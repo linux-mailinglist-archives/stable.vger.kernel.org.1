@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-170301-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-171310-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2F41DB2A3AD
-	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 15:13:01 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6DB54B2A894
+	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 16:07:03 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 1F04B56316C
-	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 13:03:24 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 1D2527B3C6B
+	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 14:04:34 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B657831B104;
-	Mon, 18 Aug 2025 13:03:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 73FF1320CC6;
+	Mon, 18 Aug 2025 13:58:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="FatC+fAC"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="eFeAf7tO"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 73BDE218AAB;
-	Mon, 18 Aug 2025 13:03:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3089E2C235D;
+	Mon, 18 Aug 2025 13:58:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755522193; cv=none; b=UEvtSXnBOfiLG+lt/dpPma4z8K0QE3ZhBl6R+tVlQpBVyv2BcrsMohqER7hdB96CDdiSEgrTrh4wseMFIHDxOYo7X4vJu8/Ngzyd3dMH/Fj88nLzLqaIhARL8awJU5Nn27InW6aa/4D1JCmeC4YgPZxVldhiV5aSu7zqOV7fk4w=
+	t=1755525500; cv=none; b=KUKvbTqbkRcSaIemA4ATeU3OdWRZu5KePXU6fW9At0kvxc4iEatWQloKZ+4i6shaeuOj7x74xdPN7VYHAXo6cyj8892TKtNM9q4v/zccT6XwJVLYk17nTChZWu7m/PW0q+qj5mTv2S7JmDO/DPUTRzrHBllvP1GwPxvZuql0B9g=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1755522193; c=relaxed/simple;
-	bh=VbRdykkUeA+U5Mh9+lxYpoGivPkFo1bn+/qBqF0fGQQ=;
+	s=arc-20240116; t=1755525500; c=relaxed/simple;
+	bh=0u695So/c/otXT2p0jnrRoKyLQYL28MznKLchnpP6OA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=HrXnBJCvtqZx8FdmJC+1XVX6pLu/gvkkYlZ/f6pRgTQ8bxQhBPDcaNOhbj4WfFMbQkdI+ZMRcHZNC9RZVW0kptIOzM7s16PzIWUAaXv7y0rhUsrahHiM0XG+M0icPXAOhrkpC2X/hu/4GT3ZSiBW7VIfCJXEPJ433e5tYWpv2DU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=FatC+fAC; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D51F9C4CEEB;
-	Mon, 18 Aug 2025 13:03:12 +0000 (UTC)
+	 MIME-Version; b=AIO0DNXRjmO+zrl6JWo7spVG0OpZjyLx8/Tg+zOFWNpeEFZFjc5B4VC1jI8lmGA6gEE/mXkiWhPjF8HeZY+bnaYOQdLszY4WMUAVRsyM+Ux9BORfoB+FuEE4g0COVNtHXOBmLJdpEkgo/Si/sBit1FvVJ8VZmIn2RkzBnbz2FRg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=eFeAf7tO; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A7508C4CEEB;
+	Mon, 18 Aug 2025 13:58:19 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1755522193;
-	bh=VbRdykkUeA+U5Mh9+lxYpoGivPkFo1bn+/qBqF0fGQQ=;
+	s=korg; t=1755525500;
+	bh=0u695So/c/otXT2p0jnrRoKyLQYL28MznKLchnpP6OA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=FatC+fAC2+zhXO2ReEqiY5VCHhJa585FfmompHjNTeH3yfCaAMhVyHqD4UQXBy/rV
-	 poLdeYbgBjIlhKJn2gTD9s1bbvYFOoUl8AziFYk7ULV1ikdh4NxcnQB6M6rPaeLQBg
-	 fuKvnTqX55Gj6Lwuo6CzsCn9nPlb/zzVUBLA/HaA=
+	b=eFeAf7tOWK4/gPGXWuG4l/sW353qCnFUxDRzLblSaMrEZ7WA7QaFZuDjLd7L1CxQW
+	 lVFYm6A7RleHNUEGqY/egdq/TYIbxnYJoSu7sY98dS/eMx3mFYwNx4gnLCIAxtxRXd
+	 ndLYf3nbwAro9aEUCqBTjpOfvr19VHXNtLn1083Q=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Heiner Kallweit <hkallweit1@gmail.com>,
-	Jacob Keller <jacob.e.keller@intel.com>,
+	Mika Westerberg <mika.westerberg@linux.intel.com>,
+	zhangjianrong <zhangjianrong5@huawei.com>,
 	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 243/444] dpaa_eth: dont use fixed_phy_change_carrier
+Subject: [PATCH 6.16 282/570] net: thunderbolt: Enable end-to-end flow control also in transmit
 Date: Mon, 18 Aug 2025 14:44:29 +0200
-Message-ID: <20250818124457.944668093@linuxfoundation.org>
+Message-ID: <20250818124516.707689365@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250818124448.879659024@linuxfoundation.org>
-References: <20250818124448.879659024@linuxfoundation.org>
+In-Reply-To: <20250818124505.781598737@linuxfoundation.org>
+References: <20250818124505.781598737@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,48 +63,61 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.16-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Heiner Kallweit <hkallweit1@gmail.com>
+From: zhangjianrong <zhangjianrong5@huawei.com>
 
-[ Upstream commit d8155c1df5c8b717052567b188455d41fa7a8908 ]
+[ Upstream commit a8065af3346ebd7c76ebc113451fb3ba94cf7769 ]
 
-This effectively reverts 6e8b0ff1ba4c ("dpaa_eth: Add change_carrier()
-for Fixed PHYs"). Usage of fixed_phy_change_carrier() requires that
-fixed_phy_register() has been called before, directly or indirectly.
-And that's not the case in this driver.
+According to USB4 specification, if E2E flow control is disabled for
+the Transmit Descriptor Ring, the Host Interface Adapter Layer shall
+not require any credits to be available before transmitting a Tunneled
+Packet from this Transmit Descriptor Ring, so e2e flow control should
+be enabled in both directions.
 
-Signed-off-by: Heiner Kallweit <hkallweit1@gmail.com>
-Reviewed-by: Jacob Keller <jacob.e.keller@intel.com>
-Link: https://patch.msgid.link/7eb189b3-d5fd-4be6-8517-a66671a4e4e3@gmail.com
+Acked-by: Mika Westerberg <mika.westerberg@linux.intel.com>
+Link: https://lore.kernel.org/20250624153805.GC2824380@black.fi.intel.com
+Signed-off-by: zhangjianrong <zhangjianrong5@huawei.com>
+Link: https://patch.msgid.link/20250628093813.647005-1-zhangjianrong5@huawei.com
 Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/ethernet/freescale/dpaa/dpaa_eth.c | 2 --
- 1 file changed, 2 deletions(-)
+ drivers/net/thunderbolt/main.c | 13 ++++++-------
+ 1 file changed, 6 insertions(+), 7 deletions(-)
 
-diff --git a/drivers/net/ethernet/freescale/dpaa/dpaa_eth.c b/drivers/net/ethernet/freescale/dpaa/dpaa_eth.c
-index e15dd3d858df..c5c1d3cb0278 100644
---- a/drivers/net/ethernet/freescale/dpaa/dpaa_eth.c
-+++ b/drivers/net/ethernet/freescale/dpaa/dpaa_eth.c
-@@ -28,7 +28,6 @@
- #include <linux/percpu.h>
- #include <linux/dma-mapping.h>
- #include <linux/sort.h>
--#include <linux/phy_fixed.h>
- #include <linux/bpf.h>
- #include <linux/bpf_trace.h>
- #include <soc/fsl/bman.h>
-@@ -3129,7 +3128,6 @@ static const struct net_device_ops dpaa_ops = {
- 	.ndo_stop = dpaa_eth_stop,
- 	.ndo_tx_timeout = dpaa_tx_timeout,
- 	.ndo_get_stats64 = dpaa_get_stats64,
--	.ndo_change_carrier = fixed_phy_change_carrier,
- 	.ndo_set_mac_address = dpaa_set_mac_address,
- 	.ndo_validate_addr = eth_validate_addr,
- 	.ndo_set_rx_mode = dpaa_set_rx_mode,
+diff --git a/drivers/net/thunderbolt/main.c b/drivers/net/thunderbolt/main.c
+index 0a53ec293d04..643cf67840b5 100644
+--- a/drivers/net/thunderbolt/main.c
++++ b/drivers/net/thunderbolt/main.c
+@@ -924,8 +924,12 @@ static int tbnet_open(struct net_device *dev)
+ 
+ 	netif_carrier_off(dev);
+ 
+-	ring = tb_ring_alloc_tx(xd->tb->nhi, -1, TBNET_RING_SIZE,
+-				RING_FLAG_FRAME);
++	flags = RING_FLAG_FRAME;
++	/* Only enable full E2E if the other end supports it too */
++	if (tbnet_e2e && net->svc->prtcstns & TBNET_E2E)
++		flags |= RING_FLAG_E2E;
++
++	ring = tb_ring_alloc_tx(xd->tb->nhi, -1, TBNET_RING_SIZE, flags);
+ 	if (!ring) {
+ 		netdev_err(dev, "failed to allocate Tx ring\n");
+ 		return -ENOMEM;
+@@ -944,11 +948,6 @@ static int tbnet_open(struct net_device *dev)
+ 	sof_mask = BIT(TBIP_PDF_FRAME_START);
+ 	eof_mask = BIT(TBIP_PDF_FRAME_END);
+ 
+-	flags = RING_FLAG_FRAME;
+-	/* Only enable full E2E if the other end supports it too */
+-	if (tbnet_e2e && net->svc->prtcstns & TBNET_E2E)
+-		flags |= RING_FLAG_E2E;
+-
+ 	ring = tb_ring_alloc_rx(xd->tb->nhi, -1, TBNET_RING_SIZE, flags,
+ 				net->tx_ring.ring->hop, sof_mask,
+ 				eof_mask, tbnet_start_poll, net);
 -- 
 2.39.5
 
