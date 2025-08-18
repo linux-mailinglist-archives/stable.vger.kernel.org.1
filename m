@@ -1,57 +1,58 @@
-Return-Path: <stable+bounces-170309-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-170810-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 90227B2A3B5
-	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 15:13:20 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 098BBB2A5EE
+	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 15:39:19 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 12B7E563D9E
-	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 13:04:16 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 56EF8B60699
+	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 13:34:02 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 722D531E11B;
-	Mon, 18 Aug 2025 13:03:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 31369321425;
+	Mon, 18 Aug 2025 13:31:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ws0kecRr"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="zFLYov+r"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 302DE31CA5B;
-	Mon, 18 Aug 2025 13:03:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E29633203A2;
+	Mon, 18 Aug 2025 13:31:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755522220; cv=none; b=JoWM8W0vHSH8E5pgHu5Gau0HJJT5J6aoYeTkCE/Wuzk8CboEdrcGbvhKg9oPATqn39YQoEBQWi72frQyX0Hi2RFfzFC7c6OlYhy5lZACVZs3Q7JsvzcY2DV2tf/JFfEUbDWsoKbjNw08g60StKA/hgcZYNVzZNpb/xaJpCqdKo0=
+	t=1755523870; cv=none; b=i1kB53R6Sy3taKH48V4VS3VJymkl3sfBzo0f4UvqCm7htuOqTFHjVeHcN/h1KZuIxmz7O+HGEqVPHvV3K3uRYwF9dduyf9ch7kT5U1NwKVShbj+rc37HbnoxlHdA7Vrz0k46DLtcdnytbGTIcyBxTTq3gKkE73eOFbR9DER31z4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1755522220; c=relaxed/simple;
-	bh=N2HcmzkmbczfQNgHUweHntGUvyPs+McS0umDHdntPHk=;
+	s=arc-20240116; t=1755523870; c=relaxed/simple;
+	bh=N/7oK+S+8l5bEKf7cC+ipAYKyIomikWleNW0OR4jOys=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=SdYO2XCOwMJGIOFFdegC7DKsZSbNGdIi+JBHLb7yzdNHlVum38+J/0QxVLuQvqXzO/ASOeWuDLertp2SGvWVve7Z6MtAuBxLUkBtPpoVlgrxWgbV6mTXK/TD3CymgHXTAn2Gip3C3UUd6Ej5uU0rb2+xBjgS8nppF7mNyQvEgEo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ws0kecRr; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2E986C4CEF1;
-	Mon, 18 Aug 2025 13:03:38 +0000 (UTC)
+	 MIME-Version; b=Yb4ERpyg6/4aDTFS3SM3ewiTbfiHq0ybqWLLEIbeegV92T1yGNeaq+IBH8pj4CP4+0Jblkj4kbuUDVQ2rLLqiBqgIGOJOL4v8MdLsjF40r/frX+tCI654ss5xi/TRSRu/Ucy2ygrkpTvK4+6nZaHMeKrB5YsHGS9a3fTJKjrq50=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=zFLYov+r; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 153D2C4CEEB;
+	Mon, 18 Aug 2025 13:31:08 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1755522219;
-	bh=N2HcmzkmbczfQNgHUweHntGUvyPs+McS0umDHdntPHk=;
+	s=korg; t=1755523869;
+	bh=N/7oK+S+8l5bEKf7cC+ipAYKyIomikWleNW0OR4jOys=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=ws0kecRrgxAUz6w/qeIzNp0DXhHgy00HQ0YtY0n+VnJjltXvcLPUKQ/EnTiLVFmH5
-	 I8kXPsuO5zcGyQS8mak+26zpK/57r3uvMbFiRkeVLsz+2AK+TZqVJQrmm+oIYMhFBQ
-	 3N09WYS28UlKGQkVyqUgPB5egr7friGyg6oRPXDY=
+	b=zFLYov+rztlUeG8l8PTPa2aUxl+EN0v7xze458kV23V9O1bel6c73nwD+upLWLoB4
+	 V5p9jS+Y20UkKLiw+MA72uBy1MPO5Z62swmTqC0xEUNQa/mFNipL056xQbt4rAAjoi
+	 iRHiHq/6+LXXTfNtcK3LOXTd0h/BfCZD0uPZr2NI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Florian Fainelli <florian.fainelli@broadcom.com>,
-	=?UTF-8?q?=C3=81lvaro=20Fern=C3=A1ndez=20Rojas?= <noltari@gmail.com>,
-	Jakub Kicinski <kuba@kernel.org>,
+	Karthikeyan Kathirvel <quic_kathirve@quicinc.com>,
+	Sarika Sharma <quic_sarishar@quicinc.com>,
+	Vasanthakumar Thiagarajan <vasanthakumar.thiagarajan@oss.qualcomm.com>,
+	Jeff Johnson <jeff.johnson@oss.qualcomm.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 250/444] net: dsa: b53: prevent GMII_PORT_OVERRIDE_CTRL access on BCM5325
+Subject: [PATCH 6.15 290/515] wifi: ath12k: Decrement TID on RX peer frag setup error handling
 Date: Mon, 18 Aug 2025 14:44:36 +0200
-Message-ID: <20250818124458.197395738@linuxfoundation.org>
+Message-ID: <20250818124509.585178789@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250818124448.879659024@linuxfoundation.org>
-References: <20250818124448.879659024@linuxfoundation.org>
+In-Reply-To: <20250818124458.334548733@linuxfoundation.org>
+References: <20250818124458.334548733@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,90 +62,48 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Álvaro Fernández Rojas <noltari@gmail.com>
+From: Karthikeyan Kathirvel <quic_kathirve@quicinc.com>
 
-[ Upstream commit 37883bbc45a8555d6eca88d3a9730504d2dac86c ]
+[ Upstream commit 7c0884fcd2ddde0544d2e77f297ae461e1f53f58 ]
 
-BCM5325 doesn't implement GMII_PORT_OVERRIDE_CTRL register so we should
-avoid reading or writing it.
-PORT_OVERRIDE_RX_FLOW and PORT_OVERRIDE_TX_FLOW aren't defined on BCM5325
-and we should use PORT_OVERRIDE_LP_FLOW_25 instead.
+Currently, TID is not decremented before peer cleanup, during error
+handling path of ath12k_dp_rx_peer_frag_setup(). This could lead to
+out-of-bounds access in peer->rx_tid[].
 
-Reviewed-by: Florian Fainelli <florian.fainelli@broadcom.com>
-Signed-off-by: Álvaro Fernández Rojas <noltari@gmail.com>
-Link: https://patch.msgid.link/20250614080000.1884236-12-noltari@gmail.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Hence, add a decrement operation for TID, before peer cleanup to
+ensures proper cleanup and prevents out-of-bounds access issues when
+the RX peer frag setup fails.
+
+Found during code review. Compile tested only.
+
+Signed-off-by: Karthikeyan Kathirvel <quic_kathirve@quicinc.com>
+Signed-off-by: Sarika Sharma <quic_sarishar@quicinc.com>
+Reviewed-by: Vasanthakumar Thiagarajan <vasanthakumar.thiagarajan@oss.qualcomm.com>
+Link: https://patch.msgid.link/20250526034713.712592-1-quic_sarishar@quicinc.com
+Signed-off-by: Jeff Johnson <jeff.johnson@oss.qualcomm.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/dsa/b53/b53_common.c | 21 +++++++++++++++++----
- drivers/net/dsa/b53/b53_regs.h   |  1 +
- 2 files changed, 18 insertions(+), 4 deletions(-)
+ drivers/net/wireless/ath/ath12k/dp.c | 1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/drivers/net/dsa/b53/b53_common.c b/drivers/net/dsa/b53/b53_common.c
-index fef265521e8a..0085adecaf2d 100644
---- a/drivers/net/dsa/b53/b53_common.c
-+++ b/drivers/net/dsa/b53/b53_common.c
-@@ -1269,6 +1269,8 @@ static void b53_force_link(struct b53_device *dev, int port, int link)
- 	if (port == dev->imp_port) {
- 		off = B53_PORT_OVERRIDE_CTRL;
- 		val = PORT_OVERRIDE_EN;
-+	} else if (is5325(dev)) {
-+		return;
- 	} else {
- 		off = B53_GMII_PORT_OVERRIDE_CTRL(port);
- 		val = GMII_PO_EN;
-@@ -1293,6 +1295,8 @@ static void b53_force_port_config(struct b53_device *dev, int port,
- 	if (port == dev->imp_port) {
- 		off = B53_PORT_OVERRIDE_CTRL;
- 		val = PORT_OVERRIDE_EN;
-+	} else if (is5325(dev)) {
-+		return;
- 	} else {
- 		off = B53_GMII_PORT_OVERRIDE_CTRL(port);
- 		val = GMII_PO_EN;
-@@ -1323,10 +1327,19 @@ static void b53_force_port_config(struct b53_device *dev, int port,
- 		return;
+diff --git a/drivers/net/wireless/ath/ath12k/dp.c b/drivers/net/wireless/ath/ath12k/dp.c
+index 807c5b345e06..a53e4ebdcbfc 100644
+--- a/drivers/net/wireless/ath/ath12k/dp.c
++++ b/drivers/net/wireless/ath/ath12k/dp.c
+@@ -84,6 +84,7 @@ int ath12k_dp_peer_setup(struct ath12k *ar, int vdev_id, const u8 *addr)
+ 	ret = ath12k_dp_rx_peer_frag_setup(ar, addr, vdev_id);
+ 	if (ret) {
+ 		ath12k_warn(ab, "failed to setup rx defrag context\n");
++		tid--;
+ 		goto peer_clean;
  	}
  
--	if (rx_pause)
--		reg |= PORT_OVERRIDE_RX_FLOW;
--	if (tx_pause)
--		reg |= PORT_OVERRIDE_TX_FLOW;
-+	if (rx_pause) {
-+		if (is5325(dev))
-+			reg |= PORT_OVERRIDE_LP_FLOW_25;
-+		else
-+			reg |= PORT_OVERRIDE_RX_FLOW;
-+	}
-+
-+	if (tx_pause) {
-+		if (is5325(dev))
-+			reg |= PORT_OVERRIDE_LP_FLOW_25;
-+		else
-+			reg |= PORT_OVERRIDE_TX_FLOW;
-+	}
- 
- 	b53_write8(dev, B53_CTRL_PAGE, off, reg);
- }
-diff --git a/drivers/net/dsa/b53/b53_regs.h b/drivers/net/dsa/b53/b53_regs.h
-index d8900aa433e5..719c2ac94a4f 100644
---- a/drivers/net/dsa/b53/b53_regs.h
-+++ b/drivers/net/dsa/b53/b53_regs.h
-@@ -95,6 +95,7 @@
- #define   PORT_OVERRIDE_SPEED_10M	(0 << PORT_OVERRIDE_SPEED_S)
- #define   PORT_OVERRIDE_SPEED_100M	(1 << PORT_OVERRIDE_SPEED_S)
- #define   PORT_OVERRIDE_SPEED_1000M	(2 << PORT_OVERRIDE_SPEED_S)
-+#define   PORT_OVERRIDE_LP_FLOW_25	BIT(3) /* BCM5325 only */
- #define   PORT_OVERRIDE_RV_MII_25	BIT(4) /* BCM5325 only */
- #define   PORT_OVERRIDE_RX_FLOW		BIT(4)
- #define   PORT_OVERRIDE_TX_FLOW		BIT(5)
 -- 
 2.39.5
 
