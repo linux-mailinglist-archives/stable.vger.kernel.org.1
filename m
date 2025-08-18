@@ -1,57 +1,59 @@
-Return-Path: <stable+bounces-169920-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-169921-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 43F60B2992B
-	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 07:55:18 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id F3E39B2992C
+	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 07:55:19 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id BD3354E7F06
-	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 05:54:28 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 120C55E158F
+	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 05:54:30 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8D1AA270ED2;
-	Mon, 18 Aug 2025 05:53:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id F37F32701BB;
+	Mon, 18 Aug 2025 05:54:05 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="uKQdqvuw"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="JXyJL07a"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2A278270EC1;
-	Mon, 18 Aug 2025 05:53:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B130226E715
+	for <stable@vger.kernel.org>; Mon, 18 Aug 2025 05:54:05 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755496381; cv=none; b=hoNvd/QqgKuKbBU2fJ1J076/mHFDsRRtzZacq9kzzME89SnF3BmVxXGbvQGkHsfYDBw4J5PzQz1405X/xTNGu5iNp4Q56qkGkPhJqxB3CTgyBAWQzjfJ/P63r1y2dU28vaaFLrf+1kTwYjsxOw1PSTqJZxgyKNShUiOWCnXF+eo=
+	t=1755496445; cv=none; b=dUSG05ZV7KbseR4WrP4ljXVodpSVVbK+6HaD4QChYDaZkufIX9GwrqyxnXKKzoyI5F4kQQoSWnrZgc3a6GaMQ89re07VkTI/uBl34M1Dh8xnJsCDNwc+DgOeZo655sUXcUMYxF4FmOdO9CBvZgFI/7gW9HY4o9OE7Hur/jAClxo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1755496381; c=relaxed/simple;
-	bh=3rzCBglMM+tJqyl0fcLp3OCwEGz9JuyA8oQioE0rcgc=;
+	s=arc-20240116; t=1755496445; c=relaxed/simple;
+	bh=7VMm1yCipGar/5QC8/PT1FgWUYooGhE6OFcFlzC9534=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=tL2FZJL8gVAtekx72Yc1zR5DwxR5ClQq6p8oKdA5YeNHS7kRA2AW7aFVnk+65a9OoAuNTHXSiQ9PXnBzsVEnGe+DCUK09sBOf+uwNy+h0Nr8ENDh/xBENCqz+F7M50QlbPNERZUC3pLrZLcngVZU0y0BGiKvphfcLdK5sroFRmM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=uKQdqvuw; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 050B0C4CEEB;
-	Mon, 18 Aug 2025 05:52:59 +0000 (UTC)
+	 Content-Type:Content-Disposition:In-Reply-To; b=a3POjNPvDKjyj36tvroyqPHDgYNx/XOV0ajuBAOW1f0Ok3rcxBePzwXHm6XXgKLJ1cSq182LcE/zBE1DS/1i7c14vsqBzQ4Q4zhMQcEDBU7Ek4sokiv2bEu4ef+iY8P3Oog2X2WLGvfSxS3s3FUMBi0o46p0UuJD3dnP0TqIrs4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=JXyJL07a; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E2EDEC4CEEB;
+	Mon, 18 Aug 2025 05:54:04 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1755496380;
-	bh=3rzCBglMM+tJqyl0fcLp3OCwEGz9JuyA8oQioE0rcgc=;
+	s=korg; t=1755496445;
+	bh=7VMm1yCipGar/5QC8/PT1FgWUYooGhE6OFcFlzC9534=;
 	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=uKQdqvuwiUJCipE0tCOzTXyHaLKZmbhwerOaI3xodCGCZH8G77OQrOHiY9dhW1KiS
-	 xR1EcycUqizEkn9cSsbEkItoTFFr/ABeyIhb0aJ86vwMHnt0ZV2WxMWptKHbACyf8v
-	 3ccR5nylvuXQMIgn89mb09U+PqsCBywwE8dGAveQ=
-Date: Mon, 18 Aug 2025 07:52:57 +0200
+	b=JXyJL07acHqlg5PvXgmSd099vExnnoKfJPfUfBFMDr07Ry4Jsnve36oYcnA8pUhgB
+	 QAV/xzCd+VNCenzBRvkU+t49ohBOOrxWoXUngWPYCGbRR44HFJs3ZLe7FhrIauahZi
+	 WqmyF3ViC8I+m/EEy82JLpYn4eVHPEmNeuoNXmsM=
+Date: Mon, 18 Aug 2025 07:54:01 +0200
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-To: Naman Jain <namjain@linux.microsoft.com>
-Cc: stable@vger.kernel.org, patches@lists.linux.dev,
-	Saurabh Sengar <ssengar@linux.microsoft.com>,
-	Long Li <longli@microsoft.com>, Wei Liu <wei.liu@kernel.org>
-Subject: Re: [PATCH 6.12 020/158] tools/hv: fcopy: Fix irregularities with
- size of ring buffer
-Message-ID: <2025081834-bullfrog-elixir-6a96@gregkh>
-References: <20250722134340.596340262@linuxfoundation.org>
- <20250722134341.490321531@linuxfoundation.org>
- <d9be2bb3-5f84-4182-91e8-ec1a4abd8f5f@linux.microsoft.com>
- <2025072316-mop-manhood-b63e@gregkh>
- <08158da3-82a0-4eb0-a805-87afe34e288a@linux.microsoft.com>
+To: Gu Bowen <gubowen5@huawei.com>
+Cc: Catalin Marinas <catalin.marinas@arm.com>,
+	Andrew Morton <akpm@linux-foundation.org>, stable@vger.kernel.org,
+	linux-mm@kvack.org, Waiman Long <llong@redhat.com>,
+	Breno Leitao <leitao@debian.org>,
+	John Ogness <john.ogness@linutronix.de>,
+	Lu Jialin <lujialin4@huawei.com>
+Subject: Re: [PATCH v3] mm: Fix possible deadlock in console_trylock_spinning
+Message-ID: <2025081846-spongy-cornstalk-ea09@gregkh>
+References: <20250813085310.2260586-1-gubowen5@huawei.com>
+ <20250813155616.d7e5a832ce7cda7764942d10@linux-foundation.org>
+ <f3e631dc-245a-4efe-98e5-cbe94464daec@huawei.com>
+ <aJ3f05Dqzx0OouJa@arm.com>
+ <2285c764-e6b3-4cb4-ae12-0bfaa1e67358@huawei.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -60,65 +62,48 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <08158da3-82a0-4eb0-a805-87afe34e288a@linux.microsoft.com>
+In-Reply-To: <2285c764-e6b3-4cb4-ae12-0bfaa1e67358@huawei.com>
 
-On Mon, Aug 18, 2025 at 10:54:10AM +0530, Naman Jain wrote:
+On Mon, Aug 18, 2025 at 10:24:38AM +0800, Gu Bowen wrote:
 > 
 > 
-> On 7/23/2025 12:12 PM, Greg Kroah-Hartman wrote:
-> > On Tue, Jul 22, 2025 at 08:29:07PM +0530, Naman Jain wrote:
+> On 8/14/2025 9:08 PM, Catalin Marinas wrote:
+> > On Thu, Aug 14, 2025 at 10:33:56AM +0800, Gu Bowen wrote:
+> > > On 8/14/2025 6:56 AM, Andrew Morton wrote:
+> > > > I'm not sure which kernel version this was against, but kmemleak.c has
+> > > > changed quite a lot.
+> > > > 
+> > > > Could we please see a patch against a latest kernel version?  Linus
+> > > > mainline will suit.
+> > > > 
+> > > > Thanks.
 > > > 
-> > > 
-> > > On 7/22/2025 7:13 PM, Greg Kroah-Hartman wrote:
-> > > > 6.12-stable review patch.  If anyone has any objections, please let me know.
-> > > > 
-> > > > ------------------
-> > > > 
-> > > > From: Naman Jain <namjain@linux.microsoft.com>
-> > > > 
-> > > > commit a4131a50d072b369bfed0b41e741c41fd8048641 upstream.
-> > > > 
-> > > > Size of ring buffer, as defined in uio_hv_generic driver, is no longer
-> > > > fixed to 16 KB. This creates a problem in fcopy, since this size was
-> > > > hardcoded. With the change in place to make ring sysfs node actually
-> > > > reflect the size of underlying ring buffer, it is safe to get the size
-> > > > of ring sysfs file and use it for ring buffer size in fcopy daemon.
-> > > > Fix the issue of disparity in ring buffer size, by making it dynamic
-> > > > in fcopy uio daemon.
-> > > > 
-> > > > Cc: stable@vger.kernel.org
-> > > > Fixes: 0315fef2aff9 ("uio_hv_generic: Align ring size to system page")
-> > > > Signed-off-by: Naman Jain <namjain@linux.microsoft.com>
-> > > > Reviewed-by: Saurabh Sengar <ssengar@linux.microsoft.com>
-> > > > Reviewed-by: Long Li <longli@microsoft.com>
-> > > > Link: https://lore.kernel.org/r/20250711060846.9168-1-namjain@linux.microsoft.com
-> > > > Signed-off-by: Wei Liu <wei.liu@kernel.org>
-> > > > Message-ID: <20250711060846.9168-1-namjain@linux.microsoft.com>
-> > > > Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-> > > > ---
-> > > 
-> > > 
-> > > Hello Greg,
-> > > Please don't pick this change yet. I have shared the reason in the other
-> > > thread:
-> > > "Re: Patch "tools/hv: fcopy: Fix irregularities with size of ring buffer"
-> > > has been added to the 6.12-stable tree"
+> > > I discovered this issue in kernel version 5.10. Afterwards, I reviewed the
+> > > code of the mainline version and found that this deadlock path no longer
+> > > exists due to the refactoring of console_lock in v6.2-rc1. For details on
+> > > the refactoring, you can refer to this link :
+> > > https://lore.kernel.org/all/20221116162152.193147-1-john.ogness@linutronix.de/.
+> > > Therefore, theoretically, this issue existed before the refactoring of
+> > > console_lock.
 > > 
-> > Ok, I have dropped this from the 6.12.y tree now.
+> > Oh, so you can no longer hit this issue with mainline. This wasn't
+> > mentioned (or I missed it) in the commit log.
 > > 
-> > thanks,
+> > So this would be a stable-only fix that does not have a correspondent
+> > upstream. Adding Greg for his opinion.
 > > 
-> > greg k-h
 > 
-> Hello Greg,
-> Can you please consider picking this change for next release of 6.12 kernel.
-> The dependent change [1] is now part of 6.12 kernel, so we need this change
-> to fix fcopy in 6.12 kernel.
+> I have discovered that I made a mistake, this fix patch should be merged
+> into the mainline. Since we have identified two types of deadlocks, the AA
+> deadlock [1] and the ABBA deadlock[2], the latter's deadlock path no longer
+> exists in the mainline due to the 40 patches that refactored console_lock.
+> However, the AA deadlock issue persists, so I believe this fix should be
+> applied to the mainline.
 > 
-> [1]: Drivers: hv: Make the sysfs node size for the ring buffer dynamic
+> [1] https://lore.kernel.org/all/20250731-kmemleak_lock-v1-1-728fd470198f@debian.org/#t
+> [2] https://lore.kernel.org/all/20250730094914.566582-1-gubowen5@huawei.com/
 
-What are the exact git commit ids you want to have applied here?  [1]
-does not reference much to me :)
+Pleasae submit it as a normal patch then.
 
 thanks,
 
