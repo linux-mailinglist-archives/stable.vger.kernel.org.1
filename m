@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-170947-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-170441-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [IPv6:2605:f480:58:1:0:1994:3:14])
-	by mail.lfdr.de (Postfix) with ESMTPS id AE8F0B2A624
-	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 15:41:18 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id B6170B2A45B
+	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 15:19:50 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 4CDB74E37DF
-	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 13:41:17 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id EE2ED2A6D69
+	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 13:11:21 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id BCDEE21CC58;
-	Mon, 18 Aug 2025 13:38:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C57F48BEC;
+	Mon, 18 Aug 2025 13:10:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="HGRYUz3u"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="QUdgaYUB"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7B49A335BC9;
-	Mon, 18 Aug 2025 13:38:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 821CA28399;
+	Mon, 18 Aug 2025 13:10:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755524315; cv=none; b=iwdD0XAWbw7s/1yR/rNWTzzLt/xOy3SjZrEwEp1OUhWyWrXHYtcjzOa36bw1mIvUmjL81iu+usSdR5xDWRSTGiHxWSgBs7zZOMUDDa3ZfyxxIwuBK36dr10VRZNWVz70spj2qozOac9yrrSfpW9Rz3CItWn8kxACSMgJhyxlFWE=
+	t=1755522648; cv=none; b=WiUBw4qvsgu9Rgh7Dc9lsfrCEHnDc7c5AWDmJZJrNrckOgLXzw8gmw95LwmroZ53w4RX256eKFjSDZK8q6iivOXWPr07d3KeUjr9yf6rfzVBca7GFF8OQPV73CNbgyRPRJwgjNX7Pu1IkoQT7TmJVlEFzux5yXR/a4IPF0BYAGY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1755524315; c=relaxed/simple;
-	bh=D97fOiiKJf7Ev3rJAH3YVhLDm+PsQs99n1ZHQqy/vMg=;
+	s=arc-20240116; t=1755522648; c=relaxed/simple;
+	bh=/flobvYht8fc3lH8TAZFa3fKG3qI6otwHwYcVHR5zfc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=LFFUyjO1zEfa5LcJVW/irVA9Uao1Nk6DOJqY8ZmadeC8+V3Hp7V5lGvmLW9vUWID+TWZP1plfBgSgg8jFZaMynz10GObrvgH3S5IbnxKbwMayJoUWC/Ts1pevfOpKKbLvug8G6tHsFoBUpRVVRw27/q3kJaUfaxfsIEp2PsA/Is=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=HGRYUz3u; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8248AC113D0;
-	Mon, 18 Aug 2025 13:38:34 +0000 (UTC)
+	 MIME-Version:Content-Type; b=gUxD37ucqkeQJhrebAQ2RaUEVibNpI/mKrqk3Kei7FqQ5R4YhlsPZMVJnzBnrAQf1vWqHcJz3r6KlqJ2RX2eIMKrD/9rmtANSMqO8i2Psrjru164uVw6Z2tBipQcjE0u7dBC737D/aOqEL6wm2fjVOak47NBR+KP3fWSGQm+E7g=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=QUdgaYUB; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E26DCC4CEEB;
+	Mon, 18 Aug 2025 13:10:47 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1755524315;
-	bh=D97fOiiKJf7Ev3rJAH3YVhLDm+PsQs99n1ZHQqy/vMg=;
+	s=korg; t=1755522648;
+	bh=/flobvYht8fc3lH8TAZFa3fKG3qI6otwHwYcVHR5zfc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=HGRYUz3u7eYqy9v4kXvk77Jmp9yCdhXp/6UdwOEgAoNl+KSSUOEOHmYo6gJg+mHwz
-	 wtL7TCClJ2EXpwwuMGSg9ih6VYN5QiRB6bLeP73q42HSWcMfEicAm//xYOxI71bdUQ
-	 e9xGA+14HT0dS3T7k/inZSf++AciHBIVbtpYrQf4=
+	b=QUdgaYUBooffjt+9nsdM87QsssUD4XIbKGJ7MnUmrwgyYF2iiY9JhwUojTz3Xolob
+	 ZG3289ley8n6yVMYosGgPCMf0J8FxRuBdSimAeL3QS24RNeoINM3+kyMzTfzycH3o6
+	 VMPhArzH9d6ssoZSjBi50jTpA+bt08hKcfSyB7xE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	"fangzhong.zhou" <myth5@myth5.com>,
-	Wolfram Sang <wsa+renesas@sang-engineering.com>,
+	=?UTF-8?q?Amadeusz=20S=C5=82awi=C5=84ski?= <amadeuszx.slawinski@linux.intel.com>,
+	Cezary Rojewski <cezary.rojewski@intel.com>,
+	Mark Brown <broonie@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.15 401/515] i2c: Force DLL0945 touchpad i2c freq to 100khz
+Subject: [PATCH 6.12 361/444] ASoC: Intel: avs: Fix uninitialized pointer error in probe()
 Date: Mon, 18 Aug 2025 14:46:27 +0200
-Message-ID: <20250818124513.846804949@linuxfoundation.org>
+Message-ID: <20250818124502.443333707@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250818124458.334548733@linuxfoundation.org>
-References: <20250818124458.334548733@linuxfoundation.org>
+In-Reply-To: <20250818124448.879659024@linuxfoundation.org>
+References: <20250818124448.879659024@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,43 +61,50 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.15-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: fangzhong.zhou <myth5@myth5.com>
+From: Cezary Rojewski <cezary.rojewski@intel.com>
 
-[ Upstream commit 0b7c9528facdb5a73ad78fea86d2e95a6c48dbc4 ]
+[ Upstream commit 11f74f48c14c1f4fe16541900ea5944c42e30ccf ]
 
-This patch fixes an issue where the touchpad cursor movement becomes
-slow on the Dell Precision 5560. Force the touchpad freq to 100khz
-as a workaround.
+If pcim_request_all_regions() fails, error path operates on
+uninitialized 'bus' pointer. Found out by Coverity static analyzer.
 
-Tested on Dell Precision 5560 with 6.14 to 6.14.6. Cursor movement
-is now smooth and responsive.
-
-Signed-off-by: fangzhong.zhou <myth5@myth5.com>
-[wsa: kept sorting and removed unnecessary parts from commit msg]
-Signed-off-by: Wolfram Sang <wsa+renesas@sang-engineering.com>
+Reviewed-by: Amadeusz Sławiński <amadeuszx.slawinski@linux.intel.com>
+Signed-off-by: Cezary Rojewski <cezary.rojewski@intel.com>
+Link: https://patch.msgid.link/20250730124906.351798-1-cezary.rojewski@intel.com
+Signed-off-by: Mark Brown <broonie@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/i2c/i2c-core-acpi.c | 1 +
- 1 file changed, 1 insertion(+)
+ sound/soc/intel/avs/core.c | 3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/i2c/i2c-core-acpi.c b/drivers/i2c/i2c-core-acpi.c
-index d2499f302b50..f43067f6797e 100644
---- a/drivers/i2c/i2c-core-acpi.c
-+++ b/drivers/i2c/i2c-core-acpi.c
-@@ -370,6 +370,7 @@ static const struct acpi_device_id i2c_acpi_force_100khz_device_ids[] = {
- 	 * the device works without issues on Windows at what is expected to be
- 	 * a 400KHz frequency. The root cause of the issue is not known.
- 	 */
-+	{ "DLL0945", 0 },
- 	{ "ELAN06FA", 0 },
- 	{}
- };
+diff --git a/sound/soc/intel/avs/core.c b/sound/soc/intel/avs/core.c
+index 82839d0994ee..80b526554bbf 100644
+--- a/sound/soc/intel/avs/core.c
++++ b/sound/soc/intel/avs/core.c
+@@ -439,6 +439,8 @@ static int avs_pci_probe(struct pci_dev *pci, const struct pci_device_id *id)
+ 	adev = devm_kzalloc(dev, sizeof(*adev), GFP_KERNEL);
+ 	if (!adev)
+ 		return -ENOMEM;
++	bus = &adev->base.core;
++
+ 	ret = avs_bus_init(adev, pci, id);
+ 	if (ret < 0) {
+ 		dev_err(dev, "failed to init avs bus: %d\n", ret);
+@@ -449,7 +451,6 @@ static int avs_pci_probe(struct pci_dev *pci, const struct pci_device_id *id)
+ 	if (ret < 0)
+ 		return ret;
+ 
+-	bus = &adev->base.core;
+ 	bus->addr = pci_resource_start(pci, 0);
+ 	bus->remap_addr = pci_ioremap_bar(pci, 0);
+ 	if (!bus->remap_addr) {
 -- 
 2.39.5
 
