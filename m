@@ -1,57 +1,55 @@
-Return-Path: <stable+bounces-171128-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-170579-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id BA13DB2A7E2
-	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 15:57:59 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2268DB2A532
+	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 15:31:11 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 1AFF7588014
-	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 13:48:59 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 1AF99580606
+	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 13:24:47 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 23D4D335BCB;
-	Mon, 18 Aug 2025 13:48:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E7987322557;
+	Mon, 18 Aug 2025 13:18:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="FpUnoLHP"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ukHWDEpO"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D4F2A335BA3;
-	Mon, 18 Aug 2025 13:48:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A4BBE320CDB;
+	Mon, 18 Aug 2025 13:18:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755524905; cv=none; b=PlubFnpGuWvmCQEtwXiuYIXeDrJNfx/xO+lZ6iGjhpn9r6resxtbynYlqD13jL8+R/tFrKnnsEQBG4jX62hCHi19I2gn8p8+wTPpA1q5g37gl7y8GQyJi/NO4iqs4N9wTL3CcNbA28BdUVyLQlwt7xpFlVVlSFv0XHg5PRGrBkU=
+	t=1755523096; cv=none; b=AAuskx023Ousn+XNJQoP+IoBVDQmmEXR+azNCKLBB0EdLdXa1jaNcW9u4VpmawKeZhFDKrxToaL5KPOhUCcAs72HruiOPzuTkvItQFUvezKLxhnnv49c3cKfwBF/cLMUn+XgmosuOGFnbScNh7gIdz0dmEvZV/IcOLZv3nm4ULo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1755524905; c=relaxed/simple;
-	bh=7l2YmgdZzMKz9Ikult+SzNwdm/OL2tUYjcL1SagTgkI=;
+	s=arc-20240116; t=1755523096; c=relaxed/simple;
+	bh=k9R5dw89WnMdRXi1D3XsR0HuyWVts8VVe+Bk5xo2olw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=bTngAH87pQkvLpl9bSWZXIEygJAEDSig/OmH2EvX3yHDka07z3OX0nxJnqTa8my4zWd5f3tsk6Rn0pBUd+BU4v8dZdz9/9GD514Lk/jkwzGdArGR0GcVNYhP93oM8mdOuhMNgwM8GFuiJEBAjrEW7WplSSx6iKrEFdpbj4Vcn5M=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=FpUnoLHP; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4488BC4CEEB;
-	Mon, 18 Aug 2025 13:48:25 +0000 (UTC)
+	 MIME-Version; b=ThT8HbIuRpKE9pkxUmWap84mcn5XEb5dMgNLLPB92Rgilt5SChSvXZYTNyCNLMb70LwBvOHdsZTXzVLN3J4huVr4WkVfp8xFQCej50zyDG2PXJgC5+tNo83yJWKbX5nJL20TpOnyvr7dZVRgy+OiCLGbY4QRtqIBNGaIpXvtgJA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ukHWDEpO; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 25206C113D0;
+	Mon, 18 Aug 2025 13:18:15 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1755524905;
-	bh=7l2YmgdZzMKz9Ikult+SzNwdm/OL2tUYjcL1SagTgkI=;
+	s=korg; t=1755523096;
+	bh=k9R5dw89WnMdRXi1D3XsR0HuyWVts8VVe+Bk5xo2olw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=FpUnoLHPm6r/aR3W8AOAnkCpMAsMrBAky9aQRN1X/3NnqiqVy32R26xiiwj03H/sM
-	 Chn7w6U+XAQ6RlaKumeC5zZsodGaOM2oNuyXo9ivX8Y2Fq8lQYKII29TP8tnK2AMO/
-	 +f5sU5JMUQhPCDBKQq966JUiZYI5Bhuh6GLQunSo=
+	b=ukHWDEpO+UjWN3hFSMJ1syRTDGari92/WmUehAgxQKYf4uBsLCbQxmEBa7W1UdzAj
+	 kw0qgzdcW0ybrm92Gffhfy6Qdg4A85w9kKXXE1pGfGiajwwf9aCP45kty2vNK+E6C0
+	 0LzyLwyhMe13M0Zo/+GMGZBG9mQ3hrZyYkVGTJu8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jijie Shao <shaojijie@huawei.com>,
-	Simon Horman <horms@kernel.org>,
-	Jakub Kicinski <kuba@kernel.org>,
+	Gao Xiang <hsiangkao@linux.alibaba.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.16 067/570] net: hibmcge: fix rtnl deadlock issue
-Date: Mon, 18 Aug 2025 14:40:54 +0200
-Message-ID: <20250818124508.394288263@linuxfoundation.org>
+Subject: [PATCH 6.15 069/515] erofs: fix block count report when 48-bit layout is on
+Date: Mon, 18 Aug 2025 14:40:55 +0200
+Message-ID: <20250818124501.051577161@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250818124505.781598737@linuxfoundation.org>
-References: <20250818124505.781598737@linuxfoundation.org>
+In-Reply-To: <20250818124458.334548733@linuxfoundation.org>
+References: <20250818124458.334548733@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,124 +61,39 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.16-stable review patch.  If anyone has any objections, please let me know.
+6.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jijie Shao <shaojijie@huawei.com>
+From: Gao Xiang <hsiangkao@linux.alibaba.com>
 
-[ Upstream commit c875503a9b9082928d7d3fc60b5400d16fbfae4e ]
+[ Upstream commit 0b96d9bed324a1c1b7d02bfb9596351ef178428d ]
 
-Currently, the hibmcge netdev acquires the rtnl_lock in
-pci_error_handlers.reset_prepare() and releases it in
-pci_error_handlers.reset_done().
+Fix incorrect shift order when combining the 48-bit block count.
 
-However, in the PCI framework:
-pci_reset_bus - __pci_reset_slot - pci_slot_save_and_disable_locked -
- pci_dev_save_and_disable - err_handler->reset_prepare(dev);
-
-In pci_slot_save_and_disable_locked():
-	list_for_each_entry(dev, &slot->bus->devices, bus_list) {
-		if (!dev->slot || dev->slot!= slot)
-			continue;
-		pci_dev_save_and_disable(dev);
-		if (dev->subordinate)
-			pci_bus_save_and_disable_locked(dev->subordinate);
-	}
-
-This will iterate through all devices under the current bus and execute
-err_handler->reset_prepare(), causing two devices of the hibmcge driver
-to sequentially request the rtnl_lock, leading to a deadlock.
-
-Since the driver now executes netif_device_detach()
-before the reset process, it will not concurrently with
-other netdev APIs, so there is no need to hold the rtnl_lock now.
-
-Therefore, this patch removes the rtnl_lock during the reset process and
-adjusts the position of HBG_NIC_STATE_RESETTING to ensure
-that multiple resets are not executed concurrently.
-
-Fixes: 3f5a61f6d504f ("net: hibmcge: Add reset supported in this module")
-Signed-off-by: Jijie Shao <shaojijie@huawei.com>
-Reviewed-by: Simon Horman <horms@kernel.org>
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Fixes: 2e1473d5195f ("erofs: implement 48-bit block addressing for unencoded inodes")
+Signed-off-by: Gao Xiang <hsiangkao@linux.alibaba.com>
+Link: https://lore.kernel.org/r/20250807082019.3093539-1-hsiangkao@linux.alibaba.com
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/ethernet/hisilicon/hibmcge/hbg_err.c | 14 +++++---------
- 1 file changed, 5 insertions(+), 9 deletions(-)
+ fs/erofs/super.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/net/ethernet/hisilicon/hibmcge/hbg_err.c b/drivers/net/ethernet/hisilicon/hibmcge/hbg_err.c
-index ff3295b60a69..dee1e8681157 100644
---- a/drivers/net/ethernet/hisilicon/hibmcge/hbg_err.c
-+++ b/drivers/net/ethernet/hisilicon/hibmcge/hbg_err.c
-@@ -53,9 +53,11 @@ static int hbg_reset_prepare(struct hbg_priv *priv, enum hbg_reset_type type)
- {
- 	int ret;
- 
--	ASSERT_RTNL();
-+	if (test_and_set_bit(HBG_NIC_STATE_RESETTING, &priv->state))
-+		return -EBUSY;
- 
- 	if (netif_running(priv->netdev)) {
-+		clear_bit(HBG_NIC_STATE_RESETTING, &priv->state);
- 		dev_warn(&priv->pdev->dev,
- 			 "failed to reset because port is up\n");
- 		return -EBUSY;
-@@ -64,7 +66,6 @@ static int hbg_reset_prepare(struct hbg_priv *priv, enum hbg_reset_type type)
- 	netif_device_detach(priv->netdev);
- 
- 	priv->reset_type = type;
--	set_bit(HBG_NIC_STATE_RESETTING, &priv->state);
- 	clear_bit(HBG_NIC_STATE_RESET_FAIL, &priv->state);
- 	ret = hbg_hw_event_notify(priv, HBG_HW_EVENT_RESET);
- 	if (ret) {
-@@ -83,28 +84,25 @@ static int hbg_reset_done(struct hbg_priv *priv, enum hbg_reset_type type)
- 	    type != priv->reset_type)
- 		return 0;
- 
--	ASSERT_RTNL();
--
--	clear_bit(HBG_NIC_STATE_RESETTING, &priv->state);
- 	ret = hbg_rebuild(priv);
- 	if (ret) {
- 		set_bit(HBG_NIC_STATE_RESET_FAIL, &priv->state);
-+		clear_bit(HBG_NIC_STATE_RESETTING, &priv->state);
- 		dev_err(&priv->pdev->dev, "failed to rebuild after reset\n");
- 		return ret;
+diff --git a/fs/erofs/super.c b/fs/erofs/super.c
+index 6e57b9cc6ed2..cfe454dbf415 100644
+--- a/fs/erofs/super.c
++++ b/fs/erofs/super.c
+@@ -313,8 +313,8 @@ static int erofs_read_superblock(struct super_block *sb)
+ 	sbi->islotbits = ilog2(sizeof(struct erofs_inode_compact));
+ 	if (erofs_sb_has_48bit(sbi) && dsb->rootnid_8b) {
+ 		sbi->root_nid = le64_to_cpu(dsb->rootnid_8b);
+-		sbi->dif0.blocks = (sbi->dif0.blocks << 32) |
+-				le16_to_cpu(dsb->rb.blocks_hi);
++		sbi->dif0.blocks = sbi->dif0.blocks |
++				((u64)le16_to_cpu(dsb->rb.blocks_hi) << 32);
+ 	} else {
+ 		sbi->root_nid = le16_to_cpu(dsb->rb.rootnid_2b);
  	}
- 
- 	netif_device_attach(priv->netdev);
-+	clear_bit(HBG_NIC_STATE_RESETTING, &priv->state);
- 
- 	dev_info(&priv->pdev->dev, "reset done\n");
- 	return ret;
- }
- 
--/* must be protected by rtnl lock */
- int hbg_reset(struct hbg_priv *priv)
- {
- 	int ret;
- 
--	ASSERT_RTNL();
- 	ret = hbg_reset_prepare(priv, HBG_RESET_TYPE_FUNCTION);
- 	if (ret)
- 		return ret;
-@@ -169,7 +167,6 @@ static void hbg_pci_err_reset_prepare(struct pci_dev *pdev)
- 	struct net_device *netdev = pci_get_drvdata(pdev);
- 	struct hbg_priv *priv = netdev_priv(netdev);
- 
--	rtnl_lock();
- 	hbg_reset_prepare(priv, HBG_RESET_TYPE_FLR);
- }
- 
-@@ -179,7 +176,6 @@ static void hbg_pci_err_reset_done(struct pci_dev *pdev)
- 	struct hbg_priv *priv = netdev_priv(netdev);
- 
- 	hbg_reset_done(priv, HBG_RESET_TYPE_FLR);
--	rtnl_unlock();
- }
- 
- static const struct pci_error_handlers hbg_pci_err_handler = {
 -- 
 2.50.1
 
