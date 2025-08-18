@@ -1,55 +1,55 @@
-Return-Path: <stable+bounces-171071-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-170068-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3D186B2A777
-	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 15:53:48 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 17632B2A24B
+	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 14:55:30 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 2081D5660F2
-	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 13:46:43 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 3D0891894969
+	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 12:50:35 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D955C27F758;
-	Mon, 18 Aug 2025 13:45:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D62DB2FF650;
+	Mon, 18 Aug 2025 12:50:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="vzKa4dV3"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="CuqovrCg"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 96475235C01;
-	Mon, 18 Aug 2025 13:45:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 91C55258ED7;
+	Mon, 18 Aug 2025 12:50:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755524723; cv=none; b=mOHMn9nXChH4bxIzGTmas+IdwVHRVnP9SLTIOh67nCdtbvSyfhouyZ/gNh4lZU49UQXAVgos7iI0KAcp0SkbaysobK9yjt+vnnQwl33wDLvILJll9c/LwR87ncpIwkT7aR+3Me1wn4ZhYONO+VKAZ6+fUbrKmjA1StRTi97jLCw=
+	t=1755521408; cv=none; b=m6v9Qrao/Qer9/SXbXiCu448Qb3lYOY1axsi7opkbAqHJWMSY6UbqAnLPKvKW7bXFjqQ0tLGUSSL/71bIA25Qtj4vSiDpLmG5j+RN/jRYmhRRI/MkwmURlTi/27HRSvlLqhYYxJM/LB0xbJmMCUOK5Icz9riArh+/Duvi/qc2Ww=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1755524723; c=relaxed/simple;
-	bh=lr6BuUbRSVBWU+eZdepPtzlo6vzN/u+9nj6jWKWnig8=;
+	s=arc-20240116; t=1755521408; c=relaxed/simple;
+	bh=z1aAFzifr60X2TLvwnaafoEhUBz3WfNSaM11uPNlJwA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=e1e8ODfv21qKi/pCT348PNPvvekZvdX8LRkF73YycM6AggzhIBBJpx87JrfkWfrJXdU5+4nCeje/T60+j3soMxs259ZMOYbdXk52EC97R2KvWASkgK8ksJpnyw8wgl89caQsOe8yFTNxydadhtFvYTdutJhjKQXcqTlHuZbBnSs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=vzKa4dV3; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 01822C4CEF1;
-	Mon, 18 Aug 2025 13:45:22 +0000 (UTC)
+	 MIME-Version; b=A3KAgNnBIyMT0d2K2uRzRWIo+HJKYnz/MXkTIWyJEuWxuh68Q3OA3JwtsGeYQoQc6jHOImBba2wX2VUqenBxio3fkUu0O+Z1zxVU/f9nhlWBlr7OuhjKau/56xIRVWV2/LvgI7I5BxT44bcOWW+FNlCbPGx+QMmskjU2+Rxynms=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=CuqovrCg; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id CE585C4CEEB;
+	Mon, 18 Aug 2025 12:50:07 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1755524723;
-	bh=lr6BuUbRSVBWU+eZdepPtzlo6vzN/u+9nj6jWKWnig8=;
+	s=korg; t=1755521408;
+	bh=z1aAFzifr60X2TLvwnaafoEhUBz3WfNSaM11uPNlJwA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=vzKa4dV3U+3cHEMpDuYLcw5kVM42+QJWSGJj0PQnpVkuyl/lmrMRrFqqeqMwEgJT+
-	 7pgNafc/fF5z2r8IECpuCLVvprdFtTsYFdGQXK9psOZR94t3dYdXdQHJQ0yC+bUC6r
-	 hXyq3XkiqF2wOVtHiVs+QYFwl20XLfZbZFBmsheg=
+	b=CuqovrCgIVSIULXmrA83M32E09s5T3+OrPfthVNNQH6GLLvaEb7SKV01OeMi1683p
+	 yVyiA+leQPyHemB3fnuO+2Rczo7tWDdxXiWrt9xfCIBlne+X0MmGHwCpgAB/iRr3oE
+	 y0d5Aw0td1BYIPZO1J9bh4YCEIMgVGwhz+fgA9+o=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	=?UTF-8?q?Andr=C3=A9=20Draszik?= <andre.draszik@linaro.org>,
-	Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
-Subject: [PATCH 6.16 043/570] clk: samsung: gs101: fix CLK_DOUT_CMU_G3D_BUSD
+	Vasiliy Kovalev <kovalev@altlinux.org>,
+	Takashi Iwai <tiwai@suse.de>
+Subject: [PATCH 6.12 004/444] ALSA: hda/realtek: Fix headset mic on HONOR BRB-X
 Date: Mon, 18 Aug 2025 14:40:30 +0200
-Message-ID: <20250818124507.479113640@linuxfoundation.org>
+Message-ID: <20250818124449.063349743@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250818124505.781598737@linuxfoundation.org>
-References: <20250818124505.781598737@linuxfoundation.org>
+In-Reply-To: <20250818124448.879659024@linuxfoundation.org>
+References: <20250818124448.879659024@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -59,41 +59,38 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.16-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: André Draszik <andre.draszik@linaro.org>
+From: Vasiliy Kovalev <kovalev@altlinux.org>
 
-commit 29a9361f0b50be2b16d308695e30ee030fedea2c upstream.
+commit b26e2afb3834d4a61ce54c8484ff6014bef0b4b7 upstream.
 
-Use the correct Linux clock ID when instantiating the G3D_BUSD
-div_clock.
+Add a PCI quirk to enable microphone input on the headphone jack on
+the HONOR BRB-X M1010 laptop.
 
-Fixes: 2c597bb7d66a ("clk: samsung: clk-gs101: Add cmu_top, cmu_misc and cmu_apm support")
-Cc: stable@vger.kernel.org
-Signed-off-by: André Draszik <andre.draszik@linaro.org>
-Link: https://lore.kernel.org/r/20250603-samsung-clk-fixes-v1-1-49daf1ff4592@linaro.org
-Signed-off-by: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
+Signed-off-by: Vasiliy Kovalev <kovalev@altlinux.org>
+Cc: <stable@vger.kernel.org>
+Link: https://patch.msgid.link/20250811132716.45076-1-kovalev@altlinux.org
+Signed-off-by: Takashi Iwai <tiwai@suse.de>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/clk/samsung/clk-gs101.c |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ sound/pci/hda/patch_realtek.c |    1 +
+ 1 file changed, 1 insertion(+)
 
---- a/drivers/clk/samsung/clk-gs101.c
-+++ b/drivers/clk/samsung/clk-gs101.c
-@@ -1154,7 +1154,7 @@ static const struct samsung_div_clock cm
- 	    CLK_CON_DIV_CLKCMU_G2D_MSCL, 0, 4),
- 	DIV(CLK_DOUT_CMU_G3AA_G3AA, "dout_cmu_g3aa_g3aa", "gout_cmu_g3aa_g3aa",
- 	    CLK_CON_DIV_CLKCMU_G3AA_G3AA, 0, 4),
--	DIV(CLK_DOUT_CMU_G3D_SWITCH, "dout_cmu_g3d_busd", "gout_cmu_g3d_busd",
-+	DIV(CLK_DOUT_CMU_G3D_BUSD, "dout_cmu_g3d_busd", "gout_cmu_g3d_busd",
- 	    CLK_CON_DIV_CLKCMU_G3D_BUSD, 0, 4),
- 	DIV(CLK_DOUT_CMU_G3D_GLB, "dout_cmu_g3d_glb", "gout_cmu_g3d_glb",
- 	    CLK_CON_DIV_CLKCMU_G3D_GLB, 0, 4),
+--- a/sound/pci/hda/patch_realtek.c
++++ b/sound/pci/hda/patch_realtek.c
+@@ -11331,6 +11331,7 @@ static const struct hda_quirk alc269_fix
+ 	SND_PCI_QUIRK(0x1d72, 0x1901, "RedmiBook 14", ALC256_FIXUP_ASUS_HEADSET_MIC),
+ 	SND_PCI_QUIRK(0x1d72, 0x1945, "Redmi G", ALC256_FIXUP_ASUS_HEADSET_MIC),
+ 	SND_PCI_QUIRK(0x1d72, 0x1947, "RedmiBook Air", ALC255_FIXUP_XIAOMI_HEADSET_MIC),
++	SND_PCI_QUIRK(0x1ee7, 0x2078, "HONOR BRB-X M1010", ALC2XX_FIXUP_HEADSET_MIC),
+ 	SND_PCI_QUIRK(0x1f66, 0x0105, "Ayaneo Portable Game Player", ALC287_FIXUP_CS35L41_I2C_2),
+ 	SND_PCI_QUIRK(0x2014, 0x800a, "Positivo ARN50", ALC269_FIXUP_LIMIT_INT_MIC_BOOST),
+ 	SND_PCI_QUIRK(0x2782, 0x0214, "VAIO VJFE-CL", ALC269_FIXUP_LIMIT_INT_MIC_BOOST),
 
 
 
