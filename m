@@ -1,56 +1,58 @@
-Return-Path: <stable+bounces-171339-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-170297-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3198DB2A92B
-	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 16:16:30 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 44BCAB2A35E
+	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 15:09:07 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 954F05A611C
-	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 14:07:48 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id DFB3A3BB1F9
+	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 13:03:04 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D38A3322A22;
-	Mon, 18 Aug 2025 13:59:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0262D31B11A;
+	Mon, 18 Aug 2025 13:03:00 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Vdg4tjt4"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="sOpg6ZVb"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8FF2F322779;
-	Mon, 18 Aug 2025 13:59:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B628C21C9FD;
+	Mon, 18 Aug 2025 13:02:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755525590; cv=none; b=Z+vZXghPAe9mQhxWqQg1MZ2ssp+kBBdI+1e/Ju2GZWH4PPw/Kp1x5fQoITfDzV0edjTEp4t+h6VrInBrrBqlNJE6vTMqU0ezVZ62MO34KYVsxK//yWW2VUP/L/ChUnxFKNzVaz2Anfh5Xaq3YJMHiU9r/Jti6+Il5wblZqPtx8A=
+	t=1755522179; cv=none; b=CwOh0ycFPKiTEQPpOmRaXm6KZB7Z0nokkcEboz8RaCT3RGgPeFzjizGHDgD2H1p4ipqYYvD1ajdwz+iho7euowicYVIS2nof/SDH0TjuKPJjas7WFoKvi/gmPejtIRWbw2n8gPDLuAFUoRAOWsYAay0zOUka1V+4ytBKRol/hpA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1755525590; c=relaxed/simple;
-	bh=gKeu5ptb65IaJm2ykD6Cdq/GiZxiWCZg8+1hGayUp1Q=;
+	s=arc-20240116; t=1755522179; c=relaxed/simple;
+	bh=8PPjL42Q1xyNZ6TYGY501BiNU7Ji14bWD8cBJmiEtGw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Bm2hcdHVGz9rfd5v4PaJPiysJFZpfYR81O24uT67wU0uV2Iq/SD9R0ouEXjBKPVYmBwD0fERcJxqlbqiLr16kFiE4DRQlIlenzV6Xy1fMWgfmOCp6cTt+1koKnzE4AV+2EAwwZ5XaqiZMZmgwr+BwjVaYTf+WuY762tY7rYyt6o=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Vdg4tjt4; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 17DD7C116C6;
-	Mon, 18 Aug 2025 13:59:49 +0000 (UTC)
+	 MIME-Version; b=mFvcvf/lk1+sTdWq37t8jv3DdsKk4nsk+bpH97VciD6o1CcwTYTXNN3J/BPm+0LHS+meeoenqD76scVrgfVg4nCqCGEiY4Q4bua9vtfAG8rWzs26we+99XTUDAbLpd50bynAVhmqNTDvIRZ443ZbLA3YaMgHbYhdrFWk6jMN/fc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=sOpg6ZVb; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2385CC4CEEB;
+	Mon, 18 Aug 2025 13:02:58 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1755525590;
-	bh=gKeu5ptb65IaJm2ykD6Cdq/GiZxiWCZg8+1hGayUp1Q=;
+	s=korg; t=1755522179;
+	bh=8PPjL42Q1xyNZ6TYGY501BiNU7Ji14bWD8cBJmiEtGw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Vdg4tjt4N+lc3I95yGKlwyfAZMQKOMhev2Uz6oXwOHzYrl1lhsK7u/yUcLz5YDBEk
-	 KPdCBeWxgGsbHr1QqblhqF3dlQXIoSYn9oIl64VYQ2ixE5bdInPWKz+mfUzgMd/nKW
-	 Hln2JAcnmsApAur4AHGgppE/ETKzor4cFEw5wd5M=
+	b=sOpg6ZVbvNNH59MUqYxXEzM8oy19F88Er8YP+9zABwmnTzOedN90zydMtZv+h+6Bb
+	 370URjtAGldnpBwCX4eHL25kruI7+MFOoaOxKtvts0jQWDECZtctPWSerl4V/lV/sR
+	 qSJFKcrsjKQPihtPq3VpbxTuFscD14hPbSWl3q24=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Bitterblue Smith <rtl8821cerfe2@gmail.com>,
-	Ping-Ke Shih <pkshih@realtek.com>,
+	ap420073@gmail.com,
+	Mina Almasry <almasrymina@google.com>,
+	Stanislav Fomichev <sdf@fomichev.me>,
+	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.16 277/570] wifi: rtw89: Disable deep power saving for USB/SDIO
-Date: Mon, 18 Aug 2025 14:44:24 +0200
-Message-ID: <20250818124516.523142199@linuxfoundation.org>
+Subject: [PATCH 6.12 239/444] netmem: fix skb_frag_address_safe with unreadable skbs
+Date: Mon, 18 Aug 2025 14:44:25 +0200
+Message-ID: <20250818124457.790368403@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250818124505.781598737@linuxfoundation.org>
-References: <20250818124505.781598737@linuxfoundation.org>
+In-Reply-To: <20250818124448.879659024@linuxfoundation.org>
+References: <20250818124448.879659024@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,41 +64,47 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.16-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Bitterblue Smith <rtl8821cerfe2@gmail.com>
+From: Mina Almasry <almasrymina@google.com>
 
-[ Upstream commit a3b871a0f7c083c2a632a31da8bc3de554ae8550 ]
+[ Upstream commit 4672aec56d2e8edabcb74c3e2320301d106a377e ]
 
-Disable deep power saving for USB and SDIO because rtw89_mac_send_rpwm()
-is called in atomic context and accessing hardware registers results in
-"scheduling while atomic" errors.
+skb_frag_address_safe() needs a check that the
+skb_frag_page exists check similar to skb_frag_address().
 
-Signed-off-by: Bitterblue Smith <rtl8821cerfe2@gmail.com>
-Acked-by: Ping-Ke Shih <pkshih@realtek.com>
-Signed-off-by: Ping-Ke Shih <pkshih@realtek.com>
-Link: https://patch.msgid.link/0f49eceb-0de0-47e2-ba36-3c6a0dddd17d@gmail.com
+Cc: ap420073@gmail.com
+
+Signed-off-by: Mina Almasry <almasrymina@google.com>
+Acked-by: Stanislav Fomichev <sdf@fomichev.me>
+Link: https://patch.msgid.link/20250619175239.3039329-1-almasrymina@google.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/wireless/realtek/rtw89/core.c | 3 +++
- 1 file changed, 3 insertions(+)
+ include/linux/skbuff.h | 8 +++++++-
+ 1 file changed, 7 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/net/wireless/realtek/rtw89/core.c b/drivers/net/wireless/realtek/rtw89/core.c
-index c886dd2a73b4..894ab7ab94cc 100644
---- a/drivers/net/wireless/realtek/rtw89/core.c
-+++ b/drivers/net/wireless/realtek/rtw89/core.c
-@@ -2839,6 +2839,9 @@ static enum rtw89_ps_mode rtw89_update_ps_mode(struct rtw89_dev *rtwdev)
+diff --git a/include/linux/skbuff.h b/include/linux/skbuff.h
+index a726a698aac4..b2827fce5a2d 100644
+--- a/include/linux/skbuff.h
++++ b/include/linux/skbuff.h
+@@ -3638,7 +3638,13 @@ static inline void *skb_frag_address(const skb_frag_t *frag)
+  */
+ static inline void *skb_frag_address_safe(const skb_frag_t *frag)
  {
- 	const struct rtw89_chip_info *chip = rtwdev->chip;
- 
-+	if (rtwdev->hci.type != RTW89_HCI_TYPE_PCIE)
-+		return RTW89_PS_MODE_NONE;
+-	void *ptr = page_address(skb_frag_page(frag));
++	struct page *page = skb_frag_page(frag);
++	void *ptr;
 +
- 	if (rtw89_disable_ps_mode || !chip->ps_mode_supported ||
- 	    RTW89_CHK_FW_FEATURE(NO_DEEP_PS, &rtwdev->fw))
- 		return RTW89_PS_MODE_NONE;
++	if (!page)
++		return NULL;
++
++	ptr = page_address(page);
+ 	if (unlikely(!ptr))
+ 		return NULL;
+ 
 -- 
 2.39.5
 
