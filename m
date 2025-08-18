@@ -1,57 +1,58 @@
-Return-Path: <stable+bounces-171328-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-170350-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 958FAB2A93E
-	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 16:17:43 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id C5324B2A3D6
+	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 15:14:38 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id EF054687DB3
-	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 14:07:16 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id D9943565461
+	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 13:06:11 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 39DB8322744;
-	Mon, 18 Aug 2025 13:59:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id DC1FA258ED7;
+	Mon, 18 Aug 2025 13:05:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="GjoyOvOu"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ojHvj1sd"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E9A881D88D7;
-	Mon, 18 Aug 2025 13:59:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9B1213218C9;
+	Mon, 18 Aug 2025 13:05:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755525554; cv=none; b=E0P3/LYIK4Pg2ztcZnInxqgkps1tNNx90+iXcS0/VknlBprJHthB5uGgaGfPi5X6w7ZdqlZ9LLD7g2PBCtNxVS8UQJ5CfF0ERSQ9ZcqPeWtH7QFLCR/qK/aSiDuFJ0NajCaZqdVRCfi0CQgptRB0h3Suom66piyZvV5nHLW/Vds=
+	t=1755522352; cv=none; b=QVd9UOtaZpCQSzH5JmlHuZKrvSCJczXzYAaSTe2OInH07ni8F25ItFCeJ9E4AeBjUXmo4FdrRAUcKuOPYLSen9nKivbXvZdwywgRVpGxiZyNqC0m/efcNZNGgnoEXuO8q8FkDTas06zGsI0o8M0Q/qVObT6yGi06/iTA7atsxcM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1755525554; c=relaxed/simple;
-	bh=DQQCjDj0Y0izkGtaeppQjbo6L3LH6AjgohxE692+TZ8=;
+	s=arc-20240116; t=1755522352; c=relaxed/simple;
+	bh=/h8ksPK7k7dc4voepdTKsSBKghUPhydm8HT0Azr870o=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=KadMSFzBSnIFQQmk5254JTUSRIC9Y9wjfNVIXX1j2jW/x/x58bTalcbnXjBGbL9Rna+lGfKtKsOANDzh64tEfn3HViTHuiF+Yv3tAVby7t2/ioR3tAzvYV64rfrcDU63VN3KYchEUjUTpNhtZrrLkk81f+5pCW4E51n+u4lG6XM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=GjoyOvOu; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id EDD4EC4CEEB;
-	Mon, 18 Aug 2025 13:59:12 +0000 (UTC)
+	 MIME-Version; b=RqB1uNnemon2O4uwco2KuDs+3aK+D9lftxhgvhLLjIPXw3qIW3GuolOuM/5y3k6dfVp8aXHNP7Sap9ZYF3UxNs9lNZncprMILqu6OUjegExtecyHd1JIdZCJG/ATvu0cqLuPsHCkQ3JlofsKd7lNso0M3uT+uop/PrZDXwZidt0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ojHvj1sd; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9151DC4CEEB;
+	Mon, 18 Aug 2025 13:05:51 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1755525553;
-	bh=DQQCjDj0Y0izkGtaeppQjbo6L3LH6AjgohxE692+TZ8=;
+	s=korg; t=1755522352;
+	bh=/h8ksPK7k7dc4voepdTKsSBKghUPhydm8HT0Azr870o=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=GjoyOvOuL0t/ukBJUbYA6e8K8l9+X5mbERAyaOobBMxmgnB65WYSG6VBYliQSRBxw
-	 99kwdu52EC6t/o0cQtnlK8ZNZZJx9wKi/IQTu+uWfebN4gP+vYDb+uC+h3t1gqhzjQ
-	 4KiLgf9sb1MRUQuufy/fDFx7ue8Ej+q/c+6iVMW0=
+	b=ojHvj1sdIXyYUXER8TauQki9NNpCB8raPk/kVMR3XxS64nGut4oQzrYEs0Jt979NO
+	 sZrplAY4gonmEOJgGnsRhdk/FB8N7B06g90vtiPixBgiXDhaS5LvwboVR/+fh/Lh3u
+	 GlZnVtwCuXmzR61I/v0Shtrs0XhCwAf1kPLIiYps=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Sarika Sharma <quic_sarishar@quicinc.com>,
-	Vasanthakumar Thiagarajan <vasanthakumar.thiagarajan@oss.qualcomm.com>,
-	Jeff Johnson <jeff.johnson@oss.qualcomm.com>,
+	Tvrtko Ursulin <tvrtko.ursulin@igalia.com>,
+	Matthew Brost <matthew.brost@intel.com>,
+	Lucas De Marchi <lucas.demarchi@intel.com>,
+	Tvrtko Ursulin <tursulin@ursulin.net>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.16 297/570] wifi: ath12k: Add memset and update default rate value in wmi tx completion
+Subject: [PATCH 6.12 258/444] drm/xe: Make dma-fences compliant with the safe access rules
 Date: Mon, 18 Aug 2025 14:44:44 +0200
-Message-ID: <20250818124517.292144773@linuxfoundation.org>
+Message-ID: <20250818124458.506457725@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250818124505.781598737@linuxfoundation.org>
-References: <20250818124505.781598737@linuxfoundation.org>
+In-Reply-To: <20250818124448.879659024@linuxfoundation.org>
+References: <20250818124448.879659024@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,59 +64,92 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.16-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Sarika Sharma <quic_sarishar@quicinc.com>
+From: Tvrtko Ursulin <tvrtko.ursulin@igalia.com>
 
-[ Upstream commit 9903c0986f782dfc511d7638b6f15fb6e8600cd3 ]
+[ Upstream commit 6bd90e700b4285e6a7541e00f969cab0d696adde ]
 
-When both AP/STA and monitor interfaces are enabled, ieee80211_tx_status()
-is invoked from two paths: the TX completion handler for data frames
-and the WMI TX completion handler for management frames.
-In the data path, the skb->cb is properly zeroed using memset, but in
-the WMI path, this step is missing.
+Xe can free some of the data pointed to by the dma-fences it exports. Most
+notably the timeline name can get freed if userspace closes the associated
+submit queue. At the same time the fence could have been exported to a
+third party (for example a sync_fence fd) which will then cause an use-
+after-free on subsequent access.
 
-As a result, mac80211 encountered uninitialized (junk) values in
-skb->cb when generating the radiotap header for monitor mode, leading
-to invalid radiotap lengths.
+To make this safe we need to make the driver compliant with the newly
+documented dma-fence rules. Driver has to ensure a RCU grace period
+between signalling a fence and freeing any data pointed to by said fence.
 
-Hence, explicitly zero the status field in the skb->cb using memset
-in WMI TX completion path to ensure consistent and correct behavior
-during WMI tx completion path.
+For the timeline name we simply make the queue be freed via kfree_rcu and
+for the shared lock associated with multiple queues we add a RCU grace
+period before freeing the per GT structure holding the lock.
 
-Additionally, set info->status.rates[0].idx = -1 to indicate that
-no valid rate information is available, avoiding misinterpretation of
-garbage values.
-
-Tested-on: QCN9274 hw2.0 PCI WLAN.WBE.1.4.1-00199-QCAHKSWPL_SILICONZ-1
-
-Signed-off-by: Sarika Sharma <quic_sarishar@quicinc.com>
-Reviewed-by: Vasanthakumar Thiagarajan <vasanthakumar.thiagarajan@oss.qualcomm.com>
-Link: https://patch.msgid.link/20250603063512.1887652-1-quic_sarishar@quicinc.com
-Signed-off-by: Jeff Johnson <jeff.johnson@oss.qualcomm.com>
+Signed-off-by: Tvrtko Ursulin <tvrtko.ursulin@igalia.com>
+Reviewed-by: Matthew Brost <matthew.brost@intel.com>
+Acked-by: Lucas De Marchi <lucas.demarchi@intel.com>
+Signed-off-by: Tvrtko Ursulin <tursulin@ursulin.net>
+Link: https://lore.kernel.org/r/20250610164226.10817-5-tvrtko.ursulin@igalia.com
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/wireless/ath/ath12k/wmi.c | 5 +++++
- 1 file changed, 5 insertions(+)
+ drivers/gpu/drm/xe/xe_guc_exec_queue_types.h | 2 ++
+ drivers/gpu/drm/xe/xe_guc_submit.c           | 7 ++++++-
+ drivers/gpu/drm/xe/xe_hw_fence.c             | 3 +++
+ 3 files changed, 11 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/net/wireless/ath/ath12k/wmi.c b/drivers/net/wireless/ath/ath12k/wmi.c
-index 745d017c5aa8..1d0d4a668946 100644
---- a/drivers/net/wireless/ath/ath12k/wmi.c
-+++ b/drivers/net/wireless/ath/ath12k/wmi.c
-@@ -6140,6 +6140,11 @@ static int wmi_process_mgmt_tx_comp(struct ath12k *ar, u32 desc_id,
- 	dma_unmap_single(ar->ab->dev, skb_cb->paddr, msdu->len, DMA_TO_DEVICE);
+diff --git a/drivers/gpu/drm/xe/xe_guc_exec_queue_types.h b/drivers/gpu/drm/xe/xe_guc_exec_queue_types.h
+index 4c39f01e4f52..a3f421e2adc0 100644
+--- a/drivers/gpu/drm/xe/xe_guc_exec_queue_types.h
++++ b/drivers/gpu/drm/xe/xe_guc_exec_queue_types.h
+@@ -20,6 +20,8 @@ struct xe_exec_queue;
+ struct xe_guc_exec_queue {
+ 	/** @q: Backpointer to parent xe_exec_queue */
+ 	struct xe_exec_queue *q;
++	/** @rcu: For safe freeing of exported dma fences */
++	struct rcu_head rcu;
+ 	/** @sched: GPU scheduler for this xe_exec_queue */
+ 	struct xe_gpu_scheduler sched;
+ 	/** @entity: Scheduler entity for this xe_exec_queue */
+diff --git a/drivers/gpu/drm/xe/xe_guc_submit.c b/drivers/gpu/drm/xe/xe_guc_submit.c
+index 0e17820a35e2..cf6946424fc3 100644
+--- a/drivers/gpu/drm/xe/xe_guc_submit.c
++++ b/drivers/gpu/drm/xe/xe_guc_submit.c
+@@ -1241,7 +1241,11 @@ static void __guc_exec_queue_fini_async(struct work_struct *w)
+ 	xe_sched_entity_fini(&ge->entity);
+ 	xe_sched_fini(&ge->sched);
  
- 	info = IEEE80211_SKB_CB(msdu);
-+	memset(&info->status, 0, sizeof(info->status));
-+
-+	/* skip tx rate update from ieee80211_status*/
-+	info->status.rates[0].idx = -1;
-+
- 	if ((!(info->flags & IEEE80211_TX_CTL_NO_ACK)) && !status)
- 		info->flags |= IEEE80211_TX_STAT_ACK;
+-	kfree(ge);
++	/*
++	 * RCU free due sched being exported via DRM scheduler fences
++	 * (timeline name).
++	 */
++	kfree_rcu(ge, rcu);
+ 	xe_exec_queue_fini(q);
+ 	xe_pm_runtime_put(guc_to_xe(guc));
+ }
+@@ -1427,6 +1431,7 @@ static int guc_exec_queue_init(struct xe_exec_queue *q)
  
+ 	q->guc = ge;
+ 	ge->q = q;
++	init_rcu_head(&ge->rcu);
+ 	init_waitqueue_head(&ge->suspend_wait);
+ 
+ 	for (i = 0; i < MAX_STATIC_MSG_TYPE; ++i)
+diff --git a/drivers/gpu/drm/xe/xe_hw_fence.c b/drivers/gpu/drm/xe/xe_hw_fence.c
+index 0b4f12be3692..6e2221b60688 100644
+--- a/drivers/gpu/drm/xe/xe_hw_fence.c
++++ b/drivers/gpu/drm/xe/xe_hw_fence.c
+@@ -100,6 +100,9 @@ void xe_hw_fence_irq_finish(struct xe_hw_fence_irq *irq)
+ 		spin_unlock_irqrestore(&irq->lock, flags);
+ 		dma_fence_end_signalling(tmp);
+ 	}
++
++	/* Safe release of the irq->lock used in dma_fence_init. */
++	synchronize_rcu();
+ }
+ 
+ void xe_hw_fence_irq_run(struct xe_hw_fence_irq *irq)
 -- 
 2.39.5
 
