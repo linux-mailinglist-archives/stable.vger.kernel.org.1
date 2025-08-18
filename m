@@ -1,220 +1,161 @@
-Return-Path: <stable+bounces-171621-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-171622-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id E9033B2AD28
-	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 17:47:55 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 99CA2B2AD6C
+	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 17:55:15 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 95B911B64064
-	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 15:43:43 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 1A69E3BF1F0
+	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 15:51:09 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 203B630E0CB;
-	Mon, 18 Aug 2025 15:42:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9133332A3E5;
+	Mon, 18 Aug 2025 15:51:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="KcH3SCBQ"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="EaNTqPlM"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-pl1-f181.google.com (mail-pl1-f181.google.com [209.85.214.181])
+Received: from mail-lf1-f50.google.com (mail-lf1-f50.google.com [209.85.167.50])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6DE0D2765EB
-	for <stable@vger.kernel.org>; Mon, 18 Aug 2025 15:42:40 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.181
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5DDBC322A1C;
+	Mon, 18 Aug 2025 15:51:02 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.167.50
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755531761; cv=none; b=XN5wvFhlMhDrtXiBOIbrsIly97mEzloRT5t5Ws3GWGNL/cG2DvINGUNQcc4PV5aCUqO7YhkYJcTx+Q7G77JY2svT2Ok8JFa1+IdRy9DJcafcvapDYuzHlq0ft57tnxw9ALT7c+t5Gb7h07VLjwHMFarnvPkCPiVmDSKaexCVSBU=
+	t=1755532264; cv=none; b=Izay2ZPwtR6IVJA4variPKgwJ3acT9uYCS3HAabdxATTvgxBa9UBzgbD17kvWaAyUnnRI+dUugJ10toK5u3B/CEseOqihTm2KHYhAVto5Le3/Xct+yVhuFLgFNzTjRM7ozjfB9pv8uKywDCPwWzpPDQO83vbud9e8AzF0MJhHkE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1755531761; c=relaxed/simple;
-	bh=Mq3dHkJ9V1S56nbZ3gGNslkI75qJJS3R6bbuGvS+TBM=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=noojEkve37V82AKoAUipuMCbz0y4iHeV6NQcSeL4ooGzltmYmL9j4+l2LEvlRoY2UFTgWdFILfU1I1V/UEY65Fgvccm3X/Ci/PA4KJgeNfozAQxZccUOXrKtToaxkResHhrtNQyJ63DpUWsxb5qaIshO88RrTYSZX+GoCH/gz/I=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=KcH3SCBQ; arc=none smtp.client-ip=209.85.214.181
+	s=arc-20240116; t=1755532264; c=relaxed/simple;
+	bh=Mo2LccUagUe1xUANazkGwfXyyJJ+Z1hgR0dGeVhngFM=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version:Content-Type; b=fTQSYfc0zgkMpP9vKMQBrv54TFe3/zbJrRo/j/llcdNJthWXZGRLGnJjPKCUZwfAG33hEe5bAf0koI6xdMjYU/xMAxlDXyUWnp7SZbYHYdI8jV8d1JIu3x4DXaVGeDLUJ8M32ywvow86RM1rgGwW+LqLVZwvfSLhB5KiTxXx1NY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=EaNTqPlM; arc=none smtp.client-ip=209.85.167.50
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-pl1-f181.google.com with SMTP id d9443c01a7336-24458051ac6so6660025ad.1
-        for <stable@vger.kernel.org>; Mon, 18 Aug 2025 08:42:40 -0700 (PDT)
+Received: by mail-lf1-f50.google.com with SMTP id 2adb3069b0e04-55ce510f4f6so4539480e87.1;
+        Mon, 18 Aug 2025 08:51:02 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1755531760; x=1756136560; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=SWjR9wVlQD2RfvrWT/us7U/22C2c5eA2O2hDzhadvrQ=;
-        b=KcH3SCBQLND6vb/fBiqNIkqScnTa6yd7EHq4I64Hmf/knO9VAXeQkG5kxaehh3hDG4
-         IBjlZPQn+bI7A9XYHQ8OQp7dqpDH1isxuqJFl9487KpWzugpoHf/9EkpTn8TtpZTOGOs
-         OfhxrlAe1tL0q4jCR61wqzr1Za+oOB9uTB5FtkYZQBnxcXDSZz6/HdDHLJfTRmGsfjR4
-         3QFA/jMSC0UldEn754hQ1wYMSly4T9GNN8DaI8Ss2IR6H84BIeZVQv/JzDW6WaCLAITX
-         qFyqk/vSbwXW+xHqhAqL29PgCoqNyflZ3b00EEV8xkvTm9A5gZyK7YhwNGtP9Yjw4Lc1
-         M5Dg==
+        d=gmail.com; s=20230601; t=1755532260; x=1756137060; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=k1k2jfv+LptyryYuraaPe3v8D77u/BoWc5hlQC6Q2Ag=;
+        b=EaNTqPlM36xRlt6qQN+3pQhxoWzSgTKtIjFeV81zD9PKcOhJ7RkAlQYX1dEZzX6d11
+         wxS1gZ/XpWnijMqmODDcLKsktqPFZGXTCd6PsvD8U41TDrqcdjc58gnXq2SQJJ5L7jKZ
+         NxJ9UP7VJrZfpW7EZXI7DbhbWdR+3K06qd3PRulXnXWpbPonfh8o00FUVFZUt5+TRbIi
+         FT1kVT7KO7ZXoSavEhbF1n+EM573KfUpp31F+bYKVIm8mOzxzfkybeTGELyho/ds1gA3
+         7fH+MccRHVPSfRLEuXdsXfnUcmEo1Rzej7afgrm8Ww9yRK3+gnh7rBK9ulOBUKrxvFmj
+         2agg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1755531760; x=1756136560;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=SWjR9wVlQD2RfvrWT/us7U/22C2c5eA2O2hDzhadvrQ=;
-        b=MhRLm2Tp7whaI7ZByo/4jmM0nW7Il0YERpAtbpl/LKUBLQs3wbOx4mvXzxcheZWFVY
-         98ili5+1vCRhmdmhENos2T9f7Pc2dna7k6r0isx0Ya2UZXjIPr1HNVFmq3eqgJtvLgQr
-         +w3qLiJXZedDna/plY2gnwgFm+OEUKuxpdocKENTCnmMs6hk3aPj5u6qXzsBtUjRsWi9
-         AzFBDvGm7t9Ogl49Df18BEh7z1in8XdKrvLXGH1lie2vKJTnc9eErc+ACzw3WosnJ6HS
-         JqLL6UTWq5U1pto8eNdD12tg+Pz7eGBOmExHNyIGw3yLHkwgdpVTdLYK0PDKWP38UrVR
-         7lCg==
-X-Forwarded-Encrypted: i=1; AJvYcCXL1N5wInoWR8LQY76KmCnE2nlNwWauOS2hBmYCEuNsfgRqc6Npp35+pQ1Mv3Q6xeVsMmyePOM=@vger.kernel.org
-X-Gm-Message-State: AOJu0YxllHlBTTUDZKFb5YRLvs6yydf0NPDwTWghu7Ja76b4ob0HsdDx
-	uGZfby+chpEyNcAVht2BatnHDeR8I8B7uvUujxI+CWIN1MHZOu2wxlsQ8dOsSsoSNGdX78ciwS7
-	wia4GmvZxlK5jhioCkyhhgbRQUGX+iWo=
-X-Gm-Gg: ASbGncs2XtnlO7ujiR4DX6+50+AjNbDAvb1ZKMXkQMpcTD2PM2bBnGJrRPOvSnoogPM
-	J+TfgE5jlAtsPFs9bsnz8uRMYU5qk+VIvevLjW/xUbIMtyWWvFXEPzndmt9ZCrIP9iO7Rk3jLkA
-	onX/qKwDnBbtXiTMkdEGG8gRlJbfNwKFa01xQw0FgIEorbfYwXHFJSJ0qQBPlm1v7laZRIvwqmf
-	GWUBotqu5d9xx4lKA==
-X-Google-Smtp-Source: AGHT+IFlzppuD9dNSIJnnHhIzNxU5p8tpYd3DxpTg9wZMmRJq7jnDuFScfIHVkPHYC+uCbocydQz1sTTgeL7QGR7YWw=
-X-Received: by 2002:a17:902:ecc2:b0:240:bd35:c4ec with SMTP id
- d9443c01a7336-2446d893254mr59572885ad.6.1755531759554; Mon, 18 Aug 2025
- 08:42:39 -0700 (PDT)
+        d=1e100.net; s=20230601; t=1755532260; x=1756137060;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=k1k2jfv+LptyryYuraaPe3v8D77u/BoWc5hlQC6Q2Ag=;
+        b=htz6P+/0PjCbJVlL9G9Dn/uxxC2BeITY9bC+U0dXG9lj9BgoTMC203TwWwxLuC2Lkh
+         HHsFikpGD4VB0H0eMOoRKYQJ6URhWOcZIgjyj5HSYwzB/+Y3y8TSG6nQat2a9bENLMAd
+         YqQDWwLy2JT6XzyzPrKfZOnIVyAmu45vSw/2xoNt+X57PeqOANe5HdzdDdtkEluXcbdW
+         B3Y4kgbAX+T3v8HM6BZQDXg6x8stcx4ARDAxhOyYRpkA29mWsNfsXPgJspm1ZQOYaUtZ
+         oGK+EIfdhL+fMBoKgV9euyFNMWRht9r1RL4Ob4EHZCD0LrYsWP6/oRraGvFEYUt8kJiH
+         vI9w==
+X-Forwarded-Encrypted: i=1; AJvYcCUK5VuCoUi34Zg2OF8piFcedZskia25Wcdn804UkpzDaXDlfwuhh0XHkJNqueKGSmMq1CBfW1xExJj5MpXuHEc=@vger.kernel.org, AJvYcCUoN4KXdu/xVetFZYBUl935p0vAVRZ0KNDOyoLVFf7rDSdXyxWY4uZGCPeIgrQffmVET3fkkDpUhguEwmQ=@vger.kernel.org
+X-Gm-Message-State: AOJu0YytO0jjdFaUxVwwZ/fzvU71dTaJNqFFizXrXQiXDREk2x0xPPa/
+	+scr+12rHWUu9qZe9TPFZL3boiE/AIPyM06whJb38kaRQXZYmFc86I1o2iS3wXFH6ac=
+X-Gm-Gg: ASbGncv0twwlFWKmblaZNMztO1N1nfiR7ttQ50b0AP7/RNFI1c0jdBUX+n0bZr+cajW
+	kSJk5T4TGmyCzbtzMJ7pPnbmX3KCNHzduuT+nOEe12H7jDaST3jb9LQ+p2E3v0Dhstc35SMuMJ8
+	3e3OucIiYLNVVFODKrtYTtKl2xbykfjaFNmTLHOrtRajYgRtu/mRntNUEW3XjKPCLesPsLZwAqD
+	IheRoF9x08jllgqMj2qEd1CsifppSsfunrVjigNHWQ73aPzZMPvdV5XSFvNMdQK2YitO9f5JWIj
+	bMw+a64nJJf9oB3jBDlZn6BZ97XJW4c+G0V0DTz2VZ9qZbEWZiG1spE45UwQqLKdQCkz8rdjoHh
+	Qvv2Pkoh2NERwgucHc6kSe4lwsBj4p2HC54L4Nq53sKZNDOC3LUhBk0B0Ki0yAGMn5s/US6lz9i
+	xJkdPSba0UoDKOlRxwhghF
+X-Google-Smtp-Source: AGHT+IF2Q8OElm4cF5e0qgh7ApeOge1RophMUMtEOTLBCEvVf0lwzkkV7zD+z/l9V5F/VLsyU+R4Tw==
+X-Received: by 2002:ac2:4c4d:0:b0:55b:8a00:c703 with SMTP id 2adb3069b0e04-55ceeaa196cmr3551845e87.10.1755532260104;
+        Mon, 18 Aug 2025 08:51:00 -0700 (PDT)
+Received: from uuba.fritz.box (2001-14ba-6e-3100-8b77-edd5-be95-580d.rev.dnainternet.fi. [2001:14ba:6e:3100:8b77:edd5:be95:580d])
+        by smtp.gmail.com with ESMTPSA id 2adb3069b0e04-55cef45a007sm1710155e87.159.2025.08.18.08.50.59
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Mon, 18 Aug 2025 08:50:59 -0700 (PDT)
+From: =?UTF-8?q?Hanne-Lotta=20M=C3=A4enp=C3=A4=C3=A4?= <hannelotta@gmail.com>
+To: stable@vger.kernel.org
+Cc: johannes@sipsolutions.net,
+	shaul.triebitz@intel.com,
+	linux-wireless@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	linux-kernel-mentees@lists.linux.dev,
+	skhan@linuxfoundation.org,
+	david.hunter.linux@gmail.com,
+	Mikhail Lobanov <m.lobanov@rosa.ru>,
+	Johannes Berg <johannes.berg@intel.com>,
+	=?UTF-8?q?Hanne-Lotta=20M=C3=A4enp=C3=A4=C3=A4?= <hannelotta@gmail.com>
+Subject: [PATCH 6.6.y] wifi: mac80211: check basic rates validity in sta_link_apply_parameters
+Date: Mon, 18 Aug 2025 18:50:38 +0300
+Message-ID: <20250818155039.8529-1-hannelotta@gmail.com>
+X-Mailer: git-send-email 2.50.0
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20250808151517.1596616-1-alexander.deucher@amd.com> <CADnq5_OozSsP_qXBPjgYR9-1cChsYTJtg-y8RPb2wA9Xn9dfoA@mail.gmail.com>
-In-Reply-To: <CADnq5_OozSsP_qXBPjgYR9-1cChsYTJtg-y8RPb2wA9Xn9dfoA@mail.gmail.com>
-From: Alex Deucher <alexdeucher@gmail.com>
-Date: Mon, 18 Aug 2025 11:42:26 -0400
-X-Gm-Features: Ac12FXw9pe0IzLWcAt9ziG1lWfA0qbYNMRZKjTIdFRf8u6BBDl4yqo6FHvRpRUw
-Message-ID: <CADnq5_Mt2Lxjso_1d+7jJbw7WGqFuY85iKL-Y1ZNCXg3VB0iqQ@mail.gmail.com>
-Subject: Re: [PATCH] drm/amdgpu: drop hw access in non-DC audio fini
-To: Alex Deucher <alexander.deucher@amd.com>
-Cc: amd-gfx@lists.freedesktop.org, stable@vger.kernel.org, 
-	oushixiong <oushixiong1025@163.com>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
 
-Ping again?
+From: Mikhail Lobanov <m.lobanov@rosa.ru>
 
-Alex
+[ Upstream commit 16ee3ea8faef8ff042acc15867a6c458c573de61 ]
 
-On Wed, Aug 13, 2025 at 9:09=E2=80=AFAM Alex Deucher <alexdeucher@gmail.com=
-> wrote:
->
-> Ping?
->
-> On Fri, Aug 8, 2025 at 11:23=E2=80=AFAM Alex Deucher <alexander.deucher@a=
-md.com> wrote:
-> >
-> > We already disable the audio pins in hw_fini so
-> > there is no need to do it again in sw_fini.
-> >
-> > Closes: https://gitlab.freedesktop.org/drm/amd/-/issues/4481
-> > Cc: stable@vger.kernel.org
-> > Cc: oushixiong <oushixiong1025@163.com>
-> > Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
-> > ---
-> >  drivers/gpu/drm/amd/amdgpu/dce_v10_0.c | 5 -----
-> >  drivers/gpu/drm/amd/amdgpu/dce_v11_0.c | 5 -----
-> >  drivers/gpu/drm/amd/amdgpu/dce_v6_0.c  | 5 -----
-> >  drivers/gpu/drm/amd/amdgpu/dce_v8_0.c  | 5 -----
-> >  4 files changed, 20 deletions(-)
-> >
-> > diff --git a/drivers/gpu/drm/amd/amdgpu/dce_v10_0.c b/drivers/gpu/drm/a=
-md/amdgpu/dce_v10_0.c
-> > index bf7c22f81cda3..ba73518f5cdf3 100644
-> > --- a/drivers/gpu/drm/amd/amdgpu/dce_v10_0.c
-> > +++ b/drivers/gpu/drm/amd/amdgpu/dce_v10_0.c
-> > @@ -1462,17 +1462,12 @@ static int dce_v10_0_audio_init(struct amdgpu_d=
-evice *adev)
-> >
-> >  static void dce_v10_0_audio_fini(struct amdgpu_device *adev)
-> >  {
-> > -       int i;
-> > -
-> >         if (!amdgpu_audio)
-> >                 return;
-> >
-> >         if (!adev->mode_info.audio.enabled)
-> >                 return;
-> >
-> > -       for (i =3D 0; i < adev->mode_info.audio.num_pins; i++)
-> > -               dce_v10_0_audio_enable(adev, &adev->mode_info.audio.pin=
-[i], false);
-> > -
-> >         adev->mode_info.audio.enabled =3D false;
-> >  }
-> >
-> > diff --git a/drivers/gpu/drm/amd/amdgpu/dce_v11_0.c b/drivers/gpu/drm/a=
-md/amdgpu/dce_v11_0.c
-> > index 47e05783c4a0e..b01d88d078fa2 100644
-> > --- a/drivers/gpu/drm/amd/amdgpu/dce_v11_0.c
-> > +++ b/drivers/gpu/drm/amd/amdgpu/dce_v11_0.c
-> > @@ -1511,17 +1511,12 @@ static int dce_v11_0_audio_init(struct amdgpu_d=
-evice *adev)
-> >
-> >  static void dce_v11_0_audio_fini(struct amdgpu_device *adev)
-> >  {
-> > -       int i;
-> > -
-> >         if (!amdgpu_audio)
-> >                 return;
-> >
-> >         if (!adev->mode_info.audio.enabled)
-> >                 return;
-> >
-> > -       for (i =3D 0; i < adev->mode_info.audio.num_pins; i++)
-> > -               dce_v11_0_audio_enable(adev, &adev->mode_info.audio.pin=
-[i], false);
-> > -
-> >         adev->mode_info.audio.enabled =3D false;
-> >  }
-> >
-> > diff --git a/drivers/gpu/drm/amd/amdgpu/dce_v6_0.c b/drivers/gpu/drm/am=
-d/amdgpu/dce_v6_0.c
-> > index 276c025c4c03d..81760a26f2ffc 100644
-> > --- a/drivers/gpu/drm/amd/amdgpu/dce_v6_0.c
-> > +++ b/drivers/gpu/drm/amd/amdgpu/dce_v6_0.c
-> > @@ -1451,17 +1451,12 @@ static int dce_v6_0_audio_init(struct amdgpu_de=
-vice *adev)
-> >
-> >  static void dce_v6_0_audio_fini(struct amdgpu_device *adev)
-> >  {
-> > -       int i;
-> > -
-> >         if (!amdgpu_audio)
-> >                 return;
-> >
-> >         if (!adev->mode_info.audio.enabled)
-> >                 return;
-> >
-> > -       for (i =3D 0; i < adev->mode_info.audio.num_pins; i++)
-> > -               dce_v6_0_audio_enable(adev, &adev->mode_info.audio.pin[=
-i], false);
-> > -
-> >         adev->mode_info.audio.enabled =3D false;
-> >  }
-> >
-> > diff --git a/drivers/gpu/drm/amd/amdgpu/dce_v8_0.c b/drivers/gpu/drm/am=
-d/amdgpu/dce_v8_0.c
-> > index e62ccf9eb73de..19a265bd4d196 100644
-> > --- a/drivers/gpu/drm/amd/amdgpu/dce_v8_0.c
-> > +++ b/drivers/gpu/drm/amd/amdgpu/dce_v8_0.c
-> > @@ -1443,17 +1443,12 @@ static int dce_v8_0_audio_init(struct amdgpu_de=
-vice *adev)
-> >
-> >  static void dce_v8_0_audio_fini(struct amdgpu_device *adev)
-> >  {
-> > -       int i;
-> > -
-> >         if (!amdgpu_audio)
-> >                 return;
-> >
-> >         if (!adev->mode_info.audio.enabled)
-> >                 return;
-> >
-> > -       for (i =3D 0; i < adev->mode_info.audio.num_pins; i++)
-> > -               dce_v8_0_audio_enable(adev, &adev->mode_info.audio.pin[=
-i], false);
-> > -
-> >         adev->mode_info.audio.enabled =3D false;
-> >  }
-> >
-> > --
-> > 2.50.1
-> >
+When userspace sets supported rates for a new station via
+NL80211_CMD_NEW_STATION, it might send a list that's empty
+or contains only invalid values. Currently, we process these
+values in sta_link_apply_parameters() without checking the result of
+ieee80211_parse_bitrates(), which can lead to an empty rates bitmap.
+
+A similar issue was addressed for NL80211_CMD_SET_BSS in commit
+ce04abc3fcc6 ("wifi: mac80211: check basic rates validity").
+This patch applies the same approach in sta_link_apply_parameters()
+for NL80211_CMD_NEW_STATION, ensuring there is at least one valid
+rate by inspecting the result of ieee80211_parse_bitrates().
+
+Found by Linux Verification Center (linuxtesting.org) with Syzkaller.
+
+[ Summary of conflict resolutions:
+  - The function ieee80211_parse_bitrates() takes channel width as
+    its first parameter, and the chandef struct has been refactored
+    in kernel version 6.9, in commit
+    6092077ad09ce880c61735c314060f0bd79ae4aa so that the width is
+    contained in chanreq.oper.width. In kernel version 6.6 the
+    width parameter is defined directly in the chandef struct. ]
+
+Fixes: b95eb7f0eee4 ("wifi: cfg80211/mac80211: separate link params from station params")
+Signed-off-by: Mikhail Lobanov <m.lobanov@rosa.ru>
+Link: https://patch.msgid.link/20250317103139.17625-1-m.lobanov@rosa.ru
+Signed-off-by: Johannes Berg <johannes.berg@intel.com>
+Signed-off-by: Hanne-Lotta Mäenpää <hannelotta@gmail.com>
+---
+ net/mac80211/cfg.c | 12 ++++++------
+ 1 file changed, 6 insertions(+), 6 deletions(-)
+
+diff --git a/net/mac80211/cfg.c b/net/mac80211/cfg.c
+index 3ff7f38394a6..1addfba4b285 100644
+--- a/net/mac80211/cfg.c
++++ b/net/mac80211/cfg.c
+@@ -1847,12 +1847,12 @@ static int sta_link_apply_parameters(struct ieee80211_local *local,
+ 	}
+ 
+ 	if (params->supported_rates &&
+-	    params->supported_rates_len) {
+-		ieee80211_parse_bitrates(link->conf->chandef.width,
+-					 sband, params->supported_rates,
+-					 params->supported_rates_len,
+-					 &link_sta->pub->supp_rates[sband->band]);
+-	}
++	    params->supported_rates_len &&
++	    !ieee80211_parse_bitrates(link->conf->chandef.width,
++				      sband, params->supported_rates,
++				      params->supported_rates_len,
++				      &link_sta->pub->supp_rates[sband->band]))
++		return -EINVAL;
+ 
+ 	if (params->ht_capa)
+ 		ieee80211_ht_cap_ie_to_sta_ht_cap(sdata, sband,
+-- 
+2.50.0
+
 
