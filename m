@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-171223-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-170245-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id D3751B2A81B
-	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 16:00:09 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id DB750B2A331
+	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 15:07:14 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id A43D0567E7C
-	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 13:53:39 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 96BD218A79E1
+	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 13:00:34 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id AA8DB335BBF;
-	Mon, 18 Aug 2025 13:53:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1F7E4318144;
+	Mon, 18 Aug 2025 13:00:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Sl3tZHVd"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="L0oIsuk+"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 68283335BAF;
-	Mon, 18 Aug 2025 13:53:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CA8841C3BEB;
+	Mon, 18 Aug 2025 13:00:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755525215; cv=none; b=Tbh/YklbSN6tBsfd6fpChyv2rHRP/Vkq1nfPRibJj92rjAmRhR7FBe5wYQwzK8XngjrAHRlg2+3VOQ2Hb2lrHCkF/tttlVyzvpUk7AAIiRNQEGnMSkP6In3qhR2T6dfxSJBtorlNzCnNXB0BH7f1RaVpE06ACa2if/WHmbYjrcA=
+	t=1755522009; cv=none; b=Bu9Fbwc8M5P9LFIJcbatReXvV1nwuRYzA6pT3/uRkLlruzI2i7syzsBjCbc7VWKAszqb76qf0Sf90oLUSEWRjOcch77wwcbYOLlMveJ5Zeblo+mcknXdFxRRYtEbKIMOhKsl40etUxqGPwKqUq8RT3HKXIGip0Cqzwph6oygoWY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1755525215; c=relaxed/simple;
-	bh=sj6RwnaWB49B/YEtEW8HFGcqMPAU5EWSzsn6OjSLlCU=;
+	s=arc-20240116; t=1755522009; c=relaxed/simple;
+	bh=th5Scw5NFJWxmy1EL9YNzqgi4tm0vGcUhJEAZ4L/UxA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Co/q5XN2BMwTdA+8lJitl4NNdKkOOTJntZT8s8ruNOok9mLIhRhyV/Yp5MdnKRNakXnvMEyD6uGSlKyXOXil2woFRg/EKOn6qqLVmFcN3AH2HMn4n5cbEJv91ZcIZ9Fw2WibfztLulK39WttP63vaeC9zcRW5USMWOJQk6G0F00=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Sl3tZHVd; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E5DD0C4CEEB;
-	Mon, 18 Aug 2025 13:53:34 +0000 (UTC)
+	 MIME-Version; b=uWgJ4c5+b0KXldz6dLitaQUCUVIqsRxtECxIJH5gTYaXzEFhIJCBZ8vOut8aw3S1ljWafUVebF4w2Rlf3QJ9MF/SqHk0dDibpzSEs+kwXTtPfYD3PRuiMYv2BFolCdyaYaHAlcj87meyRIDdrvc7MJJRf+skndSgf2CMfKFd6KY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=L0oIsuk+; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0FC27C4CEF1;
+	Mon, 18 Aug 2025 13:00:08 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1755525215;
-	bh=sj6RwnaWB49B/YEtEW8HFGcqMPAU5EWSzsn6OjSLlCU=;
+	s=korg; t=1755522009;
+	bh=th5Scw5NFJWxmy1EL9YNzqgi4tm0vGcUhJEAZ4L/UxA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Sl3tZHVd/2rfvFT56y50kT4pGnhWgq5nz0b5GV6WEohcX4tzjBaJWXcFyr4DdaRsb
-	 Pc2se0JrfolgHD8Gb2nEn8oFtboJLwz7g+PDFtIkJgDoYHdYoraIbNwGEN+XzPuEfB
-	 HdEfvH0WYSuNUszV1a41DqQWvvrcINZ3nZ/KMtk8=
+	b=L0oIsuk+iTqSO2TeoErSSn0JGqF7ciUB+c94QL5+dnj6vTuD5o9h5lPO9yii8s+Uf
+	 Gx7SAyTB4IGNnRvwI95O+CZWnluziOJimr7xf8WcINu9+58ooGsszrJ0yQZAAhw4I+
+	 WjwqS732dBHWTLVe5C8XKALFDuLUYCCdKi226SmA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	"Gautham R. Shenoy" <gautham.shenoy@amd.com>,
-	Shuah Khan <skhan@linuxfoundation.org>,
+	kernel test robot <lkp@intel.com>,
+	Lucy Thrun <lucy.thrun@digital-rabbithole.de>,
+	Takashi Iwai <tiwai@suse.de>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.16 194/570] pm: cpupower: Fix the snapshot-order of tsc,mperf, clock in mperf_stop()
+Subject: [PATCH 6.12 155/444] ALSA: hda/ca0132: Fix buffer overflow in add_tuning_control
 Date: Mon, 18 Aug 2025 14:43:01 +0200
-Message-ID: <20250818124513.273927184@linuxfoundation.org>
+Message-ID: <20250818124454.713238322@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250818124505.781598737@linuxfoundation.org>
-References: <20250818124505.781598737@linuxfoundation.org>
+In-Reply-To: <20250818124448.879659024@linuxfoundation.org>
+References: <20250818124448.879659024@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,47 +63,43 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.16-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Gautham R. Shenoy <gautham.shenoy@amd.com>
+From: Lucy Thrun <lucy.thrun@digital-rabbithole.de>
 
-[ Upstream commit cda7ac8ce7de84cf32a3871ba5f318aa3b79381e ]
+[ Upstream commit a409c60111e6bb98fcabab2aeaa069daa9434ca0 ]
 
-In the function mperf_start(), mperf_monitor snapshots the time, tsc
-and finally the aperf,mperf MSRs. However, this order of snapshotting
-in is reversed in mperf_stop(). As a result, the C0 residency (which
-is computed as delta_mperf * 100 / delta_tsc) is under-reported on
-CPUs that is 100% busy.
+The 'sprintf' call in 'add_tuning_control' may exceed the 44-byte
+buffer if either string argument is too long. This triggers a compiler
+warning.
+Replaced 'sprintf' with 'snprintf' to limit string lengths to prevent
+overflow.
 
-Fix this by snapshotting time, tsc and then aperf,mperf in
-mperf_stop() in the same order as in mperf_start().
-
-Link: https://lore.kernel.org/r/20250612122355.19629-2-gautham.shenoy@amd.com
-Signed-off-by: Gautham R. Shenoy <gautham.shenoy@amd.com>
-Signed-off-by: Shuah Khan <skhan@linuxfoundation.org>
+Reported-by: kernel test robot <lkp@intel.com>
+Closes: https://lore.kernel.org/oe-kbuild-all/202506100642.95jpuMY1-lkp@intel.com/
+Signed-off-by: Lucy Thrun <lucy.thrun@digital-rabbithole.de>
+Link: https://patch.msgid.link/20250610175012.918-3-lucy.thrun@digital-rabbithole.de
+Signed-off-by: Takashi Iwai <tiwai@suse.de>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- tools/power/cpupower/utils/idle_monitor/mperf_monitor.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ sound/pci/hda/patch_ca0132.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/tools/power/cpupower/utils/idle_monitor/mperf_monitor.c b/tools/power/cpupower/utils/idle_monitor/mperf_monitor.c
-index 73b6b10cbdd2..5ae02c3d5b64 100644
---- a/tools/power/cpupower/utils/idle_monitor/mperf_monitor.c
-+++ b/tools/power/cpupower/utils/idle_monitor/mperf_monitor.c
-@@ -240,9 +240,9 @@ static int mperf_stop(void)
- 	int cpu;
- 
- 	for (cpu = 0; cpu < cpu_count; cpu++) {
--		mperf_measure_stats(cpu);
--		mperf_get_tsc(&tsc_at_measure_end[cpu]);
- 		clock_gettime(CLOCK_REALTIME, &time_end[cpu]);
-+		mperf_get_tsc(&tsc_at_measure_end[cpu]);
-+		mperf_measure_stats(cpu);
+diff --git a/sound/pci/hda/patch_ca0132.c b/sound/pci/hda/patch_ca0132.c
+index 77432e06f3e3..a2f57d7424bb 100644
+--- a/sound/pci/hda/patch_ca0132.c
++++ b/sound/pci/hda/patch_ca0132.c
+@@ -4410,7 +4410,7 @@ static int add_tuning_control(struct hda_codec *codec,
  	}
+ 	knew.private_value =
+ 		HDA_COMPOSE_AMP_VAL(nid, 1, 0, type);
+-	sprintf(namestr, "%s %s Volume", name, dirstr[dir]);
++	snprintf(namestr, sizeof(namestr), "%s %s Volume", name, dirstr[dir]);
+ 	return snd_hda_ctl_add(codec, nid, snd_ctl_new1(&knew, codec));
+ }
  
- 	return 0;
 -- 
 2.39.5
 
