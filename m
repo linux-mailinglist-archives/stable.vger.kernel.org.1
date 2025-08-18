@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-171327-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-170842-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7AB05B2A94E
-	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 16:18:29 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 51E9FB2A66A
+	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 15:43:49 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 9BCA56E5C29
-	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 14:07:15 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 6FD906804D7
+	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 13:37:18 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 866D232274C;
-	Mon, 18 Aug 2025 13:59:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id F03CA335BA7;
+	Mon, 18 Aug 2025 13:32:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="o7d7GSuS"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="GfyOBN8Q"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 45689322744;
-	Mon, 18 Aug 2025 13:59:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AC6AC335BA5;
+	Mon, 18 Aug 2025 13:32:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755525550; cv=none; b=n867CaKfteZkGUrV97cmsdTdvfKuVv/7g/7akspueO2fmVl0MNe5wCzdMMY7kegGWriEM2zZjtKENBt0DsCgeHUiU3G+xSZBvFLjkpbIkLWXn63g9YQYUIJShxHMcEacN6llr2ON443ZsUVJ8xV3JLEsfX1axkHbhDzPfMyBQpY=
+	t=1755523973; cv=none; b=bRj7ciipq9vLQLnM1rtYeSNdtURy48Ip9Ex0e9N41JdyzzwVv3nQeKvmZVV/X6BlZe3WxmP2rPvCMTpsJGeCiRXYGwJVLyQFd/D71i7imE6rv3ArauFC0SdZ6OiZPLA+7e0Ab+dYcSpQkKYQDzpMJohoY3qsT2vDDE5XNMhWeWk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1755525550; c=relaxed/simple;
-	bh=bB6svuVDeRaTIkoOsZg1DYBxXbl11hp9iJIveRwSI3o=;
+	s=arc-20240116; t=1755523973; c=relaxed/simple;
+	bh=dnAuLyMONAZTZDthxZiNs+J1hDwkbUPG99XeuYSknrw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=YBmr5F1dgR1mJOX0cQ8pvzoE1TmtQYsXGzv40SBxADqH4IqKi3hwgC8y+rdOA9JSBdRvAwLdBPzDfkPpT6Vr7fU/S75tKpLczDfF9PcLrCcriKajGwq0XUkrL1YrNsW/wMHE9iJ8DyI5rBP4uQBb/vVITxHgxah5YouJbs3pESU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=o7d7GSuS; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id BA71BC113D0;
-	Mon, 18 Aug 2025 13:59:09 +0000 (UTC)
+	 MIME-Version; b=UuMQQUDYZ5uL2/tOYHr7FyN37jt3/V7rBW/AqX/wjgza3N9gLHqaYFMh2F0zdjabAR2RURzU038QHnQfAwrOmM0g67G3oYU9UCqBRA0Kzr8NdAUD7GcBR/657D/UZx5UA6+LO0UWKMsvAcQLlY/K5su8BCh7soBa88EarPZ0JoY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=GfyOBN8Q; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id CF853C4CEEB;
+	Mon, 18 Aug 2025 13:32:52 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1755525550;
-	bh=bB6svuVDeRaTIkoOsZg1DYBxXbl11hp9iJIveRwSI3o=;
+	s=korg; t=1755523973;
+	bh=dnAuLyMONAZTZDthxZiNs+J1hDwkbUPG99XeuYSknrw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=o7d7GSuSA1CPfrimMYAyNYcDF+kuxTSunbWAJp3wzkRUnPKzAQOz7umZM7JkPDd6g
-	 74X2gdBONhZ95wbSrAtp9mhki1YlzvOG/fdd+hNiLzt431YzWdL0pfAGL6ENqet8d4
-	 62Yrpt2EIHNl0GtCNDrDKwlL5e+4R1u7tThMjdgw=
+	b=GfyOBN8QBcdEILNk8EffMV7++HDxSDNxgNdNuRzIpja4N0Bn31pSweH0L46gUBbdF
+	 vgj+Ly5d/fIWsw05iumFYMLPTQ7HGi6i3l9pBm4cN5Q7PYdkngPfQHUp2tJCcQA08x
+	 Ld2LU8w0nMo3IpPbIqTNUnW+JSTXZjvzhAE74X7A=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Michael Chan <michael.chan@broadcom.com>,
-	Jakub Kicinski <kuba@kernel.org>,
+	Alex Hung <alex.hung@amd.com>,
+	Mario Limonciello <mario.limonciello@amd.com>,
+	Alex Deucher <alexander.deucher@amd.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.16 296/570] eth: bnxt: take page size into account for page pool recycling rings
+Subject: [PATCH 6.15 297/515] drm/amd/display: Stop storing failures into adev->dm.cached_state
 Date: Mon, 18 Aug 2025 14:44:43 +0200
-Message-ID: <20250818124517.252748940@linuxfoundation.org>
+Message-ID: <20250818124509.855904138@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250818124505.781598737@linuxfoundation.org>
-References: <20250818124505.781598737@linuxfoundation.org>
+In-Reply-To: <20250818124458.334548733@linuxfoundation.org>
+References: <20250818124458.334548733@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,65 +63,79 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.16-stable review patch.  If anyone has any objections, please let me know.
+6.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jakub Kicinski <kuba@kernel.org>
+From: Mario Limonciello <mario.limonciello@amd.com>
 
-[ Upstream commit f7dbedba63124256feb9d9fcf36e8a2e43858d1e ]
+[ Upstream commit 709a37ab9c63297da2194dc36f604537f9d2d417 ]
 
-The Rx rings are filled with Rx buffers. Which are supposed to fit
-packet headers (or MTU if HW-GRO is disabled). The aggregation buffers
-are filled with "device pages". Adjust the sizes of the page pool
-recycling ring appropriately, based on ratio of the size of the
-buffer on given ring vs system page size. Otherwise on a system
-with 64kB pages we end up with >700MB of memory sitting in every
-single page pool cache.
+If drm_atomic_helper_suspend() has failed for any reason, it's stored
+in adev->dm.cached_state.  This isn't expected because the resume
+(or complete()) sequence will attempt to use the stored state to
+resume.
 
-Correct the size calculation for the head_pool. Since the buffers
-there are always small I'm pretty sure I meant to cap the size
-at 1k, rather than make it the lowest possible size. With 64k pages
-1k cache with a 1k ring is 64x larger than we need.
-
-Reviewed-by: Michael Chan <michael.chan@broadcom.com>
-Link: https://patch.msgid.link/20250626165441.4125047-1-kuba@kernel.org
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Reviewed-by: Alex Hung <alex.hung@amd.com>
+Link: https://lore.kernel.org/r/20250602014432.3538345-3-superm1@kernel.org
+Signed-off-by: Mario Limonciello <mario.limonciello@amd.com>
+Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/ethernet/broadcom/bnxt/bnxt.c | 8 +++++---
- 1 file changed, 5 insertions(+), 3 deletions(-)
+ .../gpu/drm/amd/display/amdgpu_dm/amdgpu_dm.c | 25 +++++++++++++------
+ 1 file changed, 18 insertions(+), 7 deletions(-)
 
-diff --git a/drivers/net/ethernet/broadcom/bnxt/bnxt.c b/drivers/net/ethernet/broadcom/bnxt/bnxt.c
-index e165490af6ac..25681c2343fb 100644
---- a/drivers/net/ethernet/broadcom/bnxt/bnxt.c
-+++ b/drivers/net/ethernet/broadcom/bnxt/bnxt.c
-@@ -3809,12 +3809,14 @@ static int bnxt_alloc_rx_page_pool(struct bnxt *bp,
- 				   struct bnxt_rx_ring_info *rxr,
- 				   int numa_node)
+diff --git a/drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm.c b/drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm.c
+index f6d71bf7c89c..9c01496ba590 100644
+--- a/drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm.c
++++ b/drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm.c
+@@ -2998,6 +2998,19 @@ static void hpd_rx_irq_work_suspend(struct amdgpu_display_manager *dm)
+ 	}
+ }
+ 
++static int dm_cache_state(struct amdgpu_device *adev)
++{
++	int r;
++
++	adev->dm.cached_state = drm_atomic_helper_suspend(adev_to_drm(adev));
++	if (IS_ERR(adev->dm.cached_state)) {
++		r = PTR_ERR(adev->dm.cached_state);
++		adev->dm.cached_state = NULL;
++	}
++
++	return adev->dm.cached_state ? 0 : r;
++}
++
+ static int dm_prepare_suspend(struct amdgpu_ip_block *ip_block)
  {
-+	const unsigned int agg_size_fac = PAGE_SIZE / BNXT_RX_PAGE_SIZE;
-+	const unsigned int rx_size_fac = PAGE_SIZE / SZ_4K;
- 	struct page_pool_params pp = { 0 };
- 	struct page_pool *pool;
+ 	struct amdgpu_device *adev = ip_block->adev;
+@@ -3006,11 +3019,8 @@ static int dm_prepare_suspend(struct amdgpu_ip_block *ip_block)
+ 		return 0;
  
--	pp.pool_size = bp->rx_agg_ring_size;
-+	pp.pool_size = bp->rx_agg_ring_size / agg_size_fac;
- 	if (BNXT_RX_PAGE_MODE(bp))
--		pp.pool_size += bp->rx_ring_size;
-+		pp.pool_size += bp->rx_ring_size / rx_size_fac;
- 	pp.nid = numa_node;
- 	pp.netdev = bp->dev;
- 	pp.dev = &bp->pdev->dev;
-@@ -3831,7 +3833,7 @@ static int bnxt_alloc_rx_page_pool(struct bnxt *bp,
+ 	WARN_ON(adev->dm.cached_state);
+-	adev->dm.cached_state = drm_atomic_helper_suspend(adev_to_drm(adev));
+-	if (IS_ERR(adev->dm.cached_state))
+-		return PTR_ERR(adev->dm.cached_state);
  
- 	rxr->need_head_pool = page_pool_is_unreadable(pool);
- 	if (bnxt_separate_head_pool(rxr)) {
--		pp.pool_size = max(bp->rx_ring_size, 1024);
-+		pp.pool_size = min(bp->rx_ring_size / rx_size_fac, 1024);
- 		pp.flags = PP_FLAG_DMA_MAP | PP_FLAG_DMA_SYNC_DEV;
- 		pool = page_pool_create(&pp);
- 		if (IS_ERR(pool))
+-	return 0;
++	return dm_cache_state(adev);
+ }
+ 
+ static int dm_suspend(struct amdgpu_ip_block *ip_block)
+@@ -3044,9 +3054,10 @@ static int dm_suspend(struct amdgpu_ip_block *ip_block)
+ 	}
+ 
+ 	if (!adev->dm.cached_state) {
+-		adev->dm.cached_state = drm_atomic_helper_suspend(adev_to_drm(adev));
+-		if (IS_ERR(adev->dm.cached_state))
+-			return PTR_ERR(adev->dm.cached_state);
++		int r = dm_cache_state(adev);
++
++		if (r)
++			return r;
+ 	}
+ 
+ 	s3_handle_hdmi_cec(adev_to_drm(adev), true);
 -- 
 2.39.5
 
