@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-171215-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-170728-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 82143B2A85A
-	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 16:04:10 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 04171B2A655
+	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 15:43:05 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id B95C4627F9A
-	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 13:53:12 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 4D42D685545
+	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 13:32:30 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 040C0335BA9;
-	Mon, 18 Aug 2025 13:53:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id BAE80322A12;
+	Mon, 18 Aug 2025 13:26:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="mtvrABUu"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="x0oHLZCw"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B5B24335BC4;
-	Mon, 18 Aug 2025 13:53:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 76A52322A07;
+	Mon, 18 Aug 2025 13:26:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755525190; cv=none; b=YEiUFrnbunXu4wCt6Eu29uE0AOAtVDu6L8Czn13Ie8Joeyuc8B/ajeZ+geoD6xm+jrNGXQuU5q49YPd5eZL3vZSNRUZ0XXOoO827LUGNlnZZ+CNpGWfT1XQDBiZyr9xTNzVn7FtcFYKSMvQ31cnwb4PDSqgefGg+/pCbgOSAZEE=
+	t=1755523582; cv=none; b=Y6Mw3olBS8AKA2RM+dzC5h9LBJFysr4juDqeWjF3WWXaYqoJJfiPhswlqvfyPoT5gAELPZhWPTH8wKVVfjCxf2xGcIeohbP0v+CFSKjs94s9My5dMV5dog5/8oWHZaf5/QNj9tJlgkvd5V6+N1Mz5Sx1uDe3RBWNC4YK8HZa1Q0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1755525190; c=relaxed/simple;
-	bh=gn1cBEhVlpdiZKC+L4/HARCHr0x0lHPPLqMfjEeZhoI=;
+	s=arc-20240116; t=1755523582; c=relaxed/simple;
+	bh=ljpF81p7OvY5DFk5CVHEC95H1fnGRF6ecd4kpBDvKpM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=puoCSCQ/NXTYX0Ap7CFjEWiflMEgkfqD/4/++NNawUK787icKsLHqcd4RHU6MPLctOy+PWVMYDGWfBH/bR5gfzDSxA+QdyEJbiENF42qdZXOkFqjworoXQiN+1OBlj1NreAYrrZr6p1evTcdk5EU5CWhAavQ7WjE8K1H3j5PlEc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=mtvrABUu; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 319D6C4CEEB;
-	Mon, 18 Aug 2025 13:53:10 +0000 (UTC)
+	 MIME-Version; b=c4xHu0nP71scDLBUWPws/7L+9T9fssAczPNENb9yN9/VR0iOldJWOGarI7c9+YVuRpwFK+v9iCvFFdYkrZUYvWJ5uD14fN918mBxETErTJwgGULI19KqgLsURO8De189oI2tTZkrO1LklPEoz4o4Sma4ThOU2SmHIgvKbyQmp0w=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=x0oHLZCw; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E8782C4CEEB;
+	Mon, 18 Aug 2025 13:26:21 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1755525190;
-	bh=gn1cBEhVlpdiZKC+L4/HARCHr0x0lHPPLqMfjEeZhoI=;
+	s=korg; t=1755523582;
+	bh=ljpF81p7OvY5DFk5CVHEC95H1fnGRF6ecd4kpBDvKpM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=mtvrABUuMV61p8A2btZpSBFh6Oj8ZRo/kFvpX+WLYhBE8Y1/Wtw7JN4FSt1Z1xRUz
-	 yVWj0O26OvMV5SdeSNttVK505zudj2uukkQ5CWBUxXsCFuLCD+73aDYHXWaDUBLdWd
-	 xeU1JlrxQZdCU5B/NMmWcrY6dsQjzXfST7qTy50Q=
+	b=x0oHLZCwWwjWNqz6KLoPhb3P3XOnFs471XzfJ9ocgJtqNeurBEdrJ5n8r1CEED5Tl
+	 mgtbcrj/xvFz2+0wahr4M8QwRDsvCZO4Idpe/AB4g+DVTU7G8YYvc6HzZ6mKZFfRd8
+	 +4Rqy3MnBZNsUCN7/5/5owKZEelPpBy3RANcKg+U=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Alok Tiwari <alok.a.tiwari@oracle.com>,
-	Takashi Iwai <tiwai@suse.de>,
+	Srinivas Kandagatla <srini@kernel.org>,
+	Kuninori Morimoto <kuninori.morimoto.gx@renesas.com>,
+	Mark Brown <broonie@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.16 186/570] ALSA: intel8x0: Fix incorrect codec index usage in mixer for ICH4
-Date: Mon, 18 Aug 2025 14:42:53 +0200
-Message-ID: <20250818124512.975866351@linuxfoundation.org>
+Subject: [PATCH 6.15 188/515] ASoC: qcom: use drvdata instead of component to keep id
+Date: Mon, 18 Aug 2025 14:42:54 +0200
+Message-ID: <20250818124505.613341754@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250818124505.781598737@linuxfoundation.org>
-References: <20250818124505.781598737@linuxfoundation.org>
+In-Reply-To: <20250818124458.334548733@linuxfoundation.org>
+References: <20250818124458.334548733@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,39 +63,143 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.16-stable review patch.  If anyone has any objections, please let me know.
+6.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Alok Tiwari <alok.a.tiwari@oracle.com>
+From: Srinivas Kandagatla <srini@kernel.org>
 
-[ Upstream commit 87aafc8580acf87fcaf1a7e30ed858d8c8d37d81 ]
+[ Upstream commit 8167f4f42572818fa8153be2b03e4c2120846603 ]
 
-code mistakenly used a hardcoded index (codec[1]) instead of
-iterating, over the codec array using the loop variable i.
-Use codec[i] instead of codec[1] to match the loop iteration.
+Qcom lpass is using component->id to keep DAI ID (A).
 
-Signed-off-by: Alok Tiwari <alok.a.tiwari@oracle.com>
-Link: https://patch.msgid.link/20250621185233.4081094-1-alok.a.tiwari@oracle.com
-Signed-off-by: Takashi Iwai <tiwai@suse.de>
+(S)	static int lpass_platform_pcmops_open(
+				sruct snd_soc_component *component,
+				struct snd_pcm_substream *substream)
+	{			                          ^^^^^^^^^(B0)
+		...
+(B1)		struct snd_soc_pcm_runtime *soc_runtime = snd_soc_substream_to_rtd(substream);
+(B2)		struct snd_soc_dai *cpu_dai = snd_soc_rtd_to_cpu(soc_runtime, 0);
+		...
+(B3)		unsigned int dai_id = cpu_dai->driver->id;
+
+(A)		component->id = dai_id;
+		...
+	}
+
+This driver can get dai_id from substream (B0 - B3).
+In this driver, below functions get dai_id from component->id (A).
+
+(X)	lpass_platform_pcmops_suspend()
+(Y)	lpass_platform_pcmops_resume()
+(Z)	lpass_platform_copy()
+
+Here, (Z) can get it from substream (B0 - B3), don't need to use
+component->id (A). On suspend/resume (X)(Y), dai_id can only be obtained
+from component->id (A), because there is no substream (B0) in function
+parameter.
+
+But, component->id (A) itself should not be used for such purpose.
+It is intilialized at snd_soc_component_initialize(), and parsed its ID
+(= component->id) from device name (a).
+
+	int snd_soc_component_initialize(...)
+	{
+		...
+		if (!component->name) {
+(a)			component->name = fmt_single_name(dev, &component->id);
+			...                                     ^^^^^^^^^^^^^
+		}
+		...
+	}
+
+Unfortunately, current code is broken to start with.
+
+There are many regmaps that the driver cares about, however its only
+managing one (either dp or i2s) in component suspend/resume path.
+
+I2S regmap is mandatory however other regmaps are setup based on flags
+like "hdmi_port_enable" and "codec_dma_enable".
+
+Correct thing for suspend/resume path to handle is by checking these
+flags, instead of using component->id.
+
+Signed-off-by: Srinivas Kandagatla <srini@kernel.org>
+Suggested-by: Kuninori Morimoto <kuninori.morimoto.gx@renesas.com>
+Signed-off-by: Kuninori Morimoto <kuninori.morimoto.gx@renesas.com>
+Link: https://patch.msgid.link/87a56ouuob.wl-kuninori.morimoto.gx@renesas.com
+Signed-off-by: Mark Brown <broonie@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- sound/pci/intel8x0.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ sound/soc/qcom/lpass-platform.c | 27 +++++++++++++++++----------
+ 1 file changed, 17 insertions(+), 10 deletions(-)
 
-diff --git a/sound/pci/intel8x0.c b/sound/pci/intel8x0.c
-index 51e7f1f1a48e..b521cec20333 100644
---- a/sound/pci/intel8x0.c
-+++ b/sound/pci/intel8x0.c
-@@ -2249,7 +2249,7 @@ static int snd_intel8x0_mixer(struct intel8x0 *chip, int ac97_clock,
- 			tmp |= chip->ac97_sdin[0] << ICH_DI1L_SHIFT;
- 			for (i = 1; i < 4; i++) {
- 				if (pcm->r[0].codec[i]) {
--					tmp |= chip->ac97_sdin[pcm->r[0].codec[1]->num] << ICH_DI2L_SHIFT;
-+					tmp |= chip->ac97_sdin[pcm->r[0].codec[i]->num] << ICH_DI2L_SHIFT;
- 					break;
- 				}
- 			}
+diff --git a/sound/soc/qcom/lpass-platform.c b/sound/soc/qcom/lpass-platform.c
+index 9946f12254b3..b456e096f138 100644
+--- a/sound/soc/qcom/lpass-platform.c
++++ b/sound/soc/qcom/lpass-platform.c
+@@ -202,7 +202,6 @@ static int lpass_platform_pcmops_open(struct snd_soc_component *component,
+ 	struct regmap *map;
+ 	unsigned int dai_id = cpu_dai->driver->id;
+ 
+-	component->id = dai_id;
+ 	data = kzalloc(sizeof(*data), GFP_KERNEL);
+ 	if (!data)
+ 		return -ENOMEM;
+@@ -1190,13 +1189,14 @@ static int lpass_platform_pcmops_suspend(struct snd_soc_component *component)
+ {
+ 	struct lpass_data *drvdata = snd_soc_component_get_drvdata(component);
+ 	struct regmap *map;
+-	unsigned int dai_id = component->id;
+ 
+-	if (dai_id == LPASS_DP_RX)
++	if (drvdata->hdmi_port_enable) {
+ 		map = drvdata->hdmiif_map;
+-	else
+-		map = drvdata->lpaif_map;
++		regcache_cache_only(map, true);
++		regcache_mark_dirty(map);
++	}
+ 
++	map = drvdata->lpaif_map;
+ 	regcache_cache_only(map, true);
+ 	regcache_mark_dirty(map);
+ 
+@@ -1207,14 +1207,19 @@ static int lpass_platform_pcmops_resume(struct snd_soc_component *component)
+ {
+ 	struct lpass_data *drvdata = snd_soc_component_get_drvdata(component);
+ 	struct regmap *map;
+-	unsigned int dai_id = component->id;
++	int ret;
+ 
+-	if (dai_id == LPASS_DP_RX)
++	if (drvdata->hdmi_port_enable) {
+ 		map = drvdata->hdmiif_map;
+-	else
+-		map = drvdata->lpaif_map;
++		regcache_cache_only(map, false);
++		ret = regcache_sync(map);
++		if (ret)
++			return ret;
++	}
+ 
++	map = drvdata->lpaif_map;
+ 	regcache_cache_only(map, false);
++
+ 	return regcache_sync(map);
+ }
+ 
+@@ -1224,7 +1229,9 @@ static int lpass_platform_copy(struct snd_soc_component *component,
+ 			       unsigned long bytes)
+ {
+ 	struct snd_pcm_runtime *rt = substream->runtime;
+-	unsigned int dai_id = component->id;
++	struct snd_soc_pcm_runtime *soc_runtime = snd_soc_substream_to_rtd(substream);
++	struct snd_soc_dai *cpu_dai = snd_soc_rtd_to_cpu(soc_runtime, 0);
++	unsigned int dai_id = cpu_dai->driver->id;
+ 	int ret = 0;
+ 
+ 	void __iomem *dma_buf = (void __iomem *) (rt->dma_area + pos +
 -- 
 2.39.5
 
