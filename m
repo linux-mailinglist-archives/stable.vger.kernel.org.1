@@ -1,60 +1,58 @@
-Return-Path: <stable+bounces-171701-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-171702-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 674D3B2B5C4
-	for <lists+stable@lfdr.de>; Tue, 19 Aug 2025 03:15:44 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 56A77B2B5D7
+	for <lists+stable@lfdr.de>; Tue, 19 Aug 2025 03:20:10 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 461CA524EFC
-	for <lists+stable@lfdr.de>; Tue, 19 Aug 2025 01:15:44 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 14FEC7A96C0
+	for <lists+stable@lfdr.de>; Tue, 19 Aug 2025 01:18:36 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 01E221D54FA;
-	Tue, 19 Aug 2025 01:15:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B60D01D514E;
+	Tue, 19 Aug 2025 01:20:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="ZBtC9kWK"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="YFHaq1NN"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B510D2110
-	for <stable@vger.kernel.org>; Tue, 19 Aug 2025 01:15:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 746112110
+	for <stable@vger.kernel.org>; Tue, 19 Aug 2025 01:20:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755566136; cv=none; b=YvyWFqV5OulvjpKJFupgn/2q8MHUvdEaaSnucxRQDnoPTjXOEqa/SiGn3IwtsBHDbv6QWAEvzqEPhMk90E5SBbV2Pa8236NyGlVsjHtysYFXZOdVENrtvOOVQqGb7nxms9Y/AQVvOT2OejiOqrqjyjzK+ecQEA9z4p2TNVKLOPU=
+	t=1755566403; cv=none; b=YopnlZwvxB0ZIUZXqmclIAAd0cmDoc/bAWJE1DcGr5emKmb3ick/9roV3TM+iBkyefFm34jsUHhJ3ta6x0kuRiexqqQ9PRFKqOqrZZuXvml5hPTC7t3G/Fm0hVlcDVimB5FGrMKm/2QWLBByfwBiJ2vI7nIuP5wAp5EEPVItArc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1755566136; c=relaxed/simple;
-	bh=VlAjMZOALxCsdyp6IJ0ClHDCMF8iyNhXdS5OKfywe/Q=;
+	s=arc-20240116; t=1755566403; c=relaxed/simple;
+	bh=lDJrxu9TaElUWVEuEozba/xGt/0aBe2HqMmTO8YoOZg=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=pOQGEe9mY62c74y2seF8a2vClnObaf3YyC56rOxKLmT5Y6mh8TZkBoNc3vZEFytdIbs81YmRn7961KRbzoM81a+f5JkFqKm+hpVJjUG0u2FxAQlH/K06JwzCofQRC0J1Y9yIsbcMiPBCjt69luJslfdP9EdQwZ7I1up4lDsbDWI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=ZBtC9kWK; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 93701C113D0;
-	Tue, 19 Aug 2025 01:15:35 +0000 (UTC)
+	 MIME-Version; b=C/mjsSpte8SwE9/4aljRXyK+urNvi2ySbdZ42ZQK6wwEK5+d4HVyolgDBc8jaczBwyYN8BxrrRlpCO6jI66Gz7aGsYjT5TvXhqDcM7fuGJ5bgLzv5F9Y0iN/8pyVrDM2GzkqsjBpIbSdl/M0ugVh7SC2UPCK9dHhIbnfIjDZUtY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=YFHaq1NN; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5D71EC4CEEB;
+	Tue, 19 Aug 2025 01:20:02 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1755566136;
-	bh=VlAjMZOALxCsdyp6IJ0ClHDCMF8iyNhXdS5OKfywe/Q=;
+	s=k20201202; t=1755566403;
+	bh=lDJrxu9TaElUWVEuEozba/xGt/0aBe2HqMmTO8YoOZg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=ZBtC9kWK54IkHOrwXjxZNtgGC0IQ4Xp05w4wr11pHoNyoOtLnSgVYWuyPtF+yA0Fi
-	 xEE79T67Krjast8+soRttygmuBkYECDSep1d2fmmO07a0M3snekjJGpfOwduCYvPZ4
-	 CIsizeY4HncY5CV2UPK1rioaqK737Clke5oJMoF+QcCzrgI5Cy9rbUy/ftYWVRKzMu
-	 jgLVzOgoOW3vyjs1rud0wZX+jthe1Mkqd2ui/k0L/0+AXtY8buJ12Dnc8DOUu6TWut
-	 3PfAf7ZVdXR3eoZI7lNU5Nx57KZq0l7S3bJf8FJE+kZT8Qu39XWl9Mtt3+m3haa4X5
-	 fbg7RlO1wGs2g==
+	b=YFHaq1NN42u+8F+DsH1s4SqJB7yC8ypJdFMAat/ehH+/p1YGbhByDVuGJBHGErv1y
+	 nyccfpIkx9LY/INmclEKdbsIUI8UpnWernct6l1CfEwALF88Yif0fOZH1kZkCWs2K2
+	 1fCPawjnGgBWzeRySo7LQA8tDHaaqpdC+yOT00U74qVZ58SqyRa1v3BzZ+hA2EGIej
+	 E1OdWvrgVPA4Phyo+DVOIg6R4t2WgDrmfTBkcWg7lstAsdM46huAdTCio0e4hk1TKx
+	 5gfEdHY6l3OqBT0dCLc+db+9f5kINWwC0Cc6/p1Rt7wVu+IczDNJ7h/0/IRY18npFv
+	 BKf+Sqt6WWU/A==
 From: Sasha Levin <sashal@kernel.org>
 To: stable@vger.kernel.org
-Cc: Leo Martins <loemra.dev@gmail.com>,
-	Boris Burkov <boris@bur.io>,
-	Qu Wenruo <wqu@suse.com>,
-	David Sterba <dsterba@suse.com>,
+Cc: Christoph Hellwig <hch@lst.de>,
+	"Darrick J. Wong" <djwong@kernel.org>,
+	Carlos Maiolino <cem@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.16.y 4/4] btrfs: fix subpage deadlock in try_release_subpage_extent_buffer()
-Date: Mon, 18 Aug 2025 21:15:31 -0400
-Message-ID: <20250819011531.242846-4-sashal@kernel.org>
+Subject: [PATCH 6.16.y 1/5] xfs: decouple xfs_trans_alloc_empty from xfs_trans_alloc
+Date: Mon, 18 Aug 2025 21:19:55 -0400
+Message-ID: <20250819011959.244870-1-sashal@kernel.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250819011531.242846-1-sashal@kernel.org>
-References: <2025081814-monsoon-supermom-44bb@gregkh>
- <20250819011531.242846-1-sashal@kernel.org>
+In-Reply-To: <2025081857-swerve-preschool-2c2c@gregkh>
+References: <2025081857-swerve-preschool-2c2c@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -63,202 +61,108 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-From: Leo Martins <loemra.dev@gmail.com>
+From: Christoph Hellwig <hch@lst.de>
 
-[ Upstream commit ad580dfa388fabb52af033e3f8cc5d04be985e54 ]
+[ Upstream commit 83a80e95e797a2a6d14bf7983e5e6eecf8f5facb ]
 
-There is a potential deadlock that can happen in
-try_release_subpage_extent_buffer() because the irq-safe xarray spin
-lock fs_info->buffer_tree is being acquired before the irq-unsafe
-eb->refs_lock.
+xfs_trans_alloc_empty only shares the very basic transaction structure
+allocation and initialization with xfs_trans_alloc.
 
-This leads to the potential race:
-// T1 (random eb->refs user)                  // T2 (release folio)
+Split out a new __xfs_trans_alloc helper for that and otherwise decouple
+xfs_trans_alloc_empty from xfs_trans_alloc.
 
-spin_lock(&eb->refs_lock);
-// interrupt
-end_bbio_meta_write()
-  btrfs_meta_folio_clear_writeback()
-                                              btree_release_folio()
-                                                folio_test_writeback() //false
-                                                try_release_extent_buffer()
-                                                  try_release_subpage_extent_buffer()
-                                                    xa_lock_irq(&fs_info->buffer_tree)
-                                                    spin_lock(&eb->refs_lock); // blocked; held by T1
-  buffer_tree_clear_mark()
-    xas_lock_irqsave() // blocked; held by T2
-
-I believe that the spin lock can safely be replaced by an rcu_read_lock.
-The xa_for_each loop does not need the spin lock as it's already
-internally protected by the rcu_read_lock. The extent buffer is also
-protected by the rcu_read_lock so it won't be freed before we take the
-eb->refs_lock and check the ref count.
-
-The rcu_read_lock is taken and released every iteration, just like the
-spin lock, which means we're not protected against concurrent
-insertions into the xarray. This is fine because we rely on
-folio->private to detect if there are any ebs remaining in the folio.
-
-There is already some precedent for this with find_extent_buffer_nolock,
-which loads an extent buffer from the xarray with only rcu_read_lock.
-
-lockdep warning:
-
-            =====================================================
-            WARNING: HARDIRQ-safe -> HARDIRQ-unsafe lock order detected
-            6.16.0-0_fbk701_debug_rc0_123_g4c06e63b9203 #1 Tainted: G E    N
-            -----------------------------------------------------
-            kswapd0/66 [HC0[0]:SC0[0]:HE0:SE1] is trying to acquire:
-            ffff000011ffd600 (&eb->refs_lock){+.+.}-{3:3}, at: try_release_extent_buffer+0x18c/0x560
-
-and this task is already holding:
-            ffff0000c1d91b88 (&buffer_xa_class){-.-.}-{3:3}, at: try_release_extent_buffer+0x13c/0x560
-            which would create a new lock dependency:
-             (&buffer_xa_class){-.-.}-{3:3} -> (&eb->refs_lock){+.+.}-{3:3}
-
-but this new dependency connects a HARDIRQ-irq-safe lock:
-             (&buffer_xa_class){-.-.}-{3:3}
-
-... which became HARDIRQ-irq-safe at:
-              lock_acquire+0x178/0x358
-              _raw_spin_lock_irqsave+0x60/0x88
-              buffer_tree_clear_mark+0xc4/0x160
-              end_bbio_meta_write+0x238/0x398
-              btrfs_bio_end_io+0x1f8/0x330
-              btrfs_orig_write_end_io+0x1c4/0x2c0
-              bio_endio+0x63c/0x678
-              blk_update_request+0x1c4/0xa00
-              blk_mq_end_request+0x54/0x88
-              virtblk_request_done+0x124/0x1d0
-              blk_mq_complete_request+0x84/0xa0
-              virtblk_done+0x130/0x238
-              vring_interrupt+0x130/0x288
-              __handle_irq_event_percpu+0x1e8/0x708
-              handle_irq_event+0x98/0x1b0
-              handle_fasteoi_irq+0x264/0x7c0
-              generic_handle_domain_irq+0xa4/0x108
-              gic_handle_irq+0x7c/0x1a0
-              do_interrupt_handler+0xe4/0x148
-              el1_interrupt+0x30/0x50
-              el1h_64_irq_handler+0x14/0x20
-              el1h_64_irq+0x6c/0x70
-              _raw_spin_unlock_irq+0x38/0x70
-              __run_timer_base+0xdc/0x5e0
-              run_timer_softirq+0xa0/0x138
-              handle_softirqs.llvm.13542289750107964195+0x32c/0xbd0
-              ____do_softirq.llvm.17674514681856217165+0x18/0x28
-              call_on_irq_stack+0x24/0x30
-              __irq_exit_rcu+0x164/0x430
-              irq_exit_rcu+0x18/0x88
-              el1_interrupt+0x34/0x50
-              el1h_64_irq_handler+0x14/0x20
-              el1h_64_irq+0x6c/0x70
-              arch_local_irq_enable+0x4/0x8
-              do_idle+0x1a0/0x3b8
-              cpu_startup_entry+0x60/0x80
-              rest_init+0x204/0x228
-              start_kernel+0x394/0x3f0
-              __primary_switched+0x8c/0x8958
-
-to a HARDIRQ-irq-unsafe lock:
-             (&eb->refs_lock){+.+.}-{3:3}
-
-... which became HARDIRQ-irq-unsafe at:
-            ...
-              lock_acquire+0x178/0x358
-              _raw_spin_lock+0x4c/0x68
-              free_extent_buffer_stale+0x2c/0x170
-              btrfs_read_sys_array+0x1b0/0x338
-              open_ctree+0xeb0/0x1df8
-              btrfs_get_tree+0xb60/0x1110
-              vfs_get_tree+0x8c/0x250
-              fc_mount+0x20/0x98
-              btrfs_get_tree+0x4a4/0x1110
-              vfs_get_tree+0x8c/0x250
-              do_new_mount+0x1e0/0x6c0
-              path_mount+0x4ec/0xa58
-              __arm64_sys_mount+0x370/0x490
-              invoke_syscall+0x6c/0x208
-              el0_svc_common+0x14c/0x1b8
-              do_el0_svc+0x4c/0x60
-              el0_svc+0x4c/0x160
-              el0t_64_sync_handler+0x70/0x100
-              el0t_64_sync+0x168/0x170
-
-other info that might help us debug this:
-             Possible interrupt unsafe locking scenario:
-                   CPU0                    CPU1
-                   ----                    ----
-              lock(&eb->refs_lock);
-                                           local_irq_disable();
-                                           lock(&buffer_xa_class);
-                                           lock(&eb->refs_lock);
-              <Interrupt>
-                lock(&buffer_xa_class);
-
-  *** DEADLOCK ***
-            2 locks held by kswapd0/66:
-             #0: ffff800085506e40 (fs_reclaim){+.+.}-{0:0}, at: balance_pgdat+0xe8/0xe50
-             #1: ffff0000c1d91b88 (&buffer_xa_class){-.-.}-{3:3}, at: try_release_extent_buffer+0x13c/0x560
-
-Link: https://www.kernel.org/doc/Documentation/locking/lockdep-design.rst#:~:text=Multi%2Dlock%20dependency%20rules%3A
-Fixes: 19d7f65f032f ("btrfs: convert the buffer_radix to an xarray")
-CC: stable@vger.kernel.org # 6.16+
-Reviewed-by: Boris Burkov <boris@bur.io>
-Reviewed-by: Qu Wenruo <wqu@suse.com>
-Signed-off-by: Leo Martins <loemra.dev@gmail.com>
-Signed-off-by: David Sterba <dsterba@suse.com>
+Signed-off-by: Christoph Hellwig <hch@lst.de>
+Reviewed-by: Darrick J. Wong <djwong@kernel.org>
+Signed-off-by: Carlos Maiolino <cem@kernel.org>
+Stable-dep-of: d2845519b072 ("xfs: fully decouple XFS_IBULK* flags from XFS_IWALK* flags")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/btrfs/extent_io.c | 11 ++++++-----
- 1 file changed, 6 insertions(+), 5 deletions(-)
+ fs/xfs/xfs_trans.c | 52 +++++++++++++++++++++++++---------------------
+ 1 file changed, 28 insertions(+), 24 deletions(-)
 
-diff --git a/fs/btrfs/extent_io.c b/fs/btrfs/extent_io.c
-index 8549fb4f6dfd..1b3844756efb 100644
---- a/fs/btrfs/extent_io.c
-+++ b/fs/btrfs/extent_io.c
-@@ -4304,15 +4304,18 @@ static int try_release_subpage_extent_buffer(struct folio *folio)
- 	unsigned long end = index + (PAGE_SIZE >> fs_info->sectorsize_bits) - 1;
- 	int ret;
- 
--	xa_lock_irq(&fs_info->buffer_tree);
-+	rcu_read_lock();
- 	xa_for_each_range(&fs_info->buffer_tree, index, eb, start, end) {
- 		/*
- 		 * The same as try_release_extent_buffer(), to ensure the eb
- 		 * won't disappear out from under us.
- 		 */
- 		spin_lock(&eb->refs_lock);
-+		rcu_read_unlock();
-+
- 		if (refcount_read(&eb->refs) != 1 || extent_buffer_under_io(eb)) {
- 			spin_unlock(&eb->refs_lock);
-+			rcu_read_lock();
- 			continue;
- 		}
- 
-@@ -4331,11 +4334,10 @@ static int try_release_subpage_extent_buffer(struct folio *folio)
- 		 * check the folio private at the end.  And
- 		 * release_extent_buffer() will release the refs_lock.
- 		 */
--		xa_unlock_irq(&fs_info->buffer_tree);
- 		release_extent_buffer(eb);
--		xa_lock_irq(&fs_info->buffer_tree);
-+		rcu_read_lock();
- 	}
--	xa_unlock_irq(&fs_info->buffer_tree);
-+	rcu_read_unlock();
- 
- 	/*
- 	 * Finally to check if we have cleared folio private, as if we have
-@@ -4348,7 +4350,6 @@ static int try_release_subpage_extent_buffer(struct folio *folio)
- 		ret = 0;
- 	spin_unlock(&folio->mapping->i_private_lock);
- 	return ret;
--
+diff --git a/fs/xfs/xfs_trans.c b/fs/xfs/xfs_trans.c
+index b4a07af513ba..09ba598a10d3 100644
+--- a/fs/xfs/xfs_trans.c
++++ b/fs/xfs/xfs_trans.c
+@@ -241,6 +241,28 @@ xfs_trans_reserve(
+ 	return error;
  }
  
- int try_release_extent_buffer(struct folio *folio)
++static struct xfs_trans *
++__xfs_trans_alloc(
++	struct xfs_mount	*mp,
++	uint			flags)
++{
++	struct xfs_trans	*tp;
++
++	ASSERT(!(flags & XFS_TRANS_RES_FDBLKS) || xfs_has_lazysbcount(mp));
++
++	tp = kmem_cache_zalloc(xfs_trans_cache, GFP_KERNEL | __GFP_NOFAIL);
++	if (!(flags & XFS_TRANS_NO_WRITECOUNT))
++		sb_start_intwrite(mp->m_super);
++	xfs_trans_set_context(tp);
++	tp->t_flags = flags;
++	tp->t_mountp = mp;
++	INIT_LIST_HEAD(&tp->t_items);
++	INIT_LIST_HEAD(&tp->t_busy);
++	INIT_LIST_HEAD(&tp->t_dfops);
++	tp->t_highest_agno = NULLAGNUMBER;
++	return tp;
++}
++
+ int
+ xfs_trans_alloc(
+ 	struct xfs_mount	*mp,
+@@ -254,33 +276,16 @@ xfs_trans_alloc(
+ 	bool			want_retry = true;
+ 	int			error;
+ 
++	ASSERT(resp->tr_logres > 0);
++
+ 	/*
+ 	 * Allocate the handle before we do our freeze accounting and setting up
+ 	 * GFP_NOFS allocation context so that we avoid lockdep false positives
+ 	 * by doing GFP_KERNEL allocations inside sb_start_intwrite().
+ 	 */
+ retry:
+-	tp = kmem_cache_zalloc(xfs_trans_cache, GFP_KERNEL | __GFP_NOFAIL);
+-	if (!(flags & XFS_TRANS_NO_WRITECOUNT))
+-		sb_start_intwrite(mp->m_super);
+-	xfs_trans_set_context(tp);
+-
+-	/*
+-	 * Zero-reservation ("empty") transactions can't modify anything, so
+-	 * they're allowed to run while we're frozen.
+-	 */
+-	WARN_ON(resp->tr_logres > 0 &&
+-		mp->m_super->s_writers.frozen == SB_FREEZE_COMPLETE);
+-	ASSERT(!(flags & XFS_TRANS_RES_FDBLKS) ||
+-	       xfs_has_lazysbcount(mp));
+-
+-	tp->t_flags = flags;
+-	tp->t_mountp = mp;
+-	INIT_LIST_HEAD(&tp->t_items);
+-	INIT_LIST_HEAD(&tp->t_busy);
+-	INIT_LIST_HEAD(&tp->t_dfops);
+-	tp->t_highest_agno = NULLAGNUMBER;
+-
++	WARN_ON(mp->m_super->s_writers.frozen == SB_FREEZE_COMPLETE);
++	tp = __xfs_trans_alloc(mp, flags);
+ 	error = xfs_trans_reserve(tp, resp, blocks, rtextents);
+ 	if (error == -ENOSPC && want_retry) {
+ 		xfs_trans_cancel(tp);
+@@ -329,9 +334,8 @@ xfs_trans_alloc_empty(
+ 	struct xfs_mount		*mp,
+ 	struct xfs_trans		**tpp)
+ {
+-	struct xfs_trans_res		resv = {0};
+-
+-	return xfs_trans_alloc(mp, &resv, 0, 0, XFS_TRANS_NO_WRITECOUNT, tpp);
++	*tpp = __xfs_trans_alloc(mp, XFS_TRANS_NO_WRITECOUNT);
++	return 0;
+ }
+ 
+ /*
 -- 
 2.50.1
 
