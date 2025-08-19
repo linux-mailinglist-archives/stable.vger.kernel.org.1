@@ -1,61 +1,58 @@
-Return-Path: <stable+bounces-171802-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-171803-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 13B0BB2C718
-	for <lists+stable@lfdr.de>; Tue, 19 Aug 2025 16:33:34 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5E82BB2C719
+	for <lists+stable@lfdr.de>; Tue, 19 Aug 2025 16:33:35 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 0230D5E4A5E
-	for <lists+stable@lfdr.de>; Tue, 19 Aug 2025 14:33:11 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id D2B731BC3B4B
+	for <lists+stable@lfdr.de>; Tue, 19 Aug 2025 14:33:54 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A9879275B1A;
-	Tue, 19 Aug 2025 14:32:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 56B962690D5;
+	Tue, 19 Aug 2025 14:33:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="n2elbnCw"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="L8ma3ud7"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6A5E3275854
-	for <stable@vger.kernel.org>; Tue, 19 Aug 2025 14:32:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 16C9E258ED1
+	for <stable@vger.kernel.org>; Tue, 19 Aug 2025 14:33:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755613978; cv=none; b=IKP6TVM16hei9kW+2ycbUfkP3BGWIV6MHK6i50xrlMZunrbkVMQPMYLm+gSxOHqOuhjVfNe5SszddPIBrwq6C1GcvchwVwo/zlzwEFFJmMuUR6kYipXjfrudkTFvEcurdVTpAdplfwO/FcxkB2H8TWIs9AIFhsyjGRTJjU0QeQU=
+	t=1755614011; cv=none; b=aAWqMJMGlCgCmKUJ+BMMYYAEp9Vo2xcisn8Y6zf/Rc9sbQaxRXWWR+chiu0A/L0oaxFCj3Xc2Y3E7RkOv+AHyjT/IQguS0pmvq7fRSiPVyNMzsX0TiFfB0RmxLDZOLDgN9pX++bHfY2RAJdhLufgXx2qXSd5A7b+WSeQa7SCO9o=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1755613978; c=relaxed/simple;
-	bh=YgsWAJ7jLEHzd9gzFpKjGuOvJzjQZskQqzuUhXRC9Kk=;
+	s=arc-20240116; t=1755614011; c=relaxed/simple;
+	bh=Vp6lHOy5WSi8yt/XngvNJKmymRRgnf3oLC+LvPKxjr0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=t0ETv5JujzpyzGAblyw1MUc5HfLOB3oJuppRX0ToH3ROfpWAc3LAsTth4985ahe6bPd29bH+2J/o6sqclhsNkUwZcnnm661Dhobv86uejBTn6ieTVi7r4+mQioKLpHPzu1ixz3UwEvDmLWDkfjfhlpK8Kh50kIypfTKK4Qpv7rU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=n2elbnCw; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5BE89C116D0;
-	Tue, 19 Aug 2025 14:32:57 +0000 (UTC)
+	 MIME-Version; b=qV93e7nvySWsdFih6op98cXhdQWYPmEsaZs7iWlzZi+fhWHwuvb2YtjC8YBD1+F1mA346c8UBqeaSF1x7SHLOl948XW/GsbyMM/NuK8Wg+MRo25kXALztTtFP8J3aL5fag8p4HXf+uWPDojgT2One3b7fpIenQ6YENYADnmR1CQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=L8ma3ud7; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 199E3C4CEF1;
+	Tue, 19 Aug 2025 14:33:30 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1755613978;
-	bh=YgsWAJ7jLEHzd9gzFpKjGuOvJzjQZskQqzuUhXRC9Kk=;
+	s=k20201202; t=1755614010;
+	bh=Vp6lHOy5WSi8yt/XngvNJKmymRRgnf3oLC+LvPKxjr0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=n2elbnCw3PD9UwM4l2clAOxbJ0RwkzPV8uyiefhUMNcNde1/FP48hnimuqCMqYhXy
-	 VkP/tvEyruNj6nryzVlCXJgmZwnhK/hWppOrHLfA2BbPojRPVrc8xFqPaajI97aO1l
-	 5Wp8+pHnKYIP8ZKQQ1Th486knlbgdfSmj/XWwWEMnLUvEAd03h/wIrAvBVhlO7MvOH
-	 Ec9y7Ag7zx/hiXNMLDUpPQMM/4mC/6RpvbhtQwSfGwWfkvKtuDbLxgJCZutmeP+WQz
-	 yCqea0H36fSBPLC03qy86jOUMNBxkxzBxjXlpfdGEGuJZnJFKay/DX3VG9Ty+CxL8n
-	 VH4Mprr/KDQUQ==
+	b=L8ma3ud7THuyXif597qc3JyuCHodrvBJuU4dGNl7BXqLUxnxQVqZzyWP6ioNlX03V
+	 zg07usshEirA/UfbEf5997ErMRPmIV0tFQn1syWiJxgOW1wdYJDUczVTjlTH+UQ/wf
+	 ZtOcuDQ8YGCYFDLH0Ll7Y+FGFB6tNB303mLOzhTph9RT0L/rNkbHQJOWIoxtj7fdmn
+	 YjWhhqjC0YUlsBSA7WOEpbKkaqiBTatjK0IvmKWuHvzJl6Xo5ugq7JeZdBeB6FYcjo
+	 wYXh7UHjopqYeKPvRRogzBr99FpoUmRaJj2yO3yTOixmMSAWE4woGnLOBEVdMGny43
+	 Jt5xmjqyaZ44Q==
 From: Sasha Levin <sashal@kernel.org>
 To: stable@vger.kernel.org
-Cc: Davide Caratti <dcaratti@redhat.com>,
-	Li Shuang <shuali@redhat.com>,
-	Petr Machata <petrm@nvidia.com>,
-	Ivan Vecera <ivecera@redhat.com>,
-	Jakub Kicinski <kuba@kernel.org>,
+Cc: Qu Wenruo <wqu@suse.com>,
+	Filipe Manana <fdmanana@suse.com>,
+	David Sterba <dsterba@suse.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10.y 3/3] net/sched: ets: use old 'nbands' while purging unused classes
-Date: Tue, 19 Aug 2025 10:32:53 -0400
-Message-ID: <20250819143253.512050-3-sashal@kernel.org>
+Subject: [PATCH 5.10.y] btrfs: populate otime when logging an inode item
+Date: Tue, 19 Aug 2025 10:33:27 -0400
+Message-ID: <20250819143327.512986-1-sashal@kernel.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250819143253.512050-1-sashal@kernel.org>
-References: <2025081858-blurred-unlinked-7eae@gregkh>
- <20250819143253.512050-1-sashal@kernel.org>
+In-Reply-To: <2025081801-ended-viewless-5ac7@gregkh>
+References: <2025081801-ended-viewless-5ac7@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -64,118 +61,115 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-From: Davide Caratti <dcaratti@redhat.com>
+From: Qu Wenruo <wqu@suse.com>
 
-[ Upstream commit 87c6efc5ce9c126ae4a781bc04504b83780e3650 ]
+[ Upstream commit 1ef94169db0958d6de39f9ea6e063ce887342e2d ]
 
-Shuang reported sch_ets test-case [1] crashing in ets_class_qlen_notify()
-after recent changes from Lion [2]. The problem is: in ets_qdisc_change()
-we purge unused DWRR queues; the value of 'q->nbands' is the new one, and
-the cleanup should be done with the old one. The problem is here since my
-first attempts to fix ets_qdisc_change(), but it surfaced again after the
-recent qdisc len accounting fixes. Fix it purging idle DWRR queues before
-assigning a new value of 'q->nbands', so that all purge operations find a
-consistent configuration:
+[TEST FAILURE WITH EXPERIMENTAL FEATURES]
+When running test case generic/508, the test case will fail with the new
+btrfs shutdown support:
 
- - old 'q->nbands' because it's needed by ets_class_find()
- - old 'q->nstrict' because it's needed by ets_class_is_strict()
+generic/508       - output mismatch (see /home/adam/xfstests/results//generic/508.out.bad)
+    --- tests/generic/508.out	2022-05-11 11:25:30.806666664 +0930
+    +++ /home/adam/xfstests/results//generic/508.out.bad	2025-07-02 14:53:22.401824212 +0930
+    @@ -1,2 +1,6 @@
+     QA output created by 508
+     Silence is golden
+    +Before:
+    +After : stat.btime = Thu Jan  1 09:30:00 1970
+    +Before:
+    +After : stat.btime = Wed Jul  2 14:53:22 2025
+    ...
+    (Run 'diff -u /home/adam/xfstests/tests/generic/508.out /home/adam/xfstests/results//generic/508.out.bad'  to see the entire diff)
+Ran: generic/508
+Failures: generic/508
+Failed 1 of 1 tests
 
- BUG: kernel NULL pointer dereference, address: 0000000000000000
- #PF: supervisor read access in kernel mode
- #PF: error_code(0x0000) - not-present page
- PGD 0 P4D 0
- Oops: Oops: 0000 [#1] SMP NOPTI
- CPU: 62 UID: 0 PID: 39457 Comm: tc Kdump: loaded Not tainted 6.12.0-116.el10.x86_64 #1 PREEMPT(voluntary)
- Hardware name: Dell Inc. PowerEdge R640/06DKY5, BIOS 2.12.2 07/09/2021
- RIP: 0010:__list_del_entry_valid_or_report+0x4/0x80
- Code: ff 4c 39 c7 0f 84 39 19 8e ff b8 01 00 00 00 c3 cc cc cc cc 66 90 90 90 90 90 90 90 90 90 90 90 90 90 90 90 90 90 f3 0f 1e fa <48> 8b 17 48 8b 4f 08 48 85 d2 0f 84 56 19 8e ff 48 85 c9 0f 84 ab
- RSP: 0018:ffffba186009f400 EFLAGS: 00010202
- RAX: 00000000000000d6 RBX: 0000000000000000 RCX: 0000000000000004
- RDX: ffff9f0fa29b69c0 RSI: 0000000000000000 RDI: 0000000000000000
- RBP: ffffffffc12c2400 R08: 0000000000000008 R09: 0000000000000004
- R10: ffffffffffffffff R11: 0000000000000004 R12: 0000000000000000
- R13: ffff9f0f8cfe0000 R14: 0000000000100005 R15: 0000000000000000
- FS:  00007f2154f37480(0000) GS:ffff9f269c1c0000(0000) knlGS:0000000000000000
- CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
- CR2: 0000000000000000 CR3: 00000001530be001 CR4: 00000000007726f0
- DR0: 0000000000000000 DR1: 0000000000000000 DR2: 0000000000000000
- DR3: 0000000000000000 DR6: 00000000fffe0ff0 DR7: 0000000000000400
- PKRU: 55555554
- Call Trace:
-  <TASK>
-  ets_class_qlen_notify+0x65/0x90 [sch_ets]
-  qdisc_tree_reduce_backlog+0x74/0x110
-  ets_qdisc_change+0x630/0xa40 [sch_ets]
-  __tc_modify_qdisc.constprop.0+0x216/0x7f0
-  tc_modify_qdisc+0x7c/0x120
-  rtnetlink_rcv_msg+0x145/0x3f0
-  netlink_rcv_skb+0x53/0x100
-  netlink_unicast+0x245/0x390
-  netlink_sendmsg+0x21b/0x470
-  ____sys_sendmsg+0x39d/0x3d0
-  ___sys_sendmsg+0x9a/0xe0
-  __sys_sendmsg+0x7a/0xd0
-  do_syscall_64+0x7d/0x160
-  entry_SYSCALL_64_after_hwframe+0x76/0x7e
- RIP: 0033:0x7f2155114084
- Code: 89 02 b8 ff ff ff ff eb bb 66 2e 0f 1f 84 00 00 00 00 00 0f 1f 00 f3 0f 1e fa 80 3d 25 f0 0c 00 00 74 13 b8 2e 00 00 00 0f 05 <48> 3d 00 f0 ff ff 77 54 c3 0f 1f 00 48 83 ec 28 89 54 24 1c 48 89
- RSP: 002b:00007fff1fd7a988 EFLAGS: 00000202 ORIG_RAX: 000000000000002e
- RAX: ffffffffffffffda RBX: 0000560ec063e5e0 RCX: 00007f2155114084
- RDX: 0000000000000000 RSI: 00007fff1fd7a9f0 RDI: 0000000000000003
- RBP: 00007fff1fd7aa60 R08: 0000000000000010 R09: 000000000000003f
- R10: 0000560ee9b3a010 R11: 0000000000000202 R12: 00007fff1fd7aae0
- R13: 000000006891ccde R14: 0000560ec063e5e0 R15: 00007fff1fd7aad0
-  </TASK>
+Please note that the test case requires shutdown support, thus the test
+case will be skipped using the current upstream kernel, as it doesn't
+have shutdown ioctl support.
 
- [1] https://lore.kernel.org/netdev/e08c7f4a6882f260011909a868311c6e9b54f3e4.1639153474.git.dcaratti@redhat.com/
- [2] https://lore.kernel.org/netdev/d912cbd7-193b-4269-9857-525bee8bbb6a@gmail.com/
+[CAUSE]
+The direct cause the 0 time stamp in the log tree:
 
-Cc: stable@vger.kernel.org
-Fixes: 103406b38c60 ("net/sched: Always pass notifications when child class becomes empty")
-Fixes: c062f2a0b04d ("net/sched: sch_ets: don't remove idle classes from the round-robin list")
-Fixes: dcc68b4d8084 ("net: sch_ets: Add a new Qdisc")
-Reported-by: Li Shuang <shuali@redhat.com>
-Closes: https://issues.redhat.com/browse/RHEL-108026
-Reviewed-by: Petr Machata <petrm@nvidia.com>
-Co-developed-by: Ivan Vecera <ivecera@redhat.com>
-Signed-off-by: Ivan Vecera <ivecera@redhat.com>
-Signed-off-by: Davide Caratti <dcaratti@redhat.com>
-Link: https://patch.msgid.link/7928ff6d17db47a2ae7cc205c44777b1f1950545.1755016081.git.dcaratti@redhat.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+leaf 30507008 items 2 free space 16057 generation 9 owner TREE_LOG
+leaf 30507008 flags 0x1(WRITTEN) backref revision 1
+checksum stored e522548d
+checksum calced e522548d
+fs uuid 57d45451-481e-43e4-aa93-289ad707a3a0
+chunk uuid d52bd3fd-5163-4337-98a7-7986993ad398
+	item 0 key (257 INODE_ITEM 0) itemoff 16123 itemsize 160
+		generation 9 transid 9 size 0 nbytes 0
+		block group 0 mode 100644 links 1 uid 0 gid 0 rdev 0
+		sequence 1 flags 0x0(none)
+		atime 1751432947.492000000 (2025-07-02 14:39:07)
+		ctime 1751432947.492000000 (2025-07-02 14:39:07)
+		mtime 1751432947.492000000 (2025-07-02 14:39:07)
+		otime 0.0 (1970-01-01 09:30:00) <<<
+
+But the old fs tree has all the correct time stamp:
+
+btrfs-progs v6.12
+fs tree key (FS_TREE ROOT_ITEM 0)
+leaf 30425088 items 2 free space 16061 generation 5 owner FS_TREE
+leaf 30425088 flags 0x1(WRITTEN) backref revision 1
+checksum stored 48f6c57e
+checksum calced 48f6c57e
+fs uuid 57d45451-481e-43e4-aa93-289ad707a3a0
+chunk uuid d52bd3fd-5163-4337-98a7-7986993ad398
+	item 0 key (256 INODE_ITEM 0) itemoff 16123 itemsize 160
+		generation 3 transid 0 size 0 nbytes 16384
+		block group 0 mode 40755 links 1 uid 0 gid 0 rdev 0
+		sequence 0 flags 0x0(none)
+		atime 1751432947.0 (2025-07-02 14:39:07)
+		ctime 1751432947.0 (2025-07-02 14:39:07)
+		mtime 1751432947.0 (2025-07-02 14:39:07)
+		otime 1751432947.0 (2025-07-02 14:39:07) <<<
+
+The root cause is that fill_inode_item() in tree-log.c is only
+populating a/c/m time, not the otime (or btime in statx output).
+
+Part of the reason is that, the vfs inode only has a/c/m time, no native
+btime support yet.
+
+[FIX]
+Thankfully btrfs has its otime stored in btrfs_inode::i_otime_sec and
+btrfs_inode::i_otime_nsec.
+
+So what we really need is just fill the otime time stamp in
+fill_inode_item() of tree-log.c
+
+There is another fill_inode_item() in inode.c, which is doing the proper
+otime population.
+
+Fixes: 94edf4ae43a5 ("Btrfs: don't bother committing delayed inode updates when fsyncing")
+CC: stable@vger.kernel.org
+Reviewed-by: Filipe Manana <fdmanana@suse.com>
+Signed-off-by: Qu Wenruo <wqu@suse.com>
+Reviewed-by: David Sterba <dsterba@suse.com>
+Signed-off-by: David Sterba <dsterba@suse.com>
+[ Adapted token-based API calls ]
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/sched/sch_ets.c | 11 ++++++-----
- 1 file changed, 6 insertions(+), 5 deletions(-)
+ fs/btrfs/tree-log.c | 5 +++++
+ 1 file changed, 5 insertions(+)
 
-diff --git a/net/sched/sch_ets.c b/net/sched/sch_ets.c
-index 5c9a72f1e1f2..e38879e59872 100644
---- a/net/sched/sch_ets.c
-+++ b/net/sched/sch_ets.c
-@@ -664,6 +664,12 @@ static int ets_qdisc_change(struct Qdisc *sch, struct nlattr *opt,
+diff --git a/fs/btrfs/tree-log.c b/fs/btrfs/tree-log.c
+index dd1c40019412..2acf7d78b6d8 100644
+--- a/fs/btrfs/tree-log.c
++++ b/fs/btrfs/tree-log.c
+@@ -3909,6 +3909,11 @@ static void fill_inode_item(struct btrfs_trans_handle *trans,
+ 	btrfs_set_token_timespec_nsec(&token, &item->ctime,
+ 				      inode->i_ctime.tv_nsec);
  
- 	sch_tree_lock(sch);
- 
-+	for (i = nbands; i < oldbands; i++) {
-+		if (i >= q->nstrict && q->classes[i].qdisc->q.qlen)
-+			list_del_init(&q->classes[i].alist);
-+		qdisc_purge_queue(q->classes[i].qdisc);
-+	}
++	btrfs_set_token_timespec_sec(&token, &item->otime,
++				     BTRFS_I(inode)->i_otime.tv_sec);
++	btrfs_set_token_timespec_nsec(&token, &item->otime,
++				      BTRFS_I(inode)->i_otime.tv_nsec);
 +
- 	WRITE_ONCE(q->nbands, nbands);
- 	for (i = nstrict; i < q->nstrict; i++) {
- 		if (q->classes[i].qdisc->q.qlen) {
-@@ -671,11 +677,6 @@ static int ets_qdisc_change(struct Qdisc *sch, struct nlattr *opt,
- 			q->classes[i].deficit = quanta[i];
- 		}
- 	}
--	for (i = q->nbands; i < oldbands; i++) {
--		if (i >= q->nstrict && q->classes[i].qdisc->q.qlen)
--			list_del_init(&q->classes[i].alist);
--		qdisc_purge_queue(q->classes[i].qdisc);
--	}
- 	WRITE_ONCE(q->nstrict, nstrict);
- 	memcpy(q->prio2band, priomap, sizeof(priomap));
+ 	btrfs_set_token_inode_nbytes(&token, item, inode_get_bytes(inode));
  
+ 	btrfs_set_token_inode_sequence(&token, item, inode_peek_iversion(inode));
 -- 
 2.50.1
 
