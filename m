@@ -1,121 +1,255 @@
-Return-Path: <stable+bounces-171735-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-171736-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id BDAB9B2B73E
-	for <lists+stable@lfdr.de>; Tue, 19 Aug 2025 04:46:51 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1EB79B2B757
+	for <lists+stable@lfdr.de>; Tue, 19 Aug 2025 04:56:56 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 7F490622149
-	for <lists+stable@lfdr.de>; Tue, 19 Aug 2025 02:46:50 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id EBF6B56571B
+	for <lists+stable@lfdr.de>; Tue, 19 Aug 2025 02:56:55 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E76201494A8;
-	Tue, 19 Aug 2025 02:46:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6DB7E29E115;
+	Tue, 19 Aug 2025 02:56:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="gry9S5uz"
+	dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b="qnJnk+wN"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A5CB22F852
-	for <stable@vger.kernel.org>; Tue, 19 Aug 2025 02:46:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 289E713FEE;
+	Tue, 19 Aug 2025 02:56:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755571606; cv=none; b=tVC/hhrOaGWGFlBvc/qcxD3Drwx74B2zlbs3GHAOeRxkUUvbsp6j+XN3kxLRsDMDngBsUfAwxXUnJtPUZBzJ3hTZPDyUvNSC3UyiFFYmVGbq4kCR+u+IBbEvL43Ks9LsG4k8KxrtF2kl3wesyZYx4X98ZXzZfHrphexMj47EMG8=
+	t=1755572211; cv=none; b=jGaVYBHdErrdwLNqai+WhWoSobqUq1CzXdvKLJGxT4i/x8PrI5ykelMO2vJhuXGu6QqxtKjjeCLO68JaFQEOogmY9JYjK2BjhHKYsIR5VshDZWnRoJyYp2o0KuX1nqdR3s0izftRqgvvmYvhPt6Tj1gqL6Kjk1lV2vSrDLdd77U=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1755571606; c=relaxed/simple;
-	bh=z6Gl5Gkrr9oWFjWLgjz5nfY+2+t05p8WuZ4aps/hd80=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=lopCnjvxWozhRTkdIK2bJ4sRBG4brbMQ7ePEE1cOfqefbdMZ5wikA7MJW+rp6Ije5LbtyZpHhnp8x8IaM71HOoFv2SnQxeLZPogjtVvzOwCIRd4WHjEe7rLR30ufqMoeL5OuLs0qkHTzbncfAC4qAo91VV+lDx++itpGBizXoFs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=gry9S5uz; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 841ABC116B1;
-	Tue, 19 Aug 2025 02:46:45 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1755571606;
-	bh=z6Gl5Gkrr9oWFjWLgjz5nfY+2+t05p8WuZ4aps/hd80=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=gry9S5uzIDLSt6Osg55EGwlnS/Ypm2ONJZZnyLC9SI4fdw4bTTOG4SyCh5tPyU17K
-	 9hJsae/nAWhAwOdD6bQfHXGN0sTsNz7HwlUZLEJYuCG9c5PVdvgK4gc6r74Eqxbv98
-	 w2yYmp+WiaS82xSsdZF7KFvaobELWdnHPlmKE98aFe9fHCsmvhDFbdYh4YEoSgl16Z
-	 6N3oYfWiFe3zjir2G8L1RMbPpqsfapRqpd0Xs6DKU/xUjDLLzs8WD/l0XKZK1TB6nv
-	 kmqwLJL/77nE2Gz7qZrk2aqekqZKKGzoE6MiRXbJ/RUqpu2sJQi5G8nrMfbZ7qBlFY
-	 t/8mcub9dEs3A==
-From: Sasha Levin <sashal@kernel.org>
-To: stable@vger.kernel.org
-Cc: Christoph Hellwig <hch@lst.de>,
-	cen zhang <zzzccc427@gmail.com>,
-	"Darrick J. Wong" <djwong@kernel.org>,
-	Carlos Maiolino <cem@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12.y] xfs: fully decouple XFS_IBULK* flags from XFS_IWALK* flags
-Date: Mon, 18 Aug 2025 22:46:42 -0400
-Message-ID: <20250819024642.295522-1-sashal@kernel.org>
-X-Mailer: git-send-email 2.50.1
-In-Reply-To: <2025081858-issuing-conclude-4ff3@gregkh>
-References: <2025081858-issuing-conclude-4ff3@gregkh>
+	s=arc-20240116; t=1755572211; c=relaxed/simple;
+	bh=rYfih2fnWnJrQ/As3cIiUo6u1GhBijom/rniVzogbWE=;
+	h=Date:To:From:Subject:Message-Id; b=pZ1ECVBe0mryGdIBKAW0BX+q6dSV09FFtuBv//Y91xjdIs6WjoUPdGopnVhRpjUqGBZBuSFNQuMBQ5At988B6sfF0hmDPaYX8i6h8yhJ3K0/NwjyQclabnxsVJudb7kfApMJZzA27a4j1UCHbtPLghYL5St3yt4EuIIcd/4zr7s=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b=qnJnk+wN; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A30F4C4CEEB;
+	Tue, 19 Aug 2025 02:56:50 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linux-foundation.org;
+	s=korg; t=1755572210;
+	bh=rYfih2fnWnJrQ/As3cIiUo6u1GhBijom/rniVzogbWE=;
+	h=Date:To:From:Subject:From;
+	b=qnJnk+wNlmcj+x2VfCwyp1QROD3+pWlS1B5KMoym4Tyyiuk5mp79Md1T3tLynlq9n
+	 sQ9L03MweZ9Lr9g6gTv8+AdVjUQT8w0TBmXc0ZIzRgV1pbm30j+iEfw2FUvptdouTT
+	 gAwzE4VSQxbJgO0dOA/o/nAHLtErrQsXgxdfJJnw=
+Date: Mon, 18 Aug 2025 19:56:50 -0700
+To: mm-commits@vger.kernel.org,vbabka@suse.cz,stable@vger.kernel.org,pfalcato@suse.de,lorenzo.stoakes@oracle.com,Liam.Howlett@oracle.com,jannh@google.com,harry.yoo@oracle.com,david@redhat.com,akpm@linux-foundation.org
+From: Andrew Morton <akpm@linux-foundation.org>
+Subject: + mm-mremap-fix-warn-with-uffd-that-has-remap-events-disabled.patch added to mm-hotfixes-unstable branch
+Message-Id: <20250819025650.A30F4C4CEEB@smtp.kernel.org>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
 
-From: Christoph Hellwig <hch@lst.de>
 
-[ Upstream commit d2845519b0723c5d5a0266cbf410495f9b8fd65c ]
+The patch titled
+     Subject: mm/mremap: fix WARN with uffd that has remap events disabled
+has been added to the -mm mm-hotfixes-unstable branch.  Its filename is
+     mm-mremap-fix-warn-with-uffd-that-has-remap-events-disabled.patch
 
-Fix up xfs_inumbers to now pass in the XFS_IBULK* flags into the flags
-argument to xfs_inobt_walk, which expects the XFS_IWALK* flags.
+This patch will shortly appear at
+     https://git.kernel.org/pub/scm/linux/kernel/git/akpm/25-new.git/tree/patches/mm-mremap-fix-warn-with-uffd-that-has-remap-events-disabled.patch
 
-Currently passing the wrong flags works for non-debug builds because
-the only XFS_IWALK* flag has the same encoding as the corresponding
-XFS_IBULK* flag, but in debug builds it can trigger an assert that no
-incorrect flag is passed.  Instead just extra the relevant flag.
+This patch will later appear in the mm-hotfixes-unstable branch at
+    git://git.kernel.org/pub/scm/linux/kernel/git/akpm/mm
 
-Fixes: 5b35d922c52798 ("xfs: Decouple XFS_IBULK flags from XFS_IWALK flags")
-Cc: <stable@vger.kernel.org> # v5.19
-Reported-by: cen zhang <zzzccc427@gmail.com>
-Signed-off-by: Christoph Hellwig <hch@lst.de>
-Reviewed-by: Darrick J. Wong <djwong@kernel.org>
-Signed-off-by: Carlos Maiolino <cem@kernel.org>
-[ Adjust context ]
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Before you just go and hit "reply", please:
+   a) Consider who else should be cc'ed
+   b) Prefer to cc a suitable mailing list as well
+   c) Ideally: find the original patch on the mailing list and do a
+      reply-to-all to that, adding suitable additional cc's
+
+*** Remember to use Documentation/process/submit-checklist.rst when testing your code ***
+
+The -mm tree is included into linux-next via the mm-everything
+branch at git://git.kernel.org/pub/scm/linux/kernel/git/akpm/mm
+and is updated there every 2-3 working days
+
+------------------------------------------------------
+From: David Hildenbrand <david@redhat.com>
+Subject: mm/mremap: fix WARN with uffd that has remap events disabled
+Date: Mon, 18 Aug 2025 19:53:58 +0200
+
+Registering userfaultd on a VMA that spans at least one PMD and then
+mremap()'ing that VMA can trigger a WARN when recovering from a failed
+page table move due to a page table allocation error.
+
+The code ends up doing the right thing (recurse, avoiding moving actual
+page tables), but triggering that WARN is unpleasant:
+
+WARNING: CPU: 2 PID: 6133 at mm/mremap.c:357 move_normal_pmd mm/mremap.c:357 [inline]
+WARNING: CPU: 2 PID: 6133 at mm/mremap.c:357 move_pgt_entry mm/mremap.c:595 [inline]
+WARNING: CPU: 2 PID: 6133 at mm/mremap.c:357 move_page_tables+0x3832/0x44a0 mm/mremap.c:852
+Modules linked in:
+CPU: 2 UID: 0 PID: 6133 Comm: syz.0.19 Not tainted 6.17.0-rc1-syzkaller-00004-g53e760d89498 #0 PREEMPT(full)
+Hardware name: QEMU Standard PC (Q35 + ICH9, 2009), BIOS 1.16.3-debian-1.16.3-2~bpo12+1 04/01/2014
+RIP: 0010:move_normal_pmd mm/mremap.c:357 [inline]
+RIP: 0010:move_pgt_entry mm/mremap.c:595 [inline]
+RIP: 0010:move_page_tables+0x3832/0x44a0 mm/mremap.c:852
+Code: ...
+RSP: 0018:ffffc900037a76d8 EFLAGS: 00010293
+RAX: 0000000000000000 RBX: 0000000032930007 RCX: ffffffff820c6645
+RDX: ffff88802e56a440 RSI: ffffffff820c7201 RDI: 0000000000000007
+RBP: ffff888037728fc0 R08: 0000000000000007 R09: 0000000000000000
+R10: 0000000032930007 R11: 0000000000000000 R12: 0000000000000000
+R13: ffffc900037a79a8 R14: 0000000000000001 R15: dffffc0000000000
+FS:  000055556316a500(0000) GS:ffff8880d68bc000(0000) knlGS:0000000000000000
+CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
+CR2: 0000001b30863fff CR3: 0000000050171000 CR4: 0000000000352ef0
+Call Trace:
+ <TASK>
+ copy_vma_and_data+0x468/0x790 mm/mremap.c:1215
+ move_vma+0x548/0x1780 mm/mremap.c:1282
+ mremap_to+0x1b7/0x450 mm/mremap.c:1406
+ do_mremap+0xfad/0x1f80 mm/mremap.c:1921
+ __do_sys_mremap+0x119/0x170 mm/mremap.c:1977
+ do_syscall_x64 arch/x86/entry/syscall_64.c:63 [inline]
+ do_syscall_64+0xcd/0x4c0 arch/x86/entry/syscall_64.c:94
+ entry_SYSCALL_64_after_hwframe+0x77/0x7f
+RIP: 0033:0x7f00d0b8ebe9
+Code: ...
+RSP: 002b:00007ffe5ea5ee98 EFLAGS: 00000246 ORIG_RAX: 0000000000000019
+RAX: ffffffffffffffda RBX: 00007f00d0db5fa0 RCX: 00007f00d0b8ebe9
+RDX: 0000000000400000 RSI: 0000000000c00000 RDI: 0000200000000000
+RBP: 00007ffe5ea5eef0 R08: 0000200000c00000 R09: 0000000000000000
+R10: 0000000000000003 R11: 0000000000000246 R12: 0000000000000002
+R13: 00007f00d0db5fa0 R14: 00007f00d0db5fa0 R15: 0000000000000005
+ </TASK>
+
+The underlying issue is that we recurse during the original page table
+move, but not during the recovery move.
+
+Fix it by checking for both VMAs and performing the check before the
+pmd_none() sanity check.
+
+Add a new helper where we perform+document that check for the PMD and PUD
+level.
+
+Thanks to Harry for bisecting.
+
+Link: https://lkml.kernel.org/r/20250818175358.1184757-1-david@redhat.com
+Fixes: 0cef0bb836e ("mm: clear uffd-wp PTE/PMD state on mremap()")
+Signed-off-by: David Hildenbrand <david@redhat.com>
+Reported-by: syzbot+4d9a13f0797c46a29e42@syzkaller.appspotmail.com
+Closes: https://lkml.kernel.org/r/689bb893.050a0220.7f033.013a.GAE@google.com
+Cc: "Liam R. Howlett" <Liam.Howlett@oracle.com>
+Cc: Lorenzo Stoakes <lorenzo.stoakes@oracle.com>
+Cc: Vlastimil Babka <vbabka@suse.cz>
+Cc: Jann Horn <jannh@google.com>
+Cc: Pedro Falcato <pfalcato@suse.de>
+Cc: Harry Yoo <harry.yoo@oracle.com>
+Cc: <stable@vger.kernel.org>
+Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
 ---
- fs/xfs/xfs_itable.c | 6 +++++-
- 1 file changed, 5 insertions(+), 1 deletion(-)
 
-diff --git a/fs/xfs/xfs_itable.c b/fs/xfs/xfs_itable.c
-index c0757ab99495..dc395cd2f33b 100644
---- a/fs/xfs/xfs_itable.c
-+++ b/fs/xfs/xfs_itable.c
-@@ -430,11 +430,15 @@ xfs_inumbers(
- 		.breq		= breq,
- 	};
- 	struct xfs_trans	*tp;
-+	unsigned int		iwalk_flags = 0;
- 	int			error = 0;
+ mm/mremap.c |   41 +++++++++++++++++++++++------------------
+ 1 file changed, 23 insertions(+), 18 deletions(-)
+
+--- a/mm/mremap.c~mm-mremap-fix-warn-with-uffd-that-has-remap-events-disabled
++++ a/mm/mremap.c
+@@ -323,6 +323,25 @@ static inline bool arch_supports_page_ta
+ }
+ #endif
  
- 	if (xfs_bulkstat_already_done(breq->mp, breq->startino))
- 		return 0;
- 
-+	if (breq->flags & XFS_IBULK_SAME_AG)
-+		iwalk_flags |= XFS_IWALK_SAME_AG;
++static inline bool uffd_supports_page_table_move(struct pagetable_move_control *pmc)
++{
++	/*
++	 * If we are moving a VMA that has uffd-wp registered but with
++	 * remap events disabled (new VMA will not be registered with uffd), we
++	 * need to ensure that the uffd-wp state is cleared from all pgtables.
++	 * This means recursing into lower page tables in move_page_tables().
++	 *
++	 * We might get called with VMAs reversed when recovering from a
++	 * failed page table move. In that case, the
++	 * "old"-but-actually-"originally new" VMA during recovery will not have
++	 * a uffd context. Recursing into lower page tables during the original
++	 * move but not during the recovery move will cause trouble, because we
++	 * run into already-existing page tables. So check both VMAs.
++	 */
++	return !vma_has_uffd_without_event_remap(pmc->old) &&
++	       !vma_has_uffd_without_event_remap(pmc->new);
++}
 +
- 	/*
- 	 * Grab an empty transaction so that we can use its recursive buffer
- 	 * locking abilities to detect cycles in the inobt without deadlocking.
-@@ -443,7 +447,7 @@ xfs_inumbers(
- 	if (error)
- 		goto out;
+ #ifdef CONFIG_HAVE_MOVE_PMD
+ static bool move_normal_pmd(struct pagetable_move_control *pmc,
+ 			pmd_t *old_pmd, pmd_t *new_pmd)
+@@ -335,6 +354,8 @@ static bool move_normal_pmd(struct paget
  
--	error = xfs_inobt_walk(breq->mp, tp, breq->startino, breq->flags,
-+	error = xfs_inobt_walk(breq->mp, tp, breq->startino, iwalk_flags,
- 			xfs_inumbers_walk, breq->icount, &ic);
- 	xfs_trans_cancel(tp);
- out:
--- 
-2.50.1
+ 	if (!arch_supports_page_table_move())
+ 		return false;
++	if (!uffd_supports_page_table_move(pmc))
++		return false;
+ 	/*
+ 	 * The destination pmd shouldn't be established, free_pgtables()
+ 	 * should have released it.
+@@ -361,15 +382,6 @@ static bool move_normal_pmd(struct paget
+ 	if (WARN_ON_ONCE(!pmd_none(*new_pmd)))
+ 		return false;
+ 
+-	/* If this pmd belongs to a uffd vma with remap events disabled, we need
+-	 * to ensure that the uffd-wp state is cleared from all pgtables. This
+-	 * means recursing into lower page tables in move_page_tables(), and we
+-	 * can reuse the existing code if we simply treat the entry as "not
+-	 * moved".
+-	 */
+-	if (vma_has_uffd_without_event_remap(vma))
+-		return false;
+-
+ 	/*
+ 	 * We don't have to worry about the ordering of src and dst
+ 	 * ptlocks because exclusive mmap_lock prevents deadlock.
+@@ -418,6 +430,8 @@ static bool move_normal_pud(struct paget
+ 
+ 	if (!arch_supports_page_table_move())
+ 		return false;
++	if (!uffd_supports_page_table_move(pmc))
++		return false;
+ 	/*
+ 	 * The destination pud shouldn't be established, free_pgtables()
+ 	 * should have released it.
+@@ -425,15 +439,6 @@ static bool move_normal_pud(struct paget
+ 	if (WARN_ON_ONCE(!pud_none(*new_pud)))
+ 		return false;
+ 
+-	/* If this pud belongs to a uffd vma with remap events disabled, we need
+-	 * to ensure that the uffd-wp state is cleared from all pgtables. This
+-	 * means recursing into lower page tables in move_page_tables(), and we
+-	 * can reuse the existing code if we simply treat the entry as "not
+-	 * moved".
+-	 */
+-	if (vma_has_uffd_without_event_remap(vma))
+-		return false;
+-
+ 	/*
+ 	 * We don't have to worry about the ordering of src and dst
+ 	 * ptlocks because exclusive mmap_lock prevents deadlock.
+_
+
+Patches currently in -mm which might be from david@redhat.com are
+
+mm-mremap-fix-warn-with-uffd-that-has-remap-events-disabled.patch
+mm-migrate-remove-migratepage_unmap.patch
+treewide-remove-migratepage_success.patch
+mm-huge_memory-move-more-common-code-into-insert_pmd.patch
+mm-huge_memory-move-more-common-code-into-insert_pud.patch
+mm-huge_memory-support-huge-zero-folio-in-vmf_insert_folio_pmd.patch
+fs-dax-use-vmf_insert_folio_pmd-to-insert-the-huge-zero-folio.patch
+mm-huge_memory-mark-pmd-mappings-of-the-huge-zero-folio-special.patch
+powerpc-ptdump-rename-struct-pgtable_level-to-struct-ptdump_pglevel.patch
+mm-rmap-convert-enum-rmap_level-to-enum-pgtable_level.patch
+mm-memory-convert-print_bad_pte-to-print_bad_page_map.patch
+mm-memory-factor-out-common-code-from-vm_normal_page_.patch
+mm-introduce-and-use-vm_normal_page_pud.patch
+mm-rename-vm_ops-find_special_page-to-vm_ops-find_normal_page.patch
+prctl-extend-pr_set_thp_disable-to-optionally-exclude-vm_hugepage.patch
+mm-huge_memory-convert-tva_flags-to-enum-tva_type.patch
+mm-huge_memory-respect-madv_collapse-with-pr_thp_disable_except_advised.patch
 
 
