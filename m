@@ -1,160 +1,133 @@
-Return-Path: <stable+bounces-171783-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-171784-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 70424B2C345
-	for <lists+stable@lfdr.de>; Tue, 19 Aug 2025 14:22:04 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 03047B2C37D
+	for <lists+stable@lfdr.de>; Tue, 19 Aug 2025 14:28:42 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id C1CD27B5DAD
-	for <lists+stable@lfdr.de>; Tue, 19 Aug 2025 12:20:29 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id A1B546218B7
+	for <lists+stable@lfdr.de>; Tue, 19 Aug 2025 12:23:06 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8FB7433CEBF;
-	Tue, 19 Aug 2025 12:17:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id BC323305077;
+	Tue, 19 Aug 2025 12:17:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=suse.cz header.i=@suse.cz header.b="0GcP3hN0";
-	dkim=permerror (0-bit key) header.d=suse.cz header.i=@suse.cz header.b="CARIwZRt";
-	dkim=pass (1024-bit key) header.d=suse.cz header.i=@suse.cz header.b="0GcP3hN0";
-	dkim=permerror (0-bit key) header.d=suse.cz header.i=@suse.cz header.b="CARIwZRt"
+	dkim=pass (2048-bit key) header.d=mandrillapp.com header.i=@mandrillapp.com header.b="JRz/UpYi";
+	dkim=pass (2048-bit key) header.d=vates.tech header.i=yann.sionneau@vates.tech header.b="VXQrdDJw"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp-out2.suse.de (smtp-out2.suse.de [195.135.223.131])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mail180-9.suw31.mandrillapp.com (mail180-9.suw31.mandrillapp.com [198.2.180.9])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B5DD133CEBD
-	for <stable@vger.kernel.org>; Tue, 19 Aug 2025 12:17:22 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=195.135.223.131
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 87EB330507D
+	for <stable@vger.kernel.org>; Tue, 19 Aug 2025 12:17:41 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.2.180.9
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755605844; cv=none; b=bwTWsEJg5QZeMXypVu7y7RMl9hwu8gX7TzjopUhJpkSaoo9uWLTPrwKQv5R/vRpv8R9OfXXLXf1ktlDmrJtePVmyHP6oK9N3tKEveYDcA/+Kt/p51PA5fmJXSwNkfEtq+r/yEEWSw3IB8wOnm4cFe+zXEyJOYivlWkgpqiNKoa8=
+	t=1755605863; cv=none; b=cbP3mLFKPTdU09wZKoBTVAW5zxerIj5CJ4rlCShA0ivwOFjPtY02TzplcL9sADtapBUU8sH5WL/J6V/H3mWqmKzaqMJI2QDQOGD9V/dAE4bVWbDD9rB/wqypPtcdf/D+p14QayNqYy7NTTA0TzqEuePyJ3kRrzfoSw0Jb5zsm0k=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1755605844; c=relaxed/simple;
-	bh=aLkH05P3vAW1vdgoW32EvwBJGtyRYtVfM+OV8jRD/is=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=i6UuOeUqdndssYkJT/lK4powofHj1bA/MmyLPMrHw/ixpSpIFWFp4Y60LXWok3OJFT+Xuvn5C9iDNphxy8T0fwthtUM77A1YG867fVmeWaAw8nIMQwqgCmVuyP68ITeBw248YuzBVYRp4Rn2HJqY5yQ8I8yDIh0q3CF7Bz1IOmk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=suse.cz; spf=pass smtp.mailfrom=suse.cz; dkim=pass (1024-bit key) header.d=suse.cz header.i=@suse.cz header.b=0GcP3hN0; dkim=permerror (0-bit key) header.d=suse.cz header.i=@suse.cz header.b=CARIwZRt; dkim=pass (1024-bit key) header.d=suse.cz header.i=@suse.cz header.b=0GcP3hN0; dkim=permerror (0-bit key) header.d=suse.cz header.i=@suse.cz header.b=CARIwZRt; arc=none smtp.client-ip=195.135.223.131
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=suse.cz
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=suse.cz
-Received: from imap1.dmz-prg2.suse.org (imap1.dmz-prg2.suse.org [IPv6:2a07:de40:b281:104:10:150:64:97])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by smtp-out2.suse.de (Postfix) with ESMTPS id 3DF741F786;
-	Tue, 19 Aug 2025 12:17:20 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.cz; s=susede2_rsa;
-	t=1755605840;
-	h=from:from:reply-to:reply-to:date:date:message-id:message-id:to:to:
-	 cc:cc:mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=lJcJK5eJNAr608bIa1BI6Q8++rFnIc/EAHj+iHv+YxA=;
-	b=0GcP3hN0kgyivlhiYNfGn3NeH9dT0kzdjEzDO4Q559OVpZsXw8I9D/XZClHitz1JZ/98Qg
-	2lROdwRTzuCzw7HTDyOHQisleGS9SdUQUWmC43fr9KxurP+p7Ib8mD0Q3drcgRTtHhbM4q
-	HjNQgioxFtf1jAWgEbFdrNBXeeXI67o=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.cz;
-	s=susede2_ed25519; t=1755605840;
-	h=from:from:reply-to:reply-to:date:date:message-id:message-id:to:to:
-	 cc:cc:mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=lJcJK5eJNAr608bIa1BI6Q8++rFnIc/EAHj+iHv+YxA=;
-	b=CARIwZRtus4A9cC19aSiJGLMcbiBWNJIDstAiWUPhydNfhzj+RM+6v1ggYLOh4uSKFHzWs
-	hg/ZTToZ5+cl/PAA==
-Authentication-Results: smtp-out2.suse.de;
-	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=0GcP3hN0;
-	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=CARIwZRt
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.cz; s=susede2_rsa;
-	t=1755605840;
-	h=from:from:reply-to:reply-to:date:date:message-id:message-id:to:to:
-	 cc:cc:mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=lJcJK5eJNAr608bIa1BI6Q8++rFnIc/EAHj+iHv+YxA=;
-	b=0GcP3hN0kgyivlhiYNfGn3NeH9dT0kzdjEzDO4Q559OVpZsXw8I9D/XZClHitz1JZ/98Qg
-	2lROdwRTzuCzw7HTDyOHQisleGS9SdUQUWmC43fr9KxurP+p7Ib8mD0Q3drcgRTtHhbM4q
-	HjNQgioxFtf1jAWgEbFdrNBXeeXI67o=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.cz;
-	s=susede2_ed25519; t=1755605840;
-	h=from:from:reply-to:reply-to:date:date:message-id:message-id:to:to:
-	 cc:cc:mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=lJcJK5eJNAr608bIa1BI6Q8++rFnIc/EAHj+iHv+YxA=;
-	b=CARIwZRtus4A9cC19aSiJGLMcbiBWNJIDstAiWUPhydNfhzj+RM+6v1ggYLOh4uSKFHzWs
-	hg/ZTToZ5+cl/PAA==
-Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id 2563D139B3;
-	Tue, 19 Aug 2025 12:17:20 +0000 (UTC)
-Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
-	by imap1.dmz-prg2.suse.org with ESMTPSA
-	id JHnwCFBrpGgLeQAAD6G6ig
-	(envelope-from <dsterba@suse.cz>); Tue, 19 Aug 2025 12:17:20 +0000
-Date: Tue, 19 Aug 2025 14:17:14 +0200
-From: David Sterba <dsterba@suse.cz>
-To: Sasha Levin <sashal@kernel.org>
-Cc: stable@vger.kernel.org, Filipe Manana <fdmanana@suse.com>,
-	David Sterba <dsterba@suse.com>
-Subject: Re: [PATCH 6.12.y 7/7] btrfs: send: make fs_path_len() inline and
- constify its argument
-Message-ID: <20250819121714.GQ22430@suse.cz>
-Reply-To: dsterba@suse.cz
-References: <2025081827-washed-yelp-3c3e@gregkh>
- <20250819021601.274993-1-sashal@kernel.org>
- <20250819021601.274993-7-sashal@kernel.org>
+	s=arc-20240116; t=1755605863; c=relaxed/simple;
+	bh=X48QDKrjatUwUOBAyLY2EBMfcIzaLXjwx+ncEV8kUxE=;
+	h=From:Subject:Message-Id:To:Cc:References:In-Reply-To:Date:
+	 MIME-Version:Content-Type; b=ZSLd4Eer77/C/tlHSveGZ4rc0+udoWfs7Rm+jDHLwfXhrko7ZazDDJoJxz737Tlad8Ikp9bQkW+bZEPoIfreV87zuQBTaFiAaYoZbb0zcOjq1vqTSussREBg/AUf8NbRmlta+jAHLx9wJZnz/mW6Yy3P5PeKqnmVjManHyV9mjQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=vates.tech; spf=pass smtp.mailfrom=bounce.vates.tech; dkim=pass (2048-bit key) header.d=mandrillapp.com header.i=@mandrillapp.com header.b=JRz/UpYi; dkim=pass (2048-bit key) header.d=vates.tech header.i=yann.sionneau@vates.tech header.b=VXQrdDJw; arc=none smtp.client-ip=198.2.180.9
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=vates.tech
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=bounce.vates.tech
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=mandrillapp.com;
+	s=mte1; t=1755605860; x=1755875860;
+	bh=nNVqSU/naRM8SPZEVeMuqYweB2g7v1bY6O00tCv+qAs=;
+	h=From:Subject:Message-Id:To:Cc:References:In-Reply-To:Feedback-ID:
+	 Date:MIME-Version:Content-Type:Content-Transfer-Encoding:CC:Date:
+	 Subject:From;
+	b=JRz/UpYizr7o+cAc+in6zZsrSIpEFly/kIx8BubUPUXkIF2y/FulBnKFm8tpd88Im
+	 /j5cwhtHrsp3wzHEG7cdjdi2ZF/bQi53Pl8BNOQ/Q1W1mBznzBVfQLf39a5rLkWVOz
+	 QxviMUxVCgFdqz4XCwZdYMUrnyqvEfHk87hb6DqFaauYGGBMGXiXOF3YKNCRY0Odt+
+	 VpmDo9TzeWcrRwiwP+6zdqFp3MJz92S+CjrQdxi47Qc6ItLa7cDxF+77b0+qlzidtV
+	 nmgdCyFFiuSm8dqz1Yya76qLkw36tcQNP47vDwSV1yddAs79cVmirZo1TWT+ezndZk
+	 nSXqpcYg1Xqzg==
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=vates.tech; s=mte1;
+	t=1755605860; x=1755866360; i=yann.sionneau@vates.tech;
+	bh=nNVqSU/naRM8SPZEVeMuqYweB2g7v1bY6O00tCv+qAs=;
+	h=From:Subject:Message-Id:To:Cc:References:In-Reply-To:Feedback-ID:
+	 Date:MIME-Version:Content-Type:Content-Transfer-Encoding:CC:Date:
+	 Subject:From;
+	b=VXQrdDJwtxQuzBnXThBh6xwzMtnkZOb6GICbG5xoc+pIIz+Qj/plNKpFOCYvkeZVw
+	 zYAaLNLuHhSJdlVsCYa+Zi8a67rt+CZ9hcLbxXU52MyTmYbrBlJr10hwAfZFMYm7Nl
+	 X4jNg5CnHYDrSnjKvHDFGYyWWbWPGQi0CkEXqMPVq9/ClDwuU8Rm0yFtN6K6Rz2rc6
+	 zZB+jPMxqxrEYWUcpC3BoKeV8pXbff1yEldd2x2mqcp0upUQI56m7P0k2DRshijvJs
+	 wOTovQ1Cw01CgvoIJ1FSPvUYZiVcQ+9ZJQ/lKCN/voOaQ79WyrRj1LXGcq0XKzToQ6
+	 ip4Kb///9mtyw==
+Received: from pmta11.mandrill.prod.suw01.rsglab.com (localhost [127.0.0.1])
+	by mail180-9.suw31.mandrillapp.com (Mailchimp) with ESMTP id 4c5pW84x17zK5vqKY
+	for <stable@vger.kernel.org>; Tue, 19 Aug 2025 12:17:40 +0000 (GMT)
+From: "Yann Sionneau" <yann.sionneau@vates.tech>
+Subject: =?utf-8?Q?Re:=20[PATCH]=20ACPI:=20processor:=20idle:=20Check=20acpi=5Fbus=5Fget=5Fdevice=20return=20value?=
+Received: from [37.26.189.201] by mandrillapp.com id aecc7414d1bb4e1fb5ef211ffd9872f6; Tue, 19 Aug 2025 12:17:40 +0000
+X-Bm-Disclaimer: Yes
+X-Bm-Milter-Handled: 4ffbd6c1-ee69-4e1b-aabd-f977039bd3e2
+X-Bm-Transport-Timestamp: 1755605858517
+Message-Id: <6f616f3a-a826-489f-860c-9f25fc42736f@vates.tech>
+To: "Greg KH" <gregkh@linuxfoundation.org>
+Cc: stable@vger.kernel.org, "Li Zhong" <floridsleeves@gmail.com>, "Rafael J . Wysocki" <rafael.j.wysocki@intel.com>, "Teddy Astie" <teddy.astie@vates.tech>, "Dillon C" <dchan@dchan.tech>
+References: <20250819115301.83377-1-yann.sionneau@vates.tech> <032a8ac9-0554-49b6-a8e4-fdeb467f8327@vates.tech> <2025081900-compost-bounce-f915@gregkh>
+In-Reply-To: <2025081900-compost-bounce-f915@gregkh>
+X-Native-Encoded: 1
+X-Report-Abuse: =?UTF-8?Q?Please=20forward=20a=20copy=20of=20this=20message,=20including=20all=20headers,=20to=20abuse@mandrill.com.=20You=20can=20also=20report=20abuse=20here:=20https://mandrillapp.com/contact/abuse=3Fid=3D30504962.aecc7414d1bb4e1fb5ef211ffd9872f6?=
+X-Mandrill-User: md_30504962
+Feedback-ID: 30504962:30504962.20250819:md
+Date: Tue, 19 Aug 2025 12:17:40 +0000
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20250819021601.274993-7-sashal@kernel.org>
-User-Agent: Mutt/1.5.23.1-rc1 (2014-03-12)
-X-Spamd-Result: default: False [-4.21 / 50.00];
-	BAYES_HAM(-3.00)[100.00%];
-	NEURAL_HAM_LONG(-1.00)[-1.000];
-	HAS_REPLYTO(0.30)[dsterba@suse.cz];
-	R_DKIM_ALLOW(-0.20)[suse.cz:s=susede2_rsa,suse.cz:s=susede2_ed25519];
-	NEURAL_HAM_SHORT(-0.20)[-1.000];
-	MIME_GOOD(-0.10)[text/plain];
-	MX_GOOD(-0.01)[];
-	TO_MATCH_ENVRCPT_ALL(0.00)[];
-	FROM_HAS_DN(0.00)[];
-	DKIM_SIGNED(0.00)[suse.cz:s=susede2_rsa,suse.cz:s=susede2_ed25519];
-	ARC_NA(0.00)[];
-	FUZZY_RATELIMITED(0.00)[rspamd.com];
-	TO_DN_SOME(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	RCVD_TLS_ALL(0.00)[];
-	DKIM_TRACE(0.00)[suse.cz:+];
-	RCPT_COUNT_THREE(0.00)[4];
-	RCVD_COUNT_TWO(0.00)[2];
-	REPLYTO_ADDR_EQ_FROM(0.00)[];
-	FROM_EQ_ENVFROM(0.00)[];
-	REPLYTO_DOM_NEQ_TO_DOM(0.00)[];
-	DNSWL_BLOCKED(0.00)[2a07:de40:b281:104:10:150:64:97:from,2a07:de40:b281:106:10:150:64:167:received];
-	RECEIVED_SPAMHAUS_BLOCKED_OPENRESOLVER(0.00)[2a07:de40:b281:106:10:150:64:167:received];
-	MID_RHS_MATCH_FROM(0.00)[];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[imap1.dmz-prg2.suse.org:helo,imap1.dmz-prg2.suse.org:rdns,suse.cz:mid,suse.cz:dkim,suse.cz:replyto,suse.com:email]
-X-Spam-Flag: NO
-X-Spam-Level: 
-X-Rspamd-Queue-Id: 3DF741F786
-X-Rspamd-Server: rspamd2.dmz-prg2.suse.org
-X-Rspamd-Action: no action
-X-Spam-Score: -4.21
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: 7bit
 
-On Mon, Aug 18, 2025 at 10:16:01PM -0400, Sasha Levin wrote:
-> From: Filipe Manana <fdmanana@suse.com>
+On 8/19/25 14:12, Greg KH wrote:
+> On Tue, Aug 19, 2025 at 12:03:05PM +0000, Yann Sionneau wrote:
+>> On 8/19/25 14:00, Yann Sionneau wrote:
+>>> From: Teddy Astie <teddy.astie@vates.tech>
+>>>
+>>> Fix a potential NULL pointer dereferences if acpi_bus_get_device happens to fail.
+>>> This is backported from commit 2437513a814b3 ("ACPI: processor: idle: Check acpi_fetch_acpi_dev() return value")
+>>> This has been tested successfully by the reporter,
+>>> see https://xcp-ng.org/forum/topic/10972/xcp-ng-8.3-lts-install-on-minisforum-ms-a2-7945hx
+>>>
+>>> Signed-off-by: Li Zhong <floridsleeves@gmail.com>
+>>> Signed-off-by: Teddy Astie <teddy.astie@vates.tech>
+>>> Signed-off-by: Yann Sionneau <yann.sionneau@vates.tech>
+>>> Reported-by: Dillon C <dchan@dchan.tech>
+>>> Tested-by: Dillon C <dchan@dchan.tech>
+>>> ---
+>>
+>> Hello Greg, all,
+>>
+>> This should be picked for v5.4, v5.10 and v5.15 branches as it's already
+>> been backported in v6.0 and v6.1.
+>>
+>> I already reached out about this a few weeks ago, I just waited for the
+>> patch the be tested before sending it.
 > 
-> [ Upstream commit 920e8ee2bfcaf886fd8c0ad9df097a7dddfeb2d8 ]
-> 
-> The helper function fs_path_len() is trivial and doesn't need to change
-> its path argument, so make it inline and constify the argument.
-> 
-> Signed-off-by: Filipe Manana <fdmanana@suse.com>
-> Reviewed-by: David Sterba <dsterba@suse.com>
-> Signed-off-by: David Sterba <dsterba@suse.com>
-> Signed-off-by: Sasha Levin <sashal@kernel.org>
+> What is the upstream git commit id?
 
-This is neither a fix nor a dependency of other patches, please drop it.
+Hi Greg,
+
+commit 2437513a814b ("ACPI: processor: idle: Check acpi_fetch_acpi_dev() 
+return value"): 
+https://github.com/torvalds/linux/commit/2437513a814b3e93bd02879740a8a06e52e2cf7d
+
+Sorry I should have put "[ Upstream commit XXXX ]" I guess... Will do 
+next time. Do I re-send?
+
+-- 
+
+
+Yann Sionneau | Vates XCP-ng Developer
+
+XCP-ng & Xen Orchestra - Vates solutions
+
+web: https://vates.tech
+
+
 
