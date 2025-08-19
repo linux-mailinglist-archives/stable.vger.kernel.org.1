@@ -1,243 +1,224 @@
-Return-Path: <stable+bounces-171752-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-171753-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 56CC9B2BA2F
-	for <lists+stable@lfdr.de>; Tue, 19 Aug 2025 09:08:10 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id D2BE5B2BB63
+	for <lists+stable@lfdr.de>; Tue, 19 Aug 2025 10:07:54 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 72E1B568245
-	for <lists+stable@lfdr.de>; Tue, 19 Aug 2025 07:07:50 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 538D61B634BD
+	for <lists+stable@lfdr.de>; Tue, 19 Aug 2025 08:08:14 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A42C62848B1;
-	Tue, 19 Aug 2025 07:07:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A95952773EF;
+	Tue, 19 Aug 2025 08:07:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=ideasonboard.com header.i=@ideasonboard.com header.b="Wq0ROaY/"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="nJj9C3ap"
 X-Original-To: stable@vger.kernel.org
-Received: from perceval.ideasonboard.com (perceval.ideasonboard.com [213.167.242.64])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-wm1-f49.google.com (mail-wm1-f49.google.com [209.85.128.49])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9E950284893;
-	Tue, 19 Aug 2025 07:07:23 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=213.167.242.64
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AF8A023E34C;
+	Tue, 19 Aug 2025 08:07:46 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.49
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755587245; cv=none; b=YcTckxGdK+jzHsgrtcQS46ljVlkBgwRuxYjowegGt1kCAUinNByfi5fNJBc+p8FQUOHt50dP01jbTRCV1HLU6M/yXxQrLfKj2auAD/ZhyV/p2FOfiSTQZT7ZCiJRnDVUz16WOpffFaw+bzkbD8dXwTnFvcG96Nb2Ml5WUIuzVTA=
+	t=1755590868; cv=none; b=JNKjBHZmy8NyxhNTZ07YV58QRHqhQ8i9x9vGYXaOwBZXdHB/ssdP/cPEIW4Aud72rzQ0+aWT1PJZ7lzgJqh1A06XQtZdGQ9f3/lmwYB4C3mzpqDo+OtNg9f85LWDRG40U0f9gLMbB4fk0o/Q5JtY8QNZAkrqnIKxAj+Jy4N0aUs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1755587245; c=relaxed/simple;
-	bh=rpTRn15G48rt3ExGDh09DluD8zO91EzisMrX6aCkyl8=;
-	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
-	 In-Reply-To:To:Cc; b=JI9FR4pALUHYjDjJdoFM9d3yazSOcKr53FeYsU/dbBiyPpA3R7YAFCb05pE2SFYDKZTsE4lUWG7thwG7lOCMRPz2xGmn8vpYXKit1zsUsTKILr+IlW2zFXKKX63s9CDsspmp4pjOO4BaJwAvKRzk3dttpnKE1SUAWCi2Sj9kAWk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=ideasonboard.com; spf=pass smtp.mailfrom=ideasonboard.com; dkim=pass (1024-bit key) header.d=ideasonboard.com header.i=@ideasonboard.com header.b=Wq0ROaY/; arc=none smtp.client-ip=213.167.242.64
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=ideasonboard.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ideasonboard.com
-Received: from [192.168.1.106] (mob-5-90-52-92.net.vodafone.it [5.90.52.92])
-	by perceval.ideasonboard.com (Postfix) with ESMTPSA id 175DB22D2;
-	Tue, 19 Aug 2025 09:06:22 +0200 (CEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=ideasonboard.com;
-	s=mail; t=1755587182;
-	bh=rpTRn15G48rt3ExGDh09DluD8zO91EzisMrX6aCkyl8=;
-	h=From:Date:Subject:References:In-Reply-To:To:Cc:From;
-	b=Wq0ROaY/AQLLbrlgeRbvVqXEIiMmzuuZ8Qqxb3H6ikbVDJDv3D7Px7Ju6bLsvbLvF
-	 eMpT1N3FrmMjUPJpo8Q9ZpYpA7L9uTEgvshBx4TtoCvzZ/kV+dNjsjX2XFTNm2wp/Z
-	 uXK7KcPfd9cWGNd58PVdeRmgSbEhqdA+l2F/zFto=
-From: Jacopo Mondi <jacopo.mondi@ideasonboard.com>
-Date: Tue, 19 Aug 2025 09:07:04 +0200
-Subject: [PATCH v4 2/2] media: ivtv: Fix invalid access to file *
+	s=arc-20240116; t=1755590868; c=relaxed/simple;
+	bh=sGUUw6LOvKfNRGIW7A9NNKDDH4bQsEEaWsH9vwxGp2w=;
+	h=Message-ID:Date:MIME-Version:From:Subject:To:Cc:References:
+	 In-Reply-To:Content-Type; b=oLnMnWrDMwNhBxziO4ve1Jt5IO4DkB0Wyhp8b0iUmWbYY3fH0AtjyPyINcHyC/kRoxO5nMHSID5aDStKWQZvTQQq2wr65Qg0bOb25V0Lh0ws5/T021Jwd6GXj/S3sof/batNb1KEb5VpSKr5xO3RGqAgXzr3/YWm9ukqQ6nXbJ0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=nJj9C3ap; arc=none smtp.client-ip=209.85.128.49
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-wm1-f49.google.com with SMTP id 5b1f17b1804b1-45a1b0becf5so26937655e9.2;
+        Tue, 19 Aug 2025 01:07:46 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1755590865; x=1756195665; darn=vger.kernel.org;
+        h=content-transfer-encoding:in-reply-to:content-language:references
+         :cc:to:subject:from:user-agent:mime-version:date:message-id:from:to
+         :cc:subject:date:message-id:reply-to;
+        bh=A0A+ysSRX0BDGHubAfWN6+x/GTCkfulb6z+OLk3j05E=;
+        b=nJj9C3apjINDgQdSNbuDUGPtWhPDNtOn/A80jYa/ruY/QdA0dPdVuf+WBZB9rjHSaz
+         KzetIhur7n52IIT3mCWfSeVtsSKScRksjLwNFURQcPbsR6lUqJJpANs1gt+QItF8t7df
+         O1IBTICEQ6z4eLfsWMi3pa0BfMRDzpUL3Jq4G2axqVGZaJ+utEDB8/h/fUMZfhMOiDpf
+         UOpq+K2WLaPzrvGEYo3NtYGuDJDpqEAr8hYzSVR7q9VXWdXp664KdUjI7ZwKm0E0fdFC
+         dYTxXf1KLazLRPwNaTbC3xFtkB3xE0SPoTZr3Ugjr/epOGLbh6VfZodyhmMeHXexXUeK
+         gtEQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1755590865; x=1756195665;
+        h=content-transfer-encoding:in-reply-to:content-language:references
+         :cc:to:subject:from:user-agent:mime-version:date:message-id
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=A0A+ysSRX0BDGHubAfWN6+x/GTCkfulb6z+OLk3j05E=;
+        b=gk7K/BtmJfXv0i50NMf3QhqYyrbBAf4pvACMALKZ8svAKuzmO3fhfIUpgdZTNtzCd5
+         YWIkne7OWZI8y4u8zmn8MvEi8kEWtfFexfY9IivpWD6cQnLiFsHVV7ljghbhw8oIdqN5
+         YxTehSvQYsgiaZxGzEBRa/9XeGxwUaul29H5Qu/WKREKA0WrJpzP25qxfq32l/cYlcTS
+         c+GcEztlF+fvzIjrjgwtmWBWXEgmsGM8Tb3viv38SXRwOxx7nYMj8nsRgYxV8dCgrQSy
+         NGs99EuAw8yw8x9T1wpZia4XcdhZZNVa6J53gi/qQigECeS5oceSgogNdpWJPIXxBjp5
+         791A==
+X-Forwarded-Encrypted: i=1; AJvYcCVqRj/g+IlWc1IkOotv2dKzyVrwCEnE5BJDiWBi9lxw7J2g/WJt4LM7XCALBT8V+YCUtHcC7gQlfnYe/NAb@vger.kernel.org, AJvYcCWFxjcGFBKd8PawdsU5TCpuzYUjGbRmJUwRHQklgiJOXWBJNNkipbXzjgyTr69nXxxOBMbJh8LH@vger.kernel.org, AJvYcCWa8feEmYY3XBfwNejH3RrYBd+VzZtrm/ApXNBPcoKGICYym1Xd45Yx7Ces5CguVxV+sE5nQjwqJAU=@vger.kernel.org
+X-Gm-Message-State: AOJu0YzImOfcyF6kPoe2HnLo7Q8dUrQ+Z2S7cTH41XIPVJMEq4qkurjD
+	BN+HYwNFpDcetPPy5HemuL9A3Dtc44PpLrcUh+/S9TY4wZYtwmXmehq1
+X-Gm-Gg: ASbGnctFH4Nyv2jWAmTpPuUMMehf1J3TUC9ZYRLQXcnjvN4F4zTwAEqCq71LsWZDQ7m
+	3F+tQu6o6o1/CK1GJ79dHXdRH0pqNCn/QJa5uq7lGkpXLWWbBY9W2uzCNIL4XTqWB/fXd5Ym5q1
+	8nZT9pb/pqD9I9dM+Et2a2e/DpvwRfvbMD5uKjp69NJoTogvKSSV2FKAkiJiHIUdNyed33mG/Yx
+	tpSZ9xth1DJCgELLP5hYnQ6N3mxFezSG14GBICJnojkrLQkCWWALa/SnD+QrVnO0t1jkZpLScvK
+	azYl+akEL6+bPO+sgSCTFHGGHPoBc5iR1RvXrvL0MhRxxoXMAru5B+bEz1vKKqUdodjr9lewfwP
+	0G9cl3DgxaD9z2W2VtVfGiBJXKOyMrlskz19BScG2lGIfTdCJdQomXpBT4OPSCDMmayU5bg5P3/
+	G3NvtoSKDv
+X-Google-Smtp-Source: AGHT+IF0qT3S6QaRDTOtnywHkyQYjn24FhQXcdmgCV+CyKQOdIZxlhlDgAdk84rMMEvWXj0xBF+10Q==
+X-Received: by 2002:a05:600c:4587:b0:459:d645:bff7 with SMTP id 5b1f17b1804b1-45b43dc654cmr13172695e9.12.1755590864562;
+        Tue, 19 Aug 2025 01:07:44 -0700 (PDT)
+Received: from [192.168.20.170] (5D59A51C.catv.pool.telekom.hu. [93.89.165.28])
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-45b42a771ecsm30719785e9.9.2025.08.19.01.07.42
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Tue, 19 Aug 2025 01:07:43 -0700 (PDT)
+Message-ID: <0e0a0da5-8953-4238-af89-687fb5a34c9f@gmail.com>
+Date: Tue, 19 Aug 2025 10:07:41 +0200
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-Message-Id: <20250819-cx18-v4l2-fh-v4-2-9db1635d6787@ideasonboard.com>
-References: <20250819-cx18-v4l2-fh-v4-0-9db1635d6787@ideasonboard.com>
-In-Reply-To: <20250819-cx18-v4l2-fh-v4-0-9db1635d6787@ideasonboard.com>
-To: Andy Walls <awalls@md.metrocast.net>, 
- Mauro Carvalho Chehab <mchehab@kernel.org>, 
- Hans Verkuil <hverkuil+cisco@kernel.org>, 
- Laurent Pinchart <laurent.pinchart+renesas@ideasonboard.com>
-Cc: Dan Carpenter <dan.carpenter@linaro.org>, stable@vger.kernel.org, 
- linux-media@vger.kernel.org, linux-kernel@vger.kernel.org, 
- Jacopo Mondi <jacopo.mondi@ideasonboard.com>
-X-Mailer: b4 0.14.2
-X-Developer-Signature: v=1; a=openpgp-sha256; l=6197;
- i=jacopo.mondi@ideasonboard.com; h=from:subject:message-id;
- bh=rpTRn15G48rt3ExGDh09DluD8zO91EzisMrX6aCkyl8=;
- b=owEBbQKS/ZANAwAKAXI0Bo8WoVY8AcsmYgBopCKldmcft+/f1BpL22ywRh+erBRKgieZryU8e
- 8Ii31SwKm+JAjMEAAEKAB0WIQS1xD1IgJogio9YOMByNAaPFqFWPAUCaKQipQAKCRByNAaPFqFW
- PKhRD/9PMuD7V+auXbMYdvcCbCQRtcaQSdOn4ZLuJhUduylkPHyuN7sM31UpBwlG8mdRNPNE6f0
- 2a1DM5N4/8FumKG1g1+Z+EimFEfZs36j0iJxnmwqRBvIwMwcXS9LWIp9OJatW275BG8FupJ6puE
- stX5uqUY0w/MbNPRh8oXYea1eBeLszVIIFJ2x+TtsWsWhGDquRuCvql6GJbdc9VPz4HWkwuK3q4
- Wg3uTjOBEtNMnyLxkoZGIHjsZLMSaxJWZCc9WXKfaneM5622LXH0E7MWVTbM0jXSvFKOHDh+Pxi
- XrBQQacrRtpZRY/lS9NaITAmbq4SNi/p+WBQ3fHVkERov1DQYKKt5uN8EhXgK1VCStyVNSZxkij
- cAvuUO4DVi4bPZnJSUZm0DuN8dW5aeUZ5TLf6OqA5MXozt+EjV/5U2waWNK6PeCIrxdXCMDcHSc
- sWoI106KzcGZyxGEAEkUDyfS65Q//O1HRQPtS8KehChVy4YURRnDooXrGbpKmsygDpb91dIlArD
- a2lDnJmZHfi/2qQIOccw13/Y0iGesu/Ui65P6To/iu0/SXmfCrm7RLUBrmc57ghBjL5P2VP4hLG
- TfK4OVw79okVmj0sbSlAonyBOLJiykaOBOfb9Nn4qXp7Jv52hldmjFao91Y2dUaO3CmY8nEzKoO
- JMKrDWcQgtvtS/A==
-X-Developer-Key: i=jacopo.mondi@ideasonboard.com; a=openpgp;
- fpr=72392EDC88144A65C701EA9BA5826A2587AD026B
+User-Agent: Mozilla Thunderbird
+From: Gabor Juhos <j4g8y7@gmail.com>
+Subject: Re: [PATCH v2 2/3] i2c: pxa: prevent calling of the generic recovery
+ init code
+To: "Russell King (Oracle)" <linux@armlinux.org.uk>
+Cc: Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
+ Wolfram Sang <wsa@kernel.org>,
+ Wolfram Sang <wsa+renesas@sang-engineering.com>,
+ Andi Shyti <andi.shyti@kernel.org>, Andrew Lunn <andrew@lunn.ch>,
+ Hanna Hawa <hhhawa@amazon.com>, Robert Marko <robert.marko@sartura.hr>,
+ Linus Walleij <linus.walleij@linaro.org>, linux-i2c@vger.kernel.org,
+ linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
+ Imre Kaloz <kaloz@openwrt.org>, stable@vger.kernel.org
+References: <20250811-i2c-pxa-fix-i2c-communication-v2-0-ca42ea818dc9@gmail.com>
+ <20250811-i2c-pxa-fix-i2c-communication-v2-2-ca42ea818dc9@gmail.com>
+ <aJpR96Kkj12BwW-M@smile.fi.intel.com>
+ <8cb62eb9-9137-44b4-86f6-82f69813e83f@gmail.com>
+ <aJyOu_GUlDPuJXO5@smile.fi.intel.com>
+ <0bfcb570-dab3-4038-a1aa-8bc7fe2feee8@gmail.com>
+ <aJyvHnLS-A3F2gN7@shell.armlinux.org.uk>
+ <1261d3ed-e057-45b1-913e-f8bf1cd5d7bc@gmail.com>
+ <aKH6_1MRqD24QTq5@shell.armlinux.org.uk>
+Content-Language: hu
+In-Reply-To: <aKH6_1MRqD24QTq5@shell.armlinux.org.uk>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
 
-Since commit 9ba9d11544f9 ("media: ivtv: Access v4l2_fh from file")
-all ioctl handlers have been ported to operate on the file * first
-function argument.
+2025. 08. 17. 17:53 keltezéssel, Russell King (Oracle) írta:
+> On Sun, Aug 17, 2025 at 04:59:22PM +0200, Gabor Juhos wrote:
+>> 2025. 08. 13. 17:28 keltezéssel, Russell King (Oracle) írta:
+>>> On Wed, Aug 13, 2025 at 05:17:28PM +0200, Gabor Juhos wrote:
+>>>> 2025. 08. 13. 15:10 keltezéssel, Andy Shevchenko írta:
+>>>>> On Wed, Aug 13, 2025 at 12:36:45PM +0200, Gabor Juhos wrote:
+>>>>>> 2025. 08. 11. 22:26 keltezéssel, Andy Shevchenko írta:
+>>>>>>> On Mon, Aug 11, 2025 at 09:49:56PM +0200, Gabor Juhos wrote:
+>>>>>
+>>>>> ...
+>>>>>
+>>>>>>> TBH this sounds to me like trying to hack the solution and as you pointed out
+>>>>>>> the problem is in pinctrl state changes. I think it may affect not only I2C case.
+>>>>>>
+>>>>>> It is not an error in the pinctrl code. I have checked and even fixed a few bugs
+>>>>>> in that.
+>>>>>>
+>>>>>>> And I didn't get how recovery code affects the initialisation (enumeration).
+>>>>>>
+>>>>>> Without the fix, it is not possible to initiate a transaction on the bus, which
+>>>>>> in turn prevents enumeration.
+>>>>>
+>>>>> But why? As you said below the first pin control state is changed during the
+>>>>> probe, which is fine, and the culprit one happens on the recovery.
+>>>>
+>>>> Erm, no. Both happens during probe, before the I2C core tries to enumerate the
+>>>> devices on the bus.
+>>>>
+>>>>> Why is recovery involved in probe? This is quite confusing...
+>>>> Let me try to explain it differently. Here is the simplified call chain:
+>>>>
+>>>>   i2c_pxa_probe()
+>>>>      ...
+>>>>      i2c_pxa_init_recovery()
+>>>>         pinctrl_select_state()                  <- selects GPIO state
+>>>>         pinctrl_select_state()                  <- selects default (I2C) state
+>>>>      ...
+>>>>      i2c_add_numbered_adapter()
+>>>>          i2c_register_adapter()
+>>>>              ...
+>>>>              i2c_init_recovery()
+>>>>                  i2c_gpio_init_recovery()
+>>>>                      i2c_gpio_init_generic_recovery()
+>>>>                          pinctrl_select_state() <- selects GPIO state***
+>>>>                          ...
+>>>>                          pinctrl_select_state() <- selects default (I2C) state
+>>>>              ...
+>>>>              bus_for_each_drv()
+>>>>                  __process_new_adapter()
+>>>>                      i2c_do_add_adapter()
+>>>>                          i2c_detect()           <- enumerates the devices
+>>>>
+>>>> The culprit is the first pinctrl_select_state() call in
+>>>> i2c_gpio_init_generic_recovery() marked with '***'.
+>>>>
+>>>> That call causes the controller to go stuck, which makes it impossible to
+>>>> transfer anything on the bus.
+>>>
+>>> Probably because when GPIO state is selected, the I2C bus pins end up
+>>> being set low, which the I2C controller sees, so it thinks there's
+>>> another device communicating on the bus.
+>>
+>> Yes, it seems so.
+>>
+>> When GPIO state is selected, the bits in the Bus Monitor register which are
+>> continuously reflecting the value of the SCL and SDA pins contains zeros.
+>>
+>> Additionally, the Status register indicates an 'Early Bus Busy' condition, which
+>> means that 'The SCL or SDA line is low, without a Start condition'.
+>>
+>>
+>>> I could be wrong, as I don't have the hardware to hand to research
+>>> the issue again.
+>>>
+>>> I have a vague memory that the GPIO state must _always_ reflect the
+>>> actual pin state before switching to it to avoid glitches and avoid
+>>> inadvertently changing the I2C controller state.
+>>
+>> Unfortunately, it only helps to avoid glitches on the external lines. At least,
+>> in the current case the controller hungs no matter which value combination is
+>> being set on the GPIO pins before switching to GPIO state.
+> 
+> Note that my original i2c-pxa recovery implementation was proven
+> functional on the uDPU, both by myself and Telus.
+> 
 
-The ivtv DVB layer calls ivtv_init_on_first_open() when the driver
-needs to start streaming. This function calls the s_input() and
-s_frequency() ioctl handlers directly, but being called from the driver
-context, it doesn't have a valid file * to pass them. This causes the
-ioctl handlers to deference an invalid pointer.
+No doubt, and that is why we want to restore the original behaviour.
 
-Fix this by moving the implementation of those ioctls to two helper
-functions.
+I just wanted to indicate, that the approach used during recovery, does not help
+to avoid the current hung.
 
-The ivtv_do_s_input() helper accepts a struct ivtv * as first argument,
-which is easily accessible in ivtv_init_on_first_open() as well as from
-the file * argument of the ioctl handler.
+In other words, the i2c_gpio_init_generic_recovery() simply does this:
 
-The ivtv_s_frequency() takes an ivtv_stream * instead. The stream * can
-safely be accessed in ivtv_init_on_first_open() where it is hard-coded
-to the IVTV_ENC_STREAM_TYPE_MPG stream type, as well as from the ioctl
-handler as a valid stream type is associated to each open file handle
-depending on which video device node has been opened in the ivtv_open()
-file operation.
+        pinctrl_select_state(bri->pinctrl, bri->pins_gpio);
 
-The bug has been reported by Smatch.
+But even if we replace that with the following code (copied from
+i2c_pxa_prepare_recovery()) ...
 
-Reported-by: Dan Carpenter <dan.carpenter@linaro.org>
-Closes: https://lore.kernel.org/all/aKL4OMWsESUdX8KQ@stanley.mountain/
-Fixes: 9ba9d11544f9 ("media: ivtv: Access v4l2_fh from file")
-Cc: stable@vger.kernel.org
-Reviewed-by: Laurent Pinchart <laurent.pinchart+renesas@ideasonboard.com>
-Signed-off-by: Jacopo Mondi <jacopo.mondi@ideasonboard.com>
----
- drivers/media/pci/ivtv/ivtv-driver.c | 11 ++++-------
- drivers/media/pci/ivtv/ivtv-ioctl.c  | 22 +++++++++++++++++-----
- drivers/media/pci/ivtv/ivtv-ioctl.h  |  6 ++++--
- 3 files changed, 25 insertions(+), 14 deletions(-)
+        u32 ibmr = readl(_IBMR(i2c));
 
-diff --git a/drivers/media/pci/ivtv/ivtv-driver.c b/drivers/media/pci/ivtv/ivtv-driver.c
-index ecc20cd89926fe2ce4e472526a6b5fc0857615dd..7e2fb98cfccf02f701ceb4484dd1d330dd1dc867 100644
---- a/drivers/media/pci/ivtv/ivtv-driver.c
-+++ b/drivers/media/pci/ivtv/ivtv-driver.c
-@@ -1260,15 +1260,12 @@ static int ivtv_probe(struct pci_dev *pdev, const struct pci_device_id *pci_id)
- 
- int ivtv_init_on_first_open(struct ivtv *itv)
- {
--	struct v4l2_frequency vf;
- 	/* Needed to call ioctls later */
--	struct ivtv_open_id fh;
-+	struct ivtv_stream *s = &itv->streams[IVTV_ENC_STREAM_TYPE_MPG];
-+	struct v4l2_frequency vf;
- 	int fw_retry_count = 3;
- 	int video_input;
- 
--	fh.itv = itv;
--	fh.type = IVTV_ENC_STREAM_TYPE_MPG;
--
- 	if (test_bit(IVTV_F_I_FAILED, &itv->i_flags))
- 		return -ENXIO;
- 
-@@ -1310,13 +1307,13 @@ int ivtv_init_on_first_open(struct ivtv *itv)
- 
- 	video_input = itv->active_input;
- 	itv->active_input++;	/* Force update of input */
--	ivtv_s_input(NULL, &fh, video_input);
-+	ivtv_do_s_input(itv, video_input);
- 
- 	/* Let the VIDIOC_S_STD ioctl do all the work, keeps the code
- 	   in one place. */
- 	itv->std++;		/* Force full standard initialization */
- 	itv->std_out = itv->std;
--	ivtv_s_frequency(NULL, &fh, &vf);
-+	ivtv_do_s_frequency(s, &vf);
- 
- 	if (itv->card->v4l2_capabilities & V4L2_CAP_VIDEO_OUTPUT) {
- 		/* Turn on the TV-out: ivtv_init_mpeg_decoder() initializes
-diff --git a/drivers/media/pci/ivtv/ivtv-ioctl.c b/drivers/media/pci/ivtv/ivtv-ioctl.c
-index 8077a71d4850ec773caa20c3fca08f92f3117d69..dfbc842b22453868a2075935a81db7ae313ee46c 100644
---- a/drivers/media/pci/ivtv/ivtv-ioctl.c
-+++ b/drivers/media/pci/ivtv/ivtv-ioctl.c
-@@ -974,9 +974,8 @@ static int ivtv_g_input(struct file *file, void *fh, unsigned int *i)
- 	return 0;
- }
- 
--int ivtv_s_input(struct file *file, void *fh, unsigned int inp)
-+int ivtv_do_s_input(struct ivtv *itv, unsigned int inp)
- {
--	struct ivtv *itv = file2id(file)->itv;
- 	v4l2_std_id std;
- 	int i;
- 
-@@ -1017,6 +1016,11 @@ int ivtv_s_input(struct file *file, void *fh, unsigned int inp)
- 	return 0;
- }
- 
-+static int ivtv_s_input(struct file *file, void *fh, unsigned int inp)
-+{
-+	return ivtv_do_s_input(file2id(file)->itv, inp);
-+}
-+
- static int ivtv_g_output(struct file *file, void *fh, unsigned int *i)
- {
- 	struct ivtv *itv = file2id(file)->itv;
-@@ -1065,10 +1069,9 @@ static int ivtv_g_frequency(struct file *file, void *fh, struct v4l2_frequency *
- 	return 0;
- }
- 
--int ivtv_s_frequency(struct file *file, void *fh, const struct v4l2_frequency *vf)
-+int ivtv_do_s_frequency(struct ivtv_stream *s, const struct v4l2_frequency *vf)
- {
--	struct ivtv *itv = file2id(file)->itv;
--	struct ivtv_stream *s = &itv->streams[file2id(file)->type];
-+	struct ivtv *itv = s->itv;
- 
- 	if (s->vdev.vfl_dir)
- 		return -ENOTTY;
-@@ -1082,6 +1085,15 @@ int ivtv_s_frequency(struct file *file, void *fh, const struct v4l2_frequency *v
- 	return 0;
- }
- 
-+static int ivtv_s_frequency(struct file *file, void *fh,
-+			    const struct v4l2_frequency *vf)
-+{
-+	struct ivtv_open_id *id = file2id(file);
-+	struct ivtv *itv = id->itv;
-+
-+	return ivtv_do_s_frequency(&itv->streams[id->type], vf);
-+}
-+
- static int ivtv_g_std(struct file *file, void *fh, v4l2_std_id *std)
- {
- 	struct ivtv *itv = file2id(file)->itv;
-diff --git a/drivers/media/pci/ivtv/ivtv-ioctl.h b/drivers/media/pci/ivtv/ivtv-ioctl.h
-index 42c2516379fcbbd0640820ab0e3abe9bf00b57ea..edc05eb8e060fd64d7ff94f8f7f5c315a2fa6298 100644
---- a/drivers/media/pci/ivtv/ivtv-ioctl.h
-+++ b/drivers/media/pci/ivtv/ivtv-ioctl.h
-@@ -9,6 +9,8 @@
- #ifndef IVTV_IOCTL_H
- #define IVTV_IOCTL_H
- 
-+struct ivtv;
-+
- u16 ivtv_service2vbi(int type);
- void ivtv_expand_service_set(struct v4l2_sliced_vbi_format *fmt, int is_pal);
- u16 ivtv_get_service_set(struct v4l2_sliced_vbi_format *fmt);
-@@ -17,7 +19,7 @@ int ivtv_set_speed(struct ivtv *itv, int speed);
- void ivtv_set_funcs(struct video_device *vdev);
- void ivtv_s_std_enc(struct ivtv *itv, v4l2_std_id std);
- void ivtv_s_std_dec(struct ivtv *itv, v4l2_std_id std);
--int ivtv_s_frequency(struct file *file, void *fh, const struct v4l2_frequency *vf);
--int ivtv_s_input(struct file *file, void *fh, unsigned int inp);
-+int ivtv_do_s_frequency(struct ivtv_stream *s, const struct v4l2_frequency *vf);
-+int ivtv_do_s_input(struct ivtv *itv, unsigned int inp);
- 
- #endif
+        /*
+         * Program the GPIOs to reflect the current I2C bus state while
+         * we transition to recovery; this avoids glitching the bus.
+         */
+        gpiod_set_value(i2c->recovery.scl_gpiod, ibmr & IBMR_SCLS);
+        gpiod_set_value(i2c->recovery.sda_gpiod, ibmr & IBMR_SDAS);
 
--- 
-2.50.1
+        WARN_ON(pinctrl_select_state(i2c->pinctrl, i2c->pinctrl_recovery));
+
+... the controller still hangs once the pinctrl state is changed.
+
 
 
