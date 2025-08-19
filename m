@@ -1,115 +1,99 @@
-Return-Path: <stable+bounces-171817-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-171818-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0FAFCB2C87B
-	for <lists+stable@lfdr.de>; Tue, 19 Aug 2025 17:30:31 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id A3F91B2C876
+	for <lists+stable@lfdr.de>; Tue, 19 Aug 2025 17:29:18 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id EBDD2A01EA7
-	for <lists+stable@lfdr.de>; Tue, 19 Aug 2025 15:28:02 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 7462E1BC6B17
+	for <lists+stable@lfdr.de>; Tue, 19 Aug 2025 15:29:36 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 27A9C286433;
-	Tue, 19 Aug 2025 15:27:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 76053285412;
+	Tue, 19 Aug 2025 15:29:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="AwWYYb5b"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="KQvhuj86"
 X-Original-To: stable@vger.kernel.org
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.9])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 67598286426
-	for <stable@vger.kernel.org>; Tue, 19 Aug 2025 15:27:48 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.129.124
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 84D8828642D
+	for <stable@vger.kernel.org>; Tue, 19 Aug 2025 15:29:00 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.9
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755617269; cv=none; b=tdqyO3c2PqU0/j3gm081wQpSqbzTDLFgoTv1VGZKXWjvLcgegqoMjEWIcl5rWCItTQP0ToRthU66ooNhbqHp2LfUCCS9nBi0EzL+ufPyY4MJTkFHoHIjLdB+j5U83nDo6yJORG3uKyyc32+jkJJDgj0IEczndl8W7Zon9AuXxFM=
+	t=1755617342; cv=none; b=W/6HA/s4wSxrllUBGmSIFh6R0o3OKP9CVcy/ZuNuI54/ZL9C++XD1uQ5axIdKNkV7PpLzTmLqoquAApd2SCiuKFog1BpFnkRVpkeHksgLnCNBQ3M4+8iLVzoZlvgVOfPdoLv132Zqh6d976MeeHLZIgIs9cN9ajPUvMMGq+cKvM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1755617269; c=relaxed/simple;
-	bh=DCYZlwnE4o4mAMqqWM8IObFLQHnKgFfq0UR0RkjtI+k=;
-	h=From:To:cc:Subject:MIME-Version:Content-Type:Date:Message-ID; b=iCxtYHrKHyBy3o8IILl3urmVQDk3Np1to53StEIvg+EXW0pw+i5joM2kMTZL/rN9ttcuJxlGrUx83TtsPdD+JJ9CnpUW9Jc916nT6QEJzzsjG318K1Bk/96xGyQJej5j/DCI8k0mcdkNpcGmVQ5TlLxZeSWe6iBzOC1Vs03FKgA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=AwWYYb5b; arc=none smtp.client-ip=170.10.129.124
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1755617267;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding;
-	bh=u33GPzTf0Y6X5C/J4UkpcoeZDurx+dDSDRDqaezIuhw=;
-	b=AwWYYb5bIb+3OS1evb/y60eF5QD7ylS7/tg4X/UW6elwnnszJpAxyvSUU/denbF8UlZ9zM
-	e3slZ2obXT+M+3u8xxpzAEoez/BhYIABjt1l6AMS/j/VTliUyIjktpe2+AZl2tpEDCHIci
-	i/MeOK5dxICZP9x8PUG5jRdnjxEtD+0=
-Received: from mx-prod-mc-08.mail-002.prod.us-west-2.aws.redhat.com
- (ec2-35-165-154-97.us-west-2.compute.amazonaws.com [35.165.154.97]) by
- relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-259-mbmbiZVcM_uTK08YJzvqig-1; Tue,
- 19 Aug 2025 11:27:41 -0400
-X-MC-Unique: mbmbiZVcM_uTK08YJzvqig-1
-X-Mimecast-MFC-AGG-ID: mbmbiZVcM_uTK08YJzvqig_1755617260
-Received: from mx-prod-int-08.mail-002.prod.us-west-2.aws.redhat.com (mx-prod-int-08.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.111])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
-	(No client certificate requested)
-	by mx-prod-mc-08.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id ED5881800346;
-	Tue, 19 Aug 2025 15:27:39 +0000 (UTC)
-Received: from warthog.procyon.org.uk (unknown [10.42.28.132])
-	by mx-prod-int-08.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP id F2F1D180047F;
-	Tue, 19 Aug 2025 15:27:37 +0000 (UTC)
-Organization: Red Hat UK Ltd. Registered Address: Red Hat UK Ltd, Amberley
-	Place, 107-111 Peascod Street, Windsor, Berkshire, SI4 1TE, United
-	Kingdom.
-	Registered in England and Wales under Company Registration No. 3798903
-From: David Howells <dhowells@redhat.com>
-To: Steve French <sfrench@samba.org>
-cc: dhowells@redhat.com, Paulo Alcantara <pc@manguebit.org>,
-    linux-cifs@vger.kernel.org, linux-fsdevel@vger.kernel.org,
-    linux-kernel@vger.kernel.org, stable@vger.kernel.org
-Subject: [PATCH] cifs: Fix oops due to uninitialised variable
+	s=arc-20240116; t=1755617342; c=relaxed/simple;
+	bh=zb/vJ7IFnS9w+OWYiVl+1xbgQEvCF1ZjNdfzHcG8J/c=;
+	h=Date:From:To:Cc:Subject:Message-ID:MIME-Version:Content-Type:
+	 Content-Disposition:In-Reply-To; b=lmmToKXgk1mwFjGmKveTZe7Dh4/NvVtqnTfUpThbY7WxGUWEH24k5JgwujxdiHXo4DKc8FUJ0TqI/6k1CoDzkGUyC333gHntJcuOTTLYbuz0gm5ncUeZ/wseiVTxfON6+dUi/XRgP0GwDih9kXtueFmjmzvVuFPgtfnpDT2puXA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=KQvhuj86; arc=none smtp.client-ip=198.175.65.9
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1755617341; x=1787153341;
+  h=date:from:to:cc:subject:message-id:mime-version:
+   in-reply-to;
+  bh=zb/vJ7IFnS9w+OWYiVl+1xbgQEvCF1ZjNdfzHcG8J/c=;
+  b=KQvhuj86MUCJuco8w4VcJZOnPWVkQ+ZIvI4r1Ak9sPu8osmTdKT2+FJE
+   45yLGS8kPv45XsGZPLguZfrZ7bq2RK6rVO1L8BOs2Lb2LSMACGe8VyOPo
+   Zja1EbuFP3KSYner8Us2GClNN1rKXfNtBA1etHwTugI0OjdwBd5FkglnP
+   LqnR/i8Ibnsef/XKPlaJhXejNeGaHR0gCli96oy2XhjfTLxGBJx+3Yf10
+   +yh1fr7oZLrTZAuxQu99Luo0AJu+dWlJStN6fr61SeqiXegtt5OHR84Bb
+   81s8P6QKVMfn/lDX3MJdIPXazjyED7utmCqDgbvE16V8GmIxpjysJmgPz
+   Q==;
+X-CSE-ConnectionGUID: vuAOeidxQx+/Lq6CeYMtiQ==
+X-CSE-MsgGUID: gFME4f8XSjGDH5NNFJPCoQ==
+X-IronPort-AV: E=McAfee;i="6800,10657,11527"; a="80459509"
+X-IronPort-AV: E=Sophos;i="6.17,302,1747724400"; 
+   d="scan'208";a="80459509"
+Received: from orviesa003.jf.intel.com ([10.64.159.143])
+  by orvoesa101.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 19 Aug 2025 08:29:00 -0700
+X-CSE-ConnectionGUID: id1cJsy+T+C8pDSLQ5dYHQ==
+X-CSE-MsgGUID: IdErBmbASni0LYRg9XD70g==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.17,302,1747724400"; 
+   d="scan'208";a="172110454"
+Received: from lkp-server02.sh.intel.com (HELO 4ea60e6ab079) ([10.239.97.151])
+  by orviesa003.jf.intel.com with ESMTP; 19 Aug 2025 08:28:59 -0700
+Received: from kbuild by 4ea60e6ab079 with local (Exim 4.96)
+	(envelope-from <lkp@intel.com>)
+	id 1uoOGe-000H3z-2Y;
+	Tue, 19 Aug 2025 15:28:56 +0000
+Date: Tue, 19 Aug 2025 23:28:49 +0800
+From: kernel test robot <lkp@intel.com>
+To: David Howells <dhowells@redhat.com>
+Cc: stable@vger.kernel.org, oe-kbuild-all@lists.linux.dev
+Subject: Re: [PATCH] cifs: Fix oops due to uninitialised variable
+Message-ID: <aKSYMfOK2QSkb1SN@b34aff237e16>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="us-ascii"
-Content-ID: <1977958.1755617256.1@warthog.procyon.org.uk>
-Content-Transfer-Encoding: quoted-printable
-Date: Tue, 19 Aug 2025 16:27:36 +0100
-Message-ID: <1977959.1755617256@warthog.procyon.org.uk>
-X-Scanned-By: MIMEDefang 3.4.1 on 10.30.177.111
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <1977959.1755617256@warthog.procyon.org.uk>
 
-Fix smb3_init_transform_rq() to initialise buffer to NULL before calling
-netfs_alloc_folioq_buffer() as netfs assumes it can append to the buffer i=
-t
-is given.  Setting it to NULL means it should start a fresh buffer, but th=
-e
-value is currently undefined.
+Hi,
 
-Fixes: a2906d3316fc ("cifs: Switch crypto buffer to use a folio_queue rath=
-er than an xarray")
-Signed-off-by: David Howells <dhowells@redhat.com>
-cc: Steve French <sfrench@samba.org>
-cc: Paulo Alcantara <pc@manguebit.org>
-cc: linux-cifs@vger.kernel.org
-cc: linux-fsdevel@vger.kernel.org
----
- fs/smb/client/smb2ops.c |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+Thanks for your patch.
 
-diff --git a/fs/smb/client/smb2ops.c b/fs/smb/client/smb2ops.c
-index ad8947434b71..cd0c9b5a35c3 100644
---- a/fs/smb/client/smb2ops.c
-+++ b/fs/smb/client/smb2ops.c
-@@ -4487,7 +4487,7 @@ smb3_init_transform_rq(struct TCP_Server_Info *serve=
-r, int num_rqst,
- 	for (int i =3D 1; i < num_rqst; i++) {
- 		struct smb_rqst *old =3D &old_rq[i - 1];
- 		struct smb_rqst *new =3D &new_rq[i];
--		struct folio_queue *buffer;
-+		struct folio_queue *buffer =3D NULL;
- 		size_t size =3D iov_iter_count(&old->rq_iter);
- =
+FYI: kernel test robot notices the stable kernel rule is not satisfied.
 
- 		orig_len +=3D smb_rqst_len(server, old);
+The check is based on https://www.kernel.org/doc/html/latest/process/stable-kernel-rules.html#option-1
+
+Rule: add the tag "Cc: stable@vger.kernel.org" in the sign-off area to have the patch automatically included in the stable tree.
+Subject: [PATCH] cifs: Fix oops due to uninitialised variable
+Link: https://lore.kernel.org/stable/1977959.1755617256%40warthog.procyon.org.uk
+
+-- 
+0-DAY CI Kernel Test Service
+https://github.com/intel/lkp-tests/wiki
+
+
 
 
