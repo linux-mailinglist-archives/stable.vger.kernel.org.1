@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-171716-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-171717-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id D5A17B2B69D
-	for <lists+stable@lfdr.de>; Tue, 19 Aug 2025 04:03:24 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 78A80B2B6A5
+	for <lists+stable@lfdr.de>; Tue, 19 Aug 2025 04:04:27 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 0EFCF1B2603B
-	for <lists+stable@lfdr.de>; Tue, 19 Aug 2025 02:01:44 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 0F37D4E00E4
+	for <lists+stable@lfdr.de>; Tue, 19 Aug 2025 02:03:21 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7EB452853ED;
-	Tue, 19 Aug 2025 02:01:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8082835947;
+	Tue, 19 Aug 2025 02:03:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="V8gM6zTp"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="kmgSKg7K"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1A5C01F8EFF;
-	Tue, 19 Aug 2025 02:01:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 31946287269;
+	Tue, 19 Aug 2025 02:03:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755568872; cv=none; b=ug+XxVhUv2vG3mI4HmLXkZl9G2CWC5azEH8iy/EnoCFgnEYBti6SoVFw3R51fU7RAdDjvGRIPAeq7XqROsO872emZ7XI7XzAH0yklYlxVVfwIwd8eZvqvVOAXRcPJPdMbK8BWTRQFSS9kjq+Tt+H7N8mzEi8y2HaqsF0AMPn/3k=
+	t=1755568992; cv=none; b=MSUI+O6J5psC3r8qbPTLoIMRMEhGlzVyadK1nexSDnGgPtEMoZCDU5vgPdF1bOpPFonn3XTr0Cv9Uq3SasRdG/tyAqzyll/uuZyyvsnlz8Yimr6nVrToG5R1NC6vs/ph8nitKp0RWjkGdrpEfecgDywcp1ke/C4r2qJvSwvGJt8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1755568872; c=relaxed/simple;
-	bh=PUkNlXKrmXY1CLgusGbdGf67x2cphnPK0xcltNm/Pnw=;
+	s=arc-20240116; t=1755568992; c=relaxed/simple;
+	bh=0ze/SUX4jqsWIpc73bDlq6/O03itjI6mdzwEwm0ilTs=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=bejg6/KpmleRtseH9+YKf15YpcXL7doQ188qoChLbeAt2DcaC7FLhXYf59NyxgPYzh6P6AooTx59HAKWJp59Jb4ni42VQxsP0RBIgFNDclonmZIwYVJ9gDkpd0YinRshUCmNAJOXlSPTjRx4EJNHnfUsRVc31VW1zwOJjw7+j14=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=V8gM6zTp; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8513EC4CEEB;
-	Tue, 19 Aug 2025 02:01:10 +0000 (UTC)
+	 Content-Type:Content-Disposition:In-Reply-To; b=tZa/DzWPowvKLcpvgVl/qDci7I6OkSWu+Bynh3XO3ph2Q9Ytl2bIy2ezk2Nmj0heX8lPQphOIvnaGcSWDtXpG5s1ucyoN6N3y8x6FILb6lcEVD0hZ6c3uZk0RlViBbQVjprgocHdXn1lBTr5vkfjlPDCCzBUKgMVwMQM5DK4CSQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=kmgSKg7K; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7ECD4C4CEEB;
+	Tue, 19 Aug 2025 02:03:11 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1755568870;
-	bh=PUkNlXKrmXY1CLgusGbdGf67x2cphnPK0xcltNm/Pnw=;
+	s=k20201202; t=1755568991;
+	bh=0ze/SUX4jqsWIpc73bDlq6/O03itjI6mdzwEwm0ilTs=;
 	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=V8gM6zTpI4jGfutyv8uTMMwZ9+TjZKeLUvOgai/D4/vXbmo5eW34untPXahra9Lva
-	 61N/2Tni0GlkAenRGHPy16B8qZmez5XDY8jo+j25YrJAaPMDQCgI8q0GwFT7vW3Us2
-	 woOeg208mpKHhvzkOcBV8lYXW2aFqHGUg6eX7/OPePeWgim3tsazSCdxeFtud+EinT
-	 SELPM+R3nhc79KjMSj5ALnQlUOQUHLfqsyUfZnjQIAWMO0R0eIYdjrso4zvwzwSbg7
-	 BUDlwef1VRh/vl7zzCXivNOVz4ZGxCppETE2YndWki/Cb5Ft1cL3iULdG+4thSV+eO
-	 Fy3fgzx8fw3UA==
-Date: Mon, 18 Aug 2025 22:01:09 -0400
+	b=kmgSKg7Kq7MQdQU1soCb7OEOmqVqJORR4LRWp8S4jqiLp4tcJRdH0KRDzp5Ct9tHl
+	 YRA0FkiZgK4+WqULXUpWvKgvXOBj9nze0ryjCPWa2KyOX+1/zYXn+c9nUOBAbuEF+w
+	 5cZBM/7x2gfgGYGqBPZtmCPIOSfgBug0wC+KWxXcOhxm3sfMUjt+J84taRTOYCsDLh
+	 eV3r1Tv74WdEEtwfB5hgdZCKdFO+5L9bC7h+8PH4h3uW7Dh8aqlG30PllvEQsSwYUn
+	 be9O91fJzjIDo/Ea9X+qg+I8QEMFTNDlDQKTRqqFfN6gEbHL6pj6lzpCqfUSDy3avA
+	 kuAAlXC4GjgKQ==
+Date: Mon, 18 Aug 2025 22:03:10 -0400
 From: Sasha Levin <sashal@kernel.org>
-To: Michael Walle <mwalle@kernel.org>
-Cc: patches@lists.linux.dev, stable@vger.kernel.org,
-	Lee Jones <lee@kernel.org>
-Subject: Re: [PATCH AUTOSEL 6.12 27/69] mfd: tps6594: Add TI TPS652G1 support
-Message-ID: <aKPa5TMzs-hAfEgE@laps>
-References: <20250804003119.3620476-1-sashal@kernel.org>
- <20250804003119.3620476-27-sashal@kernel.org>
- <DC5CEJ4YYRRB.3VTJAONRBJPVB@kernel.org>
+To: Meagan Lloyd <meaganlloyd@linux.microsoft.com>
+Cc: Alexandre Belloni <alexandre.belloni@bootlin.com>,
+	stable-commits@vger.kernel.org, stable@vger.kernel.org
+Subject: Re: Patch "rtc: ds1307: remove clear of oscillator stop flag (OSF)
+ in probe" has been added to the 5.4-stable tree
+Message-ID: <aKPbXqJ-ddx4Thqj@laps>
+References: <20250817154824.2401461-1-sashal@kernel.org>
+ <66d68e9a-bbf5-4212-8ca3-175064af545c@linux.microsoft.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -59,78 +59,30 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii; format=flowed
 Content-Disposition: inline
-In-Reply-To: <DC5CEJ4YYRRB.3VTJAONRBJPVB@kernel.org>
+In-Reply-To: <66d68e9a-bbf5-4212-8ca3-175064af545c@linux.microsoft.com>
 
-On Mon, Aug 18, 2025 at 08:34:03AM +0200, Michael Walle wrote:
+On Mon, Aug 18, 2025 at 09:43:35AM -0700, Meagan Lloyd wrote:
+>On 8/17/2025 8:48 AM, Sasha Levin wrote:
+>> This is a note to let you know that I've just added the patch titled
+>>
+>>     rtc: ds1307: remove clear of oscillator stop flag (OSF) in probe
+>>
+>> to the 5.4-stable tree which can be found at:
+>>     http://www.kernel.org/git/?p=linux/kernel/git/stable/stable-queue.git;a=summary
+>
 >Hi Sasha,
 >
->On Mon Aug 4, 2025 at 2:30 AM CEST, Sasha Levin wrote:
->> From: Michael Walle <mwalle@kernel.org>
->>
->> [ Upstream commit 626bb0a45584d544d84eab909795ccb355062bcc ]
->>
->> The TPS652G1 is a stripped down version of the TPS65224. From a software
->> point of view, it lacks any voltage monitoring, the watchdog, the ESM
->> and the ADC.
->>
->> Signed-off-by: Michael Walle <mwalle@kernel.org>
->> Link: https://lore.kernel.org/r/20250613114518.1772109-2-mwalle@kernel.org
->> Signed-off-by: Lee Jones <lee@kernel.org>
->> Signed-off-by: Sasha Levin <sashal@kernel.org>
->> ---
->>
->> LLM Generated explanations, may be completely bogus:
->>
->> **YES**
->>
->> This commit should be backported to stable kernel trees for the
->> following reasons:
->>
->> 1. **Hardware Enablement (Device ID Addition)**: This patch adds support
->>    for a new PMIC variant (TPS652G1) by adding its device ID and
->>    configuration. According to stable kernel rules, patches that "just
->>    add a device ID" are explicitly allowed for stable backporting.
->>
->> 2. **Self-Contained Changes**: The modifications are isolated to adding
->>    support for the new device without altering existing functionality:
->>    - Adds `TPS652G1` to the `enum pmic_id`
->>    - Adds TPS652G1-specific MFD cells configuration
->>    - Adds device-specific IRQ mappings (subset of TPS65224 IRQs)
->>    - Adds compatible strings "ti,tps652g1" to I2C and SPI device tables
->>    - Properly handles the stripped-down nature of TPS652G1 (no RTC, ADC,
->>      watchdog, ESM)
->>
->> 3. **Low Risk**: The changes follow the existing driver pattern and only
->>    add conditional paths for the new device:
->>   ```c
->>   if (tps->chip_id == TPS65224 || tps->chip_id == TPS652G1)
->>   ```
->>   This ensures existing device support remains unaffected.
->>
->> 4. **User Benefit**: Without this patch, users with TPS652G1 hardware
->>    cannot use their devices on stable kernels. This directly impacts
->>    hardware functionality for affected users.
->>
->> 5. **Proper Implementation**: The patch correctly handles the TPS652G1
->>    as a feature-reduced variant of TPS65224, sharing the same register
->>    layout and CRC handling while properly excluding unsupported
->>    features.
->>
->> The patch is relatively small, follows established driver patterns, and
->> enables essential hardware support without introducing architectural
->> changes or new features beyond device enablement.
+>FYI, patch 2/2 of the series wasn't applied to 5.4, but was applied to all the other trees.
 >
->While this is correct, the MFD patch on it's own is rather useless,
->as the individual driver implementations are missing. See
->https://lore.kernel.org/all/20250703113153.2447110-1-mwalle@kernel.org/
+>"rtc: ds1307: handle oscillator stop flag (OSF) for ds1341"
 >
->I don't care too much, I just want to point out, that just having
->this patch might be misleading regarding the support of this PMIC.
+>[PATCH 2/2] rtc: ds1307: handle oscillator stop flag (OSF) for ds1341 - Meagan Lloyd <https://lore.kernel.org/all/1749665656-30108-3-git-send-email-meaganlloyd@linux.microsoft.com/>
+>
+>(upstream commit 523923cfd5d622b8f4ba893fdaf29fa6adeb8c3e)
 
-Yeah, it doesn't make sense to keep it in. I'll drop it.
+Looks like it failed to apply :(
 
-Thanks!
-
+Could you send a backport to 5.4 please? Or should I just patch 1/2 from 5.4?
 
 -- 
 Thanks,
