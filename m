@@ -1,59 +1,50 @@
-Return-Path: <stable+bounces-171689-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-171691-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1D3DAB2B56D
-	for <lists+stable@lfdr.de>; Tue, 19 Aug 2025 02:39:59 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id CD6E0B2B594
+	for <lists+stable@lfdr.de>; Tue, 19 Aug 2025 02:51:18 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id BB14D6260DD
-	for <lists+stable@lfdr.de>; Tue, 19 Aug 2025 00:39:16 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id D116818A1F2B
+	for <lists+stable@lfdr.de>; Tue, 19 Aug 2025 00:50:32 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 20D61C120;
-	Tue, 19 Aug 2025 00:39:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 140BA194C86;
+	Tue, 19 Aug 2025 00:50:06 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="KdB6jkuj"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="CjP8roxh"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D485013FEE
-	for <stable@vger.kernel.org>; Tue, 19 Aug 2025 00:39:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A710B13D51E;
+	Tue, 19 Aug 2025 00:50:05 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755563946; cv=none; b=OWcwOU5lDNlQcbwH5LD+c05kVuLVQaPdwvcWxDbzED3nKR9RN5JO1J697mxNnEFUDC9SHirHjH4s2KydGdchyB1Pnjxrtkn7Zlo4U3eonH22xDEPCEJ317mhqDYetwpX962/b0jHPnasNywEIo9k3FbXiCgYiWEFxuOv9ELsVwA=
+	t=1755564605; cv=none; b=BO42qCoAoHBiYkQSNc6ENvPmsIjz6K9R/QvbkXWcAGg8useyJKc9Rym374cHQY9rdd8d8yb0KdzrfGfb56zjwpOfS1lgZa9bSEw6PnftHVZ3/sCXk6MSW6bBNzgy71mdzfyEpsxtVRjLn/valQ2XmD4olPEVaQhGT/a0MFBQCyA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1755563946; c=relaxed/simple;
-	bh=6l5G46t5v8Z0qIuEh6AgE2qrLq9UvkVAMRFm1xo1c8Y=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=mplEwJSIMl6UpIspD5awRnGWbQDxt43ns4u3pECp1KpDA2egcBResuYgxlsETorrJjUVvHffuNwR9w8QwkWUgmDqd5jrLqbfgVB6nD77EcfvtrlpNhSvKccDEHTO8i6ss0YoOHg4z7w7TncQBxsswiF6g2AtR1O5+u2923RN0lA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=KdB6jkuj; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 29479C116B1;
-	Tue, 19 Aug 2025 00:39:06 +0000 (UTC)
+	s=arc-20240116; t=1755564605; c=relaxed/simple;
+	bh=tTKzEG7zl836WnweAKXGMrMXHoRDuAgoB+5V9lt1V5s=;
+	h=Content-Type:MIME-Version:Subject:From:Message-Id:Date:References:
+	 In-Reply-To:To:Cc; b=LvmT++V+yJbscXfPddR5iCNl+ZcB59cdy1f8oO+2rdfaXvqcSv340Dq0dHxG1sxNh1woglr30LIbk2eRSYsiNUTkVjLcFpAKDz2JEEmbeHOFtp6MR3vk4oD95Q1+3v6mFHuXCwwsfP5ClxA4NKM0lmE7oSg4S+y3ikCwYbtAS9A=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=CjP8roxh; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 33CFEC4CEEB;
+	Tue, 19 Aug 2025 00:50:05 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1755563946;
-	bh=6l5G46t5v8Z0qIuEh6AgE2qrLq9UvkVAMRFm1xo1c8Y=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=KdB6jkujAOpsVmmZxYm1HN2I4SofML95ynrh5mbN22V87kMKiBeV1RjL2I3ZqX13r
-	 7YQ/hi78Ds1gkjhwhE+NUHmip/hHO41ybg+XbQCQBOiVfBNOF69ALb+uVwsC48WMc+
-	 tPZoT9TjpUlpABKk2fTVzyjK6bLb7nxCQc38RCQoFihiYjhuAUx9+4qaAqdR8mwVPl
-	 TDBrIh1TIKdNPDItdQ5og3Q6hO2PvIpyuD9YgkCxZPrEJUVYuKNmRSNfsEQKTWzaV+
-	 CoKImwdotI6XqRgIwft1M1XMbET/IampquZBWaf0f50HXGEVVv1RF+TY1Y3yieyUp+
-	 19oT0NIgUkjiw==
-From: Sasha Levin <sashal@kernel.org>
-To: stable@vger.kernel.org
-Cc: Filipe Manana <fdmanana@suse.com>,
-	Boris Burkov <boris@bur.io>,
-	David Sterba <dsterba@suse.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12.y 2/2] btrfs: always abort transaction on failure to add block group to free space tree
-Date: Mon, 18 Aug 2025 20:39:03 -0400
-Message-ID: <20250819003903.227152-2-sashal@kernel.org>
-X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250819003903.227152-1-sashal@kernel.org>
-References: <2025081809-unwatched-rejoicing-21e4@gregkh>
- <20250819003903.227152-1-sashal@kernel.org>
+	s=k20201202; t=1755564605;
+	bh=tTKzEG7zl836WnweAKXGMrMXHoRDuAgoB+5V9lt1V5s=;
+	h=Subject:From:Date:References:In-Reply-To:To:Cc:From;
+	b=CjP8roxhSRFFleZTXw0+0Rz4hU5ly8A8OmNCRxXUSKihGqVXpCbmbEopnF2vLXd9E
+	 9p9LFtYYkhBd2E+74Gb4yVLiZrfd4OJy/Ih4uM08zsokdGBsqGefyYYceNxdFZmkm5
+	 /leufJ/utKPYV+XNqJFzYj6TbEHF25ad4IgPcyDGE6IesI56AkZgv1LtkVpXp76MKt
+	 PKCO6aVv+/roD+njL3BTUvxOebaz9INeC3G5prE5LtxKBUokLg4LP/6Pg1WhfGd4h+
+	 vgWWFsaoq0InRPiHChBAqhsEZg64BKU9fCxPH/S6xvUXLJ/V7Ah45OxJOTltdr9p5D
+	 XqX2EX01VxIgw==
+Received: from [10.30.226.235] (localhost [IPv6:::1])
+	by aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org (Postfix) with ESMTP id 70E25383BF4E;
+	Tue, 19 Aug 2025 00:50:16 +0000 (UTC)
+Content-Type: text/plain; charset="utf-8"
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -61,79 +52,62 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
+Subject: Re: [PATCH net 0/8] mptcp: misc fixes for v6.17-rc
+From: patchwork-bot+netdevbpf@kernel.org
+Message-Id: 
+ <175556461525.2964462.14246574540734347809.git-patchwork-notify@kernel.org>
+Date: Tue, 19 Aug 2025 00:50:15 +0000
+References: 
+ <20250815-net-mptcp-misc-fixes-6-17-rc2-v1-0-521fe9957892@kernel.org>
+In-Reply-To: 
+ <20250815-net-mptcp-misc-fixes-6-17-rc2-v1-0-521fe9957892@kernel.org>
+To: Matthieu Baerts <matttbe@kernel.org>
+Cc: mptcp@lists.linux.dev, martineau@kernel.org, geliang@kernel.org,
+ davem@davemloft.net, edumazet@google.com, kuba@kernel.org, pabeni@redhat.com,
+ horms@kernel.org, wujianguo@chinatelecom.cn, shuah@kernel.org,
+ corbet@lwn.net, pizhenwei@bytedance.com, netdev@vger.kernel.org,
+ linux-kernel@vger.kernel.org, linux-kselftest@vger.kernel.org,
+ linux-doc@vger.kernel.org, cpaasch@openai.com, stable@vger.kernel.org,
+ dreibh@simula.no
 
-From: Filipe Manana <fdmanana@suse.com>
+Hello:
 
-[ Upstream commit 1f06c942aa709d397cf6bed577a0d10a61509667 ]
+This series was applied to netdev/net.git (main)
+by Jakub Kicinski <kuba@kernel.org>:
 
-Only one of the callers of __add_block_group_free_space() aborts the
-transaction if the call fails, while the others don't do it and it's
-either never done up the call chain or much higher in the call chain.
+On Fri, 15 Aug 2025 19:28:18 +0200 you wrote:
+> Here are various fixes:
+> 
+> - Patch 1: Better handling SKB extension allocation failures. A fix for
+>   v5.7.
+> 
+> - Patches 2, 3: Avoid resetting MPTCP limits when flushing MPTCP
+>   endpoints. With a validation in the selftests. Fixes for v5.7.
+> 
+> [...]
 
-So make sure we abort the transaction at __add_block_group_free_space()
-if it fails, which brings a couple benefits:
+Here is the summary with links:
+  - [net,1/8] mptcp: drop skb if MPTCP skb extension allocation fails
+    https://git.kernel.org/netdev/net/c/ccab04469798
+  - [net,2/8] mptcp: pm: kernel: flush: do not reset ADD_ADDR limit
+    https://git.kernel.org/netdev/net/c/68fc0f4b0d25
+  - [net,3/8] selftests: mptcp: pm: check flush doesn't reset limits
+    https://git.kernel.org/netdev/net/c/452690be7de2
+  - [net,4/8] mptcp: remove duplicate sk_reset_timer call
+    https://git.kernel.org/netdev/net/c/5d13349472ac
+  - [net,5/8] mptcp: disable add_addr retransmission when timeout is 0
+    https://git.kernel.org/netdev/net/c/f5ce0714623c
+  - [net,6/8] selftests: mptcp: disable add_addr retrans in endpoint_tests
+    https://git.kernel.org/netdev/net/c/f92199f551e6
+  - [net,7/8] selftests: mptcp: connect: fix C23 extension warning
+    https://git.kernel.org/netdev/net/c/2eefbed30d46
+  - [net,8/8] selftests: mptcp: sockopt: fix C23 extension warning
+    https://git.kernel.org/netdev/net/c/3259889fd3c0
 
-1) If some call chain never aborts the transaction, we avoid having some
-   metadata inconsistency because BLOCK_GROUP_FLAG_NEEDS_FREE_SPACE is
-   cleared when we enter __add_block_group_free_space() and therefore
-   __add_block_group_free_space() is never called again to add the block
-   group items to the free space tree, since the function is only called
-   when that flag is set in a block group;
-
-2) If the call chain already aborts the transaction, then we get a better
-   trace that points to the exact step from __add_block_group_free_space()
-   which failed, which is better for analysis.
-
-So abort the transaction at __add_block_group_free_space() if any of its
-steps fails.
-
-CC: stable@vger.kernel.org # 6.6+
-Reviewed-by: Boris Burkov <boris@bur.io>
-Signed-off-by: Filipe Manana <fdmanana@suse.com>
-Reviewed-by: David Sterba <dsterba@suse.com>
-Signed-off-by: David Sterba <dsterba@suse.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
----
- fs/btrfs/free-space-tree.c | 16 +++++++++-------
- 1 file changed, 9 insertions(+), 7 deletions(-)
-
-diff --git a/fs/btrfs/free-space-tree.c b/fs/btrfs/free-space-tree.c
-index 6f5ccb7b7db9..51f286d5d00a 100644
---- a/fs/btrfs/free-space-tree.c
-+++ b/fs/btrfs/free-space-tree.c
-@@ -1379,12 +1379,17 @@ static int __add_block_group_free_space(struct btrfs_trans_handle *trans,
- 	clear_bit(BLOCK_GROUP_FLAG_NEEDS_FREE_SPACE, &block_group->runtime_flags);
- 
- 	ret = add_new_free_space_info(trans, block_group, path);
--	if (ret)
-+	if (ret) {
-+		btrfs_abort_transaction(trans, ret);
- 		return ret;
-+	}
- 
--	return __add_to_free_space_tree(trans, block_group, path,
--					block_group->start,
--					block_group->length);
-+	ret = __add_to_free_space_tree(trans, block_group, path,
-+				       block_group->start, block_group->length);
-+	if (ret)
-+		btrfs_abort_transaction(trans, ret);
-+
-+	return 0;
- }
- 
- int add_block_group_free_space(struct btrfs_trans_handle *trans,
-@@ -1409,9 +1414,6 @@ int add_block_group_free_space(struct btrfs_trans_handle *trans,
- 	}
- 
- 	ret = __add_block_group_free_space(trans, block_group, path);
--	if (ret)
--		btrfs_abort_transaction(trans, ret);
--
- out:
- 	btrfs_free_path(path);
- 	mutex_unlock(&block_group->free_space_lock);
+You are awesome, thank you!
 -- 
-2.50.1
+Deet-doot-dot, I am a bot.
+https://korg.docs.kernel.org/patchwork/pwbot.html
+
 
 
