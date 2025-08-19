@@ -1,122 +1,176 @@
-Return-Path: <stable+bounces-171775-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-171776-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 668CEB2C2A3
-	for <lists+stable@lfdr.de>; Tue, 19 Aug 2025 14:05:17 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 941A0B2C296
+	for <lists+stable@lfdr.de>; Tue, 19 Aug 2025 14:04:22 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id B56CB3BDBF6
-	for <lists+stable@lfdr.de>; Tue, 19 Aug 2025 12:03:09 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id E8E92188D03C
+	for <lists+stable@lfdr.de>; Tue, 19 Aug 2025 12:04:35 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2BE473314DB;
-	Tue, 19 Aug 2025 12:03:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id DD97C3314B3;
+	Tue, 19 Aug 2025 12:04:05 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=mandrillapp.com header.i=@mandrillapp.com header.b="fhTZ1hDQ";
-	dkim=pass (2048-bit key) header.d=vates.tech header.i=yann.sionneau@vates.tech header.b="hz/iib1k"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="G1s17FMA"
 X-Original-To: stable@vger.kernel.org
-Received: from mail180-9.suw31.mandrillapp.com (mail180-9.suw31.mandrillapp.com [198.2.180.9])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3288832C32C
-	for <stable@vger.kernel.org>; Tue, 19 Aug 2025 12:03:05 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.2.180.9
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9E9C5326D59
+	for <stable@vger.kernel.org>; Tue, 19 Aug 2025 12:04:05 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755604987; cv=none; b=BAyHRhvPhdxNpcoIcY6zbV/OcxZEJJFfUOoSvpJq6Bw/RhH1x6cSRwjbwpXeI9vvMZUFAq3jgisideRAaASu1Ymx9yYnPcWOM1RWH/vOzBCSPh3q6UzvUaSBgVE2B4CHE+HpkM/aW0q+4B+Vc2+Qo2LoZC//42Ssa6bzBhrKPyU=
+	t=1755605045; cv=none; b=OjtzmI6j+XmdI/nPhqK1FjsjaNdz6U+QFBPhZFcyHdHfnmVYz5TOUIYwv49lsZsuSCOFlUmgnUtfdugFpklMGYkhZ/+lujJN2kc5uAAnIFkVAtjTclckpal9rM5gSrwE7ypj925hxHeC8Rbl1rW6/j7dHkGwL1PbllYSGXYsmMs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1755604987; c=relaxed/simple;
-	bh=JSOko7q7IYrHE5QtxvuPBfgOHBTZZh9102WYxuGKcoY=;
-	h=From:Subject:Message-Id:To:Cc:References:In-Reply-To:Date:
-	 MIME-Version:Content-Type; b=s0HUJpppFk0FhRFy/X87nuwkjTycSzMLfGTfV2+MNP+1dbT6uC52sxOTxnOCRFuUEktfaKu1fROqBJcev3m7yIeODkGETODx65AWFpMQ9Ac85gpmNSQib/2bo2Kq2oHNaDf9MhL1Dh/aShFqtNis29d8VlhmGrW6Dt1i+5MZQSM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=vates.tech; spf=pass smtp.mailfrom=bounce.vates.tech; dkim=pass (2048-bit key) header.d=mandrillapp.com header.i=@mandrillapp.com header.b=fhTZ1hDQ; dkim=pass (2048-bit key) header.d=vates.tech header.i=yann.sionneau@vates.tech header.b=hz/iib1k; arc=none smtp.client-ip=198.2.180.9
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=vates.tech
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=bounce.vates.tech
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=mandrillapp.com;
-	s=mte1; t=1755604985; x=1755874985;
-	bh=lrYqIkcsta9jivf7dLS5/NMYx58zstFgGq30HE0QRQ4=;
-	h=From:Subject:Message-Id:To:Cc:References:In-Reply-To:Feedback-ID:
-	 Date:MIME-Version:Content-Type:Content-Transfer-Encoding:CC:Date:
-	 Subject:From;
-	b=fhTZ1hDQ1tFvLG9TiuaoSYroOIGYdPclrCw7W/ByBcQVwINtP3wJX1Avc9G8CEUYD
-	 f5et/MxeaXeCC5offrWTsd7o0Qp68b5iRWrQisDm2OyFTqjirArk5Kw/8Zj/V0ty4/
-	 fdJs5h4jg9yqSJslriP6mnQUxUQImBXEgo5hM152wesCGieznsU1xSz03BaChpax4h
-	 P6hkE+JnU9Fq9j0VlA7Gz+xbJhvvqGaOhoTtGyRUFYXeEz4C4BiUABCmAASFNx2Fud
-	 JZn+3jtaJu5uo6YxDjmn3uBgI524hGk1gxncMPxFDHm+sVi8uimmP/OI/vNVwr5EyE
-	 xhVPnMUiRCOlw==
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=vates.tech; s=mte1;
-	t=1755604985; x=1755865485; i=yann.sionneau@vates.tech;
-	bh=lrYqIkcsta9jivf7dLS5/NMYx58zstFgGq30HE0QRQ4=;
-	h=From:Subject:Message-Id:To:Cc:References:In-Reply-To:Feedback-ID:
-	 Date:MIME-Version:Content-Type:Content-Transfer-Encoding:CC:Date:
-	 Subject:From;
-	b=hz/iib1kQJ5gNu77FMkiA0Xh4mXgTqU2OlQLphc6cGh3LVZ3m0ltJCrnw/0a971f/
-	 T7lu4oKkPj1vupZX8HhumsmhsLVlVwgqKsnPUWkgtBMUJwiZgXMOQGLeoUXS9QF85r
-	 ahbtPODsj9N7yJzK51pCfNjazo25FtypGO21NktIe9ejcAACKTb9pe3UnHw3PSNX+Q
-	 mXU3mbwIVG3wThjlkTEFme3sldLGe7AKzwXdbZN26NWM9pzYiMrd1pqY1Z81BOjZhU
-	 qwzB6sR37XAt/M0/Lw04H7hfC1sRV1O4wIUFG8CR1ZOtQxnyqejUe4HFArXKW4fK0B
-	 5Gng4mivWaiKw==
-Received: from pmta11.mandrill.prod.suw01.rsglab.com (localhost [127.0.0.1])
-	by mail180-9.suw31.mandrillapp.com (Mailchimp) with ESMTP id 4c5pBK1r6HzK5vlNt
-	for <stable@vger.kernel.org>; Tue, 19 Aug 2025 12:03:05 +0000 (GMT)
-From: "Yann Sionneau" <yann.sionneau@vates.tech>
-Subject: =?utf-8?Q?Re:=20[PATCH]=20ACPI:=20processor:=20idle:=20Check=20acpi=5Fbus=5Fget=5Fdevice=20return=20value?=
-Received: from [37.26.189.201] by mandrillapp.com id 44d75d05d4084f3590cd14ccfb96b2bf; Tue, 19 Aug 2025 12:03:05 +0000
-X-Bm-Disclaimer: Yes
-X-Bm-Milter-Handled: 4ffbd6c1-ee69-4e1b-aabd-f977039bd3e2
-X-Bm-Transport-Timestamp: 1755604983109
-Message-Id: <032a8ac9-0554-49b6-a8e4-fdeb467f8327@vates.tech>
+	s=arc-20240116; t=1755605045; c=relaxed/simple;
+	bh=/dAdSk+La+2iYLqkegTV6ht3Vjl5Lu9vtxEL8xnnGpk=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=o7kpjmzpQY+LOIcgk9cvUxaD3v8UwiZDbkFyXN0yFG63fxmuMaWXn3AChaENc094uAqIi16bIkUPhLql+9cHPgoRovL2ouewpQe1s9jNbp6AVfDrWhEdyU50DmMcXv06hYRiZfrG826MFH27JB/heO5jiUF5Ov6p9LVZThByYR0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=G1s17FMA; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 80152C4CEF1;
+	Tue, 19 Aug 2025 12:04:04 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1755605045;
+	bh=/dAdSk+La+2iYLqkegTV6ht3Vjl5Lu9vtxEL8xnnGpk=;
+	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
+	b=G1s17FMA71rNXf79vVSh621fvGqJ1nYAg94um/vcliI8yABp9YqwjVbDZq+IGXp/S
+	 Iv9XNv0wKqhhaHbVbzOniIKX3EMBw1BHU4mRLZX5lhrIoC6nRH7MCXFGoOxwpxHXn0
+	 Zzj8CWEvGTbZ8bTRvJB685HkqnFLbiDza2Uq76yXOpIGKV/DPVRj7r8Eyr5jNMqVRk
+	 c+yxbYnAkB/V9hvlk2xWoFxDSZJucqB+u3thFOSwGJvVzRWANQtj/OJ6M+0Xz+r7KH
+	 D8mEnCuFtp6Gzs3IkAOFRaZSPwC3dv2ry+u5ZgpzBpjORGdwIfZ9f17nC1kyVbHEgB
+	 K+mf6tiPwjpug==
+From: Sasha Levin <sashal@kernel.org>
 To: stable@vger.kernel.org
-Cc: "Greg KH" <gregkh@linuxfoundation.org>, "Li Zhong" <floridsleeves@gmail.com>, "Rafael J . Wysocki" <rafael.j.wysocki@intel.com>, "Teddy Astie" <teddy.astie@vates.tech>, "Dillon C" <dchan@dchan.tech>
-References: <20250819115301.83377-1-yann.sionneau@vates.tech>
-In-Reply-To: <20250819115301.83377-1-yann.sionneau@vates.tech>
-X-Native-Encoded: 1
-X-Report-Abuse: =?UTF-8?Q?Please=20forward=20a=20copy=20of=20this=20message,=20including=20all=20headers,=20to=20abuse@mandrill.com.=20You=20can=20also=20report=20abuse=20here:=20https://mandrillapp.com/contact/abuse=3Fid=3D30504962.44d75d05d4084f3590cd14ccfb96b2bf?=
-X-Mandrill-User: md_30504962
-Feedback-ID: 30504962:30504962.20250819:md
-Date: Tue, 19 Aug 2025 12:03:05 +0000
+Cc: Qu Wenruo <wqu@suse.com>,
+	Filipe Manana <fdmanana@suse.com>,
+	David Sterba <dsterba@suse.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.15.y] btrfs: populate otime when logging an inode item
+Date: Tue, 19 Aug 2025 08:04:02 -0400
+Message-ID: <20250819120402.453011-1-sashal@kernel.org>
+X-Mailer: git-send-email 2.50.1
+In-Reply-To: <2025081800-anew-bullion-cdbe@gregkh>
+References: <2025081800-anew-bullion-cdbe@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: 7bit
+Content-Transfer-Encoding: 8bit
 
-On 8/19/25 14:00, Yann Sionneau wrote:
-> From: Teddy Astie <teddy.astie@vates.tech>
-> 
-> Fix a potential NULL pointer dereferences if acpi_bus_get_device happens to fail.
-> This is backported from commit 2437513a814b3 ("ACPI: processor: idle: Check acpi_fetch_acpi_dev() return value")
-> This has been tested successfully by the reporter,
-> see https://xcp-ng.org/forum/topic/10972/xcp-ng-8.3-lts-install-on-minisforum-ms-a2-7945hx
-> 
-> Signed-off-by: Li Zhong <floridsleeves@gmail.com>
-> Signed-off-by: Teddy Astie <teddy.astie@vates.tech>
-> Signed-off-by: Yann Sionneau <yann.sionneau@vates.tech>
-> Reported-by: Dillon C <dchan@dchan.tech>
-> Tested-by: Dillon C <dchan@dchan.tech>
-> ---
+From: Qu Wenruo <wqu@suse.com>
 
-Hello Greg, all,
+[ Upstream commit 1ef94169db0958d6de39f9ea6e063ce887342e2d ]
 
-This should be picked for v5.4, v5.10 and v5.15 branches as it's already 
-been backported in v6.0 and v6.1.
+[TEST FAILURE WITH EXPERIMENTAL FEATURES]
+When running test case generic/508, the test case will fail with the new
+btrfs shutdown support:
 
-I already reached out about this a few weeks ago, I just waited for the 
-patch the be tested before sending it.
+generic/508       - output mismatch (see /home/adam/xfstests/results//generic/508.out.bad)
+    --- tests/generic/508.out	2022-05-11 11:25:30.806666664 +0930
+    +++ /home/adam/xfstests/results//generic/508.out.bad	2025-07-02 14:53:22.401824212 +0930
+    @@ -1,2 +1,6 @@
+     QA output created by 508
+     Silence is golden
+    +Before:
+    +After : stat.btime = Thu Jan  1 09:30:00 1970
+    +Before:
+    +After : stat.btime = Wed Jul  2 14:53:22 2025
+    ...
+    (Run 'diff -u /home/adam/xfstests/tests/generic/508.out /home/adam/xfstests/results//generic/508.out.bad'  to see the entire diff)
+Ran: generic/508
+Failures: generic/508
+Failed 1 of 1 tests
 
-Regards,
+Please note that the test case requires shutdown support, thus the test
+case will be skipped using the current upstream kernel, as it doesn't
+have shutdown ioctl support.
 
+[CAUSE]
+The direct cause the 0 time stamp in the log tree:
+
+leaf 30507008 items 2 free space 16057 generation 9 owner TREE_LOG
+leaf 30507008 flags 0x1(WRITTEN) backref revision 1
+checksum stored e522548d
+checksum calced e522548d
+fs uuid 57d45451-481e-43e4-aa93-289ad707a3a0
+chunk uuid d52bd3fd-5163-4337-98a7-7986993ad398
+	item 0 key (257 INODE_ITEM 0) itemoff 16123 itemsize 160
+		generation 9 transid 9 size 0 nbytes 0
+		block group 0 mode 100644 links 1 uid 0 gid 0 rdev 0
+		sequence 1 flags 0x0(none)
+		atime 1751432947.492000000 (2025-07-02 14:39:07)
+		ctime 1751432947.492000000 (2025-07-02 14:39:07)
+		mtime 1751432947.492000000 (2025-07-02 14:39:07)
+		otime 0.0 (1970-01-01 09:30:00) <<<
+
+But the old fs tree has all the correct time stamp:
+
+btrfs-progs v6.12
+fs tree key (FS_TREE ROOT_ITEM 0)
+leaf 30425088 items 2 free space 16061 generation 5 owner FS_TREE
+leaf 30425088 flags 0x1(WRITTEN) backref revision 1
+checksum stored 48f6c57e
+checksum calced 48f6c57e
+fs uuid 57d45451-481e-43e4-aa93-289ad707a3a0
+chunk uuid d52bd3fd-5163-4337-98a7-7986993ad398
+	item 0 key (256 INODE_ITEM 0) itemoff 16123 itemsize 160
+		generation 3 transid 0 size 0 nbytes 16384
+		block group 0 mode 40755 links 1 uid 0 gid 0 rdev 0
+		sequence 0 flags 0x0(none)
+		atime 1751432947.0 (2025-07-02 14:39:07)
+		ctime 1751432947.0 (2025-07-02 14:39:07)
+		mtime 1751432947.0 (2025-07-02 14:39:07)
+		otime 1751432947.0 (2025-07-02 14:39:07) <<<
+
+The root cause is that fill_inode_item() in tree-log.c is only
+populating a/c/m time, not the otime (or btime in statx output).
+
+Part of the reason is that, the vfs inode only has a/c/m time, no native
+btime support yet.
+
+[FIX]
+Thankfully btrfs has its otime stored in btrfs_inode::i_otime_sec and
+btrfs_inode::i_otime_nsec.
+
+So what we really need is just fill the otime time stamp in
+fill_inode_item() of tree-log.c
+
+There is another fill_inode_item() in inode.c, which is doing the proper
+otime population.
+
+Fixes: 94edf4ae43a5 ("Btrfs: don't bother committing delayed inode updates when fsyncing")
+CC: stable@vger.kernel.org
+Reviewed-by: Filipe Manana <fdmanana@suse.com>
+Signed-off-by: Qu Wenruo <wqu@suse.com>
+Reviewed-by: David Sterba <dsterba@suse.com>
+Signed-off-by: David Sterba <dsterba@suse.com>
+[ timespec changes in older tree ]
+Signed-off-by: Sasha Levin <sashal@kernel.org>
+---
+ fs/btrfs/tree-log.c | 5 +++++
+ 1 file changed, 5 insertions(+)
+
+diff --git a/fs/btrfs/tree-log.c b/fs/btrfs/tree-log.c
+index 7049a19e07ba..e5ba83a1703a 100644
+--- a/fs/btrfs/tree-log.c
++++ b/fs/btrfs/tree-log.c
+@@ -3988,6 +3988,11 @@ static void fill_inode_item(struct btrfs_trans_handle *trans,
+ 	btrfs_set_token_timespec_nsec(&token, &item->ctime,
+ 				      inode->i_ctime.tv_nsec);
+ 
++	btrfs_set_token_timespec_sec(&token, &item->otime,
++				     BTRFS_I(inode)->i_otime.tv_sec);
++	btrfs_set_token_timespec_nsec(&token, &item->otime,
++				      BTRFS_I(inode)->i_otime.tv_nsec);
++
+ 	/*
+ 	 * We do not need to set the nbytes field, in fact during a fast fsync
+ 	 * its value may not even be correct, since a fast fsync does not wait
 -- 
-
-
-Yann Sionneau | Vates XCP-ng Developer
-
-XCP-ng & Xen Orchestra - Vates solutions
-
-web: https://vates.tech
-
+2.50.1
 
 
