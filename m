@@ -1,58 +1,59 @@
-Return-Path: <stable+bounces-171734-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-171735-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 478F1B2B725
-	for <lists+stable@lfdr.de>; Tue, 19 Aug 2025 04:40:38 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id BDAB9B2B73E
+	for <lists+stable@lfdr.de>; Tue, 19 Aug 2025 04:46:51 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 67F1C7B2950
-	for <lists+stable@lfdr.de>; Tue, 19 Aug 2025 02:39:03 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 7F490622149
+	for <lists+stable@lfdr.de>; Tue, 19 Aug 2025 02:46:50 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 29E3D288529;
-	Tue, 19 Aug 2025 02:40:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E76201494A8;
+	Tue, 19 Aug 2025 02:46:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="U3VrGAgY"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="gry9S5uz"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DF48C287269
-	for <stable@vger.kernel.org>; Tue, 19 Aug 2025 02:40:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A5CB22F852
+	for <stable@vger.kernel.org>; Tue, 19 Aug 2025 02:46:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755571227; cv=none; b=ST8toJf6qI+6ZECeWLMdE07AqWSGzjvpTMJYrbFyutM5jTmU4elMukb65PoJqV1meuBZCuIvFOWV0OgWCenb2/k3xmQ6YQNNqqmQQCddscFapTO8zcpDpKBv++QwcfNQN2Yxwp5juqcnM5nZ74dWFvqJ+lHVOyT5PRYgzkdbVdY=
+	t=1755571606; cv=none; b=tVC/hhrOaGWGFlBvc/qcxD3Drwx74B2zlbs3GHAOeRxkUUvbsp6j+XN3kxLRsDMDngBsUfAwxXUnJtPUZBzJ3hTZPDyUvNSC3UyiFFYmVGbq4kCR+u+IBbEvL43Ks9LsG4k8KxrtF2kl3wesyZYx4X98ZXzZfHrphexMj47EMG8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1755571227; c=relaxed/simple;
-	bh=jDtYSc6iuqNNdWJCOYBsxSvtAEK4IFYu6Pt9uVT3D7U=;
+	s=arc-20240116; t=1755571606; c=relaxed/simple;
+	bh=z6Gl5Gkrr9oWFjWLgjz5nfY+2+t05p8WuZ4aps/hd80=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=dq1MV1LGp2pn7zYcxM5Pd3F7sY0gWVTdFyqvxJPFa+JrMSKjHgcpKAfD+/ZciaTPoVVB1tDkcj7MUegS81/4iLL5uVFHT37NekrqVvaX890ssuyAdYiAR/FC4aqcT7DAnqYoXnNm4lZMIy27uhQ237C9MVC4GZmuVd8vPWW+pV8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=U3VrGAgY; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 23697C116C6;
-	Tue, 19 Aug 2025 02:40:26 +0000 (UTC)
+	 MIME-Version; b=lopCnjvxWozhRTkdIK2bJ4sRBG4brbMQ7ePEE1cOfqefbdMZ5wikA7MJW+rp6Ije5LbtyZpHhnp8x8IaM71HOoFv2SnQxeLZPogjtVvzOwCIRd4WHjEe7rLR30ufqMoeL5OuLs0qkHTzbncfAC4qAo91VV+lDx++itpGBizXoFs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=gry9S5uz; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 841ABC116B1;
+	Tue, 19 Aug 2025 02:46:45 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1755571226;
-	bh=jDtYSc6iuqNNdWJCOYBsxSvtAEK4IFYu6Pt9uVT3D7U=;
+	s=k20201202; t=1755571606;
+	bh=z6Gl5Gkrr9oWFjWLgjz5nfY+2+t05p8WuZ4aps/hd80=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=U3VrGAgYLLsUAgaE95oWtL4wEi0lKjF7qkUjUQkjcGcqgUMMdvI5MIMdgTVeiyBMT
-	 66HSJYgqGmw/XM5oa7q2lMiH6iQTLtKJF2Z/SHqpmNjU0B77hm+GeLIS+KsQO3fduv
-	 nJiakEEsyTwq5hkxHMJgPK0PpDOL58FuCSdnWHjbCJwd5ozlomjJ5yqRg9urswXc+Y
-	 ixcvAFzv8VDH0i3b1vRz1y9SBbceiKFNS0QzN+XxtlL/yAWefEwD2u5QJQDfMHaUoH
-	 7gb02UqQsfQ2dLIecR7/JJkRG3uLC2zoxQvUkVeSxTpcLa4h4UfJI3CnKh1fCNzeOk
-	 4Y3a2BJ6b9hEg==
+	b=gry9S5uzIDLSt6Osg55EGwlnS/Ypm2ONJZZnyLC9SI4fdw4bTTOG4SyCh5tPyU17K
+	 9hJsae/nAWhAwOdD6bQfHXGN0sTsNz7HwlUZLEJYuCG9c5PVdvgK4gc6r74Eqxbv98
+	 w2yYmp+WiaS82xSsdZF7KFvaobELWdnHPlmKE98aFe9fHCsmvhDFbdYh4YEoSgl16Z
+	 6N3oYfWiFe3zjir2G8L1RMbPpqsfapRqpd0Xs6DKU/xUjDLLzs8WD/l0XKZK1TB6nv
+	 kmqwLJL/77nE2Gz7qZrk2aqekqZKKGzoE6MiRXbJ/RUqpu2sJQi5G8nrMfbZ7qBlFY
+	 t/8mcub9dEs3A==
 From: Sasha Levin <sashal@kernel.org>
 To: stable@vger.kernel.org
-Cc: Filipe Manana <fdmanana@suse.com>,
-	David Sterba <dsterba@suse.com>,
+Cc: Christoph Hellwig <hch@lst.de>,
+	cen zhang <zzzccc427@gmail.com>,
+	"Darrick J. Wong" <djwong@kernel.org>,
+	Carlos Maiolino <cem@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6.y 7/7] btrfs: send: make fs_path_len() inline and constify its argument
-Date: Mon, 18 Aug 2025 22:40:20 -0400
-Message-ID: <20250819024020.291759-7-sashal@kernel.org>
+Subject: [PATCH 6.12.y] xfs: fully decouple XFS_IBULK* flags from XFS_IWALK* flags
+Date: Mon, 18 Aug 2025 22:46:42 -0400
+Message-ID: <20250819024642.295522-1-sashal@kernel.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250819024020.291759-1-sashal@kernel.org>
-References: <2025081840-stomp-enhance-b456@gregkh>
- <20250819024020.291759-1-sashal@kernel.org>
+In-Reply-To: <2025081858-issuing-conclude-4ff3@gregkh>
+References: <2025081858-issuing-conclude-4ff3@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -61,34 +62,59 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-From: Filipe Manana <fdmanana@suse.com>
+From: Christoph Hellwig <hch@lst.de>
 
-[ Upstream commit 920e8ee2bfcaf886fd8c0ad9df097a7dddfeb2d8 ]
+[ Upstream commit d2845519b0723c5d5a0266cbf410495f9b8fd65c ]
 
-The helper function fs_path_len() is trivial and doesn't need to change
-its path argument, so make it inline and constify the argument.
+Fix up xfs_inumbers to now pass in the XFS_IBULK* flags into the flags
+argument to xfs_inobt_walk, which expects the XFS_IWALK* flags.
 
-Signed-off-by: Filipe Manana <fdmanana@suse.com>
-Reviewed-by: David Sterba <dsterba@suse.com>
-Signed-off-by: David Sterba <dsterba@suse.com>
+Currently passing the wrong flags works for non-debug builds because
+the only XFS_IWALK* flag has the same encoding as the corresponding
+XFS_IBULK* flag, but in debug builds it can trigger an assert that no
+incorrect flag is passed.  Instead just extra the relevant flag.
+
+Fixes: 5b35d922c52798 ("xfs: Decouple XFS_IBULK flags from XFS_IWALK flags")
+Cc: <stable@vger.kernel.org> # v5.19
+Reported-by: cen zhang <zzzccc427@gmail.com>
+Signed-off-by: Christoph Hellwig <hch@lst.de>
+Reviewed-by: Darrick J. Wong <djwong@kernel.org>
+Signed-off-by: Carlos Maiolino <cem@kernel.org>
+[ Adjust context ]
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/btrfs/send.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ fs/xfs/xfs_itable.c | 6 +++++-
+ 1 file changed, 5 insertions(+), 1 deletion(-)
 
-diff --git a/fs/btrfs/send.c b/fs/btrfs/send.c
-index a512e1628dc5..c25eb4416a67 100644
---- a/fs/btrfs/send.c
-+++ b/fs/btrfs/send.c
-@@ -478,7 +478,7 @@ static void fs_path_free(struct fs_path *p)
- 	kfree(p);
- }
+diff --git a/fs/xfs/xfs_itable.c b/fs/xfs/xfs_itable.c
+index c0757ab99495..dc395cd2f33b 100644
+--- a/fs/xfs/xfs_itable.c
++++ b/fs/xfs/xfs_itable.c
+@@ -430,11 +430,15 @@ xfs_inumbers(
+ 		.breq		= breq,
+ 	};
+ 	struct xfs_trans	*tp;
++	unsigned int		iwalk_flags = 0;
+ 	int			error = 0;
  
--static int fs_path_len(struct fs_path *p)
-+static inline int fs_path_len(const struct fs_path *p)
- {
- 	return p->end - p->start;
- }
+ 	if (xfs_bulkstat_already_done(breq->mp, breq->startino))
+ 		return 0;
+ 
++	if (breq->flags & XFS_IBULK_SAME_AG)
++		iwalk_flags |= XFS_IWALK_SAME_AG;
++
+ 	/*
+ 	 * Grab an empty transaction so that we can use its recursive buffer
+ 	 * locking abilities to detect cycles in the inobt without deadlocking.
+@@ -443,7 +447,7 @@ xfs_inumbers(
+ 	if (error)
+ 		goto out;
+ 
+-	error = xfs_inobt_walk(breq->mp, tp, breq->startino, breq->flags,
++	error = xfs_inobt_walk(breq->mp, tp, breq->startino, iwalk_flags,
+ 			xfs_inumbers_walk, breq->icount, &ic);
+ 	xfs_trans_cancel(tp);
+ out:
 -- 
 2.50.1
 
