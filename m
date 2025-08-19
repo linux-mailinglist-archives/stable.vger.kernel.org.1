@@ -1,97 +1,135 @@
-Return-Path: <stable+bounces-171778-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-171779-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 66C2EB2C2DE
-	for <lists+stable@lfdr.de>; Tue, 19 Aug 2025 14:15:20 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3F92FB2C2E3
+	for <lists+stable@lfdr.de>; Tue, 19 Aug 2025 14:16:08 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id B652056126C
-	for <lists+stable@lfdr.de>; Tue, 19 Aug 2025 12:14:43 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id C11521B66B19
+	for <lists+stable@lfdr.de>; Tue, 19 Aug 2025 12:15:56 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1AD65326D5E;
-	Tue, 19 Aug 2025 12:14:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 06DBF33A01D;
+	Tue, 19 Aug 2025 12:15:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="K/D4Exje"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="B7f0PiPY"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C857C27A121;
-	Tue, 19 Aug 2025 12:14:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B9916334723
+	for <stable@vger.kernel.org>; Tue, 19 Aug 2025 12:15:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755605679; cv=none; b=oVQ6J1G/3VVR92hDVI4PGRldRPAVPKIsATisZ8MqRI34tZHeSx17/bEtw/WPJomNPFh2dcRIL99ZIf4rFidrlG1g+YKxiGlaANO0qQZLR3A5xmS8yt88ZVrpdp8ID+H5N5fMd/MVO3IQDmKqEgeHjleLL0EAsT6uZpMhieVQxu8=
+	t=1755605732; cv=none; b=rOc8CjcMF5KcGTn/xUjZj1jE2WjAk4LyTcbQ/6TSv3I+OVJn2+3sUSVFuyLSNpD5HzXRRJ/nCW/4GzoGvKIQ+XJDSV4utVfw+SOz0xssIHkAzIUK/DggMbBXZ3XIQ8aElJ30kOIvpQrxKJdt9ChleKgGCJWVhnX2eXkXeIquat4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1755605679; c=relaxed/simple;
-	bh=Y8Jn4mldOerXZWNycyZAZ0gfc61rH7TinefRWSsa2R8=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=BOCynIVgWnq1M5cONh+ZiycL20FrdSuwlEvJbJyDX27E+708X0vdsBeZRg5r4lc8l9K2/nJDcj3hciIAWNg/DBSzZ8OcU2IZkg9axDuLhRDbjXD2UtrCSgWYJVVdZD0+jBBNYHsiM+JVITQqT3bOLk7BQNKCUJKqbaV40A/uc0Y=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=K/D4Exje; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D562AC4CEF1;
-	Tue, 19 Aug 2025 12:14:38 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1755605679;
-	bh=Y8Jn4mldOerXZWNycyZAZ0gfc61rH7TinefRWSsa2R8=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=K/D4Exjez33bwpIzlVrCudsVqm6LZvYTDSs8OjXxZaJuvxjjw4hJNh0nsSeXTfM4L
-	 ENFy5jk3spLRo0cFQu8IbFveB38Vvw3Yow2W8fsHIbwsqe3ZTh/O3XLUPKyne96A2P
-	 Pi8LBZ5rHCgwXD45oL7KeRKqKTqXzSpOig4rqY5g=
-Date: Tue, 19 Aug 2025 14:14:36 +0200
-From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-To: Wang Zhaolong <wangzhaolong@huaweicloud.com>
-Cc: stable@vger.kernel.org, patches@lists.linux.dev,
-	Kuniyuki Iwashima <kuniyu@google.com>,
-	Enzo Matsumiya <ematsumiya@suse.de>,
-	Steve French <stfrench@microsoft.com>,
+	s=arc-20240116; t=1755605732; c=relaxed/simple;
+	bh=hHJNSaa7z0QLH28+zBJFEgkojRm1pKmgCyIK5Yzn6fM=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=C0BeAHSrW3mNbqX+RCpWvLEpvEgPjh6h6774lUPNg+G+Oapc7jR01wqslkh/JXtjvigMeXyc5xl5eea29J0iQ7N9sSbUbPCRJALLSOqMih9B9X4XTWReoa2S4cQdxmidMs0nQskPbGjPwm0tl0qfVxQnBnxSOklIvyBV2L4iZ2E=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=B7f0PiPY; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B4C32C4CEF1;
+	Tue, 19 Aug 2025 12:15:31 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1755605732;
+	bh=hHJNSaa7z0QLH28+zBJFEgkojRm1pKmgCyIK5Yzn6fM=;
+	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
+	b=B7f0PiPYPc3922+2aXTv0YHKOddleZuGZsIUoFYSqOAHHEJrCCnK56gh/jKyoqLrL
+	 x2qPM2QJCC+cuBwsgeJUurZrBddxDiAwNIuIIDy8TTzTPODugUC0UijI64vXRiekwC
+	 fvPQP0bpfpO+euLNNX4PFeomJeJPNXSPcptH/o9G/0ld6r43Cn5rpQ5sZ10zSOdR6I
+	 M8pLoA3HMz6n3lfxG5/MWx65LTkvg8EiBz4VeoCBYAFjb/t3XcKBMLVf0O9M+Ul32b
+	 /WDuR2QQQcst1ZA9rAHIs8oshD4+0CiDsUH3eXY3L2fzxFea6Jv7dnWKNtlG+m4zdD
+	 BdEwy5OeBm7+A==
+From: Sasha Levin <sashal@kernel.org>
+To: stable@vger.kernel.org
+Cc: Davide Caratti <dcaratti@redhat.com>,
+	Cong Wang <cong.wang@bytedance.com>,
+	"David S. Miller" <davem@davemloft.net>,
 	Sasha Levin <sashal@kernel.org>
-Subject: Re: [PATCH 6.12 429/444] smb: client: fix netns refcount leak after
- net_passive changes
-Message-ID: <2025081912-blooper-afraid-5b2c@gregkh>
-References: <20250818124448.879659024@linuxfoundation.org>
- <20250818124505.034228404@linuxfoundation.org>
- <df2f04b0-2caf-48a0-9817-a3cd07ae1bda@huaweicloud.com>
+Subject: [PATCH 5.15.y 1/3] net/sched: sch_ets: properly init all active DRR list handles
+Date: Tue, 19 Aug 2025 08:15:28 -0400
+Message-ID: <20250819121530.461591-1-sashal@kernel.org>
+X-Mailer: git-send-email 2.50.1
+In-Reply-To: <2025081857-reunite-divinely-430d@gregkh>
+References: <2025081857-reunite-divinely-430d@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <df2f04b0-2caf-48a0-9817-a3cd07ae1bda@huaweicloud.com>
+Content-Transfer-Encoding: 8bit
 
-On Tue, Aug 19, 2025 at 07:21:28PM +0800, Wang Zhaolong wrote:
-> 
-> > 
-> > Timeline of patches leading to this issue:
-> > - commit ef7134c7fc48 ("smb: client: Fix use-after-free of network
-> >    namespace.") in v6.12 fixed the original netns UAF by manually
-> >    managing socket refcounts
-> > - commit e9f2517a3e18 ("smb: client: fix TCP timers deadlock after
-> >    rmmod") in v6.13 attempted to use kernel sockets but introduced
-> >    TCP timer issues
-> > - commit 5c70eb5c593d ("net: better track kernel sockets lifetime")
-> >    in v6.14-rc5 introduced the net_passive mechanism with
-> >    sk_net_refcnt_upgrade() for proper socket conversion
-> > - commit 95d2b9f693ff ("Revert "smb: client: fix TCP timers deadlock
-> >    after rmmod"") in v6.15-rc3 reverted to manual refcount management
-> >    without adapting to the new net_passive changes
-> > 
-> 
-> 
-> Hi Greg,
-> 
-> This patch depends on the preceding patch 5c70eb5c593d ("net: better
-> track kernel sockets lifetime").
-> 
-> I have noticed that version 6.12.y has not imported this patch,
-> so I believe it should not be merged.
+From: Davide Caratti <dcaratti@redhat.com>
 
-This is in the 6.12-rc release as well, so all should be good.
+[ Upstream commit 454d3e1ae057a1e09a15905b06b860f60d6c14d0 ]
 
-thanks,
+leaf classes of ETS qdiscs are served in strict priority or deficit round
+robin (DRR), depending on the value of 'nstrict'. Since this value can be
+changed while traffic is running, we need to be sure that the active list
+of DRR classes can be updated at any time, so:
 
-greg k-h
+1) call INIT_LIST_HEAD(&alist) on all leaf classes in .init(), before the
+   first packet hits any of them.
+2) ensure that 'alist' is not overwritten with zeros when a leaf class is
+   no more strict priority nor DRR (i.e. array elements beyond 'nbands').
+
+Link: https://lore.kernel.org/netdev/YS%2FoZ+f0Nr8eQkzH@dcaratti.users.ipa.redhat.com
+Suggested-by: Cong Wang <cong.wang@bytedance.com>
+Signed-off-by: Davide Caratti <dcaratti@redhat.com>
+Signed-off-by: David S. Miller <davem@davemloft.net>
+Stable-dep-of: 87c6efc5ce9c ("net/sched: ets: use old 'nbands' while purging unused classes")
+Signed-off-by: Sasha Levin <sashal@kernel.org>
+---
+ net/sched/sch_ets.c | 12 +++++++++---
+ 1 file changed, 9 insertions(+), 3 deletions(-)
+
+diff --git a/net/sched/sch_ets.c b/net/sched/sch_ets.c
+index b49e1a977586..7bf6be69b3ee 100644
+--- a/net/sched/sch_ets.c
++++ b/net/sched/sch_ets.c
+@@ -666,7 +666,6 @@ static int ets_qdisc_change(struct Qdisc *sch, struct nlattr *opt,
+ 
+ 	q->nbands = nbands;
+ 	for (i = nstrict; i < q->nstrict; i++) {
+-		INIT_LIST_HEAD(&q->classes[i].alist);
+ 		if (q->classes[i].qdisc->q.qlen) {
+ 			list_add_tail(&q->classes[i].alist, &q->active);
+ 			q->classes[i].deficit = quanta[i];
+@@ -694,7 +693,11 @@ static int ets_qdisc_change(struct Qdisc *sch, struct nlattr *opt,
+ 	ets_offload_change(sch);
+ 	for (i = q->nbands; i < oldbands; i++) {
+ 		qdisc_put(q->classes[i].qdisc);
+-		memset(&q->classes[i], 0, sizeof(q->classes[i]));
++		q->classes[i].qdisc = NULL;
++		q->classes[i].quantum = 0;
++		q->classes[i].deficit = 0;
++		memset(&q->classes[i].bstats, 0, sizeof(q->classes[i].bstats));
++		memset(&q->classes[i].qstats, 0, sizeof(q->classes[i].qstats));
+ 	}
+ 	return 0;
+ }
+@@ -703,7 +706,7 @@ static int ets_qdisc_init(struct Qdisc *sch, struct nlattr *opt,
+ 			  struct netlink_ext_ack *extack)
+ {
+ 	struct ets_sched *q = qdisc_priv(sch);
+-	int err;
++	int err, i;
+ 
+ 	if (!opt)
+ 		return -EINVAL;
+@@ -713,6 +716,9 @@ static int ets_qdisc_init(struct Qdisc *sch, struct nlattr *opt,
+ 		return err;
+ 
+ 	INIT_LIST_HEAD(&q->active);
++	for (i = 0; i < TCQ_ETS_MAX_BANDS; i++)
++		INIT_LIST_HEAD(&q->classes[i].alist);
++
+ 	return ets_qdisc_change(sch, opt, extack);
+ }
+ 
+-- 
+2.50.1
+
 
