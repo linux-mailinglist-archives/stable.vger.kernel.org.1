@@ -1,47 +1,47 @@
-Return-Path: <stable+bounces-171862-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-171863-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id D724EB2D022
-	for <lists+stable@lfdr.de>; Wed, 20 Aug 2025 01:38:45 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 94B04B2D016
+	for <lists+stable@lfdr.de>; Wed, 20 Aug 2025 01:37:06 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 396AA170F11
-	for <lists+stable@lfdr.de>; Tue, 19 Aug 2025 23:37:00 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 2AF9672093B
+	for <lists+stable@lfdr.de>; Tue, 19 Aug 2025 23:37:03 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6205B270EC3;
-	Tue, 19 Aug 2025 23:36:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 45B58274B31;
+	Tue, 19 Aug 2025 23:36:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b="KEresYVN"
+	dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b="fuaT30MM"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1F932257458;
-	Tue, 19 Aug 2025 23:36:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0260F26D4CF;
+	Tue, 19 Aug 2025 23:36:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755646606; cv=none; b=efqh0Cc0upQBFfZa8paFZ9qAtDOp2uZMWLh3ctEIThpGQ9R4sJ0kRAge3+Ytn6Hx82VImZrrcpuTKfpm3mPvm8VNEYu90X4CHuex7gr2iWchfxDxR8N8Hz1D1dNmlgENXaZ1YQsFOfe2Mg6YMrHgWnzD2VJLXVuHcop02IcCUcA=
+	t=1755646610; cv=none; b=iPP+oepsj02Q9VGzeTZ2mW8y6NIyq7l9yU/QDnmUWWANpskRjFQmfmxB2aIQ1zcEjgCbwQdXibWpRNpmUH46s/nIcJlgkA7Nbn7eBoNLBoomJfi3gowdFkaohJs/2OMgHW4juiMk7bY5uOUzs1QdnYoQg/J7hHT5ikFRNSLzOPQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1755646606; c=relaxed/simple;
-	bh=NRpBQlbuwdTUSFW3B29tz6QhldYggfwgNqEHHxIoV1s=;
-	h=Date:To:From:Subject:Message-Id; b=PiKFqgp3/MAoC6bzwrzpSMLBqmYRLhzLAFClJNwW+BFGEMREZI8Eg6IHgJpP0aa5/4V/i/jHhYUctBUqo+v8xKrBIwzQWqqN6ZhgNl+TssiEbY7FGkqsHE79DaEKRFK5q3oT4Dp7Sg2NIVjloKZ55If6DWskNr7/opprLnPAjI4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b=KEresYVN; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E90E6C4CEF1;
-	Tue, 19 Aug 2025 23:36:45 +0000 (UTC)
+	s=arc-20240116; t=1755646610; c=relaxed/simple;
+	bh=W6lVDmC7k3dfeJD9qTL49bv0YyyrNitpbUggrRAzdcI=;
+	h=Date:To:From:Subject:Message-Id; b=jY1KDS9i6MZMsxeHVLcija3/83lfNje7+Q9RtQDftHDyGO5g1vilRjTzSVBq7yvVINNKMEL97i2AxOxJWblsDRQa7mQOOyi/BkXn9XFjzEJSJh8OtiKMRB9U+RB3z6OELXcOEquvKWMnRslc4Ufi/Z0SHdW0L9SLB3AgLpKnoJI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b=fuaT30MM; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C4C32C4CEF1;
+	Tue, 19 Aug 2025 23:36:49 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linux-foundation.org;
-	s=korg; t=1755646606;
-	bh=NRpBQlbuwdTUSFW3B29tz6QhldYggfwgNqEHHxIoV1s=;
+	s=korg; t=1755646609;
+	bh=W6lVDmC7k3dfeJD9qTL49bv0YyyrNitpbUggrRAzdcI=;
 	h=Date:To:From:Subject:From;
-	b=KEresYVNycwqYhQ3OrXWC5W5VlzgnJm3rOdor2KiIJRR0kVOOoJucfJDlw4UaE3tt
-	 RGuBW8/twdbTglcIgnv94WoAS1OhuwOtsmylaEp2YgLI8mF4X/bQk+P+98nIPpzGJV
-	 e/7ODy790Ibos+t9u25JnMD/GtTJB4358hxtb+RM=
-Date: Tue, 19 Aug 2025 16:36:45 -0700
-To: mm-commits@vger.kernel.org,willy@infradead.org,viro@zeniv.linux.org.uk,stable@vger.kernel.org,ryan@lahfa.xyz,maximilian@mbosch.me,dhowells@redhat.com,ct@flyingcircus.io,brauner@kernel.org,arnout@bzzt.net,asmadeus@codewreck.org,akpm@linux-foundation.org
+	b=fuaT30MMxZD7mLD8iK74CoRnHGc9hkq9CwTXRzA0agsTOhLcgfsYHiY7pQN/Twyb7
+	 YGS3ufT1jFRyqPZtirT0SDQqZ/dYMzGccO7AEyqPxtrnB66O+bVxYfmP4hTzBv5l2W
+	 WU4uoMBIWihswsTu1W5w3uyuIZQ9uWYmRXdYs8a4=
+Date: Tue, 19 Aug 2025 16:36:49 -0700
+To: mm-commits@vger.kernel.org,ziy@nvidia.com,xueshuai@linux.alibaba.com,wangkefeng.wang@huawei.com,stable@vger.kernel.org,osalvador@suse.de,nao.horiguchi@gmail.com,linmiaohe@huawei.com,jane.chu@oracle.com,david@redhat.com,tujinjiang@huawei.com,akpm@linux-foundation.org
 From: Andrew Morton <akpm@linux-foundation.org>
-Subject: [merged mm-hotfixes-stable] iov_iter-iterate_folioq-fix-handling-of-offset-=-folio-size.patch removed from -mm tree
-Message-Id: <20250819233645.E90E6C4CEF1@smtp.kernel.org>
+Subject: [merged mm-hotfixes-stable] mm-memory-failure-fix-infinite-uce-for-vm_pfnmap-pfn.patch removed from -mm tree
+Message-Id: <20250819233649.C4C32C4CEF1@smtp.kernel.org>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -50,94 +50,75 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 
 
 The quilt patch titled
-     Subject: iov_iter: iterate_folioq: fix handling of offset >= folio size
+     Subject: mm/memory-failure: fix infinite UCE for VM_PFNMAP pfn
 has been removed from the -mm tree.  Its filename was
-     iov_iter-iterate_folioq-fix-handling-of-offset-=-folio-size.patch
+     mm-memory-failure-fix-infinite-uce-for-vm_pfnmap-pfn.patch
 
 This patch was dropped because it was merged into the mm-hotfixes-stable branch
 of git://git.kernel.org/pub/scm/linux/kernel/git/akpm/mm
 
 ------------------------------------------------------
-From: Dominique Martinet <asmadeus@codewreck.org>
-Subject: iov_iter: iterate_folioq: fix handling of offset >= folio size
-Date: Wed, 13 Aug 2025 15:04:55 +0900
+From: Jinjiang Tu <tujinjiang@huawei.com>
+Subject: mm/memory-failure: fix infinite UCE for VM_PFNMAP pfn
+Date: Fri, 15 Aug 2025 15:32:09 +0800
 
-It's apparently possible to get an iov advanced all the way up to the end
-of the current page we're looking at, e.g.
+When memory_failure() is called for a already hwpoisoned pfn,
+kill_accessing_process() will be called to kill current task.  However, if
+the vma of the accessing vaddr is VM_PFNMAP, walk_page_range() will skip
+the vma in walk_page_test() and return 0.
 
-(gdb) p *iter
-$24 = {iter_type = 4 '\004', nofault = false, data_source = false, iov_offset = 4096, {__ubuf_iovec = {
-      iov_base = 0xffff88800f5bc000, iov_len = 655}, {{__iov = 0xffff88800f5bc000, kvec = 0xffff88800f5bc000,
-        bvec = 0xffff88800f5bc000, folioq = 0xffff88800f5bc000, xarray = 0xffff88800f5bc000,
-        ubuf = 0xffff88800f5bc000}, count = 655}}, {nr_segs = 2, folioq_slot = 2 '\002', xarray_start = 2}}
+Before commit aaf99ac2ceb7 ("mm/hwpoison: do not send SIGBUS to processes
+with recovered clean pages"), kill_accessing_process() will return EFAULT.
+For x86, the current task will be killed in kill_me_maybe().
 
-Where iov_offset is 4k with 4k-sized folios
+However, after this commit, kill_accessing_process() simplies return 0,
+that means UCE is handled properly, but it doesn't actually.  In such
+case, the user task will trigger UCE infinitely.
 
-This should have been fine because we're only in the 2nd slot and there's
-another one after this, but iterate_folioq should not try to map a folio
-that skips the whole size, and more importantly part here does not end up
-zero (because 'PAGE_SIZE - skip % PAGE_SIZE' ends up PAGE_SIZE and not
-zero..), so skip forward to the "advance to next folio" code
+To fix it, add .test_walk callback for hwpoison_walk_ops to scan all vmas.
 
-Link: https://lkml.kernel.org/r/20250813-iot_iter_folio-v3-0-a0ffad2b665a@codewreck.org
-Link: https://lkml.kernel.org/r/20250813-iot_iter_folio-v3-1-a0ffad2b665a@codewreck.org
-Signed-off-by: Dominique Martinet <asmadeus@codewreck.org>
-Fixes: db0aa2e9566f ("mm: Define struct folio_queue and ITER_FOLIOQ to handle a sequence of folios")
-Reported-by: Maximilian Bosch <maximilian@mbosch.me>
-Reported-by: Ryan Lahfa <ryan@lahfa.xyz>
-Reported-by: Christian Theune <ct@flyingcircus.io>
-Reported-by: Arnout Engelen <arnout@bzzt.net>
-Link: https://lkml.kernel.org/r/D4LHHUNLG79Y.12PI0X6BEHRHW@mbosch.me/
-Acked-by: David Howells <dhowells@redhat.com>
-Cc: Al Viro <viro@zeniv.linux.org.uk>
-Cc: Christian Brauner <brauner@kernel.org>
-Cc: Matthew Wilcox (Oracle) <willy@infradead.org>
-Cc: <stable@vger.kernel.org>	[6.12+]
+Link: https://lkml.kernel.org/r/20250815073209.1984582-1-tujinjiang@huawei.com
+Fixes: aaf99ac2ceb7 ("mm/hwpoison: do not send SIGBUS to processes with recovered clean pages")
+Signed-off-by: Jinjiang Tu <tujinjiang@huawei.com>
+Acked-by: David Hildenbrand <david@redhat.com>
+Acked-by: Miaohe Lin <linmiaohe@huawei.com>
+Reviewed-by: Jane Chu <jane.chu@oracle.com>
+Cc: Kefeng Wang <wangkefeng.wang@huawei.com>
+Cc: Naoya Horiguchi <nao.horiguchi@gmail.com>
+Cc: Oscar Salvador <osalvador@suse.de>
+Cc: Shuai Xue <xueshuai@linux.alibaba.com>
+Cc: Zi Yan <ziy@nvidia.com>
+Cc: <stable@vger.kernel.org>
 Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
 ---
 
- include/linux/iov_iter.h |   20 +++++++++++---------
- 1 file changed, 11 insertions(+), 9 deletions(-)
+ mm/memory-failure.c |    8 ++++++++
+ 1 file changed, 8 insertions(+)
 
---- a/include/linux/iov_iter.h~iov_iter-iterate_folioq-fix-handling-of-offset-=-folio-size
-+++ a/include/linux/iov_iter.h
-@@ -160,7 +160,7 @@ size_t iterate_folioq(struct iov_iter *i
+--- a/mm/memory-failure.c~mm-memory-failure-fix-infinite-uce-for-vm_pfnmap-pfn
++++ a/mm/memory-failure.c
+@@ -853,9 +853,17 @@ static int hwpoison_hugetlb_range(pte_t
+ #define hwpoison_hugetlb_range	NULL
+ #endif
  
- 	do {
- 		struct folio *folio = folioq_folio(folioq, slot);
--		size_t part, remain, consumed;
-+		size_t part, remain = 0, consumed;
- 		size_t fsize;
- 		void *base;
++static int hwpoison_test_walk(unsigned long start, unsigned long end,
++			     struct mm_walk *walk)
++{
++	/* We also want to consider pages mapped into VM_PFNMAP. */
++	return 0;
++}
++
+ static const struct mm_walk_ops hwpoison_walk_ops = {
+ 	.pmd_entry = hwpoison_pte_range,
+ 	.hugetlb_entry = hwpoison_hugetlb_range,
++	.test_walk = hwpoison_test_walk,
+ 	.walk_lock = PGWALK_RDLOCK,
+ };
  
-@@ -168,14 +168,16 @@ size_t iterate_folioq(struct iov_iter *i
- 			break;
- 
- 		fsize = folioq_folio_size(folioq, slot);
--		base = kmap_local_folio(folio, skip);
--		part = umin(len, PAGE_SIZE - skip % PAGE_SIZE);
--		remain = step(base, progress, part, priv, priv2);
--		kunmap_local(base);
--		consumed = part - remain;
--		len -= consumed;
--		progress += consumed;
--		skip += consumed;
-+		if (skip < fsize) {
-+			base = kmap_local_folio(folio, skip);
-+			part = umin(len, PAGE_SIZE - skip % PAGE_SIZE);
-+			remain = step(base, progress, part, priv, priv2);
-+			kunmap_local(base);
-+			consumed = part - remain;
-+			len -= consumed;
-+			progress += consumed;
-+			skip += consumed;
-+		}
- 		if (skip >= fsize) {
- 			skip = 0;
- 			slot++;
 _
 
-Patches currently in -mm which might be from asmadeus@codewreck.org are
+Patches currently in -mm which might be from tujinjiang@huawei.com are
 
+mm-memory_hotplug-fix-hwpoisoned-large-folio-handling-in-do_migrate_range.patch
 
 
