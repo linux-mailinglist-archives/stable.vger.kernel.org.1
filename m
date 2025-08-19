@@ -1,182 +1,200 @@
-Return-Path: <stable+bounces-171743-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-171744-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id C597CB2B78C
-	for <lists+stable@lfdr.de>; Tue, 19 Aug 2025 05:32:02 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 33D9AB2B7A9
+	for <lists+stable@lfdr.de>; Tue, 19 Aug 2025 05:36:18 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 800745E4BF3
-	for <lists+stable@lfdr.de>; Tue, 19 Aug 2025 03:32:01 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 6BFC84E4543
+	for <lists+stable@lfdr.de>; Tue, 19 Aug 2025 03:35:06 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 608701E633C;
-	Tue, 19 Aug 2025 03:31:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 014CE2E36E6;
+	Tue, 19 Aug 2025 03:34:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="q1WYnG5L"
+	dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b="gLNptCX2"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1FBE813FEE
-	for <stable@vger.kernel.org>; Tue, 19 Aug 2025 03:31:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 88F632BCF5;
+	Tue, 19 Aug 2025 03:34:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755574318; cv=none; b=kM0VnlqMZxFdH1W8fyPo2ZYTCsyQMyqNCQbEimQfggtAq8N227I4XQGVWrgC/0ZD7ExxRSXngq07e+vNcZU4xFz0ez1J1K2O3ELw2A+f1Pt/nkSWvbS08ooaTdxPBN/hRYthW0IeIgBrdJI88UjQFmuXCHCGK57WW/TkjHvzXY4=
+	t=1755574466; cv=none; b=cVF6oOUO9oi7M1iAecfUNJNmthFDD1BeNGaPkXh1TSzobj27rbbTraQjZCXAnqUhjPqS2kV/mEujOk4ofL55usbeNygibn2/DHX0afQ42YIci+4Pofm403FqA/MM1L7TWWgNd1vJhDXWdCe4020IpghfwJMUm1wXHiKTbZLsw5U=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1755574318; c=relaxed/simple;
-	bh=fn52jAL4GaE3j+WnAeYqINdjD4ysPlChdL9DN111pSk=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=np4LAA4GN7yZxMAaUeY4+HuI8U4QaqUlbj9k7OCcDdzD1tDKi46zUDAxJxSIMlprTkr3WJl9XcruqanxoEx2yjQwb/DyNivhK+wpeZK98M7m8BUX4fgjqxehFgGSh2rBryn3LZoJKzy/W2QMdUixOWKRz7T5jKhF84raXWL1nfM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=q1WYnG5L; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id ED64BC116D0;
-	Tue, 19 Aug 2025 03:31:56 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1755574317;
-	bh=fn52jAL4GaE3j+WnAeYqINdjD4ysPlChdL9DN111pSk=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=q1WYnG5L7OFAg46I4rVPbS+JJBlPlpY8Zq/1zbi7DB0ZNULZ1lufhfwSb299BJfoK
-	 /UoMCKpT+WPKX/NAs86BQ/uqS0DvFHq+FIbCnR68MbqAKT/ifuZkytniZ5R2dc6hvY
-	 HbSx8S2Pdoi0vtBNmgU0DKwgfua6wyQDuqENOplW+rpeeDhvlpg/pOxI7cxVqWyS3M
-	 WK+GH+UvOwQDSKrivHKD2VD/63OrUdkQ0m31A4whlNvJdQNdRyzWjccD2+HUGUAXMR
-	 rF0n8y7HdKiYmGAuR/LPdKQ0voX9nsiid9GQZHh+1QzmyzbSL1ZuczJa4KJTUIckoS
-	 qjvTEAGTiVNkw==
-From: Sasha Levin <sashal@kernel.org>
-To: stable@vger.kernel.org
-Cc: Davide Caratti <dcaratti@redhat.com>,
-	Li Shuang <shuali@redhat.com>,
-	Petr Machata <petrm@nvidia.com>,
-	Ivan Vecera <ivecera@redhat.com>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6.y 2/2] net/sched: ets: use old 'nbands' while purging unused classes
-Date: Mon, 18 Aug 2025 23:31:53 -0400
-Message-ID: <20250819033153.315415-2-sashal@kernel.org>
-X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250819033153.315415-1-sashal@kernel.org>
-References: <2025081854-registry-sled-ea48@gregkh>
- <20250819033153.315415-1-sashal@kernel.org>
+	s=arc-20240116; t=1755574466; c=relaxed/simple;
+	bh=klzF5qd30JB4jj1RgGdOi/FNVQPar4CEUTUmYgzfUUs=;
+	h=Date:To:From:Subject:Message-Id; b=LQBUlifbx0BmI4q2PCSn215eW3K4ikqhc9rF+dLDD80lboaXCV3BbxQ92SOW11pDEsaPvl4wJEHmJ56ZNmashHIOdAgIbjCHmndzE1e3Y0nFzeNdH8l1cM7vSuo1UjUCi8bc+blH1SFEgwj6luo+ZYDXMCvMf8bquN9zT+z5xKE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b=gLNptCX2; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id DE7D1C4CEF4;
+	Tue, 19 Aug 2025 03:34:25 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linux-foundation.org;
+	s=korg; t=1755574466;
+	bh=klzF5qd30JB4jj1RgGdOi/FNVQPar4CEUTUmYgzfUUs=;
+	h=Date:To:From:Subject:From;
+	b=gLNptCX2hP6ywMVgeRPdSnXXZzWf32H0EQr4lAFHRXnGDrP2OEyyEpggv6Q+lBqyg
+	 jdjWPC6ZsVUk8gaxX3+abWFCOqKZA8w1Z8r3sf6vM+dEZVzZ9KCakDeBK40vOLTWNf
+	 55vvcqBA8zJ/+8jTAIJ5NF9WC4qTUayMoQFWU+eo=
+Date: Mon, 18 Aug 2025 20:34:25 -0700
+To: mm-commits@vger.kernel.org,viro@zeniv.linux.org.uk,stable@vger.kernel.org,rick.p.edgecombe@intel.com,polynomial-c@gmx.de,k.shutemov@gmail.com,jirislaby@kernel.org,gregkh@linuxfoundation.org,ast@kernel.org,adobriyan@gmail.com,wangzijie1@honor.com,akpm@linux-foundation.org
+From: Andrew Morton <akpm@linux-foundation.org>
+Subject: + proc-fix-missing-pde_set_flags-for-net-proc-files.patch added to mm-hotfixes-unstable branch
+Message-Id: <20250819033425.DE7D1C4CEF4@smtp.kernel.org>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
 
-From: Davide Caratti <dcaratti@redhat.com>
 
-[ Upstream commit 87c6efc5ce9c126ae4a781bc04504b83780e3650 ]
+The patch titled
+     Subject: proc: fix missing pde_set_flags() for net proc files
+has been added to the -mm mm-hotfixes-unstable branch.  Its filename is
+     proc-fix-missing-pde_set_flags-for-net-proc-files.patch
 
-Shuang reported sch_ets test-case [1] crashing in ets_class_qlen_notify()
-after recent changes from Lion [2]. The problem is: in ets_qdisc_change()
-we purge unused DWRR queues; the value of 'q->nbands' is the new one, and
-the cleanup should be done with the old one. The problem is here since my
-first attempts to fix ets_qdisc_change(), but it surfaced again after the
-recent qdisc len accounting fixes. Fix it purging idle DWRR queues before
-assigning a new value of 'q->nbands', so that all purge operations find a
-consistent configuration:
+This patch will shortly appear at
+     https://git.kernel.org/pub/scm/linux/kernel/git/akpm/25-new.git/tree/patches/proc-fix-missing-pde_set_flags-for-net-proc-files.patch
 
- - old 'q->nbands' because it's needed by ets_class_find()
- - old 'q->nstrict' because it's needed by ets_class_is_strict()
+This patch will later appear in the mm-hotfixes-unstable branch at
+    git://git.kernel.org/pub/scm/linux/kernel/git/akpm/mm
 
- BUG: kernel NULL pointer dereference, address: 0000000000000000
- #PF: supervisor read access in kernel mode
- #PF: error_code(0x0000) - not-present page
- PGD 0 P4D 0
- Oops: Oops: 0000 [#1] SMP NOPTI
- CPU: 62 UID: 0 PID: 39457 Comm: tc Kdump: loaded Not tainted 6.12.0-116.el10.x86_64 #1 PREEMPT(voluntary)
- Hardware name: Dell Inc. PowerEdge R640/06DKY5, BIOS 2.12.2 07/09/2021
- RIP: 0010:__list_del_entry_valid_or_report+0x4/0x80
- Code: ff 4c 39 c7 0f 84 39 19 8e ff b8 01 00 00 00 c3 cc cc cc cc 66 90 90 90 90 90 90 90 90 90 90 90 90 90 90 90 90 90 f3 0f 1e fa <48> 8b 17 48 8b 4f 08 48 85 d2 0f 84 56 19 8e ff 48 85 c9 0f 84 ab
- RSP: 0018:ffffba186009f400 EFLAGS: 00010202
- RAX: 00000000000000d6 RBX: 0000000000000000 RCX: 0000000000000004
- RDX: ffff9f0fa29b69c0 RSI: 0000000000000000 RDI: 0000000000000000
- RBP: ffffffffc12c2400 R08: 0000000000000008 R09: 0000000000000004
- R10: ffffffffffffffff R11: 0000000000000004 R12: 0000000000000000
- R13: ffff9f0f8cfe0000 R14: 0000000000100005 R15: 0000000000000000
- FS:  00007f2154f37480(0000) GS:ffff9f269c1c0000(0000) knlGS:0000000000000000
- CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
- CR2: 0000000000000000 CR3: 00000001530be001 CR4: 00000000007726f0
- DR0: 0000000000000000 DR1: 0000000000000000 DR2: 0000000000000000
- DR3: 0000000000000000 DR6: 00000000fffe0ff0 DR7: 0000000000000400
- PKRU: 55555554
- Call Trace:
-  <TASK>
-  ets_class_qlen_notify+0x65/0x90 [sch_ets]
-  qdisc_tree_reduce_backlog+0x74/0x110
-  ets_qdisc_change+0x630/0xa40 [sch_ets]
-  __tc_modify_qdisc.constprop.0+0x216/0x7f0
-  tc_modify_qdisc+0x7c/0x120
-  rtnetlink_rcv_msg+0x145/0x3f0
-  netlink_rcv_skb+0x53/0x100
-  netlink_unicast+0x245/0x390
-  netlink_sendmsg+0x21b/0x470
-  ____sys_sendmsg+0x39d/0x3d0
-  ___sys_sendmsg+0x9a/0xe0
-  __sys_sendmsg+0x7a/0xd0
-  do_syscall_64+0x7d/0x160
-  entry_SYSCALL_64_after_hwframe+0x76/0x7e
- RIP: 0033:0x7f2155114084
- Code: 89 02 b8 ff ff ff ff eb bb 66 2e 0f 1f 84 00 00 00 00 00 0f 1f 00 f3 0f 1e fa 80 3d 25 f0 0c 00 00 74 13 b8 2e 00 00 00 0f 05 <48> 3d 00 f0 ff ff 77 54 c3 0f 1f 00 48 83 ec 28 89 54 24 1c 48 89
- RSP: 002b:00007fff1fd7a988 EFLAGS: 00000202 ORIG_RAX: 000000000000002e
- RAX: ffffffffffffffda RBX: 0000560ec063e5e0 RCX: 00007f2155114084
- RDX: 0000000000000000 RSI: 00007fff1fd7a9f0 RDI: 0000000000000003
- RBP: 00007fff1fd7aa60 R08: 0000000000000010 R09: 000000000000003f
- R10: 0000560ee9b3a010 R11: 0000000000000202 R12: 00007fff1fd7aae0
- R13: 000000006891ccde R14: 0000560ec063e5e0 R15: 00007fff1fd7aad0
-  </TASK>
+Before you just go and hit "reply", please:
+   a) Consider who else should be cc'ed
+   b) Prefer to cc a suitable mailing list as well
+   c) Ideally: find the original patch on the mailing list and do a
+      reply-to-all to that, adding suitable additional cc's
 
- [1] https://lore.kernel.org/netdev/e08c7f4a6882f260011909a868311c6e9b54f3e4.1639153474.git.dcaratti@redhat.com/
- [2] https://lore.kernel.org/netdev/d912cbd7-193b-4269-9857-525bee8bbb6a@gmail.com/
+*** Remember to use Documentation/process/submit-checklist.rst when testing your code ***
 
-Cc: stable@vger.kernel.org
-Fixes: 103406b38c60 ("net/sched: Always pass notifications when child class becomes empty")
-Fixes: c062f2a0b04d ("net/sched: sch_ets: don't remove idle classes from the round-robin list")
-Fixes: dcc68b4d8084 ("net: sch_ets: Add a new Qdisc")
-Reported-by: Li Shuang <shuali@redhat.com>
-Closes: https://issues.redhat.com/browse/RHEL-108026
-Reviewed-by: Petr Machata <petrm@nvidia.com>
-Co-developed-by: Ivan Vecera <ivecera@redhat.com>
-Signed-off-by: Ivan Vecera <ivecera@redhat.com>
-Signed-off-by: Davide Caratti <dcaratti@redhat.com>
-Link: https://patch.msgid.link/7928ff6d17db47a2ae7cc205c44777b1f1950545.1755016081.git.dcaratti@redhat.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+The -mm tree is included into linux-next via the mm-everything
+branch at git://git.kernel.org/pub/scm/linux/kernel/git/akpm/mm
+and is updated there every 2-3 working days
+
+------------------------------------------------------
+From: wangzijie <wangzijie1@honor.com>
+Subject: proc: fix missing pde_set_flags() for net proc files
+Date: Mon, 18 Aug 2025 20:31:02 +0800
+
+To avoid potential UAF issues during module removal races, we use
+pde_set_flags() to save proc_ops flags in PDE itself before
+proc_register(), and then use pde_has_proc_*() helpers instead of directly
+dereferencing pde->proc_ops->*.
+
+However, the pde_set_flags() call was missing when creating net related
+proc files.  This omission caused incorrect behavior which FMODE_LSEEK was
+being cleared inappropriately in proc_reg_open() for net proc files.  Lars
+reported it in this link[1].
+
+Fix this by ensuring pde_set_flags() is called when register proc entry,
+and add NULL check for proc_ops in pde_set_flags().
+
+[1]: https://lore.kernel.org/all/20250815195616.64497967@chagall.paradoxon.rec/
+
+Link: https://lkml.kernel.org/r/20250818123102.959595-1-wangzijie1@honor.com
+Fixes: ff7ec8dc1b64 ("proc: use the same treatment to check proc_lseek as ones for proc_read_iter et.al)
+Signed-off-by: wangzijie <wangzijie1@honor.com>
+Reported-by: Lars Wendler <polynomial-c@gmx.de>
+Cc: Alexei Starovoitov <ast@kernel.org>
+Cc: Alexey Dobriyan <adobriyan@gmail.com>
+Cc: Al Viro <viro@zeniv.linux.org.uk>
+Cc: "Edgecombe, Rick P" <rick.p.edgecombe@intel.com>
+Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Cc: Jiri Slaby <jirislaby@kernel.org>
+Cc: Kirill A. Shutemov <k.shutemov@gmail.com>
+Cc: wangzijie <wangzijie1@honor.com>
+Cc: <stable@vger.kernel.org>
+Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
 ---
- net/sched/sch_ets.c | 11 ++++++-----
- 1 file changed, 6 insertions(+), 5 deletions(-)
 
-diff --git a/net/sched/sch_ets.c b/net/sched/sch_ets.c
-index 93469bc337d6..9873f4ae90c3 100644
---- a/net/sched/sch_ets.c
-+++ b/net/sched/sch_ets.c
-@@ -651,6 +651,12 @@ static int ets_qdisc_change(struct Qdisc *sch, struct nlattr *opt,
+ fs/proc/generic.c |   36 +++++++++++++++++++-----------------
+ 1 file changed, 19 insertions(+), 17 deletions(-)
+
+--- a/fs/proc/generic.c~proc-fix-missing-pde_set_flags-for-net-proc-files
++++ a/fs/proc/generic.c
+@@ -367,6 +367,23 @@ static const struct inode_operations pro
+ 	.setattr	= proc_notify_change,
+ };
  
- 	sch_tree_lock(sch);
- 
-+	for (i = nbands; i < oldbands; i++) {
-+		if (i >= q->nstrict && q->classes[i].qdisc->q.qlen)
-+			list_del_init(&q->classes[i].alist);
-+		qdisc_purge_queue(q->classes[i].qdisc);
-+	}
++static void pde_set_flags(struct proc_dir_entry *pde)
++{
++	if (!pde->proc_ops)
++		return;
 +
- 	WRITE_ONCE(q->nbands, nbands);
- 	for (i = nstrict; i < q->nstrict; i++) {
- 		if (q->classes[i].qdisc->q.qlen) {
-@@ -658,11 +664,6 @@ static int ets_qdisc_change(struct Qdisc *sch, struct nlattr *opt,
- 			q->classes[i].deficit = quanta[i];
- 		}
- 	}
--	for (i = q->nbands; i < oldbands; i++) {
--		if (i >= q->nstrict && q->classes[i].qdisc->q.qlen)
--			list_del_init(&q->classes[i].alist);
--		qdisc_purge_queue(q->classes[i].qdisc);
--	}
- 	WRITE_ONCE(q->nstrict, nstrict);
- 	memcpy(q->prio2band, priomap, sizeof(priomap));
++	if (pde->proc_ops->proc_flags & PROC_ENTRY_PERMANENT)
++		pde->flags |= PROC_ENTRY_PERMANENT;
++	if (pde->proc_ops->proc_read_iter)
++		pde->flags |= PROC_ENTRY_proc_read_iter;
++#ifdef CONFIG_COMPAT
++	if (pde->proc_ops->proc_compat_ioctl)
++		pde->flags |= PROC_ENTRY_proc_compat_ioctl;
++#endif
++	if (pde->proc_ops->proc_lseek)
++		pde->flags |= PROC_ENTRY_proc_lseek;
++}
++
+ /* returns the registered entry, or frees dp and returns NULL on failure */
+ struct proc_dir_entry *proc_register(struct proc_dir_entry *dir,
+ 		struct proc_dir_entry *dp)
+@@ -374,6 +391,8 @@ struct proc_dir_entry *proc_register(str
+ 	if (proc_alloc_inum(&dp->low_ino))
+ 		goto out_free_entry;
  
--- 
-2.50.1
++	pde_set_flags(dp);
++
+ 	write_lock(&proc_subdir_lock);
+ 	dp->parent = dir;
+ 	if (pde_subdir_insert(dir, dp) == false) {
+@@ -561,20 +580,6 @@ struct proc_dir_entry *proc_create_reg(c
+ 	return p;
+ }
+ 
+-static void pde_set_flags(struct proc_dir_entry *pde)
+-{
+-	if (pde->proc_ops->proc_flags & PROC_ENTRY_PERMANENT)
+-		pde->flags |= PROC_ENTRY_PERMANENT;
+-	if (pde->proc_ops->proc_read_iter)
+-		pde->flags |= PROC_ENTRY_proc_read_iter;
+-#ifdef CONFIG_COMPAT
+-	if (pde->proc_ops->proc_compat_ioctl)
+-		pde->flags |= PROC_ENTRY_proc_compat_ioctl;
+-#endif
+-	if (pde->proc_ops->proc_lseek)
+-		pde->flags |= PROC_ENTRY_proc_lseek;
+-}
+-
+ struct proc_dir_entry *proc_create_data(const char *name, umode_t mode,
+ 		struct proc_dir_entry *parent,
+ 		const struct proc_ops *proc_ops, void *data)
+@@ -585,7 +590,6 @@ struct proc_dir_entry *proc_create_data(
+ 	if (!p)
+ 		return NULL;
+ 	p->proc_ops = proc_ops;
+-	pde_set_flags(p);
+ 	return proc_register(parent, p);
+ }
+ EXPORT_SYMBOL(proc_create_data);
+@@ -636,7 +640,6 @@ struct proc_dir_entry *proc_create_seq_p
+ 	p->proc_ops = &proc_seq_ops;
+ 	p->seq_ops = ops;
+ 	p->state_size = state_size;
+-	pde_set_flags(p);
+ 	return proc_register(parent, p);
+ }
+ EXPORT_SYMBOL(proc_create_seq_private);
+@@ -667,7 +670,6 @@ struct proc_dir_entry *proc_create_singl
+ 		return NULL;
+ 	p->proc_ops = &proc_single_ops;
+ 	p->single_show = show;
+-	pde_set_flags(p);
+ 	return proc_register(parent, p);
+ }
+ EXPORT_SYMBOL(proc_create_single_data);
+_
+
+Patches currently in -mm which might be from wangzijie1@honor.com are
+
+proc-fix-missing-pde_set_flags-for-net-proc-files.patch
 
 
