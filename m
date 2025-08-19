@@ -1,137 +1,155 @@
-Return-Path: <stable+bounces-171820-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-171821-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 13731B2C977
-	for <lists+stable@lfdr.de>; Tue, 19 Aug 2025 18:24:42 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7780EB2C979
+	for <lists+stable@lfdr.de>; Tue, 19 Aug 2025 18:24:48 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 9CA3D5C29F1
-	for <lists+stable@lfdr.de>; Tue, 19 Aug 2025 16:22:58 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id BBFCB7BA36C
+	for <lists+stable@lfdr.de>; Tue, 19 Aug 2025 16:22:59 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id BCDBF2580F3;
-	Tue, 19 Aug 2025 16:22:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6252C24A043;
+	Tue, 19 Aug 2025 16:24:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="Xwb1rpT4"
+	dkim=pass (2048-bit key) header.d=gmx.de header.i=rwarsow@gmx.de header.b="GnVunnZQ"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-qv1-f45.google.com (mail-qv1-f45.google.com [209.85.219.45])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mout.gmx.net (mout.gmx.net [212.227.17.21])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0779825742C;
-	Tue, 19 Aug 2025 16:22:30 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.219.45
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1243322FDEC;
+	Tue, 19 Aug 2025 16:24:17 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=212.227.17.21
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755620553; cv=none; b=lh3g6LNdIzFMkpowSAcdu8AdCC+K7aHCueLACx4qO8pEN7kVNlpiOZ8mL4cVLcpZqI0ZQXfTVKIIM94zAkE6YU7pUeQ60sEum//S+uGMXIkkCDuoLwrHR8lcKdrRszLLEuMSxzhze5fRa1R5dWvkijln+Zpn/J0vVSsvkaU44G0=
+	t=1755620660; cv=none; b=PZsWs+iFv3UJlZKJqD8tN26dc8y4pV6BiDnunCxkycnShar/f0wUV39IfBr3k8INgdRR4i7D4B+svY1Bd7GJguhHc9P3wEVf4MULc51nIxBxaFJYwj1vdvMH4ckK127pneSybxok/93RGbGtFqguTFI5dLR31/qMtW8JHFF3L4Q=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1755620553; c=relaxed/simple;
-	bh=DK+G00MTC6IEA0l14sAqCIguKVjz1FSApDz4hMHCrRU=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=NIBtFxuNXcZmD6jKurwKR0lXQJZAKjATDAEB+w5KR/wx0mHxgjyx7icvEohGZ14Ax+OdGI0Hhj1BgyX3v4Yn9j5rEjyvbqyfN60HSbCM1s0g6uXL9Ei43cvn/eSTufYoaLoH9YZ2VfKzVAhafnH7r+hB7oO0PDUoNYpNF2Vky14=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=Xwb1rpT4; arc=none smtp.client-ip=209.85.219.45
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-qv1-f45.google.com with SMTP id 6a1803df08f44-70a9f556d65so43160106d6.2;
-        Tue, 19 Aug 2025 09:22:30 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1755620550; x=1756225350; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=phTspbikDXoNyfPxHuBq2N0+fGYwriMvgatS5/gXfiI=;
-        b=Xwb1rpT41zlevZMKb3VBUFe0YgGZ53y1uW6mMqR7kX2rarFZTZWgdP28NV6ZnLGR+8
-         oc3kApkpMC9IF2D34iju/vw0v2sKWcrQlKvjpZ7+2p5baoKPwqHyWp+SCsiUBA+kXCb8
-         8aULyAaQzgvcdqzkZXtEULnbrY8eGcUmplUJioFhiwBnXmhucn3OZULMT6TV6+ujAvZB
-         IbOliVpxvz7aA3N7hteUYbVLs3hBLmMWOApjN0sRgFdy9wYIMrVeuOgKDU132l+pS7P8
-         9c8VdsirMeuzmTgnNhwouwaPbJ2B5RXS7sbMDaB+Cts8SlVwyEIURsgc6JwLoWYMcf0B
-         IB+w==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1755620550; x=1756225350;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=phTspbikDXoNyfPxHuBq2N0+fGYwriMvgatS5/gXfiI=;
-        b=ZyeOu0N7xxdZEcBP9xGrqPpIMPtl8ES3qXsjrIwvurPyLCf9GhMH4txAOzocyVji7I
-         CAgM8Rh9YYIJqWaaHzKj3r3roZcaGS0IoCwCFhfW+WY3yzBwuYI+CHWTIP7nAotMFk1O
-         MLzjTjIKKmK0DdKKb7JJkk3SmkaEtWYjAoRVFvC+uWmpdJTsKO0JWeUU38eORd2SBR1x
-         sTnzdu+ifGbDucWinfVDBNkFc/DZP/4g49rbgg9IHmRlA+2s5WDb390bxz0htD1IOB5x
-         uraUfGRvHLb4A4P+kvSSNaKdSUAMghsjPFBpp7AvutJBjdE4G84JC1aBWX6jZuTGrQAK
-         aTvQ==
-X-Forwarded-Encrypted: i=1; AJvYcCUkEWvMbiH8UJO2S/+C2BI2RCzu8Whkz9srjPBHVPlaeRJcJJOMvzxyBFrgrq+3RXDDrHanajYh@vger.kernel.org, AJvYcCV6O0bvoJqgxSg5mpij70p38nh+YQZYqhv6y8Jha4iieR4R75BQWfEK0RX72Zv7uVkg4+eLVc2fjV63UTU7@vger.kernel.org, AJvYcCVyNybhSBKWblx+nzPfuPi7N42OnkIAw7Aq9tDzaxPO8LtgwzsDjidpl7alWV3OtIIrEvc+75Ne5LIbDafMbQ==@vger.kernel.org, AJvYcCWHLnhuLjNV3KLRaFViIcm1zw7jbNzcrLsHdsufwyIyxFe2AqnqMj9Sc2bjnuLBV1+BsbTOsY0HGlfa@vger.kernel.org
-X-Gm-Message-State: AOJu0Yzyz7oJPiNYIK0DH8dYCo0FU9ENY7zx7L/rovLWOeMci9BmHxD5
-	KG/k4tZhGCdL+FnLEHOOrSX5A876ucdImImGFugVnqxBq3m+qeiAAmOzFlk3m1gnHE4ZdllMbcZ
-	HMY6Ut1TUaXDIzKSCRPkkjQx0LtplmQ4=
-X-Gm-Gg: ASbGncsWVPFUaKzcvV5A6SJudMm2RU+UUn9wvaNLigUE7l7ZR8yybNW4SKxFStdtfFG
-	2t/ysgtT6rJAVX1MDYFZIi002YV501jiF/B4ncz3U39G3AecigiL3/axS272Ad3JA7HdUCNq4bj
-	W8tINsXTD3c8srOMzBbLy/CJKJLlQAspOzaLjtMemVV1YUEiOD+SpwvwSILRW5z/1XkTNyIwNmh
-	u4CfZIDqfwjRTdVzM4/kG6CSSpVJKcy90ixj42ZjJxRN3+niJU=
-X-Google-Smtp-Source: AGHT+IE5gDw665mp62jMJfp1L2Q9tLdJaFXr4f6/P9JWF9HBc/OxhbBB+bGeSjIntXuGiItqxA4ZmCiHgjWs4ESpHDA=
-X-Received: by 2002:a05:6214:20e7:b0:709:d70e:adcc with SMTP id
- 6a1803df08f44-70c2b67205fmr32393756d6.15.1755620549650; Tue, 19 Aug 2025
- 09:22:29 -0700 (PDT)
+	s=arc-20240116; t=1755620660; c=relaxed/simple;
+	bh=W5ID3OY7yfWGGgbtnZevjVWj3uINdDq2sxdewYF9kdo=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=BHH+eT1pSQWfCSGzN4CwNnLuZ1Mdp6xeT2Si3ZVX+shHPKWCuvBUBvgpLmrc1hUWk7Ol1GD/pK16B7wOo9BHY3pnIE9aYdjOGn3ISqevQgFRPqvE8S8RvXtyTvxK7zH6v37OaWitE3daxHwDOUYk/TcIHl8m/vlDUNeKUH/DPFM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=gmx.de; spf=pass smtp.mailfrom=gmx.de; dkim=pass (2048-bit key) header.d=gmx.de header.i=rwarsow@gmx.de header.b=GnVunnZQ; arc=none smtp.client-ip=212.227.17.21
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=gmx.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmx.de
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gmx.de;
+	s=s31663417; t=1755620612; x=1756225412; i=rwarsow@gmx.de;
+	bh=W5ID3OY7yfWGGgbtnZevjVWj3uINdDq2sxdewYF9kdo=;
+	h=X-UI-Sender-Class:Message-ID:Date:MIME-Version:Subject:To:Cc:
+	 References:From:In-Reply-To:Content-Type:
+	 Content-Transfer-Encoding:cc:content-transfer-encoding:
+	 content-type:date:from:message-id:mime-version:reply-to:subject:
+	 to;
+	b=GnVunnZQxIbRrJueCETZJLizp5Bvh9bfsS6H6+QPJwPPDuPcnX/C4SXGUiNF+0bM
+	 ewc2A7KA0LCFXfVtd2TFReMG0b76bNOR0rO4csjy0TIAVauZ6Oo3nkiCyK/pQ8KeV
+	 ioV0uZ8hc/Nhdw+EzwjxUHFfIZynfS9T2pzVwtQjgKcaTpcMx2YK1kgzqADS52eok
+	 E+sBzYDUvIaoMCbDt9i7PJaJgtPHrFYmz1yJlaItHV+17H7WuJNUjfuKom0qoetFR
+	 B6YHeq3ahlGrC1gJHisjZg0hF8zcU4LiKSkVP7eW+nhzWMyYrrslYXe7O2E2o+ge+
+	 faQQW3f+ca/7ZZUYiQ==
+X-UI-Sender-Class: 724b4f7f-cbec-4199-ad4e-598c01a50d3a
+Received: from [192.168.200.20] ([46.142.33.212]) by mail.gmx.net (mrgmx105
+ [212.227.17.168]) with ESMTPSA (Nemesis) id 1MWRRT-1v4gpj33lb-00LF7b; Tue, 19
+ Aug 2025 18:23:32 +0200
+Message-ID: <a5e5d321-cad6-4c6a-b15f-9dad9d25d7b5@gmx.de>
+Date: Tue, 19 Aug 2025 18:23:30 +0200
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <1977959.1755617256@warthog.procyon.org.uk>
-In-Reply-To: <1977959.1755617256@warthog.procyon.org.uk>
-From: Steve French <smfrench@gmail.com>
-Date: Tue, 19 Aug 2025 11:22:18 -0500
-X-Gm-Features: Ac12FXxwk1pb1bwCRB51KO_sGuoA0z2A_s1GsLC0-6GsbrD-TooPyfXCaTpQPGQ
-Message-ID: <CAH2r5mubYwUSF-JjRyb-zdLJjDQqKG+nAz6sqjF_RHdBWXBNRA@mail.gmail.com>
-Subject: Re: [PATCH] cifs: Fix oops due to uninitialised variable
-To: David Howells <dhowells@redhat.com>
-Cc: Paulo Alcantara <pc@manguebit.org>, linux-cifs@vger.kernel.org, 
-	linux-fsdevel@vger.kernel.org, linux-kernel@vger.kernel.org, 
-	stable@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH 6.16 000/564] 6.16.2-rc2 review
+To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>, stable@vger.kernel.org
+Cc: patches@lists.linux.dev, linux-kernel@vger.kernel.org,
+ torvalds@linux-foundation.org, akpm@linux-foundation.org,
+ linux@roeck-us.net, shuah@kernel.org, patches@kernelci.org,
+ lkft-triage@lists.linaro.org, pavel@denx.de, jonathanh@nvidia.com,
+ f.fainelli@gmail.com, sudipm.mukherjee@gmail.com, srw@sladewatkins.net,
+ conor@kernel.org, hargar@microsoft.com, broonie@kernel.org, achill@achill.org
+References: <20250819122844.483737955@linuxfoundation.org>
+From: Ronald Warsow <rwarsow@gmx.de>
+Content-Language: de-DE, en-US
+In-Reply-To: <20250819122844.483737955@linuxfoundation.org>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+X-Provags-ID: V03:K1:2E/ySvqgtFn6USIQ/w0Yvwoju0rFo0qOm2KBO7aMmMs8YoB1+iq
+ Z+OpTNa8zD395nNaKpQpeDtzjHQS3qhUx7FUHXB2aDEwLraAgTOEH9ff4B0g9X21zjnzSns
+ ZfouXYHYWt2yeSJx8bM7skDra8h8wF/ubTsEzihH24T1rRRlxpaBHQmxZMPl1JdLY/d57jn
+ 6sjFs1stWD9Q79EwJuIPw==
+X-Spam-Flag: NO
+UI-OutboundReport: notjunk:1;M01:P0:R7rSkzBfnZ8=;PhjUugIoawV3M3lrHtQ13CMraOC
+ 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
+ ZOvLbY5edK73sNO1xjyc60tiQ55yz/rHK/5Zo
 
-merged into cifs-2.6.git for-next
+Hi
 
-On Tue, Aug 19, 2025 at 10:28=E2=80=AFAM David Howells <dhowells@redhat.com=
-> wrote:
->
-> Fix smb3_init_transform_rq() to initialise buffer to NULL before calling
-> netfs_alloc_folioq_buffer() as netfs assumes it can append to the buffer =
-it
-> is given.  Setting it to NULL means it should start a fresh buffer, but t=
-he
-> value is currently undefined.
->
-> Fixes: a2906d3316fc ("cifs: Switch crypto buffer to use a folio_queue rat=
-her than an xarray")
-> Signed-off-by: David Howells <dhowells@redhat.com>
-> cc: Steve French <sfrench@samba.org>
-> cc: Paulo Alcantara <pc@manguebit.org>
-> cc: linux-cifs@vger.kernel.org
-> cc: linux-fsdevel@vger.kernel.org
-> ---
->  fs/smb/client/smb2ops.c |    2 +-
->  1 file changed, 1 insertion(+), 1 deletion(-)
->
-> diff --git a/fs/smb/client/smb2ops.c b/fs/smb/client/smb2ops.c
-> index ad8947434b71..cd0c9b5a35c3 100644
-> --- a/fs/smb/client/smb2ops.c
-> +++ b/fs/smb/client/smb2ops.c
-> @@ -4487,7 +4487,7 @@ smb3_init_transform_rq(struct TCP_Server_Info *serv=
-er, int num_rqst,
->         for (int i =3D 1; i < num_rqst; i++) {
->                 struct smb_rqst *old =3D &old_rq[i - 1];
->                 struct smb_rqst *new =3D &new_rq[i];
-> -               struct folio_queue *buffer;
-> +               struct folio_queue *buffer =3D NULL;
->                 size_t size =3D iov_iter_count(&old->rq_iter);
->
->                 orig_len +=3D smb_rqst_len(server, old);
->
->
+no regressions here on x86_64 (RKL, Intel 11th Gen. CPU)
 
+Thanks
 
---=20
-Thanks,
+Tested-by: Ronald Warsow <rwarsow@gmx.de>
 
-Steve
 
