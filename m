@@ -1,58 +1,61 @@
-Return-Path: <stable+bounces-171769-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-171770-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id C250EB2C243
-	for <lists+stable@lfdr.de>; Tue, 19 Aug 2025 13:54:09 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 20E1AB2C245
+	for <lists+stable@lfdr.de>; Tue, 19 Aug 2025 13:54:12 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 317D21893485
-	for <lists+stable@lfdr.de>; Tue, 19 Aug 2025 11:52:57 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id B67B91895140
+	for <lists+stable@lfdr.de>; Tue, 19 Aug 2025 11:52:58 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id AC8B232C307;
-	Tue, 19 Aug 2025 11:52:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id BFB9932C32F;
+	Tue, 19 Aug 2025 11:52:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="cdWHhC7j"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="ODaCNFuF"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6A65532C304
-	for <stable@vger.kernel.org>; Tue, 19 Aug 2025 11:52:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7C6A332A3DE
+	for <stable@vger.kernel.org>; Tue, 19 Aug 2025 11:52:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755604346; cv=none; b=qEsqu18lAkbsQbFoxzQwB7y66VT5ORXuuO3YG1J0PjP/77qQM6NZG1/HlWSTzOLYJ7Htaa1QkstggOQwZTZnkkR/dtzYINnFZwhDeYg5DBId83jyUQ8XtoscRGhQ0IM5K7Wg8pchU5Qq6Wr267ILKiYz0fDsHJp2f0dYhJftSss=
+	t=1755604347; cv=none; b=nweJUIjvMjDIGeH06UKpUprNbB+bz3IAZYAoKezLWHyOwshTIKEXggbvtHmBNpZmaaRfMwGDSXhyhG4Eq3bUJiakRD8t0P90a4bmDh0AcsW6CA3cGZKWbyi7toQ8iwmJhuEXPraRilDATp3L6R/ziXhgpMWqvlmW9O7n2X18UxQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1755604346; c=relaxed/simple;
-	bh=ENYiwATYki9nrya+IFZaDd5v7h4PXVIoE/yG52XAA9o=;
+	s=arc-20240116; t=1755604347; c=relaxed/simple;
+	bh=fn52jAL4GaE3j+WnAeYqINdjD4ysPlChdL9DN111pSk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=GP0uZsre28yrcLipqmrW6ZN2uKs3PMiiUkg9MaD3Havnw39emUn27DfMtQooDUACk00HRErUPjsmyRURQDOtc8JgQGyDeQAF6bhOTq/33v6fPhXbn6pk+GdPMfh5HSWv73SZ/YvmGC78xZL2tUGu/2nlg1nCuswkBTjVtUSbZ0Q=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=cdWHhC7j; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7ED24C4CEF1;
-	Tue, 19 Aug 2025 11:52:25 +0000 (UTC)
+	 MIME-Version; b=booy01e7KgE9wLlf2pTVtb6DIl9/EF8YAbtfJ/dq7Tt/lkzdPv4duiYwyyzXD1CuBH/mV2AQ7RiVhcCQdNxkuh/vVNMi924OvxkDBC+in1ywOQ6r92Xt9X3k41mDql/1ECHvaQgGVmE+ab6FnsMLHaO/UWQfI1WO5gKOPkdX7bE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=ODaCNFuF; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4B4B8C116D0;
+	Tue, 19 Aug 2025 11:52:26 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1755604346;
-	bh=ENYiwATYki9nrya+IFZaDd5v7h4PXVIoE/yG52XAA9o=;
+	s=k20201202; t=1755604347;
+	bh=fn52jAL4GaE3j+WnAeYqINdjD4ysPlChdL9DN111pSk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=cdWHhC7j5C/k3mcrhZ+FtqU7lXKutpy6u9jurGAf/sFqBF6g/B8wNpiqt+5yx90Ba
-	 eZpCn2gI5UCPi4Ci+PPZtAJOqhfJjwXje+phYaBfUbVRSXmJqOskWCtdsauWTSQeC0
-	 FWc3hWn9p/23rMK8tOSxt1hxpNx3EOBoZ/434mQiIbwnKiy4zSZ60ZsF+9OZEclrMM
-	 0xgHNeBbbOWbEwm6FyizCIPBnecvUwKkqjA8ZhghNmax0y4RzdTcqYnuWQLpE/Pno3
-	 IQ+OO8CMpdl0LoOAZ2f8tVsilAahZZllDf52bU1hf7DH/RndkJkJBnm8CXjFA4QgIA
-	 3Wyo6y4bwZ4iw==
+	b=ODaCNFuF9DNAUnWm7Wfc1TvZ5ZNmQQFucl5E9kcWJTTn10m6P75xYulX8eLYDONXt
+	 lptE41sgaYZ6DKLLCqsJ4FyHilH7ajhmjd3+gewbkbq6BRMebJLmDnH+ySBc0R2bd0
+	 6eFA98nQ1BtZwFsJ/fQglzfzgPCtgq45vSvgMGyWVu8LPbW/UistldBAoEb+6J8pa+
+	 UQLUoAkF9zOEUVdIji50Agup4vuZ71RamOV6isvo5S+r0tX1kMR2e0DXHOnTGLzcpN
+	 cb+qoTPnNO+H6o0sPRZDbZO8AlRRx1KXMgWEz3pXGpk1aEdBeSPA8R7PTusZwllXEv
+	 dzacZRxxOWOxw==
 From: Sasha Levin <sashal@kernel.org>
 To: stable@vger.kernel.org
-Cc: Eric Dumazet <edumazet@google.com>,
-	Simon Horman <horms@kernel.org>,
-	"David S. Miller" <davem@davemloft.net>,
+Cc: Davide Caratti <dcaratti@redhat.com>,
+	Li Shuang <shuali@redhat.com>,
+	Petr Machata <petrm@nvidia.com>,
+	Ivan Vecera <ivecera@redhat.com>,
+	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1.y 1/2] net_sched: sch_ets: implement lockless ets_dump()
-Date: Tue, 19 Aug 2025 07:52:22 -0400
-Message-ID: <20250819115223.446888-1-sashal@kernel.org>
+Subject: [PATCH 6.1.y 2/2] net/sched: ets: use old 'nbands' while purging unused classes
+Date: Tue, 19 Aug 2025 07:52:23 -0400
+Message-ID: <20250819115223.446888-2-sashal@kernel.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <2025081855-silicon-oops-12df@gregkh>
+In-Reply-To: <20250819115223.446888-1-sashal@kernel.org>
 References: <2025081855-silicon-oops-12df@gregkh>
+ <20250819115223.446888-1-sashal@kernel.org>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -61,104 +64,117 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-From: Eric Dumazet <edumazet@google.com>
+From: Davide Caratti <dcaratti@redhat.com>
 
-[ Upstream commit c5f1dde7f731e7bf2e7c169ca42cb4989fc2f8b9 ]
+[ Upstream commit 87c6efc5ce9c126ae4a781bc04504b83780e3650 ]
 
-Instead of relying on RTNL, ets_dump() can use READ_ONCE()
-annotations, paired with WRITE_ONCE() ones in ets_change().
+Shuang reported sch_ets test-case [1] crashing in ets_class_qlen_notify()
+after recent changes from Lion [2]. The problem is: in ets_qdisc_change()
+we purge unused DWRR queues; the value of 'q->nbands' is the new one, and
+the cleanup should be done with the old one. The problem is here since my
+first attempts to fix ets_qdisc_change(), but it surfaced again after the
+recent qdisc len accounting fixes. Fix it purging idle DWRR queues before
+assigning a new value of 'q->nbands', so that all purge operations find a
+consistent configuration:
 
-Signed-off-by: Eric Dumazet <edumazet@google.com>
-Reviewed-by: Simon Horman <horms@kernel.org>
-Signed-off-by: David S. Miller <davem@davemloft.net>
-Stable-dep-of: 87c6efc5ce9c ("net/sched: ets: use old 'nbands' while purging unused classes")
+ - old 'q->nbands' because it's needed by ets_class_find()
+ - old 'q->nstrict' because it's needed by ets_class_is_strict()
+
+ BUG: kernel NULL pointer dereference, address: 0000000000000000
+ #PF: supervisor read access in kernel mode
+ #PF: error_code(0x0000) - not-present page
+ PGD 0 P4D 0
+ Oops: Oops: 0000 [#1] SMP NOPTI
+ CPU: 62 UID: 0 PID: 39457 Comm: tc Kdump: loaded Not tainted 6.12.0-116.el10.x86_64 #1 PREEMPT(voluntary)
+ Hardware name: Dell Inc. PowerEdge R640/06DKY5, BIOS 2.12.2 07/09/2021
+ RIP: 0010:__list_del_entry_valid_or_report+0x4/0x80
+ Code: ff 4c 39 c7 0f 84 39 19 8e ff b8 01 00 00 00 c3 cc cc cc cc 66 90 90 90 90 90 90 90 90 90 90 90 90 90 90 90 90 90 f3 0f 1e fa <48> 8b 17 48 8b 4f 08 48 85 d2 0f 84 56 19 8e ff 48 85 c9 0f 84 ab
+ RSP: 0018:ffffba186009f400 EFLAGS: 00010202
+ RAX: 00000000000000d6 RBX: 0000000000000000 RCX: 0000000000000004
+ RDX: ffff9f0fa29b69c0 RSI: 0000000000000000 RDI: 0000000000000000
+ RBP: ffffffffc12c2400 R08: 0000000000000008 R09: 0000000000000004
+ R10: ffffffffffffffff R11: 0000000000000004 R12: 0000000000000000
+ R13: ffff9f0f8cfe0000 R14: 0000000000100005 R15: 0000000000000000
+ FS:  00007f2154f37480(0000) GS:ffff9f269c1c0000(0000) knlGS:0000000000000000
+ CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
+ CR2: 0000000000000000 CR3: 00000001530be001 CR4: 00000000007726f0
+ DR0: 0000000000000000 DR1: 0000000000000000 DR2: 0000000000000000
+ DR3: 0000000000000000 DR6: 00000000fffe0ff0 DR7: 0000000000000400
+ PKRU: 55555554
+ Call Trace:
+  <TASK>
+  ets_class_qlen_notify+0x65/0x90 [sch_ets]
+  qdisc_tree_reduce_backlog+0x74/0x110
+  ets_qdisc_change+0x630/0xa40 [sch_ets]
+  __tc_modify_qdisc.constprop.0+0x216/0x7f0
+  tc_modify_qdisc+0x7c/0x120
+  rtnetlink_rcv_msg+0x145/0x3f0
+  netlink_rcv_skb+0x53/0x100
+  netlink_unicast+0x245/0x390
+  netlink_sendmsg+0x21b/0x470
+  ____sys_sendmsg+0x39d/0x3d0
+  ___sys_sendmsg+0x9a/0xe0
+  __sys_sendmsg+0x7a/0xd0
+  do_syscall_64+0x7d/0x160
+  entry_SYSCALL_64_after_hwframe+0x76/0x7e
+ RIP: 0033:0x7f2155114084
+ Code: 89 02 b8 ff ff ff ff eb bb 66 2e 0f 1f 84 00 00 00 00 00 0f 1f 00 f3 0f 1e fa 80 3d 25 f0 0c 00 00 74 13 b8 2e 00 00 00 0f 05 <48> 3d 00 f0 ff ff 77 54 c3 0f 1f 00 48 83 ec 28 89 54 24 1c 48 89
+ RSP: 002b:00007fff1fd7a988 EFLAGS: 00000202 ORIG_RAX: 000000000000002e
+ RAX: ffffffffffffffda RBX: 0000560ec063e5e0 RCX: 00007f2155114084
+ RDX: 0000000000000000 RSI: 00007fff1fd7a9f0 RDI: 0000000000000003
+ RBP: 00007fff1fd7aa60 R08: 0000000000000010 R09: 000000000000003f
+ R10: 0000560ee9b3a010 R11: 0000000000000202 R12: 00007fff1fd7aae0
+ R13: 000000006891ccde R14: 0000560ec063e5e0 R15: 00007fff1fd7aad0
+  </TASK>
+
+ [1] https://lore.kernel.org/netdev/e08c7f4a6882f260011909a868311c6e9b54f3e4.1639153474.git.dcaratti@redhat.com/
+ [2] https://lore.kernel.org/netdev/d912cbd7-193b-4269-9857-525bee8bbb6a@gmail.com/
+
+Cc: stable@vger.kernel.org
+Fixes: 103406b38c60 ("net/sched: Always pass notifications when child class becomes empty")
+Fixes: c062f2a0b04d ("net/sched: sch_ets: don't remove idle classes from the round-robin list")
+Fixes: dcc68b4d8084 ("net: sch_ets: Add a new Qdisc")
+Reported-by: Li Shuang <shuali@redhat.com>
+Closes: https://issues.redhat.com/browse/RHEL-108026
+Reviewed-by: Petr Machata <petrm@nvidia.com>
+Co-developed-by: Ivan Vecera <ivecera@redhat.com>
+Signed-off-by: Ivan Vecera <ivecera@redhat.com>
+Signed-off-by: Davide Caratti <dcaratti@redhat.com>
+Link: https://patch.msgid.link/7928ff6d17db47a2ae7cc205c44777b1f1950545.1755016081.git.dcaratti@redhat.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/sched/sch_ets.c | 25 ++++++++++++++-----------
- 1 file changed, 14 insertions(+), 11 deletions(-)
+ net/sched/sch_ets.c | 11 ++++++-----
+ 1 file changed, 6 insertions(+), 5 deletions(-)
 
 diff --git a/net/sched/sch_ets.c b/net/sched/sch_ets.c
-index 3ee46f6e005d..93469bc337d6 100644
+index 93469bc337d6..9873f4ae90c3 100644
 --- a/net/sched/sch_ets.c
 +++ b/net/sched/sch_ets.c
-@@ -651,7 +651,7 @@ static int ets_qdisc_change(struct Qdisc *sch, struct nlattr *opt,
+@@ -651,6 +651,12 @@ static int ets_qdisc_change(struct Qdisc *sch, struct nlattr *opt,
  
  	sch_tree_lock(sch);
  
--	q->nbands = nbands;
-+	WRITE_ONCE(q->nbands, nbands);
++	for (i = nbands; i < oldbands; i++) {
++		if (i >= q->nstrict && q->classes[i].qdisc->q.qlen)
++			list_del_init(&q->classes[i].alist);
++		qdisc_purge_queue(q->classes[i].qdisc);
++	}
++
+ 	WRITE_ONCE(q->nbands, nbands);
  	for (i = nstrict; i < q->nstrict; i++) {
  		if (q->classes[i].qdisc->q.qlen) {
- 			list_add_tail(&q->classes[i].alist, &q->active);
-@@ -663,11 +663,11 @@ static int ets_qdisc_change(struct Qdisc *sch, struct nlattr *opt,
- 			list_del_init(&q->classes[i].alist);
- 		qdisc_purge_queue(q->classes[i].qdisc);
- 	}
--	q->nstrict = nstrict;
-+	WRITE_ONCE(q->nstrict, nstrict);
- 	memcpy(q->prio2band, priomap, sizeof(priomap));
- 
- 	for (i = 0; i < q->nbands; i++)
--		q->classes[i].quantum = quanta[i];
-+		WRITE_ONCE(q->classes[i].quantum, quanta[i]);
- 
- 	for (i = oldbands; i < q->nbands; i++) {
- 		q->classes[i].qdisc = queues[i];
-@@ -681,7 +681,7 @@ static int ets_qdisc_change(struct Qdisc *sch, struct nlattr *opt,
- 	for (i = q->nbands; i < oldbands; i++) {
- 		qdisc_put(q->classes[i].qdisc);
- 		q->classes[i].qdisc = NULL;
--		q->classes[i].quantum = 0;
-+		WRITE_ONCE(q->classes[i].quantum, 0);
- 		q->classes[i].deficit = 0;
- 		gnet_stats_basic_sync_init(&q->classes[i].bstats);
- 		memset(&q->classes[i].qstats, 0, sizeof(q->classes[i].qstats));
-@@ -738,6 +738,7 @@ static int ets_qdisc_dump(struct Qdisc *sch, struct sk_buff *skb)
- 	struct ets_sched *q = qdisc_priv(sch);
- 	struct nlattr *opts;
- 	struct nlattr *nest;
-+	u8 nbands, nstrict;
- 	int band;
- 	int prio;
- 	int err;
-@@ -750,21 +751,22 @@ static int ets_qdisc_dump(struct Qdisc *sch, struct sk_buff *skb)
- 	if (!opts)
- 		goto nla_err;
- 
--	if (nla_put_u8(skb, TCA_ETS_NBANDS, q->nbands))
-+	nbands = READ_ONCE(q->nbands);
-+	if (nla_put_u8(skb, TCA_ETS_NBANDS, nbands))
- 		goto nla_err;
- 
--	if (q->nstrict &&
--	    nla_put_u8(skb, TCA_ETS_NSTRICT, q->nstrict))
-+	nstrict = READ_ONCE(q->nstrict);
-+	if (nstrict && nla_put_u8(skb, TCA_ETS_NSTRICT, nstrict))
- 		goto nla_err;
- 
--	if (q->nbands > q->nstrict) {
-+	if (nbands > nstrict) {
- 		nest = nla_nest_start(skb, TCA_ETS_QUANTA);
- 		if (!nest)
- 			goto nla_err;
- 
--		for (band = q->nstrict; band < q->nbands; band++) {
-+		for (band = nstrict; band < nbands; band++) {
- 			if (nla_put_u32(skb, TCA_ETS_QUANTA_BAND,
--					q->classes[band].quantum))
-+					READ_ONCE(q->classes[band].quantum)))
- 				goto nla_err;
+@@ -658,11 +664,6 @@ static int ets_qdisc_change(struct Qdisc *sch, struct nlattr *opt,
+ 			q->classes[i].deficit = quanta[i];
  		}
- 
-@@ -776,7 +778,8 @@ static int ets_qdisc_dump(struct Qdisc *sch, struct sk_buff *skb)
- 		goto nla_err;
- 
- 	for (prio = 0; prio <= TC_PRIO_MAX; prio++) {
--		if (nla_put_u8(skb, TCA_ETS_PRIOMAP_BAND, q->prio2band[prio]))
-+		if (nla_put_u8(skb, TCA_ETS_PRIOMAP_BAND,
-+			       READ_ONCE(q->prio2band[prio])))
- 			goto nla_err;
  	}
+-	for (i = q->nbands; i < oldbands; i++) {
+-		if (i >= q->nstrict && q->classes[i].qdisc->q.qlen)
+-			list_del_init(&q->classes[i].alist);
+-		qdisc_purge_queue(q->classes[i].qdisc);
+-	}
+ 	WRITE_ONCE(q->nstrict, nstrict);
+ 	memcpy(q->prio2band, priomap, sizeof(priomap));
  
 -- 
 2.50.1
