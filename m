@@ -1,132 +1,128 @@
-Return-Path: <stable+bounces-171837-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-171838-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 24DFEB2CC5A
-	for <lists+stable@lfdr.de>; Tue, 19 Aug 2025 20:46:59 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id BA634B2CDA8
+	for <lists+stable@lfdr.de>; Tue, 19 Aug 2025 22:18:04 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id E364B5A7CDC
-	for <lists+stable@lfdr.de>; Tue, 19 Aug 2025 18:46:58 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 80A55189EDB8
+	for <lists+stable@lfdr.de>; Tue, 19 Aug 2025 20:16:23 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id EEDBD31CA48;
-	Tue, 19 Aug 2025 18:46:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id AE5A7342C86;
+	Tue, 19 Aug 2025 20:14:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=ispras.ru header.i=@ispras.ru header.b="g+EvDrpq"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="AOE/HTA8"
 X-Original-To: stable@vger.kernel.org
-Received: from mail.ispras.ru (mail.ispras.ru [83.149.199.84])
-	(using TLSv1.2 with cipher DHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pj1-f50.google.com (mail-pj1-f50.google.com [209.85.216.50])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D395130FF10;
-	Tue, 19 Aug 2025 18:46:50 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=83.149.199.84
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 16713233707;
+	Tue, 19 Aug 2025 20:14:41 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.50
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755629213; cv=none; b=nUGvs5LTYihP321yZnL1iYKjJJwQmv6UnnHCzoZaD1Xmr+MWp2FQvmhXr68qnIlEgxJE7X+dSZ8Xzgh6x/hITSBzPeRaEdgR8xpaiSMkZdDoZ57A9JCbgSyGLyzEu4KSqX8LVMB9j974k5Poe0uk+kFtRBaJukWCyEMYE08R+eU=
+	t=1755634484; cv=none; b=R5uDLS/csUnZSax+VQjwo7msXca2NqFf9/qa0MuE4pbsR5psOmV+EPknT8wSQVa9KcCQhVzX7Ej3H+d+Gyr9Y+XEEeSPNXI3r3dQxt+p5USa2NpdwXqeLsZf8eShCqwUabLKCUajHAoxDYNTekaUZHeMYj5o8v36C/lseof6EI8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1755629213; c=relaxed/simple;
-	bh=5cs6+yRL2qmOem7LVk4h7L35MxPvPMfwCOwz7q7nwAs=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Pl6UhAZyKPa/poxz/77tjK4HdmKQ5tXVDZSfcIcmOBjKn6Sjl4uJby3OVA6xe2sp1YXy0u55a9EpDa8ZSJ5pZpSCqjq6W+l9DFhxIJnWxy7Cu9CPn0Kf/eq1AGQqOBGpieQbCOfX33cmGTAAR0m3DenwpPDjNdc7RWtY8vPfHOM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=ispras.ru; spf=pass smtp.mailfrom=ispras.ru; dkim=pass (1024-bit key) header.d=ispras.ru header.i=@ispras.ru header.b=g+EvDrpq; arc=none smtp.client-ip=83.149.199.84
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=ispras.ru
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ispras.ru
-Received: from debian.intra.ispras.ru (unknown [10.10.165.10])
-	by mail.ispras.ru (Postfix) with ESMTPSA id 36E214028386;
-	Tue, 19 Aug 2025 18:46:48 +0000 (UTC)
-DKIM-Filter: OpenDKIM Filter v2.11.0 mail.ispras.ru 36E214028386
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ispras.ru;
-	s=default; t=1755629208;
-	bh=oPSXv8RpyMOpJqM1Uz9uYy96Bhg7dBHMbsWbSICSFOM=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=g+EvDrpqIW5a+qQWMUK5cI0yebPbqDOyT3kaaw/jZMT9JiE+cRLbrdgB3Caq0QA72
-	 xOJg7K938QjAHlv4JxtePguVv/lwW6RDsjBO5JCFDlDMhRpW/GpBQE1YxyZG85O3UK
-	 WNjjQZ+HrDcouYARy/KUcYm4wrIoBnDZuhGgppFQ=
-From: Fedor Pchelkin <pchelkin@ispras.ru>
-To: Alex Deucher <alexander.deucher@amd.com>,
-	Melissa Wen <mwen@igalia.com>,
-	Mario Limonciello <mario.limonciello@amd.com>
-Cc: Fedor Pchelkin <pchelkin@ispras.ru>,
-	Harry Wentland <harry.wentland@amd.com>,
-	Rodrigo Siqueira <siqueira@igalia.com>,
-	=?UTF-8?q?Christian=20K=C3=B6nig?= <christian.koenig@amd.com>,
-	David Airlie <airlied@gmail.com>,
-	Simona Vetter <simona@ffwll.ch>,
-	Hans de Goede <hansg@kernel.org>,
-	amd-gfx@lists.freedesktop.org,
-	dri-devel@lists.freedesktop.org,
-	linux-kernel@vger.kernel.org,
-	lvc-project@linuxtesting.org,
-	stable@vger.kernel.org
-Subject: [PATCH v2 2/2] drm/amd/display: fix leak of probed modes
-Date: Tue, 19 Aug 2025 21:46:35 +0300
-Message-ID: <20250819184636.232641-3-pchelkin@ispras.ru>
-X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250819184636.232641-1-pchelkin@ispras.ru>
-References: <20250819184636.232641-1-pchelkin@ispras.ru>
+	s=arc-20240116; t=1755634484; c=relaxed/simple;
+	bh=OolmA1E6f4UZQDmmRkd6bRhmOlCMy5rIQVXKiXzx1QY=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=g+HCw3uh09N+cnhe7HV2xwx2bj5tOeYbsVhRY2+VURs5+mPbc6Az8nWMJsGdna5kQ/2UtJ9+F6FTqkzgcqxHaMrcJ2+pdYyXJjQ5B03stPq4nD2mdALg1Qdq0bW3EVlysZYfIOibtealvZwwyySiJI9z7uY6TGbpp0qil0VENkE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=AOE/HTA8; arc=none smtp.client-ip=209.85.216.50
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-pj1-f50.google.com with SMTP id 98e67ed59e1d1-32372c05c5dso2245452a91.0;
+        Tue, 19 Aug 2025 13:14:41 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1755634481; x=1756239281; darn=vger.kernel.org;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=W73sVd+N7uqF/LudfqJGmM3/FeGy4NK1TMhJYYrn5N0=;
+        b=AOE/HTA8VVQfWvLqKdGqUZvplKW7XfaT/6zd7UuYlxXO46LMEwU2iOTOO/Wme513vy
+         CDI6SHUelIx49JJ1FrdjaW+A9/V2VaPIlfCTHewZgzdXkPcw6Vwy7G6QFtLvnGQLjEkS
+         tOlT+vQQbNSkM0vbaaDpQQ6VabYmER0u6zLZKUVsQy3U+YEMBXxzW/zzsKotnI3MjSVD
+         4mSbu4LTF3vbsU2mDoVoQz+zCdH2WfIizVQQgYBIsKqhKSFVWOuQjt1REiDYoSNQoBQu
+         4Mkdp2D2Ko6YYsutP7fr133Qxp6IYOr378sJnZP61vkwFwm64Y7MyGZk6LqMrkskH4we
+         fufw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1755634481; x=1756239281;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=W73sVd+N7uqF/LudfqJGmM3/FeGy4NK1TMhJYYrn5N0=;
+        b=qYJqg2iM3JCIbP5DghMejDeM1F9xhhPp9a6RKsGEfxFfwKw5/jZvs8p0J20ioPfdJK
+         iLHrRBGmMna/b5uJAxWU3QFD+SEtg4ETnnKQDSi3O2w9Cz2nmb9rJPcHihNBSx1roNsd
+         s8TjcQzghsS+laVpL6x8e7fDryqVhFrqjqXqCEW48DVxYMiF6YrkvzsKlFCh4IegPUXL
+         Q7oWDdbYNwno4anVYJGOspOtftcavr894yJUBYwn1BDwvNowwFH6oMgkMmPIelKT8iZV
+         yqEN0p6ExHpVV/5MmVe+Ei2fFnDBB0UAbZz32GoQOQmxMXMwXf8JZmlfAWm3YjkdwLLw
+         vPyg==
+X-Forwarded-Encrypted: i=1; AJvYcCUHQu3DmDv2TmKpVBDmrEtwS8QvOkREbauoCdHEddwzyP/JNn+ozQYQySn/7Hq2ZNRnGGpIMRMc@vger.kernel.org, AJvYcCUyFUDyLCg5+SZFoUdRYRel1Bvg1i8Xkt1Z+qMgw9P873E/39bqIEqHk9iiBPaoi8qKAy6LGwSCeSQ0OaU=@vger.kernel.org
+X-Gm-Message-State: AOJu0Yw9iO7P+2Mw8fJrAUaXfntpCmsPMbBFzxDJ53m7yv8/8yfjybi4
+	tkQiOY6R/zw7LhCUKJXkGt+AVhK6kgrDPdEGLYNexkHzVJKBr9uk1lrb
+X-Gm-Gg: ASbGncumtMopyj84YSiZGrsYymRyr/vk/jGQrx+o2gFBO9g/ODkoDAT90pytoSnOXwj
+	H47htZmN0z6rL4Oro50NrXefUVTpKIN811StKBLrQODVszqDaUVboQPvhKTlRQwrBNwHwXbRf6u
+	UXdihJppS1S+KvZ1ozSnahnGil6IugHzNSAvzdT8uiy5ly8pEwf5TCa7Yrn8WMLP4UwbpHEAfZ3
+	zR/cbltNfC6bGzt/W0BrQELc67yKTISs7MWBlQZh7HAreC3oiZYRPhZ1Rwwx0hXtNxDsGPdyNc7
+	Hh0g9IIQIrt4MhkA6j+bkhNvi+r9mjsNjBZhU/5uVAionHtuvHt125wSHJg4KwUwkD3YuiWCpB5
+	G+P4YoVEbV6ZLnV5WxlwTH4o8hxbx8HyesYOrfrPhmmuM
+X-Google-Smtp-Source: AGHT+IFARVu7RhkMrgt1lXl6S/Use2BcQ+zHOPhn+JhotfEN9jUN6dNrFSWcbiPHIsc8h/OOnxrBmg==
+X-Received: by 2002:a17:90b:4e8b:b0:31f:210e:e34a with SMTP id 98e67ed59e1d1-324e128f8c6mr544831a91.8.1755634481199;
+        Tue, 19 Aug 2025 13:14:41 -0700 (PDT)
+Received: from [10.236.102.133] ([207.212.61.113])
+        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-324e26259b6sm17569a91.17.2025.08.19.13.14.30
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Tue, 19 Aug 2025 13:14:40 -0700 (PDT)
+Message-ID: <2b2f13c2-fe4b-465f-9c83-f76be8f2f45b@gmail.com>
+Date: Tue, 19 Aug 2025 13:14:29 -0700
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH 6.12 000/438] 6.12.43-rc2 review
+To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>, stable@vger.kernel.org
+Cc: patches@lists.linux.dev, linux-kernel@vger.kernel.org,
+ torvalds@linux-foundation.org, akpm@linux-foundation.org,
+ linux@roeck-us.net, shuah@kernel.org, patches@kernelci.org,
+ lkft-triage@lists.linaro.org, pavel@denx.de, jonathanh@nvidia.com,
+ sudipm.mukherjee@gmail.com, srw@sladewatkins.net, rwarsow@gmx.de,
+ conor@kernel.org, hargar@microsoft.com, broonie@kernel.org, achill@achill.org
+References: <20250819122820.553053307@linuxfoundation.org>
+Content-Language: en-US
+From: Florian Fainelli <f.fainelli@gmail.com>
+In-Reply-To: <20250819122820.553053307@linuxfoundation.org>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
 
-amdgpu_dm_connector_ddc_get_modes() reinitializes a connector's probed
-modes list without cleaning it up. First time it is called during the
-driver's initialization phase, then via drm_mode_getconnector() ioctl.
-The leaks observed with Kmemleak are as following:
 
-unreferenced object 0xffff88812f91b200 (size 128):
-  comm "(udev-worker)", pid 388, jiffies 4294695475
-  hex dump (first 32 bytes):
-    ac dd 07 00 80 02 70 0b 90 0b e0 0b 00 00 e0 01  ......p.........
-    0b 07 10 07 5c 07 00 00 0a 00 00 00 00 00 00 00  ....\...........
-  backtrace (crc 89db554f):
-    __kmalloc_cache_noprof+0x3a3/0x490
-    drm_mode_duplicate+0x8e/0x2b0
-    amdgpu_dm_create_common_mode+0x40/0x150 [amdgpu]
-    amdgpu_dm_connector_add_common_modes+0x336/0x488 [amdgpu]
-    amdgpu_dm_connector_get_modes+0x428/0x8a0 [amdgpu]
-    amdgpu_dm_initialize_drm_device+0x1389/0x17b4 [amdgpu]
-    amdgpu_dm_init.cold+0x157b/0x1a1e [amdgpu]
-    dm_hw_init+0x3f/0x110 [amdgpu]
-    amdgpu_device_ip_init+0xcf4/0x1180 [amdgpu]
-    amdgpu_device_init.cold+0xb84/0x1863 [amdgpu]
-    amdgpu_driver_load_kms+0x15/0x90 [amdgpu]
-    amdgpu_pci_probe+0x391/0xce0 [amdgpu]
-    local_pci_probe+0xd9/0x190
-    pci_call_probe+0x183/0x540
-    pci_device_probe+0x171/0x2c0
-    really_probe+0x1e1/0x890
 
-Found by Linux Verification Center (linuxtesting.org).
+On 8/19/2025 5:31 AM, Greg Kroah-Hartman wrote:
+> This is the start of the stable review cycle for the 6.12.43 release.
+> There are 438 patches in this series, all will be posted as a response
+> to this one.  If anyone has any issues with these being applied, please
+> let me know.
+> 
+> Responses should be made by Thu, 21 Aug 2025 12:27:16 +0000.
+> Anything received after that time might be too late.
+> 
+> The whole patch series can be found in one patch at:
+> 	https://www.kernel.org/pub/linux/kernel/v6.x/stable-review/patch-6.12.43-rc2.gz
+> or in the git tree and branch at:
+> 	git://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stable-rc.git linux-6.12.y
+> and the diffstat can be found below.
+> 
+> thanks,
+> 
+> greg k-h
 
-Fixes: acc96ae0d127 ("drm/amd/display: set panel orientation before drm_dev_register")
-Cc: stable@vger.kernel.org
-Signed-off-by: Fedor Pchelkin <pchelkin@ispras.ru>
----
- drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm.c | 3 +++
- 1 file changed, 3 insertions(+)
+On ARCH_BRCMSTB using 32-bit and 64-bit ARM kernels, build tested on 
+BMIPS_GENERIC:
 
-diff --git a/drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm.c b/drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm.c
-index cd0e2976e268..7ec1f9afc081 100644
---- a/drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm.c
-+++ b/drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm.c
-@@ -8227,9 +8227,12 @@ static void amdgpu_dm_connector_ddc_get_modes(struct drm_connector *connector,
- {
- 	struct amdgpu_dm_connector *amdgpu_dm_connector =
- 			to_amdgpu_dm_connector(connector);
-+	struct drm_display_mode *mode, *t;
- 
- 	if (drm_edid) {
- 		/* empty probed_modes */
-+		list_for_each_entry_safe(mode, t, &connector->probed_modes, head)
-+			drm_mode_remove(connector, mode);
- 		INIT_LIST_HEAD(&connector->probed_modes);
- 		amdgpu_dm_connector->num_modes =
- 				drm_edid_connector_add_modes(connector);
+Tested-by: Florian Fainelli <floria.fainelli@broadcom.com>
 -- 
-2.50.1
+Florian
 
 
