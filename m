@@ -1,240 +1,175 @@
-Return-Path: <stable+bounces-171680-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-171681-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 23AEFB2B52A
-	for <lists+stable@lfdr.de>; Tue, 19 Aug 2025 01:59:45 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id CD07AB2B534
+	for <lists+stable@lfdr.de>; Tue, 19 Aug 2025 02:07:34 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 58C825E00F1
-	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 23:59:37 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id D80131963343
+	for <lists+stable@lfdr.de>; Tue, 19 Aug 2025 00:07:53 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 62CB627BF99;
-	Mon, 18 Aug 2025 23:59:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9A6CDEAD7;
+	Tue, 19 Aug 2025 00:07:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=ideasonboard.com header.i=@ideasonboard.com header.b="gFnuselq"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="q6z5/lG0"
 X-Original-To: stable@vger.kernel.org
-Received: from perceval.ideasonboard.com (perceval.ideasonboard.com [213.167.242.64])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 402C81EB5B;
-	Mon, 18 Aug 2025 23:59:31 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=213.167.242.64
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 58730DDC5
+	for <stable@vger.kernel.org>; Tue, 19 Aug 2025 00:07:24 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755561573; cv=none; b=k8g0qMR1AwA2NAz811Es+1QnVlovYJw+sVijgqJ8T/pn8DXLZaiBoYO+ZKji4Qy/l/Zpp8rqw+IibBoPEcG1c/Gkm6eLkUuRIyjls9I4m9KvrLE0cSwmcgHohukFxYaoQfwLMk8Xs3MkPR7l8ih8luAZ8EvaAfG8V0bx7uveooc=
+	t=1755562044; cv=none; b=tdq5SYNt58Y88rT8ZLuPizesdgeNAbNosvBpU9+Ox1X4pvaz5aL07J73r6llEzxfgWsGcVprI2FVxi53KTGXu5RubZ4Y6pLH/tnmW9LMBdiSsC9ki6EUifSampTFCSk/s6re0D+ZQLB0m6mcZ7GgCjxDhtg3233N7+ZTY0hN7xQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1755561573; c=relaxed/simple;
-	bh=kLg7XbYIsk9Q7gmAQl8rX7a/NLVyPEC6NZAox6CGTm4=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=Z1ctfnQFIJay2rb9B/q4/XJY2Q5evndqFui4nhaAI8p9m5hnCGCl4M230Dc1gfWQ/gD9tpSTolDwy9lgj9NcGSW/MGPZ9VXElZaMZ0u5qU6VcF9u6AE9DQJkY17vhoRfFXrTOKgYOJrUw5ljQcP60G7+Ebb188gtdVDbIPJC2ZE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=ideasonboard.com; spf=pass smtp.mailfrom=ideasonboard.com; dkim=pass (1024-bit key) header.d=ideasonboard.com header.i=@ideasonboard.com header.b=gFnuselq; arc=none smtp.client-ip=213.167.242.64
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=ideasonboard.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ideasonboard.com
-Received: from pendragon.ideasonboard.com (81-175-209-231.bb.dnainternet.fi [81.175.209.231])
-	by perceval.ideasonboard.com (Postfix) with UTF8SMTPSA id 8E8DDC6D;
-	Tue, 19 Aug 2025 01:58:31 +0200 (CEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=ideasonboard.com;
-	s=mail; t=1755561511;
-	bh=kLg7XbYIsk9Q7gmAQl8rX7a/NLVyPEC6NZAox6CGTm4=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=gFnuselqMyrKeAnAzHveK3dtBfn8bkgX6bdU7LhEzHw4W/qyM/hdFy4IwOfRM0O9A
-	 1ICJ4BzrI34GewR8tXvT/492PBFaly+cUDtihJWjq0Rv3WFUEg6ePrvBh2xI89xna+
-	 h0b43taL5ZgECPA9Ya3tlE3OwkidnLoZRfgjjxEI=
-Date: Tue, 19 Aug 2025 02:59:06 +0300
-From: Laurent Pinchart <laurent.pinchart@ideasonboard.com>
-To: Jacopo Mondi <jacopo.mondi@ideasonboard.com>
-Cc: Andy Walls <awalls@md.metrocast.net>,
-	Mauro Carvalho Chehab <mchehab@kernel.org>,
-	Hans Verkuil <hverkuil+cisco@kernel.org>,
-	Dan Carpenter <dan.carpenter@linaro.org>, stable@vger.kernel.org,
-	linux-media@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH v3 2/2] media: ivtv: Fix invalid access to file *
-Message-ID: <20250818235906.GC10308@pendragon.ideasonboard.com>
-References: <20250818-cx18-v4l2-fh-v3-0-5e2f08f3cadc@ideasonboard.com>
- <20250818-cx18-v4l2-fh-v3-2-5e2f08f3cadc@ideasonboard.com>
+	s=arc-20240116; t=1755562044; c=relaxed/simple;
+	bh=ksU4oTPU1th8Kz8coBOz1Ve346HdiMRBvrn4ehQDvFc=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=uNgYp51OjiyptN+dxGDHY4Znv5x/owdU6OCATPK0hfpubv+sk90u8f+V49o3sNItP6UF1+bnKkOWH4OGU/0Lzjr+ajRjrH5Uqh/ju10NpQWA5ZLVfu4Woe9wICIQ+UvZPUD2JEvv0uH9IEpfh3ucfb2Y28bXLRolX2wHqpZr27I=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=q6z5/lG0; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 187D3C4CEF1;
+	Tue, 19 Aug 2025 00:07:23 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1755562043;
+	bh=ksU4oTPU1th8Kz8coBOz1Ve346HdiMRBvrn4ehQDvFc=;
+	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
+	b=q6z5/lG0LHP40IBExNPR2mhn816vveWtq5rVoMb6GUtCNdTZb7JxTR5wR9M0dhaWI
+	 T6WvRACLet52V1b3lG5pFr0aY/C6sDlmT0Hcm7c46SW+weXmFG8SBNPB4paJcxtXa0
+	 XSXC2eBjZnxK6XXmZoTjdfBO/t9qnl1yDUBtzS4lQQ7KoIzEDFvKxW2dgMtq5mU+qG
+	 WbK3r11RPbZyKoLI4wkDc4N+z29258VlAx5DY3DxwHPct8HQwkTTARiHFU93mYyKp5
+	 rAqkv+EkijkS/wUEJRd/MMOOfpEn46VhxjuHPCjMQDKXRXBsrQ6CTqP2Wcyw7/vOB0
+	 J8zM+xXTcngaQ==
+From: Sasha Levin <sashal@kernel.org>
+To: stable@vger.kernel.org
+Cc: Filipe Manana <fdmanana@suse.com>,
+	cen zhang <zzzccc427@gmail.com>,
+	Boris Burkov <boris@bur.io>,
+	Qu Wenruo <wqu@suse.com>,
+	David Sterba <dsterba@suse.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.6.y] btrfs: qgroup: fix race between quota disable and quota rescan ioctl
+Date: Mon, 18 Aug 2025 20:07:19 -0400
+Message-ID: <20250819000719.186990-1-sashal@kernel.org>
+X-Mailer: git-send-email 2.50.1
+In-Reply-To: <2025081831-cancel-lunchtime-0e51@gregkh>
+References: <2025081831-cancel-lunchtime-0e51@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-In-Reply-To: <20250818-cx18-v4l2-fh-v3-2-5e2f08f3cadc@ideasonboard.com>
+Content-Transfer-Encoding: 8bit
 
-Hi Jacopo,
+From: Filipe Manana <fdmanana@suse.com>
 
-Thank you for the patch.
+[ Upstream commit e1249667750399a48cafcf5945761d39fa584edf ]
 
-On Mon, Aug 18, 2025 at 10:39:37PM +0200, Jacopo Mondi wrote:
-> Since commit 9ba9d11544f9 ("media: ivtv: Access v4l2_fh from file")
-> all ioctl handlers have been ported to operate on the file * first
-> function argument.
-> 
-> The ivtv DVB layer calls ivtv_init_on_first_open() when the driver
-> needs to start streaming. This function calls the s_input() and
-> s_frequency() ioctl handlers directly, but being called from the driver
-> context, it doesn't have a valid file * to pass them. This causes the
-> ioctl handlers to deference an invalid pointer.
-> 
-> Fix this by wrapping the ioctl handlers implementation in helper
-> functions.
+There's a race between a task disabling quotas and another running the
+rescan ioctl that can result in a use-after-free of qgroup records from
+the fs_info->qgroup_tree rbtree.
 
-You may want to reword this in a similar way as proposed in 1/2.
+This happens as follows:
 
-> 
-> The ivtv_do_s_input() helper accepts a struct ivtv * as first argument,
-> which is easily accessible from the DVB layer as well as from the file *
-> argument of the ioctl handler.
-> 
-> The ivtv_s_frequency() takes an ivtv_stream * instead. The stream * can
-> safely be accessed from the DVB layer which hard-codes it to the
-> IVTV_ENC_STREAM_TYPE_MPG stream type, as well as from the ioctl handler
-> a valid stream type is associated to each open file handle depending on
-> which video device node has been opened in the ivtv_open() file
-> operation.
-> 
-> The bug has been reported by Smatch.
-> 
-> Reported-by: Dan Carpenter <dan.carpenter@linaro.org>
-> Closes: https://lore.kernel.org/all/aKL4OMWsESUdX8KQ@stanley.mountain/
-> Fixes: 9ba9d11544f9 ("media: ivtv: Access v4l2_fh from file")
-> Cc: stable@vger.kernel.org
-> Signed-off-by: Jacopo Mondi <jacopo.mondi@ideasonboard.com>
-> ---
->  drivers/media/pci/ivtv/ivtv-driver.c | 11 ++++-------
->  drivers/media/pci/ivtv/ivtv-ioctl.c  | 22 +++++++++++++++++-----
->  drivers/media/pci/ivtv/ivtv-ioctl.h  |  6 ++++--
->  3 files changed, 25 insertions(+), 14 deletions(-)
-> 
-> diff --git a/drivers/media/pci/ivtv/ivtv-driver.c b/drivers/media/pci/ivtv/ivtv-driver.c
-> index ecc20cd89926fe2ce4e472526a6b5fc0857615dd..7e2fb98cfccf02f701ceb4484dd1d330dd1dc867 100644
-> --- a/drivers/media/pci/ivtv/ivtv-driver.c
-> +++ b/drivers/media/pci/ivtv/ivtv-driver.c
-> @@ -1260,15 +1260,12 @@ static int ivtv_probe(struct pci_dev *pdev, const struct pci_device_id *pci_id)
->  
->  int ivtv_init_on_first_open(struct ivtv *itv)
->  {
-> -	struct v4l2_frequency vf;
->  	/* Needed to call ioctls later */
+1) Task A enters btrfs_ioctl_quota_rescan() -> btrfs_qgroup_rescan();
 
-I'd drop the comment.
+2) Task B enters btrfs_quota_disable() and calls
+   btrfs_qgroup_wait_for_completion(), which does nothing because at that
+   point fs_info->qgroup_rescan_running is false (it wasn't set yet by
+   task A);
 
-> -	struct ivtv_open_id fh;
-> +	struct ivtv_stream *s = &itv->streams[IVTV_ENC_STREAM_TYPE_MPG];
-> +	struct v4l2_frequency vf;
->  	int fw_retry_count = 3;
->  	int video_input;
->  
-> -	fh.itv = itv;
-> -	fh.type = IVTV_ENC_STREAM_TYPE_MPG;
-> -
->  	if (test_bit(IVTV_F_I_FAILED, &itv->i_flags))
->  		return -ENXIO;
->  
-> @@ -1310,13 +1307,13 @@ int ivtv_init_on_first_open(struct ivtv *itv)
->  
->  	video_input = itv->active_input;
->  	itv->active_input++;	/* Force update of input */
-> -	ivtv_s_input(NULL, &fh, video_input);
-> +	ivtv_do_s_input(itv, video_input);
->  
->  	/* Let the VIDIOC_S_STD ioctl do all the work, keeps the code
->  	   in one place. */
->  	itv->std++;		/* Force full standard initialization */
->  	itv->std_out = itv->std;
-> -	ivtv_s_frequency(NULL, &fh, &vf);
-> +	ivtv_do_s_frequency(s, &vf);
+3) Task B calls btrfs_free_qgroup_config() which starts freeing qgroups
+   from fs_info->qgroup_tree without taking the lock fs_info->qgroup_lock;
 
-	ivtv_do_s_frequency(&itv->streams[IVTV_ENC_STREAM_TYPE_MPG], &vf);
+4) Task A enters qgroup_rescan_zero_tracking() which starts iterating
+   the fs_info->qgroup_tree tree while holding fs_info->qgroup_lock,
+   but task B is freeing qgroup records from that tree without holding
+   the lock, resulting in a use-after-free.
 
-would work too. Up to you.
+Fix this by taking fs_info->qgroup_lock at btrfs_free_qgroup_config().
+Also at btrfs_qgroup_rescan() don't start the rescan worker if quotas
+were already disabled.
 
->  
->  	if (itv->card->v4l2_capabilities & V4L2_CAP_VIDEO_OUTPUT) {
->  		/* Turn on the TV-out: ivtv_init_mpeg_decoder() initializes
-> diff --git a/drivers/media/pci/ivtv/ivtv-ioctl.c b/drivers/media/pci/ivtv/ivtv-ioctl.c
-> index 8077a71d4850ec773caa20c3fca08f92f3117d69..dfbc842b22453868a2075935a81db7ae313ee46c 100644
-> --- a/drivers/media/pci/ivtv/ivtv-ioctl.c
-> +++ b/drivers/media/pci/ivtv/ivtv-ioctl.c
-> @@ -974,9 +974,8 @@ static int ivtv_g_input(struct file *file, void *fh, unsigned int *i)
->  	return 0;
->  }
->  
-> -int ivtv_s_input(struct file *file, void *fh, unsigned int inp)
-> +int ivtv_do_s_input(struct ivtv *itv, unsigned int inp)
->  {
-> -	struct ivtv *itv = file2id(file)->itv;
->  	v4l2_std_id std;
->  	int i;
->  
-> @@ -1017,6 +1016,11 @@ int ivtv_s_input(struct file *file, void *fh, unsigned int inp)
->  	return 0;
->  }
->  
-> +static int ivtv_s_input(struct file *file, void *fh, unsigned int inp)
-> +{
-> +	return ivtv_do_s_input(file2id(file)->itv, inp);
-> +}
-> +
->  static int ivtv_g_output(struct file *file, void *fh, unsigned int *i)
->  {
->  	struct ivtv *itv = file2id(file)->itv;
-> @@ -1065,10 +1069,9 @@ static int ivtv_g_frequency(struct file *file, void *fh, struct v4l2_frequency *
->  	return 0;
->  }
->  
-> -int ivtv_s_frequency(struct file *file, void *fh, const struct v4l2_frequency *vf)
-> +int ivtv_do_s_frequency(struct ivtv_stream *s, const struct v4l2_frequency *vf)
->  {
-> -	struct ivtv *itv = file2id(file)->itv;
-> -	struct ivtv_stream *s = &itv->streams[file2id(file)->type];
-> +	struct ivtv *itv = s->itv;
->  
->  	if (s->vdev.vfl_dir)
->  		return -ENOTTY;
-> @@ -1082,6 +1085,15 @@ int ivtv_s_frequency(struct file *file, void *fh, const struct v4l2_frequency *v
->  	return 0;
->  }
->  
-> +static int ivtv_s_frequency(struct file *file, void *fh,
-> +			    const struct v4l2_frequency *vf)
-> +{
-> +	struct ivtv_open_id *id = file2id(file);
-> +	struct ivtv *itv = id->itv;
-> +
-> +	return ivtv_do_s_frequency(&itv->streams[id->type], vf);
-> +}
-> +
->  static int ivtv_g_std(struct file *file, void *fh, v4l2_std_id *std)
->  {
->  	struct ivtv *itv = file2id(file)->itv;
-> diff --git a/drivers/media/pci/ivtv/ivtv-ioctl.h b/drivers/media/pci/ivtv/ivtv-ioctl.h
-> index 42c2516379fcbbd0640820ab0e3abe9bf00b57ea..dd713a6b095e5ebca45a234dd6c9a90df0928596 100644
-> --- a/drivers/media/pci/ivtv/ivtv-ioctl.h
-> +++ b/drivers/media/pci/ivtv/ivtv-ioctl.h
-> @@ -17,7 +17,9 @@ int ivtv_set_speed(struct ivtv *itv, int speed);
->  void ivtv_set_funcs(struct video_device *vdev);
->  void ivtv_s_std_enc(struct ivtv *itv, v4l2_std_id std);
->  void ivtv_s_std_dec(struct ivtv *itv, v4l2_std_id std);
-> -int ivtv_s_frequency(struct file *file, void *fh, const struct v4l2_frequency *vf);
-> -int ivtv_s_input(struct file *file, void *fh, unsigned int inp);
-> +
-> +struct ivtv;
+Reported-by: cen zhang <zzzccc427@gmail.com>
+Link: https://lore.kernel.org/linux-btrfs/CAFRLqsV+cMDETFuzqdKSHk_FDm6tneea45krsHqPD6B3FetLpQ@mail.gmail.com/
+CC: stable@vger.kernel.org # 6.1+
+Reviewed-by: Boris Burkov <boris@bur.io>
+Reviewed-by: Qu Wenruo <wqu@suse.com>
+Signed-off-by: Filipe Manana <fdmanana@suse.com>
+Signed-off-by: David Sterba <dsterba@suse.com>
+[ Check for BTRFS_FS_QUOTA_ENABLED, instead of btrfs_qgroup_full_accounting() ]
+Signed-off-by: Sasha Levin <sashal@kernel.org>
+---
+ fs/btrfs/qgroup.c | 31 ++++++++++++++++++++++++-------
+ 1 file changed, 24 insertions(+), 7 deletions(-)
 
-I'd drop this, as the structure is already used above.
-
-Reviewed-by: Laurent Pinchart <laurent.pinchart+renesas@ideasonboard.com>
-
-> +int ivtv_do_s_frequency(struct ivtv_stream *s, const struct v4l2_frequency *vf);
-> +int ivtv_do_s_input(struct ivtv *itv, unsigned int inp);
->  
->  #endif
-> 
-
+diff --git a/fs/btrfs/qgroup.c b/fs/btrfs/qgroup.c
+index 1b9f4f16d124..c46ea2ecf188 100644
+--- a/fs/btrfs/qgroup.c
++++ b/fs/btrfs/qgroup.c
+@@ -579,22 +579,30 @@ bool btrfs_check_quota_leak(struct btrfs_fs_info *fs_info)
+ 
+ /*
+  * This is called from close_ctree() or open_ctree() or btrfs_quota_disable(),
+- * first two are in single-threaded paths.And for the third one, we have set
+- * quota_root to be null with qgroup_lock held before, so it is safe to clean
+- * up the in-memory structures without qgroup_lock held.
++ * first two are in single-threaded paths.
+  */
+ void btrfs_free_qgroup_config(struct btrfs_fs_info *fs_info)
+ {
+ 	struct rb_node *n;
+ 	struct btrfs_qgroup *qgroup;
+ 
++	/*
++	 * btrfs_quota_disable() can be called concurrently with
++	 * btrfs_qgroup_rescan() -> qgroup_rescan_zero_tracking(), so take the
++	 * lock.
++	 */
++	spin_lock(&fs_info->qgroup_lock);
+ 	while ((n = rb_first(&fs_info->qgroup_tree))) {
+ 		qgroup = rb_entry(n, struct btrfs_qgroup, node);
+ 		rb_erase(n, &fs_info->qgroup_tree);
+ 		__del_qgroup_rb(fs_info, qgroup);
++		spin_unlock(&fs_info->qgroup_lock);
+ 		btrfs_sysfs_del_one_qgroup(fs_info, qgroup);
+ 		kfree(qgroup);
++		spin_lock(&fs_info->qgroup_lock);
+ 	}
++	spin_unlock(&fs_info->qgroup_lock);
++
+ 	/*
+ 	 * We call btrfs_free_qgroup_config() when unmounting
+ 	 * filesystem and disabling quota, so we set qgroup_ulist
+@@ -3616,12 +3624,21 @@ btrfs_qgroup_rescan(struct btrfs_fs_info *fs_info)
+ 	qgroup_rescan_zero_tracking(fs_info);
+ 
+ 	mutex_lock(&fs_info->qgroup_rescan_lock);
+-	fs_info->qgroup_rescan_running = true;
+-	btrfs_queue_work(fs_info->qgroup_rescan_workers,
+-			 &fs_info->qgroup_rescan_work);
++	/*
++	 * The rescan worker is only for full accounting qgroups, check if it's
++	 * enabled as it is pointless to queue it otherwise. A concurrent quota
++	 * disable may also have just cleared BTRFS_FS_QUOTA_ENABLED.
++	 */
++	if (test_bit(BTRFS_FS_QUOTA_ENABLED, &fs_info->flags)) {
++		fs_info->qgroup_rescan_running = true;
++		btrfs_queue_work(fs_info->qgroup_rescan_workers,
++				 &fs_info->qgroup_rescan_work);
++	} else {
++		ret = -ENOTCONN;
++	}
+ 	mutex_unlock(&fs_info->qgroup_rescan_lock);
+ 
+-	return 0;
++	return ret;
+ }
+ 
+ int btrfs_qgroup_wait_for_completion(struct btrfs_fs_info *fs_info,
 -- 
-Regards,
+2.50.1
 
-Laurent Pinchart
 
