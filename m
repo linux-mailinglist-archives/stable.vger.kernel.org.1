@@ -1,130 +1,82 @@
-Return-Path: <stable+bounces-171815-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-171816-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id ED562B2C86B
-	for <lists+stable@lfdr.de>; Tue, 19 Aug 2025 17:26:22 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 05AD0B2C870
+	for <lists+stable@lfdr.de>; Tue, 19 Aug 2025 17:27:48 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 5EC8C188CC44
-	for <lists+stable@lfdr.de>; Tue, 19 Aug 2025 15:26:42 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id A54C11BC6B1A
+	for <lists+stable@lfdr.de>; Tue, 19 Aug 2025 15:28:07 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 401D2285041;
-	Tue, 19 Aug 2025 15:26:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3B78C285CB5;
+	Tue, 19 Aug 2025 15:27:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="iTq+QWOu"
+	dkim=pass (2048-bit key) header.d=mareichelt.com header.i=@mareichelt.com header.b="KXBcISj7"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from antaris-organics.com (mail.antaris-organics.com [91.227.220.155])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0099C2253FC
-	for <stable@vger.kernel.org>; Tue, 19 Aug 2025 15:26:16 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 87EC6280309;
+	Tue, 19 Aug 2025 15:27:38 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=91.227.220.155
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755617177; cv=none; b=A/kbL4QkNfYScsRsOuEg5ej4xG5m4MqIx4TVZCkgVG1ZmLmdi592k9BVv25Z8z0MxTi6czCdlNydM3B6H7CZsVX6BEwGXgVhKFuInA4D7/mPfA20NKdUaoheatCY6plVwrRSYuqKNNoe2zakfJiP/37IlrS54Vmg9JJpFAYL29g=
+	t=1755617262; cv=none; b=NNlXjZV/RfzSQ5tmTRITiwQ4gFI9gg8zJNAaZh1A1yOQti7CeO+ZUKY/qkyaVFEIT7xElXh11bbjeVbmCUZ3xILg1EniRPszd7MX7NhDI0QOZDTvFD7a4r/dxxIyG20vJH8mbymn+uXNUO4jHplv0jteaQd6lb93q/U4IMd+ruA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1755617177; c=relaxed/simple;
-	bh=C8n0IVwazlA+gCvBMfVMpE7V0ggUn21Um1FsYbLE/dE=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=j1D5PtQ7eA9mfd+Uk3JN/b1h2i+D8PPmfe+KNayPVsC0JGiqqfgoqy/Je6bZ3Nr8lG1vpLLqHCkHo9jQnNfKukfp39x8cTt6brfhWL79aRkjeb8RBj5V6wOl8dvSOQVEdp93Sw3659Vh+Ad4D9BF/SPksmAug4WBs4ylcZ4s5hg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=iTq+QWOu; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3EF6AC113D0;
-	Tue, 19 Aug 2025 15:26:16 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1755617176;
-	bh=C8n0IVwazlA+gCvBMfVMpE7V0ggUn21Um1FsYbLE/dE=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=iTq+QWOuRkJBjAQ59N8CP+R+uSN69jRfSd8Ydby98kvFdb74NUlQsili6P3cyKIpO
-	 +piGurUyGpMKpOxFWVuIw4UHWPOJD2bwhaJkiqn9eyHyWR7yjMbKnAoSRvkhmVC6t6
-	 DxlLClHp07C4B1cWS2aF0HK2p69J5n8PBCK1lZDFOTk9mzI7yiBRsVKvTn+Lf/tXVw
-	 mlJ97QftnPDkdc79FPPwacmYYLo5y7CdmdKwiaoE5rV6PaVUPqCKW8i1AxOEdia1JL
-	 dhyP2VHhlT0wbEYMeOKeS68o7hiIaotL+1Jc8BbjGnNXVHrQ3eM/CW4IvpIYXeONTi
-	 7NwClzsFyT/8A==
-From: Sasha Levin <sashal@kernel.org>
-To: stable@vger.kernel.org
-Cc: Breno Leitao <leitao@debian.org>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Catalin Marinas <catalin.marinas@arm.com>,
-	Andrew Morton <akpm@linux-foundation.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.4.y 2/2] mm/kmemleak: avoid deadlock by moving pr_warn() outside kmemleak_lock
-Date: Tue, 19 Aug 2025 11:26:13 -0400
-Message-ID: <20250819152613.541716-2-sashal@kernel.org>
-X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250819152613.541716-1-sashal@kernel.org>
-References: <2025081848-proximity-feline-dfea@gregkh>
- <20250819152613.541716-1-sashal@kernel.org>
+	s=arc-20240116; t=1755617262; c=relaxed/simple;
+	bh=JySNi7rTLvryde5oWBixj8+fd3d6Q6nPuQZ6kxBLGIM=;
+	h=Date:From:To:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=Uyn753lHwkl2jSsxjUWdPxF3lcMWofro5FagFRSiESqVXpvcrsGtcQP4oVSsNQ1WmF3uo5iK0DCbQpdKUFiW+yK+NJ47jXoyELSn60vqziCbSP27Gqu/GuUNogRBB02YRv5PKSNiDk6vwNNtr078Aj1XlC6u2Jx8lJNy/FoYJ2o=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=mareichelt.com; spf=pass smtp.mailfrom=mareichelt.com; dkim=pass (2048-bit key) header.d=mareichelt.com header.i=@mareichelt.com header.b=KXBcISj7; arc=none smtp.client-ip=91.227.220.155
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=mareichelt.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=mareichelt.com
+Date: Tue, 19 Aug 2025 17:27:32 +0200
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=mareichelt.com;
+	s=202107; t=1755617250;
+	bh=JySNi7rTLvryde5oWBixj8+fd3d6Q6nPuQZ6kxBLGIM=;
+	h=Date:From:To:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:In-Reply-To:Cc:Cc:content-type:content-type:date:date:
+	 From:from:in-reply-to:in-reply-to:message-id:mime-version:
+	 mime-version:references:reply-to:Sender:Subject:Subject:To:To;
+	b=KXBcISj7hal+trjWQXgDgVMkKTrV+QGTWCDqv7fO3hOfxcut8E4oP4xAKotCphWkn
+	 toEj1pMpJwrSep/QAq3ShPyfsBPs01IqQBu2VpyB6hCj7MN17U9AGkkJkD28lYONMb
+	 W5Ctlt8Y0BoxOG9e/Q/yPvopWMQQzKrJircFp8f4W5QsaDmfX31N7pFuf5JR/DC+H4
+	 VEltyybb2XWduBVYsyc1nRSncJk5Kg2bewT5jjI4sNXEHSVqjX9u9Y+WoofOSjvan1
+	 HTKMl8Z8n/vtrH8MVqZHPOMoVkSoOhtOLOPxDbl/I20F2cWIRuT6wryciPR2cupBWy
+	 MKosHlHMV4nOw==
+From: Markus Reichelt <lkt+2023@mareichelt.com>
+To: stable@vger.kernel.org, linux-kernel@vger.kernel.org
+Subject: Re: [PATCH 6.16 000/570] 6.16.2-rc1 review
+Message-ID: <20250819152732.GD2771@pc21.mareichelt.com>
+Mail-Followup-To: stable@vger.kernel.org, linux-kernel@vger.kernel.org
+References: <20250818124505.781598737@linuxfoundation.org>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20250818124505.781598737@linuxfoundation.org>
 
-From: Breno Leitao <leitao@debian.org>
+* Greg Kroah-Hartman <gregkh@linuxfoundation.org> wrote:
 
-[ Upstream commit 47b0f6d8f0d2be4d311a49e13d2fd5f152f492b2 ]
+> This is the start of the stable review cycle for the 6.16.2 release.
+> There are 570 patches in this series, all will be posted as a response
+> to this one.  If anyone has any issues with these being applied, please
+> let me know.
+> 
+> Responses should be made by Wed, 20 Aug 2025 12:43:43 +0000.
+> Anything received after that time might be too late.
 
-When netpoll is enabled, calling pr_warn_once() while holding
-kmemleak_lock in mem_pool_alloc() can cause a deadlock due to lock
-inversion with the netconsole subsystem.  This occurs because
-pr_warn_once() may trigger netpoll, which eventually leads to
-__alloc_skb() and back into kmemleak code, attempting to reacquire
-kmemleak_lock.
+Hi Greg
 
-This is the path for the deadlock.
+6.16.2-rc1 compiles on x86_64 (Xeon E5-1620 v2, Slackware64-15.0),
+and boots & runs on x86_64 (AMD Ryzen 5 7520U, Slackware64-current).
+No regressions observed, apart from the already reported and being
+worked on issue https://lore.kernel.org/stable/20250818011500.376357-1-wangzijie1@honor.com/
 
-mem_pool_alloc()
-  -> raw_spin_lock_irqsave(&kmemleak_lock, flags);
-      -> pr_warn_once()
-          -> netconsole subsystem
-	     -> netpoll
-	         -> __alloc_skb
-		   -> __create_object
-		     -> raw_spin_lock_irqsave(&kmemleak_lock, flags);
-
-Fix this by setting a flag and issuing the pr_warn_once() after
-kmemleak_lock is released.
-
-Link: https://lkml.kernel.org/r/20250731-kmemleak_lock-v1-1-728fd470198f@debian.org
-Fixes: c5665868183f ("mm: kmemleak: use the memory pool for early allocations")
-Signed-off-by: Breno Leitao <leitao@debian.org>
-Reported-by: Jakub Kicinski <kuba@kernel.org>
-Acked-by: Catalin Marinas <catalin.marinas@arm.com>
-Cc: <stable@vger.kernel.org>
-Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
----
- mm/kmemleak.c | 5 ++++-
- 1 file changed, 4 insertions(+), 1 deletion(-)
-
-diff --git a/mm/kmemleak.c b/mm/kmemleak.c
-index 4ee0dde910fd..ba0cf87226a9 100644
---- a/mm/kmemleak.c
-+++ b/mm/kmemleak.c
-@@ -417,6 +417,7 @@ static struct kmemleak_object *mem_pool_alloc(gfp_t gfp)
- {
- 	unsigned long flags;
- 	struct kmemleak_object *object;
-+	bool warn = false;
- 
- 	/* try the slab allocator first */
- 	if (object_cache) {
-@@ -434,8 +435,10 @@ static struct kmemleak_object *mem_pool_alloc(gfp_t gfp)
- 	else if (mem_pool_free_count)
- 		object = &mem_pool[--mem_pool_free_count];
- 	else
--		pr_warn_once("Memory pool empty, consider increasing CONFIG_DEBUG_KMEMLEAK_MEM_POOL_SIZE\n");
-+		warn = true;
- 	raw_spin_unlock_irqrestore(&kmemleak_lock, flags);
-+	if (warn)
-+		pr_warn_once("Memory pool empty, consider increasing CONFIG_DEBUG_KMEMLEAK_MEM_POOL_SIZE\n");
- 
- 	return object;
- }
--- 
-2.50.1
-
+Tested-by: Markus Reichelt <lkt+2023@mareichelt.com>
 
