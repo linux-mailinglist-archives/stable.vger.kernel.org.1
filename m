@@ -1,58 +1,57 @@
-Return-Path: <stable+bounces-171726-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-171727-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5C1C4B2B6EF
-	for <lists+stable@lfdr.de>; Tue, 19 Aug 2025 04:28:03 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 78186B2B6F0
+	for <lists+stable@lfdr.de>; Tue, 19 Aug 2025 04:28:10 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 840884E62AD
-	for <lists+stable@lfdr.de>; Tue, 19 Aug 2025 02:28:00 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 9DF814E643B
+	for <lists+stable@lfdr.de>; Tue, 19 Aug 2025 02:28:01 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7B23A287507;
-	Tue, 19 Aug 2025 02:27:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0ED06287519;
+	Tue, 19 Aug 2025 02:27:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="N26WiVVf"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="l7eajoRb"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3A6CB18E3F
-	for <stable@vger.kernel.org>; Tue, 19 Aug 2025 02:27:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C1F0B28750B
+	for <stable@vger.kernel.org>; Tue, 19 Aug 2025 02:27:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755570477; cv=none; b=bPRc6Puqbf/T5/KKOqC4oNzN5+5iCKxmej8/aPLHjO8U+1Skk3QzX5UqIeghUZSL5xb7ashT5h+NA9i4x9pXE8NSqRpvE1dv8ShihvIIFafN8lamiO7RbePPyRFz2Z3t2BfXTCQS4BByrE1qfAPISLLUDwayFyoPNTeCZAS8ytg=
+	t=1755570477; cv=none; b=uFKzdr9d8yVIwkgbz5zbVu2g2z+ZmOhRz4O8HKT98u6/Bxsxw2dtO6Apk2V1ISc1638koW2qynpOptumY/Exa4n25a54qqOMnIrLSetRtvZygvfAjDF5EGQ2CTw57jmWwmK6bW6ndzu2bY0AMP7JUSk6ZPTvFpn18KWbUBNVTQQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
 	s=arc-20240116; t=1755570477; c=relaxed/simple;
-	bh=S8f6syNGM48MTbzDIStmsPa5OkGjvG9krliZvDLVqBg=;
+	bh=sA3KQVbWW6U7g79xRVKhqE5STgOuyccTKHs2B7LFI88=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=omb962S6V7bVAuoHFPU2K/twqhKh8VDnIh3Z1vvtzdiJlDXx2BW3UkIyIL+/t41hsjnKRhYyksR3Ep3NaZgH/+dr+n4S9T09JbIyLvUVhOzULuzKW+fUBosL5skUQFWk3FMnukdEg8ZW5SzCF9mNEsJa9HflTJLKPLeA7EU6TJ0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=N26WiVVf; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 23E43C4CEED;
+	 MIME-Version; b=H/wjhi1XbEywy9dgeyJo56gADpT4iX2VDVDkJ6s1v1SBK9sUVw9pCleL9Q1qw1ZxnL/7iB1A0+VkhOP3YU+w/vNoT5QU8rYo9oyk+0MxlnLUYmAnIzyrZel1s8/8VB1dDkJtj5soi3mNoFnwDrMRcR87oStwP2iHTekAuQlPfr8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=l7eajoRb; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E84F7C116D0;
 	Tue, 19 Aug 2025 02:27:56 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1755570476;
-	bh=S8f6syNGM48MTbzDIStmsPa5OkGjvG9krliZvDLVqBg=;
+	s=k20201202; t=1755570477;
+	bh=sA3KQVbWW6U7g79xRVKhqE5STgOuyccTKHs2B7LFI88=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=N26WiVVfz+Zyj/5XpwNA+SMo6kPOj2jpOrf9kuygrl08Sd14nGb0PD2cphWUo/i4+
-	 zNMNd933oxHh4h+f7rf3kUgefKmKH+BrnOJWdbHnO7P7fQ/rDMvvyMLUy3fplJR6ny
-	 84fPAW2WykymKRZ1lmLxxUfP6H74zdTUMhdoFhGwgx5mOJK2GNNOAYSvoL/pQ619Fh
-	 llUlfNhYjZbEXQnzP0tqu4jmmdVi6UCe2Td3iINQT8wZ62i8xvKO/spXF2WkZ4LRE1
-	 1RvmiHfDL+D9psJl3kXX3NhWGY2k15Foh0Wz42mxiwUuPItF/MB7wGABMYbj/sX/Ps
-	 AzHQJPzBVY6Jw==
+	b=l7eajoRbdW9Q2dgl3z1GNzhnOBbGx30zVXpvISxArOhtraKTh2NoiLwisQq9c8H/O
+	 PVEE3tvyYhgGb38f44SZnA1Bs4r4sgonN9itxiA1ERY5OcfwhQWqYI0G6SpWlNxd1Q
+	 b39U37rpV15VVN/CM5QzF9wQeIWdoLgA2SqGlbsKQ95jSmEq4OHbuXp7j5HDNgkvEI
+	 OIy8OGNcbpXuBus7yiq4C9E0/RK7uzLHyKxdQgkxvJFiBSWYpj+or0ELnJBpCD0vV+
+	 bykjiQFEvHmhbSazPMyGeCindp+nKmGu/dysAQJjlkYCKAaUFJEc1NVkJqCww4Sd5G
+	 u3k/cYgQpKoQA==
 From: Sasha Levin <sashal@kernel.org>
 To: stable@vger.kernel.org
-Cc: Boris Burkov <boris@bur.io>,
-	David Sterba <dsterba@suse.com>,
-	Filipe Manana <fdmanana@suse.com>,
+Cc: David Sterba <dsterba@suse.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6.y 1/2] btrfs: fix ssd_spread overallocation
-Date: Mon, 18 Aug 2025 22:27:52 -0400
-Message-ID: <20250819022753.281349-1-sashal@kernel.org>
+Subject: [PATCH 6.6.y 2/2] btrfs: constify more pointer parameters
+Date: Mon, 18 Aug 2025 22:27:53 -0400
+Message-ID: <20250819022753.281349-2-sashal@kernel.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <2025081832-unearned-monopoly-13b1@gregkh>
+In-Reply-To: <20250819022753.281349-1-sashal@kernel.org>
 References: <2025081832-unearned-monopoly-13b1@gregkh>
+ <20250819022753.281349-1-sashal@kernel.org>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -61,137 +60,709 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-From: Boris Burkov <boris@bur.io>
+From: David Sterba <dsterba@suse.com>
 
-[ Upstream commit 807d9023e75fc20bfd6dd2ac0408ce4af53f1648 ]
+[ Upstream commit ca283ea9920ac20ae23ed398b693db3121045019 ]
 
-If the ssd_spread mount option is enabled, then we run the so called
-clustered allocator for data block groups. In practice, this results in
-creating a btrfs_free_cluster which caches a block_group and borrows its
-free extents for allocation.
+Continue adding const to parameters.  This is for clarity and minor
+addition to safety. There are some minor effects, in the assembly code
+and .ko measured on release config.
 
-Since the introduction of allocation size classes in 6.1, there has been
-a bug in the interaction between that feature and ssd_spread.
-find_free_extent() has a number of nested loops. The loop going over the
-allocation stages, stored in ffe_ctl->loop and managed by
-find_free_extent_update_loop(), the loop over the raid levels, and the
-loop over all the block_groups in a space_info. The size class feature
-relies on the block_group loop to ensure it gets a chance to see a
-block_group of a given size class.  However, the clustered allocator
-uses the cached cluster block_group and breaks that loop. Each call to
-do_allocation() will really just go back to the same cached block_group.
-Normally, this is OK, as the allocation either succeeds and we don't
-want to loop any more or it fails, and we clear the cluster and return
-its space to the block_group.
-
-But with size classes, the allocation can succeed, then later fail,
-outside of do_allocation() due to size class mismatch. That latter
-failure is not properly handled due to the highly complex multi loop
-logic. The result is a painful loop where we continue to allocate the
-same num_bytes from the cluster in a tight loop until it fails and
-releases the cluster and lets us try a new block_group. But by then, we
-have skipped great swaths of the available block_groups and are likely
-to fail to allocate, looping the outer loop. In pathological cases like
-the reproducer below, the cached block_group is often the very last one,
-in which case we don't perform this tight bg loop but instead rip
-through the ffe stages to LOOP_CHUNK_ALLOC and allocate a chunk, which
-is now the last one, and we enter the tight inner loop until an
-allocation failure. Then allocation succeeds on the final block_group
-and if the next allocation is a size mismatch, the exact same thing
-happens again.
-
-Triggering this is as easy as mounting with -o ssd_spread and then
-running:
-
-  mount -o ssd_spread $dev $mnt
-  dd if=/dev/zero of=$mnt/big bs=16M count=1 &>/dev/null
-  dd if=/dev/zero of=$mnt/med bs=4M count=1 &>/dev/null
-  sync
-
-if you do the two writes + sync in a loop, you can force btrfs to spin
-an excessive amount on semi-successful clustered allocations, before
-ultimately failing and advancing to the stage where we force a chunk
-allocation. This results in 2G of data allocated per iteration, despite
-only using ~20M of data. By using a small size classed extent, the inner
-loop takes longer and we can spin for longer.
-
-The simplest, shortest term fix to unbreak this is to make the clustered
-allocator size_class aware in the dumbest way, where it fails on size
-class mismatch. This may hinder the operation of the clustered
-allocator, but better hindered than completely broken and terribly
-overallocating.
-
-Further re-design improvements are also in the works.
-
-Fixes: 52bb7a2166af ("btrfs: introduce size class to block group allocator")
-CC: stable@vger.kernel.org # 6.1+
-Reported-by: David Sterba <dsterba@suse.com>
-Reviewed-by: Filipe Manana <fdmanana@suse.com>
-Signed-off-by: Boris Burkov <boris@bur.io>
 Signed-off-by: David Sterba <dsterba@suse.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/btrfs/extent-tree.c | 33 +++++++++++++++++----------------
- 1 file changed, 17 insertions(+), 16 deletions(-)
+ fs/btrfs/backref.c           |  6 +++---
+ fs/btrfs/block-group.c       | 34 +++++++++++++++++-----------------
+ fs/btrfs/block-group.h       | 11 +++++------
+ fs/btrfs/block-rsv.c         |  2 +-
+ fs/btrfs/block-rsv.h         |  2 +-
+ fs/btrfs/ctree.c             | 14 +++++++-------
+ fs/btrfs/ctree.h             |  6 +++---
+ fs/btrfs/discard.c           |  4 ++--
+ fs/btrfs/file-item.c         |  4 ++--
+ fs/btrfs/file-item.h         |  2 +-
+ fs/btrfs/inode-item.c        | 10 +++++-----
+ fs/btrfs/inode-item.h        |  4 ++--
+ fs/btrfs/space-info.c        | 17 ++++++++---------
+ fs/btrfs/space-info.h        |  6 +++---
+ fs/btrfs/tree-mod-log.c      | 14 +++++++-------
+ fs/btrfs/tree-mod-log.h      |  6 +++---
+ fs/btrfs/zoned.c             |  2 +-
+ fs/btrfs/zoned.h             |  4 ++--
+ include/trace/events/btrfs.h |  6 +++---
+ 19 files changed, 76 insertions(+), 78 deletions(-)
 
-diff --git a/fs/btrfs/extent-tree.c b/fs/btrfs/extent-tree.c
-index ef77d4208510..8248113eb067 100644
---- a/fs/btrfs/extent-tree.c
-+++ b/fs/btrfs/extent-tree.c
-@@ -3530,6 +3530,21 @@ btrfs_release_block_group(struct btrfs_block_group *cache,
- 	btrfs_put_block_group(cache);
+diff --git a/fs/btrfs/backref.c b/fs/btrfs/backref.c
+index a2ba1c7fc16a..10f803d0534e 100644
+--- a/fs/btrfs/backref.c
++++ b/fs/btrfs/backref.c
+@@ -222,8 +222,8 @@ static void free_pref(struct prelim_ref *ref)
+  * A -1 return indicates ref1 is a 'lower' block than ref2, while 1
+  * indicates a 'higher' block.
+  */
+-static int prelim_ref_compare(struct prelim_ref *ref1,
+-			      struct prelim_ref *ref2)
++static int prelim_ref_compare(const struct prelim_ref *ref1,
++			      const struct prelim_ref *ref2)
+ {
+ 	if (ref1->level < ref2->level)
+ 		return -1;
+@@ -254,7 +254,7 @@ static int prelim_ref_compare(struct prelim_ref *ref1,
  }
  
-+static bool find_free_extent_check_size_class(const struct find_free_extent_ctl *ffe_ctl,
-+					      const struct btrfs_block_group *bg)
-+{
-+	if (ffe_ctl->policy == BTRFS_EXTENT_ALLOC_ZONED)
-+		return true;
-+	if (!btrfs_block_group_should_use_size_class(bg))
-+		return true;
-+	if (ffe_ctl->loop >= LOOP_WRONG_SIZE_CLASS)
-+		return true;
-+	if (ffe_ctl->loop >= LOOP_UNSET_SIZE_CLASS &&
-+	    bg->size_class == BTRFS_BG_SZ_NONE)
-+		return true;
-+	return ffe_ctl->size_class == bg->size_class;
-+}
-+
- /*
-  * Helper function for find_free_extent().
+ static void update_share_count(struct share_check *sc, int oldcount,
+-			       int newcount, struct prelim_ref *newref)
++			       int newcount, const struct prelim_ref *newref)
+ {
+ 	if ((!sc) || (oldcount == 0 && newcount < 1))
+ 		return;
+diff --git a/fs/btrfs/block-group.c b/fs/btrfs/block-group.c
+index 226e6434a58a..6a905f9505de 100644
+--- a/fs/btrfs/block-group.c
++++ b/fs/btrfs/block-group.c
+@@ -23,7 +23,7 @@
+ #include "extent-tree.h"
+ 
+ #ifdef CONFIG_BTRFS_DEBUG
+-int btrfs_should_fragment_free_space(struct btrfs_block_group *block_group)
++int btrfs_should_fragment_free_space(const struct btrfs_block_group *block_group)
+ {
+ 	struct btrfs_fs_info *fs_info = block_group->fs_info;
+ 
+@@ -40,9 +40,9 @@ int btrfs_should_fragment_free_space(struct btrfs_block_group *block_group)
   *
-@@ -3551,7 +3566,8 @@ static int find_free_extent_clustered(struct btrfs_block_group *bg,
- 	if (!cluster_bg)
- 		goto refill_cluster;
- 	if (cluster_bg != bg && (cluster_bg->ro ||
--	    !block_group_bits(cluster_bg, ffe_ctl->flags)))
-+	    !block_group_bits(cluster_bg, ffe_ctl->flags) ||
-+	    !find_free_extent_check_size_class(ffe_ctl, cluster_bg)))
- 		goto release_cluster;
+  * Should be called with balance_lock held
+  */
+-static u64 get_restripe_target(struct btrfs_fs_info *fs_info, u64 flags)
++static u64 get_restripe_target(const struct btrfs_fs_info *fs_info, u64 flags)
+ {
+-	struct btrfs_balance_control *bctl = fs_info->balance_ctl;
++	const struct btrfs_balance_control *bctl = fs_info->balance_ctl;
+ 	u64 target = 0;
  
- 	offset = btrfs_alloc_from_cluster(cluster_bg, last_ptr,
-@@ -4107,21 +4123,6 @@ static int find_free_extent_update_loop(struct btrfs_fs_info *fs_info,
- 	return -ENOSPC;
+ 	if (!bctl)
+@@ -1418,9 +1418,9 @@ static int inc_block_group_ro(struct btrfs_block_group *cache, int force)
  }
  
--static bool find_free_extent_check_size_class(struct find_free_extent_ctl *ffe_ctl,
--					      struct btrfs_block_group *bg)
--{
--	if (ffe_ctl->policy == BTRFS_EXTENT_ALLOC_ZONED)
--		return true;
--	if (!btrfs_block_group_should_use_size_class(bg))
--		return true;
--	if (ffe_ctl->loop >= LOOP_WRONG_SIZE_CLASS)
--		return true;
--	if (ffe_ctl->loop >= LOOP_UNSET_SIZE_CLASS &&
--	    bg->size_class == BTRFS_BG_SZ_NONE)
--		return true;
--	return ffe_ctl->size_class == bg->size_class;
--}
--
- static int prepare_allocation_clustered(struct btrfs_fs_info *fs_info,
- 					struct find_free_extent_ctl *ffe_ctl,
- 					struct btrfs_space_info *space_info,
+ static bool clean_pinned_extents(struct btrfs_trans_handle *trans,
+-				 struct btrfs_block_group *bg)
++				 const struct btrfs_block_group *bg)
+ {
+-	struct btrfs_fs_info *fs_info = bg->fs_info;
++	struct btrfs_fs_info *fs_info = trans->fs_info;
+ 	struct btrfs_transaction *prev_trans = NULL;
+ 	const u64 start = bg->start;
+ 	const u64 end = start + bg->length - 1;
+@@ -1752,14 +1752,14 @@ static int reclaim_bgs_cmp(void *unused, const struct list_head *a,
+ 	return bg1->used > bg2->used;
+ }
+ 
+-static inline bool btrfs_should_reclaim(struct btrfs_fs_info *fs_info)
++static inline bool btrfs_should_reclaim(const struct btrfs_fs_info *fs_info)
+ {
+ 	if (btrfs_is_zoned(fs_info))
+ 		return btrfs_zoned_should_reclaim(fs_info);
+ 	return true;
+ }
+ 
+-static bool should_reclaim_block_group(struct btrfs_block_group *bg, u64 bytes_freed)
++static bool should_reclaim_block_group(const struct btrfs_block_group *bg, u64 bytes_freed)
+ {
+ 	const struct btrfs_space_info *space_info = bg->space_info;
+ 	const int reclaim_thresh = READ_ONCE(space_info->bg_reclaim_threshold);
+@@ -1991,8 +1991,8 @@ void btrfs_mark_bg_to_reclaim(struct btrfs_block_group *bg)
+ 	spin_unlock(&fs_info->unused_bgs_lock);
+ }
+ 
+-static int read_bg_from_eb(struct btrfs_fs_info *fs_info, struct btrfs_key *key,
+-			   struct btrfs_path *path)
++static int read_bg_from_eb(struct btrfs_fs_info *fs_info, const struct btrfs_key *key,
++			   const struct btrfs_path *path)
+ {
+ 	struct extent_map_tree *em_tree;
+ 	struct extent_map *em;
+@@ -2044,7 +2044,7 @@ static int read_bg_from_eb(struct btrfs_fs_info *fs_info, struct btrfs_key *key,
+ 
+ static int find_first_block_group(struct btrfs_fs_info *fs_info,
+ 				  struct btrfs_path *path,
+-				  struct btrfs_key *key)
++				  const struct btrfs_key *key)
+ {
+ 	struct btrfs_root *root = btrfs_block_group_root(fs_info);
+ 	int ret;
+@@ -2636,8 +2636,8 @@ static int insert_block_group_item(struct btrfs_trans_handle *trans,
+ }
+ 
+ static int insert_dev_extent(struct btrfs_trans_handle *trans,
+-			    struct btrfs_device *device, u64 chunk_offset,
+-			    u64 start, u64 num_bytes)
++			     const struct btrfs_device *device, u64 chunk_offset,
++			     u64 start, u64 num_bytes)
+ {
+ 	struct btrfs_fs_info *fs_info = device->fs_info;
+ 	struct btrfs_root *root = fs_info->dev_root;
+@@ -2787,7 +2787,7 @@ void btrfs_create_pending_block_groups(struct btrfs_trans_handle *trans)
+  * For extent tree v2 we use the block_group_item->chunk_offset to point at our
+  * global root id.  For v1 it's always set to BTRFS_FIRST_CHUNK_TREE_OBJECTID.
+  */
+-static u64 calculate_global_root_id(struct btrfs_fs_info *fs_info, u64 offset)
++static u64 calculate_global_root_id(const struct btrfs_fs_info *fs_info, u64 offset)
+ {
+ 	u64 div = SZ_1G;
+ 	u64 index;
+@@ -3823,8 +3823,8 @@ static void force_metadata_allocation(struct btrfs_fs_info *info)
+ 	}
+ }
+ 
+-static int should_alloc_chunk(struct btrfs_fs_info *fs_info,
+-			      struct btrfs_space_info *sinfo, int force)
++static int should_alloc_chunk(const struct btrfs_fs_info *fs_info,
++			      const struct btrfs_space_info *sinfo, int force)
+ {
+ 	u64 bytes_used = btrfs_space_info_used(sinfo, false);
+ 	u64 thresh;
+@@ -4199,7 +4199,7 @@ int btrfs_chunk_alloc(struct btrfs_trans_handle *trans, u64 flags,
+ 	return ret;
+ }
+ 
+-static u64 get_profile_num_devs(struct btrfs_fs_info *fs_info, u64 type)
++static u64 get_profile_num_devs(const struct btrfs_fs_info *fs_info, u64 type)
+ {
+ 	u64 num_dev;
+ 
+@@ -4606,7 +4606,7 @@ int btrfs_use_block_group_size_class(struct btrfs_block_group *bg,
+ 	return 0;
+ }
+ 
+-bool btrfs_block_group_should_use_size_class(struct btrfs_block_group *bg)
++bool btrfs_block_group_should_use_size_class(const struct btrfs_block_group *bg)
+ {
+ 	if (btrfs_is_zoned(bg->fs_info))
+ 		return false;
+diff --git a/fs/btrfs/block-group.h b/fs/btrfs/block-group.h
+index 089979981e4a..a8a6a21e393d 100644
+--- a/fs/btrfs/block-group.h
++++ b/fs/btrfs/block-group.h
+@@ -250,7 +250,7 @@ struct btrfs_block_group {
+ 	enum btrfs_block_group_size_class size_class;
+ };
+ 
+-static inline u64 btrfs_block_group_end(struct btrfs_block_group *block_group)
++static inline u64 btrfs_block_group_end(const struct btrfs_block_group *block_group)
+ {
+ 	return (block_group->start + block_group->length);
+ }
+@@ -262,8 +262,7 @@ static inline bool btrfs_is_block_group_used(const struct btrfs_block_group *bg)
+ 	return (bg->used > 0 || bg->reserved > 0 || bg->pinned > 0);
+ }
+ 
+-static inline bool btrfs_is_block_group_data_only(
+-					struct btrfs_block_group *block_group)
++static inline bool btrfs_is_block_group_data_only(const struct btrfs_block_group *block_group)
+ {
+ 	/*
+ 	 * In mixed mode the fragmentation is expected to be high, lowering the
+@@ -274,7 +273,7 @@ static inline bool btrfs_is_block_group_data_only(
+ }
+ 
+ #ifdef CONFIG_BTRFS_DEBUG
+-int btrfs_should_fragment_free_space(struct btrfs_block_group *block_group);
++int btrfs_should_fragment_free_space(const struct btrfs_block_group *block_group);
+ #endif
+ 
+ struct btrfs_block_group *btrfs_lookup_first_block_group(
+@@ -355,7 +354,7 @@ static inline u64 btrfs_system_alloc_profile(struct btrfs_fs_info *fs_info)
+ 	return btrfs_get_alloc_profile(fs_info, BTRFS_BLOCK_GROUP_SYSTEM);
+ }
+ 
+-static inline int btrfs_block_group_done(struct btrfs_block_group *cache)
++static inline int btrfs_block_group_done(const struct btrfs_block_group *cache)
+ {
+ 	smp_mb();
+ 	return cache->cached == BTRFS_CACHE_FINISHED ||
+@@ -372,6 +371,6 @@ enum btrfs_block_group_size_class btrfs_calc_block_group_size_class(u64 size);
+ int btrfs_use_block_group_size_class(struct btrfs_block_group *bg,
+ 				     enum btrfs_block_group_size_class size_class,
+ 				     bool force_wrong_size_class);
+-bool btrfs_block_group_should_use_size_class(struct btrfs_block_group *bg);
++bool btrfs_block_group_should_use_size_class(const struct btrfs_block_group *bg);
+ 
+ #endif /* BTRFS_BLOCK_GROUP_H */
+diff --git a/fs/btrfs/block-rsv.c b/fs/btrfs/block-rsv.c
+index db8da4e7b228..97084ea3af0c 100644
+--- a/fs/btrfs/block-rsv.c
++++ b/fs/btrfs/block-rsv.c
+@@ -547,7 +547,7 @@ struct btrfs_block_rsv *btrfs_use_block_rsv(struct btrfs_trans_handle *trans,
+ 	return ERR_PTR(ret);
+ }
+ 
+-int btrfs_check_trunc_cache_free_space(struct btrfs_fs_info *fs_info,
++int btrfs_check_trunc_cache_free_space(const struct btrfs_fs_info *fs_info,
+ 				       struct btrfs_block_rsv *rsv)
+ {
+ 	u64 needed_bytes;
+diff --git a/fs/btrfs/block-rsv.h b/fs/btrfs/block-rsv.h
+index 43a9a6b5a79f..3c9a15f59731 100644
+--- a/fs/btrfs/block-rsv.h
++++ b/fs/btrfs/block-rsv.h
+@@ -82,7 +82,7 @@ void btrfs_release_global_block_rsv(struct btrfs_fs_info *fs_info);
+ struct btrfs_block_rsv *btrfs_use_block_rsv(struct btrfs_trans_handle *trans,
+ 					    struct btrfs_root *root,
+ 					    u32 blocksize);
+-int btrfs_check_trunc_cache_free_space(struct btrfs_fs_info *fs_info,
++int btrfs_check_trunc_cache_free_space(const struct btrfs_fs_info *fs_info,
+ 				       struct btrfs_block_rsv *rsv);
+ static inline void btrfs_unuse_block_rsv(struct btrfs_fs_info *fs_info,
+ 					 struct btrfs_block_rsv *block_rsv,
+diff --git a/fs/btrfs/ctree.c b/fs/btrfs/ctree.c
+index 4b21ca49b666..da49ccb991da 100644
+--- a/fs/btrfs/ctree.c
++++ b/fs/btrfs/ctree.c
+@@ -2712,7 +2712,7 @@ int btrfs_get_next_valid_item(struct btrfs_root *root, struct btrfs_key *key,
+  *
+  */
+ static void fixup_low_keys(struct btrfs_trans_handle *trans,
+-			   struct btrfs_path *path,
++			   const struct btrfs_path *path,
+ 			   struct btrfs_disk_key *key, int level)
+ {
+ 	int i;
+@@ -2742,7 +2742,7 @@ static void fixup_low_keys(struct btrfs_trans_handle *trans,
+  * that the new key won't break the order
+  */
+ void btrfs_set_item_key_safe(struct btrfs_trans_handle *trans,
+-			     struct btrfs_path *path,
++			     const struct btrfs_path *path,
+ 			     const struct btrfs_key *new_key)
+ {
+ 	struct btrfs_fs_info *fs_info = trans->fs_info;
+@@ -2808,8 +2808,8 @@ void btrfs_set_item_key_safe(struct btrfs_trans_handle *trans,
+  * is correct, we only need to bother the last key of @left and the first
+  * key of @right.
+  */
+-static bool check_sibling_keys(struct extent_buffer *left,
+-			       struct extent_buffer *right)
++static bool check_sibling_keys(const struct extent_buffer *left,
++			       const struct extent_buffer *right)
+ {
+ 	struct btrfs_key left_last;
+ 	struct btrfs_key right_first;
+@@ -3077,7 +3077,7 @@ static noinline int insert_new_root(struct btrfs_trans_handle *trans,
+  * blocknr is the block the key points to.
+  */
+ static int insert_ptr(struct btrfs_trans_handle *trans,
+-		      struct btrfs_path *path,
++		      const struct btrfs_path *path,
+ 		      struct btrfs_disk_key *key, u64 bytenr,
+ 		      int slot, int level)
+ {
+@@ -4168,7 +4168,7 @@ int btrfs_split_item(struct btrfs_trans_handle *trans,
+  * the front.
+  */
+ void btrfs_truncate_item(struct btrfs_trans_handle *trans,
+-			 struct btrfs_path *path, u32 new_size, int from_end)
++			 const struct btrfs_path *path, u32 new_size, int from_end)
+ {
+ 	int slot;
+ 	struct extent_buffer *leaf;
+@@ -4260,7 +4260,7 @@ void btrfs_truncate_item(struct btrfs_trans_handle *trans,
+  * make the item pointed to by the path bigger, data_size is the added size.
+  */
+ void btrfs_extend_item(struct btrfs_trans_handle *trans,
+-		       struct btrfs_path *path, u32 data_size)
++		       const struct btrfs_path *path, u32 data_size)
+ {
+ 	int slot;
+ 	struct extent_buffer *leaf;
+diff --git a/fs/btrfs/ctree.h b/fs/btrfs/ctree.h
+index 7df3ed2945b0..834af67fac23 100644
+--- a/fs/btrfs/ctree.h
++++ b/fs/btrfs/ctree.h
+@@ -521,7 +521,7 @@ int btrfs_previous_item(struct btrfs_root *root,
+ int btrfs_previous_extent_item(struct btrfs_root *root,
+ 			struct btrfs_path *path, u64 min_objectid);
+ void btrfs_set_item_key_safe(struct btrfs_trans_handle *trans,
+-			     struct btrfs_path *path,
++			     const struct btrfs_path *path,
+ 			     const struct btrfs_key *new_key);
+ struct extent_buffer *btrfs_root_node(struct btrfs_root *root);
+ int btrfs_find_next_key(struct btrfs_root *root, struct btrfs_path *path,
+@@ -555,9 +555,9 @@ int btrfs_block_can_be_shared(struct btrfs_trans_handle *trans,
+ int btrfs_del_ptr(struct btrfs_trans_handle *trans, struct btrfs_root *root,
+ 		  struct btrfs_path *path, int level, int slot);
+ void btrfs_extend_item(struct btrfs_trans_handle *trans,
+-		       struct btrfs_path *path, u32 data_size);
++		       const struct btrfs_path *path, u32 data_size);
+ void btrfs_truncate_item(struct btrfs_trans_handle *trans,
+-			 struct btrfs_path *path, u32 new_size, int from_end);
++			 const struct btrfs_path *path, u32 new_size, int from_end);
+ int btrfs_split_item(struct btrfs_trans_handle *trans,
+ 		     struct btrfs_root *root,
+ 		     struct btrfs_path *path,
+diff --git a/fs/btrfs/discard.c b/fs/btrfs/discard.c
+index 3981c941f5b5..d6eef4bd9e9d 100644
+--- a/fs/btrfs/discard.c
++++ b/fs/btrfs/discard.c
+@@ -68,7 +68,7 @@ static int discard_minlen[BTRFS_NR_DISCARD_LISTS] = {
+ };
+ 
+ static struct list_head *get_discard_list(struct btrfs_discard_ctl *discard_ctl,
+-					  struct btrfs_block_group *block_group)
++					  const struct btrfs_block_group *block_group)
+ {
+ 	return &discard_ctl->discard_list[block_group->discard_index];
+ }
+@@ -80,7 +80,7 @@ static struct list_head *get_discard_list(struct btrfs_discard_ctl *discard_ctl,
+  *
+  * Check if the file system is writeable and BTRFS_FS_DISCARD_RUNNING is set.
+  */
+-static bool btrfs_run_discard_work(struct btrfs_discard_ctl *discard_ctl)
++static bool btrfs_run_discard_work(const struct btrfs_discard_ctl *discard_ctl)
+ {
+ 	struct btrfs_fs_info *fs_info = container_of(discard_ctl,
+ 						     struct btrfs_fs_info,
+diff --git a/fs/btrfs/file-item.c b/fs/btrfs/file-item.c
+index 45cae356e89b..ea5759a689b9 100644
+--- a/fs/btrfs/file-item.c
++++ b/fs/btrfs/file-item.c
+@@ -153,7 +153,7 @@ static inline u32 max_ordered_sum_bytes(const struct btrfs_fs_info *fs_info)
+  * Calculate the total size needed to allocate for an ordered sum structure
+  * spanning @bytes in the file.
+  */
+-static int btrfs_ordered_sum_size(struct btrfs_fs_info *fs_info, unsigned long bytes)
++static int btrfs_ordered_sum_size(const struct btrfs_fs_info *fs_info, unsigned long bytes)
+ {
+ 	return sizeof(struct btrfs_ordered_sum) + bytes_to_csum_size(fs_info, bytes);
+ }
+@@ -1263,7 +1263,7 @@ int btrfs_csum_file_blocks(struct btrfs_trans_handle *trans,
+ 
+ void btrfs_extent_item_to_extent_map(struct btrfs_inode *inode,
+ 				     const struct btrfs_path *path,
+-				     struct btrfs_file_extent_item *fi,
++				     const struct btrfs_file_extent_item *fi,
+ 				     struct extent_map *em)
+ {
+ 	struct btrfs_fs_info *fs_info = inode->root->fs_info;
+diff --git a/fs/btrfs/file-item.h b/fs/btrfs/file-item.h
+index 04bd2d34efb1..2b1d08b88b61 100644
+--- a/fs/btrfs/file-item.h
++++ b/fs/btrfs/file-item.h
+@@ -62,7 +62,7 @@ int btrfs_lookup_csums_bitmap(struct btrfs_root *root, struct btrfs_path *path,
+ 			      unsigned long *csum_bitmap);
+ void btrfs_extent_item_to_extent_map(struct btrfs_inode *inode,
+ 				     const struct btrfs_path *path,
+-				     struct btrfs_file_extent_item *fi,
++				     const struct btrfs_file_extent_item *fi,
+ 				     struct extent_map *em);
+ int btrfs_inode_clear_file_extent_range(struct btrfs_inode *inode, u64 start,
+ 					u64 len);
+diff --git a/fs/btrfs/inode-item.c b/fs/btrfs/inode-item.c
+index d3ff97374d48..ab741a578424 100644
+--- a/fs/btrfs/inode-item.c
++++ b/fs/btrfs/inode-item.c
+@@ -15,7 +15,7 @@
+ #include "extent-tree.h"
+ #include "file-item.h"
+ 
+-struct btrfs_inode_ref *btrfs_find_name_in_backref(struct extent_buffer *leaf,
++struct btrfs_inode_ref *btrfs_find_name_in_backref(const struct extent_buffer *leaf,
+ 						   int slot,
+ 						   const struct fscrypt_str *name)
+ {
+@@ -43,7 +43,7 @@ struct btrfs_inode_ref *btrfs_find_name_in_backref(struct extent_buffer *leaf,
+ }
+ 
+ struct btrfs_inode_extref *btrfs_find_name_in_ext_backref(
+-		struct extent_buffer *leaf, int slot, u64 ref_objectid,
++		const struct extent_buffer *leaf, int slot, u64 ref_objectid,
+ 		const struct fscrypt_str *name)
+ {
+ 	struct btrfs_inode_extref *extref;
+@@ -424,9 +424,9 @@ int btrfs_lookup_inode(struct btrfs_trans_handle *trans, struct btrfs_root
+ 	return ret;
+ }
+ 
+-static inline void btrfs_trace_truncate(struct btrfs_inode *inode,
+-					struct extent_buffer *leaf,
+-					struct btrfs_file_extent_item *fi,
++static inline void btrfs_trace_truncate(const struct btrfs_inode *inode,
++					const struct extent_buffer *leaf,
++					const struct btrfs_file_extent_item *fi,
+ 					u64 offset, int extent_type, int slot)
+ {
+ 	if (!inode)
+diff --git a/fs/btrfs/inode-item.h b/fs/btrfs/inode-item.h
+index ede43b6c6559..d43633d5620f 100644
+--- a/fs/btrfs/inode-item.h
++++ b/fs/btrfs/inode-item.h
+@@ -100,11 +100,11 @@ struct btrfs_inode_extref *btrfs_lookup_inode_extref(
+ 			  u64 inode_objectid, u64 ref_objectid, int ins_len,
+ 			  int cow);
+ 
+-struct btrfs_inode_ref *btrfs_find_name_in_backref(struct extent_buffer *leaf,
++struct btrfs_inode_ref *btrfs_find_name_in_backref(const struct extent_buffer *leaf,
+ 						   int slot,
+ 						   const struct fscrypt_str *name);
+ struct btrfs_inode_extref *btrfs_find_name_in_ext_backref(
+-		struct extent_buffer *leaf, int slot, u64 ref_objectid,
++		const struct extent_buffer *leaf, int slot, u64 ref_objectid,
+ 		const struct fscrypt_str *name);
+ 
+ #endif
+diff --git a/fs/btrfs/space-info.c b/fs/btrfs/space-info.c
+index 581bdd709ee0..27690c518f6d 100644
+--- a/fs/btrfs/space-info.c
++++ b/fs/btrfs/space-info.c
+@@ -162,7 +162,7 @@
+  *   thing with or without extra unallocated space.
+  */
+ 
+-u64 __pure btrfs_space_info_used(struct btrfs_space_info *s_info,
++u64 __pure btrfs_space_info_used(const struct btrfs_space_info *s_info,
+ 			  bool may_use_included)
+ {
+ 	ASSERT(s_info);
+@@ -342,7 +342,7 @@ struct btrfs_space_info *btrfs_find_space_info(struct btrfs_fs_info *info,
+ }
+ 
+ static u64 calc_available_free_space(struct btrfs_fs_info *fs_info,
+-			  struct btrfs_space_info *space_info,
++			  const struct btrfs_space_info *space_info,
+ 			  enum btrfs_reserve_flush_enum flush)
+ {
+ 	u64 profile;
+@@ -378,7 +378,7 @@ static u64 calc_available_free_space(struct btrfs_fs_info *fs_info,
+ }
+ 
+ int btrfs_can_overcommit(struct btrfs_fs_info *fs_info,
+-			 struct btrfs_space_info *space_info, u64 bytes,
++			 const struct btrfs_space_info *space_info, u64 bytes,
+ 			 enum btrfs_reserve_flush_enum flush)
+ {
+ 	u64 avail;
+@@ -483,8 +483,8 @@ static void dump_global_block_rsv(struct btrfs_fs_info *fs_info)
+ 	DUMP_BLOCK_RSV(fs_info, delayed_refs_rsv);
+ }
+ 
+-static void __btrfs_dump_space_info(struct btrfs_fs_info *fs_info,
+-				    struct btrfs_space_info *info)
++static void __btrfs_dump_space_info(const struct btrfs_fs_info *fs_info,
++				    const struct btrfs_space_info *info)
+ {
+ 	const char *flag_str = space_info_flag_to_str(info);
+ 	lockdep_assert_held(&info->lock);
+@@ -807,9 +807,8 @@ static void flush_space(struct btrfs_fs_info *fs_info,
+ 	return;
+ }
+ 
+-static inline u64
+-btrfs_calc_reclaim_metadata_size(struct btrfs_fs_info *fs_info,
+-				 struct btrfs_space_info *space_info)
++static u64 btrfs_calc_reclaim_metadata_size(struct btrfs_fs_info *fs_info,
++					    const struct btrfs_space_info *space_info)
+ {
+ 	u64 used;
+ 	u64 avail;
+@@ -834,7 +833,7 @@ btrfs_calc_reclaim_metadata_size(struct btrfs_fs_info *fs_info,
+ }
+ 
+ static bool need_preemptive_reclaim(struct btrfs_fs_info *fs_info,
+-				    struct btrfs_space_info *space_info)
++				    const struct btrfs_space_info *space_info)
+ {
+ 	const u64 global_rsv_size = btrfs_block_rsv_reserved(&fs_info->global_block_rsv);
+ 	u64 ordered, delalloc;
+diff --git a/fs/btrfs/space-info.h b/fs/btrfs/space-info.h
+index 08a3bd10addc..b0187f25dbb5 100644
+--- a/fs/btrfs/space-info.h
++++ b/fs/btrfs/space-info.h
+@@ -165,7 +165,7 @@ struct reserve_ticket {
+ 	wait_queue_head_t wait;
+ };
+ 
+-static inline bool btrfs_mixed_space_info(struct btrfs_space_info *space_info)
++static inline bool btrfs_mixed_space_info(const struct btrfs_space_info *space_info)
+ {
+ 	return ((space_info->flags & BTRFS_BLOCK_GROUP_METADATA) &&
+ 		(space_info->flags & BTRFS_BLOCK_GROUP_DATA));
+@@ -206,7 +206,7 @@ void btrfs_update_space_info_chunk_size(struct btrfs_space_info *space_info,
+ 					u64 chunk_size);
+ struct btrfs_space_info *btrfs_find_space_info(struct btrfs_fs_info *info,
+ 					       u64 flags);
+-u64 __pure btrfs_space_info_used(struct btrfs_space_info *s_info,
++u64 __pure btrfs_space_info_used(const struct btrfs_space_info *s_info,
+ 			  bool may_use_included);
+ void btrfs_clear_space_info_full(struct btrfs_fs_info *info);
+ void btrfs_dump_space_info(struct btrfs_fs_info *fs_info,
+@@ -219,7 +219,7 @@ int btrfs_reserve_metadata_bytes(struct btrfs_fs_info *fs_info,
+ void btrfs_try_granting_tickets(struct btrfs_fs_info *fs_info,
+ 				struct btrfs_space_info *space_info);
+ int btrfs_can_overcommit(struct btrfs_fs_info *fs_info,
+-			 struct btrfs_space_info *space_info, u64 bytes,
++			 const struct btrfs_space_info *space_info, u64 bytes,
+ 			 enum btrfs_reserve_flush_enum flush);
+ 
+ static inline void btrfs_space_info_free_bytes_may_use(
+diff --git a/fs/btrfs/tree-mod-log.c b/fs/btrfs/tree-mod-log.c
+index 3df6153d5d5a..febc014a510d 100644
+--- a/fs/btrfs/tree-mod-log.c
++++ b/fs/btrfs/tree-mod-log.c
+@@ -171,7 +171,7 @@ static noinline int tree_mod_log_insert(struct btrfs_fs_info *fs_info,
+  * write unlock fs_info::tree_mod_log_lock.
+  */
+ static inline bool tree_mod_dont_log(struct btrfs_fs_info *fs_info,
+-				    struct extent_buffer *eb)
++				    const struct extent_buffer *eb)
+ {
+ 	if (!test_bit(BTRFS_FS_TREE_MOD_LOG_USERS, &fs_info->flags))
+ 		return true;
+@@ -189,7 +189,7 @@ static inline bool tree_mod_dont_log(struct btrfs_fs_info *fs_info,
+ 
+ /* Similar to tree_mod_dont_log, but doesn't acquire any locks. */
+ static inline bool tree_mod_need_log(const struct btrfs_fs_info *fs_info,
+-				    struct extent_buffer *eb)
++				    const struct extent_buffer *eb)
+ {
+ 	if (!test_bit(BTRFS_FS_TREE_MOD_LOG_USERS, &fs_info->flags))
+ 		return false;
+@@ -199,7 +199,7 @@ static inline bool tree_mod_need_log(const struct btrfs_fs_info *fs_info,
+ 	return true;
+ }
+ 
+-static struct tree_mod_elem *alloc_tree_mod_elem(struct extent_buffer *eb,
++static struct tree_mod_elem *alloc_tree_mod_elem(const struct extent_buffer *eb,
+ 						 int slot,
+ 						 enum btrfs_mod_log_op op)
+ {
+@@ -222,7 +222,7 @@ static struct tree_mod_elem *alloc_tree_mod_elem(struct extent_buffer *eb,
+ 	return tm;
+ }
+ 
+-int btrfs_tree_mod_log_insert_key(struct extent_buffer *eb, int slot,
++int btrfs_tree_mod_log_insert_key(const struct extent_buffer *eb, int slot,
+ 				  enum btrfs_mod_log_op op)
+ {
+ 	struct tree_mod_elem *tm;
+@@ -259,7 +259,7 @@ int btrfs_tree_mod_log_insert_key(struct extent_buffer *eb, int slot,
+ 	return ret;
+ }
+ 
+-static struct tree_mod_elem *tree_mod_log_alloc_move(struct extent_buffer *eb,
++static struct tree_mod_elem *tree_mod_log_alloc_move(const struct extent_buffer *eb,
+ 						     int dst_slot, int src_slot,
+ 						     int nr_items)
+ {
+@@ -279,7 +279,7 @@ static struct tree_mod_elem *tree_mod_log_alloc_move(struct extent_buffer *eb,
+ 	return tm;
+ }
+ 
+-int btrfs_tree_mod_log_insert_move(struct extent_buffer *eb,
++int btrfs_tree_mod_log_insert_move(const struct extent_buffer *eb,
+ 				   int dst_slot, int src_slot,
+ 				   int nr_items)
+ {
+@@ -536,7 +536,7 @@ static struct tree_mod_elem *tree_mod_log_search(struct btrfs_fs_info *fs_info,
+ }
+ 
+ int btrfs_tree_mod_log_eb_copy(struct extent_buffer *dst,
+-			       struct extent_buffer *src,
++			       const struct extent_buffer *src,
+ 			       unsigned long dst_offset,
+ 			       unsigned long src_offset,
+ 			       int nr_items)
+diff --git a/fs/btrfs/tree-mod-log.h b/fs/btrfs/tree-mod-log.h
+index 94f10afeee97..5f94ab681fa4 100644
+--- a/fs/btrfs/tree-mod-log.h
++++ b/fs/btrfs/tree-mod-log.h
+@@ -31,7 +31,7 @@ void btrfs_put_tree_mod_seq(struct btrfs_fs_info *fs_info,
+ int btrfs_tree_mod_log_insert_root(struct extent_buffer *old_root,
+ 				   struct extent_buffer *new_root,
+ 				   bool log_removal);
+-int btrfs_tree_mod_log_insert_key(struct extent_buffer *eb, int slot,
++int btrfs_tree_mod_log_insert_key(const struct extent_buffer *eb, int slot,
+ 				  enum btrfs_mod_log_op op);
+ int btrfs_tree_mod_log_free_eb(struct extent_buffer *eb);
+ struct extent_buffer *btrfs_tree_mod_log_rewind(struct btrfs_fs_info *fs_info,
+@@ -41,11 +41,11 @@ struct extent_buffer *btrfs_tree_mod_log_rewind(struct btrfs_fs_info *fs_info,
+ struct extent_buffer *btrfs_get_old_root(struct btrfs_root *root, u64 time_seq);
+ int btrfs_old_root_level(struct btrfs_root *root, u64 time_seq);
+ int btrfs_tree_mod_log_eb_copy(struct extent_buffer *dst,
+-			       struct extent_buffer *src,
++			       const struct extent_buffer *src,
+ 			       unsigned long dst_offset,
+ 			       unsigned long src_offset,
+ 			       int nr_items);
+-int btrfs_tree_mod_log_insert_move(struct extent_buffer *eb,
++int btrfs_tree_mod_log_insert_move(const struct extent_buffer *eb,
+ 				   int dst_slot, int src_slot,
+ 				   int nr_items);
+ u64 btrfs_tree_mod_log_lowest_seq(struct btrfs_fs_info *fs_info);
+diff --git a/fs/btrfs/zoned.c b/fs/btrfs/zoned.c
+index 197dfafbf401..0ec406cac748 100644
+--- a/fs/btrfs/zoned.c
++++ b/fs/btrfs/zoned.c
+@@ -2346,7 +2346,7 @@ void btrfs_free_zone_cache(struct btrfs_fs_info *fs_info)
+ 	mutex_unlock(&fs_devices->device_list_mutex);
+ }
+ 
+-bool btrfs_zoned_should_reclaim(struct btrfs_fs_info *fs_info)
++bool btrfs_zoned_should_reclaim(const struct btrfs_fs_info *fs_info)
+ {
+ 	struct btrfs_fs_devices *fs_devices = fs_info->fs_devices;
+ 	struct btrfs_device *device;
+diff --git a/fs/btrfs/zoned.h b/fs/btrfs/zoned.h
+index b9cec523b778..448955641d11 100644
+--- a/fs/btrfs/zoned.h
++++ b/fs/btrfs/zoned.h
+@@ -77,7 +77,7 @@ void btrfs_schedule_zone_finish_bg(struct btrfs_block_group *bg,
+ 				   struct extent_buffer *eb);
+ void btrfs_clear_data_reloc_bg(struct btrfs_block_group *bg);
+ void btrfs_free_zone_cache(struct btrfs_fs_info *fs_info);
+-bool btrfs_zoned_should_reclaim(struct btrfs_fs_info *fs_info);
++bool btrfs_zoned_should_reclaim(const struct btrfs_fs_info *fs_info);
+ void btrfs_zoned_release_data_reloc_bg(struct btrfs_fs_info *fs_info, u64 logical,
+ 				       u64 length);
+ int btrfs_zone_finish_one_bg(struct btrfs_fs_info *fs_info);
+@@ -237,7 +237,7 @@ static inline void btrfs_clear_data_reloc_bg(struct btrfs_block_group *bg) { }
+ 
+ static inline void btrfs_free_zone_cache(struct btrfs_fs_info *fs_info) { }
+ 
+-static inline bool btrfs_zoned_should_reclaim(struct btrfs_fs_info *fs_info)
++static inline bool btrfs_zoned_should_reclaim(const struct btrfs_fs_info *fs_info)
+ {
+ 	return false;
+ }
+diff --git a/include/trace/events/btrfs.h b/include/trace/events/btrfs.h
+index 8ea1674069fe..f759109caeea 100644
+--- a/include/trace/events/btrfs.h
++++ b/include/trace/events/btrfs.h
+@@ -1857,7 +1857,7 @@ TRACE_EVENT(qgroup_update_counters,
+ 
+ TRACE_EVENT(qgroup_update_reserve,
+ 
+-	TP_PROTO(struct btrfs_fs_info *fs_info, struct btrfs_qgroup *qgroup,
++	TP_PROTO(const struct btrfs_fs_info *fs_info, const struct btrfs_qgroup *qgroup,
+ 		 s64 diff, int type),
+ 
+ 	TP_ARGS(fs_info, qgroup, diff, type),
+@@ -1883,7 +1883,7 @@ TRACE_EVENT(qgroup_update_reserve,
+ 
+ TRACE_EVENT(qgroup_meta_reserve,
+ 
+-	TP_PROTO(struct btrfs_root *root, s64 diff, int type),
++	TP_PROTO(const struct btrfs_root *root, s64 diff, int type),
+ 
+ 	TP_ARGS(root, diff, type),
+ 
+@@ -1906,7 +1906,7 @@ TRACE_EVENT(qgroup_meta_reserve,
+ 
+ TRACE_EVENT(qgroup_meta_convert,
+ 
+-	TP_PROTO(struct btrfs_root *root, s64 diff),
++	TP_PROTO(const struct btrfs_root *root, s64 diff),
+ 
+ 	TP_ARGS(root, diff),
+ 
 -- 
 2.50.1
 
