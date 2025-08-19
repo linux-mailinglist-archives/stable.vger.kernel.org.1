@@ -1,101 +1,110 @@
-Return-Path: <stable+bounces-171764-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-171765-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 51D8CB2C012
-	for <lists+stable@lfdr.de>; Tue, 19 Aug 2025 13:18:39 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 59860B2C022
+	for <lists+stable@lfdr.de>; Tue, 19 Aug 2025 13:21:13 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 047D11BC2AE1
-	for <lists+stable@lfdr.de>; Tue, 19 Aug 2025 11:18:59 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id EF80C720F4A
+	for <lists+stable@lfdr.de>; Tue, 19 Aug 2025 11:21:11 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A981F326D40;
-	Tue, 19 Aug 2025 11:18:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id CB4AB322C87;
+	Tue, 19 Aug 2025 11:21:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="lsNw0tW6"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="G0uurZQx"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5B83F27586C;
-	Tue, 19 Aug 2025 11:18:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8860E27876E;
+	Tue, 19 Aug 2025 11:21:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755602314; cv=none; b=s/yh7OxWE2dMserKiEdgB0risKLknVTUc8/db22eTAG7hJQe4ePEEKGC6UfDP2uE9alRpO0iVVtQFgzLG9x8TobX9/vK1o7M8JhOLHR8nvlpA9khkYGNgiq01gPGg+2RCX0n8QGy/j2MCTaMeVocwY9Eel4tU8AydcukGojVtWU=
+	t=1755602468; cv=none; b=OUQhNLIJ7QaZDkUPPtQweCO92dbZxdsqkM7pYQpvZzLKHgcfRjcYxmVBHsWOSI83ZJXmyZretA10JIo7WK1wflh5XHSSZGH6LgIA06CdJcUuzyK95u6Z139LyuejLjbsSAgHQH5sXi1mKSQlnGPo5xSi1vTZW9PSpWlPVcHaxFE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1755602314; c=relaxed/simple;
-	bh=aLhnNIcDt23uH43MseyIo2dgJ0SryOAJ5P53JjqN+Co=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=f9tFHw6dWjMnz7HyxhWDioWLCLFG3GYPHxGevAe5q+tn3sBIm0U+CyOfGKYgxCdIaGpHrTOVzUMFjWIPxdITSu33c7ozPvGSVB/FtQiUOq1wTj35AxTcN9/mD8ewwNcSzisIsfDCDIlae24ofDyzwX/b/0FeW7zML2uO8JG4Rms=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=lsNw0tW6; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 71CB0C4CEF1;
-	Tue, 19 Aug 2025 11:18:33 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1755602313;
-	bh=aLhnNIcDt23uH43MseyIo2dgJ0SryOAJ5P53JjqN+Co=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=lsNw0tW6yibxj07+KhOMK2O8uTje0CUH03250Rbbb1M67qiAkAActu9hzruc3oasP
-	 XwWSb00TdzSeMTmc+tSnl0tzOem9zXvWGCts2IMnqjrwYJ3j/lebUwFua5G1m0cruO
-	 A5A0xPcegBQpbLs1osZ4nFas5OrbQ64AI50Owlkk=
-Date: Tue, 19 Aug 2025 13:18:30 +0200
-From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-To: Christian Brauner <brauner@kernel.org>
-Cc: Charalampos Mitrodimas <charmitro@posteo.net>,
-	linux-kernel@vger.kernel.org, stable@vger.kernel.org,
-	"Rafael J. Wysocki" <rafael@kernel.org>,
-	Danilo Krummrich <dakr@kernel.org>,
-	David Howells <dhowells@redhat.com>,
-	Eric Sandeen <sandeen@redhat.com>
-Subject: Re: [PATCH v3] debugfs: fix mount options not being applied
-Message-ID: <2025081958-scolding-spruce-696c@gregkh>
-References: <20250816-debugfs-mount-opts-v3-1-d271dad57b5b@posteo.net>
- <20250819-hotel-talent-c8de78760a68@brauner>
+	s=arc-20240116; t=1755602468; c=relaxed/simple;
+	bh=zg3sIRBucPRKdjvD/EFZO1qKU1bTJV+UdCfQrDwIHNg=;
+	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=bdIAoj6gFWKc9mYAqPhzI68g4ba0EYDNBRKI7t+lNMr3rjtOGWB88ucioqeKmOrPufeMp72QH78FNUDcYZX7CAKPYgIPHYBn/cVMz9nXRBlQR+R5yu8sA8oe6NY7hOPOSxWEOUeNkFDkDuikBiMMNSHraCmqgxiAyVW3I+qSG2A=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=G0uurZQx; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C31AEC4CEF1;
+	Tue, 19 Aug 2025 11:21:06 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1755602468;
+	bh=zg3sIRBucPRKdjvD/EFZO1qKU1bTJV+UdCfQrDwIHNg=;
+	h=From:To:Cc:Subject:Date:From;
+	b=G0uurZQxc66TBpAYTCqLjxnDYExA+Lpv2EWDN3P01TSqUx2MA14Xk4u1G5mNf0g9z
+	 K/41329Ux6Z9dnNTXrl0iidugros1p32PFOGNTKISqHLaR64+7i4O0rdARTqZCvdMz
+	 P3YUONUZJGJlLmriXFXp2/580Ilkh7gZAqm+/4reFOCGmo4LwaM03wVyQAog2yheg3
+	 5A4tEBuZMTjgkMOXJev/7/QKn/xPUhBa6yAdpqU6e9Iw2a3nRwhFZjxyM7PWyc04+D
+	 nr4LKRCQ/HiD4u+MmiU4iv3ubUzazn/Me4GzXRwiUaQcCAwRnebNbTIuC517rIR5Yg
+	 5NBkw8fhah49Q==
+From: Michael Walle <mwalle@kernel.org>
+To: Srinivas Kandagatla <srini@kernel.org>,
+	Miquel Raynal <miquel.raynal@bootlin.com>,
+	Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Cc: linux-kernel@vger.kernel.org,
+	Michael Walle <mwalle@kernel.org>,
+	stable@vger.kernel.org
+Subject: [PATCH v2] nvmem: layouts: fix automatic module loading
+Date: Tue, 19 Aug 2025 13:21:03 +0200
+Message-Id: <20250819112103.1084387-1-mwalle@kernel.org>
+X-Mailer: git-send-email 2.39.5
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20250819-hotel-talent-c8de78760a68@brauner>
+Content-Transfer-Encoding: 8bit
 
-On Tue, Aug 19, 2025 at 01:11:58PM +0200, Christian Brauner wrote:
-> On Sat, 16 Aug 2025 14:14:37 +0000, Charalampos Mitrodimas wrote:
-> > Mount options (uid, gid, mode) are silently ignored when debugfs is
-> > mounted. This is a regression introduced during the conversion to the
-> > new mount API.
-> > 
-> > When the mount API conversion was done, the parsed options were never
-> > applied to the superblock when it was reused. As a result, the mount
-> > options were ignored when debugfs was mounted.
-> > 
-> > [...]
-> 
-> Applied to the vfs-6.18.misc branch of the vfs/vfs.git tree.
-> Patches in the vfs-6.18.misc branch should appear in linux-next soon.
-> 
-> Please report any outstanding bugs that were missed during review in a
-> new review to the original patch series allowing us to drop it.
-> 
-> It's encouraged to provide Acked-bys and Reviewed-bys even though the
-> patch has now been applied. If possible patch trailers will be updated.
-> 
-> Note that commit hashes shown below are subject to change due to rebase,
-> trailer updates or similar. If in doubt, please check the listed branch.
-> 
-> tree:   https://git.kernel.org/pub/scm/linux/kernel/git/vfs/vfs.git
-> branch: vfs-6.18.misc
-> 
-> [1/1] debugfs: fix mount options not being applied
->       https://git.kernel.org/vfs/vfs/c/8e7e265d558e
+To support loading of a layout module automatically the MODALIAS
+variable in the uevent is needed. Add it.
 
-I've also included this in the driver-core -linus branch, so it should
-have been in linux-next for a few days now.  I guess both versions can't
-hurt :)
+Fixes: fc29fd821d9a ("nvmem: core: Rework layouts to become regular devices")
+Cc: stable@vger.kernel.org
+Signed-off-by: Michael Walle <mwalle@kernel.org>
+---
+I'm still not sure if the sysfs modalias file is required or not. It
+seems to work without it. I could't find any documentation about it.
 
-thanks
+v2:
+ - add Cc: stable
+---
+ drivers/nvmem/layouts.c | 13 +++++++++++++
+ 1 file changed, 13 insertions(+)
 
-greg k-h
+diff --git a/drivers/nvmem/layouts.c b/drivers/nvmem/layouts.c
+index 65d39e19f6ec..f381ce1e84bd 100644
+--- a/drivers/nvmem/layouts.c
++++ b/drivers/nvmem/layouts.c
+@@ -45,11 +45,24 @@ static void nvmem_layout_bus_remove(struct device *dev)
+ 	return drv->remove(layout);
+ }
+ 
++static int nvmem_layout_bus_uevent(const struct device *dev,
++				   struct kobj_uevent_env *env)
++{
++	int ret;
++
++	ret = of_device_uevent_modalias(dev, env);
++	if (ret != ENODEV)
++		return ret;
++
++	return 0;
++}
++
+ static const struct bus_type nvmem_layout_bus_type = {
+ 	.name		= "nvmem-layout",
+ 	.match		= nvmem_layout_bus_match,
+ 	.probe		= nvmem_layout_bus_probe,
+ 	.remove		= nvmem_layout_bus_remove,
++	.uevent		= nvmem_layout_bus_uevent,
+ };
+ 
+ int __nvmem_layout_driver_register(struct nvmem_layout_driver *drv,
+-- 
+2.39.5
+
 
