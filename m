@@ -1,58 +1,70 @@
-Return-Path: <stable+bounces-171808-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-171809-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 18009B2C807
-	for <lists+stable@lfdr.de>; Tue, 19 Aug 2025 17:08:45 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id A8D9EB2C803
+	for <lists+stable@lfdr.de>; Tue, 19 Aug 2025 17:08:03 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 5358D7BB069
-	for <lists+stable@lfdr.de>; Tue, 19 Aug 2025 14:59:00 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 61E7858062F
+	for <lists+stable@lfdr.de>; Tue, 19 Aug 2025 15:01:58 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7D3B5299AB5;
-	Tue, 19 Aug 2025 14:57:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0B64327E7EB;
+	Tue, 19 Aug 2025 15:00:35 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="GhWkJMmL"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="R6JAvDN3"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 394FF298CC4
-	for <stable@vger.kernel.org>; Tue, 19 Aug 2025 14:57:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C0AB1275869
+	for <stable@vger.kernel.org>; Tue, 19 Aug 2025 15:00:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755615477; cv=none; b=G4ie/ItVbF3kxbbe2bnOEyIiMD6pLmR7TG7+QTp7hx2f8426OEfCWALE7KMV01JSLWj5ylOHE1C2clQWHB4dFFo+2D59Y25IGZHjJsZOjsxzlMldGgmdgXbagrPzePLmhb+YJJYfT+ZEILNsVzPYPD9MnMUzoFEbfWXrTjc4gfw=
+	t=1755615634; cv=none; b=QTJyw8cvEb24tSJDD1gcGbqab5gogKog4wjr2GnJVk9vgkXDiwmU4dsJJkhTQRnVjP+maqzLPRNIjYYuAT2UDE11mUyndb2urtMjTJyqPT/WTMHeXkXlGOMJw2AoLSc1o3tlmwbMNy0KOlnh6K1cR17M7OSHDkzx2uvv/bXRIxE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1755615477; c=relaxed/simple;
-	bh=zePhLqzysL4qwpHq1kpDhtp4fYGeJmkfLGbXZL44LeI=;
+	s=arc-20240116; t=1755615634; c=relaxed/simple;
+	bh=tGiNYlG0N+GSY9UpGj8RyvG+jHj8hwp6W5kRX/16B0E=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=reNd/yRjV8w7CaSV7UNGn+EZgc17NzqQb42YhTTBBChMy4i8nUauHMcuCZSF6lCl5JGJ30KRQv9OszRi8XIHPdWkhjh33amwRhKCg7bQ94K6wVVB1bfXWXxEuQ7M8DmDdB8wZSnIlNmk/onEn/plt/KwBEOBXe7EggeMwOf3g6Q=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=GhWkJMmL; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1CC41C113D0;
-	Tue, 19 Aug 2025 14:57:56 +0000 (UTC)
+	 MIME-Version; b=GHQps0DpdLk+Nwl87I2nmWRmMR3yYq1VnlsI7irP4j+/dOiZKTIzAxt+1GLBZi3r+hCWJAJJC1cCepIWSFN4a311G0z4kI0Ywq5kncNiGNSTphzyLdz3CwkL5BhIXNAgJyqx0qx9MgOtaPok8KAj72YfIbzcve/Y3+W+Nvrbyfw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=R6JAvDN3; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 975A8C4CEF1;
+	Tue, 19 Aug 2025 15:00:32 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1755615476;
-	bh=zePhLqzysL4qwpHq1kpDhtp4fYGeJmkfLGbXZL44LeI=;
+	s=k20201202; t=1755615634;
+	bh=tGiNYlG0N+GSY9UpGj8RyvG+jHj8hwp6W5kRX/16B0E=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=GhWkJMmLMeH2kmizQBFZvJYojVfnvSwvu0J78j/D/fBZfsf57fcX1maacmeYaQUgw
-	 VIsbDdQoTDpj3IUzkPs1qg3AiPbmAC4ewE1LhwfY85epJx0Q6XOQPZoP5HhfSUsGMN
-	 KAFPE2ZmKsEPPIyrCR8RXpO9dpyM1NjjaHH6HTrhRhIiqjsoyOPLdJymXcSkxnc7kC
-	 p6plbhapNBgnhVPktmlihT+IJZZ+C7CyXdF+mA4pLlj1TH7z9W92WIxRNFnQmYZjqy
-	 BBWChT0NboG2Ijxgioa1BxNRkAg+reCWktGokgdlAnl15enm3KR7mhkcRWyajUKsS9
-	 AKW/l38h5elig==
+	b=R6JAvDN3gUh4ejYyxfRJByAP56VEv18VCc10h68wQPtq6CaOnnRCfjaD6fPs9H/ob
+	 Q+sl6DGw6s9W5eaVvrVB1oWxeHmUuLYkYQutm9XAO0tgZVOSDhYohEmT85qZc4v9S2
+	 W/gsA2OFSoCMhlz2cabr15EJuQhx+9LIAc+yZmeqgpsje2FcXFD/MI7eTfrje6lcOB
+	 lsuDy5VmQhhQ5J2RtsNz3awpP2Mn5yv92RrkOxyXSx0Xwy8QOXCMeOVqVjuH9PGeLO
+	 og7twYi+0xkt7pMlG5zU2dY3A5mk/aVVIi9yfyXQWxg9qb+zdTYbWqW1514rG4olag
+	 v3QS747YmkTGg==
 From: Sasha Levin <sashal@kernel.org>
 To: stable@vger.kernel.org
-Cc: Qu Wenruo <wqu@suse.com>,
-	Filipe Manana <fdmanana@suse.com>,
-	David Sterba <dsterba@suse.com>,
+Cc: Anshuman Khandual <anshuman.khandual@arm.com>,
+	David Hildenbrand <david@redhat.com>,
+	Dev Jain <dev.jain@arm.com>,
+	Alexander Gordeev <agordeev@linux.ibm.com>,
+	Catalin Marinas <catalin.marinas@arm.com>,
+	Will Deacon <will@kernel.org>,
+	Ryan Roberts <ryan.roberts@arm.com>,
+	Paul Walmsley <paul.walmsley@sifive.com>,
+	Palmer Dabbelt <palmer@dabbelt.com>,
+	Gerald Schaefer <gerald.schaefer@linux.ibm.com>,
+	Heiko Carstens <hca@linux.ibm.com>,
+	Vasily Gorbik <gor@linux.ibm.com>,
+	Christian Borntraeger <borntraeger@linux.ibm.com>,
+	Sven Schnelle <svens@linux.ibm.com>,
+	Andrew Morton <akpm@linux-foundation.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.4.y] btrfs: populate otime when logging an inode item
-Date: Tue, 19 Aug 2025 10:57:54 -0400
-Message-ID: <20250819145754.527446-1-sashal@kernel.org>
+Subject: [PATCH 5.15.y] mm/ptdump: take the memory hotplug lock inside ptdump_walk_pgd()
+Date: Tue, 19 Aug 2025 11:00:30 -0400
+Message-ID: <20250819150030.528447-1-sashal@kernel.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <2025081801-shortlist-acutely-2100@gregkh>
-References: <2025081801-shortlist-acutely-2100@gregkh>
+In-Reply-To: <2025081800-autopilot-booted-fb7f@gregkh>
+References: <2025081800-autopilot-booted-fb7f@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -61,115 +73,117 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-From: Qu Wenruo <wqu@suse.com>
+From: Anshuman Khandual <anshuman.khandual@arm.com>
 
-[ Upstream commit 1ef94169db0958d6de39f9ea6e063ce887342e2d ]
+[ Upstream commit 59305202c67fea50378dcad0cc199dbc13a0e99a ]
 
-[TEST FAILURE WITH EXPERIMENTAL FEATURES]
-When running test case generic/508, the test case will fail with the new
-btrfs shutdown support:
+Memory hot remove unmaps and tears down various kernel page table regions
+as required.  The ptdump code can race with concurrent modifications of
+the kernel page tables.  When leaf entries are modified concurrently, the
+dump code may log stale or inconsistent information for a VA range, but
+this is otherwise not harmful.
 
-generic/508       - output mismatch (see /home/adam/xfstests/results//generic/508.out.bad)
-    --- tests/generic/508.out	2022-05-11 11:25:30.806666664 +0930
-    +++ /home/adam/xfstests/results//generic/508.out.bad	2025-07-02 14:53:22.401824212 +0930
-    @@ -1,2 +1,6 @@
-     QA output created by 508
-     Silence is golden
-    +Before:
-    +After : stat.btime = Thu Jan  1 09:30:00 1970
-    +Before:
-    +After : stat.btime = Wed Jul  2 14:53:22 2025
-    ...
-    (Run 'diff -u /home/adam/xfstests/tests/generic/508.out /home/adam/xfstests/results//generic/508.out.bad'  to see the entire diff)
-Ran: generic/508
-Failures: generic/508
-Failed 1 of 1 tests
+But when intermediate levels of kernel page table are freed, the dump code
+will continue to use memory that has been freed and potentially
+reallocated for another purpose.  In such cases, the ptdump code may
+dereference bogus addresses, leading to a number of potential problems.
 
-Please note that the test case requires shutdown support, thus the test
-case will be skipped using the current upstream kernel, as it doesn't
-have shutdown ioctl support.
+To avoid the above mentioned race condition, platforms such as arm64,
+riscv and s390 take memory hotplug lock, while dumping kernel page table
+via the sysfs interface /sys/kernel/debug/kernel_page_tables.
 
-[CAUSE]
-The direct cause the 0 time stamp in the log tree:
+Similar race condition exists while checking for pages that might have
+been marked W+X via /sys/kernel/debug/kernel_page_tables/check_wx_pages
+which in turn calls ptdump_check_wx().  Instead of solving this race
+condition again, let's just move the memory hotplug lock inside generic
+ptdump_check_wx() which will benefit both the scenarios.
 
-leaf 30507008 items 2 free space 16057 generation 9 owner TREE_LOG
-leaf 30507008 flags 0x1(WRITTEN) backref revision 1
-checksum stored e522548d
-checksum calced e522548d
-fs uuid 57d45451-481e-43e4-aa93-289ad707a3a0
-chunk uuid d52bd3fd-5163-4337-98a7-7986993ad398
-	item 0 key (257 INODE_ITEM 0) itemoff 16123 itemsize 160
-		generation 9 transid 9 size 0 nbytes 0
-		block group 0 mode 100644 links 1 uid 0 gid 0 rdev 0
-		sequence 1 flags 0x0(none)
-		atime 1751432947.492000000 (2025-07-02 14:39:07)
-		ctime 1751432947.492000000 (2025-07-02 14:39:07)
-		mtime 1751432947.492000000 (2025-07-02 14:39:07)
-		otime 0.0 (1970-01-01 09:30:00) <<<
+Drop get_online_mems() and put_online_mems() combination from all existing
+platform ptdump code paths.
 
-But the old fs tree has all the correct time stamp:
-
-btrfs-progs v6.12
-fs tree key (FS_TREE ROOT_ITEM 0)
-leaf 30425088 items 2 free space 16061 generation 5 owner FS_TREE
-leaf 30425088 flags 0x1(WRITTEN) backref revision 1
-checksum stored 48f6c57e
-checksum calced 48f6c57e
-fs uuid 57d45451-481e-43e4-aa93-289ad707a3a0
-chunk uuid d52bd3fd-5163-4337-98a7-7986993ad398
-	item 0 key (256 INODE_ITEM 0) itemoff 16123 itemsize 160
-		generation 3 transid 0 size 0 nbytes 16384
-		block group 0 mode 40755 links 1 uid 0 gid 0 rdev 0
-		sequence 0 flags 0x0(none)
-		atime 1751432947.0 (2025-07-02 14:39:07)
-		ctime 1751432947.0 (2025-07-02 14:39:07)
-		mtime 1751432947.0 (2025-07-02 14:39:07)
-		otime 1751432947.0 (2025-07-02 14:39:07) <<<
-
-The root cause is that fill_inode_item() in tree-log.c is only
-populating a/c/m time, not the otime (or btime in statx output).
-
-Part of the reason is that, the vfs inode only has a/c/m time, no native
-btime support yet.
-
-[FIX]
-Thankfully btrfs has its otime stored in btrfs_inode::i_otime_sec and
-btrfs_inode::i_otime_nsec.
-
-So what we really need is just fill the otime time stamp in
-fill_inode_item() of tree-log.c
-
-There is another fill_inode_item() in inode.c, which is doing the proper
-otime population.
-
-Fixes: 94edf4ae43a5 ("Btrfs: don't bother committing delayed inode updates when fsyncing")
-CC: stable@vger.kernel.org
-Reviewed-by: Filipe Manana <fdmanana@suse.com>
-Signed-off-by: Qu Wenruo <wqu@suse.com>
-Reviewed-by: David Sterba <dsterba@suse.com>
-Signed-off-by: David Sterba <dsterba@suse.com>
-[ adapted token-based API and timespec64 field structure ]
+Link: https://lkml.kernel.org/r/20250620052427.2092093-1-anshuman.khandual@arm.com
+Fixes: bbd6ec605c0f ("arm64/mm: Enable memory hot remove")
+Signed-off-by: Anshuman Khandual <anshuman.khandual@arm.com>
+Acked-by: David Hildenbrand <david@redhat.com>
+Reviewed-by: Dev Jain <dev.jain@arm.com>
+Acked-by: Alexander Gordeev <agordeev@linux.ibm.com>	[s390]
+Cc: Catalin Marinas <catalin.marinas@arm.com>
+Cc: Will Deacon <will@kernel.org>
+Cc: Ryan Roberts <ryan.roberts@arm.com>
+Cc: Paul Walmsley <paul.walmsley@sifive.com>
+Cc: Palmer Dabbelt <palmer@dabbelt.com>
+Cc: Alexander Gordeev <agordeev@linux.ibm.com>
+Cc: Gerald Schaefer <gerald.schaefer@linux.ibm.com>
+Cc: Heiko Carstens <hca@linux.ibm.com>
+Cc: Vasily Gorbik <gor@linux.ibm.com>
+Cc: Christian Borntraeger <borntraeger@linux.ibm.com>
+Cc: Sven Schnelle <svens@linux.ibm.com>
+Cc: <stable@vger.kernel.org>
+Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/btrfs/tree-log.c | 5 +++++
- 1 file changed, 5 insertions(+)
+ arch/arm64/mm/ptdump_debugfs.c | 3 ---
+ arch/s390/mm/dump_pagetables.c | 2 --
+ mm/ptdump.c                    | 2 ++
+ 3 files changed, 2 insertions(+), 5 deletions(-)
 
-diff --git a/fs/btrfs/tree-log.c b/fs/btrfs/tree-log.c
-index 75bf490cd732..ce201c003546 100644
---- a/fs/btrfs/tree-log.c
-+++ b/fs/btrfs/tree-log.c
-@@ -3941,6 +3941,11 @@ static void fill_inode_item(struct btrfs_trans_handle *trans,
- 	btrfs_set_token_timespec_nsec(leaf, &item->ctime,
- 				      inode->i_ctime.tv_nsec, &token);
+diff --git a/arch/arm64/mm/ptdump_debugfs.c b/arch/arm64/mm/ptdump_debugfs.c
+index 68bf1a125502..1e308328c079 100644
+--- a/arch/arm64/mm/ptdump_debugfs.c
++++ b/arch/arm64/mm/ptdump_debugfs.c
+@@ -1,6 +1,5 @@
+ // SPDX-License-Identifier: GPL-2.0
+ #include <linux/debugfs.h>
+-#include <linux/memory_hotplug.h>
+ #include <linux/seq_file.h>
  
-+	btrfs_set_token_timespec_sec(leaf, &item->otime,
-+				     BTRFS_I(inode)->i_otime.tv_sec, &token);
-+	btrfs_set_token_timespec_nsec(leaf, &item->otime,
-+				      BTRFS_I(inode)->i_otime.tv_nsec, &token);
-+
- 	btrfs_set_token_inode_nbytes(leaf, item, inode_get_bytes(inode),
- 				     &token);
+ #include <asm/ptdump.h>
+@@ -9,9 +8,7 @@ static int ptdump_show(struct seq_file *m, void *v)
+ {
+ 	struct ptdump_info *info = m->private;
  
+-	get_online_mems();
+ 	ptdump_walk(m, info);
+-	put_online_mems();
+ 	return 0;
+ }
+ DEFINE_SHOW_ATTRIBUTE(ptdump);
+diff --git a/arch/s390/mm/dump_pagetables.c b/arch/s390/mm/dump_pagetables.c
+index 0b0c8c284953..3afd79f61668 100644
+--- a/arch/s390/mm/dump_pagetables.c
++++ b/arch/s390/mm/dump_pagetables.c
+@@ -227,11 +227,9 @@ static int ptdump_show(struct seq_file *m, void *v)
+ 		.marker = address_markers,
+ 	};
+ 
+-	get_online_mems();
+ 	mutex_lock(&cpa_mutex);
+ 	ptdump_walk_pgd(&st.ptdump, &init_mm, NULL);
+ 	mutex_unlock(&cpa_mutex);
+-	put_online_mems();
+ 	return 0;
+ }
+ DEFINE_SHOW_ATTRIBUTE(ptdump);
+diff --git a/mm/ptdump.c b/mm/ptdump.c
+index f84ea700662f..f07a3d9c2dae 100644
+--- a/mm/ptdump.c
++++ b/mm/ptdump.c
+@@ -144,6 +144,7 @@ void ptdump_walk_pgd(struct ptdump_state *st, struct mm_struct *mm, pgd_t *pgd)
+ {
+ 	const struct ptdump_range *range = st->range;
+ 
++	get_online_mems();
+ 	mmap_write_lock(mm);
+ 	while (range->start != range->end) {
+ 		walk_page_range_novma(mm, range->start, range->end,
+@@ -151,6 +152,7 @@ void ptdump_walk_pgd(struct ptdump_state *st, struct mm_struct *mm, pgd_t *pgd)
+ 		range++;
+ 	}
+ 	mmap_write_unlock(mm);
++	put_online_mems();
+ 
+ 	/* Flush out the last page */
+ 	st->note_page(st, 0, -1, 0);
 -- 
 2.50.1
 
