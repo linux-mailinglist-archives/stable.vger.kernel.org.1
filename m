@@ -1,109 +1,118 @@
-Return-Path: <stable+bounces-171766-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-171767-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 54853B2C031
-	for <lists+stable@lfdr.de>; Tue, 19 Aug 2025 13:25:21 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 72078B2C091
+	for <lists+stable@lfdr.de>; Tue, 19 Aug 2025 13:34:57 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 67683162E5A
-	for <lists+stable@lfdr.de>; Tue, 19 Aug 2025 11:21:41 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 5B94D16352C
+	for <lists+stable@lfdr.de>; Tue, 19 Aug 2025 11:31:10 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 76DD6326D66;
-	Tue, 19 Aug 2025 11:21:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3C4DA32BF27;
+	Tue, 19 Aug 2025 11:31:01 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="I9T4dDTq"
 X-Original-To: stable@vger.kernel.org
-Received: from dggsgout11.his.huawei.com (dggsgout11.his.huawei.com [45.249.212.51])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-ej1-f46.google.com (mail-ej1-f46.google.com [209.85.218.46])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5987D326D53
-	for <stable@vger.kernel.org>; Tue, 19 Aug 2025 11:21:32 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=45.249.212.51
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2A91222A4D5
+	for <stable@vger.kernel.org>; Tue, 19 Aug 2025 11:30:59 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.218.46
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755602494; cv=none; b=S77Eo+4zf7m6kWO4wYgng0R9nI22+hSZq+zJ6pHJrTsbbfC0lCFwCUOuHtT/vEzAFgCIKnIsn4Z+x1kedzpSAsbLzKJE3V89MHM91Ocm+ySgUj1GkuIPb2gNhNZb2KF+14ZR+VXpj6f4CrBcBnntitimyyv6AjMu9DsZKRuvMBQ=
+	t=1755603061; cv=none; b=mBS9ejO0SsQR8i/h3R+QvavkeoUffTCm4bs4A4TeXmK672Llhy5KSs1UYPmCiXAkvr954qB+1J+5FUK4IRg8DUAAhm3FZslOPMZZYt5ZlbZ4vMguZ4hUnO2adhcwxP4FG4qII6jq/9LJOf7BateQXDkrIyeWy4Tvba3jp1gMkB4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1755602494; c=relaxed/simple;
-	bh=f5QW2bzIdPyk4dqGBhuwk5Tg7mvinjzods+Lj1uhn6U=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=FllsnsyrbVwPAxXjEojdafpPDB4HQ4PJSIlvvA0teSzI2onvRSkZEDVI5IdulQ9O1U/rIm+ghpozDvJXTWmWcLgDOH/zXsF64FxB8MFIJMJFQuhJhnTdk2c6RQLFaLvr+2DfH6nE8wfnVgMWsd/XYkV5/FYcP0/WoUi5FB+kMEI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=huaweicloud.com; spf=none smtp.mailfrom=huaweicloud.com; arc=none smtp.client-ip=45.249.212.51
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=huaweicloud.com
-Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=huaweicloud.com
-Received: from mail.maildlp.com (unknown [172.19.163.216])
-	by dggsgout11.his.huawei.com (SkyGuard) with ESMTPS id 4c5nGM2S9HzYQtxK
-	for <stable@vger.kernel.org>; Tue, 19 Aug 2025 19:21:31 +0800 (CST)
-Received: from mail02.huawei.com (unknown [10.116.40.128])
-	by mail.maildlp.com (Postfix) with ESMTP id E61501A12DA
-	for <stable@vger.kernel.org>; Tue, 19 Aug 2025 19:21:29 +0800 (CST)
-Received: from [10.174.178.209] (unknown [10.174.178.209])
-	by APP4 (Coremail) with SMTP id gCh0CgA3sxM4XqRo5FXVEA--.30606S3;
-	Tue, 19 Aug 2025 19:21:29 +0800 (CST)
-Message-ID: <df2f04b0-2caf-48a0-9817-a3cd07ae1bda@huaweicloud.com>
-Date: Tue, 19 Aug 2025 19:21:28 +0800
+	s=arc-20240116; t=1755603061; c=relaxed/simple;
+	bh=RS+DDBsenDMGRVRuo5OpJ0by6/pE8abc8eGvwv3Szfk=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=XAlUoC8gOMqOkQwwmg/u0mdMvFMNi5sAzyWYd/MK5vkxPWOBROwoWhsZI5CURKgp9ux/NlABav+HrNfj4r4qXSjzLfE43XjQNex0iAurUMLdiv0NL1k03cdxH5tIXh4N+V1TtFxGAtwJMSg0hHGKLIzLhGL1/hmdoqY2tm5TUNo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=I9T4dDTq; arc=none smtp.client-ip=209.85.218.46
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
+Received: by mail-ej1-f46.google.com with SMTP id a640c23a62f3a-afcb78ead12so730338166b.1
+        for <stable@vger.kernel.org>; Tue, 19 Aug 2025 04:30:58 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=linaro.org; s=google; t=1755603057; x=1756207857; darn=vger.kernel.org;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:from:to:cc:subject:date:message-id:reply-to;
+        bh=MlZSqNXnF5cFT3EKTsD5C3uA+ixCm4MLZap6H11YwJU=;
+        b=I9T4dDTqJjS4jq0QjdwoeWQRXmAWQvbPFYS0e2u8VTGBYdjWEzZ/5mLK0pq8JSOmzG
+         lXFYAAjqgvVOUUFneeHZQHh59gCz6bx4698RZzv8hIilHrQdFIVDIq+LWklvPojeneh/
+         TwXkl86vCC386iFAX5MRIBOWge8IF5SSdTWrtvVGmcbzn2u8jjG5OHetpuj6OR6y3MSW
+         op9kDqoS3OsCu0iHBQQkaXfVQI9DKBVfvlbUFu8v5SAQuikPE/V+/VZ+orSALcdatqPe
+         MpISU+2sKowBpbhlDX1wYbmrLMunlSudUJykGUdotRdFbm8q2IawSVyMEhTqags7Tyzg
+         Ocrg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1755603057; x=1756207857;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=MlZSqNXnF5cFT3EKTsD5C3uA+ixCm4MLZap6H11YwJU=;
+        b=J/k0oJwC9Gs4s5PoXtM40FHhX26WNk/uuRW4u2VoEmutW4jvMQPIOb5YHhOe7A4N0P
+         a1xxCpnhcYpywTEpUY013FHPjcBoBVjZ00bbTBiMza6SBtdo3P0t6b7HCWEDK0oAvkfI
+         3cLsTf1rGmvgUQIrPIj6tjihPt1Wu07eA2EB1NhJ6lhUyAZP+w5py0z6r54U2Eq4VXQj
+         wU5PGlMn5rS4XwJ7BjupY/cNNMLecm7H+rimTdnRqgsM8wTR0rXdPOHFNUzapFyCW9G5
+         OvWplVX8fmh0ybrIdGJrGVyV03QMeOvEnR2O8tCG6Y21nYfiklaxHs+FK7CoYIthD1Ri
+         15Yw==
+X-Forwarded-Encrypted: i=1; AJvYcCWeMrqh7X7ndkfpliSiHZefZO0xGlgdksLlTQczdny1DLRtEv3Yl1aga/Gf0NbEzxA0yHClRLw=@vger.kernel.org
+X-Gm-Message-State: AOJu0YyIeF4zeBWKQNfERghWCgsXM/Gh3Jl7lgMliKLSd0pF/pSd+Psq
+	u7eolUJfyMk3b9T1vn6neB0OBXa+3Z7+PJeqWrzcIILTPdte8EsYDGas74zUepo/wEHjFsmm41h
+	LJvgRxsAJYyDdz5sB5rvGAt2tTkdPIwpBtWVjsnRc7MWICs8eC3zYkqU=
+X-Gm-Gg: ASbGncsj9Q+IZe2H0yOgJVlyGnkGL4kXxm8V/QgIFeot/cnAPGA60m/FhuWRILG8L9u
+	83U097eBmJR2hU/5NMFJ7VFpkv/Hw8AXAbjOzMWXpDCfqbVK40sSYnyfiWnUT4peynKevrrAnKo
+	W8tXu+6ZzSpMEUX+vo/fQgvNkOdjAWS1VLRMUzdaj9T5c3B+SLz9SOz7uBNIHxf3mv7qgkymTGX
+	mtQ
+X-Google-Smtp-Source: AGHT+IFc1qeOeB8SEpfLr5OOLAFUUqEj6GU45bLARYtHghlfX/crq9PpWhn+VH6PLkjxDEuyGteYvZKpflusqa5M/Ig=
+X-Received: by 2002:a17:906:c115:b0:af9:57ae:dbb3 with SMTP id
+ a640c23a62f3a-afddcb81908mr192322866b.22.1755603057341; Tue, 19 Aug 2025
+ 04:30:57 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 6.12 429/444] smb: client: fix netns refcount leak after
- net_passive changes
-To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>, stable@vger.kernel.org
-Cc: patches@lists.linux.dev, Kuniyuki Iwashima <kuniyu@google.com>,
- Enzo Matsumiya <ematsumiya@suse.de>, Steve French <stfrench@microsoft.com>,
- Sasha Levin <sashal@kernel.org>
-References: <20250818124448.879659024@linuxfoundation.org>
- <20250818124505.034228404@linuxfoundation.org>
-From: Wang Zhaolong <wangzhaolong@huaweicloud.com>
-In-Reply-To: <20250818124505.034228404@linuxfoundation.org>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-X-CM-TRANSID:gCh0CgA3sxM4XqRo5FXVEA--.30606S3
-X-Coremail-Antispam: 1UD129KBjvdXoWrur1kKFWkKFWDGr4fZr1DKFg_yoWDXFcEgr
-	Wvva1fWr4DXwsa9a17A343Zr47KFW0vasYvr1kGrWfKa4DZr4Yv3ZIgryYk3sxGFWSka47
-	Crnayr1vkrnxZjkaLaAFLSUrUUUUjb8apTn2vfkv8UJUUUU8Yxn0WfASr-VFAUDa7-sFnT
-	9fnUUIcSsGvfJTRUUUbwkYFVCjjxCrM7AC8VAFwI0_Gr0_Xr1l1xkIjI8I6I8E6xAIw20E
-	Y4v20xvaj40_Wr0E3s1l1IIY67AEw4v_Jr0_Jr4l8cAvFVAK0II2c7xJM28CjxkF64kEwV
-	A0rcxSw2x7M28EF7xvwVC0I7IYx2IY67AKxVW7JVWDJwA2z4x0Y4vE2Ix0cI8IcVCY1x02
-	67AKxVWxJVW8Jr1l84ACjcxK6I8E87Iv67AKxVW0oVCq3wA2z4x0Y4vEx4A2jsIEc7CjxV
-	AFwI0_GcCE3s1le2I262IYc4CY6c8Ij28IcVAaY2xG8wAqx4xG64xvF2IEw4CE5I8CrVC2
-	j2WlYx0E2Ix0cI8IcVAFwI0_Jr0_Jr4lYx0Ex4A2jsIE14v26r1j6r4UMcvjeVCFs4IE7x
-	kEbVWUJVW8JwACjcxG0xvEwIxGrwCY1x0262kKe7AKxVWUAVWUtwCF04k20xvY0x0EwIxG
-	rwCFx2IqxVCFs4IE7xkEbVWUJVW8JwC20s026c02F40E14v26r1j6r18MI8I3I0E7480Y4
-	vE14v26r106r1rMI8E67AF67kF1VAFwI0_JF0_Jw1lIxkGc2Ij64vIr41lIxAIcVC0I7IY
-	x2IY67AKxVWUJVWUCwCI42IY6xIIjxv20xvEc7CjxVAFwI0_Jr0_Gr1lIxAIcVCF04k26c
-	xKx2IYs7xG6r1j6r1xMIIF0xvEx4A2jsIE14v26r1j6r4UMIIF0xvEx4A2jsIEc7CjxVAF
-	wI0_Jr0_GrUvcSsGvfC2KfnxnUUI43ZEXa7IU1veHDUUUUU==
-X-CM-SenderInfo: pzdqw6xkdrz0tqj6x35dzhxuhorxvhhfrp/
+References: <20250818124458.334548733@linuxfoundation.org> <CA+G9fYt5sknJ3jbebYZrqMRhbcLZKLCvTDHfg5feNnOpj-j9Wg@mail.gmail.com>
+ <CA+G9fYt6SAsPo6TvfgtnDWHPHO2q7xfppGbCaW0JxpL50zqWew@mail.gmail.com>
+In-Reply-To: <CA+G9fYt6SAsPo6TvfgtnDWHPHO2q7xfppGbCaW0JxpL50zqWew@mail.gmail.com>
+From: Bartosz Golaszewski <bartosz.golaszewski@linaro.org>
+Date: Tue, 19 Aug 2025 13:30:46 +0200
+X-Gm-Features: Ac12FXyaJepFNIeos9w4tdtDWEq_utvLUQ4wMo0fo8sqlMNsdeJO5hMNv6oFTrY
+Message-ID: <CACMJSeu_DTVK=XtvaSD3Fj3aTXBJ5d-MpQMuysJYEFBNwznDqQ@mail.gmail.com>
+Subject: Re: [PATCH 6.15 000/515] 6.15.11-rc1 review
+To: Naresh Kamboju <naresh.kamboju@linaro.org>
+Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>, stable@vger.kernel.org, 
+	patches@lists.linux.dev, linux-kernel@vger.kernel.org, 
+	torvalds@linux-foundation.org, akpm@linux-foundation.org, linux@roeck-us.net, 
+	shuah@kernel.org, patches@kernelci.org, lkft-triage@lists.linaro.org, 
+	pavel@denx.de, jonathanh@nvidia.com, f.fainelli@gmail.com, 
+	sudipm.mukherjee@gmail.com, srw@sladewatkins.net, rwarsow@gmx.de, 
+	conor@kernel.org, hargar@microsoft.com, broonie@kernel.org, achill@achill.org, 
+	Ben Copeland <benjamin.copeland@linaro.org>, Anders Roxell <anders.roxell@linaro.org>, 
+	Dan Carpenter <dan.carpenter@linaro.org>, Arnd Bergmann <arnd@arndb.de>, 
+	Bjorn Andersson <andersson@kernel.org>, linux-arm-msm <linux-arm-msm@vger.kernel.org>, 
+	Linux ARM <linux-arm-kernel@lists.infradead.org>, srinivas.kandagatla@oss.qualcomm.com
+Content-Type: text/plain; charset="UTF-8"
 
+On Tue, 19 Aug 2025 at 12:02, Naresh Kamboju <naresh.kamboju@linaro.org> wrote:
+>
+> On Tue, 19 Aug 2025 at 00:18, Naresh Kamboju <naresh.kamboju@linaro.org> wrote:
+> >
+> >
+> > Boot regression: stable-rc 6.15.11-rc1 arm64 Qualcomm Dragonboard 410c
+> > Unable to handle kernel NULL pointer dereference
+> > qcom_scm_shm_bridge_enable
+>
+> I have reverted the following patch and the regression got fixed.
+>
+> firmware: qcom: scm: initialize tzmem before marking SCM as available
+>     [ Upstream commit 87be3e7a2d0030cda6314d2ec96b37991f636ccd ]
+>
 
-> 
-> Timeline of patches leading to this issue:
-> - commit ef7134c7fc48 ("smb: client: Fix use-after-free of network
->    namespace.") in v6.12 fixed the original netns UAF by manually
->    managing socket refcounts
-> - commit e9f2517a3e18 ("smb: client: fix TCP timers deadlock after
->    rmmod") in v6.13 attempted to use kernel sockets but introduced
->    TCP timer issues
-> - commit 5c70eb5c593d ("net: better track kernel sockets lifetime")
->    in v6.14-rc5 introduced the net_passive mechanism with
->    sk_net_refcnt_upgrade() for proper socket conversion
-> - commit 95d2b9f693ff ("Revert "smb: client: fix TCP timers deadlock
->    after rmmod"") in v6.15-rc3 reverted to manual refcount management
->    without adapting to the new net_passive changes
-> 
+Hi! I'm on vacation, I will look into this next week. I expect there
+to be a fix on top of this commit.
 
-
-Hi Greg,
-
-This patch depends on the preceding patch 5c70eb5c593d ("net: better
-track kernel sockets lifetime").
-
-I have noticed that version 6.12.y has not imported this patch,
-so I believe it should not be merged.
-
-Best regards,
-Wang Zhaolong
-
+Bart
 
