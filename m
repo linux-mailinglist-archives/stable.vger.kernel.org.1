@@ -1,104 +1,160 @@
-Return-Path: <stable+bounces-171782-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-171783-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6D347B2C2E5
-	for <lists+stable@lfdr.de>; Tue, 19 Aug 2025 14:16:13 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 70424B2C345
+	for <lists+stable@lfdr.de>; Tue, 19 Aug 2025 14:22:04 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 8DEA91B608B8
-	for <lists+stable@lfdr.de>; Tue, 19 Aug 2025 12:16:16 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id C1CD27B5DAD
+	for <lists+stable@lfdr.de>; Tue, 19 Aug 2025 12:20:29 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 89B22233704;
-	Tue, 19 Aug 2025 12:15:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8FB7433CEBF;
+	Tue, 19 Aug 2025 12:17:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ywzNfYOt"
+	dkim=pass (1024-bit key) header.d=suse.cz header.i=@suse.cz header.b="0GcP3hN0";
+	dkim=permerror (0-bit key) header.d=suse.cz header.i=@suse.cz header.b="CARIwZRt";
+	dkim=pass (1024-bit key) header.d=suse.cz header.i=@suse.cz header.b="0GcP3hN0";
+	dkim=permerror (0-bit key) header.d=suse.cz header.i=@suse.cz header.b="CARIwZRt"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from smtp-out2.suse.de (smtp-out2.suse.de [195.135.223.131])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 447F91DF74F;
-	Tue, 19 Aug 2025 12:15:51 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B5DD133CEBD
+	for <stable@vger.kernel.org>; Tue, 19 Aug 2025 12:17:22 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=195.135.223.131
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755605752; cv=none; b=ep0tpn2J1kU8kXF8qaRgiRAV20ADSwrXDcz17jsOZnZOp3rB/QvNyD5cDbyxhbND/1QaQD+vKSxaZEeSQdxWv8dnGUpjZEmiRMj/CCury1l5t4nZR+XD4Cc/4Q5RQwrmt9iqWDTs6kdApfP2snVBp6/v9WnzAWuaJf4J59kfIq8=
+	t=1755605844; cv=none; b=bwTWsEJg5QZeMXypVu7y7RMl9hwu8gX7TzjopUhJpkSaoo9uWLTPrwKQv5R/vRpv8R9OfXXLXf1ktlDmrJtePVmyHP6oK9N3tKEveYDcA/+Kt/p51PA5fmJXSwNkfEtq+r/yEEWSw3IB8wOnm4cFe+zXEyJOYivlWkgpqiNKoa8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1755605752; c=relaxed/simple;
-	bh=zS1BlQyIl02rXzTpMGL+bn7rhhFP+gwL/hpnPej1x2s=;
+	s=arc-20240116; t=1755605844; c=relaxed/simple;
+	bh=aLkH05P3vAW1vdgoW32EvwBJGtyRYtVfM+OV8jRD/is=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=JYtzB6myhW/VgOB3hix0B0RbyEKroQ4bc6NEkDP+303PCTDBC2518KrKthBYK5x4jk4srT8bTNfC6MD2dreSs/fzNLwT6p3ahzgypKgXCih9vUMoya9nY9T2UYudkUTA4S0AKglMwyC7v8VF7gX/kPQvmJlMQY7yUJAWlzIxDEg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ywzNfYOt; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 444B4C4CEF1;
-	Tue, 19 Aug 2025 12:15:51 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1755605751;
-	bh=zS1BlQyIl02rXzTpMGL+bn7rhhFP+gwL/hpnPej1x2s=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=ywzNfYOt1B47JwwE/jsR6BeACC8G/m1bJ2tSByVeXtgicgj8Ue30UZjWlzqgIn5uU
-	 jlPSu0qFt1MtDMAelwblpXPQZZCb92nVZnNZe6bi7RSk0Y5pM7f97jKTC/agKgv9Jo
-	 MVhJ/S+787rK2DCdk8Y3dFsDx58djsg3rVFliwzM=
-Date: Tue, 19 Aug 2025 14:15:48 +0200
-From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-To: Thorsten Leemhuis <linux@leemhuis.info>
-Cc: stable@vger.kernel.org, patches@lists.linux.dev,
-	Ben Hutchings <benh@debian.org>,
-	"Masami Hiramatsu (Google)" <mhiramat@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: Re: [PATCH 6.16 209/570] bootconfig: Fix unaligned access when
- building footer
-Message-ID: <2025081935-tannery-luncheon-c512@gregkh>
-References: <20250818124505.781598737@linuxfoundation.org>
- <20250818124513.854983152@linuxfoundation.org>
- <9ac42b4c-5cae-47f7-98c4-ffe0d5194e67@leemhuis.info>
+	 Content-Type:Content-Disposition:In-Reply-To; b=i6UuOeUqdndssYkJT/lK4powofHj1bA/MmyLPMrHw/ixpSpIFWFp4Y60LXWok3OJFT+Xuvn5C9iDNphxy8T0fwthtUM77A1YG867fVmeWaAw8nIMQwqgCmVuyP68ITeBw248YuzBVYRp4Rn2HJqY5yQ8I8yDIh0q3CF7Bz1IOmk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=suse.cz; spf=pass smtp.mailfrom=suse.cz; dkim=pass (1024-bit key) header.d=suse.cz header.i=@suse.cz header.b=0GcP3hN0; dkim=permerror (0-bit key) header.d=suse.cz header.i=@suse.cz header.b=CARIwZRt; dkim=pass (1024-bit key) header.d=suse.cz header.i=@suse.cz header.b=0GcP3hN0; dkim=permerror (0-bit key) header.d=suse.cz header.i=@suse.cz header.b=CARIwZRt; arc=none smtp.client-ip=195.135.223.131
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=suse.cz
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=suse.cz
+Received: from imap1.dmz-prg2.suse.org (imap1.dmz-prg2.suse.org [IPv6:2a07:de40:b281:104:10:150:64:97])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by smtp-out2.suse.de (Postfix) with ESMTPS id 3DF741F786;
+	Tue, 19 Aug 2025 12:17:20 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.cz; s=susede2_rsa;
+	t=1755605840;
+	h=from:from:reply-to:reply-to:date:date:message-id:message-id:to:to:
+	 cc:cc:mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=lJcJK5eJNAr608bIa1BI6Q8++rFnIc/EAHj+iHv+YxA=;
+	b=0GcP3hN0kgyivlhiYNfGn3NeH9dT0kzdjEzDO4Q559OVpZsXw8I9D/XZClHitz1JZ/98Qg
+	2lROdwRTzuCzw7HTDyOHQisleGS9SdUQUWmC43fr9KxurP+p7Ib8mD0Q3drcgRTtHhbM4q
+	HjNQgioxFtf1jAWgEbFdrNBXeeXI67o=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.cz;
+	s=susede2_ed25519; t=1755605840;
+	h=from:from:reply-to:reply-to:date:date:message-id:message-id:to:to:
+	 cc:cc:mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=lJcJK5eJNAr608bIa1BI6Q8++rFnIc/EAHj+iHv+YxA=;
+	b=CARIwZRtus4A9cC19aSiJGLMcbiBWNJIDstAiWUPhydNfhzj+RM+6v1ggYLOh4uSKFHzWs
+	hg/ZTToZ5+cl/PAA==
+Authentication-Results: smtp-out2.suse.de;
+	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=0GcP3hN0;
+	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=CARIwZRt
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.cz; s=susede2_rsa;
+	t=1755605840;
+	h=from:from:reply-to:reply-to:date:date:message-id:message-id:to:to:
+	 cc:cc:mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=lJcJK5eJNAr608bIa1BI6Q8++rFnIc/EAHj+iHv+YxA=;
+	b=0GcP3hN0kgyivlhiYNfGn3NeH9dT0kzdjEzDO4Q559OVpZsXw8I9D/XZClHitz1JZ/98Qg
+	2lROdwRTzuCzw7HTDyOHQisleGS9SdUQUWmC43fr9KxurP+p7Ib8mD0Q3drcgRTtHhbM4q
+	HjNQgioxFtf1jAWgEbFdrNBXeeXI67o=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.cz;
+	s=susede2_ed25519; t=1755605840;
+	h=from:from:reply-to:reply-to:date:date:message-id:message-id:to:to:
+	 cc:cc:mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=lJcJK5eJNAr608bIa1BI6Q8++rFnIc/EAHj+iHv+YxA=;
+	b=CARIwZRtus4A9cC19aSiJGLMcbiBWNJIDstAiWUPhydNfhzj+RM+6v1ggYLOh4uSKFHzWs
+	hg/ZTToZ5+cl/PAA==
+Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id 2563D139B3;
+	Tue, 19 Aug 2025 12:17:20 +0000 (UTC)
+Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
+	by imap1.dmz-prg2.suse.org with ESMTPSA
+	id JHnwCFBrpGgLeQAAD6G6ig
+	(envelope-from <dsterba@suse.cz>); Tue, 19 Aug 2025 12:17:20 +0000
+Date: Tue, 19 Aug 2025 14:17:14 +0200
+From: David Sterba <dsterba@suse.cz>
+To: Sasha Levin <sashal@kernel.org>
+Cc: stable@vger.kernel.org, Filipe Manana <fdmanana@suse.com>,
+	David Sterba <dsterba@suse.com>
+Subject: Re: [PATCH 6.12.y 7/7] btrfs: send: make fs_path_len() inline and
+ constify its argument
+Message-ID: <20250819121714.GQ22430@suse.cz>
+Reply-To: dsterba@suse.cz
+References: <2025081827-washed-yelp-3c3e@gregkh>
+ <20250819021601.274993-1-sashal@kernel.org>
+ <20250819021601.274993-7-sashal@kernel.org>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
+Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <9ac42b4c-5cae-47f7-98c4-ffe0d5194e67@leemhuis.info>
+In-Reply-To: <20250819021601.274993-7-sashal@kernel.org>
+User-Agent: Mutt/1.5.23.1-rc1 (2014-03-12)
+X-Spamd-Result: default: False [-4.21 / 50.00];
+	BAYES_HAM(-3.00)[100.00%];
+	NEURAL_HAM_LONG(-1.00)[-1.000];
+	HAS_REPLYTO(0.30)[dsterba@suse.cz];
+	R_DKIM_ALLOW(-0.20)[suse.cz:s=susede2_rsa,suse.cz:s=susede2_ed25519];
+	NEURAL_HAM_SHORT(-0.20)[-1.000];
+	MIME_GOOD(-0.10)[text/plain];
+	MX_GOOD(-0.01)[];
+	TO_MATCH_ENVRCPT_ALL(0.00)[];
+	FROM_HAS_DN(0.00)[];
+	DKIM_SIGNED(0.00)[suse.cz:s=susede2_rsa,suse.cz:s=susede2_ed25519];
+	ARC_NA(0.00)[];
+	FUZZY_RATELIMITED(0.00)[rspamd.com];
+	TO_DN_SOME(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	RCVD_TLS_ALL(0.00)[];
+	DKIM_TRACE(0.00)[suse.cz:+];
+	RCPT_COUNT_THREE(0.00)[4];
+	RCVD_COUNT_TWO(0.00)[2];
+	REPLYTO_ADDR_EQ_FROM(0.00)[];
+	FROM_EQ_ENVFROM(0.00)[];
+	REPLYTO_DOM_NEQ_TO_DOM(0.00)[];
+	DNSWL_BLOCKED(0.00)[2a07:de40:b281:104:10:150:64:97:from,2a07:de40:b281:106:10:150:64:167:received];
+	RECEIVED_SPAMHAUS_BLOCKED_OPENRESOLVER(0.00)[2a07:de40:b281:106:10:150:64:167:received];
+	MID_RHS_MATCH_FROM(0.00)[];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[imap1.dmz-prg2.suse.org:helo,imap1.dmz-prg2.suse.org:rdns,suse.cz:mid,suse.cz:dkim,suse.cz:replyto,suse.com:email]
+X-Spam-Flag: NO
+X-Spam-Level: 
+X-Rspamd-Queue-Id: 3DF741F786
+X-Rspamd-Server: rspamd2.dmz-prg2.suse.org
+X-Rspamd-Action: no action
+X-Spam-Score: -4.21
 
-On Tue, Aug 19, 2025 at 08:56:20AM +0200, Thorsten Leemhuis wrote:
-> On 18.08.25 14:43, Greg Kroah-Hartman wrote:
-> > 6.16-stable review patch.  If anyone has any objections, please let me know.
-> > 
-> > ------------------
-> > 
-> > From: Ben Hutchings <benh@debian.org>
-> > 
-> > [ Upstream commit 6ed5e20466c79e3b3350bae39f678f73cf564b4e ]
-> > 
-> > Currently we add padding between the bootconfig text and footer to
-> > ensure that the footer is aligned within the initramfs image.
-> > However, because only the bootconfig data is held in memory, not the
-> > full initramfs image, the footer may not be naturally aligned in
-> > memory.
+On Mon, Aug 18, 2025 at 10:16:01PM -0400, Sasha Levin wrote:
+> From: Filipe Manana <fdmanana@suse.com>
 > 
-> This change broke the build for me in both 6.16.y and 6.15.y (did not
-> try 6.12.y, guess it has the same problem)[1]. Reverting it or applying
-> 26dda57695090e ("tools/bootconfig: Cleanup bootconfig footer size
-> calculations") [v6.17-rc1] fixed things for me.
+> [ Upstream commit 920e8ee2bfcaf886fd8c0ad9df097a7dddfeb2d8 ]
 > 
-> Ciao, Thorsten
+> The helper function fs_path_len() is trivial and doesn't need to change
+> its path argument, so make it inline and constify the argument.
 > 
-> [1] see
-> https://download.copr.fedorainfracloud.org/results/@kernel-vanilla/stable-rc/fedora-42-x86_64/09440377-stablerc-stablerc-releases/builder-live.log.gz
-> 
-> main.c: In function ‘apply_xbc’:
-> main.c:442:41: error: ‘BOOTCONFIG_FOOTER_SIZE’ undeclared (first use in this function)
->   442 |         static_assert(sizeof(footer) == BOOTCONFIG_FOOTER_SIZE);
->       |                                         ^~~~~~~~~~~~~~~~~~~~~~
-> main.c:442:41: note: each undeclared identifier is reported only once for each function it appears in
-> main.c:442:23: error: expression in static assertion is not an integer
->   442 |         static_assert(sizeof(footer) == BOOTCONFIG_FOOTER_SIZE);
->       |                       ^~~~~~
-> make: *** [Makefile:21: bootconfig] Error 1
+> Signed-off-by: Filipe Manana <fdmanana@suse.com>
+> Reviewed-by: David Sterba <dsterba@suse.com>
+> Signed-off-by: David Sterba <dsterba@suse.com>
+> Signed-off-by: Sasha Levin <sashal@kernel.org>
 
-Thanks for the info, I'll go drop this from all queues now.
-
-greg k-h
+This is neither a fix nor a dependency of other patches, please drop it.
 
