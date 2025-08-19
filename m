@@ -1,176 +1,87 @@
-Return-Path: <stable+bounces-171776-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-171777-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 941A0B2C296
-	for <lists+stable@lfdr.de>; Tue, 19 Aug 2025 14:04:22 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0F8D1B2C2CC
+	for <lists+stable@lfdr.de>; Tue, 19 Aug 2025 14:12:28 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id E8E92188D03C
-	for <lists+stable@lfdr.de>; Tue, 19 Aug 2025 12:04:35 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id DA2F81BA32D0
+	for <lists+stable@lfdr.de>; Tue, 19 Aug 2025 12:12:38 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id DD97C3314B3;
-	Tue, 19 Aug 2025 12:04:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7D53433470A;
+	Tue, 19 Aug 2025 12:12:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="G1s17FMA"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="k/Bhrj/X"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9E9C5326D59
-	for <stable@vger.kernel.org>; Tue, 19 Aug 2025 12:04:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3B6F720C000
+	for <stable@vger.kernel.org>; Tue, 19 Aug 2025 12:12:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755605045; cv=none; b=OjtzmI6j+XmdI/nPhqK1FjsjaNdz6U+QFBPhZFcyHdHfnmVYz5TOUIYwv49lsZsuSCOFlUmgnUtfdugFpklMGYkhZ/+lujJN2kc5uAAnIFkVAtjTclckpal9rM5gSrwE7ypj925hxHeC8Rbl1rW6/j7dHkGwL1PbllYSGXYsmMs=
+	t=1755605534; cv=none; b=cgAxdKUsCQ289sSyLEBajqv/JGSa2BN0tv05gZXNz2CowSqWwdo1cOFQdUoF58uaol5jYm0P+Lk6W+scCUZe6QaO6DJ1AxyveKM0XZu6IHg81K7D/IAFuyuvJoU9SRhjDCQSJS+fbKNiOiiEg0PS4aIkO+Sti8CmUhMEu/B4HYg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1755605045; c=relaxed/simple;
-	bh=/dAdSk+La+2iYLqkegTV6ht3Vjl5Lu9vtxEL8xnnGpk=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=o7kpjmzpQY+LOIcgk9cvUxaD3v8UwiZDbkFyXN0yFG63fxmuMaWXn3AChaENc094uAqIi16bIkUPhLql+9cHPgoRovL2ouewpQe1s9jNbp6AVfDrWhEdyU50DmMcXv06hYRiZfrG826MFH27JB/heO5jiUF5Ov6p9LVZThByYR0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=G1s17FMA; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 80152C4CEF1;
-	Tue, 19 Aug 2025 12:04:04 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1755605045;
-	bh=/dAdSk+La+2iYLqkegTV6ht3Vjl5Lu9vtxEL8xnnGpk=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=G1s17FMA71rNXf79vVSh621fvGqJ1nYAg94um/vcliI8yABp9YqwjVbDZq+IGXp/S
-	 Iv9XNv0wKqhhaHbVbzOniIKX3EMBw1BHU4mRLZX5lhrIoC6nRH7MCXFGoOxwpxHXn0
-	 Zzj8CWEvGTbZ8bTRvJB685HkqnFLbiDza2Uq76yXOpIGKV/DPVRj7r8Eyr5jNMqVRk
-	 c+yxbYnAkB/V9hvlk2xWoFxDSZJucqB+u3thFOSwGJvVzRWANQtj/OJ6M+0Xz+r7KH
-	 D8mEnCuFtp6Gzs3IkAOFRaZSPwC3dv2ry+u5ZgpzBpjORGdwIfZ9f17nC1kyVbHEgB
-	 K+mf6tiPwjpug==
-From: Sasha Levin <sashal@kernel.org>
-To: stable@vger.kernel.org
-Cc: Qu Wenruo <wqu@suse.com>,
-	Filipe Manana <fdmanana@suse.com>,
-	David Sterba <dsterba@suse.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15.y] btrfs: populate otime when logging an inode item
-Date: Tue, 19 Aug 2025 08:04:02 -0400
-Message-ID: <20250819120402.453011-1-sashal@kernel.org>
-X-Mailer: git-send-email 2.50.1
-In-Reply-To: <2025081800-anew-bullion-cdbe@gregkh>
-References: <2025081800-anew-bullion-cdbe@gregkh>
+	s=arc-20240116; t=1755605534; c=relaxed/simple;
+	bh=rZGFF7MpRa6/F334erwhaHaYXychRw8kTq08vrEY6Ss=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=bqR++kqYbEuwffBpdl9tX6MPWs3kRLeH6Bjuze1C8pb7g6nIBvIOGMZCIopM2rSBFlJj+vBoyHsMFP8/cseEjPoTImddTq2+376XNAU3xxqhiK7ofcyWrIqRCV0pS1rSxMWtodolyDLDjU9juKFSg7pwlHSN4gN3+Jt5PLikuV4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=k/Bhrj/X; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3E43BC4CEF1;
+	Tue, 19 Aug 2025 12:12:13 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
+	s=korg; t=1755605533;
+	bh=rZGFF7MpRa6/F334erwhaHaYXychRw8kTq08vrEY6Ss=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=k/Bhrj/XQTYBp3zrdwBnI4r7XrfJb9JMMtqQYGmRA3hiklz2WMGFhKGfxVXI95QXu
+	 Th+zX3+TG+m8mRTpoB3oz1MT3r+AqlMx6OGFji+mwnKgWb4Qk6dfzmUYS54UAzH+3K
+	 wUCBk/gEO0iHlzRUYLzcGaJ08DBy1nzd38g2SNMg=
+Date: Tue, 19 Aug 2025 14:12:10 +0200
+From: Greg KH <gregkh@linuxfoundation.org>
+To: Yann Sionneau <yann.sionneau@vates.tech>
+Cc: stable@vger.kernel.org, Li Zhong <floridsleeves@gmail.com>,
+	"Rafael J . Wysocki" <rafael.j.wysocki@intel.com>,
+	Teddy Astie <teddy.astie@vates.tech>, Dillon C <dchan@dchan.tech>
+Subject: Re: [PATCH] ACPI: processor: idle: Check acpi_bus_get_device return
+ value
+Message-ID: <2025081900-compost-bounce-f915@gregkh>
+References: <20250819115301.83377-1-yann.sionneau@vates.tech>
+ <032a8ac9-0554-49b6-a8e4-fdeb467f8327@vates.tech>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <032a8ac9-0554-49b6-a8e4-fdeb467f8327@vates.tech>
 
-From: Qu Wenruo <wqu@suse.com>
+On Tue, Aug 19, 2025 at 12:03:05PM +0000, Yann Sionneau wrote:
+> On 8/19/25 14:00, Yann Sionneau wrote:
+> > From: Teddy Astie <teddy.astie@vates.tech>
+> > 
+> > Fix a potential NULL pointer dereferences if acpi_bus_get_device happens to fail.
+> > This is backported from commit 2437513a814b3 ("ACPI: processor: idle: Check acpi_fetch_acpi_dev() return value")
+> > This has been tested successfully by the reporter,
+> > see https://xcp-ng.org/forum/topic/10972/xcp-ng-8.3-lts-install-on-minisforum-ms-a2-7945hx
+> > 
+> > Signed-off-by: Li Zhong <floridsleeves@gmail.com>
+> > Signed-off-by: Teddy Astie <teddy.astie@vates.tech>
+> > Signed-off-by: Yann Sionneau <yann.sionneau@vates.tech>
+> > Reported-by: Dillon C <dchan@dchan.tech>
+> > Tested-by: Dillon C <dchan@dchan.tech>
+> > ---
+> 
+> Hello Greg, all,
+> 
+> This should be picked for v5.4, v5.10 and v5.15 branches as it's already 
+> been backported in v6.0 and v6.1.
+> 
+> I already reached out about this a few weeks ago, I just waited for the 
+> patch the be tested before sending it.
 
-[ Upstream commit 1ef94169db0958d6de39f9ea6e063ce887342e2d ]
-
-[TEST FAILURE WITH EXPERIMENTAL FEATURES]
-When running test case generic/508, the test case will fail with the new
-btrfs shutdown support:
-
-generic/508       - output mismatch (see /home/adam/xfstests/results//generic/508.out.bad)
-    --- tests/generic/508.out	2022-05-11 11:25:30.806666664 +0930
-    +++ /home/adam/xfstests/results//generic/508.out.bad	2025-07-02 14:53:22.401824212 +0930
-    @@ -1,2 +1,6 @@
-     QA output created by 508
-     Silence is golden
-    +Before:
-    +After : stat.btime = Thu Jan  1 09:30:00 1970
-    +Before:
-    +After : stat.btime = Wed Jul  2 14:53:22 2025
-    ...
-    (Run 'diff -u /home/adam/xfstests/tests/generic/508.out /home/adam/xfstests/results//generic/508.out.bad'  to see the entire diff)
-Ran: generic/508
-Failures: generic/508
-Failed 1 of 1 tests
-
-Please note that the test case requires shutdown support, thus the test
-case will be skipped using the current upstream kernel, as it doesn't
-have shutdown ioctl support.
-
-[CAUSE]
-The direct cause the 0 time stamp in the log tree:
-
-leaf 30507008 items 2 free space 16057 generation 9 owner TREE_LOG
-leaf 30507008 flags 0x1(WRITTEN) backref revision 1
-checksum stored e522548d
-checksum calced e522548d
-fs uuid 57d45451-481e-43e4-aa93-289ad707a3a0
-chunk uuid d52bd3fd-5163-4337-98a7-7986993ad398
-	item 0 key (257 INODE_ITEM 0) itemoff 16123 itemsize 160
-		generation 9 transid 9 size 0 nbytes 0
-		block group 0 mode 100644 links 1 uid 0 gid 0 rdev 0
-		sequence 1 flags 0x0(none)
-		atime 1751432947.492000000 (2025-07-02 14:39:07)
-		ctime 1751432947.492000000 (2025-07-02 14:39:07)
-		mtime 1751432947.492000000 (2025-07-02 14:39:07)
-		otime 0.0 (1970-01-01 09:30:00) <<<
-
-But the old fs tree has all the correct time stamp:
-
-btrfs-progs v6.12
-fs tree key (FS_TREE ROOT_ITEM 0)
-leaf 30425088 items 2 free space 16061 generation 5 owner FS_TREE
-leaf 30425088 flags 0x1(WRITTEN) backref revision 1
-checksum stored 48f6c57e
-checksum calced 48f6c57e
-fs uuid 57d45451-481e-43e4-aa93-289ad707a3a0
-chunk uuid d52bd3fd-5163-4337-98a7-7986993ad398
-	item 0 key (256 INODE_ITEM 0) itemoff 16123 itemsize 160
-		generation 3 transid 0 size 0 nbytes 16384
-		block group 0 mode 40755 links 1 uid 0 gid 0 rdev 0
-		sequence 0 flags 0x0(none)
-		atime 1751432947.0 (2025-07-02 14:39:07)
-		ctime 1751432947.0 (2025-07-02 14:39:07)
-		mtime 1751432947.0 (2025-07-02 14:39:07)
-		otime 1751432947.0 (2025-07-02 14:39:07) <<<
-
-The root cause is that fill_inode_item() in tree-log.c is only
-populating a/c/m time, not the otime (or btime in statx output).
-
-Part of the reason is that, the vfs inode only has a/c/m time, no native
-btime support yet.
-
-[FIX]
-Thankfully btrfs has its otime stored in btrfs_inode::i_otime_sec and
-btrfs_inode::i_otime_nsec.
-
-So what we really need is just fill the otime time stamp in
-fill_inode_item() of tree-log.c
-
-There is another fill_inode_item() in inode.c, which is doing the proper
-otime population.
-
-Fixes: 94edf4ae43a5 ("Btrfs: don't bother committing delayed inode updates when fsyncing")
-CC: stable@vger.kernel.org
-Reviewed-by: Filipe Manana <fdmanana@suse.com>
-Signed-off-by: Qu Wenruo <wqu@suse.com>
-Reviewed-by: David Sterba <dsterba@suse.com>
-Signed-off-by: David Sterba <dsterba@suse.com>
-[ timespec changes in older tree ]
-Signed-off-by: Sasha Levin <sashal@kernel.org>
----
- fs/btrfs/tree-log.c | 5 +++++
- 1 file changed, 5 insertions(+)
-
-diff --git a/fs/btrfs/tree-log.c b/fs/btrfs/tree-log.c
-index 7049a19e07ba..e5ba83a1703a 100644
---- a/fs/btrfs/tree-log.c
-+++ b/fs/btrfs/tree-log.c
-@@ -3988,6 +3988,11 @@ static void fill_inode_item(struct btrfs_trans_handle *trans,
- 	btrfs_set_token_timespec_nsec(&token, &item->ctime,
- 				      inode->i_ctime.tv_nsec);
- 
-+	btrfs_set_token_timespec_sec(&token, &item->otime,
-+				     BTRFS_I(inode)->i_otime.tv_sec);
-+	btrfs_set_token_timespec_nsec(&token, &item->otime,
-+				      BTRFS_I(inode)->i_otime.tv_nsec);
-+
- 	/*
- 	 * We do not need to set the nbytes field, in fact during a fast fsync
- 	 * its value may not even be correct, since a fast fsync does not wait
--- 
-2.50.1
-
+What is the upstream git commit id?
 
