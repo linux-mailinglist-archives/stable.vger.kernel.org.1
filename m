@@ -1,104 +1,138 @@
-Return-Path: <stable+bounces-171715-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-171716-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3A2A4B2B683
-	for <lists+stable@lfdr.de>; Tue, 19 Aug 2025 03:59:16 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id D5A17B2B69D
+	for <lists+stable@lfdr.de>; Tue, 19 Aug 2025 04:03:24 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 348BA1765A1
-	for <lists+stable@lfdr.de>; Tue, 19 Aug 2025 01:59:16 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 0EFCF1B2603B
+	for <lists+stable@lfdr.de>; Tue, 19 Aug 2025 02:01:44 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C2901287274;
-	Tue, 19 Aug 2025 01:58:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7EB452853ED;
+	Tue, 19 Aug 2025 02:01:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="edFAhsdL"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="V8gM6zTp"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 77483287266
-	for <stable@vger.kernel.org>; Tue, 19 Aug 2025 01:58:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1A5C01F8EFF;
+	Tue, 19 Aug 2025 02:01:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755568734; cv=none; b=RbOZvnP4bijai/TuQ9jMwPQ9VTRIljRm2Ke2SPwb19/aQS5jn/Zw+FHAhBcoDRz6iYHy1HjbdpZ5N2L0m8CjYdUwjffFO8xrwQ4A8gNv4bIBAAFy3KMXybIwLcMqbd6Q+cVdsH8IE4wC1qIT5ek87h7fcHOk6EFC7fKzcQ8gqSQ=
+	t=1755568872; cv=none; b=ug+XxVhUv2vG3mI4HmLXkZl9G2CWC5azEH8iy/EnoCFgnEYBti6SoVFw3R51fU7RAdDjvGRIPAeq7XqROsO872emZ7XI7XzAH0yklYlxVVfwIwd8eZvqvVOAXRcPJPdMbK8BWTRQFSS9kjq+Tt+H7N8mzEi8y2HaqsF0AMPn/3k=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1755568734; c=relaxed/simple;
-	bh=/GEsj1OEru9fo8JezAXFatNtA1qpuV4jwvPBrImQqV4=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Wex5bzhHh5aEc+5RE+BBeLKea2UD9oI/RIL54BC3YcLgYnZIZc6LHo2h4LSY/uUUN+7iJbYtIcb9EIeDnjz8E5hSBoSNMHBquEaXOut2mPsC8DqvrhBtedpWJlJo8Z3RefXsBBhJPEbgxA9OO5qqmubELIe1mMjUwYpCf3t4jpw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=edFAhsdL; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C486AC16AAE;
-	Tue, 19 Aug 2025 01:58:53 +0000 (UTC)
+	s=arc-20240116; t=1755568872; c=relaxed/simple;
+	bh=PUkNlXKrmXY1CLgusGbdGf67x2cphnPK0xcltNm/Pnw=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=bejg6/KpmleRtseH9+YKf15YpcXL7doQ188qoChLbeAt2DcaC7FLhXYf59NyxgPYzh6P6AooTx59HAKWJp59Jb4ni42VQxsP0RBIgFNDclonmZIwYVJ9gDkpd0YinRshUCmNAJOXlSPTjRx4EJNHnfUsRVc31VW1zwOJjw7+j14=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=V8gM6zTp; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8513EC4CEEB;
+	Tue, 19 Aug 2025 02:01:10 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1755568734;
-	bh=/GEsj1OEru9fo8JezAXFatNtA1qpuV4jwvPBrImQqV4=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=edFAhsdLBoJ0feR+nEmsw6JMnF4TREUM3XmKdwUh2pnxOH0jvpSeafPEowC59+Nfm
-	 ghpgbKEYIhkxaQ+KI2Ph7hbHh9EwtrPE7Cz2pRIHkeInMme0IAgYOHRiU24v3DTi1u
-	 WgrU1SQFT53zeXTXqyrdsYschqG9+Vfc9g48lRC9/nCUhhBDnotA0vYny0oW8McvG2
-	 sDY3vQ+/raX9pWLNtfE1N6JE6i3iGMNSGlIV9u3p7FN59M6GMqRGWD/e7UxvWZEF+L
-	 jK0BeVQAjEDmcBuCl+NZ1+NSrL7wJ1HztTCFvEbl4VppinL7L1nwubSOjm36Mxxfgk
-	 tlC7NQo74k3YA==
+	s=k20201202; t=1755568870;
+	bh=PUkNlXKrmXY1CLgusGbdGf67x2cphnPK0xcltNm/Pnw=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=V8gM6zTpI4jGfutyv8uTMMwZ9+TjZKeLUvOgai/D4/vXbmo5eW34untPXahra9Lva
+	 61N/2Tni0GlkAenRGHPy16B8qZmez5XDY8jo+j25YrJAaPMDQCgI8q0GwFT7vW3Us2
+	 woOeg208mpKHhvzkOcBV8lYXW2aFqHGUg6eX7/OPePeWgim3tsazSCdxeFtud+EinT
+	 SELPM+R3nhc79KjMSj5ALnQlUOQUHLfqsyUfZnjQIAWMO0R0eIYdjrso4zvwzwSbg7
+	 BUDlwef1VRh/vl7zzCXivNOVz4ZGxCppETE2YndWki/Cb5Ft1cL3iULdG+4thSV+eO
+	 Fy3fgzx8fw3UA==
+Date: Mon, 18 Aug 2025 22:01:09 -0400
 From: Sasha Levin <sashal@kernel.org>
-To: stable@vger.kernel.org
-Cc: Naohiro Aota <naohiro.aota@wdc.com>,
-	Johannes Thumshirn <johannes.thumshirn@wdc.com>,
-	David Sterba <dsterba@suse.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12.y 3/3] btrfs: zoned: requeue to unused block group list if zone finish failed
-Date: Mon, 18 Aug 2025 21:58:49 -0400
-Message-ID: <20250819015850.263708-3-sashal@kernel.org>
-X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250819015850.263708-1-sashal@kernel.org>
-References: <2025081853-parrot-skeleton-78e1@gregkh>
- <20250819015850.263708-1-sashal@kernel.org>
+To: Michael Walle <mwalle@kernel.org>
+Cc: patches@lists.linux.dev, stable@vger.kernel.org,
+	Lee Jones <lee@kernel.org>
+Subject: Re: [PATCH AUTOSEL 6.12 27/69] mfd: tps6594: Add TI TPS652G1 support
+Message-ID: <aKPa5TMzs-hAfEgE@laps>
+References: <20250804003119.3620476-1-sashal@kernel.org>
+ <20250804003119.3620476-27-sashal@kernel.org>
+ <DC5CEJ4YYRRB.3VTJAONRBJPVB@kernel.org>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=us-ascii; format=flowed
+Content-Disposition: inline
+In-Reply-To: <DC5CEJ4YYRRB.3VTJAONRBJPVB@kernel.org>
 
-From: Naohiro Aota <naohiro.aota@wdc.com>
+On Mon, Aug 18, 2025 at 08:34:03AM +0200, Michael Walle wrote:
+>Hi Sasha,
+>
+>On Mon Aug 4, 2025 at 2:30 AM CEST, Sasha Levin wrote:
+>> From: Michael Walle <mwalle@kernel.org>
+>>
+>> [ Upstream commit 626bb0a45584d544d84eab909795ccb355062bcc ]
+>>
+>> The TPS652G1 is a stripped down version of the TPS65224. From a software
+>> point of view, it lacks any voltage monitoring, the watchdog, the ESM
+>> and the ADC.
+>>
+>> Signed-off-by: Michael Walle <mwalle@kernel.org>
+>> Link: https://lore.kernel.org/r/20250613114518.1772109-2-mwalle@kernel.org
+>> Signed-off-by: Lee Jones <lee@kernel.org>
+>> Signed-off-by: Sasha Levin <sashal@kernel.org>
+>> ---
+>>
+>> LLM Generated explanations, may be completely bogus:
+>>
+>> **YES**
+>>
+>> This commit should be backported to stable kernel trees for the
+>> following reasons:
+>>
+>> 1. **Hardware Enablement (Device ID Addition)**: This patch adds support
+>>    for a new PMIC variant (TPS652G1) by adding its device ID and
+>>    configuration. According to stable kernel rules, patches that "just
+>>    add a device ID" are explicitly allowed for stable backporting.
+>>
+>> 2. **Self-Contained Changes**: The modifications are isolated to adding
+>>    support for the new device without altering existing functionality:
+>>    - Adds `TPS652G1` to the `enum pmic_id`
+>>    - Adds TPS652G1-specific MFD cells configuration
+>>    - Adds device-specific IRQ mappings (subset of TPS65224 IRQs)
+>>    - Adds compatible strings "ti,tps652g1" to I2C and SPI device tables
+>>    - Properly handles the stripped-down nature of TPS652G1 (no RTC, ADC,
+>>      watchdog, ESM)
+>>
+>> 3. **Low Risk**: The changes follow the existing driver pattern and only
+>>    add conditional paths for the new device:
+>>   ```c
+>>   if (tps->chip_id == TPS65224 || tps->chip_id == TPS652G1)
+>>   ```
+>>   This ensures existing device support remains unaffected.
+>>
+>> 4. **User Benefit**: Without this patch, users with TPS652G1 hardware
+>>    cannot use their devices on stable kernels. This directly impacts
+>>    hardware functionality for affected users.
+>>
+>> 5. **Proper Implementation**: The patch correctly handles the TPS652G1
+>>    as a feature-reduced variant of TPS65224, sharing the same register
+>>    layout and CRC handling while properly excluding unsupported
+>>    features.
+>>
+>> The patch is relatively small, follows established driver patterns, and
+>> enables essential hardware support without introducing architectural
+>> changes or new features beyond device enablement.
+>
+>While this is correct, the MFD patch on it's own is rather useless,
+>as the individual driver implementations are missing. See
+>https://lore.kernel.org/all/20250703113153.2447110-1-mwalle@kernel.org/
+>
+>I don't care too much, I just want to point out, that just having
+>this patch might be misleading regarding the support of this PMIC.
 
-[ Upstream commit 62be7afcc13b2727bdc6a4c91aefed6b452e6ecc ]
+Yeah, it doesn't make sense to keep it in. I'll drop it.
 
-btrfs_zone_finish() can fail for several reason. If it is -EAGAIN, we need
-to try it again later. So, put the block group to the retry list properly.
+Thanks!
 
-Failing to do so will keep the removable block group intact until remount
-and can causes unnecessary ENOSPC.
 
-Fixes: 74e91b12b115 ("btrfs: zoned: zone finish unused block group")
-CC: stable@vger.kernel.org # 6.1+
-Reviewed-by: Johannes Thumshirn <johannes.thumshirn@wdc.com>
-Signed-off-by: Naohiro Aota <naohiro.aota@wdc.com>
-Signed-off-by: David Sterba <dsterba@suse.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
----
- fs/btrfs/block-group.c | 4 +++-
- 1 file changed, 3 insertions(+), 1 deletion(-)
-
-diff --git a/fs/btrfs/block-group.c b/fs/btrfs/block-group.c
-index 841954bd788f..13b223eef995 100644
---- a/fs/btrfs/block-group.c
-+++ b/fs/btrfs/block-group.c
-@@ -1623,8 +1623,10 @@ void btrfs_delete_unused_bgs(struct btrfs_fs_info *fs_info)
- 		ret = btrfs_zone_finish(block_group);
- 		if (ret < 0) {
- 			btrfs_dec_block_group_ro(block_group);
--			if (ret == -EAGAIN)
-+			if (ret == -EAGAIN) {
-+				btrfs_link_bg_list(block_group, &retry_list);
- 				ret = 0;
-+			}
- 			goto next;
- 		}
- 
 -- 
-2.50.1
-
+Thanks,
+Sasha
 
