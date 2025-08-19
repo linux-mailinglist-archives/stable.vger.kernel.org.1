@@ -1,220 +1,266 @@
-Return-Path: <stable+bounces-171747-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-171748-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id BB356B2B9F6
-	for <lists+stable@lfdr.de>; Tue, 19 Aug 2025 08:56:49 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 3661CB2BA09
+	for <lists+stable@lfdr.de>; Tue, 19 Aug 2025 09:00:27 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 71844164201
-	for <lists+stable@lfdr.de>; Tue, 19 Aug 2025 06:56:30 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 1617F52324B
+	for <lists+stable@lfdr.de>; Tue, 19 Aug 2025 07:00:27 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 837B6262FD2;
-	Tue, 19 Aug 2025 06:56:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9B71224E4B4;
+	Tue, 19 Aug 2025 07:00:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=leemhuis.info header.i=@leemhuis.info header.b="Bzk8t+mr"
+	dkim=pass (1024-bit key) header.d=ideasonboard.com header.i=@ideasonboard.com header.b="lpX8t8gy"
 X-Original-To: stable@vger.kernel.org
-Received: from wp530.webpack.hosteurope.de (wp530.webpack.hosteurope.de [80.237.130.52])
+Received: from perceval.ideasonboard.com (perceval.ideasonboard.com [213.167.242.64])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 47DCF26A1DD;
-	Tue, 19 Aug 2025 06:56:23 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=80.237.130.52
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D80DD25BEFE;
+	Tue, 19 Aug 2025 07:00:17 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=213.167.242.64
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755586585; cv=none; b=n4XIjDHIU63RicQeA9x3qsQdPP8bF9CWyUvMWCCYgIRfqcoDsEKuJgQkc2LRccrTmaa8dWBM4uhnNUqkkdX1kifkwYelj/cvnlNZVzIieom5ozL3ryshD1vijxScSwoKax/OroJir9OSNvyExP6Stg619hGAnagg6WdfH3wveJg=
+	t=1755586820; cv=none; b=Ogqi7XITP1UC53pgUkxjjIaKZF+rrvZhmvZkHuF35j5he519N5YM8ytfeuLyQOjNQ0fpmXijn/lKhzHWOAMLi87usCLdm05ETb/Tc5YLKbd42PF6A5v1QTD2qUyaDpg57hMxODhyHWyp0ExweW5TMe4OObnk864maRcwh4ocRwg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1755586585; c=relaxed/simple;
-	bh=H6K+qEWhflAu7cNo7Du6hhX5mK0xaPJlPOCQyjH9sTo=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=iGtnDcQdXGSjG2vHnMPM/Mr+AJK0BXo/JRe1V0ksniyPmaK33QJ+vaTwUOmQaBzucs1m2YrjtHXqeviEf54FQhfE8+J6LHogoi6k8LWb5R+4ymEM/E6d1cMBDugNpcJLhjPeDMCAcRN8wV/+vxLSakPyryjf9wXR72kM36eiXjA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=leemhuis.info; spf=pass smtp.mailfrom=leemhuis.info; dkim=pass (2048-bit key) header.d=leemhuis.info header.i=@leemhuis.info header.b=Bzk8t+mr; arc=none smtp.client-ip=80.237.130.52
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=leemhuis.info
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=leemhuis.info
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-	d=leemhuis.info; s=he214686; h=Content-Transfer-Encoding:Content-Type:
-	In-Reply-To:From:References:Cc:To:Subject:MIME-Version:Date:Message-ID:From:
-	Sender:Reply-To:Subject:Date:Message-ID:To:Cc:MIME-Version:Content-Type:
-	Content-Transfer-Encoding:Content-ID:Content-Description:In-Reply-To:
-	References; bh=6St+hyO51QOaKSkLJ+t4fE+Zvd3kQPanMdycFpK8qoc=; t=1755586583;
-	x=1756018583; b=Bzk8t+mrSExjsh3yIhB7OruBHOzTWGofFv72d6HlxH6f9oxeg9+mvzQ8mJnwq
-	JnRhRVZrcTJnGfDv/5E8KOQZuWdi3T++HyfGgyt/QdXAlgisiY6op+Ex/Q0kPv2L7TWXHVYsDerTK
-	BFK/8e6BTJaYJEzCMqWA+ot+HuwEPKRJ+tNYluQyVP08W1oky5Vt8riY6GxC5dqqorCFFNigH1oD7
-	o8YhS7uCajqG8rv4wQc56d/SgJE/gTlO22eY9peHbRefueYLHNwnB877uuIFyYCdJWZKzt20MPqha
-	Qpctxna6NyeA8CyNmA2o7vmVgAzP5eXsLia8mOnz/4Bh29+UTg==;
-Received: from [2a02:8108:8984:1d00:a0cf:1912:4be:477f]; authenticated
-	by wp530.webpack.hosteurope.de running ExIM with esmtpsa (TLS1.3:ECDHE_X25519__RSA_PSS_RSAE_SHA256__AES_128_GCM:128)
-	id 1uoGGb-00FxbS-0P;
-	Tue, 19 Aug 2025 08:56:21 +0200
-Message-ID: <9ac42b4c-5cae-47f7-98c4-ffe0d5194e67@leemhuis.info>
-Date: Tue, 19 Aug 2025 08:56:20 +0200
+	s=arc-20240116; t=1755586820; c=relaxed/simple;
+	bh=E4+6SQn+0H0871MDRGuNeoo2nkDKzjeLbYdG/k+vKZk=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=aojlnaJ+jxNSDHo2tFjBZ1+WiDT85TRWD9YzkcQlEVhjUxeIKMLr/1thz2bvel8O+uF0g8Tey6y3/u596rzD3jJJo2gpR8N8lMZ6UUHW1ysK2pKU/Wduz2dQRiyYFCdGYi7WxDlAfoXv22U63ZZ+o7jSrq8TCZzgRCBWQ6MNDG4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=ideasonboard.com; spf=pass smtp.mailfrom=ideasonboard.com; dkim=pass (1024-bit key) header.d=ideasonboard.com header.i=@ideasonboard.com header.b=lpX8t8gy; arc=none smtp.client-ip=213.167.242.64
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=ideasonboard.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ideasonboard.com
+Received: from ideasonboard.com (mob-5-90-52-92.net.vodafone.it [5.90.52.92])
+	by perceval.ideasonboard.com (Postfix) with ESMTPSA id 5E2F0596;
+	Tue, 19 Aug 2025 08:59:18 +0200 (CEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=ideasonboard.com;
+	s=mail; t=1755586758;
+	bh=E4+6SQn+0H0871MDRGuNeoo2nkDKzjeLbYdG/k+vKZk=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=lpX8t8gyaI0KZ6MwBblwSiECgnXoEY0HTkt4EUFWvNwgnz3GBb1KO0u2esLlcIDrF
+	 hhiNk5KP4lNa5KO8xj2m06ByaanV1VP13cgEopf7inmLYKty7L2XqNYlF51SyEzEzn
+	 GVh9sfN8YmoQsHhkxgQcDZcjldLsQkuHd0OJg/nY=
+Date: Tue, 19 Aug 2025 09:00:11 +0200
+From: Jacopo Mondi <jacopo.mondi@ideasonboard.com>
+To: Laurent Pinchart <laurent.pinchart@ideasonboard.com>
+Cc: Jacopo Mondi <jacopo.mondi@ideasonboard.com>, 
+	Andy Walls <awalls@md.metrocast.net>, Mauro Carvalho Chehab <mchehab@kernel.org>, 
+	Hans Verkuil <hverkuil+cisco@kernel.org>, Dan Carpenter <dan.carpenter@linaro.org>, stable@vger.kernel.org, 
+	linux-media@vger.kernel.org, linux-kernel@vger.kernel.org
+Subject: Re: [PATCH v3 1/2] media: cx18: Fix invalid access to file *
+Message-ID: <3h5oa7ziojahyq4uxlpfdkqqqz2h2fakahjmtyv5un5yhxhat4@gborrcjbwme5>
+References: <20250818-cx18-v4l2-fh-v3-0-5e2f08f3cadc@ideasonboard.com>
+ <20250818-cx18-v4l2-fh-v3-1-5e2f08f3cadc@ideasonboard.com>
+ <20250818235632.GB10308@pendragon.ideasonboard.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 6.16 209/570] bootconfig: Fix unaligned access when
- building footer
-To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>, stable@vger.kernel.org
-Cc: patches@lists.linux.dev, Ben Hutchings <benh@debian.org>,
- "Masami Hiramatsu (Google)" <mhiramat@kernel.org>,
- Sasha Levin <sashal@kernel.org>
-References: <20250818124505.781598737@linuxfoundation.org>
- <20250818124513.854983152@linuxfoundation.org>
-From: Thorsten Leemhuis <linux@leemhuis.info>
-Content-Language: de-DE, en-US
-Autocrypt: addr=linux@leemhuis.info; keydata=
- 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 n7RI
-In-Reply-To: <20250818124513.854983152@linuxfoundation.org>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
-X-bounce-key: webpack.hosteurope.de;linux@leemhuis.info;1755586583;76584ecc;
-X-HE-SMSGID: 1uoGGb-00FxbS-0P
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+In-Reply-To: <20250818235632.GB10308@pendragon.ideasonboard.com>
 
-On 18.08.25 14:43, Greg Kroah-Hartman wrote:
-> 6.16-stable review patch.  If anyone has any objections, please let me know.
-> 
-> ------------------
-> 
-> From: Ben Hutchings <benh@debian.org>
-> 
-> [ Upstream commit 6ed5e20466c79e3b3350bae39f678f73cf564b4e ]
-> 
-> Currently we add padding between the bootconfig text and footer to
-> ensure that the footer is aligned within the initramfs image.
-> However, because only the bootconfig data is held in memory, not the
-> full initramfs image, the footer may not be naturally aligned in
-> memory.
+Hi Laurent
 
-This change broke the build for me in both 6.16.y and 6.15.y (did not
-try 6.12.y, guess it has the same problem)[1]. Reverting it or applying
-26dda57695090e ("tools/bootconfig: Cleanup bootconfig footer size
-calculations") [v6.17-rc1] fixed things for me.
+On Tue, Aug 19, 2025 at 02:56:32AM +0300, Laurent Pinchart wrote:
+> On Mon, Aug 18, 2025 at 10:39:36PM +0200, Jacopo Mondi wrote:
+> > Sice commit 7b9eb53e8591 ("media: cx18: Access v4l2_fh from file")
+>
+> s/Sice/Since/
+>
+> > all ioctl handlers have been ported to operate on the file * first
+> > function argument.
+> >
+> > The cx18 DVB layer calls cx18_init_on_first_open() when the driver needs
+> > to start streaming. This function calls the s_input(), s_std() and
+> > s_frequency() ioctl handlers directly, but being called from the driver
+> > context, it doesn't have a valid file * to pass them. This causes
+> > the ioctl handlers to deference an invalid pointer.
+> >
+> > Fix this by wrapping the ioctl handlers implementation in helper
+> > functions which accepts a cx18 pointer as first argument
+> > and make the cx18_init_on_first_open() function call the helpers
+> > without going through the ioctl handlers.
+>
+> It's the other way around, the ioctl handlers are not wrapper. I'd write
 
-Ciao, Thorsten
+in facts
 
-[1] see
-https://download.copr.fedorainfracloud.org/results/@kernel-vanilla/stable-rc/fedora-42-x86_64/09440377-stablerc-stablerc-releases/builder-live.log.gz
+"wrapping the ioctl handlers implementation in helpers functions"
 
-main.c: In function ‘apply_xbc’:
-main.c:442:41: error: ‘BOOTCONFIG_FOOTER_SIZE’ undeclared (first use in this function)
-  442 |         static_assert(sizeof(footer) == BOOTCONFIG_FOOTER_SIZE);
-      |                                         ^~~~~~~~~~~~~~~~~~~~~~
-main.c:442:41: note: each undeclared identifier is reported only once for each function it appears in
-main.c:442:23: error: expression in static assertion is not an integer
-  442 |         static_assert(sizeof(footer) == BOOTCONFIG_FOOTER_SIZE);
-      |                       ^~~~~~
-make: *** [Makefile:21: bootconfig] Error 1
+to me means wrapping the actual implementation in helpers
 
- 
-> This can result in an alignment fault (SIGBUS) when writing the footer
-> on some architectures, such as sparc.
-> 
-> Build the footer in a struct on the stack before adding it to the
-> buffer.
-> 
-> References: https://buildd.debian.org/status/fetch.php?pkg=linux&arch=sparc64&ver=6.16%7Erc7-1%7Eexp1&stamp=1753209801&raw=0
-> Link: https://lore.kernel.org/all/aIC-NTw-cdm9ZGFw@decadent.org.uk/
-> 
-> Signed-off-by: Ben Hutchings <benh@debian.org>
-> Signed-off-by: Masami Hiramatsu (Google) <mhiramat@kernel.org>
-> Signed-off-by: Sasha Levin <sashal@kernel.org>
-> ---
->  tools/bootconfig/main.c | 24 +++++++++++++-----------
->  1 file changed, 13 insertions(+), 11 deletions(-)
-> 
-> diff --git a/tools/bootconfig/main.c b/tools/bootconfig/main.c
-> index 8a48cc2536f5..dce2d6ffcca5 100644
-> --- a/tools/bootconfig/main.c
-> +++ b/tools/bootconfig/main.c
-> @@ -11,6 +11,7 @@
->  #include <string.h>
->  #include <errno.h>
->  #include <endian.h>
-> +#include <assert.h>
->  
->  #include <linux/bootconfig.h>
->  
-> @@ -359,7 +360,12 @@ static int delete_xbc(const char *path)
->  
->  static int apply_xbc(const char *path, const char *xbc_path)
->  {
-> -	char *buf, *data, *p;
-> +	struct {
-> +		uint32_t size;
-> +		uint32_t csum;
-> +		char magic[BOOTCONFIG_MAGIC_LEN];
-> +	} footer;
-> +	char *buf, *data;
->  	size_t total_size;
->  	struct stat stat;
->  	const char *msg;
-> @@ -430,17 +436,13 @@ static int apply_xbc(const char *path, const char *xbc_path)
->  	size += pad;
->  
->  	/* Add a footer */
-> -	p = data + size;
-> -	*(uint32_t *)p = htole32(size);
-> -	p += sizeof(uint32_t);
-> +	footer.size = htole32(size);
-> +	footer.csum = htole32(csum);
-> +	memcpy(footer.magic, BOOTCONFIG_MAGIC, BOOTCONFIG_MAGIC_LEN);
-> +	static_assert(sizeof(footer) == BOOTCONFIG_FOOTER_SIZE);
-> +	memcpy(data + size, &footer, BOOTCONFIG_FOOTER_SIZE);
->  
-> -	*(uint32_t *)p = htole32(csum);
-> -	p += sizeof(uint32_t);
-> -
-> -	memcpy(p, BOOTCONFIG_MAGIC, BOOTCONFIG_MAGIC_LEN);
-> -	p += BOOTCONFIG_MAGIC_LEN;
-> -
-> -	total_size = p - data;
-> +	total_size = size + BOOTCONFIG_FOOTER_SIZE;
->  
->  	ret = write(fd, data, total_size);
->  	if (ret < total_size) {
+>
+> Fix this by moving the implementation of those ioctls to functions that
 
+ah I should have used "moving" instead of "wrapping"
+
+> take a cx18 pointer instead of a file pointer, and turn the V4L2 ioctl
+> handlers into wrappers that get the cx18 from the file. When calling
+> from cx18_init_on_first_open(), pass the cx18 pointer directly. This
+> allows removing the fake fh in cx18_init_on_first_open().
+>
+
+ok, if it's -that- different... thankfully we nowadays have b4 that
+makes sending new version easier
+
+> >
+> > The bug has been reported by Smatch:
+> >
+> > --> 1223         cx18_s_input(NULL, &fh, video_input);
+> > The patch adds a new dereference of "file" but some of the callers pass a
+> > NULL pointer.
+> >
+> > Reported-by: Dan Carpenter <dan.carpenter@linaro.org>
+> > Closes: https://lore.kernel.org/all/aKL4OMWsESUdX8KQ@stanley.mountain/
+> > Fixes: 7b9eb53e8591 ("media: cx18: Access v4l2_fh from file")
+> > Cc: stable@vger.kernel.org
+> > Signed-off-by: Jacopo Mondi <jacopo.mondi@ideasonboard.com>
+>
+> Reviewed-by: Laurent Pinchart <laurent.pinchart+renesas@ideasonboard.com>
+>
+> > ---
+> >  drivers/media/pci/cx18/cx18-driver.c |  9 +++------
+> >  drivers/media/pci/cx18/cx18-ioctl.c  | 30 +++++++++++++++++++-----------
+> >  drivers/media/pci/cx18/cx18-ioctl.h  |  8 +++++---
+> >  3 files changed, 27 insertions(+), 20 deletions(-)
+> >
+> > diff --git a/drivers/media/pci/cx18/cx18-driver.c b/drivers/media/pci/cx18/cx18-driver.c
+> > index 743fcc9613744bfc1edeffc51e908fe88520405a..cd84dfcefcf971a7adb9aac2bafb9089dbe0f33f 100644
+> > --- a/drivers/media/pci/cx18/cx18-driver.c
+> > +++ b/drivers/media/pci/cx18/cx18-driver.c
+> > @@ -1136,11 +1136,8 @@ int cx18_init_on_first_open(struct cx18 *cx)
+> >  	int video_input;
+> >  	int fw_retry_count = 3;
+> >  	struct v4l2_frequency vf;
+> > -	struct cx18_open_id fh;
+> >  	v4l2_std_id std;
+> >
+> > -	fh.cx = cx;
+> > -
+> >  	if (test_bit(CX18_F_I_FAILED, &cx->i_flags))
+> >  		return -ENXIO;
+> >
+> > @@ -1220,14 +1217,14 @@ int cx18_init_on_first_open(struct cx18 *cx)
+> >
+> >  	video_input = cx->active_input;
+> >  	cx->active_input++;	/* Force update of input */
+> > -	cx18_s_input(NULL, &fh, video_input);
+> > +	cx18_do_s_input(cx, video_input);
+> >
+> >  	/* Let the VIDIOC_S_STD ioctl do all the work, keeps the code
+> >  	   in one place. */
+> >  	cx->std++;		/* Force full standard initialization */
+> >  	std = (cx->tuner_std == V4L2_STD_ALL) ? V4L2_STD_NTSC_M : cx->tuner_std;
+> > -	cx18_s_std(NULL, &fh, std);
+> > -	cx18_s_frequency(NULL, &fh, &vf);
+> > +	cx18_do_s_std(cx, std);
+> > +	cx18_do_s_frequency(cx, &vf);
+> >  	return 0;
+> >  }
+> >
+> > diff --git a/drivers/media/pci/cx18/cx18-ioctl.c b/drivers/media/pci/cx18/cx18-ioctl.c
+> > index bf16d36448f888d9326b5f4a8f9c8f0e13d0c3a1..6e869c43cbd520feb720a71d8eb2dd60c05b0ae9 100644
+> > --- a/drivers/media/pci/cx18/cx18-ioctl.c
+> > +++ b/drivers/media/pci/cx18/cx18-ioctl.c
+> > @@ -521,10 +521,8 @@ static int cx18_g_input(struct file *file, void *fh, unsigned int *i)
+> >  	return 0;
+> >  }
+> >
+> > -int cx18_s_input(struct file *file, void *fh, unsigned int inp)
+> > +int cx18_do_s_input(struct cx18 *cx, unsigned int inp)
+> >  {
+> > -	struct cx18_open_id *id = file2id(file);
+> > -	struct cx18 *cx = id->cx;
+> >  	v4l2_std_id std = V4L2_STD_ALL;
+> >  	const struct cx18_card_video_input *card_input =
+> >  				cx->card->video_inputs + inp;
+> > @@ -558,6 +556,11 @@ int cx18_s_input(struct file *file, void *fh, unsigned int inp)
+> >  	return 0;
+> >  }
+> >
+> > +static int cx18_s_input(struct file *file, void *fh, unsigned int inp)
+> > +{
+> > +	return cx18_do_s_input(file2id(file)->cx, inp);
+> > +}
+> > +
+> >  static int cx18_g_frequency(struct file *file, void *fh,
+> >  				struct v4l2_frequency *vf)
+> >  {
+> > @@ -570,11 +573,8 @@ static int cx18_g_frequency(struct file *file, void *fh,
+> >  	return 0;
+> >  }
+> >
+> > -int cx18_s_frequency(struct file *file, void *fh, const struct v4l2_frequency *vf)
+> > +int cx18_do_s_frequency(struct cx18 *cx, const struct v4l2_frequency *vf)
+> >  {
+> > -	struct cx18_open_id *id = file2id(file);
+> > -	struct cx18 *cx = id->cx;
+> > -
+> >  	if (vf->tuner != 0)
+> >  		return -EINVAL;
+> >
+> > @@ -585,6 +585,12 @@ int cx18_s_frequency(struct file *file, void *fh, const struct v4l2_frequency *v
+> >  	return 0;
+> >  }
+> >
+> > +static int cx18_s_frequency(struct file *file, void *fh,
+> > +			    const struct v4l2_frequency *vf)
+> > +{
+> > +	return cx18_do_s_frequency(file2id(file)->cx, vf);
+> > +}
+> > +
+> >  static int cx18_g_std(struct file *file, void *fh, v4l2_std_id *std)
+> >  {
+> >  	struct cx18 *cx = file2id(file)->cx;
+> > @@ -593,11 +599,8 @@ static int cx18_g_std(struct file *file, void *fh, v4l2_std_id *std)
+> >  	return 0;
+> >  }
+> >
+> > -int cx18_s_std(struct file *file, void *fh, v4l2_std_id std)
+> > +int cx18_do_s_std(struct cx18 *cx, v4l2_std_id std)
+> >  {
+> > -	struct cx18_open_id *id = file2id(file);
+> > -	struct cx18 *cx = id->cx;
+> > -
+> >  	if ((std & V4L2_STD_ALL) == 0)
+> >  		return -EINVAL;
+> >
+> > @@ -642,6 +645,11 @@ int cx18_s_std(struct file *file, void *fh, v4l2_std_id std)
+> >  	return 0;
+> >  }
+> >
+> > +static int cx18_s_std(struct file *file, void *fh, v4l2_std_id std)
+> > +{
+> > +	return cx18_do_s_std(file2id(file)->cx, std);
+> > +}
+> > +
+> >  static int cx18_s_tuner(struct file *file, void *fh, const struct v4l2_tuner *vt)
+> >  {
+> >  	struct cx18_open_id *id = file2id(file);
+> > diff --git a/drivers/media/pci/cx18/cx18-ioctl.h b/drivers/media/pci/cx18/cx18-ioctl.h
+> > index 221e2400fb3e2d817eaff7515fa89eb94f2d7f8a..7a42ac99312ab6502e1abe4f3d5c88c9c7f144f3 100644
+> > --- a/drivers/media/pci/cx18/cx18-ioctl.h
+> > +++ b/drivers/media/pci/cx18/cx18-ioctl.h
+> > @@ -12,6 +12,8 @@ u16 cx18_service2vbi(int type);
+> >  void cx18_expand_service_set(struct v4l2_sliced_vbi_format *fmt, int is_pal);
+> >  u16 cx18_get_service_set(struct v4l2_sliced_vbi_format *fmt);
+> >  void cx18_set_funcs(struct video_device *vdev);
+> > -int cx18_s_std(struct file *file, void *fh, v4l2_std_id std);
+> > -int cx18_s_frequency(struct file *file, void *fh, const struct v4l2_frequency *vf);
+> > -int cx18_s_input(struct file *file, void *fh, unsigned int inp);
+> > +
+> > +struct cx18;
+> > +int cx18_do_s_std(struct cx18 *cx, v4l2_std_id std);
+> > +int cx18_do_s_frequency(struct cx18 *cx, const struct v4l2_frequency *vf);
+> > +int cx18_do_s_input(struct cx18 *cx, unsigned int inp);
+> >
+>
+> --
+> Regards,
+>
+> Laurent Pinchart
 
