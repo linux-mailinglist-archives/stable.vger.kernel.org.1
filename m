@@ -1,59 +1,57 @@
-Return-Path: <stable+bounces-171688-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-171690-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id C8C3EB2B56B
-	for <lists+stable@lfdr.de>; Tue, 19 Aug 2025 02:39:42 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 52DE7B2B569
+	for <lists+stable@lfdr.de>; Tue, 19 Aug 2025 02:39:31 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id E5FB562537E
-	for <lists+stable@lfdr.de>; Tue, 19 Aug 2025 00:38:51 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 308DB16F2C8
+	for <lists+stable@lfdr.de>; Tue, 19 Aug 2025 00:39:19 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8F3A313FEE;
-	Tue, 19 Aug 2025 00:38:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9FDE1156F45;
+	Tue, 19 Aug 2025 00:39:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="SJvCk5Uk"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Q7SzzbFZ"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 503F7C120
-	for <stable@vger.kernel.org>; Tue, 19 Aug 2025 00:38:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5EF4413FEE
+	for <stable@vger.kernel.org>; Tue, 19 Aug 2025 00:39:06 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755563931; cv=none; b=mlqN+TZSZ2YwL6MCq90BpNrznrvFpg3egMoMGUYUva5hDhc3AzdLIcmZygpvhjBseEgbKICGUflpZUOxDC96VPrWXNNLl4ErCG6/rSdwG88LJSaNdWebGE6lm9f8a30LQB6+7O6pzJr+Swu9L/GOk+EtZkb58ZIo+gw9MgIKP5M=
+	t=1755563947; cv=none; b=U3Tq6olOSUY1aN/iZ1FLuR8HfwFqAkg7q8r2Uoh0pUYjcnwvDG57tjCyNFhl2yLJFRyP2wF5ZFSf7tLjSoju26Cbnv2nYAith+E++aXVCXYU4lmu+cSAXoMpdHjpOVynyXW2H01Nq5Wv2cEAOdwN6wudcfGI+SG/FwhnLf/LwEs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1755563931; c=relaxed/simple;
-	bh=1e0CbNRQYt6uL6D39abTaM1QnClAvTmFRDSodArb3Yg=;
+	s=arc-20240116; t=1755563947; c=relaxed/simple;
+	bh=igsqncgaCraDSeeyuJo/V7crRzQBfkR0dD3+GdRQ3vc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=hZHiLJhvVHMDQWKlvvLhskFCdSeYnxaaJgyxZXYc2AUY38ecU2WEgfrn69QzoMD0U+e3qV+K/l/AbWWUA/PCVHc0/IDu93vwg3r1kVwsrZki47KAKl7Hi5DJd0ehsAMV03BcxDHMk14Jna4FSmU+N4WnV9S2m42zYzJ+sPXXJkU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=SJvCk5Uk; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 305A6C4CEEB;
-	Tue, 19 Aug 2025 00:38:50 +0000 (UTC)
+	 MIME-Version; b=WuQjM5DXw/ikqX6XwLuGVRVrClDKZ/W643QO8nafyasBKIm7Gyg+oPaM0jMYRUZKCQ2cRd5ayziVScuR4+xP6KSjgvgwdQTk79lsJfS5sQ4ZkXCNZsGTyowkc0vqtqAwyngNIakOvDcRqfXHcKe4rtiZO+KrNnXD5LL9+0b1i90=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Q7SzzbFZ; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 65EC2C4CEEB;
+	Tue, 19 Aug 2025 00:39:05 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1755563930;
-	bh=1e0CbNRQYt6uL6D39abTaM1QnClAvTmFRDSodArb3Yg=;
+	s=k20201202; t=1755563945;
+	bh=igsqncgaCraDSeeyuJo/V7crRzQBfkR0dD3+GdRQ3vc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=SJvCk5UkTnTSGCUKWgbQjWRuOkXnj2FjaP/XVDQXmKiQeVfUGXWCXzVf7Cptrkk4o
-	 ZtuXvDvFRIxSUC7RburjK8cz1AMUkeSdyN9cM3/rGZOiZNo04ogIX6fRp8NyCl0hdg
-	 WNnHQUlIMdKeyatufdw36PXVJXTWKDidvZz3leUIqAi6NjvhprPTeIdF5k3BSGNUis
-	 8FNzgMCPSDtQZsTmpPFVo+ToDPOFhsruj94tnYbEn7x0NJSXm9Izldy+JHxGauxa2M
-	 EgGEnxO0y7rujYCvLr2uuX3gwtzVShsne7oQNp7AG1x010YtssHL26bvQaB/hTf1Fg
-	 JIE7y7F6mnUeg==
+	b=Q7SzzbFZ7ClYPXXpYuUZa0lxmC5A6MC6Xk9JFibMSjKU8fMk/e0sQBiBtwxnYiAca
+	 OyJZS3qZyED0Ju694czU+fdhzTFK3Q3SwyAdLbYetkT6x/D/smcVR8xBN5W0fxqcgm
+	 P0l+K92Wc6RmgeWyuLljFHwE3ZoS0psjp5SUGOb4IioyRiPPnf2OGqwGFFaK9vuaXk
+	 xJljzMMMls5M3J3Sg3Uk3CPfEWgtlqWoVXHrWuz37BabV2xmrb6XXBypazRwGRm6fs
+	 EIKnDYOOSc4byTQRmVRQNBUtXL3Sdu9xoJ4RZoO9vzi8Rng8ttc7pC8+3z134sjIIi
+	 0/tD8cGcxKDNQ==
 From: Sasha Levin <sashal@kernel.org>
 To: stable@vger.kernel.org
-Cc: Filipe Manana <fdmanana@suse.com>,
-	Daniel Vacek <neelx@suse.com>,
-	Qu Wenruo <wqu@suse.com>,
-	David Sterba <dsterba@suse.com>,
+Cc: David Sterba <dsterba@suse.com>,
+	Filipe Manana <fdmanana@suse.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.16.y] btrfs: abort transaction on unexpected eb generation at btrfs_copy_root()
-Date: Mon, 18 Aug 2025 20:38:40 -0400
-Message-ID: <20250819003840.226789-1-sashal@kernel.org>
+Subject: [PATCH 6.12.y 1/2] btrfs: move transaction aborts to the error site in add_block_group_free_space()
+Date: Mon, 18 Aug 2025 20:39:02 -0400
+Message-ID: <20250819003903.227152-1-sashal@kernel.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <2025081814-cotton-endpoint-c7b3@gregkh>
-References: <2025081814-cotton-endpoint-c7b3@gregkh>
+In-Reply-To: <2025081809-unwatched-rejoicing-21e4@gregkh>
+References: <2025081809-unwatched-rejoicing-21e4@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -62,47 +60,45 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-From: Filipe Manana <fdmanana@suse.com>
+From: David Sterba <dsterba@suse.com>
 
-[ Upstream commit 33e8f24b52d2796b8cfb28c19a1a7dd6476323a8 ]
+[ Upstream commit b63c8c1ede4407835cb8c8bed2014d96619389f3 ]
 
-If we find an unexpected generation for the extent buffer we are cloning
-at btrfs_copy_root(), we just WARN_ON() and don't error out and abort the
-transaction, meaning we allow to persist metadata with an unexpected
-generation. Instead of warning only, abort the transaction and return
--EUCLEAN.
+Transaction aborts should be done next to the place the error happens,
+which was not done in add_block_group_free_space().
 
-CC: stable@vger.kernel.org # 6.1+
-Reviewed-by: Daniel Vacek <neelx@suse.com>
-Reviewed-by: Qu Wenruo <wqu@suse.com>
-Signed-off-by: Filipe Manana <fdmanana@suse.com>
-Reviewed-by: David Sterba <dsterba@suse.com>
+Reviewed-by: Filipe Manana <fdmanana@suse.com>
 Signed-off-by: David Sterba <dsterba@suse.com>
+Stable-dep-of: 1f06c942aa70 ("btrfs: always abort transaction on failure to add block group to free space tree")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/btrfs/ctree.c | 9 ++++++++-
- 1 file changed, 8 insertions(+), 1 deletion(-)
+ fs/btrfs/free-space-tree.c | 5 +++--
+ 1 file changed, 3 insertions(+), 2 deletions(-)
 
-diff --git a/fs/btrfs/ctree.c b/fs/btrfs/ctree.c
-index 648531fe0900..df06c9c3d406 100644
---- a/fs/btrfs/ctree.c
-+++ b/fs/btrfs/ctree.c
-@@ -283,7 +283,14 @@ int btrfs_copy_root(struct btrfs_trans_handle *trans,
- 
- 	write_extent_buffer_fsid(cow, fs_info->fs_devices->metadata_uuid);
- 
--	WARN_ON(btrfs_header_generation(buf) > trans->transid);
-+	if (unlikely(btrfs_header_generation(buf) > trans->transid)) {
-+		btrfs_tree_unlock(cow);
-+		free_extent_buffer(cow);
-+		ret = -EUCLEAN;
+diff --git a/fs/btrfs/free-space-tree.c b/fs/btrfs/free-space-tree.c
+index 308abbf8855b..6f5ccb7b7db9 100644
+--- a/fs/btrfs/free-space-tree.c
++++ b/fs/btrfs/free-space-tree.c
+@@ -1404,16 +1404,17 @@ int add_block_group_free_space(struct btrfs_trans_handle *trans,
+ 	path = btrfs_alloc_path();
+ 	if (!path) {
+ 		ret = -ENOMEM;
 +		btrfs_abort_transaction(trans, ret);
-+		return ret;
-+	}
-+
- 	if (new_root_objectid == BTRFS_TREE_RELOC_OBJECTID)
- 		ret = btrfs_inc_ref(trans, root, cow, 1);
- 	else
+ 		goto out;
+ 	}
+ 
+ 	ret = __add_block_group_free_space(trans, block_group, path);
++	if (ret)
++		btrfs_abort_transaction(trans, ret);
+ 
+ out:
+ 	btrfs_free_path(path);
+ 	mutex_unlock(&block_group->free_space_lock);
+-	if (ret)
+-		btrfs_abort_transaction(trans, ret);
+ 	return ret;
+ }
+ 
 -- 
 2.50.1
 
