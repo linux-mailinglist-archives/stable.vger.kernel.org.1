@@ -1,129 +1,126 @@
-Return-Path: <stable+bounces-171795-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-171796-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id A2963B2C4EB
-	for <lists+stable@lfdr.de>; Tue, 19 Aug 2025 15:14:08 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id B378AB2C5C5
+	for <lists+stable@lfdr.de>; Tue, 19 Aug 2025 15:38:12 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 4DB9324445A
-	for <lists+stable@lfdr.de>; Tue, 19 Aug 2025 13:07:21 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 09A9F1887600
+	for <lists+stable@lfdr.de>; Tue, 19 Aug 2025 13:34:31 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9D2D8342CA0;
-	Tue, 19 Aug 2025 13:06:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4B9DF303CB0;
+	Tue, 19 Aug 2025 13:34:06 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=mandrillapp.com header.i=@mandrillapp.com header.b="bS/JjKH2";
-	dkim=pass (2048-bit key) header.d=vates.tech header.i=yann.sionneau@vates.tech header.b="NIKFOyh3"
+	dkim=pass (2048-bit key) header.d=googlemail.com header.i=@googlemail.com header.b="INlLeRhW"
 X-Original-To: stable@vger.kernel.org
-Received: from mail180-17.suw31.mandrillapp.com (mail180-17.suw31.mandrillapp.com [198.2.180.17])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-ej1-f44.google.com (mail-ej1-f44.google.com [209.85.218.44])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CC1F633EB1D
-	for <stable@vger.kernel.org>; Tue, 19 Aug 2025 13:06:10 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.2.180.17
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7709A1DE89B;
+	Tue, 19 Aug 2025 13:34:04 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.218.44
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755608772; cv=none; b=ia44R2WWVugyC8FqG4NZN+j+WmA4A9wTOpqSL1UPU1mr7fbvqwS/LqYot6qOQW5iBbXwqZKpjJqdQYDLNSmXjn05UnNUFQvE/U+VSxE+f0NhMX3hq9PJYSW1TKLAV18XEVAd4ddpFdE5C+rewRAZm8taAf+gHd7aW0eY3dgNCXY=
+	t=1755610446; cv=none; b=emGs/2tTQ+091BBb9IqtIz9s7vQugulJQjI5XFl3IT7rxQecD0GyODGOYv2UuiB+EoM616Qs5k3KgWn3o5ofU/TWch+O2B9Nuoe9iLQu5fM8z8n9akKnMW69i8kekowbxDSx4GSO16bRSDW3Xle5j+GGr7RJ41umN0Gif3Ldy34=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1755608772; c=relaxed/simple;
-	bh=fQ7pXsQGa4WtfPifP7npJmZXx5WVfS/kepd7GCuUs/Q=;
-	h=From:Subject:To:Cc:Message-Id:Date:MIME-Version:Content-Type; b=pUtFzuZ7lv3Wl2Hkvf1TbOogZCoQ23K+vLa2AciH5mUjUX29/dnAugkypXXPBIPbSL5AqewwA7DtTJ9Daj3oytcjVZAZuvjIVtzKkd2grMmnQ9EQ3Kr7iF6h4itGbtaOHGfKcYNCgXOX+ggkPl7Pm8J9dSQUgl6i0nR+vGuRAcQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=vates.tech; spf=pass smtp.mailfrom=bounce.vates.tech; dkim=pass (2048-bit key) header.d=mandrillapp.com header.i=@mandrillapp.com header.b=bS/JjKH2; dkim=pass (2048-bit key) header.d=vates.tech header.i=yann.sionneau@vates.tech header.b=NIKFOyh3; arc=none smtp.client-ip=198.2.180.17
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=vates.tech
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=bounce.vates.tech
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=mandrillapp.com;
-	s=mte1; t=1755608770; x=1755878770;
-	bh=ynN0Q4f9z5yqLgyOgBZEkWAd9n0BYuRZiiXAJvoTa44=;
-	h=From:Subject:To:Cc:Message-Id:Feedback-ID:Date:MIME-Version:
-	 Content-Type:Content-Transfer-Encoding:CC:Date:Subject:From;
-	b=bS/JjKH2GML1An7acP76+uz4amYnvbmLOxB1oMOhSqdQyBHk9vx1xDcnDkn8DyUDn
-	 WqhRJbuxwnq+5G58E3NVnRz2aXopZJ7CHSI/Nn91roBxa6Gy/KtFr9mSoi8RDsZllo
-	 bc+L9SRScMjqTNd+5NpBXk6sQKQTKm8sYj8Qra3AbgvvdY+uMC8yoP9chIutc/VQbb
-	 pk57YuDLt2ciMQXBaxF1v9yUhVVu8TD18hTZ4lt9g/zVzHKgu8V6ffJvvQmgQTXNX1
-	 kgB6YDxPynROO/TgfXwaBGz6VlDaUeKqD93u9EKelvtyCS32OR/YlYdlE0Zu4LnFf7
-	 iNVXnI5DtXcdA==
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=vates.tech; s=mte1;
-	t=1755608770; x=1755869270; i=yann.sionneau@vates.tech;
-	bh=ynN0Q4f9z5yqLgyOgBZEkWAd9n0BYuRZiiXAJvoTa44=;
-	h=From:Subject:To:Cc:Message-Id:Feedback-ID:Date:MIME-Version:
-	 Content-Type:Content-Transfer-Encoding:CC:Date:Subject:From;
-	b=NIKFOyh3HXebCHPigI2O1vxPhfTk7W8IW1k0Ew+BzEckAwJNHON+DPqVWyg3bZCCx
-	 VSubSYFovNHrK36IzsUT+Cvk5sHzZNHOCEkLamK5Tg0YnoHQzCZ5L9JtVnDSoiuicN
-	 QCu/Coil/ADmVq+nrtIf9FB3lF5Qy//hcK/eiUQ1RMEvXQNn8GOZ8e6wwzFmRxvfhJ
-	 T6elhdH2ixCZCRtoGvKFNX/e6G/ctmdxZZkR6FUG9YW8hG3JzOlOL+DIRL9NWwYCBw
-	 Ldh8TWTBWOqYth8TLTy6ADuQ0yb+ln4QiU9OTOfNzCDZKuwvaUTJcDic9RcqShTUDf
-	 K/u2x2F0wOaBQ==
-Received: from pmta11.mandrill.prod.suw01.rsglab.com (localhost [127.0.0.1])
-	by mail180-17.suw31.mandrillapp.com (Mailchimp) with ESMTP id 4c5qb60LXPzRKLrN0
-	for <stable@vger.kernel.org>; Tue, 19 Aug 2025 13:06:10 +0000 (GMT)
-From: "Yann Sionneau" <yann.sionneau@vates.tech>
-Subject: =?utf-8?Q?[PATCH=205.4.y]=20ACPI:=20processor:=20idle:=20Check=20acpi=5Fbus=5Fget=5Fdevice=20return=20value?=
-Received: from [37.26.189.201] by mandrillapp.com id 0a4c7f8cc6aa47c7af1f0edcc658228f; Tue, 19 Aug 2025 13:06:10 +0000
-X-Mailer: git-send-email 2.43.0
-X-Bm-Disclaimer: Yes
-X-Bm-Milter-Handled: 4ffbd6c1-ee69-4e1b-aabd-f977039bd3e2
-X-Bm-Transport-Timestamp: 1755608768253
-To: stable@vger.kernel.org
-Cc: "Greg KH" <gregkh@linuxfoundation.org>, "Li Zhong" <floridsleeves@gmail.com>, "Rafael J . Wysocki" <rafael.j.wysocki@intel.com>, "Teddy Astie" <teddy.astie@vates.tech>, "Yann Sionneau" <yann.sionneau@vates.tech>, "Dillon C" <dchan@dchan.tech>
-Message-Id: <20250819130603.98467-1-yann.sionneau@vates.tech>
-X-Native-Encoded: 1
-X-Report-Abuse: =?UTF-8?Q?Please=20forward=20a=20copy=20of=20this=20message,=20including=20all=20headers,=20to=20abuse@mandrill.com.=20You=20can=20also=20report=20abuse=20here:=20https://mandrillapp.com/contact/abuse=3Fid=3D30504962.0a4c7f8cc6aa47c7af1f0edcc658228f?=
-X-Mandrill-User: md_30504962
-Feedback-ID: 30504962:30504962.20250819:md
-Date: Tue, 19 Aug 2025 13:06:10 +0000
+	s=arc-20240116; t=1755610446; c=relaxed/simple;
+	bh=MWXq9VOomp2DQvGtRoxuj8RooMO765vG+1jEaxttcbE=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=QIpMs0OOXDZTtB7OMrZ3y1786xvCFa8chxArhMCw3jZYcWptTMy3b10jtr/3Gyk/RydVxZ9gRNVIs2NX4pwGPk06dZla20gltXMV2iJp+OXxu/dayWEfZtyzgY0maVcHOjtmfBDxd/eYC1VLcYZ21vKGaV4OWaLZivntquCttrU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=googlemail.com; spf=pass smtp.mailfrom=googlemail.com; dkim=pass (2048-bit key) header.d=googlemail.com header.i=@googlemail.com header.b=INlLeRhW; arc=none smtp.client-ip=209.85.218.44
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=googlemail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=googlemail.com
+Received: by mail-ej1-f44.google.com with SMTP id a640c23a62f3a-afcb7347e09so864415166b.0;
+        Tue, 19 Aug 2025 06:34:04 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=googlemail.com; s=20230601; t=1755610443; x=1756215243; darn=vger.kernel.org;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=PMkS39Gi4zmwPHBP8zrSol7/0clLz5vuWWWUq0yrTRE=;
+        b=INlLeRhWGQk6A2zAfsnD+PvjqQ2xawanX8XAbXElfgAljKLCGdbsRV61PlRZv7ihp4
+         CemcUfKbZVPRTi62kYGgPDHk1xd6qME6FUfw4K+yINChBkDQBGR8KhuDv3Uv2A5Xv5+q
+         RhVoY7GtpFIiILkOoUZst7sJcdXuR7Ez0wPmtkRWonGq5zPH+bLsOipkgUyniDJACiXW
+         ER+650+G2tIYdXHDjiqbvYI7pA4pT8BURHNwMBSDx/jmGThx6Z674SEDv9sWCCY8LfNx
+         iXiEr8z3r2HsaghOky/jdFpYMCv19I4VSd4i1+xapbRkNX0eil0egjO0oTpA/c7pD61Q
+         R2gA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1755610443; x=1756215243;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=PMkS39Gi4zmwPHBP8zrSol7/0clLz5vuWWWUq0yrTRE=;
+        b=weTllvdsMdktzVrvv0dCZIry/rvbOJ1bypaSnemecgw+oxSti6xJBU+fyHgBjN4qAZ
+         /8DDE2tj63Sr8kc5XjvaFcLoS6jL+dgkENAVQpYrPetWSL5AJigs/ShclXdI9vUgCo1a
+         iFTayWkgjZI1Uyq+rHBwmIgSP83yDNCnoeBstqkx1R33xwTkImvWdM6TVbbrUi5fIFOn
+         734cG10v2oks22Kpb3NzFDwDg+l/SSTFCmsSzhuxttABgwygLLBuDhWfgx/iLIxR2kBd
+         qGUMRNOUuMI7fg4NFT/YfDJ3Ms8Q3qMzNamEwnNDwUqHF5NxIHkFCsOdrCkj9lsWzoIo
+         8U+w==
+X-Forwarded-Encrypted: i=1; AJvYcCVTUPqZ/gidfVGmJU6AogyIrZK65LhYRIlYJkFAbIGR7MlJkM4dW0N/cQwDhVYRCbN+325MmLl6A8g/Zjc=@vger.kernel.org, AJvYcCVsWtAcn3cUEPXG+Ecy8VzrgqxUz1hC9RlZNBuFj/PzhKQc0x6yTXxbVp/Ws0CAVMcjBU5z/C7J@vger.kernel.org
+X-Gm-Message-State: AOJu0YwDLcneWAGmrfcdtgIyy+luramzj1tUqhAR0KAila8iRmtJFbqc
+	YNWQxPYvo6oY6dIudaZskmlhG1av58eltJjmJyMP2LRTT2/NPfr9a7Y=
+X-Gm-Gg: ASbGnctVNRKPbQRzys+h1Oedfs80ULzSXHbGMPkMhU4vXDn+sCS3Lfjg5wHIR0TUmqe
+	kr2tvr5gF0M7t5n4ltxfJme2NSgAYzF5Jflf46wYm9YWKHMaphXbURtYsiEnJcYvvqFxe44TEpT
+	CcPYAJofDh3dnrZlYAGgehSmTLKYkOKhiQCtiLaQyP0kooOTNIsl1q/ycqO0WkpcG7rnauXzlzf
+	nhlckbbpQwjmojfR52bfT9g/nCF6caP9Julmm4CynSUbV1Lm4xVG/3IYQRZq86gO47mcy3aA4GY
+	0CNwwR7CmSqAdTx+2NNO+s9pJLcqlKGaoJnM096UmNYxtuM015TSq8O27w6JcFd8V8z9OSO1NQH
+	NBRQgP91CSAPKLcjJdHdt/9l6b09XKUNvNPkN8bKjWies3406Ez9BLmY+vjbowLvnKH14o0D/Tb
+	Gy
+X-Google-Smtp-Source: AGHT+IHqb65cxZhCI23Qs7ElnV2Fp1AewHXJ5M8S9mU/JU4c1+05mdgft4OeUeZc8+F+7RhCjRM65w==
+X-Received: by 2002:a17:907:9801:b0:af9:2f26:4f80 with SMTP id a640c23a62f3a-afddd1eb10bmr287721666b.46.1755610442504;
+        Tue, 19 Aug 2025 06:34:02 -0700 (PDT)
+Received: from [192.168.1.3] (p5b2ac4f3.dip0.t-ipconnect.de. [91.42.196.243])
+        by smtp.gmail.com with ESMTPSA id 4fb4d7f45d1cf-61a757b9b39sm1697593a12.48.2025.08.19.06.34.01
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Tue, 19 Aug 2025 06:34:01 -0700 (PDT)
+Message-ID: <ece58364-ba74-4182-90c0-4d9b63567684@googlemail.com>
+Date: Tue, 19 Aug 2025 15:34:00 +0200
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: 7bit
+User-Agent: Betterbird (Windows)
+Subject: Re: [PATCH 6.12 000/438] 6.12.43-rc2 review
+To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>, stable@vger.kernel.org
+Cc: patches@lists.linux.dev, linux-kernel@vger.kernel.org,
+ torvalds@linux-foundation.org, akpm@linux-foundation.org,
+ linux@roeck-us.net, shuah@kernel.org, patches@kernelci.org,
+ lkft-triage@lists.linaro.org, pavel@denx.de, jonathanh@nvidia.com,
+ f.fainelli@gmail.com, sudipm.mukherjee@gmail.com, srw@sladewatkins.net,
+ rwarsow@gmx.de, conor@kernel.org, hargar@microsoft.com, broonie@kernel.org,
+ achill@achill.org
+References: <20250819122820.553053307@linuxfoundation.org>
+Content-Language: de-DE
+From: Peter Schneider <pschneider1968@googlemail.com>
+In-Reply-To: <20250819122820.553053307@linuxfoundation.org>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
 
-From: Teddy Astie <teddy.astie@vates.tech>
+Am 19.08.2025 um 14:31 schrieb Greg Kroah-Hartman:
+> This is the start of the stable review cycle for the 6.12.43 release.
+> There are 438 patches in this series, all will be posted as a response
+> to this one.  If anyone has any issues with these being applied, please
+> let me know.
 
-[ Upstream commit 2437513a814b3e93bd02879740a8a06e52e2cf7d ]
+Just like rc1, rc2 builds, boots and works fine on my 2-socket Ivy Bridge Xeon E5-2697 v2 server. No dmesg oddities or 
+regressions found.
 
-Fix a potential NULL pointer dereferences if acpi_bus_get_device happens to fail.
-This is backported from commit 2437513a814b3 ("ACPI: processor: idle: Check acpi_fetch_acpi_dev() return value")
-This has been tested successfully by the reporter,
-see https://xcp-ng.org/forum/topic/10972/xcp-ng-8.3-lts-install-on-minisforum-ms-a2-7945hx
+Tested-by: Peter Schneider <pschneider1968@googlemail.com>
 
-Signed-off-by: Li Zhong <floridsleeves@gmail.com>
-Signed-off-by: Teddy Astie <teddy.astie@vates.tech>
-Signed-off-by: Yann Sionneau <yann.sionneau@vates.tech>
-Reported-by: Dillon C <dchan@dchan.tech>
-Tested-by: Dillon C <dchan@dchan.tech>
----
- drivers/acpi/processor_idle.c | 4 +++-
- 1 file changed, 3 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/acpi/processor_idle.c b/drivers/acpi/processor_idle.c
-index 92db8b0622b2..e6bba26caf3c 100644
---- a/drivers/acpi/processor_idle.c
-+++ b/drivers/acpi/processor_idle.c
-@@ -1228,7 +1228,9 @@ static int acpi_processor_get_lpi_info(struct acpi_processor *pr)
- 
- 	status = acpi_get_parent(handle, &pr_ahandle);
- 	while (ACPI_SUCCESS(status)) {
--		acpi_bus_get_device(pr_ahandle, &d);
-+		if (acpi_bus_get_device(pr_ahandle, &d))
-+			break;
-+
- 		handle = pr_ahandle;
- 
- 		if (strcmp(acpi_device_hid(d), ACPI_PROCESSOR_CONTAINER_HID))
+Beste Grüße,
+Peter Schneider
 
-base-commit: 04b7726c3cdd2fb4da040c2b898bcf405ed607bd
 -- 
-2.43.0
+Climb the mountain not to plant your flag, but to embrace the challenge,
+enjoy the air and behold the view. Climb it so you can see the world,
+not so the world can see you.                    -- David McCullough Jr.
 
-
-
-Yann Sionneau | Vates XCP-ng Developer
-
-XCP-ng & Xen Orchestra - Vates solutions
-
-web: https://vates.tech
-
+OpenPGP:  0xA3828BD796CCE11A8CADE8866E3A92C92C3FF244
+Download: https://www.peters-netzplatz.de/download/pschneider1968_pub.asc
+https://keys.mailvelope.com/pks/lookup?op=get&search=pschneider1968@googlemail.com
+https://keys.mailvelope.com/pks/lookup?op=get&search=pschneider1968@gmail.com
 
