@@ -1,50 +1,59 @@
-Return-Path: <stable+bounces-171691-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-171692-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id CD6E0B2B594
-	for <lists+stable@lfdr.de>; Tue, 19 Aug 2025 02:51:18 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 34365B2B59B
+	for <lists+stable@lfdr.de>; Tue, 19 Aug 2025 02:57:56 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id D116818A1F2B
-	for <lists+stable@lfdr.de>; Tue, 19 Aug 2025 00:50:32 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 02DDD5224A5
+	for <lists+stable@lfdr.de>; Tue, 19 Aug 2025 00:57:56 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 140BA194C86;
-	Tue, 19 Aug 2025 00:50:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5C9C48528E;
+	Tue, 19 Aug 2025 00:57:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="CjP8roxh"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="JWleU2mL"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A710B13D51E;
-	Tue, 19 Aug 2025 00:50:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1DA8B3451D0
+	for <stable@vger.kernel.org>; Tue, 19 Aug 2025 00:57:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755564605; cv=none; b=BO42qCoAoHBiYkQSNc6ENvPmsIjz6K9R/QvbkXWcAGg8useyJKc9Rym374cHQY9rdd8d8yb0KdzrfGfb56zjwpOfS1lgZa9bSEw6PnftHVZ3/sCXk6MSW6bBNzgy71mdzfyEpsxtVRjLn/valQ2XmD4olPEVaQhGT/a0MFBQCyA=
+	t=1755565071; cv=none; b=SOA9QHqOVBJZ3cRMFNbpSxSPTOGOR7j9zmU4pgvYylxLFR1Hof8mqtvnyy+mxdtGR54qoEmd9//mkBAauPR/Li5LNE0gdNzyWasG9jCP9LkkONUO7LNWeqOCv+jFeUN8YecUXA47p3k0mn/q8heTlpbwpGFBdLTC5P3vZtul5GE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1755564605; c=relaxed/simple;
-	bh=tTKzEG7zl836WnweAKXGMrMXHoRDuAgoB+5V9lt1V5s=;
-	h=Content-Type:MIME-Version:Subject:From:Message-Id:Date:References:
-	 In-Reply-To:To:Cc; b=LvmT++V+yJbscXfPddR5iCNl+ZcB59cdy1f8oO+2rdfaXvqcSv340Dq0dHxG1sxNh1woglr30LIbk2eRSYsiNUTkVjLcFpAKDz2JEEmbeHOFtp6MR3vk4oD95Q1+3v6mFHuXCwwsfP5ClxA4NKM0lmE7oSg4S+y3ikCwYbtAS9A=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=CjP8roxh; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 33CFEC4CEEB;
-	Tue, 19 Aug 2025 00:50:05 +0000 (UTC)
+	s=arc-20240116; t=1755565071; c=relaxed/simple;
+	bh=1e0CbNRQYt6uL6D39abTaM1QnClAvTmFRDSodArb3Yg=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=byOdKV1H7jv56ZLOmCqFKHnrpyqMUSqKDjLHZ20uSvQVeq8sZfbQn2HCc5SRZtHfh4jfaDEIilIxY3CcMMzMdyk8S+Dt7nFmTfMK08BQr40WKjsym5/WyjWoSmJncsC7SKFeJtRlIjW16MuIbagLPdEC0kQIw5OyvfDshvCDH1o=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=JWleU2mL; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 07604C4CEEB;
+	Tue, 19 Aug 2025 00:57:49 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1755564605;
-	bh=tTKzEG7zl836WnweAKXGMrMXHoRDuAgoB+5V9lt1V5s=;
-	h=Subject:From:Date:References:In-Reply-To:To:Cc:From;
-	b=CjP8roxhSRFFleZTXw0+0Rz4hU5ly8A8OmNCRxXUSKihGqVXpCbmbEopnF2vLXd9E
-	 9p9LFtYYkhBd2E+74Gb4yVLiZrfd4OJy/Ih4uM08zsokdGBsqGefyYYceNxdFZmkm5
-	 /leufJ/utKPYV+XNqJFzYj6TbEHF25ad4IgPcyDGE6IesI56AkZgv1LtkVpXp76MKt
-	 PKCO6aVv+/roD+njL3BTUvxOebaz9INeC3G5prE5LtxKBUokLg4LP/6Pg1WhfGd4h+
-	 vgWWFsaoq0InRPiHChBAqhsEZg64BKU9fCxPH/S6xvUXLJ/V7Ah45OxJOTltdr9p5D
-	 XqX2EX01VxIgw==
-Received: from [10.30.226.235] (localhost [IPv6:::1])
-	by aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org (Postfix) with ESMTP id 70E25383BF4E;
-	Tue, 19 Aug 2025 00:50:16 +0000 (UTC)
-Content-Type: text/plain; charset="utf-8"
+	s=k20201202; t=1755565070;
+	bh=1e0CbNRQYt6uL6D39abTaM1QnClAvTmFRDSodArb3Yg=;
+	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
+	b=JWleU2mLyYLxOziBZb6rsBUTmimHdiw2nmJTMV2bW3hivHwNV5j8C/APTPEg1Lolm
+	 We0YxY7Tn/VInHnLfq/C6VqPAjMLzo6R6r6Bm74vIOpRedKJtJCnIa0YEsAQhAP2HW
+	 hRyLaYeH1j+35uya4vkfzGZnAJ68j0ySOf7IqrhhTiHO4HioVQ0aobEDzsFBG9TezH
+	 YGlcp+sWLPee8FDPucLAp1g6Vc3ubJt/frURw1RBE0DiNTcGkMsgVJ1/B6Chd7DQRX
+	 rNUzoVVbX17tZFxMAZT6VuPUu1XCDLZPg5Y0NWJTLVFurzaPHlOioBFa0NJ6OfKLhh
+	 WjIUepUBMTKrQ==
+From: Sasha Levin <sashal@kernel.org>
+To: stable@vger.kernel.org
+Cc: Filipe Manana <fdmanana@suse.com>,
+	Daniel Vacek <neelx@suse.com>,
+	Qu Wenruo <wqu@suse.com>,
+	David Sterba <dsterba@suse.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.15.y] btrfs: abort transaction on unexpected eb generation at btrfs_copy_root()
+Date: Mon, 18 Aug 2025 20:57:48 -0400
+Message-ID: <20250819005748.234482-1-sashal@kernel.org>
+X-Mailer: git-send-email 2.50.1
+In-Reply-To: <2025081815-mothproof-embody-49e3@gregkh>
+References: <2025081815-mothproof-embody-49e3@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -52,62 +61,49 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Subject: Re: [PATCH net 0/8] mptcp: misc fixes for v6.17-rc
-From: patchwork-bot+netdevbpf@kernel.org
-Message-Id: 
- <175556461525.2964462.14246574540734347809.git-patchwork-notify@kernel.org>
-Date: Tue, 19 Aug 2025 00:50:15 +0000
-References: 
- <20250815-net-mptcp-misc-fixes-6-17-rc2-v1-0-521fe9957892@kernel.org>
-In-Reply-To: 
- <20250815-net-mptcp-misc-fixes-6-17-rc2-v1-0-521fe9957892@kernel.org>
-To: Matthieu Baerts <matttbe@kernel.org>
-Cc: mptcp@lists.linux.dev, martineau@kernel.org, geliang@kernel.org,
- davem@davemloft.net, edumazet@google.com, kuba@kernel.org, pabeni@redhat.com,
- horms@kernel.org, wujianguo@chinatelecom.cn, shuah@kernel.org,
- corbet@lwn.net, pizhenwei@bytedance.com, netdev@vger.kernel.org,
- linux-kernel@vger.kernel.org, linux-kselftest@vger.kernel.org,
- linux-doc@vger.kernel.org, cpaasch@openai.com, stable@vger.kernel.org,
- dreibh@simula.no
 
-Hello:
+From: Filipe Manana <fdmanana@suse.com>
 
-This series was applied to netdev/net.git (main)
-by Jakub Kicinski <kuba@kernel.org>:
+[ Upstream commit 33e8f24b52d2796b8cfb28c19a1a7dd6476323a8 ]
 
-On Fri, 15 Aug 2025 19:28:18 +0200 you wrote:
-> Here are various fixes:
-> 
-> - Patch 1: Better handling SKB extension allocation failures. A fix for
->   v5.7.
-> 
-> - Patches 2, 3: Avoid resetting MPTCP limits when flushing MPTCP
->   endpoints. With a validation in the selftests. Fixes for v5.7.
-> 
-> [...]
+If we find an unexpected generation for the extent buffer we are cloning
+at btrfs_copy_root(), we just WARN_ON() and don't error out and abort the
+transaction, meaning we allow to persist metadata with an unexpected
+generation. Instead of warning only, abort the transaction and return
+-EUCLEAN.
 
-Here is the summary with links:
-  - [net,1/8] mptcp: drop skb if MPTCP skb extension allocation fails
-    https://git.kernel.org/netdev/net/c/ccab04469798
-  - [net,2/8] mptcp: pm: kernel: flush: do not reset ADD_ADDR limit
-    https://git.kernel.org/netdev/net/c/68fc0f4b0d25
-  - [net,3/8] selftests: mptcp: pm: check flush doesn't reset limits
-    https://git.kernel.org/netdev/net/c/452690be7de2
-  - [net,4/8] mptcp: remove duplicate sk_reset_timer call
-    https://git.kernel.org/netdev/net/c/5d13349472ac
-  - [net,5/8] mptcp: disable add_addr retransmission when timeout is 0
-    https://git.kernel.org/netdev/net/c/f5ce0714623c
-  - [net,6/8] selftests: mptcp: disable add_addr retrans in endpoint_tests
-    https://git.kernel.org/netdev/net/c/f92199f551e6
-  - [net,7/8] selftests: mptcp: connect: fix C23 extension warning
-    https://git.kernel.org/netdev/net/c/2eefbed30d46
-  - [net,8/8] selftests: mptcp: sockopt: fix C23 extension warning
-    https://git.kernel.org/netdev/net/c/3259889fd3c0
+CC: stable@vger.kernel.org # 6.1+
+Reviewed-by: Daniel Vacek <neelx@suse.com>
+Reviewed-by: Qu Wenruo <wqu@suse.com>
+Signed-off-by: Filipe Manana <fdmanana@suse.com>
+Reviewed-by: David Sterba <dsterba@suse.com>
+Signed-off-by: David Sterba <dsterba@suse.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
+---
+ fs/btrfs/ctree.c | 9 ++++++++-
+ 1 file changed, 8 insertions(+), 1 deletion(-)
 
-You are awesome, thank you!
+diff --git a/fs/btrfs/ctree.c b/fs/btrfs/ctree.c
+index 648531fe0900..df06c9c3d406 100644
+--- a/fs/btrfs/ctree.c
++++ b/fs/btrfs/ctree.c
+@@ -283,7 +283,14 @@ int btrfs_copy_root(struct btrfs_trans_handle *trans,
+ 
+ 	write_extent_buffer_fsid(cow, fs_info->fs_devices->metadata_uuid);
+ 
+-	WARN_ON(btrfs_header_generation(buf) > trans->transid);
++	if (unlikely(btrfs_header_generation(buf) > trans->transid)) {
++		btrfs_tree_unlock(cow);
++		free_extent_buffer(cow);
++		ret = -EUCLEAN;
++		btrfs_abort_transaction(trans, ret);
++		return ret;
++	}
++
+ 	if (new_root_objectid == BTRFS_TREE_RELOC_OBJECTID)
+ 		ret = btrfs_inc_ref(trans, root, cow, 1);
+ 	else
 -- 
-Deet-doot-dot, I am a bot.
-https://korg.docs.kernel.org/patchwork/pwbot.html
-
+2.50.1
 
 
