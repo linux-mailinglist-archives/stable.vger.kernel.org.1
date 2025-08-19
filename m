@@ -1,61 +1,57 @@
-Return-Path: <stable+bounces-171770-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-171771-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 20E1AB2C245
-	for <lists+stable@lfdr.de>; Tue, 19 Aug 2025 13:54:12 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 365B1B2C242
+	for <lists+stable@lfdr.de>; Tue, 19 Aug 2025 13:53:56 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id B67B91895140
-	for <lists+stable@lfdr.de>; Tue, 19 Aug 2025 11:52:58 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 6F3707A961E
+	for <lists+stable@lfdr.de>; Tue, 19 Aug 2025 11:52:21 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id BFB9932C32F;
-	Tue, 19 Aug 2025 11:52:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1E84B32C304;
+	Tue, 19 Aug 2025 11:53:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="ODaCNFuF"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Ws1+lEnD"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7C6A332A3DE
-	for <stable@vger.kernel.org>; Tue, 19 Aug 2025 11:52:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D1BBC322A3D
+	for <stable@vger.kernel.org>; Tue, 19 Aug 2025 11:53:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755604347; cv=none; b=nweJUIjvMjDIGeH06UKpUprNbB+bz3IAZYAoKezLWHyOwshTIKEXggbvtHmBNpZmaaRfMwGDSXhyhG4Eq3bUJiakRD8t0P90a4bmDh0AcsW6CA3cGZKWbyi7toQ8iwmJhuEXPraRilDATp3L6R/ziXhgpMWqvlmW9O7n2X18UxQ=
+	t=1755604428; cv=none; b=PmwFZUaWcrB6RH5Cuh3ZYkCEvdjyVhfkWWghK6n8bsF9Qpvo7gGzBNuoWMqxw1hahQ+lzKJbE7lc5lfOfKNX8pkzLgd92r9Klwve0awTDmuwb2R4TIQrxvzt+Ngc0LY/Ugu67dXrgkF7QNtuIAp5+6IPqv5vdkXjqWWQQVVYanE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1755604347; c=relaxed/simple;
-	bh=fn52jAL4GaE3j+WnAeYqINdjD4ysPlChdL9DN111pSk=;
+	s=arc-20240116; t=1755604428; c=relaxed/simple;
+	bh=/Pc6drBr0kRynDJ3i4gnaxL/9jZTt5fSoHYvfPFoSww=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=booy01e7KgE9wLlf2pTVtb6DIl9/EF8YAbtfJ/dq7Tt/lkzdPv4duiYwyyzXD1CuBH/mV2AQ7RiVhcCQdNxkuh/vVNMi924OvxkDBC+in1ywOQ6r92Xt9X3k41mDql/1ECHvaQgGVmE+ab6FnsMLHaO/UWQfI1WO5gKOPkdX7bE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=ODaCNFuF; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4B4B8C116D0;
-	Tue, 19 Aug 2025 11:52:26 +0000 (UTC)
+	 MIME-Version; b=YKPeFRvNU4k4vLTRyxdFsYQ9rYqOogJmvBUUWiGKtM/mCW7M9CkrI5b4r8XzMOWCOSwY203GVQCktytn1p3Q05of9Fv694Mj2VdfLZnMrMaHewsnW06b8/7asUkFDh0VZ4HHIkoUXpIZpiol8djnrlqAW4olIuCoJBrSE05pZj4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Ws1+lEnD; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id EDF43C4CEF1;
+	Tue, 19 Aug 2025 11:53:47 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1755604347;
-	bh=fn52jAL4GaE3j+WnAeYqINdjD4ysPlChdL9DN111pSk=;
+	s=k20201202; t=1755604428;
+	bh=/Pc6drBr0kRynDJ3i4gnaxL/9jZTt5fSoHYvfPFoSww=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=ODaCNFuF9DNAUnWm7Wfc1TvZ5ZNmQQFucl5E9kcWJTTn10m6P75xYulX8eLYDONXt
-	 lptE41sgaYZ6DKLLCqsJ4FyHilH7ajhmjd3+gewbkbq6BRMebJLmDnH+ySBc0R2bd0
-	 6eFA98nQ1BtZwFsJ/fQglzfzgPCtgq45vSvgMGyWVu8LPbW/UistldBAoEb+6J8pa+
-	 UQLUoAkF9zOEUVdIji50Agup4vuZ71RamOV6isvo5S+r0tX1kMR2e0DXHOnTGLzcpN
-	 cb+qoTPnNO+H6o0sPRZDbZO8AlRRx1KXMgWEz3pXGpk1aEdBeSPA8R7PTusZwllXEv
-	 dzacZRxxOWOxw==
+	b=Ws1+lEnDqWCJ9xItZxHFSzErR27P1vPqhkLyZ6Lguebo1whiNvdCVwyV4UYhlALmz
+	 GosQgtMWZUoITFSEO6tUnJVmAxrmemOehLD8pUJ/Bsd8H7wSLOvbzSJbpnhqxQ6g9K
+	 MXdqLHCJXq0pZN4tNOcq4vB1MCmPMVDPUIRNyQkndBHlItlpYc45ALnUIVmCBiwbbP
+	 gvg6+61esREWfBJgQZafo/c01WiAcRILLjtCzDqIZ0ONxcyK5P9v5TAst/x/A2KsZq
+	 hxn7zv9swyRf6uIDk5ak/p2GjKz3YsVROL/iU0IMYx4uBXS62IVVupMI9RQnTnYHPz
+	 twp7jUbkiWrTQ==
 From: Sasha Levin <sashal@kernel.org>
 To: stable@vger.kernel.org
-Cc: Davide Caratti <dcaratti@redhat.com>,
-	Li Shuang <shuali@redhat.com>,
-	Petr Machata <petrm@nvidia.com>,
-	Ivan Vecera <ivecera@redhat.com>,
+Cc: Haiyang Zhang <haiyangz@microsoft.com>,
 	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1.y 2/2] net/sched: ets: use old 'nbands' while purging unused classes
-Date: Tue, 19 Aug 2025 07:52:23 -0400
-Message-ID: <20250819115223.446888-2-sashal@kernel.org>
+Subject: [PATCH 5.15.y] hv_netvsc: Fix panic during namespace deletion with VF
+Date: Tue, 19 Aug 2025 07:53:45 -0400
+Message-ID: <20250819115346.448012-1-sashal@kernel.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250819115223.446888-1-sashal@kernel.org>
-References: <2025081855-silicon-oops-12df@gregkh>
- <20250819115223.446888-1-sashal@kernel.org>
+In-Reply-To: <2025081827-quicksand-exposure-0dd9@gregkh>
+References: <2025081827-quicksand-exposure-0dd9@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -64,117 +60,149 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-From: Davide Caratti <dcaratti@redhat.com>
+From: Haiyang Zhang <haiyangz@microsoft.com>
 
-[ Upstream commit 87c6efc5ce9c126ae4a781bc04504b83780e3650 ]
+[ Upstream commit 33caa208dba6fa639e8a92fd0c8320b652e5550c ]
 
-Shuang reported sch_ets test-case [1] crashing in ets_class_qlen_notify()
-after recent changes from Lion [2]. The problem is: in ets_qdisc_change()
-we purge unused DWRR queues; the value of 'q->nbands' is the new one, and
-the cleanup should be done with the old one. The problem is here since my
-first attempts to fix ets_qdisc_change(), but it surfaced again after the
-recent qdisc len accounting fixes. Fix it purging idle DWRR queues before
-assigning a new value of 'q->nbands', so that all purge operations find a
-consistent configuration:
+The existing code move the VF NIC to new namespace when NETDEV_REGISTER is
+received on netvsc NIC. During deletion of the namespace,
+default_device_exit_batch() >> default_device_exit_net() is called. When
+netvsc NIC is moved back and registered to the default namespace, it
+automatically brings VF NIC back to the default namespace. This will cause
+the default_device_exit_net() >> for_each_netdev_safe loop unable to detect
+the list end, and hit NULL ptr:
 
- - old 'q->nbands' because it's needed by ets_class_find()
- - old 'q->nstrict' because it's needed by ets_class_is_strict()
+[  231.449420] mana 7870:00:00.0 enP30832s1: Moved VF to namespace with: eth0
+[  231.449656] BUG: kernel NULL pointer dereference, address: 0000000000000010
+[  231.450246] #PF: supervisor read access in kernel mode
+[  231.450579] #PF: error_code(0x0000) - not-present page
+[  231.450916] PGD 17b8a8067 P4D 0
+[  231.451163] Oops: Oops: 0000 [#1] SMP NOPTI
+[  231.451450] CPU: 82 UID: 0 PID: 1394 Comm: kworker/u768:1 Not tainted 6.16.0-rc4+ #3 VOLUNTARY
+[  231.452042] Hardware name: Microsoft Corporation Virtual Machine/Virtual Machine, BIOS Hyper-V UEFI Release v4.1 11/21/2024
+[  231.452692] Workqueue: netns cleanup_net
+[  231.452947] RIP: 0010:default_device_exit_batch+0x16c/0x3f0
+[  231.453326] Code: c0 0c f5 b3 e8 d5 db fe ff 48 85 c0 74 15 48 c7 c2 f8 fd ca b2 be 10 00 00 00 48 8d 7d c0 e8 7b 77 25 00 49 8b 86 28 01 00 00 <48> 8b 50 10 4c 8b 2a 4c 8d 62 f0 49 83 ed 10 4c 39 e0 0f 84 d6 00
+[  231.454294] RSP: 0018:ff75fc7c9bf9fd00 EFLAGS: 00010246
+[  231.454610] RAX: 0000000000000000 RBX: 0000000000000002 RCX: 61c8864680b583eb
+[  231.455094] RDX: ff1fa9f71462d800 RSI: ff75fc7c9bf9fd38 RDI: 0000000030766564
+[  231.455686] RBP: ff75fc7c9bf9fd78 R08: 0000000000000000 R09: 0000000000000000
+[  231.456126] R10: 0000000000000001 R11: 0000000000000004 R12: ff1fa9f70088e340
+[  231.456621] R13: ff1fa9f70088e340 R14: ffffffffb3f50c20 R15: ff1fa9f7103e6340
+[  231.457161] FS:  0000000000000000(0000) GS:ff1faa6783a08000(0000) knlGS:0000000000000000
+[  231.457707] CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
+[  231.458031] CR2: 0000000000000010 CR3: 0000000179ab2006 CR4: 0000000000b73ef0
+[  231.458434] Call Trace:
+[  231.458600]  <TASK>
+[  231.458777]  ops_undo_list+0x100/0x220
+[  231.459015]  cleanup_net+0x1b8/0x300
+[  231.459285]  process_one_work+0x184/0x340
 
- BUG: kernel NULL pointer dereference, address: 0000000000000000
- #PF: supervisor read access in kernel mode
- #PF: error_code(0x0000) - not-present page
- PGD 0 P4D 0
- Oops: Oops: 0000 [#1] SMP NOPTI
- CPU: 62 UID: 0 PID: 39457 Comm: tc Kdump: loaded Not tainted 6.12.0-116.el10.x86_64 #1 PREEMPT(voluntary)
- Hardware name: Dell Inc. PowerEdge R640/06DKY5, BIOS 2.12.2 07/09/2021
- RIP: 0010:__list_del_entry_valid_or_report+0x4/0x80
- Code: ff 4c 39 c7 0f 84 39 19 8e ff b8 01 00 00 00 c3 cc cc cc cc 66 90 90 90 90 90 90 90 90 90 90 90 90 90 90 90 90 90 f3 0f 1e fa <48> 8b 17 48 8b 4f 08 48 85 d2 0f 84 56 19 8e ff 48 85 c9 0f 84 ab
- RSP: 0018:ffffba186009f400 EFLAGS: 00010202
- RAX: 00000000000000d6 RBX: 0000000000000000 RCX: 0000000000000004
- RDX: ffff9f0fa29b69c0 RSI: 0000000000000000 RDI: 0000000000000000
- RBP: ffffffffc12c2400 R08: 0000000000000008 R09: 0000000000000004
- R10: ffffffffffffffff R11: 0000000000000004 R12: 0000000000000000
- R13: ffff9f0f8cfe0000 R14: 0000000000100005 R15: 0000000000000000
- FS:  00007f2154f37480(0000) GS:ffff9f269c1c0000(0000) knlGS:0000000000000000
- CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
- CR2: 0000000000000000 CR3: 00000001530be001 CR4: 00000000007726f0
- DR0: 0000000000000000 DR1: 0000000000000000 DR2: 0000000000000000
- DR3: 0000000000000000 DR6: 00000000fffe0ff0 DR7: 0000000000000400
- PKRU: 55555554
- Call Trace:
-  <TASK>
-  ets_class_qlen_notify+0x65/0x90 [sch_ets]
-  qdisc_tree_reduce_backlog+0x74/0x110
-  ets_qdisc_change+0x630/0xa40 [sch_ets]
-  __tc_modify_qdisc.constprop.0+0x216/0x7f0
-  tc_modify_qdisc+0x7c/0x120
-  rtnetlink_rcv_msg+0x145/0x3f0
-  netlink_rcv_skb+0x53/0x100
-  netlink_unicast+0x245/0x390
-  netlink_sendmsg+0x21b/0x470
-  ____sys_sendmsg+0x39d/0x3d0
-  ___sys_sendmsg+0x9a/0xe0
-  __sys_sendmsg+0x7a/0xd0
-  do_syscall_64+0x7d/0x160
-  entry_SYSCALL_64_after_hwframe+0x76/0x7e
- RIP: 0033:0x7f2155114084
- Code: 89 02 b8 ff ff ff ff eb bb 66 2e 0f 1f 84 00 00 00 00 00 0f 1f 00 f3 0f 1e fa 80 3d 25 f0 0c 00 00 74 13 b8 2e 00 00 00 0f 05 <48> 3d 00 f0 ff ff 77 54 c3 0f 1f 00 48 83 ec 28 89 54 24 1c 48 89
- RSP: 002b:00007fff1fd7a988 EFLAGS: 00000202 ORIG_RAX: 000000000000002e
- RAX: ffffffffffffffda RBX: 0000560ec063e5e0 RCX: 00007f2155114084
- RDX: 0000000000000000 RSI: 00007fff1fd7a9f0 RDI: 0000000000000003
- RBP: 00007fff1fd7aa60 R08: 0000000000000010 R09: 000000000000003f
- R10: 0000560ee9b3a010 R11: 0000000000000202 R12: 00007fff1fd7aae0
- R13: 000000006891ccde R14: 0000560ec063e5e0 R15: 00007fff1fd7aad0
-  </TASK>
-
- [1] https://lore.kernel.org/netdev/e08c7f4a6882f260011909a868311c6e9b54f3e4.1639153474.git.dcaratti@redhat.com/
- [2] https://lore.kernel.org/netdev/d912cbd7-193b-4269-9857-525bee8bbb6a@gmail.com/
+To fix it, move the ns change to a workqueue, and take rtnl_lock to avoid
+changing the netdev list when default_device_exit_net() is using it.
 
 Cc: stable@vger.kernel.org
-Fixes: 103406b38c60 ("net/sched: Always pass notifications when child class becomes empty")
-Fixes: c062f2a0b04d ("net/sched: sch_ets: don't remove idle classes from the round-robin list")
-Fixes: dcc68b4d8084 ("net: sch_ets: Add a new Qdisc")
-Reported-by: Li Shuang <shuali@redhat.com>
-Closes: https://issues.redhat.com/browse/RHEL-108026
-Reviewed-by: Petr Machata <petrm@nvidia.com>
-Co-developed-by: Ivan Vecera <ivecera@redhat.com>
-Signed-off-by: Ivan Vecera <ivecera@redhat.com>
-Signed-off-by: Davide Caratti <dcaratti@redhat.com>
-Link: https://patch.msgid.link/7928ff6d17db47a2ae7cc205c44777b1f1950545.1755016081.git.dcaratti@redhat.com
+Fixes: 4c262801ea60 ("hv_netvsc: Fix VF namespace also in synthetic NIC NETDEV_REGISTER event")
+Signed-off-by: Haiyang Zhang <haiyangz@microsoft.com>
+Link: https://patch.msgid.link/1754511711-11188-1-git-send-email-haiyangz@linux.microsoft.com
 Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/sched/sch_ets.c | 11 ++++++-----
- 1 file changed, 6 insertions(+), 5 deletions(-)
+ drivers/net/hyperv/hyperv_net.h |  3 +++
+ drivers/net/hyperv/netvsc_drv.c | 29 ++++++++++++++++++++++++++++-
+ 2 files changed, 31 insertions(+), 1 deletion(-)
 
-diff --git a/net/sched/sch_ets.c b/net/sched/sch_ets.c
-index 93469bc337d6..9873f4ae90c3 100644
---- a/net/sched/sch_ets.c
-+++ b/net/sched/sch_ets.c
-@@ -651,6 +651,12 @@ static int ets_qdisc_change(struct Qdisc *sch, struct nlattr *opt,
+diff --git a/drivers/net/hyperv/hyperv_net.h b/drivers/net/hyperv/hyperv_net.h
+index aab6cb5163fe..cfb6c5989154 100644
+--- a/drivers/net/hyperv/hyperv_net.h
++++ b/drivers/net/hyperv/hyperv_net.h
+@@ -1032,6 +1032,7 @@ struct net_device_context {
+ 	struct net_device __rcu *vf_netdev;
+ 	struct netvsc_vf_pcpu_stats __percpu *vf_stats;
+ 	struct delayed_work vf_takeover;
++	struct delayed_work vfns_work;
  
- 	sch_tree_lock(sch);
+ 	/* 1: allocated, serial number is valid. 0: not allocated */
+ 	u32 vf_alloc;
+@@ -1046,6 +1047,8 @@ struct net_device_context {
+ 	struct netvsc_device_info *saved_netvsc_dev_info;
+ };
  
-+	for (i = nbands; i < oldbands; i++) {
-+		if (i >= q->nstrict && q->classes[i].qdisc->q.qlen)
-+			list_del_init(&q->classes[i].alist);
-+		qdisc_purge_queue(q->classes[i].qdisc);
++void netvsc_vfns_work(struct work_struct *w);
++
+ /* Per channel data */
+ struct netvsc_channel {
+ 	struct vmbus_channel *channel;
+diff --git a/drivers/net/hyperv/netvsc_drv.c b/drivers/net/hyperv/netvsc_drv.c
+index ff5b14210aef..01c0e9f4a68b 100644
+--- a/drivers/net/hyperv/netvsc_drv.c
++++ b/drivers/net/hyperv/netvsc_drv.c
+@@ -2565,6 +2565,7 @@ static int netvsc_probe(struct hv_device *dev,
+ 	spin_lock_init(&net_device_ctx->lock);
+ 	INIT_LIST_HEAD(&net_device_ctx->reconfig_events);
+ 	INIT_DELAYED_WORK(&net_device_ctx->vf_takeover, netvsc_vf_setup);
++	INIT_DELAYED_WORK(&net_device_ctx->vfns_work, netvsc_vfns_work);
+ 
+ 	net_device_ctx->vf_stats
+ 		= netdev_alloc_pcpu_stats(struct netvsc_vf_pcpu_stats);
+@@ -2703,6 +2704,8 @@ static int netvsc_remove(struct hv_device *dev)
+ 	cancel_delayed_work_sync(&ndev_ctx->dwork);
+ 
+ 	rtnl_lock();
++	cancel_delayed_work_sync(&ndev_ctx->vfns_work);
++
+ 	nvdev = rtnl_dereference(ndev_ctx->nvdev);
+ 	if (nvdev) {
+ 		cancel_work_sync(&nvdev->subchan_work);
+@@ -2745,6 +2748,7 @@ static int netvsc_suspend(struct hv_device *dev)
+ 	cancel_delayed_work_sync(&ndev_ctx->dwork);
+ 
+ 	rtnl_lock();
++	cancel_delayed_work_sync(&ndev_ctx->vfns_work);
+ 
+ 	nvdev = rtnl_dereference(ndev_ctx->nvdev);
+ 	if (nvdev == NULL) {
+@@ -2838,6 +2842,27 @@ static void netvsc_event_set_vf_ns(struct net_device *ndev)
+ 	}
+ }
+ 
++void netvsc_vfns_work(struct work_struct *w)
++{
++	struct net_device_context *ndev_ctx =
++		container_of(w, struct net_device_context, vfns_work.work);
++	struct net_device *ndev;
++
++	if (!rtnl_trylock()) {
++		schedule_delayed_work(&ndev_ctx->vfns_work, 1);
++		return;
 +	}
 +
- 	WRITE_ONCE(q->nbands, nbands);
- 	for (i = nstrict; i < q->nstrict; i++) {
- 		if (q->classes[i].qdisc->q.qlen) {
-@@ -658,11 +664,6 @@ static int ets_qdisc_change(struct Qdisc *sch, struct nlattr *opt,
- 			q->classes[i].deficit = quanta[i];
- 		}
++	ndev = hv_get_drvdata(ndev_ctx->device_ctx);
++	if (!ndev)
++		goto out;
++
++	netvsc_event_set_vf_ns(ndev);
++
++out:
++	rtnl_unlock();
++}
++
+ /*
+  * On Hyper-V, every VF interface is matched with a corresponding
+  * synthetic interface. The synthetic interface is presented first
+@@ -2848,10 +2873,12 @@ static int netvsc_netdev_event(struct notifier_block *this,
+ 			       unsigned long event, void *ptr)
+ {
+ 	struct net_device *event_dev = netdev_notifier_info_to_dev(ptr);
++	struct net_device_context *ndev_ctx;
+ 	int ret = 0;
+ 
+ 	if (event_dev->netdev_ops == &device_ops && event == NETDEV_REGISTER) {
+-		netvsc_event_set_vf_ns(event_dev);
++		ndev_ctx = netdev_priv(event_dev);
++		schedule_delayed_work(&ndev_ctx->vfns_work, 0);
+ 		return NOTIFY_DONE;
  	}
--	for (i = q->nbands; i < oldbands; i++) {
--		if (i >= q->nstrict && q->classes[i].qdisc->q.qlen)
--			list_del_init(&q->classes[i].alist);
--		qdisc_purge_queue(q->classes[i].qdisc);
--	}
- 	WRITE_ONCE(q->nstrict, nstrict);
- 	memcpy(q->prio2band, priomap, sizeof(priomap));
  
 -- 
 2.50.1
