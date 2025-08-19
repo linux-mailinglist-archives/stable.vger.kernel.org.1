@@ -1,59 +1,58 @@
-Return-Path: <stable+bounces-171725-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-171726-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id D2CD9B2B6DD
-	for <lists+stable@lfdr.de>; Tue, 19 Aug 2025 04:18:50 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5C1C4B2B6EF
+	for <lists+stable@lfdr.de>; Tue, 19 Aug 2025 04:28:03 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 7456B1960ED6
-	for <lists+stable@lfdr.de>; Tue, 19 Aug 2025 02:19:10 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 840884E62AD
+	for <lists+stable@lfdr.de>; Tue, 19 Aug 2025 02:28:00 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B195622F14C;
-	Tue, 19 Aug 2025 02:18:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7B23A287507;
+	Tue, 19 Aug 2025 02:27:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="d8bAjiHj"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="N26WiVVf"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 72B384A35
-	for <stable@vger.kernel.org>; Tue, 19 Aug 2025 02:18:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3A6CB18E3F
+	for <stable@vger.kernel.org>; Tue, 19 Aug 2025 02:27:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755569926; cv=none; b=VVMZZjp9uYdRx/1O6KKxZrgEKK0+pThONMou+7Sm/BqdigIbc/23BKOPmNqvTjbwGApJ7LQEtE/B5ffvyZgZ7UY9szFcl8P7W5jdI0xtSeas+KXXFEHkvGn6TmNRFQXb25NWyI/weyyjcj3YsVXW+tzyzzF6+znWisFVVNIkJiY=
+	t=1755570477; cv=none; b=bPRc6Puqbf/T5/KKOqC4oNzN5+5iCKxmej8/aPLHjO8U+1Skk3QzX5UqIeghUZSL5xb7ashT5h+NA9i4x9pXE8NSqRpvE1dv8ShihvIIFafN8lamiO7RbePPyRFz2Z3t2BfXTCQS4BByrE1qfAPISLLUDwayFyoPNTeCZAS8ytg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1755569926; c=relaxed/simple;
-	bh=EaueBH7i7n8PUNBQ8jZOxBS0xErf5iYZirSzP0Y3Q5A=;
+	s=arc-20240116; t=1755570477; c=relaxed/simple;
+	bh=S8f6syNGM48MTbzDIStmsPa5OkGjvG9krliZvDLVqBg=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=nNvhOJPMHZFEW06HRGpo4j1w8xuAlwo4m/Lg4lQqgWgtrLy899anDDIYN9HUJalzoKYemTp5NDUkzz7m5mBecWuVpwkAtFFbN4zTHUMDrujovDWesAVLlCdcYkaltZLDcHgWEPjIQ3xo6bycgGmkBdxcWYauHEkMvUBvcxVWIYY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=d8bAjiHj; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 94A0DC4CEEB;
-	Tue, 19 Aug 2025 02:18:45 +0000 (UTC)
+	 MIME-Version; b=omb962S6V7bVAuoHFPU2K/twqhKh8VDnIh3Z1vvtzdiJlDXx2BW3UkIyIL+/t41hsjnKRhYyksR3Ep3NaZgH/+dr+n4S9T09JbIyLvUVhOzULuzKW+fUBosL5skUQFWk3FMnukdEg8ZW5SzCF9mNEsJa9HflTJLKPLeA7EU6TJ0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=N26WiVVf; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 23E43C4CEED;
+	Tue, 19 Aug 2025 02:27:56 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1755569926;
-	bh=EaueBH7i7n8PUNBQ8jZOxBS0xErf5iYZirSzP0Y3Q5A=;
+	s=k20201202; t=1755570476;
+	bh=S8f6syNGM48MTbzDIStmsPa5OkGjvG9krliZvDLVqBg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=d8bAjiHjc6e0sDZeP6cik1PSPCq2RxTCdKW/dlGjLaXJ+6ZZ9LVJMI88QZiNCAZD6
-	 MtdukqfN9pv4l3+CzIWdtgnNSz5kumKgnoYbMO9luwoGLtInOkTT8Q67iSoZ3+5ai3
-	 5Cjv0H0RRC5vthfEYIhiNEeWyB25KWl+bLWwV4yreFvRmQXTDV/pzZECGVy+Ztv69K
-	 frCcih0M3QDZ3XtF9pM/uDQevi8F8zPSR5Q+QVTptP6KNyuFv0c2OwandJdIJDkfuN
-	 41nZONut5Sxc9++HxTK3+/gaQfG1yLZwKaM7pUE+vNl7UjW9Mwym/BVeArTa9Vi4U2
-	 eXPb81XvbN2lQ==
+	b=N26WiVVfz+Zyj/5XpwNA+SMo6kPOj2jpOrf9kuygrl08Sd14nGb0PD2cphWUo/i4+
+	 zNMNd933oxHh4h+f7rf3kUgefKmKH+BrnOJWdbHnO7P7fQ/rDMvvyMLUy3fplJR6ny
+	 84fPAW2WykymKRZ1lmLxxUfP6H74zdTUMhdoFhGwgx5mOJK2GNNOAYSvoL/pQ619Fh
+	 llUlfNhYjZbEXQnzP0tqu4jmmdVi6UCe2Td3iINQT8wZ62i8xvKO/spXF2WkZ4LRE1
+	 1RvmiHfDL+D9psJl3kXX3NhWGY2k15Foh0Wz42mxiwUuPItF/MB7wGABMYbj/sX/Ps
+	 AzHQJPzBVY6Jw==
 From: Sasha Levin <sashal@kernel.org>
 To: stable@vger.kernel.org
-Cc: Christoph Hellwig <hch@lst.de>,
-	cen zhang <zzzccc427@gmail.com>,
-	"Darrick J. Wong" <djwong@kernel.org>,
-	Carlos Maiolino <cem@kernel.org>,
+Cc: Boris Burkov <boris@bur.io>,
+	David Sterba <dsterba@suse.com>,
+	Filipe Manana <fdmanana@suse.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12.y] xfs: fully decouple XFS_IBULK* flags from XFS_IWALK* flags
-Date: Mon, 18 Aug 2025 22:18:43 -0400
-Message-ID: <20250819021843.277367-1-sashal@kernel.org>
+Subject: [PATCH 6.6.y 1/2] btrfs: fix ssd_spread overallocation
+Date: Mon, 18 Aug 2025 22:27:52 -0400
+Message-ID: <20250819022753.281349-1-sashal@kernel.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <2025081858-issuing-conclude-4ff3@gregkh>
-References: <2025081858-issuing-conclude-4ff3@gregkh>
+In-Reply-To: <2025081832-unearned-monopoly-13b1@gregkh>
+References: <2025081832-unearned-monopoly-13b1@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -62,58 +61,137 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-From: Christoph Hellwig <hch@lst.de>
+From: Boris Burkov <boris@bur.io>
 
-[ Upstream commit d2845519b0723c5d5a0266cbf410495f9b8fd65c ]
+[ Upstream commit 807d9023e75fc20bfd6dd2ac0408ce4af53f1648 ]
 
-Fix up xfs_inumbers to now pass in the XFS_IBULK* flags into the flags
-argument to xfs_inobt_walk, which expects the XFS_IWALK* flags.
+If the ssd_spread mount option is enabled, then we run the so called
+clustered allocator for data block groups. In practice, this results in
+creating a btrfs_free_cluster which caches a block_group and borrows its
+free extents for allocation.
 
-Currently passing the wrong flags works for non-debug builds because
-the only XFS_IWALK* flag has the same encoding as the corresponding
-XFS_IBULK* flag, but in debug builds it can trigger an assert that no
-incorrect flag is passed.  Instead just extra the relevant flag.
+Since the introduction of allocation size classes in 6.1, there has been
+a bug in the interaction between that feature and ssd_spread.
+find_free_extent() has a number of nested loops. The loop going over the
+allocation stages, stored in ffe_ctl->loop and managed by
+find_free_extent_update_loop(), the loop over the raid levels, and the
+loop over all the block_groups in a space_info. The size class feature
+relies on the block_group loop to ensure it gets a chance to see a
+block_group of a given size class.  However, the clustered allocator
+uses the cached cluster block_group and breaks that loop. Each call to
+do_allocation() will really just go back to the same cached block_group.
+Normally, this is OK, as the allocation either succeeds and we don't
+want to loop any more or it fails, and we clear the cluster and return
+its space to the block_group.
 
-Fixes: 5b35d922c52798 ("xfs: Decouple XFS_IBULK flags from XFS_IWALK flags")
-Cc: <stable@vger.kernel.org> # v5.19
-Reported-by: cen zhang <zzzccc427@gmail.com>
-Signed-off-by: Christoph Hellwig <hch@lst.de>
-Reviewed-by: Darrick J. Wong <djwong@kernel.org>
-Signed-off-by: Carlos Maiolino <cem@kernel.org>
+But with size classes, the allocation can succeed, then later fail,
+outside of do_allocation() due to size class mismatch. That latter
+failure is not properly handled due to the highly complex multi loop
+logic. The result is a painful loop where we continue to allocate the
+same num_bytes from the cluster in a tight loop until it fails and
+releases the cluster and lets us try a new block_group. But by then, we
+have skipped great swaths of the available block_groups and are likely
+to fail to allocate, looping the outer loop. In pathological cases like
+the reproducer below, the cached block_group is often the very last one,
+in which case we don't perform this tight bg loop but instead rip
+through the ffe stages to LOOP_CHUNK_ALLOC and allocate a chunk, which
+is now the last one, and we enter the tight inner loop until an
+allocation failure. Then allocation succeeds on the final block_group
+and if the next allocation is a size mismatch, the exact same thing
+happens again.
+
+Triggering this is as easy as mounting with -o ssd_spread and then
+running:
+
+  mount -o ssd_spread $dev $mnt
+  dd if=/dev/zero of=$mnt/big bs=16M count=1 &>/dev/null
+  dd if=/dev/zero of=$mnt/med bs=4M count=1 &>/dev/null
+  sync
+
+if you do the two writes + sync in a loop, you can force btrfs to spin
+an excessive amount on semi-successful clustered allocations, before
+ultimately failing and advancing to the stage where we force a chunk
+allocation. This results in 2G of data allocated per iteration, despite
+only using ~20M of data. By using a small size classed extent, the inner
+loop takes longer and we can spin for longer.
+
+The simplest, shortest term fix to unbreak this is to make the clustered
+allocator size_class aware in the dumbest way, where it fails on size
+class mismatch. This may hinder the operation of the clustered
+allocator, but better hindered than completely broken and terribly
+overallocating.
+
+Further re-design improvements are also in the works.
+
+Fixes: 52bb7a2166af ("btrfs: introduce size class to block group allocator")
+CC: stable@vger.kernel.org # 6.1+
+Reported-by: David Sterba <dsterba@suse.com>
+Reviewed-by: Filipe Manana <fdmanana@suse.com>
+Signed-off-by: Boris Burkov <boris@bur.io>
+Signed-off-by: David Sterba <dsterba@suse.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/xfs/xfs_itable.c | 6 +++++-
- 1 file changed, 5 insertions(+), 1 deletion(-)
+ fs/btrfs/extent-tree.c | 33 +++++++++++++++++----------------
+ 1 file changed, 17 insertions(+), 16 deletions(-)
 
-diff --git a/fs/xfs/xfs_itable.c b/fs/xfs/xfs_itable.c
-index c0757ab99495..dc395cd2f33b 100644
---- a/fs/xfs/xfs_itable.c
-+++ b/fs/xfs/xfs_itable.c
-@@ -430,11 +430,15 @@ xfs_inumbers(
- 		.breq		= breq,
- 	};
- 	struct xfs_trans	*tp;
-+	unsigned int		iwalk_flags = 0;
- 	int			error = 0;
+diff --git a/fs/btrfs/extent-tree.c b/fs/btrfs/extent-tree.c
+index ef77d4208510..8248113eb067 100644
+--- a/fs/btrfs/extent-tree.c
++++ b/fs/btrfs/extent-tree.c
+@@ -3530,6 +3530,21 @@ btrfs_release_block_group(struct btrfs_block_group *cache,
+ 	btrfs_put_block_group(cache);
+ }
  
- 	if (xfs_bulkstat_already_done(breq->mp, breq->startino))
- 		return 0;
- 
-+	if (breq->flags & XFS_IBULK_SAME_AG)
-+		iwalk_flags |= XFS_IWALK_SAME_AG;
++static bool find_free_extent_check_size_class(const struct find_free_extent_ctl *ffe_ctl,
++					      const struct btrfs_block_group *bg)
++{
++	if (ffe_ctl->policy == BTRFS_EXTENT_ALLOC_ZONED)
++		return true;
++	if (!btrfs_block_group_should_use_size_class(bg))
++		return true;
++	if (ffe_ctl->loop >= LOOP_WRONG_SIZE_CLASS)
++		return true;
++	if (ffe_ctl->loop >= LOOP_UNSET_SIZE_CLASS &&
++	    bg->size_class == BTRFS_BG_SZ_NONE)
++		return true;
++	return ffe_ctl->size_class == bg->size_class;
++}
 +
- 	/*
- 	 * Grab an empty transaction so that we can use its recursive buffer
- 	 * locking abilities to detect cycles in the inobt without deadlocking.
-@@ -443,7 +447,7 @@ xfs_inumbers(
- 	if (error)
- 		goto out;
+ /*
+  * Helper function for find_free_extent().
+  *
+@@ -3551,7 +3566,8 @@ static int find_free_extent_clustered(struct btrfs_block_group *bg,
+ 	if (!cluster_bg)
+ 		goto refill_cluster;
+ 	if (cluster_bg != bg && (cluster_bg->ro ||
+-	    !block_group_bits(cluster_bg, ffe_ctl->flags)))
++	    !block_group_bits(cluster_bg, ffe_ctl->flags) ||
++	    !find_free_extent_check_size_class(ffe_ctl, cluster_bg)))
+ 		goto release_cluster;
  
--	error = xfs_inobt_walk(breq->mp, tp, breq->startino, breq->flags,
-+	error = xfs_inobt_walk(breq->mp, tp, breq->startino, iwalk_flags,
- 			xfs_inumbers_walk, breq->icount, &ic);
- 	xfs_trans_cancel(tp);
- out:
+ 	offset = btrfs_alloc_from_cluster(cluster_bg, last_ptr,
+@@ -4107,21 +4123,6 @@ static int find_free_extent_update_loop(struct btrfs_fs_info *fs_info,
+ 	return -ENOSPC;
+ }
+ 
+-static bool find_free_extent_check_size_class(struct find_free_extent_ctl *ffe_ctl,
+-					      struct btrfs_block_group *bg)
+-{
+-	if (ffe_ctl->policy == BTRFS_EXTENT_ALLOC_ZONED)
+-		return true;
+-	if (!btrfs_block_group_should_use_size_class(bg))
+-		return true;
+-	if (ffe_ctl->loop >= LOOP_WRONG_SIZE_CLASS)
+-		return true;
+-	if (ffe_ctl->loop >= LOOP_UNSET_SIZE_CLASS &&
+-	    bg->size_class == BTRFS_BG_SZ_NONE)
+-		return true;
+-	return ffe_ctl->size_class == bg->size_class;
+-}
+-
+ static int prepare_allocation_clustered(struct btrfs_fs_info *fs_info,
+ 					struct find_free_extent_ctl *ffe_ctl,
+ 					struct btrfs_space_info *space_info,
 -- 
 2.50.1
 
