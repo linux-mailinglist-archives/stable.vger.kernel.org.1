@@ -1,46 +1,46 @@
-Return-Path: <stable+bounces-171806-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-171807-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id C07C3B2C751
-	for <lists+stable@lfdr.de>; Tue, 19 Aug 2025 16:42:52 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6E233B2C786
+	for <lists+stable@lfdr.de>; Tue, 19 Aug 2025 16:51:37 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 770FB1962748
-	for <lists+stable@lfdr.de>; Tue, 19 Aug 2025 14:43:12 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 6F7C41884E6F
+	for <lists+stable@lfdr.de>; Tue, 19 Aug 2025 14:50:12 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E69D72773CD;
-	Tue, 19 Aug 2025 14:42:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8C508217659;
+	Tue, 19 Aug 2025 14:49:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="SxUsFBe1"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="kMoVSrwF"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A75442737E8
-	for <stable@vger.kernel.org>; Tue, 19 Aug 2025 14:42:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4CDC53398A
+	for <stable@vger.kernel.org>; Tue, 19 Aug 2025 14:49:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755614568; cv=none; b=W4MKmPcrlBQ/05H01Mz/fmVfdd42c2mC2CbwOV0a/Y/MQn+TVXrlfQwlsZ6w4GcV8yYfqFvR38JM0+SrmUvLbjaDGVCG8KMt29xeLDVA/UpN3RS1/tNB+CT+MkppN4rO0ypKa/0BkU13O6NxIQXQkxFLoYSY5eBUL/xnZF0v2tg=
+	t=1755614988; cv=none; b=bfv7nzSco4MwzQB6oTTVYAsUWooQLZU+DObAljFOoXaWjL0bnKEcgIk5l2xx5Vr/w9tlaHWX9pfNXhw5Ixe9YbyEGCwpIlX2cJq+krAsjlR2CNY/hYQ1qSxyEPe2p/63UyFikdhY2Lko08CSjul6Zt8S9duQ1RonTV2O6b4KgHg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1755614568; c=relaxed/simple;
-	bh=AOzXG7x8oyUCXfGZusv/OBJNoH8IM4j4ujSL9LGLkSs=;
+	s=arc-20240116; t=1755614988; c=relaxed/simple;
+	bh=ccH11PaV2RzEluVzXukE2b+Agoca/aQtXfqh/yUsg3k=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=thIsRv1/n1ZJET2P+c3ickavN1TI8MUs0uJnYWgZaiD14UGZe+P0gAhbm4TxaXgbnz/tkhDBpstd0BEMRlZTrb795oHbJP7HnUCp5Au8qoVJgxV1Y1+P/qxKfMon/73a/hYCFZT+7ZGB2a5y6VTdU8q/9OSc9q2d+yqcSHVNODU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=SxUsFBe1; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A09E9C4CEF1;
-	Tue, 19 Aug 2025 14:42:45 +0000 (UTC)
+	 MIME-Version; b=bLJk+ZGGdlIgaIjCGRxk1kyUvAiCV0HNyyNCLwBTHU3Jfq3mruzbHDYX4ESczrelpvaqeS2yzZvWBwJCd3uivhfPCNS9rUmqL9cw1neGPzE2vIV33hl0RcjSgLRPii9bs76dfoUf9KajYVDBayvVUc5lu95oq9mxcOx1VgxB4/o=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=kMoVSrwF; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 27C30C4CEF1;
+	Tue, 19 Aug 2025 14:49:46 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1755614567;
-	bh=AOzXG7x8oyUCXfGZusv/OBJNoH8IM4j4ujSL9LGLkSs=;
+	s=k20201202; t=1755614987;
+	bh=ccH11PaV2RzEluVzXukE2b+Agoca/aQtXfqh/yUsg3k=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=SxUsFBe15wMaYRqrWwKx1jdRWZDil8tnv1mnpoR8xhIPoELFGXfVIaO53MXNYQVQq
-	 zq212d10K56XJH3A20d0/9c8LPUo4YrMcWYBl2qYDjRRrJdpDyCKq8CoMQ2wpO3GA5
-	 D3/zleY2XMmamzj/DhaoFVI0k2Vs/eUN9wfMUVwbb36o+jMDj+1p6CzY/Xoq4rlksB
-	 733G6gt8r28Unb7tRyDwgEs6/i03i8JCFR0mNFXxegERcpeuI3fWm6WGuVnVHcw00y
-	 ZCiyCsEdK/0EOv21MEuoCljRcezUA6zGGofwc8ytUbmvGZxTlCb1N8L3iiheHzj0zE
-	 vbUWX9rMjP1zQ==
+	b=kMoVSrwFeyHFss8jxOI41krUuO/Uc5nJl9AaVtAbyAdYNs5RRjV5O0x/EKzPx+/ly
+	 4utuyYHpIwWXJ6uMTdrxTVaraMBBW8qV3a0fwGhViN0YfZ1yZeYyzsiJ+KtYl9eBNM
+	 T3y595icOA+dshkTNQyOtHEovYT7KQrVOLJa54hktn9OOhLAErgn50jLOJiEw7wFw5
+	 AmxWSiywwxDPZMuLqbhSQfeqYojl30FxTUGBNiz62lIMdj53Ifo26Bz7EiS2weO2FA
+	 gKUKlJoKVgg5VFIgXdtc2aXJBMRIIyTcMIiVIoLHvmoW/2fHjrzKSIKABYs3WsDqhp
+	 ijkeJJqaUexng==
 From: Sasha Levin <sashal@kernel.org>
 To: stable@vger.kernel.org
 Cc: Anshuman Khandual <anshuman.khandual@arm.com>,
@@ -59,12 +59,12 @@ Cc: Anshuman Khandual <anshuman.khandual@arm.com>,
 	Sven Schnelle <svens@linux.ibm.com>,
 	Andrew Morton <akpm@linux-foundation.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6.y] mm/ptdump: take the memory hotplug lock inside ptdump_walk_pgd()
-Date: Tue, 19 Aug 2025 10:42:43 -0400
-Message-ID: <20250819144243.519849-1-sashal@kernel.org>
+Subject: [PATCH 6.1.y] mm/ptdump: take the memory hotplug lock inside ptdump_walk_pgd()
+Date: Tue, 19 Aug 2025 10:49:44 -0400
+Message-ID: <20250819144944.523881-1-sashal@kernel.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <2025081858-sabbath-blunt-7735@gregkh>
-References: <2025081858-sabbath-blunt-7735@gregkh>
+In-Reply-To: <2025081859-excess-willfully-0f01@gregkh>
+References: <2025081859-excess-willfully-0f01@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -149,7 +149,7 @@ index 68bf1a125502..1e308328c079 100644
  }
  DEFINE_SHOW_ATTRIBUTE(ptdump);
 diff --git a/arch/s390/mm/dump_pagetables.c b/arch/s390/mm/dump_pagetables.c
-index b51666967aa1..4721ada81a02 100644
+index ba5f80268878..65243e1d0c8e 100644
 --- a/arch/s390/mm/dump_pagetables.c
 +++ b/arch/s390/mm/dump_pagetables.c
 @@ -249,11 +249,9 @@ static int ptdump_show(struct seq_file *m, void *v)
@@ -165,7 +165,7 @@ index b51666967aa1..4721ada81a02 100644
  }
  DEFINE_SHOW_ATTRIBUTE(ptdump);
 diff --git a/mm/ptdump.c b/mm/ptdump.c
-index 03c1bdae4a43..e46df2c24d85 100644
+index 8adab455a68b..8e29b90d6bc3 100644
 --- a/mm/ptdump.c
 +++ b/mm/ptdump.c
 @@ -152,6 +152,7 @@ void ptdump_walk_pgd(struct ptdump_state *st, struct mm_struct *mm, pgd_t *pgd)
