@@ -1,200 +1,177 @@
-Return-Path: <stable+bounces-171744-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-171745-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 33D9AB2B7A9
-	for <lists+stable@lfdr.de>; Tue, 19 Aug 2025 05:36:18 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9EE4FB2B8F9
+	for <lists+stable@lfdr.de>; Tue, 19 Aug 2025 07:54:36 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 6BFC84E4543
-	for <lists+stable@lfdr.de>; Tue, 19 Aug 2025 03:35:06 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 82D995814E2
+	for <lists+stable@lfdr.de>; Tue, 19 Aug 2025 05:54:36 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 014CE2E36E6;
-	Tue, 19 Aug 2025 03:34:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 82641238C33;
+	Tue, 19 Aug 2025 05:54:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b="gLNptCX2"
+	dkim=pass (1024-bit key) header.d=ti.com header.i=@ti.com header.b="AHpiOaPo"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from lelvem-ot01.ext.ti.com (lelvem-ot01.ext.ti.com [198.47.23.234])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 88F632BCF5;
-	Tue, 19 Aug 2025 03:34:26 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6702B1FECD4;
+	Tue, 19 Aug 2025 05:54:28 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.47.23.234
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755574466; cv=none; b=cVF6oOUO9oi7M1iAecfUNJNmthFDD1BeNGaPkXh1TSzobj27rbbTraQjZCXAnqUhjPqS2kV/mEujOk4ofL55usbeNygibn2/DHX0afQ42YIci+4Pofm403FqA/MM1L7TWWgNd1vJhDXWdCe4020IpghfwJMUm1wXHiKTbZLsw5U=
+	t=1755582874; cv=none; b=TU76UQJ+ffpV75bJVPjyE3d2P96tPEHe0VubomAhTnM7Q0Dg3f2gXrMSR2K4QCcawFzx5dhciA/Lt2id1hxVmTvbuqgeyS8w+x//FDrvVtBYNG0Gtw0bWL1lKyq8+RU8TtsGzsrDga+ZlsL/A3djkx6GZ8a4F9+Sl9feypSGb0U=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1755574466; c=relaxed/simple;
-	bh=klzF5qd30JB4jj1RgGdOi/FNVQPar4CEUTUmYgzfUUs=;
-	h=Date:To:From:Subject:Message-Id; b=LQBUlifbx0BmI4q2PCSn215eW3K4ikqhc9rF+dLDD80lboaXCV3BbxQ92SOW11pDEsaPvl4wJEHmJ56ZNmashHIOdAgIbjCHmndzE1e3Y0nFzeNdH8l1cM7vSuo1UjUCi8bc+blH1SFEgwj6luo+ZYDXMCvMf8bquN9zT+z5xKE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b=gLNptCX2; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id DE7D1C4CEF4;
-	Tue, 19 Aug 2025 03:34:25 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linux-foundation.org;
-	s=korg; t=1755574466;
-	bh=klzF5qd30JB4jj1RgGdOi/FNVQPar4CEUTUmYgzfUUs=;
-	h=Date:To:From:Subject:From;
-	b=gLNptCX2hP6ywMVgeRPdSnXXZzWf32H0EQr4lAFHRXnGDrP2OEyyEpggv6Q+lBqyg
-	 jdjWPC6ZsVUk8gaxX3+abWFCOqKZA8w1Z8r3sf6vM+dEZVzZ9KCakDeBK40vOLTWNf
-	 55vvcqBA8zJ/+8jTAIJ5NF9WC4qTUayMoQFWU+eo=
-Date: Mon, 18 Aug 2025 20:34:25 -0700
-To: mm-commits@vger.kernel.org,viro@zeniv.linux.org.uk,stable@vger.kernel.org,rick.p.edgecombe@intel.com,polynomial-c@gmx.de,k.shutemov@gmail.com,jirislaby@kernel.org,gregkh@linuxfoundation.org,ast@kernel.org,adobriyan@gmail.com,wangzijie1@honor.com,akpm@linux-foundation.org
-From: Andrew Morton <akpm@linux-foundation.org>
-Subject: + proc-fix-missing-pde_set_flags-for-net-proc-files.patch added to mm-hotfixes-unstable branch
-Message-Id: <20250819033425.DE7D1C4CEF4@smtp.kernel.org>
+	s=arc-20240116; t=1755582874; c=relaxed/simple;
+	bh=3P8uD5CNg/kUDpT4YXMlVJMBIcVMKgQRMzpleXZ0cks=;
+	h=Message-ID:Date:MIME-Version:Subject:To:CC:References:From:
+	 In-Reply-To:Content-Type; b=uvkO0VvgsF2h6SdfBYAg8y4gaiyh+HXFI7+6oc4bBTUCReTxFQsYVk1nrsROM/ePBE3X+6C1J7aI5wVu++I/S6aSVwj6alA7Kd1hZhJzalk6DX38t0bqKQl53CpL8lfUkoqSqOEJvyKFWEhuDYzVF7FLxd+T65B4C6GoLOmfNXA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=ti.com; spf=pass smtp.mailfrom=ti.com; dkim=pass (1024-bit key) header.d=ti.com header.i=@ti.com header.b=AHpiOaPo; arc=none smtp.client-ip=198.47.23.234
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=ti.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ti.com
+Received: from lelvem-sh02.itg.ti.com ([10.180.78.226])
+	by lelvem-ot01.ext.ti.com (8.15.2/8.15.2) with ESMTP id 57J5rK8s2883382;
+	Tue, 19 Aug 2025 00:53:20 -0500
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ti.com;
+	s=ti-com-17Q1; t=1755582800;
+	bh=sTeiwFyBkdK6n6VB0SEmiukgw5hVXV2XEVJwlEkyGz0=;
+	h=Date:Subject:To:CC:References:From:In-Reply-To;
+	b=AHpiOaPosSSV1LgvmY6r4AIuPoFppFdVEmb3eQ5q6xG+lojpRdrpdAVtov9ZWbw+T
+	 ZIqdYKYHksH8+GbHXerzPAeT/198tdUd3YCHqcttZ/GTvJKsbPxvY1I/nlD7M6t1c7
+	 SeDJxrGg99TofV1/zCNcia0xXHVUzzN/9mrDR4I4=
+Received: from DLEE108.ent.ti.com (dlee108.ent.ti.com [157.170.170.38])
+	by lelvem-sh02.itg.ti.com (8.18.1/8.18.1) with ESMTPS id 57J5rKHd824561
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES128-SHA256 bits=128 verify=FAIL);
+	Tue, 19 Aug 2025 00:53:20 -0500
+Received: from DLEE113.ent.ti.com (157.170.170.24) by DLEE108.ent.ti.com
+ (157.170.170.38) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256_P256) id 15.1.2507.55; Tue, 19
+ Aug 2025 00:53:19 -0500
+Received: from lelvem-mr05.itg.ti.com (10.180.75.9) by DLEE113.ent.ti.com
+ (157.170.170.24) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256_P256) id 15.1.2507.55 via
+ Frontend Transport; Tue, 19 Aug 2025 00:53:19 -0500
+Received: from [172.24.233.149] (ws.dhcp.ti.com [172.24.233.149])
+	by lelvem-mr05.itg.ti.com (8.18.1/8.18.1) with ESMTP id 57J5rFav2511790;
+	Tue, 19 Aug 2025 00:53:16 -0500
+Message-ID: <9f700025-8a73-4e9f-acf5-6b5edf56d06d@ti.com>
+Date: Tue, 19 Aug 2025 11:23:15 +0530
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
+MIME-Version: 1.0
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v4 0/6] media: ti, cdns: Multiple pixel support and misc
+ fixes
+To: Jai Luthra <jai.luthra@ideasonboard.com>,
+        Mauro Carvalho Chehab
+	<mchehab@kernel.org>,
+        Tomi Valkeinen <tomi.valkeinen@ideasonboard.com>,
+        Sakari Ailus <sakari.ailus@linux.intel.com>,
+        Maxime Ripard
+	<mripard@kernel.org>,
+        Hans Verkuil <hverkuil@kernel.org>
+CC: Devarsh Thakkar <devarsht@ti.com>,
+        Yemike Abhilash Chandra
+	<y-abhilashchandra@ti.com>,
+        <linux-media@vger.kernel.org>, <linux-kernel@vger.kernel.org>,
+        <stable@vger.kernel.org>,
+        Changhuang Liang
+	<changhuang.liang@starfivetech.com>
+References: <20250811-probe_fixes-v4-0-aae22290f1d0@ideasonboard.com>
+Content-Language: en-US
+From: Rishikesh Donadkar <r-donadkar@ti.com>
+In-Reply-To: <20250811-probe_fixes-v4-0-aae22290f1d0@ideasonboard.com>
+Content-Type: text/plain; charset="UTF-8"; format=flowed
+Content-Transfer-Encoding: 7bit
+X-C2ProcessedOrg: 333ef613-75bf-4e12-a4b1-8e3623f5dcea
 
 
-The patch titled
-     Subject: proc: fix missing pde_set_flags() for net proc files
-has been added to the -mm mm-hotfixes-unstable branch.  Its filename is
-     proc-fix-missing-pde_set_flags-for-net-proc-files.patch
+On 11/08/25 13:50, Jai Luthra wrote:
+> Hi,
 
-This patch will shortly appear at
-     https://git.kernel.org/pub/scm/linux/kernel/git/akpm/25-new.git/tree/patches/proc-fix-missing-pde_set_flags-for-net-proc-files.patch
 
-This patch will later appear in the mm-hotfixes-unstable branch at
-    git://git.kernel.org/pub/scm/linux/kernel/git/akpm/mm
+Hi Jai,
+Thank you for the patches !
 
-Before you just go and hit "reply", please:
-   a) Consider who else should be cc'ed
-   b) Prefer to cc a suitable mailing list as well
-   c) Ideally: find the original patch on the mailing list and do a
-      reply-to-all to that, adding suitable additional cc's
 
-*** Remember to use Documentation/process/submit-checklist.rst when testing your code ***
+>
+> The first four patches in this series are miscellaneous fixes and
+> improvements in the Cadence and TI CSI-RX drivers around probing, fwnode
+> and link creation.
+>
+> The last two patches add support for transmitting multiple pixels per
+> clock on the internal bus between Cadence CSI-RX bridge and TI CSI-RX
+> wrapper. As this internal bus is 32-bit wide, the maximum number of
+> pixels that can be transmitted per cycle depend upon the format's bit
+> width. Secondly, the downstream element must support unpacking of
+> multiple pixels.
+>
+> Thus we export a module function that can be used by the downstream
+> driver to negotiate the pixels per cycle on the output pixel stream of
+> the Cadence bridge.
+>
+> Signed-off-by: Jai Luthra <jai.luthra@ideasonboard.com>
 
-The -mm tree is included into linux-next via the mm-everything
-branch at git://git.kernel.org/pub/scm/linux/kernel/git/akpm/mm
-and is updated there every 2-3 working days
 
-------------------------------------------------------
-From: wangzijie <wangzijie1@honor.com>
-Subject: proc: fix missing pde_set_flags() for net proc files
-Date: Mon, 18 Aug 2025 20:31:02 +0800
+For the entire series,
 
-To avoid potential UAF issues during module removal races, we use
-pde_set_flags() to save proc_ops flags in PDE itself before
-proc_register(), and then use pde_has_proc_*() helpers instead of directly
-dereferencing pde->proc_ops->*.
+Reviewed-by: Rishikesh Donadkar <r-donadkar@ti.com>
 
-However, the pde_set_flags() call was missing when creating net related
-proc files.  This omission caused incorrect behavior which FMODE_LSEEK was
-being cleared inappropriately in proc_reg_open() for net proc files.  Lars
-reported it in this link[1].
+Tested-by: Rishikesh Donadkar <r-donadkar@ti.com>
 
-Fix this by ensuring pde_set_flags() is called when register proc entry,
-and add NULL check for proc_ops in pde_set_flags().
 
-[1]: https://lore.kernel.org/all/20250815195616.64497967@chagall.paradoxon.rec/
+Test Logs (SK-AM62A + IMX219) :
 
-Link: https://lkml.kernel.org/r/20250818123102.959595-1-wangzijie1@honor.com
-Fixes: ff7ec8dc1b64 ("proc: use the same treatment to check proc_lseek as ones for proc_read_iter et.al)
-Signed-off-by: wangzijie <wangzijie1@honor.com>
-Reported-by: Lars Wendler <polynomial-c@gmx.de>
-Cc: Alexei Starovoitov <ast@kernel.org>
-Cc: Alexey Dobriyan <adobriyan@gmail.com>
-Cc: Al Viro <viro@zeniv.linux.org.uk>
-Cc: "Edgecombe, Rick P" <rick.p.edgecombe@intel.com>
-Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Cc: Jiri Slaby <jirislaby@kernel.org>
-Cc: Kirill A. Shutemov <k.shutemov@gmail.com>
-Cc: wangzijie <wangzijie1@honor.com>
-Cc: <stable@vger.kernel.org>
-Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
----
+https://gist.github.com/Rishikesh-D/cb1d06cf341c2327da0d38a6b21688d6
 
- fs/proc/generic.c |   36 +++++++++++++++++++-----------------
- 1 file changed, 19 insertions(+), 17 deletions(-)
 
---- a/fs/proc/generic.c~proc-fix-missing-pde_set_flags-for-net-proc-files
-+++ a/fs/proc/generic.c
-@@ -367,6 +367,23 @@ static const struct inode_operations pro
- 	.setattr	= proc_notify_change,
- };
- 
-+static void pde_set_flags(struct proc_dir_entry *pde)
-+{
-+	if (!pde->proc_ops)
-+		return;
-+
-+	if (pde->proc_ops->proc_flags & PROC_ENTRY_PERMANENT)
-+		pde->flags |= PROC_ENTRY_PERMANENT;
-+	if (pde->proc_ops->proc_read_iter)
-+		pde->flags |= PROC_ENTRY_proc_read_iter;
-+#ifdef CONFIG_COMPAT
-+	if (pde->proc_ops->proc_compat_ioctl)
-+		pde->flags |= PROC_ENTRY_proc_compat_ioctl;
-+#endif
-+	if (pde->proc_ops->proc_lseek)
-+		pde->flags |= PROC_ENTRY_proc_lseek;
-+}
-+
- /* returns the registered entry, or frees dp and returns NULL on failure */
- struct proc_dir_entry *proc_register(struct proc_dir_entry *dir,
- 		struct proc_dir_entry *dp)
-@@ -374,6 +391,8 @@ struct proc_dir_entry *proc_register(str
- 	if (proc_alloc_inum(&dp->low_ino))
- 		goto out_free_entry;
- 
-+	pde_set_flags(dp);
-+
- 	write_lock(&proc_subdir_lock);
- 	dp->parent = dir;
- 	if (pde_subdir_insert(dir, dp) == false) {
-@@ -561,20 +580,6 @@ struct proc_dir_entry *proc_create_reg(c
- 	return p;
- }
- 
--static void pde_set_flags(struct proc_dir_entry *pde)
--{
--	if (pde->proc_ops->proc_flags & PROC_ENTRY_PERMANENT)
--		pde->flags |= PROC_ENTRY_PERMANENT;
--	if (pde->proc_ops->proc_read_iter)
--		pde->flags |= PROC_ENTRY_proc_read_iter;
--#ifdef CONFIG_COMPAT
--	if (pde->proc_ops->proc_compat_ioctl)
--		pde->flags |= PROC_ENTRY_proc_compat_ioctl;
--#endif
--	if (pde->proc_ops->proc_lseek)
--		pde->flags |= PROC_ENTRY_proc_lseek;
--}
--
- struct proc_dir_entry *proc_create_data(const char *name, umode_t mode,
- 		struct proc_dir_entry *parent,
- 		const struct proc_ops *proc_ops, void *data)
-@@ -585,7 +590,6 @@ struct proc_dir_entry *proc_create_data(
- 	if (!p)
- 		return NULL;
- 	p->proc_ops = proc_ops;
--	pde_set_flags(p);
- 	return proc_register(parent, p);
- }
- EXPORT_SYMBOL(proc_create_data);
-@@ -636,7 +640,6 @@ struct proc_dir_entry *proc_create_seq_p
- 	p->proc_ops = &proc_seq_ops;
- 	p->seq_ops = ops;
- 	p->state_size = state_size;
--	pde_set_flags(p);
- 	return proc_register(parent, p);
- }
- EXPORT_SYMBOL(proc_create_seq_private);
-@@ -667,7 +670,6 @@ struct proc_dir_entry *proc_create_singl
- 		return NULL;
- 	p->proc_ops = &proc_single_ops;
- 	p->single_show = show;
--	pde_set_flags(p);
- 	return proc_register(parent, p);
- }
- EXPORT_SYMBOL(proc_create_single_data);
-_
+Regards,
 
-Patches currently in -mm which might be from wangzijie1@honor.com are
+Rishikesh
 
-proc-fix-missing-pde_set_flags-for-net-proc-files.patch
-
+> ---
+> Changes in v4:
+> - Rebase on top of v6.17-rc1
+> - Add missing include for linux/export.h in cdns-csi2rx.c
+> - Link to v3: https://lore.kernel.org/r/20250626-probe_fixes-v3-0-83e735ae466e@ideasonboard.com
+>
+> Changes in v3:
+> - Move cdns-csi2rx header to include/media
+> - Export symbol from cdns-csi2rx.c to be used only through
+>    the j721e-csi2rx.c module namespace
+> - Other minor fixes suggested by Sakari
+> - Add Abhilash's T-by tags
+> - Link to v2: https://lore.kernel.org/r/20250410-probe_fixes-v2-0-801bc6eebdea@ideasonboard.com
+>
+> Changes in v2:
+> - Rebase on v6.15-rc1
+> - Fix lkp warnings in PATCH 5/6 missing header for FIELD_PREP
+> - Add R-By tags from Devarsh and Changhuang
+> - Link to v1: https://lore.kernel.org/r/20250324-probe_fixes-v1-0-5cd5b9e1cfac@ideasonboard.com
+>
+> ---
+> Jai Luthra (6):
+>        media: ti: j721e-csi2rx: Use devm_of_platform_populate
+>        media: ti: j721e-csi2rx: Use fwnode_get_named_child_node
+>        media: ti: j721e-csi2rx: Fix source subdev link creation
+>        media: cadence: csi2rx: Implement get_fwnode_pad op
+>        media: cadence: cdns-csi2rx: Support multiple pixels per clock cycle
+>        media: ti: j721e-csi2rx: Support multiple pixels per clock
+>
+>   MAINTAINERS                                        |  1 +
+>   drivers/media/platform/cadence/cdns-csi2rx.c       | 75 ++++++++++++++++------
+>   drivers/media/platform/ti/Kconfig                  |  3 +-
+>   .../media/platform/ti/j721e-csi2rx/j721e-csi2rx.c  | 65 ++++++++++++++-----
+>   include/media/cadence/cdns-csi2rx.h                | 19 ++++++
+>   5 files changed, 128 insertions(+), 35 deletions(-)
+> ---
+> base-commit: 8f5ae30d69d7543eee0d70083daf4de8fe15d585
+> change-id: 20250314-probe_fixes-7e0ec33c7fee
+>
+> Best regards,
 
