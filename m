@@ -1,47 +1,47 @@
-Return-Path: <stable+bounces-171880-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-171882-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 34821B2D781
-	for <lists+stable@lfdr.de>; Wed, 20 Aug 2025 11:06:41 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 34A17B2D786
+	for <lists+stable@lfdr.de>; Wed, 20 Aug 2025 11:08:27 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 423933A9DA1
-	for <lists+stable@lfdr.de>; Wed, 20 Aug 2025 09:05:58 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 41C4F16680A
+	for <lists+stable@lfdr.de>; Wed, 20 Aug 2025 09:06:09 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B3E8827056D;
-	Wed, 20 Aug 2025 09:05:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id CD01F18991E;
+	Wed, 20 Aug 2025 09:06:06 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="FiGg5ur/"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="q9PQZEH1"
 X-Original-To: Stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 716A218991E
-	for <Stable@vger.kernel.org>; Wed, 20 Aug 2025 09:05:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 89C141DF74F
+	for <Stable@vger.kernel.org>; Wed, 20 Aug 2025 09:06:06 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755680754; cv=none; b=Bclb3rZX/dvFtf7fXYOQGRUhSVaZEUUXW+pe7Cr7AG1e0MbTOUzJD1xAketV3Z8dXBmBT6r01WthRavB+/wWRbgLhretrmEZqG72tRIX/zbX+/lRaPqGCYiRI0ZGkYGgY2qmsPFPqLCaX7drgTpcUEj95sA+8kJZYSKeem0af8c=
+	t=1755680766; cv=none; b=V//xK10alXIzF0N9eGVM0WVsyKIskuQUqu9Tao/Xm46uhuUqODwEVWZ/hUoxg1mRmuBBOGGicu87iqkq3Q+/Zs43LGYNX/3ze7V7KuhNhh66PR+XB3RMVX0ITM7IkzuzraK7m3RNDLE/zuLnkP8wrAiCEEe5Nq4u3qkPHEoDtMo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1755680754; c=relaxed/simple;
-	bh=xDhLK3UQDI//y9HtMGi7ySP7/fgqdfub4tnqY2n/H18=;
-	h=Subject:To:From:Date:Message-ID:MIME-Version:Content-Type; b=hq1FVXkSLwp4IFRTloxQy/hvazGRWe4Bn9orblsWMHAH8ayiznos3Ztd19azsauX9MW8/jm02BOkhNrh3AcnX4VZmDgzbgjuOPWd2ee+ZC6gFoypSWOjCGXZ5N3HlGHcGSIhB5lHshbd/rH/ZmaWs7pcVnYs9RxpwWhq/Db0liY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=FiGg5ur/; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8C355C4CEEB;
-	Wed, 20 Aug 2025 09:05:52 +0000 (UTC)
+	s=arc-20240116; t=1755680766; c=relaxed/simple;
+	bh=xUYE3Hwp/DF0oTqsuThYejwoNMaCLjwHfPdV3vqP1p0=;
+	h=Subject:To:From:Date:Message-ID:MIME-Version:Content-Type; b=lCqi6tRPLpUlioPXKjkgiY3t4gxNPgAlETHZ8AhjCOOQDxoUIE4hwIXfeWHpYlGr+OxwT/t7eDpTPiVXAyUMa/dUAvxGx/UTASnKIV9aC4EHym3o/JF6Y4NfgrOXpoREwFh/XbIlfcgLmK3E4S745AhcOrUgJEiXp8Ebtkf/bQU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=q9PQZEH1; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0A7C9C4CEEB;
+	Wed, 20 Aug 2025 09:06:05 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1755680753;
-	bh=xDhLK3UQDI//y9HtMGi7ySP7/fgqdfub4tnqY2n/H18=;
+	s=korg; t=1755680766;
+	bh=xUYE3Hwp/DF0oTqsuThYejwoNMaCLjwHfPdV3vqP1p0=;
 	h=Subject:To:From:Date:From;
-	b=FiGg5ur/t6cRrszdCU6PtZE3bSRY/q8CjYN3yfdVCwEMk9xG0ACZvgfZ/zM/N9ZQz
-	 cQbPrs+J1IUv8miMxm9c2fXVW2jdZHEJVUXAjUl5ZOyJ8FVNdpk+ZLNZKbTE3fNeKG
-	 lj+OmVS/mO7P1PhJKxlNCAG2lSAxHfOdG69hoGKI=
-Subject: patch "iio: adc: bd79124: Add GPIOLIB dependency" added to char-misc-linus
-To: mazziesaccount@gmail.com,Jonathan.Cameron@huawei.com,Stable@vger.kernel.org,bartosz.golaszewski@linaro.org,lkp@intel.com
+	b=q9PQZEH1zgPOofRxy1YISd0GgvmNaVUuAfOxbRa0pPhy+W0pA3RmlzuER5qEZADyt
+	 K35hS04wBurFKscV+DlMMDzoeoVaQAAeZmagagkvLk/rgBUqN7nrHpSOIFPRSKIFt5
+	 UpZ7p9l+2yfTvivPad1gRjcLaof923BwVxQP4KkQ=
+Subject: patch "iio: adc: rzg2l: Cleanup suspend/resume path" added to char-misc-linus
+To: claudiu.beznea.uj@bp.renesas.com,Jonathan.Cameron@huawei.com,Stable@vger.kernel.org,prabhakar.mahadev-lad.rj@bp.renesas.com,ulf.hansson@linaro.org
 From: <gregkh@linuxfoundation.org>
-Date: Wed, 20 Aug 2025 11:05:35 +0200
-Message-ID: <2025082035-cycling-security-a6d4@gregkh>
+Date: Wed, 20 Aug 2025 11:05:36 +0200
+Message-ID: <2025082036-distinct-disfigure-c20a@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -54,7 +54,7 @@ Content-Transfer-Encoding: 8bit
 
 This is a note to let you know that I've just added the patch titled
 
-    iio: adc: bd79124: Add GPIOLIB dependency
+    iio: adc: rzg2l: Cleanup suspend/resume path
 
 to my char-misc git tree which can be found at
     git://git.kernel.org/pub/scm/linux/kernel/git/gregkh/char-misc.git
@@ -69,50 +69,98 @@ next -rc kernel release.
 If you have any questions about this process, please let me know.
 
 
-From 8a6ededaad2d2dcaac8e545bffee1073dca9db95 Mon Sep 17 00:00:00 2001
-From: Matti Vaittinen <mazziesaccount@gmail.com>
-Date: Wed, 13 Aug 2025 12:16:06 +0300
-Subject: iio: adc: bd79124: Add GPIOLIB dependency
+From a3c6eabe3bbd6b0e7124d68b2d3bc32fed17362e Mon Sep 17 00:00:00 2001
+From: Claudiu Beznea <claudiu.beznea.uj@bp.renesas.com>
+Date: Sun, 10 Aug 2025 15:33:27 +0300
+Subject: iio: adc: rzg2l: Cleanup suspend/resume path
 
-The bd79124 has ADC inputs which can be muxed to be GPIOs. The driver
-supports this by registering a GPIO-chip for channels which aren't used
-as ADC.
+There is no need to manually track the runtime PM status in the driver.
+The pm_runtime_force_suspend() and pm_runtime_force_resume() functions
+already call pm_runtime_status_suspended() to check the runtime PM state.
 
-The Kconfig entry does not handle the dependency to GPIOLIB, which
-causes errors:
+Additionally, avoid calling pm_runtime_put_autosuspend() during the
+suspend/resume path, as this would decrease the usage counter of a
+potential user that had the ADC open before the suspend/resume cycle.
 
-ERROR: modpost: "devm_gpiochip_add_data_with_key" [drivers/iio/adc/rohm-bd79124.ko] undefined!
-ERROR: modpost: "gpiochip_get_data" [drivers/iio/adc/rohm-bd79124.ko] undefined!
-
-at linking phase if GPIOLIB is not configured to be used.
-
-Fix this by adding dependency to the GPIOLIB.
-
-Reported-by: kernel test robot <lkp@intel.com>
-Closes: https://lore.kernel.org/oe-kbuild-all/202508131533.5sSkq80B-lkp@intel.com/
-Fixes: 3f57a3b9ab74 ("iio: adc: Support ROHM BD79124 ADC")
-Signed-off-by: Matti Vaittinen <mazziesaccount@gmail.com>
-Reviewed-by: Bartosz Golaszewski <bartosz.golaszewski@linaro.org>
-Link: https://patch.msgid.link/6837249bddf358924e67566293944506206d2d62.1755076369.git.mazziesaccount@gmail.com
+Fixes: 563cf94f9329 ("iio: adc: rzg2l_adc: Add suspend/resume support")
+Reviewed-by: Ulf Hansson <ulf.hansson@linaro.org>
+Reviewed-by: Lad Prabhakar <prabhakar.mahadev-lad.rj@bp.renesas.com>
+Signed-off-by: Claudiu Beznea <claudiu.beznea.uj@bp.renesas.com>
+Link: https://patch.msgid.link/20250810123328.800104-2-claudiu.beznea.uj@bp.renesas.com
 Cc: <Stable@vger.kernel.org>
 Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
 ---
- drivers/iio/adc/Kconfig | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/iio/adc/rzg2l_adc.c | 29 ++++++++---------------------
+ 1 file changed, 8 insertions(+), 21 deletions(-)
 
-diff --git a/drivers/iio/adc/Kconfig b/drivers/iio/adc/Kconfig
-index 6de2abad0197..24f2572c487e 100644
---- a/drivers/iio/adc/Kconfig
-+++ b/drivers/iio/adc/Kconfig
-@@ -1300,7 +1300,7 @@ config RN5T618_ADC
+diff --git a/drivers/iio/adc/rzg2l_adc.c b/drivers/iio/adc/rzg2l_adc.c
+index 9674d48074c9..0cb5a67fd497 100644
+--- a/drivers/iio/adc/rzg2l_adc.c
++++ b/drivers/iio/adc/rzg2l_adc.c
+@@ -89,7 +89,6 @@ struct rzg2l_adc {
+ 	struct completion completion;
+ 	struct mutex lock;
+ 	u16 last_val[RZG2L_ADC_MAX_CHANNELS];
+-	bool was_rpm_active;
+ };
  
- config ROHM_BD79124
- 	tristate "Rohm BD79124 ADC driver"
--	depends on I2C
-+	depends on I2C && GPIOLIB
- 	select REGMAP_I2C
- 	select IIO_ADC_HELPER
- 	help
+ /**
+@@ -541,14 +540,9 @@ static int rzg2l_adc_suspend(struct device *dev)
+ 	};
+ 	int ret;
+ 
+-	if (pm_runtime_suspended(dev)) {
+-		adc->was_rpm_active = false;
+-	} else {
+-		ret = pm_runtime_force_suspend(dev);
+-		if (ret)
+-			return ret;
+-		adc->was_rpm_active = true;
+-	}
++	ret = pm_runtime_force_suspend(dev);
++	if (ret)
++		return ret;
+ 
+ 	ret = reset_control_bulk_assert(ARRAY_SIZE(resets), resets);
+ 	if (ret)
+@@ -557,9 +551,7 @@ static int rzg2l_adc_suspend(struct device *dev)
+ 	return 0;
+ 
+ rpm_restore:
+-	if (adc->was_rpm_active)
+-		pm_runtime_force_resume(dev);
+-
++	pm_runtime_force_resume(dev);
+ 	return ret;
+ }
+ 
+@@ -577,11 +569,9 @@ static int rzg2l_adc_resume(struct device *dev)
+ 	if (ret)
+ 		return ret;
+ 
+-	if (adc->was_rpm_active) {
+-		ret = pm_runtime_force_resume(dev);
+-		if (ret)
+-			goto resets_restore;
+-	}
++	ret = pm_runtime_force_resume(dev);
++	if (ret)
++		goto resets_restore;
+ 
+ 	ret = rzg2l_adc_hw_init(dev, adc);
+ 	if (ret)
+@@ -590,10 +580,7 @@ static int rzg2l_adc_resume(struct device *dev)
+ 	return 0;
+ 
+ rpm_restore:
+-	if (adc->was_rpm_active) {
+-		pm_runtime_mark_last_busy(dev);
+-		pm_runtime_put_autosuspend(dev);
+-	}
++	pm_runtime_force_suspend(dev);
+ resets_restore:
+ 	reset_control_bulk_assert(ARRAY_SIZE(resets), resets);
+ 	return ret;
 -- 
 2.50.1
 
