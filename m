@@ -1,47 +1,47 @@
-Return-Path: <stable+bounces-171882-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-171881-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 34A17B2D786
-	for <lists+stable@lfdr.de>; Wed, 20 Aug 2025 11:08:27 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 72F3EB2D78B
+	for <lists+stable@lfdr.de>; Wed, 20 Aug 2025 11:09:07 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 41C4F16680A
-	for <lists+stable@lfdr.de>; Wed, 20 Aug 2025 09:06:09 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id F1D8E189792B
+	for <lists+stable@lfdr.de>; Wed, 20 Aug 2025 09:06:27 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id CD01F18991E;
-	Wed, 20 Aug 2025 09:06:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A5267283153;
+	Wed, 20 Aug 2025 09:06:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="q9PQZEH1"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="B+zh0VzU"
 X-Original-To: Stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 89C141DF74F
-	for <Stable@vger.kernel.org>; Wed, 20 Aug 2025 09:06:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 653361DF74F
+	for <Stable@vger.kernel.org>; Wed, 20 Aug 2025 09:06:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755680766; cv=none; b=V//xK10alXIzF0N9eGVM0WVsyKIskuQUqu9Tao/Xm46uhuUqODwEVWZ/hUoxg1mRmuBBOGGicu87iqkq3Q+/Zs43LGYNX/3ze7V7KuhNhh66PR+XB3RMVX0ITM7IkzuzraK7m3RNDLE/zuLnkP8wrAiCEEe5Nq4u3qkPHEoDtMo=
+	t=1755680763; cv=none; b=hXmty+c6XFeDO4j/NZu27NZaffaACLXagEFUUkcWrX+BPGwq+83PidP+hDg1QNM7fEYn4XGxEkVh5wFh6yvoSE8WpNG/WhfG/tyUdRInuMFF+OZ+WT5coTc0cqtCTwZhUf1artjwAS+iwWZpe474BFF3kCN9R6BUd9lrAc6Ubls=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1755680766; c=relaxed/simple;
-	bh=xUYE3Hwp/DF0oTqsuThYejwoNMaCLjwHfPdV3vqP1p0=;
-	h=Subject:To:From:Date:Message-ID:MIME-Version:Content-Type; b=lCqi6tRPLpUlioPXKjkgiY3t4gxNPgAlETHZ8AhjCOOQDxoUIE4hwIXfeWHpYlGr+OxwT/t7eDpTPiVXAyUMa/dUAvxGx/UTASnKIV9aC4EHym3o/JF6Y4NfgrOXpoREwFh/XbIlfcgLmK3E4S745AhcOrUgJEiXp8Ebtkf/bQU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=q9PQZEH1; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0A7C9C4CEEB;
-	Wed, 20 Aug 2025 09:06:05 +0000 (UTC)
+	s=arc-20240116; t=1755680763; c=relaxed/simple;
+	bh=NQELbs/h8hw0O6nTsi9p955iFd7hqt/8Dov8jDzXn2o=;
+	h=Subject:To:From:Date:Message-ID:MIME-Version:Content-Type; b=uFkrMTDKZHX/DR7qYvu/K5k5cP76nvEkBm7n/Yt5XdfS8ozxTg3WsGzHBhojYBQIQ+30/hnoAMe99yC1s/jzTpyUGlZ8pBy15iBCMkXqwStCkl9nhTfWg8EcVGtsW+8mzA2qDfWhsIjcYdQlWxmdb+ZJJsVIWs6+uDNxLuKW6eE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=B+zh0VzU; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C7991C4CEEB;
+	Wed, 20 Aug 2025 09:06:02 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1755680766;
-	bh=xUYE3Hwp/DF0oTqsuThYejwoNMaCLjwHfPdV3vqP1p0=;
+	s=korg; t=1755680763;
+	bh=NQELbs/h8hw0O6nTsi9p955iFd7hqt/8Dov8jDzXn2o=;
 	h=Subject:To:From:Date:From;
-	b=q9PQZEH1zgPOofRxy1YISd0GgvmNaVUuAfOxbRa0pPhy+W0pA3RmlzuER5qEZADyt
-	 K35hS04wBurFKscV+DlMMDzoeoVaQAAeZmagagkvLk/rgBUqN7nrHpSOIFPRSKIFt5
-	 UpZ7p9l+2yfTvivPad1gRjcLaof923BwVxQP4KkQ=
-Subject: patch "iio: adc: rzg2l: Cleanup suspend/resume path" added to char-misc-linus
-To: claudiu.beznea.uj@bp.renesas.com,Jonathan.Cameron@huawei.com,Stable@vger.kernel.org,prabhakar.mahadev-lad.rj@bp.renesas.com,ulf.hansson@linaro.org
+	b=B+zh0VzUwq3AXXvJ5Q1PmNCbYbSDdT+zk2LNJg7Ym0r0uDT1fY3d0NM7pU+71VI4i
+	 axFJ5YKVtnDqhy/dp8+KVpv3gkX+sBKmjkkb9H2a4kuFokPHB+ZKPd8Epy0rEQCkxD
+	 z1yU2I/FCMR5Dq1SvE6EDtbyzoFkwSHZde+MIvcs=
+Subject: patch "iio: adc: rzg2l_adc: Set driver data before enabling runtime PM" added to char-misc-linus
+To: claudiu.beznea.uj@bp.renesas.com,Jonathan.Cameron@huawei.com,Stable@vger.kernel.org
 From: <gregkh@linuxfoundation.org>
 Date: Wed, 20 Aug 2025 11:05:36 +0200
-Message-ID: <2025082036-distinct-disfigure-c20a@gregkh>
+Message-ID: <2025082036-chaplain-scientist-87b8@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -54,7 +54,7 @@ Content-Transfer-Encoding: 8bit
 
 This is a note to let you know that I've just added the patch titled
 
-    iio: adc: rzg2l: Cleanup suspend/resume path
+    iio: adc: rzg2l_adc: Set driver data before enabling runtime PM
 
 to my char-misc git tree which can be found at
     git://git.kernel.org/pub/scm/linux/kernel/git/gregkh/char-misc.git
@@ -69,98 +69,50 @@ next -rc kernel release.
 If you have any questions about this process, please let me know.
 
 
-From a3c6eabe3bbd6b0e7124d68b2d3bc32fed17362e Mon Sep 17 00:00:00 2001
+From c69e13965f26b8058f538ea8bdbd2d7718cf1fbe Mon Sep 17 00:00:00 2001
 From: Claudiu Beznea <claudiu.beznea.uj@bp.renesas.com>
-Date: Sun, 10 Aug 2025 15:33:27 +0300
-Subject: iio: adc: rzg2l: Cleanup suspend/resume path
+Date: Sun, 10 Aug 2025 15:33:28 +0300
+Subject: iio: adc: rzg2l_adc: Set driver data before enabling runtime PM
 
-There is no need to manually track the runtime PM status in the driver.
-The pm_runtime_force_suspend() and pm_runtime_force_resume() functions
-already call pm_runtime_status_suspended() to check the runtime PM state.
+When stress-testing the system by repeatedly unbinding and binding the ADC
+device in a loop, and the ADC is a supplier for another device (e.g., a
+thermal hardware block that reads temperature through the ADC), it may
+happen that the ADC device is runtime-resumed immediately after runtime PM
+is enabled, triggered by its consumer. At this point, since drvdata is not
+yet set and the driver's runtime PM callbacks rely on it, a crash can
+occur. To avoid this, set drvdata just after it was allocated.
 
-Additionally, avoid calling pm_runtime_put_autosuspend() during the
-suspend/resume path, as this would decrease the usage counter of a
-potential user that had the ADC open before the suspend/resume cycle.
-
-Fixes: 563cf94f9329 ("iio: adc: rzg2l_adc: Add suspend/resume support")
-Reviewed-by: Ulf Hansson <ulf.hansson@linaro.org>
-Reviewed-by: Lad Prabhakar <prabhakar.mahadev-lad.rj@bp.renesas.com>
+Fixes: 89ee8174e8c8 ("iio: adc: rzg2l_adc: Simplify the runtime PM code")
 Signed-off-by: Claudiu Beznea <claudiu.beznea.uj@bp.renesas.com>
-Link: https://patch.msgid.link/20250810123328.800104-2-claudiu.beznea.uj@bp.renesas.com
+Link: https://patch.msgid.link/20250810123328.800104-3-claudiu.beznea.uj@bp.renesas.com
 Cc: <Stable@vger.kernel.org>
 Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
 ---
- drivers/iio/adc/rzg2l_adc.c | 29 ++++++++---------------------
- 1 file changed, 8 insertions(+), 21 deletions(-)
+ drivers/iio/adc/rzg2l_adc.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
 diff --git a/drivers/iio/adc/rzg2l_adc.c b/drivers/iio/adc/rzg2l_adc.c
-index 9674d48074c9..0cb5a67fd497 100644
+index 0cb5a67fd497..cadb0446bc29 100644
 --- a/drivers/iio/adc/rzg2l_adc.c
 +++ b/drivers/iio/adc/rzg2l_adc.c
-@@ -89,7 +89,6 @@ struct rzg2l_adc {
- 	struct completion completion;
- 	struct mutex lock;
- 	u16 last_val[RZG2L_ADC_MAX_CHANNELS];
--	bool was_rpm_active;
- };
+@@ -427,6 +427,8 @@ static int rzg2l_adc_probe(struct platform_device *pdev)
+ 	if (!indio_dev)
+ 		return -ENOMEM;
  
- /**
-@@ -541,14 +540,9 @@ static int rzg2l_adc_suspend(struct device *dev)
- 	};
- 	int ret;
++	platform_set_drvdata(pdev, indio_dev);
++
+ 	adc = iio_priv(indio_dev);
  
--	if (pm_runtime_suspended(dev)) {
--		adc->was_rpm_active = false;
--	} else {
--		ret = pm_runtime_force_suspend(dev);
--		if (ret)
--			return ret;
--		adc->was_rpm_active = true;
--	}
-+	ret = pm_runtime_force_suspend(dev);
-+	if (ret)
-+		return ret;
- 
- 	ret = reset_control_bulk_assert(ARRAY_SIZE(resets), resets);
- 	if (ret)
-@@ -557,9 +551,7 @@ static int rzg2l_adc_suspend(struct device *dev)
- 	return 0;
- 
- rpm_restore:
--	if (adc->was_rpm_active)
--		pm_runtime_force_resume(dev);
--
-+	pm_runtime_force_resume(dev);
- 	return ret;
- }
- 
-@@ -577,11 +569,9 @@ static int rzg2l_adc_resume(struct device *dev)
+ 	adc->hw_params = device_get_match_data(dev);
+@@ -459,8 +461,6 @@ static int rzg2l_adc_probe(struct platform_device *pdev)
  	if (ret)
  		return ret;
  
--	if (adc->was_rpm_active) {
--		ret = pm_runtime_force_resume(dev);
--		if (ret)
--			goto resets_restore;
--	}
-+	ret = pm_runtime_force_resume(dev);
-+	if (ret)
-+		goto resets_restore;
- 
+-	platform_set_drvdata(pdev, indio_dev);
+-
  	ret = rzg2l_adc_hw_init(dev, adc);
  	if (ret)
-@@ -590,10 +580,7 @@ static int rzg2l_adc_resume(struct device *dev)
- 	return 0;
- 
- rpm_restore:
--	if (adc->was_rpm_active) {
--		pm_runtime_mark_last_busy(dev);
--		pm_runtime_put_autosuspend(dev);
--	}
-+	pm_runtime_force_suspend(dev);
- resets_restore:
- 	reset_control_bulk_assert(ARRAY_SIZE(resets), resets);
- 	return ret;
+ 		return dev_err_probe(&pdev->dev, ret,
 -- 
 2.50.1
 
