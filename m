@@ -1,47 +1,47 @@
-Return-Path: <stable+bounces-171876-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-171877-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0A479B2D77E
-	for <lists+stable@lfdr.de>; Wed, 20 Aug 2025 11:06:36 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 62043B2D77F
+	for <lists+stable@lfdr.de>; Wed, 20 Aug 2025 11:06:37 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 02B6E5E4255
-	for <lists+stable@lfdr.de>; Wed, 20 Aug 2025 09:05:45 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 6D1C45E4892
+	for <lists+stable@lfdr.de>; Wed, 20 Aug 2025 09:05:46 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 96D6C2D7813;
-	Wed, 20 Aug 2025 09:05:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D4C0F2550CA;
+	Wed, 20 Aug 2025 09:05:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="1nt/Imd9"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="XYY7TF4P"
 X-Original-To: Stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5239620B80B
-	for <Stable@vger.kernel.org>; Wed, 20 Aug 2025 09:05:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 914A01DF74F
+	for <Stable@vger.kernel.org>; Wed, 20 Aug 2025 09:05:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755680740; cv=none; b=Jrk6TJKq1fqgVZISBqp2aIaaQTvdF5IZDTA7YG92asGYTNIG4zNcwtSXBDWkkC6Z4R0aN1SIiz5MJe3dGxwzxBvUGCZRm173ReQH65sPc+vYVLqotxTNDYwP72Vug+z2l8K00rQ5VHAHo8tS/gsNcO8rSqHVCMHCT3ecUuT7e6M=
+	t=1755680743; cv=none; b=bVgKIGH3ARj7piXg3W8S3l4DrzvNNXSaIzyjI6btRYcWtY4hKHhaGfYqR0wsNam7+tferOmMy7/JK130Hc9Q7089lDLWAi1e7nbw6RO+WIcQ4ah2h3St9CdIXt4Vokd21usFPbDsAxgmEN0MrBkh1nxVhSrbKrWq5qRt5myNelo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1755680740; c=relaxed/simple;
-	bh=Z7niuZyp+/U453rKYsmO28JvLQrunUwYRQbUCe25d2Y=;
-	h=Subject:To:From:Date:Message-ID:MIME-Version:Content-Type; b=exu6wD+EbPO9jztND0f+NDPdxrYRqMJojJIWiL2RrfSn85nrA8jC8axPWQIrcdSQcgOmQ4UkVgto/zPWM7lK6+igo5TdWducZNAA0nn6oh0dXIbGMhb1coK6nkUNjId/Q9oj9tcjyENnzYR+oUsfViq7KY9QwLYX8hA1y5dsnqw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=1nt/Imd9; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 59667C4CEEB;
-	Wed, 20 Aug 2025 09:05:39 +0000 (UTC)
+	s=arc-20240116; t=1755680743; c=relaxed/simple;
+	bh=BI7Upv0jWbd90G4Nj5xpjrZ+n+2k5tUsPfyNjzrrj1Q=;
+	h=Subject:To:From:Date:Message-ID:MIME-Version:Content-Type; b=bkWpFlVzN2qg/2Yv1dSPXAEVtGE1tkA7EiYpMkzr0t11odVJO++LLyAPnmbbSLWp9ic0hO/EN1AQnePytc+wtmkpt0N8gxrliyPWVaOVxtPQaQAXaKrcruknAHrWK90QeN8nB+rZg8/wgsZRWQLCwmyZinL6sn3Lc/1ww2CUB4I=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=XYY7TF4P; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9C58DC4CEEB;
+	Wed, 20 Aug 2025 09:05:42 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1755680739;
-	bh=Z7niuZyp+/U453rKYsmO28JvLQrunUwYRQbUCe25d2Y=;
+	s=korg; t=1755680743;
+	bh=BI7Upv0jWbd90G4Nj5xpjrZ+n+2k5tUsPfyNjzrrj1Q=;
 	h=Subject:To:From:Date:From;
-	b=1nt/Imd9wio6qQnJOM1dhSALybv43ldZJEda2xwaRJSDCiPvjhZb0dDO6lnxzFLnl
-	 XXNdc2AYWqVisG0isc69WeRyCRUrfi1mKobVq5pzQI+tyf0bAvK9sDwIr6SYRB1MeY
-	 1KZgI1Znyc57Sw+730e2GNreDNGQ8i9W7NPbtrlY=
-Subject: patch "iio: adc: ad7173: prevent scan if too many setups requested" added to char-misc-linus
+	b=XYY7TF4PJZHOaii8ION3aDtmvLSjpS0Xi3xa3CS3ff7WDaOGZuZBGncX6Nw06YmBC
+	 VrbYXBuZkflZb2nQ7Y05Ioa6Juru+TDvnCS4ZqHG6maaehKXI+uWjzCFA9/1Q4EgFk
+	 MKHZymlXTePs0F1NrwMMqYTbVBINZRrsAdUMH/fQ=
+Subject: patch "iio: proximity: isl29501: fix buffered read on big-endian systems" added to char-misc-linus
 To: dlechner@baylibre.com,Jonathan.Cameron@huawei.com,Stable@vger.kernel.org
 From: <gregkh@linuxfoundation.org>
 Date: Wed, 20 Aug 2025 11:05:33 +0200
-Message-ID: <2025082033-mummified-brim-8f08@gregkh>
+Message-ID: <2025082033-copious-cage-e62b@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -54,7 +54,7 @@ Content-Transfer-Encoding: 8bit
 
 This is a note to let you know that I've just added the patch titled
 
-    iio: adc: ad7173: prevent scan if too many setups requested
+    iio: proximity: isl29501: fix buffered read on big-endian systems
 
 to my char-misc git tree which can be found at
     git://git.kernel.org/pub/scm/linux/kernel/git/gregkh/char-misc.git
@@ -69,173 +69,55 @@ next -rc kernel release.
 If you have any questions about this process, please let me know.
 
 
-From 1cfb22c277c7274f54babaa5b416dfbc00181e16 Mon Sep 17 00:00:00 2001
+From de18e978d0cda23e4c102e18092b63a5b0b3a800 Mon Sep 17 00:00:00 2001
 From: David Lechner <dlechner@baylibre.com>
-Date: Tue, 22 Jul 2025 14:20:07 -0500
-Subject: iio: adc: ad7173: prevent scan if too many setups requested
+Date: Tue, 22 Jul 2025 15:54:21 -0500
+Subject: iio: proximity: isl29501: fix buffered read on big-endian systems
 
-Add a check to ad7173_update_scan_mode() to ensure that we didn't exceed
-the maximum number of unique channel configurations.
+Fix passing a u32 value as a u16 buffer scan item. This works on little-
+endian systems, but not on big-endian systems.
 
-In the AD7173 family of chips, there are some chips that have 16
-CHANNELx registers but only 8 setups (combination of CONFIGx, FILTERx,
-GAINx and OFFSETx registers). Since commit 92c247216918 ("iio: adc:
-ad7173: fix num_slots"), it is possible to have more than 8 channels
-enabled in a scan at the same time, so it is possible to get a bad
-configuration when more than 8 channels are using unique configurations.
-This happens because the algorithm to allocate the setup slots only
-takes into account which slot has been least recently used and doesn't
-know about the maximum number of slots available.
+A new local variable is introduced for getting the register value and
+the array is changed to a struct to make the data layout more explicit
+rather than just changing the type and having to recalculate the proper
+length needed for the timestamp.
 
-Since the algorithm to allocate the setup slots is quite complex, it is
-simpler to check after the fact if the current state is valid or not.
-So this patch adds a check in ad7173_update_scan_mode() after setting up
-all of the configurations to make sure that the actual setup still
-matches the requested setup for each enabled channel. If not, we prevent
-the scan from being enabled and return an error.
-
-The setup comparison in ad7173_setup_equal() is refactored to a separate
-function since we need to call it in two places now.
-
-Fixes: 92c247216918 ("iio: adc: ad7173: fix num_slots")
+Fixes: 1c28799257bc ("iio: light: isl29501: Add support for the ISL29501 ToF sensor.")
 Signed-off-by: David Lechner <dlechner@baylibre.com>
-Link: https://patch.msgid.link/20250722-iio-adc-ad7173-fix-setup-use-limits-v2-1-8e96bdb72a9c@baylibre.com
+Link: https://patch.msgid.link/20250722-iio-use-more-iio_declare_buffer_with_ts-7-v2-1-d3ebeb001ed3@baylibre.com
 Cc: <Stable@vger.kernel.org>
 Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
 ---
- drivers/iio/adc/ad7173.c | 87 ++++++++++++++++++++++++++++++++++------
- 1 file changed, 75 insertions(+), 12 deletions(-)
+ drivers/iio/proximity/isl29501.c | 14 ++++++++++----
+ 1 file changed, 10 insertions(+), 4 deletions(-)
 
-diff --git a/drivers/iio/adc/ad7173.c b/drivers/iio/adc/ad7173.c
-index 4413207be28f..683146e83ab2 100644
---- a/drivers/iio/adc/ad7173.c
-+++ b/drivers/iio/adc/ad7173.c
-@@ -200,7 +200,7 @@ struct ad7173_channel_config {
- 	/*
- 	 * Following fields are used to compare equality. If you
- 	 * make adaptations in it, you most likely also have to adapt
--	 * ad7173_find_live_config(), too.
-+	 * ad7173_is_setup_equal(), too.
- 	 */
- 	struct_group(config_props,
- 		bool bipolar;
-@@ -561,12 +561,19 @@ static void ad7173_reset_usage_cnts(struct ad7173_state *st)
- 	st->config_usage_counter = 0;
- }
+diff --git a/drivers/iio/proximity/isl29501.c b/drivers/iio/proximity/isl29501.c
+index d1510fe24050..f69db6f2f380 100644
+--- a/drivers/iio/proximity/isl29501.c
++++ b/drivers/iio/proximity/isl29501.c
+@@ -938,12 +938,18 @@ static irqreturn_t isl29501_trigger_handler(int irq, void *p)
+ 	struct iio_dev *indio_dev = pf->indio_dev;
+ 	struct isl29501_private *isl29501 = iio_priv(indio_dev);
+ 	const unsigned long *active_mask = indio_dev->active_scan_mask;
+-	u32 buffer[4] __aligned(8) = {}; /* 1x16-bit + naturally aligned ts */
++	u32 value;
++	struct {
++		u16 data;
++		aligned_s64 ts;
++	} scan = { };
  
--static struct ad7173_channel_config *
--ad7173_find_live_config(struct ad7173_state *st, struct ad7173_channel_config *cfg)
-+/**
-+ * ad7173_is_setup_equal - Compare two channel setups
-+ * @cfg1: First channel configuration
-+ * @cfg2: Second channel configuration
-+ *
-+ * Compares all configuration options that affect the registers connected to
-+ * SETUP_SEL, namely CONFIGx, FILTERx, GAINx and OFFSETx.
-+ *
-+ * Returns: true if the setups are identical, false otherwise
-+ */
-+static bool ad7173_is_setup_equal(const struct ad7173_channel_config *cfg1,
-+				  const struct ad7173_channel_config *cfg2)
- {
--	struct ad7173_channel_config *cfg_aux;
--	int i;
--
- 	/*
- 	 * This is just to make sure that the comparison is adapted after
- 	 * struct ad7173_channel_config was changed.
-@@ -579,14 +586,22 @@ ad7173_find_live_config(struct ad7173_state *st, struct ad7173_channel_config *c
- 				     u8 ref_sel;
- 			     }));
- 
-+	return cfg1->bipolar == cfg2->bipolar &&
-+	       cfg1->input_buf == cfg2->input_buf &&
-+	       cfg1->odr == cfg2->odr &&
-+	       cfg1->ref_sel == cfg2->ref_sel;
-+}
-+
-+static struct ad7173_channel_config *
-+ad7173_find_live_config(struct ad7173_state *st, struct ad7173_channel_config *cfg)
-+{
-+	struct ad7173_channel_config *cfg_aux;
-+	int i;
-+
- 	for (i = 0; i < st->num_channels; i++) {
- 		cfg_aux = &st->channels[i].cfg;
- 
--		if (cfg_aux->live &&
--		    cfg->bipolar == cfg_aux->bipolar &&
--		    cfg->input_buf == cfg_aux->input_buf &&
--		    cfg->odr == cfg_aux->odr &&
--		    cfg->ref_sel == cfg_aux->ref_sel)
-+		if (cfg_aux->live && ad7173_is_setup_equal(cfg, cfg_aux))
- 			return cfg_aux;
- 	}
- 	return NULL;
-@@ -1228,7 +1243,7 @@ static int ad7173_update_scan_mode(struct iio_dev *indio_dev,
- 				   const unsigned long *scan_mask)
- {
- 	struct ad7173_state *st = iio_priv(indio_dev);
--	int i, ret;
-+	int i, j, k, ret;
- 
- 	for (i = 0; i < indio_dev->num_channels; i++) {
- 		if (test_bit(i, scan_mask))
-@@ -1239,6 +1254,54 @@ static int ad7173_update_scan_mode(struct iio_dev *indio_dev,
- 			return ret;
- 	}
- 
-+	/*
-+	 * On some chips, there are more channels that setups, so if there were
-+	 * more unique setups requested than the number of available slots,
-+	 * ad7173_set_channel() will have written over some of the slots. We
-+	 * can detect this by making sure each assigned cfg_slot matches the
-+	 * requested configuration. If it doesn't, we know that the slot was
-+	 * overwritten by a different channel.
-+	 */
-+	for_each_set_bit(i, scan_mask, indio_dev->num_channels) {
-+		const struct ad7173_channel_config *cfg1, *cfg2;
-+
-+		cfg1 = &st->channels[i].cfg;
-+
-+		for_each_set_bit(j, scan_mask, indio_dev->num_channels) {
-+			cfg2 = &st->channels[j].cfg;
-+
-+			/*
-+			 * Only compare configs that are assigned to the same
-+			 * SETUP_SEL slot and don't compare channel to itself.
-+			 */
-+			if (i == j || cfg1->cfg_slot != cfg2->cfg_slot)
-+				continue;
-+
-+			/*
-+			 * If we find two different configs trying to use the
-+			 * same SETUP_SEL slot, then we know that the that we
-+			 * have too many unique configurations requested for
-+			 * the available slots and at least one was overwritten.
-+			 */
-+			if (!ad7173_is_setup_equal(cfg1, cfg2)) {
-+				/*
-+				 * At this point, there isn't a way to tell
-+				 * which setups are actually programmed in the
-+				 * ADC anymore, so we could read them back to
-+				 * see, but it is simpler to just turn off all
-+				 * of the live flags so that everything gets
-+				 * reprogramed on the next attempt read a sample.
-+				 */
-+				for (k = 0; k < st->num_channels; k++)
-+					st->channels[k].cfg.live = false;
-+
-+				dev_err(&st->sd.spi->dev,
-+					"Too many unique channel configurations requested for scan\n");
-+				return -EINVAL;
-+			}
-+		}
+-	if (test_bit(ISL29501_DISTANCE_SCAN_INDEX, active_mask))
+-		isl29501_register_read(isl29501, REG_DISTANCE, buffer);
++	if (test_bit(ISL29501_DISTANCE_SCAN_INDEX, active_mask)) {
++		isl29501_register_read(isl29501, REG_DISTANCE, &value);
++		scan.data = value;
 +	}
-+
- 	return 0;
- }
  
+-	iio_push_to_buffers_with_timestamp(indio_dev, buffer, pf->timestamp);
++	iio_push_to_buffers_with_timestamp(indio_dev, &scan, pf->timestamp);
+ 	iio_trigger_notify_done(indio_dev->trig);
+ 
+ 	return IRQ_HANDLED;
 -- 
 2.50.1
 
