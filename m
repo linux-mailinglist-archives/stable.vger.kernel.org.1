@@ -1,92 +1,146 @@
-Return-Path: <stable+bounces-171912-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-171913-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id B5598B2E0FF
-	for <lists+stable@lfdr.de>; Wed, 20 Aug 2025 17:27:56 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id F003EB2E15B
+	for <lists+stable@lfdr.de>; Wed, 20 Aug 2025 17:40:39 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 0A6E9A22CCC
-	for <lists+stable@lfdr.de>; Wed, 20 Aug 2025 15:16:46 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 0F61A188D2FB
+	for <lists+stable@lfdr.de>; Wed, 20 Aug 2025 15:38:20 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 09F13337699;
-	Wed, 20 Aug 2025 15:05:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4D22925A333;
+	Wed, 20 Aug 2025 15:37:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=zytor.com header.i=@zytor.com header.b="PRwfcjL2"
+	dkim=permerror (0-bit key) header.d=uniroma2.it header.i=@uniroma2.it header.b="bhFP+2Gp";
+	dkim=pass (2048-bit key) header.d=uniroma2.it header.i=@uniroma2.it header.b="HLDDTQaD"
 X-Original-To: stable@vger.kernel.org
-Received: from mail.zytor.com (terminus.zytor.com [198.137.202.136])
+Received: from smtp.uniroma2.it (smtp.uniroma2.it [160.80.4.42])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1D26233768D;
-	Wed, 20 Aug 2025 15:05:56 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.137.202.136
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B9073213E6D;
+	Wed, 20 Aug 2025 15:37:51 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=160.80.4.42
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755702357; cv=none; b=Iqoq74wwVgPgX+IzHfg+oalB5j9d0NaPZ4wMo5ov+t/oM117YECVxIdY3/xaWknN5vDr6YPPlAnBkYeZ2eBM0EOmc/gUfLhdvrUwbgCMY9ijklorBc36/6Cfp1LP8K106oHMOVdkbb1Pl5dPHXKdcCo/h6dyAYAkApl8z35Q3bU=
+	t=1755704275; cv=none; b=anYLCun9AcWZfjxE/z2qYzyFTSLyu1RquzWUxn+ALAK+WCsT9lk2Z99so8bOVSuDTTi4cp0bZOea9qVqqf8I4OpBaU8jNMZjD+rbkC5+rYYsfkAiQQMZd5vjuSrbUh3y2nNlZB0SgmL0tlQHt9KEKvlZDSV9a7X7/zSFOTp03Qc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1755702357; c=relaxed/simple;
-	bh=FfkoZlnzoZkKlxWkhG0YyxxMSaXAsMovbbjPCCgd1Cg=;
-	h=Date:From:To:CC:Subject:In-Reply-To:References:Message-ID:
-	 MIME-Version:Content-Type; b=RSknHAH6AkqMfulGOJ/ii4pGOjeOfPkQcz92BHPoPvfVyNpuZyyS9nWSubspR7oWH3CI8NlwX24gGpJSeYBZjBaKGVX895vCdeZdQEjQk5S3fO/ilthlrx5reN11L3hcatI/a2VI2a0/4a7y4CC8V006pk/0WfbFocZicwyFcJg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=zytor.com; spf=pass smtp.mailfrom=zytor.com; dkim=pass (2048-bit key) header.d=zytor.com header.i=@zytor.com header.b=PRwfcjL2; arc=none smtp.client-ip=198.137.202.136
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=zytor.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=zytor.com
-Received: from [127.0.0.1] (c-76-133-66-138.hsd1.ca.comcast.net [76.133.66.138])
-	(authenticated bits=0)
-	by mail.zytor.com (8.18.1/8.17.1) with ESMTPSA id 57KF4uPf3773383
-	(version=TLSv1.3 cipher=TLS_AES_128_GCM_SHA256 bits=128 verify=NO);
-	Wed, 20 Aug 2025 08:04:56 -0700
-DKIM-Filter: OpenDKIM Filter v2.11.0 mail.zytor.com 57KF4uPf3773383
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=zytor.com;
-	s=2025072201; t=1755702297;
-	bh=FfkoZlnzoZkKlxWkhG0YyxxMSaXAsMovbbjPCCgd1Cg=;
-	h=Date:From:To:CC:Subject:In-Reply-To:References:From;
-	b=PRwfcjL2kI/UMcRa4Wd7k5IA3UAsKH+P7wZvlLBk8/c52ZoSJlffLHYzpu9nmSSeA
-	 QxlcOq3URm687lveTpzJ6NImuZ7S0QKctTxKl8Rk9NobJuFNeCSip2HK2VnXwQArYE
-	 x5b/XX/uyPvrRPrgcFG+345Zhn5PPXaiy4QNZ2iu++G3JF1Y9Ms5vCBKTNJJycHAAB
-	 rpZjMD2F33ITENU3jnYHFbscU9Py2c5/ZaQCasCeYkP1h87Y5LBHiaZxN/uYeJln0S
-	 psKElp9WMbRUeM0fuD+jiktdMVxrC72u9kN0xtbh1kvGQLy5jZuNzLB2Xlb/ooqxLW
-	 T9Mm3NfWNMk+g==
-Date: Wed, 20 Aug 2025 08:04:52 -0700
-From: "H. Peter Anvin" <hpa@zytor.com>
-To: Masami Hiramatsu <mhiramat@kernel.org>
-CC: "Alan J . Wylie" <alan@wylie.me.uk>, Josh Poimboeuf <jpoimboe@kernel.org>,
-        Thomas Gleixner <tglx@linutronix.de>, Ingo Molnar <mingo@redhat.com>,
-        Borislav Petkov <bp@alien8.de>,
-        Dave Hansen <dave.hansen@linux.intel.com>,
-        linux-kernel@vger.kernel.org, regressions@lists.linux.dev,
-        stable@vger.kernel.org, Linus Torvalds <torvalds@linux-foundation.org>,
-        x86@kernel.org
-Subject: Re: [PATCH] x86: XOP prefix instructions decoder support
-User-Agent: K-9 Mail for Android
-In-Reply-To: <20250820100004.15a49b907b334e821f0a0e73@kernel.org>
-References: <175386161199.564247.597496379413236944.stgit@devnote2> <20250817093240.527825424989e5e2337b5775@kernel.org> <F5D549B0-F8F7-467A-8F8D-7ED5EE4369D3@zytor.com> <20250820100004.15a49b907b334e821f0a0e73@kernel.org>
-Message-ID: <7B59AB4E-F084-43FA-B21B-292319D30501@zytor.com>
+	s=arc-20240116; t=1755704275; c=relaxed/simple;
+	bh=tYvTZy0bYiaZpkHh2cl/jkMfUGMcOXG2vzebLIEmYEk=;
+	h=Date:From:To:Cc:Subject:Message-Id:In-Reply-To:References:
+	 Mime-Version:Content-Type; b=bWa4bVeRk8C00xcZHGzHs4A3U3UOuzsuUqHm1ZVzw3wbetxoIF8mhR2Cp8gfdypcAN1QCfvwj/16k5xzccigh6O5Gtx6vorQ09xxzJaBkPRwF+zt6l7qFZDK7yC+zppbfryQjhARVLQupYxdvU+C7MwROrJmcxaeFD57FeW9iuk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=uniroma2.it; spf=pass smtp.mailfrom=uniroma2.it; dkim=permerror (0-bit key) header.d=uniroma2.it header.i=@uniroma2.it header.b=bhFP+2Gp; dkim=pass (2048-bit key) header.d=uniroma2.it header.i=@uniroma2.it header.b=HLDDTQaD; arc=none smtp.client-ip=160.80.4.42
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=uniroma2.it
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=uniroma2.it
+Received: from smtpauth-2019-1.uniroma2.it (smtpauth.uniroma2.it [160.80.5.46])
+	by smtp-2015.uniroma2.it (8.14.4/8.14.4/Debian-8) with ESMTP id 57KFbCF1024314;
+	Wed, 20 Aug 2025 17:37:17 +0200
+Received: from lubuntu-18.04 (unknown [160.80.103.126])
+	by smtpauth-2019-1.uniroma2.it (Postfix) with ESMTPSA id 53C5F120497;
+	Wed, 20 Aug 2025 17:37:07 +0200 (CEST)
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=uniroma2.it;
+	s=ed201904; t=1755704227; h=from:from:sender:reply-to:subject:subject:date:date:
+	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=x9/s2xzb/me85lzEEWaqZKaMJPHuvgxbFuxCDRpRqQ0=;
+	b=bhFP+2Gpw2WVhtOXolH9Z4eVBubYUg0ZPefGmJz8m5S12qnFaWuJYwkiPCUT0GA+3zo7Z+
+	vQ7urGEYpNwI+/AQ==
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=uniroma2.it; s=rsa201904;
+	t=1755704227; h=from:from:sender:reply-to:subject:subject:date:date:
+	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=x9/s2xzb/me85lzEEWaqZKaMJPHuvgxbFuxCDRpRqQ0=;
+	b=HLDDTQaDyFPoFWZNYx5qgFjKhcdAyQJu3X9ET095NOmah6ZZgIAN67XAb8Oqrz2Ld+VYoG
+	AU1AiQu7n5ILE1Ha5a5M9ViVl1q4Jv9Y7wWX4LeOI4ptLaw6z0bRQrheZqsDLk/uj1ISLd
+	i74njCpmujShx1oXfUXa3OVxsxTTdSHsXg2HriOKJ4xH68oPkF8B4W53HCtZRbG/CVMhZd
+	mCSmvii8/yM9XJ8lde8vWb2XiNGZacuws2/2Hrnt2py1+DDy4Gg/1s3IsyYBF3sf9Xn6rf
+	mcSYczmN/cmKYjSyROLJVFUyEUEQd5+IsrGYfGBMlrjRKgiRHFUK/nDrWwHTJw==
+Date: Wed, 20 Aug 2025 17:37:06 +0200
+From: Andrea Mayer <andrea.mayer@uniroma2.it>
+To: Eric Biggers <ebiggers@kernel.org>
+Cc: netdev@vger.kernel.org, linux-crypto@vger.kernel.org,
+        David Lebrun
+ <dlebrun@google.com>, Minhong He <heminhong@kylinos.cn>,
+        stable@vger.kernel.org, stefano.salsano@uniroma2.it,
+        Paolo Lungaroni
+ <paolo.lungaroni@uniroma2.it>,
+        Andrea Mayer <andrea.mayer@uniroma2.it>
+Subject: Re: [PATCH net v2] ipv6: sr: Fix MAC comparison to be constant-time
+Message-Id: <20250820173706.6cd7d8848513e3082112fa06@uniroma2.it>
+In-Reply-To: <20250818202724.15713-1-ebiggers@kernel.org>
+References: <20250818202724.15713-1-ebiggers@kernel.org>
+X-Mailer: Sylpheed 3.5.1 (GTK+ 2.24.32; x86_64-pc-linux-gnu)
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-Content-Type: text/plain;
- charset=utf-8
-Content-Transfer-Encoding: quoted-printable
+Mime-Version: 1.0
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
+X-Virus-Scanned: clamav-milter 0.100.0 at smtp-2015
+X-Virus-Status: Clean
 
-On August 19, 2025 6:00:04 PM PDT, Masami Hiramatsu <mhiramat@kernel=2Eorg>=
- wrote:
->On Sat, 16 Aug 2025 18:36:17 -0700
->"H=2E Peter Anvin" <hpa@zytor=2Ecom> wrote:
->
->> The easiest way to think of XOP is as a VEX3 supporting a different set=
- of map numbers (VEX3 supports maps 0-31, XOP maps are 8-31 but separate); =
-however, the encoding format is the same=2E=20
->
->Hmm, OK=2E We need to enable VEX3 support too=2E What about the opcode?
->Most of the opcode are the same, or different instructions?
->
->Thank you,
->
->
+On Mon, 18 Aug 2025 13:27:24 -0700
+Eric Biggers <ebiggers@kernel.org> wrote:
 
-Different, that's the whole point =2E=2E=2E
+> To prevent timing attacks, MACs need to be compared in constant time.
+> Use the appropriate helper function for this.
+> 
+> Fixes: bf355b8d2c30 ("ipv6: sr: add core files for SR HMAC support")
+> Cc: stable@vger.kernel.org
+> Signed-off-by: Eric Biggers <ebiggers@kernel.org>
+> ---
+> 
+> v2: sent as standalone patch targeting net instead of net-next.
+> 
+>  net/ipv6/seg6_hmac.c | 3 ++-
+>  1 file changed, 2 insertions(+), 1 deletion(-)
+> 
+
+The fix looks good to me. Thanks!
+
+Ciao,
+Andrea
+
+Reviewed-by: Andrea Mayer <andrea.mayer@uniroma2.it>
+
+> diff --git a/net/ipv6/seg6_hmac.c b/net/ipv6/seg6_hmac.c
+> index f78ecb6ad8383..5dae892bbc73b 100644
+> --- a/net/ipv6/seg6_hmac.c
+> +++ b/net/ipv6/seg6_hmac.c
+> @@ -33,10 +33,11 @@
+>  #include <net/ip6_route.h>
+>  #include <net/addrconf.h>
+>  #include <net/xfrm.h>
+>  
+>  #include <crypto/hash.h>
+> +#include <crypto/utils.h>
+>  #include <net/seg6.h>
+>  #include <net/genetlink.h>
+>  #include <net/seg6_hmac.h>
+>  #include <linux/random.h>
+>  
+> @@ -278,11 +279,11 @@ bool seg6_hmac_validate_skb(struct sk_buff *skb)
+>  		return false;
+>  
+>  	if (seg6_hmac_compute(hinfo, srh, &ipv6_hdr(skb)->saddr, hmac_output))
+>  		return false;
+>  
+> -	if (memcmp(hmac_output, tlv->hmac, SEG6_HMAC_FIELD_LEN) != 0)
+> +	if (crypto_memneq(hmac_output, tlv->hmac, SEG6_HMAC_FIELD_LEN))
+>  		return false;
+>  
+>  	return true;
+>  }
+>  EXPORT_SYMBOL(seg6_hmac_validate_skb);
+> 
+> base-commit: 715c7a36d59f54162a26fac1d1ed8dc087a24cf1
+> -- 
+> 2.50.1
+>
 
