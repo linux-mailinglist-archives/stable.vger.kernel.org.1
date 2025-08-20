@@ -1,695 +1,197 @@
-Return-Path: <stable+bounces-171869-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-171870-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 71415B2D197
-	for <lists+stable@lfdr.de>; Wed, 20 Aug 2025 03:53:06 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id B7290B2D293
+	for <lists+stable@lfdr.de>; Wed, 20 Aug 2025 05:27:34 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id EADCA1BC7131
-	for <lists+stable@lfdr.de>; Wed, 20 Aug 2025 01:53:25 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 71D543B861A
+	for <lists+stable@lfdr.de>; Wed, 20 Aug 2025 03:27:33 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 774BA277037;
-	Wed, 20 Aug 2025 01:53:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3DCFD258ECA;
+	Wed, 20 Aug 2025 03:27:31 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="eymFlvdr"
 X-Original-To: stable@vger.kernel.org
-Received: from mxct.zte.com.cn (mxct.zte.com.cn [183.62.165.209])
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8864D27702A;
-	Wed, 20 Aug 2025 01:52:54 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=183.62.165.209
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 077751E9B08
+	for <stable@vger.kernel.org>; Wed, 20 Aug 2025 03:27:28 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.129.124
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755654780; cv=none; b=vGt5vwPgeu7yaYmZc8ejYzC94SqQyfUlSTudiKdEZ5HQpOnx8nFfmMaJ/Pz57TQ+IQZF/vToOayTrSotElRwf3wWlHJWiLQC1X1Kpvb9ctDEJZSgFs2jqSkgSGYpnAzvskvPmGhvkD/x0wsfXMKSPH8PSQom6IFtLmwrsTLANiM=
+	t=1755660451; cv=none; b=V5zaiSAv1PDDEHaFIMK/TWSumvcqkBZKaxV3GaBLItxtAzHIiy/LlFyPv62dzfkNqPITgQvDcX7lWykj1RFKMew8fZGPg2qLUrc5MA+CrNqVQorWczgOMYm3hBP9JKi+IjPS+AUgDb94LAGfpArevnyR5fVmvJp3IDFc+YeIHKM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1755654780; c=relaxed/simple;
-	bh=LZxF8hOIsi6fQf98Gc4tNrLOQFC0p/zNElbYWaP+IG0=;
-	h=Date:Message-ID:In-Reply-To:References:Mime-Version:From:To:Cc:
-	 Subject:Content-Type; b=vEuwKnkFb7AIupPtVBCH4JXuspVk/SWCGbX0tWnxbNsVLyVkK46yKGacnpcQRU9FiTMv1LJWDhGx1Lrohs6iAuNLrnDZVirhKWNXqMHpR5qVA+m2Ba6xMfbzKwZkjMG/QltGwxjCI1ln8XT+28YpVu9eN9XZMJz26vTaf5MdUQA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=zte.com.cn; spf=pass smtp.mailfrom=zte.com.cn; arc=none smtp.client-ip=183.62.165.209
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=zte.com.cn
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=zte.com.cn
-Received: from mse-fl1.zte.com.cn (unknown [10.5.228.132])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange x25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
-	(No client certificate requested)
-	by mxct.zte.com.cn (FangMail) with ESMTPS id 4c68bj4kmTz5B0m9;
-	Wed, 20 Aug 2025 09:52:49 +0800 (CST)
-Received: from xaxapp05.zte.com.cn ([10.99.98.109])
-	by mse-fl1.zte.com.cn with SMTP id 57K1qZrK063755;
-	Wed, 20 Aug 2025 09:52:35 +0800 (+08)
-	(envelope-from xu.xin16@zte.com.cn)
-Received: from mapi (xaxapp05[null])
-	by mapi (Zmail) with MAPI id mid32;
-	Wed, 20 Aug 2025 09:52:36 +0800 (CST)
-Date: Wed, 20 Aug 2025 09:52:36 +0800 (CST)
-X-Zmail-TransId: 2afc68a52a64500-22b5f
-X-Mailer: Zmail v1.0
-Message-ID: <20250820095236542p8WDHF3snIDSZHkGfJZlG@zte.com.cn>
-In-Reply-To: <2025081914-steadfast-ruckus-22bd@gregkh>
-References: 20250819221605072sYBtQfxeXfCoV3_kHWRry@zte.com.cn,2025081914-steadfast-ruckus-22bd@gregkh
+	s=arc-20240116; t=1755660451; c=relaxed/simple;
+	bh=CzE1mzfOEoyeiSDi/n0UtTiTSZvrNcqpd4IHhvvpEWA=;
+	h=From:Message-ID:Date:MIME-Version:Subject:To:Cc:References:
+	 In-Reply-To:Content-Type; b=WPJnPLVrFefNcOrQ6jq/oYaXWUA2G8bMp2JGsCe+bffI9dMtc6xAX0CqrB5Wwut0To5BHo1gYzPN4NuPQTXdc3A4rs0ulpRduSplx7q2FkqTp8sRwnvsiYvkWTMEY5J2ztqpPGh4WWTT7QuE6OpT9EfSAbSZkWstQAV/Lar+0m8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=eymFlvdr; arc=none smtp.client-ip=170.10.129.124
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1755660447;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=MBtV/gVWBkyOUPr/F57qO1omGrrH3gCVGLkqTBMXbzg=;
+	b=eymFlvdrMwsYYhWcPe+7RjbOkgFtYG6JPO8M5KjSClEVWWN9TUaHQZCFgmmnD/yG9yNqNJ
+	aNVCUkW+IWqc+kGZCI3gDyir/kCbpmW+xRTs6FrIDaeOAJWk0PN7BH6emLB0s14M3idcRw
+	0QmMjt7sATI1OhFANSkhyAhcGtIxQ/s=
+Received: from mail-qk1-f198.google.com (mail-qk1-f198.google.com
+ [209.85.222.198]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-673-LpOqHeKwOlaJyReUVbeOhQ-1; Tue, 19 Aug 2025 23:27:26 -0400
+X-MC-Unique: LpOqHeKwOlaJyReUVbeOhQ-1
+X-Mimecast-MFC-AGG-ID: LpOqHeKwOlaJyReUVbeOhQ_1755660446
+Received: by mail-qk1-f198.google.com with SMTP id af79cd13be357-7e870317642so1441152285a.0
+        for <stable@vger.kernel.org>; Tue, 19 Aug 2025 20:27:26 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1755660446; x=1756265246;
+        h=content-transfer-encoding:in-reply-to:content-language:references
+         :cc:to:subject:user-agent:mime-version:date:message-id:from
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=MBtV/gVWBkyOUPr/F57qO1omGrrH3gCVGLkqTBMXbzg=;
+        b=lTbmebsorAVIjoY+Tn0awXFgpMws4I0S0BlHup9Shhc6B06HyW1qEGEk2pfDSYyb46
+         2mjXIA2nsFfkU9EeswzulLdQWsbcDXAnleIn1c+rr2XF8RkS+eGNVgcyPVx7+xAViHfq
+         /Z6oxfmiLxiLFmkN4cwYdBJhZD7Uilo5ekmfRoaxmkW42owwKi2G8diLMPGlcDmtgA+X
+         /X2HkD2yOOyYvauFKexZ3ThvZI+RHibUSvVxvkRYfPMSI5suXgrj8pQd5ujYjdl9V41x
+         6qWUiWXhBi+hJ5fbxd6xFuVBw50jzJEOwrgGuSbWIT6OE/1yM1G2Xs9zVbYPSCxiqIuJ
+         Wyxg==
+X-Gm-Message-State: AOJu0YwRi1YqU0mJ0+S38wjtBgIZIbU9aeoqetCH9/1XqY4B8gzAvlOI
+	S3gRxSMuySM6iltxXZCzVAPrm8e0SSL5Ft2U0DOVEjTD0VZgbsCozsxYhnVJF5S5Ua3jNDgXsEz
+	t/Ax8VgTXHAElQDBnkT4qBapFji1c1h8PK7qi1LdTFDJ9R3AKVCUNQfjM8w==
+X-Gm-Gg: ASbGncs/lQfaoFjcniMpmOgcV7yo1fftxVc1KyTjnAKs66RiwEbPNsDDtwmDU8Ptdil
+	j2ORL33VUybXVfzUrvBPUg7N4pk1bN3e3MVARcEPQToBIjRzyrcq0DQjZgZoKm0s/aqp7pXhTdG
+	2aOy7it+F6ayZSaog6Ka94jfZc5JqvcUpgqj+Y0i1R90jN5jgysDT/hyair37xEAFfha/V4ofeS
+	WM5e/hqf4KBXUgUmd5O9EsDDtvxvuUTXmDFqXzQtSxQpPCExNlPCG+4tTN4gT9icuSxkCJ51S1S
+	BkkCcuwyVmSxaRDNEvEhAZeisibXC1+kxkYXQBAoKn6LFooOpYzjt+zIJdrI3nopFVdz3nRSc9M
+	QuFS7rNf3pg==
+X-Received: by 2002:a05:620a:472b:b0:7e8:39da:9735 with SMTP id af79cd13be357-7e9fca75d1dmr182364185a.14.1755660445654;
+        Tue, 19 Aug 2025 20:27:25 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IH9qFFsOUZW7BdZPaNwh9b+/hjR594POxsy5yqcNk8yrvy8IpcBso8ImATmHus1Hv5gu4ryFA==
+X-Received: by 2002:a05:620a:472b:b0:7e8:39da:9735 with SMTP id af79cd13be357-7e9fca75d1dmr182362985a.14.1755660445227;
+        Tue, 19 Aug 2025 20:27:25 -0700 (PDT)
+Received: from ?IPV6:2601:188:c180:4250:ecbe:130d:668d:951d? ([2601:188:c180:4250:ecbe:130d:668d:951d])
+        by smtp.gmail.com with ESMTPSA id af79cd13be357-7e87e1c14aesm860958585a.69.2025.08.19.20.27.24
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Tue, 19 Aug 2025 20:27:24 -0700 (PDT)
+From: Waiman Long <llong@redhat.com>
+X-Google-Original-From: Waiman Long <longman@redhat.com>
+Message-ID: <113a8332-b35c-4d00-b8b1-21c07d133f1f@redhat.com>
+Date: Tue, 19 Aug 2025 23:27:23 -0400
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0
-From: <xu.xin16@zte.com.cn>
-To: <gregkh@linuxfoundation.org>
-Cc: <luiz.dentz@gmail.com>, <linux-bluetooth@vger.kernel.org>,
-        <marcel@holtmann.org>, <johan.hedberg@gmail.com>,
-        <chen.junlin@zte.com.cn>, <stable@vger.kernel.org>,
-        <jiang.kun2@zte.com.cn>
-Subject: =?UTF-8?B?562U5aSNOiBbUEFUQ0ggbGludXgtc3RhYmxlIDYuNl0gQmx1ZXRvb3RoOiBoY2lfY29ubjogYXZvaWQgcXVldWUgd2hlbiBkZWxldGluZyBoY2kgY29ubmVjdGlvbg==?=
-Content-Type: text/plain;
-	charset="UTF-8"
-X-MAIL:mse-fl1.zte.com.cn 57K1qZrK063755
-X-TLS: YES
-X-SPF-DOMAIN: zte.com.cn
-X-ENVELOPE-SENDER: xu.xin16@zte.com.cn
-X-SPF: None
-X-SOURCE-IP: 10.5.228.132 unknown Wed, 20 Aug 2025 09:52:49 +0800
-X-Fangmail-Anti-Spam-Filtered: true
-X-Fangmail-MID-QID: 68A52A71.003/4c68bj4kmTz5B0m9
+MIME-Version: 1.0
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v4] mm: Fix possible deadlock in kmemleak
+To: Gu Bowen <gubowen5@huawei.com>, Catalin Marinas
+ <catalin.marinas@arm.com>, Andrew Morton <akpm@linux-foundation.org>,
+ Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Cc: stable@vger.kernel.org, linux-mm@kvack.org, Waiman Long
+ <llong@redhat.com>, Breno Leitao <leitao@debian.org>,
+ John Ogness <john.ogness@linutronix.de>, Lu Jialin <lujialin4@huawei.com>
+References: <20250818090945.1003644-1-gubowen5@huawei.com>
+Content-Language: en-US
+In-Reply-To: <20250818090945.1003644-1-gubowen5@huawei.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
 
-> > From: Chen Junlin <chen.junlin@zte.com.cn>
-> > 
-> > Although the upstream commit 2b0f2fc9ed62 ("Bluetooth: hci_conn:
-> > Use disable_delayed_work_sync") has fixed the issue CVE-2024-56591, that
-> > patch depends on the implementaion of disable/enable_work() of workqueue
-> > [1], which are merged into 6.9/6.10 and so on. But for branch linux-6.6,
-> > there&apos;s no these feature of workqueue.
-> 
-> html marker in a changelog text?
+On 8/18/25 5:09 AM, Gu Bowen wrote:
+> Our syztester report the lockdep WARNING [1], which was identified in
+> stable kernel version 5.10. However, this deadlock path no longer exists
+> due to the refactoring of console_lock in v6.2-rc1 [2]. Coincidentally,
+> there are two types of deadlocks that we have found here. One is the ABBA
+> deadlock, as mentioned above [1], and the other is the AA deadlock was
+> reported by Breno [3]. The latter's deadlock issue persists.
+>
+> To solve this problem, switch to printk_safe mode before printing warning
+> message, this will redirect all printk()-s to a special per-CPU buffer,
+> which will be flushed later from a safe context (irq work), and this
+> deadlock problem can be avoided. The proper API to use should be
+> printk_deferred_enter()/printk_deferred_exit() [4].
+>
+> [1]
+> https://lore.kernel.org/all/20250730094914.566582-1-gubowen5@huawei.com/
+> [2]
+> https://lore.kernel.org/all/20221116162152.193147-1-john.ogness@linutronix.de/
+> [3]
+> https://lore.kernel.org/all/20250731-kmemleak_lock-v1-1-728fd470198f@debian.org/#t
+> [4]
+> https://lore.kernel.org/all/5ca375cd-4a20-4807-b897-68b289626550@redhat.com/
+> ====================
+>
+> Signed-off-by: Gu Bowen <gubowen5@huawei.com>
+> ---
+>   mm/kmemleak.c | 18 ++++++++++++++++++
+>   1 file changed, 18 insertions(+)
+>
+> diff --git a/mm/kmemleak.c b/mm/kmemleak.c
+> index 84265983f239..26113b89d09b 100644
+> --- a/mm/kmemleak.c
+> +++ b/mm/kmemleak.c
+> @@ -437,9 +437,15 @@ static struct kmemleak_object *__lookup_object(unsigned long ptr, int alias,
+>   		else if (untagged_objp == untagged_ptr || alias)
+>   			return object;
+>   		else {
+> +			/*
+> +			 * Printk deferring due to the kmemleak_lock held.
+> +			 * This is done to avoid deadlock.
+> +			 */
+> +			printk_deferred_enter();
+>   			kmemleak_warn("Found object by alias at 0x%08lx\n",
+>   				      ptr);
+>   			dump_object_info(object);
+> +			printk_deferred_exit();
+>   			break;
+>   		}
+>   	}
+> @@ -736,6 +742,11 @@ static int __link_object(struct kmemleak_object *object, unsigned long ptr,
+>   		else if (untagged_objp + parent->size <= untagged_ptr)
+>   			link = &parent->rb_node.rb_right;
+>   		else {
+> +			/*
+> +			 * Printk deferring due to the kmemleak_lock held.
+> +			 * This is done to avoid deadlock.
+> +			 */
+> +			printk_deferred_enter();
+>   			kmemleak_stop("Cannot insert 0x%lx into the object search tree (overlaps existing)\n",
+>   				      ptr);
+>   			/*
+> @@ -743,6 +754,7 @@ static int __link_object(struct kmemleak_object *object, unsigned long ptr,
+>   			 * be freed while the kmemleak_lock is held.
+>   			 */
+>   			dump_object_info(parent);
+> +			printk_deferred_exit();
+>   			return -EEXIST;
+>   		}
+>   	}
+> @@ -858,8 +870,14 @@ static void delete_object_part(unsigned long ptr, size_t size,
+>   	object = __find_and_remove_object(ptr, 1, objflags);
+>   	if (!object) {
+>   #ifdef DEBUG
+> +		/*
+> +		 * Printk deferring due to the kmemleak_lock held.
+> +		 * This is done to avoid deadlock.
+> +		 */
+> +		printk_deferred_enter();
+>   		kmemleak_warn("Partially freeing unknown object at 0x%08lx (size %zu)\n",
+>   			      ptr, size);
+> +		printk_deferred_exit();
+>   #endif
 
-Oh, sorry, it was a mistake of my editor setting.
+This particular warning message can be moved after unlock by adding a 
+warning flag. Locking is done outside of the other two helper functions 
+above, so it is easier to use printk_deferred_enter/exit() for those.
 
-> 
-> > To solve CVE-2024-56591 without backport too many feature patches about
-> > workqueue, we can set a new flag HCI_CONN_DELETE when hci_conn_dell() is
-> > called, and the subsequent queuing of work will be ignored.
-> 
-> How was this tested?
+Anyway, it is just a nit.
 
-The issue could be reproduce by syzkaller (https://github.com/google/syzkaller)
-and the C producer is shown at the last of the reply.
+Acked-by: Waiman Long <longman@redhat.com>
 
-> 
-> > 
-> > [1] https://lore.kernel.org/all/20240216180559.208276-1-tj@kernel.org/
-> > 
-> > Signed-off-by: Chen Junlin <chen.junlin@zte.com.cn>
-> > Signed-off-by: xu xin <xu.xin16@zte.com.cn>
-> 
-> What commit id does this fix?  Why only 6.6 for it?
-
-I think the issue have existed for a long time, because it was reproduced even in Linux 5.10,
-But I'm not sure which commit cause this. Maybe Luiz Augusto von Dentz <luiz.von.dentz@intel.com>
-know better than me.
-
-> 
-> 
-> > ---
-> > include/net/bluetooth/hci_core.h | 8 +++++++-
-> > net/bluetooth/hci_conn.c         | 1 +
-> > 2 files changed, 8 insertions(+), 1 deletion(-)
-> > 
-> > diff --git a/include/net/bluetooth/hci_core.h b/include/net/bluetooth/hci_core.h
-> > index 4f067599e6e9..9a3ec55079a1 100644
-> > --- a/include/net/bluetooth/hci_core.h
-> > +++ b/include/net/bluetooth/hci_core.h
-> > @@ -954,6 +954,7 @@ enum {
-> >  	HCI_CONN_BIG_SYNC_FAILED,
-> >  	HCI_CONN_PA_SYNC,
-> >  	HCI_CONN_PA_SYNC_FAILED,
-> > +	HCI_CONN_DELETE,
-> > };
-> > 
-> > static inline bool hci_conn_ssp_enabled(struct hci_conn *conn)
-> > @@ -1575,7 +1576,12 @@ static inline void hci_conn_drop(struct hci_conn *conn)
-> >  		}
-> > 
-> >  		cancel_delayed_work(&conn->disc_work);
-> > -		queue_delayed_work(conn->hdev->workqueue,
-> > +		/*
-> > +		 * When HCI_CONN_DELETE is set, the conn is goint to be freed.
-> > +		 * Don&apos;t queue the work to avoid noisy WARNing about refcnt < 0.
-> 
-> Again, html text in a comment?
-> 
-> How does that happen?
-> 
-> thanks,
-> 
-> greg k-h
-C reproducer:
-// autogenerated by syzkaller (https://github.com/google/syzkaller)
-
-#define _GNU_SOURCE 
-
-#include <endian.h>
-#include <errno.h>
-#include <fcntl.h>
-#include <pthread.h>
-#include <sched.h>
-#include <stdarg.h>
-#include <stdbool.h>
-#include <stdint.h>
-#include <stdio.h>
-#include <stdlib.h>
-#include <string.h>
-#include <sys/epoll.h>
-#include <sys/ioctl.h>
-#include <sys/mount.h>
-#include <sys/prctl.h>
-#include <sys/resource.h>
-#include <sys/socket.h>
-#include <sys/stat.h>
-#include <sys/syscall.h>
-#include <sys/time.h>
-#include <sys/types.h>
-#include <sys/uio.h>
-#include <sys/wait.h>
-#include <unistd.h>
-
-#include <linux/capability.h>
-#include <linux/rfkill.h>
-
-static bool write_file(const char* file, const char* what, ...)
-{
-	char buf[1024];
-	va_list args;
-	va_start(args, what);
-	vsnprintf(buf, sizeof(buf), what, args);
-	va_end(args);
-	buf[sizeof(buf) - 1] = 0;
-	int len = strlen(buf);
-	int fd = open(file, O_WRONLY | O_CLOEXEC);
-	if (fd == -1)
-		return false;
-	if (write(fd, buf, len) != len) {
-		int err = errno;
-		close(fd);
-		errno = err;
-		return false;
-	}
-	close(fd);
-	return true;
-}
-
-#define BTPROTO_HCI 1
-#define ACL_LINK 1
-#define SCAN_PAGE 2
-
-typedef struct {
-	uint8_t b[6];
-} __attribute__((packed)) bdaddr_t;
-
-#define HCI_COMMAND_PKT 1
-#define HCI_EVENT_PKT 4
-#define HCI_VENDOR_PKT 0xff
-
-struct hci_command_hdr {
-	uint16_t opcode;
-	uint8_t plen;
-} __attribute__((packed));
-
-struct hci_event_hdr {
-	uint8_t evt;
-	uint8_t plen;
-} __attribute__((packed));
-
-#define HCI_EV_CONN_COMPLETE 0x03
-struct hci_ev_conn_complete {
-	uint8_t status;
-	uint16_t handle;
-	bdaddr_t bdaddr;
-	uint8_t link_type;
-	uint8_t encr_mode;
-} __attribute__((packed));
-
-#define HCI_EV_CONN_REQUEST 0x04
-struct hci_ev_conn_request {
-	bdaddr_t bdaddr;
-	uint8_t dev_class[3];
-	uint8_t link_type;
-} __attribute__((packed));
-
-#define HCI_EV_REMOTE_FEATURES 0x0b
-struct hci_ev_remote_features {
-	uint8_t status;
-	uint16_t handle;
-	uint8_t features[8];
-} __attribute__((packed));
-
-#define HCI_EV_CMD_COMPLETE 0x0e
-struct hci_ev_cmd_complete {
-	uint8_t ncmd;
-	uint16_t opcode;
-} __attribute__((packed));
-
-#define HCI_OP_WRITE_SCAN_ENABLE 0x0c1a
-
-#define HCI_OP_READ_BUFFER_SIZE 0x1005
-struct hci_rp_read_buffer_size {
-	uint8_t status;
-	uint16_t acl_mtu;
-	uint8_t sco_mtu;
-	uint16_t acl_max_pkt;
-	uint16_t sco_max_pkt;
-} __attribute__((packed));
-
-#define HCI_OP_READ_BD_ADDR 0x1009
-struct hci_rp_read_bd_addr {
-	uint8_t status;
-	bdaddr_t bdaddr;
-} __attribute__((packed));
-
-#define HCI_EV_LE_META 0x3e
-struct hci_ev_le_meta {
-	uint8_t subevent;
-} __attribute__((packed));
-
-#define HCI_EV_LE_CONN_COMPLETE 0x01
-struct hci_ev_le_conn_complete {
-	uint8_t status;
-	uint16_t handle;
-	uint8_t role;
-	uint8_t bdaddr_type;
-	bdaddr_t bdaddr;
-	uint16_t interval;
-	uint16_t latency;
-	uint16_t supervision_timeout;
-	uint8_t clk_accurancy;
-} __attribute__((packed));
-
-struct hci_dev_req {
-	uint16_t dev_id;
-	uint32_t dev_opt;
-};
-
-struct vhci_vendor_pkt_request {
-	uint8_t type;
-	uint8_t opcode;
-} __attribute__((packed));
-
-struct vhci_pkt {
-	uint8_t type;
-	union {
-		struct {
-			uint8_t opcode;
-			uint16_t id;
-		} __attribute__((packed)) vendor_pkt;
-		struct hci_command_hdr command_hdr;
-	};
-} __attribute__((packed));
-
-#define HCIDEVUP _IOW('H', 201, int)
-#define HCISETSCAN _IOW('H', 221, int)
-
-static int vhci_fd = -1;
-
-static void rfkill_unblock_all()
-{
-	int fd = open("/dev/rfkill", O_WRONLY);
-	if (fd < 0)
-	exit(1);
-	struct rfkill_event event = {0};
-	event.idx = 0;
-	event.type = RFKILL_TYPE_ALL;
-	event.op = RFKILL_OP_CHANGE_ALL;
-	event.soft = 0;
-	event.hard = 0;
-	if (write(fd, &event, sizeof(event)) < 0)
-	exit(1);
-	close(fd);
-}
-
-static void hci_send_event_packet(int fd, uint8_t evt, void* data, size_t data_len)
-{
-	struct iovec iv[3];
-	struct hci_event_hdr hdr;
-	hdr.evt = evt;
-	hdr.plen = data_len;
-	uint8_t type = HCI_EVENT_PKT;
-	iv[0].iov_base = &type;
-	iv[0].iov_len = sizeof(type);
-	iv[1].iov_base = &hdr;
-	iv[1].iov_len = sizeof(hdr);
-	iv[2].iov_base = data;
-	iv[2].iov_len = data_len;
-	if (writev(fd, iv, sizeof(iv) / sizeof(struct iovec)) < 0)
-	exit(1);
-}
-
-static void hci_send_event_cmd_complete(int fd, uint16_t opcode, void* data, size_t data_len)
-{
-	struct iovec iv[4];
-	struct hci_event_hdr hdr;
-	hdr.evt = HCI_EV_CMD_COMPLETE;
-	hdr.plen = sizeof(struct hci_ev_cmd_complete) + data_len;
-	struct hci_ev_cmd_complete evt_hdr;
-	evt_hdr.ncmd = 1;
-	evt_hdr.opcode = opcode;
-	uint8_t type = HCI_EVENT_PKT;
-	iv[0].iov_base = &type;
-	iv[0].iov_len = sizeof(type);
-	iv[1].iov_base = &hdr;
-	iv[1].iov_len = sizeof(hdr);
-	iv[2].iov_base = &evt_hdr;
-	iv[2].iov_len = sizeof(evt_hdr);
-	iv[3].iov_base = data;
-	iv[3].iov_len = data_len;
-	if (writev(fd, iv, sizeof(iv) / sizeof(struct iovec)) < 0)
-	exit(1);
-}
-
-static bool process_command_pkt(int fd, char* buf, ssize_t buf_size)
-{
-	struct hci_command_hdr* hdr = (struct hci_command_hdr*)buf;
-	if (buf_size < (ssize_t)sizeof(struct hci_command_hdr) ||
-	    hdr->plen != buf_size - sizeof(struct hci_command_hdr))
-	exit(1);
-	switch (hdr->opcode) {
-	case HCI_OP_WRITE_SCAN_ENABLE: {
-		uint8_t status = 0;
-		hci_send_event_cmd_complete(fd, hdr->opcode, &status, sizeof(status));
-		return true;
-	}
-	case HCI_OP_READ_BD_ADDR: {
-		struct hci_rp_read_bd_addr rp = {0};
-		rp.status = 0;
-		memset(&rp.bdaddr, 0xaa, 6);
-		hci_send_event_cmd_complete(fd, hdr->opcode, &rp, sizeof(rp));
-		return false;
-	}
-	case HCI_OP_READ_BUFFER_SIZE: {
-		struct hci_rp_read_buffer_size rp = {0};
-		rp.status = 0;
-		rp.acl_mtu = 1021;
-		rp.sco_mtu = 96;
-		rp.acl_max_pkt = 4;
-		rp.sco_max_pkt = 6;
-		hci_send_event_cmd_complete(fd, hdr->opcode, &rp, sizeof(rp));
-		return false;
-	}
-	}
-	char dummy[0xf9] = {0};
-	hci_send_event_cmd_complete(fd, hdr->opcode, dummy, sizeof(dummy));
-	return false;
-}
-
-static void* event_thread(void* arg)
-{
-	while (1) {
-		char buf[1024] = {0};
-		ssize_t buf_size = read(vhci_fd, buf, sizeof(buf));
-		if (buf_size < 0)
-	exit(1);
-		if (buf_size > 0 && buf[0] == HCI_COMMAND_PKT) {
-			if (process_command_pkt(vhci_fd, buf + 1, buf_size - 1))
-				break;
-		}
-	}
-	return NULL;
-}
-#define HCI_HANDLE_1 200
-#define HCI_HANDLE_2 201
-
-#define HCI_PRIMARY 0
-#define HCI_OP_RESET 0x0c03
-
-static void initialize_vhci()
-{
-	int hci_sock = socket(AF_BLUETOOTH, SOCK_RAW, BTPROTO_HCI);
-	if (hci_sock < 0)
-	exit(1);
-	vhci_fd = open("/dev/vhci", O_RDWR);
-	if (vhci_fd == -1)
-	exit(1);
-	const int kVhciFd = 202;
-	if (dup2(vhci_fd, kVhciFd) < 0)
-	exit(1);
-	close(vhci_fd);
-	vhci_fd = kVhciFd;
-	struct vhci_vendor_pkt_request vendor_pkt_req = {HCI_VENDOR_PKT, HCI_PRIMARY};
-	if (write(vhci_fd, &vendor_pkt_req, sizeof(vendor_pkt_req)) != sizeof(vendor_pkt_req))
-	exit(1);
-	struct vhci_pkt vhci_pkt;
-	if (read(vhci_fd, &vhci_pkt, sizeof(vhci_pkt)) != sizeof(vhci_pkt))
-	exit(1);
-	if (vhci_pkt.type == HCI_COMMAND_PKT && vhci_pkt.command_hdr.opcode == HCI_OP_RESET) {
-		char response[1] = {0};
-		hci_send_event_cmd_complete(vhci_fd, HCI_OP_RESET, response, sizeof(response));
-		if (read(vhci_fd, &vhci_pkt, sizeof(vhci_pkt)) != sizeof(vhci_pkt))
-	exit(1);
-	}
-	if (vhci_pkt.type != HCI_VENDOR_PKT)
-	exit(1);
-	int dev_id = vhci_pkt.vendor_pkt.id;
-	pthread_t th;
-	if (pthread_create(&th, NULL, event_thread, NULL))
-	exit(1);
-	int ret = ioctl(hci_sock, HCIDEVUP, dev_id);
-	if (ret) {
-		if (errno == ERFKILL) {
-			rfkill_unblock_all();
-			ret = ioctl(hci_sock, HCIDEVUP, dev_id);
-		}
-		if (ret && errno != EALREADY)
-	exit(1);
-	}
-	struct hci_dev_req dr = {0};
-	dr.dev_id = dev_id;
-	dr.dev_opt = SCAN_PAGE;
-	if (ioctl(hci_sock, HCISETSCAN, &dr))
-	exit(1);
-	struct hci_ev_conn_request request;
-	memset(&request, 0, sizeof(request));
-	memset(&request.bdaddr, 0xaa, 6);
-	*(uint8_t*)&request.bdaddr.b[5] = 0x10;
-	request.link_type = ACL_LINK;
-	hci_send_event_packet(vhci_fd, HCI_EV_CONN_REQUEST, &request, sizeof(request));
-	struct hci_ev_conn_complete complete;
-	memset(&complete, 0, sizeof(complete));
-	complete.status = 0;
-	complete.handle = HCI_HANDLE_1;
-	memset(&complete.bdaddr, 0xaa, 6);
-	*(uint8_t*)&complete.bdaddr.b[5] = 0x10;
-	complete.link_type = ACL_LINK;
-	complete.encr_mode = 0;
-	hci_send_event_packet(vhci_fd, HCI_EV_CONN_COMPLETE, &complete, sizeof(complete));
-	struct hci_ev_remote_features features;
-	memset(&features, 0, sizeof(features));
-	features.status = 0;
-	features.handle = HCI_HANDLE_1;
-	hci_send_event_packet(vhci_fd, HCI_EV_REMOTE_FEATURES, &features, sizeof(features));
-	struct {
-		struct hci_ev_le_meta le_meta;
-		struct hci_ev_le_conn_complete le_conn;
-	} le_conn;
-	memset(&le_conn, 0, sizeof(le_conn));
-	le_conn.le_meta.subevent = HCI_EV_LE_CONN_COMPLETE;
-	memset(&le_conn.le_conn.bdaddr, 0xaa, 6);
-	*(uint8_t*)&le_conn.le_conn.bdaddr.b[5] = 0x11;
-	le_conn.le_conn.role = 1;
-	le_conn.le_conn.handle = HCI_HANDLE_2;
-	hci_send_event_packet(vhci_fd, HCI_EV_LE_META, &le_conn, sizeof(le_conn));
-	pthread_join(th, NULL);
-	close(hci_sock);
-}
-
-static void setup_gadgetfs();
-static void setup_binderfs();
-static void setup_fusectl();
-static void sandbox_common_mount_tmpfs(void)
-{
-	write_file("/proc/sys/fs/mount-max", "100000");
-	if (mkdir("./syz-tmp", 0777))
-	exit(1);
-	if (mount("", "./syz-tmp", "tmpfs", 0, NULL))
-	exit(1);
-	if (mkdir("./syz-tmp/newroot", 0777))
-	exit(1);
-	if (mkdir("./syz-tmp/newroot/dev", 0700))
-	exit(1);
-	unsigned bind_mount_flags = MS_BIND | MS_REC | MS_PRIVATE;
-	if (mount("/dev", "./syz-tmp/newroot/dev", NULL, bind_mount_flags, NULL))
-	exit(1);
-	if (mkdir("./syz-tmp/newroot/proc", 0700))
-	exit(1);
-	if (mount("syz-proc", "./syz-tmp/newroot/proc", "proc", 0, NULL))
-	exit(1);
-	if (mkdir("./syz-tmp/newroot/selinux", 0700))
-	exit(1);
-	const char* selinux_path = "./syz-tmp/newroot/selinux";
-	if (mount("/selinux", selinux_path, NULL, bind_mount_flags, NULL)) {
-		if (errno != ENOENT)
-	exit(1);
-		if (mount("/sys/fs/selinux", selinux_path, NULL, bind_mount_flags, NULL) && errno != ENOENT)
-	exit(1);
-	}
-	if (mkdir("./syz-tmp/newroot/sys", 0700))
-	exit(1);
-	if (mount("/sys", "./syz-tmp/newroot/sys", 0, bind_mount_flags, NULL))
-	exit(1);
-	if (mount("/sys/kernel/debug", "./syz-tmp/newroot/sys/kernel/debug", NULL, bind_mount_flags, NULL) && errno != ENOENT)
-	exit(1);
-	if (mount("/sys/fs/smackfs", "./syz-tmp/newroot/sys/fs/smackfs", NULL, bind_mount_flags, NULL) && errno != ENOENT)
-	exit(1);
-	if (mount("/proc/sys/fs/binfmt_misc", "./syz-tmp/newroot/proc/sys/fs/binfmt_misc", NULL, bind_mount_flags, NULL) && errno != ENOENT)
-	exit(1);
-	if (mkdir("./syz-tmp/pivot", 0777))
-	exit(1);
-	if (syscall(SYS_pivot_root, "./syz-tmp", "./syz-tmp/pivot")) {
-		if (chdir("./syz-tmp"))
-	exit(1);
-	} else {
-		if (chdir("/"))
-	exit(1);
-		if (umount2("./pivot", MNT_DETACH))
-	exit(1);
-	}
-	if (chroot("./newroot"))
-	exit(1);
-	if (chdir("/"))
-	exit(1);
-	setup_gadgetfs();
-	setup_binderfs();
-	setup_fusectl();
-}
-
-static void setup_gadgetfs()
-{
-	if (mkdir("/dev/gadgetfs", 0777)) {
-	}
-	if (mount("gadgetfs", "/dev/gadgetfs", "gadgetfs", 0, NULL)) {
-	}
-}
-
-static void setup_fusectl()
-{
-	if (mount(0, "/sys/fs/fuse/connections", "fusectl", 0, 0)) {
-	}
-}
-
-static void setup_binderfs()
-{
-	if (mkdir("/dev/binderfs", 0777)) {
-	}
-	if (mount("binder", "/dev/binderfs", "binder", 0, NULL)) {
-	}
-	if (symlink("/dev/binderfs", "./binderfs")) {
-	}
-}
-
-static void loop();
-
-static void sandbox_common()
-{
-	prctl(PR_SET_PDEATHSIG, SIGKILL, 0, 0, 0);
-	if (getppid() == 1)
-	exit(1);
-	struct rlimit rlim;
-	rlim.rlim_cur = rlim.rlim_max = (200 << 20);
-	setrlimit(RLIMIT_AS, &rlim);
-	rlim.rlim_cur = rlim.rlim_max = 32 << 20;
-	setrlimit(RLIMIT_MEMLOCK, &rlim);
-	rlim.rlim_cur = rlim.rlim_max = 136 << 20;
-	setrlimit(RLIMIT_FSIZE, &rlim);
-	rlim.rlim_cur = rlim.rlim_max = 1 << 20;
-	setrlimit(RLIMIT_STACK, &rlim);
-	rlim.rlim_cur = rlim.rlim_max = 128 << 20;
-	setrlimit(RLIMIT_CORE, &rlim);
-	rlim.rlim_cur = rlim.rlim_max = 256;
-	setrlimit(RLIMIT_NOFILE, &rlim);
-	if (unshare(CLONE_NEWNS)) {
-	}
-	if (mount(NULL, "/", NULL, MS_REC | MS_PRIVATE, NULL)) {
-	}
-	if (unshare(CLONE_NEWIPC)) {
-	}
-	if (unshare(0x02000000)) {
-	}
-	if (unshare(CLONE_NEWUTS)) {
-	}
-	if (unshare(CLONE_SYSVSEM)) {
-	}
-	typedef struct {
-		const char* name;
-		const char* value;
-	} sysctl_t;
-	static const sysctl_t sysctls[] = {
-	    {"/proc/sys/kernel/shmmax", "16777216"},
-	    {"/proc/sys/kernel/shmall", "536870912"},
-	    {"/proc/sys/kernel/shmmni", "1024"},
-	    {"/proc/sys/kernel/msgmax", "8192"},
-	    {"/proc/sys/kernel/msgmni", "1024"},
-	    {"/proc/sys/kernel/msgmnb", "1024"},
-	    {"/proc/sys/kernel/sem", "1024 1048576 500 1024"},
-	};
-	unsigned i;
-	for (i = 0; i < sizeof(sysctls) / sizeof(sysctls[0]); i++)
-		write_file(sysctls[i].name, sysctls[i].value);
-}
-
-static int wait_for_loop(int pid)
-{
-	if (pid < 0)
-	exit(1);
-	int status = 0;
-	while (waitpid(-1, &status, __WALL) != pid) {
-	}
-	return WEXITSTATUS(status);
-}
-
-static void drop_caps(void)
-{
-	struct __user_cap_header_struct cap_hdr = {};
-	struct __user_cap_data_struct cap_data[2] = {};
-	cap_hdr.version = _LINUX_CAPABILITY_VERSION_3;
-	cap_hdr.pid = getpid();
-	if (syscall(SYS_capget, &cap_hdr, &cap_data))
-	exit(1);
-	const int drop = (1 << CAP_SYS_PTRACE) | (1 << CAP_SYS_NICE);
-	cap_data[0].effective &= ~drop;
-	cap_data[0].permitted &= ~drop;
-	cap_data[0].inheritable &= ~drop;
-	if (syscall(SYS_capset, &cap_hdr, &cap_data))
-	exit(1);
-}
-
-static int do_sandbox_none(void)
-{
-	if (unshare(CLONE_NEWPID)) {
-	}
-	int pid = fork();
-	if (pid != 0)
-		return wait_for_loop(pid);
-	initialize_vhci();
-	sandbox_common();
-	drop_caps();
-	if (unshare(CLONE_NEWNET)) {
-	}
-	write_file("/proc/sys/net/ipv4/ping_group_range", "0 65535");
-	sandbox_common_mount_tmpfs();
-	loop();
-	exit(1);
-}
-
-void loop(void)
-{
-		if (write(1, "executing program\n", sizeof("executing program\n") - 1)) {}
-
-}
-int main(void)
-{
-		syscall(__NR_mmap, /*addr=*/0x1ffff000ul, /*len=*/0x1000ul, /*prot=*/0ul, /*flags=MAP_FIXED|MAP_ANONYMOUS|MAP_PRIVATE*/0x32ul, /*fd=*/-1, /*offset=*/0ul);
-	syscall(__NR_mmap, /*addr=*/0x20000000ul, /*len=*/0x1000000ul, /*prot=PROT_WRITE|PROT_READ|PROT_EXEC*/7ul, /*flags=MAP_FIXED|MAP_ANONYMOUS|MAP_PRIVATE*/0x32ul, /*fd=*/-1, /*offset=*/0ul);
-	syscall(__NR_mmap, /*addr=*/0x21000000ul, /*len=*/0x1000ul, /*prot=*/0ul, /*flags=MAP_FIXED|MAP_ANONYMOUS|MAP_PRIVATE*/0x32ul, /*fd=*/-1, /*offset=*/0ul);
-	const char* reason;
-	(void)reason;
-			do_sandbox_none();
-	return 0;
-}
 
