@@ -1,88 +1,57 @@
-Return-Path: <stable+bounces-171925-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-171926-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 98F45B2E598
-	for <lists+stable@lfdr.de>; Wed, 20 Aug 2025 21:30:50 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 47F16B2E5CE
+	for <lists+stable@lfdr.de>; Wed, 20 Aug 2025 21:48:13 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id E54AB1C8703F
-	for <lists+stable@lfdr.de>; Wed, 20 Aug 2025 19:31:06 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id C7A2E1C8878F
+	for <lists+stable@lfdr.de>; Wed, 20 Aug 2025 19:48:29 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6C6B52741C9;
-	Wed, 20 Aug 2025 19:30:42 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="hQRjW2tY"
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 143C5277C9F;
+	Wed, 20 Aug 2025 19:47:48 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
-Received: from mail-ej1-f50.google.com (mail-ej1-f50.google.com [209.85.218.50])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 89749212D7C;
-	Wed, 20 Aug 2025 19:30:40 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.218.50
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CEB3F8F49;
+	Wed, 20 Aug 2025 19:47:47 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755718242; cv=none; b=ZKNVEQRuN27rMYlawu4UTxUnlxmV4G/rQDcUu5dqdI2s+cVn7rvfaO+VI89mRe5zIj3VpcA8FaeYwH126udbBSDoKYuwV/9wxjq22tojuUwcat7YhmV1MKySG2m+GI1RtAttP9+1mhbEw5pEz8J2iyJmA9e/mD2awNzLKd7RZpQ=
+	t=1755719267; cv=none; b=GTeP9Iou85eCEhD+DWPrVwoD8Xu6YCNGnyE4TgPhVFrohGwu1/CbMkQsjykEhC1TTqvfHFLIlSt/VutvAe5tlulMNvyAbsYkvAHUrMnYGprGUgV+PaJRWZnBR4ANn0zk1SZklR3A3E59X3+OGeNNRleA9iOwgAVGqAiC/NGNDas=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1755718242; c=relaxed/simple;
-	bh=oWgMmkF+VavFhTKCU41iCrjm9M8rM6Vy+86aNjRCt6Y=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=U1rEJavkGZko2stYnACP00Tv2D6xtP3MvHPUGQc5PHJwKW5wKpWh79vaud+exP6mtPndkFhfiqzt+QhhTnhYTNsAoj2kbiPePq8bAb56LfF0X5caoFVRnDdSYTlIznPakubN9dQ+uLDEujvSafj7YwYWXNGmCgoWjuz1Z1msLmQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=hQRjW2tY; arc=none smtp.client-ip=209.85.218.50
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-ej1-f50.google.com with SMTP id a640c23a62f3a-afcb78f5df4so42842766b.1;
-        Wed, 20 Aug 2025 12:30:40 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1755718238; x=1756323038; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=xFgVtYJ8Gh4sCpaIkpLqNQZzoK7dIue6xEz/XU13DfQ=;
-        b=hQRjW2tYAvjbSstR5TIWH0v33FvgB4uA2I4OqXIFNO2GC7DV8439BZPPiIKr7v3FTS
-         P2DfmcJyRhIlYttfykl6K2OBILCaxuCdS6/FUJF7QBvRXkMZ6mjQOi51BHVxwghTa8pW
-         TOK93T0Vupymkn1nOC8c31z6pqB4uS9DCZ+ehe1d5BNz3S0uciMJJhrpJDLjjKPGwUUm
-         JEUt5dDBhUwBEDx1g5Rqbl6QP5hgzLpb8sM1V9rLTsh2jnocSv92Y/WFJhCaQNZh74z2
-         hVY432vmGezjYU3tqEKX8/KvsGxyliLRB6QF69ER23PBylDsfSr37exX6DYnjWf6YShi
-         o7ZQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1755718238; x=1756323038;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=xFgVtYJ8Gh4sCpaIkpLqNQZzoK7dIue6xEz/XU13DfQ=;
-        b=UEolfU8tp9WJ7mfU3uKpR0O9/mmdBvz/qY5xmcaRoOsAi789kZEkTQew56iDWNrWjq
-         JhKGbqnpxIgWefAmHN6EnL3fvOrTee1c5J/BFwchAXV+ZoglOCQHGDYlHHvertzmU1b/
-         dZmxT4yKHOW98MvMJZLpco9mE62lN1D2jKjfQSLmYEbupWvdZlKfpz+G7DCo3FwJxyFg
-         kWI9WUd+svgIrobVqdKL4F8oky2HlkNLfE2EX2LKsCofUgbNAggYANGwSHv8EHKilSjp
-         ms3syn2W8S0fHazDJsGM/zKnDN15LDx7bCRGo8eRlTXDnAjckzxiC3aR3L+GcROxmU3Z
-         fxNQ==
-X-Forwarded-Encrypted: i=1; AJvYcCUQ+HqdYe/rRhj/ug8Evwys8Lq+QWTHqT3RCZDj3ua3PIK/eU7mUWfK3krhJoi03MqSspEIUSc=@vger.kernel.org
-X-Gm-Message-State: AOJu0Yy7SyLX+JTnnfIi83lnjyziLhJ9bCFc7znBdspCMJRgslmVTiz8
-	WeHt3qypBcmFNOhvpnyflX4rc3q4M/hBaxOP+aW9twWMAAtVZjy5s1urjPd1J+MC
-X-Gm-Gg: ASbGnct7R844GVT5+quWVwf2FoTrtkDgwFmpnUbb9j8OVpnqw2UVhq1aTp17Tqzel75
-	9yHpV0GjAthTK7sUuvqZA/ESt07ecWBpGwdQZ1JCC2Q9ZwJVum3T8EvnWGwYHDXoQ/rCeQ9WwS9
-	iSZw8M2hBLQHQ9aN1VknbxQK0HzeoqIykLqI2rWmEKNmF7pJytBURJeNgV+X5btAVU6C1IBrfpP
-	93XMLJhweDUSeb07+xDIQGSLumMhY8zlNXTqkm2d5CTc/KFOcdFtuHJZhrvuhxJCjofg5jCOqVU
-	cyJWOyxyAK9sGv8OH3ow53LeMwHB7HcfZxDLpYlu/f7dhqxDBkNHXrqgTxEdWQDIM/GuFsw/InR
-	hzKDTB+zlsF0fjKklRDGU1GoPWpoiYU1qrOVXfJFrEvbLYE48AFw40zGNMt/Eol/bEBYWcbf6Ng
-	AKCZk=
-X-Google-Smtp-Source: AGHT+IFCBiHSlW/ki1YtdYMi2uRfdwcyFfP12k8/JIn26TTFHKMJ3fGSane3cZ3VpRG2pvAcrBKJzA==
-X-Received: by 2002:a17:907:3c91:b0:ae3:cc60:8ce7 with SMTP id a640c23a62f3a-afe07a07df6mr3257766b.19.1755718238220;
-        Wed, 20 Aug 2025 12:30:38 -0700 (PDT)
-Received: from fedora.tux.internal (85.191.71.118.dynamic.dhcp.aura-net.dk. [85.191.71.118])
-        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-afded52ea4asm230009366b.101.2025.08.20.12.30.37
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 20 Aug 2025 12:30:37 -0700 (PDT)
-From: Bruno Thomsen <bruno.thomsen@gmail.com>
-To: linux-rtc@vger.kernel.org
-Cc: bruno.thomsen@gmail.com,
-	stable@vger.kernel.org,
-	Alexandre Belloni <alexandre.belloni@bootlin.com>,
-	Elena Popa <elena.popa@nxp.com>,
-	Hugo Villeneuve <hvilleneuve@dimonoff.com>
-Subject: [PATCH] rtc: pcf2127: fix SPI command byte for PCF2131 backport
-Date: Wed, 20 Aug 2025 21:30:16 +0200
-Message-ID: <20250820193016.7987-1-bruno.thomsen@gmail.com>
+	s=arc-20240116; t=1755719267; c=relaxed/simple;
+	bh=qDv0CfcsR9Lk4J1yuBka5j8xNyD7XtADzFxaX2la9DY=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=mzN5a9iV6fBrkoRBwnIH0Zjmya17dvoNpEAWS3u7nTxCagNHIdRSC6yBEu58HN/w6TagHkB5lTU7+SDhTfm07sBU5+QLCjAK3Rtz61l39CuFC8px4KB3vbMcJU5aaM6NL5pTXrn0ESLFIuE4wdaD2ec+dAAv53u0urTWRq908kI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 58445C4CEE7;
+	Wed, 20 Aug 2025 19:47:45 +0000 (UTC)
+From: Dave Jiang <dave.jiang@intel.com>
+To: linux-cxl@vger.kernel.org,
+	linux-acpi@vger.kernel.org,
+	linux-kernel@vger.kernel.org
+Cc: gregkh@linuxfoundation.org,
+	rafael@kernel.org,
+	dakr@kernel.org,
+	dave@stgolabs.net,
+	jonathan.cameron@huawei.com,
+	alison.schofield@intel.com,
+	vishal.l.verma@intel.com,
+	ira.weiny@intel.com,
+	dan.j.williams@intel.com,
+	marc.herbert@linux.intel.com,
+	akpm@linux-foundation.org,
+	david@redhat.com,
+	stable@vger.kernel.org
+Subject: [PATCH v2 3/4] cxl, acpi/hmat: Update CXL access coordinates directly instead of through HMAT
+Date: Wed, 20 Aug 2025 12:47:03 -0700
+Message-ID: <20250820194704.4130565-4-dave.jiang@intel.com>
 X-Mailer: git-send-email 2.50.1
+In-Reply-To: <20250820194704.4130565-1-dave.jiang@intel.com>
+References: <20250820194704.4130565-1-dave.jiang@intel.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -91,57 +60,201 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-When commit fa78e9b606a472495ef5b6b3d8b45c37f7727f9d upstream was
-backported to LTS branches linux-6.12.y and linux-6.6.y, the SPI regmap
-config fix got applied to the I2C regmap config. Most likely due to a new
-RTC get/set parm feature introduced in 6.14 causing regmap config sections
-in the buttom of the driver to move. LTS branch linux-6.1.y and earlier
-does not have PCF2131 device support.
+The current implementation of CXL memory hotplug notifier gets called
+before the HMAT memory hotplug notifier. The CXL driver calculates the
+access coordinates (bandwidth and latency values) for the CXL end to
+end path (i.e. CPU to endpoint). When the CXL region is onlined, the CXL
+memory hotplug notifier writes the access coordinates to the HMAT target
+structs. Then the HMAT memory hotplug notifier is called and it creates
+the access coordinates for the node sysfs attributes.
 
-Issue can be seen in buttom of this diff in stable/linux.git tree:
-git diff master..linux-6.12.y -- drivers/rtc/rtc-pcf2127.c
+During testing on an Intel platform, it was found that although the
+newly calculated coordinates were pushed to sysfs, the sysfs attributes for
+the access coordinates showed up with the wrong initiator. The system has
+4 nodes (0, 1, 2, 3) where node 0 and 1 are CPU nodes and node 2 and 3 are
+CXL nodes. The expectation is that node 2 would show up as a target to node
+0:
+/sys/devices/system/node/node2/access0/initiators/node0
 
-Fixes: ee61aec8529e ("rtc: pcf2127: fix SPI command byte for PCF2131")
-Fixes: 5cdd1f73401d ("rtc: pcf2127: fix SPI command byte for PCF2131")
+However it was observed that node 2 showed up as a target under node 1:
+/sys/devices/system/node/node2/access0/initiators/node1
+
+The original intent of the 'ext_updated' flag in HMAT handling code was to
+stop HMAT memory hotplug callback from clobbering the access coordinates
+after CXL has injected its calculated coordinates and replaced the generic
+target access coordinates provided by the HMAT table in the HMAT target
+structs. However the flag is hacky at best and blocks the updates from
+other CXL regions that are onlined in the same node later on. Remove the
+'ext_updated' flag usage and just update the access coordinates for the
+nodes directly without touching HMAT target data.
+
+The hotplug memory callback ordering is changed. Instead of changing CXL,
+move HMAT back so there's room for the levels rather than have CXL share
+the same level as SLAB_CALLBACK_PRI. The change will resulting in the CXL
+callback to be executed after the HMAT callback.
+
+With the change, the CXL hotplug memory notifier runs after the HMAT
+callback. The HMAT callback will create the node sysfs attributes for
+access coordinates. The CXL callback will write the access coordinates to
+the now created node sysfs attributes directly and will not pollute the
+HMAT target values.
+
+Fixes: 067353a46d8c ("cxl/region: Add memory hotplug notifier for cxl region")
 Cc: stable@vger.kernel.org
-Cc: Alexandre Belloni <alexandre.belloni@bootlin.com>
-Cc: Elena Popa <elena.popa@nxp.com>
-Cc: Hugo Villeneuve <hvilleneuve@dimonoff.com>
-Signed-off-by: Bruno Thomsen <bruno.thomsen@gmail.com>
+Tested-by: Marc Herbert <marc.herbert@linux.intel.com>
+Reviewed-by: Dan Williams <dan.j.williams@intel.com>
+Signed-off-by: Dave Jiang <dave.jiang@intel.com>
 ---
- drivers/rtc/rtc-pcf2127.c | 10 +++++-----
- 1 file changed, 5 insertions(+), 5 deletions(-)
+v2:
+- Add description to what was observed for the issue. (Dan)
+- Use the correct Fixes tag. (Dan)
+- Add Cc to stable. (Dan)
+- Add support to only update on first region appearance. (Jonathan)
+---
+ drivers/acpi/numa/hmat.c  |  6 ------
+ drivers/cxl/core/cdat.c   |  5 -----
+ drivers/cxl/core/core.h   |  1 -
+ drivers/cxl/core/region.c | 21 +++++++++++++--------
+ include/linux/memory.h    |  2 +-
+ 5 files changed, 14 insertions(+), 21 deletions(-)
 
-diff --git a/drivers/rtc/rtc-pcf2127.c b/drivers/rtc/rtc-pcf2127.c
-index fc079b9dcf71..502571f0c203 100644
---- a/drivers/rtc/rtc-pcf2127.c
-+++ b/drivers/rtc/rtc-pcf2127.c
-@@ -1383,11 +1383,6 @@ static int pcf2127_i2c_probe(struct i2c_client *client)
- 		variant = &pcf21xx_cfg[type];
- 	}
+diff --git a/drivers/acpi/numa/hmat.c b/drivers/acpi/numa/hmat.c
+index 4958301f5417..5d32490dc4ab 100644
+--- a/drivers/acpi/numa/hmat.c
++++ b/drivers/acpi/numa/hmat.c
+@@ -74,7 +74,6 @@ struct memory_target {
+ 	struct node_cache_attrs cache_attrs;
+ 	u8 gen_port_device_handle[ACPI_SRAT_DEVICE_HANDLE_SIZE];
+ 	bool registered;
+-	bool ext_updated;	/* externally updated */
+ };
  
--	if (variant->type == PCF2131) {
--		config.read_flag_mask = 0x0;
--		config.write_flag_mask = 0x0;
--	}
+ struct memory_initiator {
+@@ -391,7 +390,6 @@ int hmat_update_target_coordinates(int nid, struct access_coordinate *coord,
+ 				  coord->read_bandwidth, access);
+ 	hmat_update_target_access(target, ACPI_HMAT_WRITE_BANDWIDTH,
+ 				  coord->write_bandwidth, access);
+-	target->ext_updated = true;
+ 
+ 	return 0;
+ }
+@@ -773,10 +771,6 @@ static void hmat_update_target_attrs(struct memory_target *target,
+ 	u32 best = 0;
+ 	int i;
+ 
+-	/* Don't update if an external agent has changed the data.  */
+-	if (target->ext_updated)
+-		return;
 -
- 	config.max_register = variant->max_register,
+ 	/* Don't update for generic port if there's no device handle */
+ 	if ((access == NODE_ACCESS_CLASS_GENPORT_SINK_LOCAL ||
+ 	     access == NODE_ACCESS_CLASS_GENPORT_SINK_CPU) &&
+diff --git a/drivers/cxl/core/cdat.c b/drivers/cxl/core/cdat.c
+index c0af645425f4..c891fd618cfd 100644
+--- a/drivers/cxl/core/cdat.c
++++ b/drivers/cxl/core/cdat.c
+@@ -1081,8 +1081,3 @@ int cxl_update_hmat_access_coordinates(int nid, struct cxl_region *cxlr,
+ {
+ 	return hmat_update_target_coordinates(nid, &cxlr->coord[access], access);
+ }
+-
+-bool cxl_need_node_perf_attrs_update(int nid)
+-{
+-	return !acpi_node_backed_by_real_pxm(nid);
+-}
+diff --git a/drivers/cxl/core/core.h b/drivers/cxl/core/core.h
+index 2669f251d677..a253d308f3c9 100644
+--- a/drivers/cxl/core/core.h
++++ b/drivers/cxl/core/core.h
+@@ -139,7 +139,6 @@ long cxl_pci_get_latency(struct pci_dev *pdev);
+ int cxl_pci_get_bandwidth(struct pci_dev *pdev, struct access_coordinate *c);
+ int cxl_update_hmat_access_coordinates(int nid, struct cxl_region *cxlr,
+ 				       enum access_coordinate_class access);
+-bool cxl_need_node_perf_attrs_update(int nid);
+ int cxl_port_get_switch_dport_bandwidth(struct cxl_port *port,
+ 					struct access_coordinate *c);
  
- 	regmap = devm_regmap_init(&client->dev, &pcf2127_i2c_regmap,
-@@ -1461,6 +1456,11 @@ static int pcf2127_spi_probe(struct spi_device *spi)
- 		variant = &pcf21xx_cfg[type];
+diff --git a/drivers/cxl/core/region.c b/drivers/cxl/core/region.c
+index 71cc42d05248..371873fc43eb 100644
+--- a/drivers/cxl/core/region.c
++++ b/drivers/cxl/core/region.c
+@@ -9,6 +9,7 @@
+ #include <linux/uuid.h>
+ #include <linux/sort.h>
+ #include <linux/idr.h>
++#include <linux/xarray.h>
+ #include <linux/memory-tiers.h>
+ #include <cxlmem.h>
+ #include <cxl.h>
+@@ -30,6 +31,9 @@
+  * 3. Decoder targets
+  */
+ 
++/* xarray that stores the reference count per node for regions */
++static DEFINE_XARRAY(node_regions_xa);
++
+ static struct cxl_region *to_cxl_region(struct device *dev);
+ 
+ #define __ACCESS_ATTR_RO(_level, _name) {				\
+@@ -2442,14 +2446,8 @@ static bool cxl_region_update_coordinates(struct cxl_region *cxlr, int nid)
+ 
+ 	for (int i = 0; i < ACCESS_COORDINATE_MAX; i++) {
+ 		if (cxlr->coord[i].read_bandwidth) {
+-			rc = 0;
+-			if (cxl_need_node_perf_attrs_update(nid))
+-				node_set_perf_attrs(nid, &cxlr->coord[i], i);
+-			else
+-				rc = cxl_update_hmat_access_coordinates(nid, cxlr, i);
+-
+-			if (rc == 0)
+-				cset++;
++			node_update_perf_attrs(nid, &cxlr->coord[i], i);
++			cset++;
+ 		}
  	}
  
-+	if (variant->type == PCF2131) {
-+		config.read_flag_mask = 0x0;
-+		config.write_flag_mask = 0x0;
-+	}
-+
- 	config.max_register = variant->max_register;
+@@ -2475,6 +2473,7 @@ static int cxl_region_perf_attrs_callback(struct notifier_block *nb,
+ 	struct node_notify *nn = arg;
+ 	int nid = nn->nid;
+ 	int region_nid;
++	int rc;
  
- 	regmap = devm_regmap_init_spi(spi, &config);
-
-base-commit: 880e4ff5d6c8dc6b660f163a0e9b68b898cc6310
+ 	if (action != NODE_ADDED_FIRST_MEMORY)
+ 		return NOTIFY_DONE;
+@@ -2487,6 +2486,11 @@ static int cxl_region_perf_attrs_callback(struct notifier_block *nb,
+ 	if (nid != region_nid)
+ 		return NOTIFY_DONE;
+ 
++	/* No action needed if there's existing entry */
++	rc = xa_insert(&node_regions_xa, nid, NULL, GFP_KERNEL);
++	if (rc < 0)
++		return NOTIFY_DONE;
++
+ 	if (!cxl_region_update_coordinates(cxlr, nid))
+ 		return NOTIFY_DONE;
+ 
+@@ -3638,6 +3642,7 @@ int cxl_region_init(void)
+ 
+ void cxl_region_exit(void)
+ {
++	xa_destroy(&node_regions_xa);
+ 	cxl_driver_unregister(&cxl_region_driver);
+ }
+ 
+diff --git a/include/linux/memory.h b/include/linux/memory.h
+index de5c0d8e8925..684fd641f2f0 100644
+--- a/include/linux/memory.h
++++ b/include/linux/memory.h
+@@ -120,8 +120,8 @@ struct mem_section;
+  */
+ #define DEFAULT_CALLBACK_PRI	0
+ #define SLAB_CALLBACK_PRI	1
+-#define HMAT_CALLBACK_PRI	2
+ #define CXL_CALLBACK_PRI	5
++#define HMAT_CALLBACK_PRI	6
+ #define MM_COMPUTE_BATCH_PRI	10
+ #define CPUSET_CALLBACK_PRI	10
+ #define MEMTIER_HOTPLUG_PRI	100
 -- 
 2.50.1
 
