@@ -1,142 +1,98 @@
-Return-Path: <stable+bounces-171909-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-171910-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 600EEB2DFF4
-	for <lists+stable@lfdr.de>; Wed, 20 Aug 2025 16:51:13 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 62709B2DFE8
+	for <lists+stable@lfdr.de>; Wed, 20 Aug 2025 16:49:34 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 5154917640F
-	for <lists+stable@lfdr.de>; Wed, 20 Aug 2025 14:48:53 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 16C591C46857
+	for <lists+stable@lfdr.de>; Wed, 20 Aug 2025 14:49:54 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 69BA1296BB0;
-	Wed, 20 Aug 2025 14:48:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9C6D42DE1E6;
+	Wed, 20 Aug 2025 14:49:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=posteo.de header.i=@posteo.de header.b="qMOS4yEN"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="MoQN5YoD"
 X-Original-To: stable@vger.kernel.org
-Received: from mout02.posteo.de (mout02.posteo.de [185.67.36.66])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AB16E29ACDB
-	for <stable@vger.kernel.org>; Wed, 20 Aug 2025 14:48:47 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.67.36.66
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 502E627C172;
+	Wed, 20 Aug 2025 14:49:29 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755701330; cv=none; b=PyOJ8+TMgiUj0Y4ce9TdE2V8YtTCaod/IZdpBwf0Cpcs2Mleg7HnHLLckyMlgjPdGRlJcBybg9BvuLvlgwggOijtjnG0yRWfpmLzhbWKUeqSLJt2zBVULZbsAzYtMl4ZkM3x3HzeprFi9PZuMO3Hu4D67U13CCLB+FC5mJFUBMU=
+	t=1755701369; cv=none; b=SQKvF5r8ojZcPBySOequC4u35i28luHehTTmDyiMllNrJfu+8EPmMjj066Cla9q9Erd51dmDxYz+3MwYQhpjaHsT2ytC13sz8x4hP6FZEz58mOOGaur1u2dDb04S+MMS6kUYCJRnOBLSYaL6io7HIMlJm1atKDiSWQfb4f0Zd+0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1755701330; c=relaxed/simple;
-	bh=4qmTb8wWx4lwVM7H5BVt74kKN5x1ueUsRy7l9WSpIws=;
-	h=Message-ID:Subject:From:To:Cc:Date:In-Reply-To:References:
-	 Content-Type:MIME-Version; b=C3H4n335Kh4mc9ZaAfpw5VIIquSa4W/MCixOkPYjincspnI23YrUL25l8yUtzl+60ywSQo4weUMtOKpEveOWTpT5F2yZGnOHRUWfXnt8AuBXKZTrS0hJnOtKkGHAG2iX9URhD4+AnqCs9txOUJ0qhU1FYu1KveujQ8qQiU/W3vo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=posteo.de; spf=pass smtp.mailfrom=posteo.de; dkim=pass (2048-bit key) header.d=posteo.de header.i=@posteo.de header.b=qMOS4yEN; arc=none smtp.client-ip=185.67.36.66
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=posteo.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=posteo.de
-Received: from submission (posteo.de [185.67.36.169]) 
-	by mout02.posteo.de (Postfix) with ESMTPS id E1C49240103
-	for <stable@vger.kernel.org>; Wed, 20 Aug 2025 16:48:39 +0200 (CEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=posteo.de; s=2017;
-	t=1755701319; bh=Ht4yfG3vGqY4d0zoRqc/dtklOJvqY4LMyfDONnGbWkw=;
-	h=Message-ID:Subject:From:To:Cc:Date:Content-Type:
-	 Content-Transfer-Encoding:MIME-Version:From;
-	b=qMOS4yENli/YjEuYWJyDFMmKmLPw9p4cJvKOsLsgnohsKJoqbDUiQbpv//xoyt/aO
-	 Dm0Dv43kTlduFSq+TZn41SJ6r6gTBYnDAfZZGPh78Kvw7iaAa/noZp1YDePSJokK2w
-	 jklwNhKPiGqDJHRV35y4J8bn+XZOifWAEh5S9RyvlKB29cgO9l8SfZJQMCj2uA9ldT
-	 0RfERwSKFirQNGZduIejkIOSGwUn0ZhWGS+5qqrPDLT2KdkygyrydtfmC5I5v7kHjA
-	 8euw9WzUpxDkSzV+B8w3DK5Em2cnSALVbHoj3AX1uvLHO/mviTr6vQ/MXk0cZWPOjJ
-	 K0U0na1hmxSlA==
-Received: from customer (localhost [127.0.0.1])
-	by submission (posteo.de) with ESMTPSA id 4c6Tpt6lB8z6v1T;
-	Wed, 20 Aug 2025 16:48:38 +0200 (CEST)
-Message-ID: <8bd925340d6297bcae69f4a9b5e098e79830b528.camel@posteo.de>
-Subject: Re: [PATCH 1/2] media: mc: Fix MUST_CONNECT handling for pads with
- no links
-From: Martin Kepplinger-Novakovic <martink@posteo.de>
-To: Laurent Pinchart <laurent.pinchart@ideasonboard.com>, 
-	linux-media@vger.kernel.org
-Cc: Sakari Ailus <sakari.ailus@iki.fi>, Hans Verkuil <hans@jjverkuil.nl>, 
-	Maud Spierings <maudspierings@gocontroll.com>, stable@vger.kernel.org
-Date: Wed, 20 Aug 2025 14:48:39 +0000
-In-Reply-To: <20250820140021.8026-2-laurent.pinchart@ideasonboard.com>
-References: <20250820140021.8026-1-laurent.pinchart@ideasonboard.com>
-	 <20250820140021.8026-2-laurent.pinchart@ideasonboard.com>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+	s=arc-20240116; t=1755701369; c=relaxed/simple;
+	bh=s4nfPVcmRasmonPqk9vuBP3hp3Ub1+rC9rv5lAJPRXM=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=mhHJerSmUknFBig2rh9r9j7a8X3iCFCJLpGvRBadcX+Mf9BWTPwjnKKysBUq+j5lchMxLEd4F1F9WK1MssqVJsxUZFtCbmkGgzpjKvUnx9o6ubeFL6GtHYv5FonAA77Fn2e1cTf2/nEx7wHIScGepNk62l69fntWVhOJ9qd79rI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=MoQN5YoD; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4D18FC4CEE7;
+	Wed, 20 Aug 2025 14:49:25 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1755701368;
+	bh=s4nfPVcmRasmonPqk9vuBP3hp3Ub1+rC9rv5lAJPRXM=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=MoQN5YoD8J42r2+gTZqLn7ai82q7gmANDIemUe/34LL2njWkuR5jacQ3CAlPSEt1A
+	 dr6/3xbZFKpwPYx+zgBcY6i5VKPDC+Mzc02+5EoFJLquuLz2LR0MaojQV8f+sqZxK8
+	 IPWccKhmhamkgSB8rEsujgctaZNmnAcciJXM5kUbmNdTc5HqzFNuaICwKj9gEqzS0P
+	 sbhnb+CL96kKNGstQYqV9YccyUCAyh+g6mZQnfZtpC0mWTvEr5o7L5KRgbtZ3QEDj8
+	 52syNAyoAaGkpwFP18cD5V6xZK3q7PnWTYAQRI9HOUXEcPFYrgC8CuwHo65yrEp8uC
+	 baR31anYnSFTg==
+Date: Wed, 20 Aug 2025 15:49:22 +0100
+From: Mark Brown <broonie@kernel.org>
+To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Cc: stable@vger.kernel.org, patches@lists.linux.dev,
+	linux-kernel@vger.kernel.org, torvalds@linux-foundation.org,
+	akpm@linux-foundation.org, linux@roeck-us.net, shuah@kernel.org,
+	patches@kernelci.org, lkft-triage@lists.linaro.org, pavel@denx.de,
+	jonathanh@nvidia.com, f.fainelli@gmail.com,
+	sudipm.mukherjee@gmail.com, srw@sladewatkins.net, rwarsow@gmx.de,
+	conor@kernel.org, hargar@microsoft.com, achill@achill.org
+Subject: Re: [PATCH 6.12 000/438] 6.12.43-rc2 review
+Message-ID: <3ffb80be-0e86-44b6-a541-deeb80e0d31c@sirena.org.uk>
+References: <20250819122820.553053307@linuxfoundation.org>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: multipart/signed; micalg=pgp-sha512;
+	protocol="application/pgp-signature"; boundary="2rtn7fN3L1c4hhI/"
+Content-Disposition: inline
+In-Reply-To: <20250819122820.553053307@linuxfoundation.org>
+X-Cookie: Semper Fi, dude.
 
-Am Mittwoch, dem 20.08.2025 um 17:00 +0300 schrieb Laurent Pinchart:
-> Commit b3decc5ce7d7 ("media: mc: Expand MUST_CONNECT flag to always
-> require an enabled link") expanded the meaning of the MUST_CONNECT
-> flag
-> to require an enabled link in all cases. To do so, the link
-> exploration
-> code was expanded to cover unconnected pads, in order to reject those
-> that have the MUST_CONNECT flag set. The implementation was however
-> incorrect, ignoring unconnected pads instead of ignoring connected
-> pads.
-> Fix it.
->=20
-> Reported-by: Martin Kepplinger-Novakovi=C4=87 <martink@posteo.de>
-> Closes:
-> https://lore.kernel.org/linux-media/20250205172957.182362-1-martink@poste=
-o.de
-> Reported-by: Maud Spierings <maudspierings@gocontroll.com>
-> Closes:
-> https://lore.kernel.org/linux-media/20250818-imx8_isi-v1-1-e9cfe994c435@g=
-ocontroll.com
-> Fixes: b3decc5ce7d7 ("media: mc: Expand MUST_CONNECT flag to always
-> require an enabled link")
-> Cc: stable@vger.kernel.org=C2=A0# 6.1
-> Signed-off-by: Laurent Pinchart <laurent.pinchart@ideasonboard.com>
-> ---
-> =C2=A0drivers/media/mc/mc-entity.c | 2 +-
-> =C2=A01 file changed, 1 insertion(+), 1 deletion(-)
->=20
-> diff --git a/drivers/media/mc/mc-entity.c b/drivers/media/mc/mc-
-> entity.c
-> index 04d69f042a0e..928613d60e8f 100644
-> --- a/drivers/media/mc/mc-entity.c
-> +++ b/drivers/media/mc/mc-entity.c
-> @@ -696,7 +696,7 @@ static int
-> media_pipeline_explore_next_link(struct media_pipeline *pipe,
-> =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=
-=C2=A0=C2=A0=C2=A0=C2=A0 * (already discovered through iterating over links=
-)
-> and pads
-> =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=
-=C2=A0=C2=A0=C2=A0=C2=A0 * not internally connected.
-> =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=
-=C2=A0=C2=A0=C2=A0=C2=A0 */
-> -=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=
-=C2=A0=C2=A0=C2=A0if (origin =3D=3D local || !local->num_links ||
-> +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=
-=C2=A0=C2=A0=C2=A0if (origin =3D=3D local || local->num_links ||
-> =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=
-=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 !media_entity_has_pad_interdep(o=
-rigin->entity,
-> origin->index,
-> =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=
-=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=
-=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=
-=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=
-=A0 local->index))
-> =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=
-=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0con=
-tinue;
 
-hi Laurent,
+--2rtn7fN3L1c4hhI/
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
 
-Indeed this fixes the crash I see without checking
-media_pad_remote_pad_first()'s return value.
+On Tue, Aug 19, 2025 at 02:31:21PM +0200, Greg Kroah-Hartman wrote:
+> This is the start of the stable review cycle for the 6.12.43 release.
+> There are 438 patches in this series, all will be posted as a response
+> to this one.  If anyone has any issues with these being applied, please
+> let me know.
 
-Reported-and-tested-by: Martin Kepplinger-Novakovi=C4=87 <martink@posteo.de=
->
+Tested-by: Mark Brown <broonie@kernel.org>
 
-Thank you very much!
-                         martin
+--2rtn7fN3L1c4hhI/
+Content-Type: application/pgp-signature; name="signature.asc"
 
+-----BEGIN PGP SIGNATURE-----
+
+iQEzBAABCgAdFiEEreZoqmdXGLWf4p/qJNaLcl1Uh9AFAmil4HEACgkQJNaLcl1U
+h9BtnQf/XoHCUiBo4ifsosMk4RimE0HL59Aga6ixSDwXwA1KEghWfP0cRkMlyfyD
+HpXvYbIVc7ZaVdWAYVjeExfPgMrwnOKUNYoSy51fsIjvn+xalXgKWD4fT/aBi8GB
+9yGjWLQxGJiUZDkAYYQw9+O2vnF83den2p9u8Y6YD+rqJf5dpdQwEqzNl0HWJbwe
+FjYbJN8VoU0J0Ibcs2Ci60z086MqDW5qz8tkTT1594lKmQY3+6JgSoqzrp1zXc2n
+1Asc00bsWBw2uQWpzA2C8+XOf9G5QmFKOyEu6a0lBpIUuN2rKfSb5AmC/DRlkTyP
+WSeky3F+lSjV4yEGH/ZVZMdRQWZceA==
+=hX9B
+-----END PGP SIGNATURE-----
+
+--2rtn7fN3L1c4hhI/--
 
