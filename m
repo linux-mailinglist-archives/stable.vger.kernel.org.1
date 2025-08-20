@@ -1,127 +1,103 @@
-Return-Path: <stable+bounces-171899-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-171900-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id E0648B2DDB3
-	for <lists+stable@lfdr.de>; Wed, 20 Aug 2025 15:26:50 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id D6FFFB2DE9A
+	for <lists+stable@lfdr.de>; Wed, 20 Aug 2025 16:03:18 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id E05AC720EB0
-	for <lists+stable@lfdr.de>; Wed, 20 Aug 2025 13:26:47 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 5D6D01BA64A7
+	for <lists+stable@lfdr.de>; Wed, 20 Aug 2025 14:01:17 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C26BF31DDAF;
-	Wed, 20 Aug 2025 13:26:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4F0AE25D535;
+	Wed, 20 Aug 2025 14:00:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=ciq.com header.i=@ciq.com header.b="pOdG4z51"
+	dkim=pass (1024-bit key) header.d=ideasonboard.com header.i=@ideasonboard.com header.b="Khu6/pFl"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-qk1-f171.google.com (mail-qk1-f171.google.com [209.85.222.171])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from perceval.ideasonboard.com (perceval.ideasonboard.com [213.167.242.64])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EC1DA2D3231
-	for <stable@vger.kernel.org>; Wed, 20 Aug 2025 13:26:41 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.222.171
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1D2C2258ECD;
+	Wed, 20 Aug 2025 14:00:47 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=213.167.242.64
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755696403; cv=none; b=ryqyV7NTDvxzZ03A+H6vxUrnIbRgJz+LqpiHTnhzrdm1xhIuRbRmbWxO338zqzPhhWz4wISPI/8ApThqysEwbCLK6NPksxTrypS7DBiLeZOgE7MmbP+gyVOYGDo19/GL9Gr3srmeifESWwm7WSqlRLMgUKR/XYly1xnDdqizS84=
+	t=1755698450; cv=none; b=c1Ty+inWaHdyc5XoshnDJm+ABu+vmue6C8J/LtTNTfCoLb3PpCVJrllZvAg9CuX6jRol+JFtBgP3QyD1aWwVMOFN8QYXCb9M4TIR2oJU/6w5qT5OUbs5H/lK3acY/XR/fA3FDbrKJMub1oaLSKK0XSOGaUOAmkT33UjrKwA24mE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1755696403; c=relaxed/simple;
-	bh=0uRCBa5DuHokeAP8b7en3IxnvVTDcb0IQO3SjWgln30=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=PDJx59sQHIrnQO3XCONk7gEzVYT5bePp0rxSgxZfxDKu27ncRDI1w/9k7Sj9OvkctaKRQTytTLLNftPsrQ/izlRCKjCD18tXv3fT5eP7ipmMUh7+hqsOx9FIgnrhHwObkbSZejs360oX2AvXgT/vKSdD/0Nd3a9KgCgyS0Rrwho=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=ciq.com; spf=pass smtp.mailfrom=ciq.com; dkim=pass (2048-bit key) header.d=ciq.com header.i=@ciq.com header.b=pOdG4z51; arc=none smtp.client-ip=209.85.222.171
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=ciq.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ciq.com
-Received: by mail-qk1-f171.google.com with SMTP id af79cd13be357-7e9f7c46edbso72683385a.0
-        for <stable@vger.kernel.org>; Wed, 20 Aug 2025 06:26:41 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=ciq.com; s=s1; t=1755696401; x=1756301201; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=pduMkEptKdLVMmJZmH218CFcitvFhjXDFeo33s0r6g0=;
-        b=pOdG4z51maqCFMr0MGgLrkmLFuX4Kh1avl6nMKVdnASKJNgcoQnWPYbavRxB1ZvxPG
-         I54hOE3R7wtVuSVuHGdxNIe2ugEzeeS+Wsl+DjUtFyTFlF8MJX4R3B0p/TzLxbDLpl1R
-         3M/rAE3OpXth6bdLMJR5fJIIcr+6biAWoGNZ2cg+AkW6F5wpZEaoYiTov4mPBZ+uAeJf
-         qpovgPSDqkB9VWdvZKXu6l0HMC8ypu65xsTQGbI6wTlePw8wO24G3ST9AT8lTKI7e8R4
-         +H2IsfLb1hLoreZMQmi84KRed/orLpleyWmuY2Mxw2BxEyJT3T93rHqMd+LHcUD7z+A3
-         g7qw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1755696401; x=1756301201;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=pduMkEptKdLVMmJZmH218CFcitvFhjXDFeo33s0r6g0=;
-        b=ubgrO6gb9ybx4BY+69WxoDj8Khcv1vCEpsCpUHQ+v8c74rZrKmRL2/UipadkOHmgAI
-         7uqpaVAvJZTmYhnBlG+IZ/St4zRmGjNP17tYhrr6EZeamm1UxeIn8JhFUEDSREpZJD7h
-         FjT/nz6vTOSdzKv0NIwdDCer24KnE1oD4Rp/C1IwgQjtK2t+w9VgCq59kV3B/ntou/R1
-         6dWD8F3weD+fMx1Gxowc2ayfy6ZRdW6Rnmza+YFIRQLBVY8/wWKpcm+CmEzYRywhQnrk
-         U+3tRU8tfKGLMYxCEHzsGRI/QePLXLK+15S2+kuY4LBh4QvAOzW3EPYuu1liNRm5kfE1
-         hqCA==
-X-Gm-Message-State: AOJu0YxeIAkRdBj+dKcHYqtOOY7ou1gJRHG9S2qw101ihxeUWyspDOOv
-	Qes1Wl09rzqFHvGSaMM1g+FETsdQORsK7cZ5BQmQNwBKVlV2bFY9giZ2D+kwmRERxcQ10SOdA0P
-	/US8uVVMkjc1FLnlmQbT890sTE9yMPgbOmXXmAwJ+9g==
-X-Gm-Gg: ASbGncvMdM/q3ghYRCid5pHl6/femoiJvj8nuh6AmwiQ3DubnxMjxaf8mDDWDvxkg87
-	dNEFn03v71dcrK+xtUx8FPfgQgA/DQOa9KshJtXHoz6aRbRSRQEjGqqyE5lAnv8FBVS/jxvP0yK
-	8ntgN4tMJniHS2xnCOxL0HwOaC/1r6BcHf0fHyTcn83a2sg7nJRcIMgyrSn0hujwrrvDVtE4Jyz
-	z9kRKgxcrir6aJrKS0=
-X-Google-Smtp-Source: AGHT+IEFuP7zEWHJoh21HjBk2ylXFPhv4P+z+9swFEB6pv8mUDeiqmBE0z39lKhQPdd5eiXvNYtv0J4LLfK1tyaY6YI=
-X-Received: by 2002:a05:620a:4105:b0:7e3:2c53:b28a with SMTP id
- af79cd13be357-7e9fc7585acmr318667185a.16.1755696400716; Wed, 20 Aug 2025
- 06:26:40 -0700 (PDT)
+	s=arc-20240116; t=1755698450; c=relaxed/simple;
+	bh=PlDNfW1V70lApHqDVOVBvfQwS0zmGWBN6ms9AbLxFdM=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=SRAak+Y564dV6galvUgBp3swehemhu7to33lFna20RvWtI88jpV8KtsSupzlVb+Iq0EEe3wNSdB8VsguQtEpKlg+xcoE+Yt8w4amiATvp2OKbPgWmsS8JUL6x2sDI3L09IjyzzfamA3x18bdXhsZ8rUZhRfYVbmIrg48mDkYpRQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=ideasonboard.com; spf=pass smtp.mailfrom=ideasonboard.com; dkim=pass (1024-bit key) header.d=ideasonboard.com header.i=@ideasonboard.com header.b=Khu6/pFl; arc=none smtp.client-ip=213.167.242.64
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=ideasonboard.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ideasonboard.com
+Received: from pendragon.ideasonboard.com (81-175-209-231.bb.dnainternet.fi [81.175.209.231])
+	by perceval.ideasonboard.com (Postfix) with UTF8SMTPSA id 6BFBCB0B;
+	Wed, 20 Aug 2025 15:59:47 +0200 (CEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=ideasonboard.com;
+	s=mail; t=1755698387;
+	bh=PlDNfW1V70lApHqDVOVBvfQwS0zmGWBN6ms9AbLxFdM=;
+	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
+	b=Khu6/pFlCYnjFuBFN10ExfiTrLgc1bOqg1zFNwCfmt0hBWuFAgWwjm5at1AfMZ4tH
+	 Z2Jou3voiFCYsHNQrIvmfEAn5nYrfctGGTtw07Jst3BQL6U+HEGKyRrdLL2ofhCVc7
+	 ZZThKOERzjxSSBXa1W+fx1gFDesjsNZ3y0gSR3Nw=
+From: Laurent Pinchart <laurent.pinchart@ideasonboard.com>
+To: linux-media@vger.kernel.org
+Cc: Sakari Ailus <sakari.ailus@iki.fi>,
+	Hans Verkuil <hans@jjverkuil.nl>,
+	Maud Spierings <maudspierings@gocontroll.com>,
+	=?UTF-8?q?Martin=20Kepplinger-Novakovi=C4=87?= <martink@posteo.de>,
+	stable@vger.kernel.org
+Subject: [PATCH 1/2] media: mc: Fix MUST_CONNECT handling for pads with no links
+Date: Wed, 20 Aug 2025 17:00:20 +0300
+Message-ID: <20250820140021.8026-2-laurent.pinchart@ideasonboard.com>
+X-Mailer: git-send-email 2.49.1
+In-Reply-To: <20250820140021.8026-1-laurent.pinchart@ideasonboard.com>
+References: <20250820140021.8026-1-laurent.pinchart@ideasonboard.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20250819122820.553053307@linuxfoundation.org>
-In-Reply-To: <20250819122820.553053307@linuxfoundation.org>
-From: Brett Mastbergen <bmastbergen@ciq.com>
-Date: Wed, 20 Aug 2025 09:26:29 -0400
-X-Gm-Features: Ac12FXzu8URN-aar7Ixa8xJWtMgHFMvicrS2nfeoiQQtmUGUKz6HliO5RbQkSeU
-Message-ID: <CAOBMUvjakzTF63pwX0_GGswgKR+0TT=V4gPVZOOBuBbESqsbpw@mail.gmail.com>
-Subject: Re: [PATCH 6.12 000/438] 6.12.43-rc2 review
-To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Cc: stable@vger.kernel.org, patches@lists.linux.dev, 
-	linux-kernel@vger.kernel.org, torvalds@linux-foundation.org, 
-	akpm@linux-foundation.org, linux@roeck-us.net, shuah@kernel.org, 
-	patches@kernelci.org, lkft-triage@lists.linaro.org, pavel@denx.de, 
-	jonathanh@nvidia.com, f.fainelli@gmail.com, sudipm.mukherjee@gmail.com, 
-	srw@sladewatkins.net, rwarsow@gmx.de, conor@kernel.org, hargar@microsoft.com, 
-	broonie@kernel.org, achill@achill.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
 
-On Tue, Aug 19, 2025 at 8:35=E2=80=AFAM Greg Kroah-Hartman
-<gregkh@linuxfoundation.org> wrote:
->
-> This is the start of the stable review cycle for the 6.12.43 release.
-> There are 438 patches in this series, all will be posted as a response
-> to this one.  If anyone has any issues with these being applied, please
-> let me know.
->
-> Responses should be made by Thu, 21 Aug 2025 12:27:16 +0000.
-> Anything received after that time might be too late.
->
-> The whole patch series can be found in one patch at:
->         https://www.kernel.org/pub/linux/kernel/v6.x/stable-review/patch-=
-6.12.43-rc2.gz
-> or in the git tree and branch at:
->         git://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stable=
--rc.git linux-6.12.y
-> and the diffstat can be found below.
->
-> thanks,
->
-> greg k-h
->
+Commit b3decc5ce7d7 ("media: mc: Expand MUST_CONNECT flag to always
+require an enabled link") expanded the meaning of the MUST_CONNECT flag
+to require an enabled link in all cases. To do so, the link exploration
+code was expanded to cover unconnected pads, in order to reject those
+that have the MUST_CONNECT flag set. The implementation was however
+incorrect, ignoring unconnected pads instead of ignoring connected pads.
+Fix it.
 
--rc1 and -rc2 build successfully.  Boot and work on qemu and Dell XPS 15 95=
-20 w/
-Intel Core i7-12600H
+Reported-by: Martin Kepplinger-Novaković <martink@posteo.de>
+Closes: https://lore.kernel.org/linux-media/20250205172957.182362-1-martink@posteo.de
+Reported-by: Maud Spierings <maudspierings@gocontroll.com>
+Closes: https://lore.kernel.org/linux-media/20250818-imx8_isi-v1-1-e9cfe994c435@gocontroll.com
+Fixes: b3decc5ce7d7 ("media: mc: Expand MUST_CONNECT flag to always require an enabled link")
+Cc: stable@vger.kernel.org # 6.1
+Signed-off-by: Laurent Pinchart <laurent.pinchart@ideasonboard.com>
+---
+ drivers/media/mc/mc-entity.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-Tested-by: Brett Mastbergen <bmastbergen@ciq.com>
+diff --git a/drivers/media/mc/mc-entity.c b/drivers/media/mc/mc-entity.c
+index 04d69f042a0e..928613d60e8f 100644
+--- a/drivers/media/mc/mc-entity.c
++++ b/drivers/media/mc/mc-entity.c
+@@ -696,7 +696,7 @@ static int media_pipeline_explore_next_link(struct media_pipeline *pipe,
+ 		 * (already discovered through iterating over links) and pads
+ 		 * not internally connected.
+ 		 */
+-		if (origin == local || !local->num_links ||
++		if (origin == local || local->num_links ||
+ 		    !media_entity_has_pad_interdep(origin->entity, origin->index,
+ 						   local->index))
+ 			continue;
+-- 
+Regards,
 
-Thanks,
-Brett
+Laurent Pinchart
+
 
