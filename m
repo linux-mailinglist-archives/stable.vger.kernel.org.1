@@ -1,116 +1,76 @@
-Return-Path: <stable+bounces-171883-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-171885-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 49A92B2D77D
-	for <lists+stable@lfdr.de>; Wed, 20 Aug 2025 11:06:20 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 40951B2D816
+	for <lists+stable@lfdr.de>; Wed, 20 Aug 2025 11:26:13 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id C1B8A7AB26B
-	for <lists+stable@lfdr.de>; Wed, 20 Aug 2025 09:04:44 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id E9E0216991F
+	for <lists+stable@lfdr.de>; Wed, 20 Aug 2025 09:21:51 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1FADE296BA8;
-	Wed, 20 Aug 2025 09:06:12 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="NtH+lJMz"
-X-Original-To: Stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 196FC2E264B;
+	Wed, 20 Aug 2025 09:14:54 +0000 (UTC)
+X-Original-To: stable@vger.kernel.org
+Received: from bregans-0.gladserv.net (bregans-0.gladserv.net [185.128.210.58])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D16632550CA
-	for <Stable@vger.kernel.org>; Wed, 20 Aug 2025 09:06:10 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9D3FE2DE6F6;
+	Wed, 20 Aug 2025 09:14:50 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.128.210.58
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755680771; cv=none; b=YnyAyKNxILfw3Ia1JNZDOKK3ZewcQELBcZB62ZLGJtgA1tcPBFmqxeeTbfJ8hsjyyq/ebtxFoH68oV6MU602gVlqKxNoVcZJ8sjBN5WABU3CRkw1mCVCac0N/UlMypSUe8u6uWfljsa6nabfwVnjJnqlKrnDy7KQyPy6BzVT8ps=
+	t=1755681293; cv=none; b=mpxXH4zdoY7ti8WJVs95qbobiYgLjOeLN5MJbwSbTVXOIbRFBh9qicl8L5o/GBbHJ39n9futmt2Fqvb+8XNtrNqtWuYDhTOq2pcTYnPuY/woBGDj+aMIxMUtH5boxMQxwaK8yIUTSM8UakHjMPmtYD0gjCmc1USijyi6nqMMlao=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1755680771; c=relaxed/simple;
-	bh=A03orkuBhM73ApRnlew5K6kVE66+pOpr57aitOSGg20=;
-	h=Subject:To:From:Date:Message-ID:MIME-Version:Content-Type; b=ZKnfXZZfKSv3e3SVudmZrnYGxyLUezd0iIOCy6vjGw39EIRW/EhH8RUm4hpHJCjUx1tZURYr5gOXlV1snoJ12GCQZk/xJz1KReTbT0pnP+Yv2WTLqs7yuovamKfUwhuVdMidVoi3RJB55kMq6G8XkQ6Zl5fHaK8hF4xT0mSHwbE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=NtH+lJMz; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8B4CDC4CEEB;
-	Wed, 20 Aug 2025 09:06:09 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1755680770;
-	bh=A03orkuBhM73ApRnlew5K6kVE66+pOpr57aitOSGg20=;
-	h=Subject:To:From:Date:From;
-	b=NtH+lJMztuEqm6Zby2jqC+VzTjSFug4c2IGEHIm4/LJEFHUkrbiJ/RQWwGNMyk+JI
-	 lBeST/J/7VlIxuGasdDVWeQnJrHKISLrgLQawgGNJWOwfFu/cuLqyKzpvOwwdkV6bN
-	 Ytu6oXUkHMzeswGwZDCLYbhOa+rnfaOrOXnhAxLk=
-Subject: patch "iio: pressure: bmp280: Use IS_ERR() in bmp280_common_probe()" added to char-misc-linus
-To: salah.triki@gmail.com,Jonathan.Cameron@huawei.com,Stable@vger.kernel.org,dlechner@baylibre.com
-From: <gregkh@linuxfoundation.org>
-Date: Wed, 20 Aug 2025 11:05:37 +0200
-Message-ID: <2025082037-brownnose-bullpen-2f50@gregkh>
+	s=arc-20240116; t=1755681293; c=relaxed/simple;
+	bh=etCgKISUUn8vYRoz0op4FaQiCAIQjYWxZgOMZi6QWfc=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=MLw7meYzItu14FUqC1BhrX2w7FG1OXmLVatt8pUbYp2kNn21AY51GF/36EkaW3fT5+8NYExkRtzeK7X6V1X4n1QV24PmA9a+lCWsFJkTxJR6cJUal1GkCPIQesT1HO2IwtBPgLQS5MlNEZ30K138nmh+q6eM8pQGmzHqcjmVmW0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=librecast.net; spf=pass smtp.mailfrom=librecast.net; arc=none smtp.client-ip=185.128.210.58
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=librecast.net
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=librecast.net
+From: Brett A C Sheffield <bacs@librecast.net>
+To: gregkh@linuxfoundation.org
+Cc: stable@vger.kernel.org,
+	patches@lists.linux.dev,
+	linux-kernel@vger.kernel.org,
+	torvalds@linux-foundation.org,
+	akpm@linux-foundation.org,
+	linux@roeck-us.net,
+	shuah@kernel.org,
+	patches@kernelci.org,
+	lkft-triage@lists.linaro.org,
+	pavel@denx.de,
+	jonathanh@nvidia.com,
+	f.fainelli@gmail.com,
+	sudipm.mukherjee@gmail.com,
+	srw@sladewatkins.net,
+	rwarsow@gmx.de,
+	conor@kernel.org,
+	hargar@microsoft.com,
+	broonie@kernel.org,
+	achill@achill.org,
+	Brett A C Sheffield <bacs@librecast.net>
+Subject: Re: 6.12.43-rc2 review
+Date: Wed, 20 Aug 2025 09:14:12 +0000
+Message-ID: <20250820091411.19994-2-bacs@librecast.net>
+X-Mailer: git-send-email 2.49.1
+In-Reply-To: <20250819122820.553053307@linuxfoundation.org>
+References: <20250819122820.553053307@linuxfoundation.org>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=ANSI_X3.4-1968
 Content-Transfer-Encoding: 8bit
 
+# Librecast Test Results
 
-This is a note to let you know that I've just added the patch titled
+010/010 [ OK ] libmld
+120/120 [ OK ] liblibrecast
 
-    iio: pressure: bmp280: Use IS_ERR() in bmp280_common_probe()
+CPU/kernel: Linux auntie 6.12.43-rc2-ge80021fb2304 #44 SMP PREEMPT_DYNAMIC Tue Aug 19 14:02:42 -00 2025 x86_64 AMD Ryzen 9 9950X 16-Core Processor AuthenticAMD GNU/Linux
 
-to my char-misc git tree which can be found at
-    git://git.kernel.org/pub/scm/linux/kernel/git/gregkh/char-misc.git
-in the char-misc-linus branch.
-
-The patch will show up in the next release of the linux-next tree
-(usually sometime within the next 24 hours during the week.)
-
-The patch will hopefully also be merged in Linus's tree for the
-next -rc kernel release.
-
-If you have any questions about this process, please let me know.
-
-
-From 43c0f6456f801181a80b73d95def0e0fd134e1cc Mon Sep 17 00:00:00 2001
-From: Salah Triki <salah.triki@gmail.com>
-Date: Mon, 18 Aug 2025 10:27:30 +0100
-Subject: iio: pressure: bmp280: Use IS_ERR() in bmp280_common_probe()
-
-`devm_gpiod_get_optional()` may return non-NULL error pointer on failure.
-Check its return value using `IS_ERR()` and propagate the error if
-necessary.
-
-Fixes: df6e71256c84 ("iio: pressure: bmp280: Explicitly mark GPIO optional")
-Signed-off-by: Salah Triki <salah.triki@gmail.com>
-Reviewed-by: David Lechner <dlechner@baylibre.com>
-Link: https://patch.msgid.link/20250818092740.545379-2-salah.triki@gmail.com
-Cc: <Stable@vger.kernel.org>
-Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
----
- drivers/iio/pressure/bmp280-core.c | 9 +++++----
- 1 file changed, 5 insertions(+), 4 deletions(-)
-
-diff --git a/drivers/iio/pressure/bmp280-core.c b/drivers/iio/pressure/bmp280-core.c
-index 74505c9ec1a0..6cdc8ed53520 100644
---- a/drivers/iio/pressure/bmp280-core.c
-+++ b/drivers/iio/pressure/bmp280-core.c
-@@ -3213,11 +3213,12 @@ int bmp280_common_probe(struct device *dev,
- 
- 	/* Bring chip out of reset if there is an assigned GPIO line */
- 	gpiod = devm_gpiod_get_optional(dev, "reset", GPIOD_OUT_HIGH);
-+	if (IS_ERR(gpiod))
-+		return dev_err_probe(dev, PTR_ERR(gpiod), "failed to get reset GPIO\n");
-+
- 	/* Deassert the signal */
--	if (gpiod) {
--		dev_info(dev, "release reset\n");
--		gpiod_set_value(gpiod, 0);
--	}
-+	dev_info(dev, "release reset\n");
-+	gpiod_set_value(gpiod, 0);
- 
- 	data->regmap = regmap;
- 
--- 
-2.50.1
-
-
+Tested-by: Brett A C Sheffield <bacs@librecast.net>
 
