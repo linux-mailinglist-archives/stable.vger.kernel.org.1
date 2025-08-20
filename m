@@ -1,47 +1,47 @@
-Return-Path: <stable+bounces-171878-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-171879-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id CC83DB2D780
-	for <lists+stable@lfdr.de>; Wed, 20 Aug 2025 11:06:38 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id D78FEB2D78A
+	for <lists+stable@lfdr.de>; Wed, 20 Aug 2025 11:09:03 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id D023F5E4B98
-	for <lists+stable@lfdr.de>; Wed, 20 Aug 2025 09:05:47 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id BAF8E1890AE9
+	for <lists+stable@lfdr.de>; Wed, 20 Aug 2025 09:06:11 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 225492D7813;
-	Wed, 20 Aug 2025 09:05:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 463622550CA;
+	Wed, 20 Aug 2025 09:05:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="lGiRH67b"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="B66LJuGH"
 X-Original-To: Stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D3209283153
-	for <Stable@vger.kernel.org>; Wed, 20 Aug 2025 09:05:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F016F18991E
+	for <Stable@vger.kernel.org>; Wed, 20 Aug 2025 09:05:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755680746; cv=none; b=SCL9u3s7NJm+nVu8qE0QcJ+ZvhAR7m5uAUOHxon0OerNKSEXDpHNkb4J9yCJLbHHC36DCSdrWDNpNSX+74pkp+f3piN/mHQEC+kpY1n/rUqqKLhp2jM4gIS7N36BUkBGa23vdqko1EdjICe7GsyuQ/H0bqA+Ta+sEQQN4B9Jz8c=
+	t=1755680750; cv=none; b=BPAVWDZFzt+BebfU4sF6SPBgcNFkcfW1TSQxEwVeuDrdHONFS7lWTzwcnq17yXDtsa8+csOu4rSv95o74XAvCCu+ONI2hbOXjCqOGt03YB6YhA/GHmxfQXrxqjJCJc33Bo93gn65Y6T2fsz2plUgrZJh7rnJ38uoZ04RDawKt1o=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1755680746; c=relaxed/simple;
-	bh=48zR95M+bnbFC0/UtlN8LdVVFdgabawDwMez5KGAwjY=;
-	h=Subject:To:From:Date:Message-ID:MIME-Version:Content-Type; b=d0pEH8L5sAOyPnM5tdaFbXixQLkI3rknBGwG/A3l88Lzf+7IDOrkix7AQvWw53h1najTldJeqnsnBnU/PCYBu2I3GvCsm6es9G7xd1aerXFZfpKK7irxK86lbXaYlYf/4HzjSco/ucWBQFam8rJBHH7J2pMOK0GCdI9txfa12go=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=lGiRH67b; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E0B37C4CEEB;
-	Wed, 20 Aug 2025 09:05:45 +0000 (UTC)
+	s=arc-20240116; t=1755680750; c=relaxed/simple;
+	bh=rBIWWgSgC3Z1+DJZd9LaEuOIL1k/8mC91rTAmBS9Y0I=;
+	h=Subject:To:From:Date:Message-ID:MIME-Version:Content-Type; b=axQks0JYCxxutUnNG1RS2bUZOayZ4askJfRkXSt8Avdu5jc8Gnyf8SnDKNrZzLk+QJrC9zHXmxzflJqcUN0BNtU6zEyhN8BevHzTtdbXY5LrPl4o+yDT5zPrpEp9+GkAF4rE0xEFCGwqL5JQxZ0EzuP/6S9roJAJW+NVUoTJl8k=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=B66LJuGH; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2ABE5C4CEEB;
+	Wed, 20 Aug 2025 09:05:48 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1755680746;
-	bh=48zR95M+bnbFC0/UtlN8LdVVFdgabawDwMez5KGAwjY=;
+	s=korg; t=1755680749;
+	bh=rBIWWgSgC3Z1+DJZd9LaEuOIL1k/8mC91rTAmBS9Y0I=;
 	h=Subject:To:From:Date:From;
-	b=lGiRH67by7lGV9tFJym5pqIXzxkbMiZBKolE2CAiqnhFRDWErjlyTZilJRDYkRud5
-	 Koov8CCIU9FEjrYNSplIcWIaOT8nzD1aCGNK0hIC3exzH3kqzDTu9YJDo1M/PYHF2u
-	 YMmEYLZL0C2SOAxHVKe6xlcC1Drnn268F5gUl0l0=
-Subject: patch "iio: adc: ad7124: fix channel lookup in syscalib functions" added to char-misc-linus
+	b=B66LJuGHgt0oI8KmfkdtEW6+GLoPyiS7+wX3vMf/YBmPSssRqx/K/uvN7cHYuu7uR
+	 bSspLFIYeJHNevRA5DD1MJg5zxYFYBGDzW2QNWS/UfHJ4dlRNnoK8Jvg84QoUCg88B
+	 gHW1x25l1ksRG3o3CPx6OXkwBi/kQaEE2pUKjR34=
+Subject: patch "iio: temperature: maxim_thermocouple: use DMA-safe buffer for" added to char-misc-linus
 To: dlechner@baylibre.com,Jonathan.Cameron@huawei.com,Stable@vger.kernel.org,nuno.sa@analog.com
 From: <gregkh@linuxfoundation.org>
 Date: Wed, 20 Aug 2025 11:05:34 +0200
-Message-ID: <2025082034-semifinal-robust-d503@gregkh>
+Message-ID: <2025082034-zesty-matchless-b6aa@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -54,7 +54,7 @@ Content-Transfer-Encoding: 8bit
 
 This is a note to let you know that I've just added the patch titled
 
-    iio: adc: ad7124: fix channel lookup in syscalib functions
+    iio: temperature: maxim_thermocouple: use DMA-safe buffer for
 
 to my char-misc git tree which can be found at
     git://git.kernel.org/pub/scm/linux/kernel/git/gregkh/char-misc.git
@@ -69,86 +69,97 @@ next -rc kernel release.
 If you have any questions about this process, please let me know.
 
 
-From 197e299aae42ffa19028eaea92b2f30dd9fb8445 Mon Sep 17 00:00:00 2001
+From ae5bc07ec9f73a41734270ef3f800c5c8a7e0ad3 Mon Sep 17 00:00:00 2001
 From: David Lechner <dlechner@baylibre.com>
-Date: Sat, 26 Jul 2025 11:28:48 -0500
-Subject: iio: adc: ad7124: fix channel lookup in syscalib functions
+Date: Mon, 21 Jul 2025 18:04:04 -0500
+Subject: iio: temperature: maxim_thermocouple: use DMA-safe buffer for
+ spi_read()
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-Fix possible incorrect channel lookup in the syscalib functions by using
-the correct channel address instead of the channel number.
+Replace using stack-allocated buffers with a DMA-safe buffer for use
+with spi_read(). This allows the driver to be safely used with
+DMA-enabled SPI controllers.
 
-In the ad7124 driver, the channel field of struct iio_chan_spec is the
-input pin number of the positive input of the channel. This can be, but
-is not always the same as the index in the channels array. The correct
-index in the channels array is stored in the address field (and also
-scan_index). We use the address field to perform the correct lookup.
+The buffer array is also converted to a struct with a union to make the
+usage of the memory in the buffer more clear and ensure proper alignment.
 
-Fixes: 47036a03a303 ("iio: adc: ad7124: Implement internal calibration at probe time")
+Fixes: 1f25ca11d84a ("iio: temperature: add support for Maxim thermocouple chips")
 Signed-off-by: David Lechner <dlechner@baylibre.com>
 Reviewed-by: Nuno Sá <nuno.sa@analog.com>
-Link: https://patch.msgid.link/20250726-iio-adc-ad7124-fix-channel-lookup-in-syscalib-v1-1-b9d14bb684af@baylibre.com
+Link: https://patch.msgid.link/20250721-iio-use-more-iio_declare_buffer_with_ts-3-v2-1-0c68d41ccf6c@baylibre.com
 Cc: <Stable@vger.kernel.org>
 Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
 ---
- drivers/iio/adc/ad7124.c | 14 +++++++-------
- 1 file changed, 7 insertions(+), 7 deletions(-)
+ drivers/iio/temperature/maxim_thermocouple.c | 26 ++++++++++++--------
+ 1 file changed, 16 insertions(+), 10 deletions(-)
 
-diff --git a/drivers/iio/adc/ad7124.c b/drivers/iio/adc/ad7124.c
-index 9808df2e9242..4d8c6bafd1c3 100644
---- a/drivers/iio/adc/ad7124.c
-+++ b/drivers/iio/adc/ad7124.c
-@@ -849,7 +849,7 @@ enum {
- static int ad7124_syscalib_locked(struct ad7124_state *st, const struct iio_chan_spec *chan)
+diff --git a/drivers/iio/temperature/maxim_thermocouple.c b/drivers/iio/temperature/maxim_thermocouple.c
+index cae8e84821d7..205939680fd4 100644
+--- a/drivers/iio/temperature/maxim_thermocouple.c
++++ b/drivers/iio/temperature/maxim_thermocouple.c
+@@ -11,6 +11,7 @@
+ #include <linux/module.h>
+ #include <linux/err.h>
+ #include <linux/spi/spi.h>
++#include <linux/types.h>
+ #include <linux/iio/iio.h>
+ #include <linux/iio/sysfs.h>
+ #include <linux/iio/trigger.h>
+@@ -121,8 +122,15 @@ struct maxim_thermocouple_data {
+ 	struct spi_device *spi;
+ 	const struct maxim_thermocouple_chip *chip;
+ 	char tc_type;
+-
+-	u8 buffer[16] __aligned(IIO_DMA_MINALIGN);
++	/* Buffer for reading up to 2 hardware channels. */
++	struct {
++		union {
++			__be16 raw16;
++			__be32 raw32;
++			__be16 raw[2];
++		};
++		aligned_s64 timestamp;
++	} buffer __aligned(IIO_DMA_MINALIGN);
+ };
+ 
+ static int maxim_thermocouple_read(struct maxim_thermocouple_data *data,
+@@ -130,18 +138,16 @@ static int maxim_thermocouple_read(struct maxim_thermocouple_data *data,
  {
- 	struct device *dev = &st->sd.spi->dev;
--	struct ad7124_channel *ch = &st->channels[chan->channel];
-+	struct ad7124_channel *ch = &st->channels[chan->address];
+ 	unsigned int storage_bytes = data->chip->read_size;
+ 	unsigned int shift = chan->scan_type.shift + (chan->address * 8);
+-	__be16 buf16;
+-	__be32 buf32;
  	int ret;
  
- 	if (ch->syscalib_mode == AD7124_SYSCALIB_ZERO_SCALE) {
-@@ -865,8 +865,8 @@ static int ad7124_syscalib_locked(struct ad7124_state *st, const struct iio_chan
- 		if (ret < 0)
- 			return ret;
+ 	switch (storage_bytes) {
+ 	case 2:
+-		ret = spi_read(data->spi, (void *)&buf16, storage_bytes);
+-		*val = be16_to_cpu(buf16);
++		ret = spi_read(data->spi, &data->buffer.raw16, storage_bytes);
++		*val = be16_to_cpu(data->buffer.raw16);
+ 		break;
+ 	case 4:
+-		ret = spi_read(data->spi, (void *)&buf32, storage_bytes);
+-		*val = be32_to_cpu(buf32);
++		ret = spi_read(data->spi, &data->buffer.raw32, storage_bytes);
++		*val = be32_to_cpu(data->buffer.raw32);
+ 		break;
+ 	default:
+ 		ret = -EINVAL;
+@@ -166,9 +172,9 @@ static irqreturn_t maxim_thermocouple_trigger_handler(int irq, void *private)
+ 	struct maxim_thermocouple_data *data = iio_priv(indio_dev);
+ 	int ret;
  
--		dev_dbg(dev, "offset for channel %d after zero-scale calibration: 0x%x\n",
--			chan->channel, ch->cfg.calibration_offset);
-+		dev_dbg(dev, "offset for channel %lu after zero-scale calibration: 0x%x\n",
-+			chan->address, ch->cfg.calibration_offset);
- 	} else {
- 		ch->cfg.calibration_gain = st->gain_default;
- 
-@@ -880,8 +880,8 @@ static int ad7124_syscalib_locked(struct ad7124_state *st, const struct iio_chan
- 		if (ret < 0)
- 			return ret;
- 
--		dev_dbg(dev, "gain for channel %d after full-scale calibration: 0x%x\n",
--			chan->channel, ch->cfg.calibration_gain);
-+		dev_dbg(dev, "gain for channel %lu after full-scale calibration: 0x%x\n",
-+			chan->address, ch->cfg.calibration_gain);
+-	ret = spi_read(data->spi, data->buffer, data->chip->read_size);
++	ret = spi_read(data->spi, data->buffer.raw, data->chip->read_size);
+ 	if (!ret) {
+-		iio_push_to_buffers_with_ts(indio_dev, data->buffer,
++		iio_push_to_buffers_with_ts(indio_dev, &data->buffer,
+ 					    sizeof(data->buffer),
+ 					    iio_get_time_ns(indio_dev));
  	}
- 
- 	return 0;
-@@ -924,7 +924,7 @@ static int ad7124_set_syscalib_mode(struct iio_dev *indio_dev,
- {
- 	struct ad7124_state *st = iio_priv(indio_dev);
- 
--	st->channels[chan->channel].syscalib_mode = mode;
-+	st->channels[chan->address].syscalib_mode = mode;
- 
- 	return 0;
- }
-@@ -934,7 +934,7 @@ static int ad7124_get_syscalib_mode(struct iio_dev *indio_dev,
- {
- 	struct ad7124_state *st = iio_priv(indio_dev);
- 
--	return st->channels[chan->channel].syscalib_mode;
-+	return st->channels[chan->address].syscalib_mode;
- }
- 
- static const struct iio_enum ad7124_syscalib_mode_enum = {
 -- 
 2.50.1
 
