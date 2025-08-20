@@ -1,111 +1,82 @@
-Return-Path: <stable+bounces-171871-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-171872-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7ED70B2D48C
-	for <lists+stable@lfdr.de>; Wed, 20 Aug 2025 09:12:34 +0200 (CEST)
+Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [IPv6:2605:f480:58:1:0:1994:3:14])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2764AB2D4CE
+	for <lists+stable@lfdr.de>; Wed, 20 Aug 2025 09:26:22 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 388DF1C40414
-	for <lists+stable@lfdr.de>; Wed, 20 Aug 2025 07:12:22 +0000 (UTC)
+	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id ECCC14E4970
+	for <lists+stable@lfdr.de>; Wed, 20 Aug 2025 07:26:20 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C9EDA2D24AF;
-	Wed, 20 Aug 2025 07:11:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 52EF02D63EE;
+	Wed, 20 Aug 2025 07:26:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=denx.de header.i=@denx.de header.b="Uj7RxlJ8"
+	dkim=pass (1024-bit key) header.d=linux.microsoft.com header.i=@linux.microsoft.com header.b="ntgtclnx"
 X-Original-To: stable@vger.kernel.org
-Received: from mx.denx.de (mx.denx.de [89.58.32.78])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D83A3277C80;
-	Wed, 20 Aug 2025 07:11:54 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=89.58.32.78
+Received: from linux.microsoft.com (linux.microsoft.com [13.77.154.182])
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 20C822D5A19;
+	Wed, 20 Aug 2025 07:26:14 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=13.77.154.182
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755673916; cv=none; b=X6yvGSMc0SvW90TL8r1umCtRc0LfpOVXLkX9iIfV6x0HuPOdCvmQbpff9QOScImEKd+8W5hEKqUJBUyow59BclywcwHJ56i/Zw/wjWXMWMYIZYkzebt59JAa5a+ahzBLhziZR9mWgk/WpJK6zvEdLost3GwZBDj9RldPUrcHfdk=
+	t=1755674776; cv=none; b=hwzmkbqXAbwOd8kfal9SxHDYw9iLaIfGhxZQN0L5lW6XDGuLTj4rvVJ/arVzgxvzu1Vr+4QaWdDB+fb32DgV3fBgQPAFKonN4ig8m36O9yxZ0CcrLlztoIbS++nFLS9LHNBdCC9NTiqwMejzXB5UFnPt1LGXWJYKk35CADnRnlg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1755673916; c=relaxed/simple;
-	bh=0My0nruW+wtQVHOpDq41hwdibx0GRaDbU/OUIU5WwkE=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=fqN9YNcu2LqwsnszSr/tnk8/4DhyXM8hQN5MFRSrhqXcF9qMUZItMudkADLflhiaK0Of9cyxbxyRAYGmASVhM19jaqjWd2bzTs7y8a0rYFQrrslUbVnI1KSqYzgk1BArwDo1MVS9ReYuvG/UnL2qmfNc3oJJ6CEtafXrLFcr8pU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=denx.de; spf=pass smtp.mailfrom=denx.de; dkim=pass (2048-bit key) header.d=denx.de header.i=@denx.de header.b=Uj7RxlJ8; arc=none smtp.client-ip=89.58.32.78
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=denx.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=denx.de
-Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id 6450510391E95;
-	Wed, 20 Aug 2025 09:11:44 +0200 (CEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=denx.de; s=mx-20241105;
-	t=1755673911; h=from:subject:date:message-id:to:cc:mime-version:content-type:
-	 in-reply-to:references; bh=QWK6fDo3fD5ZpwL3KEaiHhSHjSMwZsvwVvTIf4mXTrg=;
-	b=Uj7RxlJ8PBL5nl/xumb/vuyXx4TQIMmoXYBDODvake4VDdt1wI23NFsi1RePhzWGMKeyUV
-	CWO1q5iIuoxQID5edJ4pSd3IjZQkUjYTumhEORBwKZpITLBFQX/6LkKWh6eYmdCvtFz8i9
-	C/rKtPqhHrU4Fw0zCc6QWmp7dVG0ZM87AYcYYCa4ZcjRsPQPcKvUfTciry4zBnYNTwR3r2
-	OIgFAFRkF1vvA/Gq2Sek0lkHH8wyj3mCsd0UHbtj6WVkfl2KceWPahed3R7W7j03WfsnuU
-	5ZD/zu4WE1Be0Zeisw1JE9ld2Xh2yBIoGreU/pErLMoVQB4GrXfJ3un0nm9C0g==
-Date: Wed, 20 Aug 2025 09:11:42 +0200
-From: Pavel Machek <pavel@denx.de>
-To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Cc: stable@vger.kernel.org, patches@lists.linux.dev,
-	linux-kernel@vger.kernel.org, torvalds@linux-foundation.org,
-	akpm@linux-foundation.org, linux@roeck-us.net, shuah@kernel.org,
-	patches@kernelci.org, lkft-triage@lists.linaro.org,
-	jonathanh@nvidia.com, f.fainelli@gmail.com,
-	sudipm.mukherjee@gmail.com, srw@sladewatkins.net, rwarsow@gmx.de,
-	conor@kernel.org, hargar@microsoft.com, broonie@kernel.org,
-	achill@achill.org
+	s=arc-20240116; t=1755674776; c=relaxed/simple;
+	bh=So/DPdTrEetS+prIB4juTaDi3sd6U8Pwug7hulZEtkc=;
+	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References; b=gEzwmOxLFUfrmWxmYyaRBYCTvxlFh8uruA8HoJnZGd3X1Py/8JZVXskgjPLVR6OJttSWL7Premfsj8TQXa+9+aKtqm/APFhkfphrztw+yu080uR+5Dg6rvKkOolbZtnQzSQ7OIqks8fJpLJ7kvQF9tnAw+WYOuI+/axJyYI2XqE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.microsoft.com; spf=pass smtp.mailfrom=linux.microsoft.com; dkim=pass (1024-bit key) header.d=linux.microsoft.com header.i=@linux.microsoft.com header.b=ntgtclnx; arc=none smtp.client-ip=13.77.154.182
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.microsoft.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.microsoft.com
+Received: by linux.microsoft.com (Postfix, from userid 1158)
+	id 7696F2015BC8; Wed, 20 Aug 2025 00:26:07 -0700 (PDT)
+DKIM-Filter: OpenDKIM Filter v2.11.0 linux.microsoft.com 7696F2015BC8
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.microsoft.com;
+	s=default; t=1755674767;
+	bh=So/DPdTrEetS+prIB4juTaDi3sd6U8Pwug7hulZEtkc=;
+	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
+	b=ntgtclnxCDAddTQ1PPTXn1URGH+qWeQBi47Zx8HyMKiUkfaeJI4w1wdub8Z+fA/AE
+	 H2AVrMIw2wfJ0zSsnLCjlMZGlpMhz3r3CrxVqo0PfFoz1elAzTM+lbNmUHdEsh45lV
+	 ENuIi3ncBu3npSYjdToTWDBkS0lZkZQZtjk3sbIc=
+From: Hardik Garg <hargar@linux.microsoft.com>
+To: gregkh@linuxfoundation.org
+Cc: achill@achill.org,
+	akpm@linux-foundation.org,
+	broonie@kernel.org,
+	conor@kernel.org,
+	f.fainelli@gmail.com,
+	hargar@microsoft.com,
+	jonathanh@nvidia.com,
+	linux-kernel@vger.kernel.org,
+	linux@roeck-us.net,
+	lkft-triage@lists.linaro.org,
+	patches@kernelci.org,
+	patches@lists.linux.dev,
+	pavel@denx.de,
+	rwarsow@gmx.de,
+	shuah@kernel.org,
+	srw@sladewatkins.net,
+	stable@vger.kernel.org,
+	sudipm.mukherjee@gmail.com,
+	torvalds@linux-foundation.org
 Subject: Re: [PATCH 6.12 000/438] 6.12.43-rc2 review
-Message-ID: <aKV1LlA1wbzXaSWq@duo.ucw.cz>
+Date: Wed, 20 Aug 2025 00:26:07 -0700
+Message-Id: <1755674767-30118-1-git-send-email-hargar@linux.microsoft.com>
+X-Mailer: git-send-email 1.8.3.1
+In-Reply-To: <20250819122820.553053307@linuxfoundation.org>
 References: <20250819122820.553053307@linuxfoundation.org>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha1;
-	protocol="application/pgp-signature"; boundary="MW6hhxMXnlKkMv/8"
-Content-Disposition: inline
-In-Reply-To: <20250819122820.553053307@linuxfoundation.org>
-X-Last-TLS-Session-Version: TLSv1.3
+
+The kernel, bpf tool, perf tool, and kselftest builds fine for v6.12.43-rc2 on x86 and arm64 Azure VM.
 
 
---MW6hhxMXnlKkMv/8
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
-
-Hi!
-
-> This is the start of the stable review cycle for the 6.12.43 release.
-> There are 438 patches in this series, all will be posted as a response
-> to this one.  If anyone has any issues with these being applied, please
-> let me know.
-
-CIP testing did not find any problems here:
-
-https://gitlab.com/cip-project/cip-testing/linux-stable-rc-ci/-/tree/linux-=
-6.12.y
-
-6.15, 6.16 seem to be okay, too.
-
-Tested-by: Pavel Machek (CIP) <pavel@denx.de>
-
-Best regards,
-                                                                Pavel
+Tested-by: Hardik Garg <hargar@linux.microsoft.com>
 
 
---=20
-In cooperation with DENX Software Engineering GmbH, HRB 165235 Munich,
-Office: Kirchenstr.5, D-82194 Groebenzell, Germany
-
---MW6hhxMXnlKkMv/8
-Content-Type: application/pgp-signature; name="signature.asc"
-
------BEGIN PGP SIGNATURE-----
-
-iF0EABECAB0WIQRPfPO7r0eAhk010v0w5/Bqldv68gUCaKV1LgAKCRAw5/Bqldv6
-8o7nAJ4xtK4HN6/iP1hiAOqmKPh5qFqaXgCgu5Wvk9riKfJdn2bxz9K5F1EIgjw=
-=3Cp9
------END PGP SIGNATURE-----
-
---MW6hhxMXnlKkMv/8--
+Thanks,
+Hardik
 
