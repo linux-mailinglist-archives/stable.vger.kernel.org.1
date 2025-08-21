@@ -1,130 +1,176 @@
-Return-Path: <stable+bounces-171974-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-171977-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 38B35B2F766
-	for <lists+stable@lfdr.de>; Thu, 21 Aug 2025 14:02:16 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 47F8EB2F828
+	for <lists+stable@lfdr.de>; Thu, 21 Aug 2025 14:35:33 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 214C07AFE02
-	for <lists+stable@lfdr.de>; Thu, 21 Aug 2025 11:59:59 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 560C8602A91
+	for <lists+stable@lfdr.de>; Thu, 21 Aug 2025 12:33:44 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 67F4C30F809;
-	Thu, 21 Aug 2025 12:01:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3766E30BF76;
+	Thu, 21 Aug 2025 12:33:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=siemens.com header.i=alexander.sverdlin@siemens.com header.b="FANoF1CS"
+	dkim=pass (1024-bit key) header.d=ideasonboard.com header.i=@ideasonboard.com header.b="L1YncIOH"
 X-Original-To: stable@vger.kernel.org
-Received: from mta-64-227.siemens.flowmailer.net (mta-64-227.siemens.flowmailer.net [185.136.64.227])
+Received: from perceval.ideasonboard.com (perceval.ideasonboard.com [213.167.242.64])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A6B5E28DB52
-	for <stable@vger.kernel.org>; Thu, 21 Aug 2025 12:01:22 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.136.64.227
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0ADB02F5E;
+	Thu, 21 Aug 2025 12:33:32 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=213.167.242.64
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755777688; cv=none; b=WxYQ7qMpGj1rCQtekz6UOSwCpIz6yW29C1b8mqO7PkyA+QAboOWN3CH9QbmtnmqKSSnlOc+viIQt09iyfU4VwslNTiEqygzNIdQoz19G97IFLCrN2/VQjwCZ7U1xPWHvxjeN2/Zb7qvfuf+GRae2dPbwNWHit5N+HQJIp2xwmdg=
+	t=1755779616; cv=none; b=UhQSVUP+obgKnX4IVDZIkXG+4wBnJbl9GaYiZbuP7RaItZkT4Y857ygsZCf1rk/8wZSxZy47Bu/HdOzFo5AjfIccpjD1jkbH8xmCr9KqOEBVNNWkD5dJLBzUqXAuFs3mrxBv0wXzER8W59WVWOflJoJYYeq3QgeHgN7UlSExyd8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1755777688; c=relaxed/simple;
-	bh=AZqPOIs8oTppgZY6LZx0VdFQyYDMm9MLTjA6k0xXVeM=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=PH/qAE8zSQx6jtBtUH2rOgS8dn1pOOOmx4ea3U5RfKcSOQNBNhe32Yq0RsROazJNkEizewLixreImYwVzeWbph5rvCerImhzhu5vP2wMZUQxVcfckDNRDzSlYcyiaz439AqPueRxo90OeOWigiQVl/GK0L5ueeWdIdaSCaig7yw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=siemens.com; spf=pass smtp.mailfrom=rts-flowmailer.siemens.com; dkim=pass (2048-bit key) header.d=siemens.com header.i=alexander.sverdlin@siemens.com header.b=FANoF1CS; arc=none smtp.client-ip=185.136.64.227
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=siemens.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=rts-flowmailer.siemens.com
-Received: by mta-64-227.siemens.flowmailer.net with ESMTPSA id 20250821120115d86f8bb70b0fc29d5b
-        for <stable@vger.kernel.org>;
-        Thu, 21 Aug 2025 14:01:15 +0200
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; s=fm2;
- d=siemens.com; i=alexander.sverdlin@siemens.com;
- h=Date:From:Subject:To:Message-ID:MIME-Version:Content-Type:Content-Transfer-Encoding:Cc;
- bh=uFziv+Xoqi8s1O750PzRShk/r5lOsnFwo6no1Ndpf4A=;
- b=FANoF1CSNcNhr0AzulgktsCv51sdgu0zyLNmYj8uo+YgW5H+jcFgTEBccktzoVBc0cXQqz
- WZxAe1J/kqCmDXahSLd0oi//0StCM16PlOty2c9HNjqo71J6+dTuX1xgCG/1Aj6pakw2thA/
- RYHKTD3gGvm0zZ0d+dngae0QJm40XFUVUER0jtG41a7XMMuvBLMqwHF6mhG8SaWMpdKggF7/
- soaC1OgPgeedpFJghTnbrTLjH2Xyny5SZAZoVdbmJpwBucU1OejrhxmRA386vL2ywecXGz5+
- /NkOrAmXc/He6Bki0O2CQJj6dtLU7aCGNdD0WrAOBgIKIRO5b8Z2w9ow==;
-From: "A. Sverdlin" <alexander.sverdlin@siemens.com>
-To: Boris Brezillon <bbrezillon@kernel.org>,
-	linux-mtd@lists.infradead.org
-Cc: Alexander Sverdlin <alexander.sverdlin@siemens.com>,
-	Balamanikandan.Gunasundar@microchip.com,
-	Miquel Raynal <miquel.raynal@bootlin.com>,
-	Richard Weinberger <richard@nod.at>,
-	Vignesh Raghavendra <vigneshr@ti.com>,
-	Nicolas Ferre <nicolas.ferre@microchip.com>,
-	Alexandre Belloni <alexandre.belloni@bootlin.com>,
-	Claudiu Beznea <claudiu.beznea@tuxon.dev>,
-	linux-arm-kernel@lists.infradead.org,
-	linux-kernel@vger.kernel.org,
-	stable@vger.kernel.org
-Subject: [PATCH v2] mtd: nand: raw: atmel: Respect tAR, tCLR in read setup timing
-Date: Thu, 21 Aug 2025 14:00:57 +0200
-Message-ID: <20250821120106.346869-1-alexander.sverdlin@siemens.com>
+	s=arc-20240116; t=1755779616; c=relaxed/simple;
+	bh=STIWLtVOMHk9RfVFUUas9ZZPysmjI7JRjEhbfGJJX/I=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=U6QxDdVeqWLHkdo5KWdhOAdxDm23EFu4fmafHFq8abP+hAUYDTwaMNug2XNxLOvB95qdRBpDt7lTOOybYHrS02NsMaaJhJnyot83JL1+DVKuMXlpMz2dnaroTjtJLdUwqhO/DPsFrs/RXmukwh49y0Hvh/f9jY3ig9ZZf33SQnA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=ideasonboard.com; spf=pass smtp.mailfrom=ideasonboard.com; dkim=pass (1024-bit key) header.d=ideasonboard.com header.i=@ideasonboard.com header.b=L1YncIOH; arc=none smtp.client-ip=213.167.242.64
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=ideasonboard.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ideasonboard.com
+Received: from pendragon.ideasonboard.com (81-175-209-231.bb.dnainternet.fi [81.175.209.231])
+	by perceval.ideasonboard.com (Postfix) with UTF8SMTPSA id A342EEFF;
+	Thu, 21 Aug 2025 14:32:31 +0200 (CEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=ideasonboard.com;
+	s=mail; t=1755779551;
+	bh=STIWLtVOMHk9RfVFUUas9ZZPysmjI7JRjEhbfGJJX/I=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=L1YncIOH3YE/EcyBbynXHYa8GJMi6nL8Pm2nCWAJhQKuipg3XJiAAE6Yx8H49oOBY
+	 SacwpnqIkyhRZFahZoypuiEzmLg/m6DrUn1QcqWOvPJ9GAxFs1g0tqTVhMrcXUFdmL
+	 aRoIUsqUg0uespog5NQTpTPVY9T6FKgbOoePB/dM=
+Date: Thu, 21 Aug 2025 15:33:07 +0300
+From: Laurent Pinchart <laurent.pinchart@ideasonboard.com>
+To: Guoniu Zhou <guoniu.zhou@nxp.com>
+Cc: Mauro Carvalho Chehab <mchehab@kernel.org>,
+	Shawn Guo <shawnguo@kernel.org>,
+	Sascha Hauer <s.hauer@pengutronix.de>,
+	Pengutronix Kernel Team <kernel@pengutronix.de>,
+	Fabio Estevam <festevam@gmail.com>,
+	Dong Aisheng <aisheng.dong@nxp.com>,
+	Stefan Riedmueller <s.riedmueller@phytec.de>,
+	Christian Hemp <c.hemp@phytec.de>, Jacopo Mondi <jacopo@jmondi.org>,
+	linux-media@vger.kernel.org, imx@lists.linux.dev,
+	linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
+	stable@vger.kernel.org, Frank Li <Frank.Li@nxp.com>
+Subject: Re: [PATCH v2] media: nxp: imx8-isi: Fix streamon/streamoff calls
+ are imbalanced issue
+Message-ID: <20250821123307.GB8865@pendragon.ideasonboard.com>
+References: <20250821-isi_m2m-v2-1-c616e4b00600@nxp.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Flowmailer-Platform: Siemens
-Feedback-ID: 519:519-456497:519-21489:flowmailer
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+In-Reply-To: <20250821-isi_m2m-v2-1-c616e4b00600@nxp.com>
 
-From: Alexander Sverdlin <alexander.sverdlin@siemens.com>
+Hi Guoniu,
 
-Having setup time 0 violates tAR, tCLR of some chips, for instance
-TOSHIBA TC58NVG2S3ETAI0 cannot be detected successfully (first ID byte
-being read duplicated, i.e. 98 98 dc 90 15 76 14 03 instead of
-98 dc 90 15 76 ...).
+Thank you for the patch.
 
-Atmel Application Notes postulated 1 cycle NRD_SETUP without explanation
-[1], but it looks more appropriate to just calculate setup time properly.
+On Thu, Aug 21, 2025 at 02:08:29PM +0800, Guoniu Zhou wrote:
+> If streamon/streamoff calls are imbalanced, such as exit application
+> with Ctrl+C when streaming, m2m usage_count will never reach to zero
+> and ISI channel won't be freed. Besides from that, if the input line
+> width is more 2K and exit with Ctrl+C when streaming, it will trigger
+> kernel panic, like bellow:
+> 
+> [ 59.222120] ------------[ cut here ]------------
+> [ 59.226758] WARNING: drivers/media/platform/nxp/imx8-isi/imx8-isi-hw.c:631 at mxc_isi_channel_chain+0xa4/0x120, CPU#4: v4l2-ctl/654
+> [ 59.238569] Modules linked in: ap1302
+> [ 59.242231] CPU: 4 UID: 0 PID: 654 Comm: v4l2-ctl Not tainted 6.16.0-rc4-next-20250704-06511-gff0e002d480a-dirty #258 PREEMPT
+> [ 59.253597] Hardware name: NXP i.MX95 15X15 board (DT)
+> [ 59.258720] pstate: 80400009 (Nzcv daif +PAN -UAO -TCO -DIT -SSBS BTYPE=--)
+> [ 59.265669] pc : mxc_isi_channel_chain+0xa4/0x120
+> [ 59.270358] lr : mxc_isi_channel_chain+0x44/0x120
+> [ 59.275047] sp : ffff8000848c3b40
+> [ 59.278348] x29: ffff8000848c3b40 x28: ffff0000859b4c98 x27: ffff800081939f00
+> [ 59.285472] x26: 000000000000000a x25: ffff0000859b4cb8 x24: 0000000000000001
+> [ 59.292597] x23: ffff0000816f4760 x22: ffff0000816f4258 x21: ffff000084ceb780
+> [ 59.299720] x20: ffff000084342ff8 x19: ffff000084340000 x18: 0000000000000000
+> [ 59.306845] x17: 0000000000000000 x16: 0000000000000000 x15: 0000ffffdb369e1c
+> [ 59.313969] x14: 0000000000000000 x13: 0000000000000000 x12: 0000000000000000
+> [ 59.321093] x11: 0000000000000000 x10: 0000000000000000 x9 : 0000000000000000
+> [ 59.328217] x8 : ffff8000848c3d48 x7 : ffff800081930b30 x6 : ffff800081930b30
+> [ 59.335340] x5 : ffff0000859b6000 x4 : ffff80008193ae80 x3 : ffff800081022420
+> [ 59.342464] x2 : ffff0000852f6900 x1 : 0000000000000001 x0 : ffff000084341000
+> [ 59.349590] Call trace:
+> [ 59.352025]  mxc_isi_channel_chain+0xa4/0x120 (P)
+> [ 59.356722]  mxc_isi_m2m_streamon+0x160/0x20c
+> [ 59.361072]  v4l_streamon+0x24/0x30
+> [ 59.364556]  __video_do_ioctl+0x40c/0x4a0
+> [ 59.368560]  video_usercopy+0x2bc/0x690
+> [ 59.372382]  video_ioctl2+0x18/0x24
+> [ 59.375857]  v4l2_ioctl+0x40/0x60
+> [ 59.379168]  __arm64_sys_ioctl+0xac/0x104
+> [ 59.383172]  invoke_syscall+0x48/0x104
+> [ 59.386916]  el0_svc_common.constprop.0+0xc0/0xe0
+> [ 59.391613]  do_el0_svc+0x1c/0x28
+> [ 59.394915]  el0_svc+0x34/0xf4
+> [ 59.397966]  el0t_64_sync_handler+0xa0/0xe4
+> [ 59.402143]  el0t_64_sync+0x198/0x19c
+> [ 59.405801] ---[ end trace 0000000000000000 ]---
+> 		VIDIOC_STREAMON returned -1 (Invalid argument)
+> 
+> So check the queue streaming status when application close and call
+> streamoff to fix the issue.
+> 
+> Fixes: cf21f328fcaf ("media: nxp: Add i.MX8 ISI driver")
+> Cc: stable@vger.kernel.org
+> Reviewed-by: Frank Li <Frank.Li@nxp.com>
+> Signed-off-by: Guoniu Zhou <guoniu.zhou@nxp.com>
+> ---
+> Changes in v2:
+> - No functions changed, add Cc:stable@vger.kernel.org tag in the sign-off area
+> - Link to v1: https://lore.kernel.org/r/20250818-isi_m2m-v1-1-bbe2b774d4bf@nxp.com
+> ---
+>  drivers/media/platform/nxp/imx8-isi/imx8-isi-m2m.c | 8 ++++++++
+>  1 file changed, 8 insertions(+)
+> 
+> diff --git a/drivers/media/platform/nxp/imx8-isi/imx8-isi-m2m.c b/drivers/media/platform/nxp/imx8-isi/imx8-isi-m2m.c
+> index 22e49d3a128732c077beb7ac2e2f688e0899f8e2..7650a9fe6b093e2b4e09e3e66b624c8c019c8583 100644
+> --- a/drivers/media/platform/nxp/imx8-isi/imx8-isi-m2m.c
+> +++ b/drivers/media/platform/nxp/imx8-isi/imx8-isi-m2m.c
+> @@ -709,6 +709,14 @@ static int mxc_isi_m2m_release(struct file *file)
+>  	struct mxc_isi_m2m *m2m = video_drvdata(file);
+>  	struct mxc_isi_m2m_ctx *ctx = to_isi_m2m_ctx(file->private_data);
+>  
+> +	if (ctx->queues.out.streaming)
+> +		mxc_isi_m2m_streamoff(file, &ctx->fh,
+> +				      V4L2_BUF_TYPE_VIDEO_OUTPUT_MPLANE);
+> +
+> +	if (ctx->queues.cap.streaming)
+> +		mxc_isi_m2m_streamoff(file, &ctx->fh,
+> +				      V4L2_BUF_TYPE_VIDEO_CAPTURE_MPLANE);
+> +
 
-[1] Link: https://ww1.microchip.com/downloads/aemDocuments/documents/MPU32/ApplicationNotes/ApplicationNotes/doc6255.pdf
-Cc: stable@vger.kernel.org
-Fixes: f9ce2eddf176 ("mtd: nand: atmel: Add ->setup_data_interface() hooks")
-Signed-off-by: Alexander Sverdlin <alexander.sverdlin@siemens.com>
----
-v2:
-- Cc'ed stable
-- reformatted atmel_smc_cs_conf_set_setup() call
-- rebased onto mtd/fixes
+Stopping streaming is supposed to be handled by the
+v4l2_m2m_ctx_release() function, which calls vb2_queue_release() for
+both queues. This doesn't work today because mxc_isi_m2m_streamon() and
+mxc_isi_m2m_streamoff() perform extra operations before calling
+v4l2_m2m_ioctl_streamon() and v4l2_m2m_ioctl_streamoff(). I think moving
+that code to the .prepare_streaming() and .unprepare_streaming()
+operations would be best, as done in
+https://lore.kernel.org/r/20250813212451.22140-2-laurent.pinchart@ideasonboard.com
+for the non-M2M case.
 
- drivers/mtd/nand/raw/atmel/nand-controller.c | 16 +++++++++++++---
- 1 file changed, 13 insertions(+), 3 deletions(-)
+I'm testing a patch and I will send it out.
 
-diff --git a/drivers/mtd/nand/raw/atmel/nand-controller.c b/drivers/mtd/nand/raw/atmel/nand-controller.c
-index dedcca87defc7..ad0eff385e123 100644
---- a/drivers/mtd/nand/raw/atmel/nand-controller.c
-+++ b/drivers/mtd/nand/raw/atmel/nand-controller.c
-@@ -1377,14 +1377,24 @@ static int atmel_smc_nand_prepare_smcconf(struct atmel_nand *nand,
- 	if (ret)
- 		return ret;
- 
-+	/*
-+	 * Read setup timing depends on the operation done on the NAND:
-+	 *
-+	 * NRD_SETUP = max(tAR, tCLR)
-+	 */
-+	timeps = max(conf->timings.sdr.tAR_min, conf->timings.sdr.tCLR_min);
-+	ncycles = DIV_ROUND_UP(timeps, mckperiodps);
-+	totalcycles += ncycles;
-+	ret = atmel_smc_cs_conf_set_setup(smcconf, ATMEL_SMC_NRD_SHIFT, ncycles);
-+	if (ret)
-+		return ret;
-+
- 	/*
- 	 * The read cycle timing is directly matching tRC, but is also
- 	 * dependent on the setup and hold timings we calculated earlier,
- 	 * which gives:
- 	 *
--	 * NRD_CYCLE = max(tRC, NRD_PULSE + NRD_HOLD)
--	 *
--	 * NRD_SETUP is always 0.
-+	 * NRD_CYCLE = max(tRC, NRD_SETUP + NRD_PULSE + NRD_HOLD)
- 	 */
- 	ncycles = DIV_ROUND_UP(conf->timings.sdr.tRC_min, mckperiodps);
- 	ncycles = max(totalcycles, ncycles);
+>  	v4l2_m2m_ctx_release(ctx->fh.m2m_ctx);
+>  	mxc_isi_m2m_ctx_ctrls_delete(ctx);
+>  
+> 
+> ---
+> base-commit: 8f5ae30d69d7543eee0d70083daf4de8fe15d585
+> change-id: 20250818-isi_m2m-ac52338ae925
+
 -- 
-2.50.1
+Regards,
 
+Laurent Pinchart
 
