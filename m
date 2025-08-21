@@ -1,185 +1,173 @@
-Return-Path: <stable+bounces-172163-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-172164-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id D5FE9B2FD8E
-	for <lists+stable@lfdr.de>; Thu, 21 Aug 2025 16:59:22 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9DE52B2FDF8
+	for <lists+stable@lfdr.de>; Thu, 21 Aug 2025 17:15:11 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id CB98B7AADA3
-	for <lists+stable@lfdr.de>; Thu, 21 Aug 2025 14:57:47 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id A7EF517BE50
+	for <lists+stable@lfdr.de>; Thu, 21 Aug 2025 15:08:53 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5B1DE2836B5;
-	Thu, 21 Aug 2025 14:59:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2E581281378;
+	Thu, 21 Aug 2025 15:08:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=chromium.org header.i=@chromium.org header.b="dsIK0u11"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="soM5dGFA"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-pl1-f176.google.com (mail-pl1-f176.google.com [209.85.214.176])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id ACC322F6194
-	for <stable@vger.kernel.org>; Thu, 21 Aug 2025 14:58:59 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.176
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DAF0F275B06
+	for <stable@vger.kernel.org>; Thu, 21 Aug 2025 15:08:48 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755788341; cv=none; b=cBYYiC/b7UC7ChyiQyIzXhNtytHiZiQ7GLy0HFGapwedUMmSkhTUQR/3VmEQ/rf8EjN+Ugad8VW2Z5ww/QZTr8hQjaKruMwKrrEbkVMZAHfMeZyPA7o5JesMHiL7gAx4OBujp5Eo7YWNzW9yP+Y6LsOJFjsz3wevprLjvpm+akU=
+	t=1755788928; cv=none; b=hKFLTHIteGq/IwLzps0rVCqnCBDo1xuZ0BFI6RMAJnVyYj7OW/uwfOcavQSxa6bRRJQIA9fIf7Xo8J2eIpmFeXObYJdKsk5PIig7OrlMQ+KDAzYzq59jeBTh6NXjUcXzmL7pEG6PQkR3eh/TXwXoSyt1ZFPE73qBAOy2uwrKAwI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1755788341; c=relaxed/simple;
-	bh=Tz/VZwFoOgQ0Y4zvdRFkegcxdyj0tPL1i1gvMWA7+7Q=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=N1J/utW/F7JPnEupfFGusnWIqOdnMWGGac1s4Jgb4077pKh7lE95fiVhaASf5/0RKKDcNHaLhcxvW7WoGSXiW3a0PgrjHaNkGzNrB/AYkwBAkQ0XG6Py5rT8M7GcbGrV/02wsNbviq9F5lTJJt9DCpU2Z7q/tB+IbhX3WLs94+w=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=chromium.org; spf=pass smtp.mailfrom=chromium.org; dkim=pass (1024-bit key) header.d=chromium.org header.i=@chromium.org header.b=dsIK0u11; arc=none smtp.client-ip=209.85.214.176
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=chromium.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=chromium.org
-Received: by mail-pl1-f176.google.com with SMTP id d9443c01a7336-245f19a324bso10030325ad.0
-        for <stable@vger.kernel.org>; Thu, 21 Aug 2025 07:58:59 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=chromium.org; s=google; t=1755788339; x=1756393139; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=aaLinSTBsg2Heqd5n/Y8HcIpri3LMWuuwE5FV81Iuv8=;
-        b=dsIK0u11Uj2shhL/rM82sHsgOs/rTJuf7U4i6Kw/NZ8/E4cl4wQD1yLrHaQ9XGISGH
-         OEn9H+qpR5Y9JniVagCZSBGmOoOO6LIoVMd/7lGT8VLhnzWXmxrRTVmhO02hFuMqn75o
-         bIfH5DLdHzk6EegT9kMohlQENMXNSInMHb2sI=
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1755788339; x=1756393139;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=aaLinSTBsg2Heqd5n/Y8HcIpri3LMWuuwE5FV81Iuv8=;
-        b=i5l6uzpVKvCa65c9Fi8tjKW6t08fR9w8u0Csw4ZSsBEnIEMh6bDhF8sWMqX3hFAdZT
-         030FLrX3lGoGio6CfKMoHj2HqfDgZ5J93QxNDxGb8mSp/gCMcjPPjBWum9S5q/tq3dCB
-         qrKTmbiCQjck+uqrh/u3gGEFyiuLmTOCAe/OjicVcTzFDDSoEGFBC0abSRUJDT4IMB2b
-         sLUyzZdi5gHXmlq9z9guBDeTOgGt3rM4etufIx+kxlp7SoUznTuDArteBwfVQNt97tJE
-         arUNDa7cnpUDVhR8JllZjRaLVJSAOOIvpfOw9UjzodXl9Rf6C6oKI+J4fZgd32roWtmv
-         XFsA==
-X-Forwarded-Encrypted: i=1; AJvYcCX77/j7d1oMJM2B0OOiG2HBxjzO5gBhLDvxXm5X6rnVwM5pDdQQuHXqmzSPxET8VgBeOAiBI1Y=@vger.kernel.org
-X-Gm-Message-State: AOJu0YwnwiC3hNn0k/l2jGCYnEjDnkeDeFIPToK2z8S+IKHgpdzQvLU1
-	kj+sOYR+pwxfw7ARAHjKdSXQoOoX5+yrz9obpMOXECSIcMavJXGhYQwdDGGzLMuwFA==
-X-Gm-Gg: ASbGncsFwg+4gWSQoSyfZ9EFsiMiq896HnvNv++gYMR7iocKjrSGPAZmsXbUkUecTTE
-	a93/lVaJ46STlGkRHD4Lszs0kqVuUFLCGDCRlib1IElJTJoU3Izi4xm776LkGVTMWXgoDH+D0w2
-	grYHcKTQGyMGXV0e0Qq4K4cE3/KHMyD/eNZ4MmeH997tErwQeTq3xUgnP4Af5uxUeJOUiiyGPmx
-	XMHSxP++Ul+JtSIVgnury9WLYpEhiKe0+9fhqE1+uQifYnxVmJrZY4jufaUqm1IcfadQsg5mcsZ
-	jmbMylaWmpPKqj7X6fNzZFkxcTccJYoht+U0pvUbz8v3WRIIlMnNWumgl/zRSbaLyjIihWFrwew
-	cYFkuHrNsEE5kQaIewLvqm6YKBMizS2hgqULGK7b9IuX2japvYPR6KIe4QtyUdn2I4kZgRdM=
-X-Google-Smtp-Source: AGHT+IF5jd207eAHYlWkozFvV4W7rHhk80wb+yRJAbAhw3XVWRLn8xbVDIiu2vgUdgY7fOZrtSdwdQ==
-X-Received: by 2002:a17:902:d4cd:b0:246:571:4b21 with SMTP id d9443c01a7336-24605714c9dmr35347695ad.58.1755788338577;
-        Thu, 21 Aug 2025 07:58:58 -0700 (PDT)
-Received: from localhost ([2a00:79e0:2e14:7:2283:604f:d403:4841])
-        by smtp.gmail.com with UTF8SMTPSA id d9443c01a7336-245ed33aa3esm58509915ad.24.2025.08.21.07.58.57
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Thu, 21 Aug 2025 07:58:58 -0700 (PDT)
-From: Brian Norris <briannorris@chromium.org>
-To: Bjorn Helgaas <bhelgaas@google.com>
-Cc: linux-kernel@vger.kernel.org,
-	linux-pci@vger.kernel.org,
-	Brian Norris <briannorris@google.com>,
-	stable@vger.kernel.org,
-	Brian Norris <briannorris@chromium.org>
-Subject: [PATCH] PCI/PM: Ensure power-up succeeded before restoring MMIO state
-Date: Thu, 21 Aug 2025 07:58:12 -0700
-Message-ID: <20250821075812.1.I2dbf483156c328bc4a89085816b453e436c06eb5@changeid>
-X-Mailer: git-send-email 2.51.0.rc1.193.gad69d77794-goog
+	s=arc-20240116; t=1755788928; c=relaxed/simple;
+	bh=HtloGYaeytyDJkCzYUkjkt7Pocffe/qKzi16/tE/PiA=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=kP6rD3bhcGXsjt5vcCIXmFUVwg4vodcSL/mIy6JP10Ja7sJQYo4tL6f3Ai9UOKYae+jMduOQhPHsKIW1jit207czWuXBv+1yY6Kii2eLOqZySyfLuzwsijE8ryf4qIhcwB0TiTaXtd6GGImBg0YbADw0MQThLA4LVS/GNVitjhg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=soM5dGFA; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D0670C4CEEB;
+	Thu, 21 Aug 2025 15:08:47 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1755788928;
+	bh=HtloGYaeytyDJkCzYUkjkt7Pocffe/qKzi16/tE/PiA=;
+	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
+	b=soM5dGFA5O389J5+tzWuE0pJuGXi2GZEJYaNVVWHh6+sfVUP2RVV9fmOnWoWtinM8
+	 wImUHTgqEUqIHCRjAM0OVj1wdpMFWRycfp0xXJiwIdwtZNxccAE7BbIMHi1hSJ5Ckt
+	 fGfAEz08345/UIL3Ey1jlV4k/4eHNU07nqiUizv4g8+Y9FR3F6g7d0WKvJblsL8pDP
+	 k9+dHMpZdt5Xcp1jQAmojYPRVVqOB4w6BeBKrMr8ro9ZxH0slvF7gDLUm09dAWT2Qf
+	 SOK73bJsm7s6xcp5kZvkVQfdo3uPxRUWCm9WpRAJtabXoS6AEwVwz48pdY4i3AzIeZ
+	 40+swzgwJD1nw==
+From: Sasha Levin <sashal@kernel.org>
+To: stable@vger.kernel.org
+Cc: =?UTF-8?q?Uwe=20Kleine-K=C3=B6nig?= <u.kleine-koenig@pengutronix.de>,
+	Guenter Roeck <groeck@chromium.org>,
+	Lee Jones <lee.jones@linaro.org>,
+	Mark Brown <broonie@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.15.y 1/4] platform/chrome: cros_ec: Make cros_ec_unregister() return void
+Date: Thu, 21 Aug 2025 11:08:41 -0400
+Message-ID: <20250821150844.754065-1-sashal@kernel.org>
+X-Mailer: git-send-email 2.50.1
+In-Reply-To: <2025082112-freight-pesticide-c276@gregkh>
+References: <2025082112-freight-pesticide-c276@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-From: Brian Norris <briannorris@google.com>
+From: Uwe Kleine-König <u.kleine-koenig@pengutronix.de>
 
-As the comments in pci_pm_thaw_noirq() suggest, pci_restore_state() may
-need to restore MSI-X state in MMIO space. This is only possible if we
-reach D0; if we failed to power up, this might produce a fatal error
-when touching memory space.
+[ Upstream commit afb0a80e63d67e957b5d0eb4ade301aff6e13c8c ]
 
-Check for errors (as the "verify" in "pci_pm_power_up_and_verify_state"
-implies), and skip restoring if it fails.
+Up to now cros_ec_unregister() returns zero unconditionally. Make it
+return void instead which makes it easier to see in the callers that
+there is no error to handle.
 
-This mitigates errors seen during resume_noirq, for example, when the
-platform did not resume the link properly.
+Also the return value of i2c, platform and spi remove callbacks is
+ignored anyway.
 
-Cc: stable@vger.kernel.org
-Signed-off-by: Brian Norris <briannorris@google.com>
-Signed-off-by: Brian Norris <briannorris@chromium.org>
+Reviewed-by: Guenter Roeck <groeck@chromium.org>
+Link: https://lore.kernel.org/r/20211020071753.wltjslmimb6wtlp5@pengutronix.de
+Signed-off-by: Uwe Kleine-König <u.kleine-koenig@pengutronix.de>
+Acked-by: Lee Jones <lee.jones@linaro.org>
+Link: https://lore.kernel.org/r/20220123175201.34839-5-u.kleine-koenig@pengutronix.de
+Signed-off-by: Mark Brown <broonie@kernel.org>
+Stable-dep-of: e23749534619 ("platform/chrome: cros_ec: Unregister notifier in cros_ec_unregister()")
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
+ drivers/platform/chrome/cros_ec.c     | 4 +---
+ drivers/platform/chrome/cros_ec.h     | 2 +-
+ drivers/platform/chrome/cros_ec_i2c.c | 4 +++-
+ drivers/platform/chrome/cros_ec_lpc.c | 4 +++-
+ drivers/platform/chrome/cros_ec_spi.c | 4 +++-
+ 5 files changed, 11 insertions(+), 7 deletions(-)
 
- drivers/pci/pci-driver.c | 12 +++++++++---
- drivers/pci/pci.c        | 13 +++++++++++--
- drivers/pci/pci.h        |  2 +-
- 3 files changed, 21 insertions(+), 6 deletions(-)
-
-diff --git a/drivers/pci/pci-driver.c b/drivers/pci/pci-driver.c
-index 302d61783f6c..d66d95bd0ca2 100644
---- a/drivers/pci/pci-driver.c
-+++ b/drivers/pci/pci-driver.c
-@@ -557,7 +557,13 @@ static void pci_pm_default_resume(struct pci_dev *pci_dev)
- 
- static void pci_pm_default_resume_early(struct pci_dev *pci_dev)
+diff --git a/drivers/platform/chrome/cros_ec.c b/drivers/platform/chrome/cros_ec.c
+index 9664e13ded59..ea2296104634 100644
+--- a/drivers/platform/chrome/cros_ec.c
++++ b/drivers/platform/chrome/cros_ec.c
+@@ -306,13 +306,11 @@ EXPORT_SYMBOL(cros_ec_register);
+  *
+  * Return: 0 on success or negative error code.
+  */
+-int cros_ec_unregister(struct cros_ec_device *ec_dev)
++void cros_ec_unregister(struct cros_ec_device *ec_dev)
  {
--	pci_pm_power_up_and_verify_state(pci_dev);
-+	/*
-+	 * If we failed to reach D0, we'd better not touch MSI-X state in MMIO
-+	 * space.
-+	 */
-+	if (pci_pm_power_up_and_verify_state(pci_dev))
-+		return;
-+
- 	pci_restore_state(pci_dev);
- 	pci_pme_restore(pci_dev);
+ 	if (ec_dev->pd)
+ 		platform_device_unregister(ec_dev->pd);
+ 	platform_device_unregister(ec_dev->ec);
+-
+-	return 0;
  }
-@@ -1101,8 +1107,8 @@ static int pci_pm_thaw_noirq(struct device *dev)
- 	 * in case the driver's "freeze" callbacks put it into a low-power
- 	 * state.
- 	 */
--	pci_pm_power_up_and_verify_state(pci_dev);
--	pci_restore_state(pci_dev);
-+	if (!pci_pm_power_up_and_verify_state(pci_dev))
-+		pci_restore_state(pci_dev);
+ EXPORT_SYMBOL(cros_ec_unregister);
  
- 	if (pci_has_legacy_pm_support(pci_dev))
- 		return 0;
-diff --git a/drivers/pci/pci.c b/drivers/pci/pci.c
-index e698278229f2..c75fec3b094f 100644
---- a/drivers/pci/pci.c
-+++ b/drivers/pci/pci.c
-@@ -3144,10 +3144,19 @@ void pci_d3cold_disable(struct pci_dev *dev)
- }
- EXPORT_SYMBOL_GPL(pci_d3cold_disable);
+diff --git a/drivers/platform/chrome/cros_ec.h b/drivers/platform/chrome/cros_ec.h
+index 78363dcfdf23..bbca0096868a 100644
+--- a/drivers/platform/chrome/cros_ec.h
++++ b/drivers/platform/chrome/cros_ec.h
+@@ -11,7 +11,7 @@
+ #include <linux/interrupt.h>
  
--void pci_pm_power_up_and_verify_state(struct pci_dev *pci_dev)
-+int pci_pm_power_up_and_verify_state(struct pci_dev *pci_dev)
+ int cros_ec_register(struct cros_ec_device *ec_dev);
+-int cros_ec_unregister(struct cros_ec_device *ec_dev);
++void cros_ec_unregister(struct cros_ec_device *ec_dev);
+ 
+ int cros_ec_suspend(struct cros_ec_device *ec_dev);
+ int cros_ec_resume(struct cros_ec_device *ec_dev);
+diff --git a/drivers/platform/chrome/cros_ec_i2c.c b/drivers/platform/chrome/cros_ec_i2c.c
+index 30c8938c27d5..22feb0fd4ce7 100644
+--- a/drivers/platform/chrome/cros_ec_i2c.c
++++ b/drivers/platform/chrome/cros_ec_i2c.c
+@@ -313,7 +313,9 @@ static int cros_ec_i2c_remove(struct i2c_client *client)
  {
--	pci_power_up(pci_dev);
-+	int ret;
-+
-+	ret = pci_power_up(pci_dev);
- 	pci_update_current_state(pci_dev, PCI_D0);
-+
-+	if (ret < 0 && pci_dev->current_state == PCI_D3cold) {
-+		dev_err(&pci_dev->dev, "Failed to power up device: %d\n", ret);
-+		return ret;
-+	}
+ 	struct cros_ec_device *ec_dev = i2c_get_clientdata(client);
+ 
+-	return cros_ec_unregister(ec_dev);
++	cros_ec_unregister(ec_dev);
 +
 +	return 0;
  }
  
- /**
-diff --git a/drivers/pci/pci.h b/drivers/pci/pci.h
-index 1c48bc447f58..87ad201417d5 100644
---- a/drivers/pci/pci.h
-+++ b/drivers/pci/pci.h
-@@ -233,7 +233,7 @@ void pci_dev_adjust_pme(struct pci_dev *dev);
- void pci_dev_complete_resume(struct pci_dev *pci_dev);
- void pci_config_pm_runtime_get(struct pci_dev *dev);
- void pci_config_pm_runtime_put(struct pci_dev *dev);
--void pci_pm_power_up_and_verify_state(struct pci_dev *pci_dev);
-+int pci_pm_power_up_and_verify_state(struct pci_dev *pci_dev);
- void pci_pm_init(struct pci_dev *dev);
- void pci_ea_init(struct pci_dev *dev);
- void pci_msi_init(struct pci_dev *dev);
+ #ifdef CONFIG_PM_SLEEP
+diff --git a/drivers/platform/chrome/cros_ec_lpc.c b/drivers/platform/chrome/cros_ec_lpc.c
+index 1f7861944044..8527a1bac765 100644
+--- a/drivers/platform/chrome/cros_ec_lpc.c
++++ b/drivers/platform/chrome/cros_ec_lpc.c
+@@ -439,7 +439,9 @@ static int cros_ec_lpc_remove(struct platform_device *pdev)
+ 		acpi_remove_notify_handler(adev->handle, ACPI_ALL_NOTIFY,
+ 					   cros_ec_lpc_acpi_notify);
+ 
+-	return cros_ec_unregister(ec_dev);
++	cros_ec_unregister(ec_dev);
++
++	return 0;
+ }
+ 
+ static const struct acpi_device_id cros_ec_lpc_acpi_device_ids[] = {
+diff --git a/drivers/platform/chrome/cros_ec_spi.c b/drivers/platform/chrome/cros_ec_spi.c
+index 14c4046fa04d..713c58687721 100644
+--- a/drivers/platform/chrome/cros_ec_spi.c
++++ b/drivers/platform/chrome/cros_ec_spi.c
+@@ -790,7 +790,9 @@ static int cros_ec_spi_remove(struct spi_device *spi)
+ {
+ 	struct cros_ec_device *ec_dev = spi_get_drvdata(spi);
+ 
+-	return cros_ec_unregister(ec_dev);
++	cros_ec_unregister(ec_dev);
++
++	return 0;
+ }
+ 
+ #ifdef CONFIG_PM_SLEEP
 -- 
-2.51.0.rc1.193.gad69d77794-goog
+2.50.1
 
 
