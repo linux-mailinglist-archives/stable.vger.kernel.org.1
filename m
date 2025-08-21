@@ -1,48 +1,48 @@
-Return-Path: <stable+bounces-172140-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-172141-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 70179B2FCDA
-	for <lists+stable@lfdr.de>; Thu, 21 Aug 2025 16:36:35 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 77BD2B2FCF2
+	for <lists+stable@lfdr.de>; Thu, 21 Aug 2025 16:39:15 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id DC9D7B65060
-	for <lists+stable@lfdr.de>; Thu, 21 Aug 2025 14:31:00 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 2013EA069D3
+	for <lists+stable@lfdr.de>; Thu, 21 Aug 2025 14:33:07 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 20CD6283138;
-	Thu, 21 Aug 2025 14:29:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2EFD128505A;
+	Thu, 21 Aug 2025 14:31:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="nWoxH1U9"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="IaymnUIr"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CC40A286D71
-	for <stable@vger.kernel.org>; Thu, 21 Aug 2025 14:29:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D48A72D481E
+	for <stable@vger.kernel.org>; Thu, 21 Aug 2025 14:31:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755786556; cv=none; b=CMDS/0MdlcOirQOcejRcuTcmQ5hNjMGVVCAijrUpj8xgunI75QJr8WEnQxSG/cqZ1hXGgbw141Kg8PmHZsbf0ercDAbmLMMYh3p6j6QB+zRaBOGN+fvZ4kCJ6Bu2jVpOjN7rVG1DvLE8V/Zk1nL+0+fwx9jAYlcfiOL30tgKuwI=
+	t=1755786683; cv=none; b=ne5brStatczSxAKP8wAArhxvGc/KbJz5vNuHp8Xv/yd5oN9uda1y2ay/9F25P8ZcfdMxOCJC9uJS/sR8VruP8Y15wC3VzL38Oh5jVPHPw+L3OWrf/EaK9fdkKnHcXDJbpfQ5Bu09+d/xFAydBYpNbOHYeXB7brXdrN1195iwglw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1755786556; c=relaxed/simple;
-	bh=ar2xd8lKafYhqsevDiH7vu9kAxN70erzx4ia+ysBlNc=;
-	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=D9ZPCqsJAHR2AI4fDaloDLQyj4G7BuiVTJrBUSG7qxIVs3ysvYeM6ndrUOgMSF4qkDvH3tsAG69ZEyoSlKZhtJosZYkiEhYuRmvF9TQoBPfYAxuJGCPTln9aIptjhNJOu4giotsHj0qC+xMjq8Ru2R0QVuUUVl2RwA4CzsK3TxE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=nWoxH1U9; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3AAFCC4CEEB;
-	Thu, 21 Aug 2025 14:29:16 +0000 (UTC)
+	s=arc-20240116; t=1755786683; c=relaxed/simple;
+	bh=tru1nQ5+PLlydWRzolHKhPXgjr62r+BbBU8Elo9kk9o=;
+	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=VV6MZqGcUwBMiGBXObDaoUfEZ47cRbTRv9Amkf/p1cpsy88Azaoy2MyvHieJW1VJIXX2jIYfHfSSl3Y0zEmJnDC/pI/q2Z+dB2cnJCQNBQfDSAPLJZgJgu1M2VrotYuNkEAvz/YnyX0PKrsS2Tv1ZMK6nmJlj9lttu0o8mZLRCc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=IaymnUIr; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4EA3BC2BCFA;
+	Thu, 21 Aug 2025 14:31:22 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1755786556;
-	bh=ar2xd8lKafYhqsevDiH7vu9kAxN70erzx4ia+ysBlNc=;
+	s=korg; t=1755786682;
+	bh=tru1nQ5+PLlydWRzolHKhPXgjr62r+BbBU8Elo9kk9o=;
 	h=Subject:To:Cc:From:Date:From;
-	b=nWoxH1U9m/aTAjb5YR07tyuI3etQ1qEueS/66SP3pZWPsXrqUzhcNJnf27/+PYTj0
-	 HBxQTzxXqCLiWtMSc8wP8lvEOyhJTGKRrh6lIyOzmzXe8AoxvsgDhixNJClp2BSeuh
-	 JNzt9rvgZmiH+XNynQ2Gj73PWRZkpqo9SVC/zHwk=
-Subject: FAILED: patch "[PATCH] media: venus: vdec: Clamp param smaller than 1fps and bigger" failed to apply to 5.4-stable tree
-To: ribalda@chromium.org,bod@kernel.org,bryan.odonoghue@linaro.org,hverkuil@xs4all.nl
+	b=IaymnUIrtA2hdQR7zw+We/k4dGhRkPkyrmQhyAVoiCL8Cmc8qgFy6dqZ0o6qOgRVT
+	 hmgW+ENH6vFTCricsebS7PviPB+KR8MP6OmH+oviWvQAJAQ4vzRVNU9kt5qPnhwWjx
+	 KT8i+NkTmZqdRifszdgGZVsyjU19umzjGcNsyuuc=
+Subject: FAILED: patch "[PATCH] drm/xe: Release runtime pm for error path of" failed to apply to 6.16-stable tree
+To: shuicheng.lin@intel.com,matthew.brost@intel.com
 Cc: <stable@vger.kernel.org>
 From: <gregkh@linuxfoundation.org>
-Date: Thu, 21 Aug 2025 16:29:06 +0200
-Message-ID: <2025082106-elevate-boil-beef@gregkh>
+Date: Thu, 21 Aug 2025 16:31:07 +0200
+Message-ID: <2025082107-shortcut-trough-dbf3@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -53,19 +53,19 @@ Content-Type: text/plain; charset=ANSI_X3.4-1968
 Content-Transfer-Encoding: 8bit
 
 
-The patch below does not apply to the 5.4-stable tree.
+The patch below does not apply to the 6.16-stable tree.
 If someone wants it applied there, or to any other stable or longterm
 tree, then please email the backport, including the original git commit
 id to <stable@vger.kernel.org>.
 
 To reproduce the conflict and resubmit, you may use the following commands:
 
-git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-5.4.y
+git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-6.16.y
 git checkout FETCH_HEAD
-git cherry-pick -x 377dc500d253f0b26732b2cb062e89668aef890a
+git cherry-pick -x 017ef1228d735965419ff118fe1b89089e772c42
 # <resolve conflicts, build, test, etc.>
 git commit -s
-git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2025082106-elevate-boil-beef@gregkh' --subject-prefix 'PATCH 5.4.y' HEAD^..
+git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2025082107-shortcut-trough-dbf3@gregkh' --subject-prefix 'PATCH 6.16.y' HEAD^..
 
 Possible dependencies:
 
@@ -77,60 +77,106 @@ greg k-h
 
 ------------------ original commit in Linus's tree ------------------
 
-From 377dc500d253f0b26732b2cb062e89668aef890a Mon Sep 17 00:00:00 2001
-From: Ricardo Ribalda <ribalda@chromium.org>
-Date: Mon, 16 Jun 2025 15:29:14 +0000
-Subject: [PATCH] media: venus: vdec: Clamp param smaller than 1fps and bigger
- than 240.
+From 017ef1228d735965419ff118fe1b89089e772c42 Mon Sep 17 00:00:00 2001
+From: Shuicheng Lin <shuicheng.lin@intel.com>
+Date: Mon, 7 Jul 2025 00:49:14 +0000
+Subject: [PATCH] drm/xe: Release runtime pm for error path of
+ xe_devcoredump_read()
 
-The driver uses "whole" fps in all its calculations (e.g. in
-load_per_instance()). Those calculation expect an fps bigger than 1, and
-not big enough to overflow.
+xe_pm_runtime_put() is missed to be called for the error path in
+xe_devcoredump_read().
+Add function description comments for xe_devcoredump_read() to help
+understand it.
 
-Clamp the value if the user provides a param that will result in an invalid
-fps.
+v2: more detail function comments and refine goto logic (Matt)
 
-Reported-by: Hans Verkuil <hverkuil@xs4all.nl>
-Closes: https://lore.kernel.org/linux-media/f11653a7-bc49-48cd-9cdb-1659147453e4@xs4all.nl/T/#m91cd962ac942834654f94c92206e2f85ff7d97f0
-Fixes: 7472c1c69138 ("[media] media: venus: vdec: add video decoder files")
+Fixes: c4a2e5f865b7 ("drm/xe: Add devcoredump chunking")
 Cc: stable@vger.kernel.org
-Tested-by: Bryan O'Donoghue <bryan.odonoghue@linaro.org> # qrb5615-rb5
-Reviewed-by: Bryan O'Donoghue <bryan.odonoghue@linaro.org>
-Signed-off-by: Ricardo Ribalda <ribalda@chromium.org>
-[bod: Change "parm" to "param"]
-Signed-off-by: Bryan O'Donoghue <bod@kernel.org>
-Signed-off-by: Hans Verkuil <hverkuil@xs4all.nl>
+Reviewed-by: Matthew Brost <matthew.brost@intel.com>
+Signed-off-by: Shuicheng Lin <shuicheng.lin@intel.com>
+Signed-off-by: Matthew Brost <matthew.brost@intel.com>
+Link: https://lore.kernel.org/r/20250707004911.3502904-6-shuicheng.lin@intel.com
 
-diff --git a/drivers/media/platform/qcom/venus/core.h b/drivers/media/platform/qcom/venus/core.h
-index b412e0c5515a..5b1ba1c69adb 100644
---- a/drivers/media/platform/qcom/venus/core.h
-+++ b/drivers/media/platform/qcom/venus/core.h
-@@ -28,6 +28,8 @@
- #define VIDC_RESETS_NUM_MAX		2
- #define VIDC_MAX_HIER_CODING_LAYER 6
+diff --git a/drivers/gpu/drm/xe/xe_devcoredump.c b/drivers/gpu/drm/xe/xe_devcoredump.c
+index 94625010abc4..203e3038cc81 100644
+--- a/drivers/gpu/drm/xe/xe_devcoredump.c
++++ b/drivers/gpu/drm/xe/xe_devcoredump.c
+@@ -171,14 +171,32 @@ static void xe_devcoredump_snapshot_free(struct xe_devcoredump_snapshot *ss)
  
-+#define VENUS_MAX_FPS			240
-+
- extern int venus_fw_debug;
+ #define XE_DEVCOREDUMP_CHUNK_MAX	(SZ_512M + SZ_1G)
  
- struct freq_tbl {
-diff --git a/drivers/media/platform/qcom/venus/vdec.c b/drivers/media/platform/qcom/venus/vdec.c
-index 99ce5fd41577..fca27be61f4b 100644
---- a/drivers/media/platform/qcom/venus/vdec.c
-+++ b/drivers/media/platform/qcom/venus/vdec.c
-@@ -481,11 +481,10 @@ static int vdec_s_parm(struct file *file, void *fh, struct v4l2_streamparm *a)
- 	us_per_frame = timeperframe->numerator * (u64)USEC_PER_SEC;
- 	do_div(us_per_frame, timeperframe->denominator);
++/**
++ * xe_devcoredump_read() - Read data from the Xe device coredump snapshot
++ * @buffer: Destination buffer to copy the coredump data into
++ * @offset: Offset in the coredump data to start reading from
++ * @count: Number of bytes to read
++ * @data: Pointer to the xe_devcoredump structure
++ * @datalen: Length of the data (unused)
++ *
++ * Reads a chunk of the coredump snapshot data into the provided buffer.
++ * If the devcoredump is smaller than 1.5 GB (XE_DEVCOREDUMP_CHUNK_MAX),
++ * it is read directly from a pre-written buffer. For larger devcoredumps,
++ * the pre-written buffer must be periodically repopulated from the snapshot
++ * state due to kmalloc size limitations.
++ *
++ * Return: Number of bytes copied on success, or a negative error code on failure.
++ */
+ static ssize_t xe_devcoredump_read(char *buffer, loff_t offset,
+ 				   size_t count, void *data, size_t datalen)
+ {
+ 	struct xe_devcoredump *coredump = data;
+ 	struct xe_devcoredump_snapshot *ss;
+-	ssize_t byte_copied;
++	ssize_t byte_copied = 0;
+ 	u32 chunk_offset;
+ 	ssize_t new_chunk_position;
++	bool pm_needed = false;
++	int ret = 0;
  
--	if (!us_per_frame)
--		return -EINVAL;
--
-+	us_per_frame = clamp(us_per_frame, 1, USEC_PER_SEC);
- 	fps = (u64)USEC_PER_SEC;
- 	do_div(fps, us_per_frame);
-+	fps = min(VENUS_MAX_FPS, fps);
+ 	if (!coredump)
+ 		return -ENODEV;
+@@ -188,20 +206,19 @@ static ssize_t xe_devcoredump_read(char *buffer, loff_t offset,
+ 	/* Ensure delayed work is captured before continuing */
+ 	flush_work(&ss->work);
  
- 	inst->fps = fps;
- 	inst->timeperframe = *timeperframe;
+-	if (ss->read.size > XE_DEVCOREDUMP_CHUNK_MAX)
++	pm_needed = ss->read.size > XE_DEVCOREDUMP_CHUNK_MAX;
++	if (pm_needed)
+ 		xe_pm_runtime_get(gt_to_xe(ss->gt));
+ 
+ 	mutex_lock(&coredump->lock);
+ 
+ 	if (!ss->read.buffer) {
+-		mutex_unlock(&coredump->lock);
+-		return -ENODEV;
++		ret = -ENODEV;
++		goto unlock;
+ 	}
+ 
+-	if (offset >= ss->read.size) {
+-		mutex_unlock(&coredump->lock);
+-		return 0;
+-	}
++	if (offset >= ss->read.size)
++		goto unlock;
+ 
+ 	new_chunk_position = div_u64_rem(offset,
+ 					 XE_DEVCOREDUMP_CHUNK_MAX,
+@@ -221,12 +238,13 @@ static ssize_t xe_devcoredump_read(char *buffer, loff_t offset,
+ 		ss->read.size - offset;
+ 	memcpy(buffer, ss->read.buffer + chunk_offset, byte_copied);
+ 
++unlock:
+ 	mutex_unlock(&coredump->lock);
+ 
+-	if (ss->read.size > XE_DEVCOREDUMP_CHUNK_MAX)
++	if (pm_needed)
+ 		xe_pm_runtime_put(gt_to_xe(ss->gt));
+ 
+-	return byte_copied;
++	return byte_copied ? byte_copied : ret;
+ }
+ 
+ static void xe_devcoredump_free(void *data)
 
 
