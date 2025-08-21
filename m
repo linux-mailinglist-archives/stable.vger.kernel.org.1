@@ -1,48 +1,48 @@
-Return-Path: <stable+bounces-172159-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-172160-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 053FDB2FD7F
-	for <lists+stable@lfdr.de>; Thu, 21 Aug 2025 16:56:32 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id C595DB2FD94
+	for <lists+stable@lfdr.de>; Thu, 21 Aug 2025 17:00:08 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 13A141CC2295
-	for <lists+stable@lfdr.de>; Thu, 21 Aug 2025 14:48:50 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id AF59A627463
+	for <lists+stable@lfdr.de>; Thu, 21 Aug 2025 14:48:40 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C71302E62C6;
-	Thu, 21 Aug 2025 14:48:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id AEFAE2ED17C;
+	Thu, 21 Aug 2025 14:48:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Q0ANv535"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="PMU3SK6t"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 86CFF2E2F0E
-	for <stable@vger.kernel.org>; Thu, 21 Aug 2025 14:48:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6E2BF2DC322
+	for <stable@vger.kernel.org>; Thu, 21 Aug 2025 14:48:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755787696; cv=none; b=MEyUrcMIKFvMw1vIca0N1Y/9rXrnXwMmHtHLPl9dgQDmQ8EqFyTmN3c40uIrpb6+4pcvT4VyYf2rwSdPL+Fp8h3d2bJKYxFBcTSgmfmq6NEkoF9SlOtAYuVK/5TqixbPzsfI21WlfH/bVL0C1+PtpcHRZA2v6rMAlrtMU40FORg=
+	t=1755787699; cv=none; b=JhCgy5ad8FAk6aNgbh+NlKu4UtZO/dYPaReJtB8nEVIHRkJJTF2gYl+cTEmgigiIXxfwhOacdWWJTSMyQ9UyNca0UWZ2LDYuqTNhRlSg8eda0L1/k7VNujsNsJ5G3gYUMMEBUXzKHNjO+EHiYjZrXu8GQyP0EX+FbJy4reGfahU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1755787696; c=relaxed/simple;
-	bh=w6XKZWbgAiduxUL99ZPJpZMkKKqBdFr7jBFV2dLq7d4=;
-	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=Rik+4LHy2vWNwEUDRrefuwTOLE5kvVXyl+QaFCpP7m8WcfQScewr6Rgj7Yb95kmHfHHBzVz+hQLf90bCUmiezPkvoukFsiO6bkfD9dN66gvOa5cfeAIyjVHQTAXGh8XHIv8rGeaoLac7cS71CWXhGtrlDwUUpm98n7yRFiYojeM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Q0ANv535; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id F3BB4C4CEEB;
-	Thu, 21 Aug 2025 14:48:15 +0000 (UTC)
+	s=arc-20240116; t=1755787699; c=relaxed/simple;
+	bh=WpK1FM2A7IzzPfVUyOaG2busKkf24UGIYIHMdLpZXM4=;
+	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=tVopgksK0usYYocN2gyHWrd9cY9w+ZacdjcQZZVv1tYotrmb977xutWgjeTdR4xVfStVZ0WS0OAPp0dBRmEU3nbUHQCVSj8WuQybRyXvoMxdWnRyCaBTl8KJ89ZoyV3zuiyjgvCh21n7WB9/liDiLLCg9C9yGar35Hdv9EW5p/M=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=PMU3SK6t; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E0809C4CEED;
+	Thu, 21 Aug 2025 14:48:18 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1755787696;
-	bh=w6XKZWbgAiduxUL99ZPJpZMkKKqBdFr7jBFV2dLq7d4=;
+	s=korg; t=1755787699;
+	bh=WpK1FM2A7IzzPfVUyOaG2busKkf24UGIYIHMdLpZXM4=;
 	h=Subject:To:Cc:From:Date:From;
-	b=Q0ANv535kYXPE4zejqlN2XOkw0Q8iufydyydMl01r95Od1B61Oqs7k9hK0fo7AobV
-	 E7jk4h/iW08Xp1txPiaO/1mfQpSeGMGWd6csaVe1Lk4bddJ6pCAgakAWTIAmMs5TE4
-	 XZsZjvyDKvyYpL1o0HI0TCRQwLMraNeWUUQ9ol/E=
-Subject: FAILED: patch "[PATCH] drm/amd: Restore cached manual clock settings during resume" failed to apply to 6.16-stable tree
-To: mario.limonciello@amd.com,alexander.deucher@amd.com
+	b=PMU3SK6txDhDVBFGjLL4GV+I+dqntlwInOa002K64uCmGpQLqFUG54qB+qyuWHxSn
+	 TXNgRmnil5yYa4H0ncsIH02V/xhcam02FlS+a2o45+mDtT2hzbPjp1BaEFr4+Jpu5B
+	 rMHJrBUO67fo6OGXgQ0/tHFkxSRT+tkcshU/PrzM=
+Subject: FAILED: patch "[PATCH] drm/amd/display: Fix divide by zero when calculating min ODM" failed to apply to 6.16-stable tree
+To: dillon.varone@amd.com,alexander.deucher@amd.com,daniel.wheeler@amd.com,wayne.lin@amd.com,wenjing.liu@amd.com
 Cc: <stable@vger.kernel.org>
 From: <gregkh@linuxfoundation.org>
-Date: Thu, 21 Aug 2025 16:46:08 +0200
-Message-ID: <2025082108-oil-trailing-aa0d@gregkh>
+Date: Thu, 21 Aug 2025 16:46:18 +0200
+Message-ID: <2025082118-unbounded-tarnish-ef1e@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -62,10 +62,10 @@ To reproduce the conflict and resubmit, you may use the following commands:
 
 git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-6.16.y
 git checkout FETCH_HEAD
-git cherry-pick -x 796ff8a7e01bd18738d3bb4111f9d6f963145d29
+git cherry-pick -x 3556dac8289456bc8b28670546b969f543967856
 # <resolve conflicts, build, test, etc.>
 git commit -s
-git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2025082108-oil-trailing-aa0d@gregkh' --subject-prefix 'PATCH 6.16.y' HEAD^..
+git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2025082118-unbounded-tarnish-ef1e@gregkh' --subject-prefix 'PATCH 6.16.y' HEAD^..
 
 Possible dependencies:
 
@@ -77,56 +77,136 @@ greg k-h
 
 ------------------ original commit in Linus's tree ------------------
 
-From 796ff8a7e01bd18738d3bb4111f9d6f963145d29 Mon Sep 17 00:00:00 2001
-From: Mario Limonciello <mario.limonciello@amd.com>
-Date: Thu, 24 Jul 2025 22:12:22 -0500
-Subject: [PATCH] drm/amd: Restore cached manual clock settings during resume
+From 3556dac8289456bc8b28670546b969f543967856 Mon Sep 17 00:00:00 2001
+From: Dillon Varone <dillon.varone@amd.com>
+Date: Thu, 10 Jul 2025 20:57:37 -0400
+Subject: [PATCH] drm/amd/display: Fix divide by zero when calculating min ODM
+ factor
 
-If the SCLK limits have been set before S3 they will not
-be restored. The limits are however cached in the driver and so
-they can be restored by running a commit sequence during resume.
+[WHY&HOW]
+If the debug option is set to disable_dsc the max slice width and/or
+dispclk can be zero. This causes a divide by zero when calculating the
+min ODM combine factor. Add a check to ensure they are valid first.
 
-Acked-by: Alex Deucher <alexander.deucher@amd.com>
-Link: https://lore.kernel.org/r/20250725031222.3015095-3-superm1@kernel.org
-Signed-off-by: Mario Limonciello <mario.limonciello@amd.com>
+Reviewed-by: Wenjing Liu <wenjing.liu@amd.com>
+Signed-off-by: Dillon Varone <dillon.varone@amd.com>
+Signed-off-by: Wayne Lin <wayne.lin@amd.com>
+Tested-by: Daniel Wheeler <daniel.wheeler@amd.com>
 Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
-(cherry picked from commit 4e9526924d09057a9ba854305e17eded900ced82)
 Cc: stable@vger.kernel.org
 
-diff --git a/drivers/gpu/drm/amd/pm/swsmu/amdgpu_smu.c b/drivers/gpu/drm/amd/pm/swsmu/amdgpu_smu.c
-index 310f51ff05b9..b47cb4a5f488 100644
---- a/drivers/gpu/drm/amd/pm/swsmu/amdgpu_smu.c
-+++ b/drivers/gpu/drm/amd/pm/swsmu/amdgpu_smu.c
-@@ -77,6 +77,9 @@ static void smu_power_profile_mode_get(struct smu_context *smu,
- static void smu_power_profile_mode_put(struct smu_context *smu,
- 				       enum PP_SMC_POWER_PROFILE profile_mode);
- static enum smu_clk_type smu_convert_to_smuclk(enum pp_clock_type type);
-+static int smu_od_edit_dpm_table(void *handle,
-+				 enum PP_OD_DPM_TABLE_COMMAND type,
-+				 long *input, uint32_t size);
+diff --git a/drivers/gpu/drm/amd/display/dc/dsc/dc_dsc.c b/drivers/gpu/drm/amd/display/dc/dsc/dc_dsc.c
+index a454d16e6586..1f53a9f0c0ac 100644
+--- a/drivers/gpu/drm/amd/display/dc/dsc/dc_dsc.c
++++ b/drivers/gpu/drm/amd/display/dc/dsc/dc_dsc.c
+@@ -152,7 +152,7 @@ uint32_t dc_bandwidth_in_kbps_from_timing(
+ }
  
- static int smu_sys_get_pp_feature_mask(void *handle,
- 				       char *buf)
-@@ -2195,6 +2198,7 @@ static int smu_resume(struct amdgpu_ip_block *ip_block)
- 	int ret;
- 	struct amdgpu_device *adev = ip_block->adev;
- 	struct smu_context *smu = adev->powerplay.pp_handle;
-+	struct smu_dpm_context *smu_dpm_ctx = &(smu->smu_dpm);
+ /* Forward Declerations */
+-static unsigned int get_min_slice_count_for_odm(
++static unsigned int get_min_dsc_slice_count_for_odm(
+ 		const struct display_stream_compressor *dsc,
+ 		const struct dsc_enc_caps *dsc_enc_caps,
+ 		const struct dc_crtc_timing *timing);
+@@ -466,7 +466,7 @@ bool dc_dsc_compute_bandwidth_range(
+ 		struct dc_dsc_bw_range *range)
+ {
+ 	bool is_dsc_possible = false;
+-	unsigned int min_slice_count;
++	unsigned int min_dsc_slice_count;
+ 	struct dsc_enc_caps dsc_enc_caps;
+ 	struct dsc_enc_caps dsc_common_caps;
+ 	struct dc_dsc_config config = {0};
+@@ -478,14 +478,14 @@ bool dc_dsc_compute_bandwidth_range(
  
- 	if (amdgpu_sriov_multi_vf_mode(adev))
- 		return 0;
-@@ -2232,6 +2236,12 @@ static int smu_resume(struct amdgpu_ip_block *ip_block)
- 			return ret;
+ 	get_dsc_enc_caps(dsc, &dsc_enc_caps, timing->pix_clk_100hz);
+ 
+-	min_slice_count = get_min_slice_count_for_odm(dsc, &dsc_enc_caps, timing);
++	min_dsc_slice_count = get_min_dsc_slice_count_for_odm(dsc, &dsc_enc_caps, timing);
+ 
+ 	is_dsc_possible = intersect_dsc_caps(dsc_sink_caps, &dsc_enc_caps,
+ 			timing->pixel_encoding, &dsc_common_caps);
+ 
+ 	if (is_dsc_possible)
+ 		is_dsc_possible = setup_dsc_config(dsc_sink_caps, &dsc_enc_caps, 0, timing,
+-				&options, link_encoding, min_slice_count, &config);
++				&options, link_encoding, min_dsc_slice_count, &config);
+ 
+ 	if (is_dsc_possible)
+ 		is_dsc_possible = decide_dsc_bandwidth_range(min_bpp_x16, max_bpp_x16,
+@@ -593,14 +593,12 @@ static void build_dsc_enc_caps(
+ 
+ 	struct dc *dc;
+ 
+-	memset(&single_dsc_enc_caps, 0, sizeof(struct dsc_enc_caps));
+-
+ 	if (!dsc || !dsc->ctx || !dsc->ctx->dc || !dsc->funcs->dsc_get_single_enc_caps)
+ 		return;
+ 
+ 	dc = dsc->ctx->dc;
+ 
+-	if (!dc->clk_mgr || !dc->clk_mgr->funcs->get_max_clock_khz || !dc->res_pool)
++	if (!dc->clk_mgr || !dc->clk_mgr->funcs->get_max_clock_khz || !dc->res_pool || dc->debug.disable_dsc)
+ 		return;
+ 
+ 	/* get max DSCCLK from clk_mgr */
+@@ -634,7 +632,7 @@ static inline uint32_t dsc_div_by_10_round_up(uint32_t value)
+ 	return (value + 9) / 10;
+ }
+ 
+-static unsigned int get_min_slice_count_for_odm(
++static unsigned int get_min_dsc_slice_count_for_odm(
+ 		const struct display_stream_compressor *dsc,
+ 		const struct dsc_enc_caps *dsc_enc_caps,
+ 		const struct dc_crtc_timing *timing)
+@@ -651,6 +649,10 @@ static unsigned int get_min_slice_count_for_odm(
+ 		}
  	}
  
-+	if (smu_dpm_ctx->dpm_level == AMD_DPM_FORCED_LEVEL_MANUAL) {
-+		ret = smu_od_edit_dpm_table(smu, PP_OD_COMMIT_DPM_TABLE, NULL, 0);
-+		if (ret)
-+			return ret;
-+	}
++	/* validate parameters */
++	if (max_dispclk_khz == 0 || dsc_enc_caps->max_slice_width == 0)
++		return 1;
 +
- 	dev_info(adev->dev, "SMU is resumed successfully!\n");
+ 	/* consider minimum odm slices required due to
+ 	 * 1) display pipe throughput (dispclk)
+ 	 * 2) max image width per slice
+@@ -669,13 +671,12 @@ static void get_dsc_enc_caps(
+ {
+ 	memset(dsc_enc_caps, 0, sizeof(struct dsc_enc_caps));
  
- 	return 0;
+-	if (!dsc)
++	if (!dsc || !dsc->ctx || !dsc->ctx->dc || dsc->ctx->dc->debug.disable_dsc)
+ 		return;
+ 
+ 	/* check if reported cap global or only for a single DCN DSC enc */
+ 	if (dsc->funcs->dsc_get_enc_caps) {
+-		if (!dsc->ctx->dc->debug.disable_dsc)
+-			dsc->funcs->dsc_get_enc_caps(dsc_enc_caps, pixel_clock_100Hz);
++		dsc->funcs->dsc_get_enc_caps(dsc_enc_caps, pixel_clock_100Hz);
+ 	} else {
+ 		build_dsc_enc_caps(dsc, dsc_enc_caps);
+ 	}
+@@ -1295,10 +1296,10 @@ bool dc_dsc_compute_config(
+ {
+ 	bool is_dsc_possible = false;
+ 	struct dsc_enc_caps dsc_enc_caps;
+-	unsigned int min_slice_count;
++	unsigned int min_dsc_slice_count;
+ 	get_dsc_enc_caps(dsc, &dsc_enc_caps, timing->pix_clk_100hz);
+ 
+-	min_slice_count = get_min_slice_count_for_odm(dsc, &dsc_enc_caps, timing);
++	min_dsc_slice_count = get_min_dsc_slice_count_for_odm(dsc, &dsc_enc_caps, timing);
+ 
+ 	is_dsc_possible = setup_dsc_config(dsc_sink_caps,
+ 		&dsc_enc_caps,
+@@ -1306,7 +1307,7 @@ bool dc_dsc_compute_config(
+ 		timing,
+ 		options,
+ 		link_encoding,
+-		min_slice_count,
++		min_dsc_slice_count,
+ 		dsc_cfg);
+ 	return is_dsc_possible;
+ }
 
 
