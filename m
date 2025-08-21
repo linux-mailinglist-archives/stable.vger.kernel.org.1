@@ -1,99 +1,111 @@
-Return-Path: <stable+bounces-171963-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-171965-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id E8393B2F432
-	for <lists+stable@lfdr.de>; Thu, 21 Aug 2025 11:40:36 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 89560B2F480
+	for <lists+stable@lfdr.de>; Thu, 21 Aug 2025 11:48:58 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id DE31C1C8031F
-	for <lists+stable@lfdr.de>; Thu, 21 Aug 2025 09:40:20 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 05B093AC68C
+	for <lists+stable@lfdr.de>; Thu, 21 Aug 2025 09:48:08 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 123CF2EF66E;
-	Thu, 21 Aug 2025 09:39:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id CF1FE27FD78;
+	Thu, 21 Aug 2025 09:48:06 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="Uu6gVcmx"
+	dkim=pass (1024-bit key) header.d=linux.alibaba.com header.i=@linux.alibaba.com header.b="IA7oUWF7"
 X-Original-To: stable@vger.kernel.org
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.18])
+Received: from out30-118.freemail.mail.aliyun.com (out30-118.freemail.mail.aliyun.com [115.124.30.118])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 708F71F3BAE
-	for <stable@vger.kernel.org>; Thu, 21 Aug 2025 09:39:31 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 227A71E49F
+	for <stable@vger.kernel.org>; Thu, 21 Aug 2025 09:48:03 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=115.124.30.118
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755769172; cv=none; b=tF36Ib0irwE0uZPr6XAShWt/gJj6mHZh+yTOG9jqR41vbo4qEfO1f0iasq2ZtKEZBBph/Udol1K7pnbhstNx5wv3T/OHHBfS1yDtHyyJy1FFDTxNw8XwoE4Cj0Bz4BJc93A47b/CGwlP2RqS62YBITnHt+c30jGXRaFFensjJZg=
+	t=1755769686; cv=none; b=kTcPGCZWT64q3XJSLl0CBo+FhjwlPIaLqIswAqR1Zo6PhzsXn/rYCoPc2vtBivY9qMFcB1g+sss9DgYaKIMFA6BmSiTiqTaTca2QLHO/5aeI/FagKv7TzQ09qFEbb/6YjdAmn/R7SuVTi9HcamQ/lKWc08s8S8A9eN/ILv3NDCQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1755769172; c=relaxed/simple;
-	bh=1ElbXRTpxTNqlvMv/v/uJylRQyQ6xnlrO9Zr2BEUfTI=;
-	h=Date:From:To:Cc:Subject:Message-ID:MIME-Version:Content-Type:
-	 Content-Disposition:In-Reply-To; b=jn9P5QfsYcXwB4akZtdUB4eT/tieQ3TTMjKDyBfTuIOnnNHpCGh/xWdsFMhqns2zTJReSxxoqbU2SCsDYHrluXkvSR45mPzhGS0J3JruCxtCifqxmnWZSb0I29NkAHjFqp+CnGa696oNzBzLEXKAs9wVijxfRORLeUF3RUJgP8E=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=Uu6gVcmx; arc=none smtp.client-ip=192.198.163.18
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1755769171; x=1787305171;
-  h=date:from:to:cc:subject:message-id:mime-version:
-   in-reply-to;
-  bh=1ElbXRTpxTNqlvMv/v/uJylRQyQ6xnlrO9Zr2BEUfTI=;
-  b=Uu6gVcmx1u5ya+eUI9193dCkM++I6Qvsslivs+jumltnRLw8bDU2FrxI
-   iEJs+zfZkdU+0eJovUeJkqlRjJiauHn8Vav/5nlVK7jIHamNfihDoVpDq
-   sE4dBvDKp+pJ7h08aTxlGObSPy6GANts3CiGjTP8KUFwt7utIQ3731gRP
-   m/xARWW1gpxYvXN11zDy1T/KnpX3gGNoIgsmp3zXNB6hCjcrPZul8InIx
-   XLCIGOXE1mKjupzKTC2p/8CLHhYVU+Mq9ux7PZqPkPFF3X8gySsPwf/mQ
-   g4Fiqki139k5mitUblqsspObBACqkiB6nj4d8YJoTLGvHSs0KeOpS0ia8
-   A==;
-X-CSE-ConnectionGUID: Xw9xYeaXTZiiM55pp3HfiA==
-X-CSE-MsgGUID: zhcbl4BwRRWH/HoKHEkuEQ==
-X-IronPort-AV: E=McAfee;i="6800,10657,11527"; a="57255260"
-X-IronPort-AV: E=Sophos;i="6.17,306,1747724400"; 
-   d="scan'208";a="57255260"
-Received: from orviesa003.jf.intel.com ([10.64.159.143])
-  by fmvoesa112.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 21 Aug 2025 02:39:31 -0700
-X-CSE-ConnectionGUID: xn5tSe9sQ+mn38AH5tvE+A==
-X-CSE-MsgGUID: ZwXDFX/qQbifzgUAHbP66Q==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.17,306,1747724400"; 
-   d="scan'208";a="172592309"
-Received: from lkp-server02.sh.intel.com (HELO 4ea60e6ab079) ([10.239.97.151])
-  by orviesa003.jf.intel.com with ESMTP; 21 Aug 2025 02:39:30 -0700
-Received: from kbuild by 4ea60e6ab079 with local (Exim 4.96)
-	(envelope-from <lkp@intel.com>)
-	id 1up1lX-000K9j-00;
-	Thu, 21 Aug 2025 09:39:27 +0000
-Date: Thu, 21 Aug 2025 17:38:44 +0800
-From: kernel test robot <lkp@intel.com>
-To: Harry Yoo <harry.yoo@oracle.com>
-Cc: stable@vger.kernel.org, oe-kbuild-all@lists.linux.dev
-Subject: Re: [PATCH] mm: fix KASAN build error due to p*d_populate_kernel()
-Message-ID: <aKbpJDVnjOC41cTM@85d67d3e4d56>
+	s=arc-20240116; t=1755769686; c=relaxed/simple;
+	bh=hcxNyJUaNtkfDSa1+Eo1DbSEaTohxNVNGEUpvasR4Bw=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=usDyG/O7LT6WoQ0Vuuj1bVdzWSziNaH1N+103S6Jgstg96qOoXEz0fzlf/raZ4N+kCy7ue6aNavLzJNsVtB54ipIUY/GSKegxqqwYTpCza2aGeeP5g4DOWACqr6dIilFcAc3lzkGmBCkLx5og1khrWiEY/p81XrNR6RMTGPyelI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.alibaba.com; spf=pass smtp.mailfrom=linux.alibaba.com; dkim=pass (1024-bit key) header.d=linux.alibaba.com header.i=@linux.alibaba.com header.b=IA7oUWF7; arc=none smtp.client-ip=115.124.30.118
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.alibaba.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.alibaba.com
+DKIM-Signature:v=1; a=rsa-sha256; c=relaxed/relaxed;
+	d=linux.alibaba.com; s=default;
+	t=1755769674; h=From:To:Subject:Date:Message-ID:MIME-Version;
+	bh=WRpVITYQACcouR/Yb5lAqmjELogbdfbIz8t5ESfurWM=;
+	b=IA7oUWF79jOc3g4trkvKspnnQ1kgPFk2wWASolZUUTtcq4t5J0PNZg1bZ51tVC/l9vkZTyY+qDNVEOJ49IgzJM/jIRu0Xm+S25qWMKTXbJXiXubJ7PF8D1TmQcX9PQAwJKPlipZOzyQjCamLk1EBCC9tEzN9bB252xs3d/i8yF8=
+Received: from x31i01179.sqa.na131.tbsite.net(mailfrom:hsiangkao@linux.alibaba.com fp:SMTPD_---0WmFdvuj_1755769670 cluster:ay36)
+          by smtp.aliyun-inc.com;
+          Thu, 21 Aug 2025 17:47:54 +0800
+From: Gao Xiang <hsiangkao@linux.alibaba.com>
+To: stable <stable@vger.kernel.org>,
+	Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Cc: Jiri Slaby <jirislaby@kernel.org>,
+	Geert Uytterhoeven <geert+renesas@glider.be>,
+	linux-erofs@lists.ozlabs.org,
+	"Bo Liu (OpenAnolis)" <liubo03@inspur.com>,
+	kernel test robot <lkp@intel.com>,
+	Gao Xiang <hsiangkao@linux.alibaba.com>
+Subject: [PATCH 6.16.y 1/2] erofs: fix build error with CONFIG_EROFS_FS_ZIP_ACCEL=y
+Date: Thu, 21 Aug 2025 17:47:48 +0800
+Message-ID: <20250821094749.3665395-1-hsiangkao@linux.alibaba.com>
+X-Mailer: git-send-email 2.43.5
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20250821093542.37844-1-harry.yoo@oracle.com>
+Content-Transfer-Encoding: 8bit
 
-Hi,
+From: "Bo Liu (OpenAnolis)" <liubo03@inspur.com>
 
-Thanks for your patch.
+commit 5e0bf36fd156b8d9b09f8481ee6daa6cdba1b064 upstream.
 
-FYI: kernel test robot notices the stable kernel rule is not satisfied.
+fix build err:
+ ld.lld: error: undefined symbol: crypto_req_done
+   referenced by decompressor_crypto.c
+       fs/erofs/decompressor_crypto.o:(z_erofs_crypto_decompress) in archive vmlinux.a
+   referenced by decompressor_crypto.c
+       fs/erofs/decompressor_crypto.o:(z_erofs_crypto_decompress) in archive vmlinux.a
 
-The check is based on https://www.kernel.org/doc/html/latest/process/stable-kernel-rules.html#option-1
+ ld.lld: error: undefined symbol: crypto_acomp_decompress
+   referenced by decompressor_crypto.c
+       fs/erofs/decompressor_crypto.o:(z_erofs_crypto_decompress) in archive vmlinux.a
 
-Rule: add the tag "Cc: stable@vger.kernel.org" in the sign-off area to have the patch automatically included in the stable tree.
-Subject: [PATCH] mm: fix KASAN build error due to p*d_populate_kernel()
-Link: https://lore.kernel.org/stable/20250821093542.37844-1-harry.yoo%40oracle.com
+ ld.lld: error: undefined symbol: crypto_alloc_acomp
+   referenced by decompressor_crypto.c
+       fs/erofs/decompressor_crypto.o:(z_erofs_crypto_enable_engine) in archive vmlinux.a
 
+Reported-by: kernel test robot <lkp@intel.com>
+Closes: https://lore.kernel.org/oe-kbuild-all/202507161032.QholMPtn-lkp@intel.com/
+Fixes: b4a29efc5146 ("erofs: support DEFLATE decompression by using Intel QAT")
+Signed-off-by: Bo Liu (OpenAnolis) <liubo03@inspur.com>
+Link: https://lore.kernel.org/r/20250718033039.3609-1-liubo03@inspur.com
+Reviewed-by: Gao Xiang <hsiangkao@linux.alibaba.com>
+Signed-off-by: Gao Xiang <hsiangkao@linux.alibaba.com>
+---
+Also backport commit 74da24f0ac9b to address:
+ https://lore.kernel.org/r/ca432b9e-e016-4d2d-b137-79def0aaca85@kernel.org
+
+ fs/erofs/Kconfig | 2 ++
+ 1 file changed, 2 insertions(+)
+
+diff --git a/fs/erofs/Kconfig b/fs/erofs/Kconfig
+index 6beeb7063871..7b26efc271ee 100644
+--- a/fs/erofs/Kconfig
++++ b/fs/erofs/Kconfig
+@@ -147,6 +147,8 @@ config EROFS_FS_ZIP_ZSTD
+ config EROFS_FS_ZIP_ACCEL
+ 	bool "EROFS hardware decompression support"
+ 	depends on EROFS_FS_ZIP
++	select CRYPTO
++	select CRYPTO_DEFLATE
+ 	help
+ 	  Saying Y here includes hardware accelerator support for reading
+ 	  EROFS file systems containing compressed data.  It gives better
 -- 
-0-DAY CI Kernel Test Service
-https://github.com/intel/lkp-tests/wiki
-
-
+2.43.5
 
 
