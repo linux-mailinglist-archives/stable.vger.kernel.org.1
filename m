@@ -1,59 +1,88 @@
-Return-Path: <stable+bounces-172196-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-172198-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2FBF0B3001C
-	for <lists+stable@lfdr.de>; Thu, 21 Aug 2025 18:33:14 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id D6678B30038
+	for <lists+stable@lfdr.de>; Thu, 21 Aug 2025 18:38:30 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 8224D686331
-	for <lists+stable@lfdr.de>; Thu, 21 Aug 2025 16:28:41 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id E110B3B4DBA
+	for <lists+stable@lfdr.de>; Thu, 21 Aug 2025 16:35:10 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id EAD922D8362;
-	Thu, 21 Aug 2025 16:28:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B87EB26B2C8;
+	Thu, 21 Aug 2025 16:35:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="iRyEFkpf"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="K7OZARhC"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pl1-f173.google.com (mail-pl1-f173.google.com [209.85.214.173])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A7D7B2DE6E2
-	for <stable@vger.kernel.org>; Thu, 21 Aug 2025 16:28:37 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2660D2DC34A
+	for <stable@vger.kernel.org>; Thu, 21 Aug 2025 16:35:05 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.173
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755793717; cv=none; b=KNIeoQKTzBZLrT4IJJQ6rgAkbrxltk36eUISOrs0c2yYP6cbQPIdKU/rr+H6pLi7vnCr++ViAwUJcMqJu7EfWildZ41NRVrEjvbyg/D7tECC8rZmvA0o8Z8xM1QAhhtqNF1y6Bu3PV33uule63JTXfL5PnBCqeWmYea9VzF+k6M=
+	t=1755794107; cv=none; b=CcIklnjdVHzD5AGkTMVv+jNdo9YOstpxfvCn/3JBgjL0aTGNt9ucsBaBFb6+2ZFlWUIvrYgEA8FnNW1ceQwTcPH71/rK70dEgjfXp79a754wzuQH+FP++F2XMkZ2skyc62mjNbCcrGzLKK53EUK9zumEWAbrf48K+fFHMOHoflA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1755793717; c=relaxed/simple;
-	bh=CuGdmc1nSLWDhmJP8owlk0OB2hKEey+P8PFdqZoHj3E=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=A51/Le0hCGCUwOUSb8MYhcWhfrIHhHgGE4KyLsl7dLA01GDolCO0Dh4TD0g0w8n1Vm8KGzqLfTbrvElECRc5NThmLl53cNC70Ia88LaYxiElgDjE1mKYW4T08mIc1ICBoP3SISyzJcP4juFTxLLnuhYVIrXzQpOz+GdiGud4Yko=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=iRyEFkpf; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8C2DCC4CEF4;
-	Thu, 21 Aug 2025 16:28:36 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1755793717;
-	bh=CuGdmc1nSLWDhmJP8owlk0OB2hKEey+P8PFdqZoHj3E=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=iRyEFkpfqkI2PnkEDVCDp8ddW8ccshWLwFg9TCCGIhQdiN9Lf6PdUIxrWOY+CqUnL
-	 35iOETT6wn6nr8kh/4P0C5qbKM7ABJyBKQz0N2i/bdD3YT4MAPP/9d0N3oqGjh621c
-	 lMdVFsSjF33C48Iq+ItqBsoWezqk96Wl5jGuzOuUSPxe+suCE+4i00oQKdQlzmtDFp
-	 ueK/yCe6MwnuUwDYCfPm2sPzyGAVzCSn5hXWJ0gA/0WOYhDm/FdR75lR6dS7ikGbmJ
-	 cn+0m5dkR4RrU2RpqgrIXeOLYaCFwHFEBdZ4+1R9FJcQ2SDyI3VjFNif8K6IY5xBqd
-	 LPCvBze6JBQbQ==
-From: Sasha Levin <sashal@kernel.org>
-To: stable@vger.kernel.org
-Cc: "Rafael J. Wysocki" <rafael.j.wysocki@intel.com>,
-	Ulf Hansson <ulf.hansson@linaro.org>,
-	Sakari Ailus <sakari.ailus@linux.intel.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6.y 2/2] PM: runtime: Take active children into account in pm_runtime_get_if_in_use()
-Date: Thu, 21 Aug 2025 12:28:33 -0400
-Message-ID: <20250821162833.814231-2-sashal@kernel.org>
-X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250821162833.814231-1-sashal@kernel.org>
-References: <2025082128-casually-sensuous-5677@gregkh>
- <20250821162833.814231-1-sashal@kernel.org>
+	s=arc-20240116; t=1755794107; c=relaxed/simple;
+	bh=ER20uN3ophbDodXA0V2P/El1StgLE1H9mf8h2Z2UIMk=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=ZUywd03HiOHdxR0+BppJ79GW/r2e6uo3foe+AgyORoun+7EmMBNoWFL0EcfIhbZWkgsMPF+SK4GkqrTEGLhJnwx1E4Ow7f/TdSgGQQ/hD5cHiHERXo+7ZkcufYor+weeb4DLjsuO2TBtf7nclowOukhXMBynj8trGey84RqOCdU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=K7OZARhC; arc=none smtp.client-ip=209.85.214.173
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-pl1-f173.google.com with SMTP id d9443c01a7336-24458263458so12118475ad.3
+        for <stable@vger.kernel.org>; Thu, 21 Aug 2025 09:35:05 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1755794105; x=1756398905; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=flb2E4kjGcDlTRu530Vt8i5Q+Cs64zRzjln/3+D2F4k=;
+        b=K7OZARhCr+6TKUt+AEwLBT92nuDUlPCFKglJVpmMOyCHuBtTEkwu1GzWtu7dsNTNxl
+         yD9MeEygDWxSgmzymf+PtMZAq/oPIDlVYXlsWVQ3FNzYeTYm5+6rYz6b/IJuLKz93oSg
+         id4ZrJzAMP9Tu+AWgLWDbl0r0ge1krIMlQScL60c+LFch/kUu8N54dyHA5GtLbvbsnmA
+         53+vGgMf3HbMLa5xRg0flTdqA9OLpZFIht83zvx+QMX1p46AAzk0Lv+PryNOA1EHNYY+
+         KTDo4cN5lywf+cMJ6ISfODCVeIiDBsl2+1N8/lj9zWibbMfYsMzyW3hrT9b93MTCb9+c
+         eXSg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1755794105; x=1756398905;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=flb2E4kjGcDlTRu530Vt8i5Q+Cs64zRzjln/3+D2F4k=;
+        b=lIylojAGBZs0AXuqypHruC2yYoZi5PYfJT0A+l+R0yHAul543C6kFlrnHyF+JbWDzx
+         Vo6MDYw4BiE237GbBI3ntAxNVCM4vCMC7wl2imWT5TUjFOhLxzx5y/PupLzzMyX1Uivd
+         tRBVBXX5qfCI1rWZyWxeM8kgbjZtwosBfKQ1Kw70xTUsBAH9pFliKW6H9OTrVdXDOkgp
+         ecDNozEXygSmYbbELWRBPvxSueuziwVtfjw1J1jb3C1j2ri9u37ekuDl+xvrH96Mhwp8
+         YeH+vWtoiMuPSI2vgHURuq0OWAI5qgQLN2pxnkBLMHUoZvmkPykdZeu1ReWMYkgjnk9C
+         s5/w==
+X-Forwarded-Encrypted: i=1; AJvYcCU3AjmxdVcNsWqQBcpHz7RbEC10G3Ctlz3xUZHekMO/QQLmOeQ/929k2792Hv2T6Vm3HBDLD8o=@vger.kernel.org
+X-Gm-Message-State: AOJu0Yx+3GxoXD3SqmYfSe/9txHtP6SAMYzqJhEzpCXEqiL1x9+ZSGw0
+	Dz1lcourIF7v7jmcP3fh8xH0Q774ue+a/nsPpQma3AoPuJ/1r8G6MSkV
+X-Gm-Gg: ASbGncs+5qZtfiY/W7Ai6cHim5K7e4OuywuSF9q7DJB/oxiPcvY5HOGTjPUy1UK70Ez
+	PLsr0UTElEbALNeX+1jvF2hQXKaghnh0Bwm6E6ZDpsR/uX9HP2mdhs4gCjh6galVwZJvNSC1aUQ
+	yZKFSu9S1JeCDS4KCJO6EF6btThqN4uadsVhfDD34avYwXrE0kO6IkwdaQNiY6VT8uaWLp8nvlq
+	yw4B2Rb7/W/9DKtekd5pq3DoV6AoQjgNyIX5/qN9xIRFD0gCzIGZ2cENip+soI4R+a8PRibyCCK
+	29tauoYs7H1Dl+ooEBYaPUGkpD7PVyDTCxS0kUU70k+vkdV353qNbk0bH59GFsuRAna0Wkt6ZHA
+	MO/Aw0qq5tRvnG52Q
+X-Google-Smtp-Source: AGHT+IEoK20LGwps1UI3qxtBzFuC2UZywh32woD/WzTb07rAX67EwMDZ7TmGCqkdLFk9tfZL3IepkA==
+X-Received: by 2002:a17:903:120e:b0:246:1c6a:7026 with SMTP id d9443c01a7336-2461c6a7131mr22258645ad.40.1755794104962;
+        Thu, 21 Aug 2025 09:35:04 -0700 (PDT)
+Received: from ubuntu.. ([110.9.142.4])
+        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-76e7d5242dasm8704422b3a.77.2025.08.21.09.35.01
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Thu, 21 Aug 2025 09:35:04 -0700 (PDT)
+From: Sang-Heon Jeon <ekffu200098@gmail.com>
+To: sj@kernel.org,
+	honggyu.kim@sk.com
+Cc: damon@lists.linux.dev,
+	linux-mm@kvack.org,
+	akpm@linux-foundation.org,
+	Sang-Heon Jeon <ekffu200098@gmail.com>,
+	stable@vger.kernel.org
+Subject: [PATCH v3] mm/damon/core: set quota->charged_from to jiffies at first charge window
+Date: Fri, 22 Aug 2025 01:33:46 +0900
+Message-ID: <20250821163346.1690784-1-ekffu200098@gmail.com>
+X-Mailer: git-send-email 2.43.0
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -62,85 +91,87 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-From: "Rafael J. Wysocki" <rafael.j.wysocki@intel.com>
+Kernel initialize "jiffies" timer as 5 minutes below zero, as shown in
+include/linux/jiffies.h
 
-[ Upstream commit 51888393cc64dd0462d0b96c13ab94873abbc030 ]
+/*
+* Have the 32 bit jiffies value wrap 5 minutes after boot
+* so jiffies wrap bugs show up earlier.
+*/
+#define INITIAL_JIFFIES ((unsigned long)(unsigned int) (-300*HZ))
 
-For all practical purposes, there is no difference between the situation
-in which a given device is not ignoring children and its active child
-count is nonzero and the situation in which its runtime PM usage counter
-is nonzero.  However, pm_runtime_get_if_in_use() will only increment the
-device's usage counter and return 1 in the latter case.
+And jiffies comparison help functions cast unsigned value to signed to
+cover wraparound
 
-For consistency, make it do so in the former case either by adjusting
-pm_runtime_get_conditional() and update the related kerneldoc comments
-accordingly.
+#define time_after_eq(a,b) \
+ (typecheck(unsigned long, a) && \
+ typecheck(unsigned long, b) && \
+ ((long)((a) - (b)) >= 0))
 
-Fixes: c111566bea7c ("PM: runtime: Add pm_runtime_get_if_active()")
-Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
-Reviewed-by: Ulf Hansson <ulf.hansson@linaro.org>
-Reviewed-by: Sakari Ailus <sakari.ailus@linux.intel.com>
-Cc: 5.10+ <stable@vger.kernel.org> # 5.10+: c0ef3df8dbae: PM: runtime: Simplify pm_runtime_get_if_active() usage
-Cc: 5.10+ <stable@vger.kernel.org> # 5.10+
-Link: https://patch.msgid.link/12700973.O9o76ZdvQC@rjwysocki.net
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+When quota->charged_from is initialized to 0, time_after_eq() can incorrectly
+return FALSE even after reset_interval has elapsed. This occurs when 
+(jiffies - reset_interval) produces a value with MSB=1, which is interpreted
+as negative in signed arithmetic.
+
+This issue primarily affects 32-bit systems because:
+On 64-bit systems: MSB=1 values occur after ~292 million years from boot
+(assuming HZ=1000), almost impossible.
+
+On 32-bit systems: MSB=1 values occur during the first 5 minutes after boot,
+and the second half of every jiffies wraparound cycle, starting from day 25
+(assuming HZ=1000)
+
+When above unexpected FALSE return from time_after_eq() occurs, the
+charging window will not reset. The user impact depends on esz value
+at that time.
+
+If esz is 0, scheme ignores configured quotas and runs without any
+limits.
+
+If esz is not 0, scheme stops working once the quota is exhausted. It
+remains until the charging window finally resets.
+
+So, change quota->charged_from to jiffies at damos_adjust_quota() when
+it is considered as the first charge window. By this change, we can avoid
+unexpected FALSE return from time_after_eq()
+
+Fixes: 2b8a248d5873 ("mm/damon/schemes: implement size quota for schemes application speed control") # 5.16
+Cc: stable@vger.kernel.org
+Signed-off-by: Sang-Heon Jeon <ekffu200098@gmail.com>
 ---
- drivers/base/power/runtime.c | 27 ++++++++++++++++++---------
- 1 file changed, 18 insertions(+), 9 deletions(-)
+Changes from v2 [2]
+- remove unnecessary example about time_after_eq()
+- remove description of unexpected reset of quota->charged_from
+- clarify user impacts and when bug happens
 
-diff --git a/drivers/base/power/runtime.c b/drivers/base/power/runtime.c
-index d5ac30249cac..b7c4caff743f 100644
---- a/drivers/base/power/runtime.c
-+++ b/drivers/base/power/runtime.c
-@@ -1181,10 +1181,12 @@ EXPORT_SYMBOL_GPL(__pm_runtime_resume);
-  *
-  * Return -EINVAL if runtime PM is disabled for @dev.
-  *
-- * Otherwise, if the runtime PM status of @dev is %RPM_ACTIVE and either
-- * @ign_usage_count is %true or the runtime PM usage counter of @dev is not
-- * zero, increment the usage counter of @dev and return 1. Otherwise, return 0
-- * without changing the usage counter.
-+ * Otherwise, if its runtime PM status is %RPM_ACTIVE and (1) @ign_usage_count
-+ * is set, or (2) @dev is not ignoring children and its active child count is
-+ * nonero, or (3) the runtime PM usage counter of @dev is not zero, increment
-+ * the usage counter of @dev and return 1.
-+ *
-+ * Otherwise, return 0 without changing the usage counter.
-  *
-  * If @ign_usage_count is %true, this function can be used to prevent suspending
-  * the device when its runtime PM status is %RPM_ACTIVE.
-@@ -1206,7 +1208,8 @@ static int pm_runtime_get_conditional(struct device *dev, bool ign_usage_count)
- 		retval = -EINVAL;
- 	} else if (dev->power.runtime_status != RPM_ACTIVE) {
- 		retval = 0;
--	} else if (ign_usage_count) {
-+	} else if (ign_usage_count || (!dev->power.ignore_children &&
-+		   atomic_read(&dev->power.child_count) > 0)) {
- 		retval = 1;
- 		atomic_inc(&dev->power.usage_count);
- 	} else {
-@@ -1239,10 +1242,16 @@ EXPORT_SYMBOL_GPL(pm_runtime_get_if_active);
-  * @dev: Target device.
-  *
-  * Increment the runtime PM usage counter of @dev if its runtime PM status is
-- * %RPM_ACTIVE and its runtime PM usage counter is greater than 0, in which case
-- * it returns 1. If the device is in a different state or its usage_count is 0,
-- * 0 is returned. -EINVAL is returned if runtime PM is disabled for the device,
-- * in which case also the usage_count will remain unmodified.
-+ * %RPM_ACTIVE and its runtime PM usage counter is greater than 0 or it is not
-+ * ignoring children and its active child count is nonzero.  1 is returned in
-+ * this case.
-+ *
-+ * If @dev is in a different state or it is not in use (that is, its usage
-+ * counter is 0, or it is ignoring children, or its active child count is 0),
-+ * 0 is returned.
-+ *
-+ * -EINVAL is returned if runtime PM is disabled for the device, in which case
-+ * also the usage counter of @dev is not updated.
-  */
- int pm_runtime_get_if_in_use(struct device *dev)
- {
+Changes from v1 [1]
+- not change current default value of quota->charged_from
+- set quota->charged_from when it is consider first charge below
+- add more description of jiffies and wraparound example to commit
+  messages
+
+[1] https://lore.kernel.org/damon/20250818183803.1450539-1-ekffu200098@gmail.com/
+[2] https://lore.kernel.org/damon/20250819150123.1532458-1-ekffu200098@gmail.com/
+---
+ mm/damon/core.c | 4 ++++
+ 1 file changed, 4 insertions(+)
+
+diff --git a/mm/damon/core.c b/mm/damon/core.c
+index cb41fddca78c..93bad6d0da5b 100644
+--- a/mm/damon/core.c
++++ b/mm/damon/core.c
+@@ -2130,6 +2130,10 @@ static void damos_adjust_quota(struct damon_ctx *c, struct damos *s)
+ 	if (!quota->ms && !quota->sz && list_empty(&quota->goals))
+ 		return;
+ 
++	/* First charge window */
++	if (!quota->total_charged_sz && !quota->charged_from)
++		quota->charged_from = jiffies;
++
+ 	/* New charge window starts */
+ 	if (time_after_eq(jiffies, quota->charged_from +
+ 				msecs_to_jiffies(quota->reset_interval))) {
 -- 
-2.50.1
+2.43.0
 
 
