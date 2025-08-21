@@ -1,48 +1,48 @@
-Return-Path: <stable+bounces-172155-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-172156-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id CCEE1B2FD6E
-	for <lists+stable@lfdr.de>; Thu, 21 Aug 2025 16:54:50 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 35A87B2FD7A
+	for <lists+stable@lfdr.de>; Thu, 21 Aug 2025 16:55:45 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 0CBF7189700B
-	for <lists+stable@lfdr.de>; Thu, 21 Aug 2025 14:47:44 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id EC5D63AB83B
+	for <lists+stable@lfdr.de>; Thu, 21 Aug 2025 14:47:23 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 237DA2DF707;
-	Thu, 21 Aug 2025 14:47:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B7FB12DF70D;
+	Thu, 21 Aug 2025 14:47:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="KK34RWAz"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="pDh0pg6A"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D687D2DF6EC
-	for <stable@vger.kernel.org>; Thu, 21 Aug 2025 14:47:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 791A92DF6EC
+	for <stable@vger.kernel.org>; Thu, 21 Aug 2025 14:47:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755787639; cv=none; b=U/gNnJ35RTM3y454Xrt22sNhec8HIyPwZCtE0EZolV/3OAdkR3Ro/7swzkoBupdu1ndh5LWNhYwJX6ftmlGOEpivRKRQ4LR3DJ8icIz32lDWetiiDO2szakQI7BKwvkgNNz0qTpkjMnO10lWcz6vkAUWGO86GRgsaFwR5Rp6614=
+	t=1755787642; cv=none; b=uxAuy+LKEMRpMJMMOUrWCJ05RLLshurcRDrOpGBOvaScHTSjwdQFXnKdM6V86/M6xrN0/5ygUxIO32b2szz8aM+1EK+H08j+YRb+6TB4mwaF5930vOd3ZoQOe/HM1pcQiQY2l95e/HxvJEXJlU9ZpO9/XAaZxqTdAdjQbzJsvrY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1755787639; c=relaxed/simple;
-	bh=eeUD0BoWjlL26pC2InOBvoEG+ggWCY3jKQ/Tlsvy8hc=;
-	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=SQjmk2awwq30PTc3SsjiotVfGJfMg2uQQndCZNgDr1jir7taNWd5FLf+zeeh9L8AdavhPYq09hgyC5Tbrh9zVIzr76lFnKTMiLdqcZulOYSbri2WA3eoORw/ItB/yvuPvUBN/MdeisSkjjKGrdRJyYYZascrZaWSMUlw991U85E=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=KK34RWAz; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id F2118C4CEEB;
-	Thu, 21 Aug 2025 14:47:18 +0000 (UTC)
+	s=arc-20240116; t=1755787642; c=relaxed/simple;
+	bh=oJVV1vOmwDmK5IdNnOvwC0hhtb2sCzdruZ85Bf5W+us=;
+	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=Hi7Ze+ATCte8K7+25MzW3dVUGmugvbB8qqlUvB96kEZhreoiRJpTdvr4dJXBgDStL3ET8MGNWsQ80SZEowQFl3GM8yh3ZsGozWT97PwnjnVEwroRJ2H+xRXtmG3TNLviMaq8f9eWoRvOcKyQfZHopq2goDF9JYmecdVCSTenPXo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=pDh0pg6A; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 00B0EC4CEEB;
+	Thu, 21 Aug 2025 14:47:21 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1755787639;
-	bh=eeUD0BoWjlL26pC2InOBvoEG+ggWCY3jKQ/Tlsvy8hc=;
+	s=korg; t=1755787642;
+	bh=oJVV1vOmwDmK5IdNnOvwC0hhtb2sCzdruZ85Bf5W+us=;
 	h=Subject:To:Cc:From:Date:From;
-	b=KK34RWAzxhQqzDwVhXFOb+K4mddJoXg0KOOnAu6I8f8GP+oZWJbvC4SCsajKukkHA
-	 nMhAsOlxPuoBspi1P4ZvHTGJh58A2dH1oUnk12HXF0SFMcLig7P5wfuBY3soaDA+dT
-	 Zs0hkudRVndqz3DLVLnl5EAU4jo+u9O6by/MIXBA=
-Subject: FAILED: patch "[PATCH] media: venus: vdec: Clamp param smaller than 1fps and bigger" failed to apply to 5.10-stable tree
-To: ribalda@chromium.org,bod@kernel.org,bryan.odonoghue@linaro.org,hverkuil@xs4all.nl
+	b=pDh0pg6AS+m1L5p2K5zyDOxUTV8/LTG+8UMIUHoRoXkGPXIl27oQj1qqURNGQZWWY
+	 JKyMJlgq4DYzrOyN4vo58jduW5NBKI9wNTRXHxc8hzQIPcb9eWnff9AD6flWMu7HcS
+	 GKId3NvM95cJX1FutlVveZfbzLBNhb1qN3bx6Css=
+Subject: FAILED: patch "[PATCH] media: venus: venc: Clamp param smaller than 1fps and bigger" failed to apply to 5.10-stable tree
+To: ribalda@chromium.org,bod@kernel.org,hverkuil@xs4all.nl
 Cc: <stable@vger.kernel.org>
 From: <gregkh@linuxfoundation.org>
-Date: Thu, 21 Aug 2025 16:44:03 +0200
-Message-ID: <2025082103-exfoliate-wildness-1f7f@gregkh>
+Date: Thu, 21 Aug 2025 16:44:22 +0200
+Message-ID: <2025082122-diffused-barrette-30b6@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -62,10 +62,10 @@ To reproduce the conflict and resubmit, you may use the following commands:
 
 git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-5.10.y
 git checkout FETCH_HEAD
-git cherry-pick -x 377dc500d253f0b26732b2cb062e89668aef890a
+git cherry-pick -x 417c01b92ec278a1118a05c6ad8a796eaa0c9c52
 # <resolve conflicts, build, test, etc.>
 git commit -s
-git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2025082103-exfoliate-wildness-1f7f@gregkh' --subject-prefix 'PATCH 5.10.y' HEAD^..
+git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2025082122-diffused-barrette-30b6@gregkh' --subject-prefix 'PATCH 5.10.y' HEAD^..
 
 Possible dependencies:
 
@@ -77,48 +77,33 @@ greg k-h
 
 ------------------ original commit in Linus's tree ------------------
 
-From 377dc500d253f0b26732b2cb062e89668aef890a Mon Sep 17 00:00:00 2001
+From 417c01b92ec278a1118a05c6ad8a796eaa0c9c52 Mon Sep 17 00:00:00 2001
 From: Ricardo Ribalda <ribalda@chromium.org>
-Date: Mon, 16 Jun 2025 15:29:14 +0000
-Subject: [PATCH] media: venus: vdec: Clamp param smaller than 1fps and bigger
- than 240.
+Date: Mon, 16 Jun 2025 15:29:15 +0000
+Subject: [PATCH] media: venus: venc: Clamp param smaller than 1fps and bigger
+ than 240
 
 The driver uses "whole" fps in all its calculations (e.g. in
 load_per_instance()). Those calculation expect an fps bigger than 1, and
 not big enough to overflow.
 
-Clamp the value if the user provides a param that will result in an invalid
+Clamp the param if the user provides a value that will result in an invalid
 fps.
 
 Reported-by: Hans Verkuil <hverkuil@xs4all.nl>
 Closes: https://lore.kernel.org/linux-media/f11653a7-bc49-48cd-9cdb-1659147453e4@xs4all.nl/T/#m91cd962ac942834654f94c92206e2f85ff7d97f0
-Fixes: 7472c1c69138 ("[media] media: venus: vdec: add video decoder files")
+Fixes: aaaa93eda64b ("[media] media: venus: venc: add video encoder files")
 Cc: stable@vger.kernel.org
-Tested-by: Bryan O'Donoghue <bryan.odonoghue@linaro.org> # qrb5615-rb5
-Reviewed-by: Bryan O'Donoghue <bryan.odonoghue@linaro.org>
 Signed-off-by: Ricardo Ribalda <ribalda@chromium.org>
 [bod: Change "parm" to "param"]
 Signed-off-by: Bryan O'Donoghue <bod@kernel.org>
 Signed-off-by: Hans Verkuil <hverkuil@xs4all.nl>
 
-diff --git a/drivers/media/platform/qcom/venus/core.h b/drivers/media/platform/qcom/venus/core.h
-index b412e0c5515a..5b1ba1c69adb 100644
---- a/drivers/media/platform/qcom/venus/core.h
-+++ b/drivers/media/platform/qcom/venus/core.h
-@@ -28,6 +28,8 @@
- #define VIDC_RESETS_NUM_MAX		2
- #define VIDC_MAX_HIER_CODING_LAYER 6
- 
-+#define VENUS_MAX_FPS			240
-+
- extern int venus_fw_debug;
- 
- struct freq_tbl {
-diff --git a/drivers/media/platform/qcom/venus/vdec.c b/drivers/media/platform/qcom/venus/vdec.c
-index 99ce5fd41577..fca27be61f4b 100644
---- a/drivers/media/platform/qcom/venus/vdec.c
-+++ b/drivers/media/platform/qcom/venus/vdec.c
-@@ -481,11 +481,10 @@ static int vdec_s_parm(struct file *file, void *fh, struct v4l2_streamparm *a)
+diff --git a/drivers/media/platform/qcom/venus/venc.c b/drivers/media/platform/qcom/venus/venc.c
+index c7f8e37dba9b..b9ccee870c3d 100644
+--- a/drivers/media/platform/qcom/venus/venc.c
++++ b/drivers/media/platform/qcom/venus/venc.c
+@@ -411,11 +411,10 @@ static int venc_s_parm(struct file *file, void *fh, struct v4l2_streamparm *a)
  	us_per_frame = timeperframe->numerator * (u64)USEC_PER_SEC;
  	do_div(us_per_frame, timeperframe->denominator);
  
@@ -130,7 +115,7 @@ index 99ce5fd41577..fca27be61f4b 100644
  	do_div(fps, us_per_frame);
 +	fps = min(VENUS_MAX_FPS, fps);
  
- 	inst->fps = fps;
  	inst->timeperframe = *timeperframe;
+ 	inst->fps = fps;
 
 
