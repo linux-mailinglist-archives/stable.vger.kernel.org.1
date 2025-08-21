@@ -1,169 +1,122 @@
-Return-Path: <stable+bounces-172131-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-172132-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2D659B2FD21
-	for <lists+stable@lfdr.de>; Thu, 21 Aug 2025 16:45:28 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8150AB2FD3D
+	for <lists+stable@lfdr.de>; Thu, 21 Aug 2025 16:48:46 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id B19D51896070
-	for <lists+stable@lfdr.de>; Thu, 21 Aug 2025 14:31:26 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 97875626CF3
+	for <lists+stable@lfdr.de>; Thu, 21 Aug 2025 14:31:39 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7D14E2D8DDB;
-	Thu, 21 Aug 2025 14:26:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0C8481F03DE;
+	Thu, 21 Aug 2025 14:28:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=samsung.com header.i=@samsung.com header.b="CzkRkmsW"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="PJts/0Gf"
 X-Original-To: stable@vger.kernel.org
-Received: from mailout1.samsung.com (mailout1.samsung.com [203.254.224.24])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 95A1B219E8
-	for <stable@vger.kernel.org>; Thu, 21 Aug 2025 14:26:55 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=203.254.224.24
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B384D279DB6
+	for <stable@vger.kernel.org>; Thu, 21 Aug 2025 14:28:09 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755786419; cv=none; b=fxWwDmzYVdXoLHURSsprrqT0OfWxfL8aUJthnN5jnM/uMQfxGp16YQ0Jr25m5x5YDt9zknzPvrJ0CWaNJdSUR8iPwcFhoCzvm4fBj7wK8xZGrVQIJswcWIWX2+3LRFSTFqgy7hKHJUUkaBlqbHhfzw8UHxmsfHcUJG1OtASBzj4=
+	t=1755786489; cv=none; b=YCg9o4h298+MrwXg73rgUecRmydRg+E+LIgXwcNHTiALBUZER0ryM7TsyK4p+Cz/2vKVTWQ75Aqx3zNSHQonH1Xh6H8+OW8qGWZYva1gfGRjxEjoaMsKA942eLrb7Tm5kvWJVSly+uo0xrrS56kaudZg7wJvL+M+K3rqOqxBxEg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1755786419; c=relaxed/simple;
-	bh=I0YGUdkmmt6qwtAsyx6kbKe3778eYGyXjk0G7LNXHFE=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:MIME-Version:
-	 Content-Type:References; b=YlaqCnCFnEGgOT4P8Q/VHNBntJ51y7FF1LEM5CcFnu4kmHWNnwJ0QHFrkWy8V16vFRFCHvQjUSZwFImHn9Dps5Un9RZ1Q1FkGprvz5xjynYuem+HwCQ/17QZrmbt7yccukYW7LzdVtjkLshLqRob5kPAOciU1kJbWzuiC9QVeP0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=samsung.com; spf=pass smtp.mailfrom=samsung.com; dkim=pass (1024-bit key) header.d=samsung.com header.i=@samsung.com header.b=CzkRkmsW; arc=none smtp.client-ip=203.254.224.24
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=samsung.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=samsung.com
-Received: from epcas5p4.samsung.com (unknown [182.195.41.42])
-	by mailout1.samsung.com (KnoxPortal) with ESMTP id 20250821142653epoutp011bc4cd56b0be4ba97bb9bcd81662d47e~dznDPqK831102411024epoutp01y
-	for <stable@vger.kernel.org>; Thu, 21 Aug 2025 14:26:53 +0000 (GMT)
-DKIM-Filter: OpenDKIM Filter v2.11.0 mailout1.samsung.com 20250821142653epoutp011bc4cd56b0be4ba97bb9bcd81662d47e~dznDPqK831102411024epoutp01y
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=samsung.com;
-	s=mail20170921; t=1755786413;
-	bh=0tZJRqdRee94S/c4GB7S93x3TuokNwU2gnP1lBhNk8c=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=CzkRkmsWmiLUxalqmZ+mGxQ76xiKUkGW7W+K00SuZck7Y1xsHXMXYwj+iWJ8c5/Wz
-	 i53xx/BdqPJu2inKgU6qVx5RIYqoo5OmNwhrwaBi/dfG9IKTmtAT+ceKT9LOmLCGxq
-	 eqEDibEoe1gmiamGR+2fO1Zlg8lepFNDoWCfYWl0=
-Received: from epsnrtp01.localdomain (unknown [182.195.42.153]) by
-	epcas5p1.samsung.com (KnoxPortal) with ESMTPS id
-	20250821142653epcas5p19102b213e7f93abf533924c66846f630~dznC2CQPI0045300453epcas5p1j;
-	Thu, 21 Aug 2025 14:26:53 +0000 (GMT)
-Received: from epcas5p2.samsung.com (unknown [182.195.38.90]) by
-	epsnrtp01.localdomain (Postfix) with ESMTP id 4c75HJ3mkxz6B9m4; Thu, 21 Aug
-	2025 14:26:52 +0000 (GMT)
-Received: from epsmtip2.samsung.com (unknown [182.195.34.31]) by
-	epcas5p3.samsung.com (KnoxPortal) with ESMTPA id
-	20250821142651epcas5p31ef97e0abe6d865fd9e756b6245c058f~dznAyFXbI3028930289epcas5p3S;
-	Thu, 21 Aug 2025 14:26:51 +0000 (GMT)
-Received: from INBRO002811.samsungds.net (unknown [107.122.5.126]) by
-	epsmtip2.samsung.com (KnoxPortal) with ESMTPA id
-	20250821142649epsmtip2dd218a35c0442b138f5f4a4afa60eab8~dzm_6d3Wp2391023910epsmtip2t;
-	Thu, 21 Aug 2025 14:26:48 +0000 (GMT)
-From: Selvarasu Ganesan <selvarasu.g@samsung.com>
-To: stable@vger.kernel.org
-Cc: jh0801.jung@samsung.com, dh10.jung@samsung.com, akash.m5@samsung.com,
-	hongpooh.kim@samsung.com, eomji.oh@samsung.com, shijie.cai@samsung.com,
-	alim.akhtar@samsung.com, muhammed.ali@samsung.com, thiagu.r@samsung.com,
-	Meng Li <Meng.Li@windriver.com>, Xu Yang <xu.yang_2@nxp.com>, Thinh Nguyen
-	<Thinh.Nguyen@synopsys.com>, Greg Kroah-Hartman
-	<gregkh@linuxfoundation.org>, Selvarasu Ganesan <selvarasu.g@samsung.com>
-Subject: [PATCH 5.10.y 2/2] usb: dwc3: core: remove lock of otg mode during
- gadget suspend/resume to avoid deadlock
-Date: Thu, 21 Aug 2025 19:56:07 +0530
-Message-ID: <20250821142609.264-2-selvarasu.g@samsung.com>
-X-Mailer: git-send-email 2.46.0.windows.1
-In-Reply-To: <20250821142609.264-1-selvarasu.g@samsung.com>
+	s=arc-20240116; t=1755786489; c=relaxed/simple;
+	bh=BKgiNpVchJ+N8rxJj3UbTC/ZaFcVADrkfHcsD+wCh1I=;
+	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=Z4D1IRreccnrXyTWm9B5q3gsV8TjKQMj7FR91JrjpnokTK3gyU1qDODzYbQ9tfOy65qT953Siyl2o653470u121403/Y8lhIv2B1q30OFoC6zdRRCB0J3h99L7vBR54zQTe6VMUqdU9OWjC16/dDpqnyP7bq4RtAx+GtIO5RYtM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=PJts/0Gf; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3D340C4CEEB;
+	Thu, 21 Aug 2025 14:28:09 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
+	s=korg; t=1755786489;
+	bh=BKgiNpVchJ+N8rxJj3UbTC/ZaFcVADrkfHcsD+wCh1I=;
+	h=Subject:To:Cc:From:Date:From;
+	b=PJts/0GfgWP8aRfgKhJr9Ury1Chd7VICy2yNldwADifMhGxFcIZtEiLdt2mxFdumn
+	 aauxcXGsAW8mLwjugx0Pe27qoLFfYewtCzcm7UDZr8h5nIPN498g7Bx9lxilI2khbh
+	 y1Xn2Kd3/LqEOGopzOPcnx4QvAI9Ybq2bMITSpwQ=
+Subject: FAILED: patch "[PATCH] media: qcom: camss: cleanup media device allocated resource" failed to apply to 5.15-stable tree
+To: vladimir.zapolskiy@linaro.org,bod@kernel.org,bryan.odonoghue@linaro.org,hverkuil@xs4all.nl
+Cc: <stable@vger.kernel.org>
+From: <gregkh@linuxfoundation.org>
+Date: Thu, 21 Aug 2025 16:27:55 +0200
+Message-ID: <2025082155-riches-diaper-55d5@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=ANSI_X3.4-1968
 Content-Transfer-Encoding: 8bit
-X-CMS-MailID: 20250821142651epcas5p31ef97e0abe6d865fd9e756b6245c058f
-X-Msg-Generator: CA
-Content-Type: text/plain; charset="utf-8"
-CMS-TYPE: 105P
-cpgsPolicy: CPGSC10-542,Y
-X-CFilter-Loop: Reflected
-X-CMS-RootMailID: 20250821142651epcas5p31ef97e0abe6d865fd9e756b6245c058f
-References: <20250821142609.264-1-selvarasu.g@samsung.com>
-	<CGME20250821142651epcas5p31ef97e0abe6d865fd9e756b6245c058f@epcas5p3.samsung.com>
 
-From: Meng Li <Meng.Li@windriver.com>
 
-[ Upstream commit 7838de15bb700c2898a7d741db9b1f3cbc86c136 ]
+The patch below does not apply to the 5.15-stable tree.
+If someone wants it applied there, or to any other stable or longterm
+tree, then please email the backport, including the original git commit
+id to <stable@vger.kernel.org>.
 
-When config CONFIG_USB_DWC3_DUAL_ROLE is selected, and trigger system
-to enter suspend status with below command:
-echo mem > /sys/power/state
-There will be a deadlock issue occurring. Detailed invoking path as
-below:
-dwc3_suspend_common()
-    spin_lock_irqsave(&dwc->lock, flags);              <-- 1st
-    dwc3_gadget_suspend(dwc);
-        dwc3_gadget_soft_disconnect(dwc);
-            spin_lock_irqsave(&dwc->lock, flags);      <-- 2nd
-This issue is exposed by commit c7ebd8149ee5 ("usb: dwc3: gadget: Fix
-NULL pointer dereference in dwc3_gadget_suspend") that removes the code
-of checking whether dwc->gadget_driver is NULL or not. It causes the
-following code is executed and deadlock occurs when trying to get the
-spinlock. In fact, the root cause is the commit 5265397f9442("usb: dwc3:
-Remove DWC3 locking during gadget suspend/resume") that forgot to remove
-the lock of otg mode. So, remove the redundant lock of otg mode during
-gadget suspend/resume.
+To reproduce the conflict and resubmit, you may use the following commands:
 
-Fixes: 5265397f9442 ("usb: dwc3: Remove DWC3 locking during gadget suspend/resume")
-Cc: Xu Yang <xu.yang_2@nxp.com>
+git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-5.15.y
+git checkout FETCH_HEAD
+git cherry-pick -x 69080ec3d0daba8a894025476c98ab16b5a505a4
+# <resolve conflicts, build, test, etc.>
+git commit -s
+git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2025082155-riches-diaper-55d5@gregkh' --subject-prefix 'PATCH 5.15.y' HEAD^..
+
+Possible dependencies:
+
+
+
+thanks,
+
+greg k-h
+
+------------------ original commit in Linus's tree ------------------
+
+From 69080ec3d0daba8a894025476c98ab16b5a505a4 Mon Sep 17 00:00:00 2001
+From: Vladimir Zapolskiy <vladimir.zapolskiy@linaro.org>
+Date: Tue, 13 May 2025 17:23:45 +0300
+Subject: [PATCH] media: qcom: camss: cleanup media device allocated resource
+ on error path
+
+A call to media_device_init() requires media_device_cleanup() counterpart
+to complete cleanup and release any allocated resources.
+
+This has been done in the driver .remove() right from the beginning, but
+error paths on .probe() shall also be fixed.
+
+Fixes: a1d7c116fcf7 ("media: camms: Add core files")
 Cc: stable@vger.kernel.org
-Signed-off-by: Meng Li <Meng.Li@windriver.com>
-Acked-by: Thinh Nguyen <Thinh.Nguyen@synopsys.com>
-Link: https://lore.kernel.org/r/20240618031918.2585799-1-Meng.Li@windriver.com
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Signed-off-by: Selvarasu Ganesan <selvarasu.g@samsung.com>
----
- drivers/usb/dwc3/core.c | 6 ------
- 1 file changed, 6 deletions(-)
+Signed-off-by: Vladimir Zapolskiy <vladimir.zapolskiy@linaro.org>
+Reviewed-by: Bryan O'Donoghue <bryan.odonoghue@linaro.org>
+Signed-off-by: Bryan O'Donoghue <bod@kernel.org>
+Signed-off-by: Hans Verkuil <hverkuil@xs4all.nl>
 
-diff --git a/drivers/usb/dwc3/core.c b/drivers/usb/dwc3/core.c
-index 9988424aa91f..118ab7790366 100644
---- a/drivers/usb/dwc3/core.c
-+++ b/drivers/usb/dwc3/core.c
-@@ -1735,7 +1735,6 @@ static int dwc3_core_init_for_resume(struct dwc3 *dwc)
+diff --git a/drivers/media/platform/qcom/camss/camss.c b/drivers/media/platform/qcom/camss/camss.c
+index 06f42875702f..f76773dbd296 100644
+--- a/drivers/media/platform/qcom/camss/camss.c
++++ b/drivers/media/platform/qcom/camss/camss.c
+@@ -3625,7 +3625,7 @@ static int camss_probe(struct platform_device *pdev)
+ 	ret = v4l2_device_register(camss->dev, &camss->v4l2_dev);
+ 	if (ret < 0) {
+ 		dev_err(dev, "Failed to register V4L2 device: %d\n", ret);
+-		goto err_genpd_cleanup;
++		goto err_media_device_cleanup;
+ 	}
  
- static int dwc3_suspend_common(struct dwc3 *dwc, pm_message_t msg)
- {
--	unsigned long	flags;
- 	u32 reg;
+ 	v4l2_async_nf_init(&camss->notifier, &camss->v4l2_dev);
+@@ -3680,6 +3680,8 @@ static int camss_probe(struct platform_device *pdev)
+ 	v4l2_device_unregister(&camss->v4l2_dev);
+ 	v4l2_async_nf_cleanup(&camss->notifier);
+ 	pm_runtime_disable(dev);
++err_media_device_cleanup:
++	media_device_cleanup(&camss->media_dev);
+ err_genpd_cleanup:
+ 	camss_genpd_cleanup(camss);
  
- 	switch (dwc->current_dr_role) {
-@@ -1773,9 +1772,7 @@ static int dwc3_suspend_common(struct dwc3 *dwc, pm_message_t msg)
- 			break;
- 
- 		if (dwc->current_otg_role == DWC3_OTG_ROLE_DEVICE) {
--			spin_lock_irqsave(&dwc->lock, flags);
- 			dwc3_gadget_suspend(dwc);
--			spin_unlock_irqrestore(&dwc->lock, flags);
- 			synchronize_irq(dwc->irq_gadget);
- 		}
- 
-@@ -1792,7 +1789,6 @@ static int dwc3_suspend_common(struct dwc3 *dwc, pm_message_t msg)
- 
- static int dwc3_resume_common(struct dwc3 *dwc, pm_message_t msg)
- {
--	unsigned long	flags;
- 	int		ret;
- 	u32		reg;
- 
-@@ -1841,9 +1837,7 @@ static int dwc3_resume_common(struct dwc3 *dwc, pm_message_t msg)
- 		if (dwc->current_otg_role == DWC3_OTG_ROLE_HOST) {
- 			dwc3_otg_host_init(dwc);
- 		} else if (dwc->current_otg_role == DWC3_OTG_ROLE_DEVICE) {
--			spin_lock_irqsave(&dwc->lock, flags);
- 			dwc3_gadget_resume(dwc);
--			spin_unlock_irqrestore(&dwc->lock, flags);
- 		}
- 
- 		break;
--- 
-2.17.1
 
 
