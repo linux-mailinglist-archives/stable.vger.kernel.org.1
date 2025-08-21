@@ -1,131 +1,191 @@
-Return-Path: <stable+bounces-172172-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-172173-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4E1ABB2FE13
-	for <lists+stable@lfdr.de>; Thu, 21 Aug 2025 17:18:42 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id B7C46B2FE2A
+	for <lists+stable@lfdr.de>; Thu, 21 Aug 2025 17:21:36 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 10D513B11B4
-	for <lists+stable@lfdr.de>; Thu, 21 Aug 2025 15:12:35 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id A843FA05C86
+	for <lists+stable@lfdr.de>; Thu, 21 Aug 2025 15:14:50 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2C76938F9C;
-	Thu, 21 Aug 2025 15:12:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9F1942D7818;
+	Thu, 21 Aug 2025 15:14:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="DuDapDyE"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="MqDn4Q3J"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-pj1-f42.google.com (mail-pj1-f42.google.com [209.85.216.42])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 945B020B218;
-	Thu, 21 Aug 2025 15:12:30 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.42
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5328313DBA0;
+	Thu, 21 Aug 2025 15:14:45 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755789152; cv=none; b=mcl0luJ5IQyvTIcMqs8jBPf/X9SEtndNoHHzPivC6V4rIwtWgpT3TlKx6IdT+RAVq+i0YolQTru9wmNvY8/L89NWx0WUHQHkQbbkLjFo+Ii1vlRRJDdXzK3Avqo7omXMbXey7cr34MmR6ObqH0t0p2Q8LVr+m/3bLpST5ImnE0w=
+	t=1755789286; cv=none; b=fnVZj6u/E4XT9gJJJnhBuMVE37OXBNMlNSWEAv7Lx8tMDa4iqXEcz5n5spsCJ6Br2w9B1G1xKwNWdQ48qqYrYd6zZ5aRzmvR4BNm5pyprWDigNzhWzyllEwX1GqcHoJrRGqptxPOS4DtoEOxAIiJNrQJqdB0X/DsiEc9La6krMw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1755789152; c=relaxed/simple;
-	bh=+t8snXkKmcjjxAr5BHCKqum+mz+VMESzAYGS5C3LXnM=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=oJqCQMjaCAvIdJGDjNYSqzc+1liJQofwTbTO0bk6fNXDMApVbpSiy/eqLD6ijEK4gWL29DID/V+oXps5unlctjore3clwxxzARw08yaUvp/nEsSkRf+yAGwJmxsb8Np6IsjdBohbmcnWnG4aUzu7gKIrpD5nTBSf9N/+4V/MZqM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=roeck-us.net; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=DuDapDyE; arc=none smtp.client-ip=209.85.216.42
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=roeck-us.net
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-pj1-f42.google.com with SMTP id 98e67ed59e1d1-324e3a0482dso723527a91.2;
-        Thu, 21 Aug 2025 08:12:30 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1755789150; x=1756393950; darn=vger.kernel.org;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:sender:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=66DlkmYsPsoYSqdkPK/KdDv1XaJYGY0dUdLFlLXTfd4=;
-        b=DuDapDyEHZTTOxpb6Ae+mZRcBRI4XTp/NHjSoVVMW7aMIvtPspgHs30/Wgg8/MZNIb
-         L43acnOGqkmouwoYWC9G+KEyxQ25DPw6gpGaTl3UejN5jFvVA8Gd6qwPSjUglDI1SMXP
-         zd2N6a89ojcsseakvRWXVXsmgaQ0qdlsJYBRkdjSehakA/Nz6yBN2UfyYhgKplPIHMzW
-         YcY9RtKX7Zi3EuWTh4uAKDbBwTmIY/7K3ASpX58myAQYY1w9h/FEyM1DqXM6oPQZo7Ia
-         9K55K8FXDliZM6z1y1x7Azgui/JyZMT+EJp+1mcCxxaIzmoORy9+zbeZ4EJaZ1p6GU97
-         hQDQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1755789150; x=1756393950;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:sender:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=66DlkmYsPsoYSqdkPK/KdDv1XaJYGY0dUdLFlLXTfd4=;
-        b=NxP2uuB2Nj/B6bMY4+4VNWPqPttYi3e14MS1voI20L/aTtr8yGYjaYUXEWDeJHEc5R
-         6SyoRwSm8lkBAJ3BLlc39Te0axWVrKcfRV1ggZ/glr51jtDoR9Ukax+Yh6KSxYrC20cS
-         haK2ztIdqOpkli6ZrcKsz9FopmavZVPDvEou5pahw9uymkoe/F2IBIFZBxJ62S1cv7pB
-         jxyUCoIfPbcZ1nzR2UsI1NH4slPFighafaFXgGhc090eFkmZx9A2t6qcFA9YB4OXXrA4
-         qMQxM3YPZWxewfqr8R57GdXn1S7MVy4YUIRxfIKl0wsW/9M+A04w/038wbOLL7aNXAW3
-         gAlQ==
-X-Forwarded-Encrypted: i=1; AJvYcCWstaxtQG/xUtCVeF2yZU3e/cOVh6pz7CIO1LOl0RkknSjmSeDTyjeEfCYWkwyUpyhn7l5sPMC0P2Ufq/4=@vger.kernel.org
-X-Gm-Message-State: AOJu0YxFicXEr16NP2J/yR/OLs7YM3/XU3n5c0N8aQZrLAo99PT4h9lz
-	vhc/iAyitabdNf8azd2c6xdNR5IwMdAliyHyh0HLlWIGoO8MSeFwEDMY
-X-Gm-Gg: ASbGnctxXNQN6YG7taWZSvhoU8jZsDQQ1hTGd+M0SRhUauXy+lreMjzuk8AsWlzOtEF
-	4hCehdo6yBAifTE80YI2XNnXPR6OVDYb6gfk0hnIeV1wxeL03FwVRjJPez/fOLBnuWOHtEpzbhZ
-	Zs5KyB19B/W6F+Be6D8tbVrt1hQhsmJTUB7MCkbYmJkcPGRlxADTmhZfyIAeqU+oslxm2FVDsLZ
-	GdvkbGBdxydXEOMDew8Hd0zaJc78JhXwTrlDxJw1FxbXTqIXqwZG9CbZCgF8HKDFRlc5YNiqi3G
-	BgFg81oWSMFecUtTHLDv0l8UU/xNyXoehtwC69F2RE9wXRSMlcmGZdrd0v/HANSha1ugZHPbc7v
-	iB0xt7y3zdjypgrV12Scymotl1Jav1IfASkJ/MG9hJMYIDw==
-X-Google-Smtp-Source: AGHT+IGuF10wSRyOdJQ8u9SwxmTQNE7Yfpm2eiqD8pnVDjHTYzs4E2tneYeJRUzpKjax9uwed+ExsQ==
-X-Received: by 2002:a17:90b:5746:b0:321:abd4:b108 with SMTP id 98e67ed59e1d1-324ed11995dmr4378690a91.12.1755789149706;
-        Thu, 21 Aug 2025 08:12:29 -0700 (PDT)
-Received: from server.roeck-us.net ([2600:1700:e321:62f0:da43:aeff:fecc:bfd5])
-        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-325123e7902sm52128a91.6.2025.08.21.08.12.28
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 21 Aug 2025 08:12:29 -0700 (PDT)
-Sender: Guenter Roeck <groeck7@gmail.com>
-Date: Thu, 21 Aug 2025 08:12:27 -0700
-From: Guenter Roeck <linux@roeck-us.net>
-To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Cc: stable@vger.kernel.org, patches@lists.linux.dev,
-	linux-kernel@vger.kernel.org, torvalds@linux-foundation.org,
-	akpm@linux-foundation.org, shuah@kernel.org, patches@kernelci.org,
-	lkft-triage@lists.linaro.org, pavel@denx.de, jonathanh@nvidia.com,
-	f.fainelli@gmail.com, sudipm.mukherjee@gmail.com,
-	srw@sladewatkins.net, rwarsow@gmx.de, conor@kernel.org,
-	hargar@microsoft.com, broonie@kernel.org, achill@achill.org
-Subject: Re: [PATCH 6.12 000/438] 6.12.43-rc2 review
-Message-ID: <63e25fdb-095a-40eb-b341-75781e71ea95@roeck-us.net>
-References: <20250819122820.553053307@linuxfoundation.org>
+	s=arc-20240116; t=1755789286; c=relaxed/simple;
+	bh=jq+P7k8cfTxOl/qVSRztvlA0YyPp8635tgozhST0YyA=;
+	h=Date:From:To:Cc:Subject:Message-ID:MIME-Version:Content-Type:
+	 Content-Disposition:In-Reply-To; b=sk3hLKQlKoKhBzUThBU7+Sm/Ynbap3aCRuJbO/B2OMBhdv2rjHV7KfTWVh0HHlmAq1Kw9mMNey7ysXifPc5G9ChQ0SaZr3qMRXdnsa4hqIYknG/IiosTe48OXuXcKpEXEy8awa2lJeNOWEgOZNO+o5OT7eyXLUskp9fcY+80t6M=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=MqDn4Q3J; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9E4F0C4CEEB;
+	Thu, 21 Aug 2025 15:14:45 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1755789285;
+	bh=jq+P7k8cfTxOl/qVSRztvlA0YyPp8635tgozhST0YyA=;
+	h=Date:From:To:Cc:Subject:In-Reply-To:From;
+	b=MqDn4Q3JKTqB9i2DxzAIBgcQJy5dKCJe+bcRsAIzSTMl8Uh54luweud6phUy94RK2
+	 38yX+cYHrWsNpnD8Tio6uJErHAx1Y2LArdIw/a7pr/TZYXl22HuPoGB5IsJXawr5zn
+	 pFQIunhN1vz58R5edatwuBWVg+fkmFGO2rDg1gN2qeFJDcMw8FCluh5xB7kQi+qXfa
+	 5J94MgfFSSEgS/nGUe2NbYs5zVhmdwt642SeSeLVpMTiGMU0a+JK4jn05yyyj166XZ
+	 MZ+efTVFtNownE+V6SzdYCVvRviU7oXVpha79et2KJf7eEUURwPQvon81PC0cLVOqy
+	 1wx7w6E+06lIQ==
+Date: Thu, 21 Aug 2025 10:14:44 -0500
+From: Bjorn Helgaas <helgaas@kernel.org>
+To: Ilpo =?utf-8?B?SsOkcnZpbmVu?= <ilpo.jarvinen@linux.intel.com>
+Cc: linux-pci@vger.kernel.org, Bjorn Helgaas <bhelgaas@google.com>,
+	Krzysztof =?utf-8?Q?Wilczy=C5=84ski?= <kw@linux.com>,
+	Tudor Ambarus <tudor.ambarus@linaro.org>, Rio <rio@r26.me>,
+	D Scott Phillips <scott@os.amperecomputing.com>,
+	linux-kernel@vger.kernel.org,
+	Christian =?utf-8?B?S8O2bmln?= <christian.koenig@amd.com>,
+	stable@vger.kernel.org
+Subject: Re: [PATCH v2 3/3] PCI: Fix failure detection during resource resize
+Message-ID: <20250821151444.GA674725@bhelgaas>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
+Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
-In-Reply-To: <20250819122820.553053307@linuxfoundation.org>
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <20250630142641.3516-4-ilpo.jarvinen@linux.intel.com>
 
-On Tue, Aug 19, 2025 at 02:31:21PM +0200, Greg Kroah-Hartman wrote:
-> This is the start of the stable review cycle for the 6.12.43 release.
-> There are 438 patches in this series, all will be posted as a response
-> to this one.  If anyone has any issues with these being applied, please
-> let me know.
+On Mon, Jun 30, 2025 at 05:26:41PM +0300, Ilpo Järvinen wrote:
+> Since the commit 96336ec70264 ("PCI: Perform reset_resource() and build
+> fail list in sync") the failed list is always built and returned to let
+> the caller decide what to do with the failures. The caller may want to
+> retry resource fitting and assignment and before that can happen, the
+> resources should be restored to their original state (a reset
+> effectively clears the struct resource), which requires returning them
+> on the failed list so that the original state remains stored in the
+> associated struct pci_dev_resource.
 > 
-> Responses should be made by Thu, 21 Aug 2025 12:27:16 +0000.
-> Anything received after that time might be too late.
+> Resource resizing is different from the ordinary resource fitting and
+> assignment in that it only considers part of the resources. This means
+> failures for other resource types are not relevant at all and should be
+> ignored. As resize doesn't unassign such unrelated resources, those
+> resource ending up into the failed list implies assignment of that
+> resource must have failed before resize too. The check in
+> pci_reassign_bridge_resources() to decide if the whole assignment is
+> successful, however, is based on list emptiness which will cause false
+> negatives when the failed list has resources with an unrelated type.
 > 
+> If the failed list is not empty, call pci_required_resource_failed()
+> and extend it to be able to filter on specific resource types too (if
+> provided).
+> 
+> Calling pci_required_resource_failed() at this point is slightly
+> problematic because the resource itself is reset when the failed list
+> is constructed in __assign_resources_sorted(). As a result,
+> pci_resource_is_optional() does not have access to the original
+> resource flags. This could be worked around by restoring and
+> re-reseting the resource around the call to pci_resource_is_optional(),
+> however, it shouldn't cause issue as resource resizing is meant for
+> 64-bit prefetchable resources according to Christian König (see the
+> Link which unfortunately doesn't point directly to Christian's reply
+> because lore didn't store that email at all).
+> 
+> Fixes: 96336ec70264 ("PCI: Perform reset_resource() and build fail list in sync")
+> Link: https://lore.kernel.org/all/c5d1b5d8-8669-5572-75a7-0b480f581ac1@linux.intel.com/
+> Reported-by: D Scott Phillips <scott@os.amperecomputing.com>
 
-Build reference: v6.12.43
-Compiler version: arm-linux-gnueabi-gcc (GCC) 14.3.0
-Assembler version: GNU assembler (GNU Binutils) 2.44
+Any URL we can include here?
 
-Configuration file workarounds:
-    "s/CONFIG_FRAME_WARN=.*/CONFIG_FRAME_WARN=0/"
-
-Building arm:allmodconfig ... failed
---------------
-Error log:
-drivers/net/can/ti_hecc.c: In function 'ti_hecc_start':
-drivers/net/can/ti_hecc.c:386:21: error: implicit declaration of function 'BIT_U32'; did you mean 'BIT_ULL'? [-Wimplicit-function-declaration]
-  386 |         mbx_mask = ~BIT_U32(HECC_RX_LAST_MBOX);
-      |                     ^~~~~~~
-      |                     BIT_ULL
-
-There is no BIT_U32 in v6.12.y. The same build error is seen in v6.15.11,
-which is also missing the definition of BIT_U32. Odd that no one seems
-to have noticed this. Am I missing something ?
-
-Guenter
+> Tested-by: D Scott Phillips <scott@os.amperecomputing.com>
+> Signed-off-by: Ilpo Järvinen <ilpo.jarvinen@linux.intel.com>
+> Reviewed-by: D Scott Phillips <scott@os.amperecomputing.com>
+> Cc: Christian König <christian.koenig@amd.com>
+> Cc: <stable@vger.kernel.org>
+> ---
+>  drivers/pci/setup-bus.c | 26 ++++++++++++++++++--------
+>  1 file changed, 18 insertions(+), 8 deletions(-)
+> 
+> diff --git a/drivers/pci/setup-bus.c b/drivers/pci/setup-bus.c
+> index 24863d8d0053..dbbd80d78d3d 100644
+> --- a/drivers/pci/setup-bus.c
+> +++ b/drivers/pci/setup-bus.c
+> @@ -28,6 +28,10 @@
+>  #include <linux/acpi.h>
+>  #include "pci.h"
+>  
+> +#define PCI_RES_TYPE_MASK \
+> +	(IORESOURCE_IO | IORESOURCE_MEM | IORESOURCE_PREFETCH |\
+> +	 IORESOURCE_MEM_64)
+> +
+>  unsigned int pci_flags;
+>  EXPORT_SYMBOL_GPL(pci_flags);
+>  
+> @@ -384,13 +388,19 @@ static bool pci_need_to_release(unsigned long mask, struct resource *res)
+>  }
+>  
+>  /* Return: @true if assignment of a required resource failed. */
+> -static bool pci_required_resource_failed(struct list_head *fail_head)
+> +static bool pci_required_resource_failed(struct list_head *fail_head,
+> +					 unsigned long type)
+>  {
+>  	struct pci_dev_resource *fail_res;
+>  
+> +	type &= PCI_RES_TYPE_MASK;
+> +
+>  	list_for_each_entry(fail_res, fail_head, list) {
+>  		int idx = pci_resource_num(fail_res->dev, fail_res->res);
+>  
+> +		if (type && (fail_res->flags & PCI_RES_TYPE_MASK) != type)
+> +			continue;
+> +
+>  		if (!pci_resource_is_optional(fail_res->dev, idx))
+>  			return true;
+>  	}
+> @@ -504,7 +514,7 @@ static void __assign_resources_sorted(struct list_head *head,
+>  	}
+>  
+>  	/* Without realloc_head and only optional fails, nothing more to do. */
+> -	if (!pci_required_resource_failed(&local_fail_head) &&
+> +	if (!pci_required_resource_failed(&local_fail_head, 0) &&
+>  	    list_empty(realloc_head)) {
+>  		list_for_each_entry(save_res, &save_head, list) {
+>  			struct resource *res = save_res->res;
+> @@ -1708,10 +1718,6 @@ static void __pci_bridge_assign_resources(const struct pci_dev *bridge,
+>  	}
+>  }
+>  
+> -#define PCI_RES_TYPE_MASK \
+> -	(IORESOURCE_IO | IORESOURCE_MEM | IORESOURCE_PREFETCH |\
+> -	 IORESOURCE_MEM_64)
+> -
+>  static void pci_bridge_release_resources(struct pci_bus *bus,
+>  					 unsigned long type)
+>  {
+> @@ -2449,8 +2455,12 @@ int pci_reassign_bridge_resources(struct pci_dev *bridge, unsigned long type)
+>  		free_list(&added);
+>  
+>  	if (!list_empty(&failed)) {
+> -		ret = -ENOSPC;
+> -		goto cleanup;
+> +		if (pci_required_resource_failed(&failed, type)) {
+> +			ret = -ENOSPC;
+> +			goto cleanup;
+> +		}
+> +		/* Only resources with unrelated types failed (again) */
+> +		free_list(&failed);
+>  	}
+>  
+>  	list_for_each_entry(dev_res, &saved, list) {
+> -- 
+> 2.39.5
+> 
 
