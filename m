@@ -1,48 +1,48 @@
-Return-Path: <stable+bounces-171985-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-171984-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6E599B2F889
-	for <lists+stable@lfdr.de>; Thu, 21 Aug 2025 14:45:50 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 1C09AB2F888
+	for <lists+stable@lfdr.de>; Thu, 21 Aug 2025 14:45:49 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 5DBF11CE27B9
-	for <lists+stable@lfdr.de>; Thu, 21 Aug 2025 12:44:26 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 2A1941CE275D
+	for <lists+stable@lfdr.de>; Thu, 21 Aug 2025 12:44:25 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0DE983112BE;
-	Thu, 21 Aug 2025 12:42:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3D3D9311C13;
+	Thu, 21 Aug 2025 12:42:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="mA0CLH3P"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="y8BlpmY5"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C006E31158B
-	for <stable@vger.kernel.org>; Thu, 21 Aug 2025 12:42:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F25D4311C09
+	for <stable@vger.kernel.org>; Thu, 21 Aug 2025 12:42:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755780143; cv=none; b=dfw9oQgsGv2rI5bnZkQw4cMItYF1sqfeWRSE7U4Z5UK4bRMptV4bXw50q/ygT6trGIHUVuwagGgoz+Y96sdRg5jZxKaiRA7MEQXhUkq2H3XIjJthBH0NA9+yNuBPwedHPWot5Krgjina6B+tIqGgD9QARrnffb9+MYBmm3snt54=
+	t=1755780136; cv=none; b=MsBWfEncGYHxUcNWHoMhkElNIhmj8hNfU0p5OSlkuNwLzhVWFuN1OJHndlXkLMSOZ6yZDytCo1J2k4DoCiDf6660hVPz5nmogvfdOBr0K8V3x5hOsM6K2uHcYIUR9iDQ0bcF5YeQ+h+XxaTD6ZWGAklVsHuKmIEN4cmmx2VLJiE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1755780143; c=relaxed/simple;
-	bh=m5+Q4eC2MeF4Hw9jiwq5UrBXUAtYySXooocFE301a7M=;
-	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=UaapOzS5PK5dXLDG/7QQHGkY/c6+ua8TJBkh950gKYgiK9rehNv1/Dq48r6yl+wwm1cme3PSijvjieBy7qt0TQoSxuOYRe9itDhgCkL8ffqmO9c9INLCJ6zgTS2NWp4zuq9vP/35OkUESVzk9dE9+VrlfdOboVwP6+CAJ3tdhTw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=mA0CLH3P; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 37FF8C4CEEB;
-	Thu, 21 Aug 2025 12:42:23 +0000 (UTC)
+	s=arc-20240116; t=1755780136; c=relaxed/simple;
+	bh=A/CVqSy8UptO+dS0XHl6fmghg7x4QWiz2KsaW7BAi70=;
+	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=BZHhD/YGsGi5eAd+FEeu56bQOHQ1qjwSTWRjgnr1g3gLwXgUwQbuFgMj6ITqmMQnHYewzpybuRbEq23UQ4++alWBZLYJIf5BDgsNWoc4K7Qick/KHnHkDVeIyO610iUzCWYCiAhaJqqbO/Ep2RQl0NjxApXFg5LkV17XAgSjMOA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=y8BlpmY5; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id EDB37C2BC87;
+	Thu, 21 Aug 2025 12:42:14 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1755780143;
-	bh=m5+Q4eC2MeF4Hw9jiwq5UrBXUAtYySXooocFE301a7M=;
+	s=korg; t=1755780135;
+	bh=A/CVqSy8UptO+dS0XHl6fmghg7x4QWiz2KsaW7BAi70=;
 	h=Subject:To:Cc:From:Date:From;
-	b=mA0CLH3Pd0uP49VfkZtfkKVrZxAx5kmgyo/QC1kjXYuBMDBC7GAFBTt2UxZy/VjjT
-	 aaJXb1t0eV4U9/L0SbfGG3j4J9EbkxvoSvNb/LdzK3S3Zk95ti4+5pongFQb6dMvdH
-	 CqD/0XjwOOcQ4dNJgrTMvfsDVfosr++LUtXcIEHw=
-Subject: FAILED: patch "[PATCH] platform/chrome: cros_ec: Unregister notifier in" failed to apply to 5.15-stable tree
+	b=y8BlpmY5/UFOS84MEIlc+ZH/+KW7zGa17tHf2UQUd4kuPxcfZFrXXEKJTK7pGFmkW
+	 WxZwJj7/JFihGnV7uknt4KGbBgZbmMwlmXs2zvpQ+dC2dm33lZu+crUyGD/S81Ztt/
+	 xCfeuzKjMuxLL4KebdQlS9rWIdTKQ1diviP2KSWw=
+Subject: FAILED: patch "[PATCH] platform/chrome: cros_ec: Unregister notifier in" failed to apply to 6.1-stable tree
 To: tzungbi@kernel.org,bleung@chromium.org
 Cc: <stable@vger.kernel.org>
 From: <gregkh@linuxfoundation.org>
 Date: Thu, 21 Aug 2025 14:42:12 +0200
-Message-ID: <2025082112-freight-pesticide-c276@gregkh>
+Message-ID: <2025082112-exemplary-explode-1646@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -53,19 +53,19 @@ Content-Type: text/plain; charset=ANSI_X3.4-1968
 Content-Transfer-Encoding: 8bit
 
 
-The patch below does not apply to the 5.15-stable tree.
+The patch below does not apply to the 6.1-stable tree.
 If someone wants it applied there, or to any other stable or longterm
 tree, then please email the backport, including the original git commit
 id to <stable@vger.kernel.org>.
 
 To reproduce the conflict and resubmit, you may use the following commands:
 
-git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-5.15.y
+git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-6.1.y
 git checkout FETCH_HEAD
 git cherry-pick -x e2374953461947eee49f69b3e3204ff080ef31b1
 # <resolve conflicts, build, test, etc.>
 git commit -s
-git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2025082112-freight-pesticide-c276@gregkh' --subject-prefix 'PATCH 5.15.y' HEAD^..
+git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2025082112-exemplary-explode-1646@gregkh' --subject-prefix 'PATCH 6.1.y' HEAD^..
 
 Possible dependencies:
 
