@@ -1,48 +1,48 @@
-Return-Path: <stable+bounces-172105-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-172108-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6CAA9B2FAAF
-	for <lists+stable@lfdr.de>; Thu, 21 Aug 2025 15:39:41 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id A41B2B2FAF4
+	for <lists+stable@lfdr.de>; Thu, 21 Aug 2025 15:46:20 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 4586D7B24B0
-	for <lists+stable@lfdr.de>; Thu, 21 Aug 2025 13:38:06 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 7383DAE24AB
+	for <lists+stable@lfdr.de>; Thu, 21 Aug 2025 13:39:41 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 51E25335BAA;
-	Thu, 21 Aug 2025 13:32:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E8BFC2DF6E1;
+	Thu, 21 Aug 2025 13:33:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="1qv+jD8c"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="e00cHh4O"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 10EA0335BA4
-	for <stable@vger.kernel.org>; Thu, 21 Aug 2025 13:32:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A97551E7C05
+	for <stable@vger.kernel.org>; Thu, 21 Aug 2025 13:33:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755783177; cv=none; b=DgAOO6fwsbiM1BLtCqiTPbRszpqSyIWWvSVSkWbqILsD1Y8BbPjG9LVYpsJeWgjFn0NobxDS7Ahl5o/tkil+7MCrMTKLh7DeRLyF0aYHjS15pwZKdjDeT+ZcG98lKPfpb5z9F3f3iSuuXDpUj+A3X/oXuSfZjY0FDIGeIUsK1Yc=
+	t=1755783198; cv=none; b=UWllrRuIRGhn2gGb9JdBwFWAXiY9vihld+mUL+bj5Odb2peKaJcar5YqgST/oRQJeSu3IEGeHnTl76GboH9qvwtxX2625en09zwudk4ss4FM7HlBFhmzvKgSsNSr7Xck6b9O7eW8XfPMYub2NP8P9K/FQBzuJncYOkMFXdWyuVI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1755783177; c=relaxed/simple;
-	bh=p/E2XRLTV0tw3UvfJV0Tg81IvQBAqYJi+UAzIfzmq/c=;
-	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=l6pPR7dojBfUjbnTD2G9zqkaRk/T1d9inSxRqyvKtydlcsHNEb6EUTMhI+tPfPQq5pbE/37oqVOBYDODjzXOPSJfeaqe1US9KVWxWP/QV/BU0t6/0eOl6amnoPVdgy06m2cAQ02KkPJ9yhz3u0OEbdK3NdBff30AzfaYLjBJxgs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=1qv+jD8c; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 14513C4CEEB;
-	Thu, 21 Aug 2025 13:32:55 +0000 (UTC)
+	s=arc-20240116; t=1755783198; c=relaxed/simple;
+	bh=wpbHv92SmYjE7aAL3BjRGK677Woh0gKYkaatF4RMw/g=;
+	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=LkjYkV3s/aER4q3pTgcphMozxLUSyEVBzELR3BvtrVY8DZukKVlutrC4u9aGqAEEgz6BLWGISngJnzE+C1bxwYGbf5yPsHuzfi1eBAA7CuQmF9rKcsFvmpzaCYu3P++6F8psqJ6irG1wyVGhsB28VP1Bcm4KTf8eW6HvXbwsVsQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=e00cHh4O; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D23FAC4CEEB;
+	Thu, 21 Aug 2025 13:33:17 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1755783176;
-	bh=p/E2XRLTV0tw3UvfJV0Tg81IvQBAqYJi+UAzIfzmq/c=;
+	s=korg; t=1755783198;
+	bh=wpbHv92SmYjE7aAL3BjRGK677Woh0gKYkaatF4RMw/g=;
 	h=Subject:To:Cc:From:Date:From;
-	b=1qv+jD8cXVEC1baH1u1I5yfa6vph/EBjKa12uKxwDhAJoYfTqLdMcdZtHwVWcXN+J
-	 zfJc0wQ02wMJ3yZDsuXQicf5dhNr20peYcNtQARK1Y2EvLQ/FWDGbXKBTPZrt6F0db
-	 iUtoTEdjLdiU8Wv6qGa0epfg3oVvox/3SneEaNUA=
-Subject: FAILED: patch "[PATCH] parisc: Define and use set_pte_at()" failed to apply to 6.1-stable tree
+	b=e00cHh4OIzCnaPdbM9GRIf38sykxvWcMzvkQVBgR93Uh5fJO7WRF4w51Pc36iAQ77
+	 3RkautAuEhH946qwG7I63RBdD0oyJdB7K8zNul3Zf4MXr0wGQSHHd8jfraNZbsXlsQ
+	 rhXC6DZBoCZLjjbkmC+Mz1LfXYzH2X095pLpLz/o=
+Subject: FAILED: patch "[PATCH] parisc: Drop WARN_ON_ONCE() from flush_cache_vmap" failed to apply to 5.15-stable tree
 To: dave.anglin@bell.net,deller@gmx.de
 Cc: <stable@vger.kernel.org>
 From: <gregkh@linuxfoundation.org>
-Date: Thu, 21 Aug 2025 15:32:53 +0200
-Message-ID: <2025082153-reboot-engulf-4d64@gregkh>
+Date: Thu, 21 Aug 2025 15:33:07 +0200
+Message-ID: <2025082107-limeade-bolt-c120@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -53,19 +53,19 @@ Content-Type: text/plain; charset=ANSI_X3.4-1968
 Content-Transfer-Encoding: 8bit
 
 
-The patch below does not apply to the 6.1-stable tree.
+The patch below does not apply to the 5.15-stable tree.
 If someone wants it applied there, or to any other stable or longterm
 tree, then please email the backport, including the original git commit
 id to <stable@vger.kernel.org>.
 
 To reproduce the conflict and resubmit, you may use the following commands:
 
-git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-6.1.y
+git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-5.15.y
 git checkout FETCH_HEAD
-git cherry-pick -x 802e55488bc2cc1ab6423b720255a785ccac42ce
+git cherry-pick -x 4eab1c27ce1f0e89ab67b01bf1e4e4c75215708a
 # <resolve conflicts, build, test, etc.>
 git commit -s
-git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2025082153-reboot-engulf-4d64@gregkh' --subject-prefix 'PATCH 6.1.y' HEAD^..
+git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2025082107-limeade-bolt-c120@gregkh' --subject-prefix 'PATCH 5.15.y' HEAD^..
 
 Possible dependencies:
 
@@ -77,57 +77,29 @@ greg k-h
 
 ------------------ original commit in Linus's tree ------------------
 
-From 802e55488bc2cc1ab6423b720255a785ccac42ce Mon Sep 17 00:00:00 2001
+From 4eab1c27ce1f0e89ab67b01bf1e4e4c75215708a Mon Sep 17 00:00:00 2001
 From: John David Anglin <dave.anglin@bell.net>
-Date: Mon, 21 Jul 2025 16:06:21 -0400
-Subject: [PATCH] parisc: Define and use set_pte_at()
+Date: Mon, 21 Jul 2025 16:18:41 -0400
+Subject: [PATCH] parisc: Drop WARN_ON_ONCE() from flush_cache_vmap
 
-When a PTE is changed, we need to flush the PTE. set_pte_at()
-was lost in the folio update. PA-RISC version is the same as
-the generic version.
+I have observed warning to occassionally trigger.
 
 Signed-off-by: John David Anglin <dave.anglin@bell.net>
 Signed-off-by: Helge Deller <deller@gmx.de>
 Cc: stable@vger.kernel.org # v5.12+
 
-diff --git a/arch/parisc/include/asm/pgtable.h b/arch/parisc/include/asm/pgtable.h
-index 1a86a4370b29..2c139a4dbf4b 100644
---- a/arch/parisc/include/asm/pgtable.h
-+++ b/arch/parisc/include/asm/pgtable.h
-@@ -276,7 +276,7 @@ extern unsigned long *empty_zero_page;
- #define pte_none(x)     (pte_val(x) == 0)
- #define pte_present(x)	(pte_val(x) & _PAGE_PRESENT)
- #define pte_user(x)	(pte_val(x) & _PAGE_USER)
--#define pte_clear(mm, addr, xp)  set_pte(xp, __pte(0))
-+#define pte_clear(mm, addr, xp) set_pte_at((mm), (addr), (xp), __pte(0))
- 
- #define pmd_flag(x)	(pmd_val(x) & PxD_FLAG_MASK)
- #define pmd_address(x)	((unsigned long)(pmd_val(x) &~ PxD_FLAG_MASK) << PxD_VALUE_SHIFT)
-@@ -392,6 +392,7 @@ static inline void set_ptes(struct mm_struct *mm, unsigned long addr,
+diff --git a/arch/parisc/kernel/cache.c b/arch/parisc/kernel/cache.c
+index 3b37a7e7abe4..37ca484cc495 100644
+--- a/arch/parisc/kernel/cache.c
++++ b/arch/parisc/kernel/cache.c
+@@ -841,7 +841,7 @@ void flush_cache_vmap(unsigned long start, unsigned long end)
  	}
- }
- #define set_ptes set_ptes
-+#define set_pte_at(mm, addr, ptep, pte) set_ptes(mm, addr, ptep, pte, 1)
  
- /* Used for deferring calls to flush_dcache_page() */
- 
-@@ -456,7 +457,7 @@ static inline int ptep_test_and_clear_young(struct vm_area_struct *vma, unsigned
- 	if (!pte_young(pte)) {
- 		return 0;
+ 	vm = find_vm_area((void *)start);
+-	if (WARN_ON_ONCE(!vm)) {
++	if (!vm) {
+ 		flush_cache_all();
+ 		return;
  	}
--	set_pte(ptep, pte_mkold(pte));
-+	set_pte_at(vma->vm_mm, addr, ptep, pte_mkold(pte));
- 	return 1;
- }
- 
-@@ -466,7 +467,7 @@ pte_t ptep_clear_flush(struct vm_area_struct *vma, unsigned long addr, pte_t *pt
- struct mm_struct;
- static inline void ptep_set_wrprotect(struct mm_struct *mm, unsigned long addr, pte_t *ptep)
- {
--	set_pte(ptep, pte_wrprotect(*ptep));
-+	set_pte_at(mm, addr, ptep, pte_wrprotect(*ptep));
- }
- 
- #define pte_same(A,B)	(pte_val(A) == pte_val(B))
 
 
