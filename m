@@ -1,58 +1,58 @@
-Return-Path: <stable+bounces-172217-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-172218-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id B9DE9B30217
-	for <lists+stable@lfdr.de>; Thu, 21 Aug 2025 20:31:03 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 39074B30219
+	for <lists+stable@lfdr.de>; Thu, 21 Aug 2025 20:31:40 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id A25E816B88E
-	for <lists+stable@lfdr.de>; Thu, 21 Aug 2025 18:31:03 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 581901764F8
+	for <lists+stable@lfdr.de>; Thu, 21 Aug 2025 18:31:12 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1D9C52580CF;
-	Thu, 21 Aug 2025 18:30:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 43600285C8D;
+	Thu, 21 Aug 2025 18:31:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="N3v2OFN7"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="hZ8uVqpG"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CF09220F07C
-	for <stable@vger.kernel.org>; Thu, 21 Aug 2025 18:30:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F1AE62580CF
+	for <stable@vger.kernel.org>; Thu, 21 Aug 2025 18:31:05 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755801058; cv=none; b=st3Qxa82Kna/Cq+Hgx8zhrl34CktgluCJaZr/4zxfR4ZRrBOPbLt3m6CSF3h1JLuzPsUU73wptaJceks+JFnOqiuLQk6iUNw4mc8Cjon/gvFDQZKKb6PqvmkTgx7Wk5PfuBZE7DBFP2fVwcN71pQLaNJPr5VyNSFquuWZanKmEA=
+	t=1755801067; cv=none; b=Uj1/gn6YipJn31sVAaZJiMGLpb3UMTnz48GbWUd1S/ciJibtGiXqLnuz16fFxXy3bdFKflZHQjPtzyz35p6AY8XTWPdMUGIBMWxquca9z46gWTconsaXjNBKISg3wohULPhjDsTu9ZI3izvxfQG3nAjMtLCaBFEBZRXaPNkr17Q=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1755801058; c=relaxed/simple;
-	bh=WwByeLa7zWV5DbGMVQbCqhGGIVXP6I0npd/fnMluczY=;
+	s=arc-20240116; t=1755801067; c=relaxed/simple;
+	bh=jW9psQDYGSGucDdWKd0ZMvCQCOy4hrOSEgQoNjfJMzY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=AUnwHDow5Rgki2K98qyAu1E/Ld0lgpOFJasA13NdKcdJL7WA33UR4QOntw73vRr2PVIubKNjFtCQpFgdSFPlpNAKnAW8ln5G/WNxhuYAnCJZl5XIc5JGrdvtdcMj183P+7AZD3qAAenIcvXxEVrCOFCCpr6f2lzVz+8I7RCIYzA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=N3v2OFN7; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 38D52C4CEEB;
-	Thu, 21 Aug 2025 18:30:57 +0000 (UTC)
+	 MIME-Version:Content-Type; b=FZYD/Uphbjk15+5oAxrGxNlB6w7kgTXc/s4N3t8ZPDqdRlXTuQxUwxqE7xQqmU/u4KXBGusHuR48lKcaouPAV5L/CSoqyqh0byH2kUoAfiuhQiQ8hx19iz+eRNQeV/aYkkw1ckG140Cts1E4/Q6sUy+5sC3C3FfJDRDD6tvZ+8I=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=hZ8uVqpG; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3379CC4CEEB;
+	Thu, 21 Aug 2025 18:31:04 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1755801058;
-	bh=WwByeLa7zWV5DbGMVQbCqhGGIVXP6I0npd/fnMluczY=;
+	s=k20201202; t=1755801065;
+	bh=jW9psQDYGSGucDdWKd0ZMvCQCOy4hrOSEgQoNjfJMzY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=N3v2OFN7YOoqkKE9jlSs5wiIPyUS9fadMrEbBhJvNZRCPut4AY4UU5sNTJkDhPLuU
-	 CE37Uw+QMklHaTLwiBTCPJNY+GDIL0cnWdvUr/7kPrMKjM2yz/ys0QbsVmGByu69JT
-	 2evEmWoMoSGWuSwr98MlhcC8hJ8k6nBp8xFMm2gZfVd94nUbhRaJS0cy+2V8FaEJJa
-	 L8jJpcbqey4NWW5Bu1JfiOUjJIcplveuSH362ERfKsHYXn6SpHUNZ/nlxTV4n5WlYy
-	 Qij32lkpEExO0jD0ZDAeL+8GYBT3PykHTmpNPvy9aAXQ/dBE676R/d3J8ldg+AggXf
-	 4ZYe8Az849A/Q==
+	b=hZ8uVqpGSidjHqt8xpyHF1KzEfJv5QEitUsQj6OyNjM71QvUgn3mbbf5H0FI+p2No
+	 yPJPB9tIkNuWRkKXDcTKOhTIAzF1bP9EeVys2laIHXNytQMSPRdO1CgpHnnykGwytZ
+	 tXhvKZkn/x3a/sVIQ35CdchXduJri0Jy6lBVvdxsHOCCcREV7CNB4/vPbp4QkpZSAD
+	 CN4bfXwTSEPcuHv9kJcdFNP4hRVHATxTyOFZLC/BCXZevjsGM3PAGKvuX685tzcrPX
+	 82rRlCcGFejmzO0LeIn1OMjQ6EJve/JV7Vw6m4l6tg2zMEV+mGaA0E2WqgrltxVrQh
+	 nDuV/fAhfZ/9Q==
 From: Nathan Chancellor <nathan@kernel.org>
 To: gregkh@linuxfoundation.org,
 	sashal@kernel.org
 Cc: stable@vger.kernel.org,
 	nathan@kernel.org,
 	thomas.weissschuh@linutronix.de
-Subject: [PATCH 6.1] kbuild: userprogs: use correct linker when mixing clang and GNU ld
-Date: Thu, 21 Aug 2025 11:30:51 -0700
-Message-ID: <20250821183051.1259435-1-nathan@kernel.org>
+Subject: [PATCH 5.15] kbuild: userprogs: use correct linker when mixing clang and GNU ld
+Date: Thu, 21 Aug 2025 11:30:58 -0700
+Message-ID: <20250821183058.1264091-1-nathan@kernel.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <2025082104-cosigner-parabola-3836@gregkh>
-References: <2025082104-cosigner-parabola-3836@gregkh>
+In-Reply-To: <2025082105-sessions-superhero-9a5f@gregkh>
+References: <2025082105-sessions-superhero-9a5f@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -87,10 +87,10 @@ Signed-off-by: Nathan Chancellor <nathan@kernel.org>
  1 file changed, 1 insertion(+), 1 deletion(-)
 
 diff --git a/Makefile b/Makefile
-index dd9e4faf0fd5..bd33eadb047c 100644
+index 6bc80f4cfd7e..8658e402988c 100644
 --- a/Makefile
 +++ b/Makefile
-@@ -1143,7 +1143,7 @@ KBUILD_USERCFLAGS  += $(filter -m32 -m64 --target=%, $(KBUILD_CPPFLAGS) $(KBUILD
+@@ -1130,7 +1130,7 @@ KBUILD_USERCFLAGS  += $(filter -m32 -m64 --target=%, $(KBUILD_CPPFLAGS) $(KBUILD
  KBUILD_USERLDFLAGS += $(filter -m32 -m64 --target=%, $(KBUILD_CPPFLAGS) $(KBUILD_CFLAGS))
  
  # userspace programs are linked via the compiler, use the correct linker
@@ -100,7 +100,7 @@ index dd9e4faf0fd5..bd33eadb047c 100644
  endif
  
 
-base-commit: 0bc96de781b4da716c8dbd248af4b26d8d8341f5
+base-commit: c79648372d02944bf4a54d87e3901db05d0ac82e
 -- 
 2.50.1
 
