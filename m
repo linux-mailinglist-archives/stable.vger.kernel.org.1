@@ -1,177 +1,129 @@
-Return-Path: <stable+bounces-172198-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-172199-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id D6678B30038
-	for <lists+stable@lfdr.de>; Thu, 21 Aug 2025 18:38:30 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id EC155B3006A
+	for <lists+stable@lfdr.de>; Thu, 21 Aug 2025 18:49:10 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id E110B3B4DBA
-	for <lists+stable@lfdr.de>; Thu, 21 Aug 2025 16:35:10 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id D7A2A189DEC7
+	for <lists+stable@lfdr.de>; Thu, 21 Aug 2025 16:45:48 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B87EB26B2C8;
-	Thu, 21 Aug 2025 16:35:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C282A2E5417;
+	Thu, 21 Aug 2025 16:45:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="K7OZARhC"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="Jjf6gZiu"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-pl1-f173.google.com (mail-pl1-f173.google.com [209.85.214.173])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.12])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2660D2DC34A
-	for <stable@vger.kernel.org>; Thu, 21 Aug 2025 16:35:05 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.173
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8AC802E425F;
+	Thu, 21 Aug 2025 16:45:23 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.12
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755794107; cv=none; b=CcIklnjdVHzD5AGkTMVv+jNdo9YOstpxfvCn/3JBgjL0aTGNt9ucsBaBFb6+2ZFlWUIvrYgEA8FnNW1ceQwTcPH71/rK70dEgjfXp79a754wzuQH+FP++F2XMkZ2skyc62mjNbCcrGzLKK53EUK9zumEWAbrf48K+fFHMOHoflA=
+	t=1755794725; cv=none; b=Wfv3ltIYWw6I7DxMOEFjX3omZBZT7LiFgoNjPDmBjxbGRUymZdJ/rZICiSGDjbiahX+MWVRg93dfXBQZxvvcUDfyY6rI84N99fkng/zuu8HJMR5igqTCDJsbedq087HOZLqVA34SrfZGKKv+a+umkUyfCPjXeNtfThicG6z6ehg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1755794107; c=relaxed/simple;
-	bh=ER20uN3ophbDodXA0V2P/El1StgLE1H9mf8h2Z2UIMk=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=ZUywd03HiOHdxR0+BppJ79GW/r2e6uo3foe+AgyORoun+7EmMBNoWFL0EcfIhbZWkgsMPF+SK4GkqrTEGLhJnwx1E4Ow7f/TdSgGQQ/hD5cHiHERXo+7ZkcufYor+weeb4DLjsuO2TBtf7nclowOukhXMBynj8trGey84RqOCdU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=K7OZARhC; arc=none smtp.client-ip=209.85.214.173
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-pl1-f173.google.com with SMTP id d9443c01a7336-24458263458so12118475ad.3
-        for <stable@vger.kernel.org>; Thu, 21 Aug 2025 09:35:05 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1755794105; x=1756398905; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=flb2E4kjGcDlTRu530Vt8i5Q+Cs64zRzjln/3+D2F4k=;
-        b=K7OZARhCr+6TKUt+AEwLBT92nuDUlPCFKglJVpmMOyCHuBtTEkwu1GzWtu7dsNTNxl
-         yD9MeEygDWxSgmzymf+PtMZAq/oPIDlVYXlsWVQ3FNzYeTYm5+6rYz6b/IJuLKz93oSg
-         id4ZrJzAMP9Tu+AWgLWDbl0r0ge1krIMlQScL60c+LFch/kUu8N54dyHA5GtLbvbsnmA
-         53+vGgMf3HbMLa5xRg0flTdqA9OLpZFIht83zvx+QMX1p46AAzk0Lv+PryNOA1EHNYY+
-         KTDo4cN5lywf+cMJ6ISfODCVeIiDBsl2+1N8/lj9zWibbMfYsMzyW3hrT9b93MTCb9+c
-         eXSg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1755794105; x=1756398905;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=flb2E4kjGcDlTRu530Vt8i5Q+Cs64zRzjln/3+D2F4k=;
-        b=lIylojAGBZs0AXuqypHruC2yYoZi5PYfJT0A+l+R0yHAul543C6kFlrnHyF+JbWDzx
-         Vo6MDYw4BiE237GbBI3ntAxNVCM4vCMC7wl2imWT5TUjFOhLxzx5y/PupLzzMyX1Uivd
-         tRBVBXX5qfCI1rWZyWxeM8kgbjZtwosBfKQ1Kw70xTUsBAH9pFliKW6H9OTrVdXDOkgp
-         ecDNozEXygSmYbbELWRBPvxSueuziwVtfjw1J1jb3C1j2ri9u37ekuDl+xvrH96Mhwp8
-         YeH+vWtoiMuPSI2vgHURuq0OWAI5qgQLN2pxnkBLMHUoZvmkPykdZeu1ReWMYkgjnk9C
-         s5/w==
-X-Forwarded-Encrypted: i=1; AJvYcCU3AjmxdVcNsWqQBcpHz7RbEC10G3Ctlz3xUZHekMO/QQLmOeQ/929k2792Hv2T6Vm3HBDLD8o=@vger.kernel.org
-X-Gm-Message-State: AOJu0Yx+3GxoXD3SqmYfSe/9txHtP6SAMYzqJhEzpCXEqiL1x9+ZSGw0
-	Dz1lcourIF7v7jmcP3fh8xH0Q774ue+a/nsPpQma3AoPuJ/1r8G6MSkV
-X-Gm-Gg: ASbGncs+5qZtfiY/W7Ai6cHim5K7e4OuywuSF9q7DJB/oxiPcvY5HOGTjPUy1UK70Ez
-	PLsr0UTElEbALNeX+1jvF2hQXKaghnh0Bwm6E6ZDpsR/uX9HP2mdhs4gCjh6galVwZJvNSC1aUQ
-	yZKFSu9S1JeCDS4KCJO6EF6btThqN4uadsVhfDD34avYwXrE0kO6IkwdaQNiY6VT8uaWLp8nvlq
-	yw4B2Rb7/W/9DKtekd5pq3DoV6AoQjgNyIX5/qN9xIRFD0gCzIGZ2cENip+soI4R+a8PRibyCCK
-	29tauoYs7H1Dl+ooEBYaPUGkpD7PVyDTCxS0kUU70k+vkdV353qNbk0bH59GFsuRAna0Wkt6ZHA
-	MO/Aw0qq5tRvnG52Q
-X-Google-Smtp-Source: AGHT+IEoK20LGwps1UI3qxtBzFuC2UZywh32woD/WzTb07rAX67EwMDZ7TmGCqkdLFk9tfZL3IepkA==
-X-Received: by 2002:a17:903:120e:b0:246:1c6a:7026 with SMTP id d9443c01a7336-2461c6a7131mr22258645ad.40.1755794104962;
-        Thu, 21 Aug 2025 09:35:04 -0700 (PDT)
-Received: from ubuntu.. ([110.9.142.4])
-        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-76e7d5242dasm8704422b3a.77.2025.08.21.09.35.01
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 21 Aug 2025 09:35:04 -0700 (PDT)
-From: Sang-Heon Jeon <ekffu200098@gmail.com>
-To: sj@kernel.org,
-	honggyu.kim@sk.com
-Cc: damon@lists.linux.dev,
-	linux-mm@kvack.org,
-	akpm@linux-foundation.org,
-	Sang-Heon Jeon <ekffu200098@gmail.com>,
-	stable@vger.kernel.org
-Subject: [PATCH v3] mm/damon/core: set quota->charged_from to jiffies at first charge window
-Date: Fri, 22 Aug 2025 01:33:46 +0900
-Message-ID: <20250821163346.1690784-1-ekffu200098@gmail.com>
-X-Mailer: git-send-email 2.43.0
+	s=arc-20240116; t=1755794725; c=relaxed/simple;
+	bh=WyKn3BDOpcCAD6Fuy69UuDdyk4y6Ek+DhsMO5uPWEQY=;
+	h=From:Date:To:cc:Subject:In-Reply-To:Message-ID:References:
+	 MIME-Version:Content-Type; b=bwHhm9wKaqw75lt0v8Wh2/1yUSFLWUZYI2CS12AtghBpiFM96WZ2wZrNeXCV/veLrR6R2tlwe3UBipGRdITRzCpyPkgaUXhnvLkfVWhVQGDXkuMPwnFzFCX897UjNoHOjUdV9/Oq9baxtU0R9VdDQmHKauZLPqRZMdsCBRA1OEk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=none smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=Jjf6gZiu; arc=none smtp.client-ip=198.175.65.12
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=linux.intel.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1755794724; x=1787330724;
+  h=from:date:to:cc:subject:in-reply-to:message-id:
+   references:mime-version;
+  bh=WyKn3BDOpcCAD6Fuy69UuDdyk4y6Ek+DhsMO5uPWEQY=;
+  b=Jjf6gZiuO0ZZHuBo8kN0yvMqh2pSpIai7RS/G1mhuEqzwt0vor5UijHG
+   tGq3HUJ5nFjaQ2s7r6gKFotUJNPwCycmFiOt58Zinrl+tO9hDuiucemwC
+   kvMDd0rCjLHcbLlHm2pWg/9p7+xgXfkrci8cExYWkm2FOsdgJh9jqax8m
+   vf7RsGn/3elapWoBsZQtInUPGtf5J85ZyhQCBqw2x4E0mNR1cKqDUYRdp
+   OKX7C2gDmS7tXAEu7d9q8F7bSWsd9UbJGL1KxpEGQHR0zdt/AHWmOxjNI
+   2L0nWEdjlA2m2FVp+Pqlf+xLnMx03Zd65SLXYtsdH1ULnS0mdDMBVQlmK
+   w==;
+X-CSE-ConnectionGUID: ZPZTHoKJQbm7KJNDik3z4g==
+X-CSE-MsgGUID: 4eTO7RlDR1u6scdwebCy1w==
+X-IronPort-AV: E=McAfee;i="6800,10657,11529"; a="69531221"
+X-IronPort-AV: E=Sophos;i="6.17,309,1747724400"; 
+   d="scan'208";a="69531221"
+Received: from fmviesa009.fm.intel.com ([10.60.135.149])
+  by orvoesa104.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 21 Aug 2025 09:45:23 -0700
+X-CSE-ConnectionGUID: HVt0nzi6TyKGfYzTGLP0Uw==
+X-CSE-MsgGUID: EJjiqd8UQcSWgWGcjQABNw==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.17,309,1747724400"; 
+   d="scan'208";a="168879136"
+Received: from ijarvine-mobl1.ger.corp.intel.com (HELO localhost) ([10.245.245.192])
+  by fmviesa009-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 21 Aug 2025 09:45:19 -0700
+From: =?UTF-8?q?Ilpo=20J=C3=A4rvinen?= <ilpo.jarvinen@linux.intel.com>
+Date: Thu, 21 Aug 2025 19:45:17 +0300 (EEST)
+To: Markus Elfring <Markus.Elfring@web.de>
+cc: linux-pci@vger.kernel.org, Bjorn Helgaas <bhelgaas@google.com>, 
+    stable@vger.kernel.org, tudor.ambarus@linaro.org, 
+    LKML <linux-kernel@vger.kernel.org>, kernel-janitors@vger.kernel.org, 
+    =?ISO-8859-15?Q?Christian_K=F6nig?= <christian.koenig@amd.com>, 
+    D Scott Phillips <scott@os.amperecomputing.com>, 
+    =?ISO-8859-2?Q?Krzysztof_Wilczy=F1ski?= <kw@linux.com>, 
+    Rio Liu <rio@r26.me>
+Subject: Re: [PATCH v2 1/3] PCI: Relaxed tail alignment should never increase
+ min_align
+In-Reply-To: <8e9936e5-d720-4ded-8961-b9475aeb2ac7@web.de>
+Message-ID: <21e11870-f125-e9e7-04f3-ade94d6be6b1@linux.intel.com>
+References: <20250630142641.3516-2-ilpo.jarvinen@linux.intel.com> <8e9936e5-d720-4ded-8961-b9475aeb2ac7@web.de>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: multipart/mixed; boundary="8323328-1152484891-1755794717=:933"
 
-Kernel initialize "jiffies" timer as 5 minutes below zero, as shown in
-include/linux/jiffies.h
+  This message is in MIME format.  The first part should be readable text,
+  while the remaining parts are likely unreadable without MIME-aware tools.
 
-/*
-* Have the 32 bit jiffies value wrap 5 minutes after boot
-* so jiffies wrap bugs show up earlier.
-*/
-#define INITIAL_JIFFIES ((unsigned long)(unsigned int) (-300*HZ))
+--8323328-1152484891-1755794717=:933
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: QUOTED-PRINTABLE
 
-And jiffies comparison help functions cast unsigned value to signed to
-cover wraparound
+On Thu, 21 Aug 2025, Markus Elfring wrote:
 
-#define time_after_eq(a,b) \
- (typecheck(unsigned long, a) && \
- typecheck(unsigned long, b) && \
- ((long)((a) - (b)) >= 0))
+> =E2=80=A6
+> > Ensure min_align is not increased by the relaxed tail alignment.
+> =E2=80=A6
+>=20
+>=20
+> =E2=80=A6
+> +++ b/drivers/pci/setup-bus.c
+> =E2=80=A6
+> @@ -1261,8 +1263,9 @@ static int pbus_size_mem(struct pci_bus *bus, unsig=
+ned long mask,
+>  =09=09if (bus->self && size1 &&
+>  =09=09    !pbus_upstream_space_available(bus, mask | IORESOURCE_PREFETCH=
+, type,
+>  =09=09=09=09=09=09   size1, add_align)) {
+> -=09=09=09min_align =3D 1ULL << (max_order + __ffs(SZ_1M));
+> -=09=09=09min_align =3D max(min_align, win_align);
+> +=09=09=09relaxed_align =3D 1ULL << (max_order + __ffs(SZ_1M));
+> +=09=09=09relaxed_align =3D max(min_align, win_align);
+> =E2=80=A6
+>=20
+> I wonder why a variable content would be overwritten here
+> without using the previous value.
+> https://cwe.mitre.org/data/definitions/563.html
 
-When quota->charged_from is initialized to 0, time_after_eq() can incorrectly
-return FALSE even after reset_interval has elapsed. This occurs when 
-(jiffies - reset_interval) produces a value with MSB=1, which is interpreted
-as negative in signed arithmetic.
+Hi Markus,
 
-This issue primarily affects 32-bit systems because:
-On 64-bit systems: MSB=1 values occur after ~292 million years from boot
-(assuming HZ=1000), almost impossible.
+This looks a very good catch. I think it too should have been:
 
-On 32-bit systems: MSB=1 values occur during the first 5 minutes after boot,
-and the second half of every jiffies wraparound cycle, starting from day 25
-(assuming HZ=1000)
+relaxed_align =3D max(relaxed_align, win_align);
 
-When above unexpected FALSE return from time_after_eq() occurs, the
-charging window will not reset. The user impact depends on esz value
-at that time.
+=2E..like in the other case.
 
-If esz is 0, scheme ignores configured quotas and runs without any
-limits.
+--=20
+ i.
 
-If esz is not 0, scheme stops working once the quota is exhausted. It
-remains until the charging window finally resets.
-
-So, change quota->charged_from to jiffies at damos_adjust_quota() when
-it is considered as the first charge window. By this change, we can avoid
-unexpected FALSE return from time_after_eq()
-
-Fixes: 2b8a248d5873 ("mm/damon/schemes: implement size quota for schemes application speed control") # 5.16
-Cc: stable@vger.kernel.org
-Signed-off-by: Sang-Heon Jeon <ekffu200098@gmail.com>
----
-Changes from v2 [2]
-- remove unnecessary example about time_after_eq()
-- remove description of unexpected reset of quota->charged_from
-- clarify user impacts and when bug happens
-
-Changes from v1 [1]
-- not change current default value of quota->charged_from
-- set quota->charged_from when it is consider first charge below
-- add more description of jiffies and wraparound example to commit
-  messages
-
-[1] https://lore.kernel.org/damon/20250818183803.1450539-1-ekffu200098@gmail.com/
-[2] https://lore.kernel.org/damon/20250819150123.1532458-1-ekffu200098@gmail.com/
----
- mm/damon/core.c | 4 ++++
- 1 file changed, 4 insertions(+)
-
-diff --git a/mm/damon/core.c b/mm/damon/core.c
-index cb41fddca78c..93bad6d0da5b 100644
---- a/mm/damon/core.c
-+++ b/mm/damon/core.c
-@@ -2130,6 +2130,10 @@ static void damos_adjust_quota(struct damon_ctx *c, struct damos *s)
- 	if (!quota->ms && !quota->sz && list_empty(&quota->goals))
- 		return;
- 
-+	/* First charge window */
-+	if (!quota->total_charged_sz && !quota->charged_from)
-+		quota->charged_from = jiffies;
-+
- 	/* New charge window starts */
- 	if (time_after_eq(jiffies, quota->charged_from +
- 				msecs_to_jiffies(quota->reset_interval))) {
--- 
-2.43.0
-
+--8323328-1152484891-1755794717=:933--
 
