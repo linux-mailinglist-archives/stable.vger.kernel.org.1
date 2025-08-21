@@ -1,151 +1,207 @@
-Return-Path: <stable+bounces-172221-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-172223-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 04921B30242
-	for <lists+stable@lfdr.de>; Thu, 21 Aug 2025 20:45:46 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1F729B30284
+	for <lists+stable@lfdr.de>; Thu, 21 Aug 2025 20:59:05 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 54FCF1CC23DC
-	for <lists+stable@lfdr.de>; Thu, 21 Aug 2025 18:45:47 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 161435C2803
+	for <lists+stable@lfdr.de>; Thu, 21 Aug 2025 18:58:39 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E45882E5B3C;
-	Thu, 21 Aug 2025 18:45:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id ED6483451A4;
+	Thu, 21 Aug 2025 18:58:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=ragnatech.se header.i=@ragnatech.se header.b="VgBZe121";
-	dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b="HFgACVPb"
+	dkim=pass (2048-bit key) header.d=goldelico.com header.i=@goldelico.com header.b="DWNouFtu";
+	dkim=permerror (0-bit key) header.d=goldelico.com header.i=@goldelico.com header.b="bCHTvQEA"
 X-Original-To: stable@vger.kernel.org
-Received: from fhigh-a2-smtp.messagingengine.com (fhigh-a2-smtp.messagingengine.com [103.168.172.153])
+Received: from mo4-p01-ob.smtp.rzone.de (mo4-p01-ob.smtp.rzone.de [85.215.255.51])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 22CE5343D8A;
-	Thu, 21 Aug 2025 18:45:18 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=103.168.172.153
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755801923; cv=none; b=BhIjvMIYF6Pi40DHZjflAfBWynZZwJbljRd72ZEHizzVVTSomDtkE+GyeV+Y3z3YdtqIKj+bDSPWtRzK3d2t5QoNARjwmKTlJJmP9oRQlCqXa5gqEAijlmZwzQ1LYbnKse0+igU6QZ25xAaqxV7TmftdacCGjSEZi1p9MvciGDo=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1755801923; c=relaxed/simple;
-	bh=IFXUlx+m6ia+iAeyC/QQLg53gENo62SxdMAs+i9FJM4=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=BeurMIPe0KoSyxLyHiYNs0g3jnVH50HXqgT6T1EDSEhP/BZSuIPdJp/Tfs/6NK8DmKakB2zHo6TqXEHVBlvDK66zDE/5Y3U7oJ0r3BrUSdosyFnVsK9UBjfJ5/doyYlr1rv6ePFz5/yumDU3FR54wVuWH407+71dxrCdZogTJOY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=ragnatech.se; spf=pass smtp.mailfrom=ragnatech.se; dkim=pass (2048-bit key) header.d=ragnatech.se header.i=@ragnatech.se header.b=VgBZe121; dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b=HFgACVPb; arc=none smtp.client-ip=103.168.172.153
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=ragnatech.se
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ragnatech.se
-Received: from phl-compute-05.internal (phl-compute-05.internal [10.202.2.45])
-	by mailfhigh.phl.internal (Postfix) with ESMTP id C803F1400739;
-	Thu, 21 Aug 2025 14:45:17 -0400 (EDT)
-Received: from phl-mailfrontend-02 ([10.202.2.163])
-  by phl-compute-05.internal (MEProxy); Thu, 21 Aug 2025 14:45:17 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ragnatech.se; h=
-	cc:cc:content-transfer-encoding:content-type:content-type:date
-	:date:from:from:in-reply-to:in-reply-to:message-id:mime-version
-	:references:reply-to:subject:subject:to:to; s=fm2; t=1755801917;
-	 x=1755888317; bh=sTbBCHeYh9SBjVQRP6FkYrIR5p7xcav7CZ/jExjE4GM=; b=
-	VgBZe121ku0NjMpTzwYd1Cf5L2Vy99GdnBB/i2eF1+3YfUMxwIe7QuOc0cAYKBFl
-	EhNZkILKuN5YaKE2FK5BBSWIy3AxcrESH3ojLTN7T2j2JIxHgbY9WkvlJOlcaiU6
-	CDIK+aWBOIjOPgI12lwID2zC2cJynnT6AM33G9XxSRIIyH7HHF1AMxsOtq7ivWxL
-	KUQpRSQ7pObFqZclz+LOJIHElsvfxPvh7gRGR/GXxXLhCVm1EHBQVO7DWOwx143v
-	mZ+l9wAOiP2HMwfg3WqzhLhorUKQ75uqSDzzYGWFSXY5X4ZEQyYzf0Pq2tFNK/1I
-	ixxJrl4LN777xlau6aw/tw==
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
-	messagingengine.com; h=cc:cc:content-transfer-encoding
-	:content-type:content-type:date:date:feedback-id:feedback-id
-	:from:from:in-reply-to:in-reply-to:message-id:mime-version
-	:references:reply-to:subject:subject:to:to:x-me-proxy
-	:x-me-sender:x-me-sender:x-sasl-enc; s=fm3; t=1755801917; x=
-	1755888317; bh=sTbBCHeYh9SBjVQRP6FkYrIR5p7xcav7CZ/jExjE4GM=; b=H
-	FgACVPbtCIQ/Y3/81ZgmWw2Tk9W9MDACTDyRWx0gbsVSZpcR4sE1RQ0hhsVSVfdC
-	5ZDfmt+N2YCf4EL5Ld+icg4bWUFoP+dRDVo4TE2Cj9gH/gCpsiOrTOfqPsmFBhSn
-	J/WeUAmoi8N+3lUwYy8s2J5YkAq+vr5tTch9dGuCt7v8Hb+SwQdKGKlIzISdjxfR
-	TASwBnM/VV+fj0d7aYiTOmNXFebvelDIhBwXPGKYtphIWTA/vdAdpKEkxLGzCBCk
-	cxdMonCzIe4l2cnVtJjgf2YbY+AtabQjdMhBvdp0iVFVipeJq62IKD30RjCimy5Q
-	dH4vF5pfpWa4r7By9XDxg==
-X-ME-Sender: <xms:PWmnaMx5NLKGaCGpLsuiW2muVygT-NReZNgoE5dM1r20EZawGx128g>
-    <xme:PWmnaONrDozBaW9mMClBt52QZbT4zi0ZRvRM6G1sQwCQh7tn9iRgSv0k4j-Hytyql
-    LxpdFwNds7B2mX_8iQ>
-X-ME-Received: <xmr:PWmnaAojx90TKvyiA7t-BwCB9Tv4Yguo4gGTqBjlGaCIgEcs8jkeRCzWgPopQy4NTn8t8JiJAuc_BtCwUl-z8DxC2TS7Ga2sDQ>
-X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgeeffedrtdefgdduieduleelucetufdoteggodetrf
-    dotffvucfrrhhofhhilhgvmecuhfgrshhtofgrihhlpdfurfetoffkrfgpnffqhgenuceu
-    rghilhhouhhtmecufedttdenucesvcftvggtihhpihgvnhhtshculddquddttddmnecujf
-    gurhepfffhvfevuffkfhggtggugfgjsehtkeertddttdejnecuhfhrohhmpefpihhklhgr
-    shcuufpnuggvrhhluhhnugcuoehnihhklhgrshdrshhouggvrhhluhhnugesrhgrghhnrg
-    htvggthhdrshgvqeenucggtffrrghtthgvrhhnpeevteegtddvvdfhtdekgefhfeefheet
-    heekkeegfeejudeiudeuleegtdehkeekteenucevlhhushhtvghrufhiiigvpedtnecurf
-    grrhgrmhepmhgrihhlfhhrohhmpehnihhklhgrshdrshhouggvrhhluhhnugesrhgrghhn
-    rghtvggthhdrshgvpdhnsggprhgtphhtthhopeehpdhmohguvgepshhmthhpohhuthdprh
-    gtphhtthhopehlrghurhgvnhhtrdhpihhntghhrghrthdorhgvnhgvshgrshesihguvggr
-    shhonhgsohgrrhgurdgtohhmpdhrtghpthhtoheplhhinhhugidqmhgvughirgesvhhgvg
-    hrrdhkvghrnhgvlhdrohhrghdprhgtphhtthhopehlihhnuhigqdhrvghnvghsrghsqdhs
-    ohgtsehvghgvrhdrkhgvrhhnvghlrdhorhhgpdhrtghpthhtohepjhgrtghophhordhmoh
-    hnughisehiuggvrghsohhnsghorghrugdrtghomhdprhgtphhtthhopehsthgrsghlvges
-    vhhgvghrrdhkvghrnhgvlhdrohhrgh
-X-ME-Proxy: <xmx:PWmnaPFBQJmdZcBoOnn6GAWN8uyNjPg5gQSuMcQf-8OrR39jVu4CsQ>
-    <xmx:PWmnaFoJtKdGbNO9HbH9nBCVctMiCEqbud2GOD5zgF9FIyDwDm-QNw>
-    <xmx:PWmnaIamfDlsSNiWu0QdNS_6tfpDOPBuWFrQ9RkbeE2ZrCjHDhb1Gg>
-    <xmx:PWmnaOVpZ74FPlsfWCUcVOuBEW6pSAOX2n1f3bUTCLB9M9z5VTYUlw>
-    <xmx:PWmnaMGSPqlqr0M4eV3kARcQ9jnt50qqUKpe2kmJjC6xv7BttUD6SZNE>
-Feedback-ID: i80c9496c:Fastmail
-Received: by mail.messagingengine.com (Postfix) with ESMTPA; Thu,
- 21 Aug 2025 14:45:17 -0400 (EDT)
-Date: Thu, 21 Aug 2025 20:45:15 +0200
-From: Niklas =?utf-8?Q?S=C3=B6derlund?= <niklas.soderlund@ragnatech.se>
-To: Laurent Pinchart <laurent.pinchart+renesas@ideasonboard.com>
-Cc: linux-media@vger.kernel.org, linux-renesas-soc@vger.kernel.org,
-	Jacopo Mondi <jacopo.mondi@ideasonboard.com>,
-	stable@vger.kernel.org
-Subject: Re: [PATCH] media: vsp1: Export missing vsp1_isp_free_buffer symbol
-Message-ID: <20250821184515.GF2197757@ragnatech.se>
-References: <20250821154241.24348-1-laurent.pinchart+renesas@ideasonboard.com>
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A15652DCBFD;
+	Thu, 21 Aug 2025 18:58:04 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=85.215.255.51
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1755802688; cv=pass; b=Ar1Zxzy3hFtQYaopepFplmfemyoUm1qMLKScI+5qWQ01v7iWzvrZAORjpL4BBdgLmBerg3uwUnUDeoR2Vg2yORcIDW7jNbolRPt4ijPSSfIIRyeCVWHCzMYDyeLzGvWzdKAnmI2M3yJdu9MIdzQOD87+kme+inO3WgdpjoVqqrQ=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1755802688; c=relaxed/simple;
+	bh=GjsOBI4bPr96x7VFuHyS3ITwTCf8VRb/tRRe/XKU8XI=;
+	h=Content-Type:Mime-Version:Subject:From:In-Reply-To:Date:Cc:
+	 Message-Id:References:To; b=mXakUMrne7Do09SzKdt46Q/Jk6/SmnlMK7FdBFNl4MAIpV3ZCr8USwN2g5BC549g9Ae71FpqSKQ/38T8/zwwVO8Z94z3ZIuSOtwaoqWqyYHRYakoJI9A5nNmQAbLyB7WbrZIHMY2mtMjz0rMOX6O0bzDM7pWwYGol006IljdYr4=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=goldelico.com; spf=pass smtp.mailfrom=goldelico.com; dkim=pass (2048-bit key) header.d=goldelico.com header.i=@goldelico.com header.b=DWNouFtu; dkim=permerror (0-bit key) header.d=goldelico.com header.i=@goldelico.com header.b=bCHTvQEA; arc=pass smtp.client-ip=85.215.255.51
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=goldelico.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=goldelico.com
+ARC-Seal: i=1; a=rsa-sha256; t=1755802492; cv=none;
+    d=strato.com; s=strato-dkim-0002;
+    b=BPVJy5WlfNgBmiZ3mbsnTR6JVN2Tck6iGLGbqHi9RT4RPr+wvjFJMFS7r5seYtfuCX
+    FkkVkjryDe1leg+h3ma2b9D878lcOk9d8di1mUG3ZM2OGC/bId9txxzzL0jPVHVgxSFd
+    LpG5h3kdq3/Mg52qxnYQZ91la01XEjE46lK2IT3Y43hp3kdwE52fFTAhZsn+RJh0OKxl
+    z8nNERRBIdfwYmD7GdErhy6JPH5p3fw2pOhbPGdeHwBtziiGPDXASGTjnViOHeEu/w/+
+    gTD5JfIy92KvAqGH/t9616grYIZxngCFJ8DxbNZJmb3SAAd5jUKPFLaXqayqEZOFLPbK
+    xZbg==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; t=1755802492;
+    s=strato-dkim-0002; d=strato.com;
+    h=To:References:Message-Id:Cc:Date:In-Reply-To:From:Subject:Cc:Date:
+    From:Subject:Sender;
+    bh=n+K+WaLmPgM9QTvAsx0hZF849I/TLqpLKyL1G4QQN6Q=;
+    b=ADVsbH+L1W7OkTlMuOMXB5+IkE3ZkySfsj3nOlc7ZFNmpLN7IYCsi5WHrg1AnXLyGz
+    qveoe6FlN2TN2i/jfzMVv7Kd8rRqwdBYAklGjdkLpVeChMfxitZ1yQ3D+Hb2FimRch7e
+    1E3hVAXJMakwNgt1Yfs6ml6tctN+wWnid1FgW5Wd/DHbgPMMcpVIXIQ2I6vr2pB1XMZS
+    1z+bwp8Djdrprh9FV6B9uFe0mgnZ9S7TYAhn3NRqb/qdhV2CVSH3UZvrrd1nZgGEpjC5
+    Nn1yqz9zsjRUdh/lMIYtQ/DbtA4OySWIAx48ZPLVhhpwozQpZYwxce8eCkyXQuPVk5FU
+    tQSA==
+ARC-Authentication-Results: i=1; strato.com;
+    arc=none;
+    dkim=none
+X-RZG-CLASS-ID: mo01
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; t=1755802492;
+    s=strato-dkim-0002; d=goldelico.com;
+    h=To:References:Message-Id:Cc:Date:In-Reply-To:From:Subject:Cc:Date:
+    From:Subject:Sender;
+    bh=n+K+WaLmPgM9QTvAsx0hZF849I/TLqpLKyL1G4QQN6Q=;
+    b=DWNouFtuhwIG1SzjgXQjkFo3jgAeQhjSU/T23DKwtazEJlEVRrBdYIjJCnNn/SjWTj
+    LiM2faos8KutLRtSN1yQ+tVfNuf4Zf4MLBWAp8vWqMOfNyRDy9ggp7DpcT6a1lvA0vH5
+    Y2ycHmER2U6cBVQfKE3cz+qFAym7y3bzXlGlrXYFESPe1YOLrCiHgb6ZnKnUzSjzYg+N
+    9Ys27ebnyJNoiV6Rz7deuNfswP0bLOrdU9hXzuR8Qrqks3P15yLUqK+tijkxQxlLeuzp
+    X1w2vBWObznsGPtXDyG3Ch2JLOb7cpHlFcFb7DQQ6RF5i6T9tCHXSw41KIcY4nzs4JLh
+    fpSA==
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; t=1755802492;
+    s=strato-dkim-0003; d=goldelico.com;
+    h=To:References:Message-Id:Cc:Date:In-Reply-To:From:Subject:Cc:Date:
+    From:Subject:Sender;
+    bh=n+K+WaLmPgM9QTvAsx0hZF849I/TLqpLKyL1G4QQN6Q=;
+    b=bCHTvQEAdp/diUjvAMXSxik4969cJ52xm9gI7AKnTHX4lvazJ1zIkmAdl5+l5Tze8p
+    xF57xDH6cc9enhUYLLCg==
+X-RZG-AUTH: ":JGIXVUS7cutRB/49FwqZ7WcJeFKiMhflhwDubTJ9o12DNOsPj0lFzL1yfzAZ"
+Received: from smtpclient.apple
+    by smtp.strato.de (RZmta 52.1.2 DYNA|AUTH)
+    with ESMTPSA id Q307a417LIsqvZv
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (curve X9_62_prime256v1 with 256 ECDH bits, eq. 3072 bits RSA))
+	(Client did not present a certificate);
+    Thu, 21 Aug 2025 20:54:52 +0200 (CEST)
+Content-Type: text/plain;
+	charset=us-ascii
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <20250821154241.24348-1-laurent.pinchart+renesas@ideasonboard.com>
+Mime-Version: 1.0 (Mac OS X Mail 16.0 \(3826.600.51.1.1\))
+Subject: Re: [PATCH] power: supply: bq27xxx: fix error return in case of no
+ bq27000 hdq battery
+From: "H. Nikolaus Schaller" <hns@goldelico.com>
+In-Reply-To: <20250821201544.047e54e9@akair>
+Date: Thu, 21 Aug 2025 20:54:41 +0200
+Cc: Sebastian Reichel <sre@kernel.org>,
+ Jerry Lv <Jerry.Lv@axis.com>,
+ =?utf-8?Q?Pali_Roh=C3=A1r?= <pali@kernel.org>,
+ linux-pm@vger.kernel.org,
+ linux-kernel@vger.kernel.org,
+ letux-kernel@openphoenux.org,
+ stable@vger.kernel.org,
+ kernel@pyra-handheld.com
+Content-Transfer-Encoding: quoted-printable
+Message-Id: <10174C85-591A-4DCB-A44E-95F2ACE75E99@goldelico.com>
+References: <bc405a6f782792dc41e01f9ddf9eadca3589fcdc.1753101969.git.hns@goldelico.com>
+ <20250821201544.047e54e9@akair>
+To: Andreas Kemnade <andreas@kemnade.info>
+X-Mailer: Apple Mail (2.3826.600.51.1.1)
 
-Hi Laurent,
 
-Thanks for spotting this.
 
-On 2025-08-21 18:42:41 +0300, Laurent Pinchart wrote:
-> The vsp1_isp_free_buffer() function implemented by the vsp1 driver is
-> part of the API exposed to the rcar-isp driver. All other symbols except
-> that one are properly exported. Fix it.
-> 
-> Fixes: d06c1a9f348d ("media: vsp1: Add VSPX support")
-> Cc: stable@vger.kernel.org
-> Signed-off-by: Laurent Pinchart <laurent.pinchart+renesas@ideasonboard.com>
+> Am 21.08.2025 um 20:15 schrieb Andreas Kemnade <andreas@kemnade.info>:
+>=20
+> Hi,
+>=20
+> Am Mon, 21 Jul 2025 14:46:09 +0200
+> schrieb "H. Nikolaus Schaller" <hns@goldelico.com>:
+>=20
+>> Since commit
+>>=20
+>> commit f16d9fb6cf03 ("power: supply: bq27xxx: Retrieve again when =
+busy")
+>>=20
+>> the console log of some devices with hdq but no bq27000 battery
+>> (like the Pandaboard) is flooded with messages like:
+>>=20
+>> [   34.247833] power_supply bq27000-battery: driver failed to report =
+'status' property: -1
+>>=20
+>> as soon as user-space is finding a /sys entry and trying to read the
+>> "status" property.
+>>=20
+>> It turns out that the offending commit changes the logic to now =
+return the
+>> value of cache.flags if it is <0. This is likely under the assumption =
+that
+>> it is an error number. In normal errors from bq27xxx_read() this is =
+indeed
+>> the case.
+>>=20
+>> But there is special code to detect if no bq27000 is installed or =
+accessible
+>> through hdq/1wire and wants to report this. In that case, the =
+cache.flags
+>> are set (historically) to constant -1 which did make reading =
+properties
+>> return -ENODEV. So everything appeared to be fine before the return =
+value was
+>> fixed. Now the -1 is returned as -ENOPERM instead of -ENODEV, =
+triggering the
+>> error condition in power_supply_format_property() which then floods =
+the
+>> console log.
+>>=20
+>> So we change the detection of missing bq27000 battery to simply set
+>>=20
+>> cache.flags =3D -ENODEV
+>>=20
+>> instead of -1.
+>>=20
+> This all is a bit inconsistent, the offending commit makes it worse.=20=
 
-Reviewed-by: Niklas Söderlund <niklas.soderlund+renesas@ragnatech.se>
+> Normally devices appear only in /sys if they exist. Regarding stuff in
+> /sys/class/power_supply, input power supplies might be there or not,
+> but there you can argument that the entry in /sys/class/power_supply
+> only means that there is a connector for connecting a supply.
 
-> ---
->  drivers/media/platform/renesas/vsp1/vsp1_vspx.c | 1 +
->  1 file changed, 1 insertion(+)
-> 
-> diff --git a/drivers/media/platform/renesas/vsp1/vsp1_vspx.c b/drivers/media/platform/renesas/vsp1/vsp1_vspx.c
-> index a754b92232bd..1673479be0ff 100644
-> --- a/drivers/media/platform/renesas/vsp1/vsp1_vspx.c
-> +++ b/drivers/media/platform/renesas/vsp1/vsp1_vspx.c
-> @@ -286,6 +286,7 @@ void vsp1_isp_free_buffer(struct device *dev,
->  	dma_free_coherent(bus_master, buffer_desc->size, buffer_desc->cpu_addr,
->  			  buffer_desc->dma_addr);
->  }
-> +EXPORT_SYMBOL_GPL(vsp1_isp_free_buffer);
->  
->  /**
->   * vsp1_isp_start_streaming - Start processing VSPX jobs
-> -- 
-> Regards,
-> 
-> Laurent Pinchart
-> 
+Indeed. If there is an optional bq27000 hdq battery the entry exists.
 
--- 
-Kind Regards,
-Niklas Söderlund
+> But having the battery entry everywhere looks like waste. If would
+> expect the existence of a battery bay in the device where the common
+> battery is one with a bq27xxx.
+
+I think the flaw you are mentioning is a completely diffent one. It =
+comes from that
+the 1-wire or hdq interface of some omap processors is enabled in the =
+.dtsi by default
+instead of disabling it like other interfaces (e.g. mcbsp1). E.g. for =
+omap3 hdqw1w:
+
+=
+https://elixir.bootlin.com/linux/v6.16.1/source/arch/arm/boot/dts/ti/omap/=
+omap3.dtsi#L502
+
+And we should have the dts for the boards enable it only if the hdq =
+interface is really
+in use and there is a chance that a bq27000 can be connected. In that =
+case the full
+/sys entry is prepared but returns -ENODEV if the battery is missing, =
+which is then
+exactly the right error return (instead of -EPERM triggering the console =
+message).
+
+Or is there something related to power-management, so that the hdq =
+silicon always
+needs the hdq driver to properly idle?
+
+Anyways I think this is a different topic for separate cleanup. For the =
+moment we
+should fix the hdq27000 missing battery detection which was broken by =
+changing
+the return value logic.
+
+BR,
+Nikolaus=
 
