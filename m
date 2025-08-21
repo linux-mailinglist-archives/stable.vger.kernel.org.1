@@ -1,71 +1,71 @@
-Return-Path: <stable+bounces-172070-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-172071-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3EFECB2F9F5
-	for <lists+stable@lfdr.de>; Thu, 21 Aug 2025 15:18:17 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 23F29B2F9FC
+	for <lists+stable@lfdr.de>; Thu, 21 Aug 2025 15:18:55 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 344317AD8CE
-	for <lists+stable@lfdr.de>; Thu, 21 Aug 2025 13:16:42 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 5699B7BA973
+	for <lists+stable@lfdr.de>; Thu, 21 Aug 2025 13:17:20 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id BA345334372;
-	Thu, 21 Aug 2025 13:17:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3F44331E105;
+	Thu, 21 Aug 2025 13:18:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="EB9oCrZZ"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="OvEw9Wx1"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7957433436F
-	for <stable@vger.kernel.org>; Thu, 21 Aug 2025 13:17:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F1FE12F49E8
+	for <stable@vger.kernel.org>; Thu, 21 Aug 2025 13:18:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755782226; cv=none; b=Zx409Bicypq6hW0SgbjALzHxWI2X7fHJAfn43jjgCNCaNFoRLUsU4qylBR35MEWVL68idvEr6AaxFTuSi3YcjQmvaOhMYmlconQvwkW0EZPD+CbxE/l3gLfbKJaHJR60J86Cmz7ORz0odHZqazNpykw0yXn5GZLF42LFSPRyOKA=
+	t=1755782327; cv=none; b=XQA/RdVP03NcADoyzdodlfeb5Sm35k3WPa1z8/vqDKZcfXWzq4SCPXNwWOdU+VLzzoLkR0W66wwlJPg5M7Hg2QHkrXmrurGI27swSCpYiQ0EgJnEGIwRRiV0nXEpEJ5nMJ10SdACZEZmm+Br7y8zuwGAZam7ghv+MbnlpWMjZ2A=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1755782226; c=relaxed/simple;
-	bh=opeaufMdVYzBheFV9hcOADj3ZtAoPizlYsLpa0m2Ba8=;
-	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=pdexBV8IUFWWGDGjzF31/vVwVjhRM08+nPeDC+dQa0q8FQDUxTgQLwFj7GAVGlX7V3uL5sdF3Cbq6EoEKacsy48T7Dm9tbfbnQZg3ZH7EcDtdhMrhGITD0fA0xIRwRcVs/dMK7M6v7H9BE2j38+2/V+i9itMPz+icGx2/wf4+aE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=EB9oCrZZ; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id DA416C4CEEB;
-	Thu, 21 Aug 2025 13:17:05 +0000 (UTC)
+	s=arc-20240116; t=1755782327; c=relaxed/simple;
+	bh=muOhT1Gt+5W3GCVYs3YkU04N2C45OVMxa+IZBUuR10k=;
+	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=hzmSsAxNkZKzsMtZTnZ2Y8GEEuG1XUtt+GUGvzUNWbMh+wswHIBOpeA5hGCXCOaB+mj9qJk9WMjMqoZvvbaMpcCB4/SEVf+VBpW8Ykv0r/qHusWKtr1ip30n4gd0mOFJDeRCpdyKN6pprpPYZKAw7waWLnWagLCS63SBEgeTVRk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=OvEw9Wx1; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6F2F7C4CEEB;
+	Thu, 21 Aug 2025 13:18:46 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1755782226;
-	bh=opeaufMdVYzBheFV9hcOADj3ZtAoPizlYsLpa0m2Ba8=;
+	s=korg; t=1755782326;
+	bh=muOhT1Gt+5W3GCVYs3YkU04N2C45OVMxa+IZBUuR10k=;
 	h=Subject:To:Cc:From:Date:From;
-	b=EB9oCrZZx9T/Be5RNcBMsEIylS1VNsVHIIQVMsNG13jNKZ/ica31UlpmBdJQaEd7u
-	 Ir0IH/13hqNWE5bkp2yEh2JrivgHVJZHdeO2spjcRfYcZwgjLChIKIXb5yBPsDao7K
-	 FpkqEhSFDaRytYmr2QocuZYv4KvH0CQPy7Ljw5J4=
-Subject: FAILED: patch "[PATCH] pwm: mediatek: Fix duty and period setting" failed to apply to 5.10-stable tree
-To: u.kleine-koenig@baylibre.com,angelogioacchino.delregno@collabora.com,ukleinek@kernel.org
+	b=OvEw9Wx1jhPHoEuV2ovJBh0ViheN9LisrPsuEe6XazwOzMtiv8l+YHipGrPsNKArW
+	 rlF140btBq4cKjtSRc0/1+JzWkMIg9/YaPXv6glUUNTCKdZO1HVDoU0zdDrPPSIV6q
+	 AtfEbO0ijDCyh6A8f2uAuroL+2wDO1VQ7HxQ2W2Q=
+Subject: FAILED: patch "[PATCH] wifi: ath11k: fix dest ring-buffer corruption when ring is" failed to apply to 5.15-stable tree
+To: johan+linaro@kernel.org,jeff.johnson@oss.qualcomm.com,quic_bqiang@quicinc.com
 Cc: <stable@vger.kernel.org>
 From: <gregkh@linuxfoundation.org>
-Date: Thu, 21 Aug 2025 15:16:43 +0200
-Message-ID: <2025082143-written-shale-5249@gregkh>
+Date: Thu, 21 Aug 2025 15:18:43 +0200
+Message-ID: <2025082143-halved-suitably-b32b@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
+Content-Type: text/plain; charset=ANSI_X3.4-1968
 Content-Transfer-Encoding: 8bit
 
 
-The patch below does not apply to the 5.10-stable tree.
+The patch below does not apply to the 5.15-stable tree.
 If someone wants it applied there, or to any other stable or longterm
 tree, then please email the backport, including the original git commit
 id to <stable@vger.kernel.org>.
 
 To reproduce the conflict and resubmit, you may use the following commands:
 
-git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-5.10.y
+git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-5.15.y
 git checkout FETCH_HEAD
-git cherry-pick -x f21d136caf8171f94159d975ea4620c164431bd9
+git cherry-pick -x aa6956150f820e6a6deba44be325ddfcb5b10f88
 # <resolve conflicts, build, test, etc.>
 git commit -s
-git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2025082143-written-shale-5249@gregkh' --subject-prefix 'PATCH 5.10.y' HEAD^..
+git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2025082143-halved-suitably-b32b@gregkh' --subject-prefix 'PATCH 5.15.y' HEAD^..
 
 Possible dependencies:
 
@@ -77,80 +77,61 @@ greg k-h
 
 ------------------ original commit in Linus's tree ------------------
 
-From f21d136caf8171f94159d975ea4620c164431bd9 Mon Sep 17 00:00:00 2001
-From: =?UTF-8?q?Uwe=20Kleine-K=C3=B6nig?= <u.kleine-koenig@baylibre.com>
-Date: Mon, 28 Jul 2025 18:00:18 +0200
-Subject: [PATCH] pwm: mediatek: Fix duty and period setting
-MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
+From aa6956150f820e6a6deba44be325ddfcb5b10f88 Mon Sep 17 00:00:00 2001
+From: Johan Hovold <johan+linaro@kernel.org>
+Date: Wed, 4 Jun 2025 16:34:57 +0200
+Subject: [PATCH] wifi: ath11k: fix dest ring-buffer corruption when ring is
+ full
 
-The period generated by the hardware is
+Add the missing memory barriers to make sure that destination ring
+descriptors are read before updating the tail pointer (and passing
+ownership to the device) to avoid memory corruption on weakly ordered
+architectures like aarch64 when the ring is full.
 
-	(PWMDWIDTH + 1) << CLKDIV) / freq
+Tested-on: WCN6855 hw2.1 WLAN.HSP.1.1-03125-QCAHSPSWPL_V1_V2_SILICONZ_LITE-3.6510.41
 
-according to my tests with a signal analyser and also the documentation.
+Fixes: d5c65159f289 ("ath11k: driver for Qualcomm IEEE 802.11ax devices")
+Cc: stable@vger.kernel.org      # 5.6
+Signed-off-by: Johan Hovold <johan+linaro@kernel.org>
+Reviewed-by: Baochen Qiang <quic_bqiang@quicinc.com>
+Link: https://patch.msgid.link/20250604143457.26032-6-johan+linaro@kernel.org
+Signed-off-by: Jeff Johnson <jeff.johnson@oss.qualcomm.com>
 
-The current algorithm doesn't consider the `+ 1` part and so configures
-slightly too high periods. The same issue exists for the duty cycle
-setting. So subtract 1 from both the register values for period and
-duty cycle. If period is 0, bail out, if duty_cycle is 0, just disable
-the PWM which results in a constant low output.
-
-Fixes: caf065f8fd58 ("pwm: Add MediaTek PWM support")
-Signed-off-by: Uwe Kleine-König <u.kleine-koenig@baylibre.com>
-Reviewed-by: AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>
-Link: https://lore.kernel.org/r/6d1fa87a76f8020bfe3171529b8e19baffceab10.1753717973.git.u.kleine-koenig@baylibre.com
-Cc: stable@vger.kernel.org
-Signed-off-by: Uwe Kleine-König <ukleinek@kernel.org>
-
-diff --git a/drivers/pwm/pwm-mediatek.c b/drivers/pwm/pwm-mediatek.c
-index b6560e52c803..e4b595fc5a5e 100644
---- a/drivers/pwm/pwm-mediatek.c
-+++ b/drivers/pwm/pwm-mediatek.c
-@@ -170,7 +170,10 @@ static int pwm_mediatek_config(struct pwm_chip *chip, struct pwm_device *pwm,
- 	do_div(resolution, clk_rate);
+diff --git a/drivers/net/wireless/ath/ath11k/hal.c b/drivers/net/wireless/ath/ath11k/hal.c
+index 28f94c36d304..0c3ce7509ab8 100644
+--- a/drivers/net/wireless/ath/ath11k/hal.c
++++ b/drivers/net/wireless/ath/ath11k/hal.c
+@@ -856,7 +856,6 @@ void ath11k_hal_srng_access_end(struct ath11k_base *ab, struct hal_srng *srng)
+ {
+ 	lockdep_assert_held(&srng->lock);
  
- 	cnt_period = DIV_ROUND_CLOSEST_ULL((u64)period_ns * 1000, resolution);
--	while (cnt_period > 8191) {
-+	if (!cnt_period)
-+		return -EINVAL;
-+
-+	while (cnt_period > 8192) {
- 		resolution *= 2;
- 		clkdiv++;
- 		cnt_period = DIV_ROUND_CLOSEST_ULL((u64)period_ns * 1000,
-@@ -193,9 +196,16 @@ static int pwm_mediatek_config(struct pwm_chip *chip, struct pwm_device *pwm,
- 	}
- 
- 	cnt_duty = DIV_ROUND_CLOSEST_ULL((u64)duty_ns * 1000, resolution);
-+
- 	pwm_mediatek_writel(pc, pwm->hwpwm, PWMCON, BIT(15) | clkdiv);
--	pwm_mediatek_writel(pc, pwm->hwpwm, reg_width, cnt_period);
--	pwm_mediatek_writel(pc, pwm->hwpwm, reg_thres, cnt_duty);
-+	pwm_mediatek_writel(pc, pwm->hwpwm, reg_width, cnt_period - 1);
-+
-+	if (cnt_duty) {
-+		pwm_mediatek_writel(pc, pwm->hwpwm, reg_thres, cnt_duty - 1);
-+		pwm_mediatek_enable(chip, pwm);
-+	} else {
-+		pwm_mediatek_disable(chip, pwm);
-+	}
- 
- out:
- 	pwm_mediatek_clk_disable(chip, pwm);
-@@ -224,11 +234,8 @@ static int pwm_mediatek_apply(struct pwm_chip *chip, struct pwm_device *pwm,
- 	if (err)
- 		return err;
- 
--	if (!pwm->state.enabled) {
-+	if (!pwm->state.enabled)
- 		err = pwm_mediatek_clk_enable(chip, pwm);
--		if (!err)
--			pwm_mediatek_enable(chip, pwm);
--	}
- 
- 	return err;
- }
+-	/* TODO: See if we need a write memory barrier here */
+ 	if (srng->flags & HAL_SRNG_FLAGS_LMAC_RING) {
+ 		/* For LMAC rings, ring pointer updates are done through FW and
+ 		 * hence written to a shared memory location that is read by FW
+@@ -871,7 +870,11 @@ void ath11k_hal_srng_access_end(struct ath11k_base *ab, struct hal_srng *srng)
+ 			WRITE_ONCE(*srng->u.src_ring.hp_addr, srng->u.src_ring.hp);
+ 		} else {
+ 			srng->u.dst_ring.last_hp = *srng->u.dst_ring.hp_addr;
+-			*srng->u.dst_ring.tp_addr = srng->u.dst_ring.tp;
++			/* Make sure descriptor is read before updating the
++			 * tail pointer.
++			 */
++			dma_mb();
++			WRITE_ONCE(*srng->u.dst_ring.tp_addr, srng->u.dst_ring.tp);
+ 		}
+ 	} else {
+ 		if (srng->ring_dir == HAL_SRNG_DIR_SRC) {
+@@ -887,6 +890,10 @@ void ath11k_hal_srng_access_end(struct ath11k_base *ab, struct hal_srng *srng)
+ 					   srng->u.src_ring.hp);
+ 		} else {
+ 			srng->u.dst_ring.last_hp = *srng->u.dst_ring.hp_addr;
++			/* Make sure descriptor is read before updating the
++			 * tail pointer.
++			 */
++			mb();
+ 			ath11k_hif_write32(ab,
+ 					   (unsigned long)srng->u.dst_ring.tp_addr -
+ 					   (unsigned long)ab->mem,
 
 
