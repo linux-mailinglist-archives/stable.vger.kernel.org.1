@@ -1,195 +1,126 @@
-Return-Path: <stable+bounces-172232-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-172233-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 605C7B30884
-	for <lists+stable@lfdr.de>; Thu, 21 Aug 2025 23:40:42 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2A2BCB3088F
+	for <lists+stable@lfdr.de>; Thu, 21 Aug 2025 23:44:20 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id E831FAC3FBF
-	for <lists+stable@lfdr.de>; Thu, 21 Aug 2025 21:40:40 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 0F3A1588360
+	for <lists+stable@lfdr.de>; Thu, 21 Aug 2025 21:44:20 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 14C022D7DD9;
-	Thu, 21 Aug 2025 21:40:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 876972D837E;
+	Thu, 21 Aug 2025 21:44:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="iqJxCX9t"
+	dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b="DZzscbEF"
 X-Original-To: stable@vger.kernel.org
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 52F8F393DD8
-	for <stable@vger.kernel.org>; Thu, 21 Aug 2025 21:40:35 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.129.124
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4050D28466C;
+	Thu, 21 Aug 2025 21:44:14 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755812437; cv=none; b=WE7VUAfPBZ0OZkXB4TrJKZ5me9ScIePomvZfCLhHqkY5MdiApxtEAhuOZ9WGKk00OTFF7ozRj1pbrOFQINwgrHJ7XUHl6tAz18bH03WdoHmJhrceFB8PB5sEVKn8Eky6iLw/1cPHvTKJNch7Y6jRbIvtiRdAFxr2n/s4x4SPv74=
+	t=1755812655; cv=none; b=CjmwG4PVEFlkhYKE7JU/vIFW9yH+eGUv3t8d+m0qrH+tkBFx8bdGN88CaTfLw7it5rU6Cmnacgtb/UgkQoAD21N1JFNRynN9VwZMTfJvnZniUkbaVCSbqVRBtCC8RTepbBW0IBmHHEeNtTpxko7s+j9VG3Z1UXGRbqCqUXTQS2U=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1755812437; c=relaxed/simple;
-	bh=aiNY+ZTD3J8SFNTG73ygzdE3xlpHDbcZ32iFUva19kI=;
-	h=Message-ID:Date:MIME-Version:To:Cc:From:Subject:Content-Type; b=CW1R9ABuDgydMLwhNEPXPF79OW6htRJ6OEWWahi8WKCpZmE5+W1rIZFRv7JymCAr7Umy9vBzfBZ1BQcIvjZ48SZ4K5xBchXe7nH1zJOcwp66FgdsEMmITEhWlnhYV1AKXM9B4uJjuOeJOVelj0x2ei/CW92ZVQFDqHXiwXnphVI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=iqJxCX9t; arc=none smtp.client-ip=170.10.129.124
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1755812434;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding;
-	bh=1+V6iqvdf26GZ2QBtVStSSy1lweCRThJvVkBRh8q3qs=;
-	b=iqJxCX9tPUBa+W3meAf6dxw2xphfhppxcl1wpQTwSR6WcI/vguBclIQqAeqK8wt+sBUpLh
-	gB0sq5RoUhaH7QubwphOZQtjmw4HTDO9fNbKMg9O5+Z/qa+wvWuZT/7AuA6mUOrXrlv8QZ
-	CDZfbLqkdBvnE7rWLI5dW77OQhERAok=
-Received: from mail-io1-f71.google.com (mail-io1-f71.google.com
- [209.85.166.71]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-333-0UaUQJiLOiOgQT-WerdcOg-1; Thu, 21 Aug 2025 17:36:13 -0400
-X-MC-Unique: 0UaUQJiLOiOgQT-WerdcOg-1
-X-Mimecast-MFC-AGG-ID: 0UaUQJiLOiOgQT-WerdcOg_1755812173
-Received: by mail-io1-f71.google.com with SMTP id ca18e2360f4ac-88432ccc4f9so299837539f.0
-        for <stable@vger.kernel.org>; Thu, 21 Aug 2025 14:36:13 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1755812172; x=1756416972;
-        h=content-transfer-encoding:subject:from:cc:to:content-language
-         :user-agent:mime-version:date:message-id:x-gm-message-state:from:to
-         :cc:subject:date:message-id:reply-to;
-        bh=1+V6iqvdf26GZ2QBtVStSSy1lweCRThJvVkBRh8q3qs=;
-        b=fUJSNmvGclXCwVGSE77Z1JCWebNRybJF1PTA74xeJHrFs4I44C23wQh8Qjt3R3JRxc
-         dKpGuKXZVN4TF5UuJQbkwaX1+uGK9aAFGJZvxOr1pMABt1gwLy6Awk9akn4a5ffPSF9g
-         JaWPxKO+xKpaJUWbtIV0NXMyNQjMxMCbqIMzTZgsWjdGsETj0uxRe1mKVIBMrJqn5Ey6
-         mZPcpt3waYnDFN9+CkijGo08qNK4Rm2vW1Gs1FxUH17xjV0zlLnG96Jan6eh4uzN0tIM
-         f0sioTAjOo06JERn0/MXpaoQQweI15NTLTZnm5vCGNfQ0Z1c4cq6aruJodKPEwHEbhMI
-         cRPA==
-X-Forwarded-Encrypted: i=1; AJvYcCVCOX6iV8QpjImQQipRqqpdcSyFEV6uhjvZn6CSm5K4Rrs/+MBTJtu8ieudPYGxQuMekHzDnhQ=@vger.kernel.org
-X-Gm-Message-State: AOJu0YxuLYmmjuQw7h5Sb97lagXjRM+fR1U1/2MLGI+8j5HrZqrnbwyl
-	wcJe5dKvUlbEcbHgA75qUAoIYuCYKg4hf892vjJyNs5Dysf8sHV6e+RlGshe4W9+PxZ91s8fVQj
-	lJpDbwWK3Xys66mUM5+T84zRqV91IUeakmYbA4hNFB38qh4wmsQxjRMASYw==
-X-Gm-Gg: ASbGncuuzRgWZxzOhgNWzx8Vgt5lhOaFr+y8LcFT7lQGOzpzedana7PwA+GQG9yTwbR
-	7E6CUjQ7qiecowtspp0yARFf99jdGmtrDnqDQY6H+3ZkLKFgHuAMdgkky2f8uMORbqN7tGPUARb
-	IbJKnCjD0FtmlGztWZbTSUC9/GRhdOFJkPzsq8xK4uS9nvq+tMR6rl3d+iy+/PgKzecz/OpWU7Z
-	JJ83TtHxw8WDK349Hd89H98GvxUV1ODnHlng3xAeIA9D0TLmJtqFcJlb6i6RCSciYa4T1jVnePL
-	UBIZS5v+2ByTh1Oyq6CwNVWSb3svaLerAPdkeT2Bl8HxOt0QfyZDBR2HhO1AxTmWVEMX046O+YV
-	E
-X-Received: by 2002:a5d:8d09:0:b0:873:f23:ff5 with SMTP id ca18e2360f4ac-886bd20cc50mr130394439f.12.1755812172585;
-        Thu, 21 Aug 2025 14:36:12 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IFTXROUU0BOWkIwqW7aq87mNa1x6wTYMofjvoPwPlrk/Jtplx9tFC5q+tecaIxCLJG3XXs57g==
-X-Received: by 2002:a5d:8d09:0:b0:873:f23:ff5 with SMTP id ca18e2360f4ac-886bd20cc50mr130391239f.12.1755812172215;
-        Thu, 21 Aug 2025 14:36:12 -0700 (PDT)
-Received: from [10.0.0.82] (75-168-243-62.mpls.qwest.net. [75.168.243.62])
-        by smtp.gmail.com with ESMTPSA id ca18e2360f4ac-8843f83eb6dsm796958139f.9.2025.08.21.14.36.11
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Thu, 21 Aug 2025 14:36:11 -0700 (PDT)
-Message-ID: <a896ce2b-1c3b-4298-a90c-c2c0e18de4cb@redhat.com>
-Date: Thu, 21 Aug 2025 16:36:10 -0500
+	s=arc-20240116; t=1755812655; c=relaxed/simple;
+	bh=Y9dIwT3/TdLQKXD+Up9nmrBUIclqBPLq3HsGH3mXmoc=;
+	h=Date:To:From:Subject:Message-Id; b=juyEvoVrixuYMZIuUcG0rN588rZJnq9V6M9kMTKv1kCg8yWaUUsLdBnS0z9elazPEu3Fa2WZxP0VDFygQMRD2bQRnjLae9j+4UZjIAMLR9XOiv/MBUIcdkfYNGaUT/en9DaG/vpHK9g4lJ/mYjYk+7pRWDmoYGvhlkQgDNCqiHY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b=DZzscbEF; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 868C4C4CEEB;
+	Thu, 21 Aug 2025 21:44:14 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linux-foundation.org;
+	s=korg; t=1755812654;
+	bh=Y9dIwT3/TdLQKXD+Up9nmrBUIclqBPLq3HsGH3mXmoc=;
+	h=Date:To:From:Subject:From;
+	b=DZzscbEFw56wd2JHxr+AyuvGZxE9q27LYTJIsqpXMdrWtlEtpsqzuIwlfDnWO738T
+	 gvIoXN2Zs7WSApXD3Edn/R/7u2UbzzjOdoa8aiSek7YDjXd/ouWjPkyOtSDYvMNtt9
+	 Ck2yPNQIkY6cvCAg40rGaf0wgSG+IJmwaTZKlDaY=
+Date: Thu, 21 Aug 2025 14:44:14 -0700
+To: mm-commits@vger.kernel.org,zuoze1@huawei.com,wangkefeng.wang@huawei.com,stable@vger.kernel.org,sj@kernel.org,apanyaki@amazon.com,yanquanmin1@huawei.com,akpm@linux-foundation.org
+From: Andrew Morton <akpm@linux-foundation.org>
+Subject: + mm-damon-core-prevent-unnecessary-overflow-in-damos_set_effective_quota.patch added to mm-hotfixes-unstable branch
+Message-Id: <20250821214414.868C4C4CEEB@smtp.kernel.org>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Content-Language: en-US
-To: "linux-xfs@vger.kernel.org" <linux-xfs@vger.kernel.org>
-Cc: Donald Douwsma <ddouwsma@redhat.com>, Dave Chinner <dchinner@redhat.com>,
- "Darrick J. Wong" <djwong@kernel.org>, Christoph Hellwig
- <hch@infradead.org>, stable@vger.kernel.org
-From: Eric Sandeen <sandeen@redhat.com>
-Subject: [PATCH] xfs: do not propagate ENODATA disk errors into xattr code
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
 
-ENODATA (aka ENOATTR) has a very specific meaning in the xfs xattr code;
-namely, that the requested attribute name could not be found.
 
-However, a medium error from disk may also return ENODATA. At best,
-this medium error may escape to userspace as "attribute not found"
-when in fact it's an IO (disk) error.
+The patch titled
+     Subject: mm/damon/core: prevent unnecessary overflow in damos_set_effective_quota()
+has been added to the -mm mm-hotfixes-unstable branch.  Its filename is
+     mm-damon-core-prevent-unnecessary-overflow-in-damos_set_effective_quota.patch
 
-At worst, we may oops in xfs_attr_leaf_get() when we do:
+This patch will shortly appear at
+     https://git.kernel.org/pub/scm/linux/kernel/git/akpm/25-new.git/tree/patches/mm-damon-core-prevent-unnecessary-overflow-in-damos_set_effective_quota.patch
 
-	error = xfs_attr_leaf_hasname(args, &bp);
-	if (error == -ENOATTR)  {
-		xfs_trans_brelse(args->trans, bp);
-		return error;
-	}
+This patch will later appear in the mm-hotfixes-unstable branch at
+    git://git.kernel.org/pub/scm/linux/kernel/git/akpm/mm
 
-because an ENODATA/ENOATTR error from disk leaves us with a null bp,
-and the xfs_trans_brelse will then null-deref it.
+Before you just go and hit "reply", please:
+   a) Consider who else should be cc'ed
+   b) Prefer to cc a suitable mailing list as well
+   c) Ideally: find the original patch on the mailing list and do a
+      reply-to-all to that, adding suitable additional cc's
 
-As discussed on the list, we really need to modify the lower level
-IO functions to trap all disk errors and ensure that we don't let
-unique errors like this leak up into higher xfs functions - many
-like this should be remapped to EIO.
+*** Remember to use Documentation/process/submit-checklist.rst when testing your code ***
 
-However, this patch directly addresses a reported bug in the xattr
-code, and should be safe to backport to stable kernels. A larger-scope
-patch to handle more unique errors at lower levels can follow later.
+The -mm tree is included into linux-next via the mm-everything
+branch at git://git.kernel.org/pub/scm/linux/kernel/git/akpm/mm
+and is updated there every 2-3 working days
 
-(Note, prior to 07120f1abdff we did not oops, but we did return the
-wrong error code to userspace.)
+------------------------------------------------------
+From: Quanmin Yan <yanquanmin1@huawei.com>
+Subject: mm/damon/core: prevent unnecessary overflow in damos_set_effective_quota()
+Date: Thu, 21 Aug 2025 20:55:55 +0800
 
-Signed-off-by: Eric Sandeen <sandeen@redhat.com>
-Fixes: 07120f1abdff ("xfs: Add xfs_has_attr and subroutines")
-Cc: <stable@vger.kernel.org> # v5.9+
+On 32-bit systems, the throughput calculation in
+damos_set_effective_quota() is prone to unnecessary multiplication
+overflow.  Using mult_frac() to fix it.
+
+Andrew Paniakin also recently found and privately reported this issue, on
+64 bit systems.  This can also happen on 64-bit systems, once the charged
+size exceeds ~17 TiB.  On systems running for long time in production,
+this issue can actually happen.
+
+More specifically, when a DAMOS scheme having the time quota run for
+longtime, throughput calculation can overflow and set esz too small.  As a
+result, speed of the scheme get unexpectedly slow.
+
+Link: https://lkml.kernel.org/r/20250821125555.3020951-1-yanquanmin1@huawei.com
+Fixes: 1cd243030059 ("mm/damon/schemes: implement time quota")
+Signed-off-by: Quanmin Yan <yanquanmin1@huawei.com>
+Reported-by: Andrew Paniakin <apanyaki@amazon.com>
+Reviewed-by: SeongJae Park <sj@kernel.org>
+Cc: Kefeng Wang <wangkefeng.wang@huawei.com>
+Cc: ze zuo <zuoze1@huawei.com>
+Cc: <stable@vger.kernel.org>	[5.16+]
+Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
 ---
 
-(I get it that sprinkling this around to 3 places might have an ick
-factor but I think it's necessary to make a surgical strike on this bug
-before we address the general problem.)
+ mm/damon/core.c |    4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-Thanks,
--Eric
+--- a/mm/damon/core.c~mm-damon-core-prevent-unnecessary-overflow-in-damos_set_effective_quota
++++ a/mm/damon/core.c
+@@ -2073,8 +2073,8 @@ static void damos_set_effective_quota(st
+ 
+ 	if (quota->ms) {
+ 		if (quota->total_charged_ns)
+-			throughput = quota->total_charged_sz * 1000000 /
+-				quota->total_charged_ns;
++			throughput = mult_frac(quota->total_charged_sz, 1000000,
++							quota->total_charged_ns);
+ 		else
+ 			throughput = PAGE_SIZE * 1024;
+ 		esz = min(throughput * quota->ms, esz);
+_
 
-diff --git a/fs/xfs/libxfs/xfs_attr_leaf.c b/fs/xfs/libxfs/xfs_attr_leaf.c
-index fddb55605e0c..9b54cfb0e13d 100644
---- a/fs/xfs/libxfs/xfs_attr_leaf.c
-+++ b/fs/xfs/libxfs/xfs_attr_leaf.c
-@@ -478,6 +478,12 @@ xfs_attr3_leaf_read(
- 
- 	err = xfs_da_read_buf(tp, dp, bno, 0, bpp, XFS_ATTR_FORK,
- 			&xfs_attr3_leaf_buf_ops);
-+	/*
-+	 * ENODATA from disk implies a disk medium failure; ENODATA for
-+	 * xattrs means attribute not found, so disambiguate that here.
-+	 */
-+	if (err == -ENODATA)
-+		err = -EIO;
- 	if (err || !(*bpp))
- 		return err;
- 
-diff --git a/fs/xfs/libxfs/xfs_attr_remote.c b/fs/xfs/libxfs/xfs_attr_remote.c
-index 4c44ce1c8a64..bff3dc226f81 100644
---- a/fs/xfs/libxfs/xfs_attr_remote.c
-+++ b/fs/xfs/libxfs/xfs_attr_remote.c
-@@ -435,6 +435,13 @@ xfs_attr_rmtval_get(
- 					0, &bp, &xfs_attr3_rmt_buf_ops);
- 			if (xfs_metadata_is_sick(error))
- 				xfs_dirattr_mark_sick(args->dp, XFS_ATTR_FORK);
-+			/*
-+			 * ENODATA from disk implies a disk medium failure;
-+			 * ENODATA for xattrs means attribute not found, so
-+			 * disambiguate that here.
-+			 */
-+			if (error == -ENODATA)
-+				error = -EIO;
- 			if (error)
- 				return error;
- 
-diff --git a/fs/xfs/libxfs/xfs_da_btree.c b/fs/xfs/libxfs/xfs_da_btree.c
-index 17d9e6154f19..723a0643b838 100644
---- a/fs/xfs/libxfs/xfs_da_btree.c
-+++ b/fs/xfs/libxfs/xfs_da_btree.c
-@@ -2833,6 +2833,12 @@ xfs_da_read_buf(
- 			&bp, ops);
- 	if (xfs_metadata_is_sick(error))
- 		xfs_dirattr_mark_sick(dp, whichfork);
-+	/*
-+	 * ENODATA from disk implies a disk medium failure; ENODATA for
-+	 * xattrs means attribute not found, so disambiguate that here.
-+	 */
-+	if (error == -ENODATA && whichfork == XFS_ATTR_FORK)
-+		error = -EIO;
- 	if (error)
- 		goto out_free;
- 
+Patches currently in -mm which might be from yanquanmin1@huawei.com are
+
+mm-damon-core-prevent-unnecessary-overflow-in-damos_set_effective_quota.patch
 
 
