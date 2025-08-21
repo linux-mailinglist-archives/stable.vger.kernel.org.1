@@ -1,65 +1,65 @@
-Return-Path: <stable+bounces-172175-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-172176-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1AA59B2FE62
-	for <lists+stable@lfdr.de>; Thu, 21 Aug 2025 17:31:23 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id E270DB2FE78
+	for <lists+stable@lfdr.de>; Thu, 21 Aug 2025 17:35:17 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 03888AC10F5
-	for <lists+stable@lfdr.de>; Thu, 21 Aug 2025 15:24:11 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 35EC31C2533C
+	for <lists+stable@lfdr.de>; Thu, 21 Aug 2025 15:28:56 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 64E152E03F1;
-	Thu, 21 Aug 2025 15:21:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3EE63285CA8;
+	Thu, 21 Aug 2025 15:23:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="JlHq1wRh"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="IRMivByi"
 X-Original-To: stable@vger.kernel.org
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.12])
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.9])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2319C29BD81;
-	Thu, 21 Aug 2025 15:21:29 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.12
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 41B38272811;
+	Thu, 21 Aug 2025 15:23:05 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.9
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755789695; cv=none; b=MPzPP5dz30Ld2NQB2Fjk5Wa1PVU1g5fqXpkOi40OaYiD9UUkI2eh2lK6vNFlYlv7f5ROo7I4/cYggoGTzXyp4wksjJkyPWuqap0rWHQFG6VMPVst5c0lTcj7aOO4F/Exlcw0reU9CrstfxRV7qk+wU7Mb3P3ZU/41oXAFph+v7I=
+	t=1755789788; cv=none; b=pZk3IyBqOB9X2mX8L1s/Hx6FABOfZACR/lOxZB8eCWgz6ao84lP19B3sBEV+43FlVSEnq66fyaE4Ues4Dm7JxToepumYy8SaGAtAh8UCsItczpkpCz4lMkvVUMEkT+ybe2kll7RuH7Ipo0UVun9WiRKvxLVb4aEw/a1HG+EWMmY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1755789695; c=relaxed/simple;
-	bh=KRJpPaNYZhuGdhMZHfEbshMmS3KzIhWRjBm1+wRJIDQ=;
+	s=arc-20240116; t=1755789788; c=relaxed/simple;
+	bh=tJCT2Tv2rsnR+elP2MDgDezCXgl0iUYyhaj0V30RHH4=;
 	h=From:Date:To:cc:Subject:In-Reply-To:Message-ID:References:
-	 MIME-Version:Content-Type; b=myYyTsKLurjSwpLVxm7SlV4bEQQtEkC2g/sxB5OEU9ndcrckaNM/wnpBTLx+tPrHjThSIFgG1SdTGbEyg0xaYap4exLjtPFIojhSpIo3HfzfqTRUR+XlAWnXIgUtQMTFpKrP5ReP9sFtNJZRHbKwAPtAKn7LA6acReqdmScyKYM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=none smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=JlHq1wRh; arc=none smtp.client-ip=192.198.163.12
+	 MIME-Version:Content-Type; b=oDUS5wIqKFUwowclzbjSDJ5s6LzKbWpVrRLT4mzONHqrR0T6Zn6abBs98fludMmpjMYnPQ7tLjCLM6a/+TMRJmLycdGmdoQOtuMNMkpy4IMu8spLUS8vO8PZz0hvkSMxqyU2dF+10ARWckgv0sniIy+J95R7YUbDCaaoJo+YTB8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=none smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=IRMivByi; arc=none smtp.client-ip=192.198.163.9
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
 Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=linux.intel.com
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
   d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1755789690; x=1787325690;
+  t=1755789786; x=1787325786;
   h=from:date:to:cc:subject:in-reply-to:message-id:
    references:mime-version;
-  bh=KRJpPaNYZhuGdhMZHfEbshMmS3KzIhWRjBm1+wRJIDQ=;
-  b=JlHq1wRh7xS1Ex5rt8l0zI17FNwStLoCca1qHd+nQKmq1wG1F8GQ+CNK
-   YcmiQ16Eweuyl6xIQz9goQTDNJWJX7CLfl8ZOD9cGMvnEmPNwqwYc/ac7
-   idWOeRYSrIq796nHP3sv93w91EFWtd8bM7j2A9VlSe0VARWFC9NVsDmBd
-   vwfdXKGGXwPNEqrfPJkNJQ6ODp/HF4OpM8vwnI/DIjLV6TkTHfojIsWlH
-   879jcH4oXYcVG6fmFg+39BqdmL2MI37Dd6k0b0qUzoKtmQN/owCfPp4Ro
-   nc+xH09bd5HQ81bcUfnGEJ2VnEKzKCJE4IHdg1A7Z2HCI2oAyQ80oMpuq
-   Q==;
-X-CSE-ConnectionGUID: N20LMCStRmC/lDxBe4dG6w==
-X-CSE-MsgGUID: HoG4C70wSAag/++gwLWPsQ==
-X-IronPort-AV: E=McAfee;i="6800,10657,11529"; a="61894117"
+  bh=tJCT2Tv2rsnR+elP2MDgDezCXgl0iUYyhaj0V30RHH4=;
+  b=IRMivByiGgf7+Wx/pwws/Ba2U7JH/zp9/1ixTOq7NN8gMa0dvyHuLTGQ
+   1o/pzY+kHXpmO2UKOU5Ua4YxjvEYJEMJFOiqknDeZH1izJkS2Sg4CsYU8
+   VavVSC21w0bqsYkx04o5x5Q5wuXrI281G75ULikwxmCVy8j7bZiU7cPKz
+   8hJTrERjP0vFo0IXGQgFLvdiP8ExEn1vF8x1jJMYtPNjfgsqjgGyMPneh
+   72GCDHEOlCfXAaf5/C8DtIOr0FjybdkrX/6P9LVSCDjSPRcYYlSFEy0EP
+   jYRf5RzA7mZ7PhoDyEPC1OfxicG0rx4vHYGBFGV1A51f3AANBbDmEoKYa
+   A==;
+X-CSE-ConnectionGUID: FZzAHwBrSZ6AsE4gXh9Irw==
+X-CSE-MsgGUID: lruv8KeFSauY5j0OTLeW3A==
+X-IronPort-AV: E=McAfee;i="6800,10657,11529"; a="68790157"
 X-IronPort-AV: E=Sophos;i="6.17,306,1747724400"; 
-   d="scan'208";a="61894117"
-Received: from orviesa009.jf.intel.com ([10.64.159.149])
-  by fmvoesa106.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 21 Aug 2025 08:21:29 -0700
-X-CSE-ConnectionGUID: G9CIAg6ySKqgmvSiYsmibA==
-X-CSE-MsgGUID: JclRp2AdS2WCMxuKEWk/JA==
+   d="scan'208";a="68790157"
+Received: from orviesa006.jf.intel.com ([10.64.159.146])
+  by fmvoesa103.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 21 Aug 2025 08:23:05 -0700
+X-CSE-ConnectionGUID: 8XGK7D9gSayGGZrknd0c+g==
+X-CSE-MsgGUID: ZXNIDUhORFaUleygoFeKWw==
 X-ExtLoop1: 1
 X-IronPort-AV: E=Sophos;i="6.17,306,1747724400"; 
-   d="scan'208";a="168056557"
+   d="scan'208";a="167653769"
 Received: from ijarvine-mobl1.ger.corp.intel.com (HELO localhost) ([10.245.245.192])
-  by orviesa009-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 21 Aug 2025 08:21:25 -0700
+  by orviesa006-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 21 Aug 2025 08:23:02 -0700
 From: =?UTF-8?q?Ilpo=20J=C3=A4rvinen?= <ilpo.jarvinen@linux.intel.com>
-Date: Thu, 21 Aug 2025 18:21:22 +0300 (EEST)
+Date: Thu, 21 Aug 2025 18:22:58 +0300 (EEST)
 To: Bjorn Helgaas <helgaas@kernel.org>
 cc: linux-pci@vger.kernel.org, Bjorn Helgaas <bhelgaas@google.com>, 
     =?ISO-8859-2?Q?Krzysztof_Wilczy=F1ski?= <kw@linux.com>, 
@@ -68,116 +68,167 @@ cc: linux-pci@vger.kernel.org, Bjorn Helgaas <bhelgaas@google.com>,
     LKML <linux-kernel@vger.kernel.org>, 
     =?ISO-8859-15?Q?Christian_K=F6nig?= <christian.koenig@amd.com>, 
     stable@vger.kernel.org
-Subject: Re: [PATCH v2 2/3] PCI: Fix pdev_resources_assignable() disparity
-In-Reply-To: <20250821151132.GA674480@bhelgaas>
-Message-ID: <b873e7dc-8cbe-3370-4b47-8c1cb2e6da6e@linux.intel.com>
-References: <20250821151132.GA674480@bhelgaas>
+Subject: Re: [PATCH v2 3/3] PCI: Fix failure detection during resource
+ resize
+In-Reply-To: <20250821151444.GA674725@bhelgaas>
+Message-ID: <422340e7-8016-866d-5e49-e6ea48db1683@linux.intel.com>
+References: <20250821151444.GA674725@bhelgaas>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: multipart/mixed; boundary="8323328-1567600272-1755789682=:933"
+Content-Type: multipart/mixed; boundary="8323328-1617396853-1755789778=:933"
 
   This message is in MIME format.  The first part should be readable text,
   while the remaining parts are likely unreadable without MIME-aware tools.
 
---8323328-1567600272-1755789682=:933
+--8323328-1617396853-1755789778=:933
 Content-Type: text/plain; charset=utf-8
 Content-Transfer-Encoding: QUOTED-PRINTABLE
 
 On Thu, 21 Aug 2025, Bjorn Helgaas wrote:
-
-> On Mon, Jun 30, 2025 at 05:26:40PM +0300, Ilpo J=C3=A4rvinen wrote:
-> > pdev_sort_resources() uses pdev_resources_assignable() helper to decide
-> > if device's resources cannot be assigned. pbus_size_mem(), on the other
-> > hand, does not do the same check. This could lead into a situation
-> > where a resource ends up on realloc_head list but is not on the head
-> > list, which is turn prevents emptying the resource from the
-> > realloc_head list in __assign_resources_sorted().
+> On Mon, Jun 30, 2025 at 05:26:41PM +0300, Ilpo J=C3=A4rvinen wrote:
+> > Since the commit 96336ec70264 ("PCI: Perform reset_resource() and build
+> > fail list in sync") the failed list is always built and returned to let
+> > the caller decide what to do with the failures. The caller may want to
+> > retry resource fitting and assignment and before that can happen, the
+> > resources should be restored to their original state (a reset
+> > effectively clears the struct resource), which requires returning them
+> > on the failed list so that the original state remains stored in the
+> > associated struct pci_dev_resource.
 > >=20
-> > A non-empty realloc_head is unacceptable because it triggers an
-> > internal sanity check as show in this log with a device that has class
-> > 0 (PCI_CLASS_NOT_DEFINED):
+> > Resource resizing is different from the ordinary resource fitting and
+> > assignment in that it only considers part of the resources. This means
+> > failures for other resource types are not relevant at all and should be
+> > ignored. As resize doesn't unassign such unrelated resources, those
+> > resource ending up into the failed list implies assignment of that
+> > resource must have failed before resize too. The check in
+> > pci_reassign_bridge_resources() to decide if the whole assignment is
+> > successful, however, is based on list emptiness which will cause false
+> > negatives when the failed list has resources with an unrelated type.
+> >=20
+> > If the failed list is not empty, call pci_required_resource_failed()
+> > and extend it to be able to filter on specific resource types too (if
+> > provided).
+> >=20
+> > Calling pci_required_resource_failed() at this point is slightly
+> > problematic because the resource itself is reset when the failed list
+> > is constructed in __assign_resources_sorted(). As a result,
+> > pci_resource_is_optional() does not have access to the original
+> > resource flags. This could be worked around by restoring and
+> > re-reseting the resource around the call to pci_resource_is_optional(),
+> > however, it shouldn't cause issue as resource resizing is meant for
+> > 64-bit prefetchable resources according to Christian K=C3=B6nig (see th=
+e
+> > Link which unfortunately doesn't point directly to Christian's reply
+> > because lore didn't store that email at all).
+> >=20
+> > Fixes: 96336ec70264 ("PCI: Perform reset_resource() and build fail list=
+ in sync")
+> > Link: https://lore.kernel.org/all/c5d1b5d8-8669-5572-75a7-0b480f581ac1@=
+linux.intel.com/
+> > Reported-by: D Scott Phillips <scott@os.amperecomputing.com>
 >=20
-> Is the class relevant here?
+> Any URL we can include here?
 
-It actually is, because pdev_resources_assignable() checks for it. In case=
-=20
-of this particular device there was 0 there causing leading eventually to=
-=20
-this internal sanity check problem.
+Again, it'sin the thread of the original patch:
 
-> > pci 0001:01:00.0: [144d:a5a5] type 00 class 0x000000 PCIe Endpoint
-> > pci 0001:01:00.0: BAR 0 [mem 0x00000000-0x000fffff 64bit]
-> > pci 0001:01:00.0: ROM [mem 0x00000000-0x0000ffff pref]
-> > pci 0001:01:00.0: enabling Extended Tags
-> > pci 0001:01:00.0: PME# supported from D0 D3hot D3cold
-> > pci 0001:01:00.0: 15.752 Gb/s available PCIe bandwidth, limited by 8.0 =
-GT/s PCIe x2 link at 0001:00:00.0 (capable of 31.506 Gb/s with 16.0 GT/s PC=
-Ie x2 link)
-> > pcieport 0001:00:00.0: bridge window [mem 0x00100000-0x001fffff] to [bu=
-s 01-ff] add_size 100000 add_align 100000
-> > pcieport 0001:00:00.0: bridge window [mem 0x40000000-0x401fffff]: assig=
-ned
-> > ------------[ cut here ]------------
-> > kernel BUG at drivers/pci/setup-bus.c:2532!
-> > Internal error: Oops - BUG: 00000000f2000800 [#1]  SMP
-> > ...
-> > Call trace:
-> >  pci_assign_unassigned_bus_resources+0x110/0x114 (P)
-> >  pci_rescan_bus+0x28/0x48
-> >=20
-> > Use pdev_resources_assignable() also within pbus_size_mem() to skip
-> > processing of non-assignable resources which removes the disparity in
-> > between what resources pdev_sort_resources() and pbus_size_mem()
-> > consider. As non-assignable resources are no longer processed, they are
-> > not added to the realloc_head list, thus the sanity check no longer
-> > triggers.
-> >=20
-> > This disparity problem is very old but only now became apparent after
-> > the commit 2499f5348431 ("PCI: Rework optional resource handling") that
-> > made the ROM resources optional when calculating bridge window sizes
-> > which required adding the resource to the realloc_head list.
-> > Previously, bridge windows were just sized larger than necessary.
-> >=20
-> > Fixes: 2499f5348431 ("PCI: Rework optional resource handling")
-> > Reported-by: Tudor Ambarus <tudor.ambarus@linaro.org>
->=20
-> Any URL we can include here for the report?
-
-This was discussed in the thread of the original patch/series:
-
-Link: https://lore.kernel.org/all/5f103643-5e1c-43c6-b8fe-9617d3b5447c@lina=
-ro.org/
-
-> > Signed-off-by: Ilpo J=C3=A4rvinen <ilpo.jarvinen@linux.intel.com>
-> > Cc: <stable@vger.kernel.org>
-> > ---
-> >  drivers/pci/setup-bus.c | 1 +
-> >  1 file changed, 1 insertion(+)
-> >=20
-> > diff --git a/drivers/pci/setup-bus.c b/drivers/pci/setup-bus.c
-> > index f90d49cd07da..24863d8d0053 100644
-> > --- a/drivers/pci/setup-bus.c
-> > +++ b/drivers/pci/setup-bus.c
-> > @@ -1191,6 +1191,7 @@ static int pbus_size_mem(struct pci_bus *bus, uns=
-igned long mask,
-> >  =09=09=09resource_size_t r_size;
-> > =20
-> >  =09=09=09if (r->parent || (r->flags & IORESOURCE_PCI_FIXED) ||
-> > +=09=09=09    !pdev_resources_assignable(dev) ||
-> >  =09=09=09    ((r->flags & mask) !=3D type &&
-> >  =09=09=09     (r->flags & mask) !=3D type2 &&
-> >  =09=09=09     (r->flags & mask) !=3D type3))
-> > --=20
-> > 2.39.5
-> >=20
->=20
+Link: https://lore.kernel.org/all/86plf0lgit.fsf@scott-ph-mail.amperecomput=
+ing.com/
 
 --=20
  i.
 
---8323328-1567600272-1755789682=:933--
+> > Tested-by: D Scott Phillips <scott@os.amperecomputing.com>
+> > Signed-off-by: Ilpo J=C3=A4rvinen <ilpo.jarvinen@linux.intel.com>
+> > Reviewed-by: D Scott Phillips <scott@os.amperecomputing.com>
+> > Cc: Christian K=C3=B6nig <christian.koenig@amd.com>
+> > Cc: <stable@vger.kernel.org>
+> > ---
+> >  drivers/pci/setup-bus.c | 26 ++++++++++++++++++--------
+> >  1 file changed, 18 insertions(+), 8 deletions(-)
+> >=20
+> > diff --git a/drivers/pci/setup-bus.c b/drivers/pci/setup-bus.c
+> > index 24863d8d0053..dbbd80d78d3d 100644
+> > --- a/drivers/pci/setup-bus.c
+> > +++ b/drivers/pci/setup-bus.c
+> > @@ -28,6 +28,10 @@
+> >  #include <linux/acpi.h>
+> >  #include "pci.h"
+> > =20
+> > +#define PCI_RES_TYPE_MASK \
+> > +=09(IORESOURCE_IO | IORESOURCE_MEM | IORESOURCE_PREFETCH |\
+> > +=09 IORESOURCE_MEM_64)
+> > +
+> >  unsigned int pci_flags;
+> >  EXPORT_SYMBOL_GPL(pci_flags);
+> > =20
+> > @@ -384,13 +388,19 @@ static bool pci_need_to_release(unsigned long mas=
+k, struct resource *res)
+> >  }
+> > =20
+> >  /* Return: @true if assignment of a required resource failed. */
+> > -static bool pci_required_resource_failed(struct list_head *fail_head)
+> > +static bool pci_required_resource_failed(struct list_head *fail_head,
+> > +=09=09=09=09=09 unsigned long type)
+> >  {
+> >  =09struct pci_dev_resource *fail_res;
+> > =20
+> > +=09type &=3D PCI_RES_TYPE_MASK;
+> > +
+> >  =09list_for_each_entry(fail_res, fail_head, list) {
+> >  =09=09int idx =3D pci_resource_num(fail_res->dev, fail_res->res);
+> > =20
+> > +=09=09if (type && (fail_res->flags & PCI_RES_TYPE_MASK) !=3D type)
+> > +=09=09=09continue;
+> > +
+> >  =09=09if (!pci_resource_is_optional(fail_res->dev, idx))
+> >  =09=09=09return true;
+> >  =09}
+> > @@ -504,7 +514,7 @@ static void __assign_resources_sorted(struct list_h=
+ead *head,
+> >  =09}
+> > =20
+> >  =09/* Without realloc_head and only optional fails, nothing more to do=
+=2E */
+> > -=09if (!pci_required_resource_failed(&local_fail_head) &&
+> > +=09if (!pci_required_resource_failed(&local_fail_head, 0) &&
+> >  =09    list_empty(realloc_head)) {
+> >  =09=09list_for_each_entry(save_res, &save_head, list) {
+> >  =09=09=09struct resource *res =3D save_res->res;
+> > @@ -1708,10 +1718,6 @@ static void __pci_bridge_assign_resources(const =
+struct pci_dev *bridge,
+> >  =09}
+> >  }
+> > =20
+> > -#define PCI_RES_TYPE_MASK \
+> > -=09(IORESOURCE_IO | IORESOURCE_MEM | IORESOURCE_PREFETCH |\
+> > -=09 IORESOURCE_MEM_64)
+> > -
+> >  static void pci_bridge_release_resources(struct pci_bus *bus,
+> >  =09=09=09=09=09 unsigned long type)
+> >  {
+> > @@ -2449,8 +2455,12 @@ int pci_reassign_bridge_resources(struct pci_dev=
+ *bridge, unsigned long type)
+> >  =09=09free_list(&added);
+> > =20
+> >  =09if (!list_empty(&failed)) {
+> > -=09=09ret =3D -ENOSPC;
+> > -=09=09goto cleanup;
+> > +=09=09if (pci_required_resource_failed(&failed, type)) {
+> > +=09=09=09ret =3D -ENOSPC;
+> > +=09=09=09goto cleanup;
+> > +=09=09}
+> > +=09=09/* Only resources with unrelated types failed (again) */
+> > +=09=09free_list(&failed);
+> >  =09}
+> > =20
+> >  =09list_for_each_entry(dev_res, &saved, list) {
+> > --=20
+> > 2.39.5
+> >=20
+>=20
+--8323328-1617396853-1755789778=:933--
 
