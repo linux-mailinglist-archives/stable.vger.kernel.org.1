@@ -1,176 +1,195 @@
-Return-Path: <stable+bounces-171977-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-171978-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 47F8EB2F828
-	for <lists+stable@lfdr.de>; Thu, 21 Aug 2025 14:35:33 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0A2FCB2F87C
+	for <lists+stable@lfdr.de>; Thu, 21 Aug 2025 14:45:01 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 560C8602A91
-	for <lists+stable@lfdr.de>; Thu, 21 Aug 2025 12:33:44 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 4518BAC4B45
+	for <lists+stable@lfdr.de>; Thu, 21 Aug 2025 12:43:28 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3766E30BF76;
-	Thu, 21 Aug 2025 12:33:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7B95831AF17;
+	Thu, 21 Aug 2025 12:41:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=ideasonboard.com header.i=@ideasonboard.com header.b="L1YncIOH"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="W21/DPCq"
 X-Original-To: stable@vger.kernel.org
-Received: from perceval.ideasonboard.com (perceval.ideasonboard.com [213.167.242.64])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-wr1-f68.google.com (mail-wr1-f68.google.com [209.85.221.68])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0ADB02F5E;
-	Thu, 21 Aug 2025 12:33:32 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=213.167.242.64
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7130331196E;
+	Thu, 21 Aug 2025 12:41:34 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.68
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755779616; cv=none; b=UhQSVUP+obgKnX4IVDZIkXG+4wBnJbl9GaYiZbuP7RaItZkT4Y857ygsZCf1rk/8wZSxZy47Bu/HdOzFo5AjfIccpjD1jkbH8xmCr9KqOEBVNNWkD5dJLBzUqXAuFs3mrxBv0wXzER8W59WVWOflJoJYYeq3QgeHgN7UlSExyd8=
+	t=1755780097; cv=none; b=B6iay7zpaVF1X2kB3wiliMixMUpcQSGtEbegDB326RHRzVa8Lfp2XxwQ3WXVeVLuyQjLoQv9CAYvR2OSOBg4+JtJcqXScN78PswzvP7eYiSdLHKRIhIA52DJ4o2n71BAZd6uXN3Fau5uyd5XtwfIdQmx/Sx0+1uEvIbcCZ93kKs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1755779616; c=relaxed/simple;
-	bh=STIWLtVOMHk9RfVFUUas9ZZPysmjI7JRjEhbfGJJX/I=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=U6QxDdVeqWLHkdo5KWdhOAdxDm23EFu4fmafHFq8abP+hAUYDTwaMNug2XNxLOvB95qdRBpDt7lTOOybYHrS02NsMaaJhJnyot83JL1+DVKuMXlpMz2dnaroTjtJLdUwqhO/DPsFrs/RXmukwh49y0Hvh/f9jY3ig9ZZf33SQnA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=ideasonboard.com; spf=pass smtp.mailfrom=ideasonboard.com; dkim=pass (1024-bit key) header.d=ideasonboard.com header.i=@ideasonboard.com header.b=L1YncIOH; arc=none smtp.client-ip=213.167.242.64
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=ideasonboard.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ideasonboard.com
-Received: from pendragon.ideasonboard.com (81-175-209-231.bb.dnainternet.fi [81.175.209.231])
-	by perceval.ideasonboard.com (Postfix) with UTF8SMTPSA id A342EEFF;
-	Thu, 21 Aug 2025 14:32:31 +0200 (CEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=ideasonboard.com;
-	s=mail; t=1755779551;
-	bh=STIWLtVOMHk9RfVFUUas9ZZPysmjI7JRjEhbfGJJX/I=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=L1YncIOH3YE/EcyBbynXHYa8GJMi6nL8Pm2nCWAJhQKuipg3XJiAAE6Yx8H49oOBY
-	 SacwpnqIkyhRZFahZoypuiEzmLg/m6DrUn1QcqWOvPJ9GAxFs1g0tqTVhMrcXUFdmL
-	 aRoIUsqUg0uespog5NQTpTPVY9T6FKgbOoePB/dM=
-Date: Thu, 21 Aug 2025 15:33:07 +0300
-From: Laurent Pinchart <laurent.pinchart@ideasonboard.com>
-To: Guoniu Zhou <guoniu.zhou@nxp.com>
-Cc: Mauro Carvalho Chehab <mchehab@kernel.org>,
-	Shawn Guo <shawnguo@kernel.org>,
-	Sascha Hauer <s.hauer@pengutronix.de>,
-	Pengutronix Kernel Team <kernel@pengutronix.de>,
-	Fabio Estevam <festevam@gmail.com>,
-	Dong Aisheng <aisheng.dong@nxp.com>,
-	Stefan Riedmueller <s.riedmueller@phytec.de>,
-	Christian Hemp <c.hemp@phytec.de>, Jacopo Mondi <jacopo@jmondi.org>,
-	linux-media@vger.kernel.org, imx@lists.linux.dev,
-	linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
-	stable@vger.kernel.org, Frank Li <Frank.Li@nxp.com>
-Subject: Re: [PATCH v2] media: nxp: imx8-isi: Fix streamon/streamoff calls
- are imbalanced issue
-Message-ID: <20250821123307.GB8865@pendragon.ideasonboard.com>
-References: <20250821-isi_m2m-v2-1-c616e4b00600@nxp.com>
+	s=arc-20240116; t=1755780097; c=relaxed/simple;
+	bh=vMbgsNjjm4zsv6kHeB79Iza9JJ78/9jVyLQ06lZ4lRo=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=WNcoSAHWOllbRkM8/SUwwcFM/glpkiW0AC0AouzL/V+sNYAhhkSXQ6o1LfaDnqvuNIHC6HhfAyDUdyO/jYrUvxZUbHQJaFQsRB3icfbL+9BlbGKiYGptV+9ne0ujvCy1inZeSNT1CaRhtH+KdOhxiJLPhBcOSsI1pwxWBmmL1Yw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=W21/DPCq; arc=none smtp.client-ip=209.85.221.68
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-wr1-f68.google.com with SMTP id ffacd0b85a97d-3b9e413a219so710812f8f.3;
+        Thu, 21 Aug 2025 05:41:34 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1755780093; x=1756384893; darn=vger.kernel.org;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=K/rXJGPFK3wi2vxqTh6d3zW1dWSC1/Ce4Xx/Ix7y1KE=;
+        b=W21/DPCq+WrHPfgm62YAf8HNr1wWZVlKVf4t/g+Ii0WfIWZuV4BK9pxPkpFx0pChxY
+         Hn/7mOPX5y65MUKipsLwMoxJudxT2j/eEglv9sT2EyaJOufkmZQBfmtRcDuF6+5AHwB5
+         cDBh0fcvYX52d06Wobr3D9uLH7sJQ1l/eBKHLrX8m6EUJQAqXA8tCLsKsod66e6qNUvd
+         cTsKJVANayCeW8BXVVDkENju8Bw7RILNrxoF/zlK8SKvVc2OuxSh90kiIP/LJ8xbI4LF
+         SnftMwJQGtNNkVcgN9hlxru2zQdhx5HPdzM/gO6jzpYJLuIgfqp+zqbrBk/FF50CgdoG
+         uWgQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1755780093; x=1756384893;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=K/rXJGPFK3wi2vxqTh6d3zW1dWSC1/Ce4Xx/Ix7y1KE=;
+        b=pP30lUQ3lU9xwmNBbOeFzZPkbTtBFP4pqAcQDp4BE76ZW+3r/gGhfAcoBQSyWvQk5R
+         5gwp++YyXypqu+BYv/Vhha4KsOMmJsv2RPCXsiA6XCdpoyDLhE8FxzHdFUfNwb6DFFGM
+         qaNSiDND13I9cbEj1cPVrGX+kJo//M/qISETxsVy2Q+k6j2h4T2DDF7LcDXUqJIqFTtk
+         EPlWagiTU1WimKWzIlBIUYWFQEMrmney18XEBomXVBhwFOQlqlCfvh0I1glGxNtdbqa4
+         rHF+B9aBJQsCzqM7jxxco0ESXNIg/cAG3+p3Pys7f2UcZOrdYTF6YLRGxw3ZQ8ZQMcmp
+         aDNQ==
+X-Forwarded-Encrypted: i=1; AJvYcCWnvWsmLdu4XwPPBFqXXLay34ibjSlGjZbJkacajlWSHYZ8VDAPNSb3LHQLV6pZyOjMUWah09PLxA7BCac=@vger.kernel.org, AJvYcCWq/BLhd32VHuzpVVVBp764WbDXASlJqbMJDCRTedN0dRw5DhpANim+9HLoare6yKeJsfKgu+mDILjQ@vger.kernel.org, AJvYcCXhi0KJOcFeQXYAc24astv0F7/fXnm0zXyFi6WvEBbGgjkovXlvJw5nAt1Q5fwLLc1ikvs3mF9K@vger.kernel.org
+X-Gm-Message-State: AOJu0YwEZd7+weyWduSN0Hko1WhPgbR8hMiLixSrYm7a7sXhDjWO5ZcL
+	CzDk3ShPUJ8S1LnUYujhG1Hu7sXQAsmeDlJBherxRDuB3C0LM7YeuhAa7py5iLxX
+X-Gm-Gg: ASbGnctTD7MQp3f2OoHR4lBsJR6mRGgY9HMDYoNgLRigWbjNgsSNO1lbjEpGssbpMJO
+	LR6B2KgL+k/vJij108tNDWB260X8kKmcfeKql1WxUCFkyGU7isf8UWblCY+O1ZmVrnI2lUaSQJB
+	tU7rx6stQggppVvuxq+frcU5JJ02WluewieBkLS6GKu1s5tkNeq2VIvrBI1eAuxJTakHmwlryQY
+	FrZDxVaiCOAO0P/NeAy0KKDGGfMcUdE8tV+SBEPtMvpXSvFnfi8NN9qLtQnWAaFe+qrEFybD2fw
+	nYItP5+PWaFvdzFxwMSLdYzYWQATvFIW33vIujWRjLZQK+kBx2uRmBXkPEV3IWVLfz0hjkZyJlB
+	3OkqFZKGu+pqM0p+zlu3pEaRay/enwDMl743zZjNUVZQ1W6buX4oEaSoO78+QeF6+KnFEqilcMC
+	UuwdC8EyOS3Q9yjjyPRr1TeZNBa/nsD0dOmu2onHfq2l0nDmQ3D4wG
+X-Google-Smtp-Source: AGHT+IGcpDcX/P1q3uGkxcuaxRs1676Mc/G7jVz/fGjilz+IUOZqIoSzLB5QGJrKSrKiTI0QC2xV8g==
+X-Received: by 2002:a05:6000:4284:b0:3b5:f0af:4bb0 with SMTP id ffacd0b85a97d-3c495687e00mr2017211f8f.23.1755780093100;
+        Thu, 21 Aug 2025 05:41:33 -0700 (PDT)
+Received: from [26.26.26.1] (ec2-63-178-255-169.eu-central-1.compute.amazonaws.com. [63.178.255.169])
+        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-3c3e673ab01sm4930549f8f.18.2025.08.21.05.41.30
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Thu, 21 Aug 2025 05:41:32 -0700 (PDT)
+Message-ID: <048bd3c4-887c-4d17-9636-354cc626afa3@gmail.com>
+Date: Thu, 21 Aug 2025 20:41:28 +0800
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-In-Reply-To: <20250821-isi_m2m-v2-1-c616e4b00600@nxp.com>
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH] PCI/sysfs: Ensure devices are powered for config reads
+To: Brian Norris <briannorris@chromium.org>
+Cc: Bjorn Helgaas <bhelgaas@google.com>, linux-kernel@vger.kernel.org,
+ linux-pci@vger.kernel.org, stable@vger.kernel.org
+References: <20250820102607.1.Ibb5b6ca1e2c059e04ec53140cd98a44f2684c668@changeid>
+ <dfdc655e-1e06-42df-918f-7d56f26a7473@gmail.com>
+ <aKaK4WS0pY0Nb2yi@google.com>
+Content-Language: en-US
+From: Ethan Zhao <etzhao1900@gmail.com>
+In-Reply-To: <aKaK4WS0pY0Nb2yi@google.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
 
-Hi Guoniu,
 
-Thank you for the patch.
 
-On Thu, Aug 21, 2025 at 02:08:29PM +0800, Guoniu Zhou wrote:
-> If streamon/streamoff calls are imbalanced, such as exit application
-> with Ctrl+C when streaming, m2m usage_count will never reach to zero
-> and ISI channel won't be freed. Besides from that, if the input line
-> width is more 2K and exit with Ctrl+C when streaming, it will trigger
-> kernel panic, like bellow:
+On 8/21/2025 10:56 AM, Brian Norris wrote:
+> On Thu, Aug 21, 2025 at 08:54:52AM +0800, Ethan Zhao wrote:
+>> On 8/21/2025 1:26 AM, Brian Norris wrote:
+>>> From: Brian Norris <briannorris@google.com>
+>>>
+>>> max_link_speed, max_link_width, current_link_speed, current_link_width,
+>>> secondary_bus_number, and subordinate_bus_number all access config
+>>> registers, but they don't check the runtime PM state. If the device is
+>>> in D3cold, we may see -EINVAL or even bogus values.
+>> My understanding, if your device is in D3cold, returning of -EINVAL is
+>> the right behavior.
 > 
-> [ 59.222120] ------------[ cut here ]------------
-> [ 59.226758] WARNING: drivers/media/platform/nxp/imx8-isi/imx8-isi-hw.c:631 at mxc_isi_channel_chain+0xa4/0x120, CPU#4: v4l2-ctl/654
-> [ 59.238569] Modules linked in: ap1302
-> [ 59.242231] CPU: 4 UID: 0 PID: 654 Comm: v4l2-ctl Not tainted 6.16.0-rc4-next-20250704-06511-gff0e002d480a-dirty #258 PREEMPT
-> [ 59.253597] Hardware name: NXP i.MX95 15X15 board (DT)
-> [ 59.258720] pstate: 80400009 (Nzcv daif +PAN -UAO -TCO -DIT -SSBS BTYPE=--)
-> [ 59.265669] pc : mxc_isi_channel_chain+0xa4/0x120
-> [ 59.270358] lr : mxc_isi_channel_chain+0x44/0x120
-> [ 59.275047] sp : ffff8000848c3b40
-> [ 59.278348] x29: ffff8000848c3b40 x28: ffff0000859b4c98 x27: ffff800081939f00
-> [ 59.285472] x26: 000000000000000a x25: ffff0000859b4cb8 x24: 0000000000000001
-> [ 59.292597] x23: ffff0000816f4760 x22: ffff0000816f4258 x21: ffff000084ceb780
-> [ 59.299720] x20: ffff000084342ff8 x19: ffff000084340000 x18: 0000000000000000
-> [ 59.306845] x17: 0000000000000000 x16: 0000000000000000 x15: 0000ffffdb369e1c
-> [ 59.313969] x14: 0000000000000000 x13: 0000000000000000 x12: 0000000000000000
-> [ 59.321093] x11: 0000000000000000 x10: 0000000000000000 x9 : 0000000000000000
-> [ 59.328217] x8 : ffff8000848c3d48 x7 : ffff800081930b30 x6 : ffff800081930b30
-> [ 59.335340] x5 : ffff0000859b6000 x4 : ffff80008193ae80 x3 : ffff800081022420
-> [ 59.342464] x2 : ffff0000852f6900 x1 : 0000000000000001 x0 : ffff000084341000
-> [ 59.349590] Call trace:
-> [ 59.352025]  mxc_isi_channel_chain+0xa4/0x120 (P)
-> [ 59.356722]  mxc_isi_m2m_streamon+0x160/0x20c
-> [ 59.361072]  v4l_streamon+0x24/0x30
-> [ 59.364556]  __video_do_ioctl+0x40c/0x4a0
-> [ 59.368560]  video_usercopy+0x2bc/0x690
-> [ 59.372382]  video_ioctl2+0x18/0x24
-> [ 59.375857]  v4l2_ioctl+0x40/0x60
-> [ 59.379168]  __arm64_sys_ioctl+0xac/0x104
-> [ 59.383172]  invoke_syscall+0x48/0x104
-> [ 59.386916]  el0_svc_common.constprop.0+0xc0/0xe0
-> [ 59.391613]  do_el0_svc+0x1c/0x28
-> [ 59.394915]  el0_svc+0x34/0xf4
-> [ 59.397966]  el0t_64_sync_handler+0xa0/0xe4
-> [ 59.402143]  el0t_64_sync+0x198/0x19c
-> [ 59.405801] ---[ end trace 0000000000000000 ]---
-> 		VIDIOC_STREAMON returned -1 (Invalid argument)
+> That's not the guaranteed result though. Some hosts don't properly
+> return PCIBIOS_DEVICE_NOT_FOUND, for one. But also, it's racy -- because
+> we don't even try to hold a pm_runtime reference, the device could
+> possibly enter D3cold while we're in the middle of reading from it. If
+> you're lucky, that'll get you a completion timeout and an all-1's
+> result, and we'll return a garbage result.
 > 
-> So check the queue streaming status when application close and call
-> streamoff to fix the issue.
+> So if we want to purposely not resume the device and retain "I can't
+> give you what you asked for" behavior, we'd at least need a
+> pm_runtime_get_noresume() or similar.
+I understand you just want the stable result of these caps, meanwhile
+you don't want the side effect either.>
+>>> Wrap these access in pci_config_pm_runtime_{get,put}() like most of the
+>>> rest of the similar sysfs attributes.
+>>>
+>>> Fixes: 56c1af4606f0 ("PCI: Add sysfs max_link_speed/width, current_link_speed/width, etc")
+>>> Cc: stable@vger.kernel.org
+>>> Signed-off-by: Brian Norris <briannorris@google.com>
+>>> Signed-off-by: Brian Norris <briannorris@chromium.org>
+>>> ---
+>>>
+>>>    drivers/pci/pci-sysfs.c | 32 +++++++++++++++++++++++++++++---
+>>>    1 file changed, 29 insertions(+), 3 deletions(-)
+>>>
+>>> diff --git a/drivers/pci/pci-sysfs.c b/drivers/pci/pci-sysfs.c
+>>> index 5eea14c1f7f5..160df897dc5e 100644
+>>> --- a/drivers/pci/pci-sysfs.c
+>>> +++ b/drivers/pci/pci-sysfs.c
+>>> @@ -191,9 +191,16 @@ static ssize_t max_link_speed_show(struct device *dev,
+>>>    				   struct device_attribute *attr, char *buf)
+>>>    {
+>>>    	struct pci_dev *pdev = to_pci_dev(dev);
+>>> +	ssize_t ret;
+>>> +
+>>> +	pci_config_pm_runtime_get(pdev);
+>> This function would potentially change the power state of device,
+>> that would be a complex process, beyond the meaning of
+>> max_link_speed_show(), given the semantics of these functions (
+>> max_link_speed_show()/max_link_width_show()/current_link_speed_show()/
+>> ....),
+>> this cannot be done !
 > 
-> Fixes: cf21f328fcaf ("media: nxp: Add i.MX8 ISI driver")
-> Cc: stable@vger.kernel.org
-> Reviewed-by: Frank Li <Frank.Li@nxp.com>
-> Signed-off-by: Guoniu Zhou <guoniu.zhou@nxp.com>
-> ---
-> Changes in v2:
-> - No functions changed, add Cc:stable@vger.kernel.org tag in the sign-off area
-> - Link to v1: https://lore.kernel.org/r/20250818-isi_m2m-v1-1-bbe2b774d4bf@nxp.com
-> ---
->  drivers/media/platform/nxp/imx8-isi/imx8-isi-m2m.c | 8 ++++++++
->  1 file changed, 8 insertions(+)
+> What makes this different than the 'config' attribute (i.e., "read
+> config register")? Why shouldn't that just return -EINVAL? I don't
+> really buy your reasoning -- "it's a complex process" is not a reason
+It is a reason to know there is side effect to be taken into account.> 
+not to do something. The user asked for the link speed; why not give it?
+> If the user wanted to know if the device was powered, they could check
+> the 'power_state' attribute instead.
 > 
-> diff --git a/drivers/media/platform/nxp/imx8-isi/imx8-isi-m2m.c b/drivers/media/platform/nxp/imx8-isi/imx8-isi-m2m.c
-> index 22e49d3a128732c077beb7ac2e2f688e0899f8e2..7650a9fe6b093e2b4e09e3e66b624c8c019c8583 100644
-> --- a/drivers/media/platform/nxp/imx8-isi/imx8-isi-m2m.c
-> +++ b/drivers/media/platform/nxp/imx8-isi/imx8-isi-m2m.c
-> @@ -709,6 +709,14 @@ static int mxc_isi_m2m_release(struct file *file)
->  	struct mxc_isi_m2m *m2m = video_drvdata(file);
->  	struct mxc_isi_m2m_ctx *ctx = to_isi_m2m_ctx(file->private_data);
->  
-> +	if (ctx->queues.out.streaming)
-> +		mxc_isi_m2m_streamoff(file, &ctx->fh,
-> +				      V4L2_BUF_TYPE_VIDEO_OUTPUT_MPLANE);
-> +
-> +	if (ctx->queues.cap.streaming)
-> +		mxc_isi_m2m_streamoff(file, &ctx->fh,
-> +				      V4L2_BUF_TYPE_VIDEO_CAPTURE_MPLANE);
-> +
-
-Stopping streaming is supposed to be handled by the
-v4l2_m2m_ctx_release() function, which calls vb2_queue_release() for
-both queues. This doesn't work today because mxc_isi_m2m_streamon() and
-mxc_isi_m2m_streamoff() perform extra operations before calling
-v4l2_m2m_ioctl_streamon() and v4l2_m2m_ioctl_streamoff(). I think moving
-that code to the .prepare_streaming() and .unprepare_streaming()
-operations would be best, as done in
-https://lore.kernel.org/r/20250813212451.22140-2-laurent.pinchart@ideasonboard.com
-for the non-M2M case.
-
-I'm testing a patch and I will send it out.
-
->  	v4l2_m2m_ctx_release(ctx->fh.m2m_ctx);
->  	mxc_isi_m2m_ctx_ctrls_delete(ctx);
->  
+> (Side note: these attributes don't show up anywhere in Documentation/,
+> so it's also a bit hard to declare "best" semantics for them.)
 > 
-> ---
-> base-commit: 8f5ae30d69d7543eee0d70083daf4de8fe15d585
-> change-id: 20250818-isi_m2m-ac52338ae925
+> To flip this question around a bit: if I have a system that aggressively
+> suspends devices when there's no recent activity, how am I supposed to
+> check what the link speed is? Probabilistically hammer the file while
+> hoping some other activity wakes the device, so I can find the small
+> windows of time where it's RPM_ACTIVE? Disable runtime_pm for the device
+> while I check?
+Hold a PM reference by pci_config_pm_runtime_get() and then write some
+data to the PCIe config space, no objection.
 
--- 
-Regards,
+To know about the linkspeed etc capabilities/not status, how about
+creating a cached version of these caps, no need to change their
+power state.
 
-Laurent Pinchart
+If there is aggressive power saving requirement, and the polling
+of these caps will make up wakeup/poweron bugs.
+
+
+Thanks,
+Ethan
+
+
+
+
+
+
+
+> 
+> Brian
+
 
