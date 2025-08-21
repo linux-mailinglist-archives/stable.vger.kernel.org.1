@@ -1,202 +1,185 @@
-Return-Path: <stable+bounces-172162-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-172163-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0B62CB2FDA4
-	for <lists+stable@lfdr.de>; Thu, 21 Aug 2025 17:02:43 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id D5FE9B2FD8E
+	for <lists+stable@lfdr.de>; Thu, 21 Aug 2025 16:59:22 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id EE9FD1C8785D
-	for <lists+stable@lfdr.de>; Thu, 21 Aug 2025 14:57:04 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id CB98B7AADA3
+	for <lists+stable@lfdr.de>; Thu, 21 Aug 2025 14:57:47 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C07B02EA496;
-	Thu, 21 Aug 2025 14:56:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5B1DE2836B5;
+	Thu, 21 Aug 2025 14:59:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b="lXGqo0Rq"
+	dkim=pass (1024-bit key) header.d=chromium.org header.i=@chromium.org header.b="dsIK0u11"
 X-Original-To: stable@vger.kernel.org
-Received: from NAM11-CO1-obe.outbound.protection.outlook.com (mail-co1nam11on2059.outbound.protection.outlook.com [40.107.220.59])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pl1-f176.google.com (mail-pl1-f176.google.com [209.85.214.176])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1D07C279915;
-	Thu, 21 Aug 2025 14:56:39 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.220.59
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755788201; cv=fail; b=pmhhz9i2W+lICgNxxNX9r/3Sdxr0lHgTsI1sey9hNqdCcllK8YrpccgNsXDFBVtjB1ZuaYebzJ0P5cfUqJ6UEcr96ZZNFjZfncgH/LjyG2tn07z5IRtvcQ4egpYeyCAZEn4GN6TN4zP6oSD0edX5UXyIAFZJBbs+juS48NoIdmg=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1755788201; c=relaxed/simple;
-	bh=ld6/ecGJiEZydo3OCtJYzhDHHos4sc/GcXF/B3VVpCc=;
-	h=From:To:CC:Subject:In-Reply-To:References:Content-Type:
-	 MIME-Version:Message-ID:Date; b=QI3gc8S8iMFuKCpjrzEG2Ls/bVVDHO0xzMyH1hMvPpEGZUV4jmiy/L8Aw8n2FdOb88Ci+vgJBxPoPIabhkn0apge5GtwtFO0r8hBhH8hUccdK8IpbAivrHtmsVZZJb3MRtI8/7chZgV0cfpABBSlZLuLNZBfMsWPldDs49ZxAOg=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com; spf=fail smtp.mailfrom=nvidia.com; dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b=lXGqo0Rq; arc=fail smtp.client-ip=40.107.220.59
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com
-Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=nvidia.com
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=t0LY+WbQEPmpPCsSQZp6Jf1vPdji/pusEwEo8nOtT60W9fvHR3hf3w/Anqsg+xwZZWLBGE9wJoHa9CldbKujcMrD3dz4jojy24U9MjJEMgWvxZJFqPuU9yY95qJtLRn/OFIcIy+gQrfuei4p8MczZcBfAJA7vByvKZEOHjRHGIayJHr3jOqSLScZzEH1uin8N6kmAhJ2axM8Lt8TtBT/lklUaEWY02MC5jp5aeNz+MZJOoV9hBYy67CjGu7zSrE5mELiHiq8H+3ujTWTTUautZ18omeD1eLsr/kime9/zGFbFK3G6m1HrYqnqkaYM1bHUH+i+WlXiFb3OmKelGSyRA==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=oNQrTXiPOZnNjwH69s0hfm4YTYncHFrwb6nTx1zq+p4=;
- b=xvBWtWJbi8EipVnkPsgdcSdAxNK6QJdMq2LpBvNALa8r6a0w0XEOvnn9LdlCZgms1a31y+F9yAcHnYN2/oDEruo9xiGKxk3SJlpJjxdakFy3Ffd30/Kphoxigk8Ko4oa+41i+DA4qGu+3CGe0alWYr6irU7ArZ5FIlNLJMO7cpmYf/zImq0xhbZ3nW9MYq8SbxgRal4n46Sv40oUZnHKMZA9WwY9Fz0VBxF0HjVG+dMGTbVSYD7ilawAm21J8R1pewTs9LfXe4Jdgw7KiVqvV1vS7a/5DxtQPwwR49ep0XkRAIIl1ceMNT5WxbCABjXjBZ+f3GtDZJzocgT+gil95w==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass (sender ip is
- 216.228.117.161) smtp.rcpttodomain=linuxfoundation.org
- smtp.mailfrom=nvidia.com; dmarc=pass (p=reject sp=reject pct=100) action=none
- header.from=nvidia.com; dkim=none (message not signed); arc=none (0)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
- s=selector2;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=oNQrTXiPOZnNjwH69s0hfm4YTYncHFrwb6nTx1zq+p4=;
- b=lXGqo0RqqtQTDxcnPG+u6cl63q/m2fhzYqtSDdtT1JRI4CDcv7gKZbGyrWzb9jXlQBeBm5Xu//DjqhjTaGe5iGpEO4+twcIvaWezdSKDPtHDTOSu4waIxIw5bB4KcYdux9ayem/iDoEv9ogMwV8cAoB82y5ZQ9VN2j88dfs2nTrM0Bpi1s4b/rGVi3cc2n4fTa29DhVnlCWmu9yKWLzumYF7Icga1VlNHxceICbj8ftQt329TW7KcthAgHxTgCxqndxsLkbRfBc5pMDwIOhnz4yv4qUWyNZFQkgOcOKyeSMC0YgXpXmxmnhlLsHBcd6qNbnSJhdOyVhoQ88Vp+SdaA==
-Received: from PH8PR20CA0020.namprd20.prod.outlook.com (2603:10b6:510:23c::21)
- by PH0PR12MB8775.namprd12.prod.outlook.com (2603:10b6:510:28e::19) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9031.25; Thu, 21 Aug
- 2025 14:56:36 +0000
-Received: from SN1PEPF000252A2.namprd05.prod.outlook.com
- (2603:10b6:510:23c:cafe::1) by PH8PR20CA0020.outlook.office365.com
- (2603:10b6:510:23c::21) with Microsoft SMTP Server (version=TLS1_3,
- cipher=TLS_AES_256_GCM_SHA384) id 15.20.9052.16 via Frontend Transport; Thu,
- 21 Aug 2025 14:56:36 +0000
-X-MS-Exchange-Authentication-Results: spf=pass (sender IP is 216.228.117.161)
- smtp.mailfrom=nvidia.com; dkim=none (message not signed)
- header.d=none;dmarc=pass action=none header.from=nvidia.com;
-Received-SPF: Pass (protection.outlook.com: domain of nvidia.com designates
- 216.228.117.161 as permitted sender) receiver=protection.outlook.com;
- client-ip=216.228.117.161; helo=mail.nvidia.com; pr=C
-Received: from mail.nvidia.com (216.228.117.161) by
- SN1PEPF000252A2.mail.protection.outlook.com (10.167.242.9) with Microsoft
- SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.20.9052.8 via Frontend Transport; Thu, 21 Aug 2025 14:56:36 +0000
-Received: from rnnvmail204.nvidia.com (10.129.68.6) by mail.nvidia.com
- (10.129.200.67) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1544.14; Thu, 21 Aug
- 2025 07:56:15 -0700
-Received: from rnnvmail203.nvidia.com (10.129.68.9) by rnnvmail204.nvidia.com
- (10.129.68.6) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1544.14; Thu, 21 Aug
- 2025 07:56:14 -0700
-Received: from jonathanh-vm-01.nvidia.com (10.127.8.9) by mail.nvidia.com
- (10.129.68.9) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1544.14 via Frontend
- Transport; Thu, 21 Aug 2025 07:56:14 -0700
-From: Jon Hunter <jonathanh@nvidia.com>
-To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-CC: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-	<patches@lists.linux.dev>, <linux-kernel@vger.kernel.org>,
-	<torvalds@linux-foundation.org>, <akpm@linux-foundation.org>,
-	<linux@roeck-us.net>, <shuah@kernel.org>, <patches@kernelci.org>,
-	<lkft-triage@lists.linaro.org>, <pavel@denx.de>, <jonathanh@nvidia.com>,
-	<f.fainelli@gmail.com>, <sudipm.mukherjee@gmail.com>, <srw@sladewatkins.net>,
-	<rwarsow@gmx.de>, <conor@kernel.org>, <hargar@microsoft.com>,
-	<broonie@kernel.org>, <achill@achill.org>, <linux-tegra@vger.kernel.org>,
-	<stable@vger.kernel.org>
-Subject: Re: [PATCH 6.15 000/509] 6.15.11-rc2 review
-In-Reply-To: <20250819122834.836683687@linuxfoundation.org>
-References: <20250819122834.836683687@linuxfoundation.org>
-X-NVConfidentiality: public
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id ACC322F6194
+	for <stable@vger.kernel.org>; Thu, 21 Aug 2025 14:58:59 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.176
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1755788341; cv=none; b=cBYYiC/b7UC7ChyiQyIzXhNtytHiZiQ7GLy0HFGapwedUMmSkhTUQR/3VmEQ/rf8EjN+Ugad8VW2Z5ww/QZTr8hQjaKruMwKrrEbkVMZAHfMeZyPA7o5JesMHiL7gAx4OBujp5Eo7YWNzW9yP+Y6LsOJFjsz3wevprLjvpm+akU=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1755788341; c=relaxed/simple;
+	bh=Tz/VZwFoOgQ0Y4zvdRFkegcxdyj0tPL1i1gvMWA7+7Q=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=N1J/utW/F7JPnEupfFGusnWIqOdnMWGGac1s4Jgb4077pKh7lE95fiVhaASf5/0RKKDcNHaLhcxvW7WoGSXiW3a0PgrjHaNkGzNrB/AYkwBAkQ0XG6Py5rT8M7GcbGrV/02wsNbviq9F5lTJJt9DCpU2Z7q/tB+IbhX3WLs94+w=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=chromium.org; spf=pass smtp.mailfrom=chromium.org; dkim=pass (1024-bit key) header.d=chromium.org header.i=@chromium.org header.b=dsIK0u11; arc=none smtp.client-ip=209.85.214.176
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=chromium.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=chromium.org
+Received: by mail-pl1-f176.google.com with SMTP id d9443c01a7336-245f19a324bso10030325ad.0
+        for <stable@vger.kernel.org>; Thu, 21 Aug 2025 07:58:59 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=chromium.org; s=google; t=1755788339; x=1756393139; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=aaLinSTBsg2Heqd5n/Y8HcIpri3LMWuuwE5FV81Iuv8=;
+        b=dsIK0u11Uj2shhL/rM82sHsgOs/rTJuf7U4i6Kw/NZ8/E4cl4wQD1yLrHaQ9XGISGH
+         OEn9H+qpR5Y9JniVagCZSBGmOoOO6LIoVMd/7lGT8VLhnzWXmxrRTVmhO02hFuMqn75o
+         bIfH5DLdHzk6EegT9kMohlQENMXNSInMHb2sI=
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1755788339; x=1756393139;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=aaLinSTBsg2Heqd5n/Y8HcIpri3LMWuuwE5FV81Iuv8=;
+        b=i5l6uzpVKvCa65c9Fi8tjKW6t08fR9w8u0Csw4ZSsBEnIEMh6bDhF8sWMqX3hFAdZT
+         030FLrX3lGoGio6CfKMoHj2HqfDgZ5J93QxNDxGb8mSp/gCMcjPPjBWum9S5q/tq3dCB
+         qrKTmbiCQjck+uqrh/u3gGEFyiuLmTOCAe/OjicVcTzFDDSoEGFBC0abSRUJDT4IMB2b
+         sLUyzZdi5gHXmlq9z9guBDeTOgGt3rM4etufIx+kxlp7SoUznTuDArteBwfVQNt97tJE
+         arUNDa7cnpUDVhR8JllZjRaLVJSAOOIvpfOw9UjzodXl9Rf6C6oKI+J4fZgd32roWtmv
+         XFsA==
+X-Forwarded-Encrypted: i=1; AJvYcCX77/j7d1oMJM2B0OOiG2HBxjzO5gBhLDvxXm5X6rnVwM5pDdQQuHXqmzSPxET8VgBeOAiBI1Y=@vger.kernel.org
+X-Gm-Message-State: AOJu0YwnwiC3hNn0k/l2jGCYnEjDnkeDeFIPToK2z8S+IKHgpdzQvLU1
+	kj+sOYR+pwxfw7ARAHjKdSXQoOoX5+yrz9obpMOXECSIcMavJXGhYQwdDGGzLMuwFA==
+X-Gm-Gg: ASbGncsFwg+4gWSQoSyfZ9EFsiMiq896HnvNv++gYMR7iocKjrSGPAZmsXbUkUecTTE
+	a93/lVaJ46STlGkRHD4Lszs0kqVuUFLCGDCRlib1IElJTJoU3Izi4xm776LkGVTMWXgoDH+D0w2
+	grYHcKTQGyMGXV0e0Qq4K4cE3/KHMyD/eNZ4MmeH997tErwQeTq3xUgnP4Af5uxUeJOUiiyGPmx
+	XMHSxP++Ul+JtSIVgnury9WLYpEhiKe0+9fhqE1+uQifYnxVmJrZY4jufaUqm1IcfadQsg5mcsZ
+	jmbMylaWmpPKqj7X6fNzZFkxcTccJYoht+U0pvUbz8v3WRIIlMnNWumgl/zRSbaLyjIihWFrwew
+	cYFkuHrNsEE5kQaIewLvqm6YKBMizS2hgqULGK7b9IuX2japvYPR6KIe4QtyUdn2I4kZgRdM=
+X-Google-Smtp-Source: AGHT+IF5jd207eAHYlWkozFvV4W7rHhk80wb+yRJAbAhw3XVWRLn8xbVDIiu2vgUdgY7fOZrtSdwdQ==
+X-Received: by 2002:a17:902:d4cd:b0:246:571:4b21 with SMTP id d9443c01a7336-24605714c9dmr35347695ad.58.1755788338577;
+        Thu, 21 Aug 2025 07:58:58 -0700 (PDT)
+Received: from localhost ([2a00:79e0:2e14:7:2283:604f:d403:4841])
+        by smtp.gmail.com with UTF8SMTPSA id d9443c01a7336-245ed33aa3esm58509915ad.24.2025.08.21.07.58.57
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Thu, 21 Aug 2025 07:58:58 -0700 (PDT)
+From: Brian Norris <briannorris@chromium.org>
+To: Bjorn Helgaas <bhelgaas@google.com>
+Cc: linux-kernel@vger.kernel.org,
+	linux-pci@vger.kernel.org,
+	Brian Norris <briannorris@google.com>,
+	stable@vger.kernel.org,
+	Brian Norris <briannorris@chromium.org>
+Subject: [PATCH] PCI/PM: Ensure power-up succeeded before restoring MMIO state
+Date: Thu, 21 Aug 2025 07:58:12 -0700
+Message-ID: <20250821075812.1.I2dbf483156c328bc4a89085816b453e436c06eb5@changeid>
+X-Mailer: git-send-email 2.51.0.rc1.193.gad69d77794-goog
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Message-ID: <f4249250-73f4-4b80-83f0-61e4f8f951f3@rnnvmail203.nvidia.com>
-Date: Thu, 21 Aug 2025 07:56:14 -0700
-X-NV-OnPremToCloud: ExternallySecured
-X-EOPAttributedMessage: 0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: SN1PEPF000252A2:EE_|PH0PR12MB8775:EE_
-X-MS-Office365-Filtering-Correlation-Id: 1223a45b-d484-4458-aa9e-08dde0c2ed07
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|1800799024|7416014|376014|82310400026|36860700013;
-X-Microsoft-Antispam-Message-Info:
-	=?utf-8?B?bXFMeTZhZWtHTnpyQ21PS1VQZVpHUHBXeEdmSnlyZ0ZLNk1MamR0WlJYTDcr?=
- =?utf-8?B?ZzVkMVZwK2o5cUhhZDNkL3VpS0I2RzkzaEVVYVFKbDZqa0JrczVTYkdDby9k?=
- =?utf-8?B?YUJib0R2YzJnU3RwcEhLWGplWmx3ZXZHblY5MFpWMDIydmpuVEhEWm1qREVo?=
- =?utf-8?B?R0tkZ0RaV0ZVZnpkcEVVcnFRaUE4VVh5bmN6OEIvOGxtWGpzV2twUGFlbnVF?=
- =?utf-8?B?VTN3YytOM2dIdnRuRldtQkhhbU9ldDZSdTl4NjVRQml0VWgzT3RDZzg1T2JI?=
- =?utf-8?B?b2txa1dIdldUVnpGbWVKa21QQXJ6RDd5N3gxV0IxTXJVRTVWL2lEdnh2ajM4?=
- =?utf-8?B?cUR4ZGs3UmM2dDFKWU5pcUpuV00ycXkyc1VxWCtkMFdzNjh3VmJqT1YrMGZB?=
- =?utf-8?B?SFFlVUhMeFd0TEdWNWdOVUJxM084MTVLQkEwWFRMS0tRdDNoZEYyTVR3cUFT?=
- =?utf-8?B?Sm5pWEphaXhIUVE1OWNGSHljYVZFV1gxOVd2OHhqcUJMS2owcWpKTDlFVEo0?=
- =?utf-8?B?bEFvY0p3VnAwdDh6aEtCRk9McEtLczh3b0JzbmZETUFRYUJpSUM5Mldoc3FM?=
- =?utf-8?B?ZDBFemJlWk5EN1lFazFkWkpXbFlJTTZvNU1DOG9mQ0cxdmt4L3kyZ1hOQjdS?=
- =?utf-8?B?M3NXelBDbEpiVFcyK0JxR3hvaHB2NEh4dExEekNYK2lONTJlektqczQ0YXY5?=
- =?utf-8?B?SGpTZDd3RGpDOHJpV0pxMkxSaXU0SFB2dnFMcHFISnd6UFVzb2s1TEJSay9w?=
- =?utf-8?B?ME9QcXUvZzlHdHVYYlBIRUVQam1xMkF5ZlVzWkRqZUV0NkZicFUrOFNYeU8x?=
- =?utf-8?B?V0h1bkVSYWgvTHpOUWtNRU9XcW04SzViMWM1QjRTRWNhQnBZaTZFNENPRUVi?=
- =?utf-8?B?ek01RDVlQ25RQTAxdk01VzErZm80RDJLUWdCWEVSVThkZFozaUpCUUNKUG1Z?=
- =?utf-8?B?bnl2SlFJb2xNNXNqeUpLdEVYWXhBQVpGYlZ2V1RFMEZZUERENUd5QmhoTStT?=
- =?utf-8?B?UGw3aFlDWGdTVWlwM1JHbjFDVVVNUUdqNmFXMzBJNGFMWmJxQzFlZUFjUHhp?=
- =?utf-8?B?dW9US0x3ZmcrSlNHbXZQWlJHT2ZSbURXc3NkMVYvNlBmS0Z0YjZPWVhpTHBF?=
- =?utf-8?B?bVhndWRNZ1RjWG9JMlBGclJidUJYRXllYmVFT3RNNkQwbTc0dDNYTjVYUG1Z?=
- =?utf-8?B?YmVxTi9CVXJWZEhDRGVBY3YwOGFyMlpBUlBXYWd4UVVaL0ZuZklORnZZcHBQ?=
- =?utf-8?B?bUtNQ0NJL1pYamw2VlNUNWxNWVh3bTRUcmFJcmlqSmhwdXlrT2dpWGZnbGxp?=
- =?utf-8?B?bXAwNGZWZnBEQmtsQTc1ekVUY2dZRVppZ0NFSHNBUzU0cXhjQ0V2VjlUTmZw?=
- =?utf-8?B?eEoxMW5LME42SUhnd1h6bFAzSXh3UEl5L3l6QksySyt6bDZ3clZ6T0NJZWxp?=
- =?utf-8?B?TSsvZU9QQWVscFdldytXeFZiVDhiN05TMGoyTEZzQnQ4dUJROHhGQ0J5Q1g2?=
- =?utf-8?B?UnU3dTFMUGo1V3UrNE9DaXlBcCs0MG1mdUdOOUZSZ2NsM2ZRbSttMDhpMmty?=
- =?utf-8?B?aEVqNjJoa2hHUVNGWjJxUUtpaVdmckZ3ZVU0bXBmaWF1Si85SkNMYkxWVGll?=
- =?utf-8?B?WitEbmhEUHJkYURWdUZpdThIeXpQTWRTdGhDcFFaNDFlVGRYamJabUNxY3lm?=
- =?utf-8?B?dW93clRtNWx6SnoxQk92NFBuQ3FTTXlaWjRqV0hRMFIyK1Y5MmdJYlg2VFJq?=
- =?utf-8?B?ODhqMGJkamQwY0NOTEpabUZpV3Q2dVpxNlBNdXR3bm9DRDNhM1JrT2xNbTk4?=
- =?utf-8?B?V2dwL0ZYTXFpUjh0Y28vTEtlTk9FVCsxbjBHczkxSEkxWEV1NEVsNFVXcFJO?=
- =?utf-8?B?Wm80QVlITlRoclJudEtUSjNRVGhZNVRTTExiRHdieUQ4cGlrODBQSm9WV01G?=
- =?utf-8?B?Qm01VmYzN051L2RnNndyRkFmY2NGMjBQVXlOZnBNZHhCaVVoYnQ5VU94RmRP?=
- =?utf-8?B?VWc3dWd3N0dGYnRBNmk0V0dCWW5NdTR2WXNJb0E2d3o2U3BPTWRxaCtneWpz?=
- =?utf-8?B?a3RabEh0OVkwRnora3VaTUdNVUYyLzBWSERWZz09?=
-X-Forefront-Antispam-Report:
-	CIP:216.228.117.161;CTRY:US;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:mail.nvidia.com;PTR:dc6edge2.nvidia.com;CAT:NONE;SFS:(13230040)(1800799024)(7416014)(376014)(82310400026)(36860700013);DIR:OUT;SFP:1101;
-X-OriginatorOrg: Nvidia.com
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 21 Aug 2025 14:56:36.0006
- (UTC)
-X-MS-Exchange-CrossTenant-Network-Message-Id: 1223a45b-d484-4458-aa9e-08dde0c2ed07
-X-MS-Exchange-CrossTenant-Id: 43083d15-7273-40c1-b7db-39efd9ccc17a
-X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=43083d15-7273-40c1-b7db-39efd9ccc17a;Ip=[216.228.117.161];Helo=[mail.nvidia.com]
-X-MS-Exchange-CrossTenant-AuthSource:
-	SN1PEPF000252A2.namprd05.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Anonymous
-X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: PH0PR12MB8775
+Content-Transfer-Encoding: 8bit
 
-On Tue, 19 Aug 2025 14:31:36 +0200, Greg Kroah-Hartman wrote:
-> This is the start of the stable review cycle for the 6.15.11 release.
-> There are 509 patches in this series, all will be posted as a response
-> to this one.  If anyone has any issues with these being applied, please
-> let me know.
-> 
-> Responses should be made by Thu, 21 Aug 2025 12:27:20 +0000.
-> Anything received after that time might be too late.
-> 
-> The whole patch series can be found in one patch at:
-> 	https://www.kernel.org/pub/linux/kernel/v6.x/stable-review/patch-6.15.11-rc2.gz
-> or in the git tree and branch at:
-> 	git://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stable-rc.git linux-6.15.y
-> and the diffstat can be found below.
-> 
-> thanks,
-> 
-> greg k-h
+From: Brian Norris <briannorris@google.com>
 
-All tests passing for Tegra ...
+As the comments in pci_pm_thaw_noirq() suggest, pci_restore_state() may
+need to restore MSI-X state in MMIO space. This is only possible if we
+reach D0; if we failed to power up, this might produce a fatal error
+when touching memory space.
 
-Test results for stable-v6.15:
-    10 builds:	10 pass, 0 fail
-    28 boots:	28 pass, 0 fail
-    120 tests:	120 pass, 0 fail
+Check for errors (as the "verify" in "pci_pm_power_up_and_verify_state"
+implies), and skip restoring if it fails.
 
-Linux version:	6.15.11-rc2-gcf068471031d
-Boards tested:	tegra124-jetson-tk1, tegra186-p2771-0000,
-                tegra186-p3509-0000+p3636-0001, tegra194-p2972-0000,
-                tegra194-p3509-0000+p3668-0000, tegra20-ventana,
-                tegra210-p2371-2180, tegra210-p3450-0000,
-                tegra30-cardhu-a04
+This mitigates errors seen during resume_noirq, for example, when the
+platform did not resume the link properly.
 
-Tested-by: Jon Hunter <jonathanh@nvidia.com>
+Cc: stable@vger.kernel.org
+Signed-off-by: Brian Norris <briannorris@google.com>
+Signed-off-by: Brian Norris <briannorris@chromium.org>
+---
 
-Jon
+ drivers/pci/pci-driver.c | 12 +++++++++---
+ drivers/pci/pci.c        | 13 +++++++++++--
+ drivers/pci/pci.h        |  2 +-
+ 3 files changed, 21 insertions(+), 6 deletions(-)
+
+diff --git a/drivers/pci/pci-driver.c b/drivers/pci/pci-driver.c
+index 302d61783f6c..d66d95bd0ca2 100644
+--- a/drivers/pci/pci-driver.c
++++ b/drivers/pci/pci-driver.c
+@@ -557,7 +557,13 @@ static void pci_pm_default_resume(struct pci_dev *pci_dev)
+ 
+ static void pci_pm_default_resume_early(struct pci_dev *pci_dev)
+ {
+-	pci_pm_power_up_and_verify_state(pci_dev);
++	/*
++	 * If we failed to reach D0, we'd better not touch MSI-X state in MMIO
++	 * space.
++	 */
++	if (pci_pm_power_up_and_verify_state(pci_dev))
++		return;
++
+ 	pci_restore_state(pci_dev);
+ 	pci_pme_restore(pci_dev);
+ }
+@@ -1101,8 +1107,8 @@ static int pci_pm_thaw_noirq(struct device *dev)
+ 	 * in case the driver's "freeze" callbacks put it into a low-power
+ 	 * state.
+ 	 */
+-	pci_pm_power_up_and_verify_state(pci_dev);
+-	pci_restore_state(pci_dev);
++	if (!pci_pm_power_up_and_verify_state(pci_dev))
++		pci_restore_state(pci_dev);
+ 
+ 	if (pci_has_legacy_pm_support(pci_dev))
+ 		return 0;
+diff --git a/drivers/pci/pci.c b/drivers/pci/pci.c
+index e698278229f2..c75fec3b094f 100644
+--- a/drivers/pci/pci.c
++++ b/drivers/pci/pci.c
+@@ -3144,10 +3144,19 @@ void pci_d3cold_disable(struct pci_dev *dev)
+ }
+ EXPORT_SYMBOL_GPL(pci_d3cold_disable);
+ 
+-void pci_pm_power_up_and_verify_state(struct pci_dev *pci_dev)
++int pci_pm_power_up_and_verify_state(struct pci_dev *pci_dev)
+ {
+-	pci_power_up(pci_dev);
++	int ret;
++
++	ret = pci_power_up(pci_dev);
+ 	pci_update_current_state(pci_dev, PCI_D0);
++
++	if (ret < 0 && pci_dev->current_state == PCI_D3cold) {
++		dev_err(&pci_dev->dev, "Failed to power up device: %d\n", ret);
++		return ret;
++	}
++
++	return 0;
+ }
+ 
+ /**
+diff --git a/drivers/pci/pci.h b/drivers/pci/pci.h
+index 1c48bc447f58..87ad201417d5 100644
+--- a/drivers/pci/pci.h
++++ b/drivers/pci/pci.h
+@@ -233,7 +233,7 @@ void pci_dev_adjust_pme(struct pci_dev *dev);
+ void pci_dev_complete_resume(struct pci_dev *pci_dev);
+ void pci_config_pm_runtime_get(struct pci_dev *dev);
+ void pci_config_pm_runtime_put(struct pci_dev *dev);
+-void pci_pm_power_up_and_verify_state(struct pci_dev *pci_dev);
++int pci_pm_power_up_and_verify_state(struct pci_dev *pci_dev);
+ void pci_pm_init(struct pci_dev *dev);
+ void pci_ea_init(struct pci_dev *dev);
+ void pci_msi_init(struct pci_dev *dev);
+-- 
+2.51.0.rc1.193.gad69d77794-goog
+
 
