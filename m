@@ -1,163 +1,132 @@
-Return-Path: <stable+bounces-172205-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-172206-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 120BDB3012E
-	for <lists+stable@lfdr.de>; Thu, 21 Aug 2025 19:36:28 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id E85B8B3017E
+	for <lists+stable@lfdr.de>; Thu, 21 Aug 2025 19:53:13 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id C04B87BD58A
-	for <lists+stable@lfdr.de>; Thu, 21 Aug 2025 17:34:52 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id A43B53A5F1D
+	for <lists+stable@lfdr.de>; Thu, 21 Aug 2025 17:53:12 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C0B0B33A016;
-	Thu, 21 Aug 2025 17:36:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 87B32338F57;
+	Thu, 21 Aug 2025 17:53:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="OFeLqVwJ"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Vh6qw56/"
 X-Original-To: stable@vger.kernel.org
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.11])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A01B9338F4E;
-	Thu, 21 Aug 2025 17:36:15 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.11
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 415FB1FE44D;
+	Thu, 21 Aug 2025 17:53:08 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755797777; cv=none; b=uCUjTT3XbopY8kJH6gJ8qMPlnz/4Edt+IXCkUqwKt4WxP1jvV77k0P0uUlTfe8W9P9BKvPQBYkEn7ZMPpPehAGgZHwwWCWgewXc6cF8WQPTQ7Zba5+qYH68Yac9fky78YEUAsgRck70uZ0VZoRP/Ov2XuI170gvc4dt7qXuWXN0=
+	t=1755798789; cv=none; b=eY/PA8UrOdMNM1PUnE4GeaT/dhGQsJTjdudnErJBsWf5bNMGnLtCWO2tMDK+ioJSg2JjDXYfjmUydFDc/m3dm2wHQugYWjCWDUVgi/3lpR29wooApw4honGk3cj236aSc/5qhmWHSP8Cp4QmPWq9rGDz+PET6NinwT9y88Ae2XQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1755797777; c=relaxed/simple;
-	bh=vmPUkwIY7xTJbegwgmYK1BrARx4bDlGC/nSbHP79/+M=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=h/tHhZOvYrc+yE/UFaS9ehv28EPZtbMtJibfp27TfZaGpHeX0kg7oBF0Ux0XNwtoh2bg24tBj/YJmZbH40AXLkcYEG6Ewotqhw9GxNl69FjiuhW4xB7Phw9CcZ+2RvuBAJQO+t+NAg5auwcnHUHB6nrAENcp8zH3j3kLQSr79u8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=OFeLqVwJ; arc=none smtp.client-ip=192.198.163.11
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1755797775; x=1787333775;
-  h=message-id:date:mime-version:subject:to:cc:references:
-   from:in-reply-to:content-transfer-encoding;
-  bh=vmPUkwIY7xTJbegwgmYK1BrARx4bDlGC/nSbHP79/+M=;
-  b=OFeLqVwJlOWMXeQH1e1lJI+v0ls6ABkhN6y4eyLsDynP0Q3Eeb2xpeDf
-   f0XaBD0Z+pwvSEePQ9EhZw0pk2pt16IelPdFd1unmxhYzyZrDEmhSlC2L
-   tqzsiYJ63pc/3IUptEI+JVomlBfZCCnE//v+tZO4wWNyixppMEf4rKjQv
-   Ev6hLIo9wOHqdC1PVOYdnH75xJ3AhSC9u8LOYFFgwMNPiKYJ0J6k3j7hF
-   Wt9Ukee+S6NYABiSpWtOXY5z1EjHoTEr92y+gAX7QKyJD7yIm5VLUS5YK
-   9ngM4+iK66quHf4dFL3QU8QcspmrMJfvHjxruOuNkOMYCu+85IdZxrmfA
-   w==;
-X-CSE-ConnectionGUID: vlIB1bxpTGuwl1IPlQ4LGA==
-X-CSE-MsgGUID: NJbx45gkTxScO1a11z3TfQ==
-X-IronPort-AV: E=McAfee;i="6800,10657,11529"; a="68697584"
-X-IronPort-AV: E=Sophos;i="6.17,309,1747724400"; 
-   d="scan'208";a="68697584"
-Received: from orviesa006.jf.intel.com ([10.64.159.146])
-  by fmvoesa105.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 21 Aug 2025 10:36:14 -0700
-X-CSE-ConnectionGUID: OeJWtaQ9Sf2wv3oMHTrZHw==
-X-CSE-MsgGUID: 3zh/WxAMSy6zdBECMmBLcA==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.17,309,1747724400"; 
-   d="scan'208";a="167700499"
-Received: from puneetse-mobl.amr.corp.intel.com (HELO [10.125.108.119]) ([10.125.108.119])
-  by orviesa006-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 21 Aug 2025 10:36:14 -0700
-Message-ID: <3976ef5d-a959-408a-b538-7feba1f0ab7a@intel.com>
-Date: Thu, 21 Aug 2025 10:36:12 -0700
+	s=arc-20240116; t=1755798789; c=relaxed/simple;
+	bh=HkSJibYAsBk+7KP9bP1bTvrw2NGup1d12g9fEzw+9e8=;
+	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
+	 MIME-Version; b=c6CN4IhJMo8RWgLoy9E2es5DAxpkrQtOS3b9bIyGIt8GJhiBPOAJU+JPyPak8oaJkgTuIaBjL06ab1RHduik70SKOe1S74cFrXlCR5hzdTnM4lHIbhAV27ZFPk3EXZst8YxPOjIreJFKLV92zyr6n81onC0EmD+JWlJpClHw4o4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Vh6qw56/; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9BFB5C4CEEB;
+	Thu, 21 Aug 2025 17:53:08 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1755798788;
+	bh=HkSJibYAsBk+7KP9bP1bTvrw2NGup1d12g9fEzw+9e8=;
+	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
+	b=Vh6qw56/5TCRJBeoEyYFxuGjnHdIl62D3lD+4oUm9BrnAlZOENKlkw2cNDA5pxA0N
+	 zbmDSfe+l1ff6aXaymdNeyugqMpSAS8xZtUfB4782aF916hoIri8Zr4X2h5ImrxFwN
+	 x29SAXXKL09OySO0DZWKsy59QOX5wk5OXAT0/lZvpvrjPE9agaIvYbIYyisNTxox1C
+	 UvxzUSUowp6IN7N/Toerpz9O0ifNHCqmwCXuNGOvHAoAoEM1jikMUx6VBcuHm4RA5c
+	 0rYadFlZwAWd1UOk1Wl1RALPu1rCx8Whkaj7V0q+5J8hr6PQsevFSdmw7BN4Sxsy6d
+	 oDrJw0quz0+KA==
+From: SeongJae Park <sj@kernel.org>
+To: Sang-Heon Jeon <ekffu200098@gmail.com>
+Cc: SeongJae Park <sj@kernel.org>,
+	honggyu.kim@sk.com,
+	damon@lists.linux.dev,
+	linux-mm@kvack.org,
+	akpm@linux-foundation.org,
+	stable@vger.kernel.org
+Subject: Re: [PATCH v3] mm/damon/core: set quota->charged_from to jiffies at first charge window
+Date: Thu, 21 Aug 2025 10:53:06 -0700
+Message-Id: <20250821175307.82928-1-sj@kernel.org>
+X-Mailer: git-send-email 2.39.5
+In-Reply-To: <20250821163346.1690784-1-ekffu200098@gmail.com>
+References: 
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v2] mm: fix KASAN build error due to p*d_populate_kernel()
-To: Harry Yoo <harry.yoo@oracle.com>
-Cc: Liam.Howlett@oracle.com, akpm@linux-foundation.org, andreyknvl@gmail.com,
- aneesh.kumar@linux.ibm.com, anshuman.khandual@arm.com, apopple@nvidia.com,
- ardb@kernel.org, arnd@arndb.de, bp@alien8.de, cl@gentwo.org,
- dave.hansen@linux.intel.com, david@redhat.com, dennis@kernel.org,
- dev.jain@arm.com, dvyukov@google.com, glider@google.com,
- gwan-gyeong.mun@intel.com, hpa@zyccr.com, jane.chu@oracle.com,
- jgross@suse.de, jhubbard@nvidia.com, joao.m.martins@oracle.com,
- joro@8bytes.org, kas@kernel.org, kevin.brodsky@arm.com,
- linux-arch@vger.kernel.org, linux-kernel@vger.kernel.org,
- linux-mm@kvack.org, lorenzo.stoakes@oracle.com, luto@kernel.org,
- maobibo@loongson.cn, mhocko@suse.com, mingo@redhat.com, osalvador@suse.de,
- peterx@redhat.com, peterz@infradead.org, rppt@kernel.org,
- ryabinin.a.a@gmail.com, ryan.roberts@arm.com, stable@vger.kernel.org,
- surenb@google.com, tglx@linutronix.de, thuth@redhat.com, tj@kernel.org,
- urezki@gmail.com, vbabka@suse.cz, vincenzo.frascino@arm.com, x86@kernel.org,
- zhengqi.arch@bytedance.com
-References: <20250821093542.37844-1-harry.yoo@oracle.com>
- <20250821115731.137284-1-harry.yoo@oracle.com>
-From: Dave Hansen <dave.hansen@intel.com>
-Content-Language: en-US
-Autocrypt: addr=dave.hansen@intel.com; keydata=
- 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
-In-Reply-To: <20250821115731.137284-1-harry.yoo@oracle.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+Content-Transfer-Encoding: 8bit
 
-On 8/21/25 04:57, Harry Yoo wrote:
-> However, {pgd,p4d}_populate_kernel() is defined as a function regardless
-> of the number of page table levels, so the compiler may not optimize
-> them away. In this case, the following linker error occurs:
+On Fri, 22 Aug 2025 01:33:46 +0900 Sang-Heon Jeon <ekffu200098@gmail.com> wrote:
 
-This part of the changelog confused me. I think it's focusing on the
-wrong thing.
+> Kernel initialize "jiffies" timer as 5 minutes below zero, as shown in
+> include/linux/jiffies.h
+> 
+> /*
+> * Have the 32 bit jiffies value wrap 5 minutes after boot
+> * so jiffies wrap bugs show up earlier.
+> */
+> #define INITIAL_JIFFIES ((unsigned long)(unsigned int) (-300*HZ))
+> 
+> And jiffies comparison help functions cast unsigned value to signed to
+> cover wraparound
+> 
+> #define time_after_eq(a,b) \
+>  (typecheck(unsigned long, a) && \
+>  typecheck(unsigned long, b) && \
+>  ((long)((a) - (b)) >= 0))
+> 
+> When quota->charged_from is initialized to 0, time_after_eq() can incorrectly
+> return FALSE even after reset_interval has elapsed. This occurs when 
+> (jiffies - reset_interval) produces a value with MSB=1, which is interpreted
+> as negative in signed arithmetic.
+> 
+> This issue primarily affects 32-bit systems because:
+> On 64-bit systems: MSB=1 values occur after ~292 million years from boot
+> (assuming HZ=1000), almost impossible.
+> 
+> On 32-bit systems: MSB=1 values occur during the first 5 minutes after boot,
+> and the second half of every jiffies wraparound cycle, starting from day 25
+> (assuming HZ=1000)
+> 
+> When above unexpected FALSE return from time_after_eq() occurs, the
+> charging window will not reset. The user impact depends on esz value
+> at that time.
+> 
+> If esz is 0, scheme ignores configured quotas and runs without any
+> limits.
+> 
+> If esz is not 0, scheme stops working once the quota is exhausted. It
+> remains until the charging window finally resets.
+> 
+> So, change quota->charged_from to jiffies at damos_adjust_quota() when
+> it is considered as the first charge window. By this change, we can avoid
+> unexpected FALSE return from time_after_eq()
 
-The code that's triggering this is literally:
+Thank you for this patch, Sang-Heon!  But, checkpatch.pl raises below three
+warnings.  Could you please fix those and send yet another version?
 
->                         pgd_populate(&init_mm, pgd,
->                                         lm_alias(kasan_early_shadow_p4d));
+    WARNING: Commit log lines starting with '#' are dropped by git as comments
+    #16:
+    #define INITIAL_JIFFIES ((unsigned long)(unsigned int) (-300*HZ))
 
-It sure _looks_ like it's unconditionally referencing the
-'kasan_early_shadow_p4d' symbol. I think it's wrong to hide that with
-macro magic and just assume that the macros won't reference it.
+    WARNING: Commit log lines starting with '#' are dropped by git as comments
+    #21:
+    #define time_after_eq(a,b) \
 
-If a symbol isn't being defined, it shouldn't be referenced in C code.:q
+    WARNING: Prefer a maximum 75 chars per line (possible unwrapped commit description?)
+    #26:
+    When quota->charged_from is initialized to 0, time_after_eq() can incorrectly
 
-The right way to do it is to have an #ifdef in a header that avoids
-compiling in the reference to the symbol.
 
-But just changing the 'static inline' to a #define seems like a fragile
-hack to me.
+Thanks,
+SJ
+
+[...]
 
