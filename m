@@ -1,58 +1,58 @@
-Return-Path: <stable+bounces-172213-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-172214-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0E5ABB301DA
-	for <lists+stable@lfdr.de>; Thu, 21 Aug 2025 20:18:26 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id A7AA2B3020E
+	for <lists+stable@lfdr.de>; Thu, 21 Aug 2025 20:29:02 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id D6AA5178730
-	for <lists+stable@lfdr.de>; Thu, 21 Aug 2025 18:18:25 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id AFBA5B6192E
+	for <lists+stable@lfdr.de>; Thu, 21 Aug 2025 18:25:29 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 397A9284695;
-	Thu, 21 Aug 2025 18:18:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id BC69E2FB63C;
+	Thu, 21 Aug 2025 18:26:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="l2vo8Y5N"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="HGmw+3ZT"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EDF7719EED3
-	for <stable@vger.kernel.org>; Thu, 21 Aug 2025 18:18:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7A77D2C21C3
+	for <stable@vger.kernel.org>; Thu, 21 Aug 2025 18:26:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755800302; cv=none; b=ig5PXzGn8zZIpQM6ZLrcWadKCi0Y2RjbZS+eKMj2P3iV5NXySPjwqzTe/QCvX71gAI+9dhQ1W3FDj6b0w9W1ein0RLAvw/AFayEzJLru4D8xkPsxelkmSwT2QG5RG0D+NxKeo6210KOdEFTDZ1ih6Ew/nQ4CZwh07abgj07fSJM=
+	t=1755800817; cv=none; b=pJ2pfz/IsNbQ6R6BgHMODtTfpvqBGv7tZxgYjc0OjCFrYS5+/70umr1tsRmKsvxhiFulMZCHs6vcBpPSDLuHb60BpCoJpVDQIIJA8FdgbYYXrJ25h7ZCwenqP4GQxFQ9zif28bkDZHYmHYElEcNB+t85veqOOD+2T0fzh1/pmkg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1755800302; c=relaxed/simple;
-	bh=qBUu9ey73D6gncW/WtcF/rAkVmTK/mHSPFw+sWdwTRk=;
+	s=arc-20240116; t=1755800817; c=relaxed/simple;
+	bh=Jns9dM6bNUD2PTcsoWc8SsUsE/eiP0j6c3h0Gkcyqd0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=GtvFgQL/9fGH6dMVbglDrhgo5moONxX2GRoqd16s71BmIDYiq98nmLMpy+Mjrld1ZPVArrbHoe709OSvWIy60UElR7bUdD7naSM19DzQyLg3monRBGYo1A0+GY0t5EqDaSjftxlvoV0+KqvRWyjLQ3GKTP3HswJliuPNWYzYEWc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=l2vo8Y5N; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D59DFC4CEEB;
-	Thu, 21 Aug 2025 18:18:19 +0000 (UTC)
+	 MIME-Version; b=IkTnUdhK8GxQ3nlEMNjZvmBNDdJd86ycrAlnQn3y+o2GTu6ahnW8ANDSZP6HRIjnsjeanPaSzvdbXM3HaqkHrUytGQLSRO2sbKmgM2RSzcJD+XepwxLOogZ6vHIyhVuG3bBB3kb1eg8H35I0I0G5tZ2mFsHSKILOt8L9Pc3gprM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=HGmw+3ZT; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 74E94C4CEEB;
+	Thu, 21 Aug 2025 18:26:56 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1755800300;
-	bh=qBUu9ey73D6gncW/WtcF/rAkVmTK/mHSPFw+sWdwTRk=;
+	s=k20201202; t=1755800817;
+	bh=Jns9dM6bNUD2PTcsoWc8SsUsE/eiP0j6c3h0Gkcyqd0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=l2vo8Y5NAwdiEd8ybcwESVojo7KYVgoelLxnxwP9OUGFuXSXs4eO8TN2mpHJeXYRy
-	 0PytbsG4bO23/jzj0OCM0S3fD/8lyCMxHI5/SwsAmx+oP60LZf064RU/fK59NHIQZa
-	 MDVfXXkXlV5HV/eoxiHK8ocK6mkcNngMQ5BfEywrbUccn4AACdTwjD+Epb4WzMpLey
-	 7ZQXjoj8665/rTqgp3oyjgtO/l+fSB4bQfyspSGIAulTqH8B7aCUX5TpoK8d8Guj0H
-	 kZ3Y7J+QEQiYf1rIKDM+SQWWZQ+qNHvYRGe/8zj8Gh4Rju73QtS41J482xhr50uHNA
-	 n2K2zggIkL9zw==
+	b=HGmw+3ZTYzTklfahCE7bIo53qmzJByejkVtknqhJLwjVVOO5tJKyhsFlNirkCWpch
+	 psIMbccRIjpeLQ0v7UPn2A2yMfiPKgCdrqJ6kF539KTl4NO1wEZCekJ5f5Nt84sWuA
+	 ORMYsoy09O+1PTvu2mGAUY13yDY1GL01xPc+N2pyZ6/0HQHU6z4ujuPYwulqYX8Jw1
+	 YtuEFdNUBvXkdBwlQrwbH2yuj6trgsfrz0H2cEyTtMXmoxOQQHOvkV9EBgWVscy0p4
+	 dPXv2hHXazyGe6qixryLthd0ch7TYMxWL3g8JZIvAbVglC6OAEpUooke5oWQWUUMH6
+	 Q8iV5brur7fOA==
 From: Sasha Levin <sashal@kernel.org>
 To: stable@vger.kernel.org
 Cc: Damien Le Moal <dlemoal@kernel.org>,
 	Hannes Reinecke <hare@suse.de>,
 	Niklas Cassel <cassel@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10.y] ata: Fix SATA_MOBILE_LPM_POLICY description in Kconfig
-Date: Thu, 21 Aug 2025 14:18:16 -0400
-Message-ID: <20250821181816.887742-1-sashal@kernel.org>
+Subject: [PATCH 5.4.y] ata: Fix SATA_MOBILE_LPM_POLICY description in Kconfig
+Date: Thu, 21 Aug 2025 14:26:54 -0400
+Message-ID: <20250821182654.891907-1-sashal@kernel.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <2025082138-moustache-breezy-3b73@gregkh>
-References: <2025082138-moustache-breezy-3b73@gregkh>
+In-Reply-To: <2025082138-collected-demeaning-2359@gregkh>
+References: <2025082138-collected-demeaning-2359@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -81,10 +81,10 @@ Signed-off-by: Sasha Levin <sashal@kernel.org>
  1 file changed, 26 insertions(+), 9 deletions(-)
 
 diff --git a/drivers/ata/Kconfig b/drivers/ata/Kconfig
-index 030cb32da980..a752253f7a5e 100644
+index a6beb2c5a692..dbde78feda31 100644
 --- a/drivers/ata/Kconfig
 +++ b/drivers/ata/Kconfig
-@@ -117,22 +117,39 @@ config SATA_AHCI
+@@ -92,22 +92,39 @@ config SATA_AHCI
  
  config SATA_MOBILE_LPM_POLICY
  	int "Default SATA Link Power Management policy for mobile chipsets"
