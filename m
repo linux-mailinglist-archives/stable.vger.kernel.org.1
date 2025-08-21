@@ -1,99 +1,146 @@
-Return-Path: <stable+bounces-172074-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-172075-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5B3AFB2FA57
-	for <lists+stable@lfdr.de>; Thu, 21 Aug 2025 15:28:35 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id D2F38B2FA6F
+	for <lists+stable@lfdr.de>; Thu, 21 Aug 2025 15:31:23 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 4BAE816CEAD
-	for <lists+stable@lfdr.de>; Thu, 21 Aug 2025 13:24:34 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id A9E6D3B8D00
+	for <lists+stable@lfdr.de>; Thu, 21 Aug 2025 13:25:31 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 83B9B334376;
-	Thu, 21 Aug 2025 13:24:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 89E5A3376B3;
+	Thu, 21 Aug 2025 13:24:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="U7TUwZm0"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="JTuXPe1v"
 X-Original-To: stable@vger.kernel.org
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.16])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DCFF93314D7
-	for <stable@vger.kernel.org>; Thu, 21 Aug 2025 13:24:27 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.16
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 48C513376B1
+	for <stable@vger.kernel.org>; Thu, 21 Aug 2025 13:24:59 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755782669; cv=none; b=BRihZ5f16dDSlMWUYtoVEaOLSwXVdaaFr6rd2ycfAfR710Sf6hJmiCJsUAALe/wxvu8y7rEME4QT1+OiXSy4vfLkTxfPvEkFwIJ4TMT8FKClEbqOfP9UfVgRvp329UbZJ+4ODxbwnDKOkYsxKN1O909AKDWz9iFzdoAFfdO3/as=
+	t=1755782699; cv=none; b=QUuUpCMojsDqs/gTpYb+2P2Wm9EW7MibreE3QWazTRWPmO0Ku+VsewrMMpCgMYYSMO4XFcTnUfggjMtTwKY5Oo4iM2vt0jssdBFhPs4hBgG8xXD5h+v9OufuwkHr4MimFYo7/L0tShKKvzpfE96YI4Qf+2tr8Orv4X8H74qNOao=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1755782669; c=relaxed/simple;
-	bh=wUeDnYir6m5KvyHidemxL9akHy6dwTuVuG/zzgMIb2M=;
-	h=Date:From:To:Cc:Subject:Message-ID:MIME-Version:Content-Type:
-	 Content-Disposition:In-Reply-To; b=OxB/lSKpeeh6W8eUBcBBYqx6BeiXmCNQrTgBCyLtMz5SFbFHII1OPL4F2+3TpmujuVfe+PAlKF6P1JRGIPf2rmIlk9agQ9A/uHsIqogLpbxLSJq8eyOPET/oYCEUSW91LvhDIaK5xUQlV+lWok2S8fAZVv95c3GguqhDceyXpfY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=U7TUwZm0; arc=none smtp.client-ip=198.175.65.16
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1755782668; x=1787318668;
-  h=date:from:to:cc:subject:message-id:mime-version:
-   in-reply-to;
-  bh=wUeDnYir6m5KvyHidemxL9akHy6dwTuVuG/zzgMIb2M=;
-  b=U7TUwZm0Ssd1UF3mKoclLB3vEub33Ovm7rhc5A/zXevbu/uNNaSt6LMW
-   0XqWUvKeqY5KYK2t7QB6VGZHHQcdY/cWW0zLjLZZVnlWqGVGQdz2IMOoj
-   5Eq25ngEuZQ3p2Xw+kTqYNPMJcbrQ7r1kSdVvVjlpNCTIzxye1gzKO5/Y
-   MQaiu2aZWqwVvN7b9kwrzP8k+U1hF1mqO47T/+2rDGfMTsbuvq+sKXOOj
-   S4cVPdNUBO5X92ipcIrgKFWLj8DFDq3CwS2O+cRMmtam7+EHilMc/kVSJ
-   lpFBQRWcCqqfzFLXEsrCohOhNr5YJaWJIcOGLlWBCXYn5lezlIMwqoTMo
-   A==;
-X-CSE-ConnectionGUID: JFBxH1NnSyOJiTnkROqF+Q==
-X-CSE-MsgGUID: 6SA+cVlpQni6xkUKAhnnbg==
-X-IronPort-AV: E=McAfee;i="6800,10657,11529"; a="58216745"
-X-IronPort-AV: E=Sophos;i="6.17,306,1747724400"; 
-   d="scan'208";a="58216745"
-Received: from fmviesa003.fm.intel.com ([10.60.135.143])
-  by orvoesa108.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 21 Aug 2025 06:24:28 -0700
-X-CSE-ConnectionGUID: e+O0B2y/Q5ycEDDM5yCXNg==
-X-CSE-MsgGUID: SASbzjPmQHK6XHqWR1bBlw==
-X-ExtLoop1: 1
-Received: from lkp-server02.sh.intel.com (HELO 4ea60e6ab079) ([10.239.97.151])
-  by fmviesa003.fm.intel.com with ESMTP; 21 Aug 2025 06:24:26 -0700
-Received: from kbuild by 4ea60e6ab079 with local (Exim 4.96)
-	(envelope-from <lkp@intel.com>)
-	id 1up5H5-000KJV-16;
-	Thu, 21 Aug 2025 13:24:17 +0000
-Date: Thu, 21 Aug 2025 21:23:34 +0800
-From: kernel test robot <lkp@intel.com>
-To: Jinjie Ruan <ruanjinjie@huawei.com>
-Cc: stable@vger.kernel.org, oe-kbuild-all@lists.linux.dev
-Subject: Re: [PATCH v6.6 2/2] x86/irq: Plug vector setup race
-Message-ID: <aKcd1qWqHm-S7t13@85d67d3e4d56>
+	s=arc-20240116; t=1755782699; c=relaxed/simple;
+	bh=RW0u/AFlwsWFNHFCMrMOUq3lCpnW7YEYFwDN8Wp0SWg=;
+	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=YeO+L53mDAATiuj4rV3qRd/PwDZiBqs7yO9wLKatuKlMstMXVc2WddNyJ4jRA82zL6Lj+sUWE0Z1AuFJW+MpSkZ4kNl/4QgDVh+dwfTzIJXCmIOi0/p3wyFSXDlbJf+6IkmM2V3rLsJm/s7r5TrTe8ZLE85+xvWZU/3Llk3ktv0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=JTuXPe1v; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A9CCFC4CEED;
+	Thu, 21 Aug 2025 13:24:58 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
+	s=korg; t=1755782699;
+	bh=RW0u/AFlwsWFNHFCMrMOUq3lCpnW7YEYFwDN8Wp0SWg=;
+	h=Subject:To:Cc:From:Date:From;
+	b=JTuXPe1vLItKGc/JAN0eb05Lnt+D76VBVJORv9kTn1PTS9XZWV8mRfrAZ+q99UbEF
+	 niCSSxTAFUsqw70U/oJYqIAKIsPZiWDXfKyaZEkpBq73MopEb9SMTUayMgDYk2uZcP
+	 s7L5DxWCJlMRH7fARVZmu2qbdbAdTA2yV5u38yRE=
+Subject: FAILED: patch "[PATCH] mfd: cros_ec: Separate charge-control probing from USB-PD" failed to apply to 6.16-stable tree
+To: linux@weissschuh.net,lee@kernel.org,linux@tlvince.com,tzungbi@kernel.org
+Cc: <stable@vger.kernel.org>
+From: <gregkh@linuxfoundation.org>
+Date: Thu, 21 Aug 2025 15:24:56 +0200
+Message-ID: <2025082155-turf-thinly-ac0e@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20250821131228.1094633-3-ruanjinjie@huawei.com>
-
-Hi,
-
-Thanks for your patch.
-
-FYI: kernel test robot notices the stable kernel rule is not satisfied.
-
-The check is based on https://www.kernel.org/doc/html/latest/process/stable-kernel-rules.html#option-3
-
-Rule: The upstream commit ID must be specified with a separate line above the commit text.
-Subject: [PATCH v6.6 2/2] x86/irq: Plug vector setup race
-Link: https://lore.kernel.org/stable/20250821131228.1094633-3-ruanjinjie%40huawei.com
-
-Please ignore this mail if the patch is not relevant for upstream.
-
--- 
-0-DAY CI Kernel Test Service
-https://github.com/intel/lkp-tests/wiki
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
 
 
+The patch below does not apply to the 6.16-stable tree.
+If someone wants it applied there, or to any other stable or longterm
+tree, then please email the backport, including the original git commit
+id to <stable@vger.kernel.org>.
+
+To reproduce the conflict and resubmit, you may use the following commands:
+
+git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-6.16.y
+git checkout FETCH_HEAD
+git cherry-pick -x e40fc1160d491c3bcaf8e940ae0dde0a7c5e8e14
+# <resolve conflicts, build, test, etc.>
+git commit -s
+git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2025082155-turf-thinly-ac0e@gregkh' --subject-prefix 'PATCH 6.16.y' HEAD^..
+
+Possible dependencies:
+
+
+
+thanks,
+
+greg k-h
+
+------------------ original commit in Linus's tree ------------------
+
+From e40fc1160d491c3bcaf8e940ae0dde0a7c5e8e14 Mon Sep 17 00:00:00 2001
+From: =?UTF-8?q?Thomas=20Wei=C3=9Fschuh?= <linux@weissschuh.net>
+Date: Wed, 21 May 2025 16:42:51 +0200
+Subject: [PATCH] mfd: cros_ec: Separate charge-control probing from USB-PD
+MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+
+The charge-control subsystem in the ChromeOS EC is not strictly tied to
+its USB-PD subsystem.
+
+Since commit 7613bc0d116a ("mfd: cros_ec: Don't load charger with UCSI")
+the presence of EC_FEATURE_UCSI_PPM would inhibit the probing of the
+charge-control driver.
+
+Furthermore recent versions of the EC firmware in Framework laptops
+hard-disable EC_FEATURE_USB_PD to avoid probing cros-usbpd-charger,
+which then also breaks cros-charge-control.
+
+Instead use the dedicated EC_FEATURE_CHARGER.
+
+Cc: stable@vger.kernel.org
+Link: https://github.com/FrameworkComputer/EmbeddedController/commit/1d7bcf1d50137c8c01969eb65880bc83e424597e
+Fixes: 555b5fcdb844 ("mfd: cros_ec: Register charge control subdevice")
+Signed-off-by: Thomas Weißschuh <linux@weissschuh.net>
+Reviewed-by: Tzung-Bi Shih <tzungbi@kernel.org>
+Tested-by: Tom Vincent <linux@tlvince.com>
+Link: https://lore.kernel.org/r/20250521-cros-ec-mfd-chctl-probe-v1-1-6ebfe3a6efa7@weissschuh.net
+Signed-off-by: Lee Jones <lee@kernel.org>
+
+diff --git a/drivers/mfd/cros_ec_dev.c b/drivers/mfd/cros_ec_dev.c
+index 9f84a52b48d6..dc80a272726b 100644
+--- a/drivers/mfd/cros_ec_dev.c
++++ b/drivers/mfd/cros_ec_dev.c
+@@ -87,7 +87,6 @@ static const struct mfd_cell cros_ec_sensorhub_cells[] = {
+ };
+ 
+ static const struct mfd_cell cros_usbpd_charger_cells[] = {
+-	{ .name = "cros-charge-control", },
+ 	{ .name = "cros-usbpd-charger", },
+ 	{ .name = "cros-usbpd-logger", },
+ };
+@@ -112,6 +111,10 @@ static const struct mfd_cell cros_ec_ucsi_cells[] = {
+ 	{ .name = "cros_ec_ucsi", },
+ };
+ 
++static const struct mfd_cell cros_ec_charge_control_cells[] = {
++	{ .name = "cros-charge-control", },
++};
++
+ static const struct cros_feature_to_cells cros_subdevices[] = {
+ 	{
+ 		.id		= EC_FEATURE_CEC,
+@@ -148,6 +151,11 @@ static const struct cros_feature_to_cells cros_subdevices[] = {
+ 		.mfd_cells	= cros_ec_keyboard_leds_cells,
+ 		.num_cells	= ARRAY_SIZE(cros_ec_keyboard_leds_cells),
+ 	},
++	{
++		.id		= EC_FEATURE_CHARGER,
++		.mfd_cells	= cros_ec_charge_control_cells,
++		.num_cells	= ARRAY_SIZE(cros_ec_charge_control_cells),
++	},
+ };
+ 
+ static const struct mfd_cell cros_ec_platform_cells[] = {
 
 
