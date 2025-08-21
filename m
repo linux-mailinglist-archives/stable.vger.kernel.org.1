@@ -1,214 +1,332 @@
-Return-Path: <stable+bounces-171934-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-171935-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 82FEDB2E9CE
-	for <lists+stable@lfdr.de>; Thu, 21 Aug 2025 02:55:11 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id BFD5AB2EA0C
+	for <lists+stable@lfdr.de>; Thu, 21 Aug 2025 03:08:22 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 62ABC7BC485
-	for <lists+stable@lfdr.de>; Thu, 21 Aug 2025 00:53:35 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id A2CB1171A77
+	for <lists+stable@lfdr.de>; Thu, 21 Aug 2025 01:08:22 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 03BCF1E5B64;
-	Thu, 21 Aug 2025 00:55:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 846A91B87F2;
+	Thu, 21 Aug 2025 01:08:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="VeQ/g63d"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="Z/WW3Luy"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-ed1-f68.google.com (mail-ed1-f68.google.com [209.85.208.68])
+Received: from mail-oo1-f50.google.com (mail-oo1-f50.google.com [209.85.161.50])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 08F331804A;
-	Thu, 21 Aug 2025 00:54:59 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.68
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 932BC1632DD
+	for <stable@vger.kernel.org>; Thu, 21 Aug 2025 01:08:15 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.161.50
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755737701; cv=none; b=sziBKrB6Cpm4K1XngzakOAsA2Ck0ONXjTfqkbAHUKa/FvHR7CNpCAd3IDGlAnmPu2B9nBmb5JOnrxRDQgOJ2nBhjy8YMHNct6aRbIodueH15Y8XR4Ls0zcJYrt850iaCbKaR/kWKmzUUFaaaggGKBxB5gfjUoM+81r1K6yfvxMQ=
+	t=1755738497; cv=none; b=W8xEflLPZ4OREg+UwjHldoD6AVK+PeVCgALR99q2L2rOv1sHCu/YFwu6g9HjY5faiOx0Jb0bQPGZkVblnsNV/A4wMLy63znUfHYACD2LeNfxjSfmZ4sR+4D/PqSWmVLUcisU8fh5o2BWeHEqwU5AGTdE9hvoETQwBxI6BRZKSpw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1755737701; c=relaxed/simple;
-	bh=zEKH0whlqLewLZsL8A8sZUR/hXkcaQSTvtaOJ3AF/CY=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=e2CuRpFLX2Ev7xiVSMI9hGgbmdoULpLhMmyKF6/vD3IuH/9aSfltzho9hIOxy6qbw60coZqcHF78RagSm0AyhrfJg6PQb5moab513bPW/SyJGYNjbA3wKyEVyJbfQMUKT1k8j9Lp3iJLVrLPWtFxDMXBarM3WN7KHk4XPzeUgFk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=VeQ/g63d; arc=none smtp.client-ip=209.85.208.68
+	s=arc-20240116; t=1755738497; c=relaxed/simple;
+	bh=8kTU1n+xaCdto/irG3ILeQHG8Yy2ik7dXsDiYP3zOhM=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=W5ZRxK/hv9P6StDGu87auldJG0WcBxM02RgP74Ium2TELiGxcXc7jnLECbZ6UVQXHZbAxAGiWbLrRZk87YKsA4mc0BbK3/yV+K+Ydl47RWqJ9xkLvGPyPUc4oBZ99mikSUcDwhx1Rp5/LLzF0GIOAu1DTZrdkgOLX7BtZGF7USE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=Z/WW3Luy; arc=none smtp.client-ip=209.85.161.50
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-ed1-f68.google.com with SMTP id 4fb4d7f45d1cf-61a94bd82a5so849696a12.1;
-        Wed, 20 Aug 2025 17:54:59 -0700 (PDT)
+Received: by mail-oo1-f50.google.com with SMTP id 006d021491bc7-61bf9ef4cc0so260019eaf.0
+        for <stable@vger.kernel.org>; Wed, 20 Aug 2025 18:08:15 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1755737698; x=1756342498; darn=vger.kernel.org;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=ECt6+t5ZFrrfkRkr0o7E1VCkPJWhGAI+xLcJ6W+PWtc=;
-        b=VeQ/g63dz+YuNBBWe12yaleoR/xvwjE/lPB7i/eemdByNiu78d2BzOolJkj6VVZ4kV
-         6s4Xv1EMy1SRMgYe1DHawb8F9ATscYLA+1sN0RgWxwuLyG3HspBlRm/BhdbnXYWJHvan
-         zyCCFnO5f9E7AqrKX1kyJwHxLYeWe+UKhWJfzc2tU/lJYVU0rHNydLz9Hle4az9SBPpo
-         DyoTZXHRn+jN/RR7mVCVMwLtFPXntPNE2ynI6C5zVDGHMJSJmim8baxlbzpcXaDFXJsL
-         mVQXNXDa8Rc4WBeamWYM9wbU2jytyQfllyH1Bq2BklGO4VkLi1yFNyVj2pK19qeVyxT3
-         sosA==
+        d=gmail.com; s=20230601; t=1755738494; x=1756343294; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=GokggVHwsWgtzvgyN/qEZFMv+f52a+8zLwqs+NYYW14=;
+        b=Z/WW3LuyOxsFUjhelxi4vMbykIxckmkpBf5Pk1LDAwOVSQlVjXrYelFFV4lzKsVA8Y
+         Sc3qnPIlZ1L6lXGFUA6+/pnVnLvn3a1GZwe2bqIuTPvCgsGko4vPztKpGf/uxt2HBflO
+         XFtVqbtRLLIGDHPF8fDPX/lX3DqPc253p+AUcTO0EYmbs+AUV8k2govC1ICCkBUDBa4w
+         UN6O33jPtaJJpB6wDof5KwEnC/QHeZgGL67wE+BCS8UQd+mf38aMtoa6MeLonW+Ne4QE
+         lJrGU1GqDdzEWt7ip2ukUCKLaR4cBqfc7txxuuyqvbnhIM2DwHKHFURo95NaMjozgGqt
+         8Pfg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1755737698; x=1756342498;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=ECt6+t5ZFrrfkRkr0o7E1VCkPJWhGAI+xLcJ6W+PWtc=;
-        b=u7uIdhsTeOYDlNRG3adA7X1MDAthb4/HJZK59HeZ/lBCRKbdGfne5ThE4/nIr7I4tO
-         oDcDci9ffOJE2gEGBIUiDpxgIW31bhApo/q2npksImHG8xS3GqAglv3ruwtyZsOJVtTm
-         2x8lPitw5ntyvwDjlXdB430g0lFAj55WmSLGXLaDT+wEwKXUqfC13ls3PSq2zWJglNx3
-         IG66Ya/SSLekW51F/C7xBghgm3+NpANFOxY+fUOBB7GyTb2SIP8jlEisKDLnaO7TJBdD
-         63Bq6ylD1oVwxsKx7IMPJtPRh8qUYWfNCFarELmS5Vze2/NSQOFNP/kBcfn4+Vv9kRFc
-         Rkcg==
-X-Forwarded-Encrypted: i=1; AJvYcCWGaPNnEHeYbUrM0JEeh+7nECO5zyy7fsXUD+g1iCOlawnpjZTSJke45qP1Sjn+n5enCIO7Gx4kHfA=@vger.kernel.org, AJvYcCWOOiLGndnlmRZjiicq5KFIub7TSK4iudwwN1UtcP0xWAhIHyIIzL4Tc07d8wIl4RnHWYKLv3LI@vger.kernel.org
-X-Gm-Message-State: AOJu0YwrgavGVUEPhevK3vin9pomkumzK6DGdngvmuIm8z4NSbfkbfVq
-	Lt7T+JakzHpJNUCYh1xTFvLDr8ihInjzSP7Gag9X+uyHRV99B0NIBicb
-X-Gm-Gg: ASbGncsZlicflViyan75LqUOCll9K0pvawGqxhWiC+DkqF0uEZRKUsd3/pU1v8o9gEA
-	o75RGM3c/5YUYDu0IzJEzUmE1sz2RgvkjROY32niYTotKu8bVcY2orHShOeOvruHCHWsuD19A9G
-	lOYq9SmkzbUb9xG0kKd9HrdpwK6a2YznskTPZ8TF6qzS16ezIIrg3Y1w6Uw65wV5XPur5GAHZyv
-	vTsFsHy8QDgGAPciha5rWM+0TyvjFcFqXW4p28CXzYir5BiaGHnKDSoEBhw7m9Z1LRn/QqL1CpR
-	QU6ea4WBgPjIUWxuaGAiEH7dqjSUI9AiGJNLpPLt08B0WXgfuYRcYmKTEUtKCHOLy+bjT/gDyMS
-	6cdcNNBQjns4IrCSSiqRKiJtcTPOI81/UpJVczmYgL8drOlVtz1Yc92DadNvOPcire06qgVBPqm
-	M1H2T8vc+Xfdh7kzrYruai
-X-Google-Smtp-Source: AGHT+IGqhADzawZRc4KqXqlNcb31shVNdQejYqkinActEiOhb/cOrOXHd0P2GElngi4E1XNG9BHO5g==
-X-Received: by 2002:a17:907:6d24:b0:af9:5b1f:b87a with SMTP id a640c23a62f3a-afe07b08fdemr68615666b.20.1755737698151;
-        Wed, 20 Aug 2025 17:54:58 -0700 (PDT)
-Received: from [26.26.26.1] (95.112.207.35.bc.googleusercontent.com. [35.207.112.95])
-        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-afded30bf00sm281725666b.30.2025.08.20.17.54.54
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Wed, 20 Aug 2025 17:54:56 -0700 (PDT)
-Message-ID: <dfdc655e-1e06-42df-918f-7d56f26a7473@gmail.com>
-Date: Thu, 21 Aug 2025 08:54:52 +0800
+        d=1e100.net; s=20230601; t=1755738494; x=1756343294;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=GokggVHwsWgtzvgyN/qEZFMv+f52a+8zLwqs+NYYW14=;
+        b=K3vcJMnGg5S/p0l23lmIpsfCb+Io+0MoGCmKG3yYEg6eW4EuZnFrlYAiaxpoey+SYO
+         XnemrEn4IHxEcaEp04Jy17AUQKyrkVBFVpK25r0WHJzNPdCB8uBzxHLwiM8s4u+9sKDu
+         +JuX6roGCOKuZlTRHcQx8X2Dsgx3ShyBPfwMcXoWYEOrSr/T/URgMsOPwRH2z0HERgsL
+         i2VdD1pHX65YdKrEiYq2jSKbVfSq4kSW654bIcAmXTsnQeoT0/Kjw1sQf/EyfqZ1udqr
+         6qcFrUst63V2IWf4T70w3ET8ma5P6pN2g7esinjDL9H4FhUE5/BoplU6LOWKLDjp4gQ1
+         oNFg==
+X-Forwarded-Encrypted: i=1; AJvYcCXa3XVQpSp+ThtI2HeGWij2dW2TpHVumkwvjSO/IQNmGhWuaY85oelncB6qMV6lVMEUMQ2Lk5U=@vger.kernel.org
+X-Gm-Message-State: AOJu0YwePirXvQ7snaLARnpvb3r8McnzQhiKq0H3TP05ykiO/bWdYMg5
+	ztk+36iiuOTUiUk7hs2bqf6HZ5y1eKhncoqMkm/IpuwV4hvDA8a6/JEfT/xCfZjkT+D7Yle4Tqh
+	iAc+Y2Slh0hhwFl+1GSGjxgLy5sVGpl4=
+X-Gm-Gg: ASbGncuq40z4Sq0S9bsnM8aWS0SgTugLLJZVx71kEXLS5F/fhnaRN/3quG4zU6U1r9K
+	HVd/geUOzQ0db5gUKzm2JGfyTsjbJ5b10FQSnmNhqSQrKPLs8Uo29VnbiFJv785+ynq8QYlmJ1t
+	hNUEwGho0/Rc9qGamuyBOSOMZiOcSQFlbrb6pA0E3CVoeJsGvwOuqD2pkjA/a8F1NcLIu50//oj
+	DOkgWARTOmQErE=
+X-Google-Smtp-Source: AGHT+IGMEq9pUyB7v0+w/oAnTu045iauyj+xCtdjs1ZA7QXJ8rtw+r/qDQiXoul2PqnBQyc4BEn2rmtyCs5i345g5Ao=
+X-Received: by 2002:a05:6820:80a:b0:61d:a32d:610f with SMTP id
+ 006d021491bc7-61dab37e23dmr228323eaf.3.1755738494510; Wed, 20 Aug 2025
+ 18:08:14 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH] PCI/sysfs: Ensure devices are powered for config reads
-To: Brian Norris <briannorris@chromium.org>,
- Bjorn Helgaas <bhelgaas@google.com>
-Cc: linux-kernel@vger.kernel.org, linux-pci@vger.kernel.org,
- Brian Norris <briannorris@google.com>, stable@vger.kernel.org
-References: <20250820102607.1.Ibb5b6ca1e2c059e04ec53140cd98a44f2684c668@changeid>
-Content-Language: en-US
-From: Ethan Zhao <etzhao1900@gmail.com>
-In-Reply-To: <20250820102607.1.Ibb5b6ca1e2c059e04ec53140cd98a44f2684c668@changeid>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
+References: <CABFDxMHpodpNQM_a=T0vf48k486mYqukCVnQPbanLh+G_HH+9g@mail.gmail.com>
+ <20250820182736.84941-1-sj@kernel.org>
+In-Reply-To: <20250820182736.84941-1-sj@kernel.org>
+From: Sang-Heon Jeon <ekffu200098@gmail.com>
+Date: Thu, 21 Aug 2025 10:08:03 +0900
+X-Gm-Features: Ac12FXwY0QvAKJXu1Lstb6SiLaFsDLAKOkZbXUCeMOgo9sq_Zc-hrouZIUfRh_0
+Message-ID: <CABFDxMGmVgswVoZFgBz=7xqA59M7fMt0jw2QHqWjm-W9tZktWg@mail.gmail.com>
+Subject: Re: [PATCH v2] mm/damon/core: set quota->charged_from to jiffies at
+ first charge window
+To: SeongJae Park <sj@kernel.org>
+Cc: honggyu.kim@sk.com, damon@lists.linux.dev, linux-mm@kvack.org, 
+	stable@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
+On Thu, Aug 21, 2025 at 3:27=E2=80=AFAM SeongJae Park <sj@kernel.org> wrote=
+:
+>
+> On Wed, 20 Aug 2025 22:18:53 +0900 Sang-Heon Jeon <ekffu200098@gmail.com>=
+ wrote:
+>
+> > Hello, SeongJae
+> >
+> > On Wed, Aug 20, 2025 at 2:27=E2=80=AFAM SeongJae Park <sj@kernel.org> w=
+rote:
+> > >
+> > > On Wed, 20 Aug 2025 00:01:23 +0900 Sang-Heon Jeon <ekffu200098@gmail.=
+com> wrote:
+> > >
+> > > > Kernel initialize "jiffies" timer as 5 minutes below zero, as shown=
+ in
+> > > > include/linux/jiffies.h
+> > > >
+> > > > /*
+> > > >  * Have the 32 bit jiffies value wrap 5 minutes after boot
+> > > >  * so jiffies wrap bugs show up earlier.
+> > > >  */
+> > > >  #define INITIAL_JIFFIES ((unsigned long)(unsigned int) (-300*HZ))
+> > > >
+> > > > And they cast unsigned value to signed to cover wraparound
+> > >
+> > > "they" sounds bit vague.  I think "jiffies comparison helper function=
+s" would
+> > > be better.
+> >
+> > I agree, I will change it.
+> >
+> > > >
+> > > >  #define time_after_eq(a,b) \
+> > > >   (typecheck(unsigned long, a) && \
+> > > >   typecheck(unsigned long, b) && \
+> > > >   ((long)((a) - (b)) >=3D 0))
+> > > >
+> > > > In 64bit system, these might not be a problem because wrapround occ=
+urs
+> > > > 300 million years after the boot, assuming HZ value is 1000.
+> > > >
+> > > > With same assuming, In 32bit system, wraparound occurs 5 minutues a=
+fter
+> > > > the initial boot and every 49 days after the first wraparound. And =
+about
+> > > > 25 days after first wraparound, it continues quota charging window =
+up to
+> > > > next 25 days.
+> > >
+> > > It would be nice if you can further explain what real user impacts th=
+at could
+> > > make.  To my understanding the impact is that, when the unexpected ex=
+tension of
+> > > the charging window is happened, the scheme will work until the quota=
+ is full,
+> > > but then stops working until the unexpectedly extended window is over=
+.
+> > >
+> > > The after-boot issue is really bad since there is no way to work arou=
+nd other
+> > > than reboot the machine.
+> >
+> > I agree with your point that user impact should be added to commit
+> > messages. Before modifying the commit message, I want to check that my
+> > understanding of "user impact" is correct.
+>
+> I think you should make clear at least you believe you understand the
+> consequences of your patches including user impacts before sending your p=
+atches
+> without RFC tag.  I'd suggest you to take more time on making such
+> preparational confidences and/or discussions _before_ sending non-RFC pat=
+ches.
+> You're nver lagging.  Take your time.
 
+I think that I checked about user impact already but it should be
+insufficient. As you said, I should discuss it first. Anyway, the
+whole thing is my mistake. I'm really so sorry.
 
-On 8/21/2025 1:26 AM, Brian Norris wrote:
-> From: Brian Norris <briannorris@google.com>
-> 
-> max_link_speed, max_link_width, current_link_speed, current_link_width,
-> secondary_bus_number, and subordinate_bus_number all access config
-> registers, but they don't check the runtime PM state. If the device is
-> in D3cold, we may see -EINVAL or even bogus values. 
-My understanding, if your device is in D3cold, returning of -EINVAL is
-the right behavior.  >
-> Wrap these access in pci_config_pm_runtime_{get,put}() like most of the
-> rest of the similar sysfs attributes.
-> 
-> Fixes: 56c1af4606f0 ("PCI: Add sysfs max_link_speed/width, current_link_speed/width, etc")
-> Cc: stable@vger.kernel.org
-> Signed-off-by: Brian Norris <briannorris@google.com>
-> Signed-off-by: Brian Norris <briannorris@chromium.org>
-> ---
-> 
->   drivers/pci/pci-sysfs.c | 32 +++++++++++++++++++++++++++++---
->   1 file changed, 29 insertions(+), 3 deletions(-)
-> 
-> diff --git a/drivers/pci/pci-sysfs.c b/drivers/pci/pci-sysfs.c
-> index 5eea14c1f7f5..160df897dc5e 100644
-> --- a/drivers/pci/pci-sysfs.c
-> +++ b/drivers/pci/pci-sysfs.c
-> @@ -191,9 +191,16 @@ static ssize_t max_link_speed_show(struct device *dev,
->   				   struct device_attribute *attr, char *buf)
->   {
->   	struct pci_dev *pdev = to_pci_dev(dev);
-> +	ssize_t ret;
-> +
-> +	pci_config_pm_runtime_get(pdev);
-This function would potentially change the power state of device,
-that would be a complex process, beyond the meaning of
-max_link_speed_show(), given the semantics of these functions (
-max_link_speed_show()/max_link_width_show()/current_link_speed_show()/
-....),
-this cannot be done !
+So, Would it be better to send an RFC patch even now, instead of
+asking on this email thread? (I'll make next v3 patch with RFC tag,
+it's not question of v3 direction and just about remained question on
+this email thread)
 
-Thanks,
-Ethan>
-> -	return sysfs_emit(buf, "%s\n",
-> -			  pci_speed_string(pcie_get_speed_cap(pdev)));
-> +	ret = sysfs_emit(buf, "%s\n",
-> +			 pci_speed_string(pcie_get_speed_cap(pdev)));
-> +
-> +	pci_config_pm_runtime_put(pdev);
-> +
-> +	return ret;
->   }
->   static DEVICE_ATTR_RO(max_link_speed);
->   
-> @@ -201,8 +208,15 @@ static ssize_t max_link_width_show(struct device *dev,
->   				   struct device_attribute *attr, char *buf)
->   {
->   	struct pci_dev *pdev = to_pci_dev(dev);
-> +	ssize_t ret;
-> +
-> +	pci_config_pm_runtime_get(pdev);
-> +
-> +	ret = sysfs_emit(buf, "%u\n", pcie_get_width_cap(pdev));
->   
-> -	return sysfs_emit(buf, "%u\n", pcie_get_width_cap(pdev));
-> +	pci_config_pm_runtime_put(pdev);
-> +
-> +	return ret;
->   }
->   static DEVICE_ATTR_RO(max_link_width);
->   
-> @@ -214,7 +228,10 @@ static ssize_t current_link_speed_show(struct device *dev,
->   	int err;
->   	enum pci_bus_speed speed;
->   
-> +	pci_config_pm_runtime_get(pci_dev);
->   	err = pcie_capability_read_word(pci_dev, PCI_EXP_LNKSTA, &linkstat);
-> +	pci_config_pm_runtime_put(pci_dev);
-> +
->   	if (err)
->   		return -EINVAL;
->   
-> @@ -231,7 +248,10 @@ static ssize_t current_link_width_show(struct device *dev,
->   	u16 linkstat;
->   	int err;
->   
-> +	pci_config_pm_runtime_get(pci_dev);
->   	err = pcie_capability_read_word(pci_dev, PCI_EXP_LNKSTA, &linkstat);
-> +	pci_config_pm_runtime_put(pci_dev);
-> +
->   	if (err)
->   		return -EINVAL;
->   
-> @@ -247,7 +267,10 @@ static ssize_t secondary_bus_number_show(struct device *dev,
->   	u8 sec_bus;
->   	int err;
->   
-> +	pci_config_pm_runtime_get(pci_dev);
->   	err = pci_read_config_byte(pci_dev, PCI_SECONDARY_BUS, &sec_bus);
-> +	pci_config_pm_runtime_put(pci_dev);
-> +
->   	if (err)
->   		return -EINVAL;
->   
-> @@ -263,7 +286,10 @@ static ssize_t subordinate_bus_number_show(struct device *dev,
->   	u8 sub_bus;
->   	int err;
->   
-> +	pci_config_pm_runtime_get(pci_dev);
->   	err = pci_read_config_byte(pci_dev, PCI_SUBORDINATE_BUS, &sub_bus);
-> +	pci_config_pm_runtime_put(pci_dev);
-> +
->   	if (err)
->   		return -EINVAL;
->   
+> >
+> > In the logic before this patch is applied, I think
+> > time_after_eq(jiffies, ...) should only evaluate to false when the MSB
+> > of jiffies is 1 and charged_from is 0. because if charging has
+> > occurred, it changes charge_from to jiffies at that time.
+>
+> It is not the only case that time_after_eq() can be evaluated to false.  =
+Maybe
+> you're saying only about the just-after-boot running case?  If so, please
+> clarify.  You and I know the context, but others may not.  I hope the com=
+mit
+> message be nicer for them.
 
+I think it is not just-after-boot running case also whole and only
+case, because charging changes charged_from to jiffies. if it is not
+the only case, could you please describe the specific case?
+
+> > Therefore,
+> > esz should also be zero because it is initialized with charged_from.
+> > So I think the real user impact is that "quota is not applied", rather
+> > than "stops working". If my understanding is wrong, please let me know
+> > what point is wrong.
+>
+> Thank you for clarifying your view.  The code is behaving in the way you
+> described above.  It is because damon_set_effective_quota(), which sets t=
+he
+> esz, is called only when the time_after_eq() call returns true.
+>
+> However, this is a bug rather than an intended behavior.  The current beh=
+avior
+> is making the first charging window just be wasted without doing nothing.
+>
+> Probably the bug was introduced by the commit that introduced esz.
+
+Thanks for your explanation. I'll try to cover this point in the next
+patch as well.
+
+> >
+> > > >
+> > > > Example 1: initial boot
+> > > > jiffies=3D0xFFFB6C20, charged_from+interval=3D0x000003E8
+> > > > time_after_eq(jiffies, charged_from+interval)=3D(long)0xFFFB6838; I=
+n
+> > > > signed values, it is considered negative so it is false.
+> > >
+> > > The above part is using hex numbers and look like psuedo-code.  This =
+is
+> > > unnecessarily difficult to read.  To me, this feels like your persona=
+l note
+> > > rather than a nice commit message that written for others.  I think y=
+ou could
+> > > write this in a much better way.
+> > >
+> > > >
+> > > > Example 2: after about 25 days first wraparound
+> > > > jiffies=3D0x800004E8, charged_from+interval=3D0x000003E8
+> > > > time_after_eq(jiffies, charged_from+interval)=3D(long)0x80000100; I=
+n
+> > > > signed values, it is considered negative so it is false
+> > >
+> > > Ditto.
+> >
+> > Okay, I think I can fix these sections with explanation using MSB.
+>
+> Also please make it easier to read for more human people.
+
+I see.
+
+> >
+> > > >
+> > > > So, change quota->charged_from to jiffies at damos_adjust_quota() w=
+hen
+> > > > it is consider first charge window.
+> > > >
+> > > > In theory; but almost impossible; quota->total_charged_sz and
+> > > > qutoa->charged_from should be both zero even if it is not in first
+> > >
+> > > s/should/could/ ?
+> >
+> > Sorry for my poor english.
+> >
+> > > Also, explaining when that "could" happen will be nice.
+> >
+> > I want to confirm this situation as well. I think the situation below
+> > is the only case.
+>
+> Again, if there is anything unclear, let's do discussions before sending
+> non-RFC patches.
+>
+> >
+> > 1. jiffies overflows to exactly 0
+> > 2. And quota is configured but never actually applied, so total_charged=
+_sz is 0
+>
+> Or, total_charged_sz is also overflows and bcome 0.
+
+Thanks for clarifying me.
+
+> > 3. And charging occurs at that exact moment.
+>
+> It's not necessarily when charging occurs but when damon_adjust_quota() i=
+s
+> called.  More technically speaking once per the scheme's apply interval.
+
+Ditto.
+
+> >
+> > Is that right? If right, I think this situation is almost impossible
+> > and uncommon. I feel like It's unnecessary to describe it. I'm not
+> > trying to ignore your valuable opinion, but do you still think it's
+> > better to add a description?
+>
+> I'm ok to completely drop the explanation.  But if you are gonna mention =
+it
+> partially, please clarify.
+
+I see, your opinion is reasonable. I'll keep that in my mind.
+
+> >
+> > > > charge window. But It will only delay one reset_interval, So it is =
+not
+> > > > big problem.
+> > > >
+> > > > Fixes: 2b8a248d5873 ("mm/damon/schemes: implement size quota for sc=
+hemes application speed control") # 5.16
+> > > > Cc: stable@vger.kernel.org
+> > > > Signed-off-by: Sang-Heon Jeon <ekffu200098@gmail.com>
+> > >
+> > > I think the commit message could be much be improved, but the code ch=
+ange seems
+> > > right.
+> >
+> > Once again, Sorry for my poor english. I'm doing my best on my own.
+>
+> This is not about English skill but the commit "message".  Your English s=
+kill
+> is good and probably betetr than mine.  But I ad a difficult time at revi=
+ewing
+> your patch, and feeling it could been easier if the message was nicer.
+>
+> So what I'm saying is that I tink this patch's commit message can be more=
+ nice
+> to readers.
+
+You're right. I'll try to make the commit message more clear. I'm
+really sorry for bothering you.
+
+>
+> Thanks,
+> SJ
+>
+> [...]
+
+Best Regards
+Sang-Heon Jeon
 
