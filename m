@@ -1,48 +1,48 @@
-Return-Path: <stable+bounces-172144-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-172145-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id BEDA3B2FD43
-	for <lists+stable@lfdr.de>; Thu, 21 Aug 2025 16:49:03 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5F02BB2FD15
+	for <lists+stable@lfdr.de>; Thu, 21 Aug 2025 16:43:18 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 6F4141D25D39
-	for <lists+stable@lfdr.de>; Thu, 21 Aug 2025 14:36:00 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 16FED3B51BC
+	for <lists+stable@lfdr.de>; Thu, 21 Aug 2025 14:36:13 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5D57D2EC572;
-	Thu, 21 Aug 2025 14:34:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E2D8C192598;
+	Thu, 21 Aug 2025 14:35:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="JaA4cmI3"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="0EW3mvso"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 180AE287243
-	for <stable@vger.kernel.org>; Thu, 21 Aug 2025 14:34:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A037C2EC572
+	for <stable@vger.kernel.org>; Thu, 21 Aug 2025 14:35:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755786870; cv=none; b=IXn0irz794nZ4PSeSaF1W3YM2Cg2D9wZBQ1gSBri7y6+bj3x+pSMJUQpFKriNOYMtkNozue1TGbvKGbhrRRF3qx/WNQkqhgMYewLm0uVx/5dE2oxBiGBj1uX3YpgIX1+g+nqid7sn+phd5C2umd5NcGLBppMF2xpCStJJEPwef4=
+	t=1755786946; cv=none; b=WJiuMTRssS9NRrCQn0VF8Usa3gdS/G4Ahm9KjbihCQmGWwphYwkx2Vtw5z7t7D1N5y/pGjD4/ArYJNnZVU9ceVG7M5pF/jK+CnkFHgZU/IhLSOe6j8USfnadspw8meihOucghGDCVMi/+/Ys2AKyUNgtwszQbGD8qBWoOsgDLZg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1755786870; c=relaxed/simple;
-	bh=szomaEIfnfgRNoSGHOI3wS4jznQdfZI7T2j2nxelhLI=;
-	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=bFtOafRigRH/Ujz4Cjw4Oc+01vB5lFBYG36lNp0LzygAj5a13SkbLlpffh3VXbl+LGpk8s8gFO5sPtozIzJ0JzNFH5JtbE/4K0gNIVKpsnAWWtNpZX+6u6PI9rUKcHtWe0rreva/frw/V5ch3oWOjO+e2rpVN1FGnB3zxidlYSs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=JaA4cmI3; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3DC05C4CEF4;
-	Thu, 21 Aug 2025 14:34:29 +0000 (UTC)
+	s=arc-20240116; t=1755786946; c=relaxed/simple;
+	bh=L4f/A+GW6XcthwJY7m0cdJ2c/uh3OOTfICWWvouj+/E=;
+	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=DhzyxlsFTXHHuxz3yN0aG08m2nvHNDJC00m4ogL4LimuILiywqBwmGBWyqEUkV1wc2903mB9Yo9S+ESADo6tbNLTz3Zjpdba8kuOUti7B99BSQ81VT6CFUxcKhK7UnRKWJUWv5QXUvbBStn12yZEBiOUcKm5sdtzA488YfaXbj0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=0EW3mvso; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A8D19C4CEEB;
+	Thu, 21 Aug 2025 14:35:45 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1755786869;
-	bh=szomaEIfnfgRNoSGHOI3wS4jznQdfZI7T2j2nxelhLI=;
+	s=korg; t=1755786946;
+	bh=L4f/A+GW6XcthwJY7m0cdJ2c/uh3OOTfICWWvouj+/E=;
 	h=Subject:To:Cc:From:Date:From;
-	b=JaA4cmI3HG87Windmb/JNAvFCdF5lKhL/mJcK9G8uHsHlS7Ls9y4AbJT183Rpp5LC
-	 6Mk2X3HNPepDQ1O6Te9IU0zLAMmp4kd8x1J8n0YaoFxtYB5pvdW6eeflvjt6hckNQZ
-	 /DeZghhR7E4kJwDxjN7jvDIrzQdal1VJhbBQ0nD0=
-Subject: FAILED: patch "[PATCH] drm/gpusvm: Add timeslicing support to GPU SVM" failed to apply to 6.16-stable tree
+	b=0EW3mvsoYnKM8t1gYbnhKXQA3knOYAm7WFdOEro3OJlEpbSqkNIp4a+g+QITYyqRD
+	 SfihAnlGvRf/Pws/GceD+wRWoXJqjWKCDpdneNlF6ED1rKWxu+2iV8DEi1cEre2xmZ
+	 uJd+Jgz0lVOcA3cZfKzA6DifK0CnmRv5Glewh2Tc=
+Subject: FAILED: patch "[PATCH] drm/xe: Timeslice GPU on atomic SVM fault" failed to apply to 6.16-stable tree
 To: matthew.brost@intel.com,himal.prasad.ghimiray@intel.com
 Cc: <stable@vger.kernel.org>
 From: <gregkh@linuxfoundation.org>
-Date: Thu, 21 Aug 2025 16:34:18 +0200
-Message-ID: <2025082118-unhook-drinking-9926@gregkh>
+Date: Thu, 21 Aug 2025 16:35:26 +0200
+Message-ID: <2025082126-playable-viewer-a6f2@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -62,10 +62,10 @@ To reproduce the conflict and resubmit, you may use the following commands:
 
 git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-6.16.y
 git checkout FETCH_HEAD
-git cherry-pick -x 8dc1812b5b3a42311d28eb385eed88e2053ad3cb
+git cherry-pick -x a5d8d3be1dea8154edbbea481081469627665659
 # <resolve conflicts, build, test, etc.>
 git commit -s
-git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2025082118-unhook-drinking-9926@gregkh' --subject-prefix 'PATCH 6.16.y' HEAD^..
+git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2025082126-playable-viewer-a6f2@gregkh' --subject-prefix 'PATCH 6.16.y' HEAD^..
 
 Possible dependencies:
 
@@ -77,87 +77,63 @@ greg k-h
 
 ------------------ original commit in Linus's tree ------------------
 
-From 8dc1812b5b3a42311d28eb385eed88e2053ad3cb Mon Sep 17 00:00:00 2001
+From a5d8d3be1dea8154edbbea481081469627665659 Mon Sep 17 00:00:00 2001
 From: Matthew Brost <matthew.brost@intel.com>
-Date: Mon, 12 May 2025 06:54:57 -0700
-Subject: [PATCH] drm/gpusvm: Add timeslicing support to GPU SVM
+Date: Mon, 12 May 2025 06:54:58 -0700
+Subject: [PATCH] drm/xe: Timeslice GPU on atomic SVM fault
 
-Add timeslicing support to GPU SVM which will guarantee the GPU a
-minimum execution time on piece of physical memory before migration back
-to CPU. Intended to implement strict migration policies which require
-memory to be in a certain placement for correct execution.
+Ensure GPU can make forward progress on an atomic SVM GPU fault by
+giving the GPU a timeslice of 5ms
 
-Required for shared CPU and GPU atomics on certain devices.
+v2:
+ - Reduce timeslice to 5ms
+ - Double timeslice on retry
+ - Split out GPU SVM changes into independent patch
+v5:
+ - Double timeslice in a few more places
 
-Fixes: 99624bdff867 ("drm/gpusvm: Add support for GPU Shared Virtual Memory")
+Fixes: 2f118c949160 ("drm/xe: Add SVM VRAM migration")
 Cc: stable@vger.kernel.org
 Signed-off-by: Matthew Brost <matthew.brost@intel.com>
 Reviewed-by: Himal Prasad Ghimiray <himal.prasad.ghimiray@intel.com>
-Link: https://lore.kernel.org/r/20250512135500.1405019-4-matthew.brost@intel.com
+Link: https://lore.kernel.org/r/20250512135500.1405019-5-matthew.brost@intel.com
 
-diff --git a/drivers/gpu/drm/drm_gpusvm.c b/drivers/gpu/drm/drm_gpusvm.c
-index 41f6616bcf76..4b2f32889f00 100644
---- a/drivers/gpu/drm/drm_gpusvm.c
-+++ b/drivers/gpu/drm/drm_gpusvm.c
-@@ -1783,6 +1783,8 @@ int drm_gpusvm_migrate_to_devmem(struct drm_gpusvm *gpusvm,
- 		goto err_finalize;
- 
- 	/* Upon success bind devmem allocation to range and zdd */
-+	devmem_allocation->timeslice_expiration = get_jiffies_64() +
-+		msecs_to_jiffies(ctx->timeslice_ms);
- 	zdd->devmem_allocation = devmem_allocation;	/* Owns ref */
- 
- err_finalize:
-@@ -2003,6 +2005,13 @@ static int __drm_gpusvm_migrate_to_ram(struct vm_area_struct *vas,
- 	void *buf;
- 	int i, err = 0;
- 
-+	if (page) {
-+		zdd = page->zone_device_data;
-+		if (time_before64(get_jiffies_64(),
-+				  zdd->devmem_allocation->timeslice_expiration))
-+			return 0;
-+	}
-+
- 	start = ALIGN_DOWN(fault_addr, size);
- 	end = ALIGN(fault_addr + 1, size);
- 
-diff --git a/include/drm/drm_gpusvm.h b/include/drm/drm_gpusvm.h
-index 653d48dbe1c1..eaf704d3d05e 100644
---- a/include/drm/drm_gpusvm.h
-+++ b/include/drm/drm_gpusvm.h
-@@ -89,6 +89,7 @@ struct drm_gpusvm_devmem_ops {
-  * @ops: Pointer to the operations structure for GPU SVM device memory
-  * @dpagemap: The struct drm_pagemap of the pages this allocation belongs to.
-  * @size: Size of device memory allocation
-+ * @timeslice_expiration: Timeslice expiration in jiffies
-  */
- struct drm_gpusvm_devmem {
- 	struct device *dev;
-@@ -97,6 +98,7 @@ struct drm_gpusvm_devmem {
- 	const struct drm_gpusvm_devmem_ops *ops;
- 	struct drm_pagemap *dpagemap;
- 	size_t size;
-+	u64 timeslice_expiration;
- };
- 
- /**
-@@ -295,6 +297,8 @@ struct drm_gpusvm {
-  * @check_pages_threshold: Check CPU pages for present if chunk is less than or
-  *                         equal to threshold. If not present, reduce chunk
-  *                         size.
-+ * @timeslice_ms: The timeslice MS which in minimum time a piece of memory
-+ *		  remains with either exclusive GPU or CPU access.
-  * @in_notifier: entering from a MMU notifier
-  * @read_only: operating on read-only memory
-  * @devmem_possible: possible to use device memory
-@@ -304,6 +308,7 @@ struct drm_gpusvm {
-  */
- struct drm_gpusvm_ctx {
- 	unsigned long check_pages_threshold;
-+	unsigned long timeslice_ms;
- 	unsigned int in_notifier :1;
- 	unsigned int read_only :1;
- 	unsigned int devmem_possible :1;
+diff --git a/drivers/gpu/drm/xe/xe_svm.c b/drivers/gpu/drm/xe/xe_svm.c
+index d8e15259a8df..d934df622276 100644
+--- a/drivers/gpu/drm/xe/xe_svm.c
++++ b/drivers/gpu/drm/xe/xe_svm.c
+@@ -797,6 +797,8 @@ int xe_svm_handle_pagefault(struct xe_vm *vm, struct xe_vma *vma,
+ 			IS_ENABLED(CONFIG_DRM_XE_DEVMEM_MIRROR) ? SZ_64K : 0,
+ 		.devmem_only = atomic && IS_DGFX(vm->xe) &&
+ 			IS_ENABLED(CONFIG_DRM_XE_DEVMEM_MIRROR),
++		.timeslice_ms = atomic && IS_DGFX(vm->xe) &&
++			IS_ENABLED(CONFIG_DRM_XE_DEVMEM_MIRROR) ? 5 : 0,
+ 	};
+ 	struct xe_svm_range *range;
+ 	struct drm_gpusvm_range *r;
+@@ -836,6 +838,7 @@ int xe_svm_handle_pagefault(struct xe_vm *vm, struct xe_vma *vma,
+ 	if (--migrate_try_count >= 0 &&
+ 	    xe_svm_range_needs_migrate_to_vram(range, vma)) {
+ 		err = xe_svm_alloc_vram(vm, tile, range, &ctx);
++		ctx.timeslice_ms <<= 1;	/* Double timeslice if we have to retry */
+ 		if (err) {
+ 			if (migrate_try_count || !ctx.devmem_only) {
+ 				drm_dbg(&vm->xe->drm,
+@@ -855,6 +858,7 @@ int xe_svm_handle_pagefault(struct xe_vm *vm, struct xe_vma *vma,
+ 	err = drm_gpusvm_range_get_pages(&vm->svm.gpusvm, r, &ctx);
+ 	/* Corner where CPU mappings have changed */
+ 	if (err == -EOPNOTSUPP || err == -EFAULT || err == -EPERM) {
++		ctx.timeslice_ms <<= 1;	/* Double timeslice if we have to retry */
+ 		if (migrate_try_count > 0 || !ctx.devmem_only) {
+ 			if (err == -EOPNOTSUPP) {
+ 				range_debug(range, "PAGE FAULT - EVICT PAGES");
+@@ -894,6 +898,7 @@ int xe_svm_handle_pagefault(struct xe_vm *vm, struct xe_vma *vma,
+ 			drm_exec_fini(&exec);
+ 			err = PTR_ERR(fence);
+ 			if (err == -EAGAIN) {
++				ctx.timeslice_ms <<= 1;	/* Double timeslice if we have to retry */
+ 				range_debug(range, "PAGE FAULT - RETRY BIND");
+ 				goto retry;
+ 			}
 
 
