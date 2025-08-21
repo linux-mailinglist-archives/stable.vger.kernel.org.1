@@ -1,145 +1,133 @@
-Return-Path: <stable+bounces-172104-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-172106-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id DCB72B2FAD6
-	for <lists+stable@lfdr.de>; Thu, 21 Aug 2025 15:44:16 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 69BCBB2FAE8
+	for <lists+stable@lfdr.de>; Thu, 21 Aug 2025 15:45:40 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id B12051BC1C82
-	for <lists+stable@lfdr.de>; Thu, 21 Aug 2025 13:39:57 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id D76A7623962
+	for <lists+stable@lfdr.de>; Thu, 21 Aug 2025 13:39:39 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A6DE82DF702;
-	Thu, 21 Aug 2025 13:32:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6056D2EDD7D;
+	Thu, 21 Aug 2025 13:33:05 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="iUt3V6g/"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="FaNDeWFC"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 679C02EDD7D
-	for <stable@vger.kernel.org>; Thu, 21 Aug 2025 13:32:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 217EB32BF37
+	for <stable@vger.kernel.org>; Thu, 21 Aug 2025 13:33:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755783167; cv=none; b=eYQJUIsUNAOJm4z9Ye2CQ9A7ONETSbi9w/mdQZaaY4+9bCtjFDF5Td1Mg5yWFy41nPNvcmiznDf0Xo8x4CD09GdKozIUGEG9jCPRXtxADM3EQisj3G1d5+hSpk1yVDbaWZ6v3Xkx8TpLCOp+JEG/kqpRIY3JsoGSCEr832V4CcU=
+	t=1755783185; cv=none; b=cwX8Fth6JDgbB8HiqhgpjfVp/3TB4nHuggZ2SH0go/Ed/udFZKwEJ0KvMi5uLGvC24Yad65HOaAmJ3KywpQVKIOBz1tcjAm1Q14AN+ILy79AOUvsq1+K3b0aC4JwVk/iGD1p9Xj2meMsKag82VCb4jt5UXwYrIktqALKB4NKUDI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1755783167; c=relaxed/simple;
-	bh=9tv8nktA2XSp56ndwwKTr7zkSL2n0KHFLFNp5YRYwAc=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=g6YLNtOXxnD+UAbffcohq2Pj3o0KOucctN3yKV5T5oB+9y8NDv3UAEXyEVOR/ia58kAzEUZXDBPXCpMgX2w6vRFNjcrpIwLdn/N4cjSlRiBbBKulEx/xYtRmIz3BSqG2a0+QupaIf+HocgDGD6xRMlhMnjbtybK3bi58B1pFKT8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=iUt3V6g/; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 67D6CC113CF;
-	Thu, 21 Aug 2025 13:32:46 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1755783167;
-	bh=9tv8nktA2XSp56ndwwKTr7zkSL2n0KHFLFNp5YRYwAc=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=iUt3V6g/geTCdo1Q2uHhgUiwvtaHJVdf1X9/e+tJiZ8fRfCKyU11RHTXSmXjQkGe5
-	 rLggFoADkfuat3qcR3eHgQZ2qKDyqYCii5ghr7IQX5i9lfuiqxhu/cV3euoHaWht8g
-	 F5H5lDU4ecMS1CgP+nimj9MBbNNBAuKg5hUqOUkXeMxW9xqimAviG/HkeyuKqzTqpn
-	 cf1qsR18UhVqkhEE5RfKvLbA8qNmcM0Skb6RVkBAaUl12lOVWn4GRHji8D+rOaTxm4
-	 I8BPjZn+xcNA3zjuHkkQvmCtTcJMfUHiSkp2tFaK4T+K+RxVekH8kIXNj2py+BCbhl
-	 wBRtMGqeh91CA==
-From: Sasha Levin <sashal@kernel.org>
-To: stable@vger.kernel.org
-Cc: Johan Hovold <johan@kernel.org>,
-	Roger Quadros <rogerq@kernel.org>,
-	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1.y 2/2] usb: musb: omap2430: fix device leak at unbind
-Date: Thu, 21 Aug 2025 09:32:43 -0400
-Message-ID: <20250821133244.715359-2-sashal@kernel.org>
-X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250821133244.715359-1-sashal@kernel.org>
-References: <2025082154-deferred-sneak-f740@gregkh>
- <20250821133244.715359-1-sashal@kernel.org>
+	s=arc-20240116; t=1755783185; c=relaxed/simple;
+	bh=POKKp9BOqBz3a/ddAvki6yd+Rg+b+uBA86jCku4pEtU=;
+	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=BClHmQ88eJ83m6TnDa9QitLD6LLWbz+drv2LaXlCYoedBs/6Llmo4pJePx2FamIw1mgdvs+pr7wFE9ybB8CW0PdoyO3XbcrpMfplmYhy13BCqlujV5GTrKeP93rgZ9213DC5FTOb2dvICIISUyUxE5G8jZ5+km8rAtre0yvzCCM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=FaNDeWFC; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 519E5C4CEEB;
+	Thu, 21 Aug 2025 13:33:04 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
+	s=korg; t=1755783184;
+	bh=POKKp9BOqBz3a/ddAvki6yd+Rg+b+uBA86jCku4pEtU=;
+	h=Subject:To:Cc:From:Date:From;
+	b=FaNDeWFCXO9sMiKE3L6GxtBpSMhNu28AAKO4qLSvxOr6cBOHCMYyQ3xh14Vse126l
+	 mseRnXcR1N+q6TuIy8z+BZfvBOSq5BPpWgsIMcgmmZt3Z7HRQvs0ZoCzfrVL0rD/xG
+	 SAB5l+Ibwke2FbYSGM0f8DIYgr+4jrSpy9jlUD2I=
+Subject: FAILED: patch "[PATCH] parisc: Define and use set_pte_at()" failed to apply to 5.15-stable tree
+To: dave.anglin@bell.net,deller@gmx.de
+Cc: <stable@vger.kernel.org>
+From: <gregkh@linuxfoundation.org>
+Date: Thu, 21 Aug 2025 15:32:53 +0200
+Message-ID: <2025082153-pauper-enlarged-83c3@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=ANSI_X3.4-1968
 Content-Transfer-Encoding: 8bit
 
-From: Johan Hovold <johan@kernel.org>
 
-[ Upstream commit 1473e9e7679bd4f5a62d1abccae894fb86de280f ]
+The patch below does not apply to the 5.15-stable tree.
+If someone wants it applied there, or to any other stable or longterm
+tree, then please email the backport, including the original git commit
+id to <stable@vger.kernel.org>.
 
-Make sure to drop the reference to the control device taken by
-of_find_device_by_node() during probe when the driver is unbound.
+To reproduce the conflict and resubmit, you may use the following commands:
 
-Fixes: 8934d3e4d0e7 ("usb: musb: omap2430: Don't use omap_get_control_dev()")
-Cc: stable@vger.kernel.org	# 3.13
-Cc: Roger Quadros <rogerq@kernel.org>
-Signed-off-by: Johan Hovold <johan@kernel.org>
-Link: https://lore.kernel.org/r/20250724091910.21092-5-johan@kernel.org
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
----
- drivers/usb/musb/omap2430.c | 14 +++++++++-----
- 1 file changed, 9 insertions(+), 5 deletions(-)
+git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-5.15.y
+git checkout FETCH_HEAD
+git cherry-pick -x 802e55488bc2cc1ab6423b720255a785ccac42ce
+# <resolve conflicts, build, test, etc.>
+git commit -s
+git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2025082153-pauper-enlarged-83c3@gregkh' --subject-prefix 'PATCH 5.15.y' HEAD^..
 
-diff --git a/drivers/usb/musb/omap2430.c b/drivers/usb/musb/omap2430.c
-index b9ab0c48e2ee..b4dd0747aee1 100644
---- a/drivers/usb/musb/omap2430.c
-+++ b/drivers/usb/musb/omap2430.c
-@@ -400,7 +400,7 @@ static int omap2430_probe(struct platform_device *pdev)
- 	ret = platform_device_add_resources(musb, pdev->resource, pdev->num_resources);
- 	if (ret) {
- 		dev_err(&pdev->dev, "failed to add resources\n");
--		goto err2;
-+		goto err_put_control_otghs;
+Possible dependencies:
+
+
+
+thanks,
+
+greg k-h
+
+------------------ original commit in Linus's tree ------------------
+
+From 802e55488bc2cc1ab6423b720255a785ccac42ce Mon Sep 17 00:00:00 2001
+From: John David Anglin <dave.anglin@bell.net>
+Date: Mon, 21 Jul 2025 16:06:21 -0400
+Subject: [PATCH] parisc: Define and use set_pte_at()
+
+When a PTE is changed, we need to flush the PTE. set_pte_at()
+was lost in the folio update. PA-RISC version is the same as
+the generic version.
+
+Signed-off-by: John David Anglin <dave.anglin@bell.net>
+Signed-off-by: Helge Deller <deller@gmx.de>
+Cc: stable@vger.kernel.org # v5.12+
+
+diff --git a/arch/parisc/include/asm/pgtable.h b/arch/parisc/include/asm/pgtable.h
+index 1a86a4370b29..2c139a4dbf4b 100644
+--- a/arch/parisc/include/asm/pgtable.h
++++ b/arch/parisc/include/asm/pgtable.h
+@@ -276,7 +276,7 @@ extern unsigned long *empty_zero_page;
+ #define pte_none(x)     (pte_val(x) == 0)
+ #define pte_present(x)	(pte_val(x) & _PAGE_PRESENT)
+ #define pte_user(x)	(pte_val(x) & _PAGE_USER)
+-#define pte_clear(mm, addr, xp)  set_pte(xp, __pte(0))
++#define pte_clear(mm, addr, xp) set_pte_at((mm), (addr), (xp), __pte(0))
+ 
+ #define pmd_flag(x)	(pmd_val(x) & PxD_FLAG_MASK)
+ #define pmd_address(x)	((unsigned long)(pmd_val(x) &~ PxD_FLAG_MASK) << PxD_VALUE_SHIFT)
+@@ -392,6 +392,7 @@ static inline void set_ptes(struct mm_struct *mm, unsigned long addr,
  	}
+ }
+ #define set_ptes set_ptes
++#define set_pte_at(mm, addr, ptep, pte) set_ptes(mm, addr, ptep, pte, 1)
  
- 	if (populate_irqs) {
-@@ -413,7 +413,7 @@ static int omap2430_probe(struct platform_device *pdev)
- 		res = platform_get_resource(pdev, IORESOURCE_MEM, 0);
- 		if (!res) {
- 			ret = -EINVAL;
--			goto err2;
-+			goto err_put_control_otghs;
- 		}
+ /* Used for deferring calls to flush_dcache_page() */
  
- 		musb_res[i].start = res->start;
-@@ -441,14 +441,14 @@ static int omap2430_probe(struct platform_device *pdev)
- 		ret = platform_device_add_resources(musb, musb_res, i);
- 		if (ret) {
- 			dev_err(&pdev->dev, "failed to add IRQ resources\n");
--			goto err2;
-+			goto err_put_control_otghs;
- 		}
+@@ -456,7 +457,7 @@ static inline int ptep_test_and_clear_young(struct vm_area_struct *vma, unsigned
+ 	if (!pte_young(pte)) {
+ 		return 0;
  	}
- 
- 	ret = platform_device_add_data(musb, pdata, sizeof(*pdata));
- 	if (ret) {
- 		dev_err(&pdev->dev, "failed to add platform_data\n");
--		goto err2;
-+		goto err_put_control_otghs;
- 	}
- 
- 	pm_runtime_enable(glue->dev);
-@@ -463,7 +463,9 @@ static int omap2430_probe(struct platform_device *pdev)
- 
- err3:
- 	pm_runtime_disable(glue->dev);
--
-+err_put_control_otghs:
-+	if (!IS_ERR(glue->control_otghs))
-+		put_device(glue->control_otghs);
- err2:
- 	platform_device_put(musb);
- 
-@@ -477,6 +479,8 @@ static void omap2430_remove(struct platform_device *pdev)
- 
- 	platform_device_unregister(glue->musb);
- 	pm_runtime_disable(glue->dev);
-+	if (!IS_ERR(glue->control_otghs))
-+		put_device(glue->control_otghs);
+-	set_pte(ptep, pte_mkold(pte));
++	set_pte_at(vma->vm_mm, addr, ptep, pte_mkold(pte));
+ 	return 1;
  }
  
- #ifdef CONFIG_PM
--- 
-2.50.1
+@@ -466,7 +467,7 @@ pte_t ptep_clear_flush(struct vm_area_struct *vma, unsigned long addr, pte_t *pt
+ struct mm_struct;
+ static inline void ptep_set_wrprotect(struct mm_struct *mm, unsigned long addr, pte_t *ptep)
+ {
+-	set_pte(ptep, pte_wrprotect(*ptep));
++	set_pte_at(mm, addr, ptep, pte_wrprotect(*ptep));
+ }
+ 
+ #define pte_same(A,B)	(pte_val(A) == pte_val(B))
 
 
