@@ -1,136 +1,186 @@
-Return-Path: <stable+bounces-171955-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-171956-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 648CFB2F028
-	for <lists+stable@lfdr.de>; Thu, 21 Aug 2025 09:54:20 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id D0CFEB2F0BE
+	for <lists+stable@lfdr.de>; Thu, 21 Aug 2025 10:15:01 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 1F2577AAEEA
-	for <lists+stable@lfdr.de>; Thu, 21 Aug 2025 07:52:44 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 9636A1CC6171
+	for <lists+stable@lfdr.de>; Thu, 21 Aug 2025 08:13:05 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 832AA283FCB;
-	Thu, 21 Aug 2025 07:54:11 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="aW1yJ47z"
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id AED2C2EA15B;
+	Thu, 21 Aug 2025 08:12:40 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from mta21.hihonor.com (mta21.hihonor.com [81.70.160.142])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3474B27CB0A;
-	Thu, 21 Aug 2025 07:54:10 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A5620262815;
+	Thu, 21 Aug 2025 08:12:38 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=81.70.160.142
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755762851; cv=none; b=akfdY2EbnyIVp9X+Sll/5LyEUZYgztOvIvUi5wtZCfQnkKdiS1V+qOvouung8stOEgN/RCmiz5N/Jn5/6twPJEfslT8SRoa8rkHoCMrDSgYN9njyjtJLBWvJVnDarLeVGnwJvywAu85zjgzBB3/lAj8Q4KzS4F0kHJfU60b0Vy0=
+	t=1755763960; cv=none; b=Y34vYUt051/MqiVreYlOSttA3b0mjXASM+ciH9t5qvDdjscukz84Ez64xgQSGjWbF/f9wwtYnjugc0F74NBrlBcobDa56vpQBzgTrO+WWo1NQQpoymXyRMqN8YzXfsuI7E5ptDlBrfeoB2CEgOUHCIJy6I0jN+GZW4n/CMVAU5A=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1755762851; c=relaxed/simple;
-	bh=IPUilLuvpTBBH6sPGlI6idGeP+t2/3AiJ5bzLQuzi4w=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=pywbDtF1C5nptXj5LoRx7y6bUniGvlHsiIRBOA3R29okwSVmG61/14hR97GCXi6cyFgft/xIJi6dPCpFD9hqeZaUv98bbGQpmHxewEVm4LYjgyMT0o0D85qov/WEu2qXxZjPWNJLZCAWDPKXMFo8zho5qnaJObZX1b+d+eKYnuU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=aW1yJ47z; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2A3D8C4CEED;
-	Thu, 21 Aug 2025 07:54:09 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1755762850;
-	bh=IPUilLuvpTBBH6sPGlI6idGeP+t2/3AiJ5bzLQuzi4w=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=aW1yJ47zmSPUHgdPC4EYbN1/1lCNd7kl9uuDMieVhuOo43n8Y8ivXbxNTbx+f4x8p
-	 DXu4NBjGWGCZLDxpjoSBAaQmx5Rkop/kE6zIpIkvhBdKSNloW4mZGc3ISRCBdzUX/U
-	 tQJATBa3WsYkw6cpQhAyzByLzczEWiY1VuepkbS/TTL16HsKKEwntMdRpCzAcfolpC
-	 TwuXXqqbVKX0Io2Aq7NULsbcJs73hT+s5G/AbRFPS/JvVpEHJrUnH6Rfyz98nCWhi1
-	 Y6k0Kf88lVBi249eXJVqcO+1Qr0N/SMZ9pDd2iiEbbqzOeR6hyJK6vuY6P8mefHbSS
-	 5yX5bpfUxoekQ==
-Date: Thu, 21 Aug 2025 09:54:08 +0200
-From: Krzysztof Kozlowski <krzk@kernel.org>
-To: Yao Zi <ziyao@disroot.org>
-Cc: Drew Fustini <fustini@kernel.org>, Guo Ren <guoren@kernel.org>, 
-	Fu Wei <wefu@redhat.com>, Philipp Zabel <p.zabel@pengutronix.de>, 
-	Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>, 
-	Conor Dooley <conor+dt@kernel.org>, Paul Walmsley <paul.walmsley@sifive.com>, 
-	Palmer Dabbelt <palmer@dabbelt.com>, Albert Ou <aou@eecs.berkeley.edu>, 
-	Alexandre Ghiti <alex@ghiti.fr>, Michal Wilczynski <m.wilczynski@samsung.com>, 
-	linux-riscv@lists.infradead.org, devicetree@vger.kernel.org, linux-kernel@vger.kernel.org, 
-	Icenowy Zheng <uwu@icenowy.me>, Han Gao <rabenda.cn@gmail.com>, Han Gao <gaohan@iscas.ac.cn>, 
-	stable@vger.kernel.org
-Subject: Re: [PATCH v2 1/3] dt-bindings: reset: Scope the compatible to VO
- subsystem explicitly
-Message-ID: <20250821-bizarre-pigeon-of-unity-5a2d5d@kuoka>
-References: <20250820074245.16613-1-ziyao@disroot.org>
- <20250820074245.16613-2-ziyao@disroot.org>
+	s=arc-20240116; t=1755763960; c=relaxed/simple;
+	bh=sOvu4wPdDmplFytJ6WWywKHC6CavMT261upjBYvAf14=;
+	h=From:To:CC:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=cuPZP2C4zA7j4fKU/hFJrV0xoRut3cT+LGOlJ3osJljjLDcoRbYydv7l/xLgPLjg5bjVspioSJdD87BFrkoYWXlwbQrG9SH3QFonpa2n6LbgZ+HDgZqbcnxuOtvfC4fbE35dpPw/htGyr3NvO4CAZqPtMZgwPj2FrwMVLuxrffg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=honor.com; spf=pass smtp.mailfrom=honor.com; arc=none smtp.client-ip=81.70.160.142
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=honor.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=honor.com
+Received: from w002.hihonor.com (unknown [10.68.28.120])
+	by mta21.hihonor.com (SkyGuard) with ESMTPS id 4c6wz50zmyzYlxH1;
+	Thu, 21 Aug 2025 16:12:17 +0800 (CST)
+Received: from a011.hihonor.com (10.68.31.243) by w002.hihonor.com
+ (10.68.28.120) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1544.11; Thu, 21 Aug
+ 2025 16:12:29 +0800
+Received: from localhost.localdomain (10.144.23.14) by a011.hihonor.com
+ (10.68.31.243) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1544.11; Thu, 21 Aug
+ 2025 16:12:29 +0800
+From: wangzijie <wangzijie1@honor.com>
+To: <brauner@kernel.org>
+CC: <adobriyan@gmail.com>, <akpm@linux-foundation.org>, <ast@kernel.org>,
+	<gregkh@linuxfoundation.org>, <jirislaby@kernel.org>, <k.shutemov@gmail.com>,
+	<linux-fsdevel@vger.kernel.org>, <polynomial-c@gmx.de>,
+	<regressions@lists.linux.dev>, <rick.p.edgecombe@intel.com>,
+	<stable@vger.kernel.org>, <viro@zeniv.linux.org.uk>, <wangzijie1@honor.com>
+Subject: Re: [PATCH RESEND v2] proc: fix missing pde_set_flags() for net proc files
+Date: Thu, 21 Aug 2025 16:12:29 +0800
+Message-ID: <20250821081229.1346962-1-wangzijie1@honor.com>
+X-Mailer: git-send-email 2.25.1
+In-Reply-To: <20250821-wagemut-serpentinen-e5f4b6f505f6@brauner>
+References: <20250821-wagemut-serpentinen-e5f4b6f505f6@brauner>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-In-Reply-To: <20250820074245.16613-2-ziyao@disroot.org>
+Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
+X-ClientProxiedBy: w003.hihonor.com (10.68.17.88) To a011.hihonor.com
+ (10.68.31.243)
 
-On Wed, Aug 20, 2025 at 07:42:43AM +0000, Yao Zi wrote:
-> The reset controller driver for the TH1520 was using the generic
-> compatible string "thead,th1520-reset". However, the controller
-> described by this compatible only manages the resets for the Video
-> Output (VO) subsystem.
+>On Mon, Aug 18, 2025 at 08:31:02PM +0800, wangzijie wrote:
+>> To avoid potential UAF issues during module removal races, we use pde_set_flags()
+>> to save proc_ops flags in PDE itself before proc_register(), and then use
+>> pde_has_proc_*() helpers instead of directly dereferencing pde->proc_ops->*.
+>> 
+>> However, the pde_set_flags() call was missing when creating net related proc files.
+>> This omission caused incorrect behavior which FMODE_LSEEK was being cleared
+>> inappropriately in proc_reg_open() for net proc files. Lars reported it in this link[1].
+>> 
+>> Fix this by ensuring pde_set_flags() is called when register proc entry, and add
+>> NULL check for proc_ops in pde_set_flags().
+>> 
+>> [1]: https://lore.kernel.org/all/20250815195616.64497967@chagall.paradoxon.rec/
+>> 
+>> Fixes: ff7ec8dc1b64 ("proc: use the same treatment to check proc_lseek as ones for proc_read_iter et.al)
+>> Cc: stable@vger.kernel.org
+>> Reported-by: Lars Wendler <polynomial-c@gmx.de>
+>> Signed-off-by: wangzijie <wangzijie1@honor.com>
+>> ---
+>> v2:
+>> - followed by Jiri's suggestion to refractor code and reformat commit message
+>> ---
+>>  fs/proc/generic.c | 36 +++++++++++++++++++-----------------
+>>  1 file changed, 19 insertions(+), 17 deletions(-)
+>> 
+>> diff --git a/fs/proc/generic.c b/fs/proc/generic.c
+>> index 76e800e38..003031839 100644
+>> --- a/fs/proc/generic.c
+>> +++ b/fs/proc/generic.c
+>> @@ -367,6 +367,23 @@ static const struct inode_operations proc_dir_inode_operations = {
+>>  	.setattr	= proc_notify_change,
+>>  };
+>>  
+>> +static void pde_set_flags(struct proc_dir_entry *pde)
+>> +{
+>
+>Stash pde->proc_ops in a local const variable instead of chasing the
+>pointer multiple times. Aside from that also makes it easier to read.
+>Otherwise seems fine.
 
-Please use subject prefixes matching the subsystem. You can get them for
-example with 'git log --oneline -- DIRECTORY_OR_FILE' on the directory
-your patch is touching. For bindings, the preferred subjects are
-explained here:
-https://www.kernel.org/doc/html/latest/devicetree/bindings/submitting-patches.html#i-for-patch-submitters
+Thanks for helping review, Christian. I will follow your suggestion.
 
-> 
-> Using a generic compatible is confusing as it implies control over all
-> reset units on the SoC. This could lead to conflicts if support for
 
-No, it won't lead to conflicts. Stop making up reasons.
-
-> other reset controllers on the TH1520 is added in the future like AP.
-> 
-> Let's introduce a new compatible string, "thead,th1520-reset-vo", to
-> explicitly scope the controller to VO-subsystem. The old one is marked
-> as deprecated.
-> 
-> Fixes: 30e7573babdc ("dt-bindings: reset: Add T-HEAD TH1520 SoC Reset Controller")
-> Cc: stable@vger.kernel.org
-
-Especially for backporting... Describe the actual bug being fixed here.
-
-> Reported-by: Icenowy Zheng <uwu@icenowy.me>
-> Co-developed-by: Michal Wilczynski <m.wilczynski@samsung.com>
-> Signed-off-by: Michal Wilczynski <m.wilczynski@samsung.com>
-> Signed-off-by: Yao Zi <ziyao@disroot.org>
-> ---
->  .../bindings/reset/thead,th1520-reset.yaml      | 17 ++++++++---------
->  1 file changed, 8 insertions(+), 9 deletions(-)
-> 
-> diff --git a/Documentation/devicetree/bindings/reset/thead,th1520-reset.yaml b/Documentation/devicetree/bindings/reset/thead,th1520-reset.yaml
-> index f2e91d0add7a..3930475dcc04 100644
-> --- a/Documentation/devicetree/bindings/reset/thead,th1520-reset.yaml
-> +++ b/Documentation/devicetree/bindings/reset/thead,th1520-reset.yaml
-> @@ -15,8 +15,11 @@ maintainers:
->  
->  properties:
->    compatible:
-> -    enum:
-> -      - thead,th1520-reset
-> +    oneOf:
-> +      - enum:
-> +          - thead,th1520-reset-vo
-> +      - const: thead,th1520-reset
-> +        deprecated: true
-
-This you can do, but none of this is getting to backports and your DTS
-is a NAK. This basically means that this is kind of pointless.
-
-Compatibles do not have particular meanings, so entire explanation that
-it implies something is not true. We have been here, this was discussed
-for other SoCs and you were told in v1 - don't do that.
-
-You are stuck with the old compatible. Is here an issue to fix? No.
-
-Best regards,
-Krzysztof
+>> +	if (!pde->proc_ops)
+>> +		return;
+>> +
+>> +	if (pde->proc_ops->proc_flags & PROC_ENTRY_PERMANENT)
+>> +		pde->flags |= PROC_ENTRY_PERMANENT;
+>> +	if (pde->proc_ops->proc_read_iter)
+>> +		pde->flags |= PROC_ENTRY_proc_read_iter;
+>> +#ifdef CONFIG_COMPAT
+>> +	if (pde->proc_ops->proc_compat_ioctl)
+>> +		pde->flags |= PROC_ENTRY_proc_compat_ioctl;
+>> +#endif
+>> +	if (pde->proc_ops->proc_lseek)
+>> +		pde->flags |= PROC_ENTRY_proc_lseek;
+>> +}
+>> +
+>>  /* returns the registered entry, or frees dp and returns NULL on failure */
+>>  struct proc_dir_entry *proc_register(struct proc_dir_entry *dir,
+>>  		struct proc_dir_entry *dp)
+>> @@ -374,6 +391,8 @@ struct proc_dir_entry *proc_register(struct proc_dir_entry *dir,
+>>  	if (proc_alloc_inum(&dp->low_ino))
+>>  		goto out_free_entry;
+>>  
+>> +	pde_set_flags(dp);
+>> +
+>>  	write_lock(&proc_subdir_lock);
+>>  	dp->parent = dir;
+>>  	if (pde_subdir_insert(dir, dp) == false) {
+>> @@ -561,20 +580,6 @@ struct proc_dir_entry *proc_create_reg(const char *name, umode_t mode,
+>>  	return p;
+>>  }
+>>  
+>> -static void pde_set_flags(struct proc_dir_entry *pde)
+>> -{
+>> -	if (pde->proc_ops->proc_flags & PROC_ENTRY_PERMANENT)
+>> -		pde->flags |= PROC_ENTRY_PERMANENT;
+>> -	if (pde->proc_ops->proc_read_iter)
+>> -		pde->flags |= PROC_ENTRY_proc_read_iter;
+>> -#ifdef CONFIG_COMPAT
+>> -	if (pde->proc_ops->proc_compat_ioctl)
+>> -		pde->flags |= PROC_ENTRY_proc_compat_ioctl;
+>> -#endif
+>> -	if (pde->proc_ops->proc_lseek)
+>> -		pde->flags |= PROC_ENTRY_proc_lseek;
+>> -}
+>> -
+>>  struct proc_dir_entry *proc_create_data(const char *name, umode_t mode,
+>>  		struct proc_dir_entry *parent,
+>>  		const struct proc_ops *proc_ops, void *data)
+>> @@ -585,7 +590,6 @@ struct proc_dir_entry *proc_create_data(const char *name, umode_t mode,
+>>  	if (!p)
+>>  		return NULL;
+>>  	p->proc_ops = proc_ops;
+>> -	pde_set_flags(p);
+>>  	return proc_register(parent, p);
+>>  }
+>>  EXPORT_SYMBOL(proc_create_data);
+>> @@ -636,7 +640,6 @@ struct proc_dir_entry *proc_create_seq_private(const char *name, umode_t mode,
+>>  	p->proc_ops = &proc_seq_ops;
+>>  	p->seq_ops = ops;
+>>  	p->state_size = state_size;
+>> -	pde_set_flags(p);
+>>  	return proc_register(parent, p);
+>>  }
+>>  EXPORT_SYMBOL(proc_create_seq_private);
+>> @@ -667,7 +670,6 @@ struct proc_dir_entry *proc_create_single_data(const char *name, umode_t mode,
+>>  		return NULL;
+>>  	p->proc_ops = &proc_single_ops;
+>>  	p->single_show = show;
+>> -	pde_set_flags(p);
+>>  	return proc_register(parent, p);
+>>  }
+>>  EXPORT_SYMBOL(proc_create_single_data);
+>> -- 
+>> 2.25.1
+>> 
 
 
