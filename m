@@ -1,71 +1,71 @@
-Return-Path: <stable+bounces-172036-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-172038-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 49E39B2F9B3
-	for <lists+stable@lfdr.de>; Thu, 21 Aug 2025 15:13:49 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 45A31B2F9D0
+	for <lists+stable@lfdr.de>; Thu, 21 Aug 2025 15:15:31 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id B3C69178D1B
-	for <lists+stable@lfdr.de>; Thu, 21 Aug 2025 13:08:12 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id DEDFCAE1544
+	for <lists+stable@lfdr.de>; Thu, 21 Aug 2025 13:08:52 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1B33D2DA76E;
-	Thu, 21 Aug 2025 13:07:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7B7961F473C;
+	Thu, 21 Aug 2025 13:08:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="qqOiMmLW"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="T79q4GoN"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CDA72322756
-	for <stable@vger.kernel.org>; Thu, 21 Aug 2025 13:07:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3BC2236CDE1
+	for <stable@vger.kernel.org>; Thu, 21 Aug 2025 13:08:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755781675; cv=none; b=fRX8S5RNLVkBEo6R9m92Mwnu1lrGufdZvJ6k37fEP5mwwkEJ8c4x7iz+FJvaCNJ4DqjJ5uf+yQo/BaWX6oaSYyzJsQqk3+9VdNQiNwzYnmyqhHIzLtS0IqVj3B0DNJxv3LSyDBoNQcP3RHQf1hfc7b0Y0I+l+228F5Nv+YzM60k=
+	t=1755781696; cv=none; b=gWmmKCajJKTheV/5tXuzZW3WLB6XAeiADdB6N722JgaTXm5B3b0NeC+l4TBMY6bOSm2POCE5DzWKkgS1fhkKr/fSWRxZDuo7+Hdxxk0Rl/r4lmGvB9olLEw+PYCzgbRsB0o5Gc7II9avu9vO3VHLP5bWoyuKV6bBLODmH6kuuuU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1755781675; c=relaxed/simple;
-	bh=O/R06yotY46fHOOphoLPm4fDiaeilbyvaGEXRCg0Fhk=;
-	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=swRK/Y7kiGSs0MtI5AhcOTnhtunFXVuVTGmUWhy1V6sd5cRoIMb6d4OHkgTyJ8V+hGXvvNbSvnL/ZYdA6m9TWoMd7bUT4nekMn6g5Ms97+4Kfkzbc2rb/PrOLuexyCNZiLDFgu1Vi3sV2cuSdGZ8+zBqxTx53091ftmfij2N4eA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=qqOiMmLW; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id EFDC4C4CEED;
-	Thu, 21 Aug 2025 13:07:54 +0000 (UTC)
+	s=arc-20240116; t=1755781696; c=relaxed/simple;
+	bh=2z71XZ/MXPyZhNnQtFDo+zzG5weyqMyiPgbysP8p+T4=;
+	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=bSOYWvuDDhFxAgT66AbhwuFotC0H0oHQXy+uAvX1v0TyI3bb17NJUzDUBdS5pK53IyaWImI/7eVPK39JreoiusdPrU1lb6R0TaDHN69DgX7ueezWPnWSHrfzEl9X3eVsNOGXtVoG41+53298wR1Lw9LPc3Q3yT3/JLf4iX8K640=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=T79q4GoN; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8A2A9C113CF;
+	Thu, 21 Aug 2025 13:08:15 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1755781675;
-	bh=O/R06yotY46fHOOphoLPm4fDiaeilbyvaGEXRCg0Fhk=;
+	s=korg; t=1755781695;
+	bh=2z71XZ/MXPyZhNnQtFDo+zzG5weyqMyiPgbysP8p+T4=;
 	h=Subject:To:Cc:From:Date:From;
-	b=qqOiMmLWH6lgDw4i2J4dR+JAC2kzb73Pex1aJSQS4nf5ZoRK3wrnnXHOHC9lScCmQ
-	 LGeCjzbn09xZ4avr2U6jlpSQwke2wb67chRmzp9mFM/mlGsiGFsqBfN1YmU9tGnKT7
-	 4SVEhX2nrv6TQr3eZcSmVSDo5cbpCvOwhcsCNIQk=
-Subject: FAILED: patch "[PATCH] scsi: ufs: exynos: Fix programming of HCI_UTRL_NEXUS_TYPE" failed to apply to 5.15-stable tree
-To: andre.draszik@linaro.org,bvanassche@acm.org,martin.petersen@oracle.com,peter.griffin@linaro.org
+	b=T79q4GoNMhX/QjCveCnchwwVeq4sViLgEXZ1ETTr+YcRGkHp9qevtvn1rO4Lm+VYt
+	 TDiv4lXr2vzmnB2Ws7Jt2vE7Q4BVel+VObeYQHByX21k2MqxdtGPJ5yIX37jk6OIWH
+	 mWyhC2jX943AKoPNvVbnSPbsoGqUH735tgFOMGR0=
+Subject: FAILED: patch "[PATCH] scsi: mpi3mr: Serialize admin queue BAR writes on 32-bit" failed to apply to 6.12-stable tree
+To: ranjan.kumar@broadcom.com,martin.petersen@oracle.com
 Cc: <stable@vger.kernel.org>
 From: <gregkh@linuxfoundation.org>
-Date: Thu, 21 Aug 2025 15:07:38 +0200
-Message-ID: <2025082137-liver-glimpse-25bf@gregkh>
+Date: Thu, 21 Aug 2025 15:08:04 +0200
+Message-ID: <2025082104-negative-wildcat-59ac@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
+Content-Type: text/plain; charset=ANSI_X3.4-1968
 Content-Transfer-Encoding: 8bit
 
 
-The patch below does not apply to the 5.15-stable tree.
+The patch below does not apply to the 6.12-stable tree.
 If someone wants it applied there, or to any other stable or longterm
 tree, then please email the backport, including the original git commit
 id to <stable@vger.kernel.org>.
 
 To reproduce the conflict and resubmit, you may use the following commands:
 
-git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-5.15.y
+git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-6.12.y
 git checkout FETCH_HEAD
-git cherry-pick -x 01aad16c2257ab8ff33b152b972c9f2e1af47912
+git cherry-pick -x c91e140c82eb58724c435f623702e51cc7896646
 # <resolve conflicts, build, test, etc.>
 git commit -s
-git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2025082137-liver-glimpse-25bf@gregkh' --subject-prefix 'PATCH 5.15.y' HEAD^..
+git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2025082104-negative-wildcat-59ac@gregkh' --subject-prefix 'PATCH 6.12.y' HEAD^..
 
 Possible dependencies:
 
@@ -77,55 +77,102 @@ greg k-h
 
 ------------------ original commit in Linus's tree ------------------
 
-From 01aad16c2257ab8ff33b152b972c9f2e1af47912 Mon Sep 17 00:00:00 2001
-From: =?UTF-8?q?Andr=C3=A9=20Draszik?= <andre.draszik@linaro.org>
-Date: Mon, 7 Jul 2025 18:05:27 +0100
-Subject: [PATCH] scsi: ufs: exynos: Fix programming of HCI_UTRL_NEXUS_TYPE
-MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
+From c91e140c82eb58724c435f623702e51cc7896646 Mon Sep 17 00:00:00 2001
+From: Ranjan Kumar <ranjan.kumar@broadcom.com>
+Date: Sat, 28 Jun 2025 01:15:38 +0530
+Subject: [PATCH] scsi: mpi3mr: Serialize admin queue BAR writes on 32-bit
+ systems
 
-On Google gs101, the number of UTP transfer request slots (nutrs) is 32,
-and in this case the driver ends up programming the UTRL_NEXUS_TYPE
-incorrectly as 0.
+On 32-bit systems, 64-bit BAR writes to admin queue registers are
+performed as two 32-bit writes. Without locking, this can cause partial
+writes when accessed concurrently.
 
-This is because the left hand side of the shift is 1, which is of type
-int, i.e. 31 bits wide. Shifting by more than that width results in
-undefined behaviour.
+Updated per-queue spinlocks is used to serialize these writes and prevent
+race conditions.
 
-Fix this by switching to the BIT() macro, which applies correct type
-casting as required. This ensures the correct value is written to
-UTRL_NEXUS_TYPE (0xffffffff on gs101), and it also fixes a UBSAN shift
-warning:
-
-    UBSAN: shift-out-of-bounds in drivers/ufs/host/ufs-exynos.c:1113:21
-    shift exponent 32 is too large for 32-bit type 'int'
-
-For consistency, apply the same change to the nutmrs / UTMRL_NEXUS_TYPE
-write.
-
-Fixes: 55f4b1f73631 ("scsi: ufs: ufs-exynos: Add UFS host support for Exynos SoCs")
+Fixes: 824a156633df ("scsi: mpi3mr: Base driver code")
 Cc: stable@vger.kernel.org
-Signed-off-by: André Draszik <andre.draszik@linaro.org>
-Link: https://lore.kernel.org/r/20250707-ufs-exynos-shift-v1-1-1418e161ae40@linaro.org
-Reviewed-by: Bart Van Assche <bvanassche@acm.org>
-Reviewed-by: Peter Griffin <peter.griffin@linaro.org>
+Signed-off-by: Ranjan Kumar <ranjan.kumar@broadcom.com>
+Link: https://lore.kernel.org/r/20250627194539.48851-4-ranjan.kumar@broadcom.com
 Signed-off-by: Martin K. Petersen <martin.petersen@oracle.com>
 
-diff --git a/drivers/ufs/host/ufs-exynos.c b/drivers/ufs/host/ufs-exynos.c
-index 3e545af536e5..f0adcd9dd553 100644
---- a/drivers/ufs/host/ufs-exynos.c
-+++ b/drivers/ufs/host/ufs-exynos.c
-@@ -1110,8 +1110,8 @@ static int exynos_ufs_post_link(struct ufs_hba *hba)
- 	hci_writel(ufs, val, HCI_TXPRDT_ENTRY_SIZE);
+diff --git a/drivers/scsi/mpi3mr/mpi3mr.h b/drivers/scsi/mpi3mr/mpi3mr.h
+index bf272dd69d23..f2201108ea91 100644
+--- a/drivers/scsi/mpi3mr/mpi3mr.h
++++ b/drivers/scsi/mpi3mr/mpi3mr.h
+@@ -1137,6 +1137,8 @@ struct scmd_priv {
+  * @logdata_buf: Circular buffer to store log data entries
+  * @logdata_buf_idx: Index of entry in buffer to store
+  * @logdata_entry_sz: log data entry size
++ * @adm_req_q_bar_writeq_lock: Admin request queue lock
++ * @adm_reply_q_bar_writeq_lock: Admin reply queue lock
+  * @pend_large_data_sz: Counter to track pending large data
+  * @io_throttle_data_length: I/O size to track in 512b blocks
+  * @io_throttle_high: I/O size to start throttle in 512b blocks
+@@ -1339,6 +1341,8 @@ struct mpi3mr_ioc {
+ 	u8 *logdata_buf;
+ 	u16 logdata_buf_idx;
+ 	u16 logdata_entry_sz;
++	spinlock_t adm_req_q_bar_writeq_lock;
++	spinlock_t adm_reply_q_bar_writeq_lock;
  
- 	hci_writel(ufs, ilog2(DATA_UNIT_SIZE), HCI_RXPRDT_ENTRY_SIZE);
--	hci_writel(ufs, (1 << hba->nutrs) - 1, HCI_UTRL_NEXUS_TYPE);
--	hci_writel(ufs, (1 << hba->nutmrs) - 1, HCI_UTMRL_NEXUS_TYPE);
-+	hci_writel(ufs, BIT(hba->nutrs) - 1, HCI_UTRL_NEXUS_TYPE);
-+	hci_writel(ufs, BIT(hba->nutmrs) - 1, HCI_UTMRL_NEXUS_TYPE);
- 	hci_writel(ufs, 0xf, HCI_AXIDMA_RWDATA_BURST_LEN);
+ 	atomic_t pend_large_data_sz;
+ 	u32 io_throttle_data_length;
+diff --git a/drivers/scsi/mpi3mr/mpi3mr_fw.c b/drivers/scsi/mpi3mr/mpi3mr_fw.c
+index 8976582946a2..0152d31d430a 100644
+--- a/drivers/scsi/mpi3mr/mpi3mr_fw.c
++++ b/drivers/scsi/mpi3mr/mpi3mr_fw.c
+@@ -23,17 +23,22 @@ module_param(poll_queues, int, 0444);
+ MODULE_PARM_DESC(poll_queues, "Number of queues for io_uring poll mode. (Range 1 - 126)");
  
- 	if (ufs->opts & EXYNOS_UFS_OPT_SKIP_CONNECTION_ESTAB)
+ #if defined(writeq) && defined(CONFIG_64BIT)
+-static inline void mpi3mr_writeq(__u64 b, void __iomem *addr)
++static inline void mpi3mr_writeq(__u64 b, void __iomem *addr,
++	spinlock_t *write_queue_lock)
+ {
+ 	writeq(b, addr);
+ }
+ #else
+-static inline void mpi3mr_writeq(__u64 b, void __iomem *addr)
++static inline void mpi3mr_writeq(__u64 b, void __iomem *addr,
++	spinlock_t *write_queue_lock)
+ {
+ 	__u64 data_out = b;
++	unsigned long flags;
+ 
++	spin_lock_irqsave(write_queue_lock, flags);
+ 	writel((u32)(data_out), addr);
+ 	writel((u32)(data_out >> 32), (addr + 4));
++	spin_unlock_irqrestore(write_queue_lock, flags);
+ }
+ #endif
+ 
+@@ -2954,9 +2959,11 @@ static int mpi3mr_setup_admin_qpair(struct mpi3mr_ioc *mrioc)
+ 	    (mrioc->num_admin_req);
+ 	writel(num_admin_entries, &mrioc->sysif_regs->admin_queue_num_entries);
+ 	mpi3mr_writeq(mrioc->admin_req_dma,
+-	    &mrioc->sysif_regs->admin_request_queue_address);
++		&mrioc->sysif_regs->admin_request_queue_address,
++		&mrioc->adm_req_q_bar_writeq_lock);
+ 	mpi3mr_writeq(mrioc->admin_reply_dma,
+-	    &mrioc->sysif_regs->admin_reply_queue_address);
++		&mrioc->sysif_regs->admin_reply_queue_address,
++		&mrioc->adm_reply_q_bar_writeq_lock);
+ 	writel(mrioc->admin_req_pi, &mrioc->sysif_regs->admin_request_queue_pi);
+ 	writel(mrioc->admin_reply_ci, &mrioc->sysif_regs->admin_reply_queue_ci);
+ 	return retval;
+diff --git a/drivers/scsi/mpi3mr/mpi3mr_os.c b/drivers/scsi/mpi3mr/mpi3mr_os.c
+index ce444efd859e..0d1c9bbb13b5 100644
+--- a/drivers/scsi/mpi3mr/mpi3mr_os.c
++++ b/drivers/scsi/mpi3mr/mpi3mr_os.c
+@@ -5365,6 +5365,8 @@ mpi3mr_probe(struct pci_dev *pdev, const struct pci_device_id *id)
+ 	spin_lock_init(&mrioc->tgtdev_lock);
+ 	spin_lock_init(&mrioc->watchdog_lock);
+ 	spin_lock_init(&mrioc->chain_buf_lock);
++	spin_lock_init(&mrioc->adm_req_q_bar_writeq_lock);
++	spin_lock_init(&mrioc->adm_reply_q_bar_writeq_lock);
+ 	spin_lock_init(&mrioc->sas_node_lock);
+ 	spin_lock_init(&mrioc->trigger_lock);
+ 
 
 
