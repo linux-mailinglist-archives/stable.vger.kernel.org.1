@@ -1,140 +1,126 @@
-Return-Path: <stable+bounces-172230-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-172231-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [IPv6:2605:f480:58:1:0:1994:3:14])
-	by mail.lfdr.de (Postfix) with ESMTPS id 189DDB3072D
-	for <lists+stable@lfdr.de>; Thu, 21 Aug 2025 22:54:23 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 94024B30806
+	for <lists+stable@lfdr.de>; Thu, 21 Aug 2025 23:10:21 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 0C0734E697A
-	for <lists+stable@lfdr.de>; Thu, 21 Aug 2025 20:54:22 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id B7F9A1D043E6
+	for <lists+stable@lfdr.de>; Thu, 21 Aug 2025 21:07:02 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D6498350D52;
-	Thu, 21 Aug 2025 20:38:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2D6DB393DEC;
+	Thu, 21 Aug 2025 21:02:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="VOGQNs4A"
+	dkim=pass (2048-bit key) header.d=yahoo.com header.i=@yahoo.com header.b="tP7T+6SL"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-pg1-f201.google.com (mail-pg1-f201.google.com [209.85.215.201])
+Received: from sonic314-20.consmr.mail.sg3.yahoo.com (sonic314-20.consmr.mail.sg3.yahoo.com [106.10.240.144])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 47AE41AF0AF
-	for <stable@vger.kernel.org>; Thu, 21 Aug 2025 20:38:03 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.215.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E920C393DE6
+	for <stable@vger.kernel.org>; Thu, 21 Aug 2025 21:02:18 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=106.10.240.144
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755808685; cv=none; b=DsO+Jna2tgUUUchUnf8Z08IweX7ie0b3vt9bt7HMCde/Z3U19JHZzCAnq8Ja1ZcMgAN3YlFeEqkytZMqBNLtiIp1WlpJk1x1hvZHKzORJGNjxslj//tG/nhF9jJSNEev4m9K99ZJ190G38PJQgC9hw8pStt7dQ4bOUPdDKCJOFc=
+	t=1755810141; cv=none; b=XssKgfNhac8RN4DNWRCcLew9Q7a8pxlYPZiHKqSolSGuCiEajo/EsVCRa/nHtS75NMmkrjvoMli5CsPFVSVuodR4CHfrCHoPZiNPS1lzROKanNmeTP9kLSSZdiOODS3okomsyiDGHEVYKMSRHUGkabbmx2E9yTlGwveoO4Ftp0A=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1755808685; c=relaxed/simple;
-	bh=LK0ffmxwoRRSpUy6ETRxfmp+bDaVlq/xpqFIqDqFAm8=;
-	h=Date:Mime-Version:Message-ID:Subject:From:Cc:Content-Type; b=UlezftvJioD8Jyqiir+B3MMZYLztYQg6hzaFRyCM+QcOFFAkG+F8TV55TvQ5XOkGarpxR3/0PZEtFcY00OK9B57oSfYZSzucQBEFB0KAsPa+t8Gn7FEIOQoOt/+9wSDje4cf2rrv3D1rB8jcKPNCrbpPfvjxfxiE8iny+jEs5x4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--rdbabiera.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=VOGQNs4A; arc=none smtp.client-ip=209.85.215.201
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--rdbabiera.bounces.google.com
-Received: by mail-pg1-f201.google.com with SMTP id 41be03b00d2f7-b4741e1cde6so1115556a12.3
-        for <stable@vger.kernel.org>; Thu, 21 Aug 2025 13:38:03 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1755808683; x=1756413483; darn=vger.kernel.org;
-        h=cc:from:subject:message-id:mime-version:date:from:to:cc:subject
-         :date:message-id:reply-to;
-        bh=A6J8iPdaSliSAg1NNjehK3dJ+H9DoeAFsFqVWkQlMvg=;
-        b=VOGQNs4ABqDUuaqcQ4TmXvtFzHHs9sQSpHmYGGr40OMri48cncpSPqoxD1DPWhlZWo
-         UOZYoYBSHobvt/Mey5Ll4SpozKqsCtWl8Ws+OM7uFOS98PGOEZ1HzLM6Q7oOEj8p3KqD
-         Wxq0zj/IPPu1KgLzHkwTaZBuPZ56sqFEKiqtJgvxNCVpFuiVuLH8UGoKpjkuL/OqUTgQ
-         NnqviiCRMG2PXzNznS/JdoA7VHNEqiZVdWVruyhgLz0f6ftBGf4z59/MKrRV3ACC65ln
-         x9EQV5lLNnp725mKHcW3JpuwQPvrL+yDjPLCpsfv5Td/0Yw455AtB2Tj351JNNJIirgX
-         qiBw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1755808683; x=1756413483;
-        h=cc:from:subject:message-id:mime-version:date:x-gm-message-state
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=A6J8iPdaSliSAg1NNjehK3dJ+H9DoeAFsFqVWkQlMvg=;
-        b=UM7DO33SIqqrvBM76BFQ14qUrhYQ3YXx53PvkZh/DcTdQtQckp4okfikPNwsS0S9hq
-         kAAJ3WhfEUvtvEDhsjNsZOj9q4NplPZYbvK9HthaJ1bmC0ntBhTgJttAsZozctecv3ZU
-         hBQwQmGDjgaMNg94KoA+rydm2En9IEjPF+hKTD4k4pRO6XPl8GNreJWBk84QZtoK+Wdm
-         Wfm+zuKNFQrXasxby9Gmw7aObS4VD8hNV0cyAPvH6yuyMbQyiOiIypm6sO38sIP5JgFS
-         gmHyj4H5Xv41KNl0Btkre6wQL/TUbrPlRS3aGXn79bzuDG9KLNIK8jLms5d2IoANibba
-         QfUw==
-X-Forwarded-Encrypted: i=1; AJvYcCWtzHr2AABz1HNTysRLR7mUxdVAQCk5WjU9VLTmxUbBQ8Rd8cQ9afyOyG6GFEl66f8e5fXx0TQ=@vger.kernel.org
-X-Gm-Message-State: AOJu0YyKnxpDrQ/QkmkWNtbNzzr4sqCym6aywX1LfhHFQR9x5aQswc4R
-	4rrMD7M5V4TNxx4piPlCUyjsTpLmSVLnzs7OtugfoRdPnGQARg2EWbUVlSLx1yH3abiQNonirwH
-	sPucOWfK6mtkb61YCUw==
-X-Google-Smtp-Source: AGHT+IHTNg2XpUsrE+YHf5HG9pSwBMBRFWraLKsoDyvJj3fw3Vtl+2W4kClcaiFGfxlTTGUbBZuUq4sbjFR1Bu0=
-X-Received: from pjj13.prod.google.com ([2002:a17:90b:554d:b0:31f:b2f:aeed])
- (user=rdbabiera job=prod-delivery.src-stubby-dispatcher) by
- 2002:a05:6a20:3ca1:b0:23f:f99d:465e with SMTP id adf61e73a8af0-24340c434a3mr587468637.16.1755808683509;
- Thu, 21 Aug 2025 13:38:03 -0700 (PDT)
-Date: Thu, 21 Aug 2025 20:37:57 +0000
+	s=arc-20240116; t=1755810141; c=relaxed/simple;
+	bh=o/QW5Eq00a5QXAUtM52Knv7Z7ah1Xkh2S53OzkGeLmQ=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=Z9Npe35Z+tpCt4r8tGkIiTb6Tx0PTEewOLBHfiPgq8wPFzjqnH74Wf2qilsWXGuQh3JNKgOvVD9SQNsjGEude788sL8PFhPO3dwRLeJCJG61x7iGTKJEAYc3UfH2nQ9dnclcaOMlXWRkYzAGlwC3hJS0aDr0ztAsBT3k7BybyAk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=yahoo.com; spf=pass smtp.mailfrom=yahoo.com; dkim=pass (2048-bit key) header.d=yahoo.com header.i=@yahoo.com header.b=tP7T+6SL; arc=none smtp.client-ip=106.10.240.144
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=yahoo.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=yahoo.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=yahoo.com; s=s2048; t=1755810137; bh=vBI/OWLaWKWrwJL5r562JGOYuxBdZwPCSQTwe/bG9+o=; h=From:To:Cc:Subject:Date:In-Reply-To:References:From:Subject:Reply-To; b=tP7T+6SL80gLeVgWlTfxuCPq2Xif+sXhm9z9YoU3E4I/x/8LH0fPUazRJze/BXwqySpFBJHq1nf3KOzxfEHhTcXD4DwJO6jxQ2Rp7SCzstRN2PfJjszFBEG449U0QYd3zkj6KxY+DngDR5s0JD/bORWfxHlpONnOV5zw+dHxd0ZgZ4Nj7MAEOEg/w99Mh5WxQrmY6jMgNf0E4q/XAJhb4ba5lO3KPvkXot4TX7NTNXuTqIawD4gTnoznFYOu98SZhiaAqb5KD7E/ASM6cEqRns7l5dn+VrcjQx8A532/aVQ6AY7Fcb1h9oh4gG3WpKh1ivjYYbNlPfaV6NV8+xohmQ==
+X-SONIC-DKIM-SIGN: v=1; a=rsa-sha256; c=relaxed/relaxed; d=yahoo.com; s=s2048; t=1755810137; bh=oNOWcUMXdRdd16yc4QspODBcYUG7kpTvqwRShVE3F7f=; h=X-Sonic-MF:From:To:Subject:Date:From:Subject; b=Mpa8cDXab7Czb2BwGdGSs8uin8URMOOEaWFibgol6nRaiU+0YUVfkPXy5JUpg52mUpJEgGKI1ul1edi21di5/hNz6SY4wMMmHoLmnmDy9+GKDpy7cSoLSS1+Woz8WtSbthBuUNxtAvnM2fjx+sL/etlwstXX28zlLTghq7LJtHE3g27F2keV8EGIoLxjxm/cd+U1QSn3MZAKwl0FaJGGA/RA5kF4okesFbyTvVZEHPnAvQQGQ+kfphqhJptXQ/iFOJqDUiDbVVk1oZaZkUS0et525kXcPGZWTb6PDtD24pSwyJOXZdoGRsaFocpuk8vBFxjo2WVLJkT9lPIWrfISUQ==
+X-YMail-OSG: vWSuLkUVM1kfy4eu59THuypnKreboSQetJiKdBU7SvJytXnwFfl3L.Tzu.MAhQ9
+ 28sPyt6.IXL8ugM8NdCXEsrpb2SuPOBxdbLHha2.Z66PgyIcvICHLxPEXVBLcfmDSOruVb6Qqlaq
+ htcyD9pk9Bk1uBy2_o7wnK9zTv6Jk.MB.jFGcRzwccFCp1ZTEFRqDYPa_iM5.yvRUSJuY5F4jUa5
+ oXjq6FMX04b6bSaA1I.JhyaHng_2T2pehNrZtW4.1lci3MBqTWIWw_0nZoPRYbjL6TPGhR1g_bi9
+ gOV3ojAJCga5fYX.maaPA18k_SI334Qp9JoQsfSKbgG7QaOsbEYSkweUT4P90gOqqATTA_MNQdLi
+ zvPG_2O5MU3AOUfVQpxKaOPa5y8nzQcZkzMyi3Iqy3lFIUjnvHCNt0LJM53E.V9DJwglg15uieGv
+ Kx5fCaKAKhfyuuUo6_J1LACM_svaxWC.ZuPVfFAjRsHILOvfKGW9m4w7TL0N71Jh3ty39Xu.RWWN
+ Wkm4MiEraB1Y9i4T.0yrgM3OT2aCgAiMOUYk0_CCd02RsSNtXV3o8RNiNnZHz1rMe1xo1sVaNJc3
+ 0Ako1wwzCKr01PdhNg8NDu96PWgRpnqba2bZOMaVLOgkAec4iOcfAyGWrBNyNUMRUoESH9xnsAP.
+ x.R1I5XavcNd34hLbf66kpTiX5n4jVWkydQ413HV1AXmiHho5FkzSLKGKPTI.HWVT2yM.zZJ8gGQ
+ ygZQfoOpI4Sj27caq.LRWw.wPFXTQWqXebPgZ_sM4a6EBN97Wq9L8Zvfkc039BdUUYpu7ikO1Myc
+ q5iv_07T5qrtBJeXgmJGjILv2wlAJD.pSOa8yH_rXwpKsW0VjOS8manuoSmfstIzRcPLlFZWS_9Q
+ Lr6j597U_JizRWV5mdWgbblOP8cAIN383ScnWujN7gCEw766Rimd_.Lj5PECyaPXKRh_W6l7ptl6
+ fkvIsGwppLX7rnu0pB9loz0..IE79p6j6yiNFJm7VZjEpKUqssCj0iED4shIDvYVbIyZxWgZcxyC
+ xmz4sIPL8SoMAYI84ugy_WikTKeSsoennDB1ouhxMybiXfEvS3OLGdVlhby_AfS0NZKRq303q6ju
+ Aa9jpxUvaEn602Mcj14QfQM6r47dPYFC0f7Hqh1LCs5gWVUaTfB4Xz7KXzPp0BNMUub5tgh6h.Yd
+ Af_lKR7ZjG7rhBAibZNzI5_96wcEZZNmssm.Wnrhgdzjdp.oJ.BgmLU4v9l.XQzWz6MiKjRZZJeM
+ Pq34OxsFtmP8_BRlKWyvImKSy8.QXGGxSqfz.mApefMFK6c58b66av52D7qn9oRSJfweLSAJD11f
+ .B8mKr1Ag99xKg74Sl5e0_BimYXcs4XddTE_HgyXCYecIm.R0Pk.cugWxAKbFksI_JUEtxpfH5Pf
+ _nONMDyFN189LT1bhrxwnDY7x1auQeNLtSsLEuk2W10OeiIRWPZPWuLuDJH.h.dNFaPCj2KyZRlX
+ SfJUnROeYgTbTBpmFB.StMJmW7.lE8cLNwA.PKhuJR8sb5q5YFfBxsy3e3vzPBsG3P4CT78NzfNt
+ SCAEXx069UCJ7eIwfKaShERP7tgc5q3Foihwttg_SwgGvblDrUiQEK2vpaBf2fmxJg.wZ2mwrF1Y
+ xj_io0JicrkoflwOGHTUcAHfY8nNZJGyYBCCel.ZoIHjFVhz3mc7v3pLgbEHH6Yh0siRUU2WSN.m
+ uhO9J1KKpn4OwX0fHW3tyLcw7F3zXigRyXb7CXyzOcdQxusGtl01ugJaCjRBo_aDaGISXpHqD2gE
+ QfDVRkttxWMMBGh0nIVkpxe_rXiBn.sA0qs18GrwSEn5BoaJ8t8AgWLTYAreYEMAzOA2Bbs3qEJH
+ kURK80zsAWILmZVjnQ5EZPoaN1C1jbGDW1i78zbsUhpgKJAiTIgt2xFPmRH1g6lzshTg.Eq0WyD6
+ N3A2oYj_FwV2dm8PjSCYxJ.x7qZhSqPvYT3f0gEa4oOZLFgNDxK1pHXxrXFRBelmQbFL7EUIknLa
+ 8_F5.0aI8t5P6V3tbw_PAzkAeospn93Ws8ekD3qmf4dBNQFqTScE6CfaAnKEX0QBvuS9FPVfd0pH
+ vm9IYSAxGODQ9s7vW9DhrpadpVLFFTrNVTpwxToIN6LorOOG9Jkk08HMLmRsKfp4gXhRPL81jIQ0
+ yEX5dQQy66XIs1ghn9YKxH_H3maB0QAenWFB2fN3kYErg1bAxeZQp3GOJOCyXo7UdoA_lU3lDP4A
+ NPOPYV0zhrYdYTDGN9NaIMeuTYioZkJPKVZtXtm7epK0t8qFqXkRYsas2utQpcG3kjY2ojwZNkQJ
+ 5EV2IeItuS2y13npY
+X-Sonic-MF: <sumanth.gavini@yahoo.com>
+X-Sonic-ID: b855ca6c-ebb3-4909-904f-82bbd6905c1d
+Received: from sonic.gate.mail.ne1.yahoo.com by sonic314.consmr.mail.sg3.yahoo.com with HTTP; Thu, 21 Aug 2025 21:02:17 +0000
+Received: by hermes--production-ne1-9495dc4d7-dbtfw (Yahoo Inc. Hermes SMTP Server) with ESMTPA ID 63f50e64a47cfa33942b2637b7ef206d;
+          Thu, 21 Aug 2025 21:02:12 +0000 (UTC)
+From: Sumanth Gavini <sumanth.gavini@yahoo.com>
+To: jstultz@google.com
+Cc: boqun.feng@gmail.com,
+	clingutla@codeaurora.org,
+	elavila@google.com,
+	gregkh@linuxfoundation.org,
+	kprateek.nayak@amd.com,
+	linux-kernel@vger.kernel.org,
+	mhiramat@kernel.org,
+	mingo@kernel.org,
+	rostedt@goodmis.org,
+	ryotkkr98@gmail.com,
+	sashal@kernel.org,
+	stable@vger.kernel.org,
+	sumanth.gavini@yahoo.com,
+	tglx@linutronix.de
+Subject: [PATCH 6.1] softirq: Add trace points for tasklet entry/exit
+Date: Thu, 21 Aug 2025 16:02:08 -0500
+Message-ID: <20250821210208.1724231-1-sumanth.gavini@yahoo.com>
+X-Mailer: git-send-email 2.43.0
+In-Reply-To: <CANDhNCr3E3nUjwYqFq1aC9P-EkX6iPs-X857wwN+a_QK9q7u4g@mail.gmail.com>
+References: <CANDhNCr3E3nUjwYqFq1aC9P-EkX6iPs-X857wwN+a_QK9q7u4g@mail.gmail.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0
-X-Developer-Key: i=rdbabiera@google.com; a=openpgp; fpr=639A331F1A21D691815CE090416E17CA2BBBD5C8
-X-Developer-Signature: v=1; a=openpgp-sha256; l=2145; i=rdbabiera@google.com;
- h=from:subject; bh=LK0ffmxwoRRSpUy6ETRxfmp+bDaVlq/xpqFIqDqFAm8=;
- b=owGbwMvMwCVW0bfok0KS4TbG02pJDBnLm5fPWCW6yPpk7Yd00bRfWw8tvsKwLnl22AaFJn2/C
- yLegTr9HaUsDGJcDLJiiiy6/nkGN66kbpnDWWMMM4eVCWQIAxenAEwk+Twjw9V1LKLTm8XazJwe
- iRgL2W58tI35h9M/x0kr5M5PWJjBysTIcMdyob1ltEs2r451FfNiYbPO/R5cbwNWKWm+WD755FE vTgA=
-X-Mailer: git-send-email 2.51.0.261.g7ce5a0a67e-goog
-Message-ID: <20250821203759.1720841-2-rdbabiera@google.com>
-Subject: [PATCH v1] usb: typec: tcpm: properly deliver cable vdms to altmode drivers
-From: RD Babiera <rdbabiera@google.com>
-Cc: heikki.krogerus@linux.intel.com, gregkh@linuxfoundation.org, 
-	badhri@google.com, linux-usb@vger.kernel.org, linux-kernel@vger.kernel.org, 
-	RD Babiera <rdbabiera@google.com>, stable@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
 
-tcpm_handle_vdm_request delivers messages to the partner altmode or the
-cable altmode depending on the SVDM response type, which is incorrect.
-The partner or cable should be chosen based on the received message type
-instead.
+>>
+>> Hi All,
+>>
+>> Just following up on my patch submitted with subject "Subject: [PATCH 6.1] softirq: Add trace points for tasklet entry/exit".
+>>
+>> Original message: https://lore.kernel.org/all/20250812161755.609600-1-sumanth.gavini@yahoo.com/
+>>
+>> Would you have any feedback on this change? I'd be happy to address any comments or concerns.
+>>
+>> This patch fixes this three bugs
+>> 1. https://syzkaller.appspot.com/bug?extid=5284a86a0b0a31ab266a
+>> 2. https://syzkaller.appspot.com/bug?extid=296695c8ae3c7da3d511
+>> 3. https://syzkaller.appspot.com/bug?extid=97f2ac670e5e7a3b48e4
 
-Also add this filter to ADEV_NOTIFY_USB_AND_QUEUE_VDM, which is used when
-the Enter Mode command is responded to by a NAK on SOP or SOP' and when
-the Exit Mode command is responded to by an ACK on SOP.
+> How does a patch adding a tracepoint fix the bugs highlighted here?
+> It seems maybe it would help in debugging those issues, but I'm not
+> sure I see how it would fix them.
 
-Fixes: 7e7877c55eb1 ("usb: typec: tcpm: add alt mode enter/exit/vdm support for sop'")
-Cc: stable@vger.kernel.org
-Signed-off-by: RD Babiera <rdbabiera@google.com>
-Reviewed-by: Badhri Jagan Sridharan <badhri@google.com>
----
- drivers/usb/typec/tcpm/tcpm.c | 12 ++++++++----
- 1 file changed, 8 insertions(+), 4 deletions(-)
+This patch is related to linux 6.1/backports, the backports(https://syzkaller.appspot.com/linux-6.1/backports)
+I see this patch would fix these bugs. Let me know if my understand is wrong. 
 
-diff --git a/drivers/usb/typec/tcpm/tcpm.c b/drivers/usb/typec/tcpm/tcpm.c
-index 1f6fdfaa34bf..b2a568a5bc9b 100644
---- a/drivers/usb/typec/tcpm/tcpm.c
-+++ b/drivers/usb/typec/tcpm/tcpm.c
-@@ -2426,17 +2426,21 @@ static void tcpm_handle_vdm_request(struct tcpm_port *port,
- 		case ADEV_NONE:
- 			break;
- 		case ADEV_NOTIFY_USB_AND_QUEUE_VDM:
--			WARN_ON(typec_altmode_notify(adev, TYPEC_STATE_USB, NULL));
--			typec_altmode_vdm(adev, p[0], &p[1], cnt);
-+			if (rx_sop_type == TCPC_TX_SOP_PRIME) {
-+				typec_cable_altmode_vdm(adev, TYPEC_PLUG_SOP_P, p[0], &p[1], cnt);
-+			} else {
-+				WARN_ON(typec_altmode_notify(adev, TYPEC_STATE_USB, NULL));
-+				typec_altmode_vdm(adev, p[0], &p[1], cnt);
-+			}
- 			break;
- 		case ADEV_QUEUE_VDM:
--			if (response_tx_sop_type == TCPC_TX_SOP_PRIME)
-+			if (rx_sop_type == TCPC_TX_SOP_PRIME)
- 				typec_cable_altmode_vdm(adev, TYPEC_PLUG_SOP_P, p[0], &p[1], cnt);
- 			else
- 				typec_altmode_vdm(adev, p[0], &p[1], cnt);
- 			break;
- 		case ADEV_QUEUE_VDM_SEND_EXIT_MODE_ON_FAIL:
--			if (response_tx_sop_type == TCPC_TX_SOP_PRIME) {
-+			if (rx_sop_type == TCPC_TX_SOP_PRIME) {
- 				if (typec_cable_altmode_vdm(adev, TYPEC_PLUG_SOP_P,
- 							    p[0], &p[1], cnt)) {
- 					int svdm_version = typec_get_cable_svdm_version(
-
-base-commit: 956606bafb5fc6e5968aadcda86fc0037e1d7548
--- 
-2.51.0.261.g7ce5a0a67e-goog
-
+Regards,
+Sumanth
 
