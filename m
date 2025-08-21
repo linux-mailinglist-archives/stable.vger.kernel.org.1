@@ -1,135 +1,207 @@
-Return-Path: <stable+bounces-171929-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-171930-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 62759B2E911
-	for <lists+stable@lfdr.de>; Thu, 21 Aug 2025 01:57:32 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id E3F1AB2E916
+	for <lists+stable@lfdr.de>; Thu, 21 Aug 2025 02:00:21 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id DA76917F478
-	for <lists+stable@lfdr.de>; Wed, 20 Aug 2025 23:56:38 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id BEA7B17C512
+	for <lists+stable@lfdr.de>; Thu, 21 Aug 2025 00:00:21 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 462682E1C52;
-	Wed, 20 Aug 2025 23:56:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 263518248B;
+	Thu, 21 Aug 2025 00:00:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b="wA/FUVW3"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="LanWacx1"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DE0CB2E1757;
-	Wed, 20 Aug 2025 23:56:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D2746DF76;
+	Thu, 21 Aug 2025 00:00:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755734194; cv=none; b=FJ8UiL4Aycv0iq9oMbfvQA2Aebh6uf2nfOg6xNOyDJKMNs4j9ZMaZW/f09hfrymlenvSkP3PSo0Ovs7iKH9uNjWAFXsn9nfIDM/hm0enLznXYrYCvenaerRZEi1pdBoQgqGHuFT3dGhqrIRCO2CVJvLcPR29vAszLrPBOvQAZdU=
+	t=1755734411; cv=none; b=ZT9ZnGLCcsqUJZpohhEtW2I19Zi1fY1yDJ7A9ujrRjEMR9pbuE0q2S71HiEBOvGusZ/jks64OfvcCD565DICnNwRXG1c0n7ISNyDQ/L67ghnDBzX8GnMtjbQS2ToLnr8+eis8MpqGfuqmaJ0G71XQ6Huf6GYzemaA/0AJjIyTdo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1755734194; c=relaxed/simple;
-	bh=Re1ylybfgsDuS5/NjVqPru6UuJzLyL3bNN6SP6G1UW4=;
-	h=Date:To:From:Subject:Message-Id; b=cbO9npcUYQc26eioA6OvYKck6XZMb3RuAWlQQvc9RiwghFNHgObLI5gr20zX4XZhT9D56CoOCzx3KrCkyTUDFMTFnQjFSOmU4bA0drDXtU8aFzn9+ZxmdeyvFe3XoYhojHlmaFIqOTs5dP8t1ZlS4V4RlS0f9YmGpBrz2v+vQgk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b=wA/FUVW3; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 477CFC4CEE7;
-	Wed, 20 Aug 2025 23:56:33 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linux-foundation.org;
-	s=korg; t=1755734193;
-	bh=Re1ylybfgsDuS5/NjVqPru6UuJzLyL3bNN6SP6G1UW4=;
-	h=Date:To:From:Subject:From;
-	b=wA/FUVW3kbUFxxFDVFkgWHioqKFqY3qWkJdexBp/hl4LwvfgiDdQ++ATcPsSucGy8
-	 IWWnYy4qNKoMR/0tiE12HCn9ptb235gEuYUk/hL9IZpSEEw6DQbCWGFfdqJzKJgkEX
-	 /WcjhnVrj9ZgavrcNWV63ZDxwKWFsBLgrWk37YEo=
-Date: Wed, 20 Aug 2025 16:56:32 -0700
-To: mm-commits@vger.kernel.org,stable@vger.kernel.org,piaojun@huawei.com,mark.tinguely@oracle.com,mark@fasheh.com,junxiao.bi@oracle.com,joseph.qi@linux.alibaba.com,jlbec@evilplan.org,gechangwei@live.cn,eadavis@qq.com,akpm@linux-foundation.org
-From: Andrew Morton <akpm@linux-foundation.org>
-Subject: + ocfs2-prevent-release-journal-inode-after-journal-shutdown.patch added to mm-hotfixes-unstable branch
-Message-Id: <20250820235633.477CFC4CEE7@smtp.kernel.org>
+	s=arc-20240116; t=1755734411; c=relaxed/simple;
+	bh=qM0M8s3MHhu7f4tMuCurJwd+EN9+GJIDPE7Cse4PGIs=;
+	h=Message-ID:Date:From:To:Cc:Subject:References:MIME-Version:
+	 Content-Type; b=lOoJ5qAS5c2JJChvZAs7sfp0nW8pNylBaQ0kApndqFFDmDJyjvlj4JfRsUKfVeuw+xMgGlD4XlO3bPjPe1QmXHPLzmbND4z/kXGrknighwe2P53qXi0Xfj3novacYx5Fa9eTPhf3M2E0tQ/8ooF5VQqOV2nO6OHUe8NaH/wzvpg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=LanWacx1; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5AD50C16AAE;
+	Thu, 21 Aug 2025 00:00:11 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1755734411;
+	bh=qM0M8s3MHhu7f4tMuCurJwd+EN9+GJIDPE7Cse4PGIs=;
+	h=Date:From:To:Cc:Subject:References:From;
+	b=LanWacx1J2ziGQIyrOfW5W60VavFaSVuuWs4YjTMStEFpI82FMeDx4pBhaNY2ugYO
+	 h/oZ7jWJfeL0fkKzTLN20X/AGXckiJMPrqrbxm7/xUTrmksJp6tx1PuhiAoeDXYMV4
+	 0N7fTqwN3HYdFwBHnjrIUtM7thQ8JGahiR9weBKhxpDU9z5vUMdiYYXu0Djvq6bEzX
+	 mJ/T2IQVUzL1VuP3tYCC2ZBbpwNUnTnzwfwia/NCe0etzdMU2THoXxTjazTWz9GURz
+	 ZLOP/zIN/4PnTUXj1eVVzbbEeacPsXfPdGwbQ1pQs36ykLCXOoFeVvrWNhU2ADjmdC
+	 IL0sBkAJtsBvQ==
+Received: from rostedt by gandalf with local (Exim 4.98.2)
+	(envelope-from <rostedt@kernel.org>)
+	id 1uosj0-000000013dk-3Kq4;
+	Wed, 20 Aug 2025 20:00:14 -0400
+Message-ID: <20250821000014.647378837@kernel.org>
+User-Agent: quilt/0.68
+Date: Wed, 20 Aug 2025 20:00:03 -0400
+From: Steven Rostedt <rostedt@kernel.org>
+To: linux-kernel@vger.kernel.org
+Cc: Masami Hiramatsu <mhiramat@kernel.org>,
+ Mark Rutland <mark.rutland@arm.com>,
+ Mathieu Desnoyers <mathieu.desnoyers@efficios.com>,
+ Andrew Morton <akpm@linux-foundation.org>,
+ stable@vger.kernel.org,
+ Pu Lehui <pulehui@huawei.com>
+Subject: [for-linus][PATCH 3/6] tracing: Limit access to parser->buffer when trace_get_user failed
+References: <20250821000000.210778097@kernel.org>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 
+From: Pu Lehui <pulehui@huawei.com>
 
-The patch titled
-     Subject: ocfs2: prevent release journal inode after journal shutdown
-has been added to the -mm mm-hotfixes-unstable branch.  Its filename is
-     ocfs2-prevent-release-journal-inode-after-journal-shutdown.patch
+When the length of the string written to set_ftrace_filter exceeds
+FTRACE_BUFF_MAX, the following KASAN alarm will be triggered:
 
-This patch will shortly appear at
-     https://git.kernel.org/pub/scm/linux/kernel/git/akpm/25-new.git/tree/patches/ocfs2-prevent-release-journal-inode-after-journal-shutdown.patch
+BUG: KASAN: slab-out-of-bounds in strsep+0x18c/0x1b0
+Read of size 1 at addr ffff0000d00bd5ba by task ash/165
 
-This patch will later appear in the mm-hotfixes-unstable branch at
-    git://git.kernel.org/pub/scm/linux/kernel/git/akpm/mm
+CPU: 1 UID: 0 PID: 165 Comm: ash Not tainted 6.16.0-g6bcdbd62bd56-dirty
+Hardware name: linux,dummy-virt (DT)
+Call trace:
+ show_stack+0x34/0x50 (C)
+ dump_stack_lvl+0xa0/0x158
+ print_address_description.constprop.0+0x88/0x398
+ print_report+0xb0/0x280
+ kasan_report+0xa4/0xf0
+ __asan_report_load1_noabort+0x20/0x30
+ strsep+0x18c/0x1b0
+ ftrace_process_regex.isra.0+0x100/0x2d8
+ ftrace_regex_release+0x484/0x618
+ __fput+0x364/0xa58
+ ____fput+0x28/0x40
+ task_work_run+0x154/0x278
+ do_notify_resume+0x1f0/0x220
+ el0_svc+0xec/0xf0
+ el0t_64_sync_handler+0xa0/0xe8
+ el0t_64_sync+0x1ac/0x1b0
 
-Before you just go and hit "reply", please:
-   a) Consider who else should be cc'ed
-   b) Prefer to cc a suitable mailing list as well
-   c) Ideally: find the original patch on the mailing list and do a
-      reply-to-all to that, adding suitable additional cc's
+The reason is that trace_get_user will fail when processing a string
+longer than FTRACE_BUFF_MAX, but not set the end of parser->buffer to 0.
+Then an OOB access will be triggered in ftrace_regex_release->
+ftrace_process_regex->strsep->strpbrk. We can solve this problem by
+limiting access to parser->buffer when trace_get_user failed.
 
-*** Remember to use Documentation/process/submit-checklist.rst when testing your code ***
-
-The -mm tree is included into linux-next via the mm-everything
-branch at git://git.kernel.org/pub/scm/linux/kernel/git/akpm/mm
-and is updated there every 2-3 working days
-
-------------------------------------------------------
-From: Edward Adam Davis <eadavis@qq.com>
-Subject: ocfs2: prevent release journal inode after journal shutdown
-Date: Tue, 19 Aug 2025 21:41:02 +0800
-
-Before calling ocfs2_delete_osb(), ocfs2_journal_shutdown() has already
-been executed in ocfs2_dismount_volume(), so osb->journal must be NULL. 
-Therefore, the following calltrace will inevitably fail when it reaches
-jbd2_journal_release_jbd_inode().
-
-ocfs2_dismount_volume()->
-  ocfs2_delete_osb()->
-    ocfs2_free_slot_info()->
-      __ocfs2_free_slot_info()->
-        evict()->
-          ocfs2_evict_inode()->
-            ocfs2_clear_inode()->
-	      jbd2_journal_release_jbd_inode(osb->journal->j_journal,
-
-Adding osb->journal checks will prevent null-ptr-deref during the above
-execution path.
-
-Link: https://lkml.kernel.org/r/tencent_357489BEAEE4AED74CBD67D246DBD2C4C606@qq.com
-Fixes: da5e7c87827e ("ocfs2: cleanup journal init and shutdown")
-Signed-off-by: Edward Adam Davis <eadavis@qq.com>
-Reported-by: syzbot+47d8cb2f2cc1517e515a@syzkaller.appspotmail.com
-Closes: https://syzkaller.appspot.com/bug?extid=47d8cb2f2cc1517e515a
-Tested-by: syzbot+47d8cb2f2cc1517e515a@syzkaller.appspotmail.com
-Reviewed-by: Mark Tinguely <mark.tinguely@oracle.com>
-Reviewed-by: Joseph Qi <joseph.qi@linux.alibaba.com>
-Cc: Mark Fasheh <mark@fasheh.com>
-Cc: Joel Becker <jlbec@evilplan.org>
-Cc: Junxiao Bi <junxiao.bi@oracle.com>
-Cc: Changwei Ge <gechangwei@live.cn>
-Cc: Jun Piao <piaojun@huawei.com>
-Cc: <stable@vger.kernel.org>
-Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
+Cc: stable@vger.kernel.org
+Link: https://lore.kernel.org/20250813040232.1344527-1-pulehui@huaweicloud.com
+Fixes: 8c9af478c06b ("ftrace: Handle commands when closing set_ftrace_filter file")
+Signed-off-by: Pu Lehui <pulehui@huawei.com>
+Signed-off-by: Steven Rostedt (Google) <rostedt@goodmis.org>
 ---
+ kernel/trace/trace.c | 18 ++++++++++++------
+ kernel/trace/trace.h |  8 +++++++-
+ 2 files changed, 19 insertions(+), 7 deletions(-)
 
- fs/ocfs2/inode.c |    3 +++
- 1 file changed, 3 insertions(+)
-
---- a/fs/ocfs2/inode.c~ocfs2-prevent-release-journal-inode-after-journal-shutdown
-+++ a/fs/ocfs2/inode.c
-@@ -1281,6 +1281,9 @@ static void ocfs2_clear_inode(struct ino
- 	 * the journal is flushed before journal shutdown. Thus it is safe to
- 	 * have inodes get cleaned up after journal shutdown.
- 	 */
-+	if (!osb->journal)
-+		return;
-+
- 	jbd2_journal_release_jbd_inode(osb->journal->j_journal,
- 				       &oi->ip_jinode);
+diff --git a/kernel/trace/trace.c b/kernel/trace/trace.c
+index 4283ed4e8f59..8d8935ed416d 100644
+--- a/kernel/trace/trace.c
++++ b/kernel/trace/trace.c
+@@ -1816,7 +1816,7 @@ int trace_get_user(struct trace_parser *parser, const char __user *ubuf,
+ 
+ 	ret = get_user(ch, ubuf++);
+ 	if (ret)
+-		return ret;
++		goto fail;
+ 
+ 	read++;
+ 	cnt--;
+@@ -1830,7 +1830,7 @@ int trace_get_user(struct trace_parser *parser, const char __user *ubuf,
+ 		while (cnt && isspace(ch)) {
+ 			ret = get_user(ch, ubuf++);
+ 			if (ret)
+-				return ret;
++				goto fail;
+ 			read++;
+ 			cnt--;
+ 		}
+@@ -1848,12 +1848,14 @@ int trace_get_user(struct trace_parser *parser, const char __user *ubuf,
+ 	while (cnt && !isspace(ch) && ch) {
+ 		if (parser->idx < parser->size - 1)
+ 			parser->buffer[parser->idx++] = ch;
+-		else
+-			return -EINVAL;
++		else {
++			ret = -EINVAL;
++			goto fail;
++		}
+ 
+ 		ret = get_user(ch, ubuf++);
+ 		if (ret)
+-			return ret;
++			goto fail;
+ 		read++;
+ 		cnt--;
+ 	}
+@@ -1868,11 +1870,15 @@ int trace_get_user(struct trace_parser *parser, const char __user *ubuf,
+ 		/* Make sure the parsed string always terminates with '\0'. */
+ 		parser->buffer[parser->idx] = 0;
+ 	} else {
+-		return -EINVAL;
++		ret = -EINVAL;
++		goto fail;
+ 	}
+ 
+ 	*ppos += read;
+ 	return read;
++fail:
++	trace_parser_fail(parser);
++	return ret;
  }
-_
+ 
+ /* TODO add a seq_buf_to_buffer() */
+diff --git a/kernel/trace/trace.h b/kernel/trace/trace.h
+index 1dbf1d3cf2f1..be6654899cae 100644
+--- a/kernel/trace/trace.h
++++ b/kernel/trace/trace.h
+@@ -1292,6 +1292,7 @@ bool ftrace_event_is_function(struct trace_event_call *call);
+  */
+ struct trace_parser {
+ 	bool		cont;
++	bool		fail;
+ 	char		*buffer;
+ 	unsigned	idx;
+ 	unsigned	size;
+@@ -1299,7 +1300,7 @@ struct trace_parser {
+ 
+ static inline bool trace_parser_loaded(struct trace_parser *parser)
+ {
+-	return (parser->idx != 0);
++	return !parser->fail && parser->idx != 0;
+ }
+ 
+ static inline bool trace_parser_cont(struct trace_parser *parser)
+@@ -1313,6 +1314,11 @@ static inline void trace_parser_clear(struct trace_parser *parser)
+ 	parser->idx = 0;
+ }
+ 
++static inline void trace_parser_fail(struct trace_parser *parser)
++{
++	parser->fail = true;
++}
++
+ extern int trace_parser_get_init(struct trace_parser *parser, int size);
+ extern void trace_parser_put(struct trace_parser *parser);
+ extern int trace_get_user(struct trace_parser *parser, const char __user *ubuf,
+-- 
+2.50.1
 
-Patches currently in -mm which might be from eadavis@qq.com are
-
-ocfs2-prevent-release-journal-inode-after-journal-shutdown.patch
 
 
