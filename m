@@ -1,137 +1,101 @@
-Return-Path: <stable+bounces-172072-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-172073-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id BB02FB2F9FD
-	for <lists+stable@lfdr.de>; Thu, 21 Aug 2025 15:19:03 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id A32B5B2FA4E
+	for <lists+stable@lfdr.de>; Thu, 21 Aug 2025 15:27:08 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 88FD87B6E85
-	for <lists+stable@lfdr.de>; Thu, 21 Aug 2025 13:17:28 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id C485D580C3C
+	for <lists+stable@lfdr.de>; Thu, 21 Aug 2025 13:22:14 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A819319D09C;
-	Thu, 21 Aug 2025 13:18:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D0D5B32C32F;
+	Thu, 21 Aug 2025 13:22:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="fogd1PyF"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="AhBFJcg7"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.20])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6862D32778C
-	for <stable@vger.kernel.org>; Thu, 21 Aug 2025 13:18:56 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C241B32C325
+	for <stable@vger.kernel.org>; Thu, 21 Aug 2025 13:22:08 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.20
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755782336; cv=none; b=nVWpivWdlu9w6D8lrvyLkgufNNSaT0Xgw3JVRTqWyjjFiHV50sEUMQ4fUDLlf2M90/Fo8sqXfTq4Kq0B6SVp6wRY+2CKNn5bPgXamEyaZwFePXPK5UOEJuwY53q/3z95+CVvzj1AiZ7C9yMawsvxQX4IZalllHK9/z0bxXWaoRU=
+	t=1755782531; cv=none; b=Syr297uAzF7eAv5B5L95UhUV6FdYMiyBM06bXfADObWFgNs3i3nInIr0jFqMI0RcsH7vd9WkJqK3L7AAn912rsH/wcxz0t8d+9qIzXSJ0le5y9gnSoSeoxAKgO3Bf2zTQEeisv2Osu4c5dSjbK7+gtaZSVEr23a47ZZHCKvzz5U=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1755782336; c=relaxed/simple;
-	bh=A0AkwRPTAm+N21mv5JH6Qssy/FC+Z9MyNIJoPLp+3Xg=;
-	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=LobHgW0ImB2du1s4JtDpcr9sOMVb26Sqpe7IOXuGYUWoWj4gdePelQaT3a2tXMSkKD7L8UizrDdmfkgALb/2eMXGd1PugUk6v1NieqBiK4TWEn5w5U6pLj2c5ysG378S3DoeBmILlirtm8zRkkxiC5S5S0xjhVV5BA17TeONN3s=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=fogd1PyF; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id BE491C4CEEB;
-	Thu, 21 Aug 2025 13:18:55 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1755782336;
-	bh=A0AkwRPTAm+N21mv5JH6Qssy/FC+Z9MyNIJoPLp+3Xg=;
-	h=Subject:To:Cc:From:Date:From;
-	b=fogd1PyFnJ8r5C5ICSGtDx4jaWRDe+6ib0YACov3vYWGB2vhrFTnYra4OoIKUpoBb
-	 nMCNbtMnqn7Dy9FjxiXt9qbKBegBXXn+dH/k7WOVemG5zV5eWolvw6w6BCV72If00A
-	 XSIcxOu1dL4NgYZu1ZZvi2YudCsB1PM5Nvk0auXc=
-Subject: FAILED: patch "[PATCH] wifi: ath11k: fix dest ring-buffer corruption when ring is" failed to apply to 5.10-stable tree
-To: johan+linaro@kernel.org,jeff.johnson@oss.qualcomm.com,quic_bqiang@quicinc.com
-Cc: <stable@vger.kernel.org>
-From: <gregkh@linuxfoundation.org>
-Date: Thu, 21 Aug 2025 15:18:53 +0200
-Message-ID: <2025082153-saline-camcorder-75cb@gregkh>
+	s=arc-20240116; t=1755782531; c=relaxed/simple;
+	bh=Zt1nyiK5WSkvv3Xd8A0WsZNCL1xMVFcEyVV3xMAemj0=;
+	h=Date:From:To:Cc:Subject:Message-ID:MIME-Version:Content-Type:
+	 Content-Disposition:In-Reply-To; b=bmrDGGfgrXcuvsxOA/3TDHffZHmeOdhKpP1t5qBJL1iaLOx02S66a+CiZoPvBj7uC3+7rw/m3VhN//REncz6i9y/yCXXRoHeihNsMFpgnOFcWNZFF+qCgZRuuNo4hPDP5ELyt7TYI7U1LzcwGbfbI/nqSvufD6Kjbt6OuxHEmhU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=AhBFJcg7; arc=none smtp.client-ip=198.175.65.20
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1755782529; x=1787318529;
+  h=date:from:to:cc:subject:message-id:mime-version:
+   in-reply-to;
+  bh=Zt1nyiK5WSkvv3Xd8A0WsZNCL1xMVFcEyVV3xMAemj0=;
+  b=AhBFJcg79NWbpfsgrU2nNoMWNJK7e7jOMtzRatmittIl8v0wTGg0oVhF
+   mosSzJGpSsmvXHNr7QYgxRDgY5319+9JCJdOHzl0P+0VTJ9/RY/l/jKlY
+   MIUp68riGfvxxi/zDLt7RgboO2luX9cB4sOvf1VU8gTsCnRoeFkZeEx3n
+   4zquA9Q2NjbyGWLRdoL/id4gh7ueXw6jRHSbWUZv7pT8u+5wjFeZE+uvI
+   3YvvjaGLmMl7Wv2SIBGknQXeN1qeCxj4YYPtGncxlNHtmosWxqJY7uge7
+   gy9RkufqbJubBUMcXeBX55Ydboa5rvVVeGym69n2HSYIblk1xJ7IZxhL+
+   Q==;
+X-CSE-ConnectionGUID: 5eoyaETkRS+qYsB6I1TIYA==
+X-CSE-MsgGUID: uqtUCw0qTaqtWxKMTa0JbQ==
+X-IronPort-AV: E=McAfee;i="6800,10657,11529"; a="57781535"
+X-IronPort-AV: E=Sophos;i="6.17,306,1747724400"; 
+   d="scan'208";a="57781535"
+Received: from fmviesa007.fm.intel.com ([10.60.135.147])
+  by orvoesa112.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 21 Aug 2025 06:22:08 -0700
+X-CSE-ConnectionGUID: 1hg/Fwi3StmLEN/1MaQ1XQ==
+X-CSE-MsgGUID: loso2DB1Q7SVJRZ4dyPhaQ==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.17,306,1747724400"; 
+   d="scan'208";a="167918730"
+Received: from lkp-server02.sh.intel.com (HELO 4ea60e6ab079) ([10.239.97.151])
+  by fmviesa007.fm.intel.com with ESMTP; 21 Aug 2025 06:22:07 -0700
+Received: from kbuild by 4ea60e6ab079 with local (Exim 4.96)
+	(envelope-from <lkp@intel.com>)
+	id 1up5Ey-000KJP-2y;
+	Thu, 21 Aug 2025 13:22:04 +0000
+Date: Thu, 21 Aug 2025 21:21:25 +0800
+From: kernel test robot <lkp@intel.com>
+To: Jinjie Ruan <ruanjinjie@huawei.com>
+Cc: stable@vger.kernel.org, oe-kbuild-all@lists.linux.dev
+Subject: Re: [PATCH v5.15 2/2] x86/irq: Plug vector setup race
+Message-ID: <aKcdVUU18M9Mvo_b@85d67d3e4d56>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=ANSI_X3.4-1968
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20250821131054.1094506-3-ruanjinjie@huawei.com>
+
+Hi,
+
+Thanks for your patch.
+
+FYI: kernel test robot notices the stable kernel rule is not satisfied.
+
+The check is based on https://www.kernel.org/doc/html/latest/process/stable-kernel-rules.html#option-3
+
+Rule: The upstream commit ID must be specified with a separate line above the commit text.
+Subject: [PATCH v5.15 2/2] x86/irq: Plug vector setup race
+Link: https://lore.kernel.org/stable/20250821131054.1094506-3-ruanjinjie%40huawei.com
+
+Please ignore this mail if the patch is not relevant for upstream.
+
+-- 
+0-DAY CI Kernel Test Service
+https://github.com/intel/lkp-tests/wiki
 
 
-The patch below does not apply to the 5.10-stable tree.
-If someone wants it applied there, or to any other stable or longterm
-tree, then please email the backport, including the original git commit
-id to <stable@vger.kernel.org>.
-
-To reproduce the conflict and resubmit, you may use the following commands:
-
-git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-5.10.y
-git checkout FETCH_HEAD
-git cherry-pick -x aa6956150f820e6a6deba44be325ddfcb5b10f88
-# <resolve conflicts, build, test, etc.>
-git commit -s
-git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2025082153-saline-camcorder-75cb@gregkh' --subject-prefix 'PATCH 5.10.y' HEAD^..
-
-Possible dependencies:
-
-
-
-thanks,
-
-greg k-h
-
------------------- original commit in Linus's tree ------------------
-
-From aa6956150f820e6a6deba44be325ddfcb5b10f88 Mon Sep 17 00:00:00 2001
-From: Johan Hovold <johan+linaro@kernel.org>
-Date: Wed, 4 Jun 2025 16:34:57 +0200
-Subject: [PATCH] wifi: ath11k: fix dest ring-buffer corruption when ring is
- full
-
-Add the missing memory barriers to make sure that destination ring
-descriptors are read before updating the tail pointer (and passing
-ownership to the device) to avoid memory corruption on weakly ordered
-architectures like aarch64 when the ring is full.
-
-Tested-on: WCN6855 hw2.1 WLAN.HSP.1.1-03125-QCAHSPSWPL_V1_V2_SILICONZ_LITE-3.6510.41
-
-Fixes: d5c65159f289 ("ath11k: driver for Qualcomm IEEE 802.11ax devices")
-Cc: stable@vger.kernel.org      # 5.6
-Signed-off-by: Johan Hovold <johan+linaro@kernel.org>
-Reviewed-by: Baochen Qiang <quic_bqiang@quicinc.com>
-Link: https://patch.msgid.link/20250604143457.26032-6-johan+linaro@kernel.org
-Signed-off-by: Jeff Johnson <jeff.johnson@oss.qualcomm.com>
-
-diff --git a/drivers/net/wireless/ath/ath11k/hal.c b/drivers/net/wireless/ath/ath11k/hal.c
-index 28f94c36d304..0c3ce7509ab8 100644
---- a/drivers/net/wireless/ath/ath11k/hal.c
-+++ b/drivers/net/wireless/ath/ath11k/hal.c
-@@ -856,7 +856,6 @@ void ath11k_hal_srng_access_end(struct ath11k_base *ab, struct hal_srng *srng)
- {
- 	lockdep_assert_held(&srng->lock);
- 
--	/* TODO: See if we need a write memory barrier here */
- 	if (srng->flags & HAL_SRNG_FLAGS_LMAC_RING) {
- 		/* For LMAC rings, ring pointer updates are done through FW and
- 		 * hence written to a shared memory location that is read by FW
-@@ -871,7 +870,11 @@ void ath11k_hal_srng_access_end(struct ath11k_base *ab, struct hal_srng *srng)
- 			WRITE_ONCE(*srng->u.src_ring.hp_addr, srng->u.src_ring.hp);
- 		} else {
- 			srng->u.dst_ring.last_hp = *srng->u.dst_ring.hp_addr;
--			*srng->u.dst_ring.tp_addr = srng->u.dst_ring.tp;
-+			/* Make sure descriptor is read before updating the
-+			 * tail pointer.
-+			 */
-+			dma_mb();
-+			WRITE_ONCE(*srng->u.dst_ring.tp_addr, srng->u.dst_ring.tp);
- 		}
- 	} else {
- 		if (srng->ring_dir == HAL_SRNG_DIR_SRC) {
-@@ -887,6 +890,10 @@ void ath11k_hal_srng_access_end(struct ath11k_base *ab, struct hal_srng *srng)
- 					   srng->u.src_ring.hp);
- 		} else {
- 			srng->u.dst_ring.last_hp = *srng->u.dst_ring.hp_addr;
-+			/* Make sure descriptor is read before updating the
-+			 * tail pointer.
-+			 */
-+			mb();
- 			ath11k_hif_write32(ab,
- 					   (unsigned long)srng->u.dst_ring.tp_addr -
- 					   (unsigned long)ab->mem,
 
 
