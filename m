@@ -1,274 +1,181 @@
-Return-Path: <stable+bounces-172203-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-172204-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id EA3A5B300AA
-	for <lists+stable@lfdr.de>; Thu, 21 Aug 2025 19:02:03 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id D238BB300A5
+	for <lists+stable@lfdr.de>; Thu, 21 Aug 2025 19:00:52 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id D315EAE18CB
-	for <lists+stable@lfdr.de>; Thu, 21 Aug 2025 16:59:29 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id AD5557A1D81
+	for <lists+stable@lfdr.de>; Thu, 21 Aug 2025 16:59:14 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8A1C02E7170;
-	Thu, 21 Aug 2025 16:59:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id EAC982FB605;
+	Thu, 21 Aug 2025 17:00:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="H8qEAhmG"
+	dkim=pass (2048-bit key) header.d=web.de header.i=markus.elfring@web.de header.b="CdXms9DS"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-wm1-f51.google.com (mail-wm1-f51.google.com [209.85.128.51])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mout.web.de (mout.web.de [212.227.15.14])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5A5B02E7622;
-	Thu, 21 Aug 2025 16:59:23 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.51
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F0F2E2F6194;
+	Thu, 21 Aug 2025 17:00:37 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=212.227.15.14
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755795565; cv=none; b=DNXyT6EvV73HJmqYt6iT4SJX8imbe2zcwJhQr5Z4mflifwhrwEWubzrdGBIXQWhluzGYK5uKzPDlSm+6lM9OS/YjGZm1tCnspHsck3UT4lE+RXDao2L0iOiOLXRIvHsdD57p3RTePSl5ToZxrZNth2Odh08NsRrfRhfRSAP+Xik=
+	t=1755795640; cv=none; b=GCaEdJ3vwGfSVbNzWLGC3Aj6u5mW/C3pVumPPzy1XMnsybLV8nTcVVaW53CSnqCGCDdTp3nIz2eyA4om0eTopgXb52Z+EfWhbCJ5PHl4ceVtB+hx8SNetMBVUdneocMLualbpLb7kMyDzvI4XDUuEG7A+h4ZRZ8xQNLOp1FsQ3g=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1755795565; c=relaxed/simple;
-	bh=UdF//O7XlsnTgJa4T2coHk8X0C4twb6zPAGfs24MW6M=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version:Content-Type; b=VhrMB9QRuxT5HYyNNzly55Fl29kMSLLeEMow9dOkAbshf8l7CDoCfwW6MXQXfuw3/MkEDvoqx2eKDPY0myJ4lDsWALeJXx2DozwPq22scib99rPxP90SvENAWAFnKS/RYpuJ32pkxNufj73DWndSBGG2n42oqnoPUpviY2+JoCI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=H8qEAhmG; arc=none smtp.client-ip=209.85.128.51
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-wm1-f51.google.com with SMTP id 5b1f17b1804b1-45a1abf5466so8280805e9.0;
-        Thu, 21 Aug 2025 09:59:23 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1755795561; x=1756400361; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=g4b40+kGe+PEZVO1bYQkPJai2FR2h46IoQZaQWXRcoA=;
-        b=H8qEAhmG2EblxwG3MtqiCrE7KUScd5XJfhWQywkqEedPFH70E7k0qEkpwyZqku+0up
-         JzAmI3CEXTvhGu6dMTue928BSq+RUqERC5GXVaavTgMX/+3ZjQ3LuRtoo7hpz5dbyvbR
-         s52AUD1AyqKDef659ELMEj3s4RuDSc4KA0OmUOxHrZ8YNZw7KVwjUdM7F1++MnDJRcvp
-         drMsPoj+VbuyWq1ryC5H061eUCApKWzAD4cLeKjbdWgFERz7O2Pes26lc5P81Bx6/aRW
-         Zo3dYoV/4surGDYKb9CNiL3JLALRLUkqM0/dRBInxbiBTo8KSbf2aoknypH02hQHsAFp
-         yjtw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1755795561; x=1756400361;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=g4b40+kGe+PEZVO1bYQkPJai2FR2h46IoQZaQWXRcoA=;
-        b=reI0n8oeeSo8ExR6RshlRnz8e0m16HoA1HVUHT9Uogka+4W4SAdAPFR1nmWr6llssX
-         yMOuwqOEpZBP/msmx+/rUYn0HHlZtUPpD6WZQheN1viMHhBR66Qac2v/JpOWwtXVe1LV
-         EIHveNGyWE8Oq9mhNfa9oK84V0aGDa5ranSznfQWGq4Sl9yvjlKEB7Clo5/MzzFpsjN3
-         xkSLlZGMObMcipJ7vxPOleZX0JCF2JfcAq/t2TyVIRrK7rQRfMyhcadbF4J5UKkITHTC
-         f7eHryKrVMvIG3++jvd/Xinkum0wHaqniWypNwne4yS4BQ3qU86gel0ZGiQ9P7dv/rYb
-         1eKw==
-X-Gm-Message-State: AOJu0YwJlG22QiwgoXVkNbfiWZJcGaC9owHc0W/ohwfGxaE9wDwgHKcc
-	iCq8fxmyAd8QVsIpijQczRDAbWWlIf9rXqMC2UAkbrHiP2v9WBYLUWlw7Zxztw==
-X-Gm-Gg: ASbGnctfXBFKXd67M13d3PWCzmTY87kAZ0nmZVop/hKCk1A1FvrWqzNDSHbSyN0E6A4
-	JTUPb1KIwe4fsDq6udF6Neq0bC3VtZvmUCzPwpQRr5t2lCmEur5DkeIpnqYwETlPLGRmznynwnT
-	4IT7Kgspkd1+ygeKPBCsSTdP9HxFg76T3ZNkcU1eH3VShwUmmZuLFLPKFJQXyC0qFpgV6ZkKrRD
-	JP+MKetYPyP/QjRDuenTHKHBAeArmFYEn6b+uSZpPOmxgG7tthgv1E4nxp5sdFog/qCynPjQNXv
-	PggikDltpGVb3k8moOoM/AE7nUNHhQnCDkJJWQ4PvXzXceewHeZvt7ofv6qx6fNyVxQWTX1OMnP
-	VYrSKZTkFGLRG2u3S2bo5fNBwTIQWtQzpxhgivgrl19Gc9Q==
-X-Google-Smtp-Source: AGHT+IHLzDoW33SSuJktP1LOS+YROMJ8T/ZI7it6WIKc/IYxyBMyMPfNTiBLskvV8NBHU5xpe5HFjQ==
-X-Received: by 2002:a05:600c:16c8:b0:459:d3e2:d743 with SMTP id 5b1f17b1804b1-45b4d7b46e9mr21412935e9.8.1755795561304;
-        Thu, 21 Aug 2025 09:59:21 -0700 (PDT)
-Received: from iku.Home ([2a06:5906:61b:2d00:9ed2:95cd:69a:8d10])
-        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-3c4f7318af0sm2532142f8f.0.2025.08.21.09.59.20
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 21 Aug 2025 09:59:20 -0700 (PDT)
-From: Prabhakar <prabhakar.csengg@gmail.com>
-X-Google-Original-From: Prabhakar <prabhakar.mahadev-lad.rj@bp.renesas.com>
-To: stable@vger.kernel.org
-Cc: linux-kernel@vger.kernel.org,
-	Pavel Machek <pavel@denx.de>,
-	Prabhakar <prabhakar.csengg@gmail.com>,
-	Biju Das <biju.das.jz@bp.renesas.com>,
-	Fabrizio Castro <fabrizio.castro.jz@renesas.com>
-Subject: [PATCH 5.10.y] gpio: rcar: Use raw_spinlock to protect register access
-Date: Thu, 21 Aug 2025 17:59:20 +0100
-Message-ID: <20250821165920.1145912-1-prabhakar.mahadev-lad.rj@bp.renesas.com>
-X-Mailer: git-send-email 2.51.0
+	s=arc-20240116; t=1755795640; c=relaxed/simple;
+	bh=1AXiTh8GUd+9TlmwJxkFzdvTKTRfsR7tcqwRPmwA29o=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=uDAngZpKykVgtylQ3J4IywJ3MfXKgSEkssX51aFeaXjqwFxM4CQDII3m6lpWt6MkdzCgvOTuDt2OawWHdnVaGIX9DYm7NP12ZzkqtuoWgHsSPN+LWx1X2R5IFHm/SSNUb0PjqlpsOzJF9osna4MAno4awfLwv3/8H4xtP6UohfA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=web.de; spf=pass smtp.mailfrom=web.de; dkim=pass (2048-bit key) header.d=web.de header.i=markus.elfring@web.de header.b=CdXms9DS; arc=none smtp.client-ip=212.227.15.14
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=web.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=web.de
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=web.de;
+	s=s29768273; t=1755795612; x=1756400412; i=markus.elfring@web.de;
+	bh=M+exM0vYdKURluLWW4HXSSDc98neOy/wHYX4vVdg0CY=;
+	h=X-UI-Sender-Class:Message-ID:Date:MIME-Version:Subject:To:Cc:
+	 References:From:In-Reply-To:Content-Type:
+	 Content-Transfer-Encoding:cc:content-transfer-encoding:
+	 content-type:date:from:message-id:mime-version:reply-to:subject:
+	 to;
+	b=CdXms9DSMmucZTHdl6MwjmuVs1M+4s76RmmNJ6sw9KNHBrmETDKx2VjKrO1zyD63
+	 MO+MX4FPWJw5oksTJUlwPFox6qX38K9c1IoUzUR/OfFOC7srH9k91znK1ycKre76n
+	 hi3nQptxQ1Lw79RGcltxIxpcAm8OZtOoh0eRSjEJhuSRtDUNTTGVTW/BKafCKWC/X
+	 rIHnLscSgDly90awak4wWEGq4ZhKgwKVmmvSdlnN5hK4Edcn1Fpn+IOWwpyUpVWej
+	 DK1pC4yPqvfwxk4XbkCog7xb3uwvE+vf8pAgRxjXR/uAxJ/MdrqqLBca0sI8g3j7H
+	 yEImBFmGhEMEQ0GTRA==
+X-UI-Sender-Class: 814a7b36-bfc1-4dae-8640-3722d8ec6cd6
+Received: from [192.168.178.29] ([94.31.92.249]) by smtp.web.de (mrweb005
+ [213.165.67.108]) with ESMTPSA (Nemesis) id 1MG996-1ulrvT409k-00AAj5; Thu, 21
+ Aug 2025 19:00:12 +0200
+Message-ID: <0185a58e-9211-4c10-bcf2-bbf2f566323e@web.de>
+Date: Thu, 21 Aug 2025 19:00:10 +0200
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v2 1/3] PCI: Relaxed tail alignment should never increase
+ min_align
+To: =?UTF-8?Q?Ilpo_J=C3=A4rvinen?= <ilpo.jarvinen@linux.intel.com>,
+ linux-pci@vger.kernel.org, Bjorn Helgaas <bhelgaas@google.com>
+Cc: stable@vger.kernel.org, LKML <linux-kernel@vger.kernel.org>,
+ kernel-janitors@vger.kernel.org, =?UTF-8?Q?Christian_K=C3=B6nig?=
+ <christian.koenig@amd.com>, D Scott Phillips <scott@os.amperecomputing.com>,
+ =?UTF-8?Q?Krzysztof_Wilczy=C5=84ski?= <kw@linux.com>, Rio Liu <rio@r26.me>,
+ Tudor Ambarus <tudor.ambarus@linaro.org>
+References: <20250630142641.3516-2-ilpo.jarvinen@linux.intel.com>
+ <8e9936e5-d720-4ded-8961-b9475aeb2ac7@web.de>
+ <21e11870-f125-e9e7-04f3-ade94d6be6b1@linux.intel.com>
+Content-Language: en-GB, de-DE
+From: Markus Elfring <Markus.Elfring@web.de>
+In-Reply-To: <21e11870-f125-e9e7-04f3-ade94d6be6b1@linux.intel.com>
 Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
+Content-Transfer-Encoding: quoted-printable
+X-Provags-ID: V03:K1:8oLA+mmkBygwao9p72ovdCNmXmySN/qmjBz+S0JFUrfxCYt7P0L
+ SLj59PjlMgn2lXSeSPZBYarYEVpxN+GIz3FuF1znX13ezZgXmQ0crFXfX/mWV0jg1yvmVOz
+ 7jsmNaI0xLGOsDUJbvDh1TLA3HJ5fJpY0Cj+1dTysPNGRtqcEvHc9lgmufdCIfnuvv8+UEU
+ nEGWA0EmtPhRFlYlJU3Vw==
+X-Spam-Flag: NO
+UI-OutboundReport: notjunk:1;M01:P0:5UFdCSzmd0E=;2CmpoYf8PUQXCEpZZm8Z0PoXO/u
+ wW6RJNl6CW0zoWfbffT+OyiCTUxYmz0ENpgwnguVDyQIfSMpe8gpGRJK2y3XjkYtuiFb1RCW/
+ S9E7YIE1dXWkTW/l8sxXL3WfHRDYzaJNEMPLrA92P6wCOTOqK1i+SniWE7DduPR3DAO+lHwv7
+ S9aPyerwNZfV80FmRdiaNJNGrFl1TcieVu+BotTd7J10L8PXHwkGWUp1mvDLNZlv0MlxTWJlB
+ OPPTgLnSZqCTRSoSaayIjvqL1R1Xdd+lV/LkOiJXOOCgFhu1o2+9YHAibDPGFGmXpuXwp4SyN
+ 2PoAwRREdLM/9SPY0zdgCqrivKVHSZvnFu24/s1WbyxiV2xSK225sBHxBFZMVP1C8cuv5V5dv
+ G6xTy80bsCDkqBmhdlWHR5GHuP+m+CG5poVIW3m/jLna4kAIh8sgKFffCAVySXiiOXQSUZt6T
+ VCtfleResOhpFuocWbhFBeQAeL6EtZqcMsagLGWhf1u38s5cgKmKWP22REQcmYc77yBXyZFIz
+ 4BYRF/rftcWGPjcNMEFKih2v1SzQtTnJwQTifXJoEsltSQUjUk62+qGXK/0Ldc5Z1APPpJ1IU
+ 2LfHVMJQNbZ0u0Yj65G53JeJxnq/JWfa9K18aSL29aqWEBsvgWEjdg0FONWNgUE3GLwEKCljN
+ aZhgFTeq32lrHY3kdrGCMZSEwA4z1qgkSugnF7Hy124nbIjJVb4efxPoRH3E5rdkr1xwz3TVe
+ MfoHkY5DPF9Jk2JxfiwAEt3dmc5nB0iqKzz7cSZSVVWr6a/JP+eV9fEhFFD/G+FWqcmMspad0
+ RH3xXdrz8+JWGvg9EJiHt2mEtpjwui63BceiH0bwHGzLxcmTLt46NQiBE8KTiHrU/XU683K+0
+ qtAmxs/RIiUZUEYhHFfTixjzNFdVbOFWX6TVpGdLKuNUuTR4J/RX8NzuGtsSJvPnG9r2pPbWd
+ ajXreNcVhezS+8/u7xFdGY2BvODpIPwoiYMcKrn8eOCfErCkDzcHUwuBJG7mUWztm0/oa6Oae
+ onyzowMmAEHU2oc85/JrYGfAKeEb16WFnn9EyURyOQQQ7+MrL33YCFrGHVdW4CGGsaINLFr0z
+ me+4R3pZwkgqwfDjszXBI6mTk+4FcNS5FY47hHU58vx9GzMsPJmTjv95hYjNEueWo2KqhVVKc
+ spJVR9JDBZi/SsnUP7NHddnEBcjaDZf8cOyflQi9pCHgiUEjRn0ESOXMfbxcV7EDYeLzeoB9a
+ vFzYuMJtf9wL3GKmoEYnow1SxqWG5mLwXteFu6Qw6PtDm3hD/WJGMexub4F6ilfTec/LdbL9o
+ 4stMJlX08UyLaVI9e3IF1QjtEzN1D1L/gWqdBgZ8wgin/oJY1uHTZ0v5lWiQiU+zrJFjGSNFH
+ n5mFxAWgxkJkMYFEaMmUT2Ad0YuG/lulwXgRLHibCo0D3hgXxHNwy6QMcCej8U+ru/Kt7Mp4A
+ 8Vi3oF2NNCHD+lljB7HuyTdF5mr7uDQCTuu9qOuEvZflw25SGI/Auxb5V/l7MjEbDPEYO6zTE
+ W54/8QkstAHGKQO6UR+MXw735lstaIHJJ/GHVjYy0o74QIU+AYoLgInlMzjI1r9nrFirnjt5L
+ 8vDCYBb5y+9s5smKQBhY3wOTrpJVTsDHzo2cNAIGqvYVmDgw0tCMa9ZBFcJjP8NjxAwVLwDYN
+ SJ/Zegu3HfZOl7DltsqVGmOkN+zAc5DMfQOsfwoKOb4mhcC1QNJQZ61X6WjNyhOZ+YaTKELBs
+ d+cxlUc/sSm5qu1r0UQcb/3ATGe5nvNAHD5QvgusuBu8gJHpLG1+kC6fEfOCgbGL6Mp7ty7fQ
+ Lv8a+O4Axap9UMqz4zZBdUCc1j1LYicw/5+i1+ALfBNJChkiFvJlXMYS6f/7H3n/fHoACJOGa
+ aFkVnXLAuOpA2E5iYUs4jie9sWgfl3vOpBm5z0g4TsascvqwwdRYY4HGdltkP4HeehVtBLUx8
+ kmfM2Mp4vlY69pFQGrCgd1b2Dlw9RiwXfTXk+SGNshrDQq6w9v3OF9+xqDbVLgHgGpUQ8qfjN
+ CY1kXzPVNZOO7TNPJvsQUY5c6BDhqlk6rgJoT5i/lS4a5PdUWq9w3WzIjMhj7Gp9OBC/s+Mh5
+ oHPdtTyhu/YadAhmCSbxDqjkdC2Jb5lKqeqsqD/LD1Kxu1p3erh558hVXz+LCzUY9Tlj46FJ6
+ KomqrhQenniniI4a82YDcpVFsKwKqDBSfjihP3VRsf7mDOU6lRJoHY7n5q0z4KwyjXm32IZ1T
+ VBm1XI67Cb617xoxsaJyRKt9pHHMee4ywyC7EkGu47ehvfL9UhQlrn72gjJr8CmwBmBbmdjiN
+ 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
 
-From: Niklas Söderlund <niklas.soderlund+renesas@ragnatech.se>
+>> =E2=80=A6
+>> +++ b/drivers/pci/setup-bus.c
+>> =E2=80=A6
+>> @@ -1261,8 +1263,9 @@ static int pbus_size_mem(struct pci_bus *bus, uns=
+igned long mask,
+>>  		if (bus->self && size1 &&
+>>  		    !pbus_upstream_space_available(bus, mask | IORESOURCE_PREFETCH, =
+type,
+>>  						   size1, add_align)) {
+>> -			min_align =3D 1ULL << (max_order + __ffs(SZ_1M));
+>> -			min_align =3D max(min_align, win_align);
+>> +			relaxed_align =3D 1ULL << (max_order + __ffs(SZ_1M));
+>> +			relaxed_align =3D max(min_align, win_align);
+>> =E2=80=A6
+>>
+>> I wonder why a variable content would be overwritten here
+>> without using the previous value.
+>> https://cwe.mitre.org/data/definitions/563.html
+=E2=80=A6> This looks a very good catch. I think it too should have been:
+>=20
+> relaxed_align =3D max(relaxed_align, win_align);
+>=20
+> ...like in the other case.
 
-commit f02c41f87cfe61440c18bf77d1ef0a884b9ee2b5 upstream.
+Did any known source code analysis tools point such a questionable impleme=
+ntation detail out
+for further development considerations?
 
-Use raw_spinlock in order to fix spurious messages about invalid context
-when spinlock debugging is enabled. The lock is only used to serialize
-register access.
-
-    [    4.239592] =============================
-    [    4.239595] [ BUG: Invalid wait context ]
-    [    4.239599] 6.13.0-rc7-arm64-renesas-05496-gd088502a519f #35 Not tainted
-    [    4.239603] -----------------------------
-    [    4.239606] kworker/u8:5/76 is trying to lock:
-    [    4.239609] ffff0000091898a0 (&p->lock){....}-{3:3}, at: gpio_rcar_config_interrupt_input_mode+0x34/0x164
-    [    4.239641] other info that might help us debug this:
-    [    4.239643] context-{5:5}
-    [    4.239646] 5 locks held by kworker/u8:5/76:
-    [    4.239651]  #0: ffff0000080fb148 ((wq_completion)async){+.+.}-{0:0}, at: process_one_work+0x190/0x62c
-    [    4.250180] OF: /soc/sound@ec500000/ports/port@0/endpoint: Read of boolean property 'frame-master' with a value.
-    [    4.254094]  #1: ffff80008299bd80 ((work_completion)(&entry->work)){+.+.}-{0:0}, at: process_one_work+0x1b8/0x62c
-    [    4.254109]  #2: ffff00000920c8f8
-    [    4.258345] OF: /soc/sound@ec500000/ports/port@1/endpoint: Read of boolean property 'bitclock-master' with a value.
-    [    4.264803]  (&dev->mutex){....}-{4:4}, at: __device_attach_async_helper+0x3c/0xdc
-    [    4.264820]  #3: ffff00000a50ca40 (request_class#2){+.+.}-{4:4}, at: __setup_irq+0xa0/0x690
-    [    4.264840]  #4:
-    [    4.268872] OF: /soc/sound@ec500000/ports/port@1/endpoint: Read of boolean property 'frame-master' with a value.
-    [    4.273275] ffff00000a50c8c8 (lock_class){....}-{2:2}, at: __setup_irq+0xc4/0x690
-    [    4.296130] renesas_sdhi_internal_dmac ee100000.mmc: mmc1 base at 0x00000000ee100000, max clock rate 200 MHz
-    [    4.304082] stack backtrace:
-    [    4.304086] CPU: 1 UID: 0 PID: 76 Comm: kworker/u8:5 Not tainted 6.13.0-rc7-arm64-renesas-05496-gd088502a519f #35
-    [    4.304092] Hardware name: Renesas Salvator-X 2nd version board based on r8a77965 (DT)
-    [    4.304097] Workqueue: async async_run_entry_fn
-    [    4.304106] Call trace:
-    [    4.304110]  show_stack+0x14/0x20 (C)
-    [    4.304122]  dump_stack_lvl+0x6c/0x90
-    [    4.304131]  dump_stack+0x14/0x1c
-    [    4.304138]  __lock_acquire+0xdfc/0x1584
-    [    4.426274]  lock_acquire+0x1c4/0x33c
-    [    4.429942]  _raw_spin_lock_irqsave+0x5c/0x80
-    [    4.434307]  gpio_rcar_config_interrupt_input_mode+0x34/0x164
-    [    4.440061]  gpio_rcar_irq_set_type+0xd4/0xd8
-    [    4.444422]  __irq_set_trigger+0x5c/0x178
-    [    4.448435]  __setup_irq+0x2e4/0x690
-    [    4.452012]  request_threaded_irq+0xc4/0x190
-    [    4.456285]  devm_request_threaded_irq+0x7c/0xf4
-    [    4.459398] ata1: link resume succeeded after 1 retries
-    [    4.460902]  mmc_gpiod_request_cd_irq+0x68/0xe0
-    [    4.470660]  mmc_start_host+0x50/0xac
-    [    4.474327]  mmc_add_host+0x80/0xe4
-    [    4.477817]  tmio_mmc_host_probe+0x2b0/0x440
-    [    4.482094]  renesas_sdhi_probe+0x488/0x6f4
-    [    4.486281]  renesas_sdhi_internal_dmac_probe+0x60/0x78
-    [    4.491509]  platform_probe+0x64/0xd8
-    [    4.495178]  really_probe+0xb8/0x2a8
-    [    4.498756]  __driver_probe_device+0x74/0x118
-    [    4.503116]  driver_probe_device+0x3c/0x154
-    [    4.507303]  __device_attach_driver+0xd4/0x160
-    [    4.511750]  bus_for_each_drv+0x84/0xe0
-    [    4.515588]  __device_attach_async_helper+0xb0/0xdc
-    [    4.520470]  async_run_entry_fn+0x30/0xd8
-    [    4.524481]  process_one_work+0x210/0x62c
-    [    4.528494]  worker_thread+0x1ac/0x340
-    [    4.532245]  kthread+0x10c/0x110
-    [    4.535476]  ret_from_fork+0x10/0x20
-
-Signed-off-by: Niklas Söderlund <niklas.soderlund+renesas@ragnatech.se>
-Reviewed-by: Geert Uytterhoeven <geert+renesas@glider.be>
-Tested-by: Geert Uytterhoeven <geert+renesas@glider.be>
-Cc: stable@vger.kernel.org
-Link: https://lore.kernel.org/r/20250121135833.3769310-1-niklas.soderlund+renesas@ragnatech.se
-Signed-off-by: Bartosz Golaszewski <bartosz.golaszewski@linaro.org>
-[PL: manullay applied the changes]
-Signed-off-by: Lad Prabhakar <prabhakar.mahadev-lad.rj@bp.renesas.com>
-Reviewed-by: Pavel Machek <pavel@denx.de> # for 5.10-stable
----
-Hi all,
-
-Sending this patch to stable linux-5.10.y as requested by Pavel [0],
-so that this can be included into CIP kernel. Ive added a
-reviewed-by tag for Pavel which was provided here [0].
-
-Similar patch is already present in linux-6.1.y and later:
- - https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/commit/drivers/gpio/gpio-rcar.c?h=linux-6.1.y&id=3e300913c42041e81c5b17a970c4e078086ff2d1
- - https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/commit/drivers/gpio/gpio-rcar.c?h=linux-6.12.y&id=b42c84f9e4ec5bc2885e7fd80c79ec0352f5d2af
-
-[0] https://lore.kernel.org/all/aKb38+2Q49y8kzBl@duo.ucw.cz/
-
-Cheers, Prabhakar
----
- drivers/gpio/gpio-rcar.c | 20 ++++++++++----------
- 1 file changed, 10 insertions(+), 10 deletions(-)
-
-diff --git a/drivers/gpio/gpio-rcar.c b/drivers/gpio/gpio-rcar.c
-index 80bf2a84f296..d5db55d78304 100644
---- a/drivers/gpio/gpio-rcar.c
-+++ b/drivers/gpio/gpio-rcar.c
-@@ -34,7 +34,7 @@ struct gpio_rcar_bank_info {
- 
- struct gpio_rcar_priv {
- 	void __iomem *base;
--	spinlock_t lock;
-+	raw_spinlock_t lock;
- 	struct device *dev;
- 	struct gpio_chip gpio_chip;
- 	struct irq_chip irq_chip;
-@@ -114,7 +114,7 @@ static void gpio_rcar_config_interrupt_input_mode(struct gpio_rcar_priv *p,
- 	 * "Setting Level-Sensitive Interrupt Input Mode"
- 	 */
- 
--	spin_lock_irqsave(&p->lock, flags);
-+	raw_spin_lock_irqsave(&p->lock, flags);
- 
- 	/* Configure positive or negative logic in POSNEG */
- 	gpio_rcar_modify_bit(p, POSNEG, hwirq, !active_high_rising_edge);
-@@ -133,7 +133,7 @@ static void gpio_rcar_config_interrupt_input_mode(struct gpio_rcar_priv *p,
- 	if (!level_trigger)
- 		gpio_rcar_write(p, INTCLR, BIT(hwirq));
- 
--	spin_unlock_irqrestore(&p->lock, flags);
-+	raw_spin_unlock_irqrestore(&p->lock, flags);
- }
- 
- static int gpio_rcar_irq_set_type(struct irq_data *d, unsigned int type)
-@@ -226,7 +226,7 @@ static void gpio_rcar_config_general_input_output_mode(struct gpio_chip *chip,
- 	 * "Setting General Input Mode"
- 	 */
- 
--	spin_lock_irqsave(&p->lock, flags);
-+	raw_spin_lock_irqsave(&p->lock, flags);
- 
- 	/* Configure positive logic in POSNEG */
- 	gpio_rcar_modify_bit(p, POSNEG, gpio, false);
-@@ -241,7 +241,7 @@ static void gpio_rcar_config_general_input_output_mode(struct gpio_chip *chip,
- 	if (p->has_outdtsel && output)
- 		gpio_rcar_modify_bit(p, OUTDTSEL, gpio, false);
- 
--	spin_unlock_irqrestore(&p->lock, flags);
-+	raw_spin_unlock_irqrestore(&p->lock, flags);
- }
- 
- static int gpio_rcar_request(struct gpio_chip *chip, unsigned offset)
-@@ -310,9 +310,9 @@ static void gpio_rcar_set(struct gpio_chip *chip, unsigned offset, int value)
- 	struct gpio_rcar_priv *p = gpiochip_get_data(chip);
- 	unsigned long flags;
- 
--	spin_lock_irqsave(&p->lock, flags);
-+	raw_spin_lock_irqsave(&p->lock, flags);
- 	gpio_rcar_modify_bit(p, OUTDT, offset, value);
--	spin_unlock_irqrestore(&p->lock, flags);
-+	raw_spin_unlock_irqrestore(&p->lock, flags);
- }
- 
- static void gpio_rcar_set_multiple(struct gpio_chip *chip, unsigned long *mask,
-@@ -329,12 +329,12 @@ static void gpio_rcar_set_multiple(struct gpio_chip *chip, unsigned long *mask,
- 	if (!bankmask)
- 		return;
- 
--	spin_lock_irqsave(&p->lock, flags);
-+	raw_spin_lock_irqsave(&p->lock, flags);
- 	val = gpio_rcar_read(p, OUTDT);
- 	val &= ~bankmask;
- 	val |= (bankmask & bits[0]);
- 	gpio_rcar_write(p, OUTDT, val);
--	spin_unlock_irqrestore(&p->lock, flags);
-+	raw_spin_unlock_irqrestore(&p->lock, flags);
- }
- 
- static int gpio_rcar_direction_output(struct gpio_chip *chip, unsigned offset,
-@@ -454,7 +454,7 @@ static int gpio_rcar_probe(struct platform_device *pdev)
- 		return -ENOMEM;
- 
- 	p->dev = dev;
--	spin_lock_init(&p->lock);
-+	raw_spin_lock_init(&p->lock);
- 
- 	/* Get device configuration from DT node */
- 	ret = gpio_rcar_parse_dt(p, &npins);
--- 
-2.51.0
-
+Regards,
+Markus
 
