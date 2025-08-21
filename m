@@ -1,111 +1,180 @@
-Return-Path: <stable+bounces-171953-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-171954-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 450FFB2EF3C
-	for <lists+stable@lfdr.de>; Thu, 21 Aug 2025 09:18:00 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 15236B2EFE2
+	for <lists+stable@lfdr.de>; Thu, 21 Aug 2025 09:39:13 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 4AFF11C86DCE
-	for <lists+stable@lfdr.de>; Thu, 21 Aug 2025 07:16:19 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 396AD18886E7
+	for <lists+stable@lfdr.de>; Thu, 21 Aug 2025 07:36:22 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 44A31287275;
-	Thu, 21 Aug 2025 07:15:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3971F2820A4;
+	Thu, 21 Aug 2025 07:35:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="VhfQ1M1v"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="nw86EYFG"
 X-Original-To: stable@vger.kernel.org
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.9])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 95F1FEAE7;
-	Thu, 21 Aug 2025 07:15:52 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.9
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D88062135AD;
+	Thu, 21 Aug 2025 07:35:56 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755760554; cv=none; b=WxDbCYaZAVuG1SUOZvysv1V/dLpGbzWCLQnkRYGTXiqZqomJeflKFIh3COIxGgMO++bQgctyfJfUMk8JgAhkzuRJRpezf21Cf56QJuHuGZ7i1u1OhuGg9Wg7QcqYTm0wpyt0WpapF3EYM0r78Cor6IoFrWHKUohpwwNabbUjdYI=
+	t=1755761757; cv=none; b=b997F6RQVD+seNGBVNpMYvvjR02UmLPb8mbHsbmGi5qGx/cuSR/v+rKFqyY0yO2iMjmvaGPB56xHX+c1MjSTVJPD7R7ExtV/jebb2S46YN7KUAaYI8fo41xdKhGarLt3iuVCOLdmeLsPcvcnIjJIn130H3HPGONSibVKHvRKbNk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1755760554; c=relaxed/simple;
-	bh=cLFv8+LOAbM3Lujy5L93CpKEqcIa4IhgwpBl6zi05R4=;
+	s=arc-20240116; t=1755761757; c=relaxed/simple;
+	bh=XjakIgVMScc39Ggf2ZqZHSX4qON8F54/Tai9PDv/FqE=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=oHtftje+T1utxsWxF2iAaMVsLiiYZozSP/iyOCbxC3syB5ywe6OejObTKkXi5vCgr+jHr4dSAfXqGarUjUIptjHpXfaS7d37dgYfPYK12xh3f32cWqkM92XmzOj9z3Bqm4qGe6SDrjFpd3zVhFDr1BB/OQ8Bmw3dhUGFWj8k358=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=none smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=VhfQ1M1v; arc=none smtp.client-ip=192.198.163.9
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=linux.intel.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1755760552; x=1787296552;
-  h=date:from:to:cc:subject:message-id:references:
-   mime-version:in-reply-to;
-  bh=cLFv8+LOAbM3Lujy5L93CpKEqcIa4IhgwpBl6zi05R4=;
-  b=VhfQ1M1vH2Risb5dD9SRscwQk/5LjvKQ9OH2Wyddu/WUsB/9ziJABN4I
-   xItaAx9+DOnMol7tgJzevhB5Tg/aj1UpRBxMHkYwuqMS8KB+3QNlu7H24
-   0hSIwpxs7X9S9BE3TeMDTnNDs2XhRB7r0ePX2zTzBmgLvBG/9QMasMzEM
-   pRU/qfMeH4LLTzw63L31+ESlHyqvRaTHjGiU91bNBZom6QBPU1zB2tRhy
-   26LbDg3euzg/zaU7nukBT5zNhAgHTv8dbIDfR7Qs3IpOpFjQ1VTTuQm5j
-   ZIxCofyFQQmKXIJEpO1sAOaE09zqfkJisyaHN07mt4i1Tf+Qlc3ZgyNoQ
-   w==;
-X-CSE-ConnectionGUID: SMS1zKlKRpuvAGL/eH4+cA==
-X-CSE-MsgGUID: oJUwOAHXTR+3ysb6rTRauA==
-X-IronPort-AV: E=McAfee;i="6800,10657,11527"; a="68744031"
-X-IronPort-AV: E=Sophos;i="6.17,306,1747724400"; 
-   d="scan'208";a="68744031"
-Received: from fmviesa010.fm.intel.com ([10.60.135.150])
-  by fmvoesa103.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 21 Aug 2025 00:15:51 -0700
-X-CSE-ConnectionGUID: s5PLa+MjSaaE+m/6XkEifg==
-X-CSE-MsgGUID: BERzrKRASEuU4w1DktciKQ==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.17,306,1747724400"; 
-   d="scan'208";a="169131106"
-Received: from kuha.fi.intel.com ([10.237.72.152])
-  by fmviesa010.fm.intel.com with SMTP; 21 Aug 2025 00:15:47 -0700
-Received: by kuha.fi.intel.com (sSMTP sendmail emulation); Thu, 21 Aug 2025 10:15:46 +0300
-Date: Thu, 21 Aug 2025 10:15:46 +0300
-From: Heikki Krogerus <heikki.krogerus@linux.intel.com>
-To: amitsd@google.com
-Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-	Badhri Jagan Sridharan <badhri@google.com>,
-	Guenter Roeck <linux@roeck-us.net>, linux-usb@vger.kernel.org,
-	linux-kernel@vger.kernel.org, stable@vger.kernel.org,
-	RD Babiera <rdbabiera@google.com>, Kyle Tso <kyletso@google.com>,
-	=?iso-8859-1?Q?Andr=E9?= Draszik <andre.draszik@linaro.org>,
-	Peter Griffin <peter.griffin@linaro.org>,
-	Tudor Ambarus <tudor.ambarus@linaro.org>
-Subject: Re: [PATCH v2 2/2] usb: typec: maxim_contaminant: re-enable cc
- toggle if cc is open and port is clean
-Message-ID: <aKbHoiYlznpkWS4N@kuha.fi.intel.com>
-References: <20250815-fix-upstream-contaminant-v2-0-6c8d6c3adafb@google.com>
- <20250815-fix-upstream-contaminant-v2-2-6c8d6c3adafb@google.com>
+	 Content-Type:Content-Disposition:In-Reply-To; b=FEyJ4+HQD1HfPTHhrnmPgPWrSnBzArNf7GtvLHTDK9qkvQUT7Fsg/aTSs7HRHOspC9MLeSYvOJlqs/JX/pkebQmwtXqL1KwPDzo510hi/UVHCyOK8NwKS0loW1oqAT74kPJ4dbCd2psyNfgg6ZGURDIN0PZuYG2P7eedSJ4sc3E=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=nw86EYFG; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7AE07C4CEED;
+	Thu, 21 Aug 2025 07:35:53 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1755761756;
+	bh=XjakIgVMScc39Ggf2ZqZHSX4qON8F54/Tai9PDv/FqE=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=nw86EYFGhEJULwiaGcI2Jo6ijR0iI8PIODVk0ydQNM0Ecp3GGMb/HIg9BUZohgN0z
+	 GBcRbMtnz+aODLC2iREJkg92InPS06BXDGgtGSlxY+B75k2rgiXTliTnXyVXXgw8L1
+	 DVzX7ThqZhA0gCm6dfS1c77obyIKysDEh+tZ3bXDoV6JAyhk8d4+wSrife0MzAJ4lg
+	 /uciIFjKJEhHf4gtso8jrVa0YwNHwGFgSPbyAKNil9QYIQr8y0iBD7ZHLB/dHn4lJx
+	 MHSGACjwkGvKlHDiA87YxIcL8BxlVv2+vrZtBN14sQcezcBT/JwDuWmyX5N5Y7vDao
+	 qQMMRlNbjLKSQ==
+Date: Thu, 21 Aug 2025 09:35:50 +0200
+From: Christian Brauner <brauner@kernel.org>
+To: wangzijie <wangzijie1@honor.com>
+Cc: akpm@linux-foundation.org, viro@zeniv.linux.org.uk, 
+	adobriyan@gmail.com, rick.p.edgecombe@intel.com, ast@kernel.org, k.shutemov@gmail.com, 
+	jirislaby@kernel.org, linux-fsdevel@vger.kernel.org, polynomial-c@gmx.de, 
+	gregkh@linuxfoundation.org, stable@vger.kernel.org, regressions@lists.linux.dev
+Subject: Re: [PATCH RESEND v2] proc: fix missing pde_set_flags() for net proc
+ files
+Message-ID: <20250821-wagemut-serpentinen-e5f4b6f505f6@brauner>
+References: <20250818123102.959595-1-wangzijie1@honor.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
+Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
-In-Reply-To: <20250815-fix-upstream-contaminant-v2-2-6c8d6c3adafb@google.com>
+In-Reply-To: <20250818123102.959595-1-wangzijie1@honor.com>
 
-One nitpick...
-
-> @@ -345,6 +378,12 @@ bool max_contaminant_is_contaminant(struct max_tcpci_chip *chip, bool disconnect
->  	if (ret < 0)
->  		return false;
+On Mon, Aug 18, 2025 at 08:31:02PM +0800, wangzijie wrote:
+> To avoid potential UAF issues during module removal races, we use pde_set_flags()
+> to save proc_ops flags in PDE itself before proc_register(), and then use
+> pde_has_proc_*() helpers instead of directly dereferencing pde->proc_ops->*.
+> 
+> However, the pde_set_flags() call was missing when creating net related proc files.
+> This omission caused incorrect behavior which FMODE_LSEEK was being cleared
+> inappropriately in proc_reg_open() for net proc files. Lars reported it in this link[1].
+> 
+> Fix this by ensuring pde_set_flags() is called when register proc entry, and add
+> NULL check for proc_ops in pde_set_flags().
+> 
+> [1]: https://lore.kernel.org/all/20250815195616.64497967@chagall.paradoxon.rec/
+> 
+> Fixes: ff7ec8dc1b64 ("proc: use the same treatment to check proc_lseek as ones for proc_read_iter et.al)
+> Cc: stable@vger.kernel.org
+> Reported-by: Lars Wendler <polynomial-c@gmx.de>
+> Signed-off-by: wangzijie <wangzijie1@honor.com>
+> ---
+> v2:
+> - followed by Jiri's suggestion to refractor code and reformat commit message
+> ---
+>  fs/proc/generic.c | 36 +++++++++++++++++++-----------------
+>  1 file changed, 19 insertions(+), 17 deletions(-)
+> 
+> diff --git a/fs/proc/generic.c b/fs/proc/generic.c
+> index 76e800e38..003031839 100644
+> --- a/fs/proc/generic.c
+> +++ b/fs/proc/generic.c
+> @@ -367,6 +367,23 @@ static const struct inode_operations proc_dir_inode_operations = {
+>  	.setattr	= proc_notify_change,
+>  };
 >  
-> +	if (cc_status & TCPC_CC_STATUS_TOGGLING) {
-> +		if (chip->contaminant_state == DETECTED)
-> +			return true;
-> +		return false;
-> +	}
+> +static void pde_set_flags(struct proc_dir_entry *pde)
+> +{
 
-	if (cc_status & TCPC_CC_STATUS_TOGGLING) {
-		return chip->contaminant_state == DETECTED;
+Stash pde->proc_ops in a local const variable instead of chasing the
+pointer multiple times. Aside from that also makes it easier to read.
+Otherwise seems fine.
 
->  	if (chip->contaminant_state == NOT_DETECTED || chip->contaminant_state == SINK) {
->  		if (!disconnect_while_debounce)
->  			msleep(100);
-
-thanks,
-
--- 
-heikki
+> +	if (!pde->proc_ops)
+> +		return;
+> +
+> +	if (pde->proc_ops->proc_flags & PROC_ENTRY_PERMANENT)
+> +		pde->flags |= PROC_ENTRY_PERMANENT;
+> +	if (pde->proc_ops->proc_read_iter)
+> +		pde->flags |= PROC_ENTRY_proc_read_iter;
+> +#ifdef CONFIG_COMPAT
+> +	if (pde->proc_ops->proc_compat_ioctl)
+> +		pde->flags |= PROC_ENTRY_proc_compat_ioctl;
+> +#endif
+> +	if (pde->proc_ops->proc_lseek)
+> +		pde->flags |= PROC_ENTRY_proc_lseek;
+> +}
+> +
+>  /* returns the registered entry, or frees dp and returns NULL on failure */
+>  struct proc_dir_entry *proc_register(struct proc_dir_entry *dir,
+>  		struct proc_dir_entry *dp)
+> @@ -374,6 +391,8 @@ struct proc_dir_entry *proc_register(struct proc_dir_entry *dir,
+>  	if (proc_alloc_inum(&dp->low_ino))
+>  		goto out_free_entry;
+>  
+> +	pde_set_flags(dp);
+> +
+>  	write_lock(&proc_subdir_lock);
+>  	dp->parent = dir;
+>  	if (pde_subdir_insert(dir, dp) == false) {
+> @@ -561,20 +580,6 @@ struct proc_dir_entry *proc_create_reg(const char *name, umode_t mode,
+>  	return p;
+>  }
+>  
+> -static void pde_set_flags(struct proc_dir_entry *pde)
+> -{
+> -	if (pde->proc_ops->proc_flags & PROC_ENTRY_PERMANENT)
+> -		pde->flags |= PROC_ENTRY_PERMANENT;
+> -	if (pde->proc_ops->proc_read_iter)
+> -		pde->flags |= PROC_ENTRY_proc_read_iter;
+> -#ifdef CONFIG_COMPAT
+> -	if (pde->proc_ops->proc_compat_ioctl)
+> -		pde->flags |= PROC_ENTRY_proc_compat_ioctl;
+> -#endif
+> -	if (pde->proc_ops->proc_lseek)
+> -		pde->flags |= PROC_ENTRY_proc_lseek;
+> -}
+> -
+>  struct proc_dir_entry *proc_create_data(const char *name, umode_t mode,
+>  		struct proc_dir_entry *parent,
+>  		const struct proc_ops *proc_ops, void *data)
+> @@ -585,7 +590,6 @@ struct proc_dir_entry *proc_create_data(const char *name, umode_t mode,
+>  	if (!p)
+>  		return NULL;
+>  	p->proc_ops = proc_ops;
+> -	pde_set_flags(p);
+>  	return proc_register(parent, p);
+>  }
+>  EXPORT_SYMBOL(proc_create_data);
+> @@ -636,7 +640,6 @@ struct proc_dir_entry *proc_create_seq_private(const char *name, umode_t mode,
+>  	p->proc_ops = &proc_seq_ops;
+>  	p->seq_ops = ops;
+>  	p->state_size = state_size;
+> -	pde_set_flags(p);
+>  	return proc_register(parent, p);
+>  }
+>  EXPORT_SYMBOL(proc_create_seq_private);
+> @@ -667,7 +670,6 @@ struct proc_dir_entry *proc_create_single_data(const char *name, umode_t mode,
+>  		return NULL;
+>  	p->proc_ops = &proc_single_ops;
+>  	p->single_show = show;
+> -	pde_set_flags(p);
+>  	return proc_register(parent, p);
+>  }
+>  EXPORT_SYMBOL(proc_create_single_data);
+> -- 
+> 2.25.1
+> 
 
