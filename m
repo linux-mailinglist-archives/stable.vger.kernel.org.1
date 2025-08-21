@@ -1,48 +1,48 @@
-Return-Path: <stable+bounces-172008-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-172009-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id E93C1B2F91D
-	for <lists+stable@lfdr.de>; Thu, 21 Aug 2025 14:59:28 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4984AB2F917
+	for <lists+stable@lfdr.de>; Thu, 21 Aug 2025 14:59:09 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id C24151891B92
-	for <lists+stable@lfdr.de>; Thu, 21 Aug 2025 12:55:48 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 68855165485
+	for <lists+stable@lfdr.de>; Thu, 21 Aug 2025 12:55:35 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2CD5231A042;
-	Thu, 21 Aug 2025 12:55:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2DDD3315761;
+	Thu, 21 Aug 2025 12:55:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="a0if2aBL"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="oBY+AT7o"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E1167315761
-	for <stable@vger.kernel.org>; Thu, 21 Aug 2025 12:55:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E102B2D3744
+	for <stable@vger.kernel.org>; Thu, 21 Aug 2025 12:55:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755780927; cv=none; b=iYiHy4Tw8N6He08W8/nrdgKzDGWFx9dQbPRsvZ0/xbgbInviHEX8JrwAIv3KiLLjnW0oFu3NJkcOYMj0nJNh2wVJNZUOzpagPW8KSV59yCZATVr/dl+yOhKYNtVdPCmIZl/dcPZ0zb9R1JcL05ofugpp+/XSSVJzuFb9pTX8dXM=
+	t=1755780931; cv=none; b=YLZ6MqVI3abQbkF0juysb8QJbMWA6WbPj5FB+bPcQAO0vsjKmgf8FH/ofNi+74HxpDxaQVhIrnerZJKOW/Fo03YFjjuffS9XeCJcO+bSxcp75cAWzHFo/zygJCl8AYtCDskwhRRJbTJxyrFYqMpqpflQh+B7IFrfHQohtcJg9lg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1755780927; c=relaxed/simple;
-	bh=LAkEDF5e/yAlfhLxn91os5ABi/joLeSkMUCGxrKEqxI=;
-	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=vFogIY0WfFbyYaVa01z+BuKDwdSsOVPGNpgG/79cTK6bgH10xH4eFOmPWvJlt5vDwbiTTiNmdEVqYLjKZ2qDHQvVQ5nK3g3//FNeUNuFMTIhe7RV2S/thVBEpMlD/S9s9LaVTMM4xurSkP9quRhQB1Xct6U/AsvvbhW+DbgTrfI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=a0if2aBL; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 68B80C4CEEB;
-	Thu, 21 Aug 2025 12:55:26 +0000 (UTC)
+	s=arc-20240116; t=1755780931; c=relaxed/simple;
+	bh=RIF2PHp2V+L5v7OKDkCFnGyvswc/TGZvIkUeUxVRDDE=;
+	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=oVoIXhxXEPtQCxn3sLQITjd0aeOyfVIVRezr33RkLuXV0bm9xWa3t7iChiavGgy4yHtyhKmBeeZqzK1ncyA4Z8R6KgQ2ib9IbLVvJoLoTCHXth0WLkCYluemWgcs1p5qB87gazD7VkGnAsOxABewMzfyRTNEmSvr/yDh4v1gODM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=oBY+AT7o; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 266BAC4CEEB;
+	Thu, 21 Aug 2025 12:55:29 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1755780926;
-	bh=LAkEDF5e/yAlfhLxn91os5ABi/joLeSkMUCGxrKEqxI=;
+	s=korg; t=1755780930;
+	bh=RIF2PHp2V+L5v7OKDkCFnGyvswc/TGZvIkUeUxVRDDE=;
 	h=Subject:To:Cc:From:Date:From;
-	b=a0if2aBLjMSjpfCkizKRmrh34B9RGsJbnoT8vR/eokYFtmFMDoTg8w/v02t7p8Q91
-	 H/Oe/3eIg/peVtfaA4lWyvDycVSx0l6lg4grHYEc/jPHa4tIJSRc/9l9OeqoUvv2KN
-	 P4qqrRwNWtGuPTICqoVkIDwwzq/q0QCZeazX0zxM=
-Subject: FAILED: patch "[PATCH] crypto: x86/aegis - Fix sleeping when disallowed on" failed to apply to 5.4-stable tree
+	b=oBY+AT7oKMGf0+Le7FzQWj2Wu/0JCLw5RTL23g1qm7Hbk9ZUE8HmJPoVHZ5NzxNF2
+	 zwhWM0hpuheYUG9BiI4I6q8vDjdgjuNsZvSNqV1RbxoYvZ3OsThq460sRxPVAMWqy6
+	 nXvinRkQQRoOlCs0FghDaUMk4FW/IAYxmRc06VNw=
+Subject: FAILED: patch "[PATCH] crypto: x86/aegis - Add missing error checks" failed to apply to 6.12-stable tree
 To: ebiggers@kernel.org,herbert@gondor.apana.org.au
 Cc: <stable@vger.kernel.org>
 From: <gregkh@linuxfoundation.org>
-Date: Thu, 21 Aug 2025 14:55:05 +0200
-Message-ID: <2025082105-partridge-unboxed-5a0e@gregkh>
+Date: Thu, 21 Aug 2025 14:55:14 +0200
+Message-ID: <2025082114-proofs-slideshow-5515@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -53,19 +53,19 @@ Content-Type: text/plain; charset=ANSI_X3.4-1968
 Content-Transfer-Encoding: 8bit
 
 
-The patch below does not apply to the 5.4-stable tree.
+The patch below does not apply to the 6.12-stable tree.
 If someone wants it applied there, or to any other stable or longterm
 tree, then please email the backport, including the original git commit
 id to <stable@vger.kernel.org>.
 
 To reproduce the conflict and resubmit, you may use the following commands:
 
-git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-5.4.y
+git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-6.12.y
 git checkout FETCH_HEAD
-git cherry-pick -x c7f49dadfcdf27e1f747442e874e9baa52ab7674
+git cherry-pick -x 3d9eb180fbe8828cce43bce4c370124685b205c3
 # <resolve conflicts, build, test, etc.>
 git commit -s
-git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2025082105-partridge-unboxed-5a0e@gregkh' --subject-prefix 'PATCH 5.4.y' HEAD^..
+git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2025082114-proofs-slideshow-5515@gregkh' --subject-prefix 'PATCH 6.12.y' HEAD^..
 
 Possible dependencies:
 
@@ -77,21 +77,13 @@ greg k-h
 
 ------------------ original commit in Linus's tree ------------------
 
-From c7f49dadfcdf27e1f747442e874e9baa52ab7674 Mon Sep 17 00:00:00 2001
+From 3d9eb180fbe8828cce43bce4c370124685b205c3 Mon Sep 17 00:00:00 2001
 From: Eric Biggers <ebiggers@kernel.org>
-Date: Tue, 8 Jul 2025 12:38:28 -0700
-Subject: [PATCH] crypto: x86/aegis - Fix sleeping when disallowed on
- PREEMPT_RT
+Date: Tue, 8 Jul 2025 12:38:29 -0700
+Subject: [PATCH] crypto: x86/aegis - Add missing error checks
 
-skcipher_walk_done() can call kfree(), which takes a spinlock, which
-makes it incorrect to call while preemption is disabled on PREEMPT_RT.
-Therefore, end the kernel-mode FPU section before calling
-skcipher_walk_done(), and restart it afterwards.
-
-Moreover, pass atomic=false to skcipher_walk_aead_encrypt() instead of
-atomic=true.  The point of atomic=true was to make skcipher_walk_done()
-safe to call while in a kernel-mode FPU section, but that does not
-actually work.  So just use the usual atomic=false.
+The skcipher_walk functions can allocate memory and can fail, so
+checking for errors is necessary.
 
 Fixes: 1d373d4e8e15 ("crypto: x86 - Add optimized AEGIS implementations")
 Cc: stable@vger.kernel.org
@@ -99,40 +91,112 @@ Signed-off-by: Eric Biggers <ebiggers@kernel.org>
 Signed-off-by: Herbert Xu <herbert@gondor.apana.org.au>
 
 diff --git a/arch/x86/crypto/aegis128-aesni-glue.c b/arch/x86/crypto/aegis128-aesni-glue.c
-index f1b6d40154e3..3cb5c193038b 100644
+index 3cb5c193038b..f1adfba1a76e 100644
 --- a/arch/x86/crypto/aegis128-aesni-glue.c
 +++ b/arch/x86/crypto/aegis128-aesni-glue.c
-@@ -119,7 +119,9 @@ crypto_aegis128_aesni_process_crypt(struct aegis_state *state,
- 					   walk->dst.virt.addr,
- 					   round_down(walk->nbytes,
- 						      AEGIS128_BLOCK_SIZE));
-+		kernel_fpu_end();
- 		skcipher_walk_done(walk, walk->nbytes % AEGIS128_BLOCK_SIZE);
-+		kernel_fpu_begin();
- 	}
- 
- 	if (walk->nbytes) {
-@@ -131,7 +133,9 @@ crypto_aegis128_aesni_process_crypt(struct aegis_state *state,
- 			aegis128_aesni_dec_tail(state, walk->src.virt.addr,
- 						walk->dst.virt.addr,
- 						walk->nbytes);
-+		kernel_fpu_end();
- 		skcipher_walk_done(walk, 0);
-+		kernel_fpu_begin();
+@@ -104,10 +104,12 @@ static void crypto_aegis128_aesni_process_ad(
  	}
  }
  
-@@ -176,9 +180,9 @@ crypto_aegis128_aesni_crypt(struct aead_request *req,
+-static __always_inline void
++static __always_inline int
+ crypto_aegis128_aesni_process_crypt(struct aegis_state *state,
+ 				    struct skcipher_walk *walk, bool enc)
+ {
++	int err = 0;
++
+ 	while (walk->nbytes >= AEGIS128_BLOCK_SIZE) {
+ 		if (enc)
+ 			aegis128_aesni_enc(state, walk->src.virt.addr,
+@@ -120,7 +122,8 @@ crypto_aegis128_aesni_process_crypt(struct aegis_state *state,
+ 					   round_down(walk->nbytes,
+ 						      AEGIS128_BLOCK_SIZE));
+ 		kernel_fpu_end();
+-		skcipher_walk_done(walk, walk->nbytes % AEGIS128_BLOCK_SIZE);
++		err = skcipher_walk_done(walk,
++					 walk->nbytes % AEGIS128_BLOCK_SIZE);
+ 		kernel_fpu_begin();
+ 	}
+ 
+@@ -134,9 +137,10 @@ crypto_aegis128_aesni_process_crypt(struct aegis_state *state,
+ 						walk->dst.virt.addr,
+ 						walk->nbytes);
+ 		kernel_fpu_end();
+-		skcipher_walk_done(walk, 0);
++		err = skcipher_walk_done(walk, 0);
+ 		kernel_fpu_begin();
+ 	}
++	return err;
+ }
+ 
+ static struct aegis_ctx *crypto_aegis128_aesni_ctx(struct crypto_aead *aead)
+@@ -169,7 +173,7 @@ static int crypto_aegis128_aesni_setauthsize(struct crypto_aead *tfm,
+ 	return 0;
+ }
+ 
+-static __always_inline void
++static __always_inline int
+ crypto_aegis128_aesni_crypt(struct aead_request *req,
+ 			    struct aegis_block *tag_xor,
+ 			    unsigned int cryptlen, bool enc)
+@@ -178,20 +182,24 @@ crypto_aegis128_aesni_crypt(struct aead_request *req,
+ 	struct aegis_ctx *ctx = crypto_aegis128_aesni_ctx(tfm);
+ 	struct skcipher_walk walk;
  	struct aegis_state state;
++	int err;
  
  	if (enc)
--		skcipher_walk_aead_encrypt(&walk, req, true);
-+		skcipher_walk_aead_encrypt(&walk, req, false);
+-		skcipher_walk_aead_encrypt(&walk, req, false);
++		err = skcipher_walk_aead_encrypt(&walk, req, false);
  	else
--		skcipher_walk_aead_decrypt(&walk, req, true);
-+		skcipher_walk_aead_decrypt(&walk, req, false);
+-		skcipher_walk_aead_decrypt(&walk, req, false);
++		err = skcipher_walk_aead_decrypt(&walk, req, false);
++	if (err)
++		return err;
  
  	kernel_fpu_begin();
  
+ 	aegis128_aesni_init(&state, &ctx->key, req->iv);
+ 	crypto_aegis128_aesni_process_ad(&state, req->src, req->assoclen);
+-	crypto_aegis128_aesni_process_crypt(&state, &walk, enc);
+-	aegis128_aesni_final(&state, tag_xor, req->assoclen, cryptlen);
+-
++	err = crypto_aegis128_aesni_process_crypt(&state, &walk, enc);
++	if (err == 0)
++		aegis128_aesni_final(&state, tag_xor, req->assoclen, cryptlen);
+ 	kernel_fpu_end();
++	return err;
+ }
+ 
+ static int crypto_aegis128_aesni_encrypt(struct aead_request *req)
+@@ -200,8 +208,11 @@ static int crypto_aegis128_aesni_encrypt(struct aead_request *req)
+ 	struct aegis_block tag = {};
+ 	unsigned int authsize = crypto_aead_authsize(tfm);
+ 	unsigned int cryptlen = req->cryptlen;
++	int err;
+ 
+-	crypto_aegis128_aesni_crypt(req, &tag, cryptlen, true);
++	err = crypto_aegis128_aesni_crypt(req, &tag, cryptlen, true);
++	if (err)
++		return err;
+ 
+ 	scatterwalk_map_and_copy(tag.bytes, req->dst,
+ 				 req->assoclen + cryptlen, authsize, 1);
+@@ -216,11 +227,14 @@ static int crypto_aegis128_aesni_decrypt(struct aead_request *req)
+ 	struct aegis_block tag;
+ 	unsigned int authsize = crypto_aead_authsize(tfm);
+ 	unsigned int cryptlen = req->cryptlen - authsize;
++	int err;
+ 
+ 	scatterwalk_map_and_copy(tag.bytes, req->src,
+ 				 req->assoclen + cryptlen, authsize, 0);
+ 
+-	crypto_aegis128_aesni_crypt(req, &tag, cryptlen, false);
++	err = crypto_aegis128_aesni_crypt(req, &tag, cryptlen, false);
++	if (err)
++		return err;
+ 
+ 	return crypto_memneq(tag.bytes, zeros.bytes, authsize) ? -EBADMSG : 0;
+ }
 
 
