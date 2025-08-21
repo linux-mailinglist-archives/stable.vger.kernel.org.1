@@ -1,114 +1,110 @@
-Return-Path: <stable+bounces-172026-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-172028-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 472B4B2F94A
-	for <lists+stable@lfdr.de>; Thu, 21 Aug 2025 15:05:04 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id B4323B2F9A7
+	for <lists+stable@lfdr.de>; Thu, 21 Aug 2025 15:12:57 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 0BE187AF840
-	for <lists+stable@lfdr.de>; Thu, 21 Aug 2025 13:03:27 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 97F53AC6725
+	for <lists+stable@lfdr.de>; Thu, 21 Aug 2025 13:05:55 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 44B52320399;
-	Thu, 21 Aug 2025 13:04:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id EC58D320CD7;
+	Thu, 21 Aug 2025 13:05:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="k9wflG+3"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="We38j17g"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EB0FF13A41F;
-	Thu, 21 Aug 2025 13:04:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AAEEB320CC7
+	for <stable@vger.kernel.org>; Thu, 21 Aug 2025 13:05:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755781495; cv=none; b=Z/rVLTMsrq59Tt5Rr8ejiSYqKQrj8DdYN3Uf06xBrezntnOw+Lb91C4uaAmz/jcYxKhxovaTMK7J7t4O6OUMV+AdNqV6RIOyktahEh4adnwjbqb3XJwJohL88R1dWxsI5niDdx2xoLkgbJOIVPhdPG3RF2j4PzGc7/dv79RNOWI=
+	t=1755781540; cv=none; b=Yqp4kpWMDaztULfUbAgIE0Em8zTdc4b39E/6BKy8SCBp4iPD65cSzxbj/cEjliQxbCpgwq6ydJsCGSlAy2OT0HDFlUqySwVCXL4Pului2hAgTO5qvHjpydXs2KVEq+Bdy0tpL8qjYbzTWExF+M3as2dh2Eps8PPFsdUUnY9QiTM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1755781495; c=relaxed/simple;
-	bh=afNeEt1xEIocZL5b/k7qATVzHSM7KVBgB9ZGL4lIsuA=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=PT4ImDkQnIjeBXSHpMm2lJBQUqWhMC0KqNdzoalOkU4igilpss4AsJWuPl6LEO36RiAm7jaU7rSHSv8qRpML4Df1MfIDEpHEU/3j7sEy9/5HiMsktwxfh3UOZupaMtkGGY4InvPu0vlhjNU+FTjbWPzEaS3AkQI8deByumTJGTg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=k9wflG+3; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 86F7FC4CEEB;
-	Thu, 21 Aug 2025 13:04:54 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1755781494;
-	bh=afNeEt1xEIocZL5b/k7qATVzHSM7KVBgB9ZGL4lIsuA=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=k9wflG+3N1h8gqB+XnE+COeD536k9o98/BStH3ltto9n+BGberzNanAp/XKcq6psC
-	 VjboWYzTCfvwqeaoWLwT8M+l/RxNBJenkRcnQ1O4IkGUZUUr8AmIhypECc142GJOVm
-	 O8fwegSwmXg7DjmJCw81EeFe9hXnPnCZnHY7EOiDVoRmpIuNAlnC6innPrgfBhxgy2
-	 dh97W43SRNw8FljCkgfRAyK9KB9WGwG47doiTTjB02FUjjrTdiHbPM1jRy5J3PiliG
-	 iihONR8huulx+2yVat3Q9YIpGBGKO66j0ewyU1+txOUuTG6UeheyYmG3FsPjkAzXlA
-	 GjNWOBee/Y54A==
-Date: Thu, 21 Aug 2025 09:04:53 -0400
-From: Sasha Levin <sashal@kernel.org>
-To: Paolo Abeni <pabeni@redhat.com>
-Cc: Chanho Min <chanho.min@lge.com>,
-	"David S . Miller" <davem@davemloft.net>,
-	Alexey Kuznetsov <kuznet@ms2.inr.ac.ru>,
-	Hideaki YOSHIFUJI <yoshfuji@linux-ipv6.org>, netdev@vger.kernel.org,
-	linux-kernel@vger.kernel.org, gunho.lee@lge.com,
-	stable@vger.kernel.org,
-	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-	Eric Dumazet <edumazet@google.com>,
-	Jakub Kicinski <kuba@kernel.org>
-Subject: Re: [PATCH] ipv6: mcast: extend RCU protection in igmp6_send()
-Message-ID: <aKcZdaEtye817DgO@laps>
-References: <20250818092453.38281-1-chanho.min@lge.com>
- <062219ff-6abf-4289-84da-67a5c731564e@redhat.com>
+	s=arc-20240116; t=1755781540; c=relaxed/simple;
+	bh=s2TPrQTVlibfUEMni6JHZPa2h3vxr/SbLtaEFsSUozM=;
+	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=MXz5CBaS8QBFoeQR4u0SU4cFktE22uxWOtj65QBizuG6PgL2hKiXBk9xjXcFybJUhu7pDaNCV5e3cV8LmeR0E9ABwtN7HHPgn0a5SpkbdHISTOhOOE/oFjmrjiWCPw88ydTyfF0xTW8E9iN8ONw9fKXbpp508JmJHu+/4doEefg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=We38j17g; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 32FEEC4CEEB;
+	Thu, 21 Aug 2025 13:05:40 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
+	s=korg; t=1755781540;
+	bh=s2TPrQTVlibfUEMni6JHZPa2h3vxr/SbLtaEFsSUozM=;
+	h=Subject:To:Cc:From:Date:From;
+	b=We38j17gcxOpwQMQk2vk3JEcnay4Q1p+FiOmF3bBGDLsVubpqzHIkGOfORkUCSJz4
+	 JzX+gNqQZJ8qouYeg+p1dmB9SUbSbnn8JMhosI3EKRMXsTN2zjnFKH0N39YlE/ZCWV
+	 +L3+8RbXgRlnwHzRwPKlmsYqAwQAyzPmOPmK2mKg=
+Subject: FAILED: patch "[PATCH] arm64: dts: ti: k3-am62-main: Remove eMMC High Speed DDR" failed to apply to 6.6-stable tree
+To: jm@ti.com,vigneshr@ti.com
+Cc: <stable@vger.kernel.org>
+From: <gregkh@linuxfoundation.org>
+Date: Thu, 21 Aug 2025 15:05:18 +0200
+Message-ID: <2025082118-blend-penniless-0629@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii; format=flowed
-Content-Disposition: inline
-In-Reply-To: <062219ff-6abf-4289-84da-67a5c731564e@redhat.com>
+Content-Type: text/plain; charset=ANSI_X3.4-1968
+Content-Transfer-Encoding: 8bit
 
-On Thu, Aug 21, 2025 at 11:23:23AM +0200, Paolo Abeni wrote:
->On 8/18/25 11:24 AM, Chanho Min wrote:
->> From: Eric Dumazet <edumazet@google.com>
->>
->> [ Upstream commit 087c1faa594fa07a66933d750c0b2610aa1a2946 ]
->>
->> igmp6_send() can be called without RTNL or RCU being held.
->>
->> Extend RCU protection so that we can safely fetch the net pointer
->> and avoid a potential UAF.
->>
->> Note that we no longer can use sock_alloc_send_skb() because
->> ipv6.igmp_sk uses GFP_KERNEL allocations which can sleep.
->>
->> Instead use alloc_skb() and charge the net->ipv6.igmp_sk
->> socket under RCU protection.
->>
->> Cc: stable@vger.kernel.org # 5.4
->> Fixes: b8ad0cbc58f7 ("[NETNS][IPV6] mcast - handle several network namespace")
->> Signed-off-by: Eric Dumazet <edumazet@google.com>
->> Reviewed-by: David Ahern <dsahern@kernel.org>
->> Reviewed-by: Kuniyuki Iwashima <kuniyu@amazon.com>
->> Link: https://patch.msgid.link/20250207135841.1948589-9-edumazet@google.com
->> [ chanho: Backports to v5.4.y. v5.4.y does not include
->> commit b4a11b2033b7(net: fix IPSTATS_MIB_OUTPKGS increment in OutForwDatagrams),
->> so IPSTATS_MIB_OUTREQUESTS was changed to IPSTATS_MIB_OUTPKGS defined as
->> 'OutRequests'. ]
->> Signed-off-by: Chanho Min <chanho.min@lge.com>
->> Signed-off-by: Jakub Kicinski <kuba@kernel.org>
->> Signed-off-by: Sasha Levin <sashal@kernel.org>
->
->FWIW, the SoB chain above looks incorrect, as I think that neither Jakub
->nor Sasha have touched yet this patch.
 
-It's a backport of an older backport where there already exists a commit with
-both Jakub's any my signoff:
-https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/commit/?id=81b25a07ebf53f9ef4ca8f3d96a8ddb94561dd5a
+The patch below does not apply to the 6.6-stable tree.
+If someone wants it applied there, or to any other stable or longterm
+tree, then please email the backport, including the original git commit
+id to <stable@vger.kernel.org>.
 
-But yes, the SoB chain is wrong because Chanho Min's SoB should come after
-ours, not before.
+To reproduce the conflict and resubmit, you may use the following commands:
 
--- 
-Thanks,
-Sasha
+git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-6.6.y
+git checkout FETCH_HEAD
+git cherry-pick -x 265f70af805f33a0dfc90f50cc0f116f702c3811
+# <resolve conflicts, build, test, etc.>
+git commit -s
+git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2025082118-blend-penniless-0629@gregkh' --subject-prefix 'PATCH 6.6.y' HEAD^..
+
+Possible dependencies:
+
+
+
+thanks,
+
+greg k-h
+
+------------------ original commit in Linus's tree ------------------
+
+From 265f70af805f33a0dfc90f50cc0f116f702c3811 Mon Sep 17 00:00:00 2001
+From: Judith Mendez <jm@ti.com>
+Date: Mon, 7 Jul 2025 14:12:50 -0500
+Subject: [PATCH] arm64: dts: ti: k3-am62-main: Remove eMMC High Speed DDR
+ support
+
+For eMMC, High Speed DDR mode is not supported [0], so remove
+mmc-ddr-1_8v flag which adds the capability.
+
+[0] https://www.ti.com/lit/gpn/am625
+
+Fixes: c37c58fdeb8a ("arm64: dts: ti: k3-am62: Add more peripheral nodes")
+Cc: stable@vger.kernel.org
+Signed-off-by: Judith Mendez <jm@ti.com>
+Link: https://lore.kernel.org/r/20250707191250.3953990-1-jm@ti.com
+Signed-off-by: Vignesh Raghavendra <vigneshr@ti.com>
+
+diff --git a/arch/arm64/boot/dts/ti/k3-am62-main.dtsi b/arch/arm64/boot/dts/ti/k3-am62-main.dtsi
+index 9e0b6eee9ac7..120ba8f9dd0e 100644
+--- a/arch/arm64/boot/dts/ti/k3-am62-main.dtsi
++++ b/arch/arm64/boot/dts/ti/k3-am62-main.dtsi
+@@ -553,7 +553,6 @@ sdhci0: mmc@fa10000 {
+ 		clocks = <&k3_clks 57 5>, <&k3_clks 57 6>;
+ 		clock-names = "clk_ahb", "clk_xin";
+ 		bus-width = <8>;
+-		mmc-ddr-1_8v;
+ 		mmc-hs200-1_8v;
+ 		ti,clkbuf-sel = <0x7>;
+ 		ti,otap-del-sel-legacy = <0x0>;
+
 
