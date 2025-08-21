@@ -1,120 +1,151 @@
-Return-Path: <stable+bounces-172226-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-172221-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1FE32B302E5
-	for <lists+stable@lfdr.de>; Thu, 21 Aug 2025 21:31:51 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 04921B30242
+	for <lists+stable@lfdr.de>; Thu, 21 Aug 2025 20:45:46 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id DCFCC1BC6AF7
-	for <lists+stable@lfdr.de>; Thu, 21 Aug 2025 19:32:10 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 54FCF1CC23DC
+	for <lists+stable@lfdr.de>; Thu, 21 Aug 2025 18:45:47 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 083841A9FAB;
-	Thu, 21 Aug 2025 19:31:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E45882E5B3C;
+	Thu, 21 Aug 2025 18:45:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=yahoo.com header.i=@yahoo.com header.b="GpGEFm8M"
+	dkim=pass (2048-bit key) header.d=ragnatech.se header.i=@ragnatech.se header.b="VgBZe121";
+	dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b="HFgACVPb"
 X-Original-To: stable@vger.kernel.org
-Received: from sonic305-20.consmr.mail.sg3.yahoo.com (sonic305-20.consmr.mail.sg3.yahoo.com [106.10.241.83])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from fhigh-a2-smtp.messagingengine.com (fhigh-a2-smtp.messagingengine.com [103.168.172.153])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E13D672634
-	for <stable@vger.kernel.org>; Thu, 21 Aug 2025 19:31:43 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=106.10.241.83
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 22CE5343D8A;
+	Thu, 21 Aug 2025 18:45:18 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=103.168.172.153
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755804705; cv=none; b=eUs0G5oftazkL174o3wJ25WYv2f/5mdjAqoHL8wYkC6nEE6Ta1lksRzyGopTPRG7wbIQVjbzdxZcoQSVthqwdcJVF1VDYDjwVXp8mHR288dfFkqfgLnJCPczD3JIA6K+B43KK8sYT5zNq1k+G94dLWJroz9ahdmCZ19QdwOVczg=
+	t=1755801923; cv=none; b=BhIjvMIYF6Pi40DHZjflAfBWynZZwJbljRd72ZEHizzVVTSomDtkE+GyeV+Y3z3YdtqIKj+bDSPWtRzK3d2t5QoNARjwmKTlJJmP9oRQlCqXa5gqEAijlmZwzQ1LYbnKse0+igU6QZ25xAaqxV7TmftdacCGjSEZi1p9MvciGDo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1755804705; c=relaxed/simple;
-	bh=79qMtTR4pCr7m4hgzi1TMnj2YF1DzyvB2hWRPAcN4nQ=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=OdMsi97ysaCasI1WJXdJOTE4/dbEq2PFhQfA3PIMnS0uX1BT5vleMVz7vTmzkejJuAUGOqyRtmY1r5vmhq+PDwIYIJN/FBUdFdQFga+sJkavx1PqHT8f90F3XbSv58zEfVII3argPLfCHM67/aDJ0CWsnYVgteruo+ebKdJowtE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=yahoo.com; spf=pass smtp.mailfrom=yahoo.com; dkim=pass (2048-bit key) header.d=yahoo.com header.i=@yahoo.com header.b=GpGEFm8M; arc=none smtp.client-ip=106.10.241.83
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=yahoo.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=yahoo.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=yahoo.com; s=s2048; t=1755804702; bh=79qMtTR4pCr7m4hgzi1TMnj2YF1DzyvB2hWRPAcN4nQ=; h=From:To:Cc:Subject:Date:In-Reply-To:References:From:Subject:Reply-To; b=GpGEFm8MgpGPAsOzLsViBg5wFF/7SjJ70YZ5rXRpZInpPPtMNt7HEFNKLu6lodzA/Gse7IE+bsPnp6kmGy07olkygdkJlr5rmLdqFr2IBsxQ517OZgjasxopDSsVoZ7iks/giSM1FTGZZpqucwylZ+AstqsyEb7Er4v13iVElKJFN5W+j73zQJcSfY4t1pfD0RYobbriHuJWZ48KWt3YXGG6JQUjN7buloGXly4glK55aBfsY6kE9AqNAG3P4mUEp0dmEouLPJJ4b2Vc6JGZsT6eqJYLfh5ky7X4AZ/oRdgwQq9GKqZDo0Q9jWcrVVxTM2NkK0Oz+X/vKOBqDe+5AQ==
-X-SONIC-DKIM-SIGN: v=1; a=rsa-sha256; c=relaxed/relaxed; d=yahoo.com; s=s2048; t=1755804702; bh=ycjVxM73sXGAQ9TZmDftpj1h167CfyrNVit2rc9kCVi=; h=X-Sonic-MF:From:To:Subject:Date:From:Subject; b=QkNTdHDSlsxOBmuvh/z4MF5QCfH37MSgsAjq3qWabRxbpuTV3U5NCxwJS2awF+aSQSHG074rPPDkV2Chs6rsjBAUy303zayE9GYIeNCDmLMPRoA52dYW5dTmyUew1fuiYF6faDTf1CSs+zZeAsZmc8cIuzep1Qxjtf8wrGs+u0o2U5ByHaGWadUAOyvrNnZTPpP9enzCxMgHxpqdat9LPS2hWoKmhvZ4xzOiAYc8WJqasMJMbugYde/xhdsPGMvxKtKIm6IR/b+4Srlqq00VrX+ttTdcbQyeoACpsy/841Ms3CtQGgN6HXlnOQZKZifs6P7bQUk70WiaKoUAtRoIHQ==
-X-YMail-OSG: TGkLaP4VM1nLSGOtAxOAS8DHyIaqeUWcqNZOPGYGG0qgGc88Piy6.qOfB8krpn4
- 90cTgZMSR4yOSsmNxBT.HafiRoj8pv38t.FJMAnNGxlaYJQjsiQgOdPFJo.jucGY95rwD4meJyW_
- _ICSRtIiwstQHuUft5rhAOkzLQMk3p2C4bRxHk2GXQktP5s_eYkuFEgToAGnPmFM4QYzzfjpPwbL
- LKqACYkAQWTHaH86ooHOoa7ewdi_B4JvOBmxlAx7No5ZrbrqP2YegiS39Zxx67zFiJnbvxZpsCRh
- Ka0xxrjZQGfA1sHpz2q70VKMpCZJHuVkk6_LI48NU9zXH_.mOA8AdzxohkfssObl.4mG5q7fsorX
- dY4pl8U5wWt8Ak81icHDxClNLnw9lMBFd_PL6j8Ii0AcJxN5woq.WxNSjzcgY5EM6qSiFQer32T2
- BU_TDi6v5xhsSMbyroX8CqZqHO5mnLB20rS2YTs2C0eoAK.XCX8p8Oyhz4z7crXmmEXb.1EckWA_
- RZ97d0l_0ylunFvLADeua.m5jmI2agmyIWV6BVpvdZ99i8daqStJWrIdDlZjgmC16VUMEEAE4Q2S
- SaLa_aIIy7eLlqHuWRn5yhWitVtfYRN94gCAYVyRBAyeJIneuCFsRXTDx21O_bcBi4kYbgWYQzv.
- P5ASZewYO6S.cmTHczJMz.T77PBxGi6DkTie5TydnbncrIjSO72AwgzHtdYyNhr7I5ObAaaO5ts4
- UJBCShAQnm6vg3PcpWV5TbiGlTBrV.RMLIgy87Ew3v_oe4rbSh1lnF4y3udBIsYjXjtVhizSdFDK
- tsRs4tOHcOUnuCOiU1sjBmix37lcrTCTFnaZbbtsKjj7HBovxc9AivUPC.wdTTp5RvExZJWR85q.
- PF1cAFesb9oBSco.BO6_CZcDNIwvyXPve1EPRokx9ONUitNyoDiZ9Z7yU4C38zmjXaJLvcE48AJF
- S7LEyTtfZ9u6O4Ck_MBcY0H0yLKt2VPceQ_Z4k59HNbGkTWFEGcdvnbET3TjCGhEeKLQVH3U6hsa
- v.GC94Xt3nbKnIYbY17eoPgMTqMTP1BmPX78g1otx2_SGi.atWRjOsiX6U4jOlDkya5e5GbMRJr8
- ouXiFrT4SYP76iPwAdagYQDpAs._Gjw450rsJFOkff_gQalXDQTA35gBc6tbbDFrTL_jhc5qwKAx
- 28EjdroxkhlasGuc3dBZ5fN48UPBCt4lHTj5hfGfwTfL8QzjQemkyOLps1XRTGWROmuoRrM32TA7
- ND5o2z647VXd0v6A61k4G6j38pn0oQInKKbRzzxHMg.rK2nPyfb2cOo71V6ZCw5IOMmWeezaSoAQ
- qkCqjW7XKdp9h_eYUF56Qo41wikuKywBrd96WSjOC6K.4xvL69Sim8FU9B_kfrvWDAwG7HSStiEI
- IwfMqVQomTM.T6r6eslCdSkysJwmQdvc4y7HBUI2syg1_86iavOM1b0YSMWyoz9y89gVf6k8C0It
- eEZAWaVnO8GIStST1AyR2GrQdg66L.FJxxPI_FK8g1sTMdj3oDACjKJhqBxF_aANlhV54yRmSZ89
- mDNAtfsv2Mgxl9OBFjE7nU1jTXogGD8ZtUU.ECQR.r7L1lipScsUpl0ruQ_qAcgGlJK6EFW_wmBc
- _mEEaYjA_6zbwp1ZB4o5cMHatO9FKpKYoF8KL4ggG_JbNsp4j_Mu_dtJ1cwuV1gijA1NKNbrqE3q
- KGdWcOm6ABXRKyW3v0nNta_fspuOdraxvb.FnofKYMtJvCIC3Q6cUuRlrRZXh7iHkYyJEh3ZIPnt
- vKnob3ixMwGHJbjt_t37mqmU9uHoxC.rVcXvAKnddyO2VQPd2FllepKL5REbkcJO_cr8zZiTGGMR
- YHaJf_M9tj5jQ4JePF5DDojWWKmcnn0Dd.1Y87L6sqJba9BpNwFl6649i_iLbCbA1G8IdT5c0hrp
- FzphVREkqdLWHDJM9GzV77eEVovGPUHqNovpDEwjGNuvuKeuKSTkSoPIBI9x6dDf5Ub9zSvUEitI
- .3IzsmzCEoM.UpzTRIfHffnWDRxHy.6V4Bb6NSbaRcyLsFQZd0fWe.ayWaxvAcW_oUF68EjMVGnm
- 58Sq0a5iBZD.S1YYYo1AuEYp4G9JIG.Dqhccs8njbCiK.DiPR43APsPHxrE_8vEndyNK5hxKBs3k
- 59h1ujBOoZwhIgILrHa_GkbfviOod.z_hOtj1fyK4fHq85Z5KU30enyehPtZq4bhn_EbaIxdWN45
- dE1IskItp9eUX5_g.qI_qLRDsVWcmbdtOG_hLhyY1iyrpeN7sPH0JqpC1mu.H9Ih1tjuRdWHwPdi
- MA6htqxlmboKpzVMKkA--
-X-Sonic-MF: <sumanth.gavini@yahoo.com>
-X-Sonic-ID: 5ed3eba4-7b80-485b-9dff-9c2729790cd5
-Received: from sonic.gate.mail.ne1.yahoo.com by sonic305.consmr.mail.sg3.yahoo.com with HTTP; Thu, 21 Aug 2025 19:31:42 +0000
-Received: by hermes--production-ne1-9495dc4d7-dbtfw (Yahoo Inc. Hermes SMTP Server) with ESMTPA ID d67fb2e8a117233158f28e86817b6c53;
-          Thu, 21 Aug 2025 18:40:59 +0000 (UTC)
-From: Sumanth Gavini <sumanth.gavini@yahoo.com>
-To: sumanth.gavini@yahoo.com
-Cc: boqun.feng@gmail.com,
-	clingutla@codeaurora.org,
-	elavila@google.com,
-	gregkh@linuxfoundation.org,
-	jstultz@google.com,
-	kprateek.nayak@amd.com,
-	linux-kernel@vger.kernel.org,
-	mhiramat@kernel.org,
-	mingo@kernel.org,
-	rostedt@goodmis.org,
-	ryotkkr98@gmail.com,
-	sashal@kernel.org,
-	stable@vger.kernel.org,
-	tglx@linutronix.de
-Subject: [PATCH 6.1] softirq: Add trace points for tasklet entry/exit
-Date: Thu, 21 Aug 2025 13:40:54 -0500
-Message-ID: <20250821184055.1710759-1-sumanth.gavini@yahoo.com>
-X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20250812161755.609600-1-sumanth.gavini@yahoo.com>
-References: <20250812161755.609600-1-sumanth.gavini@yahoo.com>
+	s=arc-20240116; t=1755801923; c=relaxed/simple;
+	bh=IFXUlx+m6ia+iAeyC/QQLg53gENo62SxdMAs+i9FJM4=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=BeurMIPe0KoSyxLyHiYNs0g3jnVH50HXqgT6T1EDSEhP/BZSuIPdJp/Tfs/6NK8DmKakB2zHo6TqXEHVBlvDK66zDE/5Y3U7oJ0r3BrUSdosyFnVsK9UBjfJ5/doyYlr1rv6ePFz5/yumDU3FR54wVuWH407+71dxrCdZogTJOY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=ragnatech.se; spf=pass smtp.mailfrom=ragnatech.se; dkim=pass (2048-bit key) header.d=ragnatech.se header.i=@ragnatech.se header.b=VgBZe121; dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b=HFgACVPb; arc=none smtp.client-ip=103.168.172.153
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=ragnatech.se
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ragnatech.se
+Received: from phl-compute-05.internal (phl-compute-05.internal [10.202.2.45])
+	by mailfhigh.phl.internal (Postfix) with ESMTP id C803F1400739;
+	Thu, 21 Aug 2025 14:45:17 -0400 (EDT)
+Received: from phl-mailfrontend-02 ([10.202.2.163])
+  by phl-compute-05.internal (MEProxy); Thu, 21 Aug 2025 14:45:17 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ragnatech.se; h=
+	cc:cc:content-transfer-encoding:content-type:content-type:date
+	:date:from:from:in-reply-to:in-reply-to:message-id:mime-version
+	:references:reply-to:subject:subject:to:to; s=fm2; t=1755801917;
+	 x=1755888317; bh=sTbBCHeYh9SBjVQRP6FkYrIR5p7xcav7CZ/jExjE4GM=; b=
+	VgBZe121ku0NjMpTzwYd1Cf5L2Vy99GdnBB/i2eF1+3YfUMxwIe7QuOc0cAYKBFl
+	EhNZkILKuN5YaKE2FK5BBSWIy3AxcrESH3ojLTN7T2j2JIxHgbY9WkvlJOlcaiU6
+	CDIK+aWBOIjOPgI12lwID2zC2cJynnT6AM33G9XxSRIIyH7HHF1AMxsOtq7ivWxL
+	KUQpRSQ7pObFqZclz+LOJIHElsvfxPvh7gRGR/GXxXLhCVm1EHBQVO7DWOwx143v
+	mZ+l9wAOiP2HMwfg3WqzhLhorUKQ75uqSDzzYGWFSXY5X4ZEQyYzf0Pq2tFNK/1I
+	ixxJrl4LN777xlau6aw/tw==
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
+	messagingengine.com; h=cc:cc:content-transfer-encoding
+	:content-type:content-type:date:date:feedback-id:feedback-id
+	:from:from:in-reply-to:in-reply-to:message-id:mime-version
+	:references:reply-to:subject:subject:to:to:x-me-proxy
+	:x-me-sender:x-me-sender:x-sasl-enc; s=fm3; t=1755801917; x=
+	1755888317; bh=sTbBCHeYh9SBjVQRP6FkYrIR5p7xcav7CZ/jExjE4GM=; b=H
+	FgACVPbtCIQ/Y3/81ZgmWw2Tk9W9MDACTDyRWx0gbsVSZpcR4sE1RQ0hhsVSVfdC
+	5ZDfmt+N2YCf4EL5Ld+icg4bWUFoP+dRDVo4TE2Cj9gH/gCpsiOrTOfqPsmFBhSn
+	J/WeUAmoi8N+3lUwYy8s2J5YkAq+vr5tTch9dGuCt7v8Hb+SwQdKGKlIzISdjxfR
+	TASwBnM/VV+fj0d7aYiTOmNXFebvelDIhBwXPGKYtphIWTA/vdAdpKEkxLGzCBCk
+	cxdMonCzIe4l2cnVtJjgf2YbY+AtabQjdMhBvdp0iVFVipeJq62IKD30RjCimy5Q
+	dH4vF5pfpWa4r7By9XDxg==
+X-ME-Sender: <xms:PWmnaMx5NLKGaCGpLsuiW2muVygT-NReZNgoE5dM1r20EZawGx128g>
+    <xme:PWmnaONrDozBaW9mMClBt52QZbT4zi0ZRvRM6G1sQwCQh7tn9iRgSv0k4j-Hytyql
+    LxpdFwNds7B2mX_8iQ>
+X-ME-Received: <xmr:PWmnaAojx90TKvyiA7t-BwCB9Tv4Yguo4gGTqBjlGaCIgEcs8jkeRCzWgPopQy4NTn8t8JiJAuc_BtCwUl-z8DxC2TS7Ga2sDQ>
+X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgeeffedrtdefgdduieduleelucetufdoteggodetrf
+    dotffvucfrrhhofhhilhgvmecuhfgrshhtofgrihhlpdfurfetoffkrfgpnffqhgenuceu
+    rghilhhouhhtmecufedttdenucesvcftvggtihhpihgvnhhtshculddquddttddmnecujf
+    gurhepfffhvfevuffkfhggtggugfgjsehtkeertddttdejnecuhfhrohhmpefpihhklhgr
+    shcuufpnuggvrhhluhhnugcuoehnihhklhgrshdrshhouggvrhhluhhnugesrhgrghhnrg
+    htvggthhdrshgvqeenucggtffrrghtthgvrhhnpeevteegtddvvdfhtdekgefhfeefheet
+    heekkeegfeejudeiudeuleegtdehkeekteenucevlhhushhtvghrufhiiigvpedtnecurf
+    grrhgrmhepmhgrihhlfhhrohhmpehnihhklhgrshdrshhouggvrhhluhhnugesrhgrghhn
+    rghtvggthhdrshgvpdhnsggprhgtphhtthhopeehpdhmohguvgepshhmthhpohhuthdprh
+    gtphhtthhopehlrghurhgvnhhtrdhpihhntghhrghrthdorhgvnhgvshgrshesihguvggr
+    shhonhgsohgrrhgurdgtohhmpdhrtghpthhtoheplhhinhhugidqmhgvughirgesvhhgvg
+    hrrdhkvghrnhgvlhdrohhrghdprhgtphhtthhopehlihhnuhigqdhrvghnvghsrghsqdhs
+    ohgtsehvghgvrhdrkhgvrhhnvghlrdhorhhgpdhrtghpthhtohepjhgrtghophhordhmoh
+    hnughisehiuggvrghsohhnsghorghrugdrtghomhdprhgtphhtthhopehsthgrsghlvges
+    vhhgvghrrdhkvghrnhgvlhdrohhrgh
+X-ME-Proxy: <xmx:PWmnaPFBQJmdZcBoOnn6GAWN8uyNjPg5gQSuMcQf-8OrR39jVu4CsQ>
+    <xmx:PWmnaFoJtKdGbNO9HbH9nBCVctMiCEqbud2GOD5zgF9FIyDwDm-QNw>
+    <xmx:PWmnaIamfDlsSNiWu0QdNS_6tfpDOPBuWFrQ9RkbeE2ZrCjHDhb1Gg>
+    <xmx:PWmnaOVpZ74FPlsfWCUcVOuBEW6pSAOX2n1f3bUTCLB9M9z5VTYUlw>
+    <xmx:PWmnaMGSPqlqr0M4eV3kARcQ9jnt50qqUKpe2kmJjC6xv7BttUD6SZNE>
+Feedback-ID: i80c9496c:Fastmail
+Received: by mail.messagingengine.com (Postfix) with ESMTPA; Thu,
+ 21 Aug 2025 14:45:17 -0400 (EDT)
+Date: Thu, 21 Aug 2025 20:45:15 +0200
+From: Niklas =?utf-8?Q?S=C3=B6derlund?= <niklas.soderlund@ragnatech.se>
+To: Laurent Pinchart <laurent.pinchart+renesas@ideasonboard.com>
+Cc: linux-media@vger.kernel.org, linux-renesas-soc@vger.kernel.org,
+	Jacopo Mondi <jacopo.mondi@ideasonboard.com>,
+	stable@vger.kernel.org
+Subject: Re: [PATCH] media: vsp1: Export missing vsp1_isp_free_buffer symbol
+Message-ID: <20250821184515.GF2197757@ragnatech.se>
+References: <20250821154241.24348-1-laurent.pinchart+renesas@ideasonboard.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
+In-Reply-To: <20250821154241.24348-1-laurent.pinchart+renesas@ideasonboard.com>
 
-Hi All,
+Hi Laurent,
 
-Just following up on my patch submitted with subject "Subject: [PATCH 6.1] softirq: Add trace points for tasklet entry/exit".
+Thanks for spotting this.
 
-Original message: https://lore.kernel.org/all/20250812161755.609600-1-sumanth.gavini@yahoo.com/
+On 2025-08-21 18:42:41 +0300, Laurent Pinchart wrote:
+> The vsp1_isp_free_buffer() function implemented by the vsp1 driver is
+> part of the API exposed to the rcar-isp driver. All other symbols except
+> that one are properly exported. Fix it.
+> 
+> Fixes: d06c1a9f348d ("media: vsp1: Add VSPX support")
+> Cc: stable@vger.kernel.org
+> Signed-off-by: Laurent Pinchart <laurent.pinchart+renesas@ideasonboard.com>
 
-Would you have any feedback on this change? I'd be happy to address any comments or concerns.
+Reviewed-by: Niklas Söderlund <niklas.soderlund+renesas@ragnatech.se>
 
-This patch fixes this three bugs
-1. https://syzkaller.appspot.com/bug?extid=5284a86a0b0a31ab266a
-2. https://syzkaller.appspot.com/bug?extid=296695c8ae3c7da3d511
-3. https://syzkaller.appspot.com/bug?extid=97f2ac670e5e7a3b48e4
+> ---
+>  drivers/media/platform/renesas/vsp1/vsp1_vspx.c | 1 +
+>  1 file changed, 1 insertion(+)
+> 
+> diff --git a/drivers/media/platform/renesas/vsp1/vsp1_vspx.c b/drivers/media/platform/renesas/vsp1/vsp1_vspx.c
+> index a754b92232bd..1673479be0ff 100644
+> --- a/drivers/media/platform/renesas/vsp1/vsp1_vspx.c
+> +++ b/drivers/media/platform/renesas/vsp1/vsp1_vspx.c
+> @@ -286,6 +286,7 @@ void vsp1_isp_free_buffer(struct device *dev,
+>  	dma_free_coherent(bus_master, buffer_desc->size, buffer_desc->cpu_addr,
+>  			  buffer_desc->dma_addr);
+>  }
+> +EXPORT_SYMBOL_GPL(vsp1_isp_free_buffer);
+>  
+>  /**
+>   * vsp1_isp_start_streaming - Start processing VSPX jobs
+> -- 
+> Regards,
+> 
+> Laurent Pinchart
+> 
 
-Thank you for your time and consideration.
-
-Regards,
-Sumanth Gavini
+-- 
+Kind Regards,
+Niklas Söderlund
 
