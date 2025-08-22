@@ -1,48 +1,48 @@
-Return-Path: <stable+bounces-172287-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-172288-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id EEBEDB30E4F
-	for <lists+stable@lfdr.de>; Fri, 22 Aug 2025 07:54:26 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 159EFB30E50
+	for <lists+stable@lfdr.de>; Fri, 22 Aug 2025 07:54:28 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 9E5CA5E04CD
-	for <lists+stable@lfdr.de>; Fri, 22 Aug 2025 05:54:26 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id D8D865E0544
+	for <lists+stable@lfdr.de>; Fri, 22 Aug 2025 05:54:27 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id BAFFD2E2DCE;
-	Fri, 22 Aug 2025 05:54:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D609F2E1F06;
+	Fri, 22 Aug 2025 05:54:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="e54yyojC"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="t6Rf6NYs"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 767FB2E2DC7
-	for <stable@vger.kernel.org>; Fri, 22 Aug 2025 05:54:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9272E284B25
+	for <stable@vger.kernel.org>; Fri, 22 Aug 2025 05:54:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755842046; cv=none; b=F8+6Sc6oTlPN/xOKN8GGpX5r/jyld8/D/QVYjW6pIy53HABRRCMYfWuewpAbASlrUuLsiTs4xuuhXQKDrTtoIwxths3Eh+scGMEXOQqZ6BEhEzhaqdFHN/r/Evs2F6yTreEM29HxOA0DqzKvLiXflJdEgE5jg1vvD0Lx8wKbFZo=
+	t=1755842058; cv=none; b=Se9qcsBhbZHwPDUpdj+UlpapwCJMXt2ErvufnZkfKpwuZtekTNdczkfskpRDsQT6HL4+sd1mivwYcSIfYCSSpyL9mpn5yUR+w204MiGfP/nBOjTTxLl42zjjYi4SIATTnPaytJhdepba+fKxOCeH5vusi/Iu0fNpyyV7a+1frPU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1755842046; c=relaxed/simple;
-	bh=ewf6lmrVx8psNP/HZfhfFBVHGdbqh4uih7B1X/x+enw=;
-	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=RlLAF/BZxSKQCKjIVZFosIS1UtZlyv+rTs91mVPFLjXSUtyyRNicFKWhq/sOA856W6JB1aCRb76Z6slMa24d1bvUTOJWGDHOxh/+fyLhPe6lo4Z0Ot/w9KqfM5Y1tdav6+ZxM49uTWzTrBj1axNq9CeDMoqUduEZVD330EmplHc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=e54yyojC; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D03AAC4CEF1;
-	Fri, 22 Aug 2025 05:54:05 +0000 (UTC)
+	s=arc-20240116; t=1755842058; c=relaxed/simple;
+	bh=2EJJLzp7taH46sIivmi3uFmFReKbw3UooTIJRtkXvjU=;
+	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=aXW0MfSHoQB1NFPJFLot4JV3V8KNaJSOdf4wazXKFTeEazT6N1/MFRNgYKcTICnUN10bhb8tUpOotlbEce6OsqxZ4NSK5NcXPIEd9sCElX97Z+xjxYNJllGPJRz1ijge8mJyIlvMeh9kTryqT40hIsIRiVFgPmTDvrwxeXFoLgU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=t6Rf6NYs; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B361AC4CEF1;
+	Fri, 22 Aug 2025 05:54:17 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1755842046;
-	bh=ewf6lmrVx8psNP/HZfhfFBVHGdbqh4uih7B1X/x+enw=;
+	s=korg; t=1755842058;
+	bh=2EJJLzp7taH46sIivmi3uFmFReKbw3UooTIJRtkXvjU=;
 	h=Subject:To:Cc:From:Date:From;
-	b=e54yyojCJhYNEDspTtayL7n34wr4C4VBjEmvx9D5YElVTGXUzrFqqY4F/vL1o8QgF
-	 OKQkEKXZ8tO7XvN90+C9r17GSqOY9E/C24LGoKsy5oK8dra8snFizxRMMglBNjAHYp
-	 rh/GlE+0B5+HfaylFPfJQ21SE1teftD2gtGPaRog=
-Subject: FAILED: patch "[PATCH] ipv6: sr: Fix MAC comparison to be constant-time" failed to apply to 5.4-stable tree
-To: ebiggers@kernel.org,andrea.mayer@uniroma2.it,kuba@kernel.org
+	b=t6Rf6NYsyYfnsIF8453F55crDy0eOgLBEpf80JbOkJot9BiU9JwGLa+uLyFQMoc50
+	 lF1sDHi9Ri1kNZKLXl1sw1VhDzIj1FaN2Pu1h36eamnEZmX1sKqec0LFv2deQyfc+j
+	 +ryzghwG9E34jHp0y+S3ubB4QTA1xs4iFGGlEwA4=
+Subject: FAILED: patch "[PATCH] cpuidle: governors: menu: Avoid selecting states with too" failed to apply to 6.12-stable tree
+To: rafael.j.wysocki@intel.com,christian.loehle@arm.com,stable@vger.kernel.org
 Cc: <stable@vger.kernel.org>
 From: <gregkh@linuxfoundation.org>
-Date: Fri, 22 Aug 2025 07:53:50 +0200
-Message-ID: <2025082250-legwork-enhance-f1d3@gregkh>
+Date: Fri, 22 Aug 2025 07:54:15 +0200
+Message-ID: <2025082214-daughter-popsicle-4c08@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -53,19 +53,19 @@ Content-Type: text/plain; charset=ANSI_X3.4-1968
 Content-Transfer-Encoding: 8bit
 
 
-The patch below does not apply to the 5.4-stable tree.
+The patch below does not apply to the 6.12-stable tree.
 If someone wants it applied there, or to any other stable or longterm
 tree, then please email the backport, including the original git commit
 id to <stable@vger.kernel.org>.
 
 To reproduce the conflict and resubmit, you may use the following commands:
 
-git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-5.4.y
+git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-6.12.y
 git checkout FETCH_HEAD
-git cherry-pick -x a458b2902115b26a25d67393b12ddd57d1216aaa
+git cherry-pick -x 779b1a1cb13ae17028aeddb2fbbdba97357a1e15
 # <resolve conflicts, build, test, etc.>
 git commit -s
-git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2025082250-legwork-enhance-f1d3@gregkh' --subject-prefix 'PATCH 5.4.y' HEAD^..
+git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2025082214-daughter-popsicle-4c08@gregkh' --subject-prefix 'PATCH 6.12.y' HEAD^..
 
 Possible dependencies:
 
@@ -77,41 +77,122 @@ greg k-h
 
 ------------------ original commit in Linus's tree ------------------
 
-From a458b2902115b26a25d67393b12ddd57d1216aaa Mon Sep 17 00:00:00 2001
-From: Eric Biggers <ebiggers@kernel.org>
-Date: Mon, 18 Aug 2025 13:27:24 -0700
-Subject: [PATCH] ipv6: sr: Fix MAC comparison to be constant-time
+From 779b1a1cb13ae17028aeddb2fbbdba97357a1e15 Mon Sep 17 00:00:00 2001
+From: "Rafael J. Wysocki" <rafael.j.wysocki@intel.com>
+Date: Wed, 13 Aug 2025 12:25:58 +0200
+Subject: [PATCH] cpuidle: governors: menu: Avoid selecting states with too
+ much latency
 
-To prevent timing attacks, MACs need to be compared in constant time.
-Use the appropriate helper function for this.
+Occasionally, the exit latency of the idle state selected by the menu
+governor may exceed the PM QoS CPU wakeup latency limit.  Namely, if the
+scheduler tick has been stopped already and predicted_ns is greater than
+the tick period length, the governor may return an idle state whose exit
+latency exceeds latency_req because that decision is made before
+checking the current idle state's exit latency.
 
-Fixes: bf355b8d2c30 ("ipv6: sr: add core files for SR HMAC support")
-Cc: stable@vger.kernel.org
-Signed-off-by: Eric Biggers <ebiggers@kernel.org>
-Reviewed-by: Andrea Mayer <andrea.mayer@uniroma2.it>
-Link: https://patch.msgid.link/20250818202724.15713-1-ebiggers@kernel.org
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+For instance, say that there are 3 idle states, 0, 1, and 2.  For idle
+states 0 and 1, the exit latency is equal to the target residency and
+the values are 0 and 5 us, respectively.  State 2 is deeper and has the
+exit latency and target residency of 200 us and 2 ms (which is greater
+than the tick period length), respectively.
 
-diff --git a/net/ipv6/seg6_hmac.c b/net/ipv6/seg6_hmac.c
-index d77b52523b6a..fd58426f222b 100644
---- a/net/ipv6/seg6_hmac.c
-+++ b/net/ipv6/seg6_hmac.c
-@@ -35,6 +35,7 @@
- #include <net/xfrm.h>
+Say that predicted_ns is equal to TICK_NSEC and the PM QoS latency
+limit is 20 us.  After the first two iterations of the main loop in
+menu_select(), idx becomes 1 and in the third iteration of it the target
+residency of the current state (state 2) is greater than predicted_ns.
+State 2 is not a polling one and predicted_ns is not less than TICK_NSEC,
+so the check on whether or not the tick has been stopped is done.  Say
+that the tick has been stopped already and there are no imminent timers
+(that is, delta_tick is greater than the target residency of state 2).
+In that case, idx becomes 2 and it is returned immediately, but the exit
+latency of state 2 exceeds the latency limit.
+
+Address this issue by modifying the code to compare the exit latency of
+the current idle state (idle state i) with the latency limit before
+comparing its target residency with predicted_ns, which allows one
+more exit_latency_ns check that becomes redundant to be dropped.
+
+However, after the above change, latency_req cannot take the predicted_ns
+value any more, which takes place after commit 38f83090f515 ("cpuidle:
+menu: Remove iowait influence"), because it may cause a polling state
+to be returned prematurely.
+
+In the context of the previous example say that predicted_ns is 3000 and
+the PM QoS latency limit is still 20 us.  Additionally, say that idle
+state 0 is a polling one.  Moving the exit_latency_ns check before the
+target_residency_ns one causes the loop to terminate in the second
+iteration, before the target_residency_ns check, so idle state 0 will be
+returned even though previously state 1 would be returned if there were
+no imminent timers.
+
+For this reason, remove the assignment of the predicted_ns value to
+latency_req from the code.
+
+Fixes: 5ef499cd571c ("cpuidle: menu: Handle stopped tick more aggressively")
+Cc: 4.17+ <stable@vger.kernel.org> # 4.17+
+Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
+Reviewed-by: Christian Loehle <christian.loehle@arm.com>
+Link: https://patch.msgid.link/5043159.31r3eYUQgx@rafael.j.wysocki
+
+diff --git a/drivers/cpuidle/governors/menu.c b/drivers/cpuidle/governors/menu.c
+index 81306612a5c6..b2e3d0b0a116 100644
+--- a/drivers/cpuidle/governors/menu.c
++++ b/drivers/cpuidle/governors/menu.c
+@@ -287,20 +287,15 @@ static int menu_select(struct cpuidle_driver *drv, struct cpuidle_device *dev,
+ 		return 0;
+ 	}
  
- #include <crypto/hash.h>
-+#include <crypto/utils.h>
- #include <net/seg6.h>
- #include <net/genetlink.h>
- #include <net/seg6_hmac.h>
-@@ -280,7 +281,7 @@ bool seg6_hmac_validate_skb(struct sk_buff *skb)
- 	if (seg6_hmac_compute(hinfo, srh, &ipv6_hdr(skb)->saddr, hmac_output))
- 		return false;
+-	if (tick_nohz_tick_stopped()) {
+-		/*
+-		 * If the tick is already stopped, the cost of possible short
+-		 * idle duration misprediction is much higher, because the CPU
+-		 * may be stuck in a shallow idle state for a long time as a
+-		 * result of it.  In that case say we might mispredict and use
+-		 * the known time till the closest timer event for the idle
+-		 * state selection.
+-		 */
+-		if (predicted_ns < TICK_NSEC)
+-			predicted_ns = data->next_timer_ns;
+-	} else if (latency_req > predicted_ns) {
+-		latency_req = predicted_ns;
+-	}
++	/*
++	 * If the tick is already stopped, the cost of possible short idle
++	 * duration misprediction is much higher, because the CPU may be stuck
++	 * in a shallow idle state for a long time as a result of it.  In that
++	 * case, say we might mispredict and use the known time till the closest
++	 * timer event for the idle state selection.
++	 */
++	if (tick_nohz_tick_stopped() && predicted_ns < TICK_NSEC)
++		predicted_ns = data->next_timer_ns;
  
--	if (memcmp(hmac_output, tlv->hmac, SEG6_HMAC_FIELD_LEN) != 0)
-+	if (crypto_memneq(hmac_output, tlv->hmac, SEG6_HMAC_FIELD_LEN))
- 		return false;
+ 	/*
+ 	 * Find the idle state with the lowest power while satisfying
+@@ -316,13 +311,15 @@ static int menu_select(struct cpuidle_driver *drv, struct cpuidle_device *dev,
+ 		if (idx == -1)
+ 			idx = i; /* first enabled state */
  
- 	return true;
++		if (s->exit_latency_ns > latency_req)
++			break;
++
+ 		if (s->target_residency_ns > predicted_ns) {
+ 			/*
+ 			 * Use a physical idle state, not busy polling, unless
+ 			 * a timer is going to trigger soon enough.
+ 			 */
+ 			if ((drv->states[idx].flags & CPUIDLE_FLAG_POLLING) &&
+-			    s->exit_latency_ns <= latency_req &&
+ 			    s->target_residency_ns <= data->next_timer_ns) {
+ 				predicted_ns = s->target_residency_ns;
+ 				idx = i;
+@@ -354,8 +351,6 @@ static int menu_select(struct cpuidle_driver *drv, struct cpuidle_device *dev,
+ 
+ 			return idx;
+ 		}
+-		if (s->exit_latency_ns > latency_req)
+-			break;
+ 
+ 		idx = i;
+ 	}
 
 
