@@ -1,48 +1,48 @@
-Return-Path: <stable+bounces-172394-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-172397-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id B6368B31A67
-	for <lists+stable@lfdr.de>; Fri, 22 Aug 2025 15:58:08 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 04A1AB31A8E
+	for <lists+stable@lfdr.de>; Fri, 22 Aug 2025 16:03:01 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 0C73FB0168F
-	for <lists+stable@lfdr.de>; Fri, 22 Aug 2025 13:55:13 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 7067B189084D
+	for <lists+stable@lfdr.de>; Fri, 22 Aug 2025 13:59:30 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0840D30146C;
-	Fri, 22 Aug 2025 13:55:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2B9993043AB;
+	Fri, 22 Aug 2025 13:55:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="RKGO0C+H"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="n05Sjy7Y"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B9AF13043C1
-	for <stable@vger.kernel.org>; Fri, 22 Aug 2025 13:55:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E00F92FC024
+	for <stable@vger.kernel.org>; Fri, 22 Aug 2025 13:55:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755870902; cv=none; b=cCuFFaq5MeWM4VtaWRp/qmtGZKyeDw1MR9iHoEUfQDemhgHlxeWHbCZ/27tKiuYfmWt9aaHDJU23DtDgQyacvnxpCdtJrXZ7kClPMuRTbYe0ZbsBEQkFEm5orkoE74FYUBHWaTvfCCtF12ghkIN4Dnk/0OJFce9phomK8g2Ka1s=
+	t=1755870951; cv=none; b=WoHXKT2DpnNEAjFaclgWHwsgW2A+BPhm6izlzoVroJPG5CNmbt3ZGBFeEqgqKs52NgtOW5UZe33HCLzmdr+JktKVV3h24viqnO8Rd21vIlaSdjI2n/DLxY9QENn0ekANdZ6qnrV7dmLnyrMZCRtw/LAyYMqTZQh/vw1cUOSEu/s=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1755870902; c=relaxed/simple;
-	bh=ZVtG+4mZEw6uQGNiFEKWK9YIvBN3J3nTWwLMbVtijqk=;
-	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=ZrfaCemiAAOVxs9IedkYst6Rme3SGF5ywXHXANSILBwXF2xBmGDtN9WAN19fkBhBUyuEvnFh1gQrxD8SsdmgT0XTUqL/mhPEh+WO5pVMFx4bpqWsUScERJ2uiBke5As2hHEKBUPC77JdDHryUKWHWz+Vz4JGhm2Xtcu8PEjvQ7k=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=RKGO0C+H; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B12E2C4CEED;
-	Fri, 22 Aug 2025 13:55:01 +0000 (UTC)
+	s=arc-20240116; t=1755870951; c=relaxed/simple;
+	bh=Fo8mJfuW4KSeh/lFMVvjlr1GXUYe8vm8GSQJClkfogw=;
+	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=Lx1Ukv9PUMPEE+F30LodhcUAMxoa0T7QvzV2WFxblKJDrs7rjkztp4BWgx8FLSEC9k10KGtQ0tlvltkaUjCapuGCTT0Bx00T/8UrWtcm0PDpBD1ZqO8GQXagy0U9Ypt4n5OiOD3iyfSI7VNurJUms3ajYLzOM85o68Yof4AJcK8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=n05Sjy7Y; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0A456C4CEED;
+	Fri, 22 Aug 2025 13:55:49 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1755870902;
-	bh=ZVtG+4mZEw6uQGNiFEKWK9YIvBN3J3nTWwLMbVtijqk=;
+	s=korg; t=1755870950;
+	bh=Fo8mJfuW4KSeh/lFMVvjlr1GXUYe8vm8GSQJClkfogw=;
 	h=Subject:To:Cc:From:Date:From;
-	b=RKGO0C+HvQ5PNeVakfuMWpCtQf8sY0HAZnFExiIMfAfar1l62nwP9PK//64XgUpXv
-	 s/qd9zPq1QuQ4oBk/AwCFDfm0gcjLdikPL0xZ+9zV2ZV7or/AwIViDBRJYptBX1J39
-	 V8UFrLqAraTXe9JjpOzCFQTpHSuUSByD0iX21JGo=
-Subject: FAILED: patch "[PATCH] iommu/virtio: Make instance lookup robust" failed to apply to 6.16-stable tree
-To: robin.murphy@arm.com,eric.auger@redhat.com,joerg.roedel@amd.com
+	b=n05Sjy7YOXe2CkqCe29vCuC17604vMkIPZvv3CLuXCDI4gRchPuGhTUWoagFKK2w4
+	 u87B0da2tGGayk1ZXVQFYaJZe2xfwCrtVezM4T4+HllZ2kuHcZYQyrKs0RlILITuSq
+	 sOXjQO3G4P9TVH9A/Jyu88gyUx+4/DP0ixgeKTH8=
+Subject: FAILED: patch "[PATCH] mmc: sdhci-pci-gli: Add a new function to simplify the code" failed to apply to 5.15-stable tree
+To: victor.shih@genesyslogic.com.tw,adrian.hunter@intel.com,ulf.hansson@linaro.org
 Cc: <stable@vger.kernel.org>
 From: <gregkh@linuxfoundation.org>
-Date: Fri, 22 Aug 2025 15:54:58 +0200
-Message-ID: <2025082258-exert-mousy-2b51@gregkh>
+Date: Fri, 22 Aug 2025 15:55:38 +0200
+Message-ID: <2025082238-ember-profusely-366a@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -53,19 +53,19 @@ Content-Type: text/plain; charset=ANSI_X3.4-1968
 Content-Transfer-Encoding: 8bit
 
 
-The patch below does not apply to the 6.16-stable tree.
+The patch below does not apply to the 5.15-stable tree.
 If someone wants it applied there, or to any other stable or longterm
 tree, then please email the backport, including the original git commit
 id to <stable@vger.kernel.org>.
 
 To reproduce the conflict and resubmit, you may use the following commands:
 
-git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-6.16.y
+git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-5.15.y
 git checkout FETCH_HEAD
-git cherry-pick -x 72b6f7cd89cea8251979b65528d302f9c0ed37bf
+git cherry-pick -x dec8b38be4b35cae5f7fa086daf2631e2cfa09c1
 # <resolve conflicts, build, test, etc.>
 git commit -s
-git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2025082258-exert-mousy-2b51@gregkh' --subject-prefix 'PATCH 6.16.y' HEAD^..
+git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2025082238-ember-profusely-366a@gregkh' --subject-prefix 'PATCH 5.15.y' HEAD^..
 
 Possible dependencies:
 
@@ -77,77 +77,90 @@ greg k-h
 
 ------------------ original commit in Linus's tree ------------------
 
-From 72b6f7cd89cea8251979b65528d302f9c0ed37bf Mon Sep 17 00:00:00 2001
-From: Robin Murphy <robin.murphy@arm.com>
-Date: Thu, 14 Aug 2025 17:47:16 +0100
-Subject: [PATCH] iommu/virtio: Make instance lookup robust
+From dec8b38be4b35cae5f7fa086daf2631e2cfa09c1 Mon Sep 17 00:00:00 2001
+From: Victor Shih <victor.shih@genesyslogic.com.tw>
+Date: Thu, 31 Jul 2025 14:57:50 +0800
+Subject: [PATCH] mmc: sdhci-pci-gli: Add a new function to simplify the code
 
-Much like arm-smmu in commit 7d835134d4e1 ("iommu/arm-smmu: Make
-instance lookup robust"), virtio-iommu appears to have the same issue
-where iommu_device_register() makes the IOMMU instance visible to other
-API callers (including itself) straight away, but internally the
-instance isn't ready to recognise itself for viommu_probe_device() to
-work correctly until after viommu_probe() has returned. This matters a
-lot more now that bus_iommu_probe() has the DT/VIOT knowledge to probe
-client devices the way that was always intended. Tweak the lookup and
-initialisation in much the same way as for arm-smmu, to ensure that what
-we register is functional and ready to go.
+In preparation to fix replay timer timeout, add
+sdhci_gli_mask_replay_timer_timeout() function
+to simplify some of the code, allowing it to be re-used.
 
+Signed-off-by: Victor Shih <victor.shih@genesyslogic.com.tw>
+Fixes: 1ae1d2d6e555 ("mmc: sdhci-pci-gli: Add Genesys Logic GL9763E support")
 Cc: stable@vger.kernel.org
-Fixes: bcb81ac6ae3c ("iommu: Get DT/ACPI parsing into the proper probe path")
-Signed-off-by: Robin Murphy <robin.murphy@arm.com>
-Tested-by: Eric Auger <eric.auger@redhat.com>
-Link: https://lore.kernel.org/r/308911aaa1f5be32a3a709996c7bd6cf71d30f33.1755190036.git.robin.murphy@arm.com
-Signed-off-by: Joerg Roedel <joerg.roedel@amd.com>
+Acked-by: Adrian Hunter <adrian.hunter@intel.com>
+Link: https://lore.kernel.org/r/20250731065752.450231-2-victorshihgli@gmail.com
+Signed-off-by: Ulf Hansson <ulf.hansson@linaro.org>
 
-diff --git a/drivers/iommu/virtio-iommu.c b/drivers/iommu/virtio-iommu.c
-index 532db1de201b..b39d6f134ab2 100644
---- a/drivers/iommu/virtio-iommu.c
-+++ b/drivers/iommu/virtio-iommu.c
-@@ -998,8 +998,7 @@ static void viommu_get_resv_regions(struct device *dev, struct list_head *head)
- 	iommu_dma_get_resv_regions(dev, head);
+diff --git a/drivers/mmc/host/sdhci-pci-gli.c b/drivers/mmc/host/sdhci-pci-gli.c
+index 4c2ae71770f7..f678c91f8d3e 100644
+--- a/drivers/mmc/host/sdhci-pci-gli.c
++++ b/drivers/mmc/host/sdhci-pci-gli.c
+@@ -287,6 +287,20 @@
+ #define GLI_MAX_TUNING_LOOP 40
+ 
+ /* Genesys Logic chipset */
++static void sdhci_gli_mask_replay_timer_timeout(struct pci_dev *pdev)
++{
++	int aer;
++	u32 value;
++
++	/* mask the replay timer timeout of AER */
++	aer = pci_find_ext_capability(pdev, PCI_EXT_CAP_ID_ERR);
++	if (aer) {
++		pci_read_config_dword(pdev, aer + PCI_ERR_COR_MASK, &value);
++		value |= PCI_ERR_COR_REP_TIMER;
++		pci_write_config_dword(pdev, aer + PCI_ERR_COR_MASK, value);
++	}
++}
++
+ static inline void gl9750_wt_on(struct sdhci_host *host)
+ {
+ 	u32 wt_value;
+@@ -607,7 +621,6 @@ static void gl9750_hw_setting(struct sdhci_host *host)
+ {
+ 	struct sdhci_pci_slot *slot = sdhci_priv(host);
+ 	struct pci_dev *pdev;
+-	int aer;
+ 	u32 value;
+ 
+ 	pdev = slot->chip->pdev;
+@@ -626,12 +639,7 @@ static void gl9750_hw_setting(struct sdhci_host *host)
+ 	pci_set_power_state(pdev, PCI_D0);
+ 
+ 	/* mask the replay timer timeout of AER */
+-	aer = pci_find_ext_capability(pdev, PCI_EXT_CAP_ID_ERR);
+-	if (aer) {
+-		pci_read_config_dword(pdev, aer + PCI_ERR_COR_MASK, &value);
+-		value |= PCI_ERR_COR_REP_TIMER;
+-		pci_write_config_dword(pdev, aer + PCI_ERR_COR_MASK, value);
+-	}
++	sdhci_gli_mask_replay_timer_timeout(pdev);
+ 
+ 	gl9750_wt_off(host);
  }
- 
--static const struct iommu_ops viommu_ops;
--static struct virtio_driver virtio_iommu_drv;
-+static const struct bus_type *virtio_bus_type;
- 
- static int viommu_match_node(struct device *dev, const void *data)
+@@ -806,7 +814,6 @@ static void sdhci_gl9755_set_clock(struct sdhci_host *host, unsigned int clock)
+ static void gl9755_hw_setting(struct sdhci_pci_slot *slot)
  {
-@@ -1008,8 +1007,9 @@ static int viommu_match_node(struct device *dev, const void *data)
+ 	struct pci_dev *pdev = slot->chip->pdev;
+-	int aer;
+ 	u32 value;
  
- static struct viommu_dev *viommu_get_by_fwnode(struct fwnode_handle *fwnode)
- {
--	struct device *dev = driver_find_device(&virtio_iommu_drv.driver, NULL,
--						fwnode, viommu_match_node);
-+	struct device *dev = bus_find_device(virtio_bus_type, NULL, fwnode,
-+					     viommu_match_node);
-+
- 	put_device(dev);
+ 	gl9755_wt_on(pdev);
+@@ -841,12 +848,7 @@ static void gl9755_hw_setting(struct sdhci_pci_slot *slot)
+ 	pci_set_power_state(pdev, PCI_D0);
  
- 	return dev ? dev_to_virtio(dev)->priv : NULL;
-@@ -1160,6 +1160,9 @@ static int viommu_probe(struct virtio_device *vdev)
- 	if (!viommu)
- 		return -ENOMEM;
+ 	/* mask the replay timer timeout of AER */
+-	aer = pci_find_ext_capability(pdev, PCI_EXT_CAP_ID_ERR);
+-	if (aer) {
+-		pci_read_config_dword(pdev, aer + PCI_ERR_COR_MASK, &value);
+-		value |= PCI_ERR_COR_REP_TIMER;
+-		pci_write_config_dword(pdev, aer + PCI_ERR_COR_MASK, value);
+-	}
++	sdhci_gli_mask_replay_timer_timeout(pdev);
  
-+	/* Borrow this for easy lookups later */
-+	virtio_bus_type = dev->bus;
-+
- 	spin_lock_init(&viommu->request_lock);
- 	ida_init(&viommu->domain_ids);
- 	viommu->dev = dev;
-@@ -1229,10 +1232,10 @@ static int viommu_probe(struct virtio_device *vdev)
- 	if (ret)
- 		goto err_free_vqs;
- 
--	iommu_device_register(&viommu->iommu, &viommu_ops, parent_dev);
--
- 	vdev->priv = viommu;
- 
-+	iommu_device_register(&viommu->iommu, &viommu_ops, parent_dev);
-+
- 	dev_info(dev, "input address: %u bits\n",
- 		 order_base_2(viommu->geometry.aperture_end));
- 	dev_info(dev, "page mask: %#llx\n", viommu->pgsize_bitmap);
+ 	gl9755_wt_off(pdev);
+ }
 
 
