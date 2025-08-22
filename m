@@ -1,58 +1,60 @@
-Return-Path: <stable+bounces-172478-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-172480-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id C368EB3216A
-	for <lists+stable@lfdr.de>; Fri, 22 Aug 2025 19:20:12 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id E1719B3216C
+	for <lists+stable@lfdr.de>; Fri, 22 Aug 2025 19:20:14 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 84A67AA8142
-	for <lists+stable@lfdr.de>; Fri, 22 Aug 2025 17:20:11 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id B3D0F6428BA
+	for <lists+stable@lfdr.de>; Fri, 22 Aug 2025 17:20:14 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id BF3871096F;
-	Fri, 22 Aug 2025 17:20:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B4580285C91;
+	Fri, 22 Aug 2025 17:20:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="dJuERWNn"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="pqyOOFRm"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 773A727AC37
-	for <stable@vger.kernel.org>; Fri, 22 Aug 2025 17:20:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 70E7A280A29
+	for <stable@vger.kernel.org>; Fri, 22 Aug 2025 17:20:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755883208; cv=none; b=dvSpbbw7l1rXQeIUjyn5DCr9HfRgRh4dIjEtgJx0LCEOn98Pmh9azjIcn0uBgooS6rdhRYHbxvUVZWoB6RJQxut66Wg+cB+3W1xgID9TesVHAEg0rUpqx5kh4/ID5BVpNGEEX7ESpolfIJJUQSJmSM2CXIip8gEVvM4sYkqilHk=
+	t=1755883210; cv=none; b=DESrdBN+g9o8JMgtxmeAlhiK8833P31hw/X9Svy1wemTz/tMBjYwCQgbe1ShoXSAnQrNsjHjnq7acFnnTWZH4BR7bVI4t3CKuBQPEJ74OMVU94rtluq4FPKyJMEPSilbwMYjhxWA/g5YcLjbRQ/K7OrGxj5zAcv1EC4uQ6eLOFI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1755883208; c=relaxed/simple;
-	bh=m3cZeFchT4K29btKZKWLEp5r0ySxW9xn1PDWCnLAeQU=;
+	s=arc-20240116; t=1755883210; c=relaxed/simple;
+	bh=Wq/dTD1hNE3dRnI6P2CAjKxc3aeLlkHBikD9ZKabKlY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Is+kVpe0yv1G/isPUiDDH6fr3h71OLWgOeQOxVyGUghxPlrA3EBrfExOlg+AQWcbHlDtunzlYIfAXX769Ly1pihY04jpJP3x0d/4chs0Pqbal0rFLvXFXusk/Y4Bn+d1ZTbxazpW33SJRWItdnqlfGhW9TiQrzT/YFzbhO5/zg4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=dJuERWNn; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4F7C1C4CEED;
-	Fri, 22 Aug 2025 17:20:07 +0000 (UTC)
+	 MIME-Version; b=LNGmwu0UJ1zff3oMEf9+eeaE2/t47Y6YAiakrKnT/d2VIF46SO1v2w3wIgjxUq3o2xjToypCRw34gG/JIxdqAlen64OhfhTkDlHV2y/RyfvDdbX/e7SOtNDgTtw/PlKge58vr01eCmzzdEEMO8BuOjy8pip5cLyMncVc0hZFrfU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=pqyOOFRm; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3ED1BC113CF;
+	Fri, 22 Aug 2025 17:20:08 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1755883208;
-	bh=m3cZeFchT4K29btKZKWLEp5r0ySxW9xn1PDWCnLAeQU=;
+	s=k20201202; t=1755883209;
+	bh=Wq/dTD1hNE3dRnI6P2CAjKxc3aeLlkHBikD9ZKabKlY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=dJuERWNnuKLv7yzOim137kptA1tcPiGGw3k+Yr+f2BvVLUOFneNAqLDEMjap8p98c
-	 vwdGmdaXuvBt4M3RZBU441+CFZ234vc8SwWiA9aanTQKwt+l31zoBqg6okNOywO1bK
-	 fupJ7u1bUJ108k6grvHOg1f3PISYYrURRxuukts9TiGDgo34qUI5LUAIVUhMYlF2HO
-	 Md3ARp1MjcOxmXgVVUF9S7D2cC+fh4s4IwdJ1uQN7bk6o3i9O9vg4zTjmiNbVxjpAM
-	 hUYnf1c0wGakqoaOg7UMtF0dFmFI77c9sHKHIFkfXLdbgjfl3Y8K/BLpYCpltGET5h
-	 spr5jULqX2wRQ==
+	b=pqyOOFRmmaHNve1RVyG1DV+W54AL+zmNu4M7F3x8B8x++NPjGrHGUaEPVmSs8suDe
+	 ygDwBiWGkYGOTbEe6dUXITaH1JCXu4Vrwo+kXMaUciPpoMf3+2qWYDJM/kmvieQ6De
+	 vYabOwUYnpyykHTnFG6pI4czb9TxV1BHZGxWjuJw8zbh7qxIPWZ6CxVZ0zpJO/dZNk
+	 L806myGTwdQ6bsWyb8vSkFsJlmlGOFwm1GXFs27MuF3CKJkExm5KoxLh2RMvwD+gyb
+	 hPMAl9V9ah+nY9AHwTPIao2ZEOegXMjXrJKpstjddwy3vK+zab4tWx3FpDViNbLIm3
+	 te9zIdzHutOaQ==
 From: Sasha Levin <sashal@kernel.org>
 To: stable@vger.kernel.org
-Cc: Gokul krishna Krishnakumar <quic_gokukris@quicinc.com>,
-	Melody Olvera <quic_molvera@quicinc.com>,
+Cc: Bjorn Andersson <bjorn.andersson@oss.qualcomm.com>,
+	Doug Anderson <dianders@chromium.org>,
+	Dmitry Baryshkov <dmitry.baryshkov@oss.qualcomm.com>,
 	Bjorn Andersson <andersson@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1.y 1/2] soc: qcom: mdt_loader: Enhance split binary detection
-Date: Fri, 22 Aug 2025 13:20:04 -0400
-Message-ID: <20250822172005.1328408-1-sashal@kernel.org>
+Subject: [PATCH 6.1.y 2/2] soc: qcom: mdt_loader: Ensure we don't read past the ELF header
+Date: Fri, 22 Aug 2025 13:20:05 -0400
+Message-ID: <20250822172005.1328408-2-sashal@kernel.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <2025082135-dividable-grandma-3c11@gregkh>
+In-Reply-To: <20250822172005.1328408-1-sashal@kernel.org>
 References: <2025082135-dividable-grandma-3c11@gregkh>
+ <20250822172005.1328408-1-sashal@kernel.org>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -61,85 +63,112 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-From: Gokul krishna Krishnakumar <quic_gokukris@quicinc.com>
+From: Bjorn Andersson <bjorn.andersson@oss.qualcomm.com>
 
-[ Upstream commit 210d12c8197a551caa2979be421aa42381156aec ]
+[ Upstream commit 9f9967fed9d066ed3dae9372b45ffa4f6fccfeef ]
 
-It may be that the offset of the first program header lies inside the mdt's
-filesize, in this case the loader would incorrectly assume that the bins
-were not split and in this scenario the firmware authentication fails.
-This change updates the logic used by the mdt loader to understand whether
-the firmware images are split or not. It figures this out by checking if
-each programs header's segment lies within the file or not.
+When the MDT loader is used in remoteproc, the ELF header is sanitized
+beforehand, but that's not necessary the case for other clients.
 
-Co-developed-by: Melody Olvera <quic_molvera@quicinc.com>
-Signed-off-by: Melody Olvera <quic_molvera@quicinc.com>
-Signed-off-by: Gokul krishna Krishnakumar <quic_gokukris@quicinc.com>
+Validate the size of the firmware buffer to ensure that we don't read
+past the end as we iterate over the header. e_phentsize and e_shentsize
+are validated as well, to ensure that the assumptions about step size in
+the traversal are valid.
+
+Fixes: 2aad40d911ee ("remoteproc: Move qcom_mdt_loader into drivers/soc/qcom")
+Cc: stable@vger.kernel.org
+Reported-by: Doug Anderson <dianders@chromium.org>
+Signed-off-by: Bjorn Andersson <bjorn.andersson@oss.qualcomm.com>
+Reviewed-by: Dmitry Baryshkov <dmitry.baryshkov@oss.qualcomm.com>
+Link: https://lore.kernel.org/r/20250610-mdt-loader-validation-and-fixes-v2-1-f7073e9ab899@oss.qualcomm.com
 Signed-off-by: Bjorn Andersson <andersson@kernel.org>
-Link: https://lore.kernel.org/r/20230509001821.24010-1-quic_gokukris@quicinc.com
-Stable-dep-of: 9f9967fed9d0 ("soc: qcom: mdt_loader: Ensure we don't read past the ELF header")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/soc/qcom/mdt_loader.c | 25 +++++++++++++++++++++++--
- 1 file changed, 23 insertions(+), 2 deletions(-)
+ drivers/soc/qcom/mdt_loader.c | 43 +++++++++++++++++++++++++++++++++++
+ 1 file changed, 43 insertions(+)
 
 diff --git a/drivers/soc/qcom/mdt_loader.c b/drivers/soc/qcom/mdt_loader.c
-index 10235b36d131..c075d38f38fe 100644
+index c075d38f38fe..fc6fdcd0a5d4 100644
 --- a/drivers/soc/qcom/mdt_loader.c
 +++ b/drivers/soc/qcom/mdt_loader.c
-@@ -264,6 +264,26 @@ int qcom_mdt_pas_init(struct device *dev, const struct firmware *fw,
- }
- EXPORT_SYMBOL_GPL(qcom_mdt_pas_init);
+@@ -17,6 +17,37 @@
+ #include <linux/slab.h>
+ #include <linux/soc/qcom/mdt_loader.h>
  
-+static bool qcom_mdt_bins_are_split(const struct firmware *fw, const char *fw_name)
++static bool mdt_header_valid(const struct firmware *fw)
 +{
-+	const struct elf32_phdr *phdrs;
 +	const struct elf32_hdr *ehdr;
-+	uint64_t seg_start, seg_end;
-+	int i;
++	size_t phend;
++	size_t shend;
++
++	if (fw->size < sizeof(*ehdr))
++		return false;
 +
 +	ehdr = (struct elf32_hdr *)fw->data;
-+	phdrs = (struct elf32_phdr *)(ehdr + 1);
 +
-+	for (i = 0; i < ehdr->e_phnum; i++) {
-+		seg_start = phdrs[i].p_offset;
-+		seg_end = phdrs[i].p_offset + phdrs[i].p_filesz;
-+		if (seg_start > fw->size || seg_end > fw->size)
-+			return true;
-+	}
++	if (memcmp(ehdr->e_ident, ELFMAG, SELFMAG))
++		return false;
 +
-+	return false;
++	if (ehdr->e_phentsize != sizeof(struct elf32_phdr))
++		return -EINVAL;
++
++	phend = size_add(size_mul(sizeof(struct elf32_phdr), ehdr->e_phnum), ehdr->e_phoff);
++	if (phend > fw->size)
++		return false;
++
++	if (ehdr->e_shentsize != sizeof(struct elf32_shdr))
++		return -EINVAL;
++
++	shend = size_add(size_mul(sizeof(struct elf32_shdr), ehdr->e_shnum), ehdr->e_shoff);
++	if (shend > fw->size)
++		return false;
++
++	return true;
 +}
 +
- static int __qcom_mdt_load(struct device *dev, const struct firmware *fw,
- 			   const char *fw_name, int pas_id, void *mem_region,
- 			   phys_addr_t mem_phys, size_t mem_size,
-@@ -276,6 +296,7 @@ static int __qcom_mdt_load(struct device *dev, const struct firmware *fw,
- 	phys_addr_t min_addr = PHYS_ADDR_MAX;
- 	ssize_t offset;
- 	bool relocate = false;
-+	bool is_split;
- 	void *ptr;
- 	int ret = 0;
+ static bool mdt_phdr_valid(const struct elf32_phdr *phdr)
+ {
+ 	if (phdr->p_type != PT_LOAD)
+@@ -84,6 +115,9 @@ ssize_t qcom_mdt_get_size(const struct firmware *fw)
+ 	phys_addr_t max_addr = 0;
  	int i;
-@@ -283,6 +304,7 @@ static int __qcom_mdt_load(struct device *dev, const struct firmware *fw,
- 	if (!fw || !mem_region || !mem_phys || !mem_size)
- 		return -EINVAL;
  
-+	is_split = qcom_mdt_bins_are_split(fw, fw_name);
++	if (!mdt_header_valid(fw))
++		return -EINVAL;
++
  	ehdr = (struct elf32_hdr *)fw->data;
  	phdrs = (struct elf32_phdr *)(ehdr + 1);
  
-@@ -336,8 +358,7 @@ static int __qcom_mdt_load(struct device *dev, const struct firmware *fw,
+@@ -136,6 +170,9 @@ void *qcom_mdt_read_metadata(const struct firmware *fw, size_t *data_len,
+ 	ssize_t ret;
+ 	void *data;
  
- 		ptr = mem_region + offset;
++	if (!mdt_header_valid(fw))
++		return ERR_PTR(-EINVAL);
++
+ 	ehdr = (struct elf32_hdr *)fw->data;
+ 	phdrs = (struct elf32_phdr *)(ehdr + 1);
  
--		if (phdr->p_filesz && phdr->p_offset < fw->size &&
--		    phdr->p_offset + phdr->p_filesz <= fw->size) {
-+		if (phdr->p_filesz && !is_split) {
- 			/* Firmware is large enough to be non-split */
- 			if (phdr->p_offset + phdr->p_filesz > fw->size) {
- 				dev_err(dev, "file %s segment %d would be truncated\n",
+@@ -216,6 +253,9 @@ int qcom_mdt_pas_init(struct device *dev, const struct firmware *fw,
+ 	int ret;
+ 	int i;
+ 
++	if (!mdt_header_valid(fw))
++		return -EINVAL;
++
+ 	ehdr = (struct elf32_hdr *)fw->data;
+ 	phdrs = (struct elf32_phdr *)(ehdr + 1);
+ 
+@@ -304,6 +344,9 @@ static int __qcom_mdt_load(struct device *dev, const struct firmware *fw,
+ 	if (!fw || !mem_region || !mem_phys || !mem_size)
+ 		return -EINVAL;
+ 
++	if (!mdt_header_valid(fw))
++		return -EINVAL;
++
+ 	is_split = qcom_mdt_bins_are_split(fw, fw_name);
+ 	ehdr = (struct elf32_hdr *)fw->data;
+ 	phdrs = (struct elf32_phdr *)(ehdr + 1);
 -- 
 2.50.1
 
