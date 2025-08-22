@@ -1,150 +1,186 @@
-Return-Path: <stable+bounces-172280-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-172281-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 46C8AB30D67
-	for <lists+stable@lfdr.de>; Fri, 22 Aug 2025 06:11:00 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8010BB30D71
+	for <lists+stable@lfdr.de>; Fri, 22 Aug 2025 06:16:37 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 0784C3AD548
-	for <lists+stable@lfdr.de>; Fri, 22 Aug 2025 04:10:59 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 6D9591C2443B
+	for <lists+stable@lfdr.de>; Fri, 22 Aug 2025 04:15:59 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6C40026CE2A;
-	Fri, 22 Aug 2025 04:10:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 316CD19D88F;
+	Fri, 22 Aug 2025 04:15:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="t7mS0/9R"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="B6RmuPoK"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pg1-f171.google.com (mail-pg1-f171.google.com [209.85.215.171])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 29A56221F06
-	for <stable@vger.kernel.org>; Fri, 22 Aug 2025 04:10:55 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7B22F14A09C;
+	Fri, 22 Aug 2025 04:15:31 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.215.171
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755835856; cv=none; b=B4/nF+8NVB7BOz4kxcCi54Q39TEGAksPQC1X8gFtyARbByqm8jkuEHkr9IXSKJkx816jfJcajEHy5LWA+jVHseM8QNNeP+80yqB1ivL07UQ8w8SEkEzVTtoG5mLdq6DeDypNctmFnki2Bgwy/ZbvjUJ0PckJJFoO4ARyFwU0ev8=
+	t=1755836134; cv=none; b=TQFIL1Mll0SIdQkQnSgNVhYmTt+biExZtN43DV/j3rwjeK1LnxCcsVvrvDDGCrUXyIlu7k5wAOB9ubt6TpZHcw3EiR5O+2HLM0dRX87Ko9VRtxOtRLq8ZwI64xEuoj3s0juspE+FP4ge84wjUSCyanB9iK4VngT6kqrCo3WtEF8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1755835856; c=relaxed/simple;
-	bh=VT0fBYlcmQdC9+gRPQFAsjfVP9w+rEuQqyMKfAqu9fk=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=Ey6zXiyTuto9ij79hG+6hz9Js0pl5WHSQvEWscI364HJQAREzTO8CLZwQq5DHv4vCC8deU06yIp4ok7YnaT73lwEudBXGokURHvVUsxmJ1SSdk2Usgi7WXK1WgVcxDT1ffvTIP6rRqA76cqBJyAlKkOxIIWr0lPd1adjshyWnRo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=t7mS0/9R; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 836A1C4CEF1;
-	Fri, 22 Aug 2025 04:10:55 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1755835855;
-	bh=VT0fBYlcmQdC9+gRPQFAsjfVP9w+rEuQqyMKfAqu9fk=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=t7mS0/9RJtgC3paKsImzOiAzOjLSk8ZWRE7txLzbWig4xS+tfOKkK+cfoLUTNVoxW
-	 W2b+Tktu0tA/AYXUPgDw2e+DeyhhbijakmnCjXYoe+ffQKSmLUi0iA2EBxHHDdWQlS
-	 bwZf01y3ejB8HchSejZ9GQpkudK+zs60ZFvRV4xVgYf9rPZmuEqy9cUki/MgiPpCiT
-	 KmltKs01BcNnQ2wUNgNisunKDwlOqhBGU+fgb6E4XhbPr3BpLSoStMWsRmDAZwjfcd
-	 /4nLaxQBwFgPebGCK5sMnwT7PYv8jVBqr45WbFNmnQzJwl7KsU03JiGjqTpTfHON0H
-	 RC/GhLYcqwk0g==
-Date: Fri, 22 Aug 2025 00:10:53 -0400
-From: Eric Biggers <ebiggers@kernel.org>
-To: Sasha Levin <sashal@kernel.org>
-Cc: stable@vger.kernel.org, Herbert Xu <herbert@gondor.apana.org.au>
-Subject: Re: [PATCH 6.12.y 4/4] crypto: x86/aegis - Fix sleeping when
- disallowed on PREEMPT_RT
-Message-ID: <20250822041053.GD80178@quark>
-References: <2025082102-shrug-unused-8ce2@gregkh>
- <20250822030617.1053172-1-sashal@kernel.org>
- <20250822030617.1053172-4-sashal@kernel.org>
- <20250822032304.GA80178@quark>
- <aKfj-C27OQBWNEMq@laps>
- <20250822033951.GB80178@quark>
- <aKfqY4fHAuFj_Ry8@laps>
+	s=arc-20240116; t=1755836134; c=relaxed/simple;
+	bh=A0GL3Vdq+WZd6o1+ddSu+zVjBJnzZZwNj3g5IAqTNW0=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=kL89bgvu2zbjlnNGMGSXhgbEOMo0wfaLn5YdTFj3vtHytWGE89hc8p34qGmPMd4jkU4oAqQHTCvGf9RIG3Jim7BVc5BriqBzg80kswbP00q1hrebYYQnj6Du938CGAvBNeAkP6hwsrpy92imIwZCnremNvf1F+/MtHIyrdGKJsA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=B6RmuPoK; arc=none smtp.client-ip=209.85.215.171
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-pg1-f171.google.com with SMTP id 41be03b00d2f7-b49c0c5f4dfso167589a12.1;
+        Thu, 21 Aug 2025 21:15:31 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1755836131; x=1756440931; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=y9PgfzlZAvSWVRluzRE+sTTXFHsSdjHEV58R22WBfMQ=;
+        b=B6RmuPoKVerRdq4tLMQA8YvsJgaDRc9oGd84xGPfpg3xTayIBax5lIVf684RInMDXf
+         OLKPqvQOGQjSFoZWwiVFWxCkJjT3EgDFkXYW+dond1vigGUsMGJpgVt5EmWQIsWMvtMb
+         5hIWrhn88cXjIQ3RaMd5NUO2dV+Aa0G+vSbkx/p2ptgx7FymZJy0QWUIiOKUEtoWxVfi
+         XPU9DwxUJIPLRAG6bo4HUEuf7uBHtMtSP1g/dwGRM41J0qotp1BEvA4YA87hykBuwVSy
+         yJKu2Z3iywgEeK4CzHO1J7KjRFiIFzWBZqUIuUbHOZ5vszcwUHsBKkmI15ri6tUHMjYL
+         n23w==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1755836131; x=1756440931;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=y9PgfzlZAvSWVRluzRE+sTTXFHsSdjHEV58R22WBfMQ=;
+        b=nOq5yPTPcJkZErmJrg6wnVxK9IbCfL3MgnqPyylPhNgCUBfKWbF+JcY0SBX3F862ZB
+         LlMOLJ6KSwAKzljuvFeSMOcrsJihbOjl9T71SxEe7NJ1S26ran/h7hoQc3iashs2O8Qv
+         MQ23TtKc/5zhPWLhulSR3RElXLgJg841OduB4k8QLLNZ24QLW15s54dAHSiTBobTzea+
+         VwBrnWytqLzq594Dg/MyakPJzNUEimpoVf8EWR1+8n2LjbxVAL8aVAAWxeiiPYZ2pPnQ
+         Kg2UwW4e6E66W8JvOdg8ABoNRjf17U90qwVAP5f89C2kTzEdKzdSSMv0FJTJr3fBiF23
+         t0oQ==
+X-Forwarded-Encrypted: i=1; AJvYcCVD62tD/W22IRkFN8t5LclvT3c6x1i8/DC/MaSjS9oXY7uydg8gcUxXQ7gdnQejtKHaJrj73b01xIUuaFE=@vger.kernel.org, AJvYcCWK6pMqnkAdMlS29/OQBs8cy0JYnggvE10i+qCr9gMxke50RjoP1ialNL1xxdBLWAOKfWOKjZou@vger.kernel.org
+X-Gm-Message-State: AOJu0YwPozgYIrKXqJbFBZe6Tjb8OafPqNHlz2rN6ig3nUAj6/T9E4aT
+	Kk8UDiB0LNXIpo1NjdEbZDTLbacpbfoTVTB6MYUqjKyhqvvnJsdyWnDLvxqC3R7KkK0=
+X-Gm-Gg: ASbGncv/QbTo6FBog2WIEE4cm4o52Kjpfgq4kNuEzP3zu7MiVnMoyUgkyB1oC2R2SU2
+	Oz9SjDFiVA686f+F8oh8nwpwmrdnSiBWtl4NQMMMgcLcPY38tbThqm3WfyviCPKog34yXQ+svx2
+	8UcK68nsDJxGGGZFZrFvX5Kkz/HhP5fcs14J20EdOWH8P7Med8XW5pWpcEdTuzuIph5w8JkHLdv
+	h9IGCbsTrJB1j6Kx+ZZ5tbuh0IuEyLdNM7XnA5Vi71LbGsJpJsGXTeFf8pl/TZU+NxeHzDltggw
+	Lfw87BZFMy3Aa/TC0LYQkrpPavP5GRDJipk0+tu0KtDa2cuGZvcUMdlyMuaP3WIfFkU1DiHqVXK
+	LrH5ee+wuiNQhAAEeP5V6G+9PaZ7PgJ2BiHn0h+R0CG+2jvYu4uuXmFQJgi5resM8BClQnfOc
+X-Google-Smtp-Source: AGHT+IF2iOxGEWh6lnAwzbIYm3vEYhNMhGnrxwiHW2mktl6Jf+S+uzXvJvANfSUHzslgaQzZWAH6DQ==
+X-Received: by 2002:a17:903:2282:b0:242:abc2:7f1e with SMTP id d9443c01a7336-2462ee02c31mr22915745ad.22.1755836130612;
+        Thu, 21 Aug 2025 21:15:30 -0700 (PDT)
+Received: from luna.turtle.lan ([2601:1c2:c184:dc00:ba38:b533:dcf5:1e7a])
+        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-325123e4751sm1189587a91.1.2025.08.21.21.15.29
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Thu, 21 Aug 2025 21:15:30 -0700 (PDT)
+From: Sam Edwards <cfsworks@gmail.com>
+X-Google-Original-From: Sam Edwards <CFSworks@gmail.com>
+To: Catalin Marinas <catalin.marinas@arm.com>,
+	Will Deacon <will@kernel.org>,
+	Marc Zyngier <maz@kernel.org>
+Cc: Andrew Morton <akpm@linux-foundation.org>,
+	Anshuman Khandual <anshuman.khandual@arm.com>,
+	Ard Biesheuvel <ardb@kernel.org>,
+	Ryan Roberts <ryan.roberts@arm.com>,
+	Baruch Siach <baruch@tkos.co.il>,
+	Kevin Brodsky <kevin.brodsky@arm.com>,
+	Joey Gouly <joey.gouly@arm.com>,
+	linux-arm-kernel@lists.infradead.org,
+	linux-kernel@vger.kernel.org,
+	Sam Edwards <CFSworks@gmail.com>,
+	stable@vger.kernel.org
+Subject: [PATCH] arm64/boot: Zero-initialize idmap PGDs before use
+Date: Thu, 21 Aug 2025 21:15:26 -0700
+Message-ID: <20250822041526.467434-1-CFSworks@gmail.com>
+X-Mailer: git-send-email 2.49.1
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <aKfqY4fHAuFj_Ry8@laps>
+Content-Transfer-Encoding: 8bit
 
-On Thu, Aug 21, 2025 at 11:56:19PM -0400, Sasha Levin wrote:
-> On Thu, Aug 21, 2025 at 11:39:51PM -0400, Eric Biggers wrote:
-> > On Thu, Aug 21, 2025 at 11:28:56PM -0400, Sasha Levin wrote:
-> > > On Thu, Aug 21, 2025 at 11:23:04PM -0400, Eric Biggers wrote:
-> > > > On Thu, Aug 21, 2025 at 11:06:17PM -0400, Sasha Levin wrote:
-> > > > > From: Eric Biggers <ebiggers@kernel.org>
-> > > > >
-> > > > > [ Upstream commit c7f49dadfcdf27e1f747442e874e9baa52ab7674 ]
-> > > > >
-> > > > > skcipher_walk_done() can call kfree(), which takes a spinlock, which
-> > > > > makes it incorrect to call while preemption is disabled on PREEMPT_RT.
-> > > > > Therefore, end the kernel-mode FPU section before calling
-> > > > > skcipher_walk_done(), and restart it afterwards.
-> > > > >
-> > > > > Moreover, pass atomic=false to skcipher_walk_aead_encrypt() instead of
-> > > > > atomic=true.  The point of atomic=true was to make skcipher_walk_done()
-> > > > > safe to call while in a kernel-mode FPU section, but that does not
-> > > > > actually work.  So just use the usual atomic=false.
-> > > > >
-> > > > > Fixes: 1d373d4e8e15 ("crypto: x86 - Add optimized AEGIS implementations")
-> > > > > Cc: stable@vger.kernel.org
-> > > > > Signed-off-by: Eric Biggers <ebiggers@kernel.org>
-> > > > > Signed-off-by: Herbert Xu <herbert@gondor.apana.org.au>
-> > > > > Signed-off-by: Sasha Levin <sashal@kernel.org>
-> > > > > ---
-> > > > >  arch/x86/crypto/aegis128-aesni-glue.c | 8 ++++++--
-> > > > >  1 file changed, 6 insertions(+), 2 deletions(-)
-> > > >
-> > > > 1. Missing Cc of the relevant mailing lists
-> > > > 2. Missing cover letter
-> > > 
-> > > This was sent following the instructions in the FAILED: email generated by
-> > > Greg. If you feel its insufficient, take it up with him.
-> > 
-> > You're one of the stable maintainers.  You can't just deflect and claim
-> > this is not your problem.
-> 
-> We perform different parts of the process. I don't send FAILED: mails out, I
-> don't have control over what Greg sends out. If you feel that the recipient
-> list is insufficient then Greg should be in the loop - don't take it out on me.
-> 
-> These mails looked the same for years (decade+?), if for some reason you think
-> that a cover letter or an expanded cc list would be useful to have, then you
-> can just suggest it - no need to berate me for not sending one.
+In early boot, Linux creates identity virtual->physical address mappings
+so that it can enable the MMU before full memory management is ready.
+To ensure some available physical memory to back these structures,
+vmlinux.lds reserves some space (and defines marker symbols) in the
+middle of the kernel image. However, because they are defined outside of
+PROGBITS sections, they aren't pre-initialized -- at least as far as ELF
+is concerned.
 
-I've given this same feedback many times already.
+In the typical case, this isn't actually a problem: the boot image is
+prepared with objcopy, which zero-fills the gaps, so these structures
+are incidentally zero-initialized (an all-zeroes entry is considered
+absent, so zero-initialization is appropriate).
 
-> > > > 3. Missing base-commit, and doesn't apply to stable/linux-6.16.y
-> > > 
-> > > As the subject line indicates, this applies on 6.12, not 6.16.
-> > > 
-> > > > 4. Two different series were sent out, both containing this patch
-> > > 
-> > > You might have missed that they're for different trees?
-> > > 
-> > 
-> > Sorry, I meant to write 6.12.  6.12 was indeed what I tried to apply it
-> > to, and it failed.  And there are two series for 6.12, see
-> > https://lore.kernel.org/stable/20250822030632.1053504-4-sashal@kernel.org
-> > and
-> > https://lore.kernel.org/stable/20250822030617.1053172-4-sashal@kernel.org/
-> 
-> Yup, those are replies to two different FAILED emails for two different
-> patches that failed to backport.
+However, that is just a happy accident: the `vmlinux` ELF output
+authoritatively represents the state of memory at entry. If the ELF
+says a region of memory isn't initialized, we must treat it as
+uninitialized. Indeed, certain bootloaders (e.g. Broadcom CFE) ingest
+the ELF directly -- sidestepping the objcopy-produced image entirely --
+and therefore do not initialize the gaps. This results in the early boot
+code crashing when it attempts to create identity mappings.
 
-But why send a separate series for each one, with duplicate patches
-across the different series?  That makes no sense.
+Therefore, add boot-time zero-initialization for the following:
+- __pi_init_idmap_pg_dir..__pi_init_idmap_pg_end
+- idmap_pg_dir
+- reserved_pg_dir
+- tramp_pg_dir # Already done, but this patch corrects the size
 
-> Could you share the conflict you've observed? Both series applied cleanly to
-> stable/linux-6.12.y for me.
+Note, swapper_pg_dir is already initialized (by copy from idmap_pg_dir)
+before use, so this patch does not need to address it.
 
-Try:
+Cc: stable@vger.kernel.org
+Signed-off-by: Sam Edwards <CFSworks@gmail.com>
+---
+ arch/arm64/kernel/head.S | 12 ++++++++++++
+ arch/arm64/mm/mmu.c      |  3 ++-
+ 2 files changed, 14 insertions(+), 1 deletion(-)
 
-    b4 am https://lore.kernel.org/stable/20250822030632.1053504-1-sashal@kernel.org/
+diff --git a/arch/arm64/kernel/head.S b/arch/arm64/kernel/head.S
+index ca04b338cb0d..0c3be11d0006 100644
+--- a/arch/arm64/kernel/head.S
++++ b/arch/arm64/kernel/head.S
+@@ -86,6 +86,18 @@ SYM_CODE_START(primary_entry)
+ 	bl	record_mmu_state
+ 	bl	preserve_boot_args
+ 
++	adrp	x0, reserved_pg_dir
++	add	x1, x0, #PAGE_SIZE
++0:	str	xzr, [x0], 8
++	cmp	x0, x1
++	b.lo	0b
++
++	adrp	x0, __pi_init_idmap_pg_dir
++	adrp	x1, __pi_init_idmap_pg_end
++1:	str	xzr, [x0], 8
++	cmp	x0, x1
++	b.lo	1b
++
+ 	adrp	x1, early_init_stack
+ 	mov	sp, x1
+ 	mov	x29, xzr
+diff --git a/arch/arm64/mm/mmu.c b/arch/arm64/mm/mmu.c
+index 34e5d78af076..aaf823565a65 100644
+--- a/arch/arm64/mm/mmu.c
++++ b/arch/arm64/mm/mmu.c
+@@ -761,7 +761,7 @@ static int __init map_entry_trampoline(void)
+ 	pgprot_val(prot) &= ~PTE_NG;
+ 
+ 	/* Map only the text into the trampoline page table */
+-	memset(tramp_pg_dir, 0, PGD_SIZE);
++	memset(tramp_pg_dir, 0, PAGE_SIZE);
+ 	__create_pgd_mapping(tramp_pg_dir, pa_start, TRAMP_VALIAS,
+ 			     entry_tramp_text_size(), prot,
+ 			     pgd_pgtable_alloc_init_mm, NO_BLOCK_MAPPINGS);
+@@ -806,6 +806,7 @@ static void __init create_idmap(void)
+ 	u64 end   = __pa_symbol(__idmap_text_end);
+ 	u64 ptep  = __pa_symbol(idmap_ptes);
+ 
++	memset(idmap_pg_dir, 0, PAGE_SIZE);
+ 	__pi_map_range(&ptep, start, end, start, PAGE_KERNEL_ROX,
+ 		       IDMAP_ROOT_LEVEL, (pte_t *)idmap_pg_dir, false,
+ 		       __phys_to_virt(ptep) - ptep);
+-- 
+2.49.1
 
-It looks like the problem may be that b4 picks up the patch from the
-FAILED email as a patch in the series.
-
-Please make sure that the way you're sending out patch series is
-compatible with b4, as reviewers often rely on that to download them.
-
-- Eric
 
