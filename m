@@ -1,113 +1,84 @@
-Return-Path: <stable+bounces-172449-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-172450-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6C5C8B31C93
-	for <lists+stable@lfdr.de>; Fri, 22 Aug 2025 16:49:33 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2E61AB31CD4
+	for <lists+stable@lfdr.de>; Fri, 22 Aug 2025 16:54:56 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 4B5ECBA23C3
-	for <lists+stable@lfdr.de>; Fri, 22 Aug 2025 14:47:58 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 60BAE583945
+	for <lists+stable@lfdr.de>; Fri, 22 Aug 2025 14:49:52 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 07B9B305E0D;
-	Fri, 22 Aug 2025 14:49:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C6E8730EF9B;
+	Fri, 22 Aug 2025 14:49:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="DbGJO0K7"
+	dkim=pass (2048-bit key) header.d=mareichelt.com header.i=@mareichelt.com header.b="EtrI+I5f"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from antaris-organics.com (mail.antaris-organics.com [91.227.220.155])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BB9CD1CAA6C
-	for <stable@vger.kernel.org>; Fri, 22 Aug 2025 14:49:04 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C1FA92FFDEB;
+	Fri, 22 Aug 2025 14:49:43 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=91.227.220.155
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755874144; cv=none; b=rW+y0s0RhREBiOKoe610DfokPG0PlUKdrKWFkhsgONb3rOQjTShX/lVr1/yiLr/dgf+n3GxEVrb95/0QSk+Ck3m9cqpFqwUANujao81HqNS2W2tITo2zTSwx9dQgj5qm8FDtf+beVvKXBG68+hAWrwDT7x9G8HxCvT0X66EqILo=
+	t=1755874186; cv=none; b=SlkvHW7Uww+sj8ZIegNW+7qAwoLLeQLgRTZlU60T1GbyWqL4PuF+S02ywXLZlouOTnVdkKFwafCMDNCDhKA+zBMNjNDDdnEtpbswA5Wugt5M2sHCCnL3KFUA60d57yfBUxjGtvnuuhMIJAk54D4pSS6iIeCJ1xH1ASagMZCBJyo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1755874144; c=relaxed/simple;
-	bh=KsVgglRzdall7wbbiVdsq+KS5MNPGmSBaJzqCCe1b2U=;
-	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=b6vY+TTpDfHj+BFdz/n6Ck7+VWAinLHPpmniy0Oe2ToLxqFZnO8JaZrIfnftnDAwLgx31c5NbGmeiA9uxoySIZfbTXrh1bxdzL1xSRZChtYOc6oyD8OeeVNPdVPjIFwPF774NEvakeDFgdTKebHy5NmHCTJ3/YqH5tbYnPOPFQo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=DbGJO0K7; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0892AC4CEED;
-	Fri, 22 Aug 2025 14:49:03 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1755874144;
-	bh=KsVgglRzdall7wbbiVdsq+KS5MNPGmSBaJzqCCe1b2U=;
-	h=Subject:To:Cc:From:Date:From;
-	b=DbGJO0K7O1sDMNBk/+ocCTovLI2sPC1nJ4zpVx2bFCI+JB3D72vfUPtByezZcXEPj
-	 3QaF4SZw3YZe3IYsuPIuMYJFQiM7y6/254gx0BNhCAHh6lxr1DPbehMtd5iWWeORjr
-	 bHNB9OEBT2Bmdbob6D29NjfK97wrMRzXnpO9aTpY=
-Subject: FAILED: patch "[PATCH] mmc: sdhci-pci-gli: GL9763e: Mask the replay timer timeout of" failed to apply to 5.10-stable tree
-To: victor.shih@genesyslogic.com.tw,adrian.hunter@intel.com,ulf.hansson@linaro.org
-Cc: <stable@vger.kernel.org>
-From: <gregkh@linuxfoundation.org>
-Date: Fri, 22 Aug 2025 16:48:53 +0200
-Message-ID: <2025082253-from-kindred-7d7e@gregkh>
+	s=arc-20240116; t=1755874186; c=relaxed/simple;
+	bh=GIDIl+j0MQNyBJElXtNqrbuR0HomtwPGNlTw2Z4Kp3I=;
+	h=Date:From:To:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=gwsg9IRe9VTZwTakMPQObHSqrJDsRquccnpwoxn/NHZIpbMd0iVz8gsOwMcjZIoreUO6bkuD4UdT4oRBilq2PpGoocYtjkt2dlUgl+1MPp36I7hnwqCnAX2xQxMV9cEOvrE5+uNL/fhJqboJ+Sb1sA71ZzUqY/yRUBT1YEidKOI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=mareichelt.com; spf=pass smtp.mailfrom=mareichelt.com; dkim=pass (2048-bit key) header.d=mareichelt.com header.i=@mareichelt.com header.b=EtrI+I5f; arc=none smtp.client-ip=91.227.220.155
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=mareichelt.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=mareichelt.com
+Date: Fri, 22 Aug 2025 16:49:37 +0200
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=mareichelt.com;
+	s=202107; t=1755874175;
+	bh=GIDIl+j0MQNyBJElXtNqrbuR0HomtwPGNlTw2Z4Kp3I=;
+	h=Date:From:To:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:In-Reply-To:Cc:Cc:content-type:content-type:date:date:
+	 From:from:in-reply-to:in-reply-to:message-id:mime-version:
+	 mime-version:references:reply-to:Sender:Subject:Subject:To:To;
+	b=EtrI+I5fEJR1agQyd9XRn/HwGvo02Pq/OtNFMIiWl3UQMaC9lTZSnxlB5OZULnacy
+	 KVwiEEnHNIfZUOg21GgeJmw8p61S7LrwOEi4tO/ktDvw5hg2k+WfEBDniKlYE4/86e
+	 65kicedZKmvgWdg5lDtY2BNnNZZZKeh5dHl3ZzNIQv2EiIpXsBobLf+aui7vSxb9nZ
+	 d0sDlosgg4/2k/EWTkzqMDg2p8VEaYF4IJBr3xYzP5F44PmnbR17801Azfe5lU1Ieu
+	 Fv7xhowUz8M+XrYNv1XjIDRUPqfALLuntQY9VZXgrdOpjcl3f4jx1OMmK1O3sYG+RL
+	 EwUFJTjjYIReg==
+From: Markus Reichelt <lkt+2023@mareichelt.com>
+To: stable@vger.kernel.org, linux-kernel@vger.kernel.org
+Subject: Re: [PATCH 6.16 0/9] 6.16.3-rc1 review
+Message-ID: <20250822144937.GF2771@pc21.mareichelt.com>
+Mail-Followup-To: stable@vger.kernel.org, linux-kernel@vger.kernel.org
+References: <20250822123516.780248736@linuxfoundation.org>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=ANSI_X3.4-1968
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20250822123516.780248736@linuxfoundation.org>
 
+* Greg Kroah-Hartman <gregkh@linuxfoundation.org> wrote:
 
-The patch below does not apply to the 5.10-stable tree.
-If someone wants it applied there, or to any other stable or longterm
-tree, then please email the backport, including the original git commit
-id to <stable@vger.kernel.org>.
+> This is the start of the stable review cycle for the 6.16.3 release.
+> There are 9 patches in this series, all will be posted as a response
+> to this one.  If anyone has any issues with these being applied, please
+> let me know.
 
-To reproduce the conflict and resubmit, you may use the following commands:
+Hi Greg
 
-git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-5.10.y
-git checkout FETCH_HEAD
-git cherry-pick -x 340be332e420ed37d15d4169a1b4174e912ad6cb
-# <resolve conflicts, build, test, etc.>
-git commit -s
-git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2025082253-from-kindred-7d7e@gregkh' --subject-prefix 'PATCH 5.10.y' HEAD^..
+6.16.3-rc1 compiles on x86_64 (Xeon E5-1620 v2, Slackware64-15.0),
+and boots & runs on x86_64 (AMD Ryzen 5 7520U, Slackware64-current).
 
-Possible dependencies:
+No regressions observed, apart from the one already mentioned for
+6.16.2-rc1.
+Thus I tested 6.16.3-rc1 with V3 of the patch and it seems to work ok:
+https://lore.kernel.org/stable/20250821105806.1453833-1-wangzijie1@honor.com/
 
+Tested-by: Markus Reichelt <lkt+2023@mareichelt.com>
 
-
-thanks,
-
-greg k-h
-
------------------- original commit in Linus's tree ------------------
-
-From 340be332e420ed37d15d4169a1b4174e912ad6cb Mon Sep 17 00:00:00 2001
-From: Victor Shih <victor.shih@genesyslogic.com.tw>
-Date: Thu, 31 Jul 2025 14:57:52 +0800
-Subject: [PATCH] mmc: sdhci-pci-gli: GL9763e: Mask the replay timer timeout of
- AER
-
-Due to a flaw in the hardware design, the GL9763e replay timer frequently
-times out when ASPM is enabled. As a result, the warning messages will
-often appear in the system log when the system accesses the GL9763e
-PCI config. Therefore, the replay timer timeout must be masked.
-
-Signed-off-by: Victor Shih <victor.shih@genesyslogic.com.tw>
-Fixes: 1ae1d2d6e555 ("mmc: sdhci-pci-gli: Add Genesys Logic GL9763E support")
-Cc: stable@vger.kernel.org
-Acked-by: Adrian Hunter <adrian.hunter@intel.com>
-Link: https://lore.kernel.org/r/20250731065752.450231-4-victorshihgli@gmail.com
-Signed-off-by: Ulf Hansson <ulf.hansson@linaro.org>
-
-diff --git a/drivers/mmc/host/sdhci-pci-gli.c b/drivers/mmc/host/sdhci-pci-gli.c
-index 436f0460222f..3a1de477e9af 100644
---- a/drivers/mmc/host/sdhci-pci-gli.c
-+++ b/drivers/mmc/host/sdhci-pci-gli.c
-@@ -1782,6 +1782,9 @@ static void gl9763e_hw_setting(struct sdhci_pci_slot *slot)
- 	value |= FIELD_PREP(GLI_9763E_HS400_RXDLY, GLI_9763E_HS400_RXDLY_5);
- 	pci_write_config_dword(pdev, PCIE_GLI_9763E_CLKRXDLY, value);
- 
-+	/* mask the replay timer timeout of AER */
-+	sdhci_gli_mask_replay_timer_timeout(pdev);
-+
- 	pci_read_config_dword(pdev, PCIE_GLI_9763E_VHS, &value);
- 	value &= ~GLI_9763E_VHS_REV;
- 	value |= FIELD_PREP(GLI_9763E_VHS_REV, GLI_9763E_VHS_REV_R);
 
 
