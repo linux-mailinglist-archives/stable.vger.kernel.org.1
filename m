@@ -1,48 +1,48 @@
-Return-Path: <stable+bounces-172293-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-172294-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 00F2BB30E5A
-	for <lists+stable@lfdr.de>; Fri, 22 Aug 2025 07:55:32 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2EF98B30E6F
+	for <lists+stable@lfdr.de>; Fri, 22 Aug 2025 08:04:57 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id AEAFD7BC43C
-	for <lists+stable@lfdr.de>; Fri, 22 Aug 2025 05:53:30 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 06B625E39EE
+	for <lists+stable@lfdr.de>; Fri, 22 Aug 2025 06:04:55 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 589882D47FA;
-	Fri, 22 Aug 2025 05:54:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5C2C72E2EFC;
+	Fri, 22 Aug 2025 06:04:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="y5ZjrAxa"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="EX4KQ6U5"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 17E6023A58E
-	for <stable@vger.kernel.org>; Fri, 22 Aug 2025 05:54:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1B9922E2EEA
+	for <stable@vger.kernel.org>; Fri, 22 Aug 2025 06:04:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755842092; cv=none; b=Ts8I2XxP9EptagzFIH1rN+xA7k+xsOMtIb8xOBcEK1rko6QzfssEENkoorT11BIsdYCzMClLZ7GGOtZ3YZPbBBvIuqtNzpFV1zDbqcvv6l1EF/oQF1iLZKN8ciXtCnrlI7ZzwMuo/uvGiAJO24+pwMx0VlpoeXIS+1qXpNpLdGU=
+	t=1755842673; cv=none; b=jDwW2YRDvoFDUPwbbrI1tpde5NlrvZ+AD9FkY/EbyIl4eQ4LkfNuRp4WGkLA6xyFHo75v8S3V4YUCsaVz/nIWnShqv0kfEsgLutUjMUWbCJ+Pj59L+A4JMMEr5jZFyeVyDKx/4rUxW8udv4NZbpI934ZtJfBC3kLvGG8m9lTZuU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1755842092; c=relaxed/simple;
-	bh=yvfKJamycXjnDaYiRj2UbJfezY45LTXLkDvpCzrF4Cw=;
-	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=Y+4KHIHI29uWuKpcuXpuWlcn3ZB/xoSnNeECIfnzCBrSQdJ5PxTfZYjWdlZsKzqyUInPOpaG7pcf2T1+byG3jhQ9JSdvUsgyK/KzqMdOyptW6rmg8q0VysnFoWpoYAg4F7Clz0woYKcn3o8nZLm1Xc9gv47qfEBHgK4R5k9XJCk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=y5ZjrAxa; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3D65AC4CEF1;
-	Fri, 22 Aug 2025 05:54:51 +0000 (UTC)
+	s=arc-20240116; t=1755842673; c=relaxed/simple;
+	bh=WXCW8gGPMnXtASXGAwJVd8XCipZqvOfkzZmcQSpOfMk=;
+	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=ejVae5wLqoJLpwmRB4ODimmW4Aza/iSv32nxvPMzzFrcUUQxDPOdZdI+pofd1rz1ACuXIG3wyeCDtzNxG9aeOioiN+HVAK/D/E5vDsmm7xDFoQhdb1O/L1ODNLIcDYN+sVlhfD8WQtdYiB0WUXqFOcfcGVWxhjqzJkDl3jr1ovY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=EX4KQ6U5; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E7088C116C6;
+	Fri, 22 Aug 2025 06:04:31 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1755842091;
-	bh=yvfKJamycXjnDaYiRj2UbJfezY45LTXLkDvpCzrF4Cw=;
+	s=korg; t=1755842672;
+	bh=WXCW8gGPMnXtASXGAwJVd8XCipZqvOfkzZmcQSpOfMk=;
 	h=Subject:To:Cc:From:Date:From;
-	b=y5ZjrAxaV2BESRMRIYS3Pnt+v0gOHGyi9txs7SZZ9tCJAZEGeSE6TJdXzWcWv0mhN
-	 TOqiyVwKjnqgAjXwvcNgSpgyoMymwqXDLK+czAY/nVvgLI0Sa8rRVGB7/CimQJEGPE
-	 8ySAxE9PPeML0XJJ0IltR3N8JSpFD3dNa9jF56Dw=
-Subject: FAILED: patch "[PATCH] cpuidle: governors: menu: Avoid selecting states with too" failed to apply to 5.4-stable tree
-To: rafael.j.wysocki@intel.com,christian.loehle@arm.com,stable@vger.kernel.org
+	b=EX4KQ6U5Y2EiU5qOqC9dtYcSaHgXfwUMbibnqG+AetAl4W/51ywbPPLiA5BsdzLfa
+	 O6eNU3Ecel72OjS7pzozid9mem0TC1Mitr+7Xl7bOLT+fgpbrhXh6QslL5XZGkBEuQ
+	 MyP2lDRs7VAoL5B0A/pxiUVQI4afTnTXBhBws9j0=
+Subject: FAILED: patch "[PATCH] mptcp: remove duplicate sk_reset_timer call" failed to apply to 6.12-stable tree
+To: geliang@kernel.org,kuba@kernel.org,matttbe@kernel.org,tanggeliang@kylinos.cn
 Cc: <stable@vger.kernel.org>
 From: <gregkh@linuxfoundation.org>
-Date: Fri, 22 Aug 2025 07:54:26 +0200
-Message-ID: <2025082226-jab-press-6046@gregkh>
+Date: Fri, 22 Aug 2025 08:04:29 +0200
+Message-ID: <2025082229-sly-caution-e57f@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -53,19 +53,19 @@ Content-Type: text/plain; charset=ANSI_X3.4-1968
 Content-Transfer-Encoding: 8bit
 
 
-The patch below does not apply to the 5.4-stable tree.
+The patch below does not apply to the 6.12-stable tree.
 If someone wants it applied there, or to any other stable or longterm
 tree, then please email the backport, including the original git commit
 id to <stable@vger.kernel.org>.
 
 To reproduce the conflict and resubmit, you may use the following commands:
 
-git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-5.4.y
+git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-6.12.y
 git checkout FETCH_HEAD
-git cherry-pick -x 779b1a1cb13ae17028aeddb2fbbdba97357a1e15
+git cherry-pick -x 5d13349472ac8abcbcb94407969aa0fdc2e1f1be
 # <resolve conflicts, build, test, etc.>
 git commit -s
-git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2025082226-jab-press-6046@gregkh' --subject-prefix 'PATCH 5.4.y' HEAD^..
+git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2025082229-sly-caution-e57f@gregkh' --subject-prefix 'PATCH 6.12.y' HEAD^..
 
 Possible dependencies:
 
@@ -77,122 +77,49 @@ greg k-h
 
 ------------------ original commit in Linus's tree ------------------
 
-From 779b1a1cb13ae17028aeddb2fbbdba97357a1e15 Mon Sep 17 00:00:00 2001
-From: "Rafael J. Wysocki" <rafael.j.wysocki@intel.com>
-Date: Wed, 13 Aug 2025 12:25:58 +0200
-Subject: [PATCH] cpuidle: governors: menu: Avoid selecting states with too
- much latency
+From 5d13349472ac8abcbcb94407969aa0fdc2e1f1be Mon Sep 17 00:00:00 2001
+From: Geliang Tang <geliang@kernel.org>
+Date: Fri, 15 Aug 2025 19:28:22 +0200
+Subject: [PATCH] mptcp: remove duplicate sk_reset_timer call
 
-Occasionally, the exit latency of the idle state selected by the menu
-governor may exceed the PM QoS CPU wakeup latency limit.  Namely, if the
-scheduler tick has been stopped already and predicted_ns is greater than
-the tick period length, the governor may return an idle state whose exit
-latency exceeds latency_req because that decision is made before
-checking the current idle state's exit latency.
+sk_reset_timer() was called twice in mptcp_pm_alloc_anno_list.
 
-For instance, say that there are 3 idle states, 0, 1, and 2.  For idle
-states 0 and 1, the exit latency is equal to the target residency and
-the values are 0 and 5 us, respectively.  State 2 is deeper and has the
-exit latency and target residency of 200 us and 2 ms (which is greater
-than the tick period length), respectively.
+Simplify the code by using a 'goto' statement to eliminate the
+duplication.
 
-Say that predicted_ns is equal to TICK_NSEC and the PM QoS latency
-limit is 20 us.  After the first two iterations of the main loop in
-menu_select(), idx becomes 1 and in the third iteration of it the target
-residency of the current state (state 2) is greater than predicted_ns.
-State 2 is not a polling one and predicted_ns is not less than TICK_NSEC,
-so the check on whether or not the tick has been stopped is done.  Say
-that the tick has been stopped already and there are no imminent timers
-(that is, delta_tick is greater than the target residency of state 2).
-In that case, idx becomes 2 and it is returned immediately, but the exit
-latency of state 2 exceeds the latency limit.
+Note that this is not a fix, but it will help backporting the following
+patch. The same "Fixes" tag has been added for this reason.
 
-Address this issue by modifying the code to compare the exit latency of
-the current idle state (idle state i) with the latency limit before
-comparing its target residency with predicted_ns, which allows one
-more exit_latency_ns check that becomes redundant to be dropped.
+Fixes: 93f323b9cccc ("mptcp: add a new sysctl add_addr_timeout")
+Cc: stable@vger.kernel.org
+Signed-off-by: Geliang Tang <tanggeliang@kylinos.cn>
+Reviewed-by: Matthieu Baerts (NGI0) <matttbe@kernel.org>
+Signed-off-by: Matthieu Baerts (NGI0) <matttbe@kernel.org>
+Link: https://patch.msgid.link/20250815-net-mptcp-misc-fixes-6-17-rc2-v1-4-521fe9957892@kernel.org
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 
-However, after the above change, latency_req cannot take the predicted_ns
-value any more, which takes place after commit 38f83090f515 ("cpuidle:
-menu: Remove iowait influence"), because it may cause a polling state
-to be returned prematurely.
-
-In the context of the previous example say that predicted_ns is 3000 and
-the PM QoS latency limit is still 20 us.  Additionally, say that idle
-state 0 is a polling one.  Moving the exit_latency_ns check before the
-target_residency_ns one causes the loop to terminate in the second
-iteration, before the target_residency_ns check, so idle state 0 will be
-returned even though previously state 1 would be returned if there were
-no imminent timers.
-
-For this reason, remove the assignment of the predicted_ns value to
-latency_req from the code.
-
-Fixes: 5ef499cd571c ("cpuidle: menu: Handle stopped tick more aggressively")
-Cc: 4.17+ <stable@vger.kernel.org> # 4.17+
-Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
-Reviewed-by: Christian Loehle <christian.loehle@arm.com>
-Link: https://patch.msgid.link/5043159.31r3eYUQgx@rafael.j.wysocki
-
-diff --git a/drivers/cpuidle/governors/menu.c b/drivers/cpuidle/governors/menu.c
-index 81306612a5c6..b2e3d0b0a116 100644
---- a/drivers/cpuidle/governors/menu.c
-+++ b/drivers/cpuidle/governors/menu.c
-@@ -287,20 +287,15 @@ static int menu_select(struct cpuidle_driver *drv, struct cpuidle_device *dev,
- 		return 0;
+diff --git a/net/mptcp/pm.c b/net/mptcp/pm.c
+index 420d416e2603..c5f6a53ce5f1 100644
+--- a/net/mptcp/pm.c
++++ b/net/mptcp/pm.c
+@@ -353,9 +353,7 @@ bool mptcp_pm_alloc_anno_list(struct mptcp_sock *msk,
+ 		if (WARN_ON_ONCE(mptcp_pm_is_kernel(msk)))
+ 			return false;
+ 
+-		sk_reset_timer(sk, &add_entry->add_timer,
+-			       jiffies + mptcp_get_add_addr_timeout(net));
+-		return true;
++		goto reset_timer;
  	}
  
--	if (tick_nohz_tick_stopped()) {
--		/*
--		 * If the tick is already stopped, the cost of possible short
--		 * idle duration misprediction is much higher, because the CPU
--		 * may be stuck in a shallow idle state for a long time as a
--		 * result of it.  In that case say we might mispredict and use
--		 * the known time till the closest timer event for the idle
--		 * state selection.
--		 */
--		if (predicted_ns < TICK_NSEC)
--			predicted_ns = data->next_timer_ns;
--	} else if (latency_req > predicted_ns) {
--		latency_req = predicted_ns;
--	}
-+	/*
-+	 * If the tick is already stopped, the cost of possible short idle
-+	 * duration misprediction is much higher, because the CPU may be stuck
-+	 * in a shallow idle state for a long time as a result of it.  In that
-+	 * case, say we might mispredict and use the known time till the closest
-+	 * timer event for the idle state selection.
-+	 */
-+	if (tick_nohz_tick_stopped() && predicted_ns < TICK_NSEC)
-+		predicted_ns = data->next_timer_ns;
+ 	add_entry = kmalloc(sizeof(*add_entry), GFP_ATOMIC);
+@@ -369,6 +367,7 @@ bool mptcp_pm_alloc_anno_list(struct mptcp_sock *msk,
+ 	add_entry->retrans_times = 0;
  
- 	/*
- 	 * Find the idle state with the lowest power while satisfying
-@@ -316,13 +311,15 @@ static int menu_select(struct cpuidle_driver *drv, struct cpuidle_device *dev,
- 		if (idx == -1)
- 			idx = i; /* first enabled state */
+ 	timer_setup(&add_entry->add_timer, mptcp_pm_add_timer, 0);
++reset_timer:
+ 	sk_reset_timer(sk, &add_entry->add_timer,
+ 		       jiffies + mptcp_get_add_addr_timeout(net));
  
-+		if (s->exit_latency_ns > latency_req)
-+			break;
-+
- 		if (s->target_residency_ns > predicted_ns) {
- 			/*
- 			 * Use a physical idle state, not busy polling, unless
- 			 * a timer is going to trigger soon enough.
- 			 */
- 			if ((drv->states[idx].flags & CPUIDLE_FLAG_POLLING) &&
--			    s->exit_latency_ns <= latency_req &&
- 			    s->target_residency_ns <= data->next_timer_ns) {
- 				predicted_ns = s->target_residency_ns;
- 				idx = i;
-@@ -354,8 +351,6 @@ static int menu_select(struct cpuidle_driver *drv, struct cpuidle_device *dev,
- 
- 			return idx;
- 		}
--		if (s->exit_latency_ns > latency_req)
--			break;
- 
- 		idx = i;
- 	}
 
 
