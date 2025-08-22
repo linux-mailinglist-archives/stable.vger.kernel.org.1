@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-172268-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-172264-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0EA4CB30CA6
-	for <lists+stable@lfdr.de>; Fri, 22 Aug 2025 05:37:24 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 78EF9B30CA0
+	for <lists+stable@lfdr.de>; Fri, 22 Aug 2025 05:36:18 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 44FFA1BA8786
-	for <lists+stable@lfdr.de>; Fri, 22 Aug 2025 03:37:33 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id E91991BA33AC
+	for <lists+stable@lfdr.de>; Fri, 22 Aug 2025 03:35:56 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id CF79D28C860;
-	Fri, 22 Aug 2025 03:37:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1D09C2580CF;
+	Fri, 22 Aug 2025 03:35:33 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="uCa5Wwpw"
 X-Original-To: stable@vger.kernel.org
-Received: from szxga06-in.huawei.com (szxga06-in.huawei.com [45.249.212.32])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D4AED22D785;
-	Fri, 22 Aug 2025 03:37:01 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=45.249.212.32
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CEF2C22172C
+	for <stable@vger.kernel.org>; Fri, 22 Aug 2025 03:35:32 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755833824; cv=none; b=rGJhJGJh9NwtX8Wq0zJzMgaCj+h5Rr2UPq5XssMt1/2J7AxBbw8bFM/O65cfsUEaNCMIzReVr9IyiR2MvVFxOKd9yYwMoOJf8s4PdJoebw6SIwYWunMnEGt8GAOWEyeBZUHYguhld5E7/cIiquFC9OF2qjHBsrSPFEc+DLpXJPE=
+	t=1755833732; cv=none; b=vDyXcjYx7W9rZCnUj+6VbUVvKdooFb1W90T7UomFwECT12e9HaT/ltZXVF+3sX3DNWbLT3E/l1XaVxkGxzqb0nh0S3UsOayBK/Pm9uaZ83XEvPrCHRHVm76+2WrT9txw+sX2SIEFyPoWE5+qYsh06qRo2yx7ebo0N66BXgmltZ8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1755833824; c=relaxed/simple;
-	bh=vbT7xfTq4f5WcJfNvIFUNMHK9xQIS/viO8ZR+qU59VY=;
-	h=From:To:CC:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=rmllSXXhYs8uoL8suIWLSye83RtFPHTMdx7dYUW8gAVtuAjMhEcA/iRDVTYPG0d2yamlle6o8bRcie4Vp/IulvRKRvwa172i/vsVGu6Lnpyt4Sctpv1LM6wasKhQrO01xGrHtSiBs2VHzrNTjrmYaQ3s3r9JLrQ9+pDkEokbsA4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com; spf=pass smtp.mailfrom=huawei.com; arc=none smtp.client-ip=45.249.212.32
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=huawei.com
-Received: from mail.maildlp.com (unknown [172.19.88.163])
-	by szxga06-in.huawei.com (SkyGuard) with ESMTP id 4c7QrF10Wmz27j9X;
-	Fri, 22 Aug 2025 11:38:05 +0800 (CST)
-Received: from dggpemf500011.china.huawei.com (unknown [7.185.36.131])
-	by mail.maildlp.com (Postfix) with ESMTPS id 763BB1800B2;
-	Fri, 22 Aug 2025 11:36:59 +0800 (CST)
-Received: from huawei.com (10.67.174.55) by dggpemf500011.china.huawei.com
- (7.185.36.131) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1544.11; Fri, 22 Aug
- 2025 11:36:58 +0800
-From: Jinjie Ruan <ruanjinjie@huawei.com>
-To: <tglx@linutronix.de>, <mingo@redhat.com>, <bp@alien8.de>,
-	<dave.hansen@linux.intel.com>, <hpa@zytor.com>, <prarit@redhat.com>,
-	<gregkh@linuxfoundation.org>, <x86@kernel.org>, <stable@vger.kernel.org>,
-	<linux-kernel@vger.kernel.org>
-CC: <ruanjinjie@huawei.com>
-Subject: [PATCH v5.10 RESEND 2/2] x86/irq: Plug vector setup race
-Date: Fri, 22 Aug 2025 03:33:04 +0000
-Message-ID: <20250822033304.1096496-3-ruanjinjie@huawei.com>
-X-Mailer: git-send-email 2.34.1
-In-Reply-To: <20250822033304.1096496-1-ruanjinjie@huawei.com>
-References: <20250822033304.1096496-1-ruanjinjie@huawei.com>
+	s=arc-20240116; t=1755833732; c=relaxed/simple;
+	bh=dVbLlph9G0KOlaSMTzOX4KGj/hkOEL0sKQ4UxG6EYLo=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=OJpVYRmvt9wN69BSi/EbDovS8j9c5P8RNn/WJg7XJ02WacgBEo4fZL2yxrT/DB7stg9LYQEmJMHmmkzHrtWtJI8mNHo3wwjUJK8Poj3g0jy+SMLkFcNhUQcdepbgopkAH2F4q/y74G307LwoNu+im7pUcClLHRMgq9nxbTSQMiA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=uCa5Wwpw; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id BB6ECC4CEEB;
+	Fri, 22 Aug 2025 03:35:31 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1755833732;
+	bh=dVbLlph9G0KOlaSMTzOX4KGj/hkOEL0sKQ4UxG6EYLo=;
+	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
+	b=uCa5WwpwpwsVIITdxfEEjIoeRQXAnY87xGhak8X8wjXkmaz9fEye+sX8++QFGOzm/
+	 LmkMjnUrDJOOu2M9PAMqMq6fGfRL52bynmkmc5Km1V4mTk4yN5gUm3nFYi84xb9HQ0
+	 Xwbv5oHkwjLDvBLouZ1btkcklOjR8ah1bcymcdOJgqZwci+dv3X90y4a1wZGv+wqK2
+	 qLKWaCP6Ut8+DaSZMHBuui8pJeP9fXl4tTMF2ruEITtgQZvuMyvsjK6xqNYO7lYRgU
+	 7ZBPuYvSOoE/AGadHVQw37w0ywD5wK/YAHoxhpn1Nwn0tpz4PtMORTjxb/Srm6hMdW
+	 eXKKwJl/hgGNg==
+From: Sasha Levin <sashal@kernel.org>
+To: stable@vger.kernel.org
+Cc: Qu Wenruo <wqu@suse.com>,
+	David Sterba <dsterba@suse.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.16.y 1/3] btrfs: add comments on the extra btrfs specific subpage bitmaps
+Date: Thu, 21 Aug 2025 23:35:15 -0400
+Message-ID: <20250822033527.1065200-1-sashal@kernel.org>
+X-Mailer: git-send-email 2.50.1
+In-Reply-To: <2025082101-survive-mannish-1c90@gregkh>
+References: <2025082101-survive-mannish-1c90@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -58,160 +59,79 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Content-Type: text/plain
-X-ClientProxiedBy: kwepems500002.china.huawei.com (7.221.188.17) To
- dggpemf500011.china.huawei.com (7.185.36.131)
 
-From: Thomas Gleixner <tglx@linutronix.de>
+From: Qu Wenruo <wqu@suse.com>
 
-commit ce0b5eedcb753697d43f61dd2e27d68eb5d3150f upstream.
+[ Upstream commit 1e17738d6b76cdc76d240d64de87fa66ba2365f7 ]
 
-Hogan reported a vector setup race, which overwrites the interrupt
-descriptor in the per CPU vector array resulting in a disfunctional device.
+Unlike the iomap_folio_state structure, the btrfs_subpage structure has a
+lot of extra sub-bitmaps, namely:
 
-CPU0				CPU1
-				interrupt is raised in APIC IRR
-				but not handled
-  free_irq()
-    per_cpu(vector_irq, CPU1)[vector] = VECTOR_SHUTDOWN;
+- writeback sub-bitmap
+- locked sub-bitmap
+  iomap_folio_state uses an atomic for writeback tracking, while it has
+  no per-block locked tracking.
 
-  request_irq()			common_interrupt()
-  				  d = this_cpu_read(vector_irq[vector]);
+  This is because iomap always locks a single folio, and submits dirty
+  blocks with that folio locked.
 
-    per_cpu(vector_irq, CPU1)[vector] = desc;
+  But btrfs has async delalloc ranges (for compression), which are queued
+  with their range locked, until the compression is done, then marks the
+  involved range writeback and unlocked.
 
-    				  if (d == VECTOR_SHUTDOWN)
-				    this_cpu_write(vector_irq[vector], VECTOR_UNUSED);
+  This means a range can be unlocked and marked writeback at seemingly
+  random timing, thus it needs the extra tracking.
 
-free_irq() cannot observe the pending vector in the CPU1 APIC as there is
-no way to query the remote CPUs APIC IRR.
+  This needs a huge rework on the lifespan of async delalloc range
+  before we can remove/simplify these two sub-bitmaps.
 
-This requires that request_irq() uses the same vector/CPU as the one which
-was freed, but this also can be triggered by a spurious interrupt.
+- ordered sub-bitmap
+- checked sub-bitmap
+  These are for COW-fixup, but as I mentioned in the past, the COW-fixup
+  is not really needed anymore and these two flags are already marked
+  deprecated, and will be removed in the near future after comprehensive
+  tests.
 
-Interestingly enough this problem managed to be hidden for more than a
-decade.
+Add related comments to indicate we're actively trying to align the
+sub-bitmaps to the iomap ones.
 
-Prevent this by reevaluating vector_irq under the vector lock, which is
-held by the interrupt activation code when vector_irq is updated.
-
-To avoid ifdeffery or IS_ENABLED() nonsense, move the
-[un]lock_vector_lock() declarations out under the
-CONFIG_IRQ_DOMAIN_HIERARCHY guard as it's only provided when
-CONFIG_X86_LOCAL_APIC=y.
-
-The current CONFIG_IRQ_DOMAIN_HIERARCHY guard is selected by
-CONFIG_X86_LOCAL_APIC, but can also be selected by other parts of the
-Kconfig system, which makes 32-bit UP builds with CONFIG_X86_LOCAL_APIC=n
-fail.
-
-Can we just get rid of this !APIC nonsense once and forever?
-
-Fixes: 9345005f4eed ("x86/irq: Fix do_IRQ() interrupt warning for cpu hotplug retriggered irqs")
-Cc: stable@vger.kernel.org#5.10.x
-Cc: gregkh@linuxfoundation.org
-Reported-by: Hogan Wang <hogan.wang@huawei.com>
-Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
-Tested-by: Hogan Wang <hogan.wang@huawei.com>
-Link: https://lore.kernel.org/all/draft-87ikjhrhhh.ffs@tglx
-[ Conflicts in arch/x86/kernel/irq.c because call_irq_handler() has been
-  refactored to do apic_eoi() according to the return value.
-  Conflicts in arch/x86/include/asm/hw_irq.h because (un)lock_vector_lock()
-  are already controlled by CONFIG_X86_LOCAL_APIC. ]
-Signed-off-by: Jinjie Ruan <ruanjinjie@huawei.com>
+Signed-off-by: Qu Wenruo <wqu@suse.com>
+Reviewed-by: David Sterba <dsterba@suse.com>
+Signed-off-by: David Sterba <dsterba@suse.com>
+Stable-dep-of: b1511360c8ac ("btrfs: subpage: keep TOWRITE tag until folio is cleaned")
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/x86/kernel/irq.c | 65 +++++++++++++++++++++++++++++++++----------
- 1 file changed, 51 insertions(+), 14 deletions(-)
+ fs/btrfs/subpage.h | 14 ++++++++++++++
+ 1 file changed, 14 insertions(+)
 
-diff --git a/arch/x86/kernel/irq.c b/arch/x86/kernel/irq.c
-index 89e85664cb6d..344b2199d5b3 100644
---- a/arch/x86/kernel/irq.c
-+++ b/arch/x86/kernel/irq.c
-@@ -234,24 +234,59 @@ static __always_inline void handle_irq(struct irq_desc *desc,
- 		__handle_irq(desc, regs);
- }
- 
--static __always_inline void call_irq_handler(int vector, struct pt_regs *regs)
-+static struct irq_desc *reevaluate_vector(int vector)
- {
--	struct irq_desc *desc;
-+	struct irq_desc *desc = __this_cpu_read(vector_irq[vector]);
-+
-+	if (!IS_ERR_OR_NULL(desc))
-+		return desc;
-+
-+	if (desc == VECTOR_UNUSED)
-+		pr_emerg_ratelimited("No irq handler for %d.%u\n", smp_processor_id(), vector);
-+	else
-+		__this_cpu_write(vector_irq[vector], VECTOR_UNUSED);
-+	return NULL;
-+}
-+
-+static __always_inline bool call_irq_handler(int vector, struct pt_regs *regs)
-+{
-+	struct irq_desc *desc = __this_cpu_read(vector_irq[vector]);
- 
--	desc = __this_cpu_read(vector_irq[vector]);
- 	if (likely(!IS_ERR_OR_NULL(desc))) {
- 		handle_irq(desc, regs);
--	} else {
--		ack_APIC_irq();
--
--		if (desc == VECTOR_UNUSED) {
--			pr_emerg_ratelimited("%s: %d.%u No irq handler for vector\n",
--					     __func__, smp_processor_id(),
--					     vector);
--		} else {
--			__this_cpu_write(vector_irq[vector], VECTOR_UNUSED);
--		}
-+		return true;
- 	}
+diff --git a/fs/btrfs/subpage.h b/fs/btrfs/subpage.h
+index 3042c5ea840a..52546e0e97ce 100644
+--- a/fs/btrfs/subpage.h
++++ b/fs/btrfs/subpage.h
+@@ -33,8 +33,22 @@ enum {
+ 	btrfs_bitmap_nr_uptodate = 0,
+ 	btrfs_bitmap_nr_dirty,
+ 	btrfs_bitmap_nr_writeback,
++	/*
++	 * The ordered and checked flags are for COW fixup, already marked
++	 * deprecated, and will be removed eventually.
++	 */
+ 	btrfs_bitmap_nr_ordered,
+ 	btrfs_bitmap_nr_checked,
 +
 +	/*
-+	 * Reevaluate with vector_lock held to prevent a race against
-+	 * request_irq() setting up the vector:
++	 * The locked bit is for async delalloc range (compression), currently
++	 * async extent is queued with the range locked, until the compression
++	 * is done.
++	 * So an async extent can unlock the range at any random timing.
 +	 *
-+	 * CPU0				CPU1
-+	 *				interrupt is raised in APIC IRR
-+	 *				but not handled
-+	 * free_irq()
-+	 *   per_cpu(vector_irq, CPU1)[vector] = VECTOR_SHUTDOWN;
-+	 *
-+	 * request_irq()		common_interrupt()
-+	 *				  d = this_cpu_read(vector_irq[vector]);
-+	 *
-+	 * per_cpu(vector_irq, CPU1)[vector] = desc;
-+	 *
-+	 *				  if (d == VECTOR_SHUTDOWN)
-+	 *				    this_cpu_write(vector_irq[vector], VECTOR_UNUSED);
-+	 *
-+	 * This requires that the same vector on the same target CPU is
-+	 * handed out or that a spurious interrupt hits that CPU/vector.
++	 * This will need a rework on the async extent lifespan (mark writeback
++	 * and do compression) before deprecating this flag.
 +	 */
-+	lock_vector_lock();
-+	desc = reevaluate_vector(vector);
-+	unlock_vector_lock();
-+
-+	if (!desc)
-+		return false;
-+
-+	handle_irq(desc, regs);
-+	return true;
- }
- 
- /*
-@@ -265,7 +300,9 @@ DEFINE_IDTENTRY_IRQ(common_interrupt)
- 	/* entry code tells RCU that we're not quiescent.  Check it. */
- 	RCU_LOCKDEP_WARN(!rcu_is_watching(), "IRQ failed to wake up RCU");
- 
--	call_irq_handler(vector, regs);
-+	if (unlikely(!call_irq_handler(vector, regs)))
-+		ack_APIC_irq();
-+
- 	set_irq_regs(old_regs);
- }
- 
+ 	btrfs_bitmap_nr_locked,
+ 	btrfs_bitmap_nr_max
+ };
 -- 
-2.34.1
+2.50.1
 
 
