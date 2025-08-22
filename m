@@ -1,74 +1,67 @@
-Return-Path: <stable+bounces-172381-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-172382-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id BD414B31812
-	for <lists+stable@lfdr.de>; Fri, 22 Aug 2025 14:40:49 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 78CB4B31819
+	for <lists+stable@lfdr.de>; Fri, 22 Aug 2025 14:42:36 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 2019EAA43F2
-	for <lists+stable@lfdr.de>; Fri, 22 Aug 2025 12:38:43 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id BECAE170518
+	for <lists+stable@lfdr.de>; Fri, 22 Aug 2025 12:41:14 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 13C162FB61A;
-	Fri, 22 Aug 2025 12:38:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 36DF52FB997;
+	Fri, 22 Aug 2025 12:41:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="iY9HN6yV"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="jwWpU4pg"
 X-Original-To: stable@vger.kernel.org
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.17])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4AA0A2FB60B
-	for <stable@vger.kernel.org>; Fri, 22 Aug 2025 12:38:37 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.17
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D898719007D;
+	Fri, 22 Aug 2025 12:41:08 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755866319; cv=none; b=qdaZ8TXteKTQ7jd6V6YLueRLRYBoz/t04/SV1BfPNCEyPYCo3tZ8nnqw5iZrROaX5dMVqUciwvfvMiKtXIRCNngk5i7RM+o+Kc9RvEQJiOBkfCj8Q5lTLt11KLJEOGf8TtYhwaluhWCeQAxuawoEMuluD081R2PK5a06cqLMepM=
+	t=1755866469; cv=none; b=kHdnu2SfOTdT0CbcxpuqZsUfk/jlDPBapSL3MqY3yRiQYYoYol+nRWCV/DpqpDD0QRLQdIAHkm03Oaoy+RoUkQYXOXG8Un3vzyZCOVS9JGSIK5HeWHb40YKmZfuncxRmLK7iur3EMs+WBM6GfkFGKapyFAkonHl8ZmOGFkfCcFE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1755866319; c=relaxed/simple;
-	bh=0DC9VqNFSaFwDNCOeBpxZBqscy4hBWxJM3rKCgjsS9o=;
-	h=Date:From:To:Cc:Subject:Message-ID:MIME-Version:Content-Type:
-	 Content-Disposition:In-Reply-To; b=oloRlXmbyjUmEofc9XKUiCUxacVMWurzX77n9jBjnEUuJyKQTKxPV+QglTg1Q3EF5D318sW/Cj1qccypL8quFa6vPP52Yl0DntoU0Qdalm+b8tolVijoipPpP08nSr10+ekZuyJGFlz2oppry4BKQfoE+VHTK1ExL+UYSEVCID4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=iY9HN6yV; arc=none smtp.client-ip=192.198.163.17
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1755866318; x=1787402318;
-  h=date:from:to:cc:subject:message-id:mime-version:
-   in-reply-to;
-  bh=0DC9VqNFSaFwDNCOeBpxZBqscy4hBWxJM3rKCgjsS9o=;
-  b=iY9HN6yVxI8TEXoIedT1UPw2rle3pk/lXewv4XrIaIiGe9aMEGb3JcVC
-   3K4FJx+xMcrKH2qhtoKTGkkbl2JySo6/A97bkNf/MsslyAV/XC/BuEpV3
-   7i0lB76BUqdYMdcs1yMqe6iPWEAjCPLdMR3SJK049lQVIUehG5G44pE27
-   4DlzDRWRVQZ8D8QQhK8htDaN+NjUkyil+oElzdUND7V2YE4QdYzHe19Ed
-   aKkT+QMErvYCPNBLd0pr/dUMk9EDUxTrw0LX2jChwNSTmavZNlPC/8mm5
-   3oseRrrU3x3w3M5cL5yiCc/pYQDczVZufJdbVMCVJG/tedHr/T6vMxqUA
-   g==;
-X-CSE-ConnectionGUID: FLWnB1QLRcO0KBMjfJcOLQ==
-X-CSE-MsgGUID: LHStrOILSMCpy/SgJieImw==
-X-IronPort-AV: E=McAfee;i="6800,10657,11529"; a="58096272"
-X-IronPort-AV: E=Sophos;i="6.17,309,1747724400"; 
-   d="scan'208";a="58096272"
-Received: from orviesa008.jf.intel.com ([10.64.159.148])
-  by fmvoesa111.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 22 Aug 2025 05:38:38 -0700
-X-CSE-ConnectionGUID: ockQzc0GSb2n4XgrsYUpTg==
-X-CSE-MsgGUID: CycRpZ0ETnaGMVnT9tbISQ==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.17,309,1747724400"; 
-   d="scan'208";a="168897632"
-Received: from lkp-server02.sh.intel.com (HELO 4ea60e6ab079) ([10.239.97.151])
-  by orviesa008.jf.intel.com with ESMTP; 22 Aug 2025 05:38:36 -0700
-Received: from kbuild by 4ea60e6ab079 with local (Exim 4.96)
-	(envelope-from <lkp@intel.com>)
-	id 1upR2N-000LFv-10;
-	Fri, 22 Aug 2025 12:38:32 +0000
-Date: Fri, 22 Aug 2025 20:38:08 +0800
-From: kernel test robot <lkp@intel.com>
-To: Shuai Zhang <quic_shuaz@quicinc.com>
-Cc: stable@vger.kernel.org, oe-kbuild-all@lists.linux.dev
-Subject: Re: [PATCH v8] Bluetooth: hci_qca: Fix SSR (SubSystem Restart) fail
- when BT_EN is pulled up by hw
-Message-ID: <aKhksPl4YOTlfF8O@ad180832a305>
+	s=arc-20240116; t=1755866469; c=relaxed/simple;
+	bh=/nP5nOeslRb8udPMkJJlnSbloy7uRJBAUq0VTBExCok=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=bpWR96Sg7Jec+RIF0/m0JkoEFwggARP0fhPKPqYwnjE4cS68v1Ba+y1p1uJwBp9vcYeKhyT7BUcIgB7t+ZhdVqjZ74EClUqtRQRT9Zma22G0WcArr2wtibzFjoJ2/9DbKZNicjM/bWBm2MtpWgSzYkIiZgK2YDEXn3LXS0aVVFI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=jwWpU4pg; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B2720C4CEED;
+	Fri, 22 Aug 2025 12:41:07 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
+	s=korg; t=1755866468;
+	bh=/nP5nOeslRb8udPMkJJlnSbloy7uRJBAUq0VTBExCok=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=jwWpU4pglCONCINeNN1LegyA9F+ogN37/JzXnEG2ULT/YLKMWxRc2phsXKwNnDOBw
+	 dSsZXqvAREhrYASPBvr1VH7eAYMtu72aM2+aQkS5ATxMNdqHlu78pL6CoC5+H2K/RF
+	 hYsBZCqhTjQF6REKTZ6xx3/OdfBb8QbLY2lOsNf8=
+Date: Fri, 22 Aug 2025 14:41:05 +0200
+From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+To: Dan Carpenter <dan.carpenter@linaro.org>
+Cc: Naresh Kamboju <naresh.kamboju@linaro.org>,
+	Zhang Yi <yi.zhang@huaweicloud.com>, stable@vger.kernel.org,
+	patches@lists.linux.dev, linux-kernel@vger.kernel.org,
+	torvalds@linux-foundation.org, akpm@linux-foundation.org,
+	linux@roeck-us.net, shuah@kernel.org, patches@kernelci.org,
+	lkft-triage@lists.linaro.org, pavel@denx.de, jonathanh@nvidia.com,
+	f.fainelli@gmail.com, sudipm.mukherjee@gmail.com,
+	srw@sladewatkins.net, rwarsow@gmx.de, conor@kernel.org,
+	hargar@microsoft.com, broonie@kernel.org, achill@achill.org,
+	linux-ext4 <linux-ext4@vger.kernel.org>,
+	linux-fsdevel@vger.kernel.org, Joseph Qi <jiangqi903@gmail.com>,
+	Jan Kara <jack@suse.cz>, Theodore Ts'o <tytso@mit.edu>,
+	Anders Roxell <anders.roxell@linaro.org>,
+	Arnd Bergmann <arnd@arndb.de>,
+	Ben Copeland <benjamin.copeland@linaro.org>
+Subject: Re: [PATCH 6.16 000/564] 6.16.2-rc2 review
+Message-ID: <2025082200-straw-grunt-0009@gregkh>
+References: <20250819122844.483737955@linuxfoundation.org>
+ <CA+G9fYsjac=SLhzVCZqVHnHGADv1KmTAnTdfcrnhnhcLuko+SQ@mail.gmail.com>
+ <aKg41GMffk9t1p56@stanley.mountain>
+ <2025082242-skyward-mascot-f992@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -77,24 +70,64 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20250822123605.757306-1-quic_shuaz@quicinc.com>
+In-Reply-To: <2025082242-skyward-mascot-f992@gregkh>
 
-Hi,
+On Fri, Aug 22, 2025 at 02:14:10PM +0200, Greg Kroah-Hartman wrote:
+> On Fri, Aug 22, 2025 at 12:31:00PM +0300, Dan Carpenter wrote:
+> > On Wed, Aug 20, 2025 at 08:06:01PM +0530, Naresh Kamboju wrote:
+> > > On Tue, 19 Aug 2025 at 18:02, Greg Kroah-Hartman
+> > > <gregkh@linuxfoundation.org> wrote:
+> > > >
+> > > > This is the start of the stable review cycle for the 6.16.2 release.
+> > > > There are 564 patches in this series, all will be posted as a response
+> > > > to this one.  If anyone has any issues with these being applied, please
+> > > > let me know.
+> > > >
+> > > > Responses should be made by Thu, 21 Aug 2025 12:27:23 +0000.
+> > > > Anything received after that time might be too late.
+> > > >
+> > > > The whole patch series can be found in one patch at:
+> > > >         https://www.kernel.org/pub/linux/kernel/v6.x/stable-review/patch-6.16.2-rc2.gz
+> > > > or in the git tree and branch at:
+> > > >         git://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stable-rc.git linux-6.16.y
+> > > > and the diffstat can be found below.
+> > > >
+> > > > thanks,
+> > > >
+> > > > greg k-h
+> > > 
+> > > As I have reported last week on 6.16.1-rc1 as regression is
+> > > still noticed on 6.16.2-rc2.
+> > > 
+> > > WARNING: CPU: 0 PID: 7012 at fs/jbd2/transaction.c:334 start_this_handle
+> > > 
+> > > Full test log:
+> > > ------------[ cut here ]------------
+> > > [  153.965287] WARNING: CPU: 0 PID: 7012 at fs/jbd2/transaction.c:334
+> > > start_this_handle+0x4df/0x500
+> > 
+> > The problem is that we only applied the last two patches in:
+> > https://lore.kernel.org/linux-ext4/20250707140814.542883-1-yi.zhang@huaweicloud.com/
+> > 
+> > Naresh is on vacation until Monday, but he tested the patchset on
+> > linux-next and it fixed the issues.  So we need to cherry-pick the
+> > following commits.
+> > 
+> > 1bfe6354e097 ext4: process folios writeback in bytes
+> > f922c8c2461b ext4: move the calculation of wbc->nr_to_write to mpage_folio_done()
+> > ded2d726a304 ext4: fix stale data if it bail out of the extents mapping loop
+> > 2bddafea3d0d ext4: refactor the block allocation process of ext4_page_mkwrite()
+> > e2c4c49dee64 ext4: restart handle if credits are insufficient during allocating blocks
+> > 6b132759b0fe ext4: enhance tracepoints during the folios writeback
+> > 95ad8ee45cdb ext4: correct the reserved credits for extent conversion
+> > bbbf150f3f85 ext4: reserved credits for one extent during the folio writeback
+> > 57661f28756c ext4: replace ext4_writepage_trans_blocks()
+> > 
+> > They all apply cleanly to 6.16.3-rc1.
+> 
+> Ugh.  Ok, let me go push out a -rc for JUST this issue now so that
+> people can test and I can get it released for those that are tripped up
+> by it.  Thanks for the information, much appreciated.
 
-Thanks for your patch.
-
-FYI: kernel test robot notices the stable kernel rule is not satisfied.
-
-The check is based on https://www.kernel.org/doc/html/latest/process/stable-kernel-rules.html#option-1
-
-Rule: add the tag "Cc: stable@vger.kernel.org" in the sign-off area to have the patch automatically included in the stable tree.
-Subject: [PATCH v8] Bluetooth: hci_qca: Fix SSR (SubSystem Restart) fail when BT_EN is pulled up by hw
-Link: https://lore.kernel.org/stable/20250822123605.757306-1-quic_shuaz%40quicinc.com
-
--- 
-0-DAY CI Kernel Test Service
-https://github.com/intel/lkp-tests/wiki
-
-
-
+Now pushed out.
 
