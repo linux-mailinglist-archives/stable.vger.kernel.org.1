@@ -1,48 +1,63 @@
-Return-Path: <stable+bounces-172331-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-172332-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 22E56B31238
-	for <lists+stable@lfdr.de>; Fri, 22 Aug 2025 10:49:30 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id A3A13B31247
+	for <lists+stable@lfdr.de>; Fri, 22 Aug 2025 10:52:03 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id DA1901D01D57
-	for <lists+stable@lfdr.de>; Fri, 22 Aug 2025 08:48:37 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 0653BA00446
+	for <lists+stable@lfdr.de>; Fri, 22 Aug 2025 08:50:48 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C635E2EACE0;
-	Fri, 22 Aug 2025 08:46:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6145C2D7DF8;
+	Fri, 22 Aug 2025 08:50:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=ideasonboard.com header.i=@ideasonboard.com header.b="UTqjg2u9"
+	dkim=pass (2048-bit key) header.d=quicinc.com header.i=@quicinc.com header.b="KHrd90ur"
 X-Original-To: stable@vger.kernel.org
-Received: from perceval.ideasonboard.com (perceval.ideasonboard.com [213.167.242.64])
+Received: from mx0a-0031df01.pphosted.com (mx0a-0031df01.pphosted.com [205.220.168.131])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6D6B2221577;
-	Fri, 22 Aug 2025 08:46:47 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=213.167.242.64
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 50A6113A3F7;
+	Fri, 22 Aug 2025 08:50:41 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.168.131
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755852409; cv=none; b=Tttd47+miuXq24IBAwl8VnAQ8FZFxpIEwHfs3DI/AJ3sL0ZOWghjwfDjK2Knq7hP/Ut2IMS0xgo3lhLwYj+F6ur0Fri8hrbpCt8lyRW223g+KQr1w7X0wa4a+60KCkq9UQdNzs4gPUs7E3nB+nFTJ/3+6t1Q0QC1NjWdoZKCdxk=
+	t=1755852643; cv=none; b=Jnf5lfz5jQPxT1gm9djYCis/KvCednyvzcXa7zoUX+mJhNRbhso6lTDCwd8n06NBIwO7lHk9VDBAcM9C8KGZXGaGC9Oxy0OkDOlQTrviuVFGZapc8y443BAjcYh5j94/kxEGaHY5rcuNkMqMrnKAkMl2I459oQcqCDj7DX79C84=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1755852409; c=relaxed/simple;
-	bh=sMZ/sVgshi7/W76au4urNnyFfZBACrPxwav0Rr+oR3I=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=gmaV235CVEgKyR9nJ8ysbqjHJwIta+FNMXG/M7bwEk+hv+Y3kZIximNT6WHr1clp8tkhIGr/zuD92MMHe2uxxW3D6PbZuA45is1gKoDI0XqLw+3XSg/XSayBzlirfnVPsCOEPNn+vPZimUQDa/o/xlxwHp16EI/gr3kzLjSoVZs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=ideasonboard.com; spf=pass smtp.mailfrom=ideasonboard.com; dkim=pass (1024-bit key) header.d=ideasonboard.com header.i=@ideasonboard.com header.b=UTqjg2u9; arc=none smtp.client-ip=213.167.242.64
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=ideasonboard.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ideasonboard.com
-Received: from [192.168.88.20] (91-158-153-178.elisa-laajakaista.fi [91.158.153.178])
-	by perceval.ideasonboard.com (Postfix) with ESMTPSA id A28C078E;
-	Fri, 22 Aug 2025 10:45:43 +0200 (CEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=ideasonboard.com;
-	s=mail; t=1755852344;
-	bh=sMZ/sVgshi7/W76au4urNnyFfZBACrPxwav0Rr+oR3I=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=UTqjg2u9Qun0pkqantzMaJDn76iWz8k4ZcnvyWrDtZhLjeocTxGGSUKJV06+yf2Zg
-	 kgJoclIMppgSdFcAm5zwO9NiR85IarVrjIfKsbI7J+brIs5VnF2CyM7brFj/KO6Fx6
-	 VVS/1M0i7kP4TDiRPkvkA3hnaFmjN1q1O427h9Mc=
-Message-ID: <09441f4b-bdd1-46c9-876e-2ff503dd1160@ideasonboard.com>
-Date: Fri, 22 Aug 2025 11:46:40 +0300
+	s=arc-20240116; t=1755852643; c=relaxed/simple;
+	bh=b5ccvCydC8SrFxL41zZ/M1GO0yJFBCuulJVpITMfi4g=;
+	h=Message-ID:Date:MIME-Version:Subject:To:CC:References:From:
+	 In-Reply-To:Content-Type; b=dGKko8aVYUiLz4qZg4TL9brrviGRjkFlf/vqaEdq4qgAqteYwZZmRaMv9H/GYv3ZjI5G3z9mIUxEJw7PPnDnRfxKZBfzxSWStRvLHRr7afgi29DDQ2lHnKxVeLyFvdI1iX7VuZ1gxrIBzq7ewRbftyaHcW3bHwdVzYVdT+XTOAM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=quicinc.com; spf=pass smtp.mailfrom=quicinc.com; dkim=pass (2048-bit key) header.d=quicinc.com header.i=@quicinc.com header.b=KHrd90ur; arc=none smtp.client-ip=205.220.168.131
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=quicinc.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=quicinc.com
+Received: from pps.filterd (m0279865.ppops.net [127.0.0.1])
+	by mx0a-0031df01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 57M8UOqn024194;
+	Fri, 22 Aug 2025 08:50:38 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=quicinc.com; h=
+	cc:content-transfer-encoding:content-type:date:from:in-reply-to
+	:message-id:mime-version:references:subject:to; s=qcppdkim1; bh=
+	lnhEY7d/zCtl8cH0fWDktRTg/owKEwjWlej0lOJloRA=; b=KHrd90urIqdk6djZ
+	ipCqf7tQoR3OgTSOJCwqVkysCHKNqHaE1FiHUIHyMOoi0Tr/KE8EvyvErXU+h7IB
+	amzh85v1Yc5vV+oE4fVq+hu3JQu6x5xiamSlpabTc/LdS36OW/tS3HelLyJgshDY
+	S9jPv5LD1FfmYhAv55MeDLRZo3NpRs6Yj4w79HGtC5cmQG7P7Ru3liwliDJ1Tmyf
+	BLAvM29Am7a8eWd77m5ZNxrXIcorR4oeYZwRz8ykB47hMWCGoC9UoX/HG5NUinPp
+	bDTo3v6g5tAGn6lB0+pyt5y/gJ/fICWY1pts6uEE8bggcOtJhc1X29ldg3+uxXyj
+	aOI+XA==
+Received: from nalasppmta05.qualcomm.com (Global_NAT1.qualcomm.com [129.46.96.20])
+	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 48n52agmg7-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Fri, 22 Aug 2025 08:50:37 +0000 (GMT)
+Received: from nalasex01a.na.qualcomm.com (nalasex01a.na.qualcomm.com [10.47.209.196])
+	by NALASPPMTA05.qualcomm.com (8.18.1.2/8.18.1.2) with ESMTPS id 57M8obme027664
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Fri, 22 Aug 2025 08:50:37 GMT
+Received: from [10.217.219.124] (10.80.80.8) by nalasex01a.na.qualcomm.com
+ (10.47.209.196) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1748.10; Fri, 22 Aug
+ 2025 01:50:32 -0700
+Message-ID: <ffc65cc4-61d1-49d0-a0b9-9e0101fe029c@quicinc.com>
+Date: Fri, 22 Aug 2025 14:20:29 +0530
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -50,123 +65,125 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v3] drm/bridge: cdns-dsi: Replace deprecated
- UNIVERSAL_DEV_PM_OPS()
-To: Francesco Dolcini <francesco@dolcini.it>,
- Andrzej Hajda <andrzej.hajda@intel.com>,
- Neil Armstrong <neil.armstrong@linaro.org>, Robert Foss <rfoss@kernel.org>
-Cc: Vitor Soares <ivitro@gmail.com>,
- Laurent Pinchart <Laurent.pinchart@ideasonboard.com>,
- Jonas Karlman <jonas@kwiboo.se>, Jernej Skrabec <jernej.skrabec@gmail.com>,
- Maarten Lankhorst <maarten.lankhorst@linux.intel.com>,
- Maxime Ripard <mripard@kernel.org>, Thomas Zimmermann <tzimmermann@suse.de>,
- David Airlie <airlied@gmail.com>, Simona Vetter <simona@ffwll.ch>,
- Vitor Soares <vitor.soares@toradex.com>, dri-devel@lists.freedesktop.org,
- linux-kernel@vger.kernel.org, Aradhya Bhatia <aradhya.bhatia@linux.dev>,
- Jayesh Choudhary <j-choudhary@ti.com>, stable@vger.kernel.org
-References: <20250512083215.436149-1-ivitro@gmail.com>
- <546ef388-299b-4d97-8633-9508fab4475a@ideasonboard.com>
- <20250822070401.GA15925@francesco-nb>
+Subject: Re: [PATCH] bus: mhi: ep: Fix chained transfer handling in read path
+To: Manivannan Sadhasivam <mani@kernel.org>,
+        Akhil Vinod
+	<quic_akhvin@quicinc.com>
+CC: Alex Elder <elder@kernel.org>,
+        Greg Kroah-Hartman
+	<gregkh@linuxfoundation.org>,
+        <mhi@lists.linux.dev>, <linux-arm-msm@vger.kernel.org>,
+        <linux-kernel@vger.kernel.org>, <quic_krichai@quicinc.com>,
+        <quic_skananth@quicinc.com>, <quic_vbadigan@quicinc.com>,
+        Sumit Kumar <sumk@qti.qualcomm.com>, <stable@vger.kernel.org>,
+        Akhil Vinod <akhvin@qti.qualcomm.com>
+References: <20250709-chained_transfer-v1-1-2326a4605c9c@quicinc.com>
+ <5aqtqicbtlkrqbiw2ba7kkgwrmsuqx2kjukh2tavfihm5hq5ry@gdeqegayfh77>
+ <7c833565-0e7b-4004-b691-37bd07ce6abe@quicinc.com>
+ <5ij32zdni7pei3xfpxsq6fvaghb3pdfs2fznickutqjysip3k4@kldf7h6e3qc4>
 Content-Language: en-US
-From: Tomi Valkeinen <tomi.valkeinen@ideasonboard.com>
-Autocrypt: addr=tomi.valkeinen@ideasonboard.com; keydata=
- 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
-In-Reply-To: <20250822070401.GA15925@francesco-nb>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+From: Sumit Kumar <quic_sumk@quicinc.com>
+In-Reply-To: <5ij32zdni7pei3xfpxsq6fvaghb3pdfs2fznickutqjysip3k4@kldf7h6e3qc4>
+Content-Type: text/plain; charset="UTF-8"; format=flowed
+Content-Transfer-Encoding: 8bit
+X-ClientProxiedBy: nasanex01a.na.qualcomm.com (10.52.223.231) To
+ nalasex01a.na.qualcomm.com (10.47.209.196)
+X-QCInternal: smtphost
+X-Proofpoint-Virus-Version: vendor=nai engine=6200 definitions=5800 signatures=585085
+X-Proofpoint-ORIG-GUID: Lz4Frjurt7JaMbndiyvMorWU7mGRTv0B
+X-Authority-Analysis: v=2.4 cv=B83gEOtM c=1 sm=1 tr=0 ts=68a82f5d cx=c_pps
+ a=ouPCqIW2jiPt+lZRy3xVPw==:117 a=ouPCqIW2jiPt+lZRy3xVPw==:17
+ a=GEpy-HfZoHoA:10 a=IkcTkHD0fZMA:10 a=2OwXVqhp2XgA:10 a=EUspDBNiAAAA:8
+ a=VwQbUJbxAAAA:8 a=5_CZODyF7LIRseyXUXAA:9 a=3ZKOabzyN94A:10 a=QEXdDO2ut3YA:10
+ a=cPQSjfK2_nFv0Q5t_7PE:22
+X-Proofpoint-GUID: Lz4Frjurt7JaMbndiyvMorWU7mGRTv0B
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjUwODIwMDAxMyBTYWx0ZWRfXzBgR4FerhUXD
+ r2GytHevWh4WhpV686b9QnotyKPD5Ul87ZQyeRyi4VLwtb4UWUs1/Kzb3iVqLFziRxUp/rG5/N2
+ wthxBtqjRaG9cE4w2Y/lJoEhH7ae1O+MARZLRDnOHR3ljqfj5UcFGf1PtxTOUqSLYfB5OSWd9Qz
+ bFG0HVjncJ+fsO5KE6xNX2ETVA+qqx1vXVg57NK8mpeI2c2Yv2k3DBqTX8Tv3mU1QgDylpe/rcl
+ DudE8z5bqp7G7UI+jiNAy0j5cTspYLvb91dNxqAbAM1Tc+z3TU0WcNTuF9f3OHJEJVIZyApPnQu
+ BsoHjTRPxrq262Oo15Q+p5SgaH+1BTcLZP7pbpTxnQRje29iLMLu183v6Ub+5Uz73y2tktwTDoa
+ +sabz0e5KCBwNgawi+YBSPUlFtErDA==
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1099,Hydra:6.1.9,FMLib:17.12.80.40
+ definitions=2025-08-22_03,2025-08-20_03,2025-03-28_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ phishscore=0 bulkscore=0 priorityscore=1501 suspectscore=0 malwarescore=0
+ lowpriorityscore=0 adultscore=0 impostorscore=0 clxscore=1015 spamscore=0
+ classifier=typeunknown authscore=0 authtc= authcc= route=outbound adjust=0
+ reason=mlx scancount=1 engine=8.19.0-2508110000 definitions=main-2508200013
 
-Hi,
 
-On 22/08/2025 10:04, Francesco Dolcini wrote:
-> Hello,
+
+On 7/17/2025 10:44 PM, Manivannan Sadhasivam wrote:
+> On Thu, Jul 17, 2025 at 10:18:54PM GMT, Akhil Vinod wrote:
+>>
+>> On 7/16/2025 12:10 PM, Manivannan Sadhasivam wrote:
+>>> On Wed, Jul 09, 2025 at 04:03:17PM GMT, Sumit Kumar wrote:
+>>>> From: Sumit Kumar <sumk@qti.qualcomm.com>
+>>>>
+>>>> The current implementation of mhi_ep_read_channel, in case of chained
+>>>> transactions, assumes the End of Transfer(EOT) bit is received with the
+>>>> doorbell. As a result, it may incorrectly advance mhi_chan->rd_offset
+>>>> beyond wr_offset during host-to-device transfers when EOT has not yet
+>>>> arrived. This can lead to access of unmapped host memory, causing
+>>>> IOMMU faults and processing of stale TREs.
+>>>>
+>>>> This change modifies the loop condition to ensure rd_offset remains behind
+>>>> wr_offset, allowing the function to process only valid TREs up to the
+>>>> current write pointer. This prevents premature reads and ensures safe
+>>>> traversal of chained TREs.
+>>>>
+>>>> Fixes: 5301258899773 ("bus: mhi: ep: Add support for reading from the host")
+>>>> Cc: stable@vger.kernel.org
+>>>> Co-developed-by: Akhil Vinod <akhvin@qti.qualcomm.com>
+>>>> Signed-off-by: Akhil Vinod <akhvin@qti.qualcomm.com>
+>>>> Signed-off-by: Sumit Kumar <sumk@qti.qualcomm.com>
+>>>> ---
+>>>>    drivers/bus/mhi/ep/main.c | 2 +-
+>>>>    1 file changed, 1 insertion(+), 1 deletion(-)
+>>>>
+>>>> diff --git a/drivers/bus/mhi/ep/main.c b/drivers/bus/mhi/ep/main.c
+>>>> index b3eafcf2a2c50d95e3efd3afb27038ecf55552a5..2e134f44952d1070c62c24aeca9effc7fd325860 100644
+>>>> --- a/drivers/bus/mhi/ep/main.c
+>>>> +++ b/drivers/bus/mhi/ep/main.c
+>>>> @@ -468,7 +468,7 @@ static int mhi_ep_read_channel(struct mhi_ep_cntrl *mhi_cntrl,
+>>>>    			mhi_chan->rd_offset = (mhi_chan->rd_offset + 1) % ring->ring_size;
+>>>>    		}
+>>>> -	} while (buf_left && !tr_done);
+>>>> +	} while (buf_left && !tr_done && mhi_chan->rd_offset != ring->wr_offset);
+>>> You should use mhi_ep_queue_is_empty() for checking the available elements to
+>>> process. And with this check in place, the existing check in
+>>> mhi_ep_process_ch_ring() becomes redundant.
+>>>
+>>> - Mani
+>>
+>> Yes, agreed that the check can be replaced with the mhi_ep_queue_is_empty, but the existing
+>> check in mhi_ep_process_ch_ring() is still necessary because there can be a case where
+>> there are multiple chained transactions in the ring.
+>>
+>> Example: The ring at the time mhi_ep_read_channel is executing may look like:
+>> chained | chained |  EOT#1 | chained | chained | EOT#2
+>> If we remove the check from mhi_ep_process_ch_ring, we bail out of the first transaction itself
+>> and the remaining packets won't be processed. mhi_ep_read_channel in its current form is designed
+>> for a single MHI packet only.
+>>
 > 
-> On Thu, May 22, 2025 at 12:09:08PM +0300, Tomi Valkeinen wrote:
->> On 12/05/2025 11:32, Vitor Soares wrote:
->>> From: Vitor Soares <vitor.soares@toradex.com>
->>>
->>> The deprecated UNIVERSAL_DEV_PM_OPS() macro uses the provided callbacks
->>> for both runtime PM and system sleep. This causes the DSI clocks to be
->>> disabled twice: once during runtime suspend and again during system
->>> suspend, resulting in a WARN message from the clock framework when
->>> attempting to disable already-disabled clocks.
->>>
->>> [   84.384540] clk:231:5 already disabled
->>> [   84.388314] WARNING: CPU: 2 PID: 531 at /drivers/clk/clk.c:1181 clk_core_disable+0xa4/0xac
->>> ...
->>> [   84.579183] Call trace:
->>> [   84.581624]  clk_core_disable+0xa4/0xac
->>> [   84.585457]  clk_disable+0x30/0x4c
->>> [   84.588857]  cdns_dsi_suspend+0x20/0x58 [cdns_dsi]
->>> [   84.593651]  pm_generic_suspend+0x2c/0x44
->>> [   84.597661]  ti_sci_pd_suspend+0xbc/0x15c
->>> [   84.601670]  dpm_run_callback+0x8c/0x14c
->>> [   84.605588]  __device_suspend+0x1a0/0x56c
->>> [   84.609594]  dpm_suspend+0x17c/0x21c
->>> [   84.613165]  dpm_suspend_start+0xa0/0xa8
->>> [   84.617083]  suspend_devices_and_enter+0x12c/0x634
->>> [   84.621872]  pm_suspend+0x1fc/0x368
->>>
->>> To address this issue, replace UNIVERSAL_DEV_PM_OPS() with
->>> SET_RUNTIME_PM_OPS(), enabling suspend/resume handling through the
->>> _enable()/_disable() hooks managed by the DRM framework for both
->>> runtime and system-wide PM.
->>>
->>> Cc: <stable@vger.kernel.org> # 6.1.x
->>> Fixes: e19233955d9e ("drm/bridge: Add Cadence DSI driver")
->>> Signed-off-by: Vitor Soares <vitor.soares@toradex.com>
+> Then you should ignore the EOT flag by removing '!tr_done' check and just check
+> for buf_left and mhi_ep_process_ch_ring(). Having the same check in caller and
+> callee doesn't make sense.
 > 
-> ping on this, Tomi, maybe you can pick this one or is there any
-> concern ?
+> - Mani
+> 
+Agreed, we can remove the tr_done check from the while loop, then all 
+the elements of the ring will be processed in read_channel.
+Additionally, the purpose of buf_left is to process a TRE if 
+DEFAULT_MTU_SIZE of endpoint is less than host, but the buf_left will 
+become 0 after processing a part of TRE and will not process the 
+remaining data.
 
-No concern from my side, but I'm not a bridge or cdns-dsi maintainer, so
-I don't pick any of these to drm-misc by default.
+Therefore will remove the buf_left too from read_channel otherwise it 
+will exit the loop after processing one TRE or just a part of it.
 
-Aaand now as I wrote that, I realized I just some time ago pushed the
-cdns-dsi series ("drm/bridge: cdns-dsi: Make it work a bit better") to
-drm-misc without bridge maintainer's ack... So that didn't go according
-to the rules, sorry.
-
- Tomi
-
+- Sumit
 
