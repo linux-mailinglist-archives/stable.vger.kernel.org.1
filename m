@@ -1,117 +1,137 @@
-Return-Path: <stable+bounces-172437-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-172441-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 337FAB31CAE
-	for <lists+stable@lfdr.de>; Fri, 22 Aug 2025 16:51:12 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id D8E27B31CAC
+	for <lists+stable@lfdr.de>; Fri, 22 Aug 2025 16:50:56 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id B206DB0862A
-	for <lists+stable@lfdr.de>; Fri, 22 Aug 2025 14:44:27 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 4D0B01D047DE
+	for <lists+stable@lfdr.de>; Fri, 22 Aug 2025 14:45:38 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 53407311974;
-	Fri, 22 Aug 2025 14:43:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 52DFC312819;
+	Fri, 22 Aug 2025 14:44:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="FmVWSfFx"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="DM6jPCx/"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0C31230E0F2;
-	Fri, 22 Aug 2025 14:43:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 00AD930AAD2
+	for <stable@vger.kernel.org>; Fri, 22 Aug 2025 14:44:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755873818; cv=none; b=A3yqRxta92TS76QiZDVw+8/t8Z6to23Z/L3PQhKPmJJxz+sit8tlCv4NGr+rwaL+gSvVCPItnPULnQMNGAmE4v1m4hEo5CL0mazTApln6/lDnXhQbVzp4yfJZlOPu2Zg8iG/TYEojhP47OZ57Igh+RrvhmqpmTCCt17rUAhsKG0=
+	t=1755873848; cv=none; b=VNZsQWyXTq1AZ3ihFnCaGmZ71o8FodMUHKsgPodBQqMlhCs3DVWvgv9UpFQRZJgFM4elKNg0Qx9wOTFPutlXvyZMnWBrAw1X2zYJPHTaJFEHBxNiis6zXzDS2vkVSddtq9axnJ2Bc5kfxjI3wgNTbAZxlihWA6VmQi1rbMrSyS4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1755873818; c=relaxed/simple;
-	bh=qRISSD0T4GCUU5yfMH4uUcJGBBZhh2NGiVvlvLAJsls=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=BJQ7DSYc0iOWcjOwAb0o21+m3eTwoKcyEc382wFO+OsHdAOXQy0da6OcE8RItqx3aV+PvSabFibw4+Vc4T/yIVIKredMUU6ByCc/nwp/Gf+kuVOLtkNBm+rP+3xOk0bIHKSz+2DVUv/E79hSgc/ReBXlPHvSfiWFhSisdjOst30=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=FmVWSfFx; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5B057C113D0;
-	Fri, 22 Aug 2025 14:43:36 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1755873817;
-	bh=qRISSD0T4GCUU5yfMH4uUcJGBBZhh2NGiVvlvLAJsls=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=FmVWSfFxfvPzNW9yF8I6Ns5tut7zVDaSFvHmN1oA2XbGQ8KYIU8DWdS/AKzPoUD3c
-	 fzC6YUROLgK/YpqaR7g++EcUrj4mEkbXWPsldcmzeOM90SZX/W6Q9WWc06nC30T8l0
-	 zzrEYQ23P7peIafDaCqzJaRPBnySFirOEzjo58iy+WpxbVcTkXjwQDV6OeP3BmRgMC
-	 h4vToYfXTaV8WJhF2yFMtbtvYcRFUeu60mzVS/80lb0QqnThy2xIy1kg6G1/j/YVw0
-	 WPTQnNBxQu7MeHaSWOySL0A4V5hRCbYlOvI1fac5BkgGFoCG4vlLCcTC/hdBznuhcI
-	 8C5Fysnp0AO5Q==
-From: "Matthieu Baerts (NGI0)" <matttbe@kernel.org>
-To: stable@vger.kernel.org,
-	gregkh@linuxfoundation.org
-Cc: MPTCP Upstream <mptcp@lists.linux.dev>,
-	"Matthieu Baerts (NGI0)" <matttbe@kernel.org>,
-	Mat Martineau <martineau@kernel.org>,
-	Jakub Kicinski <kuba@kernel.org>
-Subject: [PATCH 5.10.y] selftests: mptcp: pm: check flush doesn't reset limits
-Date: Fri, 22 Aug 2025 16:43:29 +0200
-Message-ID: <20250822144328.108718-2-matttbe@kernel.org>
-X-Mailer: git-send-email 2.50.0
-In-Reply-To: <2025082203-populate-sublease-ef51@gregkh>
-References: <2025082203-populate-sublease-ef51@gregkh>
+	s=arc-20240116; t=1755873848; c=relaxed/simple;
+	bh=P46cp1o1khui6/DeUeJrmVFBNCPP4UotYa96YnE1dqQ=;
+	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=F9vdiXk0+RPUwA79uv3Bp0JlGnAJYvMZ3z/Cee6ZIzAv1IoiHRGwyY3SRGQKinHp/F1DYUaNc9NQY6bGW5hVAKq1zRy2UCwse9TghmsBWgsjYZ1LgLVVZW3iil/KKNkxRbmHwZVobY+a9EqT7jY4WBFUocUYjF/I6xGvq3wooyM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=DM6jPCx/; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 46C91C4CEED;
+	Fri, 22 Aug 2025 14:44:07 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
+	s=korg; t=1755873847;
+	bh=P46cp1o1khui6/DeUeJrmVFBNCPP4UotYa96YnE1dqQ=;
+	h=Subject:To:Cc:From:Date:From;
+	b=DM6jPCx/25rPdCCXU6Wi7AtSjs3CT1Khkjjme4eMOKwngVrhS9tLX9UiHjmdUTPXm
+	 RwG1su5HAdlz7fMj/Wzvu5w2EeS4tUbprQ5XGiMou6f6V0jh4nO1xzCs4meudUoWmW
+	 0dvaESjLB9bCkASOWLvDzIrHXRLwlMjB1fmFAU2Q=
+Subject: FAILED: patch "[PATCH] mm/memory-failure: fix infinite UCE for VM_PFNMAP pfn" failed to apply to 6.1-stable tree
+To: tujinjiang@huawei.com,akpm@linux-foundation.org,david@redhat.com,jane.chu@oracle.com,linmiaohe@huawei.com,nao.horiguchi@gmail.com,osalvador@suse.de,stable@vger.kernel.org,wangkefeng.wang@huawei.com,xueshuai@linux.alibaba.com,ziy@nvidia.com
+Cc: <stable@vger.kernel.org>
+From: <gregkh@linuxfoundation.org>
+Date: Fri, 22 Aug 2025 16:44:04 +0200
+Message-ID: <2025082204-copied-affecting-d945@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-Developer-Signature: v=1; a=openpgp-sha256; l=2332; i=matttbe@kernel.org; h=from:subject; bh=qRISSD0T4GCUU5yfMH4uUcJGBBZhh2NGiVvlvLAJsls=; b=owGbwMvMwCVWo/Th0Gd3rumMp9WSGDJWNAnu/bps+XZ/2+DLnuGVS48t6DuhtlTS9bLSiUDHi 0v6f+j96ChlYRDjYpAVU2SRbovMn/m8irfEy88CZg4rE8gQBi5OAZiIizHD/7rngS/9NH6xzD+S Var9w4qnz791R/7+q9bHepyT1xqkqzMy/P3DX9CdEerO8vqwzB8b5yfnbiXcN66Yd2zny1+Jz5+ VcgAA
-X-Developer-Key: i=matttbe@kernel.org; a=openpgp; fpr=E8CB85F76877057A6E27F77AF6B7824F4269A073
+Content-Type: text/plain; charset=ANSI_X3.4-1968
 Content-Transfer-Encoding: 8bit
 
-commit 452690be7de2f91cc0de68cb9e95252875b33503 upstream.
 
-This modification is linked to the parent commit where the received
-ADD_ADDR limit was accidentally reset when the endpoints were flushed.
+The patch below does not apply to the 6.1-stable tree.
+If someone wants it applied there, or to any other stable or longterm
+tree, then please email the backport, including the original git commit
+id to <stable@vger.kernel.org>.
 
-To validate that, the test is now flushing endpoints after having set
-new limits, and before checking them.
+To reproduce the conflict and resubmit, you may use the following commands:
 
-The 'Fixes' tag here below is the same as the one from the previous
-commit: this patch here is not fixing anything wrong in the selftests,
-but it validates the previous fix for an issue introduced by this commit
-ID.
+git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-6.1.y
+git checkout FETCH_HEAD
+git cherry-pick -x 2e6053fea379806269c4f7f5e36b523c9c0fb35c
+# <resolve conflicts, build, test, etc.>
+git commit -s
+git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2025082204-copied-affecting-d945@gregkh' --subject-prefix 'PATCH 6.1.y' HEAD^..
 
-Fixes: 01cacb00b35c ("mptcp: add netlink-based PM")
-Cc: stable@vger.kernel.org
-Reviewed-by: Mat Martineau <martineau@kernel.org>
-Signed-off-by: Matthieu Baerts (NGI0) <matttbe@kernel.org>
-Link: https://patch.msgid.link/20250815-net-mptcp-misc-fixes-6-17-rc2-v1-3-521fe9957892@kernel.org
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-[ Conflicts in pm_netlink.sh, because some refactoring have been done
-  later on: commit 3188309c8ceb ("selftests: mptcp: netlink:
-  add 'limits' helpers") and commit c99d57d0007a ("selftests: mptcp: use
-  pm_nl endpoint ops") are not in this version. The same operation can
-  still be done at the same place, without using the new helper. ]
-Signed-off-by: Matthieu Baerts (NGI0) <matttbe@kernel.org>
----
-Note: this patch is validating the upstream's parent patch, commit
-68fc0f4b0d25 ("mptcp: pm: kernel: flush: do not reset ADD_ADDR limit"),
-which has not been queued in the v5.10 queue yet. I'm already sending
-this patch, because I got the FAILED notification, and the resolution is
-the same as previous patches I sent earlier today.
----
- tools/testing/selftests/net/mptcp/pm_netlink.sh | 1 +
- 1 file changed, 1 insertion(+)
+Possible dependencies:
 
-diff --git a/tools/testing/selftests/net/mptcp/pm_netlink.sh b/tools/testing/selftests/net/mptcp/pm_netlink.sh
-index fff6f74ebe16..7d194f5c2939 100755
---- a/tools/testing/selftests/net/mptcp/pm_netlink.sh
-+++ b/tools/testing/selftests/net/mptcp/pm_netlink.sh
-@@ -130,6 +130,7 @@ ip netns exec $ns1 ./pm_nl_ctl limits 1 9
- check "ip netns exec $ns1 ./pm_nl_ctl limits" "$default_limits" "subflows above hard limit"
+
+
+thanks,
+
+greg k-h
+
+------------------ original commit in Linus's tree ------------------
+
+From 2e6053fea379806269c4f7f5e36b523c9c0fb35c Mon Sep 17 00:00:00 2001
+From: Jinjiang Tu <tujinjiang@huawei.com>
+Date: Fri, 15 Aug 2025 15:32:09 +0800
+Subject: [PATCH] mm/memory-failure: fix infinite UCE for VM_PFNMAP pfn
+
+When memory_failure() is called for a already hwpoisoned pfn,
+kill_accessing_process() will be called to kill current task.  However, if
+the vma of the accessing vaddr is VM_PFNMAP, walk_page_range() will skip
+the vma in walk_page_test() and return 0.
+
+Before commit aaf99ac2ceb7 ("mm/hwpoison: do not send SIGBUS to processes
+with recovered clean pages"), kill_accessing_process() will return EFAULT.
+For x86, the current task will be killed in kill_me_maybe().
+
+However, after this commit, kill_accessing_process() simplies return 0,
+that means UCE is handled properly, but it doesn't actually.  In such
+case, the user task will trigger UCE infinitely.
+
+To fix it, add .test_walk callback for hwpoison_walk_ops to scan all vmas.
+
+Link: https://lkml.kernel.org/r/20250815073209.1984582-1-tujinjiang@huawei.com
+Fixes: aaf99ac2ceb7 ("mm/hwpoison: do not send SIGBUS to processes with recovered clean pages")
+Signed-off-by: Jinjiang Tu <tujinjiang@huawei.com>
+Acked-by: David Hildenbrand <david@redhat.com>
+Acked-by: Miaohe Lin <linmiaohe@huawei.com>
+Reviewed-by: Jane Chu <jane.chu@oracle.com>
+Cc: Kefeng Wang <wangkefeng.wang@huawei.com>
+Cc: Naoya Horiguchi <nao.horiguchi@gmail.com>
+Cc: Oscar Salvador <osalvador@suse.de>
+Cc: Shuai Xue <xueshuai@linux.alibaba.com>
+Cc: Zi Yan <ziy@nvidia.com>
+Cc: <stable@vger.kernel.org>
+Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
+
+diff --git a/mm/memory-failure.c b/mm/memory-failure.c
+index e2e685b971bb..fc30ca4804bf 100644
+--- a/mm/memory-failure.c
++++ b/mm/memory-failure.c
+@@ -853,9 +853,17 @@ static int hwpoison_hugetlb_range(pte_t *ptep, unsigned long hmask,
+ #define hwpoison_hugetlb_range	NULL
+ #endif
  
- ip netns exec $ns1 ./pm_nl_ctl limits 8 8
-+ip netns exec $ns1 ./pm_nl_ctl flush
- check "ip netns exec $ns1 ./pm_nl_ctl limits" "accept 8
- subflows 8" "set limits"
++static int hwpoison_test_walk(unsigned long start, unsigned long end,
++			     struct mm_walk *walk)
++{
++	/* We also want to consider pages mapped into VM_PFNMAP. */
++	return 0;
++}
++
+ static const struct mm_walk_ops hwpoison_walk_ops = {
+ 	.pmd_entry = hwpoison_pte_range,
+ 	.hugetlb_entry = hwpoison_hugetlb_range,
++	.test_walk = hwpoison_test_walk,
+ 	.walk_lock = PGWALK_RDLOCK,
+ };
  
--- 
-2.50.0
 
 
