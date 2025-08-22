@@ -1,46 +1,46 @@
-Return-Path: <stable+bounces-172488-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-172489-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 972C5B321FE
-	for <lists+stable@lfdr.de>; Fri, 22 Aug 2025 20:09:09 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id F077AB32234
+	for <lists+stable@lfdr.de>; Fri, 22 Aug 2025 20:18:22 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 5B153627E68
-	for <lists+stable@lfdr.de>; Fri, 22 Aug 2025 18:09:09 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 3CB01A04043
+	for <lists+stable@lfdr.de>; Fri, 22 Aug 2025 18:18:21 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4B4122BDC23;
-	Fri, 22 Aug 2025 18:09:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C0D112BE62E;
+	Fri, 22 Aug 2025 18:18:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="le6Oeaek"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="fdvOwSoV"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 08B321A9FB9
-	for <stable@vger.kernel.org>; Fri, 22 Aug 2025 18:09:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8062D35975
+	for <stable@vger.kernel.org>; Fri, 22 Aug 2025 18:18:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755886145; cv=none; b=SMagauVJtMSAk2qK3Wv856nZZPxRoVAGJJMH781ZNiDt8KesaiXdiQJWw/EtIvr3cyBmd43hmyiSjKKI4IVr70Vo1ioV8+FuEPjO+h2WY22ijj5ehXR1mcotPWnSC41stM7SDnaZW+FMULWzNMhpCXkBb0bUWZ67tTBdvufKWxU=
+	t=1755886698; cv=none; b=Sz2tiZ79RTsvjdb8Is4gojiGN+W9nhNxofB9YD2Isz439qE1nO12tWL8pc04DXYDUGK9nuCVq/vzrRCF19PilI8R3VUsWf6J6RpVvxxMEyAFkVPbreBx0X9agciJmpU2poG/TZzh2IK1ar5ADbUYX7bgPRBjM/tP7NBblzbQHyo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1755886145; c=relaxed/simple;
-	bh=VqvaX1hXVaw6OXd8rLJmEH2C7REccRXA4BZRhzwvYDk=;
+	s=arc-20240116; t=1755886698; c=relaxed/simple;
+	bh=pmMOLRm9PZWKWQaIpoJlCEMLBxMFN1yf8r7ci6M4i5A=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=IcCMFlKVp8HgcEldtnGcCT+cZR4009UFwKXpPAdTkp8h9AoP9kS+XhCrTHhO525t5Qs33pZ0i67tM6MNuL9fFyC0SjGWPpG1la6x1jxJYAn28L8Hz+w3ELG1Cxo6+VT6f+1J0Fa/36lDQ+8wKkgz/wUgLX/COUVtYLXPLds2fY8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=le6Oeaek; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 370DCC4CEED;
-	Fri, 22 Aug 2025 18:09:04 +0000 (UTC)
+	 MIME-Version; b=iCsQ0c6MkgSHHRyLi3o4fcFEUe/E7CTjST7N1K+10hQNxXJ+CNLSiKQC3bf/VzTLM/Qu7m0yuGr6FTdlDAu7aeHsxXfbbnujko5ezWokepRjzFne/fh+fKEFOCYp2qEYO25skKe+YNwrLBBQ0wivt7fceP5tycMXnXUblPeefm4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=fdvOwSoV; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 961F4C4CEED;
+	Fri, 22 Aug 2025 18:18:17 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1755886144;
-	bh=VqvaX1hXVaw6OXd8rLJmEH2C7REccRXA4BZRhzwvYDk=;
+	s=k20201202; t=1755886698;
+	bh=pmMOLRm9PZWKWQaIpoJlCEMLBxMFN1yf8r7ci6M4i5A=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=le6OeaekIteK7Yhe+m8Yfuytgkm3DJzvTX4nZtAsCo2Amc6qRBkGyUxVQEilrTs2R
-	 OFo8vHGHZRDfXDffBpVlhSeLH5ZzJlKooREql8kgWuEihVPZ1ab1p36cTPUdgrdBjR
-	 qdW5PFSXZOI+kVyvxaPQik+ulkKvvixBwwm1IRoBrQmbOF0Xnz6WHkEErK+/aaqIuK
-	 kuqOIJ2h1mU9YC8G1dMq/hWYYhpDUDPMaIW1WPvUSCAHkVwyqUpuuXB2MIg1hXBsWx
-	 s6zlwr9sAAS1bjvh8sBVp2CbRwVdVEDWkaiDEHs1iPBiFIb0k0V2Vgelsowb343sAK
-	 80w0IarY/lFtQ==
+	b=fdvOwSoVOlnH8CI6PJr/cppTdv61aVyhNFbyT19A1wtKLA/PM5Y5as1bTkB+4RM85
+	 waLwNdmQ5SgorCOS7p94zoDq1GhswSGlGlHx9OB5il0cOOfcuL+S090hEN//RlIhue
+	 u092n6visHmI1uxRKC8E3eKlg5aG12SLSmTLUxa+/ON8V18HgVMgwDc2IJr+Iiqze8
+	 NRCxgdnJIvxo42WtnCFUee5pmdptZd29qKswAWKCs7lAZKSWIH51U+gkxn4P+NlMu+
+	 Ch2er/DlNaZETAo+5CWwdKHdhsXbGzmTQMotPjJ6ogEVMb3dCvpj2/GxeyB60Xfdpb
+	 HZyNspMCTppjQ==
 From: Sasha Levin <sashal@kernel.org>
 To: stable@vger.kernel.org
 Cc: Bjorn Andersson <bjorn.andersson@oss.qualcomm.com>,
@@ -48,12 +48,12 @@ Cc: Bjorn Andersson <bjorn.andersson@oss.qualcomm.com>,
 	Dmitry Baryshkov <dmitry.baryshkov@oss.qualcomm.com>,
 	Bjorn Andersson <andersson@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15.y] soc: qcom: mdt_loader: Ensure we don't read past the ELF header
-Date: Fri, 22 Aug 2025 14:09:02 -0400
-Message-ID: <20250822180902.1356815-1-sashal@kernel.org>
+Subject: [PATCH 5.10.y] soc: qcom: mdt_loader: Ensure we don't read past the ELF header
+Date: Fri, 22 Aug 2025 14:18:15 -0400
+Message-ID: <20250822181815.1360340-1-sashal@kernel.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <2025082136-finalist-ravage-eaf5@gregkh>
-References: <2025082136-finalist-ravage-eaf5@gregkh>
+In-Reply-To: <2025082136-curve-morality-6c4a@gregkh>
+References: <2025082136-curve-morality-6c4a@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -87,7 +87,7 @@ Signed-off-by: Sasha Levin <sashal@kernel.org>
  1 file changed, 41 insertions(+)
 
 diff --git a/drivers/soc/qcom/mdt_loader.c b/drivers/soc/qcom/mdt_loader.c
-index 72fc2b539213..5b1eb34e512a 100644
+index 6034cd8992b0..c2bbde533e66 100644
 --- a/drivers/soc/qcom/mdt_loader.c
 +++ b/drivers/soc/qcom/mdt_loader.c
 @@ -12,11 +12,43 @@
