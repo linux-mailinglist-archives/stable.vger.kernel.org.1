@@ -1,208 +1,203 @@
-Return-Path: <stable+bounces-172369-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-172370-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7E780B317ED
-	for <lists+stable@lfdr.de>; Fri, 22 Aug 2025 14:35:03 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7BD5FB317FA
+	for <lists+stable@lfdr.de>; Fri, 22 Aug 2025 14:37:52 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 4EAFB600ACB
-	for <lists+stable@lfdr.de>; Fri, 22 Aug 2025 12:35:00 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 03C501CE0D92
+	for <lists+stable@lfdr.de>; Fri, 22 Aug 2025 12:36:44 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 04F692FC016;
-	Fri, 22 Aug 2025 12:34:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2E3BB2FB639;
+	Fri, 22 Aug 2025 12:36:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="PiT7c3YH"
+	dkim=pass (2048-bit key) header.d=quicinc.com header.i=@quicinc.com header.b="CC8LMj+o"
 X-Original-To: stable@vger.kernel.org
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.16])
+Received: from mx0a-0031df01.pphosted.com (mx0a-0031df01.pphosted.com [205.220.168.131])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1F5AA2FB972;
-	Fri, 22 Aug 2025 12:34:46 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.16
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5D6381A01BF;
+	Fri, 22 Aug 2025 12:36:15 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.168.131
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755866087; cv=none; b=aW8KXQxWZvAHUHTSh2xoXQdNWAlgrD5dvtmTd2NGM0IXsPgohzZUgqINTIbJkw61RQuTaCDjywBOokySQf6GatBNQh3fkLpNjJ2kpztyOKl/FW9b2+lC3i1H/4uZU/Q/tw4xVtUumvUXJRIe85yvaPlkFuVjGurkY/XuURC1C+k=
+	t=1755866176; cv=none; b=H1KEd/shYhKUWOXRog3bRRiT6ogJq5xwbQue+FqD8yYRaxPa6ljm+Z7e1Ad0CK46ieNx0+OTVtaxxx2IlTPqLCesqhDIkhsqt/pgUQUdpqAGnfPdN1e2WxQ/Y1MJH0vhIaKo/izx7dPGLHrWTCXVFgwjvS810kicbjBp5AJczcA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1755866087; c=relaxed/simple;
-	bh=np5jOecE4nT+dASmiZntjLqhj8X27reIWBQkTw8zbAk=;
-	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=hzKba1zJeLPSHYEUMlnRxB/T/SM9fQ17GC3WwOXhUDyFw8y12rTEBXIX2Z3J1U13OoN7fuYsP0NT4R+RfZdPgsIRhT8qvqPkSPWk9XRmu/msMiPoWD33FLeDYSIp8j9/xmvyXAMWng3zaf7pcsDFkoy07R7BNYhbBgcDeLd9M18=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=none smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=PiT7c3YH; arc=none smtp.client-ip=192.198.163.16
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=linux.intel.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1755866086; x=1787402086;
-  h=from:to:cc:subject:date:message-id:in-reply-to:
-   references:mime-version:content-transfer-encoding;
-  bh=np5jOecE4nT+dASmiZntjLqhj8X27reIWBQkTw8zbAk=;
-  b=PiT7c3YHlTKQ56xSbpvxqxcTgp5CGjYjPrcGQxccpS6XTlvc6n/7qbhX
-   khgFzNeqoifM5XqzvU9u3zmo6f3pPUthTIhqw0RZefIbqD0kKSMhyis0I
-   PehcSizhIeXDiIKvMZPdwZeatAFpS8vrCMbFT0QHOeXeYOysG0b7AOWQG
-   3y70KUjYkZk54xIX8H5SIpHZUZDtfcfbSMkmkX3aJD1/hMCGGuEqEIv5Q
-   cfJArcQ9EMPoQUg2omNLuTNYnvh+kPp9WdscIJiojreEs3LzioOgJ/Res
-   6nlxKndhQSah9e/H8xvabtW7CxmHcHLPxOxKHcw0oVfMnMX3StImZDNBc
-   g==;
-X-CSE-ConnectionGUID: 9vVk9gMpRdWjHEqo4+FD2Q==
-X-CSE-MsgGUID: 5DLEe32nSlmw2jSKSFZfYQ==
-X-IronPort-AV: E=McAfee;i="6800,10657,11529"; a="45742866"
-X-IronPort-AV: E=Sophos;i="6.17,309,1747724400"; 
-   d="scan'208";a="45742866"
-Received: from fmviesa006.fm.intel.com ([10.60.135.146])
-  by fmvoesa110.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 22 Aug 2025 05:34:44 -0700
-X-CSE-ConnectionGUID: iLW5NYiFSxe+wgYVIA9zjQ==
-X-CSE-MsgGUID: 5aZFHMQKTDK/Vw7+5jxfeg==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.17,309,1747724400"; 
-   d="scan'208";a="168599441"
-Received: from ijarvine-mobl1.ger.corp.intel.com (HELO localhost) ([10.245.244.115])
-  by fmviesa006-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 22 Aug 2025 05:34:40 -0700
-From: =?UTF-8?q?Ilpo=20J=C3=A4rvinen?= <ilpo.jarvinen@linux.intel.com>
-To: Bjorn Helgaas <bhelgaas@google.com>,
-	linux-pci@vger.kernel.org,
-	D Scott Phillips <scott@os.amperecomputing.com>,
-	Rio Liu <rio@r26.me>,
-	Tudor Ambarus <tudor.ambarus@linaro.org>,
-	Markus Elfring <Markus.Elfring@web.de>,
-	=?UTF-8?q?Ilpo=20J=C3=A4rvinen?= <ilpo.jarvinen@linux.intel.com>,
-	linux-kernel@vger.kernel.org
-Cc: =?UTF-8?q?Christian=20K=C3=B6nig?= <christian.koenig@amd.com>,
-	stable@vger.kernel.org
-Subject: [PATCH v3 3/3] PCI: Fix failure detection during resource resize
-Date: Fri, 22 Aug 2025 15:33:59 +0300
-Message-Id: <20250822123359.16305-4-ilpo.jarvinen@linux.intel.com>
-X-Mailer: git-send-email 2.39.5
-In-Reply-To: <20250822123359.16305-1-ilpo.jarvinen@linux.intel.com>
-References: <20250822123359.16305-1-ilpo.jarvinen@linux.intel.com>
+	s=arc-20240116; t=1755866176; c=relaxed/simple;
+	bh=QtAhiozZVc+OzM8G92D6AyUI1Z74irkiPB9et8iXAp4=;
+	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=F+MGBXlhPuiWXHO+L+qGkbRL1AaHGnVZCn8R0+OGrE5X8mrhHyRqxxDxPloCufyuG7MSsPSvNSfD3ngMe2re2gHh8FSixpR2PncbSRZC+bveY8m7r7oncc3qMVx3fOHDOoVjGSxLqo0ZJYReRnKEeRVGZfbU43pI/gEq+wc0kpw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=quicinc.com; spf=pass smtp.mailfrom=qualcomm.com; dkim=pass (2048-bit key) header.d=quicinc.com header.i=@quicinc.com header.b=CC8LMj+o; arc=none smtp.client-ip=205.220.168.131
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=quicinc.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=qualcomm.com
+Received: from pps.filterd (m0279866.ppops.net [127.0.0.1])
+	by mx0a-0031df01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 57M8UuGa001675;
+	Fri, 22 Aug 2025 12:36:11 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=quicinc.com; h=
+	cc:content-transfer-encoding:date:from:message-id:mime-version
+	:subject:to; s=qcppdkim1; bh=8bpDpKP/qGjGh6KYAATVkMhEaOqdynSbq5Z
+	tkMVFRcY=; b=CC8LMj+oEmz8q+9T9jzNK48lURsrVsagSVpEU/5f5Bu2IHXekwP
+	FrBIYxySfkQXdKRKENomJOPmutzfvnXAMAhUBKeogiJQCJebjBg9de9wsGHNwgdD
+	vlLGuYq+D9F+1kch8OS3d8syg66F/zdMW/tLSBh6eJXHlzKHRBtKbGae5xncWrEy
+	v4oTr3GNX6BY/HLvrfoRtF3ASO761tMTqdQssmeFO4EjMp+nVdgEu8RUTu2IHY8M
+	FVtNTZgl2etFIsZDOY/NQTzKCUjE+nHEPiLSedFdCrmpVqrFC9Oa+2WqekOzSPtB
+	3I4zWAiBT6FLmxQYrQ5pwKqnAfVKN1Q1csA==
+Received: from aptaippmta02.qualcomm.com (tpe-colo-wan-fw-bordernet.qualcomm.com [103.229.16.4])
+	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 48n529975g-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Fri, 22 Aug 2025 12:36:11 +0000 (GMT)
+Received: from pps.filterd (APTAIPPMTA02.qualcomm.com [127.0.0.1])
+	by APTAIPPMTA02.qualcomm.com (8.18.1.2/8.18.1.2) with ESMTP id 57MCa9UW014427;
+	Fri, 22 Aug 2025 12:36:09 GMT
+Received: from pps.reinject (localhost [127.0.0.1])
+	by APTAIPPMTA02.qualcomm.com (PPS) with ESMTPS id 48mv0f98jd-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Fri, 22 Aug 2025 12:36:09 +0000
+Received: from APTAIPPMTA02.qualcomm.com (APTAIPPMTA02.qualcomm.com [127.0.0.1])
+	by pps.reinject (8.17.1.5/8.17.1.5) with ESMTP id 57MCa97S014422;
+	Fri, 22 Aug 2025 12:36:09 GMT
+Received: from bt-iot-sh02-lnx.ap.qualcomm.com (bt-iot-sh02-lnx.qualcomm.com [10.253.144.65])
+	by APTAIPPMTA02.qualcomm.com (PPS) with ESMTPS id 57MCa8db014421
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Fri, 22 Aug 2025 12:36:09 +0000
+Received: by bt-iot-sh02-lnx.ap.qualcomm.com (Postfix, from userid 4467449)
+	id 04A7121D6A; Fri, 22 Aug 2025 20:36:08 +0800 (CST)
+From: Shuai Zhang <quic_shuaz@quicinc.com>
+To: dmitry.baryshkov@oss.qualcomm.com, marcel@holtmann.org,
+        luiz.dentz@gmail.com
+Cc: linux-bluetooth@vger.kernel.org, stable@vger.kernel.org,
+        linux-arm-msm@vger.kernel.org, linux-kernel@vger.kernel.org,
+        quic_chejiang@quicinc.com, Shuai Zhang <quic_shuaz@quicinc.com>
+Subject: [PATCH v8] Bluetooth: hci_qca: Fix SSR (SubSystem Restart) fail when BT_EN is pulled up by hw
+Date: Fri, 22 Aug 2025 20:36:05 +0800
+Message-Id: <20250822123605.757306-1-quic_shuaz@quicinc.com>
+X-Mailer: git-send-email 2.34.1
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
+X-QCInternal: smtphost
+X-QCInternal: smtphost
+X-Proofpoint-Virus-Version: vendor=nai engine=6200 definitions=5800 signatures=585085
+X-Proofpoint-Virus-Version: vendor=nai engine=6200 definitions=5800 signatures=585085
+X-Proofpoint-GUID: lDUSRJyzeVotR3Nhtocac3GsC7DJQDFh
+X-Proofpoint-ORIG-GUID: lDUSRJyzeVotR3Nhtocac3GsC7DJQDFh
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjUwODIwMDAxMyBTYWx0ZWRfXwrx/sznr6/7s
+ 02TD/JYvCl/SGymLJCV7RHjk/fqa/gjHVdKUjQdJxQi7YnZ8/tjr6658COlLV1ZCwxgLnp1qjuP
+ S0AtRauDxBtSk+hgobQxTng+puGFmbo0NV2khV7pfbeI10nhJ1JgZsT0taGfzledevY4YmlIMYq
+ jOygg11jnOmoXEfMnDJkyfCtr/DQGdq0/Dpb2lWGBNZWz9lrJoA6mRMA+v9CQy0ewxysjyrc2ju
+ Mop6ot855DviDnBlzmAGz9KTDXjp79u/85TdRYUAOTFaaLZA/ug0ngNojzRXDL9R0GHQwhkUd/Z
+ WflXKDPN8E0DvB2dm08ZDV6DvxmulmZJXpFrIwB7CkJkJ3VxfEx1NQ+3JWDvNHrynDhHiHVzDLF
+ R5l97WLKq6dCqtYqMYHbpuZk7Qnj+A==
+X-Authority-Analysis: v=2.4 cv=SPkblOvH c=1 sm=1 tr=0 ts=68a8643b cx=c_pps
+ a=nuhDOHQX5FNHPW3J6Bj6AA==:117 a=nuhDOHQX5FNHPW3J6Bj6AA==:17
+ a=2OwXVqhp2XgA:10 a=COk6AnOGAAAA:8 a=Zh3eq0SbisOj6M6HGuUA:9
+ a=TjNXssC_j7lpFel5tvFf:22 a=cPQSjfK2_nFv0Q5t_7PE:22
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1099,Hydra:6.1.9,FMLib:17.12.80.40
+ definitions=2025-08-22_04,2025-08-20_03,2025-03-28_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ suspectscore=0 priorityscore=1501 bulkscore=0 spamscore=0 phishscore=0
+ impostorscore=0 adultscore=0 malwarescore=0 lowpriorityscore=0 clxscore=1011
+ classifier=typeunknown authscore=0 authtc= authcc= route=outbound adjust=0
+ reason=mlx scancount=1 engine=8.19.0-2508110000 definitions=main-2508200013
 
-Since the commit 96336ec70264 ("PCI: Perform reset_resource() and build
-fail list in sync") the failed list is always built and returned to let
-the caller decide what to do with the failures. The caller may want to
-retry resource fitting and assignment and before that can happen, the
-resources should be restored to their original state (a reset
-effectively clears the struct resource), which requires returning them
-on the failed list so that the original state remains stored in the
-associated struct pci_dev_resource.
+When the host actively triggers SSR and collects coredump data,
+the Bluetooth stack sends a reset command to the controller. However, due
+to the inability to clear the QCA_SSR_TRIGGERED and QCA_IBS_DISABLED bits,
+the reset command times out.
 
-Resource resizing is different from the ordinary resource fitting and
-assignment in that it only considers part of the resources. This means
-failures for other resource types are not relevant at all and should be
-ignored. As resize doesn't unassign such unrelated resources, those
-resource ending up into the failed list implies assignment of that
-resource must have failed before resize too. The check in
-pci_reassign_bridge_resources() to decide if the whole assignment is
-successful, however, is based on list emptiness which will cause false
-negatives when the failed list has resources with an unrelated type.
+To address this, this patch clears the QCA_SSR_TRIGGERED and
+QCA_IBS_DISABLED flags and adds a 50ms delay after SSR, but only when
+HCI_QUIRK_NON_PERSISTENT_SETUP is not set. This ensures the controller
+completes the SSR process when BT_EN is always high due to hardware.
 
-If the failed list is not empty, call pci_required_resource_failed()
-and extend it to be able to filter on specific resource types too (if
-provided).
+For the purpose of HCI_QUIRK_NON_PERSISTENT_SETUP, please refer to
+the comment in `include/net/bluetooth/hci.h`.
 
-Calling pci_required_resource_failed() at this point is slightly
-problematic because the resource itself is reset when the failed list
-is constructed in __assign_resources_sorted(). As a result,
-pci_resource_is_optional() does not have access to the original
-resource flags. This could be worked around by restoring and
-re-reseting the resource around the call to pci_resource_is_optional(),
-however, it shouldn't cause issue as resource resizing is meant for
-64-bit prefetchable resources according to Christian König (see the
-Link which unfortunately doesn't point directly to Christian's reply
-because lore didn't store that email at all).
+The HCI_QUIRK_NON_PERSISTENT_SETUP quirk is associated with BT_EN,
+and its presence can be used to determine whether BT_EN is defined in DTS.
 
-Fixes: 96336ec70264 ("PCI: Perform reset_resource() and build fail list in sync")
-Link: https://lore.kernel.org/all/c5d1b5d8-8669-5572-75a7-0b480f581ac1@linux.intel.com/
-Reported-by: D Scott Phillips <scott@os.amperecomputing.com>
-Closes: https://lore.kernel.org/all/86plf0lgit.fsf@scott-ph-mail.amperecomputing.com/
-Tested-by: D Scott Phillips <scott@os.amperecomputing.com>
-Signed-off-by: Ilpo Järvinen <ilpo.jarvinen@linux.intel.com>
-Reviewed-by: D Scott Phillips <scott@os.amperecomputing.com>
-Cc: Christian König <christian.koenig@amd.com>
-Cc: <stable@vger.kernel.org>
+After SSR, host will not download the firmware, causing
+controller to remain in the IBS_WAKE state. Host needs
+to synchronize with the controller to maintain proper operation.
+
+Multiple triggers of SSR only first generate coredump file,
+due to memcoredump_flag no clear.
+
+add clear coredump flag when ssr completed.
+
+When the SSR duration exceeds 2 seconds, it triggers
+host tx_idle_timeout, which sets host TX state to sleep. due to the
+hardware pulling up bt_en, the firmware is not downloaded after the SSR.
+As a result, the controller does not enter sleep mode. Consequently,
+when the host sends a command afterward, it sends 0xFD to the controller,
+but the controller does not respond, leading to a command timeout.
+
+So reset tx_idle_timer after SSR to prevent host enter TX IBS_Sleep mode.
+
+Changes since v6-7:
+- Merge the changes into a single patch.
+- Update commit.
+
+Changes since v1-5:
+- Add an explanation for HCI_QUIRK_NON_PERSISTENT_SETUP.
+- Add commments for msleep(50).
+- Update format and commit.
+
+Signed-off-by: Shuai Zhang <quic_shuaz@quicinc.com>
 ---
- drivers/pci/setup-bus.c | 26 ++++++++++++++++++--------
- 1 file changed, 18 insertions(+), 8 deletions(-)
+ drivers/bluetooth/hci_qca.c | 33 +++++++++++++++++++++++++++++++++
+ 1 file changed, 33 insertions(+)
 
-diff --git a/drivers/pci/setup-bus.c b/drivers/pci/setup-bus.c
-index df5aec46c29d..def29506700e 100644
---- a/drivers/pci/setup-bus.c
-+++ b/drivers/pci/setup-bus.c
-@@ -28,6 +28,10 @@
- #include <linux/acpi.h>
- #include "pci.h"
+diff --git a/drivers/bluetooth/hci_qca.c b/drivers/bluetooth/hci_qca.c
+index 4e56782b0..9dc59b002 100644
+--- a/drivers/bluetooth/hci_qca.c
++++ b/drivers/bluetooth/hci_qca.c
+@@ -1653,6 +1653,39 @@ static void qca_hw_error(struct hci_dev *hdev, u8 code)
+ 		skb_queue_purge(&qca->rx_memdump_q);
+ 	}
  
-+#define PCI_RES_TYPE_MASK \
-+	(IORESOURCE_IO | IORESOURCE_MEM | IORESOURCE_PREFETCH |\
-+	 IORESOURCE_MEM_64)
++	/*
++	 * If the BT chip's bt_en pin is connected to a 3.3V power supply via
++	 * hardware and always stays high, driver cannot control the bt_en pin.
++	 * As a result, during SSR (SubSystem Restart), QCA_SSR_TRIGGERED and
++	 * QCA_IBS_DISABLED flags cannot be cleared, which leads to a reset
++	 * command timeout.
++	 * Add an msleep delay to ensure controller completes the SSR process.
++	 *
++	 * Host will not download the firmware after SSR, controller to remain
++	 * in the IBS_WAKE state, and the host needs to synchronize with it
++	 *
++	 * Since the bluetooth chip has been reset, clear the memdump state.
++	 */
++	if (!test_bit(HCI_QUIRK_NON_PERSISTENT_SETUP, &hdev->quirks)) {
++		/*
++		 * When the SSR (SubSystem Restart) duration exceeds 2 seconds,
++		 * it triggers host tx_idle_delay, which sets host TX state
++		 * to sleep. Reset tx_idle_timer after SSR to prevent
++		 * host enter TX IBS_Sleep mode.
++		 */
++		mod_timer(&qca->tx_idle_timer, jiffies +
++				  msecs_to_jiffies(qca->tx_idle_delay));
 +
- unsigned int pci_flags;
- EXPORT_SYMBOL_GPL(pci_flags);
- 
-@@ -384,13 +388,19 @@ static bool pci_need_to_release(unsigned long mask, struct resource *res)
++		/* Controller reset completion time is 50ms */
++		msleep(50);
++
++		clear_bit(QCA_SSR_TRIGGERED, &qca->flags);
++		clear_bit(QCA_IBS_DISABLED, &qca->flags);
++
++		qca->tx_ibs_state = HCI_IBS_TX_AWAKE;
++		qca->memdump_state = QCA_MEMDUMP_IDLE;
++	}
++
+ 	clear_bit(QCA_HW_ERROR_EVENT, &qca->flags);
  }
  
- /* Return: @true if assignment of a required resource failed. */
--static bool pci_required_resource_failed(struct list_head *fail_head)
-+static bool pci_required_resource_failed(struct list_head *fail_head,
-+					 unsigned long type)
- {
- 	struct pci_dev_resource *fail_res;
- 
-+	type &= PCI_RES_TYPE_MASK;
-+
- 	list_for_each_entry(fail_res, fail_head, list) {
- 		int idx = pci_resource_num(fail_res->dev, fail_res->res);
- 
-+		if (type && (fail_res->flags & PCI_RES_TYPE_MASK) != type)
-+			continue;
-+
- 		if (!pci_resource_is_optional(fail_res->dev, idx))
- 			return true;
- 	}
-@@ -504,7 +514,7 @@ static void __assign_resources_sorted(struct list_head *head,
- 	}
- 
- 	/* Without realloc_head and only optional fails, nothing more to do. */
--	if (!pci_required_resource_failed(&local_fail_head) &&
-+	if (!pci_required_resource_failed(&local_fail_head, 0) &&
- 	    list_empty(realloc_head)) {
- 		list_for_each_entry(save_res, &save_head, list) {
- 			struct resource *res = save_res->res;
-@@ -1708,10 +1718,6 @@ static void __pci_bridge_assign_resources(const struct pci_dev *bridge,
- 	}
- }
- 
--#define PCI_RES_TYPE_MASK \
--	(IORESOURCE_IO | IORESOURCE_MEM | IORESOURCE_PREFETCH |\
--	 IORESOURCE_MEM_64)
--
- static void pci_bridge_release_resources(struct pci_bus *bus,
- 					 unsigned long type)
- {
-@@ -2450,8 +2456,12 @@ int pci_reassign_bridge_resources(struct pci_dev *bridge, unsigned long type)
- 		free_list(&added);
- 
- 	if (!list_empty(&failed)) {
--		ret = -ENOSPC;
--		goto cleanup;
-+		if (pci_required_resource_failed(&failed, type)) {
-+			ret = -ENOSPC;
-+			goto cleanup;
-+		}
-+		/* Only resources with unrelated types failed (again) */
-+		free_list(&failed);
- 	}
- 
- 	list_for_each_entry(dev_res, &saved, list) {
 -- 
-2.39.5
+2.34.1
 
 
