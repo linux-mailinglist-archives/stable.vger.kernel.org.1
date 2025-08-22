@@ -1,217 +1,85 @@
-Return-Path: <stable+bounces-172422-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-172423-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 67BF9B31B23
-	for <lists+stable@lfdr.de>; Fri, 22 Aug 2025 16:20:00 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8F3E0B31B58
+	for <lists+stable@lfdr.de>; Fri, 22 Aug 2025 16:27:03 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 29532580E04
-	for <lists+stable@lfdr.de>; Fri, 22 Aug 2025 14:16:32 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 01FB1640FDA
+	for <lists+stable@lfdr.de>; Fri, 22 Aug 2025 14:20:49 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3907D306D49;
-	Fri, 22 Aug 2025 14:16:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A91EF3128A2;
+	Fri, 22 Aug 2025 14:18:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="it1OGCDZ"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="XhrGcV8N"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EBDF0305E31
-	for <stable@vger.kernel.org>; Fri, 22 Aug 2025 14:16:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6216731283B;
+	Fri, 22 Aug 2025 14:18:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755872182; cv=none; b=IkzaA48qfLUNB7wsAUTb3xHurtTkZuO1O5UBIR+NaDTtwPZmmY/Ge0NlmG96YcpsQhXPBwNM53ICmyrzWrkFUE5LTKU7qCpbjnmuEFkENQTXj8aHv2BEhRXXJvNzj7mDj50HqwoDx5kde3t5OmzMECjf+fJieFnlv2FglLQ2Bok=
+	t=1755872310; cv=none; b=sqomGO79OoNC2uiclKXUxiUi6bcFVmoJAYQC2/EgP/oY450IPO7uDV3PTseSp03hrgCCpvVrlgoNYUmhmVVWDFzGa2pReGGckj6T+6Vjzd521AuoAX0wDlLXIDR3nvQkTASm/il2isHIpsDhNc2gglgJltVmSbWpnbk0uDScnAw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1755872182; c=relaxed/simple;
-	bh=jntK4w2gpgsgRR7Yn85QeLLKo7nhrfb2xRHDiZKM5Rg=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=q0LLWfAOt7OF9xSO/VbvsPRmMNg4Jz4Eo+TShJKBRbs3bsX/qqL2JXsguoEHA9PucQ/082dVbQB5efQ4fcEnGj/uz2btp+mqb+1l5BNkG/HvEB6Gy9tsXdLrmMm45DCeJpXzqdN5uCaLcYN53Es+p4LoVYPFK4weAwvZUBmEfp8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=it1OGCDZ; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 19CAFC113CF;
-	Fri, 22 Aug 2025 14:16:21 +0000 (UTC)
+	s=arc-20240116; t=1755872310; c=relaxed/simple;
+	bh=YPHXDD9oTZ7YqUQcqBqzUk/QY6MAFjCqpYNcHsVGKJg=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=SFbHYkKBiFwTMqjlLEK/MUU6X1okrHQfJK9/V1m4hyRW6NVypgKI9Nux4TEosWYLgJ1Z58ChCHWrLpgVIrRdjTaxoCqtd+kS07IgGggrf1BkhNLtBXEUAHuzybGcQfTi5zeMMTbod/ZYskl0m9r3F6xV9joCKu/5+1pbKikQFnM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=XhrGcV8N; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id BCB98C113CF;
+	Fri, 22 Aug 2025 14:18:28 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1755872181;
-	bh=jntK4w2gpgsgRR7Yn85QeLLKo7nhrfb2xRHDiZKM5Rg=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=it1OGCDZg03qFS9v3/xiSkBgTjRmH6h8VmetxKwMX7y4Z/q590WAQDQNvEwXa8Kqj
-	 TF2V4ajZgwvP75waWZY/Z55bUCa3nW8AvuyqqiPEZ5RGPawpS1gEYh33PC8t8x8X3G
-	 b4GhQGn8vaPAF6DKlzEC0Fm4eEce+dOKTA/v9QprPZPxoVTHbmzdHqwv9W+BmHqroP
-	 G8K3jom6QWElaDbda9tZpK7OL/LFqjg39aNcL9ERXm9tThysQeOZigVa7spPFvUF61
-	 Ux66UicCmL8/FcN1HUnwe3JR6fgb59wKVUggOWUVUaFiIWWc4/n9zYr6+EaOeJs0r3
-	 QLe+k7R6p+7cg==
-From: Sasha Levin <sashal@kernel.org>
-To: stable@vger.kernel.org
-Cc: Judith Mendez <jm@ti.com>,
-	Vignesh Raghavendra <vigneshr@ti.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12.y 4/4] arm64: dts: ti: k3-am62*: Move eMMC pinmux to top level board file
-Date: Fri, 22 Aug 2025 10:16:15 -0400
-Message-ID: <20250822141615.1255693-4-sashal@kernel.org>
-X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250822141615.1255693-1-sashal@kernel.org>
-References: <2025082104-undermost-dispute-929c@gregkh>
- <20250822141615.1255693-1-sashal@kernel.org>
+	s=k20201202; t=1755872309;
+	bh=YPHXDD9oTZ7YqUQcqBqzUk/QY6MAFjCqpYNcHsVGKJg=;
+	h=From:To:Cc:Subject:Date:From;
+	b=XhrGcV8NJtEN4taRM5lAwcaYXzkiAEn0nqDqw0sG/+tsH5vPJVHg/JX46LNiXlLbv
+	 kPp5TNRHqsqzOAsrqrqdiya41ks5g1PEjtXmsDw8cb2PWFHBGsY13wa9b514rKpCa4
+	 OT7vfz5XaiNSBKLf+rM/IUqoulXaXU7QaAaQvaJsA9a9Cb58AlJfujX0mwf+qojUBK
+	 /lTYTg4IByuXynJvswkllfkFZbfS+fCrrm9u9EUZN12K3bGTCQAuJTt6eVoely7P1o
+	 flxm9FBOWrFLotysmhCHbZZ/6PfDcCZu8ke2SqQlyseQiBQM2xEDOH5KX8IYkJQY53
+	 HNjd3B5QCPm+g==
+From: "Matthieu Baerts (NGI0)" <matttbe@kernel.org>
+To: mptcp@lists.linux.dev,
+	stable@vger.kernel.org,
+	gregkh@linuxfoundation.org
+Cc: "Matthieu Baerts (NGI0)" <matttbe@kernel.org>,
+	sashal@kernel.org
+Subject: [PATCH 5.15.y 0/2] mptcp: fix recent failed backports (20250822)
+Date: Fri, 22 Aug 2025 16:18:17 +0200
+Message-ID: <20250822141816.61599-4-matttbe@kernel.org>
+X-Mailer: git-send-email 2.50.0
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+X-Developer-Signature: v=1; a=openpgp-sha256; l=742; i=matttbe@kernel.org; h=from:subject; bh=YPHXDD9oTZ7YqUQcqBqzUk/QY6MAFjCqpYNcHsVGKJg=; b=owGbwMvMwCVWo/Th0Gd3rumMp9WSGDJW1GhWuqd/njRtyt583as/prgY5h7j0tdcGZxwsErz0 mnDtItvOkpZGMS4GGTFFFmk2yLzZz6v4i3x8rOAmcPKBDKEgYtTACYiIsTwv6xjXVTSj+cn4r+y HRG4E1h1bW3YMrkXQZPKTs3Z+/F1Qggjw4xd4RVHnkx0ik239vgtWfXwvHmNugCvgJHv2iPFYhY 1jAA=
+X-Developer-Key: i=matttbe@kernel.org; a=openpgp; fpr=E8CB85F76877057A6E27F77AF6B7824F4269A073
 Content-Transfer-Encoding: 8bit
 
-From: Judith Mendez <jm@ti.com>
+Greg recently reported the following patches could not be applied
+without conflicts in this tree:
 
-[ Upstream commit a0b8da04153eb61cc2eaeeea5cc404e91e557f6b ]
+ - f5ce0714623c ("mptcp: disable add_addr retransmission when timeout is 0")
+ - 452690be7de2 ("selftests: mptcp: pm: check flush doesn't reset limits")
 
-This moves pinmux child nodes for sdhci0 node from k3-am62x-sk-common
-to each top level board file. This is needed since we require internal
-pullups for AM62x SK and not for AM62 LP SK since it has external
-pullups on DATA 1-7.
+Conflicts have been resolved, and documented in each patch.
 
-Internal pulls are required for AM62 SK as per JESD84 spec
-recommendation to prevent unconnected lines floating.
+Geliang Tang (1):
+  mptcp: disable add_addr retransmission when timeout is 0
 
-Fixes: d19a66ae488a ("arm64: dts: ti: k3-am625-sk: Enable on board peripherals")
-Cc: stable@vger.kernel.org
-Signed-off-by: Judith Mendez <jm@ti.com>
-Link: https://lore.kernel.org/r/20250707190830.3951619-1-jm@ti.com
-Signed-off-by: Vignesh Raghavendra <vigneshr@ti.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
----
- arch/arm64/boot/dts/ti/k3-am62-lp-sk.dts      | 24 +++++++++++++++++++
- arch/arm64/boot/dts/ti/k3-am625-sk.dts        | 24 +++++++++++++++++++
- .../arm64/boot/dts/ti/k3-am62x-sk-common.dtsi | 24 -------------------
- 3 files changed, 48 insertions(+), 24 deletions(-)
+Matthieu Baerts (NGI0) (1):
+  selftests: mptcp: pm: check flush doesn't reset limits
 
-diff --git a/arch/arm64/boot/dts/ti/k3-am62-lp-sk.dts b/arch/arm64/boot/dts/ti/k3-am62-lp-sk.dts
-index aafdb90c0eb7..4609f366006e 100644
---- a/arch/arm64/boot/dts/ti/k3-am62-lp-sk.dts
-+++ b/arch/arm64/boot/dts/ti/k3-am62-lp-sk.dts
-@@ -74,6 +74,22 @@ vddshv_sdio: regulator-4 {
- };
- 
- &main_pmx0 {
-+	main_mmc0_pins_default: main-mmc0-default-pins {
-+		bootph-all;
-+		pinctrl-single,pins = <
-+			AM62X_IOPAD(0x220, PIN_INPUT, 0) /* (V3) MMC0_CMD */
-+			AM62X_IOPAD(0x218, PIN_INPUT, 0) /* (Y1) MMC0_CLK */
-+			AM62X_IOPAD(0x214, PIN_INPUT, 0) /* (V2) MMC0_DAT0 */
-+			AM62X_IOPAD(0x210, PIN_INPUT, 0) /* (V1) MMC0_DAT1 */
-+			AM62X_IOPAD(0x20c, PIN_INPUT, 0) /* (W2) MMC0_DAT2 */
-+			AM62X_IOPAD(0x208, PIN_INPUT, 0) /* (W1) MMC0_DAT3 */
-+			AM62X_IOPAD(0x204, PIN_INPUT, 0) /* (Y2) MMC0_DAT4 */
-+			AM62X_IOPAD(0x200, PIN_INPUT, 0) /* (W3) MMC0_DAT5 */
-+			AM62X_IOPAD(0x1fc, PIN_INPUT, 0) /* (W4) MMC0_DAT6 */
-+			AM62X_IOPAD(0x1f8, PIN_INPUT, 0) /* (V4) MMC0_DAT7 */
-+		>;
-+	};
-+
- 	vddshv_sdio_pins_default: vddshv-sdio-default-pins {
- 		pinctrl-single,pins = <
- 			AM62X_IOPAD(0x07c, PIN_OUTPUT, 7) /* (M19) GPMC0_CLK.GPIO0_31 */
-@@ -144,6 +160,14 @@ exp2: gpio@23 {
- 	};
- };
- 
-+&sdhci0 {
-+	bootph-all;
-+	non-removable;
-+	pinctrl-names = "default";
-+	pinctrl-0 = <&main_mmc0_pins_default>;
-+	status = "okay";
-+};
-+
- &sdhci1 {
- 	vmmc-supply = <&vdd_mmc1>;
- 	vqmmc-supply = <&vddshv_sdio>;
-diff --git a/arch/arm64/boot/dts/ti/k3-am625-sk.dts b/arch/arm64/boot/dts/ti/k3-am625-sk.dts
-index ae81ebb39d02..0fa11d3aa71e 100644
---- a/arch/arm64/boot/dts/ti/k3-am625-sk.dts
-+++ b/arch/arm64/boot/dts/ti/k3-am625-sk.dts
-@@ -106,6 +106,22 @@ vcc_1v8: regulator-5 {
- };
- 
- &main_pmx0 {
-+	main_mmc0_pins_default: main-mmc0-default-pins {
-+		bootph-all;
-+		pinctrl-single,pins = <
-+			AM62X_IOPAD(0x220, PIN_INPUT, 0) /* (Y3) MMC0_CMD */
-+			AM62X_IOPAD(0x218, PIN_INPUT, 0) /* (AB1) MMC0_CLK */
-+			AM62X_IOPAD(0x214, PIN_INPUT, 0) /* (AA2) MMC0_DAT0 */
-+			AM62X_IOPAD(0x210, PIN_INPUT_PULLUP, 0) /* (AA1) MMC0_DAT1 */
-+			AM62X_IOPAD(0x20c, PIN_INPUT_PULLUP, 0) /* (AA3) MMC0_DAT2 */
-+			AM62X_IOPAD(0x208, PIN_INPUT_PULLUP, 0) /* (Y4) MMC0_DAT3 */
-+			AM62X_IOPAD(0x204, PIN_INPUT_PULLUP, 0) /* (AB2) MMC0_DAT4 */
-+			AM62X_IOPAD(0x200, PIN_INPUT_PULLUP, 0) /* (AC1) MMC0_DAT5 */
-+			AM62X_IOPAD(0x1fc, PIN_INPUT_PULLUP, 0) /* (AD2) MMC0_DAT6 */
-+			AM62X_IOPAD(0x1f8, PIN_INPUT_PULLUP, 0) /* (AC2) MMC0_DAT7 */
-+		>;
-+	};
-+
- 	main_rgmii2_pins_default: main-rgmii2-default-pins {
- 		bootph-all;
- 		pinctrl-single,pins = <
-@@ -195,6 +211,14 @@ exp1: gpio@22 {
- 	};
- };
- 
-+&sdhci0 {
-+	bootph-all;
-+	non-removable;
-+	pinctrl-names = "default";
-+	pinctrl-0 = <&main_mmc0_pins_default>;
-+	status = "okay";
-+};
-+
- &sdhci1 {
- 	vmmc-supply = <&vdd_mmc1>;
- 	vqmmc-supply = <&vdd_sd_dv>;
-diff --git a/arch/arm64/boot/dts/ti/k3-am62x-sk-common.dtsi b/arch/arm64/boot/dts/ti/k3-am62x-sk-common.dtsi
-index 3314955a9499..4f2d45fd3676 100644
---- a/arch/arm64/boot/dts/ti/k3-am62x-sk-common.dtsi
-+++ b/arch/arm64/boot/dts/ti/k3-am62x-sk-common.dtsi
-@@ -182,22 +182,6 @@ AM62X_IOPAD(0x0b4, PIN_INPUT_PULLUP, 1) /* (K24/H19) GPMC0_CSn3.I2C2_SDA */
- 		>;
- 	};
- 
--	main_mmc0_pins_default: main-mmc0-default-pins {
--		bootph-all;
--		pinctrl-single,pins = <
--			AM62X_IOPAD(0x220, PIN_INPUT, 0) /* (Y3/V3) MMC0_CMD */
--			AM62X_IOPAD(0x218, PIN_INPUT, 0) /* (AB1/Y1) MMC0_CLK */
--			AM62X_IOPAD(0x214, PIN_INPUT, 0) /* (AA2/V2) MMC0_DAT0 */
--			AM62X_IOPAD(0x210, PIN_INPUT, 0) /* (AA1/V1) MMC0_DAT1 */
--			AM62X_IOPAD(0x20c, PIN_INPUT, 0) /* (AA3/W2) MMC0_DAT2 */
--			AM62X_IOPAD(0x208, PIN_INPUT, 0) /* (Y4/W1) MMC0_DAT3 */
--			AM62X_IOPAD(0x204, PIN_INPUT, 0) /* (AB2/Y2) MMC0_DAT4 */
--			AM62X_IOPAD(0x200, PIN_INPUT, 0) /* (AC1/W3) MMC0_DAT5 */
--			AM62X_IOPAD(0x1fc, PIN_INPUT, 0) /* (AD2/W4) MMC0_DAT6 */
--			AM62X_IOPAD(0x1f8, PIN_INPUT, 0) /* (AC2/V4) MMC0_DAT7 */
--		>;
--	};
--
- 	main_mmc1_pins_default: main-mmc1-default-pins {
- 		bootph-all;
- 		pinctrl-single,pins = <
-@@ -413,14 +397,6 @@ &main_i2c2 {
- 	clock-frequency = <400000>;
- };
- 
--&sdhci0 {
--	bootph-all;
--	status = "okay";
--	non-removable;
--	pinctrl-names = "default";
--	pinctrl-0 = <&main_mmc0_pins_default>;
--};
--
- &sdhci1 {
- 	/* SD/MMC */
- 	bootph-all;
+ Documentation/networking/mptcp-sysctl.rst       |  2 ++
+ net/mptcp/pm_netlink.c                          | 13 ++++++++++---
+ tools/testing/selftests/net/mptcp/pm_netlink.sh |  1 +
+ 3 files changed, 13 insertions(+), 3 deletions(-)
+
 -- 
-2.50.1
+2.50.0
 
 
