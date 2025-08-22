@@ -1,115 +1,137 @@
-Return-Path: <stable+bounces-172387-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-172389-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8594BB318E8
-	for <lists+stable@lfdr.de>; Fri, 22 Aug 2025 15:11:36 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id CCF14B31919
+	for <lists+stable@lfdr.de>; Fri, 22 Aug 2025 15:18:19 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 87F80189DFA6
-	for <lists+stable@lfdr.de>; Fri, 22 Aug 2025 13:08:01 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id CB8431CC48EC
+	for <lists+stable@lfdr.de>; Fri, 22 Aug 2025 13:17:41 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4241D2FC007;
-	Fri, 22 Aug 2025 13:07:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1BFCE304BAA;
+	Fri, 22 Aug 2025 13:16:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="b1Vq6JAQ"
+	dkim=pass (2048-bit key) header.d=kernel-dk.20230601.gappssmtp.com header.i=@kernel-dk.20230601.gappssmtp.com header.b="CydOrFPe"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-io1-f44.google.com (mail-io1-f44.google.com [209.85.166.44])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EAFE52E6114;
-	Fri, 22 Aug 2025 13:07:35 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C9422302CB1
+	for <stable@vger.kernel.org>; Fri, 22 Aug 2025 13:16:02 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.166.44
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755868056; cv=none; b=ZG8k5HMA8lTFN0jniKAkJ0ZU5/2X2HuWSjRBdcOfHou6NxIr9wK7el6Xnq22YtpOFUhCCeTzrGDPO+52N0kH7ndDOUZmegdBFJvM9mkdL/llTYeCE9MYkbHBPhIRpBYSGqBpK3m0OlEz3D2iNjfunbYpegInxhbryKUDWjn2ITQ=
+	t=1755868566; cv=none; b=rsIGdjJrLROO1WqR9Sy6kb8YM8cEaYT0tOfa6MNSwz9wZJOZjsA/rBRzhDtfPkkUUfixTviHgZRaeecSs2XFMsn2j5kkOxJvmNASpgB26xplDldfdO08iSqmL+iH5ew9DUUUR5JNWPUhM6XVjOLQNQkiOsYBBkaWZyOEaOEuw14=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1755868056; c=relaxed/simple;
-	bh=I1vnQdWoQ3da9zwNugFK9yS/sak81xz7G7nlJDyiBeo=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=WJjykYA9oqpXgBG5ifcfLHnMVQ0t/JaJG+aUiQAKhbv6IORYWZZBYESnUsvpX2f4WAFrPG5+5QeA1yWX+r8VbUfvMlbt6SGQCRP/tLwGsuhBRgc5/Sc1twWD/tTNBAn+wvjij363L6bgCk7mOFMxb7U1Cqi+/LeAaGIAexOcLFc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=b1Vq6JAQ; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id BA726C4CEED;
-	Fri, 22 Aug 2025 13:07:34 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1755868055;
-	bh=I1vnQdWoQ3da9zwNugFK9yS/sak81xz7G7nlJDyiBeo=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=b1Vq6JAQuvvYPjy3NLd+Zc0cKD6v4zj7BDiT3YiYnx/jPqw/ZNUOAM7c9XqhYd/LK
-	 oqYOjigGO508K0nHIROPC7OtRhegzMoOM7xO454jJsMWtcO5yZviV2qONvrLqZMa/9
-	 ZPxMiq1GmVKjz0q8fOrgsKvB/Ym0MSG5EEl4W+88=
-Date: Fri, 22 Aug 2025 15:07:32 +0200
-From: Greg KH <gregkh@linuxfoundation.org>
-To: Sumanth Gavini <sumanth.gavini@yahoo.com>
-Cc: rostedt@goodmis.org, mhiramat@kernel.org, tglx@linutronix.de,
-	jstultz@google.com, clingutla@codeaurora.org, mingo@kernel.org,
-	sashal@kernel.org, boqun.feng@gmail.com, ryotkkr98@gmail.com,
-	kprateek.nayak@amd.com, linux-kernel@vger.kernel.org,
-	stable@vger.kernel.org, "J . Avila" <elavila@google.com>
-Subject: Re: [PATCH 6.1] softirq: Add trace points for tasklet entry/exit
-Message-ID: <2025082257-smirk-backside-6d93@gregkh>
-References: <20250812161755.609600-1-sumanth.gavini.ref@yahoo.com>
- <20250812161755.609600-1-sumanth.gavini@yahoo.com>
+	s=arc-20240116; t=1755868566; c=relaxed/simple;
+	bh=lCsro4CJBMF+D3264rl3CNoPtUXoImd/BPkzVlHunKo=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=m9fVEofw6lE3UwUh+aUDkPMrdxvRD/s7exnRPhsJBMKQmIhU5uSf3UeT222DqmbyO9ElpC1e9OItU5RJpj/aX/AnzteyO2KKblMEOI2dq5Up+zGqWNiTW+BEM1Ql9Q7QvYLBP0/N0UKaDdOsFlg2iwJR8CMGYzd2Erwc51n+KOM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=kernel.dk; spf=pass smtp.mailfrom=kernel.dk; dkim=pass (2048-bit key) header.d=kernel-dk.20230601.gappssmtp.com header.i=@kernel-dk.20230601.gappssmtp.com header.b=CydOrFPe; arc=none smtp.client-ip=209.85.166.44
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=kernel.dk
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=kernel.dk
+Received: by mail-io1-f44.google.com with SMTP id ca18e2360f4ac-88432e91223so52909339f.3
+        for <stable@vger.kernel.org>; Fri, 22 Aug 2025 06:16:02 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=kernel-dk.20230601.gappssmtp.com; s=20230601; t=1755868562; x=1756473362; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=9AKAb0qEkHWYZZg+YlLBlMjnmdIz5QWZ/OiVNDXJAIQ=;
+        b=CydOrFPeOQ+0BSMZr30hcUvwt+yUY6P0+BkAZHPB4krN7NugIakvyIauuati9q7Qly
+         8aTd7Eevg9YbZJ9xQ4TgUs0F+pPmHEvgGXNn/UyFsmGarO23ZnXHoF4C9MyCb7gPz/zQ
+         cCiYLL+0cTvrUUxiDpMRdrEJfq4xEMqcEpdiEWcSzeHW29FYW996xDZz1tua+/M2L/Q5
+         cb9/pDqXk9pKkeKS9TIKWzpuOv/fjdo5JDKkA7UXq8HKC17BLMp7XyaXFiLpYM8SmoiK
+         x7BqPhm+Vtz+hBrrE5CRjqDg4nUSuqPpZrCCoRTjxTpvBTeOFjlWHcT49EBbDJ9UrCtT
+         ET8w==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1755868562; x=1756473362;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=9AKAb0qEkHWYZZg+YlLBlMjnmdIz5QWZ/OiVNDXJAIQ=;
+        b=VUmDNBX1a/NbNcz9qs7cbPCRZjls2nONv9APTwUinsHxyHQIkwNaXNQZ4k+Q9NA0EF
+         258xqawEWJFuh9Y39I6JY/ei2Wyg57I9bdsW+KcCP8BgEq6tmijZKSy2eNlpHymAG4Uz
+         abGZzGB3np+qJsZX8aKDZT4eeJDHg93pFmXL8KN1pv/yitcCgBq27XXc41V7i1u2gbdU
+         02W6jpuQ/L1FZOQRrObmTw0ffi6hN7YH90bUfyQx0iA41ipzX36ZHg4Dq+AgEKY7/IOo
+         XMvxuepzgIntrJyllEAlt9R4BTX9HTcwzouI9FYXAhz7Tb+rvu1DNe3qeBXZlZtcqm1p
+         khxg==
+X-Forwarded-Encrypted: i=1; AJvYcCW79yzAuQs/IhcbKnG1dk0jhZjWwfuS9bp3GZO7rAcAflREWPcSwKcSID+RX1UL3o6pY1aVzy4=@vger.kernel.org
+X-Gm-Message-State: AOJu0YzJeKwZjNvwgrL4r0GfIDs3nwJx114vcdplym4zRrLT4gYf0KyN
+	FqZmitlBGeCLBNVmYRUYqRzBQjLJWE2ZVFyvrwe0oVsJ81trUzO1lzAwGulYxmuRwRA=
+X-Gm-Gg: ASbGncvHe4xsFMN0XUDmNcoD7P0lJtc/gpp/VYF5O748ixY48Q6vYhTSi86kg/kFaP3
+	aAtlswpcSE6pWIGdEK8ik+ep315evFThYj94wbOLEgqrxhmqn9T/7v/sNi4yWxxW3zJt9VmjxYA
+	R+Jy/c3jsI43bbRsSdxFzeRePN9uH9NPPj4OxXIjMjtz2YEnG242h/x+iEqLcay4YDNvZ3Lkxr2
+	zpN5z5TyLFudBgMu+utnvhSlwn/dJmGPsaAlbYw8Dx3opbdgk5+EaJ9mimsJZsAIJQDqEvrPnUL
+	/FFqnaYQBcfrFdrTwtTrdOp2Lu3/C5orHqtlpByTSSEycsOSQn1AASq2+GOcpSs3z66qEkxbTEr
+	r7Vkkkw==
+X-Google-Smtp-Source: AGHT+IHZ5YQhjejrPhudiZOgQaijyjtdhk+xq2EPlLZOIVAxl150S4/CKW7qPcD+okX5qetQN5C0cA==
+X-Received: by 2002:a05:6e02:228b:b0:3e9:eec4:9b74 with SMTP id e9e14a558f8ab-3e9eec49f44mr11692415ab.31.1755868561112;
+        Fri, 22 Aug 2025 06:16:01 -0700 (PDT)
+Received: from m2max ([96.43.243.2])
+        by smtp.gmail.com with ESMTPSA id e9e14a558f8ab-3e57e679121sm89355595ab.30.2025.08.22.06.16.00
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Fri, 22 Aug 2025 06:16:00 -0700 (PDT)
+From: Jens Axboe <axboe@kernel.dk>
+To: io-uring@vger.kernel.org
+Cc: Jens Axboe <axboe@kernel.dk>,
+	stable@vger.kernel.org
+Subject: [PATCH 1/2] io_uring/futex: ensure io_futex_wait() cleans up properly on failure
+Date: Fri, 22 Aug 2025 07:14:46 -0600
+Message-ID: <20250822131557.891602-2-axboe@kernel.dk>
+X-Mailer: git-send-email 2.50.1
+In-Reply-To: <20250822131557.891602-1-axboe@kernel.dk>
+References: <20250822131557.891602-1-axboe@kernel.dk>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20250812161755.609600-1-sumanth.gavini@yahoo.com>
+Content-Transfer-Encoding: 8bit
 
-On Tue, Aug 12, 2025 at 11:17:54AM -0500, Sumanth Gavini wrote:
-> commit f4bf3ca2e5cba655824b6e0893a98dfb33ed24e5 upstream.
-> 
-> Tasklets are supposed to finish their work quickly and should not block the
-> current running process, but it is not guaranteed that they do so.
-> 
-> Currently softirq_entry/exit can be used to analyse the total tasklets
-> execution time, but that's not helpful to track individual tasklets
-> execution time. That makes it hard to identify tasklet functions, which
-> take more time than expected.
-> 
-> Add tasklet_entry/exit trace point support to track individual tasklet
-> execution.
-> 
-> Trivial usage example:
->    # echo 1 > /sys/kernel/debug/tracing/events/irq/tasklet_entry/enable
->    # echo 1 > /sys/kernel/debug/tracing/events/irq/tasklet_exit/enable
->    # cat /sys/kernel/debug/tracing/trace
->  # tracer: nop
->  #
->  # entries-in-buffer/entries-written: 4/4   #P:4
->  #
->  #                                _-----=> irqs-off/BH-disabled
->  #                               / _----=> need-resched
->  #                              | / _---=> hardirq/softirq
->  #                              || / _--=> preempt-depth
->  #                              ||| / _-=> migrate-disable
->  #                              |||| /     delay
->  #           TASK-PID     CPU#  |||||  TIMESTAMP  FUNCTION
->  #              | |         |   |||||     |         |
->            <idle>-0       [003] ..s1.   314.011428: tasklet_entry: tasklet=0xffffa01ef8db2740 function=tcp_tasklet_func
->            <idle>-0       [003] ..s1.   314.011432: tasklet_exit: tasklet=0xffffa01ef8db2740 function=tcp_tasklet_func
->            <idle>-0       [003] ..s1.   314.017369: tasklet_entry: tasklet=0xffffa01ef8db2740 function=tcp_tasklet_func
->            <idle>-0       [003] ..s1.   314.017371: tasklet_exit: tasklet=0xffffa01ef8db2740 function=tcp_tasklet_func
-> 
-> Signed-off-by: Lingutla Chandrasekhar <clingutla@codeaurora.org>
-> Signed-off-by: J. Avila <elavila@google.com>
-> Signed-off-by: John Stultz <jstultz@google.com>
-> Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
-> Reviewed-by: Steven Rostedt (Google) <rostedt@goodmis.org>
-> Link: https://lore.kernel.org/r/20230407230526.1685443-1-jstultz@google.com
-> 
-> [elavila: Port to android-mainline]
+The io_futex_data is allocated upfront and assigned to the io_kiocb
+async_data field, but the request isn't marked with REQ_F_ASYNC_DATA
+at that point. Those two should always go together, as the flag tells
+io_uring whether the field is valid or not.
 
-This is not android-mainline, this is the normal stable tree.
+Additionally, on failure cleanup, the futex handler frees the data but
+does not clear ->async_data. Clear the data and the flag in the error
+path as well.
 
-And I'm with John, this makes no sense as to why you need/want these.  I
-think that the syzbot report is bogus, sorry.  Please prove me wrong :)
+Thanks to Trend Micro Zero Day Initiative and particularly ReDress for
+reporting this.
 
-thanks,
+Cc: stable@vger.kernel.org
+Fixes: 194bb58c6090 ("io_uring: add support for futex wake and wait")
+Signed-off-by: Jens Axboe <axboe@kernel.dk>
+---
+ io_uring/futex.c | 3 +++
+ 1 file changed, 3 insertions(+)
 
-greg k-h
+diff --git a/io_uring/futex.c b/io_uring/futex.c
+index 692462d50c8c..9113a44984f3 100644
+--- a/io_uring/futex.c
++++ b/io_uring/futex.c
+@@ -288,6 +288,7 @@ int io_futex_wait(struct io_kiocb *req, unsigned int issue_flags)
+ 		goto done_unlock;
+ 	}
+ 
++	req->flags |= REQ_F_ASYNC_DATA;
+ 	req->async_data = ifd;
+ 	ifd->q = futex_q_init;
+ 	ifd->q.bitset = iof->futex_mask;
+@@ -309,6 +310,8 @@ int io_futex_wait(struct io_kiocb *req, unsigned int issue_flags)
+ 	if (ret < 0)
+ 		req_set_fail(req);
+ 	io_req_set_res(req, ret, 0);
++	req->async_data = NULL;
++	req->flags &= ~REQ_F_ASYNC_DATA;
+ 	kfree(ifd);
+ 	return IOU_COMPLETE;
+ }
+-- 
+2.50.1
+
 
