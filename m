@@ -1,96 +1,63 @@
-Return-Path: <stable+bounces-172281-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-172282-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8010BB30D71
-	for <lists+stable@lfdr.de>; Fri, 22 Aug 2025 06:16:37 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 9F53CB30D77
+	for <lists+stable@lfdr.de>; Fri, 22 Aug 2025 06:18:35 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 6D9591C2443B
-	for <lists+stable@lfdr.de>; Fri, 22 Aug 2025 04:15:59 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 982F81CE501C
+	for <lists+stable@lfdr.de>; Fri, 22 Aug 2025 04:17:25 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 316CD19D88F;
-	Fri, 22 Aug 2025 04:15:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 89BA52836B5;
+	Fri, 22 Aug 2025 04:16:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="B6RmuPoK"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="feufGG2w"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-pg1-f171.google.com (mail-pg1-f171.google.com [209.85.215.171])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7B22F14A09C;
-	Fri, 22 Aug 2025 04:15:31 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.215.171
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 489EC20C037
+	for <stable@vger.kernel.org>; Fri, 22 Aug 2025 04:16:43 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755836134; cv=none; b=TQFIL1Mll0SIdQkQnSgNVhYmTt+biExZtN43DV/j3rwjeK1LnxCcsVvrvDDGCrUXyIlu7k5wAOB9ubt6TpZHcw3EiR5O+2HLM0dRX87Ko9VRtxOtRLq8ZwI64xEuoj3s0juspE+FP4ge84wjUSCyanB9iK4VngT6kqrCo3WtEF8=
+	t=1755836204; cv=none; b=VHS2+Pd23mkLEbyThqYiYVAoM8GyOHXaRHZO3s46zGgleMcvL0M54+DcQbpi8UviX5YpNhiTXHCMBnIZ6fPt6VPMIe8XJYarocrYQuVS5h7BeW/qBRuWz5JB1XgpmsXUzfJGkcWJVDXn43nN28YcylAheF7A3TohCNE/aWQDV1Q=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1755836134; c=relaxed/simple;
-	bh=A0GL3Vdq+WZd6o1+ddSu+zVjBJnzZZwNj3g5IAqTNW0=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=kL89bgvu2zbjlnNGMGSXhgbEOMo0wfaLn5YdTFj3vtHytWGE89hc8p34qGmPMd4jkU4oAqQHTCvGf9RIG3Jim7BVc5BriqBzg80kswbP00q1hrebYYQnj6Du938CGAvBNeAkP6hwsrpy92imIwZCnremNvf1F+/MtHIyrdGKJsA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=B6RmuPoK; arc=none smtp.client-ip=209.85.215.171
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-pg1-f171.google.com with SMTP id 41be03b00d2f7-b49c0c5f4dfso167589a12.1;
-        Thu, 21 Aug 2025 21:15:31 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1755836131; x=1756440931; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=y9PgfzlZAvSWVRluzRE+sTTXFHsSdjHEV58R22WBfMQ=;
-        b=B6RmuPoKVerRdq4tLMQA8YvsJgaDRc9oGd84xGPfpg3xTayIBax5lIVf684RInMDXf
-         OLKPqvQOGQjSFoZWwiVFWxCkJjT3EgDFkXYW+dond1vigGUsMGJpgVt5EmWQIsWMvtMb
-         5hIWrhn88cXjIQ3RaMd5NUO2dV+Aa0G+vSbkx/p2ptgx7FymZJy0QWUIiOKUEtoWxVfi
-         XPU9DwxUJIPLRAG6bo4HUEuf7uBHtMtSP1g/dwGRM41J0qotp1BEvA4YA87hykBuwVSy
-         yJKu2Z3iywgEeK4CzHO1J7KjRFiIFzWBZqUIuUbHOZ5vszcwUHsBKkmI15ri6tUHMjYL
-         n23w==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1755836131; x=1756440931;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=y9PgfzlZAvSWVRluzRE+sTTXFHsSdjHEV58R22WBfMQ=;
-        b=nOq5yPTPcJkZErmJrg6wnVxK9IbCfL3MgnqPyylPhNgCUBfKWbF+JcY0SBX3F862ZB
-         LlMOLJ6KSwAKzljuvFeSMOcrsJihbOjl9T71SxEe7NJ1S26ran/h7hoQc3iashs2O8Qv
-         MQ23TtKc/5zhPWLhulSR3RElXLgJg841OduB4k8QLLNZ24QLW15s54dAHSiTBobTzea+
-         VwBrnWytqLzq594Dg/MyakPJzNUEimpoVf8EWR1+8n2LjbxVAL8aVAAWxeiiPYZ2pPnQ
-         Kg2UwW4e6E66W8JvOdg8ABoNRjf17U90qwVAP5f89C2kTzEdKzdSSMv0FJTJr3fBiF23
-         t0oQ==
-X-Forwarded-Encrypted: i=1; AJvYcCVD62tD/W22IRkFN8t5LclvT3c6x1i8/DC/MaSjS9oXY7uydg8gcUxXQ7gdnQejtKHaJrj73b01xIUuaFE=@vger.kernel.org, AJvYcCWK6pMqnkAdMlS29/OQBs8cy0JYnggvE10i+qCr9gMxke50RjoP1ialNL1xxdBLWAOKfWOKjZou@vger.kernel.org
-X-Gm-Message-State: AOJu0YwPozgYIrKXqJbFBZe6Tjb8OafPqNHlz2rN6ig3nUAj6/T9E4aT
-	Kk8UDiB0LNXIpo1NjdEbZDTLbacpbfoTVTB6MYUqjKyhqvvnJsdyWnDLvxqC3R7KkK0=
-X-Gm-Gg: ASbGncv/QbTo6FBog2WIEE4cm4o52Kjpfgq4kNuEzP3zu7MiVnMoyUgkyB1oC2R2SU2
-	Oz9SjDFiVA686f+F8oh8nwpwmrdnSiBWtl4NQMMMgcLcPY38tbThqm3WfyviCPKog34yXQ+svx2
-	8UcK68nsDJxGGGZFZrFvX5Kkz/HhP5fcs14J20EdOWH8P7Med8XW5pWpcEdTuzuIph5w8JkHLdv
-	h9IGCbsTrJB1j6Kx+ZZ5tbuh0IuEyLdNM7XnA5Vi71LbGsJpJsGXTeFf8pl/TZU+NxeHzDltggw
-	Lfw87BZFMy3Aa/TC0LYQkrpPavP5GRDJipk0+tu0KtDa2cuGZvcUMdlyMuaP3WIfFkU1DiHqVXK
-	LrH5ee+wuiNQhAAEeP5V6G+9PaZ7PgJ2BiHn0h+R0CG+2jvYu4uuXmFQJgi5resM8BClQnfOc
-X-Google-Smtp-Source: AGHT+IF2iOxGEWh6lnAwzbIYm3vEYhNMhGnrxwiHW2mktl6Jf+S+uzXvJvANfSUHzslgaQzZWAH6DQ==
-X-Received: by 2002:a17:903:2282:b0:242:abc2:7f1e with SMTP id d9443c01a7336-2462ee02c31mr22915745ad.22.1755836130612;
-        Thu, 21 Aug 2025 21:15:30 -0700 (PDT)
-Received: from luna.turtle.lan ([2601:1c2:c184:dc00:ba38:b533:dcf5:1e7a])
-        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-325123e4751sm1189587a91.1.2025.08.21.21.15.29
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 21 Aug 2025 21:15:30 -0700 (PDT)
-From: Sam Edwards <cfsworks@gmail.com>
-X-Google-Original-From: Sam Edwards <CFSworks@gmail.com>
-To: Catalin Marinas <catalin.marinas@arm.com>,
-	Will Deacon <will@kernel.org>,
-	Marc Zyngier <maz@kernel.org>
-Cc: Andrew Morton <akpm@linux-foundation.org>,
-	Anshuman Khandual <anshuman.khandual@arm.com>,
-	Ard Biesheuvel <ardb@kernel.org>,
-	Ryan Roberts <ryan.roberts@arm.com>,
-	Baruch Siach <baruch@tkos.co.il>,
-	Kevin Brodsky <kevin.brodsky@arm.com>,
-	Joey Gouly <joey.gouly@arm.com>,
-	linux-arm-kernel@lists.infradead.org,
-	linux-kernel@vger.kernel.org,
-	Sam Edwards <CFSworks@gmail.com>,
-	stable@vger.kernel.org
-Subject: [PATCH] arm64/boot: Zero-initialize idmap PGDs before use
-Date: Thu, 21 Aug 2025 21:15:26 -0700
-Message-ID: <20250822041526.467434-1-CFSworks@gmail.com>
-X-Mailer: git-send-email 2.49.1
+	s=arc-20240116; t=1755836204; c=relaxed/simple;
+	bh=a9iKV6jsyAnyQCs2qg0rS7g3G4nUF4e1XK2/+VJouXg=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=N6Uf7chraDBAgIY87duH2vyzC9zLILToKl+xu4qFwsliSfMXEzobYm8BD5ID2+ELYxvTihp2U92qeINbgjfqumtdtsLQnh2F1xyPfl6uByOx5+pGZj/w2GSMF2u9dfyb34qDmCeSu/gP8mVEHDglqk74JGTVKNwVaqaBZx1EXAE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=feufGG2w; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9E939C4CEF1;
+	Fri, 22 Aug 2025 04:16:42 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1755836203;
+	bh=a9iKV6jsyAnyQCs2qg0rS7g3G4nUF4e1XK2/+VJouXg=;
+	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
+	b=feufGG2wdEI2oMcFAEEoYtrwsBn6cBY84QWmKjUJ+WybUuqzg5qcQx14zLrPkhAC/
+	 0zL5tIzQda+0Imlwl4jxCbECrcAAWM5GWyEobi3LGho8FsoAAvf/TgaN+YhYMgW9n/
+	 inCLxZLMd2Qq9FBN/NPZyqwef7EmkIuSbY2ZnrEblelZ7dKofVkvS35+ut2NpKmeEk
+	 5sXvgNgygT2RzSlpfavuW5ut7ZVxPtlnnSglWiGdMZ4Z1cyIOpKvEWBRDFP3rDbXuM
+	 mldQ8zXs1VX62AXIf5YCAO78+GcRYc41LDREzDqgq0xbjS7OI4Of+uy1ixEhnV0PNL
+	 WwpYeB4Fnu0aw==
+From: Sasha Levin <sashal@kernel.org>
+To: stable@vger.kernel.org
+Cc: David Laight <David.Laight@ACULAB.COM>,
+	David Laight <david.laight@aculab.com>,
+	Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
+	Christoph Hellwig <hch@infradead.org>,
+	"Jason A. Donenfeld" <Jason@zx2c4.com>,
+	Linus Torvalds <torvalds@linux-foundation.org>,
+	"Matthew Wilcox (Oracle)" <willy@infradead.org>,
+	Andrew Morton <akpm@linux-foundation.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.10.y 1/2] minmax: add umin(a, b) and umax(a, b)
+Date: Fri, 22 Aug 2025 00:16:39 -0400
+Message-ID: <20250822041640.1082105-1-sashal@kernel.org>
+X-Mailer: git-send-email 2.50.1
+In-Reply-To: <2025082130-hunchback-efficient-e925@gregkh>
+References: <2025082130-hunchback-efficient-e925@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -99,88 +66,141 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-In early boot, Linux creates identity virtual->physical address mappings
-so that it can enable the MMU before full memory management is ready.
-To ensure some available physical memory to back these structures,
-vmlinux.lds reserves some space (and defines marker symbols) in the
-middle of the kernel image. However, because they are defined outside of
-PROGBITS sections, they aren't pre-initialized -- at least as far as ELF
-is concerned.
+From: David Laight <David.Laight@ACULAB.COM>
 
-In the typical case, this isn't actually a problem: the boot image is
-prepared with objcopy, which zero-fills the gaps, so these structures
-are incidentally zero-initialized (an all-zeroes entry is considered
-absent, so zero-initialization is appropriate).
+[ Upstream commit 80fcac55385ccb710d33a20dc1caaef29bd5a921 ]
 
-However, that is just a happy accident: the `vmlinux` ELF output
-authoritatively represents the state of memory at entry. If the ELF
-says a region of memory isn't initialized, we must treat it as
-uninitialized. Indeed, certain bootloaders (e.g. Broadcom CFE) ingest
-the ELF directly -- sidestepping the objcopy-produced image entirely --
-and therefore do not initialize the gaps. This results in the early boot
-code crashing when it attempts to create identity mappings.
+Patch series "minmax: Relax type checks in min() and max()", v4.
 
-Therefore, add boot-time zero-initialization for the following:
-- __pi_init_idmap_pg_dir..__pi_init_idmap_pg_end
-- idmap_pg_dir
-- reserved_pg_dir
-- tramp_pg_dir # Already done, but this patch corrects the size
+The min() (etc) functions in minmax.h require that the arguments have
+exactly the same types.
 
-Note, swapper_pg_dir is already initialized (by copy from idmap_pg_dir)
-before use, so this patch does not need to address it.
+However when the type check fails, rather than look at the types and fix
+the type of a variable/constant, everyone seems to jump on min_t().  In
+reality min_t() ought to be rare - when something unusual is being done,
+not normality.
 
-Cc: stable@vger.kernel.org
-Signed-off-by: Sam Edwards <CFSworks@gmail.com>
+The orginal min() (added in 2.4.9) replaced several inline functions and
+included the type - so matched the implicit casting of the function call.
+This was renamed min_t() in 2.4.10 and the current min() added.  There is
+no actual indication that the conversion of negatve values to large
+unsigned values has ever been an actual problem.
+
+A quick grep shows 5734 min() and 4597 min_t().  Having the casts on
+almost half of the calls shows that something is clearly wrong.
+
+If the wrong type is picked (and it is far too easy to pick the type of
+the result instead of the larger input) then significant bits can get
+discarded.
+
+Pretty much the worst example is in the derived clamp_val(), consider:
+        unsigned char x = 200u;
+        y = clamp_val(x, 10u, 300u);
+
+I also suspect that many of the min_t(u16, ...) are actually wrong.  For
+example copy_data() in printk_ringbuffer.c contains:
+
+        data_size = min_t(u16, buf_size, len);
+
+Here buf_size is 'unsigned int' and len 'u16', pass a 64k buffer (can you
+prove that doesn't happen?) and no data is returned.  Apparantly it did -
+and has since been fixed.
+
+The only reason that most of the min_t() are 'fine' is that pretty much
+all the values in the kernel are between 0 and INT_MAX.
+
+Patch 1 adds umin(), this uses integer promotions to convert both
+arguments to 'unsigned long long'.  It can be used to compare a signed
+type that is known to contain a non-negative value with an unsigned type.
+The compiler typically optimises it all away.  Added first so that it can
+be referred to in patch 2.
+
+Patch 2 replaces the 'same type' check with a 'same signedness' one.  This
+makes min(unsigned_int_var, sizeof()) be ok.  The error message is also
+improved and will contain the expanded form of both arguments (useful for
+seeing how constants are defined).
+
+Patch 3 just fixes some whitespace.
+
+Patch 4 allows comparisons of 'unsigned char' and 'unsigned short' to
+signed types.  The integer promotion rules convert them both to 'signed
+int' prior to the comparison so they can never cause a negative value be
+converted to a large positive one.
+
+Patch 5 (rewritted for v4) allows comparisons of unsigned values against
+non-negative constant integer expressions.  This makes
+min(unsigned_int_var, 4) be ok.
+
+The only common case that is still errored is the comparison of signed
+values against unsigned constant integer expressions below __INT_MAX__.
+Typcally min(int_val, sizeof (foo)), the real fix for this is casting the
+constant: min(int_var, (int)sizeof (foo)).
+
+With all the patches applied pretty much all the min_t() could be replaced
+by min(), and most of the rest by umin().  However they all need careful
+inspection due to code like:
+
+        sz = min_t(unsigned char, sz - 1, LIM - 1) + 1;
+
+which converts 0 to LIM.
+
+This patch (of 6):
+
+umin() and umax() can be used when min()/max() errors a signed v unsigned
+compare when the signed value is known to be non-negative.
+
+Unlike min_t(some_unsigned_type, a, b) umin() will never mask off high
+bits if an inappropriate type is selected.
+
+The '+ 0u + 0ul + 0ull' may look strange.
+The '+ 0u' is needed for 'signed int' on 64bit systems.
+The '+ 0ul' is needed for 'signed long' on 32bit systems.
+The '+ 0ull' is needed for 'signed long long'.
+
+Link: https://lkml.kernel.org/r/b97faef60ad24922b530241c5d7c933c@AcuMS.aculab.com
+Link: https://lkml.kernel.org/r/41d93ca827a248698ec64bf57e0c05a5@AcuMS.aculab.com
+Signed-off-by: David Laight <david.laight@aculab.com>
+Cc: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+Cc: Christoph Hellwig <hch@infradead.org>
+Cc: Jason A. Donenfeld <Jason@zx2c4.com>
+Cc: Linus Torvalds <torvalds@linux-foundation.org>
+Cc: Matthew Wilcox (Oracle) <willy@infradead.org>
+Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
+Stable-dep-of: 02c7f7219ac0 ("ext4: fix hole length calculation overflow in non-extent inodes")
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/arm64/kernel/head.S | 12 ++++++++++++
- arch/arm64/mm/mmu.c      |  3 ++-
- 2 files changed, 14 insertions(+), 1 deletion(-)
+ include/linux/minmax.h | 17 +++++++++++++++++
+ 1 file changed, 17 insertions(+)
 
-diff --git a/arch/arm64/kernel/head.S b/arch/arm64/kernel/head.S
-index ca04b338cb0d..0c3be11d0006 100644
---- a/arch/arm64/kernel/head.S
-+++ b/arch/arm64/kernel/head.S
-@@ -86,6 +86,18 @@ SYM_CODE_START(primary_entry)
- 	bl	record_mmu_state
- 	bl	preserve_boot_args
+diff --git a/include/linux/minmax.h b/include/linux/minmax.h
+index 5433c08fcc68..1aea34b8f19b 100644
+--- a/include/linux/minmax.h
++++ b/include/linux/minmax.h
+@@ -51,6 +51,23 @@
+  */
+ #define max(x, y)	__careful_cmp(x, y, >)
  
-+	adrp	x0, reserved_pg_dir
-+	add	x1, x0, #PAGE_SIZE
-+0:	str	xzr, [x0], 8
-+	cmp	x0, x1
-+	b.lo	0b
++/**
++ * umin - return minimum of two non-negative values
++ *   Signed types are zero extended to match a larger unsigned type.
++ * @x: first value
++ * @y: second value
++ */
++#define umin(x, y)	\
++	__careful_cmp((x) + 0u + 0ul + 0ull, (y) + 0u + 0ul + 0ull, <)
 +
-+	adrp	x0, __pi_init_idmap_pg_dir
-+	adrp	x1, __pi_init_idmap_pg_end
-+1:	str	xzr, [x0], 8
-+	cmp	x0, x1
-+	b.lo	1b
++/**
++ * umax - return maximum of two non-negative values
++ * @x: first value
++ * @y: second value
++ */
++#define umax(x, y)	\
++	__careful_cmp((x) + 0u + 0ul + 0ull, (y) + 0u + 0ul + 0ull, >)
 +
- 	adrp	x1, early_init_stack
- 	mov	sp, x1
- 	mov	x29, xzr
-diff --git a/arch/arm64/mm/mmu.c b/arch/arm64/mm/mmu.c
-index 34e5d78af076..aaf823565a65 100644
---- a/arch/arm64/mm/mmu.c
-+++ b/arch/arm64/mm/mmu.c
-@@ -761,7 +761,7 @@ static int __init map_entry_trampoline(void)
- 	pgprot_val(prot) &= ~PTE_NG;
- 
- 	/* Map only the text into the trampoline page table */
--	memset(tramp_pg_dir, 0, PGD_SIZE);
-+	memset(tramp_pg_dir, 0, PAGE_SIZE);
- 	__create_pgd_mapping(tramp_pg_dir, pa_start, TRAMP_VALIAS,
- 			     entry_tramp_text_size(), prot,
- 			     pgd_pgtable_alloc_init_mm, NO_BLOCK_MAPPINGS);
-@@ -806,6 +806,7 @@ static void __init create_idmap(void)
- 	u64 end   = __pa_symbol(__idmap_text_end);
- 	u64 ptep  = __pa_symbol(idmap_ptes);
- 
-+	memset(idmap_pg_dir, 0, PAGE_SIZE);
- 	__pi_map_range(&ptep, start, end, start, PAGE_KERNEL_ROX,
- 		       IDMAP_ROOT_LEVEL, (pte_t *)idmap_pg_dir, false,
- 		       __phys_to_virt(ptep) - ptep);
+ /**
+  * min3 - return minimum of three values
+  * @x: first value
 -- 
-2.49.1
+2.50.1
 
 
