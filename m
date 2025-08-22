@@ -1,120 +1,203 @@
-Return-Path: <stable+bounces-172474-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-172475-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id A5745B3211C
-	for <lists+stable@lfdr.de>; Fri, 22 Aug 2025 19:08:53 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7A86CB32135
+	for <lists+stable@lfdr.de>; Fri, 22 Aug 2025 19:11:05 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 91622B04C86
-	for <lists+stable@lfdr.de>; Fri, 22 Aug 2025 17:06:52 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id C6021B206AD
+	for <lists+stable@lfdr.de>; Fri, 22 Aug 2025 17:09:11 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 85DE83126D0;
-	Fri, 22 Aug 2025 17:06:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 64975319867;
+	Fri, 22 Aug 2025 17:08:35 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="JxdJNrG2"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="UdisCh3a"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.15])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4633214AD2D
-	for <stable@vger.kernel.org>; Fri, 22 Aug 2025 17:06:48 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8EE65313558;
+	Fri, 22 Aug 2025 17:08:32 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.15
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755882409; cv=none; b=A/Hn+zHxM3+Ggprv4dUBVYZBRcyvpA4HfLjE38TzxeKRfYVV8RAO3Ocks+JN/Hbed/BICCAC/PmTgI8++Mun4UNxifMd9cnYlClxE4TMIMj097xgXRIIYsNFml+7l3KeOcoOACneRCOneo/S9hhA6BoJZwDrnq7EshCaj8hHgVo=
+	t=1755882515; cv=none; b=mAh0qXW2Q+FbYqLbmVA0r06iohBpNGZEZ4PdQyV0qQc5YK1V2lDu40OO9C0BihFlHwUGDffTrJGkG+U92l3nmy35ookmdZ1m4lwpdgFNa6ljcw5CwfdH0yuxefwpxiLQ+lzfiGJY05mC0VnD2GnJliHp7oYb0sX04bmac9EFdwc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1755882409; c=relaxed/simple;
-	bh=4ugULoPLpaPpB7LAl96zEw0blX41lSjC2sA1GMcE2wE=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=aqhFHScjnHjxC70C+Hok2TQDO1h1LfZXoeb40LTjRRZg64qeFpW43+MpMzx0/YymB+ndIwK1sUgUXa9vBvp7ZEPdJ7NAFZsKkfnz125Nv2YKLPUhPr50h6d6Vm/A+kBIWsLByEnhwQ8e/mKwHK7J88xq2S6dk1cFpYXnO5F1UNk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=JxdJNrG2; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 37E57C4CEED;
-	Fri, 22 Aug 2025 17:06:48 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1755882408;
-	bh=4ugULoPLpaPpB7LAl96zEw0blX41lSjC2sA1GMcE2wE=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=JxdJNrG2NEkl9EhpgDigpSc8otMTXPwjPv9b41lK1MJHnUahlyYQ3qviAmsblSuqP
-	 SgV8vVoRuoJrjRRdovX8wCG4gDZEcCTf2dkigMj2n3wY/BDIwheRRITq/PrLCq6pRQ
-	 9vMos1whK2Ft+gam9T53YeBZwH3AkSnP4+vBWbp4z5QxSnaeowjxk/3yycdAd8ORBC
-	 oFxn9Wty1DoVltU4FSbslzV+5LQS0H5iWIKIprWwznhuEdND3rsIiZijmHJ47ClmRz
-	 /KJq69WcB8ojV64HV9p6jbabK1ZzQ8n8YUxNHZYhiWzcY1HkYnnqQZDmcVMxuAR1l+
-	 cWLRib3CLqgpw==
-From: Sasha Levin <sashal@kernel.org>
-To: stable@vger.kernel.org
-Cc: =?UTF-8?q?Andr=C3=A9=20Draszik?= <andre.draszik@linaro.org>,
-	Bart Van Assche <bvanassche@acm.org>,
-	Peter Griffin <peter.griffin@linaro.org>,
-	"Martin K. Petersen" <martin.petersen@oracle.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1.y] scsi: ufs: exynos: Fix programming of HCI_UTRL_NEXUS_TYPE
-Date: Fri, 22 Aug 2025 13:06:46 -0400
-Message-ID: <20250822170646.1321395-1-sashal@kernel.org>
-X-Mailer: git-send-email 2.50.1
-In-Reply-To: <2025082137-sinister-shadiness-a5da@gregkh>
-References: <2025082137-sinister-shadiness-a5da@gregkh>
+	s=arc-20240116; t=1755882515; c=relaxed/simple;
+	bh=3YE+ZQ5vrX6aLU86H7BJlfzyReIaU+5+8eV+03TzXIE=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=EvKSY7eOCePdIViuD5e7ccsVIx4og45Les/fASzb05d7agk1xppGs5LgEakc+myDIkbKf2EwAKAqjykvCWTl7FwfzHHc9apnU2tOl+nxNxSPnkr7Xp4pXStcEHTtxB0zf2oJZR7Fq+nD490hsZcSHA5lEGzb/XNNIQyhudgL+0I=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=UdisCh3a; arc=none smtp.client-ip=198.175.65.15
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1755882514; x=1787418514;
+  h=message-id:date:mime-version:subject:to:cc:references:
+   from:in-reply-to:content-transfer-encoding;
+  bh=3YE+ZQ5vrX6aLU86H7BJlfzyReIaU+5+8eV+03TzXIE=;
+  b=UdisCh3aO1k4opOUZ2oyZsUiursTw0kvOVJk3awJnEBVj7mrjPgxrllr
+   DqOZ4d840wLVxG+jmuZHSrYBgJPIC1xIbA8g2cH5bUwKYTh/GTB1H9Gux
+   OR4DYYPqTWyKwWtz2z2wXYtWvqy/GEPnfCJxNgbTG08ybM4aBamNyYFZ0
+   jfptxmTsA5oJLMiOWlEKHGhE4CV0KJfghWkg5/mB/YwRNzjmGs5klqkVY
+   hDnXVP/orq1pHT3Yh/9ORguz5wtWALqM17HTwDZHFaWvsc1eArTy3R5eV
+   D955f2YU8ABbpTqXvPdoNgpxQ/cKybEOc0pRzLp1CD5fjyTuwS487+Puw
+   A==;
+X-CSE-ConnectionGUID: mx6iYmbhQoG0FLrcuu1qkw==
+X-CSE-MsgGUID: Bj47Yn0DTVGZ+oCpjiqJCw==
+X-IronPort-AV: E=McAfee;i="6800,10657,11529"; a="61840234"
+X-IronPort-AV: E=Sophos;i="6.17,312,1747724400"; 
+   d="scan'208";a="61840234"
+Received: from orviesa005.jf.intel.com ([10.64.159.145])
+  by orvoesa107.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 22 Aug 2025 10:08:32 -0700
+X-CSE-ConnectionGUID: 5Nu5hnUPTz+8m2WU1ivarg==
+X-CSE-MsgGUID: YdsZ6B6rSVa6oYkMnHlSKw==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.17,312,1747724400"; 
+   d="scan'208";a="174065694"
+Received: from tfalcon-desk.amr.corp.intel.com (HELO [10.125.108.168]) ([10.125.108.168])
+  by orviesa005-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 22 Aug 2025 10:08:31 -0700
+Message-ID: <79027c6f-f2f3-41b2-9ff3-c5576fc06c5c@intel.com>
+Date: Fri, 22 Aug 2025 10:08:30 -0700
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v2] mm: fix KASAN build error due to p*d_populate_kernel()
+To: Harry Yoo <harry.yoo@oracle.com>
+Cc: Liam.Howlett@oracle.com, akpm@linux-foundation.org, andreyknvl@gmail.com,
+ aneesh.kumar@linux.ibm.com, anshuman.khandual@arm.com, apopple@nvidia.com,
+ ardb@kernel.org, arnd@arndb.de, bp@alien8.de, cl@gentwo.org,
+ dave.hansen@linux.intel.com, david@redhat.com, dennis@kernel.org,
+ dev.jain@arm.com, dvyukov@google.com, glider@google.com,
+ gwan-gyeong.mun@intel.com, hpa@zyccr.com, jane.chu@oracle.com,
+ jgross@suse.de, jhubbard@nvidia.com, joao.m.martins@oracle.com,
+ joro@8bytes.org, kas@kernel.org, kevin.brodsky@arm.com,
+ linux-arch@vger.kernel.org, linux-kernel@vger.kernel.org,
+ linux-mm@kvack.org, lorenzo.stoakes@oracle.com, luto@kernel.org,
+ maobibo@loongson.cn, mhocko@suse.com, mingo@redhat.com, osalvador@suse.de,
+ peterx@redhat.com, peterz@infradead.org, rppt@kernel.org,
+ ryabinin.a.a@gmail.com, ryan.roberts@arm.com, stable@vger.kernel.org,
+ surenb@google.com, tglx@linutronix.de, thuth@redhat.com, tj@kernel.org,
+ urezki@gmail.com, vbabka@suse.cz, vincenzo.frascino@arm.com, x86@kernel.org,
+ zhengqi.arch@bytedance.com
+References: <20250821093542.37844-1-harry.yoo@oracle.com>
+ <20250821115731.137284-1-harry.yoo@oracle.com>
+ <3976ef5d-a959-408a-b538-7feba1f0ab7a@intel.com> <aKfDrKBaMc24cNgC@hyeyoo>
+From: Dave Hansen <dave.hansen@intel.com>
+Content-Language: en-US
+Autocrypt: addr=dave.hansen@intel.com; keydata=
+ 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
+In-Reply-To: <aKfDrKBaMc24cNgC@hyeyoo>
 Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
+Content-Transfer-Encoding: 7bit
 
-From: André Draszik <andre.draszik@linaro.org>
+On 8/21/25 18:11, Harry Yoo wrote:
+> On Thu, Aug 21, 2025 at 10:36:12AM -0700, Dave Hansen wrote:
+>> On 8/21/25 04:57, Harry Yoo wrote:
+>>> However, {pgd,p4d}_populate_kernel() is defined as a function regardless
+>>> of the number of page table levels, so the compiler may not optimize
+>>> them away. In this case, the following linker error occurs:
+> 
+> Hi, thanks for taking a look, Dave!
+> 
+> First of all, this is a fix-up patch of a mm-hotfixes patch series that
+> fixes a bug (I should have explained that in the changelog) [1].
+> 
+> [1] https://lore.kernel.org/linux-mm/20250818020206.4517-1-harry.yoo@oracle.com
+> 
+> I think we can continue discussing it and perhaps do that as part of
+> a follow-up series, because the current patch series need to be backported
+> to -stable and your suggestion to improve existing code doesn't require
+> -stable backports.
+> 
+> Does that sound fine?
+> 
+>> This part of the changelog confused me. I think it's focusing on the
+>> wrong thing.
+>>
+>> The code that's triggering this is literally:
+>>
+>>>                         pgd_populate(&init_mm, pgd,
+>>>                                         lm_alias(kasan_early_shadow_p4d));
+>>
+>> It sure _looks_ like it's unconditionally referencing the
+>> 'kasan_early_shadow_p4d' symbol. I think it's wrong to hide that with
+>> macro magic and just assume that the macros won't reference it.
+>>
+>> If a symbol isn't being defined, it shouldn't be referenced in C code.:q
+> 
+> A fair point, and that's what KASAN code has been doing for years.
+> 
+>> The right way to do it is to have an #ifdef in a header that avoids
+>> compiling in the reference to the symbol.
+> 
+> You mean defining some wrapper functions for p*d_populate_kernel() in
+> KASAN with different implementations based on ifdeffery?
 
-[ Upstream commit 01aad16c2257ab8ff33b152b972c9f2e1af47912 ]
+That would work.
 
-On Google gs101, the number of UTP transfer request slots (nutrs) is 32,
-and in this case the driver ends up programming the UTRL_NEXUS_TYPE
-incorrectly as 0.
+So would something like:
 
-This is because the left hand side of the shift is 1, which is of type
-int, i.e. 31 bits wide. Shifting by more than that width results in
-undefined behaviour.
+#if CONFIG_PGTABLE_LEVELS >= 4
+extern p4d_t kasan_early_shadow_p4d[MAX_PTRS_PER_P4D];
+#else
+#define kasan_early_shadow_p4d NULL
+#endif
 
-Fix this by switching to the BIT() macro, which applies correct type
-casting as required. This ensures the correct value is written to
-UTRL_NEXUS_TYPE (0xffffffff on gs101), and it also fixes a UBSAN shift
-warning:
+> Just to clarify, what should be the exact ifdeffery to cover these cases?
+> #if CONFIG_PGTABLE_LEVELS == 4 and 5, or
+> #ifdef __PAGETABLE_P4D_FOLDED and __PAGETABLE_PUD_FOLDED ?
+> 
+> I have no strong opinion on this, let's hear what KASAN folks think.
 
-    UBSAN: shift-out-of-bounds in drivers/ufs/host/ufs-exynos.c:1113:21
-    shift exponent 32 is too large for 32-bit type 'int'
+I think CONFIG_PGTABLE_LEVELS works, but in the end I'm not picky about
+the specific #ifdefs that work.
 
-For consistency, apply the same change to the nutmrs / UTMRL_NEXUS_TYPE
-write.
-
-Fixes: 55f4b1f73631 ("scsi: ufs: ufs-exynos: Add UFS host support for Exynos SoCs")
-Cc: stable@vger.kernel.org
-Signed-off-by: André Draszik <andre.draszik@linaro.org>
-Link: https://lore.kernel.org/r/20250707-ufs-exynos-shift-v1-1-1418e161ae40@linaro.org
-Reviewed-by: Bart Van Assche <bvanassche@acm.org>
-Reviewed-by: Peter Griffin <peter.griffin@linaro.org>
-Signed-off-by: Martin K. Petersen <martin.petersen@oracle.com>
-[ Adapted context ]
-Signed-off-by: Sasha Levin <sashal@kernel.org>
----
- drivers/ufs/host/ufs-exynos.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
-
-diff --git a/drivers/ufs/host/ufs-exynos.c b/drivers/ufs/host/ufs-exynos.c
-index e981f1f8805f..17db3f8c8c51 100644
---- a/drivers/ufs/host/ufs-exynos.c
-+++ b/drivers/ufs/host/ufs-exynos.c
-@@ -1028,8 +1028,8 @@ static int exynos_ufs_post_link(struct ufs_hba *hba)
- 	hci_writel(ufs, 0xa, HCI_DATA_REORDER);
- 	hci_writel(ufs, PRDT_SET_SIZE(12), HCI_TXPRDT_ENTRY_SIZE);
- 	hci_writel(ufs, PRDT_SET_SIZE(12), HCI_RXPRDT_ENTRY_SIZE);
--	hci_writel(ufs, (1 << hba->nutrs) - 1, HCI_UTRL_NEXUS_TYPE);
--	hci_writel(ufs, (1 << hba->nutmrs) - 1, HCI_UTMRL_NEXUS_TYPE);
-+	hci_writel(ufs, BIT(hba->nutrs) - 1, HCI_UTRL_NEXUS_TYPE);
-+	hci_writel(ufs, BIT(hba->nutmrs) - 1, HCI_UTMRL_NEXUS_TYPE);
- 	hci_writel(ufs, 0xf, HCI_AXIDMA_RWDATA_BURST_LEN);
- 
- 	if (ufs->opts & EXYNOS_UFS_OPT_SKIP_CONNECTION_ESTAB)
--- 
-2.50.1
 
 
