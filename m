@@ -1,46 +1,58 @@
-Return-Path: <stable+bounces-172476-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-172469-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4BFBEB32124
-	for <lists+stable@lfdr.de>; Fri, 22 Aug 2025 19:09:44 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7BCC3B320E7
+	for <lists+stable@lfdr.de>; Fri, 22 Aug 2025 19:00:27 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id A46C51D61A4F
-	for <lists+stable@lfdr.de>; Fri, 22 Aug 2025 17:09:49 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 3D620625026
+	for <lists+stable@lfdr.de>; Fri, 22 Aug 2025 17:00:27 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8391531352F;
-	Fri, 22 Aug 2025 17:09:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2EA9E231A41;
+	Fri, 22 Aug 2025 17:00:23 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="SQgE5Oh7"
 X-Original-To: stable@vger.kernel.org
-Received: from bregans-0.gladserv.net (bregans-0.gladserv.net [185.128.210.58])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 17D47310624;
-	Fri, 22 Aug 2025 17:08:59 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.128.210.58
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DE9293126CA
+	for <stable@vger.kernel.org>; Fri, 22 Aug 2025 17:00:22 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755882545; cv=none; b=pUSVTjcP4Nx3E5GsOKH/wc+2L6MaYCuZzfE0DpMsBfpFRmokrnyoPsO7GqC0oA7k7Co3k6vlgJseyWwp7cX9/AP21II/dq5o/uJE4JHxdF0jW7+/H+f2OeUzvArJGgRFVQ/YVgUGsWcthz8G5eYJGuXfSh03lRT54wv8UQiPiQg=
+	t=1755882023; cv=none; b=qmB6C0SyAR3s5RfnzTukm3QnuZw/iCgrbXXwy88gDfKHcsAVBIV46GySbiaeHEP13VLVOrFaFFbV7dWx1XhzotNz3/cPckW+oW/VLDCXE9EpJBOU7t1NuoJa1MBWNtyup7pReb9cenGKD4z0vrGAKKa2mQZn7bgu1YOgsxsF2rc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1755882545; c=relaxed/simple;
-	bh=ahzZ/0mvs0l2sMIO3U7UUbHaORgWwhdGQPeal2ZB710=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=GwyhkpTGv+NCRdiu2l9KRvgdZkv1xO707MpqoQWKmKEgbnTHhHDBbjcmx9j3StiUJ63jRv0GIfWMomyarCpswbELdVJUdjk6i/SaSIZkV/GPqCE7aNMqWl9Eate7wKQrF+a2alzT/meYc8p0QIW/lRbRo6kcFEn6hTMUQBT5a2k=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=librecast.net; spf=pass smtp.mailfrom=librecast.net; arc=none smtp.client-ip=185.128.210.58
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=librecast.net
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=librecast.net
-From: Brett A C Sheffield <bacs@librecast.net>
-To: regressions@lists.linux.dev
-Cc: Brett A C Sheffield <bacs@librecast.net>,
-	netdev@vger.kernel.org,
-	stable@vger.kernel.org,
-	davem@davemloft.net,
-	dsahern@kernel.org,
-	oscmaes92@gmail.com,
-	kuba@kernel.org
-Subject: [REGRESSION][BISECTED][PATCH] net: ipv4: fix regression in broadcast routes
-Date: Fri, 22 Aug 2025 16:50:51 +0000
-Message-ID: <20250822165231.4353-4-bacs@librecast.net>
-X-Mailer: git-send-email 2.49.1
+	s=arc-20240116; t=1755882023; c=relaxed/simple;
+	bh=BDmCzcPREXNcsqW31e5vBNp7OgRyEc+cQqJboD/gR40=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=rLAYz9w+uB5vCpCzQmp6MjwJg4EV1UQyw2+Wx+vsYHWBQJeUdIWm6dT3ho5QGYRtGSW2ufHRy7laoafLPDFMBlyX2DD8s3DUcBd7GHo2Xzmf/RQlPEYVtC5vtHNUsAwEY2zsddkj0cob01WAjst3RARO59ZQC8WeT/uu+QXVJd4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=SQgE5Oh7; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 39168C4CEED;
+	Fri, 22 Aug 2025 17:00:22 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1755882022;
+	bh=BDmCzcPREXNcsqW31e5vBNp7OgRyEc+cQqJboD/gR40=;
+	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
+	b=SQgE5Oh7O+nTE1c1fK/sjwfl4bcbGk5kkDknePBCckCyQo9u6CiO6WaEGgTKzDb4P
+	 yutT2GUHouCm8+a6tpGxPWo5GggBcwNnFkK5JK8LFDwq9ShyTwpUZEr1ghF6axzMUu
+	 JmM7QV5gzVkBYy4TYqvsPS92CW0QLb3EnooFa5Z1FWmatstP2pADTSI480X1A06PCZ
+	 UzkMfb98L1xuJKlINcC06dGk+ERQDyYD8MXHFmBMmoqOiLyHgJSkTh+8PE7k/k7Qbz
+	 QZsPuBAAUcoGfvAQNxDIDcFAWuCbKIw8o9Nlpg/pF+U8YwrOAU4ZH2Vs2apbCg7qxK
+	 9zSkSqZZC6f+A==
+From: Sasha Levin <sashal@kernel.org>
+To: stable@vger.kernel.org
+Cc: Archana Patni <archana.patni@intel.com>,
+	Bart Van Assche <bvanassche@acm.org>,
+	"Martin K. Petersen" <martin.petersen@oracle.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.15.y] scsi: ufs: ufs-pci: Fix hibernate state transition for Intel MTL-like host controllers
+Date: Fri, 22 Aug 2025 13:00:19 -0400
+Message-ID: <20250822170019.1318372-1-sashal@kernel.org>
+X-Mailer: git-send-email 2.50.1
+In-Reply-To: <2025082151-ethics-sponsor-e016@gregkh>
+References: <2025082151-ethics-sponsor-e016@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -49,67 +61,77 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-Fix the regression introduced in 9e30ecf23b1b whereby IPv4 broadcast
-packets were having their ethernet destination field mangled.  This
-broke WOL magic packets and likely other IPv4 broadcast.
+From: Archana Patni <archana.patni@intel.com>
 
-The regression can be observed by sending an IPv4 WOL packet using
-the wakeonlan program to any ethernet address:
+[ Upstream commit 4428ddea832cfdb63e476eb2e5c8feb5d36057fe ]
 
- wakeonlan 46:3b:ad:61:e0:5d
+UFSHCD core disables the UIC completion interrupt when issuing UIC
+hibernation commands, and re-enables it afterwards if it was enabled to
+start with, refer ufshcd_uic_pwr_ctrl(). For Intel MTL-like host
+controllers, accessing the register to re-enable the interrupt disrupts
+the state transition.
 
-and capturing the packet with tcpdump:
+Use hibern8_notify variant operation to disable the interrupt during the
+entire hibernation, thereby preventing the disruption.
 
- tcpdump -i eth0 -w /tmp/bad.cap dst port 9
-
-The ethernet destination MUST be ff:ff:ff:ff:ff:ff for broadcast, but is
-mangled with 9e30ecf23b1b applied.
-
-Revert the change made in 9e30ecf23b1b and ensure the MTU value for
-broadcast routes is retained by calling ip_dst_init_metrics() directly,
-avoiding the need to enter the main code block in rt_set_nexthop().
-
-Simplify the code path taken for broadcast packets back to the original
-before the regression, adding only the call to ip_dst_init_metrics().
-
-The broadcast_pmtu.sh selftest provided with the original patch still
-passes with this patch applied.
-
-Fixes: 9e30ecf23b1b ("net: ipv4: fix incorrect MTU in broadcast routes")
-Signed-off-by: Brett A C Sheffield <bacs@librecast.net>
+Fixes: 4049f7acef3e ("scsi: ufs: ufs-pci: Add support for Intel MTL")
+Cc: stable@vger.kernel.org
+Signed-off-by: Archana Patni <archana.patni@intel.com>
+Link: https://lore.kernel.org/r/20250723165856.145750-2-adrian.hunter@intel.com
+Reviewed-by: Bart Van Assche <bvanassche@acm.org>
+Signed-off-by: Martin K. Petersen <martin.petersen@oracle.com>
+[ Adapted file path from drivers/ufs/host/ to drivers/scsi/ufs/ ]
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/ipv4/route.c | 7 ++++++-
- 1 file changed, 6 insertions(+), 1 deletion(-)
+ drivers/scsi/ufs/ufshcd-pci.c | 27 +++++++++++++++++++++++++++
+ 1 file changed, 27 insertions(+)
 
-diff --git a/net/ipv4/route.c b/net/ipv4/route.c
-index f639a2ae881a..eaf78e128aca 100644
---- a/net/ipv4/route.c
-+++ b/net/ipv4/route.c
-@@ -2588,6 +2588,7 @@ static struct rtable *__mkroute_output(const struct fib_result *res,
- 	do_cache = true;
- 	if (type == RTN_BROADCAST) {
- 		flags |= RTCF_BROADCAST | RTCF_LOCAL;
-+		fi = NULL;
- 	} else if (type == RTN_MULTICAST) {
- 		flags |= RTCF_MULTICAST | RTCF_LOCAL;
- 		if (!ip_check_mc_rcu(in_dev, fl4->daddr, fl4->saddr,
-@@ -2657,8 +2658,12 @@ static struct rtable *__mkroute_output(const struct fib_result *res,
- 			rth->dst.output = ip_mc_output;
- 			RT_CACHE_STAT_INC(out_slow_mc);
- 		}
-+		if (type == RTN_BROADCAST) {
-+			/* ensure MTU value for broadcast routes is retained */
-+			ip_dst_init_metrics(&rth->dst, res->fi->fib_metrics);
-+		}
- #ifdef CONFIG_IP_MROUTE
--		if (type == RTN_MULTICAST) {
-+		else if (type == RTN_MULTICAST) {
- 			if (IN_DEV_MFORWARD(in_dev) &&
- 			    !ipv4_is_local_multicast(fl4->daddr)) {
- 				rth->dst.input = ip_mr_input;
-
-base-commit: 01b9128c5db1b470575d07b05b67ffa3cb02ebf1
+diff --git a/drivers/scsi/ufs/ufshcd-pci.c b/drivers/scsi/ufs/ufshcd-pci.c
+index 0920530a72d2..11071c132c1d 100644
+--- a/drivers/scsi/ufs/ufshcd-pci.c
++++ b/drivers/scsi/ufs/ufshcd-pci.c
+@@ -203,6 +203,32 @@ static int ufs_intel_lkf_apply_dev_quirks(struct ufs_hba *hba)
+ 	return ret;
+ }
+ 
++static void ufs_intel_ctrl_uic_compl(struct ufs_hba *hba, bool enable)
++{
++	u32 set = ufshcd_readl(hba, REG_INTERRUPT_ENABLE);
++
++	if (enable)
++		set |= UIC_COMMAND_COMPL;
++	else
++		set &= ~UIC_COMMAND_COMPL;
++	ufshcd_writel(hba, set, REG_INTERRUPT_ENABLE);
++}
++
++static void ufs_intel_mtl_h8_notify(struct ufs_hba *hba,
++				    enum uic_cmd_dme cmd,
++				    enum ufs_notify_change_status status)
++{
++	/*
++	 * Disable UIC COMPL INTR to prevent access to UFSHCI after
++	 * checking HCS.UPMCRS
++	 */
++	if (status == PRE_CHANGE && cmd == UIC_CMD_DME_HIBER_ENTER)
++		ufs_intel_ctrl_uic_compl(hba, false);
++
++	if (status == POST_CHANGE && cmd == UIC_CMD_DME_HIBER_EXIT)
++		ufs_intel_ctrl_uic_compl(hba, true);
++}
++
+ #define INTEL_ACTIVELTR		0x804
+ #define INTEL_IDLELTR		0x808
+ 
+@@ -476,6 +502,7 @@ static struct ufs_hba_variant_ops ufs_intel_mtl_hba_vops = {
+ 	.init			= ufs_intel_mtl_init,
+ 	.exit			= ufs_intel_common_exit,
+ 	.hce_enable_notify	= ufs_intel_hce_enable_notify,
++	.hibern8_notify		= ufs_intel_mtl_h8_notify,
+ 	.link_startup_notify	= ufs_intel_link_startup_notify,
+ 	.resume			= ufs_intel_resume,
+ 	.device_reset		= ufs_intel_device_reset,
 -- 
-2.49.1
+2.50.1
 
 
