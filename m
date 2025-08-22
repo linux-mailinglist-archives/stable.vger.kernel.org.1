@@ -1,76 +1,141 @@
-Return-Path: <stable+bounces-172310-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-172311-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id A6CBBB30EFE
-	for <lists+stable@lfdr.de>; Fri, 22 Aug 2025 08:33:07 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id DF5BFB30F02
+	for <lists+stable@lfdr.de>; Fri, 22 Aug 2025 08:33:44 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 7E3A71CE5035
-	for <lists+stable@lfdr.de>; Fri, 22 Aug 2025 06:33:19 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id B0E131CE48AA
+	for <lists+stable@lfdr.de>; Fri, 22 Aug 2025 06:34:04 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id EE69B2E5409;
-	Fri, 22 Aug 2025 06:32:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 50B022E543E;
+	Fri, 22 Aug 2025 06:33:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="K/Z1cNk1"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="N4KbKQRD"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-ed1-f41.google.com (mail-ed1-f41.google.com [209.85.208.41])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AD233277031
-	for <stable@vger.kernel.org>; Fri, 22 Aug 2025 06:32:51 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6EB4C2E4273
+	for <stable@vger.kernel.org>; Fri, 22 Aug 2025 06:33:38 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.41
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755844371; cv=none; b=bZvsCDhxZj4H07mx1DdYiCzim2R9D9S3WqN9lomS4lVsvNShjB7A7pns6J97coNoFqgavuw4ckIZeDn7BEW27ZsmcEp50ulJ0F90AWzumxN2SPJX9vVAN2py7LDIe43BO3U6AwNIYHpBfGDKWPfd5NJ4hITh0yn/k41QN08x1S0=
+	t=1755844420; cv=none; b=pIVh6YdSlqGAnv3aXYF1wmkSNlmRxMIB/Xjte00ov5f863HWxffdxvujguNANaEuLaVBm6Fb5xnug/AVp7kuP+2ImTox9zzZsSCMqSUNO45RCqc1BkzsTC0oCslGzh6VufHQd+iD9B41RDRteU/1JtLTFLXHcaEzzkH4f+iVUiA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1755844371; c=relaxed/simple;
-	bh=WIm1CFQ4YaVdOy1z3x70efxsPMRnm5cZ2AaEQxpRfoM=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=jHeAY+CvuonTzaRhbXIH93PN2k92EFpJtfVG3pWLt4bYmgfFFLPhBo37DwYvDcLWjaTQ4D2VSaEpBEy5MjQxJlyz1+KFg79gX2bR/sD0oYMadYkINm7IX9MQ3IKT/lB324/hRPnoyY2AScAdva2aRl3gu/HuxiGBE/dPMWGwmGc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=K/Z1cNk1; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C5FB3C4CEF1;
-	Fri, 22 Aug 2025 06:32:50 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1755844371;
-	bh=WIm1CFQ4YaVdOy1z3x70efxsPMRnm5cZ2AaEQxpRfoM=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=K/Z1cNk1L3VUuaxBcyuFeYBadBtIN26dibLnbwvJEFezltAyjLQLOyt9nyrDiWQij
-	 cccVRmj5utvGDoXJYtq69r7qFYkV8uatk6nRhykB7lFNz+4cLiaM1xOjuVpENgID9b
-	 5hMdFbHoTxJhoOtIz5wi8cF2dYrn+J8WfEZ2n48c=
-Date: Fri, 22 Aug 2025 08:32:48 +0200
-From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-To: Alistair Delva <adelva@google.com>
-Cc: Sasha Levin <sashal@kernel.org>, Elie Kheirallah <khei@google.com>,
-	Frederick Mayle <fmayle@google.com>,
-	Cody Schuffelen <schuffelen@google.com>,
-	"Cc: Android Kernel" <kernel-team@android.com>,
-	Linux Stable maillist <stable@vger.kernel.org>
-Subject: Re: 2a23a4e1159c to 6.12
-Message-ID: <2025082206-blubber-ought-421a@gregkh>
-References: <CANDihLGGcVHO=8uX6+TWciJyXqy6KtRHGgjbAGq4a1hZ36mU8A@mail.gmail.com>
+	s=arc-20240116; t=1755844420; c=relaxed/simple;
+	bh=ec81Mnup6E9CTBV0CcRVRgQ9sKckqNBArRQI10Bt5iE=;
+	h=From:To:Cc:Subject:Date:Message-Id; b=oleWwnsM6Nsqe/jMS3U4XiVrmzaj9fxr0GangHomFK0EbAfknk8t2VHnkPq/amYIF7+QflOqc3U+WRvjo1dypthr5XH4/istghZkzHrCZgqS1NPoF93P50mQSRR9YPy0oR516oY3Xl/Gc5HLlqdmSqOeZbee/AGVNCFWO2YXr9Y=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=N4KbKQRD; arc=none smtp.client-ip=209.85.208.41
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-ed1-f41.google.com with SMTP id 4fb4d7f45d1cf-61c14b1689eso1255375a12.1
+        for <stable@vger.kernel.org>; Thu, 21 Aug 2025 23:33:38 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1755844417; x=1756449217; darn=vger.kernel.org;
+        h=message-id:date:subject:cc:to:from:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=nYgWrTDKeCSkoPnBZGqn59HSOrAsr0K77JqRZD3h0Wk=;
+        b=N4KbKQRDJlrqvt4N/AsiKOMBvnyU71mtR1Bb+ghCk19brb5Ff/Cb/n1cYNAR0gZkoH
+         vhf14xoouIu9Rp05MYAY/hJ+E6VQwfVo24/mL6UETupf+RWXU3QIsNGsuUKdc2doRyA5
+         7/cdTJsJoHIzfqkL2yBio3q2zr2Fra7TPZgFfTMJL0iZAQ0XlTSNOX8Rr2huBpRICMtM
+         zIJiLYLF7HFDJGibApH4Wamivvo1LVc99W+VWpxQf5n9OeQuJxCHc47YDtdkLevyp2Yd
+         jHYhY1yLCUYRAsB6BFK7O0XyfonLL6/kHE+rY+xvGiV/outR/AmwpUIcfouCVnRvHE7i
+         kCLw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1755844417; x=1756449217;
+        h=message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=nYgWrTDKeCSkoPnBZGqn59HSOrAsr0K77JqRZD3h0Wk=;
+        b=EgCszz+2vZ0EBDclY59XYcbcnEaM+h/P0933KlWRgWD9O429KpA4r5P+7MbEokNlKM
+         j00sPN8J/h/Z3ilptFcqas5Se5lvAU0QXWf1dIIfVTbijHK//7613rroUDTeXX/YQr+1
+         2/R/tIqYmv7Z8EgTEVd8oab67xAMu1w6e7F4wxJoxhH1Nr+NPRMy/FD0VguCs8q+89hV
+         3iQDKtztHr/ceWuz7ZnfFm1gy7sRGOZcUzFbY3AGlPGGwVbU7bld55fEnkg9XdKw23ij
+         f+oLmvza9jMVhAeVav4334Sp/3hynLO28MMrulnxxglfWvuNBWrF2GGfYCVtMN0w0k1j
+         MBGw==
+X-Forwarded-Encrypted: i=1; AJvYcCWTbxM81eUZPEuR1BQVSmfySQePavbWDKhFLNs/W0eYu1PQfeYOjz0pbWCFesT3AZTPos312cI=@vger.kernel.org
+X-Gm-Message-State: AOJu0YyDKhcYqGfNxS6R+T7hkg+DphgGihHnD5Mc9/ykqxPayPzkjXxd
+	+e7cfSMDhqCdAjjfJAa/5U2gmI1j6iCqi1AqCJf9TDkqdNrxYH8Ptwnk
+X-Gm-Gg: ASbGncvR/ipldhr50YiNhfUxilOhcBGSjpNShSvyPqA4rbs8icqRmlp3Gzt4gg41sgl
+	m7pGNhLiQLMljv85zHFELIZI8zYTRDDEJ8w4WPW3IvTdYoOxZWKlpdCCs0hTGEf4XLih4BezTpZ
+	HtSXWC2QvnC0Dj2oYM4K60tKTm+0Ul9l2PIgMc1PXypGBqtcaGDC2a0Gaj8vsTSTqurNDEEIvtc
+	tTGtyzCTeE4aev+wiCfGP1h6d7n58SjjlNhd7xxdNbMakPBaxAp4yOxuX11lJACcII9o/l5QiHx
+	GajK3aspculINAs1kE0eorGF3P6/coACxTzds3Mp4fWFeWK8U199l/lWqwRVJSqxCnJF99h0ZI1
+	g5x+GJ1BjKSjLFBdDZg6hWFFzXkA6Xo1lTUn3
+X-Google-Smtp-Source: AGHT+IH9r+KFcy5AFRt3q+bnI1jzb1hmCjNuSgGHLfGMNgn5kympgvMzvvGImWzn/C5lT7w7/btAtw==
+X-Received: by 2002:a17:907:72d4:b0:afd:d9e4:5a4a with SMTP id a640c23a62f3a-afe296b7cafmr157878166b.62.1755844416438;
+        Thu, 21 Aug 2025 23:33:36 -0700 (PDT)
+Received: from localhost ([185.92.221.13])
+        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-afded2fc568sm542472066b.38.2025.08.21.23.33.35
+        (version=TLS1_2 cipher=ECDHE-ECDSA-CHACHA20-POLY1305 bits=256/256);
+        Thu, 21 Aug 2025 23:33:36 -0700 (PDT)
+From: Wei Yang <richard.weiyang@gmail.com>
+To: akpm@linux-foundation.org,
+	david@redhat.com,
+	lorenzo.stoakes@oracle.com,
+	ziy@nvidia.com,
+	baolin.wang@linux.alibaba.com,
+	npache@redhat.com,
+	ryan.roberts@arm.com,
+	dev.jain@arm.com,
+	baohua@kernel.org
+Cc: linux-mm@kvack.org,
+	Wei Yang <richard.weiyang@gmail.com>,
+	"Liam R . Howlett" <Liam.Howlett@oracle.com>,
+	stable@vger.kernel.org
+Subject: [PATCH] mm/khugepaged: fix the address passed to notifier on testing young
+Date: Fri, 22 Aug 2025 06:33:18 +0000
+Message-Id: <20250822063318.11644-1-richard.weiyang@gmail.com>
+X-Mailer: git-send-email 2.11.0
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <CANDihLGGcVHO=8uX6+TWciJyXqy6KtRHGgjbAGq4a1hZ36mU8A@mail.gmail.com>
 
-On Tue, Aug 19, 2025 at 03:00:25PM -0700, Alistair Delva wrote:
-> Dear stable maintainers,
-> 
-> Please consider cherry-picking 2a23a4e1159c ("kvm:
-> retrynx_huge_page_recovery_thread creation") to 6.12. It fixes
-> a problem where some VMMs (crosvm, firecracker, others) may
-> unnecessarily terminate a VM when -ENOMEM is returned to
-> userspace for a non-fatal condition.
+Commit 8ee53820edfd ("thp: mmu_notifier_test_young") introduced
+mmu_notifier_test_young(), but we should pass the address need to test.
+In xxx_scan_pmd(), the actual iteration address is "_address" not
+"address". We seem to misuse the variable on the very beginning.
 
-That is not a valid commit in Linus's tree, are you sure it is correct?
+Change it to the right one.
 
-thanks,
+Fixes: 8ee53820edfd ("thp: mmu_notifier_test_young")
+Signed-off-by: Wei Yang <richard.weiyang@gmail.com>
+Cc: David Hildenbrand <david@redhat.com>
+Cc: Lorenzo Stoakes <lorenzo.stoakes@oracle.com>
+Cc: Zi Yan <ziy@nvidia.com>
+Cc: Baolin Wang <baolin.wang@linux.alibaba.com>
+Cc: Liam R. Howlett <Liam.Howlett@oracle.com>
+Cc: Nico Pache <npache@redhat.com>
+Cc: Ryan Roberts <ryan.roberts@arm.com>
+Cc: Dev Jain <dev.jain@arm.com>
+Cc: Barry Song <baohua@kernel.org>
+CC: <stable@vger.kernel.org>
 
-greg k-h
+---
+The original commit 8ee53820edfd is at 2011.
+Then the code is moved to khugepaged.c in commit b46e756f5e470 ("thp:
+extract khugepaged from mm/huge_memory.c") in 2022.
+---
+ mm/khugepaged.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/mm/khugepaged.c b/mm/khugepaged.c
+index 24e18a7f8a93..b000942250d1 100644
+--- a/mm/khugepaged.c
++++ b/mm/khugepaged.c
+@@ -1418,7 +1418,7 @@ static int hpage_collapse_scan_pmd(struct mm_struct *mm,
+ 		if (cc->is_khugepaged &&
+ 		    (pte_young(pteval) || folio_test_young(folio) ||
+ 		     folio_test_referenced(folio) || mmu_notifier_test_young(vma->vm_mm,
+-								     address)))
++								     _address)))
+ 			referenced++;
+ 	}
+ 	if (!writable) {
+-- 
+2.34.1
+
 
