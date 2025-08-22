@@ -1,253 +1,175 @@
-Return-Path: <stable+bounces-172343-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-172344-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4B77DB312FB
-	for <lists+stable@lfdr.de>; Fri, 22 Aug 2025 11:27:27 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 83BEBB312F2
+	for <lists+stable@lfdr.de>; Fri, 22 Aug 2025 11:26:30 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 17E2DA2027E
-	for <lists+stable@lfdr.de>; Fri, 22 Aug 2025 09:24:50 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id D8FBF5C0A05
+	for <lists+stable@lfdr.de>; Fri, 22 Aug 2025 09:24:53 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 75D132E3AE5;
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A58442E8B61;
 	Fri, 22 Aug 2025 09:24:45 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=quicinc.com header.i=@quicinc.com header.b="G+Jiu1PZ"
+	dkim=pass (1024-bit key) header.d=ispras.ru header.i=@ispras.ru header.b="khDL7oO4"
 X-Original-To: stable@vger.kernel.org
-Received: from mx0a-0031df01.pphosted.com (mx0a-0031df01.pphosted.com [205.220.168.131])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail.ispras.ru (mail.ispras.ru [83.149.199.84])
+	(using TLSv1.2 with cipher DHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A93301E5705;
-	Fri, 22 Aug 2025 09:24:43 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.168.131
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D085329ACF0;
+	Fri, 22 Aug 2025 09:24:41 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=83.149.199.84
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755854685; cv=none; b=tMsLBzuq+g2PmcexRtx0XShZNzsqw8grz/nvvC1k1z4JqG6SJJzDDoQzGTFWzxhZ+IVWCLigKNzEwMEqxczp05WtnT4V5tP2Zv9narJleZGg4IHvl9ksinAhblyz9wEx+o6HjpPzANp9e9xSM6XzytATQtO8gsSDW4aBa7roP7M=
+	t=1755854685; cv=none; b=GYskt8txPs/Eld27hwZiJiM/wC98VA9VLN0zsC+9jFBmFT22A6HEYEzNKcSwuLzLw+Sghps1CvPViMZkVBSMb6GRT+ZBRArSkn39eRkhyiQF9/dV0sjR+8q9urDbqqk+IWv5XH6s8MsQx7++hqnAx2o12s2DQYPlImjBPgAE0kU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
 	s=arc-20240116; t=1755854685; c=relaxed/simple;
-	bh=p29owKCz3ecm4EYMWjteO2Thx/IuiRcRF4Yi/2j06xA=;
-	h=From:Date:Subject:MIME-Version:Content-Type:Message-ID:To:CC; b=f9ag5MUtWN2pIJVomtS356qZE52HgonfjlzAbCvQx/s/h4Z1LlqJBDq6p8Nnu98094pnWHOsbCYCADIj2r2ATW0nVU5kBlSLnr+XqKb4NDzAXW88QHUW3Mg8AjugZpQj6VGx7tJsIRuuUTi0BbhWWK/Ar/SyIiZygcym5/NThsY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=quicinc.com; spf=pass smtp.mailfrom=quicinc.com; dkim=pass (2048-bit key) header.d=quicinc.com header.i=@quicinc.com header.b=G+Jiu1PZ; arc=none smtp.client-ip=205.220.168.131
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=quicinc.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=quicinc.com
-Received: from pps.filterd (m0279867.ppops.net [127.0.0.1])
-	by mx0a-0031df01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 57M8UX7T022188;
-	Fri, 22 Aug 2025 09:24:40 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=quicinc.com; h=
-	cc:content-transfer-encoding:content-type:date:from:message-id
-	:mime-version:subject:to; s=qcppdkim1; bh=tohv4Om1ZHY17KbVzigLWE
-	atXmnfC4ZmdUB4jy2e14M=; b=G+Jiu1PZC1ZxtLJZ38KR9fnmEXiB7ptP/I7F8g
-	FKWrrSP4F5Wq7+gTyQr8DXgIAjA+RKA0PAwNuaS/r3VL+Ty9GPGduR5bK33JzfH/
-	UlewyFne5I9sznwWRr/BTPuPFxYXF6wJFrbVnSwopTkqPC33jAZ+DRmU9vpAMUHX
-	Kzv0N0u5sjC2nJT264UszQ0ywwdsy2K+MsNwqxL3CyFSruOcJpc/ymNNeTU/NCqZ
-	c/vPgWOaJhh+o+a7E1zbiwrUIYxB1zrN29qSNscXw7gKagMgjRLqBIAKhYrVHGu8
-	jjHX4SLhYqvrKdoDJiDiPgixTe0BCf/PoMUc+jxggrFls/aQ==
-Received: from nalasppmta05.qualcomm.com (Global_NAT1.qualcomm.com [129.46.96.20])
-	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 48n52a8qsh-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Fri, 22 Aug 2025 09:24:40 +0000 (GMT)
-Received: from nalasex01a.na.qualcomm.com (nalasex01a.na.qualcomm.com [10.47.209.196])
-	by NALASPPMTA05.qualcomm.com (8.18.1.2/8.18.1.2) with ESMTPS id 57M9Od10018521
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Fri, 22 Aug 2025 09:24:39 GMT
-Received: from hu-sumk-hyd.qualcomm.com (10.80.80.8) by
- nalasex01a.na.qualcomm.com (10.47.209.196) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.1748.10; Fri, 22 Aug 2025 02:24:35 -0700
-From: Sumit Kumar <quic_sumk@quicinc.com>
-Date: Fri, 22 Aug 2025 14:54:18 +0530
-Subject: [PATCH v2] bus: mhi: ep: Fix chained transfer handling in read
- path
+	bh=4H3CSlZbt2YKASmV8QNlaFgG034FjBGOLnkZFuH48iM=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=NtcTxBg5ffY6TS/8iABtAxBLw72iR3TqfotX7k2zzctmRGqSGxrQS5SUqgFkL3ze6K2Grretv6GTccs6QFE2U0x/V6jRD/X56bnVAYtGsTcwOPMo1jJEFFgCivWgKnPYKnkZmK1RJAznnsrZwdlZ/Pm1zC4ZnluArCIxMnHi/Tw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=ispras.ru; spf=pass smtp.mailfrom=ispras.ru; dkim=pass (1024-bit key) header.d=ispras.ru header.i=@ispras.ru header.b=khDL7oO4; arc=none smtp.client-ip=83.149.199.84
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=ispras.ru
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ispras.ru
+Received: from localhost (unknown [5.228.116.177])
+	by mail.ispras.ru (Postfix) with UTF8SMTPSA id 6111940643C9;
+	Fri, 22 Aug 2025 09:24:32 +0000 (UTC)
+DKIM-Filter: OpenDKIM Filter v2.11.0 mail.ispras.ru 6111940643C9
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ispras.ru;
+	s=default; t=1755854672;
+	bh=NC0e5OuHN3V1zBWdiEUAkeRkuP4dlYl3iTTfrLZTkNg=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=khDL7oO4F+OfTZzrlYicYCN/ZsdoG2y7hhoOiy28YZ30Dpx/i7+4nqMivO/0/68RE
+	 nOLywZ+1VBoOuDvXS9GCNi9mIADMevCvx3oUGYshacu6g3rLrC5TlT5xqk58L+1+/M
+	 5xWMCETTac1UVRJ4fHOrHTI3GswaQZGuwk3/8/F8=
+Date: Fri, 22 Aug 2025 12:24:32 +0300
+From: Fedor Pchelkin <pchelkin@ispras.ru>
+To: Melissa Wen <mwen@igalia.com>
+Cc: Alex Deucher <alexander.deucher@amd.com>, 
+	Mario Limonciello <mario.limonciello@amd.com>, Harry Wentland <harry.wentland@amd.com>, 
+	Rodrigo Siqueira <siqueira@igalia.com>, Christian =?utf-8?B?S8O2bmln?= <christian.koenig@amd.com>, 
+	David Airlie <airlied@gmail.com>, Simona Vetter <simona@ffwll.ch>, 
+	Hans de Goede <hansg@kernel.org>, amd-gfx@lists.freedesktop.org, dri-devel@lists.freedesktop.org, 
+	linux-kernel@vger.kernel.org, lvc-project@linuxtesting.org, stable@vger.kernel.org
+Subject: Re: [PATCH v2 2/2] drm/amd/display: fix leak of probed modes
+Message-ID: <20250822113609-348b2697616f3b82d6768feb-pchelkin@ispras>
+References: <20250819184636.232641-1-pchelkin@ispras.ru>
+ <20250819184636.232641-3-pchelkin@ispras.ru>
+ <e3b1f1bb-eeee-4887-a0f9-d6aa1f725ff4@igalia.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-Message-ID: <20250822-chained_transfer-v2-1-7aeb5ac215b6@quicinc.com>
-X-B4-Tracking: v=1; b=H4sIAEE3qGgC/32NQQ7CIBBFr9LMWgxgaYsr72Eag3SwsxAUKtE03
- F3sAVy+l/z3V0gYCRMcmxUiZkoUfAW5a8DOxt+Q0VQZJJeK91yzasnjdFmi8clhZPyqlRuMM+3
- QQ509Ijp6b8nzWHmmtIT42R6y+Nk/sSyYYPIgO9N2XFltT88XWfJ2b8MdxlLKF/rONgGyAAAA
-X-Change-ID: 20250709-chained_transfer-0b95f8afa487
-To: Manivannan Sadhasivam <mani@kernel.org>, Alex Elder <elder@kernel.org>,
-        Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-CC: <mhi@lists.linux.dev>, <linux-arm-msm@vger.kernel.org>,
-        <linux-kernel@vger.kernel.org>, <quic_krichai@quicinc.com>,
-        <quic_akhvin@quicinc.com>, <quic_skananth@quicinc.com>,
-        <quic_vbadigan@quicinc.com>, Sumit Kumar <sumk@qti.qualcomm.com>,
-        <stable@vger.kernel.org>, Akhil Vinod <akhvin@qti.qualcomm.com>
-X-Mailer: b4 0.14.2
-X-Developer-Signature: v=1; a=ed25519-sha256; t=1755854675; l=4966;
- i=quic_sumk@quicinc.com; s=20250409; h=from:subject:message-id;
- bh=KBThMEJX0rKHCfMSRduWUASeRfWzcxnPJbnPQ0YMEVM=;
- b=u8zK4CnamPmkex+WNNNOaszIEiqqQ/uk8SeE+PPjD350OBuLmA0F68A27q/uFhE9N5yGmSLSC
- dKYYahGVT3CCsOUhPqwRz1MTs5XFEkR8K1XgS1mJEBur9KlgxMVnb+r
-X-Developer-Key: i=quic_sumk@quicinc.com; a=ed25519;
- pk=3cys6srXqLACgA68n7n7KjDeM9JiMK1w6VxzMxr0dnM=
-X-ClientProxiedBy: nasanex01b.na.qualcomm.com (10.46.141.250) To
- nalasex01a.na.qualcomm.com (10.47.209.196)
-X-QCInternal: smtphost
-X-Proofpoint-Virus-Version: vendor=nai engine=6200 definitions=5800 signatures=585085
-X-Authority-Analysis: v=2.4 cv=feD0C0QF c=1 sm=1 tr=0 ts=68a83758 cx=c_pps
- a=ouPCqIW2jiPt+lZRy3xVPw==:117 a=ouPCqIW2jiPt+lZRy3xVPw==:17
- a=GEpy-HfZoHoA:10 a=IkcTkHD0fZMA:10 a=2OwXVqhp2XgA:10 a=VwQbUJbxAAAA:8
- a=COk6AnOGAAAA:8 a=EUspDBNiAAAA:8 a=Acz1dXpLE0r9sSoUNVYA:9 a=QEXdDO2ut3YA:10
- a=TjNXssC_j7lpFel5tvFf:22 a=cPQSjfK2_nFv0Q5t_7PE:22
-X-Proofpoint-ORIG-GUID: jyZ0ajxforUgOzikqWQQjlbVY_LUpTvj
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjUwODIwMDAxMyBTYWx0ZWRfX08/9FfkSvYUS
- tRB9+lqFJoahVh2QE9N1hYcKw2PaQSSGSHxyGH1K7O75c5OxL5qfVmLB6UPAbRgl/GGDI85YrDe
- 8fSXk4OMIAMGDkv5fF0Hw1BCJG7iSklEY6/MvYSP1VIDNW5EM4vv69f/lFee5FV0+f2etjdt7a+
- 1Mpnn/ln/uFCn+5w/4FpYk7xqj+3UnXAHt4vHFwhedxOemlS2p9iFe+JfaEi2zqoiLTkYu2jruQ
- rjYT49tQCJecX2xJWY9fVqWQwycvWJ4paiR4vwRf/n7xaZtg9SxCdEvNIektuj6FbkFuySwEZJg
- +do/iMtYjgLG8eJbPo+svXJwjZSbtPR4SgD/uB5ZEIRhLQy+PCgDj0763KkXgXcALNF7/tVjIOb
- 1ciJNIooCvMdoDRtwu9tXqD/11Iacg==
-X-Proofpoint-GUID: jyZ0ajxforUgOzikqWQQjlbVY_LUpTvj
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1099,Hydra:6.1.9,FMLib:17.12.80.40
- definitions=2025-08-22_03,2025-08-20_03,2025-03-28_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- priorityscore=1501 phishscore=0 adultscore=0 malwarescore=0 bulkscore=0
- lowpriorityscore=0 spamscore=0 impostorscore=0 suspectscore=0 clxscore=1015
- classifier=typeunknown authscore=0 authtc= authcc= route=outbound adjust=0
- reason=mlx scancount=1 engine=8.19.0-2508110000 definitions=main-2508200013
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <e3b1f1bb-eeee-4887-a0f9-d6aa1f725ff4@igalia.com>
 
-From: Sumit Kumar <sumk@qti.qualcomm.com>
+Hi,
 
-The current implementation of mhi_ep_read_channel, in case of chained
-transactions, assumes the End of Transfer(EOT) bit is received with the
-doorbell. As a result, it may incorrectly advance mhi_chan->rd_offset
-beyond wr_offset during host-to-device transfers when EOT has not yet
-arrived. This can lead to access of unmapped host memory, causing
-IOMMU faults and processing of stale TREs.
+On Wed, 20. Aug 13:00, Melissa Wen wrote:
+> On 19/08/2025 15:46, Fedor Pchelkin wrote:
+> > amdgpu_dm_connector_ddc_get_modes() reinitializes a connector's probed
+> > modes list without cleaning it up. First time it is called during the
+> > driver's initialization phase, then via drm_mode_getconnector() ioctl.
+> > The leaks observed with Kmemleak are as following:
+> > 
+> > unreferenced object 0xffff88812f91b200 (size 128):
+> >    comm "(udev-worker)", pid 388, jiffies 4294695475
+> >    hex dump (first 32 bytes):
+> >      ac dd 07 00 80 02 70 0b 90 0b e0 0b 00 00 e0 01  ......p.........
+> >      0b 07 10 07 5c 07 00 00 0a 00 00 00 00 00 00 00  ....\...........
+> >    backtrace (crc 89db554f):
+> >      __kmalloc_cache_noprof+0x3a3/0x490
+> >      drm_mode_duplicate+0x8e/0x2b0
+> >      amdgpu_dm_create_common_mode+0x40/0x150 [amdgpu]
+> >      amdgpu_dm_connector_add_common_modes+0x336/0x488 [amdgpu]
+> >      amdgpu_dm_connector_get_modes+0x428/0x8a0 [amdgpu]
+> >      amdgpu_dm_initialize_drm_device+0x1389/0x17b4 [amdgpu]
+> >      amdgpu_dm_init.cold+0x157b/0x1a1e [amdgpu]
+> >      dm_hw_init+0x3f/0x110 [amdgpu]
+> >      amdgpu_device_ip_init+0xcf4/0x1180 [amdgpu]
+> >      amdgpu_device_init.cold+0xb84/0x1863 [amdgpu]
+> >      amdgpu_driver_load_kms+0x15/0x90 [amdgpu]
+> >      amdgpu_pci_probe+0x391/0xce0 [amdgpu]
+> >      local_pci_probe+0xd9/0x190
+> >      pci_call_probe+0x183/0x540
+> >      pci_device_probe+0x171/0x2c0
+> >      really_probe+0x1e1/0x890
+> > 
+> > Found by Linux Verification Center (linuxtesting.org).
+> > 
+> > Fixes: acc96ae0d127 ("drm/amd/display: set panel orientation before drm_dev_register")
+> > Cc: stable@vger.kernel.org
+> > Signed-off-by: Fedor Pchelkin <pchelkin@ispras.ru>
+> > ---
+> >   drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm.c | 3 +++
+> >   1 file changed, 3 insertions(+)
+> > 
+> > diff --git a/drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm.c b/drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm.c
+> > index cd0e2976e268..7ec1f9afc081 100644
+> > --- a/drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm.c
+> > +++ b/drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm.c
+> > @@ -8227,9 +8227,12 @@ static void amdgpu_dm_connector_ddc_get_modes(struct drm_connector *connector,
+> >   {
+> >   	struct amdgpu_dm_connector *amdgpu_dm_connector =
+> >   			to_amdgpu_dm_connector(connector);
+> > +	struct drm_display_mode *mode, *t;
+> >   	if (drm_edid) {
+> >   		/* empty probed_modes */
+> > +		list_for_each_entry_safe(mode, t, &connector->probed_modes, head)
+> > +			drm_mode_remove(connector, mode);
+> >   		INIT_LIST_HEAD(&connector->probed_modes);
+> >   		amdgpu_dm_connector->num_modes =
+> >   				drm_edid_connector_add_modes(connector);
+> 
+> What if you update the connector with the drm_edid data and skip the
+> INIT_LIST_HEAD instead?
 
-This change modifies the loop condition to ensure mhi_queue is not empty,
-allowing the function to process only valid TREs up to the current write
-pointer. This prevents premature reads and ensures safe traversal of
-chained TREs.
+Yep, getting rid of INIT_LIST_HEAD eliminates the leak, too.
+drm_edid_connector_add_modes() comments do also strongly recommend calling
+drm_edid_connector_update() before the function.
 
-Removed buf_left from the while loop condition to avoid exiting prematurely
-before reading the ring completely.
+One thing remaining strange is that there'd be several different objects
+in the probed_modes list describing the same things I guess.
 
-Removed write_offset since it will always be zero because the new cache
-buffer is allocated everytime.
+> 
+> Something like:
+> 
+> if (drm_edid) {
 
-Fixes: 5301258899773 ("bus: mhi: ep: Add support for reading from the host")
-Cc: stable@vger.kernel.org
-Co-developed-by: Akhil Vinod <akhvin@qti.qualcomm.com>
-Signed-off-by: Akhil Vinod <akhvin@qti.qualcomm.com>
-Signed-off-by: Sumit Kumar <sumk@qti.qualcomm.com>
----
-Changes in v2:
-- Use mhi_ep_queue_is_empty in while loop (Mani).
-- Remove do while loop in mhi_ep_process_ch_ring (Mani).
-- Remove buf_left, wr_offset, tr_done.
-- Haven't added Reviewed-by as there is change in logic.
-- Link to v1: https://lore.kernel.org/r/20250709-chained_transfer-v1-1-2326a4605c9c@quicinc.com
----
- drivers/bus/mhi/ep/main.c | 37 ++++++++++++-------------------------
- 1 file changed, 12 insertions(+), 25 deletions(-)
+At this point we already have the modes in the list added with the
+previous call to amdgpu_dm_connector_get_modes() from
+amdgpu_set_panel_orientation() - during the driver initialization phase.
 
-diff --git a/drivers/bus/mhi/ep/main.c b/drivers/bus/mhi/ep/main.c
-index b3eafcf2a2c50d95e3efd3afb27038ecf55552a5..cdea24e9291959ae0a92487c1b9698dc8164d2f1 100644
---- a/drivers/bus/mhi/ep/main.c
-+++ b/drivers/bus/mhi/ep/main.c
-@@ -403,17 +403,13 @@ static int mhi_ep_read_channel(struct mhi_ep_cntrl *mhi_cntrl,
- {
- 	struct mhi_ep_chan *mhi_chan = &mhi_cntrl->mhi_chan[ring->ch_id];
- 	struct device *dev = &mhi_cntrl->mhi_dev->dev;
--	size_t tr_len, read_offset, write_offset;
-+	size_t tr_len, read_offset;
- 	struct mhi_ep_buf_info buf_info = {};
- 	u32 len = MHI_EP_DEFAULT_MTU;
- 	struct mhi_ring_element *el;
--	bool tr_done = false;
- 	void *buf_addr;
--	u32 buf_left;
- 	int ret;
- 
--	buf_left = len;
--
- 	do {
- 		/* Don't process the transfer ring if the channel is not in RUNNING state */
- 		if (mhi_chan->state != MHI_CH_STATE_RUNNING) {
-@@ -426,24 +422,23 @@ static int mhi_ep_read_channel(struct mhi_ep_cntrl *mhi_cntrl,
- 		/* Check if there is data pending to be read from previous read operation */
- 		if (mhi_chan->tre_bytes_left) {
- 			dev_dbg(dev, "TRE bytes remaining: %u\n", mhi_chan->tre_bytes_left);
--			tr_len = min(buf_left, mhi_chan->tre_bytes_left);
-+			tr_len = min(len, mhi_chan->tre_bytes_left);
- 		} else {
- 			mhi_chan->tre_loc = MHI_TRE_DATA_GET_PTR(el);
- 			mhi_chan->tre_size = MHI_TRE_DATA_GET_LEN(el);
- 			mhi_chan->tre_bytes_left = mhi_chan->tre_size;
- 
--			tr_len = min(buf_left, mhi_chan->tre_size);
-+			tr_len = min(len, mhi_chan->tre_size);
- 		}
- 
- 		read_offset = mhi_chan->tre_size - mhi_chan->tre_bytes_left;
--		write_offset = len - buf_left;
- 
- 		buf_addr = kmem_cache_zalloc(mhi_cntrl->tre_buf_cache, GFP_KERNEL);
- 		if (!buf_addr)
- 			return -ENOMEM;
- 
- 		buf_info.host_addr = mhi_chan->tre_loc + read_offset;
--		buf_info.dev_addr = buf_addr + write_offset;
-+		buf_info.dev_addr = buf_addr;
- 		buf_info.size = tr_len;
- 		buf_info.cb = mhi_ep_read_completion;
- 		buf_info.cb_buf = buf_addr;
-@@ -459,16 +454,12 @@ static int mhi_ep_read_channel(struct mhi_ep_cntrl *mhi_cntrl,
- 			goto err_free_buf_addr;
- 		}
- 
--		buf_left -= tr_len;
- 		mhi_chan->tre_bytes_left -= tr_len;
- 
--		if (!mhi_chan->tre_bytes_left) {
--			if (MHI_TRE_DATA_GET_IEOT(el))
--				tr_done = true;
--
-+		if (!mhi_chan->tre_bytes_left)
- 			mhi_chan->rd_offset = (mhi_chan->rd_offset + 1) % ring->ring_size;
--		}
--	} while (buf_left && !tr_done);
-+	/* Read until the some buffer is left or the ring becomes not empty */
-+	} while (!mhi_ep_queue_is_empty(mhi_chan->mhi_dev, DMA_TO_DEVICE));
- 
- 	return 0;
- 
-@@ -502,15 +493,11 @@ static int mhi_ep_process_ch_ring(struct mhi_ep_ring *ring)
- 		mhi_chan->xfer_cb(mhi_chan->mhi_dev, &result);
- 	} else {
- 		/* UL channel */
--		do {
--			ret = mhi_ep_read_channel(mhi_cntrl, ring);
--			if (ret < 0) {
--				dev_err(&mhi_chan->mhi_dev->dev, "Failed to read channel\n");
--				return ret;
--			}
--
--			/* Read until the ring becomes empty */
--		} while (!mhi_ep_queue_is_empty(mhi_chan->mhi_dev, DMA_TO_DEVICE));
-+		ret = mhi_ep_read_channel(mhi_cntrl, ring);
-+		if (ret < 0) {
-+			dev_err(&mhi_chan->mhi_dev->dev, "Failed to read channel\n");
-+			return ret;
-+		}
- 	}
- 
- 	return 0;
+>    drm_edid_connector_update(connector, drm_edid);
+>    amdgpu_drm_connector->num_modes =
+> drm_edid_connector_add_modes(connector);
 
----
-base-commit: 4c06e63b92038fadb566b652ec3ec04e228931e8
-change-id: 20250709-chained_transfer-0b95f8afa487
+Here we add them again (as new objects) to the list.  By the way it leads
+to amdgpu_drm_connector->num_modes be less than the actual number of
+elements present in probed_modes list.
 
-Best regards,
--- 
-Sumit Kumar <quic_sumk@quicinc.com>
+As far as I understand, *_get_modes() are supposed to be called only via
+drm_mode_get_connector ioctl, and not all things go as expected if they're
+firstly called in another path, as e.g. in amdgpu case through
+amdgpu_set_panel_orientation().
+
+But it seems commit acc96ae0d127 ("drm/amd/display: set panel orientation
+before drm_dev_register") added that call deliberately.
+
+I think we may update the connector with the drm_edid data and skip the
+INIT_LIST_HEAD part as you've suggested, but also need to flush the list -
+it might contain something left from the first amdgpu_dm_connector_get_modes()
+call.
+
+If no objections, I'll send it out as v3 soon.
+
+> [...]
+> }
+> 
+> Isn't it enough?
 
 
