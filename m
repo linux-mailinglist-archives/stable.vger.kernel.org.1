@@ -1,112 +1,112 @@
-Return-Path: <stable+bounces-172263-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-172269-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0AA16B30C90
-	for <lists+stable@lfdr.de>; Fri, 22 Aug 2025 05:29:15 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9F927B30CA8
+	for <lists+stable@lfdr.de>; Fri, 22 Aug 2025 05:37:50 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id B1CAA1C824E8
-	for <lists+stable@lfdr.de>; Fri, 22 Aug 2025 03:29:22 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 6ACC17B2E82
+	for <lists+stable@lfdr.de>; Fri, 22 Aug 2025 03:36:01 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8F67528A1D5;
-	Fri, 22 Aug 2025 03:28:58 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="SfVkuIN6"
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1A7EC28C2A6;
+	Fri, 22 Aug 2025 03:37:18 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from szxga01-in.huawei.com (szxga01-in.huawei.com [45.249.212.187])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4EE8D1096F
-	for <stable@vger.kernel.org>; Fri, 22 Aug 2025 03:28:57 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6C0BE22D785;
+	Fri, 22 Aug 2025 03:37:15 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=45.249.212.187
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755833338; cv=none; b=Hxo741DdaMSz88kxgvgmrHlZOM+PvAtZtm6lMHk9xT0o+e3AS1bOuYsF/KOokqQX5OUZvwGoZ1pgLphVOTPlu2DRK3CLsKfwCpSHNAV3loeZwsOQGECwVLiTZ4/LHSDsGhbeoU1DV0g6LxeTYn2Ph+aQqW2BR6ww20pXTC77o9k=
+	t=1755833837; cv=none; b=Nos0wJ65wWTAivlZa20dam8OM4Bfn4uXDKqVm1vureKwxBLqqZUVujRViFPbeKG3XfobRGPslgDql+rWl+5bybkqY0cDTVaj+ukurrD+RSKMHme4bplMKFJSkPD+eSFMUOhtuozZ0G0/nf8QKUClqrka8CPRMZemEQaIDZKqDew=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1755833338; c=relaxed/simple;
-	bh=wB3L8reBN8kEzirp8gASddm0oHjQNYTvt88SST0qP10=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=uxv6dnkN8GWNUzTItc/mNfHgmcIEY4WIrvnjoGMUJvbUIDjdUdlP+6kUueORo0HXYQfM0lej3Yr4exMIO5X8PNdeOigTPkcENzpGXTvXo0GD6M32PvidjSBEdfNw0T9MlgndALphbPcf48/dZnpnJ1Q1tKFgJGL0G4KTqoKKzgA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=SfVkuIN6; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9BB5AC4CEEB;
-	Fri, 22 Aug 2025 03:28:57 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1755833337;
-	bh=wB3L8reBN8kEzirp8gASddm0oHjQNYTvt88SST0qP10=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=SfVkuIN6Orvaew3k8AXTLlJXajG1aKeN0207F3ucJanX3bon0GyrFQPZUY2unpga2
-	 gMbJ08BKLkJdtbiQvb+SfDOuiOF+DaDEk6RSNo9fp6qBagR6lo5/zz0N10EbBTzoqT
-	 RUgOyL/oLPixGxJXG4nWOUFSeOpHzcr8mxtf/2KeiNmovv95w63STXpaufWnqBDy5z
-	 x6R7yNF4iW4QDtBO1gJ+BLHEwIpn9eJ8hbc2+DhuOXh7yyTHbyt3zKrs4RAvKgtzzA
-	 D81N2WALWZTRneKkWfyvQlTR8SavsPSneDJlB5Rwl4h5KgpNM7yVn+jV+18HylQK+g
-	 kLTWFpCBpNL1g==
-Date: Thu, 21 Aug 2025 23:28:56 -0400
-From: Sasha Levin <sashal@kernel.org>
-To: Eric Biggers <ebiggers@kernel.org>
-Cc: stable@vger.kernel.org, Herbert Xu <herbert@gondor.apana.org.au>
-Subject: Re: [PATCH 6.12.y 4/4] crypto: x86/aegis - Fix sleeping when
- disallowed on PREEMPT_RT
-Message-ID: <aKfj-C27OQBWNEMq@laps>
-References: <2025082102-shrug-unused-8ce2@gregkh>
- <20250822030617.1053172-1-sashal@kernel.org>
- <20250822030617.1053172-4-sashal@kernel.org>
- <20250822032304.GA80178@quark>
+	s=arc-20240116; t=1755833837; c=relaxed/simple;
+	bh=m1v8p2k+fKPNQhAi0CmcXdRTIQFBi30nev5PjI8vlNM=;
+	h=From:To:CC:Subject:Date:Message-ID:MIME-Version:Content-Type; b=NQB1hf7GdI0CVnR9B3HHi+rDOpwKB7g2mIL7QvudcRX5l3TVoViJtKf1S19IKLVwaWZMQyfwcIP5+fASvQd1FUv+2k2eJG/x7jdAFFQb15rmdxKaWySCXGOhCAlbG4v6S6YwWX4L1ho8F5T0sTxtGcrppk3UwF8KHUEuMGgWGF8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com; spf=pass smtp.mailfrom=huawei.com; arc=none smtp.client-ip=45.249.212.187
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=huawei.com
+Received: from mail.maildlp.com (unknown [172.19.163.174])
+	by szxga01-in.huawei.com (SkyGuard) with ESMTP id 4c7Qkp1vTFz13NJ3;
+	Fri, 22 Aug 2025 11:33:22 +0800 (CST)
+Received: from dggpemf500011.china.huawei.com (unknown [7.185.36.131])
+	by mail.maildlp.com (Postfix) with ESMTPS id C07841402DF;
+	Fri, 22 Aug 2025 11:36:57 +0800 (CST)
+Received: from huawei.com (10.67.174.55) by dggpemf500011.china.huawei.com
+ (7.185.36.131) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1544.11; Fri, 22 Aug
+ 2025 11:36:56 +0800
+From: Jinjie Ruan <ruanjinjie@huawei.com>
+To: <tglx@linutronix.de>, <mingo@redhat.com>, <bp@alien8.de>,
+	<dave.hansen@linux.intel.com>, <hpa@zytor.com>, <prarit@redhat.com>,
+	<gregkh@linuxfoundation.org>, <x86@kernel.org>, <stable@vger.kernel.org>,
+	<linux-kernel@vger.kernel.org>
+CC: <ruanjinjie@huawei.com>
+Subject: [PATCH v5.10 RESEND 0/2] x86/irq: Plug vector setup race
+Date: Fri, 22 Aug 2025 03:33:02 +0000
+Message-ID: <20250822033304.1096496-1-ruanjinjie@huawei.com>
+X-Mailer: git-send-email 2.34.1
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii; format=flowed
-Content-Disposition: inline
-In-Reply-To: <20250822032304.GA80178@quark>
+Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
+X-ClientProxiedBy: kwepems500002.china.huawei.com (7.221.188.17) To
+ dggpemf500011.china.huawei.com (7.185.36.131)
 
-On Thu, Aug 21, 2025 at 11:23:04PM -0400, Eric Biggers wrote:
->On Thu, Aug 21, 2025 at 11:06:17PM -0400, Sasha Levin wrote:
->> From: Eric Biggers <ebiggers@kernel.org>
->>
->> [ Upstream commit c7f49dadfcdf27e1f747442e874e9baa52ab7674 ]
->>
->> skcipher_walk_done() can call kfree(), which takes a spinlock, which
->> makes it incorrect to call while preemption is disabled on PREEMPT_RT.
->> Therefore, end the kernel-mode FPU section before calling
->> skcipher_walk_done(), and restart it afterwards.
->>
->> Moreover, pass atomic=false to skcipher_walk_aead_encrypt() instead of
->> atomic=true.  The point of atomic=true was to make skcipher_walk_done()
->> safe to call while in a kernel-mode FPU section, but that does not
->> actually work.  So just use the usual atomic=false.
->>
->> Fixes: 1d373d4e8e15 ("crypto: x86 - Add optimized AEGIS implementations")
->> Cc: stable@vger.kernel.org
->> Signed-off-by: Eric Biggers <ebiggers@kernel.org>
->> Signed-off-by: Herbert Xu <herbert@gondor.apana.org.au>
->> Signed-off-by: Sasha Levin <sashal@kernel.org>
->> ---
->>  arch/x86/crypto/aegis128-aesni-glue.c | 8 ++++++--
->>  1 file changed, 6 insertions(+), 2 deletions(-)
->
->1. Missing Cc of the relevant mailing lists
->2. Missing cover letter
+There is a vector setup race, which overwrites the interrupt
+descriptor in the per CPU vector array resulting in a disfunctional device.
 
-This was sent following the instructions in the FAILED: email generated by
-Greg. If you feel its insufficient, take it up with him.
+CPU0				CPU1
+				interrupt is raised in APIC IRR
+				but not handled
+  free_irq()
+    per_cpu(vector_irq, CPU1)[vector] = VECTOR_SHUTDOWN;
 
->3. Missing base-commit, and doesn't apply to stable/linux-6.16.y
+  request_irq()			common_interrupt()
+  				  d = this_cpu_read(vector_irq[vector]);
 
-As the subject line indicates, this applies on 6.12, not 6.16.
+    per_cpu(vector_irq, CPU1)[vector] = desc;
 
->4. Two different series were sent out, both containing this patch
+    				  if (d == VECTOR_SHUTDOWN)
+				    this_cpu_write(vector_irq[vector], VECTOR_UNUSED);
 
-You might have missed that they're for different trees?
+free_irq() cannot observe the pending vector in the CPU1 APIC as there is
+no way to query the remote CPUs APIC IRR.
 
->No reason to even take a look at the patch content until it's in a
->reviewable state.
+This requires that request_irq() uses the same vector/CPU as the one which
+was freed, but this also can be triggered by a spurious interrupt.
 
-Sure, appologies, please ignore the series.
+Interestingly enough this problem managed to be hidden for more than a
+decade.
+
+Prevent this by reevaluating vector_irq under the vector lock, which is
+held by the interrupt activation code when vector_irq is updated.
+
+The first patch provides context for subsequent real bugfix patch.
+
+Fixes: 9345005f4eed ("x86/irq: Fix do_IRQ() interrupt warning for cpu hotplug retriggered irqs")
+Cc: stable@vger.kernel.org#5.10.x
+Cc: gregkh@linuxfoundation.org
+
+v1 -> RESEND
+- Add upstream commit ID.
+
+Jacob Pan (1):
+  x86/irq: Factor out handler invocation from common_interrupt()
+
+Thomas Gleixner (1):
+  x86/irq: Plug vector setup race
+
+ arch/x86/kernel/irq.c | 70 ++++++++++++++++++++++++++++++++++---------
+ 1 file changed, 56 insertions(+), 14 deletions(-)
 
 -- 
-Thanks,
-Sasha
+2.34.1
+
 
