@@ -1,168 +1,144 @@
-Return-Path: <stable+bounces-172456-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-172457-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8D546B31DD0
-	for <lists+stable@lfdr.de>; Fri, 22 Aug 2025 17:14:27 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0A9D1B31DF8
+	for <lists+stable@lfdr.de>; Fri, 22 Aug 2025 17:17:33 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 1226E189644A
-	for <lists+stable@lfdr.de>; Fri, 22 Aug 2025 15:10:48 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 56FC8BA0416
+	for <lists+stable@lfdr.de>; Fri, 22 Aug 2025 15:13:46 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6D1771DF725;
-	Fri, 22 Aug 2025 15:10:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7B405217709;
+	Fri, 22 Aug 2025 15:14:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="vDw6jLMn"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="G5g8GSMI"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2D9B91DE3D6
-	for <stable@vger.kernel.org>; Fri, 22 Aug 2025 15:10:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 39D3A23C8D5
+	for <stable@vger.kernel.org>; Fri, 22 Aug 2025 15:14:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755875418; cv=none; b=arVw3GLf4u6QSURrFZgVwGCD0E4mBAO7Ak8dnxXZzEPXnOj2OdW2lrt9vCQu/RCFcUBVhRT/ChCQIEeFrKEABTIg9WfT4yovXCnI6TPx2SIGQUtZC/TuHAUejdyREkn4OAHZDerTmALJIjEvW5z9DbRjCrrKWMUO3jWPaRjbXBM=
+	t=1755875660; cv=none; b=drNrNlttRUzvN3dHpTVuc4ZWsceyoeJjcGidOKA6PA88l5D0CqINnn3Z7byfmDkB4yT+4qsxVVI7pk3Cu7sMQXVrt7iCB+he2cjdt+bOqXGGgI4jh3LEz7ccr6WD0kPwlZOdcLoAx8B156XgjdwY9afq/QSfN/Q3ooW5JYrUmUM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1755875418; c=relaxed/simple;
-	bh=k8W0CPBGEuGD4cJ93KVjRER9Q0iQjXStu8gFdztrNtI=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=UXzbnE/rLVZWxXwLAj2y4s4Aejk7P7gnLCsC6P5rgXt8VJJhN9ag2SNPN7dfN9GJhoL1ChrAfCS93N2dKa+SqXBwV0+UzX+kcGsdCf1VXsnNJiisUxba3zTNhHMs9RwceCLCSWPrugvkhBt9AgGRzPB7DhpyIk0n2MxwKYTnMUw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=vDw6jLMn; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 73EAEC116B1;
-	Fri, 22 Aug 2025 15:10:16 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1755875417;
-	bh=k8W0CPBGEuGD4cJ93KVjRER9Q0iQjXStu8gFdztrNtI=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=vDw6jLMng8wqBXH8j8LSYLQgMnxzTzvGGHgGk+dsy9J36jkPMWtlr6o6juPETLuhN
-	 0PuuuDHa+S3dlGUbZ60kWCNUnmw3g8Zs9BHy8wvaYOP7++YDCaesDLKIqtaJLi4eE3
-	 y8c9u5/nR83e0NaQJcfajuPMGxe0cs02rr61l3uHKQi/Rn1jihatD+wwDRyt1QHeck
-	 w6bTujgBhFh+/rmambt4F+Wpsxo4sxCInFgKfZXNj+1brRwM0q3iu51wye3qIcXUYZ
-	 39+TB1WkLcwAFIVvhw08w8WPlKGUOOaGbtvnsBvZ6ye/NC/teaNNAiMmWIXnpIEUBH
-	 xpFZZ7pUSWNXw==
-From: Sasha Levin <sashal@kernel.org>
-To: stable@vger.kernel.org
-Cc: Ranjan Kumar <ranjan.kumar@broadcom.com>,
-	"Martin K. Petersen" <martin.petersen@oracle.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1.y 2/2] scsi: mpi3mr: Serialize admin queue BAR writes on 32-bit systems
-Date: Fri, 22 Aug 2025 11:10:13 -0400
-Message-ID: <20250822151013.1280211-2-sashal@kernel.org>
-X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250822151013.1280211-1-sashal@kernel.org>
-References: <2025082105-penalize-quadrant-9ad9@gregkh>
- <20250822151013.1280211-1-sashal@kernel.org>
+	s=arc-20240116; t=1755875660; c=relaxed/simple;
+	bh=zmzdaCUp3jQSLIZBZDlbz6YPB5BVTv3CEnVMQCEHrPc=;
+	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=UvkagQSB2zSAqjELtGf/iNFX9VelZM+9bkfS8jhtF9NJNz9VhKHJqfNjbxXMIkQ7Xdh2mrqi5XlooUX0DDWyuREPRTnu4y/EZGUU6UKCyOrV9PiChJi7/VGgvddtZ+pARr/5Swlor8KfYf6BKFpql1k++ROPNBQ4vp2Db7DLV08=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=G5g8GSMI; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 12EDEC4CEED;
+	Fri, 22 Aug 2025 15:14:18 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
+	s=korg; t=1755875660;
+	bh=zmzdaCUp3jQSLIZBZDlbz6YPB5BVTv3CEnVMQCEHrPc=;
+	h=Subject:To:Cc:From:Date:From;
+	b=G5g8GSMIOqBalNfNZ0yA3gR8bY9AJ+vqK3SYMXfengZiKlk1H84zgmr951WB62F0j
+	 3pQkEUl/brBd2mujz7qjBmu+fhk3hvmOELaGAtxEIvzHjZFu+FmnYnZAVqm0o1esL0
+	 YmcqTAWyefkoEVMMJBKCvwHPcNuNjKTGUwBs9EgY=
+Subject: FAILED: patch "[PATCH] compiler: remove __ADDRESSABLE_ASM{_STR,}() again" failed to apply to 6.12-stable tree
+To: jbeulich@suse.com,jgross@suse.com,jpoimboe@kernel.org
+Cc: <stable@vger.kernel.org>
+From: <gregkh@linuxfoundation.org>
+Date: Fri, 22 Aug 2025 17:14:16 +0200
+Message-ID: <2025082216-dripping-prompter-8939@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=ANSI_X3.4-1968
 Content-Transfer-Encoding: 8bit
 
-From: Ranjan Kumar <ranjan.kumar@broadcom.com>
 
-[ Upstream commit c91e140c82eb58724c435f623702e51cc7896646 ]
+The patch below does not apply to the 6.12-stable tree.
+If someone wants it applied there, or to any other stable or longterm
+tree, then please email the backport, including the original git commit
+id to <stable@vger.kernel.org>.
 
-On 32-bit systems, 64-bit BAR writes to admin queue registers are
-performed as two 32-bit writes. Without locking, this can cause partial
-writes when accessed concurrently.
+To reproduce the conflict and resubmit, you may use the following commands:
 
-Updated per-queue spinlocks is used to serialize these writes and prevent
-race conditions.
+git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-6.12.y
+git checkout FETCH_HEAD
+git cherry-pick -x 8ea815399c3fcce1889bd951fec25b5b9a3979c1
+# <resolve conflicts, build, test, etc.>
+git commit -s
+git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2025082216-dripping-prompter-8939@gregkh' --subject-prefix 'PATCH 6.12.y' HEAD^..
 
-Fixes: 824a156633df ("scsi: mpi3mr: Base driver code")
+Possible dependencies:
+
+
+
+thanks,
+
+greg k-h
+
+------------------ original commit in Linus's tree ------------------
+
+From 8ea815399c3fcce1889bd951fec25b5b9a3979c1 Mon Sep 17 00:00:00 2001
+From: Jan Beulich <jbeulich@suse.com>
+Date: Mon, 14 Apr 2025 16:41:07 +0200
+Subject: [PATCH] compiler: remove __ADDRESSABLE_ASM{_STR,}() again
+
+__ADDRESSABLE_ASM_STR() is where the necessary stringification happens.
+As long as "sym" doesn't contain any odd characters, no quoting is
+required for its use with .quad / .long. In fact the quotation gets in
+the way with gas 2.25; it's only from 2.26 onwards that quoted symbols
+are half-way properly supported.
+
+However, assembly being different from C anyway, drop
+__ADDRESSABLE_ASM_STR() and its helper macro altogether. A simple
+.global directive will suffice to get the symbol "declared", i.e. into
+the symbol table. While there also stop open-coding STATIC_CALL_TRAMP()
+and STATIC_CALL_KEY().
+
+Fixes: 0ef8047b737d ("x86/static-call: provide a way to do very early static-call updates")
+Signed-off-by: Jan Beulich <jbeulich@suse.com>
+Acked-by: Josh Poimboeuf <jpoimboe@kernel.org>
 Cc: stable@vger.kernel.org
-Signed-off-by: Ranjan Kumar <ranjan.kumar@broadcom.com>
-Link: https://lore.kernel.org/r/20250627194539.48851-4-ranjan.kumar@broadcom.com
-Signed-off-by: Martin K. Petersen <martin.petersen@oracle.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
----
- drivers/scsi/mpi3mr/mpi3mr.h    |  4 ++++
- drivers/scsi/mpi3mr/mpi3mr_fw.c | 15 +++++++++++----
- drivers/scsi/mpi3mr/mpi3mr_os.c |  2 ++
- 3 files changed, 17 insertions(+), 4 deletions(-)
+Signed-off-by: Juergen Gross <jgross@suse.com>
+Message-ID: <609d2c74-de13-4fae-ab1a-1ec44afb948d@suse.com>
 
-diff --git a/drivers/scsi/mpi3mr/mpi3mr.h b/drivers/scsi/mpi3mr/mpi3mr.h
-index 90c9a539768d..ffeadd1e3543 100644
---- a/drivers/scsi/mpi3mr/mpi3mr.h
-+++ b/drivers/scsi/mpi3mr/mpi3mr.h
-@@ -1005,6 +1005,8 @@ struct scmd_priv {
-  * @logdata_buf: Circular buffer to store log data entries
-  * @logdata_buf_idx: Index of entry in buffer to store
-  * @logdata_entry_sz: log data entry size
-+ * @adm_req_q_bar_writeq_lock: Admin request queue lock
-+ * @adm_reply_q_bar_writeq_lock: Admin reply queue lock
-  * @pend_large_data_sz: Counter to track pending large data
-  * @io_throttle_data_length: I/O size to track in 512b blocks
-  * @io_throttle_high: I/O size to start throttle in 512b blocks
-@@ -1186,6 +1188,8 @@ struct mpi3mr_ioc {
- 	u8 *logdata_buf;
- 	u16 logdata_buf_idx;
- 	u16 logdata_entry_sz;
-+	spinlock_t adm_req_q_bar_writeq_lock;
-+	spinlock_t adm_reply_q_bar_writeq_lock;
- 
- 	atomic_t pend_large_data_sz;
- 	u32 io_throttle_data_length;
-diff --git a/drivers/scsi/mpi3mr/mpi3mr_fw.c b/drivers/scsi/mpi3mr/mpi3mr_fw.c
-index d2fcecf94eaf..b721abfd853d 100644
---- a/drivers/scsi/mpi3mr/mpi3mr_fw.c
-+++ b/drivers/scsi/mpi3mr/mpi3mr_fw.c
-@@ -23,17 +23,22 @@ module_param(poll_queues, int, 0444);
- MODULE_PARM_DESC(poll_queues, "Number of queues for io_uring poll mode. (Range 1 - 126)");
- 
- #if defined(writeq) && defined(CONFIG_64BIT)
--static inline void mpi3mr_writeq(__u64 b, void __iomem *addr)
-+static inline void mpi3mr_writeq(__u64 b, void __iomem *addr,
-+	spinlock_t *write_queue_lock)
- {
- 	writeq(b, addr);
- }
+diff --git a/arch/x86/include/asm/xen/hypercall.h b/arch/x86/include/asm/xen/hypercall.h
+index 59a62c3780a2..a16d4631547c 100644
+--- a/arch/x86/include/asm/xen/hypercall.h
++++ b/arch/x86/include/asm/xen/hypercall.h
+@@ -94,12 +94,13 @@ DECLARE_STATIC_CALL(xen_hypercall, xen_hypercall_func);
+ #ifdef MODULE
+ #define __ADDRESSABLE_xen_hypercall
  #else
--static inline void mpi3mr_writeq(__u64 b, void __iomem *addr)
-+static inline void mpi3mr_writeq(__u64 b, void __iomem *addr,
-+	spinlock_t *write_queue_lock)
- {
- 	__u64 data_out = b;
-+	unsigned long flags;
- 
-+	spin_lock_irqsave(write_queue_lock, flags);
- 	writel((u32)(data_out), addr);
- 	writel((u32)(data_out >> 32), (addr + 4));
-+	spin_unlock_irqrestore(write_queue_lock, flags);
- }
+-#define __ADDRESSABLE_xen_hypercall __ADDRESSABLE_ASM_STR(__SCK__xen_hypercall)
++#define __ADDRESSABLE_xen_hypercall \
++	__stringify(.global STATIC_CALL_KEY(xen_hypercall);)
  #endif
  
-@@ -2662,9 +2667,11 @@ static int mpi3mr_setup_admin_qpair(struct mpi3mr_ioc *mrioc)
- 	    (mrioc->num_admin_req);
- 	writel(num_admin_entries, &mrioc->sysif_regs->admin_queue_num_entries);
- 	mpi3mr_writeq(mrioc->admin_req_dma,
--	    &mrioc->sysif_regs->admin_request_queue_address);
-+		&mrioc->sysif_regs->admin_request_queue_address,
-+		&mrioc->adm_req_q_bar_writeq_lock);
- 	mpi3mr_writeq(mrioc->admin_reply_dma,
--	    &mrioc->sysif_regs->admin_reply_queue_address);
-+		&mrioc->sysif_regs->admin_reply_queue_address,
-+		&mrioc->adm_reply_q_bar_writeq_lock);
- 	writel(mrioc->admin_req_pi, &mrioc->sysif_regs->admin_request_queue_pi);
- 	writel(mrioc->admin_reply_ci, &mrioc->sysif_regs->admin_reply_queue_ci);
- 	return retval;
-diff --git a/drivers/scsi/mpi3mr/mpi3mr_os.c b/drivers/scsi/mpi3mr/mpi3mr_os.c
-index 7bd24f71cc38..c9a0c6b739a1 100644
---- a/drivers/scsi/mpi3mr/mpi3mr_os.c
-+++ b/drivers/scsi/mpi3mr/mpi3mr_os.c
-@@ -4948,6 +4948,8 @@ mpi3mr_probe(struct pci_dev *pdev, const struct pci_device_id *id)
- 	spin_lock_init(&mrioc->tgtdev_lock);
- 	spin_lock_init(&mrioc->watchdog_lock);
- 	spin_lock_init(&mrioc->chain_buf_lock);
-+	spin_lock_init(&mrioc->adm_req_q_bar_writeq_lock);
-+	spin_lock_init(&mrioc->adm_reply_q_bar_writeq_lock);
- 	spin_lock_init(&mrioc->sas_node_lock);
+ #define __HYPERCALL					\
+ 	__ADDRESSABLE_xen_hypercall			\
+-	"call __SCT__xen_hypercall"
++	__stringify(call STATIC_CALL_TRAMP(xen_hypercall))
  
- 	INIT_LIST_HEAD(&mrioc->fwevt_list);
--- 
-2.50.1
+ #define __HYPERCALL_ENTRY(x)	"a" (x)
+ 
+diff --git a/include/linux/compiler.h b/include/linux/compiler.h
+index 6f04a1d8c720..64ff73c533e5 100644
+--- a/include/linux/compiler.h
++++ b/include/linux/compiler.h
+@@ -288,14 +288,6 @@ static inline void *offset_to_ptr(const int *off)
+ #define __ADDRESSABLE(sym) \
+ 	___ADDRESSABLE(sym, __section(".discard.addressable"))
+ 
+-#define __ADDRESSABLE_ASM(sym)						\
+-	.pushsection .discard.addressable,"aw";				\
+-	.align ARCH_SEL(8,4);						\
+-	ARCH_SEL(.quad, .long) __stringify(sym);			\
+-	.popsection;
+-
+-#define __ADDRESSABLE_ASM_STR(sym) __stringify(__ADDRESSABLE_ASM(sym))
+-
+ /*
+  * This returns a constant expression while determining if an argument is
+  * a constant expression, most importantly without evaluating the argument.
 
 
