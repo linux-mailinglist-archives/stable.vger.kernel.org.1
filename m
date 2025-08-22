@@ -1,63 +1,60 @@
-Return-Path: <stable+bounces-172282-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-172283-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9F53CB30D77
-	for <lists+stable@lfdr.de>; Fri, 22 Aug 2025 06:18:35 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id EB684B30D78
+	for <lists+stable@lfdr.de>; Fri, 22 Aug 2025 06:18:36 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 982F81CE501C
-	for <lists+stable@lfdr.de>; Fri, 22 Aug 2025 04:17:25 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id E99131CE50AC
+	for <lists+stable@lfdr.de>; Fri, 22 Aug 2025 04:17:26 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 89BA52836B5;
-	Fri, 22 Aug 2025 04:16:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7568620C037;
+	Fri, 22 Aug 2025 04:16:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="feufGG2w"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="AjXJKyFp"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 489EC20C037
-	for <stable@vger.kernel.org>; Fri, 22 Aug 2025 04:16:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 32B1B72623
+	for <stable@vger.kernel.org>; Fri, 22 Aug 2025 04:16:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755836204; cv=none; b=VHS2+Pd23mkLEbyThqYiYVAoM8GyOHXaRHZO3s46zGgleMcvL0M54+DcQbpi8UviX5YpNhiTXHCMBnIZ6fPt6VPMIe8XJYarocrYQuVS5h7BeW/qBRuWz5JB1XgpmsXUzfJGkcWJVDXn43nN28YcylAheF7A3TohCNE/aWQDV1Q=
+	t=1755836206; cv=none; b=exF5DAHms+umHuSaN828GoWLwr4d9pTNI+GPBfaL3JExhkFQWckX2OK0wQmFUMrt/HGIVs0HKW9GgFyP93D/oiPSHdxkpgV6y+IdDsXFN24AjuDPwarhBEJdCAUlh9dkdWDwtSIY52LDOci7FfmgBMeL4QvKEzayNGgLA41+6qs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1755836204; c=relaxed/simple;
-	bh=a9iKV6jsyAnyQCs2qg0rS7g3G4nUF4e1XK2/+VJouXg=;
+	s=arc-20240116; t=1755836206; c=relaxed/simple;
+	bh=PJEZm10twZh66LE3MoT5cwXeF6Bph817aqJ2Yn5oem4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=N6Uf7chraDBAgIY87duH2vyzC9zLILToKl+xu4qFwsliSfMXEzobYm8BD5ID2+ELYxvTihp2U92qeINbgjfqumtdtsLQnh2F1xyPfl6uByOx5+pGZj/w2GSMF2u9dfyb34qDmCeSu/gP8mVEHDglqk74JGTVKNwVaqaBZx1EXAE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=feufGG2w; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9E939C4CEF1;
-	Fri, 22 Aug 2025 04:16:42 +0000 (UTC)
+	 MIME-Version; b=vDqp1Rfh5TEMuZK4HHOT+NS01Vvw9bEKnCNBagRHJ11z5fnZC2DbRnh+t8XbzX2IvTA6FHOLf296kmKS78XhSXy4EAC4jA/RvhIekLDZe99yOhSCgmW+ELrV9jX8rbeKZMwuKgxwMgVPNMT+xHqqtY1Q6E/Zj4Uh+gwV2EL8A2Y=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=AjXJKyFp; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 07A3DC116B1;
+	Fri, 22 Aug 2025 04:16:43 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1755836203;
-	bh=a9iKV6jsyAnyQCs2qg0rS7g3G4nUF4e1XK2/+VJouXg=;
+	s=k20201202; t=1755836204;
+	bh=PJEZm10twZh66LE3MoT5cwXeF6Bph817aqJ2Yn5oem4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=feufGG2wdEI2oMcFAEEoYtrwsBn6cBY84QWmKjUJ+WybUuqzg5qcQx14zLrPkhAC/
-	 0zL5tIzQda+0Imlwl4jxCbECrcAAWM5GWyEobi3LGho8FsoAAvf/TgaN+YhYMgW9n/
-	 inCLxZLMd2Qq9FBN/NPZyqwef7EmkIuSbY2ZnrEblelZ7dKofVkvS35+ut2NpKmeEk
-	 5sXvgNgygT2RzSlpfavuW5ut7ZVxPtlnnSglWiGdMZ4Z1cyIOpKvEWBRDFP3rDbXuM
-	 mldQ8zXs1VX62AXIf5YCAO78+GcRYc41LDREzDqgq0xbjS7OI4Of+uy1ixEhnV0PNL
-	 WwpYeB4Fnu0aw==
+	b=AjXJKyFp/8D/ZtFH0mJ9JvEl/Hk1AxLBbLPfdlbSc9cgtJ6qZ/bNIbyn/nPOLcueq
+	 4Q0EpDClOg7ghbpC4rMGTpdhke7JbmYbNjDBAX6Veldjr7OUEdH+ellApp5eaDBtqU
+	 C13ppV4vWDOvB+ObdWRuwXTWn8NIgjdzuwwZDOgqhX01D5u6g0151EszLRUI/YcYic
+	 Mryk5mROQuF+4OG0lM8idap1pw+Q00Bq/26jNWh2ThHXVqKial/MjGmXBm17rhUti7
+	 3R9jJG+SHi+EgASs5iH1RIKWSUAHq3BGWtSwstRG2O8j1LjbHhKw50CqmLg/s1bghe
+	 ECqy5dTY/oCFw==
 From: Sasha Levin <sashal@kernel.org>
 To: stable@vger.kernel.org
-Cc: David Laight <David.Laight@ACULAB.COM>,
-	David Laight <david.laight@aculab.com>,
-	Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
-	Christoph Hellwig <hch@infradead.org>,
-	"Jason A. Donenfeld" <Jason@zx2c4.com>,
-	Linus Torvalds <torvalds@linux-foundation.org>,
-	"Matthew Wilcox (Oracle)" <willy@infradead.org>,
-	Andrew Morton <akpm@linux-foundation.org>,
+Cc: Zhang Yi <yi.zhang@huawei.com>,
+	stable@kernel.org,
+	Qu Wenruo <wqu@suse.com>,
+	Theodore Ts'o <tytso@mit.edu>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10.y 1/2] minmax: add umin(a, b) and umax(a, b)
-Date: Fri, 22 Aug 2025 00:16:39 -0400
-Message-ID: <20250822041640.1082105-1-sashal@kernel.org>
+Subject: [PATCH 5.10.y 2/2] ext4: fix hole length calculation overflow in non-extent inodes
+Date: Fri, 22 Aug 2025 00:16:40 -0400
+Message-ID: <20250822041640.1082105-2-sashal@kernel.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <2025082130-hunchback-efficient-e925@gregkh>
+In-Reply-To: <20250822041640.1082105-1-sashal@kernel.org>
 References: <2025082130-hunchback-efficient-e925@gregkh>
+ <20250822041640.1082105-1-sashal@kernel.org>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -66,140 +63,83 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-From: David Laight <David.Laight@ACULAB.COM>
+From: Zhang Yi <yi.zhang@huawei.com>
 
-[ Upstream commit 80fcac55385ccb710d33a20dc1caaef29bd5a921 ]
+[ Upstream commit 02c7f7219ac0e2277b3379a3a0e9841ef464b6d4 ]
 
-Patch series "minmax: Relax type checks in min() and max()", v4.
+In a filesystem with a block size larger than 4KB, the hole length
+calculation for a non-extent inode in ext4_ind_map_blocks() can easily
+exceed INT_MAX. Then it could return a zero length hole and trigger the
+following waring and infinite in the iomap infrastructure.
 
-The min() (etc) functions in minmax.h require that the arguments have
-exactly the same types.
+  ------------[ cut here ]------------
+  WARNING: CPU: 3 PID: 434101 at fs/iomap/iter.c:34 iomap_iter_done+0x148/0x190
+  CPU: 3 UID: 0 PID: 434101 Comm: fsstress Not tainted 6.16.0-rc7+ #128 PREEMPT(voluntary)
+  Hardware name: QEMU KVM Virtual Machine, BIOS unknown 2/2/2022
+  pstate: 60400005 (nZCv daif +PAN -UAO -TCO -DIT -SSBS BTYPE=--)
+  pc : iomap_iter_done+0x148/0x190
+  lr : iomap_iter+0x174/0x230
+  sp : ffff8000880af740
+  x29: ffff8000880af740 x28: ffff0000db8e6840 x27: 0000000000000000
+  x26: 0000000000000000 x25: ffff8000880af830 x24: 0000004000000000
+  x23: 0000000000000002 x22: 000001bfdbfa8000 x21: ffffa6a41c002e48
+  x20: 0000000000000001 x19: ffff8000880af808 x18: 0000000000000000
+  x17: 0000000000000000 x16: ffffa6a495ee6cd0 x15: 0000000000000000
+  x14: 00000000000003d4 x13: 00000000fa83b2da x12: 0000b236fc95f18c
+  x11: ffffa6a4978b9c08 x10: 0000000000001da0 x9 : ffffa6a41c1a2a44
+  x8 : ffff8000880af5c8 x7 : 0000000001000000 x6 : 0000000000000000
+  x5 : 0000000000000004 x4 : 000001bfdbfa8000 x3 : 0000000000000000
+  x2 : 0000000000000000 x1 : 0000004004030000 x0 : 0000000000000000
+  Call trace:
+   iomap_iter_done+0x148/0x190 (P)
+   iomap_iter+0x174/0x230
+   iomap_fiemap+0x154/0x1d8
+   ext4_fiemap+0x110/0x140 [ext4]
+   do_vfs_ioctl+0x4b8/0xbc0
+   __arm64_sys_ioctl+0x8c/0x120
+   invoke_syscall+0x6c/0x100
+   el0_svc_common.constprop.0+0x48/0xf0
+   do_el0_svc+0x24/0x38
+   el0_svc+0x38/0x120
+   el0t_64_sync_handler+0x10c/0x138
+   el0t_64_sync+0x198/0x1a0
+  ---[ end trace 0000000000000000 ]---
 
-However when the type check fails, rather than look at the types and fix
-the type of a variable/constant, everyone seems to jump on min_t().  In
-reality min_t() ought to be rare - when something unusual is being done,
-not normality.
-
-The orginal min() (added in 2.4.9) replaced several inline functions and
-included the type - so matched the implicit casting of the function call.
-This was renamed min_t() in 2.4.10 and the current min() added.  There is
-no actual indication that the conversion of negatve values to large
-unsigned values has ever been an actual problem.
-
-A quick grep shows 5734 min() and 4597 min_t().  Having the casts on
-almost half of the calls shows that something is clearly wrong.
-
-If the wrong type is picked (and it is far too easy to pick the type of
-the result instead of the larger input) then significant bits can get
-discarded.
-
-Pretty much the worst example is in the derived clamp_val(), consider:
-        unsigned char x = 200u;
-        y = clamp_val(x, 10u, 300u);
-
-I also suspect that many of the min_t(u16, ...) are actually wrong.  For
-example copy_data() in printk_ringbuffer.c contains:
-
-        data_size = min_t(u16, buf_size, len);
-
-Here buf_size is 'unsigned int' and len 'u16', pass a 64k buffer (can you
-prove that doesn't happen?) and no data is returned.  Apparantly it did -
-and has since been fixed.
-
-The only reason that most of the min_t() are 'fine' is that pretty much
-all the values in the kernel are between 0 and INT_MAX.
-
-Patch 1 adds umin(), this uses integer promotions to convert both
-arguments to 'unsigned long long'.  It can be used to compare a signed
-type that is known to contain a non-negative value with an unsigned type.
-The compiler typically optimises it all away.  Added first so that it can
-be referred to in patch 2.
-
-Patch 2 replaces the 'same type' check with a 'same signedness' one.  This
-makes min(unsigned_int_var, sizeof()) be ok.  The error message is also
-improved and will contain the expanded form of both arguments (useful for
-seeing how constants are defined).
-
-Patch 3 just fixes some whitespace.
-
-Patch 4 allows comparisons of 'unsigned char' and 'unsigned short' to
-signed types.  The integer promotion rules convert them both to 'signed
-int' prior to the comparison so they can never cause a negative value be
-converted to a large positive one.
-
-Patch 5 (rewritted for v4) allows comparisons of unsigned values against
-non-negative constant integer expressions.  This makes
-min(unsigned_int_var, 4) be ok.
-
-The only common case that is still errored is the comparison of signed
-values against unsigned constant integer expressions below __INT_MAX__.
-Typcally min(int_val, sizeof (foo)), the real fix for this is casting the
-constant: min(int_var, (int)sizeof (foo)).
-
-With all the patches applied pretty much all the min_t() could be replaced
-by min(), and most of the rest by umin().  However they all need careful
-inspection due to code like:
-
-        sz = min_t(unsigned char, sz - 1, LIM - 1) + 1;
-
-which converts 0 to LIM.
-
-This patch (of 6):
-
-umin() and umax() can be used when min()/max() errors a signed v unsigned
-compare when the signed value is known to be non-negative.
-
-Unlike min_t(some_unsigned_type, a, b) umin() will never mask off high
-bits if an inappropriate type is selected.
-
-The '+ 0u + 0ul + 0ull' may look strange.
-The '+ 0u' is needed for 'signed int' on 64bit systems.
-The '+ 0ul' is needed for 'signed long' on 32bit systems.
-The '+ 0ull' is needed for 'signed long long'.
-
-Link: https://lkml.kernel.org/r/b97faef60ad24922b530241c5d7c933c@AcuMS.aculab.com
-Link: https://lkml.kernel.org/r/41d93ca827a248698ec64bf57e0c05a5@AcuMS.aculab.com
-Signed-off-by: David Laight <david.laight@aculab.com>
-Cc: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
-Cc: Christoph Hellwig <hch@infradead.org>
-Cc: Jason A. Donenfeld <Jason@zx2c4.com>
-Cc: Linus Torvalds <torvalds@linux-foundation.org>
-Cc: Matthew Wilcox (Oracle) <willy@infradead.org>
-Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
-Stable-dep-of: 02c7f7219ac0 ("ext4: fix hole length calculation overflow in non-extent inodes")
+Cc: stable@kernel.org
+Fixes: facab4d9711e ("ext4: return hole from ext4_map_blocks()")
+Reported-by: Qu Wenruo <wqu@suse.com>
+Closes: https://lore.kernel.org/linux-ext4/9b650a52-9672-4604-a765-bb6be55d1e4a@gmx.com/
+Tested-by: Qu Wenruo <wqu@suse.com>
+Signed-off-by: Zhang Yi <yi.zhang@huawei.com>
+Link: https://patch.msgid.link/20250811064532.1788289-1-yi.zhang@huaweicloud.com
+Signed-off-by: Theodore Ts'o <tytso@mit.edu>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- include/linux/minmax.h | 17 +++++++++++++++++
- 1 file changed, 17 insertions(+)
+ fs/ext4/indirect.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/include/linux/minmax.h b/include/linux/minmax.h
-index 5433c08fcc68..1aea34b8f19b 100644
---- a/include/linux/minmax.h
-+++ b/include/linux/minmax.h
-@@ -51,6 +51,23 @@
-  */
- #define max(x, y)	__careful_cmp(x, y, >)
+diff --git a/fs/ext4/indirect.c b/fs/ext4/indirect.c
+index c2bb2ff3fbb6..48b368f13d30 100644
+--- a/fs/ext4/indirect.c
++++ b/fs/ext4/indirect.c
+@@ -537,7 +537,7 @@ int ext4_ind_map_blocks(handle_t *handle, struct inode *inode,
+ 	int indirect_blks;
+ 	int blocks_to_boundary = 0;
+ 	int depth;
+-	int count = 0;
++	u64 count = 0;
+ 	ext4_fsblk_t first_block = 0;
  
-+/**
-+ * umin - return minimum of two non-negative values
-+ *   Signed types are zero extended to match a larger unsigned type.
-+ * @x: first value
-+ * @y: second value
-+ */
-+#define umin(x, y)	\
-+	__careful_cmp((x) + 0u + 0ul + 0ull, (y) + 0u + 0ul + 0ull, <)
-+
-+/**
-+ * umax - return maximum of two non-negative values
-+ * @x: first value
-+ * @y: second value
-+ */
-+#define umax(x, y)	\
-+	__careful_cmp((x) + 0u + 0ul + 0ull, (y) + 0u + 0ul + 0ull, >)
-+
- /**
-  * min3 - return minimum of three values
-  * @x: first value
+ 	trace_ext4_ind_map_blocks_enter(inode, map->m_lblk, map->m_len, flags);
+@@ -586,7 +586,7 @@ int ext4_ind_map_blocks(handle_t *handle, struct inode *inode,
+ 		count++;
+ 		/* Fill in size of a hole we found */
+ 		map->m_pblk = 0;
+-		map->m_len = min_t(unsigned int, map->m_len, count);
++		map->m_len = umin(map->m_len, count);
+ 		goto cleanup;
+ 	}
+ 
 -- 
 2.50.1
 
