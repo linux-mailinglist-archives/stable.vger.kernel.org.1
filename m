@@ -1,119 +1,120 @@
-Return-Path: <stable+bounces-172470-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-172471-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0A6D7B320E8
-	for <lists+stable@lfdr.de>; Fri, 22 Aug 2025 19:00:37 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 256C0B320EA
+	for <lists+stable@lfdr.de>; Fri, 22 Aug 2025 19:01:34 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 65EBD1D6119E
-	for <lists+stable@lfdr.de>; Fri, 22 Aug 2025 17:00:56 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 1340F7ABF15
+	for <lists+stable@lfdr.de>; Fri, 22 Aug 2025 16:59:59 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5C2E7231A41;
-	Fri, 22 Aug 2025 17:00:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 660613090C1;
+	Fri, 22 Aug 2025 17:01:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="XTXJ9QRg"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="ZO9UQ7CI"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1BC0CC2D1
-	for <stable@vger.kernel.org>; Fri, 22 Aug 2025 17:00:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2486D3009C1
+	for <stable@vger.kernel.org>; Fri, 22 Aug 2025 17:01:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755882032; cv=none; b=ABCA6mxVZTr06JtvNiPQgB61X1/ueSySp/dJHY9VEpSghx/UcOyKHfi+KUs0Z65C8yCh/D80pM0j9P9V7MBkruImqWBwh25G27OpgqBcWxxMtNyHyojtwHuD+qxlaq4qOm/sP8RtLkYDQcOaIstl4rVPoEg2yPU/+AV+p0mExAM=
+	t=1755882088; cv=none; b=a5D9MBhWNI/6ERP6MSmmhSu3dc1bU9ApiYq0mancYFnoZXVupn//nYwh+Dw+96jVfcOml6MiI3H79ychkhhYZjTXOvd0Crl+MUFijXMlBuaeS1I0XcDYVcojsCpB4NwWFkwQYKwNUEYEvoLzd6QLHpRm6X8UJ+sB16i1NAfzP/w=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1755882032; c=relaxed/simple;
-	bh=75NBvn99csupbhbHfo9LMLQ9vog90j3DM2Zsl37BHmo=;
+	s=arc-20240116; t=1755882088; c=relaxed/simple;
+	bh=Pi43T1r9IvZ2vqeEMBHcik6kzxWzs6y2DlgRnrjbgIY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=r1coAqxbfd8KRQ8iOzUvxguYDeT28Goox0xLKssSvBsvnPQbxJG7EQT45WOhPsXGxDSXWmmIgCX+//kAIb+c76Gk+0jpvVchakqyXtSCFVW3tITSR85mSqlWiPoDFaFZDQgjSzKJ1Y6Vqp22/Hb2mSX6HJJfbpzx1hg5d003jjs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=XTXJ9QRg; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 542B4C4CEED;
-	Fri, 22 Aug 2025 17:00:31 +0000 (UTC)
+	 MIME-Version; b=Te/PNaclTOqmatyWHyL/hNkGsKexSSKFIjZpHW4DgftUjkeMZ7N9wmegUj/vdiCzPm0kkmCx+XZU+c4HGZp/aqp+QOkRX72be3uVwCmjOMPQDeVMJ7s1NoyZf5+5Twe85sbsgAGN5qXrEJmqskJFgFX/eqytNUs6NNEIBVSzQco=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=ZO9UQ7CI; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 01E11C4CEED;
+	Fri, 22 Aug 2025 17:01:26 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1755882031;
-	bh=75NBvn99csupbhbHfo9LMLQ9vog90j3DM2Zsl37BHmo=;
+	s=k20201202; t=1755882087;
+	bh=Pi43T1r9IvZ2vqeEMBHcik6kzxWzs6y2DlgRnrjbgIY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=XTXJ9QRgFm+f9rL9IAuG23xVvbZNgCZ8JgzWpUbNhrezmBWIWZi8RspQR/T8J/GF9
-	 /5QIpbogZGxkO4O72IAwfjjhgZq6YRjJZA4hRdTvuZQ9wa6smOBnFP08FKFemIWDCJ
-	 pOpW3xcEvE+G7ElPWaNezPX9J686lJHnR7Y4ZrRr7lI7VzmIVPjwJ2Bnp5ea3WWxEx
-	 0UvX2yZBXa478Msfq3UcwcnHMx4Z+/XCF7f8CqGVrM/k+wThLCVzfZVi9b5CXfKGZ8
-	 pJkLvcp+MWVkSW7ifmsh/y8kk7UVWercFwBCnVfBFBuUuTYqEmM4G1hLToNrE8+jOS
-	 eJVuzOPtW9ezA==
+	b=ZO9UQ7CIFDJqXgKowQifIorg8wlZ/Xh4c6ZQ3/gBcBCNYWGnYOJOiEVcMGIMQB9PW
+	 Thw9vdW3AVU08hKHQeD78SlxsT5TgvmuKxFMBpjvCs3MIzqSZoQwfe/6TtKBQZ7zEX
+	 ++cXmfkvG68ZnWwj4aX2W1bhhT7JYaEqfj9eIE+8t/QTxgw78/SeMsOG5Aju2o3bpl
+	 yiK5sOts1UsI4tmcz/8a5D6Pn+VXE4kHvgZLcsh8VPRjAtuuzgHywnldOn5YZ7nSZy
+	 hryk3VJ7ffJiafvDBi6KMeeQu7JO9KVuhvJB7iCw4k+z5zL12xxVJLxxfEffRbUDFW
+	 gWha6YWQoc2Zg==
 From: Sasha Levin <sashal@kernel.org>
 To: stable@vger.kernel.org
-Cc: =?UTF-8?q?Andr=C3=A9=20Draszik?= <andre.draszik@linaro.org>,
-	Bart Van Assche <bvanassche@acm.org>,
-	Peter Griffin <peter.griffin@linaro.org>,
-	"Martin K. Petersen" <martin.petersen@oracle.com>,
+Cc: Baokun Li <libaokun1@huawei.com>,
+	stable@kernel.org,
+	Jan Kara <jack@suse.cz>,
+	Theodore Ts'o <tytso@mit.edu>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6.y] scsi: ufs: exynos: Fix programming of HCI_UTRL_NEXUS_TYPE
-Date: Fri, 22 Aug 2025 13:00:28 -0400
-Message-ID: <20250822170028.1318459-1-sashal@kernel.org>
+Subject: [PATCH 6.1.y] ext4: preserve SB_I_VERSION on remount
+Date: Fri, 22 Aug 2025 13:01:24 -0400
+Message-ID: <20250822170124.1319222-1-sashal@kernel.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <2025082136-luridness-causing-3cc9@gregkh>
-References: <2025082136-luridness-causing-3cc9@gregkh>
+In-Reply-To: <2025082139-grudging-earplugs-9567@gregkh>
+References: <2025082139-grudging-earplugs-9567@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-From: André Draszik <andre.draszik@linaro.org>
+From: Baokun Li <libaokun1@huawei.com>
 
-[ Upstream commit 01aad16c2257ab8ff33b152b972c9f2e1af47912 ]
+[ Upstream commit f2326fd14a224e4cccbab89e14c52279ff79b7ec ]
 
-On Google gs101, the number of UTP transfer request slots (nutrs) is 32,
-and in this case the driver ends up programming the UTRL_NEXUS_TYPE
-incorrectly as 0.
+IMA testing revealed that after an ext4 remount, file accesses triggered
+full measurements even without modifications, instead of skipping as
+expected when i_version is unchanged.
 
-This is because the left hand side of the shift is 1, which is of type
-int, i.e. 31 bits wide. Shifting by more than that width results in
-undefined behaviour.
+Debugging showed `SB_I_VERSION` was cleared in reconfigure_super() during
+remount due to commit 1ff20307393e ("ext4: unconditionally enable the
+i_version counter") removing the fix from commit 960e0ab63b2e ("ext4: fix
+i_version handling on remount").
 
-Fix this by switching to the BIT() macro, which applies correct type
-casting as required. This ensures the correct value is written to
-UTRL_NEXUS_TYPE (0xffffffff on gs101), and it also fixes a UBSAN shift
-warning:
+To rectify this, `SB_I_VERSION` is always set for `fc->sb_flags` in
+ext4_init_fs_context(), instead of `sb->s_flags` in __ext4_fill_super(),
+ensuring it persists across all mounts.
 
-    UBSAN: shift-out-of-bounds in drivers/ufs/host/ufs-exynos.c:1113:21
-    shift exponent 32 is too large for 32-bit type 'int'
-
-For consistency, apply the same change to the nutmrs / UTMRL_NEXUS_TYPE
-write.
-
-Fixes: 55f4b1f73631 ("scsi: ufs: ufs-exynos: Add UFS host support for Exynos SoCs")
-Cc: stable@vger.kernel.org
-Signed-off-by: André Draszik <andre.draszik@linaro.org>
-Link: https://lore.kernel.org/r/20250707-ufs-exynos-shift-v1-1-1418e161ae40@linaro.org
-Reviewed-by: Bart Van Assche <bvanassche@acm.org>
-Reviewed-by: Peter Griffin <peter.griffin@linaro.org>
-Signed-off-by: Martin K. Petersen <martin.petersen@oracle.com>
-[ Adapted context ]
+Cc: stable@kernel.org
+Fixes: 1ff20307393e ("ext4: unconditionally enable the i_version counter")
+Signed-off-by: Baokun Li <libaokun1@huawei.com>
+Reviewed-by: Jan Kara <jack@suse.cz>
+Link: https://patch.msgid.link/20250703073903.6952-2-libaokun@huaweicloud.com
+Signed-off-by: Theodore Ts'o <tytso@mit.edu>
+[ Adjust context ]
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/ufs/host/ufs-exynos.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ fs/ext4/super.c | 6 +++---
+ 1 file changed, 3 insertions(+), 3 deletions(-)
 
-diff --git a/drivers/ufs/host/ufs-exynos.c b/drivers/ufs/host/ufs-exynos.c
-index f61126189876..14c1b855e10a 100644
---- a/drivers/ufs/host/ufs-exynos.c
-+++ b/drivers/ufs/host/ufs-exynos.c
-@@ -1028,8 +1028,8 @@ static int exynos_ufs_post_link(struct ufs_hba *hba)
- 	hci_writel(ufs, 0xa, HCI_DATA_REORDER);
- 	hci_writel(ufs, PRDT_SET_SIZE(12), HCI_TXPRDT_ENTRY_SIZE);
- 	hci_writel(ufs, PRDT_SET_SIZE(12), HCI_RXPRDT_ENTRY_SIZE);
--	hci_writel(ufs, (1 << hba->nutrs) - 1, HCI_UTRL_NEXUS_TYPE);
--	hci_writel(ufs, (1 << hba->nutmrs) - 1, HCI_UTMRL_NEXUS_TYPE);
-+	hci_writel(ufs, BIT(hba->nutrs) - 1, HCI_UTRL_NEXUS_TYPE);
-+	hci_writel(ufs, BIT(hba->nutmrs) - 1, HCI_UTMRL_NEXUS_TYPE);
- 	hci_writel(ufs, 0xf, HCI_AXIDMA_RWDATA_BURST_LEN);
+diff --git a/fs/ext4/super.c b/fs/ext4/super.c
+index f829f989f2b5..e8f976bf5c5a 100644
+--- a/fs/ext4/super.c
++++ b/fs/ext4/super.c
+@@ -1937,6 +1937,9 @@ int ext4_init_fs_context(struct fs_context *fc)
+ 	fc->fs_private = ctx;
+ 	fc->ops = &ext4_context_ops;
  
- 	if (ufs->opts & EXYNOS_UFS_OPT_SKIP_CONNECTION_ESTAB)
++	/* i_version is always enabled now */
++	fc->sb_flags |= SB_I_VERSION;
++
+ 	return 0;
+ }
+ 
+@@ -5113,9 +5116,6 @@ static int __ext4_fill_super(struct fs_context *fc, struct super_block *sb)
+ 	sb->s_flags = (sb->s_flags & ~SB_POSIXACL) |
+ 		(test_opt(sb, POSIX_ACL) ? SB_POSIXACL : 0);
+ 
+-	/* i_version is always enabled now */
+-	sb->s_flags |= SB_I_VERSION;
+-
+ 	if (ext4_check_feature_compatibility(sb, es, silent))
+ 		goto failed_mount;
+ 
 -- 
 2.50.1
 
