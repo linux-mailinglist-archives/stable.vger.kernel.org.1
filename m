@@ -1,225 +1,97 @@
-Return-Path: <stable+bounces-172251-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-172252-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [142.0.200.124])
-	by mail.lfdr.de (Postfix) with ESMTPS id CEBCAB30C49
-	for <lists+stable@lfdr.de>; Fri, 22 Aug 2025 05:09:23 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id EA334B30C81
+	for <lists+stable@lfdr.de>; Fri, 22 Aug 2025 05:25:12 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 994874E36B1
-	for <lists+stable@lfdr.de>; Fri, 22 Aug 2025 03:09:22 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 122707236D8
+	for <lists+stable@lfdr.de>; Fri, 22 Aug 2025 03:23:10 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7784C26CE2D;
-	Fri, 22 Aug 2025 03:08:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5084228A1D5;
+	Fri, 22 Aug 2025 03:23:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="pq826WrM"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="R7le5sGa"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 28BD92652B4;
-	Fri, 22 Aug 2025 03:08:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0EF8F22578A
+	for <stable@vger.kernel.org>; Fri, 22 Aug 2025 03:23:06 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755832084; cv=none; b=erxwrKxigNrMCX/7tYXeO0K1diU7JsUWvZwA/PHT1PfRUlYDbXVQlmZLWhkVe7eS6MYmpHFCYxvdzOsSU1SjfQpUzk3NKh7SzEX2Hqr4emB2wK+uVRxNf4BlcrzJs8oeova21l5rThgdO71/NerImhmxVF4qIviT5q4OGjTaUMM=
+	t=1755832987; cv=none; b=KCByJ7Qg4kFf1rMhm2MsLHIGx1xtOO2tTeemzLuMKHMSnLltuISVeX7Zx+cif/H+vW8WDkqpSXmvwZaV0JppV0WWFZorteN9j5OCmRLDUeuY1l9ZIExoQFMp+5Ee0sFKhdley7q8QA12dWqjPCX51hXzGjisPRSZeb0uetMUzF8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1755832084; c=relaxed/simple;
-	bh=SCWJsd9vjE1VJ9L3wefl1VGRbBT52yKi9plp6KLTV/M=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=pemkkggPRbPeP8RGGkaO9Pgfy+KK3/FagthQ0cXR9uA28eOkU79IEJJKmDwyeD1QZl8ca2m/A0guWEihPUfnjA0YQogsFtzMLMrRQXJxjF1/H/C8hxSaxZ2siNlc/SIBjO+pXFt2xqSFcpd/JzJp6Fg69UKGFKgZC4e3PTbzohI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=pq826WrM; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id F1398C4CEEB;
-	Fri, 22 Aug 2025 03:08:02 +0000 (UTC)
+	s=arc-20240116; t=1755832987; c=relaxed/simple;
+	bh=hVKaMje8elKNZiqkzbvC21cn5/MH8FXNLXc3z2Is3z0=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=rYzl/IirpmJqh2bid3QmysAYEv+b+EpsTnbFj6Me6SaAK4XC6hCkmUX4dB8Btagn9NiOq4hjWnEZjWwNRXTmYWjGunwj8sPzY8R5I2m3yHb+V0U4yxS2TgQK/dATBr79FWxbLV8KR42ZAgx0QvluKsuNsXnI2KH/LlC9UrRffrA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=R7le5sGa; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 562BBC4CEEB;
+	Fri, 22 Aug 2025 03:23:06 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1755832084;
-	bh=SCWJsd9vjE1VJ9L3wefl1VGRbBT52yKi9plp6KLTV/M=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=pq826WrMct/ELjpuRCD360hXL5d6eRZjJlhvi1ZvcFso6C915lRq4I8Y/MQvxFvuk
-	 c61/R4JqIAiKBru31s6kf8r+L9NUyoUKZCg6JNEZe0OcRQuHHIMqM/76MFRuT22g53
-	 EvSqtDBdC+41GoPOdTB132X/U0RD6+K8MlKPfINpB+ZXjeAXb553Z4Sm5j5PG3Gy3X
-	 lC1UGWW/biRSQpqlW/VV98IVGwveT907OhGljIOMQ0ZFb9OvETPWO4iIzZwUjETta/
-	 neRSqnMgpnVKPZyGmhuL1i4ab5jXoogzvcbjqSkVXHBUNsTIryEqKRjwSDMQcl9deU
-	 FAFNC8olFBgiQ==
-From: Sasha Levin <sashal@kernel.org>
-To: stable@vger.kernel.org
-Cc: David Howells <dhowells@redhat.com>,
-	Xiaoli Feng <fengxiaoli0714@gmail.com>,
-	Paulo Alcantara <pc@manguebit.org>,
-	Steve French <sfrench@samba.org>,
-	Shyam Prasad N <sprasad@microsoft.com>,
-	netfs@lists.linux.dev,
-	linux-cifs@vger.kernel.org,
-	linux-fsdevel@vger.kernel.org,
-	Christian Brauner <brauner@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12.y] netfs: Fix unbuffered write error handling
-Date: Thu, 21 Aug 2025 23:08:00 -0400
-Message-ID: <20250822030800.1054685-1-sashal@kernel.org>
-X-Mailer: git-send-email 2.50.1
-In-Reply-To: <2025082157-dedicator-hurled-4d65@gregkh>
-References: <2025082157-dedicator-hurled-4d65@gregkh>
+	s=k20201202; t=1755832986;
+	bh=hVKaMje8elKNZiqkzbvC21cn5/MH8FXNLXc3z2Is3z0=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=R7le5sGaP2ePnjzGpuWbw8fTvP9HkugC508rRU9yk2CsWsBRDePvray1b8tBKFVze
+	 ke6ZcSjDe7Spc+iP8AspbvYfGREoBWzFBHNWrSV0x7+S8Z7XWIqdWxsfxKpzXCn/2X
+	 mgSfML+fczBwMihcFVv6SRGD9R+SdE3TqqG0eFN5ippntHmJdVxC938QrBZWSaCf9o
+	 pK+x7ofNuAca7WAKS29iyBjWY+eL2hZzZRVvSLnGrXtssq16fAtto28U2Ql2Yy/u52
+	 0ueci77NnRJERLebZg2MWia++gfDXG7ZLqqAh+EC/3hk4JmcOqn98DKy7vjGw5oxuR
+	 LaMI0Fd2Rr49Q==
+Date: Thu, 21 Aug 2025 23:23:04 -0400
+From: Eric Biggers <ebiggers@kernel.org>
+To: Sasha Levin <sashal@kernel.org>
+Cc: stable@vger.kernel.org, Herbert Xu <herbert@gondor.apana.org.au>
+Subject: Re: [PATCH 6.12.y 4/4] crypto: x86/aegis - Fix sleeping when
+ disallowed on PREEMPT_RT
+Message-ID: <20250822032304.GA80178@quark>
+References: <2025082102-shrug-unused-8ce2@gregkh>
+ <20250822030617.1053172-1-sashal@kernel.org>
+ <20250822030617.1053172-4-sashal@kernel.org>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20250822030617.1053172-4-sashal@kernel.org>
 
-From: David Howells <dhowells@redhat.com>
+On Thu, Aug 21, 2025 at 11:06:17PM -0400, Sasha Levin wrote:
+> From: Eric Biggers <ebiggers@kernel.org>
+> 
+> [ Upstream commit c7f49dadfcdf27e1f747442e874e9baa52ab7674 ]
+> 
+> skcipher_walk_done() can call kfree(), which takes a spinlock, which
+> makes it incorrect to call while preemption is disabled on PREEMPT_RT.
+> Therefore, end the kernel-mode FPU section before calling
+> skcipher_walk_done(), and restart it afterwards.
+> 
+> Moreover, pass atomic=false to skcipher_walk_aead_encrypt() instead of
+> atomic=true.  The point of atomic=true was to make skcipher_walk_done()
+> safe to call while in a kernel-mode FPU section, but that does not
+> actually work.  So just use the usual atomic=false.
+> 
+> Fixes: 1d373d4e8e15 ("crypto: x86 - Add optimized AEGIS implementations")
+> Cc: stable@vger.kernel.org
+> Signed-off-by: Eric Biggers <ebiggers@kernel.org>
+> Signed-off-by: Herbert Xu <herbert@gondor.apana.org.au>
+> Signed-off-by: Sasha Levin <sashal@kernel.org>
+> ---
+>  arch/x86/crypto/aegis128-aesni-glue.c | 8 ++++++--
+>  1 file changed, 6 insertions(+), 2 deletions(-)
 
-[ Upstream commit a3de58b12ce074ec05b8741fa28d62ccb1070468 ]
+1. Missing Cc of the relevant mailing lists
+2. Missing cover letter
+3. Missing base-commit, and doesn't apply to stable/linux-6.16.y
+4. Two different series were sent out, both containing this patch
 
-If all the subrequests in an unbuffered write stream fail, the subrequest
-collector doesn't update the stream->transferred value and it retains its
-initial LONG_MAX value.  Unfortunately, if all active streams fail, then we
-take the smallest value of { LONG_MAX, LONG_MAX, ... } as the value to set
-in wreq->transferred - which is then returned from ->write_iter().
+No reason to even take a look at the patch content until it's in a
+reviewable state.
 
-LONG_MAX was chosen as the initial value so that all the streams can be
-quickly assessed by taking the smallest value of all stream->transferred -
-but this only works if we've set any of them.
-
-Fix this by adding a flag to indicate whether the value in
-stream->transferred is valid and checking that when we integrate the
-values.  stream->transferred can then be initialised to zero.
-
-This was found by running the generic/750 xfstest against cifs with
-cache=none.  It splices data to the target file.  Once (if) it has used up
-all the available scratch space, the writes start failing with ENOSPC.
-This causes ->write_iter() to fail.  However, it was returning
-wreq->transferred, i.e. LONG_MAX, rather than an error (because it thought
-the amount transferred was non-zero) and iter_file_splice_write() would
-then try to clean up that amount of pipe bufferage - leading to an oops
-when it overran.  The kernel log showed:
-
-    CIFS: VFS: Send error in write = -28
-
-followed by:
-
-    BUG: kernel NULL pointer dereference, address: 0000000000000008
-
-with:
-
-    RIP: 0010:iter_file_splice_write+0x3a4/0x520
-    do_splice+0x197/0x4e0
-
-or:
-
-    RIP: 0010:pipe_buf_release (include/linux/pipe_fs_i.h:282)
-    iter_file_splice_write (fs/splice.c:755)
-
-Also put a warning check into splice to announce if ->write_iter() returned
-that it had written more than it was asked to.
-
-Fixes: 288ace2f57c9 ("netfs: New writeback implementation")
-Reported-by: Xiaoli Feng <fengxiaoli0714@gmail.com>
-Closes: https://bugzilla.kernel.org/show_bug.cgi?id=220445
-Signed-off-by: David Howells <dhowells@redhat.com>
-Link: https://lore.kernel.org/915443.1755207950@warthog.procyon.org.uk
-cc: Paulo Alcantara <pc@manguebit.org>
-cc: Steve French <sfrench@samba.org>
-cc: Shyam Prasad N <sprasad@microsoft.com>
-cc: netfs@lists.linux.dev
-cc: linux-cifs@vger.kernel.org
-cc: linux-fsdevel@vger.kernel.org
-cc: stable@vger.kernel.org
-Signed-off-by: Christian Brauner <brauner@kernel.org>
-[ Dropped read_collect.c hunk ]
-Signed-off-by: Sasha Levin <sashal@kernel.org>
----
- fs/netfs/write_collect.c | 10 ++++++++--
- fs/netfs/write_issue.c   |  4 ++--
- fs/splice.c              |  3 +++
- include/linux/netfs.h    |  1 +
- 4 files changed, 14 insertions(+), 4 deletions(-)
-
-diff --git a/fs/netfs/write_collect.c b/fs/netfs/write_collect.c
-index a968688a7323..c349867d74c3 100644
---- a/fs/netfs/write_collect.c
-+++ b/fs/netfs/write_collect.c
-@@ -433,6 +433,7 @@ static void netfs_collect_write_results(struct netfs_io_request *wreq)
- 			if (front->start + front->transferred > stream->collected_to) {
- 				stream->collected_to = front->start + front->transferred;
- 				stream->transferred = stream->collected_to - wreq->start;
-+				stream->transferred_valid = true;
- 				notes |= MADE_PROGRESS;
- 			}
- 			if (test_bit(NETFS_SREQ_FAILED, &front->flags)) {
-@@ -538,6 +539,7 @@ void netfs_write_collection_worker(struct work_struct *work)
- 	struct netfs_io_request *wreq = container_of(work, struct netfs_io_request, work);
- 	struct netfs_inode *ictx = netfs_inode(wreq->inode);
- 	size_t transferred;
-+	bool transferred_valid = false;
- 	int s;
- 
- 	_enter("R=%x", wreq->debug_id);
-@@ -568,12 +570,16 @@ void netfs_write_collection_worker(struct work_struct *work)
- 			netfs_put_request(wreq, false, netfs_rreq_trace_put_work);
- 			return;
- 		}
--		if (stream->transferred < transferred)
-+		if (stream->transferred_valid &&
-+		    stream->transferred < transferred) {
- 			transferred = stream->transferred;
-+			transferred_valid = true;
-+		}
- 	}
- 
- 	/* Okay, declare that all I/O is complete. */
--	wreq->transferred = transferred;
-+	if (transferred_valid)
-+		wreq->transferred = transferred;
- 	trace_netfs_rreq(wreq, netfs_rreq_trace_write_done);
- 
- 	if (wreq->io_streams[1].active &&
-diff --git a/fs/netfs/write_issue.c b/fs/netfs/write_issue.c
-index bf6d507578e5..b7830a15ae40 100644
---- a/fs/netfs/write_issue.c
-+++ b/fs/netfs/write_issue.c
-@@ -115,12 +115,12 @@ struct netfs_io_request *netfs_create_write_req(struct address_space *mapping,
- 	wreq->io_streams[0].prepare_write	= ictx->ops->prepare_write;
- 	wreq->io_streams[0].issue_write		= ictx->ops->issue_write;
- 	wreq->io_streams[0].collected_to	= start;
--	wreq->io_streams[0].transferred		= LONG_MAX;
-+	wreq->io_streams[0].transferred		= 0;
- 
- 	wreq->io_streams[1].stream_nr		= 1;
- 	wreq->io_streams[1].source		= NETFS_WRITE_TO_CACHE;
- 	wreq->io_streams[1].collected_to	= start;
--	wreq->io_streams[1].transferred		= LONG_MAX;
-+	wreq->io_streams[1].transferred		= 0;
- 	if (fscache_resources_valid(&wreq->cache_resources)) {
- 		wreq->io_streams[1].avail	= true;
- 		wreq->io_streams[1].active	= true;
-diff --git a/fs/splice.c b/fs/splice.c
-index 38f8c9426731..ed8177f6d620 100644
---- a/fs/splice.c
-+++ b/fs/splice.c
-@@ -744,6 +744,9 @@ iter_file_splice_write(struct pipe_inode_info *pipe, struct file *out,
- 		sd.pos = kiocb.ki_pos;
- 		if (ret <= 0)
- 			break;
-+		WARN_ONCE(ret > sd.total_len - left,
-+			  "Splice Exceeded! ret=%zd tot=%zu left=%zu\n",
-+			  ret, sd.total_len, left);
- 
- 		sd.num_spliced += ret;
- 		sd.total_len -= ret;
-diff --git a/include/linux/netfs.h b/include/linux/netfs.h
-index 474481ee8b7c..83d313718cd5 100644
---- a/include/linux/netfs.h
-+++ b/include/linux/netfs.h
-@@ -150,6 +150,7 @@ struct netfs_io_stream {
- 	bool			active;		/* T if stream is active */
- 	bool			need_retry;	/* T if this stream needs retrying */
- 	bool			failed;		/* T if this stream failed */
-+	bool			transferred_valid; /* T is ->transferred is valid */
- };
- 
- /*
--- 
-2.50.1
-
+- Eric
 
