@@ -1,217 +1,119 @@
-Return-Path: <stable+bounces-172276-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-172270-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 88D33B30CCF
-	for <lists+stable@lfdr.de>; Fri, 22 Aug 2025 05:44:51 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id EF2D4B30CA9
+	for <lists+stable@lfdr.de>; Fri, 22 Aug 2025 05:39:58 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 386AB606EF9
-	for <lists+stable@lfdr.de>; Fri, 22 Aug 2025 03:44:51 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id B69331CE2811
+	for <lists+stable@lfdr.de>; Fri, 22 Aug 2025 03:40:18 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id BD1442BEFE1;
-	Fri, 22 Aug 2025 03:42:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 62DE4223708;
+	Fri, 22 Aug 2025 03:39:54 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="C1Wkn5/+"
 X-Original-To: stable@vger.kernel.org
-Received: from szxga06-in.huawei.com (szxga06-in.huawei.com [45.249.212.32])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 709692BCF75;
-	Fri, 22 Aug 2025 03:42:28 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=45.249.212.32
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 20A16149C51
+	for <stable@vger.kernel.org>; Fri, 22 Aug 2025 03:39:53 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755834150; cv=none; b=bE31xaroIEWFnqm9k/lbCSGRZW+VkunAK0+TeyA78/bMneOsvjuNBlWKdSHhxboZsAIj91zMsS50tMPkGvAQuCCaeIApYGQfyaAbJg94UWo+gxFXSOjireBf2QDBVeQQ+5HmOw83iK5m4IviPyKnQzIzJ3hRV9mKKjxFN0EFd8w=
+	t=1755833994; cv=none; b=mQliyhkp4WEPZAIJ4xu4q1scp53AVfKRhkVfOGmNYmXf6lAWwtQzWHB1yn3hzmyEGYcXWLhFcCqB+4JyzG+RcRkByFjcrt4qmwCCrTkr409WRpWsgDpVCFKcj62Em+D7dVioPnFx2yS88pPqC7KOBCouXbQAOYcLzolWCKXAgzM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1755834150; c=relaxed/simple;
-	bh=9dID8pTHCNar8rKg9quXxFFqpPjurfeLsJacG9AjbBo=;
-	h=From:To:CC:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=LEQhsejxHD92HH8fDB9eeG5TwFYAmkMaYPm07SDguXiGsqbP8Sj/5qTOS2P0WvgP3hBBTLuwoDY0qNQCbTBLYM/no32cAOEDh7RIJeuO0gaUnE8GmS/Pb2Mj3q7e1lXrnKFd02C/sMdnkYjK0QkHPg2ZHsT82/jTfnPv7bbZWOs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com; spf=pass smtp.mailfrom=huawei.com; arc=none smtp.client-ip=45.249.212.32
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=huawei.com
-Received: from mail.maildlp.com (unknown [172.19.163.44])
-	by szxga06-in.huawei.com (SkyGuard) with ESMTP id 4c7QyW6S33z27jDG;
-	Fri, 22 Aug 2025 11:43:31 +0800 (CST)
-Received: from dggpemf500011.china.huawei.com (unknown [7.185.36.131])
-	by mail.maildlp.com (Postfix) with ESMTPS id 3DAEC140158;
-	Fri, 22 Aug 2025 11:42:26 +0800 (CST)
-Received: from huawei.com (10.67.174.55) by dggpemf500011.china.huawei.com
- (7.185.36.131) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1544.11; Fri, 22 Aug
- 2025 11:42:25 +0800
-From: Jinjie Ruan <ruanjinjie@huawei.com>
-To: <tglx@linutronix.de>, <mingo@redhat.com>, <bp@alien8.de>,
-	<dave.hansen@linux.intel.com>, <hpa@zytor.com>, <prarit@redhat.com>,
-	<gregkh@linuxfoundation.org>, <x86@kernel.org>, <stable@vger.kernel.org>,
-	<linux-kernel@vger.kernel.org>
-CC: <ruanjinjie@huawei.com>
-Subject: [PATCH v6.6 RESEND 2/2] x86/irq: Plug vector setup race
-Date: Fri, 22 Aug 2025 03:38:25 +0000
-Message-ID: <20250822033825.1096753-3-ruanjinjie@huawei.com>
-X-Mailer: git-send-email 2.34.1
-In-Reply-To: <20250822033825.1096753-1-ruanjinjie@huawei.com>
-References: <20250822033825.1096753-1-ruanjinjie@huawei.com>
+	s=arc-20240116; t=1755833994; c=relaxed/simple;
+	bh=0ndn9ErCLYbYq32kF5PwwmdLS4zM7/PUlxoWqoh8W98=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=uvDhC/RupvZKf8lOn6f0CxpUsXKMDT3UgFS7BF0aSH0Zc4bGLyAMoSob4zdJmnt1nxRSFfHw5GunmklQSd3C43rcibbimaV0p1TIXYrzkOFxWIOnYGlMuwYYYVgj6BhXPKPy40C1vE78ydD3jOrgymmP5o2kOZmGIVO0YH/JpNE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=C1Wkn5/+; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 76F41C4CEEB;
+	Fri, 22 Aug 2025 03:39:53 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1755833993;
+	bh=0ndn9ErCLYbYq32kF5PwwmdLS4zM7/PUlxoWqoh8W98=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=C1Wkn5/+86mKI51A3qkZ6+ezMG6l/1X/84q1sjNDKeezMg/ArIVlh+aGtQG5GRX/1
+	 SUgmow5Ctf407ebY9HuPQHKRBkercmOuYK3WgJ7c7eJqpZRAE7WDx8kWFfGdHinzVF
+	 jpEfYmKecE6nOiM5C7dPBt+/J03IbM6RcwhxhvxZ9VkX/70xSgZPTo+vdbif0Ciq1m
+	 IcALsa4BykScLAUwKMNcpZTRa3ocnq6+Ho+dnRSYDNg0AIwlX3hJF3FNELFTeZonh2
+	 51flSnFzE5GqXuoKHnGgalVuSHu+o6CyOaLQTWhvMRkdlzNU6TcDxMtW1Mm7fSzcuS
+	 OnNBbg566ZhjQ==
+Date: Thu, 21 Aug 2025 23:39:51 -0400
+From: Eric Biggers <ebiggers@kernel.org>
+To: Sasha Levin <sashal@kernel.org>
+Cc: stable@vger.kernel.org, Herbert Xu <herbert@gondor.apana.org.au>
+Subject: Re: [PATCH 6.12.y 4/4] crypto: x86/aegis - Fix sleeping when
+ disallowed on PREEMPT_RT
+Message-ID: <20250822033951.GB80178@quark>
+References: <2025082102-shrug-unused-8ce2@gregkh>
+ <20250822030617.1053172-1-sashal@kernel.org>
+ <20250822030617.1053172-4-sashal@kernel.org>
+ <20250822032304.GA80178@quark>
+ <aKfj-C27OQBWNEMq@laps>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Content-Type: text/plain
-X-ClientProxiedBy: kwepems500002.china.huawei.com (7.221.188.17) To
- dggpemf500011.china.huawei.com (7.185.36.131)
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <aKfj-C27OQBWNEMq@laps>
 
-From: Thomas Gleixner <tglx@linutronix.de>
+On Thu, Aug 21, 2025 at 11:28:56PM -0400, Sasha Levin wrote:
+> On Thu, Aug 21, 2025 at 11:23:04PM -0400, Eric Biggers wrote:
+> > On Thu, Aug 21, 2025 at 11:06:17PM -0400, Sasha Levin wrote:
+> > > From: Eric Biggers <ebiggers@kernel.org>
+> > > 
+> > > [ Upstream commit c7f49dadfcdf27e1f747442e874e9baa52ab7674 ]
+> > > 
+> > > skcipher_walk_done() can call kfree(), which takes a spinlock, which
+> > > makes it incorrect to call while preemption is disabled on PREEMPT_RT.
+> > > Therefore, end the kernel-mode FPU section before calling
+> > > skcipher_walk_done(), and restart it afterwards.
+> > > 
+> > > Moreover, pass atomic=false to skcipher_walk_aead_encrypt() instead of
+> > > atomic=true.  The point of atomic=true was to make skcipher_walk_done()
+> > > safe to call while in a kernel-mode FPU section, but that does not
+> > > actually work.  So just use the usual atomic=false.
+> > > 
+> > > Fixes: 1d373d4e8e15 ("crypto: x86 - Add optimized AEGIS implementations")
+> > > Cc: stable@vger.kernel.org
+> > > Signed-off-by: Eric Biggers <ebiggers@kernel.org>
+> > > Signed-off-by: Herbert Xu <herbert@gondor.apana.org.au>
+> > > Signed-off-by: Sasha Levin <sashal@kernel.org>
+> > > ---
+> > >  arch/x86/crypto/aegis128-aesni-glue.c | 8 ++++++--
+> > >  1 file changed, 6 insertions(+), 2 deletions(-)
+> > 
+> > 1. Missing Cc of the relevant mailing lists
+> > 2. Missing cover letter
+> 
+> This was sent following the instructions in the FAILED: email generated by
+> Greg. If you feel its insufficient, take it up with him.
 
-commit ce0b5eedcb753697d43f61dd2e27d68eb5d3150f upstream.
+You're one of the stable maintainers.  You can't just deflect and claim
+this is not your problem.
 
-Hogan reported a vector setup race, which overwrites the interrupt
-descriptor in the per CPU vector array resulting in a disfunctional device.
+> > 3. Missing base-commit, and doesn't apply to stable/linux-6.16.y
+> 
+> As the subject line indicates, this applies on 6.12, not 6.16.
+> 
+> > 4. Two different series were sent out, both containing this patch
+> 
+> You might have missed that they're for different trees?
+> 
 
-CPU0				CPU1
-				interrupt is raised in APIC IRR
-				but not handled
-  free_irq()
-    per_cpu(vector_irq, CPU1)[vector] = VECTOR_SHUTDOWN;
+Sorry, I meant to write 6.12.  6.12 was indeed what I tried to apply it
+to, and it failed.  And there are two series for 6.12, see
+https://lore.kernel.org/stable/20250822030632.1053504-4-sashal@kernel.org
+and
+https://lore.kernel.org/stable/20250822030617.1053172-4-sashal@kernel.org/
+They were sent only 14 seconds apart, so these submissions appear to be
+automated.
 
-  request_irq()			common_interrupt()
-  				  d = this_cpu_read(vector_irq[vector]);
-
-    per_cpu(vector_irq, CPU1)[vector] = desc;
-
-    				  if (d == VECTOR_SHUTDOWN)
-				    this_cpu_write(vector_irq[vector], VECTOR_UNUSED);
-
-free_irq() cannot observe the pending vector in the CPU1 APIC as there is
-no way to query the remote CPUs APIC IRR.
-
-This requires that request_irq() uses the same vector/CPU as the one which
-was freed, but this also can be triggered by a spurious interrupt.
-
-Interestingly enough this problem managed to be hidden for more than a
-decade.
-
-Prevent this by reevaluating vector_irq under the vector lock, which is
-held by the interrupt activation code when vector_irq is updated.
-
-To avoid ifdeffery or IS_ENABLED() nonsense, move the
-[un]lock_vector_lock() declarations out under the
-CONFIG_IRQ_DOMAIN_HIERARCHY guard as it's only provided when
-CONFIG_X86_LOCAL_APIC=y.
-
-The current CONFIG_IRQ_DOMAIN_HIERARCHY guard is selected by
-CONFIG_X86_LOCAL_APIC, but can also be selected by other parts of the
-Kconfig system, which makes 32-bit UP builds with CONFIG_X86_LOCAL_APIC=n
-fail.
-
-Can we just get rid of this !APIC nonsense once and forever?
-
-Fixes: 9345005f4eed ("x86/irq: Fix do_IRQ() interrupt warning for cpu hotplug retriggered irqs")
-Cc: stable@vger.kernel.org#6.6.x
-Cc: gregkh@linuxfoundation.org
-Reported-by: Hogan Wang <hogan.wang@huawei.com>
-Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
-Tested-by: Hogan Wang <hogan.wang@huawei.com>
-Link: https://lore.kernel.org/all/draft-87ikjhrhhh.ffs@tglx
-[ Conflicts in arch/x86/kernel/irq.c because call_irq_handler() has been
-  refactored to do apic_eoi() according to the return value.
-  Conflicts in arch/x86/include/asm/hw_irq.h because (un)lock_vector_lock()
-  are already controlled by CONFIG_X86_LOCAL_APIC. ]
-Signed-off-by: Jinjie Ruan <ruanjinjie@huawei.com>
----
- arch/x86/kernel/irq.c | 65 +++++++++++++++++++++++++++++++++----------
- 1 file changed, 51 insertions(+), 14 deletions(-)
-
-diff --git a/arch/x86/kernel/irq.c b/arch/x86/kernel/irq.c
-index 1f066268ec29..29d0fc94232e 100644
---- a/arch/x86/kernel/irq.c
-+++ b/arch/x86/kernel/irq.c
-@@ -242,24 +242,59 @@ static __always_inline void handle_irq(struct irq_desc *desc,
- 		__handle_irq(desc, regs);
- }
- 
--static __always_inline void call_irq_handler(int vector, struct pt_regs *regs)
-+static struct irq_desc *reevaluate_vector(int vector)
- {
--	struct irq_desc *desc;
-+	struct irq_desc *desc = __this_cpu_read(vector_irq[vector]);
-+
-+	if (!IS_ERR_OR_NULL(desc))
-+		return desc;
-+
-+	if (desc == VECTOR_UNUSED)
-+		pr_emerg_ratelimited("No irq handler for %d.%u\n", smp_processor_id(), vector);
-+	else
-+		__this_cpu_write(vector_irq[vector], VECTOR_UNUSED);
-+	return NULL;
-+}
-+
-+static __always_inline bool call_irq_handler(int vector, struct pt_regs *regs)
-+{
-+	struct irq_desc *desc = __this_cpu_read(vector_irq[vector]);
- 
--	desc = __this_cpu_read(vector_irq[vector]);
- 	if (likely(!IS_ERR_OR_NULL(desc))) {
- 		handle_irq(desc, regs);
--	} else {
--		apic_eoi();
--
--		if (desc == VECTOR_UNUSED) {
--			pr_emerg_ratelimited("%s: %d.%u No irq handler for vector\n",
--					     __func__, smp_processor_id(),
--					     vector);
--		} else {
--			__this_cpu_write(vector_irq[vector], VECTOR_UNUSED);
--		}
-+		return true;
- 	}
-+
-+	/*
-+	 * Reevaluate with vector_lock held to prevent a race against
-+	 * request_irq() setting up the vector:
-+	 *
-+	 * CPU0				CPU1
-+	 *				interrupt is raised in APIC IRR
-+	 *				but not handled
-+	 * free_irq()
-+	 *   per_cpu(vector_irq, CPU1)[vector] = VECTOR_SHUTDOWN;
-+	 *
-+	 * request_irq()		common_interrupt()
-+	 *				  d = this_cpu_read(vector_irq[vector]);
-+	 *
-+	 * per_cpu(vector_irq, CPU1)[vector] = desc;
-+	 *
-+	 *				  if (d == VECTOR_SHUTDOWN)
-+	 *				    this_cpu_write(vector_irq[vector], VECTOR_UNUSED);
-+	 *
-+	 * This requires that the same vector on the same target CPU is
-+	 * handed out or that a spurious interrupt hits that CPU/vector.
-+	 */
-+	lock_vector_lock();
-+	desc = reevaluate_vector(vector);
-+	unlock_vector_lock();
-+
-+	if (!desc)
-+		return false;
-+
-+	handle_irq(desc, regs);
-+	return true;
- }
- 
- /*
-@@ -273,7 +308,9 @@ DEFINE_IDTENTRY_IRQ(common_interrupt)
- 	/* entry code tells RCU that we're not quiescent.  Check it. */
- 	RCU_LOCKDEP_WARN(!rcu_is_watching(), "IRQ failed to wake up RCU");
- 
--	call_irq_handler(vector, regs);
-+	if (unlikely(!call_irq_handler(vector, regs)))
-+		apic_eoi();
-+
- 	set_irq_regs(old_regs);
- }
- 
--- 
-2.34.1
-
+- Eric
 
