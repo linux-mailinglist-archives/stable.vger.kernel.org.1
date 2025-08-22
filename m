@@ -1,59 +1,57 @@
-Return-Path: <stable+bounces-172506-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-172508-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0C2D2B322B4
-	for <lists+stable@lfdr.de>; Fri, 22 Aug 2025 21:18:17 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id AEC7AB322E8
+	for <lists+stable@lfdr.de>; Fri, 22 Aug 2025 21:35:11 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 85FA36270FC
-	for <lists+stable@lfdr.de>; Fri, 22 Aug 2025 19:18:07 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 67B75B06D43
+	for <lists+stable@lfdr.de>; Fri, 22 Aug 2025 19:35:10 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 928F42D0C94;
-	Fri, 22 Aug 2025 19:17:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B9B0A2C0297;
+	Fri, 22 Aug 2025 19:35:06 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="ReOxIhQq"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="vHb7CN2Y"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 51135253B4C
-	for <stable@vger.kernel.org>; Fri, 22 Aug 2025 19:17:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7655C4A1A
+	for <stable@vger.kernel.org>; Fri, 22 Aug 2025 19:35:05 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755890274; cv=none; b=rH7hiKToh4/jKUpiK31NftFhUDLx5TXfs61Etva5Ous2Tc/uF4pwFe5Uha/jp6sYeFJTF3yIuLNcQtqqd8EAolAP6NsGBpjI5e6E1PJLWNDKj4aW4Vibl5cPP/ZOo2hxMWn6mQEaQ+PdXK9dsvwW2ozaLdi9iPU2gVwyE+LBrYQ=
+	t=1755891306; cv=none; b=P2kLbT6zYEzQjZNhIarOsCiwTujiMtwBJNSIeCxH2jmUwdjK2ob5svAXiEO3oRgX9sMAn4VLv2k2BhMTteoZm8+yzU3k0/Dde+rD5v3vXsbNRN/BwcroamwzLWov3fa+hcHsoQgRBQ2y/hBdm0v/3EIbaezLEOk8KKZIPJOqIIk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1755890274; c=relaxed/simple;
-	bh=l2G5Uq1Nyd2VWE/fQbpU7Be9UY5kzrYLsd77Zw2gXmU=;
+	s=arc-20240116; t=1755891306; c=relaxed/simple;
+	bh=2Cs4kSd1rbsZdIXL+evRJjDMriuwhprDgofSILXGTXc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=J1aivzank5YwAnkcQQkslfylp+0uNWHlCKdLzxEEasicvwIWlUPH3ZyyZYtNiclUE4kHn1yI1mQJOo6mVBwaO5y6JX6hAVE4AMVtp67ouXZpTZpS9rqrS3NmuhLITwpAcP0cfHtlB6qv3YT8m+mip9urlE7IFgSldo20AWHxQ3I=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=ReOxIhQq; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 777C5C113CF;
-	Fri, 22 Aug 2025 19:17:53 +0000 (UTC)
+	 MIME-Version; b=CjuLdiq2c3KoZpZR+cT8Pd5P+IuNLbkvQC/ddvC/gwq4oJoWFsdntYbbGHsxESVowVk4EfgOtKJCSGzhCGHhMiLmZhxFVxC1Sz2ucwrXmlBvn5/IUgORPEf3vgcNGWWqDcvCrbN2Ezi+CY74HTaRRXFbOXKJ8R2taXzZvWWYLqE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=vHb7CN2Y; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 769E9C4CEED;
+	Fri, 22 Aug 2025 19:35:04 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1755890274;
-	bh=l2G5Uq1Nyd2VWE/fQbpU7Be9UY5kzrYLsd77Zw2gXmU=;
+	s=k20201202; t=1755891304;
+	bh=2Cs4kSd1rbsZdIXL+evRJjDMriuwhprDgofSILXGTXc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=ReOxIhQqDGNShD+U4/6caw8pGgbQf1ZkaxfyQCkVPELQl8xahy1dccBnWJ0s97zxv
-	 C4/dZAtl2gPa+a1Xh71jXlILSnmi+HOQsutd3vzNi1PvEgwPDBPWbFIQbZS3Db0VBw
-	 Fu6tRngpO3glLJj4r9rZJ2Jwb6q2PhoTWJZyesf2Zfl+x4QdA0LsAH6Tc81mmZXOEJ
-	 QSHWAdHYLC18zUIK2h0HbH/RW21JCJTr8P5eQfkqamtuafv35f64KmQ2HYqq1Neeli
-	 5DiCBqE74pO5VLeW4cRleO1VSKQXn3GB6SE3GeqUPzJPh2ZSk4fD5K4cPX0GFFvEVm
-	 tLwYAFN4h2vGg==
+	b=vHb7CN2YMZxRir6y3cxwfSxzVJ97gjUbR6Gus9zaDpvyWLZIdsqXWLJuSWTXjEVTb
+	 Xjz8+RnWKfdnY+TDBTb6U51DZbafdfupMDSbuGaYWn2+AZZ/JkZBICaXxh8iWwOVmz
+	 9YZg20Jqnez4mKUM4bKc8TrTAnzgMxnpUTG1pZslC3Zktxb24OtfAQWwjrbPKZiPM3
+	 RGn+CF2aYkOzjnYOOdKYGMGuid7xpkeopWWmilyyfXqSziWtsRe2kcK+TN77JszBbO
+	 Nj8t4+5CPSdqIPTkTQMhQXz7hQL8/TlpTBaRxjqEZy1y6NzPFCpXJaNXiFCXqKkCDR
+	 qppm+b7PhfFOQ==
 From: Sasha Levin <sashal@kernel.org>
 To: stable@vger.kernel.org
-Cc: Richard Zhu <hongxing.zhu@nxp.com>,
-	Bjorn Helgaas <bhelgaas@google.com>,
-	Frank Li <Frank.Li@nxp.com>,
+Cc: Marco Elver <elver@google.com>,
+	"Paul E. McKenney" <paulmck@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12.y 2/2] PCI: imx6: Add IMX8MQ_EP third 64-bit BAR in epc_features
-Date: Fri, 22 Aug 2025 15:17:50 -0400
-Message-ID: <20250822191750.1437890-2-sashal@kernel.org>
+Subject: [PATCH 5.15.y 1/3] locking/barriers, kcsan: Support generic instrumentation
+Date: Fri, 22 Aug 2025 15:35:00 -0400
+Message-ID: <20250822193502.1445377-1-sashal@kernel.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250822191750.1437890-1-sashal@kernel.org>
-References: <2025082145-scrap-ride-31b5@gregkh>
- <20250822191750.1437890-1-sashal@kernel.org>
+In-Reply-To: <2025082143-halved-suitably-b32b@gregkh>
+References: <2025082143-halved-suitably-b32b@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -62,39 +60,69 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-From: Richard Zhu <hongxing.zhu@nxp.com>
+From: Marco Elver <elver@google.com>
 
-[ Upstream commit c523fa63ac1d452abeeb4e699560ec3365037f32 ]
+[ Upstream commit 2505a51ac6f249956735e0a369e2404f96eebef0 ]
 
-IMX8MQ_EP has three 64-bit BAR0/2/4 capable and programmable BARs. For
-IMX8MQ_EP, use imx8q_pcie_epc_features (64-bit BARs 0, 2, 4) instead
-of imx8m_pcie_epc_features (64-bit BARs 0, 2).
+Thus far only smp_*() barriers had been defined by asm-generic/barrier.h
+based on __smp_*() barriers, because the !SMP case is usually generic.
 
-Fixes: 75c2f26da03f ("PCI: imx6: Add i.MX PCIe EP mode support")
-Signed-off-by: Richard Zhu <hongxing.zhu@nxp.com>
-[bhelgaas: add details in subject]
-Signed-off-by: Bjorn Helgaas <bhelgaas@google.com>
-Reviewed-by: Frank Li <Frank.Li@nxp.com>
-Cc: stable@vger.kernel.org
-Link: https://patch.msgid.link/20250708091003.2582846-2-hongxing.zhu@nxp.com
+With the introduction of instrumentation, it also makes sense to have
+asm-generic/barrier.h assist in the definition of instrumented versions
+of mb(), rmb(), wmb(), dma_rmb(), and dma_wmb().
+
+Because there is no requirement to distinguish the !SMP case, the
+definition can be simpler: we can avoid also providing fallbacks for the
+__ prefixed cases, and only check if `defined(__<barrier>)`, to finally
+define the KCSAN-instrumented versions.
+
+This also allows for the compiler to complain if an architecture
+accidentally defines both the normal and __ prefixed variant.
+
+Signed-off-by: Marco Elver <elver@google.com>
+Signed-off-by: Paul E. McKenney <paulmck@kernel.org>
+Stable-dep-of: aa6956150f82 ("wifi: ath11k: fix dest ring-buffer corruption when ring is full")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/pci/controller/dwc/pci-imx6.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ include/asm-generic/barrier.h | 25 +++++++++++++++++++++++++
+ 1 file changed, 25 insertions(+)
 
-diff --git a/drivers/pci/controller/dwc/pci-imx6.c b/drivers/pci/controller/dwc/pci-imx6.c
-index 70f281abb607..7b05eb8f95d0 100644
---- a/drivers/pci/controller/dwc/pci-imx6.c
-+++ b/drivers/pci/controller/dwc/pci-imx6.c
-@@ -1676,7 +1676,7 @@ static const struct imx_pcie_drvdata drvdata[] = {
- 		.mode_mask[0] = IMX6Q_GPR12_DEVICE_TYPE,
- 		.mode_off[1] = IOMUXC_GPR12,
- 		.mode_mask[1] = IMX8MQ_GPR12_PCIE2_CTRL_DEVICE_TYPE,
--		.epc_features = &imx8m_pcie_epc_features,
-+		.epc_features = &imx8q_pcie_epc_features,
- 		.init_phy = imx8mq_pcie_init_phy,
- 		.enable_ref_clk = imx8mm_pcie_enable_ref_clk,
- 	},
+diff --git a/include/asm-generic/barrier.h b/include/asm-generic/barrier.h
+index 640f09479bdf..05aae2922485 100644
+--- a/include/asm-generic/barrier.h
++++ b/include/asm-generic/barrier.h
+@@ -20,6 +20,31 @@
+ #define nop()	asm volatile ("nop")
+ #endif
+ 
++/*
++ * Architectures that want generic instrumentation can define __ prefixed
++ * variants of all barriers.
++ */
++
++#ifdef __mb
++#define mb()	do { kcsan_mb(); __mb(); } while (0)
++#endif
++
++#ifdef __rmb
++#define rmb()	do { kcsan_rmb(); __rmb(); } while (0)
++#endif
++
++#ifdef __wmb
++#define wmb()	do { kcsan_wmb(); __wmb(); } while (0)
++#endif
++
++#ifdef __dma_rmb
++#define dma_rmb()	do { kcsan_rmb(); __dma_rmb(); } while (0)
++#endif
++
++#ifdef __dma_wmb
++#define dma_wmb()	do { kcsan_wmb(); __dma_wmb(); } while (0)
++#endif
++
+ /*
+  * Force strict CPU ordering. And yes, this is required on UP too when we're
+  * talking to devices.
 -- 
 2.50.1
 
