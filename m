@@ -1,55 +1,55 @@
-Return-Path: <stable+bounces-172500-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-172501-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 502D2B32297
-	for <lists+stable@lfdr.de>; Fri, 22 Aug 2025 21:06:19 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 11CBEB32296
+	for <lists+stable@lfdr.de>; Fri, 22 Aug 2025 21:05:38 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 088C41CC102A
-	for <lists+stable@lfdr.de>; Fri, 22 Aug 2025 19:05:56 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id D553CAC3B55
+	for <lists+stable@lfdr.de>; Fri, 22 Aug 2025 19:05:35 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C3F482C1589;
-	Fri, 22 Aug 2025 19:05:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8FC3E2C15A5;
+	Fri, 22 Aug 2025 19:05:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="iVYzxRID"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="jFD1Lvs5"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8576D18E025
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5002218E025
 	for <stable@vger.kernel.org>; Fri, 22 Aug 2025 19:05:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755889530; cv=none; b=IlbrHLVSXAalT5nOYROY78nbHy42aTOC5OYdnyH5B3OsqH+nSZKEdfZHzDUZxenDRrR59Vn8irXosmPjJgeqBwXOqCfIEXgiJCE1mv8leUMc8ONe5LLeVFgTk6Wk+ec/mIzO+x4K+Mytii72irzUPlw67b1nKT/jRzU+rN3uxKs=
+	t=1755889531; cv=none; b=rsANOVoZMY45boovTyid2tFCjKOzBoiR3/d32P3rwMIOnyFuhKEbkJ43wHN3282jxVuL/4RS+2sqnAzT1/eCwXBSHPRDf7TIY+2hi+bZAJTKjCItLf+w4UumaqhDwAqVqzSknsWoL13GcCbpDjnOeE7yWfVkEmES3t6BER3PPSE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1755889530; c=relaxed/simple;
-	bh=kJzkhH2Ud9tboOjYnAagWWlU3/xTdzPh2ZVUkWwsVZc=;
+	s=arc-20240116; t=1755889531; c=relaxed/simple;
+	bh=LjuYxnJvlWiwYzH9XsxAticWSvE6fdZIwCCrwdtP2pw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=j+4tnr+ggBF99nGa5oiAB4dy7vAx1K1xvqFxj4oco+F71ZorU1+9mbE40Vhncm8WpegT6QVLOgvhq7o/Nw/Wp9f8kA48XEJrDw5a3B+XEcV3YFhsvfGRiz7JbN5rsUAiAXp8xR2CyGCrKJPQNUnRSDDBS2RXaLJsDu4tIqUQZZM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=iVYzxRID; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8473FC113CF;
-	Fri, 22 Aug 2025 19:05:29 +0000 (UTC)
+	 MIME-Version:Content-Type; b=AS3xYnXWFPmVIUnPnaIES5bWBXqZoWSrRTNNuQXYnJbtB65Wo/UL8q4vAQxzW/3H6PVApPr1osQW4vepjw9JDXXb9xVApL5QiU0J6Aq910GfWci/rpZS4ooHuS83IXXWi4eXcsr5hcl/ri5jbJeqoE/My4K2DVjFwMwEablNE94=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=jFD1Lvs5; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4EA27C116B1;
+	Fri, 22 Aug 2025 19:05:30 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
 	s=k20201202; t=1755889530;
-	bh=kJzkhH2Ud9tboOjYnAagWWlU3/xTdzPh2ZVUkWwsVZc=;
+	bh=LjuYxnJvlWiwYzH9XsxAticWSvE6fdZIwCCrwdtP2pw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=iVYzxRIDl/njZc2T5yobzyR1fG0YK8jT1Kwr4hkbBYi1WZBT55F3Ajm68+RB6cx3H
-	 Ub7hFHJ6/xavtx7vkJ1wb2WIDxByZrFPQDuG4uqiUv8SKPqHYFAzgLNpN2zM81yrq0
-	 I4t/e5lfMeOKQbFm31QPRp6xKDsavD/najLFMRX6Ef4U5M4Hy/27fuq/nrHXeBE5mD
-	 EiV7yXkxnuG5aCGwbuLert3g9HzwAn/suil3VKfmGkdYkS/ODTl4fyujJ5uxOPcqm4
-	 s+fFEHXPd2ZjUIHXRlTvQtpNhWknjzplm/Safj5XjHfngIkb8pu1+uBygXLRrQQxM6
-	 YzQ0YTWPOBjuw==
+	b=jFD1Lvs59I5ulYyIjOMhfEvAcl0EXiNVWYRvl3nY4bbuw5hdr/Tytur4mgOedLGTs
+	 Ogja7TqUidjq3MXY20W+DuCEXEYmJcgQgqi4yFs76fIO8lv2XdUO6axMW8qGlVK+3w
+	 01XZUa1BLTY3k9OpZKk255yklCF3aGAKcIf3WecfMKpSM5YiJLZGcS0wTZcHLd8MNa
+	 FjygJfukWTbogbY0WXXyLIaN9gvuplDgjT6z4fgb8s0enAXnNR0YNT2yyr78VimL43
+	 pw6JD6PCx0n5F+na2rmHrfloofRlKrF74WU/Tdu2Ou/BX5jQF13jSX2v/hJmh7jIBX
+	 mDPdDb4t8roIg==
 From: Sasha Levin <sashal@kernel.org>
 To: stable@vger.kernel.org
 Cc: =?UTF-8?q?Uwe=20Kleine-K=C3=B6nig?= <u.kleine-koenig@baylibre.com>,
 	AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>,
 	=?UTF-8?q?Uwe=20Kleine-K=C3=B6nig?= <ukleinek@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.4.y 2/3] pwm: mediatek: Handle hardware enable and clock enable separately
-Date: Fri, 22 Aug 2025 15:05:26 -0400
-Message-ID: <20250822190527.1408882-2-sashal@kernel.org>
+Subject: [PATCH 5.4.y 3/3] pwm: mediatek: Fix duty and period setting
+Date: Fri, 22 Aug 2025 15:05:27 -0400
+Message-ID: <20250822190527.1408882-3-sashal@kernel.org>
 X-Mailer: git-send-email 2.50.1
 In-Reply-To: <20250822190527.1408882-1-sashal@kernel.org>
 References: <2025082143-creature-relay-7247@gregkh>
@@ -65,117 +65,76 @@ Content-Transfer-Encoding: 8bit
 
 From: Uwe Kleine-König <u.kleine-koenig@baylibre.com>
 
-[ Upstream commit 704d918341c378c5f9505dfdf32d315e256d3846 ]
+[ Upstream commit f21d136caf8171f94159d975ea4620c164431bd9 ]
 
-Stop handling the clocks in pwm_mediatek_enable() and
-pwm_mediatek_disable(). This is a preparing change for the next commit
-that requires that clocks and the enable bit are handled separately.
+The period generated by the hardware is
 
-Also move these two functions a bit further up in the source file to
-make them usable in pwm_mediatek_config(), which is needed in the next
-commit, too.
+	(PWMDWIDTH + 1) << CLKDIV) / freq
 
+according to my tests with a signal analyser and also the documentation.
+
+The current algorithm doesn't consider the `+ 1` part and so configures
+slightly too high periods. The same issue exists for the duty cycle
+setting. So subtract 1 from both the register values for period and
+duty cycle. If period is 0, bail out, if duty_cycle is 0, just disable
+the PWM which results in a constant low output.
+
+Fixes: caf065f8fd58 ("pwm: Add MediaTek PWM support")
 Signed-off-by: Uwe Kleine-König <u.kleine-koenig@baylibre.com>
 Reviewed-by: AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>
-Link: https://lore.kernel.org/r/55c94fe2917ece152ee1e998f4675642a7716f13.1753717973.git.u.kleine-koenig@baylibre.com
+Link: https://lore.kernel.org/r/6d1fa87a76f8020bfe3171529b8e19baffceab10.1753717973.git.u.kleine-koenig@baylibre.com
 Cc: stable@vger.kernel.org
 Signed-off-by: Uwe Kleine-König <ukleinek@kernel.org>
-Stable-dep-of: f21d136caf81 ("pwm: mediatek: Fix duty and period setting")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/pwm/pwm-mediatek.c | 60 ++++++++++++++++++--------------------
- 1 file changed, 28 insertions(+), 32 deletions(-)
+ drivers/pwm/pwm-mediatek.c | 21 ++++++++++++++-------
+ 1 file changed, 14 insertions(+), 7 deletions(-)
 
 diff --git a/drivers/pwm/pwm-mediatek.c b/drivers/pwm/pwm-mediatek.c
-index 69616224a5fa..203e5c13a0d1 100644
+index 203e5c13a0d1..c2235daa5bcd 100644
 --- a/drivers/pwm/pwm-mediatek.c
 +++ b/drivers/pwm/pwm-mediatek.c
-@@ -119,6 +119,26 @@ static inline void pwm_mediatek_writel(struct pwm_mediatek_chip *chip,
- 	writel(value, chip->regs + pwm_mediatek_reg_offset[num] + offset);
- }
+@@ -168,7 +168,10 @@ static int pwm_mediatek_config(struct pwm_chip *chip, struct pwm_device *pwm,
+ 	do_div(resolution, clk_rate);
  
-+static void pwm_mediatek_enable(struct pwm_chip *chip, struct pwm_device *pwm)
-+{
-+	struct pwm_mediatek_chip *pc = to_pwm_mediatek_chip(chip);
-+	u32 value;
+ 	cnt_period = DIV_ROUND_CLOSEST_ULL((u64)period_ns * 1000, resolution);
+-	while (cnt_period > 8191) {
++	if (!cnt_period)
++		return -EINVAL;
 +
-+	value = readl(pc->regs);
-+	value |= BIT(pwm->hwpwm);
-+	writel(value, pc->regs);
-+}
-+
-+static void pwm_mediatek_disable(struct pwm_chip *chip, struct pwm_device *pwm)
-+{
-+	struct pwm_mediatek_chip *pc = to_pwm_mediatek_chip(chip);
-+	u32 value;
-+
-+	value = readl(pc->regs);
-+	value &= ~BIT(pwm->hwpwm);
-+	writel(value, pc->regs);
-+}
-+
- static int pwm_mediatek_config(struct pwm_chip *chip, struct pwm_device *pwm,
- 			       int duty_ns, int period_ns)
- {
-@@ -181,35 +201,6 @@ static int pwm_mediatek_config(struct pwm_chip *chip, struct pwm_device *pwm,
- 	return ret;
- }
- 
--static int pwm_mediatek_enable(struct pwm_chip *chip, struct pwm_device *pwm)
--{
--	struct pwm_mediatek_chip *pc = to_pwm_mediatek_chip(chip);
--	u32 value;
--	int ret;
--
--	ret = pwm_mediatek_clk_enable(chip, pwm);
--	if (ret < 0)
--		return ret;
--
--	value = readl(pc->regs);
--	value |= BIT(pwm->hwpwm);
--	writel(value, pc->regs);
--
--	return 0;
--}
--
--static void pwm_mediatek_disable(struct pwm_chip *chip, struct pwm_device *pwm)
--{
--	struct pwm_mediatek_chip *pc = to_pwm_mediatek_chip(chip);
--	u32 value;
--
--	value = readl(pc->regs);
--	value &= ~BIT(pwm->hwpwm);
--	writel(value, pc->regs);
--
--	pwm_mediatek_clk_disable(chip, pwm);
--}
--
- static int pwm_mediatek_apply(struct pwm_chip *chip, struct pwm_device *pwm,
- 			      const struct pwm_state *state)
- {
-@@ -219,8 +210,10 @@ static int pwm_mediatek_apply(struct pwm_chip *chip, struct pwm_device *pwm,
- 		return -EINVAL;
- 
- 	if (!state->enabled) {
--		if (pwm->state.enabled)
-+		if (pwm->state.enabled) {
- 			pwm_mediatek_disable(chip, pwm);
-+			pwm_mediatek_clk_disable(chip, pwm);
-+		}
- 
- 		return 0;
++	while (cnt_period > 8192) {
+ 		resolution *= 2;
+ 		clkdiv++;
+ 		cnt_period = DIV_ROUND_CLOSEST_ULL((u64)period_ns * 1000,
+@@ -191,9 +194,16 @@ static int pwm_mediatek_config(struct pwm_chip *chip, struct pwm_device *pwm,
  	}
-@@ -229,8 +222,11 @@ static int pwm_mediatek_apply(struct pwm_chip *chip, struct pwm_device *pwm,
+ 
+ 	cnt_duty = DIV_ROUND_CLOSEST_ULL((u64)duty_ns * 1000, resolution);
++
+ 	pwm_mediatek_writel(pc, pwm->hwpwm, PWMCON, BIT(15) | clkdiv);
+-	pwm_mediatek_writel(pc, pwm->hwpwm, reg_width, cnt_period);
+-	pwm_mediatek_writel(pc, pwm->hwpwm, reg_thres, cnt_duty);
++	pwm_mediatek_writel(pc, pwm->hwpwm, reg_width, cnt_period - 1);
++
++	if (cnt_duty) {
++		pwm_mediatek_writel(pc, pwm->hwpwm, reg_thres, cnt_duty - 1);
++		pwm_mediatek_enable(chip, pwm);
++	} else {
++		pwm_mediatek_disable(chip, pwm);
++	}
+ 
+ out:
+ 	pwm_mediatek_clk_disable(chip, pwm);
+@@ -222,11 +232,8 @@ static int pwm_mediatek_apply(struct pwm_chip *chip, struct pwm_device *pwm,
  	if (err)
  		return err;
  
--	if (!pwm->state.enabled)
--		err = pwm_mediatek_enable(chip, pwm);
-+	if (!pwm->state.enabled) {
-+		err = pwm_mediatek_clk_enable(chip, pwm);
-+		if (!err)
-+			pwm_mediatek_enable(chip, pwm);
-+	}
+-	if (!pwm->state.enabled) {
++	if (!pwm->state.enabled)
+ 		err = pwm_mediatek_clk_enable(chip, pwm);
+-		if (!err)
+-			pwm_mediatek_enable(chip, pwm);
+-	}
  
  	return err;
  }
