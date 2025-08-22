@@ -1,148 +1,137 @@
-Return-Path: <stable+bounces-172384-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-172385-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id B8425B318D1
-	for <lists+stable@lfdr.de>; Fri, 22 Aug 2025 15:08:41 +0200 (CEST)
+Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [IPv6:2605:f480:58:1:0:1994:3:14])
+	by mail.lfdr.de (Postfix) with ESMTPS id 40ED8B318B8
+	for <lists+stable@lfdr.de>; Fri, 22 Aug 2025 15:04:12 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 9BDBD3A8AC0
-	for <lists+stable@lfdr.de>; Fri, 22 Aug 2025 13:02:20 +0000 (UTC)
+	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id E1EAA4E1259
+	for <lists+stable@lfdr.de>; Fri, 22 Aug 2025 13:04:10 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 54DE3199FAC;
-	Fri, 22 Aug 2025 13:00:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5BD6A2F99AE;
+	Fri, 22 Aug 2025 13:04:06 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=goldelico.com header.i=@goldelico.com header.b="nxmKQCPh";
-	dkim=permerror (0-bit key) header.d=goldelico.com header.i=@goldelico.com header.b="Jp/67mQN"
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="JDQbHX/8"
 X-Original-To: stable@vger.kernel.org
-Received: from mo4-p01-ob.smtp.rzone.de (mo4-p01-ob.smtp.rzone.de [85.215.255.52])
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C77D42FC008;
-	Fri, 22 Aug 2025 13:00:41 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=85.215.255.52
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755867649; cv=pass; b=QO1DmY8FuZitIk7GRYJQg/HY7BooiRDu9nV8sVU4hicRcijQmHTybF+LB+96dttPEF+/g5aejiy/PEQwkLfe71/wfHn48lDQgOn3lnXFgXTeKY0wdqnsY3shrrEN+QM5ONlPlUSGinm5cyAabfnIGmDGbizlmZTKAg2S80uBxqw=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1755867649; c=relaxed/simple;
-	bh=tKWIfxfpH/XWzFDUflAitZfOsO2kUNsz1M5UwojPLDg=;
-	h=Content-Type:Mime-Version:Subject:From:In-Reply-To:Date:Cc:
-	 Message-Id:References:To; b=XytnqKdvjkoY6CJ3FHsvAkMwMjAY5au6qYI/o8eGmnCUOzLaOTrrg4VG5iWNFiv/HSNb+MPO9dmbLkfK+XA9HRRAxi1ihQIHn0nQHQHNIKyNM2SQ5fMn1zJhHu30SmxrsICVvD1RRcTqFyS4EgS9kGLHO8sATKJcompAkarafEA=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=goldelico.com; spf=pass smtp.mailfrom=goldelico.com; dkim=pass (2048-bit key) header.d=goldelico.com header.i=@goldelico.com header.b=nxmKQCPh; dkim=permerror (0-bit key) header.d=goldelico.com header.i=@goldelico.com header.b=Jp/67mQN; arc=pass smtp.client-ip=85.215.255.52
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=goldelico.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=goldelico.com
-ARC-Seal: i=1; a=rsa-sha256; t=1755867629; cv=none;
-    d=strato.com; s=strato-dkim-0002;
-    b=OQUKXQKrLIEkTNdxgMLMUmUMN1QNPVW0lHu4nhT5I54CNgy8tU3OL/oJpC05WWuNgo
-    atu3NCfBEn7rtkv7CGNd+TtNAZ+SW009ZBrBvBuJP9oZOrA8KLhQnAI4HhHrsJGpZfmX
-    HEyAFLI689W/IVIh6TfdNymMsxOKW0vkdufHBc9RZ8gsdRqEeSc8Q0mMjPiSW6HX8OAU
-    iHKZWSeMpGKteU3jlL3OZqrPzJOdjPYjptIjDqwljJHMmPxAaEYMkxOio/QgafsXYZGV
-    57ORTCHGUiPxKAEHTI6vIMOFGWwzTmigrLUauM0jlFfSjRRMFzZqwH8I//C1DLgApuXt
-    4wQA==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; t=1755867629;
-    s=strato-dkim-0002; d=strato.com;
-    h=To:References:Message-Id:Cc:Date:In-Reply-To:From:Subject:Cc:Date:
-    From:Subject:Sender;
-    bh=dyqgy5T3hx+MqXXKObwy6WBXqr/oFHAkqS1wlQiF4gA=;
-    b=L9UOthVWOLA+Lfpxh/Wt0eJ53Y3mvGXJ1j6Mqn6iUfpxNdgJ+NcrK8ZPIqALKTIlwu
-    jh7wgXfanMBNJG6E3FjIOscmJaxqKKSfjrymRyjCZ8TBoNKsCFeAPiqhoRg/gqdgwpGg
-    lkfcFJIY1h4t1eS+nLrMzBgKB3cqBItlPsPxryDC2fncGs2BjHIHiW4QPE9l1un0BlsT
-    ILZuyi+wsfLN+ExJPMxzptEaeIThos/neqEQhw094JUYP1MVGx6DDakiUcWPBQXfwRNh
-    4zFJlBEIP11FT4s3dq2x1KlGQ3Y6zCJmQ+llzK1gNSkWFm0YYgTbm8ryL+DMjyBYWLMt
-    +5Aw==
-ARC-Authentication-Results: i=1; strato.com;
-    arc=none;
-    dkim=none
-X-RZG-CLASS-ID: mo01
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; t=1755867629;
-    s=strato-dkim-0002; d=goldelico.com;
-    h=To:References:Message-Id:Cc:Date:In-Reply-To:From:Subject:Cc:Date:
-    From:Subject:Sender;
-    bh=dyqgy5T3hx+MqXXKObwy6WBXqr/oFHAkqS1wlQiF4gA=;
-    b=nxmKQCPhCIRF7ZinVmUI7+HayKuUW41E/T0aRamLmIPI7FcMOU7U0ooj/fUIIAYAvY
-    eTFvu+ygC6mJivTInVSNFdlgqRg6qYJbEJVSYquAiwLpSVM/n/H9dZ3XtOil6Y/uHYwE
-    AF396238NbPCXZ5qYYgG1kruPzPzbAvHhDFRCbkn0wL4WxcFa5Yr9io3GScTpMFljWOM
-    cb6Yziznjm31oBF5HqwVKQN6NR5JSIgSvIrf87axlgUxWmlmFhRcFVSLb79/fKz7pQx9
-    rV4WqyKU/ArlNT8Do5SBhu6a8jq4v1GrlqpEfq6pD3CjKbZdosJOHoV/dw65cM/T7Bub
-    U+8Q==
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; t=1755867629;
-    s=strato-dkim-0003; d=goldelico.com;
-    h=To:References:Message-Id:Cc:Date:In-Reply-To:From:Subject:Cc:Date:
-    From:Subject:Sender;
-    bh=dyqgy5T3hx+MqXXKObwy6WBXqr/oFHAkqS1wlQiF4gA=;
-    b=Jp/67mQNx3H74Jec//qwPYmo0UxLEBWaAYkXHLrRjsBN71l+eAVP61N54Ku31kPZwu
-    +rS7H9RI/6iFaZr9KiDA==
-X-RZG-AUTH: ":JGIXVUS7cutRB/49FwqZ7WcJeFKiMhflhwDubTJ9o12DNOsPj0lFzL1yfz0Z"
-Received: from smtpclient.apple
-    by smtp.strato.de (RZmta 52.1.2 DYNA|AUTH)
-    with ESMTPSA id Q307a417MD0S2Yt
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (curve X9_62_prime256v1 with 256 ECDH bits, eq. 3072 bits RSA))
-	(Client did not present a certificate);
-    Fri, 22 Aug 2025 15:00:28 +0200 (CEST)
-Content-Type: text/plain;
-	charset=us-ascii
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4D45028AB1E
+	for <stable@vger.kernel.org>; Fri, 22 Aug 2025 13:04:04 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.129.124
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1755867846; cv=none; b=r4oAwEibqZy9Smzku83Z3sWPcc4UMsGNQO3QnZFfRdmva/EwqgWtJyrxS02AxmYdELIYNQxyAEv1eOyMYZoVaLMFV/gb3U+Pwc5FzUyDpEVO4QKeFzT22CPSLRQ9N6Cktru4ODmPt/5dxA8+rKUhi+jiRZ5FD/bwP0Dk+6NyZSk=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1755867846; c=relaxed/simple;
+	bh=n922tzKEixyTFAkTAqnzJwmbXE0RKvWKZfpZ/AspRKE=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=TET9oiiv8Fpo28UuCJynXzPylVLZevx6N/JiS9ZN8MsnHi8mhGoMuSrOrJK/lxXTyCt04KIRP8bg259MzFqj5Gcjavara5EQmLGGRkpCZSJA6suA2UMX4FgsP4M/9OxmjXRrvgAnRkgWRakDx7uMus9rXlVPNMhAqlSu7QEk534=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=JDQbHX/8; arc=none smtp.client-ip=170.10.129.124
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1755867843;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=HQb772XW6mDHLLr/wV9DU+xM69+Gf7mm1yUdHyKM7eE=;
+	b=JDQbHX/8DQU3GzCITTQ+M6W/djzb+ObKmvm+ulLWE2mV3W6/UtH8DrOfV0m7wqeivNvdrh
+	+IjiKDsOp0MGeAolUwRih9HKMr9UAM4+2YqNbF7Q05K6MhcCM8l4mtglTGVwCoOnlpb46y
+	lEogEUYbzOfDzG/2WRVnWCPrgkWGK8M=
+Received: from mail-wr1-f71.google.com (mail-wr1-f71.google.com
+ [209.85.221.71]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-397-pPePhOKeNySF4Ixx7nKDIQ-1; Fri, 22 Aug 2025 09:04:01 -0400
+X-MC-Unique: pPePhOKeNySF4Ixx7nKDIQ-1
+X-Mimecast-MFC-AGG-ID: pPePhOKeNySF4Ixx7nKDIQ_1755867840
+Received: by mail-wr1-f71.google.com with SMTP id ffacd0b85a97d-3c6abcfd1c0so123517f8f.1
+        for <stable@vger.kernel.org>; Fri, 22 Aug 2025 06:04:01 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1755867840; x=1756472640;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=HQb772XW6mDHLLr/wV9DU+xM69+Gf7mm1yUdHyKM7eE=;
+        b=D6C6oVP5l4XHP6mHHZedlVuLGDJOLW+MrJrmeA3U+FnhDdjf0dh0aRiwErr2fjjTVD
+         UkbW90JfwXZbrXjehPVYH2Qgua0jFgFj78E2/az5Ux40P5/zYuZS9pA8JwcS5fDR7H1w
+         DFBpmPEUAX2Rwc//37S1Ilhfs7cBb+unWDOW4p/6WmEAQ7F2FQnNDPuTh7gKXzyt1XiJ
+         cVTdUv+lgZw34MuvOSTtr96q/7dnRSQu0mmn20WLNqMJM0XWQUcHTfNlvvUyNDwiA5nc
+         4ZfnuhpDeN895F/RtJF+qu+xd3HMCn94yDeQNaKom3GtufhtktTypCrdD7a19c/z6M5b
+         SPog==
+X-Forwarded-Encrypted: i=1; AJvYcCU7XAn2F/QMl0SvlwW5hFlQkg5+sg+NFeHHzNVoOlRDUwIBK1b3ZaltEGgp3kfQ26eYsjDcO4c=@vger.kernel.org
+X-Gm-Message-State: AOJu0Yy7jVD43z5eAfK1kooYORXhySgSZdlhAhyKk09Np8BL/9lchNHj
+	qIzOw8HShPAyOVS/SQIQ4BiIl1dXhQunRunEBAeKJqlZ70ojqrCGfH5nlRjbrTV8UFJh205IKe/
+	hlaGSqu6z0MvC6g+zdH2rE3W6RTsEvVokuHYTdsnp6M8JN3DhsRP99OTocezvp0R6Xw==
+X-Gm-Gg: ASbGncssp4zH+FPKpnabTKcM4vwlDzdDONSR/sPIS2nwxjqu0WBRtC+P8Cvpty2Ni/U
+	dWXIvqYU14ZhN5X/KjLIpAXWothKOyqQVJzWsoQSCem3kNvaF6nm0QV1oT455kAvTIi85DRLnEX
+	gEAyncX54wZrBKE2lPEHtYnHO0u2kyKHORZM3CP888MbBiN84VcRXa6hPH65R5gYLfIkVFM6HlN
+	k7xrSlNlJqrW3JZ6frr2qCL8cHYtADic19xLt9zwt5uw4LZVJMAbms0O2vXUhZnLdIfhuzYPp3C
+	Cg7Tc0MtYDrJd857JMgp9BpBT5+d92rF
+X-Received: by 2002:a5d:4283:0:b0:3c6:71c4:15b1 with SMTP id ffacd0b85a97d-3c671c41891mr1015388f8f.37.1755867840146;
+        Fri, 22 Aug 2025 06:04:00 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IHFhC5B1jD8ZfPwkZJ3jikuS5+ewej/ZadWsC7KMuAIXD26cfW9TJH3ggA76ktwpgn5qb6F8Q==
+X-Received: by 2002:a5d:4283:0:b0:3c6:71c4:15b1 with SMTP id ffacd0b85a97d-3c671c41891mr1015358f8f.37.1755867839631;
+        Fri, 22 Aug 2025 06:03:59 -0700 (PDT)
+Received: from redhat.com ([2a0d:6fc0:1515:7300:62e6:253a:2a96:5e3])
+        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-3c66f532992sm1535036f8f.38.2025.08.22.06.03.58
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Fri, 22 Aug 2025 06:03:59 -0700 (PDT)
+Date: Fri, 22 Aug 2025 09:03:56 -0400
+From: "Michael S. Tsirkin" <mst@redhat.com>
+To: Parav Pandit <parav@nvidia.com>
+Cc: "virtualization@lists.linux.dev" <virtualization@lists.linux.dev>,
+	"jasowang@redhat.com" <jasowang@redhat.com>,
+	"stefanha@redhat.com" <stefanha@redhat.com>,
+	"pbonzini@redhat.com" <pbonzini@redhat.com>,
+	"xuanzhuo@linux.alibaba.com" <xuanzhuo@linux.alibaba.com>,
+	"stable@vger.kernel.org" <stable@vger.kernel.org>,
+	Max Gurtovoy <mgurtovoy@nvidia.com>,
+	"NBU-Contact-Li Rongqing (EXTERNAL)" <lirongqing@baidu.com>
+Subject: Re: [PATCH] Revert "virtio_pci: Support surprise removal of virtio
+ pci device"
+Message-ID: <20250822090249-mutt-send-email-mst@kernel.org>
+References: <20250822091706.21170-1-parav@nvidia.com>
+ <20250822060839-mutt-send-email-mst@kernel.org>
+ <CY8PR12MB7195292684E62FD44B3ADFF9DC3DA@CY8PR12MB7195.namprd12.prod.outlook.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0 (Mac OS X Mail 16.0 \(3826.600.51.1.1\))
-Subject: Re: [PATCH] power: supply: bq27xxx: fix error return in case of no
- bq27000 hdq battery
-From: "H. Nikolaus Schaller" <hns@goldelico.com>
-In-Reply-To: <F9E0EBBA-094D-4940-8A15-409696E6B405@goldelico.com>
-Date: Fri, 22 Aug 2025 15:00:18 +0200
-Cc: Sebastian Reichel <sre@kernel.org>,
- Jerry Lv <Jerry.Lv@axis.com>,
- =?utf-8?Q?Pali_Roh=C3=A1r?= <pali@kernel.org>,
- linux-pm@vger.kernel.org,
- linux-kernel@vger.kernel.org,
- letux-kernel@openphoenux.org,
- stable@vger.kernel.org,
- kernel@pyra-handheld.com
-Content-Transfer-Encoding: quoted-printable
-Message-Id: <D003BFF9-737D-432D-B522-9AD5E60A6E9A@goldelico.com>
-References: <bc405a6f782792dc41e01f9ddf9eadca3589fcdc.1753101969.git.hns@goldelico.com>
- <20250821201544.047e54e9@akair>
- <10174C85-591A-4DCB-A44E-95F2ACE75E99@goldelico.com>
- <20250821220552.2cb701f9@akair>
- <F9E0EBBA-094D-4940-8A15-409696E6B405@goldelico.com>
-To: Andreas Kemnade <andreas@kemnade.info>
-X-Mailer: Apple Mail (2.3826.600.51.1.1)
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <CY8PR12MB7195292684E62FD44B3ADFF9DC3DA@CY8PR12MB7195.namprd12.prod.outlook.com>
 
-Hi,
+On Fri, Aug 22, 2025 at 12:22:50PM +0000, Parav Pandit wrote:
+> > From: Michael S. Tsirkin <mst@redhat.com>
+> > Sent: 22 August 2025 03:52 PM
+> > 
+> > On Fri, Aug 22, 2025 at 12:17:06PM +0300, Parav Pandit wrote:
+> > > This reverts commit 43bb40c5b926 ("virtio_pci: Support surprise removal of
+> > virtio pci device").
+> > >
+> > > Virtio drivers and PCI devices have never fully supported true
+> > > surprise (aka hot unplug) removal. Drivers historically continued
+> > > processing and waiting for pending I/O and even continued synchronous
+> > > device reset during surprise removal. Devices have also continued
+> > > completing I/Os, doing DMA and allowing device reset after surprise
+> > > removal to support such drivers.
+> > >
+> > > Supporting it correctly would require a new device capability
+> > 
+> > If a device is removed, it is removed. 
+> This is how it was implemented and none of the virtio drivers supported it.
+> So vendors had stepped away from such device implementation.
+> (not just us).
 
-> Am 22.08.2025 um 08:51 schrieb H. Nikolaus Schaller =
-<hns@goldelico.com>:
->=20
->=20
-> What do you mean with "catched earlier"? What is your proposal?
->=20
-> Well, as proposed by Jerry earlier, it appears as if it can also be =
-handled in bq27xxx_battery_hdq_read()
-> by detecting the register BQ27XXX_REG_FLAGS and the read value 0xff =
-and return -ENODEV.
 
-I tried this but there are more locations where BQ27XXX_REG_FLAGS are =
-read and where the reading
-code is not prepared to receive an -ENODEV. This will for example emit
+If the slot does not have a mechanical interlock, I can pull the device
+out. It's not up to a device implementation.
 
-[  293.389831] w1_slave_driver 01-000000000000: error reading flags
-
-each time the battery is removed. And in some race cases (a read of the =
-full /sys properties is
-already in progress), there may be more than one such message. That is =
-not nice to replace one
-console message with another...
-
-So I am not sure if it is a good idea to make the lowest layer ("catched =
-earlier") read function
-detect -ENODEV based on the register number. It can not know what the =
-next layer wants to do with
-the result.
-
-BR,
-Nikolaus
+-- 
+MST
 
 
