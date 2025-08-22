@@ -1,149 +1,210 @@
-Return-Path: <stable+bounces-172434-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-172436-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 01D88B31C59
-	for <lists+stable@lfdr.de>; Fri, 22 Aug 2025 16:45:17 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4CC77B31CAD
+	for <lists+stable@lfdr.de>; Fri, 22 Aug 2025 16:50:58 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id D2628B66900
-	for <lists+stable@lfdr.de>; Fri, 22 Aug 2025 14:42:36 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 33130AE59F5
+	for <lists+stable@lfdr.de>; Fri, 22 Aug 2025 14:44:26 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9A27E307ACD;
-	Fri, 22 Aug 2025 14:43:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id CB88A3112BD;
+	Fri, 22 Aug 2025 14:43:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="X6htvjiJ"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Sqw+ItEM"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 57B4A1FDA82
-	for <stable@vger.kernel.org>; Fri, 22 Aug 2025 14:43:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 875AB30E0F2
+	for <stable@vger.kernel.org>; Fri, 22 Aug 2025 14:43:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755873797; cv=none; b=IGljz37JVJCJ4jCnR5qD6ZAhpOHRfp9QPlrzWgxeiTBVDbF+sOo0f8BHE4YzymVFdO7hQ+ZdYDO5BDu2pe2667noCKP/Ipxl5lThCrnV1TAVjfHoAv5X8Qsrpe3jJgOB1ZeJ8ZGiS+KJ6rBTnAMAAy1CkGC02+Cpi72DfpPQeqI=
+	t=1755873816; cv=none; b=bpDt4Y9P8Dz95pc0G7QeeGMZfawjBjHcCV1rvrlwX1Z7wSQILwcp3dkCBBmj8yLWUaG+/fTiNJPxLEOPL/Hx9JTXU2JV3FTxE5/fHywupxUnyL4g5tVzqBb72r2adCmrKujHt6E0b21HcRJoOwFX18SEAS5kqKaOJ5hGunYtLd0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1755873797; c=relaxed/simple;
-	bh=Mp2fEzxc3R3F1PO9tgq5NqRqfp/q1FIAFpZ21KZAAGM=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=owC3rHllI/OCsGqNKb0VfEOYTQ/2VqIaarLsjhyjLmpR9WVIZgAEr44mx1GYUJz2KbWh5iudR7eVDe2g98QinXpr4/Zk7tYc65Z0P1/nWrpdLJpaHFzxTihXgFx4N965eIndFbNxEsepJubf1mZgI8KOrULMIJo/SW3R86c9pjA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=X6htvjiJ; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D6740C4CEED;
-	Fri, 22 Aug 2025 14:43:15 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1755873796;
-	bh=Mp2fEzxc3R3F1PO9tgq5NqRqfp/q1FIAFpZ21KZAAGM=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=X6htvjiJ+qi+eM4gS7pArQ5wzHtZO9CKQcgEKVmH7ctUawIN9BYY7LAmj42wV2/dN
-	 Rem0+KyfERUY3tFiEjoVP/g9cEBvpBKlkQQZAblwUVh7lX2HozRjnoTm0d1w+eirpA
-	 grr84/RVeKbYyK/14BEDqlmZxu77NiqCDiIb1qfJ48Z+V93PCK5yLRDWgP6yb5kXVO
-	 Rys8F7Zw1YwPwN8NvfBF2Gy4YvLq/y/ZdZjkkng1TgrMFtw7oAeZVYZ6he569E7hT2
-	 UcqbuNaTwbmTjlSQ74DNYHcVUbOGUeRYyzxaxNl/moyNGKZcH58DmIcu+2oWqH0EX0
-	 +foN5QWbpXDjg==
-Message-ID: <017c0cd3-7391-4d53-9e3e-ebdea5fa26da@kernel.org>
-Date: Fri, 22 Aug 2025 16:43:13 +0200
+	s=arc-20240116; t=1755873816; c=relaxed/simple;
+	bh=9lZQHJYV21ss6M+2EemDfDDivL4og0pnRNIjQEOe9lY=;
+	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=XQ9D6M6N9wM9VENEdlT7iNmEsGjQ9UnJv4Zu0kEwoyLjeR+lSB/DSwHDpIKB74cu9shYf/qGivPSQICdigPMc9GPf8s7bRTsiaFx4sjp8nKc2L6xoPWVVF79OZPzZnzYqN2PQr++D8iOe5pCOFsF/KzstxfPHSk2IFfjEo2vA5k=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Sqw+ItEM; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9C988C4CEED;
+	Fri, 22 Aug 2025 14:43:35 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
+	s=korg; t=1755873816;
+	bh=9lZQHJYV21ss6M+2EemDfDDivL4og0pnRNIjQEOe9lY=;
+	h=Subject:To:Cc:From:Date:From;
+	b=Sqw+ItEMV8UV+M2AVouV3bDWEgJtu09GYTYyjg2D9IbvqdPCAaExv3OUEgJ4J9cfv
+	 q9ZOkNcdP8U5TMm8EcMEEwaIqZPcDtiPxMZ7yWSQ3yEiOKMX03+IVqzs3sig6tCa0d
+	 6/z4W1Je0OWEbngYtHuIbPF3k6PbUx1AyHy5QWOY=
+Subject: FAILED: patch "[PATCH] NFS: Fix a race when updating an existing write" failed to apply to 6.1-stable tree
+To: trond.myklebust@hammerspace.com,aksteffen@meta.com,jdq@meta.com,jlayton@kernel.org
+Cc: <stable@vger.kernel.org>
+From: <gregkh@linuxfoundation.org>
+Date: Fri, 22 Aug 2025 16:43:24 +0200
+Message-ID: <2025082224-payment-unworthy-d165@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird Beta
-Subject: Re: FAILED: patch "[PATCH] selftests: mptcp: pm: check flush doesn't
- reset limits" failed to apply to 5.10-stable tree
-Content-Language: en-GB, fr-BE
-To: gregkh@linuxfoundation.org, kuba@kernel.org, martineau@kernel.org
+Content-Type: text/plain; charset=ANSI_X3.4-1968
+Content-Transfer-Encoding: 8bit
+
+
+The patch below does not apply to the 6.1-stable tree.
+If someone wants it applied there, or to any other stable or longterm
+tree, then please email the backport, including the original git commit
+id to <stable@vger.kernel.org>.
+
+To reproduce the conflict and resubmit, you may use the following commands:
+
+git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-6.1.y
+git checkout FETCH_HEAD
+git cherry-pick -x 76d2e3890fb169168c73f2e4f8375c7cc24a765e
+# <resolve conflicts, build, test, etc.>
+git commit -s
+git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2025082224-payment-unworthy-d165@gregkh' --subject-prefix 'PATCH 6.1.y' HEAD^..
+
+Possible dependencies:
+
+
+
+thanks,
+
+greg k-h
+
+------------------ original commit in Linus's tree ------------------
+
+From 76d2e3890fb169168c73f2e4f8375c7cc24a765e Mon Sep 17 00:00:00 2001
+From: Trond Myklebust <trond.myklebust@hammerspace.com>
+Date: Sat, 16 Aug 2025 07:25:20 -0700
+Subject: [PATCH] NFS: Fix a race when updating an existing write
+
+After nfs_lock_and_join_requests() tests for whether the request is
+still attached to the mapping, nothing prevents a call to
+nfs_inode_remove_request() from succeeding until we actually lock the
+page group.
+The reason is that whoever called nfs_inode_remove_request() doesn't
+necessarily have a lock on the page group head.
+
+So in order to avoid races, let's take the page group lock earlier in
+nfs_lock_and_join_requests(), and hold it across the removal of the
+request in nfs_inode_remove_request().
+
+Reported-by: Jeff Layton <jlayton@kernel.org>
+Tested-by: Joe Quanaim <jdq@meta.com>
+Tested-by: Andrew Steffen <aksteffen@meta.com>
+Reviewed-by: Jeff Layton <jlayton@kernel.org>
+Fixes: bd37d6fce184 ("NFSv4: Convert nfs_lock_and_join_requests() to use nfs_page_find_head_request()")
 Cc: stable@vger.kernel.org
-References: <2025082203-populate-sublease-ef51@gregkh>
-From: Matthieu Baerts <matttbe@kernel.org>
-Autocrypt: addr=matttbe@kernel.org; keydata=
- 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
- lzVbFe7fduHbABmYz9cefQpO7wDE/Q==
-Organization: NGI0 Core
-In-Reply-To: <2025082203-populate-sublease-ef51@gregkh>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+Signed-off-by: Trond Myklebust <trond.myklebust@hammerspace.com>
 
-Hi Greg,
-
-On 22/08/2025 08:05, gregkh@linuxfoundation.org wrote:
-> 
-> The patch below does not apply to the 5.10-stable tree.
-
-Thank you for the notification!
-
-> ------------------ original commit in Linus's tree ------------------
-> 
-> From 452690be7de2f91cc0de68cb9e95252875b33503 Mon Sep 17 00:00:00 2001
-> From: "Matthieu Baerts (NGI0)" <matttbe@kernel.org>
-> Date: Fri, 15 Aug 2025 19:28:21 +0200
-> Subject: [PATCH] selftests: mptcp: pm: check flush doesn't reset limits
-> 
-> This modification is linked to the parent commit where the received
-> ADD_ADDR limit was accidentally reset when the endpoints were flushed.
-> 
-> To validate that, the test is now flushing endpoints after having set
-> new limits, and before checking them.
-> 
-> The 'Fixes' tag here below is the same as the one from the previous
-> commit: this patch here is not fixing anything wrong in the selftests,
-> but it validates the previous fix for an issue introduced by this commit
-> ID.
-
-The upstream's parent patch has not been queued in v5.10 yet, but I
-already got this FAILED notification for this patch here. I guess some
-conflicts on your side prevent you to send the last batch of fixes for
-v5.10, but they will come at some points. I'm going to send a resolution
-for this backport here, because I have it: I hope that's OK.
-
-(Worst case if this patch is applied and not the parent one: the
-selftests will complain the parent patch is missing, which would serve
-as a reminder somehow, so that's probably OK :) )
-
-Cheers,
-Matt
--- 
-Sponsored by the NGI0 Core fund.
+diff --git a/fs/nfs/pagelist.c b/fs/nfs/pagelist.c
+index 11968dcb7243..6e69ce43a13f 100644
+--- a/fs/nfs/pagelist.c
++++ b/fs/nfs/pagelist.c
+@@ -253,13 +253,14 @@ nfs_page_group_unlock(struct nfs_page *req)
+ 	nfs_page_clear_headlock(req);
+ }
+ 
+-/*
+- * nfs_page_group_sync_on_bit_locked
++/**
++ * nfs_page_group_sync_on_bit_locked - Test if all requests have @bit set
++ * @req: request in page group
++ * @bit: PG_* bit that is used to sync page group
+  *
+  * must be called with page group lock held
+  */
+-static bool
+-nfs_page_group_sync_on_bit_locked(struct nfs_page *req, unsigned int bit)
++bool nfs_page_group_sync_on_bit_locked(struct nfs_page *req, unsigned int bit)
+ {
+ 	struct nfs_page *head = req->wb_head;
+ 	struct nfs_page *tmp;
+diff --git a/fs/nfs/write.c b/fs/nfs/write.c
+index fa5c41d0989a..8b7c04737967 100644
+--- a/fs/nfs/write.c
++++ b/fs/nfs/write.c
+@@ -153,20 +153,10 @@ nfs_page_set_inode_ref(struct nfs_page *req, struct inode *inode)
+ 	}
+ }
+ 
+-static int
+-nfs_cancel_remove_inode(struct nfs_page *req, struct inode *inode)
++static void nfs_cancel_remove_inode(struct nfs_page *req, struct inode *inode)
+ {
+-	int ret;
+-
+-	if (!test_bit(PG_REMOVE, &req->wb_flags))
+-		return 0;
+-	ret = nfs_page_group_lock(req);
+-	if (ret)
+-		return ret;
+ 	if (test_and_clear_bit(PG_REMOVE, &req->wb_flags))
+ 		nfs_page_set_inode_ref(req, inode);
+-	nfs_page_group_unlock(req);
+-	return 0;
+ }
+ 
+ /**
+@@ -585,19 +575,18 @@ retry:
+ 		}
+ 	}
+ 
++	ret = nfs_page_group_lock(head);
++	if (ret < 0)
++		goto out_unlock;
++
+ 	/* Ensure that nobody removed the request before we locked it */
+ 	if (head != folio->private) {
++		nfs_page_group_unlock(head);
+ 		nfs_unlock_and_release_request(head);
+ 		goto retry;
+ 	}
+ 
+-	ret = nfs_cancel_remove_inode(head, inode);
+-	if (ret < 0)
+-		goto out_unlock;
+-
+-	ret = nfs_page_group_lock(head);
+-	if (ret < 0)
+-		goto out_unlock;
++	nfs_cancel_remove_inode(head, inode);
+ 
+ 	/* lock each request in the page group */
+ 	for (subreq = head->wb_this_page;
+@@ -786,7 +775,8 @@ static void nfs_inode_remove_request(struct nfs_page *req)
+ {
+ 	struct nfs_inode *nfsi = NFS_I(nfs_page_to_inode(req));
+ 
+-	if (nfs_page_group_sync_on_bit(req, PG_REMOVE)) {
++	nfs_page_group_lock(req);
++	if (nfs_page_group_sync_on_bit_locked(req, PG_REMOVE)) {
+ 		struct folio *folio = nfs_page_to_folio(req->wb_head);
+ 		struct address_space *mapping = folio->mapping;
+ 
+@@ -798,6 +788,7 @@ static void nfs_inode_remove_request(struct nfs_page *req)
+ 		}
+ 		spin_unlock(&mapping->i_private_lock);
+ 	}
++	nfs_page_group_unlock(req);
+ 
+ 	if (test_and_clear_bit(PG_INODE_REF, &req->wb_flags)) {
+ 		atomic_long_dec(&nfsi->nrequests);
+diff --git a/include/linux/nfs_page.h b/include/linux/nfs_page.h
+index 169b4ae30ff4..9aed39abc94b 100644
+--- a/include/linux/nfs_page.h
++++ b/include/linux/nfs_page.h
+@@ -160,6 +160,7 @@ extern void nfs_join_page_group(struct nfs_page *head,
+ extern int nfs_page_group_lock(struct nfs_page *);
+ extern void nfs_page_group_unlock(struct nfs_page *);
+ extern bool nfs_page_group_sync_on_bit(struct nfs_page *, unsigned int);
++extern bool nfs_page_group_sync_on_bit_locked(struct nfs_page *, unsigned int);
+ extern	int nfs_page_set_headlock(struct nfs_page *req);
+ extern void nfs_page_clear_headlock(struct nfs_page *req);
+ extern bool nfs_async_iocounter_wait(struct rpc_task *, struct nfs_lock_context *);
 
 
