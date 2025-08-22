@@ -1,144 +1,130 @@
-Return-Path: <stable+bounces-172501-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-172502-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 11CBEB32296
-	for <lists+stable@lfdr.de>; Fri, 22 Aug 2025 21:05:38 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id A637DB322A0
+	for <lists+stable@lfdr.de>; Fri, 22 Aug 2025 21:09:44 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id D553CAC3B55
-	for <lists+stable@lfdr.de>; Fri, 22 Aug 2025 19:05:35 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id AD2141883105
+	for <lists+stable@lfdr.de>; Fri, 22 Aug 2025 19:09:59 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8FC3E2C15A5;
-	Fri, 22 Aug 2025 19:05:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id F24822C15B3;
+	Fri, 22 Aug 2025 19:09:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="jFD1Lvs5"
+	dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="Kbx/Cq5u";
+	dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="AG/TqXVM"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from galois.linutronix.de (Galois.linutronix.de [193.142.43.55])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5002218E025
-	for <stable@vger.kernel.org>; Fri, 22 Aug 2025 19:05:30 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 36E5329BD8E;
+	Fri, 22 Aug 2025 19:09:32 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=193.142.43.55
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755889531; cv=none; b=rsANOVoZMY45boovTyid2tFCjKOzBoiR3/d32P3rwMIOnyFuhKEbkJ43wHN3282jxVuL/4RS+2sqnAzT1/eCwXBSHPRDf7TIY+2hi+bZAJTKjCItLf+w4UumaqhDwAqVqzSknsWoL13GcCbpDjnOeE7yWfVkEmES3t6BER3PPSE=
+	t=1755889774; cv=none; b=Yf4RvwspxakcTEvgDhYwxr46JYZxuMZ5MzJCTf04etlbElYCRvmCjylvS07nHO/Fw/4YMrP+wzOg/xhLVn/ut2LVmFswLDKh9/P93iwt6CKHOmmlUKz22S6lfh8kcPs7h0MiHddRmv+zdXAKl32U+IM4xUrael8g2+EJ9WgdMzk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1755889531; c=relaxed/simple;
-	bh=LjuYxnJvlWiwYzH9XsxAticWSvE6fdZIwCCrwdtP2pw=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=AS3xYnXWFPmVIUnPnaIES5bWBXqZoWSrRTNNuQXYnJbtB65Wo/UL8q4vAQxzW/3H6PVApPr1osQW4vepjw9JDXXb9xVApL5QiU0J6Aq910GfWci/rpZS4ooHuS83IXXWi4eXcsr5hcl/ri5jbJeqoE/My4K2DVjFwMwEablNE94=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=jFD1Lvs5; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4EA27C116B1;
-	Fri, 22 Aug 2025 19:05:30 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1755889530;
-	bh=LjuYxnJvlWiwYzH9XsxAticWSvE6fdZIwCCrwdtP2pw=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=jFD1Lvs59I5ulYyIjOMhfEvAcl0EXiNVWYRvl3nY4bbuw5hdr/Tytur4mgOedLGTs
-	 Ogja7TqUidjq3MXY20W+DuCEXEYmJcgQgqi4yFs76fIO8lv2XdUO6axMW8qGlVK+3w
-	 01XZUa1BLTY3k9OpZKk255yklCF3aGAKcIf3WecfMKpSM5YiJLZGcS0wTZcHLd8MNa
-	 FjygJfukWTbogbY0WXXyLIaN9gvuplDgjT6z4fgb8s0enAXnNR0YNT2yyr78VimL43
-	 pw6JD6PCx0n5F+na2rmHrfloofRlKrF74WU/Tdu2Ou/BX5jQF13jSX2v/hJmh7jIBX
-	 mDPdDb4t8roIg==
-From: Sasha Levin <sashal@kernel.org>
-To: stable@vger.kernel.org
-Cc: =?UTF-8?q?Uwe=20Kleine-K=C3=B6nig?= <u.kleine-koenig@baylibre.com>,
-	AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>,
-	=?UTF-8?q?Uwe=20Kleine-K=C3=B6nig?= <ukleinek@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.4.y 3/3] pwm: mediatek: Fix duty and period setting
-Date: Fri, 22 Aug 2025 15:05:27 -0400
-Message-ID: <20250822190527.1408882-3-sashal@kernel.org>
-X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250822190527.1408882-1-sashal@kernel.org>
-References: <2025082143-creature-relay-7247@gregkh>
- <20250822190527.1408882-1-sashal@kernel.org>
+	s=arc-20240116; t=1755889774; c=relaxed/simple;
+	bh=ovMpWUhaVgi2kYqaDIh/Glgpnpo4K6hFWXL6hr4gVhA=;
+	h=Date:From:To:Subject:Cc:MIME-Version:Message-ID:Content-Type; b=RHe25g0onF04DX6Ye6NaCDIhgXn+tJNB7mQd8tvAz5FQrNk8nE4/4duFWUIOslCf5weTvl07UR6NRcKd4Vzq+ioWQ/BfFtJ0F7YX34NydjQOvLZy8lxKJLlA7VS6iUApT787ZJM8YuvAyif5334lxKzznA+jjggvU+KOoJIx8ss=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de; spf=pass smtp.mailfrom=linutronix.de; dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=Kbx/Cq5u; dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=AG/TqXVM; arc=none smtp.client-ip=193.142.43.55
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linutronix.de
+Date: Fri, 22 Aug 2025 19:09:27 -0000
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
+	s=2020; t=1755889769;
+	h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
+	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
+	 content-type:content-type:  content-transfer-encoding:content-transfer-encoding;
+	bh=P7LSD5wdloEL16KIrxIAb0rEmVcsCfb39HPPpvpLR8k=;
+	b=Kbx/Cq5u6anKv2NSNgqkdjDTYF0JcaRsfQq23RImX2vR9+ldgeftQQcTFXZeUotrNMWm0W
+	p2yvZvoFzy+w7kT1t37TguCo5xaJ9u5F22qvEt8TpvRTt3Y01JtwbGeAVw7V4rcBQ9K3RZ
+	ce30Hmjl5Zt/m8iL6JrEQIDF9uH9MjdUtmolL4BPFD6qpj7quM7mqHVk7IeDeKCqcVv1rC
+	M+4JEz5jaze8qu85+klZLdCKMqIwn+xB9/nJWvL+P+yzbkAnIIrvA4GpWnXYwglT4p2lBA
+	FhNnzfPSfGvcJUKyM1Eht2qexfKnz4JKomISpgwWqYZf1DT7hOH/8XQPVOVOtw==
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
+	s=2020e; t=1755889769;
+	h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
+	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
+	 content-type:content-type:  content-transfer-encoding:content-transfer-encoding;
+	bh=P7LSD5wdloEL16KIrxIAb0rEmVcsCfb39HPPpvpLR8k=;
+	b=AG/TqXVMENl6KPzM1LikaaeeTeDqcanHXBt0JTfZ9CwgybjaaEk+u92ZyG4DDhFUxzohni
+	qE2JgthqY+KLhmAw==
+From: "tip-bot2 for Suchit Karunakaran" <tip-bot2@linutronix.de>
+Sender: tip-bot2@linutronix.de
+Reply-to: linux-kernel@vger.kernel.org
+To: linux-tip-commits@vger.kernel.org
+Subject:
+ [tip: x86/cpu] x86/cpu/intel: Fix the constant_tsc model check for Pentium 4
+Cc: Suchit Karunakaran <suchitkarunakaran@gmail.com>,
+ Dave Hansen <dave.hansen@linux.intel.com>,
+ Sohil Mehta <sohil.mehta@intel.com>, stable@vger.kernel.org, x86@kernel.org,
+ linux-kernel@vger.kernel.org
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
+Message-ID: <175588976768.1420.16910015408694101752.tip-bot2@tip-bot2>
+Robot-ID: <tip-bot2@linutronix.de>
+Robot-Unsubscribe:
+ Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
+Precedence: bulk
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: quoted-printable
 
-From: Uwe Kleine-König <u.kleine-koenig@baylibre.com>
+The following commit has been merged into the x86/cpu branch of tip:
 
-[ Upstream commit f21d136caf8171f94159d975ea4620c164431bd9 ]
+Commit-ID:     1a77c102cee20edb2459334d8eaf3202697ac8f5
+Gitweb:        https://git.kernel.org/tip/1a77c102cee20edb2459334d8eaf3202697=
+ac8f5
+Author:        Suchit Karunakaran <suchitkarunakaran@gmail.com>
+AuthorDate:    Sat, 16 Aug 2025 12:21:26 +05:30
+Committer:     Dave Hansen <dave.hansen@linux.intel.com>
+CommitterDate: Fri, 22 Aug 2025 12:02:59 -07:00
 
-The period generated by the hardware is
+x86/cpu/intel: Fix the constant_tsc model check for Pentium 4
 
-	(PWMDWIDTH + 1) << CLKDIV) / freq
+Pentium 4's which are INTEL_P4_PRESCOTT (model 0x03) and later have
+a constant TSC. This was correctly captured until commit fadb6f569b10
+("x86/cpu/intel: Limit the non-architectural constant_tsc model checks").
 
-according to my tests with a signal analyser and also the documentation.
+In that commit, an error was introduced while selecting the last P4
+model (0x06) as the upper bound. Model 0x06 was transposed to
+INTEL_P4_WILLAMETTE, which is just plain wrong. That was presumably a
+simple typo, probably just copying and pasting the wrong P4 model.
 
-The current algorithm doesn't consider the `+ 1` part and so configures
-slightly too high periods. The same issue exists for the duty cycle
-setting. So subtract 1 from both the register values for period and
-duty cycle. If period is 0, bail out, if duty_cycle is 0, just disable
-the PWM which results in a constant low output.
+Fix the constant TSC logic to cover all later P4 models. End at
+INTEL_P4_CEDARMILL which accurately corresponds to the last P4 model.
 
-Fixes: caf065f8fd58 ("pwm: Add MediaTek PWM support")
-Signed-off-by: Uwe Kleine-König <u.kleine-koenig@baylibre.com>
-Reviewed-by: AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>
-Link: https://lore.kernel.org/r/6d1fa87a76f8020bfe3171529b8e19baffceab10.1753717973.git.u.kleine-koenig@baylibre.com
-Cc: stable@vger.kernel.org
-Signed-off-by: Uwe Kleine-König <ukleinek@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Fixes: fadb6f569b10 ("x86/cpu/intel: Limit the non-architectural constant_tsc=
+ model checks")
+Signed-off-by: Suchit Karunakaran <suchitkarunakaran@gmail.com>
+Signed-off-by: Dave Hansen <dave.hansen@linux.intel.com>
+Reviewed-by: Sohil Mehta <sohil.mehta@intel.com>
+Cc:stable@vger.kernel.org
+Link: https://lore.kernel.org/all/20250816065126.5000-1-suchitkarunakaran%40g=
+mail.com
 ---
- drivers/pwm/pwm-mediatek.c | 21 ++++++++++++++-------
- 1 file changed, 14 insertions(+), 7 deletions(-)
+ arch/x86/kernel/cpu/intel.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/pwm/pwm-mediatek.c b/drivers/pwm/pwm-mediatek.c
-index 203e5c13a0d1..c2235daa5bcd 100644
---- a/drivers/pwm/pwm-mediatek.c
-+++ b/drivers/pwm/pwm-mediatek.c
-@@ -168,7 +168,10 @@ static int pwm_mediatek_config(struct pwm_chip *chip, struct pwm_device *pwm,
- 	do_div(resolution, clk_rate);
- 
- 	cnt_period = DIV_ROUND_CLOSEST_ULL((u64)period_ns * 1000, resolution);
--	while (cnt_period > 8191) {
-+	if (!cnt_period)
-+		return -EINVAL;
-+
-+	while (cnt_period > 8192) {
- 		resolution *= 2;
- 		clkdiv++;
- 		cnt_period = DIV_ROUND_CLOSEST_ULL((u64)period_ns * 1000,
-@@ -191,9 +194,16 @@ static int pwm_mediatek_config(struct pwm_chip *chip, struct pwm_device *pwm,
+diff --git a/arch/x86/kernel/cpu/intel.c b/arch/x86/kernel/cpu/intel.c
+index 076eaa4..98ae4c3 100644
+--- a/arch/x86/kernel/cpu/intel.c
++++ b/arch/x86/kernel/cpu/intel.c
+@@ -262,7 +262,7 @@ static void early_init_intel(struct cpuinfo_x86 *c)
+ 	if (c->x86_power & (1 << 8)) {
+ 		set_cpu_cap(c, X86_FEATURE_CONSTANT_TSC);
+ 		set_cpu_cap(c, X86_FEATURE_NONSTOP_TSC);
+-	} else if ((c->x86_vfm >=3D INTEL_P4_PRESCOTT && c->x86_vfm <=3D INTEL_P4_W=
+ILLAMETTE) ||
++	} else if ((c->x86_vfm >=3D INTEL_P4_PRESCOTT && c->x86_vfm <=3D INTEL_P4_C=
+EDARMILL) ||
+ 		   (c->x86_vfm >=3D INTEL_CORE_YONAH  && c->x86_vfm <=3D INTEL_IVYBRIDGE))=
+ {
+ 		set_cpu_cap(c, X86_FEATURE_CONSTANT_TSC);
  	}
- 
- 	cnt_duty = DIV_ROUND_CLOSEST_ULL((u64)duty_ns * 1000, resolution);
-+
- 	pwm_mediatek_writel(pc, pwm->hwpwm, PWMCON, BIT(15) | clkdiv);
--	pwm_mediatek_writel(pc, pwm->hwpwm, reg_width, cnt_period);
--	pwm_mediatek_writel(pc, pwm->hwpwm, reg_thres, cnt_duty);
-+	pwm_mediatek_writel(pc, pwm->hwpwm, reg_width, cnt_period - 1);
-+
-+	if (cnt_duty) {
-+		pwm_mediatek_writel(pc, pwm->hwpwm, reg_thres, cnt_duty - 1);
-+		pwm_mediatek_enable(chip, pwm);
-+	} else {
-+		pwm_mediatek_disable(chip, pwm);
-+	}
- 
- out:
- 	pwm_mediatek_clk_disable(chip, pwm);
-@@ -222,11 +232,8 @@ static int pwm_mediatek_apply(struct pwm_chip *chip, struct pwm_device *pwm,
- 	if (err)
- 		return err;
- 
--	if (!pwm->state.enabled) {
-+	if (!pwm->state.enabled)
- 		err = pwm_mediatek_clk_enable(chip, pwm);
--		if (!err)
--			pwm_mediatek_enable(chip, pwm);
--	}
- 
- 	return err;
- }
--- 
-2.50.1
-
 
