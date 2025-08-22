@@ -1,58 +1,64 @@
-Return-Path: <stable+bounces-172249-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-172251-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 28D48B30C2F
-	for <lists+stable@lfdr.de>; Fri, 22 Aug 2025 05:07:22 +0200 (CEST)
+Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [142.0.200.124])
+	by mail.lfdr.de (Postfix) with ESMTPS id CEBCAB30C49
+	for <lists+stable@lfdr.de>; Fri, 22 Aug 2025 05:09:23 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 68CF71CE7186
-	for <lists+stable@lfdr.de>; Fri, 22 Aug 2025 03:07:03 +0000 (UTC)
+	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 994874E36B1
+	for <lists+stable@lfdr.de>; Fri, 22 Aug 2025 03:09:22 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E5A38265CA0;
-	Fri, 22 Aug 2025 03:06:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7784C26CE2D;
+	Fri, 22 Aug 2025 03:08:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="cwIW6iUG"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="pq826WrM"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A53C9263C8F
-	for <stable@vger.kernel.org>; Fri, 22 Aug 2025 03:06:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 28BD92652B4;
+	Fri, 22 Aug 2025 03:08:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755831997; cv=none; b=WgD3hv9eMzEhwBLWDtVoVELaPswOaw74kIoxzMb5SvaXeSNF25h+HE/x+Fr8jRU4Nuip8nEqx2j0avvDOKo3YZCGdCNzn2GmMk2XrvjLd0DmbsADzAebTpxIyrX2KsLr7a5xpW7xJIeMndNM6vvOp6z+t4zQLzsPx6DyxDgWe/c=
+	t=1755832084; cv=none; b=erxwrKxigNrMCX/7tYXeO0K1diU7JsUWvZwA/PHT1PfRUlYDbXVQlmZLWhkVe7eS6MYmpHFCYxvdzOsSU1SjfQpUzk3NKh7SzEX2Hqr4emB2wK+uVRxNf4BlcrzJs8oeova21l5rThgdO71/NerImhmxVF4qIviT5q4OGjTaUMM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1755831997; c=relaxed/simple;
-	bh=a4TobKdqeODb8Zp3iiaAa5b78PBDH8s2g7l3zKPCt5U=;
+	s=arc-20240116; t=1755832084; c=relaxed/simple;
+	bh=SCWJsd9vjE1VJ9L3wefl1VGRbBT52yKi9plp6KLTV/M=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=AEcgAH8h8QmpvHuUh2yvzm2VhO6od/IL+c3WCVVJck0IaFGKE76f4nUdksas7cQsBQCAtB4IaEkI6+n3IBiHAbdzl7bOW3w93A0gVZZCWc7bOLTrkeaWoS0hgVEdG5kNnWbxsjeGQczc6/m5civx7D6FCC9z6O+X9IJtiYNKwRw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=cwIW6iUG; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 17607C116B1;
-	Fri, 22 Aug 2025 03:06:37 +0000 (UTC)
+	 MIME-Version; b=pemkkggPRbPeP8RGGkaO9Pgfy+KK3/FagthQ0cXR9uA28eOkU79IEJJKmDwyeD1QZl8ca2m/A0guWEihPUfnjA0YQogsFtzMLMrRQXJxjF1/H/C8hxSaxZ2siNlc/SIBjO+pXFt2xqSFcpd/JzJp6Fg69UKGFKgZC4e3PTbzohI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=pq826WrM; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id F1398C4CEEB;
+	Fri, 22 Aug 2025 03:08:02 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1755831997;
-	bh=a4TobKdqeODb8Zp3iiaAa5b78PBDH8s2g7l3zKPCt5U=;
+	s=k20201202; t=1755832084;
+	bh=SCWJsd9vjE1VJ9L3wefl1VGRbBT52yKi9plp6KLTV/M=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=cwIW6iUGKV2e6jkcNApAtG80BNhaU/9CtxP07y6qLKS1hfyyolWgWXGQ6jLw++Gm7
-	 ysb9KL1RHjYXamKVX7L/jSAGFdKubjq2jj/OKBe5T+FXb9orNvNw2FzruSpOZIPF6S
-	 T4mbLb5WnUYg+i/nmrrJNS5bGfRWmujWcEqizPe+WkHi0+/azEjeFDDVsYdA55ph0+
-	 FzKDQIoEVAjcg0U2J3JQ/NmACsbqYYjPHHvShbUcUam+3e7QsHKUzBy3tLqS8Bq5QO
-	 bN9umxgk29tt0vcJfFjd6HW7kOBWsL2jOTaYQKio4TTV9zFjlr+vcPbkRl3wVsy02s
-	 93uP+dbKeqRNQ==
+	b=pq826WrMct/ELjpuRCD360hXL5d6eRZjJlhvi1ZvcFso6C915lRq4I8Y/MQvxFvuk
+	 c61/R4JqIAiKBru31s6kf8r+L9NUyoUKZCg6JNEZe0OcRQuHHIMqM/76MFRuT22g53
+	 EvSqtDBdC+41GoPOdTB132X/U0RD6+K8MlKPfINpB+ZXjeAXb553Z4Sm5j5PG3Gy3X
+	 lC1UGWW/biRSQpqlW/VV98IVGwveT907OhGljIOMQ0ZFb9OvETPWO4iIzZwUjETta/
+	 neRSqnMgpnVKPZyGmhuL1i4ab5jXoogzvcbjqSkVXHBUNsTIryEqKRjwSDMQcl9deU
+	 FAFNC8olFBgiQ==
 From: Sasha Levin <sashal@kernel.org>
 To: stable@vger.kernel.org
-Cc: Eric Biggers <ebiggers@kernel.org>,
-	Herbert Xu <herbert@gondor.apana.org.au>,
+Cc: David Howells <dhowells@redhat.com>,
+	Xiaoli Feng <fengxiaoli0714@gmail.com>,
+	Paulo Alcantara <pc@manguebit.org>,
+	Steve French <sfrench@samba.org>,
+	Shyam Prasad N <sprasad@microsoft.com>,
+	netfs@lists.linux.dev,
+	linux-cifs@vger.kernel.org,
+	linux-fsdevel@vger.kernel.org,
+	Christian Brauner <brauner@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12.y 5/5] crypto: x86/aegis - Add missing error checks
-Date: Thu, 21 Aug 2025 23:06:32 -0400
-Message-ID: <20250822030632.1053504-5-sashal@kernel.org>
+Subject: [PATCH 6.12.y] netfs: Fix unbuffered write error handling
+Date: Thu, 21 Aug 2025 23:08:00 -0400
+Message-ID: <20250822030800.1054685-1-sashal@kernel.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250822030632.1053504-1-sashal@kernel.org>
-References: <2025082114-proofs-slideshow-5515@gregkh>
- <20250822030632.1053504-1-sashal@kernel.org>
+In-Reply-To: <2025082157-dedicator-hurled-4d65@gregkh>
+References: <2025082157-dedicator-hurled-4d65@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -61,130 +67,158 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-From: Eric Biggers <ebiggers@kernel.org>
+From: David Howells <dhowells@redhat.com>
 
-[ Upstream commit 3d9eb180fbe8828cce43bce4c370124685b205c3 ]
+[ Upstream commit a3de58b12ce074ec05b8741fa28d62ccb1070468 ]
 
-The skcipher_walk functions can allocate memory and can fail, so
-checking for errors is necessary.
+If all the subrequests in an unbuffered write stream fail, the subrequest
+collector doesn't update the stream->transferred value and it retains its
+initial LONG_MAX value.  Unfortunately, if all active streams fail, then we
+take the smallest value of { LONG_MAX, LONG_MAX, ... } as the value to set
+in wreq->transferred - which is then returned from ->write_iter().
 
-Fixes: 1d373d4e8e15 ("crypto: x86 - Add optimized AEGIS implementations")
-Cc: stable@vger.kernel.org
-Signed-off-by: Eric Biggers <ebiggers@kernel.org>
-Signed-off-by: Herbert Xu <herbert@gondor.apana.org.au>
+LONG_MAX was chosen as the initial value so that all the streams can be
+quickly assessed by taking the smallest value of all stream->transferred -
+but this only works if we've set any of them.
+
+Fix this by adding a flag to indicate whether the value in
+stream->transferred is valid and checking that when we integrate the
+values.  stream->transferred can then be initialised to zero.
+
+This was found by running the generic/750 xfstest against cifs with
+cache=none.  It splices data to the target file.  Once (if) it has used up
+all the available scratch space, the writes start failing with ENOSPC.
+This causes ->write_iter() to fail.  However, it was returning
+wreq->transferred, i.e. LONG_MAX, rather than an error (because it thought
+the amount transferred was non-zero) and iter_file_splice_write() would
+then try to clean up that amount of pipe bufferage - leading to an oops
+when it overran.  The kernel log showed:
+
+    CIFS: VFS: Send error in write = -28
+
+followed by:
+
+    BUG: kernel NULL pointer dereference, address: 0000000000000008
+
+with:
+
+    RIP: 0010:iter_file_splice_write+0x3a4/0x520
+    do_splice+0x197/0x4e0
+
+or:
+
+    RIP: 0010:pipe_buf_release (include/linux/pipe_fs_i.h:282)
+    iter_file_splice_write (fs/splice.c:755)
+
+Also put a warning check into splice to announce if ->write_iter() returned
+that it had written more than it was asked to.
+
+Fixes: 288ace2f57c9 ("netfs: New writeback implementation")
+Reported-by: Xiaoli Feng <fengxiaoli0714@gmail.com>
+Closes: https://bugzilla.kernel.org/show_bug.cgi?id=220445
+Signed-off-by: David Howells <dhowells@redhat.com>
+Link: https://lore.kernel.org/915443.1755207950@warthog.procyon.org.uk
+cc: Paulo Alcantara <pc@manguebit.org>
+cc: Steve French <sfrench@samba.org>
+cc: Shyam Prasad N <sprasad@microsoft.com>
+cc: netfs@lists.linux.dev
+cc: linux-cifs@vger.kernel.org
+cc: linux-fsdevel@vger.kernel.org
+cc: stable@vger.kernel.org
+Signed-off-by: Christian Brauner <brauner@kernel.org>
+[ Dropped read_collect.c hunk ]
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/x86/crypto/aegis128-aesni-glue.c | 36 +++++++++++++++++++--------
- 1 file changed, 25 insertions(+), 11 deletions(-)
+ fs/netfs/write_collect.c | 10 ++++++++--
+ fs/netfs/write_issue.c   |  4 ++--
+ fs/splice.c              |  3 +++
+ include/linux/netfs.h    |  1 +
+ 4 files changed, 14 insertions(+), 4 deletions(-)
 
-diff --git a/arch/x86/crypto/aegis128-aesni-glue.c b/arch/x86/crypto/aegis128-aesni-glue.c
-index de0aab6997d4..f5bbf274a54e 100644
---- a/arch/x86/crypto/aegis128-aesni-glue.c
-+++ b/arch/x86/crypto/aegis128-aesni-glue.c
-@@ -108,10 +108,12 @@ static void crypto_aegis128_aesni_process_ad(
+diff --git a/fs/netfs/write_collect.c b/fs/netfs/write_collect.c
+index a968688a7323..c349867d74c3 100644
+--- a/fs/netfs/write_collect.c
++++ b/fs/netfs/write_collect.c
+@@ -433,6 +433,7 @@ static void netfs_collect_write_results(struct netfs_io_request *wreq)
+ 			if (front->start + front->transferred > stream->collected_to) {
+ 				stream->collected_to = front->start + front->transferred;
+ 				stream->transferred = stream->collected_to - wreq->start;
++				stream->transferred_valid = true;
+ 				notes |= MADE_PROGRESS;
+ 			}
+ 			if (test_bit(NETFS_SREQ_FAILED, &front->flags)) {
+@@ -538,6 +539,7 @@ void netfs_write_collection_worker(struct work_struct *work)
+ 	struct netfs_io_request *wreq = container_of(work, struct netfs_io_request, work);
+ 	struct netfs_inode *ictx = netfs_inode(wreq->inode);
+ 	size_t transferred;
++	bool transferred_valid = false;
+ 	int s;
+ 
+ 	_enter("R=%x", wreq->debug_id);
+@@ -568,12 +570,16 @@ void netfs_write_collection_worker(struct work_struct *work)
+ 			netfs_put_request(wreq, false, netfs_rreq_trace_put_work);
+ 			return;
+ 		}
+-		if (stream->transferred < transferred)
++		if (stream->transferred_valid &&
++		    stream->transferred < transferred) {
+ 			transferred = stream->transferred;
++			transferred_valid = true;
++		}
  	}
- }
  
--static __always_inline void
-+static __always_inline int
- crypto_aegis128_aesni_process_crypt(struct aegis_state *state,
- 				    struct skcipher_walk *walk, bool enc)
- {
-+	int err = 0;
-+
- 	while (walk->nbytes >= AEGIS128_BLOCK_SIZE) {
- 		if (enc)
- 			aegis128_aesni_enc(state, walk->src.virt.addr,
-@@ -124,7 +126,8 @@ crypto_aegis128_aesni_process_crypt(struct aegis_state *state,
- 					   round_down(walk->nbytes,
- 						      AEGIS128_BLOCK_SIZE));
- 		kernel_fpu_end();
--		skcipher_walk_done(walk, walk->nbytes % AEGIS128_BLOCK_SIZE);
-+		err = skcipher_walk_done(walk,
-+					 walk->nbytes % AEGIS128_BLOCK_SIZE);
- 		kernel_fpu_begin();
- 	}
+ 	/* Okay, declare that all I/O is complete. */
+-	wreq->transferred = transferred;
++	if (transferred_valid)
++		wreq->transferred = transferred;
+ 	trace_netfs_rreq(wreq, netfs_rreq_trace_write_done);
  
-@@ -138,9 +141,10 @@ crypto_aegis128_aesni_process_crypt(struct aegis_state *state,
- 						walk->dst.virt.addr,
- 						walk->nbytes);
- 		kernel_fpu_end();
--		skcipher_walk_done(walk, 0);
-+		err = skcipher_walk_done(walk, 0);
- 		kernel_fpu_begin();
- 	}
-+	return err;
- }
+ 	if (wreq->io_streams[1].active &&
+diff --git a/fs/netfs/write_issue.c b/fs/netfs/write_issue.c
+index bf6d507578e5..b7830a15ae40 100644
+--- a/fs/netfs/write_issue.c
++++ b/fs/netfs/write_issue.c
+@@ -115,12 +115,12 @@ struct netfs_io_request *netfs_create_write_req(struct address_space *mapping,
+ 	wreq->io_streams[0].prepare_write	= ictx->ops->prepare_write;
+ 	wreq->io_streams[0].issue_write		= ictx->ops->issue_write;
+ 	wreq->io_streams[0].collected_to	= start;
+-	wreq->io_streams[0].transferred		= LONG_MAX;
++	wreq->io_streams[0].transferred		= 0;
  
- static struct aegis_ctx *crypto_aegis128_aesni_ctx(struct crypto_aead *aead)
-@@ -173,7 +177,7 @@ static int crypto_aegis128_aesni_setauthsize(struct crypto_aead *tfm,
- 	return 0;
- }
+ 	wreq->io_streams[1].stream_nr		= 1;
+ 	wreq->io_streams[1].source		= NETFS_WRITE_TO_CACHE;
+ 	wreq->io_streams[1].collected_to	= start;
+-	wreq->io_streams[1].transferred		= LONG_MAX;
++	wreq->io_streams[1].transferred		= 0;
+ 	if (fscache_resources_valid(&wreq->cache_resources)) {
+ 		wreq->io_streams[1].avail	= true;
+ 		wreq->io_streams[1].active	= true;
+diff --git a/fs/splice.c b/fs/splice.c
+index 38f8c9426731..ed8177f6d620 100644
+--- a/fs/splice.c
++++ b/fs/splice.c
+@@ -744,6 +744,9 @@ iter_file_splice_write(struct pipe_inode_info *pipe, struct file *out,
+ 		sd.pos = kiocb.ki_pos;
+ 		if (ret <= 0)
+ 			break;
++		WARN_ONCE(ret > sd.total_len - left,
++			  "Splice Exceeded! ret=%zd tot=%zu left=%zu\n",
++			  ret, sd.total_len, left);
  
--static __always_inline void
-+static __always_inline int
- crypto_aegis128_aesni_crypt(struct aead_request *req,
- 			    struct aegis_block *tag_xor,
- 			    unsigned int cryptlen, bool enc)
-@@ -182,20 +186,24 @@ crypto_aegis128_aesni_crypt(struct aead_request *req,
- 	struct aegis_ctx *ctx = crypto_aegis128_aesni_ctx(tfm);
- 	struct skcipher_walk walk;
- 	struct aegis_state state;
-+	int err;
+ 		sd.num_spliced += ret;
+ 		sd.total_len -= ret;
+diff --git a/include/linux/netfs.h b/include/linux/netfs.h
+index 474481ee8b7c..83d313718cd5 100644
+--- a/include/linux/netfs.h
++++ b/include/linux/netfs.h
+@@ -150,6 +150,7 @@ struct netfs_io_stream {
+ 	bool			active;		/* T if stream is active */
+ 	bool			need_retry;	/* T if this stream needs retrying */
+ 	bool			failed;		/* T if this stream failed */
++	bool			transferred_valid; /* T is ->transferred is valid */
+ };
  
- 	if (enc)
--		skcipher_walk_aead_encrypt(&walk, req, false);
-+		err = skcipher_walk_aead_encrypt(&walk, req, false);
- 	else
--		skcipher_walk_aead_decrypt(&walk, req, false);
-+		err = skcipher_walk_aead_decrypt(&walk, req, false);
-+	if (err)
-+		return err;
- 
- 	kernel_fpu_begin();
- 
- 	aegis128_aesni_init(&state, &ctx->key, req->iv);
- 	crypto_aegis128_aesni_process_ad(&state, req->src, req->assoclen);
--	crypto_aegis128_aesni_process_crypt(&state, &walk, enc);
--	aegis128_aesni_final(&state, tag_xor, req->assoclen, cryptlen);
--
-+	err = crypto_aegis128_aesni_process_crypt(&state, &walk, enc);
-+	if (err == 0)
-+		aegis128_aesni_final(&state, tag_xor, req->assoclen, cryptlen);
- 	kernel_fpu_end();
-+	return err;
- }
- 
- static int crypto_aegis128_aesni_encrypt(struct aead_request *req)
-@@ -204,8 +212,11 @@ static int crypto_aegis128_aesni_encrypt(struct aead_request *req)
- 	struct aegis_block tag = {};
- 	unsigned int authsize = crypto_aead_authsize(tfm);
- 	unsigned int cryptlen = req->cryptlen;
-+	int err;
- 
--	crypto_aegis128_aesni_crypt(req, &tag, cryptlen, true);
-+	err = crypto_aegis128_aesni_crypt(req, &tag, cryptlen, true);
-+	if (err)
-+		return err;
- 
- 	scatterwalk_map_and_copy(tag.bytes, req->dst,
- 				 req->assoclen + cryptlen, authsize, 1);
-@@ -220,11 +231,14 @@ static int crypto_aegis128_aesni_decrypt(struct aead_request *req)
- 	struct aegis_block tag;
- 	unsigned int authsize = crypto_aead_authsize(tfm);
- 	unsigned int cryptlen = req->cryptlen - authsize;
-+	int err;
- 
- 	scatterwalk_map_and_copy(tag.bytes, req->src,
- 				 req->assoclen + cryptlen, authsize, 0);
- 
--	crypto_aegis128_aesni_crypt(req, &tag, cryptlen, false);
-+	err = crypto_aegis128_aesni_crypt(req, &tag, cryptlen, false);
-+	if (err)
-+		return err;
- 
- 	return crypto_memneq(tag.bytes, zeros.bytes, authsize) ? -EBADMSG : 0;
- }
+ /*
 -- 
 2.50.1
 
