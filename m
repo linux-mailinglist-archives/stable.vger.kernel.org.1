@@ -1,58 +1,59 @@
-Return-Path: <stable+bounces-172487-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-172488-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4A325B321FD
-	for <lists+stable@lfdr.de>; Fri, 22 Aug 2025 20:08:33 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 972C5B321FE
+	for <lists+stable@lfdr.de>; Fri, 22 Aug 2025 20:09:09 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 28D45B67009
-	for <lists+stable@lfdr.de>; Fri, 22 Aug 2025 18:06:45 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 5B153627E68
+	for <lists+stable@lfdr.de>; Fri, 22 Aug 2025 18:09:09 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 726131FF7D7;
-	Fri, 22 Aug 2025 18:08:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4B4122BDC23;
+	Fri, 22 Aug 2025 18:09:05 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="J0swaV6I"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="le6Oeaek"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3172C2BDC23
-	for <stable@vger.kernel.org>; Fri, 22 Aug 2025 18:08:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 08B321A9FB9
+	for <stable@vger.kernel.org>; Fri, 22 Aug 2025 18:09:05 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755886093; cv=none; b=SflfO94ZgDFY0qMOX+PAe+B7ae9CJ85tjbR3CGXnIEs0v/ww3+tkGgTP7MXLH7Q//mxyiMIRPFp6upxWnlagify9rNsq+Oo2G3iwfCSY4k6m5wCmJgy8OYJcOezlaOjubQI7/r9S9PsmjgWy3zeTJGQ2MuJf9CR2VcN2krPio0k=
+	t=1755886145; cv=none; b=SMagauVJtMSAk2qK3Wv856nZZPxRoVAGJJMH781ZNiDt8KesaiXdiQJWw/EtIvr3cyBmd43hmyiSjKKI4IVr70Vo1ioV8+FuEPjO+h2WY22ijj5ehXR1mcotPWnSC41stM7SDnaZW+FMULWzNMhpCXkBb0bUWZ67tTBdvufKWxU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1755886093; c=relaxed/simple;
-	bh=EC9crYst2Lu8Yp/52FWswrWKIkDOwGIiGQBp3yWW5u0=;
+	s=arc-20240116; t=1755886145; c=relaxed/simple;
+	bh=VqvaX1hXVaw6OXd8rLJmEH2C7REccRXA4BZRhzwvYDk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=qOhspRXN+knYKth+MJ/XGQX4fxnxekwoOdD5bWCRz8xK2yCaB4EUyHn+Ham0nlekaVBhhEALFW2/8lHSJhK2UXWk6rmGpCFaR9vilWZiQBAZTrtK+26dLP+OqBuxL2e4hzcyZcE1nacIW2KXkvKOHdrRM4hdiVCfRizdHANZA34=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=J0swaV6I; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 317CAC4CEED;
-	Fri, 22 Aug 2025 18:08:12 +0000 (UTC)
+	 MIME-Version; b=IcCMFlKVp8HgcEldtnGcCT+cZR4009UFwKXpPAdTkp8h9AoP9kS+XhCrTHhO525t5Qs33pZ0i67tM6MNuL9fFyC0SjGWPpG1la6x1jxJYAn28L8Hz+w3ELG1Cxo6+VT6f+1J0Fa/36lDQ+8wKkgz/wUgLX/COUVtYLXPLds2fY8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=le6Oeaek; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 370DCC4CEED;
+	Fri, 22 Aug 2025 18:09:04 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1755886092;
-	bh=EC9crYst2Lu8Yp/52FWswrWKIkDOwGIiGQBp3yWW5u0=;
+	s=k20201202; t=1755886144;
+	bh=VqvaX1hXVaw6OXd8rLJmEH2C7REccRXA4BZRhzwvYDk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=J0swaV6IuslUDFxnpy9bqBDdGXiPfnitO49c9AYkJMBnaAAqq9JH568F1TG2aWr/4
-	 dRaIRTI1bvfaZ9tmqW9bj+r4DeIInl9I+ceiOHkfwEipJBITF/F0YRpv+8AbwvGh9+
-	 8tcKY8ybht+4Ej7vQePCT7kx5Vs/GZ4X6Y9aV3JC6WlugVyvYtLhdOFuwmyyDfIo95
-	 Muuo29tMNCfkGpBJK8oxlJecRqdJWFhXy1xgZei78j9CJt0MQOaMlYT5Ak3G+X/qni
-	 04V2B6u/APpFL6mkaQ3SVxVDzbk7xxl+n99jsgNVSi5yYq8oxY9WtirQGemPPKA4pm
-	 O7q1pBUnHvArQ==
+	b=le6OeaekIteK7Yhe+m8Yfuytgkm3DJzvTX4nZtAsCo2Amc6qRBkGyUxVQEilrTs2R
+	 OFo8vHGHZRDfXDffBpVlhSeLH5ZzJlKooREql8kgWuEihVPZ1ab1p36cTPUdgrdBjR
+	 qdW5PFSXZOI+kVyvxaPQik+ulkKvvixBwwm1IRoBrQmbOF0Xnz6WHkEErK+/aaqIuK
+	 kuqOIJ2h1mU9YC8G1dMq/hWYYhpDUDPMaIW1WPvUSCAHkVwyqUpuuXB2MIg1hXBsWx
+	 s6zlwr9sAAS1bjvh8sBVp2CbRwVdVEDWkaiDEHs1iPBiFIb0k0V2Vgelsowb343sAK
+	 80w0IarY/lFtQ==
 From: Sasha Levin <sashal@kernel.org>
 To: stable@vger.kernel.org
-Cc: David Lechner <dlechner@baylibre.com>,
-	Stable@vger.kernel.org,
-	Jonathan Cameron <Jonathan.Cameron@huawei.com>,
+Cc: Bjorn Andersson <bjorn.andersson@oss.qualcomm.com>,
+	Doug Anderson <dianders@chromium.org>,
+	Dmitry Baryshkov <dmitry.baryshkov@oss.qualcomm.com>,
+	Bjorn Andersson <andersson@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12.y] iio: adc: ad7173: fix setting ODR in probe
-Date: Fri, 22 Aug 2025 14:08:10 -0400
-Message-ID: <20250822180810.1356484-1-sashal@kernel.org>
+Subject: [PATCH 5.15.y] soc: qcom: mdt_loader: Ensure we don't read past the ELF header
+Date: Fri, 22 Aug 2025 14:09:02 -0400
+Message-ID: <20250822180902.1356815-1-sashal@kernel.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <2025082135-slept-video-cdcc@gregkh>
-References: <2025082135-slept-video-cdcc@gregkh>
+In-Reply-To: <2025082136-finalist-ravage-eaf5@gregkh>
+References: <2025082136-finalist-ravage-eaf5@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -61,51 +62,108 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-From: David Lechner <dlechner@baylibre.com>
+From: Bjorn Andersson <bjorn.andersson@oss.qualcomm.com>
 
-[ Upstream commit 6fa908abd19cc35c205f343b79c67ff38dbc9b76 ]
+[ Upstream commit 9f9967fed9d066ed3dae9372b45ffa4f6fccfeef ]
 
-Fix the setting of the ODR register value in the probe function for
-AD7177. The AD7177 chip has a different ODR value after reset than the
-other chips (0x7 vs. 0x0) and 0 is a reserved value on that chip.
+When the MDT loader is used in remoteproc, the ELF header is sanitized
+beforehand, but that's not necessary the case for other clients.
 
-The driver already has this information available in odr_start_value
-and uses it when checking valid values when writing to the
-sampling_frequency attribute, but failed to set the correct initial
-value in the probe function.
+Validate the size of the firmware buffer to ensure that we don't read
+past the end as we iterate over the header. e_phentsize and e_shentsize
+are validated as well, to ensure that the assumptions about step size in
+the traversal are valid.
 
-Fixes: 37ae8381ccda ("iio: adc: ad7173: add support for additional models")
-Signed-off-by: David Lechner <dlechner@baylibre.com>
-Link: https://patch.msgid.link/20250710-iio-adc-ad7173-fix-setting-odr-in-probe-v1-1-78a100fec998@baylibre.com
-Cc: <Stable@vger.kernel.org>
-Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
-[ Adjust context ]
+Fixes: 2aad40d911ee ("remoteproc: Move qcom_mdt_loader into drivers/soc/qcom")
+Cc: stable@vger.kernel.org
+Reported-by: Doug Anderson <dianders@chromium.org>
+Signed-off-by: Bjorn Andersson <bjorn.andersson@oss.qualcomm.com>
+Reviewed-by: Dmitry Baryshkov <dmitry.baryshkov@oss.qualcomm.com>
+Link: https://lore.kernel.org/r/20250610-mdt-loader-validation-and-fixes-v2-1-f7073e9ab899@oss.qualcomm.com
+Signed-off-by: Bjorn Andersson <andersson@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/iio/adc/ad7173.c | 3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+ drivers/soc/qcom/mdt_loader.c | 41 +++++++++++++++++++++++++++++++++++
+ 1 file changed, 41 insertions(+)
 
-diff --git a/drivers/iio/adc/ad7173.c b/drivers/iio/adc/ad7173.c
-index 2eebc6f761a6..19b583e00753 100644
---- a/drivers/iio/adc/ad7173.c
-+++ b/drivers/iio/adc/ad7173.c
-@@ -1243,6 +1243,7 @@ static int ad7173_fw_parse_channel_config(struct iio_dev *indio_dev)
- 		chan_st_priv->cfg.bipolar = false;
- 		chan_st_priv->cfg.input_buf = st->info->has_input_buf;
- 		chan_st_priv->cfg.ref_sel = AD7173_SETUP_REF_SEL_INT_REF;
-+		chan_st_priv->cfg.odr = st->info->odr_start_value;
- 		st->adc_mode |= AD7173_ADC_MODE_REF_EN;
+diff --git a/drivers/soc/qcom/mdt_loader.c b/drivers/soc/qcom/mdt_loader.c
+index 72fc2b539213..5b1eb34e512a 100644
+--- a/drivers/soc/qcom/mdt_loader.c
++++ b/drivers/soc/qcom/mdt_loader.c
+@@ -12,11 +12,43 @@
+ #include <linux/firmware.h>
+ #include <linux/kernel.h>
+ #include <linux/module.h>
++#include <linux/overflow.h>
+ #include <linux/qcom_scm.h>
+ #include <linux/sizes.h>
+ #include <linux/slab.h>
+ #include <linux/soc/qcom/mdt_loader.h>
  
- 		chan_index++;
-@@ -1307,7 +1308,7 @@ static int ad7173_fw_parse_channel_config(struct iio_dev *indio_dev)
- 		chan->channel = ain[0];
- 		chan_st_priv->chan_reg = chan_index;
- 		chan_st_priv->cfg.input_buf = st->info->has_input_buf;
--		chan_st_priv->cfg.odr = 0;
-+		chan_st_priv->cfg.odr = st->info->odr_start_value;
++static bool mdt_header_valid(const struct firmware *fw)
++{
++	const struct elf32_hdr *ehdr;
++	size_t phend;
++	size_t shend;
++
++	if (fw->size < sizeof(*ehdr))
++		return false;
++
++	ehdr = (struct elf32_hdr *)fw->data;
++
++	if (memcmp(ehdr->e_ident, ELFMAG, SELFMAG))
++		return false;
++
++	if (ehdr->e_phentsize != sizeof(struct elf32_phdr))
++		return false;
++
++	phend = size_add(size_mul(sizeof(struct elf32_phdr), ehdr->e_phnum), ehdr->e_phoff);
++	if (phend > fw->size)
++		return false;
++
++	if (ehdr->e_shentsize != sizeof(struct elf32_shdr))
++		return false;
++
++	shend = size_add(size_mul(sizeof(struct elf32_shdr), ehdr->e_shnum), ehdr->e_shoff);
++	if (shend > fw->size)
++		return false;
++
++	return true;
++}
++
+ static bool mdt_phdr_valid(const struct elf32_phdr *phdr)
+ {
+ 	if (phdr->p_type != PT_LOAD)
+@@ -46,6 +78,9 @@ ssize_t qcom_mdt_get_size(const struct firmware *fw)
+ 	phys_addr_t max_addr = 0;
+ 	int i;
  
- 		chan_st_priv->cfg.bipolar = fwnode_property_read_bool(child, "bipolar");
- 		if (chan_st_priv->cfg.bipolar)
++	if (!mdt_header_valid(fw))
++		return -EINVAL;
++
+ 	ehdr = (struct elf32_hdr *)fw->data;
+ 	phdrs = (struct elf32_phdr *)(ehdr + 1);
+ 
+@@ -92,6 +127,9 @@ void *qcom_mdt_read_metadata(const struct firmware *fw, size_t *data_len)
+ 	size_t ehdr_size;
+ 	void *data;
+ 
++	if (!mdt_header_valid(fw))
++		return ERR_PTR(-EINVAL);
++
+ 	ehdr = (struct elf32_hdr *)fw->data;
+ 	phdrs = (struct elf32_phdr *)(ehdr + 1);
+ 
+@@ -151,6 +189,9 @@ static int __qcom_mdt_load(struct device *dev, const struct firmware *fw,
+ 	if (!fw || !mem_region || !mem_phys || !mem_size)
+ 		return -EINVAL;
+ 
++	if (!mdt_header_valid(fw))
++		return -EINVAL;
++
+ 	ehdr = (struct elf32_hdr *)fw->data;
+ 	phdrs = (struct elf32_phdr *)(ehdr + 1);
+ 
 -- 
 2.50.1
 
