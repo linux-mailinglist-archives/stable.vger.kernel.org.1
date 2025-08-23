@@ -1,71 +1,71 @@
-Return-Path: <stable+bounces-172564-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-172565-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2DC42B3277B
-	for <lists+stable@lfdr.de>; Sat, 23 Aug 2025 09:53:14 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 627E9B3278B
+	for <lists+stable@lfdr.de>; Sat, 23 Aug 2025 10:05:23 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 011C87BDDEA
-	for <lists+stable@lfdr.de>; Sat, 23 Aug 2025 07:51:22 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 417D21BC4FF1
+	for <lists+stable@lfdr.de>; Sat, 23 Aug 2025 08:05:43 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9E13E20296C;
-	Sat, 23 Aug 2025 07:52:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id AAFFD221D96;
+	Sat, 23 Aug 2025 08:05:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="BsTis9wO"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ab0DgrMz"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4D36427472
-	for <stable@vger.kernel.org>; Sat, 23 Aug 2025 07:52:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6ADDC217F40
+	for <stable@vger.kernel.org>; Sat, 23 Aug 2025 08:05:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755935570; cv=none; b=hR8zTTC+w8+G9BPLhO916VNYtq7nlyD6FPlsfRAskRQ6Gen2xBTvnAqqhwUpNZGep44s9nHULCb9ANhl/5lM2odEm7yeBd+Y4J/7nWMlRuyCAHdGCfYG50d/tVaeLJK/mpLd47BdFsghwpWdDrJgYVy9l6mwi9z6hpJTIk94Y+M=
+	t=1755936318; cv=none; b=ucBwvcBkTA/qQjCV/R9kvoHiD9DhqFhEbiKhm9XblV/RabFXFCzh+QzKqQeclwB94ONpIHA378GSR39/7pV3eGdmtFdXm2lSpO3f3byWQ4btCV876xPwuEo4kmAalKhq8PmIByiJx2gMFqkBTNEPfJBuN9rSV2838pjcIQ+BbLQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1755935570; c=relaxed/simple;
-	bh=SrvHnULy9qZs6YrDiwAZuds3Yh7Ibrd/vBGOn2vAGpw=;
-	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=YMOov5AlTzVvIb6lt+EwMbfHCli0mY4ThHKCuR2KFE4MdPbkm3zhQHsEk09h5thOCx7ff2/9OWRzrlly4+H86ucIfiuD51LdO0sPrj/03uS2LXPxDzaDxJhddmxpvCD1Sx/OxN41UjNFAn4Bg2pYPu60F1D6HPvGi1D4XJ2VJf8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=BsTis9wO; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 63F89C4CEE7;
-	Sat, 23 Aug 2025 07:52:49 +0000 (UTC)
+	s=arc-20240116; t=1755936318; c=relaxed/simple;
+	bh=8yzI28Kh5gQKC/bL9orYIMwxR4p3sv3BkRHRrIDSEbg=;
+	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=FjmTLAuYo1K3iCyjRwFj5zPROHS+unNvm74eDhJMQfSq/lmzfZCg8A4YLCRJwjc/lEx2vJ2QDmkl8fJLNqFI4LJ4Q9nysVLO/FW3PeR0uQV0PkYC2wl7RSKckvR477r1sf0/bfLS60v3CHGzI2rlGaAwHBXQPiT6lAs9VG+f0XM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ab0DgrMz; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8A1F4C4CEE7;
+	Sat, 23 Aug 2025 08:05:15 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1755935569;
-	bh=SrvHnULy9qZs6YrDiwAZuds3Yh7Ibrd/vBGOn2vAGpw=;
+	s=korg; t=1755936316;
+	bh=8yzI28Kh5gQKC/bL9orYIMwxR4p3sv3BkRHRrIDSEbg=;
 	h=Subject:To:Cc:From:Date:From;
-	b=BsTis9wOt+OQNq6ukblYPb00HwbVL/5k89tfik6pFAgYzRVFk/B0RF3X2vnuV+r9e
-	 mMGhKyunb4HCRck7BCM/UFaXfbdsKYRBI8LEllrJTzWQFsuZD4pA7l9L+T3HAvR2hB
-	 jN+c+LLMIWqMNovBiyOen+186d5mpuLEcaMIjsVQ=
-Subject: FAILED: patch "[PATCH] drm/i915/icl+/tc: Convert AUX powered WARN to a debug message" failed to apply to 6.12-stable tree
-To: imre.deak@intel.com,charlton.lin@intel.com,khaled.almahallawy@intel.com,mika.kahola@intel.com,tursulin@ursulin.net
+	b=ab0DgrMzQhmn7VrVEJEC/BDOHN44wX15YgIpi2kIKwoO0yHF8xVh1aaI0cn8y2drP
+	 UKCO7bqH1GU33GhOJ3vSQ/PlBKsw5hHAMp/pceIiw7S9+5mOSdI4MCKA1bu60Y4NYu
+	 u/AXP4xe7Ps4YqQH2tLJfZ+RjkkgrOoyPZ6QBNO4=
+Subject: FAILED: patch "[PATCH] drm/amd/display: Don't overclock DCE 6 by 15%" failed to apply to 5.10-stable tree
+To: timur.kristof@gmail.com,alex.hung@amd.com,alexander.deucher@amd.com,siqueira@igalia.com
 Cc: <stable@vger.kernel.org>
 From: <gregkh@linuxfoundation.org>
-Date: Sat, 23 Aug 2025 09:52:47 +0200
-Message-ID: <2025082347-unstuck-spiral-493c@gregkh>
+Date: Sat, 23 Aug 2025 10:05:13 +0200
+Message-ID: <2025082313-mobility-alive-f9e9@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=ANSI_X3.4-1968
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
 
-The patch below does not apply to the 6.12-stable tree.
+The patch below does not apply to the 5.10-stable tree.
 If someone wants it applied there, or to any other stable or longterm
 tree, then please email the backport, including the original git commit
 id to <stable@vger.kernel.org>.
 
 To reproduce the conflict and resubmit, you may use the following commands:
 
-git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-6.12.y
+git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-5.10.y
 git checkout FETCH_HEAD
-git cherry-pick -x d7fa5754e83cd36c4327eb2d806064e598a72ff6
+git cherry-pick -x cb7b7ae53b557d168b4af5cd8549f3eff920bfb5
 # <resolve conflicts, build, test, etc.>
 git commit -s
-git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2025082347-unstuck-spiral-493c@gregkh' --subject-prefix 'PATCH 6.12.y' HEAD^..
+git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2025082313-mobility-alive-f9e9@gregkh' --subject-prefix 'PATCH 5.10.y' HEAD^..
 
 Possible dependencies:
 
@@ -77,44 +77,52 @@ greg k-h
 
 ------------------ original commit in Linus's tree ------------------
 
-From d7fa5754e83cd36c4327eb2d806064e598a72ff6 Mon Sep 17 00:00:00 2001
-From: Imre Deak <imre.deak@intel.com>
-Date: Mon, 11 Aug 2025 11:01:52 +0300
-Subject: [PATCH] drm/i915/icl+/tc: Convert AUX powered WARN to a debug message
+From cb7b7ae53b557d168b4af5cd8549f3eff920bfb5 Mon Sep 17 00:00:00 2001
+From: =?UTF-8?q?Timur=20Krist=C3=B3f?= <timur.kristof@gmail.com>
+Date: Thu, 31 Jul 2025 11:43:46 +0200
+Subject: [PATCH] drm/amd/display: Don't overclock DCE 6 by 15%
+MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
 
-The BIOS can leave the AUX power well enabled on an output, even if this
-isn't required (on platforms where the AUX power is only needed for an
-AUX access). This was observed at least on PTL. To avoid the WARN which
-would be triggered by this during the HW readout, convert the WARN to a
-debug message.
+The extra 15% clock was added as a workaround for a Polaris issue
+which uses DCE 11, and should not have been used on DCE 6 which
+is already hardcoded to the highest possible display clock.
+Unfortunately, the extra 15% was mistakenly copied and kept
+even on code paths which don't affect Polaris.
 
-Cc: stable@vger.kernel.org # v6.8+
-Reported-by: Charlton Lin <charlton.lin@intel.com>
-Tested-by: Khaled Almahallawy <khaled.almahallawy@intel.com>
-Reviewed-by: Mika Kahola <mika.kahola@intel.com>
-Signed-off-by: Imre Deak <imre.deak@intel.com>
-Link: https://lore.kernel.org/r/20250811080152.906216-6-imre.deak@intel.com
-(cherry picked from commit 6cb52cba474b2bec1a3018d3dbf75292059a29a1)
-Signed-off-by: Tvrtko Ursulin <tursulin@ursulin.net>
+This commit fixes that and also adds a check to make sure
+not to exceed the maximum DCE 6 display clock.
 
-diff --git a/drivers/gpu/drm/i915/display/intel_tc.c b/drivers/gpu/drm/i915/display/intel_tc.c
-index 6a2442a0649e..668ef139391b 100644
---- a/drivers/gpu/drm/i915/display/intel_tc.c
-+++ b/drivers/gpu/drm/i915/display/intel_tc.c
-@@ -1498,11 +1498,11 @@ static void intel_tc_port_reset_mode(struct intel_tc_port *tc,
- 	intel_display_power_flush_work(display);
- 	if (!intel_tc_cold_requires_aux_pw(dig_port)) {
- 		enum intel_display_power_domain aux_domain;
--		bool aux_powered;
+Fixes: 8cd61c313d8b ("drm/amd/display: Raise dispclk value for Polaris")
+Fixes: dc88b4a684d2 ("drm/amd/display: make clk mgr soc specific")
+Fixes: 3ecb3b794e2c ("drm/amd/display: dc/clk_mgr: add support for SI parts (v2)")
+Signed-off-by: Timur Kristóf <timur.kristof@gmail.com>
+Acked-by: Alex Deucher <alexander.deucher@amd.com>
+Reviewed-by: Rodrigo Siqueira <siqueira@igalia.com>
+Reviewed-by: Alex Hung <alex.hung@amd.com>
+Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
+(cherry picked from commit 427980c1cbd22bb256b9385f5ce73c0937562408)
+Cc: stable@vger.kernel.org
+
+diff --git a/drivers/gpu/drm/amd/display/dc/clk_mgr/dce60/dce60_clk_mgr.c b/drivers/gpu/drm/amd/display/dc/clk_mgr/dce60/dce60_clk_mgr.c
+index 0267644717b2..cfd7309f2c6a 100644
+--- a/drivers/gpu/drm/amd/display/dc/clk_mgr/dce60/dce60_clk_mgr.c
++++ b/drivers/gpu/drm/amd/display/dc/clk_mgr/dce60/dce60_clk_mgr.c
+@@ -123,11 +123,9 @@ static void dce60_update_clocks(struct clk_mgr *clk_mgr_base,
+ {
+ 	struct clk_mgr_internal *clk_mgr_dce = TO_CLK_MGR_INTERNAL(clk_mgr_base);
+ 	struct dm_pp_power_level_change_request level_change_req;
+-	int patched_disp_clk = context->bw_ctx.bw.dce.dispclk_khz;
+-
+-	/*TODO: W/A for dal3 linux, investigate why this works */
+-	if (!clk_mgr_dce->dfs_bypass_active)
+-		patched_disp_clk = patched_disp_clk * 115 / 100;
++	const int max_disp_clk =
++		clk_mgr_dce->max_clks_by_state[DM_PP_CLOCKS_STATE_PERFORMANCE].display_clk_khz;
++	int patched_disp_clk = MIN(max_disp_clk, context->bw_ctx.bw.dce.dispclk_khz);
  
- 		aux_domain = intel_aux_power_domain(dig_port);
--		aux_powered = intel_display_power_is_enabled(display, aux_domain);
--		drm_WARN_ON(display->drm, aux_powered);
-+		if (intel_display_power_is_enabled(display, aux_domain))
-+			drm_dbg_kms(display->drm, "Port %s: AUX unexpectedly powered\n",
-+				    tc->port_name);
- 	}
- 
- 	tc_phy_disconnect(tc);
+ 	level_change_req.power_level = dce_get_required_clocks_state(clk_mgr_base, context);
+ 	/* get max clock state from PPLIB */
 
 
