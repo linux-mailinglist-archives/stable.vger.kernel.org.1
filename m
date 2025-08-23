@@ -1,126 +1,111 @@
-Return-Path: <stable+bounces-172584-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-172585-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 00D91B328AA
-	for <lists+stable@lfdr.de>; Sat, 23 Aug 2025 14:55:03 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id ACD81B328AB
+	for <lists+stable@lfdr.de>; Sat, 23 Aug 2025 14:56:34 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 756213A5BE3
-	for <lists+stable@lfdr.de>; Sat, 23 Aug 2025 12:55:01 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id B86516821B0
+	for <lists+stable@lfdr.de>; Sat, 23 Aug 2025 12:56:32 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 018AE2522B1;
-	Sat, 23 Aug 2025 12:54:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E506A246BA4;
+	Sat, 23 Aug 2025 12:56:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Rqy4uXji"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="gs9mkBWK"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B606B24CEE8
-	for <stable@vger.kernel.org>; Sat, 23 Aug 2025 12:54:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A55A223D287
+	for <stable@vger.kernel.org>; Sat, 23 Aug 2025 12:56:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755953697; cv=none; b=EuXwRo4btWfG8of0f+LmBWaQNkSBr4wt9RGsL7LDmvoKV+IQRAepexEfryv2eZ7JhatYpX4mLgsFYRVtBbSpnpvH5UKgLpmBdKNGHA/M4ZyTtsfoW+3lGMcBlyesUNukMG10nsHDPObuSI8z1+tOJK2SC7azXsHYA0Uat5/4J2A=
+	t=1755953788; cv=none; b=Zz999LAx0qGDMUH41q6lbFrT+pIuMCl68fXK4OZgLkHlNpb8Zj2yGnifCWxT57m7fuzJyb8zoWNrQg26nBAX3NzR231iUVLbL8taDOe027BcU5P7nGmRv5J5BnBeC5upvstnW/8b+Rr07hvwuGUo50eqgMu/nctKusK3J9rg7vc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1755953697; c=relaxed/simple;
-	bh=5gT8RCmdYHfHz+ABBZwPbfhelh2KlcH0qt8DRw57H+M=;
+	s=arc-20240116; t=1755953788; c=relaxed/simple;
+	bh=mDfi+vGDYy1phkvkQZOno74ILGCGwVxkGNZnwuUkHU0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=cIOwzpBK28aumhPVSVLT/+rzkf3T5L2/FfL0C+TbbkZicwLadP2/zSn88yanX/FEg4Vvia8/aqRD753TayDyw9OiUYXD7YDLjP2xIWLEvzh9sVc4rM4dyWsCs8QcmJnIyeaRB8oa8v7CQwIqsjoljgcEJuKCnOohuzxT22IC3cw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Rqy4uXji; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7C655C4CEE7;
-	Sat, 23 Aug 2025 12:54:56 +0000 (UTC)
+	 MIME-Version:Content-Type; b=IOwuN/OOixHN4MDUa6XjCT2Sonlxj+oL28kvyLm9m+QYLKyE7aih+3YWrdhKR6v0gtvX2VIYWtfYDfwBnQxbfvPdoZJ3MRK5YPE1oeLQtZA25QVom1SPjKgw6z1gtVT3gW6aU/HKvgdPDJ8vA4tCMfnZ2QZRj6rmmfmnVOtwBPM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=gs9mkBWK; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 79C81C4CEF4;
+	Sat, 23 Aug 2025 12:56:27 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1755953697;
-	bh=5gT8RCmdYHfHz+ABBZwPbfhelh2KlcH0qt8DRw57H+M=;
+	s=k20201202; t=1755953788;
+	bh=mDfi+vGDYy1phkvkQZOno74ILGCGwVxkGNZnwuUkHU0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Rqy4uXjioL23Qgh8XZxMaMd1nGWCHGSCF2JUA3y4+nWUk+erm/5m+2gMIXWe114XE
-	 NX1hR+7I6bPBAn/gNlqY3sTVhGOZrJlwLB2Q4EZlZAfbUKdbnW0IxAdUi//PeU6C02
-	 vXtZF6cumxQiLZ9Rjjl2FvfoQIMjSmnLRTC/hWodc/o46DRPo3BbIJGseq5uOCjSUB
-	 /d+Iw1IzEo1/aBSxaQAcAtE8aiB0lq8N8ykkkbXlbnJk6NRuhB+fM7DWedmkUVtXMc
-	 AV2XjTyfa7Ll3ODiohl5OGrnWQxX+pSODqWMrVXvCJ9+5o7KHKISvRIo2ZUgE9UkA5
-	 MI2+vny+Snm0Q==
+	b=gs9mkBWKFOyN9KzCDG41wQ/JJu3FN2K+dN/3pFnmLCzf91/uC720oGIeLbv15RHkX
+	 48W82Hs3nt+UMcZZsVXpLA13NdWsKOhFT15NkdyWUomcFrDmJhL7XmKgfqax4oKQvF
+	 sAL4cFTEw3Zxjb/mCOoko6UeaZJlfMGNRfnfJEg7GTx2VH7WL1+BMsyOfxP0+JcCcF
+	 IyLveh/RhIqb29xYqSHHsfjulqqepOkGAWW5tAJ8txx8VutDcNSkBLR6LBAGvWYD4C
+	 hrTAPaND8TyTmYxV2LK2coVAbPEtVyvgwEsy0isqD5JEBxsOzWnqah0dVwXujzK2S8
+	 qCkD9Qj0zQ2dw==
 From: Sasha Levin <sashal@kernel.org>
 To: stable@vger.kernel.org
-Cc: Ricardo Ribalda <ribalda@chromium.org>,
-	Hans Verkuil <hverkuil@xs4all.nl>,
-	Bryan O'Donoghue <bryan.odonoghue@linaro.org>,
-	Bryan O'Donoghue <bod@kernel.org>,
+Cc: Imre Deak <imre.deak@intel.com>,
+	=?UTF-8?q?Ville=20Syrj=C3=A4l=C3=A4?= <ville.syrjala@linux.intel.com>,
+	Jani Nikula <jani.nikula@linux.intel.com>,
+	Jani Nikula <jani.nikula@intel.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.4.y] media: venus: vdec: Clamp param smaller than 1fps and bigger than 240.
-Date: Sat, 23 Aug 2025 08:54:54 -0400
-Message-ID: <20250823125454.2100689-1-sashal@kernel.org>
+Subject: [PATCH 6.16.y] drm/dp: Change AUX DPCD probe address from DPCD_REV to LANE0_1_STATUS
+Date: Sat, 23 Aug 2025 08:56:25 -0400
+Message-ID: <20250823125625.2103160-1-sashal@kernel.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <2025082106-elevate-boil-beef@gregkh>
-References: <2025082106-elevate-boil-beef@gregkh>
+In-Reply-To: <2025082148-refutable-outmatch-8a67@gregkh>
+References: <2025082148-refutable-outmatch-8a67@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-From: Ricardo Ribalda <ribalda@chromium.org>
+From: Imre Deak <imre.deak@intel.com>
 
-[ Upstream commit 377dc500d253f0b26732b2cb062e89668aef890a ]
+[ Upstream commit a40c5d727b8111b5db424a1e43e14a1dcce1e77f ]
 
-The driver uses "whole" fps in all its calculations (e.g. in
-load_per_instance()). Those calculation expect an fps bigger than 1, and
-not big enough to overflow.
+Reading DPCD registers has side-effects in general. In particular
+accessing registers outside of the link training register range
+(0x102-0x106, 0x202-0x207, 0x200c-0x200f, 0x2216) is explicitly
+forbidden by the DP v2.1 Standard, see
 
-Clamp the value if the user provides a param that will result in an invalid
-fps.
+3.6.5.1 DPTX AUX Transaction Handling Mandates
+3.6.7.4 128b/132b DP Link Layer LTTPR Link Training Mandates
 
-Reported-by: Hans Verkuil <hverkuil@xs4all.nl>
-Closes: https://lore.kernel.org/linux-media/f11653a7-bc49-48cd-9cdb-1659147453e4@xs4all.nl/T/#m91cd962ac942834654f94c92206e2f85ff7d97f0
-Fixes: 7472c1c69138 ("[media] media: venus: vdec: add video decoder files")
-Cc: stable@vger.kernel.org
-Tested-by: Bryan O'Donoghue <bryan.odonoghue@linaro.org> # qrb5615-rb5
-Reviewed-by: Bryan O'Donoghue <bryan.odonoghue@linaro.org>
-Signed-off-by: Ricardo Ribalda <ribalda@chromium.org>
-[bod: Change "parm" to "param"]
-Signed-off-by: Bryan O'Donoghue <bod@kernel.org>
-Signed-off-by: Hans Verkuil <hverkuil@xs4all.nl>
-[ Adjust context in header ]
+Based on my tests, accessing the DPCD_REV register during the link
+training of an UHBR TBT DP tunnel sink leads to link training failures.
+
+Solve the above by using the DP_LANE0_1_STATUS (0x202) register for the
+DPCD register access quirk.
+
+Cc: <stable@vger.kernel.org>
+Cc: Ville Syrjälä <ville.syrjala@linux.intel.com>
+Cc: Jani Nikula <jani.nikula@linux.intel.com>
+Acked-by: Jani Nikula <jani.nikula@intel.com>
+Signed-off-by: Imre Deak <imre.deak@intel.com>
+Link: https://lore.kernel.org/r/20250605082850.65136-2-imre.deak@intel.com
+[ DP_TRAINING_PATTERN_SET => DP_LANE0_1_STATUS ]
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/media/platform/qcom/venus/core.h | 2 ++
- drivers/media/platform/qcom/venus/vdec.c | 5 ++---
- 2 files changed, 4 insertions(+), 3 deletions(-)
+ drivers/gpu/drm/display/drm_dp_helper.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/media/platform/qcom/venus/core.h b/drivers/media/platform/qcom/venus/core.h
-index 922cb7e64bfa..03512858c868 100644
---- a/drivers/media/platform/qcom/venus/core.h
-+++ b/drivers/media/platform/qcom/venus/core.h
-@@ -16,6 +16,8 @@
- 
- #define VIDC_CLKS_NUM_MAX	4
- 
-+#define VENUS_MAX_FPS			240
-+
- struct freq_tbl {
- 	unsigned int load;
- 	unsigned long freq;
-diff --git a/drivers/media/platform/qcom/venus/vdec.c b/drivers/media/platform/qcom/venus/vdec.c
-index a0a67b7132b8..551462e64082 100644
---- a/drivers/media/platform/qcom/venus/vdec.c
-+++ b/drivers/media/platform/qcom/venus/vdec.c
-@@ -418,11 +418,10 @@ static int vdec_s_parm(struct file *file, void *fh, struct v4l2_streamparm *a)
- 	us_per_frame = timeperframe->numerator * (u64)USEC_PER_SEC;
- 	do_div(us_per_frame, timeperframe->denominator);
- 
--	if (!us_per_frame)
--		return -EINVAL;
--
-+	us_per_frame = clamp(us_per_frame, 1, USEC_PER_SEC);
- 	fps = (u64)USEC_PER_SEC;
- 	do_div(fps, us_per_frame);
-+	fps = min(VENUS_MAX_FPS, fps);
- 
- 	inst->fps = fps;
- 	inst->timeperframe = *timeperframe;
+diff --git a/drivers/gpu/drm/display/drm_dp_helper.c b/drivers/gpu/drm/display/drm_dp_helper.c
+index ea78c6c8ca7a..dc622c78db9d 100644
+--- a/drivers/gpu/drm/display/drm_dp_helper.c
++++ b/drivers/gpu/drm/display/drm_dp_helper.c
+@@ -725,7 +725,7 @@ ssize_t drm_dp_dpcd_read(struct drm_dp_aux *aux, unsigned int offset,
+ 	 * monitor doesn't power down exactly after the throw away read.
+ 	 */
+ 	if (!aux->is_remote) {
+-		ret = drm_dp_dpcd_probe(aux, DP_TRAINING_PATTERN_SET);
++		ret = drm_dp_dpcd_probe(aux, DP_LANE0_1_STATUS);
+ 		if (ret < 0)
+ 			return ret;
+ 	}
 -- 
 2.50.1
 
