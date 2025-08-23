@@ -1,171 +1,118 @@
-Return-Path: <stable+bounces-172532-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-172533-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2F99CB3263A
-	for <lists+stable@lfdr.de>; Sat, 23 Aug 2025 03:40:55 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id A8508B3263C
+	for <lists+stable@lfdr.de>; Sat, 23 Aug 2025 03:45:26 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 675A9A07927
-	for <lists+stable@lfdr.de>; Sat, 23 Aug 2025 01:40:53 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 5E2E2B03836
+	for <lists+stable@lfdr.de>; Sat, 23 Aug 2025 01:45:25 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id DE8431DDA0E;
-	Sat, 23 Aug 2025 01:40:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 562841C861A;
+	Sat, 23 Aug 2025 01:45:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b="rGs39JuK"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="CX64GPWB"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8A39B208CA;
-	Sat, 23 Aug 2025 01:40:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 159601E0E14
+	for <stable@vger.kernel.org>; Sat, 23 Aug 2025 01:45:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755913249; cv=none; b=RAoV2XXaRCHwWhH9rt1UaXXdf4i8wvt+IXTRItcPt1937zijXNilSiAmOeumiLqxKL0yxw+u6GWszGfDOzhJ4ZIBYjMz8rCWH/NrKOdbrUiohd66AcmPcPV/nv6vb2B3WlocN11ncvoZJOMg6AM/IwqsPzustWR63kBcFudhA0A=
+	t=1755913522; cv=none; b=UV9mK3kNaZR4ebKFM1nqR6/nVMzuZhOBunr44gorFX7BTle1SIKo3aaEBRJeBRPkm8DXKOrA5s3rtxWAmv4o3/JfEeLCoqY38XntZpQgPC7Ex8aLLfXSMlpgoL2d1t/6CLAAL2pt3NKp2PjJsamWRR3X1Nr+yyvJZI/iSBaV+Rg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1755913249; c=relaxed/simple;
-	bh=O8gVHSNzhHRPA2iUp0A0aSMxPzPvr5WgrBklmdUNwJ4=;
-	h=Date:To:From:Subject:Message-Id; b=MVkbhIP21csSFbaMa8zTP56BKKq/OjvVGlf5VDgUh94UBgiXbvAT1Cvr3WMdaNWjj2hGUqN48wHmmgJ/5b7Dtn6aIe9mp5Th8KqMXL4ZhiDcxfIYFefqgbLiM0XD/Il6ZyL8Dn6zMk7b3ULZNIH29fIiyJSLe8EQDMdkTVGy4wk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b=rGs39JuK; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id ED954C4CEED;
-	Sat, 23 Aug 2025 01:40:48 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linux-foundation.org;
-	s=korg; t=1755913249;
-	bh=O8gVHSNzhHRPA2iUp0A0aSMxPzPvr5WgrBklmdUNwJ4=;
-	h=Date:To:From:Subject:From;
-	b=rGs39JuKEGcyNBeptuJ/ghJTFpEJ0Tqj/8jxCIKM7U66JwwFgwx7e6CPweM1TNPwO
-	 XtxBDFUh76UY6LCvCX3yy+cUTPy0AV2pMMo7oIinwmWHwcK2IP41Bpp4826ir7UW59
-	 BgSzb5o15irjYSY8r69bWpazLrcgRsH/z4oveoqY=
-Date: Fri, 22 Aug 2025 18:40:48 -0700
-To: mm-commits@vger.kernel.org,wangkefeng.wang@huawei.com,stable@vger.kernel.org,osalvador@suse.de,mhocko@kernel.org,linmiaohe@huawei.com,david@redhat.com,tujinjiang@huawei.com,akpm@linux-foundation.org
-From: Andrew Morton <akpm@linux-foundation.org>
-Subject: [alternative-merged] mm-memory_hotplug-fix-hwpoisoned-large-folio-handling-in-do_migrate_range.patch removed from -mm tree
-Message-Id: <20250823014048.ED954C4CEED@smtp.kernel.org>
+	s=arc-20240116; t=1755913522; c=relaxed/simple;
+	bh=0zMu4nM/4VvX6uGoWUA7zEEDFO09Zbkb0qQ920m+wtw=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=scJaVujVHUcsUFq+8CWnaAwUrB5t4IetPHN0eeWRVX+O/ftZBdTYoNX4yAfU77cR7nyaoxVldU1FHrPeY7+V2MSjAXR8PDRsNPVcv8msljA19HVS3qGkY9tY83nzMoVBpwkXJDRf8nSm5pVxK9cOQO48X11EpUauUdFMUpxukmc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=CX64GPWB; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 20B5BC4CEED;
+	Sat, 23 Aug 2025 01:45:21 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1755913521;
+	bh=0zMu4nM/4VvX6uGoWUA7zEEDFO09Zbkb0qQ920m+wtw=;
+	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
+	b=CX64GPWBWTHAHgCEqJqUwXm5LIr/rV1AkxvxDBUhXo2xYRBytNdty1Be2Or9NLwV8
+	 uqTcqW2THkHQXGb7TRaemilgmcRoqmWr5yCsQbmr84r4XFk3C+zDPvJ9+TB9iBAz+y
+	 skyUqVRT/Xt6ZepjyGD57tzqZZ2nw0wcU8GFA1b+kzQrLzE+77iNItEVfdb0k9rlrT
+	 h0j3i/u6ogcxZc1carRGwFzpzeoyxVf3WgYACYOpqeNK8KF3lfvcMnLHYn+1XIgtvx
+	 Ij0lhZmquCTcOdRPs3jonHiaVGwnfWE/8ldqkAbEX0v1no8auNENjEBhLxgkUKpILB
+	 /zzUXkQ55yk5A==
+From: Sasha Levin <sashal@kernel.org>
+To: stable@vger.kernel.org
+Cc: Gui-Dong Han <hanguidong02@gmail.com>,
+	Hans Verkuil <hverkuil@xs4all.nl>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.4.y] media: rainshadow-cec: fix TOCTOU race condition in rain_interrupt()
+Date: Fri, 22 Aug 2025 21:45:18 -0400
+Message-ID: <20250823014519.1670171-1-sashal@kernel.org>
+X-Mailer: git-send-email 2.50.1
+In-Reply-To: <2025082119-december-ranking-b3a3@gregkh>
+References: <2025082119-december-ranking-b3a3@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
+MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
 
+From: Gui-Dong Han <hanguidong02@gmail.com>
 
-The quilt patch titled
-     Subject: mm/memory_hotplug: fix hwpoisoned large folio handling in do_migrate_range
-has been removed from the -mm tree.  Its filename was
-     mm-memory_hotplug-fix-hwpoisoned-large-folio-handling-in-do_migrate_range.patch
+[ Upstream commit 7af160aea26c7dc9e6734d19306128cce156ec40 ]
 
-This patch was dropped because an alternative patch was or shall be merged
+In the interrupt handler rain_interrupt(), the buffer full check on
+rain->buf_len is performed before acquiring rain->buf_lock. This
+creates a Time-of-Check to Time-of-Use (TOCTOU) race condition, as
+rain->buf_len is concurrently accessed and modified in the work
+handler rain_irq_work_handler() under the same lock.
 
-------------------------------------------------------
-From: Jinjiang Tu <tujinjiang@huawei.com>
-Subject: mm/memory_hotplug: fix hwpoisoned large folio handling in do_migrate_range
-Date: Fri, 27 Jun 2025 20:57:47 +0800
+Multiple interrupt invocations can race, with each reading buf_len
+before it becomes full and then proceeding. This can lead to both
+interrupts attempting to write to the buffer, incrementing buf_len
+beyond its capacity (DATA_SIZE) and causing a buffer overflow.
 
-In do_migrate_range(), the hwpoisoned folio may be large folio, which
-can't be handled by unmap_poisoned_folio().
+Fix this bug by moving the spin_lock() to before the buffer full
+check. This ensures that the check and the subsequent buffer modification
+are performed atomically, preventing the race condition. An corresponding
+spin_unlock() is added to the overflow path to correctly release the
+lock.
 
-I can reproduce this issue in qemu after adding delay in memory_failure()
+This possible bug was found by an experimental static analysis tool
+developed by our team.
 
-BUG: kernel NULL pointer dereference, address: 0000000000000000
-Workqueue: kacpi_hotplug acpi_hotplug_work_fn
-RIP: 0010:try_to_unmap_one+0x16a/0xfc0
- <TASK>
- rmap_walk_anon+0xda/0x1f0
- try_to_unmap+0x78/0x80
- ? __pfx_try_to_unmap_one+0x10/0x10
- ? __pfx_folio_not_mapped+0x10/0x10
- ? __pfx_folio_lock_anon_vma_read+0x10/0x10
- unmap_poisoned_folio+0x60/0x140
- do_migrate_range+0x4d1/0x600
- ? slab_memory_callback+0x6a/0x190
- ? notifier_call_chain+0x56/0xb0
- offline_pages+0x3e6/0x460
- memory_subsys_offline+0x130/0x1f0
- device_offline+0xba/0x110
- acpi_bus_offline+0xb7/0x130
- acpi_scan_hot_remove+0x77/0x290
- acpi_device_hotplug+0x1e0/0x240
- acpi_hotplug_work_fn+0x1a/0x30
- process_one_work+0x186/0x340
-
-In this case, just make offline_pages() fail.
-
-Also, do_migrate_range() may be called between memory_failure() setting
-the hwposion flag and isolation of the folio from the lru, so remove
-WARN_ON().
-
-Also, in other places unmap_poisoned_folio() is called when the folio is
-isolated, so obey that in do_migrate_range().
-
-Link: https://lkml.kernel.org/r/20250627125747.3094074-3-tujinjiang@huawei.com
-Fixes: b15c87263a69 ("hwpoison, memory_hotplug: allow hwpoisoned pages to be offlined")
-Signed-off-by: Jinjiang Tu <tujinjiang@huawei.com>
-Cc: David Hildenbrand <david@redhat.com>
-Cc: Kefeng Wang <wangkefeng.wang@huawei.com>
-Cc: Miaohe Lin <linmiaohe@huawei.com>
-Cc: Michal Hocko <mhocko@kernel.org>
-Cc: Oscar Salvador <osalvador@suse.de>
-Cc: <stable@vger.kernel.org>
-Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
+Fixes: 0f314f6c2e77 ("[media] rainshadow-cec: new RainShadow Tech HDMI CEC driver")
+Cc: stable@vger.kernel.org
+Signed-off-by: Gui-Dong Han <hanguidong02@gmail.com>
+Signed-off-by: Hans Verkuil <hverkuil@xs4all.nl>
+[ drivers/media/cec/usb/rainshadow/ => drivers/media/usb/rainshadow-cec/ ]
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
+ drivers/media/usb/rainshadow-cec/rainshadow-cec.c | 3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
- mm/memory_hotplug.c |   21 +++++++++++++--------
- 1 file changed, 13 insertions(+), 8 deletions(-)
-
---- a/mm/memory_hotplug.c~mm-memory_hotplug-fix-hwpoisoned-large-folio-handling-in-do_migrate_range
-+++ a/mm/memory_hotplug.c
-@@ -1791,7 +1791,7 @@ found:
- 	return 0;
- }
- 
--static void do_migrate_range(unsigned long start_pfn, unsigned long end_pfn)
-+static int do_migrate_range(unsigned long start_pfn, unsigned long end_pfn)
+diff --git a/drivers/media/usb/rainshadow-cec/rainshadow-cec.c b/drivers/media/usb/rainshadow-cec/rainshadow-cec.c
+index ee870ea1a886..6f8d6797c614 100644
+--- a/drivers/media/usb/rainshadow-cec/rainshadow-cec.c
++++ b/drivers/media/usb/rainshadow-cec/rainshadow-cec.c
+@@ -171,11 +171,12 @@ static irqreturn_t rain_interrupt(struct serio *serio, unsigned char data,
  {
- 	struct folio *folio;
- 	unsigned long pfn;
-@@ -1815,8 +1815,10 @@ static void do_migrate_range(unsigned lo
- 			pfn = folio_pfn(folio) + folio_nr_pages(folio) - 1;
+ 	struct rain *rain = serio_get_drvdata(serio);
  
- 		if (folio_contain_hwpoisoned_page(folio)) {
--			if (WARN_ON(folio_test_lru(folio)))
--				folio_isolate_lru(folio);
-+			if (folio_test_large(folio) && !folio_test_hugetlb(folio))
-+				goto err_out;
-+			if (folio_test_lru(folio) && !folio_isolate_lru(folio))
-+				goto err_out;
- 			if (folio_mapped(folio)) {
- 				folio_lock(folio);
- 				unmap_poisoned_folio(folio, pfn, false);
-@@ -1873,6 +1875,11 @@ put_folio:
- 			putback_movable_pages(&source);
- 		}
++	spin_lock(&rain->buf_lock);
+ 	if (rain->buf_len == DATA_SIZE) {
++		spin_unlock(&rain->buf_lock);
+ 		dev_warn_once(rain->dev, "buffer overflow\n");
+ 		return IRQ_HANDLED;
  	}
-+	return 0;
-+err_out:
-+	folio_put(folio);
-+	putback_movable_pages(&source);
-+	return -EBUSY;
- }
- 
- static int __init cmdline_parse_movable_node(char *p)
-@@ -2006,11 +2013,9 @@ int offline_pages(unsigned long start_pf
- 
- 			ret = scan_movable_pages(pfn, end_pfn, &pfn);
- 			if (!ret) {
--				/*
--				 * TODO: fatal migration failures should bail
--				 * out
--				 */
--				do_migrate_range(pfn, end_pfn);
-+				ret = do_migrate_range(pfn, end_pfn);
-+				if (ret)
-+					break;
- 			}
- 		} while (!ret);
- 
-_
-
-Patches currently in -mm which might be from tujinjiang@huawei.com are
-
+-	spin_lock(&rain->buf_lock);
+ 	rain->buf_len++;
+ 	rain->buf[rain->buf_wr_idx] = data;
+ 	rain->buf_wr_idx = (rain->buf_wr_idx + 1) & 0xff;
+-- 
+2.50.1
 
 
