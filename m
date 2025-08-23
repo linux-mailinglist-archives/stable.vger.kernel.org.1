@@ -1,128 +1,248 @@
-Return-Path: <stable+bounces-172568-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-172569-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id DF5FCB3278E
-	for <lists+stable@lfdr.de>; Sat, 23 Aug 2025 10:06:45 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id BC34DB327A3
+	for <lists+stable@lfdr.de>; Sat, 23 Aug 2025 10:33:16 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id C1D561BC50E3
-	for <lists+stable@lfdr.de>; Sat, 23 Aug 2025 08:07:05 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 23CBD1C81283
+	for <lists+stable@lfdr.de>; Sat, 23 Aug 2025 08:33:35 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8D6D921ABB0;
-	Sat, 23 Aug 2025 08:06:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id DFD7B23BD04;
+	Sat, 23 Aug 2025 08:33:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ct8/sBl1"
+	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="OFSzcjtf"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pl1-f180.google.com (mail-pl1-f180.google.com [209.85.214.180])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4C3F220299E
-	for <stable@vger.kernel.org>; Sat, 23 Aug 2025 08:06:39 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0B794135A53
+	for <stable@vger.kernel.org>; Sat, 23 Aug 2025 08:33:00 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.180
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755936401; cv=none; b=aPmsbGIOajILPo376RGeLRbciLMPNYwF5TnMUerNB41PQWtwC17UWZODB3OXm/o0OFuXoD7j8+TOFr+BLBVH9yy/dKS8qmpFD1z9rJSCZ20jZTJ6RqvVCI/24+db5RfXWB3KsN61qtcOzTtvceuJlcQQS9VZnmBLc+z/c6Cww2E=
+	t=1755937982; cv=none; b=FOUU7EOIc9DuDvT56eBntZaveWeitzhgq9mITFe9hQIztQ8hWiVQNAMkocIAUXPOPm1W7hNUPQDETX+NUVgY8J5+uJuCWiju2uu5g2pYB9BSVD2DyPlJLbU+o9GH7D2u1sBWBzvU/hyGhwTU2Esbzi0FbK3YM7aTAzjvneXvAH8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1755936401; c=relaxed/simple;
-	bh=dCNaWFNAdE+5FtgM/RPp47vX5hAnBejjT8+8rhmjQ40=;
-	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=QbDR8VBv2o1om+lHkUzVDPR6BSL+G1nHgQKfeE+ifyHUzJiakpigdl5/iw/Hi4p/nboDhsBgNccayAsCUFY/Po/SW8RKAapTbPvS/YWz950UFttyAqvTwDolnNKD1sJsHhxguxZnNi74/xQh850uUgKilCGDF3O5B1/YfScC1Zw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ct8/sBl1; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 57E1CC4CEE7;
-	Sat, 23 Aug 2025 08:06:39 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1755936399;
-	bh=dCNaWFNAdE+5FtgM/RPp47vX5hAnBejjT8+8rhmjQ40=;
-	h=Subject:To:Cc:From:Date:From;
-	b=ct8/sBl1ufqpMpYsAkkUmD2nSeQjdfZ8rVxFyPTje1iOKkkFXuGoghRHxDKd3S9nI
-	 8xx7/1jP3pnq5yCmMqXV1J2cYuLBVKqxGBBJJ2WF6Rpnlh4UX+YD3HcIes06QPn2Zd
-	 iGkv7OB9FMzDkQL5+h76QFql0ytLtvAmk3AJjON0=
-Subject: FAILED: patch "[PATCH] drm/amd/display: Don't overclock DCE 6 by 15%" failed to apply to 6.6-stable tree
-To: timur.kristof@gmail.com,alex.hung@amd.com,alexander.deucher@amd.com,siqueira@igalia.com
-Cc: <stable@vger.kernel.org>
-From: <gregkh@linuxfoundation.org>
-Date: Sat, 23 Aug 2025 10:06:36 +0200
-Message-ID: <2025082336-hasty-pregame-9547@gregkh>
+	s=arc-20240116; t=1755937982; c=relaxed/simple;
+	bh=cC2R7dIC+jmKJ5KWCAUHe4UcJxwQJaOLa1CkUnwlYEg=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=u3Yi/rtY8fvGNIiUJ1GNCjPrxiZoAbER2c68leM5uuByL5wKaiIMWYhOTZ7N/y89ZZPUgZaqNEJgA5u0/stofHNoRvzYwV5teDNKGfxQHbvkjLjBavmnaA8dA5v+6tS0AwAH+1LTgCiTMU1tEZmLzi0eazztG000dVX11Thh5t0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=OFSzcjtf; arc=none smtp.client-ip=209.85.214.180
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
+Received: by mail-pl1-f180.google.com with SMTP id d9443c01a7336-2449978aceaso20536175ad.2
+        for <stable@vger.kernel.org>; Sat, 23 Aug 2025 01:33:00 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=linaro.org; s=google; t=1755937980; x=1756542780; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=upHWeEzdtTZrqoNSv+NWSJs+RM6eMBq+4oXrZP7WELw=;
+        b=OFSzcjtfPvEHPF7nu3sGzvOVIicJu4UJR1dw0A/B33umW7Wfpi8623h2t5Xo3N9P5z
+         wyPkU5wlGkjHlLEiSHu6JuuWJm6juYCc6k9tA7yZbgvN24NawL2zS8cUVAo2tEMNdhMn
+         eJL+rcTDOBqSgC2wogitjf3M0oCyvURlrf+NvyVtIiXpzB+Mt4CJM3gsJ4oNfGb1Zv0T
+         7JIZ8wSYvKVLBUZHAnVZtXqD5S74Tz6ZxpbVolHeQYs2E/SL+zKgTIrTxJJQexK2zhk7
+         Ld6h8I2hPP6PPAN/LZ4PuvNJDLpzBYGvAuMgoQ9Gb8/ajHBWuXI8YshFuo6D4MBN99HW
+         12zA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1755937980; x=1756542780;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=upHWeEzdtTZrqoNSv+NWSJs+RM6eMBq+4oXrZP7WELw=;
+        b=QpL92tAy5mtP8UTWf4qL7gk25hKhEZUWIbzfECsNA2WJKw1Krp/9hzFXwM7JIz4UhH
+         EFJubjfoCbLyGjRUoW58lH4pHxDan35R56shjuefEr9aRkDbYtgoFzJIPWUqRMU+ogcg
+         1Ovv2kWKf5rctZMNz4i6I6P+TPyAGIJ9u0j6epIJY7VO7EA5SV8jQLFz++pr2uHV0Dvn
+         /8FCN74dLMWfCwmeAma+KoMYGq5kdMnAUSAsu8PjeqZV3cHHqvBdO7tbPPZyOlQx7S5h
+         RQdeqx1+gQmZLVTk1BY45L+Q/NiVZEEmmykz3w/58xVg05grMrp2ijysLlVmAfEkQQce
+         1aqA==
+X-Gm-Message-State: AOJu0Yw1EULYJhPUriukd0jy0fTIsVxN1i5Jtu0iak8Vz0NuJT5aPiFh
+	YgznCUDzhx8YpBiHxjdrM3WMcn82U+i6NfzYbD0c75AlRBGzxqnkvkIA/X2TmMRqSiddg/Q7Z59
+	QS+G9jYYfOTjbgGbHAnLdebQTeQeZCz8UCFjPh5jYgA==
+X-Gm-Gg: ASbGncsUqT4uN34vLUfrd06JSj5PHfm6hCVEdn1iiPeRCxdtdAmS2pnrOehIe4bMgbH
+	EqGkXKqYTEEFiKq1nTt3HMHAKVn3dz02FN0NM3Z1pNskJO/tQ38X+0s593kkTqcO8v5eGLTt2Gy
+	g2pb8c/CQsHADvFwQ/GYFhlfau6iZSwp3tMnkeD+220zzVZDyzok/BDWE8G96TEEcdPs/lmlW5n
+	f8yWBPWCCm0E3EASAYCiUGEWfTJlOokQttugn/7
+X-Google-Smtp-Source: AGHT+IEQN4YSKtPymn606DVFVKKtzEvavaQRMuxmngqfsot0SA3jrZ9khNjbXYGtoFrClXENcn7IoJUJduyhb8F4KS8=
+X-Received: by 2002:a17:903:2a8b:b0:240:7753:3bec with SMTP id
+ d9443c01a7336-2462ef98a97mr61538175ad.51.1755937980301; Sat, 23 Aug 2025
+ 01:33:00 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
+References: <20250822123516.780248736@linuxfoundation.org>
+In-Reply-To: <20250822123516.780248736@linuxfoundation.org>
+From: Naresh Kamboju <naresh.kamboju@linaro.org>
+Date: Sat, 23 Aug 2025 14:02:48 +0530
+X-Gm-Features: Ac12FXydinZ-k0JFp2vC7EjM9psfTWKA5t0I3ZApJXylszGwy9_XUiFZWgGwYX8
+Message-ID: <CA+G9fYsNyR2RSUFEn=1v157mtJ3vrL=__vWidYfWrbaYHe6JoA@mail.gmail.com>
+Subject: Re: [PATCH 6.16 0/9] 6.16.3-rc1 review
+To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Cc: stable@vger.kernel.org, patches@lists.linux.dev, 
+	linux-kernel@vger.kernel.org, torvalds@linux-foundation.org, 
+	akpm@linux-foundation.org, linux@roeck-us.net, shuah@kernel.org, 
+	patches@kernelci.org, lkft-triage@lists.linaro.org, pavel@denx.de, 
+	jonathanh@nvidia.com, f.fainelli@gmail.com, sudipm.mukherjee@gmail.com, 
+	srw@sladewatkins.net, rwarsow@gmx.de, conor@kernel.org, hargar@microsoft.com, 
+	broonie@kernel.org, achill@achill.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
+On Fri, 22 Aug 2025 at 18:07, Greg Kroah-Hartman
+<gregkh@linuxfoundation.org> wrote:
+>
+> This is the start of the stable review cycle for the 6.16.3 release.
+> There are 9 patches in this series, all will be posted as a response
+> to this one.  If anyone has any issues with these being applied, please
+> let me know.
+>
+> Responses should be made by Sun, 24 Aug 2025 12:35:08 +0000.
+> Anything received after that time might be too late.
+>
+> The whole patch series can be found in one patch at:
+>         https://www.kernel.org/pub/linux/kernel/v6.x/stable-review/patch-=
+6.16.3-rc1.gz
+> or in the git tree and branch at:
+>         git://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stable=
+-rc.git linux-6.16.y
+> and the diffstat can be found below.
+>
+> thanks,
+>
+> greg k-h
 
-The patch below does not apply to the 6.6-stable tree.
-If someone wants it applied there, or to any other stable or longterm
-tree, then please email the backport, including the original git commit
-id to <stable@vger.kernel.org>.
+Results from Linaro=E2=80=99s test farm.
+No regressions on arm64, arm, x86_64, and i386.
 
-To reproduce the conflict and resubmit, you may use the following commands:
+Tested-by: Linux Kernel Functional Testing <lkft@linaro.org>
 
-git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-6.6.y
-git checkout FETCH_HEAD
-git cherry-pick -x cb7b7ae53b557d168b4af5cd8549f3eff920bfb5
-# <resolve conflicts, build, test, etc.>
-git commit -s
-git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2025082336-hasty-pregame-9547@gregkh' --subject-prefix 'PATCH 6.6.y' HEAD^..
+NOTE:
+The reported warning has been resolved in this review cycle.
+WARNING: fs/jbd2/transaction.c:334 at start_this_handle
 
-Possible dependencies:
+## Build
+* kernel: 6.16.3-rc1
+* git: https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stable-=
+rc.git
+* git commit: 3fb8628191b4a7d912baf880840804056f3f44ad
+* git describe: v6.16.2-10-g3fb8628191b4
+* test details:
+https://qa-reports.linaro.org/lkft/linux-stable-rc-linux-6.16.y/build/v6.16=
+.2-10-g3fb8628191b4
 
+## Test Regressions (compared to v6.16-1186-gb81166f7d590)
 
+## Metric Regressions (compared to v6.16-1186-gb81166f7d590)
 
-thanks,
+## Test Fixes (compared to v6.16-1186-gb81166f7d590)
 
-greg k-h
+## Metric Fixes (compared to v6.16-1186-gb81166f7d590)
 
------------------- original commit in Linus's tree ------------------
+## Test result summary
+total: 348595, pass: 321612, fail: 6867, skip: 20116, xfail: 0
 
-From cb7b7ae53b557d168b4af5cd8549f3eff920bfb5 Mon Sep 17 00:00:00 2001
-From: =?UTF-8?q?Timur=20Krist=C3=B3f?= <timur.kristof@gmail.com>
-Date: Thu, 31 Jul 2025 11:43:46 +0200
-Subject: [PATCH] drm/amd/display: Don't overclock DCE 6 by 15%
-MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
+## Build Summary
+* arc: 5 total, 5 passed, 0 failed
+* arm: 139 total, 138 passed, 1 failed
+* arm64: 57 total, 56 passed, 1 failed
+* i386: 18 total, 18 passed, 0 failed
+* mips: 34 total, 27 passed, 7 failed
+* parisc: 4 total, 4 passed, 0 failed
+* powerpc: 40 total, 39 passed, 1 failed
+* riscv: 25 total, 24 passed, 1 failed
+* s390: 22 total, 22 passed, 0 failed
+* sh: 5 total, 5 passed, 0 failed
+* sparc: 4 total, 3 passed, 1 failed
+* x86_64: 49 total, 48 passed, 1 failed
 
-The extra 15% clock was added as a workaround for a Polaris issue
-which uses DCE 11, and should not have been used on DCE 6 which
-is already hardcoded to the highest possible display clock.
-Unfortunately, the extra 15% was mistakenly copied and kept
-even on code paths which don't affect Polaris.
+## Test suites summary
+* boot
+* commands
+* kselftest-arm64
+* kselftest-breakpoints
+* kselftest-capabilities
+* kselftest-cgroup
+* kselftest-clone3
+* kselftest-core
+* kselftest-cpu-hotplug
+* kselftest-cpufreq
+* kselftest-efivarfs
+* kselftest-exec
+* kselftest-fpu
+* kselftest-ftrace
+* kselftest-futex
+* kselftest-gpio
+* kselftest-intel_pstate
+* kselftest-ipc
+* kselftest-kcmp
+* kselftest-kvm
+* kselftest-livepatch
+* kselftest-membarrier
+* kselftest-memfd
+* kselftest-mincore
+* kselftest-mm
+* kselftest-mqueue
+* kselftest-net
+* kselftest-net-mptcp
+* kselftest-openat2
+* kselftest-ptrace
+* kselftest-rseq
+* kselftest-rtc
+* kselftest-rust
+* kselftest-seccomp
+* kselftest-sigaltstack
+* kselftest-size
+* kselftest-tc-testing
+* kselftest-timers
+* kselftest-tmpfs
+* kselftest-tpm2
+* kselftest-user_events
+* kselftest-vDSO
+* kselftest-x86
+* kunit
+* kvm-unit-tests
+* lava
+* libgpiod
+* libhugetlbfs
+* log-parser-boot
+* log-parser-build-clang
+* log-parser-build-gcc
+* log-parser-test
+* ltp-capability
+* ltp-commands
+* ltp-containers
+* ltp-controllers
+* ltp-cpuhotplug
+* ltp-crypto
+* ltp-cve
+* ltp-dio
+* ltp-fcntl-locktests
+* ltp-fs
+* ltp-fs_bind
+* ltp-fs_perms_simple
+* ltp-hugetlb
+* ltp-math
+* ltp-mm
+* ltp-nptl
+* ltp-pty
+* ltp-sched
+* ltp-smoke
+* ltp-syscalls
+* ltp-tracing
+* modules
+* perf
+* rcutorture
+* rt-tests-cyclicdeadline
+* rt-tests-pi-stress
+* rt-tests-pmqtest
+* rt-tests-rt-migrate-test
+* rt-tests-signaltest
 
-This commit fixes that and also adds a check to make sure
-not to exceed the maximum DCE 6 display clock.
-
-Fixes: 8cd61c313d8b ("drm/amd/display: Raise dispclk value for Polaris")
-Fixes: dc88b4a684d2 ("drm/amd/display: make clk mgr soc specific")
-Fixes: 3ecb3b794e2c ("drm/amd/display: dc/clk_mgr: add support for SI parts (v2)")
-Signed-off-by: Timur Kristóf <timur.kristof@gmail.com>
-Acked-by: Alex Deucher <alexander.deucher@amd.com>
-Reviewed-by: Rodrigo Siqueira <siqueira@igalia.com>
-Reviewed-by: Alex Hung <alex.hung@amd.com>
-Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
-(cherry picked from commit 427980c1cbd22bb256b9385f5ce73c0937562408)
-Cc: stable@vger.kernel.org
-
-diff --git a/drivers/gpu/drm/amd/display/dc/clk_mgr/dce60/dce60_clk_mgr.c b/drivers/gpu/drm/amd/display/dc/clk_mgr/dce60/dce60_clk_mgr.c
-index 0267644717b2..cfd7309f2c6a 100644
---- a/drivers/gpu/drm/amd/display/dc/clk_mgr/dce60/dce60_clk_mgr.c
-+++ b/drivers/gpu/drm/amd/display/dc/clk_mgr/dce60/dce60_clk_mgr.c
-@@ -123,11 +123,9 @@ static void dce60_update_clocks(struct clk_mgr *clk_mgr_base,
- {
- 	struct clk_mgr_internal *clk_mgr_dce = TO_CLK_MGR_INTERNAL(clk_mgr_base);
- 	struct dm_pp_power_level_change_request level_change_req;
--	int patched_disp_clk = context->bw_ctx.bw.dce.dispclk_khz;
--
--	/*TODO: W/A for dal3 linux, investigate why this works */
--	if (!clk_mgr_dce->dfs_bypass_active)
--		patched_disp_clk = patched_disp_clk * 115 / 100;
-+	const int max_disp_clk =
-+		clk_mgr_dce->max_clks_by_state[DM_PP_CLOCKS_STATE_PERFORMANCE].display_clk_khz;
-+	int patched_disp_clk = MIN(max_disp_clk, context->bw_ctx.bw.dce.dispclk_khz);
- 
- 	level_change_req.power_level = dce_get_required_clocks_state(clk_mgr_base, context);
- 	/* get max clock state from PPLIB */
-
+--
+Linaro LKFT
+https://lkft.linaro.org
 
