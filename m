@@ -1,125 +1,99 @@
-Return-Path: <stable+bounces-172525-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-172526-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id DA4F7B32569
-	for <lists+stable@lfdr.de>; Sat, 23 Aug 2025 01:28:09 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id EF38EB325BF
+	for <lists+stable@lfdr.de>; Sat, 23 Aug 2025 02:22:20 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 7314F7AD707
-	for <lists+stable@lfdr.de>; Fri, 22 Aug 2025 23:26:31 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id C85631CE0588
+	for <lists+stable@lfdr.de>; Sat, 23 Aug 2025 00:22:40 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6594D2C11CA;
-	Fri, 22 Aug 2025 23:27:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D956015E8B;
+	Sat, 23 Aug 2025 00:22:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=googlemail.com header.i=@googlemail.com header.b="Xkf6imxC"
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="FOj1DAcY"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-wr1-f49.google.com (mail-wr1-f49.google.com [209.85.221.49])
+Received: from mail-pl1-f174.google.com (mail-pl1-f174.google.com [209.85.214.174])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3DB4A2D3A9E;
-	Fri, 22 Aug 2025 23:27:56 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.49
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 613D42F37
+	for <stable@vger.kernel.org>; Sat, 23 Aug 2025 00:22:14 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.174
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755905279; cv=none; b=c8N6wDagH5LsygfNm5pOoVEAbDG5hjz38cXkJC56t9UnJW3AbXJEXkDqFRSaLWPqu0ixvdUHfXdIsfyW88z/NmxS5e9kBI9B3y54NMkZzIjYtegj0WEJwf/HIHpmA8RGWxdTV6O3XcytITqDYhvPbeUb4oSz8GTUUAr5q8L0kKs=
+	t=1755908535; cv=none; b=iEomlCb2mHE6dY2NUYDBnanoYFvo9FbPfleTChdmyiRY0Y4ThLXwVhawYSjk5N0z3+6UIu1u29gSqHqXrKbkbsjnORhRm9+ejkO8wXIly4nTr970aDUllVc3aOAk9y2zhg2DaENjc62fWCziY2nyTmtSK6rHajmKNcNUGVjRJlc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1755905279; c=relaxed/simple;
-	bh=Dtbshtfd59+ACburoBjaQs73/LoWpyMIikfBId5SyFA=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=VGW4mvs/gMJoepFwqUDaZgtgRqoW5+5FSkLH9JdpJbNxh2MCjwDdF6I5bEdiOMKGXcmHdjtukgDljsPSrpGZbSVNWMZP/npLqQjvZ0XXdzclLmjgOUfG4ghWiwvtq/VsuXkPNv2lopSpcpa9Uiecd81MoVV/MLLwqBn81DSNprQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=googlemail.com; spf=pass smtp.mailfrom=googlemail.com; dkim=pass (2048-bit key) header.d=googlemail.com header.i=@googlemail.com header.b=Xkf6imxC; arc=none smtp.client-ip=209.85.221.49
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=googlemail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=googlemail.com
-Received: by mail-wr1-f49.google.com with SMTP id ffacd0b85a97d-3c68ac7e238so452471f8f.1;
-        Fri, 22 Aug 2025 16:27:56 -0700 (PDT)
+	s=arc-20240116; t=1755908535; c=relaxed/simple;
+	bh=gGE5KmQoDbr4rO3mGEwTnDCGiVKhEha5+3aDG7iVuEw=;
+	h=Date:From:To:Subject:Message-ID:MIME-Version:Content-Type:
+	 Content-Disposition; b=TpFf4MITDgA9FZaT6yuqjR2VkeQsxQQ0yaogMHELePdDHq1RWRaKXvhLNgL/O7LPtSN+MHURnVMJ/JyAwx+bMptrxNQAEmD0Bviwb6YQKtX6zny2HUkKtfXff5B91/U8whIy4WgywGbTdOuNbsb5n+lCtVfy5vYfbcJFAMA20sc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=FOj1DAcY; arc=none smtp.client-ip=209.85.214.174
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
+Received: by mail-pl1-f174.google.com with SMTP id d9443c01a7336-246013de800so68805ad.0
+        for <stable@vger.kernel.org>; Fri, 22 Aug 2025 17:22:14 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=googlemail.com; s=20230601; t=1755905275; x=1756510075; darn=vger.kernel.org;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
+        d=google.com; s=20230601; t=1755908533; x=1756513333; darn=vger.kernel.org;
+        h=content-disposition:mime-version:message-id:subject:to:from:date
          :from:to:cc:subject:date:message-id:reply-to;
-        bh=k1gpNFvn5HCFRwIuldpjghpNbvpOxRC8cn9/8F0Qqgs=;
-        b=Xkf6imxCYYsqSySZ7kenoXJcCSBsbNOXRNstNrojSUYMJY2CPYgLaQmtxLApbhFfly
-         qHXXX6VP+7OruXrcnaPEPW8a4pbE7A8Ut1tiIhnFYRksfFZJsifj6MHSzrAfST8sGI8k
-         4R1HJ9Ev5Avia7sZtQ+IIGGjETYV+XGZjm1EjqevZUuErv42UhyCSskbC+edSNOMsL1C
-         dYU1uWbux3HIueFItAaLys1zxeGdw/jwbhAqqpYLTxin/h5b8KsxmmFSIKxX3M19CSsY
-         b05Rc48NcxyoOqcWgBpluEsmaROycfb6YS+s1CDwSW+6iTFyl/xMGM0fkn/S2vOnvhTJ
-         IAUA==
+        bh=gGE5KmQoDbr4rO3mGEwTnDCGiVKhEha5+3aDG7iVuEw=;
+        b=FOj1DAcYwhUbCCDC0n/uan20dwjIYB08xayMuBhULw/RSxW0HPzNw7n7csv5to0ZOD
+         G6XAQWjvAFPxzFyLvzAuX91APHEN4b+B5wHyWCprh+u1ReYaQ7KeQcljs8z38a39258+
+         EzQvn5zJ+rWfUGD3Rh/s+lEmBt9TRySSFhK+3VdNOI+BJm1ocGDwDWTL8g4oef/QsfvV
+         QjJPbp4XPmhL961KbTBhGp+MtxhBn11ukILLhjIJboIeK1JiHWEng6JFGoTmc2ljI3vb
+         8lwjYRz2SST2EGOE4KbXEP+zYlaOljacYmqcrIgzrj9e5x4bTWJXQE94kWXk6qX81lul
+         4tSw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1755905275; x=1756510075;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
+        d=1e100.net; s=20230601; t=1755908533; x=1756513333;
+        h=content-disposition:mime-version:message-id:subject:to:from:date
          :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=k1gpNFvn5HCFRwIuldpjghpNbvpOxRC8cn9/8F0Qqgs=;
-        b=WKV3DBLSDtcIeGC4CpY0Fj31f2sZfmMSqFb8zydt2t5Z7N4Uv6fjxhiELe0VfolBqy
-         b9sTWIcLUHdYue6zZ93ifEwn2RBbCHEvJMECI/mNk5hpQE+s1jy/TXxcemn8xyybkFUD
-         6Hqgm+6ej+6VOTEwNU1VP/DKxu2IT2aMbPjd8Zect3hPCCO6YqwKpsUSKsvm0Ltwfobn
-         NzizLYKW5GxAtl1DjPyCpBx8F6UNg/hpOTVpZpNBtyytOD+KeQEwWrm9sin6XWBNgWnE
-         llA6+h8jPSobmeZEU9SlV59Ji0ztLwpSOYLPZXx8oYgk9bD6BK0UMgtMQz6LID7g388e
-         YyNw==
-X-Forwarded-Encrypted: i=1; AJvYcCUvdNx2bGjMOK/i3KvMrTiDrZp/3fOkjZN4pTTNxjjLHMF+NoOoXs+mfeBmiFYjs99Q5adfWNNCm29LwWo=@vger.kernel.org, AJvYcCWVZXADFY3iY6r3rhZt+AeNdIQTLZybVfvqenzpqRaQ3Sotie2zUEAKoV/nKESsx6tQOvPDwYHC@vger.kernel.org
-X-Gm-Message-State: AOJu0YxAHM7oPbc4W0Pmz4zyTfEbxIgFdS5iOyQFuTmhXMhkUBzECm+y
-	Lh2tn8SwvMyVI9sttTUJ/+Ei1X+kv+S5TzaD5gfNj3v7dmAQMnqIiPw=
-X-Gm-Gg: ASbGncte2ncAHWKKHSc/IxeQ9mjMD0hZREi+YB4lBrpuAergbCOkEu+SZmL9atcHebh
-	ujFXRf95RkCXJiwEkCciv3uSs7Vb3Tk0TRozyP1EHjlCtoqnFx+zqC23zuCQnhda/ubrKMt7RTj
-	EU83741w4FcxuraRqcwTGC1Iu0xbVrLcE70fvJ72aR/AUaz6lonUCSW8AIpfS6vSQgt6a7dHM9i
-	ItZT01992rZx4vROVpR//Xj/BGHrGXT1Ms03LzO2Er5dAINwRVATb5sEQNPYXqNxOH3CSSMb4XJ
-	fL0VFnq9h2L5SD/TNfsNLtUtT8u5scb51rmfYWumH0kstXy1cA1JW1k4CBxIGV4YRKMzq9fXk6l
-	3txEylzbWlpj+DAZ+pYpdlPfiag0Ndz1xO63WaRnG0se7QnntFBRph7AcBEfWg+qgJpbFCzOT34
-	FEzJv3mch/
-X-Google-Smtp-Source: AGHT+IForz6W8J+AT6PAiCEWl7L36/ArwT8KQw87Xw+3heLnbXHk0yiBNL84FscOsiQA1vM902L9tQ==
-X-Received: by 2002:a05:6000:4387:b0:3bb:bd05:7bef with SMTP id ffacd0b85a97d-3c5dbf69bfbmr3843292f8f.24.1755905275241;
-        Fri, 22 Aug 2025 16:27:55 -0700 (PDT)
-Received: from [192.168.1.3] (p5b057523.dip0.t-ipconnect.de. [91.5.117.35])
-        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-3c711211cbcsm1171217f8f.31.2025.08.22.16.27.54
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Fri, 22 Aug 2025 16:27:54 -0700 (PDT)
-Message-ID: <9f68aadd-b0dc-403e-90d8-eedc018267bd@googlemail.com>
-Date: Sat, 23 Aug 2025 01:27:53 +0200
+        bh=gGE5KmQoDbr4rO3mGEwTnDCGiVKhEha5+3aDG7iVuEw=;
+        b=OsrVdqTEH3QM1eBdcoGZz/d6BDZORyBzAFlmJ8zCpRkqDsW2mF0MsJkU5QSxS2Zcri
+         WNnve1V+cZ9Vm0njlXF26AQGAwEm1aa3YGLr7hywL5fmvyyyRfXVnAjVUJRAliJ4tfPD
+         6jQzmZyHd5Sj6aOPJwwGtI+y6b5tMFWIBtkVJjj24iOYZSR07f6XC4HYD/ZzFHggtcZR
+         S1z8EVmYKcz/wYCpQ82tKYieDejFepAbAxjLvlwdTTOOM6W1E3UyKn3C/Oy/zDZzJp5v
+         Gudrh88G5F7yDBV8bltXXdEnDwM9DjhZQSET0F2sywHAw4QX+Rnn2Y6FrHWArH7sQroG
+         8FQw==
+X-Gm-Message-State: AOJu0YwbJY4p6VQnMbYGeDBKroImXpjru9YhI/s8YyGLiDftVXPrNguL
+	y7VbpbkgvLAMHkxxHahUHrTMAc37Bjl8xqC2qkwsSrvvRf6Z9S3OOZEFMkIGflG+Yu9GF7QePHz
+	w1dAIHQ==
+X-Gm-Gg: ASbGnctgE+pveKJF5Pdjvl6vIyCNPOUdY3TbO0itZQgMDZzHrNHkQjhp1cz1t3/dJTe
+	8CUK7cp0aKe6nokP6dwJP5bFs2KactXjSNRdFtlF806KZ3blHBa2hIe7geoYliftc+FYcOM//6u
+	4NcQ/4SKOySnRyOHX1hMGiLorEYfiuKJsA39lklxG6Q1fSzJ/nLUMziDO9vabsntM/TRy0lUVW8
+	QEA3/2MIr6eNheHA2+YWVj7rGBnYJK/UY/6RvN+fiIEJNJMuFpTVtP+DJFXaz0N1zKVE7gmiYXE
+	kB1Q6FJAa3GX3vmKODsMHTWj9i7Rp4Ko6zAuMJ06M3YRUhCSfVsedez4Ak2k0iYmNHnrt4D1X9o
+	4I9FiQDTsHocINOwV8hfe1JEsAPRSJom6jNHAKrTZTKTXSkjfAYNul08vZOz2Aib9NSba86NjPo
+	0=
+X-Google-Smtp-Source: AGHT+IFTP4ho17qEdomAPvbNovCOU/J8Y57clsIJUxhqGG8ZNQgFMy7ogqUt+aPb1wssVf8Fowoj1g==
+X-Received: by 2002:a17:902:c408:b0:240:a4b5:fe0d with SMTP id d9443c01a7336-2466f9e2d9emr1802925ad.6.1755908532919;
+        Fri, 22 Aug 2025 17:22:12 -0700 (PDT)
+Received: from google.com (57.23.105.34.bc.googleusercontent.com. [34.105.23.57])
+        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-7704025ef80sm973410b3a.108.2025.08.22.17.22.11
+        for <stable@vger.kernel.org>
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Fri, 22 Aug 2025 17:22:12 -0700 (PDT)
+Date: Fri, 22 Aug 2025 17:22:08 -0700
+From: Igor Pylypiv <ipylypiv@google.com>
+To: stable@vger.kernel.org
+Subject: Backport "scsi: core: Fix command pass through retry regression" to
+ linux-6.12.y
+Message-ID: <aKkJsOJMKzOT-kqu@google.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Betterbird (Windows)
-Subject: Re: [PATCH 6.16 0/9] 6.16.3-rc1 review
-To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>, stable@vger.kernel.org
-Cc: patches@lists.linux.dev, linux-kernel@vger.kernel.org,
- torvalds@linux-foundation.org, akpm@linux-foundation.org,
- linux@roeck-us.net, shuah@kernel.org, patches@kernelci.org,
- lkft-triage@lists.linaro.org, pavel@denx.de, jonathanh@nvidia.com,
- f.fainelli@gmail.com, sudipm.mukherjee@gmail.com, srw@sladewatkins.net,
- rwarsow@gmx.de, conor@kernel.org, hargar@microsoft.com, broonie@kernel.org,
- achill@achill.org
-References: <20250822123516.780248736@linuxfoundation.org>
-Content-Language: de-DE
-From: Peter Schneider <pschneider1968@googlemail.com>
-In-Reply-To: <20250822123516.780248736@linuxfoundation.org>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
 
-Am 22.08.2025 um 14:37 schrieb Greg Kroah-Hartman:
-> This is the start of the stable review cycle for the 6.16.3 release.
-> There are 9 patches in this series, all will be posted as a response
-> to this one.  If anyone has any issues with these being applied, please
-> let me know.
+Please backport commit 8604f633f5937 ("scsi: core: Fix command
+pass through retry regression") to linux-6.12.y. The patch fixes
+a performance regression for many SCSI devices. Without the fix,
+SCSI layer needlessly retries pass through commands that completed
+successfully.
 
-Builds, boots and works on my 2-socket Ivy Bridge Xeon E5-2697 v2 server. No dmesg oddities or regressions found.
-
-Tested-by: Peter Schneider <pschneider1968@googlemail.com>
-
-
-Beste Grüße,
-Peter Schneider
-
--- 
-Climb the mountain not to plant your flag, but to embrace the challenge,
-enjoy the air and behold the view. Climb it so you can see the world,
-not so the world can see you.                    -- David McCullough Jr.
-
-OpenPGP:  0xA3828BD796CCE11A8CADE8866E3A92C92C3FF244
-Download: https://www.peters-netzplatz.de/download/pschneider1968_pub.asc
-https://keys.mailvelope.com/pks/lookup?op=get&search=pschneider1968@googlemail.com
-https://keys.mailvelope.com/pks/lookup?op=get&search=pschneider1968@gmail.com
+Thank you!
+Igor
 
