@@ -1,48 +1,48 @@
-Return-Path: <stable+bounces-172560-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-172561-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id BA268B3277C
-	for <lists+stable@lfdr.de>; Sat, 23 Aug 2025 09:53:36 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 24C98B32778
+	for <lists+stable@lfdr.de>; Sat, 23 Aug 2025 09:52:56 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 389BC176342
-	for <lists+stable@lfdr.de>; Sat, 23 Aug 2025 07:52:11 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id DE7136880D4
+	for <lists+stable@lfdr.de>; Sat, 23 Aug 2025 07:52:13 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0519922FAF8;
-	Sat, 23 Aug 2025 07:51:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0C20E21930A;
+	Sat, 23 Aug 2025 07:52:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="DSv4Ifsg"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="TgBDggrg"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id ADC1122F762
-	for <stable@vger.kernel.org>; Sat, 23 Aug 2025 07:51:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BC2D21DE4C4
+	for <stable@vger.kernel.org>; Sat, 23 Aug 2025 07:52:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755935511; cv=none; b=PpPiNR8cEFas0CzHLrJ7oYxA0gsbroY4yH88NUX+MNfUMXhKItFDQQivMNHsKIK2skuz8oFPxX4sIyHX+hnFHiEbP6PWkWxv8qcSsZlV2nmMW6tAP583U9EG3TyvMr8f1fbkha6kC2VcPFkEgODaYVS9PKGMy6OKYpsOICi79bo=
+	t=1755935528; cv=none; b=bE2j7sVI0ZGDQNJ2EG7TfM/oHORBhk5FClKCIx1TQPQdi2580BeVoTU1sSKkaQR0zwdv135jsJrfuTwMvOfl4m6b4hgVpdp0wuwgxFs94xamKjR5Q5hvgQv5begkBo11StMoty1SIvULFxt+/4DMXb0G6Ao+B7Ap19siFrjrlnA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1755935511; c=relaxed/simple;
-	bh=SBlhUaMvxw3+gM6W7Eb17wURWygBgsTaQBPUUBWV7lY=;
-	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=iyDDUzi9oHiGcaBLtfa4fVvyI6wWY2Ps1bjtDmaGWAPJUam4IBRP2dXH2aeVMFNT5WpaoT5rQM7PdsH9oYekAwAdG4GbPxnaKcvSavYG1RJpvDD7jtqgcVhziPkkqtWRcGOjffKln92t+bns/RdPVj6umb0DgNssUgi7AEPHIZs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=DSv4Ifsg; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C9A39C4CEF1;
-	Sat, 23 Aug 2025 07:51:50 +0000 (UTC)
+	s=arc-20240116; t=1755935528; c=relaxed/simple;
+	bh=HcHvhqp9G+FlH/EH+UIe2QXytwiWOB3xT33CFk7Ryik=;
+	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=XPBKRYosmvUfBpiqPTvQrbwqtbVK3LGQH1uHUaxSef+QqOxB1fZCooj6lZVASQPr/Oz5ACZqWRNJKHGSfFm4UadUNHIqbSITbwwF4+kC2oSzM2m11nNzvDli6FaglPIipL5l/GehbN6DXO/3AK6XN1WSaQdSS1GwTl68Q3npN9A=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=TgBDggrg; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id DDE3FC4CEE7;
+	Sat, 23 Aug 2025 07:52:07 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1755935511;
-	bh=SBlhUaMvxw3+gM6W7Eb17wURWygBgsTaQBPUUBWV7lY=;
+	s=korg; t=1755935528;
+	bh=HcHvhqp9G+FlH/EH+UIe2QXytwiWOB3xT33CFk7Ryik=;
 	h=Subject:To:Cc:From:Date:From;
-	b=DSv4IfsgQ10rILdU5sVRmXBJ7FLRov7Q4Kcvri8JL9VGUmiGPLnUub54HnISdhTv/
-	 tKQaF5s3vvanYJKFlc979QHBRKabcLTgtM9QlPUsQjfeX7A+TIYF7g74xoj7xkpEEi
-	 BrHcPPfafc3fo1CJVzHZtLj6saZfLUDZNZE5OLuM=
-Subject: FAILED: patch "[PATCH] drm/i915/lnl+/tc: Fix handling of an enabled/disconnected" failed to apply to 6.12-stable tree
-To: imre.deak@intel.com,charlton.lin@intel.com,jani.nikula@intel.com,khaled.almahallawy@intel.com,luciano.coelho@intel.com,mika.kahola@intel.com,tursulin@ursulin.net
+	b=TgBDggrg30zq8PW5mxbQC17Y9HqWlG8B86aT91IFsSeFlOTWyW6SSnPfTsgvo8lIa
+	 bUtgGlm5d5B1HD+VemceFLjio+AyAbnAaBdiNyAuuI8wbO9KSGi2tIMKNe1qXE+n/H
+	 VsAnx29m8zJdPGjibqOWUGE+XT6ssJOYeYvj5kKs=
+Subject: FAILED: patch "[PATCH] drm/i915/icl+/tc: Cache the max lane count value" failed to apply to 6.12-stable tree
+To: imre.deak@intel.com,charlton.lin@intel.com,khaled.almahallawy@intel.com,mika.kahola@intel.com,tursulin@ursulin.net
 Cc: <stable@vger.kernel.org>
 From: <gregkh@linuxfoundation.org>
-Date: Sat, 23 Aug 2025 09:51:47 +0200
-Message-ID: <2025082347-portside-bulb-25f5@gregkh>
+Date: Sat, 23 Aug 2025 09:52:05 +0200
+Message-ID: <2025082305-reappoint-annotate-8587@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -62,10 +62,10 @@ To reproduce the conflict and resubmit, you may use the following commands:
 
 git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-6.12.y
 git checkout FETCH_HEAD
-git cherry-pick -x f52d6aa98379842fc255d93282655566f2114e0c
+git cherry-pick -x 5fd35236546abe780eaadb7561e09953719d4fc3
 # <resolve conflicts, build, test, etc.>
 git commit -s
-git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2025082347-portside-bulb-25f5@gregkh' --subject-prefix 'PATCH 6.12.y' HEAD^..
+git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2025082305-reappoint-annotate-8587@gregkh' --subject-prefix 'PATCH 6.12.y' HEAD^..
 
 Possible dependencies:
 
@@ -77,100 +77,189 @@ greg k-h
 
 ------------------ original commit in Linus's tree ------------------
 
-From f52d6aa98379842fc255d93282655566f2114e0c Mon Sep 17 00:00:00 2001
+From 5fd35236546abe780eaadb7561e09953719d4fc3 Mon Sep 17 00:00:00 2001
 From: Imre Deak <imre.deak@intel.com>
-Date: Mon, 11 Aug 2025 11:01:48 +0300
-Subject: [PATCH] drm/i915/lnl+/tc: Fix handling of an enabled/disconnected
- dp-alt sink
+Date: Mon, 11 Aug 2025 11:01:49 +0300
+Subject: [PATCH] drm/i915/icl+/tc: Cache the max lane count value
 
-The TypeC PHY HW readout during driver loading and system resume
-determines which TypeC mode the PHY is in (legacy/DP-alt/TBT-alt) and
-whether the PHY is connected, based on the PHY's Owned and Ready flags.
-For the PHY to be in DP-alt or legacy mode and for the PHY to be in the
-connected state in these modes, both the Owned (set by the BIOS/driver)
-and the Ready (set by the HW) flags should be set.
+The PHY's pin assignment value in the TCSS_DDI_STATUS register - as set
+by the HW/FW based on the connected DP-alt sink's TypeC/PD pin
+assignment negotiation - gets cleared by the HW/FW on LNL+ as soon as
+the sink gets disconnected, even if the PHY ownership got acquired
+already by the driver (and hence the PHY itself is still connected and
+used by the display). This is similar to how the PHY Ready flag gets
+cleared on LNL+ in the same register.
 
-On ICL-MTL the HW kept the PHY's Ready flag set after the driver
-connected the PHY by acquiring the PHY ownership (by setting the Owned
-flag), until the driver disconnected the PHY by releasing the PHY
-ownership (by clearing the Owned flag). On LNL+ this has changed, in
-that the HW clears the Ready flag as soon as the sink gets disconnected,
-even if the PHY ownership was acquired already and hence the PHY is
-being used by the display.
+To be able to query the max lane count value on LNL+ - which is based on
+the above pin assignment - at all times even after the sink gets
+disconnected, the max lane count must be determined and cached during
+the PHY's HW readout and connect sequences. Do that here, leaving the
+actual use of the cached value to a follow-up change.
 
-When inheriting the HW state from BIOS for a PHY connected in DP-alt
-mode on which the sink got disconnected - i.e. in a case where the sink
-was connected while BIOS/GOP was running and so the sink got enabled
-connecting the PHY, but the user disconnected the sink by the time the
-driver loaded - the PHY Owned but not Ready state must be accounted for
-on LNL+ according to the above. Do that by assuming on LNL+ that the PHY
-is connected in DP-alt mode whenever the PHY Owned flag is set,
-regardless of the PHY Ready flag.
+v2: Don't read out the pin configuration if the PHY is disconnected.
 
-This fixes a problem on LNL+, where the PHY TypeC mode / connected state
-was detected incorrectly for a DP-alt sink, which got connected and then
-disconnected by the user in the above way.
-
-v2: Rename tc_phy_in_legacy_or_dp_alt_mode() to tc_phy_owned_by_display().
-    (Luca, Jani)
-
-Cc: Jani Nikula <jani.nikula@intel.com>
 Cc: stable@vger.kernel.org # v6.8+
 Reported-by: Charlton Lin <charlton.lin@intel.com>
 Tested-by: Khaled Almahallawy <khaled.almahallawy@intel.com>
 Reviewed-by: Mika Kahola <mika.kahola@intel.com>
-Reviewed-by: Luca Coelho <luciano.coelho@intel.com>
-[Imre: Add one-liner function documentation for tc_phy_owned_by_display()]
 Signed-off-by: Imre Deak <imre.deak@intel.com>
-Link: https://lore.kernel.org/r/20250811080152.906216-2-imre.deak@intel.com
-(cherry picked from commit 89f4b196ee4b056e0e8c179b247b29d4a71a4e7e)
+Link: https://lore.kernel.org/r/20250811080152.906216-3-imre.deak@intel.com
+(cherry picked from commit 3e32438fc406761f81b1928d210b3d2a5e7501a0)
 Signed-off-by: Tvrtko Ursulin <tursulin@ursulin.net>
 
 diff --git a/drivers/gpu/drm/i915/display/intel_tc.c b/drivers/gpu/drm/i915/display/intel_tc.c
-index 3bc57579fe53..8208539bfe66 100644
+index 8208539bfe66..34435c4fc280 100644
 --- a/drivers/gpu/drm/i915/display/intel_tc.c
 +++ b/drivers/gpu/drm/i915/display/intel_tc.c
-@@ -1226,14 +1226,19 @@ static void tc_phy_get_hw_state(struct intel_tc_port *tc)
- 	tc->phy_ops->get_hw_state(tc);
+@@ -66,6 +66,7 @@ struct intel_tc_port {
+ 	enum tc_port_mode init_mode;
+ 	enum phy_fia phy_fia;
+ 	u8 phy_fia_idx;
++	u8 max_lane_count;
+ };
+ 
+ static enum intel_display_power_domain
+@@ -365,12 +366,12 @@ static int intel_tc_port_get_max_lane_count(struct intel_digital_port *dig_port)
+ 	}
  }
  
--static bool tc_phy_is_ready_and_owned(struct intel_tc_port *tc,
--				      bool phy_is_ready, bool phy_is_owned)
-+/* Is the PHY owned by display i.e. is it in legacy or DP-alt mode? */
-+static bool tc_phy_owned_by_display(struct intel_tc_port *tc,
-+				    bool phy_is_ready, bool phy_is_owned)
+-int intel_tc_port_max_lane_count(struct intel_digital_port *dig_port)
++static int get_max_lane_count(struct intel_tc_port *tc)
  {
- 	struct intel_display *display = to_intel_display(tc->dig_port);
+-	struct intel_display *display = to_intel_display(dig_port);
+-	struct intel_tc_port *tc = to_tc_port(dig_port);
++	struct intel_display *display = to_intel_display(tc->dig_port);
++	struct intel_digital_port *dig_port = tc->dig_port;
  
--	drm_WARN_ON(display->drm, phy_is_owned && !phy_is_ready);
-+	if (DISPLAY_VER(display) < 20) {
-+		drm_WARN_ON(display->drm, phy_is_owned && !phy_is_ready);
+-	if (!intel_encoder_is_tc(&dig_port->base) || tc->mode != TC_PORT_DP_ALT)
++	if (tc->mode != TC_PORT_DP_ALT)
+ 		return 4;
  
--	return phy_is_ready && phy_is_owned;
-+		return phy_is_ready && phy_is_owned;
-+	} else {
-+		return phy_is_owned;
-+	}
+ 	assert_tc_cold_blocked(tc);
+@@ -384,6 +385,21 @@ int intel_tc_port_max_lane_count(struct intel_digital_port *dig_port)
+ 	return intel_tc_port_get_max_lane_count(dig_port);
  }
  
- static bool tc_phy_is_connected(struct intel_tc_port *tc,
-@@ -1244,7 +1249,7 @@ static bool tc_phy_is_connected(struct intel_tc_port *tc,
- 	bool phy_is_owned = tc_phy_is_owned(tc);
- 	bool is_connected;
++static void read_pin_configuration(struct intel_tc_port *tc)
++{
++	tc->max_lane_count = get_max_lane_count(tc);
++}
++
++int intel_tc_port_max_lane_count(struct intel_digital_port *dig_port)
++{
++	struct intel_tc_port *tc = to_tc_port(dig_port);
++
++	if (!intel_encoder_is_tc(&dig_port->base))
++		return 4;
++
++	return get_max_lane_count(tc);
++}
++
+ void intel_tc_port_set_fia_lane_count(struct intel_digital_port *dig_port,
+ 				      int required_lanes)
+ {
+@@ -596,9 +612,12 @@ static void icl_tc_phy_get_hw_state(struct intel_tc_port *tc)
+ 	tc_cold_wref = __tc_cold_block(tc, &domain);
  
--	if (tc_phy_is_ready_and_owned(tc, phy_is_ready, phy_is_owned))
-+	if (tc_phy_owned_by_display(tc, phy_is_ready, phy_is_owned))
- 		is_connected = port_pll_type == ICL_PORT_DPLL_MG_PHY;
- 	else
- 		is_connected = port_pll_type == ICL_PORT_DPLL_DEFAULT;
-@@ -1352,7 +1357,7 @@ tc_phy_get_current_mode(struct intel_tc_port *tc)
- 	phy_is_ready = tc_phy_is_ready(tc);
- 	phy_is_owned = tc_phy_is_owned(tc);
+ 	tc->mode = tc_phy_get_current_mode(tc);
+-	if (tc->mode != TC_PORT_DISCONNECTED)
++	if (tc->mode != TC_PORT_DISCONNECTED) {
+ 		tc->lock_wakeref = tc_cold_block(tc);
  
--	if (!tc_phy_is_ready_and_owned(tc, phy_is_ready, phy_is_owned)) {
-+	if (!tc_phy_owned_by_display(tc, phy_is_ready, phy_is_owned)) {
- 		mode = get_tc_mode_in_phy_not_owned_state(tc, live_mode);
- 	} else {
- 		drm_WARN_ON(display->drm, live_mode == TC_PORT_TBT_ALT);
++		read_pin_configuration(tc);
++	}
++
+ 	__tc_cold_unblock(tc, domain, tc_cold_wref);
+ }
+ 
+@@ -656,8 +675,11 @@ static bool icl_tc_phy_connect(struct intel_tc_port *tc,
+ 
+ 	tc->lock_wakeref = tc_cold_block(tc);
+ 
+-	if (tc->mode == TC_PORT_TBT_ALT)
++	if (tc->mode == TC_PORT_TBT_ALT) {
++		read_pin_configuration(tc);
++
+ 		return true;
++	}
+ 
+ 	if ((!tc_phy_is_ready(tc) ||
+ 	     !icl_tc_phy_take_ownership(tc, true)) &&
+@@ -668,6 +690,7 @@ static bool icl_tc_phy_connect(struct intel_tc_port *tc,
+ 		goto out_unblock_tc_cold;
+ 	}
+ 
++	read_pin_configuration(tc);
+ 
+ 	if (!tc_phy_verify_legacy_or_dp_alt_mode(tc, required_lanes))
+ 		goto out_release_phy;
+@@ -858,9 +881,12 @@ static void adlp_tc_phy_get_hw_state(struct intel_tc_port *tc)
+ 	port_wakeref = intel_display_power_get(display, port_power_domain);
+ 
+ 	tc->mode = tc_phy_get_current_mode(tc);
+-	if (tc->mode != TC_PORT_DISCONNECTED)
++	if (tc->mode != TC_PORT_DISCONNECTED) {
+ 		tc->lock_wakeref = tc_cold_block(tc);
+ 
++		read_pin_configuration(tc);
++	}
++
+ 	intel_display_power_put(display, port_power_domain, port_wakeref);
+ }
+ 
+@@ -873,6 +899,9 @@ static bool adlp_tc_phy_connect(struct intel_tc_port *tc, int required_lanes)
+ 
+ 	if (tc->mode == TC_PORT_TBT_ALT) {
+ 		tc->lock_wakeref = tc_cold_block(tc);
++
++		read_pin_configuration(tc);
++
+ 		return true;
+ 	}
+ 
+@@ -894,6 +923,8 @@ static bool adlp_tc_phy_connect(struct intel_tc_port *tc, int required_lanes)
+ 
+ 	tc->lock_wakeref = tc_cold_block(tc);
+ 
++	read_pin_configuration(tc);
++
+ 	if (!tc_phy_verify_legacy_or_dp_alt_mode(tc, required_lanes))
+ 		goto out_unblock_tc_cold;
+ 
+@@ -1124,9 +1155,12 @@ static void xelpdp_tc_phy_get_hw_state(struct intel_tc_port *tc)
+ 	tc_cold_wref = __tc_cold_block(tc, &domain);
+ 
+ 	tc->mode = tc_phy_get_current_mode(tc);
+-	if (tc->mode != TC_PORT_DISCONNECTED)
++	if (tc->mode != TC_PORT_DISCONNECTED) {
+ 		tc->lock_wakeref = tc_cold_block(tc);
+ 
++		read_pin_configuration(tc);
++	}
++
+ 	drm_WARN_ON(display->drm,
+ 		    (tc->mode == TC_PORT_DP_ALT || tc->mode == TC_PORT_LEGACY) &&
+ 		    !xelpdp_tc_phy_tcss_power_is_enabled(tc));
+@@ -1138,14 +1172,19 @@ static bool xelpdp_tc_phy_connect(struct intel_tc_port *tc, int required_lanes)
+ {
+ 	tc->lock_wakeref = tc_cold_block(tc);
+ 
+-	if (tc->mode == TC_PORT_TBT_ALT)
++	if (tc->mode == TC_PORT_TBT_ALT) {
++		read_pin_configuration(tc);
++
+ 		return true;
++	}
+ 
+ 	if (!xelpdp_tc_phy_enable_tcss_power(tc, true))
+ 		goto out_unblock_tccold;
+ 
+ 	xelpdp_tc_phy_take_ownership(tc, true);
+ 
++	read_pin_configuration(tc);
++
+ 	if (!tc_phy_verify_legacy_or_dp_alt_mode(tc, required_lanes))
+ 		goto out_release_phy;
+ 
 
 
