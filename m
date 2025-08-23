@@ -1,88 +1,49 @@
-Return-Path: <stable+bounces-172579-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-172580-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6433EB32875
-	for <lists+stable@lfdr.de>; Sat, 23 Aug 2025 14:04:19 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id E3E27B3287B
+	for <lists+stable@lfdr.de>; Sat, 23 Aug 2025 14:15:15 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 858937B414F
-	for <lists+stable@lfdr.de>; Sat, 23 Aug 2025 12:02:42 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id BF1185C709D
+	for <lists+stable@lfdr.de>; Sat, 23 Aug 2025 12:15:15 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6DCF0248F64;
-	Sat, 23 Aug 2025 12:04:08 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="bQjPuS6r"
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E531125B2FD;
+	Sat, 23 Aug 2025 12:15:10 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
-Received: from mail-pg1-f180.google.com (mail-pg1-f180.google.com [209.85.215.180])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from bregans-0.gladserv.net (bregans-0.gladserv.net [185.128.210.58])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C964E214A78;
-	Sat, 23 Aug 2025 12:04:05 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.215.180
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 68AA525A2A1;
+	Sat, 23 Aug 2025 12:15:06 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.128.210.58
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755950648; cv=none; b=CgwLkurPGQhG3PUAankBGhqHnrXjQDvDiRSFk8MZq6OGLyt1ug0VaBAe/It036loWnwTqSXnTgtu8jVCms9P/n5kVzotIqc88TiqEEQkbX/geQ137WKmitHJI/4iYmwG3l1fsNM5joc4oKeeIAKHWoIXXn5dV4slZIzH9h66sc8=
+	t=1755951310; cv=none; b=NO8g3EnK0aMKFCnASd3T/xe/QQKBX6o9P7Kb3nmnhoRCnM8w3N6TPH+8EpXS4dJPhS27AYFVW+abusWq1KggHgaTJh8Lhx4QPZqJEqCZoYmHm2M4Ox2SoyUNT8TynW8xz0y34EpTJ50ICFyK8aeZFeeg566PazgKL9wyrbY8UH8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1755950648; c=relaxed/simple;
-	bh=y9QQemxhNMuU9Cg9hSjpes05Vn3CLhpEomMTRXsM1eM=;
-	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=aTgRmfowTJdy2SUdiVTOK1u0d7w8Mdhed/AQ5GvpJzvgomNZTxm2QDb21j2hBuA+daIreev3I7eOymFtUd4nyncjJ9/rcS67FAXiv7K7YzyjuvavFhOko/31f6LHm2WYj+tVD2Lw1PUhLAO03O8ZF8i0vy8AUVeHQNI1yNhrL1Q=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=bQjPuS6r; arc=none smtp.client-ip=209.85.215.180
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-pg1-f180.google.com with SMTP id 41be03b00d2f7-b47174c3b3fso1762287a12.2;
-        Sat, 23 Aug 2025 05:04:05 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1755950645; x=1756555445; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=4oONS1z7VfzwpCrdNQbfTZz4SLPX1uCJokgWYpKs+dg=;
-        b=bQjPuS6revT8lsNehEeZfEVdvPslZcM98iw0H921j9ibtiDBhvkDZfd5Y6+pqDj1J7
-         ri6Y/MVmbOrsE8eotyA1KRbyZz13DPgM3Yr7bbFoBkp3vHfexnUdTubz/qov+LA6KHe/
-         h4DlTjWkPUZ4VXljeR8Crg6gRCMrnEeO2rZBDZ3dHEPLm//Y0VfrHqqVXX4SAfGZQoCD
-         2TJBG8rAZqBH7kW/+O7hKV+6zeHliJFFC+WwFuhax+gBo36M7jyuX+iu/8E6Lgn8oMA/
-         oixB6Exs59b3w3JDZy4HMvUAeVMomT4gKkxnAL4wWHblwSd5+CYhEIhlzi8nsyhrbMjs
-         4oIA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1755950645; x=1756555445;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=4oONS1z7VfzwpCrdNQbfTZz4SLPX1uCJokgWYpKs+dg=;
-        b=CZ1PloRgD2Pss1YXR6Tmetukw9Gv/6ty+tffdcjmZ3R3lYsqsakx3BdOA9TuX+4x2g
-         CiEFc6v9XNXfonotUqXRp/mPpi66V20/lkYetK1P4YG9AFr+Mkz7HsFKHqMn7DTNwbyf
-         XHcC2ZtxAXEENizy9twGie4LAIX+NuB3Czb+vygyHa1GSeppRECjc/vJdWMvl8oHZb10
-         0s1hQJ7tSOnVsDi7KrSR9g2NdNCa2K5unoPQv16KLL2JiUdf//ccESFVWQS21l+3LvTC
-         p13a1eV9aza+E+KJ/SyW+k7V2VpYTaA7funAA1NujsaaD1eojEXqdq7huNDOotBgZVZt
-         bLeA==
-X-Forwarded-Encrypted: i=1; AJvYcCUCpZgCKmBvyVgkcFUrk1XonBmsRwQ1LEg/gJMnA9ss4CYof/436rmkEA803r09TSBzmtQy1iGJrOCI3tc=@vger.kernel.org, AJvYcCXe104hM86qEDcqmKEA2FXFUutYNsTLdGttJyJA6CQcaFN4DoxMeffrMzRkTpH8HnlfB2cEZQps@vger.kernel.org
-X-Gm-Message-State: AOJu0Ywfr8zGTsSypWmZQx4bIuHVnnnkuoEDkRJCn/kHbMjKY8kxWppE
-	YPMYtXwPh4QiLfHH1fTQ/iaEXXjklq3SRMPKE0zZ3EQUeVh8JPlAGgIUcOsICJgc
-X-Gm-Gg: ASbGncspAr8s372yNU5xTf60EGN6dzeyzWFIUmDGNF4MUp2MXZUjxirVqBkPDsZFCmy
-	9JcxQRjR3XkQW0vGOA1RuGns9cUDC12H5o6ElymUcNsVFnz9EoPHEjNSO+NpnRmA/Bd30Xiy9t3
-	/3lmlaaVC1O15z595Qfak5iB8zoyV87FlnK5L15DBNKYWbZYa6BsmkU7bNBOtNgggr0HPcCFDA6
-	askhBv+qrFkWtgcfIX3l3KJqwElhTU5sN/Z7I4POwE97LBuTFLWjOsLflbj3CBJZIxiOr3OqCSU
-	MYoM5RF8gNJhGykPgaI1qYlTEH1j2zotHQRs1pG9xsOhLG9FxyPoj6YPwP4IiFlFcsOvzxCq+v3
-	BSceZmOiAvJlMUoWSld9sUYXAGZBQH9KhxsdrhSyKhUThVz4p8Q==
-X-Google-Smtp-Source: AGHT+IHxR6jm5ZmmM2ZSXvNmIZZ/hId0fVzNB7puIttkCZ9Eq7tldSOdS16bnkeJZ24C/1xXW3+LSQ==
-X-Received: by 2002:a17:902:ce81:b0:242:e0f1:f4bf with SMTP id d9443c01a7336-2462ee7b494mr81646085ad.18.1755950644926;
-        Sat, 23 Aug 2025 05:04:04 -0700 (PDT)
-Received: from name2965-Precision-7820-Tower.. ([121.185.186.233])
-        by smtp.gmail.com with ESMTPSA id d9443c01a7336-2466885efd4sm20931775ad.69.2025.08.23.05.04.02
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sat, 23 Aug 2025 05:04:04 -0700 (PDT)
-From: Jeongjun Park <aha310510@gmail.com>
-To: mchehab@kernel.org,
-	khoroshilov@ispras.ru
-Cc: linux-media@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
+	s=arc-20240116; t=1755951310; c=relaxed/simple;
+	bh=oGwwTtNxjC5t6H2oUN4Te1U8p72aoeL6OFMsznW6HIw=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=Jfa3nszTUzL4lP2FcYrU/SP/ugspNOQM5yTOs9ogayN+oR5hcUPtXpz3mul7AFboNbgLDtgG42P/L2IywKpuBxnvXOgL+c///+Sfcgjty/xSp2dAiJMd+ndQ96KPZtkh1KLfOFakyHPxOd7mcI/CXeaC+LpO5jEnVv0yE9oY3v8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=librecast.net; spf=pass smtp.mailfrom=librecast.net; arc=none smtp.client-ip=185.128.210.58
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=librecast.net
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=librecast.net
+From: Brett A C Sheffield <bacs@librecast.net>
+To: regressions@lists.linux.dev
+Cc: netdev@vger.kernel.org,
 	stable@vger.kernel.org,
-	syzbot+47321e8fd5a4c84088db@syzkaller.appspotmail.com,
-	Jeongjun Park <aha310510@gmail.com>
-Subject: [PATCH v2] media: as102: fix to not free memory after the device is registered in as102_usb_probe()
-Date: Sat, 23 Aug 2025 21:02:57 +0900
-Message-Id: <20250823120257.1176990-1-aha310510@gmail.com>
-X-Mailer: git-send-email 2.34.1
+	davem@davemloft.net,
+	dsahern@kernel.org,
+	oscmaes92@gmail.com,
+	kuba@kernel.org,
+	Brett A C Sheffield <bacs@librecast.net>
+Subject: [PATCH v2 1/2] selftests: net: add test for broadcast destination
+Date: Sat, 23 Aug 2025 12:13:36 +0000
+Message-ID: <20250823121336.18492-2-bacs@librecast.net>
+X-Mailer: git-send-email 2.49.1
+In-Reply-To: <20250822183250.2a9cb92c@kernel.org>
+References: <20250822183250.2a9cb92c@kernel.org>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -91,67 +52,83 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-In as102_usb driver, the following race condition occurs:
-```
-		CPU0						CPU1
-as102_usb_probe()
-  kzalloc(); // alloc as102_dev_t
-  ....
-  usb_register_dev();
-						open("/path/to/dev"); // open as102 dev
-						....
-  usb_deregister_dev();
-  ....
-  kfree(); // free as102_dev_t
-  ....
-						close(fd);
-						  as102_release() // UAF!!
-						    as102_usb_release()
-						      kfree(); // DFB!!
-```
+Add test to check the broadcast ethernet destination field is set
+correctly.
 
-When a USB character device registered with usb_register_dev() is later
-unregistered (via usb_deregister_dev() or disconnect), the device node is
-removed so new open() calls fail. However, file descriptors that are
-already open do not go away immediately: they remain valid until the last
-reference is dropped and the driver's .release() is invoked.
+This test uses the tcpdump and socat programs.
 
-In as102, as102_usb_probe() calls usb_register_dev() and then, on an
-error path, does usb_deregister_dev() and frees as102_dev_t right away.
-If userspace raced a successful open() before the deregistration, that
-open FD will later hit as102_release() --> as102_usb_release() and access
-or free as102_dev_t again, occur a race to use-after-free and
-double-free vuln.
+Send a UDP broadcast packet to UDP port 9 (DISCARD), capture this
+with tcpdump and ensure that all bits of the 6 octet ethernet destination
+are correctly set.
 
-The fix is to never kfree(as102_dev_t) directly once usb_register_dev()
-has succeeded. After deregistration, defer freeing memory to .release().
-
-In other words, let release() perform the last kfree when the final open
-FD is closed.
-
-Cc: <stable@vger.kernel.org>
-Reported-by: syzbot+47321e8fd5a4c84088db@syzkaller.appspotmail.com
-Closes: https://syzkaller.appspot.com/bug?extid=47321e8fd5a4c84088db
-Fixes: cd19f7d3e39b ("[media] as102: fix leaks at failure paths in as102_usb_probe()")
-Signed-off-by: Jeongjun Park <aha310510@gmail.com>
+Cc: stable@vger.kernel.org
+Signed-off-by: Brett A C Sheffield <bacs@librecast.net>
+Link: https://lore.kernel.org/regressions/20250822165231.4353-4-bacs@librecast.net
 ---
-v2: Fix incorrect patch description style and CC stable mailing list
-- Link to v1: https://lore.kernel.org/all/20250822143539.1157329-1-aha310510@gmail.com/
----
- drivers/media/usb/as102/as102_usb_drv.c | 1 +
- 1 file changed, 1 insertion(+)
+ tools/testing/selftests/net/Makefile          |  1 +
+ .../selftests/net/broadcast_ether_dst.sh      | 38 +++++++++++++++++++
+ 2 files changed, 39 insertions(+)
+ create mode 100755 tools/testing/selftests/net/broadcast_ether_dst.sh
 
-diff --git a/drivers/media/usb/as102/as102_usb_drv.c b/drivers/media/usb/as102/as102_usb_drv.c
-index e0ef66a522e2..abde5666b2ee 100644
---- a/drivers/media/usb/as102/as102_usb_drv.c
-+++ b/drivers/media/usb/as102/as102_usb_drv.c
-@@ -404,6 +404,7 @@ static int as102_usb_probe(struct usb_interface *intf,
- 	as102_free_usb_stream_buffer(as102_dev);
- failed_stream:
- 	usb_deregister_dev(intf, &as102_usb_class_driver);
-+	return ret;
- failed:
- 	usb_put_dev(as102_dev->bus_adap.usb_dev);
- 	usb_set_intfdata(intf, NULL);
---
+diff --git a/tools/testing/selftests/net/Makefile b/tools/testing/selftests/net/Makefile
+index b31a71f2b372..463642a78eea 100644
+--- a/tools/testing/selftests/net/Makefile
++++ b/tools/testing/selftests/net/Makefile
+@@ -116,6 +116,7 @@ TEST_GEN_FILES += skf_net_off
+ TEST_GEN_FILES += tfo
+ TEST_PROGS += tfo_passive.sh
+ TEST_PROGS += broadcast_pmtu.sh
++TEST_PROGS += broadcast_ether_dst.sh
+ TEST_PROGS += ipv6_force_forwarding.sh
+ 
+ # YNL files, must be before "include ..lib.mk"
+diff --git a/tools/testing/selftests/net/broadcast_ether_dst.sh b/tools/testing/selftests/net/broadcast_ether_dst.sh
+new file mode 100755
+index 000000000000..de6abe3513b6
+--- /dev/null
++++ b/tools/testing/selftests/net/broadcast_ether_dst.sh
+@@ -0,0 +1,38 @@
++#!/bin/bash -eu
++# SPDX-License-Identifier: GPL-2.0
++#
++# Author: Brett A C Sheffield <bacs@librecast.net>
++#
++# Ensure destination ethernet field is correctly set for
++# broadcast packets
++
++if ! which tcpdump > /dev/null 2>&1; then
++        echo "No tcpdump found. Required for this test."
++        exit $ERR
++fi
++
++CAPFILE=$(mktemp -u cap.XXXXXXXXXX)
++
++# start tcpdump listening on udp port 9
++# tcpdump will exit after receiving a single packet
++# timeout will kill tcpdump if it is still running after 2s
++timeout 2s tcpdump -c 1 -w ${CAPFILE} udp port 9 > /dev/null 2>&1 &
++PID=$!
++sleep 0.1 # let tcpdump wake up
++
++echo "Testing ethernet broadcast destination"
++
++# send broadcast UDP packet to port 9 (DISCARD)
++echo "Alonso is a good boy" | socat - udp-datagram:255.255.255.255:9,broadcast
++
++# wait for tcpdump for exit after receiving packet
++wait $PID
++
++# compare ethernet destination field to ff:ff:ff:ff:ff:ff
++# pcap has a 24 octet header + 16 octet header for each packet
++# ethernet destination is the first field in the packet
++printf '\xff\xff\xff\xff\xff\xff'| cmp -i40:0 -n6 ${CAPFILE} > /dev/null 2>&1
++RESULT=$?
++
++rm -f "${CAPFILE}"
++exit $RESULT
+
+base-commit: 01b9128c5db1b470575d07b05b67ffa3cb02ebf1
+-- 
+2.49.1
+
 
