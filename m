@@ -1,71 +1,71 @@
-Return-Path: <stable+bounces-172624-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-172626-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1D16DB329CE
-	for <lists+stable@lfdr.de>; Sat, 23 Aug 2025 17:46:12 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id E8164B329D0
+	for <lists+stable@lfdr.de>; Sat, 23 Aug 2025 17:46:20 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 3DAE3188E005
-	for <lists+stable@lfdr.de>; Sat, 23 Aug 2025 15:45:16 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id D7BCE1B66FA6
+	for <lists+stable@lfdr.de>; Sat, 23 Aug 2025 15:45:32 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4DFAE1EC01D;
-	Sat, 23 Aug 2025 15:44:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2792B25C80F;
+	Sat, 23 Aug 2025 15:45:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="noCXwvwN"
-X-Original-To: stable@vger.kernel.org
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="p62TUKHW"
+X-Original-To: Stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0E98219307F
-	for <stable@vger.kernel.org>; Sat, 23 Aug 2025 15:44:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DA0F52E8E0D
+	for <Stable@vger.kernel.org>; Sat, 23 Aug 2025 15:45:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755963891; cv=none; b=n9KFwb0v938mvGW6PVlX+1+u8f7VVxz/iZ46SLEMV1YN8jDugQwluqDqOJLTOIufv2NWNz7AS3Qm1D/XJAGfHMjmD5nrnIQNm3XCYUmgg3dP/kYbeHx2f3jQ3e860n+xyAhyLTuMa1r1tYtcazdFcroGXVC4hrN0J14KcT2TIjE=
+	t=1755963910; cv=none; b=HKMKUD29BM65JZKMSPmSZ1kO8gad+HZM6o+4pIq21sKwAiLdztU1OrwMQq0ci1qVR9AymVbGKgLPy43iQ/QJRaM0tfmovemgZV6T3fIlqmkbot4z5L9oDQJxtjaHnqaLB5lk3mnD11/zYMYf+7BNklIO0spraVl6HBjTnJRinfM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1755963891; c=relaxed/simple;
-	bh=9oiDFW2JLELtcMhWOD1NBUu8oq928+KVAlapICPTagA=;
-	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=adnREpPBneOikOqgnFnRoj5MhWkCTMhw3sSQIWIYoGxvbn6VVD5Xmuk/fzpxqOBDsIlj05+wLyH0fOlWCyM62+brSpjwXL1l0Pqiv8OsTEHjf8G8m8V5iwe+pbVtE/A6WZv6Dme6Y9vrB10hux/S6imdXIajqeA38t4pUfUJvk4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=noCXwvwN; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6B67FC4CEE7;
-	Sat, 23 Aug 2025 15:44:50 +0000 (UTC)
+	s=arc-20240116; t=1755963910; c=relaxed/simple;
+	bh=Cxia45A/3Q/ZChhm2uiuy+cHvw7UyXTfcLqYqeDYKmA=;
+	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=QVdJoK1MnfSspiAFbUHc41DOpS7Crkhoawpd7QgchGlhFaJSVXhxpZljnJuk/BQmvFvqXPOsH7wYlx+2jyT60XKzL+/PVbMXyu/Jis1pfgN9C7fYpGG2WSVnbYWU3LoNszy1+J/EaoJzQO9FIeFi2VKmlAqyBbBsumBhdybijAQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=p62TUKHW; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1E709C4CEE7;
+	Sat, 23 Aug 2025 15:45:09 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1755963890;
-	bh=9oiDFW2JLELtcMhWOD1NBUu8oq928+KVAlapICPTagA=;
+	s=korg; t=1755963910;
+	bh=Cxia45A/3Q/ZChhm2uiuy+cHvw7UyXTfcLqYqeDYKmA=;
 	h=Subject:To:Cc:From:Date:From;
-	b=noCXwvwN5HX9aY6r0KlODbP7vjayIrB7R9xbpX4MHzE+J14C+KWjFsaiG2/1Jf530
-	 6tLF82Zgw43PCh00ScZnKt7CNQ3h4+GI4PtAjv+gA3U+HiUBIRli0vO7hvzlG6VIFW
-	 u0bpajPNcTe2mYdTWvXaXHuSmkwiVW99Z/veqomo=
-Subject: FAILED: patch "[PATCH] tracing: Limit access to parser->buffer when trace_get_user" failed to apply to 5.4-stable tree
-To: pulehui@huawei.com,rostedt@goodmis.org
+	b=p62TUKHWc5Re3kweHV/LEonIV/BzaEIaMaBbJzMBQa8df5S8DZVEDOTGFKlK3dYDu
+	 nEUsS0o2FdPQgY9HtMh4jFIksC8TF2+n6YOTKKAC8mNR3DJaoCfKnAy9d2M3mwUMW3
+	 jiosECT2oPyMBl7NLYuL0/88f1+Id8iZsPePaeRs=
+Subject: FAILED: patch "[PATCH] iio: temperature: maxim_thermocouple: use DMA-safe buffer for" failed to apply to 6.6-stable tree
+To: dlechner@baylibre.com,Jonathan.Cameron@huawei.com,Stable@vger.kernel.org,nuno.sa@analog.com
 Cc: <stable@vger.kernel.org>
 From: <gregkh@linuxfoundation.org>
-Date: Sat, 23 Aug 2025 17:44:33 +0200
-Message-ID: <2025082332-cusp-headstone-2927@gregkh>
+Date: Sat, 23 Aug 2025 17:44:59 +0200
+Message-ID: <2025082359-startup-accuracy-7abb@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=ANSI_X3.4-1968
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
 
-The patch below does not apply to the 5.4-stable tree.
+The patch below does not apply to the 6.6-stable tree.
 If someone wants it applied there, or to any other stable or longterm
 tree, then please email the backport, including the original git commit
 id to <stable@vger.kernel.org>.
 
 To reproduce the conflict and resubmit, you may use the following commands:
 
-git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-5.4.y
+git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-6.6.y
 git checkout FETCH_HEAD
-git cherry-pick -x 6a909ea83f226803ea0e718f6e88613df9234d58
+git cherry-pick -x ae5bc07ec9f73a41734270ef3f800c5c8a7e0ad3
 # <resolve conflicts, build, test, etc.>
 git commit -s
-git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2025082332-cusp-headstone-2927@gregkh' --subject-prefix 'PATCH 5.4.y' HEAD^..
+git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2025082359-startup-accuracy-7abb@gregkh' --subject-prefix 'PATCH 6.6.y' HEAD^..
 
 Possible dependencies:
 
@@ -77,139 +77,93 @@ greg k-h
 
 ------------------ original commit in Linus's tree ------------------
 
-From 6a909ea83f226803ea0e718f6e88613df9234d58 Mon Sep 17 00:00:00 2001
-From: Pu Lehui <pulehui@huawei.com>
-Date: Wed, 13 Aug 2025 04:02:32 +0000
-Subject: [PATCH] tracing: Limit access to parser->buffer when trace_get_user
- failed
+From ae5bc07ec9f73a41734270ef3f800c5c8a7e0ad3 Mon Sep 17 00:00:00 2001
+From: David Lechner <dlechner@baylibre.com>
+Date: Mon, 21 Jul 2025 18:04:04 -0500
+Subject: [PATCH] iio: temperature: maxim_thermocouple: use DMA-safe buffer for
+ spi_read()
+MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
 
-When the length of the string written to set_ftrace_filter exceeds
-FTRACE_BUFF_MAX, the following KASAN alarm will be triggered:
+Replace using stack-allocated buffers with a DMA-safe buffer for use
+with spi_read(). This allows the driver to be safely used with
+DMA-enabled SPI controllers.
 
-BUG: KASAN: slab-out-of-bounds in strsep+0x18c/0x1b0
-Read of size 1 at addr ffff0000d00bd5ba by task ash/165
+The buffer array is also converted to a struct with a union to make the
+usage of the memory in the buffer more clear and ensure proper alignment.
 
-CPU: 1 UID: 0 PID: 165 Comm: ash Not tainted 6.16.0-g6bcdbd62bd56-dirty
-Hardware name: linux,dummy-virt (DT)
-Call trace:
- show_stack+0x34/0x50 (C)
- dump_stack_lvl+0xa0/0x158
- print_address_description.constprop.0+0x88/0x398
- print_report+0xb0/0x280
- kasan_report+0xa4/0xf0
- __asan_report_load1_noabort+0x20/0x30
- strsep+0x18c/0x1b0
- ftrace_process_regex.isra.0+0x100/0x2d8
- ftrace_regex_release+0x484/0x618
- __fput+0x364/0xa58
- ____fput+0x28/0x40
- task_work_run+0x154/0x278
- do_notify_resume+0x1f0/0x220
- el0_svc+0xec/0xf0
- el0t_64_sync_handler+0xa0/0xe8
- el0t_64_sync+0x1ac/0x1b0
+Fixes: 1f25ca11d84a ("iio: temperature: add support for Maxim thermocouple chips")
+Signed-off-by: David Lechner <dlechner@baylibre.com>
+Reviewed-by: Nuno Sá <nuno.sa@analog.com>
+Link: https://patch.msgid.link/20250721-iio-use-more-iio_declare_buffer_with_ts-3-v2-1-0c68d41ccf6c@baylibre.com
+Cc: <Stable@vger.kernel.org>
+Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
 
-The reason is that trace_get_user will fail when processing a string
-longer than FTRACE_BUFF_MAX, but not set the end of parser->buffer to 0.
-Then an OOB access will be triggered in ftrace_regex_release->
-ftrace_process_regex->strsep->strpbrk. We can solve this problem by
-limiting access to parser->buffer when trace_get_user failed.
-
-Cc: stable@vger.kernel.org
-Link: https://lore.kernel.org/20250813040232.1344527-1-pulehui@huaweicloud.com
-Fixes: 8c9af478c06b ("ftrace: Handle commands when closing set_ftrace_filter file")
-Signed-off-by: Pu Lehui <pulehui@huawei.com>
-Signed-off-by: Steven Rostedt (Google) <rostedt@goodmis.org>
-
-diff --git a/kernel/trace/trace.c b/kernel/trace/trace.c
-index 4283ed4e8f59..8d8935ed416d 100644
---- a/kernel/trace/trace.c
-+++ b/kernel/trace/trace.c
-@@ -1816,7 +1816,7 @@ int trace_get_user(struct trace_parser *parser, const char __user *ubuf,
+diff --git a/drivers/iio/temperature/maxim_thermocouple.c b/drivers/iio/temperature/maxim_thermocouple.c
+index cae8e84821d7..205939680fd4 100644
+--- a/drivers/iio/temperature/maxim_thermocouple.c
++++ b/drivers/iio/temperature/maxim_thermocouple.c
+@@ -11,6 +11,7 @@
+ #include <linux/module.h>
+ #include <linux/err.h>
+ #include <linux/spi/spi.h>
++#include <linux/types.h>
+ #include <linux/iio/iio.h>
+ #include <linux/iio/sysfs.h>
+ #include <linux/iio/trigger.h>
+@@ -121,8 +122,15 @@ struct maxim_thermocouple_data {
+ 	struct spi_device *spi;
+ 	const struct maxim_thermocouple_chip *chip;
+ 	char tc_type;
+-
+-	u8 buffer[16] __aligned(IIO_DMA_MINALIGN);
++	/* Buffer for reading up to 2 hardware channels. */
++	struct {
++		union {
++			__be16 raw16;
++			__be32 raw32;
++			__be16 raw[2];
++		};
++		aligned_s64 timestamp;
++	} buffer __aligned(IIO_DMA_MINALIGN);
+ };
  
- 	ret = get_user(ch, ubuf++);
- 	if (ret)
--		return ret;
-+		goto fail;
- 
- 	read++;
- 	cnt--;
-@@ -1830,7 +1830,7 @@ int trace_get_user(struct trace_parser *parser, const char __user *ubuf,
- 		while (cnt && isspace(ch)) {
- 			ret = get_user(ch, ubuf++);
- 			if (ret)
--				return ret;
-+				goto fail;
- 			read++;
- 			cnt--;
- 		}
-@@ -1848,12 +1848,14 @@ int trace_get_user(struct trace_parser *parser, const char __user *ubuf,
- 	while (cnt && !isspace(ch) && ch) {
- 		if (parser->idx < parser->size - 1)
- 			parser->buffer[parser->idx++] = ch;
--		else
--			return -EINVAL;
-+		else {
-+			ret = -EINVAL;
-+			goto fail;
-+		}
- 
- 		ret = get_user(ch, ubuf++);
- 		if (ret)
--			return ret;
-+			goto fail;
- 		read++;
- 		cnt--;
- 	}
-@@ -1868,11 +1870,15 @@ int trace_get_user(struct trace_parser *parser, const char __user *ubuf,
- 		/* Make sure the parsed string always terminates with '\0'. */
- 		parser->buffer[parser->idx] = 0;
- 	} else {
--		return -EINVAL;
-+		ret = -EINVAL;
-+		goto fail;
- 	}
- 
- 	*ppos += read;
- 	return read;
-+fail:
-+	trace_parser_fail(parser);
-+	return ret;
- }
- 
- /* TODO add a seq_buf_to_buffer() */
-diff --git a/kernel/trace/trace.h b/kernel/trace/trace.h
-index 1dbf1d3cf2f1..be6654899cae 100644
---- a/kernel/trace/trace.h
-+++ b/kernel/trace/trace.h
-@@ -1292,6 +1292,7 @@ bool ftrace_event_is_function(struct trace_event_call *call);
-  */
- struct trace_parser {
- 	bool		cont;
-+	bool		fail;
- 	char		*buffer;
- 	unsigned	idx;
- 	unsigned	size;
-@@ -1299,7 +1300,7 @@ struct trace_parser {
- 
- static inline bool trace_parser_loaded(struct trace_parser *parser)
+ static int maxim_thermocouple_read(struct maxim_thermocouple_data *data,
+@@ -130,18 +138,16 @@ static int maxim_thermocouple_read(struct maxim_thermocouple_data *data,
  {
--	return (parser->idx != 0);
-+	return !parser->fail && parser->idx != 0;
- }
+ 	unsigned int storage_bytes = data->chip->read_size;
+ 	unsigned int shift = chan->scan_type.shift + (chan->address * 8);
+-	__be16 buf16;
+-	__be32 buf32;
+ 	int ret;
  
- static inline bool trace_parser_cont(struct trace_parser *parser)
-@@ -1313,6 +1314,11 @@ static inline void trace_parser_clear(struct trace_parser *parser)
- 	parser->idx = 0;
- }
+ 	switch (storage_bytes) {
+ 	case 2:
+-		ret = spi_read(data->spi, (void *)&buf16, storage_bytes);
+-		*val = be16_to_cpu(buf16);
++		ret = spi_read(data->spi, &data->buffer.raw16, storage_bytes);
++		*val = be16_to_cpu(data->buffer.raw16);
+ 		break;
+ 	case 4:
+-		ret = spi_read(data->spi, (void *)&buf32, storage_bytes);
+-		*val = be32_to_cpu(buf32);
++		ret = spi_read(data->spi, &data->buffer.raw32, storage_bytes);
++		*val = be32_to_cpu(data->buffer.raw32);
+ 		break;
+ 	default:
+ 		ret = -EINVAL;
+@@ -166,9 +172,9 @@ static irqreturn_t maxim_thermocouple_trigger_handler(int irq, void *private)
+ 	struct maxim_thermocouple_data *data = iio_priv(indio_dev);
+ 	int ret;
  
-+static inline void trace_parser_fail(struct trace_parser *parser)
-+{
-+	parser->fail = true;
-+}
-+
- extern int trace_parser_get_init(struct trace_parser *parser, int size);
- extern void trace_parser_put(struct trace_parser *parser);
- extern int trace_get_user(struct trace_parser *parser, const char __user *ubuf,
+-	ret = spi_read(data->spi, data->buffer, data->chip->read_size);
++	ret = spi_read(data->spi, data->buffer.raw, data->chip->read_size);
+ 	if (!ret) {
+-		iio_push_to_buffers_with_ts(indio_dev, data->buffer,
++		iio_push_to_buffers_with_ts(indio_dev, &data->buffer,
+ 					    sizeof(data->buffer),
+ 					    iio_get_time_ns(indio_dev));
+ 	}
 
 
