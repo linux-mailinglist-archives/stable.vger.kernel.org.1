@@ -1,158 +1,215 @@
-Return-Path: <stable+bounces-172617-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-172618-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id C12B1B32988
-	for <lists+stable@lfdr.de>; Sat, 23 Aug 2025 17:22:37 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id C5D08B329BD
+	for <lists+stable@lfdr.de>; Sat, 23 Aug 2025 17:44:37 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id B4DD01B65A0A
-	for <lists+stable@lfdr.de>; Sat, 23 Aug 2025 15:22:57 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 7FB671BA3482
+	for <lists+stable@lfdr.de>; Sat, 23 Aug 2025 15:44:57 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7DDA82E2EF5;
-	Sat, 23 Aug 2025 15:22:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 964DC2080E8;
+	Sat, 23 Aug 2025 15:44:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="jKBG/RqM"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="iCC960gU"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3DA68155C97
-	for <stable@vger.kernel.org>; Sat, 23 Aug 2025 15:22:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 548F622097
+	for <stable@vger.kernel.org>; Sat, 23 Aug 2025 15:44:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755962553; cv=none; b=tf4gAyOF8zG6yLrH/aEY8RK8dDk3V2MOYQS7EKrFsUraNF0Kus0UjzrXZPJrDKwHT3IIkhPOo2OBm5aD9ge6TQRO6UcYsGyEnPaOIsU6BvTVp3gxhdG9NDsmqhKATfqYZHnRkfzMLUSyR6PaABaK0o6OXErfijK9Zwiu95RYArU=
+	t=1755963872; cv=none; b=p6elFnAOUypVN9N0CE6lMUoN8rju6VZ08W5KSlgIbjNWxPJpZNulL8X0qsvU5D6UI0kYqut0xfipZf5zW8hWaZCppdw4apOtNFvQHYZw09AHjRR/yl02H+P7xmXpDE3U99vtMOsinnTMMjvDod17YWJzN8KznbzDrmroEv5aZZI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1755962553; c=relaxed/simple;
-	bh=9Bdt71osyKjosO/Rgr8TcwsFGfeneKcSzaAee035x5I=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=FlPjiImTlXGc1PgH2Zj14Wbl4tW38vArJx3vgI8Gt2jUHZ2czNB4umzaxbWAM+sz4lZyHHMHrdqVgjyxE5xWyaYAK1Y0TOhxCvvilxHAFa3FAmLmUcZ5ef8P8f2X1S9AcgiWSnFyfCJe4+UesBWCZGOHOpQ0u9iJIdZyLnmGxFw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=jKBG/RqM; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 24C3AC4CEF4;
-	Sat, 23 Aug 2025 15:22:31 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1755962551;
-	bh=9Bdt71osyKjosO/Rgr8TcwsFGfeneKcSzaAee035x5I=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=jKBG/RqMCPcRSQa1+zgsRCFDK2AgQgK69oS1VamzJrgAorJlXDinZ1z8HXY3x69vO
-	 ow5lvHNhlQAId9PlLtNU1Ld0qY/QgEl2j8tQzcoweRaC9vIDe4aVGG3/vYfKcEuX1z
-	 pL9f4xq3hoD8V1c4+Jn7ILMvWq3nB/WezqoS51BMKMwEwrcaGqD1xa0nSEVmoZd83T
-	 WYYIbkKzCmBiQpZ+RcwVzrnSF5QYJM3p9GWcdSEMuS0qL423dH7XkmHa0mhw/chZoz
-	 nPpW+H6nwHd/zwC3Z1j8NpQEAOJ+zSATzi+TcU9xWv2+XJEXHe2ICMXKT0Ap4hnFF/
-	 3V1ACvACgwZvQ==
-From: Sasha Levin <sashal@kernel.org>
-To: stable@vger.kernel.org
-Cc: Geliang Tang <tanggeliang@kylinos.cn>,
-	Matthieu Baerts <matttbe@kernel.org>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15.y] mptcp: disable add_addr retransmission when timeout is 0
-Date: Sat, 23 Aug 2025 11:22:28 -0400
-Message-ID: <20250823152229.2272429-1-sashal@kernel.org>
-X-Mailer: git-send-email 2.50.1
-In-Reply-To: <2025082242-enrage-armoire-a4f8@gregkh>
-References: <2025082242-enrage-armoire-a4f8@gregkh>
+	s=arc-20240116; t=1755963872; c=relaxed/simple;
+	bh=E+KNISBNRShUvtEP4/LfBpctdReXpc8iPzCyCGeANrU=;
+	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=s5diGFbWaLeCkzbGScqf2/FV5A+yVKprk5rDI0WiwF5Ihh+EejnqNrKSxP9xmNidg/xbYHNaPTKGT/fIiqHipFLNwWpAJvUk5gOmko1xjTBgn60l34JK+PVo63gEvoZlHU1bO03SuZp6tAlmT+CNTt8tyjkzSl1GjKHA5Yeag08=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=iCC960gU; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C9084C4CEE7;
+	Sat, 23 Aug 2025 15:44:31 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
+	s=korg; t=1755963872;
+	bh=E+KNISBNRShUvtEP4/LfBpctdReXpc8iPzCyCGeANrU=;
+	h=Subject:To:Cc:From:Date:From;
+	b=iCC960gU3521CgfNE39nunizXNpmOdoDGtT29qFjLXwYJBE5IBzy8kC0C4OgDOzmq
+	 lqiX6WQlxGPwDtUAxPWdimFAG07wENhTuefzx76Ix/F/2DsJddnVrn5SD/ZRrd/Zgf
+	 zmvitEMw3nWIFkOFm9EdiK+QUfabLgY1tRH44kFM=
+Subject: FAILED: patch "[PATCH] tracing: Limit access to parser->buffer when trace_get_user" failed to apply to 6.16-stable tree
+To: pulehui@huawei.com,rostedt@goodmis.org
+Cc: <stable@vger.kernel.org>
+From: <gregkh@linuxfoundation.org>
+Date: Sat, 23 Aug 2025 17:44:29 +0200
+Message-ID: <2025082329-outgrow-powdered-a0e3@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=ANSI_X3.4-1968
 Content-Transfer-Encoding: 8bit
 
-From: Geliang Tang <tanggeliang@kylinos.cn>
 
-[ Upstream commit f5ce0714623cffd00bf2a83e890d09c609b7f50a ]
+The patch below does not apply to the 6.16-stable tree.
+If someone wants it applied there, or to any other stable or longterm
+tree, then please email the backport, including the original git commit
+id to <stable@vger.kernel.org>.
 
-When add_addr_timeout was set to 0, this caused the ADD_ADDR to be
-retransmitted immediately, which looks like a buggy behaviour. Instead,
-interpret 0 as "no retransmissions needed".
+To reproduce the conflict and resubmit, you may use the following commands:
 
-The documentation is updated to explicitly state that setting the timeout
-to 0 disables retransmission.
+git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-6.16.y
+git checkout FETCH_HEAD
+git cherry-pick -x 6a909ea83f226803ea0e718f6e88613df9234d58
+# <resolve conflicts, build, test, etc.>
+git commit -s
+git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2025082329-outgrow-powdered-a0e3@gregkh' --subject-prefix 'PATCH 6.16.y' HEAD^..
 
-Fixes: 93f323b9cccc ("mptcp: add a new sysctl add_addr_timeout")
+Possible dependencies:
+
+
+
+thanks,
+
+greg k-h
+
+------------------ original commit in Linus's tree ------------------
+
+From 6a909ea83f226803ea0e718f6e88613df9234d58 Mon Sep 17 00:00:00 2001
+From: Pu Lehui <pulehui@huawei.com>
+Date: Wed, 13 Aug 2025 04:02:32 +0000
+Subject: [PATCH] tracing: Limit access to parser->buffer when trace_get_user
+ failed
+
+When the length of the string written to set_ftrace_filter exceeds
+FTRACE_BUFF_MAX, the following KASAN alarm will be triggered:
+
+BUG: KASAN: slab-out-of-bounds in strsep+0x18c/0x1b0
+Read of size 1 at addr ffff0000d00bd5ba by task ash/165
+
+CPU: 1 UID: 0 PID: 165 Comm: ash Not tainted 6.16.0-g6bcdbd62bd56-dirty
+Hardware name: linux,dummy-virt (DT)
+Call trace:
+ show_stack+0x34/0x50 (C)
+ dump_stack_lvl+0xa0/0x158
+ print_address_description.constprop.0+0x88/0x398
+ print_report+0xb0/0x280
+ kasan_report+0xa4/0xf0
+ __asan_report_load1_noabort+0x20/0x30
+ strsep+0x18c/0x1b0
+ ftrace_process_regex.isra.0+0x100/0x2d8
+ ftrace_regex_release+0x484/0x618
+ __fput+0x364/0xa58
+ ____fput+0x28/0x40
+ task_work_run+0x154/0x278
+ do_notify_resume+0x1f0/0x220
+ el0_svc+0xec/0xf0
+ el0t_64_sync_handler+0xa0/0xe8
+ el0t_64_sync+0x1ac/0x1b0
+
+The reason is that trace_get_user will fail when processing a string
+longer than FTRACE_BUFF_MAX, but not set the end of parser->buffer to 0.
+Then an OOB access will be triggered in ftrace_regex_release->
+ftrace_process_regex->strsep->strpbrk. We can solve this problem by
+limiting access to parser->buffer when trace_get_user failed.
+
 Cc: stable@vger.kernel.org
-Suggested-by: Matthieu Baerts <matttbe@kernel.org>
-Signed-off-by: Geliang Tang <tanggeliang@kylinos.cn>
-Reviewed-by: Matthieu Baerts (NGI0) <matttbe@kernel.org>
-Signed-off-by: Matthieu Baerts (NGI0) <matttbe@kernel.org>
-Link: https://patch.msgid.link/20250815-net-mptcp-misc-fixes-6-17-rc2-v1-5-521fe9957892@kernel.org
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-[ pm.c => pm_netlink.c , drop mptcp_pm_alloc_anno_list hunk ]
-Signed-off-by: Sasha Levin <sashal@kernel.org>
----
- Documentation/networking/mptcp-sysctl.rst |  2 ++
- net/mptcp/pm_netlink.c                    | 13 ++++++++++---
- 2 files changed, 12 insertions(+), 3 deletions(-)
+Link: https://lore.kernel.org/20250813040232.1344527-1-pulehui@huaweicloud.com
+Fixes: 8c9af478c06b ("ftrace: Handle commands when closing set_ftrace_filter file")
+Signed-off-by: Pu Lehui <pulehui@huawei.com>
+Signed-off-by: Steven Rostedt (Google) <rostedt@goodmis.org>
 
-diff --git a/Documentation/networking/mptcp-sysctl.rst b/Documentation/networking/mptcp-sysctl.rst
-index b0d4da71e68e..e72ebaa14004 100644
---- a/Documentation/networking/mptcp-sysctl.rst
-+++ b/Documentation/networking/mptcp-sysctl.rst
-@@ -20,6 +20,8 @@ add_addr_timeout - INTEGER (seconds)
- 	resent to an MPTCP peer that has not acknowledged a previous
- 	ADD_ADDR message.
+diff --git a/kernel/trace/trace.c b/kernel/trace/trace.c
+index 4283ed4e8f59..8d8935ed416d 100644
+--- a/kernel/trace/trace.c
++++ b/kernel/trace/trace.c
+@@ -1816,7 +1816,7 @@ int trace_get_user(struct trace_parser *parser, const char __user *ubuf,
  
-+	Do not retransmit if set to 0.
-+
- 	The default value matches TCP_RTO_MAX. This is a per-namespace
- 	sysctl.
+ 	ret = get_user(ch, ubuf++);
+ 	if (ret)
+-		return ret;
++		goto fail;
  
-diff --git a/net/mptcp/pm_netlink.c b/net/mptcp/pm_netlink.c
-index 45708e67cccc..cf6c3d9cb0b8 100644
---- a/net/mptcp/pm_netlink.c
-+++ b/net/mptcp/pm_netlink.c
-@@ -316,6 +316,7 @@ static void mptcp_pm_add_timer(struct timer_list *timer)
- 	struct mptcp_pm_add_entry *entry = from_timer(entry, timer, add_timer);
- 	struct mptcp_sock *msk = entry->sock;
- 	struct sock *sk = (struct sock *)msk;
-+	unsigned int timeout;
+ 	read++;
+ 	cnt--;
+@@ -1830,7 +1830,7 @@ int trace_get_user(struct trace_parser *parser, const char __user *ubuf,
+ 		while (cnt && isspace(ch)) {
+ 			ret = get_user(ch, ubuf++);
+ 			if (ret)
+-				return ret;
++				goto fail;
+ 			read++;
+ 			cnt--;
+ 		}
+@@ -1848,12 +1848,14 @@ int trace_get_user(struct trace_parser *parser, const char __user *ubuf,
+ 	while (cnt && !isspace(ch) && ch) {
+ 		if (parser->idx < parser->size - 1)
+ 			parser->buffer[parser->idx++] = ch;
+-		else
+-			return -EINVAL;
++		else {
++			ret = -EINVAL;
++			goto fail;
++		}
  
- 	pr_debug("msk=%p\n", msk);
- 
-@@ -333,6 +334,10 @@ static void mptcp_pm_add_timer(struct timer_list *timer)
- 		goto out;
+ 		ret = get_user(ch, ubuf++);
+ 		if (ret)
+-			return ret;
++			goto fail;
+ 		read++;
+ 		cnt--;
+ 	}
+@@ -1868,11 +1870,15 @@ int trace_get_user(struct trace_parser *parser, const char __user *ubuf,
+ 		/* Make sure the parsed string always terminates with '\0'. */
+ 		parser->buffer[parser->idx] = 0;
+ 	} else {
+-		return -EINVAL;
++		ret = -EINVAL;
++		goto fail;
  	}
  
-+	timeout = mptcp_get_add_addr_timeout(sock_net(sk));
-+	if (!timeout)
-+		goto out;
-+
- 	spin_lock_bh(&msk->pm.lock);
- 
- 	if (!mptcp_pm_should_add_signal_addr(msk)) {
-@@ -344,7 +349,7 @@ static void mptcp_pm_add_timer(struct timer_list *timer)
- 
- 	if (entry->retrans_times < ADD_ADDR_RETRANS_MAX)
- 		sk_reset_timer(sk, timer,
--			       jiffies + mptcp_get_add_addr_timeout(sock_net(sk)));
-+			       jiffies + timeout);
- 
- 	spin_unlock_bh(&msk->pm.lock);
- 
-@@ -386,6 +391,7 @@ static bool mptcp_pm_alloc_anno_list(struct mptcp_sock *msk,
- 	struct mptcp_pm_add_entry *add_entry = NULL;
- 	struct sock *sk = (struct sock *)msk;
- 	struct net *net = sock_net(sk);
-+	unsigned int timeout;
- 
- 	lockdep_assert_held(&msk->pm.lock);
- 
-@@ -403,8 +409,9 @@ static bool mptcp_pm_alloc_anno_list(struct mptcp_sock *msk,
- 	add_entry->retrans_times = 0;
- 
- 	timer_setup(&add_entry->add_timer, mptcp_pm_add_timer, 0);
--	sk_reset_timer(sk, &add_entry->add_timer,
--		       jiffies + mptcp_get_add_addr_timeout(net));
-+	timeout = mptcp_get_add_addr_timeout(net);
-+	if (timeout)
-+		sk_reset_timer(sk, &add_entry->add_timer, jiffies + timeout);
- 
- 	return true;
+ 	*ppos += read;
+ 	return read;
++fail:
++	trace_parser_fail(parser);
++	return ret;
  }
--- 
-2.50.1
+ 
+ /* TODO add a seq_buf_to_buffer() */
+diff --git a/kernel/trace/trace.h b/kernel/trace/trace.h
+index 1dbf1d3cf2f1..be6654899cae 100644
+--- a/kernel/trace/trace.h
++++ b/kernel/trace/trace.h
+@@ -1292,6 +1292,7 @@ bool ftrace_event_is_function(struct trace_event_call *call);
+  */
+ struct trace_parser {
+ 	bool		cont;
++	bool		fail;
+ 	char		*buffer;
+ 	unsigned	idx;
+ 	unsigned	size;
+@@ -1299,7 +1300,7 @@ struct trace_parser {
+ 
+ static inline bool trace_parser_loaded(struct trace_parser *parser)
+ {
+-	return (parser->idx != 0);
++	return !parser->fail && parser->idx != 0;
+ }
+ 
+ static inline bool trace_parser_cont(struct trace_parser *parser)
+@@ -1313,6 +1314,11 @@ static inline void trace_parser_clear(struct trace_parser *parser)
+ 	parser->idx = 0;
+ }
+ 
++static inline void trace_parser_fail(struct trace_parser *parser)
++{
++	parser->fail = true;
++}
++
+ extern int trace_parser_get_init(struct trace_parser *parser, int size);
+ extern void trace_parser_put(struct trace_parser *parser);
+ extern int trace_get_user(struct trace_parser *parser, const char __user *ubuf,
 
 
