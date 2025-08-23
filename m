@@ -1,136 +1,110 @@
-Return-Path: <stable+bounces-172570-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-172571-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 835D9B327B1
-	for <lists+stable@lfdr.de>; Sat, 23 Aug 2025 10:43:45 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id DD39FB3282E
+	for <lists+stable@lfdr.de>; Sat, 23 Aug 2025 12:19:31 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 0945EA0802C
-	for <lists+stable@lfdr.de>; Sat, 23 Aug 2025 08:43:44 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 78AAEAA2B29
+	for <lists+stable@lfdr.de>; Sat, 23 Aug 2025 10:19:30 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 64EE123BCE7;
-	Sat, 23 Aug 2025 08:43:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D34D5242D7A;
+	Sat, 23 Aug 2025 10:19:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="YIddvGQa"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="RCVULJdZ"
 X-Original-To: stable@vger.kernel.org
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pl1-f176.google.com (mail-pl1-f176.google.com [209.85.214.176])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5BC51225A59
-	for <stable@vger.kernel.org>; Sat, 23 Aug 2025 08:43:22 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.129.124
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 40B081F099C;
+	Sat, 23 Aug 2025 10:19:24 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.176
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755938607; cv=none; b=DhrCK1QuGztPrqfGpw37nkqN1/b/lVvu1+Mob//lNCUiqaeTOQYpNsOmJCkpvleIEByDfZYIpykVkFRoXNVQBVrU5BWy8EluXgSLmQ2e4Cxf/PVRkDv6I5+b4jojNN6xxJ5/orpCyTAO+EQNP49vi8z1LUKOre4T72kpDUi/noU=
+	t=1755944365; cv=none; b=jFUHq1NQHAvEZ+GMicSg5+/gsfxw0WPIOhn+blNkw9nIH1pEaEPbocwTDWDh2ycUQV5bYg5NKBZmE0De5bJ965I0U5AGU3hFMid+qudjVODjJMJUr5NuFD955DcQtubGRS3mkeu7y3k08M+51AtGMjyDNhNhpWDDJmLnt1DtsL8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1755938607; c=relaxed/simple;
-	bh=Sh7NYksVOg0+cEwI/9mvebfdXkAMbtmN9W/uuKG/FSA=;
-	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=EJTC/zT8dksKtIXDRnOHMhW7Wo20LYTIk0w+1O8X+oZ546UzRtycDE1nQXMO+zB2sLPwoelv8tu3J3Qvv3XbuuLoWbrJZ4XvFD+x9bY9U76hQppF9DkGEXQ/aIrP+GWKES9VT3DxZ6zdLa6iRHTUSmLDHMR8Vdkz19HGSYnMHCM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=YIddvGQa; arc=none smtp.client-ip=170.10.129.124
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1755938601;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=XBBXwHuqYsE3hHAIcEi+8debmVMKYcuEtsvPds49qLE=;
-	b=YIddvGQa6dvWfcbCgh+B4k1pCpRrEZRCliYbx0VQRwvUuXiz2VN4EWjggHFVJ5GKEW6j28
-	K4tk16QqXqd6gIoye7J2/JLzfvrhvcLiob+rGyAUXq0N2If4LfCNJRmr1sn4GzoaVf2BY5
-	RKUNZhXWDMAUr1cWYwmuZ2lcO6H73+s=
-Received: from mail-wm1-f71.google.com (mail-wm1-f71.google.com
- [209.85.128.71]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-219-UXKazmw1PNWzYyOHAeK80w-1; Sat, 23 Aug 2025 04:43:19 -0400
-X-MC-Unique: UXKazmw1PNWzYyOHAeK80w-1
-X-Mimecast-MFC-AGG-ID: UXKazmw1PNWzYyOHAeK80w_1755938598
-Received: by mail-wm1-f71.google.com with SMTP id 5b1f17b1804b1-45b51411839so9940265e9.0
-        for <stable@vger.kernel.org>; Sat, 23 Aug 2025 01:43:19 -0700 (PDT)
+	s=arc-20240116; t=1755944365; c=relaxed/simple;
+	bh=i3bNeq76DInU/44MB2DrYiy2xn3RltylrA2iTK5shkA=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=QGQs0Ih9pHIbsR1Z4F0W2Xgw6jAKkItEZto5xzWMajaZdHt50yJLKwBFTuLyosf+Bb7o0DASYQDsliCaW6Lz9zNZFu1YZZrsdK81EnKQqAmtcj/ie+YwuprZ1hUxwwaMHrh5ut7NV2Dft08GG0QtQz09OYoIXsXcd+ZJC8UAtCw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=RCVULJdZ; arc=none smtp.client-ip=209.85.214.176
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-pl1-f176.google.com with SMTP id d9443c01a7336-24622df0d95so14331995ad.2;
+        Sat, 23 Aug 2025 03:19:24 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1755944363; x=1756549163; darn=vger.kernel.org;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:from:to:cc:subject:date:message-id:reply-to;
+        bh=i3bNeq76DInU/44MB2DrYiy2xn3RltylrA2iTK5shkA=;
+        b=RCVULJdZ+9McSa5PPpuCcOvVDkYcs/8KQYJ2NZIp8hL9AYPbTTZJTnQV2wy5qL0//N
+         OR+tNe73bQ6REP5Dja2bwZisBh6Cd0YecB4aHrKsMqN8kku+4BquVDPtqR2vF+PrghwG
+         Prg4+pnP92yysm8gaNQD6H7DjYW5a0vkKXhms7H1lAZ4zRf9NEBy7fPrARPh2z/UDraz
+         4nfDZbYrDHXiBJuav5sBD4i0/2TEUYqsnNRlGXCbkCZE/9oWlUp+UDSbYGJylAJmq6cL
+         l4mE8aVUrL/UKXY9gtvn8S5M5Fp8Vbkbmf2UBemTnzRGvufLdUpqh4IXQoUr37VVd/dU
+         ITIA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1755938598; x=1756543398;
-        h=content-transfer-encoding:mime-version:organization:references
-         :in-reply-to:message-id:subject:cc:to:from:date:x-gm-message-state
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=XBBXwHuqYsE3hHAIcEi+8debmVMKYcuEtsvPds49qLE=;
-        b=juRea/8OT1ekEBgBcLgaByu4IqN85K82oV7ojODA+7So46SlLBQc/3P/L6kzsV7Em6
-         Dip5Ij54F6CLSoZgFQ5vTFaiGfojDODiySjUa3KTx/KrfqDB/dVaqZI7BcHBetgFtzTE
-         1ud2wFL0Otxs/1dymhJYBga7/vAlJiJbeFT+wYF/gx6mHMcjnuCw0NdzL3duzB0yqIUe
-         l6PkZFgBxwRLPXahyXnHOpXcld0w8nTlfLkmdFCN99l1BP7Kg67s8jBTgd94UIdyryGf
-         wzLzZvhADTnEIaOfjGV3EOjSRCDqOhOuv3o1cjBIo377wGzV0VvfcjMoLfSQoB8zULvb
-         bV/A==
-X-Forwarded-Encrypted: i=1; AJvYcCWA5yNnNeozdjZR608wwN2Qnr7sIaV7DL7TyQYsF1smcJYrDcuf5OQQgzukHjqBP3zr/HuPmpw=@vger.kernel.org
-X-Gm-Message-State: AOJu0YxYodrJgAfXYHoavrnPKKssbFXOoDUCdsY6T1YN8FXl3f5XBfAS
-	+mGIBQQZt0EGiT0lvzunsJGmkgblWrjszK1ndJFVtxq5XinWZCvQOJURZbo434Hxa3vfg50Vh4T
-	4c7NVc2Z/Z4Vku+hwi3ZWQAolOL+jPo+cbw18T4Nqx0eU2KWLv6baU5PFmg==
-X-Gm-Gg: ASbGncvlFsAHjikfDUw18gnXUXllOzf13T6O4M+2k9wrqBqiHv6VcSEn+il5xu0ZX2W
-	LE9X1uUPudyBai/U45Ws5O+hklKdrw2fLtNRVapsrE/PKRZwHitGFny9Gj0xEhKdG8um6/IaMsD
-	HCXV7B+whaf0gdVt4iJEceWh0y74vZCfY8IqxKmbCABHEVkyG9H4OS7QT4OG51NxQFCrpAzTim4
-	V2pLgFek4oaPDWqGdeA1hqlQNlKbWyTr1KOtjcWg4+sa/9UfMMaSX2dFMpoPQh+8VZWn0+9Ol4E
-	YobeAzgamXBEvCaufrnIdLuG4DtQ2Sc/P1f8VxTADH5zRS+sgdE=
-X-Received: by 2002:a05:600c:1d20:b0:459:dc99:51bf with SMTP id 5b1f17b1804b1-45b56382171mr35465765e9.25.1755938598061;
-        Sat, 23 Aug 2025 01:43:18 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IGv+xyL1SrPU7/mPMky3/ADZJvuSN9B2wqb3s8vqHaurmc9XXiMDXRKUUTdrtSIewx9stHI2Q==
-X-Received: by 2002:a05:600c:1d20:b0:459:dc99:51bf with SMTP id 5b1f17b1804b1-45b56382171mr35465645e9.25.1755938597690;
-        Sat, 23 Aug 2025 01:43:17 -0700 (PDT)
-Received: from maya.myfinge.rs (ifcgrfdd.trafficplex.cloud. [2a10:fc81:a806:d6a9::1])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-45b57499143sm27193895e9.26.2025.08.23.01.43.17
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sat, 23 Aug 2025 01:43:17 -0700 (PDT)
-Date: Sat, 23 Aug 2025 10:43:15 +0200
-From: Stefano Brivio <sbrivio@redhat.com>
-To: wangzijie <wangzijie1@honor.com>
-Cc: <akpm@linux-foundation.org>, <brauner@kernel.org>,
- <viro@zeniv.linux.org.uk>, <adobriyan@gmail.com>,
- <rick.p.edgecombe@intel.com>, <ast@kernel.org>, <k.shutemov@gmail.com>,
- <jirislaby@kernel.org>, <linux-fsdevel@vger.kernel.org>,
- <polynomial-c@gmx.de>, <gregkh@linuxfoundation.org>,
- <stable@vger.kernel.org>, <regressions@lists.linux.dev>
-Subject: Re: [PATCH v3] proc: fix missing pde_set_flags() for net proc files
-Message-ID: <20250823104315.26060eba@elisabeth>
-In-Reply-To: <20250821105806.1453833-1-wangzijie1@honor.com>
-References: <20250821105806.1453833-1-wangzijie1@honor.com>
-Organization: Red Hat
-X-Mailer: Claws Mail 4.2.0 (GTK 3.24.49; x86_64-pc-linux-gnu)
+        d=1e100.net; s=20230601; t=1755944363; x=1756549163;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=i3bNeq76DInU/44MB2DrYiy2xn3RltylrA2iTK5shkA=;
+        b=Y56BtYclq30q34fZsZLBcgFoyIKEMoZxlRK0L5I7e1uac3pyYDuqx0+el03K7xehPH
+         QT600ukfZC7sPQEjf4VxObQxcHVtAD+VHooRFuZoc/nFgh5cVT3rg3bUU1TMysfKvp4w
+         Q0Vl3n42FMiXANzrff8LKo+Oel3ZIkNFj1Hv+rNDyAxTu5brFe8Hnvx5thk6JVnc27Ka
+         n2c2JFmr1Q5kuNieJ9p7uSWdCCG7ywFLcbWMMrLwp7HiNJvl9Nj2IQ9mGi/LDNmvFHAI
+         D/y/l4b9FWRTYea0wrPZ5PwXB2GGICqFCZaIQR0cr0PLxgDPjbn/jGu+JKsaMazmB1YO
+         jKCw==
+X-Forwarded-Encrypted: i=1; AJvYcCUqs6CPjJV0gqqed3wOsIh0tRkYPyYqzFv0+CfHC3LFTTJ/unXOrydrbug2j17+dyfuKKeAAz0V10fSBxA=@vger.kernel.org, AJvYcCVjr7QYZMel7MFcoOfOvwU0Pjqr7qynNxIcAdc7mqROfeavwURWvMiELUfdsXm7j8h+wC0INsf5@vger.kernel.org, AJvYcCWlk/ezp35UyhcWQuIbOiS63eODlcALmgj8hCPmYKeC8xWCWo46RNL9wFzmtyQQwRR1h42fjlHL@vger.kernel.org
+X-Gm-Message-State: AOJu0YwjIXx2xYh4pZG3m799bAprSjwbXWT8MXLvNht0oX94vLru1hWp
+	EvpKc6gUtCeoZGfI5R3iWoSFThhZf2Vflzlxt/k+qzfQO8MmLF/4r+5s16fVmy5/YTb0nmbrDiX
+	Y+o/kqHybgJXCZnF205F/bIUbcx/XMw==
+X-Gm-Gg: ASbGnct3nytF0kuCHS7rq6uXsy9qHUOkxPVuRXLGgoL563J9CeOc16TAaoNYdQZkjcc
+	0vWKBorSx83eEiyqwY4skQpwmJs5KOK3xhR+f7bWMmB9G4dUcL8znTZmii9ldrMksmN/SDmh3MR
+	gs6UWClOOI2wuWXAKBThbLLr4mgTPsXWdSwIJg1cSSHTu2+A37rzbb4CRkZTE3JdAmB79A1RTiC
+	Kalc/bhsAfjTtyyu658LjMZl4R6/4Cw56eRxcb8O2zhdb2JLmnVFHTMjwljC2gyEDVUQ1hoGvb/
+	PQw02PbzciDmFa542l4=
+X-Google-Smtp-Source: AGHT+IEYMFWj0FL0uCPdJzf97Uc8oUJXuFu5K/HGbgNgO7KK8RRwBHRJq1RL3WKhQC5RPuxOzDxLBceUqwQzmSM5qdY=
+X-Received: by 2002:a17:902:ce8b:b0:240:52c8:2564 with SMTP id
+ d9443c01a7336-2462ee8e8f4mr92525815ad.26.1755944363424; Sat, 23 Aug 2025
+ 03:19:23 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
+References: <CALjTZvZkDr8N18ocZ8jNND_4DwKqr-PV4BBXB60+=WXPF3vn=Q@mail.gmail.com>
+ <20250823020152.1651585-1-wangzijie1@honor.com>
+In-Reply-To: <20250823020152.1651585-1-wangzijie1@honor.com>
+From: Rui Salvaterra <rsalvaterra@gmail.com>
+Date: Sat, 23 Aug 2025 11:19:12 +0100
+X-Gm-Features: Ac12FXykPxxFJofTeeBDuGRSjKfJOOEaaMqE6mhQGLLLKx4ljImdahcB8S89iAM
+Message-ID: <CALjTZvYybts62hbLoHQyGm+xhZvT9QfUN39gbDbugF7Tr_++QA@mail.gmail.com>
+Subject: Re: [REGRESSION, BISECTED] IPv6 RA is broken with Linux 6.12.42+
+To: wangzijie <wangzijie1@honor.com>
+Cc: adobriyan@gmail.com, akpm@linux-foundation.org, gregkh@linuxfoundation.org, 
+	linux-kernel@vger.kernel.org, netdev@vger.kernel.org, 
+	openwrt-devel@lists.openwrt.org, stable@vger.kernel.org, 
+	viro@zeniv.linux.org.uk
+Content-Type: text/plain; charset="UTF-8"
 
-On Thu, 21 Aug 2025 18:58:06 +0800
-wangzijie <wangzijie1@honor.com> wrote:
+Hi, Wangzijie,
 
-> To avoid potential UAF issues during module removal races, we use pde_set_flags()
-> to save proc_ops flags in PDE itself before proc_register(), and then use
-> pde_has_proc_*() helpers instead of directly dereferencing pde->proc_ops->*.
-> 
-> However, the pde_set_flags() call was missing when creating net related proc files.
-> This omission caused incorrect behavior which FMODE_LSEEK was being cleared
-> inappropriately in proc_reg_open() for net proc files. Lars reported it in this link[1].
-> 
-> Fix this by ensuring pde_set_flags() is called when register proc entry, and add
-> NULL check for proc_ops in pde_set_flags().
-> 
-> [1]: https://lore.kernel.org/all/20250815195616.64497967@chagall.paradoxon.rec/
-> 
-> Fixes: ff7ec8dc1b64 ("proc: use the same treatment to check proc_lseek as ones for proc_read_iter et.al")
-> Cc: stable@vger.kernel.org
-> Reported-by: Lars Wendler <polynomial-c@gmx.de>
-> Signed-off-by: wangzijie <wangzijie1@honor.com>
 
-Tested-by: Stefano Brivio <sbrivio@redhat.com>
+On Sat, 23 Aug 2025 at 03:01, wangzijie <wangzijie1@honor.com> wrote:
+>
+> Hi Rui,
+> Thanks. I have submitted a patch and I think it can fix this.
+> https://lore.kernel.org/all/20250821105806.1453833-1-wangzijie1@honor.com
 
-For the records, see also my report and obsolete patch at:
+I can confirm your patch fixes the IPv6 RA issue in OpenWrt. It's thus
 
-  https://lore.kernel.org/linux-fsdevel/20250822172335.3187858-1-sbrivio@redhat.com/
+Tested-by: Rui Salvaterra <rsalvaterra@gmail.com>
 
--- 
-Stefano
 
+Kind regards,
+
+Rui Salvaterra
 
