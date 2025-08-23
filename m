@@ -1,57 +1,59 @@
-Return-Path: <stable+bounces-172654-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-172655-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7140BB32B2B
-	for <lists+stable@lfdr.de>; Sat, 23 Aug 2025 18:55:31 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 99625B32B2C
+	for <lists+stable@lfdr.de>; Sat, 23 Aug 2025 18:55:36 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 75B60AA5044
-	for <lists+stable@lfdr.de>; Sat, 23 Aug 2025 16:55:10 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id AE27AAA5458
+	for <lists+stable@lfdr.de>; Sat, 23 Aug 2025 16:55:11 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 97F2921B9CD;
-	Sat, 23 Aug 2025 16:55:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4C31D232785;
+	Sat, 23 Aug 2025 16:55:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="PmVsDpdl"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="ECId0sA8"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 57F8481720
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0B22081720
 	for <stable@vger.kernel.org>; Sat, 23 Aug 2025 16:55:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755968107; cv=none; b=UJSbKGkUphjfjw64iS9ZpyuZVMKdzfZBCPs7gScRck4Z48Uz1nHQYwvFAbSXjd6u9JSaRhBrDIBjdiJIL7KZkpHage+VEsT9pAzae1fHemqSsdMY98o1WqsSMJ3JArTyXB48bCroUKWHcNA+p9HwN8KwboYxVTPakSS7PkMRtAs=
+	t=1755968108; cv=none; b=LHwlvzifC8a3fm8Gkcx2qxglIvPowxCFqZqo21GLdSkDAv0F/dtbPsjhJnqDf4a2LuTHPYehmlaKomJDMndLija4sfnj4Jw16BjW3Q5ZY3h9qY+cH7hm4d1k2Fb9A07LgU1lEl5F9XBHXCklG5p0iGgDII40GnjnaSxM8Sd2+UA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1755968107; c=relaxed/simple;
-	bh=X30+2ydfCXUS9iocZfJVqgXQGFCOjYLPtsv3S1jPP3Y=;
+	s=arc-20240116; t=1755968108; c=relaxed/simple;
+	bh=p8UjrgxjDwLDf1QpNfcyF7eZqjHg0roZLH2ImWdwN/A=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=BnRvHIJ5dR0GxLniXcoPYkraGj8UXCWsDQUjbQyeU9fRKeysxzg/VcUs9qNU5PQc66thUo5Wim8k/mYNn0dW/etR9ZPsDNkgnSnma4MH1aWJl6Jf0c6yBb13kq63ZGR8s07S+Y4JaN+bdLjPi6cETE/1IvJNOrenTLZSMSzLVb8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=PmVsDpdl; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 61388C4CEE7;
-	Sat, 23 Aug 2025 16:55:06 +0000 (UTC)
+	 MIME-Version; b=rivTFN9DXdQg91Xv7hU4wNct9kuvITB05MlyV+gkH+mTe5a8fQJACcHIyZUavM+D4lP2AXjUYX6cYMHC66uZoBLp3T4VhjXncY3vLjVOsCVnk8Rm2snok5KdKZWIIIBeNB2ixgDQOZoIseMYv5bczIjNeDWHmwdEkZ6qY3g/swA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=ECId0sA8; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1C849C4CEF1;
+	Sat, 23 Aug 2025 16:55:07 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1755968106;
-	bh=X30+2ydfCXUS9iocZfJVqgXQGFCOjYLPtsv3S1jPP3Y=;
+	s=k20201202; t=1755968107;
+	bh=p8UjrgxjDwLDf1QpNfcyF7eZqjHg0roZLH2ImWdwN/A=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=PmVsDpdlmjG1KpD9AwolBSCUhSVzP7uOiBODgZzwLNEbmlRB1OFMDz+pQANhKnITR
-	 /avkBUwhAYDzyKpBkEnWDdt0P5aB5gOlyJwxQ3zj6S+/4Yxul7Xjftd5Oi/T70QSCo
-	 NkVBlj6fjuNT7sXXTg3G7Ud6roxoiMVhe0pysxlAVd3Szv1w6YeFPijesbaY497qe3
-	 79IwhFCavbS/5MgiViNcpzd2VWGJOF6ecOsTmT57fFS2i+t0AtUSc5bI9PqMykRoHY
-	 5luxBPIxV0+1jH+eE565aLeaLjeBgR9p/kN5q7a3xtyV/0oX0HuRrAzPdsdEk2X9PT
-	 xaJKlQwO2dg9w==
+	b=ECId0sA8fyKt+ICAJW433cZ1qTqWsUddcLU9GwgAQk1xma1QkON55PwHllGlLDU50
+	 dzaDHPAxRJTiAYm/LMBTDE9nsS8/5QNdRs91ITgD/1CgwvzrNMfDDSNt/pWLz6/B+l
+	 suY84sSPPYr4BixWGTvG+O/KuxqrWqZzQq4nL5SgyLGlRzR8aeIqHl1tIFnW4nf7os
+	 oVoSY9B+8UF9BXy0M4qaEp+5vshQAg3FR3Xkz1pzDgD+Y6asRoBJdkj7pwRb9EeRFl
+	 varyuawvd69lBxPcFNn8Tf0ReF+qqu8NMshi3rxblx78Zz/Y+c0ZEQwcAjvSmLPxox
+	 A95ebTlyHjwbA==
 From: Sasha Levin <sashal@kernel.org>
 To: stable@vger.kernel.org
-Cc: Bjorn Helgaas <bhelgaas@google.com>,
+Cc: Victor Shih <victor.shih@genesyslogic.com.tw>,
+	Adrian Hunter <adrian.hunter@intel.com>,
 	Ulf Hansson <ulf.hansson@linaro.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1.y 1/3] mmc: sdhci-pci-gli: Use PCI AER definitions, not hard-coded values
-Date: Sat, 23 Aug 2025 12:55:02 -0400
-Message-ID: <20250823165504.2340548-1-sashal@kernel.org>
+Subject: [PATCH 6.1.y 2/3] mmc: sdhci-pci-gli: Add a new function to simplify the code
+Date: Sat, 23 Aug 2025 12:55:03 -0400
+Message-ID: <20250823165504.2340548-2-sashal@kernel.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <2025082221-murmuring-commotion-35cb@gregkh>
+In-Reply-To: <20250823165504.2340548-1-sashal@kernel.org>
 References: <2025082221-murmuring-commotion-35cb@gregkh>
+ <20250823165504.2340548-1-sashal@kernel.org>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -60,73 +62,51 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-From: Bjorn Helgaas <bhelgaas@google.com>
+From: Victor Shih <victor.shih@genesyslogic.com.tw>
 
-[ Upstream commit 951b7ccc54591ba48755b5e0c7fc8b9623a64640 ]
+[ Upstream commit dec8b38be4b35cae5f7fa086daf2631e2cfa09c1 ]
 
-015c9cbcf0ad ("mmc: sdhci-pci-gli: GL9750: Mask the replay timer timeout of
-AER") added PCI_GLI_9750_CORRERR_MASK, the offset of the AER Capability in
-config space, and PCI_GLI_9750_CORRERR_MASK_REPLAY_TIMER_TIMEOUT, the
-Replay Timer Timeout bit in the AER Correctable Error Status register.
+In preparation to fix replay timer timeout, add
+sdhci_gli_mask_replay_timer_timeout() function
+to simplify some of the code, allowing it to be re-used.
 
-Use pci_find_ext_capability() to locate the AER Capability and use the
-existing PCI_ERR_COR_REP_TIMER definition to mask the bit.
-
-This removes a little bit of unnecessarily device-specific code and makes
-AER-related things more greppable.
-
-Signed-off-by: Bjorn Helgaas <bhelgaas@google.com>
-Link: https://lore.kernel.org/r/20240327214831.1544595-2-helgaas@kernel.org
+Signed-off-by: Victor Shih <victor.shih@genesyslogic.com.tw>
+Fixes: 1ae1d2d6e555 ("mmc: sdhci-pci-gli: Add Genesys Logic GL9763E support")
+Cc: stable@vger.kernel.org
+Acked-by: Adrian Hunter <adrian.hunter@intel.com>
+Link: https://lore.kernel.org/r/20250731065752.450231-2-victorshihgli@gmail.com
 Signed-off-by: Ulf Hansson <ulf.hansson@linaro.org>
+Stable-dep-of: 340be332e420 ("mmc: sdhci-pci-gli: GL9763e: Mask the replay timer timeout of AER")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/mmc/host/sdhci-pci-gli.c | 12 ++----------
- 1 file changed, 2 insertions(+), 10 deletions(-)
+ drivers/mmc/host/sdhci-pci-gli.c | 14 ++++++++++++++
+ 1 file changed, 14 insertions(+)
 
 diff --git a/drivers/mmc/host/sdhci-pci-gli.c b/drivers/mmc/host/sdhci-pci-gli.c
-index 3b5b5c139206..52e716daddbe 100644
+index 52e716daddbe..0e19e15ed356 100644
 --- a/drivers/mmc/host/sdhci-pci-gli.c
 +++ b/drivers/mmc/host/sdhci-pci-gli.c
-@@ -27,8 +27,6 @@
- #define PCI_GLI_9750_PM_CTRL	0xFC
- #define   PCI_GLI_9750_PM_STATE	  GENMASK(1, 0)
- 
--#define PCI_GLI_9750_CORRERR_MASK				0x214
--#define   PCI_GLI_9750_CORRERR_MASK_REPLAY_TIMER_TIMEOUT	  BIT(12)
- 
- #define SDHCI_GLI_9750_CFG2          0x848
- #define   SDHCI_GLI_9750_CFG2_L1DLY    GENMASK(28, 24)
-@@ -154,8 +152,6 @@
- #define PCI_GLI_9755_PM_CTRL     0xFC
- #define   PCI_GLI_9755_PM_STATE    GENMASK(1, 0)
- 
--#define PCI_GLI_9755_CORRERR_MASK				0x214
--#define   PCI_GLI_9755_CORRERR_MASK_REPLAY_TIMER_TIMEOUT	  BIT(12)
- 
+@@ -156,6 +156,20 @@
  #define GLI_MAX_TUNING_LOOP 40
  
-@@ -501,9 +497,7 @@ static void gl9750_hw_setting(struct sdhci_host *host)
- 	pci_write_config_dword(pdev, PCI_GLI_9750_PM_CTRL, value);
- 
- 	/* mask the replay timer timeout of AER */
--	pci_read_config_dword(pdev, PCI_GLI_9750_CORRERR_MASK, &value);
--	value |= PCI_GLI_9750_CORRERR_MASK_REPLAY_TIMER_TIMEOUT;
--	pci_write_config_dword(pdev, PCI_GLI_9750_CORRERR_MASK, value);
-+	sdhci_gli_mask_replay_timer_timeout(pdev);
- 
- 	gl9750_wt_off(host);
- }
-@@ -715,9 +709,7 @@ static void gl9755_hw_setting(struct sdhci_pci_slot *slot)
- 	pci_write_config_dword(pdev, PCI_GLI_9755_PM_CTRL, value);
- 
- 	/* mask the replay timer timeout of AER */
--	pci_read_config_dword(pdev, PCI_GLI_9755_CORRERR_MASK, &value);
--	value |= PCI_GLI_9755_CORRERR_MASK_REPLAY_TIMER_TIMEOUT;
--	pci_write_config_dword(pdev, PCI_GLI_9755_CORRERR_MASK, value);
-+	sdhci_gli_mask_replay_timer_timeout(pdev);
- 
- 	gl9755_wt_off(pdev);
- }
+ /* Genesys Logic chipset */
++static void sdhci_gli_mask_replay_timer_timeout(struct pci_dev *pdev)
++{
++	int aer;
++	u32 value;
++
++	/* mask the replay timer timeout of AER */
++	aer = pci_find_ext_capability(pdev, PCI_EXT_CAP_ID_ERR);
++	if (aer) {
++		pci_read_config_dword(pdev, aer + PCI_ERR_COR_MASK, &value);
++		value |= PCI_ERR_COR_REP_TIMER;
++		pci_write_config_dword(pdev, aer + PCI_ERR_COR_MASK, value);
++	}
++}
++
+ static inline void gl9750_wt_on(struct sdhci_host *host)
+ {
+ 	u32 wt_value;
 -- 
 2.50.1
 
