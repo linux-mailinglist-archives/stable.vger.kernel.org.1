@@ -1,58 +1,59 @@
-Return-Path: <stable+bounces-172614-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-172615-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 38893B3296F
-	for <lists+stable@lfdr.de>; Sat, 23 Aug 2025 16:55:41 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0E924B32974
+	for <lists+stable@lfdr.de>; Sat, 23 Aug 2025 17:02:45 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 182F95A252A
-	for <lists+stable@lfdr.de>; Sat, 23 Aug 2025 14:55:41 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id EA9B41BC5F5D
+	for <lists+stable@lfdr.de>; Sat, 23 Aug 2025 15:03:04 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7220D2D543E;
-	Sat, 23 Aug 2025 14:55:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B53F91DF756;
+	Sat, 23 Aug 2025 15:02:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="MMa7Ja94"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="kJbGJIqg"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 322E925F7B1
-	for <stable@vger.kernel.org>; Sat, 23 Aug 2025 14:55:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 754731C6FE1
+	for <stable@vger.kernel.org>; Sat, 23 Aug 2025 15:02:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755960937; cv=none; b=iVPBzoXNx9ll5n5369h76V986KnwSZDuZvqGm/fwfkwGysWwyNC3apy9wklVrtfrzL/U5/Fm10KcsFMk9S+brpUbxhwmuoG4sdP/LwvyBdZw6W7kPc8eUIUyGKUECe1pf6ArvL49vm+KtoHp6LbFXYR/s5qHGE6zSljmt5NGQ9U=
+	t=1755961360; cv=none; b=Y/9LGZl+n6PG8u4Kk4wo+lXVTX90mjSCBh15V63zeeWx51SVeBR7FOc2ZMng+lT9BL1KOCm8iCZhsX91oklIXqceQVey6gZnZaUemWtWpIjzPlqbr7wzN3Kn8alBX3hqlmDYewrplVBnx9V/cRmrMcXo0sWPCI6PnhDrn1FnXtY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1755960937; c=relaxed/simple;
-	bh=6Y1Fs4vPClMjrLMgafX6KQtCRyyohmpgXe49pKd8D1s=;
+	s=arc-20240116; t=1755961360; c=relaxed/simple;
+	bh=vs3hoit2yYaIXbF5BpE5BOJDJL+eGX2ZloJP431FLtM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=FPRbcBKAibJM5adad24ne5DZk0mHLXlv0SC95QLQYmdohqsommk6dlo1DdRlPv2vIjeo8gtWQOnlYKlVRR7+dePrEtwFJxR2laa7HDaYFPewj6P35EZSinOtnobZ76w08EZrlg4spWYm7oEVpb2YMIThL0XXPUdJue1Wf54rBog=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=MMa7Ja94; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4E4F7C4CEE7;
-	Sat, 23 Aug 2025 14:55:36 +0000 (UTC)
+	 MIME-Version; b=WpmfNyrLNIEe36SyQFfYMEAwwYRIZUzxcuUiwY39Q7qxhcI7E9XMpI02m77ATntXExlLBUcSoWFPo2+/nBxKFSjZTeI5ck73LF58lksw1CSqZfjlJUtdsrk4J2f9+elxRdgnDLIXKqevD9GUSQINv/GOT8p8W12OhwCh/ClSgW4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=kJbGJIqg; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 30C6AC4CEF4;
+	Sat, 23 Aug 2025 15:02:39 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1755960937;
-	bh=6Y1Fs4vPClMjrLMgafX6KQtCRyyohmpgXe49pKd8D1s=;
+	s=k20201202; t=1755961359;
+	bh=vs3hoit2yYaIXbF5BpE5BOJDJL+eGX2ZloJP431FLtM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=MMa7Ja94kmK5CpxefoYO/Fq9Qh2GPU+X56wWAzn8HZeQsd4aYTraiF9Qf7sBMChQW
-	 bcbOSpZM7J97eM1i0DT9YwwSmwCEnyOCKdkscOVDMFXDPjX+igyI3+OJax80f7iUb7
-	 fMcx4zu/QZPeVNrNK4hE+XN720OomXnP6PJEY0j2/paVFxVXBnj6hWEeXUX/h7UAYc
-	 yR2Z3/KxRxisJ0D+G0Tv07VtCO60ikatZR2S8PiddI0r6Y+tMzi63UuUiAX8BPqH9S
-	 jkWyXodZFNp97pIpArNf0f5pT7EUV08ZjJtxswueABzgjuvoRLBYHQbLWfbZ9lmXxN
-	 vZxWNz4m/tC5A==
+	b=kJbGJIqgaEi/CPxu7/EsZ3XiNZKYYVwAH2nkBd8xxG99v02fDw34vIjVgUWP86ozw
+	 RpvPeB5EKUd7Rwo3aQq9MiwMbPuaFhSIdZlkpZ1xQXYjLdFDBePacmcZ3DNoMRf40e
+	 kmhJkkMJWRR0buB/it7PZlgW9LOxEizcEJhtK1O3HFsb2d8IQw4Z1fNjvR6xh9E4Pc
+	 ivYQKqkCvyMY9cERy/Tm+NKFFMQBo4/JLGrYbKyY7mmLv4iAXsEVFdV6GaRzD0waLK
+	 OHZAm96dLOKezSW7bENFZHhC1Ixf+SJRO+oATsqrb0jbN7VCodgyvF+x01aSFf5D5x
+	 NSvn70K2W8kdw==
 From: Sasha Levin <sashal@kernel.org>
 To: stable@vger.kernel.org
-Cc: Geliang Tang <tanggeliang@kylinos.cn>,
-	Matthieu Baerts <matttbe@kernel.org>,
-	Jakub Kicinski <kuba@kernel.org>,
+Cc: Judith Mendez <jm@ti.com>,
+	Andrew Davis <afd@ti.com>,
+	Adrian Hunter <adrian.hunter@intel.com>,
+	Ulf Hansson <ulf.hansson@linaro.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1.y] mptcp: disable add_addr retransmission when timeout is 0
-Date: Sat, 23 Aug 2025 10:55:34 -0400
-Message-ID: <20250823145534.2259284-1-sashal@kernel.org>
+Subject: [PATCH 6.12.y] mmc: sdhci_am654: Disable HS400 for AM62P SR1.0 and SR1.1
+Date: Sat, 23 Aug 2025 11:02:37 -0400
+Message-ID: <20250823150237.2265649-1-sashal@kernel.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <2025082242-rickety-degree-c696@gregkh>
-References: <2025082242-rickety-degree-c696@gregkh>
+In-Reply-To: <2025082207-defog-stunned-9396@gregkh>
+References: <2025082207-defog-stunned-9396@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -61,109 +62,85 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-From: Geliang Tang <tanggeliang@kylinos.cn>
+From: Judith Mendez <jm@ti.com>
 
-[ Upstream commit f5ce0714623cffd00bf2a83e890d09c609b7f50a ]
+[ Upstream commit d2d7a96b29ea6ab093973a1a37d26126db70c79f ]
 
-When add_addr_timeout was set to 0, this caused the ADD_ADDR to be
-retransmitted immediately, which looks like a buggy behaviour. Instead,
-interpret 0 as "no retransmissions needed".
+This adds SDHCI_AM654_QUIRK_DISABLE_HS400 quirk which shall be used
+to disable HS400 support. AM62P SR1.0 and SR1.1 do not support HS400
+due to errata i2458 [0] so disable HS400 for these SoC revisions.
 
-The documentation is updated to explicitly state that setting the timeout
-to 0 disables retransmission.
-
-Fixes: 93f323b9cccc ("mptcp: add a new sysctl add_addr_timeout")
+[0] https://www.ti.com/lit/er/sprz574a/sprz574a.pdf
+Fixes: 37f28165518f ("arm64: dts: ti: k3-am62p: Add ITAP/OTAP values for MMC")
 Cc: stable@vger.kernel.org
-Suggested-by: Matthieu Baerts <matttbe@kernel.org>
-Signed-off-by: Geliang Tang <tanggeliang@kylinos.cn>
-Reviewed-by: Matthieu Baerts (NGI0) <matttbe@kernel.org>
-Signed-off-by: Matthieu Baerts (NGI0) <matttbe@kernel.org>
-Link: https://patch.msgid.link/20250815-net-mptcp-misc-fixes-6-17-rc2-v1-5-521fe9957892@kernel.org
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-[ Apply to net/mptcp/pm_netlink.c , structural changes in mptcp_pm_alloc_anno_list ]
+Signed-off-by: Judith Mendez <jm@ti.com>
+Reviewed-by: Andrew Davis <afd@ti.com>
+Acked-by: Adrian Hunter <adrian.hunter@intel.com>
+Link: https://lore.kernel.org/r/20250820193047.4064142-1-jm@ti.com
+Signed-off-by: Ulf Hansson <ulf.hansson@linaro.org>
+[ adapted quirk bit assignment from BIT(2) to BIT(1) ]
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- Documentation/networking/mptcp-sysctl.rst |  2 ++
- net/mptcp/pm_netlink.c                    | 18 ++++++++++++------
- 2 files changed, 14 insertions(+), 6 deletions(-)
+ drivers/mmc/host/sdhci_am654.c | 18 ++++++++++++++++++
+ 1 file changed, 18 insertions(+)
 
-diff --git a/Documentation/networking/mptcp-sysctl.rst b/Documentation/networking/mptcp-sysctl.rst
-index 213510698014..722b4395e91b 100644
---- a/Documentation/networking/mptcp-sysctl.rst
-+++ b/Documentation/networking/mptcp-sysctl.rst
-@@ -20,6 +20,8 @@ add_addr_timeout - INTEGER (seconds)
- 	resent to an MPTCP peer that has not acknowledged a previous
- 	ADD_ADDR message.
+diff --git a/drivers/mmc/host/sdhci_am654.c b/drivers/mmc/host/sdhci_am654.c
+index 8e0eb0acf442..47344e29a4c9 100644
+--- a/drivers/mmc/host/sdhci_am654.c
++++ b/drivers/mmc/host/sdhci_am654.c
+@@ -155,6 +155,7 @@ struct sdhci_am654_data {
+ 	u32 tuning_loop;
  
-+	Do not retransmit if set to 0.
+ #define SDHCI_AM654_QUIRK_FORCE_CDTEST BIT(0)
++#define SDHCI_AM654_QUIRK_DISABLE_HS400 BIT(1)
+ };
+ 
+ struct window {
+@@ -734,6 +735,7 @@ static int sdhci_am654_init(struct sdhci_host *host)
+ {
+ 	struct sdhci_pltfm_host *pltfm_host = sdhci_priv(host);
+ 	struct sdhci_am654_data *sdhci_am654 = sdhci_pltfm_priv(pltfm_host);
++	struct device *dev = mmc_dev(host->mmc);
+ 	u32 ctl_cfg_2 = 0;
+ 	u32 mask;
+ 	u32 val;
+@@ -789,6 +791,12 @@ static int sdhci_am654_init(struct sdhci_host *host)
+ 	if (ret)
+ 		goto err_cleanup_host;
+ 
++	if (sdhci_am654->quirks & SDHCI_AM654_QUIRK_DISABLE_HS400 &&
++	    host->mmc->caps2 & (MMC_CAP2_HS400 | MMC_CAP2_HS400_ES)) {
++		dev_info(dev, "HS400 mode not supported on this silicon revision, disabling it\n");
++		host->mmc->caps2 &= ~(MMC_CAP2_HS400 | MMC_CAP2_HS400_ES);
++	}
 +
- 	The default value matches TCP_RTO_MAX. This is a per-namespace
- 	sysctl.
- 
-diff --git a/net/mptcp/pm_netlink.c b/net/mptcp/pm_netlink.c
-index 3391d4df2dbb..cb92e4b39cf6 100644
---- a/net/mptcp/pm_netlink.c
-+++ b/net/mptcp/pm_netlink.c
-@@ -304,6 +304,7 @@ static void mptcp_pm_add_timer(struct timer_list *timer)
- 	struct mptcp_pm_add_entry *entry = from_timer(entry, timer, add_timer);
- 	struct mptcp_sock *msk = entry->sock;
- 	struct sock *sk = (struct sock *)msk;
-+	unsigned int timeout;
- 
- 	pr_debug("msk=%p\n", msk);
- 
-@@ -321,6 +322,10 @@ static void mptcp_pm_add_timer(struct timer_list *timer)
- 		goto out;
- 	}
- 
-+	timeout = mptcp_get_add_addr_timeout(sock_net(sk));
-+	if (!timeout)
-+		goto out;
-+
- 	spin_lock_bh(&msk->pm.lock);
- 
- 	if (!mptcp_pm_should_add_signal_addr(msk)) {
-@@ -332,7 +337,7 @@ static void mptcp_pm_add_timer(struct timer_list *timer)
- 
- 	if (entry->retrans_times < ADD_ADDR_RETRANS_MAX)
- 		sk_reset_timer(sk, timer,
--			       jiffies + mptcp_get_add_addr_timeout(sock_net(sk)));
-+			       jiffies + timeout);
- 
- 	spin_unlock_bh(&msk->pm.lock);
- 
-@@ -374,6 +379,7 @@ bool mptcp_pm_alloc_anno_list(struct mptcp_sock *msk,
- 	struct mptcp_pm_add_entry *add_entry = NULL;
- 	struct sock *sk = (struct sock *)msk;
- 	struct net *net = sock_net(sk);
-+	unsigned int timeout;
- 
- 	lockdep_assert_held(&msk->pm.lock);
- 
-@@ -383,9 +389,7 @@ bool mptcp_pm_alloc_anno_list(struct mptcp_sock *msk,
- 		if (WARN_ON_ONCE(mptcp_pm_is_kernel(msk)))
- 			return false;
- 
--		sk_reset_timer(sk, &add_entry->add_timer,
--			       jiffies + mptcp_get_add_addr_timeout(net));
--		return true;
-+		goto reset_timer;
- 	}
- 
- 	add_entry = kmalloc(sizeof(*add_entry), GFP_ATOMIC);
-@@ -399,8 +403,10 @@ bool mptcp_pm_alloc_anno_list(struct mptcp_sock *msk,
- 	add_entry->retrans_times = 0;
- 
- 	timer_setup(&add_entry->add_timer, mptcp_pm_add_timer, 0);
--	sk_reset_timer(sk, &add_entry->add_timer,
--		       jiffies + mptcp_get_add_addr_timeout(net));
-+reset_timer:
-+	timeout = mptcp_get_add_addr_timeout(net);
-+	if (timeout)
-+		sk_reset_timer(sk, &add_entry->add_timer, jiffies + timeout);
- 
- 	return true;
+ 	ret = __sdhci_add_host(host);
+ 	if (ret)
+ 		goto err_cleanup_host;
+@@ -852,6 +860,12 @@ static int sdhci_am654_get_of_property(struct platform_device *pdev,
+ 	return 0;
  }
+ 
++static const struct soc_device_attribute sdhci_am654_descope_hs400[] = {
++	{ .family = "AM62PX", .revision = "SR1.0" },
++	{ .family = "AM62PX", .revision = "SR1.1" },
++	{ /* sentinel */ }
++};
++
+ static const struct of_device_id sdhci_am654_of_match[] = {
+ 	{
+ 		.compatible = "ti,am654-sdhci-5.1",
+@@ -943,6 +957,10 @@ static int sdhci_am654_probe(struct platform_device *pdev)
+ 		goto err_pltfm_free;
+ 	}
+ 
++	soc = soc_device_match(sdhci_am654_descope_hs400);
++	if (soc)
++		sdhci_am654->quirks |= SDHCI_AM654_QUIRK_DISABLE_HS400;
++
+ 	host->mmc_host_ops.execute_tuning = sdhci_am654_execute_tuning;
+ 
+ 	pm_runtime_get_noresume(dev);
 -- 
 2.50.1
 
