@@ -1,256 +1,90 @@
-Return-Path: <stable+bounces-172657-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-172658-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 530A5B32B2E
-	for <lists+stable@lfdr.de>; Sat, 23 Aug 2025 18:56:25 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 43710B32B58
+	for <lists+stable@lfdr.de>; Sat, 23 Aug 2025 19:42:39 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 07B3FAA5129
-	for <lists+stable@lfdr.de>; Sat, 23 Aug 2025 16:56:24 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 90B807B8CA8
+	for <lists+stable@lfdr.de>; Sat, 23 Aug 2025 17:41:02 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5A3EE1F419B;
-	Sat, 23 Aug 2025 16:56:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 313A71DE4DC;
+	Sat, 23 Aug 2025 17:42:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="jmmTTgF1"
+	dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="F9ieONYA";
+	dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="tbvuSH0L"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from galois.linutronix.de (Galois.linutronix.de [193.142.43.55])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1ABB319E968
-	for <stable@vger.kernel.org>; Sat, 23 Aug 2025 16:56:20 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 889CE14B977;
+	Sat, 23 Aug 2025 17:42:28 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=193.142.43.55
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755968181; cv=none; b=n1a0iLt6n19hBpORYbGHUlxVELeagL+m/MuRBDUVfTtQZ6toK5wpDQhMYoA941/Gly6mSJFcfuf4RVln62ZAOq1GEBpnOXNHMyfGWIxCbVZTAaGWYhKL7/VoVPsHPU4Jzw4kmJoxln/XFV1OwXyKq4sH3gOEJNlTjuCsbVlO6FE=
+	t=1755970950; cv=none; b=n/GJV7nwEQZiAF6Bbl2pZWCyFYUkw352VdjtqvjR+MrrBRdQe+xTweSSDckoJW03P3xYPgKk5c2OPM1XSnYOP5unq9cSpfojR1MIMy87BQYNjxwC6z0JG2moo0gyVVqedrbLtiEFubiDPwAy6h1rYpZvzc8XVYQ1mMhUs9zjRp4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1755968181; c=relaxed/simple;
-	bh=7V5IuY1gwX9msyu/Z10x7PoyhCdoYK5tg4zG07BYJ1c=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=sMaXydXQJPOYwfoEWHmcEnRe0xl6UannLrTaJ6rTvOz4ViCFulYK/JwDJZ4sgHy3kGXu4uX3yEjXW1GFiVZzhefV68kPnD5qCfvbkACFVhiD2ukG3zVzsUrPLMSm2atwQVfYs83OX0wx9IwQTB8l//jE3HDFQ8gaEKbMzmDkVs4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=jmmTTgF1; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 02E02C4CEE7;
-	Sat, 23 Aug 2025 16:56:19 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1755968180;
-	bh=7V5IuY1gwX9msyu/Z10x7PoyhCdoYK5tg4zG07BYJ1c=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=jmmTTgF1ItNTYw/pJz4cpCvC1lpb8lDZ51Fn0matlQZ09mt1TgLMJgu3MUGYlONh2
-	 N1+K+b12vJMx/ElThos3C8K1pKvgCUJQhut7mrQX2WSdzb6ZFwghm3Gz5lgc11hdJl
-	 /S3PsbgAYKOMDIzaZlokInOSKX9o7FCXZllbHYGMAb+/t9jOnUs3bu1UMvJKbJ2/vp
-	 khrtq3KZKA0QVFmB/FF2vel1vtXlaMBMgTOyH65+hnQBoqGMzsQKmfs1kXls9hMprH
-	 d8MIEt8SNPWYFwipaRM6TN6yT6svEqEerq/ILQoLfrHzyfpK0QX/nX5aDWgykwujCC
-	 2WhVvOvYkEr3g==
-From: Sasha Levin <sashal@kernel.org>
-To: stable@vger.kernel.org
-Cc: Imre Deak <imre.deak@intel.com>,
-	Charlton Lin <charlton.lin@intel.com>,
-	Khaled Almahallawy <khaled.almahallawy@intel.com>,
-	Mika Kahola <mika.kahola@intel.com>,
-	Tvrtko Ursulin <tursulin@ursulin.net>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12.y] drm/i915/icl+/tc: Cache the max lane count value
-Date: Sat, 23 Aug 2025 12:56:18 -0400
-Message-ID: <20250823165618.2341421-1-sashal@kernel.org>
-X-Mailer: git-send-email 2.50.1
-In-Reply-To: <2025082305-reappoint-annotate-8587@gregkh>
-References: <2025082305-reappoint-annotate-8587@gregkh>
+	s=arc-20240116; t=1755970950; c=relaxed/simple;
+	bh=ys3E9OHMdP5Us8PZ5LuM+YUcdr7+gk8Grt+IehxAW3k=;
+	h=From:To:Cc:Subject:In-Reply-To:References:Date:Message-ID:
+	 MIME-Version:Content-Type; b=nfI8oJWyWuG24n59WIbknYJB361qEIeI1cIkyU6bdPXqzJt+fcPWNrd2NRIZNeXztngwWXMnADhCjKGiqAcAOPV3twLPrxlUZw4FCcYn1iD+GligO/D90LpTH8J1cfkBCJjY/B4W9zlFye68mPQz3diJ2WzC22TCxTWMBddbM7Y=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de; spf=pass smtp.mailfrom=linutronix.de; dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=F9ieONYA; dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=tbvuSH0L; arc=none smtp.client-ip=193.142.43.55
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linutronix.de
+From: Thomas Gleixner <tglx@linutronix.de>
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
+	s=2020; t=1755970946;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=/de6x57hRmjghuW5hRj9wc3ZOTI+jL2dLeu0jXGpYYw=;
+	b=F9ieONYAcUJiOYjMB94+sz+tM86drtSx1mvJVtdt83RYRfz5mL1TuhScahgNxVgHpdDWaf
+	A/b61UshtHooa2kN8B4sDgB+4Y+pA1270N8i8hwT+GsFyoNSzfqklxPG6tPi4rC8EZZ9lf
+	B+UGbPAoSuuuODwx2yjojKUGJuYhkctchNGHvZr4/Z0uEoZfg+MkV/r2Rc8NSWGDF3LBog
+	rvwsnnWPdC2xKA0atcgy97LeYW+F6u19uIF6si1TTYQgBdAndLRZRc6cVf0v45QG+1Wfo1
+	wvsnT/48UG3q1HFrNx5/Dv0IhUyR0F+XmCacd3s1w6ywzy2P8ijvV1oam/BVNA==
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
+	s=2020e; t=1755970946;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=/de6x57hRmjghuW5hRj9wc3ZOTI+jL2dLeu0jXGpYYw=;
+	b=tbvuSH0LmGaBIHWvaaAJko0FrtGSXoISrr2V22oRgAmY2nUmt9uZZ4JSaNJwVil+53BkA3
+	ut5Va+LEuqNTRdCQ==
+To: Greg KH <gregkh@linuxfoundation.org>, Sumanth Gavini
+ <sumanth.gavini@yahoo.com>
+Cc: rostedt@goodmis.org, mhiramat@kernel.org, jstultz@google.com,
+ clingutla@codeaurora.org, mingo@kernel.org, sashal@kernel.org,
+ boqun.feng@gmail.com, ryotkkr98@gmail.com, kprateek.nayak@amd.com,
+ linux-kernel@vger.kernel.org, stable@vger.kernel.org, "J . Avila"
+ <elavila@google.com>
+Subject: Re: [PATCH 6.1] softirq: Add trace points for tasklet entry/exit
+In-Reply-To: <2025082257-smirk-backside-6d93@gregkh>
+References: <20250812161755.609600-1-sumanth.gavini.ref@yahoo.com>
+ <20250812161755.609600-1-sumanth.gavini@yahoo.com>
+ <2025082257-smirk-backside-6d93@gregkh>
+Date: Sat, 23 Aug 2025 19:42:25 +0200
+Message-ID: <87ldnavsse.ffs@tglx>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
 
-From: Imre Deak <imre.deak@intel.com>
+On Fri, Aug 22 2025 at 15:07, Greg KH wrote:
+> On Tue, Aug 12, 2025 at 11:17:54AM -0500, Sumanth Gavini wrote:
+>
+> And I'm with John, this makes no sense as to why you need/want these.  I
+> think that the syzbot report is bogus, sorry.  Please prove me wrong :)
 
-[ Upstream commit 5fd35236546abe780eaadb7561e09953719d4fc3 ]
+It was validated by AI (Absense of Intelligence) that adding tracepoints
+makes the problem go away! So why do you want extra proof?
 
-The PHY's pin assignment value in the TCSS_DDI_STATUS register - as set
-by the HW/FW based on the connected DP-alt sink's TypeC/PD pin
-assignment negotiation - gets cleared by the HW/FW on LNL+ as soon as
-the sink gets disconnected, even if the PHY ownership got acquired
-already by the driver (and hence the PHY itself is still connected and
-used by the display). This is similar to how the PHY Ready flag gets
-cleared on LNL+ in the same register.
+Thanks,
 
-To be able to query the max lane count value on LNL+ - which is based on
-the above pin assignment - at all times even after the sink gets
-disconnected, the max lane count must be determined and cached during
-the PHY's HW readout and connect sequences. Do that here, leaving the
-actual use of the cached value to a follow-up change.
-
-v2: Don't read out the pin configuration if the PHY is disconnected.
-
-Cc: stable@vger.kernel.org # v6.8+
-Reported-by: Charlton Lin <charlton.lin@intel.com>
-Tested-by: Khaled Almahallawy <khaled.almahallawy@intel.com>
-Reviewed-by: Mika Kahola <mika.kahola@intel.com>
-Signed-off-by: Imre Deak <imre.deak@intel.com>
-Link: https://lore.kernel.org/r/20250811080152.906216-3-imre.deak@intel.com
-(cherry picked from commit 3e32438fc406761f81b1928d210b3d2a5e7501a0)
-Signed-off-by: Tvrtko Ursulin <tursulin@ursulin.net>
-[ adapted APIs from intel_display to drm_i915_private structures ]
-Signed-off-by: Sasha Levin <sashal@kernel.org>
----
- drivers/gpu/drm/i915/display/intel_tc.c | 55 +++++++++++++++++++++----
- 1 file changed, 47 insertions(+), 8 deletions(-)
-
-diff --git a/drivers/gpu/drm/i915/display/intel_tc.c b/drivers/gpu/drm/i915/display/intel_tc.c
-index 6f2ee7dbc43b..ad1f7c53afe6 100644
---- a/drivers/gpu/drm/i915/display/intel_tc.c
-+++ b/drivers/gpu/drm/i915/display/intel_tc.c
-@@ -63,6 +63,7 @@ struct intel_tc_port {
- 	enum tc_port_mode init_mode;
- 	enum phy_fia phy_fia;
- 	u8 phy_fia_idx;
-+	u8 max_lane_count;
- };
- 
- static enum intel_display_power_domain
-@@ -366,12 +367,12 @@ static int intel_tc_port_get_max_lane_count(struct intel_digital_port *dig_port)
- 	}
- }
- 
--int intel_tc_port_max_lane_count(struct intel_digital_port *dig_port)
-+static int get_max_lane_count(struct intel_tc_port *tc)
- {
-+	struct intel_digital_port *dig_port = tc->dig_port;
- 	struct drm_i915_private *i915 = to_i915(dig_port->base.base.dev);
--	struct intel_tc_port *tc = to_tc_port(dig_port);
- 
--	if (!intel_encoder_is_tc(&dig_port->base) || tc->mode != TC_PORT_DP_ALT)
-+	if (tc->mode != TC_PORT_DP_ALT)
- 		return 4;
- 
- 	assert_tc_cold_blocked(tc);
-@@ -385,6 +386,21 @@ int intel_tc_port_max_lane_count(struct intel_digital_port *dig_port)
- 	return intel_tc_port_get_max_lane_count(dig_port);
- }
- 
-+static void read_pin_configuration(struct intel_tc_port *tc)
-+{
-+	tc->max_lane_count = get_max_lane_count(tc);
-+}
-+
-+int intel_tc_port_max_lane_count(struct intel_digital_port *dig_port)
-+{
-+	struct intel_tc_port *tc = to_tc_port(dig_port);
-+
-+	if (!intel_encoder_is_tc(&dig_port->base))
-+		return 4;
-+
-+	return get_max_lane_count(tc);
-+}
-+
- void intel_tc_port_set_fia_lane_count(struct intel_digital_port *dig_port,
- 				      int required_lanes)
- {
-@@ -597,9 +613,12 @@ static void icl_tc_phy_get_hw_state(struct intel_tc_port *tc)
- 	tc_cold_wref = __tc_cold_block(tc, &domain);
- 
- 	tc->mode = tc_phy_get_current_mode(tc);
--	if (tc->mode != TC_PORT_DISCONNECTED)
-+	if (tc->mode != TC_PORT_DISCONNECTED) {
- 		tc->lock_wakeref = tc_cold_block(tc);
- 
-+		read_pin_configuration(tc);
-+	}
-+
- 	__tc_cold_unblock(tc, domain, tc_cold_wref);
- }
- 
-@@ -657,8 +676,11 @@ static bool icl_tc_phy_connect(struct intel_tc_port *tc,
- 
- 	tc->lock_wakeref = tc_cold_block(tc);
- 
--	if (tc->mode == TC_PORT_TBT_ALT)
-+	if (tc->mode == TC_PORT_TBT_ALT) {
-+		read_pin_configuration(tc);
-+
- 		return true;
-+	}
- 
- 	if ((!tc_phy_is_ready(tc) ||
- 	     !icl_tc_phy_take_ownership(tc, true)) &&
-@@ -669,6 +691,7 @@ static bool icl_tc_phy_connect(struct intel_tc_port *tc,
- 		goto out_unblock_tc_cold;
- 	}
- 
-+	read_pin_configuration(tc);
- 
- 	if (!tc_phy_verify_legacy_or_dp_alt_mode(tc, required_lanes))
- 		goto out_release_phy;
-@@ -859,9 +882,12 @@ static void adlp_tc_phy_get_hw_state(struct intel_tc_port *tc)
- 	port_wakeref = intel_display_power_get(i915, port_power_domain);
- 
- 	tc->mode = tc_phy_get_current_mode(tc);
--	if (tc->mode != TC_PORT_DISCONNECTED)
-+	if (tc->mode != TC_PORT_DISCONNECTED) {
- 		tc->lock_wakeref = tc_cold_block(tc);
- 
-+		read_pin_configuration(tc);
-+	}
-+
- 	intel_display_power_put(i915, port_power_domain, port_wakeref);
- }
- 
-@@ -874,6 +900,9 @@ static bool adlp_tc_phy_connect(struct intel_tc_port *tc, int required_lanes)
- 
- 	if (tc->mode == TC_PORT_TBT_ALT) {
- 		tc->lock_wakeref = tc_cold_block(tc);
-+
-+		read_pin_configuration(tc);
-+
- 		return true;
- 	}
- 
-@@ -895,6 +924,8 @@ static bool adlp_tc_phy_connect(struct intel_tc_port *tc, int required_lanes)
- 
- 	tc->lock_wakeref = tc_cold_block(tc);
- 
-+	read_pin_configuration(tc);
-+
- 	if (!tc_phy_verify_legacy_or_dp_alt_mode(tc, required_lanes))
- 		goto out_unblock_tc_cold;
- 
-@@ -1094,9 +1125,12 @@ static void xelpdp_tc_phy_get_hw_state(struct intel_tc_port *tc)
- 	tc_cold_wref = __tc_cold_block(tc, &domain);
- 
- 	tc->mode = tc_phy_get_current_mode(tc);
--	if (tc->mode != TC_PORT_DISCONNECTED)
-+	if (tc->mode != TC_PORT_DISCONNECTED) {
- 		tc->lock_wakeref = tc_cold_block(tc);
- 
-+		read_pin_configuration(tc);
-+	}
-+
- 	drm_WARN_ON(&i915->drm,
- 		    (tc->mode == TC_PORT_DP_ALT || tc->mode == TC_PORT_LEGACY) &&
- 		    !xelpdp_tc_phy_tcss_power_is_enabled(tc));
-@@ -1108,14 +1142,19 @@ static bool xelpdp_tc_phy_connect(struct intel_tc_port *tc, int required_lanes)
- {
- 	tc->lock_wakeref = tc_cold_block(tc);
- 
--	if (tc->mode == TC_PORT_TBT_ALT)
-+	if (tc->mode == TC_PORT_TBT_ALT) {
-+		read_pin_configuration(tc);
-+
- 		return true;
-+	}
- 
- 	if (!xelpdp_tc_phy_enable_tcss_power(tc, true))
- 		goto out_unblock_tccold;
- 
- 	xelpdp_tc_phy_take_ownership(tc, true);
- 
-+	read_pin_configuration(tc);
-+
- 	if (!tc_phy_verify_legacy_or_dp_alt_mode(tc, required_lanes))
- 		goto out_release_phy;
- 
--- 
-2.50.1
+        tglx
 
 
