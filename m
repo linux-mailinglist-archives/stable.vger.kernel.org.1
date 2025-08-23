@@ -1,145 +1,174 @@
-Return-Path: <stable+bounces-172662-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-172663-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id EBFB4B32C23
-	for <lists+stable@lfdr.de>; Sat, 23 Aug 2025 23:53:57 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id A4FBFB32C4D
+	for <lists+stable@lfdr.de>; Sun, 24 Aug 2025 00:26:01 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 5BCC49E2984
-	for <lists+stable@lfdr.de>; Sat, 23 Aug 2025 21:53:56 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 24CA67AB12D
+	for <lists+stable@lfdr.de>; Sat, 23 Aug 2025 22:24:26 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8E1E12EA175;
-	Sat, 23 Aug 2025 21:53:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C62632459C6;
+	Sat, 23 Aug 2025 22:25:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="F1RBuD+U"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="EW5gCCJT"
 X-Original-To: stable@vger.kernel.org
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.14])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E18C715C0;
-	Sat, 23 Aug 2025 21:53:50 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.14
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7A4E214A62B;
+	Sat, 23 Aug 2025 22:25:52 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755986033; cv=none; b=SQ6AT6nLgrif3P0/tZOKoLcXMIoWL69uMRs/eVdO0hEKNp0aDXRKlLyWJ97SludagXPfv71uhiEVKQ7DH2t5mR2lgIdH04lFYqnWsHPnz0V/RAoKr6W/HYxZetVf9kKbtw1dhkAww+A1s3HPRsOnxY3q6Z1axOpX7zDRZJCZ02w=
+	t=1755987952; cv=none; b=fH+NuSulinSmr1WH9bPRmB+dmXCIXTagCh6TQI5WFceFbt+uBtldWYuwi39zSbvmuzBRvsAwttNU5jVPHqe6IdHnhOvTLyGrrRelpq4bmnxz/Kg+cMSh5Fsgl7nhFi/6ifQLkbub5R6xHNhuTXT0Ru6P+VJhYvkIqzx2+BqYe5s=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1755986033; c=relaxed/simple;
-	bh=9BXIzaov3cIKsITFD2kYAmNOig9QKsNDG5ar116bKPs=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=aSoRrGJcLfrMmt7NXjWPQVpW0Q4TjxXLoCB9QSvnRf8yFzaJnOvARJhYJsEud6DTXh77usNJDVJZX3sVDn7+vk9VVjraphPh/2Z5OfBLGaMKR77rK4g61MJf8TdM8oHXwZsyV/yplXqWG6w6Q2YwZfgxk2LYFwI/IjkiOQPSyBU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=F1RBuD+U; arc=none smtp.client-ip=192.198.163.14
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1755986031; x=1787522031;
-  h=date:from:to:cc:subject:message-id:references:
-   mime-version:in-reply-to;
-  bh=9BXIzaov3cIKsITFD2kYAmNOig9QKsNDG5ar116bKPs=;
-  b=F1RBuD+UGGawQMj0uVGegqI/GFe/9guSB/nSFH4JF2N4tgCYSa0xmuwZ
-   IMlL+vWVYx7NG7Bg9Ci52oUdDjdJyQvb5/Myyf7LVOwJwknCW7dlGkHSe
-   KMz/ET+Kj42chNncvI5fjoIS3fR/4E02lBsu/qSkDwc/vY1YCqlx1j6l1
-   9RrOgimZg/SD0impyqhVAJ6Vz3gTt37pEwZiu1p+kksz1zJCaUqA+GJs7
-   B9SZJMVp3f0M4GmMZ5JJr2tbN9/4B35UXpD6a8YRNXncZjLxGMwd3ZVqP
-   6XSfyiAUfawIZZmXYROxTlRdiSP39AIKjhZusAfC8RD2oynwbtICAVUZr
-   A==;
-X-CSE-ConnectionGUID: Tra55mtVT72rtchuTamBmQ==
-X-CSE-MsgGUID: N9rN2BaEQ5OB4EEfQf7Xdw==
-X-IronPort-AV: E=McAfee;i="6800,10657,11531"; a="58319421"
-X-IronPort-AV: E=Sophos;i="6.17,312,1747724400"; 
-   d="scan'208";a="58319421"
-Received: from orviesa010.jf.intel.com ([10.64.159.150])
-  by fmvoesa108.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 23 Aug 2025 14:53:50 -0700
-X-CSE-ConnectionGUID: XxiiGVKgSbGjo2/uo1qaBQ==
-X-CSE-MsgGUID: RpzRL/2pTRGLvAstCrrpKg==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.17,312,1747724400"; 
-   d="scan'208";a="168210962"
-Received: from lkp-server02.sh.intel.com (HELO 4ea60e6ab079) ([10.239.97.151])
-  by orviesa010.jf.intel.com with ESMTP; 23 Aug 2025 14:53:44 -0700
-Received: from kbuild by 4ea60e6ab079 with local (Exim 4.96)
-	(envelope-from <lkp@intel.com>)
-	id 1upwBB-000Mch-25;
-	Sat, 23 Aug 2025 21:53:41 +0000
-Date: Sun, 24 Aug 2025 05:53:22 +0800
-From: kernel test robot <lkp@intel.com>
-To: Lance Yang <lance.yang@linux.dev>, akpm@linux-foundation.org,
-	fthain@linux-m68k.org, geert@linux-m68k.org, mhiramat@kernel.org,
-	senozhatsky@chromium.org
-Cc: oe-kbuild-all@lists.linux.dev, lance.yang@linux.dev,
-	amaindex@outlook.com, anna.schumaker@oracle.com,
-	boqun.feng@gmail.com, ioworker0@gmail.com, joel.granados@kernel.org,
-	jstultz@google.com, kent.overstreet@linux.dev,
-	leonylgao@tencent.com, linux-kernel@vger.kernel.org,
-	linux-m68k@lists.linux-m68k.org, longman@redhat.com,
-	mingo@redhat.com, mingzhe.yang@ly.com, oak@helsinkinet.fi,
-	rostedt@goodmis.org, tfiga@chromium.org, will@kernel.org,
-	stable@vger.kernel.org
-Subject: Re: [PATCH 1/1] hung_task: fix warnings by enforcing alignment on
- lock structures
-Message-ID: <202508240539.ARmC1Umu-lkp@intel.com>
-References: <20250823074048.92498-1-lance.yang@linux.dev>
+	s=arc-20240116; t=1755987952; c=relaxed/simple;
+	bh=o4tfWUnrvWW45XkZjNc1uODnZaubDv7GA3aKCYWJF4U=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=QH2Fu0XPv3arwqon2aEW42sBXn3KbDrt9Q9IVkRqwy7zDW7iLqTdOQGiAxh4GUoQaHFn1TA8ECBY/Ei89rx5p6F1jSivg01Rqzn9tRJ8z9QmZP3kJeg1tlNc1I/53QSLnvM75fCuMdj/x0xVErzwS4QLpL+BlHv58tdPouxVqN4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=EW5gCCJT; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 006EEC4CEE7;
+	Sat, 23 Aug 2025 22:25:51 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1755987952;
+	bh=o4tfWUnrvWW45XkZjNc1uODnZaubDv7GA3aKCYWJF4U=;
+	h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
+	b=EW5gCCJTK7w2G0x+G3zywZXedzHj9/qQI1rjhYF+wvNvopXKT7P6FrAkAuFi8cKmj
+	 I8lTL32lfQ1nqgO2elnEwFep+tvlWkgW9UKFfD4dS9yXpxgdG1G8jVF0JZI3girzc2
+	 MeIT2aesP36eC+S/Z1eSvm1YW7ebomNsH4l71ZUldiy+VOABv4pjqsr/A5zJYwI5HS
+	 XJlIgElipnkM9PuxuJlRJNNKwJl34n6/PwfEDiorLfkAUbxNJvt7UJawH3gCyEDzr9
+	 TAQA6OlARepjOpflztscbknBTiySWrM7ZSlzOxgyzp5GwK5xLmJz3RB9eyNW1sUBbC
+	 fa0AsZsHGo/Aw==
+Received: by mail-lf1-f44.google.com with SMTP id 2adb3069b0e04-55ce5243f6dso3627339e87.2;
+        Sat, 23 Aug 2025 15:25:51 -0700 (PDT)
+X-Forwarded-Encrypted: i=1; AJvYcCVOT7VFp2kLNx7uQbkTXHkWdmBra6DKqp4Mm+20063vkJJSGbtWhBTbSKpY9hXWiK3WJg3x1/6qUQuH5Q0=@vger.kernel.org, AJvYcCWRpISuHyeuAG5KT0Wc6gZYFmQCUXH1hPGmf7YcjWCv09reNkiu77R8UEnK8v4SCNVTIGvM5MhD@vger.kernel.org
+X-Gm-Message-State: AOJu0YwI+OYKilHuOflZE5jVZdjSBDi1PXJvewo8zdgjVAUwkQdL4QvZ
+	/eYAuVjNp5+XRx7J8SuqPho23bElij/laUSSV5qYp5VmCnEibDu+Lg9PiJnNL4bnD59BT1bd3yZ
+	NpEcAEultC8lIJHy2KI4jUh1+ZEWhwBU=
+X-Google-Smtp-Source: AGHT+IEAJZ5I9jytEZddwlocNfvIS6Y8INNTtScihMjxLZcdUP+pDu2NWjNEprTyR8UYHe48zmc40UAAKEbPmo50WKc=
+X-Received: by 2002:a05:6512:6284:b0:55a:5122:91ea with SMTP id
+ 2adb3069b0e04-55f0ccce7e5mr2161677e87.34.1755987950359; Sat, 23 Aug 2025
+ 15:25:50 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20250823074048.92498-1-lance.yang@linux.dev>
+References: <20250822041526.467434-1-CFSworks@gmail.com>
+In-Reply-To: <20250822041526.467434-1-CFSworks@gmail.com>
+From: Ard Biesheuvel <ardb@kernel.org>
+Date: Sun, 24 Aug 2025 08:25:39 +1000
+X-Gmail-Original-Message-ID: <CAMj1kXH38gOUpDDdarCXPAY3BHBbuFzdD=Dq7Knsg-qHJoNqzQ@mail.gmail.com>
+X-Gm-Features: Ac12FXx4h-esqmUyLXFQpc9yLkNC9WcNoc6ief3rZx4PjW95nKGNarPk-LBLvw8
+Message-ID: <CAMj1kXH38gOUpDDdarCXPAY3BHBbuFzdD=Dq7Knsg-qHJoNqzQ@mail.gmail.com>
+Subject: Re: [PATCH] arm64/boot: Zero-initialize idmap PGDs before use
+To: Sam Edwards <cfsworks@gmail.com>
+Cc: Catalin Marinas <catalin.marinas@arm.com>, Will Deacon <will@kernel.org>, 
+	Marc Zyngier <maz@kernel.org>, Andrew Morton <akpm@linux-foundation.org>, 
+	Anshuman Khandual <anshuman.khandual@arm.com>, Ryan Roberts <ryan.roberts@arm.com>, 
+	Baruch Siach <baruch@tkos.co.il>, Kevin Brodsky <kevin.brodsky@arm.com>, 
+	Joey Gouly <joey.gouly@arm.com>, linux-arm-kernel@lists.infradead.org, 
+	linux-kernel@vger.kernel.org, stable@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
 
-Hi Lance,
+Hi Sam,
 
-kernel test robot noticed the following build warnings:
+On Fri, 22 Aug 2025 at 14:15, Sam Edwards <cfsworks@gmail.com> wrote:
+>
+> In early boot, Linux creates identity virtual->physical address mappings
+> so that it can enable the MMU before full memory management is ready.
+> To ensure some available physical memory to back these structures,
+> vmlinux.lds reserves some space (and defines marker symbols) in the
+> middle of the kernel image. However, because they are defined outside of
+> PROGBITS sections, they aren't pre-initialized -- at least as far as ELF
+> is concerned.
+>
+> In the typical case, this isn't actually a problem: the boot image is
+> prepared with objcopy, which zero-fills the gaps, so these structures
+> are incidentally zero-initialized (an all-zeroes entry is considered
+> absent, so zero-initialization is appropriate).
+>
+> However, that is just a happy accident: the `vmlinux` ELF output
+> authoritatively represents the state of memory at entry. If the ELF
+> says a region of memory isn't initialized, we must treat it as
+> uninitialized. Indeed, certain bootloaders (e.g. Broadcom CFE) ingest
+> the ELF directly -- sidestepping the objcopy-produced image entirely --
+> and therefore do not initialize the gaps. This results in the early boot
+> code crashing when it attempts to create identity mappings.
+>
+> Therefore, add boot-time zero-initialization for the following:
+> - __pi_init_idmap_pg_dir..__pi_init_idmap_pg_end
+> - idmap_pg_dir
+> - reserved_pg_dir
 
-[auto build test WARNING on tip/locking/core]
-[also build test WARNING on akpm-mm/mm-everything sysctl/sysctl-next linus/master v6.17-rc2 next-20250822]
-[If your patch is applied to the wrong git tree, kindly drop us a note.
-And when submitting patch, we suggest to use '--base' as documented in
-https://git-scm.com/docs/git-format-patch#_base_tree_information]
+I don't think this is the right approach.
 
-url:    https://github.com/intel-lab-lkp/linux/commits/Lance-Yang/hung_task-fix-warnings-by-enforcing-alignment-on-lock-structures/20250823-164122
-base:   tip/locking/core
-patch link:    https://lore.kernel.org/r/20250823074048.92498-1-lance.yang%40linux.dev
-patch subject: [PATCH 1/1] hung_task: fix warnings by enforcing alignment on lock structures
-config: x86_64-buildonly-randconfig-001-20250823 (https://download.01.org/0day-ci/archive/20250824/202508240539.ARmC1Umu-lkp@intel.com/config)
-compiler: gcc-12 (Debian 12.2.0-14+deb12u1) 12.2.0
-reproduce (this is a W=1 build): (https://download.01.org/0day-ci/archive/20250824/202508240539.ARmC1Umu-lkp@intel.com/reproduce)
+If the ELF representation is inaccurate, it should be fixed, and this
+should be achievable without impacting the binary image at all.
 
-If you fix the issue in a separate patch/commit (i.e. not just a new version of
-the same patch/commit), kindly add following tags
-| Reported-by: kernel test robot <lkp@intel.com>
-| Closes: https://lore.kernel.org/oe-kbuild-all/202508240539.ARmC1Umu-lkp@intel.com/
+> - tramp_pg_dir # Already done, but this patch corrects the size
+>
 
-All warnings (new ones prefixed by >>):
+What is wrong with the size?
 
-   In file included from sound/soc/codecs/mt6660.c:15:
->> sound/soc/codecs/mt6660.h:28:1: warning: alignment 1 of 'struct mt6660_chip' is less than 8 [-Wpacked-not-aligned]
-      28 | };
-         | ^
->> sound/soc/codecs/mt6660.h:25:22: warning: 'io_lock' offset 49 in 'struct mt6660_chip' isn't aligned to 8 [-Wpacked-not-aligned]
-      25 |         struct mutex io_lock;
-         |                      ^~~~~~~
-
-
-vim +28 sound/soc/codecs/mt6660.h
-
-f289e55c6eeb43 Jeff Chang 2020-01-16  19  
-f289e55c6eeb43 Jeff Chang 2020-01-16  20  struct mt6660_chip {
-f289e55c6eeb43 Jeff Chang 2020-01-16  21  	struct i2c_client *i2c;
-f289e55c6eeb43 Jeff Chang 2020-01-16  22  	struct device *dev;
-f289e55c6eeb43 Jeff Chang 2020-01-16  23  	struct platform_device *param_dev;
-f289e55c6eeb43 Jeff Chang 2020-01-16  24  	struct mt6660_platform_data plat_data;
-f289e55c6eeb43 Jeff Chang 2020-01-16 @25  	struct mutex io_lock;
-f289e55c6eeb43 Jeff Chang 2020-01-16  26  	struct regmap *regmap;
-f289e55c6eeb43 Jeff Chang 2020-01-16  27  	u16 chip_rev;
-f289e55c6eeb43 Jeff Chang 2020-01-16 @28  };
-f289e55c6eeb43 Jeff Chang 2020-01-16  29  #pragma pack(pop)
-f289e55c6eeb43 Jeff Chang 2020-01-16  30  
-
--- 
-0-DAY CI Kernel Test Service
-https://github.com/intel/lkp-tests/wiki
+> Note, swapper_pg_dir is already initialized (by copy from idmap_pg_dir)
+> before use, so this patch does not need to address it.
+>
+> Cc: stable@vger.kernel.org
+> Signed-off-by: Sam Edwards <CFSworks@gmail.com>
+> ---
+>  arch/arm64/kernel/head.S | 12 ++++++++++++
+>  arch/arm64/mm/mmu.c      |  3 ++-
+>  2 files changed, 14 insertions(+), 1 deletion(-)
+>
+> diff --git a/arch/arm64/kernel/head.S b/arch/arm64/kernel/head.S
+> index ca04b338cb0d..0c3be11d0006 100644
+> --- a/arch/arm64/kernel/head.S
+> +++ b/arch/arm64/kernel/head.S
+> @@ -86,6 +86,18 @@ SYM_CODE_START(primary_entry)
+>         bl      record_mmu_state
+>         bl      preserve_boot_args
+>
+> +       adrp    x0, reserved_pg_dir
+> +       add     x1, x0, #PAGE_SIZE
+> +0:     str     xzr, [x0], 8
+> +       cmp     x0, x1
+> +       b.lo    0b
+> +
+> +       adrp    x0, __pi_init_idmap_pg_dir
+> +       adrp    x1, __pi_init_idmap_pg_end
+> +1:     str     xzr, [x0], 8
+> +       cmp     x0, x1
+> +       b.lo    1b
+> +
+>         adrp    x1, early_init_stack
+>         mov     sp, x1
+>         mov     x29, xzr
+> diff --git a/arch/arm64/mm/mmu.c b/arch/arm64/mm/mmu.c
+> index 34e5d78af076..aaf823565a65 100644
+> --- a/arch/arm64/mm/mmu.c
+> +++ b/arch/arm64/mm/mmu.c
+> @@ -761,7 +761,7 @@ static int __init map_entry_trampoline(void)
+>         pgprot_val(prot) &= ~PTE_NG;
+>
+>         /* Map only the text into the trampoline page table */
+> -       memset(tramp_pg_dir, 0, PGD_SIZE);
+> +       memset(tramp_pg_dir, 0, PAGE_SIZE);
+>         __create_pgd_mapping(tramp_pg_dir, pa_start, TRAMP_VALIAS,
+>                              entry_tramp_text_size(), prot,
+>                              pgd_pgtable_alloc_init_mm, NO_BLOCK_MAPPINGS);
+> @@ -806,6 +806,7 @@ static void __init create_idmap(void)
+>         u64 end   = __pa_symbol(__idmap_text_end);
+>         u64 ptep  = __pa_symbol(idmap_ptes);
+>
+> +       memset(idmap_pg_dir, 0, PAGE_SIZE);
+>         __pi_map_range(&ptep, start, end, start, PAGE_KERNEL_ROX,
+>                        IDMAP_ROOT_LEVEL, (pte_t *)idmap_pg_dir, false,
+>                        __phys_to_virt(ptep) - ptep);
+> --
+> 2.49.1
+>
 
