@@ -1,46 +1,46 @@
-Return-Path: <stable+bounces-172585-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-172586-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id ACD81B328AB
-	for <lists+stable@lfdr.de>; Sat, 23 Aug 2025 14:56:34 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id B7E9FB328AC
+	for <lists+stable@lfdr.de>; Sat, 23 Aug 2025 15:02:22 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id B86516821B0
-	for <lists+stable@lfdr.de>; Sat, 23 Aug 2025 12:56:32 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 6B255AA3C38
+	for <lists+stable@lfdr.de>; Sat, 23 Aug 2025 13:02:21 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E506A246BA4;
-	Sat, 23 Aug 2025 12:56:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 07A8E28682;
+	Sat, 23 Aug 2025 13:02:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="gs9mkBWK"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="ihIMxlFo"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A55A223D287
-	for <stable@vger.kernel.org>; Sat, 23 Aug 2025 12:56:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BC4BB3FF1
+	for <stable@vger.kernel.org>; Sat, 23 Aug 2025 13:02:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755953788; cv=none; b=Zz999LAx0qGDMUH41q6lbFrT+pIuMCl68fXK4OZgLkHlNpb8Zj2yGnifCWxT57m7fuzJyb8zoWNrQg26nBAX3NzR231iUVLbL8taDOe027BcU5P7nGmRv5J5BnBeC5upvstnW/8b+Rr07hvwuGUo50eqgMu/nctKusK3J9rg7vc=
+	t=1755954137; cv=none; b=KV/RBnV166+RWNTi6tp9IBZCDUhAhKWxo5cIrUTjfo5wPRvf7hIU3aUAIKVigSR8lVvkgYJX0HViy8/WBlh3DRiYIfm+ic3OIUhCgiTkVoEEXMrAyjrsZukmtji4mgHyJMneviKVYyP0jWVgN0wVavWygoyiwEDEOLtessneqyI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1755953788; c=relaxed/simple;
-	bh=mDfi+vGDYy1phkvkQZOno74ILGCGwVxkGNZnwuUkHU0=;
+	s=arc-20240116; t=1755954137; c=relaxed/simple;
+	bh=iPKYhmNFge8+R8ugTJVwYBJxCGUlmOMsiIMfFfVgFto=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=IOwuN/OOixHN4MDUa6XjCT2Sonlxj+oL28kvyLm9m+QYLKyE7aih+3YWrdhKR6v0gtvX2VIYWtfYDfwBnQxbfvPdoZJ3MRK5YPE1oeLQtZA25QVom1SPjKgw6z1gtVT3gW6aU/HKvgdPDJ8vA4tCMfnZ2QZRj6rmmfmnVOtwBPM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=gs9mkBWK; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 79C81C4CEF4;
-	Sat, 23 Aug 2025 12:56:27 +0000 (UTC)
+	 MIME-Version:Content-Type; b=kIi31C2ywtTeiV87RUbOfiGS/rTBoHDXTY9IU2MA1FIPBceeDW3XPHJwkC5xPOUntKzWTqt3Rpa+YaA6BCUL7F806WWi35iwO6ot3TTD0UoXdXqXjEFDglra2q38tJcmaC/N4k96xjghIyzzwtjbTeGrz0Gh9fhLi8wsWQeYSWc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=ihIMxlFo; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8245DC4CEE7;
+	Sat, 23 Aug 2025 13:02:15 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1755953788;
-	bh=mDfi+vGDYy1phkvkQZOno74ILGCGwVxkGNZnwuUkHU0=;
+	s=k20201202; t=1755954136;
+	bh=iPKYhmNFge8+R8ugTJVwYBJxCGUlmOMsiIMfFfVgFto=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=gs9mkBWKFOyN9KzCDG41wQ/JJu3FN2K+dN/3pFnmLCzf91/uC720oGIeLbv15RHkX
-	 48W82Hs3nt+UMcZZsVXpLA13NdWsKOhFT15NkdyWUomcFrDmJhL7XmKgfqax4oKQvF
-	 sAL4cFTEw3Zxjb/mCOoko6UeaZJlfMGNRfnfJEg7GTx2VH7WL1+BMsyOfxP0+JcCcF
-	 IyLveh/RhIqb29xYqSHHsfjulqqepOkGAWW5tAJ8txx8VutDcNSkBLR6LBAGvWYD4C
-	 hrTAPaND8TyTmYxV2LK2coVAbPEtVyvgwEsy0isqD5JEBxsOzWnqah0dVwXujzK2S8
-	 qCkD9Qj0zQ2dw==
+	b=ihIMxlFomzMSv0JOpIx542hbmVaLFpBqgMmk/zuN+ETeatc/4hi7VjSSgWSbf5Biu
+	 UZiRhNDXtz/hai1+VFAoqz2vvX/7z+Khbs16OnTpbU0biTTQg4Lb8EhlDQnreltSzf
+	 za27PboKteXcef4raRZfC5IbloNwA1z42AJNMwfZIzDy4ElH4S1U3aTNKdo1TPSM+m
+	 kMVrpY03qVg2JPol8vsaWZNwYlRVbYpvy9Z0Tf8qGmPlJcQDOmbjh+R9whgQL81/TF
+	 WNgwwrpAZ15SK4i3wq5XPShu5gzhy5hs483SSsSAEi485vtrvF8eVcdkXqQHDFKELc
+	 1nsQttpGcu61w==
 From: Sasha Levin <sashal@kernel.org>
 To: stable@vger.kernel.org
 Cc: Imre Deak <imre.deak@intel.com>,
@@ -48,12 +48,12 @@ Cc: Imre Deak <imre.deak@intel.com>,
 	Jani Nikula <jani.nikula@linux.intel.com>,
 	Jani Nikula <jani.nikula@intel.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.16.y] drm/dp: Change AUX DPCD probe address from DPCD_REV to LANE0_1_STATUS
-Date: Sat, 23 Aug 2025 08:56:25 -0400
-Message-ID: <20250823125625.2103160-1-sashal@kernel.org>
+Subject: [PATCH 6.12.y] drm/dp: Change AUX DPCD probe address from DPCD_REV to LANE0_1_STATUS
+Date: Sat, 23 Aug 2025 09:02:13 -0400
+Message-ID: <20250823130214.2108368-1-sashal@kernel.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <2025082148-refutable-outmatch-8a67@gregkh>
-References: <2025082148-refutable-outmatch-8a67@gregkh>
+In-Reply-To: <2025082149-baggy-limpness-3f61@gregkh>
+References: <2025082149-baggy-limpness-3f61@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -87,21 +87,20 @@ Cc: Jani Nikula <jani.nikula@linux.intel.com>
 Acked-by: Jani Nikula <jani.nikula@intel.com>
 Signed-off-by: Imre Deak <imre.deak@intel.com>
 Link: https://lore.kernel.org/r/20250605082850.65136-2-imre.deak@intel.com
-[ DP_TRAINING_PATTERN_SET => DP_LANE0_1_STATUS ]
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
  drivers/gpu/drm/display/drm_dp_helper.c | 2 +-
  1 file changed, 1 insertion(+), 1 deletion(-)
 
 diff --git a/drivers/gpu/drm/display/drm_dp_helper.c b/drivers/gpu/drm/display/drm_dp_helper.c
-index ea78c6c8ca7a..dc622c78db9d 100644
+index 9fa13da513d2..bb61bbdcce5b 100644
 --- a/drivers/gpu/drm/display/drm_dp_helper.c
 +++ b/drivers/gpu/drm/display/drm_dp_helper.c
-@@ -725,7 +725,7 @@ ssize_t drm_dp_dpcd_read(struct drm_dp_aux *aux, unsigned int offset,
+@@ -664,7 +664,7 @@ ssize_t drm_dp_dpcd_read(struct drm_dp_aux *aux, unsigned int offset,
  	 * monitor doesn't power down exactly after the throw away read.
  	 */
  	if (!aux->is_remote) {
--		ret = drm_dp_dpcd_probe(aux, DP_TRAINING_PATTERN_SET);
+-		ret = drm_dp_dpcd_probe(aux, DP_DPCD_REV);
 +		ret = drm_dp_dpcd_probe(aux, DP_LANE0_1_STATUS);
  		if (ret < 0)
  			return ret;
