@@ -1,55 +1,55 @@
-Return-Path: <stable+bounces-172655-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-172656-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 99625B32B2C
-	for <lists+stable@lfdr.de>; Sat, 23 Aug 2025 18:55:36 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 980FEB32B2D
+	for <lists+stable@lfdr.de>; Sat, 23 Aug 2025 18:55:42 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id AE27AAA5458
-	for <lists+stable@lfdr.de>; Sat, 23 Aug 2025 16:55:11 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id C67FDAA5831
+	for <lists+stable@lfdr.de>; Sat, 23 Aug 2025 16:55:12 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4C31D232785;
-	Sat, 23 Aug 2025 16:55:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2C1E82580EE;
+	Sat, 23 Aug 2025 16:55:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="ECId0sA8"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="N82PDJg6"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0B22081720
-	for <stable@vger.kernel.org>; Sat, 23 Aug 2025 16:55:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E019981720
+	for <stable@vger.kernel.org>; Sat, 23 Aug 2025 16:55:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755968108; cv=none; b=LHwlvzifC8a3fm8Gkcx2qxglIvPowxCFqZqo21GLdSkDAv0F/dtbPsjhJnqDf4a2LuTHPYehmlaKomJDMndLija4sfnj4Jw16BjW3Q5ZY3h9qY+cH7hm4d1k2Fb9A07LgU1lEl5F9XBHXCklG5p0iGgDII40GnjnaSxM8Sd2+UA=
+	t=1755968109; cv=none; b=emdylWVMm5XK6e715q1qHaXOxjfxsu3FSXMwtEEVSHA7ArWE9n98hLZTuZNSlb1Zhhc5Lz9OTI/gLfBtvQEtdfENqidp0YyMprZWMvg+3iocU4CBYzVhfKs77Mp64findi7pE23jnAA9fFgGayHhnKWhvEpX6QI9bp4KEvARuY8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1755968108; c=relaxed/simple;
-	bh=p8UjrgxjDwLDf1QpNfcyF7eZqjHg0roZLH2ImWdwN/A=;
+	s=arc-20240116; t=1755968109; c=relaxed/simple;
+	bh=n2uEiEyKilLyPFfPxy+EzPjiX64ey/rc53nZ8VgSqW8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=rivTFN9DXdQg91Xv7hU4wNct9kuvITB05MlyV+gkH+mTe5a8fQJACcHIyZUavM+D4lP2AXjUYX6cYMHC66uZoBLp3T4VhjXncY3vLjVOsCVnk8Rm2snok5KdKZWIIIBeNB2ixgDQOZoIseMYv5bczIjNeDWHmwdEkZ6qY3g/swA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=ECId0sA8; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1C849C4CEF1;
+	 MIME-Version; b=DW5Rf+EoeiE1CtDpT5CMkRXXJGZHlUAEl3O4qKLa56GQ/xjcHlAleGsZMwPaUIJN0qZ9gXO76nxJr4HnFH9MwMrlyOH8Br1IyyplTvEFRJ1loqxa2FJPZQP2akKhJyr5n9sOlKzVIAjZpGo30LnWczuugsrZVIt2lwf8TSGCYtQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=N82PDJg6; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D88D1C116D0;
 	Sat, 23 Aug 2025 16:55:07 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1755968107;
-	bh=p8UjrgxjDwLDf1QpNfcyF7eZqjHg0roZLH2ImWdwN/A=;
+	s=k20201202; t=1755968108;
+	bh=n2uEiEyKilLyPFfPxy+EzPjiX64ey/rc53nZ8VgSqW8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=ECId0sA8fyKt+ICAJW433cZ1qTqWsUddcLU9GwgAQk1xma1QkON55PwHllGlLDU50
-	 dzaDHPAxRJTiAYm/LMBTDE9nsS8/5QNdRs91ITgD/1CgwvzrNMfDDSNt/pWLz6/B+l
-	 suY84sSPPYr4BixWGTvG+O/KuxqrWqZzQq4nL5SgyLGlRzR8aeIqHl1tIFnW4nf7os
-	 oVoSY9B+8UF9BXy0M4qaEp+5vshQAg3FR3Xkz1pzDgD+Y6asRoBJdkj7pwRb9EeRFl
-	 varyuawvd69lBxPcFNn8Tf0ReF+qqu8NMshi3rxblx78Zz/Y+c0ZEQwcAjvSmLPxox
-	 A95ebTlyHjwbA==
+	b=N82PDJg6h1/SVxlHO0WhFD5ppQr/+d3fGNqMhkNQqzFQnuQ3pAuT6A2z+NOcoJdFl
+	 n3l28QY1M6aq26D3bdCX0rRyXQ13CMOR98S5tx23xAMNpjSGtIvJ76AL9TQw49Srvo
+	 jfIGjuZE7cAQf39ocT9R6rxvwa3Jg3S7BCZ30ig8CKpqaoLMv1DprnmWYEuC0rclfM
+	 AWDrCos9Q7CCcSoGqWpoEalHUHe2En/p+nx7ID4odjoCyt4T6ndUw5VlukQnrv0Zs2
+	 Dt1a5XttSvPTLznFAjAFoVQFC3hcPLEfc4aE8S3yUi6Tdu2NLys1lGeEerSIGFtLgm
+	 8eVM23CE4xkVQ==
 From: Sasha Levin <sashal@kernel.org>
 To: stable@vger.kernel.org
 Cc: Victor Shih <victor.shih@genesyslogic.com.tw>,
 	Adrian Hunter <adrian.hunter@intel.com>,
 	Ulf Hansson <ulf.hansson@linaro.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1.y 2/3] mmc: sdhci-pci-gli: Add a new function to simplify the code
-Date: Sat, 23 Aug 2025 12:55:03 -0400
-Message-ID: <20250823165504.2340548-2-sashal@kernel.org>
+Subject: [PATCH 6.1.y 3/3] mmc: sdhci-pci-gli: GL9763e: Mask the replay timer timeout of AER
+Date: Sat, 23 Aug 2025 12:55:04 -0400
+Message-ID: <20250823165504.2340548-3-sashal@kernel.org>
 X-Mailer: git-send-email 2.50.1
 In-Reply-To: <20250823165504.2340548-1-sashal@kernel.org>
 References: <2025082221-murmuring-commotion-35cb@gregkh>
@@ -64,49 +64,38 @@ Content-Transfer-Encoding: 8bit
 
 From: Victor Shih <victor.shih@genesyslogic.com.tw>
 
-[ Upstream commit dec8b38be4b35cae5f7fa086daf2631e2cfa09c1 ]
+[ Upstream commit 340be332e420ed37d15d4169a1b4174e912ad6cb ]
 
-In preparation to fix replay timer timeout, add
-sdhci_gli_mask_replay_timer_timeout() function
-to simplify some of the code, allowing it to be re-used.
+Due to a flaw in the hardware design, the GL9763e replay timer frequently
+times out when ASPM is enabled. As a result, the warning messages will
+often appear in the system log when the system accesses the GL9763e
+PCI config. Therefore, the replay timer timeout must be masked.
 
 Signed-off-by: Victor Shih <victor.shih@genesyslogic.com.tw>
 Fixes: 1ae1d2d6e555 ("mmc: sdhci-pci-gli: Add Genesys Logic GL9763E support")
 Cc: stable@vger.kernel.org
 Acked-by: Adrian Hunter <adrian.hunter@intel.com>
-Link: https://lore.kernel.org/r/20250731065752.450231-2-victorshihgli@gmail.com
+Link: https://lore.kernel.org/r/20250731065752.450231-4-victorshihgli@gmail.com
 Signed-off-by: Ulf Hansson <ulf.hansson@linaro.org>
-Stable-dep-of: 340be332e420 ("mmc: sdhci-pci-gli: GL9763e: Mask the replay timer timeout of AER")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/mmc/host/sdhci-pci-gli.c | 14 ++++++++++++++
- 1 file changed, 14 insertions(+)
+ drivers/mmc/host/sdhci-pci-gli.c | 3 +++
+ 1 file changed, 3 insertions(+)
 
 diff --git a/drivers/mmc/host/sdhci-pci-gli.c b/drivers/mmc/host/sdhci-pci-gli.c
-index 52e716daddbe..0e19e15ed356 100644
+index 0e19e15ed356..9b03450166ae 100644
 --- a/drivers/mmc/host/sdhci-pci-gli.c
 +++ b/drivers/mmc/host/sdhci-pci-gli.c
-@@ -156,6 +156,20 @@
- #define GLI_MAX_TUNING_LOOP 40
+@@ -988,6 +988,9 @@ static void gli_set_gl9763e(struct sdhci_pci_slot *slot)
+ 	value |= FIELD_PREP(GLI_9763E_HS400_RXDLY, GLI_9763E_HS400_RXDLY_5);
+ 	pci_write_config_dword(pdev, PCIE_GLI_9763E_CLKRXDLY, value);
  
- /* Genesys Logic chipset */
-+static void sdhci_gli_mask_replay_timer_timeout(struct pci_dev *pdev)
-+{
-+	int aer;
-+	u32 value;
-+
 +	/* mask the replay timer timeout of AER */
-+	aer = pci_find_ext_capability(pdev, PCI_EXT_CAP_ID_ERR);
-+	if (aer) {
-+		pci_read_config_dword(pdev, aer + PCI_ERR_COR_MASK, &value);
-+		value |= PCI_ERR_COR_REP_TIMER;
-+		pci_write_config_dword(pdev, aer + PCI_ERR_COR_MASK, value);
-+	}
-+}
++	sdhci_gli_mask_replay_timer_timeout(pdev);
 +
- static inline void gl9750_wt_on(struct sdhci_host *host)
- {
- 	u32 wt_value;
+ 	pci_read_config_dword(pdev, PCIE_GLI_9763E_VHS, &value);
+ 	value &= ~GLI_9763E_VHS_REV;
+ 	value |= FIELD_PREP(GLI_9763E_VHS_REV, GLI_9763E_VHS_REV_R);
 -- 
 2.50.1
 
