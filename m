@@ -1,64 +1,64 @@
-Return-Path: <stable+bounces-172558-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-172559-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id DDF34B326E1
-	for <lists+stable@lfdr.de>; Sat, 23 Aug 2025 07:03:00 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 05342B3276F
+	for <lists+stable@lfdr.de>; Sat, 23 Aug 2025 09:43:20 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 9A20D1B63D35
-	for <lists+stable@lfdr.de>; Sat, 23 Aug 2025 05:03:20 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id DD93E1B65B9B
+	for <lists+stable@lfdr.de>; Sat, 23 Aug 2025 07:43:39 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 559AD188A0C;
-	Sat, 23 Aug 2025 05:02:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id CB8AC2206AF;
+	Sat, 23 Aug 2025 07:43:14 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
-Received: from mail-pg1-f170.google.com (mail-pg1-f170.google.com [209.85.215.170])
+Received: from mail-pg1-f182.google.com (mail-pg1-f182.google.com [209.85.215.182])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A320E393DC3;
-	Sat, 23 Aug 2025 05:02:54 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.215.170
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id ACED429B0;
+	Sat, 23 Aug 2025 07:43:12 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.215.182
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755925376; cv=none; b=id9p0C7TL9ncuhPnKKvYzyqUnCebAbXlmmOFNJ/qaSf8qM8whgxRevElY1brdn6DVtvjisR02UL0+hr31eUrzxpkWTYWHNWNU5k/AH0qOPd2/En2I1u8DUIlxBsefjz2WrnSjmr4JXzM9nseUbgj24uSTzpRHXksJY5oEbG0Eak=
+	t=1755934994; cv=none; b=j6gaFk5cDxSYqoUjgoYjwR7uTsyjAHuH1B1Wxiyj/KfRQ3V+KNOl7OODgChH03Wqn+guKbehVcYJLS6B4eaXJM74mIkcqkOTexJnCGr7Bnp87Cx1MGiZAwekWjiJEIgCNalkBTxBgfowl38Zs8h/AeZZiUSp1CWHiCWwyhpako4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1755925376; c=relaxed/simple;
-	bh=PUw1CEY9BF2A4FCoMSDLPSzSajO6DMKtVoLXf9xDEPk=;
+	s=arc-20240116; t=1755934994; c=relaxed/simple;
+	bh=6UIZ7ESj9tVzgEhrGqLwMkKj8QEBxY3cjbR4+80KyA8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=S9NC6dlC5Vmdlz7re5AZD/ICtA0KyztURanG272Um7fPq4IWrQ/Oe+UIkZjQqCaqb9xX9NkMEfYmrgVRnln052UwlezrKBr8/eqHX7G+BV4c8e5EvyDn0dg+JPDneLuL7O9fBvMpKgG4xUTMX7onZF1Xht7hB6YKY9Uft7pwAs8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=linux.dev; spf=pass smtp.mailfrom=gmail.com; arc=none smtp.client-ip=209.85.215.170
+	 MIME-Version; b=pr8GWaUDu1Y+2riNME4gasmmSeYZOD0xuvxCcOcMr7+P5bv80AhtHLhJDXUe1dAU3BF/D8W7Ona0en50ZHI9qZnksvu367qD1vHqkDpMC7w3jgF9ZV+ZPat+mkzdgRH6izwweD5eZDQhIgVsQ3FIylobRJJmD/oBBGVv897DFf8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=linux.dev; spf=pass smtp.mailfrom=gmail.com; arc=none smtp.client-ip=209.85.215.182
 Authentication-Results: smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=linux.dev
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-pg1-f170.google.com with SMTP id 41be03b00d2f7-b471756592cso1747119a12.3;
-        Fri, 22 Aug 2025 22:02:54 -0700 (PDT)
+Received: by mail-pg1-f182.google.com with SMTP id 41be03b00d2f7-b482fd89b0eso2077884a12.2;
+        Sat, 23 Aug 2025 00:43:12 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1755925374; x=1756530174;
+        d=1e100.net; s=20230601; t=1755934992; x=1756539792;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=/d62ZhyQDkr88P3RsdKpz2BL7mo3EK8sLLtOc02S/I0=;
-        b=bW4EyELJ602f2yN9+FnkaNJYZOdCR1ycYoW12YoP5XnJY+pDp/2UEWkDUvpDyUzVCM
-         vw/LrP9JDjWWylv9EShOjsm8DiPECzFoqjC/vreDncVvKvUUnL3eGTDAMWZGO6nkL9oq
-         8tOcSX1k+r7XuNMa9y5c6ZeGc3VmCU9BXmo0j4r8zBe9+hbvN8RUSJUBPp7J1VAHAu7r
-         POmR82bAeeVa6vhCHCxyJc/z2+AFHroziIcvhtsSuy+5bF1LptFyP5Qw/Pa7Mshom3qn
-         0N7hv6IYzMmoMatGEo5T6PdKYaINjiY3ff1/3/66ZE1kiWjqZ75nz+jfYArPMMGIa48E
-         IBxQ==
-X-Forwarded-Encrypted: i=1; AJvYcCUpjAHnND8euAnBVb2HAooS+zaV1sDxDSbm8lXOF8mKxopKmGnak3Tk1//TXwTpx+DMP7fOShpSqEktATo=@vger.kernel.org, AJvYcCUzEyYaZirPyS51Mm0mBRmiZaAOadfTB8UgDH5EPAlJZedwF142ndeigmyfhLg44OF3cjB/TZ53@vger.kernel.org
-X-Gm-Message-State: AOJu0YxU1yQG6nEH5NlNMAm5zx4T+rhC1sTufw3m2Nh9zaIczwqMetEc
-	vPkwTPgngRLjhE4mBPQBvY6gBXx0La9GXB0ropvV3YB8hXVyaNLd5RWt
-X-Gm-Gg: ASbGncsepavE3SA8aAqVAJxDYwVlzJHrMd5wyBTNz6bQF5AaKi4DlJr12SCds4wzxiZ
-	fohft463t2V3unQkpo2SsgTamAj3vBbvGyRaRCtM0PtgjVLWdZDYMaMjsgzpqzbeuc+RsfaVkb0
-	ofyboZOkvUh+KJ29iQPw6xK4jhHuAaU1rKOjPTe7F/JgTXH93SHgXTAcd/o4KhTHuRAr/+d2s0S
-	azCPSPnLS1TvKy2OILYPMU6gAO1QNdctAsfrE9YUCHueVTE67le7977h3iojdCCIjN6Zn7jFkKF
-	u0pRbZA5KRIpOqpejeSHrvpdbFK+JwJXDoDu6h2a1Gggn0pF2y5F07RWnIKZotEN7ojBWkOJSVn
-	EWxYrqXvDOgY7CE/DPbBU1om27T5E
-X-Google-Smtp-Source: AGHT+IE8770SMYUXmPTg9FqFtmb8WBT+htAHMIkfnPossk9y2D5JS3AQrYJBFyN+jCsWvbzmTaOlqA==
-X-Received: by 2002:a17:902:c946:b0:246:39d7:8e6a with SMTP id d9443c01a7336-24639d78f54mr74824125ad.43.1755925373870;
-        Fri, 22 Aug 2025 22:02:53 -0700 (PDT)
+        bh=qZPX8X0B5I+s5hVLSY+6qsXOHCGUOeVZARWEgGlLC+I=;
+        b=YGRYpC1Hck04VLgqXkXMXw9eKN0LzOGybUf39FSwCg+88KyPiHusdH0dEecBovqBDI
+         OcCc2x5XzfAb7YrVqCCUsKMuXgwUHSzwA/ymPD/T7yOHJqDX1FZkzzl0zN7Ssdnggdgx
+         qWlCuEL+qTSQNrYEt2YZ9CQV7JCag2HigmqtquWMb+6Ns+LjQ7YqXaxHui15roivF1cQ
+         sqiEFLTh5+NlL4N4tsXzbIYbPl65bpEsrZvCuMFbpNWtJy1mvesyJMVY6AQshcy37kF/
+         uGPCGcshAD26W8Q70Eq+fEx9WRB+ByEtNyxtfXyhl5jK+kpqPaXY+882YNbzks1sQ/AI
+         nqpg==
+X-Forwarded-Encrypted: i=1; AJvYcCUZkfyq7ynwOiTxWXM28Xfg6h1Gy2dBiqb9dhaukVi8IQppgk8XdhXEjnk/8ZWIQKoGTK10eTKG0HN7LbE=@vger.kernel.org, AJvYcCX9Mk4q+qLqxKtJePC53sKxqi7fdltOLW7MnpiA1jlGSikrCIKU6S1zvejoeGZGd63Oqk2A+tyn@vger.kernel.org
+X-Gm-Message-State: AOJu0Yxg2PU0uX14wDo57hdD2jA2PKgJR2uvZ4VWaXSIZfsGS6PpCirq
+	9RmOvlkYOQ6VYNZa7V+Ra0TM/0yGgymRRknhevOwOD/6HuHC3zLp8kkR
+X-Gm-Gg: ASbGncsBzabHiBzz5sFFF/Ghwf1tyShZyLGw2U0Jggh1j8SQ+yzL/smVIqZR0GV1Qa0
+	xbcMP4hWCJesAYnEpzM8Kr7h3r681WSl5i6f0B8Rp6sXfDQJuUwlRz1w7dtnwqmc4dOtpEYQc/3
+	CMZB8wsbamUdg3ISEm5HluZhTItYpV0gNsRgeEqrsfhoedePNjWnG17+2HsdNMvtunp2KXQZLD5
+	FKBu0GgEP3v9ny6a+zh2UY+9ULzSh/nf1YnqysVHj1PAUqDvKMThEceHYRFiXWJiZ8rBOug9IiG
+	QQ0GVjD6MnpiG3ZIXyNps6ENEVgdZD7RZqnP4+xNbRd45KVXR8GMlbcMn+VTe/aofMS0f1V/o3e
+	U9/HX4mkb2ndQJWTKLg==
+X-Google-Smtp-Source: AGHT+IF0f2BQBSqWg3im1sdbkd//7GHSpBtH/wvKmeKJ5tjPncO4wHGFIpJvnnP3TVkq8/iiJDhfaA==
+X-Received: by 2002:a17:903:32c4:b0:246:5a41:e6ee with SMTP id d9443c01a7336-2465a41e7fbmr42588545ad.15.1755934991900;
+        Sat, 23 Aug 2025 00:43:11 -0700 (PDT)
 Received: from localhost.localdomain ([2403:2c80:17::10:4030])
-        by smtp.gmail.com with ESMTPSA id d9443c01a7336-2466877c732sm11997115ad.1.2025.08.22.22.02.43
+        by smtp.gmail.com with ESMTPSA id d9443c01a7336-246687af234sm15592435ad.48.2025.08.23.00.43.01
         (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
-        Fri, 22 Aug 2025 22:02:53 -0700 (PDT)
+        Sat, 23 Aug 2025 00:43:11 -0700 (PDT)
 From: Lance Yang <lance.yang@linux.dev>
 To: akpm@linux-foundation.org,
 	fthain@linux-m68k.org,
@@ -85,9 +85,9 @@ Cc: lance.yang@linux.dev,
 	tfiga@chromium.org,
 	will@kernel.org,
 	stable@vger.kernel.org
-Subject: [PATCH 1/1] hung_task: fix warnings caused by unaligned lock pointers
-Date: Sat, 23 Aug 2025 13:00:36 +0800
-Message-ID: <20250823050036.7748-1-lance.yang@linux.dev>
+Subject: [PATCH 1/1] hung_task: fix warnings by enforcing alignment on lock structures
+Date: Sat, 23 Aug 2025 15:40:48 +0800
+Message-ID: <20250823074048.92498-1-lance.yang@linux.dev>
 X-Mailer: git-send-email 2.49.0
 In-Reply-To: <f79735e1-1625-4746-98ce-a3c40123c5af@linux.dev>
 References: <f79735e1-1625-4746-98ce-a3c40123c5af@linux.dev>
@@ -108,10 +108,12 @@ However, as reported by Geert Uytterhoeven, some architectures like m68k
 only guarantee 2-byte alignment of 32-bit values. This breaks the
 assumption and causes two related WARN_ON_ONCE checks to trigger.
 
-To fix this, the runtime checks are adjusted. The first WARN_ON_ONCE in
-hung_task_set_blocker() is changed to a simple 'if' that returns silently
-for unaligned pointers. The second, now-invalid WARN_ON_ONCE in
-hung_task_clear_blocker() is then removed.
+To fix this, enforce a minimum of 4-byte alignment on the core lock
+structures supported by the blocker tracking mechanism. This ensures the
+algorithm's alignment assumption now holds true on all architectures.
+
+This patch adds __aligned(4) to the definitions of "struct mutex",
+"struct semaphore", and "struct rw_semaphore", resolving the warnings.
 
 Thanks to Geert for bisecting!
 
@@ -121,42 +123,50 @@ Fixes: e711faaafbe5 ("hung_task: replace blocker_mutex with encoded blocker")
 Cc: <stable@vger.kernel.org>
 Signed-off-by: Lance Yang <lance.yang@linux.dev>
 ---
- include/linux/hung_task.h | 8 +++++---
- 1 file changed, 5 insertions(+), 3 deletions(-)
+ include/linux/mutex_types.h | 2 +-
+ include/linux/rwsem.h       | 2 +-
+ include/linux/semaphore.h   | 2 +-
+ 3 files changed, 3 insertions(+), 3 deletions(-)
 
-diff --git a/include/linux/hung_task.h b/include/linux/hung_task.h
-index 34e615c76ca5..69640f266a69 100644
---- a/include/linux/hung_task.h
-+++ b/include/linux/hung_task.h
-@@ -20,6 +20,10 @@
-  * always zero. So we can use these bits to encode the specific blocking
-  * type.
-  *
-+ * Note that on architectures like m68k with only 2-byte alignment, the
-+ * blocker tracking mechanism gracefully does nothing for any lock that is
-+ * not 4-byte aligned.
-+ *
-  * Type encoding:
-  * 00 - Blocked on mutex			(BLOCKER_TYPE_MUTEX)
-  * 01 - Blocked on semaphore			(BLOCKER_TYPE_SEM)
-@@ -45,7 +49,7 @@ static inline void hung_task_set_blocker(void *lock, unsigned long type)
- 	 * If the lock pointer matches the BLOCKER_TYPE_MASK, return
- 	 * without writing anything.
- 	 */
--	if (WARN_ON_ONCE(lock_ptr & BLOCKER_TYPE_MASK))
-+	if (lock_ptr & BLOCKER_TYPE_MASK)
- 		return;
+diff --git a/include/linux/mutex_types.h b/include/linux/mutex_types.h
+index fdf7f515fde8..de798bfbc4c7 100644
+--- a/include/linux/mutex_types.h
++++ b/include/linux/mutex_types.h
+@@ -51,7 +51,7 @@ struct mutex {
+ #ifdef CONFIG_DEBUG_LOCK_ALLOC
+ 	struct lockdep_map	dep_map;
+ #endif
+-};
++} __aligned(4); /* For hung_task blocker tracking, which encodes type in LSBs */
  
- 	WRITE_ONCE(current->blocker, lock_ptr | type);
-@@ -53,8 +57,6 @@ static inline void hung_task_set_blocker(void *lock, unsigned long type)
+ #else /* !CONFIG_PREEMPT_RT */
+ /*
+diff --git a/include/linux/rwsem.h b/include/linux/rwsem.h
+index f1aaf676a874..f6ecf4a4710d 100644
+--- a/include/linux/rwsem.h
++++ b/include/linux/rwsem.h
+@@ -64,7 +64,7 @@ struct rw_semaphore {
+ #ifdef CONFIG_DEBUG_LOCK_ALLOC
+ 	struct lockdep_map	dep_map;
+ #endif
+-};
++} __aligned(4); /* For hung_task blocker tracking, which encodes type in LSBs */
  
- static inline void hung_task_clear_blocker(void)
- {
--	WARN_ON_ONCE(!READ_ONCE(current->blocker));
--
- 	WRITE_ONCE(current->blocker, 0UL);
- }
+ #define RWSEM_UNLOCKED_VALUE		0UL
+ #define RWSEM_WRITER_LOCKED		(1UL << 0)
+diff --git a/include/linux/semaphore.h b/include/linux/semaphore.h
+index 89706157e622..ac9b9c87bfb7 100644
+--- a/include/linux/semaphore.h
++++ b/include/linux/semaphore.h
+@@ -20,7 +20,7 @@ struct semaphore {
+ #ifdef CONFIG_DETECT_HUNG_TASK_BLOCKER
+ 	unsigned long		last_holder;
+ #endif
+-};
++} __aligned(4); /* For hung_task blocker tracking, which encodes type in LSBs */
  
+ #ifdef CONFIG_DETECT_HUNG_TASK_BLOCKER
+ #define __LAST_HOLDER_SEMAPHORE_INITIALIZER				\
 -- 
 2.49.0
 
