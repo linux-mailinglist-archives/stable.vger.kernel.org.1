@@ -1,110 +1,141 @@
-Return-Path: <stable+bounces-172571-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-172572-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id DD39FB3282E
-	for <lists+stable@lfdr.de>; Sat, 23 Aug 2025 12:19:31 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9B8DFB3283A
+	for <lists+stable@lfdr.de>; Sat, 23 Aug 2025 12:34:43 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 78AAEAA2B29
-	for <lists+stable@lfdr.de>; Sat, 23 Aug 2025 10:19:30 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 51EE07AB7AB
+	for <lists+stable@lfdr.de>; Sat, 23 Aug 2025 10:33:07 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D34D5242D7A;
-	Sat, 23 Aug 2025 10:19:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9C91423DEB6;
+	Sat, 23 Aug 2025 10:34:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="RCVULJdZ"
+	dkim=pass (2048-bit key) header.d=goldelico.com header.i=@goldelico.com header.b="HPfAXSxL";
+	dkim=permerror (0-bit key) header.d=goldelico.com header.i=@goldelico.com header.b="u5rjwlbx"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-pl1-f176.google.com (mail-pl1-f176.google.com [209.85.214.176])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mo4-p01-ob.smtp.rzone.de (mo4-p01-ob.smtp.rzone.de [85.215.255.53])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 40B081F099C;
-	Sat, 23 Aug 2025 10:19:24 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.176
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755944365; cv=none; b=jFUHq1NQHAvEZ+GMicSg5+/gsfxw0WPIOhn+blNkw9nIH1pEaEPbocwTDWDh2ycUQV5bYg5NKBZmE0De5bJ965I0U5AGU3hFMid+qudjVODjJMJUr5NuFD955DcQtubGRS3mkeu7y3k08M+51AtGMjyDNhNhpWDDJmLnt1DtsL8=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1755944365; c=relaxed/simple;
-	bh=i3bNeq76DInU/44MB2DrYiy2xn3RltylrA2iTK5shkA=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=QGQs0Ih9pHIbsR1Z4F0W2Xgw6jAKkItEZto5xzWMajaZdHt50yJLKwBFTuLyosf+Bb7o0DASYQDsliCaW6Lz9zNZFu1YZZrsdK81EnKQqAmtcj/ie+YwuprZ1hUxwwaMHrh5ut7NV2Dft08GG0QtQz09OYoIXsXcd+ZJC8UAtCw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=RCVULJdZ; arc=none smtp.client-ip=209.85.214.176
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-pl1-f176.google.com with SMTP id d9443c01a7336-24622df0d95so14331995ad.2;
-        Sat, 23 Aug 2025 03:19:24 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1755944363; x=1756549163; darn=vger.kernel.org;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:from:to:cc:subject:date:message-id:reply-to;
-        bh=i3bNeq76DInU/44MB2DrYiy2xn3RltylrA2iTK5shkA=;
-        b=RCVULJdZ+9McSa5PPpuCcOvVDkYcs/8KQYJ2NZIp8hL9AYPbTTZJTnQV2wy5qL0//N
-         OR+tNe73bQ6REP5Dja2bwZisBh6Cd0YecB4aHrKsMqN8kku+4BquVDPtqR2vF+PrghwG
-         Prg4+pnP92yysm8gaNQD6H7DjYW5a0vkKXhms7H1lAZ4zRf9NEBy7fPrARPh2z/UDraz
-         4nfDZbYrDHXiBJuav5sBD4i0/2TEUYqsnNRlGXCbkCZE/9oWlUp+UDSbYGJylAJmq6cL
-         l4mE8aVUrL/UKXY9gtvn8S5M5Fp8Vbkbmf2UBemTnzRGvufLdUpqh4IXQoUr37VVd/dU
-         ITIA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1755944363; x=1756549163;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=i3bNeq76DInU/44MB2DrYiy2xn3RltylrA2iTK5shkA=;
-        b=Y56BtYclq30q34fZsZLBcgFoyIKEMoZxlRK0L5I7e1uac3pyYDuqx0+el03K7xehPH
-         QT600ukfZC7sPQEjf4VxObQxcHVtAD+VHooRFuZoc/nFgh5cVT3rg3bUU1TMysfKvp4w
-         Q0Vl3n42FMiXANzrff8LKo+Oel3ZIkNFj1Hv+rNDyAxTu5brFe8Hnvx5thk6JVnc27Ka
-         n2c2JFmr1Q5kuNieJ9p7uSWdCCG7ywFLcbWMMrLwp7HiNJvl9Nj2IQ9mGi/LDNmvFHAI
-         D/y/l4b9FWRTYea0wrPZ5PwXB2GGICqFCZaIQR0cr0PLxgDPjbn/jGu+JKsaMazmB1YO
-         jKCw==
-X-Forwarded-Encrypted: i=1; AJvYcCUqs6CPjJV0gqqed3wOsIh0tRkYPyYqzFv0+CfHC3LFTTJ/unXOrydrbug2j17+dyfuKKeAAz0V10fSBxA=@vger.kernel.org, AJvYcCVjr7QYZMel7MFcoOfOvwU0Pjqr7qynNxIcAdc7mqROfeavwURWvMiELUfdsXm7j8h+wC0INsf5@vger.kernel.org, AJvYcCWlk/ezp35UyhcWQuIbOiS63eODlcALmgj8hCPmYKeC8xWCWo46RNL9wFzmtyQQwRR1h42fjlHL@vger.kernel.org
-X-Gm-Message-State: AOJu0YwjIXx2xYh4pZG3m799bAprSjwbXWT8MXLvNht0oX94vLru1hWp
-	EvpKc6gUtCeoZGfI5R3iWoSFThhZf2Vflzlxt/k+qzfQO8MmLF/4r+5s16fVmy5/YTb0nmbrDiX
-	Y+o/kqHybgJXCZnF205F/bIUbcx/XMw==
-X-Gm-Gg: ASbGnct3nytF0kuCHS7rq6uXsy9qHUOkxPVuRXLGgoL563J9CeOc16TAaoNYdQZkjcc
-	0vWKBorSx83eEiyqwY4skQpwmJs5KOK3xhR+f7bWMmB9G4dUcL8znTZmii9ldrMksmN/SDmh3MR
-	gs6UWClOOI2wuWXAKBThbLLr4mgTPsXWdSwIJg1cSSHTu2+A37rzbb4CRkZTE3JdAmB79A1RTiC
-	Kalc/bhsAfjTtyyu658LjMZl4R6/4Cw56eRxcb8O2zhdb2JLmnVFHTMjwljC2gyEDVUQ1hoGvb/
-	PQw02PbzciDmFa542l4=
-X-Google-Smtp-Source: AGHT+IEYMFWj0FL0uCPdJzf97Uc8oUJXuFu5K/HGbgNgO7KK8RRwBHRJq1RL3WKhQC5RPuxOzDxLBceUqwQzmSM5qdY=
-X-Received: by 2002:a17:902:ce8b:b0:240:52c8:2564 with SMTP id
- d9443c01a7336-2462ee8e8f4mr92525815ad.26.1755944363424; Sat, 23 Aug 2025
- 03:19:23 -0700 (PDT)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F407E1531C8;
+	Sat, 23 Aug 2025 10:34:28 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=85.215.255.53
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1755945273; cv=pass; b=MyhKx49O2yQvkiZtXuccChBtiTXljGnjyuoPQwDRfA0goT+Ic+gDdFI31XqiEldaebMNNfIW30OMaJNnIQyihmAxmRY98Znl7LwitGisjSqef0Lcq2UtPTJHyP+f+2slkIvu04CBoklt19omHDLxyAxCOl6fYTXLEyTkBd2uHao=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1755945273; c=relaxed/simple;
+	bh=0/OB5VflSjij8TvXSNLlENtij5iyXwZRqP3qH+cGyNI=;
+	h=Content-Type:Mime-Version:Subject:From:In-Reply-To:Date:Cc:
+	 Message-Id:References:To; b=OU4CtVrlih1W6ata/lqLxFuwfq9pF/AwcnEMbqjvVyyv0oeuNynR7HjsOS2xiaMu2JZ4x0Fzkc5xhnFccm6m3tBhNtykw0FCI0Jy6Gu38T6DmshCFJOVJC1P+vNKBnEl+dzSk4OHTeOYs9nm4HT7S4h0fQShzFjBl1LTYfRmajg=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=goldelico.com; spf=pass smtp.mailfrom=goldelico.com; dkim=pass (2048-bit key) header.d=goldelico.com header.i=@goldelico.com header.b=HPfAXSxL; dkim=permerror (0-bit key) header.d=goldelico.com header.i=@goldelico.com header.b=u5rjwlbx; arc=pass smtp.client-ip=85.215.255.53
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=goldelico.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=goldelico.com
+ARC-Seal: i=1; a=rsa-sha256; t=1755945077; cv=none;
+    d=strato.com; s=strato-dkim-0002;
+    b=P3RR0lC46OSACTvaVJXq8bs/R+QZ5dx+CN077hsfa1gyc3IHSaI4zM6VK+jWTl3ZML
+    LH5KnIjkALxyg1pnoqNtAiZGdGhDHTaRTnXoS1TmeSsujXwFjl0amxPzi+oaoO52uioj
+    aeIe1E++hbEG/kkvbFv9oK9EN56CGR8P1aSsVzmU4YMDFVMPms+kE3mNFiHZAAORv4Vt
+    yeiAc2McZa5Bju8G9Pn4Sk8Pz56cIrwfQTEnDk/UOomuoNpiAA9tv4k3beuxK7LQujQA
+    FTOH0iaR3o/w47LnNTUMdYNjshsFsTs5o/xTTV98tLxJmoEB8ccCl09e3ltrGXaf+1Wr
+    Vh+w==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; t=1755945077;
+    s=strato-dkim-0002; d=strato.com;
+    h=To:References:Message-Id:Cc:Date:In-Reply-To:From:Subject:Cc:Date:
+    From:Subject:Sender;
+    bh=0/OB5VflSjij8TvXSNLlENtij5iyXwZRqP3qH+cGyNI=;
+    b=HQbzoIzCZ1bg/ri2M3M3y8uTB6zxcpb/36eRYRVD4mXk22So5lTjwQ5jwc8IhB/BqQ
+    A36ficBaw23Q083LhK2F7sg1Tx8CnL4rJ1SmBflR4eJ1KJF+tAbsAYXYDnNmUl7fo2eU
+    j4fh/Un1CJR+5obdx1oTKibJ3TvXgJKeaPUmOxG4CP6I30WuP50TkTcAl1wYEBpEqcfL
+    RqNaEVIk+AO5PUG5MMnao6Fwvtoo+gcrpnsMGHrvmQVwcmuFW+y1MjJLQjS6YMFGSxK5
+    Xv91Aszh4dego73hITgIvFnw6RCYAei4y6DBYrcVZdORt4p6FTqo3Y94WBxmbXp5dK0/
+    IUQg==
+ARC-Authentication-Results: i=1; strato.com;
+    arc=none;
+    dkim=none
+X-RZG-CLASS-ID: mo01
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; t=1755945077;
+    s=strato-dkim-0002; d=goldelico.com;
+    h=To:References:Message-Id:Cc:Date:In-Reply-To:From:Subject:Cc:Date:
+    From:Subject:Sender;
+    bh=0/OB5VflSjij8TvXSNLlENtij5iyXwZRqP3qH+cGyNI=;
+    b=HPfAXSxLw1BjlzRITQWeXIYKIA80kNRTT31sqTKzFOHL3jjBwZJvU7eDe4RW6cfGxG
+    l9ph/eo0qonOKTttnIDzD4RBTl/iCtU6j5fC9fwcUVI3exFLT8yYk6nIU3iljjiP3n8Y
+    WrPQM0CWVh4cvtF3yXu2pT+Q3dlP6Mhkv71XH99aqgCJ/3l5Ne2pK7SdP30Y9+jlpQv5
+    ss1dYWjMpElF6a2V8DvjrBrZYmdF2/7CjpbFlNoQQX59Xu0L8hBruc610v2dblwf6xWZ
+    H2DQ+eHwpU+AiyVguY742AYdPK8nc2RJiwaSHxd4p9a4RewJHxv6d7JHbL2qUUHMJsho
+    oNuQ==
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; t=1755945077;
+    s=strato-dkim-0003; d=goldelico.com;
+    h=To:References:Message-Id:Cc:Date:In-Reply-To:From:Subject:Cc:Date:
+    From:Subject:Sender;
+    bh=0/OB5VflSjij8TvXSNLlENtij5iyXwZRqP3qH+cGyNI=;
+    b=u5rjwlbx14Z7ncL3oBHEv5Q9G7EHTDp4/ajNkKasdOqYnWxaAWtjq+1mHKzVDQY4vV
+    d04FwgL/RFNw+dHPlOAw==
+X-RZG-AUTH: ":JGIXVUS7cutRB/49FwqZ7WcJeFKiMhflhwDubTJ9qVpwcQVkPW4I1HrQ35pZnciHiRbfLxXMND9/QZnI+FEnHoj9hoo="
+Received: from smtpclient.apple
+    by smtp.strato.de (RZmta 52.1.2 AUTH)
+    with ESMTPSA id Q307a417NAVG8vg
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (curve X9_62_prime256v1 with 256 ECDH bits, eq. 3072 bits RSA))
+	(Client did not present a certificate);
+    Sat, 23 Aug 2025 12:31:16 +0200 (CEST)
+Content-Type: text/plain;
+	charset=us-ascii
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-References: <CALjTZvZkDr8N18ocZ8jNND_4DwKqr-PV4BBXB60+=WXPF3vn=Q@mail.gmail.com>
- <20250823020152.1651585-1-wangzijie1@honor.com>
-In-Reply-To: <20250823020152.1651585-1-wangzijie1@honor.com>
-From: Rui Salvaterra <rsalvaterra@gmail.com>
-Date: Sat, 23 Aug 2025 11:19:12 +0100
-X-Gm-Features: Ac12FXykPxxFJofTeeBDuGRSjKfJOOEaaMqE6mhQGLLLKx4ljImdahcB8S89iAM
-Message-ID: <CALjTZvYybts62hbLoHQyGm+xhZvT9QfUN39gbDbugF7Tr_++QA@mail.gmail.com>
-Subject: Re: [REGRESSION, BISECTED] IPv6 RA is broken with Linux 6.12.42+
-To: wangzijie <wangzijie1@honor.com>
-Cc: adobriyan@gmail.com, akpm@linux-foundation.org, gregkh@linuxfoundation.org, 
-	linux-kernel@vger.kernel.org, netdev@vger.kernel.org, 
-	openwrt-devel@lists.openwrt.org, stable@vger.kernel.org, 
-	viro@zeniv.linux.org.uk
-Content-Type: text/plain; charset="UTF-8"
+Mime-Version: 1.0 (Mac OS X Mail 16.0 \(3826.600.51.1.1\))
+Subject: Re: [PATCH] power: supply: bq27xxx: fix error return in case of no
+ bq27000 hdq battery
+From: "H. Nikolaus Schaller" <hns@goldelico.com>
+In-Reply-To: <VI1PR02MB10076D58D8B86F8FB50E59AADF422A@VI1PR02MB10076.eurprd02.prod.outlook.com>
+Date: Sat, 23 Aug 2025 12:31:06 +0200
+Cc: Sebastian Reichel <sre@kernel.org>,
+ =?utf-8?Q?Pali_Roh=C3=A1r?= <pali@kernel.org>,
+ "linux-pm@vger.kernel.org" <linux-pm@vger.kernel.org>,
+ "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
+ "letux-kernel@openphoenux.org" <letux-kernel@openphoenux.org>,
+ "stable@vger.kernel.org" <stable@vger.kernel.org>,
+ "kernel@pyra-handheld.com" <kernel@pyra-handheld.com>,
+ "andreas@kemnade.info" <andreas@kemnade.info>,
+ Hermes Zhang <Hermes.Zhang@axis.com>
+Content-Transfer-Encoding: quoted-printable
+Message-Id: <301AB844-A18F-48D6-9567-04E7C6586AF3@goldelico.com>
+References: <bc405a6f782792dc41e01f9ddf9eadca3589fcdc.1753101969.git.hns@goldelico.com>
+ <VI1PR02MB10076D58D8B86F8FB50E59AADF422A@VI1PR02MB10076.eurprd02.prod.outlook.com>
+To: Jerry Lv <Jerry.Lv@axis.com>
+X-Mailer: Apple Mail (2.3826.600.51.1.1)
 
-Hi, Wangzijie,
+Hi Jerry,
 
+> Am 05.08.2025 um 10:53 schrieb Jerry Lv <Jerry.Lv@axis.com>:
+>=20
+>=20
+> But there is no similar check in the bq27xxx_battery_hdq_read() for =
+the HDQ/1-wire driver.=20
+> Could we do the same check in the bq27xxx_battery_hdq_read(),
+> instead of changing the cache.flags manually when the last byte in the =
+returned data is 0xFF?
+> Or could we just force to set the returned value to "-ENODEV" only =
+when the last byte get from bq27xxx_battery_hdq_read() is 0xFF?
 
-On Sat, 23 Aug 2025 at 03:01, wangzijie <wangzijie1@honor.com> wrote:
->
-> Hi Rui,
-> Thanks. I have submitted a patch and I think it can fix this.
-> https://lore.kernel.org/all/20250821105806.1453833-1-wangzijie1@honor.com
+I tried to move the 0xff detection to bq27xxx_battery_hdq_read() and =
+make it trigger only
+for register 0x0a (BQ27XXX_REG_FLAGS), but there are other locations =
+where bq27xxx_read()
+is called for this register. And those emit error messages in case the =
+battery is removed
+while user-space is polling.
 
-I can confirm your patch fixes the IPv6 RA issue in OpenWrt. It's thus
+So I'll post a v2 with two patches (for different bugs):
+a) set cache.flags to -ENODEV to fix the -EPERM bug
+b) restrict the check for the 0xff condition to the bq27000 to avoid =
+false positives for your bq27z561
 
-Tested-by: Rui Salvaterra <rsalvaterra@gmail.com>
+BR and thanks,
+Nikolaus
 
-
-Kind regards,
-
-Rui Salvaterra
 
