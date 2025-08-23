@@ -1,58 +1,57 @@
-Return-Path: <stable+bounces-172592-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-172593-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1670EB328C6
-	for <lists+stable@lfdr.de>; Sat, 23 Aug 2025 15:24:32 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 94129B328D0
+	for <lists+stable@lfdr.de>; Sat, 23 Aug 2025 15:35:45 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id D08F57BA31F
-	for <lists+stable@lfdr.de>; Sat, 23 Aug 2025 13:22:21 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 014D4189472D
+	for <lists+stable@lfdr.de>; Sat, 23 Aug 2025 13:35:19 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 80A0D255E23;
-	Sat, 23 Aug 2025 13:23:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9E9041E7C18;
+	Sat, 23 Aug 2025 13:34:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="KSGuA5UX"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="CKgHh66U"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3FF3023F41F
-	for <stable@vger.kernel.org>; Sat, 23 Aug 2025 13:23:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5D974393DF6
+	for <stable@vger.kernel.org>; Sat, 23 Aug 2025 13:34:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755955428; cv=none; b=Lp8j1TAQ/aTjtf+zXMiUoKorDl0boKWhb1LEy75cj2S1H68+ERzQAKgz3NImL38ZdDwOoJr3xZ4jDuZosszenr8wzL9PpNPN2d4wXcXbx+SUvnRyksvAp9jblgaAzV44nZsddmVp01BKL+UVbHDcrgvJUvfHPTcsyq4Y0HlCsLk=
+	t=1755956092; cv=none; b=fba66LqvFzkNmWS9xTPE04ZwDKGk4red1agl1UFZIQjsgcOLD1GYekHPy+oEOeswFuL9K4twcTo1Cp5HSDzV64WQvEUgujlPNMbMTdyjgKVGkypqgLQMgLkorGDkYVchInufshCHCqmsoWLle8JOMcqZq2nVZGuJ/l8VyaPY8PA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1755955428; c=relaxed/simple;
-	bh=9SgWVAauOzzYZ2brV2lwYHP37gvv1lAqelP4+TcU7B4=;
+	s=arc-20240116; t=1755956092; c=relaxed/simple;
+	bh=A+towh5SLzUTLR3+K1r+1gI/eSkDNc2xzaLBlMCibcQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=KOXcWpIzgE6pn8cOwKbyB1xTXzrlN86l3Qq05Vh6T3AfHUp1dj9nJBEIsDALy8z2yhVbHmvFs5bX6QxncxrRe6RP0Uj9B82g9xMq/NYTNkh7zukq8V1lYrASVie2tgPaRDXdjcUTu5IFxAEuoUT8/IzieiWruygapYyRaaZTDE0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=KSGuA5UX; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 467ACC4CEF4;
-	Sat, 23 Aug 2025 13:23:47 +0000 (UTC)
+	 MIME-Version; b=BnZEtCz7BcGN9XMbwZY0xAX1cLiLAi6i7zaS+SdQ0nCe2mDp1oAeVJk6AqRz6yQFehT0Uyspurc44lC2seMrZJnehd4xMinHIe8NyJ8cnJRbose2Zrku2J2oObtLuymD5t4T/dMEUh2fbpOo6vd7cuOMdiU+CpgmCEqoduVSA+E=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=CKgHh66U; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 564ADC4CEF4;
+	Sat, 23 Aug 2025 13:34:51 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1755955427;
-	bh=9SgWVAauOzzYZ2brV2lwYHP37gvv1lAqelP4+TcU7B4=;
+	s=k20201202; t=1755956091;
+	bh=A+towh5SLzUTLR3+K1r+1gI/eSkDNc2xzaLBlMCibcQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=KSGuA5UXDlbz7Dg9Dq7Y0pKdMCDqvRFNHHDZ2cRJuAczgYE+0JF/Chn9kLSCoy918
-	 7JUDPaD/+PnWSmUui7mEHoRx0O4/iYTxuyDuOZ5abAl7Cyl0up0eSyCqw2awveJAJ3
-	 I+j3XoRGhIulDuoe35XuKGXMuE1hAuNRF7uqI2R4MxxsLsCzlGaKntiNfu2fDAVQDO
-	 XvE91j4gSeLqTMJmvoSU1M8xJ1M/0j4KG7VzL6ieJPwSJwYd+tgPlucR4B5uwH7+jw
-	 Mqgq7r/BdxqPiCXEz9prRm16YbY0eQ0cvHUQDlWWH+6QI6iJZwJYkij2v9iDkwOoo2
-	 E16FYrVGwi6lA==
+	b=CKgHh66UdTQGFeae8JBeR4i3qBsDoBj03H0JN2ZvjSi8hdxa0m5FtQ61nK9CEaOrx
+	 rL6fiOp+jOUJbMMQiNI2dGFYj5ixxiGNiiXmnqYW1GXIIIMSzqBppY1cDty14jehhe
+	 /4Bw6l0/s3NPNwlYHDssyrrLEsldanaX4Yxkd3KFNtcNl22znovjSx+oGFNSFfdbMM
+	 ZphJeNrRMcAu7f3W8vCpKnnWZ3Z1r5a73Bc/tm1aqBfNbU5iEVYOA2kLa3TucOqA0Y
+	 J+0WMia6puQch6h7XCXgi8lXBWAeuOGp4E88HzPDYYmm6sxM22Qoky6ahcGY+zqNpg
+	 oEqAsylMW7+0A==
 From: Sasha Levin <sashal@kernel.org>
 To: stable@vger.kernel.org
-Cc: "Rafael J. Wysocki" <rafael.j.wysocki@intel.com>,
-	Christian Loehle <christian.loehle@arm.com>,
+Cc: Christian Loehle <christian.loehle@arm.com>,
+	"Rafael J. Wysocki" <rafael.j.wysocki@intel.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12.y 2/2] cpuidle: governors: menu: Avoid selecting states with too much latency
-Date: Sat, 23 Aug 2025 09:23:44 -0400
-Message-ID: <20250823132344.2122561-2-sashal@kernel.org>
+Subject: [PATCH 6.6.y 1/2] cpuidle: menu: Remove iowait influence
+Date: Sat, 23 Aug 2025 09:34:48 -0400
+Message-ID: <20250823133449.2131644-1-sashal@kernel.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250823132344.2122561-1-sashal@kernel.org>
-References: <2025082214-daughter-popsicle-4c08@gregkh>
- <20250823132344.2122561-1-sashal@kernel.org>
+In-Reply-To: <2025082216-despair-postnasal-6dbe@gregkh>
+References: <2025082216-despair-postnasal-6dbe@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -61,125 +60,167 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-From: "Rafael J. Wysocki" <rafael.j.wysocki@intel.com>
+From: Christian Loehle <christian.loehle@arm.com>
 
-[ Upstream commit 779b1a1cb13ae17028aeddb2fbbdba97357a1e15 ]
+[ Upstream commit 38f83090f515b4b5d59382dfada1e7457f19aa47 ]
 
-Occasionally, the exit latency of the idle state selected by the menu
-governor may exceed the PM QoS CPU wakeup latency limit.  Namely, if the
-scheduler tick has been stopped already and predicted_ns is greater than
-the tick period length, the governor may return an idle state whose exit
-latency exceeds latency_req because that decision is made before
-checking the current idle state's exit latency.
+Remove CPU iowaiters influence on idle state selection.
 
-For instance, say that there are 3 idle states, 0, 1, and 2.  For idle
-states 0 and 1, the exit latency is equal to the target residency and
-the values are 0 and 5 us, respectively.  State 2 is deeper and has the
-exit latency and target residency of 200 us and 2 ms (which is greater
-than the tick period length), respectively.
+Remove the menu notion of performance multiplier which increased with
+the number of tasks that went to iowait sleep on this CPU and haven't
+woken up yet.
 
-Say that predicted_ns is equal to TICK_NSEC and the PM QoS latency
-limit is 20 us.  After the first two iterations of the main loop in
-menu_select(), idx becomes 1 and in the third iteration of it the target
-residency of the current state (state 2) is greater than predicted_ns.
-State 2 is not a polling one and predicted_ns is not less than TICK_NSEC,
-so the check on whether or not the tick has been stopped is done.  Say
-that the tick has been stopped already and there are no imminent timers
-(that is, delta_tick is greater than the target residency of state 2).
-In that case, idx becomes 2 and it is returned immediately, but the exit
-latency of state 2 exceeds the latency limit.
+Relying on iowait for cpuidle is problematic for a few reasons:
 
-Address this issue by modifying the code to compare the exit latency of
-the current idle state (idle state i) with the latency limit before
-comparing its target residency with predicted_ns, which allows one
-more exit_latency_ns check that becomes redundant to be dropped.
+ 1. There is no guarantee that an iowaiting task will wake up on the
+    same CPU.
 
-However, after the above change, latency_req cannot take the predicted_ns
-value any more, which takes place after commit 38f83090f515 ("cpuidle:
-menu: Remove iowait influence"), because it may cause a polling state
-to be returned prematurely.
+ 2. The task being in iowait says nothing about the idle duration, we
+    could be selecting shallower states for a long time.
 
-In the context of the previous example say that predicted_ns is 3000 and
-the PM QoS latency limit is still 20 us.  Additionally, say that idle
-state 0 is a polling one.  Moving the exit_latency_ns check before the
-target_residency_ns one causes the loop to terminate in the second
-iteration, before the target_residency_ns check, so idle state 0 will be
-returned even though previously state 1 would be returned if there were
-no imminent timers.
+ 3. The task being in iowait doesn't always imply a performance hit
+    with increased latency.
 
-For this reason, remove the assignment of the predicted_ns value to
-latency_req from the code.
+ 4. If there is such a performance hit, the number of iowaiting tasks
+    doesn't directly correlate.
 
-Fixes: 5ef499cd571c ("cpuidle: menu: Handle stopped tick more aggressively")
-Cc: 4.17+ <stable@vger.kernel.org> # 4.17+
+ 5. The definition of iowait altogether is vague at best, it is
+    sprinkled across kernel code.
+
+Signed-off-by: Christian Loehle <christian.loehle@arm.com>
+Link: https://patch.msgid.link/20240905092645.2885200-2-christian.loehle@arm.com
+[ rjw: Minor edits in the changelog ]
 Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
-Reviewed-by: Christian Loehle <christian.loehle@arm.com>
-Link: https://patch.msgid.link/5043159.31r3eYUQgx@rafael.j.wysocki
+Stable-dep-of: 779b1a1cb13a ("cpuidle: governors: menu: Avoid selecting states with too much latency")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/cpuidle/governors/menu.c | 29 ++++++++++++-----------------
- 1 file changed, 12 insertions(+), 17 deletions(-)
+ drivers/cpuidle/governors/menu.c | 52 ++++++--------------------------
+ 1 file changed, 9 insertions(+), 43 deletions(-)
 
 diff --git a/drivers/cpuidle/governors/menu.c b/drivers/cpuidle/governors/menu.c
-index f07f76ccfc5e..3eb543b1644d 100644
+index edd9a8fb9878..26f0a067e5e5 100644
 --- a/drivers/cpuidle/governors/menu.c
 +++ b/drivers/cpuidle/governors/menu.c
-@@ -293,20 +293,15 @@ static int menu_select(struct cpuidle_driver *drv, struct cpuidle_device *dev,
- 		return 0;
+@@ -21,7 +21,7 @@
+ 
+ #include "gov.h"
+ 
+-#define BUCKETS 12
++#define BUCKETS 6
+ #define INTERVAL_SHIFT 3
+ #define INTERVALS (1UL << INTERVAL_SHIFT)
+ #define RESOLUTION 1024
+@@ -31,12 +31,11 @@
+ /*
+  * Concepts and ideas behind the menu governor
+  *
+- * For the menu governor, there are 3 decision factors for picking a C
++ * For the menu governor, there are 2 decision factors for picking a C
+  * state:
+  * 1) Energy break even point
+- * 2) Performance impact
+- * 3) Latency tolerance (from pmqos infrastructure)
+- * These three factors are treated independently.
++ * 2) Latency tolerance (from pmqos infrastructure)
++ * These two factors are treated independently.
+  *
+  * Energy break even point
+  * -----------------------
+@@ -119,19 +118,10 @@ struct menu_device {
+ 	int		interval_ptr;
+ };
+ 
+-static inline int which_bucket(u64 duration_ns, unsigned int nr_iowaiters)
++static inline int which_bucket(u64 duration_ns)
+ {
+ 	int bucket = 0;
+ 
+-	/*
+-	 * We keep two groups of stats; one with no
+-	 * IO pending, one without.
+-	 * This allows us to calculate
+-	 * E(duration)|iowait
+-	 */
+-	if (nr_iowaiters)
+-		bucket = BUCKETS/2;
+-
+ 	if (duration_ns < 10ULL * NSEC_PER_USEC)
+ 		return bucket;
+ 	if (duration_ns < 100ULL * NSEC_PER_USEC)
+@@ -145,19 +135,6 @@ static inline int which_bucket(u64 duration_ns, unsigned int nr_iowaiters)
+ 	return bucket + 5;
+ }
+ 
+-/*
+- * Return a multiplier for the exit latency that is intended
+- * to take performance requirements into account.
+- * The more performance critical we estimate the system
+- * to be, the higher this multiplier, and thus the higher
+- * the barrier to go to an expensive C state.
+- */
+-static inline int performance_multiplier(unsigned int nr_iowaiters)
+-{
+-	/* for IO wait tasks (per cpu!) we add 10x each */
+-	return 1 + 10 * nr_iowaiters;
+-}
+-
+ static DEFINE_PER_CPU(struct menu_device, menu_devices);
+ 
+ static void menu_update(struct cpuidle_driver *drv, struct cpuidle_device *dev);
+@@ -276,8 +253,6 @@ static int menu_select(struct cpuidle_driver *drv, struct cpuidle_device *dev,
+ 	struct menu_device *data = this_cpu_ptr(&menu_devices);
+ 	s64 latency_req = cpuidle_governor_latency_req(dev->cpu);
+ 	u64 predicted_ns;
+-	u64 interactivity_req;
+-	unsigned int nr_iowaiters;
+ 	ktime_t delta, delta_tick;
+ 	int i, idx;
+ 
+@@ -286,8 +261,6 @@ static int menu_select(struct cpuidle_driver *drv, struct cpuidle_device *dev,
+ 		data->needs_update = 0;
  	}
  
--	if (tick_nohz_tick_stopped()) {
+-	nr_iowaiters = nr_iowait_cpu(dev->cpu);
+-
+ 	/* Find the shortest expected idle interval. */
+ 	predicted_ns = get_typical_interval(data) * NSEC_PER_USEC;
+ 	if (predicted_ns > RESIDENCY_THRESHOLD_NS) {
+@@ -301,7 +274,7 @@ static int menu_select(struct cpuidle_driver *drv, struct cpuidle_device *dev,
+ 		}
+ 
+ 		data->next_timer_ns = delta;
+-		data->bucket = which_bucket(data->next_timer_ns, nr_iowaiters);
++		data->bucket = which_bucket(data->next_timer_ns);
+ 
+ 		/* Round up the result for half microseconds. */
+ 		timer_us = div_u64((RESOLUTION * DECAY * NSEC_PER_USEC) / 2 +
+@@ -319,7 +292,7 @@ static int menu_select(struct cpuidle_driver *drv, struct cpuidle_device *dev,
+ 		 */
+ 		data->next_timer_ns = KTIME_MAX;
+ 		delta_tick = TICK_NSEC / 2;
+-		data->bucket = which_bucket(KTIME_MAX, nr_iowaiters);
++		data->bucket = which_bucket(KTIME_MAX);
+ 	}
+ 
+ 	if (unlikely(drv->state_count <= 1 || latency_req == 0) ||
+@@ -346,15 +319,8 @@ static int menu_select(struct cpuidle_driver *drv, struct cpuidle_device *dev,
+ 		 */
+ 		if (predicted_ns < TICK_NSEC)
+ 			predicted_ns = data->next_timer_ns;
+-	} else {
 -		/*
--		 * If the tick is already stopped, the cost of possible short
--		 * idle duration misprediction is much higher, because the CPU
--		 * may be stuck in a shallow idle state for a long time as a
--		 * result of it.  In that case say we might mispredict and use
--		 * the known time till the closest timer event for the idle
--		 * state selection.
+-		 * Use the performance multiplier and the user-configurable
+-		 * latency_req to determine the maximum exit latency.
 -		 */
--		if (predicted_ns < TICK_NSEC)
--			predicted_ns = data->next_timer_ns;
--	} else if (latency_req > predicted_ns) {
--		latency_req = predicted_ns;
--	}
-+	/*
-+	 * If the tick is already stopped, the cost of possible short idle
-+	 * duration misprediction is much higher, because the CPU may be stuck
-+	 * in a shallow idle state for a long time as a result of it.  In that
-+	 * case, say we might mispredict and use the known time till the closest
-+	 * timer event for the idle state selection.
-+	 */
-+	if (tick_nohz_tick_stopped() && predicted_ns < TICK_NSEC)
-+		predicted_ns = data->next_timer_ns;
+-		interactivity_req = div64_u64(predicted_ns,
+-					      performance_multiplier(nr_iowaiters));
+-		if (latency_req > interactivity_req)
+-			latency_req = interactivity_req;
++	} else if (latency_req > predicted_ns) {
++		latency_req = predicted_ns;
+ 	}
  
  	/*
- 	 * Find the idle state with the lowest power while satisfying
-@@ -322,13 +317,15 @@ static int menu_select(struct cpuidle_driver *drv, struct cpuidle_device *dev,
- 		if (idx == -1)
- 			idx = i; /* first enabled state */
- 
-+		if (s->exit_latency_ns > latency_req)
-+			break;
-+
- 		if (s->target_residency_ns > predicted_ns) {
- 			/*
- 			 * Use a physical idle state, not busy polling, unless
- 			 * a timer is going to trigger soon enough.
- 			 */
- 			if ((drv->states[idx].flags & CPUIDLE_FLAG_POLLING) &&
--			    s->exit_latency_ns <= latency_req &&
- 			    s->target_residency_ns <= data->next_timer_ns) {
- 				predicted_ns = s->target_residency_ns;
- 				idx = i;
-@@ -360,8 +357,6 @@ static int menu_select(struct cpuidle_driver *drv, struct cpuidle_device *dev,
- 
- 			return idx;
- 		}
--		if (s->exit_latency_ns > latency_req)
--			break;
- 
- 		idx = i;
- 	}
 -- 
 2.50.1
 
