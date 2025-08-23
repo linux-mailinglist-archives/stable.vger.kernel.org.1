@@ -1,173 +1,176 @@
-Return-Path: <stable+bounces-172559-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-172560-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 05342B3276F
-	for <lists+stable@lfdr.de>; Sat, 23 Aug 2025 09:43:20 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id BA268B3277C
+	for <lists+stable@lfdr.de>; Sat, 23 Aug 2025 09:53:36 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id DD93E1B65B9B
-	for <lists+stable@lfdr.de>; Sat, 23 Aug 2025 07:43:39 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 389BC176342
+	for <lists+stable@lfdr.de>; Sat, 23 Aug 2025 07:52:11 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id CB8AC2206AF;
-	Sat, 23 Aug 2025 07:43:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0519922FAF8;
+	Sat, 23 Aug 2025 07:51:52 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="DSv4Ifsg"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-pg1-f182.google.com (mail-pg1-f182.google.com [209.85.215.182])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id ACED429B0;
-	Sat, 23 Aug 2025 07:43:12 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.215.182
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id ADC1122F762
+	for <stable@vger.kernel.org>; Sat, 23 Aug 2025 07:51:51 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755934994; cv=none; b=j6gaFk5cDxSYqoUjgoYjwR7uTsyjAHuH1B1Wxiyj/KfRQ3V+KNOl7OODgChH03Wqn+guKbehVcYJLS6B4eaXJM74mIkcqkOTexJnCGr7Bnp87Cx1MGiZAwekWjiJEIgCNalkBTxBgfowl38Zs8h/AeZZiUSp1CWHiCWwyhpako4=
+	t=1755935511; cv=none; b=PpPiNR8cEFas0CzHLrJ7oYxA0gsbroY4yH88NUX+MNfUMXhKItFDQQivMNHsKIK2skuz8oFPxX4sIyHX+hnFHiEbP6PWkWxv8qcSsZlV2nmMW6tAP583U9EG3TyvMr8f1fbkha6kC2VcPFkEgODaYVS9PKGMy6OKYpsOICi79bo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1755934994; c=relaxed/simple;
-	bh=6UIZ7ESj9tVzgEhrGqLwMkKj8QEBxY3cjbR4+80KyA8=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=pr8GWaUDu1Y+2riNME4gasmmSeYZOD0xuvxCcOcMr7+P5bv80AhtHLhJDXUe1dAU3BF/D8W7Ona0en50ZHI9qZnksvu367qD1vHqkDpMC7w3jgF9ZV+ZPat+mkzdgRH6izwweD5eZDQhIgVsQ3FIylobRJJmD/oBBGVv897DFf8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=linux.dev; spf=pass smtp.mailfrom=gmail.com; arc=none smtp.client-ip=209.85.215.182
-Authentication-Results: smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=linux.dev
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-pg1-f182.google.com with SMTP id 41be03b00d2f7-b482fd89b0eso2077884a12.2;
-        Sat, 23 Aug 2025 00:43:12 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1755934992; x=1756539792;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=qZPX8X0B5I+s5hVLSY+6qsXOHCGUOeVZARWEgGlLC+I=;
-        b=YGRYpC1Hck04VLgqXkXMXw9eKN0LzOGybUf39FSwCg+88KyPiHusdH0dEecBovqBDI
-         OcCc2x5XzfAb7YrVqCCUsKMuXgwUHSzwA/ymPD/T7yOHJqDX1FZkzzl0zN7Ssdnggdgx
-         qWlCuEL+qTSQNrYEt2YZ9CQV7JCag2HigmqtquWMb+6Ns+LjQ7YqXaxHui15roivF1cQ
-         sqiEFLTh5+NlL4N4tsXzbIYbPl65bpEsrZvCuMFbpNWtJy1mvesyJMVY6AQshcy37kF/
-         uGPCGcshAD26W8Q70Eq+fEx9WRB+ByEtNyxtfXyhl5jK+kpqPaXY+882YNbzks1sQ/AI
-         nqpg==
-X-Forwarded-Encrypted: i=1; AJvYcCUZkfyq7ynwOiTxWXM28Xfg6h1Gy2dBiqb9dhaukVi8IQppgk8XdhXEjnk/8ZWIQKoGTK10eTKG0HN7LbE=@vger.kernel.org, AJvYcCX9Mk4q+qLqxKtJePC53sKxqi7fdltOLW7MnpiA1jlGSikrCIKU6S1zvejoeGZGd63Oqk2A+tyn@vger.kernel.org
-X-Gm-Message-State: AOJu0Yxg2PU0uX14wDo57hdD2jA2PKgJR2uvZ4VWaXSIZfsGS6PpCirq
-	9RmOvlkYOQ6VYNZa7V+Ra0TM/0yGgymRRknhevOwOD/6HuHC3zLp8kkR
-X-Gm-Gg: ASbGncsBzabHiBzz5sFFF/Ghwf1tyShZyLGw2U0Jggh1j8SQ+yzL/smVIqZR0GV1Qa0
-	xbcMP4hWCJesAYnEpzM8Kr7h3r681WSl5i6f0B8Rp6sXfDQJuUwlRz1w7dtnwqmc4dOtpEYQc/3
-	CMZB8wsbamUdg3ISEm5HluZhTItYpV0gNsRgeEqrsfhoedePNjWnG17+2HsdNMvtunp2KXQZLD5
-	FKBu0GgEP3v9ny6a+zh2UY+9ULzSh/nf1YnqysVHj1PAUqDvKMThEceHYRFiXWJiZ8rBOug9IiG
-	QQ0GVjD6MnpiG3ZIXyNps6ENEVgdZD7RZqnP4+xNbRd45KVXR8GMlbcMn+VTe/aofMS0f1V/o3e
-	U9/HX4mkb2ndQJWTKLg==
-X-Google-Smtp-Source: AGHT+IF0f2BQBSqWg3im1sdbkd//7GHSpBtH/wvKmeKJ5tjPncO4wHGFIpJvnnP3TVkq8/iiJDhfaA==
-X-Received: by 2002:a17:903:32c4:b0:246:5a41:e6ee with SMTP id d9443c01a7336-2465a41e7fbmr42588545ad.15.1755934991900;
-        Sat, 23 Aug 2025 00:43:11 -0700 (PDT)
-Received: from localhost.localdomain ([2403:2c80:17::10:4030])
-        by smtp.gmail.com with ESMTPSA id d9443c01a7336-246687af234sm15592435ad.48.2025.08.23.00.43.01
-        (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
-        Sat, 23 Aug 2025 00:43:11 -0700 (PDT)
-From: Lance Yang <lance.yang@linux.dev>
-To: akpm@linux-foundation.org,
-	fthain@linux-m68k.org,
-	geert@linux-m68k.org,
-	mhiramat@kernel.org,
-	senozhatsky@chromium.org
-Cc: lance.yang@linux.dev,
-	amaindex@outlook.com,
-	anna.schumaker@oracle.com,
-	boqun.feng@gmail.com,
-	ioworker0@gmail.com,
-	joel.granados@kernel.org,
-	jstultz@google.com,
-	kent.overstreet@linux.dev,
-	leonylgao@tencent.com,
-	linux-kernel@vger.kernel.org,
-	linux-m68k@lists.linux-m68k.org,
-	longman@redhat.com,
-	mingo@redhat.com,
-	mingzhe.yang@ly.com,
-	oak@helsinkinet.fi,
-	peterz@infradead.org,
-	rostedt@goodmis.org,
-	tfiga@chromium.org,
-	will@kernel.org,
-	stable@vger.kernel.org
-Subject: [PATCH 1/1] hung_task: fix warnings by enforcing alignment on lock structures
-Date: Sat, 23 Aug 2025 15:40:48 +0800
-Message-ID: <20250823074048.92498-1-lance.yang@linux.dev>
-X-Mailer: git-send-email 2.49.0
-In-Reply-To: <f79735e1-1625-4746-98ce-a3c40123c5af@linux.dev>
-References: <f79735e1-1625-4746-98ce-a3c40123c5af@linux.dev>
+	s=arc-20240116; t=1755935511; c=relaxed/simple;
+	bh=SBlhUaMvxw3+gM6W7Eb17wURWygBgsTaQBPUUBWV7lY=;
+	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=iyDDUzi9oHiGcaBLtfa4fVvyI6wWY2Ps1bjtDmaGWAPJUam4IBRP2dXH2aeVMFNT5WpaoT5rQM7PdsH9oYekAwAdG4GbPxnaKcvSavYG1RJpvDD7jtqgcVhziPkkqtWRcGOjffKln92t+bns/RdPVj6umb0DgNssUgi7AEPHIZs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=DSv4Ifsg; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C9A39C4CEF1;
+	Sat, 23 Aug 2025 07:51:50 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
+	s=korg; t=1755935511;
+	bh=SBlhUaMvxw3+gM6W7Eb17wURWygBgsTaQBPUUBWV7lY=;
+	h=Subject:To:Cc:From:Date:From;
+	b=DSv4IfsgQ10rILdU5sVRmXBJ7FLRov7Q4Kcvri8JL9VGUmiGPLnUub54HnISdhTv/
+	 tKQaF5s3vvanYJKFlc979QHBRKabcLTgtM9QlPUsQjfeX7A+TIYF7g74xoj7xkpEEi
+	 BrHcPPfafc3fo1CJVzHZtLj6saZfLUDZNZE5OLuM=
+Subject: FAILED: patch "[PATCH] drm/i915/lnl+/tc: Fix handling of an enabled/disconnected" failed to apply to 6.12-stable tree
+To: imre.deak@intel.com,charlton.lin@intel.com,jani.nikula@intel.com,khaled.almahallawy@intel.com,luciano.coelho@intel.com,mika.kahola@intel.com,tursulin@ursulin.net
+Cc: <stable@vger.kernel.org>
+From: <gregkh@linuxfoundation.org>
+Date: Sat, 23 Aug 2025 09:51:47 +0200
+Message-ID: <2025082347-portside-bulb-25f5@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=ANSI_X3.4-1968
 Content-Transfer-Encoding: 8bit
 
-From: Lance Yang <lance.yang@linux.dev>
 
-The blocker tracking mechanism assumes that lock pointers are at least
-4-byte aligned to use their lower bits for type encoding.
+The patch below does not apply to the 6.12-stable tree.
+If someone wants it applied there, or to any other stable or longterm
+tree, then please email the backport, including the original git commit
+id to <stable@vger.kernel.org>.
 
-However, as reported by Geert Uytterhoeven, some architectures like m68k
-only guarantee 2-byte alignment of 32-bit values. This breaks the
-assumption and causes two related WARN_ON_ONCE checks to trigger.
+To reproduce the conflict and resubmit, you may use the following commands:
 
-To fix this, enforce a minimum of 4-byte alignment on the core lock
-structures supported by the blocker tracking mechanism. This ensures the
-algorithm's alignment assumption now holds true on all architectures.
+git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-6.12.y
+git checkout FETCH_HEAD
+git cherry-pick -x f52d6aa98379842fc255d93282655566f2114e0c
+# <resolve conflicts, build, test, etc.>
+git commit -s
+git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2025082347-portside-bulb-25f5@gregkh' --subject-prefix 'PATCH 6.12.y' HEAD^..
 
-This patch adds __aligned(4) to the definitions of "struct mutex",
-"struct semaphore", and "struct rw_semaphore", resolving the warnings.
+Possible dependencies:
 
-Thanks to Geert for bisecting!
 
-Reported-by: Geert Uytterhoeven <geert@linux-m68k.org>
-Closes: https://lore.kernel.org/lkml/CAMuHMdW7Ab13DdGs2acMQcix5ObJK0O2dG_Fxzr8_g58Rc1_0g@mail.gmail.com
-Fixes: e711faaafbe5 ("hung_task: replace blocker_mutex with encoded blocker")
-Cc: <stable@vger.kernel.org>
-Signed-off-by: Lance Yang <lance.yang@linux.dev>
----
- include/linux/mutex_types.h | 2 +-
- include/linux/rwsem.h       | 2 +-
- include/linux/semaphore.h   | 2 +-
- 3 files changed, 3 insertions(+), 3 deletions(-)
 
-diff --git a/include/linux/mutex_types.h b/include/linux/mutex_types.h
-index fdf7f515fde8..de798bfbc4c7 100644
---- a/include/linux/mutex_types.h
-+++ b/include/linux/mutex_types.h
-@@ -51,7 +51,7 @@ struct mutex {
- #ifdef CONFIG_DEBUG_LOCK_ALLOC
- 	struct lockdep_map	dep_map;
- #endif
--};
-+} __aligned(4); /* For hung_task blocker tracking, which encodes type in LSBs */
+thanks,
+
+greg k-h
+
+------------------ original commit in Linus's tree ------------------
+
+From f52d6aa98379842fc255d93282655566f2114e0c Mon Sep 17 00:00:00 2001
+From: Imre Deak <imre.deak@intel.com>
+Date: Mon, 11 Aug 2025 11:01:48 +0300
+Subject: [PATCH] drm/i915/lnl+/tc: Fix handling of an enabled/disconnected
+ dp-alt sink
+
+The TypeC PHY HW readout during driver loading and system resume
+determines which TypeC mode the PHY is in (legacy/DP-alt/TBT-alt) and
+whether the PHY is connected, based on the PHY's Owned and Ready flags.
+For the PHY to be in DP-alt or legacy mode and for the PHY to be in the
+connected state in these modes, both the Owned (set by the BIOS/driver)
+and the Ready (set by the HW) flags should be set.
+
+On ICL-MTL the HW kept the PHY's Ready flag set after the driver
+connected the PHY by acquiring the PHY ownership (by setting the Owned
+flag), until the driver disconnected the PHY by releasing the PHY
+ownership (by clearing the Owned flag). On LNL+ this has changed, in
+that the HW clears the Ready flag as soon as the sink gets disconnected,
+even if the PHY ownership was acquired already and hence the PHY is
+being used by the display.
+
+When inheriting the HW state from BIOS for a PHY connected in DP-alt
+mode on which the sink got disconnected - i.e. in a case where the sink
+was connected while BIOS/GOP was running and so the sink got enabled
+connecting the PHY, but the user disconnected the sink by the time the
+driver loaded - the PHY Owned but not Ready state must be accounted for
+on LNL+ according to the above. Do that by assuming on LNL+ that the PHY
+is connected in DP-alt mode whenever the PHY Owned flag is set,
+regardless of the PHY Ready flag.
+
+This fixes a problem on LNL+, where the PHY TypeC mode / connected state
+was detected incorrectly for a DP-alt sink, which got connected and then
+disconnected by the user in the above way.
+
+v2: Rename tc_phy_in_legacy_or_dp_alt_mode() to tc_phy_owned_by_display().
+    (Luca, Jani)
+
+Cc: Jani Nikula <jani.nikula@intel.com>
+Cc: stable@vger.kernel.org # v6.8+
+Reported-by: Charlton Lin <charlton.lin@intel.com>
+Tested-by: Khaled Almahallawy <khaled.almahallawy@intel.com>
+Reviewed-by: Mika Kahola <mika.kahola@intel.com>
+Reviewed-by: Luca Coelho <luciano.coelho@intel.com>
+[Imre: Add one-liner function documentation for tc_phy_owned_by_display()]
+Signed-off-by: Imre Deak <imre.deak@intel.com>
+Link: https://lore.kernel.org/r/20250811080152.906216-2-imre.deak@intel.com
+(cherry picked from commit 89f4b196ee4b056e0e8c179b247b29d4a71a4e7e)
+Signed-off-by: Tvrtko Ursulin <tursulin@ursulin.net>
+
+diff --git a/drivers/gpu/drm/i915/display/intel_tc.c b/drivers/gpu/drm/i915/display/intel_tc.c
+index 3bc57579fe53..8208539bfe66 100644
+--- a/drivers/gpu/drm/i915/display/intel_tc.c
++++ b/drivers/gpu/drm/i915/display/intel_tc.c
+@@ -1226,14 +1226,19 @@ static void tc_phy_get_hw_state(struct intel_tc_port *tc)
+ 	tc->phy_ops->get_hw_state(tc);
+ }
  
- #else /* !CONFIG_PREEMPT_RT */
- /*
-diff --git a/include/linux/rwsem.h b/include/linux/rwsem.h
-index f1aaf676a874..f6ecf4a4710d 100644
---- a/include/linux/rwsem.h
-+++ b/include/linux/rwsem.h
-@@ -64,7 +64,7 @@ struct rw_semaphore {
- #ifdef CONFIG_DEBUG_LOCK_ALLOC
- 	struct lockdep_map	dep_map;
- #endif
--};
-+} __aligned(4); /* For hung_task blocker tracking, which encodes type in LSBs */
+-static bool tc_phy_is_ready_and_owned(struct intel_tc_port *tc,
+-				      bool phy_is_ready, bool phy_is_owned)
++/* Is the PHY owned by display i.e. is it in legacy or DP-alt mode? */
++static bool tc_phy_owned_by_display(struct intel_tc_port *tc,
++				    bool phy_is_ready, bool phy_is_owned)
+ {
+ 	struct intel_display *display = to_intel_display(tc->dig_port);
  
- #define RWSEM_UNLOCKED_VALUE		0UL
- #define RWSEM_WRITER_LOCKED		(1UL << 0)
-diff --git a/include/linux/semaphore.h b/include/linux/semaphore.h
-index 89706157e622..ac9b9c87bfb7 100644
---- a/include/linux/semaphore.h
-+++ b/include/linux/semaphore.h
-@@ -20,7 +20,7 @@ struct semaphore {
- #ifdef CONFIG_DETECT_HUNG_TASK_BLOCKER
- 	unsigned long		last_holder;
- #endif
--};
-+} __aligned(4); /* For hung_task blocker tracking, which encodes type in LSBs */
+-	drm_WARN_ON(display->drm, phy_is_owned && !phy_is_ready);
++	if (DISPLAY_VER(display) < 20) {
++		drm_WARN_ON(display->drm, phy_is_owned && !phy_is_ready);
  
- #ifdef CONFIG_DETECT_HUNG_TASK_BLOCKER
- #define __LAST_HOLDER_SEMAPHORE_INITIALIZER				\
--- 
-2.49.0
+-	return phy_is_ready && phy_is_owned;
++		return phy_is_ready && phy_is_owned;
++	} else {
++		return phy_is_owned;
++	}
+ }
+ 
+ static bool tc_phy_is_connected(struct intel_tc_port *tc,
+@@ -1244,7 +1249,7 @@ static bool tc_phy_is_connected(struct intel_tc_port *tc,
+ 	bool phy_is_owned = tc_phy_is_owned(tc);
+ 	bool is_connected;
+ 
+-	if (tc_phy_is_ready_and_owned(tc, phy_is_ready, phy_is_owned))
++	if (tc_phy_owned_by_display(tc, phy_is_ready, phy_is_owned))
+ 		is_connected = port_pll_type == ICL_PORT_DPLL_MG_PHY;
+ 	else
+ 		is_connected = port_pll_type == ICL_PORT_DPLL_DEFAULT;
+@@ -1352,7 +1357,7 @@ tc_phy_get_current_mode(struct intel_tc_port *tc)
+ 	phy_is_ready = tc_phy_is_ready(tc);
+ 	phy_is_owned = tc_phy_is_owned(tc);
+ 
+-	if (!tc_phy_is_ready_and_owned(tc, phy_is_ready, phy_is_owned)) {
++	if (!tc_phy_owned_by_display(tc, phy_is_ready, phy_is_owned)) {
+ 		mode = get_tc_mode_in_phy_not_owned_state(tc, live_mode);
+ 	} else {
+ 		drm_WARN_ON(display->drm, live_mode == TC_PORT_TBT_ALT);
 
 
