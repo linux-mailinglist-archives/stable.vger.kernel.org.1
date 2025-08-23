@@ -1,87 +1,90 @@
-Return-Path: <stable+bounces-172577-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-172578-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id C22F4B32869
-	for <lists+stable@lfdr.de>; Sat, 23 Aug 2025 13:57:41 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 10819B32872
+	for <lists+stable@lfdr.de>; Sat, 23 Aug 2025 14:01:33 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 82B405A0A8D
-	for <lists+stable@lfdr.de>; Sat, 23 Aug 2025 11:57:41 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id BD1B71BC8008
+	for <lists+stable@lfdr.de>; Sat, 23 Aug 2025 12:01:52 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1FAAB24DCEB;
-	Sat, 23 Aug 2025 11:57:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6589424CEE8;
+	Sat, 23 Aug 2025 12:01:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="U4pM2Uq4"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="AdjUpyU4"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-pl1-f175.google.com (mail-pl1-f175.google.com [209.85.214.175])
+Received: from mail-pl1-f182.google.com (mail-pl1-f182.google.com [209.85.214.182])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7B838158DAC;
-	Sat, 23 Aug 2025 11:57:33 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.175
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 16D40259CAC;
+	Sat, 23 Aug 2025 12:01:20 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.182
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755950254; cv=none; b=fssq16OEv9Tk1+Iy4unRGBybcfSW1QGBRdINXZQhEh+ghdjC3rwfy7MO+Vl3pZJ0PJ384uKXec7p02ZRxGAZAPP0Snh+LqcRe0S/o4av1LM4Ogr1t6Yq2wv6wnBgJcbufmypYg4cHzQ2vMg58jdH8zhSwlt/6t1cOh/RwIqusgE=
+	t=1755950484; cv=none; b=bG45vKIQdYKFfsgHZZLeHXp9QWXBL3wVOyinT6oInH3YNHd+I50fkVTCUesexDpfeSB5HtGxu41u4BOmQD2pLwskv4+agRtf59G1t9DhgZywHcjGVOdvC646FjRe6T7Bjsrr8piF7ldPgNNHRrXK37ZkLWG5jvyBzhIq6F3FiVE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1755950254; c=relaxed/simple;
-	bh=OQ/E4y9kB3rGINfiUnkpCWTQCdSgM4fZZHZXppCOuaw=;
-	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=upawqaonSEUBMcr9BaKEjYjr/HSRKwcemXIYCQqSA3qXSGP4MJe4za4e7zD3lw46k+3NxcKn/laEmJ9QU0qMu8Ii1iZYZA9dd31KHD54Cgh63pwV/snNKTxemP/ja8zV15im0y6Rq6BiIXPizvX9PQz0EXbiD2vFAK5tzLp0+MQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=U4pM2Uq4; arc=none smtp.client-ip=209.85.214.175
+	s=arc-20240116; t=1755950484; c=relaxed/simple;
+	bh=g+SXvOscJQeh5HJU9Sa9a+M2q24ilt3506SIFNah/B4=;
+	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=GW1LgZn5uLvmqCJgS4+Dqf5DSTBRsP7JYDTS2DZ9tc8QVTgDzmlKySnGMZFqzzminEiJvzgRoFCzU3RYP35dbd6iScx4DZIMGZX1Wf6Q7kVSf6TiD6CYQD1yz1lmGwnh7WdMFLjuELyDy/8ckZtyh/+irJBuTWCObgo9I1ZWDkk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=AdjUpyU4; arc=none smtp.client-ip=209.85.214.182
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-pl1-f175.google.com with SMTP id d9443c01a7336-246181827e9so21190605ad.3;
-        Sat, 23 Aug 2025 04:57:33 -0700 (PDT)
+Received: by mail-pl1-f182.google.com with SMTP id d9443c01a7336-245f3784edcso27325895ad.1;
+        Sat, 23 Aug 2025 05:01:20 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1755950252; x=1756555052; darn=vger.kernel.org;
+        d=gmail.com; s=20230601; t=1755950476; x=1756555276; darn=vger.kernel.org;
         h=content-transfer-encoding:mime-version:message-id:date:subject:cc
          :to:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=shL2fhdQ891TB+Ct80rXzlQvWNofQxPpdzFt0NH7YFc=;
-        b=U4pM2Uq4y9Taei86FAssixQKsrwjk2gvJqdNbAB+6cmveaEUPJsUZOsH//DEh391eg
-         uY+SvN9AyY5V1Hs8PMfDWiz1ta9WqTi0xj3/p1eVtKUimkJDSBAecv+R4iYaJSZyta5E
-         GYsUuxZ9iU7wl+R7+/iI4/ZcpnpH3yLE9X5cyRDxEXyP1dW/f5wUX/eX+uTpcEEvrJ3R
-         w26wOxlPyLpzEiHQycNqff0sCnxW2ylhPDq5uKqUun8Vl3yFrUIM2gpAvitlI8lfiwph
-         3vAkBYvPyfw6FjmK++qdHLxuNWt2hib7xr7FPGGUTDXdVP+8Zc8rWidglrDR2GOMPNRo
-         UguA==
+        bh=hbHjJUZmwsNSKsI58Zu00uvyyhHZY/S+yPHhdvFRXMU=;
+        b=AdjUpyU4XSVDhAA1JWTfbZu3oQQIJq7Xso3tIjj/ozsjxwzuEWhaeltqR5bmYSSQg0
+         +Gs3/dy94AdbtKauTosG94wW76W+Zh28NW2+t2/DT5+MqDOghMpBMFiURqBTJg/vDtO/
+         BcAAVcTSIe2fcT3O0AUxIro/v1kohcguEDMuVH6JBGypnpwNj41Nfa3JYS28xavAhV1O
+         I71hF8+hlt4GyVn2nbzgamB1RF0JnlhJuZYDEEdVqFHNj1uCly5r19WOJuKyLk9FD8qW
+         FSpTBgsWQ4oZgJOZslsOqfvv1TPEW18GlicIr6hJ6NI8IsEf9NN6upzzm52iOsB2B2gN
+         1N3Q==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1755950252; x=1756555052;
+        d=1e100.net; s=20230601; t=1755950476; x=1756555276;
         h=content-transfer-encoding:mime-version:message-id:date:subject:cc
          :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
          :reply-to;
-        bh=shL2fhdQ891TB+Ct80rXzlQvWNofQxPpdzFt0NH7YFc=;
-        b=EZepoIdh+Pq5k0mD/SmfQwC0tR3fIKQ2YEB7zPzunfmbeaQylz/LLEAKRs3lcBhSSo
-         /KdCRHBtiXwfaKMwefeVPngGOeVN4mWmRyXnxsz0sSvaUckvzXw75HLHyt69dN/SL9Ns
-         yDkWxkGVJ1yaL2wKzZSIIpddx1mv21M7yRLlRqT8Y4JDsHt965cKmHlS90z1zn/BhLH0
-         4w8hnApZi0YJqPuti8VwHSKZuxNrCZV/2KQ7f7zT+d+O0V7MdFc4AQtLipkfFGXQTqOU
-         MS0SGunSg/pzG79hEVLBksgZ+YZd3KIFpmnL3DLrbFSG6gxYaWGJ8no2+xLDP9CiJlQN
-         cV0w==
-X-Forwarded-Encrypted: i=1; AJvYcCVvbwwLYywQdCSzscyq2SQusVhoyL7GD+ankEXQvo+CLlt1niTM1eXRp3iDZArR4JWYfvuY4pbhgLuXbYE=@vger.kernel.org, AJvYcCXGekRF7itJxS8n/qFLDtGZ9DLoZhmiUah6I5fpwByNb11nsUAN2GQR8Af5jex26yZcBIeEl25N@vger.kernel.org
-X-Gm-Message-State: AOJu0Yz3ne49tk0CdVMmM9QAfT0JqwlvO9cIhnlsMxpK/YymdSvv6cEV
-	2VZqHnEf3Hsl93EflJi9EqW5ZwEDyjEkiGRC5UFREKLOhbmynLfL9YIUNyxixOKh
-X-Gm-Gg: ASbGncvBK4NOAs71F454csKzGpvxWjBIpe625Vn8e1jkiM7j6pw9m1SWaAypDR9ZR2v
-	c92d5XYaRqaUO6ceXjXKrz2R3IHWNc9Sd7meL07lhyW6lnIXId6nEa8aCKYCB6iBfOxoWVROAz/
-	MV2fBseMRGO6NOFvvYCkCJTLysWmO+lOtjyJS+qpIiOdVsFzBlKI2BtJRbejm8zQ6mwsR4PY5mV
-	61TtHIiQbIywoAEPRxiHyBfHALLZNQ2k2L/AeoLqGAzgVfYAgezzAe5cGQTOF379liVnb/A7BQs
-	bbRoUq927NnzGDtgFZqj21sxiEamwQHHn+2Chg7K9tBhdN/m8E1DRDV7dV02zYs3fenO/N2h5qi
-	W7vIlHlj2YV4u7EUL/R7ohOKfIX7jbe52IKRkcym9SZp/i4+LiWUjsSJ1QV0g
-X-Google-Smtp-Source: AGHT+IHwCdLyQE3C+sJEfzFoZBM58bhwCO353GeLHr4KxBadFDsZEsS50epSMYoPz/scaHs+CarK3w==
-X-Received: by 2002:a17:903:32ce:b0:240:8cb5:98b4 with SMTP id d9443c01a7336-2462ee54600mr84241225ad.23.1755950252443;
-        Sat, 23 Aug 2025 04:57:32 -0700 (PDT)
+        bh=hbHjJUZmwsNSKsI58Zu00uvyyhHZY/S+yPHhdvFRXMU=;
+        b=eVWHaqFTpez3HoUP+MMU/LEOP+7FTQR8svNw7iMrB+17BY2fBDzl1t/2zNIX0MYX9N
+         14OHSV6P9eDrxAtKc+Dphj11XWnnkZC66pa9O6qTHCw8syEJPFNNWgru8gPxDzrbajcj
+         5Mj2pN3r/N6VmPSGtQEubtmiEXqUcrQlq86zCiR/0EPEdnyC+MBrzx3IEj4/yekRTLck
+         iQ2Fzj2XJ1TkHsj8+Sy4X8BMURenVjARIee17/33SngLsjk1IdcWXW2D8ay1uYpGLKQg
+         G22sEgWvdMxfbwwE2T7K8Gxrex4YtAuBlew9lva7/8j8OA8gNSn9v4wbUA5GvqP9kvxu
+         RcoQ==
+X-Forwarded-Encrypted: i=1; AJvYcCVrJt7kwWCGcO4pquXSb2FNpDgZJ6LL6TozIf6gd9URCijYz3tz3UIgDvnr54XdzPuF/tEZyHJn2QSbe5I=@vger.kernel.org, AJvYcCWJNO3xmbQzEJrVSAvmTJl9V27lWw/7qExykwXklKf3B1I/pLtrR1YFtH5b0yxWScmQ6R+Kj2MExb8skl0=@vger.kernel.org, AJvYcCWmvU9xSB7IOjEZwwQllIwX2QVu/JtKZNN0fg6HsCmWxSc4xEwdtao+z6gsVZcX+DZGi2uyT9PD@vger.kernel.org
+X-Gm-Message-State: AOJu0Yxr6MXa+ds6PENydFoJVXkr+qk/syz2K1sNrZxEXrvZcirAfa4u
+	6VDIupGLBMiNWxcIwcjXjImlK/1g4JgtwwxiR0tToFPJfS2oxIwnvN7e
+X-Gm-Gg: ASbGncv6CvOA1erjW0uH+c8vH8TUSQY0XrypLROc1T6hE20pCV43cnqBzsS73N8ktod
+	/t8HeJgn4nKEnk31gFVvVeDT6ZtLDaOfHmx1Tip8LstsCAMVuOApKh+9LvbE9YS1NXJXQvno59L
+	jpYO+r6p7F4T8+uSm6WzyeV7DMBY0iYVtUJPuMXMLOahZj7epMx4oAeVFjNz5W6naNpZN69UlsV
+	EvKwDuTV5/SHpwC34wjzg/9dyV2KD2TIWhVN89yx6L5ColQZ5gK4Kk+SiRw4soYGWaotEXK2Okn
+	vVS0tN2aTsMkVguuZR/0fmyBg1O/WwnmweGqAbqyibjKlGeMy4nYFdMRLWoRITuDZ/2ALNlemVA
+	a5oMi17J8VZxoXgfcpIBx3enFdLApNXtegA8kjidqa0EXFozgrA==
+X-Google-Smtp-Source: AGHT+IFWAphMuX8WSw3ONlrGbL6mCCKgU1VRxKqkTPMapm1TUF2d7CsytRLMIt/2ZTpnnANB+GMVBQ==
+X-Received: by 2002:a17:902:c402:b0:246:570:2d9a with SMTP id d9443c01a7336-2462efca0femr77817025ad.59.1755950475963;
+        Sat, 23 Aug 2025 05:01:15 -0700 (PDT)
 Received: from name2965-Precision-7820-Tower.. ([121.185.186.233])
-        by smtp.gmail.com with ESMTPSA id d9443c01a7336-2466877c732sm20969715ad.1.2025.08.23.04.57.29
+        by smtp.gmail.com with ESMTPSA id d9443c01a7336-2466889dcd4sm20711635ad.158.2025.08.23.05.01.12
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sat, 23 Aug 2025 04:57:31 -0700 (PDT)
+        Sat, 23 Aug 2025 05:01:15 -0700 (PDT)
 From: Jeongjun Park <aha310510@gmail.com>
-To: dwlsalmeida@gmail.com,
-	mchehab@kernel.org
-Cc: linux-media@vger.kernel.org,
+To: mchehab@kernel.org,
+	hverkuil@kernel.org
+Cc: laurent.pinchart+renesas@ideasonboard.com,
+	crope@iki.fi,
+	linux-media@vger.kernel.org,
 	linux-kernel@vger.kernel.org,
 	stable@vger.kernel.org,
-	syzbot+1d9c0edea5907af239e0@syzkaller.appspotmail.com,
+	syzbot+6ffd76b5405c006a46b7@syzkaller.appspotmail.com,
+	syzbot+f1b20958f93d2d250727@syzkaller.appspotmail.com,
 	Jeongjun Park <aha310510@gmail.com>
-Subject: [PATCH v2] media: vidtv: initialize local pointers upon transfer of memory ownership
-Date: Sat, 23 Aug 2025 20:56:59 +0900
-Message-Id: <20250823115659.1176464-1-aha310510@gmail.com>
+Subject: [PATCH v2] media: hackrf: fix to not free memory after the device is registered in hackrf_probe()
+Date: Sat, 23 Aug 2025 21:00:46 +0900
+Message-Id: <20250823120046.1176789-1-aha310510@gmail.com>
 X-Mailer: git-send-email 2.34.1
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
@@ -91,53 +94,74 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-vidtv_channel_si_init() creates a temporary list (program, service, event)
-and ownership of the memory itself is transferred to the PAT/SDT/EIT
-tables through vidtv_psi_pat_program_assign(),
-vidtv_psi_sdt_service_assign(), vidtv_psi_eit_event_assign().
+In hackrf driver, the following race condition occurs:
+```
+		CPU0						CPU1
+hackrf_probe()
+  kzalloc(); // alloc hackrf_dev
+  ....
+  v4l2_device_register();
+  ....
+						open("/path/to/dev"); // open hackrf dev
+						....
+  v4l2_device_unregister();
+  ....
+  kfree(); // free hackrf_dev
+  ....
+						ioctl(fd, ...);
+						  v4l2_ioctl();
+						    video_is_registered() // UAF!!
+						....
+						close(fd);
+						  v4l2_release() // UAF!!
+						    hackrf_video_release()
+						      kfree(); // DFB!!
+```
 
-The problem here is that the local pointer where the memory ownership
-transfer was completed is not initialized to NULL. This causes the
-vidtv_psi_pmt_create_sec_for_each_pat_entry() function to fail, and
-in the flow that jumps to free_eit, the memory that was freed by
-vidtv_psi_*_table_destroy() can be accessed again by
-vidtv_psi_*_event_destroy() due to the uninitialized local pointer, so it
-is freed once again.
+When a V4L2 or video device is unregistered, the device node is removed so
+new open() calls are blocked.
 
-Therefore, to prevent use-after-free and double-free vuln, local pointers
-must be initialized to NULL when transferring memory ownership.
+However, file descriptors that are already open-and any in-flight I/O-do
+not terminate immediately; they remain valid until the last reference is
+dropped and the driver's release() is invoked.
+
+Therefore, freeing device memory on the error path after hackrf_probe()
+has registered dev it will lead to a race to use-after-free vuln, since
+those already-open handles haven't been released yet.
+
+And since release() free memory too, race to use-after-free and 
+double-free vuln occur.
+
+To prevent this, if device is registered from probe(), it should be
+modified to free memory only through release() rather than calling
+kfree() directly.
 
 Cc: <stable@vger.kernel.org>
-Reported-by: syzbot+1d9c0edea5907af239e0@syzkaller.appspotmail.com
-Closes: https://syzkaller.appspot.com/bug?extid=1d9c0edea5907af239e0
-Fixes: 3be8037960bc ("media: vidtv: add error checks")
+Reported-by: syzbot+6ffd76b5405c006a46b7@syzkaller.appspotmail.com
+Closes: https://syzkaller.appspot.com/bug?extid=6ffd76b5405c006a46b7
+Reported-by: syzbot+f1b20958f93d2d250727@syzkaller.appspotmail.com
+Closes: https://syzkaller.appspot.com/bug?extid=f1b20958f93d2d250727
+Fixes: 8bc4a9ed8504 ("[media] hackrf: add support for transmitter")
 Signed-off-by: Jeongjun Park <aha310510@gmail.com>
 ---
-v2: Improved patch description wording and CC stable mailing list
-- Link to v1: https://lore.kernel.org/all/20250822065849.1145572-1-aha310510@gmail.com/
+v2: Fix incorrect patch description style and CC stable mailing list
+- Link to v1: https://lore.kernel.org/all/20250822142729.1156816-1-aha310510@gmail.com/
 ---
- drivers/media/test-drivers/vidtv/vidtv_channel.c | 3 +++
- 1 file changed, 3 insertions(+)
+ drivers/media/usb/hackrf/hackrf.c | 2 ++
+ 1 file changed, 2 insertions(+)
 
-diff --git a/drivers/media/test-drivers/vidtv/vidtv_channel.c b/drivers/media/test-drivers/vidtv/vidtv_channel.c
-index f3023e91b3eb..3541155c6fc6 100644
---- a/drivers/media/test-drivers/vidtv/vidtv_channel.c
-+++ b/drivers/media/test-drivers/vidtv/vidtv_channel.c
-@@ -461,12 +461,15 @@ int vidtv_channel_si_init(struct vidtv_mux *m)
- 
- 	/* assemble all programs and assign to PAT */
- 	vidtv_psi_pat_program_assign(m->si.pat, programs);
-+	programs = NULL;
- 
- 	/* assemble all services and assign to SDT */
- 	vidtv_psi_sdt_service_assign(m->si.sdt, services);
-+	services = NULL;
- 
- 	/* assemble all events and assign to EIT */
- 	vidtv_psi_eit_event_assign(m->si.eit, events);
-+	events = NULL;
- 
- 	m->si.pmt_secs = vidtv_psi_pmt_create_sec_for_each_pat_entry(m->si.pat,
- 								     m->pcr_pid);
+diff --git a/drivers/media/usb/hackrf/hackrf.c b/drivers/media/usb/hackrf/hackrf.c
+index 0b50de8775a3..d7a84422193d 100644
+--- a/drivers/media/usb/hackrf/hackrf.c
++++ b/drivers/media/usb/hackrf/hackrf.c
+@@ -1515,6 +1515,8 @@ static int hackrf_probe(struct usb_interface *intf,
+ 	video_unregister_device(&dev->rx_vdev);
+ err_v4l2_device_unregister:
+ 	v4l2_device_unregister(&dev->v4l2_dev);
++	dev_dbg(&intf->dev, "failed=%d\n", ret);
++	return ret;
+ err_v4l2_ctrl_handler_free_tx:
+ 	v4l2_ctrl_handler_free(&dev->tx_ctrl_handler);
+ err_v4l2_ctrl_handler_free_rx:
 --
 
