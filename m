@@ -1,110 +1,257 @@
-Return-Path: <stable+bounces-172590-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-172591-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 914A4B328C0
-	for <lists+stable@lfdr.de>; Sat, 23 Aug 2025 15:17:07 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id E65B0B328C5
+	for <lists+stable@lfdr.de>; Sat, 23 Aug 2025 15:24:28 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 4D1A49E14B9
-	for <lists+stable@lfdr.de>; Sat, 23 Aug 2025 13:17:06 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 24B2D7BA218
+	for <lists+stable@lfdr.de>; Sat, 23 Aug 2025 13:22:20 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D68BB13B5AE;
-	Sat, 23 Aug 2025 13:17:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C65352475C2;
+	Sat, 23 Aug 2025 13:23:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="RMUgBkFG"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="LKZZpzt0"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9531111CA9
-	for <stable@vger.kernel.org>; Sat, 23 Aug 2025 13:17:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 86F0323F41F
+	for <stable@vger.kernel.org>; Sat, 23 Aug 2025 13:23:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755955022; cv=none; b=o5G96Bd2XT2mGI++WC1EpcTSDMbyHeydc/FaMSkwCbl988zc94W5zQ6VFlFO3zFq4bZEdeNq+5hza1vCUTQonHfOm0mDWJmuNYVuIvubxgZjBjLFXUKE2qgzrie0kmxMP31SbU5Zq/TWn92Bcgls4uy8/AxgHV4oJor3xOz5FZo=
+	t=1755955427; cv=none; b=DBAP1epKBK1DIdm/f+JV5t5jpsxVph/U5pJ4+JeNODLbCLs/z256FmhsIXcKcHZQcbmyN0mnk7mFmTdjresPN47tLnoR3c4DU/JSefa8Q2D5inWSOMScrk5UAK6dKPyAIh++BRGhZYfZ2YUHRyvoFeSOGrBs7jLt4rOloJglO8c=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1755955022; c=relaxed/simple;
-	bh=cxTWF3Ffh8/k9BkD1LibqgnAy/gq0QuI8NwXw8jbqog=;
+	s=arc-20240116; t=1755955427; c=relaxed/simple;
+	bh=tAd0Vmi2zkAC4oB2WOgx6Ibti6cTjxPrKBRkIYRMAek=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=uLz9zNlurwdQqUwOymQIeZCi0U1EQ8Ii8Ry/bOhbz7GOYejotxMbpX45iR/i/A/ZDCuflI13qPKA2xvKSeW4703h6B3cdJYJ2/g0BYQmrq0V+DfJRD1HZys2e66ObkC0BG3pShyGtHyZO3MPG6XNOuK/NqMrAs0sRkO8YXcRRmM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=RMUgBkFG; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7E00EC4CEE7;
-	Sat, 23 Aug 2025 13:17:01 +0000 (UTC)
+	 MIME-Version; b=ZZpqLWl/LdPGznSHWhk8pBWsyAyE1yT7Po+OmbkS72ifxcPMoxhPTx6+hlbydx8CUufVpyy+nB2XSDu1GSXjh3N+MLRIPi36FbGFtkNTZoJKxglTfJ6cHCPA7o3I+tSgIGixJx3wIci0oNhYqbQTiBHL2OSWGSAA1D7uYjacw90=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=LKZZpzt0; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 77532C4CEE7;
+	Sat, 23 Aug 2025 13:23:46 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1755955022;
-	bh=cxTWF3Ffh8/k9BkD1LibqgnAy/gq0QuI8NwXw8jbqog=;
+	s=k20201202; t=1755955427;
+	bh=tAd0Vmi2zkAC4oB2WOgx6Ibti6cTjxPrKBRkIYRMAek=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=RMUgBkFGWm+f3mDt5rc2e2tc2m/IQsu5jZKCC9ZoiUPNHL/QQhS+KNNRycR0nLEG2
-	 gcvd85zErGyQcIiaGwUCpascHCWfkTK29wTz/mWBYvM1PdUX4xZFfVMnioo212comz
-	 VZEY7fDkf/AMuzIvMDMyi6ldzlbb9DX//3+FT+XODGj+XQ8ge2mYvEkiwrSWpkYh6m
-	 whD7vFy8F8z1Oj04VhKoXlX8tj0bmdkqqkgBWQVRp6zjqnI9p0xjl5EWKpb1xumhf/
-	 KsgVrS7Jw6ie+8OBGD25oQ4WUf4vCAEqqD6v8zf1cgBU9Ajoi7KFpLq4DuZfu5eXGp
-	 SHINE5LxlBdSg==
+	b=LKZZpzt0zLmmeYM/sjW1YdhGiGsRTJqPsL+CLQ10JCjGqBc9/TetTdbG5uY+taVde
+	 DbqHeTeExQN8Igfq+zZ5QEAf7GnlTrOfSSmnZtMBvgHVrK4q6tWIkryXn7g+yycsbr
+	 m7Aq4F98Az4sOfPamB6knE324mMboSoAEd323C7A3hSe1XP0fjtHc6bZmO8NzUxN1y
+	 3SSd7B6KaX8yGlcehov62//zD1Sq20nfYr0InQXeDf6ry/i7kjrMFC3kTcdrbPSrEu
+	 9jcZHxWq7UhuWhNUrohus5rYDm0k89kJ0mJcKBjsgz329/j+t6qAqNyCwlQ68da2Qu
+	 XqxYVAEhuvNeA==
 From: Sasha Levin <sashal@kernel.org>
 To: stable@vger.kernel.org
-Cc: Imre Deak <imre.deak@intel.com>,
-	=?UTF-8?q?Ville=20Syrj=C3=A4l=C3=A4?= <ville.syrjala@linux.intel.com>,
-	Jani Nikula <jani.nikula@linux.intel.com>,
-	Jani Nikula <jani.nikula@intel.com>,
+Cc: Christian Loehle <christian.loehle@arm.com>,
+	"Rafael J. Wysocki" <rafael.j.wysocki@intel.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1.y] drm/dp: Change AUX DPCD probe address from DPCD_REV to LANE0_1_STATUS
-Date: Sat, 23 Aug 2025 09:16:59 -0400
-Message-ID: <20250823131659.2118893-1-sashal@kernel.org>
+Subject: [PATCH 6.12.y 1/2] cpuidle: menu: Remove iowait influence
+Date: Sat, 23 Aug 2025 09:23:43 -0400
+Message-ID: <20250823132344.2122561-1-sashal@kernel.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <2025082150-fiddle-impure-4da2@gregkh>
-References: <2025082150-fiddle-impure-4da2@gregkh>
+In-Reply-To: <2025082214-daughter-popsicle-4c08@gregkh>
+References: <2025082214-daughter-popsicle-4c08@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-From: Imre Deak <imre.deak@intel.com>
+From: Christian Loehle <christian.loehle@arm.com>
 
-[ Upstream commit a40c5d727b8111b5db424a1e43e14a1dcce1e77f ]
+[ Upstream commit 38f83090f515b4b5d59382dfada1e7457f19aa47 ]
 
-Reading DPCD registers has side-effects in general. In particular
-accessing registers outside of the link training register range
-(0x102-0x106, 0x202-0x207, 0x200c-0x200f, 0x2216) is explicitly
-forbidden by the DP v2.1 Standard, see
+Remove CPU iowaiters influence on idle state selection.
 
-3.6.5.1 DPTX AUX Transaction Handling Mandates
-3.6.7.4 128b/132b DP Link Layer LTTPR Link Training Mandates
+Remove the menu notion of performance multiplier which increased with
+the number of tasks that went to iowait sleep on this CPU and haven't
+woken up yet.
 
-Based on my tests, accessing the DPCD_REV register during the link
-training of an UHBR TBT DP tunnel sink leads to link training failures.
+Relying on iowait for cpuidle is problematic for a few reasons:
 
-Solve the above by using the DP_LANE0_1_STATUS (0x202) register for the
-DPCD register access quirk.
+ 1. There is no guarantee that an iowaiting task will wake up on the
+    same CPU.
 
-Cc: <stable@vger.kernel.org>
-Cc: Ville Syrjälä <ville.syrjala@linux.intel.com>
-Cc: Jani Nikula <jani.nikula@linux.intel.com>
-Acked-by: Jani Nikula <jani.nikula@intel.com>
-Signed-off-by: Imre Deak <imre.deak@intel.com>
-Link: https://lore.kernel.org/r/20250605082850.65136-2-imre.deak@intel.com
+ 2. The task being in iowait says nothing about the idle duration, we
+    could be selecting shallower states for a long time.
+
+ 3. The task being in iowait doesn't always imply a performance hit
+    with increased latency.
+
+ 4. If there is such a performance hit, the number of iowaiting tasks
+    doesn't directly correlate.
+
+ 5. The definition of iowait altogether is vague at best, it is
+    sprinkled across kernel code.
+
+Signed-off-by: Christian Loehle <christian.loehle@arm.com>
+Link: https://patch.msgid.link/20240905092645.2885200-2-christian.loehle@arm.com
+[ rjw: Minor edits in the changelog ]
+Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
+Stable-dep-of: 779b1a1cb13a ("cpuidle: governors: menu: Avoid selecting states with too much latency")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/display/drm_dp_helper.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/cpuidle/governors/menu.c | 76 ++++----------------------------
+ 1 file changed, 9 insertions(+), 67 deletions(-)
 
-diff --git a/drivers/gpu/drm/display/drm_dp_helper.c b/drivers/gpu/drm/display/drm_dp_helper.c
-index e839981c7b2f..ecb30e17d50c 100644
---- a/drivers/gpu/drm/display/drm_dp_helper.c
-+++ b/drivers/gpu/drm/display/drm_dp_helper.c
-@@ -663,7 +663,7 @@ ssize_t drm_dp_dpcd_read(struct drm_dp_aux *aux, unsigned int offset,
- 	 * monitor doesn't power down exactly after the throw away read.
- 	 */
- 	if (!aux->is_remote) {
--		ret = drm_dp_dpcd_probe(aux, DP_DPCD_REV);
-+		ret = drm_dp_dpcd_probe(aux, DP_LANE0_1_STATUS);
- 		if (ret < 0)
- 			return ret;
+diff --git a/drivers/cpuidle/governors/menu.c b/drivers/cpuidle/governors/menu.c
+index 01322a905414..f07f76ccfc5e 100644
+--- a/drivers/cpuidle/governors/menu.c
++++ b/drivers/cpuidle/governors/menu.c
+@@ -19,7 +19,7 @@
+ 
+ #include "gov.h"
+ 
+-#define BUCKETS 12
++#define BUCKETS 6
+ #define INTERVAL_SHIFT 3
+ #define INTERVALS (1UL << INTERVAL_SHIFT)
+ #define RESOLUTION 1024
+@@ -29,12 +29,11 @@
+ /*
+  * Concepts and ideas behind the menu governor
+  *
+- * For the menu governor, there are 3 decision factors for picking a C
++ * For the menu governor, there are 2 decision factors for picking a C
+  * state:
+  * 1) Energy break even point
+- * 2) Performance impact
+- * 3) Latency tolerance (from pmqos infrastructure)
+- * These three factors are treated independently.
++ * 2) Latency tolerance (from pmqos infrastructure)
++ * These two factors are treated independently.
+  *
+  * Energy break even point
+  * -----------------------
+@@ -75,30 +74,6 @@
+  * intervals and if the stand deviation of these 8 intervals is below a
+  * threshold value, we use the average of these intervals as prediction.
+  *
+- * Limiting Performance Impact
+- * ---------------------------
+- * C states, especially those with large exit latencies, can have a real
+- * noticeable impact on workloads, which is not acceptable for most sysadmins,
+- * and in addition, less performance has a power price of its own.
+- *
+- * As a general rule of thumb, menu assumes that the following heuristic
+- * holds:
+- *     The busier the system, the less impact of C states is acceptable
+- *
+- * This rule-of-thumb is implemented using a performance-multiplier:
+- * If the exit latency times the performance multiplier is longer than
+- * the predicted duration, the C state is not considered a candidate
+- * for selection due to a too high performance impact. So the higher
+- * this multiplier is, the longer we need to be idle to pick a deep C
+- * state, and thus the less likely a busy CPU will hit such a deep
+- * C state.
+- *
+- * Currently there is only one value determining the factor:
+- * 10 points are added for each process that is waiting for IO on this CPU.
+- * (This value was experimentally determined.)
+- * Utilization is no longer a factor as it was shown that it never contributed
+- * significantly to the performance multiplier in the first place.
+- *
+  */
+ 
+ struct menu_device {
+@@ -112,19 +87,10 @@ struct menu_device {
+ 	int		interval_ptr;
+ };
+ 
+-static inline int which_bucket(u64 duration_ns, unsigned int nr_iowaiters)
++static inline int which_bucket(u64 duration_ns)
+ {
+ 	int bucket = 0;
+ 
+-	/*
+-	 * We keep two groups of stats; one with no
+-	 * IO pending, one without.
+-	 * This allows us to calculate
+-	 * E(duration)|iowait
+-	 */
+-	if (nr_iowaiters)
+-		bucket = BUCKETS/2;
+-
+ 	if (duration_ns < 10ULL * NSEC_PER_USEC)
+ 		return bucket;
+ 	if (duration_ns < 100ULL * NSEC_PER_USEC)
+@@ -138,19 +104,6 @@ static inline int which_bucket(u64 duration_ns, unsigned int nr_iowaiters)
+ 	return bucket + 5;
+ }
+ 
+-/*
+- * Return a multiplier for the exit latency that is intended
+- * to take performance requirements into account.
+- * The more performance critical we estimate the system
+- * to be, the higher this multiplier, and thus the higher
+- * the barrier to go to an expensive C state.
+- */
+-static inline int performance_multiplier(unsigned int nr_iowaiters)
+-{
+-	/* for IO wait tasks (per cpu!) we add 10x each */
+-	return 1 + 10 * nr_iowaiters;
+-}
+-
+ static DEFINE_PER_CPU(struct menu_device, menu_devices);
+ 
+ static void menu_update_intervals(struct menu_device *data, unsigned int interval_us)
+@@ -277,8 +230,6 @@ static int menu_select(struct cpuidle_driver *drv, struct cpuidle_device *dev,
+ 	struct menu_device *data = this_cpu_ptr(&menu_devices);
+ 	s64 latency_req = cpuidle_governor_latency_req(dev->cpu);
+ 	u64 predicted_ns;
+-	u64 interactivity_req;
+-	unsigned int nr_iowaiters;
+ 	ktime_t delta, delta_tick;
+ 	int i, idx;
+ 
+@@ -295,8 +246,6 @@ static int menu_select(struct cpuidle_driver *drv, struct cpuidle_device *dev,
+ 		menu_update_intervals(data, UINT_MAX);
  	}
+ 
+-	nr_iowaiters = nr_iowait_cpu(dev->cpu);
+-
+ 	/* Find the shortest expected idle interval. */
+ 	predicted_ns = get_typical_interval(data) * NSEC_PER_USEC;
+ 	if (predicted_ns > RESIDENCY_THRESHOLD_NS) {
+@@ -310,7 +259,7 @@ static int menu_select(struct cpuidle_driver *drv, struct cpuidle_device *dev,
+ 		}
+ 
+ 		data->next_timer_ns = delta;
+-		data->bucket = which_bucket(data->next_timer_ns, nr_iowaiters);
++		data->bucket = which_bucket(data->next_timer_ns);
+ 
+ 		/* Round up the result for half microseconds. */
+ 		timer_us = div_u64((RESOLUTION * DECAY * NSEC_PER_USEC) / 2 +
+@@ -328,7 +277,7 @@ static int menu_select(struct cpuidle_driver *drv, struct cpuidle_device *dev,
+ 		 */
+ 		data->next_timer_ns = KTIME_MAX;
+ 		delta_tick = TICK_NSEC / 2;
+-		data->bucket = which_bucket(KTIME_MAX, nr_iowaiters);
++		data->bucket = which_bucket(KTIME_MAX);
+ 	}
+ 
+ 	if (unlikely(drv->state_count <= 1 || latency_req == 0) ||
+@@ -355,15 +304,8 @@ static int menu_select(struct cpuidle_driver *drv, struct cpuidle_device *dev,
+ 		 */
+ 		if (predicted_ns < TICK_NSEC)
+ 			predicted_ns = data->next_timer_ns;
+-	} else {
+-		/*
+-		 * Use the performance multiplier and the user-configurable
+-		 * latency_req to determine the maximum exit latency.
+-		 */
+-		interactivity_req = div64_u64(predicted_ns,
+-					      performance_multiplier(nr_iowaiters));
+-		if (latency_req > interactivity_req)
+-			latency_req = interactivity_req;
++	} else if (latency_req > predicted_ns) {
++		latency_req = predicted_ns;
+ 	}
+ 
+ 	/*
 -- 
 2.50.1
 
