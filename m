@@ -1,130 +1,139 @@
-Return-Path: <stable+bounces-172528-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-172529-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id ED77AB3260F
-	for <lists+stable@lfdr.de>; Sat, 23 Aug 2025 02:57:36 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id B9D67B32632
+	for <lists+stable@lfdr.de>; Sat, 23 Aug 2025 03:30:01 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id BAA37605E09
-	for <lists+stable@lfdr.de>; Sat, 23 Aug 2025 00:57:28 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 8E64C587EC8
+	for <lists+stable@lfdr.de>; Sat, 23 Aug 2025 01:30:01 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D37F71487F4;
-	Sat, 23 Aug 2025 00:57:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C82EE1A9F82;
+	Sat, 23 Aug 2025 01:29:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b="I/73VkpB"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="RciGh010"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-ej1-f47.google.com (mail-ej1-f47.google.com [209.85.218.47])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 87C4278F2E;
-	Sat, 23 Aug 2025 00:57:23 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EAB491A5B84
+	for <stable@vger.kernel.org>; Sat, 23 Aug 2025 01:29:55 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.218.47
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755910643; cv=none; b=e9SrU1nnufYUTgi4Hx+b0EF71n0y5jS0A4MbReaSuxf5pQjfLSRO/QBI83qHYKmwxdjSSP1y9O0Jjo6irjQvOS1xrlcnAz/2w/lzp8MjECyIGvDElNbxh4p2mKfKgbjCG4ZQYzo++TmNLmKMs8dIbkHt4+z7wyI3Ws4k+5B0nMo=
+	t=1755912597; cv=none; b=Bv4J9VDxPKdbmx/2uJCJJ/fuh7FbxhxiAa0UPduWUefliXyTP2ZzsWTobk7JoUyyKQnVtB5m7N5lbCnPAqia2rnb8CW87Ie0G1KVEDSeMwLWAtD2yCs81p3xfU7dVFvfBO339M/555+DYxtLXXiAkjTCTSUdpDzIJjCZrz9sX8s=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1755910643; c=relaxed/simple;
-	bh=nSDVIkmCX5MSWoVrHx+N/vP9bqC4kl+3LaAFjmZMerU=;
-	h=Date:To:From:Subject:Message-Id; b=k3YsUMvzN+sy3ca4w0ssdEOcViNMYY79Kmssbjcdll8ZMIxUn/teRBFD+wnYQ2vnuZq5dtV3uij3zX6j/2NeXV2Zj0YjSD2FC/Ck5xdWLfg6uhdULzTBBr/QcchzFAZlNo1NjpvuviqOHs39kyBMy19FcTzKGA2HjFmxOLn/7VY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b=I/73VkpB; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0027EC4CEED;
-	Sat, 23 Aug 2025 00:57:22 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linux-foundation.org;
-	s=korg; t=1755910643;
-	bh=nSDVIkmCX5MSWoVrHx+N/vP9bqC4kl+3LaAFjmZMerU=;
-	h=Date:To:From:Subject:From;
-	b=I/73VkpBRj7jXdzxrG1dyfCOGVtaCF9N3Iy6DC3su4la2ult2DCq35gviqHkq+42d
-	 Cu7GUX9AB7r71C41tQzUoXBPjcSWAxFlD3lejGJelgmM+ryfCvJMjUA4A77wiE+qc9
-	 PBSeIQ+zo2V3n1d8kWXLbkZ6XRz9MXQgZ2lEqsFI=
-Date: Fri, 22 Aug 2025 17:57:22 -0700
-To: mm-commits@vger.kernel.org,ziy@nvidia.com,stable@vger.kernel.org,ryan.roberts@arm.com,npache@redhat.com,lorenzo.stoakes@oracle.com,Liam.Howlett@oracle.com,dev.jain@arm.com,david@redhat.com,baolin.wang@linux.alibaba.com,baohua@kernel.org,richard.weiyang@gmail.com,akpm@linux-foundation.org
-From: Andrew Morton <akpm@linux-foundation.org>
-Subject: + mm-khugepaged-fix-the-address-passed-to-notifier-on-testing-young.patch added to mm-hotfixes-unstable branch
-Message-Id: <20250823005723.0027EC4CEED@smtp.kernel.org>
+	s=arc-20240116; t=1755912597; c=relaxed/simple;
+	bh=eebTNLbODHnfNYznM66lKU0eFyIocyvIE4h54/e/oQ8=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=EG7KJnKC/OP3XefPr7nQtEzfbhG2nbQr5XT7I2WngdjsmMenJaMxBJk8azklzD8u8XjgK311EMbs1UCb3NqUUGGagmgNiludnraE0h5PSKpobiRMoCkIy/Ziref9K4bxzrgoT+KPA6kSTqaSXr5Tu796+njitmNGkzPzNZRQmd8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=RciGh010; arc=none smtp.client-ip=209.85.218.47
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-ej1-f47.google.com with SMTP id a640c23a62f3a-afcb72d51dcso359067166b.0
+        for <stable@vger.kernel.org>; Fri, 22 Aug 2025 18:29:55 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1755912594; x=1756517394; darn=vger.kernel.org;
+        h=user-agent:in-reply-to:content-disposition:mime-version:references
+         :reply-to:message-id:subject:cc:to:from:date:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=KN436an4cyg/kh8RbzRxkUUwckCMwEPPW4Ijt1oCsdA=;
+        b=RciGh010yCbtUZWM9NTDLuaQWt+ZR0leO8hEP/nNflXpCcUDZFcDofct2OEIuvRib4
+         q3k+3pUSK0g0j1Z4oxrJj9U4voJntRebZOm0bj86oRn6Y5IYLCJUk+oWxH3g/y1Mf6Y4
+         Ab/pwwEdtKzVmSMCiECEyw7Xhoyamla3lMAd/B1vAmIbDTh6zjBMw85mure2pH9nqVVN
+         HDH7RSp+HmIUw6ChuOm5pTtg9XsdmpYtCMCNplIMZCDoJX0CKHzLH+KVTbTamiJhZeeM
+         ZBL+IOtrEWfAVU0lEJVa1+QoxUGvVQ1cb+u6sD/lnivZt62MEgn+7rjJTzfbVpLvLUDv
+         c+mA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1755912594; x=1756517394;
+        h=user-agent:in-reply-to:content-disposition:mime-version:references
+         :reply-to:message-id:subject:cc:to:from:date:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to;
+        bh=KN436an4cyg/kh8RbzRxkUUwckCMwEPPW4Ijt1oCsdA=;
+        b=itPvmJ3xjfgA8u6Y5ul7cxTRtL8HRn0z34aXVIhFLChcZl/2XbATOL6Wc4AViyLV8o
+         IEapF86nF2qMRopISFk5PdyhFIcRwsQrRvyd8cDbEOAuplq0heWtW8NUDxGkGYQMTXFR
+         9uwlbFzpD5wc45mtZlhtCDpBrNeJem5rvapRWZ/3VDIEYLNxI7Wd9EoW3aKZm1PWE5Dr
+         MIUxo79GGmZcm1CEtqvNiGUSWIe5ZSfp4Y0RfPK5oWgiwY0UtCjJWLHNxUmOZjifdJLV
+         3uHXjA4V4JGi7Gp2i+feAFbDpn2iVcC5WyXbTjbFJxz4FfeESqbI1UmEBdVFm07QXowY
+         SsWw==
+X-Forwarded-Encrypted: i=1; AJvYcCW7+ILg6zzLU8jnr6nzoulwDBOJ1BLXdO7jxkVzkv5JgyVxCAaIYb1buu8hKrg6IHwJy4hdx7I=@vger.kernel.org
+X-Gm-Message-State: AOJu0YwvrI2YImt2zjkGS6dkB5xw3FkUVhcawAWejO1sJvA6KA0ebvgR
+	67EEnktJU/u3NvGPkdrk2YolU76zg2y9HIpQ5JGCG6wn7nf2hIrlosbJ
+X-Gm-Gg: ASbGnctEwLir1Wn4vkwgOZLu3kxwKaHaWWFs/KVgzwe0hoJthFPaGm7d5rosF8Y6xUF
+	KO0RELVz2VCCFSl3eZPB71IzTPvESmkXJoU81osteg+heUp6YMvXFa0ZAJwL/Z9zLzPWXY/A6ck
+	qYEywq+MIqZGYXh81TIWSo8ZdjXlq/iO14NON4+wu4VeMEYY7MbgIEUFkEPzgxvi24EyDtSIo77
+	daYIottmNyTe0eTRrMYYNdMJp9+glyIHm6XQpsJZEwn94UB/Hydbo4qmwMZYJfvK/xPWvRF2wxT
+	NCrYguXyaDQEoNvf0dCqhpHify7phr1VRNox92+boXoLzSxHzoFh66yIR4KuMBldVhKpnKxne23
+	lMkPLDAiRdZqsqB1XOycs6GOGpA==
+X-Google-Smtp-Source: AGHT+IGwiQlMtlwhYU6c6Jpd6fvq0eyeiYuF/MNEi+zrWiwOkFs9MPE6qPvzRUsvh7G0hZYVa8USog==
+X-Received: by 2002:a17:906:c115:b0:af9:d300:c60f with SMTP id a640c23a62f3a-afe28f161c6mr411116666b.18.1755912594089;
+        Fri, 22 Aug 2025 18:29:54 -0700 (PDT)
+Received: from localhost ([185.92.221.13])
+        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-afe4937a15asm71906166b.115.2025.08.22.18.29.53
+        (version=TLS1_2 cipher=ECDHE-ECDSA-CHACHA20-POLY1305 bits=256/256);
+        Fri, 22 Aug 2025 18:29:53 -0700 (PDT)
+Date: Sat, 23 Aug 2025 01:29:53 +0000
+From: Wei Yang <richard.weiyang@gmail.com>
+To: Dev Jain <dev.jain@arm.com>
+Cc: Wei Yang <richard.weiyang@gmail.com>, akpm@linux-foundation.org,
+	david@redhat.com, lorenzo.stoakes@oracle.com, ziy@nvidia.com,
+	baolin.wang@linux.alibaba.com, npache@redhat.com,
+	ryan.roberts@arm.com, baohua@kernel.org, linux-mm@kvack.org,
+	"Liam R . Howlett" <Liam.Howlett@oracle.com>,
+	stable@vger.kernel.org
+Subject: Re: [PATCH] mm/khugepaged: fix the address passed to notifier on
+ testing young
+Message-ID: <20250823012953.cw2n3j7nuqfsle2j@master>
+Reply-To: Wei Yang <richard.weiyang@gmail.com>
+References: <20250822063318.11644-1-richard.weiyang@gmail.com>
+ <55735a20-1048-4c04-bcd4-45eff0079f61@arm.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <55735a20-1048-4c04-bcd4-45eff0079f61@arm.com>
+User-Agent: NeoMutt/20170113 (1.7.2)
+
+On Fri, Aug 22, 2025 at 01:08:57PM +0530, Dev Jain wrote:
+>
+>On 22/08/25 12:03 pm, Wei Yang wrote:
+>> Commit 8ee53820edfd ("thp: mmu_notifier_test_young") introduced
+>> mmu_notifier_test_young(), but we should pass the address need to test.
+>> In xxx_scan_pmd(), the actual iteration address is "_address" not
+>> "address". We seem to misuse the variable on the very beginning.
+>> 
+>> Change it to the right one.
+>> 
+>> Fixes: 8ee53820edfd ("thp: mmu_notifier_test_young")
+>> Signed-off-by: Wei Yang <richard.weiyang@gmail.com>
+>> Cc: David Hildenbrand <david@redhat.com>
+>> Cc: Lorenzo Stoakes <lorenzo.stoakes@oracle.com>
+>> Cc: Zi Yan <ziy@nvidia.com>
+>> Cc: Baolin Wang <baolin.wang@linux.alibaba.com>
+>> Cc: Liam R. Howlett <Liam.Howlett@oracle.com>
+>> Cc: Nico Pache <npache@redhat.com>
+>> Cc: Ryan Roberts <ryan.roberts@arm.com>
+>> Cc: Dev Jain <dev.jain@arm.com>
+>> Cc: Barry Song <baohua@kernel.org>
+>> CC: <stable@vger.kernel.org>
+>> 
+>> ---
+>
+>I hope you must have rebased since your previous patch got pulled, and
+>the difference of time between these two events is less than 1.5 hours :)
+>
+
+Thanks
+
+I took a look at the latest mm-new, this one applies.
 
 
-The patch titled
-     Subject: mm/khugepaged: fix the address passed to notifier on testing young
-has been added to the -mm mm-hotfixes-unstable branch.  Its filename is
-     mm-khugepaged-fix-the-address-passed-to-notifier-on-testing-young.patch
-
-This patch will shortly appear at
-     https://git.kernel.org/pub/scm/linux/kernel/git/akpm/25-new.git/tree/patches/mm-khugepaged-fix-the-address-passed-to-notifier-on-testing-young.patch
-
-This patch will later appear in the mm-hotfixes-unstable branch at
-    git://git.kernel.org/pub/scm/linux/kernel/git/akpm/mm
-
-Before you just go and hit "reply", please:
-   a) Consider who else should be cc'ed
-   b) Prefer to cc a suitable mailing list as well
-   c) Ideally: find the original patch on the mailing list and do a
-      reply-to-all to that, adding suitable additional cc's
-
-*** Remember to use Documentation/process/submit-checklist.rst when testing your code ***
-
-The -mm tree is included into linux-next via the mm-everything
-branch at git://git.kernel.org/pub/scm/linux/kernel/git/akpm/mm
-and is updated there every 2-3 working days
-
-------------------------------------------------------
-From: Wei Yang <richard.weiyang@gmail.com>
-Subject: mm/khugepaged: fix the address passed to notifier on testing young
-Date: Fri, 22 Aug 2025 06:33:18 +0000
-
-Commit 8ee53820edfd ("thp: mmu_notifier_test_young") introduced
-mmu_notifier_test_young(), but we should pass the address need to test. 
-In xxx_scan_pmd(), the actual iteration address is "_address" not
-"address".  We seem to misuse the variable on the very beginning.
-
-Change it to the right one.
-
-Link: https://lkml.kernel.org/r/20250822063318.11644-1-richard.weiyang@gmail.com
-Fixes: 8ee53820edfd ("thp: mmu_notifier_test_young")
-Signed-off-by: Wei Yang <richard.weiyang@gmail.com>
-Reviewed-by: Dev Jain <dev.jain@arm.com>
-Reviewed-by: Zi Yan <ziy@nvidia.com>
-Cc: David Hildenbrand <david@redhat.com>
-Cc: Lorenzo Stoakes <lorenzo.stoakes@oracle.com>
-Cc: Baolin Wang <baolin.wang@linux.alibaba.com>
-Cc: Liam R. Howlett <Liam.Howlett@oracle.com>
-Cc: Nico Pache <npache@redhat.com>
-Cc: Ryan Roberts <ryan.roberts@arm.com>
-Cc: Barry Song <baohua@kernel.org>
-Cc: <stable@vger.kernel.org>
-Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
----
-
- mm/khugepaged.c |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
-
---- a/mm/khugepaged.c~mm-khugepaged-fix-the-address-passed-to-notifier-on-testing-young
-+++ a/mm/khugepaged.c
-@@ -1418,7 +1418,7 @@ static int hpage_collapse_scan_pmd(struc
- 		if (cc->is_khugepaged &&
- 		    (pte_young(pteval) || folio_test_young(folio) ||
- 		     folio_test_referenced(folio) || mmu_notifier_test_young(vma->vm_mm,
--								     address)))
-+								     _address)))
- 			referenced++;
- 	}
- 	if (!writable) {
-_
-
-Patches currently in -mm which might be from richard.weiyang@gmail.com are
-
-mm-khugepaged-fix-the-address-passed-to-notifier-on-testing-young.patch
-mm-rmap-do-__folio_mod_stat-in-__folio_add_rmap.patch
-selftests-mm-do-check_huge_anon-with-a-number-been-passed-in.patch
-mm-rmap-not-necessary-to-mask-off-folio_pages_mapped.patch
-mm-rmap-use-folio_large_nr_pages-when-we-are-sure-it-is-a-large-folio.patch
-selftests-mm-put-general-ksm-operation-into-vm_util.patch
-selftests-mm-test-that-rmap-behave-as-expected.patch
-mm-khugepaged-use-list_xxx-helper-to-improve-readability.patch
-
+-- 
+Wei Yang
+Help you, Help me
 
