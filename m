@@ -1,31 +1,31 @@
-Return-Path: <stable+bounces-172580-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-172581-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id E3E27B3287B
-	for <lists+stable@lfdr.de>; Sat, 23 Aug 2025 14:15:15 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6F90AB32880
+	for <lists+stable@lfdr.de>; Sat, 23 Aug 2025 14:16:26 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id BF1185C709D
-	for <lists+stable@lfdr.de>; Sat, 23 Aug 2025 12:15:15 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 31EB51C263F1
+	for <lists+stable@lfdr.de>; Sat, 23 Aug 2025 12:16:09 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E531125B2FD;
-	Sat, 23 Aug 2025 12:15:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5559525A325;
+	Sat, 23 Aug 2025 12:15:36 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
 Received: from bregans-0.gladserv.net (bregans-0.gladserv.net [185.128.210.58])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 68AA525A2A1;
-	Sat, 23 Aug 2025 12:15:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5F7F62561AB;
+	Sat, 23 Aug 2025 12:15:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.128.210.58
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755951310; cv=none; b=NO8g3EnK0aMKFCnASd3T/xe/QQKBX6o9P7Kb3nmnhoRCnM8w3N6TPH+8EpXS4dJPhS27AYFVW+abusWq1KggHgaTJh8Lhx4QPZqJEqCZoYmHm2M4Ox2SoyUNT8TynW8xz0y34EpTJ50ICFyK8aeZFeeg566PazgKL9wyrbY8UH8=
+	t=1755951336; cv=none; b=g3FEygF3302SIDwH57byaZssD453dzrlhZSvo7h9AXC5sbUUhFnNsGCLWGyvzNCoX6yzoJbd++t+RU6fP3Ta0upflOCmZeTbIADq7546DzMiEY3JflX/fEP0cXTM2w3V1UGvNVR6CzgLTcr9yOd1FRbG148Ct988NDhCeu0nrAs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1755951310; c=relaxed/simple;
-	bh=oGwwTtNxjC5t6H2oUN4Te1U8p72aoeL6OFMsznW6HIw=;
+	s=arc-20240116; t=1755951336; c=relaxed/simple;
+	bh=lSuDN4eAoAl8Zs7nlCY60BE/FVp0jIeN/NStffVK/R0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Jfa3nszTUzL4lP2FcYrU/SP/ugspNOQM5yTOs9ogayN+oR5hcUPtXpz3mul7AFboNbgLDtgG42P/L2IywKpuBxnvXOgL+c///+Sfcgjty/xSp2dAiJMd+ndQ96KPZtkh1KLfOFakyHPxOd7mcI/CXeaC+LpO5jEnVv0yE9oY3v8=
+	 MIME-Version; b=u3ZX5v7aF+pt88BzcoIylumUdgwrQ3NXtD1a8Ynks6zD1ljiltZxT8Pvkz1HkK/XowQ5WxE8kmjlE4h/8PEwpn7mkLq7Q5kHtWqyBHgZG7eUVIo/9JRv8XvX7W94I7kKBiaraP723L7ofz6quUKQsqAGdfRzmLTJ6IPOeRy6P2w=
 ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=librecast.net; spf=pass smtp.mailfrom=librecast.net; arc=none smtp.client-ip=185.128.210.58
 Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=librecast.net
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=librecast.net
@@ -38,9 +38,9 @@ Cc: netdev@vger.kernel.org,
 	oscmaes92@gmail.com,
 	kuba@kernel.org,
 	Brett A C Sheffield <bacs@librecast.net>
-Subject: [PATCH v2 1/2] selftests: net: add test for broadcast destination
-Date: Sat, 23 Aug 2025 12:13:36 +0000
-Message-ID: <20250823121336.18492-2-bacs@librecast.net>
+Subject: [PATCH v2 2/2] net: ipv4: fix regression in broadcast routes
+Date: Sat, 23 Aug 2025 12:13:38 +0000
+Message-ID: <20250823121336.18492-4-bacs@librecast.net>
 X-Mailer: git-send-email 2.49.1
 In-Reply-To: <20250822183250.2a9cb92c@kernel.org>
 References: <20250822183250.2a9cb92c@kernel.org>
@@ -52,82 +52,67 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-Add test to check the broadcast ethernet destination field is set
-correctly.
+Fix the regression introduced in 9e30ecf23b1b whereby IPv4 broadcast
+packets were having their ethernet destination field mangled.  The
+problem was first observed with WOL magic packets but affects all UDP
+IPv4 broadcast packets.
 
-This test uses the tcpdump and socat programs.
+The regression can be observed by sending an IPv4 WOL packet using
+the wakeonlan program to any ethernet address:
 
-Send a UDP broadcast packet to UDP port 9 (DISCARD), capture this
-with tcpdump and ensure that all bits of the 6 octet ethernet destination
-are correctly set.
+ wakeonlan 46:3b:ad:61:e0:5d
+
+and capturing the packet with tcpdump:
+
+ tcpdump -i eth0 -w /tmp/bad.cap dst port 9
+
+The ethernet destination MUST be ff:ff:ff:ff:ff:ff for broadcast, but is
+mangled in affected kernels.
+
+Revert the change made in 9e30ecf23b1b and ensure the MTU value for
+broadcast routes is retained by calling ip_dst_init_metrics() directly,
+avoiding the need to enter the main code block in rt_set_nexthop().
+
+Simplify the code path taken for broadcast packets back to the original
+before the regression, adding only the call to ip_dst_init_metrics().
+
+The broadcast_pmtu.sh selftest provided with the original patch still
+passes with this patch applied.
 
 Cc: stable@vger.kernel.org
-Signed-off-by: Brett A C Sheffield <bacs@librecast.net>
+Fixes: 9e30ecf23b1b ("net: ipv4: fix incorrect MTU in broadcast routes")
 Link: https://lore.kernel.org/regressions/20250822165231.4353-4-bacs@librecast.net
+Signed-off-by: Brett A C Sheffield <bacs@librecast.net>
 ---
- tools/testing/selftests/net/Makefile          |  1 +
- .../selftests/net/broadcast_ether_dst.sh      | 38 +++++++++++++++++++
- 2 files changed, 39 insertions(+)
- create mode 100755 tools/testing/selftests/net/broadcast_ether_dst.sh
+ net/ipv4/route.c | 7 ++++++-
+ 1 file changed, 6 insertions(+), 1 deletion(-)
 
-diff --git a/tools/testing/selftests/net/Makefile b/tools/testing/selftests/net/Makefile
-index b31a71f2b372..463642a78eea 100644
---- a/tools/testing/selftests/net/Makefile
-+++ b/tools/testing/selftests/net/Makefile
-@@ -116,6 +116,7 @@ TEST_GEN_FILES += skf_net_off
- TEST_GEN_FILES += tfo
- TEST_PROGS += tfo_passive.sh
- TEST_PROGS += broadcast_pmtu.sh
-+TEST_PROGS += broadcast_ether_dst.sh
- TEST_PROGS += ipv6_force_forwarding.sh
- 
- # YNL files, must be before "include ..lib.mk"
-diff --git a/tools/testing/selftests/net/broadcast_ether_dst.sh b/tools/testing/selftests/net/broadcast_ether_dst.sh
-new file mode 100755
-index 000000000000..de6abe3513b6
---- /dev/null
-+++ b/tools/testing/selftests/net/broadcast_ether_dst.sh
-@@ -0,0 +1,38 @@
-+#!/bin/bash -eu
-+# SPDX-License-Identifier: GPL-2.0
-+#
-+# Author: Brett A C Sheffield <bacs@librecast.net>
-+#
-+# Ensure destination ethernet field is correctly set for
-+# broadcast packets
-+
-+if ! which tcpdump > /dev/null 2>&1; then
-+        echo "No tcpdump found. Required for this test."
-+        exit $ERR
-+fi
-+
-+CAPFILE=$(mktemp -u cap.XXXXXXXXXX)
-+
-+# start tcpdump listening on udp port 9
-+# tcpdump will exit after receiving a single packet
-+# timeout will kill tcpdump if it is still running after 2s
-+timeout 2s tcpdump -c 1 -w ${CAPFILE} udp port 9 > /dev/null 2>&1 &
-+PID=$!
-+sleep 0.1 # let tcpdump wake up
-+
-+echo "Testing ethernet broadcast destination"
-+
-+# send broadcast UDP packet to port 9 (DISCARD)
-+echo "Alonso is a good boy" | socat - udp-datagram:255.255.255.255:9,broadcast
-+
-+# wait for tcpdump for exit after receiving packet
-+wait $PID
-+
-+# compare ethernet destination field to ff:ff:ff:ff:ff:ff
-+# pcap has a 24 octet header + 16 octet header for each packet
-+# ethernet destination is the first field in the packet
-+printf '\xff\xff\xff\xff\xff\xff'| cmp -i40:0 -n6 ${CAPFILE} > /dev/null 2>&1
-+RESULT=$?
-+
-+rm -f "${CAPFILE}"
-+exit $RESULT
-
-base-commit: 01b9128c5db1b470575d07b05b67ffa3cb02ebf1
+diff --git a/net/ipv4/route.c b/net/ipv4/route.c
+index f639a2ae881a..ab4d72a59c7b 100644
+--- a/net/ipv4/route.c
++++ b/net/ipv4/route.c
+@@ -2588,6 +2588,7 @@ static struct rtable *__mkroute_output(const struct fib_result *res,
+ 	do_cache = true;
+ 	if (type == RTN_BROADCAST) {
+ 		flags |= RTCF_BROADCAST | RTCF_LOCAL;
++		fi = NULL;
+ 	} else if (type == RTN_MULTICAST) {
+ 		flags |= RTCF_MULTICAST | RTCF_LOCAL;
+ 		if (!ip_check_mc_rcu(in_dev, fl4->daddr, fl4->saddr,
+@@ -2657,8 +2658,12 @@ static struct rtable *__mkroute_output(const struct fib_result *res,
+ 			rth->dst.output = ip_mc_output;
+ 			RT_CACHE_STAT_INC(out_slow_mc);
+ 		}
++		if (type == RTN_BROADCAST && res->fi) {
++			/* ensure MTU value for broadcast routes is retained */
++			ip_dst_init_metrics(&rth->dst, res->fi->fib_metrics);
++		}
+ #ifdef CONFIG_IP_MROUTE
+-		if (type == RTN_MULTICAST) {
++		else if (type == RTN_MULTICAST) {
+ 			if (IN_DEV_MFORWARD(in_dev) &&
+ 			    !ipv4_is_local_multicast(fl4->daddr)) {
+ 				rth->dst.input = ip_mr_input;
 -- 
 2.49.1
 
