@@ -1,110 +1,156 @@
-Return-Path: <stable+bounces-172723-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-172724-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id D5AD2B32FFC
-	for <lists+stable@lfdr.de>; Sun, 24 Aug 2025 15:02:14 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 30957B32FFE
+	for <lists+stable@lfdr.de>; Sun, 24 Aug 2025 15:02:19 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id EE7E1446A0B
-	for <lists+stable@lfdr.de>; Sun, 24 Aug 2025 13:01:45 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 1F66B446CE8
+	for <lists+stable@lfdr.de>; Sun, 24 Aug 2025 13:01:47 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 374D726AABE;
-	Sun, 24 Aug 2025 13:01:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 245082BD013;
+	Sun, 24 Aug 2025 13:01:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="FVL39leC"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="TEf8R093"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EA90E63CF
-	for <stable@vger.kernel.org>; Sun, 24 Aug 2025 13:01:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D8FBE63CF
+	for <stable@vger.kernel.org>; Sun, 24 Aug 2025 13:01:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756040501; cv=none; b=KV/Fmh7BtjSxBTtUCDAppVW+ecXl6UFNP/bOiyVOWy25PGIgPy9XHJCB+JHIXL+tnVQvHBu/nV/kxOEnc4frv6NPkCsuCdyquz1njs1wij78ta2oWjvquG5VaAATq2y9pb9EVlwv4WCbfc1vqizasj1MlVRwdS4i6uPO1KFZOxY=
+	t=1756040502; cv=none; b=DA5jm7MPCR59J+yDer6vdSE+8MfcecKWChtQmhAtMxLjGvu+fcI08cHbYRZRGUyd4VMA7MJqyzxv11rYGBSu+anOnvEtqPJ22gdhF+GLHAsQnfbvZBEtyzqV0+Q8QmZmFLqCI/4XpLF+E63ZH0IsMmvyMntuhzDnmdq5UGZcNBo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756040501; c=relaxed/simple;
-	bh=BnzCzz/2KuguXT6QZmJrU3iqEp/nirNUTArB+I2EhDQ=;
+	s=arc-20240116; t=1756040502; c=relaxed/simple;
+	bh=GcGtUY9/ohflnanoWfhy5ik2ngXkam+ZyWgjVUhtIzg=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=bYUBUMH5xd2EY/rHEtg27DSUTuW5FfrI2F4qjn8sRPF0fc2+XXnqwxsWEMTql3yDvBN6Qox3sQJ/H/L+nhQNPwHXTJKl/rMC/oBdCL8xP5/zzGQ6vqBJNkh/uLsq6hcXAbS1mqbErOu9/3hrdHOGqpr4etuH89bdaWsWdgZtPYE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=FVL39leC; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E2200C4CEEB;
-	Sun, 24 Aug 2025 13:01:39 +0000 (UTC)
+	 MIME-Version:Content-Type; b=tW+kIc/8T81K3S1dfzN2R+K8OxizM6Ftiu6ZJRQKNb3J2mXEUj5fCTHu773Fm8XUcn4HZRNxhnLSTS5ZkX2pySkcfv0REQ2ZGGnH9ss9ZWw3D33O/y75BRuAEMiqd0TYh+561aSR9o9fuezFW7ZQV8tn/6mlmkcXAEjxz7tkezs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=TEf8R093; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C0116C4CEEB;
+	Sun, 24 Aug 2025 13:01:41 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1756040500;
-	bh=BnzCzz/2KuguXT6QZmJrU3iqEp/nirNUTArB+I2EhDQ=;
+	s=k20201202; t=1756040502;
+	bh=GcGtUY9/ohflnanoWfhy5ik2ngXkam+ZyWgjVUhtIzg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=FVL39leCR2JrGD/UyWqN3vdib80iBwtomR7e5786hPTPmCCe9oSVLrXcFoW1lRvSm
-	 gytS5pArRlDOgKI3SQulB3yR99c76atrEfspkL/NDdQk0ZhgHE7ImCgAX2hK+q2STq
-	 DwowiJLRULnlh27a5iFCJ+XSib0FT0cMJPvW4u8N0TK7Zi7Y8MDIPJihwh0Ui/YRRJ
-	 vQ2LfZK+xXRUZ/VbB/qT9ysfKb8AYWxRmI2vTgMx8NQUGNdPjkEEQ/HAT36L1CedrL
-	 2VN8Q3rErj6ULKbOxifK8totBWpKI3c0DCJLFLd2xGH3gWdncWxWCLqN9nIteJQGGD
-	 MecNQq310p7Xw==
+	b=TEf8R093MzDFmKQt18GJFNVp88r+avC6IBh5e1Q7RTVdNS24INf4rlN33HdonALwc
+	 xaJYDjp4xDe0z44Sg7QxGQF+CN3RXeZJDZl+7a67p0zKocljyx5mBtF6kOsupKgjjB
+	 YR6G5dqIIg0e3gKan41YzD1SvPN3q0yaQQOga6YFI9xx+MVh+Py80DzzGcdpXF2UYR
+	 XOPCeRqD+GsBO/aYm+OCpzCvjE9AX5w4sep1ii8iFwTRCfu6L9N9EX1v/v+OC3bVsr
+	 C2RITlK1yNUQLGO4CYsXc8aPFNs95zUfRMI4bfLLms+ukUBxivhtaqSOoqTMtwzTV4
+	 hXJdd1q54zU4g==
 From: Sasha Levin <sashal@kernel.org>
 To: stable@vger.kernel.org
-Cc: Jean-Baptiste Maneyrol <jean-baptiste.maneyrol@tdk.com>,
-	Andy Shevchenko <andy@kernel.org>,
-	Sean Nyekjaer <sean@geanix.com>,
+Cc: David Lechner <dlechner@baylibre.com>,
+	=?UTF-8?q?Nuno=20S=C3=A1?= <nuno.sa@analog.com>,
+	Stable@vger.kernel.org,
 	Jonathan Cameron <Jonathan.Cameron@huawei.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.16.y 3/3] iio: imu: inv_icm42600: change invalid data error to -EBUSY
-Date: Sun, 24 Aug 2025 09:01:36 -0400
-Message-ID: <20250824130136.2747952-3-sashal@kernel.org>
+Subject: [PATCH 6.6.y] iio: temperature: maxim_thermocouple: use DMA-safe buffer for spi_read()
+Date: Sun, 24 Aug 2025 09:01:40 -0400
+Message-ID: <20250824130140.2748027-1-sashal@kernel.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250824130136.2747952-1-sashal@kernel.org>
-References: <2025082313-case-filtrate-5d55@gregkh>
- <20250824130136.2747952-1-sashal@kernel.org>
+In-Reply-To: <2025082359-startup-accuracy-7abb@gregkh>
+References: <2025082359-startup-accuracy-7abb@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-From: Jean-Baptiste Maneyrol <jean-baptiste.maneyrol@tdk.com>
+From: David Lechner <dlechner@baylibre.com>
 
-[ Upstream commit dfdc31e7ccf3ac1d5ec01d5120c71e14745e3dd8 ]
+[ Upstream commit ae5bc07ec9f73a41734270ef3f800c5c8a7e0ad3 ]
 
-Temperature sensor returns the temperature of the mechanical parts
-of the chip. If both accel and gyro are off, the temperature sensor is
-also automatically turned off and returns invalid data.
+Replace using stack-allocated buffers with a DMA-safe buffer for use
+with spi_read(). This allows the driver to be safely used with
+DMA-enabled SPI controllers.
 
-In this case, returning -EBUSY error code is better then -EINVAL and
-indicates userspace that it needs to retry reading temperature in
-another context.
+The buffer array is also converted to a struct with a union to make the
+usage of the memory in the buffer more clear and ensure proper alignment.
 
-Fixes: bc3eb0207fb5 ("iio: imu: inv_icm42600: add temperature sensor support")
-Signed-off-by: Jean-Baptiste Maneyrol <jean-baptiste.maneyrol@tdk.com>
-Cc: stable@vger.kernel.org
-Reviewed-by: Andy Shevchenko <andy@kernel.org>
-Reviewed-by: Sean Nyekjaer <sean@geanix.com>
-Link: https://patch.msgid.link/20250808-inv-icm42600-change-temperature-error-code-v1-1-986fbf63b77d@tdk.com
+Fixes: 1f25ca11d84a ("iio: temperature: add support for Maxim thermocouple chips")
+Signed-off-by: David Lechner <dlechner@baylibre.com>
+Reviewed-by: Nuno Sá <nuno.sa@analog.com>
+Link: https://patch.msgid.link/20250721-iio-use-more-iio_declare_buffer_with_ts-3-v2-1-0c68d41ccf6c@baylibre.com
+Cc: <Stable@vger.kernel.org>
 Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
+[ iio_push_to_buffers_with_ts() => iio_push_to_buffers_with_timestamp() ]
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/iio/imu/inv_icm42600/inv_icm42600_temp.c | 6 +++++-
- 1 file changed, 5 insertions(+), 1 deletion(-)
+ drivers/iio/temperature/maxim_thermocouple.c | 26 ++++++++++++--------
+ 1 file changed, 16 insertions(+), 10 deletions(-)
 
-diff --git a/drivers/iio/imu/inv_icm42600/inv_icm42600_temp.c b/drivers/iio/imu/inv_icm42600/inv_icm42600_temp.c
-index 8b15afca498c..271a4788604a 100644
---- a/drivers/iio/imu/inv_icm42600/inv_icm42600_temp.c
-+++ b/drivers/iio/imu/inv_icm42600/inv_icm42600_temp.c
-@@ -32,8 +32,12 @@ static int inv_icm42600_temp_read(struct inv_icm42600_state *st, s16 *temp)
- 		goto exit;
+diff --git a/drivers/iio/temperature/maxim_thermocouple.c b/drivers/iio/temperature/maxim_thermocouple.c
+index 555a61e2f3fd..44fba61ccfe2 100644
+--- a/drivers/iio/temperature/maxim_thermocouple.c
++++ b/drivers/iio/temperature/maxim_thermocouple.c
+@@ -12,6 +12,7 @@
+ #include <linux/mutex.h>
+ #include <linux/err.h>
+ #include <linux/spi/spi.h>
++#include <linux/types.h>
+ #include <linux/iio/iio.h>
+ #include <linux/iio/sysfs.h>
+ #include <linux/iio/trigger.h>
+@@ -122,8 +123,15 @@ struct maxim_thermocouple_data {
+ 	struct spi_device *spi;
+ 	const struct maxim_thermocouple_chip *chip;
+ 	char tc_type;
+-
+-	u8 buffer[16] __aligned(IIO_DMA_MINALIGN);
++	/* Buffer for reading up to 2 hardware channels. */
++	struct {
++		union {
++			__be16 raw16;
++			__be32 raw32;
++			__be16 raw[2];
++		};
++		aligned_s64 timestamp;
++	} buffer __aligned(IIO_DMA_MINALIGN);
+ };
  
- 	*temp = (s16)be16_to_cpup(raw);
-+	/*
-+	 * Temperature data is invalid if both accel and gyro are off.
-+	 * Return -EBUSY in this case.
-+	 */
- 	if (*temp == INV_ICM42600_DATA_INVALID)
--		ret = -EINVAL;
-+		ret = -EBUSY;
+ static int maxim_thermocouple_read(struct maxim_thermocouple_data *data,
+@@ -131,18 +139,16 @@ static int maxim_thermocouple_read(struct maxim_thermocouple_data *data,
+ {
+ 	unsigned int storage_bytes = data->chip->read_size;
+ 	unsigned int shift = chan->scan_type.shift + (chan->address * 8);
+-	__be16 buf16;
+-	__be32 buf32;
+ 	int ret;
  
- exit:
- 	mutex_unlock(&st->lock);
+ 	switch (storage_bytes) {
+ 	case 2:
+-		ret = spi_read(data->spi, (void *)&buf16, storage_bytes);
+-		*val = be16_to_cpu(buf16);
++		ret = spi_read(data->spi, &data->buffer.raw16, storage_bytes);
++		*val = be16_to_cpu(data->buffer.raw16);
+ 		break;
+ 	case 4:
+-		ret = spi_read(data->spi, (void *)&buf32, storage_bytes);
+-		*val = be32_to_cpu(buf32);
++		ret = spi_read(data->spi, &data->buffer.raw32, storage_bytes);
++		*val = be32_to_cpu(data->buffer.raw32);
+ 		break;
+ 	default:
+ 		ret = -EINVAL;
+@@ -167,9 +173,9 @@ static irqreturn_t maxim_thermocouple_trigger_handler(int irq, void *private)
+ 	struct maxim_thermocouple_data *data = iio_priv(indio_dev);
+ 	int ret;
+ 
+-	ret = spi_read(data->spi, data->buffer, data->chip->read_size);
++	ret = spi_read(data->spi, data->buffer.raw, data->chip->read_size);
+ 	if (!ret) {
+-		iio_push_to_buffers_with_timestamp(indio_dev, data->buffer,
++		iio_push_to_buffers_with_timestamp(indio_dev, &data->buffer,
+ 						   iio_get_time_ns(indio_dev));
+ 	}
+ 
 -- 
 2.50.1
 
