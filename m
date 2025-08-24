@@ -1,203 +1,116 @@
-Return-Path: <stable+bounces-172678-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-172679-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6E904B32CD5
-	for <lists+stable@lfdr.de>; Sun, 24 Aug 2025 03:19:03 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id D9706B32CD6
+	for <lists+stable@lfdr.de>; Sun, 24 Aug 2025 03:19:04 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 2F1E73C01B4
-	for <lists+stable@lfdr.de>; Sun, 24 Aug 2025 01:19:02 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id B0FED1B65BEA
+	for <lists+stable@lfdr.de>; Sun, 24 Aug 2025 01:19:24 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 38D2017ADF8;
-	Sun, 24 Aug 2025 01:18:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E72CA188000;
+	Sun, 24 Aug 2025 01:19:00 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="JB7pc/fL"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="RzZBLqvP"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E98DC1426C
-	for <stable@vger.kernel.org>; Sun, 24 Aug 2025 01:18:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A55B51865EE
+	for <stable@vger.kernel.org>; Sun, 24 Aug 2025 01:19:00 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755998339; cv=none; b=iBhPusOMK+RPTz91RHGZleo4+HA/qcfL4XwTezO1yqp/YpxZaPzeaA87LtudnCXtidZuB1AJL0vh6XewEVeCATNVyHA5BepIE7eLKV3t+DS5ZNiEJyE3JXqKVgmonpbim/6xHpCfi3hW5Oxep+m+lWJKfYyAXNuO2I2QJh1lE3s=
+	t=1755998340; cv=none; b=ZfFajR9XmYNe4/hQPYEO9u+qIQir2I5A7oL64Sn6BWvig+YWW0Wwxw7NIu6hDuZzwkvf51M95op1an9pl4NnP+F7kCV0mlX6fy9VcaZ56iykKjOWUQHyr1cONFDWRBm7wwqyao5kfQxAWocTNb5NztM5x6FQvHrPH7A8gEvGKLM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1755998339; c=relaxed/simple;
-	bh=R3hfn6mO7lOLJAn1VLo4O5DtPsrDNCnQ0/B5/P26BEg=;
+	s=arc-20240116; t=1755998340; c=relaxed/simple;
+	bh=S1tCl0CWPFIcfIClRaAaoaD2XHbAlw3HVAEEZIvndKs=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Chy3VlnBNSyNAA/bK29RfdOur8HuXNgLGNsERYi9knim6noPs/LSEk//dLVkePg9/eefx0Q0ST5UX0QdkRV0JMwp5Erh2tDRPSIRnAU5vDDibSmHCpiZbZQu4sYVsS0HzqPyPNNAOS5K8K6NZkeg6s37OXl1iGYL7YhWo0rArYg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=JB7pc/fL; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id ED200C113CF;
-	Sun, 24 Aug 2025 01:18:57 +0000 (UTC)
+	 MIME-Version:Content-Type; b=hsTIRI4iSithIkCJVarDKyZjiEGbunYLHj3Qb2CNc0TKFPney6jywPsiDzMdCrgccGxzuspxuKiFcROP1LcFxoUUAYLcxn8RcO66E4wErGJpyvoEOkJ0NSPtMcx30ZT8zOPvSbZx66D81s2wWtF+ZWLb5498uZnNy8ZE9TLOceo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=RzZBLqvP; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 73C07C113D0;
+	Sun, 24 Aug 2025 01:18:59 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1755998338;
-	bh=R3hfn6mO7lOLJAn1VLo4O5DtPsrDNCnQ0/B5/P26BEg=;
+	s=k20201202; t=1755998340;
+	bh=S1tCl0CWPFIcfIClRaAaoaD2XHbAlw3HVAEEZIvndKs=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=JB7pc/fLPLEXNNxveBKbhqAQPs63rOlu49e3u6ZqwihGyPtrAimz4Z+T/+wNe0bWq
-	 uNW+MFX+aT/YfLxeol6zGvzGUCfSMVT7MqDSeWnbuo7e5HwrGiogVUfYi42hGz/wRu
-	 k+RmrLHFzV5BJbPowVE2+/3mKOg+WhxMUIDV4CCY5B95TusqIQWGs5cPrIK2oPbK/M
-	 YSrBaFl/T/qTS0ULUr5MxXIsOIFXyKs2PeM5RzpE90mgsHg0OhckDQclhilygaFKa1
-	 bv0+5kvi48j/rO2ekvCiy/PWzOcUVfUffjFi7b0SY52pY8Ch+04ulEHfpWqT3T06GU
-	 k4l827LGELXvw==
+	b=RzZBLqvPpMgkmIaNCkkD+KwDPkFJpp5BDUikoDxohZVKQeiVtTya/XKqZLknbkR++
+	 RFNH9+IIe5Av5mAvU1RYAkMlYZDgKp0UCAoJNS1HNRDW308HtNp3P75mf7sltad1fL
+	 aSyRNVlFLmSBUP2/6XAD8ulc66ChK9N+xSSTGTbDM1+3vKVfIDo2tcfrKiYvBB6Rsg
+	 ngAnlBVmXNtL07VDe8tP8vjluhp/2sTsXQ6PHRGsL1oc1S8S4gkfaabTu15oJchiCw
+	 7PBHAf6kg+FbDLigAkRHNr7mhmpYFhmyDAmGZrk4JPMoqq5rsm5/ButuKM2EWeDukA
+	 tIjdpiwj52+VA==
 From: Sasha Levin <sashal@kernel.org>
 To: stable@vger.kernel.org
-Cc: Pu Lehui <pulehui@huawei.com>,
-	"Steven Rostedt (Google)" <rostedt@goodmis.org>,
+Cc: =?UTF-8?q?Timur=20Krist=C3=B3f?= <timur.kristof@gmail.com>,
+	Alex Deucher <alexander.deucher@amd.com>,
+	Rodrigo Siqueira <siqueira@igalia.com>,
+	Alex Hung <alex.hung@amd.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12.y 2/2] tracing: Limit access to parser->buffer when trace_get_user failed
-Date: Sat, 23 Aug 2025 21:18:55 -0400
-Message-ID: <20250824011855.2574804-2-sashal@kernel.org>
+Subject: [PATCH 5.10.y] drm/amd/display: Don't overclock DCE 6 by 15%
+Date: Sat, 23 Aug 2025 21:18:57 -0400
+Message-ID: <20250824011857.2574854-1-sashal@kernel.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250824011855.2574804-1-sashal@kernel.org>
-References: <2025082330-tameness-senator-c4d5@gregkh>
- <20250824011855.2574804-1-sashal@kernel.org>
+In-Reply-To: <2025082313-mobility-alive-f9e9@gregkh>
+References: <2025082313-mobility-alive-f9e9@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-From: Pu Lehui <pulehui@huawei.com>
+From: Timur Kristóf <timur.kristof@gmail.com>
 
-[ Upstream commit 6a909ea83f226803ea0e718f6e88613df9234d58 ]
+[ Upstream commit cb7b7ae53b557d168b4af5cd8549f3eff920bfb5 ]
 
-When the length of the string written to set_ftrace_filter exceeds
-FTRACE_BUFF_MAX, the following KASAN alarm will be triggered:
+The extra 15% clock was added as a workaround for a Polaris issue
+which uses DCE 11, and should not have been used on DCE 6 which
+is already hardcoded to the highest possible display clock.
+Unfortunately, the extra 15% was mistakenly copied and kept
+even on code paths which don't affect Polaris.
 
-BUG: KASAN: slab-out-of-bounds in strsep+0x18c/0x1b0
-Read of size 1 at addr ffff0000d00bd5ba by task ash/165
+This commit fixes that and also adds a check to make sure
+not to exceed the maximum DCE 6 display clock.
 
-CPU: 1 UID: 0 PID: 165 Comm: ash Not tainted 6.16.0-g6bcdbd62bd56-dirty
-Hardware name: linux,dummy-virt (DT)
-Call trace:
- show_stack+0x34/0x50 (C)
- dump_stack_lvl+0xa0/0x158
- print_address_description.constprop.0+0x88/0x398
- print_report+0xb0/0x280
- kasan_report+0xa4/0xf0
- __asan_report_load1_noabort+0x20/0x30
- strsep+0x18c/0x1b0
- ftrace_process_regex.isra.0+0x100/0x2d8
- ftrace_regex_release+0x484/0x618
- __fput+0x364/0xa58
- ____fput+0x28/0x40
- task_work_run+0x154/0x278
- do_notify_resume+0x1f0/0x220
- el0_svc+0xec/0xf0
- el0t_64_sync_handler+0xa0/0xe8
- el0t_64_sync+0x1ac/0x1b0
-
-The reason is that trace_get_user will fail when processing a string
-longer than FTRACE_BUFF_MAX, but not set the end of parser->buffer to 0.
-Then an OOB access will be triggered in ftrace_regex_release->
-ftrace_process_regex->strsep->strpbrk. We can solve this problem by
-limiting access to parser->buffer when trace_get_user failed.
-
+Fixes: 8cd61c313d8b ("drm/amd/display: Raise dispclk value for Polaris")
+Fixes: dc88b4a684d2 ("drm/amd/display: make clk mgr soc specific")
+Fixes: 3ecb3b794e2c ("drm/amd/display: dc/clk_mgr: add support for SI parts (v2)")
+Signed-off-by: Timur Kristóf <timur.kristof@gmail.com>
+Acked-by: Alex Deucher <alexander.deucher@amd.com>
+Reviewed-by: Rodrigo Siqueira <siqueira@igalia.com>
+Reviewed-by: Alex Hung <alex.hung@amd.com>
+Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
+(cherry picked from commit 427980c1cbd22bb256b9385f5ce73c0937562408)
 Cc: stable@vger.kernel.org
-Link: https://lore.kernel.org/20250813040232.1344527-1-pulehui@huaweicloud.com
-Fixes: 8c9af478c06b ("ftrace: Handle commands when closing set_ftrace_filter file")
-Signed-off-by: Pu Lehui <pulehui@huawei.com>
-Signed-off-by: Steven Rostedt (Google) <rostedt@goodmis.org>
+[ `MIN` => `min` ]
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- kernel/trace/trace.c | 18 ++++++++++++------
- kernel/trace/trace.h |  8 +++++++-
- 2 files changed, 19 insertions(+), 7 deletions(-)
+ .../gpu/drm/amd/display/dc/clk_mgr/dce60/dce60_clk_mgr.c  | 8 +++-----
+ 1 file changed, 3 insertions(+), 5 deletions(-)
 
-diff --git a/kernel/trace/trace.c b/kernel/trace/trace.c
-index e6598a37e1e0..2f662ca4d3ff 100644
---- a/kernel/trace/trace.c
-+++ b/kernel/trace/trace.c
-@@ -1754,7 +1754,7 @@ int trace_get_user(struct trace_parser *parser, const char __user *ubuf,
- 
- 	ret = get_user(ch, ubuf++);
- 	if (ret)
--		return ret;
-+		goto fail;
- 
- 	read++;
- 	cnt--;
-@@ -1768,7 +1768,7 @@ int trace_get_user(struct trace_parser *parser, const char __user *ubuf,
- 		while (cnt && isspace(ch)) {
- 			ret = get_user(ch, ubuf++);
- 			if (ret)
--				return ret;
-+				goto fail;
- 			read++;
- 			cnt--;
- 		}
-@@ -1786,12 +1786,14 @@ int trace_get_user(struct trace_parser *parser, const char __user *ubuf,
- 	while (cnt && !isspace(ch) && ch) {
- 		if (parser->idx < parser->size - 1)
- 			parser->buffer[parser->idx++] = ch;
--		else
--			return -EINVAL;
-+		else {
-+			ret = -EINVAL;
-+			goto fail;
-+		}
- 
- 		ret = get_user(ch, ubuf++);
- 		if (ret)
--			return ret;
-+			goto fail;
- 		read++;
- 		cnt--;
- 	}
-@@ -1806,11 +1808,15 @@ int trace_get_user(struct trace_parser *parser, const char __user *ubuf,
- 		/* Make sure the parsed string always terminates with '\0'. */
- 		parser->buffer[parser->idx] = 0;
- 	} else {
--		return -EINVAL;
-+		ret = -EINVAL;
-+		goto fail;
- 	}
- 
- 	*ppos += read;
- 	return read;
-+fail:
-+	trace_parser_fail(parser);
-+	return ret;
- }
- 
- /* TODO add a seq_buf_to_buffer() */
-diff --git a/kernel/trace/trace.h b/kernel/trace/trace.h
-index 57e1af1d3e6d..b15b8ad8f80d 100644
---- a/kernel/trace/trace.h
-+++ b/kernel/trace/trace.h
-@@ -1230,6 +1230,7 @@ bool ftrace_event_is_function(struct trace_event_call *call);
-  */
- struct trace_parser {
- 	bool		cont;
-+	bool		fail;
- 	char		*buffer;
- 	unsigned	idx;
- 	unsigned	size;
-@@ -1237,7 +1238,7 @@ struct trace_parser {
- 
- static inline bool trace_parser_loaded(struct trace_parser *parser)
+diff --git a/drivers/gpu/drm/amd/display/dc/clk_mgr/dce60/dce60_clk_mgr.c b/drivers/gpu/drm/amd/display/dc/clk_mgr/dce60/dce60_clk_mgr.c
+index 0267644717b2..0d6743c37102 100644
+--- a/drivers/gpu/drm/amd/display/dc/clk_mgr/dce60/dce60_clk_mgr.c
++++ b/drivers/gpu/drm/amd/display/dc/clk_mgr/dce60/dce60_clk_mgr.c
+@@ -123,11 +123,9 @@ static void dce60_update_clocks(struct clk_mgr *clk_mgr_base,
  {
--	return (parser->idx != 0);
-+	return !parser->fail && parser->idx != 0;
- }
+ 	struct clk_mgr_internal *clk_mgr_dce = TO_CLK_MGR_INTERNAL(clk_mgr_base);
+ 	struct dm_pp_power_level_change_request level_change_req;
+-	int patched_disp_clk = context->bw_ctx.bw.dce.dispclk_khz;
+-
+-	/*TODO: W/A for dal3 linux, investigate why this works */
+-	if (!clk_mgr_dce->dfs_bypass_active)
+-		patched_disp_clk = patched_disp_clk * 115 / 100;
++	const int max_disp_clk =
++		clk_mgr_dce->max_clks_by_state[DM_PP_CLOCKS_STATE_PERFORMANCE].display_clk_khz;
++	int patched_disp_clk = min(max_disp_clk, context->bw_ctx.bw.dce.dispclk_khz);
  
- static inline bool trace_parser_cont(struct trace_parser *parser)
-@@ -1251,6 +1252,11 @@ static inline void trace_parser_clear(struct trace_parser *parser)
- 	parser->idx = 0;
- }
- 
-+static inline void trace_parser_fail(struct trace_parser *parser)
-+{
-+	parser->fail = true;
-+}
-+
- extern int trace_parser_get_init(struct trace_parser *parser, int size);
- extern void trace_parser_put(struct trace_parser *parser);
- extern int trace_get_user(struct trace_parser *parser, const char __user *ubuf,
+ 	level_change_req.power_level = dce_get_required_clocks_state(clk_mgr_base, context);
+ 	/* get max clock state from PPLIB */
 -- 
 2.50.1
 
