@@ -1,181 +1,284 @@
-Return-Path: <stable+bounces-172759-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-172760-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4D8C6B331C9
-	for <lists+stable@lfdr.de>; Sun, 24 Aug 2025 20:09:12 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id D3A35B3320F
+	for <lists+stable@lfdr.de>; Sun, 24 Aug 2025 20:31:01 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 055D62014A4
-	for <lists+stable@lfdr.de>; Sun, 24 Aug 2025 18:09:10 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 3E3C27A7FEC
+	for <lists+stable@lfdr.de>; Sun, 24 Aug 2025 18:29:26 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C83872E03E1;
-	Sun, 24 Aug 2025 18:08:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0401F823DD;
+	Sun, 24 Aug 2025 18:30:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="W0366qJt"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="kcD3JySi"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7A11F2DF719;
-	Sun, 24 Aug 2025 18:08:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B551F2CCC5
+	for <stable@vger.kernel.org>; Sun, 24 Aug 2025 18:30:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756058930; cv=none; b=ffq4rCWAGYacDxSr1gj0nkETy6iqswg2bW9b/o0y3rlmQvdFy7UK/eDiCLCdg7orMfcbXZawY34N9rBDeZ6PtwRS6OPn45wAKZpC8Ao6nwhVDVd2rbB/xmWYDsOrRyTASCEgJkU8kp00GXN8FlS2rzmlLP5UqUbfQrSM61QfKnI=
+	t=1756060253; cv=none; b=mchT8c2q+o3qgX1sfMsnOjOL072FqGhNnaqvXxS7QT+WzUWAIJNuBNo9bFj25XEGFXe4uavw/E1380NGiGSuxwwm4hP4ZODGRJpH/9NWY426yuDCbTQpGvHtFX0nJy/UK3gSS8pPi0QijfGzWjMYzydL6PrfrOkcmugRWTizQRU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756058930; c=relaxed/simple;
-	bh=An8jfmhWOdf46fE9qIQpX/BSyD/SCxzw9pyGE/aqGpo=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=aWVyL87jUOCd5yC5UdikdZQWetVkG8sYxUdy1z6oiHFxvRAZGdQSP9BqpgGR5VYzhhl3fMPx9b6Q6p7isTJDwXJoYUyE2kGrz8/M91KNrEkRE5AZwyMelSBCbLwcf7t5ejIXIA4YIwtPg+idT2DrFuvkts3Lm0N0BKpnbyl2GYo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=W0366qJt; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1D027C4CEF4;
-	Sun, 24 Aug 2025 18:08:46 +0000 (UTC)
+	s=arc-20240116; t=1756060253; c=relaxed/simple;
+	bh=Nbw6DvolaVJBIbKrSePbgv+Mb8yXzOOrprqTM+tL2N0=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=JFLrAuA43WDOeA260ZT9Iio6YqIGv8D/zWIe7+lqAaL8ZWphNI7/sDhSPyJKehfBNp9rHw8tFI6aDXIpA5oqnF4llTMBNALdAjBLziyYuoXSd4paaWxVKndahaSXJS5b32Ss8Io8CdUVpE3U1wUwCMWVPCOh5KlT0+x5mQyEm/w=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=kcD3JySi; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5DDF3C4CEEB;
+	Sun, 24 Aug 2025 18:30:51 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1756058930;
-	bh=An8jfmhWOdf46fE9qIQpX/BSyD/SCxzw9pyGE/aqGpo=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=W0366qJtN3N2wIlY1SJIG8b3r7bvUUeT3lqqwHq0HEMaD48hi+7u6KQa/0gnA9n68
-	 Vh35oBCU7hLI4g0sVT3ayS8qnIsOfvdZ5ONIHz+gMf4uvHNPaxwwIR17Jehf4HrxEG
-	 tUMVko4Ox4WI6s6xsQHqXFnRgArMcxfAdGP/CqI39Vi0x8m9rBIJeFzW1PzUVtTHN2
-	 40JKNKZumbTj2p39RNK+GFo0x8C+qWTaK6DyWOBI5bSEEaDf9lCYtyDXAQuHB/kFPZ
-	 58Nxsf058Eu9OJreMJd+0d9kiaJKbtjammqzKXePDqC0LTKupl/aHt3a0T6Q0SBqBd
-	 4nXTO3/txUuOQ==
-Message-ID: <c744f5da-ed3a-4559-80b1-9cef5254224b@kernel.org>
-Date: Sun, 24 Aug 2025 18:50:59 +0200
+	s=k20201202; t=1756060252;
+	bh=Nbw6DvolaVJBIbKrSePbgv+Mb8yXzOOrprqTM+tL2N0=;
+	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
+	b=kcD3JySi34zeskwXtmw0RU9FiIY7x18JP0yGEE72pNr5Nmat4lzv1FO7t860JEs1i
+	 ZMTc/22iKwUItZh5Bow1eYEJnFlZkayARJDjhtigAujANUX7+F25P9k5lIM4LRw0uP
+	 w9C4RzG6bSbmPd73aXyd3STL6kK6fNtx9mZpBrkkBGPJKT40bGtrfn9xG9gAMLBPAW
+	 vow6ET5BcgwHucjXlli17tULbVufg/Ncdn4U+85FzlwydxfC+C0AbsV0RCBfnZE4Pt
+	 cjx9zq/pBey7kskXu9m4zPGaynVZb8YPFhWte1UqdLmYOQ7ERV8YJofgdRnWfxLs3D
+	 f+YTIjpTySvJw==
+From: Sasha Levin <sashal@kernel.org>
+To: stable@vger.kernel.org
+Cc: Weitao Wang <WeitaoWang-oc@zhaoxin.com>,
+	Mathias Nyman <mathias.nyman@linux.intel.com>,
+	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.4.y] usb: xhci: Fix slot_id resource race conflict
+Date: Sun, 24 Aug 2025 14:30:49 -0400
+Message-ID: <20250824183049.708602-1-sashal@kernel.org>
+X-Mailer: git-send-email 2.50.1
+In-Reply-To: <2025082308-crafty-citable-521f@gregkh>
+References: <2025082308-crafty-citable-521f@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH] firmware: exynos-acpm: fix PMIC returned errno
-To: Tudor Ambarus <tudor.ambarus@linaro.org>,
- Alim Akhtar <alim.akhtar@samsung.com>
-Cc: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>,
- linux-kernel@vger.kernel.org, linux-samsung-soc@vger.kernel.org,
- linux-arm-kernel@lists.infradead.org, peter.griffin@linaro.org,
- andre.draszik@linaro.org, willmcvicker@google.com, kernel-team@android.com,
- Dan Carpenter <dan.carpenter@linaro.org>, stable@vger.kernel.org
-References: <20250821-acpm-pmix-fix-errno-v1-1-771a5969324c@linaro.org>
-From: Krzysztof Kozlowski <krzk@kernel.org>
-Content-Language: en-US
-Autocrypt: addr=krzk@kernel.org; keydata=
- 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 a/A=
-In-Reply-To: <20250821-acpm-pmix-fix-errno-v1-1-771a5969324c@linaro.org>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+Content-Transfer-Encoding: 8bit
 
-On 21/08/2025 15:28, Tudor Ambarus wrote:
-> ACPM PMIC command handlers returned a u8 value when they should
-> have returned either zero or negative error codes.
-> Translate the APM PMIC errno to linux errno.
-> 
-> Reported-by: Dan Carpenter <dan.carpenter@linaro.org>
-> Closes: https://lore.kernel.org/linux-input/aElHlTApXj-W_o1r@stanley.mountain/
-> Fixes: a88927b534ba ("firmware: add Exynos ACPM protocol driver")
-> Cc: stable@vger.kernel.org
-> Signed-off-by: Tudor Ambarus <tudor.ambarus@linaro.org>
-> ---
->  drivers/firmware/samsung/exynos-acpm-pmic.c | 36 +++++++++++++++++++++++++----
->  1 file changed, 31 insertions(+), 5 deletions(-)
-> 
-> diff --git a/drivers/firmware/samsung/exynos-acpm-pmic.c b/drivers/firmware/samsung/exynos-acpm-pmic.c
-> index 39b33a356ebd240506b6390163229a70a2d1fe68..a355ee194027c09431f275f0fd296f45652af536 100644
-> --- a/drivers/firmware/samsung/exynos-acpm-pmic.c
-> +++ b/drivers/firmware/samsung/exynos-acpm-pmic.c
-> @@ -5,6 +5,7 @@
->   * Copyright 2024 Linaro Ltd.
->   */
->  #include <linux/bitfield.h>
-> +#include <linux/errno.h>
->  #include <linux/firmware/samsung/exynos-acpm-protocol.h>
->  #include <linux/ktime.h>
->  #include <linux/types.h>
-> @@ -33,6 +34,26 @@ enum exynos_acpm_pmic_func {
->  	ACPM_PMIC_BULK_WRITE,
->  };
->  
-> +enum acpm_pmic_error_codes {
+From: Weitao Wang <WeitaoWang-oc@zhaoxin.com>
 
-This enum is not used. Size is not needed and you can just use
-designated initializers in the array.
+[ Upstream commit 2eb03376151bb8585caa23ed2673583107bb5193 ]
 
-> +	ACPM_PMIC_SUCCESS = 0,
-> +	ACPM_PMIC_ERR_READ = 1,
-> +	ACPM_PMIC_ERR_WRITE = 2,
-> +	ACPM_PMIC_ERR_MAX
-> +};
-> +
-> +static int acpm_pmic_linux_errmap[ACPM_PMIC_ERR_MAX] = {
+xHC controller may immediately reuse a slot_id after it's disabled,
+giving it to a new enumerating device before the xhci driver freed
+all resources related to the disabled device.
 
-const
+In such a scenario, device-A with slot_id equal to 1 is disconnecting
+while device-B is enumerating, device-B will fail to enumerate in the
+follow sequence.
 
-> +	0, /* ACPM_PMIC_SUCCESS */
-> +	-EACCES, /* Read register can't be accessed or issues to access it. */
-> +	-EACCES, /* Write register can't be accessed or issues to access it. */
-> +};
-> +
-> +static inline int acpm_pmic_to_linux_errno(int errno)
+1.[device-A] send disable slot command
+2.[device-B] send enable slot command
+3.[device-A] disable slot command completed and wakeup waiting thread
+4.[device-B] enable slot command completed with slot_id equal to 1 and
+	     wakeup waiting thread
+5.[device-B] driver checks that slot_id is still in use (by device-A) in
+	     xhci_alloc_virt_device, and fail to enumerate due to this
+	     conflict
+6.[device-A] xhci->devs[slot_id] set to NULL in xhci_free_virt_device
 
-Drop inline
+To fix driver's slot_id resources conflict, clear xhci->devs[slot_id] and
+xhci->dcbba->dev_context_ptrs[slot_id] pointers in the interrupt context
+when disable slot command completes successfully. Simultaneously, adjust
+function xhci_free_virt_device to accurately handle device release.
 
-s/int errno/int err/
-(or code?)
+[minor smatch warning and commit message fix -Mathias]
 
-errno is just too similar to Linux errno.
+Cc: stable@vger.kernel.org
+Fixes: 7faac1953ed1 ("xhci: avoid race between disable slot command and host runtime suspend")
+Signed-off-by: Weitao Wang <WeitaoWang-oc@zhaoxin.com>
+Signed-off-by: Mathias Nyman <mathias.nyman@linux.intel.com>
+Link: https://lore.kernel.org/r/20250819125844.2042452-2-mathias.nyman@linux.intel.com
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
+---
+ drivers/usb/host/xhci-hub.c  |  3 +--
+ drivers/usb/host/xhci-mem.c  | 22 +++++++++++-----------
+ drivers/usb/host/xhci-ring.c |  9 +++++++--
+ drivers/usb/host/xhci.c      | 18 +++++++++++++-----
+ drivers/usb/host/xhci.h      |  3 ++-
+ 5 files changed, 34 insertions(+), 21 deletions(-)
 
+diff --git a/drivers/usb/host/xhci-hub.c b/drivers/usb/host/xhci-hub.c
+index 66cb9f08bff1..2c9015f2a7d3 100644
+--- a/drivers/usb/host/xhci-hub.c
++++ b/drivers/usb/host/xhci-hub.c
+@@ -628,8 +628,7 @@ static int xhci_enter_test_mode(struct xhci_hcd *xhci,
+ 		if (!xhci->devs[i])
+ 			continue;
+ 
+-		retval = xhci_disable_slot(xhci, i);
+-		xhci_free_virt_device(xhci, i);
++		retval = xhci_disable_and_free_slot(xhci, i);
+ 		if (retval)
+ 			xhci_err(xhci, "Failed to disable slot %d, %d. Enter test mode anyway\n",
+ 				 i, retval);
+diff --git a/drivers/usb/host/xhci-mem.c b/drivers/usb/host/xhci-mem.c
+index 610190bf62da..19faec119999 100644
+--- a/drivers/usb/host/xhci-mem.c
++++ b/drivers/usb/host/xhci-mem.c
+@@ -879,21 +879,20 @@ int xhci_alloc_tt_info(struct xhci_hcd *xhci,
+  * will be manipulated by the configure endpoint, allocate device, or update
+  * hub functions while this function is removing the TT entries from the list.
+  */
+-void xhci_free_virt_device(struct xhci_hcd *xhci, int slot_id)
++void xhci_free_virt_device(struct xhci_hcd *xhci, struct xhci_virt_device *dev,
++		int slot_id)
+ {
+-	struct xhci_virt_device *dev;
+ 	int i;
+ 	int old_active_eps = 0;
+ 
+ 	/* Slot ID 0 is reserved */
+-	if (slot_id == 0 || !xhci->devs[slot_id])
++	if (slot_id == 0 || !dev)
+ 		return;
+ 
+-	dev = xhci->devs[slot_id];
+-
+-	xhci->dcbaa->dev_context_ptrs[slot_id] = 0;
+-	if (!dev)
+-		return;
++	/* If device ctx array still points to _this_ device, clear it */
++	if (dev->out_ctx &&
++	    xhci->dcbaa->dev_context_ptrs[slot_id] == cpu_to_le64(dev->out_ctx->dma))
++		xhci->dcbaa->dev_context_ptrs[slot_id] = 0;
+ 
+ 	trace_xhci_free_virt_device(dev);
+ 
+@@ -932,8 +931,9 @@ void xhci_free_virt_device(struct xhci_hcd *xhci, int slot_id)
+ 
+ 	if (dev->udev && dev->udev->slot_id)
+ 		dev->udev->slot_id = 0;
+-	kfree(xhci->devs[slot_id]);
+-	xhci->devs[slot_id] = NULL;
++	if (xhci->devs[slot_id] == dev)
++		xhci->devs[slot_id] = NULL;
++	kfree(dev);
+ }
+ 
+ /*
+@@ -975,7 +975,7 @@ static void xhci_free_virt_devices_depth_first(struct xhci_hcd *xhci, int slot_i
+ out:
+ 	/* we are now at a leaf device */
+ 	xhci_debugfs_remove_slot(xhci, slot_id);
+-	xhci_free_virt_device(xhci, slot_id);
++	xhci_free_virt_device(xhci, vdev, slot_id);
+ }
+ 
+ int xhci_alloc_virt_device(struct xhci_hcd *xhci, int slot_id,
+diff --git a/drivers/usb/host/xhci-ring.c b/drivers/usb/host/xhci-ring.c
+index 08b016864fc0..70a35e2139bb 100644
+--- a/drivers/usb/host/xhci-ring.c
++++ b/drivers/usb/host/xhci-ring.c
+@@ -1255,7 +1255,8 @@ static void xhci_handle_cmd_enable_slot(struct xhci_hcd *xhci, int slot_id,
+ 		command->slot_id = 0;
+ }
+ 
+-static void xhci_handle_cmd_disable_slot(struct xhci_hcd *xhci, int slot_id)
++static void xhci_handle_cmd_disable_slot(struct xhci_hcd *xhci, int slot_id,
++					u32 cmd_comp_code)
+ {
+ 	struct xhci_virt_device *virt_dev;
+ 	struct xhci_slot_ctx *slot_ctx;
+@@ -1270,6 +1271,10 @@ static void xhci_handle_cmd_disable_slot(struct xhci_hcd *xhci, int slot_id)
+ 	if (xhci->quirks & XHCI_EP_LIMIT_QUIRK)
+ 		/* Delete default control endpoint resources */
+ 		xhci_free_device_endpoint_resources(xhci, virt_dev, true);
++	if (cmd_comp_code == COMP_SUCCESS) {
++		xhci->dcbaa->dev_context_ptrs[slot_id] = 0;
++		xhci->devs[slot_id] = NULL;
++	}
+ }
+ 
+ static void xhci_handle_cmd_config_ep(struct xhci_hcd *xhci, int slot_id,
+@@ -1509,7 +1514,7 @@ static void handle_cmd_completion(struct xhci_hcd *xhci,
+ 		xhci_handle_cmd_enable_slot(xhci, slot_id, cmd, cmd_comp_code);
+ 		break;
+ 	case TRB_DISABLE_SLOT:
+-		xhci_handle_cmd_disable_slot(xhci, slot_id);
++		xhci_handle_cmd_disable_slot(xhci, slot_id, cmd_comp_code);
+ 		break;
+ 	case TRB_CONFIG_EP:
+ 		if (!cmd->completion)
+diff --git a/drivers/usb/host/xhci.c b/drivers/usb/host/xhci.c
+index 3383d7f0c88f..9752ff321584 100644
+--- a/drivers/usb/host/xhci.c
++++ b/drivers/usb/host/xhci.c
+@@ -3945,7 +3945,7 @@ static void xhci_free_dev(struct usb_hcd *hcd, struct usb_device *udev)
+ 	xhci_disable_slot(xhci, udev->slot_id);
+ 
+ 	spin_lock_irqsave(&xhci->lock, flags);
+-	xhci_free_virt_device(xhci, udev->slot_id);
++	xhci_free_virt_device(xhci, virt_dev, udev->slot_id);
+ 	spin_unlock_irqrestore(&xhci->lock, flags);
+ 
+ }
+@@ -3994,6 +3994,16 @@ int xhci_disable_slot(struct xhci_hcd *xhci, u32 slot_id)
+ 	return ret;
+ }
+ 
++int xhci_disable_and_free_slot(struct xhci_hcd *xhci, u32 slot_id)
++{
++	struct xhci_virt_device *vdev = xhci->devs[slot_id];
++	int ret;
++
++	ret = xhci_disable_slot(xhci, slot_id);
++	xhci_free_virt_device(xhci, vdev, slot_id);
++	return ret;
++}
++
+ /*
+  * Checks if we have enough host controller resources for the default control
+  * endpoint.
+@@ -4099,8 +4109,7 @@ int xhci_alloc_dev(struct usb_hcd *hcd, struct usb_device *udev)
+ 	return 1;
+ 
+ disable_slot:
+-	xhci_disable_slot(xhci, udev->slot_id);
+-	xhci_free_virt_device(xhci, udev->slot_id);
++	xhci_disable_and_free_slot(xhci, udev->slot_id);
+ 
+ 	return 0;
+ }
+@@ -4236,8 +4245,7 @@ static int xhci_setup_device(struct usb_hcd *hcd, struct usb_device *udev,
+ 		dev_warn(&udev->dev, "Device not responding to setup %s.\n", act);
+ 
+ 		mutex_unlock(&xhci->mutex);
+-		ret = xhci_disable_slot(xhci, udev->slot_id);
+-		xhci_free_virt_device(xhci, udev->slot_id);
++		ret = xhci_disable_and_free_slot(xhci, udev->slot_id);
+ 		if (!ret) {
+ 			if (xhci_alloc_dev(hcd, udev) == 1)
+ 				xhci_setup_addressable_virt_dev(xhci, udev);
+diff --git a/drivers/usb/host/xhci.h b/drivers/usb/host/xhci.h
+index d27b08d43e39..d6fa03b21349 100644
+--- a/drivers/usb/host/xhci.h
++++ b/drivers/usb/host/xhci.h
+@@ -1997,7 +1997,7 @@ void xhci_dbg_trace(struct xhci_hcd *xhci, void (*trace)(struct va_format *),
+ /* xHCI memory management */
+ void xhci_mem_cleanup(struct xhci_hcd *xhci);
+ int xhci_mem_init(struct xhci_hcd *xhci, gfp_t flags);
+-void xhci_free_virt_device(struct xhci_hcd *xhci, int slot_id);
++void xhci_free_virt_device(struct xhci_hcd *xhci, struct xhci_virt_device *dev, int slot_id);
+ int xhci_alloc_virt_device(struct xhci_hcd *xhci, int slot_id, struct usb_device *udev, gfp_t flags);
+ int xhci_setup_addressable_virt_dev(struct xhci_hcd *xhci, struct usb_device *udev);
+ void xhci_copy_ep0_dequeue_into_input_ctx(struct xhci_hcd *xhci,
+@@ -2087,6 +2087,7 @@ void xhci_reset_bandwidth(struct usb_hcd *hcd, struct usb_device *udev);
+ int xhci_update_hub_device(struct usb_hcd *hcd, struct usb_device *hdev,
+ 			   struct usb_tt *tt, gfp_t mem_flags);
+ int xhci_disable_slot(struct xhci_hcd *xhci, u32 slot_id);
++int xhci_disable_and_free_slot(struct xhci_hcd *xhci, u32 slot_id);
+ int xhci_ext_cap_init(struct xhci_hcd *xhci);
+ 
+ int xhci_suspend(struct xhci_hcd *xhci, bool do_wakeup);
+-- 
+2.50.1
 
-> +{
-> +	if (errno >= ACPM_PMIC_SUCCESS && errno < ACPM_PMIC_ERR_MAX)
-> +		return acpm_pmic_linux_errmap[errno];
-> +	return -EIO;
-> +}
-
-
-
-Best regards,
-Krzysztof
 
