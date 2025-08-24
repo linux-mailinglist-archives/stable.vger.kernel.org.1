@@ -1,135 +1,131 @@
-Return-Path: <stable+bounces-172762-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-172763-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 61E2FB33212
-	for <lists+stable@lfdr.de>; Sun, 24 Aug 2025 20:32:14 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 941B9B33213
+	for <lists+stable@lfdr.de>; Sun, 24 Aug 2025 20:33:19 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 709993BE908
-	for <lists+stable@lfdr.de>; Sun, 24 Aug 2025 18:31:09 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 504BC441147
+	for <lists+stable@lfdr.de>; Sun, 24 Aug 2025 18:33:18 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id CABE31A2398;
-	Sun, 24 Aug 2025 18:31:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 186221448D5;
+	Sun, 24 Aug 2025 18:33:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="WYdEAZID"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="tlL6YrVf"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-pj1-f49.google.com (mail-pj1-f49.google.com [209.85.216.49])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3A93D2CCC5;
-	Sun, 24 Aug 2025 18:31:02 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.49
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CBC0D393DF3
+	for <stable@vger.kernel.org>; Sun, 24 Aug 2025 18:33:14 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756060264; cv=none; b=U3BZT+qsfFpK9Y84swdoXfg3RC4RyPo0zKJDxZbyEMzTYndIh95xwfrZpRftFPPJtQp8loQliZGcrAZoHxEHAKkLtg5szTlkslYqwTwjOEAjH/Jgb8kiu6t0F4B9RU/IH9GhjIZTza7oTjj5WLejcR0zZskrcayOWumkjxaPMvU=
+	t=1756060394; cv=none; b=CgnmwyZPL/PnIqWQY1nrQAu0CzLg3Vs286IT0CVEOxU7+GSiV8A7l+DRvTLa/zfc9dsGHXb9clTQX748a7cAsTpfwX9KuExIcr3gzcbaMmGFeeh8aI81OF2KLRvuSSM0JDr1cSv0ggfoNJg4wggj09HJjWlgbZ3xPpZ8VeWg5Vg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756060264; c=relaxed/simple;
-	bh=W+ETwy5QtffVE6jxjJA45+5GGBoy8Sk4mzSosGZCkG4=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=ugPFHmrYPsv+4GbwcnHn4lOao2J0cD7IMziJ5bXzVHBmleueGroNpxwhsNsgxlt3jLRu+ZUp/nxdZuWtXmRfUT++D2+6W8zaR9jO/cOd9sa7EChyCLH/YVZtOrrHyMDmS6Eu5Jyq5gInVIoBvveFDLWbDC83mJsGVgQxKKJZMS4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=WYdEAZID; arc=none smtp.client-ip=209.85.216.49
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-pj1-f49.google.com with SMTP id 98e67ed59e1d1-323266cd073so287232a91.0;
-        Sun, 24 Aug 2025 11:31:02 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1756060262; x=1756665062; darn=vger.kernel.org;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=uSfLOaZ3KMbXNybbcDwUOnt1kpIXXVEtejVcb/7mXIQ=;
-        b=WYdEAZID11+JTWUdNouBNtcakstS/DqQ9RvKgB3DZumdjWULItzWs6wIrs/f85/j3S
-         mKZbOOWMwBTrIu41udXhDXs2iByl2zQ5IH8iywTEs5kqtMQxj0ilDJIvJF8gRi1a4l6P
-         Tgc0NS7exJvk4+DsSiehrUFR64DJYKaXG8fx8+mbA31Un2vqMM2pc0PnL3Mg6h/Y2CmL
-         2Sx6fhYmgzsrBzgOT6nNQoz+m+J5bMwBoT4FvX/99cGu/j7Dj3PlCFadMKlaBa1bRP96
-         N5p8KhDHLcow3WumVHmlAckBNK+NxPKdsuORKExw2QGk4sevoCozlQF7fNTjpsV5g4Kx
-         vMCg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1756060262; x=1756665062;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=uSfLOaZ3KMbXNybbcDwUOnt1kpIXXVEtejVcb/7mXIQ=;
-        b=HuIP/f3BplDopQHlE160bgAufmoSmqSdyJf+wMTr8q/PieEcC3GBo8jVgMmSlIT/fi
-         etIVtGFUN8BztvfDlyqWTg2L88unAulQXDeJ/MXGZiMzffvvcOIw+XWieYnZw5Aol8+z
-         Fm3bq+dPdUX3rRIO1CDTbrJ0ePPq939fz8rz1LtmHssmfTx9UDGfBom6w09Y6HJtCrn2
-         ioFruFYts1PL/Mw8xDRCogXevGwRjuy6k49p1JXkUcUfYipZW1OqzlKg1FtDLMt+yg0F
-         TGP31HAlZpsI0Ze6czzTVFliNLwyYmq6ZYNVzpXUT1u2n/w4gB2vStTWynJupruKPXii
-         vEjA==
-X-Forwarded-Encrypted: i=1; AJvYcCVjUafbQ3QhUyA0/gP1LZGBbPtB90IPi02jzb4jy5T1di6AXSYuNRDwxEXkHURjFUpxOSr8w/Z8@vger.kernel.org, AJvYcCX4aA190Zt6oCj90F8t+xKxV1A4GYMY27vOcRMStuXtkrBkB+H/3fe6mcY8oih8/cib8GXG06M7YkfR5qY=@vger.kernel.org
-X-Gm-Message-State: AOJu0Yzu8X3eUsZNxVuXHDauRZXtHImCxv9XpIg7RpyEMZo6qkl245lA
-	BFQWWfWNRwJh5PAtr5hCmSWIg+Id04+ZvN0Yxxi43Qy2L4o9tVxzSDF1
-X-Gm-Gg: ASbGncsySvJMrXewnV0mAt9d7WgMTtkhrBeEfl2Pc6hfFazwCNB1Qng/hwNwJ0By12J
-	I115WQ6PEXyoldp8JUu3oYOOA/CK3sSTT3s1PxzD1RB6sMoT56szwXEtgdpgZc4QQVjMYXHNZ73
-	N8zwlgSbyzHGL6OlwN8UGpuhGzHC1dYfigzg7otruTWBKsRvFPD8apjxzGb/H8in3JpNm7BClYU
-	e/UFYhN+EPsholiOFTHKAZgAKyKjCzidqUZWSW0ApBcqc9Y6j/fMndKwC17Onm2dAT/V8fBdB1r
-	4qPSczlfHPLgLNwv6yn7/VuyA9xasD/esnsSME7zRJAJQhg6vEhXPHSYgQL30AuYokMOgZXN3b4
-	BxTnWNUEPXzLGlpj9JFaoI3Xerxydcy7749874UvoTQhU3+D2hhiWAahGVhpUR1oAOLQso6zo
-X-Google-Smtp-Source: AGHT+IFeYzk+uHKZ8TMIRbRJCuxck2G2r5ftJhcw3MUl0IBu3DqGYReR3/47A7js/25z5F4TA2NVPg==
-X-Received: by 2002:a17:90b:4f8e:b0:31f:3353:471e with SMTP id 98e67ed59e1d1-32515ecb35amr7552025a91.4.1756060262304;
-        Sun, 24 Aug 2025 11:31:02 -0700 (PDT)
-Received: from [172.28.221.105] (S0106a85e45f3df00.vc.shawcable.net. [174.7.235.4])
-        by smtp.gmail.com with ESMTPSA id 41be03b00d2f7-b49cb8918e7sm4748573a12.6.2025.08.24.11.31.01
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Sun, 24 Aug 2025 11:31:01 -0700 (PDT)
-Message-ID: <cfd4d3bd-cd0e-45dc-af9b-b478a56f8942@gmail.com>
-Date: Sun, 24 Aug 2025 11:31:01 -0700
+	s=arc-20240116; t=1756060394; c=relaxed/simple;
+	bh=0zO5k/pI2fRLsyACe7hyMmhCT16J8LqUF2Ggy4M0JIA=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=ucPfIfyhlecZu0tLTR46STnszE3nnFfcV3c84rQdMIc3t0/fANE2L5dhfevspzzGfq9CkA9C0/hmb2o75QjSUG0yhpB0+rBtv7b7MWFg7o1rmvUtTDgzFQ9w3/KqZAPbY5DeEi6OpD0VacyDXbtx5Khq4WrVyHDTYgtPDHI97Ck=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=tlL6YrVf; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E8B60C4CEF4;
+	Sun, 24 Aug 2025 18:33:13 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1756060394;
+	bh=0zO5k/pI2fRLsyACe7hyMmhCT16J8LqUF2Ggy4M0JIA=;
+	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
+	b=tlL6YrVfh//z31JwBnt/jX5Qc19SABdRl3okY4D/YX7tGQwZTcew1zoBY94Ar7Plm
+	 2StEnEJC0McfVUZ5fF33NqXRt0g1nHkxbShyenSsueBVJDXfDdj0x5NYFXQG8jXY8s
+	 ng5TdEwKlaMWMZ+PvFSrEH5ApEZp1jtC723xZizKUpRJtREqG/T1VRGgMNJ5tRPnJr
+	 fnN4WwjKEWd/svSLwxX1DnwENzIlQCyUHGRvkcgehk1q4scYnIv0vRBNGppbWUvRw3
+	 EOBI0ZhOrh44m1ATAKoJvf77iMtEb5UW1MFZTyYutpBeTBhbLrPtN2x9BqRfon0egg
+	 gRO+mdgeg3M8A==
+From: Sasha Levin <sashal@kernel.org>
+To: stable@vger.kernel.org
+Cc: Amit Sunil Dhamne <amitsd@google.com>,
+	stable <stable@kernel.org>,
+	Badhri Jagan Sridharan <badhri@google.com>,
+	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.6.y] usb: typec: maxim_contaminant: disable low power mode when reading comparator values
+Date: Sun, 24 Aug 2025 14:33:12 -0400
+Message-ID: <20250824183312.795044-1-sashal@kernel.org>
+X-Mailer: git-send-email 2.50.1
+In-Reply-To: <2025082341-salami-darkroom-6913@gregkh>
+References: <2025082341-salami-darkroom-6913@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: [REGRESSION] - BROKEN NETWORKING Re: Linux 6.16.3
-To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
- linux-kernel@vger.kernel.org, akpm@linux-foundation.org,
- torvalds@linux-foundation.org, stable@vger.kernel.org
-Cc: lwn@lwn.net, jslaby@suse.cz
-References: <2025082354-halogen-retaliate-a8ba@gregkh>
-Content-Language: en-CA
-From: Kyle Sanderson <kyle.leet@gmail.com>
-In-Reply-To: <2025082354-halogen-retaliate-a8ba@gregkh>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
+Content-Transfer-Encoding: 8bit
 
-On 8/23/2025 7:51 AM, Greg Kroah-Hartman wrote:
-> I'm announcing the release of the 6.16.3 kernel.
-> 
-> All users of the 6.16 kernel series that use the ext4 filesystem should
-> upgrade.
-> 
-> The updated 6.16.y git tree can be found at:
-> 	git://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stable.git linux-6.16.y
-> and can be browsed at the normal kernel.org git web browser:
-> 	https://git.kernel.org/?p=linux/kernel/git/stable/linux-stable.git;a=summary
-> 
-> thanks,
-> 
-> greg k-h
+From: Amit Sunil Dhamne <amitsd@google.com>
 
-Hi Greg,
+[ Upstream commit cabb6c5f4d9e7f49bdf8c0a13c74bd93ee35f45a ]
 
-Thanks for maintaining these as always. For the first time in a long 
-time, I booted the latest stable (6.15.x -> 6.16.3) and somehow lost my 
-networking. It looks like there is a patch from Intel (reported by AMD) 
-that did not make it into stable 6.16.
+Low power mode is enabled when reading CC resistance as part of
+`max_contaminant_read_resistance_kohm()` and left in that state.
+However, it's supposed to work with 1uA current source. To read CC
+comparator values current source is changed to 80uA. This causes a storm
+of CC interrupts as it (falsely) detects a potential contaminant. To
+prevent this, disable low power mode current sourcing before reading
+comparator values.
 
-e67a0bc3ed4fd8ee1697cb6d937e2b294ec13b5e - ixgbe
-https://lore.kernel.org/all/94d7d5c0bb4fc171154ccff36e85261a9f186923.1755661118.git.calvin@wbinvd.org/ 
-- i40e
+Fixes: 02b332a06397 ("usb: typec: maxim_contaminant: Implement check_contaminant callback")
+Cc: stable <stable@kernel.org>
+Signed-off-by: Amit Sunil Dhamne <amitsd@google.com>
+Reviewed-by: Badhri Jagan Sridharan <badhri@google.com>
+Rule: add
+Link: https://lore.kernel.org/stable/20250814-fix-upstream-contaminant-v1-1-801ce8089031%40google.com
+Link: https://lore.kernel.org/r/20250815-fix-upstream-contaminant-v2-1-6c8d6c3adafb@google.com
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+[ adapted macro names from CCLPMODESEL to CCLPMODESEL_MASK ]
+Signed-off-by: Sasha Levin <sashal@kernel.org>
+---
+ drivers/usb/typec/tcpm/maxim_contaminant.c | 6 ++++++
+ drivers/usb/typec/tcpm/tcpci_maxim.h       | 1 +
+ 2 files changed, 7 insertions(+)
 
-This asset is a quad-port embedded Intel NIC, previously eno1..4, now 
-eno1np0, eno2np1, eno3np0, eno4np1.
+diff --git a/drivers/usb/typec/tcpm/maxim_contaminant.c b/drivers/usb/typec/tcpm/maxim_contaminant.c
+index 60f90272fed3..eb84701c4ee7 100644
+--- a/drivers/usb/typec/tcpm/maxim_contaminant.c
++++ b/drivers/usb/typec/tcpm/maxim_contaminant.c
+@@ -5,6 +5,7 @@
+  * USB-C module to reduce wakeups due to contaminants.
+  */
+ 
++#include <linux/bitfield.h>
+ #include <linux/device.h>
+ #include <linux/irqreturn.h>
+ #include <linux/module.h>
+@@ -189,6 +190,11 @@ static int max_contaminant_read_comparators(struct max_tcpci_chip *chip, u8 *ven
+ 	if (ret < 0)
+ 		return ret;
+ 
++	/* Disable low power mode */
++	ret = regmap_update_bits(regmap, TCPC_VENDOR_CC_CTRL2, CCLPMODESEL_MASK,
++				 FIELD_PREP(CCLPMODESEL_MASK,
++					    LOW_POWER_MODE_DISABLE));
++
+ 	/* Sleep to allow comparators settle */
+ 	usleep_range(5000, 6000);
+ 	ret = regmap_update_bits(regmap, TCPC_TCPC_CTRL, TCPC_TCPC_CTRL_ORIENTATION, PLUG_ORNT_CC1);
+diff --git a/drivers/usb/typec/tcpm/tcpci_maxim.h b/drivers/usb/typec/tcpm/tcpci_maxim.h
+index 2c1c4d161b0d..861801cc456f 100644
+--- a/drivers/usb/typec/tcpm/tcpci_maxim.h
++++ b/drivers/usb/typec/tcpm/tcpci_maxim.h
+@@ -21,6 +21,7 @@
+ #define CCOVPDIS                                BIT(6)
+ #define SBURPCTRL                               BIT(5)
+ #define CCLPMODESEL_MASK                        GENMASK(4, 3)
++#define LOW_POWER_MODE_DISABLE                  0
+ #define ULTRA_LOW_POWER_MODE                    BIT(3)
+ #define CCRPCTRL_MASK                           GENMASK(2, 0)
+ #define UA_1_SRC                                1
+-- 
+2.50.1
 
-Seems like there's a bit of a debate right now over should this get 
-carried in the tree (this 1/4 state stuff is no good). Anyway, upgrading 
-the kernel broke my networking, and because this is carried in 6.17-rc3 
-for ixgbe it will break again. I honestly don't care if it's some 
-ridiculous systemd thing or the kernel that fixes this, just that 
-there's a note on how to migrate for the common man (and that there is a 
-material change to how interfaces are exposed).
-
-Kyle.
 
