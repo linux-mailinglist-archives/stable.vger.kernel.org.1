@@ -1,204 +1,248 @@
-Return-Path: <stable+bounces-172747-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-172748-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id CFCE4B3304E
-	for <lists+stable@lfdr.de>; Sun, 24 Aug 2025 16:08:46 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 46E16B33069
+	for <lists+stable@lfdr.de>; Sun, 24 Aug 2025 16:29:46 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id A752517BED5
-	for <lists+stable@lfdr.de>; Sun, 24 Aug 2025 14:08:46 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 15EAF201C5E
+	for <lists+stable@lfdr.de>; Sun, 24 Aug 2025 14:29:46 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8D93C2D4B4B;
-	Sun, 24 Aug 2025 14:08:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 82B9227A129;
+	Sun, 24 Aug 2025 14:29:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="QqRWWL8I"
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="JxBIVt0a"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4CD0213D503
-	for <stable@vger.kernel.org>; Sun, 24 Aug 2025 14:08:41 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6BFBA1F4161
+	for <stable@vger.kernel.org>; Sun, 24 Aug 2025 14:29:40 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.133.124
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756044524; cv=none; b=o+T6WTIQ1qRi85en3VAJMo5mtJzeeSYGBMZMPupZDj71Ne4ODELsYJWQaOtVZeS9yrdj/UgCZ+1AiwbOJQNkpGF1wZRpUwDb1eUo96U9J9xCOrFqFxDO8SKJC+YMLplLXMdXiOrJS58bn141EHw9oHSEnZAq82tU3xntLY29J0I=
+	t=1756045782; cv=none; b=Btq/1P4OfX9mXSb91lqzcyc3lCGKrAeNjV5PptDXVY7pxEM6Nak3cKwl2Y3GIeV/rlEHjFQr1H/7khNHByHmmtbCalrqkbOvCqWsBV1GSFE1QM6zOyKs9vDOaW3nN6kR3sRF3S4hyKwYsi8PMiZgUl7K9CdiLM9Bo8Z3DOdBP6k=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756044524; c=relaxed/simple;
-	bh=f/j948PzWqlV/OFdsn2a6vN6+hHjGhT+Mg6aQ4zuuq4=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=XlwV3/nkPLoLHBe2Qjlz7FmbJUiCoFLIRTeAEZ3M6ACZKMMVodSFb0x2tAutRsdxjjkiMPI1NVFNz2vmZKO+1j0m1X4S0i/2gGDTYh0MO6ds8P4vPKbLOtepWcGGgHuVHB6CFSMsibDQLbj225VC27wO5rHjgTHu9I8An5b0EQg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=QqRWWL8I; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5A9E2C4CEF1;
-	Sun, 24 Aug 2025 14:08:41 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1756044521;
-	bh=f/j948PzWqlV/OFdsn2a6vN6+hHjGhT+Mg6aQ4zuuq4=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=QqRWWL8IImLvr18ENX2ugQCMr0Waq2dxiEsCgBBZ1jYxXP+5v4OKt1M3YuXfzeGI3
-	 CLmo6Od6QhrbpstAwbSneyYWi87WisixBOqRbOyWB2G40Iv5mbTIWQV53fsjFCDrkE
-	 XxBkS/4TokniqI/pPZMjMD9kQYVZcdrZBbC3PzYshg5Q/YUtefKnmsi+QMh6bzbJQX
-	 fiG/2J4d8tZP/vXhxlp2/UpvTvLmi/M6BKk6SE4o5Sl5ylk3BzKo/idXSel2xRrOIq
-	 i07WttJ/D+EfYCCf4QJz1/uRxW2T7e+f+LtO8n5nnkVwVBHs2YzBomFOjfz58H+qoM
-	 vhHWLXDNNB6VA==
-From: Sasha Levin <sashal@kernel.org>
-To: stable@vger.kernel.org
-Cc: Pu Lehui <pulehui@huawei.com>,
-	"Steven Rostedt (Google)" <rostedt@goodmis.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10.y 2/2] tracing: Limit access to parser->buffer when trace_get_user failed
-Date: Sun, 24 Aug 2025 10:08:38 -0400
-Message-ID: <20250824140838.2935876-2-sashal@kernel.org>
-X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250824140838.2935876-1-sashal@kernel.org>
-References: <2025082332-jubilance-impotency-10c3@gregkh>
- <20250824140838.2935876-1-sashal@kernel.org>
+	s=arc-20240116; t=1756045782; c=relaxed/simple;
+	bh=XuWL24Y83YEtYFRotPSZdAyjeZ7hd63abpLM4Ak6Mms=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=bHZqCGsNNJVKVpuwdjhydk8k/D5dDEBilcp76MgWFvF6OfnFFR+b+DOSnQi7A6wXSrToJodM0w21IcnEms4PEWfX1vIJzIfvskIF53GDG81GUqfArw5U48HEFWPoYzdm1j7G1IFlQVLyWyA4jmiNryWbMi40cfJT9v9HXrbrpFg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=JxBIVt0a; arc=none smtp.client-ip=170.10.133.124
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1756045779;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=j+h5cKX+MmfMrhq03RArt3rkQSwMq8jB/rkMBe7TwXY=;
+	b=JxBIVt0aAoBUPxfbkM+zFs3gZS5ZTsvLnnn5SBX7cFs86nOEx2QnDhtq0BYy5ZmlBbU8tS
+	pqf3TCIB+gQLRpHIWQPRjC2EqE+OSlOp9BARE04EV55B+cRj9m0PoZkG/8guLN3SWlG0JF
+	k9s1/nnvyFtPfKObotIrLTuzrX9qCSQ=
+Received: from mail-wm1-f71.google.com (mail-wm1-f71.google.com
+ [209.85.128.71]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-152-8ECcoNCaNY6QVEuPyYrnvw-1; Sun, 24 Aug 2025 10:29:38 -0400
+X-MC-Unique: 8ECcoNCaNY6QVEuPyYrnvw-1
+X-Mimecast-MFC-AGG-ID: 8ECcoNCaNY6QVEuPyYrnvw_1756045777
+Received: by mail-wm1-f71.google.com with SMTP id 5b1f17b1804b1-45a1b0071c1so17793915e9.0
+        for <stable@vger.kernel.org>; Sun, 24 Aug 2025 07:29:37 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1756045776; x=1756650576;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=j+h5cKX+MmfMrhq03RArt3rkQSwMq8jB/rkMBe7TwXY=;
+        b=h+rISx01Ljp7IutedCRqLB/+6YGJUs3r2ZrkP3sbsQtT4TzJ8yRYcs68LaehwzYkhs
+         7aI8v65EEJIK74xxU2TLWOZ9Jtr5tR3M6sSJFDYixRuGW3WGnD5zP3eO70/+iOyh3acz
+         AJcP5AvQtpX2zrAo5W+I4vqaF9wCfxaNwe0jWOfPTrNutCMbD2fHu7CJuRVim7JzGN/f
+         0hrN5vHc63c3IbiQG5aKFP2jUYcDQDj9rztbBCHKwuPTEupSZdgwzjmu+8eIzaGg2DBS
+         DeuhRCvP25wwwJC1X1Taup2HGjZ+4Y60thmdHP0QOb05YDrgVo0RzfBPhTxtWt6G+W8W
+         OWzQ==
+X-Forwarded-Encrypted: i=1; AJvYcCWT/qHbl+RDXaGdaVhaxE8HzZNvk2hCxhwp+erBWbwe51eKKF4k4HqjiHtgq8x9jFg9inaT3Ro=@vger.kernel.org
+X-Gm-Message-State: AOJu0YytvfLxUXgR1Srn+LT4iQ7U2c6hmeFc+WpE5W4Xi4DgZeKzZdS2
+	KApr1LTmoIKWyenXGvtDzhjeB6DYes/qW6cHYmJu8ia26wiwFMrzpDNTfZ5vmMpcUapx9f2WU+i
+	IpVJzm8yr6GDvdbURM+v0grBnXB3AORFEaAAAnoNolCZeWBNjIcGGcNTkEVdLGMnDew==
+X-Gm-Gg: ASbGnct7cykzzU3G4b0zTOZNFwIC6un5iHfQj0jsarp84raElgtXYVlWAzu62rvRfTK
+	AgG7ZB5+YDA/L7Z67xJtR9/kBDzy/+F1+NJpp8d8zcrA2SS1R7rixWHgd1TFDoBkLVaoSkh4srx
+	bzliKowyqgtLhAS9VpPGLDb1gsnAJoIBh6bByGvFzXgFCdNdllbpsOt/6hXCojF16/zmjcLLy4c
+	RZTxa+5/o0WqeliYtxMtO0m7jQDvUxVxsxe2cXmmNcHfxaREiIjCVPBYYJb5n0hLvlhGjIiu6Ib
+	rV73FY0Ia0DXv9M0UmAiEuPDgRSIuS/t
+X-Received: by 2002:a05:600c:4fcd:b0:456:133f:a02d with SMTP id 5b1f17b1804b1-45b517cfe71mr94700845e9.17.1756045776310;
+        Sun, 24 Aug 2025 07:29:36 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IEUNNSx/EAsLGZc9eSde38ATdxUavu26xApKf9MfadoABaFK57oo8Mjk4C7vwfE1B1fDbhoGQ==
+X-Received: by 2002:a05:600c:4fcd:b0:456:133f:a02d with SMTP id 5b1f17b1804b1-45b517cfe71mr94700685e9.17.1756045775838;
+        Sun, 24 Aug 2025 07:29:35 -0700 (PDT)
+Received: from redhat.com ([2a0d:6fc0:1515:7300:62e6:253a:2a96:5e3])
+        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-3c70e4ba078sm8187184f8f.4.2025.08.24.07.29.33
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Sun, 24 Aug 2025 07:29:34 -0700 (PDT)
+Date: Sun, 24 Aug 2025 10:29:31 -0400
+From: "Michael S. Tsirkin" <mst@redhat.com>
+To: Parav Pandit <parav@nvidia.com>
+Cc: "NBU-Contact-Li Rongqing (EXTERNAL)" <lirongqing@baidu.com>,
+	"virtualization@lists.linux.dev" <virtualization@lists.linux.dev>,
+	"jasowang@redhat.com" <jasowang@redhat.com>,
+	"stefanha@redhat.com" <stefanha@redhat.com>,
+	"pbonzini@redhat.com" <pbonzini@redhat.com>,
+	"xuanzhuo@linux.alibaba.com" <xuanzhuo@linux.alibaba.com>,
+	"stable@vger.kernel.org" <stable@vger.kernel.org>,
+	Max Gurtovoy <mgurtovoy@nvidia.com>
+Subject: Re: [PATCH] Revert "virtio_pci: Support surprise removal of virtio
+ pci device"
+Message-ID: <20250824102542-mutt-send-email-mst@kernel.org>
+References: <0cfe1ccf662346a2a6bc082b91ce9704@baidu.com>
+ <CY8PR12MB7195996E1181A80D5890B9F1DC3DA@CY8PR12MB7195.namprd12.prod.outlook.com>
+ <20250822090407-mutt-send-email-mst@kernel.org>
+ <CY8PR12MB7195425BDE79592BA24645C1DC3DA@CY8PR12MB7195.namprd12.prod.outlook.com>
+ <20250822095948-mutt-send-email-mst@kernel.org>
+ <CY8PR12MB71954425100362FBA7E29F15DC3FA@CY8PR12MB7195.namprd12.prod.outlook.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <CY8PR12MB71954425100362FBA7E29F15DC3FA@CY8PR12MB7195.namprd12.prod.outlook.com>
 
-From: Pu Lehui <pulehui@huawei.com>
+On Sun, Aug 24, 2025 at 02:36:11AM +0000, Parav Pandit wrote:
+> 
+> 
+> > From: Michael S. Tsirkin <mst@redhat.com>
+> > Sent: 22 August 2025 07:32 PM
+> > 
+> > On Fri, Aug 22, 2025 at 01:53:02PM +0000, Parav Pandit wrote:
+> > >
+> > >
+> > > > From: Michael S. Tsirkin <mst@redhat.com>
+> > > > Sent: 22 August 2025 06:35 PM
+> > > >
+> > > > On Fri, Aug 22, 2025 at 12:24:06PM +0000, Parav Pandit wrote:
+> > > > >
+> > > > > > From: Li,Rongqing <lirongqing@baidu.com>
+> > > > > > Sent: 22 August 2025 03:57 PM
+> > > > > >
+> > > > > > > This reverts commit 43bb40c5b926 ("virtio_pci: Support
+> > > > > > > surprise removal of virtio pci device").
+> > > > > > >
+> > > > > > > Virtio drivers and PCI devices have never fully supported true
+> > > > > > > surprise (aka hot
+> > > > > > > unplug) removal. Drivers historically continued processing and
+> > > > > > > waiting for pending I/O and even continued synchronous device
+> > > > > > > reset during surprise removal. Devices have also continued
+> > > > > > > completing I/Os, doing DMA and allowing device reset after
+> > > > > > > surprise
+> > > > removal to support such drivers.
+> > > > > > >
+> > > > > > > Supporting it correctly would require a new device capability
+> > > > > > > and driver negotiation in the virtio specification to safely
+> > > > > > > stop I/O and free queue
+> > > > > > memory.
+> > > > > > > Failure to do so either breaks all the existing drivers with
+> > > > > > > call trace listed in the commit or crashes the host on continuing the
+> > DMA.
+> > > > > > > Hence, until such specification and devices are invented,
+> > > > > > > restore the previous behavior of treating surprise removal as
+> > > > > > > graceful removal to avoid regressions and maintain system
+> > > > > > > stability same as before the commit 43bb40c5b926 ("virtio_pci:
+> > > > > > > Support surprise removal of virtio pci
+> > > > > > device").
+> > > > > > >
+> > > > > > > As explained above, previous analysis of solving this only in
+> > > > > > > driver was incomplete and non-reliable at [1] and at [2];
+> > > > > > > Hence reverting commit
+> > > > > > > 43bb40c5b926 ("virtio_pci: Support surprise removal of virtio
+> > > > > > > pci
+> > > > > > > device") is still the best stand to restore failures of virtio
+> > > > > > > net and block
+> > > > > > devices.
+> > > > > > >
+> > > > > > > [1]
+> > > > > > >
+> > > > > > https://lore.kernel.org/virtualization/CY8PR12MB719506CC5613EB10
+> > > > > > 0BC6
+> > > > > > C6
+> > > > > > > 38 DCBD2@CY8PR12MB7195.namprd12.prod.outlook.com/#t
+> > > > > > > [2]
+> > > > > > > https://lore.kernel.org/virtualization/20250602024358.57114-1-
+> > > > > > > para
+> > > > > > > v@nv
+> > > > > > > idia.c
+> > > > > > > om/
+> > > > > > >
+> > > > > > > Fixes: 43bb40c5b926 ("virtio_pci: Support surprise removal of
+> > > > > > > virtio pci device")
+> > > > > > > Cc: stable@vger.kernel.org
+> > > > > > > Reported-by: lirongqing@baidu.com
+> > > > > > > Closes:
+> > > > > > > https://lore.kernel.org/virtualization/c45dd68698cd47238c55fb7
+> > > > > > > 3ca9
+> > > > > > > b474
+> > > > > > > 1@b
+> > > > > > > aidu.com/
+> > > > > > > Signed-off-by: Parav Pandit <parav@nvidia.com>
+> > > > > >
+> > > > > >
+> > > > > >
+> > > > > > Tested-by: Li RongQing <lirongqing@baidu.com>
+> > > > > >
+> > > > > > Thanks
+> > > > > >
+> > > > > > -Li
+> > > > > >
+> > > > > Multiple users are blocked to have this fix in stable kernel.
+> > > >
+> > > > what are these users doing that is blocked by this fix?
+> > > >
+> > > Not sure I understand the question. Let me try to answer.
+> > > They are unable to dynamically add/remove the virtio net, block, fs devices in
+> > their systems.
+> > > Users have their networking applications running over NS network and
+> > database and file system through these devices.
+> > > Some of them keep reverting the patch. Some are unable to.
+> > > They are in search of stable kernel.
+> > >
+> > > Did I understand your question?
+> > >
+> > 
+> > Not really, sorry.
+> > 
+> > Does the system or does it not have a mechanical interlock?
+> > 
+> It is modern system beyond mechanical interlock but has the ability for surprise removal.
 
-[ Upstream commit 6a909ea83f226803ea0e718f6e88613df9234d58 ]
+I am not sure what does "beyond" mean. I guess that it does not have it?
 
-When the length of the string written to set_ftrace_filter exceeds
-FTRACE_BUFF_MAX, the following KASAN alarm will be triggered:
+> > If it does, how does a user run into surprise removal issues without the ability
+> > to remove the device?
+> > 
+> User has the ability to surprise removal a device from the slot via the slot's pci registers.
 
-BUG: KASAN: slab-out-of-bounds in strsep+0x18c/0x1b0
-Read of size 1 at addr ffff0000d00bd5ba by task ash/165
+I don't know what this means. Surprise removal is done by removing the
+device. Not via pci registers.
 
-CPU: 1 UID: 0 PID: 165 Comm: ash Not tainted 6.16.0-g6bcdbd62bd56-dirty
-Hardware name: linux,dummy-virt (DT)
-Call trace:
- show_stack+0x34/0x50 (C)
- dump_stack_lvl+0xa0/0x158
- print_address_description.constprop.0+0x88/0x398
- print_report+0xb0/0x280
- kasan_report+0xa4/0xf0
- __asan_report_load1_noabort+0x20/0x30
- strsep+0x18c/0x1b0
- ftrace_process_regex.isra.0+0x100/0x2d8
- ftrace_regex_release+0x484/0x618
- __fput+0x364/0xa58
- ____fput+0x28/0x40
- task_work_run+0x154/0x278
- do_notify_resume+0x1f0/0x220
- el0_svc+0xec/0xf0
- el0t_64_sync_handler+0xa0/0xe8
- el0t_64_sync+0x1ac/0x1b0
+> Yet the device is capable enough to fulfil the needs of broken drivers which are waiting for the pending requests to arrive.
 
-The reason is that trace_get_user will fail when processing a string
-longer than FTRACE_BUFF_MAX, but not set the end of parser->buffer to 0.
-Then an OOB access will be triggered in ftrace_regex_release->
-ftrace_process_regex->strsep->strpbrk. We can solve this problem by
-limiting access to parser->buffer when trace_get_user failed.
+I don't know what this means. A removed device can not do anything at
+all.
 
-Cc: stable@vger.kernel.org
-Link: https://lore.kernel.org/20250813040232.1344527-1-pulehui@huaweicloud.com
-Fixes: 8c9af478c06b ("ftrace: Handle commands when closing set_ftrace_filter file")
-Signed-off-by: Pu Lehui <pulehui@huawei.com>
-Signed-off-by: Steven Rostedt (Google) <rostedt@goodmis.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
----
- kernel/trace/trace.c | 18 ++++++++++++------
- kernel/trace/trace.h |  8 +++++++-
- 2 files changed, 19 insertions(+), 7 deletions(-)
+> > If it does not, and a user pull out the working device, how does your patch
+> > help?
+> >
+> A driver must tell that it will not follow broken ancient behaviour and at that point device would stop its ancient backward compatibility mode.
 
-diff --git a/kernel/trace/trace.c b/kernel/trace/trace.c
-index e0f1a8a6d85b..0c7aa47fb4d3 100644
---- a/kernel/trace/trace.c
-+++ b/kernel/trace/trace.c
-@@ -1613,7 +1613,7 @@ int trace_get_user(struct trace_parser *parser, const char __user *ubuf,
- 
- 	ret = get_user(ch, ubuf++);
- 	if (ret)
--		return ret;
-+		goto fail;
- 
- 	read++;
- 	cnt--;
-@@ -1627,7 +1627,7 @@ int trace_get_user(struct trace_parser *parser, const char __user *ubuf,
- 		while (cnt && isspace(ch)) {
- 			ret = get_user(ch, ubuf++);
- 			if (ret)
--				return ret;
-+				goto fail;
- 			read++;
- 			cnt--;
- 		}
-@@ -1645,12 +1645,14 @@ int trace_get_user(struct trace_parser *parser, const char __user *ubuf,
- 	while (cnt && !isspace(ch) && ch) {
- 		if (parser->idx < parser->size - 1)
- 			parser->buffer[parser->idx++] = ch;
--		else
--			return -EINVAL;
-+		else {
-+			ret = -EINVAL;
-+			goto fail;
-+		}
- 
- 		ret = get_user(ch, ubuf++);
- 		if (ret)
--			return ret;
-+			goto fail;
- 		read++;
- 		cnt--;
- 	}
-@@ -1665,11 +1667,15 @@ int trace_get_user(struct trace_parser *parser, const char __user *ubuf,
- 		/* Make sure the parsed string always terminates with '\0'. */
- 		parser->buffer[parser->idx] = 0;
- 	} else {
--		return -EINVAL;
-+		ret = -EINVAL;
-+		goto fail;
- 	}
- 
- 	*ppos += read;
- 	return read;
-+fail:
-+	trace_parser_fail(parser);
-+	return ret;
- }
- 
- /* TODO add a seq_buf_to_buffer() */
-diff --git a/kernel/trace/trace.h b/kernel/trace/trace.h
-index f47938d8401a..2f5558a097e9 100644
---- a/kernel/trace/trace.h
-+++ b/kernel/trace/trace.h
-@@ -1269,6 +1269,7 @@ bool ftrace_event_is_function(struct trace_event_call *call);
-  */
- struct trace_parser {
- 	bool		cont;
-+	bool		fail;
- 	char		*buffer;
- 	unsigned	idx;
- 	unsigned	size;
-@@ -1276,7 +1277,7 @@ struct trace_parser {
- 
- static inline bool trace_parser_loaded(struct trace_parser *parser)
- {
--	return (parser->idx != 0);
-+	return !parser->fail && parser->idx != 0;
- }
- 
- static inline bool trace_parser_cont(struct trace_parser *parser)
-@@ -1290,6 +1291,11 @@ static inline void trace_parser_clear(struct trace_parser *parser)
- 	parser->idx = 0;
- }
- 
-+static inline void trace_parser_fail(struct trace_parser *parser)
-+{
-+	parser->fail = true;
-+}
-+
- extern int trace_parser_get_init(struct trace_parser *parser, int size);
- extern void trace_parser_put(struct trace_parser *parser);
- extern int trace_get_user(struct trace_parser *parser, const char __user *ubuf,
--- 
-2.50.1
+
+
+I don't know what is "ancient backward compatibility mode".
+
+
+
+
+
+> > --
+> > MST
 
 
