@@ -1,116 +1,106 @@
-Return-Path: <stable+bounces-172669-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-172670-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id E9518B32CB5
-	for <lists+stable@lfdr.de>; Sun, 24 Aug 2025 02:31:18 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2F0FEB32CB8
+	for <lists+stable@lfdr.de>; Sun, 24 Aug 2025 02:32:25 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id AD82D3BF5B7
-	for <lists+stable@lfdr.de>; Sun, 24 Aug 2025 00:31:17 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 95DB3207F3E
+	for <lists+stable@lfdr.de>; Sun, 24 Aug 2025 00:32:23 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0C8671FB3;
-	Sun, 24 Aug 2025 00:31:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E3BF018C31;
+	Sun, 24 Aug 2025 00:32:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="i2h2NxZb"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="P+542iPt"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1385CCA5E
-	for <stable@vger.kernel.org>; Sun, 24 Aug 2025 00:31:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A3593211F
+	for <stable@vger.kernel.org>; Sun, 24 Aug 2025 00:32:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755995474; cv=none; b=Ry9qk95piedPYDfCiSoRoVYbUUlAu0h8QnNtqxfSs74CCYBIcyM+c2knqtG9MQGnOtF+5mD5zLeV7x0+ZbQ4I6VjYYHbL2k7DRJtfWZWuon5k+m/KZgwK6q8hMND4ts4wQ0/jyLY+x6RWdP+J8jkLMURAlb+IoInzgdUFnCjVFo=
+	t=1755995539; cv=none; b=PVJTgh2L8AGod5pZWsZWPQ4U63Sfx5Lx6w74jioJRcJXAdXegf9hGRvGtgXG3D2Stug23WpNhinDW9gIanytN/8DacxQYnXh3JEqPqznufWvSG2JkHER1UjN34zpgx3TaIWo3VZp9nCwgMGAHeaK2WguTyREMUdEYlGDIbf427k=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1755995474; c=relaxed/simple;
-	bh=S1tCl0CWPFIcfIClRaAaoaD2XHbAlw3HVAEEZIvndKs=;
+	s=arc-20240116; t=1755995539; c=relaxed/simple;
+	bh=XWG2nmbMmZ7E6FKI7+R4IelLfmICqlZwV5okOV3BBns=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=LrIZmpdxRDJ0k3FApltkhsqdMH46MzMX79zM8JRgF2Hdy34xikzy76UpBf7mK0f1o4JcFicnAQI1wUywpWgzRLoAk8rlKj8dqr+w0LShjA+RwVnoDrZDp5yCK9ww7RI16bZgNXU3IJu8cpmtZhyhUqwpKWFqx/Mm/9mgTFAI10w=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=i2h2NxZb; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8E013C4CEE7;
-	Sun, 24 Aug 2025 00:31:12 +0000 (UTC)
+	 MIME-Version; b=b/jaqEHMhqOV+4mVcW3fJfSsAhIr1yVW4s93YYVIFMg/tztRJq/JLSAASJW/K1Kk95QifEil5wmOYvr1YBaK8fx5M1K+mWZJfjEyphZebXorTHboL0QswVBVq4+7eLH5L5Rx+so/kxP/Mu18TZwV25cydvFDhlL4bR+pA/7qGf0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=P+542iPt; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7742FC4CEE7;
+	Sun, 24 Aug 2025 00:32:18 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1755995473;
-	bh=S1tCl0CWPFIcfIClRaAaoaD2XHbAlw3HVAEEZIvndKs=;
+	s=k20201202; t=1755995539;
+	bh=XWG2nmbMmZ7E6FKI7+R4IelLfmICqlZwV5okOV3BBns=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=i2h2NxZbTWJUT7cQbVX2PKTFt+rShF+YP15qGEvc2WwUXa7LXLFlQVCchraV7eVDe
-	 UeVFpsK3fQbkdDeFqpeMM9KgkKsB0ETdBaKSZ7s5ZzhySuUqKZetq/o1Nwrjk9LXOH
-	 ErIRDidTLXYf8wD93/jTKp+4rEcphHWLqb9cUuT3zN0sQpNptihwHRmBGYoJVSezem
-	 Xq8kYOn7YThKA48YfCrkVnIfWW+GyFLJLhcbvFkJjunz9i4omVmFN2nZs4WQCsngSb
-	 39R+7v4aWmNaMw5Qh7uGGquJ+xlpxMumzWRvaz2RcXXLdKP8aB6nzkZu9rAzH2vs2U
-	 rbCvuBoDCs3nw==
+	b=P+542iPtnND1QHNGOTcWO4X5rGzYyfECESFKvlesjqnN5NA9jdQv4KGOqHOZxKCMw
+	 I+wrx+j04WWYNCQ+a3tnxUsGKHdNLDMutXGCrTb71PDhRQ9wUPsEwVbRIns16Kjrd1
+	 C/3OsOzODILTNRuIMTgi6qS+IEMfa/OaVhgt7dExqRH0jRkAnooo46YiOGtN4IWwpC
+	 RVPTl+8Z+ctYU4iYW8qKPSH14+72LPXHwk4vCk5+/DTVFZODg7QBwBoCirgWOJUMIu
+	 cmX/vg6J2/xK6iROsT47xnW9yR+osbBw5KdbNK749z9e3UL00sYcyJGovl3mblsNEB
+	 QrdlYjqqYiX6g==
 From: Sasha Levin <sashal@kernel.org>
 To: stable@vger.kernel.org
-Cc: =?UTF-8?q?Timur=20Krist=C3=B3f?= <timur.kristof@gmail.com>,
-	Alex Deucher <alexander.deucher@amd.com>,
-	Rodrigo Siqueira <siqueira@igalia.com>,
-	Alex Hung <alex.hung@amd.com>,
+Cc: Imre Deak <imre.deak@intel.com>,
+	Charlton Lin <charlton.lin@intel.com>,
+	Khaled Almahallawy <khaled.almahallawy@intel.com>,
+	Mika Kahola <mika.kahola@intel.com>,
+	Tvrtko Ursulin <tursulin@ursulin.net>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1.y] drm/amd/display: Don't overclock DCE 6 by 15%
-Date: Sat, 23 Aug 2025 20:31:08 -0400
-Message-ID: <20250824003109.2531974-1-sashal@kernel.org>
+Subject: [PATCH 6.12.y] drm/i915/icl+/tc: Convert AUX powered WARN to a debug message
+Date: Sat, 23 Aug 2025 20:32:15 -0400
+Message-ID: <20250824003215.2541102-1-sashal@kernel.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <2025082313-relive-dallying-4eb7@gregkh>
-References: <2025082313-relive-dallying-4eb7@gregkh>
+In-Reply-To: <2025082347-unstuck-spiral-493c@gregkh>
+References: <2025082347-unstuck-spiral-493c@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-From: Timur Kristóf <timur.kristof@gmail.com>
+From: Imre Deak <imre.deak@intel.com>
 
-[ Upstream commit cb7b7ae53b557d168b4af5cd8549f3eff920bfb5 ]
+[ Upstream commit d7fa5754e83cd36c4327eb2d806064e598a72ff6 ]
 
-The extra 15% clock was added as a workaround for a Polaris issue
-which uses DCE 11, and should not have been used on DCE 6 which
-is already hardcoded to the highest possible display clock.
-Unfortunately, the extra 15% was mistakenly copied and kept
-even on code paths which don't affect Polaris.
+The BIOS can leave the AUX power well enabled on an output, even if this
+isn't required (on platforms where the AUX power is only needed for an
+AUX access). This was observed at least on PTL. To avoid the WARN which
+would be triggered by this during the HW readout, convert the WARN to a
+debug message.
 
-This commit fixes that and also adds a check to make sure
-not to exceed the maximum DCE 6 display clock.
-
-Fixes: 8cd61c313d8b ("drm/amd/display: Raise dispclk value for Polaris")
-Fixes: dc88b4a684d2 ("drm/amd/display: make clk mgr soc specific")
-Fixes: 3ecb3b794e2c ("drm/amd/display: dc/clk_mgr: add support for SI parts (v2)")
-Signed-off-by: Timur Kristóf <timur.kristof@gmail.com>
-Acked-by: Alex Deucher <alexander.deucher@amd.com>
-Reviewed-by: Rodrigo Siqueira <siqueira@igalia.com>
-Reviewed-by: Alex Hung <alex.hung@amd.com>
-Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
-(cherry picked from commit 427980c1cbd22bb256b9385f5ce73c0937562408)
-Cc: stable@vger.kernel.org
-[ `MIN` => `min` ]
+Cc: stable@vger.kernel.org # v6.8+
+Reported-by: Charlton Lin <charlton.lin@intel.com>
+Tested-by: Khaled Almahallawy <khaled.almahallawy@intel.com>
+Reviewed-by: Mika Kahola <mika.kahola@intel.com>
+Signed-off-by: Imre Deak <imre.deak@intel.com>
+Link: https://lore.kernel.org/r/20250811080152.906216-6-imre.deak@intel.com
+(cherry picked from commit 6cb52cba474b2bec1a3018d3dbf75292059a29a1)
+Signed-off-by: Tvrtko Ursulin <tursulin@ursulin.net>
+[ display->drm API => i915->drm ]
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- .../gpu/drm/amd/display/dc/clk_mgr/dce60/dce60_clk_mgr.c  | 8 +++-----
- 1 file changed, 3 insertions(+), 5 deletions(-)
+ drivers/gpu/drm/i915/display/intel_tc.c | 3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/gpu/drm/amd/display/dc/clk_mgr/dce60/dce60_clk_mgr.c b/drivers/gpu/drm/amd/display/dc/clk_mgr/dce60/dce60_clk_mgr.c
-index 0267644717b2..0d6743c37102 100644
---- a/drivers/gpu/drm/amd/display/dc/clk_mgr/dce60/dce60_clk_mgr.c
-+++ b/drivers/gpu/drm/amd/display/dc/clk_mgr/dce60/dce60_clk_mgr.c
-@@ -123,11 +123,9 @@ static void dce60_update_clocks(struct clk_mgr *clk_mgr_base,
- {
- 	struct clk_mgr_internal *clk_mgr_dce = TO_CLK_MGR_INTERNAL(clk_mgr_base);
- 	struct dm_pp_power_level_change_request level_change_req;
--	int patched_disp_clk = context->bw_ctx.bw.dce.dispclk_khz;
--
--	/*TODO: W/A for dal3 linux, investigate why this works */
--	if (!clk_mgr_dce->dfs_bypass_active)
--		patched_disp_clk = patched_disp_clk * 115 / 100;
-+	const int max_disp_clk =
-+		clk_mgr_dce->max_clks_by_state[DM_PP_CLOCKS_STATE_PERFORMANCE].display_clk_khz;
-+	int patched_disp_clk = min(max_disp_clk, context->bw_ctx.bw.dce.dispclk_khz);
+diff --git a/drivers/gpu/drm/i915/display/intel_tc.c b/drivers/gpu/drm/i915/display/intel_tc.c
+index 6f2ee7dbc43b..10bf7baf8726 100644
+--- a/drivers/gpu/drm/i915/display/intel_tc.c
++++ b/drivers/gpu/drm/i915/display/intel_tc.c
+@@ -1416,7 +1416,8 @@ static void intel_tc_port_reset_mode(struct intel_tc_port *tc,
  
- 	level_change_req.power_level = dce_get_required_clocks_state(clk_mgr_base, context);
- 	/* get max clock state from PPLIB */
+ 		aux_domain = intel_aux_power_domain(dig_port);
+ 		aux_powered = intel_display_power_is_enabled(i915, aux_domain);
+-		drm_WARN_ON(&i915->drm, aux_powered);
++		drm_dbg_kms(&i915->drm, "Port %s: AUX powered %d\n",
++			    tc->port_name, aux_powered);
+ 	}
+ 
+ 	tc_phy_disconnect(tc);
 -- 
 2.50.1
 
