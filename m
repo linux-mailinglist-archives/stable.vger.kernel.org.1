@@ -1,142 +1,135 @@
-Return-Path: <stable+bounces-172761-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-172762-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 83AFCB33211
-	for <lists+stable@lfdr.de>; Sun, 24 Aug 2025 20:32:13 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 61E2FB33212
+	for <lists+stable@lfdr.de>; Sun, 24 Aug 2025 20:32:14 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 39A7E189D2D1
-	for <lists+stable@lfdr.de>; Sun, 24 Aug 2025 18:31:21 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 709993BE908
+	for <lists+stable@lfdr.de>; Sun, 24 Aug 2025 18:31:09 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1959C1A8F6D;
-	Sun, 24 Aug 2025 18:30:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id CABE31A2398;
+	Sun, 24 Aug 2025 18:31:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="bv7MyUXN"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="WYdEAZID"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pj1-f49.google.com (mail-pj1-f49.google.com [209.85.216.49])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CC7022CCC5
-	for <stable@vger.kernel.org>; Sun, 24 Aug 2025 18:30:55 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3A93D2CCC5;
+	Sun, 24 Aug 2025 18:31:02 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.49
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756060256; cv=none; b=YjaXreKvLTw9fvxFIKGEwEalStDlsEB7U/xiPc14D0+4GHMc8rzQw0nk5oxaUtwo0sZdd9FMXfxe9k6R/4vWvGzLNksk49Ba3MW8Z/KfJmFqZHCzSCHtCFqLbnakZb9XBcJsyYflyULsccB+jrAZLz3+U4RpxFak0AvjsP+ZdDU=
+	t=1756060264; cv=none; b=U3BZT+qsfFpK9Y84swdoXfg3RC4RyPo0zKJDxZbyEMzTYndIh95xwfrZpRftFPPJtQp8loQliZGcrAZoHxEHAKkLtg5szTlkslYqwTwjOEAjH/Jgb8kiu6t0F4B9RU/IH9GhjIZTza7oTjj5WLejcR0zZskrcayOWumkjxaPMvU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756060256; c=relaxed/simple;
-	bh=e8cIdAuE1Jwf7gNVadEPdnsurf8I2qiXIYP03F+h9QM=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=EIs2pV82Uii4cRS4XrH6X/HQ301udDttBuasmmTbfyQvsec0rXM9BJIxTGqCMhY61uNWOhLb1/IVYAm4oPjcH4lJUn/ky7s1K2vX8p9JYZOZw4ZfNRnJxwVcYisA+1quMtaOpGZcOcHeSsDOdI+1FMGxaytgRZ2OqpX2KUPtThU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=bv7MyUXN; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id BDA6FC4CEEB;
-	Sun, 24 Aug 2025 18:30:54 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1756060255;
-	bh=e8cIdAuE1Jwf7gNVadEPdnsurf8I2qiXIYP03F+h9QM=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=bv7MyUXNFQJKFu78s7uUkHDBDOWg7Z0QuRKNx4q+tKW6SoW5Q5sumf+PVzvT0ADKn
-	 V3oDIBmUj2WUUFlMFhk7R837FVnfe7VBNI2nTfrVgUCODxo1Q0PVUYB+psZ8mCkg4c
-	 aL8CtF9KIgpnY0cGBGUW2e1FlV38bQmgNpi39KdM2CLFGMTxglz0mvTOfRwFMzgT2o
-	 7K+MRM719buHWunIEe+5c1p/8lM8Mj9KosqVFYz4yPtHsO2y8w1s37uwHOEkFOkyBw
-	 XTMsFCIvJuNSlJG/liYkLPOk4hFesorFO1vYI9GTJLI8ahiNKZEPX/zfLQuKfYFWJW
-	 5VIvgyPU7DgZQ==
-From: Sasha Levin <sashal@kernel.org>
-To: stable@vger.kernel.org
-Cc: Jan Beulich <jbeulich@suse.com>,
-	Josh Poimboeuf <jpoimboe@kernel.org>,
-	Juergen Gross <jgross@suse.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10.y] compiler: remove __ADDRESSABLE_ASM{_STR,}() again
-Date: Sun, 24 Aug 2025 14:30:52 -0400
-Message-ID: <20250824183052.717912-1-sashal@kernel.org>
-X-Mailer: git-send-email 2.50.1
-In-Reply-To: <2025082220-surfboard-widget-ac5d@gregkh>
-References: <2025082220-surfboard-widget-ac5d@gregkh>
+	s=arc-20240116; t=1756060264; c=relaxed/simple;
+	bh=W+ETwy5QtffVE6jxjJA45+5GGBoy8Sk4mzSosGZCkG4=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=ugPFHmrYPsv+4GbwcnHn4lOao2J0cD7IMziJ5bXzVHBmleueGroNpxwhsNsgxlt3jLRu+ZUp/nxdZuWtXmRfUT++D2+6W8zaR9jO/cOd9sa7EChyCLH/YVZtOrrHyMDmS6Eu5Jyq5gInVIoBvveFDLWbDC83mJsGVgQxKKJZMS4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=WYdEAZID; arc=none smtp.client-ip=209.85.216.49
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-pj1-f49.google.com with SMTP id 98e67ed59e1d1-323266cd073so287232a91.0;
+        Sun, 24 Aug 2025 11:31:02 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1756060262; x=1756665062; darn=vger.kernel.org;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=uSfLOaZ3KMbXNybbcDwUOnt1kpIXXVEtejVcb/7mXIQ=;
+        b=WYdEAZID11+JTWUdNouBNtcakstS/DqQ9RvKgB3DZumdjWULItzWs6wIrs/f85/j3S
+         mKZbOOWMwBTrIu41udXhDXs2iByl2zQ5IH8iywTEs5kqtMQxj0ilDJIvJF8gRi1a4l6P
+         Tgc0NS7exJvk4+DsSiehrUFR64DJYKaXG8fx8+mbA31Un2vqMM2pc0PnL3Mg6h/Y2CmL
+         2Sx6fhYmgzsrBzgOT6nNQoz+m+J5bMwBoT4FvX/99cGu/j7Dj3PlCFadMKlaBa1bRP96
+         N5p8KhDHLcow3WumVHmlAckBNK+NxPKdsuORKExw2QGk4sevoCozlQF7fNTjpsV5g4Kx
+         vMCg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1756060262; x=1756665062;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=uSfLOaZ3KMbXNybbcDwUOnt1kpIXXVEtejVcb/7mXIQ=;
+        b=HuIP/f3BplDopQHlE160bgAufmoSmqSdyJf+wMTr8q/PieEcC3GBo8jVgMmSlIT/fi
+         etIVtGFUN8BztvfDlyqWTg2L88unAulQXDeJ/MXGZiMzffvvcOIw+XWieYnZw5Aol8+z
+         Fm3bq+dPdUX3rRIO1CDTbrJ0ePPq939fz8rz1LtmHssmfTx9UDGfBom6w09Y6HJtCrn2
+         ioFruFYts1PL/Mw8xDRCogXevGwRjuy6k49p1JXkUcUfYipZW1OqzlKg1FtDLMt+yg0F
+         TGP31HAlZpsI0Ze6czzTVFliNLwyYmq6ZYNVzpXUT1u2n/w4gB2vStTWynJupruKPXii
+         vEjA==
+X-Forwarded-Encrypted: i=1; AJvYcCVjUafbQ3QhUyA0/gP1LZGBbPtB90IPi02jzb4jy5T1di6AXSYuNRDwxEXkHURjFUpxOSr8w/Z8@vger.kernel.org, AJvYcCX4aA190Zt6oCj90F8t+xKxV1A4GYMY27vOcRMStuXtkrBkB+H/3fe6mcY8oih8/cib8GXG06M7YkfR5qY=@vger.kernel.org
+X-Gm-Message-State: AOJu0Yzu8X3eUsZNxVuXHDauRZXtHImCxv9XpIg7RpyEMZo6qkl245lA
+	BFQWWfWNRwJh5PAtr5hCmSWIg+Id04+ZvN0Yxxi43Qy2L4o9tVxzSDF1
+X-Gm-Gg: ASbGncsySvJMrXewnV0mAt9d7WgMTtkhrBeEfl2Pc6hfFazwCNB1Qng/hwNwJ0By12J
+	I115WQ6PEXyoldp8JUu3oYOOA/CK3sSTT3s1PxzD1RB6sMoT56szwXEtgdpgZc4QQVjMYXHNZ73
+	N8zwlgSbyzHGL6OlwN8UGpuhGzHC1dYfigzg7otruTWBKsRvFPD8apjxzGb/H8in3JpNm7BClYU
+	e/UFYhN+EPsholiOFTHKAZgAKyKjCzidqUZWSW0ApBcqc9Y6j/fMndKwC17Onm2dAT/V8fBdB1r
+	4qPSczlfHPLgLNwv6yn7/VuyA9xasD/esnsSME7zRJAJQhg6vEhXPHSYgQL30AuYokMOgZXN3b4
+	BxTnWNUEPXzLGlpj9JFaoI3Xerxydcy7749874UvoTQhU3+D2hhiWAahGVhpUR1oAOLQso6zo
+X-Google-Smtp-Source: AGHT+IFeYzk+uHKZ8TMIRbRJCuxck2G2r5ftJhcw3MUl0IBu3DqGYReR3/47A7js/25z5F4TA2NVPg==
+X-Received: by 2002:a17:90b:4f8e:b0:31f:3353:471e with SMTP id 98e67ed59e1d1-32515ecb35amr7552025a91.4.1756060262304;
+        Sun, 24 Aug 2025 11:31:02 -0700 (PDT)
+Received: from [172.28.221.105] (S0106a85e45f3df00.vc.shawcable.net. [174.7.235.4])
+        by smtp.gmail.com with ESMTPSA id 41be03b00d2f7-b49cb8918e7sm4748573a12.6.2025.08.24.11.31.01
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Sun, 24 Aug 2025 11:31:01 -0700 (PDT)
+Message-ID: <cfd4d3bd-cd0e-45dc-af9b-b478a56f8942@gmail.com>
+Date: Sun, 24 Aug 2025 11:31:01 -0700
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+User-Agent: Mozilla Thunderbird
+Subject: [REGRESSION] - BROKEN NETWORKING Re: Linux 6.16.3
+To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+ linux-kernel@vger.kernel.org, akpm@linux-foundation.org,
+ torvalds@linux-foundation.org, stable@vger.kernel.org
+Cc: lwn@lwn.net, jslaby@suse.cz
+References: <2025082354-halogen-retaliate-a8ba@gregkh>
+Content-Language: en-CA
+From: Kyle Sanderson <kyle.leet@gmail.com>
+In-Reply-To: <2025082354-halogen-retaliate-a8ba@gregkh>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
 
-From: Jan Beulich <jbeulich@suse.com>
+On 8/23/2025 7:51 AM, Greg Kroah-Hartman wrote:
+> I'm announcing the release of the 6.16.3 kernel.
+> 
+> All users of the 6.16 kernel series that use the ext4 filesystem should
+> upgrade.
+> 
+> The updated 6.16.y git tree can be found at:
+> 	git://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stable.git linux-6.16.y
+> and can be browsed at the normal kernel.org git web browser:
+> 	https://git.kernel.org/?p=linux/kernel/git/stable/linux-stable.git;a=summary
+> 
+> thanks,
+> 
+> greg k-h
 
-[ Upstream commit 8ea815399c3fcce1889bd951fec25b5b9a3979c1 ]
+Hi Greg,
 
-__ADDRESSABLE_ASM_STR() is where the necessary stringification happens.
-As long as "sym" doesn't contain any odd characters, no quoting is
-required for its use with .quad / .long. In fact the quotation gets in
-the way with gas 2.25; it's only from 2.26 onwards that quoted symbols
-are half-way properly supported.
+Thanks for maintaining these as always. For the first time in a long 
+time, I booted the latest stable (6.15.x -> 6.16.3) and somehow lost my 
+networking. It looks like there is a patch from Intel (reported by AMD) 
+that did not make it into stable 6.16.
 
-However, assembly being different from C anyway, drop
-__ADDRESSABLE_ASM_STR() and its helper macro altogether. A simple
-.global directive will suffice to get the symbol "declared", i.e. into
-the symbol table. While there also stop open-coding STATIC_CALL_TRAMP()
-and STATIC_CALL_KEY().
+e67a0bc3ed4fd8ee1697cb6d937e2b294ec13b5e - ixgbe
+https://lore.kernel.org/all/94d7d5c0bb4fc171154ccff36e85261a9f186923.1755661118.git.calvin@wbinvd.org/ 
+- i40e
 
-Fixes: 0ef8047b737d ("x86/static-call: provide a way to do very early static-call updates")
-Signed-off-by: Jan Beulich <jbeulich@suse.com>
-Acked-by: Josh Poimboeuf <jpoimboe@kernel.org>
-Cc: stable@vger.kernel.org
-Signed-off-by: Juergen Gross <jgross@suse.com>
-Message-ID: <609d2c74-de13-4fae-ab1a-1ec44afb948d@suse.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
----
- arch/x86/include/asm/xen/hypercall.h | 6 ++++--
- include/linux/compiler.h             | 8 --------
- 2 files changed, 4 insertions(+), 10 deletions(-)
+This asset is a quad-port embedded Intel NIC, previously eno1..4, now 
+eno1np0, eno2np1, eno3np0, eno4np1.
 
-diff --git a/arch/x86/include/asm/xen/hypercall.h b/arch/x86/include/asm/xen/hypercall.h
-index 89cd98693efc..019fc7f78d53 100644
---- a/arch/x86/include/asm/xen/hypercall.h
-+++ b/arch/x86/include/asm/xen/hypercall.h
-@@ -37,6 +37,7 @@
- #include <linux/spinlock.h>
- #include <linux/errno.h>
- #include <linux/string.h>
-+#include <linux/stringify.h>
- #include <linux/types.h>
- #include <linux/pgtable.h>
- #include <linux/instrumentation.h>
-@@ -94,12 +95,13 @@ DECLARE_STATIC_CALL(xen_hypercall, xen_hypercall_func);
- #ifdef MODULE
- #define __ADDRESSABLE_xen_hypercall
- #else
--#define __ADDRESSABLE_xen_hypercall __ADDRESSABLE_ASM_STR(__SCK__xen_hypercall)
-+#define __ADDRESSABLE_xen_hypercall \
-+	__stringify(.global STATIC_CALL_KEY(xen_hypercall);)
- #endif
- 
- #define __HYPERCALL					\
- 	__ADDRESSABLE_xen_hypercall			\
--	"call __SCT__xen_hypercall"
-+	__stringify(call STATIC_CALL_TRAMP(xen_hypercall))
- 
- #define __HYPERCALL_ENTRY(x)	"a" (x)
- 
-diff --git a/include/linux/compiler.h b/include/linux/compiler.h
-index 13a43651984f..bbd74420fa21 100644
---- a/include/linux/compiler.h
-+++ b/include/linux/compiler.h
-@@ -242,14 +242,6 @@ static inline void *offset_to_ptr(const int *off)
- 	static void * __section(".discard.addressable") __used \
- 		__UNIQUE_ID(__PASTE(__addressable_,sym)) = (void *)&sym;
- 
--#define __ADDRESSABLE_ASM(sym)						\
--	.pushsection .discard.addressable,"aw";				\
--	.align ARCH_SEL(8,4);						\
--	ARCH_SEL(.quad, .long) __stringify(sym);			\
--	.popsection;
--
--#define __ADDRESSABLE_ASM_STR(sym) __stringify(__ADDRESSABLE_ASM(sym))
--
- /* &a[0] degrades to a pointer: a different type from an array */
- #define __must_be_array(a)	BUILD_BUG_ON_ZERO(__same_type((a), &(a)[0]))
- 
--- 
-2.50.1
+Seems like there's a bit of a debate right now over should this get 
+carried in the tree (this 1/4 state stuff is no good). Anyway, upgrading 
+the kernel broke my networking, and because this is carried in 6.17-rc3 
+for ixgbe it will break again. I honestly don't care if it's some 
+ridiculous systemd thing or the kernel that fixes this, just that 
+there's a note on how to migrate for the common man (and that there is a 
+material change to how interfaces are exposed).
 
+Kyle.
 
