@@ -1,60 +1,58 @@
-Return-Path: <stable+bounces-172677-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-172678-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 32AB0B32CD4
-	for <lists+stable@lfdr.de>; Sun, 24 Aug 2025 03:19:02 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 6E904B32CD5
+	for <lists+stable@lfdr.de>; Sun, 24 Aug 2025 03:19:03 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id DEE923C01D0
-	for <lists+stable@lfdr.de>; Sun, 24 Aug 2025 01:19:00 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 2F1E73C01B4
+	for <lists+stable@lfdr.de>; Sun, 24 Aug 2025 01:19:02 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6921414A4CC;
-	Sun, 24 Aug 2025 01:18:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 38D2017ADF8;
+	Sun, 24 Aug 2025 01:18:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="oS3R0N/S"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="JB7pc/fL"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 264391426C
-	for <stable@vger.kernel.org>; Sun, 24 Aug 2025 01:18:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E98DC1426C
+	for <stable@vger.kernel.org>; Sun, 24 Aug 2025 01:18:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755998338; cv=none; b=YPUBYXNXOpaMGbKfy9vpSq27LfQIzQXAKey8KpzZ1zlObQleFIDgEt3NdIATtjlu+QjD7OlUbpfmLIjr6jt8SekROc9WYHWxt0svNx5+MVOG8I2DmCSkn0/gH4td2UzbHfFALG+u2ctkQqVTWtHx+/F3AdzIn7BMtu6mhLVdNvc=
+	t=1755998339; cv=none; b=iBhPusOMK+RPTz91RHGZleo4+HA/qcfL4XwTezO1yqp/YpxZaPzeaA87LtudnCXtidZuB1AJL0vh6XewEVeCATNVyHA5BepIE7eLKV3t+DS5ZNiEJyE3JXqKVgmonpbim/6xHpCfi3hW5Oxep+m+lWJKfYyAXNuO2I2QJh1lE3s=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1755998338; c=relaxed/simple;
-	bh=GMF8iON5JKKHYgMjVKLliY1fFWK9/ErM49FV4ZBlNpY=;
+	s=arc-20240116; t=1755998339; c=relaxed/simple;
+	bh=R3hfn6mO7lOLJAn1VLo4O5DtPsrDNCnQ0/B5/P26BEg=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=JUsOkLwr8IRjpdCtFjwGomuhLVaz83zkU8AoYr/rBQy/+ww4oE9T1tbc1zI8l5WP2z+ekQXSjBxwdA+qHFM7UWsrBmPmOC2sXYzyE7b+GkShEllWlPzgioXJX9FSQMEnjwXlj/4MNNrFjTR27CXaiG4LnNQK+xS758k0UV8mD90=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=oS3R0N/S; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id CF70BC4CEE7;
-	Sun, 24 Aug 2025 01:18:56 +0000 (UTC)
+	 MIME-Version; b=Chy3VlnBNSyNAA/bK29RfdOur8HuXNgLGNsERYi9knim6noPs/LSEk//dLVkePg9/eefx0Q0ST5UX0QdkRV0JMwp5Erh2tDRPSIRnAU5vDDibSmHCpiZbZQu4sYVsS0HzqPyPNNAOS5K8K6NZkeg6s37OXl1iGYL7YhWo0rArYg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=JB7pc/fL; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id ED200C113CF;
+	Sun, 24 Aug 2025 01:18:57 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1755998337;
-	bh=GMF8iON5JKKHYgMjVKLliY1fFWK9/ErM49FV4ZBlNpY=;
+	s=k20201202; t=1755998338;
+	bh=R3hfn6mO7lOLJAn1VLo4O5DtPsrDNCnQ0/B5/P26BEg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=oS3R0N/ShBu4hNIKypxuukpl0V5P1ExHlx7LGvstEsZsDgKzWurUs2Zm3W4S0Dwcs
-	 hF6BqxBui+Z4uNe+Iqh41U9qq293JXlDB+tDg5gdj13mDnZSH2llRxaDimGNsUjUfQ
-	 /w5XVLkTKmNxbBoa0XKDYXmARlJO/QEuzUIFLzTWDS8wchox5gd9wCvK5gCVxzMc5N
-	 j8KLFwd9U79xqaQrGH5ids8SRNvQpz/eTOjORl97Gr0tzBgnDL0wT2iV31eHV33Mg9
-	 IQqyMdjVJsOCztdYWthUcvrlPnXNy5KrajjpHidTIQnb1n/R9YOkY873cO7ry/dSDh
-	 +9rn0ylEtvGGA==
+	b=JB7pc/fLPLEXNNxveBKbhqAQPs63rOlu49e3u6ZqwihGyPtrAimz4Z+T/+wNe0bWq
+	 uNW+MFX+aT/YfLxeol6zGvzGUCfSMVT7MqDSeWnbuo7e5HwrGiogVUfYi42hGz/wRu
+	 k+RmrLHFzV5BJbPowVE2+/3mKOg+WhxMUIDV4CCY5B95TusqIQWGs5cPrIK2oPbK/M
+	 YSrBaFl/T/qTS0ULUr5MxXIsOIFXyKs2PeM5RzpE90mgsHg0OhckDQclhilygaFKa1
+	 bv0+5kvi48j/rO2ekvCiy/PWzOcUVfUffjFi7b0SY52pY8Ch+04ulEHfpWqT3T06GU
+	 k4l827LGELXvw==
 From: Sasha Levin <sashal@kernel.org>
 To: stable@vger.kernel.org
-Cc: Steven Rostedt <rostedt@goodmis.org>,
-	Masami Hiramatsu <mhiramat@kernel.org>,
-	Mark Rutland <mark.rutland@arm.com>,
-	Mathieu Desnoyers <mathieu.desnoyers@efficios.com>,
-	Andrew Morton <akpm@linux-foundation.org>,
+Cc: Pu Lehui <pulehui@huawei.com>,
+	"Steven Rostedt (Google)" <rostedt@goodmis.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12.y 1/2] tracing: Remove unneeded goto out logic
-Date: Sat, 23 Aug 2025 21:18:54 -0400
-Message-ID: <20250824011855.2574804-1-sashal@kernel.org>
+Subject: [PATCH 6.12.y 2/2] tracing: Limit access to parser->buffer when trace_get_user failed
+Date: Sat, 23 Aug 2025 21:18:55 -0400
+Message-ID: <20250824011855.2574804-2-sashal@kernel.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <2025082330-tameness-senator-c4d5@gregkh>
+In-Reply-To: <20250824011855.2574804-1-sashal@kernel.org>
 References: <2025082330-tameness-senator-c4d5@gregkh>
+ <20250824011855.2574804-1-sashal@kernel.org>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -63,38 +61,63 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-From: Steven Rostedt <rostedt@goodmis.org>
+From: Pu Lehui <pulehui@huawei.com>
 
-[ Upstream commit c89504a703fb779052213add0e8ed642f4a4f1c8 ]
+[ Upstream commit 6a909ea83f226803ea0e718f6e88613df9234d58 ]
 
-Several places in the trace.c file there's a goto out where the out is
-simply a return. There's no reason to jump to the out label if it's not
-doing any more logic but simply returning from the function.
+When the length of the string written to set_ftrace_filter exceeds
+FTRACE_BUFF_MAX, the following KASAN alarm will be triggered:
 
-Replace the goto outs with a return and remove the out labels.
+BUG: KASAN: slab-out-of-bounds in strsep+0x18c/0x1b0
+Read of size 1 at addr ffff0000d00bd5ba by task ash/165
 
-Cc: Masami Hiramatsu <mhiramat@kernel.org>
-Cc: Mark Rutland <mark.rutland@arm.com>
-Cc: Mathieu Desnoyers <mathieu.desnoyers@efficios.com>
-Cc: Andrew Morton <akpm@linux-foundation.org>
-Link: https://lore.kernel.org/20250801203857.538726745@kernel.org
+CPU: 1 UID: 0 PID: 165 Comm: ash Not tainted 6.16.0-g6bcdbd62bd56-dirty
+Hardware name: linux,dummy-virt (DT)
+Call trace:
+ show_stack+0x34/0x50 (C)
+ dump_stack_lvl+0xa0/0x158
+ print_address_description.constprop.0+0x88/0x398
+ print_report+0xb0/0x280
+ kasan_report+0xa4/0xf0
+ __asan_report_load1_noabort+0x20/0x30
+ strsep+0x18c/0x1b0
+ ftrace_process_regex.isra.0+0x100/0x2d8
+ ftrace_regex_release+0x484/0x618
+ __fput+0x364/0xa58
+ ____fput+0x28/0x40
+ task_work_run+0x154/0x278
+ do_notify_resume+0x1f0/0x220
+ el0_svc+0xec/0xf0
+ el0t_64_sync_handler+0xa0/0xe8
+ el0t_64_sync+0x1ac/0x1b0
+
+The reason is that trace_get_user will fail when processing a string
+longer than FTRACE_BUFF_MAX, but not set the end of parser->buffer to 0.
+Then an OOB access will be triggered in ftrace_regex_release->
+ftrace_process_regex->strsep->strpbrk. We can solve this problem by
+limiting access to parser->buffer when trace_get_user failed.
+
+Cc: stable@vger.kernel.org
+Link: https://lore.kernel.org/20250813040232.1344527-1-pulehui@huaweicloud.com
+Fixes: 8c9af478c06b ("ftrace: Handle commands when closing set_ftrace_filter file")
+Signed-off-by: Pu Lehui <pulehui@huawei.com>
 Signed-off-by: Steven Rostedt (Google) <rostedt@goodmis.org>
-Stable-dep-of: 6a909ea83f22 ("tracing: Limit access to parser->buffer when trace_get_user failed")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- kernel/trace/trace.c | 38 +++++++++++++++-----------------------
- 1 file changed, 15 insertions(+), 23 deletions(-)
+ kernel/trace/trace.c | 18 ++++++++++++------
+ kernel/trace/trace.h |  8 +++++++-
+ 2 files changed, 19 insertions(+), 7 deletions(-)
 
 diff --git a/kernel/trace/trace.c b/kernel/trace/trace.c
-index 801def692f92..e6598a37e1e0 100644
+index e6598a37e1e0..2f662ca4d3ff 100644
 --- a/kernel/trace/trace.c
 +++ b/kernel/trace/trace.c
 @@ -1754,7 +1754,7 @@ int trace_get_user(struct trace_parser *parser, const char __user *ubuf,
  
  	ret = get_user(ch, ubuf++);
  	if (ret)
--		goto out;
-+		return ret;
+-		return ret;
++		goto fail;
  
  	read++;
  	cnt--;
@@ -102,112 +125,79 @@ index 801def692f92..e6598a37e1e0 100644
  		while (cnt && isspace(ch)) {
  			ret = get_user(ch, ubuf++);
  			if (ret)
--				goto out;
-+				return ret;
+-				return ret;
++				goto fail;
  			read++;
  			cnt--;
  		}
-@@ -1778,8 +1778,7 @@ int trace_get_user(struct trace_parser *parser, const char __user *ubuf,
- 		/* only spaces were written */
- 		if (isspace(ch) || !ch) {
- 			*ppos += read;
--			ret = read;
--			goto out;
-+			return read;
- 		}
- 	}
- 
-@@ -1787,13 +1786,12 @@ int trace_get_user(struct trace_parser *parser, const char __user *ubuf,
+@@ -1786,12 +1786,14 @@ int trace_get_user(struct trace_parser *parser, const char __user *ubuf,
  	while (cnt && !isspace(ch) && ch) {
  		if (parser->idx < parser->size - 1)
  			parser->buffer[parser->idx++] = ch;
--		else {
--			ret = -EINVAL;
--			goto out;
--		}
-+		else
-+			return -EINVAL;
-+
+-		else
+-			return -EINVAL;
++		else {
++			ret = -EINVAL;
++			goto fail;
++		}
+ 
  		ret = get_user(ch, ubuf++);
  		if (ret)
--			goto out;
-+			return ret;
+-			return ret;
++			goto fail;
  		read++;
  		cnt--;
  	}
-@@ -1808,15 +1806,11 @@ int trace_get_user(struct trace_parser *parser, const char __user *ubuf,
+@@ -1806,11 +1808,15 @@ int trace_get_user(struct trace_parser *parser, const char __user *ubuf,
  		/* Make sure the parsed string always terminates with '\0'. */
  		parser->buffer[parser->idx] = 0;
  	} else {
--		ret = -EINVAL;
--		goto out;
-+		return -EINVAL;
+-		return -EINVAL;
++		ret = -EINVAL;
++		goto fail;
  	}
  
  	*ppos += read;
--	ret = read;
--
--out:
--	return ret;
-+	return read;
+ 	return read;
++fail:
++	trace_parser_fail(parser);
++	return ret;
  }
  
  /* TODO add a seq_buf_to_buffer() */
-@@ -2318,10 +2312,10 @@ int __init register_tracer(struct tracer *type)
- 	mutex_unlock(&trace_types_lock);
+diff --git a/kernel/trace/trace.h b/kernel/trace/trace.h
+index 57e1af1d3e6d..b15b8ad8f80d 100644
+--- a/kernel/trace/trace.h
++++ b/kernel/trace/trace.h
+@@ -1230,6 +1230,7 @@ bool ftrace_event_is_function(struct trace_event_call *call);
+  */
+ struct trace_parser {
+ 	bool		cont;
++	bool		fail;
+ 	char		*buffer;
+ 	unsigned	idx;
+ 	unsigned	size;
+@@ -1237,7 +1238,7 @@ struct trace_parser {
  
- 	if (ret || !default_bootup_tracer)
--		goto out_unlock;
-+		return ret;
- 
- 	if (strncmp(default_bootup_tracer, type->name, MAX_TRACER_SIZE))
--		goto out_unlock;
-+		return 0;
- 
- 	printk(KERN_INFO "Starting tracer '%s'\n", type->name);
- 	/* Do we want this tracer to start on bootup? */
-@@ -2333,8 +2327,7 @@ int __init register_tracer(struct tracer *type)
- 	/* disable other selftests, since this will break it. */
- 	disable_tracing_selftest("running a tracer");
- 
-- out_unlock:
--	return ret;
-+	return 0;
+ static inline bool trace_parser_loaded(struct trace_parser *parser)
+ {
+-	return (parser->idx != 0);
++	return !parser->fail && parser->idx != 0;
  }
  
- static void tracing_reset_cpu(struct array_buffer *buf, int cpu)
-@@ -8563,12 +8556,12 @@ ftrace_trace_snapshot_callback(struct trace_array *tr, struct ftrace_hash *hash,
-  out_reg:
- 	ret = tracing_arm_snapshot(tr);
- 	if (ret < 0)
--		goto out;
-+		return ret;
+ static inline bool trace_parser_cont(struct trace_parser *parser)
+@@ -1251,6 +1252,11 @@ static inline void trace_parser_clear(struct trace_parser *parser)
+ 	parser->idx = 0;
+ }
  
- 	ret = register_ftrace_function_probe(glob, tr, ops, count);
- 	if (ret < 0)
- 		tracing_disarm_snapshot(tr);
-- out:
++static inline void trace_parser_fail(struct trace_parser *parser)
++{
++	parser->fail = true;
++}
 +
- 	return ret < 0 ? ret : 0;
- }
- 
-@@ -10469,7 +10462,7 @@ __init static int tracer_alloc_buffers(void)
- 	BUILD_BUG_ON(TRACE_ITER_LAST_BIT > TRACE_FLAGS_MAX_SIZE);
- 
- 	if (!alloc_cpumask_var(&tracing_buffer_mask, GFP_KERNEL))
--		goto out;
-+		return -ENOMEM;
- 
- 	if (!alloc_cpumask_var(&global_trace.tracing_cpumask, GFP_KERNEL))
- 		goto out_free_buffer_mask;
-@@ -10582,7 +10575,6 @@ __init static int tracer_alloc_buffers(void)
- 	free_cpumask_var(global_trace.tracing_cpumask);
- out_free_buffer_mask:
- 	free_cpumask_var(tracing_buffer_mask);
--out:
- 	return ret;
- }
- 
+ extern int trace_parser_get_init(struct trace_parser *parser, int size);
+ extern void trace_parser_put(struct trace_parser *parser);
+ extern int trace_get_user(struct trace_parser *parser, const char __user *ubuf,
 -- 
 2.50.1
 
