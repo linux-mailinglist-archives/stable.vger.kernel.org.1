@@ -1,83 +1,85 @@
-Return-Path: <stable+bounces-172683-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-172684-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1D1F0B32CF7
-	for <lists+stable@lfdr.de>; Sun, 24 Aug 2025 04:36:23 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id E0988B32CF9
+	for <lists+stable@lfdr.de>; Sun, 24 Aug 2025 04:36:35 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 9ED341B2202A
-	for <lists+stable@lfdr.de>; Sun, 24 Aug 2025 02:36:42 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id A93964852D9
+	for <lists+stable@lfdr.de>; Sun, 24 Aug 2025 02:36:33 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 40AFA1C8616;
-	Sun, 24 Aug 2025 02:36:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8C0A01DE4E1;
+	Sun, 24 Aug 2025 02:36:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b="YTpF2aJO"
+	dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b="m9E4CCsu"
 X-Original-To: stable@vger.kernel.org
-Received: from NAM10-MW2-obe.outbound.protection.outlook.com (mail-mw2nam10on2084.outbound.protection.outlook.com [40.107.94.84])
+Received: from NAM11-BN8-obe.outbound.protection.outlook.com (mail-bn8nam11on2048.outbound.protection.outlook.com [40.107.236.48])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6FC80393DD5
-	for <stable@vger.kernel.org>; Sun, 24 Aug 2025 02:36:15 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.94.84
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AC7231D9A5F
+	for <stable@vger.kernel.org>; Sun, 24 Aug 2025 02:36:27 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.236.48
 ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756002977; cv=fail; b=PLpt1Mf9tMq7ACe9Gn0/0YN2+2TN+nYlj5xS7EC66Cz5jCsWCZpCzfp/L5oB2h11mBTaSVeIjbN9+DByM2bBJkdV9+zS/xz5OB6+yRixO89eGdK4tGE9797sjZ208z8NfC3wEuGvap4gpqFoAEkBrY+thM0db3btFQkPw8crvaE=
+	t=1756002989; cv=fail; b=mS7FYiXQCbOCFB/DcjFxiC43yHodFC8GEVXE3LzljP8o2GjgajInKp2d91aUUrcaVnrDmN7X5+mxMnyR6WbCjGF+9i8pmARY7rLKzYNCLH01WRb/1u4JLWC9TdBuUo3h1ftiRREQfYooijrpRKCFuo2JFg0ZQa3/8QcCmYbvmfc=
 ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756002977; c=relaxed/simple;
-	bh=AnMdrd9+CR8TqLrB3RCADxHTbODtkD0/YMrBAJygTNc=;
+	s=arc-20240116; t=1756002989; c=relaxed/simple;
+	bh=6oJh0E7J4VuCLXeiqnrm9Y5+OfyeW2YaB9yLw4JRD3Y=;
 	h=From:To:CC:Subject:Date:Message-ID:References:In-Reply-To:
-	 Content-Type:MIME-Version; b=fkxEJbFkvgSUbvSLSBPSGpuupORIxz7BsiTlq54IFSAMyfK6oX7b0+7v7DC79hWj+LPqCYb6EAkBzqzkFKpLuvtjBnLtLoQGlNHahqsNXaJN3DoEvcJ1rceRYRONmXSR6hPPLE1fGBZVYE6T3L/4V2ENeivPQStW4DhxoYO9eC4=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com; spf=fail smtp.mailfrom=nvidia.com; dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b=YTpF2aJO; arc=fail smtp.client-ip=40.107.94.84
+	 Content-Type:MIME-Version; b=jz4lkumPgrFnIE4g+flXJnb04uNXb69Zi3VlzArg62NGAAn8bB7qlTtu+KK3GzhZ/AjdZGqM+wetvvL9Tk4a9VGTRZhS7aUsDY92xhZajXuaRUq1bhR1hSMJLOSfQHmoB1ICKu7vEZEEv6BgambiQkeVe4txPJ7b80h/PHi60ms=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com; spf=fail smtp.mailfrom=nvidia.com; dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b=m9E4CCsu; arc=fail smtp.client-ip=40.107.236.48
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com
 Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=nvidia.com
 ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=WPnS7Rdvpc0nYMyWZs2/+wxZzlPUn8nf9KaSxR+hpibW4SAZQVCtaLAc9Qnp4y6wt0TeX5qtgypjVMD2+y4OtKpZYfRgzdTJ7+oc0nqkT6pJyeM2Bn7wt8HHlaL31n1x4e36T1uRD4ZU7f8pRZnMhoiUllVFVbKtKXxeWDC8T/zJi3Mv+SrZ74MSOUK+PJ3Re2HiF0oPOS1gJMKALAqfCYD38GAezjmZrmhk4yfKyzSs0KNHiToaKIvHqS4wQnS8wo4LrPxWuAFS/1VpG+cHaWcOiOk5o5ibpAdCXhTcdgqOELcNHsV5myHXD69URtH6aJQ2l4R4sABr3e+/Gbm+JQ==
+ b=AnmuL4cxYp+mj/covpweFMc4/CHZxX+X+8GPoHmbCAi0gKMFmjmxb7ENG3tps5y//MhqBMevA/B4ENhCER6jySW/iYKaZDLi5x99+hiqBnGEJ6HlHGNz/TXsn0KbvdRrgAp5WoLmwtK4RvQomsPO28LmVAMz/TpimF3e/UOR1YLIeG3455Hpug/QILiCOLLxQX6cLIGWysB7Xmp0Ommg5BNahGyGqWVHxVeyY40ZpJnWbRFA5RPF0f/N4q6umXHaUFC0ACVCd3sT9RS4Z6tG0WHpjv+Ps7Dcape2uiL+ez7q7ZPZ74dzu6lpZJqk10GVPi24YtCsU7nnz0D1qnqyAQ==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
  s=arcselector10001;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=AnMdrd9+CR8TqLrB3RCADxHTbODtkD0/YMrBAJygTNc=;
- b=h0VO1FbEXluJqzS0Cf8KxM5+VQsRsMMHb41KuaSuQhzgcxYUydI2RYUL4I2SkMGW1bBg2/WdcHujoM3TTTqgQvQupgE8/8oW1kH7G2l2ubbkX/q4fdreimBMvm4mR9Fi783/gJtXvSJ/UrEFfVzqbU2OTFUkh4Dq4GnzhPUiP+/eQSuJ0mOaLRNCE4zIuoz4sn6iJoUxkrg9oD8Mt1VTMwBIUs7X0OfK/LmEyvk/Hdy2qL9+ryfKgaKRmdfv9oShRq4OEmId/xrw7Df586dPVqR6hHnFZcFDqKxkLADHYdUhIwJVOyMcLLoynugnQAiZIE3PfhoIbd5OJmvnwibF4A==
+ bh=41Z1PSI1uKVlH0qYSKsBlNLNiIyD7bmI8kE22e34NCM=;
+ b=p8C8yjnNVAooXZtGM2K4vPLctjk/jquxR34tjX2J8Tlz4IwTaEkTkvDdRhEiGsAs0QJO9axEmAPyGbiDRk5yj7gXGSloW4Zx2phWhxJ3ra/TraKVBeOZrXsU0xIw/P5svSV0AHOM6T9Leo43vxpuOgSpr6+MxwemvI0gVkfxLZb3npK1Csgq/u3ElOFVdA7Wtu95kR52fnKr1OYh5crqFpNv8QY/6lPTZF/xBAA9uj0w5KjpVL5ScGWydlJYLRagqmHXBSRal2rxTitgTFP5ZOil5X8s53SCZFZvloCmCvoWKOOl3kacqYBmVRm1jTM8oGIxz8Zak8uOmeR5483r3w==
 ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
  smtp.mailfrom=nvidia.com; dmarc=pass action=none header.from=nvidia.com;
  dkim=pass header.d=nvidia.com; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
  s=selector2;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=AnMdrd9+CR8TqLrB3RCADxHTbODtkD0/YMrBAJygTNc=;
- b=YTpF2aJOjYyeOtpzP/q83s7GKSgTji3zCXIJqz/gco2/WvrxRu+V0qbwopU4Q+Z0oYLvGo/Q/RzqU1J5l4TAnbEk6QziqDBdSrQ2EdpsfXp0n+q0d34TIKvjzfc7Y7lv9jh076jm01B+M9HtpXUP7vPXmE1sGr+vDHp1Dj7jS6GxSXhJGhYMHsiLYSCeYSqNeWYv5759B1KzhiY5wM6BFACL0dtcNgHkKFw4XYcr31wZbY8Gf/8I6q9v6crzn/NgSag4IIkFnlXjKn+MOtLldxXxWtjNVCaGSwDjHmx66mZP0RF6qSaOajxdcNf1pbEDXhSf7F25b4W0swfWl5tqrg==
+ bh=41Z1PSI1uKVlH0qYSKsBlNLNiIyD7bmI8kE22e34NCM=;
+ b=m9E4CCsuS8eO19Y+oKF2NdClJsn6FdJwESqu9kuqF2TUHJgrOOy8GSvTmSx/UnpBghm6W6PPz5RUqdvvaOHjeIXdLCuaElZpbBsMRkUyYOFEQLQ8vzhmnswdsJ4NZVDWiwOntXsMO1FXTpCxr2d7jrDTcRb5NkjnzNF24ML8solx2xgBnqF0J7uvLTSvKrr6Hw3JihYVxzFCBq4G0QulAGNZ1eNaE6mgybHBokbpZeCV+ylSVNtvwijtrIas3ILSAZkA2U+NVYwxmj1E44VifUz3efDMOmm604oVoz7USNJ8KhiTELrQ2+kQMmzczKHd2P2qwQkDiFzuyGa9H8qPww==
 Received: from CY8PR12MB7195.namprd12.prod.outlook.com (2603:10b6:930:59::11)
- by DS0PR12MB7607.namprd12.prod.outlook.com (2603:10b6:8:13f::13) with
+ by CH1PPF12253E83C.namprd12.prod.outlook.com (2603:10b6:61f:fc00::606) with
  Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9052.20; Sun, 24 Aug
- 2025 02:36:11 +0000
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9052.13; Sun, 24 Aug
+ 2025 02:36:24 +0000
 Received: from CY8PR12MB7195.namprd12.prod.outlook.com
  ([fe80::e571:5f76:2b46:e0f8]) by CY8PR12MB7195.namprd12.prod.outlook.com
  ([fe80::e571:5f76:2b46:e0f8%6]) with mapi id 15.20.9052.019; Sun, 24 Aug 2025
- 02:36:11 +0000
+ 02:36:24 +0000
 From: Parav Pandit <parav@nvidia.com>
 To: "Michael S. Tsirkin" <mst@redhat.com>
-CC: "NBU-Contact-Li Rongqing (EXTERNAL)" <lirongqing@baidu.com>,
-	"virtualization@lists.linux.dev" <virtualization@lists.linux.dev>,
+CC: "virtualization@lists.linux.dev" <virtualization@lists.linux.dev>,
 	"jasowang@redhat.com" <jasowang@redhat.com>, "stefanha@redhat.com"
 	<stefanha@redhat.com>, "pbonzini@redhat.com" <pbonzini@redhat.com>,
 	"xuanzhuo@linux.alibaba.com" <xuanzhuo@linux.alibaba.com>,
 	"stable@vger.kernel.org" <stable@vger.kernel.org>, Max Gurtovoy
-	<mgurtovoy@nvidia.com>
+	<mgurtovoy@nvidia.com>, "NBU-Contact-Li Rongqing (EXTERNAL)"
+	<lirongqing@baidu.com>
 Subject: RE: [PATCH] Revert "virtio_pci: Support surprise removal of virtio
  pci device"
 Thread-Topic: [PATCH] Revert "virtio_pci: Support surprise removal of virtio
  pci device"
-Thread-Index: AdwTTxd+YdVEFNqzQBWcarw+isQ7dgAEGgsAAAF2L4AAAZBEYAAAb+MAAEx3t3A=
-Date: Sun, 24 Aug 2025 02:36:11 +0000
+Thread-Index:
+ AQHcE0XKqVbu8cWtaUCLZj1LjgeTGbRudpsAgAAWuWCAABaPAIAADA7wgAADewCAAmIWsA==
+Date: Sun, 24 Aug 2025 02:36:23 +0000
 Message-ID:
- <CY8PR12MB71954425100362FBA7E29F15DC3FA@CY8PR12MB7195.namprd12.prod.outlook.com>
-References: <0cfe1ccf662346a2a6bc082b91ce9704@baidu.com>
- <CY8PR12MB7195996E1181A80D5890B9F1DC3DA@CY8PR12MB7195.namprd12.prod.outlook.com>
- <20250822090407-mutt-send-email-mst@kernel.org>
- <CY8PR12MB7195425BDE79592BA24645C1DC3DA@CY8PR12MB7195.namprd12.prod.outlook.com>
- <20250822095948-mutt-send-email-mst@kernel.org>
-In-Reply-To: <20250822095948-mutt-send-email-mst@kernel.org>
+ <CY8PR12MB7195C932CA73F6C2FC7484ABDC3FA@CY8PR12MB7195.namprd12.prod.outlook.com>
+References: <20250822091706.21170-1-parav@nvidia.com>
+ <20250822060839-mutt-send-email-mst@kernel.org>
+ <CY8PR12MB7195292684E62FD44B3ADFF9DC3DA@CY8PR12MB7195.namprd12.prod.outlook.com>
+ <20250822090249-mutt-send-email-mst@kernel.org>
+ <CY8PR12MB7195392690042EF1600CEAC5DC3DA@CY8PR12MB7195.namprd12.prod.outlook.com>
+ <20250822095225-mutt-send-email-mst@kernel.org>
+In-Reply-To: <20250822095225-mutt-send-email-mst@kernel.org>
 Accept-Language: en-US
 Content-Language: en-US
 X-MS-Has-Attach:
@@ -85,70 +87,69 @@ X-MS-TNEF-Correlator:
 authentication-results: dkim=none (message not signed)
  header.d=none;dmarc=none action=none header.from=nvidia.com;
 x-ms-publictraffictype: Email
-x-ms-traffictypediagnostic: CY8PR12MB7195:EE_|DS0PR12MB7607:EE_
-x-ms-office365-filtering-correlation-id: 24143b11-0554-408e-d32d-08dde2b6fd2d
+x-ms-traffictypediagnostic: CY8PR12MB7195:EE_|CH1PPF12253E83C:EE_
+x-ms-office365-filtering-correlation-id: 1f649957-2cae-44cc-2617-08dde2b70495
 x-ld-processed: 43083d15-7273-40c1-b7db-39efd9ccc17a,ExtAddr
 x-ms-exchange-senderadcheck: 1
 x-ms-exchange-antispam-relay: 0
 x-microsoft-antispam: BCL:0;ARA:13230040|1800799024|376014|366016|38070700018;
 x-microsoft-antispam-message-info:
- =?us-ascii?Q?zf/olNC3UXRwGyGCThoO5oc745hcwtJ3FUYpueMOsuzA71L6tnKLANfQsm/4?=
- =?us-ascii?Q?Fp4Uw6GywZudAV5BgbW5k2o04M4QdPNRADHRCDyqelvlisdmIx+V1uWpqI7o?=
- =?us-ascii?Q?7YNvETdK6GDztiw9+cDa+42cPEq6E54RyUfX8sKQR+vkYfGXfmnYxqwmvW/I?=
- =?us-ascii?Q?YoBGklXoP7W85t3/YoWbDdzIgHWToZIouu0Hnvjilw0/9m6CoR1B4V3qpaFw?=
- =?us-ascii?Q?d2p9jmp+H7RKs+NkPq/BK26y0vixVoO1sdhP3cnYFReyP1dMh7xlLJus4yqQ?=
- =?us-ascii?Q?xqSGM0AQlTA3tAA58hGUc5pH0cCz5cyydfP5wPiXYrPNp2Y+d3bNg/Ragbvr?=
- =?us-ascii?Q?gX4RMgFJl1GqPbU8PTq1YstFb9gSj/6QEsfEh7vXzIeplKzpmbxgHz1MU/qg?=
- =?us-ascii?Q?FhSBfrG7DHcyEVb5n2XQJnO/3s8OxlEchp093i330vFu8xGKQhWEP9WWWfSl?=
- =?us-ascii?Q?aU+kAlCJsOnCytuPadMJCiFJA7hn+FhZz71a4FweSbPqIPCuph/chTVpFKq7?=
- =?us-ascii?Q?Evrvl0+DpzKlb/AP58HCjxJ9pSa8MJvTc3MwoiC+BOUUNV7qdCMeGURk1KWI?=
- =?us-ascii?Q?f4GN0upRMJ3Ibx/Zz5odNsgYkq87g9RoND3fZcqAahwVw/NLP9jvtnshUr0w?=
- =?us-ascii?Q?9+BUXL/O3RkMvxgQ2dTHZSG1qHwr/TJTKo6taBtfbBScSnY5+8xn6sBhbWi1?=
- =?us-ascii?Q?w3TGsf/2R9CuZBZJt8nxcILlpuo8qj+UkTi3sATslJOyMxxKUX9CB93kpJ1r?=
- =?us-ascii?Q?CrWx3MTROCWaKFcBfw0WcZAjrXPeQsuxiUkWJ8gCyDRztx5iKZP5F1szuiwD?=
- =?us-ascii?Q?iIkYyr07VlezKtHNtFTLqUEmLTaWDT4diJZUq1duwVvBOCFoTaG511TWBTIW?=
- =?us-ascii?Q?7bcT71UlQG6Nb4KpYiavTnL7YFPQPw8ujWYE5J9JAXgUJu//hTprdNBy+5Mc?=
- =?us-ascii?Q?Xn6D3nfGMBb+Qq5pVXg5MChJVaDDqzoa9VQjiq766Fv6C//oXPzipSLx5FPj?=
- =?us-ascii?Q?vdOq1D+4j0eWOyxZG+bAYL5sig669R9kGWTz9YErgLNiX7dI/WyCnETigg0Q?=
- =?us-ascii?Q?oaLkDZan6ryq0sABcsVybSGNY1rTuzd9np4IT6PlOg/viEwYMyxCKRQcc7Sp?=
- =?us-ascii?Q?geuMS0A3c3I+jTRNfO+RulzNzP+5MA/GXTQdOxcDq+EIKZVHl6Ei2kzeyu/I?=
- =?us-ascii?Q?7Bbv1DVCbugNAGczwdg+e3waDykif+5EwVYJPw+faTtbWqiOeolRZLEhqOgD?=
- =?us-ascii?Q?mLB5C6cYHeO/RE1CCp2uy/koDbwq/Mf31HQx5d05apKIrWbdf4eLs/UmbW2u?=
- =?us-ascii?Q?OcGMCGPJNDJKzUy/erg1cumxOze06TwsH+dfRKOK1C7qGbYoVs3BDdri2e6e?=
- =?us-ascii?Q?IsYX9JYzNW9b3wMomlqZU7+TzZj6ZpCV9L/VQ5p0ysgWG1cHqEbs9Q0eAC3R?=
- =?us-ascii?Q?fpSVO4y7MMwc5g4gl0hy/vXNF/pDl0jsUt3ldHCSR760niwZvDpq1m5vHP9t?=
- =?us-ascii?Q?UxwmaJ7FWExbcAo=3D?=
+ =?us-ascii?Q?OBDp5Q1NKe+nFydDViyGD/90/3KN9uPBBh/HmWC2ZO1R5WioNOMccIGp4WZW?=
+ =?us-ascii?Q?Tkn/VnL0elCt5iUYOlVxnCgkGURIItCCJO8ZaaUTzdLveoFi5ot3IQ84PsW/?=
+ =?us-ascii?Q?RlcqZrBVzg56ICg9pxaaHPdZ/VwsIFlMuZPvATJKMxQIx61wKyRlOwIBps1T?=
+ =?us-ascii?Q?SIPCelAyjkUYa802kmcCSUeWNJDJfy5QLarwt4N/RE4VmwaoI6enuuRXCm0e?=
+ =?us-ascii?Q?gPkaPaao9AM7nK8I07/+fFSaaVAMooUYsXEva3MMvJLfrL9JE+igRXNVLiHM?=
+ =?us-ascii?Q?2gQy7DT2ELDvwPBrn2/nfUwGeCcTS4JNXDrPoh9YasxTxmdgT7op1TMcb2jR?=
+ =?us-ascii?Q?b1bo2Ehfa224u5NtXZUILkvHStr4bmDJ4Mf0S5toCo6nwTyYAPXlMcpMNYY9?=
+ =?us-ascii?Q?aHqKYJ7LL7NT8bTx5NaCmAXEidUlkNYSlzsEgw4QDD3gvZBc6E7AMRzIcdwZ?=
+ =?us-ascii?Q?vhT+33CQi/MozEH2zZoMso9S2Bi4tLMkf/Iw2AP7sC1noftczTy+3wZohUpQ?=
+ =?us-ascii?Q?UD9LwkjERr4fl9CjsDYdizR5taUf+qFJNO1rO9ncO4WP/wZ38jwoWUH/a0xD?=
+ =?us-ascii?Q?+RYb3vyg2CFV51bRFXYZSlpIE8rzz1fa3CaKrcbdPCWs7iLYI3SmGuPmara/?=
+ =?us-ascii?Q?N+LVp/2iBFjL0VB2CvTjsPMk14FP2rd46yHLp6825GizMhr5ynId8Vf8F+LW?=
+ =?us-ascii?Q?tBdTrU57QaceW28THELx97ireDUIPQKjPB4vxlOeUQQXXq6mAwqm2kQVwPaf?=
+ =?us-ascii?Q?mkXWeBc/n+l3TOESY/VBpET09UXCj4IEUtrpZmT1dKcy6muh9AeDc9bHDqzu?=
+ =?us-ascii?Q?tjVfHwM4Z9LVvbUWYkbNXRMffm3su0rZlqcwaKeeu6BF18o2hdJ0IiDaH5b0?=
+ =?us-ascii?Q?8YF3S1LTtHa7/kaeRAcrH8MgIeB0zu9iJzq+yxMH3wH1Gz3Yx+aA7p2PZAys?=
+ =?us-ascii?Q?pZ5hLR7eLhRFm3owMcxEGhUdaB+0ZCXZeE+78hspqf8JM7qWOgclP/9rGCss?=
+ =?us-ascii?Q?jB/bs24jU8PN/GlVPbgvHug686CwloBjvS1gMrGqViTvR7bX0on0V0r1KmcW?=
+ =?us-ascii?Q?m8lQzN7JzOZbW4DMipnIy0wzgB3jpWSusdtqvn7MIU5JmN1t3mFKvafaBKO6?=
+ =?us-ascii?Q?F8ehIXApl1NBM96KiNRdzFFRH7jQLwYACsuuxWfHk8gm+zw3H7FL7U31nCIp?=
+ =?us-ascii?Q?NSN5qDjYDzFqjJ9R0qxigg5Ld3WVcZA3aIzQOhWpwUKk1X0wqsZ+SveIBPDQ?=
+ =?us-ascii?Q?8aOyrZIWw/l6gFVPaRza5kOrlU8M7NCz6jg+aGhSAx53hePfQbXBm/0JvFtr?=
+ =?us-ascii?Q?NdCGKDF16qJmjcl6JYPKj95PyD5NFHYR8HI552CT94/tv101gpsf72VplWiC?=
+ =?us-ascii?Q?8n9h1AmnieiCukoKWRUHCo6P+pGLOoDl8vuQn4RgUXezzBuIBb03qGnQsrq0?=
+ =?us-ascii?Q?O6/LTCeZ0IbmOvXvw/7OJxmxCejXeDgLVY8sO47dDgJSiuEJFqJcRQ=3D=3D?=
 x-forefront-antispam-report:
  CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:CY8PR12MB7195.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(1800799024)(376014)(366016)(38070700018);DIR:OUT;SFP:1101;
 x-ms-exchange-antispam-messagedata-chunkcount: 1
 x-ms-exchange-antispam-messagedata-0:
- =?us-ascii?Q?GZlgMl3NRgjG1qCifeLNk/q/Nz++2cwUdt7udt9fQtxRrRsf4JWnwLYaQ6Xm?=
- =?us-ascii?Q?17AYgJ+CrX0MBa58ngPdUKTmMxMyzfnms4FvgdFgMDLZnsTe8RNx52JBWrGq?=
- =?us-ascii?Q?igR6snq1HHuLOeC9wO6/zZ0SkxR4X/gAjQccotTTUJJxX2NrBcHlMQx1686v?=
- =?us-ascii?Q?p1qrbq8fLK40GPH+oomdrzVYVBAABWwUFsALTrv2e0qGLP8pEhqQf8Ynnha2?=
- =?us-ascii?Q?flEZwrsj1KUrSlGTA2geSwbBqsbFbZZfEtVWvGdG1KpeH5tY1cPHtUuKJNmW?=
- =?us-ascii?Q?fOI+rcxaOx76WXu1FABpe6BfPxiSqJmUWO5UEBhrP/xi2eKKdw9v7oOEdtx6?=
- =?us-ascii?Q?TOEuVXpM7UnwlZpfZg+lQCJ4GoeufjqqOfvRSBFrY5eB1M5iI0FmsMS4xhpz?=
- =?us-ascii?Q?TKnkTmEYC6aEzFuYehks/WFUqPRNRLEaj8O1Zb56/WIPt/1EHNwZZGrT9plq?=
- =?us-ascii?Q?pEFPgzipeCiRYBJy/dZG0cpLdJl4Th00QfJdkkPYl6CdNeQM7/pYnKthGFKt?=
- =?us-ascii?Q?mivyplEELZ1AGTgf2VYx3H902v+V95aSKI4X2GhZ7prsbUSdFG7xzy42fKR4?=
- =?us-ascii?Q?qgSdCcbnVoCpkkOcATmBSturVqGaUMutuBKxt3mZTVPJD+VZSvmTfd5Szdbm?=
- =?us-ascii?Q?RSdPeCK25VrqIyOCZLahNIpWArkXzAYxW/GCZB4lvzg47m5NtrcR3K/oYAwd?=
- =?us-ascii?Q?eGrzcOKwUmYtiS5PTQakjWKQa5tx2dEtn5mUCSrRq2MjImAf/RErrNhtBLAR?=
- =?us-ascii?Q?dbXXJkmYChZIgqRwd2dXXsOeXLSLrhnxI534nBt+M0RbeCrlffVFQfJup8sT?=
- =?us-ascii?Q?7mbK3td1BwWP6oB0Q+PWsFPXNczLJ72fUaEpq6zrxo+k6QvXy1eAOWXEeI5U?=
- =?us-ascii?Q?E9hAMPES+BoXTQLiOb7xPaYVg0CGXDjDYiILuXa6a6dsw8mMi6lGYHN171rI?=
- =?us-ascii?Q?qDJ99PSCwjStF5ELVtVcfz6tXSyWpOmsUTL7cQwYUhSNE/ZikwAlPPcc2QZp?=
- =?us-ascii?Q?uUgCNC+ZyIiOKMb404y7aY+1CUEWD/6fSzEBvHuK4AzdT47gXap2B6yGbv06?=
- =?us-ascii?Q?R8P9IaRnFDQ0nZQ68JH6MmurX5n/1lD3/acXQ2AXuEyWPHGMIdwNVlXb4fa1?=
- =?us-ascii?Q?JO0kcuGhCd4hjh8PleDnXFd6Hk3Vz8RqlINoHHFZdXO/RLenG988O9OV2eWY?=
- =?us-ascii?Q?fvMrAvao7M89Aksq1Z8a7KUH7+BbX7J3aQmyqFrMkFTvhWZQu9LoeojIr8KM?=
- =?us-ascii?Q?MIZr+KUa6Bl5lVdoHVA0FiA4NLdfCWfv96XP+sCVw6b8JMF+BtL8AzXcSJ42?=
- =?us-ascii?Q?4OQagbzXCH3NF0s7UOj+CLg91ya7OE+39MyCRT17LK3j4SabPjAismPZ8Lip?=
- =?us-ascii?Q?BmszLpqH99sV81QpqUfVTfsZNteA/tx3RPkxakze634L47yUaTNSgZm57HjM?=
- =?us-ascii?Q?6qqlVDpucWJlXFYkcR83xiYArzMWXLXZ1yELS0JiFy7ueHY7oMlvbAFMHTPn?=
- =?us-ascii?Q?OxY0EVnB3ngtw/D0MepulckAIiCyEBDot68suX6YrBy0Qlk/nLsyjAvsThrb?=
- =?us-ascii?Q?lP3hRv2j2SmYfWvByQM=3D?=
+ =?us-ascii?Q?th0rEqsX/g8rM1MFShUVcfXBJnS9wuNU8rVG7f3T9aCpBxHkBUSU5HKE/IcI?=
+ =?us-ascii?Q?GhNV4ZoA2OMMCDBvXXgf9DEDdU692+VArG9jCl6bGXhwZTBly8bRfyq1IkKS?=
+ =?us-ascii?Q?Jv1OeEr0v9+YJ94vRRE/lsndA8nKvFiXdJntCuz+UXX8iyrQO6LPj+jz78km?=
+ =?us-ascii?Q?jPWO/5EhfJ7u/xUcswIPKS/fVD0NQ+aRfzQaqLQ3UUbHfGgjNAPxz/VtKx/e?=
+ =?us-ascii?Q?5aTgkJfNv6QSXRbQbgJsfKrnFUuVMyyx0a3rLK9ArKOgv+k9hZzOUKddmLdi?=
+ =?us-ascii?Q?BK8Noc3/UQu8uYqnVpQqt13EoxzShh1n/ZlOW5lOjGAU6WC8VVTY58qhzrkv?=
+ =?us-ascii?Q?kOBvEJl0b/O4k7Tn1tbyEDEWS2vIizdQ3i7jQOObswrZGVvTOcVHiFe48GyK?=
+ =?us-ascii?Q?YS0njoQdUJpHoStohUBDX0bQCp+eWLaEJ2tbAbdUxWLNh6tkqJ1VqHwMffy9?=
+ =?us-ascii?Q?D04mXjdhh+xhhR4ansVrUbXIH3Rcqc3WiGKZII5y6BnM5Q6oR8JnAbIjiSkG?=
+ =?us-ascii?Q?ee6W72pnTP73SMgrIxXtXzgao0T7UTPH/pYeiTbYkZUqz8aP97jGrF5iVA9r?=
+ =?us-ascii?Q?8908DPlF/HNZkywh+qd+vfHXpYar+jK6r+Rgbq81sUenJ0zKEqJ5fLR54cgF?=
+ =?us-ascii?Q?T/+dNvXnKmkvpCzV46zDdmHa7uYI9j5M7yXh2v49HLNuJcpTAhl5Gez8MHUh?=
+ =?us-ascii?Q?UnoA+9BzwlQ60RDGDt4qSdLFOEf48CW/catnUk24sU0xqMi0DtGea+UTBsUK?=
+ =?us-ascii?Q?M7/Zjz7gz/9FeMzk6YW/or43uXpM3hgvtEFl7hHbv7BQfMrVe+d9Z6CyIoHq?=
+ =?us-ascii?Q?GemdeC4dAlAQNYtzaPuFfRc+EImbZeeu5WvztoB8vbFaQ/0iSmMtzMUsQNDJ?=
+ =?us-ascii?Q?z6y5J9lIvb200faL7uA7DCIurKPBnAu9CDzA5ZzNYZtUYGWr7vJG16j6V4Go?=
+ =?us-ascii?Q?zHtCoTk2TUGPore02kTTfhALyqOPx8TirX5orvNldlAzmETp53C77SqA2SfR?=
+ =?us-ascii?Q?vGGq96hD3KS03cnAK43c7sXgNiDsXXaGh2HSDl6omPQ52OFR/b3l3nom9dnD?=
+ =?us-ascii?Q?LqSNEDNDtGakPIhOb91/fGpAY6REkk5OKc6PW7lom7KjszdsxxUw8gYl4FLN?=
+ =?us-ascii?Q?Xw3h3K8Ho18jCeQ2+b5A27gHpz88wKkTE5nQj4OCH0XtuY+udqDy/UhbdqfV?=
+ =?us-ascii?Q?yrf+WUG8G8mGFIvGvMuLoMKRfkC8Sg5n/omu9zZ6odrykd50qjYU7i4k/pP9?=
+ =?us-ascii?Q?KqKgdte2H2PREjXCjgiFBOv8vB+ivOaGjSysEsIiwlkkhZuy2l+gS4wv1fTi?=
+ =?us-ascii?Q?E9q573KOT5+gpbiNO22ucymkdMgZ5JzrK1/qgZUMZ11BmoFlcCwZSHmJJuT6?=
+ =?us-ascii?Q?WDfca0FeoD32DrQmr9xwyUXys8swfwe+/+HRwprNA9ZuPoBgZSIMj5k1XTRt?=
+ =?us-ascii?Q?fHE5zNeoZE0wZAdMgzlFBaDENoHmpy9TYd0YiF1RG0zxyz+9jupw+NUa3ZUH?=
+ =?us-ascii?Q?ZfVNSR8+v5E/krZtPtoBKWQWD39oSBN3Q973uGPkPwqENScT7iLGkHYhoLMV?=
+ =?us-ascii?Q?ZfcxypYX9+0tauu9T6M=3D?=
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: quoted-printable
 Precedence: bulk
@@ -160,139 +161,111 @@ MIME-Version: 1.0
 X-OriginatorOrg: Nvidia.com
 X-MS-Exchange-CrossTenant-AuthAs: Internal
 X-MS-Exchange-CrossTenant-AuthSource: CY8PR12MB7195.namprd12.prod.outlook.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 24143b11-0554-408e-d32d-08dde2b6fd2d
-X-MS-Exchange-CrossTenant-originalarrivaltime: 24 Aug 2025 02:36:11.5528
+X-MS-Exchange-CrossTenant-Network-Message-Id: 1f649957-2cae-44cc-2617-08dde2b70495
+X-MS-Exchange-CrossTenant-originalarrivaltime: 24 Aug 2025 02:36:23.9705
  (UTC)
 X-MS-Exchange-CrossTenant-fromentityheader: Hosted
 X-MS-Exchange-CrossTenant-id: 43083d15-7273-40c1-b7db-39efd9ccc17a
 X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
-X-MS-Exchange-CrossTenant-userprincipalname: o+UEcVLeS5PTY/QBTa07RtZFOxGM5Ejhaz8iBQ+F9aKUioRYTlVR3PHaht2mphJg3aMWNt2MbX+4+bxaTLJodQ==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: DS0PR12MB7607
-
+X-MS-Exchange-CrossTenant-userprincipalname: XW9XP/80CkJAJuLyrKdTWzXFhNySM3McuTszRxmRrvLGkejdalhVCNL1fUoS8jPuZ6JTJqo6oOaKqqujwMpVwQ==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: CH1PPF12253E83C
 
 
 > From: Michael S. Tsirkin <mst@redhat.com>
-> Sent: 22 August 2025 07:32 PM
+> Sent: 22 August 2025 07:30 PM
 >=20
-> On Fri, Aug 22, 2025 at 01:53:02PM +0000, Parav Pandit wrote:
-> >
+> On Fri, Aug 22, 2025 at 01:49:36PM +0000, Parav Pandit wrote:
 > >
 > > > From: Michael S. Tsirkin <mst@redhat.com>
-> > > Sent: 22 August 2025 06:35 PM
+> > > Sent: 22 August 2025 06:34 PM
 > > >
-> > > On Fri, Aug 22, 2025 at 12:24:06PM +0000, Parav Pandit wrote:
-> > > >
-> > > > > From: Li,Rongqing <lirongqing@baidu.com>
-> > > > > Sent: 22 August 2025 03:57 PM
+> > > On Fri, Aug 22, 2025 at 12:22:50PM +0000, Parav Pandit wrote:
+> > > > > From: Michael S. Tsirkin <mst@redhat.com>
+> > > > > Sent: 22 August 2025 03:52 PM
 > > > > >
+> > > > > On Fri, Aug 22, 2025 at 12:17:06PM +0300, Parav Pandit wrote:
 > > > > > > This reverts commit 43bb40c5b926 ("virtio_pci: Support
-> > > > > > surprise removal of virtio pci device").
+> > > > > > surprise removal of
+> > > > > virtio pci device").
 > > > > > >
 > > > > > > Virtio drivers and PCI devices have never fully supported true
-> > > > > > surprise (aka hot
-> > > > > > unplug) removal. Drivers historically continued processing and
-> > > > > > waiting for pending I/O and even continued synchronous device
-> > > > > > reset during surprise removal. Devices have also continued
-> > > > > > completing I/Os, doing DMA and allowing device reset after
-> > > > > > surprise
-> > > removal to support such drivers.
+> > > > > > surprise (aka hot unplug) removal. Drivers historically
+> > > > > > continued processing and waiting for pending I/O and even
+> > > > > > continued synchronous device reset during surprise removal.
+> > > > > > Devices have also continued completing I/Os, doing DMA and
+> > > > > > allowing device reset after surprise removal to support such dr=
+ivers.
 > > > > > >
 > > > > > > Supporting it correctly would require a new device capability
-> > > > > > and driver negotiation in the virtio specification to safely
-> > > > > > stop I/O and free queue
-> > > > > memory.
-> > > > > > Failure to do so either breaks all the existing drivers with
-> > > > > > call trace listed in the commit or crashes the host on continui=
-ng the
-> DMA.
-> > > > > > Hence, until such specification and devices are invented,
-> > > > > > restore the previous behavior of treating surprise removal as
-> > > > > > graceful removal to avoid regressions and maintain system
-> > > > > > stability same as before the commit 43bb40c5b926 ("virtio_pci:
-> > > > > > Support surprise removal of virtio pci
-> > > > > device").
-> > > > > >
-> > > > > > As explained above, previous analysis of solving this only in
-> > > > > > driver was incomplete and non-reliable at [1] and at [2];
-> > > > > > Hence reverting commit
-> > > > > > 43bb40c5b926 ("virtio_pci: Support surprise removal of virtio
-> > > > > > pci
-> > > > > > device") is still the best stand to restore failures of virtio
-> > > > > > net and block
-> > > > > devices.
-> > > > > >
-> > > > > > [1]
-> > > > > >
-> > > > > https://lore.kernel.org/virtualization/CY8PR12MB719506CC5613EB10
-> > > > > 0BC6
-> > > > > C6
-> > > > > > 38 DCBD2@CY8PR12MB7195.namprd12.prod.outlook.com/#t
-> > > > > > [2]
-> > > > > > https://lore.kernel.org/virtualization/20250602024358.57114-1-
-> > > > > > para
-> > > > > > v@nv
-> > > > > > idia.c
-> > > > > > om/
-> > > > > >
-> > > > > > Fixes: 43bb40c5b926 ("virtio_pci: Support surprise removal of
-> > > > > > virtio pci device")
-> > > > > > Cc: stable@vger.kernel.org
-> > > > > > Reported-by: lirongqing@baidu.com
-> > > > > > Closes:
-> > > > > > https://lore.kernel.org/virtualization/c45dd68698cd47238c55fb7
-> > > > > > 3ca9
-> > > > > > b474
-> > > > > > 1@b
-> > > > > > aidu.com/
-> > > > > > Signed-off-by: Parav Pandit <parav@nvidia.com>
 > > > > >
-> > > > >
-> > > > >
-> > > > > Tested-by: Li RongQing <lirongqing@baidu.com>
-> > > > >
-> > > > > Thanks
-> > > > >
-> > > > > -Li
-> > > > >
-> > > > Multiple users are blocked to have this fix in stable kernel.
+> > > > > If a device is removed, it is removed.
+> > > > This is how it was implemented and none of the virtio drivers suppo=
+rted it.
+> > > > So vendors had stepped away from such device implementation.
+> > > > (not just us).
 > > >
-> > > what are these users doing that is blocked by this fix?
 > > >
-> > Not sure I understand the question. Let me try to answer.
-> > They are unable to dynamically add/remove the virtio net, block, fs dev=
-ices in
-> their systems.
-> > Users have their networking applications running over NS network and
-> database and file system through these devices.
-> > Some of them keep reverting the patch. Some are unable to.
-> > They are in search of stable kernel.
+> > > If the slot does not have a mechanical interlock, I can pull the
+> > > device out. It's not up to a device implementation.
 > >
-> > Did I understand your question?
-> >
+> > Sure yes, stack is not there yet to support it.
+> > Each of the virtio device drivers are not there yet.
+> > Lets build that infra, let device indicate it and it will be smooth rid=
+e for driver
+> and device.
 >=20
-> Not really, sorry.
+> There is simply no way for the device to "support" for surprise removal, =
+or lack
+> such support thereof.=20
+> The support is up to the slot, not the device.  Any pci
+> compliant device can be placed in a slot that allows surprise removal and=
+ that is
+> all. The user can then remove the device.
+> Software can then either recover gracefully - it should - or hang or cras=
+h - it
+> does sometimes, now. The patch you are trying to revert is an attempt to =
+move
+> some use-cases from the 1st to the 2nd category.
 >=20
-> Does the system or does it not have a mechanical interlock?
->=20
-It is modern system beyond mechanical interlock but has the ability for sur=
-prise removal.
+It is the driver (and not the device) who needs to tell the device that it =
+will do sane cleanup and not wait infinitely.
 
-> If it does, how does a user run into surprise removal issues without the =
-ability
-> to remove the device?
->=20
-User has the ability to surprise removal a device from the slot via the slo=
-t's pci registers.
-Yet the device is capable enough to fulfil the needs of broken drivers whic=
-h are waiting for the pending requests to arrive.
-
-> If it does not, and a user pull out the working device, how does your pat=
-ch
-> help?
->
-A driver must tell that it will not follow broken ancient behaviour and at =
-that point device would stop its ancient backward compatibility mode.
+> But what is going on now, as far as I could tell, is that someone develop=
+ed a
+> surprise removal emulation that does not actually remove the device, and =
+is
+> using that for testing the code in linux that supports surprise removal. =
 =20
+Nop. Your analysis is incorrect.
+And I explained you that already.
+The device implementation supports correct implementation where device stop=
+s all the dma and also does not support register access.
+And no single virtio driver supported that.
+
+On a surprised removed device, driver expects I/Os to complete and this is =
+beyond a 'bug fix' watermark.
+
+> That
+> weird emulation seems to lead to all kind of weird issues. You answer is =
+to
+> remove the existing code and tell your testing team "we do not support
+> surprise removal".
+>
+He he, it is no the device, it is the driver that does not support surprise=
+ removal as you can see in your proposed patches and other sw changes.
+=20
+> But just go ahead and tell this to them straight away. You do not need th=
+is patch
+> for this.
+>=20
+It is needed until infrastructure in multiple subsystem is built.
+>=20
+> Or better still, let's fix the issues please.
+>=20
+The implementation is more than a fix category for stable kernels.
+Hence, what is asked is to do proper implementation for future kernels and =
+until that point restore the bad use experience.
+>=20
 > --
 > MST
 
