@@ -1,124 +1,214 @@
-Return-Path: <stable+bounces-172673-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-172674-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 82DC2B32CBE
-	for <lists+stable@lfdr.de>; Sun, 24 Aug 2025 02:48:03 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 9B9BAB32CCD
+	for <lists+stable@lfdr.de>; Sun, 24 Aug 2025 03:02:01 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 5739C241425
-	for <lists+stable@lfdr.de>; Sun, 24 Aug 2025 00:48:03 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 819A424489A
+	for <lists+stable@lfdr.de>; Sun, 24 Aug 2025 01:01:44 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 955A43398B;
-	Sun, 24 Aug 2025 00:47:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 08FAAEEA6;
+	Sun, 24 Aug 2025 01:01:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b="H6OSqoDq"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Yl1jzee0"
 X-Original-To: stable@vger.kernel.org
-Received: from fout-b4-smtp.messagingengine.com (fout-b4-smtp.messagingengine.com [202.12.124.147])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6DD8C35979;
-	Sun, 24 Aug 2025 00:47:55 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=202.12.124.147
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B2C6D393DC5
+	for <stable@vger.kernel.org>; Sun, 24 Aug 2025 01:01:39 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755996477; cv=none; b=CkZ9a1FDD0Q5d2RU2r3X/hxNMZQ3OThUk64qBKOZP3SdehNl6hei2QX6JPMotCEpwH1+Rntl0Mzu/stUbqtdDkBHtxRFXsHOlvmy9QtlMMv56MeRlAMTX/yst3Mx+Lzv7KGj6li0DWmuGbi42pyPrTYczoBMSa9pclgL6qIe5/4=
+	t=1755997299; cv=none; b=FDM8WGPpNxJAoMgyR6XkcUbyhLXzEE4rcmSYrQWZiX8K2/B8NRhxb7UyM1jvFHd64gtRf++6F73bz5xbRoXjeTk20GD+NarHPN2c8Odd+pKLXrtm7xDZfrkUYckiKsDlTLZdJ7sN7UwYc/kXBhCpnDBw6eTSW0o/rHuEqD8od2c=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1755996477; c=relaxed/simple;
-	bh=xuziBNnie5ysUoLtEvcYwCBlbrBMWsV4Kgchzge+dzw=;
-	h=Date:From:To:cc:Subject:In-Reply-To:Message-ID:References:
-	 MIME-Version:Content-Type; b=Ebtn0okMg07VctmJ3TravH99M4l1qNlLNHjAfMQbqIMXfjhL3eMzYcyS9/StzEhJTaeMaw+EC4X7FcuSPIfqI9IyQQrHGms7udv81ih001sJxcVbvkGxlQ7Md5JiGLrmd1sJSDArnImhxCOkGUwn2dudM3cNeLRtiJHkjEj9Ox8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=linux-m68k.org; spf=none smtp.mailfrom=linux-m68k.org; dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b=H6OSqoDq; arc=none smtp.client-ip=202.12.124.147
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=linux-m68k.org
-Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=linux-m68k.org
-Received: from phl-compute-05.internal (phl-compute-05.internal [10.202.2.45])
-	by mailfout.stl.internal (Postfix) with ESMTP id B16161D00058;
-	Sat, 23 Aug 2025 20:47:53 -0400 (EDT)
-Received: from phl-mailfrontend-02 ([10.202.2.163])
-  by phl-compute-05.internal (MEProxy); Sat, 23 Aug 2025 20:47:54 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
-	messagingengine.com; h=cc:cc:content-type:content-type:date:date
-	:feedback-id:feedback-id:from:from:in-reply-to:in-reply-to
-	:message-id:mime-version:references:reply-to:subject:subject:to
-	:to:x-me-proxy:x-me-sender:x-me-sender:x-sasl-enc; s=fm3; t=
-	1755996473; x=1756082873; bh=K9+5HFtQoSlLWA05xKrNFkVtPjshle8xz2R
-	oDrH7qqw=; b=H6OSqoDqn0f5f56RTJE1davNYSkFNdjq6EsNs8+j8FJVcjLjwsQ
-	qyzJM6MFR52H1SMMk7booEPiSEJmSHfIykHbupGfnce5We+RQgYp9Q1mTpuX0EWh
-	n9kfZ6EhjmnQ28cSS20faecxQDKeMSeUAu34VH2d2YMsn3Qvse8StIDEeMUi/6SX
-	atUG2FD5gWhazXI3vYLGwyiI8DWSPKauctAtNX1Wx/40SCEZbDbBBrQoW9hoA0lX
-	GffGOBLvGAMuVv6KVSUiR5gZwleoExAYVNDqL3m4RRLchByDZHovFFfiisIs6vBf
-	q1/6CpFnblGlIs+0OS3hZS2X0uK8mOzs5kw==
-X-ME-Sender: <xms:N2GqaI2_gjPKjn3kbIlU-XthtqRduRD0SuAJCLzNrmmEjtA2y4vBOQ>
-    <xme:N2GqaEzYHNaPMkd6kj0WsMxP0Uz0_3WxBVPmS-ZFy3CStA4TYhaak-KVRoYq6lQPK
-    AsP9o74B5wsRTy-TZo>
-X-ME-Received: <xmr:N2GqaEURq1-gbDivz9hBV5Sor30hze0bjYu5B_hBbJ5UquvytqMejPX9_lbVOf3bQ65XoVGlqHvyi5Px9ZjnU1Uz1y4b8bYtRnE>
-X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgeeffedrtdefgdduieekudduucetufdoteggodetrf
-    dotffvucfrrhhofhhilhgvmecuhfgrshhtofgrihhlpdfurfetoffkrfgpnffqhgenuceu
-    rghilhhouhhtmecufedttdenucesvcftvggtihhpihgvnhhtshculddquddttddmnecujf
-    gurhepfffhvfevufgjkfhfgggtsehttdertddttddvnecuhfhrohhmpefhihhnnhcuvfhh
-    rghinhcuoehfthhhrghinheslhhinhhugidqmheikehkrdhorhhgqeenucggtffrrghtth
-    gvrhhnpeelueehleehkefgueevtdevteejkefhffekfeffffdtgfejveekgeefvdeuheeu
-    leenucevlhhushhtvghrufhiiigvpedtnecurfgrrhgrmhepmhgrihhlfhhrohhmpehfth
-    hhrghinheslhhinhhugidqmheikehkrdhorhhgpdhnsggprhgtphhtthhopedvhedpmhho
-    uggvpehsmhhtphhouhhtpdhrtghpthhtoheplhgrnhgtvgdrhigrnhhgsehlihhnuhigrd
-    guvghvpdhrtghpthhtoheplhhkphesihhnthgvlhdrtghomhdprhgtphhtthhopegrkhhp
-    mheslhhinhhugidqfhhouhhnuggrthhiohhnrdhorhhgpdhrtghpthhtohepghgvvghrth
-    eslhhinhhugidqmheikehkrdhorhhgpdhrtghpthhtohepmhhhihhrrghmrghtsehkvghr
-    nhgvlhdrohhrghdprhgtphhtthhopehsvghnohiihhgrthhskhihsegthhhrohhmihhumh
-    drohhrghdprhgtphhtthhopehovgdqkhgsuhhilhguqdgrlhhlsehlihhsthhsrdhlihhn
-    uhigrdguvghvpdhrtghpthhtoheprghmrghinhguvgigsehouhhtlhhoohhkrdgtohhmpd
-    hrtghpthhtoheprghnnhgrrdhstghhuhhmrghkvghrsehorhgrtghlvgdrtghomh
-X-ME-Proxy: <xmx:N2GqaBpOZYglFui0EcyXP4m2ZlwBg_VcFUylNyLblJoVMYzokceriw>
-    <xmx:N2GqaBf6sadZesdCD3THfvgjucDbU1NYOfW0aKDU2lbFgIxNWBvulw>
-    <xmx:N2GqaPGkju3b2tuzqBpc043uXH8WFFG1NPtqD307ax55BXlTZT_SVw>
-    <xmx:N2GqaH3H8LC98VX9T0kBNvsrVrjXgZ4inLJE4Gxszraoti0Xi_QsYw>
-    <xmx:OWGqaFYFZ9DRuli5EtF7eM0QsoYHPE0fnw2EIhtHxquh5xRDrsTU6ljl>
-Feedback-ID: i58a146ae:Fastmail
-Received: by mail.messagingengine.com (Postfix) with ESMTPA; Sat,
- 23 Aug 2025 20:47:49 -0400 (EDT)
-Date: Sun, 24 Aug 2025 10:47:43 +1000 (AEST)
-From: Finn Thain <fthain@linux-m68k.org>
-To: Lance Yang <lance.yang@linux.dev>
-cc: kernel test robot <lkp@intel.com>, akpm@linux-foundation.org, 
-    geert@linux-m68k.org, mhiramat@kernel.org, senozhatsky@chromium.org, 
-    oe-kbuild-all@lists.linux.dev, amaindex@outlook.com, 
-    anna.schumaker@oracle.com, boqun.feng@gmail.com, ioworker0@gmail.com, 
-    joel.granados@kernel.org, jstultz@google.com, kent.overstreet@linux.dev, 
-    leonylgao@tencent.com, linux-kernel@vger.kernel.org, 
-    linux-m68k@lists.linux-m68k.org, longman@redhat.com, mingo@redhat.com, 
-    mingzhe.yang@ly.com, oak@helsinkinet.fi, rostedt@goodmis.org, 
-    tfiga@chromium.org, will@kernel.org, stable@vger.kernel.org
-Subject: Re: [PATCH 1/1] hung_task: fix warnings by enforcing alignment on
- lock structures
-In-Reply-To: <202508240539.ARmC1Umu-lkp@intel.com>
-Message-ID: <29f4f58e-2f14-99c8-3899-3b0be79382c2@linux-m68k.org>
-References: <20250823074048.92498-1-lance.yang@linux.dev> <202508240539.ARmC1Umu-lkp@intel.com>
+	s=arc-20240116; t=1755997299; c=relaxed/simple;
+	bh=ihPjMSxldWj+atpcya1Nseo5X6J0Hxe4Yk8SUDPyYTw=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=YQ1+ukMcSOmHwjL7SKaf4Ym9mznMS4uYnV9b/Z46GalRbZpG2W0L55fYzBZEynG6T7ojXQpjKgx2FgRwxAFebKSopXqIkjIP6YL6cWesQoq+bYH+8OYAJImfQ8qr/3shTDxAwSAM+tL46K3/6xtoZcVutxhQhe+VMEvVVrmrCZ4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Yl1jzee0; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 81E3EC4CEE7;
+	Sun, 24 Aug 2025 01:01:38 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1755997299;
+	bh=ihPjMSxldWj+atpcya1Nseo5X6J0Hxe4Yk8SUDPyYTw=;
+	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
+	b=Yl1jzee0PW1EbHB0x8CnuEGOVAFUVPuzkGg5SGUcUS7qEFc24OyfU3vHZJtdnFCDD
+	 J2jjGdE7SGS4KKLguT4eDbWQugAs0jpfT0iGRRCouyYzsVsHnVxRiX2jE5syAsWqGW
+	 0V0LhQO0qDdYD67Vo1vzX9ELVTZ/qcne0uisdblvQ6TvxDdc3CcZ9FljQzSK6upF5N
+	 rQKmOVyTtmYvUuoDx1fpRT8aU82wvNJqywb24YmCrCUUs5klmgXcvWqwmawBSoBu5i
+	 MWBSY16BRW7ELlYyeJ0csYKVqh+3eQkgIqQKizAtygGRezRgTmDX8NYEsIzxOL3ja5
+	 RDdPPaHpsrgxg==
+From: Sasha Levin <sashal@kernel.org>
+To: stable@vger.kernel.org
+Cc: Steven Rostedt <rostedt@goodmis.org>,
+	Masami Hiramatsu <mhiramat@kernel.org>,
+	Mark Rutland <mark.rutland@arm.com>,
+	Mathieu Desnoyers <mathieu.desnoyers@efficios.com>,
+	Andrew Morton <akpm@linux-foundation.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.16.y 1/2] tracing: Remove unneeded goto out logic
+Date: Sat, 23 Aug 2025 21:01:35 -0400
+Message-ID: <20250824010136.2569554-1-sashal@kernel.org>
+X-Mailer: git-send-email 2.50.1
+In-Reply-To: <2025082329-outgrow-powdered-a0e3@gregkh>
+References: <2025082329-outgrow-powdered-a0e3@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
+Content-Transfer-Encoding: 8bit
 
+From: Steven Rostedt <rostedt@goodmis.org>
 
-On Sun, 24 Aug 2025, kernel test robot wrote:
+[ Upstream commit c89504a703fb779052213add0e8ed642f4a4f1c8 ]
 
-> 
-> All warnings (new ones prefixed by >>):
-> 
->    In file included from sound/soc/codecs/mt6660.c:15:
-> >> sound/soc/codecs/mt6660.h:28:1: warning: alignment 1 of 'struct mt6660_chip' is less than 8 [-Wpacked-not-aligned]
->       28 | };
->          | ^
-> >> sound/soc/codecs/mt6660.h:25:22: warning: 'io_lock' offset 49 in 'struct mt6660_chip' isn't aligned to 8 [-Wpacked-not-aligned]
->       25 |         struct mutex io_lock;
->          |                      ^~~~~~~
-> 
+Several places in the trace.c file there's a goto out where the out is
+simply a return. There's no reason to jump to the out label if it's not
+doing any more logic but simply returning from the function.
 
-Misalignment warnings like this one won't work if you just pick an 
-alignment arbitrarily i.e. to suit whatever bitfield you happen to need.
+Replace the goto outs with a return and remove the out labels.
 
-Instead, I think I would naturally align the actual locks, that is, 
-arch_spinlock_t and arch_rwlock_t in include/linux/spinlock_types*.h.
+Cc: Masami Hiramatsu <mhiramat@kernel.org>
+Cc: Mark Rutland <mark.rutland@arm.com>
+Cc: Mathieu Desnoyers <mathieu.desnoyers@efficios.com>
+Cc: Andrew Morton <akpm@linux-foundation.org>
+Link: https://lore.kernel.org/20250801203857.538726745@kernel.org
+Signed-off-by: Steven Rostedt (Google) <rostedt@goodmis.org>
+Stable-dep-of: 6a909ea83f22 ("tracing: Limit access to parser->buffer when trace_get_user failed")
+Signed-off-by: Sasha Levin <sashal@kernel.org>
+---
+ kernel/trace/trace.c | 38 +++++++++++++++-----------------------
+ 1 file changed, 15 insertions(+), 23 deletions(-)
+
+diff --git a/kernel/trace/trace.c b/kernel/trace/trace.c
+index 7996f26c3f46..fafe0c436c74 100644
+--- a/kernel/trace/trace.c
++++ b/kernel/trace/trace.c
+@@ -1846,7 +1846,7 @@ int trace_get_user(struct trace_parser *parser, const char __user *ubuf,
+ 
+ 	ret = get_user(ch, ubuf++);
+ 	if (ret)
+-		goto out;
++		return ret;
+ 
+ 	read++;
+ 	cnt--;
+@@ -1860,7 +1860,7 @@ int trace_get_user(struct trace_parser *parser, const char __user *ubuf,
+ 		while (cnt && isspace(ch)) {
+ 			ret = get_user(ch, ubuf++);
+ 			if (ret)
+-				goto out;
++				return ret;
+ 			read++;
+ 			cnt--;
+ 		}
+@@ -1870,8 +1870,7 @@ int trace_get_user(struct trace_parser *parser, const char __user *ubuf,
+ 		/* only spaces were written */
+ 		if (isspace(ch) || !ch) {
+ 			*ppos += read;
+-			ret = read;
+-			goto out;
++			return read;
+ 		}
+ 	}
+ 
+@@ -1879,13 +1878,12 @@ int trace_get_user(struct trace_parser *parser, const char __user *ubuf,
+ 	while (cnt && !isspace(ch) && ch) {
+ 		if (parser->idx < parser->size - 1)
+ 			parser->buffer[parser->idx++] = ch;
+-		else {
+-			ret = -EINVAL;
+-			goto out;
+-		}
++		else
++			return -EINVAL;
++
+ 		ret = get_user(ch, ubuf++);
+ 		if (ret)
+-			goto out;
++			return ret;
+ 		read++;
+ 		cnt--;
+ 	}
+@@ -1900,15 +1898,11 @@ int trace_get_user(struct trace_parser *parser, const char __user *ubuf,
+ 		/* Make sure the parsed string always terminates with '\0'. */
+ 		parser->buffer[parser->idx] = 0;
+ 	} else {
+-		ret = -EINVAL;
+-		goto out;
++		return -EINVAL;
+ 	}
+ 
+ 	*ppos += read;
+-	ret = read;
+-
+-out:
+-	return ret;
++	return read;
+ }
+ 
+ /* TODO add a seq_buf_to_buffer() */
+@@ -2410,10 +2404,10 @@ int __init register_tracer(struct tracer *type)
+ 	mutex_unlock(&trace_types_lock);
+ 
+ 	if (ret || !default_bootup_tracer)
+-		goto out_unlock;
++		return ret;
+ 
+ 	if (strncmp(default_bootup_tracer, type->name, MAX_TRACER_SIZE))
+-		goto out_unlock;
++		return 0;
+ 
+ 	printk(KERN_INFO "Starting tracer '%s'\n", type->name);
+ 	/* Do we want this tracer to start on bootup? */
+@@ -2425,8 +2419,7 @@ int __init register_tracer(struct tracer *type)
+ 	/* disable other selftests, since this will break it. */
+ 	disable_tracing_selftest("running a tracer");
+ 
+- out_unlock:
+-	return ret;
++	return 0;
+ }
+ 
+ static void tracing_reset_cpu(struct array_buffer *buf, int cpu)
+@@ -8954,12 +8947,12 @@ ftrace_trace_snapshot_callback(struct trace_array *tr, struct ftrace_hash *hash,
+  out_reg:
+ 	ret = tracing_arm_snapshot(tr);
+ 	if (ret < 0)
+-		goto out;
++		return ret;
+ 
+ 	ret = register_ftrace_function_probe(glob, tr, ops, count);
+ 	if (ret < 0)
+ 		tracing_disarm_snapshot(tr);
+- out:
++
+ 	return ret < 0 ? ret : 0;
+ }
+ 
+@@ -11057,7 +11050,7 @@ __init static int tracer_alloc_buffers(void)
+ 	BUILD_BUG_ON(TRACE_ITER_LAST_BIT > TRACE_FLAGS_MAX_SIZE);
+ 
+ 	if (!alloc_cpumask_var(&tracing_buffer_mask, GFP_KERNEL))
+-		goto out;
++		return -ENOMEM;
+ 
+ 	if (!alloc_cpumask_var(&global_trace.tracing_cpumask, GFP_KERNEL))
+ 		goto out_free_buffer_mask;
+@@ -11175,7 +11168,6 @@ __init static int tracer_alloc_buffers(void)
+ 	free_cpumask_var(global_trace.tracing_cpumask);
+ out_free_buffer_mask:
+ 	free_cpumask_var(tracing_buffer_mask);
+-out:
+ 	return ret;
+ }
+ 
+-- 
+2.50.1
+
 
