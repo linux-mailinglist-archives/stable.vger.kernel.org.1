@@ -1,155 +1,236 @@
-Return-Path: <stable+bounces-172680-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-172681-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 09A84B32CD8
-	for <lists+stable@lfdr.de>; Sun, 24 Aug 2025 03:20:56 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0E130B32CDA
+	for <lists+stable@lfdr.de>; Sun, 24 Aug 2025 03:29:42 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id C6063189315C
-	for <lists+stable@lfdr.de>; Sun, 24 Aug 2025 01:20:35 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 97B9B7A52CC
+	for <lists+stable@lfdr.de>; Sun, 24 Aug 2025 01:28:06 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C0C28165F1A;
-	Sun, 24 Aug 2025 01:20:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6BFBB13D503;
+	Sun, 24 Aug 2025 01:29:35 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="ePVZJA7u"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="UZiGRkQ5"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7E313211F
-	for <stable@vger.kernel.org>; Sun, 24 Aug 2025 01:20:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2B61933E7
+	for <stable@vger.kernel.org>; Sun, 24 Aug 2025 01:29:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755998411; cv=none; b=beoeKY3dqBh2EXwiz+xItB8FdzNYZ+M2GhY2sIRGYu3EDVGbT8EZU8mwD1YcMg1gbodAWwD+JDWu7ZY/eHjdoGYv53PMpbxEw6GUf88oI1y3kTno96++FM63CPcy3+1JGG1h9ob+Zc8N0axQMm6ovsdYAmkA3tS7cOb5uJN2IEM=
+	t=1755998975; cv=none; b=rEor5O8SbmYy+NYfOYzKhVwtq+zqCsTMhl2Nss39LoDYWnn2rObJHwjd26/VxxyFW3pvjrzv5TWZjOhQLaen5e0l25v1T7z2xaeACa3uAJ9mywc9qw6q8YB4t/zjNgKViNy2O2j3rnfiCSeIoGyvSQDdjCFHHad6A2JAs+34iL0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1755998411; c=relaxed/simple;
-	bh=GcGtUY9/ohflnanoWfhy5ik2ngXkam+ZyWgjVUhtIzg=;
+	s=arc-20240116; t=1755998975; c=relaxed/simple;
+	bh=HHwfW3lW2emlZpo/Z+3QokN7Yhkcptjl9X0cxvzmL28=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=QISuIHknXcYkN6Lqk17SgI4Iu3jNig49MORtzelVSqBr86Q2E4c22j4/XAAnq9lZwWi0xQzcbgEWMjlMgomhOerAQUo1rit0M5Dv4yOv3LBcnhh4me+9WdFWzQ9JqX9OeDeaUZKDwJWP8eS1iODETXKG8vKydC5yxn8/OrAOZ6w=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=ePVZJA7u; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 51394C4CEE7;
-	Sun, 24 Aug 2025 01:20:10 +0000 (UTC)
+	 MIME-Version; b=O5wqVUTV21aQ0zRiXx1hMFOVRSjWh2J/Lafgp19/XSdJsx9fYgYNyZAAVhfLKx3iknyF+kerkND34AvBHvaXLdWMDpFpZTe+D8zUViMQSPQLK8ZMdzawqv3qNR3TQMg5Bw/xwn5o88SOQi7BUUqJcG1mDdsClP92+mOXter3520=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=UZiGRkQ5; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0B7DFC4CEE7;
+	Sun, 24 Aug 2025 01:29:33 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1755998411;
-	bh=GcGtUY9/ohflnanoWfhy5ik2ngXkam+ZyWgjVUhtIzg=;
+	s=k20201202; t=1755998974;
+	bh=HHwfW3lW2emlZpo/Z+3QokN7Yhkcptjl9X0cxvzmL28=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=ePVZJA7uj5IjGM2NURluL+jYcRqNtoJc7sdOhK6aL5UAmRrUjonGoiTwO2fb3unGK
-	 79mS33LyAXMPGuxCsshUMfTnvMXWoRaS5TCQ/LyBo5EEu0tUzb9N7oO9S/8pcDMYPZ
-	 Ql74qwxMmB/msEE98VQkJGY9FGbDdNl6y8h2wlD6sOqK4RTOWrNL2UFJqPZLoW+ysx
-	 +AfKjJdNUNrmqnmfS58y+rA2KyX3wx2n2bh/DPUfioa7dvkQKE6oQCugK3qrrOBvLx
-	 +4IVzBIxCKHmTcQYQzzA2PkC7XlvQTALtrbz8NplRBdsGDTD2OFS0JUKriR44mxfaC
-	 0SiT/LGEiZDAg==
+	b=UZiGRkQ5uhMkIi2KohLy/8kIFbOTw6ldHUEbkfWW5ZJomnjWJeCVBu3o5+r8Osed1
+	 cT04yIVUtkeCmwrX3xsfPwPxd5+9okkoiumErx2xcCE8yoGzRTAcScqrxb8UwpEhsU
+	 XGVpKxcbmg5bD/NhJJXtaHQ5DAiOrmx+aeJDFegkfMDFI51RYQZ1jcnWXp3YPdPveI
+	 eNEy5s/on/8ITrM0DmRpiKalZySMuHyoHK56FHV2n/Su50Nnk1jOp5fEipKUsMvBJa
+	 A8VY2XujhPCHs1KGO5RGYoSs6SCNiWz1XiVbj5OIaKPzJK76930nPHsTmIc3UsHiRr
+	 vgFYLixYKu4+A==
 From: Sasha Levin <sashal@kernel.org>
 To: stable@vger.kernel.org
-Cc: David Lechner <dlechner@baylibre.com>,
-	=?UTF-8?q?Nuno=20S=C3=A1?= <nuno.sa@analog.com>,
-	Stable@vger.kernel.org,
-	Jonathan Cameron <Jonathan.Cameron@huawei.com>,
+Cc: Jonathan Cameron <Jonathan.Cameron@huawei.com>,
+	Matti Vaittinen <mazziesaccount@gmail.com>,
+	Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12.y] iio: temperature: maxim_thermocouple: use DMA-safe buffer for spi_read()
-Date: Sat, 23 Aug 2025 21:20:08 -0400
-Message-ID: <20250824012008.2575688-1-sashal@kernel.org>
+Subject: [PATCH 6.12.y 1/2] iio: light: Use aligned_s64 instead of open coding alignment.
+Date: Sat, 23 Aug 2025 21:29:31 -0400
+Message-ID: <20250824012932.2578686-1-sashal@kernel.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <2025082359-tall-affected-36cf@gregkh>
-References: <2025082359-tall-affected-36cf@gregkh>
+In-Reply-To: <2025082316-antennae-resurrect-e01a@gregkh>
+References: <2025082316-antennae-resurrect-e01a@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-From: David Lechner <dlechner@baylibre.com>
+From: Jonathan Cameron <Jonathan.Cameron@huawei.com>
 
-[ Upstream commit ae5bc07ec9f73a41734270ef3f800c5c8a7e0ad3 ]
+[ Upstream commit a801016da0bbb955acf1a551584790e3816bb4db ]
 
-Replace using stack-allocated buffers with a DMA-safe buffer for use
-with spi_read(). This allows the driver to be safely used with
-DMA-enabled SPI controllers.
+Use this new type to both slightly simplify the code and avoid
+confusing static analysis tools. Mostly this series is about consistency
+to avoid this code pattern getting copied into more drivers.
 
-The buffer array is also converted to a struct with a union to make the
-usage of the memory in the buffer more clear and ensure proper alignment.
-
-Fixes: 1f25ca11d84a ("iio: temperature: add support for Maxim thermocouple chips")
-Signed-off-by: David Lechner <dlechner@baylibre.com>
-Reviewed-by: Nuno Sá <nuno.sa@analog.com>
-Link: https://patch.msgid.link/20250721-iio-use-more-iio_declare_buffer_with_ts-3-v2-1-0c68d41ccf6c@baylibre.com
-Cc: <Stable@vger.kernel.org>
+Acked-By: Matti Vaittinen <mazziesaccount@gmail.com> #For bu27034, rpr0521
+Reviewed-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+Link: https://patch.msgid.link/20241215182912.481706-9-jic23@kernel.org
 Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
-[ iio_push_to_buffers_with_ts() => iio_push_to_buffers_with_timestamp() ]
+Stable-dep-of: 433b99e92294 ("iio: light: as73211: Ensure buffer holes are zeroed")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/iio/temperature/maxim_thermocouple.c | 26 ++++++++++++--------
- 1 file changed, 16 insertions(+), 10 deletions(-)
+ drivers/iio/light/adjd_s311.c    | 2 +-
+ drivers/iio/light/as73211.c      | 2 +-
+ drivers/iio/light/bh1745.c       | 2 +-
+ drivers/iio/light/isl29125.c     | 2 +-
+ drivers/iio/light/ltr501.c       | 2 +-
+ drivers/iio/light/max44000.c     | 2 +-
+ drivers/iio/light/rohm-bu27034.c | 2 +-
+ drivers/iio/light/rpr0521.c      | 2 +-
+ drivers/iio/light/st_uvis25.h    | 2 +-
+ drivers/iio/light/tcs3414.c      | 2 +-
+ drivers/iio/light/tcs3472.c      | 2 +-
+ 11 files changed, 11 insertions(+), 11 deletions(-)
 
-diff --git a/drivers/iio/temperature/maxim_thermocouple.c b/drivers/iio/temperature/maxim_thermocouple.c
-index 555a61e2f3fd..44fba61ccfe2 100644
---- a/drivers/iio/temperature/maxim_thermocouple.c
-+++ b/drivers/iio/temperature/maxim_thermocouple.c
-@@ -12,6 +12,7 @@
- #include <linux/mutex.h>
- #include <linux/err.h>
- #include <linux/spi/spi.h>
-+#include <linux/types.h>
- #include <linux/iio/iio.h>
- #include <linux/iio/sysfs.h>
- #include <linux/iio/trigger.h>
-@@ -122,8 +123,15 @@ struct maxim_thermocouple_data {
- 	struct spi_device *spi;
- 	const struct maxim_thermocouple_chip *chip;
- 	char tc_type;
--
--	u8 buffer[16] __aligned(IIO_DMA_MINALIGN);
-+	/* Buffer for reading up to 2 hardware channels. */
-+	struct {
-+		union {
-+			__be16 raw16;
-+			__be32 raw32;
-+			__be16 raw[2];
-+		};
-+		aligned_s64 timestamp;
-+	} buffer __aligned(IIO_DMA_MINALIGN);
+diff --git a/drivers/iio/light/adjd_s311.c b/drivers/iio/light/adjd_s311.c
+index c1b43053fbc7..cf96e3dd8bc6 100644
+--- a/drivers/iio/light/adjd_s311.c
++++ b/drivers/iio/light/adjd_s311.c
+@@ -56,7 +56,7 @@ struct adjd_s311_data {
+ 	struct i2c_client *client;
+ 	struct {
+ 		s16 chans[4];
+-		s64 ts __aligned(8);
++		aligned_s64 ts;
+ 	} scan;
  };
  
- static int maxim_thermocouple_read(struct maxim_thermocouple_data *data,
-@@ -131,18 +139,16 @@ static int maxim_thermocouple_read(struct maxim_thermocouple_data *data,
- {
- 	unsigned int storage_bytes = data->chip->read_size;
- 	unsigned int shift = chan->scan_type.shift + (chan->address * 8);
--	__be16 buf16;
--	__be32 buf32;
- 	int ret;
+diff --git a/drivers/iio/light/as73211.c b/drivers/iio/light/as73211.c
+index 11fbdcdd26d6..37fffce35dd1 100644
+--- a/drivers/iio/light/as73211.c
++++ b/drivers/iio/light/as73211.c
+@@ -642,7 +642,7 @@ static irqreturn_t as73211_trigger_handler(int irq __always_unused, void *p)
+ 	struct as73211_data *data = iio_priv(indio_dev);
+ 	struct {
+ 		__le16 chan[4];
+-		s64 ts __aligned(8);
++		aligned_s64 ts;
+ 	} scan;
+ 	int data_result, ret;
  
- 	switch (storage_bytes) {
- 	case 2:
--		ret = spi_read(data->spi, (void *)&buf16, storage_bytes);
--		*val = be16_to_cpu(buf16);
-+		ret = spi_read(data->spi, &data->buffer.raw16, storage_bytes);
-+		*val = be16_to_cpu(data->buffer.raw16);
- 		break;
- 	case 4:
--		ret = spi_read(data->spi, (void *)&buf32, storage_bytes);
--		*val = be32_to_cpu(buf32);
-+		ret = spi_read(data->spi, &data->buffer.raw32, storage_bytes);
-+		*val = be32_to_cpu(data->buffer.raw32);
- 		break;
- 	default:
- 		ret = -EINVAL;
-@@ -167,9 +173,9 @@ static irqreturn_t maxim_thermocouple_trigger_handler(int irq, void *private)
- 	struct maxim_thermocouple_data *data = iio_priv(indio_dev);
+diff --git a/drivers/iio/light/bh1745.c b/drivers/iio/light/bh1745.c
+index a025e279df07..617d098d202a 100644
+--- a/drivers/iio/light/bh1745.c
++++ b/drivers/iio/light/bh1745.c
+@@ -743,7 +743,7 @@ static irqreturn_t bh1745_trigger_handler(int interrupt, void *p)
+ 	struct bh1745_data *data = iio_priv(indio_dev);
+ 	struct {
+ 		u16 chans[4];
+-		s64 timestamp __aligned(8);
++		aligned_s64 timestamp;
+ 	} scan;
+ 	u16 value;
  	int ret;
+diff --git a/drivers/iio/light/isl29125.c b/drivers/iio/light/isl29125.c
+index b176bf4c884b..326dc39e7929 100644
+--- a/drivers/iio/light/isl29125.c
++++ b/drivers/iio/light/isl29125.c
+@@ -54,7 +54,7 @@ struct isl29125_data {
+ 	/* Ensure timestamp is naturally aligned */
+ 	struct {
+ 		u16 chans[3];
+-		s64 timestamp __aligned(8);
++		aligned_s64 timestamp;
+ 	} scan;
+ };
  
--	ret = spi_read(data->spi, data->buffer, data->chip->read_size);
-+	ret = spi_read(data->spi, data->buffer.raw, data->chip->read_size);
- 	if (!ret) {
--		iio_push_to_buffers_with_timestamp(indio_dev, data->buffer,
-+		iio_push_to_buffers_with_timestamp(indio_dev, &data->buffer,
- 						   iio_get_time_ns(indio_dev));
- 	}
+diff --git a/drivers/iio/light/ltr501.c b/drivers/iio/light/ltr501.c
+index 640a5d3aa2c6..8c0b616815b2 100644
+--- a/drivers/iio/light/ltr501.c
++++ b/drivers/iio/light/ltr501.c
+@@ -1285,7 +1285,7 @@ static irqreturn_t ltr501_trigger_handler(int irq, void *p)
+ 	struct ltr501_data *data = iio_priv(indio_dev);
+ 	struct {
+ 		u16 channels[3];
+-		s64 ts __aligned(8);
++		aligned_s64 ts;
+ 	} scan;
+ 	__le16 als_buf[2];
+ 	u8 mask = 0;
+diff --git a/drivers/iio/light/max44000.c b/drivers/iio/light/max44000.c
+index b935976871a6..e8b767680133 100644
+--- a/drivers/iio/light/max44000.c
++++ b/drivers/iio/light/max44000.c
+@@ -78,7 +78,7 @@ struct max44000_data {
+ 	/* Ensure naturally aligned timestamp */
+ 	struct {
+ 		u16 channels[2];
+-		s64 ts __aligned(8);
++		aligned_s64 ts;
+ 	} scan;
+ };
+ 
+diff --git a/drivers/iio/light/rohm-bu27034.c b/drivers/iio/light/rohm-bu27034.c
+index 76711c3cdf7c..29da3313addb 100644
+--- a/drivers/iio/light/rohm-bu27034.c
++++ b/drivers/iio/light/rohm-bu27034.c
+@@ -205,7 +205,7 @@ struct bu27034_data {
+ 	struct {
+ 		u32 mlux;
+ 		__le16 channels[BU27034_NUM_HW_DATA_CHANS];
+-		s64 ts __aligned(8);
++		aligned_s64 ts;
+ 	} scan;
+ };
+ 
+diff --git a/drivers/iio/light/rpr0521.c b/drivers/iio/light/rpr0521.c
+index 78c08e0bd077..0a5408c12cc0 100644
+--- a/drivers/iio/light/rpr0521.c
++++ b/drivers/iio/light/rpr0521.c
+@@ -203,7 +203,7 @@ struct rpr0521_data {
+ 	struct {
+ 		__le16 channels[3];
+ 		u8 garbage;
+-		s64 ts __aligned(8);
++		aligned_s64 ts;
+ 	} scan;
+ };
+ 
+diff --git a/drivers/iio/light/st_uvis25.h b/drivers/iio/light/st_uvis25.h
+index 283086887caf..1f93e3dc45c2 100644
+--- a/drivers/iio/light/st_uvis25.h
++++ b/drivers/iio/light/st_uvis25.h
+@@ -30,7 +30,7 @@ struct st_uvis25_hw {
+ 	/* Ensure timestamp is naturally aligned */
+ 	struct {
+ 		u8 chan;
+-		s64 ts __aligned(8);
++		aligned_s64 ts;
+ 	} scan;
+ };
+ 
+diff --git a/drivers/iio/light/tcs3414.c b/drivers/iio/light/tcs3414.c
+index 4fecdf10aeb1..884e43e4cda4 100644
+--- a/drivers/iio/light/tcs3414.c
++++ b/drivers/iio/light/tcs3414.c
+@@ -56,7 +56,7 @@ struct tcs3414_data {
+ 	/* Ensure timestamp is naturally aligned */
+ 	struct {
+ 		u16 chans[4];
+-		s64 timestamp __aligned(8);
++		aligned_s64 timestamp;
+ 	} scan;
+ };
+ 
+diff --git a/drivers/iio/light/tcs3472.c b/drivers/iio/light/tcs3472.c
+index 04452b4664f3..afc90b5bb0ec 100644
+--- a/drivers/iio/light/tcs3472.c
++++ b/drivers/iio/light/tcs3472.c
+@@ -67,7 +67,7 @@ struct tcs3472_data {
+ 	/* Ensure timestamp is naturally aligned */
+ 	struct {
+ 		u16 chans[4];
+-		s64 timestamp __aligned(8);
++		aligned_s64 timestamp;
+ 	} scan;
+ };
  
 -- 
 2.50.1
