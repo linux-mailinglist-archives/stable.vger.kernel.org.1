@@ -1,97 +1,111 @@
-Return-Path: <stable+bounces-172753-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-172754-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 154A6B3315D
-	for <lists+stable@lfdr.de>; Sun, 24 Aug 2025 18:11:23 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6F34FB3317D
+	for <lists+stable@lfdr.de>; Sun, 24 Aug 2025 18:39:36 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id E2809443469
-	for <lists+stable@lfdr.de>; Sun, 24 Aug 2025 16:11:04 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 687EE189C2EC
+	for <lists+stable@lfdr.de>; Sun, 24 Aug 2025 16:39:56 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D076A2DE6E3;
-	Sun, 24 Aug 2025 16:10:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A2162238C23;
+	Sun, 24 Aug 2025 16:39:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b="unbVP/Uu"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="AfH1+GT9"
 X-Original-To: stable@vger.kernel.org
-Received: from smtpout-04.galae.net (smtpout-04.galae.net [185.171.202.116])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B9A4C1E5B72
-	for <stable@vger.kernel.org>; Sun, 24 Aug 2025 16:10:54 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.171.202.116
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5ED171DE3BB
+	for <stable@vger.kernel.org>; Sun, 24 Aug 2025 16:39:32 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756051858; cv=none; b=fS4t76rY88JFzIsLGB/yhIEUM8EqnNXtaTXNCQEcki/GY/dL0L8fWMBm72YFX3fBE7WujLYmGPXWpqe1lVDHulal6/piqTV3CVNxyCe4bpMMOedZd9thcmHxn/p5nnIawHnYhfFRL3be3IS9S54m3q/OFbE3md7b8NEDF3XZbgM=
+	t=1756053572; cv=none; b=T+q6m4o2Oy6lNL3q3C+aLRbVaVTPrdMBhIK0u+U63asFNqBjxkeP4bDivmJFBbr8dMkhYJsycAJsvHImcmkLUdRFbWZbJRwHc6xE0uRI+MwJJL9epVXWOwC+J21WjR3KSs0DQMVmi+uF3tZqqHCsys0jzZfZE+9i7SUpiTBkCCk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756051858; c=relaxed/simple;
-	bh=x0bMF5B9tDvXdbNljtpMp9oSkN009vSkXfIvk5tNQs0=;
-	h=From:To:Cc:Subject:In-Reply-To:References:Date:Message-ID:
-	 MIME-Version:Content-Type; b=EbJV/3DCdkcBMihtJduZhIgnQdRxPJ4WCyHoLsRu2ER91alD7/THISBmkk+xD2Qa1igLQtEYOr58l6NOQWKNEXsQ/NZBoJFMtrLyRDFdyw7x7cn6O/54UUxA5ALgWwO0dB9acn3PKV57PSUWpwhaD5wADuR5Kk34O9aT/0DvWLo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com; spf=pass smtp.mailfrom=bootlin.com; dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b=unbVP/Uu; arc=none smtp.client-ip=185.171.202.116
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=bootlin.com
-Received: from smtpout-01.galae.net (smtpout-01.galae.net [212.83.139.233])
-	by smtpout-04.galae.net (Postfix) with ESMTPS id E20EDC6B38D;
-	Sun, 24 Aug 2025 16:10:38 +0000 (UTC)
-Received: from mail.galae.net (mail.galae.net [212.83.136.155])
-	by smtpout-01.galae.net (Postfix) with ESMTPS id C8F8D605F1;
-	Sun, 24 Aug 2025 16:10:52 +0000 (UTC)
-Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id B8ED21C228A5B;
-	Sun, 24 Aug 2025 18:10:43 +0200 (CEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=dkim;
-	t=1756051850; h=from:subject:date:message-id:to:cc:mime-version:content-type:
-	 content-transfer-encoding:in-reply-to:references;
-	bh=x0bMF5B9tDvXdbNljtpMp9oSkN009vSkXfIvk5tNQs0=;
-	b=unbVP/Uu79ICK0Tn4oHFWqVD5VwJOm5ApWOMpoOGEZaOUX81uKFOCXuZK9sF+W7EK69omi
-	4JtgkzUndZqu3xFUjcqQfwcYd1Z+M9ViAXuap0+8pdlZhY1WStERsBcTi/qCc8SH6I9zB3
-	5+Y3+CSMoRD24KlQqx0PynrsDaejve3u2VIPGaMl3A2hc+109kpk3vsfBiqOK8T2wjsJie
-	ASzFyXLlSrNXNfOsleXK1EgOUo556cWD9UZx7V9ohBf9MCx4adZhPcG426dSMpEedq3dxA
-	xsGD7zeILwjDDK5wteFmKsPd46DK3oJBpEMJH8NrYYlt5INJhnl1x/2oEO2/0g==
-From: Miquel Raynal <miquel.raynal@bootlin.com>
-To: Michael Walle <mwalle@kernel.org>
-Cc: Srinivas Kandagatla <srini@kernel.org>,  Greg Kroah-Hartman
- <gregkh@linuxfoundation.org>,  linux-kernel@vger.kernel.org,
-  stable@vger.kernel.org
-Subject: Re: [PATCH v2] nvmem: layouts: fix automatic module loading
-In-Reply-To: <20250819112103.1084387-1-mwalle@kernel.org> (Michael Walle's
-	message of "Tue, 19 Aug 2025 13:21:03 +0200")
-References: <20250819112103.1084387-1-mwalle@kernel.org>
-User-Agent: mu4e 1.12.7; emacs 30.1
-Date: Sun, 24 Aug 2025 18:10:37 +0200
-Message-ID: <87frdgk8ea.fsf@bootlin.com>
+	s=arc-20240116; t=1756053572; c=relaxed/simple;
+	bh=xr8yoJnCqK8XTgilfNmdiGE8Gn6IGFLEQ4OQw/l6TG8=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=j81H1z3LEKKYTLQF35gBZ2yRxcR95rDUeEBgyvXikeTGLJbAg1CB5Zd0jOrGkaEGG3nBJt7wXK1pppOFDOS7iKufoKWb5cjCQDbJdsL2WJ0vypzrjYQpY4XXCEhQzZXFPaASIBipSNy98W6/EZnT6sCyqkv+zXlYyaVQKyg5s3c=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=AfH1+GT9; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4DFA9C4CEEB;
+	Sun, 24 Aug 2025 16:39:31 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1756053572;
+	bh=xr8yoJnCqK8XTgilfNmdiGE8Gn6IGFLEQ4OQw/l6TG8=;
+	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
+	b=AfH1+GT9J9Prb0RVEZmEure02vM8SS84JODEisVt3TLCDhV9pvv1DwwZBI5aLSa6y
+	 HOTktnYoW+xRkGGdPUoLYdlUk6xBkuqVCCKIWV6xXdKjVjlhJbVbd9EmrRO3EKdVQT
+	 49oLig7lq3qNy8uBKWS75YB0iIG/AdgPgqA0KFYqy9Gpy/ZlJYVzxkRBM2r+u4Jgry
+	 LrvCXWH5Ro+O/EjLycUG/ZHqHNfsp5z700Sk5NXSvR7h1rOlPihYUCMLSJECGU5uIt
+	 GYIo1BZYDdisJ13oIdr1OmJkxEYEUP1fk3oQPxlkQtj12GlM5l47QcJ1x8p0qzClcb
+	 lrqAcDCa3atWg==
+From: Sasha Levin <sashal@kernel.org>
+To: stable@vger.kernel.org
+Cc: Jean-Baptiste Maneyrol <jean-baptiste.maneyrol@tdk.com>,
+	Andy Shevchenko <andy@kernel.org>,
+	Sean Nyekjaer <sean@geanix.com>,
+	Jonathan Cameron <Jonathan.Cameron@huawei.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.10.y] iio: imu: inv_icm42600: change invalid data error to -EBUSY
+Date: Sun, 24 Aug 2025 12:39:29 -0400
+Message-ID: <20250824163929.4031504-1-sashal@kernel.org>
+X-Mailer: git-send-email 2.50.1
+In-Reply-To: <2025082315-delirious-sandy-654a@gregkh>
+References: <2025082315-delirious-sandy-654a@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
-X-Last-TLS-Session-Version: TLSv1.3
+Content-Transfer-Encoding: 8bit
 
-Hello,
+From: Jean-Baptiste Maneyrol <jean-baptiste.maneyrol@tdk.com>
 
-On 19/08/2025 at 13:21:03 +02, Michael Walle <mwalle@kernel.org> wrote:
+[ Upstream commit dfdc31e7ccf3ac1d5ec01d5120c71e14745e3dd8 ]
 
-> To support loading of a layout module automatically the MODALIAS
-> variable in the uevent is needed. Add it.
->
-> Fixes: fc29fd821d9a ("nvmem: core: Rework layouts to become regular devic=
-es")
-> Cc: stable@vger.kernel.org
-> Signed-off-by: Michael Walle <mwalle@kernel.org>
-> ---
-> I'm still not sure if the sysfs modalias file is required or not. It
-> seems to work without it. I could't find any documentation about it.
+Temperature sensor returns the temperature of the mechanical parts
+of the chip. If both accel and gyro are off, the temperature sensor is
+also automatically turned off and returns invalid data.
 
-I do not recall how this worked on my side, nor if it actually did with
-the latest version (there's been a version where module loading was
-requested in kernel code, and this was working well with an initamfs
-IIRC), but that change sound reasonable.
+In this case, returning -EBUSY error code is better then -EINVAL and
+indicates userspace that it needs to retry reading temperature in
+another context.
 
-Reviewed-by: Miquel Raynal <miquel.raynal@bootlin.com>
+Fixes: bc3eb0207fb5 ("iio: imu: inv_icm42600: add temperature sensor support")
+Signed-off-by: Jean-Baptiste Maneyrol <jean-baptiste.maneyrol@tdk.com>
+Cc: stable@vger.kernel.org
+Reviewed-by: Andy Shevchenko <andy@kernel.org>
+Reviewed-by: Sean Nyekjaer <sean@geanix.com>
+Link: https://patch.msgid.link/20250808-inv-icm42600-change-temperature-error-code-v1-1-986fbf63b77d@tdk.com
+Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
+[ Adjust context ]
+Signed-off-by: Sasha Levin <sashal@kernel.org>
+---
+ drivers/iio/imu/inv_icm42600/inv_icm42600_temp.c | 6 +++++-
+ 1 file changed, 5 insertions(+), 1 deletion(-)
 
-Thanks,
-Miqu=C3=A8l
+diff --git a/drivers/iio/imu/inv_icm42600/inv_icm42600_temp.c b/drivers/iio/imu/inv_icm42600/inv_icm42600_temp.c
+index 91f0f381082b..8926b48d7661 100644
+--- a/drivers/iio/imu/inv_icm42600/inv_icm42600_temp.c
++++ b/drivers/iio/imu/inv_icm42600/inv_icm42600_temp.c
+@@ -32,8 +32,12 @@ static int inv_icm42600_temp_read(struct inv_icm42600_state *st, int16_t *temp)
+ 		goto exit;
+ 
+ 	*temp = (int16_t)be16_to_cpup(raw);
++	/*
++	 * Temperature data is invalid if both accel and gyro are off.
++	 * Return -EBUSY in this case.
++	 */
+ 	if (*temp == INV_ICM42600_DATA_INVALID)
+-		ret = -EINVAL;
++		ret = -EBUSY;
+ 
+ exit:
+ 	mutex_unlock(&st->lock);
+-- 
+2.50.1
+
 
