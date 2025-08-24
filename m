@@ -1,81 +1,151 @@
-Return-Path: <stable+bounces-172705-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-172706-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [142.0.200.124])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1FA22B32E67
-	for <lists+stable@lfdr.de>; Sun, 24 Aug 2025 10:46:50 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id EDF83B32E87
+	for <lists+stable@lfdr.de>; Sun, 24 Aug 2025 10:55:54 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 0C5FD4E2409
-	for <lists+stable@lfdr.de>; Sun, 24 Aug 2025 08:46:49 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 5E3CB3B4EB6
+	for <lists+stable@lfdr.de>; Sun, 24 Aug 2025 08:55:46 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2AABE25E44B;
-	Sun, 24 Aug 2025 08:45:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B7AE825EFBE;
+	Sun, 24 Aug 2025 08:55:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="0d+Vw/zI"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="c0fc+Imn"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CE11525BEF4
-	for <stable@vger.kernel.org>; Sun, 24 Aug 2025 08:45:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7419B25E813;
+	Sun, 24 Aug 2025 08:55:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756025138; cv=none; b=fdf9GN/qLVcYn4EqV7QBt1uO0IVbzmryIejPwatL38rdCMIBe1AvaEdgLYnf9e2S6kUpT1D0sdoaG4bE/MhaqvnPxCT4gF8HkYR3qcbH6uGV2fLal2esy6Khk14XIuzDm7jp2rouY5wCXeROcXhoOOR8/4vCJMz+UUjX8XT1BZI=
+	t=1756025741; cv=none; b=mGDcISB5LwmXpJCIwKTj5tN49NGfOyWIA5HTWvu3UNrelWBBkcdCdcZptqPbEnCx4Jf0quf7pLMSLNXDWmokuejQOE01n+gOYfYquFqwTtp5614yBiK1kry9xns2y3+htaUFC01O7fSCuD010cYUtCo1aUzH+p22BrAXFzmHDfQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756025138; c=relaxed/simple;
-	bh=J7wTPt4ppJNFIk2BNIc6tg7ymkHsYYRmsUbZz2/Zd6U=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=q/6MVcdEEORCu6vbSggg7qXN7TjFBz1cwNxsZ7LREyph3I7IpETCdQSxZb0dCv4Y8W8eTHgKdq9p0ac40TFGzCwchKXTusZjnJkfNT185J7zvgYQ5iCLjrB0jo5o/stS9BmuLgleZ7rxGaak53su5sbhPPOhhMphTYm4qvNYdg0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=0d+Vw/zI; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 55AA7C4CEEB;
-	Sun, 24 Aug 2025 08:45:38 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1756025138;
-	bh=J7wTPt4ppJNFIk2BNIc6tg7ymkHsYYRmsUbZz2/Zd6U=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=0d+Vw/zIY7oabQCPUTqNm1gWidcheqfRGUALzVy48cm7daecF8GEzYh2dIW02RVBD
-	 2KHaLa1wzJ6Yryw3AreejYdMNFhFBDL/r//BdhrnIKNsExvbVY/AC8A4V9zz4IqwmZ
-	 oE86McSnO0+rOpHqRG+apxx83YNcTxDzaXKow69U=
-Date: Sun, 24 Aug 2025 10:45:36 +0200
-From: Greg KH <gregkh@linuxfoundation.org>
-To: Jakub Kicinski <kuba@kernel.org>
-Cc: Sasha Levin <sashal@kernel.org>, stable@vger.kernel.org,
-	John Ernberg <john.ernberg@actia.se>
-Subject: Re: [PATCH 5.4.y] net: usbnet: Avoid potential RCU stall on
- LINK_CHANGE event
-Message-ID: <2025082429-unholy-sprung-75cb@gregkh>
-References: <2025081259-headset-swinger-4805@gregkh>
- <20250813134932.2037778-1-sashal@kernel.org>
- <20250813073802.3f28d69c@kernel.org>
+	s=arc-20240116; t=1756025741; c=relaxed/simple;
+	bh=3efWoqKGeWKkhZdCmvOAtelROBxMcZQovbTe+Bsz4Qo=;
+	h=Date:Message-ID:From:To:Cc:Subject:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=Y2s+mSGOfoebjavwRALUcFW3Jnd0Y7AIRMcERD6Lj28E4wXE7+HyXDXTL5MxUHoJ4kWAACSmFa/JdfQCcRgCNl+NsqbM/0ZrYKRXQVSdjhJzNEoyuQ+QZLxK8hLXbiazwHP8+KtTHiWtp9B611mBQCfPxXcHcdqkQfuHdCSr4Q0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=c0fc+Imn; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 344FCC116B1;
+	Sun, 24 Aug 2025 08:55:41 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1756025741;
+	bh=3efWoqKGeWKkhZdCmvOAtelROBxMcZQovbTe+Bsz4Qo=;
+	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
+	b=c0fc+ImnS9/BDevSzy+t+aRAEDOYCniaBkwi+IW58oy+IcTfmR81WTqGPM9Cpat8E
+	 dZAfuYb7yESRUBrATeBON5H6c8cjU6Zi2LVycUupFtpbgdy4Zo0+dz79cnxU3lkNnh
+	 883c6cMkhi40MH2YimoXW8ymsup5QT4Vbl6lDMh+ss6yaFa7/CWGll5eWqIXIE6TNh
+	 aIpryI0WHxHwuIAZjNgo5u2oIIMFPa+vyYc/qkq1NGrF9Dl2wFgnWPlUdZa3Msteco
+	 kGgVI6VvU8gB78ERpXSZI7UcFQYCDbChtC1hFyAYo0atd10lGNPoHeFkwxoigQ0HqL
+	 me7zEt6/mQaiA==
+Received: from sofa.misterjones.org ([185.219.108.64] helo=lobster-girl.misterjones.org)
+	by disco-boy.misterjones.org with esmtpsa  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
+	(Exim 4.95)
+	(envelope-from <maz@kernel.org>)
+	id 1uq6Vm-00AWlW-E3;
+	Sun, 24 Aug 2025 09:55:38 +0100
+Date: Sun, 24 Aug 2025 09:55:34 +0100
+Message-ID: <874itx14l5.wl-maz@kernel.org>
+From: Marc Zyngier <maz@kernel.org>
+To: Sam Edwards <cfsworks@gmail.com>
+Cc: Ard Biesheuvel <ardb@kernel.org>,
+	Catalin Marinas <catalin.marinas@arm.com>,
+	Will Deacon <will@kernel.org>,
+	Andrew Morton <akpm@linux-foundation.org>,
+	Anshuman Khandual <anshuman.khandual@arm.com>,
+	Ryan Roberts <ryan.roberts@arm.com>,
+	Baruch Siach <baruch@tkos.co.il>,
+	Kevin Brodsky <kevin.brodsky@arm.com>,
+	Joey Gouly <joey.gouly@arm.com>,
+	linux-arm-kernel@lists.infradead.org,
+	linux-kernel@vger.kernel.org,
+	stable@vger.kernel.org
+Subject: Re: [PATCH] arm64/boot: Zero-initialize idmap PGDs before use
+In-Reply-To: <CAH5Ym4h+2w6aayzsVu__3qu3-6ETq1HK7u18yGzOrRqZ--2H9w@mail.gmail.com>
+References: <20250822041526.467434-1-CFSworks@gmail.com>
+	<CAMj1kXH38gOUpDDdarCXPAY3BHBbuFzdD=Dq7Knsg-qHJoNqzQ@mail.gmail.com>
+	<CAH5Ym4gTTLcyucnXjxFtNutVR1HQ0G2k_YBSNO-7G3-4YXUtag@mail.gmail.com>
+	<CAMj1kXF00Y0=67apXVbOC+rpbEEvyEovFYf4r_edr6mXjrj0+A@mail.gmail.com>
+	<CAH5Ym4h+2w6aayzsVu__3qu3-6ETq1HK7u18yGzOrRqZ--2H9w@mail.gmail.com>
+User-Agent: Wanderlust/2.15.9 (Almost Unreal) SEMI-EPG/1.14.7 (Harue)
+ FLIM-LB/1.14.9 (=?UTF-8?B?R29qxY0=?=) APEL-LB/10.8 EasyPG/1.0.0 Emacs/30.1
+ (aarch64-unknown-linux-gnu) MULE/6.0 (HANACHIRUSATO)
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20250813073802.3f28d69c@kernel.org>
+MIME-Version: 1.0 (generated by SEMI-EPG 1.14.7 - "Harue")
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: quoted-printable
+X-SA-Exim-Connect-IP: 185.219.108.64
+X-SA-Exim-Rcpt-To: cfsworks@gmail.com, ardb@kernel.org, catalin.marinas@arm.com, will@kernel.org, akpm@linux-foundation.org, anshuman.khandual@arm.com, ryan.roberts@arm.com, baruch@tkos.co.il, kevin.brodsky@arm.com, joey.gouly@arm.com, linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org, stable@vger.kernel.org
+X-SA-Exim-Mail-From: maz@kernel.org
+X-SA-Exim-Scanned: No (on disco-boy.misterjones.org); SAEximRunCond expanded to false
 
-On Wed, Aug 13, 2025 at 07:38:02AM -0700, Jakub Kicinski wrote:
-> On Wed, 13 Aug 2025 09:49:32 -0400 Sasha Levin wrote:
-> > From: John Ernberg <john.ernberg@actia.se>
-> > 
-> > [ Upstream commit 0d9cfc9b8cb17dbc29a98792d36ec39a1cf1395f ]
-> > 
-> > The Gemalto Cinterion PLS83-W modem (cdc_ether) is emitting confusing link
-> > up and down events when the WWAN interface is activated on the modem-side.
-> > 
-> > Interrupt URBs will in consecutive polls grab:
-> > * Link Connected
-> > * Link Disconnected
-> > * Link Connected
-> 
-> Be sure to pull in 8466d393700f9cc into the same release.
-> This change broke Linus's laptop.
-> 
+Hi Sam,
 
-Thanks, now picked up.
+On Sun, 24 Aug 2025 04:05:05 +0100,
+Sam Edwards <cfsworks@gmail.com> wrote:
+>=20
+> On Sat, Aug 23, 2025 at 5:29=E2=80=AFPM Ard Biesheuvel <ardb@kernel.org> =
+wrote:
+> >
+
+[...]
+
+> > Under which conditions would PGD_SIZE assume a value greater than PAGE_=
+SIZE?
+>=20
+> I might be doing my math wrong, but wouldn't 52-bit VA with 4K
+> granules and 5 levels result in this?
+
+No. 52bit VA at 4kB granule results in levels 0-3 each resolving 9
+bits, and level -1 resolving 4 bits. That's a total of 40 bits, plus
+the 12 bits coming directly from the VA making for the expected 52.
+
+> Each PTE represents 4K of virtual memory, so covers VA bits [11:0]
+> (this is level 3)
+
+That's where you got it wrong. The architecture is pretty clear that
+each level resolves PAGE_SHIFT-3 bits, hence the computation
+above. The bottom PAGE_SHIFT bits are directly extracted from the VA,
+without any translation.
+
+> Each PMD has 512 PTEs, the index of which covers VA bits [20:12] (this
+> is level 2)
+> Each PUD references 512 PMDs, the index covering VA [29:21] (this is leve=
+l 1)
+> Each P4D references 512 PUDs, indexed by VA [38:30] (this is level 0)
+> The PGD, at level -1, therefore has to cover VA bits [51:39], which
+> means it has a 13-bit index: 8192 entries of 8 bytes each would make
+> it 16 pages in size.
+>
+> > Note that at stage 1, arm64 does not support page table concatenation,
+> > and so the root page table is never larger than a page.
+>=20
+> Doesn't PGD_SIZE refer to the size used for userspace PGDs after the
+> boot progresses beyond stage 1? (What do you mean by "never" here?
+> "Under no circumstances is it larger than a page at stage 1"? Or
+> "during the entire lifecycle of the system, there is no time at which
+> it's larger than a page"?)
+
+Never, ever, is a S1 table bigger than a page. This concept doesn't
+exist in the architecture. Only S2 tables can use concatenation at the
+top-most level, for up to 16 pages (in order to skip a level when
+possible).
+
+The top-level can be smaller than a page, with some alignment
+constraints, but that's about the only degree of freedom you have for
+S1 page tables.
+
+Thanks,
+
+	M.
+
+--=20
+Jazz isn't dead. It just smells funny.
 
