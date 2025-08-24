@@ -1,75 +1,140 @@
-Return-Path: <stable+bounces-172707-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-172708-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8095BB32E8F
-	for <lists+stable@lfdr.de>; Sun, 24 Aug 2025 11:01:09 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id AD389B32E97
+	for <lists+stable@lfdr.de>; Sun, 24 Aug 2025 11:07:51 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 3B5004444DC
-	for <lists+stable@lfdr.de>; Sun, 24 Aug 2025 09:01:08 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 8B96317179D
+	for <lists+stable@lfdr.de>; Sun, 24 Aug 2025 09:07:51 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A694F1EA7E4;
-	Sun, 24 Aug 2025 09:01:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4D1BC231C9F;
+	Sun, 24 Aug 2025 09:07:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="FBLH6vD1"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="VI1/nzR5"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 571F317A31B
-	for <stable@vger.kernel.org>; Sun, 24 Aug 2025 09:01:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EDB7720322
+	for <stable@vger.kernel.org>; Sun, 24 Aug 2025 09:07:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756026065; cv=none; b=lAT3TajpXV+IfNZpuGFaXEuvEjtxKiysEy0iFFYW95c7vzTfakxj2TXpgvulcO7tBs7vwk9Nm5BYfYM3nxV82Gfv7QwrAJL0XL4NUMfyNsA0Xxo+Khnboc4XT0TLk2KSHMmjVSVDOzKP1ZLsiEpXevJ0jJ9dUb7hYvvMauFlKhY=
+	t=1756026468; cv=none; b=KzWDetI0bqOK6XQEtE0E7sIrWCtZndJEaEffIU7g6R9Qky3G6DxeqSc1EjGIg5Q7HUvniuxOLBTn18XtmuOguyYqObShiNcszXXzfqEgYPMoDLyLCmqF6CZuGUKjCVIjTGJyWTpSSeqvm7ukbyPjD71Bv47gvCiyKMXkTE4h3zI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756026065; c=relaxed/simple;
-	bh=/FmCqj2u2V8mp0UjjYF2Fnjzx7frypxGep1lBC5W+ww=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=loxvbm+Mqigyj0zVKdwitOgDxQolnG4C24mHakVNNEoEuN1YMLLGm4X8qWlF9IhpmtG8NWIyZ/L001yVCtSBnFfqnWiW3Gf1/G+pEXicbN7LLDWlNeHHAkbWd29SGIUMOIa/W89GGmHJE9TnX6P/HK8JGnUMf7HOi/MMPFN5xTs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=FBLH6vD1; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 797D4C4CEEB;
-	Sun, 24 Aug 2025 09:01:04 +0000 (UTC)
+	s=arc-20240116; t=1756026468; c=relaxed/simple;
+	bh=ShfAuY9/xvjVk9fL9CO7leavxgldIPd6/whGz4Im3KI=;
+	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=F3F5tiXJCQgusO3QrzFv0Zz44b9+pMBP9vO2Wu2i45gm4wFxa5hV0IIQDkQDBkCVpuVZsaJuU3XSMSvHIq1E8dLjd+v66U++5nosTQWsiFf6XcWKh8S83a2UZrQgbMIQ3hxzMt/+4twy2bPqAPeDv9DIJCa+3KaT8fxq7PHOl+g=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=VI1/nzR5; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 23C9DC4CEEB;
+	Sun, 24 Aug 2025 09:07:45 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1756026064;
-	bh=/FmCqj2u2V8mp0UjjYF2Fnjzx7frypxGep1lBC5W+ww=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=FBLH6vD1xyZHGhZupurJJiXDqq58uRTXx4NKkircguBR1slJBtNWWA+62IXIMwGlB
-	 CZQ+WJlLuS5jRVb/CtF7osgc0FoMzMTfMhLRhanK5QcOIK35gkicqhvc66YoNZxHut
-	 naUdlTf1k1KUwp7VkDqq7HZcr/O1ZWIQ4B1E5PXc=
-Date: Sun, 24 Aug 2025 11:01:02 +0200
-From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-To: Christophe Leroy <christophe.leroy@csgroup.eu>
-Cc: linux-stable <stable@vger.kernel.org>,
-	"linuxppc-dev@lists.ozlabs.org" <linuxppc-dev@lists.ozlabs.org>
-Subject: Re: Apply commit 5a821e2d69e2 ("powerpc/boot: Fix build with gcc
- 15") to stable kernels
-Message-ID: <2025082435-swoop-cyclist-b6fc@gregkh>
-References: <7240379a-176f-4187-a353-1e6b68a359ce@csgroup.eu>
+	s=korg; t=1756026466;
+	bh=ShfAuY9/xvjVk9fL9CO7leavxgldIPd6/whGz4Im3KI=;
+	h=Subject:To:Cc:From:Date:From;
+	b=VI1/nzR5S/eT3RqURSNhwQG1HsellGV8tdrRhyaS3jT2ez+58QSKUAaAJhMUejtS6
+	 Qhr5k+aJuTWsv9l2VdCP8+L8cGLwdi4FJlxEO08NI1lauei1l1CmgLKWV0s1GV7wfL
+	 xPrw+jXbiF2MoAYGU3cPPqOLuCkG0bJvGuwY/mzI=
+Subject: FAILED: patch "[PATCH] tls: fix handling of zero-length records on the rx_list" failed to apply to 5.15-stable tree
+To: kuba@kernel.org,billy@starlabs.sg,ramdhan@starlabs.sg,sd@queasysnail.net
+Cc: <stable@vger.kernel.org>
+From: <gregkh@linuxfoundation.org>
+Date: Sun, 24 Aug 2025 11:07:43 +0200
+Message-ID: <2025082443-caliber-swung-4d8f@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <7240379a-176f-4187-a353-1e6b68a359ce@csgroup.eu>
+Content-Type: text/plain; charset=ANSI_X3.4-1968
+Content-Transfer-Encoding: 8bit
 
-On Tue, Aug 05, 2025 at 08:03:49AM +0200, Christophe Leroy wrote:
-> Hi,
-> 
-> Could you please apply commit 5a821e2d69e2 ("powerpc/boot: Fix build with
-> gcc 15") to stable kernels, just like you did with commit ee2ab467bddf
-> ("x86/boot: Use '-std=gnu11' to fix build with GCC 15")
-> 
-> Ref: https://bugzilla.kernel.org/show_bug.cgi?id=220407
 
-It only applies to 6.6.y and 6.12.y, not older.  If you want it in older
-trees please send a backport.
+The patch below does not apply to the 5.15-stable tree.
+If someone wants it applied there, or to any other stable or longterm
+tree, then please email the backport, including the original git commit
+id to <stable@vger.kernel.org>.
+
+To reproduce the conflict and resubmit, you may use the following commands:
+
+git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-5.15.y
+git checkout FETCH_HEAD
+git cherry-pick -x 62708b9452f8eb77513115b17c4f8d1a22ebf843
+# <resolve conflicts, build, test, etc.>
+git commit -s
+git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2025082443-caliber-swung-4d8f@gregkh' --subject-prefix 'PATCH 5.15.y' HEAD^..
+
+Possible dependencies:
+
+
 
 thanks,
 
 greg k-h
+
+------------------ original commit in Linus's tree ------------------
+
+From 62708b9452f8eb77513115b17c4f8d1a22ebf843 Mon Sep 17 00:00:00 2001
+From: Jakub Kicinski <kuba@kernel.org>
+Date: Tue, 19 Aug 2025 19:19:51 -0700
+Subject: [PATCH] tls: fix handling of zero-length records on the rx_list
+
+Each recvmsg() call must process either
+ - only contiguous DATA records (any number of them)
+ - one non-DATA record
+
+If the next record has different type than what has already been
+processed we break out of the main processing loop. If the record
+has already been decrypted (which may be the case for TLS 1.3 where
+we don't know type until decryption) we queue the pending record
+to the rx_list. Next recvmsg() will pick it up from there.
+
+Queuing the skb to rx_list after zero-copy decrypt is not possible,
+since in that case we decrypted directly to the user space buffer,
+and we don't have an skb to queue (darg.skb points to the ciphertext
+skb for access to metadata like length).
+
+Only data records are allowed zero-copy, and we break the processing
+loop after each non-data record. So we should never zero-copy and
+then find out that the record type has changed. The corner case
+we missed is when the initial record comes from rx_list, and it's
+zero length.
+
+Reported-by: Muhammad Alifa Ramdhan <ramdhan@starlabs.sg>
+Reported-by: Billy Jheng Bing-Jhong <billy@starlabs.sg>
+Fixes: 84c61fe1a75b ("tls: rx: do not use the standard strparser")
+Reviewed-by: Sabrina Dubroca <sd@queasysnail.net>
+Link: https://patch.msgid.link/20250820021952.143068-1-kuba@kernel.org
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+
+diff --git a/net/tls/tls_sw.c b/net/tls/tls_sw.c
+index 51c98a007dda..bac65d0d4e3e 100644
+--- a/net/tls/tls_sw.c
++++ b/net/tls/tls_sw.c
+@@ -1808,6 +1808,9 @@ int decrypt_skb(struct sock *sk, struct scatterlist *sgout)
+ 	return tls_decrypt_sg(sk, NULL, sgout, &darg);
+ }
+ 
++/* All records returned from a recvmsg() call must have the same type.
++ * 0 is not a valid content type. Use it as "no type reported, yet".
++ */
+ static int tls_record_content_type(struct msghdr *msg, struct tls_msg *tlm,
+ 				   u8 *control)
+ {
+@@ -2051,8 +2054,10 @@ int tls_sw_recvmsg(struct sock *sk,
+ 	if (err < 0)
+ 		goto end;
+ 
++	/* process_rx_list() will set @control if it processed any records */
+ 	copied = err;
+-	if (len <= copied || (copied && control != TLS_RECORD_TYPE_DATA) || rx_more)
++	if (len <= copied || rx_more ||
++	    (control && control != TLS_RECORD_TYPE_DATA))
+ 		goto end;
+ 
+ 	target = sock_rcvlowat(sk, flags & MSG_WAITALL, len);
+
 
