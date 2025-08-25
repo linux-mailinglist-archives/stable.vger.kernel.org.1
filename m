@@ -1,253 +1,209 @@
-Return-Path: <stable+bounces-172824-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-172825-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id C9001B33E2C
-	for <lists+stable@lfdr.de>; Mon, 25 Aug 2025 13:37:49 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id D3843B33E36
+	for <lists+stable@lfdr.de>; Mon, 25 Aug 2025 13:39:16 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 6767B48629F
-	for <lists+stable@lfdr.de>; Mon, 25 Aug 2025 11:37:48 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 8E3143A797F
+	for <lists+stable@lfdr.de>; Mon, 25 Aug 2025 11:39:15 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 761062E717C;
-	Mon, 25 Aug 2025 11:37:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 804512EAB98;
+	Mon, 25 Aug 2025 11:39:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b="nPPJsa0x"
+	dkim=pass (2048-bit key) header.d=quicinc.com header.i=@quicinc.com header.b="cA9AuFCa"
 X-Original-To: stable@vger.kernel.org
-Received: from out-179.mta1.migadu.com (out-179.mta1.migadu.com [95.215.58.179])
+Received: from mx0b-0031df01.pphosted.com (mx0b-0031df01.pphosted.com [205.220.180.131])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DFCE52E7BDD
-	for <stable@vger.kernel.org>; Mon, 25 Aug 2025 11:37:38 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=95.215.58.179
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9C5492EA741;
+	Mon, 25 Aug 2025 11:39:07 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.180.131
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756121861; cv=none; b=kfWlNAfxa8XeLs2ma4L7iie6Y5NCFEN73gO1LskwVL6YT9NaVP4z9AZRzw4g0WtnonKqRHwwlymxP23LtYr+lAVLBt/xa8rICIOZ9boXpdBiL+kQGDjn/MHljEUhq5DydHZMN4P4VK+S7tSJgJ6Vf8yxfvQeMBVf3qoyFib2Mig=
+	t=1756121949; cv=none; b=hF8g4uY8V6T56MgxSg8PgcBCRm5Wc+CqkARnXs9/7C2e6Tnp8oX530SHP5iinUK3lostS2uVX9Ngwuqie5n/Mw7l7pjGZp89hoVXhuzNFBh8wAvrirJPmaLUzlXyLAMUw6/rRORZ2w0fPf0/dYqEUvQB6c0gtx1ftF/VOBd9M9I=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756121861; c=relaxed/simple;
-	bh=pwJCEMDpvX3gklff8xWinqIcMPxht82kzXUSa4aAw8Y=;
-	h=Message-ID:Date:MIME-Version:Subject:From:To:Cc:References:
-	 In-Reply-To:Content-Type; b=kJdAGgGytm+6pmt43P78z0SgPOP7rqzfo/S/d7rWD5/pT22d8nmh0IgDV5lIMPuJkQZNvRDY4RHLgmoL70kHkn1mYb+Jw4GYYwC/lZ+yH6hEjBQzSfXYJSkIpQKy881SA5KLDn4Ncs1a1Z9sp4H68htlrqrjOFFVSfskkOKZXKk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev; spf=pass smtp.mailfrom=linux.dev; dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b=nPPJsa0x; arc=none smtp.client-ip=95.215.58.179
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.dev
-Message-ID: <30a55f56-93c2-4408-b1a5-5574984fb45f@linux.dev>
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
-	t=1756121847;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=0E9DoNqxH8BhrYWKlmOL9GX4MsVdIQhY6Uu/0eN17PI=;
-	b=nPPJsa0xezAuseaYyAKztO89AC2rWbR4RjjyDTrK9pem5DC8VI6SQBPctQ61hKlfEtvcRy
-	ctw6+e+AciKKAJCaZT3I4/wXtIoiloms6v80MmCTJ4AXwsLL8NpmSHUMqqD4liNzn36M+X
-	ovTmSgNUttMRPT4sTSIuDLaWVh/x0gQ=
-Date: Mon, 25 Aug 2025 19:36:51 +0800
+	s=arc-20240116; t=1756121949; c=relaxed/simple;
+	bh=Dd64tH2C/anRhlI56SfA7nQHik6qZJ5IimIUY4B060M=;
+	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=KX9tBZS2QggwED6btdR2ZdJEHTXT9DYhJyGn7wUS5EQoLwUEwHpI8DdEGnZ2rDNxpVIcpmOQLgpXvNBRp+S0uGOFtEN0Gdxijrr/JnTB1e/PxIungFnI2AOoYGb2jnhK0sVvT5HgwSwWF3OSdJZJls4o8U5Ho6vim4Q8+qiuMvo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=quicinc.com; spf=pass smtp.mailfrom=qualcomm.com; dkim=pass (2048-bit key) header.d=quicinc.com header.i=@quicinc.com header.b=cA9AuFCa; arc=none smtp.client-ip=205.220.180.131
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=quicinc.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=qualcomm.com
+Received: from pps.filterd (m0279873.ppops.net [127.0.0.1])
+	by mx0a-0031df01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 57P85xC6006924;
+	Mon, 25 Aug 2025 11:39:04 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=quicinc.com; h=
+	cc:content-transfer-encoding:date:from:message-id:mime-version
+	:subject:to; s=qcppdkim1; bh=efHdpw6MZigXbTvjxJT2D/SB8ccWQ+VoVAO
+	UhEsFy0A=; b=cA9AuFCaJK0N3e7IzZXMVeBneLw3Co9gfDZq684+XPWfXNpLnup
+	LutkiHQHzckADx37iVEFumu4PWTcesgattDnDsZLtHWJrXVA4Fq8uOCSJu9QPiT1
+	/XaqGcv1ix612+geDLqoJC30WRYrkNNx/QWOscFWL2vhnntM5BY5Xm8a1aAeRYRI
+	B7hpKtbAg3Bp1pN16yiBYVp4eLdhgmG7avglmxuT3Hp5Wa5Omvylm4WNcfuDzA+q
+	ZvMuht8RlfllgcrzMh1BUPl02ETwgiNIRx6ruOGF0Awl8SZSe+6GsfCGxcjo7WVr
+	C86jW7nlrazK/vBNL/7fE7tI05Q5n9JYB5Q==
+Received: from aptaippmta02.qualcomm.com (tpe-colo-wan-fw-bordernet.qualcomm.com [103.229.16.4])
+	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 48q5unmv0f-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Mon, 25 Aug 2025 11:39:03 +0000 (GMT)
+Received: from pps.filterd (APTAIPPMTA02.qualcomm.com [127.0.0.1])
+	by APTAIPPMTA02.qualcomm.com (8.18.1.2/8.18.1.2) with ESMTP id 57PBd1F3013545;
+	Mon, 25 Aug 2025 11:39:01 GMT
+Received: from pps.reinject (localhost [127.0.0.1])
+	by APTAIPPMTA02.qualcomm.com (PPS) with ESMTPS id 48q6qkm58m-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Mon, 25 Aug 2025 11:39:01 +0000
+Received: from APTAIPPMTA02.qualcomm.com (APTAIPPMTA02.qualcomm.com [127.0.0.1])
+	by pps.reinject (8.17.1.5/8.17.1.5) with ESMTP id 57PBd0V2013535;
+	Mon, 25 Aug 2025 11:39:00 GMT
+Received: from bt-iot-sh02-lnx.ap.qualcomm.com (bt-iot-sh02-lnx.qualcomm.com [10.253.144.65])
+	by APTAIPPMTA02.qualcomm.com (PPS) with ESMTPS id 57PBd0qs013533
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Mon, 25 Aug 2025 11:39:00 +0000
+Received: by bt-iot-sh02-lnx.ap.qualcomm.com (Postfix, from userid 4467449)
+	id A97CB22A9B; Mon, 25 Aug 2025 19:38:59 +0800 (CST)
+From: Shuai Zhang <quic_shuaz@quicinc.com>
+To: dmitry.baryshkov@oss.qualcomm.com, marcel@holtmann.org,
+        luiz.dentz@gmail.com
+Cc: linux-bluetooth@vger.kernel.org, stable@vger.kernel.org,
+        linux-arm-msm@vger.kernel.org, linux-kernel@vger.kernel.org,
+        quic_chejiang@quicinc.com, Shuai Zhang <quic_shuaz@quicinc.com>
+Subject: [PATCH v10] Bluetooth: hci_qca: Fix SSR (SubSystem Restart) fail when BT_EN is pulled up by hw
+Date: Mon, 25 Aug 2025 19:38:58 +0800
+Message-Id: <20250825113858.4017780-1-quic_shuaz@quicinc.com>
+X-Mailer: git-send-email 2.34.1
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Subject: Re: [PATCH] atomic: Specify natural alignment for atomic_t
-Content-Language: en-US
-X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
-From: Lance Yang <lance.yang@linux.dev>
-To: Finn Thain <fthain@linux-m68k.org>
-Cc: akpm@linux-foundation.org, geert@linux-m68k.org,
- linux-kernel@vger.kernel.org, mhiramat@kernel.org, oak@helsinkinet.fi,
- peterz@infradead.org, stable@vger.kernel.org, will@kernel.org,
- Lance Yang <ioworker0@gmail.com>, linux-m68k@lists.linux-m68k.org
-References: <7d9554bfe2412ed9427bf71ce38a376e06eb9ec4.1756087385.git.fthain@linux-m68k.org>
- <20250825032743.80641-1-ioworker0@gmail.com>
- <c8851682-25f1-f594-e30f-5b62e019d37b@linux-m68k.org>
- <96ae7afc-c882-4c3d-9dea-3e2ae2789caf@linux.dev>
- <5a44c60b-650a-1f8a-d5cb-abf9f0716817@linux-m68k.org>
- <4e7e7292-338d-4a57-84ec-ae7427f6ad7c@linux.dev>
- <d07778f8-8990-226b-5171-4a36e6e18f32@linux-m68k.org>
- <d95592ec-f51e-4d80-b633-7440b4e69944@linux.dev>
-In-Reply-To: <d95592ec-f51e-4d80-b633-7440b4e69944@linux.dev>
-Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
-X-Migadu-Flow: FLOW_OUT
+X-QCInternal: smtphost
+X-QCInternal: smtphost
+X-Proofpoint-Virus-Version: vendor=nai engine=6200 definitions=5800 signatures=585085
+X-Proofpoint-Virus-Version: vendor=nai engine=6200 definitions=5800 signatures=585085
+X-Proofpoint-GUID: l8eD72juh49j3hINidIq_b9KFYpq9Ifs
+X-Proofpoint-ORIG-GUID: l8eD72juh49j3hINidIq_b9KFYpq9Ifs
+X-Authority-Analysis: v=2.4 cv=JJo7s9Kb c=1 sm=1 tr=0 ts=68ac4b58 cx=c_pps
+ a=nuhDOHQX5FNHPW3J6Bj6AA==:117 a=nuhDOHQX5FNHPW3J6Bj6AA==:17
+ a=2OwXVqhp2XgA:10 a=VwQbUJbxAAAA:8 a=COk6AnOGAAAA:8 a=Zh3eq0SbisOj6M6HGuUA:9
+ a=TjNXssC_j7lpFel5tvFf:22
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjUwODIzMDAzMSBTYWx0ZWRfX4vZYMzZU/TZ8
+ ahfYmyhgS8l8RQ3Tph6nlkjdkHrmedjTzOK523lUa53nMyT0qyDIIViKGfig4eBJXg09C1Zus7p
+ ClYtyuhMBT0xG4jRvRebeO2KvhjsCnGygykXbiR5YnrVWE+CPQLVFFurEtn0cxfzcvF6tWag1rd
+ N8fNoYOiUfpZqsh4J9JRmvdIVSYKkPgjmEsGPhggL7CbPFaePP5xys+IgSgPvGv5D4Ix17AJf6/
+ SaAV3lDF9/s+vfbcBx7lWhRzkyxcPvmdUktxNoJE0uDi9BRZfHzoK/BLraMr7L7OPECMCYyNIb3
+ uhCD/44rQDtUFiNagIFsME25Voe4DEXA0ellg9ucvXj/+MAzYPSEUzNG25jaZCSW9A56Ryw00Tv
+ OYInK80t
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1099,Hydra:6.1.9,FMLib:17.12.80.40
+ definitions=2025-08-25_05,2025-08-20_03,2025-03-28_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ phishscore=0 adultscore=0 bulkscore=0 spamscore=0 impostorscore=0
+ malwarescore=0 clxscore=1015 priorityscore=1501 suspectscore=0
+ classifier=typeunknown authscore=0 authtc= authcc= route=outbound adjust=0
+ reason=mlx scancount=1 engine=8.19.0-2507300000 definitions=main-2508230031
 
+When the host actively triggers SSR and collects coredump data,
+the Bluetooth stack sends a reset command to the controller. However, due
+to the inability to clear the QCA_SSR_TRIGGERED and QCA_IBS_DISABLED bits,
+the reset command times out.
 
+To address this, this patch clears the QCA_SSR_TRIGGERED and
+QCA_IBS_DISABLED flags and adds a 50ms delay after SSR, but only when
+HCI_QUIRK_NON_PERSISTENT_SETUP is not set. This ensures the controller
+completes the SSR process when BT_EN is always high due to hardware.
 
-On 2025/8/25 19:19, Lance Yang wrote:
-> Thanks for digging deeper!
-> 
-> On 2025/8/25 18:49, Finn Thain wrote:
->>
->> [Belated Cc linux-m68k...]
->>
->> On Mon, 25 Aug 2025, Lance Yang wrote:
->>
->>>
->>> On 2025/8/25 14:17, Finn Thain wrote:
->>>>
->>>> On Mon, 25 Aug 2025, Lance Yang wrote:
->>>>
->>>>>
->>>>> What if we squash the runtime check fix into your patch?
->>>>
->>>> Did my patch not solve the problem?
->>>
->>> Hmm... it should solve the problem for natural alignment, which is a
->>> critical fix.
->>>
->>> But it cannot solve the problem of forced misalignment from drivers
->>> using #pragma pack(1). The runtime warning will still trigger in those
->>> cases.
->>>
->>> I built a simple test module on a kernel with your patch applied:
->>>
->>> ```
->>> #include <linux/module.h>
->>> #include <linux/init.h>
->>>
->>> struct __attribute__((packed)) test_container {
->>>      char padding[49];
->>>      struct mutex io_lock;
->>> };
->>>
->>> static int __init alignment_init(void)
->>> {
->>>      struct test_container cont;
->>>      pr_info("io_lock address offset mod 4: %lu\n", (unsigned 
->>> long)&cont.io_lock % 4);
->>>      return 0;
->>> }
->>>
->>> static void __exit alignment_exit(void)
->>> {
->>>      pr_info("Module unloaded\n");
->>> }
->>>
->>> module_init(alignment_init);
->>> module_exit(alignment_exit);
->>> MODULE_LICENSE("GPL");
->>> MODULE_AUTHOR("x");
->>> MODULE_DESCRIPTION("x");
->>> ```
->>>
->>> Result from dmesg:
->>> [Mon Aug 25 15:44:50 2025] io_lock address offset mod 4: 1
->>>
->>
->> Thanks for sending code to illustrate your point. Unfortunately, I was 
->> not
->> able to reproduce your results. Tested on x86, your test module shows no
->> misalignment:
->>
->> [131840.349042] io_lock address offset mod 4: 0
->>
->> Tested on m68k I also get 0, given the patch at the top of this thread:
->>
->> [    0.400000] io_lock address offset mod 4: 0
->>
->>>
->>> As we can see, a packed struct can still force the entire mutex object
->>> to an unaligned address. With an address like this, the WARN_ON_ONCE can
->>> still be triggered.
-> 
->>
->> I don't think so. But there is something unexpected going on here -- the
->> output from pahole appears to say io_lock is at offset 49, which seems to
->> contradict the printk() output above.
-> 
-> Interesting! That contradiction is the key. It seems we're seeing different
-> compiler behaviors.
-> 
-> I'm on GCC 14.2.0 (Debian 14.2.0-19), and it appears to be strictly 
-> respecting
-> the packed attribute.
-> 
-> So let's print something more:
-> 
-> ```
-> #include <linux/module.h>
-> #include <linux/init.h>
-> 
-> struct __attribute__((packed)) test_container {
->      char padding[49];
->      struct mutex io_lock;
-> };
-> 
-> static int __init alignment_init(void)
-> {
->      struct test_container cont;
->      pr_info("Container base address      : %px\n", &cont);
->      pr_info("io_lock member address      : %px\n", &cont.io_lock);
->      pr_info("io_lock address offset mod 4: %lu\n", (unsigned 
-> long)&cont.io_lock % 4);
->      return 0;
-> }
-> 
-> static void __exit alignment_exit(void)
-> {
->      pr_info("Module unloaded\n");
-> }
-> 
-> module_init(alignment_init);
-> module_exit(alignment_exit);
-> MODULE_LICENSE("GPL");
-> MODULE_AUTHOR("x");
-> MODULE_DESCRIPTION("x");
-> ```
-> 
-> Result from dmesg:
-> 
-> ```
-> [Mon Aug 25 19:15:33 2025] Container base address      : ff1100063570f840
-> [Mon Aug 25 19:15:33 2025] io_lock member address      : ff1100063570f871
-> [Mon Aug 25 19:15:33 2025] io_lock address offset mod 4: 1
-> ```
-> 
-> io_lock is exactly base + 49, resulting in misalignment.
-> 
-> Seems like your compiler is cleverly re-aligning the whole struct on the
-> stack, but we can't rely on that behavior, as it's not guaranteed across
-> all compilers or versions. wdyt?
+For the purpose of HCI_QUIRK_NON_PERSISTENT_SETUP, please refer to
+the comment in `include/net/bluetooth/hci.h`.
 
+The HCI_QUIRK_NON_PERSISTENT_SETUP quirk is associated with BT_EN,
+and its presence can be used to determine whether BT_EN is defined in DTS.
 
-Same here, using a global static variable instead of a local one. The result
-is consistently misaligned.
+After SSR, host will not download the firmware, causing
+controller to remain in the IBS_WAKE state. Host needs
+to synchronize with the controller to maintain proper operation.
 
-```
-#include <linux/module.h>
-#include <linux/init.h>
+Multiple triggers of SSR only first generate coredump file,
+due to memcoredump_flag no clear.
 
-static struct __attribute__((packed)) test_container {
-     char padding[49];
-     struct mutex io_lock;
-} cont;
+add clear coredump flag when ssr completed.
 
-static int __init alignment_init(void)
-{
-     pr_info("Container base address      : %px\n", &cont);
-     pr_info("io_lock member address      : %px\n", &cont.io_lock);
-     pr_info("io_lock address offset mod 4: %lu\n", (unsigned 
-long)&cont.io_lock % 4);
-     return 0;
-}
+When the SSR duration exceeds 2 seconds, it triggers
+host tx_idle_timeout, which sets host TX state to sleep. due to the
+hardware pulling up bt_en, the firmware is not downloaded after the SSR.
+As a result, the controller does not enter sleep mode. Consequently,
+when the host sends a command afterward, it sends 0xFD to the controller,
+but the controller does not respond, leading to a command timeout.
 
-static void __exit alignment_exit(void)
-{
-     pr_info("Module unloaded\n");
-}
+So reset tx_idle_timer after SSR to prevent host enter TX IBS_Sleep mode.
 
-module_init(alignment_init);
-module_exit(alignment_exit);
-MODULE_LICENSE("GPL");
-MODULE_AUTHOR("x");
-MODULE_DESCRIPTION("x");
-```
+---
+Changs since v8-v9:
+-- Update base patch to latest patch.
+-- add Cc stable@vger.kernel.org on signed-of.
 
-Result from dmesg:
+Changes since v6-7:
+- Merge the changes into a single patch.
+- Update commit.
 
-```
-[Mon Aug 25 19:33:28 2025] Container base address      : ffffffffc28f0940
-[Mon Aug 25 19:33:28 2025] io_lock member address      : ffffffffc28f0971
-[Mon Aug 25 19:33:28 2025] io_lock address offset mod 4: 1
-```
+Changes since v1-5:
+- Add an explanation for HCI_QUIRK_NON_PERSISTENT_SETUP.
+- Add commments for msleep(50).
+- Update format and commit.
+
+Signed-off-by: Shuai Zhang <quic_shuaz@quicinc.com>
+Cc: stable@vger.kernel.org
+---
+ drivers/bluetooth/hci_qca.c | 33 +++++++++++++++++++++++++++++++++
+ 1 file changed, 33 insertions(+)
+
+diff --git a/drivers/bluetooth/hci_qca.c b/drivers/bluetooth/hci_qca.c
+index 4cff4d9be..97aaf4985 100644
+--- a/drivers/bluetooth/hci_qca.c
++++ b/drivers/bluetooth/hci_qca.c
+@@ -1653,6 +1653,39 @@ static void qca_hw_error(struct hci_dev *hdev, u8 code)
+ 		skb_queue_purge(&qca->rx_memdump_q);
+ 	}
+ 
++	/*
++	 * If the BT chip's bt_en pin is connected to a 3.3V power supply via
++	 * hardware and always stays high, driver cannot control the bt_en pin.
++	 * As a result, during SSR (SubSystem Restart), QCA_SSR_TRIGGERED and
++	 * QCA_IBS_DISABLED flags cannot be cleared, which leads to a reset
++	 * command timeout.
++	 * Add an msleep delay to ensure controller completes the SSR process.
++	 *
++	 * Host will not download the firmware after SSR, controller to remain
++	 * in the IBS_WAKE state, and the host needs to synchronize with it
++	 *
++	 * Since the bluetooth chip has been reset, clear the memdump state.
++	 */
++	if (!test_bit(HCI_QUIRK_NON_PERSISTENT_SETUP, &hdev->quirks)) {
++		/*
++		 * When the SSR (SubSystem Restart) duration exceeds 2 seconds,
++		 * it triggers host tx_idle_delay, which sets host TX state
++		 * to sleep. Reset tx_idle_timer after SSR to prevent
++		 * host enter TX IBS_Sleep mode.
++		 */
++		mod_timer(&qca->tx_idle_timer, jiffies +
++				  msecs_to_jiffies(qca->tx_idle_delay));
++
++		/* Controller reset completion time is 50ms */
++		msleep(50);
++
++		clear_bit(QCA_SSR_TRIGGERED, &qca->flags);
++		clear_bit(QCA_IBS_DISABLED, &qca->flags);
++
++		qca->tx_ibs_state = HCI_IBS_TX_AWAKE;
++		qca->memdump_state = QCA_MEMDUMP_IDLE;
++	}
++
+ 	clear_bit(QCA_HW_ERROR_EVENT, &qca->flags);
+ }
+ 
+-- 
+2.34.1
+
 
