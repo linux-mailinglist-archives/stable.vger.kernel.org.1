@@ -1,201 +1,117 @@
-Return-Path: <stable+bounces-172810-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-172811-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id E1512B33A3E
-	for <lists+stable@lfdr.de>; Mon, 25 Aug 2025 11:13:00 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 21C57B33AB8
+	for <lists+stable@lfdr.de>; Mon, 25 Aug 2025 11:23:46 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id BBD151897FDA
-	for <lists+stable@lfdr.de>; Mon, 25 Aug 2025 09:13:20 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 30B371884942
+	for <lists+stable@lfdr.de>; Mon, 25 Aug 2025 09:24:03 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 48FF92BD5A8;
-	Mon, 25 Aug 2025 09:12:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 21C6F2C0F64;
+	Mon, 25 Aug 2025 09:23:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Ldus4Vwn"
+	dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="I+JCGrRu";
+	dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="kBjqm/nb"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from galois.linutronix.de (Galois.linutronix.de [193.142.43.55])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 03917282EB;
-	Mon, 25 Aug 2025 09:12:54 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 69DD72BDC25;
+	Mon, 25 Aug 2025 09:23:30 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=193.142.43.55
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756113175; cv=none; b=YR0+KCgn/fMNmWYVYaqkFmdB0QIcLuTfRU5BMf9Ah7S4d3V+kjkX43UbGa7s2sR9CbABcNapMe6+F/GgBnwP54v8kn13twb6AJimYBfNtXPlBOvqi5nqr20SGgSZ2VyFkRIhSRwaOgDrkmrHca7ct2bP7AYTRRlR2GIwpj9ASQg=
+	t=1756113811; cv=none; b=aqVOKupJOJpzOhYddDsF28Xqg5aCtxl52+mT0Gl/WnBdN2TT8kNP+SutAE2HsPpQL5kQOPiVmN9OD9RxgpxWjCDAWCl0yXb0drxp+MVgq4lxZzez9ZUnVFR89R8brIAsK8LtpRS11TbMsTarJG1OIKHSWONqjrsMTERHx83JDBI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756113175; c=relaxed/simple;
-	bh=F13Y4FbWAU6xrLfR84xXT+EMfWvjmDKA3j1lzEZ9/Ys=;
-	h=Date:Message-ID:From:To:Cc:Subject:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=Ix5/gJnLDaLxlBSpii6F6CtYcuhv/EyLbz+1Dqo3xsND/J6aaXNovVqFBRUVL36UYRUuHK4zPdngWxdgv5FgSiy4wLLKeqWq6cIvcb/TxdEH5n87PaKn8puj/QuhQamsy6s1feo2nlFuMFWGP/+4iBHkKmyBLTZqZQZbADwKL1M=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Ldus4Vwn; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8146FC4CEED;
-	Mon, 25 Aug 2025 09:12:54 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1756113174;
-	bh=F13Y4FbWAU6xrLfR84xXT+EMfWvjmDKA3j1lzEZ9/Ys=;
-	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-	b=Ldus4Vwn80Hyx52ZVG9s5XbnsBhRtoP72Az1zyDa7qEa6fharS/QAYTaHoZUkgVYe
-	 V75f4D1PccdTOlqvTvL4n2O2gcWfyAFygCcCLzB+Q2orFW2nXb/AwytJwVldjRzS58
-	 q0/dqeEFdXAwuYso4gIJWZSNMgwtkTBURl1GyQrWTIJJ7xY+CE97h7LL3OZ/T+eHIq
-	 BQQaqhFU1fNYWF0Tdd0W3Al2KIO3xsWcsSiWvOGmEYdF96PnTMUpF6w8Ub8EPqXv62
-	 DRUT7AsU5AmluAoAQuY9T0UWUF5EpXjSEIRDVjHREIcmD3tuVFDnbhXQeiRJ6vtDB+
-	 B8OZ8ovdJ4zsA==
-Received: from sofa.misterjones.org ([185.219.108.64] helo=lobster-girl.misterjones.org)
-	by disco-boy.misterjones.org with esmtpsa  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
-	(Exim 4.98.2)
-	(envelope-from <maz@kernel.org>)
-	id 1uqTG0-00000000AfV-0BxV;
-	Mon, 25 Aug 2025 09:12:52 +0000
-Date: Mon, 25 Aug 2025 10:12:50 +0100
-Message-ID: <871poz2299.wl-maz@kernel.org>
-From: Marc Zyngier <maz@kernel.org>
-To: Sam Edwards <cfsworks@gmail.com>
-Cc: Ard Biesheuvel <ardb@kernel.org>,
-	Catalin Marinas <catalin.marinas@arm.com>,
-	Will Deacon <will@kernel.org>,
-	Andrew Morton <akpm@linux-foundation.org>,
-	Anshuman Khandual <anshuman.khandual@arm.com>,
-	Ryan Roberts <ryan.roberts@arm.com>,
-	Baruch Siach <baruch@tkos.co.il>,
-	Kevin Brodsky <kevin.brodsky@arm.com>,
-	Joey Gouly <joey.gouly@arm.com>,
-	linux-arm-kernel@lists.infradead.org,
-	linux-kernel@vger.kernel.org,
+	s=arc-20240116; t=1756113811; c=relaxed/simple;
+	bh=Vi8IsWr8sfqjbSpr0TipQn/bFejpu2MbrNdIRDZf5cY=;
+	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=ZyHDlVPCRbWX2cvaVapwxi7oqBJY3Opo6QOt79F5tQAfiSEBoATOoLamcLOgKXXquxmEUjpM9FjYdpo6BYLbodjzxgz52zjmj75f2lIk6p8AuqTvYpoz+2BceytkqlcD0SkubRRX8gQz0Y5nScaftuY+4uPHHXAX4KucqTiA+xA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de; spf=pass smtp.mailfrom=linutronix.de; dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=I+JCGrRu; dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=kBjqm/nb; arc=none smtp.client-ip=193.142.43.55
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linutronix.de
+From: Martin Kaistra <martin.kaistra@linutronix.de>
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
+	s=2020; t=1756113808;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:
+	 content-transfer-encoding:content-transfer-encoding;
+	bh=9vNDsLG8yRQa1f6yiPV69gzJlsO/fR4VPwef6lF3Q/U=;
+	b=I+JCGrRuTkBXJyOjaoU9QWAA4kZlP0Lgfc/c+WCo5W2su7hCCnrHCrVXr7dBZEAe43RVRq
+	JdnQ7o+vYKyA2NBspzDlzFQ7sEx5LCr8s/kPk56c9ZOFo8cG/QEcqpiWqgNR8rK41wcqrG
+	9SKGNFiOgZcHlVS3pHOxhCWgwqMbh/Valsbe3MG8McUcbcjJEQITKlfEelwUMFjB6iU69q
+	QlkJxDj7nSodK8pgyAcOv/WqXq2eMdLouLEvXKaH6oEvpCVjT57cFv5hbfCdDQx84MX3u3
+	YQgcpA7Aw6xBC9uBP7a7BcRMRyXRZoasZnKbm5YkjFytlnd/WkImbpNCJpD19A==
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
+	s=2020e; t=1756113808;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:
+	 content-transfer-encoding:content-transfer-encoding;
+	bh=9vNDsLG8yRQa1f6yiPV69gzJlsO/fR4VPwef6lF3Q/U=;
+	b=kBjqm/nbuSN7K/X1C+X5U8O2yenC79h6hEgl2XO2Df5ot8rKSbv214FL63nBVU6GkyIk04
+	PC+kSM6j62iFuuBg==
+To: Michal Simek <michal.simek@amd.com>,
+	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+	linux-serial@vger.kernel.org
+Cc: Manikanta Guntupalli <manikanta.guntupalli@amd.com>,
 	stable@vger.kernel.org
-Subject: Re: [PATCH] arm64/boot: Zero-initialize idmap PGDs before use
-In-Reply-To: <CAH5Ym4iqvQuO6JxO-jypTp05Ug_2vDokCDoBgGB+cOzgmTQpkQ@mail.gmail.com>
-References: <20250822041526.467434-1-CFSworks@gmail.com>
-	<CAMj1kXH38gOUpDDdarCXPAY3BHBbuFzdD=Dq7Knsg-qHJoNqzQ@mail.gmail.com>
-	<CAH5Ym4gTTLcyucnXjxFtNutVR1HQ0G2k_YBSNO-7G3-4YXUtag@mail.gmail.com>
-	<CAMj1kXF00Y0=67apXVbOC+rpbEEvyEovFYf4r_edr6mXjrj0+A@mail.gmail.com>
-	<CAH5Ym4h+2w6aayzsVu__3qu3-6ETq1HK7u18yGzOrRqZ--2H9w@mail.gmail.com>
-	<874itx14l5.wl-maz@kernel.org>
-	<CAH5Ym4iqvQuO6JxO-jypTp05Ug_2vDokCDoBgGB+cOzgmTQpkQ@mail.gmail.com>
-User-Agent: Wanderlust/2.15.9 (Almost Unreal) SEMI-EPG/1.14.7 (Harue)
- FLIM-LB/1.14.9 (=?UTF-8?B?R29qxY0=?=) APEL-LB/10.8 EasyPG/1.0.0 Emacs/30.1
- (aarch64-unknown-linux-gnu) MULE/6.0 (HANACHIRUSATO)
+Subject: [PATCH v2] serial: uartps: do not deassert RS485 RTS GPIO prematurely
+Date: Mon, 25 Aug 2025 11:22:51 +0200
+Message-Id: <20250825092251.1444274-1-martin.kaistra@linutronix.de>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0 (generated by SEMI-EPG 1.14.7 - "Harue")
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: quoted-printable
-X-SA-Exim-Connect-IP: 185.219.108.64
-X-SA-Exim-Rcpt-To: cfsworks@gmail.com, ardb@kernel.org, catalin.marinas@arm.com, will@kernel.org, akpm@linux-foundation.org, anshuman.khandual@arm.com, ryan.roberts@arm.com, baruch@tkos.co.il, kevin.brodsky@arm.com, joey.gouly@arm.com, linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org, stable@vger.kernel.org
-X-SA-Exim-Mail-From: maz@kernel.org
-X-SA-Exim-Scanned: No (on disco-boy.misterjones.org); SAEximRunCond expanded to false
+MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
 
-On Mon, 25 Aug 2025 00:43:08 +0100,
-Sam Edwards <cfsworks@gmail.com> wrote:
->=20
-> Hi, Marc! It's been a while; hope you're well.
->=20
-> On Sun, Aug 24, 2025 at 1:55=E2=80=AFAM Marc Zyngier <maz@kernel.org> wro=
-te:
-> >
-> > Hi Sam,
-> >
-> > On Sun, 24 Aug 2025 04:05:05 +0100,
-> > Sam Edwards <cfsworks@gmail.com> wrote:
-> > >
-> > > On Sat, Aug 23, 2025 at 5:29=E2=80=AFPM Ard Biesheuvel <ardb@kernel.o=
-rg> wrote:
-> > > >
-> >
-> > [...]
-> >
-> > > > Under which conditions would PGD_SIZE assume a value greater than P=
-AGE_SIZE?
-> > >
-> > > I might be doing my math wrong, but wouldn't 52-bit VA with 4K
-> > > granules and 5 levels result in this?
-> >
-> > No. 52bit VA at 4kB granule results in levels 0-3 each resolving 9
-> > bits, and level -1 resolving 4 bits. That's a total of 40 bits, plus
-> > the 12 bits coming directly from the VA making for the expected 52.
->=20
-> Thank you, that makes it clear: I made an off-by-one mistake in my
-> counting of the levels.
->=20
-> > > Each PTE represents 4K of virtual memory, so covers VA bits [11:0]
-> > > (this is level 3)
-> >
-> > That's where you got it wrong. The architecture is pretty clear that
-> > each level resolves PAGE_SHIFT-3 bits, hence the computation
-> > above. The bottom PAGE_SHIFT bits are directly extracted from the VA,
-> > without any translation.
->=20
-> Bear with me a moment while I unpack which part of that I got wrong:
-> A PTE is the terminal entry of the MMU walk, so I believe I'm correct
-> (in this example, and assuming no hugepages) that each PTE represents
-> 4K of virtual memory: that means the final step of computing a PA
-> takes a (valid) PTE and the low 12 bits of the VA, then just adds
-> those bits to the physical frame address.
-> It sounds like what you're saying is "That isn't a *level* though:
-> that's just concatenation. A 'level' always takes a bitslice of the VA
-> and uses it as an index into a table of word-sized entries. PTEs don't
-> point to a further table: they have all of the final information
-> encoded directly."
+After all bytes to be transmitted have been written to the FIFO
+register, the hardware might still be busy actually sending them.
 
-That's mostly it, yes. Each valid descriptor has an output address,
-which either points to another table or to actual memory, further to
-be indexed by the remaining bits of the VA (for 4kB pages: 12 bits for
-a level-3, 21 bits for a level-2...). Level-3 (aka PTEs in x86
-parlance) are always final.
+Thus, wait for the TX FIFO to be empty before starting the timer for the
+RTS after send delay.
 
-> That makes a lot more sense to me, but contradicts how I read this
-> comment from pgtable-hwdef.h:
->  * Level 3 descriptor (PTE).
-> I took this as, "a PTE describes how to perform level 3 of the
-> translation." But because in fact there are no "levels" after a PTE,
-> it must actually be saying "Level 3 of the translation is a lookup
-> into an array of PTEs."? The problem with that latter reading is that
-> this comment...
->  * Level -1 descriptor (PGD).
-> ...when read the same way, is saying "Level -1 of the translation is a
-> lookup into an array of PGDs." An "array of PGDs" is nonsense, so I
-> reverted back to my earlier readings: "PGD describes how to do level
-> -1." and "PTE describes how to do level 3."
+Cc: stable@vger.kernel.org
+Fixes: fccc9d9233f9 ("tty: serial: uartps: Add rs485 support to uartps driver")
+Signed-off-by: Martin Kaistra <martin.kaistra@linutronix.de>
+---
+Changes in v2:
+- Add cc stable
+- Add timeout
 
-The initial level of lookup *is* an array: you take the base address
-from TTBR, index it with the correct slice of bits from the VA, read
-the value at that address, and you have the information needed for the
-next level. The only difference is that you obtain that initial
-address from a register instead of getting it from memory.
+ drivers/tty/serial/xilinx_uartps.c | 9 ++++++++-
+ 1 file changed, 8 insertions(+), 1 deletion(-)
 
->=20
-> This smells like a classic "fencepost problem": The "PXX" Linuxisms
-> refer to the *nodes* along the MMU walk, while the "levels" in ARM
-> parlance are the actual steps of the walk taken by hardware -- edges,
-> not nodes, getting us from fencepost to fencepost. A fence with five
-> segments needs six posts, but we only have five currently.
->=20
-> So: where do the terms P4D, PUD, and PMD fit in here? And which one's
-> our missing fencepost?
-> PGD ----> ??? ----> ??? ----> ??? ----> ??? ----> PTE (|| low VA bits
-> =3D final PA)
+diff --git a/drivers/tty/serial/xilinx_uartps.c b/drivers/tty/serial/xilinx_uartps.c
+index fe457bf1e15bb..e1dd3843d563c 100644
+--- a/drivers/tty/serial/xilinx_uartps.c
++++ b/drivers/tty/serial/xilinx_uartps.c
+@@ -429,7 +429,7 @@ static void cdns_uart_handle_tx(void *dev_id)
+ 	struct uart_port *port = (struct uart_port *)dev_id;
+ 	struct cdns_uart *cdns_uart = port->private_data;
+ 	struct tty_port *tport = &port->state->port;
+-	unsigned int numbytes;
++	unsigned int numbytes, tmout;
+ 	unsigned char ch;
+ 
+ 	if (kfifo_is_empty(&tport->xmit_fifo) || uart_tx_stopped(port)) {
+@@ -454,6 +454,13 @@ static void cdns_uart_handle_tx(void *dev_id)
+ 
+ 	if (cdns_uart->port->rs485.flags & SER_RS485_ENABLED &&
+ 	    (kfifo_is_empty(&tport->xmit_fifo) || uart_tx_stopped(port))) {
++		/* Wait for the tx fifo to be actually empty */
++		for (tmout = 1000000; tmout; tmout--) {
++			if (cdns_uart_tx_empty(port) == TIOCSER_TEMT)
++				break;
++			udelay(1);
++		}
++
+ 		hrtimer_update_function(&cdns_uart->tx_timer, cdns_rs485_rx_callback);
+ 		hrtimer_start(&cdns_uart->tx_timer,
+ 			      ns_to_ktime(cdns_calc_after_tx_delay(cdns_uart)), HRTIMER_MODE_REL);
+-- 
+2.39.5
 
-I'm struggling to see what you consider a problem, really. For me, the
-original mistake is that you seem to have started off the LSBs of the
-VA, instead of the MSBs.
-
-As for the naming, the comments in pgtable-hwdef.h do apply. Except
-that they only match a full 5-level walk, while the kernel can be
-configured for as little as 2 levels. Hence the macro hell of folding
-levels to hide the fact that we don't have 5 levels in most cases.
-
-I find it much easier to reason about a start level (anywhere from -1
-to 2, depending on the page size and the number of VA bits), and the
-walk to always finish at level 3. The x86 naming is just compatibility
-cruft that I tend to ignore.
-
-Thanks,
-
-	M.
-
---=20
-Jazz isn't dead. It just smells funny.
 
