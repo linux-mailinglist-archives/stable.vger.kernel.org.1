@@ -1,119 +1,229 @@
-Return-Path: <stable+bounces-172787-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-172788-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id A7C0AB3377E
-	for <lists+stable@lfdr.de>; Mon, 25 Aug 2025 09:13:03 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 655E2B337B3
+	for <lists+stable@lfdr.de>; Mon, 25 Aug 2025 09:22:09 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 7B682169D09
-	for <lists+stable@lfdr.de>; Mon, 25 Aug 2025 07:13:03 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 3CAFF17E7F5
+	for <lists+stable@lfdr.de>; Mon, 25 Aug 2025 07:21:43 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 363BF28725B;
-	Mon, 25 Aug 2025 07:12:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7806429898B;
+	Mon, 25 Aug 2025 07:20:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=infradead.org header.i=@infradead.org header.b="CrI8d8jx"
+	dkim=pass (2048-bit key) header.d=mailbox.org header.i=@mailbox.org header.b="a6OVE8xv"
 X-Original-To: stable@vger.kernel.org
-Received: from desiato.infradead.org (desiato.infradead.org [90.155.92.199])
+Received: from mout-p-202.mailbox.org (mout-p-202.mailbox.org [80.241.56.172])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5F40E189F43;
-	Mon, 25 Aug 2025 07:12:55 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=90.155.92.199
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6006F28C2A6
+	for <stable@vger.kernel.org>; Mon, 25 Aug 2025 07:20:53 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=80.241.56.172
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756105977; cv=none; b=RM2EAcnhWGkk7ctjxEZLIZXuy0ciT/cC5UGEUzwzP1Ejioo/4rSKZBiH2ulvdro+oMH3ZuwEck0G7qsqqERKwAbnGdgDThtRzuJfYc7pKm6awRWkJJr7kIPGcASSbK8eSFyUvZSJOHfrE/yLLI1BbA8O+nq4oUc2uLQT02QipPQ=
+	t=1756106455; cv=none; b=GpCDqg3P8DRoFyil62kMxvw5oXgN4zyqyGs7qs/OGGaPVTwKyo+cTbCsDSUm/QYrufmSRqckZE0off82B8mcWu5qqRMEwgS30lD7n7GnVClqCYyNG6OITba+8tZij2oWbgKAJ9YxCxNHPEiBChxdpH5/IaqKwqH9yefTq2+pgyc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756105977; c=relaxed/simple;
-	bh=IVaAyasT9vwk8UxDmhDHOD/accMOWwV9PXxR0d4p3pU=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=XupBVUOE9agSPQa5BhOuNFjn4v/Tlr4Vy32Z7Iv+k9BlwQTREl2Nkt4HHUqb5oQeVWOSxqFt4EBk7A9r2HzwzSfAUOZVvqjpfTq0Dggdyt/o+5/Nqcyiib/a3qJKGPCjNq/7ArulQUzFvoXg28ksj2pFjlW6wX5xpTmkZ8cSoy8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=infradead.org; spf=none smtp.mailfrom=infradead.org; dkim=pass (2048-bit key) header.d=infradead.org header.i=@infradead.org header.b=CrI8d8jx; arc=none smtp.client-ip=90.155.92.199
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=infradead.org
-Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=infradead.org
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-	d=infradead.org; s=desiato.20200630; h=In-Reply-To:Content-Type:MIME-Version:
-	References:Message-ID:Subject:Cc:To:From:Date:Sender:Reply-To:
-	Content-Transfer-Encoding:Content-ID:Content-Description;
-	bh=87dEfwuDs8a3Bmpg1D5wqvl9OXwHplw3ah1EhMVZftY=; b=CrI8d8jx6gFWsRryHPxs/WVwYu
-	/38YoClmiBCt1ji87ST0XIXBdbAFYmtpshiSC1E1NJkxrl49R6mWWhG+MGnxwSHDK8XY9noAlKSlU
-	ENqM4P1eND74WKvWP49jMUlf013DdeB/G27dgV30d5Pjl9rpatRlloaOWUaCj3oCHDOactnFj0Aw8
-	InnahP0FZf4aPEHHrWolvM6ptLh1dloiqvODJK95P4byXbslbdwfLBlDs99zs7yBW/EJdKRJ8kMBR
-	iNnrAgTCt6VDKlZpjg2w0k6BOrTEm7Ake/JHq/KYzeS8cg5djZ+XEvLgfsr3mQ1QnSls4s6UbbTa1
-	iQzdY8fQ==;
-Received: from 77-249-17-252.cable.dynamic.v4.ziggo.nl ([77.249.17.252] helo=noisy.programming.kicks-ass.net)
-	by desiato.infradead.org with esmtpsa (Exim 4.98.2 #2 (Red Hat Linux))
-	id 1uqRNo-00000001lqX-2zzD;
-	Mon, 25 Aug 2025 07:12:49 +0000
-Received: by noisy.programming.kicks-ass.net (Postfix, from userid 1000)
-	id 534F33002ED; Mon, 25 Aug 2025 09:12:47 +0200 (CEST)
-Date: Mon, 25 Aug 2025 09:12:47 +0200
-From: Peter Zijlstra <peterz@infradead.org>
-To: Finn Thain <fthain@linux-m68k.org>
-Cc: Andrew Morton <akpm@linux-foundation.org>,
-	Lance Yang <lance.yang@linux.dev>,
-	Geert Uytterhoeven <geert@linux-m68k.org>,
-	Masami Hiramatsu <mhiramat@kernel.org>,
-	Eero Tamminen <oak@helsinkinet.fi>, Will Deacon <will@kernel.org>,
-	stable@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH] atomic: Specify natural alignment for atomic_t
-Message-ID: <20250825071247.GO3245006@noisy.programming.kicks-ass.net>
-References: <7d9554bfe2412ed9427bf71ce38a376e06eb9ec4.1756087385.git.fthain@linux-m68k.org>
+	s=arc-20240116; t=1756106455; c=relaxed/simple;
+	bh=58bfE69lKPQpn6bqCAeUJso9UWvQW8nmzGp5gae4qN8=;
+	h=Message-ID:Subject:From:To:Cc:Date:In-Reply-To:References:
+	 Content-Type:MIME-Version; b=CYBAtX3Bhtj6U9EkU2l0DegQlriWhtYo2/RMLWDeFZy6STOae4OQ3wMzyOPP18gxEpTCxvSlLwFlNtEVnbcCHtpJ9mMzO3zem0ETqLZHJoLxiQ7bdlNaEYhspKE+1p35GbS/wGBhyr24wr/vvtJFxLnB2bF1GDamaFrGJw6J+E8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=mailbox.org; spf=pass smtp.mailfrom=mailbox.org; dkim=pass (2048-bit key) header.d=mailbox.org header.i=@mailbox.org header.b=a6OVE8xv; arc=none smtp.client-ip=80.241.56.172
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=mailbox.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=mailbox.org
+Received: from smtp102.mailbox.org (smtp102.mailbox.org [IPv6:2001:67c:2050:b231:465::102])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by mout-p-202.mailbox.org (Postfix) with ESMTPS id 4c9Mds3gyWz9tfp;
+	Mon, 25 Aug 2025 09:20:49 +0200 (CEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=mailbox.org; s=mail20150812;
+	t=1756106449; h=from:from:reply-to:reply-to:subject:subject:date:date:
+	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=kc+jnmb97nhx7hv+sdQ0FxANFqoWSC9un0Xi9kWhsmw=;
+	b=a6OVE8xvesJa8ubbQuj3+5/nxjJUXpfau2CgfCyZNweqKaCR8EMeWr6TOfBjCIGVBwTWZw
+	LEYsRRntT3Ra6UNOnG2A2IKtSQrX70dM6juu8yvPvKoeQHlvCA6gbZBVgMon9XdK+zsikT
+	ite1YpEQHIoHEo4NK4OoBLAA1Qde1ultxjQdBjRFOW70eXfKcqeN7yKuY54tnslr4+6Chv
+	Yt+7RXr4at14lTmUScgXIzeQVUWUeLlRs8TNAlEg0mskHos61n/pS+QKrDLNbo3OAoTkIe
+	1RWw1OlIzVi8QE3BsaKgaucfVVGMTsYCUFjAjOCIJKtKKOilxf/syzpLwfA7sQ==
+Message-ID: <f0f2694be1d40c31ae968677a2d6b8a37aae6cf6.camel@mailbox.org>
+Subject: Re: [PATCH 6.16 256/570] drm/sched: Avoid memory leaks with
+ cancel_job() callback
+From: Philipp Stanner <phasta@mailbox.org>
+Reply-To: phasta@kernel.org
+To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>, stable@vger.kernel.org
+Cc: patches@lists.linux.dev, Tvrtko Ursulin <tvrtko.ursulin@igalia.com>, 
+ =?ISO-8859-1?Q?Ma=EDra?= Canal
+	 <mcanal@igalia.com>, Philipp Stanner <phasta@kernel.org>, Sasha Levin
+	 <sashal@kernel.org>
+Date: Mon, 25 Aug 2025 09:20:43 +0200
+In-Reply-To: <20250818124515.684210604@linuxfoundation.org>
+References: <20250818124505.781598737@linuxfoundation.org>
+	 <20250818124515.684210604@linuxfoundation.org>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <7d9554bfe2412ed9427bf71ce38a376e06eb9ec4.1756087385.git.fthain@linux-m68k.org>
+X-MBO-RS-ID: 9bf598924fa62c3e28e
+X-MBO-RS-META: mgp9xnmaiznzmai5zoysqqo9hf5qfm73
 
-On Mon, Aug 25, 2025 at 12:03:05PM +1000, Finn Thain wrote:
-> Some recent commits incorrectly assumed the natural alignment of locks.
-> That assumption fails on Linux/m68k (and, interestingly, would have failed
-> on Linux/cris also). This leads to spurious warnings from the hang check
-> code. Fix this bug by adding the necessary 'aligned' attribute.
-> 
-> Cc: Andrew Morton <akpm@linux-foundation.org>
-> Cc: Geert Uytterhoeven <geert@linux-m68k.org>
-> Cc: Lance Yang <lance.yang@linux.dev>
-> Cc: Masami Hiramatsu <mhiramat@kernel.org>
-> Cc: Eero Tamminen <oak@helsinkinet.fi>
-> Cc: Peter Zijlstra <peterz@infradead.org>
-> Cc: Will Deacon <will@kernel.org>
-> Cc: stable@vger.kernel.org
-> Reported-by: Eero Tamminen <oak@helsinkinet.fi>
-> Closes: https://lore.kernel.org/lkml/CAMuHMdW7Ab13DdGs2acMQcix5ObJK0O2dG_Fxzr8_g58Rc1_0g@mail.gmail.com/
-> Fixes: e711faaafbe5 ("hung_task: replace blocker_mutex with encoded blocker")
+On Mon, 2025-08-18 at 14:44 +0200, Greg Kroah-Hartman wrote:
+> 6.16-stable review patch.=C2=A0 If anyone has any objections, please let =
+me know.
+>=20
+> ------------------
+>=20
+> From: Philipp Stanner <phasta@kernel.org>
+>=20
+> [ Upstream commit bf8bbaefaa6ae0a07971ea57b3208df60e8ad0a4 ]
+>=20
+> Since its inception, the GPU scheduler can leak memory if the driver
+> calls drm_sched_fini() while there are still jobs in flight.
+>=20
+> The simplest way to solve this in a backwards compatible manner is by
+> adding a new callback, drm_sched_backend_ops.cancel_job(), which
+> instructs the driver to signal the hardware fence associated with the
+> job. Afterwards, the scheduler can safely use the established free_job()
+> callback for freeing the job.
+>=20
+> Implement the new backend_ops callback cancel_job().
 
-I don't see how this patch it at all relevant. Let along how its fixed
-by the below.
+There is no use in backporting this to stable, since it doesn't really
+solve leaks just by adding it. The drivers have to support it
+additionally, too, which is something we will ramp up step-by-step over
+the long term.
 
-> Signed-off-by: Finn Thain <fthain@linux-m68k.org>
+AFAICT there is no harm in backporting it, but it's just not useful.
+
+P.
+
+>=20
+> Suggested-by: Tvrtko Ursulin <tvrtko.ursulin@igalia.com>
+> Link: https://lore.kernel.org/dri-devel/20250418113211.69956-1-tvrtko.urs=
+ulin@igalia.com/
+> Reviewed-by: Ma=C3=ADra Canal <mcanal@igalia.com>
+> Acked-by: Tvrtko Ursulin <tvrtko.ursulin@igalia.com>
+> Signed-off-by: Philipp Stanner <phasta@kernel.org>
+> Link: https://lore.kernel.org/r/20250710125412.128476-4-phasta@kernel.org
+> Signed-off-by: Sasha Levin <sashal@kernel.org>
 > ---
-> I tested this on m68k using GCC and it fixed the problem for me. AFAIK,
-> the other architectures naturally align ints already so I'm expecting to
-> see no effect there.
-> ---
->  include/linux/types.h | 2 +-
->  1 file changed, 1 insertion(+), 1 deletion(-)
-> 
-> diff --git a/include/linux/types.h b/include/linux/types.h
-> index 6dfdb8e8e4c3..cd5b2b0f4b02 100644
-> --- a/include/linux/types.h
-> +++ b/include/linux/types.h
-> @@ -179,7 +179,7 @@ typedef phys_addr_t resource_size_t;
->  typedef unsigned long irq_hw_number_t;
->  
->  typedef struct {
-> -	int counter;
-> +	int counter __aligned(sizeof(int));
->  } atomic_t;
->  
->  #define ATOMIC_INIT(i) { (i) }
-
-And your architecture doesn't trap on unaligned atomic access ?!!?!
-
+> =C2=A0drivers/gpu/drm/scheduler/sched_main.c | 34 ++++++++++++++++-------=
+---
+> =C2=A0include/drm/gpu_scheduler.h=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=
+=A0=C2=A0=C2=A0=C2=A0=C2=A0 | 18 ++++++++++++++
+> =C2=A02 files changed, 39 insertions(+), 13 deletions(-)
+>=20
+> diff --git a/drivers/gpu/drm/scheduler/sched_main.c b/drivers/gpu/drm/sch=
+eduler/sched_main.c
+> index 829579c41c6b..3ac5e6acce04 100644
+> --- a/drivers/gpu/drm/scheduler/sched_main.c
+> +++ b/drivers/gpu/drm/scheduler/sched_main.c
+> @@ -1348,6 +1348,18 @@ int drm_sched_init(struct drm_gpu_scheduler *sched=
+, const struct drm_sched_init_
+> =C2=A0}
+> =C2=A0EXPORT_SYMBOL(drm_sched_init);
+> =C2=A0
+> +static void drm_sched_cancel_remaining_jobs(struct drm_gpu_scheduler *sc=
+hed)
+> +{
+> +	struct drm_sched_job *job, *tmp;
+> +
+> +	/* All other accessors are stopped. No locking necessary. */
+> +	list_for_each_entry_safe_reverse(job, tmp, &sched->pending_list, list) =
+{
+> +		sched->ops->cancel_job(job);
+> +		list_del(&job->list);
+> +		sched->ops->free_job(job);
+> +	}
+> +}
+> +
+> =C2=A0/**
+> =C2=A0 * drm_sched_fini - Destroy a gpu scheduler
+> =C2=A0 *
+> @@ -1355,19 +1367,11 @@ EXPORT_SYMBOL(drm_sched_init);
+> =C2=A0 *
+> =C2=A0 * Tears down and cleans up the scheduler.
+> =C2=A0 *
+> - * This stops submission of new jobs to the hardware through
+> - * drm_sched_backend_ops.run_job(). Consequently, drm_sched_backend_ops.=
+free_job()
+> - * will not be called for all jobs still in drm_gpu_scheduler.pending_li=
+st.
+> - * There is no solution for this currently. Thus, it is up to the driver=
+ to make
+> - * sure that:
+> - *
+> - *=C2=A0 a) drm_sched_fini() is only called after for all submitted jobs
+> - *=C2=A0=C2=A0=C2=A0=C2=A0 drm_sched_backend_ops.free_job() has been cal=
+led or that
+> - *=C2=A0 b) the jobs for which drm_sched_backend_ops.free_job() has not =
+been called
+> - *=C2=A0=C2=A0=C2=A0=C2=A0 after drm_sched_fini() ran are freed manually=
+.
+> - *
+> - * FIXME: Take care of the above problem and prevent this function from =
+leaking
+> - * the jobs in drm_gpu_scheduler.pending_list under any circumstances.
+> + * This stops submission of new jobs to the hardware through &struct
+> + * drm_sched_backend_ops.run_job. If &struct drm_sched_backend_ops.cance=
+l_job
+> + * is implemented, all jobs will be canceled through it and afterwards c=
+leaned
+> + * up through &struct drm_sched_backend_ops.free_job. If cancel_job is n=
+ot
+> + * implemented, memory could leak.
+> =C2=A0 */
+> =C2=A0void drm_sched_fini(struct drm_gpu_scheduler *sched)
+> =C2=A0{
+> @@ -1397,6 +1401,10 @@ void drm_sched_fini(struct drm_gpu_scheduler *sche=
+d)
+> =C2=A0	/* Confirm no work left behind accessing device structures */
+> =C2=A0	cancel_delayed_work_sync(&sched->work_tdr);
+> =C2=A0
+> +	/* Avoid memory leaks if supported by the driver. */
+> +	if (sched->ops->cancel_job)
+> +		drm_sched_cancel_remaining_jobs(sched);
+> +
+> =C2=A0	if (sched->own_submit_wq)
+> =C2=A0		destroy_workqueue(sched->submit_wq);
+> =C2=A0	sched->ready =3D false;
+> diff --git a/include/drm/gpu_scheduler.h b/include/drm/gpu_scheduler.h
+> index 1a7e377d4cbb..1eed74c7f2f7 100644
+> --- a/include/drm/gpu_scheduler.h
+> +++ b/include/drm/gpu_scheduler.h
+> @@ -508,6 +508,24 @@ struct drm_sched_backend_ops {
+> =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 * and it's time to=
+ clean it up.
+> =C2=A0	 */
+> =C2=A0	void (*free_job)(struct drm_sched_job *sched_job);
+> +
+> +	/**
+> +	 * @cancel_job: Used by the scheduler to guarantee remaining jobs' fenc=
+es
+> +	 * get signaled in drm_sched_fini().
+> +	 *
+> +	 * Used by the scheduler to cancel all jobs that have not been executed
+> +	 * with &struct drm_sched_backend_ops.run_job by the time
+> +	 * drm_sched_fini() gets invoked.
+> +	 *
+> +	 * Drivers need to signal the passed job's hardware fence with an
+> +	 * appropriate error code (e.g., -ECANCELED) in this callback. They
+> +	 * must not free the job.
+> +	 *
+> +	 * The scheduler will only call this callback once it stopped calling
+> +	 * all other callbacks forever, with the exception of &struct
+> +	 * drm_sched_backend_ops.free_job.
+> +	 */
+> +	void (*cancel_job)(struct drm_sched_job *sched_job);
+> =C2=A0};
+> =C2=A0
+> =C2=A0/**
 
 
