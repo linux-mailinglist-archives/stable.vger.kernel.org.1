@@ -1,228 +1,508 @@
-Return-Path: <stable+bounces-172892-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-172893-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id A43F7B34EEB
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 00:21:42 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 19F5EB34EF5
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 00:23:18 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 4C5DF17CF4F
-	for <lists+stable@lfdr.de>; Mon, 25 Aug 2025 22:21:42 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 17B711B23AA9
+	for <lists+stable@lfdr.de>; Mon, 25 Aug 2025 22:23:38 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id AA3301F560B;
-	Mon, 25 Aug 2025 22:21:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5E97B23C503;
+	Mon, 25 Aug 2025 22:23:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="VKesTbLe"
+	dkim=pass (2048-bit key) header.d=suse.com header.i=@suse.com header.b="G18y48eb"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-wr1-f49.google.com (mail-wr1-f49.google.com [209.85.221.49])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 600E24A33;
-	Mon, 25 Aug 2025 22:21:35 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3852D1F560B
+	for <stable@vger.kernel.org>; Mon, 25 Aug 2025 22:23:02 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.49
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756160497; cv=none; b=g38jyYKxSpwEm1pwq09NlN7gFHshTVj7G4+L0rHpnVQ2LI81ZaFLyYtLo5QBYRNOX/2KP1ryAZaXoAZPaACwdifvRSNzjOka1xjZ32XTaX7V83H+Sxgc+WKhJtJsNUNmblOWIsdS/g7xCPMDxI1fHifhXaRM5B9fmyMlDZNp5BI=
+	t=1756160591; cv=none; b=AClDyda0/+RSqunvPSAUoW5tTEunLrFkfUbKwgtI0QqoZxaFZ692uJ937uRsyoyqN9D0IyVKazmns+3cZVavJMWX3m1Tyuwz4fsRmPDWzYrHDdjmR/pkP9Q57tDmj3zbX3WlXeANllq+tmrkQKXYiYVtcUFX7XccEZKlztt6syI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756160497; c=relaxed/simple;
-	bh=1L1AMdIXakqF4oFhemuvzl1klkE1NdZzGzIJyFFccH4=;
-	h=Date:From:To:Cc:Subject:Message-ID:MIME-Version:Content-Type:
-	 Content-Disposition:In-Reply-To; b=lTBvRhQAhCr2NXyHLdXlM9AYtLrgkZWWlm3eEwlufixj/5cFWvSM9tpMccsjBffWCNnUq3aZR5hgB2WKZAtoMPO570u7gi9Hh2Nd4k+rPt5gQk1YZioY6gjv3hnmI5X5hBb4MwvmIbIF8AT28d3R0YpI8Zfhf6tw6tblScBk/VU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=VKesTbLe; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id AB690C4CEED;
-	Mon, 25 Aug 2025 22:21:35 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1756160495;
-	bh=1L1AMdIXakqF4oFhemuvzl1klkE1NdZzGzIJyFFccH4=;
-	h=Date:From:To:Cc:Subject:In-Reply-To:From;
-	b=VKesTbLeCYuq1TwE/MAEQ2ULIODY4Mo2e6+NWiSqA8IWwgfwiZYRP783bqAoUprla
-	 SMfxTllMwfDYNoJXY4BBMq2A0Svp0m8X3SYElrvKz07JNKApySlceic921u2aOMx6a
-	 TV942BsXs8q+vbOrosqx4o4S5o6Yinds2KTeizof0DwwJxoLdhDVeaz1Qow8O43uIO
-	 4/LObGqzcWiZtYNquiSIqAKle0eLZXFx4PIb+lGx0N6nUXeIeXMOvPhsOUzzsXwcBb
-	 /sbUAkFks7PDvR0K6wHdGZ53sfANkojvyw9Z0NqUqsJj8g5O0iPgeP/2vNke8OEGPQ
-	 CGxTPKLham6aA==
-Date: Mon, 25 Aug 2025 17:21:34 -0500
-From: Bjorn Helgaas <helgaas@kernel.org>
-To: Ilpo =?utf-8?B?SsOkcnZpbmVu?= <ilpo.jarvinen@linux.intel.com>
-Cc: Bjorn Helgaas <bhelgaas@google.com>, linux-pci@vger.kernel.org,
-	D Scott Phillips <scott@os.amperecomputing.com>,
-	Rio Liu <rio@r26.me>, Tudor Ambarus <tudor.ambarus@linaro.org>,
-	Markus Elfring <Markus.Elfring@web.de>,
-	linux-kernel@vger.kernel.org,
-	Christian =?utf-8?B?S8O2bmln?= <christian.koenig@amd.com>,
-	stable@vger.kernel.org
-Subject: Re: [PATCH v3 3/3] PCI: Fix failure detection during resource resize
-Message-ID: <20250825222134.GA802347@bhelgaas>
+	s=arc-20240116; t=1756160591; c=relaxed/simple;
+	bh=FjphrcKmWs+qFQgLjiUYFc378Y0zknHxdOawalo9hZ8=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=As+kUIi6RZ4WanZepJgDL4b/PZU9VuF82pSwzOpkZsiE6A7/g/XBh8w7bZnS+H8BPKBRkAGqY/2SaM15zEjfPfg3CSa6ysi+CBQT4nh/sLosS/DGWarHGS5l7TPiBoDi1LrChHSS/hlpANR55Z4Kcca4rwTt8/S1D7jUvQIOS8Y=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=suse.com; spf=pass smtp.mailfrom=suse.com; dkim=pass (2048-bit key) header.d=suse.com header.i=@suse.com header.b=G18y48eb; arc=none smtp.client-ip=209.85.221.49
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=suse.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=suse.com
+Received: by mail-wr1-f49.google.com with SMTP id ffacd0b85a97d-3c84aea9d32so920418f8f.2
+        for <stable@vger.kernel.org>; Mon, 25 Aug 2025 15:23:02 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=suse.com; s=google; t=1756160581; x=1756765381; darn=vger.kernel.org;
+        h=content-transfer-encoding:in-reply-to:autocrypt:from
+         :content-language:references:cc:to:subject:user-agent:mime-version
+         :date:message-id:from:to:cc:subject:date:message-id:reply-to;
+        bh=JV1qt9VRKtilTGxy+NFNrG8/QnPmgFh9/d4Dp0dAEp8=;
+        b=G18y48ebUbVZVT8ob/rHSsYZ4fi+Cd83Nv3SGkQMuDAHVvQEpZGrq+YW3UEqawQi17
+         UYi4pP4L82tDp60Ooj1yut3qSNc8XX1orCAkfQWC2vHWkGjJ4mUaDoNWfl7dyP13li/L
+         K7Fps7qeZe3Blyu5EwOKfv+vRC7JyJgp4sAqLsr5UDxw0/C6vD/ggjwH8nq1Km2ZHNiU
+         COvOdvV4UAElLWk5NRgRaSwBimTVlo4nsWDm+jWxY9WbOJg+aPdMZS0nxXJGo4JPh6Ht
+         UXI5g++O70+dJDKzessiHoUXkt3q1/xLORjT9DyLLPZOPp+wZd5FiPap0c+novPstwno
+         4BmA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1756160581; x=1756765381;
+        h=content-transfer-encoding:in-reply-to:autocrypt:from
+         :content-language:references:cc:to:subject:user-agent:mime-version
+         :date:message-id:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=JV1qt9VRKtilTGxy+NFNrG8/QnPmgFh9/d4Dp0dAEp8=;
+        b=A+0wr6zrQh/Gkxno5BuEImDcdRAtHFI78o49EhO2PhacWLkcqVeFRU6zl9IV3hoNJ2
+         tgEJj0Wws/NhHAnrq9EhXT3knZCeX4rpbhufaru46xM8Vfc2ra8NpATIU3s9yrAtvALv
+         JAA7CsUt5ZYLgcANGj0LdhAwFVcW5KRl1vGNgUmAvwChlfcYfLtsAJQ3Cmep+Y6NnJKV
+         wPAlhNqumhsZJtB+jotmg4yJKzrJapcwUAFqobcfw2ImVf9XjDySvyo9auUeBAk20MIz
+         nprVpZIZjYX/t9P3fp9FsOsg7C9mw+M6K+TFMrjoSIKcdZ9GTcrzQkE6Sw0/mtFYINCN
+         LeKg==
+X-Forwarded-Encrypted: i=1; AJvYcCW6wJiQJz4/zUvTzvigt2cSqxnEsujPZl7d6rPpIiG8r98SYmxnig0QLifA0Rn5/uYkxjDVs2Y=@vger.kernel.org
+X-Gm-Message-State: AOJu0YyeyDeXextAQGBeA+hRD6+TcqZ9L6LWBp6WTFZF8GcKIsrfu1fa
+	FsbSSiv69zbBNXxlO4EoD0Ozqsyy7ExLjyKiMoxO/s9LCGQ/Po7gUd6RkrrYFaGPTUE=
+X-Gm-Gg: ASbGnctmrFxH11TIPwA1gKZcC0kLTfQG1hmc1YI7l54O4g5i78e3J6C6y3/qe5GOlO0
+	Y9KZU4iachOh8aRJNFXrCp9VJl7RoBQV/cF3XZR86j4NH9B02o/7kw6dt0onbP8Il9DGP55MOYX
+	KqxC1AZySgNswmSyK6iKxOy2aID7mdQKhc4BRZtChYA2GdgEupanvippLAoBRj9tOQbW3Nd8L34
+	GjpYVAyDR3M6F6d+ZcEvD0BQfTHqJjkCB9ANSNkekvIy5cx1eJnA5K2fvqglVappcsI2ngKCUSn
+	j0xPpZe5NfBKhZmefcKkubTS6vsPTIV4ZC/pzMhvH/oUtyyTmZfXmFOw2Ew7Yc6aCTENLNRBgN6
+	KX/6BQVumjOYH4aPP4s3SEYbZosJFg8zMzdQyjYTOgyxesnvh8sXPcQNeBpNBhQ==
+X-Google-Smtp-Source: AGHT+IEKvYkxowtvnH8uiA3iF0PccOjIb2NXnOf8g8cHv+1S2zJgM1ppTiy3hTEu1derTQSYdScJTg==
+X-Received: by 2002:a05:6000:430a:b0:3c8:2667:4e3f with SMTP id ffacd0b85a97d-3c82667573bmr5736413f8f.13.1756160581157;
+        Mon, 25 Aug 2025 15:23:01 -0700 (PDT)
+Received: from ?IPV6:2403:580d:fda1::299? (2403-580d-fda1--299.ip6.aussiebb.net. [2403:580d:fda1::299])
+        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-7705406d213sm5818322b3a.81.2025.08.25.15.22.59
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Mon, 25 Aug 2025 15:23:00 -0700 (PDT)
+Message-ID: <afcd983e-9514-4cac-80b4-dd20bcf52534@suse.com>
+Date: Tue, 26 Aug 2025 07:52:56 +0930
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v2] btrfs: do more strict compressed read merge check
+To: Filipe Manana <fdmanana@kernel.org>
+Cc: linux-btrfs@vger.kernel.org, stable@vger.kernel.org
+References: <fe1f1d9e9f2425fa25a2ff9295b4e194125392f6.1755991465.git.wqu@suse.com>
+ <CAL3q7H7eZp0QG_UyiNaagC=uEk_od87jsdVrJq0YyyXfOnb-nw@mail.gmail.com>
+Content-Language: en-US
+From: Qu Wenruo <wqu@suse.com>
+Autocrypt: addr=wqu@suse.com; keydata=
+ xsBNBFnVga8BCACyhFP3ExcTIuB73jDIBA/vSoYcTyysFQzPvez64TUSCv1SgXEByR7fju3o
+ 8RfaWuHCnkkea5luuTZMqfgTXrun2dqNVYDNOV6RIVrc4YuG20yhC1epnV55fJCThqij0MRL
+ 1NxPKXIlEdHvN0Kov3CtWA+R1iNN0RCeVun7rmOrrjBK573aWC5sgP7YsBOLK79H3tmUtz6b
+ 9Imuj0ZyEsa76Xg9PX9Hn2myKj1hfWGS+5og9Va4hrwQC8ipjXik6NKR5GDV+hOZkktU81G5
+ gkQtGB9jOAYRs86QG/b7PtIlbd3+pppT0gaS+wvwMs8cuNG+Pu6KO1oC4jgdseFLu7NpABEB
+ AAHNGFF1IFdlbnJ1byA8d3F1QHN1c2UuY29tPsLAlAQTAQgAPgIbAwULCQgHAgYVCAkKCwIE
+ FgIDAQIeAQIXgBYhBC3fcuWlpVuonapC4cI9kfOhJf6oBQJnEXVgBQkQ/lqxAAoJEMI9kfOh
+ Jf6o+jIH/2KhFmyOw4XWAYbnnijuYqb/obGae8HhcJO2KIGcxbsinK+KQFTSZnkFxnbsQ+VY
+ fvtWBHGt8WfHcNmfjdejmy9si2jyy8smQV2jiB60a8iqQXGmsrkuR+AM2V360oEbMF3gVvim
+ 2VSX2IiW9KERuhifjseNV1HLk0SHw5NnXiWh1THTqtvFFY+CwnLN2GqiMaSLF6gATW05/sEd
+ V17MdI1z4+WSk7D57FlLjp50F3ow2WJtXwG8yG8d6S40dytZpH9iFuk12Sbg7lrtQxPPOIEU
+ rpmZLfCNJJoZj603613w/M8EiZw6MohzikTWcFc55RLYJPBWQ+9puZtx1DopW2jOwE0EWdWB
+ rwEIAKpT62HgSzL9zwGe+WIUCMB+nOEjXAfvoUPUwk+YCEDcOdfkkM5FyBoJs8TCEuPXGXBO
+ Cl5P5B8OYYnkHkGWutAVlUTV8KESOIm/KJIA7jJA+Ss9VhMjtePfgWexw+P8itFRSRrrwyUf
+ E+0WcAevblUi45LjWWZgpg3A80tHP0iToOZ5MbdYk7YFBE29cDSleskfV80ZKxFv6koQocq0
+ vXzTfHvXNDELAuH7Ms/WJcdUzmPyBf3Oq6mKBBH8J6XZc9LjjNZwNbyvsHSrV5bgmu/THX2n
+ g/3be+iqf6OggCiy3I1NSMJ5KtR0q2H2Nx2Vqb1fYPOID8McMV9Ll6rh8S8AEQEAAcLAfAQY
+ AQgAJgIbDBYhBC3fcuWlpVuonapC4cI9kfOhJf6oBQJnEXWBBQkQ/lrSAAoJEMI9kfOhJf6o
+ cakH+QHwDszsoYvmrNq36MFGgvAHRjdlrHRBa4A1V1kzd4kOUokongcrOOgHY9yfglcvZqlJ
+ qfa4l+1oxs1BvCi29psteQTtw+memmcGruKi+YHD7793zNCMtAtYidDmQ2pWaLfqSaryjlzR
+ /3tBWMyvIeWZKURnZbBzWRREB7iWxEbZ014B3gICqZPDRwwitHpH8Om3eZr7ygZck6bBa4MU
+ o1XgbZcspyCGqu1xF/bMAY2iCDcq6ULKQceuKkbeQ8qxvt9hVxJC2W3lHq8dlK1pkHPDg9wO
+ JoAXek8MF37R8gpLoGWl41FIUb3hFiu3zhDDvslYM4BmzI18QgQTQnotJH8=
+In-Reply-To: <CAL3q7H7eZp0QG_UyiNaagC=uEk_od87jsdVrJq0YyyXfOnb-nw@mail.gmail.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
-In-Reply-To: <20250822123359.16305-4-ilpo.jarvinen@linux.intel.com>
 
-On Fri, Aug 22, 2025 at 03:33:59PM +0300, Ilpo Järvinen wrote:
-> Since the commit 96336ec70264 ("PCI: Perform reset_resource() and build
-> fail list in sync") the failed list is always built and returned to let
-> the caller decide what to do with the failures. The caller may want to
-> retry resource fitting and assignment and before that can happen, the
-> resources should be restored to their original state (a reset
-> effectively clears the struct resource), which requires returning them
-> on the failed list so that the original state remains stored in the
-> associated struct pci_dev_resource.
+
+
+在 2025/8/25 20:12, Filipe Manana 写道:
+> On Sun, Aug 24, 2025 at 12:27 AM Qu Wenruo <wqu@suse.com> wrote:
+>>
+>> [BUG]
+>> When running test case generic/457, there is a chance to hit the
+>> following error, with 64K page size and 4K btrfs block size, and
+>> "compress=zstd" mount option:
+>>
+>> FSTYP         -- btrfs
+>> PLATFORM      -- Linux/aarch64 btrfs-aarch64 6.17.0-rc2-custom+ #129 SMP PREEMPT_DYNAMIC Wed Aug 20 18:52:51 ACST 2025
+>> MKFS_OPTIONS  -- -s 4k /dev/mapper/test-scratch1
+>> MOUNT_OPTIONS -- -o compress=zstd /dev/mapper/test-scratch1 /mnt/scratch
+>>
+>> generic/457 2s ... [failed, exit status 1]- output mismatch (see /home/adam/xfstests-dev/results//generic/457.out.bad)
+>>      --- tests/generic/457.out   2024-04-25 18:13:45.160550980 +0930
+>>      +++ /home/adam/xfstests-dev/results//generic/457.out.bad    2025-08-22 16:09:41.039352391 +0930
+>>      @@ -1,2 +1,3 @@
+>>       QA output created by 457
+>>      -Silence is golden
+>>      +testfile6 end md5sum mismatched
+>>      +(see /home/adam/xfstests-dev/results//generic/457.full for details)
+>>      ...
+>>      (Run 'diff -u /home/adam/xfstests-dev/tests/generic/457.out /home/adam/xfstests-dev/results//generic/457.out.bad'  to see the entire diff)
+>>
+>> The root problem is, after certain fsx operations the file contents
+>> change just after a mount cycle.
+>>
+>> There is a much smaller reproducer based on that test case, which I
+>> mainly used to debug the bug:
+>>
+>> workload() {
+>>          mkfs.btrfs -f $dev > /dev/null
+>>          dmesg -C
+>>          trace-cmd clear
+>>          mount -o compress=zstd $dev $mnt
+>>          xfs_io -f -c "pwrite -S 0xff 0 256K" -c "sync" $mnt/base > /dev/null
+>>          cp --reflink=always -p -f $mnt/base $mnt/file
+>>          $fsx -N 4 -d -k -S 3746842 $mnt/file
+>>          if [ $? -ne 0 ]; then
+>>                  echo "!!! FSX FAILURE !!!"
+>>                  fail
+>>          fi
+>>          csum_before=$(_md5_checksum $mnt/file)
+>>          stop_trace
+>>          umount $mnt
+>>          mount $dev $mnt
+>>          csum_after=$(_md5_checksum $mnt/file)
+>>          umount $mnt
+>>          if [ "$csum_before" != "$csum_after" ]; then
+>>                  echo "!!! CSUM MISMATCH !!!"
+>>                  fail
+>>          fi
+>> }
+>>
+>> This seed value will cause 100% reproducible csum mismatch after a mount
+>> cycle.
+>>
+>> The seed value results only 2 real operations:
+>>
+>>    Seed set to 3746842
+>>    main: filesystem does not support fallocate mode FALLOC_FL_UNSHARE_RANGE, disabling!
+>>    main: filesystem does not support fallocate mode FALLOC_FL_COLLAPSE_RANGE, disabling!
+>>    main: filesystem does not support fallocate mode FALLOC_FL_INSERT_RANGE, disabling!
+>>    main: filesystem does not support exchange range, disabling!
+>>    main: filesystem does not support dontcache IO, disabling!
+>>    2 clone       from 0x3b000 to 0x3f000, (0x4000 bytes) at 0x1f000
+>>    3 write       0x2975b thru    0x2ba20 (0x22c6 bytes)  dontcache=0
+>>    All 4 operations completed A-OK!
 > 
-> Resource resizing is different from the ordinary resource fitting and
-> assignment in that it only considers part of the resources. This means
-> failures for other resource types are not relevant at all and should be
-> ignored. As resize doesn't unassign such unrelated resources, those
-> resource ending up into the failed list implies assignment of that
-> resource must have failed before resize too. The check in
-> pci_reassign_bridge_resources() to decide if the whole assignment is
-> successful, however, is based on list emptiness which will cause false
-> negatives when the failed list has resources with an unrelated type.
+> Can you please make a test case for fstests?
+> Without fsx of course, since when new operations are added or fsx is
+> changed in other ways, the same seed is likely to not exercise the bug
+> anymore.
 > 
-> If the failed list is not empty, call pci_required_resource_failed()
-> and extend it to be able to filter on specific resource types too (if
-> provided).
+> Just using xfs_io (writes, cloning, etc).
+
+Sure.
+
+Although by the nature of page reads, on x86_64 it will mostly not 
+reproduce and only trigger on bs < ps cases.
+
+[...]
+>> This means, we reads of range [124K, 140K) and [140K, 165K) should not
 > 
-> Calling pci_required_resource_failed() at this point is slightly
-> problematic because the resource itself is reset when the failed list
-> is constructed in __assign_resources_sorted(). As a result,
-> pci_resource_is_optional() does not have access to the original
-> resource flags. This could be worked around by restoring and
-> re-reseting the resource around the call to pci_resource_is_optional(),
-> however, it shouldn't cause issue as resource resizing is meant for
-> 64-bit prefetchable resources according to Christian König (see the
-> Link which unfortunately doesn't point directly to Christian's reply
-> because lore didn't store that email at all).
+> "we reads of range..." -> the reads of ranges...
 > 
-> Fixes: 96336ec70264 ("PCI: Perform reset_resource() and build fail list in sync")
-> Link: https://lore.kernel.org/all/c5d1b5d8-8669-5572-75a7-0b480f581ac1@linux.intel.com/
-> Reported-by: D Scott Phillips <scott@os.amperecomputing.com>
-> Closes: https://lore.kernel.org/all/86plf0lgit.fsf@scott-ph-mail.amperecomputing.com/
-
-I'm trying to connect this fix with the Asynchronous SError Interrupt
-crash that Scott reported here.  From the call trace:
-
-  ...
-  arm64_serror_panic+0x6c/0x90
-  do_serror+0x58/0x60
-  el1h_64_error_handler+0x38/0x60
-  el1h_64_error+0x84/0x88
-  _raw_spin_lock_irqsave+0x34/0xb0 (P)
-  amdgpu_ih_process+0xf0/0x150 [amdgpu]
-  amdgpu_irq_handler+0x34/0xa0 [amdgpu]
-  __handle_irq_event_percpu+0x60/0x248
-  handle_irq_event+0x4c/0xc0
-  handle_fasteoi_irq+0xa0/0x1c8
-  handle_irq_desc+0x3c/0x68
-  generic_handle_domain_irq+0x24/0x40
-  __gic_handle_irq_from_irqson.isra.0+0x15c/0x260
-  gic_handle_irq+0x28/0x80
-  call_on_irq_stack+0x24/0x30
-  do_interrupt_handler+0x88/0xa0
-  el1_interrupt+0x44/0xd0
-  el1h_64_irq_handler+0x18/0x28
-  el1h_64_irq+0x84/0x88
-  amdgpu_device_rreg.part.0+0x4c/0x190 [amdgpu] (P)
-  amdgpu_device_rreg+0x24/0x40 [amdgpu]
-
-I guess something happened in amdgpu_device_rreg() that caused an
-interrupt, maybe a bogus virtual address for a register?
-
-And then amdgpu_ih_process() did something that caused the SError?  Or
-since it seems to be asynchronous, maybe the amdgpu_ih_process()
-connection is coincidental and the SError was a consequence of
-something else?
-
-I'd like to have a bread crumb here in the commit log that connects
-this fix with something a user might see, but I don't know what that
-would look like.
-
-> Tested-by: D Scott Phillips <scott@os.amperecomputing.com>
-> Signed-off-by: Ilpo Järvinen <ilpo.jarvinen@linux.intel.com>
-> Reviewed-by: D Scott Phillips <scott@os.amperecomputing.com>
-> Cc: Christian König <christian.koenig@amd.com>
-> Cc: <stable@vger.kernel.org>
-> ---
->  drivers/pci/setup-bus.c | 26 ++++++++++++++++++--------
->  1 file changed, 18 insertions(+), 8 deletions(-)
+>> be merged.
+>>
+>> But read merge check function, btrfs_bio_is_contig(), is only checking
+>> the disk_bytenr of two compressed reads, as there are not enough info
+>> like the involved extent maps to do more comprehensive checks, resulting
+>> the incorrect compressed read.
 > 
-> diff --git a/drivers/pci/setup-bus.c b/drivers/pci/setup-bus.c
-> index df5aec46c29d..def29506700e 100644
-> --- a/drivers/pci/setup-bus.c
-> +++ b/drivers/pci/setup-bus.c
-> @@ -28,6 +28,10 @@
->  #include <linux/acpi.h>
->  #include "pci.h"
->  
-> +#define PCI_RES_TYPE_MASK \
-> +	(IORESOURCE_IO | IORESOURCE_MEM | IORESOURCE_PREFETCH |\
-> +	 IORESOURCE_MEM_64)
+> So this is a variant of similar problems solved in the past where for
+> compressed extents we merged when we shouldn't have:
+> 
+> https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git/commit/?id=005efedf2c7d0a270ffbe28d8997b03844f3e3e7
+> http://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git/commit/?id=808f80b46790f27e145c72112189d6a3be2bc884
+> https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git/commit/?id=8e928218780e2f1cf2f5891c7575e8f0b284fcce
+
+Exactly.
+
+> And we have test cases btrfs/103, btrfs/106 and btrfs/183 that
+> exercise those past pugs.
+> 
+>>
+>> Unfortunately this is a long existing bug, way before subpage block size
+>> support.
+>>
+>> But subpage block size support (and experimental large folio support)
+>> makes it much easier to detect.
+>>
+>> If block size equals page size, regular page read will only read one
+>> block each time, thus no extent map sharing nor merge.
+>>
+>> (This means for bs == ps cases, it's still possible to hit the bug with
+>> readahead, just we don't have test coverage with content verification
+>> for readahead)
+>>
+>> [FIX]
+>> Save the last hit compressed extent map start/len into btrfs_bio_ctrl,
+>> and check if the current extent map is the same as the saved one.
+>>
+>> Here we only save em::start/len to save memory for btrfs_bio_ctrl, as
+>> it's using the stack memory, which is a very limited resource inside the
+>> kernel.
+>>
+>> Since the compressed extent maps are never merged, their start/len are
+>> unique inside the same inode, thus just checking start/len will be
+>> enough to make sure they are the same extent map.
+>>
+>> If the extent maps do not match, force submitting the current bio, so
+>> that the read will never be merged.
+>>
+>> CC: stable@vger.kernel.org
+>> Signed-off-by: Qu Wenruo <wqu@suse.com>
+>> ---
+>> v2:
+>> - Only save extent_map::start/len to save memory for btrfs_bio_ctrl
+>>    It's using on-stack memory which is very limited inside the kernel.
+>>
+>> - Remove the commit message mentioning of clearing last saved em
+>>    Since we're using em::start/len, there is no need to clear them.
+>>    Either we hit the same em::start/len, meaning hitting the same extent
+>>    map, or we hit a different em, which will have a different start/len.
+>> ---
+>>   fs/btrfs/extent_io.c | 52 ++++++++++++++++++++++++++++++++++++++++++++
+>>   1 file changed, 52 insertions(+)
+>>
+>> diff --git a/fs/btrfs/extent_io.c b/fs/btrfs/extent_io.c
+>> index 0c12fd64a1f3..418e3bf40f94 100644
+>> --- a/fs/btrfs/extent_io.c
+>> +++ b/fs/btrfs/extent_io.c
+>> @@ -131,6 +131,22 @@ struct btrfs_bio_ctrl {
+>>           */
+>>          unsigned long submit_bitmap;
+>>          struct readahead_control *ractl;
+>> +
+>> +       /*
+>> +        * The start/len of the last hit compressed extent map.
+>> +        *
+>> +        * The current btrfs_bio_is_contig() only uses disk_bytenr as
+>> +        * the condition to check if the read can be merged with previous
+>> +        * bio, which is not correct. E.g. two file extents pointing to the
+>> +        * same extent.
+>> +        *
+>> +        * So here we need to do extra check to merge reads that are
+>> +        * covered by the same extent map.
+>> +        * Just extent_map::start/len will be enough, as they are unique
+>> +        * inside the same inode.
+>> +        */
+>> +       u64 last_compress_em_start;
+>> +       u64 last_compress_em_len;
+>>   };
+>>
+>>   /*
+>> @@ -957,6 +973,32 @@ static void btrfs_readahead_expand(struct readahead_control *ractl,
+>>                  readahead_expand(ractl, ra_pos, em_end - ra_pos);
+>>   }
+>>
+>> +static void save_compressed_em(struct btrfs_bio_ctrl *bio_ctrl,
+>> +                              const struct extent_map *em)
+>> +{
+>> +       if (btrfs_extent_map_compression(em) == BTRFS_COMPRESS_NONE)
+>> +               return;
+>> +       bio_ctrl->last_compress_em_start = em->start;
+>> +       bio_ctrl->last_compress_em_len = em->len;
+>> +}
+> 
+> Something so simple can be open coded instead in the single caller...
+> 
+>> +
+>> +static bool is_same_compressed_em(struct btrfs_bio_ctrl *bio_ctrl,
+>> +                                 const struct extent_map *em)
+>> +{
+>> +       /*
+>> +        * Only if the em is completely the same as the previous one we can merge
+>> +        * the current folio in the read bio.
+>> +        *
+>> +        * Here we only need to compare the em->start/len against saved
+>> +        * last_compress_em_start/len, as start/len inside an inode are unique,
+>> +        * and compressed extent maps are never merged.
+>> +        */
+>> +       if (em->start != bio_ctrl->last_compress_em_start ||
+>> +           em->len != bio_ctrl->last_compress_em_len)
+>> +               return false;
+> 
+> Same here. In fact we already have part of this logic in the caller, see below.
+> 
+> 
+>> +       return true;
+>> +}
+>> +
+>>   /*
+>>    * basic readpage implementation.  Locked extent state structs are inserted
+>>    * into the tree that are removed when the IO is done (by the end_io
+>> @@ -1080,9 +1122,19 @@ static int btrfs_do_readpage(struct folio *folio, struct extent_map **em_cached,
+>>                      *prev_em_start != em->start)
+>>                          force_bio_submit = true;
+>>
+>> +               /*
+>> +                * We must ensure we only merge compressed read when the current
+>> +                * extent map matches the previous one exactly.
+>> +                */
+>> +               if (compress_type != BTRFS_COMPRESS_NONE) {
+>> +                       if (!is_same_compressed_em(bio_ctrl, em))
+>> +                               force_bio_submit = true;
+>> +               }
+> 
+> We already do almost all of this above - we only miss the extent map
+> length check.
+> We have the prev_em_start which already stores the start offset of the
+> last found compressed extent map, so we're duplicating code and logic
+> here unnecessarily.
+> 
+> Further with this new logic, since last_compress_em_start and
+> last_compress_em_len are initialized to zero, we always do an
+> unnecessary split for the first readahead call that spans more than
+> page/folio.
+> We need to distinguish the first call and ignore it - that's why
+> *prev_em_start is initialized to (u64)-1 and we check that special
+> value above.
+> 
+> 
+> 
+>> +
+>>                  if (prev_em_start)
+>>                          *prev_em_start = em->start;
+>>
+>> +               save_compressed_em(bio_ctrl, em);
+> 
+> This could have been placed under the check for compress_type !=
+> BTRFS_COMPRESS_NONE...
+> 
+> In other words, this could be simplified to this:
+> 
+> (also at https://pastebin.com/raw/tZHq7icd)
+> 
+> diff --git a/fs/btrfs/extent_io.c b/fs/btrfs/extent_io.c
+> index 0c12fd64a1f3..a982277f852b 100644
+> --- a/fs/btrfs/extent_io.c
+> +++ b/fs/btrfs/extent_io.c
+> @@ -131,6 +131,22 @@ struct btrfs_bio_ctrl {
+>    */
+>    unsigned long submit_bitmap;
+>    struct readahead_control *ractl;
 > +
->  unsigned int pci_flags;
->  EXPORT_SYMBOL_GPL(pci_flags);
->  
-> @@ -384,13 +388,19 @@ static bool pci_need_to_release(unsigned long mask, struct resource *res)
->  }
->  
->  /* Return: @true if assignment of a required resource failed. */
-> -static bool pci_required_resource_failed(struct list_head *fail_head)
-> +static bool pci_required_resource_failed(struct list_head *fail_head,
-> +					 unsigned long type)
->  {
->  	struct pci_dev_resource *fail_res;
->  
-> +	type &= PCI_RES_TYPE_MASK;
-> +
->  	list_for_each_entry(fail_res, fail_head, list) {
->  		int idx = pci_resource_num(fail_res->dev, fail_res->res);
->  
-> +		if (type && (fail_res->flags & PCI_RES_TYPE_MASK) != type)
-> +			continue;
-> +
->  		if (!pci_resource_is_optional(fail_res->dev, idx))
->  			return true;
->  	}
-> @@ -504,7 +514,7 @@ static void __assign_resources_sorted(struct list_head *head,
->  	}
->  
->  	/* Without realloc_head and only optional fails, nothing more to do. */
-> -	if (!pci_required_resource_failed(&local_fail_head) &&
-> +	if (!pci_required_resource_failed(&local_fail_head, 0) &&
->  	    list_empty(realloc_head)) {
->  		list_for_each_entry(save_res, &save_head, list) {
->  			struct resource *res = save_res->res;
-> @@ -1708,10 +1718,6 @@ static void __pci_bridge_assign_resources(const struct pci_dev *bridge,
->  	}
->  }
->  
-> -#define PCI_RES_TYPE_MASK \
-> -	(IORESOURCE_IO | IORESOURCE_MEM | IORESOURCE_PREFETCH |\
-> -	 IORESOURCE_MEM_64)
+> + /*
+> + * The start/len of the last hit compressed extent map.
+> + *
+> + * The current btrfs_bio_is_contig() only uses disk_bytenr as
+> + * the condition to check if the read can be merged with previous
+> + * bio, which is not correct. E.g. two file extents pointing to the
+> + * same extent.
+> + *
+> + * So here we need to do extra check to merge reads that are
+> + * covered by the same extent map.
+> + * Just extent_map::start/len will be enough, as they are unique
+> + * inside the same inode.
+> + */
+> + u64 last_compress_em_start;
+> + u64 last_compress_em_len;
+>   };
+> 
+>   /*
+> @@ -965,7 +981,7 @@ static void btrfs_readahead_expand(struct
+> readahead_control *ractl,
+>    * return 0 on success, otherwise return error
+>    */
+>   static int btrfs_do_readpage(struct folio *folio, struct extent_map
+> **em_cached,
+> -      struct btrfs_bio_ctrl *bio_ctrl, u64 *prev_em_start)
+> +     struct btrfs_bio_ctrl *bio_ctrl)
+>   {
+>    struct inode *inode = folio->mapping->host;
+>    struct btrfs_fs_info *fs_info = inode_to_fs_info(inode);
+> @@ -1075,13 +1091,15 @@ static int btrfs_do_readpage(struct folio
+> *folio, struct extent_map **em_cached,
+>    * is a corner case so we prioritize correctness over
+>    * non-optimal behavior (submitting 2 bios for the same extent).
+>    */
+> - if (compress_type != BTRFS_COMPRESS_NONE &&
+> -    prev_em_start && *prev_em_start != (u64)-1 &&
+> -    *prev_em_start != em->start)
+> - force_bio_submit = true;
 > -
->  static void pci_bridge_release_resources(struct pci_bus *bus,
->  					 unsigned long type)
->  {
-> @@ -2450,8 +2456,12 @@ int pci_reassign_bridge_resources(struct pci_dev *bridge, unsigned long type)
->  		free_list(&added);
->  
->  	if (!list_empty(&failed)) {
-> -		ret = -ENOSPC;
-> -		goto cleanup;
-> +		if (pci_required_resource_failed(&failed, type)) {
-> +			ret = -ENOSPC;
-> +			goto cleanup;
-> +		}
-> +		/* Only resources with unrelated types failed (again) */
-> +		free_list(&failed);
->  	}
->  
->  	list_for_each_entry(dev_res, &saved, list) {
-> -- 
-> 2.39.5
+> - if (prev_em_start)
+> - *prev_em_start = em->start;
+> + if (compress_type != BTRFS_COMPRESS_NONE) {
+> + if (bio_ctrl->last_compress_em_start != U64_MAX &&
+
+Since we have last_compress_em_len and it's initialized to 0, we can use 
+that em_len instead of using U64_MAX for em_start.
+
+Since we should never hit an em with 0 length.
+
+> +    (em->start != bio_ctrl->last_compress_em_start ||
+> +     em->len != bio_ctrl->last_compress_em_len))
+> + force_bio_submit = true;
+> +
+> + bio_ctrl->last_compress_em_start = em->start;
+> + bio_ctrl->last_compress_em_len = em->len;
+> + }
 > 
+>    em_gen = em->generation;
+>    btrfs_free_extent_map(em);
+> @@ -1296,12 +1314,15 @@ int btrfs_read_folio(struct file *file, struct
+> folio *folio)
+>    const u64 start = folio_pos(folio);
+>    const u64 end = start + folio_size(folio) - 1;
+>    struct extent_state *cached_state = NULL;
+> - struct btrfs_bio_ctrl bio_ctrl = { .opf = REQ_OP_READ };
+> + struct btrfs_bio_ctrl bio_ctrl = {
+> + .opf = REQ_OP_READ,
+> + .last_compress_em_start = U64_MAX,
+> + };
+>    struct extent_map *em_cached = NULL;
+>    int ret;
+> 
+>    lock_extents_for_read(inode, start, end, &cached_state);
+> - ret = btrfs_do_readpage(folio, &em_cached, &bio_ctrl, NULL);
+> + ret = btrfs_do_readpage(folio, &em_cached, &bio_ctrl);
+>    btrfs_unlock_extent(&inode->io_tree, start, end, &cached_state);
+> 
+>    btrfs_free_extent_map(em_cached);
+> @@ -2641,7 +2662,8 @@ void btrfs_readahead(struct readahead_control *rac)
+>   {
+>    struct btrfs_bio_ctrl bio_ctrl = {
+>    .opf = REQ_OP_READ | REQ_RAHEAD,
+> - .ractl = rac
+> + .ractl = rac,
+> + .last_compress_em_start = U64_MAX,
+>    };
+>    struct folio *folio;
+>    struct btrfs_inode *inode = BTRFS_I(rac->mapping->host);
+> @@ -2649,12 +2671,11 @@ void btrfs_readahead(struct readahead_control *rac)
+>    const u64 end = start + readahead_length(rac) - 1;
+>    struct extent_state *cached_state = NULL;
+>    struct extent_map *em_cached = NULL;
+> - u64 prev_em_start = (u64)-1;
+> 
+>    lock_extents_for_read(inode, start, end, &cached_state);
+> 
+>    while ((folio = readahead_folio(rac)) != NULL)
+> - btrfs_do_readpage(folio, &em_cached, &bio_ctrl, &prev_em_start);
+> + btrfs_do_readpage(folio, &em_cached, &bio_ctrl);
+> 
+>    btrfs_unlock_extent(&inode->io_tree, start, end, &cached_state);
+
+Thanks a lot for the simplified version, will update the patch with this 
+change and a more simplified reproducer.
+
+Thanks,
+Qu
+
+> 
+> Thanks.
+>>                  em_gen = em->generation;
+>>                  btrfs_free_extent_map(em);
+>>                  em = NULL;
+>> --
+>> 2.50.1
+>>
+>>
+
 
