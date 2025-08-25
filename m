@@ -1,81 +1,65 @@
-Return-Path: <stable+bounces-172893-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-172894-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 19F5EB34EF5
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 00:23:18 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 49BCCB34F15
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 00:37:08 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 17B711B23AA9
-	for <lists+stable@lfdr.de>; Mon, 25 Aug 2025 22:23:38 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 7ADEC7A663C
+	for <lists+stable@lfdr.de>; Mon, 25 Aug 2025 22:35:32 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5E97B23C503;
-	Mon, 25 Aug 2025 22:23:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5932729B78E;
+	Mon, 25 Aug 2025 22:37:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=suse.com header.i=@suse.com header.b="G18y48eb"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="boViPtN2"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-wr1-f49.google.com (mail-wr1-f49.google.com [209.85.221.49])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.11])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3852D1F560B
-	for <stable@vger.kernel.org>; Mon, 25 Aug 2025 22:23:02 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.49
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F1AEC299AB4;
+	Mon, 25 Aug 2025 22:36:58 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.11
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756160591; cv=none; b=AClDyda0/+RSqunvPSAUoW5tTEunLrFkfUbKwgtI0QqoZxaFZ692uJ937uRsyoyqN9D0IyVKazmns+3cZVavJMWX3m1Tyuwz4fsRmPDWzYrHDdjmR/pkP9Q57tDmj3zbX3WlXeANllq+tmrkQKXYiYVtcUFX7XccEZKlztt6syI=
+	t=1756161421; cv=none; b=rTwxYypb0x4FK3cHVtRVBbDRlu6Yx62qfaFcNyqtaadzzvgN/ntPId0YhmR22raOwaNAzvP16bEcFg+LUt39qaPmAPDsYxINr+Vpxc4XEtoO3ef9XYB1C9diuGBdRurIA0zhbCHr+h+dJEytk6Rz+6k5y2mUN18/YCeBG4r8smc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756160591; c=relaxed/simple;
-	bh=FjphrcKmWs+qFQgLjiUYFc378Y0zknHxdOawalo9hZ8=;
+	s=arc-20240116; t=1756161421; c=relaxed/simple;
+	bh=HHZpwUWnYEqYO7u28z/GMdp5Wm3QF7J3oRF7G0xFWP4=;
 	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=As+kUIi6RZ4WanZepJgDL4b/PZU9VuF82pSwzOpkZsiE6A7/g/XBh8w7bZnS+H8BPKBRkAGqY/2SaM15zEjfPfg3CSa6ysi+CBQT4nh/sLosS/DGWarHGS5l7TPiBoDi1LrChHSS/hlpANR55Z4Kcca4rwTt8/S1D7jUvQIOS8Y=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=suse.com; spf=pass smtp.mailfrom=suse.com; dkim=pass (2048-bit key) header.d=suse.com header.i=@suse.com header.b=G18y48eb; arc=none smtp.client-ip=209.85.221.49
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=suse.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=suse.com
-Received: by mail-wr1-f49.google.com with SMTP id ffacd0b85a97d-3c84aea9d32so920418f8f.2
-        for <stable@vger.kernel.org>; Mon, 25 Aug 2025 15:23:02 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=suse.com; s=google; t=1756160581; x=1756765381; darn=vger.kernel.org;
-        h=content-transfer-encoding:in-reply-to:autocrypt:from
-         :content-language:references:cc:to:subject:user-agent:mime-version
-         :date:message-id:from:to:cc:subject:date:message-id:reply-to;
-        bh=JV1qt9VRKtilTGxy+NFNrG8/QnPmgFh9/d4Dp0dAEp8=;
-        b=G18y48ebUbVZVT8ob/rHSsYZ4fi+Cd83Nv3SGkQMuDAHVvQEpZGrq+YW3UEqawQi17
-         UYi4pP4L82tDp60Ooj1yut3qSNc8XX1orCAkfQWC2vHWkGjJ4mUaDoNWfl7dyP13li/L
-         K7Fps7qeZe3Blyu5EwOKfv+vRC7JyJgp4sAqLsr5UDxw0/C6vD/ggjwH8nq1Km2ZHNiU
-         COvOdvV4UAElLWk5NRgRaSwBimTVlo4nsWDm+jWxY9WbOJg+aPdMZS0nxXJGo4JPh6Ht
-         UXI5g++O70+dJDKzessiHoUXkt3q1/xLORjT9DyLLPZOPp+wZd5FiPap0c+novPstwno
-         4BmA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1756160581; x=1756765381;
-        h=content-transfer-encoding:in-reply-to:autocrypt:from
-         :content-language:references:cc:to:subject:user-agent:mime-version
-         :date:message-id:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=JV1qt9VRKtilTGxy+NFNrG8/QnPmgFh9/d4Dp0dAEp8=;
-        b=A+0wr6zrQh/Gkxno5BuEImDcdRAtHFI78o49EhO2PhacWLkcqVeFRU6zl9IV3hoNJ2
-         tgEJj0Wws/NhHAnrq9EhXT3knZCeX4rpbhufaru46xM8Vfc2ra8NpATIU3s9yrAtvALv
-         JAA7CsUt5ZYLgcANGj0LdhAwFVcW5KRl1vGNgUmAvwChlfcYfLtsAJQ3Cmep+Y6NnJKV
-         wPAlhNqumhsZJtB+jotmg4yJKzrJapcwUAFqobcfw2ImVf9XjDySvyo9auUeBAk20MIz
-         nprVpZIZjYX/t9P3fp9FsOsg7C9mw+M6K+TFMrjoSIKcdZ9GTcrzQkE6Sw0/mtFYINCN
-         LeKg==
-X-Forwarded-Encrypted: i=1; AJvYcCW6wJiQJz4/zUvTzvigt2cSqxnEsujPZl7d6rPpIiG8r98SYmxnig0QLifA0Rn5/uYkxjDVs2Y=@vger.kernel.org
-X-Gm-Message-State: AOJu0YyeyDeXextAQGBeA+hRD6+TcqZ9L6LWBp6WTFZF8GcKIsrfu1fa
-	FsbSSiv69zbBNXxlO4EoD0Ozqsyy7ExLjyKiMoxO/s9LCGQ/Po7gUd6RkrrYFaGPTUE=
-X-Gm-Gg: ASbGnctmrFxH11TIPwA1gKZcC0kLTfQG1hmc1YI7l54O4g5i78e3J6C6y3/qe5GOlO0
-	Y9KZU4iachOh8aRJNFXrCp9VJl7RoBQV/cF3XZR86j4NH9B02o/7kw6dt0onbP8Il9DGP55MOYX
-	KqxC1AZySgNswmSyK6iKxOy2aID7mdQKhc4BRZtChYA2GdgEupanvippLAoBRj9tOQbW3Nd8L34
-	GjpYVAyDR3M6F6d+ZcEvD0BQfTHqJjkCB9ANSNkekvIy5cx1eJnA5K2fvqglVappcsI2ngKCUSn
-	j0xPpZe5NfBKhZmefcKkubTS6vsPTIV4ZC/pzMhvH/oUtyyTmZfXmFOw2Ew7Yc6aCTENLNRBgN6
-	KX/6BQVumjOYH4aPP4s3SEYbZosJFg8zMzdQyjYTOgyxesnvh8sXPcQNeBpNBhQ==
-X-Google-Smtp-Source: AGHT+IEKvYkxowtvnH8uiA3iF0PccOjIb2NXnOf8g8cHv+1S2zJgM1ppTiy3hTEu1derTQSYdScJTg==
-X-Received: by 2002:a05:6000:430a:b0:3c8:2667:4e3f with SMTP id ffacd0b85a97d-3c82667573bmr5736413f8f.13.1756160581157;
-        Mon, 25 Aug 2025 15:23:01 -0700 (PDT)
-Received: from ?IPV6:2403:580d:fda1::299? (2403-580d-fda1--299.ip6.aussiebb.net. [2403:580d:fda1::299])
-        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-7705406d213sm5818322b3a.81.2025.08.25.15.22.59
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Mon, 25 Aug 2025 15:23:00 -0700 (PDT)
-Message-ID: <afcd983e-9514-4cac-80b4-dd20bcf52534@suse.com>
-Date: Tue, 26 Aug 2025 07:52:56 +0930
+	 In-Reply-To:Content-Type; b=PGWbCTtB7hq8fhkxxMLl6C89L3clif8+JjUX/y7l+twguSL1TYfC6wnr2lvP+q6JZ982ZO6DAEKeeX46yXsgm2HkO4aZT/zkE1flGEle1Xbxx8M/CfDvhWZpyDlFFW0uLLxmR6QuqwiHtmj/ZcpxykAp8oyNdhBq50OT0Z29Jgk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=boViPtN2; arc=none smtp.client-ip=192.198.163.11
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1756161419; x=1787697419;
+  h=message-id:date:mime-version:subject:to:cc:references:
+   from:in-reply-to:content-transfer-encoding;
+  bh=HHZpwUWnYEqYO7u28z/GMdp5Wm3QF7J3oRF7G0xFWP4=;
+  b=boViPtN2ebR9GSIQK3ozI0L9oDfxhDx1DxZn16ALfaSZ53n9G0hB7fo9
+   yYsnsKc4yt+t1ixVVPto1fEGnNn8RBsqSMGQlYjVWfV5hRJhfqkI4M+ue
+   K4zXMLy48CZuUsfZvsmDnE/vFLT+pD425fEm8+Jxs9y4Hy8o19TbRAFxC
+   fcOvsHcs9k4oO2ayIGe+62+/tGdYSw4P/pDAiXQvib3oexoUwvR7zFZGp
+   GW6pRQs+XRTuVq1sCjUczgQlkqPZeEtxX3tsIpfhTs5el0bm2ArCZUxem
+   RyELq3g5KwsmRJqK6qCEVhqDmBQZMI1Csscme4Pwha1E7RMlIrH4zeWdX
+   g==;
+X-CSE-ConnectionGUID: 8xrH+PjVSsCOCSpbnrN1+w==
+X-CSE-MsgGUID: aok+4Hq0TiWzTx4yN2XDTQ==
+X-IronPort-AV: E=McAfee;i="6800,10657,11533"; a="68978640"
+X-IronPort-AV: E=Sophos;i="6.18,214,1751266800"; 
+   d="scan'208";a="68978640"
+Received: from orviesa004.jf.intel.com ([10.64.159.144])
+  by fmvoesa105.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 25 Aug 2025 15:36:40 -0700
+X-CSE-ConnectionGUID: VZX7DiUATze0WHqdFrBwaA==
+X-CSE-MsgGUID: auc4kNUiTwWWIiw8VzgpMA==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.18,214,1751266800"; 
+   d="scan'208";a="173809776"
+Received: from cmdeoliv-mobl4.amr.corp.intel.com (HELO [10.125.109.1]) ([10.125.109.1])
+  by orviesa004-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 25 Aug 2025 15:36:40 -0700
+Message-ID: <9a649ff4-55fe-478a-bfd7-f3287534499a@intel.com>
+Date: Mon, 25 Aug 2025 15:36:39 -0700
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -83,426 +67,93 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v2] btrfs: do more strict compressed read merge check
-To: Filipe Manana <fdmanana@kernel.org>
-Cc: linux-btrfs@vger.kernel.org, stable@vger.kernel.org
-References: <fe1f1d9e9f2425fa25a2ff9295b4e194125392f6.1755991465.git.wqu@suse.com>
- <CAL3q7H7eZp0QG_UyiNaagC=uEk_od87jsdVrJq0YyyXfOnb-nw@mail.gmail.com>
+Subject: Re: [PATCH v3 1/1] iommu/sva: Invalidate KVA range on kernel TLB
+ flush
+To: Baolu Lu <baolu.lu@linux.intel.com>, "Tian, Kevin"
+ <kevin.tian@intel.com>, Jason Gunthorpe <jgg@nvidia.com>
+Cc: Joerg Roedel <joro@8bytes.org>, Will Deacon <will@kernel.org>,
+ Robin Murphy <robin.murphy@arm.com>, Jann Horn <jannh@google.com>,
+ Vasant Hegde <vasant.hegde@amd.com>, Alistair Popple <apopple@nvidia.com>,
+ Peter Zijlstra <peterz@infradead.org>, Uladzislau Rezki <urezki@gmail.com>,
+ Jean-Philippe Brucker <jean-philippe@linaro.org>,
+ Andy Lutomirski <luto@kernel.org>, "Lai, Yi1" <yi1.lai@intel.com>,
+ "iommu@lists.linux.dev" <iommu@lists.linux.dev>,
+ "security@kernel.org" <security@kernel.org>,
+ "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
+ "stable@vger.kernel.org" <stable@vger.kernel.org>
+References: <20250806052505.3113108-1-baolu.lu@linux.intel.com>
+ <d646d434-f680-47a3-b6b9-26f4538c1209@intel.com>
+ <20250806155223.GV184255@nvidia.com>
+ <d02cb97a-7cea-4ad3-82b3-89754c5278ad@intel.com>
+ <20250806160904.GX184255@nvidia.com>
+ <62d21545-9e75-41e3-89a3-f21dda15bf16@intel.com>
+ <4a8df0e8-bd5a-44e4-acce-46ba75594846@linux.intel.com>
+ <20250807195154.GO184255@nvidia.com>
+ <BN9PR11MB52762A47B347C99F0C0E4C288C2FA@BN9PR11MB5276.namprd11.prod.outlook.com>
+ <87bfc80e-258e-4193-a56c-3096608aec30@linux.intel.com>
+ <BN9PR11MB52766165393F7DD8209DA45A8C32A@BN9PR11MB5276.namprd11.prod.outlook.com>
+ <e321d374-38a7-4f60-b991-58458a2761b9@linux.intel.com>
+From: Dave Hansen <dave.hansen@intel.com>
 Content-Language: en-US
-From: Qu Wenruo <wqu@suse.com>
-Autocrypt: addr=wqu@suse.com; keydata=
- xsBNBFnVga8BCACyhFP3ExcTIuB73jDIBA/vSoYcTyysFQzPvez64TUSCv1SgXEByR7fju3o
- 8RfaWuHCnkkea5luuTZMqfgTXrun2dqNVYDNOV6RIVrc4YuG20yhC1epnV55fJCThqij0MRL
- 1NxPKXIlEdHvN0Kov3CtWA+R1iNN0RCeVun7rmOrrjBK573aWC5sgP7YsBOLK79H3tmUtz6b
- 9Imuj0ZyEsa76Xg9PX9Hn2myKj1hfWGS+5og9Va4hrwQC8ipjXik6NKR5GDV+hOZkktU81G5
- gkQtGB9jOAYRs86QG/b7PtIlbd3+pppT0gaS+wvwMs8cuNG+Pu6KO1oC4jgdseFLu7NpABEB
- AAHNGFF1IFdlbnJ1byA8d3F1QHN1c2UuY29tPsLAlAQTAQgAPgIbAwULCQgHAgYVCAkKCwIE
- FgIDAQIeAQIXgBYhBC3fcuWlpVuonapC4cI9kfOhJf6oBQJnEXVgBQkQ/lqxAAoJEMI9kfOh
- Jf6o+jIH/2KhFmyOw4XWAYbnnijuYqb/obGae8HhcJO2KIGcxbsinK+KQFTSZnkFxnbsQ+VY
- fvtWBHGt8WfHcNmfjdejmy9si2jyy8smQV2jiB60a8iqQXGmsrkuR+AM2V360oEbMF3gVvim
- 2VSX2IiW9KERuhifjseNV1HLk0SHw5NnXiWh1THTqtvFFY+CwnLN2GqiMaSLF6gATW05/sEd
- V17MdI1z4+WSk7D57FlLjp50F3ow2WJtXwG8yG8d6S40dytZpH9iFuk12Sbg7lrtQxPPOIEU
- rpmZLfCNJJoZj603613w/M8EiZw6MohzikTWcFc55RLYJPBWQ+9puZtx1DopW2jOwE0EWdWB
- rwEIAKpT62HgSzL9zwGe+WIUCMB+nOEjXAfvoUPUwk+YCEDcOdfkkM5FyBoJs8TCEuPXGXBO
- Cl5P5B8OYYnkHkGWutAVlUTV8KESOIm/KJIA7jJA+Ss9VhMjtePfgWexw+P8itFRSRrrwyUf
- E+0WcAevblUi45LjWWZgpg3A80tHP0iToOZ5MbdYk7YFBE29cDSleskfV80ZKxFv6koQocq0
- vXzTfHvXNDELAuH7Ms/WJcdUzmPyBf3Oq6mKBBH8J6XZc9LjjNZwNbyvsHSrV5bgmu/THX2n
- g/3be+iqf6OggCiy3I1NSMJ5KtR0q2H2Nx2Vqb1fYPOID8McMV9Ll6rh8S8AEQEAAcLAfAQY
- AQgAJgIbDBYhBC3fcuWlpVuonapC4cI9kfOhJf6oBQJnEXWBBQkQ/lrSAAoJEMI9kfOhJf6o
- cakH+QHwDszsoYvmrNq36MFGgvAHRjdlrHRBa4A1V1kzd4kOUokongcrOOgHY9yfglcvZqlJ
- qfa4l+1oxs1BvCi29psteQTtw+memmcGruKi+YHD7793zNCMtAtYidDmQ2pWaLfqSaryjlzR
- /3tBWMyvIeWZKURnZbBzWRREB7iWxEbZ014B3gICqZPDRwwitHpH8Om3eZr7ygZck6bBa4MU
- o1XgbZcspyCGqu1xF/bMAY2iCDcq6ULKQceuKkbeQ8qxvt9hVxJC2W3lHq8dlK1pkHPDg9wO
- JoAXek8MF37R8gpLoGWl41FIUb3hFiu3zhDDvslYM4BmzI18QgQTQnotJH8=
-In-Reply-To: <CAL3q7H7eZp0QG_UyiNaagC=uEk_od87jsdVrJq0YyyXfOnb-nw@mail.gmail.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
+Autocrypt: addr=dave.hansen@intel.com; keydata=
+ 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
+In-Reply-To: <e321d374-38a7-4f60-b991-58458a2761b9@linux.intel.com>
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
+On 8/22/25 20:26, Baolu Lu wrote:
+> +static struct {
+> +    /* list for pagetable_dtor_free() */
+> +    struct list_head dtor;
+> +    /* list for __free_page() */
+> +    struct list_head page;
+> +    /* list for free_pages() */
+> +    struct list_head pages;
+> +    /* protect all the ptdesc lists */
+> +    spinlock_t lock;
+> +    struct work_struct work;
 
-
-在 2025/8/25 20:12, Filipe Manana 写道:
-> On Sun, Aug 24, 2025 at 12:27 AM Qu Wenruo <wqu@suse.com> wrote:
->>
->> [BUG]
->> When running test case generic/457, there is a chance to hit the
->> following error, with 64K page size and 4K btrfs block size, and
->> "compress=zstd" mount option:
->>
->> FSTYP         -- btrfs
->> PLATFORM      -- Linux/aarch64 btrfs-aarch64 6.17.0-rc2-custom+ #129 SMP PREEMPT_DYNAMIC Wed Aug 20 18:52:51 ACST 2025
->> MKFS_OPTIONS  -- -s 4k /dev/mapper/test-scratch1
->> MOUNT_OPTIONS -- -o compress=zstd /dev/mapper/test-scratch1 /mnt/scratch
->>
->> generic/457 2s ... [failed, exit status 1]- output mismatch (see /home/adam/xfstests-dev/results//generic/457.out.bad)
->>      --- tests/generic/457.out   2024-04-25 18:13:45.160550980 +0930
->>      +++ /home/adam/xfstests-dev/results//generic/457.out.bad    2025-08-22 16:09:41.039352391 +0930
->>      @@ -1,2 +1,3 @@
->>       QA output created by 457
->>      -Silence is golden
->>      +testfile6 end md5sum mismatched
->>      +(see /home/adam/xfstests-dev/results//generic/457.full for details)
->>      ...
->>      (Run 'diff -u /home/adam/xfstests-dev/tests/generic/457.out /home/adam/xfstests-dev/results//generic/457.out.bad'  to see the entire diff)
->>
->> The root problem is, after certain fsx operations the file contents
->> change just after a mount cycle.
->>
->> There is a much smaller reproducer based on that test case, which I
->> mainly used to debug the bug:
->>
->> workload() {
->>          mkfs.btrfs -f $dev > /dev/null
->>          dmesg -C
->>          trace-cmd clear
->>          mount -o compress=zstd $dev $mnt
->>          xfs_io -f -c "pwrite -S 0xff 0 256K" -c "sync" $mnt/base > /dev/null
->>          cp --reflink=always -p -f $mnt/base $mnt/file
->>          $fsx -N 4 -d -k -S 3746842 $mnt/file
->>          if [ $? -ne 0 ]; then
->>                  echo "!!! FSX FAILURE !!!"
->>                  fail
->>          fi
->>          csum_before=$(_md5_checksum $mnt/file)
->>          stop_trace
->>          umount $mnt
->>          mount $dev $mnt
->>          csum_after=$(_md5_checksum $mnt/file)
->>          umount $mnt
->>          if [ "$csum_before" != "$csum_after" ]; then
->>                  echo "!!! CSUM MISMATCH !!!"
->>                  fail
->>          fi
->> }
->>
->> This seed value will cause 100% reproducible csum mismatch after a mount
->> cycle.
->>
->> The seed value results only 2 real operations:
->>
->>    Seed set to 3746842
->>    main: filesystem does not support fallocate mode FALLOC_FL_UNSHARE_RANGE, disabling!
->>    main: filesystem does not support fallocate mode FALLOC_FL_COLLAPSE_RANGE, disabling!
->>    main: filesystem does not support fallocate mode FALLOC_FL_INSERT_RANGE, disabling!
->>    main: filesystem does not support exchange range, disabling!
->>    main: filesystem does not support dontcache IO, disabling!
->>    2 clone       from 0x3b000 to 0x3f000, (0x4000 bytes) at 0x1f000
->>    3 write       0x2975b thru    0x2ba20 (0x22c6 bytes)  dontcache=0
->>    All 4 operations completed A-OK!
-> 
-> Can you please make a test case for fstests?
-> Without fsx of course, since when new operations are added or fsx is
-> changed in other ways, the same seed is likely to not exercise the bug
-> anymore.
-> 
-> Just using xfs_io (writes, cloning, etc).
-
-Sure.
-
-Although by the nature of page reads, on x86_64 it will mostly not 
-reproduce and only trigger on bs < ps cases.
-
-[...]
->> This means, we reads of range [124K, 140K) and [140K, 165K) should not
-> 
-> "we reads of range..." -> the reads of ranges...
-> 
->> be merged.
->>
->> But read merge check function, btrfs_bio_is_contig(), is only checking
->> the disk_bytenr of two compressed reads, as there are not enough info
->> like the involved extent maps to do more comprehensive checks, resulting
->> the incorrect compressed read.
-> 
-> So this is a variant of similar problems solved in the past where for
-> compressed extents we merged when we shouldn't have:
-> 
-> https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git/commit/?id=005efedf2c7d0a270ffbe28d8997b03844f3e3e7
-> http://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git/commit/?id=808f80b46790f27e145c72112189d6a3be2bc884
-> https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git/commit/?id=8e928218780e2f1cf2f5891c7575e8f0b284fcce
-
-Exactly.
-
-> And we have test cases btrfs/103, btrfs/106 and btrfs/183 that
-> exercise those past pugs.
-> 
->>
->> Unfortunately this is a long existing bug, way before subpage block size
->> support.
->>
->> But subpage block size support (and experimental large folio support)
->> makes it much easier to detect.
->>
->> If block size equals page size, regular page read will only read one
->> block each time, thus no extent map sharing nor merge.
->>
->> (This means for bs == ps cases, it's still possible to hit the bug with
->> readahead, just we don't have test coverage with content verification
->> for readahead)
->>
->> [FIX]
->> Save the last hit compressed extent map start/len into btrfs_bio_ctrl,
->> and check if the current extent map is the same as the saved one.
->>
->> Here we only save em::start/len to save memory for btrfs_bio_ctrl, as
->> it's using the stack memory, which is a very limited resource inside the
->> kernel.
->>
->> Since the compressed extent maps are never merged, their start/len are
->> unique inside the same inode, thus just checking start/len will be
->> enough to make sure they are the same extent map.
->>
->> If the extent maps do not match, force submitting the current bio, so
->> that the read will never be merged.
->>
->> CC: stable@vger.kernel.org
->> Signed-off-by: Qu Wenruo <wqu@suse.com>
->> ---
->> v2:
->> - Only save extent_map::start/len to save memory for btrfs_bio_ctrl
->>    It's using on-stack memory which is very limited inside the kernel.
->>
->> - Remove the commit message mentioning of clearing last saved em
->>    Since we're using em::start/len, there is no need to clear them.
->>    Either we hit the same em::start/len, meaning hitting the same extent
->>    map, or we hit a different em, which will have a different start/len.
->> ---
->>   fs/btrfs/extent_io.c | 52 ++++++++++++++++++++++++++++++++++++++++++++
->>   1 file changed, 52 insertions(+)
->>
->> diff --git a/fs/btrfs/extent_io.c b/fs/btrfs/extent_io.c
->> index 0c12fd64a1f3..418e3bf40f94 100644
->> --- a/fs/btrfs/extent_io.c
->> +++ b/fs/btrfs/extent_io.c
->> @@ -131,6 +131,22 @@ struct btrfs_bio_ctrl {
->>           */
->>          unsigned long submit_bitmap;
->>          struct readahead_control *ractl;
->> +
->> +       /*
->> +        * The start/len of the last hit compressed extent map.
->> +        *
->> +        * The current btrfs_bio_is_contig() only uses disk_bytenr as
->> +        * the condition to check if the read can be merged with previous
->> +        * bio, which is not correct. E.g. two file extents pointing to the
->> +        * same extent.
->> +        *
->> +        * So here we need to do extra check to merge reads that are
->> +        * covered by the same extent map.
->> +        * Just extent_map::start/len will be enough, as they are unique
->> +        * inside the same inode.
->> +        */
->> +       u64 last_compress_em_start;
->> +       u64 last_compress_em_len;
->>   };
->>
->>   /*
->> @@ -957,6 +973,32 @@ static void btrfs_readahead_expand(struct readahead_control *ractl,
->>                  readahead_expand(ractl, ra_pos, em_end - ra_pos);
->>   }
->>
->> +static void save_compressed_em(struct btrfs_bio_ctrl *bio_ctrl,
->> +                              const struct extent_map *em)
->> +{
->> +       if (btrfs_extent_map_compression(em) == BTRFS_COMPRESS_NONE)
->> +               return;
->> +       bio_ctrl->last_compress_em_start = em->start;
->> +       bio_ctrl->last_compress_em_len = em->len;
->> +}
-> 
-> Something so simple can be open coded instead in the single caller...
-> 
->> +
->> +static bool is_same_compressed_em(struct btrfs_bio_ctrl *bio_ctrl,
->> +                                 const struct extent_map *em)
->> +{
->> +       /*
->> +        * Only if the em is completely the same as the previous one we can merge
->> +        * the current folio in the read bio.
->> +        *
->> +        * Here we only need to compare the em->start/len against saved
->> +        * last_compress_em_start/len, as start/len inside an inode are unique,
->> +        * and compressed extent maps are never merged.
->> +        */
->> +       if (em->start != bio_ctrl->last_compress_em_start ||
->> +           em->len != bio_ctrl->last_compress_em_len)
->> +               return false;
-> 
-> Same here. In fact we already have part of this logic in the caller, see below.
-> 
-> 
->> +       return true;
->> +}
->> +
->>   /*
->>    * basic readpage implementation.  Locked extent state structs are inserted
->>    * into the tree that are removed when the IO is done (by the end_io
->> @@ -1080,9 +1122,19 @@ static int btrfs_do_readpage(struct folio *folio, struct extent_map **em_cached,
->>                      *prev_em_start != em->start)
->>                          force_bio_submit = true;
->>
->> +               /*
->> +                * We must ensure we only merge compressed read when the current
->> +                * extent map matches the previous one exactly.
->> +                */
->> +               if (compress_type != BTRFS_COMPRESS_NONE) {
->> +                       if (!is_same_compressed_em(bio_ctrl, em))
->> +                               force_bio_submit = true;
->> +               }
-> 
-> We already do almost all of this above - we only miss the extent map
-> length check.
-> We have the prev_em_start which already stores the start offset of the
-> last found compressed extent map, so we're duplicating code and logic
-> here unnecessarily.
-> 
-> Further with this new logic, since last_compress_em_start and
-> last_compress_em_len are initialized to zero, we always do an
-> unnecessary split for the first readahead call that spans more than
-> page/folio.
-> We need to distinguish the first call and ignore it - that's why
-> *prev_em_start is initialized to (u64)-1 and we check that special
-> value above.
-> 
-> 
-> 
->> +
->>                  if (prev_em_start)
->>                          *prev_em_start = em->start;
->>
->> +               save_compressed_em(bio_ctrl, em);
-> 
-> This could have been placed under the check for compress_type !=
-> BTRFS_COMPRESS_NONE...
-> 
-> In other words, this could be simplified to this:
-> 
-> (also at https://pastebin.com/raw/tZHq7icd)
-> 
-> diff --git a/fs/btrfs/extent_io.c b/fs/btrfs/extent_io.c
-> index 0c12fd64a1f3..a982277f852b 100644
-> --- a/fs/btrfs/extent_io.c
-> +++ b/fs/btrfs/extent_io.c
-> @@ -131,6 +131,22 @@ struct btrfs_bio_ctrl {
->    */
->    unsigned long submit_bitmap;
->    struct readahead_control *ractl;
-> +
-> + /*
-> + * The start/len of the last hit compressed extent map.
-> + *
-> + * The current btrfs_bio_is_contig() only uses disk_bytenr as
-> + * the condition to check if the read can be merged with previous
-> + * bio, which is not correct. E.g. two file extents pointing to the
-> + * same extent.
-> + *
-> + * So here we need to do extra check to merge reads that are
-> + * covered by the same extent map.
-> + * Just extent_map::start/len will be enough, as they are unique
-> + * inside the same inode.
-> + */
-> + u64 last_compress_em_start;
-> + u64 last_compress_em_len;
->   };
-> 
->   /*
-> @@ -965,7 +981,7 @@ static void btrfs_readahead_expand(struct
-> readahead_control *ractl,
->    * return 0 on success, otherwise return error
->    */
->   static int btrfs_do_readpage(struct folio *folio, struct extent_map
-> **em_cached,
-> -      struct btrfs_bio_ctrl *bio_ctrl, u64 *prev_em_start)
-> +     struct btrfs_bio_ctrl *bio_ctrl)
->   {
->    struct inode *inode = folio->mapping->host;
->    struct btrfs_fs_info *fs_info = inode_to_fs_info(inode);
-> @@ -1075,13 +1091,15 @@ static int btrfs_do_readpage(struct folio
-> *folio, struct extent_map **em_cached,
->    * is a corner case so we prioritize correctness over
->    * non-optimal behavior (submitting 2 bios for the same extent).
->    */
-> - if (compress_type != BTRFS_COMPRESS_NONE &&
-> -    prev_em_start && *prev_em_start != (u64)-1 &&
-> -    *prev_em_start != em->start)
-> - force_bio_submit = true;
-> -
-> - if (prev_em_start)
-> - *prev_em_start = em->start;
-> + if (compress_type != BTRFS_COMPRESS_NONE) {
-> + if (bio_ctrl->last_compress_em_start != U64_MAX &&
-
-Since we have last_compress_em_len and it's initialized to 0, we can use 
-that em_len instead of using U64_MAX for em_start.
-
-Since we should never hit an em with 0 length.
-
-> +    (em->start != bio_ctrl->last_compress_em_start ||
-> +     em->len != bio_ctrl->last_compress_em_len))
-> + force_bio_submit = true;
-> +
-> + bio_ctrl->last_compress_em_start = em->start;
-> + bio_ctrl->last_compress_em_len = em->len;
-> + }
-> 
->    em_gen = em->generation;
->    btrfs_free_extent_map(em);
-> @@ -1296,12 +1314,15 @@ int btrfs_read_folio(struct file *file, struct
-> folio *folio)
->    const u64 start = folio_pos(folio);
->    const u64 end = start + folio_size(folio) - 1;
->    struct extent_state *cached_state = NULL;
-> - struct btrfs_bio_ctrl bio_ctrl = { .opf = REQ_OP_READ };
-> + struct btrfs_bio_ctrl bio_ctrl = {
-> + .opf = REQ_OP_READ,
-> + .last_compress_em_start = U64_MAX,
-> + };
->    struct extent_map *em_cached = NULL;
->    int ret;
-> 
->    lock_extents_for_read(inode, start, end, &cached_state);
-> - ret = btrfs_do_readpage(folio, &em_cached, &bio_ctrl, NULL);
-> + ret = btrfs_do_readpage(folio, &em_cached, &bio_ctrl);
->    btrfs_unlock_extent(&inode->io_tree, start, end, &cached_state);
-> 
->    btrfs_free_extent_map(em_cached);
-> @@ -2641,7 +2662,8 @@ void btrfs_readahead(struct readahead_control *rac)
->   {
->    struct btrfs_bio_ctrl bio_ctrl = {
->    .opf = REQ_OP_READ | REQ_RAHEAD,
-> - .ractl = rac
-> + .ractl = rac,
-> + .last_compress_em_start = U64_MAX,
->    };
->    struct folio *folio;
->    struct btrfs_inode *inode = BTRFS_I(rac->mapping->host);
-> @@ -2649,12 +2671,11 @@ void btrfs_readahead(struct readahead_control *rac)
->    const u64 end = start + readahead_length(rac) - 1;
->    struct extent_state *cached_state = NULL;
->    struct extent_map *em_cached = NULL;
-> - u64 prev_em_start = (u64)-1;
-> 
->    lock_extents_for_read(inode, start, end, &cached_state);
-> 
->    while ((folio = readahead_folio(rac)) != NULL)
-> - btrfs_do_readpage(folio, &em_cached, &bio_ctrl, &prev_em_start);
-> + btrfs_do_readpage(folio, &em_cached, &bio_ctrl);
-> 
->    btrfs_unlock_extent(&inode->io_tree, start, end, &cached_state);
-
-Thanks a lot for the simplified version, will update the patch with this 
-change and a more simplified reproducer.
-
-Thanks,
-Qu
-
-> 
-> Thanks.
->>                  em_gen = em->generation;
->>                  btrfs_free_extent_map(em);
->>                  em = NULL;
->> --
->> 2.50.1
->>
->>
-
+Could you explain a bit why this now needs three separate lists? Seems
+like pure overkill.
 
