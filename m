@@ -1,293 +1,201 @@
-Return-Path: <stable+bounces-172809-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-172810-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 52D11B33987
-	for <lists+stable@lfdr.de>; Mon, 25 Aug 2025 10:40:28 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id E1512B33A3E
+	for <lists+stable@lfdr.de>; Mon, 25 Aug 2025 11:13:00 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 52E431899DEC
-	for <lists+stable@lfdr.de>; Mon, 25 Aug 2025 08:40:41 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id BBD151897FDA
+	for <lists+stable@lfdr.de>; Mon, 25 Aug 2025 09:13:20 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id F259B28B7DA;
-	Mon, 25 Aug 2025 08:35:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 48FF92BD5A8;
+	Mon, 25 Aug 2025 09:12:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linux.alibaba.com header.i=@linux.alibaba.com header.b="H879jBmw"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Ldus4Vwn"
 X-Original-To: stable@vger.kernel.org
-Received: from out30-130.freemail.mail.aliyun.com (out30-130.freemail.mail.aliyun.com [115.124.30.130])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1F04B2737FC
-	for <stable@vger.kernel.org>; Mon, 25 Aug 2025 08:35:05 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=115.124.30.130
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 03917282EB;
+	Mon, 25 Aug 2025 09:12:54 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756110908; cv=none; b=Nba6JSq3ZjIsly1RhtM/bcYEViour1jbEEP/kjvh3yU18F+YLBZAndgBC1sh2zEcb4IZzxfo+L9Z2lRU/9Bq77PCq12Qlb5Z9e/oVbGez4QyjIsaY/5ZvYaO+plm1rGNB4fUdGV+iRjtKWGJ7+yLBpHVwkj1GAKgM+XEB2kNwYk=
+	t=1756113175; cv=none; b=YR0+KCgn/fMNmWYVYaqkFmdB0QIcLuTfRU5BMf9Ah7S4d3V+kjkX43UbGa7s2sR9CbABcNapMe6+F/GgBnwP54v8kn13twb6AJimYBfNtXPlBOvqi5nqr20SGgSZ2VyFkRIhSRwaOgDrkmrHca7ct2bP7AYTRRlR2GIwpj9ASQg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756110908; c=relaxed/simple;
-	bh=ABYGEiEnQV5EkJYNuVVUds0AHxrXowezYYQAKmwdyvg=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=Cin2xAtK8QgPlExDEKZsYEPJXOUZzZTB6WSCggnCqUqoY4Zel66Wp0VZd2gTY/I8dNJiBec43u5E3zJ+7jXEtsjIt5pVvQXBM2C8js4IyiehuSRlAf6BIkOVYvhVkNZPGmldxJxVcMABh7nm3ITHv51cSSsatPS6gggiv7Ip2ZA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.alibaba.com; spf=pass smtp.mailfrom=linux.alibaba.com; dkim=pass (1024-bit key) header.d=linux.alibaba.com header.i=@linux.alibaba.com header.b=H879jBmw; arc=none smtp.client-ip=115.124.30.130
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.alibaba.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.alibaba.com
-DKIM-Signature:v=1; a=rsa-sha256; c=relaxed/relaxed;
-	d=linux.alibaba.com; s=default;
-	t=1756110904; h=From:To:Subject:Date:Message-ID:MIME-Version;
-	bh=K1NFs4hqkUfNERen8q+TQY0cRH5WARIu2GqUBfQABnQ=;
-	b=H879jBmwaYEZOglKH59qemcVPBZ+QqupY/8T2eAuL0FSU70DSKX/sbloy+Lvsh8Iey2vH4g+sJc6qSAf0Utb6kcu5LwWcnXfp2Biwui3WtCtWKfUUEkvbdl7s41PTneuE+BFcF2Q4E5ki8xsRknoOzFuHUopNrwODwteyV+Disg=
-Received: from x31l07246.sqa.na131.tbsite.net(mailfrom:tongweilin@linux.alibaba.com fp:SMTPD_---0WmTrBr0_1756110894 cluster:ay36)
-          by smtp.aliyun-inc.com;
-          Mon, 25 Aug 2025 16:35:03 +0800
-From: Weilin Tong <tongweilin@linux.alibaba.com>
-To: tongweilin@linux.alibaba.com
-Cc: Artem Bityutskiy <artem.bityutskiy@linux.intel.com>,
-	"6 . 8+" <stable@vger.kernel.org>,
-	"Rafael J . Wysocki" <rafael.j.wysocki@intel.com>,
-	Yingbao Jia <yingbao.jia@intel.com>,
-	Artie Ding <artie.ding@linux.alibaba.com>
-Subject: [PATCH] intel_idle: fix ACPI _CST matching for newer Xeon platforms
-Date: Mon, 25 Aug 2025 16:34:51 +0800
-Message-ID: <20250825083451.1528820-1-tongweilin@linux.alibaba.com>
-X-Mailer: git-send-email 2.43.7
+	s=arc-20240116; t=1756113175; c=relaxed/simple;
+	bh=F13Y4FbWAU6xrLfR84xXT+EMfWvjmDKA3j1lzEZ9/Ys=;
+	h=Date:Message-ID:From:To:Cc:Subject:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=Ix5/gJnLDaLxlBSpii6F6CtYcuhv/EyLbz+1Dqo3xsND/J6aaXNovVqFBRUVL36UYRUuHK4zPdngWxdgv5FgSiy4wLLKeqWq6cIvcb/TxdEH5n87PaKn8puj/QuhQamsy6s1feo2nlFuMFWGP/+4iBHkKmyBLTZqZQZbADwKL1M=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Ldus4Vwn; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8146FC4CEED;
+	Mon, 25 Aug 2025 09:12:54 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1756113174;
+	bh=F13Y4FbWAU6xrLfR84xXT+EMfWvjmDKA3j1lzEZ9/Ys=;
+	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
+	b=Ldus4Vwn80Hyx52ZVG9s5XbnsBhRtoP72Az1zyDa7qEa6fharS/QAYTaHoZUkgVYe
+	 V75f4D1PccdTOlqvTvL4n2O2gcWfyAFygCcCLzB+Q2orFW2nXb/AwytJwVldjRzS58
+	 q0/dqeEFdXAwuYso4gIJWZSNMgwtkTBURl1GyQrWTIJJ7xY+CE97h7LL3OZ/T+eHIq
+	 BQQaqhFU1fNYWF0Tdd0W3Al2KIO3xsWcsSiWvOGmEYdF96PnTMUpF6w8Ub8EPqXv62
+	 DRUT7AsU5AmluAoAQuY9T0UWUF5EpXjSEIRDVjHREIcmD3tuVFDnbhXQeiRJ6vtDB+
+	 B8OZ8ovdJ4zsA==
+Received: from sofa.misterjones.org ([185.219.108.64] helo=lobster-girl.misterjones.org)
+	by disco-boy.misterjones.org with esmtpsa  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
+	(Exim 4.98.2)
+	(envelope-from <maz@kernel.org>)
+	id 1uqTG0-00000000AfV-0BxV;
+	Mon, 25 Aug 2025 09:12:52 +0000
+Date: Mon, 25 Aug 2025 10:12:50 +0100
+Message-ID: <871poz2299.wl-maz@kernel.org>
+From: Marc Zyngier <maz@kernel.org>
+To: Sam Edwards <cfsworks@gmail.com>
+Cc: Ard Biesheuvel <ardb@kernel.org>,
+	Catalin Marinas <catalin.marinas@arm.com>,
+	Will Deacon <will@kernel.org>,
+	Andrew Morton <akpm@linux-foundation.org>,
+	Anshuman Khandual <anshuman.khandual@arm.com>,
+	Ryan Roberts <ryan.roberts@arm.com>,
+	Baruch Siach <baruch@tkos.co.il>,
+	Kevin Brodsky <kevin.brodsky@arm.com>,
+	Joey Gouly <joey.gouly@arm.com>,
+	linux-arm-kernel@lists.infradead.org,
+	linux-kernel@vger.kernel.org,
+	stable@vger.kernel.org
+Subject: Re: [PATCH] arm64/boot: Zero-initialize idmap PGDs before use
+In-Reply-To: <CAH5Ym4iqvQuO6JxO-jypTp05Ug_2vDokCDoBgGB+cOzgmTQpkQ@mail.gmail.com>
+References: <20250822041526.467434-1-CFSworks@gmail.com>
+	<CAMj1kXH38gOUpDDdarCXPAY3BHBbuFzdD=Dq7Knsg-qHJoNqzQ@mail.gmail.com>
+	<CAH5Ym4gTTLcyucnXjxFtNutVR1HQ0G2k_YBSNO-7G3-4YXUtag@mail.gmail.com>
+	<CAMj1kXF00Y0=67apXVbOC+rpbEEvyEovFYf4r_edr6mXjrj0+A@mail.gmail.com>
+	<CAH5Ym4h+2w6aayzsVu__3qu3-6ETq1HK7u18yGzOrRqZ--2H9w@mail.gmail.com>
+	<874itx14l5.wl-maz@kernel.org>
+	<CAH5Ym4iqvQuO6JxO-jypTp05Ug_2vDokCDoBgGB+cOzgmTQpkQ@mail.gmail.com>
+User-Agent: Wanderlust/2.15.9 (Almost Unreal) SEMI-EPG/1.14.7 (Harue)
+ FLIM-LB/1.14.9 (=?UTF-8?B?R29qxY0=?=) APEL-LB/10.8 EasyPG/1.0.0 Emacs/30.1
+ (aarch64-unknown-linux-gnu) MULE/6.0 (HANACHIRUSATO)
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+MIME-Version: 1.0 (generated by SEMI-EPG 1.14.7 - "Harue")
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: quoted-printable
+X-SA-Exim-Connect-IP: 185.219.108.64
+X-SA-Exim-Rcpt-To: cfsworks@gmail.com, ardb@kernel.org, catalin.marinas@arm.com, will@kernel.org, akpm@linux-foundation.org, anshuman.khandual@arm.com, ryan.roberts@arm.com, baruch@tkos.co.il, kevin.brodsky@arm.com, joey.gouly@arm.com, linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org, stable@vger.kernel.org
+X-SA-Exim-Mail-From: maz@kernel.org
+X-SA-Exim-Scanned: No (on disco-boy.misterjones.org); SAEximRunCond expanded to false
 
-From: Artem Bityutskiy <artem.bityutskiy@linux.intel.com>
+On Mon, 25 Aug 2025 00:43:08 +0100,
+Sam Edwards <cfsworks@gmail.com> wrote:
+>=20
+> Hi, Marc! It's been a while; hope you're well.
+>=20
+> On Sun, Aug 24, 2025 at 1:55=E2=80=AFAM Marc Zyngier <maz@kernel.org> wro=
+te:
+> >
+> > Hi Sam,
+> >
+> > On Sun, 24 Aug 2025 04:05:05 +0100,
+> > Sam Edwards <cfsworks@gmail.com> wrote:
+> > >
+> > > On Sat, Aug 23, 2025 at 5:29=E2=80=AFPM Ard Biesheuvel <ardb@kernel.o=
+rg> wrote:
+> > > >
+> >
+> > [...]
+> >
+> > > > Under which conditions would PGD_SIZE assume a value greater than P=
+AGE_SIZE?
+> > >
+> > > I might be doing my math wrong, but wouldn't 52-bit VA with 4K
+> > > granules and 5 levels result in this?
+> >
+> > No. 52bit VA at 4kB granule results in levels 0-3 each resolving 9
+> > bits, and level -1 resolving 4 bits. That's a total of 40 bits, plus
+> > the 12 bits coming directly from the VA making for the expected 52.
+>=20
+> Thank you, that makes it clear: I made an off-by-one mistake in my
+> counting of the levels.
+>=20
+> > > Each PTE represents 4K of virtual memory, so covers VA bits [11:0]
+> > > (this is level 3)
+> >
+> > That's where you got it wrong. The architecture is pretty clear that
+> > each level resolves PAGE_SHIFT-3 bits, hence the computation
+> > above. The bottom PAGE_SHIFT bits are directly extracted from the VA,
+> > without any translation.
+>=20
+> Bear with me a moment while I unpack which part of that I got wrong:
+> A PTE is the terminal entry of the MMU walk, so I believe I'm correct
+> (in this example, and assuming no hugepages) that each PTE represents
+> 4K of virtual memory: that means the final step of computing a PA
+> takes a (valid) PTE and the low 12 bits of the VA, then just adds
+> those bits to the physical frame address.
+> It sounds like what you're saying is "That isn't a *level* though:
+> that's just concatenation. A 'level' always takes a bitslice of the VA
+> and uses it as an index into a table of word-sized entries. PTEs don't
+> point to a further table: they have all of the final information
+> encoded directly."
 
-ANBZ: #11599
+That's mostly it, yes. Each valid descriptor has an output address,
+which either points to another table or to actual memory, further to
+be indexed by the remaining bits of the VA (for 4kB pages: 12 bits for
+a level-3, 21 bits for a level-2...). Level-3 (aka PTEs in x86
+parlance) are always final.
 
-commit 4c411cca33cf1c21946b710b2eb59aca9f646703 upstream.
+> That makes a lot more sense to me, but contradicts how I read this
+> comment from pgtable-hwdef.h:
+>  * Level 3 descriptor (PTE).
+> I took this as, "a PTE describes how to perform level 3 of the
+> translation." But because in fact there are no "levels" after a PTE,
+> it must actually be saying "Level 3 of the translation is a lookup
+> into an array of PTEs."? The problem with that latter reading is that
+> this comment...
+>  * Level -1 descriptor (PGD).
+> ...when read the same way, is saying "Level -1 of the translation is a
+> lookup into an array of PGDs." An "array of PGDs" is nonsense, so I
+> reverted back to my earlier readings: "PGD describes how to do level
+> -1." and "PTE describes how to do level 3."
 
-Background
-~~~~~~~~~~
+The initial level of lookup *is* an array: you take the base address
+from TTBR, index it with the correct slice of bits from the VA, read
+the value at that address, and you have the information needed for the
+next level. The only difference is that you obtain that initial
+address from a register instead of getting it from memory.
 
-The driver uses 'use_acpi = true' in C-state custom table for all Xeon
-platforms. The meaning of this flag is as follows.
+>=20
+> This smells like a classic "fencepost problem": The "PXX" Linuxisms
+> refer to the *nodes* along the MMU walk, while the "levels" in ARM
+> parlance are the actual steps of the walk taken by hardware -- edges,
+> not nodes, getting us from fencepost to fencepost. A fence with five
+> segments needs six posts, but we only have five currently.
+>=20
+> So: where do the terms P4D, PUD, and PMD fit in here? And which one's
+> our missing fencepost?
+> PGD ----> ??? ----> ??? ----> ??? ----> ??? ----> PTE (|| low VA bits
+> =3D final PA)
 
- 1. If a C-state from the custom table is defined in ACPI _CST (matched
-    by the mwait hint), then enable this C-state.
+I'm struggling to see what you consider a problem, really. For me, the
+original mistake is that you seem to have started off the LSBs of the
+VA, instead of the MSBs.
 
- 2. Otherwise, disable this C-state, unless the C-sate definition in the
-    custom table has the 'CPUIDLE_FLAG_ALWAYS_ENABLE' flag set, in which
-    case enabled it.
+As for the naming, the comments in pgtable-hwdef.h do apply. Except
+that they only match a full 5-level walk, while the kernel can be
+configured for as little as 2 levels. Hence the macro hell of folding
+levels to hide the fact that we don't have 5 levels in most cases.
 
-The goal is to honor BIOS C6 settings - If BIOS disables C6, disable it
-by default in the OS too (but it can be enabled via sysfs).
+I find it much easier to reason about a start level (anywhere from -1
+to 2, depending on the page size and the number of VA bits), and the
+walk to always finish at level 3. The x86 naming is just compatibility
+cruft that I tend to ignore.
 
-This works well on Xeons that expose only one flavor of C6. This are all
-Xeons except for the newest Granite Rapids (GNR) and Sierra Forest (SRF).
+Thanks,
 
-The problem
-~~~~~~~~~~~
+	M.
 
-GNR and SRF have 2 flavors of C6: C6/C6P on GNR, C6S/C6SP on SRF. The
-the "P" flavor allows for the package C6, while the "non-P" flavor
-allows only for core/module C6.
-
-As far as this patch is concerned, both GNR and SRF platforms are
-handled the same way. Therefore, further discussion is focused on GNR,
-but it applies to SRF as well.
-
-On Intel Xeon platforms, BIOS exposes only 2 ACPI C-states: C1 and C2.
-Well, depending on BIOS settings, C2 may be named as C3. But there still
-will be only 2 states - C1 and C3. But this is a non-essential detail,
-so further discussion is focused on the ACPI C1 and C2 case.
-
-On pre-GNR/SRF Xeon platforms, ACPI C1 is mapped to C1 or C1E, and ACPI
-C2 is mapped to C6. The 'use_acpi' flag works just fine:
-
- * If ACPI C2 enabled, enable C6.
- * Otherwise, disable C6.
-
-However, on GNR there are 2 flavors of C6, so BIOS maps ACPI C2 to
-either C6 or C6P, depending on the user settings. As a result, due to
-the 'use_acpi' flag, 'intel_idle' disables least one of the C6 flavors.
-
-BIOS                   | OS                         | Verdict
-----------------------------------------------------|---------
-ACPI C2 disabled       | C6 disabled, C6P disabled  | OK
-ACPI C2 mapped to C6   | C6 enabled,  C6P disabled  | Not OK
-ACPI C2 mapped to C6P  | C6 disabled, C6P enabled   | Not OK
-
-The goal of 'use_acpi' is to honor BIOS ACPI C2 disabled case, which
-works fine. But if ACPI C2 is enabled, the goal is to enable all flavors
-of C6, not just one of the flavors. This was overlooked when enabling
-GNR/SRF platforms.
-
-In other words, before GNR/SRF, the ACPI C2 status was binary - enabled
-or disabled. But it is not binary on GNR/SRF, however the goal is to
-continue treat it as binary.
-
-The fix
-~~~~~~~
-
-Notice, that current algorithm matches ACPI and custom table C-states
-by the mwait hint. However, mwait hint consists of the 'state' and
-'sub-state' parts, and all C6 flavors have the same state value of 0x20,
-but different sub-state values.
-
-Introduce new C-state table flag - CPUIDLE_FLAG_PARTIAL_HINT_MATCH and
-add it to both C6 flavors of the GNR/SRF platforms.
-
-When matching ACPI _CST and custom table C-states, match only the start
-part if the C-state has CPUIDLE_FLAG_PARTIAL_HINT_MATCH, other wise
-match both state and sub-state parts (as before).
-
-With this fix, GNR C-states enabled/disabled status looks like this.
-
-BIOS                   | OS
-----------------------------------------------------
-ACPI C2 disabled       | C6 disabled, C6P disabled
-ACPI C2 mapped to C6   | C6 enabled, C6P enabled
-ACPI C2 mapped to C6P  | C6 enabled, C6P enabled
-
-Possible alternative
-~~~~~~~~~~~~~~~~~~~~
-
-The alternative would be to remove 'use_acpi' flag for GNR and SRF.
-This would be a simpler solution, but it would violate the principle of
-least surprise - users of Xeon platforms are used to the fact that
-intel_idle honors C6 enabled/disabled flag. It is more consistent user
-experience if GNR/SRF continue doing so.
-
-How tested
-~~~~~~~~~~
-
-Tested on GNR and SRF platform with all the 3 BIOS configurations: ACPI
-C2 disabled, mapped to C6/C6S, mapped to C6P/C6SP.
-
-Tested on Ice lake Xeon and Sapphire Rapids Xeon platforms with ACPI C2
-enabled and disabled, just to verify that the patch does not break older
-Xeons.
-
-Intel-SIG: Intel-SIG: commit 4c411cca33cf intel_idle: fix ACPI _CST matching for newer Xeon platforms.
-Backport intel_idle GNR and SRF fix
-
-Fixes: 92813fd5b156 ("intel_idle: add Sierra Forest SoC support")
-Fixes: 370406bf5738 ("intel_idle: add Granite Rapids Xeon support")
-Cc: 6.8+ <stable@vger.kernel.org> # 6.8+
-Signed-off-by: Artem Bityutskiy <artem.bityutskiy@linux.intel.com>
-Link: https://patch.msgid.link/20240913165143.4140073-1-dedekind1@gmail.com
-[ rjw: Changelog edits ]
-Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
-[ Yingbao Jia: amend commit log ]
-Signed-off-by: Yingbao Jia <yingbao.jia@intel.com>
-Reviewed-by: Artie Ding <artie.ding@linux.alibaba.com>
-Link: https://gitee.com/anolis/cloud-kernel/pulls/4057
----
- drivers/idle/intel_idle.c | 37 +++++++++++++++++++++++++++++--------
- 1 file changed, 29 insertions(+), 8 deletions(-)
-
-diff --git a/drivers/idle/intel_idle.c b/drivers/idle/intel_idle.c
-index 3f216160f19c..783545ff98af 100644
---- a/drivers/idle/intel_idle.c
-+++ b/drivers/idle/intel_idle.c
-@@ -120,6 +120,12 @@ static unsigned int mwait_substates __initdata;
-  */
- #define CPUIDLE_FLAG_INIT_XSTATE	BIT(17)
- 
-+/*
-+ * Ignore the sub-state when matching mwait hints between the ACPI _CST and
-+ * custom tables.
-+ */
-+#define CPUIDLE_FLAG_PARTIAL_HINT_MATCH	BIT(18)
-+
- /*
-  * MWAIT takes an 8-bit "hint" in EAX "suggesting"
-  * the C-state (top nibble) and sub-state (bottom nibble)
-@@ -880,7 +886,8 @@ static struct cpuidle_state gnr_cstates[] __initdata = {
- 		.name = "C6",
- 		.desc = "MWAIT 0x20",
- 		.flags = MWAIT2flg(0x20) | CPUIDLE_FLAG_TLB_FLUSHED |
--					   CPUIDLE_FLAG_INIT_XSTATE,
-+					   CPUIDLE_FLAG_INIT_XSTATE |
-+					   CPUIDLE_FLAG_PARTIAL_HINT_MATCH,
- 		.exit_latency = 170,
- 		.target_residency = 650,
- 		.enter = &intel_idle,
-@@ -889,7 +896,8 @@ static struct cpuidle_state gnr_cstates[] __initdata = {
- 		.name = "C6P",
- 		.desc = "MWAIT 0x21",
- 		.flags = MWAIT2flg(0x21) | CPUIDLE_FLAG_TLB_FLUSHED |
--					   CPUIDLE_FLAG_INIT_XSTATE,
-+					   CPUIDLE_FLAG_INIT_XSTATE |
-+					   CPUIDLE_FLAG_PARTIAL_HINT_MATCH,
- 		.exit_latency = 210,
- 		.target_residency = 1000,
- 		.enter = &intel_idle,
-@@ -1162,7 +1170,8 @@ static struct cpuidle_state srf_cstates[] __initdata = {
- 	{
- 		.name = "C6S",
- 		.desc = "MWAIT 0x22",
--		.flags = MWAIT2flg(0x22) | CPUIDLE_FLAG_TLB_FLUSHED,
-+		.flags = MWAIT2flg(0x22) | CPUIDLE_FLAG_TLB_FLUSHED |
-+					   CPUIDLE_FLAG_PARTIAL_HINT_MATCH,
- 		.exit_latency = 270,
- 		.target_residency = 700,
- 		.enter = &intel_idle,
-@@ -1170,7 +1179,8 @@ static struct cpuidle_state srf_cstates[] __initdata = {
- 	{
- 		.name = "C6SP",
- 		.desc = "MWAIT 0x23",
--		.flags = MWAIT2flg(0x23) | CPUIDLE_FLAG_TLB_FLUSHED,
-+		.flags = MWAIT2flg(0x23) | CPUIDLE_FLAG_TLB_FLUSHED |
-+					   CPUIDLE_FLAG_PARTIAL_HINT_MATCH,
- 		.exit_latency = 310,
- 		.target_residency = 900,
- 		.enter = &intel_idle,
-@@ -1519,7 +1529,7 @@ static void __init intel_idle_init_cstates_acpi(struct cpuidle_driver *drv)
- 	}
- }
- 
--static bool __init intel_idle_off_by_default(u32 mwait_hint)
-+static bool __init intel_idle_off_by_default(unsigned int flags, u32 mwait_hint)
- {
- 	int cstate, limit;
- 
-@@ -1536,7 +1546,15 @@ static bool __init intel_idle_off_by_default(u32 mwait_hint)
- 	 * the interesting states are ACPI_CSTATE_FFH.
- 	 */
- 	for (cstate = 1; cstate < limit; cstate++) {
--		if (acpi_state_table.states[cstate].address == mwait_hint)
-+		u32 acpi_hint = acpi_state_table.states[cstate].address;
-+		u32 table_hint = mwait_hint;
-+
-+		if (flags & CPUIDLE_FLAG_PARTIAL_HINT_MATCH) {
-+			acpi_hint &= ~MWAIT_SUBSTATE_MASK;
-+			table_hint &= ~MWAIT_SUBSTATE_MASK;
-+		}
-+
-+		if (acpi_hint == table_hint)
- 			return false;
- 	}
- 	return true;
-@@ -1546,7 +1564,10 @@ static bool __init intel_idle_off_by_default(u32 mwait_hint)
- 
- static inline bool intel_idle_acpi_cst_extract(void) { return false; }
- static inline void intel_idle_init_cstates_acpi(struct cpuidle_driver *drv) { }
--static inline bool intel_idle_off_by_default(u32 mwait_hint) { return false; }
-+static inline bool intel_idle_off_by_default(unsigned int flags, u32 mwait_hint)
-+{
-+	return false;
-+}
- #endif /* !CONFIG_ACPI_PROCESSOR_CSTATE */
- 
- /**
-@@ -1833,7 +1854,7 @@ static void __init intel_idle_init_cstates_icpu(struct cpuidle_driver *drv)
- 
- 		if ((disabled_states_mask & BIT(drv->state_count)) ||
- 		    ((icpu->use_acpi || force_use_acpi) &&
--		     intel_idle_off_by_default(mwait_hint) &&
-+		     intel_idle_off_by_default(state->flags, mwait_hint) &&
- 		     !(state->flags & CPUIDLE_FLAG_ALWAYS_ENABLE)))
- 			state->flags |= CPUIDLE_FLAG_OFF;
- 
--- 
-2.43.5
-
+--=20
+Jazz isn't dead. It just smells funny.
 
