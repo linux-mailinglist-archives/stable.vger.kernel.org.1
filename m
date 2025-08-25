@@ -1,55 +1,55 @@
-Return-Path: <stable+bounces-172885-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-172886-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 52BDBB34B97
-	for <lists+stable@lfdr.de>; Mon, 25 Aug 2025 22:18:36 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6D18DB34B9C
+	for <lists+stable@lfdr.de>; Mon, 25 Aug 2025 22:19:05 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 5D3741A882A9
-	for <lists+stable@lfdr.de>; Mon, 25 Aug 2025 20:18:56 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 6C5EC242DBD
+	for <lists+stable@lfdr.de>; Mon, 25 Aug 2025 20:19:03 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id BD29928C5A4;
-	Mon, 25 Aug 2025 20:18:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1C677285C8F;
+	Mon, 25 Aug 2025 20:19:00 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="TsK60+Qw"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="0UTb2K5R"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 63CD8288511;
-	Mon, 25 Aug 2025 20:18:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B100B223DFB;
+	Mon, 25 Aug 2025 20:18:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756153103; cv=none; b=Q3EG8dffkgq85nQvuG7zbOdUFbtNR3mmg8e51BWX1PovXx0G249fB2gBKdEFS5uxiy8ON5o8YRFdjCk3yCZREw9zZhpkVXMFz2ai4RRcXVw1vNImsGSnIUf/FaBmLmKZ7B23GRRr/xnacXSWAdX+fLIKv2BmDXcf4nL2+wmH4NU=
+	t=1756153139; cv=none; b=AhTc6ZsemxJ6d0X5mFEhvhKqGo5guvK3DgDMtpztrouY1WPUrE+zzTOGlJW3jSN0P8zps5vywpByq8BvxIcx226EJhT6CxGSRzzk4O0X2o//GBrEgRqnHO7nqN7JWshBSpkud/f2jc3rrjHhy5OhT0J6jL9a7Y3xFInjf0N5eAc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756153103; c=relaxed/simple;
-	bh=R8LG7/Fjb2k8AuYElz6WhqCpr4XGp4nctijttxN3LuE=;
+	s=arc-20240116; t=1756153139; c=relaxed/simple;
+	bh=RnQT2Jq69c863sbfZ4VHtKk/qPD5yfUvI35BE8N2aow=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=snk498nKHjQ0qQnspspADR+1ZeZGJtQj8KmC7DWNxir8ZCWTOL8s2lXTxj2VTIFYcckh9ZLAdr/45+L2hQhtHqoHlD1azdsXXkJKJtSzCnyLNK5hXJ+yOSjTTGQgWhj46/2Y0WbPnkN0irFEUxcncFwzizdj7hsHKrVnHR7bg84=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=TsK60+Qw; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id CEA50C116B1;
-	Mon, 25 Aug 2025 20:18:22 +0000 (UTC)
+	 Content-Type:Content-Disposition:In-Reply-To; b=aPlZkA6fKpDCzCT5f+1Zent4Xzxjn1ahXgcusQwjGWjuPfXcXGTTAStNtLRJSwyy5Um/78mSIT0gKMmwNoPjhzYclnDxyXOkKhbBgotjKcgt4JipQT4jo7W9UwzcK/JZn8U6dZ06TVdancojj8XJxUZgVuaPs2ghEBfjVzlWdso=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=0UTb2K5R; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id DC89FC4CEED;
+	Mon, 25 Aug 2025 20:18:58 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1756153103;
-	bh=R8LG7/Fjb2k8AuYElz6WhqCpr4XGp4nctijttxN3LuE=;
+	s=korg; t=1756153139;
+	bh=RnQT2Jq69c863sbfZ4VHtKk/qPD5yfUvI35BE8N2aow=;
 	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=TsK60+Qwpmbzezf1xS+8WYpSUqm0dPjA91/UMRHo/XrJKfYAQcGYlj4zZCjOdVVFf
-	 IQawvub03ugDEoHZDDQmPwjtw6911v/JtHbCM3fmAb4Fig114jjrU5m3qV0fT40VPM
-	 NIyib9D4IyYe2U9u5VchX5639K4kHg21aJLYBACY=
-Date: Mon, 25 Aug 2025 22:18:19 +0200
+	b=0UTb2K5Rc0+DRzx/gbgUarCDsuSVVFc77YCj4snPuZGNZGla2yNKKTIW14eNutYbf
+	 pC2jPL0zPHegbNsnuJGP7xDf19vR2CnqPmEs/a2VCNAYVHimgzH7dHUAJdRcs8h/FG
+	 ydGauTjFaa+DwiBrg7KEgE8RQNuoJ9l5LQyWnoEE=
+Date: Mon, 25 Aug 2025 22:18:55 +0200
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: "Deucher, Alexander" <Alexander.Deucher@amd.com>
 Cc: "stable@vger.kernel.org" <stable@vger.kernel.org>,
 	"patches@lists.linux.dev" <patches@lists.linux.dev>,
 	"Xiao, Jack" <Jack.Xiao@amd.com>, "Gao, Likun" <Likun.Gao@amd.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: Re: [PATCH 6.15 438/515] drm/amdgpu: fix incorrect vm flags to map bo
-Message-ID: <2025082507-scientist-trustless-9a5b@gregkh>
-References: <20250818124458.334548733@linuxfoundation.org>
- <20250818124515.286695172@linuxfoundation.org>
- <BL1PR12MB5144A729CC4218D2F6DCFE5FF73EA@BL1PR12MB5144.namprd12.prod.outlook.com>
+Subject: Re: [PATCH 6.16 482/570] drm/amdgpu: fix incorrect vm flags to map bo
+Message-ID: <2025082530-gory-outsmart-d4eb@gregkh>
+References: <20250818124505.781598737@linuxfoundation.org>
+ <20250818124524.452481295@linuxfoundation.org>
+ <BL1PR12MB5144F2E3EB31673E0B78B8B7F73EA@BL1PR12MB5144.namprd12.prod.outlook.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -58,21 +58,21 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <BL1PR12MB5144A729CC4218D2F6DCFE5FF73EA@BL1PR12MB5144.namprd12.prod.outlook.com>
+In-Reply-To: <BL1PR12MB5144F2E3EB31673E0B78B8B7F73EA@BL1PR12MB5144.namprd12.prod.outlook.com>
 
-On Mon, Aug 25, 2025 at 02:04:37PM +0000, Deucher, Alexander wrote:
+On Mon, Aug 25, 2025 at 02:04:11PM +0000, Deucher, Alexander wrote:
 > [Public]
 > 
 > > -----Original Message-----
 > > From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-> > Sent: Monday, August 18, 2025 8:47 AM
+> > Sent: Monday, August 18, 2025 8:48 AM
 > > To: stable@vger.kernel.org
 > > Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>; patches@lists.linux.dev;
 > > Xiao, Jack <Jack.Xiao@amd.com>; Gao, Likun <Likun.Gao@amd.com>; Deucher,
 > > Alexander <Alexander.Deucher@amd.com>; Sasha Levin <sashal@kernel.org>
-> > Subject: [PATCH 6.15 438/515] drm/amdgpu: fix incorrect vm flags to map bo
+> > Subject: [PATCH 6.16 482/570] drm/amdgpu: fix incorrect vm flags to map bo
 > >
-> > 6.15-stable review patch.  If anyone has any objections, please let me know.
+> > 6.16-stable review patch.  If anyone has any objections, please let me know.
 > >
 > > ------------------
 > >
@@ -86,5 +86,11 @@ On Mon, Aug 25, 2025 at 02:04:37PM +0000, Deucher, Alexander wrote:
 > 
 > I accidently tagged this with the wrong fixes tag.  This patch should not go to anything other than 6.17.  Sorry for the confusion.  Please revert for older kernels.
 
-6.15 is end-of-life, sorry.
+So no stable releases at all?
+
+And can you send a revert, this is already in released kernels.
+
+thanks,
+
+greg k-h
 
