@@ -1,207 +1,226 @@
-Return-Path: <stable+bounces-172849-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-172850-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id C8A22B33F1C
-	for <lists+stable@lfdr.de>; Mon, 25 Aug 2025 14:15:58 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0CD5DB33F2E
+	for <lists+stable@lfdr.de>; Mon, 25 Aug 2025 14:19:37 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 93D427AA8B4
-	for <lists+stable@lfdr.de>; Mon, 25 Aug 2025 12:14:22 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id E7F861A822AF
+	for <lists+stable@lfdr.de>; Mon, 25 Aug 2025 12:19:56 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 61F811CDFAC;
-	Mon, 25 Aug 2025 12:15:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7D583189919;
+	Mon, 25 Aug 2025 12:19:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="un5ESlkH"
+	dkim=pass (1024-bit key) header.d=163.com header.i=@163.com header.b="htDE4r67"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7885C14EC46;
-	Mon, 25 Aug 2025 12:15:23 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+Received: from m16.mail.163.com (m16.mail.163.com [220.197.31.5])
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 33FF576026;
+	Mon, 25 Aug 2025 12:19:26 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=220.197.31.5
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756124123; cv=none; b=Xp/cJql2JzL0iTeZOYtWzId9XdUvsycdmx62VUnFK5rCTGR0tDPXg1G0iOpyuSTZVjRlsnlE2d/PzPTV2y3gei6flOYtoAt+0O2UTuMq8F6xb4u7nsSjKID1X4Zg5O2JBAsMz83OONSrNX3lQxWanZt8Yw0MJRAblaRv3eQU9FE=
+	t=1756124371; cv=none; b=iKS8xnKwb1ZvQoH6lPuAi+ZV/aYIniG8CXZgKEpYi5kZ1J4ZM5u6I1Kn4s4VS4nZHKccY6BTuXGV3Lzn30LwCQJu+YY/G0qvLPIlpO8gi5LmVxqk2NU7jK/J1T8EsXmvTUMR+DdfxaE8PX836p3NeXuZjvRc3J8W7pLNTmzXJMU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756124123; c=relaxed/simple;
-	bh=FYacGFcvtziYaQU23dkF5qhnNiOq+YUOP4jCmJ/AMb8=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=HyZ5gGYZpjz6izGRdRSwOp+vk9Wqp5mrGD1h41ej59nNZQfUl4+H98ojveBB1oGSvxz+dtpUYm7XfJObwi1TBZuMxr54jUdkJvQZuB9+4oOq78emjxxH4fdNtSfmvihhOhyY6TzCcC7aHgCX9ywVzGZGpc+Pxip1yV+BzLlxlAs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=un5ESlkH; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 44F4BC4CEED;
-	Mon, 25 Aug 2025 12:15:22 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1756124123;
-	bh=FYacGFcvtziYaQU23dkF5qhnNiOq+YUOP4jCmJ/AMb8=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=un5ESlkHE/jiWQ4E7w+MIAM9BFrs7ubsGv3bHkx9mxVJvkwmG0FHmZOydp0W/iSt1
-	 ZyDJ/xT+9FwjUymkV61Vt8c2kUlYCso7GjA59LPhV8503jRYJuJqHe8t6J411TZMod
-	 slufIfhAYejxpbmfnTPe1aGvMMHd1ZFkT+5gbsMSVi1n9bSWAa0qhHPbJq+hGQ8Iph
-	 ZiUE7lVH1fpuOn0Vjk094HIuDQ/tkqyJcBkOsbsfxXUYuLpj80dboesibKEjCEt6ia
-	 QeoS5R5UqXl+AGXnjA/u/aNpS5kpp0tFJ3A44ppfZxZAUag3xJ/9zypter6lYfBsIz
-	 94/9r4/4Liofw==
-From: Sasha Levin <sashal@kernel.org>
-To: patches@lists.linux.dev,
+	s=arc-20240116; t=1756124371; c=relaxed/simple;
+	bh=SqeDizIwrr3y1GUkB2O8oQBvKjcCpXVMPbkpXiLxCf0=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=iToKOLyItftHUNhjJlG2idWUUEOQhe8wO7S2cjf0s8XZJX7zvSBXaHkF23/bu0EVqthlTidFxXeqyJSKRg9NnFjfaZQN6jjStQsCFxDaYO3ZXHW13Zuqjdcyc2DGSw9wVt8WgaqQb1BQAQ4DhMEBkUnEyyu1ofzmMbOOUOL99t8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=163.com; spf=pass smtp.mailfrom=163.com; dkim=pass (1024-bit key) header.d=163.com header.i=@163.com header.b=htDE4r67; arc=none smtp.client-ip=220.197.31.5
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=163.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=163.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=163.com;
+	s=s110527; h=From:To:Subject:Date:Message-ID:MIME-Version; bh=en
+	QjVH9CPVENIVsHk7gsCn5/5+hGNNH2XndDe1QIK7w=; b=htDE4r67TWRW8/4/23
+	/qk3oo/CzwSXo0U2Fmra438wGVC795bfCZXAVAIaRY7dX8aio69L7Jf0x+eSTBc8
+	6jYS9HXn+8Ln/d1RjYbMWF+WJkGUMSmc4DxPQRFWFFKuOx+q3GLj0QEfB482ZDpf
+	qrSfHIurifvyA2n9H1bHX2weg=
+Received: from mi-work.mioffice.cn (unknown [])
+	by gzga-smtp-mtada-g1-4 (Coremail) with SMTP id _____wBHsTdyVKxoeChoDw--.61651S4;
+	Mon, 25 Aug 2025 20:17:55 +0800 (CST)
+From: yangshiguang1011@163.com
+To: harry.yoo@oracle.com
+Cc: vbabka@suse.cz,
+	akpm@linux-foundation.org,
+	cl@gentwo.org,
+	rientjes@google.com,
+	roman.gushchin@linux.dev,
+	glittao@gmail.com,
+	linux-mm@kvack.org,
+	linux-kernel@vger.kernel.org,
+	yangshiguang <yangshiguang@xiaomi.com>,
 	stable@vger.kernel.org
-Cc: Piotr Zalewski <pZ010001011111@proton.me>,
-	Diederik de Haas <didi.debian@cknow.org>,
-	Andy Yan <andy.yan@rock-chips.com>,
-	Heiko Stuebner <heiko@sntech.de>,
-	Sasha Levin <sashal@kernel.org>,
-	hjc@rock-chips.com,
-	dri-devel@lists.freedesktop.org,
-	linux-arm-kernel@lists.infradead.org,
-	linux-rockchip@lists.infradead.org
-Subject: [PATCH AUTOSEL 6.16-6.12] drm/rockchip: vop2: make vp registers nonvolatile
-Date: Mon, 25 Aug 2025 08:15:00 -0400
-Message-ID: <20250825121505.2983941-11-sashal@kernel.org>
-X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250825121505.2983941-1-sashal@kernel.org>
-References: <20250825121505.2983941-1-sashal@kernel.org>
+Subject: [PATCH v3] mm: slub: avoid wake up kswapd in set_track_prepare
+Date: Mon, 25 Aug 2025 20:17:37 +0800
+Message-ID: <20250825121737.2535732-1-yangshiguang1011@163.com>
+X-Mailer: git-send-email 2.43.0
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-stable: review
-X-Patchwork-Hint: Ignore
-X-stable-base: Linux 6.16.3
 Content-Transfer-Encoding: 8bit
+X-CM-TRANSID:_____wBHsTdyVKxoeChoDw--.61651S4
+X-Coremail-Antispam: 1Uf129KBjvJXoW3Jr43XFWkKF1UCFWkWryUWrg_yoW7CryfpF
+	W7WFy3tF48AF1jqFWUCw4Uur1SvrZ3CrW8Cr43Wa4ruF1Yvr48GFW7tFyYvFW5ArykuanF
+	ka109Fn3Ww4UXaUanT9S1TB71UUUUU7qnTZGkaVYY2UrUUUUjbIjqfuFe4nvWSU5nxnvy2
+	9KBjDUYxBIdaVFxhVjvjDU0xZFpf9x07juUDAUUUUU=
+X-CM-SenderInfo: 51dqw25klj3ttqjriiqr6rljoofrz/xtbBMRq05WisT9l87gAAs6
 
-From: Piotr Zalewski <pZ010001011111@proton.me>
+From: yangshiguang <yangshiguang@xiaomi.com>
 
-[ Upstream commit a52dffaa46c2c5ff0b311c4dc1288581f7b9109e ]
+From: yangshiguang <yangshiguang@xiaomi.com>
 
-Make video port registers nonvolatile. As DSP_CTRL register is written
-to twice due to gamma LUT enable bit which is set outside of the main
-DSP_CTRL initialization within atomic_enable (for rk356x case it is also
-necessary to always disable gamma LUT before writing a new LUT) there is
-a chance that DSP_CTRL value read-out in gamma LUT init/update code is
-not the one which was written by the preceding DSP_CTRL initialization
-code within atomic_enable. This might result in misconfigured DSP_CTRL
-which leads to no visual output[1]. Since DSP_CTRL write takes effect
-after VSYNC[1] the issue is not always present. When tested on Pinetab2
-with kernel 6.14 it happenes only when DRM is compiled as a module[1].
-In order to confirm that it is a timing issue I inserted 18ms udelay
-before vop2_crtc_atomic_try_set_gamma in atomic enable and compiled DRM
-as module - this has also fixed the issue.
+set_track_prepare() can incur lock recursion.
+The issue is that it is called from hrtimer_start_range_ns
+holding the per_cpu(hrtimer_bases)[n].lock, but when enabled
+CONFIG_DEBUG_OBJECTS_TIMERS, may wake up kswapd in set_track_prepare,
+and try to hold the per_cpu(hrtimer_bases)[n].lock.
 
-[1] https://lore.kernel.org/linux-rockchip/562b38e5.a496.1975f09f983.Coremail.andyshrk@163.com/
+Avoid deadlock caused by implicitly waking up kswapd by
+passing in allocation flags.
 
-Reported-by: Diederik de Haas <didi.debian@cknow.org>
-Closes: https://lore.kernel.org/linux-rockchip/DAEVDSTMWI1E.J454VZN0R9MA@cknow.org/
-Suggested-by: Andy Yan <andy.yan@rock-chips.com>
-Signed-off-by: Piotr Zalewski <pZ010001011111@proton.me>
-Tested-by: Diederik de Haas <didi.debian@cknow.org>
-Signed-off-by: Heiko Stuebner <heiko@sntech.de>
-Link: https://lore.kernel.org/r/20250706083629.140332-2-pZ010001011111@proton.me
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+The oops looks something like:
+
+BUG: spinlock recursion on CPU#3, swapper/3/0
+ lock: 0xffffff8a4bf29c80, .magic: dead4ead, .owner: swapper/3/0, .owner_cpu: 3
+Hardware name: Qualcomm Technologies, Inc. Popsicle based on SM8850 (DT)
+Call trace:
+spin_bug+0x0
+_raw_spin_lock_irqsave+0x80
+hrtimer_try_to_cancel+0x94
+task_contending+0x10c
+enqueue_dl_entity+0x2a4
+dl_server_start+0x74
+enqueue_task_fair+0x568
+enqueue_task+0xac
+do_activate_task+0x14c
+ttwu_do_activate+0xcc
+try_to_wake_up+0x6c8
+default_wake_function+0x20
+autoremove_wake_function+0x1c
+__wake_up+0xac
+wakeup_kswapd+0x19c
+wake_all_kswapds+0x78
+__alloc_pages_slowpath+0x1ac
+__alloc_pages_noprof+0x298
+stack_depot_save_flags+0x6b0
+stack_depot_save+0x14
+set_track_prepare+0x5c
+___slab_alloc+0xccc
+__kmalloc_cache_noprof+0x470
+__set_page_owner+0x2bc
+post_alloc_hook[jt]+0x1b8
+prep_new_page+0x28
+get_page_from_freelist+0x1edc
+__alloc_pages_noprof+0x13c
+alloc_slab_page+0x244
+allocate_slab+0x7c
+___slab_alloc+0x8e8
+kmem_cache_alloc_noprof+0x450
+debug_objects_fill_pool+0x22c
+debug_object_activate+0x40
+enqueue_hrtimer[jt]+0xdc
+hrtimer_start_range_ns+0x5f8
+...
+
+Signed-off-by: yangshiguang <yangshiguang@xiaomi.com>
+Fixes: 5cf909c553e9 ("mm/slub: use stackdepot to save stack trace in objects")
+Cc: stable@vger.kernel.org
 ---
 
-LLM Generated explanations, may be completely bogus:
+v1 -> v2:
+    propagate gfp flags to set_track_prepare()
+v2 -> v3:
+    Remove the gfp restriction in set_track_prepare()
 
-Based on my analysis of the commit, let me provide my determination:
+[1]https://lore.kernel.org/all/20250801065121.876793-1-yangshiguang1011@163.com/
+[2]https://lore.kernel.org/all/20250814111641.380629-2-yangshiguang1011@163.com/
+---
+ mm/slub.c | 22 ++++++++++++----------
+ 1 file changed, 12 insertions(+), 10 deletions(-)
 
-**Backport Status: YES**
-
-## Extensive Analysis:
-
-This commit is a strong candidate for backporting to stable kernel trees
-for the following reasons:
-
-### 1. **Bug Fix Nature**
-The commit fixes a real bug that causes **no visual output** on
-displays. This is a critical user-visible issue where the display driver
-fails to produce any image output. The commit message clearly describes
-this as fixing a situation where "misconfigured DSP_CTRL which leads to
-no visual output."
-
-### 2. **Race Condition Fix**
-The code changes address a race condition in register access patterns.
-The issue occurs because:
-- DSP_CTRL register is written twice during atomic_enable
-- The second write happens for gamma LUT configuration
-- Due to the register being volatile, read-modify-write operations can
-  read stale values
-- DSP_CTRL writes only take effect after VSYNC, creating a timing window
-  for the race
-
-### 3. **Small and Contained Change**
-The actual code change is minimal - just one line adding the VP register
-range to the nonvolatile list:
-```c
-+       regmap_reg_range(RK3568_VP0_CTRL_BASE, RK3588_VP3_CTRL_BASE +
-255),
-```
-
-This makes the video port registers (0xc00-0xeff based on the offsets)
-use the regmap cache instead of reading back from hardware, preventing
-the race condition.
-
-### 4. **Hardware-Specific Fix**
-The fix is specific to Rockchip VOP2 hardware (RK3568/RK3588 SoCs) and
-doesn't affect other subsystems. It's confined to the DRM/Rockchip
-display driver.
-
-### 5. **Tested and Confirmed**
-The commit includes:
-- A "Reported-by" tag indicating a real user issue
-- A "Tested-by" tag confirming the fix works
-- Clear reproduction details (happens on Pinetab2 with kernel 6.14 when
-  DRM is compiled as module)
-
-### 6. **Low Risk of Regression**
-The change only affects how registers are cached in the regmap
-framework. It doesn't change any functional logic, algorithms, or
-introduce new features. The comment update accurately reflects that both
-window AND video port registers are now marked as non-volatile for cache
-coherency.
-
-### 7. **Follows Stable Rules**
-This fix aligns with stable kernel rules:
-- Fixes a real bug that users are hitting
-- Small change (essentially 1 line of functional code)
-- Already tested by reporter
-- Fix is obvious once the problem is understood
-- No new features or architectural changes
-
-### 8. **Critical Display Functionality**
-Display output is fundamental functionality. A bug that causes "no
-visual output" severely impacts usability of devices using these SoCs,
-making this a high-priority fix for stable trees.
-
-The commit properly documents the issue with external references and
-follows good practices for a bug fix that should be backported to stable
-kernels.
-
- drivers/gpu/drm/rockchip/rockchip_drm_vop2.c | 9 +++++----
- 1 file changed, 5 insertions(+), 4 deletions(-)
-
-diff --git a/drivers/gpu/drm/rockchip/rockchip_drm_vop2.c b/drivers/gpu/drm/rockchip/rockchip_drm_vop2.c
-index 186f6452a7d3..b50927a824b4 100644
---- a/drivers/gpu/drm/rockchip/rockchip_drm_vop2.c
-+++ b/drivers/gpu/drm/rockchip/rockchip_drm_vop2.c
-@@ -2579,12 +2579,13 @@ static int vop2_win_init(struct vop2 *vop2)
+diff --git a/mm/slub.c b/mm/slub.c
+index 30003763d224..443411713e2f 100644
+--- a/mm/slub.c
++++ b/mm/slub.c
+@@ -962,19 +962,21 @@ static struct track *get_track(struct kmem_cache *s, void *object,
  }
  
- /*
-- * The window registers are only updated when config done is written.
-- * Until that they read back the old value. As we read-modify-write
-- * these registers mark them as non-volatile. This makes sure we read
-- * the new values from the regmap register cache.
-+ * The window and video port registers are only updated when config
-+ * done is written. Until that they read back the old value. As we
-+ * read-modify-write these registers mark them as non-volatile. This
-+ * makes sure we read the new values from the regmap register cache.
-  */
- static const struct regmap_range vop2_nonvolatile_range[] = {
-+	regmap_reg_range(RK3568_VP0_CTRL_BASE, RK3588_VP3_CTRL_BASE + 255),
- 	regmap_reg_range(0x1000, 0x23ff),
- };
+ #ifdef CONFIG_STACKDEPOT
+-static noinline depot_stack_handle_t set_track_prepare(void)
++static noinline depot_stack_handle_t set_track_prepare(gfp_t gfp_flags)
+ {
+ 	depot_stack_handle_t handle;
+ 	unsigned long entries[TRACK_ADDRS_COUNT];
+ 	unsigned int nr_entries;
++	/* Preemption is disabled in ___slab_alloc() */
++	gfp_flags &= ~(__GFP_DIRECT_RECLAIM);
+ 
+ 	nr_entries = stack_trace_save(entries, ARRAY_SIZE(entries), 3);
+-	handle = stack_depot_save(entries, nr_entries, GFP_NOWAIT);
++	handle = stack_depot_save(entries, nr_entries, gfp_flags);
+ 
+ 	return handle;
+ }
+ #else
+-static inline depot_stack_handle_t set_track_prepare(void)
++static inline depot_stack_handle_t set_track_prepare(gfp_t gfp_flags)
+ {
+ 	return 0;
+ }
+@@ -996,9 +998,9 @@ static void set_track_update(struct kmem_cache *s, void *object,
+ }
+ 
+ static __always_inline void set_track(struct kmem_cache *s, void *object,
+-				      enum track_item alloc, unsigned long addr)
++				      enum track_item alloc, unsigned long addr, gfp_t gfp_flags)
+ {
+-	depot_stack_handle_t handle = set_track_prepare();
++	depot_stack_handle_t handle = set_track_prepare(gfp_flags);
+ 
+ 	set_track_update(s, object, alloc, addr, handle);
+ }
+@@ -1921,9 +1923,9 @@ static inline bool free_debug_processing(struct kmem_cache *s,
+ static inline void slab_pad_check(struct kmem_cache *s, struct slab *slab) {}
+ static inline int check_object(struct kmem_cache *s, struct slab *slab,
+ 			void *object, u8 val) { return 1; }
+-static inline depot_stack_handle_t set_track_prepare(void) { return 0; }
++static inline depot_stack_handle_t set_track_prepare(gfp_t gfp_flags) { return 0; }
+ static inline void set_track(struct kmem_cache *s, void *object,
+-			     enum track_item alloc, unsigned long addr) {}
++			     enum track_item alloc, unsigned long addr, gfp_t gfp_flags) {}
+ static inline void add_full(struct kmem_cache *s, struct kmem_cache_node *n,
+ 					struct slab *slab) {}
+ static inline void remove_full(struct kmem_cache *s, struct kmem_cache_node *n,
+@@ -3878,7 +3880,7 @@ static void *___slab_alloc(struct kmem_cache *s, gfp_t gfpflags, int node,
+ 			 * tracking info and return the object.
+ 			 */
+ 			if (s->flags & SLAB_STORE_USER)
+-				set_track(s, freelist, TRACK_ALLOC, addr);
++				set_track(s, freelist, TRACK_ALLOC, addr, gfpflags);
+ 
+ 			return freelist;
+ 		}
+@@ -3910,7 +3912,7 @@ static void *___slab_alloc(struct kmem_cache *s, gfp_t gfpflags, int node,
+ 			goto new_objects;
+ 
+ 		if (s->flags & SLAB_STORE_USER)
+-			set_track(s, freelist, TRACK_ALLOC, addr);
++			set_track(s, freelist, TRACK_ALLOC, addr, gfpflags);
+ 
+ 		return freelist;
+ 	}
+@@ -4422,7 +4424,7 @@ static noinline void free_to_partial_list(
+ 	depot_stack_handle_t handle = 0;
+ 
+ 	if (s->flags & SLAB_STORE_USER)
+-		handle = set_track_prepare();
++		handle = set_track_prepare(__GFP_NOWARN);
+ 
+ 	spin_lock_irqsave(&n->list_lock, flags);
  
 -- 
-2.50.1
+2.43.0
 
 
