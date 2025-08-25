@@ -1,96 +1,77 @@
-Return-Path: <stable+bounces-172883-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-172884-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 025D7B34B3D
-	for <lists+stable@lfdr.de>; Mon, 25 Aug 2025 21:57:18 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id E52A9B34B92
+	for <lists+stable@lfdr.de>; Mon, 25 Aug 2025 22:17:36 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 4E3227B5838
-	for <lists+stable@lfdr.de>; Mon, 25 Aug 2025 19:55:09 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id BA785242393
+	for <lists+stable@lfdr.de>; Mon, 25 Aug 2025 20:17:36 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4D1FA286D72;
-	Mon, 25 Aug 2025 19:56:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id BEDD0275AF0;
+	Mon, 25 Aug 2025 20:17:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="pTeAa+2u"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="jqr+xFc/"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EC596283FD0;
-	Mon, 25 Aug 2025 19:56:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 627C5223DFB
+	for <stable@vger.kernel.org>; Mon, 25 Aug 2025 20:17:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756151784; cv=none; b=bVDTBN6HtM7mae+PSAhNia2T5EM+VmPRldl5dRIduJVMw5zlrzKSquJygjVzN4VUMberllnn4xWm/l5eX8q8j5C34RigBYBCNdvKFqgeX8a7cfcZpOuetfwjNY0j3LeEJig0mn2v1Q1ATod7g9sroq2cg4WYzrVf74Ne1cWOQAE=
+	t=1756153051; cv=none; b=UpasNGGTCDYx3O1U9gH+th+2oq8hLF5wfpTc1BM777AivCPUFNVekz0Wu7mQ3ZFohbnkqHyJ1Mfq/4utOzo7j+YeuIGwZH26+164NonSTuHauytjy7ZaZQedXtiw0kt1EpMEljML7IH98JH9QXdmyylB+CF3xTKczXvaeznqg+I=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756151784; c=relaxed/simple;
-	bh=hVscp1LYJaE3qcWw1GcbvK5mxrfCB+Tpux7lBFjeAVs=;
+	s=arc-20240116; t=1756153051; c=relaxed/simple;
+	bh=lyyssDivZdiQWEzacr1cJ0xJzpgvmZD+lASe9pF75/8=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=IxIkQV2fRbuaKCajgNgZuJ+D2sDXJX0m2a0gD2AzijB7JTMu86UU6Y7tdPpFd5ZzaVsoIbfxeoUqr/IcCQWwO4k7zF35S/d86I9D+L8TAlJGWWjvLXMy0nlLwq1au+d1OyMWbjkIgDkVErnkSC/Mc5KqbErc8mD/Mtc08HraobM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=pTeAa+2u; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2926AC113D0;
-	Mon, 25 Aug 2025 19:56:23 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1756151783;
-	bh=hVscp1LYJaE3qcWw1GcbvK5mxrfCB+Tpux7lBFjeAVs=;
+	 Content-Type:Content-Disposition:In-Reply-To; b=HW9RNdEKtNy7NNsjrUo1vtY0iJR2elHTW8ntAo3BKo406W040Png/Qdhb/foPH6mslUKsRMFw/MasDYwpUitaE2wK8xixVhDlAmhdsguQFinFwj32H3/Wq89Vs51kSVbExErZ8Psb85mgJz4ymUYj3/oOKIlazT15rwniQybxkI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=jqr+xFc/; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 99B51C113D0;
+	Mon, 25 Aug 2025 20:17:30 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
+	s=korg; t=1756153050;
+	bh=lyyssDivZdiQWEzacr1cJ0xJzpgvmZD+lASe9pF75/8=;
 	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=pTeAa+2uOaISM98RRzC4Nn9WsSf6YSnwYgEVzqlFEkSipaSB9bsubD0esBLaK0qRe
-	 Xoz6/+sA3FMfCp1GLgVG/1xN2OZE1Z47LrAjd7WZnqr5PSco+5OqLJFRn7C6H3Uzg/
-	 lA8E6HVDHwHmLaQZmbxGbgPx8i6UneXWZbrkjXJ9omsb3Jw0NuuvTMDikSNDpE1O7O
-	 GAqabyk803NyWP8+6151e+wjA1onWrEyyYy5uk/a/0Mt8VKXd+Hr7jof2Bq/TsnK/+
-	 xDi0QSyWJ9lhL0yKWGVlIjq8TKkTfDNz4jv9lAieSBPXG5K4vmntqP1rPXmyLovOeC
-	 TdJB5NU4zK0FA==
-Date: Mon, 25 Aug 2025 15:56:21 -0400
-From: Sasha Levin <sashal@kernel.org>
-To: Nathan Gao <zcgao@amazon.com>
-Cc: stable@vger.kernel.org, regressions@lists.linux.dev,
-	linux-fsdevel@vger.kernel.org
-Subject: Re: [REGRESSION] fs: ERR_PTR dereference in expand_files() on
- v6.12.43
-Message-ID: <aKy_5bOIZwolisn2@laps>
-References: <20250825152725.43133-1-zcgao@amazon.com>
+	b=jqr+xFc/XnicikeIJZO5CwHvvSwN/mWmuPfQ8OXTAnjU/CBu4a2Lu0s8ITaIZoYka
+	 TJ4Y3+5g1l9Xeg0vRlIizIochXoLTcO0mdcV/aKuizT36XWPEIfxq+Kbi8mFKH7UDs
+	 O1F8zus9scJZy3KX4+jKUaJXUScGuJvSRe8pOhsk=
+Date: Mon, 25 Aug 2025 22:17:27 +0200
+From: Greg KH <gregkh@linuxfoundation.org>
+To: Jakub Kicinski <kuba@kernel.org>
+Cc: billy@starlabs.sg, ramdhan@starlabs.sg, sd@queasysnail.net,
+	stable@vger.kernel.org
+Subject: Re: FAILED: patch "[PATCH] tls: fix handling of zero-length records
+ on the rx_list" failed to apply to 5.15-stable tree
+Message-ID: <2025082508-undusted-tributary-124b@gregkh>
+References: <2025082443-caliber-swung-4d8f@gregkh>
+ <20250825082014.0a713fee@kernel.org>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii; format=flowed
+Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20250825152725.43133-1-zcgao@amazon.com>
+In-Reply-To: <20250825082014.0a713fee@kernel.org>
 
-On Mon, Aug 25, 2025 at 08:27:25AM -0700, Nathan Gao wrote:
->Hi,
->
->I noticed an ERR_PTR dereference issue in expand_files() on kernel 6.12.43
->when allocating large file descriptor tables. The issue occurs when
->alloc_fdtable() returns ERR_PTR(-EMFILE) for large nr input, but
->expand_fdtable() is not properly checking these error returns. dup_fd()
->seems also have the issue, missing proper ERR_PTR handling.
->
->The ERR_PTR return was introduced by d4f9351243c1 ("fs: Prevent file
->descriptor table allocations exceeding INT_MAX") which adds INT_MAX limit
->check in alloc_fdtable().
+On Mon, Aug 25, 2025 at 08:20:14AM -0700, Jakub Kicinski wrote:
+> On Sun, 24 Aug 2025 11:07:43 +0200 gregkh@linuxfoundation.org wrote:
+> > The patch below does not apply to the 5.15-stable tree.
+> > If someone wants it applied there, or to any other stable or longterm
+> > tree, then please email the backport, including the original git commit
+> > id to <stable@vger.kernel.org>.
+> 
+> This is not needed prior to 5.19.
+> 
+> Sorry for not including the kernel version in the stable tag.
+> I suppose Fixes is not taken into account when identifying where 
+> to backport the patch?
 
-Ugh, sorry :(
+It is, but my fault, I missed that this is not in 5.15, sorry.
 
->I was able to trigger this with the unshare_test selftest:
->
->[   40.283906] BUG: unable to handle page fault for address: ffffffffffffffe8
->...
->[   40.287436] RIP: 0010:expand_files+0x7e/0x1c0
->...
->[   40.366211] Kernel panic - not syncing: Fatal exception
->
->Looking at the upstream kernel, this can be addressed by Al Viro's
->fdtable series [1], which added the ERR_PTR handling in this code path.
->Perhaps backporting this series, especially 1d3b4be ("alloc_fdtable():
->change calling conventions.") would help resolve the issue.
-
-I agree. I'll pick up. Thanks for the report!
-
--- 
-Thanks,
-Sasha
+greg k-h
 
