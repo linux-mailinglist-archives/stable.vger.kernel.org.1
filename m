@@ -1,139 +1,114 @@
-Return-Path: <stable+bounces-172773-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-172774-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7C990B3347F
-	for <lists+stable@lfdr.de>; Mon, 25 Aug 2025 05:31:03 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9ADBBB334DF
+	for <lists+stable@lfdr.de>; Mon, 25 Aug 2025 05:59:39 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 4AF3017C008
-	for <lists+stable@lfdr.de>; Mon, 25 Aug 2025 03:31:03 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 8EDEC1B235CC
+	for <lists+stable@lfdr.de>; Mon, 25 Aug 2025 03:59:59 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C66961F2BB8;
-	Mon, 25 Aug 2025 03:30:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7F1C6239567;
+	Mon, 25 Aug 2025 03:59:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=wbinvd.org header.i=@wbinvd.org header.b="X2eGKC8I"
+	dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b="eN5jjmdS"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-pj1-f52.google.com (mail-pj1-f52.google.com [209.85.216.52])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from fout-b5-smtp.messagingengine.com (fout-b5-smtp.messagingengine.com [202.12.124.148])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DD81228E7
-	for <stable@vger.kernel.org>; Mon, 25 Aug 2025 03:30:56 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.52
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0FCCC45009;
+	Mon, 25 Aug 2025 03:59:30 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=202.12.124.148
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756092658; cv=none; b=sxP8w9J/XWPAuxaWU5ljxfxhSATzfYd3RsxP4CNYPeoKh3Hbk+o2TlZ0QnZJ5GMsoZqjeJC1C0XysHFBgT3Myu91q3rFZ5bl69R1snlEt7Ad8h+RNW+zV+Z82YFtDPZcyxR9seCaWz8x/7xv+x8TFwtVbiwqwr6fa25/cCiJC9w=
+	t=1756094373; cv=none; b=u5vr7g2JefcYPIDsNmEE/E9PdvEGsS8BdOO7E8jhZgEOLK/CUjfSt0S64dZKAkI0ekTwkW1t8e3Fs9UGmPP5tN7IYEPVoqruCTL6YxVDyvcUzsVleHolNt6uHKo/hxchw8qTyGjBS2tgpoytVbYibSyj1j99qvs+nS4DvDBDB84=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756092658; c=relaxed/simple;
-	bh=KvLr6SyIw7xWcJFozvT9idFznnJlWoos4HFd4VRS4E8=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=uQ4yNpCWCpVCD3uB2xwko6sQxCP0Xxcv9zoc8V11Ze3raTOGmHYFDUgVU+wuKApnXzmCa2MVQKJmLAfcAPCw0+aGfonEtAVKPEdj0a7pdIdywxRXF3HcC292/kSk33A/vkWpug0KzaXdwT+okPOoNb9y4EbKbazjVKJ8rmxh/ic=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=wbinvd.org; spf=pass smtp.mailfrom=wbinvd.org; dkim=pass (2048-bit key) header.d=wbinvd.org header.i=@wbinvd.org header.b=X2eGKC8I; arc=none smtp.client-ip=209.85.216.52
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=wbinvd.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=wbinvd.org
-Received: by mail-pj1-f52.google.com with SMTP id 98e67ed59e1d1-323267b98a4so3128991a91.1
-        for <stable@vger.kernel.org>; Sun, 24 Aug 2025 20:30:56 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=wbinvd.org; s=wbinvd; t=1756092656; x=1756697456; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=Va5JTW85XJBn4Q7SWndBzAhOMuHsSHXhqk+r6dmLRJA=;
-        b=X2eGKC8I7J4Nldv+ifDHCc0eJIIMzQikqfib64/xEdAA3zouB1EFq748+pZs21ly/3
-         dBzW8/U84QNUfIdIcsCSNT+Hhu7M+X6YkFCA+ht0muPZtZ9W9s/OELHwVSYy7j51k/OH
-         /PgnUl5h+EhYWXyqtoBd+8+RVqCgZPFNmCkBMJxvypKNphS00mbmossxlrDLcnfkQCu1
-         2F1zIWe5+jKBK43raesIZWdJml26YiR5xlVELxvCiq1DrJjqxAGWl5GyK/3Fl3GmL0vp
-         P2oIfgmVSR2FJruMvQhvFZYBCLPtI8CABbl/5btaccjSE9NY97ysYYlTikaV9dgMQrUF
-         SOoQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1756092656; x=1756697456;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=Va5JTW85XJBn4Q7SWndBzAhOMuHsSHXhqk+r6dmLRJA=;
-        b=oijq9E0SMBbQtJIx2mDZ5Be6MfLXA3OTQzPWvs9GLcZSNW4GdUw4tvFo0OXIyefrcg
-         JoVmLcuPtc/mnq+jhVcOGkdDJUeiwJFC8CzxNObL6nx8bc+cP6v6CsZG18fEquDYdLIl
-         rDa7q5vRvY8twzGUSUinJvA7OylJgTFLzMZTD9w87tUvlSwGzRcW732uUyZ7l5NF+Skf
-         4VOQn8/bcv7b1qwtVFZABgYPruNxyJV8Gnoqa5qEBvQvHCto4op5Z98tuvJMNqaG9hOm
-         1RWmhduJHHVt5UXwc8KS9yZVbgPhk0NzWsIv3cpmKt70Z3iKZQZLFWAl4WZpBNvr1XZT
-         wIig==
-X-Gm-Message-State: AOJu0YxG1CHyJNDuNq+MA0hOhx62Iwy9gSgzBpkvTATw1OD3WMLvBKZk
-	kCO9Oo6rLJEyxHAVY9YuHxjgENZqyqp8Pr8ynbhF5uLuMitXRCMVzB6Rw7/gCOlrjKRLYQItwIG
-	Idz0+d8Q=
-X-Gm-Gg: ASbGnctTaZVoZoG+EU8o3r/OY+WRCWs9V5LgOVn8w/AcBHfsNOtLW/M3iX0xWBlOJEG
-	2GwcO21wpPv8kA0CAuys472WU0f2/pBUMG2Nnadb8h4eK8yOakTrvUxXApNJZV47sekLQzed299
-	TCOgpW1XqDe5K6eZDJqPdMomNPODI4EA3Zg7T8s5+3++Rq8MKBjMWiL1tPLlLKRV8tWI10UU1bi
-	Q63omMC20yb8WCIrTeuX5/X8tdnthv3Jjc0rPB76ANgd26235oez7GFDT3KEvifQo1Qf24USseI
-	4oF9R3sBOVLPDA1tMk9ZdddYDnLP4EfPg3gbnV+n3eek4Jlf2GZTh1WnhuHVG9IQU+NnBe9ygfB
-	ZMEnZo7J8bp5Ug0pGGKIvFAKm
-X-Google-Smtp-Source: AGHT+IGjVDBVN7kbTQZXat9hjOEVw6P48/DymDTgoeYm6kGCR/kOvnbd4hOwBUwx7ZTzt2ErjkiWDA==
-X-Received: by 2002:a17:90b:1d92:b0:323:7bb1:1048 with SMTP id 98e67ed59e1d1-32515ec1404mr12159211a91.2.1756092656079;
-        Sun, 24 Aug 2025 20:30:56 -0700 (PDT)
-Received: from mozart.vkv.me ([192.184.167.117])
-        by smtp.gmail.com with ESMTPSA id 41be03b00d2f7-b49d2f0206dsm4214150a12.48.2025.08.24.20.30.55
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sun, 24 Aug 2025 20:30:55 -0700 (PDT)
-From: Calvin Owens <calvin@wbinvd.org>
-To: stable@vger.kernel.org
-Cc: jedrzej.jagielski@intel.com,
-	anthony.l.nguyen@intel.com,
-	David.Kaplan@amd.com,
-	dhowells@redhat.com,
-	kyle.leet@gmail.com
-Subject: [PATCH 6.16.y 2/2] ixgbe: prevent from unwanted interface name changes
-Date: Sun, 24 Aug 2025 20:30:14 -0700
-Message-ID: <00196d6ecf9781d8bf5526cb0d992d3a0653167c.1756088250.git.calvin@wbinvd.org>
-X-Mailer: git-send-email 2.47.2
-In-Reply-To: <20597f81c1439569e34d026542365aef1cedfb00.1756088250.git.calvin@wbinvd.org>
-References: <20597f81c1439569e34d026542365aef1cedfb00.1756088250.git.calvin@wbinvd.org>
+	s=arc-20240116; t=1756094373; c=relaxed/simple;
+	bh=BpLYJBz/OgUK0QsfkqyYCFTLO5lALaDTFxyTD/lHG0o=;
+	h=Date:From:To:cc:Subject:In-Reply-To:Message-ID:References:
+	 MIME-Version:Content-Type; b=HvVYGl9ST3WIAj1nUdm0n208UhIM/d/VASQDWYnW+06TsnSynITo6BfMsKVIjNScvkuTmjbs8/sz00o3KFZCoPNQPUNvZHuwIHzxTqNHZOjoXX8poJ+xW5CB0c2jnBEmW2vjEDQhX+Z0bnzouAdHKVj81//mPTL5mLIRLsH6R3U=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=linux-m68k.org; spf=none smtp.mailfrom=linux-m68k.org; dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b=eN5jjmdS; arc=none smtp.client-ip=202.12.124.148
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=linux-m68k.org
+Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=linux-m68k.org
+Received: from phl-compute-01.internal (phl-compute-01.internal [10.202.2.41])
+	by mailfout.stl.internal (Postfix) with ESMTP id ACC5B1D0009E;
+	Sun, 24 Aug 2025 23:59:29 -0400 (EDT)
+Received: from phl-mailfrontend-02 ([10.202.2.163])
+  by phl-compute-01.internal (MEProxy); Sun, 24 Aug 2025 23:59:29 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
+	messagingengine.com; h=cc:cc:content-type:content-type:date:date
+	:feedback-id:feedback-id:from:from:in-reply-to:in-reply-to
+	:message-id:mime-version:references:reply-to:subject:subject:to
+	:to:x-me-proxy:x-me-sender:x-me-sender:x-sasl-enc; s=fm3; t=
+	1756094369; x=1756180769; bh=v5afX053KsvJ4SMpwBkx22A4YZ0qtD8eE3+
+	3AxdTItg=; b=eN5jjmdSimtXYqdvEELuN5xzugx3IM/Px8l9iPfL1oZGzKqyu9H
+	wPYgPUcs9hInxm9o/PfSklkDT2Cpy4PPfgyXw4zBxM/vMqsUwfvMrdaAfE43KZSX
+	erMlVvcfyZzbxpyQazfLR6KjAx+HzcjM2KiWVCpB1YvdML7f9TAFbeeyP2H2PrKf
+	NeKADOOPcYMV+/3R1xfIk7R6e8jLLt63ZnX5vJnoyUxKdmmSZg0RjYTQUHqnHXTE
+	RIqUPqrBdi4IQKrR08XQXgWQx1+JPJezIsdNwWt7bA0DOJSahp95el6Vnx3hNCRl
+	ei5+7Wuw0h4VvZKgNzJtozZT9/N7o6pxLJQ==
+X-ME-Sender: <xms:oN-raDYO9uswdoz7Am9Or32-uxEo0M1VmfScWyEs0UkHIyYO7spIBg>
+    <xme:oN-raPxobtLIWM132at0mz22pxMxiUbLpCH8WTEg7COEGG042Vb0Qw57uDJzadfDX
+    VBKC5xLFROlAqZBDeo>
+X-ME-Received: <xmr:oN-raNSSp_QrboYVpt3AUk13lzb_nUPhf5uBnIYhiXCXDx74BfARPkyewTf-Y-1CMpMaz3DTYYt1oatNHm-6f7uHqzDX6-A3O1o>
+X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgeeffedrtdefgddujedufeejucetufdoteggodetrf
+    dotffvucfrrhhofhhilhgvmecuhfgrshhtofgrihhlpdfurfetoffkrfgpnffqhgenuceu
+    rghilhhouhhtmecufedttdenucenucfjughrpeffhffvvefujgfkfhggtgesthdtredttd
+    dtvdenucfhrhhomhephfhinhhnucfvhhgrihhnuceofhhthhgrihhnsehlihhnuhigqdhm
+    ieekkhdrohhrgheqnecuggftrfgrthhtvghrnhepleeuheelheekgfeuvedtveetjeekhf
+    ffkeeffffftdfgjeevkeegfedvueehueelnecuvehluhhsthgvrhfuihiivgeptdenucfr
+    rghrrghmpehmrghilhhfrhhomhepfhhthhgrihhnsehlihhnuhigqdhmieekkhdrohhrgh
+    dpnhgspghrtghpthhtohepuddtpdhmohguvgepshhmthhpohhuthdprhgtphhtthhopehi
+    ohifohhrkhgvrhdtsehgmhgrihhlrdgtohhmpdhrtghpthhtoheprghkphhmsehlihhnuh
+    igqdhfohhunhgurghtihhonhdrohhrghdprhgtphhtthhopehgvggvrhhtsehlihhnuhig
+    qdhmieekkhdrohhrghdprhgtphhtthhopehlrghntggvrdihrghngheslhhinhhugidrug
+    gvvhdprhgtphhtthhopehlihhnuhigqdhkvghrnhgvlhesvhhgvghrrdhkvghrnhgvlhdr
+    ohhrghdprhgtphhtthhopehmhhhirhgrmhgrtheskhgvrhhnvghlrdhorhhgpdhrtghpth
+    htohepohgrkheshhgvlhhsihhnkhhinhgvthdrfhhipdhrtghpthhtohepphgvthgvrhii
+    sehinhhfrhgruggvrggurdhorhhgpdhrtghpthhtohepshhtrggslhgvsehvghgvrhdrkh
+    gvrhhnvghlrdhorhhg
+X-ME-Proxy: <xmx:oN-raEJldICrR8WUXe_ginDjgsArPGh685i1bhddCXvUdh0aSZ0WAA>
+    <xmx:oN-raMV50ptNNW_pCze1DvEOTLzDtbtz1Lqvq_dGW0AQdtj_LJ7XXQ>
+    <xmx:oN-raASZGxOFKN7rFtgEyfErpKTeP0zAD-EXafOE3WFBJe60rFo4bg>
+    <xmx:oN-raMBEYtiSq2vUvAtw0zSIAcsSyILcVq6rYoBjXPJhtZ2UKirJdw>
+    <xmx:od-raAi5AxTdv-XbR_rwt91OaBk4DdERTfuDg_qJSuA-3fFKvZyCw0oW>
+Feedback-ID: i58a146ae:Fastmail
+Received: by mail.messagingengine.com (Postfix) with ESMTPA; Sun,
+ 24 Aug 2025 23:59:25 -0400 (EDT)
+Date: Mon, 25 Aug 2025 13:59:16 +1000 (AEST)
+From: Finn Thain <fthain@linux-m68k.org>
+To: Lance Yang <ioworker0@gmail.com>
+cc: akpm@linux-foundation.org, geert@linux-m68k.org, lance.yang@linux.dev, 
+    linux-kernel@vger.kernel.org, mhiramat@kernel.org, oak@helsinkinet.fi, 
+    peterz@infradead.org, stable@vger.kernel.org, will@kernel.org
+Subject: Re: [PATCH] atomic: Specify natural alignment for atomic_t
+In-Reply-To: <20250825032743.80641-1-ioworker0@gmail.com>
+Message-ID: <8ca84cf3-4e9c-6bb7-af3c-5ead372e8025@linux-m68k.org>
+References: <7d9554bfe2412ed9427bf71ce38a376e06eb9ec4.1756087385.git.fthain@linux-m68k.org> <20250825032743.80641-1-ioworker0@gmail.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=us-ascii
 
-From: Jedrzej Jagielski <jedrzej.jagielski@intel.com>
 
-[ upstream commit e67a0bc3ed4fd8ee1697cb6d937e2b294ec13b5e ]
+On Mon, 25 Aug 2025, Lance Yang wrote:
 
-Users of the ixgbe driver report that after adding devlink support by
-the commit a0285236ab93 ("ixgbe: add initial devlink support") their
-configs got broken due to unwanted changes of interface names. It's
-caused by automatic phys_port_name generation during devlink port
-initialization flow.
+> 
+> However, as we've seen from the kernel test robot's report on 
+> mt6660_chip, this won't solve the cases where a lock is forced to be 
+> unaligned by #pragma pack(1). That will still trigger warnings, IIUC.
+> 
 
-To prevent from that set no_phys_port_name flag for ixgbe devlink ports.
+I think you've misunderstood the warning that your patch produced. (BTW, I 
+have not seen any warnings from my own patch, so far.)
 
-Reported-by: David Howells <dhowells@redhat.com>
-Closes: https://lore.kernel.org/netdev/3452224.1745518016@warthog.procyon.org.uk/
-Reported-by: David Kaplan <David.Kaplan@amd.com>
-Closes: https://lore.kernel.org/netdev/LV3PR12MB92658474624CCF60220157199470A@LV3PR12MB9265.namprd12.prod.outlook.com/
-Fixes: a0285236ab93 ("ixgbe: add initial devlink support")
-Signed-off-by: Jedrzej Jagielski <jedrzej.jagielski@intel.com>
-Tested-by: Rinitha S <sx.rinitha@intel.com> (A Contingent worker at Intel)
-Signed-off-by: Tony Nguyen <anthony.l.nguyen@intel.com>
-Cc: stable@vger.kernel.org # 6.16
-Tested-By: Calvin Owens <calvin@wbinvd.org>
-Signed-off-by: Calvin Owens <calvin@wbinvd.org>
----
- drivers/net/ethernet/intel/ixgbe/devlink/devlink.c | 1 +
- 1 file changed, 1 insertion(+)
+The mistake you made in your patch was to add an alignment attribute to a 
+member of a packed struct. That's why I suggested that you should align 
+the lock instead.
 
-diff --git a/drivers/net/ethernet/intel/ixgbe/devlink/devlink.c b/drivers/net/ethernet/intel/ixgbe/devlink/devlink.c
-index 54f1b83dfe42..d227f4d2a2d1 100644
---- a/drivers/net/ethernet/intel/ixgbe/devlink/devlink.c
-+++ b/drivers/net/ethernet/intel/ixgbe/devlink/devlink.c
-@@ -543,6 +543,7 @@ int ixgbe_devlink_register_port(struct ixgbe_adapter *adapter)
- 
- 	attrs.flavour = DEVLINK_PORT_FLAVOUR_PHYSICAL;
- 	attrs.phys.port_number = adapter->hw.bus.func;
-+	attrs.no_phys_port_name = 1;
- 	ixgbe_devlink_set_switch_id(adapter, &attrs.switch_id);
- 
- 	devlink_port_attrs_set(devlink_port, &attrs);
--- 
-2.47.2
-
+Is there some problem with my approach?
 
