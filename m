@@ -1,264 +1,130 @@
-Return-Path: <stable+bounces-172880-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-172881-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 926E8B34A8A
-	for <lists+stable@lfdr.de>; Mon, 25 Aug 2025 20:41:40 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id C6FE4B34AC5
+	for <lists+stable@lfdr.de>; Mon, 25 Aug 2025 21:09:38 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 1F7045E197B
-	for <lists+stable@lfdr.de>; Mon, 25 Aug 2025 18:41:35 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 2A6AE7A622D
+	for <lists+stable@lfdr.de>; Mon, 25 Aug 2025 19:08:02 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 08BF83093D1;
-	Mon, 25 Aug 2025 18:41:30 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="FexkvddI"
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 86959284B36;
+	Mon, 25 Aug 2025 19:09:04 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
-Received: from mail-pf1-f174.google.com (mail-pf1-f174.google.com [209.85.210.174])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.uniroma2.it (smtp.uniroma2.it [160.80.4.42])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9C6CB19D081;
-	Mon, 25 Aug 2025 18:41:27 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.174
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 04AC22836BE;
+	Mon, 25 Aug 2025 19:09:00 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=160.80.4.42
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756147289; cv=none; b=HwSsvjlP3G5qrgzbc5cKup/XursiFBmystN7vye+1cEYThtp9Dun2mPRZ6ouka9WX8bZ9pvHKFRLgKURsB8Flq7GyyRcEZfVRljDkHy5SOPypxQWbPecj5RNFmIuDOP4UE5eddUokOZJ3lthg9lEX4ZsvWPdRY+wL8zQo3hCShk=
+	t=1756148944; cv=none; b=cYurWlLNTNtEWT2DsETFaIfpvOv7c6yWqHuZzvB/xrWiI3FnSqbOfxhh6lrmkuuxRXdfruzr7rR+AZV+hD5RZlpONf3siG+xWbE2Ng7iunFUDhXOFhROJlCpIZMB0/a9miFjlgEX+P7OiwkMyFeiGR6UafBoZ4sfuNCrOvi0ChY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756147289; c=relaxed/simple;
-	bh=wnBx1m6t7DxX/qkxhgOcbfIgslGqyOfvvccgrgi1TMI=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=uxq1SSzjF5Oi30NAYMm+DC33kKPqZP2yphp0aMLCpOLQZ3vvDTBcesNMe6Ex0W6PjuawWpmSEVURi5n1IxTJqfMXiNE1Hi5mTuBZ1LkdIO/QyH+VKbiwBV2JbF1UTyuOh3nuBFeJ0N1OCJ8FAj2GvJcdS5INjNMxSe2bcIzLMvQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=FexkvddI; arc=none smtp.client-ip=209.85.210.174
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-pf1-f174.google.com with SMTP id d2e1a72fcca58-76e2ea6ccb7so3647067b3a.2;
-        Mon, 25 Aug 2025 11:41:27 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1756147287; x=1756752087; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=FWlT+WUrwobKV/mFWuvW1R2n0pbFPQZ79e1BmpM9k1c=;
-        b=FexkvddIDuSwuyy5AJOGegq4cNyAoRejske7Ont2GCcgcxovOgC2WgGJH0YhnRpcHK
-         V2OCnqB8rv5/UX5Nsv5zqKR65FkgQSJwq+2vjgKm65r1M3t4x1QzUsCnjYF+LouHHrvN
-         jTS++cRXlPAfygr4GlbkK2eVt0ES6V+NE1DfVTDijgfppuC7uqxDg6q5HI8ibL/6ckVO
-         WwLG/RkBIQgRNWJqkOk/ahAmjjoyu9e7dSK7mdbYdakiWjgMvpwOnEUNPe2QgscmJlSG
-         ngr5jLAKfKPvgqQ5oDu0hjB7eHPe6NWK/PWANaCziofuOpgevy6thYTe6eeMT93tvZil
-         xf0w==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1756147287; x=1756752087;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=FWlT+WUrwobKV/mFWuvW1R2n0pbFPQZ79e1BmpM9k1c=;
-        b=Ylo6U/8IVllFnOn0F4zZJ0Lr5X5CtXa474VVF4O7tzNJN+mEjr5NTbcNR9wvElzR9Q
-         aQ0YQhycBajpCF2+qsSjlB6RNTKzGXUWbkH2+3sqHXqUo/kQDks760w0ngMMditNnT4B
-         /zznf++akdiEHPRC2PEf2gKCUdr3/KnJGiXFGEFOmcTxxdW9+ogWsMg/PjC539/PgWnS
-         v69MDVbyP8ztqdkdL1Xeq61oX/lH40VQpf/bSAAO4FCN5cYapSNODqJTuApzlGEJ/x7O
-         o16xOKhAhLiJL5gdd8Qxc5/w6th1bXqGO7afi4u8reRw7ByxufcOuUslNv2/qYUSj8Cd
-         UMAg==
-X-Forwarded-Encrypted: i=1; AJvYcCUszEDgIPnX5iWfdWbTAbvigjQWIiFFn3rBwU6CVJLfqArpWkuuxcNPpAkV4II/W2KvxENPGLPO2sCb9Q==@vger.kernel.org, AJvYcCXdBixvijg3JG9PUsfKyYDWmHEZqe7qAnfk1SOJE19LLFkLEXMLMGgho60Wp5VNcwPvTfUc7FlwOiXE7Gs=@vger.kernel.org, AJvYcCXfqxJxeptLXNjLI6ZS63vTNAAK72CxPERoBRkOJv10Msae2z4m6w+upFo/LYzbmqSNmy0A7L4b@vger.kernel.org
-X-Gm-Message-State: AOJu0YxQ65IfjJ5tit8VyJPYPT1vTnGpvQ0cvt1PEnXHhqBf4SuXKhed
-	EhL8nDV2asXrlXlWAUsPyXmFbaviJbYVL7lewSjPAFOC0/Qj6l/IyoFN
-X-Gm-Gg: ASbGncvSnlszO/B6k+0JNjtMxpPOxMNT/JFQ50Hr9j84Fx5joQZu7tRlbwiBknU4PcJ
-	YW7jIZ3oo8lrAI8b9ozyeHf/cqdyedjQLjWYqb5lB+AJoZogyssIcxWtc16oY+47TO6Pm6ES0zh
-	y0iJPyXMh06eSQ1ZUswS7XpntZNcRHX+hDVm9Ik+t+5/wSPyr6aaHPay9fGSe28kVr7EibFlphm
-	Wx/FlWKur+mTBAm2eV9JhoaD4JMwCoCFe+MiJ69yrr+decZNjOS/2Q40bEsLxlvW1+CvMxw1Trh
-	MbHdurSX/GJAVk5dRxxqG+Jbkn6n4GxX0lX10n3XLJmwDOB5W3E3hekDJk13YX/hq6ZtgdKrL1j
-	fga6KVzyLz4bIYU8IUSddnlYSFb4NgrmHOFJGLUXxP5O5AQ==
-X-Google-Smtp-Source: AGHT+IExkFnPTAzEGPeXGOfNTRcREXfiOVv3L9yGaGgBypj79FXTZIOh2KKjDnvcGk6D+ioH35KIZA==
-X-Received: by 2002:a05:6a00:21c1:b0:76b:c9b9:a11b with SMTP id d2e1a72fcca58-7702f9d8b5fmr16038637b3a.3.1756147286879;
-        Mon, 25 Aug 2025 11:41:26 -0700 (PDT)
-Received: from localhost.localdomain ([202.83.40.77])
-        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-77040249e37sm8155142b3a.105.2025.08.25.11.41.23
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 25 Aug 2025 11:41:26 -0700 (PDT)
-From: Abinash Singh <abinashsinghlalotra@gmail.com>
-To: bvanassche@acm.org
-Cc: James.Bottomley@HansenPartnership.com,
-	abinashsinghlalotra@gmail.com,
-	dlemoal@kernel.org,
-	linux-kernel@vger.kernel.org,
-	linux-scsi@vger.kernel.org,
-	martin.petersen@oracle.com,
-	stable@vger.kernel.org
-Subject: [PATCH v10 1/3] scsi: sd: Fix build warning in sd_revalidate_disk()
-Date: Tue, 26 Aug 2025 00:09:38 +0530
-Message-ID: <20250825183940.13211-2-abinashsinghlalotra@gmail.com>
-X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20250825183940.13211-1-abinashsinghlalotra@gmail.com>
-References: <20250825183940.13211-1-abinashsinghlalotra@gmail.com>
+	s=arc-20240116; t=1756148944; c=relaxed/simple;
+	bh=9Nn5ZXTPqHydySEm+Aq/8KSWqV9NKz7RWl79tb4PImI=;
+	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=kIbgbAfwd9WoC1nZ4uAvLA94mz2llm6NK4e5ERzoonw0RZv3QAOf3OPaaUPf8N+hkfe2vDqr1KKcjWzeXJUN7O2JkfeSX85hehCE80uE/hxrlL7ghEdl7X1j8/FtBbLEvHS/ws/JwZO/8PlSZ/r6dyYEilPwF3yd1k5YVOkLXNY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=uniroma2.it; spf=pass smtp.mailfrom=uniroma2.it; arc=none smtp.client-ip=160.80.4.42
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=uniroma2.it
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=uniroma2.it
+Received: from localhost.localdomain ([160.80.103.126])
+	by smtp-2015.uniroma2.it (8.14.4/8.14.4/Debian-8) with ESMTP id 57PJ8NAK007054
+	(version=TLSv1/SSLv3 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128 verify=NOT);
+	Mon, 25 Aug 2025 21:08:24 +0200
+From: Andrea Mayer <andrea.mayer@uniroma2.it>
+To: "David S. Miller" <davem@davemloft.net>,
+        Eric Dumazet <edumazet@google.com>, Jakub Kicinski <kuba@kernel.org>,
+        Paolo Abeni <pabeni@redhat.com>, David Ahern <dsahern@kernel.org>,
+        Simon Horman <horms@kernel.org>, linux-kernel@vger.kernel.org,
+        netdev@vger.kernel.org
+Cc: Eric Biggers <ebiggers@kernel.org>, David Lebrun <dlebrun@google.com>,
+        Stefano Salsano <stefano.salsano@uniroma2.it>,
+        Paolo Lungaroni <paolo.lungaroni@uniroma2.it>,
+        Ahmed Abdelsalam <ahabdels.dev@gmail.com>,
+        Andrea Mayer <andrea.mayer@uniroma2.it>, stable@vger.kernel.org
+Subject: [PATCH net] ipv6: sr: fix destroy of seg6_hmac_info to prevent HMAC data leak
+Date: Mon, 25 Aug 2025 21:07:15 +0200
+Message-Id: <20250825190715.1690-1-andrea.mayer@uniroma2.it>
+X-Mailer: git-send-email 2.20.1
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
+X-Virus-Scanned: clamav-milter 0.100.0 at smtp-2015
+X-Virus-Status: Clean
 
-A build warning was triggered due to excessive stack usage in
-sd_revalidate_disk():
+The seg6_hmac_info structure stores information related to SRv6 HMAC
+configurations, including the secret key, HMAC ID, and hashing algorithm
+used to authenticate and secure SRv6 packets.
 
-drivers/scsi/sd.c: In function ‘sd_revalidate_disk.isra’:
-drivers/scsi/sd.c:3824:1: warning: the frame size of 1160 bytes is larger than 1024 bytes [-Wframe-larger-than=]
+When a seg6_hmac_info object is no longer needed, it is destroyed via
+seg6_hmac_info_del(), which eventually calls seg6_hinfo_release(). This
+function uses kfree_rcu() to safely deallocate memory after an RCU grace
+period has elapsed.
+The kfree_rcu() releases memory without sanitization (e.g., zeroing out
+the memory). Consequently, sensitive information such as the HMAC secret
+and its length may remain in freed memory, potentially leading to data
+leaks.
 
-This is caused by a large local struct queue_limits (~400B) allocated
-on the stack. Replacing it with a heap allocation using kmalloc()
-significantly reduces frame usage. Kernel stack is limited (~8 KB),
-and allocating large structs on the stack is discouraged.
-As the function already performs heap allocations (e.g. for buffer),
-this change fits well.
+To address this risk, we replaced kfree_rcu() with a custom RCU
+callback, seg6_hinfo_free_callback_rcu(). Within this callback, we
+explicitly sanitize the seg6_hmac_info object before deallocating it
+safely using kfree_sensitive(). This approach ensures the memory is
+securely freed and prevents potential HMAC info leaks.
+Additionally, in the control path, we ensure proper cleanup of
+seg6_hmac_info objects when seg6_hmac_info_add() fails: such objects are
+freed using kfree_sensitive() instead of kfree().
 
-Fixes: 804e498e0496 ("sd: convert to the atomic queue limits API")
+Fixes: 4f4853dc1c9c ("ipv6: sr: implement API to control SR HMAC structure")
+Fixes: bf355b8d2c30 ("ipv6: sr: add core files for SR HMAC support")
 Cc: stable@vger.kernel.org
-Reviewed-by: Bart Van Assche <bvanassche@acm.org>
-Signed-off-by: Abinash Singh <abinashsinghlalotra@gmail.com>
-
+Signed-off-by: Andrea Mayer <andrea.mayer@uniroma2.it>
 ---
- drivers/scsi/sd.c | 50 ++++++++++++++++++++++++++---------------------
- 1 file changed, 28 insertions(+), 22 deletions(-)
+ net/ipv6/seg6.c      |  2 +-
+ net/ipv6/seg6_hmac.c | 10 +++++++++-
+ 2 files changed, 10 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/scsi/sd.c b/drivers/scsi/sd.c
-index 5b8668accf8e..bf12e23f1212 100644
---- a/drivers/scsi/sd.c
-+++ b/drivers/scsi/sd.c
-@@ -3696,10 +3696,10 @@ static int sd_revalidate_disk(struct gendisk *disk)
- 	struct scsi_disk *sdkp = scsi_disk(disk);
- 	struct scsi_device *sdp = sdkp->device;
- 	sector_t old_capacity = sdkp->capacity;
--	struct queue_limits lim;
--	unsigned char *buffer;
-+	struct queue_limits *lim = NULL;
-+	unsigned char *buffer = NULL;
- 	unsigned int dev_max;
--	int err;
-+	int err = 0;
+diff --git a/net/ipv6/seg6.c b/net/ipv6/seg6.c
+index 180da19c148c..88782bdab843 100644
+--- a/net/ipv6/seg6.c
++++ b/net/ipv6/seg6.c
+@@ -215,7 +215,7 @@ static int seg6_genl_sethmac(struct sk_buff *skb, struct genl_info *info)
  
- 	SCSI_LOG_HLQUEUE(3, sd_printk(KERN_INFO, sdkp,
- 				      "sd_revalidate_disk\n"));
-@@ -3711,6 +3711,10 @@ static int sd_revalidate_disk(struct gendisk *disk)
- 	if (!scsi_device_online(sdp))
- 		goto out;
- 
-+	lim = kmalloc(sizeof(*lim), GFP_KERNEL);
-+	if (!lim)
-+		goto out;
-+
- 	buffer = kmalloc(SD_BUF_SIZE, GFP_KERNEL);
- 	if (!buffer) {
- 		sd_printk(KERN_WARNING, sdkp, "sd_revalidate_disk: Memory "
-@@ -3720,14 +3724,14 @@ static int sd_revalidate_disk(struct gendisk *disk)
- 
- 	sd_spinup_disk(sdkp);
- 
--	lim = queue_limits_start_update(sdkp->disk->queue);
-+	*lim = queue_limits_start_update(sdkp->disk->queue);
- 
- 	/*
- 	 * Without media there is no reason to ask; moreover, some devices
- 	 * react badly if we do.
- 	 */
- 	if (sdkp->media_present) {
--		sd_read_capacity(sdkp, &lim, buffer);
-+		sd_read_capacity(sdkp, lim, buffer);
- 		/*
- 		 * Some USB/UAS devices return generic values for mode pages
- 		 * until the media has been accessed. Trigger a READ operation
-@@ -3741,17 +3745,17 @@ static int sd_revalidate_disk(struct gendisk *disk)
- 		 * cause this to be updated correctly and any device which
- 		 * doesn't support it should be treated as rotational.
- 		 */
--		lim.features |= (BLK_FEAT_ROTATIONAL | BLK_FEAT_ADD_RANDOM);
-+		lim->features |= (BLK_FEAT_ROTATIONAL | BLK_FEAT_ADD_RANDOM);
- 
- 		if (scsi_device_supports_vpd(sdp)) {
- 			sd_read_block_provisioning(sdkp);
--			sd_read_block_limits(sdkp, &lim);
-+			sd_read_block_limits(sdkp, lim);
- 			sd_read_block_limits_ext(sdkp);
--			sd_read_block_characteristics(sdkp, &lim);
--			sd_zbc_read_zones(sdkp, &lim, buffer);
-+			sd_read_block_characteristics(sdkp, lim);
-+			sd_zbc_read_zones(sdkp, lim, buffer);
- 		}
- 
--		sd_config_discard(sdkp, &lim, sd_discard_mode(sdkp));
-+		sd_config_discard(sdkp, lim, sd_discard_mode(sdkp));
- 
- 		sd_print_capacity(sdkp, old_capacity);
- 
-@@ -3761,47 +3765,46 @@ static int sd_revalidate_disk(struct gendisk *disk)
- 		sd_read_app_tag_own(sdkp, buffer);
- 		sd_read_write_same(sdkp, buffer);
- 		sd_read_security(sdkp, buffer);
--		sd_config_protection(sdkp, &lim);
-+		sd_config_protection(sdkp, lim);
- 	}
- 
- 	/*
- 	 * We now have all cache related info, determine how we deal
- 	 * with flush requests.
- 	 */
--	sd_set_flush_flag(sdkp, &lim);
-+	sd_set_flush_flag(sdkp, lim);
- 
- 	/* Initial block count limit based on CDB TRANSFER LENGTH field size. */
- 	dev_max = sdp->use_16_for_rw ? SD_MAX_XFER_BLOCKS : SD_DEF_XFER_BLOCKS;
- 
- 	/* Some devices report a maximum block count for READ/WRITE requests. */
- 	dev_max = min_not_zero(dev_max, sdkp->max_xfer_blocks);
--	lim.max_dev_sectors = logical_to_sectors(sdp, dev_max);
-+	lim->max_dev_sectors = logical_to_sectors(sdp, dev_max);
- 
- 	if (sd_validate_min_xfer_size(sdkp))
--		lim.io_min = logical_to_bytes(sdp, sdkp->min_xfer_blocks);
-+		lim->io_min = logical_to_bytes(sdp, sdkp->min_xfer_blocks);
- 	else
--		lim.io_min = 0;
-+		lim->io_min = 0;
- 
- 	/*
- 	 * Limit default to SCSI host optimal sector limit if set. There may be
- 	 * an impact on performance for when the size of a request exceeds this
- 	 * host limit.
- 	 */
--	lim.io_opt = sdp->host->opt_sectors << SECTOR_SHIFT;
-+	lim->io_opt = sdp->host->opt_sectors << SECTOR_SHIFT;
- 	if (sd_validate_opt_xfer_size(sdkp, dev_max)) {
--		lim.io_opt = min_not_zero(lim.io_opt,
-+		lim->io_opt = min_not_zero(lim->io_opt,
- 				logical_to_bytes(sdp, sdkp->opt_xfer_blocks));
- 	}
- 
- 	sdkp->first_scan = 0;
- 
- 	set_capacity_and_notify(disk, logical_to_sectors(sdp, sdkp->capacity));
--	sd_config_write_same(sdkp, &lim);
--	kfree(buffer);
-+	sd_config_write_same(sdkp, lim);
- 
--	err = queue_limits_commit_update_frozen(sdkp->disk->queue, &lim);
-+	err = queue_limits_commit_update_frozen(sdkp->disk->queue, lim);
+ 	err = seg6_hmac_info_add(net, hmackeyid, hinfo);
  	if (err)
--		return err;
-+		goto out;
+-		kfree(hinfo);
++		kfree_sensitive(hinfo);
  
- 	/*
- 	 * Query concurrent positioning ranges after
-@@ -3820,7 +3823,10 @@ static int sd_revalidate_disk(struct gendisk *disk)
- 		set_capacity_and_notify(disk, 0);
- 
-  out:
--	return 0;
-+	kfree(buffer);
-+	kfree(lim);
-+
-+	return err;
+ out_unlock:
+ 	mutex_unlock(&sdata->lock);
+diff --git a/net/ipv6/seg6_hmac.c b/net/ipv6/seg6_hmac.c
+index fd58426f222b..19cdf3791ebf 100644
+--- a/net/ipv6/seg6_hmac.c
++++ b/net/ipv6/seg6_hmac.c
+@@ -57,9 +57,17 @@ static int seg6_hmac_cmpfn(struct rhashtable_compare_arg *arg, const void *obj)
+ 	return (hinfo->hmackeyid != *(__u32 *)arg->key);
  }
  
- /**
++static void seg6_hinfo_free_callback_rcu(struct rcu_head *head)
++{
++	struct seg6_hmac_info *hinfo;
++
++	hinfo = container_of(head, struct seg6_hmac_info, rcu);
++	kfree_sensitive(hinfo);
++}
++
+ static inline void seg6_hinfo_release(struct seg6_hmac_info *hinfo)
+ {
+-	kfree_rcu(hinfo, rcu);
++	call_rcu(&hinfo->rcu, seg6_hinfo_free_callback_rcu);
+ }
+ 
+ static void seg6_free_hi(void *ptr, void *arg)
 -- 
-2.43.0
+2.20.1
 
 
