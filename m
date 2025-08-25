@@ -1,129 +1,121 @@
-Return-Path: <stable+bounces-172833-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-172834-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 77B7EB33E75
-	for <lists+stable@lfdr.de>; Mon, 25 Aug 2025 13:55:00 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9A342B33E82
+	for <lists+stable@lfdr.de>; Mon, 25 Aug 2025 13:56:29 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id C9BA83A6CEF
-	for <lists+stable@lfdr.de>; Mon, 25 Aug 2025 11:54:57 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id AACFF1A81555
+	for <lists+stable@lfdr.de>; Mon, 25 Aug 2025 11:56:49 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2C9302D0C88;
-	Mon, 25 Aug 2025 11:54:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C1BF72D543A;
+	Mon, 25 Aug 2025 11:56:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Fs1sI8/Q"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="OBA+TBmD"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D744026B765;
-	Mon, 25 Aug 2025 11:54:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 825342C15B6
+	for <stable@vger.kernel.org>; Mon, 25 Aug 2025 11:56:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756122894; cv=none; b=kakH/gwbipn52cfquATx89XG9rwIeTFOe4hOJ/J+73UgiDTPoh6eeLpy7ldAyR4izuOk2jdq8gWZYNfVrNEHhVcQiY9TfjxJRUBHweRQ9h67WB32keSJfXGmYLBX5ekrmC/WPoZ2+idsinWw90VgKnq9Yx+tMWx838iYBDTgW10=
+	t=1756122984; cv=none; b=mmygI9Ygh+5cM3e4yQN+RSlbCDHTaJNGw/dXkKgTYHrXJ5Kl9pe3d2hUg+TRv3bFEhYSkrrVQ1Sz6V8+MMNPPj3kas05YEdCg6n7AGltu9laMe1RD+YQOZk6/P/pqijNwDXn606zDtSC7EnYC1kKWpdBGcEhg3WGGUfTc7HjB0U=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756122894; c=relaxed/simple;
-	bh=g2gmnboO9nZabnyuX7FiQjLhCojuISQi/XxxNX6cmec=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=bZPKgh8tGkOlCr09eeAkhZiBKghtb1d3rLJyp/iOdzcaDM64Crfao5jcTivbPwzjv1Fd6Axzu2gahWqcH6tRCjPKnbooNZvqYmSpjEtRJMQ6ypMlSFfDm32hQiIkYGLQfIfiLkCR+XrdtPgq9Pulam5b3kkxAyRaF6mvcNPNpxo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Fs1sI8/Q; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 802B1C4CEED;
-	Mon, 25 Aug 2025 11:54:51 +0000 (UTC)
+	s=arc-20240116; t=1756122984; c=relaxed/simple;
+	bh=1wvV5GLERR8OQU5GfoQe9PtMeI++PBKgemESU9nHvNg=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=gFMVQojnxfaqRwKWFjm3plN01Vt9LeeHFKU+z7sWFpoCQYEOG6HRZIUD9pZ7+NV+QErXxBujHKxAZ+vTYfwuDMS1avDY05vnSGavoNGcdeKQN8Nwn4UGrUOPDZtGOM04YIrjK3sJvcT4vRvevhhSxuiS4DkF1lupZOyq4snaVMw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=OBA+TBmD; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A5E7CC4CEED;
+	Mon, 25 Aug 2025 11:56:23 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1756122893;
-	bh=g2gmnboO9nZabnyuX7FiQjLhCojuISQi/XxxNX6cmec=;
-	h=From:To:Cc:Subject:Date:From;
-	b=Fs1sI8/QMZ5jZaiM1e0UooAx1FeOJOGd8aFTzqvWhmadpCA1Yy1sLY7LzZ6ZIc+aY
-	 yX3XMLP+e4Y1eOM6wTw3Ig7GX5z2WNsK9fHaia3NfzMQTTNfpu36JG6VKLa3+1jAsL
-	 oaFDlOf1kOhd76TXb+lmJcKJlS0PHKMuQqBMQG4Z6K9nUL4S+Fw7OmD30KiNokru3G
-	 Eg+cInAAzjg8P3TmYRSjgHd/boSNI1xGwYeD34iJKgYEEcWZmftqHH3ASi7WbJEnfC
-	 0iYnN7wkPT8IAddL15YOoRtutpntZE16ZqOGUFJyO/cppkRA8/IilZCK7i8ItN048z
-	 XZmyyMbEbVc0Q==
-From: Conor Dooley <conor@kernel.org>
-To: linux-spi@vger.kernel.org
-Cc: conor@kernel.org,
-	Conor Dooley <conor.dooley@microchip.com>,
-	stable@vger.kernel.org,
-	Valentina Fernandez <valentina.fernandezalanis@microchip.com>,
-	Daire McNamara <daire.mcnamara@microchip.com>,
-	Mark Brown <broonie@kernel.org>,
-	Miquel Raynal <miquel.raynal@bootlin.com>,
-	linux-kernel@vger.kernel.org
-Subject: [PATCH v1] spi: microchip-core-qspi: stop checking viability of op->max_freq in supports_op callback
-Date: Mon, 25 Aug 2025 12:53:28 +0100
-Message-ID: <20250825-during-ploy-939bdd068593@spud>
-X-Mailer: git-send-email 2.47.2
+	s=k20201202; t=1756122984;
+	bh=1wvV5GLERR8OQU5GfoQe9PtMeI++PBKgemESU9nHvNg=;
+	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
+	b=OBA+TBmD2nhLY6mRZ//ERy0oOJ2HSJtI+/UL5iKb+uFnRAL+ABuu3lhDFazevCxzY
+	 iLpIFf3qPUv208L6ow8jgdZd4AM4KjFGCCKKaKZoHuTsrDNq/7qnfYyc4CoXPRhjWp
+	 Ip33emrajGe2774fjtRZ9xVxlUfAkxJigq0PFMZjZe0ch119DLN83k2dT5Gv6o8yis
+	 P/yVfO1Pv6uMYVXnA9Poptt88dIqIgMpdGx0yhiXw72cR+pzdkF8hw5Cupq4sdfAiP
+	 lduOBWdhNUGH8gR4pOLLEALEPMYlCTH82LtxeuRPSPdkHuABTtLc5R8FnMPE5+mfnq
+	 kV6hgV63xD9Cg==
+From: Sasha Levin <sashal@kernel.org>
+To: stable@vger.kernel.org
+Cc: Tianxiang Peng <txpeng@tencent.com>,
+	"Borislav Petkov (AMD)" <bp@alien8.de>,
+	Hui Li <caelli@tencent.com>,
+	stable@kernel.org,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.1.y] x86/cpu/hygon: Add missing resctrl_cpu_detect() in bsp_init helper
+Date: Mon, 25 Aug 2025 07:56:22 -0400
+Message-ID: <20250825115622.2973996-1-sashal@kernel.org>
+X-Mailer: git-send-email 2.50.1
+In-Reply-To: <2025082517-cramp-prissy-ebff@gregkh>
+References: <2025082517-cramp-prissy-ebff@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-Developer-Signature: v=1; a=openpgp-sha256; l=2317; i=conor.dooley@microchip.com; h=from:subject:message-id; bh=963aCcXAFShwXBQl4QTDgw6nzQulhYZfSH5xFVMsRJQ=; b=owGbwMvMwCVWscWwfUFT0iXG02pJDBlr/Hasuzi779Rfm4260yd83bnlxZnFTeu3Py7dJTxRn tH29puVBR2lLAxiXAyyYoosibf7WqTW/3HZ4dzzFmYOKxPIEAYuTgGYiJMlI8N7myZL1sdLnwfb ZDscWXNjV3J+7R6HZFd2ponJBadVldMZ/meIJRu12p0J+7mKrf78/fC+a7WzNh7IzPVe8Z3hn80 CNUYA
-X-Developer-Key: i=conor.dooley@microchip.com; a=openpgp; fpr=F9ECA03CF54F12CD01F1655722E2C55B37CF380C
 Content-Transfer-Encoding: 8bit
 
-From: Conor Dooley <conor.dooley@microchip.com>
+From: Tianxiang Peng <txpeng@tencent.com>
 
-In commit 13529647743d9 ("spi: microchip-core-qspi: Support per spi-mem
-operation frequency switches") the logic for checking the viability of
-op->max_freq in mchp_coreqspi_setup_clock() was copied into
-mchp_coreqspi_supports_op(). Unfortunately, op->max_freq is not valid
-when this function is called during probe but is instead zero.
-Accordingly, baud_rate_val is calculated to be INT_MAX due to division
-by zero, causing probe of the attached memory device to fail.
+[ Upstream commit d8df126349dad855cdfedd6bbf315bad2e901c2f ]
 
-Seemingly spi-microchip-core-qspi was the only driver that had such a
-modification made to its supports_op callback when the per_op_freq
-capability was added, so just remove it to restore prior functionality.
+Since
 
-CC: stable@vger.kernel.org
-Reported-by: Valentina Fernandez <valentina.fernandezalanis@microchip.com>
-Fixes: 13529647743d9 ("spi: microchip-core-qspi: Support per spi-mem operation frequency switches")
-Signed-off-by: Conor Dooley <conor.dooley@microchip.com>
+  923f3a2b48bd ("x86/resctrl: Query LLC monitoring properties once during boot")
+
+resctrl_cpu_detect() has been moved from common CPU initialization code to
+the vendor-specific BSP init helper, while Hygon didn't put that call in their
+code.
+
+This triggers a division by zero fault during early booting stage on our
+machines with X86_FEATURE_CQM* supported, where get_rdt_mon_resources() tries
+to calculate mon_l3_config with uninitialized boot_cpu_data.x86_cache_occ_scale.
+
+Add the missing resctrl_cpu_detect() in the Hygon BSP init helper.
+
+  [ bp: Massage commit message. ]
+
+Fixes: 923f3a2b48bd ("x86/resctrl: Query LLC monitoring properties once during boot")
+Signed-off-by: Tianxiang Peng <txpeng@tencent.com>
+Signed-off-by: Borislav Petkov (AMD) <bp@alien8.de>
+Reviewed-by: Hui Li <caelli@tencent.com>
+Cc: <stable@kernel.org>
+Link: https://lore.kernel.org/20250623093153.3016937-1-txpeng@tencent.com
+[ Adjust context ]
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
-CC: Conor Dooley <conor.dooley@microchip.com>
-CC: Daire McNamara <daire.mcnamara@microchip.com>
-CC: Mark Brown <broonie@kernel.org>
-CC: Miquel Raynal <miquel.raynal@bootlin.com>
-CC: linux-spi@vger.kernel.org
-CC: linux-kernel@vger.kernel.org
----
- drivers/spi/spi-microchip-core-qspi.c | 12 ------------
- 1 file changed, 12 deletions(-)
+ arch/x86/kernel/cpu/hygon.c | 3 +++
+ 1 file changed, 3 insertions(+)
 
-diff --git a/drivers/spi/spi-microchip-core-qspi.c b/drivers/spi/spi-microchip-core-qspi.c
-index d13a9b755c7f8..8dc98b17f77b5 100644
---- a/drivers/spi/spi-microchip-core-qspi.c
-+++ b/drivers/spi/spi-microchip-core-qspi.c
-@@ -531,10 +531,6 @@ static int mchp_coreqspi_exec_op(struct spi_mem *mem, const struct spi_mem_op *o
+diff --git a/arch/x86/kernel/cpu/hygon.c b/arch/x86/kernel/cpu/hygon.c
+index 8a80d5343f3a..4f69e85bc255 100644
+--- a/arch/x86/kernel/cpu/hygon.c
++++ b/arch/x86/kernel/cpu/hygon.c
+@@ -14,6 +14,7 @@
+ #include <asm/cacheinfo.h>
+ #include <asm/spec-ctrl.h>
+ #include <asm/delay.h>
++#include <asm/resctrl.h>
  
- static bool mchp_coreqspi_supports_op(struct spi_mem *mem, const struct spi_mem_op *op)
- {
--	struct mchp_coreqspi *qspi = spi_controller_get_devdata(mem->spi->controller);
--	unsigned long clk_hz;
--	u32 baud_rate_val;
--
- 	if (!spi_mem_default_supports_op(mem, op))
- 		return false;
+ #include "cpu.h"
  
-@@ -557,14 +553,6 @@ static bool mchp_coreqspi_supports_op(struct spi_mem *mem, const struct spi_mem_
- 			return false;
+@@ -239,6 +240,8 @@ static void bsp_init_hygon(struct cpuinfo_x86 *c)
+ 			x86_amd_ls_cfg_ssbd_mask = 1ULL << 10;
+ 		}
  	}
- 
--	clk_hz = clk_get_rate(qspi->clk);
--	if (!clk_hz)
--		return false;
--
--	baud_rate_val = DIV_ROUND_UP(clk_hz, 2 * op->max_freq);
--	if (baud_rate_val > MAX_DIVIDER || baud_rate_val < MIN_DIVIDER)
--		return false;
--
- 	return true;
++
++	resctrl_cpu_detect(c);
  }
  
+ static void early_init_hygon(struct cpuinfo_x86 *c)
 -- 
-2.47.2
+2.50.1
 
 
