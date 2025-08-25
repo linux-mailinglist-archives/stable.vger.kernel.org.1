@@ -1,53 +1,55 @@
-Return-Path: <stable+bounces-172784-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-172785-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id B3912B33705
-	for <lists+stable@lfdr.de>; Mon, 25 Aug 2025 09:00:24 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 028D0B33715
+	for <lists+stable@lfdr.de>; Mon, 25 Aug 2025 09:02:13 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 63A1F3AEF4E
-	for <lists+stable@lfdr.de>; Mon, 25 Aug 2025 07:00:23 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id E2431200D37
+	for <lists+stable@lfdr.de>; Mon, 25 Aug 2025 07:01:39 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9044B2877D0;
-	Mon, 25 Aug 2025 07:00:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B7DEB2882DB;
+	Mon, 25 Aug 2025 07:00:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="CdGNsNWB"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="gLZ1mKLR"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 254E528750C;
-	Mon, 25 Aug 2025 07:00:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 46E3128BAB9;
+	Mon, 25 Aug 2025 07:00:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756105220; cv=none; b=g4Gh400jKRhbddp6co24PN7PCBzLgZXlhdHLPPXSzibbGw2eiuNVvzwEPBQCZOyfgLgx4XrurqgK9s7p0YhiaGFjuahmccTd0JW6B4Rtdse2OU/eRDAScAqwkv+BAChgSvKbs9USuiWhSCXDKCjEELujcFxuNe7R+LfEy4bchnE=
+	t=1756105259; cv=none; b=QG/7zdY+qDj8wI9KreXu3V+xHFqJBAlqtkLwmN4T+1z5KAQ5Q5GuS3qqkc1RkTCmOHropGl5OQHtxPMLbeDvB1M2Jo6CsbVaiJSDkVGLf3pLE4Qgzn5hMP5NUIC3b4GjOFmHf1Eb/pXGOb8LBMelxRhONRX+kTimRXzsyKWMseo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756105220; c=relaxed/simple;
-	bh=x49B5c6Khl0SgwCgszGNzX2jHZA4AGTLJBlK44cAA8s=;
+	s=arc-20240116; t=1756105259; c=relaxed/simple;
+	bh=ZFGRT8XhbRRDu0zZf/hkL81JK0HxzTeqjggcqL9BvtU=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=cH3RyMrtp2nECY7fvzmnf0mWy0vJyI8C3tDQeNKRuMSZ5YtN9pYqNcokEUaqbVn9RAyvE+h1kQCrBJil5afrLEuV9oB93EAMNkD8NJriegnmwJ+vdif8vu4KWTTLq9OqV+iqBTu6cDDT92TbGvX+c9+MUS4XRoQBrx9Xmy+jRqU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=CdGNsNWB; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4EACEC4CEED;
-	Mon, 25 Aug 2025 07:00:19 +0000 (UTC)
+	 Content-Type:Content-Disposition:In-Reply-To; b=Gy65zLuX/Oi4DX2iAtVdIO68O5fXI0queAY19bD6pfZdLNb6uOaiMZHqpKmgJD41rnAkjzfQe4gVb/rsiEiKE6Y+XFMAD9aqhjJMY5szQHUWb6KA0IlKami7aHxARIB3a3GC+F6gkraKZZj1T57CPO0UdsRGfu8WfhqdmH0h5uA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=gLZ1mKLR; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7784BC116C6;
+	Mon, 25 Aug 2025 07:00:58 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1756105219;
-	bh=x49B5c6Khl0SgwCgszGNzX2jHZA4AGTLJBlK44cAA8s=;
+	s=korg; t=1756105258;
+	bh=ZFGRT8XhbRRDu0zZf/hkL81JK0HxzTeqjggcqL9BvtU=;
 	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=CdGNsNWBS3w69aGvE352IarGzmGMbPrDjZ/ywVobpOHnfF2/mrH5JJb1oZ5sk7Xog
-	 WCXTK51PMHLZrQOyLV8ZoSA14U7gQIctGeWnO6crIdiorcGvJNf9rAulFw4nd5uVzq
-	 lPD506SafO1H/NoNu0ixPv7tZheZPxlKuiuqjZjI=
-Date: Mon, 25 Aug 2025 09:00:14 +0200
-From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-To: Kyle Sanderson <kyle.leet@gmail.com>
-Cc: linux-kernel@vger.kernel.org, akpm@linux-foundation.org,
-	torvalds@linux-foundation.org, stable@vger.kernel.org, lwn@lwn.net,
-	jslaby@suse.cz
-Subject: Re: [REGRESSION] - BROKEN NETWORKING Re: Linux 6.16.3
-Message-ID: <2025082529-reporter-frays-73a5@gregkh>
-References: <2025082354-halogen-retaliate-a8ba@gregkh>
- <cfd4d3bd-cd0e-45dc-af9b-b478a56f8942@gmail.com>
+	b=gLZ1mKLREkZX3OCMEgBA3fWb6wt73e9RZbny9aOfsOz6X2hCLGrqiJNoP1ohHMXjN
+	 P9/4Qco/Yz+EAfjSvLlyMKO3YZDc1QrO2hMNBnojywAMCKo4sxPXLftH4DZbCvqwG6
+	 ji2kSuHMd4bf6MPAm7CLvuwz98uHUqKj5/N0k5ZM=
+Date: Mon, 25 Aug 2025 09:00:53 +0200
+From: Greg KH <gregkh@linuxfoundation.org>
+To: Xu Yilun <yilun.xu@linux.intel.com>
+Cc: stable@vger.kernel.org, jgg@nvidia.com, m.szyprowski@samsung.com,
+	yilun.xu@intel.com, stable-commits@vger.kernel.org
+Subject: Re: Patch "zynq_fpga: use sgtable-based scatterlist wrappers" has
+ been added to the 6.16-stable tree
+Message-ID: <2025082539-hug-spellbind-6779@gregkh>
+References: <2025082118-visitor-lanky-8451@gregkh>
+ <aKfn1+1q0VX3zfyG@yilunxu-OptiPlex-7050>
+ <2025082242-blemish-stylus-39e0@gregkh>
+ <aKvCfK8gV0UJy+wD@yilunxu-OptiPlex-7050>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -56,40 +58,46 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <cfd4d3bd-cd0e-45dc-af9b-b478a56f8942@gmail.com>
+In-Reply-To: <aKvCfK8gV0UJy+wD@yilunxu-OptiPlex-7050>
 
-On Sun, Aug 24, 2025 at 11:31:01AM -0700, Kyle Sanderson wrote:
-> On 8/23/2025 7:51 AM, Greg Kroah-Hartman wrote:
-> > I'm announcing the release of the 6.16.3 kernel.
+On Mon, Aug 25, 2025 at 09:55:08AM +0800, Xu Yilun wrote:
+> On Fri, Aug 22, 2025 at 08:26:55AM +0200, Greg KH wrote:
+> > On Fri, Aug 22, 2025 at 11:45:27AM +0800, Xu Yilun wrote:
+> > > On Thu, Aug 21, 2025 at 03:20:18PM +0200, gregkh@linuxfoundation.org wrote:
+> > > > 
+> > > > This is a note to let you know that I've just added the patch titled
+> > > > 
+> > > >     zynq_fpga: use sgtable-based scatterlist wrappers
+> > > > 
+> > > > to the 6.16-stable tree which can be found at:
+> > > >     http://www.kernel.org/git/?p=linux/kernel/git/stable/stable-queue.git;a=summary
+> > > > 
+> > > > The filename of the patch is:
+> > > >      zynq_fpga-use-sgtable-based-scatterlist-wrappers.patch
+> > > > and it can be found in the queue-6.16 subdirectory.
+> > > > 
+> > > > If you, or anyone else, feels it should not be added to the stable tree,
+> > > > please let <stable@vger.kernel.org> know about it.
+> > > 
+> > > Hi Greg:
+> > > 
+> > > This patch solves sgtable usage issue but causes AMD fpga driver fail,
+> > > 
+> > > https://lore.kernel.org/linux-fpga/202508041548.22955.pisa@fel.cvut.cz/
+> > > 
+> > > 
+> > > The fix patch should be applied together with this patch:
+> > > 
+> > > https://lore.kernel.org/linux-fpga/20250806070605.1920909-2-yilun.xu@linux.intel.com/
+> > > 
 > > 
-> > All users of the 6.16 kernel series that use the ext4 filesystem should
-> > upgrade.
-> > 
-> > The updated 6.16.y git tree can be found at:
-> > 	git://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stable.git linux-6.16.y
-> > and can be browsed at the normal kernel.org git web browser:
-> > 	https://git.kernel.org/?p=linux/kernel/git/stable/linux-stable.git;a=summary
-> > 
-> > thanks,
-> > 
-> > greg k-h
+> > What is the git id of that patch in Linus's tree?
 > 
-> Hi Greg,
+> https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git/commit/?id=1ca61060de92a4320d73adfe5dc8d335653907ac
 > 
-> Thanks for maintaining these as always. For the first time in a long time, I
-> booted the latest stable (6.15.x -> 6.16.3) and somehow lost my networking.
-> It looks like there is a patch from Intel (reported by AMD) that did not
-> make it into stable 6.16.
-> 
-> e67a0bc3ed4fd8ee1697cb6d937e2b294ec13b5e - ixgbe
-> https://lore.kernel.org/all/94d7d5c0bb4fc171154ccff36e85261a9f186923.1755661118.git.calvin@wbinvd.org/
-> - i40e
+> But I see the original "CC: stable@vger.kernel.org" tag is removed.
 
-Any specific reason why this hasn't been asked to be backported to
-stable trees if it fixes an issue?   Please cc: the developers involved
-so that they know to let us pick it up.
-
-thanks,
+I picked it up a few days ago, so all is good, thanks.
 
 greg k-h
 
