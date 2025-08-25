@@ -1,143 +1,205 @@
-Return-Path: <stable+bounces-172817-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-172819-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2A616B33D85
-	for <lists+stable@lfdr.de>; Mon, 25 Aug 2025 13:03:26 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 02AB9B33DCD
+	for <lists+stable@lfdr.de>; Mon, 25 Aug 2025 13:19:55 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 050054880C3
-	for <lists+stable@lfdr.de>; Mon, 25 Aug 2025 11:03:23 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id AF2343A36AE
+	for <lists+stable@lfdr.de>; Mon, 25 Aug 2025 11:19:54 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 799452DCF62;
-	Mon, 25 Aug 2025 11:03:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5523C2E611D;
+	Mon, 25 Aug 2025 11:19:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linux.microsoft.com header.i=@linux.microsoft.com header.b="NSgUljRS"
+	dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b="cLHA4cDC"
 X-Original-To: stable@vger.kernel.org
-Received: from linux.microsoft.com (linux.microsoft.com [13.77.154.182])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C08EB2D0623;
-	Mon, 25 Aug 2025 11:03:16 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=13.77.154.182
+Received: from out-180.mta1.migadu.com (out-180.mta1.migadu.com [95.215.58.180])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+	(No client certificate requested)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 091522E5D3C
+	for <stable@vger.kernel.org>; Mon, 25 Aug 2025 11:19:50 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=95.215.58.180
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756119798; cv=none; b=ie2l2keK5g+H/kthzFka24JQYA9yF1Mxo/j4eEY5bIjwN8jS6Er0ynCYHnHX8ZVEnYGYBb5ZaAQK+J4PeJDt2WzKnWHk5226vcrtgLJjYcidX1+IfxflfyBdoG9gdGlyVQ24a+57UPMv1PN5f9DVkDu7A2AOngi3cRvgD72ukys=
+	t=1756120793; cv=none; b=MP/e6tQlGX1sX/bdwvrfZNqogoN9egA1BkKaNW4JcsYhUb18hAb5jvK0UW+wJ2UeNgYmiBPiFGXBxrNSPA4bf2kBcQ2IVqc8EPGu8z9jXQoV22i3r2wkIu69cthzvdi24vsWDmAwUL5f3pDTceEvI2zFx3DAub1r+Esj5HBUlOo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756119798; c=relaxed/simple;
-	bh=i7Bh1lmrcNhrpuE5kAEpZHyG48GyUCraJrr1KmwINdE=;
-	h=From:To:Cc:Subject:Date:Message-Id; b=kpqme/JcS8IqIO88nfwGBOScucInKG9d92rHtFxE7FiDPT8j3RR4FbDqcMI1SpWJPWM18+4zQ/oc1oovxOejqyis1FtihptGPvgZ+GoNF4xIuSw7vURZvnYFxTl6G++etfrxrAWlYPkwfnnYf4CKrEyjuVHG595oKt1fVpWA1xQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.microsoft.com; spf=pass smtp.mailfrom=linux.microsoft.com; dkim=pass (1024-bit key) header.d=linux.microsoft.com header.i=@linux.microsoft.com header.b=NSgUljRS; arc=none smtp.client-ip=13.77.154.182
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.microsoft.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.microsoft.com
-Received: by linux.microsoft.com (Postfix, from userid 1127)
-	id 41746211828C; Mon, 25 Aug 2025 04:03:16 -0700 (PDT)
-DKIM-Filter: OpenDKIM Filter v2.11.0 linux.microsoft.com 41746211828C
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.microsoft.com;
-	s=default; t=1756119796;
-	bh=QN/7ZaTct3LU/anujYLQq8OzF8EQzpibQw8k4S15RNg=;
-	h=From:To:Cc:Subject:Date:From;
-	b=NSgUljRSt6JU7MeyF6jX3RTLdwdrpx12Fnt802jxi7LXi3Pwvh3ozejSAPvaYRwyC
-	 nn5JIjm3EbeiMF9j1vn44jrnaseEf7lbxYFlZl6g/KJinmTlm3KfyIn7sphcFrUVah
-	 G7N8CijyWKlszwcZo0Q5NAqnAcwOk4+DPKG/tTJM=
-From: Saurabh Sengar <ssengar@linux.microsoft.com>
-To: kys@microsoft.com,
-	haiyangz@microsoft.com,
-	wei.liu@kernel.org,
-	decui@microsoft.com,
-	andrew+netdev@lunn.ch,
-	davem@davemloft.net,
-	edumazet@google.com,
-	kuba@kernel.org,
-	pabeni@redhat.com,
-	shradhagupta@linux.microsoft.com,
-	ernis@linux.microsoft.com,
-	dipayanroy@linux.microsoft.com,
-	shirazsaleem@microsoft.com,
-	linux-hyperv@vger.kernel.org,
-	netdev@vger.kernel.org,
-	linux-kernel@vger.kernel.org
-Cc: ssengar@microsoft.com,
-	stable@vger.kernel.org,
-	Saurabh Sengar <ssengar@linux.microsoft.com>
-Subject: [PATCH net] net: mana: Remove redundant netdev_lock_ops_to_full() calls
-Date: Mon, 25 Aug 2025 04:03:14 -0700
-Message-Id: <1756119794-20110-1-git-send-email-ssengar@linux.microsoft.com>
-X-Mailer: git-send-email 1.8.3.1
+	s=arc-20240116; t=1756120793; c=relaxed/simple;
+	bh=abeEpDYL1qgnMqEOopqpv+UkECheT5tVxOCyUApnwH4=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=p5tzxxz0KmW7z0Kkk7GWfiEgFYyBbpYwWrSf+2vCm7pY4w4chE3X5lRR8+Ji9FY8UU5FqELc14ka+qrwFZsAr9I2Ax0F+V3006bJPNUaTxHDT8uBWrBZku5QtI2f1yJOwLnWAWTpc8DzgRTQ+R77RVGn83dU7ovAamQtWzw9RQw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev; spf=pass smtp.mailfrom=linux.dev; dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b=cLHA4cDC; arc=none smtp.client-ip=95.215.58.180
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.dev
+Message-ID: <d95592ec-f51e-4d80-b633-7440b4e69944@linux.dev>
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
+	t=1756120779;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=Q3B0wNYJZR8rgNNF1zxTd6HIMaR7QIKKvouK3UYKEvM=;
+	b=cLHA4cDCqEAbAsT55G9hBCiMO1/WtVQIBYsSTb84tnvkWYDt+dgExmtKFnm2O38aUL9xfW
+	ER0biyvRqLkhNXP5M1jkfBh2cOWrtr+8H0Ug0cP7L7DkeUcA00lTg/xa3H5vrnCipnwmV5
+	HleeHsELwNfr8Whj9pmjWnyURQcormc=
+Date: Mon, 25 Aug 2025 19:19:19 +0800
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
+MIME-Version: 1.0
+Subject: Re: [PATCH] atomic: Specify natural alignment for atomic_t
+Content-Language: en-US
+To: Finn Thain <fthain@linux-m68k.org>
+Cc: akpm@linux-foundation.org, geert@linux-m68k.org,
+ linux-kernel@vger.kernel.org, mhiramat@kernel.org, oak@helsinkinet.fi,
+ peterz@infradead.org, stable@vger.kernel.org, will@kernel.org,
+ Lance Yang <ioworker0@gmail.com>, linux-m68k@lists.linux-m68k.org
+References: <7d9554bfe2412ed9427bf71ce38a376e06eb9ec4.1756087385.git.fthain@linux-m68k.org>
+ <20250825032743.80641-1-ioworker0@gmail.com>
+ <c8851682-25f1-f594-e30f-5b62e019d37b@linux-m68k.org>
+ <96ae7afc-c882-4c3d-9dea-3e2ae2789caf@linux.dev>
+ <5a44c60b-650a-1f8a-d5cb-abf9f0716817@linux-m68k.org>
+ <4e7e7292-338d-4a57-84ec-ae7427f6ad7c@linux.dev>
+ <d07778f8-8990-226b-5171-4a36e6e18f32@linux-m68k.org>
+X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
+From: Lance Yang <lance.yang@linux.dev>
+In-Reply-To: <d07778f8-8990-226b-5171-4a36e6e18f32@linux-m68k.org>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+X-Migadu-Flow: FLOW_OUT
 
-NET_SHAPER is always selected for MANA driver. When NET_SHAPER is enabled,
-netdev_lock_ops_to_full() reduces effectively to only an assert for lock,
-which is always held in the path when NET_SHAPER is enabled.
+Thanks for digging deeper!
 
-Remove the redundant netdev_lock_ops_to_full() call.
+On 2025/8/25 18:49, Finn Thain wrote:
+> 
+> [Belated Cc linux-m68k...]
+> 
+> On Mon, 25 Aug 2025, Lance Yang wrote:
+> 
+>>
+>> On 2025/8/25 14:17, Finn Thain wrote:
+>>>
+>>> On Mon, 25 Aug 2025, Lance Yang wrote:
+>>>
+>>>>
+>>>> What if we squash the runtime check fix into your patch?
+>>>
+>>> Did my patch not solve the problem?
+>>
+>> Hmm... it should solve the problem for natural alignment, which is a
+>> critical fix.
+>>
+>> But it cannot solve the problem of forced misalignment from drivers
+>> using #pragma pack(1). The runtime warning will still trigger in those
+>> cases.
+>>
+>> I built a simple test module on a kernel with your patch applied:
+>>
+>> ```
+>> #include <linux/module.h>
+>> #include <linux/init.h>
+>>
+>> struct __attribute__((packed)) test_container {
+>>      char padding[49];
+>>      struct mutex io_lock;
+>> };
+>>
+>> static int __init alignment_init(void)
+>> {
+>>      struct test_container cont;
+>>      pr_info("io_lock address offset mod 4: %lu\n", (unsigned long)&cont.io_lock % 4);
+>>      return 0;
+>> }
+>>
+>> static void __exit alignment_exit(void)
+>> {
+>>      pr_info("Module unloaded\n");
+>> }
+>>
+>> module_init(alignment_init);
+>> module_exit(alignment_exit);
+>> MODULE_LICENSE("GPL");
+>> MODULE_AUTHOR("x");
+>> MODULE_DESCRIPTION("x");
+>> ```
+>>
+>> Result from dmesg:
+>> [Mon Aug 25 15:44:50 2025] io_lock address offset mod 4: 1
+>>
+> 
+> Thanks for sending code to illustrate your point. Unfortunately, I was not
+> able to reproduce your results. Tested on x86, your test module shows no
+> misalignment:
+> 
+> [131840.349042] io_lock address offset mod 4: 0
+> 
+> Tested on m68k I also get 0, given the patch at the top of this thread:
+> 
+> [    0.400000] io_lock address offset mod 4: 0
+> 
+>>
+>> As we can see, a packed struct can still force the entire mutex object
+>> to an unaligned address. With an address like this, the WARN_ON_ONCE can
+>> still be triggered.
 
-Fixes: d5c8f0e4e0cb ("net: mana: Fix potential deadlocks in mana napi ops")
-Cc: stable@vger.kernel.org
-Signed-off-by: Saurabh Sengar <ssengar@linux.microsoft.com>
----
- drivers/net/ethernet/microsoft/mana/mana_en.c | 10 ----------
- 1 file changed, 10 deletions(-)
+> 
+> I don't think so. But there is something unexpected going on here -- the
+> output from pahole appears to say io_lock is at offset 49, which seems to
+> contradict the printk() output above.
 
-diff --git a/drivers/net/ethernet/microsoft/mana/mana_en.c b/drivers/net/ethernet/microsoft/mana/mana_en.c
-index 550843e2164b..f0dbf4e82e0b 100644
---- a/drivers/net/ethernet/microsoft/mana/mana_en.c
-+++ b/drivers/net/ethernet/microsoft/mana/mana_en.c
-@@ -2100,10 +2100,8 @@ static void mana_destroy_txq(struct mana_port_context *apc)
- 		napi = &apc->tx_qp[i].tx_cq.napi;
- 		if (apc->tx_qp[i].txq.napi_initialized) {
- 			napi_synchronize(napi);
--			netdev_lock_ops_to_full(napi->dev);
- 			napi_disable_locked(napi);
- 			netif_napi_del_locked(napi);
--			netdev_unlock_full_to_ops(napi->dev);
- 			apc->tx_qp[i].txq.napi_initialized = false;
- 		}
- 		mana_destroy_wq_obj(apc, GDMA_SQ, apc->tx_qp[i].tx_object);
-@@ -2256,10 +2254,8 @@ static int mana_create_txq(struct mana_port_context *apc,
- 		mana_create_txq_debugfs(apc, i);
- 
- 		set_bit(NAPI_STATE_NO_BUSY_POLL, &cq->napi.state);
--		netdev_lock_ops_to_full(net);
- 		netif_napi_add_locked(net, &cq->napi, mana_poll);
- 		napi_enable_locked(&cq->napi);
--		netdev_unlock_full_to_ops(net);
- 		txq->napi_initialized = true;
- 
- 		mana_gd_ring_cq(cq->gdma_cq, SET_ARM_BIT);
-@@ -2295,10 +2291,8 @@ static void mana_destroy_rxq(struct mana_port_context *apc,
- 	if (napi_initialized) {
- 		napi_synchronize(napi);
- 
--		netdev_lock_ops_to_full(napi->dev);
- 		napi_disable_locked(napi);
- 		netif_napi_del_locked(napi);
--		netdev_unlock_full_to_ops(napi->dev);
- 	}
- 	xdp_rxq_info_unreg(&rxq->xdp_rxq);
- 
-@@ -2549,18 +2543,14 @@ static struct mana_rxq *mana_create_rxq(struct mana_port_context *apc,
- 
- 	gc->cq_table[cq->gdma_id] = cq->gdma_cq;
- 
--	netdev_lock_ops_to_full(ndev);
- 	netif_napi_add_weight_locked(ndev, &cq->napi, mana_poll, 1);
--	netdev_unlock_full_to_ops(ndev);
- 
- 	WARN_ON(xdp_rxq_info_reg(&rxq->xdp_rxq, ndev, rxq_idx,
- 				 cq->napi.napi_id));
- 	WARN_ON(xdp_rxq_info_reg_mem_model(&rxq->xdp_rxq, MEM_TYPE_PAGE_POOL,
- 					   rxq->page_pool));
- 
--	netdev_lock_ops_to_full(ndev);
- 	napi_enable_locked(&cq->napi);
--	netdev_unlock_full_to_ops(ndev);
- 
- 	mana_gd_ring_cq(cq->gdma_cq, SET_ARM_BIT);
- out:
--- 
-2.43.0
+Interesting! That contradiction is the key. It seems we're seeing different
+compiler behaviors.
 
+I'm on GCC 14.2.0 (Debian 14.2.0-19), and it appears to be strictly 
+respecting
+the packed attribute.
+
+So let's print something more:
+
+```
+#include <linux/module.h>
+#include <linux/init.h>
+
+struct __attribute__((packed)) test_container {
+     char padding[49];
+     struct mutex io_lock;
+};
+
+static int __init alignment_init(void)
+{
+     struct test_container cont;
+     pr_info("Container base address      : %px\n", &cont);
+     pr_info("io_lock member address      : %px\n", &cont.io_lock);
+     pr_info("io_lock address offset mod 4: %lu\n", (unsigned 
+long)&cont.io_lock % 4);
+     return 0;
+}
+
+static void __exit alignment_exit(void)
+{
+     pr_info("Module unloaded\n");
+}
+
+module_init(alignment_init);
+module_exit(alignment_exit);
+MODULE_LICENSE("GPL");
+MODULE_AUTHOR("x");
+MODULE_DESCRIPTION("x");
+```
+
+Result from dmesg:
+
+```
+[Mon Aug 25 19:15:33 2025] Container base address      : ff1100063570f840
+[Mon Aug 25 19:15:33 2025] io_lock member address      : ff1100063570f871
+[Mon Aug 25 19:15:33 2025] io_lock address offset mod 4: 1
+```
+
+io_lock is exactly base + 49, resulting in misalignment.
+
+Seems like your compiler is cleverly re-aligning the whole struct on the
+stack, but we can't rely on that behavior, as it's not guaranteed across
+all compilers or versions. wdyt?
 
