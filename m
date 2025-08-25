@@ -1,185 +1,154 @@
-Return-Path: <stable+bounces-172812-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-172813-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5CADFB33B8A
-	for <lists+stable@lfdr.de>; Mon, 25 Aug 2025 11:49:01 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id C6A91B33C4A
+	for <lists+stable@lfdr.de>; Mon, 25 Aug 2025 12:13:14 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 0D6791B266AF
-	for <lists+stable@lfdr.de>; Mon, 25 Aug 2025 09:48:31 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 02ADD7A4AC3
+	for <lists+stable@lfdr.de>; Mon, 25 Aug 2025 10:11:37 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id EE3072C0F93;
-	Mon, 25 Aug 2025 09:46:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4BCF02DAFA2;
+	Mon, 25 Aug 2025 10:13:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="XEvthUFl"
-X-Original-To: stable@vger.kernel.org
-Received: from mail-lj1-f176.google.com (mail-lj1-f176.google.com [209.85.208.176])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+	dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b="HX0CBdcN"
+X-Original-To: Stable@vger.kernel.org
+Received: from mx0b-0031df01.pphosted.com (mx0b-0031df01.pphosted.com [205.220.180.131])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 02D97CA6F;
-	Mon, 25 Aug 2025 09:46:20 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.176
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A77B22D5432
+	for <Stable@vger.kernel.org>; Mon, 25 Aug 2025 10:13:00 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.180.131
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756115182; cv=none; b=DrQErLdziGVgBi17gp02ylI/+3v6kCpgJszOhLbjpw2xGVYmhP6tpvjy/yLoTaBhJA6sc9hV0gm+Q0Y7gwn9qPcli4Xrd36U9+VvZFI0Fk2cNmsw7eYMHs2MUPuzOFFCUdnZSHRr4TyjPlYaUfz+GQ4xFBb+BIKHjgfT4qteDak=
+	t=1756116782; cv=none; b=HKGZJvk9AS0pQSecd08MnkG/sendl95xT2dmkgJ3LS5plKq2RhixvvOM/qed0TMju9kXXaGoOGIYCCNDQbnnXevhqNSics5KZhrfoNV/QZKM6tSYe79fZRdV/1R60E0XBf01W8GbJwb/Fu4bNvC1/Zk75Fi8FeEYSrSrNxagPVY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756115182; c=relaxed/simple;
-	bh=H2ZktNpJ2w+x6Ps+H/dAzLcu/l8hGCEFFeruuYhpia0=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=gebDlynbiwF9LD5dSlSxKjcgHiqRWo/E13/Ww1EDx6jnhSUFSgaa+8AwcUfZ+/IvMSoVKZU/HG38V0QLrO1S4SOTxEGPz24Z26Fbwn7SFr9xVyOSIJrF1BMW6BKR7A4+ieDcMSGpWpIlgYF09EFc94M7cf3xagHgONcvRjLlP+8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=XEvthUFl; arc=none smtp.client-ip=209.85.208.176
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-lj1-f176.google.com with SMTP id 38308e7fff4ca-3366004736aso3636841fa.1;
-        Mon, 25 Aug 2025 02:46:20 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1756115179; x=1756719979; darn=vger.kernel.org;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=vA6vI044zEdIbfha2CiMeRJA/WTffOEZFr4+NNjxx2k=;
-        b=XEvthUFlHmMW685icm0qfOOOulst6KaV+or8KtEDwm0MdLgfrOEDeFu63pVpYcuqaF
-         aOVqdVnS4ZbmlgTnq3aK1KU5JDd61wU+I7sSpcVc/PQJLz+dg2xTirk8OSOR92BNSeFZ
-         OPNv8K2RXZkTRcVt9ujcBKIAlVS4rKhjBQRqReGaO3nPjQvrRWqd8gtcP/2pC7EKArgi
-         zuOuBUMalvLaX1ao+20xB2GpbvksMUbg/YPRgc+QSFlcoe8FqUE1uJRrNSHDwFCWY3DN
-         0scG/6v0LuImPB8XE/Du9W77SydKK2xnU33bCD9Ks+bY3J8th++/vLJuzDyaTW1hZKD4
-         8Few==
+	s=arc-20240116; t=1756116782; c=relaxed/simple;
+	bh=qETacxdD+xOMesgXMU0txWNaZ5hKWFtVQbpaLYum4Vo=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=sDAlj/K/OXK20c5CrCjdTiyy8P2f1pGZA9EyGhrY1gMKmiU4ks1FT8RZnqcjvnpK+9BZbOT+/s737EPr5gEnjxafamvJBZIyEPAsqndDd6QBZbFB37hKyar2CCPoJGLiWrvRZQNM8iU8pBk4PFeOJrh4Lkn3GYX7hrRyL4Im7/0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oss.qualcomm.com; spf=pass smtp.mailfrom=oss.qualcomm.com; dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b=HX0CBdcN; arc=none smtp.client-ip=205.220.180.131
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oss.qualcomm.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=oss.qualcomm.com
+Received: from pps.filterd (m0279870.ppops.net [127.0.0.1])
+	by mx0a-0031df01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 57P8LOl2012253
+	for <Stable@vger.kernel.org>; Mon, 25 Aug 2025 10:12:59 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=qualcomm.com; h=
+	cc:content-transfer-encoding:date:from:in-reply-to:message-id
+	:mime-version:references:subject:to; s=qcppdkim1; bh=M94yiXXN3v2
+	OeJTyDLo3KsFMQqNubljS5iZCkUwPSZ8=; b=HX0CBdcNMAbP5YdkvBxw06GNjHs
+	dXwFKQKsnZrIvxTZbcsiK1KYW90sEKivlKgJFD+6g+kydNSH/pv1RvvPiu5lwB/X
+	ug9ZFCKox4qmhIk7HytzYQncH0GmsuIe7Fg+w0NXw8UWKIcp5V0N/A05Fxz9bTP5
+	C1WgmsLC6wIa9EAFyaz4t8sIGIUSbeYF99s5/Wvg0co5WOXC1Tiln9vrArZpojqv
+	SJohIZ3/ppYgqky5n0jZgvqLMLnKKw9MSaeYau+zvhcmfWhb9XQSm9rnrnrFs/tG
+	RUcuoAsX0+LAX/iv4TfsVtrsKQWXg61JF6S3lQwrMo2urbSluQdvCf8CrmQ==
+Received: from mail-qt1-f200.google.com (mail-qt1-f200.google.com [209.85.160.200])
+	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 48q5xfcqq8-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128 verify=NOT)
+	for <Stable@vger.kernel.org>; Mon, 25 Aug 2025 10:12:59 +0000 (GMT)
+Received: by mail-qt1-f200.google.com with SMTP id d75a77b69052e-4b109bc103bso98533041cf.2
+        for <Stable@vger.kernel.org>; Mon, 25 Aug 2025 03:12:59 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1756115179; x=1756719979;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=vA6vI044zEdIbfha2CiMeRJA/WTffOEZFr4+NNjxx2k=;
-        b=e/km1/2RAxseFp8efnxm6R2JKr9jsKS7sLho9t3DusYQtBoYfXoNhUJPHkAouoRYzJ
-         o7uJT+rOSmeLQxolvDUQr+UidH4mBvnmrx3x5Y3cJlQg1/5V6G/vyWQFtpvJoTx4jX6s
-         HiPPlwBsk+ZySb4xirYKesKMabWgTNRRqvZ/xxNobMR38/20ytW/3xB0BnLVcRxkW/j3
-         ZSyd8o6ZxuPgvE0DtynZSDSYudPdl4aTQrCJKmKAPpvBl/yTNG0ANoVTtyT/+qcs21qP
-         tZaAHl4aPR+wp5wz5EoE2JLpHUMJK3010W/re+Gu0pkTpXFff9DM77vtIG1OsBh4mFqq
-         lZtw==
-X-Forwarded-Encrypted: i=1; AJvYcCUm/q3pQPNJP1bysjAoTi3tC4vcWms+1GtvSvfJE9fzWprBsPXkHUv9UraLec7gu2cJbKL2DfKW@vger.kernel.org, AJvYcCVU4BdQoPzHl52u2nuekUaTEmfBrGIkugsgdIk5C23uQ8m2tNllx+6tb58TgA+dYFrQOiNNwov+8rBa@vger.kernel.org, AJvYcCWIdlAfzpnryQLXri+0/nSIh+T5iS2/yjM4Mme0BocM8LAjCxgvqafF6GKRrPIihnUSjS76+NWNJEWrx27O@vger.kernel.org
-X-Gm-Message-State: AOJu0Yz/zrAtDumcDManV4tyT7HkKRTYbIoFlRkzRT4AknmYC6seoxT2
-	I0+TFwAUTxo3Ee5KgQ6WtjvhW0LkLCoayB60TwpFX2RKdzJzNFCAHdyC
-X-Gm-Gg: ASbGncvVuFR3Itb+NEAsyXos3KB5KMExbPu4nxGWKQHDrjxfmgxn9w2dDORISl0hqGD
-	sUaf7csEeKL8y3x5JErVA8siIQZFwBfBINC7rOBXAPSW3gdVD1i9HwGA0q68fPyf9BPakXxmKhf
-	HkBhep0wejE7KpW5OgiuxIM4VCPmcrevWOfK6ocraA1vuLxnah5G/4pgbgVBELzwMhfEi6i22ca
-	bGbUXGPc0YtL1cnGXzJEyVlx+9l4djK2pEfSuOEty02KOzYBJIW+Vf399YWk1NeNyugX0s0/WzQ
-	DO95/334kAvOCIVJeDgh37uvRTz8NQlqQlmuvOdMWr8l1BqziaUK3IV5/H1AYewDCpjXUaphdSq
-	NrtzTcroPynGZ4r2EB07HgOotNbNt
-X-Google-Smtp-Source: AGHT+IH1efX+K+mAJdmcOpmqJG6368qZBIn8i/p3/9xVotsBIWed+ijE4z8OQ+KPmvT3ummuxgSxVg==
-X-Received: by 2002:a05:6512:2527:b0:553:ad91:d400 with SMTP id 2adb3069b0e04-55f0cce52f4mr1975986e87.6.1756115178725;
-        Mon, 25 Aug 2025 02:46:18 -0700 (PDT)
-Received: from [10.214.35.248] ([80.93.240.68])
-        by smtp.gmail.com with ESMTPSA id 2adb3069b0e04-55f35c12072sm1557498e87.44.2025.08.25.02.46.15
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Mon, 25 Aug 2025 02:46:17 -0700 (PDT)
-Message-ID: <8077d344-580b-431b-b7dc-a84dc4ba6b44@gmail.com>
-Date: Mon, 25 Aug 2025 11:46:12 +0200
+        d=1e100.net; s=20230601; t=1756116779; x=1756721579;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=M94yiXXN3v2OeJTyDLo3KsFMQqNubljS5iZCkUwPSZ8=;
+        b=hfho0180SzyCNpR5xkIjsAg+dY/2UYjNzX6yyBR2gF2hiCaMfL36pzdsfuPhejBQk5
+         zhFSI20RwshmeD3B39/sTJqOwuNYw418cQgOlVjXOVkctZZt4X6Mp+YCsf50q/aFslaD
+         dPaOFkY3mWlbe+XotYzQfFJkpz59X1lBv6PaFtAFTwxvKgGuSbuKj3jaof1UbbhDqT5i
+         Ez7zab7DBW79+0oz6M9VWaFJJzitmFn//GAMMsfAaU3IPWCWJFtpfwrulW+I5JNTiV6T
+         O772FCWcZGXMgh7mucv4RndqCQCl7tzXBUTmjR/V66tzXRN+0usrUZuMj7Ur1kfwdAME
+         5I9g==
+X-Forwarded-Encrypted: i=1; AJvYcCUUPgyB8q4OGnyNyQetR5cQP4IGz385N385Z/A+h/jfqw8DohCEZU6lCV3LJxKZ1cnVHWZLZkE=@vger.kernel.org
+X-Gm-Message-State: AOJu0Yxm/D+qMGXX4q+DwJlrlmP8e6Z4cGHzD6pF3aP+s9+UqRvOls8g
+	i3ln/gUVGuW+5kfafLo1HcWIb3UFaWssHQDpedx2ThVYQp5WJmr7ktJO2ViAFt3rva9QPegk/Y4
+	1mH20BOw0RKXw2AgouwXuSyNlKyw4I54ruHkerbqgEJjN/+EBQUQxFHOnPNs=
+X-Gm-Gg: ASbGncvuDfG+VQK+0UHIfNFR4Uq8ufwKLaeomayV1F1RpB2VE24JO3EmkmnPCUOA9p6
+	zYSbrQGB98/OyPSAf+nzGdk9r2oXFbl3uQi9LdzFMgBowXv1Vf/frCFBIHPeZqwr0xxjAydj4Ln
+	QM0BGulidtN/121f3N0fy89wB5aDQlpatcMGlDZFoJXFYkp+FgvFxuFXD8ntLpva9SkmmEbewcD
+	uYmegVaFpnAqY5Nesd1kLzEvV1gD6EaxUEp15VhzIrZBzaBq3s/oTYfRB7HDeVgPDZz25w7jRfO
+	5GRDa6L8r/DCuIg9QUgZlWklxtcGjuS/AnmtSNoEbIklowsdsQsI3Q==
+X-Received: by 2002:a05:622a:4188:b0:4b2:d25d:2f15 with SMTP id d75a77b69052e-4b2d25d317amr35725531cf.20.1756116778642;
+        Mon, 25 Aug 2025 03:12:58 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IF2cGVPeIFuXbrWm4z0GxzF/KpOCtFW5IwJGn5xkGyqjVJJolW8huuGhTudz9wm/LFSsEywjw==
+X-Received: by 2002:a05:622a:4188:b0:4b2:d25d:2f15 with SMTP id d75a77b69052e-4b2d25d317amr35725231cf.20.1756116778089;
+        Mon, 25 Aug 2025 03:12:58 -0700 (PDT)
+Received: from debian ([5.133.47.210])
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-45b6359b8d6sm5798645e9.4.2025.08.25.03.12.57
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Mon, 25 Aug 2025 03:12:57 -0700 (PDT)
+From: Srinivas Kandagatla <srinivas.kandagatla@oss.qualcomm.com>
+To: broonie@kernel.org
+Cc: perex@perex.cz, tiwai@suse.com, srini@kernel.org, lgirdwood@gmail.com,
+        linux-sound@vger.kernel.org, linux-kernel@vger.kernel.org,
+        linux-arm-msm@vger.kernel.org, krzysztof.kozlowski@linaro.org,
+        Srinivas Kandagatla <srinivas.kandagatla@oss.qualcomm.com>,
+        Dan Carpenter <dan.carpenter@linaro.org>, Stable@vger.kernel.org
+Subject: [PATCH 1/3] ASoC: qcom: audioreach: fix potential null pointer dereference
+Date: Mon, 25 Aug 2025 11:12:45 +0100
+Message-ID: <20250825101247.152619-2-srinivas.kandagatla@oss.qualcomm.com>
+X-Mailer: git-send-email 2.50.0
+In-Reply-To: <20250825101247.152619-1-srinivas.kandagatla@oss.qualcomm.com>
+References: <20250825101247.152619-1-srinivas.kandagatla@oss.qualcomm.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v2] mm: fix KASAN build error due to p*d_populate_kernel()
-To: Dave Hansen <dave.hansen@intel.com>, Harry Yoo <harry.yoo@oracle.com>
-Cc: Liam.Howlett@oracle.com, akpm@linux-foundation.org, andreyknvl@gmail.com,
- aneesh.kumar@linux.ibm.com, anshuman.khandual@arm.com, apopple@nvidia.com,
- ardb@kernel.org, arnd@arndb.de, bp@alien8.de, cl@gentwo.org,
- dave.hansen@linux.intel.com, david@redhat.com, dennis@kernel.org,
- dev.jain@arm.com, dvyukov@google.com, glider@google.com,
- gwan-gyeong.mun@intel.com, hpa@zyccr.com, jane.chu@oracle.com,
- jgross@suse.de, jhubbard@nvidia.com, joao.m.martins@oracle.com,
- joro@8bytes.org, kas@kernel.org, kevin.brodsky@arm.com,
- linux-arch@vger.kernel.org, linux-kernel@vger.kernel.org,
- linux-mm@kvack.org, lorenzo.stoakes@oracle.com, luto@kernel.org,
- maobibo@loongson.cn, mhocko@suse.com, mingo@redhat.com, osalvador@suse.de,
- peterx@redhat.com, peterz@infradead.org, rppt@kernel.org,
- ryan.roberts@arm.com, stable@vger.kernel.org, surenb@google.com,
- tglx@linutronix.de, thuth@redhat.com, tj@kernel.org, urezki@gmail.com,
- vbabka@suse.cz, vincenzo.frascino@arm.com, x86@kernel.org,
- zhengqi.arch@bytedance.com
-References: <20250821093542.37844-1-harry.yoo@oracle.com>
- <20250821115731.137284-1-harry.yoo@oracle.com>
- <3976ef5d-a959-408a-b538-7feba1f0ab7a@intel.com> <aKfDrKBaMc24cNgC@hyeyoo>
- <79027c6f-f2f3-41b2-9ff3-c5576fc06c5c@intel.com>
-Content-Language: en-US
-From: Andrey Ryabinin <ryabinin.a.a@gmail.com>
-In-Reply-To: <79027c6f-f2f3-41b2-9ff3-c5576fc06c5c@intel.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+Content-Transfer-Encoding: 8bit
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjUwODIzMDAzMyBTYWx0ZWRfX6hbAa/h760D9
+ Rvt9OPPYiWoYdo1+DqreNJFEorGKZz/fuSNEJpBOGr9il/D2wvdhdSI6bH9y3J+ilS6fQJREUfX
+ mdKaLD8WJ5HMocEgh2aOmzPrCQpRd6yHgQSaCXxf1r1DxXMH3Av0WxnCFi1ExVXiGHlrwc8pvTn
+ Qc+abZpmV79txC2fC/mFvG6hHKMvDp/ee5j/+R8lJCRWeASF4RiySofANSt/nDDkbyhPD0EOnW6
+ SA1Zt4g4h1nqEgXn+6wRMKA7PVYeafwxgEXXIEF0seJs7VLIWBF5qejHX1IKH0IFRqxWfASX4ES
+ +hQFqI4UDtMCJTwQLzJF0wrrG5g4J/6loI8PC+umMtgo6zb4qDKZryz3W5s1fgcon7SMoueAHP9
+ 8Dlj1+Pc
+X-Proofpoint-GUID: u0BsL8cNuEAamdVXJIyQvnL5xIGgh_CK
+X-Authority-Analysis: v=2.4 cv=MutS63ae c=1 sm=1 tr=0 ts=68ac372b cx=c_pps
+ a=JbAStetqSzwMeJznSMzCyw==:117 a=ZsC4DHZuhs/kKio7QBcDoQ==:17
+ a=2OwXVqhp2XgA:10 a=KKAkSRfTAAAA:8 a=VwQbUJbxAAAA:8 a=EUspDBNiAAAA:8
+ a=6m3MDpN89X3R0uDixRgA:9 a=uxP6HrT_eTzRwkO_Te1X:22 a=cvBusfyB2V15izCimMoJ:22
+X-Proofpoint-ORIG-GUID: u0BsL8cNuEAamdVXJIyQvnL5xIGgh_CK
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1099,Hydra:6.1.9,FMLib:17.12.80.40
+ definitions=2025-08-25_05,2025-08-20_03,2025-03-28_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ phishscore=0 impostorscore=0 adultscore=0 spamscore=0 malwarescore=0
+ suspectscore=0 clxscore=1015 bulkscore=0 priorityscore=1501
+ classifier=typeunknown authscore=0 authtc= authcc= route=outbound adjust=0
+ reason=mlx scancount=1 engine=8.19.0-2507300000 definitions=main-2508230033
 
+It is possible that the topology parsing function
+audioreach_widget_load_module_common() could return NULL or an error
+pointer. Add missing NULL check so that we do not dereference it.
 
+Reported-by: Dan Carpenter <dan.carpenter@linaro.org>
+Cc: <Stable@vger.kernel.org>
+Fixes: 36ad9bf1d93d ("ASoC: qdsp6: audioreach: add topology support")
+Signed-off-by: Srinivas Kandagatla <srinivas.kandagatla@oss.qualcomm.com>
+---
+ sound/soc/qcom/qdsp6/topology.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-On 8/22/25 7:08 PM, Dave Hansen wrote:
-> On 8/21/25 18:11, Harry Yoo wrote:
->> On Thu, Aug 21, 2025 at 10:36:12AM -0700, Dave Hansen wrote:
->>> On 8/21/25 04:57, Harry Yoo wrote:
->>>> However, {pgd,p4d}_populate_kernel() is defined as a function regardless
->>>> of the number of page table levels, so the compiler may not optimize
->>>> them away. In this case, the following linker error occurs:
->>
->> Hi, thanks for taking a look, Dave!
->>
->> First of all, this is a fix-up patch of a mm-hotfixes patch series that
->> fixes a bug (I should have explained that in the changelog) [1].
->>
->> [1] https://lore.kernel.org/linux-mm/20250818020206.4517-1-harry.yoo@oracle.com
->>
->> I think we can continue discussing it and perhaps do that as part of
->> a follow-up series, because the current patch series need to be backported
->> to -stable and your suggestion to improve existing code doesn't require
->> -stable backports.
->>
->> Does that sound fine?
->>
->>> This part of the changelog confused me. I think it's focusing on the
->>> wrong thing.
->>>
->>> The code that's triggering this is literally:
->>>
->>>>                         pgd_populate(&init_mm, pgd,
->>>>                                         lm_alias(kasan_early_shadow_p4d));
->>>
->>> It sure _looks_ like it's unconditionally referencing the
->>> 'kasan_early_shadow_p4d' symbol. I think it's wrong to hide that with
->>> macro magic and just assume that the macros won't reference it.
->>>
->>> If a symbol isn't being defined, it shouldn't be referenced in C code.:q
->>
->> A fair point, and that's what KASAN code has been doing for years.
->>
->>> The right way to do it is to have an #ifdef in a header that avoids
->>> compiling in the reference to the symbol.
->>
->> You mean defining some wrapper functions for p*d_populate_kernel() in
->> KASAN with different implementations based on ifdeffery?
-> 
-> That would work.
-> 
-> So would something like:
-> 
-> #if CONFIG_PGTABLE_LEVELS >= 4
-> extern p4d_t kasan_early_shadow_p4d[MAX_PTRS_PER_P4D];
-> #else
-> #define kasan_early_shadow_p4d NULL
-> #endif
-> 
-
-This won't work. It will fix the linker error, but will introduce runtime bug instead:
-
-lm_alias(kasan_early_shadow_p4d) -> __va(__phys_addr_symbol(NULL))
-
-On arm64:
-
-phys_addr_t __phys_addr_symbol(unsigned long x)
-	VIRTUAL_BUG_ON(x < (unsigned long) KERNEL_START ||
-		       x > (unsigned long) KERNEL_END);
-
-And NULL is < KERNEL_START.
-
-Since __phys_addr_symbol() isn't pure or const,  compiler has no right to eliminate such
-call even though the return value is unused.
+diff --git a/sound/soc/qcom/qdsp6/topology.c b/sound/soc/qcom/qdsp6/topology.c
+index ec51fabd98cb..c2226ed5164f 100644
+--- a/sound/soc/qcom/qdsp6/topology.c
++++ b/sound/soc/qcom/qdsp6/topology.c
+@@ -607,8 +607,8 @@ static int audioreach_widget_load_module_common(struct snd_soc_component *compon
+ 		return PTR_ERR(cont);
+ 
+ 	mod = audioreach_parse_common_tokens(apm, cont, &tplg_w->priv, w);
+-	if (IS_ERR(mod))
+-		return PTR_ERR(mod);
++	if (IS_ERR_OR_NULL(mod))
++		return mod ? PTR_ERR(mod) : -ENODEV;
+ 
+ 	mod->data = audioreach_get_module_priv_data(&tplg_w->priv);
+ 
+-- 
+2.50.0
 
 
