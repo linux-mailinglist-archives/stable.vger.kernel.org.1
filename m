@@ -1,119 +1,185 @@
-Return-Path: <stable+bounces-172868-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-172869-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 53DDDB345BF
-	for <lists+stable@lfdr.de>; Mon, 25 Aug 2025 17:27:57 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id A717BB345D1
+	for <lists+stable@lfdr.de>; Mon, 25 Aug 2025 17:32:01 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 5966D17FF82
-	for <lists+stable@lfdr.de>; Mon, 25 Aug 2025 15:27:55 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id A7DAC7A9993
+	for <lists+stable@lfdr.de>; Mon, 25 Aug 2025 15:30:25 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5F9772FD1A0;
-	Mon, 25 Aug 2025 15:27:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B12562FCBF1;
+	Mon, 25 Aug 2025 15:31:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=amazon.com header.i=@amazon.com header.b="MmUXfq8D"
+	dkim=pass (2048-bit key) header.d=sandeen.net header.i=@sandeen.net header.b="OzlF7xJ/";
+	dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b="Gi2ofYe3"
 X-Original-To: stable@vger.kernel.org
-Received: from pdx-out-010.esa.us-west-2.outbound.mail-perimeter.amazon.com (pdx-out-010.esa.us-west-2.outbound.mail-perimeter.amazon.com [52.12.53.23])
+Received: from fhigh-a2-smtp.messagingengine.com (fhigh-a2-smtp.messagingengine.com [103.168.172.153])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A3E0E2FCBE9;
-	Mon, 25 Aug 2025 15:27:40 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=52.12.53.23
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3C5F427703A;
+	Mon, 25 Aug 2025 15:31:46 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=103.168.172.153
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756135662; cv=none; b=bDk/4M3BD8xQdxvoQFAM3EaahcYyMBcVQS6wbCoorYF9/51wKxs/Eb7Tw68BdZCvYdbXjfwyfYfa9OmoBVQsC6qpnY0Sl7Zxj6kGIRL69Tm24eFHe5pJRL7DzpTZAAjouE9+c6SgwAa/UjjgdVtbIVGvTO/96sge+2zibvR6S9Y=
+	t=1756135910; cv=none; b=Aol1GIEQNdXG0s/nm1PAGECIGiGaQ+qqoreR1unEvJgaGVsphKuqRwHGOptKLKtHnsdbH3XNVmP9KrsNiJ8kSCBjPw24STH9gwXIaSuhpL126+29JbFHLomh64SX+bG4ZqlXA2Y+qvtuqOEM7FfitRPCU5Gy4oUEENqsRQTKGfo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756135662; c=relaxed/simple;
-	bh=9teZsTlxaiCMeOlbM7YIEPYnNGo5OqA0QqKK4+oc4Ns=;
-	h=From:To:CC:Subject:Date:Message-ID:MIME-Version:Content-Type; b=QUpOL9m+FxYKE3KosiQNV6I/xP6MaXk1qgWaYtnR7+8OjJfDBy1ejH8DlwENULHyqiU7B8BBwED+rJZb+JDkrQu0z48ApFoBGt5DVVCyV7Zz4LMDg+TTuSrclXC90QX+rlZV5Y20Rw2qugDFKWTsvdFYevzESNwqz46PYLCJ0X8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amazon.com; spf=pass smtp.mailfrom=amazon.com; dkim=pass (2048-bit key) header.d=amazon.com header.i=@amazon.com header.b=MmUXfq8D; arc=none smtp.client-ip=52.12.53.23
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amazon.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=amazon.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-  d=amazon.com; i=@amazon.com; q=dns/txt; s=amazoncorp2;
-  t=1756135660; x=1787671660;
-  h=from:to:cc:subject:date:message-id:mime-version:
-   content-transfer-encoding;
-  bh=pjR3IxmlegVTQ8y8i+n1XtxsAeGOstInWSOCpUqe+tk=;
-  b=MmUXfq8Dq6g8cjhuRgL9Fti7x/nIDO90WPT6MvX5gMNWBUE9pExtjljC
-   zHhG0mqY6wUEmNQaPORh0at5PForiH3q4Vb8ev0eZURs16LMyFoYFauma
-   FRgpJNY2nw/99Xo0sqLiih9VvhILCdt42ovroSCn/MLOylLFRnHIyoeRM
-   hkQVhxEgYj8DC2sScLSLRQgjC6U2jt8ogAoxbCtlHc9Ed06a7tvyyuW+B
-   DbYK+OGAnn4htRNYN92odRP+Gowfqc36TqbTWcs0oSG1Nt0ayQqe2ua+F
-   IkBObDqN3DpYSlq7lg+CCbYL1UaXj8sFeafdldUvvOJ+x12bOCQsjbQPe
-   g==;
-X-CSE-ConnectionGUID: ga3VzlrpSj+HL4YyCc3hVg==
-X-CSE-MsgGUID: aGHBHyP+SVyVvc1gK/EdTA==
-X-IronPort-AV: E=Sophos;i="6.18,213,1751241600"; 
-   d="scan'208";a="1635991"
-Received: from ip-10-5-9-48.us-west-2.compute.internal (HELO smtpout.naws.us-west-2.prod.farcaster.email.amazon.dev) ([10.5.9.48])
-  by internal-pdx-out-010.esa.us-west-2.outbound.mail-perimeter.amazon.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 25 Aug 2025 15:27:40 +0000
-Received: from EX19MTAUWB001.ant.amazon.com [10.0.21.151:23105]
- by smtpin.naws.us-west-2.prod.farcaster.email.amazon.dev [10.0.61.91:2525] with esmtp (Farcaster)
- id 1152cbe8-a41b-4717-b99d-7936b4c67de5; Mon, 25 Aug 2025 15:27:39 +0000 (UTC)
-X-Farcaster-Flow-ID: 1152cbe8-a41b-4717-b99d-7936b4c67de5
-Received: from EX19D001UWA001.ant.amazon.com (10.13.138.214) by
- EX19MTAUWB001.ant.amazon.com (10.250.64.248) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA) id 15.2.2562.17;
- Mon, 25 Aug 2025 15:27:39 +0000
-Received: from 6c7e67c92ceb.amazon.com (10.106.100.51) by
- EX19D001UWA001.ant.amazon.com (10.13.138.214) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA) id 15.2.2562.17;
- Mon, 25 Aug 2025 15:27:39 +0000
-From: Nathan Gao <zcgao@amazon.com>
-To: <stable@vger.kernel.org>
-CC: <regressions@lists.linux.dev>, <linux-fsdevel@vger.kernel.org>, Nathan Gao
-	<zcgao@amazon.com>
-Subject: [REGRESSION] fs: ERR_PTR dereference in expand_files() on v6.12.43
-Date: Mon, 25 Aug 2025 08:27:25 -0700
-Message-ID: <20250825152725.43133-1-zcgao@amazon.com>
-X-Mailer: git-send-email 2.39.5 (Apple Git-154)
+	s=arc-20240116; t=1756135910; c=relaxed/simple;
+	bh=zbWkyVXnxMSene78pmXJ8oBGvr2CDEba7oVxMzvFbn0=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=UP2Sbz9MUoyt9RoY266Z4b4BQ5mLRNVFAhCR/wHPGHBqCGSw3M6jlYaz2wZIBNwSmlJVK7l2kaymoSt8KxQ85zEhKD/qn0xmhNeAyuWTBhXd9alhB9KIf3B2clYMUml5q0xQds2LGj4QkDn/4Pjk2dBIUwKgFODx8s0J/C6ySvY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=sandeen.net; spf=pass smtp.mailfrom=sandeen.net; dkim=pass (2048-bit key) header.d=sandeen.net header.i=@sandeen.net header.b=OzlF7xJ/; dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b=Gi2ofYe3; arc=none smtp.client-ip=103.168.172.153
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=sandeen.net
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=sandeen.net
+Received: from phl-compute-09.internal (phl-compute-09.internal [10.202.2.49])
+	by mailfhigh.phl.internal (Postfix) with ESMTP id 5E58614000FB;
+	Mon, 25 Aug 2025 11:31:46 -0400 (EDT)
+Received: from phl-mailfrontend-01 ([10.202.2.162])
+  by phl-compute-09.internal (MEProxy); Mon, 25 Aug 2025 11:31:46 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=sandeen.net; h=
+	cc:cc:content-transfer-encoding:content-type:content-type:date
+	:date:from:from:in-reply-to:in-reply-to:message-id:mime-version
+	:references:reply-to:subject:subject:to:to; s=fm1; t=1756135906;
+	 x=1756222306; bh=pr7xK785ii+AwC3ghCIZynz3XkESPopY5hwOsvD1K8k=; b=
+	OzlF7xJ/zWmxrL9MCsyJF5UNTxAGmT1W2RIfjKeN7emldcmt65KB7XGK/YNWhPxw
+	RB4UkudIounVrBM/SlTX7W2i5mhjby4GvTnJ9bM6nsONwFHUuGFic55MVXkNVBIO
+	G+lIgdRfnp2uwrUXBpz96gn0wO46m36Imo2eRD9DZVkgHuvbNwOEKv2rNAgiYVVn
+	u2Ddv429+3Sdn8Js6yVqRNg8qANzTga7RARQgZcaC90aR3I1RMKEtrYDntqFjuNB
+	SQfv9/nNmNuK8wegf/Qonon7UksZiVvhnXime2YoLt6FwavRh02ejw7RqmSll6GL
+	jCiPVQ51FyI4gSOEfBZrxw==
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
+	messagingengine.com; h=cc:cc:content-transfer-encoding
+	:content-type:content-type:date:date:feedback-id:feedback-id
+	:from:from:in-reply-to:in-reply-to:message-id:mime-version
+	:references:reply-to:subject:subject:to:to:x-me-proxy
+	:x-me-sender:x-me-sender:x-sasl-enc; s=fm3; t=1756135906; x=
+	1756222306; bh=pr7xK785ii+AwC3ghCIZynz3XkESPopY5hwOsvD1K8k=; b=G
+	i2ofYe3bkmMSMY63SN+UJ3KR+wivBYi7uh64VyV9H3Kai1J9I44Ep/x3PlFBStg4
+	VdFnnQjkOmHkSBkBNGGIhgKuf/ijerXAZSr+XLUAPSAq5u8mdYDICHHf1IMf8kN6
+	1qrk3U83/IEBAlqeZgrD3sBNkkvZdMY2NJoGE71FShjnoarkdkbrJIjZzyNZXv56
+	+qR60KYqlebMCoKoEO8VQ9hNDCCjgL8/JI3L3vc7SVrO7yFnHQdkgHhy/HVB3S7S
+	ef1ixp8j8WmUIm2/LlLqsB5in9bvhs7WmFVSpR+FpjV5neexA8a3wZLZ+0bQZuu7
+	JnetgxUqAx3oLAOnIBUVg==
+X-ME-Sender: <xms:4oGsaAKigpfV9cJjdT0e3EERO6f66tFV8UDmrR-oO0iE7JQVptyYfw>
+    <xme:4oGsaD-buT0BzrRuQI5hLx1zp3QnP2nX_1AICygmKOHhqa7gtptKARleV3u02Eddd
+    EP-qDorlXlfsXuv_Ww>
+X-ME-Received: <xmr:4oGsaJwT4xtMViDOKKIwq_mXJmkqLwjwvlZ8CxGqsbY1yh3CnUwSXbjJimzuBQ>
+X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgeeffedrtdefgddujedvjeehucetufdoteggodetrf
+    dotffvucfrrhhofhhilhgvmecuhfgrshhtofgrihhlpdfurfetoffkrfgpnffqhgenuceu
+    rghilhhouhhtmecufedttdenucesvcftvggtihhpihgvnhhtshculddquddttddmnecujf
+    gurhepkfffgggfuffvvehfhfgjtgfgsehtjeertddtvdejnecuhfhrohhmpefgrhhitgcu
+    ufgrnhguvggvnhcuoehsrghnuggvvghnsehsrghnuggvvghnrdhnvghtqeenucggtffrrg
+    htthgvrhhnpeevieekueetfeeujedtheeffedvgeffiedvjeejleffhfeggeejuedtjeeu
+    lefhvdenucevlhhushhtvghrufhiiigvpedtnecurfgrrhgrmhepmhgrihhlfhhrohhmpe
+    hsrghnuggvvghnsehsrghnuggvvghnrdhnvghtpdhnsggprhgtphhtthhopeejpdhmohgu
+    vgepshhmthhpohhuthdprhgtphhtthhopehhtghhsehinhhfrhgruggvrggurdhorhhgpd
+    hrtghpthhtohepughjfihonhhgsehkvghrnhgvlhdrohhrghdprhgtphhtthhopehsrghn
+    uggvvghnsehrvgguhhgrthdrtghomhdprhgtphhtthhopehlihhnuhigqdigfhhssehvgh
+    gvrhdrkhgvrhhnvghlrdhorhhgpdhrtghpthhtohepugguohhufihsmhgrsehrvgguhhgr
+    thdrtghomhdprhgtphhtthhopegutghhihhnnhgvrhesrhgvughhrghtrdgtohhmpdhrtg
+    hpthhtohepshhtrggslhgvsehvghgvrhdrkhgvrhhnvghlrdhorhhg
+X-ME-Proxy: <xmx:4oGsaA7d97Lu0lJN1eC0hmDjl1yrUIQL9qHIPE-7C5mtMD0UHZhsrA>
+    <xmx:4oGsaA-udF-wiVGYTqrsKzONVss-OGhCGJbiAECH4rHhpwH6cgL69g>
+    <xmx:4oGsaFpUcIT1q6GuuqtcxPG_pydSudPNxR0OLG3aNteQfJ1b3_P4WA>
+    <xmx:4oGsaBrkfZM-nQZ9eCU0hkJAypiDLGSH3NhFFOT49cNFV5KFy5o3Zw>
+    <xmx:4oGsaE_6Wh2kIIZEfnpuzGGYLs7Fuc0SkvqgCIjzBQRcqFSNhdzwc1RZ>
+Feedback-ID: i2b59495a:Fastmail
+Received: by mail.messagingengine.com (Postfix) with ESMTPA; Mon,
+ 25 Aug 2025 11:31:45 -0400 (EDT)
+Message-ID: <b5e5de1d-5672-495d-b116-8531d66ca356@sandeen.net>
+Date: Mon, 25 Aug 2025 10:31:43 -0500
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Content-Type: text/plain
-X-ClientProxiedBy: EX19D039UWB001.ant.amazon.com (10.13.138.119) To
- EX19D001UWA001.ant.amazon.com (10.13.138.214)
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH] xfs: do not propagate ENODATA disk errors into xattr code
+To: Christoph Hellwig <hch@infradead.org>, "Darrick J. Wong"
+ <djwong@kernel.org>
+Cc: Eric Sandeen <sandeen@redhat.com>,
+ "linux-xfs@vger.kernel.org" <linux-xfs@vger.kernel.org>,
+ Donald Douwsma <ddouwsma@redhat.com>, Dave Chinner <dchinner@redhat.com>,
+ stable@vger.kernel.org
+References: <a896ce2b-1c3b-4298-a90c-c2c0e18de4cb@redhat.com>
+ <20250822152137.GE7965@frogsfrogsfrogs> <aKwW2gEnQdIdDONk@infradead.org>
+Content-Language: en-US
+From: Eric Sandeen <sandeen@sandeen.net>
+In-Reply-To: <aKwW2gEnQdIdDONk@infradead.org>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
 
-Hi,
+On 8/25/25 2:55 AM, Christoph Hellwig wrote:
+> On Fri, Aug 22, 2025 at 08:21:37AM -0700, Darrick J. Wong wrote:
+>> We only flag corruptions for these two error codes, but ENODATA from the
+>> block layer means "critical medium error".  I take that to mean the
+>> media has permanently lost whatever was persisted there, right?
+> 
+> It can also be a write error.  But yes, it's what EIO indidcates in
+> general.  Which is why I really think we should be doing something like
+> the patch below.  But as I don't have the time to fully shephed this
+> I'm not trying to block this hack, even if I think the issue will
+> continue to byte us in the future.
 
-I noticed an ERR_PTR dereference issue in expand_files() on kernel 6.12.43
-when allocating large file descriptor tables. The issue occurs when
-alloc_fdtable() returns ERR_PTR(-EMFILE) for large nr input, but
-expand_fdtable() is not properly checking these error returns. dup_fd()
-seems also have the issue, missing proper ERR_PTR handling.
+Right, as I said we need to do something like what you suggest, which
+is 100% fine by me.
 
-The ERR_PTR return was introduced by d4f9351243c1 ("fs: Prevent file
-descriptor table allocations exceeding INT_MAX") which adds INT_MAX limit
-check in alloc_fdtable().
+I'd just like a safe, very targeted fix merged first, to handle the
+currently observed and reported error. A bigger scope change pushed
+back to stable kernels has somewhat more risk, and I'd like to avoid
+that.
 
-I was able to trigger this with the unshare_test selftest:
+I'll work on something like this, and send another patch that's 
+something like "xfs: generalize block device error handling" or
+whatever, that effectively reverts the patch proposed by me, and
+adds this patch proposed by you.
 
-[   40.283906] BUG: unable to handle page fault for address: ffffffffffffffe8
-...
-[   40.287436] RIP: 0010:expand_files+0x7e/0x1c0
-...
-[   40.366211] Kernel panic - not syncing: Fatal exception
+If it soaks a little and has no regressions, I'd be happy to send the
+broader fix back to stable as well.
 
-Looking at the upstream kernel, this can be addressed by Al Viro's
-fdtable series [1], which added the ERR_PTR handling in this code path.
-Perhaps backporting this series, especially 1d3b4be ("alloc_fdtable():
-change calling conventions.") would help resolve the issue.
+Thanks,
+-Eric
 
-Thanks for all the work on stable tree.
+> diff --git a/fs/xfs/xfs_buf.c b/fs/xfs/xfs_buf.c
+> index f9ef3b2a332a..0252faf038aa 100644
+> --- a/fs/xfs/xfs_buf.c
+> +++ b/fs/xfs/xfs_buf.c
+> @@ -1290,6 +1290,22 @@ xfs_bwrite(
+>  	return error;
+>  }
+>  
+> +static int
+> +xfs_buf_bio_status(
+> +	struct bio		*bio)
+> +{
+> +	switch (bio->bi_status) {
+> +	case BLK_STS_OK:
+> +		return 0;
+> +	case BLK_STS_NOSPC:
+> +		return -ENOSPC;
+> +	case BLK_STS_OFFLINE:
+> +		return -ENODEV;
+> +	default:
+> +		return -EIO;
+> +	}
+> +}
+> +
+>  static void
+>  xfs_buf_bio_end_io(
+>  	struct bio		*bio)
+> @@ -1297,7 +1313,7 @@ xfs_buf_bio_end_io(
+>  	struct xfs_buf		*bp = bio->bi_private;
+>  
+>  	if (bio->bi_status)
+> -		xfs_buf_ioerror(bp, blk_status_to_errno(bio->bi_status));
+> +		xfs_buf_ioerror(bp, xfs_buf_bio_status(bio));
+>  	else if ((bp->b_flags & XBF_WRITE) && (bp->b_flags & XBF_ASYNC) &&
+>  		 XFS_TEST_ERROR(false, bp->b_mount, XFS_ERRTAG_BUF_IOERROR))
+>  		xfs_buf_ioerror(bp, -EIO);
+> 
 
-Best,
-Nathan Gao
 
-[1] https://lore.kernel.org/all/20241007173912.GR4017910@ZenIV/
-
-Signed-off-by: Nathan Gao <zcgao@amazon.com>
--- 
-2.47.3
 
 
