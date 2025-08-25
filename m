@@ -1,95 +1,87 @@
-Return-Path: <stable+bounces-172771-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-172772-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id CA53DB3347B
-	for <lists+stable@lfdr.de>; Mon, 25 Aug 2025 05:28:02 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1C5BEB3347E
+	for <lists+stable@lfdr.de>; Mon, 25 Aug 2025 05:30:57 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 0D9827AD83A
-	for <lists+stable@lfdr.de>; Mon, 25 Aug 2025 03:26:27 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id A19913B98EF
+	for <lists+stable@lfdr.de>; Mon, 25 Aug 2025 03:30:55 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2392A23BCF8;
-	Mon, 25 Aug 2025 03:27:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B08001F2BB8;
+	Mon, 25 Aug 2025 03:30:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="MapA4Qaj"
+	dkim=pass (2048-bit key) header.d=wbinvd.org header.i=@wbinvd.org header.b="Eg/EtFSH"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-wr1-f49.google.com (mail-wr1-f49.google.com [209.85.221.49])
+Received: from mail-pl1-f171.google.com (mail-pl1-f171.google.com [209.85.214.171])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2F7CA18FC91;
-	Mon, 25 Aug 2025 03:27:52 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.49
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BF57F28E7
+	for <stable@vger.kernel.org>; Mon, 25 Aug 2025 03:30:49 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.171
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756092474; cv=none; b=ULuc6xElAIsarPd2oWVQRX1vE0cNPSc7SOV6eCS8eqTUGXX4BxsbLkxz2cgV62K3C1AxQPrPk2HmZ5zevgN8v2A3utbJnukf72j6pAo+3bhRtGk4AhvqejYwOht50HeO2Io2QlVbqe1bAHomX6hR4JwKTKkRj6mxj00Gy4fWU00=
+	t=1756092651; cv=none; b=mqVFC3PhkzW4ICE/tNPErZTKHB+azS4hSxIhaKB07c/Q++hweMVL02TZ1VMjc8I0WVni4NvwhmpcWGiMupG8WACtQr7TjHNtivfBmq1/gPHCq0/WlfM2CE9TgroHCHBIcsHOovQkju0wtFdThjpvSdql27xCJo6Jm12dteRVuBw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756092474; c=relaxed/simple;
-	bh=nUxe3lSxwuyyKWXdqrX6byaN+Kz7apsi4XZf32m/e3s=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Os2zfFOJBeLLQNfVZg9lO40lOT64k8IstDRXSI9oeVIn3BAsT3XlZiGoUDrqmvUFljXIzj0doUwCQUnXZ371uTmJzTF3ejnM0LMP1JtWsTfa5YKuJKMLETAIGSq7Pcu1O1ZYL8UFnPJP7lS7xNX0VFMDU625w9SFRDz30/azBcE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=MapA4Qaj; arc=none smtp.client-ip=209.85.221.49
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-wr1-f49.google.com with SMTP id ffacd0b85a97d-3c6ae25978bso1489346f8f.0;
-        Sun, 24 Aug 2025 20:27:52 -0700 (PDT)
+	s=arc-20240116; t=1756092651; c=relaxed/simple;
+	bh=20Ly0v4mf5I3GvJq4vdI6Ezg4VLhRM+gZjB7CZkqRY8=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=ltQGCsz5c0RIg0jY/CDwhShPk5fUNP6/KVGCHLLflLH1I5peQeCP3dlcY/HGvgdexj2AjCpunMXcyL3dzczi2FRsdadTsBFCdFAvKTEKaX1FC7WsqawxoKRFXGwNJehagVCUhvaG8EYQbcv6CLR9nUU2CnmDqBR4GC4OYISq3TA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=wbinvd.org; spf=pass smtp.mailfrom=wbinvd.org; dkim=pass (2048-bit key) header.d=wbinvd.org header.i=@wbinvd.org header.b=Eg/EtFSH; arc=none smtp.client-ip=209.85.214.171
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=wbinvd.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=wbinvd.org
+Received: by mail-pl1-f171.google.com with SMTP id d9443c01a7336-246648f833aso11389805ad.3
+        for <stable@vger.kernel.org>; Sun, 24 Aug 2025 20:30:49 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1756092471; x=1756697271; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=jerr00v6pjlEVXRP5Dl23B9B9cCcjX8VSV7tuhNw5dk=;
-        b=MapA4QajtaD9eiAMqSEwm4HgIZ5OypZGRsOBnPR86ANBSxSQzgDIm8/8smSDwGUqZd
-         zzOB8ECuPX507rCIqds/DwTPWy+1fzLRijGl5aHZuy+PA+1s9e6Vx5xng63xTXdFBqFp
-         6V27AJL+f+6H0vQyOKe63oaKCdyE6hj3B+Bs8PvlHXOb+Tthj+nBlnnsBoGrTKA3l1yg
-         C89qRE3iue3cuEGbwiUl73Qj8rwWYf3Nx8dSL+zL7+rIcP0lVtC9qsGb8WC70/qYjwow
-         v746A1y09AMIomOglbm6JA8AkcgUGwW1+AiHeUznDb0r9mmgdYWlPqK/Qz0tnpvSbL9J
-         aqZg==
+        d=wbinvd.org; s=wbinvd; t=1756092649; x=1756697449; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=WOG7Pn5iOjR9eaz+H8Eol5Ftxa06sNkeSd4gzYS0v7s=;
+        b=Eg/EtFSH3FTcYKGvQ7moCCddvsH1/2HWXHuG+EryC58U8H+9VmUpsPdykFZMisb+40
+         ff1SaNaTq0a0Qnhy93U1LrUlHsxefCah6SZf/Ep0P4Ca3VbN6561VaIMO9418P0h2RLZ
+         EFx/EdsXFfQ5dcqwsHfrL3asa+9HZnreroEXxrafpfGGGrmkH8tflaJjlTq35IIANogk
+         /rm/gQmIxiGGij1j7NtOKg2Zuzb3BA4ex6s3GuqsL+7n+93EiLGJ12adiOYUIF2eOpf4
+         s/CnoRxW9GuyiIkQCPxZB5xBUM7sshIaM8zbEbXWx0YtVsHuNhHy33MSykrZ4mkCPI4D
+         HB2A==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1756092471; x=1756697271;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=jerr00v6pjlEVXRP5Dl23B9B9cCcjX8VSV7tuhNw5dk=;
-        b=po70ZakFSKuh24TN7AKlwqXOekdW8wnHs8oE6i8rcBiLK1fgzmCd7Rr42jRW+ikZXZ
-         sjLBJR0JU7ZZmeyM00SIO8UMrvrClPEbL4Rw8bJtlggAJs3VrKbApDx7CsGteAY3fntQ
-         UpxKKWy0gMoD9pMIF0cRP9IZ+nRaUkiJmgd6r+fkoV4hdoEJQOzPd/jOKfle7HcYtWyC
-         TSm8mHMbtkNsH0Mm5z45AFrqiSFFzAPBy+4fg9xbuQtobrvxnXkxEIQNw8yRNj3bHYlf
-         DfcDl07QfbYnvYGtt8r43qbAYps9cYav5fk7o8GHA87k8l0Z0ohovyCD2mCknVqAVXRW
-         9oRg==
-X-Forwarded-Encrypted: i=1; AJvYcCWqgPITBaNz7gmJ+am++Y3cQaW4EVWb0c7Fg7r3BCOiKyr8a5ri330fPqIvitts3eXx0G72pSoSNsgKcc8=@vger.kernel.org, AJvYcCX9a3ubQdJLsaZHQBuepJfTUIxrvgQN+OmA6csM0JmxFVe3JYQyp9h8VwauPqJEkpDGEmdZTPed@vger.kernel.org
-X-Gm-Message-State: AOJu0YyzluzClP0+avF61k/LupZimVIhmu8zAXeWRXF3QYBIQtXPsbki
-	aa1rWycubzGP87ll8Usa7HBrtxS03TrYQ7vDciX+IVdEW7A6rsUTqp3n
-X-Gm-Gg: ASbGncvqSiLzbhyNL1eRmjEY3gMHsMc4T6KHcb0o9f+ms+OTeqsEf0L7XNz7v+TM31R
-	ZCMTqYZvvRjnMPPIILekVohLfTSLxInGw8H8wBMO1eBA6tCpeBOEweNJ6qxKn/lopGCBNc50KIa
-	2VlFZLqd13tJOxwYoXtvaduoddewQpZipxH2H4DTCJ4ZmtiknSrpxoYObulwl2+xZvuhfoFnQf9
-	PI2P7BXn3VLMi+o2s4Lflx3B3nOsaipXZU8ui5OemKD3pkSBIgJJavWSNf33VzZhmF8DIedEzEo
-	mso3+3LeEj0PjZ7bTnNS8vGARyHdAmYgdZisbPx7bUvjHq7w1jIRYwTSAAnTqyPsrhv7lofAlq0
-	NPUUHyvyqN84=
-X-Google-Smtp-Source: AGHT+IH5v4zWHRqDVHmkLqW/uf+Xt5VdTLSGqts9jlByiTv9ftfD5HIUCezlI9NHZqMoOMQWCAbb3Q==
-X-Received: by 2002:a05:6000:238a:b0:3b6:1a8c:569f with SMTP id ffacd0b85a97d-3c5dac171cemr7429530f8f.1.1756092471145;
-        Sun, 24 Aug 2025 20:27:51 -0700 (PDT)
-Received: from EBJ9932692.tcent.cn ([2a09:0:1:2::302c])
-        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-3c7116e1397sm9533947f8f.49.2025.08.24.20.27.46
-        (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
-        Sun, 24 Aug 2025 20:27:50 -0700 (PDT)
-From: Lance Yang <ioworker0@gmail.com>
-To: fthain@linux-m68k.org
-Cc: akpm@linux-foundation.org,
-	geert@linux-m68k.org,
-	lance.yang@linux.dev,
-	linux-kernel@vger.kernel.org,
-	mhiramat@kernel.org,
-	oak@helsinkinet.fi,
-	peterz@infradead.org,
-	stable@vger.kernel.org,
-	will@kernel.org
-Subject: Re: [PATCH] atomic: Specify natural alignment for atomic_t
-Date: Mon, 25 Aug 2025 11:27:43 +0800
-Message-ID: <20250825032743.80641-1-ioworker0@gmail.com>
-X-Mailer: git-send-email 2.49.0
-In-Reply-To: <7d9554bfe2412ed9427bf71ce38a376e06eb9ec4.1756087385.git.fthain@linux-m68k.org>
-References: <7d9554bfe2412ed9427bf71ce38a376e06eb9ec4.1756087385.git.fthain@linux-m68k.org>
+        d=1e100.net; s=20230601; t=1756092649; x=1756697449;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=WOG7Pn5iOjR9eaz+H8Eol5Ftxa06sNkeSd4gzYS0v7s=;
+        b=mKrLzyhUJyzW+tHpnphjJvavtqVWGc7LrIIpWZ2skWgbRIL3cK4u2i+htNb1Rj9e9e
+         f6ycfHrPm4WSqTxjMqiaQHJLo5qqroDuqhFS5A95v0Fn+NBudKDkKtAjavTQWPlnUScs
+         jGrCXc+Fwg8YTlBMlQo3JNYWVEkVtspYpQ3ccXZuR103HJDKbzWZ9hxVblnTz9O3YPnn
+         O/kH3NWAoUZLrzvQ29Ip+dmAN4ssYVtVugpfTqzEZBhEkkNeU1YG7jVcxvcgiydYY8k4
+         ODg1OFxeWIY3AAUlWwVoe1ewFoykYqRKeaZnRVqVwd+7HelWJLI0InNag+eXte9ZWm1k
+         uW0A==
+X-Gm-Message-State: AOJu0Yw+OSIi/OL1F5Zb+cpC43xmQPjqmd6zne52mJFODVtWRSu3q8uB
+	08QaddhhTE+BR0W7Vxxf3BFi+SpK5mCxCk2+goWDWZCGtygniXaqsV0t6dG+zolOgT+VdXSZibI
+	PeegM5XM=
+X-Gm-Gg: ASbGncvRq0eblSe8G6N7YBvH0vt21tjwVEp3ZKYIBwwyr8Na7V5ksiWLbZ1BX+Kybwr
+	9UN0kLwEJzuWCKRoyMlx3tO3IHCgooz0geyLKTyBKIAy4ta/id64STJcnvKV2qqkqxnziGzwRtg
+	FKEEBLtkDEd/qKzDXutxUL7uckFNR4h7yI+tR4XfP6jTeDTFO+pSDZ+xu7iLcVtBQVRfr+91mXj
+	xmRnOFq/aCNTfmAWz/5OfGMkWFF6pHNEAs7DxruIzi+Z44PYu5cIL/afrNlaOK7gvPqq9me8GJW
+	RX8BAjigFTWlBglWjsCgcODh40BFKMCoGl15Gc86xFIfIyc1H7gv0P7ZCdpaNIapQR2YQ/2ogYQ
+	2vwc+DNu5+gOb+u2Scvti0Rj1
+X-Google-Smtp-Source: AGHT+IGvcaAkL3l4PMeONMCzfeiQBSuzJcoTy2Iz5VXJqSXE8Bv8ULxvPsZwU4/I4xcnfIxM1AZCKw==
+X-Received: by 2002:a17:903:2ad0:b0:246:b93b:9739 with SMTP id d9443c01a7336-246b93b9d0bmr30873635ad.22.1756092648980;
+        Sun, 24 Aug 2025 20:30:48 -0700 (PDT)
+Received: from mozart.vkv.me ([192.184.167.117])
+        by smtp.gmail.com with ESMTPSA id 41be03b00d2f7-b49d2f0206dsm4214150a12.48.2025.08.24.20.30.47
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Sun, 24 Aug 2025 20:30:48 -0700 (PDT)
+From: Calvin Owens <calvin@wbinvd.org>
+To: stable@vger.kernel.org
+Cc: jedrzej.jagielski@intel.com,
+	anthony.l.nguyen@intel.com,
+	David.Kaplan@amd.com,
+	dhowells@redhat.com,
+	kyle.leet@gmail.com
+Subject: [PATCH 6.16.y 1/2] devlink: let driver opt out of automatic phys_port_name generation
+Date: Sun, 24 Aug 2025 20:30:13 -0700
+Message-ID: <20597f81c1439569e34d026542365aef1cedfb00.1756088250.git.calvin@wbinvd.org>
+X-Mailer: git-send-email 2.47.2
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -98,81 +90,72 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-Hi Finn,
+From: Jedrzej Jagielski <jedrzej.jagielski@intel.com>
 
-Nice work, thanks for your patch!
+[ Upstream commit c5ec7f49b480db0dfc83f395755b1c2a7c979920 ]
 
-On 2025/8/25 10:03, Finn Thain wrote:
-> Some recent commits incorrectly assumed the natural alignment of locks.
-> That assumption fails on Linux/m68k (and, interestingly, would have failed
-> on Linux/cris also). This leads to spurious warnings from the hang check
-> code. Fix this bug by adding the necessary 'aligned' attribute.
-> 
-> Cc: Andrew Morton <akpm@linux-foundation.org>
-> Cc: Geert Uytterhoeven <geert@linux-m68k.org>
-> Cc: Lance Yang <lance.yang@linux.dev>
-> Cc: Masami Hiramatsu <mhiramat@kernel.org>
-> Cc: Eero Tamminen <oak@helsinkinet.fi>
-> Cc: Peter Zijlstra <peterz@infradead.org>
-> Cc: Will Deacon <will@kernel.org>
-> Cc: stable@vger.kernel.org
-> Reported-by: Eero Tamminen <oak@helsinkinet.fi>
-> Closes: https://lore.kernel.org/lkml/CAMuHMdW7Ab13DdGs2acMQcix5ObJK0O2dG_Fxzr8_g58Rc1_0g@mail.gmail.com/
-> Fixes: e711faaafbe5 ("hung_task: replace blocker_mutex with encoded blocker")
-> Signed-off-by: Finn Thain <fthain@linux-m68k.org>
-> ---
-> I tested this on m68k using GCC and it fixed the problem for me. AFAIK,
-> the other architectures naturally align ints already so I'm expecting to
-> see no effect there.
+Currently when adding devlink port, phys_port_name is automatically
+generated within devlink port initialization flow. As a result adding
+devlink port support to driver may result in forced changes of interface
+names, which breaks already existing network configs.
 
-Yeah, it is the correct approach for the spurious warnings on architectures
-like m68k, where the natural alignment of types can be less than 4 bytes.
+This is an expected behavior but in some scenarios it would not be
+preferable to provide such limitation for legacy driver not being able to
+keep 'pre-devlink' interface name.
 
-> ---
->   include/linux/types.h | 2 +-
->   1 file changed, 1 insertion(+), 1 deletion(-)
-> 
-> diff --git a/include/linux/types.h b/include/linux/types.h
-> index 6dfdb8e8e4c3..cd5b2b0f4b02 100644
-> --- a/include/linux/types.h
-> +++ b/include/linux/types.h
-> @@ -179,7 +179,7 @@ typedef phys_addr_t resource_size_t;
->   typedef unsigned long irq_hw_number_t;
->   
->   typedef struct {
-> -	int counter;
-> +	int counter __aligned(sizeof(int));
->   } atomic_t;
->   
->   #define ATOMIC_INIT(i) { (i) }
+Add flag no_phys_port_name to devlink_port_attrs struct which indicates
+if devlink should not alter name of interface.
 
-However, as we've seen from the kernel test robot's report on mt6660_chip,
-this won't solve the cases where a lock is forced to be unaligned by
-#pragma pack(1). That will still trigger warnings, IIUC.
+Suggested-by: Jiri Pirko <jiri@resnulli.us>
+Link: https://lore.kernel.org/all/nbwrfnjhvrcduqzjl4a2jafnvvud6qsbxlvxaxilnryglf4j7r@btuqrimnfuly/
+Signed-off-by: Jedrzej Jagielski <jedrzej.jagielski@intel.com>
+Signed-off-by: Tony Nguyen <anthony.l.nguyen@intel.com>
+Cc: stable@vger.kernel.org # 6.16
+Tested-By: Calvin Owens <calvin@wbinvd.org>
+Signed-off-by: Calvin Owens <calvin@wbinvd.org>
+---
+ include/net/devlink.h | 6 +++++-
+ net/devlink/port.c    | 2 +-
+ 2 files changed, 6 insertions(+), 2 deletions(-)
 
-Perhaps we should also apply the follwoing?
+diff --git a/include/net/devlink.h b/include/net/devlink.h
+index 0091f23a40f7..af3fd45155dd 100644
+--- a/include/net/devlink.h
++++ b/include/net/devlink.h
+@@ -78,6 +78,9 @@ struct devlink_port_pci_sf_attrs {
+  * @flavour: flavour of the port
+  * @split: indicates if this is split port
+  * @splittable: indicates if the port can be split.
++ * @no_phys_port_name: skip automatic phys_port_name generation; for
++ *		       compatibility only, newly added driver/port instance
++ *		       should never set this.
+  * @lanes: maximum number of lanes the port supports. 0 value is not passed to netlink.
+  * @switch_id: if the port is part of switch, this is buffer with ID, otherwise this is NULL
+  * @phys: physical port attributes
+@@ -87,7 +90,8 @@ struct devlink_port_pci_sf_attrs {
+  */
+ struct devlink_port_attrs {
+ 	u8 split:1,
+-	   splittable:1;
++	   splittable:1,
++	   no_phys_port_name:1;
+ 	u32 lanes;
+ 	enum devlink_port_flavour flavour;
+ 	struct netdev_phys_item_id switch_id;
+diff --git a/net/devlink/port.c b/net/devlink/port.c
+index 939081a0e615..cb8d4df61619 100644
+--- a/net/devlink/port.c
++++ b/net/devlink/port.c
+@@ -1519,7 +1519,7 @@ static int __devlink_port_phys_port_name_get(struct devlink_port *devlink_port,
+ 	struct devlink_port_attrs *attrs = &devlink_port->attrs;
+ 	int n = 0;
+ 
+-	if (!devlink_port->attrs_set)
++	if (!devlink_port->attrs_set || devlink_port->attrs.no_phys_port_name)
+ 		return -EOPNOTSUPP;
+ 
+ 	switch (attrs->flavour) {
+-- 
+2.47.2
 
-diff --git a/include/linux/hung_task.h b/include/linux/hung_task.h
-index 34e615c76ca5..940f8f3558f6 100644
---- a/include/linux/hung_task.h
-+++ b/include/linux/hung_task.h
-@@ -45,7 +45,7 @@ static inline void hung_task_set_blocker(void *lock, unsigned long type)
- 	 * If the lock pointer matches the BLOCKER_TYPE_MASK, return
- 	 * without writing anything.
- 	 */
--	if (WARN_ON_ONCE(lock_ptr & BLOCKER_TYPE_MASK))
-+	if (lock_ptr & BLOCKER_TYPE_MASK)
- 		return;
-
- 	WRITE_ONCE(current->blocker, lock_ptr | type);
-@@ -53,8 +53,6 @@ static inline void hung_task_set_blocker(void *lock, unsigned long type)
-
- static inline void hung_task_clear_blocker(void)
- {
--	WARN_ON_ONCE(!READ_ONCE(current->blocker));
--
- 	WRITE_ONCE(current->blocker, 0UL);
- }
-
-Let the feature gracefully do nothing on that ;)
 
