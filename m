@@ -1,165 +1,125 @@
-Return-Path: <stable+bounces-172878-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-172879-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 83AD8B34967
-	for <lists+stable@lfdr.de>; Mon, 25 Aug 2025 19:55:36 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 77FB5B34A0A
+	for <lists+stable@lfdr.de>; Mon, 25 Aug 2025 20:17:43 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 1087B1A807B7
-	for <lists+stable@lfdr.de>; Mon, 25 Aug 2025 17:55:22 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 293A71B25AB7
+	for <lists+stable@lfdr.de>; Mon, 25 Aug 2025 18:17:35 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6FBE4305E29;
-	Mon, 25 Aug 2025 17:54:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 035463101DE;
+	Mon, 25 Aug 2025 18:15:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="ajEUK1Ti"
+	dkim=pass (1024-bit key) header.d=zohomail.com header.i=safinaskar@zohomail.com header.b="SK233mkq"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-pg1-f179.google.com (mail-pg1-f179.google.com [209.85.215.179])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from sender4-pp-o95.zoho.com (sender4-pp-o95.zoho.com [136.143.188.95])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B568E3019CD;
-	Mon, 25 Aug 2025 17:54:54 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.215.179
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756144496; cv=none; b=FEKOOQVcESG4yPUaFQHi1iKxxN0TcEMIgc0aiodfynbUWqN/P8PsuWXOfHoilMqZ3W4d66mgV6VeNphHFIJMllRGVPuWOqYcb09883r+6Gax56dLqcsx1tf0d3xMyRAr8+xyl4YTuqdqybDxWy/tK06ghM4uQayypt5eZsxDj8U=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756144496; c=relaxed/simple;
-	bh=Jo0jztRLJE2KbbyR4ObT+rd1uD7ix0PGgyGFcQ8Xtmk=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=QjbHVIYomX9xVAOahahH2O2av7LEJNdigWxkveI2fqrtKl4je+oMbyXjwtx2k+iGp/7d53DxQeTiBrr3qJkBV8L8EnEUmDoWSNwJws2atB46XPpvzY8HR/5bLgSsRs/wg/zD9qTJEvaungZRH7TCJApqqmxB70SmovXsLZ4bZ6c=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=ajEUK1Ti; arc=none smtp.client-ip=209.85.215.179
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-pg1-f179.google.com with SMTP id 41be03b00d2f7-b47174aec0eso3046358a12.2;
-        Mon, 25 Aug 2025 10:54:54 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1756144494; x=1756749294; darn=vger.kernel.org;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
-        bh=PALG1f/QrrclDqeCnjMHSh9ak08P++xF1J9dcSjVu/Q=;
-        b=ajEUK1TiWYalIXLmifonDfcDzINhzTWK6j3sIQ0z6IEu/RNolmr9C+gfHPkTMT9Ns6
-         nH8cpVsiQMXgjTGvdMVoKDI4Z/t6yYwWjYf5yAvnUG5rif69skJbggekyDZ0lvSlErOA
-         /+76tpPWVwJ73Fr6dXJAWhFzjItumIxpcFjvV9riRK629INu9Y5qfqarCwojG1Fhrb1I
-         AknARJrZLm/dgPu4zDF0BmyV2JA+8bGqDFFGFAdLu5Fi8sfbbff/SN2j7bm4BE87hSNL
-         HgFkueOwyy/o1ZoIOR6OmtCO+myj8erXnt9HZvMro9flIMXdQ3BVg4gVm8Hfa4uGA9Qi
-         kFnA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1756144494; x=1756749294;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=PALG1f/QrrclDqeCnjMHSh9ak08P++xF1J9dcSjVu/Q=;
-        b=edCiMbjRvN/MzAtVW07w+VYo8TrZUEUg1txZvuG5x8+MKYeK2YrHMSN/Q4ZiIRKQpx
-         zQsIsnXHygwgNyQpH4b0np6EPhvwdBL41APRR7ZM88h7SWLyNsI4H29O2UZZfhBUPFRa
-         LM/QSZevL2ui9paFTg+jI4rqWo/vW8I28ZleftfQuJ8caTAA2SNO2xszEDOEaKp496qv
-         OG9AVv+G88MXMq9PMVCGIuLoWLhizoKXNDcHnHzgfl7Djpge6k+p1ymQ63uKAh3g3vQt
-         rNdX3h48iCgqWXo1Hz3EPSqdfysSnw1V74DtsNbW3A0rOJXY/EoLKjZs7mbcXACVXsfW
-         0zpg==
-X-Forwarded-Encrypted: i=1; AJvYcCVIBRb0GVqP27Vhb8U1wLzJYTpYrJJ29UOrqYkO43iZ1hvbj6yQU3Mv3W8XxKRU8JhU58BsHHvltLJDiXA=@vger.kernel.org, AJvYcCXpq9RVZh6scfGuIlnGoLcUB6YDZlhTJ3s7bEO3azcm0DyWbUSbJKBDWAZJlSUaT4W0L7Nb2kDc@vger.kernel.org
-X-Gm-Message-State: AOJu0YwwoW8QGMXhIJ04LPb8Ltzopd7U1ZKaa+ZqnfSrnHntCNnD8fMe
-	nJP6qGUWe3P1X4RKeGRHgacyge1AkteAcSGPiPd9u+kBw6yyDCerl+uT8Cncv2mn
-X-Gm-Gg: ASbGncsCZzWzmer8Q7UYf/Yjt0nDq1OcwZ5cLukqHKZ7+Pt2XuvlLOSPDZHRXwniWWH
-	kblYMgvBRjGTyYGAnpVD1XGdbYBcgW7QHTwgo4V8Bl+8hJm3vOIYl60P2u2KXaZVkRq4OzGV/h1
-	CjvIeZ4p40PGv7WFwD/+E4qc3426Cs8BAlkyq95zrufuLDlif6rvMIglqaF2ZyFQZTLB+wyMNgm
-	mpdiA45EFVxlpjlfpR/ZrOVm56QfSqXWMhNUw4bCQjK6/baA6EpuSLuS1Rf8PfyKSXgWvG6ZAzD
-	S3h5TPGJo/SQpxTVnyO2c37suRkdJA9qzInUBTjmms2Ds8lPTaOP7ntMinoW3JqCOm3k9V2NReo
-	8oIXKyQrHcVlVt9FNKLkXBd54nOdn1av1NFE5dkYfsRa/g8I70AvvK6iQ53Fc
-X-Google-Smtp-Source: AGHT+IHqyWefoCtbS0gX6KgX4uuDcl9YGbvjxjelXwm8qZs/hpL1be/XcwM8tdZuLvSL5dxbQ4v1JQ==
-X-Received: by 2002:a17:902:ef01:b0:240:52c8:2552 with SMTP id d9443c01a7336-2462ef6f40dmr182941865ad.43.1756144493845;
-        Mon, 25 Aug 2025 10:54:53 -0700 (PDT)
-Received: from visitorckw-System-Product-Name ([140.113.216.168])
-        by smtp.gmail.com with ESMTPSA id d9443c01a7336-2466885efc8sm73686345ad.90.2025.08.25.10.54.51
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 25 Aug 2025 10:54:53 -0700 (PDT)
-Date: Tue, 26 Aug 2025 01:54:49 +0800
-From: Kuan-Wei Chiu <visitorckw@gmail.com>
-To: Vlastimil Babka <vbabka@suse.cz>
-Cc: akpm@linux-foundation.org, cl@gentwo.org, rientjes@google.com,
-	roman.gushchin@linux.dev, harry.yoo@oracle.com, glittao@gmail.com,
-	jserv@ccns.ncku.edu.tw, linux-mm@kvack.org,
-	linux-kernel@vger.kernel.org, stable@vger.kernel.org,
-	Joshua Hahn <joshua.hahnjy@gmail.com>
-Subject: Re: [PATCH 1/2] mm/slub: Fix cmp_loc_by_count() to return 0 when
- counts are equal
-Message-ID: <aKyjaTUneWQgwsV5@visitorckw-System-Product-Name>
-References: <20250825013419.240278-1-visitorckw@gmail.com>
- <20250825013419.240278-2-visitorckw@gmail.com>
- <eb2fa38c-d963-4466-8702-e7017557e718@suse.cz>
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2FF6B30AAD7;
+	Mon, 25 Aug 2025 18:15:23 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=136.143.188.95
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1756145732; cv=pass; b=Wkvn6YiXzFbNsog7eRI4eWrT7VmfW2yoDdFOtyR/OJ7ThnJyeaNOlqOcNVskRmH2zT+TxVx183tvFZOPIHMCw/EGD+MgHmgtwna5FZ3Q3VzBou6oRmsclWQk2ZJqbRVgzi8OzhiQ+1AejRnRswtfjBmV9poonx7kR+F36g26hvE=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1756145732; c=relaxed/simple;
+	bh=QSuJFG9WEOu7hrAhCZO92w8PGwNMTMIRZ431SGwMOyQ=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=hDHVvb3OgApAK1I6AzoW9/EVVEvnR4dfa0V1f7Ar4/N06ZPOTEXcLibHQ6CeZOAJSVYkqizioQlepcNS0ZwewdfrCJaOdHkrwi6ZPtIdZW3/JaOSPOF+YYgLO2XXiG3zoL0+giUrpfO6vJdGkFLJ07NvznTmnJr31vJZSoz2XcE=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=zohomail.com; spf=pass smtp.mailfrom=zohomail.com; dkim=pass (1024-bit key) header.d=zohomail.com header.i=safinaskar@zohomail.com header.b=SK233mkq; arc=pass smtp.client-ip=136.143.188.95
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=zohomail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=zohomail.com
+ARC-Seal: i=1; a=rsa-sha256; t=1756145584; cv=none; 
+	d=zohomail.com; s=zohoarc; 
+	b=Agb4Disii1aOKD0QGJCGIclW1/jOqIjvnNQNrV9qM+Sbtg2OzjrJ/WxKNdXlDZ+xqmzONfgu6stZdICovFFOp6e981e8tKSwbgpEQkMGDty7V/jBABphOs5dKCcRkSbCPl4GzNpUWLsPFtSCOMEhULjW/Bv0D31il4QTjVHbFNQ=
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=zohomail.com; s=zohoarc; 
+	t=1756145584; h=Content-Transfer-Encoding:Cc:Cc:Date:Date:From:From:In-Reply-To:MIME-Version:Message-ID:References:Subject:Subject:To:To:Message-Id:Reply-To; 
+	bh=JlC3DgQSXz1hIeG6AMRPoFdwWbDvOMu8QglF3XjZpik=; 
+	b=B4s1FuS2sCQr9kXH6/7aG4wUbxH3nVgxEGZsl2xjQPPq6BPOLmJdlCjjHojb8Dc5dqLLKstRPJPHgNCEjwgdpb2hjILZE2/NlcVoBkiYVluCBSUNf9c6oCeaWUVM210xRXRT2BF/GgUjSkkEjzR8ICYyo9WzWsOeDZoldjy6pUs=
+ARC-Authentication-Results: i=1; mx.zohomail.com;
+	dkim=pass  header.i=zohomail.com;
+	spf=pass  smtp.mailfrom=safinaskar@zohomail.com;
+	dmarc=pass header.from=<safinaskar@zohomail.com>
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; t=1756145584;
+	s=zm2022; d=zohomail.com; i=safinaskar@zohomail.com;
+	h=From:From:To:To:Cc:Cc:Subject:Subject:Date:Date:Message-ID:In-Reply-To:References:MIME-Version:Content-Transfer-Encoding:Feedback-ID:Message-Id:Reply-To;
+	bh=JlC3DgQSXz1hIeG6AMRPoFdwWbDvOMu8QglF3XjZpik=;
+	b=SK233mkqloN9Bb6HdpCjwQFBWnXiXjDpDhGpvyg6QEOeyz7yXaOYDiztrSE4kuwa
+	arc9mf0qEpUQWzxbwAVyD9ftMxi54tstCv9B8ZP+yu/umzF6+eoqYHm4e61PNSbuewb
+	ANJPWgrBLuWlhJHEbHHQCCDUpNN5SEFUvlnk8WJA=
+Received: by mx.zohomail.com with SMTPS id 1756145580669449.3528756808671;
+	Mon, 25 Aug 2025 11:13:00 -0700 (PDT)
+From: Askar Safin <safinaskar@zohomail.com>
+To: Alexander Viro <viro@zeniv.linux.org.uk>,
+	Christian Brauner <brauner@kernel.org>,
+	Jan Kara <jack@suse.cz>
+Cc: linux-fsdevel@vger.kernel.org,
+	David Howells <dhowells@redhat.com>,
+	cyphar@cyphar.com,
+	Ian Kent <raven@themaw.net>,
+	autofs mailing list <autofs@vger.kernel.org>,
+	patches@lists.linux.dev,
+	stable@vger.kernel.org
+Subject: [PATCH v2 4/4] openat2: don't trigger automounts with RESOLVE_NO_XDEV
+Date: Mon, 25 Aug 2025 18:12:33 +0000
+Message-ID: <20250825181233.2464822-5-safinaskar@zohomail.com>
+X-Mailer: git-send-email 2.47.2
+In-Reply-To: <20250825181233.2464822-1-safinaskar@zohomail.com>
+References: <20250825181233.2464822-1-safinaskar@zohomail.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <eb2fa38c-d963-4466-8702-e7017557e718@suse.cz>
+Content-Transfer-Encoding: 8bit
+Feedback-ID: rr08011227bb229794dc1e7f0bd79612fe000065eefe797c6f42aaa0d3a50188bf1faf0d872d330211ac8a8f:zu0801122788997f44b63b81177147c6b5000074ee63011c9a870dc19350f050d68c8a5d87dd474dd09f7aba:rf0801122c949435d49ef9dfd721dd97ed00005c4e911c980755f326c1ade71c02278950f69665d2f53edaa7f93762540b:ZohoMail
+X-ZohoMailClient: External
 
-Hi Vlastimil,
+openat2 had a bug: if we pass RESOLVE_NO_XDEV, then openat2
+doesn't traverse through automounts, but may still trigger them.
+(See the link for full bug report with reproducer.)
 
-On Mon, Aug 25, 2025 at 07:28:17PM +0200, Vlastimil Babka wrote:
-> On 8/25/25 03:34, Kuan-Wei Chiu wrote:
-> > The comparison function cmp_loc_by_count() used for sorting stack trace
-> > locations in debugfs currently returns -1 if a->count > b->count and 1
-> > otherwise. This breaks the antisymmetry property required by sort(),
-> > because when two counts are equal, both cmp(a, b) and cmp(b, a) return
-> > 1.
-> 
-> Good catch.
-> 
-> > This can lead to undefined or incorrect ordering results. Fix it by
-> 
-> Wonder if it can really affect anything in practice other than swapping
-> needlessly some records with an equal count?
-> 
-It could result in some elements being incorrectly ordered, similar to
-what happened before in ACPI causing issues with s2idle [1][2]. But in
-this case, the worst impact is just the display order not matching the
-count, so it's not too critical.
+This commit fixes this bug.
 
-[1]: https://lore.kernel.org/lkml/70674dc7-5586-4183-8953-8095567e73df@gmail.com/
-[2]: https://lore.kernel.org/lkml/20240701205639.117194-1-visitorckw@gmail.com/
+Link: https://lore.kernel.org/linux-fsdevel/20250817075252.4137628-1-safinaskar@zohomail.com/
+Fixes: fddb5d430ad9fa91b49b1 ("open: introduce openat2(2) syscall")
+Reviewed-by: Aleksa Sarai <cyphar@cyphar.com>
+Cc: <stable@vger.kernel.org>
+Signed-off-by: Askar Safin <safinaskar@zohomail.com>
+---
+ fs/namei.c | 8 ++++++++
+ 1 file changed, 8 insertions(+)
 
-> > explicitly returning 0 when the counts are equal, ensuring that the
-> > comparison function follows the expected mathematical properties.
-> 
-> Agreed with the cmp_int() suggestion for a v2.
-> 
-I'll make that change in v2.
+diff --git a/fs/namei.c b/fs/namei.c
+index c23e5a076ab3..bfa8232b94dc 100644
+--- a/fs/namei.c
++++ b/fs/namei.c
+@@ -1449,6 +1449,10 @@ static int follow_automount(struct path *path, int *count, unsigned lookup_flags
+ 	    dentry->d_inode)
+ 		return -EISDIR;
+ 
++	/* No need to trigger automounts if mountpoint crossing is disabled. */
++	if (lookup_flags & LOOKUP_NO_XDEV)
++		return -EXDEV;
++
+ 	if (count && (*count)++ >= MAXSYMLINKS)
+ 		return -ELOOP;
+ 
+@@ -1472,6 +1476,10 @@ static int __traverse_mounts(struct path *path, unsigned flags, bool *jumped,
+ 		/* Allow the filesystem to manage the transit without i_rwsem
+ 		 * being held. */
+ 		if (flags & DCACHE_MANAGE_TRANSIT) {
++			if (lookup_flags & LOOKUP_NO_XDEV) {
++				ret = -EXDEV;
++				break;
++			}
+ 			ret = path->dentry->d_op->d_manage(path, false);
+ 			flags = smp_load_acquire(&path->dentry->d_flags);
+ 			if (ret < 0)
+-- 
+2.47.2
 
-> > Fixes: 553c0369b3e1 ("mm/slub: sort debugfs output by frequency of stack traces")
-> > Cc: stable@vger.kernel.org
-> 
-> I don't think it can cause any serious bugs so Cc: stable is unnecessary.
-> 
-I'll drop it in v2.
-
-Regards,
-Kuan-Wei
-
-> > Signed-off-by: Kuan-Wei Chiu <visitorckw@gmail.com>
-> 
-> Thanks!
-> 
-> > ---
-> >  mm/slub.c | 3 ++-
-> >  1 file changed, 2 insertions(+), 1 deletion(-)
-> > 
-> > diff --git a/mm/slub.c b/mm/slub.c
-> > index 30003763d224..c91b3744adbc 100644
-> > --- a/mm/slub.c
-> > +++ b/mm/slub.c
-> > @@ -7718,8 +7718,9 @@ static int cmp_loc_by_count(const void *a, const void *b, const void *data)
-> >  
-> >  	if (loc1->count > loc2->count)
-> >  		return -1;
-> > -	else
-> > +	if (loc1->count < loc2->count)
-> >  		return 1;
-> > +	return 0;
-> >  }
-> >  
-> >  static void *slab_debugfs_start(struct seq_file *seq, loff_t *ppos)
-> 
 
