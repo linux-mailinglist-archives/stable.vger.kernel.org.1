@@ -1,55 +1,56 @@
-Return-Path: <stable+bounces-173116-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-174521-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4D67FB35BE2
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 13:29:08 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 182CBB3638D
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 15:31:04 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 19435167F72
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 11:23:42 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 3804A1BC61D6
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 13:25:31 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7D8D0227599;
-	Tue, 26 Aug 2025 11:23:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 674921EF39E;
+	Tue, 26 Aug 2025 13:23:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="IE688jYU"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="uus6FkV3"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3AC1C245012;
-	Tue, 26 Aug 2025 11:23:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 250D628FD;
+	Tue, 26 Aug 2025 13:23:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756207413; cv=none; b=AaLM7xWHdI/heZOKws1ZkR7Hp9TZRUBwW6ycBFiENdhpQDUTIa2ypp+nUvwmoenTfy+s+Lo1UJa9aq0MzIEYMxt6j3u0XMCTTAiNE0DapXmLRyEp7haYQh6OCBucWn91X6hbnkKTgIQu3/kGEnZX7unU1uvzO6ru//9wBvXaSZY=
+	t=1756214612; cv=none; b=WQfmJpFwsWtn3SJqHDty2TF7d1uoyLgiomIGxRIRHlBAwHX6BRLuGdcNfPc3qDRmaUpaExt5m2wLxezdRoAx/S/ygejKA3fkR3pc8XuC8Wakt825kGXXPAtPl2pGoenHQQGa8GW5XwS0JTQwoMAcYpOeMzb6Y5m9BhGakLpvMiE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756207413; c=relaxed/simple;
-	bh=NXoFARUjflh7aMqkKVlWDBbgnBNDDtomCWHeeEq/s6U=;
+	s=arc-20240116; t=1756214612; c=relaxed/simple;
+	bh=it1E0wnhqoXT4MYn9zZAMX2HDOh0ANsgNK8riaz4sZ4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=LVLWVbiaxdb3MyexRvtQgG/ch/ZybLkhxtQg633nptEth0MMfxkT0oiz2otbaXAa/5cfl5/PiIvXvcRb7Mx41jVUKUA4h7ZEe2Jctd3Op7D0VnWH4b1cGFtKkLcRBOipLdg8FtXAfRAU2LEuKx4Gb52NbjyiYI9I0mLi4CkLHnw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=IE688jYU; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 79484C4CEF1;
-	Tue, 26 Aug 2025 11:23:32 +0000 (UTC)
+	 MIME-Version; b=BaVROhyW29RWj94K0ALPnM12/kue7nHpUYuP+/YSRRlIP9wi1vBrC78C45+8I6DCsOzck45AOpJ79pFjtwX+utbwqjR7vOYKdv/4aud1mb8wG/sCU+N7mPI5Wls1YV4/7dIy8ACQPe8bLeKj//SmRKMT5o5UEn61aScf67HnGo8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=uus6FkV3; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id AB92BC4CEF1;
+	Tue, 26 Aug 2025 13:23:31 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1756207412;
-	bh=NXoFARUjflh7aMqkKVlWDBbgnBNDDtomCWHeeEq/s6U=;
+	s=korg; t=1756214612;
+	bh=it1E0wnhqoXT4MYn9zZAMX2HDOh0ANsgNK8riaz4sZ4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=IE688jYUnN1Dr134c/cKdqbO1OFlZpNX80tZaRAIfI0kKPQArgtYgHojEhXbguaXh
-	 NnftHPEVK5TxU929az4YiEzYSPDmNCwNF2su7tQIuMxdI3JGKpaqAD0gbO+O+D/ygk
-	 HHkVeMGeA+PSKPYLaDW05Q8ZpnaW85xnRyyLUSlA=
+	b=uus6FkV3jBc2ketSWFAvQ2fdEaAl7CHhdI7rD6VFOqj4+PbINT6cMsJ6uUeL6B2Cd
+	 hvuBniDacKpUEQd7Wiu/+KEVaSqbJ0Cveu1qxoc42QwG9E0JyAUqfy9S+vTr5lV2cR
+	 FEPGFPL/54XJv7Mr8djqMaMLEcZeMYqwi9Trug7I=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Alex Deucher <alexander.deucher@amd.com>,
-	Mario Limonciello <mario.limonciello@amd.com>
-Subject: [PATCH 6.16 172/457] drm/amd: Restore cached power limit during resume
+	Wolfram Sang <wsa+renesas@sang-engineering.com>,
+	Hans Verkuil <hverkuil@xs4all.nl>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.1 203/482] media: usb: hdpvr: disable zero-length read messages
 Date: Tue, 26 Aug 2025 13:07:36 +0200
-Message-ID: <20250826110941.627201471@linuxfoundation.org>
+Message-ID: <20250826110935.803215441@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250826110937.289866482@linuxfoundation.org>
-References: <20250826110937.289866482@linuxfoundation.org>
+In-Reply-To: <20250826110930.769259449@linuxfoundation.org>
+References: <20250826110930.769259449@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,45 +62,51 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.16-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Mario Limonciello <mario.limonciello@amd.com>
+From: Wolfram Sang <wsa+renesas@sang-engineering.com>
 
-commit ed4efe426a49729952b3dc05d20e33b94409bdd1 upstream.
+[ Upstream commit b5ae5a79825ba8037b0be3ef677a24de8c063abf ]
 
-The power limit will be cached in smu->current_power_limit but
-if the ASIC goes into S3 this value won't be restored.
+This driver passes the length of an i2c_msg directly to
+usb_control_msg(). If the message is now a read and of length 0, it
+violates the USB protocol and a warning will be printed. Enable the
+I2C_AQ_NO_ZERO_LEN_READ quirk for this adapter thus forbidding 0-length
+read messages altogether.
 
-Restore the value during SMU resume.
-
-Acked-by: Alex Deucher <alexander.deucher@amd.com>
-Link: https://lore.kernel.org/r/20250725031222.3015095-2-superm1@kernel.org
-Signed-off-by: Mario Limonciello <mario.limonciello@amd.com>
-Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
-(cherry picked from commit 26a609e053a6fc494403e95403bc6a2470383bec)
-Cc: stable@vger.kernel.org
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Signed-off-by: Wolfram Sang <wsa+renesas@sang-engineering.com>
+Signed-off-by: Hans Verkuil <hverkuil@xs4all.nl>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/amd/pm/swsmu/amdgpu_smu.c |    6 ++++++
+ drivers/media/usb/hdpvr/hdpvr-i2c.c | 6 ++++++
  1 file changed, 6 insertions(+)
 
---- a/drivers/gpu/drm/amd/pm/swsmu/amdgpu_smu.c
-+++ b/drivers/gpu/drm/amd/pm/swsmu/amdgpu_smu.c
-@@ -2175,6 +2175,12 @@ static int smu_resume(struct amdgpu_ip_b
+diff --git a/drivers/media/usb/hdpvr/hdpvr-i2c.c b/drivers/media/usb/hdpvr/hdpvr-i2c.c
+index 070559b01b01..54956a8ff15e 100644
+--- a/drivers/media/usb/hdpvr/hdpvr-i2c.c
++++ b/drivers/media/usb/hdpvr/hdpvr-i2c.c
+@@ -165,10 +165,16 @@ static const struct i2c_algorithm hdpvr_algo = {
+ 	.functionality = hdpvr_functionality,
+ };
  
- 	adev->pm.dpm_enabled = true;
- 
-+	if (smu->current_power_limit) {
-+		ret = smu_set_power_limit(smu, smu->current_power_limit);
-+		if (ret && ret != -EOPNOTSUPP)
-+			return ret;
-+	}
++/* prevent invalid 0-length usb_control_msg */
++static const struct i2c_adapter_quirks hdpvr_quirks = {
++	.flags = I2C_AQ_NO_ZERO_LEN_READ,
++};
 +
- 	dev_info(adev->dev, "SMU is resumed successfully!\n");
+ static const struct i2c_adapter hdpvr_i2c_adapter_template = {
+ 	.name   = "Hauppauge HD PVR I2C",
+ 	.owner  = THIS_MODULE,
+ 	.algo   = &hdpvr_algo,
++	.quirks = &hdpvr_quirks,
+ };
  
- 	return 0;
+ static int hdpvr_activate_ir(struct hdpvr_device *dev)
+-- 
+2.39.5
+
 
 
 
