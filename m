@@ -1,58 +1,56 @@
-Return-Path: <stable+bounces-172982-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-174387-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 34883B35B28
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 13:19:47 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5A9CDB3628B
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 15:20:04 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 4BD351BA0BD4
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 11:19:12 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 45A1C7B419D
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 13:18:28 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2CCD533A002;
-	Tue, 26 Aug 2025 11:17:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D57CC241673;
+	Tue, 26 Aug 2025 13:17:35 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="B2ypz6/8"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="V0YlscSv"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C86B7338F3F;
-	Tue, 26 Aug 2025 11:17:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 75B12278771;
+	Tue, 26 Aug 2025 13:17:35 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756207067; cv=none; b=awI68GCl+yS/x8ins8FHpr1o3KNr+kZBr+pn/U91Gah4LpetNHq3vvwzwofWAJq8beNMpWL9lLIdjZ6dll5NOw/bAoF7RUZij/guCkJRHelLqGs9OOgPZrhcb9yNWlxavYtQxX/ERFLAfB8yR+/mAPpPK/AsP6YUwylGiT0VPio=
+	t=1756214255; cv=none; b=baMUHZpePeTN8wL7ubhJ/TpK/Y9hmna01Why38IkhdL3mDEOSXOBJlUZt/7ky8T54gQxDCntp2zpPk5lAIPbXmUmPuBKK3EkSBsWjUbR8crR6IkFQ3gm31Qh/TbykhkJuA7uu7WA7UJUnSZ1MziIkqARgn+ZqQo9ArVH3pzmDQQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756207067; c=relaxed/simple;
-	bh=2qwVv6+sX6PG0gNsN8RTeUIrKUouVzQcHdWNy8I+tzI=;
+	s=arc-20240116; t=1756214255; c=relaxed/simple;
+	bh=AUq1ins058+lvWXiWVQE8sDUskOkQv3hx3rfZoBaKS8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=gGCKCS5RSrCr8qwFigDU91q+DVbaTVzGgbERxQrGfCSe4ZoYp/eyZ/v5YRORBsOOJo2pGL8it5poSGQjsbIwVin0C+5lTBxu5Uut1NjSTnRDUaMp5Ol1H46Y0y7XuZGI5H/fsMJpoAQjX9Hz1DeD4oAWrV294jDCYdmFdzRfbnc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=B2ypz6/8; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 55F57C116B1;
-	Tue, 26 Aug 2025 11:17:47 +0000 (UTC)
+	 MIME-Version; b=pftaaoK6vv8eB3lJCTGJIQizP2S5PeaKPrdH31UYjfGtlHbrnvo1/INhSRCZiYkjZSjNUWhC9hUq471TlTTuXavtA8TgVUwXKG52BF5xLjP8+BHCNKol7T0oMYk/6+DpTrdgrcuMS3JOwgvTLEtLaMoBFGqqGnGsMO3Vwv8Vmlc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=V0YlscSv; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 068CEC4CEF1;
+	Tue, 26 Aug 2025 13:17:34 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1756207067;
-	bh=2qwVv6+sX6PG0gNsN8RTeUIrKUouVzQcHdWNy8I+tzI=;
+	s=korg; t=1756214255;
+	bh=AUq1ins058+lvWXiWVQE8sDUskOkQv3hx3rfZoBaKS8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=B2ypz6/85O1/+P/edDb1DtM0NqMxhsWJ4poHzoTStYduK/WxuKzG3fSDnK5XqyA7q
-	 0ueaFr88IX8m0NN1XgbTsvqV69Qx9Agf++Khoo8y1xG0aM6WcFmu8vvYSxZM6XDc13
-	 SQurzZUPDIpIB+GWA8jW7gL2kKSDfd7UBG7zzAqI=
+	b=V0YlscSv2DFfB9rLAXKQp8xFmhmL623yJykLDHwA6utJnR6FTOlu0wurayzY13+gT
+	 GpmnBIgfaFDGEieFruMgASZAmYKSy80GT3zfexyqr9JS+e58hDOEno094YmWlcjAMF
+	 klEWsPR8G5F2AxpfgJvJBhCs1awtLXh7cqoizlsI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Andreas Dilger <adilger@whamcloud.com>,
-	Li Dongyang <dongyangli@ddn.com>,
-	Alex Zhuravlev <bzzz@whamcloud.com>,
-	Oleg Drokin <green@whamcloud.com>,
-	Theodore Tso <tytso@mit.edu>
-Subject: [PATCH 6.16 038/457] ext4: check fast symlink for ea_inode correctly
+	Mario Limonciello <mario.limonciello@amd.com>,
+	Mathias Nyman <mathias.nyman@linux.intel.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.1 069/482] usb: xhci: Avoid showing warnings for dying controller
 Date: Tue, 26 Aug 2025 13:05:22 +0200
-Message-ID: <20250826110938.287890823@linuxfoundation.org>
+Message-ID: <20250826110932.540944858@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250826110937.289866482@linuxfoundation.org>
-References: <20250826110937.289866482@linuxfoundation.org>
+In-Reply-To: <20250826110930.769259449@linuxfoundation.org>
+References: <20250826110930.769259449@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,68 +62,60 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.16-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Andreas Dilger <adilger@dilger.ca>
+From: Mario Limonciello <mario.limonciello@amd.com>
 
-commit b4cc4a4077268522e3d0d34de4b2dc144e2330fa upstream.
+[ Upstream commit 65fc0fc137b5da3ee1f4ca4f61050fcb203d7582 ]
 
-The check for a fast symlink in the presence of only an
-external xattr inode is incorrect.  If a fast symlink does
-not have an xattr block (i_file_acl == 0), but does have
-an external xattr inode that increases inode i_blocks, then
-the check for a fast symlink will incorrectly fail and
-__ext4_iget()->ext4_ind_check_inode() will report the inode
-is corrupt when it "validates" i_data[] on the next read:
+When a USB4 dock is unplugged from a system it won't respond to ring
+events. The PCI core handles the surprise removal event and notifies
+all PCI drivers. The XHCI PCI driver sets a flag that the device is
+being removed, and when the device stops responding a flag is also
+added to indicate it's dying.
 
-    # ln -s foo /mnt/tmp/bar
-    # setfattr -h -n trusted.test \
-               -v "$(yes | head -n 4000)" /mnt/tmp/bar
-    # umount /mnt/tmp
-    # mount /mnt/tmp
-    # ls -l /mnt/tmp
-    ls: cannot access '/mnt/tmp/bar': Structure needs cleaning
-    total 4
-     ? l?????????? ? ?    ?        ?            ? bar
-    # dmesg | tail -1
-    EXT4-fs error (device dm-8): __ext4_iget:5098:
-        inode #24578: block 7303014: comm ls: invalid block
+When that flag is set don't bother to show warnings about a missing
+controller.
 
-(note that "block 7303014" = 0x6f6f66 = "foo" in LE order).
-
-ext4_inode_is_fast_symlink() should check the superblock
-EXT4_FEATURE_INCOMPAT_EA_INODE feature flag, not the inode
-EXT4_EA_INODE_FL, since the latter is only set on the xattr
-inode itself, and not on the inode that uses this xattr.
-
-Cc: stable@vger.kernel.org
-Fixes: fc82228a5e38 ("ext4: support fast symlinks from ext3 file systems")
-Signed-off-by: Andreas Dilger <adilger@whamcloud.com>
-Reviewed-by: Li Dongyang <dongyangli@ddn.com>
-Reviewed-by: Alex Zhuravlev <bzzz@whamcloud.com>
-Reviewed-by: Oleg Drokin <green@whamcloud.com>
-Reviewed-on: https://review.whamcloud.com/59879
-Lustre-bug-id: https://jira.whamcloud.com/browse/LU-19121
-Link: https://patch.msgid.link/20250717063709.757077-1-adilger@dilger.ca
-Signed-off-by: Theodore Ts'o <tytso@mit.edu>
+Signed-off-by: Mario Limonciello <mario.limonciello@amd.com>
+Signed-off-by: Mathias Nyman <mathias.nyman@linux.intel.com>
+Acked-by: Mathias Nyman <mathias.nyman@linux.intel.com>
+Link: https://lore.kernel.org/r/20250717073107.488599-3-mathias.nyman@linux.intel.com
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/ext4/inode.c |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/usb/host/xhci.c | 6 ++++--
+ 1 file changed, 4 insertions(+), 2 deletions(-)
 
---- a/fs/ext4/inode.c
-+++ b/fs/ext4/inode.c
-@@ -146,7 +146,7 @@ static inline int ext4_begin_ordered_tru
-  */
- int ext4_inode_is_fast_symlink(struct inode *inode)
- {
--	if (!(EXT4_I(inode)->i_flags & EXT4_EA_INODE_FL)) {
-+	if (!ext4_has_feature_ea_inode(inode->i_sb)) {
- 		int ea_blocks = EXT4_I(inode)->i_file_acl ?
- 				EXT4_CLUSTER_SIZE(inode->i_sb) >> 9 : 0;
+diff --git a/drivers/usb/host/xhci.c b/drivers/usb/host/xhci.c
+index e726c5edee03..a5ce544860b8 100644
+--- a/drivers/usb/host/xhci.c
++++ b/drivers/usb/host/xhci.c
+@@ -119,7 +119,8 @@ int xhci_halt(struct xhci_hcd *xhci)
+ 	ret = xhci_handshake(&xhci->op_regs->status,
+ 			STS_HALT, STS_HALT, XHCI_MAX_HALT_USEC);
+ 	if (ret) {
+-		xhci_warn(xhci, "Host halt failed, %d\n", ret);
++		if (!(xhci->xhc_state & XHCI_STATE_DYING))
++			xhci_warn(xhci, "Host halt failed, %d\n", ret);
+ 		return ret;
+ 	}
  
+@@ -178,7 +179,8 @@ int xhci_reset(struct xhci_hcd *xhci, u64 timeout_us)
+ 	state = readl(&xhci->op_regs->status);
+ 
+ 	if (state == ~(u32)0) {
+-		xhci_warn(xhci, "Host not accessible, reset failed.\n");
++		if (!(xhci->xhc_state & XHCI_STATE_DYING))
++			xhci_warn(xhci, "Host not accessible, reset failed.\n");
+ 		return -ENODEV;
+ 	}
+ 
+-- 
+2.39.5
+
 
 
 
