@@ -1,69 +1,58 @@
-Return-Path: <stable+bounces-174196-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-175855-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4AB08B36207
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 15:15:08 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id CDE3EB36A8B
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 16:38:30 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id D7EE52A2424
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 13:09:55 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 7C74AA00605
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 14:24:02 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2171E260586;
-	Tue, 26 Aug 2025 13:09:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B59482459F3;
+	Tue, 26 Aug 2025 14:22:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="m+fdK+Vl"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="PH/+eK2H"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D387D246790;
-	Tue, 26 Aug 2025 13:09:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6E13F223335;
+	Tue, 26 Aug 2025 14:22:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756213748; cv=none; b=K51lUTAOH3I9SmiZsFntsZ0cTdVpTDbqtF/A7JJjHfiQIn7rd0OXSc8rU7G3n+DkKryvUqU87xZoZFSWTT0+e4wHzDSxdr/jGPrLY1BT91AAwQIbvwjPKRWS2Y1dl1T9Qclvt4qxWctcjxF2uHQGpO2+zbaK566R5lc7OpK9g14=
+	t=1756218146; cv=none; b=kSdDIzBGGXzZDcgTF38PunPYn2VUDMn654vquB3ex5mVmsbp7vsqyIAm+h/UzYOM2hn2vZfiWeEcUiQTo/RuruhD8mxh8OTta9HGiXcD57M8Z2aaVwwjFG/lb7bEazFIBAheVMclfu08RutwC9Hm3TpeoA8D1Q0xqNWWWP5D4d0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756213748; c=relaxed/simple;
-	bh=Yc01BcGpTTx95SftQKnWxGXeJLnekvUkyMM+GxE90a4=;
+	s=arc-20240116; t=1756218146; c=relaxed/simple;
+	bh=KUIfdNYZhV4saauaYjR3K47k3D06iF2bxT76Rh7efj8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=mrm7YPB2GGqYWu5+wSyHkrue0sTRdUgP2btr/eEyxLiCz7XhgqNEvVGyMg6Mx+hIYwniJgytKnxSavca7HMxwwsbWq9t0sJAiQk/KTwOY1d641jwdNkibVehFvJd2DmU92nStwIjQzOee0TyWYFx6zGvQQ1EH9KLBeI6CKe8q6g=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=m+fdK+Vl; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D747FC116D0;
-	Tue, 26 Aug 2025 13:09:06 +0000 (UTC)
+	 MIME-Version; b=rCEtpDgAmMf6UEv4khrEOHDX5upr+7vYHknfJRH/MRA2dFWd9vm52lY8coYnWzCVoTfL5xNKiV5SAiBAbrzTsX2t6LIMg124G+3iB0P1rlP8YXhBB2266QfeK6R1wr34c7JJ9VB3M/BCpfLzeX5k88BHg8p7yxwg+4TFV/GC0DA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=PH/+eK2H; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id F36EBC4CEF1;
+	Tue, 26 Aug 2025 14:22:25 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1756213747;
-	bh=Yc01BcGpTTx95SftQKnWxGXeJLnekvUkyMM+GxE90a4=;
+	s=korg; t=1756218146;
+	bh=KUIfdNYZhV4saauaYjR3K47k3D06iF2bxT76Rh7efj8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=m+fdK+VlahkolvRF72OPA6Iuso7cKw1YSnAdf4RDBDZ15dbngU+jHNDCuX2V8ixkq
-	 iqpVMP4VIjSSjmyKlWJ/U5OkzGfuozLmEIhoxHKJ3pT64hpT1D5TAwA8blEgTFkB+f
-	 ddZkWNe/o9x+9PfCYyX/m8NH+QKsYfDiW9EixssY=
+	b=PH/+eK2HaTkfmorOAzFx1rpnBoxGPeD3jb43DXZfa/AH6v7i8TRQWMpIm7q13vYx5
+	 hMwtegMubjcolKHM0Bku/sFT9FH0zhg2pDmekCkqFrXPWaNsqlbyHzbreeTY85tOaN
+	 iOoiXcN2C/Yeo0Ff05o4vmHRQzcA1I0c8vss6Ghw=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Anshuman Khandual <anshuman.khandual@arm.com>,
-	David Hildenbrand <david@redhat.com>,
-	Dev Jain <dev.jain@arm.com>,
-	Catalin Marinas <catalin.marinas@arm.com>,
-	Will Deacon <will@kernel.org>,
-	Ryan Roberts <ryan.roberts@arm.com>,
-	Paul Walmsley <paul.walmsley@sifive.com>,
-	Palmer Dabbelt <palmer@dabbelt.com>,
-	Alexander Gordeev <agordeev@linux.ibm.com>,
-	Gerald Schaefer <gerald.schaefer@linux.ibm.com>,
-	Heiko Carstens <hca@linux.ibm.com>,
-	Vasily Gorbik <gor@linux.ibm.com>,
-	Christian Borntraeger <borntraeger@linux.ibm.com>,
-	Sven Schnelle <svens@linux.ibm.com>,
-	Andrew Morton <akpm@linux-foundation.org>,
+	Andrei Vagin <avagin@gmail.com>,
+	Pavel Tikhomirov <ptikhomirov@virtuozzo.com>,
+	Christian Brauner <brauner@kernel.org>,
+	Al Viro <viro@zeniv.linux.org.uk>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 464/587] mm/ptdump: take the memory hotplug lock inside ptdump_walk_pgd()
+Subject: [PATCH 5.10 403/523] use uniform permission checks for all mount propagation changes
 Date: Tue, 26 Aug 2025 13:10:13 +0200
-Message-ID: <20250826111004.784116141@linuxfoundation.org>
+Message-ID: <20250826110934.399132849@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250826110952.942403671@linuxfoundation.org>
-References: <20250826110952.942403671@linuxfoundation.org>
+In-Reply-To: <20250826110924.562212281@linuxfoundation.org>
+References: <20250826110924.562212281@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -75,116 +64,108 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Anshuman Khandual <anshuman.khandual@arm.com>
+From: Al Viro <viro@zeniv.linux.org.uk>
 
-commit 59305202c67fea50378dcad0cc199dbc13a0e99a upstream.
+[ Upstream commit cffd0441872e7f6b1fce5e78fb1c99187a291330 ]
 
-Memory hot remove unmaps and tears down various kernel page table regions
-as required.  The ptdump code can race with concurrent modifications of
-the kernel page tables.  When leaf entries are modified concurrently, the
-dump code may log stale or inconsistent information for a VA range, but
-this is otherwise not harmful.
+do_change_type() and do_set_group() are operating on different
+aspects of the same thing - propagation graph.  The latter
+asks for mounts involved to be mounted in namespace(s) the caller
+has CAP_SYS_ADMIN for.  The former is a mess - originally it
+didn't even check that mount *is* mounted.  That got fixed,
+but the resulting check turns out to be too strict for userland -
+in effect, we check that mount is in our namespace, having already
+checked that we have CAP_SYS_ADMIN there.
 
-But when intermediate levels of kernel page table are freed, the dump code
-will continue to use memory that has been freed and potentially
-reallocated for another purpose.  In such cases, the ptdump code may
-dereference bogus addresses, leading to a number of potential problems.
+What we really need (in both cases) is
+	* only touch mounts that are mounted.  That's a must-have
+constraint - data corruption happens if it get violated.
+	* don't allow to mess with a namespace unless you already
+have enough permissions to do so (i.e. CAP_SYS_ADMIN in its userns).
 
-To avoid the above mentioned race condition, platforms such as arm64,
-riscv and s390 take memory hotplug lock, while dumping kernel page table
-via the sysfs interface /sys/kernel/debug/kernel_page_tables.
+That's an equivalent of what do_set_group() does; let's extract that
+into a helper (may_change_propagation()) and use it in both
+do_set_group() and do_change_type().
 
-Similar race condition exists while checking for pages that might have
-been marked W+X via /sys/kernel/debug/kernel_page_tables/check_wx_pages
-which in turn calls ptdump_check_wx().  Instead of solving this race
-condition again, let's just move the memory hotplug lock inside generic
-ptdump_check_wx() which will benefit both the scenarios.
-
-Drop get_online_mems() and put_online_mems() combination from all existing
-platform ptdump code paths.
-
-Link: https://lkml.kernel.org/r/20250620052427.2092093-1-anshuman.khandual@arm.com
-Fixes: bbd6ec605c0f ("arm64/mm: Enable memory hot remove")
-Signed-off-by: Anshuman Khandual <anshuman.khandual@arm.com>
-Acked-by: David Hildenbrand <david@redhat.com>
-Reviewed-by: Dev Jain <dev.jain@arm.com>
-Acked-by: Alexander Gordeev <agordeev@linux.ibm.com>	[s390]
-Cc: Catalin Marinas <catalin.marinas@arm.com>
-Cc: Will Deacon <will@kernel.org>
-Cc: Ryan Roberts <ryan.roberts@arm.com>
-Cc: Paul Walmsley <paul.walmsley@sifive.com>
-Cc: Palmer Dabbelt <palmer@dabbelt.com>
-Cc: Alexander Gordeev <agordeev@linux.ibm.com>
-Cc: Gerald Schaefer <gerald.schaefer@linux.ibm.com>
-Cc: Heiko Carstens <hca@linux.ibm.com>
-Cc: Vasily Gorbik <gor@linux.ibm.com>
-Cc: Christian Borntraeger <borntraeger@linux.ibm.com>
-Cc: Sven Schnelle <svens@linux.ibm.com>
-Cc: <stable@vger.kernel.org>
-Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
+Fixes: 12f147ddd6de "do_change_type(): refuse to operate on unmounted/not ours mounts"
+Acked-by: Andrei Vagin <avagin@gmail.com>
+Reviewed-by: Pavel Tikhomirov <ptikhomirov@virtuozzo.com>
+Tested-by: Pavel Tikhomirov <ptikhomirov@virtuozzo.com>
+Reviewed-by: Christian Brauner <brauner@kernel.org>
+Signed-off-by: Al Viro <viro@zeniv.linux.org.uk>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- arch/arm64/mm/ptdump_debugfs.c |    3 ---
- arch/s390/mm/dump_pagetables.c |    2 --
- mm/ptdump.c                    |    2 ++
- 3 files changed, 2 insertions(+), 5 deletions(-)
+ fs/namespace.c | 34 ++++++++++++++++++++--------------
+ 1 file changed, 20 insertions(+), 14 deletions(-)
 
---- a/arch/arm64/mm/ptdump_debugfs.c
-+++ b/arch/arm64/mm/ptdump_debugfs.c
-@@ -1,6 +1,5 @@
- // SPDX-License-Identifier: GPL-2.0
- #include <linux/debugfs.h>
--#include <linux/memory_hotplug.h>
- #include <linux/seq_file.h>
- 
- #include <asm/ptdump.h>
-@@ -9,9 +8,7 @@ static int ptdump_show(struct seq_file *
- {
- 	struct ptdump_info *info = m->private;
- 
--	get_online_mems();
- 	ptdump_walk(m, info);
--	put_online_mems();
- 	return 0;
+diff --git a/fs/namespace.c b/fs/namespace.c
+index 7f7ccc9e53b8..d1751f9b6f1c 100644
+--- a/fs/namespace.c
++++ b/fs/namespace.c
+@@ -2272,6 +2272,19 @@ static int graft_tree(struct mount *mnt, struct mount *p, struct mountpoint *mp)
+ 	return attach_recursive_mnt(mnt, p, mp, false);
  }
- DEFINE_SHOW_ATTRIBUTE(ptdump);
---- a/arch/s390/mm/dump_pagetables.c
-+++ b/arch/s390/mm/dump_pagetables.c
-@@ -249,11 +249,9 @@ static int ptdump_show(struct seq_file *
- 		.marker = address_markers,
- 	};
  
--	get_online_mems();
- 	mutex_lock(&cpa_mutex);
- 	ptdump_walk_pgd(&st.ptdump, &init_mm, NULL);
- 	mutex_unlock(&cpa_mutex);
--	put_online_mems();
- 	return 0;
- }
- DEFINE_SHOW_ATTRIBUTE(ptdump);
---- a/mm/ptdump.c
-+++ b/mm/ptdump.c
-@@ -152,6 +152,7 @@ void ptdump_walk_pgd(struct ptdump_state
- {
- 	const struct ptdump_range *range = st->range;
++static int may_change_propagation(const struct mount *m)
++{
++        struct mnt_namespace *ns = m->mnt_ns;
++
++	 // it must be mounted in some namespace
++	 if (IS_ERR_OR_NULL(ns))         // is_mounted()
++		 return -EINVAL;
++	 // and the caller must be admin in userns of that namespace
++	 if (!ns_capable(ns->user_ns, CAP_SYS_ADMIN))
++		 return -EPERM;
++	 return 0;
++}
++
+ /*
+  * Sanity check the flags to change_mnt_propagation.
+  */
+@@ -2308,10 +2321,10 @@ static int do_change_type(struct path *path, int ms_flags)
+ 		return -EINVAL;
  
-+	get_online_mems();
- 	mmap_write_lock(mm);
- 	while (range->start != range->end) {
- 		walk_page_range_novma(mm, range->start, range->end,
-@@ -159,6 +160,7 @@ void ptdump_walk_pgd(struct ptdump_state
- 		range++;
- 	}
- 	mmap_write_unlock(mm);
-+	put_online_mems();
+ 	namespace_lock();
+-	if (!check_mnt(mnt)) {
+-		err = -EINVAL;
++	err = may_change_propagation(mnt);
++	if (err)
+ 		goto out_unlock;
+-	}
++
+ 	if (type == MS_SHARED) {
+ 		err = invent_group_ids(mnt, recurse);
+ 		if (err)
+@@ -2702,18 +2715,11 @@ static int do_set_group(struct path *from_path, struct path *to_path)
  
- 	/* Flush out the last page */
- 	st->note_page(st, 0, -1, 0);
+ 	namespace_lock();
+ 
+-	err = -EINVAL;
+-	/* To and From must be mounted */
+-	if (!is_mounted(&from->mnt))
+-		goto out;
+-	if (!is_mounted(&to->mnt))
+-		goto out;
+-
+-	err = -EPERM;
+-	/* We should be allowed to modify mount namespaces of both mounts */
+-	if (!ns_capable(from->mnt_ns->user_ns, CAP_SYS_ADMIN))
++	err = may_change_propagation(from);
++	if (err)
+ 		goto out;
+-	if (!ns_capable(to->mnt_ns->user_ns, CAP_SYS_ADMIN))
++	err = may_change_propagation(to);
++	if (err)
+ 		goto out;
+ 
+ 	err = -EINVAL;
+-- 
+2.50.1
+
 
 
 
