@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-175428-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-173705-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id C11A1B36865
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 16:16:05 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5B8F0B35E6B
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 13:57:21 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id AB72D1C24F53
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 14:05:34 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 75E761BA6F68
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 11:49:30 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 83351352FC1;
-	Tue, 26 Aug 2025 14:03:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 798AE8635C;
+	Tue, 26 Aug 2025 11:49:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="HS1qUC7b"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="AQV1omxr"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 40EE72FDC5C;
-	Tue, 26 Aug 2025 14:03:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 34BBB749C;
+	Tue, 26 Aug 2025 11:49:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756217016; cv=none; b=Zargy+bRJoAX0PBbEgNDC/S6h97uKrdRaU1q3H8ZLmdFfBzaFfsMlaMjYjxyJs+nlle79B4YKEGyoZ/x6LYD2Of555TPKr0l/viKVhblwZSBlYtQugR0Ql+h1bvFhmekwpJvjg59VvEUyHC0eQJTqJdR37Da6qI3jf/OGHQQze0=
+	t=1756208942; cv=none; b=fYlZDZZ4Wyn8vjsi92cKZiFB/SIQXmqNrsbrkizn71KPCPuS/oKvNJRTGZJFI0wOkByTMkhoMaVVjkkY6m8C2OkEJBrJemKxPbtdkw0M6adhL92XwAKstjKlkCN5gpg1UdBBfyeXOO9+0WEFMnE7UFehr+kAJIArf7kO6ABcJ5E=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756217016; c=relaxed/simple;
-	bh=vt2C1eB2aGzyyc7xo1yGtqI+vCxc3crNrEXKM/J45I4=;
+	s=arc-20240116; t=1756208942; c=relaxed/simple;
+	bh=Pz5CE3T0HKknzblo3MNNpNOtGIPSF8nB5FJFjHif7tM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=b9x7ZrXVjpuFtoNL+KFMNkq3MEvTaU+HPNDMawYCDjvxKfpVk7a8+wA0U9s+uQYO1ydLUEyFZCg83tvVZfYeCaLMlNUdVNEswpFmW4DJ7NKdEBFO16YDxUDQp47azf2IsJPqVtqtE0l/kA2OX1SKMwAlzsM7Uxam2fxc7PUFUlw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=HS1qUC7b; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C6046C4CEF1;
-	Tue, 26 Aug 2025 14:03:35 +0000 (UTC)
+	 MIME-Version; b=M/WwCtxXhpPrhEdnb7jQCxtYC640cgjk0aPSup6eUQO/s/ULZlymi3vbXzb7nEKGLU4+qjkUTs4XwGHEbP8ue2PuVtMPPY8VjVGZGJXxXli4W0miVvjImsJH+pYIw/dOdx7ZkJyujyQzKKj4Xh85fMFsxh4crYhoxVgcTVLaJoE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=AQV1omxr; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B9A90C4CEF1;
+	Tue, 26 Aug 2025 11:49:01 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1756217016;
-	bh=vt2C1eB2aGzyyc7xo1yGtqI+vCxc3crNrEXKM/J45I4=;
+	s=korg; t=1756208942;
+	bh=Pz5CE3T0HKknzblo3MNNpNOtGIPSF8nB5FJFjHif7tM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=HS1qUC7bEE4hwaM/C2ELqszMFyKTeeNK2FvpzA4UzEbmcQkhujz4I7ByutnhDLZ7O
-	 ZZWnHRxeFro9yc1eGHYIS5ZDhYcDoJCVewRKCDjwVA9JvIfBU4vtQebatFN6TsqWr3
-	 jHcgrIFiGYs21+rtLEokJTWXZIGNb3iOkhOxujRU=
+	b=AQV1omxrwnTQ6dMrvanpvQ8Tt+LYyOeDF+/0O9Qwqc6ivV7QobvMMWd1eJDdBWam0
+	 C163iM7RbbKKhREheBuS8rfd7lOLIuUMuO4qSeq1HDxIIohr33izTI2S+xbBtgnenB
+	 snFgH8PBw5qkI1X3Cc3bIOJzab4MxQRT9fk7mRoA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Baihan Li <libaihan@huawei.com>,
-	Yongbang Shi <shiyongbang@huawei.com>,
-	Dmitry Baryshkov <dmitry.baryshkov@oss.qualcomm.com>,
+	Alexander Gordeev <agordeev@linux.ibm.com>,
+	Heiko Carstens <hca@linux.ibm.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 627/644] drm/hisilicon/hibmc: fix the hibmc loaded failed bug
+Subject: [PATCH 6.12 303/322] s390/mm: Do not map lowcore with identity mapping
 Date: Tue, 26 Aug 2025 13:11:58 +0200
-Message-ID: <20250826111002.094737325@linuxfoundation.org>
+Message-ID: <20250826110923.374283068@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250826110946.507083938@linuxfoundation.org>
-References: <20250826110946.507083938@linuxfoundation.org>
+In-Reply-To: <20250826110915.169062587@linuxfoundation.org>
+References: <20250826110915.169062587@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,49 +62,47 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Baihan Li <libaihan@huawei.com>
+From: Heiko Carstens <hca@linux.ibm.com>
 
-[ Upstream commit 93a08f856fcc5aaeeecad01f71bef3088588216a ]
+[ Upstream commit 93f616ff870a1fb7e84d472cad0af651b18f9f87 ]
 
-When hibmc loaded failed, the driver use hibmc_unload to free the
-resource, but the mutexes in mode.config are not init, which will
-access an NULL pointer. Just change goto statement to return, because
-hibnc_hw_init() doesn't need to free anything.
+Since the identity mapping is pinned to address zero the lowcore is always
+also mapped to address zero, this happens regardless of the relocate_lowcore
+command line option. If the option is specified the lowcore is mapped
+twice, instead of only once.
 
-Fixes: b3df5e65cc03 ("drm/hibmc: Drop drm_vblank_cleanup")
-Signed-off-by: Baihan Li <libaihan@huawei.com>
-Signed-off-by: Yongbang Shi <shiyongbang@huawei.com>
-Reviewed-by: Dmitry Baryshkov <dmitry.baryshkov@oss.qualcomm.com>
-Link: https://lore.kernel.org/r/20250813094238.3722345-5-shiyongbang@huawei.com
-Signed-off-by: Dmitry Baryshkov <dmitry.baryshkov@oss.qualcomm.com>
+This means that NULL pointer accesses will succeed instead of causing an
+exception (low address protection still applies, but covers only parts).
+To fix this never map the first two pages of physical memory with the
+identity mapping.
+
+Fixes: 32db401965f1 ("s390/mm: Pin identity mapping base to zero")
+Reviewed-by: Alexander Gordeev <agordeev@linux.ibm.com>
+Signed-off-by: Heiko Carstens <hca@linux.ibm.com>
+Signed-off-by: Alexander Gordeev <agordeev@linux.ibm.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/hisilicon/hibmc/hibmc_drm_drv.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ arch/s390/boot/vmem.c | 3 +++
+ 1 file changed, 3 insertions(+)
 
-diff --git a/drivers/gpu/drm/hisilicon/hibmc/hibmc_drm_drv.c b/drivers/gpu/drm/hisilicon/hibmc/hibmc_drm_drv.c
-index 610fc8e135f9..7d0edecfc495 100644
---- a/drivers/gpu/drm/hisilicon/hibmc/hibmc_drm_drv.c
-+++ b/drivers/gpu/drm/hisilicon/hibmc/hibmc_drm_drv.c
-@@ -268,12 +268,12 @@ static int hibmc_load(struct drm_device *dev)
- 
- 	ret = hibmc_hw_init(priv);
- 	if (ret)
--		goto err;
-+		return ret;
- 
- 	ret = drmm_vram_helper_init(dev, pci_resource_start(pdev, 0), priv->fb_size);
- 	if (ret) {
- 		drm_err(dev, "Error initializing VRAM MM; %d\n", ret);
--		goto err;
-+		return ret;
- 	}
- 
- 	ret = hibmc_kms_init(priv);
+diff --git a/arch/s390/boot/vmem.c b/arch/s390/boot/vmem.c
+index 3fa28db2fe59..14aee8524021 100644
+--- a/arch/s390/boot/vmem.c
++++ b/arch/s390/boot/vmem.c
+@@ -471,6 +471,9 @@ void setup_vmem(unsigned long kernel_start, unsigned long kernel_end, unsigned l
+ 			 lowcore_address + sizeof(struct lowcore),
+ 			 POPULATE_LOWCORE);
+ 	for_each_physmem_usable_range(i, &start, &end) {
++		/* Do not map lowcore with identity mapping */
++		if (!start)
++			start = sizeof(struct lowcore);
+ 		pgtable_populate((unsigned long)__identity_va(start),
+ 				 (unsigned long)__identity_va(end),
+ 				 POPULATE_IDENTITY);
 -- 
 2.50.1
 
