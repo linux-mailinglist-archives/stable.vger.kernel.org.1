@@ -1,58 +1,56 @@
-Return-Path: <stable+bounces-174927-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-173766-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1AC1FB3657D
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 15:48:26 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 27573B35F9F
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 14:51:28 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id B51EA2A6B74
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 13:41:25 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 06E8C3A9D1F
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 12:50:37 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 80BAE23A9A0;
-	Tue, 26 Aug 2025 13:41:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3DB081B6CE9;
+	Tue, 26 Aug 2025 12:50:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="WtLif4YB"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="fmSLZNVp"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2F395221290;
-	Tue, 26 Aug 2025 13:41:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EDBA172602;
+	Tue, 26 Aug 2025 12:50:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756215684; cv=none; b=XVeHOg91V7V1GRhaBE1jLV2uoGVtNpXn0Ot3m/h4+4r2ktskYJVOwieY5sEYCu859tAvH+4DY1LzkXWf/4T1cTRS10wUuMN62tCMDCCgFymfl1KO/zRmEF2hl3cuhRaoN0b7qnenQAZK1MXofQ0wHFUau46xFwNcJXoFXZHUDRc=
+	t=1756212615; cv=none; b=MQjmRqZXwawbvXXIh79sLOgXJRze2et1s+l6SHkWncUkQWL7/Gj2pSInLYT05Gf7FH3ouoFGegzKN8WyDOBi/tnHuq6UeAVmWw1Pueb7hYFMjM8BnY0w1Msu1mLlQLHBVvXOirZZSYI/otpSM8hozJfg8a96Kq7on2S+wpe9228=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756215684; c=relaxed/simple;
-	bh=31UDqyPnvFsMMWk2wCL57iSxTxtSCc8PrdGuBcvpezk=;
+	s=arc-20240116; t=1756212615; c=relaxed/simple;
+	bh=Ta13OrJ0tShf94nQ7FQHW2ByMrbvvtXYuerjIt14YPc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=NKUtg/3TSejNs11L1pnMmNsNaP1J4j5ZUPzvHBsaydvPs8dwDILE1/ybH875iAXOYk/diEmdM+g9mNxt7y/HPKyOrAE9zRFicv8eF9VJN0r2IWZcJdT9h/OiOeKFLC0jLd5J/gXfFrRxxrtYwDWjmjnefmEax2Q5Tnlb4yvoVcQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=WtLif4YB; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B52E5C113CF;
-	Tue, 26 Aug 2025 13:41:23 +0000 (UTC)
+	 MIME-Version; b=i3lwGJmBCwREa7KnqoBt3sbLqjQNGGiLbjagqOU12uMOQsIREylxw7sbFsv++JmFw7QFhUOfq5PtBd4cThyRH1U0sBubEVpJr4B13HXZNFTeb+grBSn6nq51hH/K39oRR97jEZThme76UysNuoXTVZEFvENPzGbYPBipjJvfmcM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=fmSLZNVp; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6FADDC116B1;
+	Tue, 26 Aug 2025 12:50:14 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1756215684;
-	bh=31UDqyPnvFsMMWk2wCL57iSxTxtSCc8PrdGuBcvpezk=;
+	s=korg; t=1756212614;
+	bh=Ta13OrJ0tShf94nQ7FQHW2ByMrbvvtXYuerjIt14YPc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=WtLif4YBop+DRbD+/QWXoQXTl3HlFf0uoL5agxl3Y7JxkWSNImQAAMh2iJfZnyRtY
-	 GPyRIqGpVT5QOwgK/YO4PhilAk6B/RthxNyLkxEY/sDlx3RHMQHR8k4re+AfxVeW0p
-	 XF8jfrhiN5kWMymN4f8O+eLWPSOgqxB2/wDJ9u4U=
+	b=fmSLZNVpALYpSNy5L613XkWG3UH2M2+UYt4BPAJ0QyIdGk55DZfdfJtW9pI4afc4W
+	 5nNK6eq5Ssfc32jqwqBIm743jsPR+0WAifhIESI/G1aM8zfVzg+hruf7MbCsoZ26AL
+	 4sT/yA7cUO6qvULNT3k86EZ0OsvwZ4A6pjMENN2A=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jacek Kowalski <jacek@jacekk.info>,
-	Simon Horman <horms@kernel.org>,
-	Vitaly Lifshits <vitaly.lifshits@intel.com>,
-	Mor Bar-Gabay <morx.bar.gabay@intel.com>,
-	Tony Nguyen <anthony.l.nguyen@intel.com>
-Subject: [PATCH 5.15 095/644] e1000e: disregard NVM checksum on tgp when valid checksum bit is not set
+	Chao Gao <chao.gao@intel.com>,
+	Sean Christopherson <seanjc@google.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.6 037/587] KVM: x86: Plumb in the vCPU to kvm_x86_ops.hwapic_isr_update()
 Date: Tue, 26 Aug 2025 13:03:06 +0200
-Message-ID: <20250826110948.859854114@linuxfoundation.org>
+Message-ID: <20250826110953.893876738@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250826110946.507083938@linuxfoundation.org>
-References: <20250826110946.507083938@linuxfoundation.org>
+In-Reply-To: <20250826110952.942403671@linuxfoundation.org>
+References: <20250826110952.942403671@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,47 +62,109 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jacek Kowalski <jacek@jacekk.info>
+From: Sean Christopherson <seanjc@google.com>
 
-commit 536fd741c7ac907d63166cdae1081b1febfab613 upstream.
+[ Upstream commit 76bce9f10162cd4b36ac0b7889649b22baf70ebd ]
 
-As described by Vitaly Lifshits:
+Pass the target vCPU to the hwapic_isr_update() vendor hook so that VMX
+can defer the update until after nested VM-Exit if an EOI for L1's vAPIC
+occurs while L2 is active.
 
-> Starting from Tiger Lake, LAN NVM is locked for writes by SW, so the
-> driver cannot perform checksum validation and correction. This means
-> that all NVM images must leave the factory with correct checksum and
-> checksum valid bit set. Since Tiger Lake devices were the first to have
-> this lock, some systems in the field did not meet this requirement.
-> Therefore, for these transitional devices we skip checksum update and
-> verification, if the valid bit is not set.
+Note, commit d39850f57d21 ("KVM: x86: Drop @vcpu parameter from
+kvm_x86_ops.hwapic_isr_update()") removed the parameter with the
+justification that doing so "allows for a decent amount of (future)
+cleanup in the APIC code", but it's not at all clear what cleanup was
+intended, or if it was ever realized.
 
-Signed-off-by: Jacek Kowalski <jacek@jacekk.info>
-Reviewed-by: Simon Horman <horms@kernel.org>
-Reviewed-by: Vitaly Lifshits <vitaly.lifshits@intel.com>
-Fixes: 4051f68318ca9 ("e1000e: Do not take care about recovery NVM checksum")
+No functional change intended.
+
 Cc: stable@vger.kernel.org
-Tested-by: Mor Bar-Gabay <morx.bar.gabay@intel.com>
-Signed-off-by: Tony Nguyen <anthony.l.nguyen@intel.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Reviewed-by: Chao Gao <chao.gao@intel.com>
+Tested-by: Chao Gao <chao.gao@intel.com>
+Link: https://lore.kernel.org/r/20241128000010.4051275-2-seanjc@google.com
+Signed-off-by: Sean Christopherson <seanjc@google.com>
+[sean: account for lack of kvm_x86_call(), drop vmx/x86_ops.h change]
+Signed-off-by: Sean Christopherson <seanjc@google.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/ethernet/intel/e1000e/ich8lan.c |    2 ++
- 1 file changed, 2 insertions(+)
+ arch/x86/include/asm/kvm_host.h | 2 +-
+ arch/x86/kvm/lapic.c            | 8 ++++----
+ arch/x86/kvm/vmx/vmx.c          | 2 +-
+ 3 files changed, 6 insertions(+), 6 deletions(-)
 
---- a/drivers/net/ethernet/intel/e1000e/ich8lan.c
-+++ b/drivers/net/ethernet/intel/e1000e/ich8lan.c
-@@ -4146,6 +4146,8 @@ static s32 e1000_validate_nvm_checksum_i
- 			ret_val = e1000e_update_nvm_checksum(hw);
- 			if (ret_val)
- 				return ret_val;
-+		} else if (hw->mac.type == e1000_pch_tgp) {
-+			return 0;
- 		}
+diff --git a/arch/x86/include/asm/kvm_host.h b/arch/x86/include/asm/kvm_host.h
+index 5dfb8cc9616e..5fc89d255550 100644
+--- a/arch/x86/include/asm/kvm_host.h
++++ b/arch/x86/include/asm/kvm_host.h
+@@ -1657,7 +1657,7 @@ struct kvm_x86_ops {
+ 	bool allow_apicv_in_x2apic_without_x2apic_virtualization;
+ 	void (*refresh_apicv_exec_ctrl)(struct kvm_vcpu *vcpu);
+ 	void (*hwapic_irr_update)(struct kvm_vcpu *vcpu, int max_irr);
+-	void (*hwapic_isr_update)(int isr);
++	void (*hwapic_isr_update)(struct kvm_vcpu *vcpu, int isr);
+ 	bool (*guest_apic_has_interrupt)(struct kvm_vcpu *vcpu);
+ 	void (*load_eoi_exitmap)(struct kvm_vcpu *vcpu, u64 *eoi_exit_bitmap);
+ 	void (*set_virtual_apic_mode)(struct kvm_vcpu *vcpu);
+diff --git a/arch/x86/kvm/lapic.c b/arch/x86/kvm/lapic.c
+index 66c7f2367bb3..cbf85a1ffb74 100644
+--- a/arch/x86/kvm/lapic.c
++++ b/arch/x86/kvm/lapic.c
+@@ -750,7 +750,7 @@ static inline void apic_set_isr(int vec, struct kvm_lapic *apic)
+ 	 * just set SVI.
+ 	 */
+ 	if (unlikely(apic->apicv_active))
+-		static_call_cond(kvm_x86_hwapic_isr_update)(vec);
++		static_call_cond(kvm_x86_hwapic_isr_update)(apic->vcpu, vec);
+ 	else {
+ 		++apic->isr_count;
+ 		BUG_ON(apic->isr_count > MAX_APIC_VECTOR);
+@@ -795,7 +795,7 @@ static inline void apic_clear_isr(int vec, struct kvm_lapic *apic)
+ 	 * and must be left alone.
+ 	 */
+ 	if (unlikely(apic->apicv_active))
+-		static_call_cond(kvm_x86_hwapic_isr_update)(apic_find_highest_isr(apic));
++		static_call_cond(kvm_x86_hwapic_isr_update)(apic->vcpu, apic_find_highest_isr(apic));
+ 	else {
+ 		--apic->isr_count;
+ 		BUG_ON(apic->isr_count < 0);
+@@ -2772,7 +2772,7 @@ void kvm_lapic_reset(struct kvm_vcpu *vcpu, bool init_event)
+ 	if (apic->apicv_active) {
+ 		static_call_cond(kvm_x86_apicv_post_state_restore)(vcpu);
+ 		static_call_cond(kvm_x86_hwapic_irr_update)(vcpu, -1);
+-		static_call_cond(kvm_x86_hwapic_isr_update)(-1);
++		static_call_cond(kvm_x86_hwapic_isr_update)(vcpu, -1);
  	}
  
+ 	vcpu->arch.apic_arb_prio = 0;
+@@ -3072,7 +3072,7 @@ int kvm_apic_set_state(struct kvm_vcpu *vcpu, struct kvm_lapic_state *s)
+ 	if (apic->apicv_active) {
+ 		static_call_cond(kvm_x86_apicv_post_state_restore)(vcpu);
+ 		static_call_cond(kvm_x86_hwapic_irr_update)(vcpu, apic_find_highest_irr(apic));
+-		static_call_cond(kvm_x86_hwapic_isr_update)(apic_find_highest_isr(apic));
++		static_call_cond(kvm_x86_hwapic_isr_update)(vcpu, apic_find_highest_isr(apic));
+ 	}
+ 	kvm_make_request(KVM_REQ_EVENT, vcpu);
+ 	if (ioapic_in_kernel(vcpu->kvm))
+diff --git a/arch/x86/kvm/vmx/vmx.c b/arch/x86/kvm/vmx/vmx.c
+index e53620e18925..cde01eb1f5e3 100644
+--- a/arch/x86/kvm/vmx/vmx.c
++++ b/arch/x86/kvm/vmx/vmx.c
+@@ -6834,7 +6834,7 @@ static void vmx_set_apic_access_page_addr(struct kvm_vcpu *vcpu)
+ 	kvm_release_pfn_clean(pfn);
+ }
+ 
+-static void vmx_hwapic_isr_update(int max_isr)
++static void vmx_hwapic_isr_update(struct kvm_vcpu *vcpu, int max_isr)
+ {
+ 	u16 status;
+ 	u8 old;
+-- 
+2.50.1
+
 
 
 
