@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-174189-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-174703-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 49092B36178
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 15:09:56 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0A88FB3651B
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 15:45:06 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 46BF17B9B35
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 13:08:11 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 5458C561088
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 13:32:48 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7C28A3376BE;
-	Tue, 26 Aug 2025 13:08:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 26F51265CC0;
+	Tue, 26 Aug 2025 13:31:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="qR0IoHUs"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ZNu+IMSu"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 399A12FAC0A;
-	Tue, 26 Aug 2025 13:08:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D7EEB334723;
+	Tue, 26 Aug 2025 13:31:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756213729; cv=none; b=nJZpvxHS1hUjTN4q7eJjfiYp3+folgjBC56nG03wr7RmgcEDhK+j1m83bQgZt3c1Spg9yWcehg3gzoarmJ8DChLjZiqc2yFUetmTfLPDfiyMUB4FzxJofkunPjS3GoojNDUbT26UUMsu5wkCaTGnUyYW3T205qthOMi49kdjRH0=
+	t=1756215093; cv=none; b=d8D44Amw5l00TqRXSKARwMreAiIroRi8oxzoCFxKCLOEPhtb1FnulGch9Xn9xZE6pTzkIr57mNPo2gt4KEuHnVeDVIh5CWyPvG4dqBXqqKikvpFvrpN95/HkI/TmU/zFjpF+6wwO7K8uH3rBE3Z+ubY2WqsioFXSOVtys5gxw9s=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756213729; c=relaxed/simple;
-	bh=Y68OZcjhoWxIf5lGqrrsfdvO9vd0vYBepbTKYPZqivY=;
+	s=arc-20240116; t=1756215093; c=relaxed/simple;
+	bh=uepPBA9l0YScPdRYCEIpZ15VsHHisattPjAYUCdekbc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=A1N0fe89i31PXniFCVq7SNq3UdQYgHsWzBA3u3rUTSFEzm13+gyeUCJbA0eM6vFwcQ5Gx9KLNABj0KvpSR9wX90XlEDSVDUK8eHiCrYR70lxFsqnX1KUkipGgSLB1JKDs7mixNcpk/2FqVgPrnzxL5Xr0iZDT/McaDSdWbqLE6c=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=qR0IoHUs; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B9B24C4CEF4;
-	Tue, 26 Aug 2025 13:08:48 +0000 (UTC)
+	 MIME-Version; b=e0erf28hBikHQ3XpKjm7WMQU1cc2J5OHV5kurz4PsUc/AKFfSY3OiowdrqIix7J1ZyrDEKSf2hQI+ukA65lp+DUZ//0nlqCH+vr2jKaRdlTjOgOmnINWX6kH6LTBharwlSEkWCT1JkD/YHi3+U87j2uClPJboIdTWoibZgJ8K9E=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ZNu+IMSu; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3419EC4CEF1;
+	Tue, 26 Aug 2025 13:31:33 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1756213729;
-	bh=Y68OZcjhoWxIf5lGqrrsfdvO9vd0vYBepbTKYPZqivY=;
+	s=korg; t=1756215093;
+	bh=uepPBA9l0YScPdRYCEIpZ15VsHHisattPjAYUCdekbc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=qR0IoHUsuzYeuUp72Ylo9guS87puQ5ri2VmeyyCbBDLQUkFtpo+MwQrHqULyHCjr8
-	 qk1QM/nHRFXfI+8t4wVo+2QhRHn6VMW8xP39aa1vvo2cid+RiVx0aZQGae1orN0vGI
-	 aK22+PFIDTsKOahuQ/dVhv3LVtDepMBli1qDfHLk=
+	b=ZNu+IMSug74IWN9iBYH8f5+vQBB7O7DnELOID0Wl8/2BFeH+jfH5TsF0K2suuXSZY
+	 jd0hth3rj0KhS+u094rrTGVVtJALMqF6RO1GyXIw0OQwA/W3wQ30hx5UpdCoy41Ji/
+	 94lnpM+4AFtO8RHHM317iDfwrFq0KEhmNqXuX3bM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Filipe Manana <fdmanana@suse.com>,
-	David Sterba <dsterba@suse.com>,
+	Ard Biesheuvel <ardb@kernel.org>,
+	Eric Biggers <ebiggers@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 458/587] btrfs: send: avoid path allocation for the current inode when issuing commands
+Subject: [PATCH 6.1 354/482] fscrypt: Dont use problematic non-inline crypto engines
 Date: Tue, 26 Aug 2025 13:10:07 +0200
-Message-ID: <20250826111004.620847557@linuxfoundation.org>
+Message-ID: <20250826110939.580003608@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250826110952.942403671@linuxfoundation.org>
-References: <20250826110952.942403671@linuxfoundation.org>
+In-Reply-To: <20250826110930.769259449@linuxfoundation.org>
+References: <20250826110930.769259449@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,554 +62,190 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Filipe Manana <fdmanana@suse.com>
+From: Eric Biggers <ebiggers@kernel.org>
 
-[ Upstream commit 374d45af6435534a11b01b88762323abf03dd755 ]
+[ Upstream commit b41c1d8d07906786c60893980d52688f31d114a6 ]
 
-Whenever we issue a command we allocate a path and then compute it. For
-the current inode this is not necessary since we have one preallocated
-and computed in the send context structure, so we can use it instead
-and avoid allocating and freeing a path.
+Make fscrypt no longer use Crypto API drivers for non-inline crypto
+engines, even when the Crypto API prioritizes them over CPU-based code
+(which unfortunately it often does).  These drivers tend to be really
+problematic, especially for fscrypt's workload.  This commit has no
+effect on inline crypto engines, which are different and do work well.
 
-For example if we have 100 extents to send (100 write commands) for a
-file, we are allocating and freeing paths 100 times.
+Specifically, exclude drivers that have CRYPTO_ALG_KERN_DRIVER_ONLY or
+CRYPTO_ALG_ALLOCATES_MEMORY set.  (Later, CRYPTO_ALG_ASYNC should be
+excluded too.  That's omitted for now to keep this commit backportable,
+since until recently some CPU-based code had CRYPTO_ALG_ASYNC set.)
 
-So improve on this by avoiding path allocation and freeing whenever a
-command is for the current inode by using the current inode's path
-stored in the send context structure.
+There are two major issues with these drivers: bugs and performance.
 
-A test was run before applying this patch and the previous one in the
-series:
+First, these drivers tend to be buggy.  They're fundamentally much more
+error-prone and harder to test than the CPU-based code.  They often
+don't get tested before kernel releases, and even if they do, the crypto
+self-tests don't properly test these drivers.  Released drivers have
+en/decrypted or hashed data incorrectly.  These bugs cause issues for
+fscrypt users who often didn't even want to use these drivers, e.g.:
 
-  "btrfs: send: keep the current inode's path cached"
+- https://github.com/google/fscryptctl/issues/32
+- https://github.com/google/fscryptctl/issues/9
+- https://lore.kernel.org/r/PH0PR02MB731916ECDB6C613665863B6CFFAA2@PH0PR02MB7319.namprd02.prod.outlook.com
 
-The test script is the following:
+These drivers have also similarly caused issues for dm-crypt users,
+including data corruption and deadlocks.  Since Linux v5.10, dm-crypt
+has disabled most of them by excluding CRYPTO_ALG_ALLOCATES_MEMORY.
 
-  $ cat test.sh
-  #!/bin/bash
+Second, these drivers tend to be *much* slower than the CPU-based code.
+This may seem counterintuitive, but benchmarks clearly show it.  There's
+a *lot* of overhead associated with going to a hardware driver, off the
+CPU, and back again.  To prove this, I gathered as many systems with
+this type of crypto engine as I could, and I measured synchronous
+encryption of 4096-byte messages (which matches fscrypt's workload):
 
-  DEV=/dev/nullb0
-  MNT=/mnt/nullb0
+Intel Emerald Rapids server:
+   AES-256-XTS:
+      xts-aes-vaes-avx512   16171 MB/s  [CPU-based, Vector AES]
+      qat_aes_xts             289 MB/s  [Offload, Intel QuickAssist]
 
-  mkfs.btrfs -f $DEV > /dev/null
-  mount $DEV $MNT
+Qualcomm SM8650 HDK:
+   AES-256-XTS:
+      xts-aes-ce             4301 MB/s  [CPU-based, ARMv8 Crypto Extensions]
+      xts-aes-qce              73 MB/s  [Offload, Qualcomm Crypto Engine]
 
-  DIR="$MNT/one/two/three/four"
-  FILE="$DIR/foobar"
+i.MX 8M Nano LPDDR4 EVK:
+   AES-256-XTS:
+      xts-aes-ce              647 MB/s   [CPU-based, ARMv8 Crypto Extensions]
+      xts(ecb-aes-caam)        20 MB/s   [Offload, CAAM]
+   AES-128-CBC-ESSIV:
+      essiv(cbc-aes-caam,sha256-lib) 23 MB/s   [Offload, CAAM]
 
-  mkdir -p $DIR
+STM32MP157F-DK2:
+   AES-256-XTS:
+      xts-aes-neonbs         13.2 MB/s   [CPU-based, ARM NEON]
+      xts(stm32-ecb-aes)     3.1 MB/s    [Offload, STM32 crypto engine]
+   AES-128-CBC-ESSIV:
+      essiv(cbc-aes-neonbs,sha256-lib)
+                             14.7 MB/s   [CPU-based, ARM NEON]
+      essiv(stm32-cbc-aes,sha256-lib)
+                             3.2 MB/s    [Offload, STM32 crypto engine]
+   Adiantum:
+      adiantum(xchacha12-arm,aes-arm,nhpoly1305-neon)
+                             52.8 MB/s   [CPU-based, ARM scalar + NEON]
 
-  # Create some empty files to get a deeper btree and therefore make
-  # path computations slower.
-  for ((i = 1; i <= 30000; i++)); do
-      echo -n > "$DIR/filler_$i"
-  done
+So, there was no case in which the crypto engine was even *close* to
+being faster.  On the first three, which have AES instructions in the
+CPU, the CPU was 30 to 55 times faster (!).  Even on STM32MP157F-DK2
+which has a Cortex-A7 CPU that doesn't have AES instructions, AES was
+over 4 times faster on the CPU.  And Adiantum encryption, which is what
+actually should be used on CPUs like that, was over 17 times faster.
 
-  for ((i = 0; i < 10000; i += 2)); do
-     offset=$(( i * 4096 ))
-     xfs_io -f -c "pwrite -S 0xab $offset 4K" $FILE > /dev/null
-  done
+Other justifications that have been given for these non-inline crypto
+engines (almost always coming from the hardware vendors, not actual
+users) don't seem very plausible either:
 
-  btrfs subvolume snapshot -r $MNT $MNT/snap
+  - The crypto engine throughput could be improved by processing
+    multiple requests concurrently.  Currently irrelevant to fscrypt,
+    since it doesn't do that.  This would also be complex, and unhelpful
+    in many cases.  2 of the 4 engines I tested even had only one queue.
 
-  start=$(date +%s%N)
-  btrfs send -f /dev/null $MNT/snap
-  end=$(date +%s%N)
+  - Some of the engines, e.g. STM32, support hardware keys.  Also
+    currently irrelevant to fscrypt, since it doesn't support these.
+    Interestingly, the STM32 driver itself doesn't support this either.
 
-  echo -e "\nsend took $(( (end - start) / 1000000 )) milliseconds"
+  - Free up CPU for other tasks and/or reduce energy usage.  Not very
+    plausible considering the "short" message length, driver overhead,
+    and scheduling overhead.  There's just very little time for the CPU
+    to do something else like run another task or enter low-power state,
+    before the message finishes and it's time to process the next one.
 
-  umount $MNT
+  - Some of these engines resist power analysis and electromagnetic
+    attacks, while the CPU-based crypto generally does not.  In theory,
+    this sounds great.  In practice, if this benefit requires the use of
+    an off-CPU offload that massively regresses performance and has a
+    low-quality, buggy driver, the price for this hardening (which is
+    not relevant to most fscrypt users, and tends to be incomplete) is
+    just too high.  Inline crypto engines are much more promising here,
+    as are on-CPU solutions like RISC-V High Assurance Cryptography.
 
-Result before applying the 2 patches:  1121 milliseconds
-Result after applying the 2 patches:    815 milliseconds  (-31.6%)
-
-Signed-off-by: Filipe Manana <fdmanana@suse.com>
-Reviewed-by: David Sterba <dsterba@suse.com>
-Signed-off-by: David Sterba <dsterba@suse.com>
-Stable-dep-of: 005b0a0c24e1 ("btrfs: send: use fallocate for hole punching with send stream v2")
+Fixes: b30ab0e03407 ("ext4 crypto: add ext4 encryption facilities")
+Cc: stable@vger.kernel.org
+Acked-by: Ard Biesheuvel <ardb@kernel.org>
+Link: https://lore.kernel.org/r/20250704070322.20692-1-ebiggers@kernel.org
+Signed-off-by: Eric Biggers <ebiggers@kernel.org>
+[ Drop some documentation changes ]
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- fs/btrfs/send.c |  215 +++++++++++++++++++++++++-------------------------------
- 1 file changed, 97 insertions(+), 118 deletions(-)
+ fs/crypto/fscrypt_private.h |   17 +++++++++++++++++
+ fs/crypto/hkdf.c            |    2 +-
+ fs/crypto/keysetup.c        |    3 ++-
+ fs/crypto/keysetup_v1.c     |    3 ++-
+ 4 files changed, 22 insertions(+), 3 deletions(-)
 
---- a/fs/btrfs/send.c
-+++ b/fs/btrfs/send.c
-@@ -2623,6 +2623,47 @@ out:
- 	return ret;
- }
+--- a/fs/crypto/fscrypt_private.h
++++ b/fs/crypto/fscrypt_private.h
+@@ -27,6 +27,23 @@
+  */
+ #define FSCRYPT_MIN_KEY_SIZE	16
  
-+static struct fs_path *get_cur_inode_path(struct send_ctx *sctx)
-+{
-+	if (fs_path_len(&sctx->cur_inode_path) == 0) {
-+		int ret;
++/*
++ * This mask is passed as the third argument to the crypto_alloc_*() functions
++ * to prevent fscrypt from using the Crypto API drivers for non-inline crypto
++ * engines.  Those drivers have been problematic for fscrypt.  fscrypt users
++ * have reported hangs and even incorrect en/decryption with these drivers.
++ * Since going to the driver, off CPU, and back again is really slow, such
++ * drivers can be over 50 times slower than the CPU-based code for fscrypt's
++ * workload.  Even on platforms that lack AES instructions on the CPU, using the
++ * offloads has been shown to be slower, even staying with AES.  (Of course,
++ * Adiantum is faster still, and is the recommended option on such platforms...)
++ *
++ * Note that fscrypt also supports inline crypto engines.  Those don't use the
++ * Crypto API and work much better than the old-style (non-inline) engines.
++ */
++#define FSCRYPT_CRYPTOAPI_MASK \
++	(CRYPTO_ALG_ALLOCATES_MEMORY | CRYPTO_ALG_KERN_DRIVER_ONLY)
 +
-+		ret = get_cur_path(sctx, sctx->cur_ino, sctx->cur_inode_gen,
-+				   &sctx->cur_inode_path);
-+		if (ret < 0)
-+			return ERR_PTR(ret);
-+	}
-+
-+	return &sctx->cur_inode_path;
-+}
-+
-+static struct fs_path *get_path_for_command(struct send_ctx *sctx, u64 ino, u64 gen)
-+{
-+	struct fs_path *path;
-+	int ret;
-+
-+	if (ino == sctx->cur_ino && gen == sctx->cur_inode_gen)
-+		return get_cur_inode_path(sctx);
-+
-+	path = fs_path_alloc();
-+	if (!path)
-+		return ERR_PTR(-ENOMEM);
-+
-+	ret = get_cur_path(sctx, ino, gen, path);
-+	if (ret < 0) {
-+		fs_path_free(path);
-+		return ERR_PTR(ret);
-+	}
-+
-+	return path;
-+}
-+
-+static void free_path_for_command(const struct send_ctx *sctx, struct fs_path *path)
-+{
-+	if (path != &sctx->cur_inode_path)
-+		fs_path_free(path);
-+}
-+
- static int send_truncate(struct send_ctx *sctx, u64 ino, u64 gen, u64 size)
- {
- 	struct btrfs_fs_info *fs_info = sctx->send_root->fs_info;
-@@ -2631,17 +2672,14 @@ static int send_truncate(struct send_ctx
- 
- 	btrfs_debug(fs_info, "send_truncate %llu size=%llu", ino, size);
- 
--	p = fs_path_alloc();
--	if (!p)
--		return -ENOMEM;
-+	p = get_path_for_command(sctx, ino, gen);
-+	if (IS_ERR(p))
-+		return PTR_ERR(p);
- 
- 	ret = begin_cmd(sctx, BTRFS_SEND_C_TRUNCATE);
- 	if (ret < 0)
- 		goto out;
- 
--	ret = get_cur_path(sctx, ino, gen, p);
--	if (ret < 0)
--		goto out;
- 	TLV_PUT_PATH(sctx, BTRFS_SEND_A_PATH, p);
- 	TLV_PUT_U64(sctx, BTRFS_SEND_A_SIZE, size);
- 
-@@ -2649,7 +2687,7 @@ static int send_truncate(struct send_ctx
- 
- tlv_put_failure:
- out:
--	fs_path_free(p);
-+	free_path_for_command(sctx, p);
- 	return ret;
- }
- 
-@@ -2661,17 +2699,14 @@ static int send_chmod(struct send_ctx *s
- 
- 	btrfs_debug(fs_info, "send_chmod %llu mode=%llu", ino, mode);
- 
--	p = fs_path_alloc();
--	if (!p)
--		return -ENOMEM;
-+	p = get_path_for_command(sctx, ino, gen);
-+	if (IS_ERR(p))
-+		return PTR_ERR(p);
- 
- 	ret = begin_cmd(sctx, BTRFS_SEND_C_CHMOD);
- 	if (ret < 0)
- 		goto out;
- 
--	ret = get_cur_path(sctx, ino, gen, p);
--	if (ret < 0)
--		goto out;
- 	TLV_PUT_PATH(sctx, BTRFS_SEND_A_PATH, p);
- 	TLV_PUT_U64(sctx, BTRFS_SEND_A_MODE, mode & 07777);
- 
-@@ -2679,7 +2714,7 @@ static int send_chmod(struct send_ctx *s
- 
- tlv_put_failure:
- out:
--	fs_path_free(p);
-+	free_path_for_command(sctx, p);
- 	return ret;
- }
- 
-@@ -2694,17 +2729,14 @@ static int send_fileattr(struct send_ctx
- 
- 	btrfs_debug(fs_info, "send_fileattr %llu fileattr=%llu", ino, fileattr);
- 
--	p = fs_path_alloc();
--	if (!p)
--		return -ENOMEM;
-+	p = get_path_for_command(sctx, ino, gen);
-+	if (IS_ERR(p))
-+		return PTR_ERR(p);
- 
- 	ret = begin_cmd(sctx, BTRFS_SEND_C_FILEATTR);
- 	if (ret < 0)
- 		goto out;
- 
--	ret = get_cur_path(sctx, ino, gen, p);
--	if (ret < 0)
--		goto out;
- 	TLV_PUT_PATH(sctx, BTRFS_SEND_A_PATH, p);
- 	TLV_PUT_U64(sctx, BTRFS_SEND_A_FILEATTR, fileattr);
- 
-@@ -2712,7 +2744,7 @@ static int send_fileattr(struct send_ctx
- 
- tlv_put_failure:
- out:
--	fs_path_free(p);
-+	free_path_for_command(sctx, p);
- 	return ret;
- }
- 
-@@ -2725,17 +2757,14 @@ static int send_chown(struct send_ctx *s
- 	btrfs_debug(fs_info, "send_chown %llu uid=%llu, gid=%llu",
- 		    ino, uid, gid);
- 
--	p = fs_path_alloc();
--	if (!p)
--		return -ENOMEM;
-+	p = get_path_for_command(sctx, ino, gen);
-+	if (IS_ERR(p))
-+		return PTR_ERR(p);
- 
- 	ret = begin_cmd(sctx, BTRFS_SEND_C_CHOWN);
- 	if (ret < 0)
- 		goto out;
- 
--	ret = get_cur_path(sctx, ino, gen, p);
--	if (ret < 0)
--		goto out;
- 	TLV_PUT_PATH(sctx, BTRFS_SEND_A_PATH, p);
- 	TLV_PUT_U64(sctx, BTRFS_SEND_A_UID, uid);
- 	TLV_PUT_U64(sctx, BTRFS_SEND_A_GID, gid);
-@@ -2744,7 +2773,7 @@ static int send_chown(struct send_ctx *s
- 
- tlv_put_failure:
- out:
--	fs_path_free(p);
-+	free_path_for_command(sctx, p);
- 	return ret;
- }
- 
-@@ -2761,9 +2790,9 @@ static int send_utimes(struct send_ctx *
- 
- 	btrfs_debug(fs_info, "send_utimes %llu", ino);
- 
--	p = fs_path_alloc();
--	if (!p)
--		return -ENOMEM;
-+	p = get_path_for_command(sctx, ino, gen);
-+	if (IS_ERR(p))
-+		return PTR_ERR(p);
- 
- 	path = alloc_path_for_send();
- 	if (!path) {
-@@ -2788,9 +2817,6 @@ static int send_utimes(struct send_ctx *
- 	if (ret < 0)
- 		goto out;
- 
--	ret = get_cur_path(sctx, ino, gen, p);
--	if (ret < 0)
--		goto out;
- 	TLV_PUT_PATH(sctx, BTRFS_SEND_A_PATH, p);
- 	TLV_PUT_BTRFS_TIMESPEC(sctx, BTRFS_SEND_A_ATIME, eb, &ii->atime);
- 	TLV_PUT_BTRFS_TIMESPEC(sctx, BTRFS_SEND_A_MTIME, eb, &ii->mtime);
-@@ -2802,7 +2828,7 @@ static int send_utimes(struct send_ctx *
- 
- tlv_put_failure:
- out:
--	fs_path_free(p);
-+	free_path_for_command(sctx, p);
- 	btrfs_free_path(path);
- 	return ret;
- }
-@@ -4930,13 +4956,9 @@ static int send_set_xattr(struct send_ct
- 	struct fs_path *path;
- 	int ret;
- 
--	path = fs_path_alloc();
--	if (!path)
--		return -ENOMEM;
--
--	ret = get_cur_path(sctx, sctx->cur_ino, sctx->cur_inode_gen, path);
--	if (ret < 0)
--		goto out;
-+	path = get_cur_inode_path(sctx);
-+	if (IS_ERR(path))
-+		return PTR_ERR(path);
- 
- 	ret = begin_cmd(sctx, BTRFS_SEND_C_SET_XATTR);
- 	if (ret < 0)
-@@ -4950,8 +4972,6 @@ static int send_set_xattr(struct send_ct
- 
- tlv_put_failure:
- out:
--	fs_path_free(path);
--
- 	return ret;
- }
- 
-@@ -5009,23 +5029,14 @@ static int __process_deleted_xattr(int n
- 				   const char *name, int name_len,
- 				   const char *data, int data_len, void *ctx)
- {
--	int ret;
- 	struct send_ctx *sctx = ctx;
- 	struct fs_path *p;
- 
--	p = fs_path_alloc();
--	if (!p)
--		return -ENOMEM;
--
--	ret = get_cur_path(sctx, sctx->cur_ino, sctx->cur_inode_gen, p);
--	if (ret < 0)
--		goto out;
--
--	ret = send_remove_xattr(sctx, p, name, name_len);
-+	p = get_cur_inode_path(sctx);
-+	if (IS_ERR(p))
-+		return PTR_ERR(p);
- 
--out:
--	fs_path_free(p);
--	return ret;
-+	return send_remove_xattr(sctx, p, name, name_len);
- }
- 
- static int process_new_xattr(struct send_ctx *sctx)
-@@ -5259,21 +5270,13 @@ static int process_verity(struct send_ct
- 	if (ret < 0)
- 		goto iput;
- 
--	p = fs_path_alloc();
--	if (!p) {
--		ret = -ENOMEM;
-+	p = get_cur_inode_path(sctx);
-+	if (IS_ERR(p)) {
-+		ret = PTR_ERR(p);
- 		goto iput;
- 	}
--	ret = get_cur_path(sctx, sctx->cur_ino, sctx->cur_inode_gen, p);
--	if (ret < 0)
--		goto free_path;
- 
- 	ret = send_verity(sctx, p, sctx->verity_descriptor);
--	if (ret < 0)
--		goto free_path;
--
--free_path:
--	fs_path_free(p);
- iput:
- 	iput(inode);
- 	return ret;
-@@ -5388,31 +5391,25 @@ static int send_write(struct send_ctx *s
- 	int ret = 0;
- 	struct fs_path *p;
- 
--	p = fs_path_alloc();
--	if (!p)
--		return -ENOMEM;
--
- 	btrfs_debug(fs_info, "send_write offset=%llu, len=%d", offset, len);
- 
--	ret = begin_cmd(sctx, BTRFS_SEND_C_WRITE);
--	if (ret < 0)
--		goto out;
-+	p = get_cur_inode_path(sctx);
-+	if (IS_ERR(p))
-+		return PTR_ERR(p);
- 
--	ret = get_cur_path(sctx, sctx->cur_ino, sctx->cur_inode_gen, p);
-+	ret = begin_cmd(sctx, BTRFS_SEND_C_WRITE);
- 	if (ret < 0)
--		goto out;
-+		return ret;
- 
- 	TLV_PUT_PATH(sctx, BTRFS_SEND_A_PATH, p);
- 	TLV_PUT_U64(sctx, BTRFS_SEND_A_FILE_OFFSET, offset);
- 	ret = put_file_data(sctx, offset, len);
- 	if (ret < 0)
--		goto out;
-+		return ret;
- 
- 	ret = send_cmd(sctx);
- 
- tlv_put_failure:
--out:
--	fs_path_free(p);
- 	return ret;
- }
- 
-@@ -5425,6 +5422,7 @@ static int send_clone(struct send_ctx *s
- {
- 	int ret = 0;
- 	struct fs_path *p;
-+	struct fs_path *cur_inode_path;
- 	u64 gen;
- 
- 	btrfs_debug(sctx->send_root->fs_info,
-@@ -5432,6 +5430,10 @@ static int send_clone(struct send_ctx *s
- 		    offset, len, clone_root->root->root_key.objectid,
- 		    clone_root->ino, clone_root->offset);
- 
-+	cur_inode_path = get_cur_inode_path(sctx);
-+	if (IS_ERR(cur_inode_path))
-+		return PTR_ERR(cur_inode_path);
-+
- 	p = fs_path_alloc();
- 	if (!p)
- 		return -ENOMEM;
-@@ -5440,13 +5442,9 @@ static int send_clone(struct send_ctx *s
- 	if (ret < 0)
- 		goto out;
- 
--	ret = get_cur_path(sctx, sctx->cur_ino, sctx->cur_inode_gen, p);
--	if (ret < 0)
--		goto out;
--
- 	TLV_PUT_U64(sctx, BTRFS_SEND_A_FILE_OFFSET, offset);
- 	TLV_PUT_U64(sctx, BTRFS_SEND_A_CLONE_LEN, len);
--	TLV_PUT_PATH(sctx, BTRFS_SEND_A_PATH, p);
-+	TLV_PUT_PATH(sctx, BTRFS_SEND_A_PATH, cur_inode_path);
- 
- 	if (clone_root->root == sctx->send_root) {
- 		ret = get_inode_gen(sctx->send_root, clone_root->ino, &gen);
-@@ -5497,17 +5495,13 @@ static int send_update_extent(struct sen
- 	int ret = 0;
- 	struct fs_path *p;
- 
--	p = fs_path_alloc();
--	if (!p)
--		return -ENOMEM;
-+	p = get_cur_inode_path(sctx);
-+	if (IS_ERR(p))
-+		return PTR_ERR(p);
- 
- 	ret = begin_cmd(sctx, BTRFS_SEND_C_UPDATE_EXTENT);
- 	if (ret < 0)
--		goto out;
--
--	ret = get_cur_path(sctx, sctx->cur_ino, sctx->cur_inode_gen, p);
--	if (ret < 0)
--		goto out;
-+		return ret;
- 
- 	TLV_PUT_PATH(sctx, BTRFS_SEND_A_PATH, p);
- 	TLV_PUT_U64(sctx, BTRFS_SEND_A_FILE_OFFSET, offset);
-@@ -5516,8 +5510,6 @@ static int send_update_extent(struct sen
- 	ret = send_cmd(sctx);
- 
- tlv_put_failure:
--out:
--	fs_path_free(p);
- 	return ret;
- }
- 
-@@ -5546,12 +5538,10 @@ static int send_hole(struct send_ctx *sc
- 	if (sctx->flags & BTRFS_SEND_FLAG_NO_FILE_DATA)
- 		return send_update_extent(sctx, offset, end - offset);
- 
--	p = fs_path_alloc();
--	if (!p)
--		return -ENOMEM;
--	ret = get_cur_path(sctx, sctx->cur_ino, sctx->cur_inode_gen, p);
--	if (ret < 0)
--		goto tlv_put_failure;
-+	p = get_cur_inode_path(sctx);
-+	if (IS_ERR(p))
-+		return PTR_ERR(p);
-+
- 	while (offset < end) {
- 		u64 len = min(end - offset, read_size);
- 
-@@ -5572,7 +5562,6 @@ static int send_hole(struct send_ctx *sc
- 	}
- 	sctx->cur_inode_next_write_offset = offset;
- tlv_put_failure:
--	fs_path_free(p);
- 	return ret;
- }
- 
-@@ -5595,9 +5584,9 @@ static int send_encoded_inline_extent(st
- 	if (IS_ERR(inode))
- 		return PTR_ERR(inode);
- 
--	fspath = fs_path_alloc();
--	if (!fspath) {
--		ret = -ENOMEM;
-+	fspath = get_cur_inode_path(sctx);
-+	if (IS_ERR(fspath)) {
-+		ret = PTR_ERR(fspath);
- 		goto out;
- 	}
- 
-@@ -5605,10 +5594,6 @@ static int send_encoded_inline_extent(st
- 	if (ret < 0)
- 		goto out;
- 
--	ret = get_cur_path(sctx, sctx->cur_ino, sctx->cur_inode_gen, fspath);
--	if (ret < 0)
--		goto out;
--
- 	btrfs_item_key_to_cpu(leaf, &key, path->slots[0]);
- 	ei = btrfs_item_ptr(leaf, path->slots[0], struct btrfs_file_extent_item);
- 	ram_bytes = btrfs_file_extent_ram_bytes(leaf, ei);
-@@ -5637,7 +5622,6 @@ static int send_encoded_inline_extent(st
- 
- tlv_put_failure:
- out:
--	fs_path_free(fspath);
- 	iput(inode);
- 	return ret;
- }
-@@ -5662,9 +5646,9 @@ static int send_encoded_extent(struct se
- 	if (IS_ERR(inode))
- 		return PTR_ERR(inode);
- 
--	fspath = fs_path_alloc();
--	if (!fspath) {
--		ret = -ENOMEM;
-+	fspath = get_cur_inode_path(sctx);
-+	if (IS_ERR(fspath)) {
-+		ret = PTR_ERR(fspath);
- 		goto out;
- 	}
- 
-@@ -5672,10 +5656,6 @@ static int send_encoded_extent(struct se
- 	if (ret < 0)
- 		goto out;
- 
--	ret = get_cur_path(sctx, sctx->cur_ino, sctx->cur_inode_gen, fspath);
--	if (ret < 0)
--		goto out;
--
- 	btrfs_item_key_to_cpu(leaf, &key, path->slots[0]);
- 	ei = btrfs_item_ptr(leaf, path->slots[0], struct btrfs_file_extent_item);
- 	disk_bytenr = btrfs_file_extent_disk_bytenr(leaf, ei);
-@@ -5742,7 +5722,6 @@ static int send_encoded_extent(struct se
- 
- tlv_put_failure:
- out:
--	fs_path_free(fspath);
- 	iput(inode);
- 	return ret;
- }
+ #define FSCRYPT_CONTEXT_V1	1
+ #define FSCRYPT_CONTEXT_V2	2
+ 
+--- a/fs/crypto/hkdf.c
++++ b/fs/crypto/hkdf.c
+@@ -72,7 +72,7 @@ int fscrypt_init_hkdf(struct fscrypt_hkd
+ 	u8 prk[HKDF_HASHLEN];
+ 	int err;
+ 
+-	hmac_tfm = crypto_alloc_shash(HKDF_HMAC_ALG, 0, 0);
++	hmac_tfm = crypto_alloc_shash(HKDF_HMAC_ALG, 0, FSCRYPT_CRYPTOAPI_MASK);
+ 	if (IS_ERR(hmac_tfm)) {
+ 		fscrypt_err(NULL, "Error allocating " HKDF_HMAC_ALG ": %ld",
+ 			    PTR_ERR(hmac_tfm));
+--- a/fs/crypto/keysetup.c
++++ b/fs/crypto/keysetup.c
+@@ -88,7 +88,8 @@ fscrypt_allocate_skcipher(struct fscrypt
+ 	struct crypto_skcipher *tfm;
+ 	int err;
+ 
+-	tfm = crypto_alloc_skcipher(mode->cipher_str, 0, 0);
++	tfm = crypto_alloc_skcipher(mode->cipher_str, 0,
++				    FSCRYPT_CRYPTOAPI_MASK);
+ 	if (IS_ERR(tfm)) {
+ 		if (PTR_ERR(tfm) == -ENOENT) {
+ 			fscrypt_warn(inode,
+--- a/fs/crypto/keysetup_v1.c
++++ b/fs/crypto/keysetup_v1.c
+@@ -52,7 +52,8 @@ static int derive_key_aes(const u8 *mast
+ 	struct skcipher_request *req = NULL;
+ 	DECLARE_CRYPTO_WAIT(wait);
+ 	struct scatterlist src_sg, dst_sg;
+-	struct crypto_skcipher *tfm = crypto_alloc_skcipher("ecb(aes)", 0, 0);
++	struct crypto_skcipher *tfm =
++		crypto_alloc_skcipher("ecb(aes)", 0, FSCRYPT_CRYPTOAPI_MASK);
+ 
+ 	if (IS_ERR(tfm)) {
+ 		res = PTR_ERR(tfm);
 
 
 
