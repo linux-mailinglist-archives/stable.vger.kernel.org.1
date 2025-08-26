@@ -1,57 +1,58 @@
-Return-Path: <stable+bounces-174312-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-176344-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6A47DB3627B
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 15:19:27 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 53E20B36D2D
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 17:09:39 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 33BAA188419F
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 13:16:24 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 00C289828F2
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 14:46:34 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C441F1ADFFE;
-	Tue, 26 Aug 2025 13:14:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B6A5335336C;
+	Tue, 26 Aug 2025 14:43:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="BU0fj9Q3"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="0I01q4OD"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 82A8AFBF0;
-	Tue, 26 Aug 2025 13:14:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 753B8353360;
+	Tue, 26 Aug 2025 14:43:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756214055; cv=none; b=rswPBlAq6HJuSdzEqbgAY8k9IeYVol4LtGD5R7o5BawzNtKgI9RhoSm6X6s6tcTvqw3Yr5qjtHfOgGeODnQVdAB9Bs/yXUH8TtzRB3rJ8tEjX6cUi7abeWD49TKSBIvZ1+2CzUxo45aj1FTEQakOczqEJrvWJC+n2RYcxT0wn8M=
+	t=1756219414; cv=none; b=jwUl0U/dWEFkmAtQJ/kQoMIGffiZRWYB7SZDnFifjmVF8eyKbQj5FmVOJ+LqEQ8iHJfSSghV3WElkAKHbphoe83YOB2KsysvWZ1+oWN3fFuRCGCdwMlXAc4yhOXXnD1kbhQy2aRlewnqYcA6CQ33vZbRSvYXGK0Egf3nOT3eTq0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756214055; c=relaxed/simple;
-	bh=GGXd1+av8+S2acf8qIznnCCquUWHxULXrWQEPs13dgM=;
+	s=arc-20240116; t=1756219414; c=relaxed/simple;
+	bh=3La+myHi3hFPsRzGMXBXNzGxT2KjyGywOEulOo9Zzek=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=D2UFNkaFICRsq6DfHH8v1LuhUSRaYm3BiU3qXhGuPFVqMK5imtcK4kD//Dm4dE6JMADSLPSIZZJzACpVOWv3FhppfBL/KX4QR1RUyQWpHu3nVzHq3JAjw05MGc7JrAliQTWjFWYMvfXysqA7Th+ttY8C8EnX0+JyY3Ias+8tNoY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=BU0fj9Q3; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 13C69C4CEF1;
-	Tue, 26 Aug 2025 13:14:14 +0000 (UTC)
+	 MIME-Version; b=efnFfeFHjYCvR4aX0+9S5c8MJat4tz8txMrbBBAAyoWLalGoSqKpi6QAqA5iZGDGPsTboxtbLfSYpKKxOw9Uub+MkXI6uG99XRdjEq+t/1QB4fdUQYLlDbmGGSFEtiO3d95Wq92cGah7MT7TAojdExw1KMw/5yaUvrs6nV4ATzI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=0I01q4OD; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 05601C4CEF1;
+	Tue, 26 Aug 2025 14:43:33 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1756214055;
-	bh=GGXd1+av8+S2acf8qIznnCCquUWHxULXrWQEPs13dgM=;
+	s=korg; t=1756219414;
+	bh=3La+myHi3hFPsRzGMXBXNzGxT2KjyGywOEulOo9Zzek=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=BU0fj9Q3i+64fula+85qvvdP4jxxNsdpDUWzghL+OS5+K/UnKqg7B0Bq7ONIyTv5/
-	 YBzTb1X0pmFGhre8nhZcQPE7iYpTv06XQvRJhTrCw+GLC3+JsZUZ3fAdL2Kb1mZ5Cy
-	 vn5O4tOY9axjPdFgJPUTYzMVYseSQvaSseau4K+4=
+	b=0I01q4ODWRP2L1M9XXVv4+AxASgdefYKCJdunvJTg6cNTd5Pm6JRlOJR4l4nF06AL
+	 rzfeZfV0LrKot4W6521iyF3AeNDV7WNYtj5W3+XTWTvTvKCGaKpGQgNJk8s7DATgEd
+	 5q2juGNTWjzTKKvjST5eq1sv4BkjtXueLpxR0Xog=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	kernel test robot <lkp@intel.com>,
-	Fanhua Li <lifanhua5@huawei.com>,
-	Danilo Krummrich <dakr@kernel.org>,
+	stable@kernel.org,
+	Jiaming Zhang <r772577952@gmail.com>,
+	Chao Yu <chao@kernel.org>,
+	Jaegeuk Kim <jaegeuk@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 549/587] drm/nouveau/nvif: Fix potential memory leak in nvif_vmm_ctor().
+Subject: [PATCH 5.4 372/403] f2fs: fix to avoid out-of-boundary access in dnode page
 Date: Tue, 26 Aug 2025 13:11:38 +0200
-Message-ID: <20250826111006.985818396@linuxfoundation.org>
+Message-ID: <20250826110917.290329271@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250826110952.942403671@linuxfoundation.org>
-References: <20250826110952.942403671@linuxfoundation.org>
+In-Reply-To: <20250826110905.607690791@linuxfoundation.org>
+References: <20250826110905.607690791@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,46 +64,78 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+5.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Fanhua Li <lifanhua5@huawei.com>
+From: Chao Yu <chao@kernel.org>
 
-[ Upstream commit bb8aeaa3191b617c6faf8ae937252e059673b7ea ]
+[ Upstream commit 77de19b6867f2740cdcb6c9c7e50d522b47847a4 ]
 
-When the nvif_vmm_type is invalid, we will return error directly
-without freeing the args in nvif_vmm_ctor(), which leading a memory
-leak. Fix it by setting the ret -EINVAL and goto done.
+As Jiaming Zhang reported:
 
-Reported-by: kernel test robot <lkp@intel.com>
-Closes: https://lore.kernel.org/all/202312040659.4pJpMafN-lkp@intel.com/
-Fixes: 6b252cf42281 ("drm/nouveau: nvkm/vmm: implement raw ops to manage uvmm")
-Signed-off-by: Fanhua Li <lifanhua5@huawei.com>
-Link: https://lore.kernel.org/r/20250728115027.50878-1-lifanhua5@huawei.com
-Signed-off-by: Danilo Krummrich <dakr@kernel.org>
+ <TASK>
+ __dump_stack lib/dump_stack.c:94 [inline]
+ dump_stack_lvl+0x1c1/0x2a0 lib/dump_stack.c:120
+ print_address_description mm/kasan/report.c:378 [inline]
+ print_report+0x17e/0x800 mm/kasan/report.c:480
+ kasan_report+0x147/0x180 mm/kasan/report.c:593
+ data_blkaddr fs/f2fs/f2fs.h:3053 [inline]
+ f2fs_data_blkaddr fs/f2fs/f2fs.h:3058 [inline]
+ f2fs_get_dnode_of_data+0x1a09/0x1c40 fs/f2fs/node.c:855
+ f2fs_reserve_block+0x53/0x310 fs/f2fs/data.c:1195
+ prepare_write_begin fs/f2fs/data.c:3395 [inline]
+ f2fs_write_begin+0xf39/0x2190 fs/f2fs/data.c:3594
+ generic_perform_write+0x2c7/0x910 mm/filemap.c:4112
+ f2fs_buffered_write_iter fs/f2fs/file.c:4988 [inline]
+ f2fs_file_write_iter+0x1ec8/0x2410 fs/f2fs/file.c:5216
+ new_sync_write fs/read_write.c:593 [inline]
+ vfs_write+0x546/0xa90 fs/read_write.c:686
+ ksys_write+0x149/0x250 fs/read_write.c:738
+ do_syscall_x64 arch/x86/entry/syscall_64.c:63 [inline]
+ do_syscall_64+0xf3/0x3d0 arch/x86/entry/syscall_64.c:94
+ entry_SYSCALL_64_after_hwframe+0x77/0x7f
+
+The root cause is in the corrupted image, there is a dnode has the same
+node id w/ its inode, so during f2fs_get_dnode_of_data(), it tries to
+access block address in dnode at offset 934, however it parses the dnode
+as inode node, so that get_dnode_addr() returns 360, then it tries to
+access page address from 360 + 934 * 4 = 4096 w/ 4 bytes.
+
+To fix this issue, let's add sanity check for node id of all direct nodes
+during f2fs_get_dnode_of_data().
+
+Cc: stable@kernel.org
+Reported-by: Jiaming Zhang <r772577952@gmail.com>
+Closes: https://groups.google.com/g/syzkaller/c/-ZnaaOOfO3M
+Signed-off-by: Chao Yu <chao@kernel.org>
+Signed-off-by: Jaegeuk Kim <jaegeuk@kernel.org>
+[ replaced f2fs_err_ratelimited() with f2fs_err() ]
 Signed-off-by: Sasha Levin <sashal@kernel.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/gpu/drm/nouveau/nvif/vmm.c | 3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+ fs/f2fs/node.c |   10 ++++++++++
+ 1 file changed, 10 insertions(+)
 
-diff --git a/drivers/gpu/drm/nouveau/nvif/vmm.c b/drivers/gpu/drm/nouveau/nvif/vmm.c
-index 99296f03371a..07c1ebc2a941 100644
---- a/drivers/gpu/drm/nouveau/nvif/vmm.c
-+++ b/drivers/gpu/drm/nouveau/nvif/vmm.c
-@@ -219,7 +219,8 @@ nvif_vmm_ctor(struct nvif_mmu *mmu, const char *name, s32 oclass,
- 	case RAW: args->type = NVIF_VMM_V0_TYPE_RAW; break;
- 	default:
- 		WARN_ON(1);
--		return -EINVAL;
-+		ret = -EINVAL;
-+		goto done;
- 	}
+--- a/fs/f2fs/node.c
++++ b/fs/f2fs/node.c
+@@ -764,6 +764,16 @@ int f2fs_get_dnode_of_data(struct dnode_
+ 	for (i = 1; i <= level; i++) {
+ 		bool done = false;
  
- 	memcpy(args->data, argv, argc);
--- 
-2.50.1
-
++		if (nids[i] && nids[i] == dn->inode->i_ino) {
++			err = -EFSCORRUPTED;
++			f2fs_err(sbi,
++				"inode mapping table is corrupted, run fsck to fix it, "
++				"ino:%lu, nid:%u, level:%d, offset:%d",
++				dn->inode->i_ino, nids[i], level, offset[level]);
++			set_sbi_flag(sbi, SBI_NEED_FSCK);
++			goto release_pages;
++		}
++
+ 		if (!nids[i] && mode == ALLOC_NODE) {
+ 			/* alloc new node */
+ 			if (!f2fs_alloc_nid(sbi, &(nids[i]))) {
 
 
 
