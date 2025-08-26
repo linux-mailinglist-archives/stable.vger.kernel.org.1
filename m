@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-175324-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-173599-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6F653B367CC
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 16:10:21 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6DCB3B35E7B
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 13:58:09 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 5D9B81C40059
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 14:01:24 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id F036436268E
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 11:45:49 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 761DB341650;
-	Tue, 26 Aug 2025 13:58:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A3460338F2A;
+	Tue, 26 Aug 2025 11:44:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="YaDNjZFM"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Zh7ca7v+"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 165FB352FF7;
-	Tue, 26 Aug 2025 13:58:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5E0CC338F36;
+	Tue, 26 Aug 2025 11:44:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756216735; cv=none; b=BBOr/LEkQJ5TXOLOvlf6FNmhrzIy2O8zPGBYcFPLqb8TFMMn6nvM4CZKsgbSvdZOztujavGtf++Lsxoc8qBuRcR1jM8SrxM4HQW7xL0LKKy5+/6RN8AGeU7vkLdNLLSaX7A77+EBenPz4RnwabYlgoffplvlD4IcvOyQ+RNL3AU=
+	t=1756208668; cv=none; b=NWLyEmML/0yPPqkdB7f/cIvwg8Hv+R1t8NrNjDzvw40n4oEGn2rsWsZFashuiY6WQ0Zm2XgwfanlRyxVmmrrqvJGByxvE+vtZzOXur7RrjaUA5YUfng9SNjXEFOQt8I8czfV2jvyShn4nll9CG5gtDdZFZU5ZSdqwaBnPyT101I=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756216735; c=relaxed/simple;
-	bh=douXv3ssvUooykMqByIrU+XbIX2G8C6oNsjPDtEhKVY=;
+	s=arc-20240116; t=1756208668; c=relaxed/simple;
+	bh=q6IYNGsf/d+dBzWvWLWjFzP91GFOcXNZUrykY01P1Ko=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=ViWHY5VRubLzsaGOBZAMbyLKVr5M4YUDH0cz36OnpRCLmaUNBGgXcHV/b/5kBO8p9xNk04tHCxmlHLIg18zA1QPAv9EUUDOqN/x3A7z1fzvP1XRzkZB5efmA4BG99hJJ+bzUskdaPE1bc4YDqRjOvtS6H4mlHa0VUhNzDfh6dMA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=YaDNjZFM; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 34DFFC4CEF1;
-	Tue, 26 Aug 2025 13:58:54 +0000 (UTC)
+	 MIME-Version; b=aV2Aq8HIg36/pv63SZaFAfrbiuRRUFulOofcm/UUSlhs8Dm12lBVRtMc6Ts9v401PkKxrOKoRfohI+qCDbSQMQwRo7jlRgIOLpbkO+g/2ZyPJ4fuO+6W7iRDhydt+zJaQZQJaD6mZFCLWnII//QAbwIFs4ORckkW/w3/CbphivM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Zh7ca7v+; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E797CC4CEF1;
+	Tue, 26 Aug 2025 11:44:27 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1756216734;
-	bh=douXv3ssvUooykMqByIrU+XbIX2G8C6oNsjPDtEhKVY=;
+	s=korg; t=1756208668;
+	bh=q6IYNGsf/d+dBzWvWLWjFzP91GFOcXNZUrykY01P1Ko=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=YaDNjZFMVtQAYsxL4kkTUxcBVKykz4VypL+w1F9glMl3muHpUHUOzkyYeFBRJy1Rm
-	 h38zNq62N9SUUdiIRCni73ploTEg7U/BGERcGcngIhOTkUUwXcFsmSPFzIWRM54ECg
-	 AC8uemZ0Xzflg1bUyAiyEjsQ2v0vdwx40a6BsS0w=
+	b=Zh7ca7v+xhhLmZgRmL2duEpn+/DZFExATpQ1BWZPlDgin/cI6qWhq/LqFPgvc4R8e
+	 KB+GDfuwX87g8luZpt0h9InBmTyCzDicHCZuUIpV1mZ6mFUuuAXS4/pYjkuli/E6Gh
+	 5h4t6m72yaTfFB8COrX54Dzd6cxBgn81h3+pxvGA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Thorsten Blum <thorsten.blum@linux.dev>,
-	Namjae Jeon <linkinjeon@kernel.org>,
-	Steve French <stfrench@microsoft.com>,
+	Ranjan Kumar <ranjan.kumar@broadcom.com>,
+	"Martin K. Petersen" <martin.petersen@oracle.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 523/644] smb: server: Fix extension string in ksmbd_extract_shortname()
+Subject: [PATCH 6.12 199/322] scsi: mpi3mr: Serialize admin queue BAR writes on 32-bit systems
 Date: Tue, 26 Aug 2025 13:10:14 +0200
-Message-ID: <20250826110959.470251450@linuxfoundation.org>
+Message-ID: <20250826110920.780216536@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250826110946.507083938@linuxfoundation.org>
-References: <20250826110946.507083938@linuxfoundation.org>
+In-Reply-To: <20250826110915.169062587@linuxfoundation.org>
+References: <20250826110915.169062587@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,44 +62,106 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Thorsten Blum <thorsten.blum@linux.dev>
+From: Ranjan Kumar <ranjan.kumar@broadcom.com>
 
-[ Upstream commit 8e7d178d06e8937454b6d2f2811fa6a15656a214 ]
+[ Upstream commit c91e140c82eb58724c435f623702e51cc7896646 ]
 
-In ksmbd_extract_shortname(), strscpy() is incorrectly called with the
-length of the source string (excluding the NUL terminator) rather than
-the size of the destination buffer. This results in "__" being copied
-to 'extension' rather than "___" (two underscores instead of three).
+On 32-bit systems, 64-bit BAR writes to admin queue registers are
+performed as two 32-bit writes. Without locking, this can cause partial
+writes when accessed concurrently.
 
-Use the destination buffer size instead to ensure that the string "___"
-(three underscores) is copied correctly.
+Updated per-queue spinlocks is used to serialize these writes and prevent
+race conditions.
 
+Fixes: 824a156633df ("scsi: mpi3mr: Base driver code")
 Cc: stable@vger.kernel.org
-Fixes: e2f34481b24d ("cifsd: add server-side procedures for SMB3")
-Signed-off-by: Thorsten Blum <thorsten.blum@linux.dev>
-Acked-by: Namjae Jeon <linkinjeon@kernel.org>
-Signed-off-by: Steve French <stfrench@microsoft.com>
+Signed-off-by: Ranjan Kumar <ranjan.kumar@broadcom.com>
+Link: https://lore.kernel.org/r/20250627194539.48851-4-ranjan.kumar@broadcom.com
+Signed-off-by: Martin K. Petersen <martin.petersen@oracle.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- fs/ksmbd/smb_common.c |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/scsi/mpi3mr/mpi3mr.h    |    4 ++++
+ drivers/scsi/mpi3mr/mpi3mr_fw.c |   15 +++++++++++----
+ drivers/scsi/mpi3mr/mpi3mr_os.c |    2 ++
+ 3 files changed, 17 insertions(+), 4 deletions(-)
 
---- a/fs/ksmbd/smb_common.c
-+++ b/fs/ksmbd/smb_common.c
-@@ -508,7 +508,7 @@ int ksmbd_extract_shortname(struct ksmbd
+--- a/drivers/scsi/mpi3mr/mpi3mr.h
++++ b/drivers/scsi/mpi3mr/mpi3mr.h
+@@ -1131,6 +1131,8 @@ struct scmd_priv {
+  * @logdata_buf: Circular buffer to store log data entries
+  * @logdata_buf_idx: Index of entry in buffer to store
+  * @logdata_entry_sz: log data entry size
++ * @adm_req_q_bar_writeq_lock: Admin request queue lock
++ * @adm_reply_q_bar_writeq_lock: Admin reply queue lock
+  * @pend_large_data_sz: Counter to track pending large data
+  * @io_throttle_data_length: I/O size to track in 512b blocks
+  * @io_throttle_high: I/O size to start throttle in 512b blocks
+@@ -1328,6 +1330,8 @@ struct mpi3mr_ioc {
+ 	u8 *logdata_buf;
+ 	u16 logdata_buf_idx;
+ 	u16 logdata_entry_sz;
++	spinlock_t adm_req_q_bar_writeq_lock;
++	spinlock_t adm_reply_q_bar_writeq_lock;
  
- 	p = strrchr(longname, '.');
- 	if (p == longname) { /*name starts with a dot*/
--		strscpy(extension, "___", strlen("___"));
-+		strscpy(extension, "___", sizeof(extension));
- 	} else {
- 		if (p) {
- 			p++;
+ 	atomic_t pend_large_data_sz;
+ 	u32 io_throttle_data_length;
+--- a/drivers/scsi/mpi3mr/mpi3mr_fw.c
++++ b/drivers/scsi/mpi3mr/mpi3mr_fw.c
+@@ -23,17 +23,22 @@ module_param(poll_queues, int, 0444);
+ MODULE_PARM_DESC(poll_queues, "Number of queues for io_uring poll mode. (Range 1 - 126)");
+ 
+ #if defined(writeq) && defined(CONFIG_64BIT)
+-static inline void mpi3mr_writeq(__u64 b, void __iomem *addr)
++static inline void mpi3mr_writeq(__u64 b, void __iomem *addr,
++	spinlock_t *write_queue_lock)
+ {
+ 	writeq(b, addr);
+ }
+ #else
+-static inline void mpi3mr_writeq(__u64 b, void __iomem *addr)
++static inline void mpi3mr_writeq(__u64 b, void __iomem *addr,
++	spinlock_t *write_queue_lock)
+ {
+ 	__u64 data_out = b;
++	unsigned long flags;
+ 
++	spin_lock_irqsave(write_queue_lock, flags);
+ 	writel((u32)(data_out), addr);
+ 	writel((u32)(data_out >> 32), (addr + 4));
++	spin_unlock_irqrestore(write_queue_lock, flags);
+ }
+ #endif
+ 
+@@ -2931,9 +2936,11 @@ static int mpi3mr_setup_admin_qpair(stru
+ 	    (mrioc->num_admin_req);
+ 	writel(num_admin_entries, &mrioc->sysif_regs->admin_queue_num_entries);
+ 	mpi3mr_writeq(mrioc->admin_req_dma,
+-	    &mrioc->sysif_regs->admin_request_queue_address);
++		&mrioc->sysif_regs->admin_request_queue_address,
++		&mrioc->adm_req_q_bar_writeq_lock);
+ 	mpi3mr_writeq(mrioc->admin_reply_dma,
+-	    &mrioc->sysif_regs->admin_reply_queue_address);
++		&mrioc->sysif_regs->admin_reply_queue_address,
++		&mrioc->adm_reply_q_bar_writeq_lock);
+ 	writel(mrioc->admin_req_pi, &mrioc->sysif_regs->admin_request_queue_pi);
+ 	writel(mrioc->admin_reply_ci, &mrioc->sysif_regs->admin_reply_queue_ci);
+ 	return retval;
+--- a/drivers/scsi/mpi3mr/mpi3mr_os.c
++++ b/drivers/scsi/mpi3mr/mpi3mr_os.c
+@@ -5251,6 +5251,8 @@ mpi3mr_probe(struct pci_dev *pdev, const
+ 	spin_lock_init(&mrioc->tgtdev_lock);
+ 	spin_lock_init(&mrioc->watchdog_lock);
+ 	spin_lock_init(&mrioc->chain_buf_lock);
++	spin_lock_init(&mrioc->adm_req_q_bar_writeq_lock);
++	spin_lock_init(&mrioc->adm_reply_q_bar_writeq_lock);
+ 	spin_lock_init(&mrioc->sas_node_lock);
+ 	spin_lock_init(&mrioc->trigger_lock);
+ 
 
 
 
