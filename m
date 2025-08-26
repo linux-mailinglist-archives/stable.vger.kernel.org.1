@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-174409-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-176018-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id B07B5B36330
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 15:27:41 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id F3EE2B36A8A
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 16:38:28 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 6164B8A4649
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 13:20:53 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id ED15A1C80643
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 14:32:20 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 80E22341674;
-	Tue, 26 Aug 2025 13:18:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 290463568F5;
+	Tue, 26 Aug 2025 14:29:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="DiVBxyGs"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="BlS165hG"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3EA811B87E8;
-	Tue, 26 Aug 2025 13:18:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DBEC5352096;
+	Tue, 26 Aug 2025 14:29:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756214313; cv=none; b=tOMgGoOyZYnyMHZile+Om8XSwYuCGy4gWhxlJqfHubONj+389M3Nb87PHhyf/S+4ovLYLv1KdZMUIQ2IxGOVz9TLSCWZrtk16KbbcRgzsUhx3lpiT7km0uDdWuQc9yrxuQ8NmTpAdl0KYjEm6NaaJUyMALYsa6XP3MyV1MxWkOM=
+	t=1756218569; cv=none; b=iRP2k4SsBIzK+jizA/f9Q0mql8K7ZBI2MXrMA55BV430ZHaAj2JjZ6X153MdTAPPTFA5e3wkC3PDwdmJZj6D3MilPi8IXwaspx6KKIW03KsrbUQX6KWyfILMJ0MOXBod9OK59D52fwW9j0kLGkOxjwO2IfzsevgSFgeWU2E+HXc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756214313; c=relaxed/simple;
-	bh=W0sYGl+jzpwW8zDfxxQtAf+BAGGXoAj6UPyOdfzMbeI=;
+	s=arc-20240116; t=1756218569; c=relaxed/simple;
+	bh=P9RgFeWLg59dcVLPzgrkNEyK8D2tQ9Lmv+qQeAxrPMk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=qWQTxFFsirDK6QREHWJ9rVVUqByW+YkoL4Erj7ucGd6ptZbOTaBXQPGrHJPXbjIO4AR2mEsMPb7Wbt+Dtzdhy9V3eBY3tYY5FeL/hhEFQGZAX535bXkM2OXpxu2RQugSPhw0zXn1aAYSnApLbylF5Rm9r57+dWMHSS8AO3X190Q=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=DiVBxyGs; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C2C51C113D0;
-	Tue, 26 Aug 2025 13:18:32 +0000 (UTC)
+	 MIME-Version; b=nOWm30x8dTMU6qBEPw/J41YFhhR13oo973lJKF/P21Te8tvVXrqicgyoNJExyeYRuJcxSy3M5g3MKYnWwPqb1YCqA+0mrsF6mdCtIz3Lae+GCPie89HvNAppAZ8Yc4ObYOL72jbrUD/l/QLhdFxEIvY+E/NVG82BSCJM/59mMbY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=BlS165hG; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7002CC4CEF1;
+	Tue, 26 Aug 2025 14:29:29 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1756214313;
-	bh=W0sYGl+jzpwW8zDfxxQtAf+BAGGXoAj6UPyOdfzMbeI=;
+	s=korg; t=1756218569;
+	bh=P9RgFeWLg59dcVLPzgrkNEyK8D2tQ9Lmv+qQeAxrPMk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=DiVBxyGsuMzjQkyaRuEeZTG3+nz/4f4KWGfUzl6BO6/RSO3NwnM6QzAyPoI4itx7M
-	 XF6s/7uT9T19wgYDA9cU/s16+l/gX7YitYpE4LpO3xXSpef8ZTiP3gvdbM8HjKE4Au
-	 NA+Nvc74anEiHmQIk7MTOeLd2QcHJgwk4h8P355Y=
+	b=BlS165hG6vrpAlnGM5D9aop+oLzmiISajyuq7TNmVkmuK507EvUVYirLQlZfdjdLh
+	 wod5fsCvB3Vpew1ZGelBlWW8BqYCt+R/UE7f/WkSC5l3NJZ7HhU55B+2WfQijbJ/8r
+	 pn+XR6JKAq+YHM8j7p5hfhSR/aonAAXgQiLrHpxA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Breno Leitao <leitao@debian.org>,
-	Tony Luck <tony.luck@intel.com>,
-	"Rafael J. Wysocki" <rafael.j.wysocki@intel.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 092/482] ACPI: APEI: GHES: add TAINT_MACHINE_CHECK on GHES panic path
+	Judith Mendez <jm@ti.com>,
+	Adrian Hunter <adrian.hunter@intel.com>,
+	Ulf Hansson <ulf.hansson@linaro.org>
+Subject: [PATCH 5.4 019/403] mmc: sdhci_am654: Workaround for Errata i2312
 Date: Tue, 26 Aug 2025 13:05:45 +0200
-Message-ID: <20250826110933.100482403@linuxfoundation.org>
+Message-ID: <20250826110906.298084227@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250826110930.769259449@linuxfoundation.org>
-References: <20250826110930.769259449@linuxfoundation.org>
+In-Reply-To: <20250826110905.607690791@linuxfoundation.org>
+References: <20250826110905.607690791@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,48 +62,67 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+5.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Breno Leitao <leitao@debian.org>
+From: Judith Mendez <jm@ti.com>
 
-[ Upstream commit 4734c8b46b901cff2feda8b82abc710b65dc31c1 ]
+commit 6d0b1c01847fedd7c85a5cdf59b8cfc7d14512e6 upstream.
 
-When a GHES (Generic Hardware Error Source) triggers a panic, add the
-TAINT_MACHINE_CHECK taint flag to the kernel. This explicitly marks the
-kernel as tainted due to a machine check event, improving diagnostics
-and post-mortem analysis. The taint is set with LOCKDEP_STILL_OK to
-indicate lockdep remains valid.
+Errata i2312 [0] for K3 silicon mentions the maximum obtainable
+timeout through MMC host controller is 700ms. And for commands taking
+longer than 700ms, hardware timeout should be disabled and software
+timeout should be used.
 
-At large scale deployment, this helps to quickly determine panics that
-are coming due to hardware failures.
+The workaround for Errata i2312 can be achieved by adding
+SDHCI_QUIRK2_DISABLE_HW_TIMEOUT quirk in sdhci_am654.
 
-Signed-off-by: Breno Leitao <leitao@debian.org>
-Reviewed-by: Tony Luck <tony.luck@intel.com>
-Link: https://patch.msgid.link/20250702-add_tain-v1-1-9187b10914b9@debian.org
-Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+[0] https://www.ti.com/lit/pdf/sprz487
+
+Signed-off-by: Judith Mendez <jm@ti.com>
+Acked-by: Adrian Hunter <adrian.hunter@intel.com>
+Fixes: 41fd4caeb00b ("mmc: sdhci_am654: Add Initial Support for AM654 SDHCI driver")
+Cc: stable@vger.kernel.org
+Link: https://lore.kernel.org/r/20250626231452.3460987-1-jm@ti.com
+Signed-off-by: Ulf Hansson <ulf.hansson@linaro.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/acpi/apei/ghes.c | 2 ++
- 1 file changed, 2 insertions(+)
+ drivers/mmc/host/sdhci_am654.c |    9 ++++++---
+ 1 file changed, 6 insertions(+), 3 deletions(-)
 
-diff --git a/drivers/acpi/apei/ghes.c b/drivers/acpi/apei/ghes.c
-index 1f327ec4c30b..3c862acaa28a 100644
---- a/drivers/acpi/apei/ghes.c
-+++ b/drivers/acpi/apei/ghes.c
-@@ -860,6 +860,8 @@ static void __ghes_panic(struct ghes *ghes,
+--- a/drivers/mmc/host/sdhci_am654.c
++++ b/drivers/mmc/host/sdhci_am654.c
+@@ -264,7 +264,8 @@ static struct sdhci_ops sdhci_am654_ops
+ static const struct sdhci_pltfm_data sdhci_am654_pdata = {
+ 	.ops = &sdhci_am654_ops,
+ 	.quirks = SDHCI_QUIRK_MULTIBLOCK_READ_ACMD12,
+-	.quirks2 = SDHCI_QUIRK2_PRESET_VALUE_BROKEN,
++	.quirks2 = SDHCI_QUIRK2_PRESET_VALUE_BROKEN |
++		   SDHCI_QUIRK2_DISABLE_HW_TIMEOUT,
+ };
  
- 	__ghes_print_estatus(KERN_EMERG, ghes->generic, estatus);
+ static const struct sdhci_am654_driver_data sdhci_am654_drvdata = {
+@@ -286,7 +287,8 @@ static struct sdhci_ops sdhci_j721e_8bit
+ static const struct sdhci_pltfm_data sdhci_j721e_8bit_pdata = {
+ 	.ops = &sdhci_j721e_8bit_ops,
+ 	.quirks = SDHCI_QUIRK_MULTIBLOCK_READ_ACMD12,
+-	.quirks2 = SDHCI_QUIRK2_PRESET_VALUE_BROKEN,
++	.quirks2 = SDHCI_QUIRK2_PRESET_VALUE_BROKEN |
++		   SDHCI_QUIRK2_DISABLE_HW_TIMEOUT,
+ };
  
-+	add_taint(TAINT_MACHINE_CHECK, LOCKDEP_STILL_OK);
-+
- 	ghes_clear_estatus(ghes, estatus, buf_paddr, fixmap_idx);
+ static const struct sdhci_am654_driver_data sdhci_j721e_8bit_drvdata = {
+@@ -308,7 +310,8 @@ static struct sdhci_ops sdhci_j721e_4bit
+ static const struct sdhci_pltfm_data sdhci_j721e_4bit_pdata = {
+ 	.ops = &sdhci_j721e_4bit_ops,
+ 	.quirks = SDHCI_QUIRK_MULTIBLOCK_READ_ACMD12,
+-	.quirks2 = SDHCI_QUIRK2_PRESET_VALUE_BROKEN,
++	.quirks2 = SDHCI_QUIRK2_PRESET_VALUE_BROKEN |
++		   SDHCI_QUIRK2_DISABLE_HW_TIMEOUT,
+ };
  
- 	if (!panic_timeout)
--- 
-2.39.5
-
+ static const struct sdhci_am654_driver_data sdhci_j721e_4bit_drvdata = {
 
 
 
