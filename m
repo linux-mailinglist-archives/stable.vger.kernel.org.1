@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-173695-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-173368-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id A7A01B35E78
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 13:58:03 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4BC87B35C9F
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 13:36:19 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 78AED188F843
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 11:48:58 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id D01AF7C0BE1
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 11:36:14 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9AD05749C;
-	Tue, 26 Aug 2025 11:48:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1AB7A2BE643;
+	Tue, 26 Aug 2025 11:34:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="MUmFs7sH"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="d0Lfk+63"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 584E1200112;
-	Tue, 26 Aug 2025 11:48:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CA7EC2135B8;
+	Tue, 26 Aug 2025 11:34:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756208916; cv=none; b=dKYXoBzDWwmuYmxfCqBzUIs5FlWCDJQC0Lk3DWuLIRekHiEnNO3o3doozhQKMnV9vuXYTXGcixJwKsHJhusfofa+4PNZhpWBYmmg2FWBTEAZlmMVFiW54tzY5mz2MGRVmv/dnPARsyBodYoKr7o6dWQgrlhGpCMhI/i9RZiIKnY=
+	t=1756208066; cv=none; b=k7jP+CC/nRaz7qIpP1pW5Y4CQTObB4go2Nvc1cAxLRtr4bO0ImeWovSaoV7sTHF3lVZ1jH5RrC6Tb059nFYfZXqpMHUkLKdeUr6SfpBVmC3gVUiABg+U2723iCxXfIYmO2WBHtSUjxA4uTa2DpO9BG06vqH5C7EVN9mtVZgJ2/U=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756208916; c=relaxed/simple;
-	bh=5qY0+5o/00NDpuuXLV/zw6kd0bDl8wMLruIK9FDe+sM=;
+	s=arc-20240116; t=1756208066; c=relaxed/simple;
+	bh=ew8qiPND3OGJSZm747P3UoiN7ujlrAYIUug0HExOmS4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=J7gX5ouN0UYrQBiNulh0PZ0GbYEls0COURIgsvKz9FPvmIG2zi6xJIRJsiNCtCfBiXOy0b9jRdDyncICbdUVW50Gq3MXj4iomvTJMfpyshKqmoNk4yzidEZAuBufda9Mqy5h21cyfgpw4ck75jBeFJZP2oz0jyjwjIAPKXbb0jE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=MUmFs7sH; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id DA147C4CEF1;
-	Tue, 26 Aug 2025 11:48:35 +0000 (UTC)
+	 MIME-Version; b=ky3y+BvyBsdoKPzBIBBPaLSgYCB7v68K9ItPFG2vpOs8J2+Ijx1FYP5Os5m2aLR8M2BSYFTT7Iiv4Tz6p9gvZJzr5quFcDZRexBupBqDp1aMmBUKQIampTOlq1knO14nThhnnl/XD5MDtbfvZV6Qv2686KNWcg46rN/XybRqpjI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=d0Lfk+63; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id ED7B1C4CEF1;
+	Tue, 26 Aug 2025 11:34:25 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1756208916;
-	bh=5qY0+5o/00NDpuuXLV/zw6kd0bDl8wMLruIK9FDe+sM=;
+	s=korg; t=1756208066;
+	bh=ew8qiPND3OGJSZm747P3UoiN7ujlrAYIUug0HExOmS4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=MUmFs7sH1jFrOjplrZx5kiaTDV1GLDsfxdv2KvK+R/3PqQeg/88fjEKxJCFSKYbzQ
-	 6W4l86p4jNgY/E0hVUFu6TOGLJLD4lPJd3DoQ8ZJ0FFUAl/eHnEeg5LB/ptuAgDf9/
-	 0lPTkBcBrfRuE4re3LzCR0lBZ7B/xa64uBPBbX6Q=
+	b=d0Lfk+632RGJuiB0NtvXxOPFwKENo0qNc6mEKh5xxtBdtGnTvxAQsK0TYWgznfQpz
+	 ai6COmAUnWeWFSgOsbL6+KoQBV1kk7BGt6n6T2nibgGeOoZfXogVBNQX3T3Pl/L2+N
+	 JYWr54c38/WYkpye/FCY7JAufe6o2L2ZydHZLHGE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	MD Danish Anwar <danishanwar@ti.com>,
-	Paolo Abeni <pabeni@redhat.com>,
+	Stefan Binding <sbinding@opensource.cirrus.com>,
+	Mark Brown <broonie@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 294/322] net: ti: icssg-prueth: Fix HSR and switch offload Enablement during firwmare reload.
+Subject: [PATCH 6.16 425/457] ASoC: cs35l56: Update Firmware Addresses for CS35L63 for production silicon
 Date: Tue, 26 Aug 2025 13:11:49 +0200
-Message-ID: <20250826110923.163373874@linuxfoundation.org>
+Message-ID: <20250826110947.793272841@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250826110915.169062587@linuxfoundation.org>
-References: <20250826110915.169062587@linuxfoundation.org>
+In-Reply-To: <20250826110937.289866482@linuxfoundation.org>
+References: <20250826110937.289866482@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,147 +62,45 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.16-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: MD Danish Anwar <danishanwar@ti.com>
+From: Stefan Binding <sbinding@opensource.cirrus.com>
 
-[ Upstream commit 01792bc3e5bdafa171dd83c7073f00e7de93a653 ]
+[ Upstream commit f135fb24ef29335b94921077588cae445bc7f099 ]
 
-To enable HSR / Switch offload, certain configurations are needed.
-Currently they are done inside icssg_change_mode(). This function only
-gets called if we move from one mode to another without bringing the
-links up / down.
+Production silicon for CS36L63 has some small differences compared to
+pre-production silicon. Update firmware addresses, which are different.
 
-Once in HSR / Switch mode, if we bring the links down and bring it back
-up again. The callback sequence is,
+No product was ever released with pre-production silicon so there is no
+need for the driver to include support for it.
 
-- emac_ndo_stop()
-	Firmwares are stopped
-- emac_ndo_open()
-	Firmwares are loaded
+Fixes: 978858791ced ("ASoC: cs35l56: Add initial support for CS35L63 for I2C and SoundWire")
 
-In this path icssg_change_mode() doesn't get called and as a result the
-configurations needed for HSR / Switch is not done.
-
-To fix this, put all these configurations in a separate function
-icssg_enable_fw_offload() and call this from both icssg_change_mode()
-and emac_ndo_open()
-
-Fixes: 56375086d093 ("net: ti: icssg-prueth: Enable HSR Tx duplication, Tx Tag and Rx Tag offload")
-Signed-off-by: MD Danish Anwar <danishanwar@ti.com>
-Link: https://patch.msgid.link/20250814105106.1491871-1-danishanwar@ti.com
-Signed-off-by: Paolo Abeni <pabeni@redhat.com>
+Signed-off-by: Stefan Binding <sbinding@opensource.cirrus.com>
+Link: https://patch.msgid.link/20250820142209.127575-2-sbinding@opensource.cirrus.com
+Signed-off-by: Mark Brown <broonie@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/ethernet/ti/icssg/icssg_prueth.c | 72 +++++++++++---------
- 1 file changed, 41 insertions(+), 31 deletions(-)
+ include/sound/cs35l56.h | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/net/ethernet/ti/icssg/icssg_prueth.c b/drivers/net/ethernet/ti/icssg/icssg_prueth.c
-index ddbc4624ae88..055c5765bd86 100644
---- a/drivers/net/ethernet/ti/icssg/icssg_prueth.c
-+++ b/drivers/net/ethernet/ti/icssg/icssg_prueth.c
-@@ -240,6 +240,44 @@ static void prueth_emac_stop(struct prueth *prueth)
- 	}
- }
+diff --git a/include/sound/cs35l56.h b/include/sound/cs35l56.h
+index e17c4cadd04d..f44aabde805e 100644
+--- a/include/sound/cs35l56.h
++++ b/include/sound/cs35l56.h
+@@ -107,8 +107,8 @@
+ #define CS35L56_DSP1_PMEM_5114				0x3804FE8
  
-+static void icssg_enable_fw_offload(struct prueth *prueth)
-+{
-+	struct prueth_emac *emac;
-+	int mac;
-+
-+	for (mac = PRUETH_MAC0; mac < PRUETH_NUM_MACS; mac++) {
-+		emac = prueth->emac[mac];
-+		if (prueth->is_hsr_offload_mode) {
-+			if (emac->ndev->features & NETIF_F_HW_HSR_TAG_RM)
-+				icssg_set_port_state(emac, ICSSG_EMAC_HSR_RX_OFFLOAD_ENABLE);
-+			else
-+				icssg_set_port_state(emac, ICSSG_EMAC_HSR_RX_OFFLOAD_DISABLE);
-+		}
-+
-+		if (prueth->is_switch_mode || prueth->is_hsr_offload_mode) {
-+			if (netif_running(emac->ndev)) {
-+				icssg_fdb_add_del(emac, eth_stp_addr, prueth->default_vlan,
-+						  ICSSG_FDB_ENTRY_P0_MEMBERSHIP |
-+						  ICSSG_FDB_ENTRY_P1_MEMBERSHIP |
-+						  ICSSG_FDB_ENTRY_P2_MEMBERSHIP |
-+						  ICSSG_FDB_ENTRY_BLOCK,
-+						  true);
-+				icssg_vtbl_modify(emac, emac->port_vlan | DEFAULT_VID,
-+						  BIT(emac->port_id) | DEFAULT_PORT_MASK,
-+						  BIT(emac->port_id) | DEFAULT_UNTAG_MASK,
-+						  true);
-+				if (prueth->is_hsr_offload_mode)
-+					icssg_vtbl_modify(emac, DEFAULT_VID,
-+							  DEFAULT_PORT_MASK,
-+							  DEFAULT_UNTAG_MASK, true);
-+				icssg_set_pvid(prueth, emac->port_vlan, emac->port_id);
-+				if (prueth->is_switch_mode)
-+					icssg_set_port_state(emac, ICSSG_EMAC_PORT_VLAN_AWARE_ENABLE);
-+			}
-+		}
-+	}
-+}
-+
- static int prueth_emac_common_start(struct prueth *prueth)
- {
- 	struct prueth_emac *emac;
-@@ -690,6 +728,7 @@ static int emac_ndo_open(struct net_device *ndev)
- 		ret = prueth_emac_common_start(prueth);
- 		if (ret)
- 			goto free_rx_irq;
-+		icssg_enable_fw_offload(prueth);
- 	}
- 
- 	flow_cfg = emac->dram.va + ICSSG_CONFIG_OFFSET + PSI_L_REGULAR_FLOW_ID_BASE_OFFSET;
-@@ -1146,8 +1185,7 @@ static int prueth_emac_restart(struct prueth *prueth)
- 
- static void icssg_change_mode(struct prueth *prueth)
- {
--	struct prueth_emac *emac;
--	int mac, ret;
-+	int ret;
- 
- 	ret = prueth_emac_restart(prueth);
- 	if (ret) {
-@@ -1155,35 +1193,7 @@ static void icssg_change_mode(struct prueth *prueth)
- 		return;
- 	}
- 
--	for (mac = PRUETH_MAC0; mac < PRUETH_NUM_MACS; mac++) {
--		emac = prueth->emac[mac];
--		if (prueth->is_hsr_offload_mode) {
--			if (emac->ndev->features & NETIF_F_HW_HSR_TAG_RM)
--				icssg_set_port_state(emac, ICSSG_EMAC_HSR_RX_OFFLOAD_ENABLE);
--			else
--				icssg_set_port_state(emac, ICSSG_EMAC_HSR_RX_OFFLOAD_DISABLE);
--		}
--
--		if (netif_running(emac->ndev)) {
--			icssg_fdb_add_del(emac, eth_stp_addr, prueth->default_vlan,
--					  ICSSG_FDB_ENTRY_P0_MEMBERSHIP |
--					  ICSSG_FDB_ENTRY_P1_MEMBERSHIP |
--					  ICSSG_FDB_ENTRY_P2_MEMBERSHIP |
--					  ICSSG_FDB_ENTRY_BLOCK,
--					  true);
--			icssg_vtbl_modify(emac, emac->port_vlan | DEFAULT_VID,
--					  BIT(emac->port_id) | DEFAULT_PORT_MASK,
--					  BIT(emac->port_id) | DEFAULT_UNTAG_MASK,
--					  true);
--			if (prueth->is_hsr_offload_mode)
--				icssg_vtbl_modify(emac, DEFAULT_VID,
--						  DEFAULT_PORT_MASK,
--						  DEFAULT_UNTAG_MASK, true);
--			icssg_set_pvid(prueth, emac->port_vlan, emac->port_id);
--			if (prueth->is_switch_mode)
--				icssg_set_port_state(emac, ICSSG_EMAC_PORT_VLAN_AWARE_ENABLE);
--		}
--	}
-+	icssg_enable_fw_offload(prueth);
- }
- 
- static int prueth_netdevice_port_link(struct net_device *ndev,
+ #define CS35L63_DSP1_FW_VER				CS35L56_DSP1_FW_VER
+-#define CS35L63_DSP1_HALO_STATE				0x280396C
+-#define CS35L63_DSP1_PM_CUR_STATE			0x28042C8
++#define CS35L63_DSP1_HALO_STATE				0x2803C04
++#define CS35L63_DSP1_PM_CUR_STATE			0x2804518
+ #define CS35L63_PROTECTION_STATUS			0x340009C
+ #define CS35L63_TRANSDUCER_ACTUAL_PS			0x34000F4
+ #define CS35L63_MAIN_RENDER_USER_MUTE			0x3400020
 -- 
 2.50.1
 
