@@ -1,55 +1,57 @@
-Return-Path: <stable+bounces-173850-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-174358-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 22BFCB36006
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 14:56:23 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id A978AB36253
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 15:17:58 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id A7C9B3A99C7
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 12:54:32 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 78E157A84C6
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 13:16:20 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1256C1F09A8;
-	Tue, 26 Aug 2025 12:53:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9FAF427EFE7;
+	Tue, 26 Aug 2025 13:16:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="mUDdJbO2"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="dX0HtBPr"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BAB231E5718;
-	Tue, 26 Aug 2025 12:53:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5D1171A23A4;
+	Tue, 26 Aug 2025 13:16:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756212829; cv=none; b=erzZNYJPgiBuFRCUX1q02EHyG+URbnMyI6Qp3SK5U7JwcxZGRTa1YISD7eoBKDlWgCBYDCWAIwp4SKg4Vqt9l51YEycYDnQmai7WMfxYUGUjRPnlwWsJDNd9fZOvTezDq8DbizHmejVQvOsB8ZPHtWcI6n+sHEpmd6jsWoXNnno=
+	t=1756214179; cv=none; b=VuNskHzAKw/CfMtmOs8JS8cD24p1+VlP/wX+EvmMwvr4+45rNs022pN/9vLAGuwAMIpit8F7tENn6Bi9KPlL6Y1vFVR5sB4k85P4b3171eq5beauHhDXR1mCbXf49ls5G0gmpy0IVrywVMqrqM8u73nqg6m36RGkp7xb+41u03o=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756212829; c=relaxed/simple;
-	bh=FNHyEi10fpSX6LJVlgIrObT2IkcHnp1tvvDcGto4MAs=;
+	s=arc-20240116; t=1756214179; c=relaxed/simple;
+	bh=dukydRT4itf/w/M6hfzvZLpX/0Cg7RdzqA3tq4WUECs=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=EgsQXcuMDITXm/Tp2y8GTQB5MkHB0GLzGj5GU+Do2eho+DZrHdLLA7KxdKGVtY5SXLbkz0GrS2z5zjI6EpXXIcp1QkT/8l7nnXhkUsEGuCbXLLHlHJHJxSsmDWxzwQJHj8kCdy75PYRevxXkR/KdYtKz65td0lQ+LYnkLO8jdSs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=mUDdJbO2; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4FBA6C4CEF1;
-	Tue, 26 Aug 2025 12:53:49 +0000 (UTC)
+	 MIME-Version; b=VRzo+dudNBZTmqPPsvPbhseaNP1WkQJAjJNl5hXEeFcpNvJo6vey/+TJayrZRAsTL1XjuautJyLuU38cp5e4+mZw4RVf0ApUi4Xu7SkCjZljfIvN0v659cOJXBnXjiFuiBSn5zmldEFQzTtIVXoEE8zywh8goR6gK6pU7I57x0Q=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=dX0HtBPr; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E011FC4CEF1;
+	Tue, 26 Aug 2025 13:16:18 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1756212829;
-	bh=FNHyEi10fpSX6LJVlgIrObT2IkcHnp1tvvDcGto4MAs=;
+	s=korg; t=1756214179;
+	bh=dukydRT4itf/w/M6hfzvZLpX/0Cg7RdzqA3tq4WUECs=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=mUDdJbO2uTws4HWR4yCymCCF3wvyRJleqgcSeEa/GVOHf5H4sFbm+pxJ6ON5mv/7t
-	 Zd6/ksdXWX8WPbPc/BFeitad2W2hAYfrnghZSsIBD/FCK3of1KokTiI/l0I6vP7KKm
-	 wvKQaDJUYMoU2kRYHkKKcz/hBXWen2wFcm0ND0Y8=
+	b=dX0HtBPrH8CONNkadzzwn7PFSZRBeeT138xQx5x+XLzAXFdSaTaRTn4VjL+9dbW31
+	 hPC0G8mdYDYYNpa7Va6Tb4y+mzqXIciISAWuJumvI9cufquV+LnjcU/TNYs5Q9CxJL
+	 QwjYK69nkUye9T2tLxX6SD+OKjb2u8sTW/TlL0ZQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Zijun Hu <zijun.hu@oss.qualcomm.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 117/587] char: misc: Fix improper and inaccurate error code returned by misc_init()
+	Felix Fietkau <nbd@nbd.name>,
+	Johan Hovold <johan@kernel.org>,
+	Simon Horman <horms@kernel.org>,
+	Jakub Kicinski <kuba@kernel.org>
+Subject: [PATCH 6.1 013/482] net: mtk_eth_soc: fix device leak at probe
 Date: Tue, 26 Aug 2025 13:04:26 +0200
-Message-ID: <20250826110955.944808810@linuxfoundation.org>
+Message-ID: <20250826110931.114017244@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250826110952.942403671@linuxfoundation.org>
-References: <20250826110952.942403671@linuxfoundation.org>
+In-Reply-To: <20250826110930.769259449@linuxfoundation.org>
+References: <20250826110930.769259449@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,47 +63,40 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Zijun Hu <zijun.hu@oss.qualcomm.com>
+From: Johan Hovold <johan@kernel.org>
 
-[ Upstream commit 0ef1fe4bc38673db72e39b700b29c50dfcc5a415 ]
+commit 3e13274ca8750823e8b68181bdf185d238febe0d upstream.
 
-misc_init() returns -EIO for __register_chrdev() invocation failure, but:
+The reference count to the WED devices has already been incremented when
+looking them up using of_find_device_by_node() so drop the bogus
+additional reference taken during probe.
 
-- -EIO is for I/O error normally, but __register_chrdev() does not do I/O.
-- -EIO can not cover various error codes returned by __register_chrdev().
-
-Fix by returning error code of __register_chrdev().
-
-Signed-off-by: Zijun Hu <zijun.hu@oss.qualcomm.com>
-Link: https://lore.kernel.org/r/20250620-fix_mischar-v1-3-6c2716bbf1fa@oss.qualcomm.com
+Fixes: 804775dfc288 ("net: ethernet: mtk_eth_soc: add support for Wireless Ethernet Dispatch (WED)")
+Cc: stable@vger.kernel.org	# 5.19
+Cc: Felix Fietkau <nbd@nbd.name>
+Signed-off-by: Johan Hovold <johan@kernel.org>
+Reviewed-by: Simon Horman <horms@kernel.org>
+Link: https://patch.msgid.link/20250725171213.880-5-johan@kernel.org
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/char/misc.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ drivers/net/ethernet/mediatek/mtk_wed.c |    1 -
+ 1 file changed, 1 deletion(-)
 
-diff --git a/drivers/char/misc.c b/drivers/char/misc.c
-index dda466f9181a..30178e20d962 100644
---- a/drivers/char/misc.c
-+++ b/drivers/char/misc.c
-@@ -314,8 +314,8 @@ static int __init misc_init(void)
- 	if (err)
- 		goto fail_remove;
+--- a/drivers/net/ethernet/mediatek/mtk_wed.c
++++ b/drivers/net/ethernet/mediatek/mtk_wed.c
+@@ -1074,7 +1074,6 @@ void mtk_wed_add_hw(struct device_node *
+ 	if (!pdev)
+ 		goto err_of_node_put;
  
--	err = -EIO;
--	if (__register_chrdev(MISC_MAJOR, 0, MINORMASK + 1, "misc", &misc_fops))
-+	err = __register_chrdev(MISC_MAJOR, 0, MINORMASK + 1, "misc", &misc_fops);
-+	if (err < 0)
- 		goto fail_printk;
- 	return 0;
- 
--- 
-2.39.5
-
+-	get_device(&pdev->dev);
+ 	irq = platform_get_irq(pdev, 0);
+ 	if (irq < 0)
+ 		goto err_put_device;
 
 
 
