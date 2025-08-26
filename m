@@ -1,57 +1,58 @@
-Return-Path: <stable+bounces-174434-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-175573-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id EE6E7B36351
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 15:28:44 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3D455B36920
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 16:23:03 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 7620D7C57FA
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 13:21:38 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 2A6151C8216B
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 14:12:48 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6F33034A328;
-	Tue, 26 Aug 2025 13:19:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id AABFD34A338;
+	Tue, 26 Aug 2025 14:10:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="chhXuW0w"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="LSTO0LlD"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2C4131FBE9B;
-	Tue, 26 Aug 2025 13:19:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 669C92C0F9C;
+	Tue, 26 Aug 2025 14:10:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756214382; cv=none; b=JXe4CNfGCog6dy+keipS6Y9S98Pw6RStDrHRRCA5O9E3wevdW9JW9jc+zb0iBsgzIOk830z7GSEjzuFVliKiosyKUM6SYed407e4/UeRlgf/NtDOUu3oJRfzXRFcfaregY90kEx7OhPaHQ4Kn/6xXvveUVDOSMscAbmJqlJVNms=
+	t=1756217401; cv=none; b=gN2B0tLRyH+WwwylBUZUI7w8KUmn/X3ODE0CmaUVEVPsRc438GnBw1jQ1RFugVPq6E8haCsfW2W7uYGkp7yKZJqDrwxLjcDOlKZnJd1QdbigQxhVG2IzKx2127XS4b3C1VX50/f7sX66PEZf8HTQUELRBs+ZAYM+OrlW+e9vXE8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756214382; c=relaxed/simple;
-	bh=/8kJ6RN59kgc4ozoKaNgraJb4UdsB2x7FB8vu8sFIs8=;
+	s=arc-20240116; t=1756217401; c=relaxed/simple;
+	bh=Vl9wGio45+hr03vqH6dH9fB3bhwMyiLcg71Wy8UNhXo=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=L0ljCjWT30NrZY+sUuJJKMzJCiJwEt1eZ9HWUfoClqRSFGLBdtCYJ5sYktR/EdoGFqakwPTCPidPau2rYc+mxMDzVJf2bbiYJqF41ByYkUs76q8CaBiFHDfPOstcuEDARXiEaBbxNCgzbJ9HXeQvXWRRp7w7nTsDzYWWn6Xet8M=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=chhXuW0w; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B039FC4CEF1;
-	Tue, 26 Aug 2025 13:19:41 +0000 (UTC)
+	 MIME-Version; b=rve8V4+m76pLT/qg53Z+PANKTr/v9J55kIhvoOHLntL0Pl34VVk8w7iP9+accABQ87RS3A9Fun9LzzpM3OlK8V6bPe+Cp9wDsCfNXKF/Fr1YDpyYo4t7mHETKemiGJozvyR5M0clDMakBLtAuja6PAN2NExMUAqZT9NvBPR8Kno=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=LSTO0LlD; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E8CF8C4CEF1;
+	Tue, 26 Aug 2025 14:10:00 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1756214382;
-	bh=/8kJ6RN59kgc4ozoKaNgraJb4UdsB2x7FB8vu8sFIs8=;
+	s=korg; t=1756217401;
+	bh=Vl9wGio45+hr03vqH6dH9fB3bhwMyiLcg71Wy8UNhXo=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=chhXuW0wTSGOoG12X3oNRhLWbaqLqbqxsuzJ5Vck5LiTT501Ws6z+6/dXede4o0ZW
-	 Z1EqzW8Tx3eKIUTcxehWYuAgrg2Pq6a0CndPSlRkNZE56W5bseUzNhYj7lL/0JofNh
-	 yHv6DGhCX4UbZt8YWPjWq8RFLV3I3pWWyBEyZLiQ=
+	b=LSTO0LlDQS1NRMu7dyFY1QKeULC1R97bWoq0oWT87USa1QjNVJNpsSxNecBT8ZZF1
+	 lS0b9SUlZFpR3JNIrGstwRc7FMWnOCwgo6EY56Gk+s90srm8VuH6dkc/4Stq5iaFM3
+	 Xsr4VMAetPGkcE//dgpXWeumxtyhQ4Z32yxO2ANk=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	"Masami Hiramatsu (Google)" <mhiramat@kernel.org>,
-	"Steven Rostedt (Google)" <rostedt@goodmis.org>,
-	Shuah Khan <skhan@linuxfoundation.org>,
+	Aishwarya TCV <aishwarya.tcv@arm.com>,
+	Leo Yan <leo.yan@arm.com>,
+	Ian Rogers <irogers@google.com>,
+	Namhyung Kim <namhyung@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 085/482] selftests: tracing: Use mutex_unlock for testing glob filter
+Subject: [PATCH 5.10 128/523] perf tests bp_account: Fix leaked file descriptor
 Date: Tue, 26 Aug 2025 13:05:38 +0200
-Message-ID: <20250826110932.930223585@linuxfoundation.org>
+Message-ID: <20250826110927.666430181@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250826110930.769259449@linuxfoundation.org>
-References: <20250826110930.769259449@linuxfoundation.org>
+In-Reply-To: <20250826110924.562212281@linuxfoundation.org>
+References: <20250826110924.562212281@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,43 +64,59 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Masami Hiramatsu (Google) <mhiramat@kernel.org>
+From: Leo Yan <leo.yan@arm.com>
 
-[ Upstream commit a089bb2822a49b0c5777a8936f82c1f8629231fb ]
+[ Upstream commit 4a6cdecaa1497f1fbbd1d5307a225b6ca5a62a90 ]
 
-Since commit c5b6ababd21a ("locking/mutex: implement
-mutex_trylock_nested") makes mutex_trylock() as an inlined
-function if CONFIG_DEBUG_LOCK_ALLOC=y, we can not use
-mutex_trylock() for testing the glob filter of ftrace.
+Since the commit e9846f5ead26 ("perf test: In forked mode add check that
+fds aren't leaked"), the test "Breakpoint accounting" reports the error:
 
-Use mutex_unlock instead.
+  # perf test -vvv "Breakpoint accounting"
+  20: Breakpoint accounting:
+  --- start ---
+  test child forked, pid 373
+  failed opening event 0
+  failed opening event 0
+  watchpoints count 4, breakpoints count 6, has_ioctl 1, share 0
+  wp 0 created
+  wp 1 created
+  wp 2 created
+  wp 3 created
+  wp 0 modified to bp
+  wp max created
+  ---- end(0) ----
+  Leak of file descriptor 7 that opened: 'anon_inode:[perf_event]'
 
-Link: https://lore.kernel.org/r/175151680309.2149615.9795104805153538717.stgit@mhiramat.tok.corp.google.com
-Signed-off-by: Masami Hiramatsu (Google) <mhiramat@kernel.org>
-Acked-by: Steven Rostedt (Google) <rostedt@goodmis.org>
-Signed-off-by: Shuah Khan <skhan@linuxfoundation.org>
+A watchpoint's file descriptor was not properly released. This patch
+fixes the leak.
+
+Fixes: 032db28e5fa3 ("perf tests: Add breakpoint accounting/modify test")
+Reported-by: Aishwarya TCV <aishwarya.tcv@arm.com>
+Signed-off-by: Leo Yan <leo.yan@arm.com>
+Reviewed-by: Ian Rogers <irogers@google.com>
+Link: https://lore.kernel.org/r/20250711-perf_fix_breakpoint_accounting-v1-1-b314393023f9@arm.com
+Signed-off-by: Namhyung Kim <namhyung@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- .../testing/selftests/ftrace/test.d/ftrace/func-filter-glob.tc  | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ tools/perf/tests/bp_account.c | 1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/tools/testing/selftests/ftrace/test.d/ftrace/func-filter-glob.tc b/tools/testing/selftests/ftrace/test.d/ftrace/func-filter-glob.tc
-index 4b994b6df5ac..ed81eaf2afd6 100644
---- a/tools/testing/selftests/ftrace/test.d/ftrace/func-filter-glob.tc
-+++ b/tools/testing/selftests/ftrace/test.d/ftrace/func-filter-glob.tc
-@@ -29,7 +29,7 @@ ftrace_filter_check 'schedule*' '^schedule.*$'
- ftrace_filter_check '*pin*lock' '.*pin.*lock$'
+diff --git a/tools/perf/tests/bp_account.c b/tools/perf/tests/bp_account.c
+index 489b50604cf2..ac39f4947fd8 100644
+--- a/tools/perf/tests/bp_account.c
++++ b/tools/perf/tests/bp_account.c
+@@ -89,6 +89,7 @@ static int bp_accounting(int wp_cnt, int share)
+ 		fd_wp = wp_event((void *)&the_var, &attr_new);
+ 		TEST_ASSERT_VAL("failed to create max wp\n", fd_wp != -1);
+ 		pr_debug("wp max created\n");
++		close(fd_wp);
+ 	}
  
- # filter by start*mid*
--ftrace_filter_check 'mutex*try*' '^mutex.*try.*'
-+ftrace_filter_check 'mutex*unl*' '^mutex.*unl.*'
- 
- # Advanced full-glob matching feature is recently supported.
- # Skip the tests if we are sure the kernel does not support it.
+ 	for (i = 0; i < wp_cnt; i++)
 -- 
 2.39.5
 
