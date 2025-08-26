@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-174727-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-173678-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5A80AB3650E
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 15:44:08 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8C133B35DDE
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 13:48:58 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id CB7FC8E103B
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 13:33:42 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id AF9B07C68CC
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 11:47:56 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8101B2E6106;
-	Tue, 26 Aug 2025 13:32:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D886C29BDB8;
+	Tue, 26 Aug 2025 11:47:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="OLdwlX1m"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Qe/Tfetx"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3C9D02F7473;
-	Tue, 26 Aug 2025 13:32:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 96D8F749C;
+	Tue, 26 Aug 2025 11:47:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756215157; cv=none; b=oYd28ZyTOsh1bblLlGfQv8PVGByiVz1mC1aueX8IEvDN6wxtYEX1H00ORt2QudRfYMeYZVQ3IZcnC1kjHSJRh7If9PhifWsjXR8AN20+EWtQUd+KJlUEMIaTn02ddB20ouE6MNFLLQpTbUQ0Pk00pYgEpzLLn110P+UbQy/NVlg=
+	t=1756208871; cv=none; b=UE2CbaZqX1yws7ZEag9jctZ4/HAiEYgekLuB86IPK9HIVjH4Z5QMHYVsw2WBkf4j9slaHMzPmlR/X2Sp613+s9NXkVlw9QylMjs+KmGwQVZWsqG2UuYAt9kEjuv9IzpFPnDrerprRFRUFA0tyM/YfDJEHa3LPb2t/Wpy67tNxyQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756215157; c=relaxed/simple;
-	bh=TnqQmVkn7CcpmjuyFSWA9ybJFujwdUMXERQbb3v4do8=;
+	s=arc-20240116; t=1756208871; c=relaxed/simple;
+	bh=j9g3X6WbQTZEhQwMPqk0l9Zg3rbKPbK59cLrBDdMVkY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=LfIfIMBBVXJ//A7t/X9axbAa+dYSidycr+EkhMO7Eur7Vw+KQinKYozPzE8crrKyLy6RLwichqLPoEYqEUtsRBfZUymWliDtcdVkWRvLodFG1A5LjyZRgrs37UAX9J8pB+3+sxdAmxNeGYsW76VI7+tAUAtbbSQwULUmDUY8gtA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=OLdwlX1m; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C18BBC4CEF1;
-	Tue, 26 Aug 2025 13:32:36 +0000 (UTC)
+	 MIME-Version; b=kt1Mh+89uUzwpiuuIYqrsxc8Yvxp0II06kPNDPwyn7qkk7DZIj2mC6ZOMGd1p92I1Pob7lwtOKlVrM7QMwBWxAjj1PJIXmHmwVxGvaJ19qtntUjlK9YukTrK40F6rjW9pUr0cR54bjiF1iq4XumsC40eYWEKrMgrSykk3JrhheU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Qe/Tfetx; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2773EC4CEF1;
+	Tue, 26 Aug 2025 11:47:50 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1756215157;
-	bh=TnqQmVkn7CcpmjuyFSWA9ybJFujwdUMXERQbb3v4do8=;
+	s=korg; t=1756208871;
+	bh=j9g3X6WbQTZEhQwMPqk0l9Zg3rbKPbK59cLrBDdMVkY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=OLdwlX1m7SvzdrY8fUgXdv4DAlehCW9vGV5pthO4ijoW8iaFRJeuGgS4CRfD46/dx
-	 CkGqIUZWGA9wDvw0MgylCc/zP7kIGFn8ObIfhVeoCfB6AZ+DUiN/Flyuy3YC5/n7FG
-	 gyFd2lqfC3OnSk3yG5UtYLff8Wp3PhBzvotQDaq0=
+	b=Qe/TfetxDSu5xt9j4PecWXRlFyYKSIQnuNYtR6kIXLoLJr2HeOfRpV/2PHIorue+X
+	 1pzm0iWXIqPyK1XLu382aLRbdC8y9cY3036YhxIrPpXmDu2jGcpnyFMMcwUDJ7ERLZ
+	 bA0/IDBjlCVDwagYYrLfA65kTNbYmGSNskjjBWvw=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Pavel Pisa <pisa@fel.cvut.cz>,
-	Jason Gunthorpe <jgg@nvidia.com>,
-	Marek Szyprowski <m.szyprowski@samsung.com>,
-	Xu Yilun <yilun.xu@linux.intel.com>
-Subject: [PATCH 6.1 408/482] fpga: zynq_fpga: Fix the wrong usage of dma_map_sgtable()
+	Muhammad Alifa Ramdhan <ramdhan@starlabs.sg>,
+	Billy Jheng Bing-Jhong <billy@starlabs.sg>,
+	Sabrina Dubroca <sd@queasysnail.net>,
+	Jakub Kicinski <kuba@kernel.org>
+Subject: [PATCH 6.12 246/322] tls: fix handling of zero-length records on the rx_list
 Date: Tue, 26 Aug 2025 13:11:01 +0200
-Message-ID: <20250826110940.909051327@linuxfoundation.org>
+Message-ID: <20250826110921.995588423@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250826110930.769259449@linuxfoundation.org>
-References: <20250826110930.769259449@linuxfoundation.org>
+In-Reply-To: <20250826110915.169062587@linuxfoundation.org>
+References: <20250826110915.169062587@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,49 +63,70 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Xu Yilun <yilun.xu@linux.intel.com>
+From: Jakub Kicinski <kuba@kernel.org>
 
-commit 1ca61060de92a4320d73adfe5dc8d335653907ac upstream.
+commit 62708b9452f8eb77513115b17c4f8d1a22ebf843 upstream.
 
-dma_map_sgtable() returns only 0 or the error code. Read sgt->nents to
-get the number of mapped segments.
+Each recvmsg() call must process either
+ - only contiguous DATA records (any number of them)
+ - one non-DATA record
 
-Fixes: 37e00703228a ("zynq_fpga: use sgtable-based scatterlist wrappers")
-Reported-by: Pavel Pisa <pisa@fel.cvut.cz>
-Closes: https://lore.kernel.org/linux-fpga/202508041548.22955.pisa@fel.cvut.cz/
-Reviewed-by: Jason Gunthorpe <jgg@nvidia.com>
-Reviewed-by: Marek Szyprowski <m.szyprowski@samsung.com>
-Signed-off-by: Xu Yilun <yilun.xu@linux.intel.com>
-Tested-by: Pavel Pisa <pisa@fel.cvut.cz>
-Link: https://lore.kernel.org/r/20250806070605.1920909-2-yilun.xu@linux.intel.com
+If the next record has different type than what has already been
+processed we break out of the main processing loop. If the record
+has already been decrypted (which may be the case for TLS 1.3 where
+we don't know type until decryption) we queue the pending record
+to the rx_list. Next recvmsg() will pick it up from there.
+
+Queuing the skb to rx_list after zero-copy decrypt is not possible,
+since in that case we decrypted directly to the user space buffer,
+and we don't have an skb to queue (darg.skb points to the ciphertext
+skb for access to metadata like length).
+
+Only data records are allowed zero-copy, and we break the processing
+loop after each non-data record. So we should never zero-copy and
+then find out that the record type has changed. The corner case
+we missed is when the initial record comes from rx_list, and it's
+zero length.
+
+Reported-by: Muhammad Alifa Ramdhan <ramdhan@starlabs.sg>
+Reported-by: Billy Jheng Bing-Jhong <billy@starlabs.sg>
+Fixes: 84c61fe1a75b ("tls: rx: do not use the standard strparser")
+Reviewed-by: Sabrina Dubroca <sd@queasysnail.net>
+Link: https://patch.msgid.link/20250820021952.143068-1-kuba@kernel.org
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/fpga/zynq-fpga.c |    8 ++++----
- 1 file changed, 4 insertions(+), 4 deletions(-)
+ net/tls/tls_sw.c |    7 ++++++-
+ 1 file changed, 6 insertions(+), 1 deletion(-)
 
---- a/drivers/fpga/zynq-fpga.c
-+++ b/drivers/fpga/zynq-fpga.c
-@@ -405,12 +405,12 @@ static int zynq_fpga_ops_write(struct fp
- 		}
- 	}
+--- a/net/tls/tls_sw.c
++++ b/net/tls/tls_sw.c
+@@ -1774,6 +1774,9 @@ int decrypt_skb(struct sock *sk, struct
+ 	return tls_decrypt_sg(sk, NULL, sgout, &darg);
+ }
  
--	priv->dma_nelms =
--	    dma_map_sgtable(mgr->dev.parent, sgt, DMA_TO_DEVICE, 0);
--	if (priv->dma_nelms == 0) {
-+	err = dma_map_sgtable(mgr->dev.parent, sgt, DMA_TO_DEVICE, 0);
-+	if (err) {
- 		dev_err(&mgr->dev, "Unable to DMA map (TO_DEVICE)\n");
--		return -ENOMEM;
-+		return err;
- 	}
-+	priv->dma_nelms = sgt->nents;
++/* All records returned from a recvmsg() call must have the same type.
++ * 0 is not a valid content type. Use it as "no type reported, yet".
++ */
+ static int tls_record_content_type(struct msghdr *msg, struct tls_msg *tlm,
+ 				   u8 *control)
+ {
+@@ -2017,8 +2020,10 @@ int tls_sw_recvmsg(struct sock *sk,
+ 	if (err < 0)
+ 		goto end;
  
- 	/* enable clock */
- 	err = clk_enable(priv->clk);
++	/* process_rx_list() will set @control if it processed any records */
+ 	copied = err;
+-	if (len <= copied || (copied && control != TLS_RECORD_TYPE_DATA) || rx_more)
++	if (len <= copied || rx_more ||
++	    (control && control != TLS_RECORD_TYPE_DATA))
+ 		goto end;
+ 
+ 	target = sock_rcvlowat(sk, flags & MSG_WAITALL, len);
 
 
 
