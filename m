@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-173254-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-176212-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id C6CD3B35C39
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 13:32:39 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4BADDB36BC3
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 16:48:48 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id CF19B7AE175
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 11:30:48 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 9F1AE8E8071
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 14:40:48 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9F4F932143D;
-	Tue, 26 Aug 2025 11:29:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 037E0296BDF;
+	Tue, 26 Aug 2025 14:37:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="rpF6o3I0"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="zT6iRS7d"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5C601227599;
-	Tue, 26 Aug 2025 11:29:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 91B5A35A29E;
+	Tue, 26 Aug 2025 14:37:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756207770; cv=none; b=ZVmjMTv+7oGGZFcIrJXrfPO3AgOMMKkioo+5Xp9tfuWFTlYwP2uZ/44ZpqCeMBejOa9x8BCES6EejzUPIfTd8skm/X6PRA6GO8D66KBrRdjNtYefpJYASY7xj7XfcSax+JYVFc2G1vmP6EnHOxWRWZDypMT5r0ia1xPPAt3AfdE=
+	t=1756219071; cv=none; b=K4bsX18nerDzTLFVD4TNZKFDAiHyr6/SH34cWy5pznhPrY4G2457mNUY/6O2L5E3Jnuumgc6tTiQUBz8l1e18Y1+RKt884/6W9YMPHfcBbpTY8zPo3AXmToCNMlRqXCAyxMhEuYLcizXsDLGtkGRrF52v4ZHH4ceWZwNJNMTKWI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756207770; c=relaxed/simple;
-	bh=YZWPnhNTjowTmlPHfebG01vuJoGwaz3XPGDTWK0LAsQ=;
+	s=arc-20240116; t=1756219071; c=relaxed/simple;
+	bh=FjMqsq9z1mzeFBdvGUn0P0DNXBFzXcHdbZ7BXTRphzw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Y5GHCSWo/tsz/0RB8I3thgUO7uqA+K7nKVDTINDhANHR1XW1dpT3CANr02FJvEMB4jbc1XatVZ9WF4u9GV/eS4xJG+bOvA/YukjuGAFj28+WNtTHAbQl4b7QR571iyslpDldZONp5upe/w+Q5SdFpkX9qJZbl3lznlGtOB8XoqE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=rpF6o3I0; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E30C3C4CEF1;
-	Tue, 26 Aug 2025 11:29:29 +0000 (UTC)
+	 MIME-Version; b=gqS9pjRySR7g/uKcrJv3S+DqvglpImsAlIhtRWEfVPKTLDrzHTckDiVl4xXmzkwk7RY7i2j8xloHSGa6LMAefN+uQLWPTRE773zJOImqgacxEnIRcTYrQW/BIB05xY3of2/pJKFpyXTx6zWWikBpuzdb8W44Gu2MPBJiGZNf+RQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=zT6iRS7d; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 84941C113CF;
+	Tue, 26 Aug 2025 14:37:50 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1756207770;
-	bh=YZWPnhNTjowTmlPHfebG01vuJoGwaz3XPGDTWK0LAsQ=;
+	s=korg; t=1756219070;
+	bh=FjMqsq9z1mzeFBdvGUn0P0DNXBFzXcHdbZ7BXTRphzw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=rpF6o3I0VR5kSMS5UZ3+tF4NUP+WD93+f3KcOZ6sDsMOntfmdh96xgvusobIgIPdw
-	 Slds1K3Exu9gdNjQpZmcg3NV+or1n4uQ+OewL5FjIMXJSgl8hRyrNrRzjbyVUOXDB0
-	 zKbAQYO4I+I33cGisGY8UJIbFp77LE3Il3N4dUc0=
+	b=zT6iRS7dcL+NsFYtcvLe8WSnDr8xUutxzMys3rkF5So1+fa6P8fnZg0oUdtNk9BiN
+	 bUUu3X28PZJ9FmVZ8twprDb+LwpyPI3NC4Iw6Z6xCheVZPPBT1YunUHjkMsTnsc3pF
+	 YlZcxmvYSHj3Q3pVpMajX9rIBNG0UB+39wqGIdsg=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Johannes Thumshirn <johannes.thumshirn@wdc.com>,
-	Naohiro Aota <naohiro.aota@wdc.com>,
-	David Sterba <dsterba@suse.com>,
+	syzbot+cffd18309153948f3c3e@syzkaller.appspotmail.com,
+	Arnaud Lecomte <contact@arnaud-lcm.com>,
+	Dave Kleikamp <dave.kleikamp@oracle.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.16 283/457] btrfs: zoned: fix data relocation block group reservation
+Subject: [PATCH 5.4 241/403] jfs: upper bound check of tree index in dbAllocAG
 Date: Tue, 26 Aug 2025 13:09:27 +0200
-Message-ID: <20250826110944.372048240@linuxfoundation.org>
+Message-ID: <20250826110913.487250859@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250826110937.289866482@linuxfoundation.org>
-References: <20250826110937.289866482@linuxfoundation.org>
+In-Reply-To: <20250826110905.607690791@linuxfoundation.org>
+References: <20250826110905.607690791@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,144 +63,48 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.16-stable review patch.  If anyone has any objections, please let me know.
+5.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Naohiro Aota <naohiro.aota@wdc.com>
+From: Arnaud Lecomte <contact@arnaud-lcm.com>
 
-[ Upstream commit daa0fde322350b467bc62bc1b141bf62df6123f8 ]
+[ Upstream commit c214006856ff52a8ff17ed8da52d50601d54f9ce ]
 
-btrfs_zoned_reserve_data_reloc_bg() is called on mount and at that point,
-all data block groups belong to the primary data space_info. So, we don't
-find anything in the data relocation space_info.
+When computing the tree index in dbAllocAG, we never check if we are
+out of bounds realative to the size of the stree.
+This could happen in a scenario where the filesystem metadata are
+corrupted.
 
-Also, the condition "bg->used > 0" can select a block group with full of
-zone_unusable bytes for the candidate. As we cannot allocate from the block
-group, it is useless to reserve it as the data relocation block group.
-
-Furthermore, because of the space_info separation, we need to migrate the
-selected block group to the data relocation space_info. If not, the extent
-allocator cannot use the block group to do the allocation.
-
-This commit fixes these three issues.
-
-Fixes: e606ff985ec7 ("btrfs: zoned: reserve data_reloc block group on mount")
-Reviewed-by: Johannes Thumshirn <johannes.thumshirn@wdc.com>
-Signed-off-by: Naohiro Aota <naohiro.aota@wdc.com>
-Signed-off-by: David Sterba <dsterba@suse.com>
+Reported-by: syzbot+cffd18309153948f3c3e@syzkaller.appspotmail.com
+Closes: https://syzkaller.appspot.com/bug?extid=cffd18309153948f3c3e
+Tested-by: syzbot+cffd18309153948f3c3e@syzkaller.appspotmail.com
+Signed-off-by: Arnaud Lecomte <contact@arnaud-lcm.com>
+Signed-off-by: Dave Kleikamp <dave.kleikamp@oracle.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/btrfs/zoned.c | 55 +++++++++++++++++++++++++++++++++++++++++-------
- 1 file changed, 47 insertions(+), 8 deletions(-)
+ fs/jfs/jfs_dmap.c | 6 ++++++
+ 1 file changed, 6 insertions(+)
 
-diff --git a/fs/btrfs/zoned.c b/fs/btrfs/zoned.c
-index 936448b1f716..af5ba3ad2eb8 100644
---- a/fs/btrfs/zoned.c
-+++ b/fs/btrfs/zoned.c
-@@ -18,6 +18,7 @@
- #include "accessors.h"
- #include "bio.h"
- #include "transaction.h"
-+#include "sysfs.h"
+diff --git a/fs/jfs/jfs_dmap.c b/fs/jfs/jfs_dmap.c
+index 15f885d2fa3d..17c4e7bdf283 100644
+--- a/fs/jfs/jfs_dmap.c
++++ b/fs/jfs/jfs_dmap.c
+@@ -1457,6 +1457,12 @@ dbAllocAG(struct bmap * bmp, int agno, s64 nblocks, int l2nb, s64 * results)
+ 	    (1 << (L2LPERCTL - (bmp->db_agheight << 1))) / bmp->db_agwidth;
+ 	ti = bmp->db_agstart + bmp->db_agwidth * (agno & (agperlev - 1));
  
- /* Maximum number of zones to report per blkdev_report_zones() call */
- #define BTRFS_REPORT_NR_ZONES   4096
-@@ -2510,12 +2511,12 @@ void btrfs_clear_data_reloc_bg(struct btrfs_block_group *bg)
- void btrfs_zoned_reserve_data_reloc_bg(struct btrfs_fs_info *fs_info)
- {
- 	struct btrfs_space_info *data_sinfo = fs_info->data_sinfo;
--	struct btrfs_space_info *space_info = data_sinfo->sub_group[0];
-+	struct btrfs_space_info *space_info = data_sinfo;
- 	struct btrfs_trans_handle *trans;
- 	struct btrfs_block_group *bg;
- 	struct list_head *bg_list;
- 	u64 alloc_flags;
--	bool initial = false;
-+	bool first = true;
- 	bool did_chunk_alloc = false;
- 	int index;
- 	int ret;
-@@ -2529,21 +2530,52 @@ void btrfs_zoned_reserve_data_reloc_bg(struct btrfs_fs_info *fs_info)
- 	if (sb_rdonly(fs_info->sb))
- 		return;
- 
--	ASSERT(space_info->subgroup_id == BTRFS_SUB_GROUP_DATA_RELOC);
- 	alloc_flags = btrfs_get_alloc_profile(fs_info, space_info->flags);
- 	index = btrfs_bg_flags_to_raid_index(alloc_flags);
- 
--	bg_list = &data_sinfo->block_groups[index];
-+	/* Scan the data space_info to find empty block groups. Take the second one. */
- again:
-+	bg_list = &space_info->block_groups[index];
- 	list_for_each_entry(bg, bg_list, list) {
--		if (bg->used > 0)
-+		if (bg->alloc_offset != 0)
- 			continue;
- 
--		if (!initial) {
--			initial = true;
-+		if (first) {
-+			first = false;
- 			continue;
- 		}
- 
-+		if (space_info == data_sinfo) {
-+			/* Migrate the block group to the data relocation space_info. */
-+			struct btrfs_space_info *reloc_sinfo = data_sinfo->sub_group[0];
-+			int factor;
++	if (ti < 0 || ti >= le32_to_cpu(dcp->nleafs)) {
++		jfs_error(bmp->db_ipbmap->i_sb, "Corrupt dmapctl page\n");
++		release_metapage(mp);
++		return -EIO;
++	}
 +
-+			ASSERT(reloc_sinfo->subgroup_id == BTRFS_SUB_GROUP_DATA_RELOC);
-+			factor = btrfs_bg_type_to_factor(bg->flags);
-+
-+			down_write(&space_info->groups_sem);
-+			list_del_init(&bg->list);
-+			/* We can assume this as we choose the second empty one. */
-+			ASSERT(!list_empty(&space_info->block_groups[index]));
-+			up_write(&space_info->groups_sem);
-+
-+			spin_lock(&space_info->lock);
-+			space_info->total_bytes -= bg->length;
-+			space_info->disk_total -= bg->length * factor;
-+			/* There is no allocation ever happened. */
-+			ASSERT(bg->used == 0);
-+			ASSERT(bg->zone_unusable == 0);
-+			/* No super block in a block group on the zoned setup. */
-+			ASSERT(bg->bytes_super == 0);
-+			spin_unlock(&space_info->lock);
-+
-+			bg->space_info = reloc_sinfo;
-+			if (reloc_sinfo->block_group_kobjs[index] == NULL)
-+				btrfs_sysfs_add_block_group_type(bg);
-+
-+			btrfs_add_bg_to_space_info(fs_info, bg);
-+		}
-+
- 		fs_info->data_reloc_bg = bg->start;
- 		set_bit(BLOCK_GROUP_FLAG_ZONED_DATA_RELOC, &bg->runtime_flags);
- 		btrfs_zone_activate(bg);
-@@ -2558,11 +2590,18 @@ void btrfs_zoned_reserve_data_reloc_bg(struct btrfs_fs_info *fs_info)
- 	if (IS_ERR(trans))
- 		return;
- 
-+	/* Allocate new BG in the data relocation space_info. */
-+	space_info = data_sinfo->sub_group[0];
-+	ASSERT(space_info->subgroup_id == BTRFS_SUB_GROUP_DATA_RELOC);
- 	ret = btrfs_chunk_alloc(trans, space_info, alloc_flags, CHUNK_ALLOC_FORCE);
- 	btrfs_end_transaction(trans);
- 	if (ret == 1) {
-+		/*
-+		 * We allocated a new block group in the data relocation space_info. We
-+		 * can take that one.
-+		 */
-+		first = false;
- 		did_chunk_alloc = true;
--		bg_list = &space_info->block_groups[index];
- 		goto again;
- 	}
- }
+ 	/* dmap control page trees fan-out by 4 and a single allocation
+ 	 * group may be described by 1 or 2 subtrees within the ag level
+ 	 * dmap control page, depending upon the ag size. examine the ag's
 -- 
-2.50.1
+2.39.5
 
 
 
