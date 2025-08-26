@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-173899-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-175035-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 57EB9B36053
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 14:59:25 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9EDDDB36663
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 15:56:41 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 4B55E463A37
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 12:56:54 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id B6AF48E70C6
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 13:46:27 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9693C299A94;
-	Tue, 26 Aug 2025 12:55:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 84FCD34A333;
+	Tue, 26 Aug 2025 13:46:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="qX8kxKFQ"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="TDLHvWNz"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5199A246790;
-	Tue, 26 Aug 2025 12:55:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4197D3451D5;
+	Tue, 26 Aug 2025 13:46:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756212959; cv=none; b=bkQrQO6pY7iaI/W+p2HczjEoK6Y5FxGJPTdCtGvBQTq3Oe346884asGTuJeIpqtT3fs9WqPnGTb32NL7sdWdFvtPdBOXbv7b1mG/CIe58RBfzgcGo+YEyMO/7gYqzqKfBmgeYf76m1/y4Woj0aYP9rHqXHhS50MjC9wl3/x3kng=
+	t=1756215969; cv=none; b=B1XL17dv+9Vv8GAKU/xaTyC/2cCg0e7xhy5Kmylb5UBmJN+q4Dp92uUPLQPkqkTsVfFEkcnrO6cVksqbwrWMsBxM3x/ktVE5nR9rWzkzUhtErx50yUomSMzbG31vlO0L8TgUi9ZS3ruR84cl4y3TocTCVTctWu4dg1LW8cpqPFg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756212959; c=relaxed/simple;
-	bh=b8gYumdyEqvnYvcB5SkCz5KNjzsbqBBZuUxeS56LyTk=;
+	s=arc-20240116; t=1756215969; c=relaxed/simple;
+	bh=pvlAVlnCkW9wASnQvU29RrLul4R7IIJcPO5aH3Wr96Y=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=bWY84KrBsWI3bTHee08rvC8tRzTRbDyR572d+x0oZxayFVEG0oQBCHdNDlmxjPRU3ibNqgN8dXJ3bGyEkloLcdXWfLZSpNccvN2NI/0aD9t/BflG9ZdaJIJwONp6jcfanUbvfvK379zSOdTKvo5V1S+5JgFUNh6tYFbopmFTgZI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=qX8kxKFQ; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id CF82AC116B1;
-	Tue, 26 Aug 2025 12:55:58 +0000 (UTC)
+	 MIME-Version; b=jSjHbB6SH2IwMqowLCO2iAG8eRSP0qgOCSFMxeVbCA2n2v7pRZXfGo1k77CDzMCFgj7DKUM2/rEH/m5HUndRxj8yRGpO8+HXp33fSYCnjgQnm+uGpeQCZ8DVl5/bHU/pJeL8yGzuGvLhlmtsj8G+fL+YmuM8jl9qWZ3Mw07ZkBE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=TDLHvWNz; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id BC28CC4CEF1;
+	Tue, 26 Aug 2025 13:46:08 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1756212959;
-	bh=b8gYumdyEqvnYvcB5SkCz5KNjzsbqBBZuUxeS56LyTk=;
+	s=korg; t=1756215969;
+	bh=pvlAVlnCkW9wASnQvU29RrLul4R7IIJcPO5aH3Wr96Y=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=qX8kxKFQTXhWyF3EMLAq8+Zzxowinx8XRzpKJSrl2gwFzFtPeOKWxOdUd+lAZipQi
-	 +PHJbNgKBXHmI3rogUqm6w2IG/ah10QMPjL0+T4pzAifkO2K3iZlPRas6cOvWkGhpZ
-	 pAPleaGCYtNMmvVWDfQWu4Q9YIDa6Q5EAVNUiJzk=
+	b=TDLHvWNz8+ZMykq4zuUboe0ovnu60DBkdruOtutwcS1Rzudfs7BQe04RWy+CxSDrK
+	 c0picm3DN+zhlu9qqNLogXZ4gKGwTJoXTBHDxlKouwm9sHNo5QmxBEk2cdF0e4Drx1
+	 N65EGRlWyz+hrBlP6QR4qDk9lHAb9Cskh042FRo0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Hari Chandrakanthan <quic_haric@quicinc.com>,
-	Sarika Sharma <quic_sarishar@quicinc.com>,
-	Johannes Berg <johannes.berg@intel.com>,
+	zhangjian <zhangjian496@huawei.com>,
+	Trond Myklebust <trond.myklebust@hammerspace.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 168/587] wifi: mac80211: fix rx link assignment for non-MLO stations
-Date: Tue, 26 Aug 2025 13:05:17 +0200
-Message-ID: <20250826110957.219280011@linuxfoundation.org>
+Subject: [PATCH 5.15 227/644] NFS: Fix filehandle bounds checking in nfs_fh_to_dentry()
+Date: Tue, 26 Aug 2025 13:05:18 +0200
+Message-ID: <20250826110952.040477798@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250826110952.942403671@linuxfoundation.org>
-References: <20250826110952.942403671@linuxfoundation.org>
+In-Reply-To: <20250826110946.507083938@linuxfoundation.org>
+References: <20250826110946.507083938@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,59 +62,53 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Hari Chandrakanthan <quic_haric@quicinc.com>
+From: Trond Myklebust <trond.myklebust@hammerspace.com>
 
-[ Upstream commit cc2b722132893164bcb3cee4f08ed056e126eb6c ]
+[ Upstream commit ef93a685e01a281b5e2a25ce4e3428cf9371a205 ]
 
-Currently, ieee80211_rx_data_set_sta() does not correctly handle the
-case where the interface supports multiple links (MLO), but the station
-does not (non-MLO). This can lead to incorrect link assignment or
-unexpected warnings when accessing link information.
+The function needs to check the minimal filehandle length before it can
+access the embedded filehandle.
 
-Hence, add a fix to check if the station lacks valid link support and
-use its default link ID for rx->link assignment. If the station
-unexpectedly has valid links, fall back to the default link.
-
-This ensures correct link association and prevents potential issues
-in mixed MLO/non-MLO environments.
-
-Signed-off-by: Hari Chandrakanthan <quic_haric@quicinc.com>
-Signed-off-by: Sarika Sharma <quic_sarishar@quicinc.com>
-Link: https://patch.msgid.link/20250630084119.3583593-1-quic_sarishar@quicinc.com
-Signed-off-by: Johannes Berg <johannes.berg@intel.com>
+Reported-by: zhangjian <zhangjian496@huawei.com>
+Fixes: 20fa19027286 ("nfs: add export operations")
+Signed-off-by: Trond Myklebust <trond.myklebust@hammerspace.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/mac80211/rx.c | 12 +++++++++---
- 1 file changed, 9 insertions(+), 3 deletions(-)
+ fs/nfs/export.c | 11 +++++++++--
+ 1 file changed, 9 insertions(+), 2 deletions(-)
 
-diff --git a/net/mac80211/rx.c b/net/mac80211/rx.c
-index 58665b6ae635..210337ef23cf 100644
---- a/net/mac80211/rx.c
-+++ b/net/mac80211/rx.c
-@@ -4221,10 +4221,16 @@ static bool ieee80211_rx_data_set_sta(struct ieee80211_rx_data *rx,
- 		rx->link_sta = NULL;
- 	}
+diff --git a/fs/nfs/export.c b/fs/nfs/export.c
+index eafa9d7b0911..6bbe92a4eb0c 100644
+--- a/fs/nfs/export.c
++++ b/fs/nfs/export.c
+@@ -67,14 +67,21 @@ nfs_fh_to_dentry(struct super_block *sb, struct fid *fid,
+ 	struct nfs4_label *label = NULL;
+ 	struct nfs_fattr *fattr = NULL;
+ 	struct nfs_fh *server_fh = nfs_exp_embedfh(fid->raw);
+-	size_t fh_size = offsetof(struct nfs_fh, data) + server_fh->size;
++	size_t fh_size = offsetof(struct nfs_fh, data);
+ 	const struct nfs_rpc_ops *rpc_ops;
+ 	struct dentry *dentry;
+ 	struct inode *inode;
+-	int len = EMBED_FH_OFF + XDR_QUADLEN(fh_size);
++	int len = EMBED_FH_OFF;
+ 	u32 *p = fid->raw;
+ 	int ret;
  
--	if (link_id < 0)
--		rx->link = &rx->sdata->deflink;
--	else if (!ieee80211_rx_data_set_link(rx, link_id))
-+	if (link_id < 0) {
-+		if (ieee80211_vif_is_mld(&rx->sdata->vif) &&
-+		    sta && !sta->sta.valid_links)
-+			rx->link =
-+				rcu_dereference(rx->sdata->link[sta->deflink.link_id]);
-+		else
-+			rx->link = &rx->sdata->deflink;
-+	} else if (!ieee80211_rx_data_set_link(rx, link_id)) {
- 		return false;
-+	}
- 
- 	return true;
- }
++	/* Initial check of bounds */
++	if (fh_len < len + XDR_QUADLEN(fh_size) ||
++	    fh_len > XDR_QUADLEN(NFS_MAXFHSIZE))
++		return NULL;
++	/* Calculate embedded filehandle size */
++	fh_size += server_fh->size;
++	len += XDR_QUADLEN(fh_size);
+ 	/* NULL translates to ESTALE */
+ 	if (fh_len < len || fh_type != len)
+ 		return NULL;
 -- 
 2.39.5
 
