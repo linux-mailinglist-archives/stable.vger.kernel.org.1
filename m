@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-174456-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-176034-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id BACC1B3636D
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 15:29:47 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9F835B36AC5
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 16:40:40 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id DA8843BB40F
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 13:22:46 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 69B905677F3
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 14:32:29 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id BD98A322C87;
-	Tue, 26 Aug 2025 13:20:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E1C342BE7D1;
+	Tue, 26 Aug 2025 14:30:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="M6yrKxf9"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="jD5e2VRB"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6D8DB187554;
-	Tue, 26 Aug 2025 13:20:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9F43D1A316E;
+	Tue, 26 Aug 2025 14:30:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756214440; cv=none; b=FketmDb7XtNJ2drEBBzwCcA+m3chjJ6Z0vP+RA2thy6AAZ5nfEPRUUe5m8WvbB6Dc8ml37PosGhqPblgf7wY0guam8E8gJoHw9w8KZv0JnT8j6QkGttPvfTKbfXcBHxT/61E14DoGMnGbEEb5PcFApB2TT/ASjcFmy0qzDV1QJ0=
+	t=1756218612; cv=none; b=jPT87c8Fz1ex0YZB0yEzHVj+zTs0dGnDQb1Ctt6OrOpIbzCR7PFD6/OFA6xaX++G5UDsM9H9V+5myDPgrFJCF5VhgfkbcTDetSHmoG4BitNCAoc4yMlx5aItInv2LdnQzniGLLiIHm52xnkaIzjHZnrVL2NruGXoCRjMlutXPDA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756214440; c=relaxed/simple;
-	bh=DXqboIZKXZ42CGARzccnAhpFGIKrXnremqSDac6qvzU=;
+	s=arc-20240116; t=1756218612; c=relaxed/simple;
+	bh=KLm9vnn+741y8sEJqCmzELFwfKgx121rsXgTgDxwbjc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=CISRNpy6nAk0DD5UxzlIIJwxYhCvaNz7E8l289Ni4qUQaWn9Iw5VSjz1DG0n94fvZTSB2cVPXypBXeLVCzsW+ymsHvecz6LAL2Gsf9XOQugd5ru/g8HM+jdIZjOqxNE8n34+8FjcaivXjDmJrR+wk9IikPC4tzeeMFynA5D8NGo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=M6yrKxf9; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id DDEE7C4CEF1;
-	Tue, 26 Aug 2025 13:20:39 +0000 (UTC)
+	 MIME-Version; b=Yc62VdorNiipRvGPws2OqrykjFn01qIm9t+jii18q2zWQ+9iQOGY80J3QxYmIdVSNxykxOnWGdgF4PN3bvFQVYpW2r4AJ2oiVLXcL/zi05PQZ5NZMUBYCDcJR50GL08aNR2epQ6G32pYmxrgWYSGYGlZ/JpILAGFOf8m/1GHNAc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=jD5e2VRB; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 31D03C4CEF1;
+	Tue, 26 Aug 2025 14:30:12 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1756214440;
-	bh=DXqboIZKXZ42CGARzccnAhpFGIKrXnremqSDac6qvzU=;
+	s=korg; t=1756218612;
+	bh=KLm9vnn+741y8sEJqCmzELFwfKgx121rsXgTgDxwbjc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=M6yrKxf9aBaWcF93PT0d833PeAtf0XJcEWXOwi4E1dA6C1FzHCPprHHX5E7ExB09Z
-	 8orgUZO6nc88P0kDfIVmgBMXC67N74dUBzhcdXOJbv+nIwRNG3oBeih4UyPDxcL/ah
-	 YSl9z8qOPU2GOsQycuuefT2TnQmGXOWdjeFIBowo=
+	b=jD5e2VRBAlsRLqlfzd1WUN+Ti7/L0ycMm8tlLYsmaxIV6KGdwcs8ODosP/eggoub3
+	 5vBXzkg1Q159OgjIVQq8rcVywwFmIxOrtOrvsfByt3+SfNcL6ejjs2Gntw5bgVb1nV
+	 EoyY41pJ8ieXq/Hi52tRVGH7KYai2F9633jd2isk=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Bitterblue Smith <rtl8821cerfe2@gmail.com>,
-	Ping-Ke Shih <pkshih@realtek.com>,
+	Jun Li <jun.li@nxp.com>,
+	Peter Chen <peter.chen@nxp.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 138/482] wifi: rtw89: Disable deep power saving for USB/SDIO
-Date: Tue, 26 Aug 2025 13:06:31 +0200
-Message-ID: <20250826110934.229854994@linuxfoundation.org>
+Subject: [PATCH 5.4 066/403] usb: chipidea: udc: protect usb interrupt enable
+Date: Tue, 26 Aug 2025 13:06:32 +0200
+Message-ID: <20250826110907.904682515@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250826110930.769259449@linuxfoundation.org>
-References: <20250826110930.769259449@linuxfoundation.org>
+In-Reply-To: <20250826110905.607690791@linuxfoundation.org>
+References: <20250826110905.607690791@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,41 +62,99 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+5.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Bitterblue Smith <rtl8821cerfe2@gmail.com>
+From: Jun Li <jun.li@nxp.com>
 
-[ Upstream commit a3b871a0f7c083c2a632a31da8bc3de554ae8550 ]
+[ Upstream commit 72dc8df7920fc24eba0f586c56e900a1643ff2b3 ]
 
-Disable deep power saving for USB and SDIO because rtw89_mac_send_rpwm()
-is called in atomic context and accessing hardware registers results in
-"scheduling while atomic" errors.
+We hit the problem with below sequence:
+- ci_udc_vbus_session() update vbus_active flag and ci->driver
+is valid,
+- before calling the ci_hdrc_gadget_connect(),
+usb_gadget_udc_stop() is called by application remove gadget
+driver,
+- ci_udc_vbus_session() will contine do ci_hdrc_gadget_connect() as
+gadget_ready is 1, so udc interrupt is enabled, but ci->driver is
+NULL.
+- USB connection irq generated but ci->driver is NULL.
 
-Signed-off-by: Bitterblue Smith <rtl8821cerfe2@gmail.com>
-Acked-by: Ping-Ke Shih <pkshih@realtek.com>
-Signed-off-by: Ping-Ke Shih <pkshih@realtek.com>
-Link: https://patch.msgid.link/0f49eceb-0de0-47e2-ba36-3c6a0dddd17d@gmail.com
+As udc irq only should be enabled when gadget driver is binded, so
+add spinlock to protect the usb irq enable for vbus session handling.
+
+Signed-off-by: Jun Li <jun.li@nxp.com>
+Signed-off-by: Peter Chen <peter.chen@nxp.com>
+Stable-dep-of: b7a62611fab7 ("usb: chipidea: add USB PHY event")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/wireless/realtek/rtw89/core.c | 3 +++
- 1 file changed, 3 insertions(+)
+ drivers/usb/chipidea/udc.c | 18 ++++++++++--------
+ 1 file changed, 10 insertions(+), 8 deletions(-)
 
-diff --git a/drivers/net/wireless/realtek/rtw89/core.c b/drivers/net/wireless/realtek/rtw89/core.c
-index 9e4a02a322ff..ff3a31bf3a87 100644
---- a/drivers/net/wireless/realtek/rtw89/core.c
-+++ b/drivers/net/wireless/realtek/rtw89/core.c
-@@ -1721,6 +1721,9 @@ static enum rtw89_ps_mode rtw89_update_ps_mode(struct rtw89_dev *rtwdev)
+diff --git a/drivers/usb/chipidea/udc.c b/drivers/usb/chipidea/udc.c
+index e9ef6271e20d..9212c3842a1b 100644
+--- a/drivers/usb/chipidea/udc.c
++++ b/drivers/usb/chipidea/udc.c
+@@ -1539,13 +1539,18 @@ static const struct usb_ep_ops usb_ep_ops = {
+ static void ci_hdrc_gadget_connect(struct usb_gadget *_gadget, int is_active)
  {
- 	const struct rtw89_chip_info *chip = rtwdev->chip;
+ 	struct ci_hdrc *ci = container_of(_gadget, struct ci_hdrc, gadget);
++	unsigned long flags;
  
-+	if (rtwdev->hci.type != RTW89_HCI_TYPE_PCIE)
-+		return RTW89_PS_MODE_NONE;
-+
- 	if (rtw89_disable_ps_mode || !chip->ps_mode_supported ||
- 	    RTW89_CHK_FW_FEATURE(NO_DEEP_PS, &rtwdev->fw))
- 		return RTW89_PS_MODE_NONE;
+ 	if (is_active) {
+ 		pm_runtime_get_sync(&_gadget->dev);
+ 		hw_device_reset(ci);
+-		hw_device_state(ci, ci->ep0out->qh.dma);
+-		usb_gadget_set_state(_gadget, USB_STATE_POWERED);
+-		usb_udc_vbus_handler(_gadget, true);
++		spin_lock_irqsave(&ci->lock, flags);
++		if (ci->driver) {
++			hw_device_state(ci, ci->ep0out->qh.dma);
++			usb_gadget_set_state(_gadget, USB_STATE_POWERED);
++			usb_udc_vbus_handler(_gadget, true);
++		}
++		spin_unlock_irqrestore(&ci->lock, flags);
+ 	} else {
+ 		usb_udc_vbus_handler(_gadget, false);
+ 		if (ci->driver)
+@@ -1564,19 +1569,16 @@ static int ci_udc_vbus_session(struct usb_gadget *_gadget, int is_active)
+ {
+ 	struct ci_hdrc *ci = container_of(_gadget, struct ci_hdrc, gadget);
+ 	unsigned long flags;
+-	int gadget_ready = 0;
+ 
+ 	spin_lock_irqsave(&ci->lock, flags);
+ 	ci->vbus_active = is_active;
+-	if (ci->driver)
+-		gadget_ready = 1;
+ 	spin_unlock_irqrestore(&ci->lock, flags);
+ 
+ 	if (ci->usb_phy)
+ 		usb_phy_set_charger_state(ci->usb_phy, is_active ?
+ 			USB_CHARGER_PRESENT : USB_CHARGER_ABSENT);
+ 
+-	if (gadget_ready)
++	if (ci->driver)
+ 		ci_hdrc_gadget_connect(_gadget, is_active);
+ 
+ 	return 0;
+@@ -1836,6 +1838,7 @@ static int ci_udc_stop(struct usb_gadget *gadget)
+ 	unsigned long flags;
+ 
+ 	spin_lock_irqsave(&ci->lock, flags);
++	ci->driver = NULL;
+ 
+ 	if (ci->vbus_active) {
+ 		hw_device_state(ci, 0);
+@@ -1848,7 +1851,6 @@ static int ci_udc_stop(struct usb_gadget *gadget)
+ 		pm_runtime_put(&ci->gadget.dev);
+ 	}
+ 
+-	ci->driver = NULL;
+ 	spin_unlock_irqrestore(&ci->lock, flags);
+ 
+ 	ci_udc_stop_for_otg_fsm(ci);
 -- 
 2.39.5
 
