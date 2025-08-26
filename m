@@ -1,57 +1,58 @@
-Return-Path: <stable+bounces-173969-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-173047-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0A3B0B3608F
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 15:01:52 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3B427B35B47
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 13:22:37 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id C5CB7360677
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 12:59:04 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 601F93AE948
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 11:22:00 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 905391DE2B4;
-	Tue, 26 Aug 2025 12:59:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4B6E534165A;
+	Tue, 26 Aug 2025 11:20:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="bNODunRy"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="P/Vm87/q"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4DE551DD0D4;
-	Tue, 26 Aug 2025 12:59:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 07466239573;
+	Tue, 26 Aug 2025 11:20:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756213143; cv=none; b=hEWuW1pNOsY4qirrNW9eoslr9HDh0Nfr/teBC9GuIxSkv1f40XY6RS0glZogb0mZc1gPvoz8F0Lb26zT9h6KK8To5SNaWZshVldkhWDW9wWd0MGlXV4jyKN3y5mMtKLig6SfTQsU98kdOUIQ0oleYcFgatGfLizIT1wBdL59Wxg=
+	t=1756207237; cv=none; b=dvMzI9Vn/r/BxIHiqQ7be2h5zvSdiPkVHE1RwUCssbCJs0hL0oUXhoDT9SpUlOV2b8llvAQDp1LWij/DouWqsV0b6u17v1+CjUavBySTkY+3/psDZP0jJ8XqWIEPJfpTxGZ9WMIISgqEHFcoNgg7Bbpizw+4k8c/titmFSPgFcU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756213143; c=relaxed/simple;
-	bh=HMv+Ws94QyBEsOD2P09uiXLVeSPy9IPuUqbXFmitHLo=;
+	s=arc-20240116; t=1756207237; c=relaxed/simple;
+	bh=MjX4S3qrbV1PBVOj9UGLNjCZMR/QdwoEaKwtM7Uq7xo=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=VMDq0r6PrwV5I7yfY1Y4laB0VLRAjMUAJWCl6n87W3MdE4kOtvKh4jGoUy2A2nhifcNPrHpOiqk2WITdxa1JZhKaK/rkXWIQg2sLLjI5XwHb3qG4DOy6s8WXmM8+qXl/UZtKzILXLSYCOyREahUHAM2Xh44Ko10QUGDsAnlJfn0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=bNODunRy; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id AC58BC4CEF1;
-	Tue, 26 Aug 2025 12:59:02 +0000 (UTC)
+	 MIME-Version; b=EMQyp7a3wB120Z1wKHwnyHTSQdbt2mpWch/xSiOOif97DpF+Ya0fp45yCc5nUg5vi5fYc6ah4tRo1Wx2guKDwJSbzsyYWaxVXc8t1XPhQ4c4pQxZrK1AwTBn3yqPVhSc8KUvZx5H3lCMGFZ3TiseRLZxj/s0Ta39CHDNiFLaOKE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=P/Vm87/q; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 66BE4C4CEF1;
+	Tue, 26 Aug 2025 11:20:36 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1756213143;
-	bh=HMv+Ws94QyBEsOD2P09uiXLVeSPy9IPuUqbXFmitHLo=;
+	s=korg; t=1756207236;
+	bh=MjX4S3qrbV1PBVOj9UGLNjCZMR/QdwoEaKwtM7Uq7xo=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=bNODunRybiii0X9xPwGx7njdQB4Gm1O7jCQCmLAOy+2qwghw6cT0lhpyPa+GX+Qhk
-	 9KVwCmEFCQ8hE4yn8vuWMvcSEmNznS7kKf5rvrks3VRHIOHckzr8/sRpBpOgJhtsED
-	 ldReIlZC1KyfW9gYWV3HqWMsAmPo0oy9PlKXqKPQ=
+	b=P/Vm87/q6voKy4bnNpA6NidnKj5zpZujhVXjTyERVPrDwSLvVh7XldgyCgBZI3mai
+	 Wf0tBqDAeFbRwoDELGJTg2UXw3S49FUuhl0vDe4O5Pgwp/h383eYSWWxUXPHS2wS70
+	 JcT0PcHPq38Po5XwefQzLxkNthwX9k4n7DkTlIpc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Stephan Mueller <smueller@chronox.de>,
-	Markus Theil <theil.markus@gmail.com>,
-	Herbert Xu <herbert@gondor.apana.org.au>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 238/587] crypto: jitter - fix intermediary handling
+	Tim Harvey <tharvey@gateworks.com>,
+	Richard Zhu <hongxing.zhu@nxp.com>,
+	Manivannan Sadhasivam <mani@kernel.org>,
+	Bjorn Helgaas <bhelgaas@google.com>,
+	Frank Li <Frank.Li@nxp.com>
+Subject: [PATCH 6.16 103/457] PCI: imx6: Remove apps_reset toggling from imx_pcie_{assert/deassert}_core_reset
 Date: Tue, 26 Aug 2025 13:06:27 +0200
-Message-ID: <20250826110958.988464867@linuxfoundation.org>
+Message-ID: <20250826110939.922523298@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250826110952.942403671@linuxfoundation.org>
-References: <20250826110952.942403671@linuxfoundation.org>
+In-Reply-To: <20250826110937.289866482@linuxfoundation.org>
+References: <20250826110937.289866482@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,59 +64,71 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.16-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Markus Theil <theil.markus@gmail.com>
+From: Richard Zhu <hongxing.zhu@nxp.com>
 
-[ Upstream commit 735b72568c73875269a6b73ab9543a70f6ac8a9f ]
+commit d31eb217425591e100b475fad6360cd3da2073c6 upstream.
 
-The intermediary value was included in the wrong
-hash state. While there, adapt to user-space by
-setting the timestamp to 0 if stuck and inserting
-the values nevertheless.
+apps_reset corresponds to LTSSM_EN in i.MX7, i.MX8MQ, i.MX8MM and i.MX8MP
+platforms. Since assertion/de-assertion of apps_reset is done in
+imx_pcie_ltssm_enable() and imx_pcie_ltssm_disable(), remove it from
+imx_pcie_assert_core_reset() and imx_pcie_deassert_core_reset().
 
-Acked-by: Stephan Mueller <smueller@chronox.de>
-Signed-off-by: Markus Theil <theil.markus@gmail.com>
-Signed-off-by: Herbert Xu <herbert@gondor.apana.org.au>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+This also fixes a failure in enumerating the PI7C9X2G608GP (hotplug) chip
+reliably on i.MX8MM, as reported by Tim.
+
+It should be noted that only i.MX7D, i.MX8MQ, i.MX8MM, and i.MX8MP
+platforms have the apps_reset logic, so this change doesn't have any effect
+on other platforms.
+
+Fixes: ef61c7d8d032 ("PCI: imx6: Deassert apps_reset in imx_pcie_deassert_core_reset()")
+Reported-by: Tim Harvey <tharvey@gateworks.com>
+Closes: https://lore.kernel.org/all/CAJ+vNU3ohR2YKTwC4xoYrc1z-neDoH2TTZcMHDy+poj9=jSy+w@mail.gmail.com/
+Signed-off-by: Richard Zhu <hongxing.zhu@nxp.com>
+[mani: reworded commit subject and description]
+Signed-off-by: Manivannan Sadhasivam <mani@kernel.org>
+[bhelgaas: commit log]
+Signed-off-by: Bjorn Helgaas <bhelgaas@google.com>
+Tested-by: Tim Harvey <tharvey@gateworks.com> # imx8mp-venice-gw74xx (i.MX8MP + hotplug capable switch)
+Reviewed-by: Frank Li <Frank.Li@nxp.com>
+Cc: stable@vger.kernel.org
+Link: https://patch.msgid.link/20250709033722.2924372-2-hongxing.zhu@nxp.com
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- crypto/jitterentropy-kcapi.c | 9 +++++----
- 1 file changed, 5 insertions(+), 4 deletions(-)
+ drivers/pci/controller/dwc/pci-imx6.c |    5 +++--
+ 1 file changed, 3 insertions(+), 2 deletions(-)
 
-diff --git a/crypto/jitterentropy-kcapi.c b/crypto/jitterentropy-kcapi.c
-index 7d1463a1562a..dd05faf00571 100644
---- a/crypto/jitterentropy-kcapi.c
-+++ b/crypto/jitterentropy-kcapi.c
-@@ -134,7 +134,7 @@ int jent_hash_time(void *hash_state, __u64 time, u8 *addtl,
- 	 * Inject the data from the previous loop into the pool. This data is
- 	 * not considered to contain any entropy, but it stirs the pool a bit.
- 	 */
--	ret = crypto_shash_update(desc, intermediary, sizeof(intermediary));
-+	ret = crypto_shash_update(hash_state_desc, intermediary, sizeof(intermediary));
- 	if (ret)
- 		goto err;
+--- a/drivers/pci/controller/dwc/pci-imx6.c
++++ b/drivers/pci/controller/dwc/pci-imx6.c
+@@ -860,7 +860,6 @@ static int imx95_pcie_core_reset(struct
+ static void imx_pcie_assert_core_reset(struct imx_pcie *imx_pcie)
+ {
+ 	reset_control_assert(imx_pcie->pciephy_reset);
+-	reset_control_assert(imx_pcie->apps_reset);
  
-@@ -147,11 +147,12 @@ int jent_hash_time(void *hash_state, __u64 time, u8 *addtl,
- 	 * conditioning operation to have an identical amount of input data
- 	 * according to section 3.1.5.
- 	 */
--	if (!stuck) {
--		ret = crypto_shash_update(hash_state_desc, (u8 *)&time,
--					  sizeof(__u64));
-+	if (stuck) {
-+		time = 0;
+ 	if (imx_pcie->drvdata->core_reset)
+ 		imx_pcie->drvdata->core_reset(imx_pcie, true);
+@@ -872,7 +871,6 @@ static void imx_pcie_assert_core_reset(s
+ static int imx_pcie_deassert_core_reset(struct imx_pcie *imx_pcie)
+ {
+ 	reset_control_deassert(imx_pcie->pciephy_reset);
+-	reset_control_deassert(imx_pcie->apps_reset);
+ 
+ 	if (imx_pcie->drvdata->core_reset)
+ 		imx_pcie->drvdata->core_reset(imx_pcie, false);
+@@ -1247,6 +1245,9 @@ static int imx_pcie_host_init(struct dw_
+ 		}
  	}
  
-+	ret = crypto_shash_update(hash_state_desc, (u8 *)&time, sizeof(__u64));
++	/* Make sure that PCIe LTSSM is cleared */
++	imx_pcie_ltssm_disable(dev);
 +
- err:
- 	shash_desc_zero(desc);
- 	memzero_explicit(intermediary, sizeof(intermediary));
--- 
-2.39.5
-
+ 	ret = imx_pcie_deassert_core_reset(imx_pcie);
+ 	if (ret < 0) {
+ 		dev_err(dev, "pcie deassert core reset failed: %d\n", ret);
 
 
 
