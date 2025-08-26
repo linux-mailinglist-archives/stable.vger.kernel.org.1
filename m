@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-176092-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-175714-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9ABCFB36B6A
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 16:45:47 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id A3F21B3699F
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 16:28:43 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 757AC5A0A5E
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 14:35:53 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 64BB05657CF
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 14:18:28 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A85A435FC02;
-	Tue, 26 Aug 2025 14:32:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5F9CF352077;
+	Tue, 26 Aug 2025 14:16:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="FlcIiZi8"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="DzfqG9Z7"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 56F2A350831;
-	Tue, 26 Aug 2025 14:32:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1D9D72F83BA;
+	Tue, 26 Aug 2025 14:16:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756218762; cv=none; b=gO4BZy098XSA2Vd0kUQtf+88wdkBFZUzsOYVFq7/g8+FKkqVBBraQF2yTo1+JCcCZzTkqVE3rv1Tul5ZIKavQHyt5d8CVlsubxHDevvq1hYVRGRtYwPr4R+/C7vGRU+rp45hkKe2S1OQUeLyB3O5VlxyY/TcrGZQsVVM5wNfhSI=
+	t=1756217777; cv=none; b=nmOlIhOEou6V759It0tUfGvpIPfThSbm7ie4lUvl9HjzhfPAyhhGjDZsg+PY1scIk6nR/mX2Tt105naJkUS5KK0CPKNXVha+4RbBXRhSeeV2KPUTsbBFLktcS/7YlsuAsSOvdNJKCvGXSEtql49Zmm8ZXufIMqormed1+BtZQv8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756218762; c=relaxed/simple;
-	bh=6CXU9kxrvhi4N0ZrBWWjfjkYNDguOxuCGA2Kd0zlhE4=;
+	s=arc-20240116; t=1756217777; c=relaxed/simple;
+	bh=0Tbw568gDyy+7hAMHgm0ex+nGHi8/Pi8UScwlvcTEyU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=rjCEqI5j2Z9ui5V/wtZZxxoyXHL8AoudTjA6yII/Vp1NlUMQOak7p7pa5HU9O1Jvam/GMeOkGOHArm5sxp1qQKKMiNhxLiAlSVxqPePmb2k/XDt4zk3dpjXD63UFzomJEjDHyQk/lGmmllCBN4wSJjmaDuaOKuokMitDE4sS1gk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=FlcIiZi8; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D4E49C4CEF1;
-	Tue, 26 Aug 2025 14:32:41 +0000 (UTC)
+	 MIME-Version; b=ZrwQ4uTZcUgh4XulXywMtPP6234zLMI6ykHKXvVDWG8pNi3tdDYE121WjgOGPkk9rH4CrAivZHq7vk8b+s48i5bp1lcuZv8Py/4W/nghwdGLiHjmQ6/cSqXGxdhOeCCY+pGh4n2cnTqykBnnGkZLKN8ehTVjZphyuXnw51pQHEs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=DzfqG9Z7; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A589CC4CEF1;
+	Tue, 26 Aug 2025 14:16:16 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1756218762;
-	bh=6CXU9kxrvhi4N0ZrBWWjfjkYNDguOxuCGA2Kd0zlhE4=;
+	s=korg; t=1756217777;
+	bh=0Tbw568gDyy+7hAMHgm0ex+nGHi8/Pi8UScwlvcTEyU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=FlcIiZi8biZT8+BbCIS5yccPL8u8hQHXU/8vfAbzrWsMlTW15/spRmGWXPGwO9TwL
-	 OioywaTARSY1GYRjuJ+T+rFwpQC6d3nLSOivBqxdCMllN1FZGgB0PT61BrDcc7ucDZ
-	 XpqpQRCzTEzHjiMK7E8dKN7iZmxef7Nu5hpalUKY=
+	b=DzfqG9Z7H+NMevbdPpBU2aNwxqnxaDo/bB1m9sCkPbYRqJIbevhqF4ZxeAKr94/oZ
+	 tcPIqr6hFJWbY34N3H4ncTVZIpbbQlBnBJ8freRsrC4JhasBeihT5UYXeMbHZ+Kar2
+	 2FQ5yLA3oG7ea7nERI/VHDcdXvqQ2X8e79dyIbjk=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Giovanni Cabiddu <giovanni.cabiddu@intel.com>,
-	Ahsan Atta <ahsan.atta@intel.com>,
-	Herbert Xu <herbert@gondor.apana.org.au>,
+	Sarthak Garg <quic_sartgarg@quicinc.com>,
+	Adrian Hunter <adrian.hunter@intel.com>,
+	Ulf Hansson <ulf.hansson@linaro.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.4 124/403] crypto: qat - fix seq_file position update in adf_ring_next()
+Subject: [PATCH 5.10 240/523] mmc: sdhci-msm: Ensure SD card power isnt ON when card removed
 Date: Tue, 26 Aug 2025 13:07:30 +0200
-Message-ID: <20250826110910.163207863@linuxfoundation.org>
+Message-ID: <20250826110930.362592462@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250826110905.607690791@linuxfoundation.org>
-References: <20250826110905.607690791@linuxfoundation.org>
+In-Reply-To: <20250826110924.562212281@linuxfoundation.org>
+References: <20250826110924.562212281@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,51 +63,73 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.4-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Giovanni Cabiddu <giovanni.cabiddu@intel.com>
+From: Sarthak Garg <quic_sartgarg@quicinc.com>
 
-[ Upstream commit 6908c5f4f066a0412c3d9a6f543a09fa7d87824b ]
+[ Upstream commit db58532188ebf51d52b1d7693d9e94c76b926e9f ]
 
-The `adf_ring_next()` function in the QAT debug transport interface
-fails to correctly update the position index when reaching the end of
-the ring elements. This triggers the following kernel warning when
-reading ring files, such as
-/sys/kernel/debug/qat_c6xx_<D:B:D:F>/transport/bank_00/ring_00:
+Many mobile phones feature multi-card tray designs, where the same
+tray is used for both SD and SIM cards. If the SD card is placed
+at the outermost location in the tray, the SIM card may come in
+contact with SD card power-supply while removing the tray, possibly
+resulting in SIM damage.
 
-   [27725.022965] seq_file: buggy .next function adf_ring_next [intel_qat] did not update position index
+To prevent that, make sure the SD card is really inserted by reading
+the Card Detect pin state. If it's not, turn off the power in
+sdhci_msm_check_power_status() and also set the BUS_FAIL power state
+on the controller as part of pwr_irq handling for BUS_ON request.
 
-Ensure that the `*pos` index is incremented before returning NULL when
-after the last element in the ring is found, satisfying the seq_file API
-requirements and preventing the warning.
-
-Fixes: a672a9dc872e ("crypto: qat - Intel(R) QAT transport code")
-Signed-off-by: Giovanni Cabiddu <giovanni.cabiddu@intel.com>
-Reviewed-by: Ahsan Atta <ahsan.atta@intel.com>
-Signed-off-by: Herbert Xu <herbert@gondor.apana.org.au>
+Signed-off-by: Sarthak Garg <quic_sartgarg@quicinc.com>
+Acked-by: Adrian Hunter <adrian.hunter@intel.com>
+Link: https://lore.kernel.org/r/20250701100659.3310386-1-quic_sartgarg@quicinc.com
+Signed-off-by: Ulf Hansson <ulf.hansson@linaro.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/crypto/qat/qat_common/adf_transport_debug.c | 4 +++-
- 1 file changed, 3 insertions(+), 1 deletion(-)
+ drivers/mmc/host/sdhci-msm.c | 14 ++++++++++++++
+ 1 file changed, 14 insertions(+)
 
-diff --git a/drivers/crypto/qat/qat_common/adf_transport_debug.c b/drivers/crypto/qat/qat_common/adf_transport_debug.c
-index e794e9d97b2c..9303d6318207 100644
---- a/drivers/crypto/qat/qat_common/adf_transport_debug.c
-+++ b/drivers/crypto/qat/qat_common/adf_transport_debug.c
-@@ -75,8 +75,10 @@ static void *adf_ring_next(struct seq_file *sfile, void *v, loff_t *pos)
- 	struct adf_etr_ring_data *ring = sfile->private;
- 
- 	if (*pos >= (ADF_SIZE_TO_RING_SIZE_IN_BYTES(ring->ring_size) /
--		     ADF_MSG_SIZE_TO_BYTES(ring->msg_size)))
-+		     ADF_MSG_SIZE_TO_BYTES(ring->msg_size))) {
-+		(*pos)++;
- 		return NULL;
+diff --git a/drivers/mmc/host/sdhci-msm.c b/drivers/mmc/host/sdhci-msm.c
+index c9298a986ef0..183617d56b44 100644
+--- a/drivers/mmc/host/sdhci-msm.c
++++ b/drivers/mmc/host/sdhci-msm.c
+@@ -1544,6 +1544,7 @@ static void sdhci_msm_check_power_status(struct sdhci_host *host, u32 req_type)
+ {
+ 	struct sdhci_pltfm_host *pltfm_host = sdhci_priv(host);
+ 	struct sdhci_msm_host *msm_host = sdhci_pltfm_priv(pltfm_host);
++	struct mmc_host *mmc = host->mmc;
+ 	bool done = false;
+ 	u32 val = SWITCHABLE_SIGNALING_VOLTAGE;
+ 	const struct sdhci_msm_offset *msm_offset =
+@@ -1601,6 +1602,12 @@ static void sdhci_msm_check_power_status(struct sdhci_host *host, u32 req_type)
+ 				 "%s: pwr_irq for req: (%d) timed out\n",
+ 				 mmc_hostname(host->mmc), req_type);
+ 	}
++
++	if ((req_type & REQ_BUS_ON) && mmc->card && !mmc->ops->get_cd(mmc)) {
++		sdhci_writeb(host, 0, SDHCI_POWER_CONTROL);
++		host->pwr = 0;
 +	}
++
+ 	pr_debug("%s: %s: request %d done\n", mmc_hostname(host->mmc),
+ 			__func__, req_type);
+ }
+@@ -1659,6 +1666,13 @@ static void sdhci_msm_handle_pwr_irq(struct sdhci_host *host, int irq)
+ 		udelay(10);
+ 	}
  
- 	return ring->base_addr +
- 		(ADF_MSG_SIZE_TO_BYTES(ring->msg_size) * (*pos)++);
++	if ((irq_status & CORE_PWRCTL_BUS_ON) && mmc->card &&
++	    !mmc->ops->get_cd(mmc)) {
++		msm_host_writel(msm_host, CORE_PWRCTL_BUS_FAIL, host,
++				msm_offset->core_pwrctl_ctl);
++		return;
++	}
++
+ 	/* Handle BUS ON/OFF*/
+ 	if (irq_status & CORE_PWRCTL_BUS_ON) {
+ 		pwr_state = REQ_BUS_ON;
 -- 
 2.39.5
 
