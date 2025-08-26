@@ -1,55 +1,56 @@
-Return-Path: <stable+bounces-175657-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-175136-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id EEBB5B369A1
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 16:28:46 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id ABC8DB366AF
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 15:59:25 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 9777F1C23CB5
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 14:16:26 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 69F76188E68E
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 13:52:31 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 72F28352094;
-	Tue, 26 Aug 2025 14:13:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 61D6E34F481;
+	Tue, 26 Aug 2025 13:50:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="wYvOdeC2"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="GPUgSToD"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3253C306D3F;
-	Tue, 26 Aug 2025 14:13:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1658F34F485;
+	Tue, 26 Aug 2025 13:50:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756217625; cv=none; b=MQwX9V/0vs27d1TsStv9rk7IQG+iCtbzHp8UaQRIzZZctlwTwKmeNYX/vKT1HLp7VXiBL3SJ2DHKbaLHiH0VIvzUvksi5UgnhqrCNmb4Yl9aP3Ka+ZlYJKtc4TEg+fSbqB5hUo1JWamhlqI7ULIBaEVvvmhpiRTEl2mbHFKBdDw=
+	t=1756216237; cv=none; b=AmmgptV0lm1nV82njrqUfbzXu1DoiLQRv7o64yTig77q8A9LX6Q9NWwweTs7m6zRa9+8WfqB5Lh+6zgws07b/Mco3RnQi1HaHNFeR3iqSfjBhqkXCBpQxRKC3OFoyP3s87ze9SDCf4YFxqgZcXNmcSrO7TXiZBDvS9J9gZE3vFw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756217625; c=relaxed/simple;
-	bh=zKEc+gXo2d37EHJtDe66AewJipiQp62Jz7W8DcFrWKI=;
+	s=arc-20240116; t=1756216237; c=relaxed/simple;
+	bh=nV5BLit3m7YBVwhMuedKZ+sZfcd4zxcfZBuf3l6y2yM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=U7pJXDuB8wxnoDN5uDAF+GQJR2MtkUS1vDtUKDJh9LIcSpCWCbwJZgjqn8q2bRd5z/KbvrshZfk1om9dwcBVnGZMfYwunT5oEDYQMcq0ZZ/UMulyGs+vKvAZxm3Y8uyoBXrHOxlXosNFby8ZQHytkUkG4WSUvh4QNWm8gcWgB6s=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=wYvOdeC2; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B8A20C4CEF1;
-	Tue, 26 Aug 2025 14:13:44 +0000 (UTC)
+	 MIME-Version; b=ONl3TixKafV5IsPEfi+HjbbAXkqH3KQiY41UdVd0Jx9G6RtPnKUdkDDrvXdlN/Qy6YcglAJpYQD5twyolx4cXE7D0r6dzgUFbNaO7le48JeVFPwhK0wfjW4io4mVoHulFZohqR64bieJIwssQqptP4KHlyjsumlxjU84WI5yf6c=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=GPUgSToD; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9D859C116B1;
+	Tue, 26 Aug 2025 13:50:36 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1756217625;
-	bh=zKEc+gXo2d37EHJtDe66AewJipiQp62Jz7W8DcFrWKI=;
+	s=korg; t=1756216237;
+	bh=nV5BLit3m7YBVwhMuedKZ+sZfcd4zxcfZBuf3l6y2yM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=wYvOdeC2D+dw7CwbY8OVXsCqe/PGCBqenVSEcBXEWMg2KO4OufviJMJRTqnbT/6il
-	 4JjVP2EqBaREuutUbs9UVP/l940i7V3tIrrVUjZyIuDvSYBJ/bNuviO0tXoiggqzP6
-	 +lljLWgMzbzP5wVr0D8ppJw0btQWQMWhzUfTBNK8=
+	b=GPUgSToDQt/YZDoBwVfPtxK4qifHUUCpT2wW8H8Rf5zop7QpQ0aqCApN9VfaGbuUP
+	 Q9dODQK7dort5xEE27cpufEr8WP8RoMjenV2gjumPrS2Xn46Q1krKdSgvzVAcdnnGI
+	 XBAPEGpWJ9gryNLNxJYh2n3h0N3o6+MSoI/Oou0E=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Kees Cook <kees@kernel.org>,
+	Cristian Ciocaltea <cristian.ciocaltea@collabora.com>,
+	Takashi Iwai <tiwai@suse.de>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 214/523] arm64: Handle KCOV __init vs inline mismatches
-Date: Tue, 26 Aug 2025 13:07:04 +0200
-Message-ID: <20250826110929.743763799@linuxfoundation.org>
+Subject: [PATCH 5.15 334/644] ALSA: usb-audio: Avoid precedence issues in mixer_quirks macros
+Date: Tue, 26 Aug 2025 13:07:05 +0200
+Message-ID: <20250826110954.665764512@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250826110924.562212281@linuxfoundation.org>
-References: <20250826110924.562212281@linuxfoundation.org>
+In-Reply-To: <20250826110946.507083938@linuxfoundation.org>
+References: <20250826110946.507083938@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,53 +62,63 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Kees Cook <kees@kernel.org>
+From: Cristian Ciocaltea <cristian.ciocaltea@collabora.com>
 
-[ Upstream commit 65c430906efffee9bd7551d474f01a6b1197df90 ]
+[ Upstream commit fd3ab72e42e9871a9902b945a2bf8bb87b49c718 ]
 
-GCC appears to have kind of fragile inlining heuristics, in the
-sense that it can change whether or not it inlines something based on
-optimizations. It looks like the kcov instrumentation being added (or in
-this case, removed) from a function changes the optimization results,
-and some functions marked "inline" are _not_ inlined. In that case,
-we end up with __init code calling a function not marked __init, and we
-get the build warnings I'm trying to eliminate in the coming patch that
-adds __no_sanitize_coverage to __init functions:
+Fix all macro related issues identified by checkpatch.pl:
 
-WARNING: modpost: vmlinux: section mismatch in reference: acpi_get_enable_method+0x1c (section: .text.unlikely) -> acpi_psci_present (section: .init.text)
+  CHECK: Macro argument 'x' may be better as '(x)' to avoid precedence issues
 
-This problem is somewhat fragile (though using either __always_inline
-or __init will deterministically solve it), but we've tripped over
-this before with GCC and the solution has usually been to just use
-__always_inline and move on.
-
-For arm64 this requires forcing one ACPI function to be inlined with
-__always_inline.
-
-Link: https://lore.kernel.org/r/20250724055029.3623499-1-kees@kernel.org
-Signed-off-by: Kees Cook <kees@kernel.org>
+Signed-off-by: Cristian Ciocaltea <cristian.ciocaltea@collabora.com>
+Signed-off-by: Takashi Iwai <tiwai@suse.de>
+Link: https://patch.msgid.link/20250526-dualsense-alsa-jack-v1-3-1a821463b632@collabora.com
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/arm64/include/asm/acpi.h | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ sound/usb/mixer_quirks.c | 14 +++++++-------
+ 1 file changed, 7 insertions(+), 7 deletions(-)
 
-diff --git a/arch/arm64/include/asm/acpi.h b/arch/arm64/include/asm/acpi.h
-index 702587fda70c..8cbbd08cc8c5 100644
---- a/arch/arm64/include/asm/acpi.h
-+++ b/arch/arm64/include/asm/acpi.h
-@@ -128,7 +128,7 @@ acpi_set_mailbox_entry(int cpu, struct acpi_madt_generic_interrupt *processor)
- {}
- #endif
+diff --git a/sound/usb/mixer_quirks.c b/sound/usb/mixer_quirks.c
+index 5eccc8af839f..03cba220fff1 100644
+--- a/sound/usb/mixer_quirks.c
++++ b/sound/usb/mixer_quirks.c
+@@ -2132,15 +2132,15 @@ static int dell_dock_mixer_init(struct usb_mixer_interface *mixer)
+ #define SND_RME_CLK_FREQMUL_SHIFT		18
+ #define SND_RME_CLK_FREQMUL_MASK		0x7
+ #define SND_RME_CLK_SYSTEM(x) \
+-	((x >> SND_RME_CLK_SYSTEM_SHIFT) & SND_RME_CLK_SYSTEM_MASK)
++	(((x) >> SND_RME_CLK_SYSTEM_SHIFT) & SND_RME_CLK_SYSTEM_MASK)
+ #define SND_RME_CLK_AES(x) \
+-	((x >> SND_RME_CLK_AES_SHIFT) & SND_RME_CLK_AES_SPDIF_MASK)
++	(((x) >> SND_RME_CLK_AES_SHIFT) & SND_RME_CLK_AES_SPDIF_MASK)
+ #define SND_RME_CLK_SPDIF(x) \
+-	((x >> SND_RME_CLK_SPDIF_SHIFT) & SND_RME_CLK_AES_SPDIF_MASK)
++	(((x) >> SND_RME_CLK_SPDIF_SHIFT) & SND_RME_CLK_AES_SPDIF_MASK)
+ #define SND_RME_CLK_SYNC(x) \
+-	((x >> SND_RME_CLK_SYNC_SHIFT) & SND_RME_CLK_SYNC_MASK)
++	(((x) >> SND_RME_CLK_SYNC_SHIFT) & SND_RME_CLK_SYNC_MASK)
+ #define SND_RME_CLK_FREQMUL(x) \
+-	((x >> SND_RME_CLK_FREQMUL_SHIFT) & SND_RME_CLK_FREQMUL_MASK)
++	(((x) >> SND_RME_CLK_FREQMUL_SHIFT) & SND_RME_CLK_FREQMUL_MASK)
+ #define SND_RME_CLK_AES_LOCK			0x1
+ #define SND_RME_CLK_AES_SYNC			0x4
+ #define SND_RME_CLK_SPDIF_LOCK			0x2
+@@ -2149,9 +2149,9 @@ static int dell_dock_mixer_init(struct usb_mixer_interface *mixer)
+ #define SND_RME_SPDIF_FORMAT_SHIFT		5
+ #define SND_RME_BINARY_MASK			0x1
+ #define SND_RME_SPDIF_IF(x) \
+-	((x >> SND_RME_SPDIF_IF_SHIFT) & SND_RME_BINARY_MASK)
++	(((x) >> SND_RME_SPDIF_IF_SHIFT) & SND_RME_BINARY_MASK)
+ #define SND_RME_SPDIF_FORMAT(x) \
+-	((x >> SND_RME_SPDIF_FORMAT_SHIFT) & SND_RME_BINARY_MASK)
++	(((x) >> SND_RME_SPDIF_FORMAT_SHIFT) & SND_RME_BINARY_MASK)
  
--static inline const char *acpi_get_enable_method(int cpu)
-+static __always_inline const char *acpi_get_enable_method(int cpu)
- {
- 	if (acpi_psci_present())
- 		return "psci";
+ static const u32 snd_rme_rate_table[] = {
+ 	32000, 44100, 48000, 50000,
 -- 
 2.39.5
 
