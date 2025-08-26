@@ -1,64 +1,57 @@
-Return-Path: <stable+bounces-175891-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-173674-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5F6F3B36A9C
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 16:39:01 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8583AB35E46
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 13:55:24 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id AB1B31BC6A4F
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 14:26:54 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 9C9671886CA6
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 11:48:12 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 66EB5260586;
-	Tue, 26 Aug 2025 14:24:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 76B862BEFF0;
+	Tue, 26 Aug 2025 11:47:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="lJ11Jo4J"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="L9A8aJ4v"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1BD34350842;
-	Tue, 26 Aug 2025 14:24:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 34BFE200112;
+	Tue, 26 Aug 2025 11:47:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756218240; cv=none; b=CcYfXwT1zcky2MDL6Ghn1SE7qg7Mjgd0e1/0U5hz9qXcdlX5GhD4447+BvqQTf+0mJ995WYT1uxpmXDodgShpPyyKZhHkGahpFW+fj3pTI92sQ0QQzwmFwdEG3IEEGSmy+OCv8YMTZttwP4llVcikpe4vLROz08O+Yp5wRKKL5E=
+	t=1756208861; cv=none; b=HZNPscAiJTtCIm3NhQVRfsVxTbqRLhGERbkBo1nq8okB7jgKuMc4yrvD2ZUDh6sQupn47InEgNmEfLbP1h3QOLBn6PSMkyEdidKShGKZSPaS6jQX549lTkJOXhPjoSw9Qejkgk6pGnDvYpfmxNN+WcSoc7tREt/496LexXzfjs8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756218240; c=relaxed/simple;
-	bh=nXyE1K05IlDybpxZFdkduSpLGcQvLdsL4jIEVb2xMp4=;
+	s=arc-20240116; t=1756208861; c=relaxed/simple;
+	bh=5GsFcIxMmZO3AlDfZECLZR8uXcafK8PVd9jKW1i54Nw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=r+cDWt/tc5zD90BDec8Q2k1DSqLLdad6yAr/Ygg3paDjFBGebpeDFDpvt8F9XdpVXftLr+0pkiStOfp/JR0DSnuD1LpQXiP1DO3B0+t+iFnswuI4w/5jVXnOAD32UEPSfytkf4W6jh2nvfkyX4VOM/5sAi/z3xfrxmlKFjgE78U=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=lJ11Jo4J; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 786F3C113CF;
-	Tue, 26 Aug 2025 14:23:59 +0000 (UTC)
+	 MIME-Version; b=T0TYnasnaL7e5r8Bljsv0A+sT4y6HVsNGpxpmgc8yhX+QFdpXIl02ZQ1rZXcVH5x49bSdCojjD71Wko/YiCtsvgRwX3mn28x1lzw/t+WAqnFPg1NMZ1N4Z08fwGPB0UJelailb6bAT+S2wvqPXQDIZ0bbOG2xyUwGbvnuNUyFXU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=L9A8aJ4v; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id BE975C4CEF1;
+	Tue, 26 Aug 2025 11:47:40 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1756218240;
-	bh=nXyE1K05IlDybpxZFdkduSpLGcQvLdsL4jIEVb2xMp4=;
+	s=korg; t=1756208861;
+	bh=5GsFcIxMmZO3AlDfZECLZR8uXcafK8PVd9jKW1i54Nw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=lJ11Jo4JNtyEmHP7mYLRIRvjzI9BDspv7ZkOWwPg6nLhimLiW7tt8LtM/XjW/aQbL
-	 5tBNPPB9p5Sxct08PN9tgZRel5kqJsXab3jf7Z+yEh6bmK8u/S6H6H7jNb2iZBCrp5
-	 Im0sQErMmj5STiVN4m7cz6s0bm0COAaQrOJwpLZk=
+	b=L9A8aJ4voWvhSr83eX8WH/2QzAnjnM6M6YltYpaYQVEhBn3FXowBOQCf+phFrYMAl
+	 GH3LmN5yi1iv5tABdHtuiLWJiF6+/1EJ/Q5BFeJF2vSdhQ5phEj8qbFo5SXPUwMbW4
+	 CLNSwyACHwNsakC5jSDhh4oOyvK33C1jRmR1x3yw=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Lorenzo Stoakes <lstoakes@gmail.com>,
-	Jan Kara <jack@suse.cz>,
-	Alexander Viro <viro@zeniv.linux.org.uk>,
-	Andy Lutomirski <luto@kernel.org>,
-	Christian Brauner <brauner@kernel.org>,
-	Hugh Dickins <hughd@google.com>,
-	"Matthew Wilcox (Oracle)" <willy@infradead.org>,
-	Mike Kravetz <mike.kravetz@oracle.com>,
-	Muchun Song <muchun.song@linux.dev>,
-	Andrew Morton <akpm@linux-foundation.org>,
-	"Isaac J. Manjarres" <isaacmanjarres@google.com>
-Subject: [PATCH 5.10 447/523] mm: update memfd seal write check to include F_SEAL_WRITE
+	Jan Beulich <jbeulich@suse.com>,
+	Josh Poimboeuf <jpoimboe@kernel.org>,
+	Juergen Gross <jgross@suse.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.12 242/322] compiler: remove __ADDRESSABLE_ASM{_STR,}() again
 Date: Tue, 26 Aug 2025 13:10:57 +0200
-Message-ID: <20250826110935.479523517@linuxfoundation.org>
+Message-ID: <20250826110921.895442522@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250826110924.562212281@linuxfoundation.org>
-References: <20250826110924.562212281@linuxfoundation.org>
+In-Reply-To: <20250826110915.169062587@linuxfoundation.org>
+References: <20250826110915.169062587@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -70,105 +63,74 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Lorenzo Stoakes <lstoakes@gmail.com>
+From: Jan Beulich <jbeulich@suse.com>
 
-[ Upstream commit 28464bbb2ddc199433383994bcb9600c8034afa1 ]
+[ Upstream commit 8ea815399c3fcce1889bd951fec25b5b9a3979c1 ]
 
-The seal_check_future_write() function is called by shmem_mmap() or
-hugetlbfs_file_mmap() to disallow any future writable mappings of an memfd
-sealed this way.
+__ADDRESSABLE_ASM_STR() is where the necessary stringification happens.
+As long as "sym" doesn't contain any odd characters, no quoting is
+required for its use with .quad / .long. In fact the quotation gets in
+the way with gas 2.25; it's only from 2.26 onwards that quoted symbols
+are half-way properly supported.
 
-The F_SEAL_WRITE flag is not checked here, as that is handled via the
-mapping->i_mmap_writable mechanism and so any attempt at a mapping would
-fail before this could be run.
+However, assembly being different from C anyway, drop
+__ADDRESSABLE_ASM_STR() and its helper macro altogether. A simple
+.global directive will suffice to get the symbol "declared", i.e. into
+the symbol table. While there also stop open-coding STATIC_CALL_TRAMP()
+and STATIC_CALL_KEY().
 
-However we intend to change this, meaning this check can be performed for
-F_SEAL_WRITE mappings also.
-
-The logic here is equally applicable to both flags, so update this
-function to accommodate both and rename it accordingly.
-
-Link: https://lkml.kernel.org/r/913628168ce6cce77df7d13a63970bae06a526e0.1697116581.git.lstoakes@gmail.com
-Signed-off-by: Lorenzo Stoakes <lstoakes@gmail.com>
-Reviewed-by: Jan Kara <jack@suse.cz>
-Cc: Alexander Viro <viro@zeniv.linux.org.uk>
-Cc: Andy Lutomirski <luto@kernel.org>
-Cc: Christian Brauner <brauner@kernel.org>
-Cc: Hugh Dickins <hughd@google.com>
-Cc: Matthew Wilcox (Oracle) <willy@infradead.org>
-Cc: Mike Kravetz <mike.kravetz@oracle.com>
-Cc: Muchun Song <muchun.song@linux.dev>
-Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
+Fixes: 0ef8047b737d ("x86/static-call: provide a way to do very early static-call updates")
+Signed-off-by: Jan Beulich <jbeulich@suse.com>
+Acked-by: Josh Poimboeuf <jpoimboe@kernel.org>
 Cc: stable@vger.kernel.org
-Signed-off-by: Isaac J. Manjarres <isaacmanjarres@google.com>
+Signed-off-by: Juergen Gross <jgross@suse.com>
+Message-ID: <609d2c74-de13-4fae-ab1a-1ec44afb948d@suse.com>
+[ Adjust context ]
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- fs/hugetlbfs/inode.c |    2 +-
- include/linux/mm.h   |   15 ++++++++-------
- mm/shmem.c           |    2 +-
- 3 files changed, 10 insertions(+), 9 deletions(-)
+ arch/x86/include/asm/xen/hypercall.h |    5 +++--
+ include/linux/compiler.h             |    8 --------
+ 2 files changed, 3 insertions(+), 10 deletions(-)
 
---- a/fs/hugetlbfs/inode.c
-+++ b/fs/hugetlbfs/inode.c
-@@ -148,7 +148,7 @@ static int hugetlbfs_file_mmap(struct fi
- 	vma->vm_flags |= VM_HUGETLB | VM_DONTEXPAND;
- 	vma->vm_ops = &hugetlb_vm_ops;
+--- a/arch/x86/include/asm/xen/hypercall.h
++++ b/arch/x86/include/asm/xen/hypercall.h
+@@ -94,12 +94,13 @@ DECLARE_STATIC_CALL(xen_hypercall, xen_h
+ #ifdef MODULE
+ #define __ADDRESSABLE_xen_hypercall
+ #else
+-#define __ADDRESSABLE_xen_hypercall __ADDRESSABLE_ASM_STR(__SCK__xen_hypercall)
++#define __ADDRESSABLE_xen_hypercall \
++	__stringify(.global STATIC_CALL_KEY(xen_hypercall);)
+ #endif
  
--	ret = seal_check_future_write(info->seals, vma);
-+	ret = seal_check_write(info->seals, vma);
- 	if (ret)
- 		return ret;
+ #define __HYPERCALL					\
+ 	__ADDRESSABLE_xen_hypercall			\
+-	"call __SCT__xen_hypercall"
++	__stringify(call STATIC_CALL_TRAMP(xen_hypercall))
  
---- a/include/linux/mm.h
-+++ b/include/linux/mm.h
-@@ -3201,25 +3201,26 @@ unsigned long wp_shared_mapping_range(st
- extern int sysctl_nr_trim_pages;
+ #define __HYPERCALL_ENTRY(x)	"a" (x)
  
- /**
-- * seal_check_future_write - Check for F_SEAL_FUTURE_WRITE flag and handle it
-+ * seal_check_write - Check for F_SEAL_WRITE or F_SEAL_FUTURE_WRITE flags and
-+ *                    handle them.
-  * @seals: the seals to check
-  * @vma: the vma to operate on
-  *
-- * Check whether F_SEAL_FUTURE_WRITE is set; if so, do proper check/handling on
-- * the vma flags.  Return 0 if check pass, or <0 for errors.
-+ * Check whether F_SEAL_WRITE or F_SEAL_FUTURE_WRITE are set; if so, do proper
-+ * check/handling on the vma flags.  Return 0 if check pass, or <0 for errors.
-  */
--static inline int seal_check_future_write(int seals, struct vm_area_struct *vma)
-+static inline int seal_check_write(int seals, struct vm_area_struct *vma)
- {
--	if (seals & F_SEAL_FUTURE_WRITE) {
-+	if (seals & (F_SEAL_WRITE | F_SEAL_FUTURE_WRITE)) {
- 		/*
- 		 * New PROT_WRITE and MAP_SHARED mmaps are not allowed when
--		 * "future write" seal active.
-+		 * write seals are active.
- 		 */
- 		if ((vma->vm_flags & VM_SHARED) && (vma->vm_flags & VM_WRITE))
- 			return -EPERM;
+--- a/include/linux/compiler.h
++++ b/include/linux/compiler.h
+@@ -223,14 +223,6 @@ static inline void *offset_to_ptr(const
+ #define __ADDRESSABLE(sym) \
+ 	___ADDRESSABLE(sym, __section(".discard.addressable"))
  
- 		/*
--		 * Since an F_SEAL_FUTURE_WRITE sealed memfd can be mapped as
-+		 * Since an F_SEAL_[FUTURE_]WRITE sealed memfd can be mapped as
- 		 * MAP_SHARED and read-only, take care to not allow mprotect to
- 		 * revert protections on such mappings. Do this only for shared
- 		 * mappings. For private mappings, don't need to mask
---- a/mm/shmem.c
-+++ b/mm/shmem.c
-@@ -2263,7 +2263,7 @@ static int shmem_mmap(struct file *file,
- 	struct shmem_inode_info *info = SHMEM_I(file_inode(file));
- 	int ret;
- 
--	ret = seal_check_future_write(info->seals, vma);
-+	ret = seal_check_write(info->seals, vma);
- 	if (ret)
- 		return ret;
+-#define __ADDRESSABLE_ASM(sym)						\
+-	.pushsection .discard.addressable,"aw";				\
+-	.align ARCH_SEL(8,4);						\
+-	ARCH_SEL(.quad, .long) __stringify(sym);			\
+-	.popsection;
+-
+-#define __ADDRESSABLE_ASM_STR(sym) __stringify(__ADDRESSABLE_ASM(sym))
+-
+ /* &a[0] degrades to a pointer: a different type from an array */
+ #define __must_be_array(a)	BUILD_BUG_ON_ZERO(__same_type((a), &(a)[0]))
  
 
 
