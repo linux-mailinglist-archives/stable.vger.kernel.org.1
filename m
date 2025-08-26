@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-173556-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-176198-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 34304B35E0B
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 13:51:16 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id C9065B36AD6
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 16:41:12 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id BDA20463ADB
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 11:42:38 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 85A3C7B4C2E
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 14:38:46 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1FF8D1FECAB;
-	Tue, 26 Aug 2025 11:42:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E0F7C3570AC;
+	Tue, 26 Aug 2025 14:37:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="rPhH4FpS"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="vgBJdJYq"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D3E9118DF9D;
-	Tue, 26 Aug 2025 11:42:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9A0C635691C;
+	Tue, 26 Aug 2025 14:37:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756208555; cv=none; b=cIRR3p01fHlfi47xb08SypAFl7L/l04ANsCiIWCJy5FUJv8tXbscu9JNsV/7xYG4F4U4mCdO6kyBPCb/EQ+Y/ug1j0G7a127OdrcaCH6iTXSZjJ3c6NRO6aeewYJ2fkphf/H3tRJWj97/QL3pGOSiarBERqEr2ElLyKeOZpd2MU=
+	t=1756219034; cv=none; b=FV0EVQFlGQYLmL6h6zVIMeqXpaY3OyDJf29aISfBX5cW8DZfPEPtKzAdMLWna9oD7KE/ljxEHi8yEXEkHen3IzlB7y8nI3LWC64Cs0nHSJuUMZA/In5T43/DMsRT3A08szjCO/uEyd8+7G7rlf0BcZLsyjKJUL1KZ91yFSUAZLQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756208555; c=relaxed/simple;
-	bh=ld61A2SoNqmX+xGjsbmn3iJ8hz6AHEGCNe/cqaiGaG0=;
+	s=arc-20240116; t=1756219034; c=relaxed/simple;
+	bh=bUkqGbqgu31oWPCww9l0G+6WpZSBsvSfTQqI8iFbIgA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=MF0TnCUji2Xn9yLY8MwDyKCJ+SmIe0xAYWmK2lTzWebUm5RjqSARJ9T08ixujCrW8vXc//g92DPpoEV+4Jhiy9XTSjyX6JSEsxZOL/v1Vp1ZTeG3Fm+XusWAqDAcIhvXetdIZb5ysju3OZN7g33q6I7dENxSdS++SQ9QkyguOyk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=rPhH4FpS; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 637D7C4CEF1;
-	Tue, 26 Aug 2025 11:42:35 +0000 (UTC)
+	 MIME-Version; b=MRcAFol6CiCKgCshYbJ3yVVuBrtICluHrX4rGDSrDY2xHtTso7Gi8EoTrQhZ38X0yYySms464XSWWbD8vV6+PZTQyMTuv13VEbmSAb920QAcsLllMyCmkMkeuKfwCDec26KBWcj2amv1yLfS8rGPug66wUSYCLSqIG/gnxDLFBQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=vgBJdJYq; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 285AEC4CEF1;
+	Tue, 26 Aug 2025 14:37:13 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1756208555;
-	bh=ld61A2SoNqmX+xGjsbmn3iJ8hz6AHEGCNe/cqaiGaG0=;
+	s=korg; t=1756219034;
+	bh=bUkqGbqgu31oWPCww9l0G+6WpZSBsvSfTQqI8iFbIgA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=rPhH4FpSsYc6AgYNlmBVDU+nqMU2El0xoJTeJKNdb22m+LTWn7PM7XdT/sPnRKkW4
-	 rgIOfgVAUQGLUXjvRmcvFr0WUXsfoJV95KbKI1QsC16ShA38z1aVADWlvMsPelsjWv
-	 wvZuABF3yG63Af1moGfrjfrNjsF2406MT9nUT1dA=
+	b=vgBJdJYqo9emJDr6RjtBJCyxpBRi8ym7Z4I9b9yAtuyoUX0YvhVLhK0CCDVM1JlLt
+	 iw/6JzHWmTYsUU8XxY3+LzYlIQINQUV5loloqOLY3Sr5Sp3g1bu8AsdlkNxEi/fl8R
+	 7LpPnvA+mLlj5ClOVoFpvHTj91/cNnQx//UQYkhs=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Tom Lendacky <thomas.lendacky@amd.com>,
-	"Borislav Petkov (AMD)" <bp@alien8.de>,
-	Joerg Roedel <joerg.roedel@amd.com>,
-	stable@kernel.org
-Subject: [PATCH 6.12 139/322] x86/sev: Ensure SVSM reserved fields in a page validation entry are initialized to zero
+	Hari Kalavakunta <kalavakunta.hari.prasad@gmail.com>,
+	Paul Fertser <fercerpav@gmail.com>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.4 228/403] net: ncsi: Fix buffer overflow in fetching version id
 Date: Tue, 26 Aug 2025 13:09:14 +0200
-Message-ID: <20250826110919.236991859@linuxfoundation.org>
+Message-ID: <20250826110913.126811457@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250826110915.169062587@linuxfoundation.org>
-References: <20250826110915.169062587@linuxfoundation.org>
+In-Reply-To: <20250826110905.607690791@linuxfoundation.org>
+References: <20250826110905.607690791@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,56 +63,57 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+5.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Tom Lendacky <thomas.lendacky@amd.com>
+From: Hari Kalavakunta <kalavakunta.hari.prasad@gmail.com>
 
-commit 3ee9cebd0a5e7ea47eb35cec95eaa1a866af982d upstream.
+[ Upstream commit 8e16170ae972c7fed132bc928914a2ffb94690fc ]
 
-In order to support future versions of the SVSM_CORE_PVALIDATE call, all
-reserved fields within a PVALIDATE entry must be set to zero as an SVSM should
-be ensuring all reserved fields are zero in order to support future usage of
-reserved areas based on the protocol version.
+In NC-SI spec v1.2 section 8.4.44.2, the firmware name doesn't
+need to be null terminated while its size occupies the full size
+of the field. Fix the buffer overflow issue by adding one
+additional byte for null terminator.
 
-Fixes: fcd042e86422 ("x86/sev: Perform PVALIDATE using the SVSM when not at VMPL0")
-Signed-off-by: Tom Lendacky <thomas.lendacky@amd.com>
-Signed-off-by: Borislav Petkov (AMD) <bp@alien8.de>
-Reviewed-by: Joerg Roedel <joerg.roedel@amd.com>
-Cc: <stable@kernel.org>
-Link: https://lore.kernel.org/7cde412f8b057ea13a646fb166b1ca023f6a5031.1755098819.git.thomas.lendacky@amd.com
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Signed-off-by: Hari Kalavakunta <kalavakunta.hari.prasad@gmail.com>
+Reviewed-by: Paul Fertser <fercerpav@gmail.com>
+Link: https://patch.msgid.link/20250610193338.1368-1-kalavakunta.hari.prasad@gmail.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/x86/coco/sev/shared.c |    3 +++
- 1 file changed, 3 insertions(+)
+ net/ncsi/internal.h | 2 +-
+ net/ncsi/ncsi-rsp.c | 1 +
+ 2 files changed, 2 insertions(+), 1 deletion(-)
 
---- a/arch/x86/coco/sev/shared.c
-+++ b/arch/x86/coco/sev/shared.c
-@@ -1285,6 +1285,7 @@ static void svsm_pval_4k_page(unsigned l
- 	pc->entry[0].page_size = RMP_PG_SIZE_4K;
- 	pc->entry[0].action    = validate;
- 	pc->entry[0].ignore_cf = 0;
-+	pc->entry[0].rsvd      = 0;
- 	pc->entry[0].pfn       = paddr >> PAGE_SHIFT;
- 
- 	/* Protocol 0, Call ID 1 */
-@@ -1373,6 +1374,7 @@ static u64 svsm_build_ca_from_pfn_range(
- 		pe->page_size = RMP_PG_SIZE_4K;
- 		pe->action    = action;
- 		pe->ignore_cf = 0;
-+		pe->rsvd      = 0;
- 		pe->pfn       = pfn;
- 
- 		pe++;
-@@ -1403,6 +1405,7 @@ static int svsm_build_ca_from_psc_desc(s
- 		pe->page_size = e->pagesize ? RMP_PG_SIZE_2M : RMP_PG_SIZE_4K;
- 		pe->action    = e->operation == SNP_PAGE_STATE_PRIVATE;
- 		pe->ignore_cf = 0;
-+		pe->rsvd      = 0;
- 		pe->pfn       = e->gfn;
- 
- 		pe++;
+diff --git a/net/ncsi/internal.h b/net/ncsi/internal.h
+index b723452768d4..67d5ee4dbc2a 100644
+--- a/net/ncsi/internal.h
++++ b/net/ncsi/internal.h
+@@ -86,7 +86,7 @@ struct ncsi_channel_version {
+ 	u8   update;		/* NCSI version update */
+ 	char alpha1;		/* NCSI version alpha1 */
+ 	char alpha2;		/* NCSI version alpha2 */
+-	u8  fw_name[12];	/* Firmware name string                */
++	u8  fw_name[12 + 1];	/* Firmware name string                */
+ 	u32 fw_version;		/* Firmware version                   */
+ 	u16 pci_ids[4];		/* PCI identification                 */
+ 	u32 mf_id;		/* Manufacture ID                     */
+diff --git a/net/ncsi/ncsi-rsp.c b/net/ncsi/ncsi-rsp.c
+index b7d311f97905..41e4ed80f29a 100644
+--- a/net/ncsi/ncsi-rsp.c
++++ b/net/ncsi/ncsi-rsp.c
+@@ -782,6 +782,7 @@ static int ncsi_rsp_handler_gvi(struct ncsi_request *nr)
+ 	ncv->alpha1 = rsp->alpha1;
+ 	ncv->alpha2 = rsp->alpha2;
+ 	memcpy(ncv->fw_name, rsp->fw_name, 12);
++	ncv->fw_name[12] = '\0';
+ 	ncv->fw_version = ntohl(rsp->fw_version);
+ 	for (i = 0; i < ARRAY_SIZE(ncv->pci_ids); i++)
+ 		ncv->pci_ids[i] = ntohs(rsp->pci_ids[i]);
+-- 
+2.39.5
+
 
 
 
