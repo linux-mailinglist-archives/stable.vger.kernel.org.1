@@ -1,56 +1,58 @@
-Return-Path: <stable+bounces-174015-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-174498-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 983E4B360D6
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 15:04:30 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 891CEB3639B
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 15:31:44 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 601BB1BA59F0
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 13:01:29 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id A536D8E076A
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 13:24:09 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7A45717C211;
-	Tue, 26 Aug 2025 13:01:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 112113451DE;
+	Tue, 26 Aug 2025 13:22:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="RkhbY1ld"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="lhQ/ifYb"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 367633597C;
-	Tue, 26 Aug 2025 13:01:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BF1D62D0606;
+	Tue, 26 Aug 2025 13:22:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756213267; cv=none; b=kuW9jDycVhrTc5SKUY9kAHIF04kHxKitrj3VKFQPPnuImwCCY64XkcO5WdQojr9J9ysp5lL20wXrMpy7HUK8P0BrCpa1OZGozAJOduORVSzPUpJZM6YT/iuoa8sXPLwNNznR4i3a8J4cXy2qpEBVk76EDXka49EROtWG2p9Tpg0=
+	t=1756214551; cv=none; b=TYdGbwe6dw8GT5vKWlUXubH62nuxCwbOLK4ObrHy5Fcu/KV70cPeSH8tesIR1lSwL7Qgx8byFPJPsX3YASHFEZsv8937FnOx65lGf0ZMbSzFd1L0OFFq2SvM8Oi4aT51iNiac3fc3Jnct0sDOU9dFm32weY41g1dpQ/5Vg1jXaY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756213267; c=relaxed/simple;
-	bh=qChEFNgmyyRiaZLQbWPHjPXIWksNMngI5y9WywfjHYM=;
+	s=arc-20240116; t=1756214551; c=relaxed/simple;
+	bh=17xjPZzrY+aLXbsaYzY+eoqk1btIQsckpgq3onFRIes=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=cDTleCO1sogI4QabyNUSX8PlxpFbuNyOZ7tphd4RpntMESGvoDAY8G6Qhnj/am2WplXH7bJI4Wfz8encPjJrL5drLw1ogvH6mLDs+edVwuG1s4zz5V0dSGEe6r4GQUg91fmY+BPg6Whva0EclLb1DSbCHI0EnP6cfvvlupjXrRg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=RkhbY1ld; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id BA11FC4CEF1;
-	Tue, 26 Aug 2025 13:01:06 +0000 (UTC)
+	 MIME-Version; b=eUwNrYmJKkPnBRj4/lrHswyZ4gJLBtaUgPAac+qhdq9O0kKLWoqeoXAyvOK6d4s1XDsDviI46Ezq/aCzX4P5SuoeGelDtn46jLq9BOHms7lG0AM5xI4PdpzGwHtML6f19UGW8sYiEwnsid5P6bIk3zvq5XnYj50N56+kvgFbqoA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=lhQ/ifYb; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id F117FC4CEF1;
+	Tue, 26 Aug 2025 13:22:30 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1756213267;
-	bh=qChEFNgmyyRiaZLQbWPHjPXIWksNMngI5y9WywfjHYM=;
+	s=korg; t=1756214551;
+	bh=17xjPZzrY+aLXbsaYzY+eoqk1btIQsckpgq3onFRIes=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=RkhbY1ldjy2L8brFCKoJeDD5mzVLxd/1BfL9OG1xx8ZOweKg0QRKUQxqhKAbWblUC
-	 tfgCjLOmp1U3Wkz1z0V7vdLFMRpEpeyRYHAEIF43eYw3kyh7SgzXL0cZBxl6PoJde3
-	 21+gJZhngvY5GRrbfm48VIJG3XaA6MqdXKOg00iM=
+	b=lhQ/ifYb2WinwSc9Rd1JDG++8CRRfB/3Kkom0VATg/99fTmH9LioQbnH8MF2l7vf6
+	 wtSGHzD7G5yJv8snYo+DvGJwQfsfXT4F13gRdW7Ceh+u32Iuk8F++ptd3Ca17e1Wdw
+	 GADzruT7hPrOnUnVltGMHpm7cARJCW275l1QsBgE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Masahiro Yamada <masahiroy@kernel.org>,
-	Randy Dunlap <rdunlap@infradead.org>,
+	Showrya M N <showrya@chelsio.com>,
+	Potnuri Bharat Teja <bharat@chelsio.com>,
+	Chris Leech <cleech@redhat.com>,
+	"Martin K. Petersen" <martin.petersen@oracle.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 283/587] kconfig: gconf: fix potential memory leak in renderer_edited()
+Subject: [PATCH 6.1 179/482] scsi: libiscsi: Initialize iscsi_conn->dd_data only if memory is allocated
 Date: Tue, 26 Aug 2025 13:07:12 +0200
-Message-ID: <20250826111000.130895939@linuxfoundation.org>
+Message-ID: <20250826110935.230520177@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250826110952.942403671@linuxfoundation.org>
-References: <20250826110952.942403671@linuxfoundation.org>
+In-Reply-To: <20250826110930.769259449@linuxfoundation.org>
+References: <20250826110930.769259449@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,44 +64,64 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Masahiro Yamada <masahiroy@kernel.org>
+From: Showrya M N <showrya@chelsio.com>
 
-[ Upstream commit f72ed4c6a375e52a3f4b75615e4a89d29d8acea7 ]
+[ Upstream commit 3ea3a256ed81f95ab0f3281a0e234b01a9cae605 ]
 
-If gtk_tree_model_get_iter() fails, gtk_tree_path_free() is not called.
+In case of an ib_fast_reg_mr allocation failure during iSER setup, the
+machine hits a panic because iscsi_conn->dd_data is initialized
+unconditionally, even when no memory is allocated (dd_size == 0).  This
+leads invalid pointer dereference during connection teardown.
 
-Signed-off-by: Masahiro Yamada <masahiroy@kernel.org>
-Acked-by: Randy Dunlap <rdunlap@infradead.org>
+Fix by setting iscsi_conn->dd_data only if memory is actually allocated.
+
+Panic trace:
+------------
+ iser: iser_create_fastreg_desc: Failed to allocate ib_fast_reg_mr err=-12
+ iser: iser_alloc_rx_descriptors: failed allocating rx descriptors / data buffers
+ BUG: unable to handle page fault for address: fffffffffffffff8
+ RIP: 0010:swake_up_locked.part.5+0xa/0x40
+ Call Trace:
+  complete+0x31/0x40
+  iscsi_iser_conn_stop+0x88/0xb0 [ib_iser]
+  iscsi_stop_conn+0x66/0xc0 [scsi_transport_iscsi]
+  iscsi_if_stop_conn+0x14a/0x150 [scsi_transport_iscsi]
+  iscsi_if_rx+0x1135/0x1834 [scsi_transport_iscsi]
+  ? netlink_lookup+0x12f/0x1b0
+  ? netlink_deliver_tap+0x2c/0x200
+  netlink_unicast+0x1ab/0x280
+  netlink_sendmsg+0x257/0x4f0
+  ? _copy_from_user+0x29/0x60
+  sock_sendmsg+0x5f/0x70
+
+Signed-off-by: Showrya M N <showrya@chelsio.com>
+Signed-off-by: Potnuri Bharat Teja <bharat@chelsio.com>
+Link: https://lore.kernel.org/r/20250627112329.19763-1-showrya@chelsio.com
+Reviewed-by: Chris Leech <cleech@redhat.com>
+Signed-off-by: Martin K. Petersen <martin.petersen@oracle.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- scripts/kconfig/gconf.c | 3 ++-
+ drivers/scsi/libiscsi.c | 3 ++-
  1 file changed, 2 insertions(+), 1 deletion(-)
 
-diff --git a/scripts/kconfig/gconf.c b/scripts/kconfig/gconf.c
-index a9f78e167e2e..2b99d18e703d 100644
---- a/scripts/kconfig/gconf.c
-+++ b/scripts/kconfig/gconf.c
-@@ -780,7 +780,7 @@ static void renderer_edited(GtkCellRendererText * cell,
- 	struct symbol *sym;
+diff --git a/drivers/scsi/libiscsi.c b/drivers/scsi/libiscsi.c
+index 6e811d753cb1..ee4e3feedd10 100644
+--- a/drivers/scsi/libiscsi.c
++++ b/drivers/scsi/libiscsi.c
+@@ -3184,7 +3184,8 @@ iscsi_conn_setup(struct iscsi_cls_session *cls_session, int dd_size,
+ 		return NULL;
+ 	conn = cls_conn->dd_data;
  
- 	if (!gtk_tree_model_get_iter(model2, &iter, path))
--		return;
-+		goto free;
- 
- 	gtk_tree_model_get(model2, &iter, COL_MENU, &menu, -1);
- 	sym = menu->sym;
-@@ -792,6 +792,7 @@ static void renderer_edited(GtkCellRendererText * cell,
- 
- 	update_tree(&rootmenu, NULL);
- 
-+free:
- 	gtk_tree_path_free(path);
- }
- 
+-	conn->dd_data = cls_conn->dd_data + sizeof(*conn);
++	if (dd_size)
++		conn->dd_data = cls_conn->dd_data + sizeof(*conn);
+ 	conn->session = session;
+ 	conn->cls_conn = cls_conn;
+ 	conn->c_stage = ISCSI_CONN_INITIAL_STAGE;
 -- 
 2.39.5
 
