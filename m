@@ -1,59 +1,57 @@
-Return-Path: <stable+bounces-174767-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-173685-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 126F5B36572
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 15:48:06 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id D726FB35EA0
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 14:00:22 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id EE00556584D
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 13:35:16 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id C2555560CEA
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 11:48:11 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5C4D02AD04;
-	Tue, 26 Aug 2025 13:34:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 71A2B749C;
+	Tue, 26 Aug 2025 11:48:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ZZKBnwBF"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="NQ0haaSp"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1A4092BDC2F;
-	Tue, 26 Aug 2025 13:34:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2F4BE26C3A4;
+	Tue, 26 Aug 2025 11:48:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756215263; cv=none; b=F/Tit02RUjYeJzCiY8nHiePNIb4VgOhq+V9ptV3IyAJ6LTIgHuYL9k2pXkqfwXzmAmnAHpB0nHiaMJrzj66HcZjmzSQnqR9jCPWE1Iq91sLH1UNE8cuJXy/DlBzELLoeDCmpKU8jT5iaMy8sF1VJZ2TVXlxwZCfcJmRA/CG7oNw=
+	t=1756208890; cv=none; b=LOXK2oILojhhB4dRyc/AVz4M43d7rC116gCag620Rbsa6bMaTKjnwSbKcwoSbzWtclCbvcf9iWF23ExcOnJF7YPneko2SNMNhDHSug/3VR1CjAB78QI/wabACHacT178ycrjyQQ7XX1NLS9U3dz+75FJ6o9WDQHY1Y9mYVKmmkE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756215263; c=relaxed/simple;
-	bh=2hbJOsn+sxSiNrMu8qXQiESNN6liFslrx8+Kgzv757Q=;
+	s=arc-20240116; t=1756208890; c=relaxed/simple;
+	bh=62N01LiHHJx13dq2aMPYZO6ensWdlksUtdiIT88lD5A=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=UKbl0meXB6S1AQbrTYKu5AqyWh5/EPLy7VdkNiTP3YSy2/0Bm5scohQUQeIGRUPEYifQTJs3+KthVd4nlVgTAEvHurHvnDBzw8XEimew6T4hfljLvl5yrKJvwDovibLnm9AG6YlamG3H9VMYZ/2POsHR2Sd769PY6qFyklWWxdY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ZZKBnwBF; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9FEE1C4CEF1;
-	Tue, 26 Aug 2025 13:34:22 +0000 (UTC)
+	 MIME-Version; b=VtM3rxtp7SeqpkQ9+rwZ8tdbs59H+EV/Ai6ln4NeNiO5K6q9X4+EPcdy7fwZbVliKqQxwuPITo9qwVhv85ZDQfrzzsA4wb/UrqHkLtx7qTuvhcwG4nrSmnV5mSW/tkoOfzMnXJvB2K/SOGDqXXu+GYmVoAvMoFz5yAdqIZL2U7k=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=NQ0haaSp; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B6D8BC4CEF1;
+	Tue, 26 Aug 2025 11:48:09 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1756215263;
-	bh=2hbJOsn+sxSiNrMu8qXQiESNN6liFslrx8+Kgzv757Q=;
+	s=korg; t=1756208890;
+	bh=62N01LiHHJx13dq2aMPYZO6ensWdlksUtdiIT88lD5A=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=ZZKBnwBFm80lOMRFAMDV7o+pH+N11OFdPnCajeK7PvEk99JJMCG8Z6ODeR+I0MRAh
-	 rKYE+nVSKeyF3oCAiSJXFqIWdbYgOi2cFSW6NJmFcgr9/5l4Wqo1FYSwo9mQ0+ntmW
-	 BzxV3K+jNDVOrrTA+DomFWA6gMfqWajUNY8wcqss=
+	b=NQ0haaSpVVjZJQkSWD+Elc8FtCM1fTThbrn+A4HYkE8FsrpVFUw6P2DQkAAC5sHBl
+	 pdSjSCNsq9S7ce83GmYRtUxAe2hQeYwKn5myePrrN48k1mnDl8bP0IxUcXnr/hHfeB
+	 3C+PgWIJTRt14MqtFBgU5UYkDsaP/tL2E1td3tsI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Masami Hiramatsu <mhiramat@kernel.org>,
-	Mark Rutland <mark.rutland@arm.com>,
-	Mathieu Desnoyers <mathieu.desnoyers@efficios.com>,
-	Andrew Morton <akpm@linux-foundation.org>,
-	"Steven Rostedt (Google)" <rostedt@goodmis.org>,
+	Baihan Li <libaihan@huawei.com>,
+	Yongbang Shi <shiyongbang@huawei.com>,
+	Dmitry Baryshkov <dmitry.baryshkov@oss.qualcomm.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 447/482] tracing: Remove unneeded goto out logic
+Subject: [PATCH 6.12 285/322] drm/hisilicon/hibmc: fix the i2c device resource leak when vdac init failed
 Date: Tue, 26 Aug 2025 13:11:40 +0200
-Message-ID: <20250826110941.872610555@linuxfoundation.org>
+Message-ID: <20250826110922.953461996@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250826110930.769259449@linuxfoundation.org>
-References: <20250826110930.769259449@linuxfoundation.org>
+In-Reply-To: <20250826110915.169062587@linuxfoundation.org>
+References: <20250826110915.169062587@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -65,151 +63,98 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Steven Rostedt <rostedt@goodmis.org>
+From: Baihan Li <libaihan@huawei.com>
 
-[ Upstream commit c89504a703fb779052213add0e8ed642f4a4f1c8 ]
+[ Upstream commit e5f48bfa2ae0806d5f51fb8061afc619a73599a7 ]
 
-Several places in the trace.c file there's a goto out where the out is
-simply a return. There's no reason to jump to the out label if it's not
-doing any more logic but simply returning from the function.
+Currently the driver missed to clean the i2c adapter when vdac init failed.
+It may cause resource leak.
 
-Replace the goto outs with a return and remove the out labels.
-
-Cc: Masami Hiramatsu <mhiramat@kernel.org>
-Cc: Mark Rutland <mark.rutland@arm.com>
-Cc: Mathieu Desnoyers <mathieu.desnoyers@efficios.com>
-Cc: Andrew Morton <akpm@linux-foundation.org>
-Link: https://lore.kernel.org/20250801203857.538726745@kernel.org
-Signed-off-by: Steven Rostedt (Google) <rostedt@goodmis.org>
+Fixes: a0d078d06e516 ("drm/hisilicon: Features to support reading resolutions from EDID")
+Signed-off-by: Baihan Li <libaihan@huawei.com>
+Signed-off-by: Yongbang Shi <shiyongbang@huawei.com>
+Reviewed-by: Dmitry Baryshkov <dmitry.baryshkov@oss.qualcomm.com>
+Link: https://lore.kernel.org/r/20250813094238.3722345-2-shiyongbang@huawei.com
+Signed-off-by: Dmitry Baryshkov <dmitry.baryshkov@oss.qualcomm.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- kernel/trace/trace.c |   37 ++++++++++++++-----------------------
- 1 file changed, 14 insertions(+), 23 deletions(-)
+ drivers/gpu/drm/hisilicon/hibmc/hibmc_drm_drv.h  |  1 +
+ drivers/gpu/drm/hisilicon/hibmc/hibmc_drm_i2c.c  |  5 +++++
+ drivers/gpu/drm/hisilicon/hibmc/hibmc_drm_vdac.c | 11 ++++++++---
+ 3 files changed, 14 insertions(+), 3 deletions(-)
 
---- a/kernel/trace/trace.c
-+++ b/kernel/trace/trace.c
-@@ -1618,7 +1618,7 @@ int trace_get_user(struct trace_parser *
+diff --git a/drivers/gpu/drm/hisilicon/hibmc/hibmc_drm_drv.h b/drivers/gpu/drm/hisilicon/hibmc/hibmc_drm_drv.h
+index 42f0ab8f9b5a..6eb0d41a0f68 100644
+--- a/drivers/gpu/drm/hisilicon/hibmc/hibmc_drm_drv.h
++++ b/drivers/gpu/drm/hisilicon/hibmc/hibmc_drm_drv.h
+@@ -58,5 +58,6 @@ int hibmc_de_init(struct hibmc_drm_private *priv);
+ int hibmc_vdac_init(struct hibmc_drm_private *priv);
  
- 	ret = get_user(ch, ubuf++);
- 	if (ret)
--		goto out;
-+		return ret;
+ int hibmc_ddc_create(struct drm_device *drm_dev, struct hibmc_vdac *connector);
++void hibmc_ddc_del(struct hibmc_vdac *vdac);
  
- 	read++;
- 	cnt--;
-@@ -1632,7 +1632,7 @@ int trace_get_user(struct trace_parser *
- 		while (cnt && isspace(ch)) {
- 			ret = get_user(ch, ubuf++);
- 			if (ret)
--				goto out;
-+				return ret;
- 			read++;
- 			cnt--;
- 		}
-@@ -1642,8 +1642,7 @@ int trace_get_user(struct trace_parser *
- 		/* only spaces were written */
- 		if (isspace(ch) || !ch) {
- 			*ppos += read;
--			ret = read;
--			goto out;
-+			return read;
- 		}
- 	}
+ #endif
+diff --git a/drivers/gpu/drm/hisilicon/hibmc/hibmc_drm_i2c.c b/drivers/gpu/drm/hisilicon/hibmc/hibmc_drm_i2c.c
+index 99b3b77b5445..44860011855e 100644
+--- a/drivers/gpu/drm/hisilicon/hibmc/hibmc_drm_i2c.c
++++ b/drivers/gpu/drm/hisilicon/hibmc/hibmc_drm_i2c.c
+@@ -95,3 +95,8 @@ int hibmc_ddc_create(struct drm_device *drm_dev, struct hibmc_vdac *vdac)
  
-@@ -1651,13 +1650,12 @@ int trace_get_user(struct trace_parser *
- 	while (cnt && !isspace(ch) && ch) {
- 		if (parser->idx < parser->size - 1)
- 			parser->buffer[parser->idx++] = ch;
--		else {
--			ret = -EINVAL;
--			goto out;
--		}
-+		else
-+			return -EINVAL;
+ 	return i2c_bit_add_bus(&vdac->adapter);
+ }
 +
- 		ret = get_user(ch, ubuf++);
- 		if (ret)
--			goto out;
-+			return ret;
- 		read++;
- 		cnt--;
++void hibmc_ddc_del(struct hibmc_vdac *vdac)
++{
++	i2c_del_adapter(&vdac->adapter);
++}
+diff --git a/drivers/gpu/drm/hisilicon/hibmc/hibmc_drm_vdac.c b/drivers/gpu/drm/hisilicon/hibmc/hibmc_drm_vdac.c
+index 05e19ea4c9f9..9e29386700c8 100644
+--- a/drivers/gpu/drm/hisilicon/hibmc/hibmc_drm_vdac.c
++++ b/drivers/gpu/drm/hisilicon/hibmc/hibmc_drm_vdac.c
+@@ -53,7 +53,7 @@ static void hibmc_connector_destroy(struct drm_connector *connector)
+ {
+ 	struct hibmc_vdac *vdac = to_hibmc_vdac(connector);
+ 
+-	i2c_del_adapter(&vdac->adapter);
++	hibmc_ddc_del(vdac);
+ 	drm_connector_cleanup(connector);
+ }
+ 
+@@ -109,7 +109,7 @@ int hibmc_vdac_init(struct hibmc_drm_private *priv)
+ 	ret = drmm_encoder_init(dev, encoder, NULL, DRM_MODE_ENCODER_DAC, NULL);
+ 	if (ret) {
+ 		drm_err(dev, "failed to init encoder: %d\n", ret);
+-		return ret;
++		goto err;
  	}
-@@ -1672,15 +1670,11 @@ int trace_get_user(struct trace_parser *
- 		/* Make sure the parsed string always terminates with '\0'. */
- 		parser->buffer[parser->idx] = 0;
- 	} else {
--		ret = -EINVAL;
--		goto out;
-+		return -EINVAL;
+ 
+ 	drm_encoder_helper_add(encoder, &hibmc_encoder_helper_funcs);
+@@ -120,7 +120,7 @@ int hibmc_vdac_init(struct hibmc_drm_private *priv)
+ 					  &vdac->adapter);
+ 	if (ret) {
+ 		drm_err(dev, "failed to init connector: %d\n", ret);
+-		return ret;
++		goto err;
  	}
  
- 	*ppos += read;
--	ret = read;
--
--out:
--	return ret;
-+	return read;
+ 	drm_connector_helper_add(connector, &hibmc_connector_helper_funcs);
+@@ -128,4 +128,9 @@ int hibmc_vdac_init(struct hibmc_drm_private *priv)
+ 	drm_connector_attach_encoder(connector, encoder);
+ 
+ 	return 0;
++
++err:
++	hibmc_ddc_del(vdac);
++
++	return ret;
  }
- 
- /* TODO add a seq_buf_to_buffer() */
-@@ -2149,10 +2143,10 @@ int __init register_tracer(struct tracer
- 	mutex_unlock(&trace_types_lock);
- 
- 	if (ret || !default_bootup_tracer)
--		goto out_unlock;
-+		return ret;
- 
- 	if (strncmp(default_bootup_tracer, type->name, MAX_TRACER_SIZE))
--		goto out_unlock;
-+		return 0;
- 
- 	printk(KERN_INFO "Starting tracer '%s'\n", type->name);
- 	/* Do we want this tracer to start on bootup? */
-@@ -2164,8 +2158,7 @@ int __init register_tracer(struct tracer
- 	/* disable other selftests, since this will break it. */
- 	disable_tracing_selftest("running a tracer");
- 
-- out_unlock:
--	return ret;
-+	return 0;
- }
- 
- static void tracing_reset_cpu(struct array_buffer *buf, int cpu)
-@@ -8761,11 +8754,10 @@ ftrace_trace_snapshot_callback(struct tr
-  out_reg:
- 	ret = tracing_alloc_snapshot_instance(tr);
- 	if (ret < 0)
--		goto out;
-+		return ret;
- 
- 	ret = register_ftrace_function_probe(glob, tr, ops, count);
- 
-- out:
- 	return ret < 0 ? ret : 0;
- }
- 
-@@ -10292,7 +10284,7 @@ __init static int tracer_alloc_buffers(v
- 	BUILD_BUG_ON(TRACE_ITER_LAST_BIT > TRACE_FLAGS_MAX_SIZE);
- 
- 	if (!alloc_cpumask_var(&tracing_buffer_mask, GFP_KERNEL))
--		goto out;
-+		return -ENOMEM;
- 
- 	if (!alloc_cpumask_var(&global_trace.tracing_cpumask, GFP_KERNEL))
- 		goto out_free_buffer_mask;
-@@ -10405,7 +10397,6 @@ out_free_cpumask:
- 	free_cpumask_var(global_trace.tracing_cpumask);
- out_free_buffer_mask:
- 	free_cpumask_var(tracing_buffer_mask);
--out:
- 	return ret;
- }
- 
+-- 
+2.50.1
+
 
 
 
