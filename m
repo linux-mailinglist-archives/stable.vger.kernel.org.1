@@ -1,58 +1,56 @@
-Return-Path: <stable+bounces-174058-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-173459-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9E156B36103
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 15:05:56 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id CC977B35CDD
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 13:39:31 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id F40D61BA742A
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 13:03:22 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 8D4AA7C5691
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 11:39:30 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0187E1B6D06;
-	Tue, 26 Aug 2025 13:03:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 59DFC29D26A;
+	Tue, 26 Aug 2025 11:38:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Ud+UTqqm"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="f/nkEs3P"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B33AB8635D;
-	Tue, 26 Aug 2025 13:03:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 14D89393DD1;
+	Tue, 26 Aug 2025 11:38:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756213380; cv=none; b=nxnXtkOngEV2lrrz89izFJ2+q3Wmc7dy32Q1Tq2z4EfoqkCimCj8eDAOy5Cw5Wg8ZgRR/YZsrX1UtJK3z/N3f/RRS+SMagi1MWyqlGe4xWYxYVKGTVdKRJgqkRczCRiFQIrxrLk/bvA3aUo7wqD3aXBY04K/wfdIWqLEcumYE9A=
+	t=1756208303; cv=none; b=XCU+3o/1uOOp1wX9LA2LNxhmAQxcRk2pQI9ZcW0g7zFhu+tCtA7Sq7BK2rRKT95qtmMrOR3/Mj4oTru+VNbvRJZyl3v9O69OOH373TugoM2xIHFKdW4lwGx7wl7/Oaj5GzCuYOVp3FnuTtzR0tz3XUv9fsT3KJXaHBOt557KBDs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756213380; c=relaxed/simple;
-	bh=oiHnil3b27wUcOtPKr4jXyvvnPucMduQp8kE8Jzw148=;
+	s=arc-20240116; t=1756208303; c=relaxed/simple;
+	bh=deUyYWHBVrO8BWEPJsuimi/m+x36l3jKT0HpTqeKSM8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=sd3ayd8gP/cLwAcTlAPl49bmUbU6N8dlzM63AIyLpRDSDQS4bagSWOYincw9Sf/88kdoOhGganC+152pcAHHhPddwZK4vFhxHjNgtASoOfIHvTd1qiB4ixBK78jYS8ZcYbcZiKTevMeu7XbryCgk8a5flYlvpMKuHLUotLdYxLw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Ud+UTqqm; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 35408C4CEF1;
-	Tue, 26 Aug 2025 13:03:00 +0000 (UTC)
+	 MIME-Version; b=YlOedPMbTYEJYk14xepPevKMu8YZwgPku/+m/s67C6ey8IFjvvidbZfXKZ3OhHPajKptbQU1ABsTeKoGoadl9W1ha+1rYMUF+kSL8IfutcVWNqmmUaTNXY7hXzt97f1uxbeB+vzzQ/9XSlQbyaudK4Xw5PN47Bo/laast562Sho=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=f/nkEs3P; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4378BC4CEF1;
+	Tue, 26 Aug 2025 11:38:22 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1756213380;
-	bh=oiHnil3b27wUcOtPKr4jXyvvnPucMduQp8kE8Jzw148=;
+	s=korg; t=1756208302;
+	bh=deUyYWHBVrO8BWEPJsuimi/m+x36l3jKT0HpTqeKSM8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Ud+UTqqmt7pvbin7avKuFA1DoM2vSKQ6okGR3POz0P4jQMTY/dfkK6/liPHCI9T/8
-	 zEeo639DKGpepREiW2C9EErgnB6MXnViKd6RF01xQfVfpWkN6mXIKjn2HM4nBrv6Tq
-	 u0y/M65uWNnGkU5GngEyl8dMfc8TaMNLVYr0DXqg=
+	b=f/nkEs3Pt4QF8UWlqoeiIvZpVAt2oSONbO2o8MzRBUe/Q0nibz+cRWPQanZislywS
+	 Zq5dC+wMojO0Mni7hqJqVfa3vo4o7wCuCbDShWmuXliSZLa/tbHtwC7e5h+9jBQAQA
+	 uONy8GCpgr+EJMHYpkiv6FSEl+kV1CufwTqve/fU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	kernel test robot <oliver.sang@intel.com>,
-	David Howells <dhowells@redhat.com>,
-	Pedro Falcato <pfalcato@suse.de>,
-	Bernard Metzler <bernard.metzler@linux.dev>,
-	Jason Gunthorpe <jgg@nvidia.com>
-Subject: [PATCH 6.6 325/587] RDMA/siw: Fix the sendmsg byte count in siw_tcp_sendpages
+	Johan Hovold <johan+linaro@kernel.org>,
+	Baochen Qiang <quic_bqiang@quicinc.com>,
+	Jeff Johnson <jeff.johnson@oss.qualcomm.com>
+Subject: [PATCH 6.12 059/322] wifi: ath12k: fix dest ring-buffer corruption
 Date: Tue, 26 Aug 2025 13:07:54 +0200
-Message-ID: <20250826111001.184125583@linuxfoundation.org>
+Message-ID: <20250826110916.991745672@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250826110952.942403671@linuxfoundation.org>
-References: <20250826110952.942403671@linuxfoundation.org>
+In-Reply-To: <20250826110915.169062587@linuxfoundation.org>
+References: <20250826110915.169062587@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,100 +62,78 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Pedro Falcato <pfalcato@suse.de>
+From: Johan Hovold <johan+linaro@kernel.org>
 
-commit c18646248fed07683d4cee8a8af933fc4fe83c0d upstream.
+commit 8157ce533a60521f21d466eb4de45d9735b19484 upstream.
 
-Ever since commit c2ff29e99a76 ("siw: Inline do_tcp_sendpages()"),
-we have been doing this:
+Add the missing memory barrier to make sure that destination ring
+descriptors are read after the head pointers to avoid using stale data
+on weakly ordered architectures like aarch64.
 
-static int siw_tcp_sendpages(struct socket *s, struct page **page, int offset,
-                             size_t size)
-[...]
-        /* Calculate the number of bytes we need to push, for this page
-         * specifically */
-        size_t bytes = min_t(size_t, PAGE_SIZE - offset, size);
-        /* If we can't splice it, then copy it in, as normal */
-        if (!sendpage_ok(page[i]))
-                msg.msg_flags &= ~MSG_SPLICE_PAGES;
-        /* Set the bvec pointing to the page, with len $bytes */
-        bvec_set_page(&bvec, page[i], bytes, offset);
-        /* Set the iter to $size, aka the size of the whole sendpages (!!!) */
-        iov_iter_bvec(&msg.msg_iter, ITER_SOURCE, &bvec, 1, size);
-try_page_again:
-        lock_sock(sk);
-        /* Sendmsg with $size size (!!!) */
-        rv = tcp_sendmsg_locked(sk, &msg, size);
+The barrier is added to the ath12k_hal_srng_access_begin() helper for
+symmetry with follow-on fixes for source ring buffer corruption which
+will add barriers to ath12k_hal_srng_access_end().
 
-This means we've been sending oversized iov_iters and tcp_sendmsg calls
-for a while. This has a been a benign bug because sendpage_ok() always
-returned true. With the recent slab allocator changes being slowly
-introduced into next (that disallow sendpage on large kmalloc
-allocations), we have recently hit out-of-bounds crashes, due to slight
-differences in iov_iter behavior between the MSG_SPLICE_PAGES and
-"regular" copy paths:
+Tested-on: WCN7850 hw2.0 WLAN.HMT.1.0.c5-00481-QCAHMTSWPL_V1.0_V2.0_SILICONZ-3
 
-(MSG_SPLICE_PAGES)
-skb_splice_from_iter
-  iov_iter_extract_pages
-    iov_iter_extract_bvec_pages
-      uses i->nr_segs to correctly stop in its tracks before OoB'ing everywhere
-  skb_splice_from_iter gets a "short" read
-
-(!MSG_SPLICE_PAGES)
-skb_copy_to_page_nocache copy=iov_iter_count
- [...]
-   copy_from_iter
-        /* this doesn't help */
-        if (unlikely(iter->count < len))
-                len = iter->count;
-          iterate_bvec
-            ... and we run off the bvecs
-
-Fix this by properly setting the iov_iter's byte count, plus sending the
-correct byte count to tcp_sendmsg_locked.
-
-Link: https://patch.msgid.link/r/20250729120348.495568-1-pfalcato@suse.de
-Cc: stable@vger.kernel.org
-Fixes: c2ff29e99a76 ("siw: Inline do_tcp_sendpages()")
-Reported-by: kernel test robot <oliver.sang@intel.com>
-Closes: https://lore.kernel.org/oe-lkp/202507220801.50a7210-lkp@intel.com
-Reviewed-by: David Howells <dhowells@redhat.com>
-Signed-off-by: Pedro Falcato <pfalcato@suse.de>
-Acked-by: Bernard Metzler <bernard.metzler@linux.dev>
-Signed-off-by: Jason Gunthorpe <jgg@nvidia.com>
+Fixes: d889913205cf ("wifi: ath12k: driver for Qualcomm Wi-Fi 7 devices")
+Cc: stable@vger.kernel.org	# 6.3
+Signed-off-by: Johan Hovold <johan+linaro@kernel.org>
+Reviewed-by: Baochen Qiang <quic_bqiang@quicinc.com>
+Link: https://patch.msgid.link/20250617084402.14475-2-johan+linaro@kernel.org
+Signed-off-by: Jeff Johnson <jeff.johnson@oss.qualcomm.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/infiniband/sw/siw/siw_qp_tx.c |    5 ++---
- 1 file changed, 2 insertions(+), 3 deletions(-)
+ drivers/net/wireless/ath/ath12k/ce.c  |    3 ---
+ drivers/net/wireless/ath/ath12k/hal.c |   17 ++++++++++++++---
+ 2 files changed, 14 insertions(+), 6 deletions(-)
 
---- a/drivers/infiniband/sw/siw/siw_qp_tx.c
-+++ b/drivers/infiniband/sw/siw/siw_qp_tx.c
-@@ -340,18 +340,17 @@ static int siw_tcp_sendpages(struct sock
- 		if (!sendpage_ok(page[i]))
- 			msg.msg_flags &= ~MSG_SPLICE_PAGES;
- 		bvec_set_page(&bvec, page[i], bytes, offset);
--		iov_iter_bvec(&msg.msg_iter, ITER_SOURCE, &bvec, 1, size);
-+		iov_iter_bvec(&msg.msg_iter, ITER_SOURCE, &bvec, 1, bytes);
+--- a/drivers/net/wireless/ath/ath12k/ce.c
++++ b/drivers/net/wireless/ath/ath12k/ce.c
+@@ -343,9 +343,6 @@ static int ath12k_ce_completed_recv_next
+ 		goto err;
+ 	}
  
- try_page_again:
- 		lock_sock(sk);
--		rv = tcp_sendmsg_locked(sk, &msg, size);
-+		rv = tcp_sendmsg_locked(sk, &msg, bytes);
- 		release_sock(sk);
+-	/* Make sure descriptor is read after the head pointer. */
+-	dma_rmb();
+-
+ 	*nbytes = ath12k_hal_ce_dst_status_get_length(desc);
  
- 		if (rv > 0) {
- 			size -= rv;
- 			sent += rv;
- 			if (rv != bytes) {
--				offset += rv;
- 				bytes -= rv;
- 				goto try_page_again;
- 			}
+ 	*skb = pipe->dest_ring->skb[sw_index];
+--- a/drivers/net/wireless/ath/ath12k/hal.c
++++ b/drivers/net/wireless/ath/ath12k/hal.c
+@@ -2107,13 +2107,24 @@ void *ath12k_hal_srng_src_get_next_reape
+ 
+ void ath12k_hal_srng_access_begin(struct ath12k_base *ab, struct hal_srng *srng)
+ {
++	u32 hp;
++
+ 	lockdep_assert_held(&srng->lock);
+ 
+-	if (srng->ring_dir == HAL_SRNG_DIR_SRC)
++	if (srng->ring_dir == HAL_SRNG_DIR_SRC) {
+ 		srng->u.src_ring.cached_tp =
+ 			*(volatile u32 *)srng->u.src_ring.tp_addr;
+-	else
+-		srng->u.dst_ring.cached_hp = READ_ONCE(*srng->u.dst_ring.hp_addr);
++	} else {
++		hp = READ_ONCE(*srng->u.dst_ring.hp_addr);
++
++		if (hp != srng->u.dst_ring.cached_hp) {
++			srng->u.dst_ring.cached_hp = hp;
++			/* Make sure descriptor is read after the head
++			 * pointer.
++			 */
++			dma_rmb();
++		}
++	}
+ }
+ 
+ /* Update cached ring head/tail pointers to HW. ath12k_hal_srng_access_begin()
 
 
 
