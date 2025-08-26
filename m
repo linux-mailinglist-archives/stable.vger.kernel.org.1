@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-174540-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-173452-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 88831B363DB
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 15:33:52 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 64C88B35DD2
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 13:48:28 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 5D16B2A6610
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 13:25:54 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 2250C367E34
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 11:39:21 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C4825334379;
-	Tue, 26 Aug 2025 13:24:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1C4063093AB;
+	Tue, 26 Aug 2025 11:38:05 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ilir8f/+"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="QtAmHTPD"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7778218A6C4;
-	Tue, 26 Aug 2025 13:24:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CF7352BE03C;
+	Tue, 26 Aug 2025 11:38:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756214662; cv=none; b=Iqn4z1hEoTm8PAkq6Zmv0uEutFRRteep+BfUAbd26E4TNsQdyhTLzNMsOOqCZqE2iXJ/LrrSL+XxHD79oHqC8AUzsr2XhMEweJrXQFWaTESktTbMEWRHbYB3PNqb7y/UnOyl78BLO/xrbbG8jQwXn9lIgaIUQy6LS2KIDEEIX4Q=
+	t=1756208284; cv=none; b=FR6aiOf+L6/lfbIYv+KW0GfZoSFB59yNdqrP8J5j4froURwHXz7cQofGtrVgaDC+UTR0rIhIltaGUJotxv5GMzPBHciATyvlgFCxcnSqdo7TAa/Gg+XPxnilvVEG7oLPpoYBz0VDq8Y+fqNqgbRezM56g4710Yw2BZSFi1c6lNM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756214662; c=relaxed/simple;
-	bh=mQp1iEPyZwpGx/zyM3Bs8sgRIiWvfSKg0M6+3Xm09oo=;
+	s=arc-20240116; t=1756208284; c=relaxed/simple;
+	bh=P82NRHfMNheHISOY/wBb5wLAp9ICnKPy4eNBVgibojw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=u96TOK87mAdN3sxefOPazuxh0cPyNJPjScoDCVftcUDq3RZYh24Kh2j9TOS3TkoLnXighCGdygovsJwIPJnxCboVXUnfeBYsisYCt43kd00qZkcnroOD2Tweibg+IEppi5uPNcVBuqbrB8jjMheU2ix4b6PsR0Ns6mYj4lNLqyw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ilir8f/+; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id AD7CAC4CEF1;
-	Tue, 26 Aug 2025 13:24:21 +0000 (UTC)
+	 MIME-Version; b=sVtFi2vJTNL/ameWlZDjo0xdap+DS8qG0eRTR3Y7m0oioCg7MPqYCfRbrg20sYLZznzNptCousSGLNt8B5Za4ElTMtL64rfv7wq6YjAmjTQgPjcBPBxJFKX7+BMaTZoko49ugEzGjtCxRyh4EYt/M4y8HhwavTsMe9Gonw8BpLE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=QtAmHTPD; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 57CABC4CEF1;
+	Tue, 26 Aug 2025 11:38:04 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1756214662;
-	bh=mQp1iEPyZwpGx/zyM3Bs8sgRIiWvfSKg0M6+3Xm09oo=;
+	s=korg; t=1756208284;
+	bh=P82NRHfMNheHISOY/wBb5wLAp9ICnKPy4eNBVgibojw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=ilir8f/+AGvi0h+tRYEkY83QCX8tjqRXHj+8CV+WblQbeoUwAr2tIDqFH2XMi4Ekc
-	 HOs76XI9re6+1xVyXV+M/GdQEuhmNa7RsVFZYH3RdC7U+UmB7G+Rn/eBiuIaXm+ver
-	 l84PFVvSPP4ydjqbpcECTPsWLeD1zOZ7iaaKYAZ0=
+	b=QtAmHTPDuNGJIDyg3lD3rLybE4cqWyMJgsQzSFgAtTKTB8rm55aN5g3qzorN4TXAM
+	 OBpGnrnXxqQFwci0ynA+5QP63emKMRFuqelLYfBvQCa6yDyl2npMLhfAgkkSEsdR1z
+	 GIetb4/egT5tt+hxo/iQh9znyOaeWRpO0gB4n2HM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Benjamin Marzinski <bmarzins@redhat.com>,
-	Mike Snitzer <snitzer@kernel.org>,
-	Mikulas Patocka <mpatocka@redhat.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 215/482] dm-table: fix checking for rq stackable devices
+	Igor Pylypiv <ipylypiv@google.com>,
+	Niklas Cassel <cassel@kernel.org>,
+	Damien Le Moal <dlemoal@kernel.org>
+Subject: [PATCH 6.12 053/322] ata: libata-scsi: Fix CDL control
 Date: Tue, 26 Aug 2025 13:07:48 +0200
-Message-ID: <20250826110936.088223703@linuxfoundation.org>
+Message-ID: <20250826110916.716718008@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250826110930.769259449@linuxfoundation.org>
-References: <20250826110930.769259449@linuxfoundation.org>
+In-Reply-To: <20250826110915.169062587@linuxfoundation.org>
+References: <20250826110915.169062587@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,65 +62,67 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Benjamin Marzinski <bmarzins@redhat.com>
+From: Igor Pylypiv <ipylypiv@google.com>
 
-[ Upstream commit 8ca719b81987be690f197e82fdb030580c0a07f3 ]
+commit 58768b0563916ddcb73d8ed26ede664915f8df31 upstream.
 
-Due to the semantics of iterate_devices(), the current code allows a
-request-based dm table as long as it includes one request-stackable
-device. It is supposed to only allow tables where there are no
-non-request-stackable devices.
+Delete extra checks for the ATA_DFLAG_CDL_ENABLED flag that prevent
+SET FEATURES command from being issued to a drive when NCQ commands
+are active.
 
-Signed-off-by: Benjamin Marzinski <bmarzins@redhat.com>
-Reviewed-by: Mike Snitzer <snitzer@kernel.org>
-Signed-off-by: Mikulas Patocka <mpatocka@redhat.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+ata_mselect_control_ata_feature() sets / clears the ATA_DFLAG_CDL_ENABLED
+flag during the translation of MODE SELECT to SET FEATURES. If SET FEATURES
+gets deferred due to outstanding NCQ commands, the original MODE SELECT
+command will be re-queued. When the re-queued MODE SELECT goes through
+the ata_mselect_control_ata_feature() translation again, SET FEATURES
+will not be issued because ATA_DFLAG_CDL_ENABLED has been already set or
+cleared by the initial translation of MODE SELECT.
+
+The ATA_DFLAG_CDL_ENABLED checks in ata_mselect_control_ata_feature()
+are safe to remove because scsi_cdl_enable() implements a similar logic
+that avoids enabling CDL if it has been enabled already.
+
+Fixes: 17e897a45675 ("ata: libata-scsi: Improve CDL control")
+Cc: stable@vger.kernel.org
+Signed-off-by: Igor Pylypiv <ipylypiv@google.com>
+Reviewed-by: Niklas Cassel <cassel@kernel.org>
+Signed-off-by: Damien Le Moal <dlemoal@kernel.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/md/dm-table.c | 10 +++++-----
- 1 file changed, 5 insertions(+), 5 deletions(-)
+ drivers/ata/libata-scsi.c |   11 +++--------
+ 1 file changed, 3 insertions(+), 8 deletions(-)
 
-diff --git a/drivers/md/dm-table.c b/drivers/md/dm-table.c
-index 8b23b8bc5a03..f18e47a24454 100644
---- a/drivers/md/dm-table.c
-+++ b/drivers/md/dm-table.c
-@@ -863,17 +863,17 @@ static bool dm_table_supports_dax(struct dm_table *t,
- 	return true;
- }
- 
--static int device_is_rq_stackable(struct dm_target *ti, struct dm_dev *dev,
--				  sector_t start, sector_t len, void *data)
-+static int device_is_not_rq_stackable(struct dm_target *ti, struct dm_dev *dev,
-+				      sector_t start, sector_t len, void *data)
- {
- 	struct block_device *bdev = dev->bdev;
- 	struct request_queue *q = bdev_get_queue(bdev);
- 
- 	/* request-based cannot stack on partitions! */
- 	if (bdev_is_partition(bdev))
--		return false;
-+		return true;
- 
--	return queue_is_mq(q);
-+	return !queue_is_mq(q);
- }
- 
- static int dm_table_determine_type(struct dm_table *t)
-@@ -969,7 +969,7 @@ static int dm_table_determine_type(struct dm_table *t)
- 
- 	/* Non-request-stackable devices can't be used for request-based dm */
- 	if (!ti->type->iterate_devices ||
--	    !ti->type->iterate_devices(ti, device_is_rq_stackable, NULL)) {
-+	    ti->type->iterate_devices(ti, device_is_not_rq_stackable, NULL)) {
- 		DMERR("table load rejected: including non-request-stackable devices");
- 		return -EINVAL;
- 	}
--- 
-2.39.5
-
+--- a/drivers/ata/libata-scsi.c
++++ b/drivers/ata/libata-scsi.c
+@@ -3752,21 +3752,16 @@ static int ata_mselect_control_ata_featu
+ 	/* Check cdl_ctrl */
+ 	switch (buf[0] & 0x03) {
+ 	case 0:
+-		/* Disable CDL if it is enabled */
+-		if (!(dev->flags & ATA_DFLAG_CDL_ENABLED))
+-			return 0;
++		/* Disable CDL */
+ 		ata_dev_dbg(dev, "Disabling CDL\n");
+ 		cdl_action = 0;
+ 		dev->flags &= ~ATA_DFLAG_CDL_ENABLED;
+ 		break;
+ 	case 0x02:
+ 		/*
+-		 * Enable CDL if not already enabled. Since this is mutually
+-		 * exclusive with NCQ priority, allow this only if NCQ priority
+-		 * is disabled.
++		 * Enable CDL. Since CDL is mutually exclusive with NCQ
++		 * priority, allow this only if NCQ priority is disabled.
+ 		 */
+-		if (dev->flags & ATA_DFLAG_CDL_ENABLED)
+-			return 0;
+ 		if (dev->flags & ATA_DFLAG_NCQ_PRIO_ENABLED) {
+ 			ata_dev_err(dev,
+ 				"NCQ priority must be disabled to enable CDL\n");
 
 
 
