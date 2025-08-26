@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-176165-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-175233-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id E3FE4B36C74
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 16:56:31 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id CD6F3B36728
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 16:04:11 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 444235A1997
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 14:38:30 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 21DC68E7E4A
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 13:56:17 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5ABC4356913;
-	Tue, 26 Aug 2025 14:35:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D5A4833439F;
+	Tue, 26 Aug 2025 13:54:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="agZRkiqy"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="1lsNZm4Z"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 106EE299A94;
-	Tue, 26 Aug 2025 14:35:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 91D4334DCF5;
+	Tue, 26 Aug 2025 13:54:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756218949; cv=none; b=l/qkSQoL46IBySjMkIZy5G2ElCd7nrZLETRrUmf4JtGkeCjrX7eW4CAkMCK27dgFqi1epI+wvQyHo0aM+rmmq6xIvcU+N1h+jNHaA7JfSu87t3QcvXG2RGpcVobPNp/CgQwyJZLIImZQWIULeqRd9qafGXU7vcBqCIf/gSGN5iY=
+	t=1756216495; cv=none; b=YjK7npUO7LiJPQnUwjzHIglCrTcjDZsJQ7QVRsr0scfKB2q3Fphbp6DFuywWAVjhpGFnKYo5kqrr0l48A3/MIYaM92K4UdN8s+FIV/98BImcL0FvlPuV0v+lYCdRcCTzqF/QeUPqqoqQvL+HwoVmpzMDgu0Nf9crk04ME2j9ABE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756218949; c=relaxed/simple;
-	bh=QnhewsbJ+9tuNQ07pZlakyStjI0nUb4OWAPXDlZF14g=;
+	s=arc-20240116; t=1756216495; c=relaxed/simple;
+	bh=p4ifRfDZX8HlTiIhQd136p4tAvo4lwKlquhFwv8+1+0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=QpDgIq7gzksBg4pDgB+H3mmM21w1l7DHDuhH1J6y8pYvEGmVWdcHLJ2+kWWGb/ZFZOm9IfEdi3BZKIoNtdjbGqu8Ar/hGXnSJpAVcVuxpFronyecIi7QXB3GTDfXN69deBTbLPnGNfgYuTcqIUCCus/xSbrcy4ZyMADlSCbMN90=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=agZRkiqy; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 91E8EC4CEF1;
-	Tue, 26 Aug 2025 14:35:48 +0000 (UTC)
+	 MIME-Version; b=s53tHYSaVuXckduhXnHHHdC0MBpTtPj3O2S4eKt6bCF1pmX/i87ABA4YBM/0TW2cCkFAMrEJjtOpJQEROu41iAQ4Yjku8KXLW6G25EhbW6DJuUT/QBdXw4X8j3Q1ejKwhaeYuzQeBiZWjgzje7MDUfaHkyBK2y5RtMGm7B7pD/A=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=1lsNZm4Z; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 14294C4CEF1;
+	Tue, 26 Aug 2025 13:54:53 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1756218948;
-	bh=QnhewsbJ+9tuNQ07pZlakyStjI0nUb4OWAPXDlZF14g=;
+	s=korg; t=1756216494;
+	bh=p4ifRfDZX8HlTiIhQd136p4tAvo4lwKlquhFwv8+1+0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=agZRkiqyuTQIhKgwfrA4C4EgFNF3JRjDWFV8MpyWxr2VpHQqflPt09sFdKYmILzo5
-	 BNp/kjNnoMYfPb6rK+MkKziE8vxV1laoqsDLDHz0UYYF55MVKrYEbuGb9mfu8t0y9+
-	 9PSU3VpNImsrHBnpYgVleKWHhhVmU2oH1jxImaAo=
+	b=1lsNZm4ZhigNdLrzkOIXth6muUAjH4JfKH67YFsHNykMKdRNQF8/DilVwdQ4bXN+Y
+	 sbRnJ1eDxL1lLcucsQQTHOy9OdpH8YHUcTS33U8e9rJEwPKnd5/PUGZCuxcX/jlbQB
+	 np22BNYUZ4JeF3YOhfR8Qufaxa2mAvwju79Ls5d0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Breno Leitao <leitao@debian.org>,
-	Tony Luck <tony.luck@intel.com>,
-	"Rafael J. Wysocki" <rafael.j.wysocki@intel.com>,
+	Sergey Bashirov <sergeybashirov@gmail.com>,
+	Christoph Hellwig <hch@lst.de>,
+	Trond Myklebust <trond.myklebust@hammerspace.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.4 196/403] ACPI: APEI: GHES: add TAINT_MACHINE_CHECK on GHES panic path
+Subject: [PATCH 5.15 431/644] pNFS: Fix disk addr range check in block/scsi layout
 Date: Tue, 26 Aug 2025 13:08:42 +0200
-Message-ID: <20250826110912.283253668@linuxfoundation.org>
+Message-ID: <20250826110957.141931221@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250826110905.607690791@linuxfoundation.org>
-References: <20250826110905.607690791@linuxfoundation.org>
+In-Reply-To: <20250826110946.507083938@linuxfoundation.org>
+References: <20250826110946.507083938@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,45 +63,43 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.4-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Breno Leitao <leitao@debian.org>
+From: Sergey Bashirov <sergeybashirov@gmail.com>
 
-[ Upstream commit 4734c8b46b901cff2feda8b82abc710b65dc31c1 ]
+[ Upstream commit 7db6e66663681abda54f81d5916db3a3b8b1a13d ]
 
-When a GHES (Generic Hardware Error Source) triggers a panic, add the
-TAINT_MACHINE_CHECK taint flag to the kernel. This explicitly marks the
-kernel as tainted due to a machine check event, improving diagnostics
-and post-mortem analysis. The taint is set with LOCKDEP_STILL_OK to
-indicate lockdep remains valid.
+At the end of the isect translation, disc_addr represents the physical
+disk offset. Thus, end calculated from disk_addr is also a physical disk
+offset. Therefore, range checking should be done using map->disk_offset,
+not map->start.
 
-At large scale deployment, this helps to quickly determine panics that
-are coming due to hardware failures.
-
-Signed-off-by: Breno Leitao <leitao@debian.org>
-Reviewed-by: Tony Luck <tony.luck@intel.com>
-Link: https://patch.msgid.link/20250702-add_tain-v1-1-9187b10914b9@debian.org
-Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
+Signed-off-by: Sergey Bashirov <sergeybashirov@gmail.com>
+Reviewed-by: Christoph Hellwig <hch@lst.de>
+Link: https://lore.kernel.org/r/20250702133226.212537-1-sergeybashirov@gmail.com
+Signed-off-by: Trond Myklebust <trond.myklebust@hammerspace.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/acpi/apei/ghes.c | 2 ++
- 1 file changed, 2 insertions(+)
+ fs/nfs/blocklayout/blocklayout.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/acpi/apei/ghes.c b/drivers/acpi/apei/ghes.c
-index 50bed5a70812..d02d7cbab387 100644
---- a/drivers/acpi/apei/ghes.c
-+++ b/drivers/acpi/apei/ghes.c
-@@ -709,6 +709,8 @@ static void __ghes_panic(struct ghes *ghes,
+diff --git a/fs/nfs/blocklayout/blocklayout.c b/fs/nfs/blocklayout/blocklayout.c
+index dc657b12822d..76423557f5b3 100644
+--- a/fs/nfs/blocklayout/blocklayout.c
++++ b/fs/nfs/blocklayout/blocklayout.c
+@@ -166,8 +166,8 @@ do_add_page_to_bio(struct bio *bio, int npg, int rw, sector_t isect,
  
- 	__ghes_print_estatus(KERN_EMERG, ghes->generic, estatus);
+ 	/* limit length to what the device mapping allows */
+ 	end = disk_addr + *len;
+-	if (end >= map->start + map->len)
+-		*len = map->start + map->len - disk_addr;
++	if (end >= map->disk_offset + map->len)
++		*len = map->disk_offset + map->len - disk_addr;
  
-+	add_taint(TAINT_MACHINE_CHECK, LOCKDEP_STILL_OK);
-+
- 	ghes_clear_estatus(ghes, estatus, buf_paddr, fixmap_idx);
- 
- 	if (!panic_timeout)
+ retry:
+ 	if (!bio) {
 -- 
 2.39.5
 
