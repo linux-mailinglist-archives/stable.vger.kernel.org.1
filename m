@@ -1,56 +1,58 @@
-Return-Path: <stable+bounces-174652-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-173247-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id C6C0EB36472
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 15:38:39 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id E2364B35CB3
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 13:37:35 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 45A0F8E29EA
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 13:30:35 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id F1CB3189A0B0
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 11:32:32 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 66D3D22DFB8;
-	Tue, 26 Aug 2025 13:29:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id EA8BB3376BD;
+	Tue, 26 Aug 2025 11:29:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="HjPWFxui"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="vy47P+oy"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 25C2B14B950;
-	Tue, 26 Aug 2025 13:29:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 961693375D9;
+	Tue, 26 Aug 2025 11:29:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756214958; cv=none; b=cwdYnh8zjlqQPM2tfOHNXIbXKAVZe/1tWNbPK7FKMWkkxgQBQH5ynLajUY2IDfzUfdklekJqESi1ZXWVcB69lUHNIIbuhpPGtobPkA7QacRc0NNepxMP3NPigGBUhUyPyzK5+546edEZi4vlg9yPEGLAiUWtb3uWZluAM+3lols=
+	t=1756207753; cv=none; b=qyRgO8mo5xmzWZUHxznRUfUkuAxJB85JWE3gPVrA/Q/w9PMV+ek2F8uGYCj9Os6zSoZatkOR2dA6kUncJ8dsEPvrIkVLNKVJg6RLpp02chxN3Mngsu9tUyAEPz7bk/p3DtsOQoKf8cmW4dGOdOjNqCy7ghAUbO8Gmr4409/qYjE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756214958; c=relaxed/simple;
-	bh=Vbh90YnOPRnMimTgaxBh8n/sLSDBL4o3B43b3NhjlIo=;
+	s=arc-20240116; t=1756207753; c=relaxed/simple;
+	bh=8wkEq0amkOD9Bix6ko+SYiMVzNTx20ikrNPeU1JibGk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=AYIcJX9iv5YgYpOIxSBF0fQuqsT6T66Q7gFIgqZTh1TEbagZMnMoCQduetxYgWE9Jeg7qHLsU70G/iTbmZq5EUaFKDzCQ6YOTg+eTlQJ9lt/xnS9PNVtGn2jHaHn0RCI7siggV+CnlzbyEdYBaiLVSdIYxzXTONI0ew/YkK+bjs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=HjPWFxui; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 43651C4CEF1;
-	Tue, 26 Aug 2025 13:29:16 +0000 (UTC)
+	 MIME-Version; b=VH9x1n3J1PXv6mlqN15xma8j+reX5cmu18M12hjpHWgxLi1pQHg+Cr//ufyAKjFdEhrtDQlxe96aAu0OrZySR4frzCMU4K0mNrpCQ95k31QS+4xWKuOS74mLBkWQww8+srwM5115Yg+wzlP4GYAR+pjLrbyHQi2aHtUl6Jzc/sM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=vy47P+oy; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id BBAFBC4CEF1;
+	Tue, 26 Aug 2025 11:29:12 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1756214956;
-	bh=Vbh90YnOPRnMimTgaxBh8n/sLSDBL4o3B43b3NhjlIo=;
+	s=korg; t=1756207753;
+	bh=8wkEq0amkOD9Bix6ko+SYiMVzNTx20ikrNPeU1JibGk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=HjPWFxuijScdbPYiy8B8FYiO09bYvC1D7uU1G59cmDi0dwWjBYmcmbDPBSWV4ZgrW
-	 svIG+r/EZczM+0intM/uKlcAuqpb8KF212ZcaFK8Q08UggxSQewVZCyTPflpwU8W1p
-	 QBVSa3195lIiWrOUDnUd7aIW6sDNuG8TTI8BwN2E=
+	b=vy47P+oyXut8xvphuS75ZqqoMUiMfdSa/GNZHJb8Mblp8VrLAK6ltjvRnX8hjevlL
+	 4t3dR9l97bdvxtx/2ucOFeFs/2eu5Ds/jkYC3Om0yDDJISDCIjCP3qby8U4zKAUCel
+	 0zajMcBxaIP6kCOI7dFYIUOC95ZSh6Ep500ejnL8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	=?UTF-8?q?Christian=20K=C3=B6nig?= <christian.koenig@amd.com>,
-	Gang Ba <Gang.Ba@amd.com>,
-	Alex Deucher <alexander.deucher@amd.com>
-Subject: [PATCH 6.1 334/482] drm/amdgpu: Avoid extra evict-restore process.
+	kernel test robot <lkp@intel.com>,
+	Matti Vaittinen <mazziesaccount@gmail.com>,
+	Bartosz Golaszewski <bartosz.golaszewski@linaro.org>,
+	Stable@vger.kernel.org,
+	Jonathan Cameron <Jonathan.Cameron@huawei.com>
+Subject: [PATCH 6.16 303/457] iio: adc: bd79124: Add GPIOLIB dependency
 Date: Tue, 26 Aug 2025 13:09:47 +0200
-Message-ID: <20250826110939.074443601@linuxfoundation.org>
+Message-ID: <20250826110944.860462481@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250826110930.769259449@linuxfoundation.org>
-References: <20250826110930.769259449@linuxfoundation.org>
+In-Reply-To: <20250826110937.289866482@linuxfoundation.org>
+References: <20250826110937.289866482@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,67 +62,54 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.16-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Gang Ba <Gang.Ba@amd.com>
+From: Matti Vaittinen <mazziesaccount@gmail.com>
 
-commit 1f02f2044bda1db1fd995bc35961ab075fa7b5a2 upstream.
+commit 8a6ededaad2d2dcaac8e545bffee1073dca9db95 upstream.
 
-If vm belongs to another process, this is fclose after fork,
-wait may enable signaling KFD eviction fence and cause parent process queue evicted.
+The bd79124 has ADC inputs which can be muxed to be GPIOs. The driver
+supports this by registering a GPIO-chip for channels which aren't used
+as ADC.
 
-[677852.634569]  amdkfd_fence_enable_signaling+0x56/0x70 [amdgpu]
-[677852.634814]  __dma_fence_enable_signaling+0x3e/0xe0
-[677852.634820]  dma_fence_wait_timeout+0x3a/0x140
-[677852.634825]  amddma_resv_wait_timeout+0x7f/0xf0 [amdkcl]
-[677852.634831]  amdgpu_vm_wait_idle+0x2d/0x60 [amdgpu]
-[677852.635026]  amdgpu_flush+0x34/0x50 [amdgpu]
-[677852.635208]  filp_flush+0x38/0x90
-[677852.635213]  filp_close+0x14/0x30
-[677852.635216]  do_close_on_exec+0xdd/0x130
-[677852.635221]  begin_new_exec+0x1da/0x490
-[677852.635225]  load_elf_binary+0x307/0xea0
-[677852.635231]  ? srso_alias_return_thunk+0x5/0xfbef5
-[677852.635235]  ? ima_bprm_check+0xa2/0xd0
-[677852.635240]  search_binary_handler+0xda/0x260
-[677852.635245]  exec_binprm+0x58/0x1a0
-[677852.635249]  bprm_execve.part.0+0x16f/0x210
-[677852.635254]  bprm_execve+0x45/0x80
-[677852.635257]  do_execveat_common.isra.0+0x190/0x200
+The Kconfig entry does not handle the dependency to GPIOLIB, which
+causes errors:
 
-Suggested-by: Christian König <christian.koenig@amd.com>
-Signed-off-by: Gang Ba <Gang.Ba@amd.com>
-Reviewed-by: Christian König <christian.koenig@amd.com>
-Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
-Cc: stable@vger.kernel.org
+ERROR: modpost: "devm_gpiochip_add_data_with_key" [drivers/iio/adc/rohm-bd79124.ko] undefined!
+ERROR: modpost: "gpiochip_get_data" [drivers/iio/adc/rohm-bd79124.ko] undefined!
+
+at linking phase if GPIOLIB is not configured to be used.
+
+Fix this by adding dependency to the GPIOLIB.
+
+Reported-by: kernel test robot <lkp@intel.com>
+Closes: https://lore.kernel.org/oe-kbuild-all/202508131533.5sSkq80B-lkp@intel.com/
+Fixes: 3f57a3b9ab74 ("iio: adc: Support ROHM BD79124 ADC")
+Signed-off-by: Matti Vaittinen <mazziesaccount@gmail.com>
+Reviewed-by: Bartosz Golaszewski <bartosz.golaszewski@linaro.org>
+Link: https://patch.msgid.link/6837249bddf358924e67566293944506206d2d62.1755076369.git.mazziesaccount@gmail.com
+Cc: <Stable@vger.kernel.org>
+Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/gpu/drm/amd/amdgpu/amdgpu_vm.c |    6 ++----
- 1 file changed, 2 insertions(+), 4 deletions(-)
+ drivers/iio/adc/Kconfig |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/drivers/gpu/drm/amd/amdgpu/amdgpu_vm.c
-+++ b/drivers/gpu/drm/amd/amdgpu/amdgpu_vm.c
-@@ -2024,13 +2024,11 @@ void amdgpu_vm_adjust_size(struct amdgpu
-  */
- long amdgpu_vm_wait_idle(struct amdgpu_vm *vm, long timeout)
- {
--	timeout = dma_resv_wait_timeout(vm->root.bo->tbo.base.resv,
--					DMA_RESV_USAGE_BOOKKEEP,
--					true, timeout);
-+	timeout = drm_sched_entity_flush(&vm->immediate, timeout);
- 	if (timeout <= 0)
- 		return timeout;
+--- a/drivers/iio/adc/Kconfig
++++ b/drivers/iio/adc/Kconfig
+@@ -1257,7 +1257,7 @@ config RN5T618_ADC
  
--	return dma_fence_wait_timeout(vm->last_unlocked, true, timeout);
-+	return drm_sched_entity_flush(&vm->delayed, timeout);
- }
- 
- /**
+ config ROHM_BD79124
+ 	tristate "Rohm BD79124 ADC driver"
+-	depends on I2C
++	depends on I2C && GPIOLIB
+ 	select REGMAP_I2C
+ 	select IIO_ADC_HELPER
+ 	help
 
 
 
