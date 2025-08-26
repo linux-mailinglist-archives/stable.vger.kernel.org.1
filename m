@@ -1,56 +1,55 @@
-Return-Path: <stable+bounces-175694-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-173122-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 07AD9B369C7
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 16:30:41 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2609FB35BC2
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 13:27:52 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 447ED568441
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 14:17:45 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 193F11BA3CE0
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 11:24:19 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 20B2335AAA1;
-	Tue, 26 Aug 2025 14:15:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1360D2FE58A;
+	Tue, 26 Aug 2025 11:23:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="PLUDH3c3"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="eoh7kpwj"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D2C1535A2A2;
-	Tue, 26 Aug 2025 14:15:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C0FA8267386;
+	Tue, 26 Aug 2025 11:23:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756217722; cv=none; b=tm4US0b27FT3Kmh1PTuGd+Fw3Wz4RibiOQ/0tbvh5Zrd3E46EOGt2F8yFODmxcMQ6vpHjrKdO40ZTe6XGI/tBYZ6lBgnIujnFRfmxzRhITPc1nB4XLLT6O51dHn0CCVcnqXDO8YFUFU+AqXW58hCfoyprivDoHD3KLPQXPBSZI4=
+	t=1756207430; cv=none; b=NxTvuYXueSlW6tZW23rgjB4mBv8anQfeEUfQq4bpRZFeRy0KqU7zt/XHsM3RlouWCh8awhjm7lveW3bTQkKXZk6oVyuG9C8dpDIG1tKVrSi9JfLIK5B90baUe/EOE5w74wbS/Es9oJiVP5NVctXQgKvxQf0Xf9DymBfzidJihzo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756217722; c=relaxed/simple;
-	bh=GcVCjv0fTRTlEV7XFQbhekDMcavpaD65y75cHRA+m3A=;
+	s=arc-20240116; t=1756207430; c=relaxed/simple;
+	bh=IZABP5PrhXWe7I5GHFqXHmNRtkE3w9qrFcL0j5g5MiQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=rceTItnoGP+har8KnDwjuRr7mJ+GlSWIGygNQG4ppbZ8aFfqtCB2HZneCsUmWPnqno26AyjepX/21YQoztyysjYxNxxkk9+r7iX2G3ptnGXdj6+Byns4y4zstR86xeuHOBoIYaoQGcLqKbOKD+5sdRpealZ8nUQjK0eCuG1ULWQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=PLUDH3c3; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1E314C4CEF1;
-	Tue, 26 Aug 2025 14:15:21 +0000 (UTC)
+	 MIME-Version; b=ne9ic5U1dFfMGBJFoxJuBZL49b32Ep0VzOlCvHewNOx3xxFzac3yMbseJpj/LC/aSAw2PExiHuMkCvEddRCfkx7WC1GtSiRF4nqTNFrhU/U9AndGIHQVb5JKorgK0gJGJqf3jQqA7yp6FTutJ/jiTcJyfTJxMoDdLUs+ExJVp/4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=eoh7kpwj; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D9052C4CEF4;
+	Tue, 26 Aug 2025 11:23:49 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1756217722;
-	bh=GcVCjv0fTRTlEV7XFQbhekDMcavpaD65y75cHRA+m3A=;
+	s=korg; t=1756207430;
+	bh=IZABP5PrhXWe7I5GHFqXHmNRtkE3w9qrFcL0j5g5MiQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=PLUDH3c3vHA90xH/ECVC0rmpanAuYmiTfmAir9LZ0ZShPlP25NNYCUOH6XI9Agi1T
-	 NhXUbzX34hbhxTND+/L/6vbCp3FVZ1xOj1YTzBzA2w0UfavKL0NaZt9DvDPfcDQC6H
-	 YIm9Vt9+OeK+McyIPhI+Rt2IupOAQ8NNYXTqlqqA=
+	b=eoh7kpwjLnQw39SJtor1Azm3MjtjxhpfIIW9lIJX6Srz1A4v2eHBifrnGZAC5Mua6
+	 60BtX+YKMIu04rG+Tb4fcbxtUv5QTKnf/0RaeuVVb1+dMbuNHmP2DcjNUd8rUNMe6y
+	 7DDuXDcUTyJVTZnbBdiTCxOCdZ4TwRqm4b1pUncM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Kees Cook <kees@kernel.org>,
-	=?UTF-8?q?Ilpo=20J=C3=A4rvinen?= <ilpo.jarvinen@linux.intel.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 251/523] platform/x86: thinkpad_acpi: Handle KCOV __init vs inline mismatches
+	Nathan Chancellor <nathan@kernel.org>,
+	Alex Deucher <alexander.deucher@amd.com>
+Subject: [PATCH 6.16 177/457] drm/amdgpu: Initialize data to NULL in imu_v12_0_program_rlc_ram()
 Date: Tue, 26 Aug 2025 13:07:41 +0200
-Message-ID: <20250826110930.623783961@linuxfoundation.org>
+Message-ID: <20250826110941.749420254@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250826110924.562212281@linuxfoundation.org>
-References: <20250826110924.562212281@linuxfoundation.org>
+In-Reply-To: <20250826110937.289866482@linuxfoundation.org>
+References: <20250826110937.289866482@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,55 +59,57 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+6.16-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Kees Cook <kees@kernel.org>
+From: Nathan Chancellor <nathan@kernel.org>
 
-[ Upstream commit 6418a8504187dc7f5b6f9d0649c03e362cb0664b ]
+commit c90f2e1172c51fa25492471dc9910e2d7c1444b9 upstream.
 
-When KCOV is enabled all functions get instrumented, unless the
-__no_sanitize_coverage attribute is used. To prepare for
-__no_sanitize_coverage being applied to __init functions[1], we have
-to handle differences in how GCC's inline optimizations get resolved.
-For thinkpad_acpi routines, this means forcing two functions to be
-inline with __always_inline.
+After a recent change in clang to expose uninitialized warnings from
+const variables and pointers [1], there is a warning in
+imu_v12_0_program_rlc_ram() because data is passed uninitialized to
+program_imu_rlc_ram():
 
-Link: https://lore.kernel.org/lkml/20250523043935.2009972-11-kees@kernel.org/ [1]
-Signed-off-by: Kees Cook <kees@kernel.org>
-Link: https://lore.kernel.org/r/20250529181831.work.439-kees@kernel.org
-Signed-off-by: Ilpo Järvinen <ilpo.jarvinen@linux.intel.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+  drivers/gpu/drm/amd/amdgpu/imu_v12_0.c:374:30: error: variable 'data' is uninitialized when used here [-Werror,-Wuninitialized]
+    374 |                         program_imu_rlc_ram(adev, data, (const u32)size);
+        |                                                   ^~~~
+
+As this warning happens early in clang's frontend, it does not realize
+that due to the assignment of r to -EINVAL, program_imu_rlc_ram() is
+never actually called, and even if it were, data would not be
+dereferenced because size is 0.
+
+Just initialize data to NULL to silence the warning, as the commit that
+added program_imu_rlc_ram() mentioned it would eventually be used over
+the old method, at which point data can be properly initialized and
+used.
+
+Cc: stable@vger.kernel.org
+Closes: https://github.com/ClangBuiltLinux/linux/issues/2107
+Fixes: 56159fffaab5 ("drm/amdgpu: use new method to program rlc ram")
+Link: https://github.com/llvm/llvm-project/commit/2464313eef01c5b1edf0eccf57a32cdee01472c7 [1]
+Signed-off-by: Nathan Chancellor <nathan@kernel.org>
+Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/platform/x86/thinkpad_acpi.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ drivers/gpu/drm/amd/amdgpu/imu_v12_0.c |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/platform/x86/thinkpad_acpi.c b/drivers/platform/x86/thinkpad_acpi.c
-index 5a8434da60e7..d18b6ddba982 100644
---- a/drivers/platform/x86/thinkpad_acpi.c
-+++ b/drivers/platform/x86/thinkpad_acpi.c
-@@ -515,12 +515,12 @@ static unsigned long __init tpacpi_check_quirks(
- 	return 0;
- }
- 
--static inline bool __pure __init tpacpi_is_lenovo(void)
-+static __always_inline bool __pure __init tpacpi_is_lenovo(void)
+--- a/drivers/gpu/drm/amd/amdgpu/imu_v12_0.c
++++ b/drivers/gpu/drm/amd/amdgpu/imu_v12_0.c
+@@ -367,7 +367,7 @@ static void program_imu_rlc_ram(struct a
+ static void imu_v12_0_program_rlc_ram(struct amdgpu_device *adev)
  {
- 	return thinkpad_id.vendor == PCI_VENDOR_ID_LENOVO;
- }
+ 	u32 reg_data, size = 0;
+-	const u32 *data;
++	const u32 *data = NULL;
+ 	int r = -EINVAL;
  
--static inline bool __pure __init tpacpi_is_ibm(void)
-+static __always_inline bool __pure __init tpacpi_is_ibm(void)
- {
- 	return thinkpad_id.vendor == PCI_VENDOR_ID_IBM;
- }
--- 
-2.39.5
-
+ 	WREG32_SOC15(GC, 0, regGFX_IMU_RLC_RAM_INDEX, 0x2);
 
 
 
