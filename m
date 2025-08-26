@@ -1,57 +1,55 @@
-Return-Path: <stable+bounces-175201-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-174074-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id EE9CDB36740
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 16:05:00 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 14DF2B36149
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 15:08:21 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 2F4F93610CB
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 13:55:30 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 8563C2A48DF
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 13:04:32 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D9AC23451A0;
-	Tue, 26 Aug 2025 13:53:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 32A3A2D320B;
+	Tue, 26 Aug 2025 13:03:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="fq5AbtFu"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="UEUip+Zd"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 95045350D54;
-	Tue, 26 Aug 2025 13:53:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E24D51D47B4;
+	Tue, 26 Aug 2025 13:03:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756216407; cv=none; b=jlDnn5vsnwyTcPJimNWX/iAvNRhwul6zdZrwRGns0bhdH1jZ8sQwwfRuIt7cO4WzMSq9XeKwASGntnHFKlL98ZvMiOtxHPC+d4hdY0Mh3FMeMZDENal9lS+BT9rNGrcdyvCDPZPZyFvFebo5OmaJARScsrKjBiYC2quriO6IbMM=
+	t=1756213424; cv=none; b=bjY40pxAlQVLvnUtYeyWUborxiuuN6E7kpnR/vlKO5Q3KzdTM8l8OH5+KqnZD0ZGQunm5b8ekNByFxk4EMfhZzjQWvzG/8sYNH9Xpu8kKyNGh69IsbrZrQLGjhZTONMLSJguTs+5XIPhNJDunmsV38zN40K80yFiezfLCm8OHgQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756216407; c=relaxed/simple;
-	bh=Ndjgbi4f3RS9ordCfxR14N1sGrmXdd7NdO/LNJ+yEds=;
+	s=arc-20240116; t=1756213424; c=relaxed/simple;
+	bh=IIyAdOgumXDoBNYRx7Rbk11z3gHacO2FvJyQ8pbVD68=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=AsbIxtLxmJlW0gWCl9fp/rCKWLymk/u+4VTAKfp/OLRaI/tVqQ9pRszXZGc7yY33A/dvwxpBdjIOgsMTvVPAPnHA47g/dC6h5VKxIYJcNu2B/EbzcJxI//JRkgDAu7L17Pg/oyQShTxMjMOc0ZMjU4ivDWqT9LV2CUvBeEZlId8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=fq5AbtFu; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 26052C4CEF1;
-	Tue, 26 Aug 2025 13:53:26 +0000 (UTC)
+	 MIME-Version; b=endylX+oLGo9BEyAg8qPSaMM9ngdWaoRoVZNB/wu7GoTx9x6P5C6fYJngTn4V1YL3Fz6ioisumxuDpE7Mg+y932i88jMl6Lm+r39czv0qldm63dpRkU5ukk9nujQnWsn8Xu1LnAVk3uKC50Pmnj1bn9JgdyM8a7YWANAX//JbvM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=UEUip+Zd; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2232AC4CEF4;
+	Tue, 26 Aug 2025 13:03:41 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1756216407;
-	bh=Ndjgbi4f3RS9ordCfxR14N1sGrmXdd7NdO/LNJ+yEds=;
+	s=korg; t=1756213422;
+	bh=IIyAdOgumXDoBNYRx7Rbk11z3gHacO2FvJyQ8pbVD68=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=fq5AbtFurDwG/bWYM0kQcgkm2w/YxdwRtncQvzuJoxdYqj6y1ugaAMXINkOtPtiCg
-	 ue2qyOXCoFj2aPzABoPyC5HQOAH8BX83NLDfTPdrPq1+pKvDP2otCXSulCWVdMsqr4
-	 6eWpTxtDYWDDlYjFyaGKJmXXxn2kCwiILG5OwFk4=
+	b=UEUip+Zdox/meWXax+E1MaMJikicsqvlTIvBkgmtCMLOhWm9jcnks8AYJoGtyKCbO
+	 WBOM2hdSJZJwkTFDCzmaTtlZBge+JIy6a/DomtX+Fnz6FnKyBvWJuhG6uN4lKObBEo
+	 LUDfc5Wt0JNHShugOn6VIKcTqb2eu90vnFXOSrXo=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	syzbot+6e516bb515d93230bc7b@syzkaller.appspotmail.com,
-	Lizhi Xu <lizhi.xu@windriver.com>,
-	Dave Kleikamp <dave.kleikamp@oracle.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 393/644] jfs: truncate good inode pages when hard link is 0
+	Roger Quadros <rogerq@kernel.org>,
+	Johan Hovold <johan@kernel.org>
+Subject: [PATCH 6.6 335/587] usb: musb: omap2430: fix device leak at unbind
 Date: Tue, 26 Aug 2025 13:08:04 +0200
-Message-ID: <20250826110956.187077777@linuxfoundation.org>
+Message-ID: <20250826111001.440911956@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250826110946.507083938@linuxfoundation.org>
-References: <20250826110946.507083938@linuxfoundation.org>
+In-Reply-To: <20250826110952.942403671@linuxfoundation.org>
+References: <20250826110952.942403671@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,46 +61,84 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Lizhi Xu <lizhi.xu@windriver.com>
+From: Johan Hovold <johan@kernel.org>
 
-[ Upstream commit 2d91b3765cd05016335cd5df5e5c6a29708ec058 ]
+commit 1473e9e7679bd4f5a62d1abccae894fb86de280f upstream.
 
-The fileset value of the inode copy from the disk by the reproducer is
-AGGR_RESERVED_I. When executing evict, its hard link number is 0, so its
-inode pages are not truncated. This causes the bugon to be triggered when
-executing clear_inode() because nrpages is greater than 0.
+Make sure to drop the reference to the control device taken by
+of_find_device_by_node() during probe when the driver is unbound.
 
-Reported-by: syzbot+6e516bb515d93230bc7b@syzkaller.appspotmail.com
-Closes: https://syzkaller.appspot.com/bug?extid=6e516bb515d93230bc7b
-Signed-off-by: Lizhi Xu <lizhi.xu@windriver.com>
-Signed-off-by: Dave Kleikamp <dave.kleikamp@oracle.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Fixes: 8934d3e4d0e7 ("usb: musb: omap2430: Don't use omap_get_control_dev()")
+Cc: stable@vger.kernel.org	# 3.13
+Cc: Roger Quadros <rogerq@kernel.org>
+Signed-off-by: Johan Hovold <johan@kernel.org>
+Link: https://lore.kernel.org/r/20250724091910.21092-5-johan@kernel.org
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- fs/jfs/inode.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/usb/musb/omap2430.c |   14 +++++++++-----
+ 1 file changed, 9 insertions(+), 5 deletions(-)
 
-diff --git a/fs/jfs/inode.c b/fs/jfs/inode.c
-index 072821b50ab9..e132dafa1b6c 100644
---- a/fs/jfs/inode.c
-+++ b/fs/jfs/inode.c
-@@ -145,9 +145,9 @@ void jfs_evict_inode(struct inode *inode)
- 	if (!inode->i_nlink && !is_bad_inode(inode)) {
- 		dquot_initialize(inode);
+--- a/drivers/usb/musb/omap2430.c
++++ b/drivers/usb/musb/omap2430.c
+@@ -400,7 +400,7 @@ static int omap2430_probe(struct platfor
+ 	ret = platform_device_add_resources(musb, pdev->resource, pdev->num_resources);
+ 	if (ret) {
+ 		dev_err(&pdev->dev, "failed to add resources\n");
+-		goto err2;
++		goto err_put_control_otghs;
+ 	}
  
-+		truncate_inode_pages_final(&inode->i_data);
- 		if (JFS_IP(inode)->fileset == FILESYSTEM_I) {
- 			struct inode *ipimap = JFS_SBI(inode->i_sb)->ipimap;
--			truncate_inode_pages_final(&inode->i_data);
+ 	if (populate_irqs) {
+@@ -413,7 +413,7 @@ static int omap2430_probe(struct platfor
+ 		res = platform_get_resource(pdev, IORESOURCE_MEM, 0);
+ 		if (!res) {
+ 			ret = -EINVAL;
+-			goto err2;
++			goto err_put_control_otghs;
+ 		}
  
- 			if (test_cflag(COMMIT_Freewmap, inode))
- 				jfs_free_zero_link(inode);
--- 
-2.39.5
-
+ 		musb_res[i].start = res->start;
+@@ -441,14 +441,14 @@ static int omap2430_probe(struct platfor
+ 		ret = platform_device_add_resources(musb, musb_res, i);
+ 		if (ret) {
+ 			dev_err(&pdev->dev, "failed to add IRQ resources\n");
+-			goto err2;
++			goto err_put_control_otghs;
+ 		}
+ 	}
+ 
+ 	ret = platform_device_add_data(musb, pdata, sizeof(*pdata));
+ 	if (ret) {
+ 		dev_err(&pdev->dev, "failed to add platform_data\n");
+-		goto err2;
++		goto err_put_control_otghs;
+ 	}
+ 
+ 	pm_runtime_enable(glue->dev);
+@@ -463,7 +463,9 @@ static int omap2430_probe(struct platfor
+ 
+ err3:
+ 	pm_runtime_disable(glue->dev);
+-
++err_put_control_otghs:
++	if (!IS_ERR(glue->control_otghs))
++		put_device(glue->control_otghs);
+ err2:
+ 	platform_device_put(musb);
+ 
+@@ -477,6 +479,8 @@ static void omap2430_remove(struct platf
+ 
+ 	platform_device_unregister(glue->musb);
+ 	pm_runtime_disable(glue->dev);
++	if (!IS_ERR(glue->control_otghs))
++		put_device(glue->control_otghs);
+ }
+ 
+ #ifdef CONFIG_PM
 
 
 
