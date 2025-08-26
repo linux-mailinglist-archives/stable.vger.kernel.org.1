@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-176070-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-173088-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id E7327B36A20
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 16:34:28 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1A6E1B35B50
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 13:23:06 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id C0D887A775C
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 14:32:52 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 3084D7AE96F
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 11:21:30 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6E5683568EA;
-	Tue, 26 Aug 2025 14:31:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id AE1B031280D;
+	Tue, 26 Aug 2025 11:22:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="RKZ813n0"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="E0L83F+j"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2BBF721D3F2;
-	Tue, 26 Aug 2025 14:31:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6C4543002B9;
+	Tue, 26 Aug 2025 11:22:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756218705; cv=none; b=cJvUmXyvbWieEUQkfKPjg2NuNAoY5StVBPTw21jLIHIqYfTiTWdTZbWWsueUkZWZWMvZuSTFi/ioH/tegDionq5Oaa9syhBlCJdSDPaWj6Qo3K/Xth88cd27NetvVsWpnoBnj/f0c8S/M1t1tl8salr+Ebnv1Ac0e0l5PV0Z3tY=
+	t=1756207341; cv=none; b=Ug+455iiGMd1QJovCpXYEFWZJUU7NJG6p1uwvsd6CwQ55uLKdFWcnbREQUOVOQXr76qUqnHvSYA8D2Ze0j+xhdfQGlCWOVclbH8LLir3IluyxybSztjqVUd1P2GNPe5yWoBe0JZImTfthf4mW9Kg/LxlU9FKXBXKtUyjVieAWtM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756218705; c=relaxed/simple;
-	bh=UVfJM669TvIwfGUcpAW13oP1F1js6BISR2v9yD2aIts=;
+	s=arc-20240116; t=1756207341; c=relaxed/simple;
+	bh=b02PHhzD1iba5kqSEA0xhRGT/TECseXV+1qUZaF24LU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Jn6Vh3YMsn6Re3BDlX98UPGulGcvHeAGghyTd/i4oN4mLD6qaIv6PnkXUtnpAeC0BmAaIyyOx7Rc+yum2a7uk0kbZNbismmFAnxJ0My5D3nJ8iMefhQI1jJ8K7jHlVwcxMPRdRw5xeUDVmEz7PAGLHM5O9tfX1fKgROWNYaGZR0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=RKZ813n0; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B2A64C4CEF1;
-	Tue, 26 Aug 2025 14:31:44 +0000 (UTC)
+	 MIME-Version; b=j5+sTx0rTfPyFlxR42GKRK/wOUmyF0j/o7U8Mp7vcJeMkA8czv0s//z7OyYOnYJ+KDAhPECr9DlNb5QbuocPyKTjmxT4h2n9quUZCjAa3v6/d2YNxiMvaXYkEbaf4hD6wKYujiCI4wYtkGMMJdniZUnNPuU/0vKK8wxINnSIzGg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=E0L83F+j; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id F2563C4CEF1;
+	Tue, 26 Aug 2025 11:22:20 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1756218705;
-	bh=UVfJM669TvIwfGUcpAW13oP1F1js6BISR2v9yD2aIts=;
+	s=korg; t=1756207341;
+	bh=b02PHhzD1iba5kqSEA0xhRGT/TECseXV+1qUZaF24LU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=RKZ813n0COMTm4G6ZDHp0Z8s7d9rs2vLDpSkc4Ph0S93dg7C6VmBIPxvJd/Or1kCk
-	 /RE1/vXofOUTRy7ziPyHkmXO8AykJww/1PTctIfjPvSQvQ+BZlZlyzOLA0SS/41JlM
-	 tjalIQPNheFWQFF/cPomFmR06j0fB1IrZ1/V1ybI=
+	b=E0L83F+j7OiuoFsX0r5REq+cbA/0jPUwS/Jgw5bcy2/aRfar7U3F006fRX2os4BFm
+	 TUlgzeYpe7RVyTuPzk05oNNGdCYvNhQkB8I4+0jLbgFUb1oE1iMZ5L8v/sTbrU7AMh
+	 I2HCWUeEoZfdoHemlfzEF3vFXE4+e2CUGDHO+Wlw=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Vincent Mailhol <mailhol.vincent@wanadoo.fr>,
-	Jimmy Assarsson <extja@kvaser.com>,
-	Marc Kleine-Budde <mkl@pengutronix.de>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.4 101/403] can: kvaser_usb: Assign netdev.dev_port based on device channel index
+	Bryan ODonoghue <bryan.odonoghue@linaro.org>,
+	Vladimir Zapolskiy <vladimir.zapolskiy@linaro.org>,
+	Bryan ODonoghue <bod@kernel.org>,
+	Hans Verkuil <hverkuil@xs4all.nl>
+Subject: [PATCH 6.16 143/457] media: qcom: camss: csiphy-3ph: Fix inadvertent dropping of SDM660/SDM670 phy init
 Date: Tue, 26 Aug 2025 13:07:07 +0200
-Message-ID: <20250826110909.466310002@linuxfoundation.org>
+Message-ID: <20250826110940.907556564@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250826110905.607690791@linuxfoundation.org>
-References: <20250826110905.607690791@linuxfoundation.org>
+In-Reply-To: <20250826110937.289866482@linuxfoundation.org>
+References: <20250826110937.289866482@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,43 +63,46 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.4-stable review patch.  If anyone has any objections, please let me know.
+6.16-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jimmy Assarsson <extja@kvaser.com>
+From: Bryan O'Donoghue <bryan.odonoghue@linaro.org>
 
-[ Upstream commit c151b06a087a61c7a1790b75ee2f1d6edb6a8a45 ]
+commit 868423c834a29981fe3a77d32caf645c6b91a4c5 upstream.
 
-Assign netdev.dev_port based on the device channel index, to indicate the
-port number of the network device.
-While this driver already uses netdev.dev_id for that purpose, dev_port is
-more appropriate. However, retain dev_id to avoid potential regressions.
+The moving of init sequence hook from gen2() to subdev_init() doesn't
+account for gen1 devices such as SDM660 and SDM670. The switch should find
+the right offset for gen2 PHYs only, not reject gen1. Remove the default
+error case to restore gen1 CSIPHY support.
 
-Fixes: 3e66d0138c05 ("can: populate netdev::dev_id for udev discrimination")
-Reviewed-by: Vincent Mailhol <mailhol.vincent@wanadoo.fr>
-Signed-off-by: Jimmy Assarsson <extja@kvaser.com>
-Link: https://patch.msgid.link/20250725123452.41-4-extja@kvaser.com
-Signed-off-by: Marc Kleine-Budde <mkl@pengutronix.de>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Cc: stable@vger.kernel.org
+Fixes: fbce0ca24c3a ("media: qcom: camss: csiphy-3ph: Move CSIPHY variables to data field inside csiphy struct")
+Signed-off-by: Bryan O'Donoghue <bryan.odonoghue@linaro.org>
+Reviewed-by: Vladimir Zapolskiy <vladimir.zapolskiy@linaro.org>
+Signed-off-by: Bryan O'Donoghue <bod@kernel.org>
+Signed-off-by: Hans Verkuil <hverkuil@xs4all.nl>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/net/can/usb/kvaser_usb/kvaser_usb_core.c | 1 +
- 1 file changed, 1 insertion(+)
+ drivers/media/platform/qcom/camss/camss-csiphy-3ph-1-0.c | 3 +--
+ 1 file changed, 1 insertion(+), 2 deletions(-)
 
-diff --git a/drivers/net/can/usb/kvaser_usb/kvaser_usb_core.c b/drivers/net/can/usb/kvaser_usb/kvaser_usb_core.c
-index a96b22398407..602f0b3bbcdf 100644
---- a/drivers/net/can/usb/kvaser_usb/kvaser_usb_core.c
-+++ b/drivers/net/can/usb/kvaser_usb/kvaser_usb_core.c
-@@ -813,6 +813,7 @@ static int kvaser_usb_init_one(struct kvaser_usb *dev, int channel)
+diff --git a/drivers/media/platform/qcom/camss/camss-csiphy-3ph-1-0.c b/drivers/media/platform/qcom/camss/camss-csiphy-3ph-1-0.c
+index f732a76de93e..88c0ba495c32 100644
+--- a/drivers/media/platform/qcom/camss/camss-csiphy-3ph-1-0.c
++++ b/drivers/media/platform/qcom/camss/camss-csiphy-3ph-1-0.c
+@@ -849,8 +849,7 @@ static int csiphy_init(struct csiphy_device *csiphy)
+ 		regs->offset = 0x1000;
+ 		break;
+ 	default:
+-		WARN(1, "unknown csiphy version\n");
+-		return -ENODEV;
++		break;
+ 	}
  
- 	SET_NETDEV_DEV(netdev, &dev->intf->dev);
- 	netdev->dev_id = channel;
-+	netdev->dev_port = channel;
- 
- 	dev->nets[channel] = priv;
- 
+ 	return 0;
 -- 
-2.39.5
+2.50.1
 
 
 
