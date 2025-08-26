@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-176047-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-175114-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 99D05B36AAC
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 16:39:35 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 89496B366E4
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 16:01:31 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 2BE1F982B3F
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 14:32:58 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id E5AF1366B00
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 13:51:14 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B534A352FC3;
-	Tue, 26 Aug 2025 14:30:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id BE6D7350D51;
+	Tue, 26 Aug 2025 13:49:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="m6P1y+/Z"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="tS/rZI/g"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 72F4C35208F;
-	Tue, 26 Aug 2025 14:30:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7AE1B350851;
+	Tue, 26 Aug 2025 13:49:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756218646; cv=none; b=IfMP8tXZ1R5wpBnTPFIN71zWkNUBaoe2yc0T2clI+4qOrg0DhWAlFQHEj1PGIvyTJNA84GCpiKYa3O/nsobHE0IrRHBh2Eaw6AkeLZP/NmGd+DvxQDRo75HunICvQmzg0NsV0/zVNoOjM5IvWqMS3/vXKr+clQw76L8U6gUv2+w=
+	t=1756216176; cv=none; b=bU/EyCrga26NcTFHwRBt/JcYJ1R00ZNnVg5L+QakeADU4dlWrlDKyq/dUitLVetEPrrR9ox1ifWoRm28G305Ggy2h9W/yAOzBtS9sM5ffEORvR6n+pbyQfd2YsyYfuZkcYzZSOCaY4rWSgRCEg1iRoI2T+r6aFgfGBBv9a97I1Y=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756218646; c=relaxed/simple;
-	bh=DcViz9EHyxxfnb8aPXCLvwr9EXpTQgN6BNMZwctrS3I=;
+	s=arc-20240116; t=1756216176; c=relaxed/simple;
+	bh=RmcfBBdtOU2JX/TbevEafoiuYmvI8IRKhWGewa7QHBs=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=dDMQ6vb4e5ADFzIO+8mH6/UtOOtaBP94lDYOQ4Tmse/gk1ho5O1efq3IA2WUzdZvUIzkMxyjElJIQCDdV33rNFD3GQIz4ogj6Hdp7FH3sGT3MHM08Ox6/3qcU/A1MVwsx9Z+ts68BRQKTTzv1GOXnaxORUSOtmuDkC3uzS5PUHA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=m6P1y+/Z; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 03D45C4CEF1;
-	Tue, 26 Aug 2025 14:30:45 +0000 (UTC)
+	 MIME-Version; b=s+wbHcM0xOrl52Eyfy8kJldTDpkg5Ms1yHXIQv2gPtaAgmZU2KcvbBoaOnKXhZLX0pgBnuI77vTeHqH/2V07/8Q7wRTvEx+eTxS3S3sVG72v5J1vi3wBYolfDxhYt6EhsIWMO+5eISTofRbYt5Xhmx+5UCALE+HPDZmLVMYSVxo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=tS/rZI/g; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0D314C4CEF1;
+	Tue, 26 Aug 2025 13:49:35 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1756218646;
-	bh=DcViz9EHyxxfnb8aPXCLvwr9EXpTQgN6BNMZwctrS3I=;
+	s=korg; t=1756216176;
+	bh=RmcfBBdtOU2JX/TbevEafoiuYmvI8IRKhWGewa7QHBs=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=m6P1y+/Zki1yOQFUdGtKzX+jxD6K+HF0d93EgNa8cM2MbRIm46mxSzyphbZ13E1iX
-	 RN5n7iVJrlmSc7NGcKWU0Y9GY0Bc6IYHdRCGjMpr8jexdTvjuRvwpv+QvMZTd4vcs2
-	 ygAwHNXFIRS98NKeQ8NycOn8WnSIHzz+zhPp+NBo=
+	b=tS/rZI/g8Yf6o+ba4Hqym/7GbB5WcsRJPPLF8wPh0+dw07LbC2J9b2P0+6ZHtQK0a
+	 DageaXgte+hDaiiD36SHSZgsa4JpcA1B0YZ0Nj/86xUva/68dz+GsDNGln//UBSdEu
+	 EhZCrlLZlgJvEw+MdGzVSW9L2siAP4ty69Qv6ooQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Stephen Rothwell <sfr@canb.auug.org.au>,
-	Lizhi Xu <lizhi.xu@windriver.com>,
+	Ulf Hansson <ulf.hansson@linaro.org>,
+	"Rafael J. Wysocki" <rafael.j.wysocki@intel.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.4 078/403] Revert "vmci: Prevent the dispatching of uninitialized payloads"
-Date: Tue, 26 Aug 2025 13:06:44 +0200
-Message-ID: <20250826110908.593983679@linuxfoundation.org>
+Subject: [PATCH 5.15 314/644] PM: runtime: Clear power.needs_force_resume in pm_runtime_reinit()
+Date: Tue, 26 Aug 2025 13:06:45 +0200
+Message-ID: <20250826110954.166640659@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250826110905.607690791@linuxfoundation.org>
-References: <20250826110905.607690791@linuxfoundation.org>
+In-Reply-To: <20250826110946.507083938@linuxfoundation.org>
+References: <20250826110946.507083938@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,57 +62,43 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.4-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+From: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
 
-[ Upstream commit 8f5d9bed6122b8d96508436e5ad2498bb797eb6b ]
+[ Upstream commit 89d9cec3b1e9c49bae9375a2db6dc49bc7468af0 ]
 
-This reverts commit bfb4cf9fb97e4063f0aa62e9e398025fb6625031.
+Clear power.needs_force_resume in pm_runtime_reinit() in case it has
+been set by pm_runtime_force_suspend() invoked from a driver remove
+callback.
 
-While the code "looks" correct, the compiler has no way to know that
-doing "fun" pointer math like this really isn't a write off the end of
-the structure as there is no hint anywhere that the structure has data
-at the end of it.
-
-This causes the following build warning:
-
-In function 'fortify_memset_chk',
-    inlined from 'ctx_fire_notification.isra' at drivers/misc/vmw_vmci/vmci_context.c:254:3:
-include/linux/fortify-string.h:480:25: error: call to '__write_overflow_field' declared with attribute warning: detected write beyond size of field (1st parameter); maybe use struct_group()? [-Werror=attribute-warning]
-  480 |                         __write_overflow_field(p_size_field, size);
-      |                         ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-
-So revert it for now and it can come back in the future in a "sane" way
-that either correctly makes the structure know that there is trailing
-data, OR just the payload structure is properly referenced and zeroed
-out.
-
-Fixes: bfb4cf9fb97e ("vmci: Prevent the dispatching of uninitialized payloads")
-Cc: Stephen Rothwell <sfr@canb.auug.org.au>
-Cc: Lizhi Xu <lizhi.xu@windriver.com>
-Link: https://lore.kernel.org/r/20250703171021.0aee1482@canb.auug.org.au
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Suggested-by: Ulf Hansson <ulf.hansson@linaro.org>
+Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
+Reviewed-by: Ulf Hansson <ulf.hansson@linaro.org>
+Link: https://patch.msgid.link/9495163.CDJkKcVGEf@rjwysocki.net
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/misc/vmw_vmci/vmci_context.c | 2 --
- 1 file changed, 2 deletions(-)
+ drivers/base/power/runtime.c | 5 +++++
+ 1 file changed, 5 insertions(+)
 
-diff --git a/drivers/misc/vmw_vmci/vmci_context.c b/drivers/misc/vmw_vmci/vmci_context.c
-index ccadbc0d8f7d..26ff49fdf0f7 100644
---- a/drivers/misc/vmw_vmci/vmci_context.c
-+++ b/drivers/misc/vmw_vmci/vmci_context.c
-@@ -251,8 +251,6 @@ static int ctx_fire_notification(u32 context_id, u32 priv_flags)
- 		ev.msg.hdr.src = vmci_make_handle(VMCI_HYPERVISOR_CONTEXT_ID,
- 						  VMCI_CONTEXT_RESOURCE_ID);
- 		ev.msg.hdr.payload_size = sizeof(ev) - sizeof(ev.msg.hdr);
--		memset((char*)&ev.msg.hdr + sizeof(ev.msg.hdr), 0,
--			ev.msg.hdr.payload_size);
- 		ev.msg.event_data.event = VMCI_EVENT_CTX_REMOVED;
- 		ev.payload.context_id = context_id;
+diff --git a/drivers/base/power/runtime.c b/drivers/base/power/runtime.c
+index 35e1a090ef90..26ea7f5c8d42 100644
+--- a/drivers/base/power/runtime.c
++++ b/drivers/base/power/runtime.c
+@@ -1714,6 +1714,11 @@ void pm_runtime_reinit(struct device *dev)
+ 				pm_runtime_put(dev->parent);
+ 		}
+ 	}
++	/*
++	 * Clear power.needs_force_resume in case it has been set by
++	 * pm_runtime_force_suspend() invoked from a driver remove callback.
++	 */
++	dev->power.needs_force_resume = false;
+ }
  
+ /**
 -- 
 2.39.5
 
