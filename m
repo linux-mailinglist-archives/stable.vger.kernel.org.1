@@ -1,43 +1,43 @@
-Return-Path: <stable+bounces-173634-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-176325-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id AF655B35DBB
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 13:47:35 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id B9616B36C6E
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 16:56:23 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 8BAAB7C56AA
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 11:46:49 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id B0411587DCF
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 14:46:09 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0472933470A;
-	Tue, 26 Aug 2025 11:45:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B4E9235A284;
+	Tue, 26 Aug 2025 14:42:45 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="tUUsxSU8"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="MKWEI6Vl"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B6148285CA9;
-	Tue, 26 Aug 2025 11:45:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1BE57352FD9;
+	Tue, 26 Aug 2025 14:42:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756208757; cv=none; b=hMIXKhwr9SsKswiBvxlFP5aMtdVbI/t/QQXciSKsD/uLuHLLZwIRpLn5PZale+rOhSeKiyS65wBYhHzUdq7h5BG853kKgdthO6ObN/nPMjV3Wk+mo2Gv+Z5pnCtivVXaYZFSlZj/bD7TUx+E6R/7PiM5Q2rC3l9/G7McuGRg9wc=
+	t=1756219365; cv=none; b=qVriv3QPwaTFrLYqS315kBBlsZyD5fI5sJcDBK3urrkwekelVvAcTcrTmBKu6BRV9KypgK68tGkGT5k2+ofsYYEzXU1YpODnPeGzBQ0AUsFSpgzkovTZFxlDIFdY0Vm1cV+/uyA7Zach/7zlyO9MQmaRZAXhpLWz/i4o7LZtgrs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756208757; c=relaxed/simple;
-	bh=WjH5Ct8V6Yj7YEQ26TiJDJgUX7jfZy/DNKk2Pi911zQ=;
+	s=arc-20240116; t=1756219365; c=relaxed/simple;
+	bh=CuN9qOBnc7QYMQNlXIymgoXZdIs1H7cXHnl/sqtqSCk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=pKjrXk+tv3/b3/094iwVHr7M9oEHbTKFZRVwusePd0aCJHGM8qDVH+LGtxH1BnaG9wHyxxShpI6C5fLZXibEQ3TbdVFddZDvgapW8yLlzbV08SJjb6/90qA/n/r/4BFjaEQyu7kqdyL6vzmwT9O3yHGU3E/ixT70rlzxQJfHKA4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=tUUsxSU8; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 015F2C4CEF1;
-	Tue, 26 Aug 2025 11:45:56 +0000 (UTC)
+	 MIME-Version; b=F/TTXBQ+yVomdOTxNRS3+huFxfmY7P/kpWoSrXVl0M3wi12GkIYz5Lgvo/gvcS4+P1p6N6ka1uh0yUJvmHfebJq1JQ82NIwjMorQOZa/iah9jWKTTr3Jm4b7zt9iidoLrJJAROsUAZA3KXelbqxhVv/93lM7ng9WuF1fDUVRD+o=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=MKWEI6Vl; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4D75BC4CEF1;
+	Tue, 26 Aug 2025 14:42:44 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1756208757;
-	bh=WjH5Ct8V6Yj7YEQ26TiJDJgUX7jfZy/DNKk2Pi911zQ=;
+	s=korg; t=1756219364;
+	bh=CuN9qOBnc7QYMQNlXIymgoXZdIs1H7cXHnl/sqtqSCk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=tUUsxSU8vlhTl0w+t1SQITMDL86Vloh0RbS5IxVppZmPKy+NNrqcPPBTRF1M5sabe
-	 Fhbg9oNpf5tBdz04Il68pXvZ/YIqD8CPxUV4Ux0NjNqvIzE7dmMD05qnSpgWq9rt1t
-	 jwC91vd+mVyoBbD/kxFJPNS2JGPVnDV6da/3QBmA=
+	b=MKWEI6VlU+krwluS54c/4zaO+MS43Wg5lsv2KfX0Vjo/H/atJ02kDv45KPDH7BmWB
+	 Fa1R/sz5+OZMbMxmpdoO3pHSY75nP+tvCibFPJ2qsar6wx9jEo1VQmf7copJIxBStJ
+	 GnT/S/+wglySvt7MV3xibMVxoHjQER42vG1i2QDg=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
@@ -45,12 +45,12 @@ Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	stable <stable@kernel.org>,
 	Kuen-Han Tsai <khtsai@google.com>,
 	Thinh Nguyen <Thinh.Nguyen@synopsys.com>
-Subject: [PATCH 6.12 233/322] usb: dwc3: Ignore late xferNotReady event to prevent halt timeout
+Subject: [PATCH 5.4 322/403] usb: dwc3: Ignore late xferNotReady event to prevent halt timeout
 Date: Tue, 26 Aug 2025 13:10:48 +0200
-Message-ID: <20250826110921.656914256@linuxfoundation.org>
+Message-ID: <20250826110915.706905731@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250826110915.169062587@linuxfoundation.org>
-References: <20250826110915.169062587@linuxfoundation.org>
+In-Reply-To: <20250826110905.607690791@linuxfoundation.org>
+References: <20250826110905.607690791@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,7 +62,7 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+5.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
@@ -91,7 +91,7 @@ Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 
 --- a/drivers/usb/dwc3/gadget.c
 +++ b/drivers/usb/dwc3/gadget.c
-@@ -3707,6 +3707,15 @@ static void dwc3_gadget_endpoint_transfe
+@@ -2937,6 +2937,15 @@ static void dwc3_gadget_endpoint_transfe
  static void dwc3_gadget_endpoint_transfer_not_ready(struct dwc3_ep *dep,
  		const struct dwc3_event_depevt *event)
  {
@@ -105,8 +105,8 @@ Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 +		return;
 +
  	dwc3_gadget_endpoint_frame_from_event(dep, event);
- 
- 	/*
+ 	(void) __dwc3_gadget_start_isoc(dep);
+ }
 
 
 
