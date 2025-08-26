@@ -1,58 +1,55 @@
-Return-Path: <stable+bounces-175563-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-175979-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3AD23B3690D
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 16:22:22 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 114ABB36A78
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 16:37:46 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 2AA769803D0
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 14:11:38 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 260732A4284
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 14:30:10 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 60AF7353371;
-	Tue, 26 Aug 2025 14:09:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id BF97334DCF6;
+	Tue, 26 Aug 2025 14:27:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="LnneMj2S"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="e6XygUKV"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1E57F35206F;
-	Tue, 26 Aug 2025 14:09:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 79B762AD32;
+	Tue, 26 Aug 2025 14:27:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756217375; cv=none; b=QfLQGZn8NE8/EgrNx3xWAwAmlPMUccMcK66wFxuJQCiWySWYh0r4QfHw73q5cRLvrukKFKmdgpLYBKUC4V7NhCUYughFsg/mx4GgZFzVE2r57VczTRT5jhayEASQY0uH6XEyWuY45Cc7ygtNEhQilBqe7ghTD5TqyVNFDSE9KGg=
+	t=1756218468; cv=none; b=Y2ksiKYv/jmmbrhBlgcOu2bn1IlqekzCK61MAaiIJy0HjzBOoGq60wUPTW4I45hSamqoY4uUBE6co8CnB/haLbYnQXh82MuDzuD/2Iupd5Zkb2/+WbHU+aLuo1xM/g9SFMH4Ks+giH1iUmoOmj1fq/5bLH3f3IPGWlB9vHjcae4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756217375; c=relaxed/simple;
-	bh=Xs9kXbuGlqiseav31ZzMeaTN9v/AN374z3Psx9R5KtA=;
+	s=arc-20240116; t=1756218468; c=relaxed/simple;
+	bh=iCR9a/Mkx946Q7/A6CXCEJeMDhfbE0tBOIMbkoJ3gOU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=jmUhhIiZDdJ2zK7s+QRdS3+11FYPlX0dddfudw0KEyHhDv7oO7A6a9+HdePMd1aSWWlvP1rpBrNi/iyV4U2SwuIHxfXPvPMZtS4NYxC9Hk7GJ1yRFfq9kU95jyfEfXaIyVrjvwJKtMhbyXNN5NSYcxLR6C9MOQOkd4j+RQl9kuY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=LnneMj2S; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A00F4C113D0;
-	Tue, 26 Aug 2025 14:09:34 +0000 (UTC)
+	 MIME-Version; b=A7FImxZiSeXB1315IwLqgjKZDGbjAFNHERS2GQSx0lR/H8CrBSsoN8+XYiXkHZZS7RUOvJcdLcH8URrPbt7n/PRYZik1quaeDPYNeouuxXdlynOE5WE1/atvI8O3+RlzxCdynL0ZGls4JVNF4DYFpSP0NLcmwdppdbXUIX7RrrE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=e6XygUKV; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id AA5E0C113CF;
+	Tue, 26 Aug 2025 14:27:47 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1756217375;
-	bh=Xs9kXbuGlqiseav31ZzMeaTN9v/AN374z3Psx9R5KtA=;
+	s=korg; t=1756218468;
+	bh=iCR9a/Mkx946Q7/A6CXCEJeMDhfbE0tBOIMbkoJ3gOU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=LnneMj2SkVGI3fM8M5jJnixHebxBE0GvvQC+jnsntkvx4T/42XzF32tAQR4UW7aEG
-	 zmx7J/v6r1KeEopZ0s7kgR6Jo3cLB1zYgenEv5sqWPjdhTd96wfC0z9I4Za8BM3uYp
-	 su1ieJkixV+4kgyqH6/J4PznVfM6Knz0Xk4lC7YA=
+	b=e6XygUKVqof3+KhmOyVibAm4j5jcioywmpPP/2VWXzP3N5aUbNqaFBJk2ejQG3Gz1
+	 NGBwYOwXA53qiWFfulE3ZmRFNjWLQQ4yu5Adav8C0gr94NiO7/9jkGunW8uNwztd1e
+	 AByV383IGrOF0QBdiAejjR+ZnncZm8v3yxEGt7RQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	David Ahern <dsahern@kernel.org>,
-	Ido Schimmel <idosch@nvidia.com>,
-	Stanislav Fomichev <sdf@fomichev.me>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 119/523] vrf: Drop existing dst reference in vrf_ip6_input_dst
-Date: Tue, 26 Aug 2025 13:05:29 +0200
-Message-ID: <20250826110927.452781080@linuxfoundation.org>
+	Xinyu Liu <katieeliu@tencent.com>,
+	stable <stable@kernel.org>
+Subject: [PATCH 5.4 004/403] usb: gadget: configfs: Fix OOB read on empty string write
+Date: Tue, 26 Aug 2025 13:05:30 +0200
+Message-ID: <20250826110905.744707297@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250826110924.562212281@linuxfoundation.org>
-References: <20250826110924.562212281@linuxfoundation.org>
+In-Reply-To: <20250826110905.607690791@linuxfoundation.org>
+References: <20250826110905.607690791@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,70 +61,41 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+5.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Stanislav Fomichev <sdf@fomichev.me>
+From: Xinyu Liu <1171169449@qq.com>
 
-[ Upstream commit f388f807eca1de9e6e70f9ffb1a573c3811c4215 ]
+commit 3014168731b7930300aab656085af784edc861f6 upstream.
 
-Commit ff3fbcdd4724 ("selftests: tc: Add generic erspan_opts matching support
-for tc-flower") started triggering the following kmemleak warning:
+When writing an empty string to either 'qw_sign' or 'landingPage'
+sysfs attributes, the store functions attempt to access page[l - 1]
+before validating that the length 'l' is greater than zero.
 
-unreferenced object 0xffff888015fb0e00 (size 512):
-  comm "softirq", pid 0, jiffies 4294679065
-  hex dump (first 32 bytes):
-    00 00 00 00 00 00 00 00 40 d2 85 9e ff ff ff ff  ........@.......
-    41 69 59 9d ff ff ff ff 00 00 00 00 00 00 00 00  AiY.............
-  backtrace (crc 30b71e8b):
-    __kmalloc_noprof+0x359/0x460
-    metadata_dst_alloc+0x28/0x490
-    erspan_rcv+0x4f1/0x1160 [ip_gre]
-    gre_rcv+0x217/0x240 [ip_gre]
-    gre_rcv+0x1b8/0x400 [gre]
-    ip_protocol_deliver_rcu+0x31d/0x3a0
-    ip_local_deliver_finish+0x37d/0x620
-    ip_local_deliver+0x174/0x460
-    ip_rcv+0x52b/0x6b0
-    __netif_receive_skb_one_core+0x149/0x1a0
-    process_backlog+0x3c8/0x1390
-    __napi_poll.constprop.0+0xa1/0x390
-    net_rx_action+0x59b/0xe00
-    handle_softirqs+0x22b/0x630
-    do_softirq+0xb1/0xf0
-    __local_bh_enable_ip+0x115/0x150
+This patch fixes the vulnerability by adding a check at the beginning
+of os_desc_qw_sign_store() and webusb_landingPage_store() to handle
+the zero-length input case gracefully by returning immediately.
 
-vrf_ip6_input_dst unconditionally sets skb dst entry, add a call to
-skb_dst_drop to drop any existing entry.
-
-Cc: David Ahern <dsahern@kernel.org>
-Reviewed-by: Ido Schimmel <idosch@nvidia.com>
-Fixes: 9ff74384600a ("net: vrf: Handle ipv6 multicast and link-local addresses")
-Signed-off-by: Stanislav Fomichev <sdf@fomichev.me>
-Link: https://patch.msgid.link/20250725160043.350725-1-sdf@fomichev.me
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Signed-off-by: Xinyu Liu <katieeliu@tencent.com>
+Cc: stable <stable@kernel.org>
+Link: https://lore.kernel.org/r/tencent_B1C9481688D0E95E7362AB2E999DE8048207@qq.com
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/net/vrf.c | 2 ++
+ drivers/usb/gadget/configfs.c |    2 ++
  1 file changed, 2 insertions(+)
 
-diff --git a/drivers/net/vrf.c b/drivers/net/vrf.c
-index c801185ade2b..b43e8041fda3 100644
---- a/drivers/net/vrf.c
-+++ b/drivers/net/vrf.c
-@@ -1316,6 +1316,8 @@ static void vrf_ip6_input_dst(struct sk_buff *skb, struct net_device *vrf_dev,
- 	struct net *net = dev_net(vrf_dev);
- 	struct rt6_info *rt6;
+--- a/drivers/usb/gadget/configfs.c
++++ b/drivers/usb/gadget/configfs.c
+@@ -824,6 +824,8 @@ static ssize_t os_desc_qw_sign_store(str
+ 	struct gadget_info *gi = os_desc_item_to_gadget_info(item);
+ 	int res, l;
  
-+	skb_dst_drop(skb);
-+
- 	rt6 = vrf_ip6_route_lookup(net, vrf_dev, &fl6, ifindex, skb,
- 				   RT6_LOOKUP_F_HAS_SADDR | RT6_LOOKUP_F_IFACE);
- 	if (unlikely(!rt6))
--- 
-2.39.5
-
++	if (!len)
++		return len;
+ 	l = min((int)len, OS_STRING_QW_SIGN_LEN >> 1);
+ 	if (page[l - 1] == '\n')
+ 		--l;
 
 
 
