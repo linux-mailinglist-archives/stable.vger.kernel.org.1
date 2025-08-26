@@ -1,58 +1,56 @@
-Return-Path: <stable+bounces-175252-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-174590-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 53B5CB36752
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 16:05:47 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id E33B7B363D8
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 15:33:47 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id B30169824A6
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 13:57:09 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 00DE41BC4B7F
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 13:27:56 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 95D41350852;
-	Tue, 26 Aug 2025 13:55:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0872223A9A0;
+	Tue, 26 Aug 2025 13:26:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="qP2iDNq2"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="c+2R/gTU"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 543EB374C4;
-	Tue, 26 Aug 2025 13:55:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B9980187554;
+	Tue, 26 Aug 2025 13:26:35 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756216546; cv=none; b=DA56L4BwTD/sW1eYc432QfcHFESknry+jXcGKcM37T4TiVzVcDEtQmRAbhVzYldTeXcMyDstZSYR2zfXy/MfAsUQPvrE2rHr/Not0IniIKJmKGWJTf5p2fhZM/r7ZpAomvS3bximCxLEhZbuKex/+vUwTbxoGt4BGhSVKzMWnWk=
+	t=1756214795; cv=none; b=QPrQ+LUhffZM7FJVjvp5Y15F/txVXLsqIjkiDJ6BsayWIQCL8kNeXpPmq2/W6D5MRg3NNTN5tgAWFQ5SEL/8XEtwdtk9vgTJeUWZYcfdH9DH9jipLeqmf0myvx5LzxqlHnu7EpuhLplnvTS6Gim3McZtG/yh98t4iTzSe+L9+F0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756216546; c=relaxed/simple;
-	bh=HFl7B7MaDPY/uFclLDQXHEDWYW8+y0vFyXw/9lVlalM=;
+	s=arc-20240116; t=1756214795; c=relaxed/simple;
+	bh=t0pWQJOUy578nc17cdp0/ZH/VTyhlynEX1+oxZfQbj4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=mll8aybEb88k7yCAkxMg7DqdF4mdUNZDmSl6J6yppr/3JDu0wkPBs5yL4gH3Y5QRaaiy/aSFDs4GJUaF8kzefeJmJRIh9iyillnovYxqIdTK9mQYW+PXprwD8z0lnFJ3XvXxIUgDJfE5O35ik7K8yFqYCMlaWQoNsB6+0sM+264=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=qP2iDNq2; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D4859C113CF;
-	Tue, 26 Aug 2025 13:55:45 +0000 (UTC)
+	 MIME-Version; b=Yt9meybHFJhBC4GLnquovxTrJWFNdowjCK0jLm4NVu65VtNCYDziPu1d/X/zLwwo1w37B+HIbJTyKdg81vABLoWtR98h4OkoRB5uDxXVsN59Lydq8zDLLG/U2QlDhq2IaaKvV1cwweNP8/mPwlSzGOJE3nwFsyKSVo1RGvAd/iU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=c+2R/gTU; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 24542C4CEF1;
+	Tue, 26 Aug 2025 13:26:34 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1756216546;
-	bh=HFl7B7MaDPY/uFclLDQXHEDWYW8+y0vFyXw/9lVlalM=;
+	s=korg; t=1756214795;
+	bh=t0pWQJOUy578nc17cdp0/ZH/VTyhlynEX1+oxZfQbj4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=qP2iDNq2zV3fJQWSuWqUdzG0rcq4DlOlSOYAmpHYUKy+QSOfRw6cny9XPNY2IRFlp
-	 NNK4s7JieWnv9PvD2+YVyXtl2XVwgnHWBGg3emcNQzjlSvqZgPP4fYiAppcfrLZR0M
-	 rjFyPOK7c50G8JCFKmkukBqeZHUpYOWUzMoqE7K8=
+	b=c+2R/gTUj5qU/jHcLqhSSni1ToxLfE2vSIwRMJs7xnyjWRKe35vv+C8wPD0qTH13D
+	 r+pA9smq6QX2zgfIv2PCYc98t1Em8uv8Muh4A/aMAwLkrDWwsJCXuB6s37TQmZW4D4
+	 V8RnVh42ST+Y5Lb9033YhH5qAmu7HRF6WYXhvAsc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Meagan Lloyd <meaganlloyd@linux.microsoft.com>,
-	Tyler Hicks <code@tyhicks.com>,
-	Rodolfo Giometti <giometti@enneenne.com>,
-	Alexandre Belloni <alexandre.belloni@bootlin.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 434/644] rtc: ds1307: remove clear of oscillator stop flag (OSF) in probe
+	Neil Armstrong <neil.armstrong@linaro.org>,
+	Johan Hovold <johan@kernel.org>,
+	Martin Blumenstingl <martin.blumenstingl@googlemail.com>
+Subject: [PATCH 6.1 272/482] usb: dwc3: meson-g12a: fix device leaks at unbind
 Date: Tue, 26 Aug 2025 13:08:45 +0200
-Message-ID: <20250826110957.220059238@linuxfoundation.org>
+Message-ID: <20250826110937.490998024@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250826110946.507083938@linuxfoundation.org>
-References: <20250826110946.507083938@linuxfoundation.org>
+In-Reply-To: <20250826110930.769259449@linuxfoundation.org>
+References: <20250826110930.769259449@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,57 +62,40 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Meagan Lloyd <meaganlloyd@linux.microsoft.com>
+From: Johan Hovold <johan@kernel.org>
 
-[ Upstream commit 48458654659c9c2e149c211d86637f1592470da5 ]
+commit 93b400f4951404d040197943a25d6fef9f8ccabb upstream.
 
-In using CONFIG_RTC_HCTOSYS, rtc_hctosys() will sync the RTC time to the
-kernel time as long as rtc_read_time() succeeds. In some power loss
-situations, our supercapacitor-backed DS1342 RTC comes up with either an
-unpredictable future time or the default 01/01/00 from the datasheet.
-The oscillator stop flag (OSF) is set in these scenarios due to the
-power loss and can be used to determine the validity of the RTC data.
+Make sure to drop the references taken to the child devices by
+of_find_device_by_node() during probe on driver unbind.
 
-Some chip types in the ds1307 driver already have OSF handling to
-determine whether .read_time provides valid RTC data or returns -EINVAL.
-
-This change removes the clear of the OSF in .probe as the OSF needs to
-be preserved to expand the OSF handling to the ds1341 chip type (note
-that DS1341 and DS1342 share a datasheet).
-
-Signed-off-by: Meagan Lloyd <meaganlloyd@linux.microsoft.com>
-Reviewed-by: Tyler Hicks <code@tyhicks.com>
-Acked-by: Rodolfo Giometti <giometti@enneenne.com>
-Link: https://lore.kernel.org/r/1749665656-30108-2-git-send-email-meaganlloyd@linux.microsoft.com
-Signed-off-by: Alexandre Belloni <alexandre.belloni@bootlin.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Fixes: c99993376f72 ("usb: dwc3: Add Amlogic G12A DWC3 glue")
+Cc: stable@vger.kernel.org	# 5.2
+Cc: Neil Armstrong <neil.armstrong@linaro.org>
+Signed-off-by: Johan Hovold <johan@kernel.org>
+Reviewed-by: Martin Blumenstingl <martin.blumenstingl@googlemail.com>
+Link: https://lore.kernel.org/r/20250724091910.21092-3-johan@kernel.org
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/rtc/rtc-ds1307.c | 4 +---
- 1 file changed, 1 insertion(+), 3 deletions(-)
+ drivers/usb/dwc3/dwc3-meson-g12a.c |    3 +++
+ 1 file changed, 3 insertions(+)
 
-diff --git a/drivers/rtc/rtc-ds1307.c b/drivers/rtc/rtc-ds1307.c
-index f8e32f5c37e3..e02bc2a2e77f 100644
---- a/drivers/rtc/rtc-ds1307.c
-+++ b/drivers/rtc/rtc-ds1307.c
-@@ -1819,10 +1819,8 @@ static int ds1307_probe(struct i2c_client *client,
- 		regmap_write(ds1307->regmap, DS1337_REG_CONTROL,
- 			     regs[0]);
+--- a/drivers/usb/dwc3/dwc3-meson-g12a.c
++++ b/drivers/usb/dwc3/dwc3-meson-g12a.c
+@@ -847,6 +847,9 @@ static int dwc3_meson_g12a_remove(struct
+ 	if (priv->drvdata->otg_switch_supported)
+ 		usb_role_switch_unregister(priv->role_switch);
  
--		/* oscillator fault?  clear flag, and warn */
-+		/* oscillator fault? warn */
- 		if (regs[1] & DS1337_BIT_OSF) {
--			regmap_write(ds1307->regmap, DS1337_REG_STATUS,
--				     regs[1] & ~DS1337_BIT_OSF);
- 			dev_warn(ds1307->dev, "SET TIME!\n");
- 		}
- 		break;
--- 
-2.39.5
-
++	put_device(priv->switch_desc.udc);
++	put_device(priv->switch_desc.usb2_port);
++
+ 	of_platform_depopulate(dev);
+ 
+ 	for (i = 0 ; i < PHY_COUNT ; ++i) {
 
 
 
