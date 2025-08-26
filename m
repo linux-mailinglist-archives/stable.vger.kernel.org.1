@@ -1,55 +1,57 @@
-Return-Path: <stable+bounces-175121-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-174475-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4DBBAB36743
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 16:05:12 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id BBF56B36384
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 15:30:38 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 14B7698094F
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 13:51:24 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 1998B2A8317
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 13:23:14 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id BA351350843;
-	Tue, 26 Aug 2025 13:49:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id EA99C227EA8;
+	Tue, 26 Aug 2025 13:21:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="09rXedlE"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="yfy4pTBT"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6F1C23451A0;
-	Tue, 26 Aug 2025 13:49:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A914527707;
+	Tue, 26 Aug 2025 13:21:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756216195; cv=none; b=MHn+Gi7XONv1fLcC0JVqtp63j1R23bmrH/mRgVPSBgNGh5qk0SvfkZft5vLNG5lnenHXkqKzGULsfOAVykBHmtqifgT+l3cK03Ndn8fmBkehSDSLprlAWADr1yzTr5rTNVyyH+T4RFWLWNMiAvg6mqqJYdm/+05T4nWpDAghO1Y=
+	t=1756214490; cv=none; b=qG1FBP6LwmzcoYQ7mAgGQA9S2tLEJ+N35JJ9vNA/IKjCYj3ZS1Em0b9ZiggOownDVkGQm5/206mKbhpwNGbZv1Db7Ro5Tyk/w4vyg1P48YA2bN6Vu7sJthUZ6c6odQ0LWao93M9MBm4Z5w/dGnW/OxtGcs9e70tcxv1TSocEXWE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756216195; c=relaxed/simple;
-	bh=se38gZVO9wzvvv/WVhovKXaMpy8dyMnSPRFaP+tUWMk=;
+	s=arc-20240116; t=1756214490; c=relaxed/simple;
+	bh=ERLICgGIsoAEnnIegw7Y5t3jrnTgsF6/PMrRNO2NSac=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=tayY+/Y8xc63RwbJmZhzGctIfyI38rN9DpoxZ4wjWKiQzeKVWhrQ6KzHac9ytp6EEF28IMuR26w6T6Dujq91+8HqwHAKt26Fsz+KDon8Gb+LcW6GbhmZARTq8Q2yYfRn6Ifde1FIoDwgfPPQFQASJxFOCj8mJ9HuY+F9AaFMSEQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=09rXedlE; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id F379AC4CEF1;
-	Tue, 26 Aug 2025 13:49:54 +0000 (UTC)
+	 MIME-Version:Content-Type; b=cV2q2xCDIJXGAb7ErdPrN0A9pnUz8ak9GR6b89oo+463WHK1V3eJPx54U185gm76ic/mlz4ymnp1kymex3S+4lHb8WTDTTn1cha8ctxOEENm9HjtQ/hLIYrsFK6cV9aLnoKuSqeIIxxpxofhuNFOKY/ZADgLdu4gZ13EsPCsm/A=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=yfy4pTBT; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3AAD5C113D0;
+	Tue, 26 Aug 2025 13:21:30 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1756216195;
-	bh=se38gZVO9wzvvv/WVhovKXaMpy8dyMnSPRFaP+tUWMk=;
+	s=korg; t=1756214490;
+	bh=ERLICgGIsoAEnnIegw7Y5t3jrnTgsF6/PMrRNO2NSac=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=09rXedlEt83o4Kkbz3L9LN0OZmDwQHTwGz7SLfHCoi9E0vExv6BN4wYxyZsykLs4l
-	 MAZQJCoKnUr+GlWkRcukqk5EgGVHakFnFy2pMmKG+Grc0omyEu65h994RdfQGeskT1
-	 fL2/Ei3qVddWfPdxAbw3lBsLxa4ZUNzIk9m8Y21g=
+	b=yfy4pTBTCdPxjAamWddcoLvgAbBslAdkCV16dCCvWkfRZ/4ZdauVqyBtfxWBiAtHS
+	 fBrqq9619G//IUtfUwZ9hBmvJROsOEUPSBoGNZxnqaoqYDj6nV0fDTWmxr2bpJqn9v
+	 BaWQORtakFtIswGDpqI6iniRl6X0VeS+wI6v2Pb0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Eliav Farber <farbere@amazon.com>,
+	Florian Fainelli <florian.fainelli@broadcom.com>,
+	=?UTF-8?q?=C3=81lvaro=20Fern=C3=A1ndez=20Rojas?= <noltari@gmail.com>,
+	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 320/644] pps: clients: gpio: fix interrupt handling order in remove path
+Subject: [PATCH 6.1 158/482] net: dsa: b53: fix b53_imp_vlan_setup for BCM5325
 Date: Tue, 26 Aug 2025 13:06:51 +0200
-Message-ID: <20250826110954.315789302@linuxfoundation.org>
+Message-ID: <20250826110934.716496401@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250826110946.507083938@linuxfoundation.org>
-References: <20250826110946.507083938@linuxfoundation.org>
+In-Reply-To: <20250826110930.769259449@linuxfoundation.org>
+References: <20250826110930.769259449@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -59,62 +61,44 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Eliav Farber <farbere@amazon.com>
+From: Álvaro Fernández Rojas <noltari@gmail.com>
 
-[ Upstream commit 6bca1e955830808dc90e0506b2951b4256b81bbb ]
+[ Upstream commit c00df1018791185ea398f78af415a2a0aaa0c79c ]
 
-The interrupt handler in pps_gpio_probe() is registered after calling
-pps_register_source() using devm_request_irq(). However, in the
-corresponding remove function, pps_unregister_source() is called before
-the IRQ is freed, since devm-managed resources are released after the
-remove function completes.
+CPU port should be B53_CPU_PORT instead of B53_CPU_PORT_25 for
+B53_PVLAN_PORT_MASK register.
 
-This creates a potential race condition where an interrupt may occur
-after the PPS source is unregistered but before the handler is removed,
-possibly leading to a kernel panic.
-
-To prevent this, switch from devm-managed IRQ registration to manual
-management by using request_irq() and calling free_irq() explicitly in
-the remove path before unregistering the PPS source. This ensures the
-interrupt handler is safely removed before deactivating the PPS source.
-
-Signed-off-by: Eliav Farber <farbere@amazon.com>
-Link: https://lore.kernel.org/r/20250527053355.37185-1-farbere@amazon.com
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Reviewed-by: Florian Fainelli <florian.fainelli@broadcom.com>
+Signed-off-by: Álvaro Fernández Rojas <noltari@gmail.com>
+Link: https://patch.msgid.link/20250614080000.1884236-14-noltari@gmail.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/pps/clients/pps-gpio.c | 5 +++--
- 1 file changed, 3 insertions(+), 2 deletions(-)
+ drivers/net/dsa/b53/b53_common.c | 4 ++++
+ 1 file changed, 4 insertions(+)
 
-diff --git a/drivers/pps/clients/pps-gpio.c b/drivers/pps/clients/pps-gpio.c
-index bf3b6f1aa984..41e1fdbcda16 100644
---- a/drivers/pps/clients/pps-gpio.c
-+++ b/drivers/pps/clients/pps-gpio.c
-@@ -206,8 +206,8 @@ static int pps_gpio_probe(struct platform_device *pdev)
- 	}
+diff --git a/drivers/net/dsa/b53/b53_common.c b/drivers/net/dsa/b53/b53_common.c
+index 1a23fcc0445c..ecc887b5c8c0 100644
+--- a/drivers/net/dsa/b53/b53_common.c
++++ b/drivers/net/dsa/b53/b53_common.c
+@@ -507,6 +507,10 @@ void b53_imp_vlan_setup(struct dsa_switch *ds, int cpu_port)
+ 	unsigned int i;
+ 	u16 pvlan;
  
- 	/* register IRQ interrupt handler */
--	ret = devm_request_irq(dev, data->irq, pps_gpio_irq_handler,
--			get_irqf_trigger_flags(data), data->info.name, data);
-+	ret = request_irq(data->irq, pps_gpio_irq_handler,
-+			  get_irqf_trigger_flags(data), data->info.name, data);
- 	if (ret) {
- 		pps_unregister_source(data->pps);
- 		dev_err(dev, "failed to acquire IRQ %d\n", data->irq);
-@@ -224,6 +224,7 @@ static int pps_gpio_remove(struct platform_device *pdev)
- {
- 	struct pps_gpio_device_data *data = platform_get_drvdata(pdev);
- 
-+	free_irq(data->irq, data);
- 	pps_unregister_source(data->pps);
- 	del_timer_sync(&data->echo_timer);
- 	/* reset echo pin in any case */
++	/* BCM5325 CPU port is at 8 */
++	if ((is5325(dev) || is5365(dev)) && cpu_port == B53_CPU_PORT_25)
++		cpu_port = B53_CPU_PORT;
++
+ 	/* Enable the IMP port to be in the same VLAN as the other ports
+ 	 * on a per-port basis such that we only have Port i and IMP in
+ 	 * the same VLAN.
 -- 
 2.39.5
 
