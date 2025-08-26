@@ -1,55 +1,56 @@
-Return-Path: <stable+bounces-174339-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-174985-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7EE5EB3629A
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 15:20:39 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id B22FDB36603
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 15:52:30 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 58A6D188D219
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 13:17:41 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 27BE08E63A4
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 13:44:32 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 161D61B85F8;
-	Tue, 26 Aug 2025 13:15:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4398834166B;
+	Tue, 26 Aug 2025 13:43:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="KB0+u+Cr"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="V76Um84T"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C4DC734A317;
-	Tue, 26 Aug 2025 13:15:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E9BF12D0621;
+	Tue, 26 Aug 2025 13:43:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756214128; cv=none; b=aI9XT3n4F5LooQlv3bbWoTWGZ+u2fviD7x9Dd2Kz0X6/khO1JviZmKwcuO/3dBV2OtAzQmHKgvJ0DSlisl6YS4tvb37z5uoz29RBVpHWAG4lbDZNAbHci2maooHGta4ixP4DsWnd/Ltf0Ll2a6c4fla1dYGTJXNvdipuHXXGff4=
+	t=1756215837; cv=none; b=ofhkPCWh10bRUOpvJutTfVKh4AO/7Xt2S71JytTMk0JoGSWSMZpNPYjO7QuSUj1Ko/9BDXJDErAgRk9Tfsqqb+l3ilcakCppfBoLLzMhpGfv6sLUtPLnyADBngvFD5ujnd3RgoCkXGIok2AKvMJENRnx2JGINDvQy6m8JF57kWo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756214128; c=relaxed/simple;
-	bh=2GY4RciBrbLlwfcZeg0Cs3AN6tATKi20lbCm1fM5PlU=;
+	s=arc-20240116; t=1756215837; c=relaxed/simple;
+	bh=FJJdiygfjHaM4kxjKxQ2ygoILzaf8a4wsIou7K/8f/Q=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Bti1GjCA8nZ4T/8Lx45NSjr5yBjIUTMqqhp8QbayiKlNs43aHl1EAK0X4GdTzE1UGFl7e51k6ic2clomFBT2Pld0pyzb9npVAUcQwSBWZ2sBKa4ASckX+3pORrv57MIVxCpvTK94WIByM7HYuwQcCT1Hd2iX+MJZCmPw6S8o+p0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=KB0+u+Cr; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 541ECC113CF;
-	Tue, 26 Aug 2025 13:15:28 +0000 (UTC)
+	 MIME-Version; b=Sr8DZo6CPPa1bBv/2mfPgviMzV4yA9Sg5HtWs+BSDHK95XfZEaEuroGkiNxF+Zr8kUS1p/LW4tOSmt9PxE/vQuruq6+AVRQg2k1ZI806vyIuh8XxwFvrYHIGNSARHuXOjDHhWEf2a2c2OZa0etqsZUSNif7A02NwGz2u/IljUwQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=V76Um84T; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 403E1C4CEF1;
+	Tue, 26 Aug 2025 13:43:56 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1756214128;
-	bh=2GY4RciBrbLlwfcZeg0Cs3AN6tATKi20lbCm1fM5PlU=;
+	s=korg; t=1756215836;
+	bh=FJJdiygfjHaM4kxjKxQ2ygoILzaf8a4wsIou7K/8f/Q=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=KB0+u+Cr7iA1xICOaae5/w5/wPp+UzYGuMIFHv7WoR+b7o51uZBCM1BAjF9HUASFM
-	 9putvKs/lsDh2mxQAvISlOuIn1OcwWyE9djghO9UiXTw309ip9qTF0vFMEoFBaU/4a
-	 RLy82mkujTEiSuNgrAIR9Zx9NIJYRPhOX2H0GzlM=
+	b=V76Um84TTYHlhgu4hTqzxhO0thpgyOOCy8JNpyZuyS6wDixMSZqVQxq1yOgCbn0m8
+	 3WmYZZzYqbBZGHJ5hCkrYgnmi4jYnAaG17gNWIFd8l0K4A7HhgS5rIB2eLC5TSvbim
+	 56qb0tTE8To32ZqRDyXMTRRbHPHxbftoKGWj4Cak=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Sasha Levin <sashal@kernel.org>,
-	Christian Brauner <brauner@kernel.org>
-Subject: [PATCH 6.1 022/482] fs: Prevent file descriptor table allocations exceeding INT_MAX
+	Thomas Fourier <fourier.thomas@gmail.com>,
+	"Martin K. Petersen" <martin.petersen@oracle.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.15 184/644] scsi: mvsas: Fix dma_unmap_sg() nents value
 Date: Tue, 26 Aug 2025 13:04:35 +0200
-Message-ID: <20250826110931.340111223@linuxfoundation.org>
+Message-ID: <20250826110951.023359882@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250826110930.769259449@linuxfoundation.org>
-References: <20250826110930.769259449@linuxfoundation.org>
+In-Reply-To: <20250826110946.507083938@linuxfoundation.org>
+References: <20250826110946.507083938@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,109 +62,51 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Sasha Levin <sashal@kernel.org>
+From: Thomas Fourier <fourier.thomas@gmail.com>
 
-commit 04a2c4b4511d186b0fce685da21085a5d4acd370 upstream.
+[ Upstream commit 0141618727bc929fe868153d21797f10ce5bef3f ]
 
-When sysctl_nr_open is set to a very high value (for example, 1073741816
-as set by systemd), processes attempting to use file descriptors near
-the limit can trigger massive memory allocation attempts that exceed
-INT_MAX, resulting in a WARNING in mm/slub.c:
+The dma_unmap_sg() functions should be called with the same nents as the
+dma_map_sg(), not the value the map function returned.
 
-  WARNING: CPU: 0 PID: 44 at mm/slub.c:5027 __kvmalloc_node_noprof+0x21a/0x288
-
-This happens because kvmalloc_array() and kvmalloc() check if the
-requested size exceeds INT_MAX and emit a warning when the allocation is
-not flagged with __GFP_NOWARN.
-
-Specifically, when nr_open is set to 1073741816 (0x3ffffff8) and a
-process calls dup2(oldfd, 1073741880), the kernel attempts to allocate:
-- File descriptor array: 1073741880 * 8 bytes = 8,589,935,040 bytes
-- Multiple bitmaps: ~400MB
-- Total allocation size: > 8GB (exceeding INT_MAX = 2,147,483,647)
-
-Reproducer:
-1. Set /proc/sys/fs/nr_open to 1073741816:
-   # echo 1073741816 > /proc/sys/fs/nr_open
-
-2. Run a program that uses a high file descriptor:
-   #include <unistd.h>
-   #include <sys/resource.h>
-
-   int main() {
-       struct rlimit rlim = {1073741824, 1073741824};
-       setrlimit(RLIMIT_NOFILE, &rlim);
-       dup2(2, 1073741880);  // Triggers the warning
-       return 0;
-   }
-
-3. Observe WARNING in dmesg at mm/slub.c:5027
-
-systemd commit a8b627a introduced automatic bumping of fs.nr_open to the
-maximum possible value. The rationale was that systems with memory
-control groups (memcg) no longer need separate file descriptor limits
-since memory is properly accounted. However, this change overlooked
-that:
-
-1. The kernel's allocation functions still enforce INT_MAX as a maximum
-   size regardless of memcg accounting
-2. Programs and tests that legitimately test file descriptor limits can
-   inadvertently trigger massive allocations
-3. The resulting allocations (>8GB) are impractical and will always fail
-
-systemd's algorithm starts with INT_MAX and keeps halving the value
-until the kernel accepts it. On most systems, this results in nr_open
-being set to 1073741816 (0x3ffffff8), which is just under 1GB of file
-descriptors.
-
-While processes rarely use file descriptors near this limit in normal
-operation, certain selftests (like
-tools/testing/selftests/core/unshare_test.c) and programs that test file
-descriptor limits can trigger this issue.
-
-Fix this by adding a check in alloc_fdtable() to ensure the requested
-allocation size does not exceed INT_MAX. This causes the operation to
-fail with -EMFILE instead of triggering a kernel warning and avoids the
-impractical >8GB memory allocation request.
-
-Fixes: 9cfe015aa424 ("get rid of NR_OPEN and introduce a sysctl_nr_open")
-Cc: stable@vger.kernel.org
+Fixes: b5762948263d ("[SCSI] mvsas: Add Marvell 6440 SAS/SATA driver")
+Signed-off-by: Thomas Fourier <fourier.thomas@gmail.com>
+Link: https://lore.kernel.org/r/20250627134822.234813-2-fourier.thomas@gmail.com
+Signed-off-by: Martin K. Petersen <martin.petersen@oracle.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
-Link: https://lore.kernel.org/20250629074021.1038845-1-sashal@kernel.org
-Signed-off-by: Christian Brauner <brauner@kernel.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- fs/file.c |   15 +++++++++++++++
- 1 file changed, 15 insertions(+)
+ drivers/scsi/mvsas/mv_sas.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
---- a/fs/file.c
-+++ b/fs/file.c
-@@ -126,6 +126,21 @@ static struct fdtable * alloc_fdtable(un
- 	if (unlikely(nr > sysctl_nr_open))
- 		nr = ((sysctl_nr_open - 1) | (BITS_PER_LONG - 1)) + 1;
+diff --git a/drivers/scsi/mvsas/mv_sas.c b/drivers/scsi/mvsas/mv_sas.c
+index 04d3710c683f..efd11fabff93 100644
+--- a/drivers/scsi/mvsas/mv_sas.c
++++ b/drivers/scsi/mvsas/mv_sas.c
+@@ -829,7 +829,7 @@ static int mvs_task_prep(struct sas_task *task, struct mvs_info *mvi, int is_tmf
+ 	dev_printk(KERN_ERR, mvi->dev, "mvsas prep failed[%d]!\n", rc);
+ 	if (!sas_protocol_ata(task->task_proto))
+ 		if (n_elem)
+-			dma_unmap_sg(mvi->dev, task->scatter, n_elem,
++			dma_unmap_sg(mvi->dev, task->scatter, task->num_scatter,
+ 				     task->data_dir);
+ prep_out:
+ 	return rc;
+@@ -880,7 +880,7 @@ static void mvs_slot_task_free(struct mvs_info *mvi, struct sas_task *task,
+ 	if (!sas_protocol_ata(task->task_proto))
+ 		if (slot->n_elem)
+ 			dma_unmap_sg(mvi->dev, task->scatter,
+-				     slot->n_elem, task->data_dir);
++				     task->num_scatter, task->data_dir);
  
-+	/*
-+	 * Check if the allocation size would exceed INT_MAX. kvmalloc_array()
-+	 * and kvmalloc() will warn if the allocation size is greater than
-+	 * INT_MAX, as filp_cachep objects are not __GFP_NOWARN.
-+	 *
-+	 * This can happen when sysctl_nr_open is set to a very high value and
-+	 * a process tries to use a file descriptor near that limit. For example,
-+	 * if sysctl_nr_open is set to 1073741816 (0x3ffffff8) - which is what
-+	 * systemd typically sets it to - then trying to use a file descriptor
-+	 * close to that value will require allocating a file descriptor table
-+	 * that exceeds 8GB in size.
-+	 */
-+	if (unlikely(nr > INT_MAX / sizeof(struct file *)))
-+		return ERR_PTR(-EMFILE);
-+
- 	fdt = kmalloc(sizeof(struct fdtable), GFP_KERNEL_ACCOUNT);
- 	if (!fdt)
- 		goto out;
+ 	switch (task->task_proto) {
+ 	case SAS_PROTOCOL_SMP:
+-- 
+2.39.5
+
 
 
 
