@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-173063-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-175071-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id B7D5EB35B90
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 13:25:48 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id A15DDB366F9
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 16:02:31 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 2C131188D9A3
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 11:22:49 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 1FA645630CF
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 13:48:49 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1292A33439F;
-	Tue, 26 Aug 2025 11:21:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A1DEA22128B;
+	Tue, 26 Aug 2025 13:47:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="hbVbjxZg"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="sT8oJu0Y"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C090D31CA74;
-	Tue, 26 Aug 2025 11:21:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5E64B343218;
+	Tue, 26 Aug 2025 13:47:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756207278; cv=none; b=IbHPJMo7AasZavAnWzzM92ha3k/2hslXZAyimPdNEggajA/le5A0eQ81cXwMXzZpmTzY7YvDsFEy0PzWLSNkhR0FsGZpBmUUTjC3Jw/LKMcL1psrS+A0sVrDvc/6iBogEevxPImwVD8n8s5vVkPQU+2Jsqxf7V40KW4SzQcbMM8=
+	t=1756216064; cv=none; b=DdWyTR/XabcYjOgLpFBbumvJDkoLrki+YkMzBjcCD0UK1s4qD1yx2bGMXTR/FETRXDLuCHfMQV/iFQC/LZ3dSnkAYto/KmbVHs7/9K8OjpGa4TWSWwpbwpICR4C7U5BoF5M6lXNKWYJNMqTyhhYMAu+2XXLhtbW66h+ljkT3ajk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756207278; c=relaxed/simple;
-	bh=k3vGpgSkgDSIZFDMBKi3qr7fhky9fN5uWsIHn2Fr/Fc=;
+	s=arc-20240116; t=1756216064; c=relaxed/simple;
+	bh=TyDGWgzDxdOWWqg7GKGWoDLjDSa8VFH/84T5N7thCA4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=U88q990LPchICaYeXZk5/z3Z/2wIvsZWedS9v8+yNXUsV7EkKIFhY6bH9wUSMcLx9Pg6S6Btt04pCAklephNaxp6rj6yyhBlz3UT3tZdhozs/CNm7d0CnPscU3ZNEKPwMV6ZMFD1v5djKOjoexwNsbNTZL41JejCo5zPpv6JUTQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=hbVbjxZg; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1F33DC4CEF1;
-	Tue, 26 Aug 2025 11:21:16 +0000 (UTC)
+	 MIME-Version; b=Udl4frnsr6BA/xt1WQuEVVI2m8Dw76ENGhu4JengIqkZ9Lqd0M/HdRE2vhTDcRvePe/Vp7aTEgMvzJRFOh+MsTJK1K/6/7f2xtkXrTaI1/+MuRoolalWb5mJoR1ZFpXeU9QwpCSTog/HooqZpD6XaZHIq+4msSCTgLIYOsAiOe8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=sT8oJu0Y; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7FD15C4CEF1;
+	Tue, 26 Aug 2025 13:47:43 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1756207277;
-	bh=k3vGpgSkgDSIZFDMBKi3qr7fhky9fN5uWsIHn2Fr/Fc=;
+	s=korg; t=1756216063;
+	bh=TyDGWgzDxdOWWqg7GKGWoDLjDSa8VFH/84T5N7thCA4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=hbVbjxZgdZEDTItXiVPpw8ITsHrz49+yT4hsHGH+2uvPbft95x9ylHxgzSfrz8cI2
-	 4kr9D/lgZ+1cdDM3Jt1FQd+mlQHmWfy5VQ5T6+QV/TYx0QOgxYrUyNmQKf12gjzOeE
-	 1tOhr4WqFhql/q6zQUk+sRm2kb8oYuXEJn8kx1iU=
+	b=sT8oJu0YF1cHBMRrk1PMlKpQqIMPp2Rlq52qWBNFJtxUa4lXaSAxmN9TacL3IodkR
+	 2dsX+BikXBJr1vuzWs7aAXnPz6IqywH0C1Fniwq6CW/44d8YF04LjQOypr5VIbqEOV
+	 xY8DIRmJQ3UhMzhzeWLASQooFNR4BpV+m89+erIU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	David Lechner <dlechner@baylibre.com>,
-	=?UTF-8?q?Nuno=20S=C3=A1?= <nuno.sa@analog.com>,
-	Stable@vger.kernel.org,
-	Jonathan Cameron <Jonathan.Cameron@huawei.com>
-Subject: [PATCH 6.16 078/457] iio: adc: ad7173: fix calibration channel
+	Yevhen Kondrashyn <e.kondrashyn@gmail.com>,
+	Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
+	"Rafael J. Wysocki" <rafael.j.wysocki@intel.com>
+Subject: [PATCH 5.15 271/644] Documentation: ACPI: Fix parent device references
 Date: Tue, 26 Aug 2025 13:06:02 +0200
-Message-ID: <20250826110939.303009623@linuxfoundation.org>
+Message-ID: <20250826110953.086845923@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250826110937.289866482@linuxfoundation.org>
-References: <20250826110937.289866482@linuxfoundation.org>
+In-Reply-To: <20250826110946.507083938@linuxfoundation.org>
+References: <20250826110946.507083938@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,58 +60,79 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.16-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: David Lechner <dlechner@baylibre.com>
+From: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
 
-commit 1d9a21ffb43b6fd326ead98f0d0afd6d104b739a upstream.
+commit e65cb011349e653ded541dddd6469c2ca813edcf upstream.
 
-Fix the channel index values passed to ad_sd_calibrate() in
-ad7173_calibrate_all().
+The _CRS resources in many cases want to have ResourceSource field
+to be a type of ACPI String. This means that to compile properly
+we need to enclosure the name path into double quotes. This will
+in practice defer the interpretation to a run-time stage, However,
+this may be interpreted differently on different OSes and ACPI
+interpreter implementations. In particular ACPICA might not correctly
+recognize the leading '^' (caret) character and will not resolve
+the relative name path properly. On top of that, this piece may be
+used in SSDTs which are loaded after the DSDT and on itself may also
+not resolve relative name paths outside of their own scopes.
+With this all said, fix documentation to use fully-qualified name
+paths always to avoid any misinterpretations, which is proven to
+work.
 
-ad7173_calibrate_all() expects these values to be that of the CHANNELx
-register assigned to the channel, not the datasheet INPUTx number of the
-channel. The incorrect values were causing register writes to fail for
-some channels because they set the WEN bit that must always be 0 for
-register access and set the R/W bit to read instead of write. For other
-channels, the channel number was just wrong because the CHANNELx
-registers are generally assigned in reverse order and so almost never
-match the INPUTx numbers.
-
-Fixes: 031bdc8aee01 ("iio: adc: ad7173: add calibration support")
-Signed-off-by: David Lechner <dlechner@baylibre.com>
-Reviewed-by: Nuno Sá <nuno.sa@analog.com>
-Link: https://patch.msgid.link/20250708-iio-adc-ad7313-fix-calibration-channel-v1-1-e6174e2c7cbf@baylibre.com
-Cc: <Stable@vger.kernel.org>
-Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
+Fixes: 8eb5c87a92c0 ("i2c: add ACPI support for I2C mux ports")
+Reported-by: Yevhen Kondrashyn <e.kondrashyn@gmail.com>
+Cc: All applicable <stable@vger.kernel.org>
+Signed-off-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+Link: https://patch.msgid.link/20250710170225.961303-1-andriy.shevchenko@linux.intel.com
+Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/iio/adc/ad7173.c |    5 ++---
- 1 file changed, 2 insertions(+), 3 deletions(-)
+ Documentation/firmware-guide/acpi/i2c-muxes.rst |    8 ++++----
+ 1 file changed, 4 insertions(+), 4 deletions(-)
 
---- a/drivers/iio/adc/ad7173.c
-+++ b/drivers/iio/adc/ad7173.c
-@@ -392,13 +392,12 @@ static int ad7173_calibrate_all(struct a
- 		if (indio_dev->channels[i].type != IIO_VOLTAGE)
- 			continue;
+--- a/Documentation/firmware-guide/acpi/i2c-muxes.rst
++++ b/Documentation/firmware-guide/acpi/i2c-muxes.rst
+@@ -14,7 +14,7 @@ Consider this topology::
+     |      |   | 0x70 |--CH01--> i2c client B (0x50)
+     +------+   +------+
  
--		ret = ad_sd_calibrate(&st->sd, AD7173_MODE_CAL_INT_ZERO, st->channels[i].ain);
-+		ret = ad_sd_calibrate(&st->sd, AD7173_MODE_CAL_INT_ZERO, i);
- 		if (ret < 0)
- 			return ret;
+-which corresponds to the following ASL::
++which corresponds to the following ASL (in the scope of \_SB)::
  
- 		if (st->info->has_internal_fs_calibration) {
--			ret = ad_sd_calibrate(&st->sd, AD7173_MODE_CAL_INT_FULL,
--					      st->channels[i].ain);
-+			ret = ad_sd_calibrate(&st->sd, AD7173_MODE_CAL_INT_FULL, i);
- 			if (ret < 0)
- 				return ret;
- 		}
+     Device (SMB1)
+     {
+@@ -24,7 +24,7 @@ which corresponds to the following ASL::
+             Name (_HID, ...)
+             Name (_CRS, ResourceTemplate () {
+                 I2cSerialBus (0x70, ControllerInitiated, I2C_SPEED,
+-                            AddressingMode7Bit, "^SMB1", 0x00,
++                            AddressingMode7Bit, "\\_SB.SMB1", 0x00,
+                             ResourceConsumer,,)
+             }
+ 
+@@ -37,7 +37,7 @@ which corresponds to the following ASL::
+                     Name (_HID, ...)
+                     Name (_CRS, ResourceTemplate () {
+                         I2cSerialBus (0x50, ControllerInitiated, I2C_SPEED,
+-                                    AddressingMode7Bit, "^CH00", 0x00,
++                                    AddressingMode7Bit, "\\_SB.SMB1.CH00", 0x00,
+                                     ResourceConsumer,,)
+                     }
+                 }
+@@ -52,7 +52,7 @@ which corresponds to the following ASL::
+                     Name (_HID, ...)
+                     Name (_CRS, ResourceTemplate () {
+                         I2cSerialBus (0x50, ControllerInitiated, I2C_SPEED,
+-                                    AddressingMode7Bit, "^CH01", 0x00,
++                                    AddressingMode7Bit, "\\_SB.SMB1.CH01", 0x00,
+                                     ResourceConsumer,,)
+                     }
+                 }
 
 
 
