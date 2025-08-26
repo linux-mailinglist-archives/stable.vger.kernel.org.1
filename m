@@ -1,58 +1,57 @@
-Return-Path: <stable+bounces-174775-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-175914-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 89071B3652B
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 15:45:31 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 96657B36B98
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 16:47:33 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 18C0A6876B7
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 13:35:27 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id F0A668A5D73
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 14:27:21 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 69DDC23817D;
-	Tue, 26 Aug 2025 13:34:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C20CC341AA1;
+	Tue, 26 Aug 2025 14:24:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="zUZgCO7S"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="09LZuJYA"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2871622DFA7;
-	Tue, 26 Aug 2025 13:34:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 808892C0F9C;
+	Tue, 26 Aug 2025 14:24:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756215284; cv=none; b=p5TWkOvhG+VgbM0xRr+gbZ1VC0v/yYLxwxtHdiVC+Mrkpp6/dElJxbThwz6rgCxZaNR+EcT2lByp9DqAA/BHZ+is7+83lLCGLMZWOASoIqevKCfGD9STufG9nnhrRVxfc82MkrJQ524qD2bM9lFCpGlLuvC8k5+7IhFkia/nQ8Q=
+	t=1756218299; cv=none; b=kCNNK1dT1U0EqQ0mu6KGws9N3bHHRG/yd0JBvCQ1h0eV1jeKQ2Z2RmID9KrW+jJiej+jw2dE+NEGZ1OQ1qxrYcyWfZF3rA3O6xRgSND/giakSyKfUUKv6WPoC7TyPQenY5zN5PtaxBAHJNPV0leg6rABbaf56AK6xETImgroWTc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756215284; c=relaxed/simple;
-	bh=ikvB/gZuqZ7Z3Prj5WBKiiDF3R4tBpfr6OgFWmzfUfo=;
+	s=arc-20240116; t=1756218299; c=relaxed/simple;
+	bh=SUXJ+YTaIXbVAeEvfyKLMqhNlZHdYRqdCmwQvR7utwY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=nUDvGMnJEv7FN2oGu5gPy5kzDxeAS/WUgLjudPT2PRvmFIFL6sq9k+5H4+JSvwpJITYuxLQEgcCng6O3JeXjhh3ZL82ptW116PXao/vEKyFFLpdSwJrS+hqzmOILKBkQd95ICSB7IFQ09/0+NStzKf4bKpytX7q9J+H3Bc/e26U=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=zUZgCO7S; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id AC829C4CEF1;
-	Tue, 26 Aug 2025 13:34:43 +0000 (UTC)
+	 MIME-Version; b=LXAtxtvd0sqkYdtp9j4mWt3KOkStcsiMUV9dVazJTILnjbUrY/nVYje4RF5E2+6X7Adenizof8+gSfEJRx6Wj+ZTdV0DFi0r7U6IWH+sCLABVtPrumdNI2L1TUF2dcOQEKFMowkj3rxRz41/+AfhRqxzcqo73W076Oq/zhHHvNo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=09LZuJYA; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 135DBC4CEF1;
+	Tue, 26 Aug 2025 14:24:58 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1756215284;
-	bh=ikvB/gZuqZ7Z3Prj5WBKiiDF3R4tBpfr6OgFWmzfUfo=;
+	s=korg; t=1756218299;
+	bh=SUXJ+YTaIXbVAeEvfyKLMqhNlZHdYRqdCmwQvR7utwY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=zUZgCO7S4ki9wKRCuGA6DmqTEtFN4J5Jwu4VEuk8SqulGO1Cf3XTk/nb79MnK8ngl
-	 wLhWylgNCK1+FkTX4FSUxC/mvn6b8mZNu2x8EkwZC0yF/VJz3j7qr7eqfdukHovn9U
-	 VMmgFquLuvgclB9HZM7x29hdqX6cPZuvT0H++Obw=
+	b=09LZuJYAmdPpARUPXeDRlGaorXuhyIyqaR4xNcsndVLtWKHXM0DVFYgvAZBXS5JQc
+	 mNbcuBQXzTng13suqR6D9zDluXSuiAkVUcXcZ2Dedq7NtTt3OZsVWPMrvzXYGpbuhl
+	 IRDa4xAbsX9H47icCaCq2NlA3aA4eOhApDc2KJ6Q=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	=?UTF-8?q?Andr=C3=A9=20Draszik?= <andre.draszik@linaro.org>,
-	Bart Van Assche <bvanassche@acm.org>,
-	Peter Griffin <peter.griffin@linaro.org>,
-	"Martin K. Petersen" <martin.petersen@oracle.com>,
+	Filipe Manana <fdmanana@suse.com>,
+	Qu Wenruo <wqu@suse.com>,
+	David Sterba <dsterba@suse.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 425/482] scsi: ufs: exynos: Fix programming of HCI_UTRL_NEXUS_TYPE
+Subject: [PATCH 5.10 468/523] btrfs: populate otime when logging an inode item
 Date: Tue, 26 Aug 2025 13:11:18 +0200
-Message-ID: <20250826110941.327995691@linuxfoundation.org>
+Message-ID: <20250826110935.988237996@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250826110930.769259449@linuxfoundation.org>
-References: <20250826110930.769259449@linuxfoundation.org>
+In-Reply-To: <20250826110924.562212281@linuxfoundation.org>
+References: <20250826110924.562212281@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,63 +61,120 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: André Draszik <andre.draszik@linaro.org>
+From: Qu Wenruo <wqu@suse.com>
 
-[ Upstream commit 01aad16c2257ab8ff33b152b972c9f2e1af47912 ]
+[ Upstream commit 1ef94169db0958d6de39f9ea6e063ce887342e2d ]
 
-On Google gs101, the number of UTP transfer request slots (nutrs) is 32,
-and in this case the driver ends up programming the UTRL_NEXUS_TYPE
-incorrectly as 0.
+[TEST FAILURE WITH EXPERIMENTAL FEATURES]
+When running test case generic/508, the test case will fail with the new
+btrfs shutdown support:
 
-This is because the left hand side of the shift is 1, which is of type
-int, i.e. 31 bits wide. Shifting by more than that width results in
-undefined behaviour.
+generic/508       - output mismatch (see /home/adam/xfstests/results//generic/508.out.bad)
+#    --- tests/generic/508.out	2022-05-11 11:25:30.806666664 +0930
+#    +++ /home/adam/xfstests/results//generic/508.out.bad	2025-07-02 14:53:22.401824212 +0930
+#    @@ -1,2 +1,6 @@
+#     QA output created by 508
+#     Silence is golden
+#    +Before:
+#    +After : stat.btime = Thu Jan  1 09:30:00 1970
+#    +Before:
+#    +After : stat.btime = Wed Jul  2 14:53:22 2025
+#    ...
+#    (Run 'diff -u /home/adam/xfstests/tests/generic/508.out /home/adam/xfstests/results//generic/508.out.bad'  to see the entire diff)
+Ran: generic/508
+Failures: generic/508
+Failed 1 of 1 tests
 
-Fix this by switching to the BIT() macro, which applies correct type
-casting as required. This ensures the correct value is written to
-UTRL_NEXUS_TYPE (0xffffffff on gs101), and it also fixes a UBSAN shift
-warning:
+Please note that the test case requires shutdown support, thus the test
+case will be skipped using the current upstream kernel, as it doesn't
+have shutdown ioctl support.
 
-    UBSAN: shift-out-of-bounds in drivers/ufs/host/ufs-exynos.c:1113:21
-    shift exponent 32 is too large for 32-bit type 'int'
+[CAUSE]
+The direct cause the 0 time stamp in the log tree:
 
-For consistency, apply the same change to the nutmrs / UTMRL_NEXUS_TYPE
-write.
+leaf 30507008 items 2 free space 16057 generation 9 owner TREE_LOG
+leaf 30507008 flags 0x1(WRITTEN) backref revision 1
+checksum stored e522548d
+checksum calced e522548d
+fs uuid 57d45451-481e-43e4-aa93-289ad707a3a0
+chunk uuid d52bd3fd-5163-4337-98a7-7986993ad398
+	item 0 key (257 INODE_ITEM 0) itemoff 16123 itemsize 160
+		generation 9 transid 9 size 0 nbytes 0
+		block group 0 mode 100644 links 1 uid 0 gid 0 rdev 0
+		sequence 1 flags 0x0(none)
+		atime 1751432947.492000000 (2025-07-02 14:39:07)
+		ctime 1751432947.492000000 (2025-07-02 14:39:07)
+		mtime 1751432947.492000000 (2025-07-02 14:39:07)
+		otime 0.0 (1970-01-01 09:30:00) <<<
 
-Fixes: 55f4b1f73631 ("scsi: ufs: ufs-exynos: Add UFS host support for Exynos SoCs")
-Cc: stable@vger.kernel.org
-Signed-off-by: André Draszik <andre.draszik@linaro.org>
-Link: https://lore.kernel.org/r/20250707-ufs-exynos-shift-v1-1-1418e161ae40@linaro.org
-Reviewed-by: Bart Van Assche <bvanassche@acm.org>
-Reviewed-by: Peter Griffin <peter.griffin@linaro.org>
-Signed-off-by: Martin K. Petersen <martin.petersen@oracle.com>
-[ Adapted context ]
+But the old fs tree has all the correct time stamp:
+
+btrfs-progs v6.12
+fs tree key (FS_TREE ROOT_ITEM 0)
+leaf 30425088 items 2 free space 16061 generation 5 owner FS_TREE
+leaf 30425088 flags 0x1(WRITTEN) backref revision 1
+checksum stored 48f6c57e
+checksum calced 48f6c57e
+fs uuid 57d45451-481e-43e4-aa93-289ad707a3a0
+chunk uuid d52bd3fd-5163-4337-98a7-7986993ad398
+	item 0 key (256 INODE_ITEM 0) itemoff 16123 itemsize 160
+		generation 3 transid 0 size 0 nbytes 16384
+		block group 0 mode 40755 links 1 uid 0 gid 0 rdev 0
+		sequence 0 flags 0x0(none)
+		atime 1751432947.0 (2025-07-02 14:39:07)
+		ctime 1751432947.0 (2025-07-02 14:39:07)
+		mtime 1751432947.0 (2025-07-02 14:39:07)
+		otime 1751432947.0 (2025-07-02 14:39:07) <<<
+
+The root cause is that fill_inode_item() in tree-log.c is only
+populating a/c/m time, not the otime (or btime in statx output).
+
+Part of the reason is that, the vfs inode only has a/c/m time, no native
+btime support yet.
+
+[FIX]
+Thankfully btrfs has its otime stored in btrfs_inode::i_otime_sec and
+btrfs_inode::i_otime_nsec.
+
+So what we really need is just fill the otime time stamp in
+fill_inode_item() of tree-log.c
+
+There is another fill_inode_item() in inode.c, which is doing the proper
+otime population.
+
+Fixes: 94edf4ae43a5 ("Btrfs: don't bother committing delayed inode updates when fsyncing")
+CC: stable@vger.kernel.org
+Reviewed-by: Filipe Manana <fdmanana@suse.com>
+Signed-off-by: Qu Wenruo <wqu@suse.com>
+Reviewed-by: David Sterba <dsterba@suse.com>
+Signed-off-by: David Sterba <dsterba@suse.com>
+[ Adapted token-based API calls ]
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/ufs/host/ufs-exynos.c |    4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ fs/btrfs/tree-log.c |    5 +++++
+ 1 file changed, 5 insertions(+)
 
---- a/drivers/ufs/host/ufs-exynos.c
-+++ b/drivers/ufs/host/ufs-exynos.c
-@@ -1028,8 +1028,8 @@ static int exynos_ufs_post_link(struct u
- 	hci_writel(ufs, 0xa, HCI_DATA_REORDER);
- 	hci_writel(ufs, PRDT_SET_SIZE(12), HCI_TXPRDT_ENTRY_SIZE);
- 	hci_writel(ufs, PRDT_SET_SIZE(12), HCI_RXPRDT_ENTRY_SIZE);
--	hci_writel(ufs, (1 << hba->nutrs) - 1, HCI_UTRL_NEXUS_TYPE);
--	hci_writel(ufs, (1 << hba->nutmrs) - 1, HCI_UTMRL_NEXUS_TYPE);
-+	hci_writel(ufs, BIT(hba->nutrs) - 1, HCI_UTRL_NEXUS_TYPE);
-+	hci_writel(ufs, BIT(hba->nutmrs) - 1, HCI_UTMRL_NEXUS_TYPE);
- 	hci_writel(ufs, 0xf, HCI_AXIDMA_RWDATA_BURST_LEN);
+--- a/fs/btrfs/tree-log.c
++++ b/fs/btrfs/tree-log.c
+@@ -3921,6 +3921,11 @@ static void fill_inode_item(struct btrfs
+ 	btrfs_set_token_timespec_nsec(&token, &item->ctime,
+ 				      inode->i_ctime.tv_nsec);
  
- 	if (ufs->opts & EXYNOS_UFS_OPT_SKIP_CONNECTION_ESTAB)
++	btrfs_set_token_timespec_sec(&token, &item->otime,
++				     BTRFS_I(inode)->i_otime.tv_sec);
++	btrfs_set_token_timespec_nsec(&token, &item->otime,
++				      BTRFS_I(inode)->i_otime.tv_nsec);
++
+ 	btrfs_set_token_inode_nbytes(&token, item, inode_get_bytes(inode));
+ 
+ 	btrfs_set_token_inode_sequence(&token, item, inode_peek_iversion(inode));
 
 
 
