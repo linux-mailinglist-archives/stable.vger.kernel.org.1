@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-175905-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-174743-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id BF315B36B03
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 16:42:29 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id AB8E8B363FC
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 15:34:52 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 6FC7B1BC6C9D
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 14:27:31 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 9C3E37B8AC4
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 13:33:10 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A08E4356915;
-	Tue, 26 Aug 2025 14:24:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B167A34A324;
+	Tue, 26 Aug 2025 13:33:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="2FvCRhsA"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="jXqLdZJ3"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 550D0352FD7;
-	Tue, 26 Aug 2025 14:24:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6F8E3279788;
+	Tue, 26 Aug 2025 13:33:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756218276; cv=none; b=Yn8zHR16VltN9/eNcHqYdIQWwpu46BzVvEJK+pc7InQvf/+zoDjdkGlMrSoSKhKpwkJBTSsQK+alVQdqqPbYxmMY6XceJ4sGHODSXK13L4xU9cSWYYKnRlJiqqBzcP9usv8T1QTSW2r8uYeoJsOnB5I8wqP/qc8oArbcfTXGeVs=
+	t=1756215199; cv=none; b=gOyw3Bzxst1wqagdD3cFV9nPZReXyGgCw3YSvd1u3QcoI/SLz1Eo73lPVO/e4n6CND9utqN13dvZsDvTLAh64OZDbOxQ8LAmjcinVMXQQPk87z50yn5TgIYG+euyT0iKktlvaUReoz6cwpklTB+VLclCCCs+tFlOKYsGSFMshII=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756218276; c=relaxed/simple;
-	bh=pQwh4pja4aa1c91hDBGfophkNir9cmqAZrj01vZYFcg=;
+	s=arc-20240116; t=1756215199; c=relaxed/simple;
+	bh=sgKzZScs3iLZfnccpiL32pmXVCerxPJrX3MZy4sfG8c=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=mFhHPVwDoOSssXsXkF52pD4zGVvaoGzxMu/zrkkm6abkPRTnr9/fCUcdA0nSy31ug4bexXdTdZU4nxX+lOAMqW1T1eflysswxwy3+BHtY6CEZ7QoaP4oLaeu7cv7j2mN3hFbuuULjJnCQ1uj1Uppbz3AFHZVcInm3kPEvLT9PeY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=2FvCRhsA; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id CFDCDC4CEF1;
-	Tue, 26 Aug 2025 14:24:35 +0000 (UTC)
+	 MIME-Version; b=dQtoM/sMecaZfMdzs4+oj7JzTHFEEn2rS1F9e6JzqoHs6OJbiyKXm1CU8JUwKqY2KybTH6+8JShndCGC1v+opg/a2E5UwIO2yzzchtk5+fgIVCebqhdRlCyzweEM3Kfukwo3VYEejcE7+czQFzHxf5uTTtCrlc6MJ49eekqeNOY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=jXqLdZJ3; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0136AC4CEF1;
+	Tue, 26 Aug 2025 13:33:18 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1756218276;
-	bh=pQwh4pja4aa1c91hDBGfophkNir9cmqAZrj01vZYFcg=;
+	s=korg; t=1756215199;
+	bh=sgKzZScs3iLZfnccpiL32pmXVCerxPJrX3MZy4sfG8c=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=2FvCRhsAoKsXQNwvJt5NXk9BtvTgMKhX3oKxcCNBf+eIv6/JtwdsxTGk4KLkEJDbH
-	 t246CPAe4oYqjNfJygsCu0yi6+ct5gxyIIDuS2m/KYcw3etLkfcr78WUGXcO4d7T+I
-	 8NtWZkCXDn64OwwEBPffcCGb6sAnvw2K+owBRj0U=
+	b=jXqLdZJ3hAlsxAjnnBq1zC5IjTF4jHvwRyQqTYEauDDHTOIiVxFv88iwxTvMrwYij
+	 OFRh8GpXAS6CwNEYNjO3LfNAhDcYEkuicn//9ZLfEJioo+qsrdJV/7H3KbrHvBG4m4
+	 pPnpx9eTYLAA9SwmYespNp4OOD4lDr+Cg7bx0AZw=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Eric Dumazet <edumazet@google.com>,
-	Simon Horman <horms@kernel.org>,
-	"David S. Miller" <davem@davemloft.net>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 460/523] net_sched: sch_ets: implement lockless ets_dump()
+	stable <stable@kernel.org>,
+	Jun Li <jun.li@nxp.com>,
+	Xu Yang <xu.yang_2@nxp.com>,
+	Alan Stern <stern@rowland.harvard.edu>
+Subject: [PATCH 6.1 417/482] usb: core: hcd: fix accessing unmapped memory in SINGLE_STEP_SET_FEATURE test
 Date: Tue, 26 Aug 2025 13:11:10 +0200
-Message-ID: <20250826110935.793001321@linuxfoundation.org>
+Message-ID: <20250826110941.129330951@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250826110924.562212281@linuxfoundation.org>
-References: <20250826110924.562212281@linuxfoundation.org>
+In-Reply-To: <20250826110930.769259449@linuxfoundation.org>
+References: <20250826110930.769259449@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,108 +63,63 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Eric Dumazet <edumazet@google.com>
+From: Xu Yang <xu.yang_2@nxp.com>
 
-[ Upstream commit c5f1dde7f731e7bf2e7c169ca42cb4989fc2f8b9 ]
+commit 8fe06185e11ae753414aa6117f0e798aa77567ff upstream.
 
-Instead of relying on RTNL, ets_dump() can use READ_ONCE()
-annotations, paired with WRITE_ONCE() ones in ets_change().
+The USB core will unmap urb->transfer_dma after SETUP stage completes.
+Then the USB controller will access unmapped memory when it received
+device descriptor. If iommu is equipped, the entire test can't be
+completed due to the memory accessing is blocked.
 
-Signed-off-by: Eric Dumazet <edumazet@google.com>
-Reviewed-by: Simon Horman <horms@kernel.org>
-Signed-off-by: David S. Miller <davem@davemloft.net>
-Stable-dep-of: 87c6efc5ce9c ("net/sched: ets: use old 'nbands' while purging unused classes")
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Fix it by calling map_urb_for_dma() again for IN stage. To reduce
+redundant map for urb->transfer_buffer, this will also set
+URB_NO_TRANSFER_DMA_MAP flag before first map_urb_for_dma() to skip
+dma map for urb->transfer_buffer and clear URB_NO_TRANSFER_DMA_MAP
+flag before second map_urb_for_dma().
+
+Fixes: 216e0e563d81 ("usb: core: hcd: use map_urb_for_dma for single step set feature urb")
+Cc: stable <stable@kernel.org>
+Reviewed-by: Jun Li <jun.li@nxp.com>
+Signed-off-by: Xu Yang <xu.yang_2@nxp.com>
+Acked-by: Alan Stern <stern@rowland.harvard.edu>
+Link: https://lore.kernel.org/r/20250806083955.3325299-1-xu.yang_2@nxp.com
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- net/sched/sch_ets.c |   25 ++++++++++++++-----------
- 1 file changed, 14 insertions(+), 11 deletions(-)
+ drivers/usb/core/hcd.c |    8 +++++++-
+ 1 file changed, 7 insertions(+), 1 deletion(-)
 
---- a/net/sched/sch_ets.c
-+++ b/net/sched/sch_ets.c
-@@ -664,7 +664,7 @@ static int ets_qdisc_change(struct Qdisc
+--- a/drivers/usb/core/hcd.c
++++ b/drivers/usb/core/hcd.c
+@@ -2177,7 +2177,7 @@ static struct urb *request_single_step_s
+ 	urb->complete = usb_ehset_completion;
+ 	urb->status = -EINPROGRESS;
+ 	urb->actual_length = 0;
+-	urb->transfer_flags = URB_DIR_IN;
++	urb->transfer_flags = URB_DIR_IN | URB_NO_TRANSFER_DMA_MAP;
+ 	usb_get_urb(urb);
+ 	atomic_inc(&urb->use_count);
+ 	atomic_inc(&urb->dev->urbnum);
+@@ -2241,9 +2241,15 @@ int ehset_single_step_set_feature(struct
  
- 	sch_tree_lock(sch);
- 
--	q->nbands = nbands;
-+	WRITE_ONCE(q->nbands, nbands);
- 	for (i = nstrict; i < q->nstrict; i++) {
- 		if (q->classes[i].qdisc->q.qlen) {
- 			list_add_tail(&q->classes[i].alist, &q->active);
-@@ -676,11 +676,11 @@ static int ets_qdisc_change(struct Qdisc
- 			list_del_init(&q->classes[i].alist);
- 		qdisc_purge_queue(q->classes[i].qdisc);
- 	}
--	q->nstrict = nstrict;
-+	WRITE_ONCE(q->nstrict, nstrict);
- 	memcpy(q->prio2band, priomap, sizeof(priomap));
- 
- 	for (i = 0; i < q->nbands; i++)
--		q->classes[i].quantum = quanta[i];
-+		WRITE_ONCE(q->classes[i].quantum, quanta[i]);
- 
- 	for (i = oldbands; i < q->nbands; i++) {
- 		q->classes[i].qdisc = queues[i];
-@@ -694,7 +694,7 @@ static int ets_qdisc_change(struct Qdisc
- 	for (i = q->nbands; i < oldbands; i++) {
- 		qdisc_put(q->classes[i].qdisc);
- 		q->classes[i].qdisc = NULL;
--		q->classes[i].quantum = 0;
-+		WRITE_ONCE(q->classes[i].quantum, 0);
- 		q->classes[i].deficit = 0;
- 		memset(&q->classes[i].bstats, 0, sizeof(q->classes[i].bstats));
- 		memset(&q->classes[i].qstats, 0, sizeof(q->classes[i].qstats));
-@@ -751,6 +751,7 @@ static int ets_qdisc_dump(struct Qdisc *
- 	struct ets_sched *q = qdisc_priv(sch);
- 	struct nlattr *opts;
- 	struct nlattr *nest;
-+	u8 nbands, nstrict;
- 	int band;
- 	int prio;
- 	int err;
-@@ -763,21 +764,22 @@ static int ets_qdisc_dump(struct Qdisc *
- 	if (!opts)
- 		goto nla_err;
- 
--	if (nla_put_u8(skb, TCA_ETS_NBANDS, q->nbands))
-+	nbands = READ_ONCE(q->nbands);
-+	if (nla_put_u8(skb, TCA_ETS_NBANDS, nbands))
- 		goto nla_err;
- 
--	if (q->nstrict &&
--	    nla_put_u8(skb, TCA_ETS_NSTRICT, q->nstrict))
-+	nstrict = READ_ONCE(q->nstrict);
-+	if (nstrict && nla_put_u8(skb, TCA_ETS_NSTRICT, nstrict))
- 		goto nla_err;
- 
--	if (q->nbands > q->nstrict) {
-+	if (nbands > nstrict) {
- 		nest = nla_nest_start(skb, TCA_ETS_QUANTA);
- 		if (!nest)
- 			goto nla_err;
- 
--		for (band = q->nstrict; band < q->nbands; band++) {
-+		for (band = nstrict; band < nbands; band++) {
- 			if (nla_put_u32(skb, TCA_ETS_QUANTA_BAND,
--					q->classes[band].quantum))
-+					READ_ONCE(q->classes[band].quantum)))
- 				goto nla_err;
- 		}
- 
-@@ -789,7 +791,8 @@ static int ets_qdisc_dump(struct Qdisc *
- 		goto nla_err;
- 
- 	for (prio = 0; prio <= TC_PRIO_MAX; prio++) {
--		if (nla_put_u8(skb, TCA_ETS_PRIOMAP_BAND, q->prio2band[prio]))
-+		if (nla_put_u8(skb, TCA_ETS_PRIOMAP_BAND,
-+			       READ_ONCE(q->prio2band[prio])))
- 			goto nla_err;
- 	}
- 
+ 	/* Complete remaining DATA and STATUS stages using the same URB */
+ 	urb->status = -EINPROGRESS;
++	urb->transfer_flags &= ~URB_NO_TRANSFER_DMA_MAP;
+ 	usb_get_urb(urb);
+ 	atomic_inc(&urb->use_count);
+ 	atomic_inc(&urb->dev->urbnum);
++	if (map_urb_for_dma(hcd, urb, GFP_KERNEL)) {
++		usb_put_urb(urb);
++		goto out1;
++	}
++
+ 	retval = hcd->driver->submit_single_step_set_feature(hcd, urb, 0);
+ 	if (!retval && !wait_for_completion_timeout(&done,
+ 						msecs_to_jiffies(2000))) {
 
 
 
