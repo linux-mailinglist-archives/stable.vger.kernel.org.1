@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-173597-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-176290-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9B0FAB35D8F
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 13:46:10 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9905CB36C6A
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 16:56:18 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id D663E3BE71C
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 11:45:35 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 066BC1C47908
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 14:45:05 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 22AA8341653;
-	Tue, 26 Aug 2025 11:44:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2E742362086;
+	Tue, 26 Aug 2025 14:41:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ocqfNqgO"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="IRl5hNOF"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D23D33375DC;
-	Tue, 26 Aug 2025 11:44:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DE89B3568E6;
+	Tue, 26 Aug 2025 14:41:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756208663; cv=none; b=RVgAseXgPDEoL0v2COLf5BAFnGu89YH+GM0R1UhLkNz3Hh2DPJsOkJcz6XGc5KVAMMW5kAV3VCxmhKpKB9Tdbxd0u61qXPOBJQwnAaHSL8MBHWe4N2loXTKfi1hj+7Jx6s0q8zdq9t49EEQDtsf8gtGuWmZUZQwT7ukdnI2Z3MQ=
+	t=1756219272; cv=none; b=k/UuhsXuywNOLGVjtm0Srr3ZECJK+KUQGM760VOXXJujhffBo/CGj+1BPOC2H3Vu0erZ13N5PP3tHY4BWNc8M7A9RiaDKPx1nXw9yubYMzWZo5RRqqGjjCAd5/Oxk/lXIQaZgX68KETSEeevX8/JdNPGFDtuSv8TrezYQsDLH+8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756208663; c=relaxed/simple;
-	bh=na68LtGyms7k2daci8BylHlg0hS7d0HkQMiPHoLMVbg=;
+	s=arc-20240116; t=1756219272; c=relaxed/simple;
+	bh=gaRCeB4hw11yYWC1Wgn3Rr2UN9m3Kl3EcvBtC9YRsz0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=l8YhaxSC3PxVSRJNrgCsMHOhHCjAD3HuutP0NWa9k/GLCUrUzRKOlejagfaMF8dnlb4GxUHE/L6pziEQcnoUlaEXbIlJP7ARoYluqP5DtaTQ/D1mqfT+vUxyPAJ1cKepI/j6e2TMrtcPuL625OI8zo947Uor4HkQpgObpvRIwsw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ocqfNqgO; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 171D7C4CEF1;
-	Tue, 26 Aug 2025 11:44:22 +0000 (UTC)
+	 MIME-Version; b=TCoG41FVZzzltNQxpJncoqND+ewYmVCFLxpqV1tm1tx3MVwxCECecGJG2AV92RFpnOv9eVFHUDpzbU0P7KwchagRaWoxRBl7ZjThbt3mtlbym88E1VNaVhvqO9qDilodpw9mDVTObfyTiugvyP+GCQ+x/0RLrGKnRxKopYrLw2I=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=IRl5hNOF; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6E02AC4CEF1;
+	Tue, 26 Aug 2025 14:41:11 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1756208663;
-	bh=na68LtGyms7k2daci8BylHlg0hS7d0HkQMiPHoLMVbg=;
+	s=korg; t=1756219271;
+	bh=gaRCeB4hw11yYWC1Wgn3Rr2UN9m3Kl3EcvBtC9YRsz0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=ocqfNqgOqW55+gIMT34cDTdnEoEE5Jp8JuQ6wLUohHxVVQVTyQJah2omoZr3qPZLY
-	 M0FPa1UWUNdZly7a3cXCK2O4dtm8km2oSe/PCrxQaPRbMBSUaL7WimusahJjCaY1mu
-	 dk9LyiIHeoIfgjZV/7sQrVi43LazqiEB+Hoi2lIM=
+	b=IRl5hNOFyQBlyCX2b7FfcaN04oHTqa7Hm2Pw5dgdR6rpUyPY60dqyKyK4KbCSyyca
+	 6U1cudNcTns4GqrRntDD7mpwrxYJ1zPJSZyj9oZvusKRq9kpAfDyj+daRVhtIwg3T5
+	 xsumWHELq1ggSGqGUt+LMeFHU0TOhRgOXaMyTVik=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	David Lechner <dlechner@baylibre.com>,
-	Stable@vger.kernel.org,
-	Jonathan Cameron <Jonathan.Cameron@huawei.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 197/322] iio: adc: ad7173: fix setting ODR in probe
-Date: Tue, 26 Aug 2025 13:10:12 +0200
-Message-ID: <20250826110920.732181215@linuxfoundation.org>
+	Neil Armstrong <neil.armstrong@linaro.org>,
+	Johan Hovold <johan@kernel.org>,
+	Martin Blumenstingl <martin.blumenstingl@googlemail.com>
+Subject: [PATCH 5.4 287/403] usb: dwc3: meson-g12a: fix device leaks at unbind
+Date: Tue, 26 Aug 2025 13:10:13 +0200
+Message-ID: <20250826110914.739199680@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250826110915.169062587@linuxfoundation.org>
-References: <20250826110915.169062587@linuxfoundation.org>
+In-Reply-To: <20250826110905.607690791@linuxfoundation.org>
+References: <20250826110905.607690791@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,54 +62,40 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+5.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: David Lechner <dlechner@baylibre.com>
+From: Johan Hovold <johan@kernel.org>
 
-[ Upstream commit 6fa908abd19cc35c205f343b79c67ff38dbc9b76 ]
+commit 93b400f4951404d040197943a25d6fef9f8ccabb upstream.
 
-Fix the setting of the ODR register value in the probe function for
-AD7177. The AD7177 chip has a different ODR value after reset than the
-other chips (0x7 vs. 0x0) and 0 is a reserved value on that chip.
+Make sure to drop the references taken to the child devices by
+of_find_device_by_node() during probe on driver unbind.
 
-The driver already has this information available in odr_start_value
-and uses it when checking valid values when writing to the
-sampling_frequency attribute, but failed to set the correct initial
-value in the probe function.
-
-Fixes: 37ae8381ccda ("iio: adc: ad7173: add support for additional models")
-Signed-off-by: David Lechner <dlechner@baylibre.com>
-Link: https://patch.msgid.link/20250710-iio-adc-ad7173-fix-setting-odr-in-probe-v1-1-78a100fec998@baylibre.com
-Cc: <Stable@vger.kernel.org>
-Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
-[ Adjust context ]
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Fixes: c99993376f72 ("usb: dwc3: Add Amlogic G12A DWC3 glue")
+Cc: stable@vger.kernel.org	# 5.2
+Cc: Neil Armstrong <neil.armstrong@linaro.org>
+Signed-off-by: Johan Hovold <johan@kernel.org>
+Reviewed-by: Martin Blumenstingl <martin.blumenstingl@googlemail.com>
+Link: https://lore.kernel.org/r/20250724091910.21092-3-johan@kernel.org
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/iio/adc/ad7173.c |    3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+ drivers/usb/dwc3/dwc3-meson-g12a.c |    3 +++
+ 1 file changed, 3 insertions(+)
 
---- a/drivers/iio/adc/ad7173.c
-+++ b/drivers/iio/adc/ad7173.c
-@@ -1243,6 +1243,7 @@ static int ad7173_fw_parse_channel_confi
- 		chan_st_priv->cfg.bipolar = false;
- 		chan_st_priv->cfg.input_buf = st->info->has_input_buf;
- 		chan_st_priv->cfg.ref_sel = AD7173_SETUP_REF_SEL_INT_REF;
-+		chan_st_priv->cfg.odr = st->info->odr_start_value;
- 		st->adc_mode |= AD7173_ADC_MODE_REF_EN;
+--- a/drivers/usb/dwc3/dwc3-meson-g12a.c
++++ b/drivers/usb/dwc3/dwc3-meson-g12a.c
+@@ -529,6 +529,9 @@ static int dwc3_meson_g12a_remove(struct
  
- 		chan_index++;
-@@ -1307,7 +1308,7 @@ static int ad7173_fw_parse_channel_confi
- 		chan->channel = ain[0];
- 		chan_st_priv->chan_reg = chan_index;
- 		chan_st_priv->cfg.input_buf = st->info->has_input_buf;
--		chan_st_priv->cfg.odr = 0;
-+		chan_st_priv->cfg.odr = st->info->odr_start_value;
+ 	usb_role_switch_unregister(priv->role_switch);
  
- 		chan_st_priv->cfg.bipolar = fwnode_property_read_bool(child, "bipolar");
- 		if (chan_st_priv->cfg.bipolar)
++	put_device(priv->switch_desc.udc);
++	put_device(priv->switch_desc.usb2_port);
++
+ 	of_platform_depopulate(dev);
+ 
+ 	for (i = 0 ; i < PHY_COUNT ; ++i) {
 
 
 
