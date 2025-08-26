@@ -1,56 +1,59 @@
-Return-Path: <stable+bounces-174072-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-173109-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 98117B36133
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 15:07:40 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id C3B4BB35B69
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 13:24:07 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id E45212A14CD
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 13:04:07 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 7040C7C3BAD
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 11:23:31 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 113F022AE5D;
-	Tue, 26 Aug 2025 13:03:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 42B5131813A;
+	Tue, 26 Aug 2025 11:23:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="VqdezQ8o"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="MPpybz1G"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C365622A4EE;
-	Tue, 26 Aug 2025 13:03:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E453D1A256B;
+	Tue, 26 Aug 2025 11:23:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756213417; cv=none; b=hNUnP6A1WKRgaYlSpnsYktEWfyYUSbUxTld5VbLmbgkRYJXYmNNNOM0HYR/QautKE8AC+yf8HNyoAH0FPjGs8Be0t+tiVlHaHdwHDjfBlz/ZEhlIKDA2mjHHjsdAQf+DrMsP6ONX20f+Bot+3JWZ30F76bXDmXA7pk+DvAsqaZ8=
+	t=1756207395; cv=none; b=KUChhZfdj6qoqcTbvR5gfll8ALXXQnmqfr2MGc37dk+OKik95geCUE1J/6AFmbNP2Rymwa5Yz+R957O53oSoepvXI1Wg6ZfM2bvJyim+4UmykUHRheuuxpXAZCuL75h41sS82+i7XFzIQLDNK6BNssqgCw337Ebh3pB+fE2uVAw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756213417; c=relaxed/simple;
-	bh=l4TUW+psjTj0eF0TNpAvOkOFgbhLDLPeIBrbnNIFW4Q=;
+	s=arc-20240116; t=1756207395; c=relaxed/simple;
+	bh=+iP5RkpYp8LB5l7LL5Aa5GnX5vdtTQGIZ8f467Q8Ft8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=ZUvMPudTeepakC7zb6XlVkH4j2cKrURJDle3Ru1AJtMyvO1iYu8u96+G100TeSfDJyaMc12yNE8o2vX73c9TqBaxzf/Ca8Mo7a6yfl3GQcaiSTXVsae3RamL1mVEWYW0eiEXE70yRG7JDJaZVevibt5KjjKF/AwRPqvnvyUeclE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=VqdezQ8o; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0E6BAC113CF;
-	Tue, 26 Aug 2025 13:03:36 +0000 (UTC)
+	 MIME-Version; b=h+bclUU6vgL1mMzzfmV3yBQiR7BSdRLJfUo1o2JN2Up3rjXgsvIO1t6Ta5pkJDL5KZxTM/+5eXnh0Rap3OwsyeeSlvo6u0PIVJJmeecUw9RV458EOVfcUA5VaYc1wXIUuoQIG3BSNu1rGQHQuNbl93KOsyDmltuHlQMGADauEsU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=MPpybz1G; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7DC89C4CEF1;
+	Tue, 26 Aug 2025 11:23:14 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1756213417;
-	bh=l4TUW+psjTj0eF0TNpAvOkOFgbhLDLPeIBrbnNIFW4Q=;
+	s=korg; t=1756207394;
+	bh=+iP5RkpYp8LB5l7LL5Aa5GnX5vdtTQGIZ8f467Q8Ft8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=VqdezQ8obRKlxEVgY2nonD03awm0J31hToqTOAI+3X5s9kST3j+4SenAOdcAHfH8W
-	 YYIPn5cDEZmye2fP/w2IKb+9nMjYQK3w+SEUJsgc6yaQcK3rzFeTe1eyiXy8NGmSl1
-	 nXHnkDiQQjlW85SDxFVRIUufLLlb7PLHddjjBGTY=
+	b=MPpybz1GDgU1lTyQrOazEkIMPBZZko7TiBeTNJAi8WN/KbGcXnNrB/KFSND/AKV5B
+	 L8wDPrcREHfhCs3hLvVBMaXLoSY583anEVpyd9ine2CLvGte0hDbXqfTGiGQgPvBy8
+	 Wl1JpW2xJthmmo7n0ethfiCmvWo3KZrFpDAuC+LE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Kevin Tian <kevin.tian@intel.com>,
-	Jason Gunthorpe <jgg@nvidia.com>,
-	Nicolin Chen <nicolinc@nvidia.com>
-Subject: [PATCH 6.6 299/587] iommufd: Report unmapped bytes in the error path of iopt_unmap_iova_range
-Date: Tue, 26 Aug 2025 13:07:28 +0200
-Message-ID: <20250826111000.532577997@linuxfoundation.org>
+	Bryan ODonoghue <bryan.odonoghue@linaro.org>,
+	Vikash Garodia <quic_vgarodia@quicinc.com>,
+	Dikshita Agarwal <quic_dikshita@quicinc.com>,
+	Bryan ODonoghue <bod@kernel.org>,
+	Hans Verkuil <hverkuil@xs4all.nl>,
+	Neil Armstrong <neil.armstrong@linaro.org>
+Subject: [PATCH 6.16 165/457] media: iris: Update CAPTURE format info based on OUTPUT format
+Date: Tue, 26 Aug 2025 13:07:29 +0200
+Message-ID: <20250826110941.453515827@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250826110952.942403671@linuxfoundation.org>
-References: <20250826110952.942403671@linuxfoundation.org>
+In-Reply-To: <20250826110937.289866482@linuxfoundation.org>
+References: <20250826110937.289866482@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,52 +65,55 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.16-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Nicolin Chen <nicolinc@nvidia.com>
+From: Dikshita Agarwal <quic_dikshita@quicinc.com>
 
-commit b23e09f9997771b4b739c1c694fa832b5fa2de02 upstream.
+commit 8aadfd445373b74de4a5cd36736843ae01856636 upstream.
 
-There are callers that read the unmapped bytes even when rc != 0. Thus, do
-not forget to report it in the error path too.
+Update the width, height and buffer size of CAPTURE based on the
+resolution set to OUTPUT via VIDIOC_S_FMT. This is required to set the
+updated capture resolution to firmware when S_FMT is called only for
+OUTPUT.
 
-Fixes: 8d40205f6093 ("iommufd: Add kAPI toward external drivers for kernel access")
-Link: https://patch.msgid.link/r/e2b61303bbc008ba1a4e2d7c2a2894749b59fdac.1752126748.git.nicolinc@nvidia.com
 Cc: stable@vger.kernel.org
-Reviewed-by: Kevin Tian <kevin.tian@intel.com>
-Reviewed-by: Jason Gunthorpe <jgg@nvidia.com>
-Signed-off-by: Nicolin Chen <nicolinc@nvidia.com>
-Signed-off-by: Jason Gunthorpe <jgg@nvidia.com>
+Fixes: b530b95de22c ("media: iris: implement s_fmt, g_fmt and try_fmt ioctls")
+Reviewed-by: Bryan O'Donoghue <bryan.odonoghue@linaro.org>
+Acked-by: Vikash Garodia <quic_vgarodia@quicinc.com>
+Tested-by: Neil Armstrong <neil.armstrong@linaro.org> # on SM8550-QRD
+Tested-by: Neil Armstrong <neil.armstrong@linaro.org> # on SM8550-HDK
+Tested-by: Neil Armstrong <neil.armstrong@linaro.org> # on SM8650-QRD
+Tested-by: Neil Armstrong <neil.armstrong@linaro.org> # on SM8650-HDK
+Signed-off-by: Dikshita Agarwal <quic_dikshita@quicinc.com>
+Tested-by: Vikash Garodia <quic_vgarodia@quicinc.com> # on sa8775p-ride
+Signed-off-by: Bryan O'Donoghue <bod@kernel.org>
+Signed-off-by: Hans Verkuil <hverkuil@xs4all.nl>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/iommu/iommufd/io_pagetable.c |    7 +++++--
- 1 file changed, 5 insertions(+), 2 deletions(-)
+ drivers/media/platform/qcom/iris/iris_vdec.c | 5 +++++
+ 1 file changed, 5 insertions(+)
 
---- a/drivers/iommu/iommufd/io_pagetable.c
-+++ b/drivers/iommu/iommufd/io_pagetable.c
-@@ -524,8 +524,10 @@ again:
- 			iommufd_access_notify_unmap(iopt, area_first, length);
- 			/* Something is not responding to unmap requests. */
- 			tries++;
--			if (WARN_ON(tries > 100))
--				return -EDEADLOCK;
-+			if (WARN_ON(tries > 100)) {
-+				rc = -EDEADLOCK;
-+				goto out_unmapped;
-+			}
- 			goto again;
- 		}
+diff --git a/drivers/media/platform/qcom/iris/iris_vdec.c b/drivers/media/platform/qcom/iris/iris_vdec.c
+index 9c049b9671cc..d342f733feb9 100644
+--- a/drivers/media/platform/qcom/iris/iris_vdec.c
++++ b/drivers/media/platform/qcom/iris/iris_vdec.c
+@@ -171,6 +171,11 @@ int iris_vdec_s_fmt(struct iris_inst *inst, struct v4l2_format *f)
+ 		output_fmt->fmt.pix_mp.ycbcr_enc = f->fmt.pix_mp.ycbcr_enc;
+ 		output_fmt->fmt.pix_mp.quantization = f->fmt.pix_mp.quantization;
  
-@@ -547,6 +549,7 @@ again:
- out_unlock_iova:
- 	up_write(&iopt->iova_rwsem);
- 	up_read(&iopt->domains_rwsem);
-+out_unmapped:
- 	if (unmapped)
- 		*unmapped = unmapped_bytes;
- 	return rc;
++		/* Update capture format based on new ip w/h */
++		output_fmt->fmt.pix_mp.width = ALIGN(f->fmt.pix_mp.width, 128);
++		output_fmt->fmt.pix_mp.height = ALIGN(f->fmt.pix_mp.height, 32);
++		inst->buffers[BUF_OUTPUT].size = iris_get_buffer_size(inst, BUF_OUTPUT);
++
+ 		inst->crop.left = 0;
+ 		inst->crop.top = 0;
+ 		inst->crop.width = f->fmt.pix_mp.width;
+-- 
+2.50.1
+
 
 
 
