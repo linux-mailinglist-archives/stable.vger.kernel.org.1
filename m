@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-172988-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-175037-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id CACD1B35B2A
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 13:19:59 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4E3E5B3654C
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 15:46:44 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id E38367C2EE7
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 11:19:45 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id D813D7BC45F
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 13:44:58 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 59A41342CA3;
-	Tue, 26 Aug 2025 11:18:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B578A345730;
+	Tue, 26 Aug 2025 13:46:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="paA/LMQn"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="p7F0sJ+l"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DBD7D321433;
-	Tue, 26 Aug 2025 11:18:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 73427393DC0;
+	Tue, 26 Aug 2025 13:46:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756207084; cv=none; b=UzBMQOBOTj44ckHaEkzxoTtpiShzIxPrQRQxJ3lTtZViocouHhKr+q6qBXW1D4p95SLFOjrmqbGALPI/jABJq1VJE42OrOXV9MbGtEvja8pWWbpl3Rl6x2Fii7qy+46k6wxHe2p+EQq43QnSMg+ACapO4iQrViFI9h7R4niWzD8=
+	t=1756215974; cv=none; b=SSbukecd5LttqWJFSJJHnU+fLGSsslSCPwJLAwO335v6YEWPlvPbq79cU3X1sJ67p2vzJzGAquWWFxB0PqL2ME/t0q9RpYDmOV86M0K4j/RJeB3lx5tG7OIdEGD2KFvHM4flor06uoXYQAr/se8fabElqMb0BWomJt2iUR8s/zE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756207084; c=relaxed/simple;
-	bh=YMczHaihYPxaVVMJ6lwHgXti1mDOaBhTNAzfId5QnnQ=;
+	s=arc-20240116; t=1756215974; c=relaxed/simple;
+	bh=/d8rxjJIybEjnLWT4vvGMyduIr9TxIvfjvp/6hva+8w=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Y2+JjSoB/adCoPkHlI6qnv6I+HFK93llKzZsOsNk8qswUjzm+pb3y0pLHsZbMzr8fgvNb07emjXrchFsdJti1vsq+jzWIpIo3L3QlHSsFWdARBq2mYhb22J4dZ7e6K8cLXnSAP9TiQnF8Deihlyk/u47AblJF51fMFXSq47bpbg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=paA/LMQn; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 663A1C4CEF1;
-	Tue, 26 Aug 2025 11:18:03 +0000 (UTC)
+	 MIME-Version; b=Hz0MWGYd6Ly2lyczFfamAOo8Ms1CG2Uf8mYC5eJfza2zPlb7ZBlEH8GYDu00D/t9cZfe5RA9uuAa3jM+PW80FeYLTo2Iv9oZBxtuhGdQotTbBKVuCjrmbZAqjfj12JG5mqMzoui7twgmo8BLV7jUKDP/cBvowsTVMgX+SlpFnbk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=p7F0sJ+l; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0434FC4CEF1;
+	Tue, 26 Aug 2025 13:46:13 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1756207083;
-	bh=YMczHaihYPxaVVMJ6lwHgXti1mDOaBhTNAzfId5QnnQ=;
+	s=korg; t=1756215974;
+	bh=/d8rxjJIybEjnLWT4vvGMyduIr9TxIvfjvp/6hva+8w=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=paA/LMQnzdb7Uf6q/iy5XdFRXLV5ihGQlh6MlEGXfPQ9g0nbIvfx9MTxvbHoqEOOh
-	 sIGatj+tqLx7is911QVM8xvFjyhZL4tlS/japXfu79IyE7XMPxxOlf+h3oLzFncb/j
-	 p7x2llQeh4wf+CrcxtUYTCFqYpE6ibdeIwOX4Z1k=
+	b=p7F0sJ+lhwmEU//olt/p72XqR3wv8qjGZf7peIMrWI/PqGc61UZa/XYav7uZ1Kwsu
+	 4kvIXxea5DfcXZhuhDV4+Rdu+0jF7jR/UsCX0+LVzpK702580nBRFcerYCE5eLZnHs
+	 PTd17DXkiQ5U2KtZepZhtAzBZn2g4K0UX3/1mSmQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	stable@kernel.org,
-	Qu Wenruo <wqu@suse.com>,
-	Zhang Yi <yi.zhang@huawei.com>,
-	Theodore Tso <tytso@mit.edu>
-Subject: [PATCH 6.16 043/457] ext4: fix hole length calculation overflow in non-extent inodes
-Date: Tue, 26 Aug 2025 13:05:27 +0200
-Message-ID: <20250826110938.409115561@linuxfoundation.org>
+	Michal Schmidt <mschmidt@redhat.com>,
+	Nikolay Aleksandrov <razor@blackwall.org>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.15 237/644] benet: fix BUG when creating VFs
+Date: Tue, 26 Aug 2025 13:05:28 +0200
+Message-ID: <20250826110952.276380583@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250826110937.289866482@linuxfoundation.org>
-References: <20250826110937.289866482@linuxfoundation.org>
+In-Reply-To: <20250826110946.507083938@linuxfoundation.org>
+References: <20250826110946.507083938@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,85 +63,66 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.16-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Zhang Yi <yi.zhang@huawei.com>
+From: Michal Schmidt <mschmidt@redhat.com>
 
-commit 02c7f7219ac0e2277b3379a3a0e9841ef464b6d4 upstream.
+[ Upstream commit 5a40f8af2ba1b9bdf46e2db10e8c9710538fbc63 ]
 
-In a filesystem with a block size larger than 4KB, the hole length
-calculation for a non-extent inode in ext4_ind_map_blocks() can easily
-exceed INT_MAX. Then it could return a zero length hole and trigger the
-following waring and infinite in the iomap infrastructure.
+benet crashes as soon as SRIOV VFs are created:
 
-  ------------[ cut here ]------------
-  WARNING: CPU: 3 PID: 434101 at fs/iomap/iter.c:34 iomap_iter_done+0x148/0x190
-  CPU: 3 UID: 0 PID: 434101 Comm: fsstress Not tainted 6.16.0-rc7+ #128 PREEMPT(voluntary)
-  Hardware name: QEMU KVM Virtual Machine, BIOS unknown 2/2/2022
-  pstate: 60400005 (nZCv daif +PAN -UAO -TCO -DIT -SSBS BTYPE=--)
-  pc : iomap_iter_done+0x148/0x190
-  lr : iomap_iter+0x174/0x230
-  sp : ffff8000880af740
-  x29: ffff8000880af740 x28: ffff0000db8e6840 x27: 0000000000000000
-  x26: 0000000000000000 x25: ffff8000880af830 x24: 0000004000000000
-  x23: 0000000000000002 x22: 000001bfdbfa8000 x21: ffffa6a41c002e48
-  x20: 0000000000000001 x19: ffff8000880af808 x18: 0000000000000000
-  x17: 0000000000000000 x16: ffffa6a495ee6cd0 x15: 0000000000000000
-  x14: 00000000000003d4 x13: 00000000fa83b2da x12: 0000b236fc95f18c
-  x11: ffffa6a4978b9c08 x10: 0000000000001da0 x9 : ffffa6a41c1a2a44
-  x8 : ffff8000880af5c8 x7 : 0000000001000000 x6 : 0000000000000000
-  x5 : 0000000000000004 x4 : 000001bfdbfa8000 x3 : 0000000000000000
-  x2 : 0000000000000000 x1 : 0000004004030000 x0 : 0000000000000000
-  Call trace:
-   iomap_iter_done+0x148/0x190 (P)
-   iomap_iter+0x174/0x230
-   iomap_fiemap+0x154/0x1d8
-   ext4_fiemap+0x110/0x140 [ext4]
-   do_vfs_ioctl+0x4b8/0xbc0
-   __arm64_sys_ioctl+0x8c/0x120
-   invoke_syscall+0x6c/0x100
-   el0_svc_common.constprop.0+0x48/0xf0
-   do_el0_svc+0x24/0x38
-   el0_svc+0x38/0x120
-   el0t_64_sync_handler+0x10c/0x138
-   el0t_64_sync+0x198/0x1a0
-  ---[ end trace 0000000000000000 ]---
+ kernel BUG at mm/vmalloc.c:3457!
+ Oops: invalid opcode: 0000 [#1] SMP KASAN NOPTI
+ CPU: 4 UID: 0 PID: 7408 Comm: test.sh Kdump: loaded Not tainted 6.16.0+ #1 PREEMPT(voluntary)
+ [...]
+ RIP: 0010:vunmap+0x5f/0x70
+ [...]
+ Call Trace:
+  <TASK>
+  __iommu_dma_free+0xe8/0x1c0
+  be_cmd_set_mac_list+0x3fe/0x640 [be2net]
+  be_cmd_set_mac+0xaf/0x110 [be2net]
+  be_vf_eth_addr_config+0x19f/0x330 [be2net]
+  be_vf_setup+0x4f7/0x990 [be2net]
+  be_pci_sriov_configure+0x3a1/0x470 [be2net]
+  sriov_numvfs_store+0x20b/0x380
+  kernfs_fop_write_iter+0x354/0x530
+  vfs_write+0x9b9/0xf60
+  ksys_write+0xf3/0x1d0
+  do_syscall_64+0x8c/0x3d0
 
-Cc: stable@kernel.org
-Fixes: facab4d9711e ("ext4: return hole from ext4_map_blocks()")
-Reported-by: Qu Wenruo <wqu@suse.com>
-Closes: https://lore.kernel.org/linux-ext4/9b650a52-9672-4604-a765-bb6be55d1e4a@gmx.com/
-Tested-by: Qu Wenruo <wqu@suse.com>
-Signed-off-by: Zhang Yi <yi.zhang@huawei.com>
-Link: https://patch.msgid.link/20250811064532.1788289-1-yi.zhang@huaweicloud.com
-Signed-off-by: Theodore Ts'o <tytso@mit.edu>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+be_cmd_set_mac_list() calls dma_free_coherent() under a spin_lock_bh.
+Fix it by freeing only after the lock has been released.
+
+Fixes: 1a82d19ca2d6 ("be2net: fix sleeping while atomic bugs in be_ndo_bridge_getlink")
+Signed-off-by: Michal Schmidt <mschmidt@redhat.com>
+Reviewed-by: Nikolay Aleksandrov <razor@blackwall.org>
+Link: https://patch.msgid.link/20250801101338.72502-1-mschmidt@redhat.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/ext4/indirect.c |    4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ drivers/net/ethernet/emulex/benet/be_cmds.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/fs/ext4/indirect.c
-+++ b/fs/ext4/indirect.c
-@@ -539,7 +539,7 @@ int ext4_ind_map_blocks(handle_t *handle
- 	int indirect_blks;
- 	int blocks_to_boundary = 0;
- 	int depth;
--	int count = 0;
-+	u64 count = 0;
- 	ext4_fsblk_t first_block = 0;
+diff --git a/drivers/net/ethernet/emulex/benet/be_cmds.c b/drivers/net/ethernet/emulex/benet/be_cmds.c
+index 1cdb7ca019f5..96a8749cf34f 100644
+--- a/drivers/net/ethernet/emulex/benet/be_cmds.c
++++ b/drivers/net/ethernet/emulex/benet/be_cmds.c
+@@ -3851,8 +3851,8 @@ int be_cmd_set_mac_list(struct be_adapter *adapter, u8 *mac_array,
+ 	status = be_mcc_notify_wait(adapter);
  
- 	trace_ext4_ind_map_blocks_enter(inode, map->m_lblk, map->m_len, flags);
-@@ -588,7 +588,7 @@ int ext4_ind_map_blocks(handle_t *handle
- 		count++;
- 		/* Fill in size of a hole we found */
- 		map->m_pblk = 0;
--		map->m_len = min_t(unsigned int, map->m_len, count);
-+		map->m_len = umin(map->m_len, count);
- 		goto cleanup;
- 	}
+ err:
+-	dma_free_coherent(&adapter->pdev->dev, cmd.size, cmd.va, cmd.dma);
+ 	spin_unlock_bh(&adapter->mcc_lock);
++	dma_free_coherent(&adapter->pdev->dev, cmd.size, cmd.va, cmd.dma);
+ 	return status;
+ }
  
+-- 
+2.39.5
+
 
 
 
