@@ -1,57 +1,58 @@
-Return-Path: <stable+bounces-173699-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-175955-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id A0DC4B35E6C
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 13:57:31 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3F5B8B36AC2
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 16:40:37 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 409111892B3F
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 11:49:22 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 7527F1C23C0D
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 14:29:31 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5FAA0283FDF;
-	Tue, 26 Aug 2025 11:48:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5ADCE35337E;
+	Tue, 26 Aug 2025 14:26:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="KXOVHel2"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="vH14Uh6K"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1CAF8200112;
-	Tue, 26 Aug 2025 11:48:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 14FA130AAD8;
+	Tue, 26 Aug 2025 14:26:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756208927; cv=none; b=c9y7K5N39VStxqSM5UnWti0cR1kpiOWttmrS29Tb8eSbB4m+8G2UhFX5FMM6XQUbfk/orPrpdfOru5+ZAqqGyRHOP++Z0O9vjC14usV6skOYvry8kr4nzHTB1vPzpUTGcpye2u+wVl6diE5U318EWamob2xyVcfLEzVp+VIEfPk=
+	t=1756218408; cv=none; b=rlPlMhA2qI6i2iH0+poOLfAHwKzjLPPewcpwFZek83Wrhp/4YOQoAiK0iiQPnUhL2FUjRnaxsDvxVVbMEFMcX6eH4VmcRho1L4wL+T3iYVitN3UlVxJIgpIT0fCmwLhyH6LZj/Z3AladWqxIP2h3VZ4llvHr5lkag8VRAwsB/Rs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756208927; c=relaxed/simple;
-	bh=VtMo4qNuX9dRPg4XY/Uf+ri6ZXTkFsGagjj/Juc8E9o=;
+	s=arc-20240116; t=1756218408; c=relaxed/simple;
+	bh=a/GWlP0uyC/zhBRfjrPostSKwANlPPlMfVNJ+7BGQLU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=QQRiPTNqs2MY7T/5EKHUq1Tl41vddBMEOZzFL9JUX+Y5tnyQuuywaWUBB1jjrEaLbHANkv0Bjaqoox6MjouIDqu2B6FBK5wa8+JxCUDzQd+4vS7jGJVSCBQ8v8q56kkNImQJxXYpgxMF0crtyxJMrpkhH5XB45xvDWg+vwbsjcU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=KXOVHel2; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A23CFC4CEF4;
-	Tue, 26 Aug 2025 11:48:46 +0000 (UTC)
+	 MIME-Version; b=KA/jQAljbvclWf6fpzNPsi0Zatt/Wzj1KWuNwgPqRacuySwBkyJnvs0sfRqwJBMn3n//y9nSSlRbUSlQuaclbgB9baEVjdMpU4Il3rVNM9PKO8UgxZlojWYUNNABaiQtuaUgkYdKsN1UXPrKdOEqkBXJmtbtlgPgg2apqCLAaLs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=vH14Uh6K; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 99410C4CEF1;
+	Tue, 26 Aug 2025 14:26:47 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1756208927;
-	bh=VtMo4qNuX9dRPg4XY/Uf+ri6ZXTkFsGagjj/Juc8E9o=;
+	s=korg; t=1756218408;
+	bh=a/GWlP0uyC/zhBRfjrPostSKwANlPPlMfVNJ+7BGQLU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=KXOVHel24Z75nLNfhKlyVEDQ961u3E2puIlvtkf7nxTQRGaejiW9C27/Brze5g8PT
-	 nLUsx1eOxcs0Op4wruU8mUsU37oyoNILOEMGBde6ur6CMrb90Fz5K6vOJZd1UjSbIe
-	 HAHHgBaMqcCNNWHMYDgYzQqjN6uBPoPhyLL6DaDA=
+	b=vH14Uh6KMARTKf8h6/gaDseWADFGqenROjJvYhknJyZOCaTcPY72aqIhIFB9ghGwk
+	 wFA04AVlwWtO4esKhlOBT5R7H4rhS4UjNhWb7yERWOyPlD7vQYzJN2r7kixzpqtDZi
+	 PAJAQsUs9pP7IWVwYxE+jdT05BuiEW2LPAOxQYfI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jordan Rhee <jordanrhee@google.com>,
-	Jeroen de Borst <jeroendb@google.com>,
-	Jakub Kicinski <kuba@kernel.org>,
+	Jean-Baptiste Maneyrol <jean-baptiste.maneyrol@tdk.com>,
+	Andy Shevchenko <andy@kernel.org>,
+	Sean Nyekjaer <sean@geanix.com>,
+	Jonathan Cameron <Jonathan.Cameron@huawei.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 298/322] gve: prevent ethtool ops after shutdown
+Subject: [PATCH 5.10 503/523] iio: imu: inv_icm42600: change invalid data error to -EBUSY
 Date: Tue, 26 Aug 2025 13:11:53 +0200
-Message-ID: <20250826110923.256741834@linuxfoundation.org>
+Message-ID: <20250826110936.848373147@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250826110915.169062587@linuxfoundation.org>
-References: <20250826110915.169062587@linuxfoundation.org>
+In-Reply-To: <20250826110924.562212281@linuxfoundation.org>
+References: <20250826110924.562212281@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,59 +64,52 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jordan Rhee <jordanrhee@google.com>
+From: Jean-Baptiste Maneyrol <jean-baptiste.maneyrol@tdk.com>
 
-[ Upstream commit 75a9a46d67f46d608205888f9b34e315c1786345 ]
+[ Upstream commit dfdc31e7ccf3ac1d5ec01d5120c71e14745e3dd8 ]
 
-A crash can occur if an ethtool operation is invoked
-after shutdown() is called.
+Temperature sensor returns the temperature of the mechanical parts
+of the chip. If both accel and gyro are off, the temperature sensor is
+also automatically turned off and returns invalid data.
 
-shutdown() is invoked during system shutdown to stop DMA operations
-without performing expensive deallocations. It is discouraged to
-unregister the netdev in this path, so the device may still be visible
-to userspace and kernel helpers.
+In this case, returning -EBUSY error code is better then -EINVAL and
+indicates userspace that it needs to retry reading temperature in
+another context.
 
-In gve, shutdown() tears down most internal data structures. If an
-ethtool operation is dispatched after shutdown(), it will dereference
-freed or NULL pointers, leading to a kernel panic. While graceful
-shutdown normally quiesces userspace before invoking the reboot
-syscall, forced shutdowns (as observed on GCP VMs) can still trigger
-this path.
-
-Fix by calling netif_device_detach() in shutdown().
-This marks the device as detached so the ethtool ioctl handler
-will skip dispatching operations to the driver.
-
-Fixes: 974365e51861 ("gve: Implement suspend/resume/shutdown")
-Signed-off-by: Jordan Rhee <jordanrhee@google.com>
-Signed-off-by: Jeroen de Borst <jeroendb@google.com>
-Link: https://patch.msgid.link/20250818211245.1156919-1-jeroendb@google.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Fixes: bc3eb0207fb5 ("iio: imu: inv_icm42600: add temperature sensor support")
+Signed-off-by: Jean-Baptiste Maneyrol <jean-baptiste.maneyrol@tdk.com>
+Cc: stable@vger.kernel.org
+Reviewed-by: Andy Shevchenko <andy@kernel.org>
+Reviewed-by: Sean Nyekjaer <sean@geanix.com>
+Link: https://patch.msgid.link/20250808-inv-icm42600-change-temperature-error-code-v1-1-986fbf63b77d@tdk.com
+Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
+[ Adjust context ]
 Signed-off-by: Sasha Levin <sashal@kernel.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/net/ethernet/google/gve/gve_main.c | 2 ++
- 1 file changed, 2 insertions(+)
+ drivers/iio/imu/inv_icm42600/inv_icm42600_temp.c |    6 +++++-
+ 1 file changed, 5 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/net/ethernet/google/gve/gve_main.c b/drivers/net/ethernet/google/gve/gve_main.c
-index 8ea3c7493663..497a19ca198d 100644
---- a/drivers/net/ethernet/google/gve/gve_main.c
-+++ b/drivers/net/ethernet/google/gve/gve_main.c
-@@ -2726,6 +2726,8 @@ static void gve_shutdown(struct pci_dev *pdev)
- 	struct gve_priv *priv = netdev_priv(netdev);
- 	bool was_up = netif_running(priv->dev);
+--- a/drivers/iio/imu/inv_icm42600/inv_icm42600_temp.c
++++ b/drivers/iio/imu/inv_icm42600/inv_icm42600_temp.c
+@@ -32,8 +32,12 @@ static int inv_icm42600_temp_read(struct
+ 		goto exit;
  
-+	netif_device_detach(netdev);
-+
- 	rtnl_lock();
- 	if (was_up && gve_close(priv->dev)) {
- 		/* If the dev was up, attempt to close, if close fails, reset */
--- 
-2.50.1
-
+ 	*temp = (int16_t)be16_to_cpup(raw);
++	/*
++	 * Temperature data is invalid if both accel and gyro are off.
++	 * Return -EBUSY in this case.
++	 */
+ 	if (*temp == INV_ICM42600_DATA_INVALID)
+-		ret = -EINVAL;
++		ret = -EBUSY;
+ 
+ exit:
+ 	mutex_unlock(&st->lock);
 
 
 
