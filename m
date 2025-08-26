@@ -1,55 +1,57 @@
-Return-Path: <stable+bounces-173568-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-176258-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 62E18B35E5B
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 13:56:35 +0200 (CEST)
+Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [IPv6:2605:f480:58:1:0:1994:3:14])
+	by mail.lfdr.de (Postfix) with ESMTPS id 26547B36B13
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 16:42:49 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id E97DC366A1D
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 11:43:40 +0000 (UTC)
+	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 8029C4E2D0E
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 14:42:43 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9EB27321F30;
-	Tue, 26 Aug 2025 11:43:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8BA9035AABD;
+	Tue, 26 Aug 2025 14:39:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="suj7temX"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="fi2audQ5"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5C3D4321456;
-	Tue, 26 Aug 2025 11:43:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3632D35AACB;
+	Tue, 26 Aug 2025 14:39:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756208587; cv=none; b=Lz2ar08oAnZRHHiS1jyr4JHBj4DMs4RlYW9sVZJQBcENTZGGibdQJ1o+Qd6UAc6V+A7UEBxvJbDbpJKg17KQN/hHcOY78EX4NWFPmZ8e2rAjNfD75MhKt8XqMd3WVMOepXuql0/Lhut8XFOpbFKOusvzbsRASGXr8gk5oxiDiPY=
+	t=1756219188; cv=none; b=pOG334DeJSOIbYkSbSSboLjQLvRtyapGHyUNVqDi+KEGE1aaR9kJpTOpR3S9jQs0vJ1OCvFMl+JLCN528VPyeMGR6jygdT4SvspIp85Mjf4E5wxTiV6TNIOkH8VpSNDgbUlO/L2HMcuuCUXvcxIj+pI7N7kDnbH71ACCXcNpoMM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756208587; c=relaxed/simple;
-	bh=WtetgnXbKE1a8bDMrc4JKhmFKHfHX18be0D5ReGEZvg=;
+	s=arc-20240116; t=1756219188; c=relaxed/simple;
+	bh=OyMrv7rlG2ZQxbYd3dthhSYzG0argWLliQ6AZ0clRW0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=oXo4W8P3POYlY2hiY7RE0VAkeS8jj0TjmzP1pdHwJV3hgERars2lbUtU0zo/bDhPCJKf1RE6ukgBSzorvQydhwM486oimTBzU8JQESBDEX3NoPD7soTnXDrzA1hC8g0cvZdpgPVsYdlUJwMh7J8tdxdRF+wW48g31IewteFG+AM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=suj7temX; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id EBE65C4CEF1;
-	Tue, 26 Aug 2025 11:43:06 +0000 (UTC)
+	 MIME-Version; b=eB+ihfJmq3pLAsDFlDbHq+cNH7LvsLZXmw/ggxym2oVXKBtt4WyjWBpqviPvr+ZhT2uwarQF637+yAozAqlgi9BYpQjOmv1opi8mi1ivQeosTHmvt/gq/OWa8D0vOWe8ME9Ml0cuAB/VabO2Eji60QDa3laUWuHMgyHF3e96c44=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=fi2audQ5; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id BABCDC4CEF1;
+	Tue, 26 Aug 2025 14:39:47 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1756208587;
-	bh=WtetgnXbKE1a8bDMrc4JKhmFKHfHX18be0D5ReGEZvg=;
+	s=korg; t=1756219188;
+	bh=OyMrv7rlG2ZQxbYd3dthhSYzG0argWLliQ6AZ0clRW0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=suj7temX23IgcPjGlYM7S1tRQ0U04frQ9Or7vF3CtU1LeTnavDQA1ePbE/2kswxcF
-	 Ptv0+CnwdLAbHw5EyXuhb0pU+1upEfVuKxwZNktrSc386PxyVgX5XV3cIq/hRS6tY2
-	 NfqBzoe//44MksCwjFDaAw2BHiANg3A63FPw8vx4=
+	b=fi2audQ5b+NxV+YSFAGO2nxBN8ioypRkt2eJzHetct0i5lEAMuM5hlGFo51ISVkup
+	 c5aX1NuATcNVAxWt7gY2L3EHgG2P7w4c52aZxRGCOMw8kvZpYtGsAGeS3n8saKpB/M
+	 nyQdfG5QoaRW1zhPx97TRrQGLAKC4eQvbph20PEE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jiayi Li <lijiayi@kylinos.cn>,
-	Ulf Hansson <ulf.hansson@linaro.org>
-Subject: [PATCH 6.12 167/322] memstick: Fix deadlock by moving removing flag earlier
+	Wolfram Sang <wsa+renesas@sang-engineering.com>,
+	Frank Li <Frank.Li@nxp.com>,
+	Alexandre Belloni <alexandre.belloni@bootlin.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.4 256/403] i3c: dont fail if GETHDRCAP is unsupported
 Date: Tue, 26 Aug 2025 13:09:42 +0200
-Message-ID: <20250826110919.957981870@linuxfoundation.org>
+Message-ID: <20250826110913.895986309@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250826110915.169062587@linuxfoundation.org>
-References: <20250826110915.169062587@linuxfoundation.org>
+In-Reply-To: <20250826110905.607690791@linuxfoundation.org>
+References: <20250826110905.607690791@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,85 +63,48 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+5.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jiayi Li <lijiayi@kylinos.cn>
+From: Wolfram Sang <wsa+renesas@sang-engineering.com>
 
-commit 99d7ab8db9d8230b243f5ed20ba0229e54cc0dfa upstream.
+[ Upstream commit 447270cdb41b1c8c3621bb14b93a6749f942556e ]
 
-The existing memstick core patch: commit 62c59a8786e6 ("memstick: Skip
-allocating card when removing host") sets host->removing in
-memstick_remove_host(),but still exists a critical time window where
-memstick_check can run after host->eject is set but before removing is set.
+'I3C_BCR_HDR_CAP' is still spec v1.0 and has been renamed to 'advanced
+capabilities' in v1.1 onwards. The ST pressure sensor LPS22DF does not
+have HDR, but has the 'advanced cap' bit set. The core still wants to
+get additional information using the CCC 'GETHDRCAP' (or GETCAPS in v1.1
+onwards). Not all controllers support this CCC and will notify the upper
+layers about it. For instantiating the device, we can ignore this
+unsupported CCC as standard communication will work. Without this patch,
+the device will not be instantiated at all.
 
-In the rtsx_usb_ms driver, the problematic sequence is:
-
-rtsx_usb_ms_drv_remove:          memstick_check:
-  host->eject = true
-  cancel_work_sync(handle_req)     if(!host->removing)
-  ...                              memstick_alloc_card()
-                                     memstick_set_rw_addr()
-                                       memstick_new_req()
-                                         rtsx_usb_ms_request()
-                                           if(!host->eject)
-                                           skip schedule_work
-                                       wait_for_completion()
-  memstick_remove_host:                [blocks indefinitely]
-    host->removing = true
-    flush_workqueue()
-    [block]
-
-1. rtsx_usb_ms_drv_remove sets host->eject = true
-2. cancel_work_sync(&host->handle_req) runs
-3. memstick_check work may be executed here <-- danger window
-4. memstick_remove_host sets removing = 1
-
-During this window (step 3), memstick_check calls memstick_alloc_card,
-which may indefinitely waiting for mrq_complete completion that will
-never occur because rtsx_usb_ms_request sees eject=true and skips
-scheduling work, memstick_set_rw_addr waits forever for completion.
-
-This causes a deadlock when memstick_remove_host tries to flush_workqueue,
-waiting for memstick_check to complete, while memstick_check is blocked
-waiting for mrq_complete completion.
-
-Fix this by setting removing=true at the start of rtsx_usb_ms_drv_remove,
-before any work cancellation. This ensures memstick_check will see the
-removing flag immediately and exit early, avoiding the deadlock.
-
-Fixes: 62c59a8786e6 ("memstick: Skip allocating card when removing host")
-Signed-off-by: Jiayi Li <lijiayi@kylinos.cn>
-Cc: stable@vger.kernel.org
-Link: https://lore.kernel.org/r/20250804013604.1311218-1-lijiayi@kylinos.cn
-Signed-off-by: Ulf Hansson <ulf.hansson@linaro.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Signed-off-by: Wolfram Sang <wsa+renesas@sang-engineering.com>
+Reviewed-by: Frank Li <Frank.Li@nxp.com>
+Link: https://lore.kernel.org/r/20250704204524.6124-1-wsa+renesas@sang-engineering.com
+Signed-off-by: Alexandre Belloni <alexandre.belloni@bootlin.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/memstick/core/memstick.c    |    1 -
- drivers/memstick/host/rtsx_usb_ms.c |    1 +
- 2 files changed, 1 insertion(+), 1 deletion(-)
+ drivers/i3c/master.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/drivers/memstick/core/memstick.c
-+++ b/drivers/memstick/core/memstick.c
-@@ -547,7 +547,6 @@ EXPORT_SYMBOL(memstick_add_host);
-  */
- void memstick_remove_host(struct memstick_host *host)
- {
--	host->removing = 1;
- 	flush_workqueue(workqueue);
- 	mutex_lock(&host->lock);
- 	if (host->card)
---- a/drivers/memstick/host/rtsx_usb_ms.c
-+++ b/drivers/memstick/host/rtsx_usb_ms.c
-@@ -812,6 +812,7 @@ static void rtsx_usb_ms_drv_remove(struc
- 	int err;
+diff --git a/drivers/i3c/master.c b/drivers/i3c/master.c
+index 8604c9e7b6ac..07478ddff622 100644
+--- a/drivers/i3c/master.c
++++ b/drivers/i3c/master.c
+@@ -1243,7 +1243,7 @@ static int i3c_master_retrieve_dev_info(struct i3c_dev_desc *dev)
  
- 	host->eject = true;
-+	msh->removing = true;
- 	cancel_work_sync(&host->handle_req);
- 	cancel_delayed_work_sync(&host->poll_card);
+ 	if (dev->info.bcr & I3C_BCR_HDR_CAP) {
+ 		ret = i3c_master_gethdrcap_locked(master, &dev->info);
+-		if (ret)
++		if (ret && ret != -ENOTSUPP)
+ 			return ret;
+ 	}
  
+-- 
+2.39.5
+
 
 
 
