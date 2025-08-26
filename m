@@ -1,57 +1,58 @@
-Return-Path: <stable+bounces-175447-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-176374-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id EA0F5B36899
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 16:17:40 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7CC35B36C83
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 16:56:48 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 653CF1C41577
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 14:06:46 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id A26FA8E3F76
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 14:47:49 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 51141341650;
-	Tue, 26 Aug 2025 14:04:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A9B7D352FCE;
+	Tue, 26 Aug 2025 14:44:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="xpSQaeg2"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="BAYcbsuJ"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0F4BB374C4;
-	Tue, 26 Aug 2025 14:04:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 66EBA296BDF;
+	Tue, 26 Aug 2025 14:44:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756217068; cv=none; b=bUG2xFCBO/+o4/48254z8AYZd3ZvUPgdnvhTbzipEaHRyLgF4UWV8n8QIcHfmAVvIwBbCrxG3qEaDvkdF90nTZz8aCGwblfgBwr4vAgptip7+156FDslB6RH8sfwgqy6aK51y4DRMVJLGFz8ZpHA31IX/PEGCduPZUZwDyVty1U=
+	t=1756219492; cv=none; b=UILscP67UJSOoC6XeFLdqW7T29BzHwDXNAqcDVf2U++Ubgl+H+V+oJHKOjRqw9hP4Mzx7Dd3XpMtE3WqZFgoqbytWrScvuD6t3m8zuBJSQZOqE/F7tIQZZhIiJInijAkFiljYh420SqH48IRpNA1pOdfReH9W7WH85fMf+4EpLM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756217068; c=relaxed/simple;
-	bh=CfS4YxZqWlnjdgiRUKW+OG7oUwWIrFb9C+QQPFtrBSs=;
+	s=arc-20240116; t=1756219492; c=relaxed/simple;
+	bh=5bmVF2pJ81A1F+14sPcz6rXnxQytUH1NaMnnI65zEtM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=i+/RVr6/nojCoGe86wSWZRvqUXOpGbdfv8l13xmJp0lDab1TPNh43KQP1OAcxU+uJI4vHKQnBW58cQhZpq/FBAS1g7/9M6lSjW7vpQt4XBa8W7QmPuoUSvK8HEy1I5fdNBSsGYVqwjx2ETFxi7dJhw2dVUXR+UaWem4SLZTmrMQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=xpSQaeg2; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 96BD9C113D0;
-	Tue, 26 Aug 2025 14:04:27 +0000 (UTC)
+	 MIME-Version; b=n1bTBUXof/MKAW14YSG4EskutGgVVm4hkaDThQkjQ0SsFGVy8YcGke8YKXRXTtTYFrOccmi5D57KRwoGvnNaUt7743Raiz3xSnq6z5inNPQn09PU5PG2hAeXNKjDCH9ozEwJ+8Qdi/ccYr+K1GZyz6W17WFmacBMsmo9y+Nhedg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=BAYcbsuJ; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id EF1E3C4CEF1;
+	Tue, 26 Aug 2025 14:44:51 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1756217067;
-	bh=CfS4YxZqWlnjdgiRUKW+OG7oUwWIrFb9C+QQPFtrBSs=;
+	s=korg; t=1756219492;
+	bh=5bmVF2pJ81A1F+14sPcz6rXnxQytUH1NaMnnI65zEtM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=xpSQaeg2ol8ji+VasbONi51WUKi77d5Ir1GVcBfZfGinAEZikrLtICIxaujvbIURG
-	 sCDrmaX8/YtWmDurZTPc8gn3wKN2ayIBVgKngn+R1W4w4uCDs53+c6KjumUPehadpB
-	 nY7j7Pfu0cv/KStvpqtgi8wmD0V8x7oP5iSTFzwc=
+	b=BAYcbsuJmEgqB6nxDbPqnNkoAVnSqJHCmg02l+L9+v5hYPW4rnJs2CZeWpU8IiBsg
+	 UwtQ71vUlUUxwC5Z9x4FQAsg29ndGqwzSctxsqjPsC3P0080d8LLUXhIIuFzkGZwK5
+	 KlNcsFnU0N8PM1gbt8mVkCWDc8hw+lxmtDzWmc0A=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	William Liu <will@willsroot.io>,
-	Savino Dicanosa <savy@syst3mfailure.io>,
-	Jakub Kicinski <kuba@kernel.org>,
+	Mete Durlu <meted@linux.ibm.com>,
+	Vasily Gorbik <gor@linux.ibm.com>,
+	Peter Oberparleiter <oberpar@linux.ibm.com>,
+	Alexander Gordeev <agordeev@linux.ibm.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 638/644] net/sched: Remove unnecessary WARNING condition for empty child qdisc in htb_activate
+Subject: [PATCH 5.4 403/403] s390/hypfs: Enable limited access during lockdown
 Date: Tue, 26 Aug 2025 13:12:09 +0200
-Message-ID: <20250826111002.369603789@linuxfoundation.org>
+Message-ID: <20250826110918.174424369@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250826110946.507083938@linuxfoundation.org>
-References: <20250826110946.507083938@linuxfoundation.org>
+In-Reply-To: <20250826110905.607690791@linuxfoundation.org>
+References: <20250826110905.607690791@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,40 +64,59 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+5.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: William Liu <will@willsroot.io>
+From: Peter Oberparleiter <oberpar@linux.ibm.com>
 
-[ Upstream commit 2c2192e5f9c7c2892fe2363244d1387f62710d83 ]
+[ Upstream commit 3868f910440c47cd5d158776be4ba4e2186beda7 ]
 
-The WARN_ON trigger based on !cl->leaf.q->q.qlen is unnecessary in
-htb_activate. htb_dequeue_tree already accounts for that scenario.
+When kernel lockdown is active, debugfs_locked_down() blocks access to
+hypfs files that register ioctl callbacks, even if the ioctl interface
+is not required for a function. This unnecessarily breaks userspace
+tools that only rely on read operations.
 
-Fixes: 1da177e4c3f4 ("Linux-2.6.12-rc2")
-Signed-off-by: William Liu <will@willsroot.io>
-Reviewed-by: Savino Dicanosa <savy@syst3mfailure.io>
-Link: https://patch.msgid.link/20250819033632.579854-1-will@willsroot.io
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Resolve this by registering a minimal set of file operations during
+lockdown, avoiding ioctl registration and preserving access for affected
+tooling.
+
+Note that this change restores hypfs functionality when lockdown is
+active from early boot (e.g. via lockdown=integrity kernel parameter),
+but does not apply to scenarios where lockdown is enabled dynamically
+while Linux is running.
+
+Tested-by: Mete Durlu <meted@linux.ibm.com>
+Reviewed-by: Vasily Gorbik <gor@linux.ibm.com>
+Fixes: 5496197f9b08 ("debugfs: Restrict debugfs when the kernel is locked down")
+Signed-off-by: Peter Oberparleiter <oberpar@linux.ibm.com>
+Signed-off-by: Alexander Gordeev <agordeev@linux.ibm.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/sched/sch_htb.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ arch/s390/hypfs/hypfs_dbfs.c | 3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
-diff --git a/net/sched/sch_htb.c b/net/sched/sch_htb.c
-index e9f349cb6446..6c4de685a8e4 100644
---- a/net/sched/sch_htb.c
-+++ b/net/sched/sch_htb.c
-@@ -589,7 +589,7 @@ htb_change_class_mode(struct htb_sched *q, struct htb_class *cl, s64 *diff)
+diff --git a/arch/s390/hypfs/hypfs_dbfs.c b/arch/s390/hypfs/hypfs_dbfs.c
+index c5f53dc3dbbc..5848f2e374a6 100644
+--- a/arch/s390/hypfs/hypfs_dbfs.c
++++ b/arch/s390/hypfs/hypfs_dbfs.c
+@@ -6,6 +6,7 @@
+  * Author(s): Michael Holzheu <holzheu@linux.vnet.ibm.com>
   */
- static inline void htb_activate(struct htb_sched *q, struct htb_class *cl)
- {
--	WARN_ON(cl->level || !cl->leaf.q || !cl->leaf.q->q.qlen);
-+	WARN_ON(cl->level || !cl->leaf.q);
  
- 	if (!cl->prio_activity) {
- 		cl->prio_activity = 1 << cl->prio;
++#include <linux/security.h>
+ #include <linux/slab.h>
+ #include "hypfs.h"
+ 
+@@ -83,7 +84,7 @@ void hypfs_dbfs_create_file(struct hypfs_dbfs_file *df)
+ {
+ 	const struct file_operations *fops = &dbfs_ops;
+ 
+-	if (df->unlocked_ioctl)
++	if (df->unlocked_ioctl && !security_locked_down(LOCKDOWN_DEBUGFS))
+ 		fops = &dbfs_ops_ioctl;
+ 	df->dentry = debugfs_create_file(df->name, 0400, dbfs_dir, df, fops);
+ 	mutex_init(&df->lock);
 -- 
 2.50.1
 
