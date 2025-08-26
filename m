@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-175209-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-173187-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 058BFB36767
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 16:06:10 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 38866B35BAC
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 13:26:55 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 176C016C00D
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 13:55:42 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 462C23A843E
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 11:26:37 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9A41B3469E3;
-	Tue, 26 Aug 2025 13:53:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id EA966284B5B;
+	Tue, 26 Aug 2025 11:26:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="KpDpcKzW"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="JjRS5Rst"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 570B1338F51;
-	Tue, 26 Aug 2025 13:53:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A871C2BE03C;
+	Tue, 26 Aug 2025 11:26:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756216429; cv=none; b=jU+Oi4pAFPJf+CDlOPeoWdHoYMnstCJjds+GqH/TleuEJ1w22yOSW4FBk+2L5mPoJbfeoxXfkmauP2OCz6pz0hL7+KWc7Y42yu47liN7shAToAecGfRp7gRFlcJFJgY3Z5TonFNndQLGMzX/FJ/zVe4bw/pawwrQt9OIGf21m10=
+	t=1756207596; cv=none; b=ewa5n5IjulyKH81wwjK1vMRBfGe1mQwwPHSjAYJ/yMzVZpJXk2arxi5aCvwGSqFlfLxPHzBdKi2T1cpN76JTf+vvpUeArOKY3cXZELc+YqLZGuWaoWH06Jov1eeAuNZHW3709sLc2OhW/FJn98w/6/xZ0AIyZvx4qjmfFaUuLys=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756216429; c=relaxed/simple;
-	bh=tikVpCArvSY+jXqy9ObybvNuxbcImHmQA5/kwsToKMM=;
+	s=arc-20240116; t=1756207596; c=relaxed/simple;
+	bh=5nSW2E5JhAU1NzCeUaO2HBpqqHJk7N4Vs0gaFUWwRuM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=lEpwk++it2J4uFpmHkLjoDzWFOif6TUi9iDmZtoLIsdBy0CS9TbzRVySNDl+5wbAbufz0GBFtYQkO2QHBXIF0mJQUAUDtA9IJ+mNtqSdP+iXvFzXCfaPjROZEp+TaYOz+pKu2hr2ppIv49vSanQxZz+RHDKC7s1fW6j2GURCL+o=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=KpDpcKzW; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D8871C4CEF1;
-	Tue, 26 Aug 2025 13:53:48 +0000 (UTC)
+	 MIME-Version; b=k6KI8mh4s9Tg7qfFWeBHrK/aVkQkuC5TJgufkd/R4OvhXApcxL/UITvZTNKbho8HXkSYCbMt5z3ci3ZuVSqMpOlihvayRvESR4urHfppQCBdTRJql9dVZ667wgZ9fSTXyD0JeSWVMoWayMrM5FuibcpHsybkNpBn2uvkov2CaEw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=JjRS5Rst; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 356F3C4CEF1;
+	Tue, 26 Aug 2025 11:26:36 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1756216429;
-	bh=tikVpCArvSY+jXqy9ObybvNuxbcImHmQA5/kwsToKMM=;
+	s=korg; t=1756207596;
+	bh=5nSW2E5JhAU1NzCeUaO2HBpqqHJk7N4Vs0gaFUWwRuM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=KpDpcKzWtwISzrs6Xfh8mW8Dq500SOdCR04OQkVOyjaJKTvhnKq3NQMqn4LJbk4yB
-	 o10WHPEl8cu6HQrorkOhPOEUmtWLGMZT415E1DkFv7DQHHuE6Ngw9oCF4pdp4tFVNv
-	 d+aTKJV6wSKt//HWatY2sXJy9kkoq2ZpQNcQfPO0=
+	b=JjRS5RstYvBdE/kfxG18pBbyQSZbPrnTMaQNdpTlXGkc5bTQ2eTAoHZrvUrdeaHpt
+	 wK8gWje4nmHDwkdOgPphySgeseaBBFmnY8Gc/KEPSJfKyqO5cg4fTgbM6XC3OR1hYF
+	 5qBNTgiXjzrhi7+tYvWYA6jAcDZOY6HGmS6nTjzM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Alex Guo <alexguo1023@gmail.com>,
-	Mauro Carvalho Chehab <mchehab+huawei@kernel.org>,
+	Boris Burkov <boris@bur.io>,
+	Filipe Manana <fdmanana@suse.com>,
+	David Sterba <dsterba@suse.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 409/644] media: dvb-frontends: w7090p: fix null-ptr-deref in w7090p_tuner_write_serpar and w7090p_tuner_read_serpar
+Subject: [PATCH 6.16 216/457] btrfs: add comment for optimization in free_extent_buffer()
 Date: Tue, 26 Aug 2025 13:08:20 +0200
-Message-ID: <20250826110956.589676042@linuxfoundation.org>
+Message-ID: <20250826110942.702075942@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250826110946.507083938@linuxfoundation.org>
-References: <20250826110946.507083938@linuxfoundation.org>
+In-Reply-To: <20250826110937.289866482@linuxfoundation.org>
+References: <20250826110937.289866482@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,49 +63,39 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.16-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Alex Guo <alexguo1023@gmail.com>
+From: Filipe Manana <fdmanana@suse.com>
 
-[ Upstream commit ed0234c8458b3149f15e496b48a1c9874dd24a1b ]
+[ Upstream commit 2697b6159744e5afae0f7715da9f830ba6f9e45a ]
 
-In w7090p_tuner_write_serpar, msg is controlled by user. When msg[0].buf is null and msg[0].len is zero, former checks on msg[0].buf would be passed. If accessing msg[0].buf[2] without sanity check, null pointer deref would happen. We add
-check on msg[0].len to prevent crash.
+There's this special atomic compare and exchange logic which serves to
+avoid locking the extent buffers refs_lock spinlock and therefore reduce
+lock contention, so add a comment to make it more obvious.
 
-Similar commit: commit 0ed554fd769a ("media: dvb-usb: az6027: fix null-ptr-deref in az6027_i2c_xfer()")
-
-Signed-off-by: Alex Guo <alexguo1023@gmail.com>
-Link: https://lore.kernel.org/r/20250616013353.738790-1-alexguo1023@gmail.com
-Signed-off-by: Mauro Carvalho Chehab <mchehab+huawei@kernel.org>
+Reviewed-by: Boris Burkov <boris@bur.io>
+Signed-off-by: Filipe Manana <fdmanana@suse.com>
+Reviewed-by: David Sterba <dsterba@suse.com>
+Signed-off-by: David Sterba <dsterba@suse.com>
+Stable-dep-of: ad580dfa388f ("btrfs: fix subpage deadlock in try_release_subpage_extent_buffer()")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/media/dvb-frontends/dib7000p.c |    6 ++++++
- 1 file changed, 6 insertions(+)
+ fs/btrfs/extent_io.c |    1 +
+ 1 file changed, 1 insertion(+)
 
---- a/drivers/media/dvb-frontends/dib7000p.c
-+++ b/drivers/media/dvb-frontends/dib7000p.c
-@@ -2200,6 +2200,9 @@ static int w7090p_tuner_write_serpar(str
- 	u16 i = 1000;
- 	u16 serpar_num = msg[0].buf[0];
+--- a/fs/btrfs/extent_io.c
++++ b/fs/btrfs/extent_io.c
+@@ -3493,6 +3493,7 @@ void free_extent_buffer(struct extent_bu
+ 			break;
+ 		}
  
-+	if (msg[0].len < 3)
-+		return -EOPNOTSUPP;
-+
- 	while (n_overflow == 1 && i) {
- 		n_overflow = (dib7000p_read_word(state, 1984) >> 1) & 0x1;
- 		i--;
-@@ -2220,6 +2223,9 @@ static int w7090p_tuner_read_serpar(stru
- 	u16 serpar_num = msg[0].buf[0];
- 	u16 read_word;
- 
-+	if (msg[0].len < 1 || msg[1].len < 2)
-+		return -EOPNOTSUPP;
-+
- 	while (n_overflow == 1 && i) {
- 		n_overflow = (dib7000p_read_word(state, 1984) >> 1) & 0x1;
- 		i--;
++		/* Optimization to avoid locking eb->refs_lock. */
+ 		if (atomic_try_cmpxchg(&eb->refs, &refs, refs - 1))
+ 			return;
+ 	}
 
 
 
