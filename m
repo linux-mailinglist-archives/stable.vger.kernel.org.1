@@ -1,55 +1,56 @@
-Return-Path: <stable+bounces-175053-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-174407-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 68063B36672
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 15:57:18 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id CFCA6B36324
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 15:27:08 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 0C8E08E7C4D
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 13:48:19 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id EA4106837E3
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 13:20:30 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id F1B2034A333;
-	Tue, 26 Aug 2025 13:46:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4C3EA23026B;
+	Tue, 26 Aug 2025 13:18:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="fEeHQUIB"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="auDbYgda"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AD9E7350D62;
-	Tue, 26 Aug 2025 13:46:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 09182187554;
+	Tue, 26 Aug 2025 13:18:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756216016; cv=none; b=l848oVJf5QI7eeORwySPUtCvIDzsjKHMO6YmbpybwV0dJdOwxyqfp+mnhgKhoLzGyVdX/Fgv71GQCXzC0AwqvF6v9oNEkuooXetrYfxEQejZ3mB9s2gq0tOdHrSYH8DP+657ypgwKmmzMxgV7vIIF7Ob/qpu2S9pQoZMlyswQ04=
+	t=1756214308; cv=none; b=XhRC5WcG2nySuGhJBnmx0v4T0zIrIxGiiAJG8V3bp5t2yAEYtCbZJCl8QI8s8ykRAwL0CSQOw/IBUg+r0TxMWWEE7zGBN1hEcwa4EiJmX5Oyy+cnKFG4nhrlx5xgNinE8nz/DKYGC6jNLR0yX7upRtLuCe2DJpU3il4f/enLDHc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756216016; c=relaxed/simple;
-	bh=stKvZbT+eo+bS9sCSwM2Bg5yYFhH+2f0099KaIeXZqw=;
+	s=arc-20240116; t=1756214308; c=relaxed/simple;
+	bh=ppWK1dSEJzM9+MLPTF2QvCL4qOGZIhSgLhEUVnG+6EE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=i3EpTuf4NhNtzrY2FcJ889rxPBpO3yPLTLuvdUqdYSD1DQSBZQBI24hi8qcYJzoq2SmphqstTRcwf8juChO378Y1PcsUerEw7a5282R9LimtlA9jrV/U7McIEs36ydhJV+6BqVmxms+eWxHPGLHXdUO+39XUVchYwYa89NrtwlE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=fEeHQUIB; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3D7AAC4CEF1;
-	Tue, 26 Aug 2025 13:46:56 +0000 (UTC)
+	 MIME-Version; b=BF4E46DsyeTAYy5iBROJwfF4MX79sTdpnQ1goPup5+vOq4QSRfOfpEr35O3XtlTbGuEuI0/+6MlqcHlYYXGLAH01A7PpMjqLzw39dcxjix0GDTb7xktYwL6WkUNtAG7ogCgrS5oD1Vzc7ECakRhztH5bh8PQDSnWFRJHeGJ4z9Y=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=auDbYgda; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 90E2FC4CEF1;
+	Tue, 26 Aug 2025 13:18:27 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1756216016;
-	bh=stKvZbT+eo+bS9sCSwM2Bg5yYFhH+2f0099KaIeXZqw=;
+	s=korg; t=1756214307;
+	bh=ppWK1dSEJzM9+MLPTF2QvCL4qOGZIhSgLhEUVnG+6EE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=fEeHQUIBfpo7a8rnKZnE8JwM5FDr9fRqp62HjFuEIMhltNpH9u5ky5tNErGfFGEIl
-	 HoVPknz9tYTrdWxcqjEM10jGadVxTduhGJ0XjV7Bcb8LUOMzyZUe0tFj/sasNfoO0v
-	 sc42ZrAADvYBNleXea8bCn+Tzp1POCh+Nju1+bps=
+	b=auDbYgdaRLWdy1dZohvQsbH3tahPlPLscq5azuovaBpucggZlGvp67UtPmvQ2rSs2
+	 PCiuq0EO8d29NWT45NNixSz1Jm64jmoKX1UC8QDIzXUjWGW82rpEBWxOpKYVYNBb60
+	 cyxNM7CdxhiN1RNeE9nj7QlOgS+g8Tg2WPzO5vkQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	John Ernberg <john.ernberg@actia.se>,
-	Jakub Kicinski <kuba@kernel.org>
-Subject: [PATCH 5.15 252/644] net: usbnet: Avoid potential RCU stall on LINK_CHANGE event
+	Sebastian Ott <sebott@redhat.com>,
+	"Rafael J. Wysocki" <rafael.j.wysocki@intel.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.1 090/482] ACPI: processor: fix acpi_object initialization
 Date: Tue, 26 Aug 2025 13:05:43 +0200
-Message-ID: <20250826110952.629853339@linuxfoundation.org>
+Message-ID: <20250826110933.050904050@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250826110946.507083938@linuxfoundation.org>
-References: <20250826110946.507083938@linuxfoundation.org>
+In-Reply-To: <20250826110930.769259449@linuxfoundation.org>
+References: <20250826110930.769259449@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,125 +62,46 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: John Ernberg <john.ernberg@actia.se>
+From: Sebastian Ott <sebott@redhat.com>
 
-commit 0d9cfc9b8cb17dbc29a98792d36ec39a1cf1395f upstream.
+[ Upstream commit 13edf7539211d8f7d0068ce3ed143005f1da3547 ]
 
-The Gemalto Cinterion PLS83-W modem (cdc_ether) is emitting confusing link
-up and down events when the WWAN interface is activated on the modem-side.
+Initialization of the local acpi_object in acpi_processor_get_info()
+only sets the first 4 bytes to zero and is thus incomplete. This is
+indicated by messages like:
+	acpi ACPI0007:be: Invalid PBLK length [166288104]
 
-Interrupt URBs will in consecutive polls grab:
-* Link Connected
-* Link Disconnected
-* Link Connected
+Fix this by initializing all 16 bytes of the processor member of that
+union.
 
-Where the last Connected is then a stable link state.
-
-When the system is under load this may cause the unlink_urbs() work in
-__handle_link_change() to not complete before the next usbnet_link_change()
-call turns the carrier on again, allowing rx_submit() to queue new SKBs.
-
-In that event the URB queue is filled faster than it can drain, ending up
-in a RCU stall:
-
-    rcu: INFO: rcu_sched detected expedited stalls on CPUs/tasks: { 0-.... } 33108 jiffies s: 201 root: 0x1/.
-    rcu: blocking rcu_node structures (internal RCU debug):
-    Sending NMI from CPU 1 to CPUs 0:
-    NMI backtrace for cpu 0
-
-    Call trace:
-     arch_local_irq_enable+0x4/0x8
-     local_bh_enable+0x18/0x20
-     __netdev_alloc_skb+0x18c/0x1cc
-     rx_submit+0x68/0x1f8 [usbnet]
-     rx_alloc_submit+0x4c/0x74 [usbnet]
-     usbnet_bh+0x1d8/0x218 [usbnet]
-     usbnet_bh_tasklet+0x10/0x18 [usbnet]
-     tasklet_action_common+0xa8/0x110
-     tasklet_action+0x2c/0x34
-     handle_softirqs+0x2cc/0x3a0
-     __do_softirq+0x10/0x18
-     ____do_softirq+0xc/0x14
-     call_on_irq_stack+0x24/0x34
-     do_softirq_own_stack+0x18/0x20
-     __irq_exit_rcu+0xa8/0xb8
-     irq_exit_rcu+0xc/0x30
-     el1_interrupt+0x34/0x48
-     el1h_64_irq_handler+0x14/0x1c
-     el1h_64_irq+0x68/0x6c
-     _raw_spin_unlock_irqrestore+0x38/0x48
-     xhci_urb_dequeue+0x1ac/0x45c [xhci_hcd]
-     unlink1+0xd4/0xdc [usbcore]
-     usb_hcd_unlink_urb+0x70/0xb0 [usbcore]
-     usb_unlink_urb+0x24/0x44 [usbcore]
-     unlink_urbs.constprop.0.isra.0+0x64/0xa8 [usbnet]
-     __handle_link_change+0x34/0x70 [usbnet]
-     usbnet_deferred_kevent+0x1c0/0x320 [usbnet]
-     process_scheduled_works+0x2d0/0x48c
-     worker_thread+0x150/0x1dc
-     kthread+0xd8/0xe8
-     ret_from_fork+0x10/0x20
-
-Get around the problem by delaying the carrier on to the scheduled work.
-
-This needs a new flag to keep track of the necessary action.
-
-The carrier ok check cannot be removed as it remains required for the
-LINK_RESET event flow.
-
-Fixes: 4b49f58fff00 ("usbnet: handle link change")
-Cc: stable@vger.kernel.org
-Signed-off-by: John Ernberg <john.ernberg@actia.se>
-Link: https://patch.msgid.link/20250723102526.1305339-1-john.ernberg@actia.se
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Signed-off-by: Sebastian Ott <sebott@redhat.com>
+Link: https://patch.msgid.link/20250703124215.12522-1-sebott@redhat.com
+Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/usb/usbnet.c   |   11 ++++++++---
- include/linux/usb/usbnet.h |    1 +
- 2 files changed, 9 insertions(+), 3 deletions(-)
+ drivers/acpi/acpi_processor.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/drivers/net/usb/usbnet.c
-+++ b/drivers/net/usb/usbnet.c
-@@ -1127,6 +1127,9 @@ static void __handle_link_change(struct
- 		 * tx queue is stopped by netcore after link becomes off
- 		 */
- 	} else {
-+		if (test_and_clear_bit(EVENT_LINK_CARRIER_ON, &dev->flags))
-+			netif_carrier_on(dev->net);
-+
- 		/* submitting URBs for reading packets */
- 		tasklet_schedule(&dev->bh);
- 	}
-@@ -2013,10 +2016,12 @@ EXPORT_SYMBOL(usbnet_manage_power);
- void usbnet_link_change(struct usbnet *dev, bool link, bool need_reset)
- {
- 	/* update link after link is reseted */
--	if (link && !need_reset)
--		netif_carrier_on(dev->net);
--	else
-+	if (link && !need_reset) {
-+		set_bit(EVENT_LINK_CARRIER_ON, &dev->flags);
-+	} else {
-+		clear_bit(EVENT_LINK_CARRIER_ON, &dev->flags);
- 		netif_carrier_off(dev->net);
-+	}
+diff --git a/drivers/acpi/acpi_processor.c b/drivers/acpi/acpi_processor.c
+index 8bd5c4fa91f2..cfa75b14caa2 100644
+--- a/drivers/acpi/acpi_processor.c
++++ b/drivers/acpi/acpi_processor.c
+@@ -216,7 +216,7 @@ static inline int acpi_processor_hotadd_init(struct acpi_processor *pr)
  
- 	if (need_reset && link)
- 		usbnet_defer_kevent(dev, EVENT_LINK_RESET);
---- a/include/linux/usb/usbnet.h
-+++ b/include/linux/usb/usbnet.h
-@@ -84,6 +84,7 @@ struct usbnet {
- #		define EVENT_LINK_CHANGE	11
- #		define EVENT_SET_RX_MODE	12
- #		define EVENT_NO_IP_ALIGN	13
-+#		define EVENT_LINK_CARRIER_ON	14
- /* This one is special, as it indicates that the device is going away
-  * there are cyclic dependencies between tasklet, timer and bh
-  * that must be broken
+ static int acpi_processor_get_info(struct acpi_device *device)
+ {
+-	union acpi_object object = { 0 };
++	union acpi_object object = { .processor = { 0 } };
+ 	struct acpi_buffer buffer = { sizeof(union acpi_object), &object };
+ 	struct acpi_processor *pr = acpi_driver_data(device);
+ 	int device_declaration = 0;
+-- 
+2.39.5
+
 
 
 
