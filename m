@@ -1,59 +1,56 @@
-Return-Path: <stable+bounces-174463-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-175631-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id CFA3BB363D1
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 15:33:28 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 81C4BB36966
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 16:26:37 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id DF29C174EA0
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 13:22:56 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 4DCF6580034
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 14:15:04 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 912FE3376BA;
-	Tue, 26 Aug 2025 13:20:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id DFA762C0F9C;
+	Tue, 26 Aug 2025 14:12:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="P2MnMsQe"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="lYQNrMSa"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4DEA91B87E8;
-	Tue, 26 Aug 2025 13:20:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9E40F341ABD;
+	Tue, 26 Aug 2025 14:12:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756214459; cv=none; b=t5ZXokfwgbLAeKBMD14WBeElHwFNJ/7mk4XjprCvE7F81QcyPcRJ11BFDpZDGOZgDjhPEXylonVEL3ZLFkzxN2VrdlOV79QRauDhZiOFOEZK3rWtS2IPE/tO86vP0/3+sV6b+87tgfN7OtZZhh3CaHxHqZbClGlKTjTETvkiftM=
+	t=1756217556; cv=none; b=LZW/kvrKyJhwXXA9P6IdpEFlotbuw9pHLEyooWAM211Qc9DgRNvTqdmhG9XkAeKr+ZItdZr6jt2dCQH/GjlpUlWHW0p1C+pEDKlHcNO1zS/bcW8V4ASNaRgTlcQag0IMoKeA0lTQWxyGUJaMgmhx02GF/LiQEJ/s+zJv57CD2lU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756214459; c=relaxed/simple;
-	bh=RdSUXSNEorZVt56zWQtdomExEoiIM5tuYdj6h+cKTk0=;
+	s=arc-20240116; t=1756217556; c=relaxed/simple;
+	bh=+uu7/+H0c66ypD3JGWlcebD3VshWzWxvgyRV9YX5C2Y=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Rlf4F5nmcnvelv3x+wFAm4H0oXp+uH23YMvGBcOuCOHuNZwsyTzNWw3lWfSdR/rCK1L44RjW8h0Qllz12H7fBKdk+rJoBOokhmnp6+ZqAZR9uZ9ONk+rinFgVhNSIbOGV7QAFaiirt7K6Lpok83Kjje8NtivSbdxuFbFziZ7JFc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=P2MnMsQe; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 97CE3C4CEF1;
-	Tue, 26 Aug 2025 13:20:58 +0000 (UTC)
+	 MIME-Version; b=pQWDNDdDwwlebpuLeP2oOFeFnRGul2ocGQ/O1G3YPBORxCfESCjwvYXxwGu40x63PZDUJrJ5lsirzJsRmk2mR5Ti3o6XuJC/WUX5HORwGCQLf4Ji9CmJLxMVlzcHteQK73bYIV2wscWYi10t4XOzJjHMbExubLh7eKFeZowK+Dc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=lYQNrMSa; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D1A85C4CEF1;
+	Tue, 26 Aug 2025 14:12:35 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1756214458;
-	bh=RdSUXSNEorZVt56zWQtdomExEoiIM5tuYdj6h+cKTk0=;
+	s=korg; t=1756217556;
+	bh=+uu7/+H0c66ypD3JGWlcebD3VshWzWxvgyRV9YX5C2Y=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=P2MnMsQemXWIY9v+/dWnAxsoW7BYxW8ei90GAdAaOWWvu9n19rR8ZXWyD70UV/Vfi
-	 BYSMOGWBJXUjit7Ksuzn9Te0eGhXM6cCzjxzxlBZJlBXpk8v4NNUOhgoFzkeT9wKz2
-	 ptVTCLubgDeWL7J2N0yq1ICQHxWmHnKzplP5WSwA=
+	b=lYQNrMSaqalwM+yyvXy0O8xk/6b92hV1xS8aT7FF8ijqzgTRTPWPt/AekPSo7f+Yg
+	 RsXI3fxKr5sXdie5enO22pA+Kq0mc9/TXR+pdnD7DzwEMvfZPaQoheKR1rahgr1o4e
+	 cm1KzT5TvkRpKHHQNyIOuLzzT5YdvNEe1CdeV3hw=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Nevenko Stupar <nevenko.stupar@amd.com>,
-	Ilya Bakoulin <Ilya.Bakoulin@amd.com>,
-	Ray Wu <ray.wu@amd.com>,
-	Daniel Wheeler <daniel.wheeler@amd.com>,
-	Alex Deucher <alexander.deucher@amd.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 144/482] drm/amd/display: Separate set_gsl from set_gsl_source_select
+	Budimir Markovic <markovicbudimir@gmail.com>,
+	Stefano Garzarella <sgarzare@redhat.com>,
+	Jakub Kicinski <kuba@kernel.org>
+Subject: [PATCH 5.10 187/523] vsock: Do not allow binding to VMADDR_PORT_ANY
 Date: Tue, 26 Aug 2025 13:06:37 +0200
-Message-ID: <20250826110934.373574335@linuxfoundation.org>
+Message-ID: <20250826110929.065327889@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250826110930.769259449@linuxfoundation.org>
-References: <20250826110930.769259449@linuxfoundation.org>
+In-Reply-To: <20250826110924.562212281@linuxfoundation.org>
+References: <20250826110924.562212281@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -65,54 +62,47 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Ilya Bakoulin <Ilya.Bakoulin@amd.com>
+From: Budimir Markovic <markovicbudimir@gmail.com>
 
-[ Upstream commit 660a467a5e7366cd6642de61f1aaeaf0d253ee68 ]
+commit aba0c94f61ec05315fa7815d21aefa4c87f6a9f4 upstream.
 
-[Why/How]
-Separate the checks for set_gsl and set_gsl_source_select, since
-source_select may not be implemented/necessary.
+It is possible for a vsock to autobind to VMADDR_PORT_ANY. This can
+cause a use-after-free when a connection is made to the bound socket.
+The socket returned by accept() also has port VMADDR_PORT_ANY but is not
+on the list of unbound sockets. Binding it will result in an extra
+refcount decrement similar to the one fixed in fcdd2242c023 (vsock: Keep
+the binding until socket destruction).
 
-Reviewed-by: Nevenko Stupar <nevenko.stupar@amd.com>
-Signed-off-by: Ilya Bakoulin <Ilya.Bakoulin@amd.com>
-Signed-off-by: Ray Wu <ray.wu@amd.com>
-Tested-by: Daniel Wheeler <daniel.wheeler@amd.com>
-Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Modify the check in __vsock_bind_connectible() to also prevent binding
+to VMADDR_PORT_ANY.
+
+Fixes: d021c344051a ("VSOCK: Introduce VM Sockets")
+Reported-by: Budimir Markovic <markovicbudimir@gmail.com>
+Signed-off-by: Budimir Markovic <markovicbudimir@gmail.com>
+Reviewed-by: Stefano Garzarella <sgarzare@redhat.com>
+Link: https://patch.msgid.link/20250807041811.678-1-markovicbudimir@gmail.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/gpu/drm/amd/display/dc/dcn20/dcn20_hwseq.c | 9 ++++-----
- 1 file changed, 4 insertions(+), 5 deletions(-)
+ net/vmw_vsock/af_vsock.c |    3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/gpu/drm/amd/display/dc/dcn20/dcn20_hwseq.c b/drivers/gpu/drm/amd/display/dc/dcn20/dcn20_hwseq.c
-index 81b1ab55338a..d8cf5f20ef3b 100644
---- a/drivers/gpu/drm/amd/display/dc/dcn20/dcn20_hwseq.c
-+++ b/drivers/gpu/drm/amd/display/dc/dcn20/dcn20_hwseq.c
-@@ -164,14 +164,13 @@ static void dcn20_setup_gsl_group_as_lock(
- 	}
+--- a/net/vmw_vsock/af_vsock.c
++++ b/net/vmw_vsock/af_vsock.c
+@@ -674,7 +674,8 @@ static int __vsock_bind_stream(struct vs
+ 		unsigned int i;
  
- 	/* at this point we want to program whether it's to enable or disable */
--	if (pipe_ctx->stream_res.tg->funcs->set_gsl != NULL &&
--		pipe_ctx->stream_res.tg->funcs->set_gsl_source_select != NULL) {
-+	if (pipe_ctx->stream_res.tg->funcs->set_gsl != NULL) {
- 		pipe_ctx->stream_res.tg->funcs->set_gsl(
- 			pipe_ctx->stream_res.tg,
- 			&gsl);
--
--		pipe_ctx->stream_res.tg->funcs->set_gsl_source_select(
--			pipe_ctx->stream_res.tg, group_idx,	enable ? 4 : 0);
-+		if (pipe_ctx->stream_res.tg->funcs->set_gsl_source_select != NULL)
-+			pipe_ctx->stream_res.tg->funcs->set_gsl_source_select(
-+				pipe_ctx->stream_res.tg, group_idx, enable ? 4 : 0);
- 	} else
- 		BREAK_TO_DEBUGGER();
- }
--- 
-2.39.5
-
+ 		for (i = 0; i < MAX_PORT_RETRIES; i++) {
+-			if (port <= LAST_RESERVED_PORT)
++			if (port == VMADDR_PORT_ANY ||
++			    port <= LAST_RESERVED_PORT)
+ 				port = LAST_RESERVED_PORT + 1;
+ 
+ 			new_addr.svm_port = port++;
 
 
 
