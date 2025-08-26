@@ -1,58 +1,57 @@
-Return-Path: <stable+bounces-173357-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-174296-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 470E5B35C93
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 13:35:56 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 7CA3CB362AE
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 15:21:14 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id AF9FF3AE8C6
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 11:35:43 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 68F3C683C0F
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 13:15:41 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3359C3376A5;
-	Tue, 26 Aug 2025 11:33:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7BE52341659;
+	Tue, 26 Aug 2025 13:13:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="fuUHqxEf"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Y+xUqwcB"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D9A3C3093BA;
-	Tue, 26 Aug 2025 11:33:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3BD52308F03;
+	Tue, 26 Aug 2025 13:13:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756208037; cv=none; b=bS8efrveqzdicnVbE/posYIMO468Ru5bGPf07+BcEaH7ODDK2ASoL1eg/t8j5es1I2Ay09Pt8o6Wi3rorYTX5cW8Rho4xim9NjBeyjgFWi1DzhSybcqef5f2YGY3/pVtI0l1yia/e+KPW6ES4A25zpjiTexiOLndtihFHUg/KwU=
+	t=1756214013; cv=none; b=mEU/ianpv2g+rxjl2vAFLODjQBIrNqC/4+C0DlFyT8qnV3cFRuw2gCE6za1VfyOFmAKAWfvDrCQL9BEGCtp9HIiEY/XPZ6XfDGwft7WObE2a2CbJQMQAyws2De531zuuB6XNehnfoWsuMXLGi3gswI9EwrvmuLvG+7z8GNcx4f0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756208037; c=relaxed/simple;
-	bh=4imxUJW9eJ8MNCn8BIyRbfPNRwsyu5DIEExJoQH0yJ0=;
+	s=arc-20240116; t=1756214013; c=relaxed/simple;
+	bh=ihk7ZfWhi9a9cfozyj2nnyTNErl6mNcWKpMXhc/RCTw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=cPUJkYk4nmpRQpPJghpoUBpNH3SL8Qz8Qh4V0hp4vVgvAnck42QM7+kYHvJo1SqEvun8CCzh3UBvugGwpErdp7583ZrlVyQKRZxlYEqmRfM9HYRlEobfoBKmICdXynr8aSNy/HEmbTIqfDu8AEJPDDeJA4aqKa3Tn3TlODwO7pw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=fuUHqxEf; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 67637C4CEF4;
-	Tue, 26 Aug 2025 11:33:57 +0000 (UTC)
+	 MIME-Version; b=eu/s5KRXSTQbqnjVIX2C4xlmqyfjc28rT0S0cOpFLhsbZZfMSgCa1WOsSzXwt+6WwWXdDPFt0BNeWXhlKev9II+N8VhtRCkUNk0Hc/5yFnndBx00/9wKrsn7DhNV9x1Ef+erMFl/ZJH2/wEjTg5eGqW0ohMudYOsfwo22YoILZQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Y+xUqwcB; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C11F7C4CEF4;
+	Tue, 26 Aug 2025 13:13:32 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1756208037;
-	bh=4imxUJW9eJ8MNCn8BIyRbfPNRwsyu5DIEExJoQH0yJ0=;
+	s=korg; t=1756214013;
+	bh=ihk7ZfWhi9a9cfozyj2nnyTNErl6mNcWKpMXhc/RCTw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=fuUHqxEfq8+MDMrxC5au0WSiySGv/2KhfDQcakzpDn+fdNwsO7saEZV0R002QLADL
-	 X1A6vJAnLHDEskYSoffGeUCfXB2KlqFn5QZP+UCaGy4NmiTWHm2Th5NuPlEypcVodU
-	 AnFcpuWdigIspHxeqT4vKIsvqW0NvLlr+IR2C9wQ=
+	b=Y+xUqwcBphC5QYbqmEJb5U1qw8663AV31Ta7uYXq4FxRGuZIWBPRm3zh6ckTE9UQB
+	 imicn5Pg+/BAB1xxUl2H71BHIZed47YUkvhF3xMh4WAgUWJ2azcMuhdMgPTOHn+GFC
+	 VUf0N9uLXqTYDERF/Ofafr7GQqQONASMjb+dmoyw=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	syzbot+20537064367a0f98d597@syzkaller.appspotmail.com,
-	Yuichiro Tsuji <yuichtsu@amazon.com>,
-	Andrew Lunn <andrew@lunn.ch>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.16 412/457] net: usb: asix_devices: Fix PHY address mask in MDIO bus initialization
+	Tianxiang Peng <txpeng@tencent.com>,
+	"Borislav Petkov (AMD)" <bp@alien8.de>,
+	Hui Li <caelli@tencent.com>,
+	stable@kernel.org
+Subject: [PATCH 6.6 547/587] x86/cpu/hygon: Add missing resctrl_cpu_detect() in bsp_init helper
 Date: Tue, 26 Aug 2025 13:11:36 +0200
-Message-ID: <20250826110947.476612272@linuxfoundation.org>
+Message-ID: <20250826111006.934102642@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250826110937.289866482@linuxfoundation.org>
-References: <20250826110937.289866482@linuxfoundation.org>
+In-Reply-To: <20250826110952.942403671@linuxfoundation.org>
+References: <20250826110952.942403671@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,52 +63,61 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.16-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Yuichiro Tsuji <yuichtsu@amazon.com>
+From: Tianxiang Peng <txpeng@tencent.com>
 
-[ Upstream commit 24ef2f53c07f273bad99173e27ee88d44d135b1c ]
+commit d8df126349dad855cdfedd6bbf315bad2e901c2f upstream.
 
-Syzbot reported shift-out-of-bounds exception on MDIO bus initialization.
+Since
 
-The PHY address should be masked to 5 bits (0-31). Without this
-mask, invalid PHY addresses could be used, potentially causing issues
-with MDIO bus operations.
+  923f3a2b48bd ("x86/resctrl: Query LLC monitoring properties once during boot")
 
-Fix this by masking the PHY address with 0x1f (31 decimal) to ensure
-it stays within the valid range.
+resctrl_cpu_detect() has been moved from common CPU initialization code to
+the vendor-specific BSP init helper, while Hygon didn't put that call in their
+code.
 
-Fixes: 4faff70959d5 ("net: usb: asix_devices: add phy_mask for ax88772 mdio bus")
-Reported-by: syzbot+20537064367a0f98d597@syzkaller.appspotmail.com
-Closes: https://syzkaller.appspot.com/bug?extid=20537064367a0f98d597
-Tested-by: syzbot+20537064367a0f98d597@syzkaller.appspotmail.com
-Signed-off-by: Yuichiro Tsuji <yuichtsu@amazon.com>
-Reviewed-by: Andrew Lunn <andrew@lunn.ch>
-Link: https://patch.msgid.link/20250818084541.1958-1-yuichtsu@amazon.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+This triggers a division by zero fault during early booting stage on our
+machines with X86_FEATURE_CQM* supported, where get_rdt_mon_resources() tries
+to calculate mon_l3_config with uninitialized boot_cpu_data.x86_cache_occ_scale.
+
+Add the missing resctrl_cpu_detect() in the Hygon BSP init helper.
+
+  [ bp: Massage commit message. ]
+
+Fixes: 923f3a2b48bd ("x86/resctrl: Query LLC monitoring properties once during boot")
+Signed-off-by: Tianxiang Peng <txpeng@tencent.com>
+Signed-off-by: Borislav Petkov (AMD) <bp@alien8.de>
+Reviewed-by: Hui Li <caelli@tencent.com>
+Cc: <stable@kernel.org>
+Link: https://lore.kernel.org/20250623093153.3016937-1-txpeng@tencent.com
+Signed-off-by: Tianxiang Peng <txpeng@tencent.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/net/usb/asix_devices.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ arch/x86/kernel/cpu/hygon.c |    3 +++
+ 1 file changed, 3 insertions(+)
 
-diff --git a/drivers/net/usb/asix_devices.c b/drivers/net/usb/asix_devices.c
-index d9f5942ccc44..792ddda1ad49 100644
---- a/drivers/net/usb/asix_devices.c
-+++ b/drivers/net/usb/asix_devices.c
-@@ -676,7 +676,7 @@ static int ax88772_init_mdio(struct usbnet *dev)
- 	priv->mdio->read = &asix_mdio_bus_read;
- 	priv->mdio->write = &asix_mdio_bus_write;
- 	priv->mdio->name = "Asix MDIO Bus";
--	priv->mdio->phy_mask = ~(BIT(priv->phy_addr) | BIT(AX_EMBD_PHY_ADDR));
-+	priv->mdio->phy_mask = ~(BIT(priv->phy_addr & 0x1f) | BIT(AX_EMBD_PHY_ADDR));
- 	/* mii bus name is usb-<usb bus number>-<usb device number> */
- 	snprintf(priv->mdio->id, MII_BUS_ID_SIZE, "usb-%03d:%03d",
- 		 dev->udev->bus->busnum, dev->udev->devnum);
--- 
-2.50.1
-
+--- a/arch/x86/kernel/cpu/hygon.c
++++ b/arch/x86/kernel/cpu/hygon.c
+@@ -15,6 +15,7 @@
+ #include <asm/cacheinfo.h>
+ #include <asm/spec-ctrl.h>
+ #include <asm/delay.h>
++#include <asm/resctrl.h>
+ 
+ #include "cpu.h"
+ 
+@@ -240,6 +241,8 @@ static void bsp_init_hygon(struct cpuinf
+ 			x86_amd_ls_cfg_ssbd_mask = 1ULL << 10;
+ 		}
+ 	}
++
++	resctrl_cpu_detect(c);
+ }
+ 
+ static void early_init_hygon(struct cpuinfo_x86 *c)
 
 
 
