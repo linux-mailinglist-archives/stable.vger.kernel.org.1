@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-174997-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-175489-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 06D54B3661B
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 15:53:29 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 3C2F7B368F9
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 16:21:23 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 50B708A44CD
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 13:45:01 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 1BC6D8E709F
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 14:08:02 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 94B9E343219;
-	Tue, 26 Aug 2025 13:44:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1D51F352FF2;
+	Tue, 26 Aug 2025 14:06:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="XbdDv8b/"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Nuxvi6b4"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4DE5D2F49EA;
-	Tue, 26 Aug 2025 13:44:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CE79B350D7F;
+	Tue, 26 Aug 2025 14:06:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756215868; cv=none; b=ez8pjgTRIERSnYHNGLE1k3zE/bNYw8hAYnGC6g1wMSxOmNhZZ421tlpsNjEtzz11SIn4u15II7XwE0XAdNNlyhML5RCOktQgOyxKxOGA0s0nJrlX1LutS3wZAy3diButlnUS4VOLITYy92AzzYfAm5b1rpVi6ey1SOBTqpiWKIY=
+	t=1756217180; cv=none; b=GuKgTf9j572gc6YP+LET3otmmxQb5d24pjBCwOOOS3AZM48wnXH6KRC6wSG4TgF+rGijYEdDyiJ5PEiX72rmeZdWiG76tZ4PjDNvQfFW/itiuVv1T26h+KSfedxZTaZU7sY3WHf69OtKMupdPr8ooxPBANgq2vkYNDD2KVSWk8g=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756215868; c=relaxed/simple;
-	bh=sZ7RrW9BsfNUXIRy0hxkVWlWyqxaRAP5YCVtq5G8ucY=;
+	s=arc-20240116; t=1756217180; c=relaxed/simple;
+	bh=iifIuFtT9kMegx4BXHmbrPVuPdetsM5xxpFY0vroWHY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=A3m8jb966sTI21OAEy4BxyfRFn+dHfaCdJ8CuuhHC560hH5fSL+sptEAGR2P7VgMOVdg+znRipTrStm+DGE49bSgenXQvi6+CX5UyzJD4SZVYNAMaHqLaVRfD9AXYJvIdss3k6PcU23AFZ6ONFiHpHfK/AxjbhjE/wAqdeMYcWk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=XbdDv8b/; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D2FAFC4CEF1;
-	Tue, 26 Aug 2025 13:44:27 +0000 (UTC)
+	 MIME-Version; b=L5YZthXhwZPbN336MrnjNyxxpJxp1w6jTUzYovM9T73wOvqlNs1XJtWSyIuOMYkVitGM26pWwnF97UyehdO8PKANakTKCEBQgILH4QrUo0W53wZjAtui71v+8Jt5Ho9VlusyLTRbC7QdUn9f88luaaIHgd4+uhphWotS02wcYG4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Nuxvi6b4; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 09DFFC113CF;
+	Tue, 26 Aug 2025 14:06:18 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1756215868;
-	bh=sZ7RrW9BsfNUXIRy0hxkVWlWyqxaRAP5YCVtq5G8ucY=;
+	s=korg; t=1756217179;
+	bh=iifIuFtT9kMegx4BXHmbrPVuPdetsM5xxpFY0vroWHY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=XbdDv8b/5NanYJHLv+NBWn2EVTgzKF36vRZTdVsdq2vWjtZ2PjRZrxpTcyY4cp5f9
-	 WbBSsXXwMZ7kb+PxPjt5icPwhCJiDjbxmbkTiTyY5ynXALQivzxbDyG7zSvGFxrXZX
-	 psiBv7HPP5p2Ii4/OLCeUyr3UKx9oGTE9+jM6r/g=
+	b=Nuxvi6b4DMW2jXrEDOx3FMiAFH6HSgRoi4MuSoa4do6/kgxgelIgl4UpDZ3FUJXfe
+	 JaYg8cJbZgpQQzuyeSERQAjnLXuVPUhWc5cE68VdJ4yLMJZ5CjjMXA0mV87iIF0DZl
+	 Vkh6ZA+DPPNT+RUjetHDGaNsmD93YEPF7+x00gp0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Hans Zhang <18255117159@163.com>,
-	Manivannan Sadhasivam <mani@kernel.org>,
-	Shawn Lin <shawn.lin@rock-chips.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 165/644] PCI: rockchip-host: Fix "Unexpected Completion" log message
+	stable <stable@kernel.org>,
+	Konrad Dybcio <konrad.dybcio@oss.qualcomm.com>,
+	Alan Stern <stern@rowland.harvard.edu>,
+	Mathias Nyman <mathias.nyman@linux.intel.com>
+Subject: [PATCH 5.10 046/523] usb: hub: Fix flushing and scheduling of delayed work that tunes runtime pm
 Date: Tue, 26 Aug 2025 13:04:16 +0200
-Message-ID: <20250826110950.568889055@linuxfoundation.org>
+Message-ID: <20250826110925.738390572@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250826110946.507083938@linuxfoundation.org>
-References: <20250826110946.507083938@linuxfoundation.org>
+In-Reply-To: <20250826110924.562212281@linuxfoundation.org>
+References: <20250826110924.562212281@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,46 +63,68 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Hans Zhang <18255117159@163.com>
+From: Mathias Nyman <mathias.nyman@linux.intel.com>
 
-[ Upstream commit fcc5f586c4edbcc10de23fb9b8c0972a84e945cd ]
+commit a49e1e2e785fb3621f2d748581881b23a364998a upstream.
 
-Fix the debug message for the PCIE_CORE_INT_UCR interrupt to clearly
-indicate "Unexpected Completion" instead of a duplicate "malformed TLP"
-message.
+Delayed work to prevent USB3 hubs from runtime-suspending immediately
+after resume was added in commit 8f5b7e2bec1c ("usb: hub: fix detection
+of high tier USB3 devices behind suspended hubs").
 
-Fixes: e77f847df54c ("PCI: rockchip: Add Rockchip PCIe controller support")
-Signed-off-by: Hans Zhang <18255117159@163.com>
-[mani: added fixes tag]
-Signed-off-by: Manivannan Sadhasivam <mani@kernel.org>
-Reviewed-by: Manivannan Sadhasivam <mani@kernel.org>
-Acked-by: Shawn Lin <shawn.lin@rock-chips.com>
-Link: https://patch.msgid.link/20250607160201.807043-2-18255117159@163.com
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+This delayed work needs be flushed if system suspends, or hub needs to
+be quiesced for other reasons right after resume. Not flushing it
+triggered issues on QC SC8280XP CRD board during suspend/resume testing.
+
+Fix it by flushing the delayed resume work in hub_quiesce()
+
+The delayed work item that allow hub runtime suspend is also scheduled
+just before calling autopm get. Alan pointed out there is a small risk
+that work is run before autopm get, which would call autopm put before
+get, and mess up the runtime pm usage order.
+Swap the order of work sheduling and calling autopm get to solve this.
+
+Cc: stable <stable@kernel.org>
+Fixes: 8f5b7e2bec1c ("usb: hub: fix detection of high tier USB3 devices behind suspended hubs")
+Reported-by: Konrad Dybcio <konrad.dybcio@oss.qualcomm.com>
+Closes: https://lore.kernel.org/linux-usb/acaaa928-832c-48ca-b0ea-d202d5cd3d6c@oss.qualcomm.com
+Reported-by: Alan Stern <stern@rowland.harvard.edu>
+Closes: https://lore.kernel.org/linux-usb/c73fbead-66d7-497a-8fa1-75ea4761090a@rowland.harvard.edu
+Signed-off-by: Mathias Nyman <mathias.nyman@linux.intel.com>
+Link: https://lore.kernel.org/r/20250626130102.3639861-2-mathias.nyman@linux.intel.com
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/pci/controller/pcie-rockchip-host.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/usb/core/hub.c |    6 ++++--
+ 1 file changed, 4 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/pci/controller/pcie-rockchip-host.c b/drivers/pci/controller/pcie-rockchip-host.c
-index c52316d0bfd2..9e9e90e7c0fe 100644
---- a/drivers/pci/controller/pcie-rockchip-host.c
-+++ b/drivers/pci/controller/pcie-rockchip-host.c
-@@ -441,7 +441,7 @@ static irqreturn_t rockchip_pcie_subsys_irq_handler(int irq, void *arg)
- 			dev_dbg(dev, "malformed TLP received from the link\n");
+--- a/drivers/usb/core/hub.c
++++ b/drivers/usb/core/hub.c
+@@ -1316,11 +1316,12 @@ static void hub_activate(struct usb_hub
  
- 		if (sub_reg & PCIE_CORE_INT_UCR)
--			dev_dbg(dev, "malformed TLP received from the link\n");
-+			dev_dbg(dev, "Unexpected Completion received from the link\n");
+ 	if (type == HUB_RESUME && hub_is_superspeed(hub->hdev)) {
+ 		/* give usb3 downstream links training time after hub resume */
++		usb_autopm_get_interface_no_resume(
++			to_usb_interface(hub->intfdev));
++
+ 		INIT_DELAYED_WORK(&hub->init_work, hub_post_resume);
+ 		queue_delayed_work(system_power_efficient_wq, &hub->init_work,
+ 				   msecs_to_jiffies(USB_SS_PORT_U0_WAKE_TIME));
+-		usb_autopm_get_interface_no_resume(
+-			to_usb_interface(hub->intfdev));
+ 		return;
+ 	}
  
- 		if (sub_reg & PCIE_CORE_INT_FCE)
- 			dev_dbg(dev, "an error was observed in the flow control advertisements from the other side\n");
--- 
-2.39.5
-
+@@ -1374,6 +1375,7 @@ static void hub_quiesce(struct usb_hub *
+ 
+ 	/* Stop hub_wq and related activity */
+ 	del_timer_sync(&hub->irq_urb_retry);
++	flush_delayed_work(&hub->init_work);
+ 	usb_kill_urb(hub->urb);
+ 	if (hub->has_indicators)
+ 		cancel_delayed_work_sync(&hub->leds);
 
 
 
