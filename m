@@ -1,58 +1,59 @@
-Return-Path: <stable+bounces-175453-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-175960-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 56A71B36833
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 16:13:58 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4EDC8B36BB7
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 16:48:14 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 0EB582A6D5D
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 14:06:35 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 30F121C4767A
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 14:29:51 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E72572192F2;
-	Tue, 26 Aug 2025 14:04:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 65EF835AABB;
+	Tue, 26 Aug 2025 14:27:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="xzEeBJAz"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="xfeXVXWv"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A44D72AE7F;
-	Tue, 26 Aug 2025 14:04:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2208A352FCE;
+	Tue, 26 Aug 2025 14:27:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756217083; cv=none; b=Z6P0+Scz8dUrCMeCGL42sxIsmNcAI2VunMJ6kmNA80ydvI3x+Rqtf/2Yz+Krmke6z3hWl24T0/489a621aD1zE6wlCAyt8mdrOO7TkGxkizNcFkyTfc2zYYkXGsgRnwFKQu7iRQO+Fex5G06JF/kdvukU+0j8tFl1CAx1QQqZPg=
+	t=1756218421; cv=none; b=ttKAwlXR2TDSTAQ2M4huj9ECNI94wfjvk2GUGJ8XHqtrud5EO7XGAEfHcAR8TSuvi38nV42cJPa/Gn6HXAkAbwuvGr5T8iMaxw+XbOhDTnQwk8aB1mE5T836QR3u2TAU09nJuquOjBcrn8CR+1z01dL0yxatQq305qAmey3R3OY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756217083; c=relaxed/simple;
-	bh=4obc0n+8Ax21jeVcaicNxq0m7k6FzfFiaxqrjnhEESI=;
+	s=arc-20240116; t=1756218421; c=relaxed/simple;
+	bh=3X4vPCTI+qfVjzHHzKs5LsSuS40kgG3xTxnIE+Dw2gQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=mRvsI+4CsoOdesGAAZsNbuv7Ewxk0DyAIL9veMNe0GZCHiAYHrZZ6CJXJFrrXuGJcJ+Gp9xtuiHjb8Geoe/zahenBb2OYg6XZRAoS6pD29fkdrLLgdlijO4yAH+tOAyBb1pcl3Uqvju27ex5n7+fWD7mZD2nz9VcTPKrVp85USU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=xzEeBJAz; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 37377C4CEF1;
-	Tue, 26 Aug 2025 14:04:43 +0000 (UTC)
+	 MIME-Version:Content-Type; b=H+fpQh+2+SVbI18U3AY7/vPy0PinHsAll0AU6wwC3PYZSGoAQ++fg0+eCcSQjOCLJ884FNkbCefgyisH+8XXiIohlvVrpz/tKi3g0/KtFY3NtP8xxHNBtVK1V5XIXjVEdqY/PtryBK0gY+ZiId3QQ+op0HrZJYNbxeEi1FMRaKI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=xfeXVXWv; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A73D6C4CEF1;
+	Tue, 26 Aug 2025 14:27:00 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1756217083;
-	bh=4obc0n+8Ax21jeVcaicNxq0m7k6FzfFiaxqrjnhEESI=;
+	s=korg; t=1756218421;
+	bh=3X4vPCTI+qfVjzHHzKs5LsSuS40kgG3xTxnIE+Dw2gQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=xzEeBJAz8A4K7h6ROxyVIuHzU2CxJ9hOmkwE6Mw73Zs0ouOm3qjKlLOfYMZd12ur1
-	 Y6KcMiQdJh2fBlV9a4FnjWH9RfKQ5+fdpMWoEISuZwEHAsL2pV9qhAlQ/tfKYdHOav
-	 cPL5C7ekeCWZYnQxFEyRvv4UrjMgNdf3WUjy1zLY=
+	b=xfeXVXWvzMJH8pe6BdmFyb1sBN5S+uqwJDy8akLM1Jy7R+91lpytbz4x0goIx3lEX
+	 6AvEAo327YhhXMx+MH+uYEk2sIeiKBFT9v7udgO75gOjy4dJ6B8/HuGTBZrTMn/Rma
+	 xJ/8xb4oDK05dEPZQ9Px07zsq3miWk4F2087wn3c=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	syzbot+20537064367a0f98d597@syzkaller.appspotmail.com,
-	Yuichiro Tsuji <yuichtsu@amazon.com>,
-	Andrew Lunn <andrew@lunn.ch>,
+	William Liu <will@willsroot.io>,
+	Savino Dicanosa <savy@syst3mfailure.io>,
+	=?UTF-8?q?Toke=20H=C3=B8iland-J=C3=B8rgensen?= <toke@toke.dk>,
+	Jamal Hadi Salim <jhs@mojatatu.com>,
 	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 634/644] net: usb: asix_devices: Fix PHY address mask in MDIO bus initialization
-Date: Tue, 26 Aug 2025 13:12:05 +0200
-Message-ID: <20250826111002.270467178@linuxfoundation.org>
+Subject: [PATCH 5.10 516/523] net/sched: Make cake_enqueue return NET_XMIT_CN when past buffer_limit
+Date: Tue, 26 Aug 2025 13:12:06 +0200
+Message-ID: <20250826110937.167468548@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250826110946.507083938@linuxfoundation.org>
-References: <20250826110946.507083938@linuxfoundation.org>
+In-Reply-To: <20250826110924.562212281@linuxfoundation.org>
+References: <20250826110924.562212281@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,51 +63,95 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Yuichiro Tsuji <yuichtsu@amazon.com>
+From: William Liu <will@willsroot.io>
 
-[ Upstream commit 24ef2f53c07f273bad99173e27ee88d44d135b1c ]
+[ Upstream commit 15de71d06a400f7fdc15bf377a2552b0ec437cf5 ]
 
-Syzbot reported shift-out-of-bounds exception on MDIO bus initialization.
+The following setup can trigger a WARNING in htb_activate due to
+the condition: !cl->leaf.q->q.qlen
 
-The PHY address should be masked to 5 bits (0-31). Without this
-mask, invalid PHY addresses could be used, potentially causing issues
-with MDIO bus operations.
+tc qdisc del dev lo root
+tc qdisc add dev lo root handle 1: htb default 1
+tc class add dev lo parent 1: classid 1:1 \
+       htb rate 64bit
+tc qdisc add dev lo parent 1:1 handle f: \
+       cake memlimit 1b
+ping -I lo -f -c1 -s64 -W0.001 127.0.0.1
 
-Fix this by masking the PHY address with 0x1f (31 decimal) to ensure
-it stays within the valid range.
+This is because the low memlimit leads to a low buffer_limit, which
+causes packet dropping. However, cake_enqueue still returns
+NET_XMIT_SUCCESS, causing htb_enqueue to call htb_activate with an
+empty child qdisc. We should return NET_XMIT_CN when packets are
+dropped from the same tin and flow.
 
-Fixes: 4faff70959d5 ("net: usb: asix_devices: add phy_mask for ax88772 mdio bus")
-Reported-by: syzbot+20537064367a0f98d597@syzkaller.appspotmail.com
-Closes: https://syzkaller.appspot.com/bug?extid=20537064367a0f98d597
-Tested-by: syzbot+20537064367a0f98d597@syzkaller.appspotmail.com
-Signed-off-by: Yuichiro Tsuji <yuichtsu@amazon.com>
-Reviewed-by: Andrew Lunn <andrew@lunn.ch>
-Link: https://patch.msgid.link/20250818084541.1958-1-yuichtsu@amazon.com
+I do not believe return value of NET_XMIT_CN is necessary for packet
+drops in the case of ack filtering, as that is meant to optimize
+performance, not to signal congestion.
+
+Fixes: 046f6fd5daef ("sched: Add Common Applications Kept Enhanced (cake) qdisc")
+Signed-off-by: William Liu <will@willsroot.io>
+Reviewed-by: Savino Dicanosa <savy@syst3mfailure.io>
+Acked-by: Toke Høiland-Jørgensen <toke@toke.dk>
+Reviewed-by: Jamal Hadi Salim <jhs@mojatatu.com>
+Link: https://patch.msgid.link/20250819033601.579821-1-will@willsroot.io
 Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/usb/asix_devices.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ net/sched/sch_cake.c | 14 ++++++++++++--
+ 1 file changed, 12 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/net/usb/asix_devices.c b/drivers/net/usb/asix_devices.c
-index 928516222959..97d2037e7fee 100644
---- a/drivers/net/usb/asix_devices.c
-+++ b/drivers/net/usb/asix_devices.c
-@@ -669,7 +669,7 @@ static int ax88772_init_mdio(struct usbnet *dev)
- 	priv->mdio->read = &asix_mdio_bus_read;
- 	priv->mdio->write = &asix_mdio_bus_write;
- 	priv->mdio->name = "Asix MDIO Bus";
--	priv->mdio->phy_mask = ~(BIT(priv->phy_addr) | BIT(AX_EMBD_PHY_ADDR));
-+	priv->mdio->phy_mask = ~(BIT(priv->phy_addr & 0x1f) | BIT(AX_EMBD_PHY_ADDR));
- 	/* mii bus name is usb-<usb bus number>-<usb device number> */
- 	snprintf(priv->mdio->id, MII_BUS_ID_SIZE, "usb-%03d:%03d",
- 		 dev->udev->bus->busnum, dev->udev->devnum);
+diff --git a/net/sched/sch_cake.c b/net/sched/sch_cake.c
+index d9535129f4e9..6dabe5eaa3be 100644
+--- a/net/sched/sch_cake.c
++++ b/net/sched/sch_cake.c
+@@ -1761,7 +1761,7 @@ static s32 cake_enqueue(struct sk_buff *skb, struct Qdisc *sch,
+ 	ktime_t now = ktime_get();
+ 	struct cake_tin_data *b;
+ 	struct cake_flow *flow;
+-	u32 idx;
++	u32 idx, tin;
+ 
+ 	/* choose flow to insert into */
+ 	idx = cake_classify(sch, &b, skb, q->flow_mode, &ret);
+@@ -1771,6 +1771,7 @@ static s32 cake_enqueue(struct sk_buff *skb, struct Qdisc *sch,
+ 		__qdisc_drop(skb, to_free);
+ 		return ret;
+ 	}
++	tin = (u32)(b - q->tins);
+ 	idx--;
+ 	flow = &b->flows[idx];
+ 
+@@ -1938,13 +1939,22 @@ static s32 cake_enqueue(struct sk_buff *skb, struct Qdisc *sch,
+ 		q->buffer_max_used = q->buffer_used;
+ 
+ 	if (q->buffer_used > q->buffer_limit) {
++		bool same_flow = false;
+ 		u32 dropped = 0;
++		u32 drop_id;
+ 
+ 		while (q->buffer_used > q->buffer_limit) {
+ 			dropped++;
+-			cake_drop(sch, to_free);
++			drop_id = cake_drop(sch, to_free);
++
++			if ((drop_id >> 16) == tin &&
++			    (drop_id & 0xFFFF) == idx)
++				same_flow = true;
+ 		}
+ 		b->drop_overlimit += dropped;
++
++		if (same_flow)
++			return NET_XMIT_CN;
+ 	}
+ 	return NET_XMIT_SUCCESS;
+ }
 -- 
 2.50.1
 
