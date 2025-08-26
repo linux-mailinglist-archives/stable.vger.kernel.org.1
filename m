@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-174120-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-174631-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id F25C6B36115
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 15:06:22 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0A430B36468
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 15:38:15 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 901137B8487
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 13:04:46 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id ABCED8E1ECB
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 13:29:18 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1DCDF246BC5;
-	Tue, 26 Aug 2025 13:05:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6589023817D;
+	Tue, 26 Aug 2025 13:28:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="UZMqMciH"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="SATdMGII"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CD386221704;
-	Tue, 26 Aug 2025 13:05:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 219C81FBCB5;
+	Tue, 26 Aug 2025 13:28:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756213546; cv=none; b=XlSE+dAG+VyIDN0QhEhkrKnXqB+1IDQRB49qkhnLeWkFmnRJ6A1HE5r5sl0foQXAgKZ94doM7s5/iKhgfZJfs6jL/I8optnljyyqjC9FSEwDPx2aRw8sJoMSlsE53ejuKvlc9QnFvYi/ghoPEH1mB/eqa9KzhowvhkwvCCbR4AI=
+	t=1756214901; cv=none; b=dXPWOwL38Ezx9NJMvauBDYz7lrVZrTiDwn8UAc/z5H0qK8jpQYuyyHgaleNDkmbSg+xsR0s2vd6mF/8ZhhgOBWIXz1TG8jPNnLX35SmjmOtkfdgCBA+SXAzZmsuQCM1jmFkjt8ulfx476+dJDhQaR3cz+WtcoO//+4OzEsdoyeQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756213546; c=relaxed/simple;
-	bh=Avq0SuDfrC8VAqnW0IRoboVMaOjmT4zUhcMSgsrtG2M=;
+	s=arc-20240116; t=1756214901; c=relaxed/simple;
+	bh=N1dewOGJXQJ2xe1zxismJUzJamfT9e/6TlDgrbrNYe8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=B4WK5X9OjSWBd9MlV0UEhknUKck/Ezab8oemg2EXAN3deSTxijAXYWPiDCNw13FebV+W1XweP/v1/jlZPVhtKAQD3Cq7T8WZ0cVPw2j5JH1ZAX+UhpE1us2Fl83S3G/n97osDfCaxd62Y68Pd5SOcYo4fw6ehgHot4QCyaz4fIg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=UZMqMciH; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 585EDC4CEF1;
-	Tue, 26 Aug 2025 13:05:46 +0000 (UTC)
+	 MIME-Version; b=DZ76mSNm2DRwhUMZhx7vbJOGyv/aFNkkc+PWPD64oGDZpNKruz45K6/5vPOSfxJhyxGPncqMtgX/LhxP+LF2hTyivZN+nnrH7X6Bh+NufTUQK3JuuQ92E+KIrRAxJe1mbOELQN7wyQav7BnBR5YdvCnsjq9t6sQxyRZSVGaj4sA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=SATdMGII; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A8706C113D0;
+	Tue, 26 Aug 2025 13:28:20 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1756213546;
-	bh=Avq0SuDfrC8VAqnW0IRoboVMaOjmT4zUhcMSgsrtG2M=;
+	s=korg; t=1756214901;
+	bh=N1dewOGJXQJ2xe1zxismJUzJamfT9e/6TlDgrbrNYe8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=UZMqMciHS9jabhqOqB5OrSotYjnpQI4nUY+jk5pK94U44drxTpwF2sBGgwZR9RBCD
-	 eMimBQUB3Y3irbsnEd2IOfFjLeqehwrVMZ+NpSJzXIzBDj2JAurCFSkbbN9G20kawf
-	 d+qsXBWEERVhdq/d7YksVOkzVsJaJhdjJtzbsju8=
+	b=SATdMGIIEhznwxGtdyWf4N13PBSMF5jtrTnVg1IGe8mjr1LltSbLImyOF2/06jCvh
+	 dxTPxYMVkGZJgdA56aEZPZFabEw5B5GuSN9QxPdq7VViNuEj00qvtVda7Y+Ia5m+/4
+	 KKJAzThxasdWED6iSOWMjbQ/ZcDDGz3Nv3u3qEv8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
 	stable@kernel.org,
-	Jiaming Zhang <r772577952@gmail.com>,
-	Chao Yu <chao@kernel.org>,
-	Jaegeuk Kim <jaegeuk@kernel.org>
-Subject: [PATCH 6.6 389/587] f2fs: fix to avoid out-of-boundary access in dnode page
+	Qu Wenruo <wqu@suse.com>,
+	Zhang Yi <yi.zhang@huawei.com>,
+	Theodore Tso <tytso@mit.edu>
+Subject: [PATCH 6.1 285/482] ext4: fix hole length calculation overflow in non-extent inodes
 Date: Tue, 26 Aug 2025 13:08:58 +0200
-Message-ID: <20250826111002.812001766@linuxfoundation.org>
+Message-ID: <20250826110937.831022100@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250826110952.942403671@linuxfoundation.org>
-References: <20250826110952.942403671@linuxfoundation.org>
+In-Reply-To: <20250826110930.769259449@linuxfoundation.org>
+References: <20250826110930.769259449@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,76 +63,85 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Chao Yu <chao@kernel.org>
+From: Zhang Yi <yi.zhang@huawei.com>
 
-commit 77de19b6867f2740cdcb6c9c7e50d522b47847a4 upstream.
+commit 02c7f7219ac0e2277b3379a3a0e9841ef464b6d4 upstream.
 
-As Jiaming Zhang reported:
+In a filesystem with a block size larger than 4KB, the hole length
+calculation for a non-extent inode in ext4_ind_map_blocks() can easily
+exceed INT_MAX. Then it could return a zero length hole and trigger the
+following waring and infinite in the iomap infrastructure.
 
- <TASK>
- __dump_stack lib/dump_stack.c:94 [inline]
- dump_stack_lvl+0x1c1/0x2a0 lib/dump_stack.c:120
- print_address_description mm/kasan/report.c:378 [inline]
- print_report+0x17e/0x800 mm/kasan/report.c:480
- kasan_report+0x147/0x180 mm/kasan/report.c:593
- data_blkaddr fs/f2fs/f2fs.h:3053 [inline]
- f2fs_data_blkaddr fs/f2fs/f2fs.h:3058 [inline]
- f2fs_get_dnode_of_data+0x1a09/0x1c40 fs/f2fs/node.c:855
- f2fs_reserve_block+0x53/0x310 fs/f2fs/data.c:1195
- prepare_write_begin fs/f2fs/data.c:3395 [inline]
- f2fs_write_begin+0xf39/0x2190 fs/f2fs/data.c:3594
- generic_perform_write+0x2c7/0x910 mm/filemap.c:4112
- f2fs_buffered_write_iter fs/f2fs/file.c:4988 [inline]
- f2fs_file_write_iter+0x1ec8/0x2410 fs/f2fs/file.c:5216
- new_sync_write fs/read_write.c:593 [inline]
- vfs_write+0x546/0xa90 fs/read_write.c:686
- ksys_write+0x149/0x250 fs/read_write.c:738
- do_syscall_x64 arch/x86/entry/syscall_64.c:63 [inline]
- do_syscall_64+0xf3/0x3d0 arch/x86/entry/syscall_64.c:94
- entry_SYSCALL_64_after_hwframe+0x77/0x7f
-
-The root cause is in the corrupted image, there is a dnode has the same
-node id w/ its inode, so during f2fs_get_dnode_of_data(), it tries to
-access block address in dnode at offset 934, however it parses the dnode
-as inode node, so that get_dnode_addr() returns 360, then it tries to
-access page address from 360 + 934 * 4 = 4096 w/ 4 bytes.
-
-To fix this issue, let's add sanity check for node id of all direct nodes
-during f2fs_get_dnode_of_data().
+  ------------[ cut here ]------------
+  WARNING: CPU: 3 PID: 434101 at fs/iomap/iter.c:34 iomap_iter_done+0x148/0x190
+  CPU: 3 UID: 0 PID: 434101 Comm: fsstress Not tainted 6.16.0-rc7+ #128 PREEMPT(voluntary)
+  Hardware name: QEMU KVM Virtual Machine, BIOS unknown 2/2/2022
+  pstate: 60400005 (nZCv daif +PAN -UAO -TCO -DIT -SSBS BTYPE=--)
+  pc : iomap_iter_done+0x148/0x190
+  lr : iomap_iter+0x174/0x230
+  sp : ffff8000880af740
+  x29: ffff8000880af740 x28: ffff0000db8e6840 x27: 0000000000000000
+  x26: 0000000000000000 x25: ffff8000880af830 x24: 0000004000000000
+  x23: 0000000000000002 x22: 000001bfdbfa8000 x21: ffffa6a41c002e48
+  x20: 0000000000000001 x19: ffff8000880af808 x18: 0000000000000000
+  x17: 0000000000000000 x16: ffffa6a495ee6cd0 x15: 0000000000000000
+  x14: 00000000000003d4 x13: 00000000fa83b2da x12: 0000b236fc95f18c
+  x11: ffffa6a4978b9c08 x10: 0000000000001da0 x9 : ffffa6a41c1a2a44
+  x8 : ffff8000880af5c8 x7 : 0000000001000000 x6 : 0000000000000000
+  x5 : 0000000000000004 x4 : 000001bfdbfa8000 x3 : 0000000000000000
+  x2 : 0000000000000000 x1 : 0000004004030000 x0 : 0000000000000000
+  Call trace:
+   iomap_iter_done+0x148/0x190 (P)
+   iomap_iter+0x174/0x230
+   iomap_fiemap+0x154/0x1d8
+   ext4_fiemap+0x110/0x140 [ext4]
+   do_vfs_ioctl+0x4b8/0xbc0
+   __arm64_sys_ioctl+0x8c/0x120
+   invoke_syscall+0x6c/0x100
+   el0_svc_common.constprop.0+0x48/0xf0
+   do_el0_svc+0x24/0x38
+   el0_svc+0x38/0x120
+   el0t_64_sync_handler+0x10c/0x138
+   el0t_64_sync+0x198/0x1a0
+  ---[ end trace 0000000000000000 ]---
 
 Cc: stable@kernel.org
-Reported-by: Jiaming Zhang <r772577952@gmail.com>
-Closes: https://groups.google.com/g/syzkaller/c/-ZnaaOOfO3M
-Signed-off-by: Chao Yu <chao@kernel.org>
-Signed-off-by: Jaegeuk Kim <jaegeuk@kernel.org>
+Fixes: facab4d9711e ("ext4: return hole from ext4_map_blocks()")
+Reported-by: Qu Wenruo <wqu@suse.com>
+Closes: https://lore.kernel.org/linux-ext4/9b650a52-9672-4604-a765-bb6be55d1e4a@gmx.com/
+Tested-by: Qu Wenruo <wqu@suse.com>
+Signed-off-by: Zhang Yi <yi.zhang@huawei.com>
+Link: https://patch.msgid.link/20250811064532.1788289-1-yi.zhang@huaweicloud.com
+Signed-off-by: Theodore Ts'o <tytso@mit.edu>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- fs/f2fs/node.c |   10 ++++++++++
- 1 file changed, 10 insertions(+)
+ fs/ext4/indirect.c |    4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
---- a/fs/f2fs/node.c
-+++ b/fs/f2fs/node.c
-@@ -799,6 +799,16 @@ int f2fs_get_dnode_of_data(struct dnode_
- 	for (i = 1; i <= level; i++) {
- 		bool done = false;
+--- a/fs/ext4/indirect.c
++++ b/fs/ext4/indirect.c
+@@ -539,7 +539,7 @@ int ext4_ind_map_blocks(handle_t *handle
+ 	int indirect_blks;
+ 	int blocks_to_boundary = 0;
+ 	int depth;
+-	int count = 0;
++	u64 count = 0;
+ 	ext4_fsblk_t first_block = 0;
  
-+		if (nids[i] && nids[i] == dn->inode->i_ino) {
-+			err = -EFSCORRUPTED;
-+			f2fs_err_ratelimited(sbi,
-+				"inode mapping table is corrupted, run fsck to fix it, "
-+				"ino:%lu, nid:%u, level:%d, offset:%d",
-+				dn->inode->i_ino, nids[i], level, offset[level]);
-+			set_sbi_flag(sbi, SBI_NEED_FSCK);
-+			goto release_pages;
-+		}
-+
- 		if (!nids[i] && mode == ALLOC_NODE) {
- 			/* alloc new node */
- 			if (!f2fs_alloc_nid(sbi, &(nids[i]))) {
+ 	trace_ext4_ind_map_blocks_enter(inode, map->m_lblk, map->m_len, flags);
+@@ -588,7 +588,7 @@ int ext4_ind_map_blocks(handle_t *handle
+ 		count++;
+ 		/* Fill in size of a hole we found */
+ 		map->m_pblk = 0;
+-		map->m_len = min_t(unsigned int, map->m_len, count);
++		map->m_len = umin(map->m_len, count);
+ 		goto cleanup;
+ 	}
+ 
 
 
 
