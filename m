@@ -1,58 +1,60 @@
-Return-Path: <stable+bounces-175588-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-174420-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0C609B368DA
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 16:20:10 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id BDAB4B3633D
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 15:28:11 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 806C658344B
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 14:13:06 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 423F18A8114
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 13:21:14 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 72F8D352FDC;
-	Tue, 26 Aug 2025 14:10:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id ED5593451B0;
+	Tue, 26 Aug 2025 13:19:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="LIWQkyVz"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="FdrIF7y9"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2BA4D350835;
-	Tue, 26 Aug 2025 14:10:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A6B7C343D83;
+	Tue, 26 Aug 2025 13:19:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756217443; cv=none; b=fnffy3zSd55zCUJSx11Ek82H6Nq2LlndWXx6bmezNTsZtzx4PZGYAxjcr6sz/EGhIBZmxx7tTMEzrLyLjoE0IqV0iKHJAIlP4dCQt/eL5aAMEByXiVPsPppehdHvcEVur+Fu8IcVOWPiJ7j1M/eCRAodebT7a4Q9wpgyD3OXJVo=
+	t=1756214342; cv=none; b=MjZvlG0MlU49oDEuFVNRn28+1ORTDCbiLnhDZN/ttszwaJiUC8kuzAUf4BtPdKbyDpAWaLvfK3EP20UMmaG2jFxX697LcjVmpce1rVW7kIbi5X9/+afB8Db2ZaaxsT41H8pgsmBDFGYX3yNJ7iNJhScsnCJvNjLtB72R0QbfAsk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756217443; c=relaxed/simple;
-	bh=+oKXSN0UPAHggYW0B7cyww5V6ZBCscwdlt1gSi1sCII=;
+	s=arc-20240116; t=1756214342; c=relaxed/simple;
+	bh=Xg0j9SSpv/Dh6PfgpTaLUk/va4Bat8wCK96fW4sfzsU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=ZcNd6szRDOnAQJFABpuy6M9ZreKVPrE5GiPb68Q5vBcwAGVbG5+ESmvNzdELMzUIeJYWyOdQCCXRN58tAi89ptjrvljZc8aecR86/RpIg7oyCVz0i0z37UpRelZy3rmRMm6ioisCU+ioMeSgClyJeE+c70Z7eGy72sc4r5TO/sw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=LIWQkyVz; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 33BC6C113D0;
-	Tue, 26 Aug 2025 14:10:41 +0000 (UTC)
+	 MIME-Version; b=L/K1Yzm0X8dURsCgC6whp1eedByiISbxFMjrYckq9nLLDb3g8L1lfbEh8iBHbUATBNhTbCuGI5Wne5zn56hGLYE8ZqA4dSIu4Gx7KKGpL4h6jlyeeDDNJpDhbSlYdhTIzR0BkXFQHtDx69dHABTQnNUnEMVujUJLakr6QpxvsEI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=FdrIF7y9; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B42BDC4CEF1;
+	Tue, 26 Aug 2025 13:19:01 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1756217442;
-	bh=+oKXSN0UPAHggYW0B7cyww5V6ZBCscwdlt1gSi1sCII=;
+	s=korg; t=1756214342;
+	bh=Xg0j9SSpv/Dh6PfgpTaLUk/va4Bat8wCK96fW4sfzsU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=LIWQkyVzxnVajcYl0o7YKUW3BKIDoZCnYhlFozfqZrLSxpRCYNhXWXBECfgBkJGN/
-	 VDf3+5uR3YilSQGAGSwOwU6W5m9fRqcaErfVqRecj9B+vm37vWI8jwSGpl9EaI2xQf
-	 g10S9fN3A5dBasJJlxsKiFcgAQkC7Dqu2Pdsw6ZE=
+	b=FdrIF7y9STniEvWzcjvotuHvliMHZXmWQjXTviIXKte3ta7Jdv1rsQVXjE7+qlCLt
+	 kHrWFQkAn7dVo8q0fMYQpNbacmUEd1mpu5EkQIN7DlhIcpED/sV51aApiP2pFqAU6C
+	 4YcLK11qwoUNJBQ8j9fsXg76A3Ee/AEA4RuMgUZc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Zixun LI <admin@hifiphile.com>,
-	Ada Couprie Diaz <ada.coupriediaz@arm.com>,
-	Balamanikandan Gunasundar <balamanikandan.gunasundar@microchip.com>,
-	Miquel Raynal <miquel.raynal@bootlin.com>,
+	Peter Ujfalusi <peter.ujfalusi@linux.intel.com>,
+	Bard Liao <yung-chuan.liao@linux.intel.com>,
+	Ranjani Sridharan <ranjani.sridharan@linux.intel.com>,
+	Liam Girdwood <liam.r.girdwood@intel.com>,
+	Kai Vehmanen <kai.vehmanen@linux.intel.com>,
+	Mark Brown <broonie@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 145/523] mtd: rawnand: atmel: set pmecc data setup time
+Subject: [PATCH 6.1 102/482] ASoC: core: Check for rtd == NULL in snd_soc_remove_pcm_runtime()
 Date: Tue, 26 Aug 2025 13:05:55 +0200
-Message-ID: <20250826110928.067366811@linuxfoundation.org>
+Message-ID: <20250826110933.349669582@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250826110924.562212281@linuxfoundation.org>
-References: <20250826110924.562212281@linuxfoundation.org>
+In-Reply-To: <20250826110930.769259449@linuxfoundation.org>
+References: <20250826110930.769259449@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,59 +66,48 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Balamanikandan Gunasundar <balamanikandan.gunasundar@microchip.com>
+From: Peter Ujfalusi <peter.ujfalusi@linux.intel.com>
 
-[ Upstream commit f552a7c7e0a14215cb8a6fd89e60fa3932a74786 ]
+[ Upstream commit 2d91cb261cac6d885954b8f5da28b5c176c18131 ]
 
-Setup the pmecc data setup time as 3 clock cycles for 133MHz as recommended
-by the datasheet.
+snd_soc_remove_pcm_runtime() might be called with rtd == NULL which will
+leads to null pointer dereference.
+This was reproduced with topology loading and marking a link as ignore
+due to missing hardware component on the system.
+On module removal the soc_tplg_remove_link() would call
+snd_soc_remove_pcm_runtime() with rtd == NULL since the link was ignored,
+no runtime was created.
 
-Fixes: f88fc122cc34 ("mtd: nand: Cleanup/rework the atmel_nand driver")
-Reported-by: Zixun LI <admin@hifiphile.com>
-Closes: https://lore.kernel.org/all/c015bb20-6a57-4f63-8102-34b3d83e0f5b@microchip.com
-Suggested-by: Ada Couprie Diaz <ada.coupriediaz@arm.com>
-Signed-off-by: Balamanikandan Gunasundar <balamanikandan.gunasundar@microchip.com>
-Signed-off-by: Miquel Raynal <miquel.raynal@bootlin.com>
+Signed-off-by: Peter Ujfalusi <peter.ujfalusi@linux.intel.com>
+Reviewed-by: Bard Liao <yung-chuan.liao@linux.intel.com>
+Reviewed-by: Ranjani Sridharan <ranjani.sridharan@linux.intel.com>
+Reviewed-by: Liam Girdwood <liam.r.girdwood@intel.com>
+Reviewed-by: Kai Vehmanen <kai.vehmanen@linux.intel.com>
+Link: https://patch.msgid.link/20250619084222.559-3-peter.ujfalusi@linux.intel.com
+Signed-off-by: Mark Brown <broonie@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/mtd/nand/raw/atmel/pmecc.c | 6 ++++++
- 1 file changed, 6 insertions(+)
+ sound/soc/soc-core.c | 3 +++
+ 1 file changed, 3 insertions(+)
 
-diff --git a/drivers/mtd/nand/raw/atmel/pmecc.c b/drivers/mtd/nand/raw/atmel/pmecc.c
-index d1ed5878b3b1..28ed65dd3d43 100644
---- a/drivers/mtd/nand/raw/atmel/pmecc.c
-+++ b/drivers/mtd/nand/raw/atmel/pmecc.c
-@@ -143,6 +143,7 @@ struct atmel_pmecc_caps {
- 	int nstrengths;
- 	int el_offset;
- 	bool correct_erased_chunks;
-+	bool clk_ctrl;
- };
- 
- struct atmel_pmecc {
-@@ -846,6 +847,10 @@ static struct atmel_pmecc *atmel_pmecc_create(struct platform_device *pdev,
- 	if (IS_ERR(pmecc->regs.errloc))
- 		return ERR_CAST(pmecc->regs.errloc);
- 
-+	/* pmecc data setup time */
-+	if (caps->clk_ctrl)
-+		writel(PMECC_CLK_133MHZ, pmecc->regs.base + ATMEL_PMECC_CLK);
+diff --git a/sound/soc/soc-core.c b/sound/soc/soc-core.c
+index b13370d2ec1d..1ff7a0b0a236 100644
+--- a/sound/soc/soc-core.c
++++ b/sound/soc/soc-core.c
+@@ -937,6 +937,9 @@ static int soc_dai_link_sanity_check(struct snd_soc_card *card,
+ void snd_soc_remove_pcm_runtime(struct snd_soc_card *card,
+ 				struct snd_soc_pcm_runtime *rtd)
+ {
++	if (!rtd)
++		return;
 +
- 	/* Disable all interrupts before registering the PMECC handler. */
- 	writel(0xffffffff, pmecc->regs.base + ATMEL_PMECC_IDR);
- 	atmel_pmecc_reset(pmecc);
-@@ -899,6 +904,7 @@ static struct atmel_pmecc_caps at91sam9g45_caps = {
- 	.strengths = atmel_pmecc_strengths,
- 	.nstrengths = 5,
- 	.el_offset = 0x8c,
-+	.clk_ctrl = true,
- };
+ 	lockdep_assert_held(&client_mutex);
  
- static struct atmel_pmecc_caps sama5d4_caps = {
+ 	/* release machine specific resources */
 -- 
 2.39.5
 
