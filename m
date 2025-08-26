@@ -1,137 +1,159 @@
-Return-Path: <stable+bounces-176435-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-176436-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 82747B3737A
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 21:57:07 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id A5051B37394
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 22:04:53 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 4FDF74641C6
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 19:57:07 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 7FF391886D53
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 20:05:13 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8FEAA372888;
-	Tue, 26 Aug 2025 19:56:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 886F82BE04D;
+	Tue, 26 Aug 2025 20:04:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="JTG1lPK/"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="WdB6U0FR"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-pg1-f193.google.com (mail-pg1-f193.google.com [209.85.215.193])
+Received: from mail-qv1-f41.google.com (mail-qv1-f41.google.com [209.85.219.41])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id ECD5836CC88;
-	Tue, 26 Aug 2025 19:56:52 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.215.193
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D7C4A27781E;
+	Tue, 26 Aug 2025 20:04:46 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.219.41
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756238214; cv=none; b=m8XDzvtNZVIWLwBI239NpFytScIxp2Ubzn5+le/qiTY/CLotHdNTCsBPiModX9V+dkXgASId49gP7MANvuR5m4ylymtD5eFSi44UX+QMnnKbSdSlv+hcnb09w2CAeo2C/I2HXP3NxB3G/Nl/Rqql4KEDa06hmcGEE0I0XlVdmgU=
+	t=1756238688; cv=none; b=sCP46ee+39x2BXvRYfnw77R7oUFldV4WdehTWNWcaool8I1rmjhBYc3bm0luPnkvvAYyYUsIniW6G+kNPJMpSyjg7tTvsZwBgjXTRuJptjmFiqrrNYdHS/suo7xdfRMXFn4W2bIrNvmm1qv4Mjwm16AR9p1uVC5o1kQQlFjf3TQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756238214; c=relaxed/simple;
-	bh=xJa+W3UokioulPwGvLVtg35a5+SMdSqwOfR7pM6zUSI=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=JGjP8kNhhiX6zMeQ6nBfs1U39KE63i9SDmVsq4AQqlrv2fJHxyR+laHsQXlMLN4EVS/SALPTXR4VBW95260TxknhcS8HNt6zs9bveSuNwIK3rEf+tbQkascQWZCcy9xsKk0J/V/+BsD0m3ue5Hz1fgMnRToE2BojKx5xFk8eK3g=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=JTG1lPK/; arc=none smtp.client-ip=209.85.215.193
+	s=arc-20240116; t=1756238688; c=relaxed/simple;
+	bh=Iz5j6+gS5cmTf3s570FP7jbA7T9DKSSLrEDiWLZhe2Y=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=DwsGWVR09I2o5wqwI9xGpOi/yT689s5+iuaUuwifY7fw7u05jUWqO8OIoz+ORY95tL23pswv3eKLBhcQ8qCxh7lNvrf8KGWTxEzLSLYww8fE/SNer+tuB8SaEuJlFoQDW3yjkQeWGcmG8sc8RKfwEqu3E8wbUUf20v+x8FPGzik=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=WdB6U0FR; arc=none smtp.client-ip=209.85.219.41
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-pg1-f193.google.com with SMTP id 41be03b00d2f7-b4c1ed55930so2476468a12.1;
-        Tue, 26 Aug 2025 12:56:52 -0700 (PDT)
+Received: by mail-qv1-f41.google.com with SMTP id 6a1803df08f44-70a88de7d4fso52975796d6.0;
+        Tue, 26 Aug 2025 13:04:46 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1756238212; x=1756843012; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=4vNLOlgD3vPK4LvPKDOvALHCAxJkia83pN01LYsamok=;
-        b=JTG1lPK/q1nXvSkVjNY3CTdTNnSCMKbR1DXfhiw2/HF6AA252WwFuPnQcbJjQ1sCsz
-         3xv+diTl7XAmh4+tg3ROJFL2QomTVQQfWieKC/jq2ItgQ4JdnUjCAxzMORpfnzXdggzo
-         1zdSYGsAtvpN3+7x609kUEk4XfiJ6q3nZmG8wUvk0ufN0HIkPFFkEgUh/mjRxWQlRwR6
-         vE1ZPURAhQ2LKzKO2PsV1Dm5rmkcRfLCEfTLHwGv0sOL77Si5LhB7IPXLrDeCY/K+Sbi
-         rZ0MnFruqvOIODEq1NKeRNx5kIuRaLw2lUuGKsJNc5GfIpRNoJgy2kr9Uxmw7YcfLAM4
-         rmbw==
+        d=gmail.com; s=20230601; t=1756238686; x=1756843486; darn=vger.kernel.org;
+        h=content-transfer-encoding:in-reply-to:autocrypt:from
+         :content-language:references:cc:to:subject:user-agent:mime-version
+         :date:message-id:from:to:cc:subject:date:message-id:reply-to;
+        bh=/GyZ4F2+FZFGH/ZXJuJwmND0K+jQGTwQ/gHFGulFAPo=;
+        b=WdB6U0FRHI8Fz4PrpIGQ9lIssNo+Bc0HjrhmdOraQSnVXgO1yBhuotAItbROpYIR+o
+         7sW1UvUiQed+z726B8KI0/acM5dBqzv0HFsoblFuSa/ZF9rwKB6n0zE13Tqd6dVgGUxw
+         PojYtjK010bY31/yfPJnHMbvFFGlC2NYSRSJe8iOYoMW9Fj65vqD/n5h1SKH749JBT83
+         XpVanyV2fBDq2qj6urO0mIyXWyKxroe7dL4UQPe+YH0ZNutS8F7TJ7owR3rMkPlyHtSE
+         mj5e+Tnsf85gwAlE2sUqqefiM2JBlENMNT8mJ4Kkxg6+6C/yw1Nfzp8waOfdbtrxBjer
+         wRbg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1756238212; x=1756843012;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=4vNLOlgD3vPK4LvPKDOvALHCAxJkia83pN01LYsamok=;
-        b=g/hz3zSdXWjlsY1iqRGvAVSKiGzMopGGO2uKHQgRSF7stjHuqDWjGGbdIFB7d2GHvs
-         dvGcYsmL9wfY0OCdjSklzR31D9sdBWt0Ic4MTpGdaVs14iL3L2Zo5SfuawLkOEe2v0EF
-         V/3UbW978VXxeDgq6O44KFKPnsIvWFB/ix28Nz9P4OjvpzuYwOWhNSJIE3g3pvziMMix
-         Dbu4qjxOR62aOqZUdNNjot+NmYnn7u7t4ydJU0QXcAm0ms0QIng78MNOSNaUCe/8XfcL
-         l1q/1ruFdBXZrs0JNqLlqiH6t7y5APchh5HEhpySccjtCB4JAjPZki+iUN3i9/8gxe04
-         nNFQ==
-X-Forwarded-Encrypted: i=1; AJvYcCVfNK9TZ5Mm1ERWOaAurss+tZ5a7sICvtdpxhkBFstYNbDMPHg7XEbtcyohyVhOjn5m6mjIwVWddYLyZd8=@vger.kernel.org, AJvYcCXRPztz6f2mRijPbBXWoCmjSgIC79kW05EZJ+mZaMoTJKazVw1cQ20D0f/L7GxaWD1kyZ5R1R11@vger.kernel.org
-X-Gm-Message-State: AOJu0YxPaqK00XUGt9KMyoLSQjWIW4JCBLdpMqaXZdoGvxHGmGwhNNgN
-	YP9EeXYWJ6vZyFiiyBsVizHK+10j9BxEcZQq2NLSny0OVBDaj9499JQg
-X-Gm-Gg: ASbGncuix5tm895pfpiqgttd5SqsBOb7ZjBEv84WwduiXl+r07eMVxDd4U5lq0D3GdT
-	vHQA1IuLEOuOkCmeqbJ7jApfFEF9oMUbXDxWRQP8BuOqHHvPKICr689tlvmvx/tONoGbtp898Lc
-	pPNFGfZWlhJIiI/IeGwZMeg93FUqgLGTXWCqxjX1ZbCgrKdgx8MZqjrfmSSCKvMb/GUy7l9BCyL
-	vUtbh/FbIe+3KMl/Zum4UE6NN2UB3ACDcCwOZqzVuv+2YqOXYyucV/h7H9JgzsbyRcVVrsfTybf
-	eQMAKcz0GAY50RZmTxInj2ZaCsGSAg4iWS5uCpxw9J+F01N6f7GBGIxjhK8GQRYZlBQ76zzv3u9
-	2V0vUwMdDiuGu6/euhDTzTvak4yPGyGCH3mrBl293keHcxHAbM48twiP0wMPuUiL5IMoXJwhY
-X-Google-Smtp-Source: AGHT+IFfIJ+TQCebVZNnXSchhRPJtNdtNYjqf8pcWiVrCLWy2yGcohk7uncuJrAvb/82tP/d800VpA==
-X-Received: by 2002:a17:903:37c5:b0:246:cfc4:9a52 with SMTP id d9443c01a7336-246cfc4a0ccmr102210245ad.52.1756238212185;
-        Tue, 26 Aug 2025 12:56:52 -0700 (PDT)
-Received: from 2045D.localdomain (65.sub-72-110-66.myvzw.com. [72.110.66.65])
-        by smtp.gmail.com with ESMTPSA id d9443c01a7336-24896721727sm2214555ad.84.2025.08.26.12.56.49
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 26 Aug 2025 12:56:51 -0700 (PDT)
-From: John Evans <evans1210144@gmail.com>
-To: james.smart@broadcom.com,
-	dick.kennedy@broadcom.com,
-	James.Bottomley@HansenPartnership.com,
-	martin.petersen@oracle.com
-Cc: linux-scsi@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	stable@vger.kernel.org
-Subject: [PATCH] scsi: lpfc: Fix buffer free/clear order in deferred receive path
-Date: Tue, 26 Aug 2025 15:56:45 -0400
-Message-ID: <20250826195645.720-1-evans1210144@gmail.com>
-X-Mailer: git-send-email 2.43.0
+        d=1e100.net; s=20230601; t=1756238686; x=1756843486;
+        h=content-transfer-encoding:in-reply-to:autocrypt:from
+         :content-language:references:cc:to:subject:user-agent:mime-version
+         :date:message-id:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=/GyZ4F2+FZFGH/ZXJuJwmND0K+jQGTwQ/gHFGulFAPo=;
+        b=LBcwQKu86BcbqnJbb5VF2hsqER0S6LI6f1NjnR2y47Vnl1MqF49PQ7uP5mhkAuB+yt
+         OLzSZGSyQo2wY+EwVeoaCGNpwecyYHnb3ybXsJ5i6eWyHfeicPEqszby8am3HZOhXT8T
+         og4M7i6On/ar/0+OEl5krTHDLUuixJ1DLCJ1P/0hQAGnyG1Zr+3f4eglql5bnBWKV5o/
+         JxHoaThAizbGCnUOCuqwyddfedbk0OgvBr0ZsEHz7UUiQczpdrD9R4Jvx+Pu3lAeF76K
+         Ol4MM56UkVAZUwlDMEipo+EoqQpxqzCiJo/TLVa0F+GmoeVISPB5/y8GrzA2/yrpKK6c
+         G+Jw==
+X-Forwarded-Encrypted: i=1; AJvYcCVa8PMaIK9/2WRCDl7ix33XNZG3Ucwr4/SA5L0d1OwrYAgYRagpoKNTTKANTZgHmU66Ag9nEx74@vger.kernel.org, AJvYcCX5KsZ2vUOL1UBhS2ylAidbVr4gVWNxCXAwIbtXd15ZVXnptZOUVSN0fA5ZULhjl98wXEUGL6XPERWsFGI=@vger.kernel.org
+X-Gm-Message-State: AOJu0YyFayYy9y2EEVc7mg85HZJJ+2FnLEtdy7jZIzlaQCgO0YvfbrxV
+	paMG/P9Wqv5ayXNreuOjlmK2Lll/9MyzZTdi4uSWnNGN5FOQozZ0aahg
+X-Gm-Gg: ASbGnctFA17EnhYjfE/uOQVUYpuXvpVqBpev7PXt31doer9E19TutaHjInAWqGddE7y
+	VU/fNVd2e9KdjQjILUAOAI5GpdHeGfR7lX2aC1whv8DE3N8WdFmz3wxO0kM5K53Z+TIT7W9cn7f
+	/xN6x+AQZPeRLl4iqESgXWC33ZkrRoxWzLgQjVzLjswJSue6IDzXN1tMYaETXXmBL/jg75GGKMj
+	kBRBr6nGXe1VQqDtaK5J1rHBqODGEE4eYAAbcmvVSf+R52ENX20GU0CxIEcqEL5iI6qCeqldqUX
+	iWddS7qrB1/8WoTx3TmbjU74gWibSQs0jp2GsbKirTnTQ276CPY9/iFqExofiJPXyc1nMch6zHT
+	1wbABfV0UWrFX18RbCZD7iehSDwqH7f1lC1SMW0d21iIoOevOfA==
+X-Google-Smtp-Source: AGHT+IFuANQ1KkRmzYan5H66Moy0S6ewy+fARrkWJ5qhd9nMmxWZFd4/LTR7UH86P9TJi8DXbPaiDA==
+X-Received: by 2002:a05:6214:2404:b0:70d:6de2:1b31 with SMTP id 6a1803df08f44-70d9723e317mr194725796d6.61.1756238685551;
+        Tue, 26 Aug 2025 13:04:45 -0700 (PDT)
+Received: from [10.67.48.245] ([192.19.223.252])
+        by smtp.gmail.com with ESMTPSA id 6a1803df08f44-70dc5649acesm34881416d6.74.2025.08.26.13.04.41
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Tue, 26 Aug 2025 13:04:44 -0700 (PDT)
+Message-ID: <ff481fb6-3639-4297-b226-a37632e80927@gmail.com>
+Date: Tue, 26 Aug 2025 13:04:39 -0700
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH 6.16 000/457] 6.16.4-rc1 review
+To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>, stable@vger.kernel.org
+Cc: patches@lists.linux.dev, linux-kernel@vger.kernel.org,
+ torvalds@linux-foundation.org, akpm@linux-foundation.org,
+ linux@roeck-us.net, shuah@kernel.org, patches@kernelci.org,
+ lkft-triage@lists.linaro.org, pavel@denx.de, jonathanh@nvidia.com,
+ sudipm.mukherjee@gmail.com, srw@sladewatkins.net, rwarsow@gmx.de,
+ conor@kernel.org, hargar@microsoft.com, broonie@kernel.org, achill@achill.org
+References: <20250826110937.289866482@linuxfoundation.org>
+Content-Language: en-US
+From: Florian Fainelli <f.fainelli@gmail.com>
+Autocrypt: addr=f.fainelli@gmail.com; keydata=
+ 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
+ WlfRzlpjIPmdjgoicA==
+In-Reply-To: <20250826110937.289866482@linuxfoundation.org>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
 
-Fix a use-after-free window by correcting the buffer release sequence in
-the deferred receive path. The code freed the RQ buffer first and only
-then cleared the context pointer under the lock. Concurrent paths
-(e.g., ABTS and the repost path) also inspect and release the same
-pointer under the lock, so the old order could lead to double-free/UAF.
+On 8/26/25 04:04, Greg Kroah-Hartman wrote:
+> This is the start of the stable review cycle for the 6.16.4 release.
+> There are 457 patches in this series, all will be posted as a response
+> to this one.  If anyone has any issues with these being applied, please
+> let me know.
+> 
+> Responses should be made by Thu, 28 Aug 2025 11:08:27 +0000.
+> Anything received after that time might be too late.
+> 
+> The whole patch series can be found in one patch at:
+> 	https://www.kernel.org/pub/linux/kernel/v6.x/stable-review/patch-6.16.4-rc1.gz
+> or in the git tree and branch at:
+> 	git://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stable-rc.git linux-6.16.y
+> and the diffstat can be found below.
+> 
+> thanks,
+> 
+> greg k-h
 
-Note that the repost path already uses the correct pattern: detach the
-pointer under the lock, then free it after dropping the lock. The deferred
-path should do the same.
+On ARCH_BRCMSTB using 32-bit and 64-bit ARM kernels, build tested on 
+BMIPS_GENERIC:
 
-Fixes: 472e146d1cf3 ("scsi: lpfc: Correct upcalling nvmet_fc transport during io done downcall")
-Cc: stable@vger.kernel.org
-Signed-off-by: John Evans <evans1210144@gmail.com>
----
- drivers/scsi/lpfc/lpfc_nvmet.c | 11 ++++++++---
- 1 file changed, 8 insertions(+), 3 deletions(-)
-
-diff --git a/drivers/scsi/lpfc/lpfc_nvmet.c b/drivers/scsi/lpfc/lpfc_nvmet.c
-index fba2e62027b7..766319543680 100644
---- a/drivers/scsi/lpfc/lpfc_nvmet.c
-+++ b/drivers/scsi/lpfc/lpfc_nvmet.c
-@@ -1264,10 +1264,15 @@ lpfc_nvmet_defer_rcv(struct nvmet_fc_target_port *tgtport,
- 		atomic_inc(&tgtp->rcv_fcp_cmd_defer);
- 
- 	/* Free the nvmebuf since a new buffer already replaced it */
--	nvmebuf->hrq->rqbp->rqb_free_buffer(phba, nvmebuf);
- 	spin_lock_irqsave(&ctxp->ctxlock, iflag);
--	ctxp->rqb_buffer = NULL;
--	spin_unlock_irqrestore(&ctxp->ctxlock, iflag);
-+	nvmebuf = ctxp->rqb_buffer;
-+	if (nvmebuf) {
-+		ctxp->rqb_buffer = NULL;
-+		spin_unlock_irqrestore(&ctxp->ctxlock, iflag);
-+		nvmebuf->hrq->rqbp->rqb_free_buffer(phba, nvmebuf);
-+	} else {
-+		spin_unlock_irqrestore(&ctxp->ctxlock, iflag);
-+	}
- }
- 
- /**
+Tested-by: Florian Fainelli <florian.fainelli@broadcom.com>
 -- 
-2.43.0
-
+Florian
 
