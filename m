@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-173299-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-175875-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 91801B35D34
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 13:42:09 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7135FB369FA
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 16:33:04 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id C9897460BD6
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 11:33:51 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 858BB1C458F6
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 14:25:46 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 421B434A308;
-	Tue, 26 Aug 2025 11:31:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 226A7352072;
+	Tue, 26 Aug 2025 14:23:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Qm2/3hmp"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="z1o3rVhA"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F403234A304;
-	Tue, 26 Aug 2025 11:31:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CBA132F83BA;
+	Tue, 26 Aug 2025 14:23:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756207889; cv=none; b=h0OqmDgoA82+0/6nF2JWMbmjQ3/RGp99r3fxwFnfFY7mz8ygoGxmlcTqsc0Kayvcuv/pHXAIdKvTTIwcQRVNyy18LkRiX2A3Dom7jn+GjoLeEihiduoFXQE99ZgkTg3wIBORfBh1zlmZdUav+nYjSj9XykIBFIIjN32WGcmeGQY=
+	t=1756218198; cv=none; b=mvJ6wzCNOMalxjrSADEtXsE/Rju0x/IqzoymLyqzbZ+9cqC8JFKYnyrw4BVAZ3plWC5+zRKYXeIMSH0Hjh5SYHiqX9Os926J69WEfiKMCLMIQcgxFtRNmHNgOggDRoeg813E8dcgu7+h+P6z2EnAoCsj4fpEcHUVL9HYep9lw9U=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756207889; c=relaxed/simple;
-	bh=EXWZd/cZOLGCx0aDA8sFaXnosopQDgzTPrsDy2empKk=;
+	s=arc-20240116; t=1756218198; c=relaxed/simple;
+	bh=0jdoZmxgPsPaJiVcqkbLb5Qo1q1KqScL5mI8d0CSQCU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=jqEwl3djBOud4ihZighKr/p7kBq4z+ztxq786y4kifzOgVpuFWZj7tkR5OHojV+B5Hup1s5bgZF4NUxuiNCzdysSPltluxjKOLT18NiL5pN/zy8iGBIz4z2EqAuLCHOoPoGgEGMM+moWlv04a0+jlMc3pvWiCkrO5hb2mgYPjIg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Qm2/3hmp; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 369ABC4CEF1;
-	Tue, 26 Aug 2025 11:31:27 +0000 (UTC)
+	 MIME-Version; b=t7EywpLFgW3ltn72LNbKkrlKaZcKTU24yGldi5aJ7lKqFkYgw2T2wBDOQu10kyhpoTD2W5n8jKW9oG/MKAC3h6QlT8Rdw94Tsub17TeJr/w6Ms3YwVxxBfWRMwo9sFiPhVTQrpD093r8dChSaCs0NtoiHO3J1zeOiTea49ZojbY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=z1o3rVhA; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5B0A8C4CEF1;
+	Tue, 26 Aug 2025 14:23:18 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1756207887;
-	bh=EXWZd/cZOLGCx0aDA8sFaXnosopQDgzTPrsDy2empKk=;
+	s=korg; t=1756218198;
+	bh=0jdoZmxgPsPaJiVcqkbLb5Qo1q1KqScL5mI8d0CSQCU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Qm2/3hmpyo4rFpH+0KBfqmZ376eBp58n/eKvdgN0pUc2RlLWK4MwpiyYN5StDPnBi
-	 ANSPn8r4v/qCIu6yXY6Eke2hfkD2FCQsGJekYxRZN7U37LUP1kpJtc4MgKBDI98knT
-	 oy8hHX1KkQCf/RArL0UQqVwq17z2L67/Z7APkjm4=
+	b=z1o3rVhADLIeBrwQIPOoko9+WVdKiOLMVurRj8yNpNXPE3YM0rMMHb0pl+nyUCQB5
+	 2j3rDG4D6v7dTB9Yq5d4EXa84MXCM8oHXWZytG/qsX5BmQnnri63rAQgdSWjGtYyML
+	 KoJsAprbNG8CxoofBNxkXn4kRUhzTGYk0/G+0BnM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Andrei Lalaev <andrey.lalaev@gmail.com>,
-	Alice Ryhl <aliceryhl@google.com>,
-	Jocelyn Falempe <jfalempe@redhat.com>,
+	John Ernberg <john.ernberg@actia.se>,
+	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.16 356/457] drm/panic: Add a u64 divide by 10 for arm32
+Subject: [PATCH 5.10 430/523] net: usbnet: Avoid potential RCU stall on LINK_CHANGE event
 Date: Tue, 26 Aug 2025 13:10:40 +0200
-Message-ID: <20250826110946.115434093@linuxfoundation.org>
+Message-ID: <20250826110935.062155899@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250826110937.289866482@linuxfoundation.org>
-References: <20250826110937.289866482@linuxfoundation.org>
+In-Reply-To: <20250826110924.562212281@linuxfoundation.org>
+References: <20250826110924.562212281@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,72 +62,127 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.16-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jocelyn Falempe <jfalempe@redhat.com>
+From: John Ernberg <john.ernberg@actia.se>
 
-[ Upstream commit 9af8f2b469c0438620832f3729a3c5c03853b56b ]
+[ Upstream commit 0d9cfc9b8cb17dbc29a98792d36ec39a1cf1395f ]
 
-On 32bits ARM, u64 divided by a constant is not optimized to a
-multiply by inverse by the compiler [1].
-So do the multiply by inverse explicitly for this architecture.
+The Gemalto Cinterion PLS83-W modem (cdc_ether) is emitting confusing link
+up and down events when the WWAN interface is activated on the modem-side.
 
-Link: https://github.com/llvm/llvm-project/issues/37280 [1]
-Reported-by: Andrei Lalaev <andrey.lalaev@gmail.com>
-Closes: https://lore.kernel.org/dri-devel/c0a2771c-f3f5-4d4c-aa82-d673b3c5cb46@gmail.com/
-Fixes: 675008f196ca ("drm/panic: Use a decimal fifo to avoid u64 by u64 divide")
-Reviewed-by: Alice Ryhl <aliceryhl@google.com>
-Signed-off-by: Jocelyn Falempe <jfalempe@redhat.com>
+Interrupt URBs will in consecutive polls grab:
+* Link Connected
+* Link Disconnected
+* Link Connected
+
+Where the last Connected is then a stable link state.
+
+When the system is under load this may cause the unlink_urbs() work in
+__handle_link_change() to not complete before the next usbnet_link_change()
+call turns the carrier on again, allowing rx_submit() to queue new SKBs.
+
+In that event the URB queue is filled faster than it can drain, ending up
+in a RCU stall:
+
+    rcu: INFO: rcu_sched detected expedited stalls on CPUs/tasks: { 0-.... } 33108 jiffies s: 201 root: 0x1/.
+    rcu: blocking rcu_node structures (internal RCU debug):
+    Sending NMI from CPU 1 to CPUs 0:
+    NMI backtrace for cpu 0
+
+    Call trace:
+     arch_local_irq_enable+0x4/0x8
+     local_bh_enable+0x18/0x20
+     __netdev_alloc_skb+0x18c/0x1cc
+     rx_submit+0x68/0x1f8 [usbnet]
+     rx_alloc_submit+0x4c/0x74 [usbnet]
+     usbnet_bh+0x1d8/0x218 [usbnet]
+     usbnet_bh_tasklet+0x10/0x18 [usbnet]
+     tasklet_action_common+0xa8/0x110
+     tasklet_action+0x2c/0x34
+     handle_softirqs+0x2cc/0x3a0
+     __do_softirq+0x10/0x18
+     ____do_softirq+0xc/0x14
+     call_on_irq_stack+0x24/0x34
+     do_softirq_own_stack+0x18/0x20
+     __irq_exit_rcu+0xa8/0xb8
+     irq_exit_rcu+0xc/0x30
+     el1_interrupt+0x34/0x48
+     el1h_64_irq_handler+0x14/0x1c
+     el1h_64_irq+0x68/0x6c
+     _raw_spin_unlock_irqrestore+0x38/0x48
+     xhci_urb_dequeue+0x1ac/0x45c [xhci_hcd]
+     unlink1+0xd4/0xdc [usbcore]
+     usb_hcd_unlink_urb+0x70/0xb0 [usbcore]
+     usb_unlink_urb+0x24/0x44 [usbcore]
+     unlink_urbs.constprop.0.isra.0+0x64/0xa8 [usbnet]
+     __handle_link_change+0x34/0x70 [usbnet]
+     usbnet_deferred_kevent+0x1c0/0x320 [usbnet]
+     process_scheduled_works+0x2d0/0x48c
+     worker_thread+0x150/0x1dc
+     kthread+0xd8/0xe8
+     ret_from_fork+0x10/0x20
+
+Get around the problem by delaying the carrier on to the scheduled work.
+
+This needs a new flag to keep track of the necessary action.
+
+The carrier ok check cannot be removed as it remains required for the
+LINK_RESET event flow.
+
+Fixes: 4b49f58fff00 ("usbnet: handle link change")
+Cc: stable@vger.kernel.org
+Signed-off-by: John Ernberg <john.ernberg@actia.se>
+Link: https://patch.msgid.link/20250723102526.1305339-1-john.ernberg@actia.se
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+[ adjust context in header ]
 Signed-off-by: Sasha Levin <sashal@kernel.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/gpu/drm/drm_panic_qr.rs | 22 +++++++++++++++++++++-
- 1 file changed, 21 insertions(+), 1 deletion(-)
+ drivers/net/usb/usbnet.c   |   11 ++++++++---
+ include/linux/usb/usbnet.h |    1 +
+ 2 files changed, 9 insertions(+), 3 deletions(-)
 
-diff --git a/drivers/gpu/drm/drm_panic_qr.rs b/drivers/gpu/drm/drm_panic_qr.rs
-index 18492daae4b3..b9cc64458437 100644
---- a/drivers/gpu/drm/drm_panic_qr.rs
-+++ b/drivers/gpu/drm/drm_panic_qr.rs
-@@ -381,6 +381,26 @@ struct DecFifo {
-     len: usize,
- }
+--- a/drivers/net/usb/usbnet.c
++++ b/drivers/net/usb/usbnet.c
+@@ -1080,6 +1080,9 @@ static void __handle_link_change(struct
+ 		 * tx queue is stopped by netcore after link becomes off
+ 		 */
+ 	} else {
++		if (test_and_clear_bit(EVENT_LINK_CARRIER_ON, &dev->flags))
++			netif_carrier_on(dev->net);
++
+ 		/* submitting URBs for reading packets */
+ 		tasklet_schedule(&dev->bh);
+ 	}
+@@ -1960,10 +1963,12 @@ EXPORT_SYMBOL(usbnet_manage_power);
+ void usbnet_link_change(struct usbnet *dev, bool link, bool need_reset)
+ {
+ 	/* update link after link is reseted */
+-	if (link && !need_reset)
+-		netif_carrier_on(dev->net);
+-	else
++	if (link && !need_reset) {
++		set_bit(EVENT_LINK_CARRIER_ON, &dev->flags);
++	} else {
++		clear_bit(EVENT_LINK_CARRIER_ON, &dev->flags);
+ 		netif_carrier_off(dev->net);
++	}
  
-+// On arm32 architecture, dividing an `u64` by a constant will generate a call
-+// to `__aeabi_uldivmod` which is not present in the kernel.
-+// So use the multiply by inverse method for this architecture.
-+fn div10(val: u64) -> u64 {
-+    if cfg!(target_arch = "arm") {
-+        let val_h = val >> 32;
-+        let val_l = val & 0xFFFFFFFF;
-+        let b_h: u64 = 0x66666666;
-+        let b_l: u64 = 0x66666667;
-+
-+        let tmp1 = val_h * b_l + ((val_l * b_l) >> 32);
-+        let tmp2 = val_l * b_h + (tmp1 & 0xffffffff);
-+        let tmp3 = val_h * b_h + (tmp1 >> 32) + (tmp2 >> 32);
-+
-+        tmp3 >> 2
-+    } else {
-+        val / 10
-+    }
-+}
-+
- impl DecFifo {
-     fn push(&mut self, data: u64, len: usize) {
-         let mut chunk = data;
-@@ -389,7 +409,7 @@ impl DecFifo {
-         }
-         for i in 0..len {
-             self.decimals[i] = (chunk % 10) as u8;
--            chunk /= 10;
-+            chunk = div10(chunk);
-         }
-         self.len += len;
-     }
--- 
-2.50.1
-
+ 	if (need_reset && link)
+ 		usbnet_defer_kevent(dev, EVENT_LINK_RESET);
+--- a/include/linux/usb/usbnet.h
++++ b/include/linux/usb/usbnet.h
+@@ -83,6 +83,7 @@ struct usbnet {
+ #		define EVENT_LINK_CHANGE	11
+ #		define EVENT_SET_RX_MODE	12
+ #		define EVENT_NO_IP_ALIGN	13
++#		define EVENT_LINK_CARRIER_ON	14
+ 	u32			rx_speed;	/* in bps - NOT Mbps */
+ 	u32			tx_speed;	/* in bps - NOT Mbps */
+ };
 
 
 
