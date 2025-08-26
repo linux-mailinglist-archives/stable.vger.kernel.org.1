@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-173748-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-174879-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id A9B8EB35F7B
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 14:49:38 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 973B7B36543
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 15:46:17 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 925AA1BA3A88
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 12:49:55 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id F37EC1BC05DB
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 13:39:39 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id EC7E042AA4;
-	Tue, 26 Aug 2025 12:49:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2AF161FBCB1;
+	Tue, 26 Aug 2025 13:39:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="BImCyuJc"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="RL1leGGL"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A3686FC1D;
-	Tue, 26 Aug 2025 12:49:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DE0602F84F;
+	Tue, 26 Aug 2025 13:39:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756212570; cv=none; b=fMO9ZPSu0KRkKXhVYm8rJeWOwIBNScyBmVlonFdUUBZdy69aPBihGo5AIklfyyEFfyBveR3KyBbKW6p9dXECoutl5efE8qRf5+Bu2eydxEV5UqkaL+y1wgkgKNTyq1ekshQQAD/pTDoLHMAc/+XLnKaBrN1Epvg4t3y0gxhyou0=
+	t=1756215558; cv=none; b=QTuFPLWgSFCulDzWc9aspyCFbMQze+fQh61LYxtj56Hw5Xb4Zsl5AydXOGeFctJRHZI5NlVEzhfyrLrs+i2BhM5aoScIamTobs4iLZ9AbdAJIVdPrcv0DMbt6uxspe4kFGXgIRHRf6jQ0nD0/bo2evv0XqaePDVTGyDhUh7kFSI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756212570; c=relaxed/simple;
-	bh=/uy4f2xDZ3NJTGgd2m2QRGOsoN6yW4yZnQOzhpN1dbY=;
+	s=arc-20240116; t=1756215558; c=relaxed/simple;
+	bh=V9+JD3+j06wcGwlBj8645pvSeg5GtVg1ebUi3/xFIhI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=h+1/JAN71HUDZIHjVdHb+3pTnujXEVZNYizPu8nyejEK+PQlZAMgzvha5tM6FN3Kx/Tmk395Kbt8Q1zfvTaQMSqxycfaTNNbCKmkAWJiNAI0/qFe4tfimgVKO4H6qa3AvP51BvTBePfMF1BdkoUCKuC7G7CCnNFlquUtMRtidb8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=BImCyuJc; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id DC632C4CEF1;
-	Tue, 26 Aug 2025 12:49:29 +0000 (UTC)
+	 MIME-Version; b=mn2lhDosxFmFrk7eWvz0ixkeG/9Ejq6WWJXYQnBJxHUCsrhQyngAkWn6onHWhYRLLlzCBA+f7guCJrO13MWO9EQ3qosMhEzTy7wi+UgoOpCZevcgFtdthMx3BN4C0jvXiG7IMZRtHYPnamvpMzQSH4yZ3fCJwtFEaNxcpkXZEJM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=RL1leGGL; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 12F7BC113D0;
+	Tue, 26 Aug 2025 13:39:15 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1756212570;
-	bh=/uy4f2xDZ3NJTGgd2m2QRGOsoN6yW4yZnQOzhpN1dbY=;
+	s=korg; t=1756215556;
+	bh=V9+JD3+j06wcGwlBj8645pvSeg5GtVg1ebUi3/xFIhI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=BImCyuJcSS0UDvlZohKJ354nfGpXQYhBC0Jst6KskAO0sv9sw7HEJ2dOEspMxuauP
-	 5KC14jHjsCJg4dXP7AXdaLs03UqT9rcLCb+FiOY8U78XeL4vloa6R3gENW1IqKX7F9
-	 ycYceb/KturNUPWpBGPUb1tZRZGUgVR2EWt1ZlX4=
+	b=RL1leGGLz+au6qNzyGoejRgYTP6LaEjvd+xJwB1MAUjKItgAof4sRYhZLHEp8Lgl0
+	 7ePJgMI+FhCYYCYWROD+nTmLnrTzRcgMxrt0g0tmMyjB/f1o3iWN0safK7v+7gk53z
+	 8EB2VOVlZIqsAZy/GCMJiC2k1lBfEcqcufr4xrfw=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Xu Yang <xu.yang_2@nxp.com>,
-	Oleksij Rempel <o.rempel@pengutronix.de>,
-	Paolo Abeni <pabeni@redhat.com>
-Subject: [PATCH 6.6 020/587] net: usb: asix_devices: add phy_mask for ax88772 mdio bus
+	Maor Gottlieb <maorg@nvidia.com>,
+	Leon Romanovsky <leonro@nvidia.com>,
+	Jason Gunthorpe <jgg@nvidia.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.15 078/644] RDMA/core: Rate limit GID cache warning messages
 Date: Tue, 26 Aug 2025 13:02:49 +0200
-Message-ID: <20250826110953.469903269@linuxfoundation.org>
+Message-ID: <20250826110948.430098949@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250826110952.942403671@linuxfoundation.org>
-References: <20250826110952.942403671@linuxfoundation.org>
+In-Reply-To: <20250826110946.507083938@linuxfoundation.org>
+References: <20250826110946.507083938@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,47 +63,49 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Xu Yang <xu.yang_2@nxp.com>
+From: Maor Gottlieb <maorg@nvidia.com>
 
-commit 4faff70959d51078f9ee8372f8cff0d7045e4114 upstream.
+[ Upstream commit 333e4d79316c9ed5877d7aac8b8ed22efc74e96d ]
 
-Without setting phy_mask for ax88772 mdio bus, current driver may create
-at most 32 mdio phy devices with phy address range from 0x00 ~ 0x1f.
-DLink DUB-E100 H/W Ver B1 is such a device. However, only one main phy
-device will bind to net phy driver. This is creating issue during system
-suspend/resume since phy_polling_mode() in phy_state_machine() will
-directly deference member of phydev->drv for non-main phy devices. Then
-NULL pointer dereference issue will occur. Due to only external phy or
-internal phy is necessary, add phy_mask for ax88772 mdio bus to workarnoud
-the issue.
+The GID cache warning messages can flood the kernel log when there are
+multiple failed attempts to add GIDs. This can happen when creating many
+virtual interfaces without having enough space for their GIDs in the GID
+table.
 
-Closes: https://lore.kernel.org/netdev/20250806082931.3289134-1-xu.yang_2@nxp.com
-Fixes: e532a096be0e ("net: usb: asix: ax88772: add phylib support")
-Cc: stable@vger.kernel.org
-Signed-off-by: Xu Yang <xu.yang_2@nxp.com>
-Tested-by: Oleksij Rempel <o.rempel@pengutronix.de>
-Reviewed-by: Oleksij Rempel <o.rempel@pengutronix.de>
-Link: https://patch.msgid.link/20250811092931.860333-1-xu.yang_2@nxp.com
-Signed-off-by: Paolo Abeni <pabeni@redhat.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Change pr_warn to pr_warn_ratelimited to prevent log flooding while still
+maintaining visibility of the issue.
+
+Link: https://patch.msgid.link/r/fd45ed4a1078e743f498b234c3ae816610ba1b18.1750062357.git.leon@kernel.org
+Signed-off-by: Maor Gottlieb <maorg@nvidia.com>
+Signed-off-by: Leon Romanovsky <leonro@nvidia.com>
+Signed-off-by: Jason Gunthorpe <jgg@nvidia.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/usb/asix_devices.c |    1 +
- 1 file changed, 1 insertion(+)
+ drivers/infiniband/core/cache.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
---- a/drivers/net/usb/asix_devices.c
-+++ b/drivers/net/usb/asix_devices.c
-@@ -676,6 +676,7 @@ static int ax88772_init_mdio(struct usbn
- 	priv->mdio->read = &asix_mdio_bus_read;
- 	priv->mdio->write = &asix_mdio_bus_write;
- 	priv->mdio->name = "Asix MDIO Bus";
-+	priv->mdio->phy_mask = ~(BIT(priv->phy_addr) | BIT(AX_EMBD_PHY_ADDR));
- 	/* mii bus name is usb-<usb bus number>-<usb device number> */
- 	snprintf(priv->mdio->id, MII_BUS_ID_SIZE, "usb-%03d:%03d",
- 		 dev->udev->bus->busnum, dev->udev->devnum);
+diff --git a/drivers/infiniband/core/cache.c b/drivers/infiniband/core/cache.c
+index b534ef03168c6..91ee3e823a9fe 100644
+--- a/drivers/infiniband/core/cache.c
++++ b/drivers/infiniband/core/cache.c
+@@ -582,8 +582,8 @@ static int __ib_cache_gid_add(struct ib_device *ib_dev, u32 port,
+ out_unlock:
+ 	mutex_unlock(&table->lock);
+ 	if (ret)
+-		pr_warn("%s: unable to add gid %pI6 error=%d\n",
+-			__func__, gid->raw, ret);
++		pr_warn_ratelimited("%s: unable to add gid %pI6 error=%d\n",
++				    __func__, gid->raw, ret);
+ 	return ret;
+ }
+ 
+-- 
+2.39.5
+
 
 
 
