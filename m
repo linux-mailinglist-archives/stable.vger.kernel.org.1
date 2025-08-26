@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-175151-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-173978-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 48667B366AB
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 15:59:17 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id F3BEAB3605B
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 14:59:39 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 93EFC8E2736
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 13:52:50 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 354727B5A12
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 12:58:04 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5A157350D40;
-	Tue, 26 Aug 2025 13:51:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 921951F1534;
+	Tue, 26 Aug 2025 12:59:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="xHVOCvPm"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="dvndfjFh"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1677334F48D;
-	Tue, 26 Aug 2025 13:51:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4DDF31DD9D3;
+	Tue, 26 Aug 2025 12:59:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756216277; cv=none; b=i1h8LtP3sY8vgQR+iNvDzQ8di40lJ+5HROpC3facJTD3x2XE1QlrxXIH2fpgQF3PXoy24XhyO+kgnPhtJEoPtdAR9NzWFx962uuOBKhy6KNZ86tBIi9Hy20jiZ4r+6lD2Dff6vfhpEcAOYYJU4MuNtkeG3aZr84Yp4deVTNrNIc=
+	t=1756213169; cv=none; b=I6gDd8hgujQ/RvlOa2uj0M/+E5uDesH0J3B1Z5j6AhQpFWoZhr5aHCFKU254jxtERj2SU3jv+Y96Ilv945QPxTW32rSryxqyi70Qz+gDNUKuqx6cPWcHRgoxO2A/TW0du/ROJeatpVZz+UAEbNfy1oUo/DJIz0jc47YEeYAOdxU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756216277; c=relaxed/simple;
-	bh=uYryhlWsEqysnaAi+AFpbKQPNVmBUTm460B3tCDSNiY=;
+	s=arc-20240116; t=1756213169; c=relaxed/simple;
+	bh=bS38em7zvpPwralGmmwG6T8aZmBnH+iZBSNTTCM6/KU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=J67+u0blNqkJHFWsUrgX2wvsrs8EfnOekkGmdMiXaH5B9hg5611OnVo6FclyFd+eZuhKFdfcUj2xKDGFCvSTm3OqacUgIgC37S6U5xQue+5ICtesGb8uBHHVM4tE2hiOaRy6u32QtKZc7MAy/ipn/Fk5avHoBtQmWQnjbAJV0rE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=xHVOCvPm; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 40806C4CEF1;
-	Tue, 26 Aug 2025 13:51:16 +0000 (UTC)
+	 MIME-Version; b=U7acr8enYrIye6DubCjl7AzOrcod8FBdF7y9IiBcGn1XiEivPzVx9sYofjz4fifowtxdos3HO/CHY7BTl6xXqjgaLizoYV2xSZJI6oubQ5JO5y+5ztYPh+j5qTUiURNdn1bYVwOaza0HB7GjzgCeYN7zn+mevLojLLnrtMCek1U=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=dvndfjFh; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 691DFC4CEF1;
+	Tue, 26 Aug 2025 12:59:28 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1756216276;
-	bh=uYryhlWsEqysnaAi+AFpbKQPNVmBUTm460B3tCDSNiY=;
+	s=korg; t=1756213168;
+	bh=bS38em7zvpPwralGmmwG6T8aZmBnH+iZBSNTTCM6/KU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=xHVOCvPm8wtgzmnEXEwzH82ty18BMZRSiG5SQpPJckfusPu210a1Hqxj8fZFbIXxZ
-	 9Yf1Z9zUqLIDjsITOvbHvKQMl7FLgLM3wBKUIVkqWeYbNoDixqaJ8uQy8rk5RDyXnr
-	 q0H3aDbSyJz5KVJ0UFOyAa1Dkck2pYhqAM57myqQ=
+	b=dvndfjFhPpgJC7nIHhfVwF8N16u0WSQZ4atqowWPpVgFvqdLUJ01BG9Y8eovxRBHw
+	 XkmblwCFAJAyNAlaIpjlF1ifUXAdpZSjsQ544zH51p44NWaTBCVQcSEvh4MLhW9RZT
+	 Wrbp3jvGChnv8wMy9ZqN/ZbqUZb+3vj/4GPNSdqA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Alexander Kochetkov <al.kochet@gmail.com>,
-	Heiko Stuebner <heiko@sntech.de>,
+	Justin Tee <justin.tee@broadcom.com>,
+	"Martin K. Petersen" <martin.petersen@oracle.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 304/644] ARM: rockchip: fix kernel hang during smp initialization
+Subject: [PATCH 6.6 246/587] scsi: lpfc: Check for hdwq null ptr when cleaning up lpfc_vport structure
 Date: Tue, 26 Aug 2025 13:06:35 +0200
-Message-ID: <20250826110953.916971011@linuxfoundation.org>
+Message-ID: <20250826110959.188456385@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250826110946.507083938@linuxfoundation.org>
-References: <20250826110946.507083938@linuxfoundation.org>
+In-Reply-To: <20250826110952.942403671@linuxfoundation.org>
+References: <20250826110952.942403671@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,72 +62,45 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Alexander Kochetkov <al.kochet@gmail.com>
+From: Justin Tee <justin.tee@broadcom.com>
 
-[ Upstream commit 7cdb433bb44cdc87dc5260cdf15bf03cc1cd1814 ]
+[ Upstream commit 6698796282e828733cde3329c887b4ae9e5545e9 ]
 
-In order to bring up secondary CPUs main CPU write trampoline
-code to SRAM. The trampoline code is written while secondary
-CPUs are powered on (at least that true for RK3188 CPU).
-Sometimes that leads to kernel hang. Probably because secondary
-CPU execute trampoline code while kernel doesn't expect.
+If a call to lpfc_sli4_read_rev() from lpfc_sli4_hba_setup() fails, the
+resultant cleanup routine lpfc_sli4_vport_delete_fcp_xri_aborted() may
+occur before sli4_hba.hdwqs are allocated.  This may result in a null
+pointer dereference when attempting to take the abts_io_buf_list_lock for
+the first hardware queue.  Fix by adding a null ptr check on
+phba->sli4_hba.hdwq and early return because this situation means there
+must have been an error during port initialization.
 
-The patch moves SRAM initialization step to the point where all
-secondary CPUs are powered down.
-
-That fixes rarely hangs on RK3188:
-[    0.091568] CPU0: thread -1, cpu 0, socket 0, mpidr 80000000
-[    0.091996] rockchip_smp_prepare_cpus: ncores 4
-
-Signed-off-by: Alexander Kochetkov <al.kochet@gmail.com>
-Link: https://lore.kernel.org/r/20250703140453.1273027-1-al.kochet@gmail.com
-Signed-off-by: Heiko Stuebner <heiko@sntech.de>
+Signed-off-by: Justin Tee <justin.tee@broadcom.com>
+Link: https://lore.kernel.org/r/20250618192138.124116-4-justintee8345@gmail.com
+Signed-off-by: Martin K. Petersen <martin.petersen@oracle.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/arm/mach-rockchip/platsmp.c | 15 +++++++++------
- 1 file changed, 9 insertions(+), 6 deletions(-)
+ drivers/scsi/lpfc/lpfc_scsi.c | 4 ++++
+ 1 file changed, 4 insertions(+)
 
-diff --git a/arch/arm/mach-rockchip/platsmp.c b/arch/arm/mach-rockchip/platsmp.c
-index d60856898d97..17aee4701e81 100644
---- a/arch/arm/mach-rockchip/platsmp.c
-+++ b/arch/arm/mach-rockchip/platsmp.c
-@@ -279,11 +279,6 @@ static void __init rockchip_smp_prepare_cpus(unsigned int max_cpus)
- 	}
+diff --git a/drivers/scsi/lpfc/lpfc_scsi.c b/drivers/scsi/lpfc/lpfc_scsi.c
+index 070654cc9292..dcbb2432c978 100644
+--- a/drivers/scsi/lpfc/lpfc_scsi.c
++++ b/drivers/scsi/lpfc/lpfc_scsi.c
+@@ -390,6 +390,10 @@ lpfc_sli4_vport_delete_fcp_xri_aborted(struct lpfc_vport *vport)
+ 	if (!(vport->cfg_enable_fc4_type & LPFC_ENABLE_FCP))
+ 		return;
  
- 	if (read_cpuid_part() == ARM_CPU_PART_CORTEX_A9) {
--		if (rockchip_smp_prepare_sram(node)) {
--			of_node_put(node);
--			return;
--		}
--
- 		/* enable the SCU power domain */
- 		pmu_set_power_domain(PMU_PWRDN_SCU, true);
- 
-@@ -316,11 +311,19 @@ static void __init rockchip_smp_prepare_cpus(unsigned int max_cpus)
- 		asm ("mrc p15, 1, %0, c9, c0, 2\n" : "=r" (l2ctlr));
- 		ncores = ((l2ctlr >> 24) & 0x3) + 1;
- 	}
--	of_node_put(node);
- 
- 	/* Make sure that all cores except the first are really off */
- 	for (i = 1; i < ncores; i++)
- 		pmu_set_power_domain(0 + i, false);
++	/* may be called before queues established if hba_setup fails */
++	if (!phba->sli4_hba.hdwq)
++		return;
 +
-+	if (read_cpuid_part() == ARM_CPU_PART_CORTEX_A9) {
-+		if (rockchip_smp_prepare_sram(node)) {
-+			of_node_put(node);
-+			return;
-+		}
-+	}
-+
-+	of_node_put(node);
- }
- 
- static void __init rk3036_smp_prepare_cpus(unsigned int max_cpus)
+ 	spin_lock_irqsave(&phba->hbalock, iflag);
+ 	for (idx = 0; idx < phba->cfg_hdw_queue; idx++) {
+ 		qp = &phba->sli4_hba.hdwq[idx];
 -- 
 2.39.5
 
