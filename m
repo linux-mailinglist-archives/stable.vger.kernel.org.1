@@ -1,57 +1,59 @@
-Return-Path: <stable+bounces-176024-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-175648-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5932FB36AB5
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 16:39:59 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 21B17B36929
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 16:23:30 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id D856558780C
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 14:32:09 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id AD1F85843FC
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 14:15:49 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E1B373568FC;
-	Tue, 26 Aug 2025 14:29:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A6E10352FE6;
+	Tue, 26 Aug 2025 14:13:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="IC4r4Z9/"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="E1O+C69F"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9F76E356903;
-	Tue, 26 Aug 2025 14:29:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 64CFB352FDA;
+	Tue, 26 Aug 2025 14:13:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756218585; cv=none; b=SYOE5jdx3mxRWq5JBr0/4j96bAAOLxCb75QWE0SKtQAqo1KBmmpfNc/5PdFe0COvU4zhuf7YQ4e0Oh3wYzGKgYnjDGfoIscl88AnkoJ8ggikIFc6b8B3jS9r/ux1IqTL2Vp2zHMDXzGpH4Id0aOV+zOHFQpGUdxGGkYOvwUsVUA=
+	t=1756217601; cv=none; b=lKzvPHa/qxZI79PZiJI5OvtXmSIuEAG77l1Rfktj2pyR4WBgcyX1tJAzxWLega0U4o1hfx24qDJKKBHpKWY/oIetrVZlNu7hdo5LpmvTEmTMUt02898uP21CVjdj1nZ/BPJt3ZSH4NmwRdA+MWNklqH+oQYSkEBYVWSnFA6RZM4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756218585; c=relaxed/simple;
-	bh=wPo7f0QesYrlhyBXK6O6qPhzir4nDNWoahpm2vmZwCM=;
+	s=arc-20240116; t=1756217601; c=relaxed/simple;
+	bh=tt0MHI3i+FpcP7JRbKk7gftxqgfWM1zxXBf8jF7xPio=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=nfZhVUf/4c3YmHSAltvFoD1TJEpWeF+KDP0N+DjrbH/bUPJyKq2XGkvhLrhk0DXIiYS85SWGqUg/2fId0M9mdbB2EcJ7wyzBTl47St7VuupiX4Mmxv03djCMEJOokGLROWhc3btvj8NHLdpUgZ7DDWyqHzDEyBnCE934q2DpfXU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=IC4r4Z9/; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 32B6CC4CEF1;
-	Tue, 26 Aug 2025 14:29:45 +0000 (UTC)
+	 MIME-Version; b=LsLfTe85CHf7aDZbuQHO2cMmtrOON4lEMNzTYjIZBCrG/89OqN+88NVfnn/wOfuZzLPsDePuYcYvHJaJoL/yWfYXsZhYS6rE3xaYm0vOPBh9gzMGtNhfpP6UpALryD0pJcd4DoS6jNMbcR/DguYMkJGcG5S67N/l2+LZagw3OM4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=E1O+C69F; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D97B6C113CF;
+	Tue, 26 Aug 2025 14:13:20 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1756218585;
-	bh=wPo7f0QesYrlhyBXK6O6qPhzir4nDNWoahpm2vmZwCM=;
+	s=korg; t=1756217601;
+	bh=tt0MHI3i+FpcP7JRbKk7gftxqgfWM1zxXBf8jF7xPio=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=IC4r4Z9/htTAAmScJm6EZXZSp+gKnAb4C3TqeXXVaBMlJ4VWyMrPkhRM4+kSiUB2t
-	 homN9tHj22GyKek4z8vYKEeBu2oy94mo6NGEQNZFxl2qJErEwrZNqFoZpi2E4dtheo
-	 cCrEyHyXHPFBNS0vmkHKwl3YKAefkagwB1VKKU0Q=
+	b=E1O+C69F8xmxB5Ms6ZkTC9p3/+B/1WMo0nviJAAvOva/U5FEPzyCeFdMyqAxatzLA
+	 GsHzSVvoTEvKkRC5WyEPhB0bD0kBBnGrZq4iNte8qZRKKDKAlPa83B8oRTdpVvXmb8
+	 7C40oQrM371PViSvpRrpahcNFbLudnERen3sZnWM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Maor Gottlieb <maorg@nvidia.com>,
-	Leon Romanovsky <leonro@nvidia.com>,
-	Jason Gunthorpe <jgg@nvidia.com>,
+	Trond Myklebust <trondmy@kernel.org>,
+	Benjamin Coddington <bcodding@redhat.com>,
+	Laurence Oberman <loberman@redhat.com>,
+	Jeff Layton <jlayton@kernel.org>,
+	Trond Myklebust <trond.myklebust@hammerspace.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.4 057/403] RDMA/core: Rate limit GID cache warning messages
+Subject: [PATCH 5.10 173/523] NFS: Fixup allocation flags for nfsiods __GFP_NORETRY
 Date: Tue, 26 Aug 2025 13:06:23 +0200
-Message-ID: <20250826110907.443169335@linuxfoundation.org>
+Message-ID: <20250826110928.730967898@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250826110905.607690791@linuxfoundation.org>
-References: <20250826110905.607690791@linuxfoundation.org>
+In-Reply-To: <20250826110924.562212281@linuxfoundation.org>
+References: <20250826110924.562212281@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,46 +65,57 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.4-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Maor Gottlieb <maorg@nvidia.com>
+From: Benjamin Coddington <bcodding@redhat.com>
 
-[ Upstream commit 333e4d79316c9ed5877d7aac8b8ed22efc74e96d ]
+[ Upstream commit 99765233ab42bf7a4950377ad7894dce8a5c0e60 ]
 
-The GID cache warning messages can flood the kernel log when there are
-multiple failed attempts to add GIDs. This can happen when creating many
-virtual interfaces without having enough space for their GIDs in the GID
-table.
+If the NFS client is doing writeback from a workqueue context, avoid using
+__GFP_NORETRY for allocations if the task has set PF_MEMALLOC_NOIO or
+PF_MEMALLOC_NOFS.  The combination of these flags makes memory allocation
+failures much more likely.
 
-Change pr_warn to pr_warn_ratelimited to prevent log flooding while still
-maintaining visibility of the issue.
+We've seen those allocation failures show up when the loopback driver is
+doing writeback from a workqueue to a file on NFS, where memory allocation
+failure results in errors or corruption within the loopback device's
+filesystem.
 
-Link: https://patch.msgid.link/r/fd45ed4a1078e743f498b234c3ae816610ba1b18.1750062357.git.leon@kernel.org
-Signed-off-by: Maor Gottlieb <maorg@nvidia.com>
-Signed-off-by: Leon Romanovsky <leonro@nvidia.com>
-Signed-off-by: Jason Gunthorpe <jgg@nvidia.com>
+Suggested-by: Trond Myklebust <trondmy@kernel.org>
+Fixes: 0bae835b63c5 ("NFS: Avoid writeback threads getting stuck in mempool_alloc()")
+Signed-off-by: Benjamin Coddington <bcodding@redhat.com>
+Reviewed-by: Laurence Oberman <loberman@redhat.com>
+Tested-by: Laurence Oberman <loberman@redhat.com>
+Reviewed-by: Jeff Layton <jlayton@kernel.org>
+Link: https://lore.kernel.org/r/f83ac1155a4bc670f2663959a7a068571e06afd9.1752111622.git.bcodding@redhat.com
+Signed-off-by: Trond Myklebust <trond.myklebust@hammerspace.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/infiniband/core/cache.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ fs/nfs/internal.h | 9 ++++++---
+ 1 file changed, 6 insertions(+), 3 deletions(-)
 
-diff --git a/drivers/infiniband/core/cache.c b/drivers/infiniband/core/cache.c
-index 7affe6b4ae210..641e537a0069a 100644
---- a/drivers/infiniband/core/cache.c
-+++ b/drivers/infiniband/core/cache.c
-@@ -578,8 +578,8 @@ static int __ib_cache_gid_add(struct ib_device *ib_dev, u8 port,
- out_unlock:
- 	mutex_unlock(&table->lock);
- 	if (ret)
--		pr_warn("%s: unable to add gid %pI6 error=%d\n",
--			__func__, gid->raw, ret);
-+		pr_warn_ratelimited("%s: unable to add gid %pI6 error=%d\n",
-+				    __func__, gid->raw, ret);
- 	return ret;
+diff --git a/fs/nfs/internal.h b/fs/nfs/internal.h
+index 2fdc7c2a17fe..8af263a30fc0 100644
+--- a/fs/nfs/internal.h
++++ b/fs/nfs/internal.h
+@@ -588,9 +588,12 @@ nfs_write_match_verf(const struct nfs_writeverf *verf,
+ 
+ static inline gfp_t nfs_io_gfp_mask(void)
+ {
+-	if (current->flags & PF_WQ_WORKER)
+-		return GFP_KERNEL | __GFP_NORETRY | __GFP_NOWARN;
+-	return GFP_KERNEL;
++	gfp_t ret = current_gfp_context(GFP_KERNEL);
++
++	/* For workers __GFP_NORETRY only with __GFP_IO or __GFP_FS */
++	if ((current->flags & PF_WQ_WORKER) && ret == GFP_KERNEL)
++		ret |= __GFP_NORETRY | __GFP_NOWARN;
++	return ret;
  }
  
+ /* unlink.c */
 -- 
 2.39.5
 
