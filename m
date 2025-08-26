@@ -1,55 +1,57 @@
-Return-Path: <stable+bounces-173035-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-175086-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6E44CB35B40
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 13:22:18 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 00B30B3664F
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 15:55:56 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 3C2F63B88D8
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 11:21:46 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 8DA961889798
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 13:50:09 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A5BB4340DBF;
-	Tue, 26 Aug 2025 11:20:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id DB1B3350D6A;
+	Tue, 26 Aug 2025 13:48:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="gJa6ScnA"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="z5d4s6p4"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3E0D8341642;
-	Tue, 26 Aug 2025 11:20:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 955D9350D61;
+	Tue, 26 Aug 2025 13:48:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756207206; cv=none; b=UV1MSd+o15jc5V4JSXUqWND6UYfD5Gn/5AIQt7DjPKphLc4mg+P7IyP166TKIXqP7xrJEpQGwGOtOmC8biGSeNxecWYcL4X+SC2QcYPUjduPpyF8SBag8NEXlaWAKkG3dIzzaq1DmT1Jg5CV98mVhTnH7+++nip4L66CLuys39s=
+	t=1756216103; cv=none; b=Bz7JaFVu9Bf1k2l/1ERMfTmV9jlit9zOg4fQMvgKlRyHj8cQKZ2pMLTprTb9Zm852If3Kd5U8PHeu6Xvi8kFZT5etDrYPSL4PXrLv2O/3iI8vDDbT460D0dF6cVHrF/c6mdRJDHNe91iGzMvsrE6doMh6hRCLV0YkELU1b7frU8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756207206; c=relaxed/simple;
-	bh=c2Ie9KciATxhc+er+Elv0LSLRr08g10SBi7cwvpwxPI=;
+	s=arc-20240116; t=1756216103; c=relaxed/simple;
+	bh=lCMTqazBoeNqF5A10hN5yc0X3I5HvWdiQ2ZJdPtAUX0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=LpuLMyx1b6xc3/jyyinhHE9sT/rfVV1KD5qNe0OoDvcPRgq8bL0x82aILdATGq8E2bhDNDlpfNIXZmoliXDUxspQ3WeT6grTbIz7vL9tuGzYnVRZFSZI+TTAA/xkTC6vOlO83tA7eExDUMJAkagkkMnVy7e7kuhiekWTH8QKdAM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=gJa6ScnA; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C30CAC4CEF1;
-	Tue, 26 Aug 2025 11:20:05 +0000 (UTC)
+	 MIME-Version; b=V7OycddKmhSVqMzddhCL1d/9Ewc487THD9E6rmxp4t7YSrnuhAbaNPCkRKCPUWWDuUTDvabwalIr5u85a2TzMIwxDYJTgFTzZnn4Ud7oXnhmpql3xhQItJZX27PXat6fmNPz7EhbGfWC7dBUMktyVmwhhVlAVTV6AZWS0WF0zL8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=z5d4s6p4; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id CD8CFC113CF;
+	Tue, 26 Aug 2025 13:48:22 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1756207206;
-	bh=c2Ie9KciATxhc+er+Elv0LSLRr08g10SBi7cwvpwxPI=;
+	s=korg; t=1756216103;
+	bh=lCMTqazBoeNqF5A10hN5yc0X3I5HvWdiQ2ZJdPtAUX0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=gJa6ScnAS5vnmlkwMBUDxvCcF2c9vfRQIBbYSS+e4MCsooiHlB8MUyI0xOc6xjNKl
-	 ncxo4SLKDLlfToZ+ncgVGmu3F0G97jizU3kFozGoDmH9ylkbOWyPSIOllkLUrTAZnA
-	 w89USpH4LbMOrcxBtrJiJBkdQBniof3JNJx7hkeI=
+	b=z5d4s6p4zQDbP8tMHnkIy7BedSOPv0tIiZ07pdTHPKD2zDNbnMv1GdO3+W7dc97qy
+	 TIRZBV18FihlzeJW/s8qmhSsuQK24Rn+AOZ3T2FosKAcRkPcqJocJHl/choSnfoDOz
+	 Mo6nj1yJtTV1SSYj5vbW1nIyh1Af2hI3ze+6GESk=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Gabor Juhos <j4g8y7@gmail.com>,
-	Miquel Raynal <miquel.raynal@bootlin.com>
-Subject: [PATCH 6.16 092/457] mtd: spinand: propagate spinand_wait() errors from spinand_write_page()
+	NeilBrown <neil@brown.name>,
+	Namjae Jeon <linkinjeon@kernel.org>,
+	Steve French <stfrench@microsoft.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.15 285/644] smb/server: avoid deadlock when linking with ReplaceIfExists
 Date: Tue, 26 Aug 2025 13:06:16 +0200
-Message-ID: <20250826110939.652326665@linuxfoundation.org>
+Message-ID: <20250826110953.443128971@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250826110937.289866482@linuxfoundation.org>
-References: <20250826110937.289866482@linuxfoundation.org>
+In-Reply-To: <20250826110946.507083938@linuxfoundation.org>
+References: <20250826110946.507083938@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,42 +63,87 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.16-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Gabor Juhos <j4g8y7@gmail.com>
+From: NeilBrown <neil@brown.name>
 
-commit 091d9e35b85b0f8f7e1c73535299f91364a5c73a upstream.
+[ Upstream commit d5fc1400a34b4ea5e8f2ce296ea12bf8c8421694 ]
 
-Since commit 3d1f08b032dc ("mtd: spinand: Use the external ECC engine
-logic") the spinand_write_page() function ignores the errors returned
-by spinand_wait(). Change the code to propagate those up to the stack
-as it was done before the offending change.
+If smb2_create_link() is called with ReplaceIfExists set and the name
+does exist then a deadlock will happen.
 
-Cc: stable@vger.kernel.org
-Fixes: 3d1f08b032dc ("mtd: spinand: Use the external ECC engine logic")
-Signed-off-by: Gabor Juhos <j4g8y7@gmail.com>
-Signed-off-by: Miquel Raynal <miquel.raynal@bootlin.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+ksmbd_vfs_kern_path_locked() will return with success and the parent
+directory will be locked.  ksmbd_vfs_remove_file() will then remove the
+file.  ksmbd_vfs_link() will then be called while the parent is still
+locked.  It will try to lock the same parent and will deadlock.
+
+This patch moves the ksmbd_vfs_kern_path_unlock() call to *before*
+ksmbd_vfs_link() and then simplifies the code, removing the file_present
+flag variable.
+
+Signed-off-by: NeilBrown <neil@brown.name>
+Acked-by: Namjae Jeon <linkinjeon@kernel.org>
+Signed-off-by: Steve French <stfrench@microsoft.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/mtd/nand/spi/core.c |    5 ++++-
- 1 file changed, 4 insertions(+), 1 deletion(-)
+ fs/ksmbd/smb2pdu.c | 16 ++++------------
+ 1 file changed, 4 insertions(+), 12 deletions(-)
 
---- a/drivers/mtd/nand/spi/core.c
-+++ b/drivers/mtd/nand/spi/core.c
-@@ -688,7 +688,10 @@ int spinand_write_page(struct spinand_de
- 			   SPINAND_WRITE_INITIAL_DELAY_US,
- 			   SPINAND_WRITE_POLL_DELAY_US,
- 			   &status);
--	if (!ret && (status & STATUS_PROG_FAILED))
-+	if (ret)
-+		return ret;
-+
-+	if (status & STATUS_PROG_FAILED)
- 		return -EIO;
+diff --git a/fs/ksmbd/smb2pdu.c b/fs/ksmbd/smb2pdu.c
+index 76334a983cd2..3439dbad9389 100644
+--- a/fs/ksmbd/smb2pdu.c
++++ b/fs/ksmbd/smb2pdu.c
+@@ -5612,7 +5612,6 @@ static int smb2_create_link(struct ksmbd_work *work,
+ {
+ 	char *link_name = NULL, *target_name = NULL, *pathname = NULL;
+ 	struct path path, parent_path;
+-	bool file_present = false;
+ 	int rc;
  
- 	return nand_ecc_finish_io_req(nand, (struct nand_page_io_req *)req);
+ 	if (buf_len < (u64)sizeof(struct smb2_file_link_info) +
+@@ -5645,11 +5644,8 @@ static int smb2_create_link(struct ksmbd_work *work,
+ 	if (rc) {
+ 		if (rc != -ENOENT)
+ 			goto out;
+-	} else
+-		file_present = true;
+-
+-	if (file_info->ReplaceIfExists) {
+-		if (file_present) {
++	} else {
++		if (file_info->ReplaceIfExists) {
+ 			rc = ksmbd_vfs_remove_file(work, &path);
+ 			if (rc) {
+ 				rc = -EINVAL;
+@@ -5657,21 +5653,17 @@ static int smb2_create_link(struct ksmbd_work *work,
+ 					    link_name);
+ 				goto out;
+ 			}
+-		}
+-	} else {
+-		if (file_present) {
++		} else {
+ 			rc = -EEXIST;
+ 			ksmbd_debug(SMB, "link already exists\n");
+ 			goto out;
+ 		}
++		ksmbd_vfs_kern_path_unlock(&parent_path, &path);
+ 	}
+-
+ 	rc = ksmbd_vfs_link(work, target_name, link_name);
+ 	if (rc)
+ 		rc = -EINVAL;
+ out:
+-	if (file_present)
+-		ksmbd_vfs_kern_path_unlock(&parent_path, &path);
+ 
+ 	if (!IS_ERR(link_name))
+ 		kfree(link_name);
+-- 
+2.39.5
+
 
 
 
