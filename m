@@ -1,58 +1,57 @@
-Return-Path: <stable+bounces-173106-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-175156-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4A9A5B35BF0
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 13:29:31 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 25EC3B366BE
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 15:59:59 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 36ABB3622E9
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 11:23:28 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 45E89566F76
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 13:53:12 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 19D1B29BDBA;
-	Tue, 26 Aug 2025 11:23:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 19529350843;
+	Tue, 26 Aug 2025 13:51:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="YTRNXsnm"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="0mQ66JKt"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CA0C0227599;
-	Tue, 26 Aug 2025 11:23:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C01B3350830;
+	Tue, 26 Aug 2025 13:51:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756207387; cv=none; b=SuB/ImiGxztccCHh1woBjeyhedx8jetg+rhW4y20Z7EMa0+j2CJxPFQnVQ3L8zPlqIYUXBEy7kNwnARa0qdU8wXFlz14hk4WSLwTvKcRPpbZkZWt6TPAuPN8oFhYDEfnPs+t+6JsFsshcZW32gHUPqSDkhLIEPS+o39PTPadHkk=
+	t=1756216289; cv=none; b=aMbnzQHBceDCQ2x0pChqujG9GdeKIYvjEduUEM/oQwOc1e1tr0qgqToujsXO00iByeU+DF+bYW/sAKDPmnUhtX1Gx1N0xwfJxbUkZRKqQlCyCwDOBYyiRkohziC3qKT8D0A1xykzDaNtBRNtyzCIu8hZ98JEr7CtG/msfe7daig=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756207387; c=relaxed/simple;
-	bh=402AmNbzrSa6vseN8isNuLbtky5TZr+AdgWnAyi0pXI=;
+	s=arc-20240116; t=1756216289; c=relaxed/simple;
+	bh=Z9l9Kf15IWKklafaA85h16v2Eh/RYa7zk+V4+qhJW1A=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=EKNxi7MbX8ynsV6wJj28HRhRORdE0TjKHJtmQO9+vgdOrcqxYHyYPhloF/hDOsRi+TYju/DKjaLE6Ab0xzMyzdUb2eUnmAyxA746tVXV/WHYnRpvPTe0uhOpMFPebUbo0tLm4HmBisBzJB4AxsgTpYWiobUIeBYjRsOmR6mDyI0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=YTRNXsnm; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 257A1C4CEF1;
-	Tue, 26 Aug 2025 11:23:07 +0000 (UTC)
+	 MIME-Version; b=bTjOEel6eaoM+6Jez5IzQtHhDh4yhreFhYgKLZpSFQ+FWMnP4Qv9hyy9svzxafvdq8Ld7TmK9mHF1MEiUT4tW5a99/vu5UK8atcS6l16EviiLVNTTpIn0+6Q74EtSBCw2mFFecE004ahS5s14ky5RS4UFejnXy5S3jFkNhT17JY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=0mQ66JKt; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5191DC113CF;
+	Tue, 26 Aug 2025 13:51:29 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1756207387;
-	bh=402AmNbzrSa6vseN8isNuLbtky5TZr+AdgWnAyi0pXI=;
+	s=korg; t=1756216289;
+	bh=Z9l9Kf15IWKklafaA85h16v2Eh/RYa7zk+V4+qhJW1A=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=YTRNXsnmbaEFBW8T1dAu4BxZpBnkUpIGubYtbSJrPsBjUH20cgDvZ1pHscxiPD/1k
-	 qVLhZuldwb3D4i8kUQrvw3XiD7LPlYbCLnSMgptXMrJjzPUo/ATNb6VlCm3SDWozFN
-	 f73gZjUniWpLEMh30FG2wmvmAUDyWKsaqNQBr/WY=
+	b=0mQ66JKt1sqYfFanIBTEvCHB7qPhEjb8GhQ4i3ufvoqYxH7PmlnJ0BZJLMN7QL3tE
+	 7+u7mow6dC7VdevqIwL16CDUrloD+elNF+7H5F2itVEai2yEYEnwHlt4Sq2QUb0Tvd
+	 UR5xfGe5BqZdz8iiZPgnLp5Z7+Qqf0/c+K6y4kDo=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Vikash Garodia <quic_vgarodia@quicinc.com>,
-	Dikshita Agarwal <quic_dikshita@quicinc.com>,
-	Bryan ODonoghue <bod@kernel.org>,
-	Hans Verkuil <hverkuil@xs4all.nl>,
-	Neil Armstrong <neil.armstrong@linaro.org>
-Subject: [PATCH 6.16 163/457] media: iris: Skip flush on first sequence change
+	Kuniyuki Iwashima <kuniyu@google.com>,
+	Eric Dumazet <edumazet@google.com>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.15 356/644] ipv6: mcast: Check inet6_dev->dead under idev->mc_lock in __ipv6_dev_mc_inc().
 Date: Tue, 26 Aug 2025 13:07:27 +0200
-Message-ID: <20250826110941.404142476@linuxfoundation.org>
+Message-ID: <20250826110955.224100654@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250826110937.289866482@linuxfoundation.org>
-References: <20250826110937.289866482@linuxfoundation.org>
+In-Reply-To: <20250826110946.507083938@linuxfoundation.org>
+References: <20250826110946.507083938@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,49 +63,121 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.16-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Dikshita Agarwal <quic_dikshita@quicinc.com>
+From: Kuniyuki Iwashima <kuniyu@google.com>
 
-commit 1e27e9ffce59ac41cde71673d74eb368a533cdb2 upstream.
+[ Upstream commit dbd40f318cf2f59759bd170c401adc20ba360a3e ]
 
-Add a condition to skip the flush operation during the first sequence
-change event. At this point, the capture queue is not streaming, making
-the flush unnecessary.
+Since commit 63ed8de4be81 ("mld: add mc_lock for protecting
+per-interface mld data"), every multicast resource is protected
+by inet6_dev->mc_lock.
 
-Cc: stable@vger.kernel.org
-Fixes: 84e17adae3e3 ("media: iris: add support for dynamic resolution change")
-Acked-by: Vikash Garodia <quic_vgarodia@quicinc.com>
-Tested-by: Neil Armstrong <neil.armstrong@linaro.org> # on SM8550-QRD
-Tested-by: Neil Armstrong <neil.armstrong@linaro.org> # on SM8550-HDK
-Tested-by: Neil Armstrong <neil.armstrong@linaro.org> # on SM8650-QRD
-Tested-by: Neil Armstrong <neil.armstrong@linaro.org> # on SM8650-HDK
-Signed-off-by: Dikshita Agarwal <quic_dikshita@quicinc.com>
-Tested-by: Vikash Garodia <quic_vgarodia@quicinc.com> # on sa8775p-ride
-Signed-off-by: Bryan O'Donoghue <bod@kernel.org>
-Signed-off-by: Hans Verkuil <hverkuil@xs4all.nl>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+RTNL is unnecessary in terms of protection but still needed for
+synchronisation between addrconf_ifdown() and __ipv6_dev_mc_inc().
+
+Once we removed RTNL, there would be a race below, where we could
+add a multicast address to a dead inet6_dev.
+
+  CPU1                            CPU2
+  ====                            ====
+  addrconf_ifdown()               __ipv6_dev_mc_inc()
+                                    if (idev->dead) <-- false
+    dead = true                       return -ENODEV;
+    ipv6_mc_destroy_dev() / ipv6_mc_down()
+      mutex_lock(&idev->mc_lock)
+      ...
+      mutex_unlock(&idev->mc_lock)
+                                    mutex_lock(&idev->mc_lock)
+                                    ...
+                                    mutex_unlock(&idev->mc_lock)
+
+The race window can be easily closed by checking inet6_dev->dead
+under inet6_dev->mc_lock in __ipv6_dev_mc_inc() as addrconf_ifdown()
+will acquire it after marking inet6_dev dead.
+
+Let's check inet6_dev->dead under mc_lock in __ipv6_dev_mc_inc().
+
+Note that now __ipv6_dev_mc_inc() no longer depends on RTNL and
+we can remove ASSERT_RTNL() there and the RTNL comment above
+addrconf_join_solict().
+
+Signed-off-by: Kuniyuki Iwashima <kuniyu@google.com>
+Reviewed-by: Eric Dumazet <edumazet@google.com>
+Link: https://patch.msgid.link/20250702230210.3115355-4-kuni1840@gmail.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/media/platform/qcom/iris/iris_hfi_gen1_response.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ net/ipv6/addrconf.c |  7 +++----
+ net/ipv6/mcast.c    | 11 +++++------
+ 2 files changed, 8 insertions(+), 10 deletions(-)
 
-diff --git a/drivers/media/platform/qcom/iris/iris_hfi_gen1_response.c b/drivers/media/platform/qcom/iris/iris_hfi_gen1_response.c
-index 271e14469223..aaad32a70b9e 100644
---- a/drivers/media/platform/qcom/iris/iris_hfi_gen1_response.c
-+++ b/drivers/media/platform/qcom/iris/iris_hfi_gen1_response.c
-@@ -200,7 +200,7 @@ static void iris_hfi_gen1_event_seq_changed(struct iris_inst *inst,
+diff --git a/net/ipv6/addrconf.c b/net/ipv6/addrconf.c
+index bb0e385992fc..43df9ad96e39 100644
+--- a/net/ipv6/addrconf.c
++++ b/net/ipv6/addrconf.c
+@@ -2189,13 +2189,12 @@ void addrconf_dad_failure(struct sk_buff *skb, struct inet6_ifaddr *ifp)
+ 	in6_ifa_put(ifp);
+ }
  
- 	iris_hfi_gen1_read_changed_params(inst, pkt);
+-/* Join to solicited addr multicast group.
+- * caller must hold RTNL */
++/* Join to solicited addr multicast group. */
+ void addrconf_join_solict(struct net_device *dev, const struct in6_addr *addr)
+ {
+ 	struct in6_addr maddr;
  
--	if (inst->state != IRIS_INST_ERROR) {
-+	if (inst->state != IRIS_INST_ERROR && !(inst->sub_state & IRIS_INST_SUB_FIRST_IPSC)) {
- 		reinit_completion(&inst->flush_completion);
+-	if (dev->flags&(IFF_LOOPBACK|IFF_NOARP))
++	if (READ_ONCE(dev->flags) & (IFF_LOOPBACK | IFF_NOARP))
+ 		return;
  
- 		flush_pkt.shdr.hdr.size = sizeof(struct hfi_session_flush_pkt);
+ 	addrconf_addr_solict_mult(addr, &maddr);
+@@ -3784,7 +3783,7 @@ static int addrconf_ifdown(struct net_device *dev, bool unregister)
+ 	 *	   Do not dev_put!
+ 	 */
+ 	if (unregister) {
+-		idev->dead = 1;
++		WRITE_ONCE(idev->dead, 1);
+ 
+ 		/* protected by rtnl_lock */
+ 		RCU_INIT_POINTER(dev->ip6_ptr, NULL);
+diff --git a/net/ipv6/mcast.c b/net/ipv6/mcast.c
+index 574a30d7f930..77a9f17c816b 100644
+--- a/net/ipv6/mcast.c
++++ b/net/ipv6/mcast.c
+@@ -906,23 +906,22 @@ static struct ifmcaddr6 *mca_alloc(struct inet6_dev *idev,
+ static int __ipv6_dev_mc_inc(struct net_device *dev,
+ 			     const struct in6_addr *addr, unsigned int mode)
+ {
+-	struct ifmcaddr6 *mc;
+ 	struct inet6_dev *idev;
+-
+-	ASSERT_RTNL();
++	struct ifmcaddr6 *mc;
+ 
+ 	/* we need to take a reference on idev */
+ 	idev = in6_dev_get(dev);
+-
+ 	if (!idev)
+ 		return -EINVAL;
+ 
+-	if (idev->dead) {
++	mutex_lock(&idev->mc_lock);
++
++	if (READ_ONCE(idev->dead)) {
++		mutex_unlock(&idev->mc_lock);
+ 		in6_dev_put(idev);
+ 		return -ENODEV;
+ 	}
+ 
+-	mutex_lock(&idev->mc_lock);
+ 	for_each_mc_mclock(idev, mc) {
+ 		if (ipv6_addr_equal(&mc->mca_addr, addr)) {
+ 			mc->mca_users++;
 -- 
-2.50.1
+2.39.5
 
 
 
