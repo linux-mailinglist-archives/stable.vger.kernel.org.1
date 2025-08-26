@@ -1,55 +1,55 @@
-Return-Path: <stable+bounces-173483-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-174082-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 67A03B35CFE
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 13:40:26 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9FF63B3613C
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 15:08:05 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id B63C53A9F2E
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 11:40:03 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 026481B61E0D
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 13:05:22 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id AE3302BEC34;
-	Tue, 26 Aug 2025 11:39:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 24CE920FA81;
+	Tue, 26 Aug 2025 13:04:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="AijNPsVj"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="XsMf3bqo"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6A7642BE03C;
-	Tue, 26 Aug 2025 11:39:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D68DB393DC5;
+	Tue, 26 Aug 2025 13:04:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756208366; cv=none; b=Y4S3u4pR3beI+lLjPjV6Nevs6lufqOEMXPP4S4p2YFLqPgTGYaMKYXf9j3cwjZbRG0Fq3x09ezM1RBBRFM/7e19chfElyCRPgMij1Tj6t/m9tPnFiTQdeeaAD8T9tTOOM9uVddhTLX0yLqciDtgMACEwcK8Mr58zLhgGdz/WLLs=
+	t=1756213443; cv=none; b=E6T4bp+QXQR6XDlbyS34BBTRM7rPN1Pw1v/v9QcBXSN9QYZ3zqqo+trC3/9NyDnjQqBT/6m9B+OAQn4md8IdeoMWkQ3WKCOEM6ohzpMkrqWHB16DKesd6fk6Xf17k52N6p7clcFS6mTG4S5qBXIXO7s0UdcIOqxLAIU5LZ9XJZE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756208366; c=relaxed/simple;
-	bh=1tXcCL52Cljf7I8TlppnFRqvbBBYBSMARtYSg/CR/S4=;
+	s=arc-20240116; t=1756213443; c=relaxed/simple;
+	bh=wAoFMYC5C1iIPKfCyslEycsRaU9Ps0sQfZZTHKqLWAs=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=iA0eevX6yV9bYWeganektChuuaUlHmScypiDjWnnpRTegtjJH0LYofWkZ+JYRlIPeTs3Fuu8BitYoxDgVr7Nn/RefckFADeH0eYNom49P8N48QCN4vDPITIOMrkf8CjTSKUqCfCDG2Q8IKw/bULc7Pg/63X2X9iVQTXCJHjyRVU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=AijNPsVj; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id EEC5AC4CEF1;
-	Tue, 26 Aug 2025 11:39:25 +0000 (UTC)
+	 MIME-Version; b=Qws8E+I1h1kpEe7UW3xVosDoukZJedG5ZxInNjSh3a6gFsOOedTwPYKD32xW/fMcU1gndxgSnYY2QTvf+WHLydQRud0kIjJ7LRxOtMBfrMXH3IgZCkjK0kuzyvY2s2nO8ctwzPmoA9I/FOUhOuLmSKS5p47+DZxLijKy1TOBABQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=XsMf3bqo; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6985CC4CEF1;
+	Tue, 26 Aug 2025 13:04:03 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1756208366;
-	bh=1tXcCL52Cljf7I8TlppnFRqvbBBYBSMARtYSg/CR/S4=;
+	s=korg; t=1756213443;
+	bh=wAoFMYC5C1iIPKfCyslEycsRaU9Ps0sQfZZTHKqLWAs=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=AijNPsVjqEGItoYcnJ+YfUBLDP+p7uQ0s80DnxaOxQcRrwVwskmOKKhoNtGci54Tz
-	 1PbfvRNaCICfzDHApuIiC12b7GjpVl+cVTFIwFs5r3dHE96ORixsKTVAz1XZWaBFlS
-	 aLtBfTlbvy3tTUrHpKV9p88Xc5kwUviMKFTyx3yw=
+	b=XsMf3bqolWqPklfOrVzntwRCU0X5X1tuQtR4/o7l8zm2G6cD+EYykzt++scHKrW6/
+	 n46/ChNLoz8Ya8wm4iZUoV/nTvh2jIf7FpW6/8cNnVmpgV9QvFUfF153mSffHS0k/2
+	 ETgH0yONcJ/h0dxAuxMCxTxztD7KjGrrEM4gguVQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Muhammad Usama Anjum <usama.anjum@collabora.com>,
-	Mark Brown <broonie@kernel.org>
-Subject: [PATCH 6.12 084/322] ASoC: SOF: amd: acp-loader: Use GFP_KERNEL for DMA allocations in resume context
-Date: Tue, 26 Aug 2025 13:08:19 +0200
-Message-ID: <20250826110917.703738235@linuxfoundation.org>
+	stable@kernel.org,
+	Theodore Tso <tytso@mit.edu>
+Subject: [PATCH 6.6 351/587] ext4: dont try to clear the orphan_present feature block device is r/o
+Date: Tue, 26 Aug 2025 13:08:20 +0200
+Message-ID: <20250826111001.844540603@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250826110915.169062587@linuxfoundation.org>
-References: <20250826110915.169062587@linuxfoundation.org>
+In-Reply-To: <20250826110952.942403671@linuxfoundation.org>
+References: <20250826110952.942403671@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,65 +61,53 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Muhammad Usama Anjum <usama.anjum@collabora.com>
+From: Theodore Ts'o <tytso@mit.edu>
 
-commit eb3bb145280b6c857a748731a229698e4a7cf37b upstream.
+commit c5e104a91e7b6fa12c1dc2d8bf84abb7ef9b89ad upstream.
 
-Replace GFP_ATOMIC with GFP_KERNEL for dma_alloc_coherent() calls. This
-change improves memory allocation reliability during firmware loading,
-particularly during system resume when memory pressure is high. Because
-of using GFP_KERNEL, reclaim can happen which can reduce the probability
-of failure.
+When the file system is frozen in preparation for taking an LVM
+snapshot, the journal is checkpointed and if the orphan_file feature
+is enabled, and the orphan file is empty, we clear the orphan_present
+feature flag.  But if there are pending inodes that need to be removed
+the orphan_present feature flag can't be cleared.
 
-Fixes memory allocation failures observed during system resume with
-fragmented memory conditions.
+The problem comes if the block device is read-only.  In that case, we
+can't process the orphan inode list, so it is skipped in
+ext4_orphan_cleanup().  But then in ext4_mark_recovery_complete(),
+this results in the ext4 error "Orphan file not empty on read-only fs"
+firing and the file system mount is aborted.
 
-	snd_sof_amd_vangogh 0000:04:00.5: error: failed to load DSP firmware after resume -12
+Fix this by clearing the needs_recovery flag in the block device is
+read-only.  We do this after the call to ext4_load_and_init-journal()
+since there are some error checks need to be done in case the journal
+needs to be replayed and the block device is read-only, or if the
+block device containing the externa journal is read-only, etc.
 
-Fixes: 145d7e5ae8f4e ("ASoC: SOF: amd: add option to use sram for data bin loading")
-Fixes: 7e51a9e38ab20 ("ASoC: SOF: amd: Add fw loader and renoir dsp ops to load firmware")
+Cc: stable@kernel.org
+Link: https://bugs.debian.org/cgi-bin/bugreport.cgi?bug=1108271
 Cc: stable@vger.kernel.org
-Signed-off-by: Muhammad Usama Anjum <usama.anjum@collabora.com>
-Link: https://patch.msgid.link/20250725190254.1081184-1-usama.anjum@collabora.com
-Signed-off-by: Mark Brown <broonie@kernel.org>
+Fixes: 02f310fcf47f ("ext4: Speedup ext4 orphan inode handling")
+Signed-off-by: Theodore Ts'o <tytso@mit.edu>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- sound/soc/sof/amd/acp-loader.c |    6 +++---
- 1 file changed, 3 insertions(+), 3 deletions(-)
+ fs/ext4/super.c |    2 ++
+ 1 file changed, 2 insertions(+)
 
---- a/sound/soc/sof/amd/acp-loader.c
-+++ b/sound/soc/sof/amd/acp-loader.c
-@@ -65,7 +65,7 @@ int acp_dsp_block_write(struct snd_sof_d
- 			dma_size = page_count * ACP_PAGE_SIZE;
- 			adata->bin_buf = dma_alloc_coherent(&pci->dev, dma_size,
- 							    &adata->sha_dma_addr,
--							    GFP_ATOMIC);
-+							    GFP_KERNEL);
- 			if (!adata->bin_buf)
- 				return -ENOMEM;
- 		}
-@@ -77,7 +77,7 @@ int acp_dsp_block_write(struct snd_sof_d
- 			adata->data_buf = dma_alloc_coherent(&pci->dev,
- 							     ACP_DEFAULT_DRAM_LENGTH,
- 							     &adata->dma_addr,
--							     GFP_ATOMIC);
-+							     GFP_KERNEL);
- 			if (!adata->data_buf)
- 				return -ENOMEM;
- 		}
-@@ -90,7 +90,7 @@ int acp_dsp_block_write(struct snd_sof_d
- 			adata->sram_data_buf = dma_alloc_coherent(&pci->dev,
- 								  ACP_DEFAULT_SRAM_LENGTH,
- 								  &adata->sram_dma_addr,
--								  GFP_ATOMIC);
-+								  GFP_KERNEL);
- 			if (!adata->sram_data_buf)
- 				return -ENOMEM;
- 		}
+--- a/fs/ext4/super.c
++++ b/fs/ext4/super.c
+@@ -5398,6 +5398,8 @@ static int __ext4_fill_super(struct fs_c
+ 		err = ext4_load_and_init_journal(sb, es, ctx);
+ 		if (err)
+ 			goto failed_mount3a;
++		if (bdev_read_only(sb->s_bdev))
++		    needs_recovery = 0;
+ 	} else if (test_opt(sb, NOLOAD) && !sb_rdonly(sb) &&
+ 		   ext4_has_feature_journal_needs_recovery(sb)) {
+ 		ext4_msg(sb, KERN_ERR, "required journal recovery "
 
 
 
