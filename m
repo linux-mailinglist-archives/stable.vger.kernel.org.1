@@ -1,57 +1,55 @@
-Return-Path: <stable+bounces-175028-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-174353-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 08A13B365F8
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 15:52:12 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id DB536B362DC
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 15:23:20 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id E3FF21BC734F
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 13:46:37 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id A39A68A4E0E
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 13:17:46 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 464F734AAFE;
-	Tue, 26 Aug 2025 13:45:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5C8F3252904;
+	Tue, 26 Aug 2025 13:16:06 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="rc0znc2R"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="H1AzH2oP"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F07A93451DE;
-	Tue, 26 Aug 2025 13:45:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1ACD31ADFFE;
+	Tue, 26 Aug 2025 13:16:06 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756215951; cv=none; b=jF7rA9CoEQghrZ9aLT68MfGcZvdqpuIpXtCK7l62IkblNWttyQJ5USzGtyyHz4vQeIFPohl7F+rC9ogEwhLMd/8w5xa/yX4ZzBOAHZNziUozqeTCEVO9/haS+NmM5S71nZX3qVpTCrpibb8c5LMLsaRFMcGku67mNl/WECd6vCE=
+	t=1756214166; cv=none; b=OkfXvwYEGa0g3G2+KuflbsK4lDKZP2UszRFFpoNIfKcl80OJvPAb+YjpAtGp9bVLHUsDRnAnbztbdXoR7k/TbqeZB3VfeM+Mj7BjFUATdHTsCvS9UC42mH/5OEh4i2bmz74LzQoO/t7SNaMdTA/uwk3dTwl3iGAFX/vBDsiJ8Fw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756215951; c=relaxed/simple;
-	bh=JwtekzWspDPsxaLuzN+64O0wPCsxqHXd9yA8mFF2yXs=;
+	s=arc-20240116; t=1756214166; c=relaxed/simple;
+	bh=x56nIxocI8jLM295R6ixCQ0yzYkFjoi3yDZr12czo0k=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=cid26kUhKSS9H8u6fCNrdqbqRx+/Kq25aFSqZCKzEBIxoi/MkInVTsueL6o/kbna+YtPDnuGOBfvc84PxrDuBJsxmio1mlxPdY30yt7y9WZJBvjU4lu7bM6hkBcvOlWjjeu0IhK8UwoHwCTC6NsjCL9QPZs1LMUF+W9VThiUANM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=rc0znc2R; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 80911C4CEF1;
-	Tue, 26 Aug 2025 13:45:50 +0000 (UTC)
+	 MIME-Version; b=QNnR00j9R3SUatngYmPsmT+keoP+oCTtkzrvjTW8oOZNdfSp/p+xzypHJW0rmtl16q1q1UnCuGaiIoo0ghxf5PqjlWJMnwOX/8CbzPtUJjG6wcbra4Xstz13iHGMk/BgWkeYBvUmsVHi6s9ou913xgPuBPpER7npDSodZdbAg0U=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=H1AzH2oP; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9EECDC4CEF1;
+	Tue, 26 Aug 2025 13:16:05 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1756215950;
-	bh=JwtekzWspDPsxaLuzN+64O0wPCsxqHXd9yA8mFF2yXs=;
+	s=korg; t=1756214166;
+	bh=x56nIxocI8jLM295R6ixCQ0yzYkFjoi3yDZr12czo0k=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=rc0znc2R8OwUATM5X21iWYoxn5dDQhmvioGf9iKZPkppth5id3dXKjfrL8YXpc/Pg
-	 255z3lZWpPwa+Z1TEiWFj4vswpn/t8iWro8PmT1diDpZ9z9wDIx63UOCvBBvGLI5I/
-	 kfWwA2Disz6FhX3DW0RxC548EzcteP5wrtuLg4ZE=
+	b=H1AzH2oPGrq0QQy2Zy6i7wKBj0IH5FdJUPqU+7QU2n5Hc1WRsv36Ev7c1hRYFfSvD
+	 5owGCXXc+ZdeAC6DmbK7Yko5/98Cf1VJmf12dM51RNnZgFP0YWinnTNH2drZC6fA3S
+	 uPm8mybewIJhG3X5ma0y1fRgHfsF94/dUMWFWpM4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Giovanni Cabiddu <giovanni.cabiddu@intel.com>,
-	Ahsan Atta <ahsan.atta@intel.com>,
-	Herbert Xu <herbert@gondor.apana.org.au>,
+	Sean Christopherson <seanjc@google.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 196/644] crypto: qat - fix seq_file position update in adf_ring_next()
-Date: Tue, 26 Aug 2025 13:04:47 +0200
-Message-ID: <20250826110951.306420422@linuxfoundation.org>
+Subject: [PATCH 6.1 035/482] KVM: VMX: Re-enter guest in fastpath for "spurious" preemption timer exits
+Date: Tue, 26 Aug 2025 13:04:48 +0200
+Message-ID: <20250826110931.673691378@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250826110946.507083938@linuxfoundation.org>
-References: <20250826110946.507083938@linuxfoundation.org>
+In-Reply-To: <20250826110930.769259449@linuxfoundation.org>
+References: <20250826110930.769259449@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,53 +61,52 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Giovanni Cabiddu <giovanni.cabiddu@intel.com>
+From: Sean Christopherson <seanjc@google.com>
 
-[ Upstream commit 6908c5f4f066a0412c3d9a6f543a09fa7d87824b ]
+[ Upstream commit e6b5d16bbd2d4c8259ad76aa33de80d561aba5f9 ]
 
-The `adf_ring_next()` function in the QAT debug transport interface
-fails to correctly update the position index when reaching the end of
-the ring elements. This triggers the following kernel warning when
-reading ring files, such as
-/sys/kernel/debug/qat_c6xx_<D:B:D:F>/transport/bank_00/ring_00:
+Re-enter the guest in the fast path if VMX preeemption timer VM-Exit was
+"spurious", i.e. if KVM "soft disabled" the timer by writing -1u and by
+some miracle the timer expired before any other VM-Exit occurred.  This is
+just an intermediate step to cleaning up the preemption timer handling,
+optimizing these types of spurious VM-Exits is not interesting as they are
+extremely rare/infrequent.
 
-   [27725.022965] seq_file: buggy .next function adf_ring_next [intel_qat] did not update position index
-
-Ensure that the `*pos` index is incremented before returning NULL when
-after the last element in the ring is found, satisfying the seq_file API
-requirements and preventing the warning.
-
-Fixes: a672a9dc872e ("crypto: qat - Intel(R) QAT transport code")
-Signed-off-by: Giovanni Cabiddu <giovanni.cabiddu@intel.com>
-Reviewed-by: Ahsan Atta <ahsan.atta@intel.com>
-Signed-off-by: Herbert Xu <herbert@gondor.apana.org.au>
+Link: https://lore.kernel.org/r/20240110012705.506918-3-seanjc@google.com
+Signed-off-by: Sean Christopherson <seanjc@google.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/crypto/qat/qat_common/adf_transport_debug.c | 4 +++-
- 1 file changed, 3 insertions(+), 1 deletion(-)
+ arch/x86/kvm/vmx/vmx.c | 11 +++++++++--
+ 1 file changed, 9 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/crypto/qat/qat_common/adf_transport_debug.c b/drivers/crypto/qat/qat_common/adf_transport_debug.c
-index 006867f410bd..494ddab81df7 100644
---- a/drivers/crypto/qat/qat_common/adf_transport_debug.c
-+++ b/drivers/crypto/qat/qat_common/adf_transport_debug.c
-@@ -31,8 +31,10 @@ static void *adf_ring_next(struct seq_file *sfile, void *v, loff_t *pos)
- 	struct adf_etr_ring_data *ring = sfile->private;
+diff --git a/arch/x86/kvm/vmx/vmx.c b/arch/x86/kvm/vmx/vmx.c
+index 0b495979a02b..96bbccd9477c 100644
+--- a/arch/x86/kvm/vmx/vmx.c
++++ b/arch/x86/kvm/vmx/vmx.c
+@@ -5933,8 +5933,15 @@ static fastpath_t handle_fastpath_preemption_timer(struct kvm_vcpu *vcpu)
+ {
+ 	struct vcpu_vmx *vmx = to_vmx(vcpu);
  
- 	if (*pos >= (ADF_SIZE_TO_RING_SIZE_IN_BYTES(ring->ring_size) /
--		     ADF_MSG_SIZE_TO_BYTES(ring->msg_size)))
-+		     ADF_MSG_SIZE_TO_BYTES(ring->msg_size))) {
-+		(*pos)++;
- 		return NULL;
-+	}
- 
- 	return ring->base_addr +
- 		(ADF_MSG_SIZE_TO_BYTES(ring->msg_size) * (*pos)++);
+-	if (!vmx->req_immediate_exit &&
+-	    !unlikely(vmx->loaded_vmcs->hv_timer_soft_disabled)) {
++	/*
++	 * In the *extremely* unlikely scenario that this is a spurious VM-Exit
++	 * due to the timer expiring while it was "soft" disabled, just eat the
++	 * exit and re-enter the guest.
++	 */
++	if (unlikely(vmx->loaded_vmcs->hv_timer_soft_disabled))
++		return EXIT_FASTPATH_REENTER_GUEST;
++
++	if (!vmx->req_immediate_exit) {
+ 		kvm_lapic_expired_hv_timer(vcpu);
+ 		return EXIT_FASTPATH_REENTER_GUEST;
+ 	}
 -- 
-2.39.5
+2.50.1
 
 
 
