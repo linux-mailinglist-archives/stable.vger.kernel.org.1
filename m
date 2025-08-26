@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-175031-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-175523-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id C0DD0B36685
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 15:58:01 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id AB2D7B36897
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 16:17:38 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 3E8458E7005
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 13:46:20 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 14D19580723
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 14:09:18 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 49353345758;
-	Tue, 26 Aug 2025 13:45:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0829B343D63;
+	Tue, 26 Aug 2025 14:07:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="05jTPJ5a"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="nScX3gEt"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D31F23431FE;
-	Tue, 26 Aug 2025 13:45:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B79432BE058;
+	Tue, 26 Aug 2025 14:07:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756215958; cv=none; b=nXNAdkn8DB0UcvP2jRP3aV3v4zZAlC0hyHeAkHHEEwOTx7O+llkVeHMghSnb6g3si0yaGnW1ivQrlwX2629WVH/PLIhdcQQLL0y2SVeHWCyTUBnf9GorHUWSzfTex5BUhZgfBbh99MLHPEyFBbbZw11RPcKVn6lUv2VjQcUETGg=
+	t=1756217268; cv=none; b=FskRPCqVHBLhZGX+Ia0nz5SRPF/6/lOruuq8ecLSkZAGnpeBqavAZkUDkKx+S7HBVR5xYGgPYuG6oTJLK4UAVIF6+ESEmQNJph5d/WGy7Zbteaj/o5YqH5b/kTTWB4iyzklL+k6ZAFG0vtzgjvbGM0imexO/T0e3AfeF/3ouFIk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756215958; c=relaxed/simple;
-	bh=IfXfa2yHT5+7dnVM8pUEZuNFzlGejP8Q/j+lmErukBI=;
+	s=arc-20240116; t=1756217268; c=relaxed/simple;
+	bh=l6OAzve3gS+dNnZ98LVezjtaM4JIXA8Ol1oOzP+QwlM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=DfCKuYI2gyWxdVY5sqijE55bi+2KSiTg09hWxvtAWx09yxI2xRXEo2X1vRRyrXHtCt+81PSfWMAoBAhweGDE/sXumk9jPZ7NWbBdQ82iM4mLdDsVBXqPcIQGmgFQkAfPvmlKPSGwyLHiqzuxHz1Rx+g+CAMysqJqfRXD+nR/eDg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=05jTPJ5a; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 67165C4CEF1;
-	Tue, 26 Aug 2025 13:45:58 +0000 (UTC)
+	 MIME-Version; b=FQuqunsLqywq7YZE8LEMhVnKrLzJlX+EEKmQkHppGxtB5eU59Y+wucmxqr06IOrAufy4JcMUSvm5El2uwJVZJc+6RF1yf02UT/ONu41Xmgene7PDYLVTJtUSyGfgPLNAEzcIdwPVfY/7U1ziZ+aLipFBgacveM+7M6l14ogyYnY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=nScX3gEt; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 453AFC4CEF1;
+	Tue, 26 Aug 2025 14:07:48 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1756215958;
-	bh=IfXfa2yHT5+7dnVM8pUEZuNFzlGejP8Q/j+lmErukBI=;
+	s=korg; t=1756217268;
+	bh=l6OAzve3gS+dNnZ98LVezjtaM4JIXA8Ol1oOzP+QwlM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=05jTPJ5aelLsW/PNBxEy2LZgo5ND4HfYzxb0HJeEFmMspmQyoxK+p4f9faSzhBQ2Q
-	 goBIhbhTZpij4MNp1DYDuY3I2i6vqQFzgg+ThPb0JYIE10wUMids2B8WBvR6HGmzj2
-	 bf4+zNf0j5iIS4MU3ljXe0MBsqkUpq9+PSeLswyw=
+	b=nScX3gEtIVGMAMBMep8RPyjmis07oR5vzgBTxT85u98MSAGkL3Ui+tuih9p+Y3oQM
+	 jH5SudJUb02bEIsKq4VbdMYKbn7S3C3uQNdFPeY0PKlkscUdr0KwUI2NmsfWcuHVSX
+	 ZzRnj91J3bxmiyDRod/YqpkmZApz3ClMNX1GIIYQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Thomas Fourier <fourier.thomas@gmail.com>,
-	Miquel Raynal <miquel.raynal@bootlin.com>,
+	Arnd Bergmann <arnd@arndb.de>,
+	Mark Brown <broonie@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 199/644] mtd: rawnand: atmel: Fix dma_mapping_error() address
+Subject: [PATCH 5.10 080/523] ASoC: ops: dynamically allocate struct snd_ctl_elem_value
 Date: Tue, 26 Aug 2025 13:04:50 +0200
-Message-ID: <20250826110951.374505153@linuxfoundation.org>
+Message-ID: <20250826110926.538903867@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250826110946.507083938@linuxfoundation.org>
-References: <20250826110946.507083938@linuxfoundation.org>
+In-Reply-To: <20250826110924.562212281@linuxfoundation.org>
+References: <20250826110924.562212281@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,40 +62,81 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Thomas Fourier <fourier.thomas@gmail.com>
+From: Arnd Bergmann <arnd@arndb.de>
 
-[ Upstream commit e1e6b933c56b1e9fda93caa0b8bae39f3f421e5c ]
+[ Upstream commit 7e10d7242ea8a5947878880b912ffa5806520705 ]
 
-It seems like what was intended is to test if the dma_map of the
-previous line failed but the wrong dma address was passed.
+This structure is really too larget to be allocated on the stack:
 
-Fixes: f88fc122cc34 ("mtd: nand: Cleanup/rework the atmel_nand driver")
-Signed-off-by: Thomas Fourier <fourier.thomas@gmail.com>
-Rule: add
-Link: https://lore.kernel.org/stable/20250702064515.18145-2-fourier.thomas%40gmail.com
-Signed-off-by: Miquel Raynal <miquel.raynal@bootlin.com>
+sound/soc/soc-ops.c:435:5: error: stack frame size (1296) exceeds limit (1280) in 'snd_soc_limit_volume' [-Werror,-Wframe-larger-than]
+
+Change the function to dynamically allocate it instead.
+
+There is probably a better way to do it since only two integer fields
+inside of that structure are actually used, but this is the simplest
+rework for the moment.
+
+Fixes: 783db6851c18 ("ASoC: ops: Enforce platform maximum on initial value")
+Signed-off-by: Arnd Bergmann <arnd@arndb.de>
+Link: https://patch.msgid.link/20250610093057.2643233-1-arnd@kernel.org
+Signed-off-by: Mark Brown <broonie@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/mtd/nand/raw/atmel/nand-controller.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ sound/soc/soc-ops.c | 26 +++++++++++++++-----------
+ 1 file changed, 15 insertions(+), 11 deletions(-)
 
-diff --git a/drivers/mtd/nand/raw/atmel/nand-controller.c b/drivers/mtd/nand/raw/atmel/nand-controller.c
-index 73956a9f5449..060e2c11b8e0 100644
---- a/drivers/mtd/nand/raw/atmel/nand-controller.c
-+++ b/drivers/mtd/nand/raw/atmel/nand-controller.c
-@@ -373,7 +373,7 @@ static int atmel_nand_dma_transfer(struct atmel_nand_controller *nc,
- 	dma_cookie_t cookie;
+diff --git a/sound/soc/soc-ops.c b/sound/soc/soc-ops.c
+index 55f7c7999330..91afd73cdd13 100644
+--- a/sound/soc/soc-ops.c
++++ b/sound/soc/soc-ops.c
+@@ -618,28 +618,32 @@ EXPORT_SYMBOL_GPL(snd_soc_get_volsw_range);
+ static int snd_soc_clip_to_platform_max(struct snd_kcontrol *kctl)
+ {
+ 	struct soc_mixer_control *mc = (struct soc_mixer_control *)kctl->private_value;
+-	struct snd_ctl_elem_value uctl;
++	struct snd_ctl_elem_value *uctl;
+ 	int ret;
  
- 	buf_dma = dma_map_single(nc->dev, buf, len, dir);
--	if (dma_mapping_error(nc->dev, dev_dma)) {
-+	if (dma_mapping_error(nc->dev, buf_dma)) {
- 		dev_err(nc->dev,
- 			"Failed to prepare a buffer for DMA access\n");
- 		goto err;
+ 	if (!mc->platform_max)
+ 		return 0;
+ 
+-	ret = kctl->get(kctl, &uctl);
++	uctl = kzalloc(sizeof(*uctl), GFP_KERNEL);
++	if (!uctl)
++		return -ENOMEM;
++
++	ret = kctl->get(kctl, uctl);
+ 	if (ret < 0)
+-		return ret;
++		goto out;
+ 
+-	if (uctl.value.integer.value[0] > mc->platform_max)
+-		uctl.value.integer.value[0] = mc->platform_max;
++	if (uctl->value.integer.value[0] > mc->platform_max)
++		uctl->value.integer.value[0] = mc->platform_max;
+ 
+ 	if (snd_soc_volsw_is_stereo(mc) &&
+-	    uctl.value.integer.value[1] > mc->platform_max)
+-		uctl.value.integer.value[1] = mc->platform_max;
++	    uctl->value.integer.value[1] > mc->platform_max)
++		uctl->value.integer.value[1] = mc->platform_max;
+ 
+-	ret = kctl->put(kctl, &uctl);
+-	if (ret < 0)
+-		return ret;
++	ret = kctl->put(kctl, uctl);
+ 
+-	return 0;
++out:
++	kfree(uctl);
++	return ret;
+ }
+ 
+ /**
 -- 
 2.39.5
 
