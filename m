@@ -1,61 +1,58 @@
-Return-Path: <stable+bounces-174322-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-175450-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8B654B36282
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 15:19:43 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id BB421B3692C
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 16:23:32 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 3B6C218972B9
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 13:16:38 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 92FBF985008
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 14:06:29 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3C551338F24;
-	Tue, 26 Aug 2025 13:14:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1EDEF3451A0;
+	Tue, 26 Aug 2025 14:04:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="jrnw0NaX"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="q7bhKF9a"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EBD3A2459F3;
-	Tue, 26 Aug 2025 13:14:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D088E2192F2;
+	Tue, 26 Aug 2025 14:04:35 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756214084; cv=none; b=iBDwheVg0rqrIOu7ZS9NaZ0A+8vuBZj6K/0KVUdt48hZR2OBW0r+FpEy2XvJcOL2pHXORi7K55tggxVFqivU9uk5pJYxpjD2CagXfY5ZBtpZ7Qv0vRD/kRhY6cjxbvF9Ba/j2HnmGtwWfjsZ4vmYprY1xIR4PakT5JWd1l9wRZA=
+	t=1756217075; cv=none; b=mqwih7S7nWrPLBjsEztzfRTN8eAdXDwA9HCvJCktGAzvN00fbxXok895GRFA6l2qPxWHyPCJbF0naMixegAO/zaQKiI4X8K9LZfzIeJqr4tn7KT2tKDfQ3EY9h+G/zEPMeainBA/jncyGzDoUAss3Gamjmq5l7wPLNPxgc8sBuw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756214084; c=relaxed/simple;
-	bh=oBRo2Z5aCMb9bkzwUgFjr5UEib8M7MNpVmRw2U++fzQ=;
+	s=arc-20240116; t=1756217075; c=relaxed/simple;
+	bh=+oeCs66aO5prwh7mQAhuGWqbPHR58QLLwYiVgI9nDtI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Yez4Yx7oSmNn9WhhTL3+ZVih9mUr8fcKOPEvY5c2Bg5W3pvp5FNwHBi38euOF3MFdWbh0xkTc2YV3s0rG0Q4D4P+MyL+nH6kQx2C+exFgjrx1g1tuTIV5GeiFIjusx4pEwFHe/sBuidcvGOxfZiQWfM79Id3ICpqb6FkEtEjNVI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=jrnw0NaX; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7A76DC4CEF1;
-	Tue, 26 Aug 2025 13:14:43 +0000 (UTC)
+	 MIME-Version; b=RqY6ikUfoR3IPZPiaCDxoLAWbKqVz876dB+UxPVUGN3zCo7nLcI/JyUrrSMePmAmP6E6DkFiOSsLoAohnPFK5i3eVT+TpGc0G8wLr46sxD+Z75VMnbOu6GrAqSh7VxzCv/9Gdym+VmpSIv8lAL+nwSg0COUYcni4vnjE1pKI63g=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=q7bhKF9a; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 63286C4CEF1;
+	Tue, 26 Aug 2025 14:04:35 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1756214083;
-	bh=oBRo2Z5aCMb9bkzwUgFjr5UEib8M7MNpVmRw2U++fzQ=;
+	s=korg; t=1756217075;
+	bh=+oeCs66aO5prwh7mQAhuGWqbPHR58QLLwYiVgI9nDtI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=jrnw0NaXFj+dJqqBcT94sAqRf5F+iLRqHOzajewcCBtUYIYQS7zS6giL+ne+JPxXb
-	 qrVHZ3rGTKWK5+Uusw8KaUS8X5K8RBsKNFi1yduzprmf3h639EFc6KaQvelsqjC/xk
-	 E2tH5VNjT7jvSmfYshoko03DKnz6WqpnziiNDtEA=
+	b=q7bhKF9a8ygubQFdYQ9Wger5RskeQ4MmFU62VAsRsjAq1avzpov/6DrD00yX+VVqC
+	 BfiQuls/1a0erCpjsNXP4AkwvcMqNoYzklEN9OH8CkgoUtvqKhMwt3Ogzl8esQn7i0
+	 /KRAjUYCx0kdEnfw/deRpeNTtmq6Kxb67RbO6Q84=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Armen Ratner <armeng@nvidia.com>,
-	Maher Sanalla <msanalla@nvidia.com>,
-	Tariq Toukan <tariqt@nvidia.com>,
-	Alexei Lazar <alazar@nvidia.com>,
-	Mark Bloch <mbloch@nvidia.com>,
-	Przemek Kitszel <przemyslaw.kitszel@intel.com>,
-	Jakub Kicinski <kuba@kernel.org>,
+	Mete Durlu <meted@linux.ibm.com>,
+	Vasily Gorbik <gor@linux.ibm.com>,
+	Peter Oberparleiter <oberpar@linux.ibm.com>,
+	Alexander Gordeev <agordeev@linux.ibm.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 583/587] net/mlx5e: Preserve shared buffer capacity during headroom updates
+Subject: [PATCH 5.15 641/644] s390/hypfs: Avoid unnecessary ioctl registration in debugfs
 Date: Tue, 26 Aug 2025 13:12:12 +0200
-Message-ID: <20250826111007.867647946@linuxfoundation.org>
+Message-ID: <20250826111002.446609938@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250826110952.942403671@linuxfoundation.org>
-References: <20250826110952.942403671@linuxfoundation.org>
+In-Reply-To: <20250826110946.507083938@linuxfoundation.org>
+References: <20250826110946.507083938@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -67,108 +64,72 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Armen Ratner <armeng@nvidia.com>
+From: Peter Oberparleiter <oberpar@linux.ibm.com>
 
-[ Upstream commit 8b0587a885fdb34fd6090a3f8625cb7ac1444826 ]
+[ Upstream commit fec7bdfe7f8694a0c39e6c3ec026ff61ca1058b9 ]
 
-When port buffer headroom changes, port_update_shared_buffer()
-recalculates the shared buffer size and splits it in a 3:1 ratio
-(lossy:lossless) - Currently, the calculation is:
-lossless = shared / 4;
-lossy = (shared / 4) * 3;
+Currently, hypfs registers ioctl callbacks for all debugfs files,
+despite only one file requiring them. This leads to unintended exposure
+of unused interfaces to user space and can trigger side effects such as
+restricted access when kernel lockdown is enabled.
 
-Meaning, the calculation dropped the remainder of shared % 4 due to
-integer division, unintentionally reducing the total shared buffer
-by up to three cells on each update. Over time, this could shrink
-the buffer below usable size.
+Restrict ioctl registration to only those files that implement ioctl
+functionality to avoid interface clutter and unnecessary access
+restrictions.
 
-Fix it by changing the calculation to:
-lossless = shared / 4;
-lossy = shared - lossless;
-
-This retains all buffer cells while still approximating the
-intended 3:1 split, preventing capacity loss over time.
-
-While at it, perform headroom calculations in units of cells rather than
-in bytes for more accurate calculations avoiding extra divisions.
-
-Fixes: a440030d8946 ("net/mlx5e: Update shared buffer along with device buffer changes")
-Signed-off-by: Armen Ratner <armeng@nvidia.com>
-Signed-off-by: Maher Sanalla <msanalla@nvidia.com>
-Reviewed-by: Tariq Toukan <tariqt@nvidia.com>
-Signed-off-by: Alexei Lazar <alazar@nvidia.com>
-Signed-off-by: Mark Bloch <mbloch@nvidia.com>
-Reviewed-by: Przemek Kitszel <przemyslaw.kitszel@intel.com>
-Link: https://patch.msgid.link/20250820133209.389065-9-mbloch@nvidia.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Tested-by: Mete Durlu <meted@linux.ibm.com>
+Reviewed-by: Vasily Gorbik <gor@linux.ibm.com>
+Fixes: 5496197f9b08 ("debugfs: Restrict debugfs when the kernel is locked down")
+Signed-off-by: Peter Oberparleiter <oberpar@linux.ibm.com>
+Signed-off-by: Alexander Gordeev <agordeev@linux.ibm.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- .../mellanox/mlx5/core/en/port_buffer.c        | 18 ++++++++----------
- 1 file changed, 8 insertions(+), 10 deletions(-)
+ arch/s390/hypfs/hypfs_dbfs.c | 18 +++++++++++-------
+ 1 file changed, 11 insertions(+), 7 deletions(-)
 
-diff --git a/drivers/net/ethernet/mellanox/mlx5/core/en/port_buffer.c b/drivers/net/ethernet/mellanox/mlx5/core/en/port_buffer.c
-index 5ae787656a7c..3efa8bf1d14e 100644
---- a/drivers/net/ethernet/mellanox/mlx5/core/en/port_buffer.c
-+++ b/drivers/net/ethernet/mellanox/mlx5/core/en/port_buffer.c
-@@ -272,8 +272,8 @@ static int port_update_shared_buffer(struct mlx5_core_dev *mdev,
- 	/* Total shared buffer size is split in a ratio of 3:1 between
- 	 * lossy and lossless pools respectively.
- 	 */
--	lossy_epool_size = (shared_buffer_size / 4) * 3;
- 	lossless_ipool_size = shared_buffer_size / 4;
-+	lossy_epool_size    = shared_buffer_size - lossless_ipool_size;
+diff --git a/arch/s390/hypfs/hypfs_dbfs.c b/arch/s390/hypfs/hypfs_dbfs.c
+index f4c7dbfaf8ee..c5f53dc3dbbc 100644
+--- a/arch/s390/hypfs/hypfs_dbfs.c
++++ b/arch/s390/hypfs/hypfs_dbfs.c
+@@ -64,24 +64,28 @@ static long dbfs_ioctl(struct file *file, unsigned int cmd, unsigned long arg)
+ 	long rc;
  
- 	mlx5e_port_set_sbpr(mdev, 0, MLX5_EGRESS_DIR, MLX5_LOSSY_POOL, 0,
- 			    lossy_epool_size);
-@@ -288,14 +288,12 @@ static int port_set_buffer(struct mlx5e_priv *priv,
- 	u16 port_buff_cell_sz = priv->dcbx.port_buff_cell_sz;
- 	struct mlx5_core_dev *mdev = priv->mdev;
- 	int sz = MLX5_ST_SZ_BYTES(pbmc_reg);
--	u32 new_headroom_size = 0;
--	u32 current_headroom_size;
-+	u32 current_headroom_cells = 0;
-+	u32 new_headroom_cells = 0;
- 	void *in;
- 	int err;
- 	int i;
+ 	mutex_lock(&df->lock);
+-	if (df->unlocked_ioctl)
+-		rc = df->unlocked_ioctl(file, cmd, arg);
+-	else
+-		rc = -ENOTTY;
++	rc = df->unlocked_ioctl(file, cmd, arg);
+ 	mutex_unlock(&df->lock);
+ 	return rc;
+ }
  
--	current_headroom_size = port_buffer->headroom_size;
--
- 	in = kzalloc(sz, GFP_KERNEL);
- 	if (!in)
- 		return -ENOMEM;
-@@ -306,12 +304,14 @@ static int port_set_buffer(struct mlx5e_priv *priv,
+-static const struct file_operations dbfs_ops = {
++static const struct file_operations dbfs_ops_ioctl = {
+ 	.read		= dbfs_read,
+ 	.llseek		= no_llseek,
+ 	.unlocked_ioctl = dbfs_ioctl,
+ };
  
- 	for (i = 0; i < MLX5E_MAX_NETWORK_BUFFER; i++) {
- 		void *buffer = MLX5_ADDR_OF(pbmc_reg, in, buffer[i]);
-+		current_headroom_cells += MLX5_GET(bufferx_reg, buffer, size);
++static const struct file_operations dbfs_ops = {
++	.read		= dbfs_read,
++};
 +
- 		u64 size = port_buffer->buffer[i].size;
- 		u64 xoff = port_buffer->buffer[i].xoff;
- 		u64 xon = port_buffer->buffer[i].xon;
- 
--		new_headroom_size += size;
- 		do_div(size, port_buff_cell_sz);
-+		new_headroom_cells += size;
- 		do_div(xoff, port_buff_cell_sz);
- 		do_div(xon, port_buff_cell_sz);
- 		MLX5_SET(bufferx_reg, buffer, size, size);
-@@ -320,10 +320,8 @@ static int port_set_buffer(struct mlx5e_priv *priv,
- 		MLX5_SET(bufferx_reg, buffer, xon_threshold, xon);
- 	}
- 
--	new_headroom_size /= port_buff_cell_sz;
--	current_headroom_size /= port_buff_cell_sz;
--	err = port_update_shared_buffer(priv->mdev, current_headroom_size,
--					new_headroom_size);
-+	err = port_update_shared_buffer(priv->mdev, current_headroom_cells,
-+					new_headroom_cells);
- 	if (err)
- 		goto out;
+ void hypfs_dbfs_create_file(struct hypfs_dbfs_file *df)
+ {
+-	df->dentry = debugfs_create_file(df->name, 0400, dbfs_dir, df,
+-					 &dbfs_ops);
++	const struct file_operations *fops = &dbfs_ops;
++
++	if (df->unlocked_ioctl)
++		fops = &dbfs_ops_ioctl;
++	df->dentry = debugfs_create_file(df->name, 0400, dbfs_dir, df, fops);
+ 	mutex_init(&df->lock);
+ }
  
 -- 
 2.50.1
