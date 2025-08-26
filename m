@@ -1,55 +1,55 @@
-Return-Path: <stable+bounces-175805-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-174654-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id EA58DB36A88
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 16:38:25 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 462F7B36385
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 15:30:42 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id CB5331C2568A
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 14:22:04 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id C46607BD86C
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 13:29:05 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8AA49350D4C;
-	Tue, 26 Aug 2025 14:20:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 177FD1F4CA9;
+	Tue, 26 Aug 2025 13:29:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="D8vvKJNi"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="DdtVzOSf"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 46008481CD;
-	Tue, 26 Aug 2025 14:20:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C5DB714B950;
+	Tue, 26 Aug 2025 13:29:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756218015; cv=none; b=l0ElppHb/Hr2EkdgYFlYYsfgwCUh8R+brV8mdgpygKubZGi2dj6rESGXWa4PQkhiQ0ImA35DZpzgSs4IXwMokv0xUpFjIw5lN9Wr7wfCE3l8salgwBHKzAVhW5LvmzD3BOlPcPU/f35XBfU3JGDDfi47VzQgMo3IgEdqoEoTbz0=
+	t=1756214961; cv=none; b=A1wyiieh/InVeMI57Dz5Q92zkylblrmtLrUh+7hBSu8BsSUVWS39x/mWhdAZKhiuknoq6GL/Gx0k9qhXbHI8x9uqVS10ce/ltSGROdTIEy/bBiXeS+MU/tRoqHex+3ECjr4jOtdyKIjhV0scXhDXniqSCopy72HTm/h/CkFWPVw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756218015; c=relaxed/simple;
-	bh=Zfl8PEcbTK74z5caVd75h5OETxAfMauJedsMNOqQGVs=;
+	s=arc-20240116; t=1756214961; c=relaxed/simple;
+	bh=QFCQB+1bNHRU/olRviaUXGzutbpIgu6PTdb2TbFLRJE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=hDvR19q4oUpQ2kDp9LzgeqEZxiG8kX8g3UDQaB3gTdOBoWa5Me/ouGULIovmXRxcXQ3J4GfMwTALXVQm2wXxzOOXUB/sxs7Vaj+QU2APV930za3AxjXmQRf5dye+X76ch1/Lr8HsEIQRSZ0r3DUFKI2186nfENVdupw1uX1CRwI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=D8vvKJNi; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id CD7C8C4CEF1;
-	Tue, 26 Aug 2025 14:20:14 +0000 (UTC)
+	 MIME-Version; b=L/q9oQui6olVcSdxXpYkNc3kOrNIoMFanTxsnZBZNx0gRGq732x3JYKaoyXQ/GfRF+69f4nPm0MeJXbh0urmS+jvLOzoz8ay6y9aK8/ehkMwWSIBty+AdngDaIL9a22tsq5UIge33nnBWn8CyiywtRT9mq4pHmCP2bkIO9wLcpE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=DdtVzOSf; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5A6A9C4CEF1;
+	Tue, 26 Aug 2025 13:29:21 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1756218015;
-	bh=Zfl8PEcbTK74z5caVd75h5OETxAfMauJedsMNOqQGVs=;
+	s=korg; t=1756214961;
+	bh=QFCQB+1bNHRU/olRviaUXGzutbpIgu6PTdb2TbFLRJE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=D8vvKJNic9v7E2FzwFSVaacpKAC3++sJYK6RSg2VsVegkNL37sKDNqMkuFvJ6l8mX
-	 PLagWIzXViRAialbo3y/KNIZUK0j8n7x8rBrdrlevTMn2gIKcuqDYfjkfSWKGE4JBM
-	 tljKXTlivkiWbd4JDHImgB/g4P1CIkB3tOPR6XEc=
+	b=DdtVzOSfNhkQxskLpxFBuVaGC0mrYrpVvxYy/DSiVnZHoxmvAfF7ti5LrP7LTJNWW
+	 BlmfaGPv5mTSMOr3Be/FYaXK+vMorb9MZsr3+pp8IsgP4feayCfghVTLBJP+wbZ710
+	 4skmXJKCR73dB6CJPQ52DTbLNIBxWLzwHyqAq1IU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	kernel test robot <lkp@intel.com>,
-	Eric Biggers <ebiggers@kernel.org>
-Subject: [PATCH 5.10 361/523] lib/crypto: mips/chacha: Fix clang build and remove unneeded byteswap
+	John David Anglin <dave.anglin@bell.net>,
+	Helge Deller <deller@gmx.de>
+Subject: [PATCH 6.1 318/482] parisc: Update comments in make_insert_tlb
 Date: Tue, 26 Aug 2025 13:09:31 +0200
-Message-ID: <20250826110933.373352406@linuxfoundation.org>
+Message-ID: <20250826110938.663322101@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250826110924.562212281@linuxfoundation.org>
-References: <20250826110924.562212281@linuxfoundation.org>
+In-Reply-To: <20250826110930.769259449@linuxfoundation.org>
+References: <20250826110930.769259449@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,109 +61,103 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Eric Biggers <ebiggers@kernel.org>
+From: John David Anglin <dave.anglin@bell.net>
 
-commit 22375adaa0d9fbba9646c8e2b099c6e87c97bfae upstream.
+commit cb22f247f371bd206a88cf0e0c05d80b8b62fb26 upstream.
 
-The MIPS32r2 ChaCha code has never been buildable with the clang
-assembler.  First, clang doesn't support the 'rotl' pseudo-instruction:
+The following testcase exposed a problem with our read access checks
+in get_user() and raw_copy_from_user():
 
-    error: unknown instruction, did you mean: rol, rotr?
+#include <stdint.h>
+#include <stddef.h>
+#include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
+#include <unistd.h>
+#include <errno.h>
+#include <sys/mman.h>
+#include <sys/types.h>
 
-Second, clang requires that both operands of the 'wsbh' instruction be
-explicitly given:
+int main(int argc, char **argv)
+{
+  unsigned long page_size = sysconf(_SC_PAGESIZE);
+  char *p = malloc(3 * page_size);
+  char *p_aligned;
 
-    error: too few operands for instruction
+  /* initialize memory region. If not initialized, write syscall below will correctly return EFAULT. */
+  if (1)
+	memset(p, 'X', 3 * page_size);
 
-To fix this, align the code with the real instruction set by (1) using
-the real instruction 'rotr' instead of the nonstandard pseudo-
-instruction 'rotl', and (2) explicitly giving both operands to 'wsbh'.
+  p_aligned = (char *) ((((uintptr_t) p) + (2*page_size - 1)) & ~(page_size - 1));
+  /* Drop PROT_READ protection. Kernel and userspace should fault when accessing that memory region */
+  mprotect(p_aligned, page_size, PROT_NONE);
 
-To make removing the use of 'rotl' a bit easier, also remove the
-unnecessary special-casing for big endian CPUs at
-.Lchacha_mips_xor_bytes.  The tail handling is actually
-endian-independent since it processes one byte at a time.  On big endian
-CPUs the old code byte-swapped SAVED_X, then iterated through it in
-reverse order.  But the byteswap and reverse iteration canceled out.
+  /* the following write() should return EFAULT, since PROT_READ was dropped by previous mprotect() */
+  int ret = write(2, p_aligned, 1);
+  if (!ret || errno != EFAULT)
+	printf("\n FAILURE: write() did not returned expected EFAULT value\n");
 
-Tested with chacha20poly1305-selftest in QEMU using "-M malta" with both
-little endian and big endian mips32r2 kernels.
+  return 0;
+}
 
-Fixes: 49aa7c00eddf ("crypto: mips/chacha - import 32r2 ChaCha code from Zinc")
-Cc: stable@vger.kernel.org
-Reported-by: kernel test robot <lkp@intel.com>
-Closes: https://lore.kernel.org/oe-kbuild-all/202505080409.EujEBwA0-lkp@intel.com/
-Link: https://lore.kernel.org/r/20250619225535.679301-1-ebiggers@kernel.org
-Signed-off-by: Eric Biggers <ebiggers@kernel.org>
+Because of the way _PAGE_READ is handled, kernel code never generates
+a read access fault when it access a page as the kernel privilege level
+is always less than PL1 in the PTE.
+
+This patch reworks the comments in the make_insert_tlb macro to try
+to make this clearer.
+
+Signed-off-by: John David Anglin <dave.anglin@bell.net>
+Signed-off-by: Helge Deller <deller@gmx.de>
+Cc: stable@vger.kernel.org # v5.12+
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- arch/mips/crypto/chacha-core.S |   20 +++++++-------------
- 1 file changed, 7 insertions(+), 13 deletions(-)
+ arch/parisc/kernel/entry.S |   17 ++++++++++++-----
+ 1 file changed, 12 insertions(+), 5 deletions(-)
 
---- a/arch/mips/crypto/chacha-core.S
-+++ b/arch/mips/crypto/chacha-core.S
-@@ -55,17 +55,13 @@
- #if __BYTE_ORDER__ == __ORDER_BIG_ENDIAN__
- #define MSB 0
- #define LSB 3
--#define ROTx rotl
--#define ROTR(n) rotr n, 24
- #define	CPU_TO_LE32(n) \
--	wsbh	n; \
-+	wsbh	n, n; \
- 	rotr	n, 16;
- #else
- #define MSB 3
- #define LSB 0
--#define ROTx rotr
- #define CPU_TO_LE32(n)
--#define ROTR(n)
- #endif
+--- a/arch/parisc/kernel/entry.S
++++ b/arch/parisc/kernel/entry.S
+@@ -486,6 +486,12 @@
+ 	 * this happens is quite subtle, read below */
+ 	.macro		make_insert_tlb	spc,pte,prot,tmp
+ 	space_to_prot   \spc \prot        /* create prot id from space */
++
++#if _PAGE_SPECIAL_BIT == _PAGE_DMB_BIT
++	/* need to drop DMB bit, as it's used as SPECIAL flag */
++	depi		0,_PAGE_SPECIAL_BIT,1,\pte
++#endif
++
+ 	/* The following is the real subtlety.  This is depositing
+ 	 * T <-> _PAGE_REFTRAP
+ 	 * D <-> _PAGE_DIRTY
+@@ -498,17 +504,18 @@
+ 	 * Finally, _PAGE_READ goes in the top bit of PL1 (so we
+ 	 * trigger an access rights trap in user space if the user
+ 	 * tries to read an unreadable page */
+-#if _PAGE_SPECIAL_BIT == _PAGE_DMB_BIT
+-	/* need to drop DMB bit, as it's used as SPECIAL flag */
+-	depi		0,_PAGE_SPECIAL_BIT,1,\pte
+-#endif
+ 	depd            \pte,8,7,\prot
  
- #define FOR_EACH_WORD(x) \
-@@ -192,10 +188,10 @@ CONCAT3(.Lchacha_mips_xor_aligned_, PLUS
- 	xor	X(W), X(B); \
- 	xor	X(Y), X(C); \
- 	xor	X(Z), X(D); \
--	rotl	X(V), S;    \
--	rotl	X(W), S;    \
--	rotl	X(Y), S;    \
--	rotl	X(Z), S;
-+	rotr	X(V), 32 - S; \
-+	rotr	X(W), 32 - S; \
-+	rotr	X(Y), 32 - S; \
-+	rotr	X(Z), 32 - S;
- 
- .text
- .set	reorder
-@@ -372,21 +368,19 @@ chacha_crypt_arch:
- 	/* First byte */
- 	lbu	T1, 0(IN)
- 	addiu	$at, BYTES, 1
--	CPU_TO_LE32(SAVED_X)
--	ROTR(SAVED_X)
- 	xor	T1, SAVED_X
- 	sb	T1, 0(OUT)
- 	beqz	$at, .Lchacha_mips_xor_done
- 	/* Second byte */
- 	lbu	T1, 1(IN)
- 	addiu	$at, BYTES, 2
--	ROTx	SAVED_X, 8
-+	rotr	SAVED_X, 8
- 	xor	T1, SAVED_X
- 	sb	T1, 1(OUT)
- 	beqz	$at, .Lchacha_mips_xor_done
- 	/* Third byte */
- 	lbu	T1, 2(IN)
--	ROTx	SAVED_X, 8
-+	rotr	SAVED_X, 8
- 	xor	T1, SAVED_X
- 	sb	T1, 2(OUT)
- 	b	.Lchacha_mips_xor_done
+ 	/* PAGE_USER indicates the page can be read with user privileges,
+ 	 * so deposit X1|11 to PL1|PL2 (remember the upper bit of PL1
+-	 * contains _PAGE_READ) */
++	 * contains _PAGE_READ). While the kernel can't directly write
++	 * user pages which have _PAGE_WRITE zero, it can read pages
++	 * which have _PAGE_READ zero (PL <= PL1). Thus, the kernel
++	 * exception fault handler doesn't trigger when reading pages
++	 * that aren't user read accessible */
+ 	extrd,u,*=      \pte,_PAGE_USER_BIT+32,1,%r0
+ 	depdi		7,11,3,\prot
++
+ 	/* If we're a gateway page, drop PL2 back to zero for promotion
+ 	 * to kernel privilege (so we can execute the page as kernel).
+ 	 * Any privilege promotion page always denys read and write */
 
 
 
