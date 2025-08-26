@@ -1,58 +1,57 @@
-Return-Path: <stable+bounces-173221-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-174150-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 60008B35C92
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 13:35:48 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6AD78B361BA
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 15:12:00 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 2F610362C8F
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 11:29:22 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 8A2002A6C6C
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 13:07:14 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9BBC12F8BD9;
-	Tue, 26 Aug 2025 11:28:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 288EA2147EF;
+	Tue, 26 Aug 2025 13:07:06 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="t+DObS5C"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="hgdCvqWp"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3E9C62F9992;
-	Tue, 26 Aug 2025 11:28:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D92B11ACEDA;
+	Tue, 26 Aug 2025 13:07:05 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756207683; cv=none; b=LhCamg3Hd6vdzReQRMZqdTg3OcqvjiOXolkmMnfg+ar//Tv3lVjRtxw4prJrk34UIhszGitUG80m2FLsFc9rqUvfTuWedv3PC84agMxAx3zk0WSxfXQ05YMG5la0eTlWWDbNek9Z+zoq4i5pDFzyJcYIodjjXl95EIeXnQat3SE=
+	t=1756213625; cv=none; b=fgl4RR2PvyC8les5zomI5f7rOylU4EcVxIEhe++vHi58mZ0d4k6BPhYFduHLO5tFufG7f6sp4uHlqRly0Zul/EWu6o8eumQ4OMkmQjArY7iR98YDpRalw/rQmHS3ShmVdFAgRQrHOEp2EE8+3sM2KoRfywAEDT2kc8E5Yzx+2VM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756207683; c=relaxed/simple;
-	bh=KwuFiKuZzQPWpeFbiT4V+A4lGbo/I0+s1VX4RLFJLm4=;
+	s=arc-20240116; t=1756213625; c=relaxed/simple;
+	bh=I+XxFpSPfLtFIU5PQmR1tVRQHWOs4VECWrqx93QvEeM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=oPAYKoXhWttALWKpd0yZwgBtn2G4FvwEAnJhdywYi0EuWlWF2/QDVmcJXkCfGd+qYjPu3UOyqRz9Gynn3JNEiz6AUXNKoIPOKtzCaV3BWQSEXJoCg01DTAP1vPMJ6cKXNblU7ZboXPTxrW0CEUN+OBEd2M1/HYboURtgIM3TVQ4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=t+DObS5C; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C094FC4CEF1;
-	Tue, 26 Aug 2025 11:28:02 +0000 (UTC)
+	 MIME-Version; b=c9pgo7QXomyfQg3Uo2nzE7MJ6c9OpzmyPs4FLZfCm9KiKpUVMrF1foZdPTtf2Zyp7fuNPlnH/KWAwCj7FWkMpmxRMBA18TErmK7gQIJdrqf4dkhcNHUy1U6bUz7VyRv/NQnf5CcBwWp2GzD3KahYQ15Gp92KFMhDThIPYVypSNI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=hgdCvqWp; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4232CC4CEF1;
+	Tue, 26 Aug 2025 13:07:05 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1756207683;
-	bh=KwuFiKuZzQPWpeFbiT4V+A4lGbo/I0+s1VX4RLFJLm4=;
+	s=korg; t=1756213625;
+	bh=I+XxFpSPfLtFIU5PQmR1tVRQHWOs4VECWrqx93QvEeM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=t+DObS5CrrF0lfB5/kNN7AcWSh0vVNO7FZl8NMUTeM7KF+No4i2p+iy59idiVloZ+
-	 G1hYsTjHaoKePRfxBSbPbWO3ncpk6HTA2KZM46vJIAuckZqaqe6bVrUX9dFb45uNqI
-	 w8c+Tmfzw+m+58k2kW+PhASZnVUQaM69D3JXu1H8=
+	b=hgdCvqWpVPN3SPCphChkdOxCjx5Hd8WACfJnf7iIUzgj8g92p2ce/hPmzbwqqBOPr
+	 gamRODGkNOpg40M6R1omYD3p8tId5FCjxh6alKHD+/CTOJbFrxdek1KjyW9lJ8hkXg
+	 iqiUl3v37JcJnFsjz4v44mf4+haf/uwXH7mjblbY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Geraldo Nascimento <geraldogabriel@gmail.com>,
-	Manivannan Sadhasivam <mani@kernel.org>,
-	Bjorn Helgaas <bhelgaas@google.com>,
-	Robin Murphy <robin.murphy@arm.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.16 276/457] PCI: rockchip: Set Target Link Speed to 5.0 GT/s before retraining
+	Vladimir Zapolskiy <vladimir.zapolskiy@linaro.org>,
+	Bryan ODonoghue <bryan.odonoghue@linaro.org>,
+	Bryan ODonoghue <bod@kernel.org>,
+	Hans Verkuil <hverkuil@xs4all.nl>
+Subject: [PATCH 6.6 411/587] media: qcom: camss: cleanup media device allocated resource on error path
 Date: Tue, 26 Aug 2025 13:09:20 +0200
-Message-ID: <20250826110944.202990719@linuxfoundation.org>
+Message-ID: <20250826111003.386980451@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250826110937.289866482@linuxfoundation.org>
-References: <20250826110937.289866482@linuxfoundation.org>
+In-Reply-To: <20250826110952.942403671@linuxfoundation.org>
+References: <20250826110952.942403671@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,46 +63,51 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.16-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Geraldo Nascimento <geraldogabriel@gmail.com>
+From: Vladimir Zapolskiy <vladimir.zapolskiy@linaro.org>
 
-[ Upstream commit 114b06ee108cabc82b995fbac6672230a9776936 ]
+commit 69080ec3d0daba8a894025476c98ab16b5a505a4 upstream.
 
-Rockchip controllers can support up to 5.0 GT/s link speed. But the driver
-doesn't set the Target Link Speed currently. This may cause failure in
-retraining the link to 5.0 GT/s if supported by the endpoint. So set the
-Target Link Speed to 5.0 GT/s in the Link Control and Status Register 2.
+A call to media_device_init() requires media_device_cleanup() counterpart
+to complete cleanup and release any allocated resources.
 
-Fixes: e77f847df54c ("PCI: rockchip: Add Rockchip PCIe controller support")
-Signed-off-by: Geraldo Nascimento <geraldogabriel@gmail.com>
-[mani: fixed whitespace warning, commit message rewording, added fixes tag]
-Signed-off-by: Manivannan Sadhasivam <mani@kernel.org>
-Signed-off-by: Bjorn Helgaas <bhelgaas@google.com>
-Tested-by: Robin Murphy <robin.murphy@arm.com>
+This has been done in the driver .remove() right from the beginning, but
+error paths on .probe() shall also be fixed.
+
+Fixes: a1d7c116fcf7 ("media: camms: Add core files")
 Cc: stable@vger.kernel.org
-Link: https://patch.msgid.link/0afa6bc47b7f50e2e81b0b47d51c66feb0fb565f.1751322015.git.geraldogabriel@gmail.com
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Signed-off-by: Vladimir Zapolskiy <vladimir.zapolskiy@linaro.org>
+Reviewed-by: Bryan O'Donoghue <bryan.odonoghue@linaro.org>
+Signed-off-by: Bryan O'Donoghue <bod@kernel.org>
+Signed-off-by: Hans Verkuil <hverkuil@xs4all.nl>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/pci/controller/pcie-rockchip-host.c |    4 ++++
- 1 file changed, 4 insertions(+)
+ drivers/media/platform/qcom/camss/camss.c |    4 +++-
+ 1 file changed, 3 insertions(+), 1 deletion(-)
 
---- a/drivers/pci/controller/pcie-rockchip-host.c
-+++ b/drivers/pci/controller/pcie-rockchip-host.c
-@@ -342,6 +342,10 @@ static int rockchip_pcie_host_init_port(
- 		 * Enable retrain for gen2. This should be configured only after
- 		 * gen1 finished.
- 		 */
-+		status = rockchip_pcie_read(rockchip, PCIE_RC_CONFIG_CR + PCI_EXP_LNKCTL2);
-+		status &= ~PCI_EXP_LNKCTL2_TLS;
-+		status |= PCI_EXP_LNKCTL2_TLS_5_0GT;
-+		rockchip_pcie_write(rockchip, status, PCIE_RC_CONFIG_CR + PCI_EXP_LNKCTL2);
- 		status = rockchip_pcie_read(rockchip, PCIE_RC_CONFIG_CR + PCI_EXP_LNKCTL);
- 		status |= PCI_EXP_LNKCTL_RL;
- 		rockchip_pcie_write(rockchip, status, PCIE_RC_CONFIG_CR + PCI_EXP_LNKCTL);
+--- a/drivers/media/platform/qcom/camss/camss.c
++++ b/drivers/media/platform/qcom/camss/camss.c
+@@ -1660,7 +1660,7 @@ static int camss_probe(struct platform_d
+ 	ret = v4l2_device_register(camss->dev, &camss->v4l2_dev);
+ 	if (ret < 0) {
+ 		dev_err(dev, "Failed to register V4L2 device: %d\n", ret);
+-		goto err_genpd_cleanup;
++		goto err_media_device_cleanup;
+ 	}
+ 
+ 	v4l2_async_nf_init(&camss->notifier, &camss->v4l2_dev);
+@@ -1711,6 +1711,8 @@ err_v4l2_device_unregister:
+ 	v4l2_device_unregister(&camss->v4l2_dev);
+ 	v4l2_async_nf_cleanup(&camss->notifier);
+ 	pm_runtime_disable(dev);
++err_media_device_cleanup:
++	media_device_cleanup(&camss->media_dev);
+ err_genpd_cleanup:
+ 	camss_genpd_cleanup(camss);
+ 
 
 
 
