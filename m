@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-176056-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-173031-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [142.0.200.124])
-	by mail.lfdr.de (Postfix) with ESMTPS id B4996B36A11
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 16:33:55 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 138DFB35B3A
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 13:21:40 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 7978C4E110D
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 14:33:54 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id E44057ADC63
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 11:20:03 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4FF223570AD;
-	Tue, 26 Aug 2025 14:31:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8969933EB1D;
+	Tue, 26 Aug 2025 11:19:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="s1GLOL4r"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="my4vfakA"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0DC19352067;
-	Tue, 26 Aug 2025 14:31:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4626E33CEAF;
+	Tue, 26 Aug 2025 11:19:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756218669; cv=none; b=oEVi8IM1UuRXAoi5QYJuotX53UdQ75KPp+vEfFv++Qod9HZUgjFteGrN3PwJlOn1DdgB1QMvNc3/lyrAwo+HRWTtBNp3cTIRfzYTXHdhYFJ/r3yTGZVzSO+CSE4Uk9dji8+dFH84Eejk3/TL01XBPfWU1UqEzAWxCLMQ0hacvvM=
+	t=1756207196; cv=none; b=kb6hE8eZUiOOVRu/KRsgRLpGx2aXZMqrajBGC29uNQLCfjcm7Yl8L+AEtsNl2oOUgM/we3kaYNPvPqySbq6vV1lAuawWl//LkjakB8mPEPfbbvh7wCJ64i1wWJXTaT51RW5jE+6Av3S70SNWeZT2xMmRCEwDEs+3RIASCgI+EzE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756218669; c=relaxed/simple;
-	bh=jThZW1uIec8lWE3MNU2EjD0hPZlrfllCZoUjT17vLR0=;
+	s=arc-20240116; t=1756207196; c=relaxed/simple;
+	bh=UEOs5wEjim2wjnnlpC00NBB7CGtIpZTR7jsLtmSfrAM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=ZM0XZE4zmkieNk3hExuElvxmCYitON5Pt+r/juKlw5fpSQuBLl5D7cfVNUMhJtJHWyuxUenUb4WMu6cmCr0l1fUuxMGXMREksStQ4tjjY8jI+3CpSN54mcDxzVp7Xi3JGK9ZMsRpb5sCMPC9T9PbLmXeqTAY2vakgWf8+Q4vGvw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=s1GLOL4r; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2DD1BC4CEF1;
-	Tue, 26 Aug 2025 14:31:07 +0000 (UTC)
+	 MIME-Version:Content-Type; b=IvdWUX1LR6wo4NT3zKSC/o6HcRFfF7wQyr+Gr6B7Gx2eKe4U0U/+RrjpX0eXsO6oJybalBXMpWXpUuYrNgCVB7v8AlCMdM/83GVk9IIDLPp8BkRKsIvKgNdoXssxg44t67Aae/J/WUwsTFtIjtNlm6ySq8lgjEQKpghEcTguWMc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=my4vfakA; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7FA73C4CEF1;
+	Tue, 26 Aug 2025 11:19:55 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1756218668;
-	bh=jThZW1uIec8lWE3MNU2EjD0hPZlrfllCZoUjT17vLR0=;
+	s=korg; t=1756207195;
+	bh=UEOs5wEjim2wjnnlpC00NBB7CGtIpZTR7jsLtmSfrAM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=s1GLOL4rLUU26eNrxGA+MM7iPxmaOFOeFBfB5qT+5QHTJnAwqmys6H2RkMKrkSax2
-	 SnfmdIXAejAMMuaEDPk8zlRDNauQHLLT/21asZ91uOCFEQ/b/lkKXVLMGpinWBrqu8
-	 1JBZ4NSBiqMYZr3GMzMiIFn5sGFAjtrdeHl4AKFY=
+	b=my4vfakA6m1mm6uUGFNYm99kmXXhRvEE4yzxNYcGhryzXyieB0cxKmXjrx/7wwC4h
+	 Fj+hNDW38b+d7k9vAbZpElRp/CKHOhbwMXG5p76FvJrK8hwNwnFVMopWYDBrGerefQ
+	 zQS3ARB2fI8JixbCURV9xn7Ct6jR3Bj1Adn+1UWU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Zeal Robot <zealci@zte.com.cn>,
-	Minghao Chi <chi.minghao@zte.com.cn>,
-	Sebastian Reichel <sebastian.reichel@collabora.com>,
-	Shubham Kulkarni <skulkarni@mvista.com>
-Subject: [PATCH 5.4 046/403] power: supply: bq24190_charger: using pm_runtime_resume_and_get instead of pm_runtime_get_sync
+	=?UTF-8?q?Uwe=20Kleine-K=C3=B6nig?= <u.kleine-koenig@baylibre.com>,
+	AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>,
+	=?UTF-8?q?Uwe=20Kleine-K=C3=B6nig?= <ukleinek@kernel.org>
+Subject: [PATCH 6.16 088/457] pwm: mediatek: Handle hardware enable and clock enable separately
 Date: Tue, 26 Aug 2025 13:06:12 +0200
-Message-ID: <20250826110907.106060195@linuxfoundation.org>
+Message-ID: <20250826110939.556274485@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250826110905.607690791@linuxfoundation.org>
-References: <20250826110905.607690791@linuxfoundation.org>
+In-Reply-To: <20250826110937.289866482@linuxfoundation.org>
+References: <20250826110937.289866482@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,194 +60,126 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-5.4-stable review patch.  If anyone has any objections, please let me know.
+6.16-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Minghao Chi <chi.minghao@zte.com.cn>
+From: Uwe Kleine-König <u.kleine-koenig@baylibre.com>
 
-[ Upstream commit d96a89407e5f682d1cb22569d91784506c784863 ]
+commit 704d918341c378c5f9505dfdf32d315e256d3846 upstream.
 
-Using pm_runtime_resume_and_get is more appropriate
-for simplifing code
+Stop handling the clocks in pwm_mediatek_enable() and
+pwm_mediatek_disable(). This is a preparing change for the next commit
+that requires that clocks and the enable bit are handled separately.
 
-Reported-by: Zeal Robot <zealci@zte.com.cn>
-Signed-off-by: Minghao Chi <chi.minghao@zte.com.cn>
-Signed-off-by: Sebastian Reichel <sebastian.reichel@collabora.com>
-[ skulkarni: Minor changes in hunk #3/12 wrt the mainline commit ]
-Stable-dep-of: 47c29d692129 ("power: supply: bq24190: Fix use after free bug in bq24190_remove due to race condition")
-Signed-off-by: Shubham Kulkarni <skulkarni@mvista.com>
+Also move these two functions a bit further up in the source file to
+make them usable in pwm_mediatek_config(), which is needed in the next
+commit, too.
+
+Signed-off-by: Uwe Kleine-König <u.kleine-koenig@baylibre.com>
+Reviewed-by: AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>
+Link: https://lore.kernel.org/r/55c94fe2917ece152ee1e998f4675642a7716f13.1753717973.git.u.kleine-koenig@baylibre.com
+Cc: stable@vger.kernel.org
+Signed-off-by: Uwe Kleine-König <ukleinek@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/power/supply/bq24190_charger.c |   63 +++++++++++----------------------
- 1 file changed, 21 insertions(+), 42 deletions(-)
+ drivers/pwm/pwm-mediatek.c |   60 +++++++++++++++++++++------------------------
+ 1 file changed, 28 insertions(+), 32 deletions(-)
 
---- a/drivers/power/supply/bq24190_charger.c
-+++ b/drivers/power/supply/bq24190_charger.c
-@@ -448,11 +448,9 @@ static ssize_t bq24190_sysfs_show(struct
- 	if (!info)
+--- a/drivers/pwm/pwm-mediatek.c
++++ b/drivers/pwm/pwm-mediatek.c
+@@ -115,6 +115,26 @@ static inline void pwm_mediatek_writel(s
+ 	writel(value, chip->regs + chip->soc->reg_offset[num] + offset);
+ }
+ 
++static void pwm_mediatek_enable(struct pwm_chip *chip, struct pwm_device *pwm)
++{
++	struct pwm_mediatek_chip *pc = to_pwm_mediatek_chip(chip);
++	u32 value;
++
++	value = readl(pc->regs);
++	value |= BIT(pwm->hwpwm);
++	writel(value, pc->regs);
++}
++
++static void pwm_mediatek_disable(struct pwm_chip *chip, struct pwm_device *pwm)
++{
++	struct pwm_mediatek_chip *pc = to_pwm_mediatek_chip(chip);
++	u32 value;
++
++	value = readl(pc->regs);
++	value &= ~BIT(pwm->hwpwm);
++	writel(value, pc->regs);
++}
++
+ static int pwm_mediatek_config(struct pwm_chip *chip, struct pwm_device *pwm,
+ 			       int duty_ns, int period_ns)
+ {
+@@ -177,35 +197,6 @@ out:
+ 	return ret;
+ }
+ 
+-static int pwm_mediatek_enable(struct pwm_chip *chip, struct pwm_device *pwm)
+-{
+-	struct pwm_mediatek_chip *pc = to_pwm_mediatek_chip(chip);
+-	u32 value;
+-	int ret;
+-
+-	ret = pwm_mediatek_clk_enable(chip, pwm);
+-	if (ret < 0)
+-		return ret;
+-
+-	value = readl(pc->regs);
+-	value |= BIT(pwm->hwpwm);
+-	writel(value, pc->regs);
+-
+-	return 0;
+-}
+-
+-static void pwm_mediatek_disable(struct pwm_chip *chip, struct pwm_device *pwm)
+-{
+-	struct pwm_mediatek_chip *pc = to_pwm_mediatek_chip(chip);
+-	u32 value;
+-
+-	value = readl(pc->regs);
+-	value &= ~BIT(pwm->hwpwm);
+-	writel(value, pc->regs);
+-
+-	pwm_mediatek_clk_disable(chip, pwm);
+-}
+-
+ static int pwm_mediatek_apply(struct pwm_chip *chip, struct pwm_device *pwm,
+ 			      const struct pwm_state *state)
+ {
+@@ -215,8 +206,10 @@ static int pwm_mediatek_apply(struct pwm
  		return -EINVAL;
  
--	ret = pm_runtime_get_sync(bdi->dev);
--	if (ret < 0) {
--		pm_runtime_put_noidle(bdi->dev);
-+	ret = pm_runtime_resume_and_get(bdi->dev);
-+	if (ret < 0)
- 		return ret;
--	}
+ 	if (!state->enabled) {
+-		if (pwm->state.enabled)
++		if (pwm->state.enabled) {
+ 			pwm_mediatek_disable(chip, pwm);
++			pwm_mediatek_clk_disable(chip, pwm);
++		}
  
- 	ret = bq24190_read_mask(bdi, info->reg, info->mask, info->shift, &v);
- 	if (ret)
-@@ -483,11 +481,9 @@ static ssize_t bq24190_sysfs_store(struc
- 	if (ret < 0)
- 		return ret;
- 
--	ret = pm_runtime_get_sync(bdi->dev);
--	if (ret < 0) {
--		pm_runtime_put_noidle(bdi->dev);
-+	ret = pm_runtime_resume_and_get(bdi->dev);
-+	if (ret < 0)
- 		return ret;
--	}
- 
- 	ret = bq24190_write_mask(bdi, info->reg, info->mask, info->shift, v);
- 	if (ret)
-@@ -506,10 +502,9 @@ static int bq24190_set_charge_mode(struc
- 	struct bq24190_dev_info *bdi = rdev_get_drvdata(dev);
- 	int ret;
- 
--	ret = pm_runtime_get_sync(bdi->dev);
-+	ret = pm_runtime_resume_and_get(bdi->dev);
- 	if (ret < 0) {
- 		dev_warn(bdi->dev, "pm_runtime_get failed: %i\n", ret);
--		pm_runtime_put_noidle(bdi->dev);
- 		return ret;
+ 		return 0;
  	}
+@@ -225,8 +218,11 @@ static int pwm_mediatek_apply(struct pwm
+ 	if (err)
+ 		return err;
  
-@@ -539,10 +534,9 @@ static int bq24190_vbus_is_enabled(struc
- 	int ret;
- 	u8 val;
+-	if (!pwm->state.enabled)
+-		err = pwm_mediatek_enable(chip, pwm);
++	if (!pwm->state.enabled) {
++		err = pwm_mediatek_clk_enable(chip, pwm);
++		if (!err)
++			pwm_mediatek_enable(chip, pwm);
++	}
  
--	ret = pm_runtime_get_sync(bdi->dev);
-+	ret = pm_runtime_resume_and_get(bdi->dev);
- 	if (ret < 0) {
- 		dev_warn(bdi->dev, "pm_runtime_get failed: %i\n", ret);
--		pm_runtime_put_noidle(bdi->dev);
- 		return ret;
- 	}
- 
-@@ -1083,11 +1077,9 @@ static int bq24190_charger_get_property(
- 
- 	dev_dbg(bdi->dev, "prop: %d\n", psp);
- 
--	ret = pm_runtime_get_sync(bdi->dev);
--	if (ret < 0) {
--		pm_runtime_put_noidle(bdi->dev);
-+	ret = pm_runtime_resume_and_get(bdi->dev);
-+	if (ret < 0)
- 		return ret;
--	}
- 
- 	switch (psp) {
- 	case POWER_SUPPLY_PROP_CHARGE_TYPE:
-@@ -1157,11 +1149,9 @@ static int bq24190_charger_set_property(
- 
- 	dev_dbg(bdi->dev, "prop: %d\n", psp);
- 
--	ret = pm_runtime_get_sync(bdi->dev);
--	if (ret < 0) {
--		pm_runtime_put_noidle(bdi->dev);
-+	ret = pm_runtime_resume_and_get(bdi->dev);
-+	if (ret < 0)
- 		return ret;
--	}
- 
- 	switch (psp) {
- 	case POWER_SUPPLY_PROP_ONLINE:
-@@ -1431,11 +1421,9 @@ static int bq24190_battery_get_property(
- 	dev_warn(bdi->dev, "warning: /sys/class/power_supply/bq24190-battery is deprecated\n");
- 	dev_dbg(bdi->dev, "prop: %d\n", psp);
- 
--	ret = pm_runtime_get_sync(bdi->dev);
--	if (ret < 0) {
--		pm_runtime_put_noidle(bdi->dev);
-+	ret = pm_runtime_resume_and_get(bdi->dev);
-+	if (ret < 0)
- 		return ret;
--	}
- 
- 	switch (psp) {
- 	case POWER_SUPPLY_PROP_STATUS:
-@@ -1479,11 +1467,9 @@ static int bq24190_battery_set_property(
- 	dev_warn(bdi->dev, "warning: /sys/class/power_supply/bq24190-battery is deprecated\n");
- 	dev_dbg(bdi->dev, "prop: %d\n", psp);
- 
--	ret = pm_runtime_get_sync(bdi->dev);
--	if (ret < 0) {
--		pm_runtime_put_noidle(bdi->dev);
-+	ret = pm_runtime_resume_and_get(bdi->dev);
-+	if (ret < 0)
- 		return ret;
--	}
- 
- 	switch (psp) {
- 	case POWER_SUPPLY_PROP_ONLINE:
-@@ -1637,10 +1623,9 @@ static irqreturn_t bq24190_irq_handler_t
- 	int error;
- 
- 	bdi->irq_event = true;
--	error = pm_runtime_get_sync(bdi->dev);
-+	error = pm_runtime_resume_and_get(bdi->dev);
- 	if (error < 0) {
- 		dev_warn(bdi->dev, "pm_runtime_get failed: %i\n", error);
--		pm_runtime_put_noidle(bdi->dev);
- 		return IRQ_NONE;
- 	}
- 	bq24190_check_status(bdi);
-@@ -1860,11 +1845,9 @@ static int bq24190_remove(struct i2c_cli
- 	struct bq24190_dev_info *bdi = i2c_get_clientdata(client);
- 	int error;
- 
--	error = pm_runtime_get_sync(bdi->dev);
--	if (error < 0) {
-+	error = pm_runtime_resume_and_get(bdi->dev);
-+	if (error < 0)
- 		dev_warn(bdi->dev, "pm_runtime_get failed: %i\n", error);
--		pm_runtime_put_noidle(bdi->dev);
--	}
- 
- 	bq24190_register_reset(bdi);
- 	if (bdi->battery)
-@@ -1913,11 +1896,9 @@ static __maybe_unused int bq24190_pm_sus
- 	struct bq24190_dev_info *bdi = i2c_get_clientdata(client);
- 	int error;
- 
--	error = pm_runtime_get_sync(bdi->dev);
--	if (error < 0) {
-+	error = pm_runtime_resume_and_get(bdi->dev);
-+	if (error < 0)
- 		dev_warn(bdi->dev, "pm_runtime_get failed: %i\n", error);
--		pm_runtime_put_noidle(bdi->dev);
--	}
- 
- 	bq24190_register_reset(bdi);
- 
-@@ -1938,11 +1919,9 @@ static __maybe_unused int bq24190_pm_res
- 	bdi->f_reg = 0;
- 	bdi->ss_reg = BQ24190_REG_SS_VBUS_STAT_MASK; /* impossible state */
- 
--	error = pm_runtime_get_sync(bdi->dev);
--	if (error < 0) {
-+	error = pm_runtime_resume_and_get(bdi->dev);
-+	if (error < 0)
- 		dev_warn(bdi->dev, "pm_runtime_get failed: %i\n", error);
--		pm_runtime_put_noidle(bdi->dev);
--	}
- 
- 	bq24190_register_reset(bdi);
- 	bq24190_set_config(bdi);
+ 	return err;
+ }
 
 
 
