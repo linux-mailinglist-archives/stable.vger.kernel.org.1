@@ -1,56 +1,55 @@
-Return-Path: <stable+bounces-175561-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-175020-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id A088BB368BC
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 16:19:05 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3F337B36542
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 15:46:13 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id F1BA456219B
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 14:11:15 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 80D187BC6BD
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 13:44:20 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 169F23568FB;
-	Tue, 26 Aug 2025 14:09:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 27F1E34DCCC;
+	Tue, 26 Aug 2025 13:45:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="dY+glk7c"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ZtquXOeY"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C77B93568F5;
-	Tue, 26 Aug 2025 14:09:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D95582BEC45;
+	Tue, 26 Aug 2025 13:45:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756217369; cv=none; b=ayMWD2Z3C233cfJePwdS74XUOuGl+RUFBA6FsssaC1VXr2sPjWzxBWkCtBAeU773Z2XJ0zVefkWFtHy6LpRctY62GPkUC0QSpftC3jIKRYYVflnkWXncNFUCCEnMCj/x+JfJ5l88YQA0jlEqjRxNrTpbMWLkKbII/mk99ST146Q=
+	t=1756215929; cv=none; b=Xh7ce7NaiBWh/U70wN3bHGaZdGZBuQH72yOHe2WxDxWXMWCixLx3Il2UUYnf5ktlHywisXhU3WfcOUwK+jxm/Rh7q51sQcutIy0PjdeBbsec+wyRW+WIutEQKV3XFJYhfjNbyx/Dm0Fd7gyQDTNrgXcjrykEgdh45fYIssN+zm8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756217369; c=relaxed/simple;
-	bh=Byb4tjI4zxx6DrrFdIgtQBCFLhnG0+7wKtDqiNkp3mI=;
+	s=arc-20240116; t=1756215929; c=relaxed/simple;
+	bh=8OvbNbfE0Ss6xhCrFskhLG9kPzS3Ky0IPp74pg4Rghs=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=sYUQsR1ZAA4R6cOT3MQ8Vh0HmMEa0WGB7GplCE8ivEY/t5ucV4vVTwLYBWtGIuqB9MvZdEetPviCHAY990Znlgw47DpyGqdTM5DJNmbLd067o0gMnIULJRLuDWzfhgMC7l2waslwNJ8iiXfbq9LRHfQHJvtb42WvS5Uakn9hBdM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=dY+glk7c; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5A496C113CF;
-	Tue, 26 Aug 2025 14:09:29 +0000 (UTC)
+	 MIME-Version; b=u8VBj99Y/arBiNOU1XTUiH6rcAfdXUfrYAuAvdr0XVAUJBWAJzR/Qx3aRtHp+0pdVCbkhwxU3ERC6gxQ4VQz5uHKjZBhmm2DZlIcdqATu5AJpXnBmZ2FzOJ7Z1Ibo3f/pY+slC7hKEIe4kuag+DDdKLE2IVHIJAzZUNCsDo4cz8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ZtquXOeY; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6B961C4CEF1;
+	Tue, 26 Aug 2025 13:45:29 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1756217369;
-	bh=Byb4tjI4zxx6DrrFdIgtQBCFLhnG0+7wKtDqiNkp3mI=;
+	s=korg; t=1756215929;
+	bh=8OvbNbfE0Ss6xhCrFskhLG9kPzS3Ky0IPp74pg4Rghs=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=dY+glk7cTa0i+G+ge7ZsalPR+ecGVwTgTchH3g1pFyOAvhYbFawEtNvezRROQx9BN
-	 nySXm08NZCAhDym+pGaXY2XF5ufwkWugLajKQmujZZ5mIz84as7b04vNPm1GfZMAzC
-	 oF5mTzBEqIMQV8Y91RVJnltcZ8ozXoUgUMoBzt7k=
+	b=ZtquXOeYdFfxfuorwBeJ4Yg7+Ch8pRiWQ7OUrIDbaNwMbXuEuUh4Y+S8+mqbg6F1j
+	 c43z0a419b+ZKuHhuk8CYlJsAv4U3uDTXQc/1J0ZG9tUUMqPF1YdfZ5Cd4FDDrDdDV
+	 HRWDVqJD0emX4g1IZnr1/YDZi9GpwFDgWuHqcNLI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jiasheng Jiang <jiasheng@iscas.ac.cn>,
-	Miri Korenblit <miriam.rachel.korenblit@intel.com>,
+	Masahiro Yamada <masahiroy@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 100/523] iwlwifi: Add missing check for alloc_ordered_workqueue
+Subject: [PATCH 5.15 219/644] kconfig: qconf: fix ConfigList::updateListAllforAll()
 Date: Tue, 26 Aug 2025 13:05:10 +0200
-Message-ID: <20250826110927.005224008@linuxfoundation.org>
+Message-ID: <20250826110951.854503838@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250826110924.562212281@linuxfoundation.org>
-References: <20250826110924.562212281@linuxfoundation.org>
+In-Reply-To: <20250826110946.507083938@linuxfoundation.org>
+References: <20250826110946.507083938@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,71 +61,40 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jiasheng Jiang <jiasheng@iscas.ac.cn>
+From: Masahiro Yamada <masahiroy@kernel.org>
 
-[ Upstream commit 90a0d9f339960448a3acc1437a46730f975efd6a ]
+[ Upstream commit 721bfe583c52ba1ea74b3736a31a9dcfe6dd6d95 ]
 
-Add check for the return value of alloc_ordered_workqueue since it may
-return NULL pointer.
+ConfigList::updateListForAll() and ConfigList::updateListAllforAll()
+are identical.
 
-Fixes: b481de9ca074 ("[IWLWIFI]: add iwlwifi wireless drivers")
-Signed-off-by: Jiasheng Jiang <jiasheng@iscas.ac.cn>
-Link: https://patch.msgid.link/20230110014848.28226-1-jiasheng@iscas.ac.cn
-Signed-off-by: Miri Korenblit <miriam.rachel.korenblit@intel.com>
+Commit f9b918fae678 ("kconfig: qconf: move ConfigView::updateList(All)
+to ConfigList class") was a misconversion.
+
+Fixes: f9b918fae678 ("kconfig: qconf: move ConfigView::updateList(All) to ConfigList class")
+Signed-off-by: Masahiro Yamada <masahiroy@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/wireless/intel/iwlwifi/dvm/main.c | 11 +++++++++--
- 1 file changed, 9 insertions(+), 2 deletions(-)
+ scripts/kconfig/qconf.cc | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/net/wireless/intel/iwlwifi/dvm/main.c b/drivers/net/wireless/intel/iwlwifi/dvm/main.c
-index 6a19fc4c6860..54fef25a11a1 100644
---- a/drivers/net/wireless/intel/iwlwifi/dvm/main.c
-+++ b/drivers/net/wireless/intel/iwlwifi/dvm/main.c
-@@ -1054,9 +1054,11 @@ static void iwl_bg_restart(struct work_struct *data)
-  *
-  *****************************************************************************/
+diff --git a/scripts/kconfig/qconf.cc b/scripts/kconfig/qconf.cc
+index 61b679f6c2f2..c31dead186cc 100644
+--- a/scripts/kconfig/qconf.cc
++++ b/scripts/kconfig/qconf.cc
+@@ -478,7 +478,7 @@ void ConfigList::updateListAllForAll()
+ 	while (it.hasNext()) {
+ 		ConfigList *list = it.next();
  
--static void iwl_setup_deferred_work(struct iwl_priv *priv)
-+static int iwl_setup_deferred_work(struct iwl_priv *priv)
- {
- 	priv->workqueue = alloc_ordered_workqueue(DRV_NAME, 0);
-+	if (!priv->workqueue)
-+		return -ENOMEM;
- 
- 	INIT_WORK(&priv->restart, iwl_bg_restart);
- 	INIT_WORK(&priv->beacon_update, iwl_bg_beacon_update);
-@@ -1073,6 +1075,8 @@ static void iwl_setup_deferred_work(struct iwl_priv *priv)
- 	timer_setup(&priv->statistics_periodic, iwl_bg_statistics_periodic, 0);
- 
- 	timer_setup(&priv->ucode_trace, iwl_bg_ucode_trace, 0);
-+
-+	return 0;
+-		list->updateList();
++		list->updateListAll();
+ 	}
  }
  
- void iwl_cancel_deferred_work(struct iwl_priv *priv)
-@@ -1462,7 +1466,9 @@ static struct iwl_op_mode *iwl_op_mode_dvm_start(struct iwl_trans *trans,
- 	/********************
- 	 * 6. Setup services
- 	 ********************/
--	iwl_setup_deferred_work(priv);
-+	if (iwl_setup_deferred_work(priv))
-+		goto out_uninit_drv;
-+
- 	iwl_setup_rx_handlers(priv);
- 
- 	iwl_power_initialize(priv);
-@@ -1500,6 +1506,7 @@ static struct iwl_op_mode *iwl_op_mode_dvm_start(struct iwl_trans *trans,
- 	iwl_cancel_deferred_work(priv);
- 	destroy_workqueue(priv->workqueue);
- 	priv->workqueue = NULL;
-+out_uninit_drv:
- 	iwl_uninit_drv(priv);
- out_free_eeprom_blob:
- 	kfree(priv->eeprom_blob);
 -- 
 2.39.5
 
