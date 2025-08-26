@@ -1,59 +1,56 @@
-Return-Path: <stable+bounces-174176-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-174629-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8C8DFB36144
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 15:08:18 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0A4E4B36455
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 15:37:46 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id BC2B37B8F3E
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 13:06:42 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id F118F56372C
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 13:29:16 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id BE115200112;
-	Tue, 26 Aug 2025 13:08:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 89B8114B950;
+	Tue, 26 Aug 2025 13:28:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ZCKe+Je/"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="A/FduzZC"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7D12618F2FC;
-	Tue, 26 Aug 2025 13:08:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4773A137932;
+	Tue, 26 Aug 2025 13:28:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756213694; cv=none; b=s/VuBlQhWL3tCBzzWV/0ZMbjcPvMVh7S/PPgZ9gMbJ91rP4arIYglpPoGFAOaS2fex2MCXbe+lc9ZitZj9BAnaObcETs2cIqmVdRPfH53v1i+t5qGWgDxe0VniahoShEwKDLQrCHgWYaJrYxvYPKsP5Pp5hUez1/1VQ+e0YA9l8=
+	t=1756214897; cv=none; b=eF4YoWGa9GUpozqczXTBdKOyNczevdQDj07krQOJv5VH5jDY3k9ipxJQXgtPEKJrBDUPXNoNmKOKTJJmrV92ZRVvasx4AVpJPvA8nGVYJkKkXcKqW2jpNomkaK6H3kisceWYGKhWHDB6o/br3OAc8m3afZKD2+ouFoCLOjFdjn8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756213694; c=relaxed/simple;
-	bh=gZUipHgh4S7KFS0552uRC4RzCgFkVzw0dbTlnLJIX8A=;
+	s=arc-20240116; t=1756214897; c=relaxed/simple;
+	bh=WU+seN7EptUzr77fJNcFC9rABVT5/P9kbiRWMDmq6lA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Bj0v/6Vy1MiJsLsbBcWyk6parhUH32qegNT/uJ12er997zXCeioVASUC5PJ4bMRt8hvdtM6bOGEVkiUg+lAHUzS6voJZi3rkiE3LerFwwtY3mKatB3xmC7mGkul+NuLMgNdTG9ZeqtAS7JTU8jAg5guK9FHARJ+UmN+zUnlmHgY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ZCKe+Je/; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 09B64C4CEF1;
-	Tue, 26 Aug 2025 13:08:13 +0000 (UTC)
+	 MIME-Version; b=l0sV1B7NJwTWoJTHFWccif/BeIRoAOClId1gZh9gPT/jx5W2ksqh9BhVi8f95++M9i+c1b5Q4rISRfMCJkGlv8pxi8kIiGEiE5zZP2b9AWTah9gbG+jzZ6XmOzRv/5iih95pymlc9fAYWH0l9fvjO4/tkY6rOX68EDG/GVA82F4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=A/FduzZC; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 828DFC4CEF1;
+	Tue, 26 Aug 2025 13:28:15 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1756213694;
-	bh=gZUipHgh4S7KFS0552uRC4RzCgFkVzw0dbTlnLJIX8A=;
+	s=korg; t=1756214895;
+	bh=WU+seN7EptUzr77fJNcFC9rABVT5/P9kbiRWMDmq6lA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=ZCKe+Je/CcV7bCN6f3RTCIxga9Fh9GMIHRe1kkchGVGGHsthmWWRnJqK6uPMUXFQt
-	 bbGR3MhjysUJ6OTyEkwf0WiBBlBj/WAjlBShYbdJ8QwuoOAyB10zZYHggoDqMo2AHL
-	 LOUkXz+AHD6g9Tr0sR+LF2YtV7py2zvlQMb1UzIg=
+	b=A/FduzZC5hXzsWC5AClwpQQIB4spixOZiVZDobLF1HNhdXtjphk8uGE1+CxfWQ7Gd
+	 X+EqK1Nq0E8CvnP7c8BIo9T+bi+Vie0aij5/GiJdIcpqhktawn3OIGh/u4E1YYYdJg
+	 TXHFXWYHYoIp3fGtopIRTFvAhI2HVQCb10rXZrQU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jorge Ramirez-Ortiz <jorge.ramirez@oss.qualcomm.com>,
-	Bryan ODonoghue <bryan.odonoghue@linaro.org>,
-	Vikash Garodia <quic_vgarodia@quicinc.com>,
-	Dikshita Agarwal <quic_dikshita@quicinc.com>,
-	Bryan ODonoghue <bod@kernel.org>,
-	Hans Verkuil <hverkuil@xs4all.nl>
-Subject: [PATCH 6.6 414/587] media: venus: protect against spurious interrupts during probe
+	Stefano Garzarella <sgarzare@redhat.com>,
+	Will Deacon <will@kernel.org>,
+	"Michael S. Tsirkin" <mst@redhat.com>
+Subject: [PATCH 6.1 310/482] vhost/vsock: Avoid allocating arbitrarily-sized SKBs
 Date: Tue, 26 Aug 2025 13:09:23 +0200
-Message-ID: <20250826111003.468361897@linuxfoundation.org>
+Message-ID: <20250826110938.459455489@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250826110952.942403671@linuxfoundation.org>
-References: <20250826110952.942403671@linuxfoundation.org>
+In-Reply-To: <20250826110930.769259449@linuxfoundation.org>
+References: <20250826110930.769259449@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -65,57 +62,58 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jorge Ramirez-Ortiz <jorge.ramirez@oss.qualcomm.com>
+From: Will Deacon <will@kernel.org>
 
-commit 3200144a2fa4209dc084a19941b9b203b43580f0 upstream.
+commit 10a886aaed293c4db3417951f396827216299e3d upstream.
 
-Make sure the interrupt handler is initialized before the interrupt is
-registered.
+vhost_vsock_alloc_skb() returns NULL for packets advertising a length
+larger than VIRTIO_VSOCK_MAX_PKT_BUF_SIZE in the packet header. However,
+this is only checked once the SKB has been allocated and, if the length
+in the packet header is zero, the SKB may not be freed immediately.
 
-If the IRQ is registered before hfi_create(), it's possible that an
-interrupt fires before the handler setup is complete, leading to a NULL
-dereference.
+Hoist the size check before the SKB allocation so that an iovec larger
+than VIRTIO_VSOCK_MAX_PKT_BUF_SIZE + the header size is rejected
+outright. The subsequent check on the length field in the header can
+then simply check that the allocated SKB is indeed large enough to hold
+the packet.
 
-This error condition has been observed during system boot on Rb3Gen2.
-
-Fixes: af2c3834c8ca ("[media] media: venus: adding core part and helper functions")
-Cc: stable@vger.kernel.org
-Signed-off-by: Jorge Ramirez-Ortiz <jorge.ramirez@oss.qualcomm.com>
-Reviewed-by: Bryan O'Donoghue <bryan.odonoghue@linaro.org>
-Reviewed-by: Vikash Garodia <quic_vgarodia@quicinc.com>
-Reviewed-by: Dikshita Agarwal <quic_dikshita@quicinc.com>
-Tested-by: Dikshita Agarwal <quic_dikshita@quicinc.com> # RB5
-Signed-off-by: Bryan O'Donoghue <bod@kernel.org>
-Signed-off-by: Hans Verkuil <hverkuil@xs4all.nl>
+Cc: <stable@vger.kernel.org>
+Fixes: 71dc9ec9ac7d ("virtio/vsock: replace virtio_vsock_pkt with sk_buff")
+Reviewed-by: Stefano Garzarella <sgarzare@redhat.com>
+Signed-off-by: Will Deacon <will@kernel.org>
+Message-Id: <20250717090116.11987-2-will@kernel.org>
+Signed-off-by: Michael S. Tsirkin <mst@redhat.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/media/platform/qcom/venus/core.c |    8 ++++----
- 1 file changed, 4 insertions(+), 4 deletions(-)
+ drivers/vhost/vsock.c |    6 ++++--
+ 1 file changed, 4 insertions(+), 2 deletions(-)
 
---- a/drivers/media/platform/qcom/venus/core.c
-+++ b/drivers/media/platform/qcom/venus/core.c
-@@ -334,13 +334,13 @@ static int venus_probe(struct platform_d
- 	INIT_DELAYED_WORK(&core->work, venus_sys_error_handler);
- 	init_waitqueue_head(&core->sys_err_done);
+--- a/drivers/vhost/vsock.c
++++ b/drivers/vhost/vsock.c
+@@ -340,6 +340,9 @@ vhost_vsock_alloc_skb(struct vhost_virtq
  
--	ret = devm_request_threaded_irq(dev, core->irq, hfi_isr, venus_isr_thread,
--					IRQF_TRIGGER_HIGH | IRQF_ONESHOT,
--					"venus", core);
-+	ret = hfi_create(core, &venus_core_ops);
- 	if (ret)
- 		goto err_core_put;
+ 	len = iov_length(vq->iov, out);
  
--	ret = hfi_create(core, &venus_core_ops);
-+	ret = devm_request_threaded_irq(dev, core->irq, hfi_isr, venus_isr_thread,
-+					IRQF_TRIGGER_HIGH | IRQF_ONESHOT,
-+					"venus", core);
- 	if (ret)
- 		goto err_core_put;
++	if (len > VIRTIO_VSOCK_MAX_PKT_BUF_SIZE + VIRTIO_VSOCK_SKB_HEADROOM)
++		return NULL;
++
+ 	/* len contains both payload and hdr */
+ 	skb = virtio_vsock_alloc_skb(len, GFP_KERNEL);
+ 	if (!skb)
+@@ -363,8 +366,7 @@ vhost_vsock_alloc_skb(struct vhost_virtq
+ 		return skb;
  
+ 	/* The pkt is too big or the length in the header is invalid */
+-	if (payload_len > VIRTIO_VSOCK_MAX_PKT_BUF_SIZE ||
+-	    payload_len + sizeof(*hdr) > len) {
++	if (payload_len + sizeof(*hdr) > len) {
+ 		kfree_skb(skb);
+ 		return NULL;
+ 	}
 
 
 
