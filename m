@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-174542-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-175729-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id B574EB36463
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 15:38:04 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 44369B36A4D
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 16:36:25 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 180E746428C
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 13:25:57 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 895218E24C1
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 14:19:05 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1959918A6C4;
-	Tue, 26 Aug 2025 13:24:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E4A37352FDF;
+	Tue, 26 Aug 2025 14:16:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="AsBYtVLT"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="kNfSAT8k"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CBD073376A5;
-	Tue, 26 Aug 2025 13:24:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 94FDA34F496;
+	Tue, 26 Aug 2025 14:16:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756214667; cv=none; b=MknP1I82ubM4mXmVABzk/WhuSVwwbxB0vs0CNSaa90zKezbWOrAPzAq6Aqmz0Gih2VidmWRjWo4BQY0eVQcnSC+DsbV231QpOsvCE3dX1GOqCd23vSizY16e+zVx2hJskXhkWEIMqLXtePuVcrg1BxV+tOZcKewRi1AUsg+G7MQ=
+	t=1756217818; cv=none; b=teddqDlKvgZYoHT3OoW/2OUJLK8q6FayjZFjLbozPaP+8YKVAoYbPsQqmAJ0IYjjY77fZEoodfl9fuM8aF9VPswwIkfigjw81JAfBRDVb4eOQx0Dj45TanJ7zXr1cjTlg9/vrX33Cja+Hw+8QXzMEJ9qHF8JMYMYmucpbxd4S0A=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756214667; c=relaxed/simple;
-	bh=DTd1JBAb+zfEJ6nneL0B3TYJy7VyzYO95Om9Whl9Cvg=;
+	s=arc-20240116; t=1756217818; c=relaxed/simple;
+	bh=+ODs0a6v/pa2Bq8GHBC1fy63Syk9N5khm5iE6K/S43s=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=NcDAciXSWt69dmgHjHnMO82nz9gKkxRU1WDAgq8AkTD6jVSgyYGxFB5LtIlIWwSxPNE/KeSVuo1+m40wLc9g31oQrW+HiURojQ53Dt7JmYhw8EXtsM1AEDzmDPTY7K0EDhHCRNPM9g0Q0OFkNCuIvwkvrmb7CzBd6TfmSidsibg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=AsBYtVLT; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 023F1C4CEF1;
-	Tue, 26 Aug 2025 13:24:26 +0000 (UTC)
+	 MIME-Version:Content-Type; b=m6npmi4XRY3Q9vAcjPqqyQrw0ckDs76kCTG6k+ZJypWt6LVkLOo0JgI79WjPTrm5D+fgYDd1ZATbQ6UstBNFyEw1L/1l7jQcWT+16jj8xXoNlDVvi5doi2xfbT61oaIISL3GPXw5dq81QGVdRpZJP1elC+GpSF1x+Q4lbJyed1Q=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=kNfSAT8k; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id CBEC1C4CEF1;
+	Tue, 26 Aug 2025 14:16:55 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1756214667;
-	bh=DTd1JBAb+zfEJ6nneL0B3TYJy7VyzYO95Om9Whl9Cvg=;
+	s=korg; t=1756217816;
+	bh=+ODs0a6v/pa2Bq8GHBC1fy63Syk9N5khm5iE6K/S43s=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=AsBYtVLTrgx0oELG9DtX+JdOwTUtqcX8aw27UAfQjUSuViqiV1fRkwNqSqMLK13CX
-	 wS89NrqSyJHJiaoptm2okaWCiDGSij95AyLST8l+a/GACQAZ0I64mm2twgpyfwOLVB
-	 i3Dvrw4MxDx5NCFjaipSzaAD3Mgg755bWGtUryP4=
+	b=kNfSAT8kRu0GxQg+KtFVKRUsPQN9Kq5FO1kb8vs6MnLR33Wr21hZwUM9EqqjsGiOV
+	 tbdq9j1zlJ7/Oz6yRyJ0hyarpjMNBMM2M1a/fcB5PoHJuSH29x6Sx7PfTKZzmDD/DI
+	 iPHppnAtqzsxIQTuRUegt+ei5XBw4+u1Vc8aA/ik=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Breno Leitao <leitao@debian.org>,
-	Corey Minyard <corey@minyard.net>,
+	Alok Tiwari <alok.a.tiwari@oracle.com>,
+	Simon Horman <horms@kernel.org>,
+	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 225/482] ipmi: Use dev_warn_ratelimited() for incorrect message warnings
+Subject: [PATCH 5.10 268/523] net: thunderx: Fix format-truncation warning in bgx_acpi_match_id()
 Date: Tue, 26 Aug 2025 13:07:58 +0200
-Message-ID: <20250826110936.333293244@linuxfoundation.org>
+Message-ID: <20250826110931.037869868@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250826110930.769259449@linuxfoundation.org>
-References: <20250826110930.769259449@linuxfoundation.org>
+In-Reply-To: <20250826110924.562212281@linuxfoundation.org>
+References: <20250826110924.562212281@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,51 +61,68 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Breno Leitao <leitao@debian.org>
+From: Alok Tiwari <alok.a.tiwari@oracle.com>
 
-[ Upstream commit ec50ec378e3fd83bde9b3d622ceac3509a60b6b5 ]
+[ Upstream commit 53d20606c40678d425cc03f0978c614dca51f25e ]
 
-During BMC firmware upgrades on live systems, the ipmi_msghandler
-generates excessive "BMC returned incorrect response" warnings
-while the BMC is temporarily offline. This can flood system logs
-in large deployments.
+The buffer bgx_sel used in snprintf() was too small to safely hold
+the formatted string "BGX%d" for all valid bgx_id values. This caused
+a -Wformat-truncation warning with `Werror` enabled during build.
 
-Replace dev_warn() with dev_warn_ratelimited() to throttle these
-warnings and prevent log spam during BMC maintenance operations.
+Increase the buffer size from 5 to 7 and use `sizeof(bgx_sel)` in
+snprintf() to ensure safety and suppress the warning.
 
-Signed-off-by: Breno Leitao <leitao@debian.org>
-Message-ID: <20250710-ipmi_ratelimit-v1-1-6d417015ebe9@debian.org>
-Signed-off-by: Corey Minyard <corey@minyard.net>
+Build warning:
+  CC      drivers/net/ethernet/cavium/thunder/thunder_bgx.o
+  drivers/net/ethernet/cavium/thunder/thunder_bgx.c: In function
+‘bgx_acpi_match_id’:
+  drivers/net/ethernet/cavium/thunder/thunder_bgx.c:1434:27: error: ‘%d’
+directive output may be truncated writing between 1 and 3 bytes into a
+region of size 2 [-Werror=format-truncation=]
+    snprintf(bgx_sel, 5, "BGX%d", bgx->bgx_id);
+                             ^~
+  drivers/net/ethernet/cavium/thunder/thunder_bgx.c:1434:23: note:
+directive argument in the range [0, 255]
+    snprintf(bgx_sel, 5, "BGX%d", bgx->bgx_id);
+                         ^~~~~~~
+  drivers/net/ethernet/cavium/thunder/thunder_bgx.c:1434:2: note:
+‘snprintf’ output between 5 and 7 bytes into a destination of size 5
+    snprintf(bgx_sel, 5, "BGX%d", bgx->bgx_id);
+
+compiler warning due to insufficient snprintf buffer size.
+
+Signed-off-by: Alok Tiwari <alok.a.tiwari@oracle.com>
+Reviewed-by: Simon Horman <horms@kernel.org>
+Link: https://patch.msgid.link/20250711140532.2463602-1-alok.a.tiwari@oracle.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/char/ipmi/ipmi_msghandler.c | 8 ++++----
- 1 file changed, 4 insertions(+), 4 deletions(-)
+ drivers/net/ethernet/cavium/thunder/thunder_bgx.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/char/ipmi/ipmi_msghandler.c b/drivers/char/ipmi/ipmi_msghandler.c
-index e4ac38b39889..653e07171dc6 100644
---- a/drivers/char/ipmi/ipmi_msghandler.c
-+++ b/drivers/char/ipmi/ipmi_msghandler.c
-@@ -4618,10 +4618,10 @@ static int handle_one_recv_msg(struct ipmi_smi *intf,
- 		 * The NetFN and Command in the response is not even
- 		 * marginally correct.
- 		 */
--		dev_warn(intf->si_dev,
--			 "BMC returned incorrect response, expected netfn %x cmd %x, got netfn %x cmd %x\n",
--			 (msg->data[0] >> 2) | 1, msg->data[1],
--			 msg->rsp[0] >> 2, msg->rsp[1]);
-+		dev_warn_ratelimited(intf->si_dev,
-+				     "BMC returned incorrect response, expected netfn %x cmd %x, got netfn %x cmd %x\n",
-+				     (msg->data[0] >> 2) | 1, msg->data[1],
-+				     msg->rsp[0] >> 2, msg->rsp[1]);
+diff --git a/drivers/net/ethernet/cavium/thunder/thunder_bgx.c b/drivers/net/ethernet/cavium/thunder/thunder_bgx.c
+index f0e48b9373d6..0a71909bb2ee 100644
+--- a/drivers/net/ethernet/cavium/thunder/thunder_bgx.c
++++ b/drivers/net/ethernet/cavium/thunder/thunder_bgx.c
+@@ -1430,9 +1430,9 @@ static acpi_status bgx_acpi_match_id(acpi_handle handle, u32 lvl,
+ {
+ 	struct acpi_buffer string = { ACPI_ALLOCATE_BUFFER, NULL };
+ 	struct bgx *bgx = context;
+-	char bgx_sel[5];
++	char bgx_sel[7];
  
- 		goto return_unspecified;
- 	}
+-	snprintf(bgx_sel, 5, "BGX%d", bgx->bgx_id);
++	snprintf(bgx_sel, sizeof(bgx_sel), "BGX%d", bgx->bgx_id);
+ 	if (ACPI_FAILURE(acpi_get_name(handle, ACPI_SINGLE_NAME, &string))) {
+ 		pr_warn("Invalid link device\n");
+ 		return AE_OK;
 -- 
 2.39.5
 
