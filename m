@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-174382-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-175534-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3B829B362F0
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 15:24:16 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id B6811B368C0
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 16:19:13 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 037D818865CC
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 13:20:16 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id EE6571C80962
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 14:09:54 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E1A5034F499;
-	Tue, 26 Aug 2025 13:17:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 89284352FD3;
+	Tue, 26 Aug 2025 14:08:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="bQZvbE6I"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="1VLpiuEs"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9AF3934F492;
-	Tue, 26 Aug 2025 13:17:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4714C34166C;
+	Tue, 26 Aug 2025 14:08:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756214242; cv=none; b=tWrGLrGMaltWvyHcQwWAnmktp1fmuT7fzxfnkeVd9CswPMir0FTej61jCwIeqHMwJXXCCbKCGHXq1xnOCYh1sNEN+dhretDr3ugeErZLV8vmlJiQCD4NBK4nKUm1hWTtT86BSYPF+6hWsYK9Kp/mDtWkGV6fofwoS4F5ygWCa6I=
+	t=1756217298; cv=none; b=Q3k6H6hWge96dKyw+yRpgJvOMQBGe6RfbJ1vAawWMJmkSiFVnTsSGx6wgRL0Z7Xz58i8B59zoLY/c6RLkZ9hqSIh68M/0c/SBLoxbdm78oIavkzSM+v9A61Ekbr1nzmEqEMnmDURcPNpt4PtS/AEVyKvyfo0VeYE7vaGzNodRmo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756214242; c=relaxed/simple;
-	bh=e0AVWpAc+Y2aR3Cj/LFAwNFvoflhS9aDTPEsgpYfmGw=;
+	s=arc-20240116; t=1756217298; c=relaxed/simple;
+	bh=wvcrVePOSppCJY5fVFHHEvd/fAcCn9VNwSxCWlyS9aI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=WfuIWHklYXbG9O4IWroEKvRReM2crJqrPsgdJQOfOueSAMum72xIuVR4/6U9BlS4D842CdvbjcE9QiqmadL80QhV+7TGnP4F++syJNQZRtkJGqJtkxqJSKmycK/KAvm3wG/O0YF+iwbLM1Yr6igVyfN6lVlDjYZaCoM6m7pFMVQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=bQZvbE6I; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id DEAA6C4CEF1;
-	Tue, 26 Aug 2025 13:17:21 +0000 (UTC)
+	 MIME-Version; b=splHctimAYfh5Qwfzrn7/NnR4XMnZ0d4oLH0LZjexXYwUJaODC7K1xoy3ogjj23d8jyEfF/uiDsX85rJW6JCR1KwzeEhDLXqHJDXe7y07dAwsHRLITDYW3qv0UE0k6NTzfk46JecwGJZAlkBxNFK9eUJ2dRnV9RM7KfgWnyRiiA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=1VLpiuEs; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id CC401C4CEF1;
+	Tue, 26 Aug 2025 14:08:17 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1756214242;
-	bh=e0AVWpAc+Y2aR3Cj/LFAwNFvoflhS9aDTPEsgpYfmGw=;
+	s=korg; t=1756217298;
+	bh=wvcrVePOSppCJY5fVFHHEvd/fAcCn9VNwSxCWlyS9aI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=bQZvbE6IMO8Tg2S5Mug9XF1EqY8UApYxV/q95Bb7BFCoqLJyu63P7zP0F2/zAr6lD
-	 ++7szBTo93eAlGr39T4bvvA9N0QhP5VDO74/3BKzxhBVjB3WVZM9k63jcz/z1jxg+v
-	 H0fUO4aUqRYNC9TNFLduYFIcrjMhtb2MtjzKmfiQ=
+	b=1VLpiuEszP4gIlx8bSFgbyKAEOvtan/drFPuhHMoka44EVAS1axSySWRBb2TxvFIS
+	 JvyUoZTtfjyPjWXMPX2TC8558fyUH9/ClTBUkNgQunkhJoyk4/vVXCSW9SN5UJWj7v
+	 lgt41Jp5aD/wZo9+OfgFPUNFJ6jR4oWbEp9EDHHA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Sabrina Dubroca <sd@queasysnail.net>,
-	Steffen Klassert <steffen.klassert@secunet.com>,
+	Lifeng Zheng <zhenglifeng1@huawei.com>,
+	"Rafael J. Wysocki" <rafael.j.wysocki@intel.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 047/482] udp: also consider secpath when evaluating ipsec use for checksumming
+Subject: [PATCH 5.10 090/523] cpufreq: Init policy->rwsem before it may be possibly used
 Date: Tue, 26 Aug 2025 13:05:00 +0200
-Message-ID: <20250826110931.979332791@linuxfoundation.org>
+Message-ID: <20250826110926.771602940@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250826110930.769259449@linuxfoundation.org>
-References: <20250826110930.769259449@linuxfoundation.org>
+In-Reply-To: <20250826110924.562212281@linuxfoundation.org>
+References: <20250826110924.562212281@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,55 +62,53 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Sabrina Dubroca <sd@queasysnail.net>
+From: Lifeng Zheng <zhenglifeng1@huawei.com>
 
-[ Upstream commit 1118aaa3b35157777890fffab91d8c1da841b20b ]
+[ Upstream commit d1378d1d7edb3a4c4935a44fe834ae135be03564 ]
 
-Commit b40c5f4fde22 ("udp: disable inner UDP checksum offloads in
-IPsec case") tried to fix checksumming in UFO when the packets are
-going through IPsec, so that we can't rely on offloads because the UDP
-header and payload will be encrypted.
+In cpufreq_policy_put_kobj(), policy->rwsem is used. But in
+cpufreq_policy_alloc(), if freq_qos_add_notifier() returns an error, error
+path via err_kobj_remove or err_min_qos_notifier will be reached and
+cpufreq_policy_put_kobj() will be called before policy->rwsem is
+initialized. Thus, the calling of init_rwsem() should be moved to where
+before these two error paths can be reached.
 
-But when doing a TCP test over VXLAN going through IPsec transport
-mode with GSO enabled (esp4_offload module loaded), I'm seeing broken
-UDP checksums on the encap after successful decryption.
-
-The skbs get to udp4_ufo_fragment/__skb_udp_tunnel_segment via
-__dev_queue_xmit -> validate_xmit_skb -> skb_gso_segment and at this
-point we've already dropped the dst (unless the device sets
-IFF_XMIT_DST_RELEASE, which is not common), so need_ipsec is false and
-we proceed with checksum offload.
-
-Make need_ipsec also check the secpath, which is not dropped on this
-callpath.
-
-Fixes: b40c5f4fde22 ("udp: disable inner UDP checksum offloads in IPsec case")
-Signed-off-by: Sabrina Dubroca <sd@queasysnail.net>
-Signed-off-by: Steffen Klassert <steffen.klassert@secunet.com>
+Fixes: 67d874c3b2c6 ("cpufreq: Register notifiers with the PM QoS framework")
+Signed-off-by: Lifeng Zheng <zhenglifeng1@huawei.com>
+Link: https://patch.msgid.link/20250709104145.2348017-3-zhenglifeng1@huawei.com
+Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/ipv4/udp_offload.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/cpufreq/cpufreq.c | 3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
-diff --git a/net/ipv4/udp_offload.c b/net/ipv4/udp_offload.c
-index 1a51c4b44c00..593108049ab7 100644
---- a/net/ipv4/udp_offload.c
-+++ b/net/ipv4/udp_offload.c
-@@ -60,7 +60,7 @@ static struct sk_buff *__skb_udp_tunnel_segment(struct sk_buff *skb,
- 	remcsum = !!(skb_shinfo(skb)->gso_type & SKB_GSO_TUNNEL_REMCSUM);
- 	skb->remcsum_offload = remcsum;
+diff --git a/drivers/cpufreq/cpufreq.c b/drivers/cpufreq/cpufreq.c
+index 6e03526ee759..d1277f98d1fd 100644
+--- a/drivers/cpufreq/cpufreq.c
++++ b/drivers/cpufreq/cpufreq.c
+@@ -1227,6 +1227,8 @@ static struct cpufreq_policy *cpufreq_policy_alloc(unsigned int cpu)
+ 		goto err_free_real_cpus;
+ 	}
  
--	need_ipsec = skb_dst(skb) && dst_xfrm(skb_dst(skb));
-+	need_ipsec = (skb_dst(skb) && dst_xfrm(skb_dst(skb))) || skb_sec_path(skb);
- 	/* Try to offload checksum if possible */
- 	offload_csum = !!(need_csum &&
- 			  !need_ipsec &&
++	init_rwsem(&policy->rwsem);
++
+ 	freq_constraints_init(&policy->constraints);
+ 
+ 	policy->nb_min.notifier_call = cpufreq_notifier_min;
+@@ -1249,7 +1251,6 @@ static struct cpufreq_policy *cpufreq_policy_alloc(unsigned int cpu)
+ 	}
+ 
+ 	INIT_LIST_HEAD(&policy->policy_list);
+-	init_rwsem(&policy->rwsem);
+ 	spin_lock_init(&policy->transition_lock);
+ 	init_waitqueue_head(&policy->transition_wait);
+ 	INIT_WORK(&policy->update, handle_update);
 -- 
-2.50.1
+2.39.5
 
 
 
