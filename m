@@ -1,56 +1,55 @@
-Return-Path: <stable+bounces-174406-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-176015-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 767E5B36321
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 15:27:01 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 71005B36BD1
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 16:49:16 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id A2A558A7E9F
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 13:20:29 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 4BC991C805A4
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 14:32:16 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id AFCC52BE643;
-	Tue, 26 Aug 2025 13:18:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8D114405F7;
+	Tue, 26 Aug 2025 14:29:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="dpH69aKE"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="oZrErkez"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6BFF226FDBF;
-	Tue, 26 Aug 2025 13:18:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 46EF8352060;
+	Tue, 26 Aug 2025 14:29:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756214305; cv=none; b=EkD66Y3OUPPsEjAmNPe8QrQ7TQurs7tnZMPlpyTmEY5lMioUbL9vcJSvivwgkkAsXNhP5e0Ae1wTMO74GfHTEJxpeF93st4sn5UYRWXPsR+ZbLWGW4ElDil40+dOObQ6MeUZJcbru5YEhBvfFvKHVcqW6NUXelpcdn+EJIWsrCI=
+	t=1756218562; cv=none; b=KlLBQJlLkCpkAmp7byNM7cSRF5TJNAkCLKgr7ECeWQAouysjPIcU2IoXDHMQrFnssViaKlGt4OKmzQ44/ErtJ/z3yqzcWK6vuhFRA4eppdwmLpWTjR3PF/RAUZOSpa0ebn7ujkvt+uMyAVz4dXNiPnT63daBDPhIKt6R/pHmqUY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756214305; c=relaxed/simple;
-	bh=EraQzWekIz5XCwR3mgIpitlUMC5nj6Yq+26G3THtVek=;
+	s=arc-20240116; t=1756218562; c=relaxed/simple;
+	bh=RigU6pJDtRFjQ9c2hepaGg5ocE0OLXzaiXv9TOkufqQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=BtpmXwTWWiIxH5+cb4hH34fQmuvzXIN3Fo/DOFt+04XELWiD2WI2zTPxkEgPTSxsfUu5vUri3foerSaDi584U6OsWelaxEe8Qkph3T2uu+Fzh9kRnRbsUXSungkg1vSibLs1S2ZKElaOmiUwItEkPbmZ06/n8fQyBJfX+jkiTsE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=dpH69aKE; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id EFB74C4CEF1;
-	Tue, 26 Aug 2025 13:18:24 +0000 (UTC)
+	 MIME-Version; b=PMO5xqqv2e6IwmI3IBdxOUDuHEwOrDnxqiSzx7LGzXMH96K/1Gd18her2U1BFyNRQUkkCCmTRfKLdbCMSeT1q9FNJfWRggANNU9bY+l4kHnaDp7HHfhWx/bovNU3+odVl8Ea6qpbnomwoCRf0MptQksttTdnFJVFYpBv2wqkYNo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=oZrErkez; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C95EAC113D0;
+	Tue, 26 Aug 2025 14:29:21 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1756214305;
-	bh=EraQzWekIz5XCwR3mgIpitlUMC5nj6Yq+26G3THtVek=;
+	s=korg; t=1756218562;
+	bh=RigU6pJDtRFjQ9c2hepaGg5ocE0OLXzaiXv9TOkufqQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=dpH69aKELV8dZxdk3CpBbkLl3H+JfGcM8tf3CdQkgE05f7V6TNyKCA54OWzZ2AcX+
-	 Lc23LlsNsRUA2ddD5LJO2p8sO6d642aMrFl4Oxx1o9961nmsF8gQROT56hffW+sQIZ
-	 N226IR0bpoKzBxVO0ZJtnStuXICJeGtS9/JtS4bA=
+	b=oZrErkez578t11xXTlSWe2VE3U/EJOXXGzxsrpGYdl4vJWD8Ri5YYjnz0MzWtiO99
+	 MlRka+q16q22YeI2LfO3hk+ZE+8cgQw0pwahd5LUCQ4EmsxQxyHzKybVD6jr0bJnZ/
+	 SIAGVCb64oxkGglrnijPn1FcdtrpYBpJD6ZEuw9g=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	tuhaowen <tuhaowen@uniontech.com>,
-	"Rafael J. Wysocki" <rafael.j.wysocki@intel.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 089/482] PM: sleep: console: Fix the black screen issue
+	Nathan Chancellor <nathan@kernel.org>,
+	Ulf Hansson <ulf.hansson@linaro.org>
+Subject: [PATCH 5.4 016/403] memstick: core: Zero initialize id_reg in h_memstick_read_dev_id()
 Date: Tue, 26 Aug 2025 13:05:42 +0200
-Message-ID: <20250826110933.027276390@linuxfoundation.org>
+Message-ID: <20250826110906.212632271@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250826110930.769259449@linuxfoundation.org>
-References: <20250826110930.769259449@linuxfoundation.org>
+In-Reply-To: <20250826110905.607690791@linuxfoundation.org>
+References: <20250826110905.607690791@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,82 +61,52 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+5.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: tuhaowen <tuhaowen@uniontech.com>
+From: Nathan Chancellor <nathan@kernel.org>
 
-[ Upstream commit 4266e8fa56d3d982bf451d382a410b9db432015c ]
+commit 21b34a3a204ed616373a12ec17dc127ebe51eab3 upstream.
 
-When the computer enters sleep status without a monitor
-connected, the system switches the console to the virtual
-terminal tty63(SUSPEND_CONSOLE).
+A new warning in clang [1] points out that id_reg is uninitialized then
+passed to memstick_init_req() as a const pointer:
 
-If a monitor is subsequently connected before waking up,
-the system skips the required VT restoration process
-during wake-up, leaving the console on tty63 instead of
-switching back to tty1.
+  drivers/memstick/core/memstick.c:330:59: error: variable 'id_reg' is uninitialized when passed as a const pointer argument here [-Werror,-Wuninitialized-const-pointer]
+    330 |                 memstick_init_req(&card->current_mrq, MS_TPC_READ_REG, &id_reg,
+        |                                                                         ^~~~~~
 
-To fix this issue, a global flag vt_switch_done is introduced
-to record whether the system has successfully switched to
-the suspend console via vt_move_to_console() during suspend.
+Commit de182cc8e882 ("drivers/memstick/core/memstick.c: avoid -Wnonnull
+warning") intentionally passed this variable uninitialized to avoid an
+-Wnonnull warning from a NULL value that was previously there because
+id_reg is never read from the call to memstick_init_req() in
+h_memstick_read_dev_id(). Just zero initialize id_reg to avoid the
+warning, which is likely happening in the majority of builds using
+modern compilers that support '-ftrivial-auto-var-init=zero'.
 
-If the switch was completed, vt_switch_done is set to 1.
-Later during resume, this flag is checked to ensure that
-the original console is restored properly by calling
-vt_move_to_console(orig_fgconsole, 0).
-
-This prevents scenarios where the resume logic skips console
-restoration due to incorrect detection of the console state,
-especially when a monitor is reconnected before waking up.
-
-Signed-off-by: tuhaowen <tuhaowen@uniontech.com>
-Link: https://patch.msgid.link/20250611032345.29962-1-tuhaowen@uniontech.com
-Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Cc: stable@vger.kernel.org
+Fixes: de182cc8e882 ("drivers/memstick/core/memstick.c: avoid -Wnonnull warning")
+Link: https://github.com/llvm/llvm-project/commit/00dacf8c22f065cb52efb14cd091d441f19b319e [1]
+Closes: https://github.com/ClangBuiltLinux/linux/issues/2105
+Signed-off-by: Nathan Chancellor <nathan@kernel.org>
+Link: https://lore.kernel.org/r/20250715-memstick-fix-uninit-const-pointer-v1-1-f6753829c27a@kernel.org
+Signed-off-by: Ulf Hansson <ulf.hansson@linaro.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- kernel/power/console.c | 7 ++++++-
- 1 file changed, 6 insertions(+), 1 deletion(-)
+ drivers/memstick/core/memstick.c |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/kernel/power/console.c b/kernel/power/console.c
-index fcdf0e14a47d..19c48aa5355d 100644
---- a/kernel/power/console.c
-+++ b/kernel/power/console.c
-@@ -16,6 +16,7 @@
- #define SUSPEND_CONSOLE	(MAX_NR_CONSOLES-1)
- 
- static int orig_fgconsole, orig_kmsg;
-+static bool vt_switch_done;
- 
- static DEFINE_MUTEX(vt_switch_mutex);
- 
-@@ -136,17 +137,21 @@ void pm_prepare_console(void)
- 	if (orig_fgconsole < 0)
- 		return;
- 
-+	vt_switch_done = true;
-+
- 	orig_kmsg = vt_kmsg_redirect(SUSPEND_CONSOLE);
- 	return;
- }
- 
- void pm_restore_console(void)
+--- a/drivers/memstick/core/memstick.c
++++ b/drivers/memstick/core/memstick.c
+@@ -324,7 +324,7 @@ EXPORT_SYMBOL(memstick_init_req);
+ static int h_memstick_read_dev_id(struct memstick_dev *card,
+ 				  struct memstick_request **mrq)
  {
--	if (!pm_vt_switch())
-+	if (!pm_vt_switch() && !vt_switch_done)
- 		return;
+-	struct ms_id_register id_reg;
++	struct ms_id_register id_reg = {};
  
- 	if (orig_fgconsole >= 0) {
- 		vt_move_to_console(orig_fgconsole, 0);
- 		vt_kmsg_redirect(orig_kmsg);
- 	}
-+
-+	vt_switch_done = false;
- }
--- 
-2.39.5
-
+ 	if (!(*mrq)) {
+ 		memstick_init_req(&card->current_mrq, MS_TPC_READ_REG, &id_reg,
 
 
 
