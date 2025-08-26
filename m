@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-175682-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-175129-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 66315B36999
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 16:28:28 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id ED793B365EA
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 15:51:52 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 807093A608F
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 14:17:00 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 19C9C7BF986
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 13:50:17 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 765893570A2;
-	Tue, 26 Aug 2025 14:14:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6D0D934DCCE;
+	Tue, 26 Aug 2025 13:50:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="wHiU5RO4"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="BajJfy/g"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 343992192F2;
-	Tue, 26 Aug 2025 14:14:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 27E9534A33C;
+	Tue, 26 Aug 2025 13:50:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756217690; cv=none; b=RRhLaTtV3XLT/bZY6LtFP08HuDMQfcDVY/P8KKA0+J8lCg+Wvef3Z32dNM+3ITlyXjnG+F6Qaz9dvHt3PPDbE+KS++m/oQG2b6pR3lRroE8O89S/G56Ba1s1DjeMoVi+Ll4mkRfaKL65j/wOS/IG3CCp1mHx/ClFOQpzlkBE5ss=
+	t=1756216218; cv=none; b=nSDIybuJxwcKuu1lJaFvI37i/UMWIBjwG2YH4m+Xj6pj64S76qLpBpLzfoj7JpmkSAzOZvlyHVpUkjHVRFVu9lWwr2Uwv8JEZDqd00kOilCcHqTEk7xjoTXAO7ysxvP4ZD7EunzWghVsAZ+Oa3t5sKXxvDgkQxzMan9jdGZR4t4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756217690; c=relaxed/simple;
-	bh=B03pqy3KzCkrHRddErB7r824gDCY3yF/gd1HO5RgFu8=;
+	s=arc-20240116; t=1756216218; c=relaxed/simple;
+	bh=kHTG9QdfXLZYYwun/ILmerR/t+nCwV/YX3yUxdyzvjI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=B1SVLVjvGX71XNrxsIkXTorgsxoEMHtvqhgnheYNyWeM9PHx/vmZEgQKYawjFqqNei9+1DLlQmjioyoshvZiC+TnTisNXXDjl/rwj2UPqvbF/gqSSlr4wpMmXkz7rETC40Juq+12zGa/9tDKb+4rAEjY4bHMuZIYvPJ7KMXezhM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=wHiU5RO4; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id BC681C116B1;
-	Tue, 26 Aug 2025 14:14:49 +0000 (UTC)
+	 MIME-Version; b=t3LjwiwgWNx+YJgqoDb99q5+KriIWlzo2UTdJeTy8InomqGvA19wz3fu0Pxi67YjMZyttJ4crmhgZZSqMOfvMHBknaWKQUctujItVe4pekQQJYmhM0pgKrfYecYQRxdzG5l8S49QRxz3SR4qXwkGTN3n/bcyV5ynEpw1yTzHiAI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=BajJfy/g; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A2F89C4CEF1;
+	Tue, 26 Aug 2025 13:50:17 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1756217690;
-	bh=B03pqy3KzCkrHRddErB7r824gDCY3yF/gd1HO5RgFu8=;
+	s=korg; t=1756216218;
+	bh=kHTG9QdfXLZYYwun/ILmerR/t+nCwV/YX3yUxdyzvjI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=wHiU5RO4iWEva/jlfg2zLl/mUW/v62EpYP0urCMjAPehRBh+lWR4VBunBxrntlh6u
-	 /3VsnSYDcSDsjfjo2bd8H7YkGMfGYICMxbLOLLTln0E7BHXU1MdhvHvgZkwkRVwav+
-	 MrmvRi0ZlnEOPBk76FuuZHj6BqkLwRsf79Fyckbo=
+	b=BajJfy/gBTTQtvVDs0NYDiTVdXqqPen91jzNF6CZOoUt7d7VCoOH4C+84yk77xf90
+	 c3IHJrOuy0aQry4xfNrtipmRrtchHyskt16WT72YYJhLECYQKptsYJhSfV7hnTd+C9
+	 Cna/SAMTJv2ehICGF8SP3pUp6eukFnQCViBvEwyk=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Len Brown <len.brown@intel.com>,
-	"Rafael J. Wysocki" <rafael.j.wysocki@intel.com>,
+	Tomasz Michalec <tmichalec@google.com>,
+	Heikki Krogerus <heikki.krogerus@linux.intel.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 208/523] intel_idle: Allow loading ACPI tables for any family
+Subject: [PATCH 5.15 327/644] usb: typec: intel_pmc_mux: Defer probe if SCU IPC isnt present
 Date: Tue, 26 Aug 2025 13:06:58 +0200
-Message-ID: <20250826110929.575985766@linuxfoundation.org>
+Message-ID: <20250826110954.489107551@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250826110924.562212281@linuxfoundation.org>
-References: <20250826110924.562212281@linuxfoundation.org>
+In-Reply-To: <20250826110946.507083938@linuxfoundation.org>
+References: <20250826110946.507083938@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,45 +62,44 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Len Brown <len.brown@intel.com>
+From: Tomasz Michalec <tmichalec@google.com>
 
-[ Upstream commit e91a158b694d7f4bd937763dde79ed0afa472d8a ]
+[ Upstream commit df9a825f330e76c72d1985bc9bdc4b8981e3d15f ]
 
-There is no reason to limit intel_idle's loading of ACPI tables to
-family 6.  Upcoming Intel processors are not in family 6.
+If pmc_usb_probe is called before SCU IPC is registered, pmc_usb_probe
+will fail.
 
-Below "Fixes" really means "applies cleanly until".
-That syntax commit didn't change the previous logic,
-but shows this patch applies back 5-years.
+Return -EPROBE_DEFER when pmc_usb_probe doesn't get SCU IPC device, so
+the probe function can be called again after SCU IPC is initialized.
 
-Fixes: 4a9f45a0533f ("intel_idle: Convert to new X86 CPU match macros")
-Signed-off-by: Len Brown <len.brown@intel.com>
-Link: https://patch.msgid.link/06101aa4fe784e5b0be1cb2c0bdd9afcf16bd9d4.1754681697.git.len.brown@intel.com
-Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
+Signed-off-by: Tomasz Michalec <tmichalec@google.com>
+Reviewed-by: Heikki Krogerus <heikki.krogerus@linux.intel.com>
+Link: https://lore.kernel.org/r/20250610154058.1859812-1-tmichalec@google.com
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/idle/intel_idle.c | 2 +-
+ drivers/usb/typec/mux/intel_pmc_mux.c | 2 +-
  1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/idle/intel_idle.c b/drivers/idle/intel_idle.c
-index 1cead368f961..f6a2211ca4ef 100644
---- a/drivers/idle/intel_idle.c
-+++ b/drivers/idle/intel_idle.c
-@@ -1154,7 +1154,7 @@ static const struct x86_cpu_id intel_idle_ids[] __initconst = {
- };
+diff --git a/drivers/usb/typec/mux/intel_pmc_mux.c b/drivers/usb/typec/mux/intel_pmc_mux.c
+index a7313c2d9f0f..806ffeacdecb 100644
+--- a/drivers/usb/typec/mux/intel_pmc_mux.c
++++ b/drivers/usb/typec/mux/intel_pmc_mux.c
+@@ -650,7 +650,7 @@ static int pmc_usb_probe(struct platform_device *pdev)
  
- static const struct x86_cpu_id intel_mwait_ids[] __initconst = {
--	X86_MATCH_VENDOR_FAM_FEATURE(INTEL, 6, X86_FEATURE_MWAIT, NULL),
-+	X86_MATCH_VENDOR_FAM_FEATURE(INTEL, X86_FAMILY_ANY, X86_FEATURE_MWAIT, NULL),
- 	{}
- };
+ 	pmc->ipc = devm_intel_scu_ipc_dev_get(&pdev->dev);
+ 	if (!pmc->ipc)
+-		return -ENODEV;
++		return -EPROBE_DEFER;
+ 
+ 	pmc->dev = &pdev->dev;
  
 -- 
-2.50.1
+2.39.5
 
 
 
