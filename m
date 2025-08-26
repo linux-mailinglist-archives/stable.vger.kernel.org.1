@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-175794-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-173222-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id AD75EB36A02
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 16:33:14 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 54B5FB35C91
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 13:35:48 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id DF7A21BC7E38
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 14:21:48 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 9129E3626DA
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 11:29:23 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2788135082E;
-	Tue, 26 Aug 2025 14:19:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 79CD42FAC1C;
+	Tue, 26 Aug 2025 11:28:06 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="DORxi/g6"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="CeSmMDA5"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D9775481CD;
-	Tue, 26 Aug 2025 14:19:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3582F29D26A;
+	Tue, 26 Aug 2025 11:28:05 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756217986; cv=none; b=PZ3oSL135uqbR7MpI7Ex0+o0wQXN/ZMHNjFqWSvTjv+4InLSeVBt719WNDfAWZ0zGRsRaeMtZY4xjLtYNSSGbuWOIPYUrYCPR9/8QBg1V1Fez88oJsRtokGIcw/sdzWiPRr221H3jJazaa7Ar9Y2SIIAhrzYe8C0Wy1Qsu5XwW0=
+	t=1756207686; cv=none; b=R4Qe5+HIW8Y87J7Ui8iD4TQ2fXgiZLN5TTIfjHw5xP6TTcJ9RF95lR86miwqr6EVzHQqM9ID/xlCkRkBGZ7umqiUJzULVI8P2rxU45/PMlBsbm7g6E8Rc0K/nR/MSDzjqnep+KTEFLe5RT0UO+ENA7iH/hKI7wajJngqYu3ACEQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756217986; c=relaxed/simple;
-	bh=Vf0fkoc47jahVgqrwiC/C8c8Y8uTyzizTV8OnGfqf6s=;
+	s=arc-20240116; t=1756207686; c=relaxed/simple;
+	bh=n8yF8D5MwGhFZzNfx6UicoHQ0Vjvnzso2isWwExSjDs=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Ms4VCEe+4LkoIxixv7LTNfwePRE+u6CKlnrmISYeZ+woMqPsR4ODTd2GIifZCsioUXKN50PtLoLqYD0Uhj0506k1NGNVmRlwBIQhECHN7eUR6quKmmRE4agln1tjFDN1/5ux6gnTCvVlG6ENjDMdLz1YrTPHKNbaeoXuO2IEBJE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=DORxi/g6; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 65A08C4CEF1;
-	Tue, 26 Aug 2025 14:19:46 +0000 (UTC)
+	 MIME-Version:Content-Type; b=NacvOsHp17y45/x0D9c0dQx8ef9aRU9cLhpw9lLZvh+KBEnwHCt7K8mikoHlMPSoQfeJYDowAAhVmylrxf+gNcaYm2p3ExNYGFKzqAXsUPnPtojnEdllIJP4dLhlil18IkwzhU8SQR39GPAcFMOFrCl1OBg9wPsZNwoI4gCqR2w=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=CeSmMDA5; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 764FDC4CEF1;
+	Tue, 26 Aug 2025 11:28:05 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1756217986;
-	bh=Vf0fkoc47jahVgqrwiC/C8c8Y8uTyzizTV8OnGfqf6s=;
+	s=korg; t=1756207685;
+	bh=n8yF8D5MwGhFZzNfx6UicoHQ0Vjvnzso2isWwExSjDs=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=DORxi/g6n+M20QB2Lq4ax7CiAIFJdtD6c7ZOyibdqQmv9WIWDM0J/faLdtaAgqz8M
-	 LjZ5i5rjPseg+TEo29JnLO0LSG0hmjxGV57KS/5TAygqGuotUToeSMLZNcAVmKVe5t
-	 0Cwf/zHokTpRZTlxmVoEZO/6RP5PEcVEdIdr6opI=
+	b=CeSmMDA5SUxeAzkdukJbYrppyWF2aMdGKjGE5TrBd7Tr0WhfSlp+LFiew6o6a3xCN
+	 UfnE7LVLCT9wJMiv+lvL/fyswE72fLTU31Mwg+vPfxx6kBRm7x9cH1C2qFNsi49wKI
+	 hGxoT8DRM5b2JnkKr8k+uYFSVjSxjhRo9E7HRWbU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Laurent Pinchart <laurent.pinchart@ideasonboard.com>,
-	Hans de Goede <hansg@kernel.org>,
-	Ricardo Ribalda <ribalda@chromium.org>,
-	Hans Verkuil <hverkuil@xs4all.nl>
-Subject: [PATCH 5.10 351/523] media: uvcvideo: Do not mark valid metadata as invalid
+	Liu01 Tong <Tong.Liu01@amd.com>,
+	"Lin.Cao" <lincao12@amd.com>,
+	=?UTF-8?q?Christian=20K=C3=B6nig?= <christian.koenig@amd.com>,
+	Alex Deucher <alexander.deucher@amd.com>
+Subject: [PATCH 6.16 277/457] drm/amdgpu: fix task hang from failed job submission during process kill
 Date: Tue, 26 Aug 2025 13:09:21 +0200
-Message-ID: <20250826110933.125154128@linuxfoundation.org>
+Message-ID: <20250826110944.227054493@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250826110924.562212281@linuxfoundation.org>
-References: <20250826110924.562212281@linuxfoundation.org>
+In-Reply-To: <20250826110937.289866482@linuxfoundation.org>
+References: <20250826110937.289866482@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,65 +61,88 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+6.16-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Ricardo Ribalda <ribalda@chromium.org>
+From: Liu01 Tong <Tong.Liu01@amd.com>
 
-commit bda2859bff0b9596a19648f3740c697ce4c71496 upstream.
+commit aa5fc4362fac9351557eb27c745579159a2e4520 upstream.
 
-Currently, the driver performs a length check of the metadata buffer
-before the actual metadata size is known and before the metadata is
-decided to be copied. This results in valid metadata buffers being
-incorrectly marked as invalid.
+During process kill, drm_sched_entity_flush() will kill the vm
+entities. The following job submissions of this process will fail, and
+the resources of these jobs have not been released, nor have the fences
+been signalled, causing tasks to hang and timeout.
 
-Move the length check to occur after the metadata size is determined and
-is decided to be copied.
+Fix by check entity status in amdgpu_vm_ready() and avoid submit jobs to
+stopped entity.
 
-Cc: stable@vger.kernel.org
-Fixes: 088ead255245 ("media: uvcvideo: Add a metadata device node")
-Reviewed-by: Laurent Pinchart <laurent.pinchart@ideasonboard.com>
-Reviewed-by: Hans de Goede <hansg@kernel.org>
-Signed-off-by: Ricardo Ribalda <ribalda@chromium.org>
-Link: https://lore.kernel.org/r/20250707-uvc-meta-v8-1-ed17f8b1218b@chromium.org
-Signed-off-by: Hans de Goede <hansg@kernel.org>
-Signed-off-by: Hans Verkuil <hverkuil@xs4all.nl>
+v2: add amdgpu_vm_ready() check before amdgpu_vm_clear_freed() in
+function amdgpu_cs_vm_handling().
+
+Fixes: 1f02f2044bda ("drm/amdgpu: Avoid extra evict-restore process.")
+Signed-off-by: Liu01 Tong <Tong.Liu01@amd.com>
+Signed-off-by: Lin.Cao <lincao12@amd.com>
+Reviewed-by: Christian König <christian.koenig@amd.com>
+Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
+(cherry picked from commit f101c13a8720c73e67f8f9d511fbbeda95bcedb1)
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/media/usb/uvc/uvc_video.c |   12 ++++++------
- 1 file changed, 6 insertions(+), 6 deletions(-)
+ drivers/gpu/drm/amd/amdgpu/amdgpu_cs.c |    3 +++
+ drivers/gpu/drm/amd/amdgpu/amdgpu_vm.c |   15 +++++++++++----
+ 2 files changed, 14 insertions(+), 4 deletions(-)
 
---- a/drivers/media/usb/uvc/uvc_video.c
-+++ b/drivers/media/usb/uvc/uvc_video.c
-@@ -1309,12 +1309,6 @@ static void uvc_video_decode_meta(struct
- 	if (!meta_buf || length == 2)
- 		return;
+--- a/drivers/gpu/drm/amd/amdgpu/amdgpu_cs.c
++++ b/drivers/gpu/drm/amd/amdgpu/amdgpu_cs.c
+@@ -1138,6 +1138,9 @@ static int amdgpu_cs_vm_handling(struct
+ 		}
+ 	}
  
--	if (meta_buf->length - meta_buf->bytesused <
--	    length + sizeof(meta->ns) + sizeof(meta->sof)) {
--		meta_buf->error = 1;
--		return;
--	}
--
- 	has_pts = mem[1] & UVC_STREAM_PTS;
- 	has_scr = mem[1] & UVC_STREAM_SCR;
- 
-@@ -1335,6 +1329,12 @@ static void uvc_video_decode_meta(struct
- 				  !memcmp(scr, stream->clock.last_scr, 6)))
- 		return;
- 
-+	if (meta_buf->length - meta_buf->bytesused <
-+	    length + sizeof(meta->ns) + sizeof(meta->sof)) {
-+		meta_buf->error = 1;
-+		return;
-+	}
++	if (!amdgpu_vm_ready(vm))
++		return -EINVAL;
 +
- 	meta = (struct uvc_meta_buf *)((u8 *)meta_buf->mem + meta_buf->bytesused);
- 	local_irq_save(flags);
- 	time = uvc_video_get_time();
+ 	r = amdgpu_vm_clear_freed(adev, vm, NULL);
+ 	if (r)
+ 		return r;
+--- a/drivers/gpu/drm/amd/amdgpu/amdgpu_vm.c
++++ b/drivers/gpu/drm/amd/amdgpu/amdgpu_vm.c
+@@ -654,11 +654,10 @@ int amdgpu_vm_validate(struct amdgpu_dev
+  * Check if all VM PDs/PTs are ready for updates
+  *
+  * Returns:
+- * True if VM is not evicting.
++ * True if VM is not evicting and all VM entities are not stopped
+  */
+ bool amdgpu_vm_ready(struct amdgpu_vm *vm)
+ {
+-	bool empty;
+ 	bool ret;
+ 
+ 	amdgpu_vm_eviction_lock(vm);
+@@ -666,10 +665,18 @@ bool amdgpu_vm_ready(struct amdgpu_vm *v
+ 	amdgpu_vm_eviction_unlock(vm);
+ 
+ 	spin_lock(&vm->status_lock);
+-	empty = list_empty(&vm->evicted);
++	ret &= list_empty(&vm->evicted);
+ 	spin_unlock(&vm->status_lock);
+ 
+-	return ret && empty;
++	spin_lock(&vm->immediate.lock);
++	ret &= !vm->immediate.stopped;
++	spin_unlock(&vm->immediate.lock);
++
++	spin_lock(&vm->delayed.lock);
++	ret &= !vm->delayed.stopped;
++	spin_unlock(&vm->delayed.lock);
++
++	return ret;
+ }
+ 
+ /**
 
 
 
