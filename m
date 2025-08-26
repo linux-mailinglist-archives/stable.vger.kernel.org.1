@@ -1,55 +1,56 @@
-Return-Path: <stable+bounces-175623-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-175127-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7F965B36875
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 16:16:30 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id E6582B3669A
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 15:58:45 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id E83557A1AE5
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 14:13:18 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 54D1F1C23345
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 13:52:01 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B843C34A325;
-	Tue, 26 Aug 2025 14:12:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 24E08350D7B;
+	Tue, 26 Aug 2025 13:50:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="DrUZzaH4"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="bMIE7e46"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 770F73568F8;
-	Tue, 26 Aug 2025 14:12:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D41F4350D6A;
+	Tue, 26 Aug 2025 13:50:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756217535; cv=none; b=Kuxw5+wsXfu9lC/noXvuZsnGj0UB+BPlbVHVOzAH8ZJX39U6Y0tgqJu9px2JfYwZB+TNtTpkjfjxuiFhWbhx6zNktf40pON713wzG93MJFf1SlxqL4iZm24lb0GL89bzVIDmfnllsoTIM6JuVzN8W/jVaXLXA+rtOhPSpsIdyOw=
+	t=1756216211; cv=none; b=WoddkJ2N00Uf1lFHU0uuUBoDXI2w1N8h6Ji3EhXKF46rVugZl+0obir+tH8AhZnxktkp0Agqk35NITyRDlE4BOGNrWOpaqrVNqR3LORzRX5yLYwBmB4FbH7wUCUvP9R4HG5FTCOtzE2u6cu1r68Cfv5iRmosG9QYnXNErRNGtNs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756217535; c=relaxed/simple;
-	bh=6E/t1A1AWVIy68ytB358+cEhMC5t65VlUDd8F3Lg8Ls=;
+	s=arc-20240116; t=1756216211; c=relaxed/simple;
+	bh=vIpg0DE05DnDv0ZSeHHPNxMDUPQtJuUo7F5DCIFVINM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=ni9xT3RFUSSmBJnhpZT795nudVKjm2xu8AsEA2WvUqkJ+p8uQJKNYgG8frYw2PZNCNVBgJB2rhO002jNz96er9vlgRDU5EIK9kY4F5qrYZy4EajZEvumdPJXqg53Jnz9OL6oEiWsr3NJi5owTzvS6eWC7ktFDpkepAgA/CIyrNM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=DrUZzaH4; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A603DC4CEF1;
-	Tue, 26 Aug 2025 14:12:14 +0000 (UTC)
+	 MIME-Version; b=sXy2XN2prINz8rJU/a/AMFT6Wbjsa6C+NoRojm7AnoLuKP/3XKeeXl3BBRPA6m63X4dhvFksZr+E48aTFAMtxh/lF6kVh5aI4MkbnDZgSWGEEg0NH4yA+cWT8VwwZ3vgkdI5Vzv0Btyp3t6mgFdNZxwo0J6YH+BF9fW8cB88HG0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=bMIE7e46; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3EADBC113CF;
+	Tue, 26 Aug 2025 13:50:11 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1756217535;
-	bh=6E/t1A1AWVIy68ytB358+cEhMC5t65VlUDd8F3Lg8Ls=;
+	s=korg; t=1756216211;
+	bh=vIpg0DE05DnDv0ZSeHHPNxMDUPQtJuUo7F5DCIFVINM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=DrUZzaH4PkEXrFZLnFs20KDTB7tNwpCvofiWP/HWrzkNq+wI2QUJjfDBTivRaKJeG
-	 uVrwpQJa4xi/dX591vzbAt4LXaFqoXd6Axj5+kYxqf/HP2m83iVats9V5E2XFZU+tD
-	 LV7brLOU3rR/UGSMcRJVv53afuJHmJ6bzHr7cOOw=
+	b=bMIE7e46NE1I+0ZPYEmEvqQwwaEvH5s/RTy+IyRqELxnBWsTHUk0wQETImYxaSTKW
+	 L+39wIGlpUUweQ9iYel2H4I+uQ5aJW+O/TY3/F0Tls0UgUCCMi2uJUwHOzYl/V6dnq
+	 Q4nUJ3I4Jb+zkfYIz6IgScSOutoHPvAyixIuq9Jc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Takashi Iwai <tiwai@suse.de>,
+	Mario Limonciello <mario.limonciello@amd.com>,
+	Mathias Nyman <mathias.nyman@linux.intel.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 180/523] ALSA: hda/ca0132: Fix missing error handling in ca0132_alt_select_out()
+Subject: [PATCH 5.15 299/644] usb: xhci: Avoid showing warnings for dying controller
 Date: Tue, 26 Aug 2025 13:06:30 +0200
-Message-ID: <20250826110928.896252527@linuxfoundation.org>
+Message-ID: <20250826110953.795842933@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250826110924.562212281@linuxfoundation.org>
-References: <20250826110924.562212281@linuxfoundation.org>
+In-Reply-To: <20250826110946.507083938@linuxfoundation.org>
+References: <20250826110946.507083938@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,48 +62,57 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Takashi Iwai <tiwai@suse.de>
+From: Mario Limonciello <mario.limonciello@amd.com>
 
-[ Upstream commit 9f320dfb0ffc555aa2eac8331dee0c2c16f67633 ]
+[ Upstream commit 65fc0fc137b5da3ee1f4ca4f61050fcb203d7582 ]
 
-There are a couple of cases where the error is ignored or the error
-code isn't propagated in ca0132_alt_select_out().  Fix those.
+When a USB4 dock is unplugged from a system it won't respond to ring
+events. The PCI core handles the surprise removal event and notifies
+all PCI drivers. The XHCI PCI driver sets a flag that the device is
+being removed, and when the device stops responding a flag is also
+added to indicate it's dying.
 
-Fixes: def3f0a5c700 ("ALSA: hda/ca0132 - Add quirk output selection structures.")
-Link: https://patch.msgid.link/20250806094423.8843-1-tiwai@suse.de
-Signed-off-by: Takashi Iwai <tiwai@suse.de>
+When that flag is set don't bother to show warnings about a missing
+controller.
+
+Signed-off-by: Mario Limonciello <mario.limonciello@amd.com>
+Signed-off-by: Mathias Nyman <mathias.nyman@linux.intel.com>
+Acked-by: Mathias Nyman <mathias.nyman@linux.intel.com>
+Link: https://lore.kernel.org/r/20250717073107.488599-3-mathias.nyman@linux.intel.com
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- sound/pci/hda/patch_ca0132.c | 5 ++++-
- 1 file changed, 4 insertions(+), 1 deletion(-)
+ drivers/usb/host/xhci.c | 6 ++++--
+ 1 file changed, 4 insertions(+), 2 deletions(-)
 
-diff --git a/sound/pci/hda/patch_ca0132.c b/sound/pci/hda/patch_ca0132.c
-index 6d67cca4cfa6..b9d88b156f40 100644
---- a/sound/pci/hda/patch_ca0132.c
-+++ b/sound/pci/hda/patch_ca0132.c
-@@ -4671,7 +4671,8 @@ static int ca0132_alt_select_out(struct hda_codec *codec)
- 	if (err < 0)
- 		goto exit;
+diff --git a/drivers/usb/host/xhci.c b/drivers/usb/host/xhci.c
+index e9ebb6c7954f..2d8ca3356ff3 100644
+--- a/drivers/usb/host/xhci.c
++++ b/drivers/usb/host/xhci.c
+@@ -118,7 +118,8 @@ int xhci_halt(struct xhci_hcd *xhci)
+ 	ret = xhci_handshake(&xhci->op_regs->status,
+ 			STS_HALT, STS_HALT, XHCI_MAX_HALT_USEC);
+ 	if (ret) {
+-		xhci_warn(xhci, "Host halt failed, %d\n", ret);
++		if (!(xhci->xhc_state & XHCI_STATE_DYING))
++			xhci_warn(xhci, "Host halt failed, %d\n", ret);
+ 		return ret;
+ 	}
+ 	xhci->xhc_state |= XHCI_STATE_HALTED;
+@@ -175,7 +176,8 @@ int xhci_reset(struct xhci_hcd *xhci, u64 timeout_us)
+ 	state = readl(&xhci->op_regs->status);
  
--	if (ca0132_alt_select_out_quirk_set(codec) < 0)
-+	err = ca0132_alt_select_out_quirk_set(codec);
-+	if (err < 0)
- 		goto exit;
+ 	if (state == ~(u32)0) {
+-		xhci_warn(xhci, "Host not accessible, reset failed.\n");
++		if (!(xhci->xhc_state & XHCI_STATE_DYING))
++			xhci_warn(xhci, "Host not accessible, reset failed.\n");
+ 		return -ENODEV;
+ 	}
  
- 	switch (spec->cur_out_type) {
-@@ -4761,6 +4762,8 @@ static int ca0132_alt_select_out(struct hda_codec *codec)
- 				spec->bass_redirection_val);
- 	else
- 		err = ca0132_alt_surround_set_bass_redirection(codec, 0);
-+	if (err < 0)
-+		goto exit;
- 
- 	/* Unmute DSP now that we're done with output selection. */
- 	err = dspio_set_uint_param(codec, 0x96,
 -- 
 2.39.5
 
