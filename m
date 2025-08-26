@@ -1,58 +1,55 @@
-Return-Path: <stable+bounces-173650-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-174733-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 91C6CB35E9F
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 14:00:16 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 6D9A0B364F0
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 15:43:06 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id EC204560525
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 11:47:18 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id ADE3C565294
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 13:34:06 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D44AD322C80;
-	Tue, 26 Aug 2025 11:46:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 52F86345741;
+	Tue, 26 Aug 2025 13:32:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="tqjjR0pP"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ebpNoNg2"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8B4372FAC02;
-	Tue, 26 Aug 2025 11:46:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0A992345758;
+	Tue, 26 Aug 2025 13:32:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756208798; cv=none; b=jGXx91pyAKcW8JebODt/nQVrrOBvRHmoHOsUm5ruQ6b9d642Pl1ezTzJSzmE+j6dS58Ezit9PNmdXHwCjscGG1TZaqc3A6svMLTkDZZc0971zUIyu5CR1SjBFINDiAA5IE1AaNFSdsVSOr1C2nnw8fkIMRsvhD7UisEwVANVsgc=
+	t=1756215173; cv=none; b=DsiMY75HNGUKWZsESQxinAm8dEB4I/eFfyx0qUNguTrX3Q4u3Dkrydx/THyZh6hC1Xmwg2prqz0faZyo1zPob/H7sJKjBNUq5+q1k0Sv0liFSGM55tjtT+bGjCZogJIUwx3LpAMAhFuVzj/1P9w1efNeujb/Pm4WPSmCg+S8V2Y=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756208798; c=relaxed/simple;
-	bh=oSvInxgCNVsYihKvDWT5lT4L+vHSCuxSy52R1iQG8ek=;
+	s=arc-20240116; t=1756215173; c=relaxed/simple;
+	bh=ry4E59uLPPzOjTS33TFBw0L6S7l3pnPyPIfKPt/ChA8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=tMtdWwoVEu+HlFl7NuwKktXXdgK4SeeAbk6xRLpZo2VaScyOTZiEz2iUSiX6CHlfufOZJjoZCceTzgUd+QaM6UEhZ++DK3uoWmwcTwdbfJYus29XqmFJIzL1H3XIlsl1v9+t2UwnMypgPeo+pNlLud7zCyg1fVqvfI4Nxq6X6sg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=tqjjR0pP; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 24F8EC4CEF1;
-	Tue, 26 Aug 2025 11:46:38 +0000 (UTC)
+	 MIME-Version; b=gT/Pgp/T2M7MDBVEEObrL2rSzgw2U3E2FutiNHzq2cjEKyd3rG3nlJatP/bbwUJRaanKEOwp2N8Jt6mvzoDnO7WwaWnuHNxgy3J5opCmVTKu1HdpVrpZS34UBv2C42uNZ7yv+IPqC1Oh2pI+61APiw8TXqexiHXCRqhNxzT4Eyo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ebpNoNg2; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 92261C4CEF1;
+	Tue, 26 Aug 2025 13:32:52 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1756208798;
-	bh=oSvInxgCNVsYihKvDWT5lT4L+vHSCuxSy52R1iQG8ek=;
+	s=korg; t=1756215172;
+	bh=ry4E59uLPPzOjTS33TFBw0L6S7l3pnPyPIfKPt/ChA8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=tqjjR0pPuxxpEiswbUtwDYHB7tpk27IFaZ52c2Fy2G6wHzR2W5L4Yei7Jaa5VE5vy
-	 WZqjoKZaff3oS/qg+KHki8caHV+ISgvgVLDui0ERW1QJDcLcHvcVPXTaan3O4IFpaL
-	 YSgWPgeBz+DDV06e+P/SS3UVhRze0KNBsicIU3gs=
+	b=ebpNoNg2XbIvOziw+vgyterBvYYSqrcr4IFr5DkR0HJmaFK4NvoEC9q3WKyIpPwnZ
+	 /k8NBTSF6mNGxNeT6IMHCblbQSjdIrHGnHUwf0+zlpRrZY2p/QpWiBKGNr1P5QCAj8
+	 FVWy+dwMoez98zQqb3l+1La6r8pqT3D25D9EPFUg=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jean-Baptiste Maneyrol <jean-baptiste.maneyrol@tdk.com>,
-	Andy Shevchenko <andy@kernel.org>,
-	Sean Nyekjaer <sean@geanix.com>,
-	Jonathan Cameron <Jonathan.Cameron@huawei.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 250/322] iio: imu: inv_icm42600: change invalid data error to -EBUSY
-Date: Tue, 26 Aug 2025 13:11:05 +0200
-Message-ID: <20250826110922.100331104@linuxfoundation.org>
+	Miao Li <limiao@kylinos.cn>,
+	stable <stable@kernel.org>
+Subject: [PATCH 6.1 413/482] usb: quirks: Add DELAY_INIT quick for another SanDisk 3.2Gen1 Flash Drive
+Date: Tue, 26 Aug 2025 13:11:06 +0200
+Message-ID: <20250826110941.029790415@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250826110915.169062587@linuxfoundation.org>
-References: <20250826110915.169062587@linuxfoundation.org>
+In-Reply-To: <20250826110930.769259449@linuxfoundation.org>
+References: <20250826110930.769259449@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,51 +61,36 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jean-Baptiste Maneyrol <jean-baptiste.maneyrol@tdk.com>
+From: Miao Li <limiao@kylinos.cn>
 
-[ Upstream commit dfdc31e7ccf3ac1d5ec01d5120c71e14745e3dd8 ]
+commit e664036cf36480414936cd91f4cfa2179a3d8367 upstream.
 
-Temperature sensor returns the temperature of the mechanical parts
-of the chip. If both accel and gyro are off, the temperature sensor is
-also automatically turned off and returns invalid data.
+Another SanDisk 3.2Gen1 Flash Drive also need DELAY_INIT quick,
+or it will randomly work incorrectly on Huawei hisi platforms
+when doing reboot test.
 
-In this case, returning -EBUSY error code is better then -EINVAL and
-indicates userspace that it needs to retry reading temperature in
-another context.
-
-Fixes: bc3eb0207fb5 ("iio: imu: inv_icm42600: add temperature sensor support")
-Signed-off-by: Jean-Baptiste Maneyrol <jean-baptiste.maneyrol@tdk.com>
-Cc: stable@vger.kernel.org
-Reviewed-by: Andy Shevchenko <andy@kernel.org>
-Reviewed-by: Sean Nyekjaer <sean@geanix.com>
-Link: https://patch.msgid.link/20250808-inv-icm42600-change-temperature-error-code-v1-1-986fbf63b77d@tdk.com
-Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Signed-off-by: Miao Li <limiao@kylinos.cn>
+Cc: stable <stable@kernel.org>
+Link: https://lore.kernel.org/r/20250801082728.469406-1-limiao870622@163.com
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/iio/imu/inv_icm42600/inv_icm42600_temp.c |    6 +++++-
- 1 file changed, 5 insertions(+), 1 deletion(-)
+ drivers/usb/core/quirks.c |    1 +
+ 1 file changed, 1 insertion(+)
 
---- a/drivers/iio/imu/inv_icm42600/inv_icm42600_temp.c
-+++ b/drivers/iio/imu/inv_icm42600/inv_icm42600_temp.c
-@@ -32,8 +32,12 @@ static int inv_icm42600_temp_read(struct
- 		goto exit;
+--- a/drivers/usb/core/quirks.c
++++ b/drivers/usb/core/quirks.c
+@@ -371,6 +371,7 @@ static const struct usb_device_id usb_qu
+ 	{ USB_DEVICE(0x0781, 0x5591), .driver_info = USB_QUIRK_NO_LPM },
  
- 	*temp = (s16)be16_to_cpup(raw);
-+	/*
-+	 * Temperature data is invalid if both accel and gyro are off.
-+	 * Return -EBUSY in this case.
-+	 */
- 	if (*temp == INV_ICM42600_DATA_INVALID)
--		ret = -EINVAL;
-+		ret = -EBUSY;
+ 	/* SanDisk Corp. SanDisk 3.2Gen1 */
++	{ USB_DEVICE(0x0781, 0x5596), .driver_info = USB_QUIRK_DELAY_INIT },
+ 	{ USB_DEVICE(0x0781, 0x55a3), .driver_info = USB_QUIRK_DELAY_INIT },
  
- exit:
- 	mutex_unlock(&st->lock);
+ 	/* SanDisk Extreme 55AE */
 
 
 
