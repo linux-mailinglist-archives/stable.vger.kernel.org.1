@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-175026-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-175581-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id AD072B365F7
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 15:52:09 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1FDECB368FD
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 16:21:28 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 072301C216D1
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 13:46:35 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 744902A7B74
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 14:12:39 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0133B321457;
-	Tue, 26 Aug 2025 13:45:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3064B350830;
+	Tue, 26 Aug 2025 14:10:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Ksgulzca"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="rjFzdUh8"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A98E3191F84;
-	Tue, 26 Aug 2025 13:45:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E21E234DCED;
+	Tue, 26 Aug 2025 14:10:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756215945; cv=none; b=Ykrkl1g9xrN2grxYlqSuNrEdrYHsSazrKgBDFbNurhXkbgXJ3x97yjqOKZxRkKFf6KwIAUt2rk7y2dI5ROYjnLrVq4vhbNdlDEhcS9u69OTp0OWQh6SPNLlIeBagtWQnldLeFUGndbKnL0+HlHqvExTCmKCU4VDW7F15Rd4qvuM=
+	t=1756217423; cv=none; b=P9dPYv16x4WPC7xYHDBYID/S27/qMCexd4d6bCcZ5d0Kw2+cOwu/i+N41PHsmZTXIbDN8R3kRGcBeo9/sjT6N8QIShHzsFCsnFqRTUczXsZhm8JiNSoSEKWf9D7X3VS93qjpiA79kzCvHCTVClGKXxTG9ARuFJZYk6fq9Z6xzWo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756215945; c=relaxed/simple;
-	bh=B8BvrzaRonWSTf4j/XOjgLwWUUIdx4v7KkU7+JpRoa8=;
+	s=arc-20240116; t=1756217423; c=relaxed/simple;
+	bh=YPv0qCtJ0gFtqLe6B7ksGJ8dk+KHf56ao35aWeqoiD0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=qSoOT5OfixUicmG8hmdLfUN1Riksq/HUswCh9ZyfXplPUVmihT411L3txeAq31Yxs3yfu+AyC9MGBmNtXlO/ZpG0y68v40h+bQ4UMr5xbhsHQogerqCU7l/eYhGTWjqTBe7U1cr89k5iDibZbtU0PFe3gJkOcy1TYY6YYquakig=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Ksgulzca; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 38FBFC4CEF1;
-	Tue, 26 Aug 2025 13:45:45 +0000 (UTC)
+	 MIME-Version; b=aSERZErGQy2u+nnfpVhp2b5QgOaFunhvttmtIhe/L4Q/f0pA3ayOCgzbJ2Tq1ddU3f1E1dD1fGqARZbOyv5rYKgEltsLyzBCPxPX/0HV3fFix9JIT9gK4KklwonQapZppVmH//YQO6JJTIyU156VIB7P9GcSPwqFeLbJAgpd2fE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=rjFzdUh8; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 23DC5C4CEF1;
+	Tue, 26 Aug 2025 14:10:21 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1756215945;
-	bh=B8BvrzaRonWSTf4j/XOjgLwWUUIdx4v7KkU7+JpRoa8=;
+	s=korg; t=1756217422;
+	bh=YPv0qCtJ0gFtqLe6B7ksGJ8dk+KHf56ao35aWeqoiD0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=KsgulzcaBU7pmxjt0AkWvDfnZ+l5+YHJF/NARqC42CKVBlXYHaL+IVKGYZAAC5KQc
-	 EXXSLvkcpjf8ILl09uCYWzgVrGhyjTPtioyub81UNI5NGS0mX9wNxw2Sn69jlPzyyb
-	 fPXDpqvzW9tBDhA3Xn5Pz3tgAsIzGY6gu3tanuYA=
+	b=rjFzdUh8dsonsMrz/LqW6BsQc3385nyxWNWWcB7iGbV4wIzF2iSocTu24CmmAZWiw
+	 pah1ByD1mCq7SZIefNqbumoHSzscIkSN268ri5v8DG5iccyZ2jGt8v8joNn2Rbb6JB
+	 l9p6NhUCWFtoQeIwR7Xf0gya4aZtsqapqNdIxJjk=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Timothy Pearson <tpearson@raptorengineering.com>,
-	Bjorn Helgaas <bhelgaas@google.com>,
+	Johan Korsnes <johan.korsnes@gmail.com>,
+	Christophe Leroy <christophe.leroy@csgroup.eu>,
 	Madhavan Srinivasan <maddy@linux.ibm.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 224/644] powerpc/eeh: Make EEH driver device hotplug safe
-Date: Tue, 26 Aug 2025 13:05:15 +0200
-Message-ID: <20250826110951.971892695@linuxfoundation.org>
+Subject: [PATCH 5.10 106/523] arch: powerpc: defconfig: Drop obsolete CONFIG_NET_CLS_TCINDEX
+Date: Tue, 26 Aug 2025 13:05:16 +0200
+Message-ID: <20250826110927.150136481@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250826110946.507083938@linuxfoundation.org>
-References: <20250826110946.507083938@linuxfoundation.org>
+In-Reply-To: <20250826110924.562212281@linuxfoundation.org>
+References: <20250826110924.562212281@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,254 +63,40 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Timothy Pearson <tpearson@raptorengineering.com>
+From: Johan Korsnes <johan.korsnes@gmail.com>
 
-[ Upstream commit 1010b4c012b0d78dfb9d3132b49aa2ef024a07a7 ]
+[ Upstream commit 75cd37c5f28b85979fd5a65174013010f6b78f27 ]
 
-Multiple race conditions existed between the PCIe hotplug driver and the
-EEH driver, leading to a variety of kernel oopses of the same general
-nature:
+This option was removed from the Kconfig in commit
+8c710f75256b ("net/sched: Retire tcindex classifier") but it was not
+removed from the defconfigs.
 
-<pcie device unplug>
-<eeh driver trigger>
-<hotplug removal trigger>
-<pcie tree reconfiguration>
-<eeh recovery next step>
-<oops in EEH driver bus iteration loop>
-
-A second class of oops is also seen when the underlying bus disappears
-during device recovery.
-
-Refactor the EEH module to be PCI rescan and remove safe.  Also clean
-up a few minor formatting / readability issues.
-
-Signed-off-by: Timothy Pearson <tpearson@raptorengineering.com>
-Signed-off-by: Bjorn Helgaas <bhelgaas@google.com>
+Fixes: 8c710f75256b ("net/sched: Retire tcindex classifier")
+Signed-off-by: Johan Korsnes <johan.korsnes@gmail.com>
+Reviewed-by: Christophe Leroy <christophe.leroy@csgroup.eu>
 Signed-off-by: Madhavan Srinivasan <maddy@linux.ibm.com>
-Link: https://patch.msgid.link/1334208367.1359861.1752615503144.JavaMail.zimbra@raptorengineeringinc.com
+Link: https://patch.msgid.link/20250323191116.113482-1-johan.korsnes@gmail.com
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/powerpc/kernel/eeh_driver.c | 48 +++++++++++++++++++++-----------
- arch/powerpc/kernel/eeh_pe.c     | 10 ++++---
- 2 files changed, 38 insertions(+), 20 deletions(-)
+ arch/powerpc/configs/ppc6xx_defconfig | 1 -
+ 1 file changed, 1 deletion(-)
 
-diff --git a/arch/powerpc/kernel/eeh_driver.c b/arch/powerpc/kernel/eeh_driver.c
-index 665d847ef9b5..ed5be1bff60c 100644
---- a/arch/powerpc/kernel/eeh_driver.c
-+++ b/arch/powerpc/kernel/eeh_driver.c
-@@ -258,13 +258,12 @@ static void eeh_pe_report_edev(struct eeh_dev *edev, eeh_report_fn fn,
- 	struct pci_driver *driver;
- 	enum pci_ers_result new_result;
- 
--	pci_lock_rescan_remove();
- 	pdev = edev->pdev;
- 	if (pdev)
- 		get_device(&pdev->dev);
--	pci_unlock_rescan_remove();
- 	if (!pdev) {
- 		eeh_edev_info(edev, "no device");
-+		*result = PCI_ERS_RESULT_DISCONNECT;
- 		return;
- 	}
- 	device_lock(&pdev->dev);
-@@ -305,8 +304,9 @@ static void eeh_pe_report(const char *name, struct eeh_pe *root,
- 	struct eeh_dev *edev, *tmp;
- 
- 	pr_info("EEH: Beginning: '%s'\n", name);
--	eeh_for_each_pe(root, pe) eeh_pe_for_each_dev(pe, edev, tmp)
--		eeh_pe_report_edev(edev, fn, result);
-+	eeh_for_each_pe(root, pe)
-+		eeh_pe_for_each_dev(pe, edev, tmp)
-+			eeh_pe_report_edev(edev, fn, result);
- 	if (result)
- 		pr_info("EEH: Finished:'%s' with aggregate recovery state:'%s'\n",
- 			name, pci_ers_result_name(*result));
-@@ -384,6 +384,8 @@ static void eeh_dev_restore_state(struct eeh_dev *edev, void *userdata)
- 	if (!edev)
- 		return;
- 
-+	pci_lock_rescan_remove();
-+
- 	/*
- 	 * The content in the config space isn't saved because
- 	 * the blocked config space on some adapters. We have
-@@ -394,14 +396,19 @@ static void eeh_dev_restore_state(struct eeh_dev *edev, void *userdata)
- 		if (list_is_last(&edev->entry, &edev->pe->edevs))
- 			eeh_pe_restore_bars(edev->pe);
- 
-+		pci_unlock_rescan_remove();
- 		return;
- 	}
- 
- 	pdev = eeh_dev_to_pci_dev(edev);
--	if (!pdev)
-+	if (!pdev) {
-+		pci_unlock_rescan_remove();
- 		return;
-+	}
- 
- 	pci_restore_state(pdev);
-+
-+	pci_unlock_rescan_remove();
- }
- 
- /**
-@@ -648,9 +655,7 @@ static int eeh_reset_device(struct eeh_pe *pe, struct pci_bus *bus,
- 	if (any_passed || driver_eeh_aware || (pe->type & EEH_PE_VF)) {
- 		eeh_pe_dev_traverse(pe, eeh_rmv_device, rmv_data);
- 	} else {
--		pci_lock_rescan_remove();
- 		pci_hp_remove_devices(bus);
--		pci_unlock_rescan_remove();
- 	}
- 
- 	/*
-@@ -666,8 +671,6 @@ static int eeh_reset_device(struct eeh_pe *pe, struct pci_bus *bus,
- 	if (rc)
- 		return rc;
- 
--	pci_lock_rescan_remove();
--
- 	/* Restore PE */
- 	eeh_ops->configure_bridge(pe);
- 	eeh_pe_restore_bars(pe);
-@@ -675,7 +678,6 @@ static int eeh_reset_device(struct eeh_pe *pe, struct pci_bus *bus,
- 	/* Clear frozen state */
- 	rc = eeh_clear_pe_frozen_state(pe, false);
- 	if (rc) {
--		pci_unlock_rescan_remove();
- 		return rc;
- 	}
- 
-@@ -710,7 +712,6 @@ static int eeh_reset_device(struct eeh_pe *pe, struct pci_bus *bus,
- 	pe->tstamp = tstamp;
- 	pe->freeze_count = cnt;
- 
--	pci_unlock_rescan_remove();
- 	return 0;
- }
- 
-@@ -844,10 +845,13 @@ void eeh_handle_normal_event(struct eeh_pe *pe)
- 		{LIST_HEAD_INIT(rmv_data.removed_vf_list), 0};
- 	int devices = 0;
- 
-+	pci_lock_rescan_remove();
-+
- 	bus = eeh_pe_bus_get(pe);
- 	if (!bus) {
- 		pr_err("%s: Cannot find PCI bus for PHB#%x-PE#%x\n",
- 			__func__, pe->phb->global_number, pe->addr);
-+		pci_unlock_rescan_remove();
- 		return;
- 	}
- 
-@@ -1089,10 +1093,15 @@ void eeh_handle_normal_event(struct eeh_pe *pe)
- 		eeh_pe_state_clear(pe, EEH_PE_PRI_BUS, true);
- 		eeh_pe_dev_mode_mark(pe, EEH_DEV_REMOVED);
- 
--		pci_lock_rescan_remove();
--		pci_hp_remove_devices(bus);
--		pci_unlock_rescan_remove();
-+		bus = eeh_pe_bus_get(pe);
-+		if (bus)
-+			pci_hp_remove_devices(bus);
-+		else
-+			pr_err("%s: PCI bus for PHB#%x-PE#%x disappeared\n",
-+				__func__, pe->phb->global_number, pe->addr);
-+
- 		/* The passed PE should no longer be used */
-+		pci_unlock_rescan_remove();
- 		return;
- 	}
- 
-@@ -1109,6 +1118,8 @@ void eeh_handle_normal_event(struct eeh_pe *pe)
- 			eeh_clear_slot_attention(edev->pdev);
- 
- 	eeh_pe_state_clear(pe, EEH_PE_RECOVERING, true);
-+
-+	pci_unlock_rescan_remove();
- }
- 
- /**
-@@ -1127,6 +1138,7 @@ void eeh_handle_special_event(void)
- 	unsigned long flags;
- 	int rc;
- 
-+	pci_lock_rescan_remove();
- 
- 	do {
- 		rc = eeh_ops->next_error(&pe);
-@@ -1166,10 +1178,12 @@ void eeh_handle_special_event(void)
- 
- 			break;
- 		case EEH_NEXT_ERR_NONE:
-+			pci_unlock_rescan_remove();
- 			return;
- 		default:
- 			pr_warn("%s: Invalid value %d from next_error()\n",
- 				__func__, rc);
-+			pci_unlock_rescan_remove();
- 			return;
- 		}
- 
-@@ -1181,7 +1195,9 @@ void eeh_handle_special_event(void)
- 		if (rc == EEH_NEXT_ERR_FROZEN_PE ||
- 		    rc == EEH_NEXT_ERR_FENCED_PHB) {
- 			eeh_pe_state_mark(pe, EEH_PE_RECOVERING);
-+			pci_unlock_rescan_remove();
- 			eeh_handle_normal_event(pe);
-+			pci_lock_rescan_remove();
- 		} else {
- 			eeh_for_each_pe(pe, tmp_pe)
- 				eeh_pe_for_each_dev(tmp_pe, edev, tmp_edev)
-@@ -1194,7 +1210,6 @@ void eeh_handle_special_event(void)
- 				eeh_report_failure, NULL);
- 			eeh_set_channel_state(pe, pci_channel_io_perm_failure);
- 
--			pci_lock_rescan_remove();
- 			list_for_each_entry(hose, &hose_list, list_node) {
- 				phb_pe = eeh_phb_pe_get(hose);
- 				if (!phb_pe ||
-@@ -1213,7 +1228,6 @@ void eeh_handle_special_event(void)
- 				}
- 				pci_hp_remove_devices(bus);
- 			}
--			pci_unlock_rescan_remove();
- 		}
- 
- 		/*
-@@ -1223,4 +1237,6 @@ void eeh_handle_special_event(void)
- 		if (rc == EEH_NEXT_ERR_DEAD_IOC)
- 			break;
- 	} while (rc != EEH_NEXT_ERR_NONE);
-+
-+	pci_unlock_rescan_remove();
- }
-diff --git a/arch/powerpc/kernel/eeh_pe.c b/arch/powerpc/kernel/eeh_pe.c
-index 3f55e372f259..fea58e9546f9 100644
---- a/arch/powerpc/kernel/eeh_pe.c
-+++ b/arch/powerpc/kernel/eeh_pe.c
-@@ -670,10 +670,12 @@ static void eeh_bridge_check_link(struct eeh_dev *edev)
- 	eeh_ops->write_config(edev, cap + PCI_EXP_LNKCTL, 2, val);
- 
- 	/* Check link */
--	if (!edev->pdev->link_active_reporting) {
--		eeh_edev_dbg(edev, "No link reporting capability\n");
--		msleep(1000);
--		return;
-+	if (edev->pdev) {
-+		if (!edev->pdev->link_active_reporting) {
-+			eeh_edev_dbg(edev, "No link reporting capability\n");
-+			msleep(1000);
-+			return;
-+		}
- 	}
- 
- 	/* Wait the link is up until timeout (5s) */
+diff --git a/arch/powerpc/configs/ppc6xx_defconfig b/arch/powerpc/configs/ppc6xx_defconfig
+index 021da6736570..7c14fecc7154 100644
+--- a/arch/powerpc/configs/ppc6xx_defconfig
++++ b/arch/powerpc/configs/ppc6xx_defconfig
+@@ -265,7 +265,6 @@ CONFIG_NET_SCH_DSMARK=m
+ CONFIG_NET_SCH_NETEM=m
+ CONFIG_NET_SCH_INGRESS=m
+ CONFIG_NET_CLS_BASIC=m
+-CONFIG_NET_CLS_TCINDEX=m
+ CONFIG_NET_CLS_ROUTE4=m
+ CONFIG_NET_CLS_FW=m
+ CONFIG_NET_CLS_U32=m
 -- 
 2.39.5
 
