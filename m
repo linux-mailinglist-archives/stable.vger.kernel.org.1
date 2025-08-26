@@ -1,55 +1,56 @@
-Return-Path: <stable+bounces-174133-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-174614-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6588DB3611C
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 15:06:46 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id D6A14B36498
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 15:40:21 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id C25E17B86CA
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 13:05:09 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 0C9A256326C
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 13:28:33 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3D6D42676E9;
-	Tue, 26 Aug 2025 13:06:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D4A5733A015;
+	Tue, 26 Aug 2025 13:27:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="X/0DvNqN"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="rt8uoi1M"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EE44423C4F4;
-	Tue, 26 Aug 2025 13:06:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 91DCD1A239A;
+	Tue, 26 Aug 2025 13:27:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756213581; cv=none; b=LdZlr9LqwBY5udUBzSE/4mCenw45uCls7Ug9BnWkgcLFpBQ5gNG+VdsEE3U/bDhcikWlZd3NyQ8dl6GHA8vKUt/aS74NNAdOxcg6z1xtEv8roJ1ySK9YtKcO4T9TQy0e0hJ4BPUAf0el6faPM4uF+oDmWhP4AGTKPjZpvAeRfM4=
+	t=1756214859; cv=none; b=em92swRT9Y8eXXu0Fa/Of44qfDDcGNGrZYWN3dGH8E8oPqpG8KoBeOVVOgcu2xH3DnW9U1ih360WWnF2tbmw1qGUJTPkW9Ha3R/OX7Y89wPYJX2BVTGANXmjCzaaHeopCRxBdUhRa6y0ldB1vlA3wJ5NlkDXgbDej3Qa9mrq9vA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756213581; c=relaxed/simple;
-	bh=WuHYcPG2kO4eFvlNIwceQgwtG1+47xZTTOmhjGtNRjY=;
+	s=arc-20240116; t=1756214859; c=relaxed/simple;
+	bh=AVKEzNQB/e48vMAwpEYRZdPAR+cdrzcHGoXajPggj68=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=g0/b+SBRzHEtIg6GQYEZFtkU1dbCRYQynb6c3pZ1x9zfYzv+q4mlRLd/3Rd+gtE1enFvWshkLtmjvg/6xNbe0ToEKDhD4yhLqav+Ge0e4n4r0bdGkHMaX19ta4oRvZ3yi4jJvLnp9gfP+JrRNrUndtYsi2gWnIh+iBI6EH4g9uI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=X/0DvNqN; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7CFE3C16AAE;
-	Tue, 26 Aug 2025 13:06:20 +0000 (UTC)
+	 MIME-Version; b=Tjm0MNkc8RK5yaDKimSg0cptcwxBDMErw/SYSWImQIvJkgjoJqUCaky0y5F812yBhKRUx7ebaOHXDry361KiQCHbIPW5m3mF5aOZKtUNpaxLm3YVxHk7DUDIerrhTZ5C92j1DGT8yEM37rm/OIuSVTxoMNbJAjO5UtRd5EMq82I=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=rt8uoi1M; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E8778C113CF;
+	Tue, 26 Aug 2025 13:27:38 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1756213580;
-	bh=WuHYcPG2kO4eFvlNIwceQgwtG1+47xZTTOmhjGtNRjY=;
+	s=korg; t=1756214859;
+	bh=AVKEzNQB/e48vMAwpEYRZdPAR+cdrzcHGoXajPggj68=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=X/0DvNqNkjfcxQ9hfcTwSKfXKVfsViGZEa8vQD27RyiaWHTKEXgxpqpEgL8KhRCRQ
-	 Y8QM7m1aouRyfkhY44iCbNhpZDRyYfo3gywknxuv4An3Ixn6VIjg0ODRlDn+vXWUg7
-	 U8z+EEesI5pKg4Va+r/pBBDmCvPMTRBKsCwjuUPM=
+	b=rt8uoi1MAgg/sWHqym4gCZ0iAjop0pTwaMOOp+5OYs/boiDyXOgHegzlTcarO6Zzu
+	 emK+IcpmVhtElhrbByl+Cv4ntXjMtnYKZRBL9+TUJF8lqNokiONR4zpnXw6/PALXIb
+	 zCs4uY2V2hBvfKkAUw9JA+4KG7tkdMUDrEcfFxRQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Dan Carpenter <dan.carpenter@linaro.org>,
-	Hans Verkuil <hverkuil@xs4all.nl>
-Subject: [PATCH 6.6 401/587] media: gspca: Add bounds checking to firmware parser
+	Johan Hovold <johan+linaro@kernel.org>,
+	Baochen Qiang <quic_bqiang@quicinc.com>,
+	Jeff Johnson <jeff.johnson@oss.qualcomm.com>
+Subject: [PATCH 6.1 297/482] wifi: ath11k: fix source ring-buffer corruption
 Date: Tue, 26 Aug 2025 13:09:10 +0200
-Message-ID: <20250826111003.127450219@linuxfoundation.org>
+Message-ID: <20250826110938.132791420@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250826110952.942403671@linuxfoundation.org>
-References: <20250826110952.942403671@linuxfoundation.org>
+In-Reply-To: <20250826110930.769259449@linuxfoundation.org>
+References: <20250826110930.769259449@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,61 +62,61 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Dan Carpenter <dan.carpenter@linaro.org>
+From: Johan Hovold <johan+linaro@kernel.org>
 
-commit aef89c0b2417da79cb2062a95476288f9f203ab0 upstream.
+commit 6efa0df54022c6c9fd4d294b87622c7fcdc418c8 upstream.
 
-This sd_init() function reads the firmware.  The firmware data holds a
-series of records and the function reads each record and sends the data
-to the device.  The request_ihex_firmware() function
-calls ihex_validate_fw() which ensures that the total length of all the
-records won't read out of bounds of the fw->data[].
+Add the missing memory barrier to make sure that LMAC source ring
+descriptors are written before updating the head pointer to avoid
+passing stale data to the firmware on weakly ordered architectures like
+aarch64.
 
-However, a potential issue is if there is a single very large
-record (larger than PAGE_SIZE) and that would result in memory
-corruption.  Generally we trust the firmware, but it's always better to
-double check.
+Note that non-LMAC rings use MMIO write accessors which have the
+required write memory barrier.
 
-Fixes: 49b61ec9b5af ("[media] gspca: Add new vicam subdriver")
-Cc: stable@vger.kernel.org
-Signed-off-by: Dan Carpenter <dan.carpenter@linaro.org>
-Signed-off-by: Hans Verkuil <hverkuil@xs4all.nl>
+Tested-on: WCN6855 hw2.1 WLAN.HSP.1.1-03125-QCAHSPSWPL_V1_V2_SILICONZ_LITE-3.6510.41
+
+Fixes: d5c65159f289 ("ath11k: driver for Qualcomm IEEE 802.11ax devices")
+Cc: stable@vger.kernel.org      # 5.6
+Signed-off-by: Johan Hovold <johan+linaro@kernel.org>
+Reviewed-by: Baochen Qiang <quic_bqiang@quicinc.com>
+Link: https://patch.msgid.link/20250604143457.26032-5-johan+linaro@kernel.org
+Signed-off-by: Jeff Johnson <jeff.johnson@oss.qualcomm.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/media/usb/gspca/vicam.c |   10 ++++++++--
- 1 file changed, 8 insertions(+), 2 deletions(-)
+ drivers/net/wireless/ath/ath11k/hal.c |   10 +++++++++-
+ 1 file changed, 9 insertions(+), 1 deletion(-)
 
---- a/drivers/media/usb/gspca/vicam.c
-+++ b/drivers/media/usb/gspca/vicam.c
-@@ -227,6 +227,7 @@ static int sd_init(struct gspca_dev *gsp
- 	const struct ihex_binrec *rec;
- 	const struct firmware *fw;
- 	u8 *firmware_buf;
-+	int len;
- 
- 	ret = request_ihex_firmware(&fw, VICAM_FIRMWARE,
- 				    &gspca_dev->dev->dev);
-@@ -241,9 +242,14 @@ static int sd_init(struct gspca_dev *gsp
- 		goto exit;
- 	}
- 	for (rec = (void *)fw->data; rec; rec = ihex_next_binrec(rec)) {
--		memcpy(firmware_buf, rec->data, be16_to_cpu(rec->len));
-+		len = be16_to_cpu(rec->len);
-+		if (len > PAGE_SIZE) {
-+			ret = -EINVAL;
-+			break;
-+		}
-+		memcpy(firmware_buf, rec->data, len);
- 		ret = vicam_control_msg(gspca_dev, 0xff, 0, 0, firmware_buf,
--					be16_to_cpu(rec->len));
-+					len);
- 		if (ret < 0)
- 			break;
- 	}
+--- a/drivers/net/wireless/ath/ath11k/hal.c
++++ b/drivers/net/wireless/ath/ath11k/hal.c
+@@ -835,7 +835,11 @@ void ath11k_hal_srng_access_end(struct a
+ 		if (srng->ring_dir == HAL_SRNG_DIR_SRC) {
+ 			srng->u.src_ring.last_tp =
+ 				*(volatile u32 *)srng->u.src_ring.tp_addr;
+-			*srng->u.src_ring.hp_addr = srng->u.src_ring.hp;
++			/* Make sure descriptor is written before updating the
++			 * head pointer.
++			 */
++			dma_wmb();
++			WRITE_ONCE(*srng->u.src_ring.hp_addr, srng->u.src_ring.hp);
+ 		} else {
+ 			srng->u.dst_ring.last_hp = *srng->u.dst_ring.hp_addr;
+ 			*srng->u.dst_ring.tp_addr = srng->u.dst_ring.tp;
+@@ -844,6 +848,10 @@ void ath11k_hal_srng_access_end(struct a
+ 		if (srng->ring_dir == HAL_SRNG_DIR_SRC) {
+ 			srng->u.src_ring.last_tp =
+ 				*(volatile u32 *)srng->u.src_ring.tp_addr;
++			/* Assume implementation use an MMIO write accessor
++			 * which has the required wmb() so that the descriptor
++			 * is written before the updating the head pointer.
++			 */
+ 			ath11k_hif_write32(ab,
+ 					   (unsigned long)srng->u.src_ring.hp_addr -
+ 					   (unsigned long)ab->mem,
 
 
 
