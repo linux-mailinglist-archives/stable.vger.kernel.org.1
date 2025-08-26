@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-175743-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-173167-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id F0E02B3699E
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 16:28:41 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id EE8F2B35C1C
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 13:31:35 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 03FEB1C4293E
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 14:20:01 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 2C95F364DA9
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 11:25:47 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1610434F46B;
-	Tue, 26 Aug 2025 14:17:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D35322BEFF0;
+	Tue, 26 Aug 2025 11:25:45 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Ghxs+Wib"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="enTTXqQ1"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C8353481CD;
-	Tue, 26 Aug 2025 14:17:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8B2E92BD00C;
+	Tue, 26 Aug 2025 11:25:45 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756217852; cv=none; b=sUF+52jJZ+XsyHKC91jeR9HhE3H6VsEpPiCGwYpl8SCh3X4Wru4UIF7aZKy1XY4HTg26ttyfkDACYW5zNWcw224FijQ++iHcJbfPjkR+O3mmncnYOB+3GbVMq1o0ZN58YP+oJIFxQSpxesh5Tem/R5zDimk5KqYmyIXwWure2F0=
+	t=1756207545; cv=none; b=e6Xt5856l0ErfPSgDMGao+uGfIw7hJQlKScgouIC3OwYFw7Yo2nQ0+uv9EP8hJOpPdmUYK4Av7gR+arViKujrluj/O+BHueDXn1WA/eMVzoV7hJvlbyRE4BYTedwZUrVpp0t+LAwFHatSMVDRfzuKIrgscmkZzn3QmJuZna2xDc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756217852; c=relaxed/simple;
-	bh=7pGwjk6C7AJo/suB88KE4xommi2UEEFgrr8args7egg=;
+	s=arc-20240116; t=1756207545; c=relaxed/simple;
+	bh=yiEir1uWVmCQh9+A0tC3KDsFy/LmLRCeVSzZaGfGUMk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=gzifydF7xBaExpWnfO3u0q+tlykPndehEsMyXei1EHgE+oDUpFluu1N22jGMkeH185vpn2Ur4cKEvzuksJ/Ml152RGXtDiQ4Q43gWfzmqQK+u93vCQrxnUDRwF+TlS+ceU9P7cu8FM62xhJZm6SmOo/7/N2SgTd6n3pIIWmtB10=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Ghxs+Wib; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 588BEC4CEF1;
-	Tue, 26 Aug 2025 14:17:32 +0000 (UTC)
+	 MIME-Version; b=jU3Fsghe6JA4d0i0251Nc/uhP7RLNXynyyRJJD63/YPV1Eailv5eXxUnhb/ngh6dgF+86cmtkeH7E0STaYeeb6kd25HXZ0T8YIqutO5wYelXiQXEnMMNxkwm3080Sdi+GDy4+KzrksZsONUa0CCoMSmjcZHH7VUZvB/F7BxBh/8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=enTTXqQ1; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1B18AC4CEF1;
+	Tue, 26 Aug 2025 11:25:44 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1756217852;
-	bh=7pGwjk6C7AJo/suB88KE4xommi2UEEFgrr8args7egg=;
+	s=korg; t=1756207545;
+	bh=yiEir1uWVmCQh9+A0tC3KDsFy/LmLRCeVSzZaGfGUMk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Ghxs+WibIJGJM1td5gW9WEFrC0tCsW+0TVGKsUxh6Tz5zhg1R6HcRAI77N+kHv1pC
-	 XaOoL691gJgup3uRZGmB6V0epVJ7GiqBKqQUZ6HF99RmqiSQ5f21jvqz3Le9xVl8Ug
-	 TOqAPg1pOHZ0bfgLmcSDbo2UCKIkjGwoC4JX9dQ0=
+	b=enTTXqQ1E7nmn0NuERmDubKEatqDNS0QDqCeiYXgJ3USe5pAPuCuQdmyJboI9mynp
+	 /1LHEMmzBum0JXKSwZGNaJdQMA1pZsrxV7FkGUarYPsRJPsKj+hDOko8onjhtaEJ8o
+	 MkqfymWnS9HSAEMGYb0R4pjTMzzqWrUOg7XbKSp4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	syzbot+6e516bb515d93230bc7b@syzkaller.appspotmail.com,
-	Lizhi Xu <lizhi.xu@windriver.com>,
-	Dave Kleikamp <dave.kleikamp@oracle.com>,
+	Christoph Hellwig <hch@lst.de>,
+	"Darrick J. Wong" <djwong@kernel.org>,
+	Carlos Maiolino <cem@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 298/523] jfs: truncate good inode pages when hard link is 0
+Subject: [PATCH 6.16 224/457] xfs: improve the comments in xfs_select_zone_nowait
 Date: Tue, 26 Aug 2025 13:08:28 +0200
-Message-ID: <20250826110931.801504202@linuxfoundation.org>
+Message-ID: <20250826110942.903608912@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250826110924.562212281@linuxfoundation.org>
-References: <20250826110924.562212281@linuxfoundation.org>
+In-Reply-To: <20250826110937.289866482@linuxfoundation.org>
+References: <20250826110937.289866482@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,46 +63,54 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+6.16-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Lizhi Xu <lizhi.xu@windriver.com>
+From: Christoph Hellwig <hch@lst.de>
 
-[ Upstream commit 2d91b3765cd05016335cd5df5e5c6a29708ec058 ]
+[ Upstream commit 60e02f956d77af31b85ed4e73abf85d5f12d0a98 ]
 
-The fileset value of the inode copy from the disk by the reproducer is
-AGGR_RESERVED_I. When executing evict, its hard link number is 0, so its
-inode pages are not truncated. This causes the bugon to be triggered when
-executing clear_inode() because nrpages is greater than 0.
+The top of the function comment is outdated, and the parts still correct
+duplicate information in comment inside the function.  Remove the top of
+the function comment and instead improve a comment inside the function.
 
-Reported-by: syzbot+6e516bb515d93230bc7b@syzkaller.appspotmail.com
-Closes: https://syzkaller.appspot.com/bug?extid=6e516bb515d93230bc7b
-Signed-off-by: Lizhi Xu <lizhi.xu@windriver.com>
-Signed-off-by: Dave Kleikamp <dave.kleikamp@oracle.com>
+Signed-off-by: Christoph Hellwig <hch@lst.de>
+Reviewed-by: Darrick J. Wong <djwong@kernel.org>
+Signed-off-by: Carlos Maiolino <cem@kernel.org>
+Stable-dep-of: d2845519b072 ("xfs: fully decouple XFS_IBULK* flags from XFS_IWALK* flags")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- fs/jfs/inode.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ fs/xfs/xfs_zone_alloc.c |   10 ++--------
+ 1 file changed, 2 insertions(+), 8 deletions(-)
 
-diff --git a/fs/jfs/inode.c b/fs/jfs/inode.c
-index 980aa3300f10..2472b33e3a2d 100644
---- a/fs/jfs/inode.c
-+++ b/fs/jfs/inode.c
-@@ -145,9 +145,9 @@ void jfs_evict_inode(struct inode *inode)
- 	if (!inode->i_nlink && !is_bad_inode(inode)) {
- 		dquot_initialize(inode);
+--- a/fs/xfs/xfs_zone_alloc.c
++++ b/fs/xfs/xfs_zone_alloc.c
+@@ -654,13 +654,6 @@ static inline bool xfs_zoned_pack_tight(
+ 		!(ip->i_diflags & XFS_DIFLAG_APPEND);
+ }
  
-+		truncate_inode_pages_final(&inode->i_data);
- 		if (JFS_IP(inode)->fileset == FILESYSTEM_I) {
- 			struct inode *ipimap = JFS_SBI(inode->i_sb)->ipimap;
--			truncate_inode_pages_final(&inode->i_data);
+-/*
+- * Pick a new zone for writes.
+- *
+- * If we aren't using up our budget of open zones just open a new one from the
+- * freelist.  Else try to find one that matches the expected data lifetime.  If
+- * we don't find one that is good pick any zone that is available.
+- */
+ static struct xfs_open_zone *
+ xfs_select_zone_nowait(
+ 	struct xfs_mount	*mp,
+@@ -688,7 +681,8 @@ xfs_select_zone_nowait(
+ 		goto out_unlock;
  
- 			if (test_cflag(COMMIT_Freewmap, inode))
- 				jfs_free_zero_link(inode);
--- 
-2.39.5
-
+ 	/*
+-	 * See if we can open a new zone and use that.
++	 * See if we can open a new zone and use that so that data for different
++	 * files is mixed as little as possible.
+ 	 */
+ 	oz = xfs_try_open_zone(mp, write_hint);
+ 	if (oz)
 
 
 
