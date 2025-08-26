@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-175440-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-174314-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id A0EB1B367D5
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 16:10:36 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 68E24B362E1
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 15:23:32 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id A9435B630EF
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 14:04:41 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 4C0A2466622
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 13:16:06 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 354A1356915;
-	Tue, 26 Aug 2025 14:04:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5B77326158C;
+	Tue, 26 Aug 2025 13:14:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="lXe2oskb"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="1KkLizAy"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E7269352078;
-	Tue, 26 Aug 2025 14:04:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1A002FBF0;
+	Tue, 26 Aug 2025 13:14:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756217048; cv=none; b=vGT1TQv5g3t47AqSH4r4fMd+UyHI8NFdv9W6orC9oaz92r7WOYghjkv3uL9dkq/H/Lep+Y8+autHAtTJw364kgftA/jPZ8y/uGPRhvt2iyOyD9K65Arx6daQq4RVApoWEyp/8E61gMw7oUtMHu9afd0B2xk+EC/WpdvUwzhanzc=
+	t=1756214061; cv=none; b=ua+1QCt8zxq7kNUTWwVkXil7OQJ9HAc4lh4y29iTH9Je05+/oEZev7E1ZcQws/37rmpvMFYUlSZrDNiWGqJOcB7YQPtrIRDnOx8cczPImbO8t+c31rea/yL9jOfufHICvDbM3BCRadJx3g4WvMhfdSdnBnwVueN/9ArhqZlSUu4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756217048; c=relaxed/simple;
-	bh=c5sdOUbVHlPxHDdVEf32z1H32ofwU55vTD2gHABFzDA=;
+	s=arc-20240116; t=1756214061; c=relaxed/simple;
+	bh=iz+TOzIs+SgoO98dcDiw8J436hWZggtmCeil8cSGcrU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=bvtLXINvXONolt3vvu6uc4ugKRMNSLpTEZqln8P3CTKHRKOfU0SFNF0S931CPb/u+sBDtIP8e6woi3tQUlicCIC/i9VsGhNF4eYwQ8duzhi0Zzz9w/k0ebLNpbSR5dQbcjfhtTmEbNvkm49IdOfw9ldNY37zOEz/RqHrNPO6iK4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=lXe2oskb; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 212E0C4CEF1;
-	Tue, 26 Aug 2025 14:04:06 +0000 (UTC)
+	 MIME-Version; b=gxHCcYlBZdVFLCmgASNDwudMxBJwcbG/qjFd5TJeZrgLyfxe674WI3fYLaq0Dlma1aKPcLHDmwFdDvFrzrKGHlE1E8PjD1PLXLl30hVBpQ365zmgbp/uRJ51XQwxIQjGKvknV3Tk4P4KdA87sdXoEvGbmJWhVQ9jU2sd+kwx2s8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=1KkLizAy; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 46E77C4CEF1;
+	Tue, 26 Aug 2025 13:14:20 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1756217047;
-	bh=c5sdOUbVHlPxHDdVEf32z1H32ofwU55vTD2gHABFzDA=;
+	s=korg; t=1756214060;
+	bh=iz+TOzIs+SgoO98dcDiw8J436hWZggtmCeil8cSGcrU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=lXe2oskbXly9iRGFqiI72jhCVA+zrwtlkKThydg7lS954TjwozsTT/iOyW+B4X3UC
-	 CBXUJ8Jjsych9WISK43sKwb3QuKUBRx8/cia+auadJWnHEu/6D+QDG/fHIpVR68efU
-	 0Vei4xN9nooidqF54VEihdnQDHiEchf+M9Y/8qdU=
+	b=1KkLizAyQZyz8oRjjRvTa+PxCxQLstYlVKl4v0d0mQS5JKZ1BNH//olJJ/fbEin4l
+	 +YfVJXwst0fHaoNpBdN7CI6WjXMCuZzAp1cxETwtO2sy43xTzrzcjEB8VazShBkpY2
+	 ZkKUIo3lxis/JbDaApY2QbNuLyR13jwUKDl/3ENI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	=?UTF-8?q?Uwe=20Kleine-K=C3=B6nig?= <u.kleine-koenig@baylibre.com>,
-	AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>,
-	=?UTF-8?q?Uwe=20Kleine-K=C3=B6nig?= <ukleinek@kernel.org>,
+	Nitin Gote <nitin.r.gote@intel.com>,
+	Andi Shyti <andi.shyti@linux.intel.com>,
+	Thomas Zimmermann <tzimmermann@suse.de>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 609/644] pwm: mediatek: Handle hardware enable and clock enable separately
+Subject: [PATCH 6.6 551/587] iosys-map: Fix undefined behavior in iosys_map_clear()
 Date: Tue, 26 Aug 2025 13:11:40 +0200
-Message-ID: <20250826111001.643777568@linuxfoundation.org>
+Message-ID: <20250826111007.038542880@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250826110946.507083938@linuxfoundation.org>
-References: <20250826110946.507083938@linuxfoundation.org>
+In-Reply-To: <20250826110952.942403671@linuxfoundation.org>
+References: <20250826110952.942403671@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,128 +61,62 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Uwe Kleine-König <u.kleine-koenig@baylibre.com>
+From: Nitin Gote <nitin.r.gote@intel.com>
 
-[ Upstream commit 704d918341c378c5f9505dfdf32d315e256d3846 ]
+[ Upstream commit 5634c8cb298a7146b4e38873473e280b50e27a2c ]
 
-Stop handling the clocks in pwm_mediatek_enable() and
-pwm_mediatek_disable(). This is a preparing change for the next commit
-that requires that clocks and the enable bit are handled separately.
+The current iosys_map_clear() implementation reads the potentially
+uninitialized 'is_iomem' boolean field to decide which union member
+to clear. This causes undefined behavior when called on uninitialized
+structures, as 'is_iomem' may contain garbage values like 0xFF.
 
-Also move these two functions a bit further up in the source file to
-make them usable in pwm_mediatek_config(), which is needed in the next
-commit, too.
+UBSAN detects this as:
+    UBSAN: invalid-load in include/linux/iosys-map.h:267
+    load of value 255 is not a valid value for type '_Bool'
 
-Signed-off-by: Uwe Kleine-König <u.kleine-koenig@baylibre.com>
-Reviewed-by: AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>
-Link: https://lore.kernel.org/r/55c94fe2917ece152ee1e998f4675642a7716f13.1753717973.git.u.kleine-koenig@baylibre.com
-Cc: stable@vger.kernel.org
-Signed-off-by: Uwe Kleine-König <ukleinek@kernel.org>
-Stable-dep-of: f21d136caf81 ("pwm: mediatek: Fix duty and period setting")
+Fix by unconditionally clearing the entire structure with memset(),
+eliminating the need to read uninitialized data and ensuring all
+fields are set to known good values.
+
+Closes: https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/14639
+Fixes: 01fd30da0474 ("dma-buf: Add struct dma-buf-map for storing struct dma_buf.vaddr_ptr")
+Signed-off-by: Nitin Gote <nitin.r.gote@intel.com>
+Reviewed-by: Andi Shyti <andi.shyti@linux.intel.com>
+Reviewed-by: Thomas Zimmermann <tzimmermann@suse.de>
+Signed-off-by: Thomas Zimmermann <tzimmermann@suse.de>
+Link: https://lore.kernel.org/r/20250718105051.2709487-1-nitin.r.gote@intel.com
 Signed-off-by: Sasha Levin <sashal@kernel.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/pwm/pwm-mediatek.c |   60 +++++++++++++++++++++------------------------
- 1 file changed, 28 insertions(+), 32 deletions(-)
+ include/linux/iosys-map.h | 7 +------
+ 1 file changed, 1 insertion(+), 6 deletions(-)
 
---- a/drivers/pwm/pwm-mediatek.c
-+++ b/drivers/pwm/pwm-mediatek.c
-@@ -114,6 +114,26 @@ static inline void pwm_mediatek_writel(s
- 	writel(value, chip->regs + pwm_mediatek_reg_offset[num] + offset);
- }
- 
-+static void pwm_mediatek_enable(struct pwm_chip *chip, struct pwm_device *pwm)
-+{
-+	struct pwm_mediatek_chip *pc = to_pwm_mediatek_chip(chip);
-+	u32 value;
-+
-+	value = readl(pc->regs);
-+	value |= BIT(pwm->hwpwm);
-+	writel(value, pc->regs);
-+}
-+
-+static void pwm_mediatek_disable(struct pwm_chip *chip, struct pwm_device *pwm)
-+{
-+	struct pwm_mediatek_chip *pc = to_pwm_mediatek_chip(chip);
-+	u32 value;
-+
-+	value = readl(pc->regs);
-+	value &= ~BIT(pwm->hwpwm);
-+	writel(value, pc->regs);
-+}
-+
- static int pwm_mediatek_config(struct pwm_chip *chip, struct pwm_device *pwm,
- 			       int duty_ns, int period_ns)
+diff --git a/include/linux/iosys-map.h b/include/linux/iosys-map.h
+index cb71aa616bd3..631d58d0b838 100644
+--- a/include/linux/iosys-map.h
++++ b/include/linux/iosys-map.h
+@@ -264,12 +264,7 @@ static inline bool iosys_map_is_set(const struct iosys_map *map)
+  */
+ static inline void iosys_map_clear(struct iosys_map *map)
  {
-@@ -176,35 +196,6 @@ out:
- 	return ret;
+-	if (map->is_iomem) {
+-		map->vaddr_iomem = NULL;
+-		map->is_iomem = false;
+-	} else {
+-		map->vaddr = NULL;
+-	}
++	memset(map, 0, sizeof(*map));
  }
  
--static int pwm_mediatek_enable(struct pwm_chip *chip, struct pwm_device *pwm)
--{
--	struct pwm_mediatek_chip *pc = to_pwm_mediatek_chip(chip);
--	u32 value;
--	int ret;
--
--	ret = pwm_mediatek_clk_enable(chip, pwm);
--	if (ret < 0)
--		return ret;
--
--	value = readl(pc->regs);
--	value |= BIT(pwm->hwpwm);
--	writel(value, pc->regs);
--
--	return 0;
--}
--
--static void pwm_mediatek_disable(struct pwm_chip *chip, struct pwm_device *pwm)
--{
--	struct pwm_mediatek_chip *pc = to_pwm_mediatek_chip(chip);
--	u32 value;
--
--	value = readl(pc->regs);
--	value &= ~BIT(pwm->hwpwm);
--	writel(value, pc->regs);
--
--	pwm_mediatek_clk_disable(chip, pwm);
--}
--
- static int pwm_mediatek_apply(struct pwm_chip *chip, struct pwm_device *pwm,
- 			      const struct pwm_state *state)
- {
-@@ -214,8 +205,10 @@ static int pwm_mediatek_apply(struct pwm
- 		return -EINVAL;
- 
- 	if (!state->enabled) {
--		if (pwm->state.enabled)
-+		if (pwm->state.enabled) {
- 			pwm_mediatek_disable(chip, pwm);
-+			pwm_mediatek_clk_disable(chip, pwm);
-+		}
- 
- 		return 0;
- 	}
-@@ -224,8 +217,11 @@ static int pwm_mediatek_apply(struct pwm
- 	if (err)
- 		return err;
- 
--	if (!pwm->state.enabled)
--		err = pwm_mediatek_enable(chip, pwm);
-+	if (!pwm->state.enabled) {
-+		err = pwm_mediatek_clk_enable(chip, pwm);
-+		if (!err)
-+			pwm_mediatek_enable(chip, pwm);
-+	}
- 
- 	return err;
- }
+ /**
+-- 
+2.50.1
+
 
 
 
