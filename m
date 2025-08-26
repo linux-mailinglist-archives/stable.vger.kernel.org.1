@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-174098-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-176190-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id D3A3AB360F1
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 15:05:31 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 620A8B36CFC
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 17:04:30 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 7D6837B7E68
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 13:03:55 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 26B4C8E6F06
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 14:39:44 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A420123026B;
-	Tue, 26 Aug 2025 13:04:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1510C35AAD2;
+	Tue, 26 Aug 2025 14:36:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="q4yZoKVe"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="tzLH3olX"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5DF3E12CDA5;
-	Tue, 26 Aug 2025 13:04:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C5E6135AAC8;
+	Tue, 26 Aug 2025 14:36:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756213488; cv=none; b=tDN2kO6UjdixKbQoOpde1zFy9XmVfCIFjZbPpof9AUMr2f/bWIQuDzw1tB71fP0FJq1s2qvMOjpb0/xhpT+9c55PSJmB4pSK1isssBioaVTSJOmKbFpqKKqnsUvagRE/9dPxZCzFDW7uxtlaMlVXNgRAGMGvdDrFdyR5bGt3wS0=
+	t=1756219013; cv=none; b=qhQnXiSm2fErgaCBdpt8Rx1bWTLcvIFbBXZOaqf1Wg9rpV+2nd9RrZDVcisWRuFcQu+i7pusw7M/s3+grn0s297zjUuu57mZfydsAzl8qYuiRv4N8H2cL77Hqpc36PTVvaBDbwmv74wxF8JqjHR/Zq4SmkyQkoPzRtx4v8TkIyU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756213488; c=relaxed/simple;
-	bh=odxyQEG8f2M6hDOeXxvSa9lXsy0A7eKceb7Hpg4GKhI=;
+	s=arc-20240116; t=1756219013; c=relaxed/simple;
+	bh=VYb8AFKSx8YJARe6Upsdj2S+Rm0thMw2YRzFBtMtw9M=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=hTq+HYPDSSAum5k/cgkEFTSi/2rOCBr4YjL1+NNGuLN3KEW2aOQ9IQ+L7ghvSw/AMGrdou2rQ1BvRcM+y9jAHwcUTOcwfAuTGc6sggcSMssvDBIHiSsG0eAUIxRouk6yNXTXhGVO3mv3rLRNaX34azOD4RHNONL7N5px/yY5wNs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=q4yZoKVe; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9630EC4CEF1;
-	Tue, 26 Aug 2025 13:04:47 +0000 (UTC)
+	 MIME-Version; b=XHQ1Y+7wjLBMcYoqhytwF9q6OxLw3GWxGSLQ8NAqO33hlUqMTTly5M/cmxBmE+FUZYMWXe6/E6qdD57XE+jOMBzOmK2w8R5U6+uqv75TjUva2n6FEIWddXH6G2LfaHa47ICnntawJTe6U04FHC9vc1l/YdRbua8NOFUJ/UI3DWU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=tzLH3olX; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 59777C4CEF1;
+	Tue, 26 Aug 2025 14:36:53 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1756213487;
-	bh=odxyQEG8f2M6hDOeXxvSa9lXsy0A7eKceb7Hpg4GKhI=;
+	s=korg; t=1756219013;
+	bh=VYb8AFKSx8YJARe6Upsdj2S+Rm0thMw2YRzFBtMtw9M=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=q4yZoKVevf6YnD7opllfRbEBF1J9zcZVfj/bTQBRjZGSpO8l61bP7rwK7m/6hCXD8
-	 7Q4OyUrsi+y5iiMjNAE3od2xHUb+fFBoNBH0WVp7NJondF0TIjW8FlTwLiVPIiTZ+2
-	 ZYgK4nTG4epJ1FPu/g1Nl9q0u197MiJ1nrjIvF6o=
+	b=tzLH3olXvT0uem/zBHSKehc707r+TYSxx1d104mpcc8gSPJI7zQHAtWRVX2jt13ap
+	 YUjXelQxHX8QUzdfimp/t8b025F0vW+DkVdA1f1c2J5JDPiEk5TL9FgJagjtSVKxR6
+	 aFVCM4inEzcJ/dssrxO9PVbTQkwY5iIYAI56A9nE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Doug Anderson <dianders@chromium.org>,
-	Bjorn Andersson <bjorn.andersson@oss.qualcomm.com>,
-	Dmitry Baryshkov <dmitry.baryshkov@oss.qualcomm.com>,
-	Bjorn Andersson <andersson@kernel.org>
-Subject: [PATCH 6.6 365/587] soc: qcom: mdt_loader: Ensure we dont read past the ELF header
+	Kuninori Morimoto <kuninori.morimoto.gx@renesas.com>,
+	Mark Brown <broonie@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.4 188/403] ASoC: soc-dapm: set bias_level if snd_soc_dapm_set_bias_level() was successed
 Date: Tue, 26 Aug 2025 13:08:34 +0200
-Message-ID: <20250826111002.194495235@linuxfoundation.org>
+Message-ID: <20250826110912.070673029@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250826110952.942403671@linuxfoundation.org>
-References: <20250826110952.942403671@linuxfoundation.org>
+In-Reply-To: <20250826110905.607690791@linuxfoundation.org>
+References: <20250826110905.607690791@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,114 +62,77 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+5.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Bjorn Andersson <bjorn.andersson@oss.qualcomm.com>
+From: Kuninori Morimoto <kuninori.morimoto.gx@renesas.com>
 
-commit 9f9967fed9d066ed3dae9372b45ffa4f6fccfeef upstream.
+[ Upstream commit f40ecc2743652c0b0f19935f81baf57c601eb7f0 ]
 
-When the MDT loader is used in remoteproc, the ELF header is sanitized
-beforehand, but that's not necessary the case for other clients.
+ASoC has 2 functions to set bias level.
+	(A) snd_soc_dapm_force_bias_level()
+	(B) snd_soc_dapm_set_bias_level()
 
-Validate the size of the firmware buffer to ensure that we don't read
-past the end as we iterate over the header. e_phentsize and e_shentsize
-are validated as well, to ensure that the assumptions about step size in
-the traversal are valid.
+snd_soc_dapm_force_bias_level() (A) will set dapm->bias_level (a) if
+successed.
 
-Fixes: 2aad40d911ee ("remoteproc: Move qcom_mdt_loader into drivers/soc/qcom")
-Cc: stable@vger.kernel.org
-Reported-by: Doug Anderson <dianders@chromium.org>
-Signed-off-by: Bjorn Andersson <bjorn.andersson@oss.qualcomm.com>
-Reviewed-by: Dmitry Baryshkov <dmitry.baryshkov@oss.qualcomm.com>
-Link: https://lore.kernel.org/r/20250610-mdt-loader-validation-and-fixes-v2-1-f7073e9ab899@oss.qualcomm.com
-Signed-off-by: Bjorn Andersson <andersson@kernel.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+(A)	int snd_soc_dapm_force_bias_level(...)
+	{
+		...
+		if (ret == 0)
+(a)			dapm->bias_level = level;
+		...
+	}
+
+snd_soc_dapm_set_bias_level() (B) is also a function that sets bias_level.
+It will call snd_soc_dapm_force_bias_level() (A) inside, but doesn't
+set dapm->bias_level by itself. One note is that (A) might not be called.
+
+(B)	static int snd_soc_dapm_set_bias_level(...)
+	{
+		...
+		ret = snd_soc_card_set_bias_level(...);
+		...
+		if (dapm != &card->dapm)
+(A)			ret = snd_soc_dapm_force_bias_level(...);
+		...
+		ret = snd_soc_card_set_bias_level_post(...);
+		...
+	}
+
+dapm->bias_level will be set if (A) was called, but might not be set
+if (B) was called, even though it calles set_bias_level() function.
+
+We should set dapm->bias_level if we calls
+snd_soc_dapm_set_bias_level() (B), too.
+
+Signed-off-by: Kuninori Morimoto <kuninori.morimoto.gx@renesas.com>
+Link: https://patch.msgid.link/87qzyn4g4h.wl-kuninori.morimoto.gx@renesas.com
+Signed-off-by: Mark Brown <broonie@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/soc/qcom/mdt_loader.c |   43 ++++++++++++++++++++++++++++++++++++++++++
- 1 file changed, 43 insertions(+)
+ sound/soc/soc-dapm.c | 4 ++++
+ 1 file changed, 4 insertions(+)
 
---- a/drivers/soc/qcom/mdt_loader.c
-+++ b/drivers/soc/qcom/mdt_loader.c
-@@ -17,6 +17,37 @@
- #include <linux/slab.h>
- #include <linux/soc/qcom/mdt_loader.h>
+diff --git a/sound/soc/soc-dapm.c b/sound/soc/soc-dapm.c
+index 9f764d92469e..6142ce468c3b 100644
+--- a/sound/soc/soc-dapm.c
++++ b/sound/soc/soc-dapm.c
+@@ -741,6 +741,10 @@ static int snd_soc_dapm_set_bias_level(struct snd_soc_dapm_context *dapm,
+ out:
+ 	trace_snd_soc_bias_level_done(card, level);
  
-+static bool mdt_header_valid(const struct firmware *fw)
-+{
-+	const struct elf32_hdr *ehdr;
-+	size_t phend;
-+	size_t shend;
++	/* success */
++	if (ret == 0)
++		snd_soc_dapm_init_bias_level(dapm, level);
 +
-+	if (fw->size < sizeof(*ehdr))
-+		return false;
-+
-+	ehdr = (struct elf32_hdr *)fw->data;
-+
-+	if (memcmp(ehdr->e_ident, ELFMAG, SELFMAG))
-+		return false;
-+
-+	if (ehdr->e_phentsize != sizeof(struct elf32_phdr))
-+		return -EINVAL;
-+
-+	phend = size_add(size_mul(sizeof(struct elf32_phdr), ehdr->e_phnum), ehdr->e_phoff);
-+	if (phend > fw->size)
-+		return false;
-+
-+	if (ehdr->e_shentsize != sizeof(struct elf32_shdr))
-+		return -EINVAL;
-+
-+	shend = size_add(size_mul(sizeof(struct elf32_shdr), ehdr->e_shnum), ehdr->e_shoff);
-+	if (shend > fw->size)
-+		return false;
-+
-+	return true;
-+}
-+
- static bool mdt_phdr_valid(const struct elf32_phdr *phdr)
- {
- 	if (phdr->p_type != PT_LOAD)
-@@ -84,6 +115,9 @@ ssize_t qcom_mdt_get_size(const struct f
- 	phys_addr_t max_addr = 0;
- 	int i;
+ 	return ret;
+ }
  
-+	if (!mdt_header_valid(fw))
-+		return -EINVAL;
-+
- 	ehdr = (struct elf32_hdr *)fw->data;
- 	phdrs = (struct elf32_phdr *)(fw->data + ehdr->e_phoff);
- 
-@@ -136,6 +170,9 @@ void *qcom_mdt_read_metadata(const struc
- 	ssize_t ret;
- 	void *data;
- 
-+	if (!mdt_header_valid(fw))
-+		return ERR_PTR(-EINVAL);
-+
- 	ehdr = (struct elf32_hdr *)fw->data;
- 	phdrs = (struct elf32_phdr *)(fw->data + ehdr->e_phoff);
- 
-@@ -216,6 +253,9 @@ int qcom_mdt_pas_init(struct device *dev
- 	int ret;
- 	int i;
- 
-+	if (!mdt_header_valid(fw))
-+		return -EINVAL;
-+
- 	ehdr = (struct elf32_hdr *)fw->data;
- 	phdrs = (struct elf32_phdr *)(fw->data + ehdr->e_phoff);
- 
-@@ -312,6 +352,9 @@ static int __qcom_mdt_load(struct device
- 	if (!fw || !mem_region || !mem_phys || !mem_size)
- 		return -EINVAL;
- 
-+	if (!mdt_header_valid(fw))
-+		return -EINVAL;
-+
- 	is_split = qcom_mdt_bins_are_split(fw, fw_name);
- 	ehdr = (struct elf32_hdr *)fw->data;
- 	phdrs = (struct elf32_phdr *)(fw->data + ehdr->e_phoff);
+-- 
+2.39.5
+
 
 
 
