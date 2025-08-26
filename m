@@ -1,57 +1,55 @@
-Return-Path: <stable+bounces-176182-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-173228-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 94120B36C70
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 16:56:25 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 58CD5B35C8E
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 13:35:41 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 6F1E71C22603
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 14:39:45 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 6FB611888F19
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 11:30:57 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8A84F35E4DD;
-	Tue, 26 Aug 2025 14:36:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id EC93C34A307;
+	Tue, 26 Aug 2025 11:28:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="v5NV17fo"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="DstzZKXe"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4814435E4D0;
-	Tue, 26 Aug 2025 14:36:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AA1B5346A1D;
+	Tue, 26 Aug 2025 11:28:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756218993; cv=none; b=eLGMgTWhTrzrNxCPq52SLLnT3wYc+6MTPQQYI1vedoqE3LQn+eauQ7DrHuXLQX+9TWaxp87U/JN6styZC23PfAOF3+z8tXIFKCiXfQnOriUpXX7U9jZWRG+z5GOmmy9LWPWsFiADicM1itfyQh1e5XX13okPlaxzogrZN04O3fQ=
+	t=1756207701; cv=none; b=SfmLfhC17Y9HF/qJJhWI5TZEbWnZGhyV2JdRpp07W142jd4XvZAqut1RG1Av8Iy2c7a1w/7mjCYMqUbZ8Mw1PN/Pld3UlN3VUlAsulwA94ghq26xdkzeGS7Wxg1wuZFxGDSTpLeU6aY+l/ATzxSQ77xSz/6MzsYr9JKSaYzwgrM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756218993; c=relaxed/simple;
-	bh=9Db9kURQ4+HkMRvJmKU4Ur0PKGTJogpfqcrRaEhzMNQ=;
+	s=arc-20240116; t=1756207701; c=relaxed/simple;
+	bh=ix7Y2EVT+FasLKTP+wz8VJh7yH2ee7+yBR64noQlLzM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=kqsqAVyXGydsJF5rhawqa7OJYCqiJ3xG8QRqZ+7IKtVXQeMUrqAyWBk1KWdJFQgU7CUANvOPIak1jQdzgZ+vtW3bic2TUf21uONHYiy4bHpSJ0/b1h1Vn+V7fGHMLjEUnB8rT+aJKTwJOGzyfG0oyxct0eVxuZjf3UYmBEmWdWY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=v5NV17fo; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8B625C113CF;
-	Tue, 26 Aug 2025 14:36:32 +0000 (UTC)
+	 MIME-Version; b=YSUiYdUX+En69ppvKWyyLX61lb1E+xywfaNVaS7i13iGgVZIX+TGb5fNaC9nkXhqCWi+k3zD5NlsUR/vFl2xFs4/BzU7gOSlGzrza1W2NAyhNGt0qYw57LaAsdAd1HEtI7aVauDPxte4nd2/kAdwK2ZWlVLqRlyPuDcWuJ2s6Ps=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=DstzZKXe; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id CEDE8C4CEF4;
+	Tue, 26 Aug 2025 11:28:20 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1756218992;
-	bh=9Db9kURQ4+HkMRvJmKU4Ur0PKGTJogpfqcrRaEhzMNQ=;
+	s=korg; t=1756207701;
+	bh=ix7Y2EVT+FasLKTP+wz8VJh7yH2ee7+yBR64noQlLzM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=v5NV17fo2y7VGAtvB5f7f68KuRep8DVya1W0yXPaZ/wTuWA+E04bGUNQGgLvKYMv1
-	 olHrHuvUlqOvnGmLoLAm+lmxSbmBMpZCdMcVJBzTT7LTwM/4MxFmDf8jK9A2UVwaI4
-	 0oTjWystz6CV/wyBCsdsBqmiQMizu153BgjXd4uA=
+	b=DstzZKXeXxj4KDWGch8aHekOew9W+rNP+0DDVEozUkQVo1N+lzhxwnhVK5BYorOj0
+	 tEt9D+OMnAJ24ZcQqwj83iXjY5ClBCa+pTiaybIjN7FjI5l+IZFz+RQbDJ/wriGGBt
+	 W4AqnngYNN8nA/hRU1anDb10ezoTxOHcsFEjNcHQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Thomas Fourier <fourier.thomas@gmail.com>,
-	Simon Horman <horms@kernel.org>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.4 211/403] net: ag71xx: Add missing check after DMA map
+	Alexander Gordeev <agordeev@linux.ibm.com>,
+	Peter Oberparleiter <oberpar@linux.ibm.com>
+Subject: [PATCH 6.16 253/457] s390/sclp: Fix SCCB present check
 Date: Tue, 26 Aug 2025 13:08:57 +0200
-Message-ID: <20250826110912.672183598@linuxfoundation.org>
+Message-ID: <20250826110943.611599404@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250826110905.607690791@linuxfoundation.org>
-References: <20250826110905.607690791@linuxfoundation.org>
+In-Reply-To: <20250826110937.289866482@linuxfoundation.org>
+References: <20250826110937.289866482@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,55 +61,70 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.4-stable review patch.  If anyone has any objections, please let me know.
+6.16-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Thomas Fourier <fourier.thomas@gmail.com>
+From: Peter Oberparleiter <oberpar@linux.ibm.com>
 
-[ Upstream commit 96a1e15e60216b52da0e6da5336b6d7f5b0188b0 ]
+commit 430fa71027b6ac9bb0ce5532b8d0676777d4219a upstream.
 
-The DMA map functions can fail and should be tested for errors.
+Tracing code called by the SCLP interrupt handler contains early exits
+if the SCCB address associated with an interrupt is NULL. This check is
+performed after physical to virtual address translation.
 
-Signed-off-by: Thomas Fourier <fourier.thomas@gmail.com>
-Reviewed-by: Simon Horman <horms@kernel.org>
-Link: https://patch.msgid.link/20250716095733.37452-3-fourier.thomas@gmail.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+If the kernel identity mapping does not start at address zero, the
+resulting virtual address is never zero, so that the NULL checks won't
+work. Subsequently this may result in incorrect accesses to the first
+page of the identity mapping.
+
+Fix this by introducing a function that handles the NULL case before
+address translation.
+
+Fixes: ada1da31ce34 ("s390/sclp: sort out physical vs virtual pointers usage")
+Cc: stable@vger.kernel.org
+Reviewed-by: Alexander Gordeev <agordeev@linux.ibm.com>
+Signed-off-by: Peter Oberparleiter <oberpar@linux.ibm.com>
+Signed-off-by: Alexander Gordeev <agordeev@linux.ibm.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/net/ethernet/atheros/ag71xx.c | 9 +++++++++
- 1 file changed, 9 insertions(+)
+ drivers/s390/char/sclp.c |   11 +++++++++--
+ 1 file changed, 9 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/net/ethernet/atheros/ag71xx.c b/drivers/net/ethernet/atheros/ag71xx.c
-index 58a002dd758c..ba07817d0a22 100644
---- a/drivers/net/ethernet/atheros/ag71xx.c
-+++ b/drivers/net/ethernet/atheros/ag71xx.c
-@@ -1049,6 +1049,11 @@ static bool ag71xx_fill_rx_buf(struct ag71xx *ag, struct ag71xx_buf *buf,
- 	buf->rx.rx_buf = data;
- 	buf->rx.dma_addr = dma_map_single(&ag->pdev->dev, data, ag->rx_buf_size,
- 					  DMA_FROM_DEVICE);
-+	if (dma_mapping_error(&ag->pdev->dev, buf->rx.dma_addr)) {
-+		skb_free_frag(data);
-+		buf->rx.rx_buf = NULL;
-+		return false;
-+	}
- 	desc->data = (u32)buf->rx.dma_addr + offset;
- 	return true;
- }
-@@ -1343,6 +1348,10 @@ static netdev_tx_t ag71xx_hard_start_xmit(struct sk_buff *skb,
+--- a/drivers/s390/char/sclp.c
++++ b/drivers/s390/char/sclp.c
+@@ -76,6 +76,13 @@ unsigned long sclp_console_full;
+ /* The currently active SCLP command word. */
+ static sclp_cmdw_t active_cmd;
  
- 	dma_addr = dma_map_single(&ag->pdev->dev, skb->data, skb->len,
- 				  DMA_TO_DEVICE);
-+	if (dma_mapping_error(&ag->pdev->dev, dma_addr)) {
-+		netif_dbg(ag, tx_err, ndev, "DMA mapping error\n");
-+		goto err_drop;
-+	}
++static inline struct sccb_header *sclpint_to_sccb(u32 sccb_int)
++{
++	if (sccb_int)
++		return __va(sccb_int);
++	return NULL;
++}
++
+ static inline void sclp_trace(int prio, char *id, u32 a, u64 b, bool err)
+ {
+ 	struct sclp_trace_entry e;
+@@ -619,7 +626,7 @@ __sclp_find_req(u32 sccb)
  
- 	i = ring->curr & ring_mask;
- 	desc = ag71xx_ring_desc(ring, i);
--- 
-2.39.5
-
+ static bool ok_response(u32 sccb_int, sclp_cmdw_t cmd)
+ {
+-	struct sccb_header *sccb = (struct sccb_header *)__va(sccb_int);
++	struct sccb_header *sccb = sclpint_to_sccb(sccb_int);
+ 	struct evbuf_header *evbuf;
+ 	u16 response;
+ 
+@@ -658,7 +665,7 @@ static void sclp_interrupt_handler(struc
+ 
+ 	/* INT: Interrupt received (a=intparm, b=cmd) */
+ 	sclp_trace_sccb(0, "INT", param32, active_cmd, active_cmd,
+-			(struct sccb_header *)__va(finished_sccb),
++			sclpint_to_sccb(finished_sccb),
+ 			!ok_response(finished_sccb, active_cmd));
+ 
+ 	if (finished_sccb) {
 
 
 
