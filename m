@@ -1,56 +1,55 @@
-Return-Path: <stable+bounces-174906-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-173778-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id F41AEB36596
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 15:49:18 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9B1E0B35FAB
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 14:52:22 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id F18CA3BBAF9
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 13:40:30 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 1D7CA1BA535F
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 12:51:46 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7181A2264B8;
-	Tue, 26 Aug 2025 13:40:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id DE1071EEA49;
+	Tue, 26 Aug 2025 12:50:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="mxUlQBYF"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="tlklvThS"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2E161221290;
-	Tue, 26 Aug 2025 13:40:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 989561EB9F2;
+	Tue, 26 Aug 2025 12:50:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756215629; cv=none; b=N6wMBdU4fw8USbzA16SYMYKO6k1QlNv5zlJq3PfJH/0iqM8IPl3oREiDQTtuepQ6VDw57fqYwmQYjWRt6v0tF77t0M6kR+epdzSnLm8m8zVi1+V1KjKgWs0t+2OsVhO57dGqegqezT47Cry3TrwaAX0vyoeV76VvZee233Lbe2E=
+	t=1756212646; cv=none; b=mbNkWsKDzdyAhHPR0l0dJFBSMep1skKuC947L+V1duZtl8lTF8/TJF9Ut08+pxXkrfyono/gtYA3FyKdtGEpcxnaaZV2G615lIfT6kHyu/h799BOI3qOCAUbUtwwZ4Vp2wZChWegHlDFCEYIDQBlyXwC5KOrDsKmIHFBKA8gKPU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756215629; c=relaxed/simple;
-	bh=hC9yxy2GQsYJAS8wetWTBPrplvtuQ/ajTUKakC9A6+g=;
+	s=arc-20240116; t=1756212646; c=relaxed/simple;
+	bh=6ajrFTw2WiEabVJZ46bAiLvQ4rabjxQxSiI2m1vzWJI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=DRDMHeZ8n5VsubjhJzFCiSPwO1Dexfsm/IKP737j2Qmlc0sLiNmTXGgYhD1kzpmURttXP9z8JDjSPb8dHbrrZRS3Y24DY/CeHeRl5/XG5Kk8E7wLuRlq/rDo0DH9sICq+voyzC2o9eg0hUkyrLzPRLhn8X6XQcGFlRgUwvrtVMI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=mxUlQBYF; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id AF2ADC4CEF1;
-	Tue, 26 Aug 2025 13:40:28 +0000 (UTC)
+	 MIME-Version; b=CeLc/gbieP4EU/iLOvV/y3kyT07Fowk+G1n1od4ju07UET30OiegaYNb/jANaIzFkEd+2vhh/5x1BvLn1Olxsrwmbg4dcTf5dzpuHAAxvXNCzLPsjOki/Lp2VuCnaruCAPLFsM3GBre0HiVWHbJ+brggS6kmEukA24vrn2aGU6Y=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=tlklvThS; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2FB0DC4CEF4;
+	Tue, 26 Aug 2025 12:50:46 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1756215629;
-	bh=hC9yxy2GQsYJAS8wetWTBPrplvtuQ/ajTUKakC9A6+g=;
+	s=korg; t=1756212646;
+	bh=6ajrFTw2WiEabVJZ46bAiLvQ4rabjxQxSiI2m1vzWJI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=mxUlQBYFHVVo3qOlSQjU9uPU3XSGdPEJoA0NNfaI/PQvr9A6CmNBYKbFPU2rK0s73
-	 orNhdsTisvqRA0kcg1SFSmgGlA7VIKRFp4uTMyerCNex6UzA/40dpCeZ5n/Y+rKwIR
-	 4vv/wSHN+nuhci1B5I+dXu3H2/6h/LmLsqL3Wz00=
+	b=tlklvThSHsR7J73+F82Wao3IimCDsusAELDyoIRZOIsQ8OV1EdEzoJUVQmxB/dEbS
+	 mmgM+Kys3f52sWvddnaF8wfQBjeiQrkUl1fws9NxYi8Eqw6qwCeR4Po+n9wiraM91P
+	 vYOugZAKLVaQY3H45xGLhbw5Dt8aNUJsC1qM8hDY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Daniel Dadap <ddadap@nvidia.com>,
-	Takashi Iwai <tiwai@suse.de>,
+	Sean Christopherson <seanjc@google.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 106/644] ALSA: hda: Add missing NVIDIA HDA codec IDs
+Subject: [PATCH 6.6 048/587] KVM: x86: Drop kvm_x86_ops.set_dr6() in favor of a new KVM_RUN flag
 Date: Tue, 26 Aug 2025 13:03:17 +0200
-Message-ID: <20250826110949.143947309@linuxfoundation.org>
+Message-ID: <20250826110954.165543975@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250826110946.507083938@linuxfoundation.org>
-References: <20250826110946.507083938@linuxfoundation.org>
+In-Reply-To: <20250826110952.942403671@linuxfoundation.org>
+References: <20250826110952.942403671@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,72 +61,149 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Daniel Dadap <ddadap@nvidia.com>
+From: Sean Christopherson <seanjc@google.com>
 
-commit e0a911ac86857a73182edde9e50d9b4b949b7f01 upstream.
+[ Upstream commit 80c64c7afea1da6a93ebe88d3d29d8a60377ef80 ]
 
-Add codec IDs for several NVIDIA products with HDA controllers to the
-snd_hda_id_hdmi[] patch table.
+Instruct vendor code to load the guest's DR6 into hardware via a new
+KVM_RUN flag, and remove kvm_x86_ops.set_dr6(), whose sole purpose was to
+load vcpu->arch.dr6 into hardware when DR6 can be read/written directly
+by the guest.
 
-Signed-off-by: Daniel Dadap <ddadap@nvidia.com>
-Cc: <stable@vger.kernel.org>
-Link: https://patch.msgid.link/aF24rqwMKFWoHu12@ddadap-lakeline.nvidia.com
-Signed-off-by: Takashi Iwai <tiwai@suse.de>
-[ change patch_tegra234_hdmi function calls to patch_tegra_hdmi ]
+Note, TDX already WARNs on any run_flag being set, i.e. will yell if KVM
+thinks DR6 needs to be reloaded.  TDX vCPUs force KVM_DEBUGREG_AUTO_SWITCH
+and never clear the flag, i.e. should never observe KVM_RUN_LOAD_GUEST_DR6.
+
+Cc: stable@vger.kernel.org
+Link: https://lore.kernel.org/r/20250610232010.162191-4-seanjc@google.com
+Signed-off-by: Sean Christopherson <seanjc@google.com>
+[sean: account for lack of vmx/main.c]
+Signed-off-by: Sean Christopherson <seanjc@google.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- sound/pci/hda/patch_hdmi.c |   19 +++++++++++++++++++
- 1 file changed, 19 insertions(+)
+ arch/x86/include/asm/kvm-x86-ops.h |  1 -
+ arch/x86/include/asm/kvm_host.h    |  2 +-
+ arch/x86/kvm/svm/svm.c             | 10 ++++++----
+ arch/x86/kvm/vmx/vmx.c             | 10 +++-------
+ arch/x86/kvm/x86.c                 |  2 +-
+ 5 files changed, 11 insertions(+), 14 deletions(-)
 
---- a/sound/pci/hda/patch_hdmi.c
-+++ b/sound/pci/hda/patch_hdmi.c
-@@ -4364,6 +4364,8 @@ HDA_CODEC_ENTRY(0x10de002d, "Tegra186 HD
- HDA_CODEC_ENTRY(0x10de002e, "Tegra186 HDMI/DP1", patch_tegra_hdmi),
- HDA_CODEC_ENTRY(0x10de002f, "Tegra194 HDMI/DP2", patch_tegra_hdmi),
- HDA_CODEC_ENTRY(0x10de0030, "Tegra194 HDMI/DP3", patch_tegra_hdmi),
-+HDA_CODEC_ENTRY(0x10de0033, "SoC 33 HDMI/DP",	patch_tegra_hdmi),
-+HDA_CODEC_ENTRY(0x10de0035, "SoC 35 HDMI/DP",	patch_tegra_hdmi),
- HDA_CODEC_ENTRY(0x10de0040, "GPU 40 HDMI/DP",	patch_nvhdmi),
- HDA_CODEC_ENTRY(0x10de0041, "GPU 41 HDMI/DP",	patch_nvhdmi),
- HDA_CODEC_ENTRY(0x10de0042, "GPU 42 HDMI/DP",	patch_nvhdmi),
-@@ -4402,15 +4404,32 @@ HDA_CODEC_ENTRY(0x10de0097, "GPU 97 HDMI
- HDA_CODEC_ENTRY(0x10de0098, "GPU 98 HDMI/DP",	patch_nvhdmi),
- HDA_CODEC_ENTRY(0x10de0099, "GPU 99 HDMI/DP",	patch_nvhdmi),
- HDA_CODEC_ENTRY(0x10de009a, "GPU 9a HDMI/DP",	patch_nvhdmi),
-+HDA_CODEC_ENTRY(0x10de009b, "GPU 9b HDMI/DP",	patch_nvhdmi),
-+HDA_CODEC_ENTRY(0x10de009c, "GPU 9c HDMI/DP",	patch_nvhdmi),
- HDA_CODEC_ENTRY(0x10de009d, "GPU 9d HDMI/DP",	patch_nvhdmi),
- HDA_CODEC_ENTRY(0x10de009e, "GPU 9e HDMI/DP",	patch_nvhdmi),
- HDA_CODEC_ENTRY(0x10de009f, "GPU 9f HDMI/DP",	patch_nvhdmi),
- HDA_CODEC_ENTRY(0x10de00a0, "GPU a0 HDMI/DP",	patch_nvhdmi),
-+HDA_CODEC_ENTRY(0x10de00a1, "GPU a1 HDMI/DP",	patch_nvhdmi),
- HDA_CODEC_ENTRY(0x10de00a3, "GPU a3 HDMI/DP",	patch_nvhdmi),
- HDA_CODEC_ENTRY(0x10de00a4, "GPU a4 HDMI/DP",	patch_nvhdmi),
- HDA_CODEC_ENTRY(0x10de00a5, "GPU a5 HDMI/DP",	patch_nvhdmi),
- HDA_CODEC_ENTRY(0x10de00a6, "GPU a6 HDMI/DP",	patch_nvhdmi),
- HDA_CODEC_ENTRY(0x10de00a7, "GPU a7 HDMI/DP",	patch_nvhdmi),
-+HDA_CODEC_ENTRY(0x10de00a8, "GPU a8 HDMI/DP",	patch_nvhdmi),
-+HDA_CODEC_ENTRY(0x10de00a9, "GPU a9 HDMI/DP",	patch_nvhdmi),
-+HDA_CODEC_ENTRY(0x10de00aa, "GPU aa HDMI/DP",	patch_nvhdmi),
-+HDA_CODEC_ENTRY(0x10de00ab, "GPU ab HDMI/DP",	patch_nvhdmi),
-+HDA_CODEC_ENTRY(0x10de00ad, "GPU ad HDMI/DP",	patch_nvhdmi),
-+HDA_CODEC_ENTRY(0x10de00ae, "GPU ae HDMI/DP",	patch_nvhdmi),
-+HDA_CODEC_ENTRY(0x10de00af, "GPU af HDMI/DP",	patch_nvhdmi),
-+HDA_CODEC_ENTRY(0x10de00b0, "GPU b0 HDMI/DP",	patch_nvhdmi),
-+HDA_CODEC_ENTRY(0x10de00b1, "GPU b1 HDMI/DP",	patch_nvhdmi),
-+HDA_CODEC_ENTRY(0x10de00c0, "GPU c0 HDMI/DP",	patch_nvhdmi),
-+HDA_CODEC_ENTRY(0x10de00c1, "GPU c1 HDMI/DP",	patch_nvhdmi),
-+HDA_CODEC_ENTRY(0x10de00c3, "GPU c3 HDMI/DP",	patch_nvhdmi),
-+HDA_CODEC_ENTRY(0x10de00c4, "GPU c4 HDMI/DP",	patch_nvhdmi),
-+HDA_CODEC_ENTRY(0x10de00c5, "GPU c5 HDMI/DP",	patch_nvhdmi),
- HDA_CODEC_ENTRY(0x10de8001, "MCP73 HDMI",	patch_nvhdmi_2ch),
- HDA_CODEC_ENTRY(0x10de8067, "MCP67/68 HDMI",	patch_nvhdmi_2ch),
- HDA_CODEC_ENTRY(0x67663d82, "Arise 82 HDMI/DP",	patch_gf_hdmi),
+diff --git a/arch/x86/include/asm/kvm-x86-ops.h b/arch/x86/include/asm/kvm-x86-ops.h
+index 8fe6667d945f..a0a4fc684e63 100644
+--- a/arch/x86/include/asm/kvm-x86-ops.h
++++ b/arch/x86/include/asm/kvm-x86-ops.h
+@@ -48,7 +48,6 @@ KVM_X86_OP(set_idt)
+ KVM_X86_OP(get_gdt)
+ KVM_X86_OP(set_gdt)
+ KVM_X86_OP(sync_dirty_debug_regs)
+-KVM_X86_OP(set_dr6)
+ KVM_X86_OP(set_dr7)
+ KVM_X86_OP(cache_reg)
+ KVM_X86_OP(get_rflags)
+diff --git a/arch/x86/include/asm/kvm_host.h b/arch/x86/include/asm/kvm_host.h
+index aa6d04cd9ee6..7373b22c02a7 100644
+--- a/arch/x86/include/asm/kvm_host.h
++++ b/arch/x86/include/asm/kvm_host.h
+@@ -1552,6 +1552,7 @@ static inline u16 kvm_lapic_irq_dest_mode(bool dest_mode_logical)
+ 
+ enum kvm_x86_run_flags {
+ 	KVM_RUN_FORCE_IMMEDIATE_EXIT	= BIT(0),
++	KVM_RUN_LOAD_GUEST_DR6		= BIT(1),
+ };
+ 
+ struct kvm_x86_ops {
+@@ -1600,7 +1601,6 @@ struct kvm_x86_ops {
+ 	void (*get_gdt)(struct kvm_vcpu *vcpu, struct desc_ptr *dt);
+ 	void (*set_gdt)(struct kvm_vcpu *vcpu, struct desc_ptr *dt);
+ 	void (*sync_dirty_debug_regs)(struct kvm_vcpu *vcpu);
+-	void (*set_dr6)(struct kvm_vcpu *vcpu, unsigned long value);
+ 	void (*set_dr7)(struct kvm_vcpu *vcpu, unsigned long value);
+ 	void (*cache_reg)(struct kvm_vcpu *vcpu, enum kvm_reg reg);
+ 	unsigned long (*get_rflags)(struct kvm_vcpu *vcpu);
+diff --git a/arch/x86/kvm/svm/svm.c b/arch/x86/kvm/svm/svm.c
+index 61e5e261cde2..abff6d45ae33 100644
+--- a/arch/x86/kvm/svm/svm.c
++++ b/arch/x86/kvm/svm/svm.c
+@@ -4241,10 +4241,13 @@ static __no_kcsan fastpath_t svm_vcpu_run(struct kvm_vcpu *vcpu, u64 run_flags)
+ 	svm_hv_update_vp_id(svm->vmcb, vcpu);
+ 
+ 	/*
+-	 * Run with all-zero DR6 unless needed, so that we can get the exact cause
+-	 * of a #DB.
++	 * Run with all-zero DR6 unless the guest can write DR6 freely, so that
++	 * KVM can get the exact cause of a #DB.  Note, loading guest DR6 from
++	 * KVM's snapshot is only necessary when DR accesses won't exit.
+ 	 */
+-	if (likely(!(vcpu->arch.switch_db_regs & KVM_DEBUGREG_WONT_EXIT)))
++	if (unlikely(run_flags & KVM_RUN_LOAD_GUEST_DR6))
++		svm_set_dr6(vcpu, vcpu->arch.dr6);
++	else if (likely(!(vcpu->arch.switch_db_regs & KVM_DEBUGREG_WONT_EXIT)))
+ 		svm_set_dr6(vcpu, DR6_ACTIVE_LOW);
+ 
+ 	clgi();
+@@ -5021,7 +5024,6 @@ static struct kvm_x86_ops svm_x86_ops __initdata = {
+ 	.set_idt = svm_set_idt,
+ 	.get_gdt = svm_get_gdt,
+ 	.set_gdt = svm_set_gdt,
+-	.set_dr6 = svm_set_dr6,
+ 	.set_dr7 = svm_set_dr7,
+ 	.sync_dirty_debug_regs = svm_sync_dirty_debug_regs,
+ 	.cache_reg = svm_cache_reg,
+diff --git a/arch/x86/kvm/vmx/vmx.c b/arch/x86/kvm/vmx/vmx.c
+index 065aac2f4bce..08ca218ee858 100644
+--- a/arch/x86/kvm/vmx/vmx.c
++++ b/arch/x86/kvm/vmx/vmx.c
+@@ -5616,12 +5616,6 @@ static void vmx_sync_dirty_debug_regs(struct kvm_vcpu *vcpu)
+ 	set_debugreg(DR6_RESERVED, 6);
+ }
+ 
+-static void vmx_set_dr6(struct kvm_vcpu *vcpu, unsigned long val)
+-{
+-	lockdep_assert_irqs_disabled();
+-	set_debugreg(vcpu->arch.dr6, 6);
+-}
+-
+ static void vmx_set_dr7(struct kvm_vcpu *vcpu, unsigned long val)
+ {
+ 	vmcs_writel(GUEST_DR7, val);
+@@ -7392,6 +7386,9 @@ static fastpath_t vmx_vcpu_run(struct kvm_vcpu *vcpu, u64 run_flags)
+ 		vmcs_writel(GUEST_RIP, vcpu->arch.regs[VCPU_REGS_RIP]);
+ 	vcpu->arch.regs_dirty = 0;
+ 
++	if (run_flags & KVM_RUN_LOAD_GUEST_DR6)
++		set_debugreg(vcpu->arch.dr6, 6);
++
+ 	/*
+ 	 * Refresh vmcs.HOST_CR3 if necessary.  This must be done immediately
+ 	 * prior to VM-Enter, as the kernel may load a new ASID (PCID) any time
+@@ -8337,7 +8334,6 @@ static struct kvm_x86_ops vmx_x86_ops __initdata = {
+ 	.set_idt = vmx_set_idt,
+ 	.get_gdt = vmx_get_gdt,
+ 	.set_gdt = vmx_set_gdt,
+-	.set_dr6 = vmx_set_dr6,
+ 	.set_dr7 = vmx_set_dr7,
+ 	.sync_dirty_debug_regs = vmx_sync_dirty_debug_regs,
+ 	.cache_reg = vmx_cache_reg,
+diff --git a/arch/x86/kvm/x86.c b/arch/x86/kvm/x86.c
+index ecc151397341..fbb2e70e3031 100644
+--- a/arch/x86/kvm/x86.c
++++ b/arch/x86/kvm/x86.c
+@@ -10772,7 +10772,7 @@ static int vcpu_enter_guest(struct kvm_vcpu *vcpu)
+ 		set_debugreg(vcpu->arch.eff_db[3], 3);
+ 		/* When KVM_DEBUGREG_WONT_EXIT, dr6 is accessible in guest. */
+ 		if (unlikely(vcpu->arch.switch_db_regs & KVM_DEBUGREG_WONT_EXIT))
+-			static_call(kvm_x86_set_dr6)(vcpu, vcpu->arch.dr6);
++			run_flags |= KVM_RUN_LOAD_GUEST_DR6;
+ 	} else if (unlikely(hw_breakpoint_active())) {
+ 		set_debugreg(0, 7);
+ 	}
+-- 
+2.50.1
+
 
 
 
