@@ -1,57 +1,65 @@
-Return-Path: <stable+bounces-176166-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-173183-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 39313B36A8E
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 16:38:34 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 08662B35C14
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 13:31:08 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 4206A7A71DF
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 14:36:58 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 0534F188F670
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 11:26:52 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D609D2C0F9C;
-	Tue, 26 Aug 2025 14:35:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id F1E842C15A8;
+	Tue, 26 Aug 2025 11:26:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="SVp8CSC8"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="E2ySa4+T"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9519E239E8B;
-	Tue, 26 Aug 2025 14:35:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AC14929C339;
+	Tue, 26 Aug 2025 11:26:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756218951; cv=none; b=ripykCfL5CL9L4TVjn4IZvBwBoVqei41NX9QQAwW4jV2LKvLp99oHZd+FulAK8D3DxbyL4ocff3PpH9KlCBfPwFkyOopH/iQw9dGDKmcYXQ7taDh8kqHzelvJasQOAsauKL0e/3bnurKofbhqNCvXQJS6pR0O1fv3JMswVo4+LQ=
+	t=1756207586; cv=none; b=V+h43JcNc3uzPVosVkZDZujUtq1KeezgHNXdryYqGFp68WMoMdq1pR+/UxVNpAwHI8XvzjWTNH+spvVmKNeODPAyxjlFQsRlOHl/2pKZmR9rOQllrn/Kv37z6EegUtW895tpL3JM0Zx4petSJEqfl5OU1wsdBZq2Dm+tsAaM8gY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756218951; c=relaxed/simple;
-	bh=AgQ0C0vnPcWnvuJgmYEZ9jw5t5eNFGjr1WxQ2JI2P/U=;
+	s=arc-20240116; t=1756207586; c=relaxed/simple;
+	bh=eZf/SkwYoUFVo8sA7z/TbcFK2NTK6V9zPNkSMZe02AI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=rXWv9m24u4XTyStqK5zx9/7LSvwX3M/KY/nDpfFt4mkz0fWoThOBRrjarccLawBD643dD0OGHCKy8/iFDxcqIhi6QUgbzaWVNszMNNVEykq3sTuPFngvr4RgQQQ5V60ol2C49SPeuYBZx6YximihwBEV9hylCN4BJ3NFo/DGTN8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=SVp8CSC8; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 23679C4CEF1;
-	Tue, 26 Aug 2025 14:35:50 +0000 (UTC)
+	 MIME-Version; b=gZrbr5hsYPuObIu4xyfEB7xg0nfjCcerJjSSSr/Gv8+7MVOWGstkTp/vV7GX4FBScw+0CW3geoXjaXxhWJNJJHH+/iEm03jCm8TcMEuUKiRrg9aVVontbeyVpc5d3L6w6CbDI5qHVUnuNYXI0aUPtmF/cmpVUVdbVH/14MVMIJ0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=E2ySa4+T; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1F342C4CEF1;
+	Tue, 26 Aug 2025 11:26:26 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1756218951;
-	bh=AgQ0C0vnPcWnvuJgmYEZ9jw5t5eNFGjr1WxQ2JI2P/U=;
+	s=korg; t=1756207586;
+	bh=eZf/SkwYoUFVo8sA7z/TbcFK2NTK6V9zPNkSMZe02AI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=SVp8CSC8iT7ajOTarab5v1pZrCXH1GQpjgkhuWowPM7gfbyh92FAQJgu1eUHXbC3I
-	 h4XL6n8DZtoUrwDmX4SglXyo2kk47aDfz8j4lJCaK9r7R75Vq5S71h4s4UdWW42lLn
-	 sZfELVjV4TE07MPlMXBJqRoPR5qOcZ7W1c30m4LA=
+	b=E2ySa4+Tkekhb69N8ry1IFtI1IsQ8chAoypOvM58Sjir0WnFo5Z+RBZhk1c10jFl0
+	 vzIW8jlaw5DRJVv1l+nxV4Ct0g3LvwvWgui5W5rRq+Ays7mABE0G4QtEL5WONMh1jw
+	 ClfLN0+lklaV86SeUpP5SW7ezx7l+QXucfrPeJbY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Avri Altman <avri.altman@sandisk.com>,
-	Ulf Hansson <ulf.hansson@linaro.org>,
-	Ricky Wu <ricky_wu@realtek.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.4 197/403] mmc: rtsx_usb_sdmmc: Fix error-path in sd_set_power_mode()
+	Pasha Tatashin <pasha.tatashin@soleen.com>,
+	"Mike Rapoport (Microsoft)" <rppt@kernel.org>,
+	Pratyush Yadav <pratyush@kernel.org>,
+	Alexander Graf <graf@amazon.com>,
+	Arnd Bergmann <arnd@arndb.de>,
+	Baoquan He <bhe@redhat.com>,
+	Changyuan Lyu <changyuanl@google.com>,
+	Coiby Xu <coxu@redhat.com>,
+	Dave Vasilevsky <dave@vasilevsky.ca>,
+	Eric Biggers <ebiggers@google.com>,
+	Kees Cook <kees@kernel.org>,
+	Andrew Morton <akpm@linux-foundation.org>
+Subject: [PATCH 6.16 239/457] kho: warn if KHO is disabled due to an error
 Date: Tue, 26 Aug 2025 13:08:43 +0200
-Message-ID: <20250826110912.309063387@linuxfoundation.org>
+Message-ID: <20250826110943.281727118@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250826110905.607690791@linuxfoundation.org>
-References: <20250826110905.607690791@linuxfoundation.org>
+In-Reply-To: <20250826110937.289866482@linuxfoundation.org>
+References: <20250826110937.289866482@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,44 +71,53 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.4-stable review patch.  If anyone has any objections, please let me know.
+6.16-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Ulf Hansson <ulf.hansson@linaro.org>
+From: Pasha Tatashin <pasha.tatashin@soleen.com>
 
-[ Upstream commit 47a255f7d2eabee06cfbf5b1c2379749442fd01d ]
+commit 44958f2025ed3f29fc3e93bb1f6c16121d7847ad upstream.
 
-In the error path of sd_set_power_mode() we don't update host->power_mode,
-which could lead to an imbalance of the runtime PM usage count. Fix this by
-always updating host->power_mode.
+During boot scratch area is allocated based on command line parameters or
+auto calculated.  However, scratch area may fail to allocate, and in that
+case KHO is disabled.  Currently, no warning is printed that KHO is
+disabled, which makes it confusing for the end user to figure out why KHO
+is not available.  Add the missing warning message.
 
-Reviewed-by: Avri Altman <avri.altman@sandisk.com>
-Signed-off-by: Ulf Hansson <ulf.hansson@linaro.org>
-Acked-by: Ricky Wu <ricky_wu@realtek.com>
-Link: https://lore.kernel.org/r/20250610111633.504366-2-ulf.hansson@linaro.org
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Link: https://lkml.kernel.org/r/20250808201804.772010-4-pasha.tatashin@soleen.com
+Signed-off-by: Pasha Tatashin <pasha.tatashin@soleen.com>
+Acked-by: Mike Rapoport (Microsoft) <rppt@kernel.org>
+Acked-by: Pratyush Yadav <pratyush@kernel.org>
+Cc: Alexander Graf <graf@amazon.com>
+Cc: Arnd Bergmann <arnd@arndb.de>
+Cc: Baoquan He <bhe@redhat.com>
+Cc: Changyuan Lyu <changyuanl@google.com>
+Cc: Coiby Xu <coxu@redhat.com>
+Cc: Dave Vasilevsky <dave@vasilevsky.ca>
+Cc: Eric Biggers <ebiggers@google.com>
+Cc: Kees Cook <kees@kernel.org>
+Cc: <stable@vger.kernel.org>
+Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/mmc/host/rtsx_usb_sdmmc.c | 4 +---
- 1 file changed, 1 insertion(+), 3 deletions(-)
+ kernel/kexec_handover.c | 1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/drivers/mmc/host/rtsx_usb_sdmmc.c b/drivers/mmc/host/rtsx_usb_sdmmc.c
-index 3261560bede4..581bec5c4caf 100644
---- a/drivers/mmc/host/rtsx_usb_sdmmc.c
-+++ b/drivers/mmc/host/rtsx_usb_sdmmc.c
-@@ -1038,9 +1038,7 @@ static int sd_set_power_mode(struct rtsx_usb_sdmmc *host,
- 		err = sd_power_on(host);
- 	}
- 
--	if (!err)
--		host->power_mode = power_mode;
--
-+	host->power_mode = power_mode;
- 	return err;
+diff --git a/kernel/kexec_handover.c b/kernel/kexec_handover.c
+index 65145972d6d6..ecd1ac210dbd 100644
+--- a/kernel/kexec_handover.c
++++ b/kernel/kexec_handover.c
+@@ -564,6 +564,7 @@ err_free_scratch_areas:
+ err_free_scratch_desc:
+ 	memblock_free(kho_scratch, kho_scratch_cnt * sizeof(*kho_scratch));
+ err_disable_kho:
++	pr_warn("Failed to reserve scratch area, disabling kexec handover\n");
+ 	kho_enable = false;
  }
  
 -- 
-2.39.5
+2.50.1
 
 
 
