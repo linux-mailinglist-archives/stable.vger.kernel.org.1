@@ -1,58 +1,56 @@
-Return-Path: <stable+bounces-175502-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-174365-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7DC88B3687E
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 16:16:47 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id B9ABEB36258
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 15:18:20 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 1D0C71C260DF
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 14:08:55 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id AC3AF7BC814
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 13:16:44 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 927902BEC45;
-	Tue, 26 Aug 2025 14:06:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id DC4A234164B;
+	Tue, 26 Aug 2025 13:16:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ZahX2uVI"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="IGxLaVEA"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 506781662E7;
-	Tue, 26 Aug 2025 14:06:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9789433EAF9;
+	Tue, 26 Aug 2025 13:16:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756217213; cv=none; b=RGhOSq3cZpmxtqekIkEBIwQzqHudp3LFlolViGa6HHD1UXq7+rqmBvS0GjFUwiyu5lPdJc3K1fEg0ImxYJe0OJ4wnL4UWYiZ+ZFMUCjIApCCrpCwK6zrllpJa2peLkZSs146Qf/DBOde5zNhmd5ugVPAVz7LjjFgvQm8x32NeqE=
+	t=1756214197; cv=none; b=dW6817wAE4DKikrsniG0JKp0bs671UAJQ44zy4K7NfTABjeEyD+a0HBS6VZ9VvRuSTOOxbKNdmX8ejwWPJcTJOQGQQwGN0fmtNgbTZ0m39PbWzJfZ6iSvb7gQC7RN6EDJFXUKGeD3CP8bM5v4kGNlIxYKF90eKRMUbjKf47a8T4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756217213; c=relaxed/simple;
-	bh=AtV/MS8Q2pJaeCQ+Q0hln3tDicxLgufTvMcOxtR80Lg=;
+	s=arc-20240116; t=1756214197; c=relaxed/simple;
+	bh=UFpw/8AlgxjhfZIrFwbUBRUY07q4QIv1XZ/jtoCbll0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=tmcpj/8yX46osbvOOENsc5Ldq/522bi5PDSC6KHhlTxEP/hajd/wLB4M2pDrNGF1eXw2wRah/SbDp+ZgzuO9PdULcFDB3dScKUfVbYBH8MJFXnIONRght1YBZEmMoI9WvFZQ1rJY57oOTUWye3Ad7dEFhphzXQEAfw45L/9JmMM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ZahX2uVI; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D6F00C4CEF1;
-	Tue, 26 Aug 2025 14:06:52 +0000 (UTC)
+	 MIME-Version; b=ezw3TEF3bV9Z82XjuYWyMn7WckTj6FQTf2cj0cuW1xYPt++bx6gLA3KHvxghlcDVKjCztSPB3A0Ik6EA0RDyTZJ9GHeWMluppqTy/s4jRqcMtfzAjbwT58keIRoNB39kLbcLENmpjlGIquwWaKoDF4oQZIqsextNk/66oiG+og0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=IGxLaVEA; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2651AC4CEF1;
+	Tue, 26 Aug 2025 13:16:36 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1756217213;
-	bh=AtV/MS8Q2pJaeCQ+Q0hln3tDicxLgufTvMcOxtR80Lg=;
+	s=korg; t=1756214197;
+	bh=UFpw/8AlgxjhfZIrFwbUBRUY07q4QIv1XZ/jtoCbll0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=ZahX2uVIPS09d6fI6C83kjpBLM3iH28yTLEj/Cz9CEkqXJa/2fYkCZioa63zKeZwB
-	 nR0j9qkausY69yZWBc7xKiF4lTptIPo5LWZL/8IJjg1xB/xpv6QI1QQcaQBFNTI4C9
-	 +bu3PM0upGDHT+TJNmupS+saI95x0nf83Iz+ApHc=
+	b=IGxLaVEA8pABKKhT+ZJOP7Lan5IgYMoBLhDlPwzHyEEmVlZal5rapCQZr0ASavZwt
+	 U5FHa0BWX9eskO4giiGrMCZXg9vqbopPa3QYRJlYF0ppJ9uPSdUWfw0alQoR3c7TbR
+	 ntaYz0rW0WPYKC/KfdKBI0sVYV2QQ/1Hv26esrrE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Dennis Chen <dechen@redhat.com>,
-	Simon Horman <horms@kernel.org>,
-	Rafal Romanowski <rafal.romanowski@intel.com>,
-	Tony Nguyen <anthony.l.nguyen@intel.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 058/523] i40e: report VF tx_dropped with tx_errors instead of tx_discards
+	Xu Yang <xu.yang_2@nxp.com>,
+	Oleksij Rempel <o.rempel@pengutronix.de>,
+	Paolo Abeni <pabeni@redhat.com>
+Subject: [PATCH 6.1 015/482] net: usb: asix_devices: add phy_mask for ax88772 mdio bus
 Date: Tue, 26 Aug 2025 13:04:28 +0200
-Message-ID: <20250826110926.018992587@linuxfoundation.org>
+Message-ID: <20250826110931.163697386@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250826110924.562212281@linuxfoundation.org>
-References: <20250826110924.562212281@linuxfoundation.org>
+In-Reply-To: <20250826110930.769259449@linuxfoundation.org>
+References: <20250826110930.769259449@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,113 +62,47 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Dennis Chen <dechen@redhat.com>
+From: Xu Yang <xu.yang_2@nxp.com>
 
-[ Upstream commit 50b2af451597ca6eefe9d4543f8bbf8de8aa00e7 ]
+commit 4faff70959d51078f9ee8372f8cff0d7045e4114 upstream.
 
-Currently the tx_dropped field in VF stats is not updated correctly
-when reading stats from the PF. This is because it reads from
-i40e_eth_stats.tx_discards which seems to be unused for per VSI stats,
-as it is not updated by i40e_update_eth_stats() and the corresponding
-register, GLV_TDPC, is not implemented[1].
+Without setting phy_mask for ax88772 mdio bus, current driver may create
+at most 32 mdio phy devices with phy address range from 0x00 ~ 0x1f.
+DLink DUB-E100 H/W Ver B1 is such a device. However, only one main phy
+device will bind to net phy driver. This is creating issue during system
+suspend/resume since phy_polling_mode() in phy_state_machine() will
+directly deference member of phydev->drv for non-main phy devices. Then
+NULL pointer dereference issue will occur. Due to only external phy or
+internal phy is necessary, add phy_mask for ax88772 mdio bus to workarnoud
+the issue.
 
-Use i40e_eth_stats.tx_errors instead, which is actually updated by
-i40e_update_eth_stats() by reading from GLV_TEPC.
-
-To test, create a VF and try to send bad packets through it:
-
-$ echo 1 > /sys/class/net/enp2s0f0/device/sriov_numvfs
-$ cat test.py
-from scapy.all import *
-
-vlan_pkt = Ether(dst="ff:ff:ff:ff:ff:ff") / Dot1Q(vlan=999) / IP(dst="192.168.0.1") / ICMP()
-ttl_pkt = IP(dst="8.8.8.8", ttl=0) / ICMP()
-
-print("Send packet with bad VLAN tag")
-sendp(vlan_pkt, iface="enp2s0f0v0")
-print("Send packet with TTL=0")
-sendp(ttl_pkt, iface="enp2s0f0v0")
-$ ip -s link show dev enp2s0f0
-16: enp2s0f0: <BROADCAST,MULTICAST,UP,LOWER_UP> mtu 1500 qdisc mq state UP mode DEFAULT group default qlen 1000
-    link/ether 3c:ec:ef:b7:e0:ac brd ff:ff:ff:ff:ff:ff
-    RX:  bytes packets errors dropped  missed   mcast
-             0       0      0       0       0       0
-    TX:  bytes packets errors dropped carrier collsns
-             0       0      0       0       0       0
-    vf 0     link/ether e2:c6:fd:c1:1e:92 brd ff:ff:ff:ff:ff:ff, spoof checking on, link-state auto, trust off
-    RX: bytes  packets  mcast   bcast   dropped
-             0        0       0       0        0
-    TX: bytes  packets   dropped
-             0        0        0
-$ python test.py
-Send packet with bad VLAN tag
-.
-Sent 1 packets.
-Send packet with TTL=0
-.
-Sent 1 packets.
-$ ip -s link show dev enp2s0f0
-16: enp2s0f0: <BROADCAST,MULTICAST,UP,LOWER_UP> mtu 1500 qdisc mq state UP mode DEFAULT group default qlen 1000
-    link/ether 3c:ec:ef:b7:e0:ac brd ff:ff:ff:ff:ff:ff
-    RX:  bytes packets errors dropped  missed   mcast
-             0       0      0       0       0       0
-    TX:  bytes packets errors dropped carrier collsns
-             0       0      0       0       0       0
-    vf 0     link/ether e2:c6:fd:c1:1e:92 brd ff:ff:ff:ff:ff:ff, spoof checking on, link-state auto, trust off
-    RX: bytes  packets  mcast   bcast   dropped
-             0        0       0       0        0
-    TX: bytes  packets   dropped
-             0        0        0
-
-A packet with non-existent VLAN tag and a packet with TTL = 0 are sent,
-but tx_dropped is not incremented.
-
-After patch:
-
-$ ip -s link show dev enp2s0f0
-19: enp2s0f0: <BROADCAST,MULTICAST,UP,LOWER_UP> mtu 1500 qdisc mq state UP mode DEFAULT group default qlen 1000
-    link/ether 3c:ec:ef:b7:e0:ac brd ff:ff:ff:ff:ff:ff
-    RX:  bytes packets errors dropped  missed   mcast
-             0       0      0       0       0       0
-    TX:  bytes packets errors dropped carrier collsns
-             0       0      0       0       0       0
-    vf 0     link/ether 4a:b7:3d:37:f7:56 brd ff:ff:ff:ff:ff:ff, spoof checking on, link-state auto, trust off
-    RX: bytes  packets  mcast   bcast   dropped
-             0        0       0       0        0
-    TX: bytes  packets   dropped
-             0        0        2
-
-Fixes: dc645daef9af5bcbd9c ("i40e: implement VF stats NDO")
-Signed-off-by: Dennis Chen <dechen@redhat.com>
-Link: https://www.intel.com/content/www/us/en/content-details/596333/intel-ethernet-controller-x710-tm4-at2-carlsville-datasheet.html
-Reviewed-by: Simon Horman <horms@kernel.org>
-Tested-by: Rafal Romanowski <rafal.romanowski@intel.com>
-Signed-off-by: Tony Nguyen <anthony.l.nguyen@intel.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Closes: https://lore.kernel.org/netdev/20250806082931.3289134-1-xu.yang_2@nxp.com
+Fixes: e532a096be0e ("net: usb: asix: ax88772: add phylib support")
+Cc: stable@vger.kernel.org
+Signed-off-by: Xu Yang <xu.yang_2@nxp.com>
+Tested-by: Oleksij Rempel <o.rempel@pengutronix.de>
+Reviewed-by: Oleksij Rempel <o.rempel@pengutronix.de>
+Link: https://patch.msgid.link/20250811092931.860333-1-xu.yang_2@nxp.com
+Signed-off-by: Paolo Abeni <pabeni@redhat.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/net/ethernet/intel/i40e/i40e_virtchnl_pf.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/net/usb/asix_devices.c |    1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/drivers/net/ethernet/intel/i40e/i40e_virtchnl_pf.c b/drivers/net/ethernet/intel/i40e/i40e_virtchnl_pf.c
-index 65093c310dce8..c86c429e9a3a3 100644
---- a/drivers/net/ethernet/intel/i40e/i40e_virtchnl_pf.c
-+++ b/drivers/net/ethernet/intel/i40e/i40e_virtchnl_pf.c
-@@ -4836,7 +4836,7 @@ int i40e_get_vf_stats(struct net_device *netdev, int vf_id,
- 	vf_stats->broadcast  = stats->rx_broadcast;
- 	vf_stats->multicast  = stats->rx_multicast;
- 	vf_stats->rx_dropped = stats->rx_discards + stats->rx_discards_other;
--	vf_stats->tx_dropped = stats->tx_discards;
-+	vf_stats->tx_dropped = stats->tx_errors;
- 
- 	return 0;
- }
--- 
-2.39.5
-
+--- a/drivers/net/usb/asix_devices.c
++++ b/drivers/net/usb/asix_devices.c
+@@ -676,6 +676,7 @@ static int ax88772_init_mdio(struct usbn
+ 	priv->mdio->read = &asix_mdio_bus_read;
+ 	priv->mdio->write = &asix_mdio_bus_write;
+ 	priv->mdio->name = "Asix MDIO Bus";
++	priv->mdio->phy_mask = ~(BIT(priv->phy_addr) | BIT(AX_EMBD_PHY_ADDR));
+ 	/* mii bus name is usb-<usb bus number>-<usb device number> */
+ 	snprintf(priv->mdio->id, MII_BUS_ID_SIZE, "usb-%03d:%03d",
+ 		 dev->udev->bus->busnum, dev->udev->devnum);
 
 
 
