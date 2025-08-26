@@ -1,56 +1,58 @@
-Return-Path: <stable+bounces-174523-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-175168-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 94EB7B363C0
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 15:33:01 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5F61AB36742
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 16:05:10 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id C999B8A1598
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 13:25:12 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 001B5564D0E
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 13:54:16 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C731D3093BA;
-	Tue, 26 Aug 2025 13:23:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 653BD34DCE8;
+	Tue, 26 Aug 2025 13:52:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="L42pQzR/"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="yYEOUwGP"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8612B28FD;
-	Tue, 26 Aug 2025 13:23:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 22E0222128B;
+	Tue, 26 Aug 2025 13:52:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756214617; cv=none; b=MGUQ/veO6EDzaZ01GCAlX91G6n85wI9e+ammdmtSLJa6CjSUk0t+nGrClwaJyGo+SoMGzsWEEZr4rU2GwhnWGJ9tLmfy7Q0nj3svHcyh+0VTDGWftFJbAxfjfhlJ+3kM5PdHexqrH8wVWaF7Hw+jXSJCgJ3GqcF5rN4l2OFTLvs=
+	t=1756216321; cv=none; b=GbKcsNtT31fKCQ8USNbQoQ28hH1f8+J1xCKjMPy5k9yLa/wdOTCf4fHEFsTgC1sPNuuSc3Y7+nATOI+wgVKUl+z6KAvT9r4upXkfZwPdtVOiI5XYNOAe26kZDrfC7ZBbeY6rheK6cnzLMJ3hdkLE1Y925O+PN01uihYskW7CzS4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756214617; c=relaxed/simple;
-	bh=Id7lRayrjsCjfeKGgTWa3twZvqAaWFR47CJZGaDzdSg=;
+	s=arc-20240116; t=1756216321; c=relaxed/simple;
+	bh=0+pnD09jUQ1favwv4WB7XWq2MCNj/Lj/qIbrLwGN4bs=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=FcMK3FUdqd7YIVzEQvgKFgQdT3UEpEnhaOkNFOsbXK4kZc7hWctUx9kmP/qmqG7JiMekvl8j6g9/UiA4eorXkBNFWJQ1XvUarEUP4i8eVDr7TMW7DVP8M1fhFO1TN3rbQl+prUtH/mFrJ5VV2ceLhskc2N6nw8S28znbdovxGvg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=L42pQzR/; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 19EFFC4CEF1;
-	Tue, 26 Aug 2025 13:23:36 +0000 (UTC)
+	 MIME-Version; b=Qs0RGybyBnUvYpEPDcAG6H9+vkw6NFuOX7BzmZ8xOtRt+bU0/Byelw6ARh+obyoa5X/eQKAmF5LKyw4YGjHnDjf4uGlyRLhiOPU3BgKgapyFG8ItHjlSd1Gjt6Of0I5Cs+YhfP9MJD3lXCo1Yhch9RLV9/TZ62FVf1FqE3RZBZk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=yYEOUwGP; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A88A7C4CEF1;
+	Tue, 26 Aug 2025 13:52:00 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1756214617;
-	bh=Id7lRayrjsCjfeKGgTWa3twZvqAaWFR47CJZGaDzdSg=;
+	s=korg; t=1756216321;
+	bh=0+pnD09jUQ1favwv4WB7XWq2MCNj/Lj/qIbrLwGN4bs=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=L42pQzR/4BBu/TvSsoTYAq6AIdWJqTkaIsT7TusEZaH8H1vsqHOQc92CvjSLZLL86
-	 9tZfYP0G7NT8efCF4Weky//5DVf04KggR83p2ekY8/e+Bwvie9pIJkLutmdjrJ5NA2
-	 x83yYytNZlirgKimLU8ZAcQqPT+pyIPuTdlWyszc=
+	b=yYEOUwGP4SuE54BcL/M31BJy3yb8WoTqpmrBKJC/A8QB7NgDRURW8KqJttfj49W3m
+	 36eiLcFcTFWnAjDUDRn4dgjuQGJwG1KOTIqXCMCsAdSAZag2XICPbKYNpupPRd9TGf
+	 BCus22Fv2scf6/2vrWTjupjJHSR7un74Y4aTZbgU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Alex Guo <alexguo1023@gmail.com>,
-	Mauro Carvalho Chehab <mchehab+huawei@kernel.org>,
+	Fedor Pchelkin <pchelkin@ispras.ru>,
+	Alexei Safin <a.safin@rosa.ru>,
+	Stanislaw Gruszka <stf_xl@wp.pl>,
+	Johannes Berg <johannes.berg@intel.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 205/482] media: dvb-frontends: w7090p: fix null-ptr-deref in w7090p_tuner_write_serpar and w7090p_tuner_read_serpar
+Subject: [PATCH 5.15 367/644] wifi: iwlegacy: Check rate_idx range after addition
 Date: Tue, 26 Aug 2025 13:07:38 +0200
-Message-ID: <20250826110935.852349668@linuxfoundation.org>
+Message-ID: <20250826110955.509845760@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250826110930.769259449@linuxfoundation.org>
-References: <20250826110930.769259449@linuxfoundation.org>
+In-Reply-To: <20250826110946.507083938@linuxfoundation.org>
+References: <20250826110946.507083938@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,49 +64,45 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Alex Guo <alexguo1023@gmail.com>
+From: Stanislaw Gruszka <stf_xl@wp.pl>
 
-[ Upstream commit ed0234c8458b3149f15e496b48a1c9874dd24a1b ]
+[ Upstream commit 0de19d5ae0b2c5b18b88c5c7f0442f707a207409 ]
 
-In w7090p_tuner_write_serpar, msg is controlled by user. When msg[0].buf is null and msg[0].len is zero, former checks on msg[0].buf would be passed. If accessing msg[0].buf[2] without sanity check, null pointer deref would happen. We add
-check on msg[0].len to prevent crash.
+Limit rate_idx to IL_LAST_OFDM_RATE for 5GHz band for thinkable case
+the index is incorrect.
 
-Similar commit: commit 0ed554fd769a ("media: dvb-usb: az6027: fix null-ptr-deref in az6027_i2c_xfer()")
-
-Signed-off-by: Alex Guo <alexguo1023@gmail.com>
-Link: https://lore.kernel.org/r/20250616013353.738790-1-alexguo1023@gmail.com
-Signed-off-by: Mauro Carvalho Chehab <mchehab+huawei@kernel.org>
+Reported-by: Fedor Pchelkin <pchelkin@ispras.ru>
+Reported-by: Alexei Safin <a.safin@rosa.ru>
+Signed-off-by: Stanislaw Gruszka <stf_xl@wp.pl>
+Reviewed-by: Fedor Pchelkin <pchelkin@ispras.ru>
+Link: https://patch.msgid.link/20250525144524.GA172583@wp.pl
+Signed-off-by: Johannes Berg <johannes.berg@intel.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/media/dvb-frontends/dib7000p.c | 4 ++++
- 1 file changed, 4 insertions(+)
+ drivers/net/wireless/intel/iwlegacy/4965-mac.c | 5 ++++-
+ 1 file changed, 4 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/media/dvb-frontends/dib7000p.c b/drivers/media/dvb-frontends/dib7000p.c
-index aae8335644f3..f40bc835649c 100644
---- a/drivers/media/dvb-frontends/dib7000p.c
-+++ b/drivers/media/dvb-frontends/dib7000p.c
-@@ -2198,6 +2198,8 @@ static int w7090p_tuner_write_serpar(struct i2c_adapter *i2c_adap, struct i2c_ms
- 	struct dib7000p_state *state = i2c_get_adapdata(i2c_adap);
- 	u8 n_overflow = 1;
- 	u16 i = 1000;
-+	if (msg[0].len < 3)
-+		return -EOPNOTSUPP;
- 	u16 serpar_num = msg[0].buf[0];
- 
- 	while (n_overflow == 1 && i) {
-@@ -2217,6 +2219,8 @@ static int w7090p_tuner_read_serpar(struct i2c_adapter *i2c_adap, struct i2c_msg
- 	struct dib7000p_state *state = i2c_get_adapdata(i2c_adap);
- 	u8 n_overflow = 1, n_empty = 1;
- 	u16 i = 1000;
-+	if (msg[0].len < 1 || msg[1].len < 2)
-+		return -EOPNOTSUPP;
- 	u16 serpar_num = msg[0].buf[0];
- 	u16 read_word;
- 
+diff --git a/drivers/net/wireless/intel/iwlegacy/4965-mac.c b/drivers/net/wireless/intel/iwlegacy/4965-mac.c
+index ceab7704897d..df9d139a008e 100644
+--- a/drivers/net/wireless/intel/iwlegacy/4965-mac.c
++++ b/drivers/net/wireless/intel/iwlegacy/4965-mac.c
+@@ -1575,8 +1575,11 @@ il4965_tx_cmd_build_rate(struct il_priv *il,
+ 	    || rate_idx > RATE_COUNT_LEGACY)
+ 		rate_idx = rate_lowest_index(&il->bands[info->band], sta);
+ 	/* For 5 GHZ band, remap mac80211 rate indices into driver indices */
+-	if (info->band == NL80211_BAND_5GHZ)
++	if (info->band == NL80211_BAND_5GHZ) {
+ 		rate_idx += IL_FIRST_OFDM_RATE;
++		if (rate_idx > IL_LAST_OFDM_RATE)
++			rate_idx = IL_LAST_OFDM_RATE;
++	}
+ 	/* Get PLCP rate for tx_cmd->rate_n_flags */
+ 	rate_plcp = il_rates[rate_idx].plcp;
+ 	/* Zero out flags for this packet */
 -- 
 2.39.5
 
