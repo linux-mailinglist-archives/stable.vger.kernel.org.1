@@ -1,58 +1,56 @@
-Return-Path: <stable+bounces-172968-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-174374-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 45B4FB35B1D
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 13:18:41 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0396BB362FC
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 15:24:56 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 3B77517188D
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 11:17:17 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 967598A591F
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 13:18:50 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C241327A917;
-	Tue, 26 Aug 2025 11:17:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C4A0A3451CD;
+	Tue, 26 Aug 2025 13:17:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="MulpDoGp"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="JVJLIrC1"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7FD7020B7EE;
-	Tue, 26 Aug 2025 11:17:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8075122DF99;
+	Tue, 26 Aug 2025 13:17:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756207032; cv=none; b=Wpr9DHnIQ2Gwh9UqRNuGmU8YAv1Sf5Ir6Y4V3JR3T3vAsEPAJNjxs8VUbyGAr5/85obgPnYJInVPJej9igqYB3SXX0gpRIZHDRS9rdF3RY3CvhlNo21F55vvC8H/5bjh8I0g3UqSMlzltyuc/5MBWKp+2hBMdnoiijB9TxqIPek=
+	t=1756214221; cv=none; b=KZ7ty9zna/2jxiW0f32PHHyX0zEDkCLh0yFHwboX4jYtSNnIaFdDocxOht0epCv1vSlx0Mzjs9NXuwyDesGDBy3morAD0fc0o7z7Nn1/XKxjZrvjJ6d6Pw1e46VA8OC2mLfP9R+sSkhNh5b32OrJWa4SPQoSCcMYdgRWaYT2weE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756207032; c=relaxed/simple;
-	bh=0nJlYRwWWB6G+OakE5RUTbhUh3e4TOnC3coRX6sGhTs=;
+	s=arc-20240116; t=1756214221; c=relaxed/simple;
+	bh=gJTZgtuPZTX5wS1ntM2pQUd1k5R5KiG0tdRIQuskka0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=iMI7WBIonsR+8NS+fJQpSWNa8rslvsZAaPHhaNmenr+AqNAMjIEUzxi41ixVO2PATHNwk136tRqVHm6lDChiTkKraFLiW4KlZj5Kru0875Ex9KudhcZU+Z049rbTq9y7tQWkCff7fGyDuij6MaGuYT1oBML1ScEGhzDQ3RI55IQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=MulpDoGp; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 18386C4CEF1;
-	Tue, 26 Aug 2025 11:17:11 +0000 (UTC)
+	 MIME-Version; b=WEJR+EE8Fc0jSjGb32TLE3jo7o6ugyyNyEZC0/aWJaS+LBH51dQ1dOEpjP58RLEZQzwIyxD7+K9MOS7OjtqCzZfyGjGB1sVoMYAYHwQ+Qx5fwfalUnpkfAAEKRr8DLI2vJ/A0Ee2T5++sdw1cm3yNKbcTrOat1CFywEDApv6JTU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=JVJLIrC1; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 10E78C4CEF1;
+	Tue, 26 Aug 2025 13:17:00 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1756207032;
-	bh=0nJlYRwWWB6G+OakE5RUTbhUh3e4TOnC3coRX6sGhTs=;
+	s=korg; t=1756214221;
+	bh=gJTZgtuPZTX5wS1ntM2pQUd1k5R5KiG0tdRIQuskka0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=MulpDoGpFBwtCZdZmobf9/Qh9wMIDKbDaE9F3NwZf7n/PFL1TPnsrCxOj311GqJjo
-	 kafBylCeuRF/r2Dny9lk0Ud1mr9WH/CcLUof9iWrTrLDVdarXAxHRmg5xQcVF55/tH
-	 7xjrtiu88RZHPXkVlikYO6d5tx6zuirl+qZrkGIM=
+	b=JVJLIrC1Rw9la1gn3twIFXaZGy50j1NjVBux33qPyWgAKu9bYgGPglXic8D7ImuyQ
+	 e7Oj3Ry6TCn4UXWnrc/lmddBRzzh/PsnGBbAbQYyusNNXAOsmBJIag/Fbfj2cMo9lg
+	 n1sQUjGwBhL1lR+oAQMoAx82SzvswxKa5WCBOmFI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	John Ernberg <john.ernberg@actia.se>,
-	Peng Fan <peng.fan@nxp.com>,
-	Frank Li <Frank.Li@nxp.com>,
-	Herbert Xu <herbert@gondor.apana.org.au>,
-	stable@kernel.org
-Subject: [PATCH 6.16 025/457] crypto: caam - Prevent crash on suspend with iMX8QM / iMX8ULP
-Date: Tue, 26 Aug 2025 13:05:09 +0200
-Message-ID: <20250826110937.956335961@linuxfoundation.org>
+	Viacheslav Dubeyko <slava@dubeyko.com>,
+	Johannes Thumshirn <johannes.thumshirn@wdc.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.1 057/482] hfs: fix not erasing deleted b-tree node issue
+Date: Tue, 26 Aug 2025 13:05:10 +0200
+Message-ID: <20250826110932.232383096@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250826110937.289866482@linuxfoundation.org>
-References: <20250826110937.289866482@linuxfoundation.org>
+In-Reply-To: <20250826110930.769259449@linuxfoundation.org>
+References: <20250826110930.769259449@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,121 +62,110 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.16-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: John Ernberg <john.ernberg@actia.se>
+From: Viacheslav Dubeyko <slava@dubeyko.com>
 
-commit 5ffc47feddcf8eb4d8ac7b42111a02c8e8146512 upstream.
+[ Upstream commit d3ed6d6981f4756f145766753c872482bc3b28d3 ]
 
-Since the CAAM on these SoCs is managed by another ARM core, called the
-SECO (Security Controller) on iMX8QM and Secure Enclave on iMX8ULP, which
-also reserves access to register page 0 suspend operations cannot touch
-this page.
+The generic/001 test of xfstests suite fails and corrupts
+the HFS volume:
 
-This is similar to when running OPTEE, where OPTEE will reserve page 0.
+sudo ./check generic/001
+FSTYP         -- hfs
+PLATFORM      -- Linux/x86_64 hfsplus-testing-0001 6.15.0-rc2+ #3 SMP PREEMPT_DYNAMIC Fri Apr 25 17:13:00 PDT 2>
+MKFS_OPTIONS  -- /dev/loop51
+MOUNT_OPTIONS -- /dev/loop51 /mnt/scratch
 
-Track this situation using a new state variable no_page0, reflecting if
-page 0 is reserved elsewhere, either by other management cores in SoC or
-by OPTEE.
+generic/001 32s ... _check_generic_filesystem: filesystem on /dev/loop50 is inconsistent
+(see /home/slavad/XFSTESTS-2/xfstests-dev/results//generic/001.full for details)
 
-Replace the optee_en check in suspend/resume with the new check.
+Ran: generic/001
+Failures: generic/001
+Failed 1 of 1 tests
 
-optee_en cannot go away as it's needed elsewhere to gate OPTEE specific
-situations.
+fsck.hfs -d -n ./test-image.bin
+** ./test-image.bin (NO WRITE)
+	Using cacheBlockSize=32K cacheTotalBlock=1024 cacheSize=32768K.
+   Executing fsck_hfs (version 540.1-Linux).
+** Checking HFS volume.
+   The volume name is untitled
+** Checking extents overflow file.
+** Checking catalog file.
+   Unused node is not erased (node = 2)
+   Unused node is not erased (node = 4)
+<skipped>
+   Unused node is not erased (node = 253)
+   Unused node is not erased (node = 254)
+   Unused node is not erased (node = 255)
+   Unused node is not erased (node = 256)
+** Checking catalog hierarchy.
+** Checking volume bitmap.
+** Checking volume information.
+   Verify Status: VIStat = 0x0000, ABTStat = 0x0000 EBTStat = 0x0000
+                  CBTStat = 0x0004 CatStat = 0x00000000
+** The volume untitled was found corrupt and needs to be repaired.
+	volume type is HFS
+	primary MDB is at block 2 0x02
+	alternate MDB is at block 20971518 0x13ffffe
+	primary VHB is at block 0 0x00
+	alternate VHB is at block 0 0x00
+	sector size = 512 0x200
+	VolumeObject flags = 0x19
+	total sectors for volume = 20971520 0x1400000
+	total sectors for embedded volume = 0 0x00
 
-Fixes the following splat at suspend:
+This patch adds logic of clearing the deleted b-tree node.
 
-    Internal error: synchronous external abort: 0000000096000010 [#1] SMP
-    Hardware name: Freescale i.MX8QXP ACU6C (DT)
-    pstate: 60400005 (nZCv daif +PAN -UAO -TCO -DIT -SSBS BTYPE=--)
-    pc : readl+0x0/0x18
-    lr : rd_reg32+0x18/0x3c
-    sp : ffffffc08192ba20
-    x29: ffffffc08192ba20 x28: ffffff8025190000 x27: 0000000000000000
-    x26: ffffffc0808ae808 x25: ffffffc080922338 x24: ffffff8020e89090
-    x23: 0000000000000000 x22: ffffffc080922000 x21: ffffff8020e89010
-    x20: ffffffc080387ef8 x19: ffffff8020e89010 x18: 000000005d8000d5
-    x17: 0000000030f35963 x16: 000000008f785f3f x15: 000000003b8ef57c
-    x14: 00000000c418aef8 x13: 00000000f5fea526 x12: 0000000000000001
-    x11: 0000000000000002 x10: 0000000000000001 x9 : 0000000000000000
-    x8 : ffffff8025190870 x7 : ffffff8021726880 x6 : 0000000000000002
-    x5 : ffffff80217268f0 x4 : ffffff8021726880 x3 : ffffffc081200000
-    x2 : 0000000000000001 x1 : ffffff8020e89010 x0 : ffffffc081200004
-    Call trace:
-     readl+0x0/0x18
-     caam_ctrl_suspend+0x30/0xdc
-     dpm_run_callback.constprop.0+0x24/0x5c
-     device_suspend+0x170/0x2e8
-     dpm_suspend+0xa0/0x104
-     dpm_suspend_start+0x48/0x50
-     suspend_devices_and_enter+0x7c/0x45c
-     pm_suspend+0x148/0x160
-     state_store+0xb4/0xf8
-     kobj_attr_store+0x14/0x24
-     sysfs_kf_write+0x38/0x48
-     kernfs_fop_write_iter+0xb4/0x178
-     vfs_write+0x118/0x178
-     ksys_write+0x6c/0xd0
-     __arm64_sys_write+0x14/0x1c
-     invoke_syscall.constprop.0+0x64/0xb0
-     do_el0_svc+0x90/0xb0
-     el0_svc+0x18/0x44
-     el0t_64_sync_handler+0x88/0x124
-     el0t_64_sync+0x150/0x154
-    Code: 88dffc21 88dffc21 5ac00800 d65f03c0 (b9400000)
+sudo ./check generic/001
+FSTYP         -- hfs
+PLATFORM      -- Linux/x86_64 hfsplus-testing-0001 6.15.0-rc2+ #3 SMP PREEMPT_DYNAMIC Fri Apr 25 17:13:00 PDT 2025
+MKFS_OPTIONS  -- /dev/loop51
+MOUNT_OPTIONS -- /dev/loop51 /mnt/scratch
 
-Fixes: d2835701d93c ("crypto: caam - i.MX8ULP donot have CAAM page0 access")
-Cc: stable@kernel.org # v6.10+
-Signed-off-by: John Ernberg <john.ernberg@actia.se>
-Reviewed-by: Peng Fan <peng.fan@nxp.com>
-Reviewed-by: Frank Li <Frank.Li@nxp.com>
-Signed-off-by: Herbert Xu <herbert@gondor.apana.org.au>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+generic/001 9s ...  32s
+Ran: generic/001
+Passed all 1 tests
+
+fsck.hfs -d -n ./test-image.bin
+** ./test-image.bin (NO WRITE)
+	Using cacheBlockSize=32K cacheTotalBlock=1024 cacheSize=32768K.
+   Executing fsck_hfs (version 540.1-Linux).
+** Checking HFS volume.
+   The volume name is untitled
+** Checking extents overflow file.
+** Checking catalog file.
+** Checking catalog hierarchy.
+** Checking volume bitmap.
+** Checking volume information.
+** The volume untitled appears to be OK.
+
+Signed-off-by: Viacheslav Dubeyko <slava@dubeyko.com>
+Reviewed-by: Johannes Thumshirn <johannes.thumshirn@wdc.com>
+Link: https://lore.kernel.org/r/20250430001211.1912533-1-slava@dubeyko.com
+Signed-off-by: Viacheslav Dubeyko <slava@dubeyko.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/crypto/caam/ctrl.c   |    5 +++--
- drivers/crypto/caam/intern.h |    1 +
- 2 files changed, 4 insertions(+), 2 deletions(-)
+ fs/hfs/bnode.c | 1 +
+ 1 file changed, 1 insertion(+)
 
---- a/drivers/crypto/caam/ctrl.c
-+++ b/drivers/crypto/caam/ctrl.c
-@@ -831,7 +831,7 @@ static int caam_ctrl_suspend(struct devi
- {
- 	const struct caam_drv_private *ctrlpriv = dev_get_drvdata(dev);
- 
--	if (ctrlpriv->caam_off_during_pm && !ctrlpriv->optee_en)
-+	if (ctrlpriv->caam_off_during_pm && !ctrlpriv->no_page0)
- 		caam_state_save(dev);
- 
- 	return 0;
-@@ -842,7 +842,7 @@ static int caam_ctrl_resume(struct devic
- 	struct caam_drv_private *ctrlpriv = dev_get_drvdata(dev);
- 	int ret = 0;
- 
--	if (ctrlpriv->caam_off_during_pm && !ctrlpriv->optee_en) {
-+	if (ctrlpriv->caam_off_during_pm && !ctrlpriv->no_page0) {
- 		caam_state_restore(dev);
- 
- 		/* HW and rng will be reset so deinstantiation can be removed */
-@@ -908,6 +908,7 @@ static int caam_probe(struct platform_de
- 
- 		imx_soc_data = imx_soc_match->data;
- 		reg_access = reg_access && imx_soc_data->page0_access;
-+		ctrlpriv->no_page0 = !reg_access;
- 		/*
- 		 * CAAM clocks cannot be controlled from kernel.
- 		 */
---- a/drivers/crypto/caam/intern.h
-+++ b/drivers/crypto/caam/intern.h
-@@ -115,6 +115,7 @@ struct caam_drv_private {
- 	u8 blob_present;	/* Nonzero if BLOB support present in device */
- 	u8 mc_en;		/* Nonzero if MC f/w is active */
- 	u8 optee_en;		/* Nonzero if OP-TEE f/w is active */
-+	u8 no_page0;		/* Nonzero if register page 0 is not controlled by Linux */
- 	bool pr_support;        /* RNG prediction resistance available */
- 	int secvio_irq;		/* Security violation interrupt number */
- 	int virt_en;		/* Virtualization enabled in CAAM */
+diff --git a/fs/hfs/bnode.c b/fs/hfs/bnode.c
+index 1dac5d9c055f..e8cd1a31f247 100644
+--- a/fs/hfs/bnode.c
++++ b/fs/hfs/bnode.c
+@@ -574,6 +574,7 @@ void hfs_bnode_put(struct hfs_bnode *node)
+ 		if (test_bit(HFS_BNODE_DELETED, &node->flags)) {
+ 			hfs_bnode_unhash(node);
+ 			spin_unlock(&tree->hash_lock);
++			hfs_bnode_clear(node, 0, tree->node_size);
+ 			hfs_bmap_free(node);
+ 			hfs_bnode_free(node);
+ 			return;
+-- 
+2.39.5
+
 
 
 
