@@ -1,58 +1,59 @@
-Return-Path: <stable+bounces-173580-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-175829-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id E7115B35D63
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 13:44:34 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 0F746B369CE
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 16:30:58 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 8C2A77C5F7F
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 11:44:33 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 2E08898498F
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 14:22:18 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 63A562BF002;
-	Tue, 26 Aug 2025 11:43:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9DA87260586;
+	Tue, 26 Aug 2025 14:21:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="t+UBRd//"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="JVldsbr+"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1FC4529D292;
-	Tue, 26 Aug 2025 11:43:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5B76F2459F3;
+	Tue, 26 Aug 2025 14:21:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756208618; cv=none; b=pzQxbpiwqew8xUMWvdfStWi8B4kPkp29JUEks4vjtvEOYgcbtcUhfj9vQ0CW4p90OFJ3CvQrDEHkCNFYouZqHrr2ZyhaIX0zbmb6u6r+ZQ57qz5ficV3TCzQl1ih0FcRt+CDfrXpNa9C3OMjgZAH69NAXYjLPsPqR27oTqxo3Rw=
+	t=1756218080; cv=none; b=DekTS9F4/dMb53Kksl9ez87P+OBOrU+zib8O82PWdDmZpQQW9gDEwg8Hrqk61TvgtQ4M0i874FkiZ9x8/d4T31NH5iw8LYzNdPWZMynNHkHuJV6aIboUm5QKBMjIWX8w0lo/T8RXep5Ojonc06aET80+2Vgom2/5C0f9A6ZEIOo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756208618; c=relaxed/simple;
-	bh=NUlXEDyqFyC2Ywmf9Guvb8Fv32YoPdods81lQRDR5Jk=;
+	s=arc-20240116; t=1756218080; c=relaxed/simple;
+	bh=zcSuwowLJuQSfR4DfUJwN7froXm+6lpH7/Zu/D6MqMI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=XZ8S1i6Xxezy2ki39JxXUKIctXUQaBlmbiAxAEfZAnmCcGOdFmEexIC8LJsa901X4YxCgC7B9lolI5CDrlFUJOt9g4nW/tS3M69g/8URkIf+Ok0Nu9/L1nB0BbVsXOZnEmEzy3h2XvUtjGtRciw4rK5QLBc9sCCgXAyvUhRxwnk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=t+UBRd//; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A093DC4CEF1;
-	Tue, 26 Aug 2025 11:43:37 +0000 (UTC)
+	 MIME-Version; b=JtXd6PbZ7YllxDxVwn1DDR7LHDtAKXDv7XjZdlCDSELCndk8JAu3qMSMmVdQzmb3sdc9TusLl+6eJGFufK4fTncFAsAN/KddyovVgZT0zUALsMy9iPD+OPq2ghg3ReKKEp+pXNGs+0V1MCSF9UuMA07qPnwD7p46EVD2N0iXeDc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=JVldsbr+; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A6402C4CEF1;
+	Tue, 26 Aug 2025 14:21:19 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1756208618;
-	bh=NUlXEDyqFyC2Ywmf9Guvb8Fv32YoPdods81lQRDR5Jk=;
+	s=korg; t=1756218080;
+	bh=zcSuwowLJuQSfR4DfUJwN7froXm+6lpH7/Zu/D6MqMI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=t+UBRd//Y08vTwchUDxL+FvJOyeTot/x8xeBMYDwGh6mnM3hU1dp9ESPiemrFvBPm
-	 yKGMGGigEcRfXPb9r7ktXfylGo8twc8jO5RM/VwbnhSeZ/ymfkS6uUk1elXNmVpN6Y
-	 GCPdLr3M2ve1GzsLUY+IS1L1U2lXffmsiRpEXTeM=
+	b=JVldsbr+CjekXpf8O8ql3NpD7Gj8x6GAYw++m0YPaLeTqvtOnZqZShuT6ABSpsUU8
+	 UG3YE8UTMPWhV+TXzdrz26W/gf062HrSVD36khA8df5aWHd6W/hJK6ApY5a1/93tUc
+	 rALnIcqaLw0ckOnn9yEz+hOgtW6qIsZkNV1eMKnY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Mario Limonciello <mario.limonciello@amd.com>,
-	Alex Deucher <alexander.deucher@amd.com>,
-	Harry Wentland <harry.wentland@amd.com>,
-	Alex Hung <alex.hung@amd.com>,
-	Dan Wheeler <daniel.wheeler@amd.com>
-Subject: [PATCH 6.12 181/322] drm/amd/display: Avoid a NULL pointer dereference
+	Gerrard Tai <gerrard.tai@starlabs.sg>,
+	Cong Wang <xiyou.wangcong@gmail.com>,
+	Simon Horman <horms@kernel.org>,
+	Jamal Hadi Salim <jhs@mojatatu.com>,
+	Paolo Abeni <pabeni@redhat.com>,
+	Siddh Raman Pant <siddh.raman.pant@oracle.com>
+Subject: [PATCH 5.10 386/523] sch_htb: make htb_qlen_notify() idempotent
 Date: Tue, 26 Aug 2025 13:09:56 +0200
-Message-ID: <20250826110920.333537296@linuxfoundation.org>
+Message-ID: <20250826110933.981148687@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250826110915.169062587@linuxfoundation.org>
-References: <20250826110915.169062587@linuxfoundation.org>
+In-Reply-To: <20250826110924.562212281@linuxfoundation.org>
+References: <20250826110924.562212281@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,47 +65,44 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Mario Limonciello <mario.limonciello@amd.com>
+From: Cong Wang <xiyou.wangcong@gmail.com>
 
-commit 07b93a5704b0b72002f0c4bd1076214af67dc661 upstream.
+commit 5ba8b837b522d7051ef81bacf3d95383ff8edce5 upstream.
 
-[WHY]
-Although unlikely drm_atomic_get_new_connector_state() or
-drm_atomic_get_old_connector_state() can return NULL.
+htb_qlen_notify() always deactivates the HTB class and in fact could
+trigger a warning if it is already deactivated. Therefore, it is not
+idempotent and not friendly to its callers, like fq_codel_dequeue().
 
-[HOW]
-Check returns before dereference.
+Let's make it idempotent to ease qdisc_tree_reduce_backlog() callers'
+life.
 
-Cc: Mario Limonciello <mario.limonciello@amd.com>
-Cc: Alex Deucher <alexander.deucher@amd.com>
-Reviewed-by: Harry Wentland <harry.wentland@amd.com>
-Signed-off-by: Mario Limonciello <mario.limonciello@amd.com>
-Signed-off-by: Alex Hung <alex.hung@amd.com>
-Tested-by: Dan Wheeler <daniel.wheeler@amd.com>
-Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
-(cherry picked from commit 1e5e8d672fec9f2ab352be121be971877bff2af9)
-Cc: stable@vger.kernel.org
+Reported-by: Gerrard Tai <gerrard.tai@starlabs.sg>
+Signed-off-by: Cong Wang <xiyou.wangcong@gmail.com>
+Reviewed-by: Simon Horman <horms@kernel.org>
+Link: https://patch.msgid.link/20250403211033.166059-2-xiyou.wangcong@gmail.com
+Acked-by: Jamal Hadi Salim <jhs@mojatatu.com>
+Signed-off-by: Paolo Abeni <pabeni@redhat.com>
+Signed-off-by: Siddh Raman Pant <siddh.raman.pant@oracle.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm.c |    3 +++
- 1 file changed, 3 insertions(+)
+ net/sched/sch_htb.c |    2 ++
+ 1 file changed, 2 insertions(+)
 
---- a/drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm.c
-+++ b/drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm.c
-@@ -7583,6 +7583,9 @@ amdgpu_dm_connector_atomic_check(struct
- 	struct amdgpu_dm_connector *aconn = to_amdgpu_dm_connector(conn);
- 	int ret;
+--- a/net/sched/sch_htb.c
++++ b/net/sched/sch_htb.c
+@@ -1173,6 +1173,8 @@ static void htb_qlen_notify(struct Qdisc
+ {
+ 	struct htb_class *cl = (struct htb_class *)arg;
  
-+	if (WARN_ON(unlikely(!old_con_state || !new_con_state)))
-+		return -EINVAL;
-+
- 	trace_amdgpu_dm_connector_atomic_check(new_con_state);
++	if (!cl->prio_activity)
++		return;
+ 	htb_deactivate(qdisc_priv(sch), cl);
+ }
  
- 	if (conn->connector_type == DRM_MODE_CONNECTOR_DisplayPort) {
 
 
 
