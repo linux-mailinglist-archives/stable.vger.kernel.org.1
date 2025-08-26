@@ -1,57 +1,55 @@
-Return-Path: <stable+bounces-174694-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-176273-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id DA6CFB36485
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 15:39:32 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 324BBB36CCC
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 17:01:07 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 98B863667A1
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 13:32:27 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id E26E1987ACC
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 14:43:13 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4DCCB23D28F;
-	Tue, 26 Aug 2025 13:31:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B483F1E500C;
+	Tue, 26 Aug 2025 14:40:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="OLVohrs7"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="0IuHxbTk"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 09B9428314A;
-	Tue, 26 Aug 2025 13:31:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 71530352FF0;
+	Tue, 26 Aug 2025 14:40:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756215069; cv=none; b=jNi7OCpgBg9Dy4s2dAU27yzoWLG7QK/6AzPZciU9s35T1qYPEecDpp9k3h8bjbMCO93Igl3RIDsqaOETJ0hH+0prYnTo3fVzFPeqmo7NJ5bo69Bo0h0KNMJ7xxtDgJP4woaFLfa7KKtso4OHGGo/8OzPlGDO+PWXhknIEPEz5y0=
+	t=1756219227; cv=none; b=bHfvnNMnsgDJqaHSRkaTZJifXndlDk4I71anUHQADnZH9XiSQoaoaZa2kLpzic48kUkXSiaLwQe7YvTfXWekv74689uVN5HoZ9znDB7+MIwxiY/o6Kxb3aN13p4Q4p4Yu+FVGyTm4KNEcKt0D2bHeuIxnFhlQ90e1iFuLLyhLEA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756215069; c=relaxed/simple;
-	bh=cADI3dfpAytBmOFDJazL8Fa6TLNAvEoSQpD24+0oZB4=;
+	s=arc-20240116; t=1756219227; c=relaxed/simple;
+	bh=yBqlL3H4AHzzTUfGVkOHwYP6j74cfvlLgDI8uiJ3hCA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Ns/Y1unfMcCJ4p/c9RK+TsQdlurp0nP7wMfU9asZkBrnqLhwR/LpltH6k2gHVa5xlsJLgFkm95BUm/s1Vzaxl99MQlvK/ioZQHzPXk2TVuBmCDkyeKaRqEvpQUUEewdb3H5dFZeClu3b+PV/XpqLwN2q7JPs6N8sA3ViJUHK/Rg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=OLVohrs7; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8D3AFC4CEF1;
-	Tue, 26 Aug 2025 13:31:08 +0000 (UTC)
+	 MIME-Version; b=mJAQezkRGFQxOSM5RIe3s14nPMsW8EH2KY3VldC9gbNAkJA1qfusX7M5/zG8ZcP03Ud3okPvEzvKRccFwHly+z2hIajB5kJuKgAflV0+yZCm5tGDeK1ClXSS4fbaBYabkF6fd9dOaU6CSfEH+enU9al7JBrsmeJR75UHISiEjrY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=0IuHxbTk; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 03590C4CEF1;
+	Tue, 26 Aug 2025 14:40:26 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1756215068;
-	bh=cADI3dfpAytBmOFDJazL8Fa6TLNAvEoSQpD24+0oZB4=;
+	s=korg; t=1756219227;
+	bh=yBqlL3H4AHzzTUfGVkOHwYP6j74cfvlLgDI8uiJ3hCA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=OLVohrs7etNLleM11pK8QGsU0XEhDz0QY8Epqi8r73prB9rxQtTQK6xstraTKEqsv
-	 NmdQby+QbA6o9Ov5MxgjG9FBPReRU/Jw8Fyz7vk1wXT06/Iax6Eij0nRmqDCPZfjYb
-	 47XZId1BC2ytLp+by+qjZXJMfDmzpyg1SSPAhLjg=
+	b=0IuHxbTk+u2KinB5GGnj1+GCW1mmJPnOFF10mfEN4uoiB5GzZeno+580DNiVbbutu
+	 D5d5xj6TgM5BMb9bCyWPXgRzlXY3dWiAz7VmLNjNwnI8u5FD1eA+wVJIS1NocNb5pP
+	 DS/rSM5KPNyE5+BG9GTNqKUQ5RckZe3R54ni+n9o=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Damien Le Moal <dlemoal@kernel.org>,
-	Hannes Reinecke <hare@suse.de>,
-	Niklas Cassel <cassel@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 375/482] ata: Fix SATA_MOBILE_LPM_POLICY description in Kconfig
+	Jon Hunter <jonathanh@nvidia.com>,
+	Ulf Hansson <ulf.hansson@linaro.org>
+Subject: [PATCH 5.4 302/403] soc/tegra: pmc: Ensure power-domains are in a known state
 Date: Tue, 26 Aug 2025 13:10:28 +0200
-Message-ID: <20250826110940.095241178@linuxfoundation.org>
+Message-ID: <20250826110915.156093736@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250826110930.769259449@linuxfoundation.org>
-References: <20250826110930.769259449@linuxfoundation.org>
+In-Reply-To: <20250826110905.607690791@linuxfoundation.org>
+References: <20250826110905.607690791@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,81 +61,142 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+5.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Damien Le Moal <dlemoal@kernel.org>
+From: Jon Hunter <jonathanh@nvidia.com>
 
-[ Upstream commit ed62a62a18bc144f73eadf866ae46842e8f6606e ]
+commit b6bcbce3359619d05bf387d4f5cc3af63668dbaa upstream.
 
-Improve the description of the possible default SATA link power
-management policies and add the missing description for policy 5.
-No functional changes.
+After commit 13a4b7fb6260 ("pmdomain: core: Leave powered-on genpds on
+until late_initcall_sync") was applied, the Tegra210 Jetson TX1 board
+failed to boot. Looking into this issue, before this commit was applied,
+if any of the Tegra power-domains were in 'on' state when the kernel
+booted, they were being turned off by the genpd core before any driver
+had chance to request them. This was purely by luck and a consequence of
+the power-domains being turned off earlier during boot. After this
+commit was applied, any power-domains in the 'on' state are kept on for
+longer during boot and therefore, may never transitioned to the off
+state before they are requested/used. The hang on the Tegra210 Jetson
+TX1 is caused because devices in some power-domains are accessed without
+the power-domain being turned off and on, indicating that the
+power-domain is not in a completely on state.
 
-Fixes: a5ec5a7bfd1f ("ata: ahci: Support state with min power but Partial low power state")
+>From reviewing the Tegra PMC driver code, if a power-domain is in the
+'on' state there is no guarantee that all the necessary clocks
+associated with the power-domain are on and even if they are they would
+not have been requested via the clock framework and so could be turned
+off later. Some power-domains also have a 'clamping' register that needs
+to be configured as well. In short, if a power-domain is already 'on' it
+is difficult to know if it has been configured correctly. Given that the
+power-domains happened to be switched off during boot previously, to
+ensure that they are in a good known state on boot, fix this by
+switching off any power-domains that are on initially when registering
+the power-domains with the genpd framework.
+
+Note that commit 05cfb988a4d0 ("soc/tegra: pmc: Initialise resets
+associated with a power partition") updated the
+tegra_powergate_of_get_resets() function to pass the 'off' to ensure
+that the resets for the power-domain are in the correct state on boot.
+However, now that we may power off a domain on boot, if it is on, it is
+better to move this logic into the tegra_powergate_add() function so
+that there is a single place where we are handling the initial state of
+the power-domain.
+
+Fixes: a38045121bf4 ("soc/tegra: pmc: Add generic PM domain support")
+Signed-off-by: Jon Hunter <jonathanh@nvidia.com>
 Cc: stable@vger.kernel.org
-Signed-off-by: Damien Le Moal <dlemoal@kernel.org>
-Reviewed-by: Hannes Reinecke <hare@suse.de>
-Reviewed-by: Niklas Cassel <cassel@kernel.org>
-[ Adjust context ]
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Link: https://lore.kernel.org/r/20250731121832.213671-1-jonathanh@nvidia.com
+Signed-off-by: Ulf Hansson <ulf.hansson@linaro.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/ata/Kconfig |   33 +++++++++++++++++++++++++--------
- 1 file changed, 25 insertions(+), 8 deletions(-)
+ drivers/soc/tegra/pmc.c |   51 +++++++++++++++++++++++++++---------------------
+ 1 file changed, 29 insertions(+), 22 deletions(-)
 
---- a/drivers/ata/Kconfig
-+++ b/drivers/ata/Kconfig
-@@ -117,7 +117,7 @@ config SATA_AHCI
+--- a/drivers/soc/tegra/pmc.c
++++ b/drivers/soc/tegra/pmc.c
+@@ -950,7 +950,7 @@ err:
+ }
  
- config SATA_MOBILE_LPM_POLICY
- 	int "Default SATA Link Power Management policy for low power chipsets"
--	range 0 4
-+	range 0 5
- 	default 0
- 	depends on SATA_AHCI
- 	help
-@@ -126,15 +126,32 @@ config SATA_MOBILE_LPM_POLICY
- 	  chipsets are typically found on most laptops but desktops and
- 	  servers now also widely use chipsets supporting low power modes.
+ static int tegra_powergate_of_get_resets(struct tegra_powergate *pg,
+-					 struct device_node *np, bool off)
++					 struct device_node *np)
+ {
+ 	struct device *dev = pg->pmc->dev;
+ 	int err;
+@@ -965,22 +965,6 @@ static int tegra_powergate_of_get_resets
+ 	err = reset_control_acquire(pg->reset);
+ 	if (err < 0) {
+ 		pr_err("failed to acquire resets: %d\n", err);
+-		goto out;
+-	}
+-
+-	if (off) {
+-		err = reset_control_assert(pg->reset);
+-	} else {
+-		err = reset_control_deassert(pg->reset);
+-		if (err < 0)
+-			goto out;
+-
+-		reset_control_release(pg->reset);
+-	}
+-
+-out:
+-	if (err) {
+-		reset_control_release(pg->reset);
+ 		reset_control_put(pg->reset);
+ 	}
  
--	  The value set has the following meanings:
-+	  Each policy combines power saving states and features:
-+	   - Partial: The Phy logic is powered but is in a reduced power
-+                      state. The exit latency from this state is no longer than
-+                      10us).
-+	   - Slumber: The Phy logic is powered but is in an even lower power
-+                      state. The exit latency from this state is potentially
-+		      longer, but no longer than 10ms.
-+	   - DevSleep: The Phy logic may be powered down. The exit latency from
-+	               this state is no longer than 20 ms, unless otherwise
-+		       specified by DETO in the device Identify Device Data log.
-+	   - HIPM: Host Initiated Power Management (host automatically
-+		   transitions to partial and slumber).
-+	   - DIPM: Device Initiated Power Management (device automatically
-+		   transitions to partial and slumber).
-+
-+	  The possible values for the default SATA link power management
-+	  policies are:
- 		0 => Keep firmware settings
--		1 => Maximum performance
--		2 => Medium power
--		3 => Medium power with Device Initiated PM enabled
--		4 => Minimum power
-+		1 => No power savings (maximum performance)
-+		2 => HIPM (Partial)
-+		3 => HIPM (Partial) and DIPM (Partial and Slumber)
-+		4 => HIPM (Partial and DevSleep) and DIPM (Partial and Slumber)
-+		5 => HIPM (Slumber and DevSleep) and DIPM (Partial and Slumber)
+@@ -1025,20 +1009,43 @@ static int tegra_powergate_add(struct te
+ 		goto set_available;
+ 	}
  
--	  Note "Minimum power" is known to cause issues, including disk
--	  corruption, with some disks and should not be used.
-+	  Excluding the value 0, higher values represent policies with higher
-+	  power savings.
+-	err = tegra_powergate_of_get_resets(pg, np, off);
++	err = tegra_powergate_of_get_resets(pg, np);
+ 	if (err < 0) {
+ 		dev_err(dev, "failed to get resets for %pOFn: %d\n", np, err);
+ 		goto remove_clks;
+ 	}
  
- config SATA_AHCI_PLATFORM
- 	tristate "Platform AHCI SATA support"
+-	if (!IS_ENABLED(CONFIG_PM_GENERIC_DOMAINS)) {
+-		if (off)
+-			WARN_ON(tegra_powergate_power_up(pg, true));
++	/*
++	 * If the power-domain is off, then ensure the resets are asserted.
++	 * If the power-domain is on, then power down to ensure that when is
++	 * it turned on the power-domain, clocks and resets are all in the
++	 * expected state.
++	 */
++	if (off) {
++		err = reset_control_assert(pg->reset);
++		if (err) {
++			pr_err("failed to assert resets: %d\n", err);
++			goto remove_resets;
++		}
++	} else {
++		err = tegra_powergate_power_down(pg);
++		if (err) {
++			dev_err(dev, "failed to turn off PM domain %s: %d\n",
++				pg->genpd.name, err);
++			goto remove_resets;
++		}
++	}
+ 
++	/*
++	 * If PM_GENERIC_DOMAINS is not enabled, power-on
++	 * the domain and skip the genpd registration.
++	 */
++	if (!IS_ENABLED(CONFIG_PM_GENERIC_DOMAINS)) {
++		WARN_ON(tegra_powergate_power_up(pg, true));
+ 		goto remove_resets;
+ 	}
+ 
+-	err = pm_genpd_init(&pg->genpd, NULL, off);
++	err = pm_genpd_init(&pg->genpd, NULL, true);
+ 	if (err < 0) {
+ 		dev_err(dev, "failed to initialise PM domain %pOFn: %d\n", np,
+ 		       err);
 
 
 
