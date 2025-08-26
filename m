@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-174578-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-173499-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id C22F9B363C7
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 15:33:10 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id A1FC9B35D14
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 13:41:00 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 603E8188F0A7
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 13:27:22 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 8AB775E05CC
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 11:40:38 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 70A50334717;
-	Tue, 26 Aug 2025 13:26:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 907B2284B5B;
+	Tue, 26 Aug 2025 11:40:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="aHd6xl+P"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="DFuYf3Jw"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2D7493019A3;
-	Tue, 26 Aug 2025 13:26:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4DDE323B628;
+	Tue, 26 Aug 2025 11:40:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756214764; cv=none; b=iN0CLxgI5LT0XzjqnitLELjYfKCvs4BWZGg7E47E/3XSsY5eq2U0m62SP2qdn2dTGlX0FAxVKtjl1D4zJBwL6an6WJ25YRwIlbTU+eSM54+F3kK0iHBb5fTuSi3rA8tN1G+KlmIKksNkU7qSfKOc3HZFsUrgsdFC6z+zYvdQ6i8=
+	t=1756208408; cv=none; b=jsMXsUwQgQhOHuJ+qil758HElGhcLjM5x50tzOb4pXF7/pJtydAk8AUz+go4spa/s2/LD7587f6JWqfJ/SUUqbtTj/izL6CddbzG0BTDJ7VDQdeMfV7mE9WJNPgCGEdgoZi9uuYHooo/rt58iW7P46QAP/nYCrcPMhgv+awb0Ac=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756214764; c=relaxed/simple;
-	bh=l6M4+hzqphpXagZnL4UxsvknRBYSZMlzv97Ho36bplg=;
+	s=arc-20240116; t=1756208408; c=relaxed/simple;
+	bh=LucJMRUjMxQO4kbVwwZmn3o6SYTEI0QfnNG9U6e7j4M=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=OBNi2Z6QbH5AUSbALT5tQJD3m/PtXiWj4K2yGcOFtOOtg2unOfcIol2HDN9MLw+iu4VF7MI/qZcdDfFnVdJJrOiG0wZsAttW6KyZFWd6+/andZqoFtt4kmRrKeDPvtKAQ3CFf00Oy4a7K5K+c1Q7UPZUcrcA0FLV5y0aur2T3Rg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=aHd6xl+P; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B75B7C4CEF1;
-	Tue, 26 Aug 2025 13:26:03 +0000 (UTC)
+	 MIME-Version; b=rPmQVROqjix7BSNSZ188kZ5ENZJRWU0b7J/9bdOMeRFU+V/R6eAo83Dio+KeWVscm5aMu/LAuhfe5yZt9Ss6dl0o9IgsM4fp2jMkJ0MAkhiwC3rbuM50ly468iihV6GJENSwogVkNVSwf3zwNvx46JudwkwFIbSpStdrgKgdQYc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=DFuYf3Jw; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 760D8C4CEF1;
+	Tue, 26 Aug 2025 11:40:07 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1756214764;
-	bh=l6M4+hzqphpXagZnL4UxsvknRBYSZMlzv97Ho36bplg=;
+	s=korg; t=1756208407;
+	bh=LucJMRUjMxQO4kbVwwZmn3o6SYTEI0QfnNG9U6e7j4M=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=aHd6xl+P+EavprdofeNryqMYOGxPJzN61tco8aaFRfm5GZzqrYu9pPEW7iJvLw5sB
-	 Tt0VcemWMOetMo1DPlHAeuwXqdIXPA4hvxg8az3QiGlG//PmnHvzH3WW9IfUe/5eCp
-	 7RNYukmSNBEaDzMAxA1n96bx5nteHZN5TUp4xPi8=
+	b=DFuYf3JwFVE2SCQ1hPaeOyxU5A2oawDYagSjbqpBtkQOPfNWIRCTDzI2pxJPwqA1J
+	 t7vTD0j4uP94WlhbZYRRC6AOFiomUUnbfdyiDVihRNsKM+ggmJWKzWJR2l1DJtNlIS
+	 wF0/0SH3bvkfWH/Cm2uOYCegCNTPGIFI+SZd5Id0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Breno Leitao <leitao@debian.org>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Catalin Marinas <catalin.marinas@arm.com>,
-	Andrew Morton <akpm@linux-foundation.org>
-Subject: [PATCH 6.1 261/482] mm/kmemleak: avoid deadlock by moving pr_warn() outside kmemleak_lock
+	Bingbu Cao <bingbu.cao@intel.com>,
+	Sakari Ailus <sakari.ailus@linux.intel.com>,
+	Hans Verkuil <hverkuil@xs4all.nl>
+Subject: [PATCH 6.12 099/322] media: hi556: correct the test pattern configuration
 Date: Tue, 26 Aug 2025 13:08:34 +0200
-Message-ID: <20250826110937.217929042@linuxfoundation.org>
+Message-ID: <20250826110918.147754950@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250826110930.769259449@linuxfoundation.org>
-References: <20250826110930.769259449@linuxfoundation.org>
+In-Reply-To: <20250826110915.169062587@linuxfoundation.org>
+References: <20250826110915.169062587@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,69 +62,100 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Breno Leitao <leitao@debian.org>
+From: Bingbu Cao <bingbu.cao@intel.com>
 
-commit 47b0f6d8f0d2be4d311a49e13d2fd5f152f492b2 upstream.
+commit 020f602b068c9ce18d5056d02c8302199377d98d upstream.
 
-When netpoll is enabled, calling pr_warn_once() while holding
-kmemleak_lock in mem_pool_alloc() can cause a deadlock due to lock
-inversion with the netconsole subsystem.  This occurs because
-pr_warn_once() may trigger netpoll, which eventually leads to
-__alloc_skb() and back into kmemleak code, attempting to reacquire
-kmemleak_lock.
+Hynix hi556 support 8 test pattern modes:
+hi556_test_pattern_menu[] = {
+{
+	"Disabled",
+	"Solid Colour",
+	"100% Colour Bars",
+	"Fade To Grey Colour Bars",
+	"PN9",
+	"Gradient Horizontal",
+	"Gradient Vertical",
+	"Check Board",
+	"Slant Pattern",
+}
 
-This is the path for the deadlock.
+The test pattern is set by a 8-bit register according to the
+specification.
++--------+-------------------------------+
+| BIT[0] |  Solid color                  |
++--------+-------------------------------+
+| BIT[1] |  Color bar                    |
++--------+-------------------------------+
+| BIT[2] |  Fade to grey color bar       |
++--------+-------------------------------+
+| BIT[3] |  PN9                          |
++--------+-------------------------------+
+| BIT[4] |  Gradient horizontal          |
++--------+-------------------------------+
+| BIT[5] |  Gradient vertical            |
++--------+-------------------------------+
+| BIT[6] |  Check board                  |
++--------+-------------------------------+
+| BIT[7] |  Slant pattern                |
++--------+-------------------------------+
+Based on function above, current test pattern programming is wrong.
+This patch fixes it by 'BIT(pattern - 1)'. If pattern is 0, driver
+will disable the test pattern generation and set the pattern to 0.
 
-mem_pool_alloc()
-  -> raw_spin_lock_irqsave(&kmemleak_lock, flags);
-      -> pr_warn_once()
-          -> netconsole subsystem
-	     -> netpoll
-	         -> __alloc_skb
-		   -> __create_object
-		     -> raw_spin_lock_irqsave(&kmemleak_lock, flags);
-
-Fix this by setting a flag and issuing the pr_warn_once() after
-kmemleak_lock is released.
-
-Link: https://lkml.kernel.org/r/20250731-kmemleak_lock-v1-1-728fd470198f@debian.org
-Fixes: c5665868183f ("mm: kmemleak: use the memory pool for early allocations")
-Signed-off-by: Breno Leitao <leitao@debian.org>
-Reported-by: Jakub Kicinski <kuba@kernel.org>
-Acked-by: Catalin Marinas <catalin.marinas@arm.com>
-Cc: <stable@vger.kernel.org>
-Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
+Fixes: e62138403a84 ("media: hi556: Add support for Hi-556 sensor")
+Cc: stable@vger.kernel.org
+Signed-off-by: Bingbu Cao <bingbu.cao@intel.com>
+Signed-off-by: Sakari Ailus <sakari.ailus@linux.intel.com>
+Signed-off-by: Hans Verkuil <hverkuil@xs4all.nl>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- mm/kmemleak.c |    5 ++++-
- 1 file changed, 4 insertions(+), 1 deletion(-)
+ drivers/media/i2c/hi556.c |   28 +++++++++++++++-------------
+ 1 file changed, 15 insertions(+), 13 deletions(-)
 
---- a/mm/kmemleak.c
-+++ b/mm/kmemleak.c
-@@ -441,6 +441,7 @@ static struct kmemleak_object *mem_pool_
- {
- 	unsigned long flags;
- 	struct kmemleak_object *object;
-+	bool warn = false;
+--- a/drivers/media/i2c/hi556.c
++++ b/drivers/media/i2c/hi556.c
+@@ -756,21 +756,23 @@ static int hi556_test_pattern(struct hi5
+ 	int ret;
+ 	u32 val;
  
- 	/* try the slab allocator first */
- 	if (object_cache) {
-@@ -458,8 +459,10 @@ static struct kmemleak_object *mem_pool_
- 	else if (mem_pool_free_count)
- 		object = &mem_pool[--mem_pool_free_count];
- 	else
--		pr_warn_once("Memory pool empty, consider increasing CONFIG_DEBUG_KMEMLEAK_MEM_POOL_SIZE\n");
-+		warn = true;
- 	raw_spin_unlock_irqrestore(&kmemleak_lock, flags);
-+	if (warn)
-+		pr_warn_once("Memory pool empty, consider increasing CONFIG_DEBUG_KMEMLEAK_MEM_POOL_SIZE\n");
+-	if (pattern) {
+-		ret = hi556_read_reg(hi556, HI556_REG_ISP,
+-				     HI556_REG_VALUE_08BIT, &val);
+-		if (ret)
+-			return ret;
+-
+-		ret = hi556_write_reg(hi556, HI556_REG_ISP,
+-				      HI556_REG_VALUE_08BIT,
+-				      val | HI556_REG_ISP_TPG_EN);
+-		if (ret)
+-			return ret;
+-	}
++	ret = hi556_read_reg(hi556, HI556_REG_ISP,
++			     HI556_REG_VALUE_08BIT, &val);
++	if (ret)
++		return ret;
++
++	val = pattern ? (val | HI556_REG_ISP_TPG_EN) :
++		(val & ~HI556_REG_ISP_TPG_EN);
++
++	ret = hi556_write_reg(hi556, HI556_REG_ISP,
++			      HI556_REG_VALUE_08BIT, val);
++	if (ret)
++		return ret;
++
++	val = pattern ? BIT(pattern - 1) : 0;
  
- 	return object;
+ 	return hi556_write_reg(hi556, HI556_REG_TEST_PATTERN,
+-			       HI556_REG_VALUE_08BIT, pattern);
++			       HI556_REG_VALUE_08BIT, val);
  }
+ 
+ static int hi556_set_ctrl(struct v4l2_ctrl *ctrl)
 
 
 
