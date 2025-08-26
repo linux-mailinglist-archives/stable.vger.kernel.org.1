@@ -1,58 +1,57 @@
-Return-Path: <stable+bounces-173304-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-174741-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4054AB35D23
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 13:41:35 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2870DB36520
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 15:45:15 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id B5C313666B9
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 11:33:58 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 78F088E0F89
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 13:34:34 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9E49434A313;
-	Tue, 26 Aug 2025 11:31:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8215E24A066;
+	Tue, 26 Aug 2025 13:33:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="aXPDbjlA"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="JwcY8FaH"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5CA063469F3;
-	Tue, 26 Aug 2025 11:31:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 39B98228C9D;
+	Tue, 26 Aug 2025 13:33:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756207900; cv=none; b=SgiHRtKNvtJvX5GWxy1xe0bwnV3ZkhrIqlNQgUQJmvoY09KqlU6wUGD8EM1oXtLimEwzVAJgJgKGeokU1mz86Ok9kj1It0nHDt3MWgvb5L5JbwIQgUnY8AgYTbHE63WuDS0n5wv0NC+BXQSb30BikwZzIo+DRGF0fXk0+j2lcTY=
+	t=1756215195; cv=none; b=p06W53sgs/txulJzY9GBsJ5nfUmui8rfsinhqndlndN+NaSeqV4YHgw5u87cOl5bKBoCJmAWh2BWi1l5aHUrVwgTcfu/R/1GQ+nahUD9iGmlpA+8zA0AxytxTaGB1hSTBfpxLGAMt+s1SKg7JudJ9eFeKoX1t89LQvzoB8n7jH0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756207900; c=relaxed/simple;
-	bh=MWph2R+I/YfbRy4KKKlQXycAU1BUGs9nPJAWcUmNp+4=;
+	s=arc-20240116; t=1756215195; c=relaxed/simple;
+	bh=6ft4k1pvcYpuLDdWyRjEA/B1husa2cyxcoITOLbObFA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Ey4J8pWZudFve6xOhXP5iY/mJ402APXpB2Yyjnezx5JesJ6N8dGyVsuvHhEnrQ6WI2HCmhWDEyA6fcMkgMXBsFXD2X57PkUmXeRZuo5FHXPnINP2yvg+V62DO/URKfeRvrj93sVqa1ZIocn8nAeH/rGAudUIQjQRNdxhQvVeoOc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=aXPDbjlA; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id EAEC1C4CEF1;
-	Tue, 26 Aug 2025 11:31:39 +0000 (UTC)
+	 MIME-Version; b=tSeZoY5upGRqpeZ9anCK7npb2RCjF9VNw5blqL99zSzxRiUkp+fcfiAAoCjQK6a/iQW4DB7lew225b1jgrq7fu/M3UvfCONffMN+Ywu6zw/zdKYEijxPNa0sLwZequ/L0W5pzuj6HmS5aPRFp+NreMAFkXDZ7bz/y80crnr5dQ4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=JwcY8FaH; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 650D8C4CEF1;
+	Tue, 26 Aug 2025 13:33:13 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1756207900;
-	bh=MWph2R+I/YfbRy4KKKlQXycAU1BUGs9nPJAWcUmNp+4=;
+	s=korg; t=1756215193;
+	bh=6ft4k1pvcYpuLDdWyRjEA/B1husa2cyxcoITOLbObFA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=aXPDbjlAsI1i+Pw4YLzkSMzMfQpPp/TTihpzAmMMY0GyfOJrqdgKsZNLbUJTs4PC5
-	 fXB73CTgkXf9gHHIrEA3eA3fSxPmV4Tw/qBK1x1GoqTjm8Fuz90MxiCbrhgP8yLim4
-	 6LFbcleWGRuS4tE7lrdk/Re3GX/2mTzxSk4AAlss=
+	b=JwcY8FaHdaNsJbAWd+WMLWrWzb01x9NowHp8+6MGka60uKyN0Gj8PB4F6Pm7EFyMI
+	 NBwIf2H1Vtzc+J0HpXZi6wu3bq6CubVTS/NgT0ZX5H6Yoo6o+FtQYtk2RORMqtMfwL
+	 lXhdXLnoq6uVgk/l3P9tzucXosrXN4eb0Ct6MMq8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Kashyap Desai <kashyap.desai@broadcom.com>,
-	Saravanan Vajravel <saravanan.vajravel@broadcom.com>,
-	Kalesh AP <kalesh-anakkur.purayil@broadcom.com>,
-	Leon Romanovsky <leon@kernel.org>,
+	Chao Gao <chao.gao@intel.com>,
+	Kai Huang <kai.huang@intel.com>,
+	Sean Christopherson <seanjc@google.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.16 361/457] RDMA/bnxt_re: Fix to do SRQ armena by default
+Subject: [PATCH 6.1 392/482] KVM: VMX: Flush shadow VMCS on emergency reboot
 Date: Tue, 26 Aug 2025 13:10:45 +0200
-Message-ID: <20250826110946.234631627@linuxfoundation.org>
+Message-ID: <20250826110940.512419004@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250826110937.289866482@linuxfoundation.org>
-References: <20250826110937.289866482@linuxfoundation.org>
+In-Reply-To: <20250826110930.769259449@linuxfoundation.org>
+References: <20250826110930.769259449@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,49 +63,54 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.16-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Kashyap Desai <kashyap.desai@broadcom.com>
+From: Chao Gao <chao.gao@intel.com>
 
-[ Upstream commit 6296f9a5293ada28558f2867ac54c487e1e2b9f2 ]
+[ Upstream commit a0ee1d5faff135e28810f29e0f06328c66f89852 ]
 
-Whenever SRQ is created, make sure SRQ arm enable is always
-set. Driver is always ready to receive SRQ ASYNC event.
+Ensure the shadow VMCS cache is evicted during an emergency reboot to
+prevent potential memory corruption if the cache is evicted after reboot.
 
-Additional note -
-There is no need to do srq arm enable conditionally.
-See bnxt_qplib_armen_db in bnxt_qplib_create_cq().
+This issue was identified through code inspection, as __loaded_vmcs_clear()
+flushes both the normal VMCS and the shadow VMCS.
 
-Fixes: 37cb11acf1f7 ("RDMA/bnxt_re: Add SRQ support for Broadcom adapters")
-Signed-off-by: Kashyap Desai <kashyap.desai@broadcom.com>
-Signed-off-by: Saravanan Vajravel <saravanan.vajravel@broadcom.com>
-Link: https://patch.msgid.link/20250805101000.233310-2-kalesh-anakkur.purayil@broadcom.com
-Reviewed-by: Kalesh AP <kalesh-anakkur.purayil@broadcom.com>
-Signed-off-by: Leon Romanovsky <leon@kernel.org>
+Avoid checking the "launched" state during an emergency reboot, unlike the
+behavior in __loaded_vmcs_clear(). This is important because reboot NMIs
+can interfere with operations like copy_shadow_to_vmcs12(), where shadow
+VMCSes are loaded directly using VMPTRLD. In such cases, if NMIs occur
+right after the VMCS load, the shadow VMCSes will be active but the
+"launched" state may not be set.
+
+Fixes: 16f5b9034b69 ("KVM: nVMX: Copy processor-specific shadow-vmcs to VMCS12")
+Cc: stable@vger.kernel.org
+Signed-off-by: Chao Gao <chao.gao@intel.com>
+Reviewed-by: Kai Huang <kai.huang@intel.com>
+Link: https://lore.kernel.org/r/20250324140849.2099723-1-chao.gao@intel.com
+Signed-off-by: Sean Christopherson <seanjc@google.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/infiniband/hw/bnxt_re/qplib_fp.c | 3 +--
- 1 file changed, 1 insertion(+), 2 deletions(-)
+ arch/x86/kvm/vmx/vmx.c |    5 ++++-
+ 1 file changed, 4 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/infiniband/hw/bnxt_re/qplib_fp.c b/drivers/infiniband/hw/bnxt_re/qplib_fp.c
-index be34c605d516..eb82440cdded 100644
---- a/drivers/infiniband/hw/bnxt_re/qplib_fp.c
-+++ b/drivers/infiniband/hw/bnxt_re/qplib_fp.c
-@@ -705,8 +705,7 @@ int bnxt_qplib_create_srq(struct bnxt_qplib_res *res,
- 	srq->dbinfo.db = srq->dpi->dbr;
- 	srq->dbinfo.max_slot = 1;
- 	srq->dbinfo.priv_db = res->dpi_tbl.priv_db;
--	if (srq->threshold)
--		bnxt_qplib_armen_db(&srq->dbinfo, DBC_DBC_TYPE_SRQ_ARMENA);
-+	bnxt_qplib_armen_db(&srq->dbinfo, DBC_DBC_TYPE_SRQ_ARMENA);
- 	srq->arm_req = false;
+--- a/arch/x86/kvm/vmx/vmx.c
++++ b/arch/x86/kvm/vmx/vmx.c
+@@ -713,8 +713,11 @@ static void vmx_emergency_disable(void)
+ 	struct loaded_vmcs *v;
  
- 	return 0;
--- 
-2.50.1
-
+ 	list_for_each_entry(v, &per_cpu(loaded_vmcss_on_cpu, cpu),
+-			    loaded_vmcss_on_cpu_link)
++			    loaded_vmcss_on_cpu_link) {
+ 		vmcs_clear(v->vmcs);
++		if (v->shadow_vmcs)
++			vmcs_clear(v->shadow_vmcs);
++	}
+ 
+ 	__cpu_emergency_vmxoff();
+ }
 
 
 
