@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-176376-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-173699-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8C0C2B36CBA
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 17:00:06 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id A0DC4B35E6C
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 13:57:31 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 559B05A2FF4
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 14:47:53 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 409111892B3F
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 11:49:22 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B6F97341AA6;
-	Tue, 26 Aug 2025 14:44:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5FAA0283FDF;
+	Tue, 26 Aug 2025 11:48:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="SLQx7RlT"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="KXOVHel2"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 74F93296BDF;
-	Tue, 26 Aug 2025 14:44:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1CAF8200112;
+	Tue, 26 Aug 2025 11:48:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756219497; cv=none; b=RcxlkqU0Bfe7KzX2NDGHs017FBy7ktXfT+4Pj5V5ENXw1yHqESZATX5sQmHVv4Xu2K3sdhmqoKbM12gxYqu3MsquukmZ7hfpVMQ6pL9c0yXq/OruoyYJayQekcv2zBlCdHcPZbTBobvuXDyubZXl3067+Cnhwz6yVnCMTXtGCrA=
+	t=1756208927; cv=none; b=c9y7K5N39VStxqSM5UnWti0cR1kpiOWttmrS29Tb8eSbB4m+8G2UhFX5FMM6XQUbfk/orPrpdfOru5+ZAqqGyRHOP++Z0O9vjC14usV6skOYvry8kr4nzHTB1vPzpUTGcpye2u+wVl6diE5U318EWamob2xyVcfLEzVp+VIEfPk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756219497; c=relaxed/simple;
-	bh=YHiytu09ntTOIrYFSegI8pzis7I53/RKQ2ty3h4QnqM=;
+	s=arc-20240116; t=1756208927; c=relaxed/simple;
+	bh=VtMo4qNuX9dRPg4XY/Uf+ri6ZXTkFsGagjj/Juc8E9o=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=mvOwMbRFsv91tqa+GqdCm/li4C0HXXnWeoC+Fve9g0ATj89IljqcNl5g2uavH9ZL8el2bV0EBy7EM7mXjTOKmfM8tnBU+NFYsiYDF3amYHBZGVYDRf9VFvx69C2X7clYEwpYYzSsAYFrVREn8NRN0OQ1uCqjpNFPMpulgUX4uKs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=SLQx7RlT; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 044E6C4CEF1;
-	Tue, 26 Aug 2025 14:44:56 +0000 (UTC)
+	 MIME-Version; b=QQRiPTNqs2MY7T/5EKHUq1Tl41vddBMEOZzFL9JUX+Y5tnyQuuywaWUBB1jjrEaLbHANkv0Bjaqoox6MjouIDqu2B6FBK5wa8+JxCUDzQd+4vS7jGJVSCBQ8v8q56kkNImQJxXYpgxMF0crtyxJMrpkhH5XB45xvDWg+vwbsjcU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=KXOVHel2; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A23CFC4CEF4;
+	Tue, 26 Aug 2025 11:48:46 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1756219497;
-	bh=YHiytu09ntTOIrYFSegI8pzis7I53/RKQ2ty3h4QnqM=;
+	s=korg; t=1756208927;
+	bh=VtMo4qNuX9dRPg4XY/Uf+ri6ZXTkFsGagjj/Juc8E9o=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=SLQx7RlTGPcaOp/cmXKro5KRsKZj5XILcp6ZgUsGSRtEzXClISrMLQE/jgjaz/LEF
-	 OaQu6Wv48aIEpXJYrPN6Yao0dSRBwrcdmqU2clZ4A7+tBtmaIYNrGAXfLOTW9Sb78f
-	 wMV/pFxVpjmi92xiPvM7W5X0UNXAtO8Hqe1fjXCI=
+	b=KXOVHel24Z75nLNfhKlyVEDQ961u3E2puIlvtkf7nxTQRGaejiW9C27/Brze5g8PT
+	 nLUsx1eOxcs0Op4wruU8mUsU37oyoNILOEMGBde6ur6CMrb90Fz5K6vOJZd1UjSbIe
+	 HAHHgBaMqcCNNWHMYDgYzQqjN6uBPoPhyLL6DaDA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	wenxu <wenxu@ucloud.cn>,
+	Jordan Rhee <jordanrhee@google.com>,
+	Jeroen de Borst <jeroendb@google.com>,
 	Jakub Kicinski <kuba@kernel.org>,
-	Shubham Kulkarni <skulkarni@mvista.com>
-Subject: [PATCH 5.4 387/403] net/sched: act_mirred: refactor the handle of xmit
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.12 298/322] gve: prevent ethtool ops after shutdown
 Date: Tue, 26 Aug 2025 13:11:53 +0200
-Message-ID: <20250826110917.710119672@linuxfoundation.org>
+Message-ID: <20250826110923.256741834@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250826110905.607690791@linuxfoundation.org>
-References: <20250826110905.607690791@linuxfoundation.org>
+In-Reply-To: <20250826110915.169062587@linuxfoundation.org>
+References: <20250826110915.169062587@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,84 +63,59 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.4-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: wenxu <wenxu@ucloud.cn>
+From: Jordan Rhee <jordanrhee@google.com>
 
-[ Upstream commit fa6d639930ee5cd3f932cc314f3407f07a06582d ]
+[ Upstream commit 75a9a46d67f46d608205888f9b34e315c1786345 ]
 
-This one is prepare for the next patch.
+A crash can occur if an ethtool operation is invoked
+after shutdown() is called.
 
-Signed-off-by: wenxu <wenxu@ucloud.cn>
+shutdown() is invoked during system shutdown to stop DMA operations
+without performing expensive deallocations. It is discouraged to
+unregister the netdev in this path, so the device may still be visible
+to userspace and kernel helpers.
+
+In gve, shutdown() tears down most internal data structures. If an
+ethtool operation is dispatched after shutdown(), it will dereference
+freed or NULL pointers, leading to a kernel panic. While graceful
+shutdown normally quiesces userspace before invoking the reboot
+syscall, forced shutdowns (as observed on GCP VMs) can still trigger
+this path.
+
+Fix by calling netif_device_detach() in shutdown().
+This marks the device as detached so the ethtool ioctl handler
+will skip dispatching operations to the driver.
+
+Fixes: 974365e51861 ("gve: Implement suspend/resume/shutdown")
+Signed-off-by: Jordan Rhee <jordanrhee@google.com>
+Signed-off-by: Jeroen de Borst <jeroendb@google.com>
+Link: https://patch.msgid.link/20250818211245.1156919-1-jeroendb@google.com
 Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-[ skulkarni: Adjusted patch for file 'sch_generic.h' wrt the mainline commit ]
-Stable-dep-of: ca22da2fbd69 ("act_mirred: use the backlog for nested calls to mirred ingress")
-Signed-off-by: Shubham Kulkarni <skulkarni@mvista.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- include/net/sch_generic.h |    5 -----
- net/sched/act_mirred.c    |   21 +++++++++++++++------
- 2 files changed, 15 insertions(+), 11 deletions(-)
+ drivers/net/ethernet/google/gve/gve_main.c | 2 ++
+ 1 file changed, 2 insertions(+)
 
---- a/include/net/sch_generic.h
-+++ b/include/net/sch_generic.h
-@@ -1320,11 +1320,6 @@ void mini_qdisc_pair_swap(struct mini_Qd
- void mini_qdisc_pair_init(struct mini_Qdisc_pair *miniqp, struct Qdisc *qdisc,
- 			  struct mini_Qdisc __rcu **p_miniq);
+diff --git a/drivers/net/ethernet/google/gve/gve_main.c b/drivers/net/ethernet/google/gve/gve_main.c
+index 8ea3c7493663..497a19ca198d 100644
+--- a/drivers/net/ethernet/google/gve/gve_main.c
++++ b/drivers/net/ethernet/google/gve/gve_main.c
+@@ -2726,6 +2726,8 @@ static void gve_shutdown(struct pci_dev *pdev)
+ 	struct gve_priv *priv = netdev_priv(netdev);
+ 	bool was_up = netif_running(priv->dev);
  
--static inline int skb_tc_reinsert(struct sk_buff *skb, struct tcf_result *res)
--{
--	return res->ingress ? netif_receive_skb(skb) : dev_queue_xmit(skb);
--}
--
- /* Make sure qdisc is no longer in SCHED state. */
- static inline void qdisc_synchronize(const struct Qdisc *q)
- {
---- a/net/sched/act_mirred.c
-+++ b/net/sched/act_mirred.c
-@@ -206,6 +206,18 @@ release_idr:
- 	return err;
- }
- 
-+static int tcf_mirred_forward(bool want_ingress, struct sk_buff *skb)
-+{
-+	int err;
++	netif_device_detach(netdev);
 +
-+	if (!want_ingress)
-+		err = dev_queue_xmit(skb);
-+	else
-+		err = netif_receive_skb(skb);
-+
-+	return err;
-+}
-+
- static int tcf_mirred_act(struct sk_buff *skb, const struct tc_action *a,
- 			  struct tcf_result *res)
- {
-@@ -295,18 +307,15 @@ static int tcf_mirred_act(struct sk_buff
- 		/* let's the caller reinsert the packet, if possible */
- 		if (use_reinsert) {
- 			res->ingress = want_ingress;
--			if (skb_tc_reinsert(skb, res))
-+			err = tcf_mirred_forward(res->ingress, skb);
-+			if (err)
- 				tcf_action_inc_overlimit_qstats(&m->common);
- 			__this_cpu_dec(mirred_rec_level);
- 			return TC_ACT_CONSUMED;
- 		}
- 	}
- 
--	if (!want_ingress)
--		err = dev_queue_xmit(skb2);
--	else
--		err = netif_receive_skb(skb2);
--
-+	err = tcf_mirred_forward(want_ingress, skb2);
- 	if (err) {
- out:
- 		tcf_action_inc_overlimit_qstats(&m->common);
+ 	rtnl_lock();
+ 	if (was_up && gve_close(priv->dev)) {
+ 		/* If the dev was up, attempt to close, if close fails, reset */
+-- 
+2.50.1
+
 
 
 
