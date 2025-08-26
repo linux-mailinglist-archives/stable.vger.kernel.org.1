@@ -1,57 +1,55 @@
-Return-Path: <stable+bounces-174495-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-175637-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id BEF6AB3639E
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 15:31:51 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id AD8EEB36880
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 16:16:58 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 470955E33F1
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 13:23:57 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 64C4D7BF1B4
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 14:13:52 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 02C4324DD11;
-	Tue, 26 Aug 2025 13:22:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3353235A280;
+	Tue, 26 Aug 2025 14:12:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="HIJDEECG"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="RCh29D6h"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B23752BE653;
-	Tue, 26 Aug 2025 13:22:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D9DBD3570D5;
+	Tue, 26 Aug 2025 14:12:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756214543; cv=none; b=bTnXdjiOqTXohH2xXQ761YycoLdIs296b2iBJbfgrr6d+0muLBRSvmuZ9uwBG2iBdDnMYh8DYSHoJSSd284OUMKff54jw1Q4Sr56LJNvb8ayesRGL6LnIURTSPIY5lcDkMXnm9CyBA+AZs25v3TZqmM+lwanII+hYKODFOwdNj0=
+	t=1756217572; cv=none; b=rEupEUxwcjDnmMjFOAud3UNRzsD7u348tSUugnvBgwAuGUUw6uIcZ4DvnwSvnDUQFKSH4KrdnRpDlsxY4Oy4mR+aGv6Qv4UUTsa8LeGQgwLxSzgeE/oCKP5fjIkDUbKUXutny7YZ2Zkx7Vdjqc4xTMN/u5pvZe9Tt/qwas1Oq4g=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756214543; c=relaxed/simple;
-	bh=BR8DHIVy1BXgng6Hienw4W1Ps/VaKLK9EI0JuDuMVtA=;
+	s=arc-20240116; t=1756217572; c=relaxed/simple;
+	bh=lmD0RitzxqnMTsnF67BHZDh3ecmpfMYHyF6Q3Z8qPSw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=bUboO6Aycy3gmtepCCcMtgYaaM3WWvNYrH3+GSrekyWjqlF6YGePb275gHfiXKUvrFHCU7QWtTC6NvFJxSnJwqSYk44xDhhCGtcVStC2XkZsRlg6ap3ffylfZrJ44/7vLQNA2ci8GhyM24i4+18QOwcFIXPkVkWYPBNhU4Ly76A=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=HIJDEECG; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E54CAC4CEF1;
-	Tue, 26 Aug 2025 13:22:22 +0000 (UTC)
+	 MIME-Version; b=kJ2cc2eL4ZHa7zA/SKtKbN1cvVTLyeZ2fcRJP5QWfDNZRjaej6BwoV6avCPlDxpSW/uVRa7pGzAAFF/jGTa9gOyZp7ygsBrWtuXiTYv49cgwwMot48S/7nc8oGABstsN6+BeUywpFr+XMspW3yM3BZQEW/fwPTShI9TroMwMf6M=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=RCh29D6h; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0FD4DC19425;
+	Tue, 26 Aug 2025 14:12:51 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1756214543;
-	bh=BR8DHIVy1BXgng6Hienw4W1Ps/VaKLK9EI0JuDuMVtA=;
+	s=korg; t=1756217572;
+	bh=lmD0RitzxqnMTsnF67BHZDh3ecmpfMYHyF6Q3Z8qPSw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=HIJDEECGRZtE4qFVbVU6WzzVsDrFf32AqSv3aJVQRUk6+H2oWBX7SPBR9VGlA/9kg
-	 5rtgbMv3uE+xV7EnpHNxULWxs4a8fM/30AYkh2trA5qoLbkuXV40bPnm3xkLk0DWpR
-	 oz2KI6VwbLQFPsBIWa5a9xjrvxDEGIt8Ulb7fO60=
+	b=RCh29D6h0PI6CXReC6t7AvaUtzzR+s/TOky6NLG3c3pvzr7b823eGpLi4ZNkmnyIg
+	 fKD/ir8aSPYSuhCbN+AsqDgMFNuIF8dX2BW+ie3kKiQrVD/3zQ4TO2gUO/XO7looqC
+	 NPTXG6cMQgL/PgD7bD6nrT7rGL1aydQaOrzKiMm4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Thomas Fourier <fourier.thomas@gmail.com>,
-	Christophe Leroy <christophe.leroy@csgroup.eu>,
-	Madhavan Srinivasan <maddy@linux.ibm.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 150/482] powerpc: floppy: Add missing checks after DMA map
+	Takashi Iwai <tiwai@suse.de>,
+	Youngjun Lee <yjjuny.lee@samsung.com>
+Subject: [PATCH 5.10 193/523] ALSA: usb-audio: Validate UAC3 power domain descriptors, too
 Date: Tue, 26 Aug 2025 13:06:43 +0200
-Message-ID: <20250826110934.523652241@linuxfoundation.org>
+Message-ID: <20250826110929.209478271@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250826110930.769259449@linuxfoundation.org>
-References: <20250826110930.769259449@linuxfoundation.org>
+In-Reply-To: <20250826110924.562212281@linuxfoundation.org>
+References: <20250826110924.562212281@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,46 +61,56 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Thomas Fourier <fourier.thomas@gmail.com>
+From: Takashi Iwai <tiwai@suse.de>
 
-[ Upstream commit cf183c1730f2634245da35e9b5d53381b787d112 ]
+commit d832ccbc301fbd9e5a1d691bdcf461cdb514595f upstream.
 
-The DMA map functions can fail and should be tested for errors.
+UAC3 power domain descriptors need to be verified with its variable
+bLength for avoiding the unexpected OOB accesses by malicious
+firmware, too.
 
-Signed-off-by: Thomas Fourier <fourier.thomas@gmail.com>
-Reviewed-by: Christophe Leroy <christophe.leroy@csgroup.eu>
-Signed-off-by: Madhavan Srinivasan <maddy@linux.ibm.com>
-Link: https://patch.msgid.link/20250620075602.12575-1-fourier.thomas@gmail.com
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Fixes: 9a2fe9b801f5 ("ALSA: usb: initial USB Audio Device Class 3.0 support")
+Reported-and-tested-by: Youngjun Lee <yjjuny.lee@samsung.com>
+Cc: <stable@vger.kernel.org>
+Link: https://patch.msgid.link/20250814081245.8902-1-tiwai@suse.de
+Signed-off-by: Takashi Iwai <tiwai@suse.de>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- arch/powerpc/include/asm/floppy.h | 5 ++++-
- 1 file changed, 4 insertions(+), 1 deletion(-)
+ sound/usb/validate.c |   12 ++++++++++++
+ 1 file changed, 12 insertions(+)
 
-diff --git a/arch/powerpc/include/asm/floppy.h b/arch/powerpc/include/asm/floppy.h
-index f8ce178b43b7..34abf8bea2cc 100644
---- a/arch/powerpc/include/asm/floppy.h
-+++ b/arch/powerpc/include/asm/floppy.h
-@@ -144,9 +144,12 @@ static int hard_dma_setup(char *addr, unsigned long size, int mode, int io)
- 		bus_addr = 0;
- 	}
+--- a/sound/usb/validate.c
++++ b/sound/usb/validate.c
+@@ -221,6 +221,17 @@ static bool validate_uac3_feature_unit(c
+ 	return d->bLength >= sizeof(*d) + 4 + 2;
+ }
  
--	if (!bus_addr)	/* need to map it */
-+	if (!bus_addr) {	/* need to map it */
- 		bus_addr = dma_map_single(&isa_bridge_pcidev->dev, addr, size,
- 					  dir);
-+		if (dma_mapping_error(&isa_bridge_pcidev->dev, bus_addr))
-+			return -ENOMEM;
-+	}
++static bool validate_uac3_power_domain_unit(const void *p,
++					    const struct usb_desc_validator *v)
++{
++	const struct uac3_power_domain_descriptor *d = p;
++
++	if (d->bLength < sizeof(*d))
++		return false;
++	/* baEntities[] + wPDomainDescrStr */
++	return d->bLength >= sizeof(*d) + d->bNrEntities + 2;
++}
++
+ static bool validate_midi_out_jack(const void *p,
+ 				   const struct usb_desc_validator *v)
+ {
+@@ -285,6 +296,7 @@ static const struct usb_desc_validator a
+ 	      struct uac3_clock_multiplier_descriptor),
+ 	/* UAC_VERSION_3, UAC3_SAMPLE_RATE_CONVERTER: not implemented yet */
+ 	/* UAC_VERSION_3, UAC3_CONNECTORS: not implemented yet */
++	FUNC(UAC_VERSION_3, UAC3_POWER_DOMAIN, validate_uac3_power_domain_unit),
+ 	{ } /* terminator */
+ };
  
- 	/* remember this one as prev */
- 	prev_addr = addr;
--- 
-2.39.5
-
 
 
 
