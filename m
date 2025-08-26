@@ -1,55 +1,55 @@
-Return-Path: <stable+bounces-173069-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-175121-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 31376B35BC6
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 13:28:00 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4DBBAB36743
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 16:05:12 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id C36C62A4478
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 11:22:36 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 14B7698094F
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 13:51:24 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 12E4E2FE069;
-	Tue, 26 Aug 2025 11:21:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id BA351350843;
+	Tue, 26 Aug 2025 13:49:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="0TmvdAGt"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="09rXedlE"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BC4F520B7EE;
-	Tue, 26 Aug 2025 11:21:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6F1C23451A0;
+	Tue, 26 Aug 2025 13:49:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756207292; cv=none; b=aOyBVo/sZp5hY0OKvFpBE1IenhliLcwf9C0hZLjSptoyJz1QfyqMMiBnnJ3/k7St+EPPDSpvDojsTV9OUDp/GH/RNIkJ6+gLopUTgfyWqB1cKUJCxFSS3FR8UjKkkGz54ymN2MYEX0/Tp7pg7ce6BWEThwCxQGxwDZDoO2xvggc=
+	t=1756216195; cv=none; b=MHn+Gi7XONv1fLcC0JVqtp63j1R23bmrH/mRgVPSBgNGh5qk0SvfkZft5vLNG5lnenHXkqKzGULsfOAVykBHmtqifgT+l3cK03Ndn8fmBkehSDSLprlAWADr1yzTr5rTNVyyH+T4RFWLWNMiAvg6mqqJYdm/+05T4nWpDAghO1Y=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756207292; c=relaxed/simple;
-	bh=ccbMdD6EyY3BVjUgZTGXItmkmxja9tYHZky986EqSOk=;
+	s=arc-20240116; t=1756216195; c=relaxed/simple;
+	bh=se38gZVO9wzvvv/WVhovKXaMpy8dyMnSPRFaP+tUWMk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=aj3HXrQ8+/TNIrg6m+Xb6toLH/q0VHWiwKNbBE90r5R9KK972Uns8aVQzIPsf1wDK0iVEqw/YwGAsb/VRS7hDw/xZ+sqZZoyFvXisNyuXTo5q9mCezurVE04QpURJ4UMTGsCivXAbCOOsfCXxbR4HKphcFEQLpS4OTJoQPca8qs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=0TmvdAGt; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 54C62C113CF;
-	Tue, 26 Aug 2025 11:21:32 +0000 (UTC)
+	 MIME-Version; b=tayY+/Y8xc63RwbJmZhzGctIfyI38rN9DpoxZ4wjWKiQzeKVWhrQ6KzHac9ytp6EEF28IMuR26w6T6Dujq91+8HqwHAKt26Fsz+KDon8Gb+LcW6GbhmZARTq8Q2yYfRn6Ifde1FIoDwgfPPQFQASJxFOCj8mJ9HuY+F9AaFMSEQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=09rXedlE; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id F379AC4CEF1;
+	Tue, 26 Aug 2025 13:49:54 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1756207292;
-	bh=ccbMdD6EyY3BVjUgZTGXItmkmxja9tYHZky986EqSOk=;
+	s=korg; t=1756216195;
+	bh=se38gZVO9wzvvv/WVhovKXaMpy8dyMnSPRFaP+tUWMk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=0TmvdAGtJntTfqTtyh7/EHJaxpMERuk4Ok/r/MKMgcmOk0nXk9b+/TzAF8MMIAg9g
-	 Jh6CDD7IWYoGV7k7r0+Sl/aDey0q4fSmcPnWD3qJihmV/L/Us6pSNIQuVGyLb5EUQK
-	 /q2zSvhmTioLXsI2/d4z46D7sYHMFcirDJBJQioY=
+	b=09rXedlEt83o4Kkbz3L9LN0OZmDwQHTwGz7SLfHCoi9E0vExv6BN4wYxyZsykLs4l
+	 MAZQJCoKnUr+GlWkRcukqk5EgGVHakFnFy2pMmKG+Grc0omyEu65h994RdfQGeskT1
+	 fL2/Ei3qVddWfPdxAbw3lBsLxa4ZUNzIk9m8Y21g=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	John David Anglin <dave.anglin@bell.net>,
-	Helge Deller <deller@gmx.de>
-Subject: [PATCH 6.16 126/457] parisc: Revise __get_user() to probe user read access
-Date: Tue, 26 Aug 2025 13:06:50 +0200
-Message-ID: <20250826110940.488457553@linuxfoundation.org>
+	Eliav Farber <farbere@amazon.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.15 320/644] pps: clients: gpio: fix interrupt handling order in remove path
+Date: Tue, 26 Aug 2025 13:06:51 +0200
+Message-ID: <20250826110954.315789302@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250826110937.289866482@linuxfoundation.org>
-References: <20250826110937.289866482@linuxfoundation.org>
+In-Reply-To: <20250826110946.507083938@linuxfoundation.org>
+References: <20250826110946.507083938@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,64 +61,63 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.16-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: John David Anglin <dave.anglin@bell.net>
+From: Eliav Farber <farbere@amazon.com>
 
-commit 89f686a0fb6e473a876a9a60a13aec67a62b9a7e upstream.
+[ Upstream commit 6bca1e955830808dc90e0506b2951b4256b81bbb ]
 
-Because of the way read access support is implemented, read access
-interruptions are only triggered at privilege levels 2 and 3. The
-kernel executes at privilege level 0, so __get_user() never triggers
-a read access interruption (code 26). Thus, it is currently possible
-for user code to access a read protected address via a system call.
+The interrupt handler in pps_gpio_probe() is registered after calling
+pps_register_source() using devm_request_irq(). However, in the
+corresponding remove function, pps_unregister_source() is called before
+the IRQ is freed, since devm-managed resources are released after the
+remove function completes.
 
-Fix this by probing read access rights at privilege level 3 (PRIV_USER)
-and setting __gu_err to -EFAULT (-14) if access isn't allowed.
+This creates a potential race condition where an interrupt may occur
+after the PPS source is unregistered but before the handler is removed,
+possibly leading to a kernel panic.
 
-Note the cmpiclr instruction does a 32-bit compare because COND macro
-doesn't work inside asm.
+To prevent this, switch from devm-managed IRQ registration to manual
+management by using request_irq() and calling free_irq() explicitly in
+the remove path before unregistering the PPS source. This ensures the
+interrupt handler is safely removed before deactivating the PPS source.
 
-Signed-off-by: John David Anglin <dave.anglin@bell.net>
-Signed-off-by: Helge Deller <deller@gmx.de>
-Cc: stable@vger.kernel.org # v5.12+
+Signed-off-by: Eliav Farber <farbere@amazon.com>
+Link: https://lore.kernel.org/r/20250527053355.37185-1-farbere@amazon.com
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/parisc/include/asm/uaccess.h |   21 ++++++++++++++++++---
- 1 file changed, 18 insertions(+), 3 deletions(-)
+ drivers/pps/clients/pps-gpio.c | 5 +++--
+ 1 file changed, 3 insertions(+), 2 deletions(-)
 
---- a/arch/parisc/include/asm/uaccess.h
-+++ b/arch/parisc/include/asm/uaccess.h
-@@ -42,9 +42,24 @@
- 	__gu_err;					\
- })
+diff --git a/drivers/pps/clients/pps-gpio.c b/drivers/pps/clients/pps-gpio.c
+index bf3b6f1aa984..41e1fdbcda16 100644
+--- a/drivers/pps/clients/pps-gpio.c
++++ b/drivers/pps/clients/pps-gpio.c
+@@ -206,8 +206,8 @@ static int pps_gpio_probe(struct platform_device *pdev)
+ 	}
  
--#define __get_user(val, ptr)				\
--({							\
--	__get_user_internal(SR_USER, val, ptr);	\
-+#define __probe_user_internal(sr, error, ptr)			\
-+({								\
-+	__asm__("\tproberi (%%sr%1,%2),%3,%0\n"			\
-+		"\tcmpiclr,= 1,%0,%0\n"				\
-+		"\tldi %4,%0\n"					\
-+		: "=r"(error)					\
-+		: "i"(sr), "r"(ptr), "i"(PRIV_USER),		\
-+		  "i"(-EFAULT));				\
-+})
-+
-+#define __get_user(val, ptr)					\
-+({								\
-+	register long __gu_err;					\
-+								\
-+	__gu_err = __get_user_internal(SR_USER, val, ptr);	\
-+	if (likely(!__gu_err))					\
-+		__probe_user_internal(SR_USER, __gu_err, ptr);	\
-+	__gu_err;						\
- })
+ 	/* register IRQ interrupt handler */
+-	ret = devm_request_irq(dev, data->irq, pps_gpio_irq_handler,
+-			get_irqf_trigger_flags(data), data->info.name, data);
++	ret = request_irq(data->irq, pps_gpio_irq_handler,
++			  get_irqf_trigger_flags(data), data->info.name, data);
+ 	if (ret) {
+ 		pps_unregister_source(data->pps);
+ 		dev_err(dev, "failed to acquire IRQ %d\n", data->irq);
+@@ -224,6 +224,7 @@ static int pps_gpio_remove(struct platform_device *pdev)
+ {
+ 	struct pps_gpio_device_data *data = platform_get_drvdata(pdev);
  
- #define __get_user_asm(sr, val, ldx, ptr)		\
++	free_irq(data->irq, data);
+ 	pps_unregister_source(data->pps);
+ 	del_timer_sync(&data->echo_timer);
+ 	/* reset echo pin in any case */
+-- 
+2.39.5
+
 
 
 
