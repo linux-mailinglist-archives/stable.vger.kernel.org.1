@@ -1,55 +1,56 @@
-Return-Path: <stable+bounces-175839-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-173589-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2B126B36AD5
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 16:41:09 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8979FB35E20
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 13:52:52 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 38A99988506
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 14:22:45 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 46B6F1BA3C07
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 11:45:33 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id DC54F34DCE8;
-	Tue, 26 Aug 2025 14:21:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id EF185340DBF;
+	Tue, 26 Aug 2025 11:44:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="xG1kBsCJ"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="l14UQX2M"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 97CC434A32E;
-	Tue, 26 Aug 2025 14:21:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AB788340D9E;
+	Tue, 26 Aug 2025 11:44:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756218106; cv=none; b=ISuYt4DCmcUON07cxutF1tiflmhf3Uzv2u5LqCLsZq48BU6p5YWlBPC/BAb8p6wUAHQXItBfnBjwXkUFWYmUPBiUu6bzchpC+hOSFWU7+NuqfKbowN+IWM3hKnGJ9JAsdyhg2Gx/KoNHlxyvGNWFN78GOpHbf1amL9p6pZjhyxU=
+	t=1756208641; cv=none; b=fRQdcNDqISmTyFIPrRmDkMcSqgaKML8CzNqosuggmdrK4ZE4sTK1bOeVaq7RGvoMAqxeLx0FdBTIPnBtES8mM3ApzsNVkXGeJmKqlLi3bJ5tfgFAJ61h8Kke6IV2IsJTC60qpkT01HhyDxmV54PImBJSmzJ2zD7PvxUqF8y65Ds=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756218106; c=relaxed/simple;
-	bh=okfOkMa6H3og0hHJTG73mp8xH37+pfOP21lbtF4A6xM=;
+	s=arc-20240116; t=1756208641; c=relaxed/simple;
+	bh=qvuyInjaBJxkY/JSVmbJhNvwTfvT1KCqfIvirvE+5qE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=EgE2uVm5T3sTNqqKPGIItM9Rf0UYkPMA3ekQk2Ke4Pwv+EvFoTDzwbm3oFUtiZS0CcA6QtyJfRWQPoBH4xyd1uHAX+iNqN4cxVHOgxf92LaUIBjtC8BvugDeHPg2vHstAZI9sDP/qqnQy8aVQv9kMZ8b7Ty2mvOAY4KKtokOZJU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=xG1kBsCJ; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2A018C4CEF1;
-	Tue, 26 Aug 2025 14:21:46 +0000 (UTC)
+	 MIME-Version; b=Wi2egNC12HmQ3WNkTMgpoteuCmFHnqwDMYanBNNuvG/bq9ffQVbjK2RxoUwNgXldCeismP+wqIAZ+Y17tef4444Q2b5HUMyDfDydBgetyyCSc19gWU24eq1TnGbpGVu3e073yDLj5BHE43qza5hyyVqVx6Z777hlmk1qbQJoQx8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=l14UQX2M; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 170FDC4CEF1;
+	Tue, 26 Aug 2025 11:44:00 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1756218106;
-	bh=okfOkMa6H3og0hHJTG73mp8xH37+pfOP21lbtF4A6xM=;
+	s=korg; t=1756208641;
+	bh=qvuyInjaBJxkY/JSVmbJhNvwTfvT1KCqfIvirvE+5qE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=xG1kBsCJ0HLuC/eIe9MTP0Y4RMekhVOf3CjkG5SxRD1nVkmAyZrYhVlRyufHXv7Ma
-	 uW48W7XZ3+z6kkjNkEAe6PIOmyBZ+fE1ff3VkDJBKLpRcf+Oih8bR/udxtk+NiO137
-	 88BJKQ3Swc4plXJstZO6eeK+WYm7GFgQqYmg91UI=
+	b=l14UQX2MhiHCr5tOQa59/A8gunR5H9D0JIjHPlss1a+saIWnuMXpWbCQHRXXjSOtw
+	 Rq352fxtDxDI467FjcCEkb4JPZtXktmLdZUBlswvyWNUii4lrlJ8ftmNNT3oDY2+My
+	 aVi0j5IWM0XB1lEI4qOjdoHLkg6u6EAjynZT2Lck=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Evgeniy Harchenko <evgeniyharchenko.dev@gmail.com>,
-	Takashi Iwai <tiwai@suse.de>
-Subject: [PATCH 5.10 395/523] ALSA: hda/realtek: Add support for HP EliteBook x360 830 G6 and EliteBook 830 G6
+	Geliang Tang <tanggeliang@kylinos.cn>,
+	"Matthieu Baerts (NGI0)" <matttbe@kernel.org>,
+	Jakub Kicinski <kuba@kernel.org>
+Subject: [PATCH 6.12 190/322] mptcp: remove duplicate sk_reset_timer call
 Date: Tue, 26 Aug 2025 13:10:05 +0200
-Message-ID: <20250826110934.205657501@linuxfoundation.org>
+Message-ID: <20250826110920.557502307@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250826110924.562212281@linuxfoundation.org>
-References: <20250826110924.562212281@linuxfoundation.org>
+In-Reply-To: <20250826110915.169062587@linuxfoundation.org>
+References: <20250826110915.169062587@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,38 +62,59 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Evgeniy Harchenko <evgeniyharchenko.dev@gmail.com>
+From: Geliang Tang <tanggeliang@kylinos.cn>
 
-commit eafae0fdd115a71b3a200ef1a31f86da04bac77f upstream.
+commit 5d13349472ac8abcbcb94407969aa0fdc2e1f1be upstream.
 
-The HP EliteBook x360 830 G6 and HP EliteBook 830 G6 have
-Realtek HDA codec ALC215. It needs the ALC285_FIXUP_HP_GPIO_LED
-quirk to enable the mute LED.
+sk_reset_timer() was called twice in mptcp_pm_alloc_anno_list.
 
-Cc: <stable@vger.kernel.org>
-Signed-off-by: Evgeniy Harchenko <evgeniyharchenko.dev@gmail.com>
-Link: https://patch.msgid.link/20250815095814.75845-1-evgeniyharchenko.dev@gmail.com
-Signed-off-by: Takashi Iwai <tiwai@suse.de>
+Simplify the code by using a 'goto' statement to eliminate the
+duplication.
+
+Note that this is not a fix, but it will help backporting the following
+patch. The same "Fixes" tag has been added for this reason.
+
+Fixes: 93f323b9cccc ("mptcp: add a new sysctl add_addr_timeout")
+Cc: stable@vger.kernel.org
+Signed-off-by: Geliang Tang <tanggeliang@kylinos.cn>
+Reviewed-by: Matthieu Baerts (NGI0) <matttbe@kernel.org>
+Signed-off-by: Matthieu Baerts (NGI0) <matttbe@kernel.org>
+Link: https://patch.msgid.link/20250815-net-mptcp-misc-fixes-6-17-rc2-v1-4-521fe9957892@kernel.org
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+[ Before commit e4c28e3d5c09 ("mptcp: pm: move generic PM helpers to
+  pm.c"), mptcp_pm_alloc_anno_list() was in pm_netlink.c. The same patch
+  can be applied there without conflicts. ]
+Signed-off-by: Matthieu Baerts (NGI0) <matttbe@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- sound/pci/hda/patch_realtek.c |    2 ++
- 1 file changed, 2 insertions(+)
+ net/mptcp/pm_netlink.c |    5 ++---
+ 1 file changed, 2 insertions(+), 3 deletions(-)
 
---- a/sound/pci/hda/patch_realtek.c
-+++ b/sound/pci/hda/patch_realtek.c
-@@ -9256,6 +9256,8 @@ static const struct snd_pci_quirk alc269
- 	SND_PCI_QUIRK(0x103c, 0x84e7, "HP Pavilion 15", ALC269_FIXUP_HP_MUTE_LED_MIC3),
- 	SND_PCI_QUIRK(0x103c, 0x8519, "HP Spectre x360 15-df0xxx", ALC285_FIXUP_HP_SPECTRE_X360),
- 	SND_PCI_QUIRK(0x103c, 0x8537, "HP ProBook 440 G6", ALC236_FIXUP_HP_MUTE_LED_MICMUTE_VREF),
-+	SND_PCI_QUIRK(0x103c, 0x8548, "HP EliteBook x360 830 G6", ALC285_FIXUP_HP_GPIO_LED),
-+	SND_PCI_QUIRK(0x103c, 0x854a, "HP EliteBook 830 G6", ALC285_FIXUP_HP_GPIO_LED),
- 	SND_PCI_QUIRK(0x103c, 0x85c6, "HP Pavilion x360 Convertible 14-dy1xxx", ALC295_FIXUP_HP_MUTE_LED_COEFBIT11),
- 	SND_PCI_QUIRK(0x103c, 0x85de, "HP Envy x360 13-ar0xxx", ALC285_FIXUP_HP_ENVY_X360),
- 	SND_PCI_QUIRK(0x103c, 0x860f, "HP ZBook 15 G6", ALC285_FIXUP_HP_GPIO_AMP_INIT),
+--- a/net/mptcp/pm_netlink.c
++++ b/net/mptcp/pm_netlink.c
+@@ -372,9 +372,7 @@ bool mptcp_pm_alloc_anno_list(struct mpt
+ 		if (WARN_ON_ONCE(mptcp_pm_is_kernel(msk)))
+ 			return false;
+ 
+-		sk_reset_timer(sk, &add_entry->add_timer,
+-			       jiffies + mptcp_get_add_addr_timeout(net));
+-		return true;
++		goto reset_timer;
+ 	}
+ 
+ 	add_entry = kmalloc(sizeof(*add_entry), GFP_ATOMIC);
+@@ -388,6 +386,7 @@ bool mptcp_pm_alloc_anno_list(struct mpt
+ 	add_entry->retrans_times = 0;
+ 
+ 	timer_setup(&add_entry->add_timer, mptcp_pm_add_timer, 0);
++reset_timer:
+ 	sk_reset_timer(sk, &add_entry->add_timer,
+ 		       jiffies + mptcp_get_add_addr_timeout(net));
+ 
 
 
 
