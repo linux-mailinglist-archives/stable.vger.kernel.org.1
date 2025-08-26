@@ -1,56 +1,61 @@
-Return-Path: <stable+bounces-175444-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-173403-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id D1119B3684D
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 16:15:04 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1C107B35DB0
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 13:47:20 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 4B9AF981F90
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 14:06:20 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 990D5461DD4
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 11:37:38 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7004734F496;
-	Tue, 26 Aug 2025 14:04:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 26834341658;
+	Tue, 26 Aug 2025 11:35:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="RLfyVKWt"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="bL3z6SpT"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2E72935207F;
-	Tue, 26 Aug 2025 14:04:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D126233CE94;
+	Tue, 26 Aug 2025 11:35:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756217060; cv=none; b=IQ6LVRyKc13hUKCgyWFVSou+UfC5RGhqtSYcM9oZM7VfpooW3uUFoSp0UclJoMC0fUgDWjFBsewj641vD3ZGRI7yokgkq72ztrBLPNZ6lDkBp5UtXDOVG8Hi695/pJaSY1IisesKbLNuxUaEIoOnJLITBNOJ4ZmUoqeu1DZ37/8=
+	t=1756208157; cv=none; b=OUooipOWgk6sFa7+2fqzyFAWsf2EOyJg/hSdn7GYRT9q1uriPbE0SHEn+dPDHXbHOIRAQX8HnEAYxMR8E0vTQ8a54TOdtiNGLfyUuoJcqAL0wxf28HujSAMjtijq0AIN1S8FdaVQuMrx69wrHa4rwHS1Rx+BwbdF266AAXoeo1Q=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756217060; c=relaxed/simple;
-	bh=ERxh9k1FfPJbP/URNUx94Idt40kDjD2z6tBeQfA3VLc=;
+	s=arc-20240116; t=1756208157; c=relaxed/simple;
+	bh=DWgboMTj+D+OoqlI/7qLPS4lYcHDkn4g6UqHfiVKnEI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=TlzXNcssliI0YjdllY9w0jmRDlqtQcgYKAg5FL8a+3X2ilthL1fB7AT3omCqMzV1hj9SOnn0nUp4BLs2z7Nt+xspss2wdsdUmkp0ktWG5d4bMZi7au4NyNBsgJdWxvy1Y4NY3LB5aLhi20tD3adYNB9WmV33Teustk2VZp22XLE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=RLfyVKWt; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id AB640C4CEF1;
-	Tue, 26 Aug 2025 14:04:19 +0000 (UTC)
+	 MIME-Version; b=kRHJNYJ87qZO77xBUNZtuuBqDKq86kNVmTojgxBAPKLGrI6RcvmAR+uLPtj49IOFuvjfohNJ+jvSENIiP+wZ4uPbd4HcnP+HvIty5lRNOUcw+m+nSlCUxfgV0AhZkJzm8baCropezDc3K4LEtRDvSP/C3yrOreDkOT0LN+1AI6Q=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=bL3z6SpT; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 62C48C4CEF1;
+	Tue, 26 Aug 2025 11:35:57 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1756217060;
-	bh=ERxh9k1FfPJbP/URNUx94Idt40kDjD2z6tBeQfA3VLc=;
+	s=korg; t=1756208157;
+	bh=DWgboMTj+D+OoqlI/7qLPS4lYcHDkn4g6UqHfiVKnEI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=RLfyVKWt4x8Gp8l4+1ENwRq5ymNbbVBlDBhEx84ZHLv/H7//cIbkfa11v3RVlei+f
-	 xCVtGuf1O+ciNatw0OW2phc0B0w3BZDwAon8DggXjH9UnL+3ASKRg+W2qtMYHXY2Kj
-	 HLFcJgWlnYcKqror22JkC4L6/1rDcYnC6MAp8Hvk=
+	b=bL3z6SpTSyAyIBJqyFmeqTGe/THTH/aNw4OIFcNrksQG+4xG4TVPAUHY8iuDNzxOk
+	 xG3EQ7m0KM5UBwEvNf43bPLdkRfOzMrzd9K+4bw24WxAoxrI9otHthuLEMbo/oqz+t
+	 6ulWjMC0HKP8Ff5RUq3V+EX+WKk+zoIzQOwv/EaM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Mikhail Lobanov <m.lobanov@rosa.ru>,
-	Johannes Berg <johannes.berg@intel.com>,
-	=?UTF-8?q?Hanne-Lotta=20M=C3=A4enp=C3=A4=C3=A4?= <hannelotta@gmail.com>
-Subject: [PATCH 5.15 644/644] wifi: mac80211: check basic rates validity in sta_link_apply_parameters
+	Armen Ratner <armeng@nvidia.com>,
+	Maher Sanalla <msanalla@nvidia.com>,
+	Tariq Toukan <tariqt@nvidia.com>,
+	Alexei Lazar <alazar@nvidia.com>,
+	Mark Bloch <mbloch@nvidia.com>,
+	Przemek Kitszel <przemyslaw.kitszel@intel.com>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.16 451/457] net/mlx5e: Preserve shared buffer capacity during headroom updates
 Date: Tue, 26 Aug 2025 13:12:15 +0200
-Message-ID: <20250826111002.523760019@linuxfoundation.org>
+Message-ID: <20250826110948.431404827@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250826110946.507083938@linuxfoundation.org>
-References: <20250826110946.507083938@linuxfoundation.org>
+In-Reply-To: <20250826110937.289866482@linuxfoundation.org>
+References: <20250826110937.289866482@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,70 +65,114 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.16-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Mikhail Lobanov <m.lobanov@rosa.ru>
+From: Armen Ratner <armeng@nvidia.com>
 
-commit 16ee3ea8faef8ff042acc15867a6c458c573de61 upstream.
+[ Upstream commit 8b0587a885fdb34fd6090a3f8625cb7ac1444826 ]
 
-When userspace sets supported rates for a new station via
-NL80211_CMD_NEW_STATION, it might send a list that's empty
-or contains only invalid values. Currently, we process these
-values in sta_link_apply_parameters() without checking the result of
-ieee80211_parse_bitrates(), which can lead to an empty rates bitmap.
+When port buffer headroom changes, port_update_shared_buffer()
+recalculates the shared buffer size and splits it in a 3:1 ratio
+(lossy:lossless) - Currently, the calculation is:
+lossless = shared / 4;
+lossy = (shared / 4) * 3;
 
-A similar issue was addressed for NL80211_CMD_SET_BSS in commit
-ce04abc3fcc6 ("wifi: mac80211: check basic rates validity").
-This patch applies the same approach in sta_link_apply_parameters()
-for NL80211_CMD_NEW_STATION, ensuring there is at least one valid
-rate by inspecting the result of ieee80211_parse_bitrates().
+Meaning, the calculation dropped the remainder of shared % 4 due to
+integer division, unintentionally reducing the total shared buffer
+by up to three cells on each update. Over time, this could shrink
+the buffer below usable size.
 
-Found by Linux Verification Center (linuxtesting.org) with Syzkaller.
+Fix it by changing the calculation to:
+lossless = shared / 4;
+lossy = shared - lossless;
 
-Fixes: b95eb7f0eee4 ("wifi: cfg80211/mac80211: separate link params from station params")
-Signed-off-by: Mikhail Lobanov <m.lobanov@rosa.ru>
-Link: https://patch.msgid.link/20250317103139.17625-1-m.lobanov@rosa.ru
-Signed-off-by: Johannes Berg <johannes.berg@intel.com>
-[ Summary of conflict resolutions:
-  - Function ieee80211_parse_bitrates() takes channel width as its
-    first parameter in mainline kernel version. In v5.15 the function
-    takes the whole chandef struct as its first parameter.
-  - The same function takes link station parameters as its last
-    parameter, and in v5.15 they are in a struct called sta,
-    instead of a struct called link_sta. ]
-Signed-off-by: Hanne-Lotta Mäenpää <hannelotta@gmail.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+This retains all buffer cells while still approximating the
+intended 3:1 split, preventing capacity loss over time.
+
+While at it, perform headroom calculations in units of cells rather than
+in bytes for more accurate calculations avoiding extra divisions.
+
+Fixes: a440030d8946 ("net/mlx5e: Update shared buffer along with device buffer changes")
+Signed-off-by: Armen Ratner <armeng@nvidia.com>
+Signed-off-by: Maher Sanalla <msanalla@nvidia.com>
+Reviewed-by: Tariq Toukan <tariqt@nvidia.com>
+Signed-off-by: Alexei Lazar <alazar@nvidia.com>
+Signed-off-by: Mark Bloch <mbloch@nvidia.com>
+Reviewed-by: Przemek Kitszel <przemyslaw.kitszel@intel.com>
+Link: https://patch.msgid.link/20250820133209.389065-9-mbloch@nvidia.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/mac80211/cfg.c |   13 +++++++------
- 1 file changed, 7 insertions(+), 6 deletions(-)
+ .../mellanox/mlx5/core/en/port_buffer.c        | 18 ++++++++----------
+ 1 file changed, 8 insertions(+), 10 deletions(-)
 
---- a/net/mac80211/cfg.c
-+++ b/net/mac80211/cfg.c
-@@ -1658,12 +1658,13 @@ static int sta_apply_parameters(struct i
- 			return ret;
+diff --git a/drivers/net/ethernet/mellanox/mlx5/core/en/port_buffer.c b/drivers/net/ethernet/mellanox/mlx5/core/en/port_buffer.c
+index 5ae787656a7c..3efa8bf1d14e 100644
+--- a/drivers/net/ethernet/mellanox/mlx5/core/en/port_buffer.c
++++ b/drivers/net/ethernet/mellanox/mlx5/core/en/port_buffer.c
+@@ -272,8 +272,8 @@ static int port_update_shared_buffer(struct mlx5_core_dev *mdev,
+ 	/* Total shared buffer size is split in a ratio of 3:1 between
+ 	 * lossy and lossless pools respectively.
+ 	 */
+-	lossy_epool_size = (shared_buffer_size / 4) * 3;
+ 	lossless_ipool_size = shared_buffer_size / 4;
++	lossy_epool_size    = shared_buffer_size - lossless_ipool_size;
+ 
+ 	mlx5e_port_set_sbpr(mdev, 0, MLX5_EGRESS_DIR, MLX5_LOSSY_POOL, 0,
+ 			    lossy_epool_size);
+@@ -288,14 +288,12 @@ static int port_set_buffer(struct mlx5e_priv *priv,
+ 	u16 port_buff_cell_sz = priv->dcbx.port_buff_cell_sz;
+ 	struct mlx5_core_dev *mdev = priv->mdev;
+ 	int sz = MLX5_ST_SZ_BYTES(pbmc_reg);
+-	u32 new_headroom_size = 0;
+-	u32 current_headroom_size;
++	u32 current_headroom_cells = 0;
++	u32 new_headroom_cells = 0;
+ 	void *in;
+ 	int err;
+ 	int i;
+ 
+-	current_headroom_size = port_buffer->headroom_size;
+-
+ 	in = kzalloc(sz, GFP_KERNEL);
+ 	if (!in)
+ 		return -ENOMEM;
+@@ -306,12 +304,14 @@ static int port_set_buffer(struct mlx5e_priv *priv,
+ 
+ 	for (i = 0; i < MLX5E_MAX_NETWORK_BUFFER; i++) {
+ 		void *buffer = MLX5_ADDR_OF(pbmc_reg, in, buffer[i]);
++		current_headroom_cells += MLX5_GET(bufferx_reg, buffer, size);
++
+ 		u64 size = port_buffer->buffer[i].size;
+ 		u64 xoff = port_buffer->buffer[i].xoff;
+ 		u64 xon = port_buffer->buffer[i].xon;
+ 
+-		new_headroom_size += size;
+ 		do_div(size, port_buff_cell_sz);
++		new_headroom_cells += size;
+ 		do_div(xoff, port_buff_cell_sz);
+ 		do_div(xon, port_buff_cell_sz);
+ 		MLX5_SET(bufferx_reg, buffer, size, size);
+@@ -320,10 +320,8 @@ static int port_set_buffer(struct mlx5e_priv *priv,
+ 		MLX5_SET(bufferx_reg, buffer, xon_threshold, xon);
  	}
  
--	if (params->supported_rates && params->supported_rates_len) {
--		ieee80211_parse_bitrates(&sdata->vif.bss_conf.chandef,
--					 sband, params->supported_rates,
--					 params->supported_rates_len,
--					 &sta->sta.supp_rates[sband->band]);
--	}
-+	if (params->supported_rates &&
-+	    params->supported_rates_len &&
-+	    !ieee80211_parse_bitrates(&sdata->vif.bss_conf.chandef,
-+				      sband, params->supported_rates,
-+				      params->supported_rates_len,
-+				      &sta->sta.supp_rates[sband->band]))
-+		return -EINVAL;
+-	new_headroom_size /= port_buff_cell_sz;
+-	current_headroom_size /= port_buff_cell_sz;
+-	err = port_update_shared_buffer(priv->mdev, current_headroom_size,
+-					new_headroom_size);
++	err = port_update_shared_buffer(priv->mdev, current_headroom_cells,
++					new_headroom_cells);
+ 	if (err)
+ 		goto out;
  
- 	if (params->ht_capa)
- 		ieee80211_ht_cap_ie_to_sta_ht_cap(sdata, sband,
+-- 
+2.50.1
+
 
 
 
