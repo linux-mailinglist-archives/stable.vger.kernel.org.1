@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-174640-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-175253-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id BD2B0B36422
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 15:35:59 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id A50FDB36789
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 16:08:03 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 43D7218899D6
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 13:30:01 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 2329E9824D3
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 13:57:11 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2FEB22AD04;
-	Tue, 26 Aug 2025 13:28:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6B753374C4;
+	Tue, 26 Aug 2025 13:55:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="RWbHe52F"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="nUfOlIGn"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E17422B2DA;
-	Tue, 26 Aug 2025 13:28:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2766634DCC4;
+	Tue, 26 Aug 2025 13:55:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756214925; cv=none; b=dPerZKrbG2XQggutLYntbbbeacCMpJZ2kPLUaXdrwD/J1EmfL3rGHsr/fqUJvNc8g7GqXPXGT4gs7Z8eKhaf+Sn04JZAsmi36OvYnXPeRpfoGJpMzJY8SrmlDHxXzPfTE7517C+zzcK+WSDJsMuqFaCRykhFJidYXRdVPNtYmM8=
+	t=1756216549; cv=none; b=mbsg1BbMDvH7nxls3CTu1i0K+OzjIFZLl/LMJM5GMH5nYxe/+wvuVsbzO2vAoi2YE0yB5FaVDna3c4XrUu2i0wcSLMWKXgfXwzVLbcRtn63QfAbImd/l7aLfa6eCpflrv82Igc1ZMx80ovj67+Ad/yOmp0kkt11O4UK/ZICZTQc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756214925; c=relaxed/simple;
-	bh=8qJUt9KzKYPDMOqFms0NDBpO+7NVhy0AfoUu9AhzZ7A=;
+	s=arc-20240116; t=1756216549; c=relaxed/simple;
+	bh=fVrQyOICJEvVOj2RoI6uA+J1RdjJQov/UQyZ/anMzGw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=NQXhgYREQY++8IvIc1r0wEXWNta6yh9VuvfNeKypZaXzwx+VmznfJpjI0N7+sw7+T09ncqXZrzYub9z1Fq0qGmfox5sy+TAQX1S9NDT8UzH+pP0NoU8FfLisrEUJZ9Hf81aIr5CDgvJDgM2iq1ITztpwDjrhK7Wu76Is8rLdQOU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=RWbHe52F; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2BCD0C4CEF1;
-	Tue, 26 Aug 2025 13:28:44 +0000 (UTC)
+	 MIME-Version; b=jZVr+bYp7d68q+tZm6tOKK2Qgvi8igbPeujwXrILGyPR14dAwb5z9OAXJZF8iTEN9+1zYzSLVtH+14LjteUhEm9Azq9h/1ugUv7t/ONxfmjP+p8vWjvqCHr4S0Or7qGIkjjx4IHTWK19xkdnwfPGc9BF5Ouu4ECesTGczqmKDHE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=nUfOlIGn; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 667A7C4CEF1;
+	Tue, 26 Aug 2025 13:55:48 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1756214924;
-	bh=8qJUt9KzKYPDMOqFms0NDBpO+7NVhy0AfoUu9AhzZ7A=;
+	s=korg; t=1756216548;
+	bh=fVrQyOICJEvVOj2RoI6uA+J1RdjJQov/UQyZ/anMzGw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=RWbHe52FjEuqrjjnU+UMBtW0DV+pS2UqxGQHm7Pb5gGkb7k3Ery54eY57XclBRUe+
-	 kjDl8OWMLDT8Gal4sBxUa/cdLGnwz8R/WZNv8hSNHqIC4VqU076uHX0sd4yKK3tRuK
-	 9shsyPcnkdSLKx2mS9vU5tKyTfNEvmoDLSvCSTZ8=
+	b=nUfOlIGnRtp5K6lCWpZRFjQP/WX4s+CDezu2jULJUZLDHxR0SKJ2dUQvoW6VFUF3Z
+	 wCFIZWPFzhoniQ3mcYaQ17texAbE4P7oCFLPwdUB0QoowdQh8rYRP+yieJIPhO4nCY
+	 IKv17MpOtagW8yjxpFJ3zhdXybbnI35R352ew880=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Archana Patni <archana.patni@intel.com>,
-	Bart Van Assche <bvanassche@acm.org>,
-	"Martin K. Petersen" <martin.petersen@oracle.com>
-Subject: [PATCH 6.1 290/482] scsi: ufs: ufs-pci: Fix hibernate state transition for Intel MTL-like host controllers
+	Breno Leitao <leitao@debian.org>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Catalin Marinas <catalin.marinas@arm.com>,
+	Andrew Morton <akpm@linux-foundation.org>
+Subject: [PATCH 5.15 452/644] mm/kmemleak: avoid deadlock by moving pr_warn() outside kmemleak_lock
 Date: Tue, 26 Aug 2025 13:09:03 +0200
-Message-ID: <20250826110937.955400190@linuxfoundation.org>
+Message-ID: <20250826110957.674656620@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250826110930.769259449@linuxfoundation.org>
-References: <20250826110930.769259449@linuxfoundation.org>
+In-Reply-To: <20250826110946.507083938@linuxfoundation.org>
+References: <20250826110946.507083938@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,77 +63,69 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Archana Patni <archana.patni@intel.com>
+From: Breno Leitao <leitao@debian.org>
 
-commit 4428ddea832cfdb63e476eb2e5c8feb5d36057fe upstream.
+commit 47b0f6d8f0d2be4d311a49e13d2fd5f152f492b2 upstream.
 
-UFSHCD core disables the UIC completion interrupt when issuing UIC
-hibernation commands, and re-enables it afterwards if it was enabled to
-start with, refer ufshcd_uic_pwr_ctrl(). For Intel MTL-like host
-controllers, accessing the register to re-enable the interrupt disrupts
-the state transition.
+When netpoll is enabled, calling pr_warn_once() while holding
+kmemleak_lock in mem_pool_alloc() can cause a deadlock due to lock
+inversion with the netconsole subsystem.  This occurs because
+pr_warn_once() may trigger netpoll, which eventually leads to
+__alloc_skb() and back into kmemleak code, attempting to reacquire
+kmemleak_lock.
 
-Use hibern8_notify variant operation to disable the interrupt during the
-entire hibernation, thereby preventing the disruption.
+This is the path for the deadlock.
 
-Fixes: 4049f7acef3e ("scsi: ufs: ufs-pci: Add support for Intel MTL")
-Cc: stable@vger.kernel.org
-Signed-off-by: Archana Patni <archana.patni@intel.com>
-Link: https://lore.kernel.org/r/20250723165856.145750-2-adrian.hunter@intel.com
-Reviewed-by: Bart Van Assche <bvanassche@acm.org>
-Signed-off-by: Martin K. Petersen <martin.petersen@oracle.com>
+mem_pool_alloc()
+  -> raw_spin_lock_irqsave(&kmemleak_lock, flags);
+      -> pr_warn_once()
+          -> netconsole subsystem
+	     -> netpoll
+	         -> __alloc_skb
+		   -> __create_object
+		     -> raw_spin_lock_irqsave(&kmemleak_lock, flags);
+
+Fix this by setting a flag and issuing the pr_warn_once() after
+kmemleak_lock is released.
+
+Link: https://lkml.kernel.org/r/20250731-kmemleak_lock-v1-1-728fd470198f@debian.org
+Fixes: c5665868183f ("mm: kmemleak: use the memory pool for early allocations")
+Signed-off-by: Breno Leitao <leitao@debian.org>
+Reported-by: Jakub Kicinski <kuba@kernel.org>
+Acked-by: Catalin Marinas <catalin.marinas@arm.com>
+Cc: <stable@vger.kernel.org>
+Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/ufs/host/ufshcd-pci.c |   27 +++++++++++++++++++++++++++
- 1 file changed, 27 insertions(+)
+ mm/kmemleak.c |    5 ++++-
+ 1 file changed, 4 insertions(+), 1 deletion(-)
 
---- a/drivers/ufs/host/ufshcd-pci.c
-+++ b/drivers/ufs/host/ufshcd-pci.c
-@@ -213,6 +213,32 @@ out:
- 	return ret;
+--- a/mm/kmemleak.c
++++ b/mm/kmemleak.c
+@@ -419,6 +419,7 @@ static struct kmemleak_object *mem_pool_
+ {
+ 	unsigned long flags;
+ 	struct kmemleak_object *object;
++	bool warn = false;
+ 
+ 	/* try the slab allocator first */
+ 	if (object_cache) {
+@@ -436,8 +437,10 @@ static struct kmemleak_object *mem_pool_
+ 	else if (mem_pool_free_count)
+ 		object = &mem_pool[--mem_pool_free_count];
+ 	else
+-		pr_warn_once("Memory pool empty, consider increasing CONFIG_DEBUG_KMEMLEAK_MEM_POOL_SIZE\n");
++		warn = true;
+ 	raw_spin_unlock_irqrestore(&kmemleak_lock, flags);
++	if (warn)
++		pr_warn_once("Memory pool empty, consider increasing CONFIG_DEBUG_KMEMLEAK_MEM_POOL_SIZE\n");
+ 
+ 	return object;
  }
- 
-+static void ufs_intel_ctrl_uic_compl(struct ufs_hba *hba, bool enable)
-+{
-+	u32 set = ufshcd_readl(hba, REG_INTERRUPT_ENABLE);
-+
-+	if (enable)
-+		set |= UIC_COMMAND_COMPL;
-+	else
-+		set &= ~UIC_COMMAND_COMPL;
-+	ufshcd_writel(hba, set, REG_INTERRUPT_ENABLE);
-+}
-+
-+static void ufs_intel_mtl_h8_notify(struct ufs_hba *hba,
-+				    enum uic_cmd_dme cmd,
-+				    enum ufs_notify_change_status status)
-+{
-+	/*
-+	 * Disable UIC COMPL INTR to prevent access to UFSHCI after
-+	 * checking HCS.UPMCRS
-+	 */
-+	if (status == PRE_CHANGE && cmd == UIC_CMD_DME_HIBER_ENTER)
-+		ufs_intel_ctrl_uic_compl(hba, false);
-+
-+	if (status == POST_CHANGE && cmd == UIC_CMD_DME_HIBER_EXIT)
-+		ufs_intel_ctrl_uic_compl(hba, true);
-+}
-+
- #define INTEL_ACTIVELTR		0x804
- #define INTEL_IDLELTR		0x808
- 
-@@ -487,6 +513,7 @@ static struct ufs_hba_variant_ops ufs_in
- 	.init			= ufs_intel_mtl_init,
- 	.exit			= ufs_intel_common_exit,
- 	.hce_enable_notify	= ufs_intel_hce_enable_notify,
-+	.hibern8_notify		= ufs_intel_mtl_h8_notify,
- 	.link_startup_notify	= ufs_intel_link_startup_notify,
- 	.resume			= ufs_intel_resume,
- 	.device_reset		= ufs_intel_device_reset,
 
 
 
