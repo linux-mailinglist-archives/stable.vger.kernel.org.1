@@ -1,59 +1,58 @@
-Return-Path: <stable+bounces-173593-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-173267-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 35C66B35E36
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 13:54:23 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id C3FDAB35CFD
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 13:40:25 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id AC7A7464B29
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 11:45:23 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 26F221731AB
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 11:32:41 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8056532A3E4;
-	Tue, 26 Aug 2025 11:44:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3956532144F;
+	Tue, 26 Aug 2025 11:30:05 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="kJ53KUG0"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="qkpTJXue"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3DCC92798ED;
-	Tue, 26 Aug 2025 11:44:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E996733CEBC;
+	Tue, 26 Aug 2025 11:30:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756208653; cv=none; b=scULxTTKB3OG50anv9Gu1OI5RNI/GAdVrlpIu4dOMPOoDDhXOAIizySSmtL+mz4nuDeFrI98Uynqn20Ke9fUrdf2IiJszubIKddJ6n4Lqqk7qV30oUc2AA8LnK3XgOA5qSaAlXYpg/hB2JzeF2b51sviCiD3lxKJONsNvNkI6ys=
+	t=1756207805; cv=none; b=abEdT7Fmz26iJvuMdU1YttJh1Ma0fXApyhrF57hTpT5yFvi3qu2ZLM/amkaolGLCNjJc65+zFMXiIH/ITTzuCO+MpI0LsmXK3K2/U0vndTa4u0u7bM3Qs2bfq6OWNpRcSN/qTbXeNUQCrIG/XURRozWibvaVcJKpZlbKaOvv6WM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756208653; c=relaxed/simple;
-	bh=Xv8C1+LDqp1sqTFtlCrNnRhVoywj2DvnkkhGdgaaJPc=;
+	s=arc-20240116; t=1756207805; c=relaxed/simple;
+	bh=DvEJ1akUJz1PriYSy7vJH3Gci05CyOvV1EGWtEeHiqE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=IBjJKuyCWNWWzTRnIPtnFZU54HcsF6QpcwuwyI6dgnLqYZA+INT73MlDUvUKML/xq1fuN50aEfEboul7nbw6np6/4aFLHoSybH2SpLR14ZpfJiBzuwB28AKPUhnPEnN9fFJeVeg7KDW4zD/P3una/Vk1R8g2W+b0stZU8ortE/8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=kJ53KUG0; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C973EC4CEF1;
-	Tue, 26 Aug 2025 11:44:12 +0000 (UTC)
+	 MIME-Version; b=UVbAB34Ir5rHn5yOe0kuI5cPHoZOHJwqoCe/Ucv1e2PYcJ1MbtKaQx1xmUzsiocUNy82CBBcgUC+SOmNvMZmhCKXopvPnF61bMNVixCH9/LADTVXKPHBLmTyFp1xP7va5iiu5nk+IrDmPqFA/hJo6bpgkNSP4n6DIvyfw11sOe8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=qkpTJXue; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 79CC5C4CEF1;
+	Tue, 26 Aug 2025 11:30:04 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1756208653;
-	bh=Xv8C1+LDqp1sqTFtlCrNnRhVoywj2DvnkkhGdgaaJPc=;
+	s=korg; t=1756207804;
+	bh=DvEJ1akUJz1PriYSy7vJH3Gci05CyOvV1EGWtEeHiqE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=kJ53KUG0//kGfj/joFFjY1W8KVprrm0ozkcTGfDcltwwTojp2XrOYb8RT5M2n3RC1
-	 OtIkiiJEhrFEk9h2S1t8K7qqhJs4niihGwS7l8ZOfirsXrn7vfm7hfrXZPyX5ZCvbB
-	 +4//Di0r9WxAVvzAe3Y94Fb6ivNMEPOAj0la1Z1w=
+	b=qkpTJXueILMzcU0Ekn102+8lCJplhwFhfzUsbx6ogKLgYFiMHW+gYK3abF61buzWl
+	 LAnBIMMHhDT7X6kI0YUmKSIsWK7PqjS9+DP+44ZtO95yIXNkG6Vpa2gDYAul7p9t2h
+	 k8twv+fSHYUDoAneOSa+7U71V0Lgy9koV+a827dE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Frank Li <Frank.Li@nxp.com>,
-	=?UTF-8?q?Krzysztof=20Wilczy=C5=84ski?= <kwilczynski@kernel.org>,
-	Bjorn Helgaas <bhelgaas@google.com>,
-	Richard Zhu <hongxing.zhu@nxp.com>,
-	Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 193/322] PCI: imx6: Add i.MX8Q PCIe Endpoint (EP) support
+	stable <stable@kernel.org>,
+	Akash M <akash.m5@samsung.com>,
+	Selvarasu Ganesan <selvarasu.g@samsung.com>,
+	Thinh Nguyen <Thinh.Nguyen@synopsys.com>,
+	Sebastian Andrzej Siewior <bigeasy@linutronix.de>
+Subject: [PATCH 6.16 324/457] usb: dwc3: Remove WARN_ON for device endpoint command timeouts
 Date: Tue, 26 Aug 2025 13:10:08 +0200
-Message-ID: <20250826110920.630944423@linuxfoundation.org>
+Message-ID: <20250826110945.357641341@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250826110915.169062587@linuxfoundation.org>
-References: <20250826110915.169062587@linuxfoundation.org>
+In-Reply-To: <20250826110937.289866482@linuxfoundation.org>
+References: <20250826110937.289866482@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,86 +62,140 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.16-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Frank Li <Frank.Li@nxp.com>
+From: Selvarasu Ganesan <selvarasu.g@samsung.com>
 
-[ Upstream commit 687aedb73a401addf151c5f60e481e574b4c9ad9 ]
+commit 45eae113dccaf8e502090ecf5b3d9e9b805add6f upstream.
 
-Add support for the i.MX8Q series (i.MX8QM, i.MX8QXP, and i.MX8DXL) PCIe
-Endpoint (EP). On the i.MX8Q platforms, the PCI bus addresses differ
-from the CPU addresses. However, the DesignWare (DWC) driver already
-handles this in the common code.
+This commit addresses a rarely observed endpoint command timeout
+which causes kernel panic due to warn when 'panic_on_warn' is enabled
+and unnecessary call trace prints when 'panic_on_warn' is disabled.
+It is seen during fast software-controlled connect/disconnect testcases.
+The following is one such endpoint command timeout that we observed:
 
-Link: https://lore.kernel.org/r/20241119-pci_fixup_addr-v8-7-c4bfa5193288@nxp.com
-Signed-off-by: Frank Li <Frank.Li@nxp.com>
-[kwilczynski: commit log]
-Signed-off-by: Krzysztof Wilczyński <kwilczynski@kernel.org>
-Signed-off-by: Bjorn Helgaas <bhelgaas@google.com>
-Reviewed-by: Richard Zhu <hongxing.zhu@nxp.com>
-Reviewed-by: Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>
-Stable-dep-of: c523fa63ac1d ("PCI: imx6: Add IMX8MQ_EP third 64-bit BAR in epc_features")
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+1. Connect
+   =======
+->dwc3_thread_interrupt
+ ->dwc3_ep0_interrupt
+  ->configfs_composite_setup
+   ->composite_setup
+    ->usb_ep_queue
+     ->dwc3_gadget_ep0_queue
+      ->__dwc3_gadget_ep0_queue
+       ->__dwc3_ep0_do_control_data
+        ->dwc3_send_gadget_ep_cmd
+
+2. Disconnect
+   ==========
+->dwc3_thread_interrupt
+ ->dwc3_gadget_disconnect_interrupt
+  ->dwc3_ep0_reset_state
+   ->dwc3_ep0_end_control_data
+    ->dwc3_send_gadget_ep_cmd
+
+In the issue scenario, in Exynos platforms, we observed that control
+transfers for the previous connect have not yet been completed and end
+transfer command sent as a part of the disconnect sequence and
+processing of USB_ENDPOINT_HALT feature request from the host timeout.
+This maybe an expected scenario since the controller is processing EP
+commands sent as a part of the previous connect. It maybe better to
+remove WARN_ON in all places where device endpoint commands are sent to
+avoid unnecessary kernel panic due to warn.
+
+Cc: stable <stable@kernel.org>
+Co-developed-by: Akash M <akash.m5@samsung.com>
+Signed-off-by: Akash M <akash.m5@samsung.com>
+Signed-off-by: Selvarasu Ganesan <selvarasu.g@samsung.com>
+Acked-by: Thinh Nguyen <Thinh.Nguyen@synopsys.com>
+Reviewed-by: Sebastian Andrzej Siewior <bigeasy@linutronix.de>
+Link: https://lore.kernel.org/r/20250808125315.1607-1-selvarasu.g@samsung.com
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/pci/controller/dwc/pci-imx6.c |   20 ++++++++++++++++++++
- 1 file changed, 20 insertions(+)
+ drivers/usb/dwc3/ep0.c    |   20 ++++++++++++++++----
+ drivers/usb/dwc3/gadget.c |   10 ++++++++--
+ 2 files changed, 24 insertions(+), 6 deletions(-)
 
---- a/drivers/pci/controller/dwc/pci-imx6.c
-+++ b/drivers/pci/controller/dwc/pci-imx6.c
-@@ -72,6 +72,7 @@ enum imx_pcie_variants {
- 	IMX8MQ_EP,
- 	IMX8MM_EP,
- 	IMX8MP_EP,
-+	IMX8Q_EP,
- 	IMX95_EP,
- };
- 
-@@ -1103,6 +1104,16 @@ static const struct pci_epc_features imx
- 	.align = SZ_64K,
- };
- 
-+static const struct pci_epc_features imx8q_pcie_epc_features = {
-+	.linkup_notifier = false,
-+	.msi_capable = true,
-+	.msix_capable = false,
-+	.bar[BAR_1] = { .type = BAR_RESERVED, },
-+	.bar[BAR_3] = { .type = BAR_RESERVED, },
-+	.bar[BAR_5] = { .type = BAR_RESERVED, },
-+	.align = SZ_64K,
-+};
+--- a/drivers/usb/dwc3/ep0.c
++++ b/drivers/usb/dwc3/ep0.c
+@@ -288,7 +288,9 @@ void dwc3_ep0_out_start(struct dwc3 *dwc
+ 	dwc3_ep0_prepare_one_trb(dep, dwc->ep0_trb_addr, 8,
+ 			DWC3_TRBCTL_CONTROL_SETUP, false);
+ 	ret = dwc3_ep0_start_trans(dep);
+-	WARN_ON(ret < 0);
++	if (ret < 0)
++		dev_err(dwc->dev, "ep0 out start transfer failed: %d\n", ret);
 +
- /*
-  * BAR#	| Default BAR enable	| Default BAR Type	| Default BAR Size	| BAR Sizing Scheme
-  * ================================================================================================
-@@ -1695,6 +1706,14 @@ static const struct imx_pcie_drvdata drv
- 		.epc_features = &imx8m_pcie_epc_features,
- 		.enable_ref_clk = imx8mm_pcie_enable_ref_clk,
- 	},
-+	[IMX8Q_EP] = {
-+		.variant = IMX8Q_EP,
-+		.flags = IMX_PCIE_FLAG_HAS_PHYDRV,
-+		.mode = DW_PCIE_EP_TYPE,
-+		.epc_features = &imx8q_pcie_epc_features,
-+		.clk_names = imx8q_clks,
-+		.clks_cnt = ARRAY_SIZE(imx8q_clks),
-+	},
- 	[IMX95_EP] = {
- 		.variant = IMX95_EP,
- 		.flags = IMX_PCIE_FLAG_HAS_SERDES |
-@@ -1724,6 +1743,7 @@ static const struct of_device_id imx_pci
- 	{ .compatible = "fsl,imx8mq-pcie-ep", .data = &drvdata[IMX8MQ_EP], },
- 	{ .compatible = "fsl,imx8mm-pcie-ep", .data = &drvdata[IMX8MM_EP], },
- 	{ .compatible = "fsl,imx8mp-pcie-ep", .data = &drvdata[IMX8MP_EP], },
-+	{ .compatible = "fsl,imx8q-pcie-ep", .data = &drvdata[IMX8Q_EP], },
- 	{ .compatible = "fsl,imx95-pcie-ep", .data = &drvdata[IMX95_EP], },
- 	{},
- };
+ 	for (i = 2; i < DWC3_ENDPOINTS_NUM; i++) {
+ 		struct dwc3_ep *dwc3_ep;
+ 
+@@ -1061,7 +1063,9 @@ static void __dwc3_ep0_do_control_data(s
+ 		ret = dwc3_ep0_start_trans(dep);
+ 	}
+ 
+-	WARN_ON(ret < 0);
++	if (ret < 0)
++		dev_err(dwc->dev,
++			"ep0 data phase start transfer failed: %d\n", ret);
+ }
+ 
+ static int dwc3_ep0_start_control_status(struct dwc3_ep *dep)
+@@ -1078,7 +1082,12 @@ static int dwc3_ep0_start_control_status
+ 
+ static void __dwc3_ep0_do_control_status(struct dwc3 *dwc, struct dwc3_ep *dep)
+ {
+-	WARN_ON(dwc3_ep0_start_control_status(dep));
++	int	ret;
++
++	ret = dwc3_ep0_start_control_status(dep);
++	if (ret)
++		dev_err(dwc->dev,
++			"ep0 status phase start transfer failed: %d\n", ret);
+ }
+ 
+ static void dwc3_ep0_do_control_status(struct dwc3 *dwc,
+@@ -1121,7 +1130,10 @@ void dwc3_ep0_end_control_data(struct dw
+ 	cmd |= DWC3_DEPCMD_PARAM(dep->resource_index);
+ 	memset(&params, 0, sizeof(params));
+ 	ret = dwc3_send_gadget_ep_cmd(dep, cmd, &params);
+-	WARN_ON_ONCE(ret);
++	if (ret)
++		dev_err_ratelimited(dwc->dev,
++			"ep0 data phase end transfer failed: %d\n", ret);
++
+ 	dep->resource_index = 0;
+ }
+ 
+--- a/drivers/usb/dwc3/gadget.c
++++ b/drivers/usb/dwc3/gadget.c
+@@ -1774,7 +1774,11 @@ static int __dwc3_stop_active_transfer(s
+ 		dep->flags |= DWC3_EP_DELAY_STOP;
+ 		return 0;
+ 	}
+-	WARN_ON_ONCE(ret);
++
++	if (ret)
++		dev_err_ratelimited(dep->dwc->dev,
++				"end transfer failed: %d\n", ret);
++
+ 	dep->resource_index = 0;
+ 
+ 	if (!interrupt)
+@@ -4050,7 +4054,9 @@ static void dwc3_clear_stall_all_ep(stru
+ 		dep->flags &= ~DWC3_EP_STALL;
+ 
+ 		ret = dwc3_send_clear_stall_ep_cmd(dep);
+-		WARN_ON_ONCE(ret);
++		if (ret)
++			dev_err_ratelimited(dwc->dev,
++				"failed to clear STALL on %s\n", dep->name);
+ 	}
+ }
+ 
 
 
 
