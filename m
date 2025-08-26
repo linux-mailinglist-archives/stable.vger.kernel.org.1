@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-176212-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-173551-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4BADDB36BC3
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 16:48:48 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id EB0DFB35E0E
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 13:51:28 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 9F1AE8E8071
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 14:40:48 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 637312A5E76
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 11:42:29 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 037E0296BDF;
-	Tue, 26 Aug 2025 14:37:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 24EFA2BE643;
+	Tue, 26 Aug 2025 11:42:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="zT6iRS7d"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="RKaWGNd1"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 91B5A35A29E;
-	Tue, 26 Aug 2025 14:37:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D332F29D27E;
+	Tue, 26 Aug 2025 11:42:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756219071; cv=none; b=K4bsX18nerDzTLFVD4TNZKFDAiHyr6/SH34cWy5pznhPrY4G2457mNUY/6O2L5E3Jnuumgc6tTiQUBz8l1e18Y1+RKt884/6W9YMPHfcBbpTY8zPo3AXmToCNMlRqXCAyxMhEuYLcizXsDLGtkGRrF52v4ZHH4ceWZwNJNMTKWI=
+	t=1756208542; cv=none; b=LqbnOIucSNHSx6br+Uc01QopUh3mPggZBldzCWUKc9vgXZRon8F7dDRbSU52O6/aUPAP4OmUjmo3gvpsOH8OEi5XbH1nbzY80/eJ6QoqHL2J4GlE9QtMDGmj+WrN5aRF7J+orJMdyQx2PBga26xh5ShqMTLeyXz9TnFQL8kbPdA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756219071; c=relaxed/simple;
-	bh=FjMqsq9z1mzeFBdvGUn0P0DNXBFzXcHdbZ7BXTRphzw=;
+	s=arc-20240116; t=1756208542; c=relaxed/simple;
+	bh=aAoztSmTHBh/D/KoW9vV6ejeoxOQnH4YmjXFktilivs=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=gqS9pjRySR7g/uKcrJv3S+DqvglpImsAlIhtRWEfVPKTLDrzHTckDiVl4xXmzkwk7RY7i2j8xloHSGa6LMAefN+uQLWPTRE773zJOImqgacxEnIRcTYrQW/BIB05xY3of2/pJKFpyXTx6zWWikBpuzdb8W44Gu2MPBJiGZNf+RQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=zT6iRS7d; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 84941C113CF;
-	Tue, 26 Aug 2025 14:37:50 +0000 (UTC)
+	 MIME-Version; b=l5hzujHQbmS8yTVZdUJORq+WQ95rW0q8aPqEwKgtMGHmCG9A1RX+qVdX03GlM2EXPuAoGwg4QJLZT5z6cpE3DGXudxYY0wDH+skUxcfZIcpfXIYSfkaY2Dp0gLaKkmOMDy9NKeqGU7RkdqnmMyBIHWvLRR3rghxvUWpK8iS3Eyc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=RKaWGNd1; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 62A63C4CEF1;
+	Tue, 26 Aug 2025 11:42:22 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1756219070;
-	bh=FjMqsq9z1mzeFBdvGUn0P0DNXBFzXcHdbZ7BXTRphzw=;
+	s=korg; t=1756208542;
+	bh=aAoztSmTHBh/D/KoW9vV6ejeoxOQnH4YmjXFktilivs=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=zT6iRS7dcL+NsFYtcvLe8WSnDr8xUutxzMys3rkF5So1+fa6P8fnZg0oUdtNk9BiN
-	 bUUu3X28PZJ9FmVZ8twprDb+LwpyPI3NC4Iw6Z6xCheVZPPBT1YunUHjkMsTnsc3pF
-	 YlZcxmvYSHj3Q3pVpMajX9rIBNG0UB+39wqGIdsg=
+	b=RKaWGNd1CI5mJLNtQDB2QsvYsFAecrVtT3TbhZzcVsO57XYVReVjAxfUpwf8KDbjD
+	 OZs1k/FWxs0ysite+4sclKmdZMpS/FXrCImlEEEfP74196J2BYZp5IPl7h/SaFvgN2
+	 N6e8OvNn9WztBjn1Av+qG9iCxvfKoEnvFRlKvhs0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	syzbot+cffd18309153948f3c3e@syzkaller.appspotmail.com,
-	Arnaud Lecomte <contact@arnaud-lcm.com>,
-	Dave Kleikamp <dave.kleikamp@oracle.com>,
+	Filipe Manana <fdmanana@suse.com>,
+	David Sterba <dsterba@suse.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.4 241/403] jfs: upper bound check of tree index in dbAllocAG
+Subject: [PATCH 6.12 152/322] btrfs: send: only use boolean variables at process_recorded_refs()
 Date: Tue, 26 Aug 2025 13:09:27 +0200
-Message-ID: <20250826110913.487250859@linuxfoundation.org>
+Message-ID: <20250826110919.569744676@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250826110905.607690791@linuxfoundation.org>
-References: <20250826110905.607690791@linuxfoundation.org>
+In-Reply-To: <20250826110915.169062587@linuxfoundation.org>
+References: <20250826110915.169062587@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,49 +62,78 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.4-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Arnaud Lecomte <contact@arnaud-lcm.com>
+From: Filipe Manana <fdmanana@suse.com>
 
-[ Upstream commit c214006856ff52a8ff17ed8da52d50601d54f9ce ]
+[ Upstream commit 9453fe329789073d9a971de01da5902c32c1a01a ]
 
-When computing the tree index in dbAllocAG, we never check if we are
-out of bounds realative to the size of the stree.
-This could happen in a scenario where the filesystem metadata are
-corrupted.
+We have several local variables at process_recorded_refs() that are used
+as booleans, with some of them having a 'bool' type while two of them
+having an 'int' type. Change this to make them all use the 'bool' type
+which is more clear and to make everything more consistent.
 
-Reported-by: syzbot+cffd18309153948f3c3e@syzkaller.appspotmail.com
-Closes: https://syzkaller.appspot.com/bug?extid=cffd18309153948f3c3e
-Tested-by: syzbot+cffd18309153948f3c3e@syzkaller.appspotmail.com
-Signed-off-by: Arnaud Lecomte <contact@arnaud-lcm.com>
-Signed-off-by: Dave Kleikamp <dave.kleikamp@oracle.com>
+Signed-off-by: Filipe Manana <fdmanana@suse.com>
+Reviewed-by: David Sterba <dsterba@suse.com>
+Signed-off-by: David Sterba <dsterba@suse.com>
+Stable-dep-of: 005b0a0c24e1 ("btrfs: send: use fallocate for hole punching with send stream v2")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- fs/jfs/jfs_dmap.c | 6 ++++++
- 1 file changed, 6 insertions(+)
+ fs/btrfs/send.c |   12 ++++++------
+ 1 file changed, 6 insertions(+), 6 deletions(-)
 
-diff --git a/fs/jfs/jfs_dmap.c b/fs/jfs/jfs_dmap.c
-index 15f885d2fa3d..17c4e7bdf283 100644
---- a/fs/jfs/jfs_dmap.c
-+++ b/fs/jfs/jfs_dmap.c
-@@ -1457,6 +1457,12 @@ dbAllocAG(struct bmap * bmp, int agno, s64 nblocks, int l2nb, s64 * results)
- 	    (1 << (L2LPERCTL - (bmp->db_agheight << 1))) / bmp->db_agwidth;
- 	ti = bmp->db_agstart + bmp->db_agwidth * (agno & (agperlev - 1));
+--- a/fs/btrfs/send.c
++++ b/fs/btrfs/send.c
+@@ -4179,9 +4179,9 @@ static int process_recorded_refs(struct
+ 	u64 ow_inode = 0;
+ 	u64 ow_gen;
+ 	u64 ow_mode;
+-	int did_overwrite = 0;
+-	int is_orphan = 0;
+ 	u64 last_dir_ino_rm = 0;
++	bool did_overwrite = false;
++	bool is_orphan = false;
+ 	bool can_rename = true;
+ 	bool orphanized_dir = false;
+ 	bool orphanized_ancestor = false;
+@@ -4223,14 +4223,14 @@ static int process_recorded_refs(struct
+ 		if (ret < 0)
+ 			goto out;
+ 		if (ret)
+-			did_overwrite = 1;
++			did_overwrite = true;
+ 	}
+ 	if (sctx->cur_inode_new || did_overwrite) {
+ 		ret = gen_unique_name(sctx, sctx->cur_ino,
+ 				sctx->cur_inode_gen, valid_path);
+ 		if (ret < 0)
+ 			goto out;
+-		is_orphan = 1;
++		is_orphan = true;
+ 	} else {
+ 		ret = get_cur_path(sctx, sctx->cur_ino, sctx->cur_inode_gen,
+ 				valid_path);
+@@ -4453,7 +4453,7 @@ static int process_recorded_refs(struct
+ 			ret = send_rename(sctx, valid_path, cur->full_path);
+ 			if (ret < 0)
+ 				goto out;
+-			is_orphan = 0;
++			is_orphan = false;
+ 			ret = fs_path_copy(valid_path, cur->full_path);
+ 			if (ret < 0)
+ 				goto out;
+@@ -4514,7 +4514,7 @@ static int process_recorded_refs(struct
+ 					sctx->cur_inode_gen, valid_path);
+ 			if (ret < 0)
+ 				goto out;
+-			is_orphan = 1;
++			is_orphan = true;
+ 		}
  
-+	if (ti < 0 || ti >= le32_to_cpu(dcp->nleafs)) {
-+		jfs_error(bmp->db_ipbmap->i_sb, "Corrupt dmapctl page\n");
-+		release_metapage(mp);
-+		return -EIO;
-+	}
-+
- 	/* dmap control page trees fan-out by 4 and a single allocation
- 	 * group may be described by 1 or 2 subtrees within the ag level
- 	 * dmap control page, depending upon the ag size. examine the ag's
--- 
-2.39.5
-
+ 		list_for_each_entry(cur, &sctx->deleted_refs, list) {
 
 
 
