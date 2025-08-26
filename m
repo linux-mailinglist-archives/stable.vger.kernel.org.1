@@ -1,55 +1,56 @@
-Return-Path: <stable+bounces-173033-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-175609-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5DE73B35B75
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 13:24:42 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 21B19B36930
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 16:23:48 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 954071885F6D
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 11:22:05 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 81B7F56481C
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 14:13:47 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C08F333EAF2;
-	Tue, 26 Aug 2025 11:20:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3E8353568EF;
+	Tue, 26 Aug 2025 14:11:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="BtAnrz9Z"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="RN20Nb/b"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7A56332142D;
-	Tue, 26 Aug 2025 11:20:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EBF3D3431FE;
+	Tue, 26 Aug 2025 14:11:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756207201; cv=none; b=oJ1NtAbCu3FcdN+FzA8vHjTaBqlqz5GLvHfZtM1+UluryD6vDFEyYYXiBTBRbjK/sPAFVqrBvYKCIvBUjC9GXL8FdG7rb43JxsPsVx9FOW4dNMWUi8vACcnzFY6Gq2Et2owUOcUrtEIrrgvK41lLtXG660zNmV8Li6CYBRFwshY=
+	t=1756217498; cv=none; b=p9TbZMPPZAqDkir7rtuX5dbomcVUJ3DeTM4tPA2S9vyYXIZSWP8UnOD3g+EJkHfS80+ZO5Dd8lZ48oz4ug5s3PODPvJIF9CzhJ9SnZgiqbIHvCy/6r9sCDgwNKrjIe+U3W4biPekS0KLtO/IIrc1+ynBBrpLkkf387zid54yClY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756207201; c=relaxed/simple;
-	bh=LCSvU7Lnq6t6QroEWqTZ2Hgb0WFppfgSUyjsqcYMb5U=;
+	s=arc-20240116; t=1756217498; c=relaxed/simple;
+	bh=aDk2Fmxy03mz/zhIPm+voGeBiPX1saHzaEkOuDVxfr4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=DdQcQ9lDmq71MsRuiJHe4nB7rBXYzCowiXSEBhXzDTJEsB8+3KQkQaVInInUYuiDl3BtNPo+qCiTxNfAFxMvbNtUCgXqHzyzP/RHW9D34Dr6Hz24qISjaK4yNOq0dDQRiMiFHNciFgt9Hni7QoNucin053zDs+po5PB92uP+DfA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=BtAnrz9Z; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id AB74EC4CEF1;
-	Tue, 26 Aug 2025 11:20:00 +0000 (UTC)
+	 MIME-Version; b=BkXsJl43qdVaN5Ej+DPnGrsgviOl14UwyZPW0/ppQFc97PYh0t/qNVLHbKiSUfTQmuwrFTlOGaL+uwXHKMlsMGnEZrTR/kqVA8TdMZ0odCR/Gs3HjL53hkeI/C961lyzejayUtWORroriCMXn9E/4hebAsCi1KDL5I5bQunMjFQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=RN20Nb/b; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7CCA3C4CEF1;
+	Tue, 26 Aug 2025 14:11:37 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1756207201;
-	bh=LCSvU7Lnq6t6QroEWqTZ2Hgb0WFppfgSUyjsqcYMb5U=;
+	s=korg; t=1756217497;
+	bh=aDk2Fmxy03mz/zhIPm+voGeBiPX1saHzaEkOuDVxfr4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=BtAnrz9Z49btjRCzd+Dluf8BA55P66rtG40smBQ2l6ivP2DkMU4jzDVrJ5LRwcA6p
-	 6cDg9qN53wiiZ+RY2jYX02fPkeGGVpCg8j1DC4YMtXxIoXD8KhR6+TbtssMuinFHCY
-	 BHPRres9GlCfBu4hIOTl+gKtUPXDcl1xUmkujic0=
+	b=RN20Nb/bVXi+rZpG6NFPBMkP/44O7Q0ylgGuIgpplp/LJ0biQ5Rm50bnb248n/8Jh
+	 B7bGEg97QWuR7VT9tx/dJEXhXh+OvPmQi2lxTn5hCUbHKCoaOMP1vlg7Erjlr7j9IF
+	 6+FsyNqJgP47JOvAb9YJULJBuL6nojO2xHpD3UzY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Tim Harvey <tharvey@gateworks.com>,
-	Guenter Roeck <linux@roeck-us.net>
-Subject: [PATCH 6.16 090/457] hwmon: (gsc-hwmon) fix fan pwm setpoint show functions
+	"Maciej W. Rozycki" <macro@orcam.me.uk>,
+	Bjorn Helgaas <bhelgaas@google.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.10 164/523] powerpc/eeh: Rely on dev->link_active_reporting
 Date: Tue, 26 Aug 2025 13:06:14 +0200
-Message-ID: <20250826110939.605564127@linuxfoundation.org>
+Message-ID: <20250826110928.516207143@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250826110937.289866482@linuxfoundation.org>
-References: <20250826110937.289866482@linuxfoundation.org>
+In-Reply-To: <20250826110924.562212281@linuxfoundation.org>
+References: <20250826110924.562212281@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,64 +62,44 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.16-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Tim Harvey <tharvey@gateworks.com>
+From: Maciej W. Rozycki <macro@orcam.me.uk>
 
-commit 9c62e2282900332c8b711d9f9e37af369a8ef71b upstream.
+[ Upstream commit 1541a21305ceb10fcf3f7cbb23f3e1a00bbf1789 ]
 
-The Linux hwmon sysfs API values for pwmX_auto_pointY_pwm represent an
-integer value between 0 (0%) to 255 (100%) and the pwmX_auto_pointY_temp
-represent millidegrees Celcius.
+Use dev->link_active_reporting to determine whether Data Link Layer Link
+Active Reporting is available rather than re-retrieving the capability.
 
-Commit a6d80df47ee2 ("hwmon: (gsc-hwmon) fix fan pwm temperature
-scaling") properly addressed the incorrect scaling in the
-pwm_auto_point_temp_store implementation but erroneously scaled
-the pwm_auto_point_pwm_show (pwm value) instead of the
-pwm_auto_point_temp_show (temp value) resulting in:
- # cat /sys/class/hwmon/hwmon0/pwm1_auto_point6_pwm
- 25500
- # cat /sys/class/hwmon/hwmon0/pwm1_auto_point6_temp
- 4500
-
-Fix the scaling of these attributes:
- # cat /sys/class/hwmon/hwmon0/pwm1_auto_point6_pwm
- 255
- # cat /sys/class/hwmon/hwmon0/pwm1_auto_point6_temp
- 45000
-
-Fixes: a6d80df47ee2 ("hwmon: (gsc-hwmon) fix fan pwm temperature scaling")
-Cc: stable@vger.kernel.org
-Signed-off-by: Tim Harvey <tharvey@gateworks.com>
-Link: https://lore.kernel.org/r/20250718200259.1840792-1-tharvey@gateworks.com
-Signed-off-by: Guenter Roeck <linux@roeck-us.net>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Link: https://lore.kernel.org/r/alpine.DEB.2.21.2305310124100.59226@angie.orcam.me.uk
+Signed-off-by: Maciej W. Rozycki <macro@orcam.me.uk>
+Signed-off-by: Bjorn Helgaas <bhelgaas@google.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/hwmon/gsc-hwmon.c |    4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ arch/powerpc/kernel/eeh_pe.c | 5 ++---
+ 1 file changed, 2 insertions(+), 3 deletions(-)
 
---- a/drivers/hwmon/gsc-hwmon.c
-+++ b/drivers/hwmon/gsc-hwmon.c
-@@ -64,7 +64,7 @@ static ssize_t pwm_auto_point_temp_show(
- 		return ret;
+diff --git a/arch/powerpc/kernel/eeh_pe.c b/arch/powerpc/kernel/eeh_pe.c
+index a856d9ba42d2..3f55e372f259 100644
+--- a/arch/powerpc/kernel/eeh_pe.c
++++ b/arch/powerpc/kernel/eeh_pe.c
+@@ -670,9 +670,8 @@ static void eeh_bridge_check_link(struct eeh_dev *edev)
+ 	eeh_ops->write_config(edev, cap + PCI_EXP_LNKCTL, 2, val);
  
- 	ret = regs[0] | regs[1] << 8;
--	return sprintf(buf, "%d\n", ret * 10);
-+	return sprintf(buf, "%d\n", ret * 100);
- }
- 
- static ssize_t pwm_auto_point_temp_store(struct device *dev,
-@@ -99,7 +99,7 @@ static ssize_t pwm_auto_point_pwm_show(s
- {
- 	struct sensor_device_attribute *attr = to_sensor_dev_attr(devattr);
- 
--	return sprintf(buf, "%d\n", 255 * (50 + (attr->index * 10)));
-+	return sprintf(buf, "%d\n", 255 * (50 + (attr->index * 10)) / 100);
- }
- 
- static SENSOR_DEVICE_ATTR_RO(pwm1_auto_point1_pwm, pwm_auto_point_pwm, 0);
+ 	/* Check link */
+-	eeh_ops->read_config(edev, cap + PCI_EXP_LNKCAP, 4, &val);
+-	if (!(val & PCI_EXP_LNKCAP_DLLLARC)) {
+-		eeh_edev_dbg(edev, "No link reporting capability (0x%08x) \n", val);
++	if (!edev->pdev->link_active_reporting) {
++		eeh_edev_dbg(edev, "No link reporting capability\n");
+ 		msleep(1000);
+ 		return;
+ 	}
+-- 
+2.39.5
+
 
 
 
