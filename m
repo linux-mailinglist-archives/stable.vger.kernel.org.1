@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-174397-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-173018-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id CFC0EB3631D
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 15:26:50 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9F387B35B3B
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 13:21:40 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 7B4348A619F
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 13:20:14 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id D38C468003A
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 11:21:08 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id BF43A24467E;
-	Tue, 26 Aug 2025 13:18:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B42D5338F32;
+	Tue, 26 Aug 2025 11:19:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="1P7LRn2x"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="1fX4j85r"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7D7651917ED;
-	Tue, 26 Aug 2025 13:18:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6CC7F3375D9;
+	Tue, 26 Aug 2025 11:19:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756214281; cv=none; b=S5FXLIy6OUPQeVQwP6aF5Kn2b4YAJjSEIYsj5U4E7m9FrNlCN9DChXRyOcV+MztVp8f6q9MooSDPSnZY9RU6gQMAfTGPV1wR9PlqlyRa+T589OAPJx36R/7UcK7uhFan/G/Piuaq2685ZcMDQM/LHvjRKAqpPkgXUlMwzgMJMxE=
+	t=1756207162; cv=none; b=o0JW2strCXNeKi1IVb4Wi+BUm9xva5TAqKZoUMXGlu3dnIIdqHQ8384WVxxj50coiAjditdu+mTKsk/g90Luv9DUto+xTiDfu0ue5Z8h1vzo2iuaB/c7vfteP3epEnVa3ZkSbLe7Vg7E6Cl4dUu5AwtHZFhw6oVAftprXChCjUU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756214281; c=relaxed/simple;
-	bh=D1qwvws/P6CXPFrj26mX79LenVAU+zEelKZf9ztu2ow=;
+	s=arc-20240116; t=1756207162; c=relaxed/simple;
+	bh=3F3GeHFfhmGLNyDK7oqixUTxWJYc4aojTsIsYlMsPfY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=ZK5jOoCPaA69yNXLEuIFYwwc0r3VdYVcM1NPCOgfMAca/Q+fuy730Wvwd3qJ02/t2L05PyrIYJQ2eaChyarHHDUYxr7UsmcUqaim0k0euZ+LL+K6E4DnHqv7mC5Oum49LwWBFvWQAb9BTVNMKa24fSudxHr6nDg5U2ccsqXWW1k=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=1P7LRn2x; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0BDEDC4CEF1;
-	Tue, 26 Aug 2025 13:18:00 +0000 (UTC)
+	 MIME-Version; b=BHSkVXgn+SSgfC16Wq7mlTuesutp5CqZxHRmIydUy6ul2uVovQiHBbM9g/Av45qwYWWqJvzBeLqPEX9X8rjZXQf52lXY34Tu659zpjfPX6sd9fpLw1i/QvZ8jWIErLHJlOBnNGMkA+LH99JkEU1AG2yAjEQWoBUuqviiywZGCYk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=1fX4j85r; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 05900C4CEF1;
+	Tue, 26 Aug 2025 11:19:21 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1756214281;
-	bh=D1qwvws/P6CXPFrj26mX79LenVAU+zEelKZf9ztu2ow=;
+	s=korg; t=1756207162;
+	bh=3F3GeHFfhmGLNyDK7oqixUTxWJYc4aojTsIsYlMsPfY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=1P7LRn2xiYPbV6SdtB0wzIcldqIRIzJoGWGei6+RmPeGthDoWaC6LXBNoPrYomv7z
-	 SdUI1nPFbAaYsoMG1QQSPMIrGrH2w3jtacjxdfOAyZ4/K0BljeWYjOC5i0tjLmV+Ph
-	 a717v9NNBZGvFXe3quIEbVO9AXG+qJ9LvQZ4kEbY=
+	b=1fX4j85r1W2jwHsakmBYXcztk6OVIlN8YYK+mKD2eGapB5ngO7SDf0dmdkIZoj+ET
+	 58up9iYe3SjKsoxp367SzhgVc2J5lH6sOgqY8uMqJxT73yf4cuGwsixWzmaxvO5the
+	 rMiyw2tGabFDgmsJ4RnS/3cUZ5e73wQcAYqLaaBw=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Kuninori Morimoto <kuninori.morimoto.gx@renesas.com>,
-	Mark Brown <broonie@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 078/482] ASoC: soc-dapm: set bias_level if snd_soc_dapm_set_bias_level() was successed
+	Qu Wenruo <wqu@suse.com>,
+	Kyoji Ogasawara <sawara04.o@gmail.com>,
+	David Sterba <dsterba@suse.com>
+Subject: [PATCH 6.16 047/457] btrfs: fix printing of mount info messages for NODATACOW/NODATASUM
 Date: Tue, 26 Aug 2025 13:05:31 +0200
-Message-ID: <20250826110932.760330747@linuxfoundation.org>
+Message-ID: <20250826110938.510552873@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250826110930.769259449@linuxfoundation.org>
-References: <20250826110930.769259449@linuxfoundation.org>
+In-Reply-To: <20250826110937.289866482@linuxfoundation.org>
+References: <20250826110937.289866482@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,77 +62,48 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.16-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Kuninori Morimoto <kuninori.morimoto.gx@renesas.com>
+From: Kyoji Ogasawara <sawara04.o@gmail.com>
 
-[ Upstream commit f40ecc2743652c0b0f19935f81baf57c601eb7f0 ]
+commit 74857fdc5dd2cdcdeb6e99bdf26976fd9299d2bb upstream.
 
-ASoC has 2 functions to set bias level.
-	(A) snd_soc_dapm_force_bias_level()
-	(B) snd_soc_dapm_set_bias_level()
+The NODATASUM message was printed twice by mistake and the NODATACOW was
+missing from the 'unset' part.  Fix the duplication and make the output
+look the same.
 
-snd_soc_dapm_force_bias_level() (A) will set dapm->bias_level (a) if
-successed.
-
-(A)	int snd_soc_dapm_force_bias_level(...)
-	{
-		...
-		if (ret == 0)
-(a)			dapm->bias_level = level;
-		...
-	}
-
-snd_soc_dapm_set_bias_level() (B) is also a function that sets bias_level.
-It will call snd_soc_dapm_force_bias_level() (A) inside, but doesn't
-set dapm->bias_level by itself. One note is that (A) might not be called.
-
-(B)	static int snd_soc_dapm_set_bias_level(...)
-	{
-		...
-		ret = snd_soc_card_set_bias_level(...);
-		...
-		if (dapm != &card->dapm)
-(A)			ret = snd_soc_dapm_force_bias_level(...);
-		...
-		ret = snd_soc_card_set_bias_level_post(...);
-		...
-	}
-
-dapm->bias_level will be set if (A) was called, but might not be set
-if (B) was called, even though it calles set_bias_level() function.
-
-We should set dapm->bias_level if we calls
-snd_soc_dapm_set_bias_level() (B), too.
-
-Signed-off-by: Kuninori Morimoto <kuninori.morimoto.gx@renesas.com>
-Link: https://patch.msgid.link/87qzyn4g4h.wl-kuninori.morimoto.gx@renesas.com
-Signed-off-by: Mark Brown <broonie@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Fixes: eddb1a433f26 ("btrfs: add reconfigure callback for fs_context")
+CC: stable@vger.kernel.org # 6.8+
+Reviewed-by: Qu Wenruo <wqu@suse.com>
+Signed-off-by: Kyoji Ogasawara <sawara04.o@gmail.com>
+Reviewed-by: David Sterba <dsterba@suse.com>
+Signed-off-by: David Sterba <dsterba@suse.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- sound/soc/soc-dapm.c | 4 ++++
- 1 file changed, 4 insertions(+)
+ fs/btrfs/super.c |    3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
-diff --git a/sound/soc/soc-dapm.c b/sound/soc/soc-dapm.c
-index 4103443770b0..481e5dd593b6 100644
---- a/sound/soc/soc-dapm.c
-+++ b/sound/soc/soc-dapm.c
-@@ -742,6 +742,10 @@ static int snd_soc_dapm_set_bias_level(struct snd_soc_dapm_context *dapm,
- out:
- 	trace_snd_soc_bias_level_done(card, level);
+--- a/fs/btrfs/super.c
++++ b/fs/btrfs/super.c
+@@ -1430,7 +1430,7 @@ static void btrfs_emit_options(struct bt
+ {
+ 	btrfs_info_if_set(info, old, NODATASUM, "setting nodatasum");
+ 	btrfs_info_if_set(info, old, DEGRADED, "allowing degraded mounts");
+-	btrfs_info_if_set(info, old, NODATASUM, "setting nodatasum");
++	btrfs_info_if_set(info, old, NODATACOW, "setting nodatacow");
+ 	btrfs_info_if_set(info, old, SSD, "enabling ssd optimizations");
+ 	btrfs_info_if_set(info, old, SSD_SPREAD, "using spread ssd allocation scheme");
+ 	btrfs_info_if_set(info, old, NOBARRIER, "turning off barriers");
+@@ -1452,6 +1452,7 @@ static void btrfs_emit_options(struct bt
+ 	btrfs_info_if_set(info, old, IGNOREMETACSUMS, "ignoring meta csums");
+ 	btrfs_info_if_set(info, old, IGNORESUPERFLAGS, "ignoring unknown super block flags");
  
-+	/* success */
-+	if (ret == 0)
-+		snd_soc_dapm_init_bias_level(dapm, level);
-+
- 	return ret;
- }
- 
--- 
-2.39.5
-
++	btrfs_info_if_unset(info, old, NODATASUM, "setting datasum");
+ 	btrfs_info_if_unset(info, old, NODATACOW, "setting datacow");
+ 	btrfs_info_if_unset(info, old, SSD, "not using ssd optimizations");
+ 	btrfs_info_if_unset(info, old, SSD_SPREAD, "not using spread ssd allocation scheme");
 
 
 
