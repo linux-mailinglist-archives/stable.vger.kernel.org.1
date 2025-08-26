@@ -1,54 +1,58 @@
-Return-Path: <stable+bounces-175515-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-173854-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6EA99B36890
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 16:17:20 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id B4209B3600C
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 14:56:28 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 2DBDC581A47
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 14:09:06 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 59D293B15CC
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 12:54:37 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6106734AB0D;
-	Tue, 26 Aug 2025 14:07:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3AAED1E411C;
+	Tue, 26 Aug 2025 12:54:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="sTepAsn5"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="aztzSpqA"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EE7451DF985;
-	Tue, 26 Aug 2025 14:07:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EB11A7260F;
+	Tue, 26 Aug 2025 12:54:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756217248; cv=none; b=e23XGyDxb0mIsY0a5iP2qElnfQX5EUHhFs/eUsTp+cKl+2dfz6Q49KHo0nd9xy3nc9e2DDjDbDVYyKuS/S7b92n1Npo0qqeIEfSNcEmw3RIrXrJlKG3zLZHuiZ49ydsxStO8JIzExhluVh7iJemPCb1Du3OlOM/Jotjpyw6ohFA=
+	t=1756212842; cv=none; b=t7NbtkpZxW7w2i9TcqyBQuJcnRXKCBn70H0RfTkOokrINu7HF4whWXwADYVTRbeMAGkpGQMTUKygV8BsDoRB9DW9wZLqzGmzGPg6mXyhPpqxFJlA9Wbrjwq1iD90A+u7xfmkCDK33sqB45PL1wqg+cPJd3v5KD3LfDPlBccJch4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756217248; c=relaxed/simple;
-	bh=4ij4clBkrML2URglrU+rXNaycp7YvX5Yie02zK87inA=;
+	s=arc-20240116; t=1756212842; c=relaxed/simple;
+	bh=GK34UdY/iArNBjSSNrM0LyHbmT5dnDeucLrq8yGI+Ho=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=tiSyaQC5ycu44VimHXYWZnvUYwki9DrgqyDeC2lcu32keCSvb2NuHgSE+y6vCmwoh6A96PC8rbhbRTtyZVsy2lnmiF9ArPcfrVh/eHwniid5RoQdTkbWS2XjvbUJaxqtesvwfNxuxZFFGNQ0OGNM/3+nzV8/QqvTaalGj+yS0DU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=sTepAsn5; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 34EFAC4CEF1;
-	Tue, 26 Aug 2025 14:07:27 +0000 (UTC)
+	 MIME-Version; b=fNMlCZTA0r2ApJ6jZtx3LAFBmH09ge0zjflf/jiRpbAPUSQ9Zzl7ePeOppLK+aBbNo0VmNVLO0A+0Gm23e7UJ+HXetaWxqF4EUchqTACQf+5uNQWT8zGBjYq4fZqwSMotph3QQXRREhT7mkZToRxOrhG7Ph4aR3rRTEXiEmZbAY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=aztzSpqA; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 80D98C4CEF1;
+	Tue, 26 Aug 2025 12:54:01 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1756217247;
-	bh=4ij4clBkrML2URglrU+rXNaycp7YvX5Yie02zK87inA=;
+	s=korg; t=1756212841;
+	bh=GK34UdY/iArNBjSSNrM0LyHbmT5dnDeucLrq8yGI+Ho=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=sTepAsn5XaDBZADRyM4CmxN4ARszCDYqHkT+OcrcHl4CeiDOO/dNCdx5bpigAh1CM
-	 7u6desrYe+4qxOTqM7A93x15GkaFcUVyRQishSpK1qUPHOKoijKGjpakyZJJxRxW5b
-	 itbjCXYnPkd9z/Z0f733TYjFe/FxUHiozNpnyRPY=
+	b=aztzSpqAFF5YOxollKx7ad2RdVLvpebZ9NHaX6zAmc8wp0rwtS9elaosDH2JatkBr
+	 s0FP4GDYr+xsYhq1AqgdMKaRL8qr8MO1XGIgPTdY88MtNu1EuehbJG7dnv8pRVDGdF
+	 pcGpjTYmHtyL3XsBUS5Wi1KcBBjnGfqlyUBgOxfw=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Ian Abbott <abbotti@mev.co.uk>
-Subject: [PATCH 5.10 030/523] comedi: das6402: Fix bit shift out of bounds
+	Maulik Shah <maulik.shah@oss.qualcomm.com>,
+	Konrad Dybcio <konrad.dybcio@oss.qualcomm.com>,
+	Neil Armstrong <neil.armstrong@linaro.org>,
+	Bjorn Andersson <andersson@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.6 091/587] soc: qcom: rpmh-rsc: Add RSC version 4 support
 Date: Tue, 26 Aug 2025 13:04:00 +0200
-Message-ID: <20250826110925.342583345@linuxfoundation.org>
+Message-ID: <20250826110955.250590548@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250826110924.562212281@linuxfoundation.org>
-References: <20250826110924.562212281@linuxfoundation.org>
+In-Reply-To: <20250826110952.942403671@linuxfoundation.org>
+References: <20250826110952.942403671@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,47 +64,43 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Ian Abbott <abbotti@mev.co.uk>
+From: Maulik Shah <maulik.shah@oss.qualcomm.com>
 
-commit 70f2b28b5243df557f51c054c20058ae207baaac upstream.
+[ Upstream commit 84684c57c9cd47b86c883a7170dd68222d97ef13 ]
 
-When checking for a supported IRQ number, the following test is used:
+Register offsets for v3 and v4 versions are backward compatible. Assign v3
+offsets for v4 and all higher versions to avoid end up using v2 offsets.
 
-	/* IRQs 2,3,5,6,7, 10,11,15 are valid for "enhanced" mode */
-	if ((1 << it->options[1]) & 0x8cec) {
-
-However, `it->options[i]` is an unchecked `int` value from userspace, so
-the shift amount could be negative or out of bounds.  Fix the test by
-requiring `it->options[1]` to be within bounds before proceeding with
-the original test.  Valid `it->options[1]` values that select the IRQ
-will be in the range [1,15]. The value 0 explicitly disables the use of
-interrupts.
-
-Fixes: 79e5e6addbb1 ("staging: comedi: das6402: rewrite broken driver")
-Cc: stable@vger.kernel.org # 5.13+
-Signed-off-by: Ian Abbott <abbotti@mev.co.uk>
-Link: https://lore.kernel.org/r/20250707135737.77448-1-abbotti@mev.co.uk
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Signed-off-by: Maulik Shah <maulik.shah@oss.qualcomm.com>
+Reviewed-by: Konrad Dybcio <konrad.dybcio@oss.qualcomm.com>
+Reviewed-by: Neil Armstrong <neil.armstrong@linaro.org>
+Link: https://lore.kernel.org/r/20250623-rsc_v4-v1-1-275b27bc5e3c@oss.qualcomm.com
+Signed-off-by: Bjorn Andersson <andersson@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/staging/comedi/drivers/das6402.c |    3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+ drivers/soc/qcom/rpmh-rsc.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/drivers/staging/comedi/drivers/das6402.c
-+++ b/drivers/staging/comedi/drivers/das6402.c
-@@ -569,7 +569,8 @@ static int das6402_attach(struct comedi_
- 	das6402_reset(dev);
+diff --git a/drivers/soc/qcom/rpmh-rsc.c b/drivers/soc/qcom/rpmh-rsc.c
+index dfc2d4e38fa9..163a58eb02e0 100644
+--- a/drivers/soc/qcom/rpmh-rsc.c
++++ b/drivers/soc/qcom/rpmh-rsc.c
+@@ -1075,7 +1075,7 @@ static int rpmh_rsc_probe(struct platform_device *pdev)
+ 	drv->ver.minor = rsc_id & (MINOR_VER_MASK << MINOR_VER_SHIFT);
+ 	drv->ver.minor >>= MINOR_VER_SHIFT;
  
- 	/* IRQs 2,3,5,6,7, 10,11,15 are valid for "enhanced" mode */
--	if ((1 << it->options[1]) & 0x8cec) {
-+	if (it->options[1] > 0 && it->options[1] < 16 &&
-+	    (1 << it->options[1]) & 0x8cec) {
- 		ret = request_irq(it->options[1], das6402_interrupt, 0,
- 				  dev->board_name, dev);
- 		if (ret == 0) {
+-	if (drv->ver.major == 3)
++	if (drv->ver.major >= 3)
+ 		drv->regs = rpmh_rsc_reg_offset_ver_3_0;
+ 	else
+ 		drv->regs = rpmh_rsc_reg_offset_ver_2_7;
+-- 
+2.39.5
+
 
 
 
