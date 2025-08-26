@@ -1,55 +1,57 @@
-Return-Path: <stable+bounces-173040-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-175091-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 76F5BB35B7B
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 13:24:55 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1DC3EB366F6
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 16:02:27 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 8A2CF1BA2B66
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 11:22:13 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id E86ED98019E
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 13:50:06 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3D93C21D00E;
-	Tue, 26 Aug 2025 11:20:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 992B634AB1A;
+	Tue, 26 Aug 2025 13:48:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Vr4prnu0"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ec88x08/"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E65BA321F53;
-	Tue, 26 Aug 2025 11:20:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 568D930146A;
+	Tue, 26 Aug 2025 13:48:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756207219; cv=none; b=h4/IEx0HY1KKNKa402VStj97P72LZXNoxIs0WLHyq3jsrSHcdFHtdpbYZPFnzlBT2gqqCdlwpd02NNpF9QGj0ucMYOJ5Gm2nSygIW9aK1zAbRob0wYfYBtim77sHwa6WROvpjRndhuJQbcHxoh4LG1/egX3yH81YIq2tGDhQwHA=
+	t=1756216116; cv=none; b=c1D0bnhptIkXUs0BW18IPK4DKvMqOGcJ5Ufxx6ppZxuIrEUsg59xaaYdgJpyS4m/eG7nUESaKNwHepeQxpUy+oTELt3nO8BdPlIiek442RWQKG9URE9H7fplXw3LeA1wnAksOMN3MnP57MbHstk0Wve+n/oRIgaq/beysN2kVMM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756207219; c=relaxed/simple;
-	bh=Ii8292jv9XiyK5YH1oMO3L5Ps/6ZqnZoV/k7b+LOxW4=;
+	s=arc-20240116; t=1756216116; c=relaxed/simple;
+	bh=KsOWl7X3Var+Ijw2qV4uBR23MAGs2bYlYeLJt0FGF0s=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=OU1IZzdXRUdX5mR+jpoghiTHBCwaI+5F3OBtviD83efAdDXS9FqqBkSJAkT9Brk8o5H+YeRATG2hOqAbanri/oWKdrQpq7zQxZDF1AyLvCWVrbuzf3ptzsI86HutibDjfi1qSBJEc048zfmJYOaPAg1TyKO6xPGJVvZ5v9hlItw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Vr4prnu0; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7B231C4CEF1;
-	Tue, 26 Aug 2025 11:20:18 +0000 (UTC)
+	 MIME-Version; b=NFFd2HvFcFhaEwlnT/Qkmrrr7WIw/DGrpdW36fCey5qlWJvRrqEjWHB3l8mT3uqmxTg3At0qaBC2LIN6D5aizWdwzp57EpYWSqzMt61EF3gZ7hA3jBtmNGgj7dcXzAYIecrixPGX8rCq0yM9QgfVB69AsxmSJdpXf4cPPwFtumc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ec88x08/; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id DE5CAC4CEF1;
+	Tue, 26 Aug 2025 13:48:35 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1756207218;
-	bh=Ii8292jv9XiyK5YH1oMO3L5Ps/6ZqnZoV/k7b+LOxW4=;
+	s=korg; t=1756216116;
+	bh=KsOWl7X3Var+Ijw2qV4uBR23MAGs2bYlYeLJt0FGF0s=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Vr4prnu0uy2eBlyjAXBWMrW4FUrSHdoeiRIln0OLoOKY7A8Nll3ThH/7HSgUB1ip8
-	 WHDADO8cToZTmLO5cqMpRyiZwpITP+Q/+UTX67S4bD93Y9k874wUOHALwWELz+nV4m
-	 QWto08ZCyoe05Awno2etZh+2dE1woXtP400M2R5s=
+	b=ec88x08/sgu/HG3X5QLJXACcZMfkU0U1lZyxbDu0r6+km5F/pDX5WM3XE+mtcqPRq
+	 fSrmvE+BwvXD40+4Sx/elzasNUx58BtlZZpnFAfeeatCBifxOLS0LKLnN8jpFZl0sV
+	 SiQRpZyEcUHP2u1inGNImDipiOjSiBPTUcm2vHu0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Lukas Wunner <lukas@wunner.de>,
-	Bjorn Helgaas <bhelgaas@google.com>
-Subject: [PATCH 6.16 097/457] PCI/portdrv: Use is_pciehp instead of is_hotplug_bridge
+	Damien Le Moal <dlemoal@kernel.org>,
+	Niklas Cassel <cassel@kernel.org>,
+	Hannes Reinecke <hare@suse.de>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.15 290/644] ata: libata-sata: Disallow changing LPM state if not supported
 Date: Tue, 26 Aug 2025 13:06:21 +0200
-Message-ID: <20250826110939.773865325@linuxfoundation.org>
+Message-ID: <20250826110953.568372474@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250826110937.289866482@linuxfoundation.org>
-References: <20250826110937.289866482@linuxfoundation.org>
+In-Reply-To: <20250826110946.507083938@linuxfoundation.org>
+References: <20250826110946.507083938@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,46 +63,47 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.16-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Lukas Wunner <lukas@wunner.de>
+From: Damien Le Moal <dlemoal@kernel.org>
 
-commit 1d60796a62f327cd9e0a6a0865ded7656d2c67f9 upstream.
+[ Upstream commit 413e800cadbf67550d76c77c230b2ecd96bce83a ]
 
-The PCIe port driver erroneously creates a subdevice for hotplug on ACPI
-slots which are handled by the ACPI hotplug driver.
+Modify ata_scsi_lpm_store() to return an error if a user attempts to set
+a link power management policy for a port that does not support LPM,
+that is, ports flagged with ATA_FLAG_NO_LPM.
 
-Avoid by checking the is_pciehp flag instead of is_hotplug_bridge when
-deciding whether to create a subdevice.  The latter encompasses ACPI slots
-whereas the former doesn't.
-
-The superfluous subdevice has no real negative impact, it occupies memory
-and interrupt resources but otherwise just sits there waiting for
-interrupts from the slot that are never signaled.
-
-Fixes: f8415222837b ("PCI: Use cached copy of PCI_EXP_SLTCAP_HPC bit")
-Signed-off-by: Lukas Wunner <lukas@wunner.de>
-Signed-off-by: Bjorn Helgaas <bhelgaas@google.com>
-Cc: stable@vger.kernel.org # v4.7+
-Link: https://patch.msgid.link/40d5a5fe8d40595d505949c620a067fa110ee85e.1752390102.git.lukas@wunner.de
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Signed-off-by: Damien Le Moal <dlemoal@kernel.org>
+Reviewed-by: Niklas Cassel <cassel@kernel.org>
+Reviewed-by: Hannes Reinecke <hare@suse.de>
+Link: https://lore.kernel.org/r/20250701125321.69496-6-dlemoal@kernel.org
+Signed-off-by: Niklas Cassel <cassel@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/pci/pcie/portdrv.c |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/ata/libata-sata.c | 5 +++++
+ 1 file changed, 5 insertions(+)
 
---- a/drivers/pci/pcie/portdrv.c
-+++ b/drivers/pci/pcie/portdrv.c
-@@ -220,7 +220,7 @@ static int get_port_device_capability(st
- 	struct pci_host_bridge *host = pci_find_host_bridge(dev->bus);
- 	int services = 0;
+diff --git a/drivers/ata/libata-sata.c b/drivers/ata/libata-sata.c
+index 04bdd53abf20..7cacb2bfc360 100644
+--- a/drivers/ata/libata-sata.c
++++ b/drivers/ata/libata-sata.c
+@@ -815,6 +815,11 @@ static ssize_t ata_scsi_lpm_store(struct device *device,
  
--	if (dev->is_hotplug_bridge &&
-+	if (dev->is_pciehp &&
- 	    (pci_pcie_type(dev) == PCI_EXP_TYPE_ROOT_PORT ||
- 	     pci_pcie_type(dev) == PCI_EXP_TYPE_DOWNSTREAM) &&
- 	    (pcie_ports_native || host->native_pcie_hotplug)) {
+ 	spin_lock_irqsave(ap->lock, flags);
+ 
++	if (ap->flags & ATA_FLAG_NO_LPM) {
++		count = -EOPNOTSUPP;
++		goto out_unlock;
++	}
++
+ 	ata_for_each_link(link, ap, EDGE) {
+ 		ata_for_each_dev(dev, &ap->link, ENABLED) {
+ 			if (dev->horkage & ATA_HORKAGE_NOLPM) {
+-- 
+2.39.5
+
 
 
 
