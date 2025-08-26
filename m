@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-175124-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-176089-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id C8688B366F0
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 16:02:09 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id A4676B36A3E
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 16:35:50 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id F3F508E5CEF
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 13:51:27 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id D402C7A9A16
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 14:34:14 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A7E7A350D46;
-	Tue, 26 Aug 2025 13:50:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A53B935E4FE;
+	Tue, 26 Aug 2025 14:32:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="DffkvXn8"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="mKsasrD/"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 64A7C34A333;
-	Tue, 26 Aug 2025 13:50:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 61A0935A299;
+	Tue, 26 Aug 2025 14:32:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756216203; cv=none; b=uFlbr+TzVYKDQu1tql1HKNJbiWxbNuVuZAojVgVIAoCUisYH7VGFU+Ub0qXtfV3ffRmjQ1sqayWVpHUbZOD6d1z28KcFpIKI3gmDerBE0RTQgiX+p+J89NbLUKhfPWRF/BZspRiB4SgEgyUk0ZJ3YrppcyLgbas5KrHbIoGv2go=
+	t=1756218754; cv=none; b=N2tl+MultRMUGZqoZtMUwsJwosa+ioKj2nYIB+BoPyVStL585NNyI+VwgiG/aEDcDpGvcl2WqQlH/ipOQCesfriYEEps+lEcw5TSCrOeDyKVeBPUyJEODjci1m/cPgWM2nZkOfsP0JF4BA74enj3TdV8tyigiX7P1oVMbM6jChI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756216203; c=relaxed/simple;
-	bh=yem0bo4X2ODCvlTXqzI1awOh7b4jLVXB+sW0tyON9s4=;
+	s=arc-20240116; t=1756218754; c=relaxed/simple;
+	bh=3vJJ4Bv54JXW2OlGQql1t3lC3JIh6HTbXmDBx37acbY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=JwB36fOFlpC1trX8M8MwTPAoHtYbyAPeMYNRZCimiBkUKSLEdWIa4GOr9ygo+mPL95aSZ1xwsSsk3WLpv7g3ucSB7+pPC/mvYYS3pP5PS7YuE7FJxSwkHViMl7scc6TdrCK07SO3au5xuNRUlJ8qTOQ5K5tXwdvIkbH/UPrZuac=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=DffkvXn8; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id EB965C4CEF1;
-	Tue, 26 Aug 2025 13:50:02 +0000 (UTC)
+	 MIME-Version; b=K5mNBXoofq9KTtLrPVDXr+Yi27TIOwap4maPQgWbp8mv9Ffd8xcJwR1lbx9jgdbAspSCN4w7qY+HTx5cQNAT9G8WuaurQyot4bt7lbDi5XbDqRW4XbLDHwlHBeE3qKNu5w7snVecyuK+di8uSqXyGX2+ZYW00BMWvVB+XFxGJAM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=mKsasrD/; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id EB9DCC4CEF1;
+	Tue, 26 Aug 2025 14:32:33 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1756216203;
-	bh=yem0bo4X2ODCvlTXqzI1awOh7b4jLVXB+sW0tyON9s4=;
+	s=korg; t=1756218754;
+	bh=3vJJ4Bv54JXW2OlGQql1t3lC3JIh6HTbXmDBx37acbY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=DffkvXn8dX73Gh/JvwQG1Tj0MPzIfNKMeZRFA4PyiaKc52VYnviClwCOgAArMfjbF
-	 G/dgS1LwT9TOTeEZ+SroV3nAyr1vTBG3h5MbSJwrNF/p74QxukIUkUdSd9ziviAncg
-	 uuG2DOy3/5pINcz8z/VKGlifEbLVki2nimW3jqiI=
+	b=mKsasrD/hAXFz0OykwmgoFzdrGvgBiKrZgtOplGWBnrsS1sP0wL4F3+4HkRiUdJUT
+	 zrMqB3yNhj3g9OZ69Pej9Fhvp2Ux+uUKzaJ1GkOvKsIYh6KB1B/YVgNT66z/pIRfnQ
+	 RsN8q+joo+nsyCKymjWKKsu3eWWplyWguvtW9AAM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Borislav Petkov <bp@alien8.de>,
-	Pawan Gupta <pawan.kumar.gupta@linux.intel.com>,
+	Jiasheng Jiang <jiasheng@iscas.ac.cn>,
+	Miri Korenblit <miriam.rachel.korenblit@intel.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 323/644] x86/bugs: Avoid warning when overriding return thunk
-Date: Tue, 26 Aug 2025 13:06:54 +0200
-Message-ID: <20250826110954.390009361@linuxfoundation.org>
+Subject: [PATCH 5.4 089/403] iwlwifi: Add missing check for alloc_ordered_workqueue
+Date: Tue, 26 Aug 2025 13:06:55 +0200
+Message-ID: <20250826110909.124067505@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250826110946.507083938@linuxfoundation.org>
-References: <20250826110946.507083938@linuxfoundation.org>
+In-Reply-To: <20250826110905.607690791@linuxfoundation.org>
+References: <20250826110905.607690791@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,48 +62,71 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+5.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Pawan Gupta <pawan.kumar.gupta@linux.intel.com>
+From: Jiasheng Jiang <jiasheng@iscas.ac.cn>
 
-[ Upstream commit 9f85fdb9fc5a1bd308a10a0a7d7e34f2712ba58b ]
+[ Upstream commit 90a0d9f339960448a3acc1437a46730f975efd6a ]
 
-The purpose of the warning is to prevent an unexpected change to the return
-thunk mitigation. However, there are legitimate cases where the return
-thunk is intentionally set more than once. For example, ITS and SRSO both
-can set the return thunk after retbleed has set it. In both the cases
-retbleed is still mitigated.
+Add check for the return value of alloc_ordered_workqueue since it may
+return NULL pointer.
 
-Replace the warning with an info about the active return thunk.
-
-Suggested-by: Borislav Petkov <bp@alien8.de>
-Signed-off-by: Pawan Gupta <pawan.kumar.gupta@linux.intel.com>
-Signed-off-by: Borislav Petkov (AMD) <bp@alien8.de>
-Link: https://lore.kernel.org/20250611-eibrs-fix-v4-3-5ff86cac6c61@linux.intel.com
+Fixes: b481de9ca074 ("[IWLWIFI]: add iwlwifi wireless drivers")
+Signed-off-by: Jiasheng Jiang <jiasheng@iscas.ac.cn>
+Link: https://patch.msgid.link/20230110014848.28226-1-jiasheng@iscas.ac.cn
+Signed-off-by: Miri Korenblit <miriam.rachel.korenblit@intel.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/x86/kernel/cpu/bugs.c | 5 ++---
- 1 file changed, 2 insertions(+), 3 deletions(-)
+ drivers/net/wireless/intel/iwlwifi/dvm/main.c | 11 +++++++++--
+ 1 file changed, 9 insertions(+), 2 deletions(-)
 
-diff --git a/arch/x86/kernel/cpu/bugs.c b/arch/x86/kernel/cpu/bugs.c
-index 261aa716971d..9e313ee9ba66 100644
---- a/arch/x86/kernel/cpu/bugs.c
-+++ b/arch/x86/kernel/cpu/bugs.c
-@@ -70,10 +70,9 @@ void (*x86_return_thunk)(void) __ro_after_init = &__x86_return_thunk;
+diff --git a/drivers/net/wireless/intel/iwlwifi/dvm/main.c b/drivers/net/wireless/intel/iwlwifi/dvm/main.c
+index 4f2789bb3b5b..9ca704a2c679 100644
+--- a/drivers/net/wireless/intel/iwlwifi/dvm/main.c
++++ b/drivers/net/wireless/intel/iwlwifi/dvm/main.c
+@@ -1055,9 +1055,11 @@ static void iwl_bg_restart(struct work_struct *data)
+  *
+  *****************************************************************************/
  
- static void __init set_return_thunk(void *thunk)
+-static void iwl_setup_deferred_work(struct iwl_priv *priv)
++static int iwl_setup_deferred_work(struct iwl_priv *priv)
  {
--	if (x86_return_thunk != __x86_return_thunk)
--		pr_warn("x86/bugs: return thunk changed\n");
--
- 	x86_return_thunk = thunk;
+ 	priv->workqueue = alloc_ordered_workqueue(DRV_NAME, 0);
++	if (!priv->workqueue)
++		return -ENOMEM;
+ 
+ 	INIT_WORK(&priv->restart, iwl_bg_restart);
+ 	INIT_WORK(&priv->beacon_update, iwl_bg_beacon_update);
+@@ -1074,6 +1076,8 @@ static void iwl_setup_deferred_work(struct iwl_priv *priv)
+ 	timer_setup(&priv->statistics_periodic, iwl_bg_statistics_periodic, 0);
+ 
+ 	timer_setup(&priv->ucode_trace, iwl_bg_ucode_trace, 0);
 +
-+	pr_info("active return thunk: %ps\n", thunk);
++	return 0;
  }
  
- /* Update SPEC_CTRL MSR and its cached copy unconditionally */
+ void iwl_cancel_deferred_work(struct iwl_priv *priv)
+@@ -1469,7 +1473,9 @@ static struct iwl_op_mode *iwl_op_mode_dvm_start(struct iwl_trans *trans,
+ 	/********************
+ 	 * 6. Setup services
+ 	 ********************/
+-	iwl_setup_deferred_work(priv);
++	if (iwl_setup_deferred_work(priv))
++		goto out_uninit_drv;
++
+ 	iwl_setup_rx_handlers(priv);
+ 
+ 	iwl_power_initialize(priv);
+@@ -1507,6 +1513,7 @@ static struct iwl_op_mode *iwl_op_mode_dvm_start(struct iwl_trans *trans,
+ 	iwl_cancel_deferred_work(priv);
+ 	destroy_workqueue(priv->workqueue);
+ 	priv->workqueue = NULL;
++out_uninit_drv:
+ 	iwl_uninit_drv(priv);
+ out_free_eeprom_blob:
+ 	kfree(priv->eeprom_blob);
 -- 
 2.39.5
 
