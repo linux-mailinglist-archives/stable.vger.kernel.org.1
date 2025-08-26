@@ -1,58 +1,55 @@
-Return-Path: <stable+bounces-176180-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-173520-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 03DF8B36AAE
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 16:39:36 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 612C6B35E35
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 13:54:22 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 966BC7AFF5C
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 14:37:47 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 1773A366504
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 11:41:10 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id EAC753570BF;
-	Tue, 26 Aug 2025 14:36:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 27DCA284B5B;
+	Tue, 26 Aug 2025 11:41:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="aG767lEF"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Weac0XlL"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A9247352077;
-	Tue, 26 Aug 2025 14:36:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DADE2393DD1;
+	Tue, 26 Aug 2025 11:41:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756218990; cv=none; b=rwytN9Mr/myoC6N2Q1jB5jjwPklBuAn4VdCh65tp2mHSgCdS3L8jXq/D57TKjEvcBWBney4cgvyHURjekpUErjYilF+Ee0OceYp9ay+qt0LLAgGoFAnn6tTMbgp9QsLTUVjNd/wSQEkA+enHLFG+ITkHPtIm+qmvhd2Slt5LvpI=
+	t=1756208461; cv=none; b=AtBjOOp3LQ1E9RiiaMdSJ9zxSI+2SZS1VeVFjisHjomM945y4x6vr4B457LUqd2tzvoysH7TLSewi7BsjWL3R6SvkFZlpzu0OQH7OIXByOusbP8s8+eLRy7KLCItIxVwRaw4Y4WvNdcpHlDli1j0vTZZHbmiS4y3RRsV8s3y2e8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756218990; c=relaxed/simple;
-	bh=o6r9s7x++xvuZbUF3N26pobTwwbJO8P4LnP51JFujZo=;
+	s=arc-20240116; t=1756208461; c=relaxed/simple;
+	bh=R2CsOUabmboLXrelTc+bAYDvVi7/6sUI7VJqVWkh5zA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=nk7muvSGV/uAlki2UExiI/B3QsWkaYc2nouSk/mMyF373X+vATO57v+eC17cnEkhgqVwEY64EdZxWNrPLEuWVcgQF5wHqqYUtYQwuSpbgVXo45vF1DHoouXZ6Sosu5mZQznz1Mc+toOiztmYL4Hdx/rddJBCJmezjB4a6UXBHW8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=aG767lEF; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E8AC5C113CF;
-	Tue, 26 Aug 2025 14:36:29 +0000 (UTC)
+	 MIME-Version; b=ctfxXyeKLzRLtE/p8FWtxZmvsXQ8ODOkx9HNKdbXzMZc6EUx4mVfnYL1PAEnZeycB5jBLo7Yo665rnLxWwzLDIo3dZcY/3uMGtpRBbgrLpjWzHKT8h1NogM0LuY9cs3pvgqgD2IddQwKG2x1Y64QiSrn7Lh2P9kNaEnVHZRIwKo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Weac0XlL; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6927DC4CEF1;
+	Tue, 26 Aug 2025 11:41:01 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1756218990;
-	bh=o6r9s7x++xvuZbUF3N26pobTwwbJO8P4LnP51JFujZo=;
+	s=korg; t=1756208461;
+	bh=R2CsOUabmboLXrelTc+bAYDvVi7/6sUI7VJqVWkh5zA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=aG767lEF7XF5x5XeqrzPm+FlnWe9xY3VjAsmuvwRhXrbsFfiTTopriJTmloirzkvp
-	 U5lNtASItTOK2Q5lM3KkngtSBr1qCN5orPfdh/DEeQVhGw/NVNWBCgr04Dx9untD/t
-	 kIct1gnMtDpt8CnhR7DSHUhplokg6usdBCFPXjWA=
+	b=Weac0XlLhMIQggaY1dxjFuY94QlDyHeHj2VL2qOk38waXyO2RbPUIYrV748G7ceha
+	 rwVi2EPRBjT1DlHSuInF1k4RZb+YtED8fmVCsIp9yQ+ejBGSZWW0iCIg7vuY0QIwPX
+	 JD4/nSCXAG0Si8dKGrQtcIfoCOfC25D4th26AQN0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Thomas Fourier <fourier.thomas@gmail.com>,
-	Mark Einon <mark.einon@gmail.com>,
-	Simon Horman <horms@kernel.org>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.4 210/403] et131x: Add missing check after DMA map
+	Peter Shkenev <mustela@erminea.space>,
+	Alex Deucher <alexander.deucher@amd.com>
+Subject: [PATCH 6.12 121/322] drm/amdgpu: check if hubbub is NULL in debugfs/amdgpu_dm_capabilities
 Date: Tue, 26 Aug 2025 13:08:56 +0200
-Message-ID: <20250826110912.645730308@linuxfoundation.org>
+Message-ID: <20250826110918.787932169@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250826110905.607690791@linuxfoundation.org>
-References: <20250826110905.607690791@linuxfoundation.org>
+In-Reply-To: <20250826110915.169062587@linuxfoundation.org>
+References: <20250826110915.169062587@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,105 +61,37 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.4-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Thomas Fourier <fourier.thomas@gmail.com>
+From: Peter Shkenev <mustela@erminea.space>
 
-[ Upstream commit d61f6cb6f6ef3c70d2ccc0d9c85c508cb8017da9 ]
+commit b4a69f7f29c8a459ad6b4d8a8b72450f1d9fd288 upstream.
 
-The DMA map functions can fail and should be tested for errors.
-If the mapping fails, unmap and return an error.
+HUBBUB structure is not initialized on DCE hardware, so check if it is NULL
+to avoid null dereference while accessing amdgpu_dm_capabilities file in
+debugfs.
 
-Signed-off-by: Thomas Fourier <fourier.thomas@gmail.com>
-Acked-by: Mark Einon <mark.einon@gmail.com>
-Reviewed-by: Simon Horman <horms@kernel.org>
-Link: https://patch.msgid.link/20250716094733.28734-2-fourier.thomas@gmail.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Signed-off-by: Peter Shkenev <mustela@erminea.space>
+Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
+Cc: stable@vger.kernel.org
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/net/ethernet/agere/et131x.c | 36 +++++++++++++++++++++++++++++
- 1 file changed, 36 insertions(+)
+ drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm_debugfs.c |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/net/ethernet/agere/et131x.c b/drivers/net/ethernet/agere/et131x.c
-index 174344c450af..f6232e8178b8 100644
---- a/drivers/net/ethernet/agere/et131x.c
-+++ b/drivers/net/ethernet/agere/et131x.c
-@@ -2464,6 +2464,10 @@ static int nic_send_packet(struct et131x_adapter *adapter, struct tcb *tcb)
- 							  skb->data,
- 							  skb_headlen(skb),
- 							  DMA_TO_DEVICE);
-+				if (dma_mapping_error(&adapter->pdev->dev,
-+						      dma_addr))
-+					return -ENOMEM;
-+
- 				desc[frag].addr_lo = lower_32_bits(dma_addr);
- 				desc[frag].addr_hi = upper_32_bits(dma_addr);
- 				frag++;
-@@ -2473,6 +2477,10 @@ static int nic_send_packet(struct et131x_adapter *adapter, struct tcb *tcb)
- 							  skb->data,
- 							  skb_headlen(skb) / 2,
- 							  DMA_TO_DEVICE);
-+				if (dma_mapping_error(&adapter->pdev->dev,
-+						      dma_addr))
-+					return -ENOMEM;
-+
- 				desc[frag].addr_lo = lower_32_bits(dma_addr);
- 				desc[frag].addr_hi = upper_32_bits(dma_addr);
- 				frag++;
-@@ -2483,6 +2491,10 @@ static int nic_send_packet(struct et131x_adapter *adapter, struct tcb *tcb)
- 							  skb_headlen(skb) / 2,
- 							  skb_headlen(skb) / 2,
- 							  DMA_TO_DEVICE);
-+				if (dma_mapping_error(&adapter->pdev->dev,
-+						      dma_addr))
-+					goto unmap_first_out;
-+
- 				desc[frag].addr_lo = lower_32_bits(dma_addr);
- 				desc[frag].addr_hi = upper_32_bits(dma_addr);
- 				frag++;
-@@ -2494,6 +2506,9 @@ static int nic_send_packet(struct et131x_adapter *adapter, struct tcb *tcb)
- 						    0,
- 						    desc[frag].len_vlan,
- 						    DMA_TO_DEVICE);
-+			if (dma_mapping_error(&adapter->pdev->dev, dma_addr))
-+				goto unmap_out;
-+
- 			desc[frag].addr_lo = lower_32_bits(dma_addr);
- 			desc[frag].addr_hi = upper_32_bits(dma_addr);
- 			frag++;
-@@ -2583,6 +2598,27 @@ static int nic_send_packet(struct et131x_adapter *adapter, struct tcb *tcb)
- 		       &adapter->regs->global.watchdog_timer);
- 	}
- 	return 0;
-+
-+unmap_out:
-+	// Unmap the body of the packet with map_page
-+	while (--i) {
-+		frag--;
-+		dma_addr = desc[frag].addr_lo;
-+		dma_addr |= (u64)desc[frag].addr_hi << 32;
-+		dma_unmap_page(&adapter->pdev->dev, dma_addr,
-+			       desc[frag].len_vlan, DMA_TO_DEVICE);
-+	}
-+
-+unmap_first_out:
-+	// Unmap the header with map_single
-+	while (frag--) {
-+		dma_addr = desc[frag].addr_lo;
-+		dma_addr |= (u64)desc[frag].addr_hi << 32;
-+		dma_unmap_single(&adapter->pdev->dev, dma_addr,
-+				 desc[frag].len_vlan, DMA_TO_DEVICE);
-+	}
-+
-+	return -ENOMEM;
- }
+--- a/drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm_debugfs.c
++++ b/drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm_debugfs.c
+@@ -3932,7 +3932,7 @@ static int capabilities_show(struct seq_
  
- static int send_packet(struct sk_buff *skb, struct et131x_adapter *adapter)
--- 
-2.39.5
-
+ 	struct hubbub *hubbub = dc->res_pool->hubbub;
+ 
+-	if (hubbub->funcs->get_mall_en)
++	if (hubbub && hubbub->funcs->get_mall_en)
+ 		hubbub->funcs->get_mall_en(hubbub, &mall_in_use);
+ 
+ 	if (dc->cap_funcs.get_subvp_en)
 
 
 
