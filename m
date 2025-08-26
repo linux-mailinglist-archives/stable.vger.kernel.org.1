@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-173685-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-176346-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id D726FB35EA0
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 14:00:22 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 171A2B36D0B
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 17:06:17 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id C2555560CEA
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 11:48:11 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 91EE45632CB
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 14:46:37 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 71A2B749C;
-	Tue, 26 Aug 2025 11:48:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id CA8BE350D46;
+	Tue, 26 Aug 2025 14:43:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="NQ0haaSp"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="F9JWtJ1Y"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2F4BE26C3A4;
-	Tue, 26 Aug 2025 11:48:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8735D34F46F;
+	Tue, 26 Aug 2025 14:43:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756208890; cv=none; b=LOXK2oILojhhB4dRyc/AVz4M43d7rC116gCag620Rbsa6bMaTKjnwSbKcwoSbzWtclCbvcf9iWF23ExcOnJF7YPneko2SNMNhDHSug/3VR1CjAB78QI/wabACHacT178ycrjyQQ7XX1NLS9U3dz+75FJ6o9WDQHY1Y9mYVKmmkE=
+	t=1756219419; cv=none; b=CEdmryMkKQ2oT0e3m4JnNkpDxWdiSk8v5FIEvPa/3X3n/Wb2TZt4iy5n3GHOIL18j1Ru9eW+pkXMhmRt2oz01uNZOA1x0CiZFfTfKn2i/gbUEUwZcStaKgSeGVXFT0K1F33UEL3wBy56UDP+HWitjZE2YL9iwftoOAYcUpoRCGo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756208890; c=relaxed/simple;
-	bh=62N01LiHHJx13dq2aMPYZO6ensWdlksUtdiIT88lD5A=;
+	s=arc-20240116; t=1756219419; c=relaxed/simple;
+	bh=QoLsqdeDtuz/rmlvEDKX7R/XWANnDzpLkZ4ghvmQdwQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=VtM3rxtp7SeqpkQ9+rwZ8tdbs59H+EV/Ai6ln4NeNiO5K6q9X4+EPcdy7fwZbVliKqQxwuPITo9qwVhv85ZDQfrzzsA4wb/UrqHkLtx7qTuvhcwG4nrSmnV5mSW/tkoOfzMnXJvB2K/SOGDqXXu+GYmVoAvMoFz5yAdqIZL2U7k=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=NQ0haaSp; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B6D8BC4CEF1;
-	Tue, 26 Aug 2025 11:48:09 +0000 (UTC)
+	 MIME-Version; b=EH8qMwWtw6qeW38KfSm0QRFSx4AdIEhZ4O3BvWZa3rtsAvrnbZ663UR2G2YLkmWPdFVVl9h879p6QapilP1vKQwZ/D27CKVTkWOtZKdmedyQmyMyMZLPu9JK0+FKwkH2B0LO366i8sYZDAkkN84DfYTEkpfvvwXN9lfjrjkyw84=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=F9JWtJ1Y; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1ABB9C113D0;
+	Tue, 26 Aug 2025 14:43:38 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1756208890;
-	bh=62N01LiHHJx13dq2aMPYZO6ensWdlksUtdiIT88lD5A=;
+	s=korg; t=1756219419;
+	bh=QoLsqdeDtuz/rmlvEDKX7R/XWANnDzpLkZ4ghvmQdwQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=NQ0haaSpVVjZJQkSWD+Elc8FtCM1fTThbrn+A4HYkE8FsrpVFUw6P2DQkAAC5sHBl
-	 pdSjSCNsq9S7ce83GmYRtUxAe2hQeYwKn5myePrrN48k1mnDl8bP0IxUcXnr/hHfeB
-	 3C+PgWIJTRt14MqtFBgU5UYkDsaP/tL2E1td3tsI=
+	b=F9JWtJ1YWxxHM75XJ+llnA6tvV3scfJndo0H/8qQwwVMJCrD7CIYMbaWtWSrlLgq0
+	 MPS9Ho2k5pEzhX/mu9MZHVqpHf6lrMRg4YsX+mKU90rL4aW2VoBl716fXyK3pYvJs3
+	 3IE/S2qjiQWGallm2wpG3WlgvjNEIJaNKs8fsGb4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Baihan Li <libaihan@huawei.com>,
-	Yongbang Shi <shiyongbang@huawei.com>,
-	Dmitry Baryshkov <dmitry.baryshkov@oss.qualcomm.com>,
+	Filipe Manana <fdmanana@suse.com>,
+	Qu Wenruo <wqu@suse.com>,
+	David Sterba <dsterba@suse.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 285/322] drm/hisilicon/hibmc: fix the i2c device resource leak when vdac init failed
+Subject: [PATCH 5.4 374/403] btrfs: populate otime when logging an inode item
 Date: Tue, 26 Aug 2025 13:11:40 +0200
-Message-ID: <20250826110922.953461996@linuxfoundation.org>
+Message-ID: <20250826110917.349701160@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250826110915.169062587@linuxfoundation.org>
-References: <20250826110915.169062587@linuxfoundation.org>
+In-Reply-To: <20250826110905.607690791@linuxfoundation.org>
+References: <20250826110905.607690791@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,98 +63,118 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+5.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Baihan Li <libaihan@huawei.com>
+From: Qu Wenruo <wqu@suse.com>
 
-[ Upstream commit e5f48bfa2ae0806d5f51fb8061afc619a73599a7 ]
+[ Upstream commit 1ef94169db0958d6de39f9ea6e063ce887342e2d ]
 
-Currently the driver missed to clean the i2c adapter when vdac init failed.
-It may cause resource leak.
+[TEST FAILURE WITH EXPERIMENTAL FEATURES]
+When running test case generic/508, the test case will fail with the new
+btrfs shutdown support:
 
-Fixes: a0d078d06e516 ("drm/hisilicon: Features to support reading resolutions from EDID")
-Signed-off-by: Baihan Li <libaihan@huawei.com>
-Signed-off-by: Yongbang Shi <shiyongbang@huawei.com>
-Reviewed-by: Dmitry Baryshkov <dmitry.baryshkov@oss.qualcomm.com>
-Link: https://lore.kernel.org/r/20250813094238.3722345-2-shiyongbang@huawei.com
-Signed-off-by: Dmitry Baryshkov <dmitry.baryshkov@oss.qualcomm.com>
+generic/508       - output mismatch (see /home/adam/xfstests/results//generic/508.out.bad)
+#    --- tests/generic/508.out	2022-05-11 11:25:30.806666664 +0930
+#    +++ /home/adam/xfstests/results//generic/508.out.bad	2025-07-02 14:53:22.401824212 +0930
+#    @@ -1,2 +1,6 @@
+#     QA output created by 508
+#     Silence is golden
+#    +Before:
+#    +After : stat.btime = Thu Jan  1 09:30:00 1970
+#    +Before:
+#    +After : stat.btime = Wed Jul  2 14:53:22 2025
+#    ...
+#    (Run 'diff -u /home/adam/xfstests/tests/generic/508.out /home/adam/xfstests/results//generic/508.out.bad'  to see the entire diff)
+Ran: generic/508
+Failures: generic/508
+Failed 1 of 1 tests
+
+Please note that the test case requires shutdown support, thus the test
+case will be skipped using the current upstream kernel, as it doesn't
+have shutdown ioctl support.
+
+[CAUSE]
+The direct cause the 0 time stamp in the log tree:
+
+leaf 30507008 items 2 free space 16057 generation 9 owner TREE_LOG
+leaf 30507008 flags 0x1(WRITTEN) backref revision 1
+checksum stored e522548d
+checksum calced e522548d
+fs uuid 57d45451-481e-43e4-aa93-289ad707a3a0
+chunk uuid d52bd3fd-5163-4337-98a7-7986993ad398
+	item 0 key (257 INODE_ITEM 0) itemoff 16123 itemsize 160
+		generation 9 transid 9 size 0 nbytes 0
+		block group 0 mode 100644 links 1 uid 0 gid 0 rdev 0
+		sequence 1 flags 0x0(none)
+		atime 1751432947.492000000 (2025-07-02 14:39:07)
+		ctime 1751432947.492000000 (2025-07-02 14:39:07)
+		mtime 1751432947.492000000 (2025-07-02 14:39:07)
+		otime 0.0 (1970-01-01 09:30:00) <<<
+
+But the old fs tree has all the correct time stamp:
+
+btrfs-progs v6.12
+fs tree key (FS_TREE ROOT_ITEM 0)
+leaf 30425088 items 2 free space 16061 generation 5 owner FS_TREE
+leaf 30425088 flags 0x1(WRITTEN) backref revision 1
+checksum stored 48f6c57e
+checksum calced 48f6c57e
+fs uuid 57d45451-481e-43e4-aa93-289ad707a3a0
+chunk uuid d52bd3fd-5163-4337-98a7-7986993ad398
+	item 0 key (256 INODE_ITEM 0) itemoff 16123 itemsize 160
+		generation 3 transid 0 size 0 nbytes 16384
+		block group 0 mode 40755 links 1 uid 0 gid 0 rdev 0
+		sequence 0 flags 0x0(none)
+		atime 1751432947.0 (2025-07-02 14:39:07)
+		ctime 1751432947.0 (2025-07-02 14:39:07)
+		mtime 1751432947.0 (2025-07-02 14:39:07)
+		otime 1751432947.0 (2025-07-02 14:39:07) <<<
+
+The root cause is that fill_inode_item() in tree-log.c is only
+populating a/c/m time, not the otime (or btime in statx output).
+
+Part of the reason is that, the vfs inode only has a/c/m time, no native
+btime support yet.
+
+[FIX]
+Thankfully btrfs has its otime stored in btrfs_inode::i_otime_sec and
+btrfs_inode::i_otime_nsec.
+
+So what we really need is just fill the otime time stamp in
+fill_inode_item() of tree-log.c
+
+There is another fill_inode_item() in inode.c, which is doing the proper
+otime population.
+
+Fixes: 94edf4ae43a5 ("Btrfs: don't bother committing delayed inode updates when fsyncing")
+CC: stable@vger.kernel.org
+Reviewed-by: Filipe Manana <fdmanana@suse.com>
+Signed-off-by: Qu Wenruo <wqu@suse.com>
+Reviewed-by: David Sterba <dsterba@suse.com>
+Signed-off-by: David Sterba <dsterba@suse.com>
+[ adapted token-based API and timespec64 field structure ]
 Signed-off-by: Sasha Levin <sashal@kernel.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/gpu/drm/hisilicon/hibmc/hibmc_drm_drv.h  |  1 +
- drivers/gpu/drm/hisilicon/hibmc/hibmc_drm_i2c.c  |  5 +++++
- drivers/gpu/drm/hisilicon/hibmc/hibmc_drm_vdac.c | 11 ++++++++---
- 3 files changed, 14 insertions(+), 3 deletions(-)
+ fs/btrfs/tree-log.c |    5 +++++
+ 1 file changed, 5 insertions(+)
 
-diff --git a/drivers/gpu/drm/hisilicon/hibmc/hibmc_drm_drv.h b/drivers/gpu/drm/hisilicon/hibmc/hibmc_drm_drv.h
-index 42f0ab8f9b5a..6eb0d41a0f68 100644
---- a/drivers/gpu/drm/hisilicon/hibmc/hibmc_drm_drv.h
-+++ b/drivers/gpu/drm/hisilicon/hibmc/hibmc_drm_drv.h
-@@ -58,5 +58,6 @@ int hibmc_de_init(struct hibmc_drm_private *priv);
- int hibmc_vdac_init(struct hibmc_drm_private *priv);
+--- a/fs/btrfs/tree-log.c
++++ b/fs/btrfs/tree-log.c
+@@ -3953,6 +3953,11 @@ static void fill_inode_item(struct btrfs
+ 	btrfs_set_token_timespec_nsec(leaf, &item->ctime,
+ 				      inode->i_ctime.tv_nsec, &token);
  
- int hibmc_ddc_create(struct drm_device *drm_dev, struct hibmc_vdac *connector);
-+void hibmc_ddc_del(struct hibmc_vdac *vdac);
- 
- #endif
-diff --git a/drivers/gpu/drm/hisilicon/hibmc/hibmc_drm_i2c.c b/drivers/gpu/drm/hisilicon/hibmc/hibmc_drm_i2c.c
-index 99b3b77b5445..44860011855e 100644
---- a/drivers/gpu/drm/hisilicon/hibmc/hibmc_drm_i2c.c
-+++ b/drivers/gpu/drm/hisilicon/hibmc/hibmc_drm_i2c.c
-@@ -95,3 +95,8 @@ int hibmc_ddc_create(struct drm_device *drm_dev, struct hibmc_vdac *vdac)
- 
- 	return i2c_bit_add_bus(&vdac->adapter);
- }
++	btrfs_set_token_timespec_sec(leaf, &item->otime,
++				     BTRFS_I(inode)->i_otime.tv_sec, &token);
++	btrfs_set_token_timespec_nsec(leaf, &item->otime,
++				      BTRFS_I(inode)->i_otime.tv_nsec, &token);
 +
-+void hibmc_ddc_del(struct hibmc_vdac *vdac)
-+{
-+	i2c_del_adapter(&vdac->adapter);
-+}
-diff --git a/drivers/gpu/drm/hisilicon/hibmc/hibmc_drm_vdac.c b/drivers/gpu/drm/hisilicon/hibmc/hibmc_drm_vdac.c
-index 05e19ea4c9f9..9e29386700c8 100644
---- a/drivers/gpu/drm/hisilicon/hibmc/hibmc_drm_vdac.c
-+++ b/drivers/gpu/drm/hisilicon/hibmc/hibmc_drm_vdac.c
-@@ -53,7 +53,7 @@ static void hibmc_connector_destroy(struct drm_connector *connector)
- {
- 	struct hibmc_vdac *vdac = to_hibmc_vdac(connector);
+ 	btrfs_set_token_inode_nbytes(leaf, item, inode_get_bytes(inode),
+ 				     &token);
  
--	i2c_del_adapter(&vdac->adapter);
-+	hibmc_ddc_del(vdac);
- 	drm_connector_cleanup(connector);
- }
- 
-@@ -109,7 +109,7 @@ int hibmc_vdac_init(struct hibmc_drm_private *priv)
- 	ret = drmm_encoder_init(dev, encoder, NULL, DRM_MODE_ENCODER_DAC, NULL);
- 	if (ret) {
- 		drm_err(dev, "failed to init encoder: %d\n", ret);
--		return ret;
-+		goto err;
- 	}
- 
- 	drm_encoder_helper_add(encoder, &hibmc_encoder_helper_funcs);
-@@ -120,7 +120,7 @@ int hibmc_vdac_init(struct hibmc_drm_private *priv)
- 					  &vdac->adapter);
- 	if (ret) {
- 		drm_err(dev, "failed to init connector: %d\n", ret);
--		return ret;
-+		goto err;
- 	}
- 
- 	drm_connector_helper_add(connector, &hibmc_connector_helper_funcs);
-@@ -128,4 +128,9 @@ int hibmc_vdac_init(struct hibmc_drm_private *priv)
- 	drm_connector_attach_encoder(connector, encoder);
- 
- 	return 0;
-+
-+err:
-+	hibmc_ddc_del(vdac);
-+
-+	return ret;
- }
--- 
-2.50.1
-
 
 
 
