@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-174365-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-173852-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id B9ABEB36258
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 15:18:20 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id DBA88B36017
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 14:56:44 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id AC3AF7BC814
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 13:16:44 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id D5A0C463DCF
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 12:54:35 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id DC4A234164B;
-	Tue, 26 Aug 2025 13:16:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 50E6D770FE;
+	Tue, 26 Aug 2025 12:53:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="IGxLaVEA"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="DZqZCmBA"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9789433EAF9;
-	Tue, 26 Aug 2025 13:16:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0DFF81E521E;
+	Tue, 26 Aug 2025 12:53:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756214197; cv=none; b=dW6817wAE4DKikrsniG0JKp0bs671UAJQ44zy4K7NfTABjeEyD+a0HBS6VZ9VvRuSTOOxbKNdmX8ejwWPJcTJOQGQQwGN0fmtNgbTZ0m39PbWzJfZ6iSvb7gQC7RN6EDJFXUKGeD3CP8bM5v4kGNlIxYKF90eKRMUbjKf47a8T4=
+	t=1756212835; cv=none; b=acGeaV+CNY2WlzT3smC53ROClL4F14Q7uobHGal1jlo0NTDY4ON+y4kxw6xm+RaHmo5ZoPFNR7axdMPhMZFzd0Y9LngkVQUj2XYPQY9YWOGb9bXk/4NamK+ijwDEG8IPEWdzgAFjmLMB/wwMoqTHGDkel/xAYt1VsYuMIErqtRE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756214197; c=relaxed/simple;
-	bh=UFpw/8AlgxjhfZIrFwbUBRUY07q4QIv1XZ/jtoCbll0=;
+	s=arc-20240116; t=1756212835; c=relaxed/simple;
+	bh=rfmjw3Cvn3Ojq1mjp6u3jQAgqiBh/YbVpAubO8SfD4c=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=ezw3TEF3bV9Z82XjuYWyMn7WckTj6FQTf2cj0cuW1xYPt++bx6gLA3KHvxghlcDVKjCztSPB3A0Ik6EA0RDyTZJ9GHeWMluppqTy/s4jRqcMtfzAjbwT58keIRoNB39kLbcLENmpjlGIquwWaKoDF4oQZIqsextNk/66oiG+og0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=IGxLaVEA; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2651AC4CEF1;
-	Tue, 26 Aug 2025 13:16:36 +0000 (UTC)
+	 MIME-Version; b=KPyfsLAHLYlNr6vv2sYBlcemGBfnIiF1JzE1Kc00qMCEv3pIFSgTdtzBY74eE6R25OtAtwd3V2OhOIs3rY0nNpblN5ExHojFJr0gKdzpvv//PHxIK8um3JvUOtZtuk/EQRCPM3fnQse6Ufct16xf45psypgJLMEhcJUkBMDsovg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=DZqZCmBA; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 95D36C4CEF1;
+	Tue, 26 Aug 2025 12:53:54 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1756214197;
-	bh=UFpw/8AlgxjhfZIrFwbUBRUY07q4QIv1XZ/jtoCbll0=;
+	s=korg; t=1756212834;
+	bh=rfmjw3Cvn3Ojq1mjp6u3jQAgqiBh/YbVpAubO8SfD4c=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=IGxLaVEA8pABKKhT+ZJOP7Lan5IgYMoBLhDlPwzHyEEmVlZal5rapCQZr0ASavZwt
-	 U5FHa0BWX9eskO4giiGrMCZXg9vqbopPa3QYRJlYF0ppJ9uPSdUWfw0alQoR3c7TbR
-	 ntaYz0rW0WPYKC/KfdKBI0sVYV2QQ/1Hv26esrrE=
+	b=DZqZCmBA1UuVP5JXyX3O6sjRIRF1HkVypRfIgq4uhq3VLSqsQaabI3+USAZN+IzaV
+	 NGb8001gDZOSc8hf84hqG6r8UJteM+9rSSKZOdtQMrzQi7tkqSOsWIJm1tnA4faHQp
+	 E7t6hSfm1hUMQ6+44QepvP2JwUn+cuZJMUFmpGsk=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Xu Yang <xu.yang_2@nxp.com>,
-	Oleksij Rempel <o.rempel@pengutronix.de>,
-	Paolo Abeni <pabeni@redhat.com>
-Subject: [PATCH 6.1 015/482] net: usb: asix_devices: add phy_mask for ax88772 mdio bus
+	Avri Altman <avri.altman@sandisk.com>,
+	Ulf Hansson <ulf.hansson@linaro.org>,
+	Ricky Wu <ricky_wu@realtek.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.6 119/587] mmc: rtsx_usb_sdmmc: Fix error-path in sd_set_power_mode()
 Date: Tue, 26 Aug 2025 13:04:28 +0200
-Message-ID: <20250826110931.163697386@linuxfoundation.org>
+Message-ID: <20250826110955.990330862@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250826110930.769259449@linuxfoundation.org>
-References: <20250826110930.769259449@linuxfoundation.org>
+In-Reply-To: <20250826110952.942403671@linuxfoundation.org>
+References: <20250826110952.942403671@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,47 +63,45 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Xu Yang <xu.yang_2@nxp.com>
+From: Ulf Hansson <ulf.hansson@linaro.org>
 
-commit 4faff70959d51078f9ee8372f8cff0d7045e4114 upstream.
+[ Upstream commit 47a255f7d2eabee06cfbf5b1c2379749442fd01d ]
 
-Without setting phy_mask for ax88772 mdio bus, current driver may create
-at most 32 mdio phy devices with phy address range from 0x00 ~ 0x1f.
-DLink DUB-E100 H/W Ver B1 is such a device. However, only one main phy
-device will bind to net phy driver. This is creating issue during system
-suspend/resume since phy_polling_mode() in phy_state_machine() will
-directly deference member of phydev->drv for non-main phy devices. Then
-NULL pointer dereference issue will occur. Due to only external phy or
-internal phy is necessary, add phy_mask for ax88772 mdio bus to workarnoud
-the issue.
+In the error path of sd_set_power_mode() we don't update host->power_mode,
+which could lead to an imbalance of the runtime PM usage count. Fix this by
+always updating host->power_mode.
 
-Closes: https://lore.kernel.org/netdev/20250806082931.3289134-1-xu.yang_2@nxp.com
-Fixes: e532a096be0e ("net: usb: asix: ax88772: add phylib support")
-Cc: stable@vger.kernel.org
-Signed-off-by: Xu Yang <xu.yang_2@nxp.com>
-Tested-by: Oleksij Rempel <o.rempel@pengutronix.de>
-Reviewed-by: Oleksij Rempel <o.rempel@pengutronix.de>
-Link: https://patch.msgid.link/20250811092931.860333-1-xu.yang_2@nxp.com
-Signed-off-by: Paolo Abeni <pabeni@redhat.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Reviewed-by: Avri Altman <avri.altman@sandisk.com>
+Signed-off-by: Ulf Hansson <ulf.hansson@linaro.org>
+Acked-by: Ricky Wu <ricky_wu@realtek.com>
+Link: https://lore.kernel.org/r/20250610111633.504366-2-ulf.hansson@linaro.org
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/usb/asix_devices.c |    1 +
- 1 file changed, 1 insertion(+)
+ drivers/mmc/host/rtsx_usb_sdmmc.c | 4 +---
+ 1 file changed, 1 insertion(+), 3 deletions(-)
 
---- a/drivers/net/usb/asix_devices.c
-+++ b/drivers/net/usb/asix_devices.c
-@@ -676,6 +676,7 @@ static int ax88772_init_mdio(struct usbn
- 	priv->mdio->read = &asix_mdio_bus_read;
- 	priv->mdio->write = &asix_mdio_bus_write;
- 	priv->mdio->name = "Asix MDIO Bus";
-+	priv->mdio->phy_mask = ~(BIT(priv->phy_addr) | BIT(AX_EMBD_PHY_ADDR));
- 	/* mii bus name is usb-<usb bus number>-<usb device number> */
- 	snprintf(priv->mdio->id, MII_BUS_ID_SIZE, "usb-%03d:%03d",
- 		 dev->udev->bus->busnum, dev->udev->devnum);
+diff --git a/drivers/mmc/host/rtsx_usb_sdmmc.c b/drivers/mmc/host/rtsx_usb_sdmmc.c
+index ded9b6849e35..90ea92bbdb2c 100644
+--- a/drivers/mmc/host/rtsx_usb_sdmmc.c
++++ b/drivers/mmc/host/rtsx_usb_sdmmc.c
+@@ -1032,9 +1032,7 @@ static int sd_set_power_mode(struct rtsx_usb_sdmmc *host,
+ 		err = sd_power_on(host);
+ 	}
+ 
+-	if (!err)
+-		host->power_mode = power_mode;
+-
++	host->power_mode = power_mode;
+ 	return err;
+ }
+ 
+-- 
+2.39.5
+
 
 
 
