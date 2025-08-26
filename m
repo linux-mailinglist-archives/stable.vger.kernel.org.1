@@ -1,58 +1,56 @@
-Return-Path: <stable+bounces-173720-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-175444-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id D8953B35E72
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 13:57:46 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id D1119B3684D
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 16:15:04 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 72C861BC3E32
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 11:50:13 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 4B9AF981F90
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 14:06:20 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 69E4E2BE65E;
-	Tue, 26 Aug 2025 11:49:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7004734F496;
+	Tue, 26 Aug 2025 14:04:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="HdPZUizH"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="RLfyVKWt"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 27F2826C3A4;
-	Tue, 26 Aug 2025 11:49:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2E72935207F;
+	Tue, 26 Aug 2025 14:04:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756208982; cv=none; b=pUfUJeWTF9HaWGAmVD3DhbC6e3i7kjpx5+IoNgA1qMPfomjXnmh22JfjDDk1yTJvasQwcaSc0qO59OKZTXF0luehJGJ+pkVa/m3lT9nj1PIb4OGUi3r8jINLzOvOATKT+Sm7tI17oxQoo4VoIA77WLwGeGfaBgNxzWYTGct162Y=
+	t=1756217060; cv=none; b=IQ6LVRyKc13hUKCgyWFVSou+UfC5RGhqtSYcM9oZM7VfpooW3uUFoSp0UclJoMC0fUgDWjFBsewj641vD3ZGRI7yokgkq72ztrBLPNZ6lDkBp5UtXDOVG8Hi695/pJaSY1IisesKbLNuxUaEIoOnJLITBNOJ4ZmUoqeu1DZ37/8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756208982; c=relaxed/simple;
-	bh=2h3Lu6P7j0zd8WzCSnpp1pgZVxMeHz1JGJFUQ6QGsIo=;
+	s=arc-20240116; t=1756217060; c=relaxed/simple;
+	bh=ERxh9k1FfPJbP/URNUx94Idt40kDjD2z6tBeQfA3VLc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=X0cwl1hU7xUBCUREeUV0UK3hPT1JPgSKo0B9Rykhk4a1E5bs069gIOH32TWg1YgZJweKvhAyA9PvoJgWR+HmO0V+2DU4H801xSfJutEu65qhkzOxqTqidhz6HNDFWqcJ8W1u756FEMow10ZldQoOPrpBqo6d5NxNzxrQV2L/+LE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=HdPZUizH; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id AAF26C4CEF1;
-	Tue, 26 Aug 2025 11:49:41 +0000 (UTC)
+	 MIME-Version:Content-Type; b=TlzXNcssliI0YjdllY9w0jmRDlqtQcgYKAg5FL8a+3X2ilthL1fB7AT3omCqMzV1hj9SOnn0nUp4BLs2z7Nt+xspss2wdsdUmkp0ktWG5d4bMZi7au4NyNBsgJdWxvy1Y4NY3LB5aLhi20tD3adYNB9WmV33Teustk2VZp22XLE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=RLfyVKWt; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id AB640C4CEF1;
+	Tue, 26 Aug 2025 14:04:19 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1756208982;
-	bh=2h3Lu6P7j0zd8WzCSnpp1pgZVxMeHz1JGJFUQ6QGsIo=;
+	s=korg; t=1756217060;
+	bh=ERxh9k1FfPJbP/URNUx94Idt40kDjD2z6tBeQfA3VLc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=HdPZUizHdGdKt6ClnLUKsknFwlDk62UEK7qD4ZAbJbWgQIu5YXRhK8ggX7GDBesFZ
-	 lbHDigI4IVEKujIYYra7964o+pEtnCT1EnK528vNpoksTrtf7qkqOLJwQ6+370p6/W
-	 D8N5Q6YipkiWH+jZgRXwsRQjHQy2tO1FvRap6Y4U=
+	b=RLfyVKWt4x8Gp8l4+1ENwRq5ymNbbVBlDBhEx84ZHLv/H7//cIbkfa11v3RVlei+f
+	 xCVtGuf1O+ciNatw0OW2phc0B0w3BZDwAon8DggXjH9UnL+3ASKRg+W2qtMYHXY2Kj
+	 HLFcJgWlnYcKqror22JkC4L6/1rDcYnC6MAp8Hvk=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Mete Durlu <meted@linux.ibm.com>,
-	Vasily Gorbik <gor@linux.ibm.com>,
-	Peter Oberparleiter <oberpar@linux.ibm.com>,
-	Alexander Gordeev <agordeev@linux.ibm.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 320/322] s390/hypfs: Enable limited access during lockdown
+	Mikhail Lobanov <m.lobanov@rosa.ru>,
+	Johannes Berg <johannes.berg@intel.com>,
+	=?UTF-8?q?Hanne-Lotta=20M=C3=A4enp=C3=A4=C3=A4?= <hannelotta@gmail.com>
+Subject: [PATCH 5.15 644/644] wifi: mac80211: check basic rates validity in sta_link_apply_parameters
 Date: Tue, 26 Aug 2025 13:12:15 +0200
-Message-ID: <20250826110923.788504994@linuxfoundation.org>
+Message-ID: <20250826111002.523760019@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250826110915.169062587@linuxfoundation.org>
-References: <20250826110915.169062587@linuxfoundation.org>
+In-Reply-To: <20250826110946.507083938@linuxfoundation.org>
+References: <20250826110946.507083938@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,64 +60,70 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Peter Oberparleiter <oberpar@linux.ibm.com>
+From: Mikhail Lobanov <m.lobanov@rosa.ru>
 
-[ Upstream commit 3868f910440c47cd5d158776be4ba4e2186beda7 ]
+commit 16ee3ea8faef8ff042acc15867a6c458c573de61 upstream.
 
-When kernel lockdown is active, debugfs_locked_down() blocks access to
-hypfs files that register ioctl callbacks, even if the ioctl interface
-is not required for a function. This unnecessarily breaks userspace
-tools that only rely on read operations.
+When userspace sets supported rates for a new station via
+NL80211_CMD_NEW_STATION, it might send a list that's empty
+or contains only invalid values. Currently, we process these
+values in sta_link_apply_parameters() without checking the result of
+ieee80211_parse_bitrates(), which can lead to an empty rates bitmap.
 
-Resolve this by registering a minimal set of file operations during
-lockdown, avoiding ioctl registration and preserving access for affected
-tooling.
+A similar issue was addressed for NL80211_CMD_SET_BSS in commit
+ce04abc3fcc6 ("wifi: mac80211: check basic rates validity").
+This patch applies the same approach in sta_link_apply_parameters()
+for NL80211_CMD_NEW_STATION, ensuring there is at least one valid
+rate by inspecting the result of ieee80211_parse_bitrates().
 
-Note that this change restores hypfs functionality when lockdown is
-active from early boot (e.g. via lockdown=integrity kernel parameter),
-but does not apply to scenarios where lockdown is enabled dynamically
-while Linux is running.
+Found by Linux Verification Center (linuxtesting.org) with Syzkaller.
 
-Tested-by: Mete Durlu <meted@linux.ibm.com>
-Reviewed-by: Vasily Gorbik <gor@linux.ibm.com>
-Fixes: 5496197f9b08 ("debugfs: Restrict debugfs when the kernel is locked down")
-Signed-off-by: Peter Oberparleiter <oberpar@linux.ibm.com>
-Signed-off-by: Alexander Gordeev <agordeev@linux.ibm.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Fixes: b95eb7f0eee4 ("wifi: cfg80211/mac80211: separate link params from station params")
+Signed-off-by: Mikhail Lobanov <m.lobanov@rosa.ru>
+Link: https://patch.msgid.link/20250317103139.17625-1-m.lobanov@rosa.ru
+Signed-off-by: Johannes Berg <johannes.berg@intel.com>
+[ Summary of conflict resolutions:
+  - Function ieee80211_parse_bitrates() takes channel width as its
+    first parameter in mainline kernel version. In v5.15 the function
+    takes the whole chandef struct as its first parameter.
+  - The same function takes link station parameters as its last
+    parameter, and in v5.15 they are in a struct called sta,
+    instead of a struct called link_sta. ]
+Signed-off-by: Hanne-Lotta Mäenpää <hannelotta@gmail.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- arch/s390/hypfs/hypfs_dbfs.c | 3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+ net/mac80211/cfg.c |   13 +++++++------
+ 1 file changed, 7 insertions(+), 6 deletions(-)
 
-diff --git a/arch/s390/hypfs/hypfs_dbfs.c b/arch/s390/hypfs/hypfs_dbfs.c
-index e74eb8f9b23a..41a0d2066fa0 100644
---- a/arch/s390/hypfs/hypfs_dbfs.c
-+++ b/arch/s390/hypfs/hypfs_dbfs.c
-@@ -6,6 +6,7 @@
-  * Author(s): Michael Holzheu <holzheu@linux.vnet.ibm.com>
-  */
+--- a/net/mac80211/cfg.c
++++ b/net/mac80211/cfg.c
+@@ -1658,12 +1658,13 @@ static int sta_apply_parameters(struct i
+ 			return ret;
+ 	}
  
-+#include <linux/security.h>
- #include <linux/slab.h>
- #include "hypfs.h"
+-	if (params->supported_rates && params->supported_rates_len) {
+-		ieee80211_parse_bitrates(&sdata->vif.bss_conf.chandef,
+-					 sband, params->supported_rates,
+-					 params->supported_rates_len,
+-					 &sta->sta.supp_rates[sband->band]);
+-	}
++	if (params->supported_rates &&
++	    params->supported_rates_len &&
++	    !ieee80211_parse_bitrates(&sdata->vif.bss_conf.chandef,
++				      sband, params->supported_rates,
++				      params->supported_rates_len,
++				      &sta->sta.supp_rates[sband->band]))
++		return -EINVAL;
  
-@@ -84,7 +85,7 @@ void hypfs_dbfs_create_file(struct hypfs_dbfs_file *df)
- {
- 	const struct file_operations *fops = &dbfs_ops;
- 
--	if (df->unlocked_ioctl)
-+	if (df->unlocked_ioctl && !security_locked_down(LOCKDOWN_DEBUGFS))
- 		fops = &dbfs_ops_ioctl;
- 	df->dentry = debugfs_create_file(df->name, 0400, dbfs_dir, df, fops);
- 	mutex_init(&df->lock);
--- 
-2.50.1
-
+ 	if (params->ht_capa)
+ 		ieee80211_ht_cap_ie_to_sta_ht_cap(sdata, sband,
 
 
 
