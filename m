@@ -1,58 +1,56 @@
-Return-Path: <stable+bounces-175399-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-176333-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6BEBCB36754
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 16:05:49 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 393C3B36C76
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 16:56:34 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 57473B620AA
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 14:02:41 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 9C84A2A7224
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 14:46:20 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id CBF5635207F;
-	Tue, 26 Aug 2025 14:02:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3F476352FD9;
+	Tue, 26 Aug 2025 14:43:06 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="121ZXmzs"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="TJ3QwAc0"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 89881352061;
-	Tue, 26 Aug 2025 14:02:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DC6AC350830;
+	Tue, 26 Aug 2025 14:43:05 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756216935; cv=none; b=tbikb7OtsdBoV3sV39qm2Zl3PUfDBs2JCltFGUMkEhRwI0SNo00nhCioMRAe/LpD1cXFrQFxjxGgZTpgjtKYeW38lE+LRp4wk26egbrAwh4cMtUfvdopVvsXXcnTgu4CALgedjhzBIhdmBlixuGYCHGwpQQrkw86aBUBsGMQQ3o=
+	t=1756219386; cv=none; b=EahTsDkGnr0hkvPf3aGNoYDZCvuOUkTKem72On6P0PcQ88a1TGCkOo6ySVZQIlgFiYf5lgMcNDRwI5ytqMPkLYIwAO6Whaku5VTb+hCerM2KGkSg7iYrW+TgFb2sv5HCYtccC/xWX0T2+ffzgm++2VlReInYg/v1jWWylPHWerw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756216935; c=relaxed/simple;
-	bh=Frx1ZYUAQxhHwF6u8aSp5UYR0c3UohIbd3XVoP5tqtI=;
+	s=arc-20240116; t=1756219386; c=relaxed/simple;
+	bh=iJ8+0ZvlzZ0qJpXAldcMttoXDSfCaGfAcO3jj4W5TDo=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=b8arhJuJzGnx4KUCza3mbZMGr+P18WmriwmWEiJnaVCJ8tz48NqIPSXv2CXp4Gx/k2Dudhc0809eiJacAt+zH3gMkJp9/BsXMiHHTNhPCw5o9qe840vUAJAuRfTdqvqtr6z4TBYsjw67HFAYLruYWq80UBaK4+nVxB8RIY+pf78=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=121ZXmzs; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1DB3FC4CEF1;
-	Tue, 26 Aug 2025 14:02:14 +0000 (UTC)
+	 MIME-Version; b=iE/QVBn7e5vMljjt7UyJhkFzStHQeOCeAkwz1GY+97ukgg8bQIBRlLwqQszk5g6+Bctcs8R1Qx24WUz0eKOdHD8EzCP9x0cawPFJY0Indt5rfONrrGUwCv5FR4ZZHOVHORCxGh12q5y5fOS3mfTQwfaN+bJS+8DoJcIm0XRzPb0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=TJ3QwAc0; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 286DAC4CEF1;
+	Tue, 26 Aug 2025 14:43:05 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1756216935;
-	bh=Frx1ZYUAQxhHwF6u8aSp5UYR0c3UohIbd3XVoP5tqtI=;
+	s=korg; t=1756219385;
+	bh=iJ8+0ZvlzZ0qJpXAldcMttoXDSfCaGfAcO3jj4W5TDo=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=121ZXmzsEaW3b/ERq/1GnQ4M1irEnR6tm7Lx6NZwgLt8heSxEy8gXWguz/hlNqgJS
-	 b6kwycoTQ0e2NgM6AITG0S26BGxHY+DcW+pAv/ax53Bno/TLRAHKtnEQtMcOKnt5Kc
-	 d+pFXt5/ZxVKI5Hzmq//abb4l7KoCsq87iHgIkrg=
+	b=TJ3QwAc0YOjeqRl+SJ5fva3yrd0I2APBFc0t44m7tZoLUhPeLFzVsbp0kp+Y6ktaj
+	 AMk6NsBcE1gRHw5cs3KFgjkDeoViS1DkxrQNDX+NjAt1cVdpcNv+zaw+wLJoZEFyG+
+	 uU5Q976msmuhX67H6c1tszEyjNNuo3CyhEd1VZDA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Vladimir Zapolskiy <vladimir.zapolskiy@linaro.org>,
-	Bryan ODonoghue <bryan.odonoghue@linaro.org>,
-	Bryan ODonoghue <bod@kernel.org>,
-	Hans Verkuil <hverkuil@xs4all.nl>,
+	Hans Verkuil <hverkuil-cisco@xs4all.nl>,
+	Mauro Carvalho Chehab <mchehab+huawei@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 597/644] media: qcom: camss: cleanup media device allocated resource on error path
+Subject: [PATCH 5.4 362/403] media: v4l2-ctrls: always copy the controls on completion
 Date: Tue, 26 Aug 2025 13:11:28 +0200
-Message-ID: <20250826111001.336492725@linuxfoundation.org>
+Message-ID: <20250826110917.001640279@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250826110946.507083938@linuxfoundation.org>
-References: <20250826110946.507083938@linuxfoundation.org>
+In-Reply-To: <20250826110905.607690791@linuxfoundation.org>
+References: <20250826110905.607690791@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,53 +62,96 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+5.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Sasha Levin <sashal@kernel.org>
+From: Hans Verkuil <hverkuil-cisco@xs4all.nl>
 
-[ Upstream commit 69080ec3d0daba8a894025476c98ab16b5a505a4 ]
+[ Upstream commit c3bf5129f33923c92bf3bddaf4359b7b25ecb4ba ]
 
-A call to media_device_init() requires media_device_cleanup() counterpart
-to complete cleanup and release any allocated resources.
+When v4l2_ctrl_request_complete() is called and there is no control
+handler object found in the request, then create such an object so
+that all controls at completion state can be stored and are available
+to userspace.
 
-This has been done in the driver .remove() right from the beginning, but
-error paths on .probe() shall also be fixed.
+Otherwise any attempt by userspace to read the completed request data
+will fail.
 
-Fixes: a1d7c116fcf7 ("media: camms: Add core files")
-Cc: stable@vger.kernel.org
-Signed-off-by: Vladimir Zapolskiy <vladimir.zapolskiy@linaro.org>
-Reviewed-by: Bryan O'Donoghue <bryan.odonoghue@linaro.org>
-Signed-off-by: Bryan O'Donoghue <bod@kernel.org>
-Signed-off-by: Hans Verkuil <hverkuil@xs4all.nl>
-[ adapted error label from err_genpd_cleanup to err_cleanup ]
+If allocating the control handler object failed, then indicate that
+by returning ENOMEM when attempting to get the controls from the
+completed request instead of returning ENOENT.
+
+Signed-off-by: Hans Verkuil <hverkuil-cisco@xs4all.nl>
+Signed-off-by: Mauro Carvalho Chehab <mchehab+huawei@kernel.org>
+Stable-dep-of: 5a0400aca5fa ("media: v4l2-ctrls: Don't reset handler's error in v4l2_ctrl_handler_free()")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/media/platform/qcom/camss/camss.c |    4 +++-
- 1 file changed, 3 insertions(+), 1 deletion(-)
+ drivers/media/v4l2-core/v4l2-ctrls.c |   36 +++++++++++++++++++++++++++++++----
+ 1 file changed, 32 insertions(+), 4 deletions(-)
 
---- a/drivers/media/platform/qcom/camss/camss.c
-+++ b/drivers/media/platform/qcom/camss/camss.c
-@@ -1396,7 +1396,7 @@ static int camss_probe(struct platform_d
- 	ret = v4l2_device_register(camss->dev, &camss->v4l2_dev);
- 	if (ret < 0) {
- 		dev_err(dev, "Failed to register V4L2 device: %d\n", ret);
--		goto err_cleanup;
-+		goto err_media_cleanup;
+--- a/drivers/media/v4l2-core/v4l2-ctrls.c
++++ b/drivers/media/v4l2-core/v4l2-ctrls.c
+@@ -3529,8 +3529,19 @@ v4l2_ctrls_find_req_obj(struct v4l2_ctrl
+ 	obj = media_request_object_find(req, &req_ops, hdl);
+ 	if (obj)
+ 		return obj;
++	/*
++	 * If there are no controls in this completed request,
++	 * then that can only happen if:
++	 *
++	 * 1) no controls were present in the queued request, and
++	 * 2) v4l2_ctrl_request_complete() could not allocate a
++	 *    control handler object to store the completed state in.
++	 *
++	 * So return ENOMEM to indicate that there was an out-of-memory
++	 * error.
++	 */
+ 	if (!set)
+-		return ERR_PTR(-ENOENT);
++		return ERR_PTR(-ENOMEM);
+ 
+ 	new_hdl = kzalloc(sizeof(*new_hdl), GFP_KERNEL);
+ 	if (!new_hdl)
+@@ -3541,8 +3552,8 @@ v4l2_ctrls_find_req_obj(struct v4l2_ctrl
+ 	if (!ret)
+ 		ret = v4l2_ctrl_request_bind(req, new_hdl, hdl);
+ 	if (ret) {
++		v4l2_ctrl_handler_free(new_hdl);
+ 		kfree(new_hdl);
+-
+ 		return ERR_PTR(ret);
  	}
  
- 	ret = camss_register_entities(camss);
-@@ -1438,6 +1438,8 @@ err_register_subdevs:
- 	camss_unregister_entities(camss);
- err_register_entities:
- 	v4l2_device_unregister(&camss->v4l2_dev);
-+err_media_cleanup:
-+	media_device_cleanup(&camss->media_dev);
- err_cleanup:
- 	v4l2_async_notifier_cleanup(&camss->notifier);
- err_free:
+@@ -4113,8 +4124,25 @@ void v4l2_ctrl_request_complete(struct m
+ 	 * wants to leave the controls unchanged.
+ 	 */
+ 	obj = media_request_object_find(req, &req_ops, main_hdl);
+-	if (!obj)
+-		return;
++	if (!obj) {
++		int ret;
++
++		/* Create a new request so the driver can return controls */
++		hdl = kzalloc(sizeof(*hdl), GFP_KERNEL);
++		if (!hdl)
++			return;
++
++		ret = v4l2_ctrl_handler_init(hdl, (main_hdl->nr_of_buckets - 1) * 8);
++		if (!ret)
++			ret = v4l2_ctrl_request_bind(req, hdl, main_hdl);
++		if (ret) {
++			v4l2_ctrl_handler_free(hdl);
++			kfree(hdl);
++			return;
++		}
++		hdl->request_is_queued = true;
++		obj = media_request_object_find(req, &req_ops, main_hdl);
++	}
+ 	hdl = container_of(obj, struct v4l2_ctrl_handler, req_obj);
+ 
+ 	list_for_each_entry(ref, &hdl->ctrl_refs, node) {
 
 
 
