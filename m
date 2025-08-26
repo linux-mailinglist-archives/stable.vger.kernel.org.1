@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-176023-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-174446-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id CF8E5B36BEC
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 16:50:34 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 13D91B3635C
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 15:29:01 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 994D0A03B5C
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 14:32:07 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 52B528A6A9F
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 13:22:12 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 415B735690E;
-	Tue, 26 Aug 2025 14:29:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 47E9F1FBCB1;
+	Tue, 26 Aug 2025 13:20:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="jiVvJnZY"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="h5IVe5WT"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F336D35690D;
-	Tue, 26 Aug 2025 14:29:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0415272605;
+	Tue, 26 Aug 2025 13:20:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756218583; cv=none; b=JaaRn+mK0adY7kzd9TUACTbYGt58iob5YFTig++ROmU3qMeR9M3b0QQOJuhUS/oBzpqxlxAh5nZ4DwR5s2HKYZtkLOatfweABpwuJ2P/2J6ZYR4VvxBxF+kCU6b8RVv3oJ/BnLJPMOJ91JiVILjlmybO9i5lbykrKmB2L+gTU5k=
+	t=1756214414; cv=none; b=N+e7pLVlae0Is2hDXv3FD3tOvYJiio/o2ZP6OseB0nYYVmNtZA2SaPO8a/XhqLYCXaBVdDodAb1xHcbsV8fgS5+VL/JbCIJx7An/bia05RIr2TDEcIUPbvEnD0/DyUZH3Lh4coL7bVss5RTLnXY4F7niJ+O5q3IFDhU4f5R0ZTM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756218583; c=relaxed/simple;
-	bh=vmYZNKVtSpBzizZZgpCjTqDksBn1HFliqqyU9Pm36aY=;
+	s=arc-20240116; t=1756214414; c=relaxed/simple;
+	bh=7ZQFPZX3YVHebQDyXPwg+lNqcCp78naGQU76Tz2OsUI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Y9+Ae3XDgQDR4N4EbJ9G0FXq8FCs8VVLZWj13SHzg/w4n1YgWypg8LuZa2d68IXtjpjEHpeHay2p/Xrw0IGxWg8IP3Jvd3kiP43/uyUGD6/jnLh8BC/Nf9JGiLIwknWkd1e7sjo/w/VBoGIA2JBWICMFisouaM6Yv2jpy6D4wqM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=jiVvJnZY; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5B155C113CF;
-	Tue, 26 Aug 2025 14:29:42 +0000 (UTC)
+	 MIME-Version:Content-Type; b=hJm3DOTviegHODJZdXhoMghQcjEGCqj/Tmfw7sFa4H1SXLDseHu4HOm1SHaYKb//2GnTER1wmkJfs5K8JzsANReFQfspiEfCyuOHjzcew3XWI1fdQK0G5p1FfA+a158iXYp0bmEvff7IeayOaPEF6VqES+2tfK4sE6m7E1einjY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=h5IVe5WT; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8C86FC4CEF1;
+	Tue, 26 Aug 2025 13:20:13 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1756218582;
-	bh=vmYZNKVtSpBzizZZgpCjTqDksBn1HFliqqyU9Pm36aY=;
+	s=korg; t=1756214413;
+	bh=7ZQFPZX3YVHebQDyXPwg+lNqcCp78naGQU76Tz2OsUI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=jiVvJnZY9xQHgC2gqETzxV2QBA1WYjUIYVsEuU0y3UshAwClcAAYGDppMuOeU18Pv
-	 u8zJcej/a20YajbqPejoedbX2LZ0VxFnJasCuYrvVa8dEMY41zCHCSTRuhxiVc/fey
-	 x62XPrYu5MGHUSRr8DZuK8vClPNK5UfIMMAm1yHs=
+	b=h5IVe5WTM7g2d/rSozuJJuSNEhTYAeiE+pvFZ0IG1nJEpGTlbonILlygtjkxtkO4p
+	 WL1OOdE8//pePHONAIBDVbow2J7topxdLtcGn3B1pQFyc+pOph70Y3rQ/wFnhWS8J7
+	 cmr3Ic4rFNuDfVFN6D5Irz6wty9e34e3IWfknBDc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Alessandro Carminati <acarmina@redhat.com>,
-	Mark Brown <broonie@kernel.org>,
+	=?UTF-8?q?Thomas=20Wei=C3=9Fschuh?= <thomas.weissschuh@linutronix.de>,
+	Nam Cao <namcao@linutronix.de>,
+	Johannes Berg <johannes.berg@intel.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.4 056/403] regulator: core: fix NULL dereference on unbind due to stale coupling data
+Subject: [PATCH 6.1 129/482] um: Re-evaluate thread flags repeatedly
 Date: Tue, 26 Aug 2025 13:06:22 +0200
-Message-ID: <20250826110907.416027491@linuxfoundation.org>
+Message-ID: <20250826110934.007479824@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250826110905.607690791@linuxfoundation.org>
-References: <20250826110905.607690791@linuxfoundation.org>
+In-Reply-To: <20250826110930.769259449@linuxfoundation.org>
+References: <20250826110930.769259449@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,47 +61,80 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-5.4-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Alessandro Carminati <acarmina@redhat.com>
+From: Thomas Weißschuh <thomas.weissschuh@linutronix.de>
 
-[ Upstream commit ca46946a482238b0cdea459fb82fc837fb36260e ]
+[ Upstream commit b9e2f2246eb2b5617d53af7b5e4e1b8c916f26a8 ]
 
-Failing to reset coupling_desc.n_coupled after freeing coupled_rdevs can
-lead to NULL pointer dereference when regulators are accessed post-unbind.
+The thread flags may change during their processing.
+For example a task_work can queue a new signal to be sent.
+This signal should be delivered before returning to usespace again.
 
-This can happen during runtime PM or other regulator operations that rely
-on coupling metadata.
+Evaluate the flags repeatedly similar to other architectures.
 
-For example, on ridesx4, unbinding the 'reg-dummy' platform device triggers
-a panic in regulator_lock_recursive() due to stale coupling state.
-
-Ensure n_coupled is set to 0 to prevent access to invalid pointers.
-
-Signed-off-by: Alessandro Carminati <acarmina@redhat.com>
-Link: https://patch.msgid.link/20250626083809.314842-1-acarmina@redhat.com
-Signed-off-by: Mark Brown <broonie@kernel.org>
+Signed-off-by: Thomas Weißschuh <thomas.weissschuh@linutronix.de>
+Reviewed-by: Nam Cao <namcao@linutronix.de>
+Link: https://patch.msgid.link/20250704-uml-thread_flags-v1-1-0e293fd8d627@linutronix.de
+Signed-off-by: Johannes Berg <johannes.berg@intel.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/regulator/core.c | 1 +
- 1 file changed, 1 insertion(+)
+ arch/um/include/asm/thread_info.h |  4 ++++
+ arch/um/kernel/process.c          | 20 ++++++++++++--------
+ 2 files changed, 16 insertions(+), 8 deletions(-)
 
-diff --git a/drivers/regulator/core.c b/drivers/regulator/core.c
-index a01a769b2f2d1..e5ce97dc32158 100644
---- a/drivers/regulator/core.c
-+++ b/drivers/regulator/core.c
-@@ -5062,6 +5062,7 @@ static void regulator_remove_coupling(struct regulator_dev *rdev)
- 				 err);
- 	}
+diff --git a/arch/um/include/asm/thread_info.h b/arch/um/include/asm/thread_info.h
+index c7b4b49826a2..40d823f36c09 100644
+--- a/arch/um/include/asm/thread_info.h
++++ b/arch/um/include/asm/thread_info.h
+@@ -68,7 +68,11 @@ static inline struct thread_info *current_thread_info(void)
+ #define _TIF_NOTIFY_SIGNAL	(1 << TIF_NOTIFY_SIGNAL)
+ #define _TIF_MEMDIE		(1 << TIF_MEMDIE)
+ #define _TIF_SYSCALL_AUDIT	(1 << TIF_SYSCALL_AUDIT)
++#define _TIF_NOTIFY_RESUME	(1 << TIF_NOTIFY_RESUME)
+ #define _TIF_SECCOMP		(1 << TIF_SECCOMP)
+ #define _TIF_SINGLESTEP		(1 << TIF_SINGLESTEP)
  
-+	rdev->coupling_desc.n_coupled = 0;
- 	kfree(rdev->coupling_desc.coupled_rdevs);
- 	rdev->coupling_desc.coupled_rdevs = NULL;
++#define _TIF_WORK_MASK		(_TIF_NEED_RESCHED | _TIF_SIGPENDING | _TIF_NOTIFY_SIGNAL | \
++				 _TIF_NOTIFY_RESUME)
++
+ #endif
+diff --git a/arch/um/kernel/process.c b/arch/um/kernel/process.c
+index c5281ce31685..d8c274d99390 100644
+--- a/arch/um/kernel/process.c
++++ b/arch/um/kernel/process.c
+@@ -97,14 +97,18 @@ void *__switch_to(struct task_struct *from, struct task_struct *to)
+ void interrupt_end(void)
+ {
+ 	struct pt_regs *regs = &current->thread.regs;
+-
+-	if (need_resched())
+-		schedule();
+-	if (test_thread_flag(TIF_SIGPENDING) ||
+-	    test_thread_flag(TIF_NOTIFY_SIGNAL))
+-		do_signal(regs);
+-	if (test_thread_flag(TIF_NOTIFY_RESUME))
+-		resume_user_mode_work(regs);
++	unsigned long thread_flags;
++
++	thread_flags = read_thread_flags();
++	while (thread_flags & _TIF_WORK_MASK) {
++		if (thread_flags & _TIF_NEED_RESCHED)
++			schedule();
++		if (thread_flags & (_TIF_SIGPENDING | _TIF_NOTIFY_SIGNAL))
++			do_signal(regs);
++		if (thread_flags & _TIF_NOTIFY_RESUME)
++			resume_user_mode_work(regs);
++		thread_flags = read_thread_flags();
++	}
  }
+ 
+ int get_current_pid(void)
 -- 
 2.39.5
 
