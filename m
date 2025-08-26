@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-176000-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-173019-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8FC4BB36B90
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 16:47:25 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4F6CDB35B89
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 13:25:31 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 28F45A0368D
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 14:31:17 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 282B0363900
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 11:21:11 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 94D8A350D4E;
-	Tue, 26 Aug 2025 14:28:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1C739334371;
+	Tue, 26 Aug 2025 11:19:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="KOWoIygr"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="adu9d27t"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 536F6350D7B;
-	Tue, 26 Aug 2025 14:28:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CB5CA27A917;
+	Tue, 26 Aug 2025 11:19:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756218524; cv=none; b=rFsLT/ytRqZzRxyIFyMW0be3zWVJAdCDBrM6YKP2GmJFtD9mexO83u8h1A9mbBXiBsRkaPjnIJ98ZQQrUBheXNX8mz2Nu7+JE224b37v9f6linrWrDMCV7oygX0GLi1bMiurCMHBc2X2003puHUSOEnP6BXBl5bCxovjTPxpIug=
+	t=1756207164; cv=none; b=SZmUFi3GhP0LjjiXyDhLZIuQ96z4ppILkDkvzfQSSjpgmkQlhVLj1GClOh6EAWg1CccEjwtwJUNppvkKvUojkePMWDVC/0BiKPD7PSnK8yI0LUNFJ48NTaEnN1+rSdTBk4VxPx3e/hZusTFUkLWwHi984fa0xUmGjO/0X9dko5M=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756218524; c=relaxed/simple;
-	bh=g3U+DKNokvO0aULl4qewBZiuNiENhCozaD+VLnhrzBU=;
+	s=arc-20240116; t=1756207164; c=relaxed/simple;
+	bh=ZauHOtZVD0w8ag9YH6GUftvrOQ5gY+tcTSUX2FivZqE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Zz12kWmrcufquajkR0dyhBe2cY7XI8ZjLkd0EPNkyDg6u0IkZt7xyYbuhGFuKiWc+GxHHflYzLP9h6FHUgjWvgq9D03O8jY+Tfwb74jHh/863KjEydLMfq/4tSeGk1M7XsNB/JAdt0IWNjiO0GBHxDYKSLf8r87Uow5QKd03+vo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=KOWoIygr; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8D64DC4CEF1;
-	Tue, 26 Aug 2025 14:28:42 +0000 (UTC)
+	 MIME-Version; b=D06jtyPja6izKvdZkwjzsAZgXQhohYA6LAMVS+a7Ygz9ey6t9Y2vV7rxbmAjaHItsWLoXITCd7m2P0lH7F36+ZWJXCoozyzl0tzDP3R6q77pfmQ1iCpw6+UEh3eudpFV43y14UxUD52d5VcU5eZJGsak6h9+kPBiG8Y0Ys5BKN4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=adu9d27t; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6612BC4CEF4;
+	Tue, 26 Aug 2025 11:19:24 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1756218522;
-	bh=g3U+DKNokvO0aULl4qewBZiuNiENhCozaD+VLnhrzBU=;
+	s=korg; t=1756207164;
+	bh=ZauHOtZVD0w8ag9YH6GUftvrOQ5gY+tcTSUX2FivZqE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=KOWoIygrfxgYeV0aWk+B1e7BDVM8QstmFn7D5Le770CuQjz6oqBBZ9y2t6ApDGt8X
-	 FQgtT2j2B/o/61CRthAQ5Lcl3r8lerkRoxB8ODtIGXGnJFn4AMBdMmoaZLUqnpSMkv
-	 Z5P1+4QE+9qeQo4jHdmhcKEEGX2Rx9IkJzvmLNfc=
+	b=adu9d27tCBb8Rh1cMhC8XrJ92HBrKlF4Pf3DEM2Bc8H2p8SvbyM/irnYcEVdydWwH
+	 qYUcPgT7eX4PrfZ7y8uQ2qzYXBJMGTzNKuzHNpcDD0eWQBCvz4B9/2RR3uoSf1zc9P
+	 SsJA3HTDUo+WO4WnZ6isOTsI3RovkSlJgFv2u2Zo=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Xiang Mei <xmei5@asu.edu>,
-	Cong Wang <xiyou.wangcong@gmail.com>,
-	"David S. Miller" <davem@davemloft.net>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.4 032/403] net/sched: sch_qfq: Fix race condition on qfq_aggregate
+	Marek Szyprowski <m.szyprowski@samsung.com>,
+	Jason Gunthorpe <jgg@nvidia.com>,
+	Xu Yilun <yilun.xu@intel.com>,
+	Xu Yilun <yilun.xu@linux.intel.com>
+Subject: [PATCH 6.16 074/457] zynq_fpga: use sgtable-based scatterlist wrappers
 Date: Tue, 26 Aug 2025 13:05:58 +0200
-Message-ID: <20250826110906.701306665@linuxfoundation.org>
+Message-ID: <20250826110939.202932129@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250826110905.607690791@linuxfoundation.org>
-References: <20250826110905.607690791@linuxfoundation.org>
+In-Reply-To: <20250826110937.289866482@linuxfoundation.org>
+References: <20250826110937.289866482@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,120 +63,51 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.4-stable review patch.  If anyone has any objections, please let me know.
+6.16-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Xiang Mei <xmei5@asu.edu>
+From: Marek Szyprowski <m.szyprowski@samsung.com>
 
-[ Upstream commit 5e28d5a3f774f118896aec17a3a20a9c5c9dfc64 ]
+commit 37e00703228ab44d0aacc32a97809a4f6f58df1b upstream.
 
-A race condition can occur when 'agg' is modified in qfq_change_agg
-(called during qfq_enqueue) while other threads access it
-concurrently. For example, qfq_dump_class may trigger a NULL
-dereference, and qfq_delete_class may cause a use-after-free.
+Use common wrappers operating directly on the struct sg_table objects to
+fix incorrect use of statterlists related calls. dma_unmap_sg() function
+has to be called with the number of elements originally passed to the
+dma_map_sg() function, not the one returned in sgtable's nents.
 
-This patch addresses the issue by:
-
-1. Moved qfq_destroy_class into the critical section.
-
-2. Added sch_tree_lock protection to qfq_dump_class and
-qfq_dump_class_stats.
-
-Fixes: 462dbc9101ac ("pkt_sched: QFQ Plus: fair-queueing service at DRR cost")
-Signed-off-by: Xiang Mei <xmei5@asu.edu>
-Reviewed-by: Cong Wang <xiyou.wangcong@gmail.com>
-Signed-off-by: David S. Miller <davem@davemloft.net>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+CC: stable@vger.kernel.org
+Fixes: 425902f5c8e3 ("fpga zynq: Use the scatterlist interface")
+Signed-off-by: Marek Szyprowski <m.szyprowski@samsung.com>
+Reviewed-by: Jason Gunthorpe <jgg@nvidia.com>
+Reviewed-by: Xu Yilun <yilun.xu@intel.com>
+Link: https://lore.kernel.org/r/20250616120932.1090614-1-m.szyprowski@samsung.com
+Signed-off-by: Xu Yilun <yilun.xu@linux.intel.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- net/sched/sch_qfq.c | 30 +++++++++++++++++++++---------
- 1 file changed, 21 insertions(+), 9 deletions(-)
+ drivers/fpga/zynq-fpga.c |    4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/net/sched/sch_qfq.c b/net/sched/sch_qfq.c
-index c466d255f7865..2a4331a084949 100644
---- a/net/sched/sch_qfq.c
-+++ b/net/sched/sch_qfq.c
-@@ -408,7 +408,7 @@ static int qfq_change_class(struct Qdisc *sch, u32 classid, u32 parentid,
- 	bool existing = false;
- 	struct nlattr *tb[TCA_QFQ_MAX + 1];
- 	struct qfq_aggregate *new_agg = NULL;
--	u32 weight, lmax, inv_w;
-+	u32 weight, lmax, inv_w, old_weight, old_lmax;
- 	int err;
- 	int delta_w;
+--- a/drivers/fpga/zynq-fpga.c
++++ b/drivers/fpga/zynq-fpga.c
+@@ -406,7 +406,7 @@ static int zynq_fpga_ops_write(struct fp
+ 	}
  
-@@ -444,12 +444,16 @@ static int qfq_change_class(struct Qdisc *sch, u32 classid, u32 parentid,
- 	inv_w = ONE_FP / weight;
- 	weight = ONE_FP / inv_w;
+ 	priv->dma_nelms =
+-	    dma_map_sg(mgr->dev.parent, sgt->sgl, sgt->nents, DMA_TO_DEVICE);
++	    dma_map_sgtable(mgr->dev.parent, sgt, DMA_TO_DEVICE, 0);
+ 	if (priv->dma_nelms == 0) {
+ 		dev_err(&mgr->dev, "Unable to DMA map (TO_DEVICE)\n");
+ 		return -ENOMEM;
+@@ -478,7 +478,7 @@ out_clk:
+ 	clk_disable(priv->clk);
  
--	if (cl != NULL &&
--	    lmax == cl->agg->lmax &&
--	    weight == cl->agg->class_weight)
--		return 0; /* nothing to change */
-+	if (cl != NULL) {
-+		sch_tree_lock(sch);
-+		old_weight = cl->agg->class_weight;
-+		old_lmax   = cl->agg->lmax;
-+		sch_tree_unlock(sch);
-+		if (lmax == old_lmax && weight == old_weight)
-+			return 0; /* nothing to change */
-+	}
- 
--	delta_w = weight - (cl ? cl->agg->class_weight : 0);
-+	delta_w = weight - (cl ? old_weight : 0);
- 
- 	if (q->wsum + delta_w > QFQ_MAX_WSUM) {
- 		pr_notice("qfq: total weight out of range (%d + %u)\n",
-@@ -550,10 +554,10 @@ static int qfq_delete_class(struct Qdisc *sch, unsigned long arg)
- 
- 	qdisc_purge_queue(cl->qdisc);
- 	qdisc_class_hash_remove(&q->clhash, &cl->common);
-+	qfq_destroy_class(sch, cl);
- 
- 	sch_tree_unlock(sch);
- 
--	qfq_destroy_class(sch, cl);
- 	return 0;
+ out_free:
+-	dma_unmap_sg(mgr->dev.parent, sgt->sgl, sgt->nents, DMA_TO_DEVICE);
++	dma_unmap_sgtable(mgr->dev.parent, sgt, DMA_TO_DEVICE, 0);
+ 	return err;
  }
  
-@@ -620,6 +624,7 @@ static int qfq_dump_class(struct Qdisc *sch, unsigned long arg,
- {
- 	struct qfq_class *cl = (struct qfq_class *)arg;
- 	struct nlattr *nest;
-+	u32 class_weight, lmax;
- 
- 	tcm->tcm_parent	= TC_H_ROOT;
- 	tcm->tcm_handle	= cl->common.classid;
-@@ -628,8 +633,13 @@ static int qfq_dump_class(struct Qdisc *sch, unsigned long arg,
- 	nest = nla_nest_start_noflag(skb, TCA_OPTIONS);
- 	if (nest == NULL)
- 		goto nla_put_failure;
--	if (nla_put_u32(skb, TCA_QFQ_WEIGHT, cl->agg->class_weight) ||
--	    nla_put_u32(skb, TCA_QFQ_LMAX, cl->agg->lmax))
-+
-+	sch_tree_lock(sch);
-+	class_weight	= cl->agg->class_weight;
-+	lmax		= cl->agg->lmax;
-+	sch_tree_unlock(sch);
-+	if (nla_put_u32(skb, TCA_QFQ_WEIGHT, class_weight) ||
-+	    nla_put_u32(skb, TCA_QFQ_LMAX, lmax))
- 		goto nla_put_failure;
- 	return nla_nest_end(skb, nest);
- 
-@@ -646,8 +656,10 @@ static int qfq_dump_class_stats(struct Qdisc *sch, unsigned long arg,
- 
- 	memset(&xstats, 0, sizeof(xstats));
- 
-+	sch_tree_lock(sch);
- 	xstats.weight = cl->agg->class_weight;
- 	xstats.lmax = cl->agg->lmax;
-+	sch_tree_unlock(sch);
- 
- 	if (gnet_stats_copy_basic(qdisc_root_sleeping_running(sch),
- 				  d, NULL, &cl->bstats) < 0 ||
--- 
-2.39.5
-
 
 
 
