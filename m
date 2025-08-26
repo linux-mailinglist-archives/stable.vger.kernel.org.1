@@ -1,55 +1,57 @@
-Return-Path: <stable+bounces-174014-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-175143-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id B9810B360EA
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 15:05:11 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 19F85B36737
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 16:04:42 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 450E05E00CF
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 13:01:05 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 3D0BC463EC6
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 13:52:40 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D152B3A1B5;
-	Tue, 26 Aug 2025 13:01:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id BBC74350835;
+	Tue, 26 Aug 2025 13:50:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="yQYv8W55"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Q2suxF2k"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 90E59101F2;
-	Tue, 26 Aug 2025 13:01:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 778DB34F49D;
+	Tue, 26 Aug 2025 13:50:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756213264; cv=none; b=ANxjHuFR8jclPTMEfmsbWCFmvkveV/08IyW6PywDIE6aSz7AYkanLbGeSw4WtUCnpPGkQLBC4hn2CMob1MfC5MtKt7dWD1qLKGJnX60DgsfNgXa3JrWpT59GpJuYtnwnUiRLYWIk3CJmh3lPWy1lj4W6ZtrJXXR6j0R6sinlnnQ=
+	t=1756216255; cv=none; b=n9f/068OSvvDnmYXK6LzIRvBBN5BTzI3p621L7Hc3aDqzBSnpF068XORPcixvboNF2+W4bWNwI42Y+E6WFGkThhQVJNP6xgdsxqdiLuDABewmou+MyaHb7uYm7i3iJQ+lQZrppISHEGzxpRs5i9Us5nIBJnPgVl0YqA19Ltoi4E=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756213264; c=relaxed/simple;
-	bh=gsOMGmr7/O0qul8vYCKh+Y8cQ0LP32rvXgIbsEde5Kc=;
+	s=arc-20240116; t=1756216255; c=relaxed/simple;
+	bh=QRN9JVLng10BfUXHvP/Kpfis2PVqKBzmYN7v6p9rytI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=i5Pxf9Cn1lQ5K26BqCcg6kmuemTE8yygyEr7RqBV/6ZapbvJ1d24zxJuT7M+afPyazASpuad3YrwCedHsVczEIa5JPmdvdu8a8v5VRimnq3GGxySyLex04nEDSCqyiFntaUVS1ia16oG+SxnXcCH/5JoxIH7eLwqfTY8ANeIr4s=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=yQYv8W55; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 25233C4CEF1;
-	Tue, 26 Aug 2025 13:01:03 +0000 (UTC)
+	 MIME-Version; b=nCL+2u6gZYpUxh234Z9OFgoUb3T6KE8fyzmGNLWcHNzDv4PCFPW5mF4NQQHDjjj8j7My9eHZDdrLMZIEW3UBaoA0pkOAMtnO/6J4IhiP4xoLGjAFCYEdD/pFjxGlNYpUxPHFV5cVUy7CV6ULeFsQmi3YFXX2Rl/AemV4O8EEdSw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Q2suxF2k; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 052A3C4CEF1;
+	Tue, 26 Aug 2025 13:50:54 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1756213264;
-	bh=gsOMGmr7/O0qul8vYCKh+Y8cQ0LP32rvXgIbsEde5Kc=;
+	s=korg; t=1756216255;
+	bh=QRN9JVLng10BfUXHvP/Kpfis2PVqKBzmYN7v6p9rytI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=yQYv8W55uQuCWWxqLbqMaGxyClntQ2t3XAfdmx24iMpAEDJlKUMQ7H8SB6dAZzp7Q
-	 F70x4sHA7e5pjhyo4B01arSyRTnr7TIKjJZ3DsKzPJVMHEu4fdOVC3MQKYvgbsO63T
-	 I4fpi6tGyqA/k6P85CgfoQFmGY0S/24E5bz3IH8k=
+	b=Q2suxF2kWbSCL3/GA4aBaQeaT2AjntNlUnteiKcNkqtg9rTZOfgbegW3BByxdudff
+	 txu+I2feWsEdGxIQoe8dQjB9OhjxrFt7ntaKIih8xo3SD1XULuc87vQBlPZe9E77IZ
+	 mYzy+FFFnG217yZ+Hp4xfX7LVj9e9w2TubORvGf0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Masahiro Yamada <masahiroy@kernel.org>,
+	Sven Schnelle <svens@linux.ibm.com>,
+	Heiko Carstens <hca@linux.ibm.com>,
+	Alexander Gordeev <agordeev@linux.ibm.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 282/587] kconfig: gconf: avoid hardcoding model2 in on_treeview2_cursor_changed()
+Subject: [PATCH 5.15 340/644] s390/time: Use monotonic clock in get_cycles()
 Date: Tue, 26 Aug 2025 13:07:11 +0200
-Message-ID: <20250826111000.105531171@linuxfoundation.org>
+Message-ID: <20250826110954.814315982@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250826110952.942403671@linuxfoundation.org>
-References: <20250826110952.942403671@linuxfoundation.org>
+In-Reply-To: <20250826110946.507083938@linuxfoundation.org>
+References: <20250826110946.507083938@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,46 +63,56 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Masahiro Yamada <masahiroy@kernel.org>
+From: Sven Schnelle <svens@linux.ibm.com>
 
-[ Upstream commit cae9cdbcd9af044810bcceeb43a87accca47c71d ]
+[ Upstream commit 09e7e29d2b49ba84bcefb3dc1657726d2de5bb24 ]
 
-The on_treeview2_cursor_changed() handler is connected to both the left
-and right tree views, but it hardcodes model2 (the GtkTreeModel of the
-right tree view). This is incorrect. Get the associated model from the
-view.
+Otherwise the code might not work correctly when the clock
+is changed.
 
-Signed-off-by: Masahiro Yamada <masahiroy@kernel.org>
+Signed-off-by: Sven Schnelle <svens@linux.ibm.com>
+Reviewed-by: Heiko Carstens <hca@linux.ibm.com>
+Signed-off-by: Alexander Gordeev <agordeev@linux.ibm.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- scripts/kconfig/gconf.c | 5 +++--
- 1 file changed, 3 insertions(+), 2 deletions(-)
+ arch/s390/include/asm/timex.h | 13 ++++++-------
+ 1 file changed, 6 insertions(+), 7 deletions(-)
 
-diff --git a/scripts/kconfig/gconf.c b/scripts/kconfig/gconf.c
-index 9e52c7360e55..a9f78e167e2e 100644
---- a/scripts/kconfig/gconf.c
-+++ b/scripts/kconfig/gconf.c
-@@ -974,13 +974,14 @@ on_treeview2_key_press_event(GtkWidget * widget,
- void
- on_treeview2_cursor_changed(GtkTreeView * treeview, gpointer user_data)
- {
-+	GtkTreeModel *model = gtk_tree_view_get_model(treeview);
- 	GtkTreeSelection *selection;
- 	GtkTreeIter iter;
- 	struct menu *menu;
- 
- 	selection = gtk_tree_view_get_selection(treeview);
--	if (gtk_tree_selection_get_selected(selection, &model2, &iter)) {
--		gtk_tree_model_get(model2, &iter, COL_MENU, &menu, -1);
-+	if (gtk_tree_selection_get_selected(selection, &model, &iter)) {
-+		gtk_tree_model_get(model, &iter, COL_MENU, &menu, -1);
- 		text_insert_help(menu);
- 	}
+diff --git a/arch/s390/include/asm/timex.h b/arch/s390/include/asm/timex.h
+index bc50ee0e91ff..a046a4d13816 100644
+--- a/arch/s390/include/asm/timex.h
++++ b/arch/s390/include/asm/timex.h
+@@ -196,13 +196,6 @@ static inline unsigned long get_tod_clock_fast(void)
+ 	return get_tod_clock();
+ #endif
  }
+-
+-static inline cycles_t get_cycles(void)
+-{
+-	return (cycles_t) get_tod_clock() >> 2;
+-}
+-#define get_cycles get_cycles
+-
+ int get_phys_clock(unsigned long *clock);
+ void init_cpu_timer(void);
+ 
+@@ -225,6 +218,12 @@ static inline unsigned long get_tod_clock_monotonic(void)
+ 	return tod;
+ }
+ 
++static inline cycles_t get_cycles(void)
++{
++	return (cycles_t)get_tod_clock_monotonic() >> 2;
++}
++#define get_cycles get_cycles
++
+ /**
+  * tod_to_ns - convert a TOD format value to nanoseconds
+  * @todval: to be converted TOD format value
 -- 
 2.39.5
 
