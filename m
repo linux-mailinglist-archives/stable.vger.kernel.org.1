@@ -1,56 +1,60 @@
-Return-Path: <stable+bounces-175437-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-175931-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 368C8B36849
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 16:14:59 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id EF214B36A61
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 16:37:01 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 541E38A5FA1
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 14:06:09 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id E7E1A58541B
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 14:28:22 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 62CD635207C;
-	Tue, 26 Aug 2025 14:04:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 30377352094;
+	Tue, 26 Aug 2025 14:25:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="LUY3nz14"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="AJoiTu65"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 21449374C4;
-	Tue, 26 Aug 2025 14:03:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E327435207F;
+	Tue, 26 Aug 2025 14:25:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756217041; cv=none; b=bKCubdEqCG+Q5K8WBx326lN+OcoYmpwhYjRcR6PIy3AZ+hEWNk5T2IzzRO4uHZRoW8koSkYNkKmJI4a+2ns0dvIOfYF/PQ2PPn48uTeSrkQRKQ9/TOHhxoglnf7bVANJV97ZeU9zwYNjEvBQEvcZeGmWAzcGToS2FaydP/binEw=
+	t=1756218344; cv=none; b=e0SpDuuowNZ660gWepN+UFrbK9C++VV7ZLjsjmBZMHIV7vtfk6TPrdom4s7WGekP5r4KerI0Y5R6h/dLiMwcWOx18anYEao8v4iPMb+1LA3LNnQh1XWp+mq5JYjBvCp4mV0abn8nn9+Ervmw84SOsBZnSix2OxZ23TVmLIlInj0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756217041; c=relaxed/simple;
-	bh=xOUMMlvNlkBsn7jhN5wCaSUruNqOmF+8tUZo/crnUco=;
+	s=arc-20240116; t=1756218344; c=relaxed/simple;
+	bh=bMYHeLMfakGQwjo4Z4fQfu2F70Nfwfy4HPBUOknEx+I=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=QKEz6xIQ24e+fHPKGAwe0zPtkJ4f1ciS8uxQW442TIqpXprEg5AMJDBZDIX9r9RBE1otxnlhClQzAYdGQVMb6z5xWMQtnyqNYB4syZpT9QSNAzzqspSHVxxQP+7FaF54dQvQIycPKCnFhAND1r3T6m6abPY+oXuKEorF/pZQlew=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=LUY3nz14; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5C239C4CEF1;
-	Tue, 26 Aug 2025 14:03:59 +0000 (UTC)
+	 MIME-Version; b=DrFlDuAmRFbiuU4g2bzIuKgMWDKZajPFum2pCZee/U99jiCif/OWg9CqPXnslkwCz3Tndd7gXcR7GvrjfLbc4vTXdSujA67R6N72y3fuxq89fgwURsqn9D/y2ZuiKMeeZyv2GQORUgzWS+tz9EO9Ukv/20NFblMCPXSmxOvtE70=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=AJoiTu65; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 76DD3C4CEF1;
+	Tue, 26 Aug 2025 14:25:43 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1756217039;
-	bh=xOUMMlvNlkBsn7jhN5wCaSUruNqOmF+8tUZo/crnUco=;
+	s=korg; t=1756218343;
+	bh=bMYHeLMfakGQwjo4Z4fQfu2F70Nfwfy4HPBUOknEx+I=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=LUY3nz14lpcuRQZyEw2b+bZi3uaQvVKuOGX9Mt7x0U2VBa+IAtfv6ka+mYFd2pna7
-	 ScCw/19MYBeS1jW750iYTWR3zz/sa07pmVtFzSfXKUc7CZswrYld5LkPjSj5EGAacE
-	 51F3G/53Upz4aAaOyQ0dSyLYs4ykC+DkMMe3LGVI=
+	b=AJoiTu65qiviO10BAiT4x2WdlXm8NRzyG9XcsSSqEGAJjBJ3rrMqyNCuKl4FXpWjo
+	 uOqoTWLh8Pxtg/NSwSBp+IzNOBSA19NFfZeGBAFd15RT/S1YYheswAeO0UzIHaCu45
+	 +38eNyFq4/EZ7TtBYNas72INSJBSNGtOGO+6LZ0I=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Ranjan Kumar <ranjan.kumar@broadcom.com>,
-	"Martin K. Petersen" <martin.petersen@oracle.com>,
+	Jorge Ramirez-Ortiz <jorge.ramirez@oss.qualcomm.com>,
+	Bryan ODonoghue <bryan.odonoghue@linaro.org>,
+	Vikash Garodia <quic_vgarodia@quicinc.com>,
+	Dikshita Agarwal <quic_dikshita@quicinc.com>,
+	Bryan ODonoghue <bod@kernel.org>,
+	Hans Verkuil <hverkuil@xs4all.nl>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 606/644] scsi: mpi3mr: Drop unnecessary volatile from __iomem pointers
+Subject: [PATCH 5.10 487/523] media: venus: protect against spurious interrupts during probe
 Date: Tue, 26 Aug 2025 13:11:37 +0200
-Message-ID: <20250826111001.567903099@linuxfoundation.org>
+Message-ID: <20250826110936.459244774@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250826110946.507083938@linuxfoundation.org>
-References: <20250826110946.507083938@linuxfoundation.org>
+In-Reply-To: <20250826110924.562212281@linuxfoundation.org>
+References: <20250826110924.562212281@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,57 +66,57 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Ranjan Kumar <ranjan.kumar@broadcom.com>
+From: Jorge Ramirez-Ortiz <jorge.ramirez@oss.qualcomm.com>
 
-[ Upstream commit 6853885b21cb1d7157cc14c9d30cc17141565bae ]
+[ Upstream commit 3200144a2fa4209dc084a19941b9b203b43580f0 ]
 
-The volatile qualifier is redundant for __iomem pointers.
+Make sure the interrupt handler is initialized before the interrupt is
+registered.
 
-Cleaned up usage in mpi3mr_writeq() and sysif_regs pointer as per
-Upstream compliance.
+If the IRQ is registered before hfi_create(), it's possible that an
+interrupt fires before the handler setup is complete, leading to a NULL
+dereference.
 
-Signed-off-by: Ranjan Kumar <ranjan.kumar@broadcom.com>
-Link: https://lore.kernel.org/r/20250627194539.48851-3-ranjan.kumar@broadcom.com
-Signed-off-by: Martin K. Petersen <martin.petersen@oracle.com>
-Stable-dep-of: c91e140c82eb ("scsi: mpi3mr: Serialize admin queue BAR writes on 32-bit systems")
+This error condition has been observed during system boot on Rb3Gen2.
+
+Fixes: af2c3834c8ca ("[media] media: venus: adding core part and helper functions")
+Cc: stable@vger.kernel.org
+Signed-off-by: Jorge Ramirez-Ortiz <jorge.ramirez@oss.qualcomm.com>
+Reviewed-by: Bryan O'Donoghue <bryan.odonoghue@linaro.org>
+Reviewed-by: Vikash Garodia <quic_vgarodia@quicinc.com>
+Reviewed-by: Dikshita Agarwal <quic_dikshita@quicinc.com>
+Tested-by: Dikshita Agarwal <quic_dikshita@quicinc.com> # RB5
+Signed-off-by: Bryan O'Donoghue <bod@kernel.org>
+Signed-off-by: Hans Verkuil <hverkuil@xs4all.nl>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/scsi/mpi3mr/mpi3mr.h    |    2 +-
- drivers/scsi/mpi3mr/mpi3mr_fw.c |    4 ++--
- 2 files changed, 3 insertions(+), 3 deletions(-)
+ drivers/media/platform/qcom/venus/core.c |    8 ++++----
+ 1 file changed, 4 insertions(+), 4 deletions(-)
 
---- a/drivers/scsi/mpi3mr/mpi3mr.h
-+++ b/drivers/scsi/mpi3mr/mpi3mr.h
-@@ -714,7 +714,7 @@ struct mpi3mr_ioc {
- 	char name[MPI3MR_NAME_LENGTH];
- 	char driver_name[MPI3MR_NAME_LENGTH];
+--- a/drivers/media/platform/qcom/venus/core.c
++++ b/drivers/media/platform/qcom/venus/core.c
+@@ -289,13 +289,13 @@ static int venus_probe(struct platform_d
+ 	mutex_init(&core->lock);
+ 	INIT_DELAYED_WORK(&core->work, venus_sys_error_handler);
  
--	volatile struct mpi3_sysif_registers __iomem *sysif_regs;
-+	struct mpi3_sysif_registers __iomem *sysif_regs;
- 	resource_size_t sysif_regs_phys;
- 	int bars;
- 	u64 dma_mask;
---- a/drivers/scsi/mpi3mr/mpi3mr_fw.c
-+++ b/drivers/scsi/mpi3mr/mpi3mr_fw.c
-@@ -11,12 +11,12 @@
- #include <linux/io-64-nonatomic-lo-hi.h>
+-	ret = devm_request_threaded_irq(dev, core->irq, hfi_isr, venus_isr_thread,
+-					IRQF_TRIGGER_HIGH | IRQF_ONESHOT,
+-					"venus", core);
++	ret = hfi_create(core, &venus_core_ops);
+ 	if (ret)
+ 		goto err_core_put;
  
- #if defined(writeq) && defined(CONFIG_64BIT)
--static inline void mpi3mr_writeq(__u64 b, volatile void __iomem *addr)
-+static inline void mpi3mr_writeq(__u64 b, void __iomem *addr)
- {
- 	writeq(b, addr);
- }
- #else
--static inline void mpi3mr_writeq(__u64 b, volatile void __iomem *addr)
-+static inline void mpi3mr_writeq(__u64 b, void __iomem *addr)
- {
- 	__u64 data_out = b;
+-	ret = hfi_create(core, &venus_core_ops);
++	ret = devm_request_threaded_irq(dev, core->irq, hfi_isr, venus_isr_thread,
++					IRQF_TRIGGER_HIGH | IRQF_ONESHOT,
++					"venus", core);
+ 	if (ret)
+ 		goto err_core_put;
  
 
 
