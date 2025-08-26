@@ -1,43 +1,43 @@
-Return-Path: <stable+bounces-176370-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-174309-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id E15BFB36C5C
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 16:55:30 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1AE16B362BA
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 15:21:35 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 2BFEB5A1D59
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 14:47:45 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id B1FEF8A2AD7
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 13:15:58 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 71D0321D3F2;
-	Tue, 26 Aug 2025 14:44:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id F2A7A243946;
+	Tue, 26 Aug 2025 13:14:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="TcYrGhxF"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="TUj46kwn"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2D31D35A2B8;
-	Tue, 26 Aug 2025 14:44:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B084F1FBCB5;
+	Tue, 26 Aug 2025 13:14:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756219482; cv=none; b=gQIld7BGZJ+IF6Y7hw/4cUcQqS357zsNDvNyiismmQ5dkNlIpqbcLkF8EnTdQ1JnFmssQwsZJS0ApKs2SOP7Pu/IpHiigOL2Q59J9KGDfFdan8K8AGDfhgARB0/JCif+6wZ+3bxWSNajAU4vpJM+Xw4fmpsd3cNfFg591NC5IyA=
+	t=1756214047; cv=none; b=UbeCIamDn7k3KjjmMIE/v0QCu4eOQSVXCkyVskIuN4d29KALeUPoq7yIclPX5fKTmUJGSPJ6rOzatHhx8mRieB8wcc9B8zDIlVhp8F1h4UOObGBYP86QfeiHkxMPsmp2IlwJDzQCh3Ul5OE8VC7hD0fzjr9b2JX2d90VLPhVU2E=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756219482; c=relaxed/simple;
-	bh=OJXu+y0TBNggLZEeCrDXR+1hOijy8rZfpklAur0PP98=;
+	s=arc-20240116; t=1756214047; c=relaxed/simple;
+	bh=gtzP9J7tViN4/Tdwx0UQ8H1vtnDVlP5Ro2pfqfFzvj4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=G1glrjTeJ213bzd19oTWC2dVt7PmUKtKURELTbE59xJNNrjUoiQYMmWSzI4or0KbP3c8THXSZoEkLtHoZwSKEvxxy8fc3xRVZuAuvPj2UuELMXSb5dFvvSwhBmC6L1usw7L+LGmEV8S1rsUhTpAnA6UC/JS5EWQdonlri6asZdc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=TcYrGhxF; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6764FC4CEF1;
-	Tue, 26 Aug 2025 14:44:41 +0000 (UTC)
+	 MIME-Version:Content-Type; b=YrMwiJ/G19Bob/sQDEILuCim8VD7nA13YCCdqMrF9bpxH+KHkJyQOPdPzLW55hIB6HjIMMM+whb5uWGCIjKoHEUT9F6ktkq+Jh/e4RmaujEJxWgYzsgPSjeOF1XS1VwAs7D+267qhS87u1vBLOlQUROAQoPMmjGZnhc0GDwn1a8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=TUj46kwn; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 42E1CC4CEF1;
+	Tue, 26 Aug 2025 13:14:07 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1756219481;
-	bh=OJXu+y0TBNggLZEeCrDXR+1hOijy8rZfpklAur0PP98=;
+	s=korg; t=1756214047;
+	bh=gtzP9J7tViN4/Tdwx0UQ8H1vtnDVlP5Ro2pfqfFzvj4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=TcYrGhxFCXPvS/u4hgDBJiAIRu3RLWBOEFkeit4eR9itM0tKKP1Sp7y1pKcARlfX0
-	 aVph34xiWzt6lD/SpiSoisrUyF1dQjBXeU8m9ACSt0jkjh2ThZtooO3PtZQGPanFpX
-	 GRag0KQOBzr+URTkzE9hvWis4hrKiyTfKMa2Xy0Y=
+	b=TUj46kwngED25DGbScQqQGRBf8s4hcPcrMVVzRxQm3WRwyZ9PkBEK0wZsIDYKDAcy
+	 MCsLX9iG4Ipx3YRfV6vhgq9sDMO+6Xtoh8lQmr29TEuWQs5KO5sYNtAGIwFlRenR1A
+	 5RYmej+mELP4gJg6Shrixmmw+A/VXyWvi/qmns/o=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
@@ -48,12 +48,12 @@ Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	Jamal Hadi Salim <jhs@mojatatu.com>,
 	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.4 399/403] net/sched: Make cake_enqueue return NET_XMIT_CN when past buffer_limit
+Subject: [PATCH 6.6 576/587] net/sched: Make cake_enqueue return NET_XMIT_CN when past buffer_limit
 Date: Tue, 26 Aug 2025 13:12:05 +0200
-Message-ID: <20250826110918.057037683@linuxfoundation.org>
+Message-ID: <20250826111007.688456378@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250826110905.607690791@linuxfoundation.org>
-References: <20250826110905.607690791@linuxfoundation.org>
+In-Reply-To: <20250826110952.942403671@linuxfoundation.org>
+References: <20250826110952.942403671@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -66,7 +66,7 @@ MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-5.4-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
@@ -108,10 +108,10 @@ Signed-off-by: Sasha Levin <sashal@kernel.org>
  1 file changed, 12 insertions(+), 2 deletions(-)
 
 diff --git a/net/sched/sch_cake.c b/net/sched/sch_cake.c
-index fc96ec46e6f6..738691b5697b 100644
+index 09242578dac5..85984c91cf51 100644
 --- a/net/sched/sch_cake.c
 +++ b/net/sched/sch_cake.c
-@@ -1725,7 +1725,7 @@ static s32 cake_enqueue(struct sk_buff *skb, struct Qdisc *sch,
+@@ -1762,7 +1762,7 @@ static s32 cake_enqueue(struct sk_buff *skb, struct Qdisc *sch,
  	ktime_t now = ktime_get();
  	struct cake_tin_data *b;
  	struct cake_flow *flow;
@@ -120,7 +120,7 @@ index fc96ec46e6f6..738691b5697b 100644
  
  	/* choose flow to insert into */
  	idx = cake_classify(sch, &b, skb, q->flow_mode, &ret);
-@@ -1735,6 +1735,7 @@ static s32 cake_enqueue(struct sk_buff *skb, struct Qdisc *sch,
+@@ -1772,6 +1772,7 @@ static s32 cake_enqueue(struct sk_buff *skb, struct Qdisc *sch,
  		__qdisc_drop(skb, to_free);
  		return ret;
  	}
@@ -128,7 +128,7 @@ index fc96ec46e6f6..738691b5697b 100644
  	idx--;
  	flow = &b->flows[idx];
  
-@@ -1904,13 +1905,22 @@ static s32 cake_enqueue(struct sk_buff *skb, struct Qdisc *sch,
+@@ -1939,13 +1940,22 @@ static s32 cake_enqueue(struct sk_buff *skb, struct Qdisc *sch,
  		q->buffer_max_used = q->buffer_used;
  
  	if (q->buffer_used > q->buffer_limit) {
