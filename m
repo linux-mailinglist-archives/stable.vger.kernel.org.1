@@ -1,58 +1,56 @@
-Return-Path: <stable+bounces-174697-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-173309-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8E271B364A4
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 15:40:48 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id B7FFEB35C79
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 13:34:43 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id F0DCE200202
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 13:32:39 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 95F4F7B86C6
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 11:32:36 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 73921345744;
-	Tue, 26 Aug 2025 13:31:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9341D34A32C;
+	Tue, 26 Aug 2025 11:31:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Z3NeKk/M"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="QQyogsrA"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2D8A826B747;
-	Tue, 26 Aug 2025 13:31:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4E88E34A31E;
+	Tue, 26 Aug 2025 11:31:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756215077; cv=none; b=sK8v+vHkgl+i1PgGh5xk1YrylQv6i+sL+WT6UHXD7fTI6RIsw1hEAZ5Cp35R3PPHWaQdU7rQI9ie/mGHUXCGPquMTv4sbn9CkA+9XVWW/kSeTJsOQtmRm8WYmFP7tB53C0LNrTju92GeT1rLTJK1b4xs6PSY83AotG5u7xf/VhE=
+	t=1756207913; cv=none; b=IomX7ke3g9Pf8u0Qhp5fvpQaqJr8ozC+rchjO7dDxbmNoOvm2cwfjGYLMw2R4Qgtl9m9nYxAkzBWhz88cr9366lFQojZvsAKBN1x3bN4HS+15R+g9SIBPt8KkkT8KQSkkZMWmt7/NPO2HFlyVJfIPyzNuyarQcZLIZWCkfNAoz4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756215077; c=relaxed/simple;
-	bh=pWnSvxKokleudL3eYbWUeNyibYsbzX/+m//BvnnSfSQ=;
+	s=arc-20240116; t=1756207913; c=relaxed/simple;
+	bh=Ph8Or5Z8DpExZcHLdFQXeBHAohoBxTnqcUXNV4Lq8+s=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=loJkpLhggZYEoJlt5VyHUe3YCJJJqTK/FmDne4C4b4N7MhW7syXwC2mIrdR1uySD4esNxBTJf4gSddcCE6GMXvCkydiiU6lLTH35AO/3KVesUqMpa6YvdQLAAc0NrQZietuIkgzAeBxj+VcJtJmcg18wEn+B/qiin1qN9hZc9Cw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Z3NeKk/M; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 99B07C113D0;
-	Tue, 26 Aug 2025 13:31:16 +0000 (UTC)
+	 MIME-Version:Content-Type; b=uq9xWUAIMNudCXvQwaXZg5IxdanjqH+E6d91/irJ+eNIPmzeM5jnm4O1APlkvSzmg5fUnwnW4SMF/K/+R+Ej9vLZdzRB/fSdNWr3/gr6jWXwXXIua2Ls7MCYBkId+5e5+MoxprIJNOSeJWjCb55k5FpYADDmWADAdOdg6R1dAis=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=QQyogsrA; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C2946C4CEF1;
+	Tue, 26 Aug 2025 11:31:52 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1756215077;
-	bh=pWnSvxKokleudL3eYbWUeNyibYsbzX/+m//BvnnSfSQ=;
+	s=korg; t=1756207913;
+	bh=Ph8Or5Z8DpExZcHLdFQXeBHAohoBxTnqcUXNV4Lq8+s=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Z3NeKk/MYQoWkruhIAu2p45SUZVyHwEnjAigbdzC45Wc1GzirdtiV/uy6+9iCxnoN
-	 tVfP6vRV9TF/SLysXBKfmkDWRWf4niFGCdXPffYI1DqkExLrWbHVySoXdmvhgHPBEc
-	 hgWPoLIkPvQppSmqrmJ3/1c9vP+47kDsTNBsBt/c=
+	b=QQyogsrA9uSpI+4MvrMclGhlh5X04ZJOQQZ4LYWJHzTs0i1vxcfWm31M+3QXvxd6i
+	 pRDeJSXMMcpuDaCq5KnoJSxnXSOq53I2a5wqrE2tk3LHUOufmM236y+cbLwdSnyQMy
+	 J9jYZkIeSrtNniInGrbsZEamitmWionUXh3WA4eM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Giovanni Cabiddu <giovanni.cabiddu@intel.com>,
-	Damian Muszynski <damian.muszynski@intel.com>,
-	Tero Kristo <tero.kristo@linux.intel.com>,
-	Herbert Xu <herbert@gondor.apana.org.au>,
-	Ahsan Atta <ahsan.atta@intel.com>
-Subject: [PATCH 6.1 378/482] crypto: qat - fix ring to service map for QAT GEN4
-Date: Tue, 26 Aug 2025 13:10:31 +0200
-Message-ID: <20250826110940.167333371@linuxfoundation.org>
+	=?UTF-8?q?Jos=C3=A9=20Exp=C3=B3sito?= <jose.exposito89@gmail.com>,
+	Thomas Zimmermann <tzimmermann@suse.de>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.16 348/457] drm/tests: Fix endian warning
+Date: Tue, 26 Aug 2025 13:10:32 +0200
+Message-ID: <20250826110945.927165586@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250826110930.769259449@linuxfoundation.org>
-References: <20250826110930.769259449@linuxfoundation.org>
+In-Reply-To: <20250826110937.289866482@linuxfoundation.org>
+References: <20250826110937.289866482@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,111 +60,51 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.16-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Giovanni Cabiddu <giovanni.cabiddu@intel.com>
+From: José Expósito <jose.exposito89@gmail.com>
 
-commit a238487f7965d102794ed9f8aff0b667cd2ae886 upstream.
+[ Upstream commit d28b9d2925b4f773adb21b1fc20260ddc370fb13 ]
 
-The 4xxx drivers hardcode the ring to service mapping. However, when
-additional configurations where added to the driver, the mappings were
-not updated. This implies that an incorrect mapping might be reported
-through pfvf for certain configurations.
+When compiling with sparse enabled, this warning is thrown:
 
-Add an algorithm that computes the correct ring to service mapping based
-on the firmware loaded on the device.
+  warning: incorrect type in argument 2 (different base types)
+     expected restricted __le32 const [usertype] *buf
+     got unsigned int [usertype] *[assigned] buf
 
-Fixes: 0cec19c761e5 ("crypto: qat - add support for compression for 4xxx")
-Signed-off-by: Giovanni Cabiddu <giovanni.cabiddu@intel.com>
-Reviewed-by: Damian Muszynski <damian.muszynski@intel.com>
-Reviewed-by: Tero Kristo <tero.kristo@linux.intel.com>
-Signed-off-by: Herbert Xu <herbert@gondor.apana.org.au>
-[Giovanni: backport to 6.1.y, conflict resolved simplifying the logic
-in the function get_ring_to_svc_map() as the QAT driver in v6.1 supports
-only limited configurations (crypto only and compression).  Differs from
-upstream as the ring to service mapping is hardcoded rather than being
-dynamically computed.]
-Reviewed-by: Ahsan Atta <ahsan.atta@intel.com>
-Tested-by: Ahsan Atta <ahsan.atta@intel.com>
-Signed-off-by: Giovanni Cabiddu <giovanni.cabiddu@intel.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Add a cast to fix it.
+
+Fixes: 453114319699 ("drm/format-helper: Add KUnit tests for drm_fb_xrgb8888_to_xrgb2101010()")
+Signed-off-by: José Expósito <jose.exposito89@gmail.com>
+Reviewed-by: Thomas Zimmermann <tzimmermann@suse.de>
+Signed-off-by: Thomas Zimmermann <tzimmermann@suse.de>
+Link: https://lore.kernel.org/r/20250630090054.353246-1-jose.exposito89@gmail.com
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/crypto/qat/qat_4xxx/adf_4xxx_hw_data.c    |   13 +++++++++++++
- drivers/crypto/qat/qat_common/adf_accel_devices.h |    1 +
- drivers/crypto/qat/qat_common/adf_gen4_hw_data.h  |    6 ++++++
- drivers/crypto/qat/qat_common/adf_init.c          |    3 +++
- 4 files changed, 23 insertions(+)
+ drivers/gpu/drm/tests/drm_format_helper_test.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/drivers/crypto/qat/qat_4xxx/adf_4xxx_hw_data.c
-+++ b/drivers/crypto/qat/qat_4xxx/adf_4xxx_hw_data.c
-@@ -297,6 +297,18 @@ static char *uof_get_name(struct adf_acc
- 	return NULL;
- }
+diff --git a/drivers/gpu/drm/tests/drm_format_helper_test.c b/drivers/gpu/drm/tests/drm_format_helper_test.c
+index 35cd3405d045..2a3d80b27cae 100644
+--- a/drivers/gpu/drm/tests/drm_format_helper_test.c
++++ b/drivers/gpu/drm/tests/drm_format_helper_test.c
+@@ -1071,7 +1071,7 @@ static void drm_test_fb_xrgb8888_to_xrgb2101010(struct kunit *test)
+ 		NULL : &result->dst_pitch;
  
-+static u16 get_ring_to_svc_map(struct adf_accel_dev *accel_dev)
-+{
-+	switch (get_service_enabled(accel_dev)) {
-+	case SVC_CY:
-+		return ADF_GEN4_DEFAULT_RING_TO_SRV_MAP;
-+	case SVC_DC:
-+		return ADF_GEN4_DEFAULT_RING_TO_SRV_MAP_DC;
-+	}
-+
-+	return 0;
-+}
-+
- static u32 uof_get_ae_mask(struct adf_accel_dev *accel_dev, u32 obj_num)
- {
- 	switch (get_service_enabled(accel_dev)) {
-@@ -353,6 +365,7 @@ void adf_init_hw_data_4xxx(struct adf_hw
- 	hw_data->uof_get_ae_mask = uof_get_ae_mask;
- 	hw_data->set_msix_rttable = set_msix_default_rttable;
- 	hw_data->set_ssm_wdtimer = adf_gen4_set_ssm_wdtimer;
-+	hw_data->get_ring_to_svc_map = get_ring_to_svc_map;
- 	hw_data->disable_iov = adf_disable_sriov;
- 	hw_data->ring_pair_reset = adf_gen4_ring_pair_reset;
- 	hw_data->enable_pm = adf_gen4_enable_pm;
---- a/drivers/crypto/qat/qat_common/adf_accel_devices.h
-+++ b/drivers/crypto/qat/qat_common/adf_accel_devices.h
-@@ -176,6 +176,7 @@ struct adf_hw_device_data {
- 	void (*get_arb_info)(struct arb_info *arb_csrs_info);
- 	void (*get_admin_info)(struct admin_info *admin_csrs_info);
- 	enum dev_sku_info (*get_sku)(struct adf_hw_device_data *self);
-+	u16 (*get_ring_to_svc_map)(struct adf_accel_dev *accel_dev);
- 	int (*alloc_irq)(struct adf_accel_dev *accel_dev);
- 	void (*free_irq)(struct adf_accel_dev *accel_dev);
- 	void (*enable_error_correction)(struct adf_accel_dev *accel_dev);
---- a/drivers/crypto/qat/qat_common/adf_gen4_hw_data.h
-+++ b/drivers/crypto/qat/qat_common/adf_gen4_hw_data.h
-@@ -95,6 +95,12 @@ do { \
- 		   ADF_RING_BUNDLE_SIZE * (bank) + \
- 		   ADF_RING_CSR_RING_SRV_ARB_EN, (value))
+ 	drm_fb_xrgb8888_to_xrgb2101010(&dst, dst_pitch, &src, &fb, &params->clip, &fmtcnv_state);
+-	buf = le32buf_to_cpu(test, buf, dst_size / sizeof(u32));
++	buf = le32buf_to_cpu(test, (__force const __le32 *)buf, dst_size / sizeof(u32));
+ 	KUNIT_EXPECT_MEMEQ(test, buf, result->expected, dst_size);
  
-+#define ADF_GEN4_DEFAULT_RING_TO_SRV_MAP_DC \
-+	(COMP << ADF_CFG_SERV_RING_PAIR_0_SHIFT | \
-+	 COMP << ADF_CFG_SERV_RING_PAIR_1_SHIFT | \
-+	 COMP << ADF_CFG_SERV_RING_PAIR_2_SHIFT | \
-+	 COMP << ADF_CFG_SERV_RING_PAIR_3_SHIFT)
-+
- /* Default ring mapping */
- #define ADF_GEN4_DEFAULT_RING_TO_SRV_MAP \
- 	(ASYM << ADF_CFG_SERV_RING_PAIR_0_SHIFT | \
---- a/drivers/crypto/qat/qat_common/adf_init.c
-+++ b/drivers/crypto/qat/qat_common/adf_init.c
-@@ -95,6 +95,9 @@ int adf_dev_init(struct adf_accel_dev *a
- 		return -EFAULT;
- 	}
- 
-+	if (hw_data->get_ring_to_svc_map)
-+		hw_data->ring_to_svc_map = hw_data->get_ring_to_svc_map(accel_dev);
-+
- 	if (adf_ae_init(accel_dev)) {
- 		dev_err(&GET_DEV(accel_dev),
- 			"Failed to initialise Acceleration Engine\n");
+ 	buf = dst.vaddr; /* restore original value of buf */
+-- 
+2.50.1
+
 
 
 
