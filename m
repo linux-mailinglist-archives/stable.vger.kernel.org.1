@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-175379-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-173655-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7194CB367F4
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 16:11:33 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7CC26B35E3B
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 13:54:37 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 394E85652DC
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 14:02:45 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 31B781BC0F6F
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 11:47:46 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3FB5D345758;
-	Tue, 26 Aug 2025 14:01:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E11DD29D280;
+	Tue, 26 Aug 2025 11:46:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="hpImaPwL"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="wbRBrqhy"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EFF2C1DE8BE;
-	Tue, 26 Aug 2025 14:01:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9F0C629BD98;
+	Tue, 26 Aug 2025 11:46:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756216883; cv=none; b=L4WiciEpEb2sPLfxuQpRpTct4M8LHmcSKypI3TRnvPS4bufMhfS81RaWuswS+7QmMjDV0OX7rHJu0OBuh1Qo/uu35xqSRD6njsvmoUzUq3ESxONT0VuwflN9ajSKOiZodVzq/np4JNPnW/x0f5An60Lx50CBVBZW8iAUcYT66Gk=
+	t=1756208811; cv=none; b=pMiZ4vqxrELSDljCSC/cEVEkLnPnLd9Z9rkT6baY/nNupI0x0BCheZokoVri0n3H4RJcVstTph7b65AzuaEZE+Ng+aMIeLeUcpUtgLunlBYnifA5dV6BicHXDmzBpaVZDrwtpxTkBdaldJKSd4Oovj6vlo1760OpMRKObKnq/VA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756216883; c=relaxed/simple;
-	bh=+OI5njkpkehpVoD/6y8kKKEUCpMiZRMzFSNzA7IscJw=;
+	s=arc-20240116; t=1756208811; c=relaxed/simple;
+	bh=oKgIT+k7S214UgybvZ/v3Pmcb0rW7rm9GuUUezmKWj0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=NNnh01oGBxo1UHVxMuky+gC3wL0RMTKwXcevcfDJMfUjUo4n6LF1hfmG+mQFTG4oKREdC1bSImAz7jqWL96hmrnX9th7Kb0rPviEW6uAI0Vunmdgvoq9CGJNu99eD9vW8DJ1P8PujSSG+LiQGYlfase15rph1U10r9+6F5zOkEo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=hpImaPwL; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 852C9C4CEF1;
-	Tue, 26 Aug 2025 14:01:22 +0000 (UTC)
+	 MIME-Version; b=GGCpKU0iCppWyTNKadZmAxH3ULsOMDR1UlQ2+uKvR4iaAHyWcMMV+Xs9mP/D3SU28z2RynWFRBLIWKODIfIh83qQGuA/MJML7nj8sO3xKBo8gOnoTleZPSKPF+qLM8t4vEbZOM/p/I7A4wAwUF1kliigMX/u8o9bq5KeGNujDOQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=wbRBrqhy; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 324EFC4CEF1;
+	Tue, 26 Aug 2025 11:46:51 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1756216882;
-	bh=+OI5njkpkehpVoD/6y8kKKEUCpMiZRMzFSNzA7IscJw=;
+	s=korg; t=1756208811;
+	bh=oKgIT+k7S214UgybvZ/v3Pmcb0rW7rm9GuUUezmKWj0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=hpImaPwL//kl4IJwqnY8C0AH4rIL0R4DffZaAVmy+K2Iu8lhFZHBeMsVJaCXK7Ar9
-	 frlKp56w86HWSdbGOC3olPOj628PsTUjdnncPD7anvV4o30WAAal12bcp0z5Fz4FfQ
-	 7D9orDr9d8T3osUSB99bjmxaXlg67kY9iCwC6K7M=
+	b=wbRBrqhyQk325mUztuinprpqjSUkxqzpUk+4/MYTz04AtyWJZW4iD9E669KGvoJNR
+	 49QPX6ABHkPOeWXWyCYf6eIlTGKtYRBwzqqYHkEHT3f4xSfEpY/tov4rMgVnKai7A0
+	 5e/yXdW7P6EJoRZ8EbiBK91rpACmE4xMgw31P+ZQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	David Lechner <dlechner@baylibre.com>,
-	Stable@vger.kernel.org,
-	Jonathan Cameron <Jonathan.Cameron@huawei.com>
-Subject: [PATCH 5.15 579/644] iio: proximity: isl29501: fix buffered read on big-endian systems
+	Waiman Long <longman@redhat.com>,
+	Tejun Heo <tj@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.12 255/322] cgroup/cpuset: Fix a partition error with CPU hotplug
 Date: Tue, 26 Aug 2025 13:11:10 +0200
-Message-ID: <20250826111000.880030955@linuxfoundation.org>
+Message-ID: <20250826110922.232827737@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250826110946.507083938@linuxfoundation.org>
-References: <20250826110946.507083938@linuxfoundation.org>
+In-Reply-To: <20250826110915.169062587@linuxfoundation.org>
+References: <20250826110915.169062587@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,57 +62,65 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: David Lechner <dlechner@baylibre.com>
+From: Waiman Long <longman@redhat.com>
 
-commit de18e978d0cda23e4c102e18092b63a5b0b3a800 upstream.
+[ Upstream commit 150e298ae0ccbecff2357a72fbabd80f8849ea6e ]
 
-Fix passing a u32 value as a u16 buffer scan item. This works on little-
-endian systems, but not on big-endian systems.
+It was found during testing that an invalid leaf partition with an
+empty effective exclusive CPU list can become a valid empty partition
+with no CPU afer an offline/online operation of an unrelated CPU. An
+empty partition root is allowed in the special case that it has no
+task in its cgroup and has distributed out all its CPUs to its child
+partitions. That is certainly not the case here.
 
-A new local variable is introduced for getting the register value and
-the array is changed to a struct to make the data layout more explicit
-rather than just changing the type and having to recalculate the proper
-length needed for the timestamp.
+The problem is in the cpumask_subsets() test in the hotplug case
+(update with no new mask) of update_parent_effective_cpumask() as it
+also returns true if the effective exclusive CPU list is empty. Fix that
+by addding the cpumask_empty() test to root out this exception case.
+Also add the cpumask_empty() test in cpuset_hotplug_update_tasks()
+to avoid calling update_parent_effective_cpumask() for this special case.
 
-Fixes: 1c28799257bc ("iio: light: isl29501: Add support for the ISL29501 ToF sensor.")
-Signed-off-by: David Lechner <dlechner@baylibre.com>
-Link: https://patch.msgid.link/20250722-iio-use-more-iio_declare_buffer_with_ts-7-v2-1-d3ebeb001ed3@baylibre.com
-Cc: <Stable@vger.kernel.org>
-Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: 0c7f293efc87 ("cgroup/cpuset: Add cpuset.cpus.exclusive.effective for v2")
+Signed-off-by: Waiman Long <longman@redhat.com>
+Signed-off-by: Tejun Heo <tj@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/iio/proximity/isl29501.c |   14 ++++++++++----
- 1 file changed, 10 insertions(+), 4 deletions(-)
+ kernel/cgroup/cpuset.c | 7 ++++---
+ 1 file changed, 4 insertions(+), 3 deletions(-)
 
---- a/drivers/iio/proximity/isl29501.c
-+++ b/drivers/iio/proximity/isl29501.c
-@@ -938,12 +938,18 @@ static irqreturn_t isl29501_trigger_hand
- 	struct iio_dev *indio_dev = pf->indio_dev;
- 	struct isl29501_private *isl29501 = iio_priv(indio_dev);
- 	const unsigned long *active_mask = indio_dev->active_scan_mask;
--	u32 buffer[4] __aligned(8) = {}; /* 1x16-bit + naturally aligned ts */
-+	u32 value;
-+	struct {
-+		u16 data;
-+		aligned_s64 ts;
-+	} scan = { };
+diff --git a/kernel/cgroup/cpuset.c b/kernel/cgroup/cpuset.c
+index af5dc30bfe4b..25f9565f798d 100644
+--- a/kernel/cgroup/cpuset.c
++++ b/kernel/cgroup/cpuset.c
+@@ -1771,7 +1771,7 @@ static int update_parent_effective_cpumask(struct cpuset *cs, int cmd,
+ 			if (is_partition_valid(cs))
+ 				adding = cpumask_and(tmp->addmask,
+ 						xcpus, parent->effective_xcpus);
+-		} else if (is_partition_invalid(cs) &&
++		} else if (is_partition_invalid(cs) && !cpumask_empty(xcpus) &&
+ 			   cpumask_subset(xcpus, parent->effective_xcpus)) {
+ 			struct cgroup_subsys_state *css;
+ 			struct cpuset *child;
+@@ -3792,9 +3792,10 @@ static void cpuset_hotplug_update_tasks(struct cpuset *cs, struct tmpmasks *tmp)
+ 		partcmd = partcmd_invalidate;
+ 	/*
+ 	 * On the other hand, an invalid partition root may be transitioned
+-	 * back to a regular one.
++	 * back to a regular one with a non-empty effective xcpus.
+ 	 */
+-	else if (is_partition_valid(parent) && is_partition_invalid(cs))
++	else if (is_partition_valid(parent) && is_partition_invalid(cs) &&
++		 !cpumask_empty(cs->effective_xcpus))
+ 		partcmd = partcmd_update;
  
--	if (test_bit(ISL29501_DISTANCE_SCAN_INDEX, active_mask))
--		isl29501_register_read(isl29501, REG_DISTANCE, buffer);
-+	if (test_bit(ISL29501_DISTANCE_SCAN_INDEX, active_mask)) {
-+		isl29501_register_read(isl29501, REG_DISTANCE, &value);
-+		scan.data = value;
-+	}
- 
--	iio_push_to_buffers_with_timestamp(indio_dev, buffer, pf->timestamp);
-+	iio_push_to_buffers_with_timestamp(indio_dev, &scan, pf->timestamp);
- 	iio_trigger_notify_done(indio_dev->trig);
- 
- 	return IRQ_HANDLED;
+ 	if (partcmd >= 0) {
+-- 
+2.50.1
+
 
 
 
