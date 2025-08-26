@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-175575-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-172999-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8C8C2B36906
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 16:21:55 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 50F17B35B54
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 13:23:13 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 84EA8582FD7
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 14:12:30 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id E03231897CA9
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 11:21:06 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0421E2C0F9C;
-	Tue, 26 Aug 2025 14:10:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0BD08334375;
+	Tue, 26 Aug 2025 11:18:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="JpOoCtjP"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="AE6gNtUc"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B5163374C4;
-	Tue, 26 Aug 2025 14:10:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A8576296BDF;
+	Tue, 26 Aug 2025 11:18:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756217406; cv=none; b=MglxaRN1+J488lg2W3i2xgru9CfgcHNs3SP2u62XZ/lMxX7MPTdYHYZ8pmg1scIsVqm3oW169MKB+WIVqiqM86kWY2SFD7PLwE625RzyZD/bcCqUMZgGhSWH+405TXySjT8YIdoSCIWnj8Vvzcd95/QkQjXsH36sC04U+dfiuVQ=
+	t=1756207113; cv=none; b=lSzr6MEJJqzOEsYJ2SXOU1kbhHNveo1FIZgZ4D34mkapW2lgmbOAddK5gqtNMY2V73FUQZ6zQVjP8fkn0d+K6PmR+YiLhadzbD8gh2Qzq47bw2tJn59Pog6ZZos6C2xWK1wc3ss7oAdIwVCu3kNWcHnvsaSsvwROomZNE/Axffc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756217406; c=relaxed/simple;
-	bh=9JpVAz3Fzqi/fOMqEKTs/a+fU4iz23zau1dE2PPJT50=;
+	s=arc-20240116; t=1756207113; c=relaxed/simple;
+	bh=6Moach80SfYFhqa+D3+lVM65WiwKpwIRW5cnqWskXoU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=K9kHFhcIL0UAnVJsD+xvVvoJH2GBWUWeML8sbDUxF37bYB9m3oWy037c/6Wbm1JneSaPhpg15G8QpcLI/AU8WgP5WrVxg2Bqn7x4gRJd7J3Aya16OAtZCYzHfwnxdCa0CkpyDwO/tA6EjA+kns5RbmPGgvq4XwcQmXgWSOVx5Ck=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=JpOoCtjP; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2236CC4CEF1;
-	Tue, 26 Aug 2025 14:10:05 +0000 (UTC)
+	 MIME-Version; b=Z7nLystFDmfOY6j7DlX8qJWAgmNYC+d0RrXW6uigCKXa3q0LhaPI/5xn/ROM5RHA9755ZNN2T1ldcTJtJ9+LN/5UYltpdpEJ9WQRO2gMr1mtyiNiEmOb0QotFNsYAN5wefseisBl5o9SZICy2DUY1bAuMyL8ZIGnYssK1WehSc0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=AE6gNtUc; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 375D8C4CEF1;
+	Tue, 26 Aug 2025 11:18:33 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1756217406;
-	bh=9JpVAz3Fzqi/fOMqEKTs/a+fU4iz23zau1dE2PPJT50=;
+	s=korg; t=1756207113;
+	bh=6Moach80SfYFhqa+D3+lVM65WiwKpwIRW5cnqWskXoU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=JpOoCtjPWYG5TAsXVnip9BGTFw0a20+AYv6uhdWCCKdwMR0yEKlFsQkTe0sOq8PHg
-	 u87SXdWEmzho0qbGA1lTMwjwsl9YcA1iX1CK+OI+MsOq04oY+Jz6e4G8NT9hwmuI48
-	 da+X9Jmljr8ZTrnuI+cTeT4q2BU5/lYMrkghAW9I=
+	b=AE6gNtUc0stPFF3CJaJ2iuVwhlGjYeETrxNsbxX6dviAq/Iri+edn1ZpKBa/u5TgU
+	 D/u9HJaD6708cRaVXCGUyt+Ju0g5fne5djSZvcYzbqpinULf8WacvN2nQvA++qiZdz
+	 zb8kInvwV/SSEbW2eTzo0sf2mVxt6fOmYBw185CU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Thomas Fourier <fourier.thomas@gmail.com>,
-	"Martin K. Petersen" <martin.petersen@oracle.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 130/523] scsi: ibmvscsi_tgt: Fix dma_unmap_sg() nents value
+	Hong Guan <hguan@ti.com>,
+	Bryan Brattlof <bb@ti.com>,
+	Vignesh Raghavendra <vigneshr@ti.com>
+Subject: [PATCH 6.16 056/457] arm64: dts: ti: k3-am62a7-sk: fix pinmux for main_uart1
 Date: Tue, 26 Aug 2025 13:05:40 +0200
-Message-ID: <20250826110927.711852900@linuxfoundation.org>
+Message-ID: <20250826110938.740031260@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250826110924.562212281@linuxfoundation.org>
-References: <20250826110924.562212281@linuxfoundation.org>
+In-Reply-To: <20250826110937.289866482@linuxfoundation.org>
+References: <20250826110937.289866482@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,53 +62,43 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+6.16-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Thomas Fourier <fourier.thomas@gmail.com>
+From: Hong Guan <hguan@ti.com>
 
-[ Upstream commit 023a293b9cd0bb86a9b50cd7688a3d9d266826db ]
+commit 8e44ac61abaae56fc6eb537a04ed78b458c5b984 upstream.
 
-The dma_unmap_sg() functions should be called with the same nents as the
-dma_map_sg(), not the value the map function returned.
+main_uart1 reserved for TIFS firmware traces is routed to the
+onboard FT4232 via a FET switch which is connected to pin A21 and
+B21 of the SoC and not E17 and C17. Fix it.
 
-Fixes: 88a678bbc34c ("ibmvscsis: Initial commit of IBM VSCSI Tgt Driver")
-Signed-off-by: Thomas Fourier <fourier.thomas@gmail.com>
-Link: https://lore.kernel.org/r/20250630111803.94389-2-fourier.thomas@gmail.com
-Signed-off-by: Martin K. Petersen <martin.petersen@oracle.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Fixes: cf39ff15cc01a ("arm64: dts: ti: k3-am62a7-sk: Describe main_uart1 and wkup_uart")
+Cc: stable@vger.kernel.org
+Signed-off-by: Hong Guan <hguan@ti.com>
+[bb@ti.com: expanded commit message]
+Signed-off-by: Bryan Brattlof <bb@ti.com>
+Link: https://lore.kernel.org/r/20250707-uart-fixes-v1-1-8164147218b0@ti.com
+Signed-off-by: Vignesh Raghavendra <vigneshr@ti.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/scsi/ibmvscsi_tgt/libsrp.c | 6 ++++--
- 1 file changed, 4 insertions(+), 2 deletions(-)
+ arch/arm64/boot/dts/ti/k3-am62a7-sk.dts |    4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/scsi/ibmvscsi_tgt/libsrp.c b/drivers/scsi/ibmvscsi_tgt/libsrp.c
-index 8a0e28aec928..0ecad398ed3d 100644
---- a/drivers/scsi/ibmvscsi_tgt/libsrp.c
-+++ b/drivers/scsi/ibmvscsi_tgt/libsrp.c
-@@ -184,7 +184,8 @@ static int srp_direct_data(struct ibmvscsis_cmd *cmd, struct srp_direct_buf *md,
- 	err = rdma_io(cmd, sg, nsg, md, 1, dir, len);
+--- a/arch/arm64/boot/dts/ti/k3-am62a7-sk.dts
++++ b/arch/arm64/boot/dts/ti/k3-am62a7-sk.dts
+@@ -301,8 +301,8 @@
  
- 	if (dma_map)
--		dma_unmap_sg(iue->target->dev, sg, nsg, DMA_BIDIRECTIONAL);
-+		dma_unmap_sg(iue->target->dev, sg, cmd->se_cmd.t_data_nents,
-+			     DMA_BIDIRECTIONAL);
- 
- 	return err;
- }
-@@ -256,7 +257,8 @@ static int srp_indirect_data(struct ibmvscsis_cmd *cmd, struct srp_cmd *srp_cmd,
- 	err = rdma_io(cmd, sg, nsg, md, nmd, dir, len);
- 
- 	if (dma_map)
--		dma_unmap_sg(iue->target->dev, sg, nsg, DMA_BIDIRECTIONAL);
-+		dma_unmap_sg(iue->target->dev, sg, cmd->se_cmd.t_data_nents,
-+			     DMA_BIDIRECTIONAL);
- 
- free_mem:
- 	if (token && dma_map) {
--- 
-2.39.5
-
+ 	main_uart1_pins_default: main-uart1-default-pins {
+ 		pinctrl-single,pins = <
+-			AM62AX_IOPAD(0x01e8, PIN_INPUT, 1) /* (C17) I2C1_SCL.UART1_RXD */
+-			AM62AX_IOPAD(0x01ec, PIN_OUTPUT, 1) /* (E17) I2C1_SDA.UART1_TXD */
++			AM62AX_IOPAD(0x01ac, PIN_INPUT, 2) /* (B21) MCASP0_AFSR.UART1_RXD */
++			AM62AX_IOPAD(0x01b0, PIN_OUTPUT, 2) /* (A21) MCASP0_ACLKR.UART1_TXD */
+ 			AM62AX_IOPAD(0x0194, PIN_INPUT, 2) /* (C19) MCASP0_AXR3.UART1_CTSn */
+ 			AM62AX_IOPAD(0x0198, PIN_OUTPUT, 2) /* (B19) MCASP0_AXR2.UART1_RTSn */
+ 		>;
 
 
 
