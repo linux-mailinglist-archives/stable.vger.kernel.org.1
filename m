@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-173515-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-175765-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 03D77B35DC2
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 13:47:46 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5CDEDB36A3A
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 16:35:38 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 4FD261BC126B
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 11:41:23 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id EB23E987B1A
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 14:20:33 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id F0445283FDF;
-	Tue, 26 Aug 2025 11:40:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id AA8AA352077;
+	Tue, 26 Aug 2025 14:18:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="1il7GUXr"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="rjv0pJto"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AB3EE199935;
-	Tue, 26 Aug 2025 11:40:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 66A25342CA7;
+	Tue, 26 Aug 2025 14:18:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756208448; cv=none; b=pkBNMZVjCr7XX2AdJL3amaTb02A015rhMuCQghYl8V2779EkoRGI6q3Wuocz7jRfPoL4By2o3qmXuguTDpPlNmUexwoRidl0Pb+jpx3BEP4aOKD4FGUZauCpIdhwMI17gzDSZOyw6B/i2mFMI3IPQfk3rgW3+ayweVrPmfG0UQ0=
+	t=1756217910; cv=none; b=RTq+szOKudvuXke+064lBMqUryxjcfPsqsWtDMcN5SoU6e+x3qN0uJ2gWjIyuM/r2Q9+pnegeSm81UdWz7ibpkWCRYN3YaAbKW0kY1hSKndpbGjpwlPK0CwLmzFBpke4ZGHrRMA3fYChyDB0n3kzbs7CYh18j3zkByVYbfgNKVI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756208448; c=relaxed/simple;
-	bh=hGLCeozpeShmt/+XUBIdNd72DY2tOUg0JVPnkYeBdsU=;
+	s=arc-20240116; t=1756217910; c=relaxed/simple;
+	bh=zzDKZSsvsxDxhXGJ8gN1eZ/mSOXV3BWuHkfYj4Z+qcA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=hW/2EJeUjgGyGL/LT4VjmqUlTmerWJuo8UkMZlhu2hJcZS/lTB2A0AYebY+7xClG5abHeubc1PQjhl6N65U7d0x5GkasA59TQEyiT02NIP8FqQUEN2ypa7BeelgCV1qLDD2n3aYx/4bu+9MrJFmolT8uG9lLw7PkjL6yk2srQq4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=1il7GUXr; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2FC64C4CEF1;
-	Tue, 26 Aug 2025 11:40:48 +0000 (UTC)
+	 MIME-Version; b=C3HP4DWz49YUK8RCeH5f5iM7/HBVlPdZbwbxYJ2pou9N90JBz+vI20qYKat2Rw4jmt5lXgzpYXJ0aT6XaIplaxsnVwSzbeqM2kY7ZQJgNkvDgvYI81pwiMfK+/Qe5kj8YVOcQM3MNeY1/6gMgc+Il+G2PcQual/MO745+M1i3tA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=rjv0pJto; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id EA7E2C4CEF1;
+	Tue, 26 Aug 2025 14:18:29 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1756208448;
-	bh=hGLCeozpeShmt/+XUBIdNd72DY2tOUg0JVPnkYeBdsU=;
+	s=korg; t=1756217910;
+	bh=zzDKZSsvsxDxhXGJ8gN1eZ/mSOXV3BWuHkfYj4Z+qcA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=1il7GUXrxxKdDcJhyy5ZyyCqsyfg0MZhxHi73jPDY1LrRyXed86bbJvDnzE2RleED
-	 GLytZa1oSAUXooxHBJ7ZFOFULoN6Fb3u9DJo+/FBGdCYChdtEZ0kz2fg7waRoPGOTM
-	 r0e6ZQxT5nG5vd3C9UeX3wskeej4hCZMVGldJYo0=
+	b=rjv0pJtoOo2LcjSFfRJVqelr+rKr4P6bNrHqq9Vu1DHnv30ivueBZqWxMWVZrUEBs
+	 6VTV+zHdOI2DVn4Y7KyB+ir2z9FwKhm1SpabbneJqoq5j7mFYMFLXT1h/IaNW0mgn3
+	 fy3R3M7+IS3JVhFiYEgo9+fyaD4KV86eOPNTyk2o=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Hans Verkuil <hverkuil@xs4all.nl>,
-	Bryan ODonoghue <bryan.odonoghue@linaro.org>,
-	Ricardo Ribalda <ribalda@chromium.org>,
-	Bryan ODonoghue <bod@kernel.org>
-Subject: [PATCH 6.12 116/322] media: venus: vdec: Clamp param smaller than 1fps and bigger than 240.
+	Suchit Karunakaran <suchitkarunakaran@gmail.com>,
+	Nicolas Schier <nicolas.schier@linux.dev>,
+	Masahiro Yamada <masahiroy@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.10 321/523] kconfig: lxdialog: replace strcpy() with strncpy() in inputbox.c
 Date: Tue, 26 Aug 2025 13:08:51 +0200
-Message-ID: <20250826110918.658873522@linuxfoundation.org>
+Message-ID: <20250826110932.383824363@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250826110915.169062587@linuxfoundation.org>
-References: <20250826110915.169062587@linuxfoundation.org>
+In-Reply-To: <20250826110924.562212281@linuxfoundation.org>
+References: <20250826110924.562212281@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,64 +63,46 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Ricardo Ribalda <ribalda@chromium.org>
+From: Suchit Karunakaran <suchitkarunakaran@gmail.com>
 
-commit 377dc500d253f0b26732b2cb062e89668aef890a upstream.
+[ Upstream commit 5ac726653a1029a2eccba93bbe59e01fc9725828 ]
 
-The driver uses "whole" fps in all its calculations (e.g. in
-load_per_instance()). Those calculation expect an fps bigger than 1, and
-not big enough to overflow.
+strcpy() performs no bounds checking and can lead to buffer overflows if
+the input string exceeds the destination buffer size. This patch replaces
+it with strncpy(), and null terminates the input string.
 
-Clamp the value if the user provides a param that will result in an invalid
-fps.
-
-Reported-by: Hans Verkuil <hverkuil@xs4all.nl>
-Closes: https://lore.kernel.org/linux-media/f11653a7-bc49-48cd-9cdb-1659147453e4@xs4all.nl/T/#m91cd962ac942834654f94c92206e2f85ff7d97f0
-Fixes: 7472c1c69138 ("[media] media: venus: vdec: add video decoder files")
-Cc: stable@vger.kernel.org
-Tested-by: Bryan O'Donoghue <bryan.odonoghue@linaro.org> # qrb5615-rb5
-Reviewed-by: Bryan O'Donoghue <bryan.odonoghue@linaro.org>
-Signed-off-by: Ricardo Ribalda <ribalda@chromium.org>
-[bod: Change "parm" to "param"]
-Signed-off-by: Bryan O'Donoghue <bod@kernel.org>
-Signed-off-by: Hans Verkuil <hverkuil@xs4all.nl>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Signed-off-by: Suchit Karunakaran <suchitkarunakaran@gmail.com>
+Reviewed-by: Nicolas Schier <nicolas.schier@linux.dev>
+Signed-off-by: Masahiro Yamada <masahiroy@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/media/platform/qcom/venus/core.h |    2 ++
- drivers/media/platform/qcom/venus/vdec.c |    5 ++---
- 2 files changed, 4 insertions(+), 3 deletions(-)
+ scripts/kconfig/lxdialog/inputbox.c | 6 ++++--
+ 1 file changed, 4 insertions(+), 2 deletions(-)
 
---- a/drivers/media/platform/qcom/venus/core.h
-+++ b/drivers/media/platform/qcom/venus/core.h
-@@ -27,6 +27,8 @@
- #define VIDC_VCODEC_CLKS_NUM_MAX	2
- #define VIDC_RESETS_NUM_MAX		2
+diff --git a/scripts/kconfig/lxdialog/inputbox.c b/scripts/kconfig/lxdialog/inputbox.c
+index 1dcfb288ee63..327b60cdb8da 100644
+--- a/scripts/kconfig/lxdialog/inputbox.c
++++ b/scripts/kconfig/lxdialog/inputbox.c
+@@ -39,8 +39,10 @@ int dialog_inputbox(const char *title, const char *prompt, int height, int width
  
-+#define VENUS_MAX_FPS			240
-+
- extern int venus_fw_debug;
+ 	if (!init)
+ 		instr[0] = '\0';
+-	else
+-		strcpy(instr, init);
++	else {
++		strncpy(instr, init, sizeof(dialog_input_result) - 1);
++		instr[sizeof(dialog_input_result) - 1] = '\0';
++	}
  
- struct freq_tbl {
---- a/drivers/media/platform/qcom/venus/vdec.c
-+++ b/drivers/media/platform/qcom/venus/vdec.c
-@@ -481,11 +481,10 @@ static int vdec_s_parm(struct file *file
- 	us_per_frame = timeperframe->numerator * (u64)USEC_PER_SEC;
- 	do_div(us_per_frame, timeperframe->denominator);
- 
--	if (!us_per_frame)
--		return -EINVAL;
--
-+	us_per_frame = clamp(us_per_frame, 1, USEC_PER_SEC);
- 	fps = (u64)USEC_PER_SEC;
- 	do_div(fps, us_per_frame);
-+	fps = min(VENUS_MAX_FPS, fps);
- 
- 	inst->fps = fps;
- 	inst->timeperframe = *timeperframe;
+ do_resize:
+ 	if (getmaxy(stdscr) <= (height - INPUTBOX_HEIGTH_MIN))
+-- 
+2.39.5
+
 
 
 
