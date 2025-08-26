@@ -1,56 +1,58 @@
-Return-Path: <stable+bounces-174118-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-176180-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6E1DBB36168
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 15:09:16 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 03DF8B36AAE
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 16:39:36 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 69CCB1BA79E4
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 13:06:32 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 966BC7AFF5C
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 14:37:47 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1DEA3242D7B;
-	Tue, 26 Aug 2025 13:05:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id EAC753570BF;
+	Tue, 26 Aug 2025 14:36:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="SemD0CdS"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="aG767lEF"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CDDD7242D6A;
-	Tue, 26 Aug 2025 13:05:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A9247352077;
+	Tue, 26 Aug 2025 14:36:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756213541; cv=none; b=rKM7bm8ueHlnYBpWt4MmwFq5sT21oTPEY+LJRtz+68zxO0XQt5XukBMyEIuV+itGMCCBu1YvQ3IWhw9cCVzopDcYkLKrs+kjRaVjFIt2aBRDmdrw4ogtRstUsXb7YLmCVslnCX9uaxalRF8Kd6VzguvGyQrg8sIpULW3wYUQeHo=
+	t=1756218990; cv=none; b=rwytN9Mr/myoC6N2Q1jB5jjwPklBuAn4VdCh65tp2mHSgCdS3L8jXq/D57TKjEvcBWBney4cgvyHURjekpUErjYilF+Ee0OceYp9ay+qt0LLAgGoFAnn6tTMbgp9QsLTUVjNd/wSQEkA+enHLFG+ITkHPtIm+qmvhd2Slt5LvpI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756213541; c=relaxed/simple;
-	bh=7obho7UFx38bScCwidz5bZTIrbg9wrbYGkgaR842tZs=;
+	s=arc-20240116; t=1756218990; c=relaxed/simple;
+	bh=o6r9s7x++xvuZbUF3N26pobTwwbJO8P4LnP51JFujZo=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=jYD3BTRqoONomvmaTW5M9HG7cZk9IM/t1uKxmHQ0VcjJytNDJG1Z6ZRaWit9qeIK5kxjYa1MD0YzcEgRTjbZ7r7SuAt/dj3mrU6t7vxVifCk6rSAEbsV6YQu7sMMnGTYX+WIe5uvfxszQTMJSr/74E+J0VyW6BN9h4lXInz1AgE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=SemD0CdS; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id F0DADC19421;
-	Tue, 26 Aug 2025 13:05:40 +0000 (UTC)
+	 MIME-Version; b=nk7muvSGV/uAlki2UExiI/B3QsWkaYc2nouSk/mMyF373X+vATO57v+eC17cnEkhgqVwEY64EdZxWNrPLEuWVcgQF5wHqqYUtYQwuSpbgVXo45vF1DHoouXZ6Sosu5mZQznz1Mc+toOiztmYL4Hdx/rddJBCJmezjB4a6UXBHW8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=aG767lEF; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E8AC5C113CF;
+	Tue, 26 Aug 2025 14:36:29 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1756213541;
-	bh=7obho7UFx38bScCwidz5bZTIrbg9wrbYGkgaR842tZs=;
+	s=korg; t=1756218990;
+	bh=o6r9s7x++xvuZbUF3N26pobTwwbJO8P4LnP51JFujZo=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=SemD0CdSFzE7OQ8vy5gXirTGajONH1GG82J3004up6SNK8TzfJ05cHwP9YbybgmCV
-	 ik3uXtAVoo4qMar+GsqIRgyt3xe/gpXYRR+MRY7OWDtBqcnsurNaRTQEqn1hcMswcG
-	 53rFIvack8OeFcS5Gbl2WkBhnB9xEpB/2CpobK5c=
+	b=aG767lEF7XF5x5XeqrzPm+FlnWe9xY3VjAsmuvwRhXrbsFfiTTopriJTmloirzkvp
+	 U5lNtASItTOK2Q5lM3KkngtSBr1qCN5orPfdh/DEeQVhGw/NVNWBCgr04Dx9untD/t
+	 kIct1gnMtDpt8CnhR7DSHUhplokg6usdBCFPXjWA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Stefano Garzarella <sgarzare@redhat.com>,
-	Will Deacon <will@kernel.org>,
-	"Michael S. Tsirkin" <mst@redhat.com>
-Subject: [PATCH 6.6 387/587] vhost/vsock: Avoid allocating arbitrarily-sized SKBs
+	Thomas Fourier <fourier.thomas@gmail.com>,
+	Mark Einon <mark.einon@gmail.com>,
+	Simon Horman <horms@kernel.org>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.4 210/403] et131x: Add missing check after DMA map
 Date: Tue, 26 Aug 2025 13:08:56 +0200
-Message-ID: <20250826111002.758593819@linuxfoundation.org>
+Message-ID: <20250826110912.645730308@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250826110952.942403671@linuxfoundation.org>
-References: <20250826110952.942403671@linuxfoundation.org>
+In-Reply-To: <20250826110905.607690791@linuxfoundation.org>
+References: <20250826110905.607690791@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,58 +64,105 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+5.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Will Deacon <will@kernel.org>
+From: Thomas Fourier <fourier.thomas@gmail.com>
 
-commit 10a886aaed293c4db3417951f396827216299e3d upstream.
+[ Upstream commit d61f6cb6f6ef3c70d2ccc0d9c85c508cb8017da9 ]
 
-vhost_vsock_alloc_skb() returns NULL for packets advertising a length
-larger than VIRTIO_VSOCK_MAX_PKT_BUF_SIZE in the packet header. However,
-this is only checked once the SKB has been allocated and, if the length
-in the packet header is zero, the SKB may not be freed immediately.
+The DMA map functions can fail and should be tested for errors.
+If the mapping fails, unmap and return an error.
 
-Hoist the size check before the SKB allocation so that an iovec larger
-than VIRTIO_VSOCK_MAX_PKT_BUF_SIZE + the header size is rejected
-outright. The subsequent check on the length field in the header can
-then simply check that the allocated SKB is indeed large enough to hold
-the packet.
-
-Cc: <stable@vger.kernel.org>
-Fixes: 71dc9ec9ac7d ("virtio/vsock: replace virtio_vsock_pkt with sk_buff")
-Reviewed-by: Stefano Garzarella <sgarzare@redhat.com>
-Signed-off-by: Will Deacon <will@kernel.org>
-Message-Id: <20250717090116.11987-2-will@kernel.org>
-Signed-off-by: Michael S. Tsirkin <mst@redhat.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Signed-off-by: Thomas Fourier <fourier.thomas@gmail.com>
+Acked-by: Mark Einon <mark.einon@gmail.com>
+Reviewed-by: Simon Horman <horms@kernel.org>
+Link: https://patch.msgid.link/20250716094733.28734-2-fourier.thomas@gmail.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/vhost/vsock.c |    6 ++++--
- 1 file changed, 4 insertions(+), 2 deletions(-)
+ drivers/net/ethernet/agere/et131x.c | 36 +++++++++++++++++++++++++++++
+ 1 file changed, 36 insertions(+)
 
---- a/drivers/vhost/vsock.c
-+++ b/drivers/vhost/vsock.c
-@@ -340,6 +340,9 @@ vhost_vsock_alloc_skb(struct vhost_virtq
- 
- 	len = iov_length(vq->iov, out);
- 
-+	if (len > VIRTIO_VSOCK_MAX_PKT_BUF_SIZE + VIRTIO_VSOCK_SKB_HEADROOM)
-+		return NULL;
+diff --git a/drivers/net/ethernet/agere/et131x.c b/drivers/net/ethernet/agere/et131x.c
+index 174344c450af..f6232e8178b8 100644
+--- a/drivers/net/ethernet/agere/et131x.c
++++ b/drivers/net/ethernet/agere/et131x.c
+@@ -2464,6 +2464,10 @@ static int nic_send_packet(struct et131x_adapter *adapter, struct tcb *tcb)
+ 							  skb->data,
+ 							  skb_headlen(skb),
+ 							  DMA_TO_DEVICE);
++				if (dma_mapping_error(&adapter->pdev->dev,
++						      dma_addr))
++					return -ENOMEM;
 +
- 	/* len contains both payload and hdr */
- 	skb = virtio_vsock_alloc_skb(len, GFP_KERNEL);
- 	if (!skb)
-@@ -363,8 +366,7 @@ vhost_vsock_alloc_skb(struct vhost_virtq
- 		return skb;
- 
- 	/* The pkt is too big or the length in the header is invalid */
--	if (payload_len > VIRTIO_VSOCK_MAX_PKT_BUF_SIZE ||
--	    payload_len + sizeof(*hdr) > len) {
-+	if (payload_len + sizeof(*hdr) > len) {
- 		kfree_skb(skb);
- 		return NULL;
+ 				desc[frag].addr_lo = lower_32_bits(dma_addr);
+ 				desc[frag].addr_hi = upper_32_bits(dma_addr);
+ 				frag++;
+@@ -2473,6 +2477,10 @@ static int nic_send_packet(struct et131x_adapter *adapter, struct tcb *tcb)
+ 							  skb->data,
+ 							  skb_headlen(skb) / 2,
+ 							  DMA_TO_DEVICE);
++				if (dma_mapping_error(&adapter->pdev->dev,
++						      dma_addr))
++					return -ENOMEM;
++
+ 				desc[frag].addr_lo = lower_32_bits(dma_addr);
+ 				desc[frag].addr_hi = upper_32_bits(dma_addr);
+ 				frag++;
+@@ -2483,6 +2491,10 @@ static int nic_send_packet(struct et131x_adapter *adapter, struct tcb *tcb)
+ 							  skb_headlen(skb) / 2,
+ 							  skb_headlen(skb) / 2,
+ 							  DMA_TO_DEVICE);
++				if (dma_mapping_error(&adapter->pdev->dev,
++						      dma_addr))
++					goto unmap_first_out;
++
+ 				desc[frag].addr_lo = lower_32_bits(dma_addr);
+ 				desc[frag].addr_hi = upper_32_bits(dma_addr);
+ 				frag++;
+@@ -2494,6 +2506,9 @@ static int nic_send_packet(struct et131x_adapter *adapter, struct tcb *tcb)
+ 						    0,
+ 						    desc[frag].len_vlan,
+ 						    DMA_TO_DEVICE);
++			if (dma_mapping_error(&adapter->pdev->dev, dma_addr))
++				goto unmap_out;
++
+ 			desc[frag].addr_lo = lower_32_bits(dma_addr);
+ 			desc[frag].addr_hi = upper_32_bits(dma_addr);
+ 			frag++;
+@@ -2583,6 +2598,27 @@ static int nic_send_packet(struct et131x_adapter *adapter, struct tcb *tcb)
+ 		       &adapter->regs->global.watchdog_timer);
  	}
+ 	return 0;
++
++unmap_out:
++	// Unmap the body of the packet with map_page
++	while (--i) {
++		frag--;
++		dma_addr = desc[frag].addr_lo;
++		dma_addr |= (u64)desc[frag].addr_hi << 32;
++		dma_unmap_page(&adapter->pdev->dev, dma_addr,
++			       desc[frag].len_vlan, DMA_TO_DEVICE);
++	}
++
++unmap_first_out:
++	// Unmap the header with map_single
++	while (frag--) {
++		dma_addr = desc[frag].addr_lo;
++		dma_addr |= (u64)desc[frag].addr_hi << 32;
++		dma_unmap_single(&adapter->pdev->dev, dma_addr,
++				 desc[frag].len_vlan, DMA_TO_DEVICE);
++	}
++
++	return -ENOMEM;
+ }
+ 
+ static int send_packet(struct sk_buff *skb, struct et131x_adapter *adapter)
+-- 
+2.39.5
+
 
 
 
