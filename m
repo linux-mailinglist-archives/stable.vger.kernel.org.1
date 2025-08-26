@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-175554-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-172981-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id C85CEB36931
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 16:23:48 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 17CA0B35B26
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 13:19:28 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 34D548E55F7
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 14:10:04 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id AD4A21BA0ED9
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 11:18:59 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6AF7634DCF1;
-	Tue, 26 Aug 2025 14:09:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D0C9B335BC3;
+	Tue, 26 Aug 2025 11:17:45 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="FwM4dvLO"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="uZTF+J4I"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 28FF828314A;
-	Tue, 26 Aug 2025 14:09:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8A5DF3375DC;
+	Tue, 26 Aug 2025 11:17:45 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756217351; cv=none; b=rlYKOMK+8pPZYEhjzr+zHYr+M+tQ0zipjKG81/6IE6LSBJrTnQbDhLHgmbNF1GmtiGBEgnEf8UnwRDz3DGJTWYYmcaqi2Y+yy9HXAg/Kw0SsqJoMqVrbSLWUaGRZZNXUmejjCK1ZDY8BFzDT96Nkx+L+PPrg+Mak/15M5rwdBwA=
+	t=1756207065; cv=none; b=Xc810kNXX+757S1WtHd63lOh3cNGhClSwk2x+XUcx4jOVq8oeFkpnA5rqmJ9vxuw9XY/WVWs0BbzQtUiAgqBHtMoYhdlGxf/8HniTM1atdL4DaoraKC0u6PCAfnlaWo0ephVzu21teu+wkoI0DyxRI6kyM0TQbk+c1HnDr4Kqe8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756217351; c=relaxed/simple;
-	bh=GOp7LLBn1qOmXLU4Ett6weoCZnjkWf1Xleva05YXOHY=;
+	s=arc-20240116; t=1756207065; c=relaxed/simple;
+	bh=ULJH31bzaTJaExtg7+vRNM+gkj/LJ9duOzOc+MiwPgA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=iQY8MCNEOMdd2Mp7fjIB7RFkRYuMt3bcAZh0XOIw5YSoU3rt24HAAnREE0uBP1UmcdbCvXgws8PBMvJ9A0tiITCk3VXcNDOxkxrgUQI9Y/96Goj1ORfkEHvbJevEble92CtZIE52rlCVw4427trFjERkHpmcExuN9y3ibH9jM0U=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=FwM4dvLO; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B074AC113CF;
-	Tue, 26 Aug 2025 14:09:10 +0000 (UTC)
+	 MIME-Version; b=jAVcO5MYgnScCQ7Pxn/5jPpnN+KNfzd1BN3eccMTlo1Cpob9KtTBjCX7UmCZO2QXp330XZMay85/pyrRuypohyH/A0ZF4k8JRBLjPuR1MJ0vFe/KfudlnGwiTzFbA000qEmRO4wXWaF7bCY/l3kKlD1bAVJyUZf03iXNIwReIeU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=uZTF+J4I; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A8A53C4CEF1;
+	Tue, 26 Aug 2025 11:17:44 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1756217351;
-	bh=GOp7LLBn1qOmXLU4Ett6weoCZnjkWf1Xleva05YXOHY=;
+	s=korg; t=1756207065;
+	bh=ULJH31bzaTJaExtg7+vRNM+gkj/LJ9duOzOc+MiwPgA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=FwM4dvLOItsRIAMvPpL2+p3cW3m3nz9vP0g1UUzuVt80cWyruDHlzN3IO6UAUTNl+
-	 yEL36hO29vQZ/bMzO2VVBS+AGdWpJjjVWFtrN6uSSB6r5gsRZIO/OO9ihmYrOUhRUQ
-	 MBPKmoHN7Vbi2Y6z+6Jm1VwH+8mUD07XqwX2J3Ts=
+	b=uZTF+J4IIRQgtGN2YUHObEYpMbdwsA18Yr8S5n1GX6mH6RGpKmFimAiirqDQTfOQl
+	 w9aTR+7vf5Er5e1c0iXBzfFZlNOwolcKqndJDjY+oxBKm5d0lwFgPEpExi8H6kYQr3
+	 ZqiDXSP1Wk5TIufIyMdJ6DUHH8MBQYar/9t38BY8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Thomas Fourier <fourier.thomas@gmail.com>,
-	Johannes Berg <johannes.berg@intel.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 111/523] mwl8k: Add missing check after DMA map
+	stable@kernel.org,
+	Baokun Li <libaokun1@huawei.com>,
+	Jan Kara <jack@suse.cz>,
+	Theodore Tso <tytso@mit.edu>
+Subject: [PATCH 6.16 037/457] ext4: preserve SB_I_VERSION on remount
 Date: Tue, 26 Aug 2025 13:05:21 +0200
-Message-ID: <20250826110927.264993100@linuxfoundation.org>
+Message-ID: <20250826110938.261885427@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250826110924.562212281@linuxfoundation.org>
-References: <20250826110924.562212281@linuxfoundation.org>
+In-Reply-To: <20250826110937.289866482@linuxfoundation.org>
+References: <20250826110937.289866482@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,44 +63,60 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+6.16-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Thomas Fourier <fourier.thomas@gmail.com>
+From: Baokun Li <libaokun1@huawei.com>
 
-[ Upstream commit 50459501b9a212dbe7a673727589ee105a8a9954 ]
+commit f2326fd14a224e4cccbab89e14c52279ff79b7ec upstream.
 
-The DMA map functions can fail and should be tested for errors.
-If the mapping fails, unmap and return an error.
+IMA testing revealed that after an ext4 remount, file accesses triggered
+full measurements even without modifications, instead of skipping as
+expected when i_version is unchanged.
 
-Fixes: 788838ebe8a4 ("mwl8k: use pci_unmap_addr{,set}() to keep track of unmap addresses on rx")
-Signed-off-by: Thomas Fourier <fourier.thomas@gmail.com>
-Link: https://patch.msgid.link/20250709111339.25360-2-fourier.thomas@gmail.com
-Signed-off-by: Johannes Berg <johannes.berg@intel.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Debugging showed `SB_I_VERSION` was cleared in reconfigure_super() during
+remount due to commit 1ff20307393e ("ext4: unconditionally enable the
+i_version counter") removing the fix from commit 960e0ab63b2e ("ext4: fix
+i_version handling on remount").
+
+To rectify this, `SB_I_VERSION` is always set for `fc->sb_flags` in
+ext4_init_fs_context(), instead of `sb->s_flags` in __ext4_fill_super(),
+ensuring it persists across all mounts.
+
+Cc: stable@kernel.org
+Fixes: 1ff20307393e ("ext4: unconditionally enable the i_version counter")
+Signed-off-by: Baokun Li <libaokun1@huawei.com>
+Reviewed-by: Jan Kara <jack@suse.cz>
+Link: https://patch.msgid.link/20250703073903.6952-2-libaokun@huaweicloud.com
+Signed-off-by: Theodore Ts'o <tytso@mit.edu>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/net/wireless/marvell/mwl8k.c | 4 ++++
- 1 file changed, 4 insertions(+)
+ fs/ext4/super.c |    6 +++---
+ 1 file changed, 3 insertions(+), 3 deletions(-)
 
-diff --git a/drivers/net/wireless/marvell/mwl8k.c b/drivers/net/wireless/marvell/mwl8k.c
-index dd72e9f8b407..194087e6a764 100644
---- a/drivers/net/wireless/marvell/mwl8k.c
-+++ b/drivers/net/wireless/marvell/mwl8k.c
-@@ -1220,6 +1220,10 @@ static int rxq_refill(struct ieee80211_hw *hw, int index, int limit)
+--- a/fs/ext4/super.c
++++ b/fs/ext4/super.c
+@@ -1998,6 +1998,9 @@ int ext4_init_fs_context(struct fs_conte
+ 	fc->fs_private = ctx;
+ 	fc->ops = &ext4_context_ops;
  
- 		addr = pci_map_single(priv->pdev, skb->data,
- 				      MWL8K_RX_MAXSZ, DMA_FROM_DEVICE);
-+		if (dma_mapping_error(&priv->pdev->dev, addr)) {
-+			kfree_skb(skb);
-+			break;
-+		}
++	/* i_version is always enabled now */
++	fc->sb_flags |= SB_I_VERSION;
++
+ 	return 0;
+ }
  
- 		rxq->rxd_count++;
- 		rx = rxq->tail++;
--- 
-2.39.5
-
+@@ -5314,9 +5317,6 @@ static int __ext4_fill_super(struct fs_c
+ 	sb->s_flags = (sb->s_flags & ~SB_POSIXACL) |
+ 		(test_opt(sb, POSIX_ACL) ? SB_POSIXACL : 0);
+ 
+-	/* i_version is always enabled now */
+-	sb->s_flags |= SB_I_VERSION;
+-
+ 	/* HSM events are allowed by default. */
+ 	sb->s_iflags |= SB_I_ALLOW_HSM;
+ 
 
 
 
