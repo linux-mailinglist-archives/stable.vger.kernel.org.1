@@ -1,55 +1,57 @@
-Return-Path: <stable+bounces-173053-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-174457-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id F1FCBB35B88
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 13:25:24 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id A95F6B362D6
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 15:22:51 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id DD1C01BA2E62
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 11:22:29 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id C67557AE288
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 13:21:15 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 76EED3090E1;
-	Tue, 26 Aug 2025 11:20:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 86233139579;
+	Tue, 26 Aug 2025 13:20:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="QFWKGgUc"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="HjcUkqKM"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 34F4F299959;
-	Tue, 26 Aug 2025 11:20:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 427F8AD4B;
+	Tue, 26 Aug 2025 13:20:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756207252; cv=none; b=lb5WN2aj0jrDo7iaUg6npkVifd1/7Oddn8I0yXeAVlVyI5VF4eHMoTp2/5lPsJc5bh3vJY6DZjUXWALSpneh4O9jMuO0buM6C8TQExg/6dt2oDy4auci936pd+gpyHigvLqWpcHvUr6GoHbGVkYbhcCDbg1VJMt/NaK2d0+dWsw=
+	t=1756214443; cv=none; b=bYC8IrAl8cEZs5XyquheCzL/OPaPJ9M3/A0kwMcxaRPFtGuqWadbVZYwDqyB/BZ/tuvJDxfUVAoUcRELKfMaEoSvaKOfPlfEFJqbdcgKCJhTAoSOwuP5Zmik6zj+WPYUkBwfkNOAaEhntjud2pGmJX4Zj7kUbJu6tOfBfDbxeak=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756207252; c=relaxed/simple;
-	bh=Ru+y4B9xzfuqIAxAyh/v5YySM1y8D1rAdBcjljYe3cU=;
+	s=arc-20240116; t=1756214443; c=relaxed/simple;
+	bh=hCiMe5XgobARM+Q/Vb3qN0MsTLH+Ll6cVEa9P9zYUHM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=qYo53bod1hlAwW+3/b1Pl2kMF6nh2oGPjOwVU2VclJUw+67B75vl6cHYI8YwRwV9zXkLJlcxsISf13phqJMnRlOEK5DfcRApqEqv3j3DVpuCBtiQgx71hF1Q375p2tXfqnDE+eDVQEdasEH9ElM3IOQ+dRln3xzxsB8JwMXnjyc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=QFWKGgUc; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id BFDC0C4CEF1;
-	Tue, 26 Aug 2025 11:20:51 +0000 (UTC)
+	 MIME-Version; b=Ru3z9ljFqu+AmP1ePrQPOHEdZWByNc4xcU7GaW3miy8pNlGzock/Kc26wHjFBI5azX0z83ksaLj/5dvHCuQWEQzi1ILBdj0W53r9qMolH1krOV1CNsupSOp2Ibe6TwaaXPabhAc7LTTmw8UCw/Z6+x1OYwGGusuWo2qtMBD1pDk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=HjcUkqKM; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9F62AC4CEF1;
+	Tue, 26 Aug 2025 13:20:42 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1756207252;
-	bh=Ru+y4B9xzfuqIAxAyh/v5YySM1y8D1rAdBcjljYe3cU=;
+	s=korg; t=1756214443;
+	bh=hCiMe5XgobARM+Q/Vb3qN0MsTLH+Ll6cVEa9P9zYUHM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=QFWKGgUcmsc1q70ZW07AYbBtpVGkovz31kPGfvum+HJNVZm95xSfhh/seVmX6dsCl
-	 nwVwf3eQ5rS6Ybkh9CmYAoJ2qA9tKJpktUxmT54rVIot426FLMhTdOREd7cieq6obb
-	 HCBPrvoY1UZHWWrAUYgRAlsfgD9bWi6IQztW+BUo=
+	b=HjcUkqKMo3j+xby+ewlckZYBqifQmVQXY4Bnp3HZLJUe/bbwfJZ3KuZ068knZBqyF
+	 SsfFCcO8Otcw2QBjvwyndCK8vWcLK0+5NoCNlP9OCrGh+GS5OUAvIA5WstQRuPc4lG
+	 YJvtyyjL9XYG3i1lKiAbOLyTh+G5a+6s/gVFGVnQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Xaver Hugl <xaver.hugl@kde.org>,
-	Alex Deucher <alexander.deucher@amd.com>
-Subject: [PATCH 6.16 108/457] amdgpu/amdgpu_discovery: increase timeout limit for IFWI init
+	Mark Rutland <mark.rutland@arm.com>,
+	Mark Brown <broonie@kernel.org>,
+	Catalin Marinas <catalin.marinas@arm.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.1 139/482] kselftest/arm64: Specify SVE data when testing VL set in sve-ptrace
 Date: Tue, 26 Aug 2025 13:06:32 +0200
-Message-ID: <20250826110940.041520707@linuxfoundation.org>
+Message-ID: <20250826110934.253126855@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250826110937.289866482@linuxfoundation.org>
-References: <20250826110937.289866482@linuxfoundation.org>
+In-Reply-To: <20250826110930.769259449@linuxfoundation.org>
+References: <20250826110930.769259449@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,47 +63,54 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.16-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Xaver Hugl <xaver.hugl@kde.org>
+From: Mark Brown <broonie@kernel.org>
 
-commit 928587381b54b1b6c62736486b1dc6cb16c568c2 upstream.
+[ Upstream commit 9e8ebfe677f9101bbfe1f75d548a5aec581e8213 ]
 
-With a timeout of only 1 second, my rx 5700XT fails to initialize,
-so this increases the timeout to 2s.
+Since f916dd32a943 ("arm64/fpsimd: ptrace: Mandate SVE payload for
+streaming-mode state") we reject attempts to write to the streaming mode
+regset even if there is no register data supplied, causing the tests for
+setting vector lengths and setting SVE_VL_INHERIT in sve-ptrace to
+spuriously fail. Set the flag to avoid the issue, we still support not
+supplying register data.
 
-Closes: https://gitlab.freedesktop.org/drm/amd/-/issues/3697
-Signed-off-by: Xaver Hugl <xaver.hugl@kde.org>
-Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
-(cherry picked from commit 9ed3d7bdf2dcdf1a1196630fab89a124526e9cc2)
-Cc: stable@vger.kernel.org
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Acked-by: Mark Rutland <mark.rutland@arm.com>
+Signed-off-by: Mark Brown <broonie@kernel.org>
+Link: https://lore.kernel.org/r/20250609-kselftest-arm64-ssve-fixups-v2-3-998fcfa6f240@kernel.org
+Signed-off-by: Catalin Marinas <catalin.marinas@arm.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/amd/amdgpu/amdgpu_discovery.c |    4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ tools/testing/selftests/arm64/fp/sve-ptrace.c | 3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
---- a/drivers/gpu/drm/amd/amdgpu/amdgpu_discovery.c
-+++ b/drivers/gpu/drm/amd/amdgpu/amdgpu_discovery.c
-@@ -276,7 +276,7 @@ static int amdgpu_discovery_read_binary_
- 	u32 msg;
- 
- 	if (!amdgpu_sriov_vf(adev)) {
--		/* It can take up to a second for IFWI init to complete on some dGPUs,
-+		/* It can take up to two second for IFWI init to complete on some dGPUs,
- 		 * but generally it should be in the 60-100ms range.  Normally this starts
- 		 * as soon as the device gets power so by the time the OS loads this has long
- 		 * completed.  However, when a card is hotplugged via e.g., USB4, we need to
-@@ -284,7 +284,7 @@ static int amdgpu_discovery_read_binary_
- 		 * continue.
- 		 */
- 
--		for (i = 0; i < 1000; i++) {
-+		for (i = 0; i < 2000; i++) {
- 			msg = RREG32(mmMP0_SMN_C2PMSG_33);
- 			if (msg & 0x80000000)
- 				break;
+diff --git a/tools/testing/selftests/arm64/fp/sve-ptrace.c b/tools/testing/selftests/arm64/fp/sve-ptrace.c
+index 91dd31629ffe..9f5461cd5b8f 100644
+--- a/tools/testing/selftests/arm64/fp/sve-ptrace.c
++++ b/tools/testing/selftests/arm64/fp/sve-ptrace.c
+@@ -158,7 +158,7 @@ static void ptrace_set_get_inherit(pid_t child, const struct vec_type *type)
+ 	memset(&sve, 0, sizeof(sve));
+ 	sve.size = sizeof(sve);
+ 	sve.vl = sve_vl_from_vq(SVE_VQ_MIN);
+-	sve.flags = SVE_PT_VL_INHERIT;
++	sve.flags = SVE_PT_VL_INHERIT | SVE_PT_REGS_SVE;
+ 	ret = set_sve(child, type, &sve);
+ 	if (ret != 0) {
+ 		ksft_test_result_fail("Failed to set %s SVE_PT_VL_INHERIT\n",
+@@ -223,6 +223,7 @@ static void ptrace_set_get_vl(pid_t child, const struct vec_type *type,
+ 	/* Set the VL by doing a set with no register payload */
+ 	memset(&sve, 0, sizeof(sve));
+ 	sve.size = sizeof(sve);
++	sve.flags = SVE_PT_REGS_SVE;
+ 	sve.vl = vl;
+ 	ret = set_sve(child, type, &sve);
+ 	if (ret != 0) {
+-- 
+2.39.5
+
 
 
 
