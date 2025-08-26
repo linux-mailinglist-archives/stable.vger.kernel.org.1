@@ -1,58 +1,58 @@
-Return-Path: <stable+bounces-173670-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-174748-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9B08AB35E56
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 13:56:17 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2F7B6B364F7
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 15:43:19 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id AB11A1BC3562
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 11:48:06 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id D9A3C2A0F99
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 13:34:50 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 18F252BE65E;
-	Tue, 26 Aug 2025 11:47:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id AA0BF279788;
+	Tue, 26 Aug 2025 13:33:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="2orcwn0I"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="I+vnDV0e"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CB5C2299957;
-	Tue, 26 Aug 2025 11:47:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 67A221ADFFE;
+	Tue, 26 Aug 2025 13:33:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756208850; cv=none; b=p3Rq7tlN5/EzuY9+9rHVgnaHBNv+u7RUZcSPEQ1evD13nL3jpZ630GUrLXJFfsGyUQ/nR9mwRxRFcvhMY9H9hwsBpkACeYLO/rghp0JR/ypLW1Y7PKE/xA0I5QiKxTv02s3LqdFxLm6BpqDNg+rk98paMPYwAhhVHihePc+kUbY=
+	t=1756215212; cv=none; b=tyvrWaoHfaFo7dgK2h5jQEtcgY5iKmDBZYNFzuZzsyHtk/AKTiwtoY5IHDgzPY7+KFjnBaelZ3/QqR1gJJugm6uChzlOsqMLZv1wQKYogm1g8POoUSGjNg/kkxUtVa335xW6muD8Tw1JRhYEWdUCQMRg20ia7wqgLRC4wP3g4E4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756208850; c=relaxed/simple;
-	bh=cu1kXxJN9s15uwYVjlE5rXlichueM8kY8VJVvJyHU48=;
+	s=arc-20240116; t=1756215212; c=relaxed/simple;
+	bh=CNthKO4RpuRqLRQ0nbs3xVyFgBV00lI1iWhhsR/7Xtc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=vBxN8vvJ4bnyPnumktO5LjOgfNo1N/ljC9Iz1rYzjHsq/k65JWOOQgo1iDPobBSih5T3dC/g0G3Et9SN7LJCURqBy60IG4v/TznsADTShzTQv2/Qu1R+x2B/X4bx399Ww0gyD+Az7gBVdNbmMdUSowRcDN7bw2u2olnzVQjUihw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=2orcwn0I; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 66E90C4CEF1;
-	Tue, 26 Aug 2025 11:47:30 +0000 (UTC)
+	 MIME-Version; b=hBOUeuygD2ifqL4J/YkJiPGgtRokJKgallzfR+ldVhPOo7U55VsC1BGWLMzx/605cY9znaoAx8iRfgbB8YlMnubqnHWTJQWEv10sXU8VX1iwRiiNPWjTMChOQMcRKa8kZMdRwCdwD9HEB/4scptkijTZQPvLM2qV1V3v7GCPh58=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=I+vnDV0e; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id EFE0DC4CEF1;
+	Tue, 26 Aug 2025 13:33:31 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1756208850;
-	bh=cu1kXxJN9s15uwYVjlE5rXlichueM8kY8VJVvJyHU48=;
+	s=korg; t=1756215212;
+	bh=CNthKO4RpuRqLRQ0nbs3xVyFgBV00lI1iWhhsR/7Xtc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=2orcwn0I3cjpd8MLiJNR9Z5FXgZcCMYhfeeUTm3JNcI35lg9M84A3z87awy9kQBY/
-	 Ul4bzHjkWObiyzRhYTwCL7uchJ/V0L5vnrKIWfvjdMSak/UbJjFACZL3EGzH4YGv8b
-	 7Y+zYQzorEW22OFVWzIVes2r1cIRxlk0NXG/TLWs=
+	b=I+vnDV0eq95XXh/Qtp465CAQ+SjKzO1PTR05l0JfQRsmi9ND4VTfSsUnVTWKT8flt
+	 8F3mzoRDpL8p7KBk/u+nCHpeQ74R7A6zW73CRcXTdYyLHJSZdbjAQmJ1Qu4TOJGnB5
+	 pYh+0lSLcrJuA94LAZD3AtttiMqKviih6HMbG0A4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Kashyap Desai <kashyap.desai@broadcom.com>,
-	Saravanan Vajravel <saravanan.vajravel@broadcom.com>,
-	Kalesh AP <kalesh-anakkur.purayil@broadcom.com>,
-	Leon Romanovsky <leon@kernel.org>,
+	Geraldo Nascimento <geraldogabriel@gmail.com>,
+	Manivannan Sadhasivam <mani@kernel.org>,
+	Bjorn Helgaas <bhelgaas@google.com>,
+	Robin Murphy <robin.murphy@arm.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 268/322] RDMA/bnxt_re: Fix to remove workload check in SRQ limit path
+Subject: [PATCH 6.1 430/482] PCI: rockchip: Set Target Link Speed to 5.0 GT/s before retraining
 Date: Tue, 26 Aug 2025 13:11:23 +0200
-Message-ID: <20250826110922.548481795@linuxfoundation.org>
+Message-ID: <20250826110941.453382356@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250826110915.169062587@linuxfoundation.org>
-References: <20250826110915.169062587@linuxfoundation.org>
+In-Reply-To: <20250826110930.769259449@linuxfoundation.org>
+References: <20250826110930.769259449@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,136 +64,46 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Kashyap Desai <kashyap.desai@broadcom.com>
+From: Geraldo Nascimento <geraldogabriel@gmail.com>
 
-[ Upstream commit 666bce0bd7e771127cb0cda125cc9d32d9f9f15d ]
+[ Upstream commit 114b06ee108cabc82b995fbac6672230a9776936 ]
 
-There should not be any checks of current workload to set
-srq_limit value to SRQ hw context.
+Rockchip controllers can support up to 5.0 GT/s link speed. But the driver
+doesn't set the Target Link Speed currently. This may cause failure in
+retraining the link to 5.0 GT/s if supported by the endpoint. So set the
+Target Link Speed to 5.0 GT/s in the Link Control and Status Register 2.
 
-Remove all such workload checks and make a direct call to
-set srq_limit via doorbell SRQ_ARM.
-
-Fixes: 37cb11acf1f7 ("RDMA/bnxt_re: Add SRQ support for Broadcom adapters")
-Signed-off-by: Kashyap Desai <kashyap.desai@broadcom.com>
-Signed-off-by: Saravanan Vajravel <saravanan.vajravel@broadcom.com>
-Signed-off-by: Kalesh AP <kalesh-anakkur.purayil@broadcom.com>
-Link: https://patch.msgid.link/20250805101000.233310-3-kalesh-anakkur.purayil@broadcom.com
-Signed-off-by: Leon Romanovsky <leon@kernel.org>
+Fixes: e77f847df54c ("PCI: rockchip: Add Rockchip PCIe controller support")
+Signed-off-by: Geraldo Nascimento <geraldogabriel@gmail.com>
+[mani: fixed whitespace warning, commit message rewording, added fixes tag]
+Signed-off-by: Manivannan Sadhasivam <mani@kernel.org>
+Signed-off-by: Bjorn Helgaas <bhelgaas@google.com>
+Tested-by: Robin Murphy <robin.murphy@arm.com>
+Cc: stable@vger.kernel.org
+Link: https://patch.msgid.link/0afa6bc47b7f50e2e81b0b47d51c66feb0fb565f.1751322015.git.geraldogabriel@gmail.com
 Signed-off-by: Sasha Levin <sashal@kernel.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/infiniband/hw/bnxt_re/ib_verbs.c |  8 ++-----
- drivers/infiniband/hw/bnxt_re/qplib_fp.c | 27 ------------------------
- drivers/infiniband/hw/bnxt_re/qplib_fp.h |  2 --
- 3 files changed, 2 insertions(+), 35 deletions(-)
+ drivers/pci/controller/pcie-rockchip-host.c |    4 ++++
+ 1 file changed, 4 insertions(+)
 
-diff --git a/drivers/infiniband/hw/bnxt_re/ib_verbs.c b/drivers/infiniband/hw/bnxt_re/ib_verbs.c
-index 4a3ce61a3bba..b222bf4f38e1 100644
---- a/drivers/infiniband/hw/bnxt_re/ib_verbs.c
-+++ b/drivers/infiniband/hw/bnxt_re/ib_verbs.c
-@@ -1874,7 +1874,6 @@ int bnxt_re_modify_srq(struct ib_srq *ib_srq, struct ib_srq_attr *srq_attr,
- 	struct bnxt_re_srq *srq = container_of(ib_srq, struct bnxt_re_srq,
- 					       ib_srq);
- 	struct bnxt_re_dev *rdev = srq->rdev;
--	int rc;
- 
- 	switch (srq_attr_mask) {
- 	case IB_SRQ_MAX_WR:
-@@ -1886,11 +1885,8 @@ int bnxt_re_modify_srq(struct ib_srq *ib_srq, struct ib_srq_attr *srq_attr,
- 			return -EINVAL;
- 
- 		srq->qplib_srq.threshold = srq_attr->srq_limit;
--		rc = bnxt_qplib_modify_srq(&rdev->qplib_res, &srq->qplib_srq);
--		if (rc) {
--			ibdev_err(&rdev->ibdev, "Modify HW SRQ failed!");
--			return rc;
--		}
-+		bnxt_qplib_srq_arm_db(&srq->qplib_srq.dbinfo, srq->qplib_srq.threshold);
-+
- 		/* On success, update the shadow */
- 		srq->srq_limit = srq_attr->srq_limit;
- 		/* No need to Build and send response back to udata */
-diff --git a/drivers/infiniband/hw/bnxt_re/qplib_fp.c b/drivers/infiniband/hw/bnxt_re/qplib_fp.c
-index 3170a3e2df24..0f50c1ffbe01 100644
---- a/drivers/infiniband/hw/bnxt_re/qplib_fp.c
-+++ b/drivers/infiniband/hw/bnxt_re/qplib_fp.c
-@@ -705,7 +705,6 @@ int bnxt_qplib_create_srq(struct bnxt_qplib_res *res,
- 	srq->dbinfo.max_slot = 1;
- 	srq->dbinfo.priv_db = res->dpi_tbl.priv_db;
- 	bnxt_qplib_armen_db(&srq->dbinfo, DBC_DBC_TYPE_SRQ_ARMENA);
--	srq->arm_req = false;
- 
- 	return 0;
- fail:
-@@ -715,24 +714,6 @@ int bnxt_qplib_create_srq(struct bnxt_qplib_res *res,
- 	return rc;
- }
- 
--int bnxt_qplib_modify_srq(struct bnxt_qplib_res *res,
--			  struct bnxt_qplib_srq *srq)
--{
--	struct bnxt_qplib_hwq *srq_hwq = &srq->hwq;
--	u32 count;
--
--	count = __bnxt_qplib_get_avail(srq_hwq);
--	if (count > srq->threshold) {
--		srq->arm_req = false;
--		bnxt_qplib_srq_arm_db(&srq->dbinfo, srq->threshold);
--	} else {
--		/* Deferred arming */
--		srq->arm_req = true;
--	}
--
--	return 0;
--}
--
- int bnxt_qplib_query_srq(struct bnxt_qplib_res *res,
- 			 struct bnxt_qplib_srq *srq)
- {
-@@ -774,7 +755,6 @@ int bnxt_qplib_post_srq_recv(struct bnxt_qplib_srq *srq,
- 	struct bnxt_qplib_hwq *srq_hwq = &srq->hwq;
- 	struct rq_wqe *srqe;
- 	struct sq_sge *hw_sge;
--	u32 count = 0;
- 	int i, next;
- 
- 	spin_lock(&srq_hwq->lock);
-@@ -806,15 +786,8 @@ int bnxt_qplib_post_srq_recv(struct bnxt_qplib_srq *srq,
- 
- 	bnxt_qplib_hwq_incr_prod(&srq->dbinfo, srq_hwq, srq->dbinfo.max_slot);
- 
--	spin_lock(&srq_hwq->lock);
--	count = __bnxt_qplib_get_avail(srq_hwq);
--	spin_unlock(&srq_hwq->lock);
- 	/* Ring DB */
- 	bnxt_qplib_ring_prod_db(&srq->dbinfo, DBC_DBC_TYPE_SRQ);
--	if (srq->arm_req == true && count > srq->threshold) {
--		srq->arm_req = false;
--		bnxt_qplib_srq_arm_db(&srq->dbinfo, srq->threshold);
--	}
- 
- 	return 0;
- }
-diff --git a/drivers/infiniband/hw/bnxt_re/qplib_fp.h b/drivers/infiniband/hw/bnxt_re/qplib_fp.h
-index 6f02954eb142..fd4f9fada46a 100644
---- a/drivers/infiniband/hw/bnxt_re/qplib_fp.h
-+++ b/drivers/infiniband/hw/bnxt_re/qplib_fp.h
-@@ -521,8 +521,6 @@ int bnxt_qplib_enable_nq(struct pci_dev *pdev, struct bnxt_qplib_nq *nq,
- 			 srqn_handler_t srq_handler);
- int bnxt_qplib_create_srq(struct bnxt_qplib_res *res,
- 			  struct bnxt_qplib_srq *srq);
--int bnxt_qplib_modify_srq(struct bnxt_qplib_res *res,
--			  struct bnxt_qplib_srq *srq);
- int bnxt_qplib_query_srq(struct bnxt_qplib_res *res,
- 			 struct bnxt_qplib_srq *srq);
- void bnxt_qplib_destroy_srq(struct bnxt_qplib_res *res,
--- 
-2.50.1
-
+--- a/drivers/pci/controller/pcie-rockchip-host.c
++++ b/drivers/pci/controller/pcie-rockchip-host.c
+@@ -342,6 +342,10 @@ static int rockchip_pcie_host_init_port(
+ 		 * Enable retrain for gen2. This should be configured only after
+ 		 * gen1 finished.
+ 		 */
++		status = rockchip_pcie_read(rockchip, PCIE_RC_CONFIG_CR + PCI_EXP_LNKCTL2);
++		status &= ~PCI_EXP_LNKCTL2_TLS;
++		status |= PCI_EXP_LNKCTL2_TLS_5_0GT;
++		rockchip_pcie_write(rockchip, status, PCIE_RC_CONFIG_CR + PCI_EXP_LNKCTL2);
+ 		status = rockchip_pcie_read(rockchip, PCIE_RC_CONFIG_CR + PCI_EXP_LNKCTL);
+ 		status |= PCI_EXP_LNKCTL_RL;
+ 		rockchip_pcie_write(rockchip, status, PCIE_RC_CONFIG_CR + PCI_EXP_LNKCTL);
 
 
 
