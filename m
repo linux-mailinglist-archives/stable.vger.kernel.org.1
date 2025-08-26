@@ -1,57 +1,55 @@
-Return-Path: <stable+bounces-175374-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-174248-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 62DFCB367DF
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 16:10:53 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7E48DB36245
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 15:17:23 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 0A71F467409
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 14:02:38 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 242332A07FE
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 13:11:36 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5D4743469F4;
-	Tue, 26 Aug 2025 14:01:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 332F21FBCB5;
+	Tue, 26 Aug 2025 13:11:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="N+ihDsKj"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="d6PwMM6Z"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 19C1B352FC7;
-	Tue, 26 Aug 2025 14:01:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D39E611187;
+	Tue, 26 Aug 2025 13:11:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756216870; cv=none; b=IOlBn4KWaxyeDt4F4PIXHmyl6JqANy6N/jMov0Dc9cDAKHrY+XzzukPAQUnUjaKqJq+ulriMTrmMM1TKG3CUVOpW1PfhvuI2I42/HmqlgeNIYjjV18i5kKWp3lERAfvQcundaG5DlO/jjZ05hw8F+/ceyx7d8H355b1Ter1+PBM=
+	t=1756213885; cv=none; b=EV4sVIMR/nG5iLRWKMIaBJGBKYNX4l8VEbKwLyoHFHtxJdmYhE39wHyZvkBGJiGM75twwJaKfrfi5AHCEmPGUgAIZcTSiI+hUqct+SAo+N1LWJC5fHYwKdg0hMpp+V34CIJfxiA9piHhrHNARaeCu1MKaGYeRLrQcURncR2f+MI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756216870; c=relaxed/simple;
-	bh=ibmhUqpCmqgneio3Dq5qwsdl+MPjTdgHSpa7s/DpQxs=;
+	s=arc-20240116; t=1756213885; c=relaxed/simple;
+	bh=mD4EDyh7n4t2Ik0fexpN+tFdyRe9iLanmotbbPAe544=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=vAPnbDZwYmZ6KI84PFMxbGMHkZMwoqKUak9WK4SXqta2OIsSTSc0XiRLVO90PRwN14tuoZynVXP594usc2OTwvZ9M/GgqNd0d7ZP0iy2ea6/+M1CgiXghP2myMk43OXgbTV1aFILbnPcDW7L1febAchY6SK/cf3IpKsw3qU2WIM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=N+ihDsKj; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 60384C4CEF1;
-	Tue, 26 Aug 2025 14:01:09 +0000 (UTC)
+	 MIME-Version; b=TxNrtwJuzjG7gwzsDoMSEF5FBTATukn4PhbajOa01DA/hSMcszsI97YJ+f5Z44GyTyzLZwhQDgjdVTeWEl3GW9u6WC+lq4BD+yVk2qof0c+SzCpecI3WFimrsbbrStsJ6zJ1dbq3vb+BhR/PoWSpn13/oxNO/Hz9bk1hpErxAVU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=d6PwMM6Z; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 373C4C4CEF1;
+	Tue, 26 Aug 2025 13:11:25 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1756216869;
-	bh=ibmhUqpCmqgneio3Dq5qwsdl+MPjTdgHSpa7s/DpQxs=;
+	s=korg; t=1756213885;
+	bh=mD4EDyh7n4t2Ik0fexpN+tFdyRe9iLanmotbbPAe544=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=N+ihDsKjVxP5q2abZDRD3FsEcxmgROjsRnOhLxehgMz7zV0d3rAasmk3jnDZYqChm
-	 OFEZSS5BZroEyCqRv7Q3somC9C5AkvHF2o7E475RreQxnmTv1ndiBVClXTUi06OYRo
-	 TifrdgAr4S6ZOn+ihp4ocdS0IYY3zi6THALaTGHU=
+	b=d6PwMM6ZpLUcss4arAchmya4e85kUFjwsgQZOZAj0iDTmue1mqbVXqrJRluAJhXaQ
+	 l9Tb5JorHPYhTgxz8kFpMLfRFEcsc54UTDmD2YeRgHIKg042AUx7s5aZZ8fWAe7prR
+	 6txvJlG0tkS/C4CBiTE2C6vKxgnIe5bAP5aEKpsU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Eric Dumazet <edumazet@google.com>,
-	Simon Horman <horms@kernel.org>,
-	"David S. Miller" <davem@davemloft.net>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 542/644] net_sched: sch_ets: implement lockless ets_dump()
-Date: Tue, 26 Aug 2025 13:10:33 +0200
-Message-ID: <20250826110959.950302446@linuxfoundation.org>
+	Evgeniy Harchenko <evgeniyharchenko.dev@gmail.com>,
+	Takashi Iwai <tiwai@suse.de>
+Subject: [PATCH 6.6 485/587] ALSA: hda/realtek: Add support for HP EliteBook x360 830 G6 and EliteBook 830 G6
+Date: Tue, 26 Aug 2025 13:10:34 +0200
+Message-ID: <20250826111005.312503180@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250826110946.507083938@linuxfoundation.org>
-References: <20250826110946.507083938@linuxfoundation.org>
+In-Reply-To: <20250826110952.942403671@linuxfoundation.org>
+References: <20250826110952.942403671@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,108 +61,38 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Eric Dumazet <edumazet@google.com>
+From: Evgeniy Harchenko <evgeniyharchenko.dev@gmail.com>
 
-[ Upstream commit c5f1dde7f731e7bf2e7c169ca42cb4989fc2f8b9 ]
+commit eafae0fdd115a71b3a200ef1a31f86da04bac77f upstream.
 
-Instead of relying on RTNL, ets_dump() can use READ_ONCE()
-annotations, paired with WRITE_ONCE() ones in ets_change().
+The HP EliteBook x360 830 G6 and HP EliteBook 830 G6 have
+Realtek HDA codec ALC215. It needs the ALC285_FIXUP_HP_GPIO_LED
+quirk to enable the mute LED.
 
-Signed-off-by: Eric Dumazet <edumazet@google.com>
-Reviewed-by: Simon Horman <horms@kernel.org>
-Signed-off-by: David S. Miller <davem@davemloft.net>
-Stable-dep-of: 87c6efc5ce9c ("net/sched: ets: use old 'nbands' while purging unused classes")
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Cc: <stable@vger.kernel.org>
+Signed-off-by: Evgeniy Harchenko <evgeniyharchenko.dev@gmail.com>
+Link: https://patch.msgid.link/20250815095814.75845-1-evgeniyharchenko.dev@gmail.com
+Signed-off-by: Takashi Iwai <tiwai@suse.de>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- net/sched/sch_ets.c |   25 ++++++++++++++-----------
- 1 file changed, 14 insertions(+), 11 deletions(-)
+ sound/pci/hda/patch_realtek.c |    2 ++
+ 1 file changed, 2 insertions(+)
 
---- a/net/sched/sch_ets.c
-+++ b/net/sched/sch_ets.c
-@@ -664,7 +664,7 @@ static int ets_qdisc_change(struct Qdisc
- 
- 	sch_tree_lock(sch);
- 
--	q->nbands = nbands;
-+	WRITE_ONCE(q->nbands, nbands);
- 	for (i = nstrict; i < q->nstrict; i++) {
- 		if (q->classes[i].qdisc->q.qlen) {
- 			list_add_tail(&q->classes[i].alist, &q->active);
-@@ -676,11 +676,11 @@ static int ets_qdisc_change(struct Qdisc
- 			list_del_init(&q->classes[i].alist);
- 		qdisc_purge_queue(q->classes[i].qdisc);
- 	}
--	q->nstrict = nstrict;
-+	WRITE_ONCE(q->nstrict, nstrict);
- 	memcpy(q->prio2band, priomap, sizeof(priomap));
- 
- 	for (i = 0; i < q->nbands; i++)
--		q->classes[i].quantum = quanta[i];
-+		WRITE_ONCE(q->classes[i].quantum, quanta[i]);
- 
- 	for (i = oldbands; i < q->nbands; i++) {
- 		q->classes[i].qdisc = queues[i];
-@@ -694,7 +694,7 @@ static int ets_qdisc_change(struct Qdisc
- 	for (i = q->nbands; i < oldbands; i++) {
- 		qdisc_put(q->classes[i].qdisc);
- 		q->classes[i].qdisc = NULL;
--		q->classes[i].quantum = 0;
-+		WRITE_ONCE(q->classes[i].quantum, 0);
- 		q->classes[i].deficit = 0;
- 		memset(&q->classes[i].bstats, 0, sizeof(q->classes[i].bstats));
- 		memset(&q->classes[i].qstats, 0, sizeof(q->classes[i].qstats));
-@@ -751,6 +751,7 @@ static int ets_qdisc_dump(struct Qdisc *
- 	struct ets_sched *q = qdisc_priv(sch);
- 	struct nlattr *opts;
- 	struct nlattr *nest;
-+	u8 nbands, nstrict;
- 	int band;
- 	int prio;
- 	int err;
-@@ -763,21 +764,22 @@ static int ets_qdisc_dump(struct Qdisc *
- 	if (!opts)
- 		goto nla_err;
- 
--	if (nla_put_u8(skb, TCA_ETS_NBANDS, q->nbands))
-+	nbands = READ_ONCE(q->nbands);
-+	if (nla_put_u8(skb, TCA_ETS_NBANDS, nbands))
- 		goto nla_err;
- 
--	if (q->nstrict &&
--	    nla_put_u8(skb, TCA_ETS_NSTRICT, q->nstrict))
-+	nstrict = READ_ONCE(q->nstrict);
-+	if (nstrict && nla_put_u8(skb, TCA_ETS_NSTRICT, nstrict))
- 		goto nla_err;
- 
--	if (q->nbands > q->nstrict) {
-+	if (nbands > nstrict) {
- 		nest = nla_nest_start(skb, TCA_ETS_QUANTA);
- 		if (!nest)
- 			goto nla_err;
- 
--		for (band = q->nstrict; band < q->nbands; band++) {
-+		for (band = nstrict; band < nbands; band++) {
- 			if (nla_put_u32(skb, TCA_ETS_QUANTA_BAND,
--					q->classes[band].quantum))
-+					READ_ONCE(q->classes[band].quantum)))
- 				goto nla_err;
- 		}
- 
-@@ -789,7 +791,8 @@ static int ets_qdisc_dump(struct Qdisc *
- 		goto nla_err;
- 
- 	for (prio = 0; prio <= TC_PRIO_MAX; prio++) {
--		if (nla_put_u8(skb, TCA_ETS_PRIOMAP_BAND, q->prio2band[prio]))
-+		if (nla_put_u8(skb, TCA_ETS_PRIOMAP_BAND,
-+			       READ_ONCE(q->prio2band[prio])))
- 			goto nla_err;
- 	}
- 
+--- a/sound/pci/hda/patch_realtek.c
++++ b/sound/pci/hda/patch_realtek.c
+@@ -10071,6 +10071,8 @@ static const struct hda_quirk alc269_fix
+ 	SND_PCI_QUIRK(0x103c, 0x84e7, "HP Pavilion 15", ALC269_FIXUP_HP_MUTE_LED_MIC3),
+ 	SND_PCI_QUIRK(0x103c, 0x8519, "HP Spectre x360 15-df0xxx", ALC285_FIXUP_HP_SPECTRE_X360),
+ 	SND_PCI_QUIRK(0x103c, 0x8537, "HP ProBook 440 G6", ALC236_FIXUP_HP_MUTE_LED_MICMUTE_VREF),
++	SND_PCI_QUIRK(0x103c, 0x8548, "HP EliteBook x360 830 G6", ALC285_FIXUP_HP_GPIO_LED),
++	SND_PCI_QUIRK(0x103c, 0x854a, "HP EliteBook 830 G6", ALC285_FIXUP_HP_GPIO_LED),
+ 	SND_PCI_QUIRK(0x103c, 0x85c6, "HP Pavilion x360 Convertible 14-dy1xxx", ALC295_FIXUP_HP_MUTE_LED_COEFBIT11),
+ 	SND_PCI_QUIRK(0x103c, 0x85de, "HP Envy x360 13-ar0xxx", ALC285_FIXUP_HP_ENVY_X360),
+ 	SND_PCI_QUIRK(0x103c, 0x860f, "HP ZBook 15 G6", ALC285_FIXUP_HP_GPIO_AMP_INIT),
 
 
 
