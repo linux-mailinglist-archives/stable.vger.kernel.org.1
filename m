@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-173727-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-175962-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id DC7B8B35E71
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 13:57:40 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 451BBB36A97
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 16:38:51 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id EDAB51BC189D
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 11:50:40 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 736F11C477A5
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 14:29:59 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 43AA3321438;
-	Tue, 26 Aug 2025 11:50:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 23B8535AAD2;
+	Tue, 26 Aug 2025 14:27:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Q/Pwy528"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="E3zCFO+t"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 002CE319849;
-	Tue, 26 Aug 2025 11:49:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D46D435AACE;
+	Tue, 26 Aug 2025 14:27:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756209000; cv=none; b=eHLw8jph/2cbYKelU7Z39+PhkZ6ASnYXxseUvibw570+XPFvonsz34NkW+m8fXr6GXhf3Y4cvg4REOnYgHUCwqjf/W/T4mrWT4JhOBKkJ/45lQ9fTARMVCpBoSNevbMrwd60g0+TUBb1A7LxujKhMk2JoFL3JtSwlIPFT4zoqHo=
+	t=1756218423; cv=none; b=ht4tJySyjad6xLBtBM7YPw1jGZElBAepaEhydu7aW64cRfj5TS0XXZ12E/hbdrBzCSMFCuzPWPxfrhNCXdgtXWdHC/0fItpwip/9ZGuKwvn+ZgpbKh1CMOkogBalelHM380RUpxY0LbqQWe5IKUk4QUB9IOVZvOQbEIyETPUc1Y=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756209000; c=relaxed/simple;
-	bh=3Vgu/4zceyD0b95lI7bNjrNO700ArC5QrycOETaribc=;
+	s=arc-20240116; t=1756218423; c=relaxed/simple;
+	bh=FJiZea/ybZUSRrUE59aCZjM0XQvjlu2t06aRolvi21c=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=ORdxwJZfS91FrGypcaoHfXM/fjjmhn3prIbgjZdSmdYOWR2AFbjs64EO5cn5ETZSRa8wIupLhOUsen+FX2rn3vVpNsuiabBJD2bNXwASgPhgdtO2yL+8hVczxCkUMsP31waDFUzBjS9EU75up9T0dUd87Dx3r9eRDiLgPnafNRw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Q/Pwy528; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8C9FAC4CEF1;
-	Tue, 26 Aug 2025 11:49:59 +0000 (UTC)
+	 MIME-Version; b=LDnF4ZH/E6dvClFqj9NkfWqJpbSAEX3b4TwPjBHDNkkdX+zZkWjclj568R99KC6ZXHCnfqILCXwAkfNqLbgrNXBev60YckM0GvtqnVmRIveSezDye1ZTQ4i4c671L7wzFNAUJLdMLgBwILXyGAijMoKLsn6t2VWcOPwCR4V8T1s=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=E3zCFO+t; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 653FBC4CEF1;
+	Tue, 26 Aug 2025 14:27:03 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1756208999;
-	bh=3Vgu/4zceyD0b95lI7bNjrNO700ArC5QrycOETaribc=;
+	s=korg; t=1756218423;
+	bh=FJiZea/ybZUSRrUE59aCZjM0XQvjlu2t06aRolvi21c=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Q/Pwy5289YSqIAWCn8CCGSxNC9qfKZv4aKtFu5flSD9ofL/f+jVq4l66qbso09avd
-	 SA3KYVAp3w1PDsTMD4/+FjFHUyng++QIHXAAGLbCqoG4Z4K64CaE5SZC0mKxmmeyHG
-	 g3BWU34ApvrCiTml88PW0ZAd6WdZTD33WdZh5VTs=
+	b=E3zCFO+t5stlNXwSxeVrTMDPgcyiadwfEbTXpQPWNnB5/Fn89sCcLHnYyjRZGjyLM
+	 j6epKBkhdDOta1l4FkFUu1jQqDRO2NGFAGDu/BpkvaH+bI+gyzSA0cCR9uvjXWefDf
+	 YT7wEGp8DpBWZAkbNhwLKvER5yHJgbKiYescTAow=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Hariprasad Kelam <hkelam@marvell.com>,
+	William Liu <will@willsroot.io>,
+	Savino Dicanosa <savy@syst3mfailure.io>,
 	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 312/322] Octeontx2-af: Skip overlap check for SPI field
+Subject: [PATCH 5.10 517/523] net/sched: Remove unnecessary WARNING condition for empty child qdisc in htb_activate
 Date: Tue, 26 Aug 2025 13:12:07 +0200
-Message-ID: <20250826110923.598662779@linuxfoundation.org>
+Message-ID: <20250826110937.191475243@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250826110915.169062587@linuxfoundation.org>
-References: <20250826110915.169062587@linuxfoundation.org>
+In-Reply-To: <20250826110924.562212281@linuxfoundation.org>
+References: <20250826110924.562212281@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,70 +63,40 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Hariprasad Kelam <hkelam@marvell.com>
+From: William Liu <will@willsroot.io>
 
-[ Upstream commit 8c5d95988c34f0aeba1f34cd5e4ba69494c90c5f ]
+[ Upstream commit 2c2192e5f9c7c2892fe2363244d1387f62710d83 ]
 
-Octeontx2/CN10K silicon supports generating a 256-bit key per packet.
-The specific fields to be extracted from a packet for key generation
-are configurable via a Key Extraction (MKEX) Profile.
+The WARN_ON trigger based on !cl->leaf.q->q.qlen is unnecessary in
+htb_activate. htb_dequeue_tree already accounts for that scenario.
 
-The AF driver scans the configured extraction profile to ensure that
-fields from upper layers do not overwrite fields from lower layers in
-the key.
-
-Example Packet Field Layout:
-LA: DMAC + SMAC
-LB: VLAN
-LC: IPv4/IPv6
-LD: TCP/UDP
-
-Valid MKEX Profile Configuration:
-
-LA   -> DMAC   -> key_offset[0-5]
-LC   -> SIP    -> key_offset[20-23]
-LD   -> SPORT  -> key_offset[30-31]
-
-Invalid MKEX profile configuration:
-
-LA   -> DMAC   -> key_offset[0-5]
-LC   -> SIP    -> key_offset[20-23]
-LD   -> SPORT  -> key_offset[2-3]  // Overlaps with DMAC field
-
-In another scenario, if the MKEX profile is configured to extract
-the SPI field from both AH and ESP headers at the same key offset,
-the driver rejecting this configuration. In a regular traffic,
-ipsec packet will be having either AH(LD) or ESP (LE). This patch
-relaxes the check for the same.
-
-Fixes: 12aa0a3b93f3 ("octeontx2-af: Harden rule validation.")
-Signed-off-by: Hariprasad Kelam <hkelam@marvell.com>
-Link: https://patch.msgid.link/20250820063919.1463518-1-hkelam@marvell.com
+Fixes: 1da177e4c3f4 ("Linux-2.6.12-rc2")
+Signed-off-by: William Liu <will@willsroot.io>
+Reviewed-by: Savino Dicanosa <savy@syst3mfailure.io>
+Link: https://patch.msgid.link/20250819033632.579854-1-will@willsroot.io
 Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/ethernet/marvell/octeontx2/af/rvu_npc_fs.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ net/sched/sch_htb.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/net/ethernet/marvell/octeontx2/af/rvu_npc_fs.c b/drivers/net/ethernet/marvell/octeontx2/af/rvu_npc_fs.c
-index 150635de2bd5..0c484120be79 100644
---- a/drivers/net/ethernet/marvell/octeontx2/af/rvu_npc_fs.c
-+++ b/drivers/net/ethernet/marvell/octeontx2/af/rvu_npc_fs.c
-@@ -606,8 +606,8 @@ static void npc_set_features(struct rvu *rvu, int blkaddr, u8 intf)
- 		if (!npc_check_field(rvu, blkaddr, NPC_LB, intf))
- 			*features &= ~BIT_ULL(NPC_OUTER_VID);
+diff --git a/net/sched/sch_htb.c b/net/sched/sch_htb.c
+index 94e0a8c68d59..b301efa41c1c 100644
+--- a/net/sched/sch_htb.c
++++ b/net/sched/sch_htb.c
+@@ -558,7 +558,7 @@ htb_change_class_mode(struct htb_sched *q, struct htb_class *cl, s64 *diff)
+  */
+ static inline void htb_activate(struct htb_sched *q, struct htb_class *cl)
+ {
+-	WARN_ON(cl->level || !cl->leaf.q || !cl->leaf.q->q.qlen);
++	WARN_ON(cl->level || !cl->leaf.q);
  
--	/* Set SPI flag only if AH/ESP and IPSEC_SPI are in the key */
--	if (npc_check_field(rvu, blkaddr, NPC_IPSEC_SPI, intf) &&
-+	/* Allow extracting SPI field from AH and ESP headers at same offset */
-+	if (npc_is_field_present(rvu, NPC_IPSEC_SPI, intf) &&
- 	    (*features & (BIT_ULL(NPC_IPPROTO_ESP) | BIT_ULL(NPC_IPPROTO_AH))))
- 		*features |= BIT_ULL(NPC_IPSEC_SPI);
- 
+ 	if (!cl->prio_activity) {
+ 		cl->prio_activity = 1 << cl->prio;
 -- 
 2.50.1
 
