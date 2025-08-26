@@ -1,57 +1,58 @@
-Return-Path: <stable+bounces-175289-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-176252-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id E6572B366E8
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 16:01:48 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3F2A3B36C4F
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 16:54:50 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 7782CB61C5C
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 13:58:06 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id D36B81C44E7C
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 14:42:52 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6615B34A338;
-	Tue, 26 Aug 2025 13:57:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id EB53935A296;
+	Tue, 26 Aug 2025 14:39:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="aZQMH0Z4"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="q7tnoob1"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 21C6622083;
-	Tue, 26 Aug 2025 13:57:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A78AF352077;
+	Tue, 26 Aug 2025 14:39:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756216643; cv=none; b=mwL1LiHgoIFef8nOiRbb0D+hfz2X/uH6aQXN22RQ4IEBSZOjZiN+MdxCTgRnl4p6bhRoQdx25CAEzHt1956FNysIJBKKpM2Op387gEZgtu4LYKR5XxWNaU63yvsdnuOIHoIzuiAg3a594reu33rUD/WU+dJ1hllW5SZc8zNP2KM=
+	t=1756219172; cv=none; b=ZzGEl7kojT1DW0Gxszz7ecJVQ3gGd1y8uzTljNZu+Mw05rM9uy+eSLtKtK43pRk98G5Dset+esqWGqegPaNX5TAnZSSHlWCX40fYRjwoAiABh5nxZRcmxZX/GPnsALp7U8E97CbpWJe9LuLXxfF/OGuaehyUv6FOYqbxJ304VRs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756216643; c=relaxed/simple;
-	bh=j4sOscvmNWqyPtTojTsa64lXIwrjNmvjcFPKQJkqcmo=;
+	s=arc-20240116; t=1756219172; c=relaxed/simple;
+	bh=j9FMROHGHB6iX2yAnLkcjepXW4Mx8E1JAb2nNjZ8QbM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=I/C6ML5oaZ549EmETuo+dB+msVPtwY12rsar75a8oe4QmLM7GKNw46ykwcCPMC949LgcmpPRvbl9AoakqQ95vuUOf5+i86tk1RHPPFSRuyvaKMqymuMCTc7brMhlyX+xdHBN11QJ89YOsSWbxzcRY/Zq8Qojt28fUKqI/y+ljsc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=aZQMH0Z4; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A2962C4CEF1;
-	Tue, 26 Aug 2025 13:57:22 +0000 (UTC)
+	 MIME-Version; b=RCN5PzrV94O5eEstAtwOuBcI0yDOumFy0Teso62JZBpp9JPnzjoDn1JmO+iK3MaTTncxoGT6YKCKVu0rfX3hF6EzIo5r08PsZ77RvjpKPv6nwZWpTVrUNXt8KXEDIxSLaOFvPGRhmIRBD98YXObMmLxmfiBAwDMZxPzmv9SUd1s=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=q7tnoob1; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 37BC2C4CEF1;
+	Tue, 26 Aug 2025 14:39:32 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1756216643;
-	bh=j4sOscvmNWqyPtTojTsa64lXIwrjNmvjcFPKQJkqcmo=;
+	s=korg; t=1756219172;
+	bh=j9FMROHGHB6iX2yAnLkcjepXW4Mx8E1JAb2nNjZ8QbM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=aZQMH0Z4mmQ9s74cOWy3KdgwutHJ6/gMuAnQd5CaVtXFLMnusV5Y8te5ldXA2F57U
-	 8Hl2LqrRKb+lJJd8BXzzV66eA5ej1p4UjdvZmgsDn1S1Xv1OiyCrvRO3xm/2QL5l6G
-	 fMuWgFiJ8+GCnOsAPkHgR8yKxkr6DibEXi3W/T8Q=
+	b=q7tnoob1HGMdQVNbpQMW80IurpO/x1pLUEP86UEkH2Tx0esCf6p2GTQz8Lo+gq+5B
+	 dF+BaSwO7L3glyuveVQn6H+EINuhJVA/2uC07Ustf4Q7dvadDOuOlVwJQQxaqNVdKY
+	 oIylBNTX9IUmEtNW2uVuOWuE9DI8drFbnUIbI4aM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Haoxiang Li <haoxiang_li2024@163.com>,
-	Dan Carpenter <dan.carpenter@linaro.org>,
-	Nicolas Dufresne <nicolas.dufresne@collabora.com>,
-	Hans Verkuil <hverkuil@xs4all.nl>
-Subject: [PATCH 5.15 488/644] media: imx: fix a potential memory leak in imx_media_csc_scaler_device_init()
+	chenchangcheng <chenchangcheng@kylinos.cn>,
+	Ricardo Ribalda <ribalda@chromium.org>,
+	Laurent Pinchart <laurent.pinchart@ideasonboard.com>,
+	Hans Verkuil <hverkuil@xs4all.nl>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.4 253/403] media: uvcvideo: Fix bandwidth issue for Alcor camera
 Date: Tue, 26 Aug 2025 13:09:39 +0200
-Message-ID: <20250826110958.584419119@linuxfoundation.org>
+Message-ID: <20250826110913.811142208@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250826110946.507083938@linuxfoundation.org>
-References: <20250826110946.507083938@linuxfoundation.org>
+In-Reply-To: <20250826110905.607690791@linuxfoundation.org>
+References: <20250826110905.607690791@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,40 +64,57 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+5.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Haoxiang Li <haoxiang_li2024@163.com>
+From: chenchangcheng <chenchangcheng@kylinos.cn>
 
-commit fc5f8aec77704373ee804b5dba0e0e5029c0f180 upstream.
+[ Upstream commit 9764401bf6f8a20eb11c2e78470f20fee91a9ea7 ]
 
-Add video_device_release() in label 'err_m2m' to release the memory
-allocated by video_device_alloc() and prevent potential memory leaks.
-Remove the reduntant code in label 'err_m2m'.
+Some broken device return wrong dwMaxPayloadTransferSize fields as
+follows:
 
-Fixes: a8ef0488cc59 ("media: imx: add csc/scaler mem2mem device")
-Cc: stable@vger.kernel.org
-Signed-off-by: Haoxiang Li <haoxiang_li2024@163.com>
-Reviewed-by: Dan Carpenter <dan.carpenter@linaro.org>
-Signed-off-by: Nicolas Dufresne <nicolas.dufresne@collabora.com>
+[  218.632537] uvcvideo: Device requested 2752512 B/frame bandwidth.
+[  218.632598] uvcvideo: No fast enough alt setting for requested bandwidth.
+
+When dwMaxPayloadTransferSize is greater than maxpsize, it will prevent
+the camera from starting. So use the bandwidth of maxpsize.
+
+Signed-off-by: chenchangcheng <chenchangcheng@kylinos.cn>
+Reviewed-by: Ricardo Ribalda <ribalda@chromium.org>
+Reviewed-by: Laurent Pinchart <laurent.pinchart@ideasonboard.com>
+Link: https://lore.kernel.org/r/20250510061803.811433-1-ccc194101@163.com
+Signed-off-by: Laurent Pinchart <laurent.pinchart@ideasonboard.com>
 Signed-off-by: Hans Verkuil <hverkuil@xs4all.nl>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/staging/media/imx/imx-media-csc-scaler.c |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/media/usb/uvc/uvc_video.c | 9 +++++++++
+ 1 file changed, 9 insertions(+)
 
---- a/drivers/staging/media/imx/imx-media-csc-scaler.c
-+++ b/drivers/staging/media/imx/imx-media-csc-scaler.c
-@@ -914,7 +914,7 @@ imx_media_csc_scaler_device_init(struct
- 	return &priv->vdev;
+diff --git a/drivers/media/usb/uvc/uvc_video.c b/drivers/media/usb/uvc/uvc_video.c
+index e62afdee20db..d1510c1230d9 100644
+--- a/drivers/media/usb/uvc/uvc_video.c
++++ b/drivers/media/usb/uvc/uvc_video.c
+@@ -228,6 +228,15 @@ static void uvc_fixup_video_ctrl(struct uvc_streaming *stream,
  
- err_m2m:
--	video_set_drvdata(vfd, NULL);
-+	video_device_release(vfd);
- err_vfd:
- 	kfree(priv);
- 	return ERR_PTR(ret);
+ 		ctrl->dwMaxPayloadTransferSize = bandwidth;
+ 	}
++
++	if (stream->intf->num_altsetting > 1 &&
++	    ctrl->dwMaxPayloadTransferSize > stream->maxpsize) {
++		dev_warn_ratelimited(&stream->intf->dev,
++				     "UVC non compliance: the max payload transmission size (%u) exceeds the size of the ep max packet (%u). Using the max size.\n",
++				     ctrl->dwMaxPayloadTransferSize,
++				     stream->maxpsize);
++		ctrl->dwMaxPayloadTransferSize = stream->maxpsize;
++	}
+ }
+ 
+ static size_t uvc_video_ctrl_size(struct uvc_streaming *stream)
+-- 
+2.39.5
+
 
 
 
