@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-173890-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-174987-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0F636B36049
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 14:59:08 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id D40E5B36639
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 15:55:05 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 220ED1BA5F7E
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 12:56:45 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id A4006567FA2
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 13:44:35 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8850E1B424F;
-	Tue, 26 Aug 2025 12:55:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8698329D291;
+	Tue, 26 Aug 2025 13:44:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="2lXxP5cQ"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="WvsDTYPO"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4443A12CD88;
-	Tue, 26 Aug 2025 12:55:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3E0CD2FDC5C;
+	Tue, 26 Aug 2025 13:44:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756212938; cv=none; b=W18Rz17TY1S/UBvlMyi7V7fLFRVvZVsu1VaTux9hKLBc9/SjSrN6RNy3PK5mbjB8Qmvi1aHjC7ww7w09I+C468N1eyTRLElQlrt5Dx1VedO2sgePNuMG+okfsnyEvbejQ0T3Jm6OVfE3xRfxMtTuki4cuJ/XVgyt9LAMUo+R91k=
+	t=1756215842; cv=none; b=aItp/rvR5VwmH3XUinkDHxJIudDi9zTzj2lwFUtg5vVWorY4rIcibHzff6CqtquA4Dy65vY8YyCtoZJ5NIO0m8176gdAZ0nI8ixCU1wcsxkpt4eBhpKwpcAeSjCMMkxSB/Nr8T/5IJMW7ugdccZp4R0AWd38Ut4M4b44K0LFYc0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756212938; c=relaxed/simple;
-	bh=fpcQhKIXkAasfY7DPyPX70F22q7dlgQeQcvOiYmxe2A=;
+	s=arc-20240116; t=1756215842; c=relaxed/simple;
+	bh=Ut6u+hGDHqIJ5eMznf8wVnJGWUaonHy6+C63LWxnTNk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=t/tC/mZ0HdsKozqq7SM2HmA5LUavj/kO5Zd54cf4Ud3AgJkUOjk1AbkykPnsu7csclWPHJ0zRsE6wuhwDHFIn0vPPysWFgv/7KVpMvh+sdwgaCE5SEeKtH+RWNk5WiBHF8o2qEEMVK3lAqXlGyPDxfrMrvbnA1B91Yiora/6+xU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=2lXxP5cQ; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6C6AFC4CEF1;
-	Tue, 26 Aug 2025 12:55:35 +0000 (UTC)
+	 MIME-Version; b=lDseD3DNjNkGMAB5yAjM2dlKbWoSKDe1X+C2CAzMXdQTl8mZ9P9Mwn8a2dAIporBx2oQzLvoWm7ctyKqCa71IoIwDFRYDaMfFXrDjbnP7woCJ0SNYK71sHPRBxltYTziI66YfSgB3VSSk0JUYt0o9QiN/8a6u9Kpnr38edGoajA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=WvsDTYPO; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8B664C4CEF1;
+	Tue, 26 Aug 2025 13:44:01 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1756212935;
-	bh=fpcQhKIXkAasfY7DPyPX70F22q7dlgQeQcvOiYmxe2A=;
+	s=korg; t=1756215841;
+	bh=Ut6u+hGDHqIJ5eMznf8wVnJGWUaonHy6+C63LWxnTNk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=2lXxP5cQ9KkFGBObTUpJ/g5qYCxkf4DzGuIkjjsQNW4de3OnmSoBrlwLFg4GJ9Jq8
-	 Y4ADagNlJtuVFxYH/jP2uvtZZb+PfSkn4WCgn9VVesHa0HikclXct8cYG+QJRU0Qwf
-	 9hcGaWvkjzyyxF3mHVxBBSt7VxhM3w/x9wKCvBYc=
+	b=WvsDTYPOEdXoHBIzqsBzPAo27K4ugSG6OoXs0R9m91uthakHMh/U0NA37+fWsMd6/
+	 8m5ZLZui/sx2X3dffq8c781PGQ3p/7eg2/Vea6KIw0wz3XR63oBhW1c2cxNxoN7Q8x
+	 WpcsBvieHLGBnDaMyL6OFL9EZNPmfu+uALqsBLH0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	"Gautham R. Shenoy" <gautham.shenoy@amd.com>,
-	Shuah Khan <skhan@linuxfoundation.org>,
+	Dan Carpenter <dan.carpenter@linaro.org>,
+	Guenter Roeck <linux@roeck-us.net>,
+	Wim Van Sebroeck <wim@linux-watchdog.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 128/587] pm: cpupower: Fix the snapshot-order of tsc,mperf, clock in mperf_stop()
+Subject: [PATCH 5.15 186/644] watchdog: ziirave_wdt: check record length in ziirave_firm_verify()
 Date: Tue, 26 Aug 2025 13:04:37 +0200
-Message-ID: <20250826110956.211923606@linuxfoundation.org>
+Message-ID: <20250826110951.069335535@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250826110952.942403671@linuxfoundation.org>
-References: <20250826110952.942403671@linuxfoundation.org>
+In-Reply-To: <20250826110946.507083938@linuxfoundation.org>
+References: <20250826110946.507083938@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,47 +63,44 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Gautham R. Shenoy <gautham.shenoy@amd.com>
+From: Dan Carpenter <dan.carpenter@linaro.org>
 
-[ Upstream commit cda7ac8ce7de84cf32a3871ba5f318aa3b79381e ]
+[ Upstream commit 8b61d8ca751bc15875b50e0ff6ac3ba0cf95a529 ]
 
-In the function mperf_start(), mperf_monitor snapshots the time, tsc
-and finally the aperf,mperf MSRs. However, this order of snapshotting
-in is reversed in mperf_stop(). As a result, the C0 residency (which
-is computed as delta_mperf * 100 / delta_tsc) is under-reported on
-CPUs that is 100% busy.
+The "rec->len" value comes from the firmware.  We generally do
+trust firmware, but it's always better to double check.  If
+the length value is too large it would lead to memory corruption
+when we set "data[i] = ret;"
 
-Fix this by snapshotting time, tsc and then aperf,mperf in
-mperf_stop() in the same order as in mperf_start().
-
-Link: https://lore.kernel.org/r/20250612122355.19629-2-gautham.shenoy@amd.com
-Signed-off-by: Gautham R. Shenoy <gautham.shenoy@amd.com>
-Signed-off-by: Shuah Khan <skhan@linuxfoundation.org>
+Fixes: 217209db0204 ("watchdog: ziirave_wdt: Add support to upload the firmware.")
+Signed-off-by: Dan Carpenter <dan.carpenter@linaro.org>
+Reviewed-by: Guenter Roeck <linux@roeck-us.net>
+Link: https://lore.kernel.org/r/3b58b453f0faa8b968c90523f52c11908b56c346.1748463049.git.dan.carpenter@linaro.org
+Signed-off-by: Guenter Roeck <linux@roeck-us.net>
+Signed-off-by: Wim Van Sebroeck <wim@linux-watchdog.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- tools/power/cpupower/utils/idle_monitor/mperf_monitor.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ drivers/watchdog/ziirave_wdt.c | 3 +++
+ 1 file changed, 3 insertions(+)
 
-diff --git a/tools/power/cpupower/utils/idle_monitor/mperf_monitor.c b/tools/power/cpupower/utils/idle_monitor/mperf_monitor.c
-index 08a399b0be28..6ab9139f16af 100644
---- a/tools/power/cpupower/utils/idle_monitor/mperf_monitor.c
-+++ b/tools/power/cpupower/utils/idle_monitor/mperf_monitor.c
-@@ -240,9 +240,9 @@ static int mperf_stop(void)
- 	int cpu;
+diff --git a/drivers/watchdog/ziirave_wdt.c b/drivers/watchdog/ziirave_wdt.c
+index c5a9b820d43a..48c68c66e530 100644
+--- a/drivers/watchdog/ziirave_wdt.c
++++ b/drivers/watchdog/ziirave_wdt.c
+@@ -302,6 +302,9 @@ static int ziirave_firm_verify(struct watchdog_device *wdd,
+ 		const u16 len = be16_to_cpu(rec->len);
+ 		const u32 addr = be32_to_cpu(rec->addr);
  
- 	for (cpu = 0; cpu < cpu_count; cpu++) {
--		mperf_measure_stats(cpu);
--		mperf_get_tsc(&tsc_at_measure_end[cpu]);
- 		clock_gettime(CLOCK_REALTIME, &time_end[cpu]);
-+		mperf_get_tsc(&tsc_at_measure_end[cpu]);
-+		mperf_measure_stats(cpu);
- 	}
++		if (len > sizeof(data))
++			return -EINVAL;
++
+ 		if (ziirave_firm_addr_readonly(addr))
+ 			continue;
  
- 	return 0;
 -- 
 2.39.5
 
