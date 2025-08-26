@@ -1,58 +1,56 @@
-Return-Path: <stable+bounces-175494-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-173843-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id CFCF1B36884
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 16:17:02 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7B9DBB3600D
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 14:56:30 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id A65701C27DB3
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 14:08:43 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 7A591463BBD
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 12:54:25 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C98B23451A0;
-	Tue, 26 Aug 2025 14:06:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 109311C860B;
+	Tue, 26 Aug 2025 12:53:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="jZQ1hiYw"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="siU0t+Mb"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8808D22128B;
-	Tue, 26 Aug 2025 14:06:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C2E611C6BE;
+	Tue, 26 Aug 2025 12:53:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756217192; cv=none; b=ORIlZwf1t1zUTd3yXGKbky4SWtwFgaXHUDXSRdIsoeDeAGgDPZcLLDYlG4kodEPfeuXr90jG9v6sWUSNrXMATBZodUj2V1aE7C0hhUt6xmwFOjT8hxuE2ZrRBNtdDgJmmroRPxk2ITufguAqMG+JD+VuvlbPWX3mBGG02ZlLXBs=
+	t=1756212811; cv=none; b=BXOuInFZZLcQX1Py1h9FTiQb80voGJGN5XD6Imv+eaF//RupwGcpCKwY85XCrgQ6wHkMvX5OZniUI9W1/8CkSYI505brBmpmDWLaygRC652ktXmqpFV1bTeHsnlmRiazCx4uqtvvWS1yewNfyL2h4upfk2GMfahaUDHfOA6n3rA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756217192; c=relaxed/simple;
-	bh=ZaLREzbC7iZl2TMpIVVpVjkvoTG/RGvMQ1OF2ARt6a0=;
+	s=arc-20240116; t=1756212811; c=relaxed/simple;
+	bh=B7ftmo4zNYz3dBVO1xkwFNWcBWMR7srhh1qcd5SRmxU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Y0BTAj4crJyZ0KW/PMBLArqIHai1DJ/2YQDVLY5lh+YkERCGi3GMSAcUXEtZtq8u9P5uLeTCltKPrjj71z6KDPFL3DpSJowQ4S+Zl2Ss8qxkWpFGuarqGBtQb+b9N8Y94HtoZqmfhT60J0icW1x5pUgAH/OIdkNarg5xhK3TUaA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=jZQ1hiYw; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1B91DC4CEF1;
-	Tue, 26 Aug 2025 14:06:31 +0000 (UTC)
+	 MIME-Version; b=jWDRQAtJLedU1lG9wp2sIBKHg/OdW0P+bMfU+3zB4jsMkiflS8c2SKfqTMBxwS8XdaOZoRZV3D4RRoLXN0C1NXoWG+jWTLVWy3USARIuhyU0YuQNfS86GQAxI6ALy2URi0X1rBlgqmvxenGsUrfMH34xs23AsVBFQeonRzbTz0w=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=siU0t+Mb; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 57CCAC4CEF1;
+	Tue, 26 Aug 2025 12:53:31 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1756217192;
-	bh=ZaLREzbC7iZl2TMpIVVpVjkvoTG/RGvMQ1OF2ARt6a0=;
+	s=korg; t=1756212811;
+	bh=B7ftmo4zNYz3dBVO1xkwFNWcBWMR7srhh1qcd5SRmxU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=jZQ1hiYwU1VrxL8uWORklKqTVSLGCu6LZ2JDGPHI6rHMX3TGemwy+o3GRKkYSGUx7
-	 oP4NRVl/pGAn3pGxHdMfArRC81KD9eq3ifbopUJ5E+37FMO4V30NXEx/OcS3Ct4Oe7
-	 UN/wmp2mveXJ/EYSxCU+KVK8Y3mbTllErRGWLHGc=
+	b=siU0t+MbV/jXRAWAJhZt41qdn3Kobmlmvs+HAHQxWKQSHBWxuPN3gK3SUB6GP9aWw
+	 FmHYENO2mf/Ae+AdTezZ1jWdpoqafbhXIeRNA8jBqZip/MPcyMMO7ux4gkMwYG7Wxz
+	 0He37dbuHhKF8q2xVEtNSdPJAqOhZ8/YjQM9ooco=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	stable <stable@kernel.org>,
-	Thinh Nguyen <Thinh.Nguyen@synopsys.com>,
-	Konrad Dybcio <konrad.dybcio@oss.qualcomm.com>,
-	Krishna Kurapati <krishna.kurapati@oss.qualcomm.com>,
+	tuhaowen <tuhaowen@uniontech.com>,
+	"Rafael J. Wysocki" <rafael.j.wysocki@intel.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 050/523] usb: dwc3: qcom: Dont leave BCR asserted
+Subject: [PATCH 6.6 111/587] PM: sleep: console: Fix the black screen issue
 Date: Tue, 26 Aug 2025 13:04:20 +0200
-Message-ID: <20250826110925.833286139@linuxfoundation.org>
+Message-ID: <20250826110955.764249763@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250826110924.562212281@linuxfoundation.org>
-References: <20250826110924.562212281@linuxfoundation.org>
+In-Reply-To: <20250826110952.942403671@linuxfoundation.org>
+References: <20250826110952.942403671@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,70 +62,82 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Krishna Kurapati <krishna.kurapati@oss.qualcomm.com>
+From: tuhaowen <tuhaowen@uniontech.com>
 
-commit ef8abc0ba49ce717e6bc4124e88e59982671f3b5 upstream.
+[ Upstream commit 4266e8fa56d3d982bf451d382a410b9db432015c ]
 
-Leaving the USB BCR asserted prevents the associated GDSC to turn on. This
-blocks any subsequent attempts of probing the device, e.g. after a probe
-deferral, with the following showing in the log:
+When the computer enters sleep status without a monitor
+connected, the system switches the console to the virtual
+terminal tty63(SUSPEND_CONSOLE).
 
-[    1.332226] usb30_prim_gdsc status stuck at 'off'
+If a monitor is subsequently connected before waking up,
+the system skips the required VT restoration process
+during wake-up, leaving the console on tty63 instead of
+switching back to tty1.
 
-Leave the BCR deasserted when exiting the driver to avoid this issue.
+To fix this issue, a global flag vt_switch_done is introduced
+to record whether the system has successfully switched to
+the suspend console via vt_move_to_console() during suspend.
 
-Cc: stable <stable@kernel.org>
-Fixes: a4333c3a6ba9 ("usb: dwc3: Add Qualcomm DWC3 glue driver")
-Acked-by: Thinh Nguyen <Thinh.Nguyen@synopsys.com>
-Reviewed-by: Konrad Dybcio <konrad.dybcio@oss.qualcomm.com>
-Signed-off-by: Krishna Kurapati <krishna.kurapati@oss.qualcomm.com>
-Link: https://lore.kernel.org/r/20250709132900.3408752-1-krishna.kurapati@oss.qualcomm.com
-[ adapted to individual clock management API instead of bulk clock operations ]
+If the switch was completed, vt_switch_done is set to 1.
+Later during resume, this flag is checked to ensure that
+the original console is restored properly by calling
+vt_move_to_console(orig_fgconsole, 0).
+
+This prevents scenarios where the resume logic skips console
+restoration due to incorrect detection of the console state,
+especially when a monitor is reconnected before waking up.
+
+Signed-off-by: tuhaowen <tuhaowen@uniontech.com>
+Link: https://patch.msgid.link/20250611032345.29962-1-tuhaowen@uniontech.com
+Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/usb/dwc3/dwc3-qcom.c |    7 ++-----
- 1 file changed, 2 insertions(+), 5 deletions(-)
+ kernel/power/console.c | 7 ++++++-
+ 1 file changed, 6 insertions(+), 1 deletion(-)
 
---- a/drivers/usb/dwc3/dwc3-qcom.c
-+++ b/drivers/usb/dwc3/dwc3-qcom.c
-@@ -786,13 +786,13 @@ static int dwc3_qcom_probe(struct platfo
- 	ret = reset_control_deassert(qcom->resets);
- 	if (ret) {
- 		dev_err(&pdev->dev, "failed to deassert resets, err=%d\n", ret);
--		goto reset_assert;
-+		return ret;
- 	}
+diff --git a/kernel/power/console.c b/kernel/power/console.c
+index fcdf0e14a47d..19c48aa5355d 100644
+--- a/kernel/power/console.c
++++ b/kernel/power/console.c
+@@ -16,6 +16,7 @@
+ #define SUSPEND_CONSOLE	(MAX_NR_CONSOLES-1)
  
- 	ret = dwc3_qcom_clk_init(qcom, of_clk_get_parent_count(np));
- 	if (ret) {
- 		dev_err(dev, "failed to get clocks\n");
--		goto reset_assert;
-+		return ret;
- 	}
+ static int orig_fgconsole, orig_kmsg;
++static bool vt_switch_done;
  
- 	res = platform_get_resource(pdev, IORESOURCE_MEM, 0);
-@@ -892,8 +892,6 @@ clk_disable:
- 		clk_disable_unprepare(qcom->clks[i]);
- 		clk_put(qcom->clks[i]);
- 	}
--reset_assert:
--	reset_control_assert(qcom->resets);
+ static DEFINE_MUTEX(vt_switch_mutex);
  
- 	return ret;
+@@ -136,17 +137,21 @@ void pm_prepare_console(void)
+ 	if (orig_fgconsole < 0)
+ 		return;
+ 
++	vt_switch_done = true;
++
+ 	orig_kmsg = vt_kmsg_redirect(SUSPEND_CONSOLE);
+ 	return;
  }
-@@ -921,7 +919,6 @@ static int dwc3_qcom_remove(struct platf
- 	qcom->num_clocks = 0;
  
- 	dwc3_qcom_interconnect_exit(qcom);
--	reset_control_assert(qcom->resets);
+ void pm_restore_console(void)
+ {
+-	if (!pm_vt_switch())
++	if (!pm_vt_switch() && !vt_switch_done)
+ 		return;
  
- 	pm_runtime_allow(dev);
- 	pm_runtime_disable(dev);
+ 	if (orig_fgconsole >= 0) {
+ 		vt_move_to_console(orig_fgconsole, 0);
+ 		vt_kmsg_redirect(orig_kmsg);
+ 	}
++
++	vt_switch_done = false;
+ }
+-- 
+2.39.5
+
 
 
 
