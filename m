@@ -1,56 +1,58 @@
-Return-Path: <stable+bounces-175276-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-176213-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [142.0.200.124])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2E80AB3669E
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 15:58:51 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6BEABB36C6D
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 16:56:21 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 099BF4E45CE
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 13:58:50 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id D71CE8E80B6
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 14:40:49 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 478F6352FD4;
-	Tue, 26 Aug 2025 13:56:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 324C01E0E08;
+	Tue, 26 Aug 2025 14:37:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="OXlN/fX8"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="isacDJ6Z"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F4203352FFE;
-	Tue, 26 Aug 2025 13:56:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D435A353379;
+	Tue, 26 Aug 2025 14:37:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756216609; cv=none; b=VkIlkjh1lj9RFIazl+QW9V36vzdxyzl78OpB7HyIiiGhRRBtATkrH5tEH9YWyZipH+qRICp7UTaGEZqu+yYe5G77KS8HqnajMcOPxKEWXmUlB3uubOQeZ9nkJIDyIv5HkWEjAo3EL6/GiuC/CZNvOtkTqc5/8+vAhOnSitFluzQ=
+	t=1756219073; cv=none; b=t097UcT/HhiFMY2HtXI6P5m8z0Y7kU3hrN6JXRjBlp0C56sC0fTZ3i+L/DEMamoonQVCer1cvRvD9Qj+mh9Ie99i5TImVSfmsKg/8jNCOr3f/iHAjcklBePeaqUJ9tU8M4L//Fw4RoZQyeFAnhgAxdihKErkvSLIDYcAFr4jz7Q=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756216609; c=relaxed/simple;
-	bh=Pwn7QalGwXgy82kICuMdI353EzukxSlrQOwIt71su2U=;
+	s=arc-20240116; t=1756219073; c=relaxed/simple;
+	bh=UWkJiUUqtk1hRGVOpkvofqNmOGsAGT0U/z8t5WQGZXk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=cgA0shvZKwJXu0hrP8HfFx7ttg4cRBiiFTtXOq69sDxUnHEsoD742exPIUaioMr27KSN8tDjt4fE9gUPFJQR/ghLg3q8gHEPNnH2543CuM1JaLZ8pKmgdlxW2MwgdP/YnpPZ+JdWEOeraNN9rZh4Xa2EiDN9X0ITGAMvEzaq+MM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=OXlN/fX8; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7B7CBC113CF;
-	Tue, 26 Aug 2025 13:56:48 +0000 (UTC)
+	 MIME-Version:Content-Type; b=n9NssteaduJfLmhKWZDk8F/+s1j77dvhruqfCdjoFuinV8r/f8lX/OE2FVanMxaWnmyPLKaHOPzWVxPzSK8FHGq4yWciyxbRYB4X5DSLCjnIaL4i6mG5iVULGvI6PNfTaVjREHtrvqnZyJqKynnM8KWS3mlpDhsaByVoBtYUfeo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=isacDJ6Z; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1D3E3C4CEF1;
+	Tue, 26 Aug 2025 14:37:52 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1756216608;
-	bh=Pwn7QalGwXgy82kICuMdI353EzukxSlrQOwIt71su2U=;
+	s=korg; t=1756219073;
+	bh=UWkJiUUqtk1hRGVOpkvofqNmOGsAGT0U/z8t5WQGZXk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=OXlN/fX8ZEzgHS83tkdGUGq6JA5Ekh/idkJJLJVnyxEtJlM5o9rSlR9i0j3ZLNW9O
-	 pnnEQn+9nYBsB60wK+hceF2vkrdQetwZUrVWT6gxSjaGj0BSXnPRxwWCL4/evsTnlD
-	 VCOO2qZ7eJYP/rTy/drkoYEOKuXwbhLpJSf13MRw=
+	b=isacDJ6Z2EpjdrW/fPLE0qtkqBXfHWPBLq344E35+nJgBITHqJBB0uYERxtKxGklT
+	 d8pf8i+LTgDT3V0SxtiHCd2LcT0DtaSb8EhWvSLg/ofFyjWVO8C9CuOr2H7uQRv6GS
+	 RkeflSUotDIppuBQbACYz3PPOSQ61ib7cB6zxUW0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Nathan Chancellor <nathan@kernel.org>,
-	Johannes Berg <johannes.berg@intel.com>,
-	Arend van Spriel <arend.vanspriel@broadcom.com>
-Subject: [PATCH 5.15 476/644] wifi: brcmsmac: Remove const from tbl_ptr parameter in wlc_lcnphy_common_read_table()
-Date: Tue, 26 Aug 2025 13:09:27 +0200
-Message-ID: <20250826110958.279014905@linuxfoundation.org>
+	=?UTF-8?q?Thomas=20Wei=C3=9Fschuh?= <thomas.weissschuh@linutronix.de>,
+	David Gow <davidgow@google.com>,
+	Huacai Chen <chenhuacai@loongson.cn>,
+	Thomas Bogendoerfer <tsbogend@alpha.franken.de>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.4 242/403] MIPS: Dont crash in stack_top() for tasks without ABI or vDSO
+Date: Tue, 26 Aug 2025 13:09:28 +0200
+Message-ID: <20250826110913.512854862@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250826110946.507083938@linuxfoundation.org>
-References: <20250826110946.507083938@linuxfoundation.org>
+In-Reply-To: <20250826110905.607690791@linuxfoundation.org>
+References: <20250826110905.607690791@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,53 +62,84 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+5.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Nathan Chancellor <nathan@kernel.org>
+From: Thomas Weißschuh <thomas.weissschuh@linutronix.de>
 
-commit 81284e86bf8849f8e98e8ead3ff5811926b2107f upstream.
+[ Upstream commit e9f4a6b3421e936c3ee9d74710243897d74dbaa2 ]
 
-A new warning in clang [1] complains that diq_start in
-wlc_lcnphy_tx_iqlo_cal() is passed uninitialized as a const pointer to
-wlc_lcnphy_common_read_table():
+Not all tasks have an ABI associated or vDSO mapped,
+for example kthreads never do.
+If such a task ever ends up calling stack_top(), it will derefence the
+NULL ABI pointer and crash.
 
-  drivers/net/wireless/broadcom/brcm80211/brcmsmac/phy/phy_lcn.c:2728:13: error: variable 'diq_start' is uninitialized when passed as a const pointer argument here [-Werror,-Wuninitialized-const-pointer]
-   2728 |                                                      &diq_start, 1, 16, 69);
-        |                                                       ^~~~~~~~~
+This can for example happen when using kunit:
 
-The table pointer passed to wlc_lcnphy_common_read_table() should not be
-considered constant, as wlc_phy_read_table() is ultimately going to
-update it. Remove the const qualifier from the tbl_ptr to clear up the
-warning.
+    mips_stack_top+0x28/0xc0
+    arch_pick_mmap_layout+0x190/0x220
+    kunit_vm_mmap_init+0xf8/0x138
+    __kunit_add_resource+0x40/0xa8
+    kunit_vm_mmap+0x88/0xd8
+    usercopy_test_init+0xb8/0x240
+    kunit_try_run_case+0x5c/0x1a8
+    kunit_generic_run_threadfn_adapter+0x28/0x50
+    kthread+0x118/0x240
+    ret_from_kernel_thread+0x14/0x1c
 
-Cc: stable@vger.kernel.org
-Closes: https://github.com/ClangBuiltLinux/linux/issues/2108
-Fixes: 5b435de0d786 ("net: wireless: add brcm80211 drivers")
-Link: https://github.com/llvm/llvm-project/commit/00dacf8c22f065cb52efb14cd091d441f19b319e [1]
-Signed-off-by: Nathan Chancellor <nathan@kernel.org>
-Acked-by: Arend van Spriel <arend.vanspriel@broadcom.com>>
-Link: https://patch.msgid.link/20250715-brcmsmac-fix-uninit-const-pointer-v1-1-16e6a51a8ef4@kernel.org
-Signed-off-by: Johannes Berg <johannes.berg@intel.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Only dereference the ABI point if it is set.
+
+The GIC page is also included as it is specific to the vDSO.
+Also move the randomization adjustment into the same conditional.
+
+Signed-off-by: Thomas Weißschuh <thomas.weissschuh@linutronix.de>
+Reviewed-by: David Gow <davidgow@google.com>
+Reviewed-by: Huacai Chen <chenhuacai@loongson.cn>
+Signed-off-by: Thomas Bogendoerfer <tsbogend@alpha.franken.de>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/wireless/broadcom/brcm80211/brcmsmac/phy/phy_lcn.c |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ arch/mips/kernel/process.c | 16 +++++++++-------
+ 1 file changed, 9 insertions(+), 7 deletions(-)
 
---- a/drivers/net/wireless/broadcom/brcm80211/brcmsmac/phy/phy_lcn.c
-+++ b/drivers/net/wireless/broadcom/brcm80211/brcmsmac/phy/phy_lcn.c
-@@ -919,7 +919,7 @@ void wlc_lcnphy_read_table(struct brcms_
+diff --git a/arch/mips/kernel/process.c b/arch/mips/kernel/process.c
+index 339870ed92f7..42e95e6edd1d 100644
+--- a/arch/mips/kernel/process.c
++++ b/arch/mips/kernel/process.c
+@@ -654,18 +654,20 @@ unsigned long mips_stack_top(void)
+ 	top -= PAGE_SIZE;
  
- static void
- wlc_lcnphy_common_read_table(struct brcms_phy *pi, u32 tbl_id,
--			     const u16 *tbl_ptr, u32 tbl_len,
-+			     u16 *tbl_ptr, u32 tbl_len,
- 			     u32 tbl_width, u32 tbl_offset)
- {
- 	struct phytbl_info tab;
+ 	/* Space for the VDSO, data page & GIC user page */
+-	top -= PAGE_ALIGN(current->thread.abi->vdso->size);
+-	top -= PAGE_SIZE;
+-	top -= mips_gic_present() ? PAGE_SIZE : 0;
++	if (current->thread.abi) {
++		top -= PAGE_ALIGN(current->thread.abi->vdso->size);
++		top -= PAGE_SIZE;
++		top -= mips_gic_present() ? PAGE_SIZE : 0;
++
++		/* Space to randomize the VDSO base */
++		if (current->flags & PF_RANDOMIZE)
++			top -= VDSO_RANDOMIZE_SIZE;
++	}
+ 
+ 	/* Space for cache colour alignment */
+ 	if (cpu_has_dc_aliases)
+ 		top -= shm_align_mask + 1;
+ 
+-	/* Space to randomize the VDSO base */
+-	if (current->flags & PF_RANDOMIZE)
+-		top -= VDSO_RANDOMIZE_SIZE;
+-
+ 	return top;
+ }
+ 
+-- 
+2.39.5
+
 
 
 
