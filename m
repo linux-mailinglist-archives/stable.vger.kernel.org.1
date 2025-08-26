@@ -1,55 +1,58 @@
-Return-Path: <stable+bounces-173607-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-174657-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5A2CDB35D9D
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 13:46:51 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 087BBB364DF
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 15:42:31 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 680EF5E6D50
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 11:46:12 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 0B7C856061F
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 13:30:57 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E05E929BDBA;
-	Tue, 26 Aug 2025 11:44:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 068483451D5;
+	Tue, 26 Aug 2025 13:29:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="mJDpqTLi"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="k7W24ICX"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8F1E2393DD1;
-	Tue, 26 Aug 2025 11:44:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B68F9319867;
+	Tue, 26 Aug 2025 13:29:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756208686; cv=none; b=rjQYAgLH+0hyplbMZp4MqhbYT6QzgmNap/XzXeeRGOMzczbzm/h2SIRbypccL1IgGjTZNIhiN6IhcZfqhA9Z82M639HgVnRqNjiU6JRygo8r6pQP7RYug4CSgN4AXTMahTySkJM0sjZpkzNVmDuFYiwb9G9Oen46TrJfXF9ZW10=
+	t=1756214969; cv=none; b=K23zNnGlWE5BUnsOxuQL9cpNA8NvXZaTtQX7yyxcZmNOru3qqUg9kLCGh4fw+mw5qXhW5rJASpxRyYjpOj15/cSTjByTHRoTTCN1CgQZcyuAMH0x91iPRA2HGj6soUllYYubv6KrH2gm2UHHlyEdWig3MhGG6BZLjjA4kF7gtww=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756208686; c=relaxed/simple;
-	bh=r3cbHMHF3qI40Wt4xXnDivznqUXbW9jNOD+OlZuUlQo=;
+	s=arc-20240116; t=1756214969; c=relaxed/simple;
+	bh=xz+d4phyaJ/BBQR4SLjGxDl+WVL1miUknUkxJjmNK9o=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=iMHKpKL8OSZO6o6697U4qffGTKHApG5YimSAMZ2VBXkUQXkhUephb33sisCTmaSjZdeFdOHrAE/1dyarSDGO/BPrNSiFql+g2F1k3GPmpiFgH+4GvxGNBYhR0Pi1w7jYda6QE9if5tHcBZiNhNWkHUQpa9c0Vehj7gF/aI6TBmM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=mJDpqTLi; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 20559C116B1;
-	Tue, 26 Aug 2025 11:44:45 +0000 (UTC)
+	 MIME-Version:Content-Type; b=Tk/EyyjF5bVHPXGygdpgO7FjMfwJ8rdToAJpoX9IQ6YpKHRefltpKp7eTcRodraujLnOg8vTnI4MyEz90F37GBV9e0lXpklhNMuf0SX++Qcq6Ho3R+xgtmrSPteoZ2btqyoqo32dIN+OvtdKz4SIFwkRzam2FRSRbWTYbPKSa2c=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=k7W24ICX; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4324EC4CEF1;
+	Tue, 26 Aug 2025 13:29:29 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1756208686;
-	bh=r3cbHMHF3qI40Wt4xXnDivznqUXbW9jNOD+OlZuUlQo=;
+	s=korg; t=1756214969;
+	bh=xz+d4phyaJ/BBQR4SLjGxDl+WVL1miUknUkxJjmNK9o=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=mJDpqTLiBzx1YVGk8UkRgjlq1TsaFD6P/M/W3ZIRTLLcnwh9ub8dVwiKbHBNF5Ay0
-	 xH0Id3IJ0Vvys/e0vUCLchBwY/Z70N6EuaOvg5VBaS17R7exk/uA6Z48nDNf6rg/cW
-	 5wKaeSpCE2Vqf/I5gUz9rF19uLHl7zSJeNM5gjrg=
+	b=k7W24ICXzZKfsQJTuRst3/tG3crGrWD4RIngG0JyATJ2b7QStTk4FQ03o5b3UAbb7
+	 QNNDpUPdHUgb9mXG0fCuAYH/uBmzrNnfQHPVOFxZkJWA3L/klmQm3AKXdqEobsmA1f
+	 jcIDAuUsWPhFC7fmI54AfPvFvTUGgqMSLOh98Ahk=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Alexander Gordeev <agordeev@linux.ibm.com>,
-	Peter Oberparleiter <oberpar@linux.ibm.com>
-Subject: [PATCH 6.12 176/322] s390/sclp: Fix SCCB present check
+	stable@kernel.org,
+	syzbot+a81f2759d022496b40ab@syzkaller.appspotmail.com,
+	Jakub Acs <acsjakub@amazon.de>,
+	Eric Dumazet <edumazet@google.com>,
+	Jakub Kicinski <kuba@kernel.org>
+Subject: [PATCH 6.1 338/482] net, hsr: reject HSR frame if skb cant hold tag
 Date: Tue, 26 Aug 2025 13:09:51 +0200
-Message-ID: <20250826110920.206948182@linuxfoundation.org>
+Message-ID: <20250826110939.177813070@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250826110915.169062587@linuxfoundation.org>
-References: <20250826110915.169062587@linuxfoundation.org>
+In-Reply-To: <20250826110930.769259449@linuxfoundation.org>
+References: <20250826110930.769259449@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -59,72 +62,194 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Peter Oberparleiter <oberpar@linux.ibm.com>
+From: Jakub Acs <acsjakub@amazon.de>
 
-commit 430fa71027b6ac9bb0ce5532b8d0676777d4219a upstream.
+commit 7af76e9d18a9fd6f8611b3313c86c190f9b6a5a7 upstream.
 
-Tracing code called by the SCLP interrupt handler contains early exits
-if the SCCB address associated with an interrupt is NULL. This check is
-performed after physical to virtual address translation.
+Receiving HSR frame with insufficient space to hold HSR tag in the skb
+can result in a crash (kernel BUG):
 
-If the kernel identity mapping does not start at address zero, the
-resulting virtual address is never zero, so that the NULL checks won't
-work. Subsequently this may result in incorrect accesses to the first
-page of the identity mapping.
+[   45.390915] skbuff: skb_under_panic: text:ffffffff86f32cac len:26 put:14 head:ffff888042418000 data:ffff888042417ff4 tail:0xe end:0x180 dev:bridge_slave_1
+[   45.392559] ------------[ cut here ]------------
+[   45.392912] kernel BUG at net/core/skbuff.c:211!
+[   45.393276] Oops: invalid opcode: 0000 [#1] SMP DEBUG_PAGEALLOC KASAN NOPTI
+[   45.393809] CPU: 1 UID: 0 PID: 2496 Comm: reproducer Not tainted 6.15.0 #12 PREEMPT(undef)
+[   45.394433] Hardware name: QEMU Standard PC (i440FX + PIIX, 1996), BIOS rel-1.16.3-0-ga6ed6b701f0a-prebuilt.qemu.org 04/01/2014
+[   45.395273] RIP: 0010:skb_panic+0x15b/0x1d0
 
-Fix this by introducing a function that handles the NULL case before
-address translation.
+<snip registers, remove unreliable trace>
 
-Fixes: ada1da31ce34 ("s390/sclp: sort out physical vs virtual pointers usage")
-Cc: stable@vger.kernel.org
-Reviewed-by: Alexander Gordeev <agordeev@linux.ibm.com>
-Signed-off-by: Peter Oberparleiter <oberpar@linux.ibm.com>
-Signed-off-by: Alexander Gordeev <agordeev@linux.ibm.com>
+[   45.402911] Call Trace:
+[   45.403105]  <IRQ>
+[   45.404470]  skb_push+0xcd/0xf0
+[   45.404726]  br_dev_queue_push_xmit+0x7c/0x6c0
+[   45.406513]  br_forward_finish+0x128/0x260
+[   45.408483]  __br_forward+0x42d/0x590
+[   45.409464]  maybe_deliver+0x2eb/0x420
+[   45.409763]  br_flood+0x174/0x4a0
+[   45.410030]  br_handle_frame_finish+0xc7c/0x1bc0
+[   45.411618]  br_handle_frame+0xac3/0x1230
+[   45.413674]  __netif_receive_skb_core.constprop.0+0x808/0x3df0
+[   45.422966]  __netif_receive_skb_one_core+0xb4/0x1f0
+[   45.424478]  __netif_receive_skb+0x22/0x170
+[   45.424806]  process_backlog+0x242/0x6d0
+[   45.425116]  __napi_poll+0xbb/0x630
+[   45.425394]  net_rx_action+0x4d1/0xcc0
+[   45.427613]  handle_softirqs+0x1a4/0x580
+[   45.427926]  do_softirq+0x74/0x90
+[   45.428196]  </IRQ>
+
+This issue was found by syzkaller.
+
+The panic happens in br_dev_queue_push_xmit() once it receives a
+corrupted skb with ETH header already pushed in linear data. When it
+attempts the skb_push() call, there's not enough headroom and
+skb_push() panics.
+
+The corrupted skb is put on the queue by HSR layer, which makes a
+sequence of unintended transformations when it receives a specific
+corrupted HSR frame (with incomplete TAG).
+
+Fix it by dropping and consuming frames that are not long enough to
+contain both ethernet and hsr headers.
+
+Alternative fix would be to check for enough headroom before skb_push()
+in br_dev_queue_push_xmit().
+
+In the reproducer, this is injected via AF_PACKET, but I don't easily
+see why it couldn't be sent over the wire from adjacent network.
+
+Further Details:
+
+In the reproducer, the following network interface chain is set up:
+
+┌────────────────┐   ┌────────────────┐
+│ veth0_to_hsr   ├───┤  hsr_slave0    ┼───┐
+└────────────────┘   └────────────────┘   │
+                                          │ ┌──────┐
+                                          ├─┤ hsr0 ├───┐
+                                          │ └──────┘   │
+┌────────────────┐   ┌────────────────┐   │            │┌────────┐
+│ veth1_to_hsr   ┼───┤  hsr_slave1    ├───┘            └┤        │
+└────────────────┘   └────────────────┘                ┌┼ bridge │
+                                                       ││        │
+                                                       │└────────┘
+                                                       │
+                                        ┌───────┐      │
+                                        │  ...  ├──────┘
+                                        └───────┘
+
+To trigger the events leading up to crash, reproducer sends a corrupted
+HSR frame with incomplete TAG, via AF_PACKET socket on 'veth0_to_hsr'.
+
+The first HSR-layer function to process this frame is
+hsr_handle_frame(). It and then checks if the
+protocol is ETH_P_PRP or ETH_P_HSR. If it is, it calls
+skb_set_network_header(skb, ETH_HLEN + HSR_HLEN), without checking that
+the skb is long enough. For the crashing frame it is not, and hence the
+skb->network_header and skb->mac_len fields are set incorrectly,
+pointing after the end of the linear buffer.
+
+I will call this a BUG#1 and it is what is addressed by this patch. In
+the crashing scenario before the fix, the skb continues to go down the
+hsr path as follows.
+
+hsr_handle_frame() then calls this sequence
+hsr_forward_skb()
+  fill_frame_info()
+    hsr->proto_ops->fill_frame_info()
+      hsr_fill_frame_info()
+
+hsr_fill_frame_info() contains a check that intends to check whether the
+skb actually contains the HSR header. But the check relies on the
+skb->mac_len field which was erroneously setup due to BUG#1, so the
+check passes and the execution continues  back in the hsr_forward_skb():
+
+hsr_forward_skb()
+  hsr_forward_do()
+    hsr->proto_ops->get_untagged_frame()
+      hsr_get_untagged_frame()
+        create_stripped_skb_hsr()
+
+In create_stripped_skb_hsr(), a copy of the skb is created and is
+further corrupted by operation that attempts to strip the HSR tag in a
+call to __pskb_copy().
+
+The skb enters create_stripped_skb_hsr() with ethernet header pushed in
+linear buffer. The skb_pull(skb_in, HSR_HLEN) thus pulls 6 bytes of
+ethernet header into the headroom, creating skb_in with a headroom of
+size 8. The subsequent __pskb_copy() then creates an skb with headroom
+of just 2 and skb->len of just 12, this is how it looks after the copy:
+
+gdb) p skb->len
+$10 = 12
+(gdb) p skb->data
+$11 = (unsigned char *) 0xffff888041e45382 "\252\252\252\252\252!\210\373",
+(gdb) p skb->head
+$12 = (unsigned char *) 0xffff888041e45380 ""
+
+It seems create_stripped_skb_hsr() assumes that ETH header is pulled
+in the headroom when it's entered, because it just pulls HSR header on
+top. But that is not the case in our code-path and we end up with the
+corrupted skb instead. I will call this BUG#2
+
+*I got confused here because it seems that under no conditions can
+create_stripped_skb_hsr() work well, the assumption it makes is not true
+during the processing of hsr frames - since the skb_push() in
+hsr_handle_frame to skb_pull in hsr_deliver_master(). I wonder whether I
+missed something here.*
+
+Next, the execution arrives in hsr_deliver_master(). It calls
+skb_pull(ETH_HLEN), which just returns NULL - the SKB does not have
+enough space for the pull (as it only has 12 bytes in total at this
+point).
+
+*The skb_pull() here further suggests that ethernet header is meant
+to be pushed through the whole hsr processing and
+create_stripped_skb_hsr() should pull it before doing the HSR header
+pull.*
+
+hsr_deliver_master() then puts the corrupted skb on the queue, it is
+then picked up from there by bridge frame handling layer and finally
+lands in br_dev_queue_push_xmit where it panics.
+
+Cc: stable@kernel.org
+Fixes: 48b491a5cc74 ("net: hsr: fix mac_len checks")
+Reported-by: syzbot+a81f2759d022496b40ab@syzkaller.appspotmail.com
+Signed-off-by: Jakub Acs <acsjakub@amazon.de>
+Reviewed-by: Eric Dumazet <edumazet@google.com>
+Link: https://patch.msgid.link/20250819082842.94378-1-acsjakub@amazon.de
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/s390/char/sclp.c |   11 +++++++++--
- 1 file changed, 9 insertions(+), 2 deletions(-)
+ net/hsr/hsr_slave.c |    8 +++++++-
+ 1 file changed, 7 insertions(+), 1 deletion(-)
 
---- a/drivers/s390/char/sclp.c
-+++ b/drivers/s390/char/sclp.c
-@@ -76,6 +76,13 @@ unsigned long sclp_console_full;
- /* The currently active SCLP command word. */
- static sclp_cmdw_t active_cmd;
- 
-+static inline struct sccb_header *sclpint_to_sccb(u32 sccb_int)
-+{
-+	if (sccb_int)
-+		return __va(sccb_int);
-+	return NULL;
-+}
+--- a/net/hsr/hsr_slave.c
++++ b/net/hsr/hsr_slave.c
+@@ -62,8 +62,14 @@ static rx_handler_result_t hsr_handle_fr
+ 	skb_push(skb, ETH_HLEN);
+ 	skb_reset_mac_header(skb);
+ 	if ((!hsr->prot_version && protocol == htons(ETH_P_PRP)) ||
+-	    protocol == htons(ETH_P_HSR))
++	    protocol == htons(ETH_P_HSR)) {
++		if (!pskb_may_pull(skb, ETH_HLEN + HSR_HLEN)) {
++			kfree_skb(skb);
++			goto finish_consume;
++		}
 +
- static inline void sclp_trace(int prio, char *id, u32 a, u64 b, bool err)
- {
- 	struct sclp_trace_entry e;
-@@ -619,7 +626,7 @@ __sclp_find_req(u32 sccb)
+ 		skb_set_network_header(skb, ETH_HLEN + HSR_HLEN);
++	}
+ 	skb_reset_mac_len(skb);
  
- static bool ok_response(u32 sccb_int, sclp_cmdw_t cmd)
- {
--	struct sccb_header *sccb = (struct sccb_header *)__va(sccb_int);
-+	struct sccb_header *sccb = sclpint_to_sccb(sccb_int);
- 	struct evbuf_header *evbuf;
- 	u16 response;
- 
-@@ -658,7 +665,7 @@ static void sclp_interrupt_handler(struc
- 
- 	/* INT: Interrupt received (a=intparm, b=cmd) */
- 	sclp_trace_sccb(0, "INT", param32, active_cmd, active_cmd,
--			(struct sccb_header *)__va(finished_sccb),
-+			sclpint_to_sccb(finished_sccb),
- 			!ok_response(finished_sccb, active_cmd));
- 
- 	if (finished_sccb) {
+ 	hsr_forward_skb(skb, port);
 
 
 
