@@ -1,62 +1,59 @@
-Return-Path: <stable+bounces-175892-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-173675-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 06962B36A63
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 16:37:06 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9319BB35DDD
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 13:48:53 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 1DED01BC715C
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 14:26:56 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 5EB697C676C
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 11:47:52 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 09528353364;
-	Tue, 26 Aug 2025 14:24:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id EA7782BE7A7;
+	Tue, 26 Aug 2025 11:47:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="CSpMrC8i"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="sHCsy/4u"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B31EB2FE580;
-	Tue, 26 Aug 2025 14:24:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A83B629BDBA;
+	Tue, 26 Aug 2025 11:47:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756218242; cv=none; b=KPblXPKxNHO7H5dliKilrQ//aMTFVnX1DOMFAeSdCyNSNKEh7MVzPqgClAT/jwQf4GCsrzDLNV87CBjyWFYT/vsmm5ncmTVHR8f5/D1+JET6hWrcX1TKse61fFc/Mqd5KlhZ09CbirwKj70F66fW7IyVBMyViR68KXcMvIRQ/Zk=
+	t=1756208863; cv=none; b=p7nFs8MWUSztXDH5RTHbqHDJ8YNV9BX+Y4ZSKoCC44GO9rLClt4anZXiti6A9t3FBeKCdtBbGoQQxB4LPdMvCDyOFXbqKmMKLSbD+toJ0sDp9cjTF4i5mLZk9WX1zWAhP+cJZ2baMDeQQRqAq4kM7BIYv+4etj5AGwlcfh87dTo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756218242; c=relaxed/simple;
-	bh=ZtKQqje3JT5GEd+lHDtf1pQRG1UvnvACg0x7nAf5i5U=;
+	s=arc-20240116; t=1756208863; c=relaxed/simple;
+	bh=+MBEnNvKevpkArtuT2OG8MH7CHvqRPMRgmn8wPv9wMo=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=OCgzPq1bAlKcbnrVjL7ABadodjCm5mW5JUMP7ym53gtdvR3Tox+C4uMlY/XxoBo7+SRiTuAW2fNp4pbXoFQAO7nbB2BXbj+5EiNFtnh1ao/jz+q9JATPvR7pHm5Llo/Jbj9Znzmej24ZnvATN/tmCbGKZzw9ENzQ9/TBB+RIgUw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=CSpMrC8i; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 18944C4CEF1;
-	Tue, 26 Aug 2025 14:24:02 +0000 (UTC)
+	 MIME-Version; b=cZTFVFjutGzlGPyjakCmPucw+S06D3eoFq2g3TrAOZMgumglPvhJYez2nuV4ERt9m8yVsV8DUccO4vbkbboUhmvMdwEUEOh6bB4j3B5fyF3734rNhdaPiX20UXuMnl+KTKUpMW36Rl0Nk+1UIzYUHk5rcliaYob/cfmqegXCgWs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=sHCsy/4u; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 33B15C4CEF1;
+	Tue, 26 Aug 2025 11:47:43 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1756218242;
-	bh=ZtKQqje3JT5GEd+lHDtf1pQRG1UvnvACg0x7nAf5i5U=;
+	s=korg; t=1756208863;
+	bh=+MBEnNvKevpkArtuT2OG8MH7CHvqRPMRgmn8wPv9wMo=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=CSpMrC8iFefEjlm3Qr+yJyGW7SQ/aKg5fP2gwAw6e3k5pdlVPfkG1M9WIJxtSQ3+8
-	 MZ7kb6OCyuhA2V6kSzkTxezrUzDJ1wGsewjO10c2LHdFTFOAn1gEUDg0FEMx1FRmmc
-	 qsq9urY7XL23EvJLu7+nKP+4nv2TX7ZSNBYOtdoI=
+	b=sHCsy/4u2jO8A4FKoMGT2otuTSy8xfQOMuwQ85/WyHWtZ+NPLWxRaQT2vaRGweHyo
+	 As5sbK3uATvxrw/RMvIkIBTv4X5taKdIEVERzULq4VIaPjK2wO5/RI03st6GKrG1HN
+	 g5cdzAtcqoyFeBYADISenhSWUbSRw4bKDo8INCZM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Lorenzo Stoakes <lorenzo.stoakes@oracle.com>,
-	Julian Orth <ju.orth@gmail.com>,
-	Jann Horn <jannh@google.com>,
-	"Liam R. Howlett" <Liam.Howlett@Oracle.com>,
-	Linus Torvalds <torvalds@linux-foundation.org>,
-	Shuah Khan <shuah@kernel.org>,
-	Vlastimil Babka <vbabka@suse.cz>,
-	Andrew Morton <akpm@linux-foundation.org>,
-	"Isaac J. Manjarres" <isaacmanjarres@google.com>
-Subject: [PATCH 5.10 448/523] mm: reinstate ability to map write-sealed memfd mappings read-only
+	Charlton Lin <charlton.lin@intel.com>,
+	Khaled Almahallawy <khaled.almahallawy@intel.com>,
+	Mika Kahola <mika.kahola@intel.com>,
+	Imre Deak <imre.deak@intel.com>,
+	Tvrtko Ursulin <tursulin@ursulin.net>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.12 243/322] drm/i915/icl+/tc: Cache the max lane count value
 Date: Tue, 26 Aug 2025 13:10:58 +0200
-Message-ID: <20250826110935.505072082@linuxfoundation.org>
+Message-ID: <20250826110921.921037341@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250826110924.562212281@linuxfoundation.org>
-References: <20250826110924.562212281@linuxfoundation.org>
+In-Reply-To: <20250826110915.169062587@linuxfoundation.org>
+References: <20250826110915.169062587@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -68,236 +65,196 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Lorenzo Stoakes <lorenzo.stoakes@oracle.com>
+From: Imre Deak <imre.deak@intel.com>
 
-[ Upstream commit 8ec396d05d1b737c87311fb7311f753b02c2a6b1 ]
+[ Upstream commit 5fd35236546abe780eaadb7561e09953719d4fc3 ]
 
-Patch series "mm: reinstate ability to map write-sealed memfd mappings
-read-only".
+The PHY's pin assignment value in the TCSS_DDI_STATUS register - as set
+by the HW/FW based on the connected DP-alt sink's TypeC/PD pin
+assignment negotiation - gets cleared by the HW/FW on LNL+ as soon as
+the sink gets disconnected, even if the PHY ownership got acquired
+already by the driver (and hence the PHY itself is still connected and
+used by the display). This is similar to how the PHY Ready flag gets
+cleared on LNL+ in the same register.
 
-In commit 158978945f31 ("mm: perform the mapping_map_writable() check
-after call_mmap()") (and preceding changes in the same series) it became
-possible to mmap() F_SEAL_WRITE sealed memfd mappings read-only.
+To be able to query the max lane count value on LNL+ - which is based on
+the above pin assignment - at all times even after the sink gets
+disconnected, the max lane count must be determined and cached during
+the PHY's HW readout and connect sequences. Do that here, leaving the
+actual use of the cached value to a follow-up change.
 
-Commit 5de195060b2e ("mm: resolve faulty mmap_region() error path
-behaviour") unintentionally undid this logic by moving the
-mapping_map_writable() check before the shmem_mmap() hook is invoked,
-thereby regressing this change.
+v2: Don't read out the pin configuration if the PHY is disconnected.
 
-This series reworks how we both permit write-sealed mappings being mapped
-read-only and disallow mprotect() from undoing the write-seal, fixing this
-regression.
-
-We also add a regression test to ensure that we do not accidentally
-regress this in future.
-
-Thanks to Julian Orth for reporting this regression.
-
-This patch (of 2):
-
-In commit 158978945f31 ("mm: perform the mapping_map_writable() check
-after call_mmap()") (and preceding changes in the same series) it became
-possible to mmap() F_SEAL_WRITE sealed memfd mappings read-only.
-
-This was previously unnecessarily disallowed, despite the man page
-documentation indicating that it would be, thereby limiting the usefulness
-of F_SEAL_WRITE logic.
-
-We fixed this by adapting logic that existed for the F_SEAL_FUTURE_WRITE
-seal (one which disallows future writes to the memfd) to also be used for
-F_SEAL_WRITE.
-
-For background - the F_SEAL_FUTURE_WRITE seal clears VM_MAYWRITE for a
-read-only mapping to disallow mprotect() from overriding the seal - an
-operation performed by seal_check_write(), invoked from shmem_mmap(), the
-f_op->mmap() hook used by shmem mappings.
-
-By extending this to F_SEAL_WRITE and critically - checking
-mapping_map_writable() to determine if we may map the memfd AFTER we
-invoke shmem_mmap() - the desired logic becomes possible.  This is because
-mapping_map_writable() explicitly checks for VM_MAYWRITE, which we will
-have cleared.
-
-Commit 5de195060b2e ("mm: resolve faulty mmap_region() error path
-behaviour") unintentionally undid this logic by moving the
-mapping_map_writable() check before the shmem_mmap() hook is invoked,
-thereby regressing this change.
-
-We reinstate this functionality by moving the check out of shmem_mmap()
-and instead performing it in do_mmap() at the point at which VMA flags are
-being determined, which seems in any case to be a more appropriate place
-in which to make this determination.
-
-In order to achieve this we rework memfd seal logic to allow us access to
-this information using existing logic and eliminate the clearing of
-VM_MAYWRITE from seal_check_write() which we are performing in do_mmap()
-instead.
-
-Link: https://lkml.kernel.org/r/99fc35d2c62bd2e05571cf60d9f8b843c56069e0.1732804776.git.lorenzo.stoakes@oracle.com
-Fixes: 5de195060b2e ("mm: resolve faulty mmap_region() error path behaviour")
-Signed-off-by: Lorenzo Stoakes <lorenzo.stoakes@oracle.com>
-Reported-by: Julian Orth <ju.orth@gmail.com>
-Closes: https://lore.kernel.org/all/CAHijbEUMhvJTN9Xw1GmbM266FXXv=U7s4L_Jem5x3AaPZxrYpQ@mail.gmail.com/
-Cc: Jann Horn <jannh@google.com>
-Cc: Liam R. Howlett <Liam.Howlett@Oracle.com>
-Cc: Linus Torvalds <torvalds@linux-foundation.org>
-Cc: Shuah Khan <shuah@kernel.org>
-Cc: Vlastimil Babka <vbabka@suse.cz>
-Cc: <stable@vger.kernel.org>
-Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
-Signed-off-by: Isaac J. Manjarres <isaacmanjarres@google.com>
+Cc: stable@vger.kernel.org # v6.8+
+Reported-by: Charlton Lin <charlton.lin@intel.com>
+Tested-by: Khaled Almahallawy <khaled.almahallawy@intel.com>
+Reviewed-by: Mika Kahola <mika.kahola@intel.com>
+Signed-off-by: Imre Deak <imre.deak@intel.com>
+Link: https://lore.kernel.org/r/20250811080152.906216-3-imre.deak@intel.com
+(cherry picked from commit 3e32438fc406761f81b1928d210b3d2a5e7501a0)
+Signed-off-by: Tvrtko Ursulin <tursulin@ursulin.net>
+[ adapted APIs from intel_display to drm_i915_private structures ]
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- include/linux/memfd.h |   14 ++++++++++++
- include/linux/mm.h    |   58 ++++++++++++++++++++++++++++++++++----------------
- mm/memfd.c            |    2 -
- mm/mmap.c             |    4 +++
- 4 files changed, 59 insertions(+), 19 deletions(-)
+ drivers/gpu/drm/i915/display/intel_tc.c |   55 +++++++++++++++++++++++++++-----
+ 1 file changed, 47 insertions(+), 8 deletions(-)
 
---- a/include/linux/memfd.h
-+++ b/include/linux/memfd.h
-@@ -6,11 +6,25 @@
+--- a/drivers/gpu/drm/i915/display/intel_tc.c
++++ b/drivers/gpu/drm/i915/display/intel_tc.c
+@@ -63,6 +63,7 @@ struct intel_tc_port {
+ 	enum tc_port_mode init_mode;
+ 	enum phy_fia phy_fia;
+ 	u8 phy_fia_idx;
++	u8 max_lane_count;
+ };
  
- #ifdef CONFIG_MEMFD_CREATE
- extern long memfd_fcntl(struct file *file, unsigned int cmd, unsigned long arg);
-+unsigned int *memfd_file_seals_ptr(struct file *file);
- #else
- static inline long memfd_fcntl(struct file *f, unsigned int c, unsigned long a)
- {
- 	return -EINVAL;
- }
-+
-+static inline unsigned int *memfd_file_seals_ptr(struct file *file)
-+{
-+	return NULL;
-+}
- #endif
- 
-+/* Retrieve memfd seals associated with the file, if any. */
-+static inline unsigned int memfd_file_seals(struct file *file)
-+{
-+	unsigned int *sealsp = memfd_file_seals_ptr(file);
-+
-+	return sealsp ? *sealsp : 0;
-+}
-+
- #endif /* __LINUX_MEMFD_H */
---- a/include/linux/mm.h
-+++ b/include/linux/mm.h
-@@ -3200,6 +3200,37 @@ unsigned long wp_shared_mapping_range(st
- 
- extern int sysctl_nr_trim_pages;
- 
-+static inline bool is_write_sealed(int seals)
-+{
-+	return seals & (F_SEAL_WRITE | F_SEAL_FUTURE_WRITE);
-+}
-+
-+/**
-+ * is_readonly_sealed - Checks whether write-sealed but mapped read-only,
-+ *                      in which case writes should be disallowing moving
-+ *                      forwards.
-+ * @seals: the seals to check
-+ * @vm_flags: the VMA flags to check
-+ *
-+ * Returns whether readonly sealed, in which case writess should be disallowed
-+ * going forward.
-+ */
-+static inline bool is_readonly_sealed(int seals, vm_flags_t vm_flags)
-+{
-+	/*
-+	 * Since an F_SEAL_[FUTURE_]WRITE sealed memfd can be mapped as
-+	 * MAP_SHARED and read-only, take care to not allow mprotect to
-+	 * revert protections on such mappings. Do this only for shared
-+	 * mappings. For private mappings, don't need to mask
-+	 * VM_MAYWRITE as we still want them to be COW-writable.
-+	 */
-+	if (is_write_sealed(seals) &&
-+	    ((vm_flags & (VM_SHARED | VM_WRITE)) == VM_SHARED))
-+		return true;
-+
-+	return false;
-+}
-+
- /**
-  * seal_check_write - Check for F_SEAL_WRITE or F_SEAL_FUTURE_WRITE flags and
-  *                    handle them.
-@@ -3211,24 +3242,15 @@ extern int sysctl_nr_trim_pages;
-  */
- static inline int seal_check_write(int seals, struct vm_area_struct *vma)
- {
--	if (seals & (F_SEAL_WRITE | F_SEAL_FUTURE_WRITE)) {
--		/*
--		 * New PROT_WRITE and MAP_SHARED mmaps are not allowed when
--		 * write seals are active.
--		 */
--		if ((vma->vm_flags & VM_SHARED) && (vma->vm_flags & VM_WRITE))
--			return -EPERM;
--
--		/*
--		 * Since an F_SEAL_[FUTURE_]WRITE sealed memfd can be mapped as
--		 * MAP_SHARED and read-only, take care to not allow mprotect to
--		 * revert protections on such mappings. Do this only for shared
--		 * mappings. For private mappings, don't need to mask
--		 * VM_MAYWRITE as we still want them to be COW-writable.
--		 */
--		if (vma->vm_flags & VM_SHARED)
--			vma->vm_flags &= ~(VM_MAYWRITE);
--	}
-+	if (!is_write_sealed(seals))
-+		return 0;
-+
-+	/*
-+	 * New PROT_WRITE and MAP_SHARED mmaps are not allowed when
-+	 * write seals are active.
-+	 */
-+	if ((vma->vm_flags & VM_SHARED) && (vma->vm_flags & VM_WRITE))
-+		return -EPERM;
- 
- 	return 0;
- }
---- a/mm/memfd.c
-+++ b/mm/memfd.c
-@@ -133,7 +133,7 @@ static int memfd_wait_for_pins(struct ad
- 	return error;
+ static enum intel_display_power_domain
+@@ -366,12 +367,12 @@ static int intel_tc_port_get_max_lane_co
+ 	}
  }
  
--static unsigned int *memfd_file_seals_ptr(struct file *file)
-+unsigned int *memfd_file_seals_ptr(struct file *file)
+-int intel_tc_port_max_lane_count(struct intel_digital_port *dig_port)
++static int get_max_lane_count(struct intel_tc_port *tc)
  {
- 	if (shmem_file(file))
- 		return &SHMEM_I(file_inode(file))->seals;
---- a/mm/mmap.c
-+++ b/mm/mmap.c
-@@ -47,6 +47,7 @@
- #include <linux/pkeys.h>
- #include <linux/oom.h>
- #include <linux/sched/mm.h>
-+#include <linux/memfd.h>
++	struct intel_digital_port *dig_port = tc->dig_port;
+ 	struct drm_i915_private *i915 = to_i915(dig_port->base.base.dev);
+-	struct intel_tc_port *tc = to_tc_port(dig_port);
  
- #include <linux/uaccess.h>
- #include <asm/cacheflush.h>
-@@ -1488,6 +1489,7 @@ unsigned long do_mmap(struct file *file,
+-	if (!intel_encoder_is_tc(&dig_port->base) || tc->mode != TC_PORT_DP_ALT)
++	if (tc->mode != TC_PORT_DP_ALT)
+ 		return 4;
  
- 	if (file) {
- 		struct inode *inode = file_inode(file);
-+		unsigned int seals = memfd_file_seals(file);
- 		unsigned long flags_mask;
+ 	assert_tc_cold_blocked(tc);
+@@ -385,6 +386,21 @@ int intel_tc_port_max_lane_count(struct
+ 	return intel_tc_port_get_max_lane_count(dig_port);
+ }
  
- 		if (!file_mmap_ok(file, inode, pgoff, len))
-@@ -1532,6 +1534,8 @@ unsigned long do_mmap(struct file *file,
- 			vm_flags |= VM_SHARED | VM_MAYSHARE;
- 			if (!(file->f_mode & FMODE_WRITE))
- 				vm_flags &= ~(VM_MAYWRITE | VM_SHARED);
-+			else if (is_readonly_sealed(seals, vm_flags))
-+				vm_flags &= ~VM_MAYWRITE;
- 			fallthrough;
- 		case MAP_PRIVATE:
- 			if (!(file->f_mode & FMODE_READ))
++static void read_pin_configuration(struct intel_tc_port *tc)
++{
++	tc->max_lane_count = get_max_lane_count(tc);
++}
++
++int intel_tc_port_max_lane_count(struct intel_digital_port *dig_port)
++{
++	struct intel_tc_port *tc = to_tc_port(dig_port);
++
++	if (!intel_encoder_is_tc(&dig_port->base))
++		return 4;
++
++	return get_max_lane_count(tc);
++}
++
+ void intel_tc_port_set_fia_lane_count(struct intel_digital_port *dig_port,
+ 				      int required_lanes)
+ {
+@@ -597,9 +613,12 @@ static void icl_tc_phy_get_hw_state(stru
+ 	tc_cold_wref = __tc_cold_block(tc, &domain);
+ 
+ 	tc->mode = tc_phy_get_current_mode(tc);
+-	if (tc->mode != TC_PORT_DISCONNECTED)
++	if (tc->mode != TC_PORT_DISCONNECTED) {
+ 		tc->lock_wakeref = tc_cold_block(tc);
+ 
++		read_pin_configuration(tc);
++	}
++
+ 	__tc_cold_unblock(tc, domain, tc_cold_wref);
+ }
+ 
+@@ -657,8 +676,11 @@ static bool icl_tc_phy_connect(struct in
+ 
+ 	tc->lock_wakeref = tc_cold_block(tc);
+ 
+-	if (tc->mode == TC_PORT_TBT_ALT)
++	if (tc->mode == TC_PORT_TBT_ALT) {
++		read_pin_configuration(tc);
++
+ 		return true;
++	}
+ 
+ 	if ((!tc_phy_is_ready(tc) ||
+ 	     !icl_tc_phy_take_ownership(tc, true)) &&
+@@ -669,6 +691,7 @@ static bool icl_tc_phy_connect(struct in
+ 		goto out_unblock_tc_cold;
+ 	}
+ 
++	read_pin_configuration(tc);
+ 
+ 	if (!tc_phy_verify_legacy_or_dp_alt_mode(tc, required_lanes))
+ 		goto out_release_phy;
+@@ -859,9 +882,12 @@ static void adlp_tc_phy_get_hw_state(str
+ 	port_wakeref = intel_display_power_get(i915, port_power_domain);
+ 
+ 	tc->mode = tc_phy_get_current_mode(tc);
+-	if (tc->mode != TC_PORT_DISCONNECTED)
++	if (tc->mode != TC_PORT_DISCONNECTED) {
+ 		tc->lock_wakeref = tc_cold_block(tc);
+ 
++		read_pin_configuration(tc);
++	}
++
+ 	intel_display_power_put(i915, port_power_domain, port_wakeref);
+ }
+ 
+@@ -874,6 +900,9 @@ static bool adlp_tc_phy_connect(struct i
+ 
+ 	if (tc->mode == TC_PORT_TBT_ALT) {
+ 		tc->lock_wakeref = tc_cold_block(tc);
++
++		read_pin_configuration(tc);
++
+ 		return true;
+ 	}
+ 
+@@ -895,6 +924,8 @@ static bool adlp_tc_phy_connect(struct i
+ 
+ 	tc->lock_wakeref = tc_cold_block(tc);
+ 
++	read_pin_configuration(tc);
++
+ 	if (!tc_phy_verify_legacy_or_dp_alt_mode(tc, required_lanes))
+ 		goto out_unblock_tc_cold;
+ 
+@@ -1094,9 +1125,12 @@ static void xelpdp_tc_phy_get_hw_state(s
+ 	tc_cold_wref = __tc_cold_block(tc, &domain);
+ 
+ 	tc->mode = tc_phy_get_current_mode(tc);
+-	if (tc->mode != TC_PORT_DISCONNECTED)
++	if (tc->mode != TC_PORT_DISCONNECTED) {
+ 		tc->lock_wakeref = tc_cold_block(tc);
+ 
++		read_pin_configuration(tc);
++	}
++
+ 	drm_WARN_ON(&i915->drm,
+ 		    (tc->mode == TC_PORT_DP_ALT || tc->mode == TC_PORT_LEGACY) &&
+ 		    !xelpdp_tc_phy_tcss_power_is_enabled(tc));
+@@ -1108,14 +1142,19 @@ static bool xelpdp_tc_phy_connect(struct
+ {
+ 	tc->lock_wakeref = tc_cold_block(tc);
+ 
+-	if (tc->mode == TC_PORT_TBT_ALT)
++	if (tc->mode == TC_PORT_TBT_ALT) {
++		read_pin_configuration(tc);
++
+ 		return true;
++	}
+ 
+ 	if (!xelpdp_tc_phy_enable_tcss_power(tc, true))
+ 		goto out_unblock_tccold;
+ 
+ 	xelpdp_tc_phy_take_ownership(tc, true);
+ 
++	read_pin_configuration(tc);
++
+ 	if (!tc_phy_verify_legacy_or_dp_alt_mode(tc, required_lanes))
+ 		goto out_release_phy;
+ 
 
 
 
