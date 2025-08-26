@@ -1,55 +1,55 @@
-Return-Path: <stable+bounces-174255-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-175382-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id BE016B36263
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 15:18:29 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id A479FB367CA
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 16:10:16 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 59DE32A649E
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 13:12:24 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 9C886580BFC
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 14:02:49 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 56B39257859;
-	Tue, 26 Aug 2025 13:11:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 14BAD350820;
+	Tue, 26 Aug 2025 14:01:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="wxONGDkg"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="QN+hnYqn"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1442218F2FC;
-	Tue, 26 Aug 2025 13:11:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C3B51341ABD;
+	Tue, 26 Aug 2025 14:01:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756213904; cv=none; b=C+Jtc8c18WxIk1i/zDZXun46ER3qiyqIMgpGmZZwEcqhvLuEiJznJfnfbpiWcmgnFm+REuexfvQptqJ/kR2vMTOTz0IpGkgHglUqntuJizHx943qEROoNgg8GiG0jtIXWjqSapF007FioRP/M7X5rDIliDJO0mRlWO/MHjTg6No=
+	t=1756216890; cv=none; b=Z5DMJ8q+2sQuu0SPWy0lFil9h4BSjG4Qor2qEoWHjfvZh7ArL+eCEpcc4cDjFXPH5x4OwEyxVL53Y8+qjeVAmmeqQGnCfCHm3ktQfPlTCmxnQzsRH5QtOjlXpLFfg7lDzFHG7wK5Dl3PpJwbcWgyDEW/W3glCvSc29kf09b4rhw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756213904; c=relaxed/simple;
-	bh=5NQourxqfRnFBuuQLZF7yvFt5OEuOYgYz2gKRfDzPzY=;
+	s=arc-20240116; t=1756216890; c=relaxed/simple;
+	bh=vbN+5pIbRHgtb02kvSv7sMYAhSRjh2rWQTo9AOrUJBE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=rQiEwKHO120e/tHotHo4RXYBCOeX3HRhuwyJd/ZJEcj878qMNQ1cJvd/5DTWmMx0yP+suuLaiM4FVThF8NIeLqJ8aVIRYt61vzeTGY3FEo+1d+5SWx2JrssSQjkWrES2KP1kxmAbzFV6+8PGWkP/O+8dgkK98fyh41zZCeJ293Y=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=wxONGDkg; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9C99EC4CEF1;
-	Tue, 26 Aug 2025 13:11:43 +0000 (UTC)
+	 MIME-Version; b=CF9/n88m5S19L37gzO7Yp8ECrYBY/f9vtVC5ocxx7yl+MHQYdXlAVPcqKQH4p06IYEash2DCFHZfgFdxHezoVWazZxESPEKIGVVGBmwNpf04u59v6k3n2YoPtIYi4+v2T8OMFVDO5RhwBV8WoQemZE1ePoQwl1JLKlun1SP8Yvc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=QN+hnYqn; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4CB1DC4CEF1;
+	Tue, 26 Aug 2025 14:01:30 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1756213903;
-	bh=5NQourxqfRnFBuuQLZF7yvFt5OEuOYgYz2gKRfDzPzY=;
+	s=korg; t=1756216890;
+	bh=vbN+5pIbRHgtb02kvSv7sMYAhSRjh2rWQTo9AOrUJBE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=wxONGDkgWt+GLmZt0RRDJkDamsJTwgSPDn1P3BEm+T/Kd6d1S7PP4P4AY3NNIHxso
-	 EzIu4x+X1WyFn9/o34XZoviw4p3F/na5xZLN7I1a5s2myl8hIS6oOwX+bcGm6dh7E6
-	 JgtsXDIvgVFlMZJREeT9KHG8wCFDYvP7HFLzT9X8=
+	b=QN+hnYqnwZZAhaQxTdtSy2sI+nTz04OfcKRXbJjGE0JrWq4CCfcybLO0EtFuirFAr
+	 w2wkJQkRXe3f4bLSUubqsQeKBkHChDI6dDrfQOfOidldnfRsLf4UU/j+PLPDyp+KE3
+	 COyEoAdaPOnsYC0dvyhWNmJ/gdKK/rdzi+xoZA/E=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	stable <stable@kernel.org>,
-	Marek Vasut <marek.vasut+renesas@mailbox.org>
-Subject: [PATCH 6.6 524/587] usb: renesas-xhci: Fix External ROM access timeouts
+	Ian Abbott <abbotti@mev.co.uk>,
+	stable <stable@kernel.org>
+Subject: [PATCH 5.15 582/644] comedi: Make insn_rw_emulate_bits() do insn->n samples
 Date: Tue, 26 Aug 2025 13:11:13 +0200
-Message-ID: <20250826111006.328526578@linuxfoundation.org>
+Message-ID: <20250826111000.955028874@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250826110952.942403671@linuxfoundation.org>
-References: <20250826110952.942403671@linuxfoundation.org>
+In-Reply-To: <20250826110946.507083938@linuxfoundation.org>
+References: <20250826110946.507083938@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -59,77 +59,89 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Marek Vasut <marek.vasut+renesas@mailbox.org>
+From: Ian Abbott <abbotti@mev.co.uk>
 
-commit f9420f4757752f056144896024d5ea89e5a611f1 upstream.
+commit 7afba9221f70d4cbce0f417c558879cba0eb5e66 upstream.
 
-Increase the External ROM access timeouts to prevent failures during
-programming of External SPI EEPROM chips. The current timeouts are
-too short for some SPI EEPROMs used with uPD720201 controllers.
+The `insn_rw_emulate_bits()` function is used as a default handler for
+`INSN_READ` instructions for subdevices that have a handler for
+`INSN_BITS` but not for `INSN_READ`.  Similarly, it is used as a default
+handler for `INSN_WRITE` instructions for subdevices that have a handler
+for `INSN_BITS` but not for `INSN_WRITE`. It works by emulating the
+`INSN_READ` or `INSN_WRITE` instruction handling with a constructed
+`INSN_BITS` instruction.  However, `INSN_READ` and `INSN_WRITE`
+instructions are supposed to be able read or write multiple samples,
+indicated by the `insn->n` value, but `insn_rw_emulate_bits()` currently
+only handles a single sample.  For `INSN_READ`, the comedi core will
+copy `insn->n` samples back to user-space.  (That triggered KASAN
+kernel-infoleak errors when `insn->n` was greater than 1, but that is
+being fixed more generally elsewhere in the comedi core.)
 
-The current timeout for Chip Erase in renesas_rom_erase() is 100 ms ,
-the current timeout for Sector Erase issued by the controller before
-Page Program in renesas_fw_download_image() is also 100 ms. Neither
-timeout is sufficient for e.g. the Macronix MX25L5121E or MX25V5126F.
+Make `insn_rw_emulate_bits()` either handle `insn->n` samples, or return
+an error, to conform to the general expectation for `INSN_READ` and
+`INSN_WRITE` handlers.
 
-MX25L5121E reference manual [1] page 35 section "ERASE AND PROGRAMMING
-PERFORMANCE" and page 23 section "Table 8. AC CHARACTERISTICS (Temperature
-= 0°C to 70°C for Commercial grade, VCC = 2.7V ~ 3.6V)" row "tCE" indicate
-that the maximum time required for Chip Erase opcode to complete is 2 s,
-and for Sector Erase it is 300 ms .
-
-MX25V5126F reference manual [2] page 47 section "13. ERASE AND PROGRAMMING
-PERFORMANCE (2.3V - 3.6V)" and page 42 section "Table 8. AC CHARACTERISTICS
-(Temperature = -40°C to 85°C for Industrial grade, VCC = 2.3V - 3.6V)" row
-"tCE" indicate that the maximum time required for Chip Erase opcode to
-complete is 3.2 s, and for Sector Erase it is 400 ms .
-
-Update the timeouts such, that Chip Erase timeout is set to 5 seconds,
-and Sector Erase timeout is set to 500 ms. Such lengthy timeouts ought
-to be sufficient for majority of SPI EEPROM chips.
-
-[1] https://www.macronix.com/Lists/Datasheet/Attachments/8634/MX25L5121E,%203V,%20512Kb,%20v1.3.pdf
-[2] https://www.macronix.com/Lists/Datasheet/Attachments/8750/MX25V5126F,%202.5V,%20512Kb,%20v1.1.pdf
-
-Fixes: 2478be82de44 ("usb: renesas-xhci: Add ROM loader for uPD720201")
-Cc: stable <stable@kernel.org>
-Signed-off-by: Marek Vasut <marek.vasut+renesas@mailbox.org>
-Link: https://lore.kernel.org/r/20250802225526.25431-1-marek.vasut+renesas@mailbox.org
+Fixes: ed9eccbe8970 ("Staging: add comedi core")
+Cc: stable <stable@kernel.org> # 5.13+
+Signed-off-by: Ian Abbott <abbotti@mev.co.uk>
+Link: https://lore.kernel.org/r/20250725141034.87297-1-abbotti@mev.co.uk
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/usb/host/xhci-pci-renesas.c |    7 ++++---
- 1 file changed, 4 insertions(+), 3 deletions(-)
+ drivers/comedi/drivers.c |   25 +++++++++++++------------
+ 1 file changed, 13 insertions(+), 12 deletions(-)
 
---- a/drivers/usb/host/xhci-pci-renesas.c
-+++ b/drivers/usb/host/xhci-pci-renesas.c
-@@ -47,8 +47,9 @@
- #define RENESAS_ROM_ERASE_MAGIC				0x5A65726F
- #define RENESAS_ROM_WRITE_MAGIC				0x53524F4D
+--- a/drivers/comedi/drivers.c
++++ b/drivers/comedi/drivers.c
+@@ -620,11 +620,9 @@ static int insn_rw_emulate_bits(struct c
+ 	unsigned int chan = CR_CHAN(insn->chanspec);
+ 	unsigned int base_chan = (chan < 32) ? 0 : chan;
+ 	unsigned int _data[2];
++	unsigned int i;
+ 	int ret;
  
--#define RENESAS_RETRY	10000
--#define RENESAS_DELAY	10
-+#define RENESAS_RETRY			50000	/* 50000 * RENESAS_DELAY ~= 500ms */
-+#define RENESAS_CHIP_ERASE_RETRY	500000	/* 500000 * RENESAS_DELAY ~= 5s */
-+#define RENESAS_DELAY			10
+-	if (insn->n == 0)
+-		return 0;
+-
+ 	memset(_data, 0, sizeof(_data));
+ 	memset(&_insn, 0, sizeof(_insn));
+ 	_insn.insn = INSN_BITS;
+@@ -635,18 +633,21 @@ static int insn_rw_emulate_bits(struct c
+ 	if (insn->insn == INSN_WRITE) {
+ 		if (!(s->subdev_flags & SDF_WRITABLE))
+ 			return -EINVAL;
+-		_data[0] = 1U << (chan - base_chan);		     /* mask */
+-		_data[1] = data[0] ? (1U << (chan - base_chan)) : 0; /* bits */
++		_data[0] = 1U << (chan - base_chan);		/* mask */
+ 	}
++	for (i = 0; i < insn->n; i++) {
++		if (insn->insn == INSN_WRITE)
++			_data[1] = data[i] ? _data[0] : 0;	/* bits */
++
++		ret = s->insn_bits(dev, s, &_insn, _data);
++		if (ret < 0)
++			return ret;
  
- static int renesas_fw_download_image(struct pci_dev *dev,
- 				     const u32 *fw, size_t step, bool rom)
-@@ -405,7 +406,7 @@ static void renesas_rom_erase(struct pci
- 	/* sleep a bit while ROM is erased */
- 	msleep(20);
+-	ret = s->insn_bits(dev, s, &_insn, _data);
+-	if (ret < 0)
+-		return ret;
+-
+-	if (insn->insn == INSN_READ)
+-		data[0] = (_data[1] >> (chan - base_chan)) & 1;
++		if (insn->insn == INSN_READ)
++			data[i] = (_data[1] >> (chan - base_chan)) & 1;
++	}
  
--	for (i = 0; i < RENESAS_RETRY; i++) {
-+	for (i = 0; i < RENESAS_CHIP_ERASE_RETRY; i++) {
- 		retval = pci_read_config_byte(pdev, RENESAS_ROM_STATUS,
- 					      &status);
- 		status &= RENESAS_ROM_STATUS_ERASE;
+-	return 1;
++	return insn->n;
+ }
+ 
+ static int __comedi_device_postconfig_async(struct comedi_device *dev,
 
 
 
