@@ -1,53 +1,53 @@
-Return-Path: <stable+bounces-176043-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-176045-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id BF070B36C46
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 16:54:18 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 868B0B36B5C
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 16:45:16 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 5521998851D
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 14:32:41 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id A61F71C41367
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 14:33:05 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4490B341AD4;
-	Tue, 26 Aug 2025 14:30:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id CC78D350843;
+	Tue, 26 Aug 2025 14:30:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="pT7I4N5x"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="CPGiQW2k"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 032F72AD32;
-	Tue, 26 Aug 2025 14:30:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 87F44350D47;
+	Tue, 26 Aug 2025 14:30:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756218636; cv=none; b=tOx50LFCea3eYUh+lLbjLdXFsrOhYThZCPekbTlWsKNlefpVfPfbxuip1CNT+a7/i7Xwif0UGyGR3cTjiuq1mCLrv0QjJzRwn/6x/Q1u/ffLh3XdlROv3yU3OnOjxKrjsE1abe1JFuHnsRvU5tRUe2Jqyq7U/NNl0E0XLT4u87A=
+	t=1756218641; cv=none; b=TMgf/xkQxvLWYwL67o4x5+3Nwee9bo838GMZomDuacH89AY4oUbBqqnGSXzAAGEPpkF8y+bEr5aZJQChTQYNsWLkMGP/YyXoXM8N+Z3vEo7LBV1RMgPPuNCWC2Qdb6oOcLSKEvImk4x5lrqDpz+9bqqJJqDMJczsM2bBrjuI6MM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756218636; c=relaxed/simple;
-	bh=rp0Kr6If0JP6AEX7X4TqkiKi8qrFKmU8csqYygBzBBM=;
+	s=arc-20240116; t=1756218641; c=relaxed/simple;
+	bh=34BTHudvTne33MY8PvyS+nzDcEuajad/QSo/19/sWW0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=isvZpLGoua84RC68QTFaErOP5H58KWvVJakLqyXK8WVEbARbdcwUiXnRrJ0A1S2UvTEpqlOPJOJNVaqK6Frwa/O+hhRI41YZEZrVsJo2JaeynLHc4XgeU9C0RUR7X/5KTAu3cAlgaIDP5e2sxuc5BXPTh9iQ1a0A1CC2RYL3weQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=pT7I4N5x; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8C6AEC4CEF1;
-	Tue, 26 Aug 2025 14:30:35 +0000 (UTC)
+	 MIME-Version; b=dzbJhS4D4iVvNylrLrY/0bEcZw9icZvsyNF6DX1DQE+otztEBiSiIJxpLmHX93mZjrZpsbGIfYCbcJZkPzkxgxxys0TiR8uStgt1rVTHOPOcYitwzkoh4t21mfXXeMzXYdl+gTtLt8DebBdtq/CrVWl9bnafOKA/Lm8IrTkFvJc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=CPGiQW2k; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id BE53FC4CEF1;
+	Tue, 26 Aug 2025 14:30:40 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1756218635;
-	bh=rp0Kr6If0JP6AEX7X4TqkiKi8qrFKmU8csqYygBzBBM=;
+	s=korg; t=1756218641;
+	bh=34BTHudvTne33MY8PvyS+nzDcEuajad/QSo/19/sWW0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=pT7I4N5x6UdjLTUuwqNmeQUanFrAvztU0yrmug6I2HhHM2Bb1Wb2NlVvPSfzTVqt0
-	 JkOKZMpklWiq4evDsOuBO+yrmvUZTo+RI0PX4oYZUSxRvrRGt+ZGQCLbgY2IWeuT4H
-	 2CQXuV8ThazlhnxuazY33J6gfOJVly3anY/wMFD0=
+	b=CPGiQW2kDW0J9/vLshr2XieX3YJs2AyxK15ojaQB+mPkBKQXerdKlqZyjoCSfF38F
+	 vFiJ5JvxAGnWSuweywnF0vw9x30/egk3MeO+Et6yFr9BpKg7MevDt1VY4K3krQj5FT
+	 Yk9tNOb/Xn4xYefw1PY6EMm32S1jU8WkxTEnbFgo=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Abdun Nihaal <abdun.nihaal@gmail.com>,
-	Dan Carpenter <dan.carpenter@linaro.org>,
+	syzbot+9b9124ae9b12d5af5d95@syzkaller.appspotmail.com,
+	Lizhi Xu <lizhi.xu@windriver.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.4 075/403] staging: fbtft: fix potential memory leak in fbtft_framebuffer_alloc()
-Date: Tue, 26 Aug 2025 13:06:41 +0200
-Message-ID: <20250826110908.468975690@linuxfoundation.org>
+Subject: [PATCH 5.4 076/403] vmci: Prevent the dispatching of uninitialized payloads
+Date: Tue, 26 Aug 2025 13:06:42 +0200
+Message-ID: <20250826110908.503555939@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
 In-Reply-To: <20250826110905.607690791@linuxfoundation.org>
 References: <20250826110905.607690791@linuxfoundation.org>
@@ -66,36 +66,47 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Abdun Nihaal <abdun.nihaal@gmail.com>
+From: Lizhi Xu <lizhi.xu@windriver.com>
 
-[ Upstream commit eb2cb7dab60f9be0b435ac4a674255429a36d72c ]
+[ Upstream commit bfb4cf9fb97e4063f0aa62e9e398025fb6625031 ]
 
-In the error paths after fb_info structure is successfully allocated,
-the memory allocated in fb_deferred_io_init() for info->pagerefs is not
-freed. Fix that by adding the cleanup function on the error path.
+The reproducer executes the host's unlocked_ioctl call in two different
+tasks. When init_context fails, the struct vmci_event_ctx is not fully
+initialized when executing vmci_datagram_dispatch() to send events to all
+vm contexts. This affects the datagram taken from the datagram queue of
+its context by another task, because the datagram payload is not initialized
+according to the size payload_size, which causes the kernel data to leak
+to the user space.
 
-Fixes: c296d5f9957c ("staging: fbtft: core support")
-Signed-off-by: Abdun Nihaal <abdun.nihaal@gmail.com>
-Reviewed-by: Dan Carpenter <dan.carpenter@linaro.org>
-Link: https://lore.kernel.org/r/20250626172412.18355-1-abdun.nihaal@gmail.com
+Before dispatching the datagram, and before setting the payload content,
+explicitly set the payload content to 0 to avoid data leakage caused by
+incomplete payload initialization.
+
+Fixes: 28d6692cd8fb ("VMCI: context implementation.")
+Reported-by: syzbot+9b9124ae9b12d5af5d95@syzkaller.appspotmail.com
+Closes: https://syzkaller.appspot.com/bug?extid=9b9124ae9b12d5af5d95
+Tested-by: syzbot+9b9124ae9b12d5af5d95@syzkaller.appspotmail.com
+Signed-off-by: Lizhi Xu <lizhi.xu@windriver.com>
+Link: https://lore.kernel.org/r/20250627055214.2967129-1-lizhi.xu@windriver.com
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/staging/fbtft/fbtft-core.c | 1 +
- 1 file changed, 1 insertion(+)
+ drivers/misc/vmw_vmci/vmci_context.c | 2 ++
+ 1 file changed, 2 insertions(+)
 
-diff --git a/drivers/staging/fbtft/fbtft-core.c b/drivers/staging/fbtft/fbtft-core.c
-index 771697508cec..a524cacd89cd 100644
---- a/drivers/staging/fbtft/fbtft-core.c
-+++ b/drivers/staging/fbtft/fbtft-core.c
-@@ -752,6 +752,7 @@ struct fb_info *fbtft_framebuffer_alloc(struct fbtft_display *display,
- 	return info;
+diff --git a/drivers/misc/vmw_vmci/vmci_context.c b/drivers/misc/vmw_vmci/vmci_context.c
+index 26ff49fdf0f7..ccadbc0d8f7d 100644
+--- a/drivers/misc/vmw_vmci/vmci_context.c
++++ b/drivers/misc/vmw_vmci/vmci_context.c
+@@ -251,6 +251,8 @@ static int ctx_fire_notification(u32 context_id, u32 priv_flags)
+ 		ev.msg.hdr.src = vmci_make_handle(VMCI_HYPERVISOR_CONTEXT_ID,
+ 						  VMCI_CONTEXT_RESOURCE_ID);
+ 		ev.msg.hdr.payload_size = sizeof(ev) - sizeof(ev.msg.hdr);
++		memset((char*)&ev.msg.hdr + sizeof(ev.msg.hdr), 0,
++			ev.msg.hdr.payload_size);
+ 		ev.msg.event_data.event = VMCI_EVENT_CTX_REMOVED;
+ 		ev.payload.context_id = context_id;
  
- release_framebuf:
-+	fb_deferred_io_cleanup(info);
- 	framebuffer_release(info);
- 
- alloc_fail:
 -- 
 2.39.5
 
