@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-174435-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-175574-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id B8462B3634D
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 15:28:39 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id D97C6B3690E
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 16:22:22 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id CDE838A82B1
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 13:21:39 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 1451F8E7B74
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 14:12:28 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1140134A333;
-	Tue, 26 Aug 2025 13:19:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3DE2B34A32E;
+	Tue, 26 Aug 2025 14:10:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="bh4UhnbW"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="jYDTQrsH"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BF73B2F8BC9;
-	Tue, 26 Aug 2025 13:19:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EBE551F4C90;
+	Tue, 26 Aug 2025 14:10:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756214384; cv=none; b=WW98OyxHL4d70zWA4H5f3rNFpZ6XwuWqg1euPLUMGqXHiDbUIsfRkG5ys8/sKl7U5St1JPr3y9wfiy8oSsUqo6MNp2PHgVLtUMAGOys1YMerB4GTBVj9K2ZLSay4xrGid1dsehadqJSrCqiPYzIouwgFymmqrFj7RFCgMFv/Wek=
+	t=1756217404; cv=none; b=BfHmoxhBm7sgmp58M1s1mfjttAckwsdHpHHfbBPLeBHYJ9VN2nx/lIVFzjxKart1H8Nk3QOqaluusCM/GVQM92VixiKp4YAFe1MdDIYb+8ZfZI7kWRy4lGJ8waqdHoGvZnqNtL28Aj5X93mDSojQupdxxXfPNpufkp8JI9ZfPiI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756214384; c=relaxed/simple;
-	bh=HgCWem4mmICVK0lykEsMnyvkWBqp9IVRNnEy7HEAJrA=;
+	s=arc-20240116; t=1756217404; c=relaxed/simple;
+	bh=MWU10ry0ceSSsieOAMqXI5qV5rGvZfWUv47aX/hRY4o=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=ZgaeW8PTie6akAInbR6VQjsfYMDH0g2UVA/z6ZJmfaQbm0kp8kbUMVAlyY24yp1g6BiEgWXCzEstQ9ygU8SjX1hIIWmgS48JO6EgOfLd/2p2qEW6IvojjmlFmAZJ9uKCIYO5b6WqvAGNk/Nt/WzF0iGbzsb90mMhFiNYJqdkDHc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=bh4UhnbW; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 52D5FC4CEF1;
-	Tue, 26 Aug 2025 13:19:44 +0000 (UTC)
+	 MIME-Version; b=WTzn+zkLXKTb5eG5FsG4NCOMNGocb08hTn+9xeNJJKE0BvLekqjEhHiqBOW5/PSV+c6cg7VFc/TsXL4EI1W6K315p4fpLhw1wY2DwCQtaXIIUQBUSvXXR3gcQpJeMC56LGmW1Cr/RL7BqrZ9v4+IiJV72Qb+EAeoNM75rCEw46o=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=jYDTQrsH; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7E83AC4CEF1;
+	Tue, 26 Aug 2025 14:10:03 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1756214384;
-	bh=HgCWem4mmICVK0lykEsMnyvkWBqp9IVRNnEy7HEAJrA=;
+	s=korg; t=1756217403;
+	bh=MWU10ry0ceSSsieOAMqXI5qV5rGvZfWUv47aX/hRY4o=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=bh4UhnbWgG6Ui1gM4uvrhDz3R7cYRe2a9luujoplB8fvsHlT0/0Ux3zDficUA46l5
-	 7P/v4q/VzYAf4NrZ9JtjJDZr/Jy2LDc2ZZwa4lpq2dd+w/DP/dhWxlqdF1CuoFqhNc
-	 gCUqQM1eawc3P7fjTHT+xy5neJh8cpfUMlKpdvZM=
+	b=jYDTQrsH1pWyFMCoc3xB5AGd03OcrWKzR5Soh67qJYVkfDbFnQmJfOTrTcpmAxHKb
+	 UrYS2aCVn3pSCLNUIXqQ1hZ5YZNL3EUndAT3qj4gOChrKpK+pC1e7Yc2dm5ir9jKNj
+	 CtP5xtxQtxOjEWEK2B9xSPpxTv125SxODFR9sKrU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Zhu Qiyu <qiyuzhu2@amd.com>,
-	"Rafael J. Wysocki" <rafael.j.wysocki@intel.com>,
+	Paul Kocialkowski <paulk@sys-base.io>,
+	Chen-Yu Tsai <wens@csie.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 086/482] ACPI: PRM: Reduce unnecessary printing to avoid user confusion
+Subject: [PATCH 5.10 129/523] clk: sunxi-ng: v3s: Fix de clock definition
 Date: Tue, 26 Aug 2025 13:05:39 +0200
-Message-ID: <20250826110932.954471703@linuxfoundation.org>
+Message-ID: <20250826110927.689094858@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250826110930.769259449@linuxfoundation.org>
-References: <20250826110930.769259449@linuxfoundation.org>
+In-Reply-To: <20250826110924.562212281@linuxfoundation.org>
+References: <20250826110924.562212281@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,85 +62,46 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Zhu Qiyu <qiyuzhu2@amd.com>
+From: Paul Kocialkowski <paulk@sys-base.io>
 
-[ Upstream commit 3db5648c4d608b5483470efc1da9780b081242dd ]
+[ Upstream commit e8ab346f9907a1a3aa2f0e5decf849925c06ae2e ]
 
-Commit 088984c8d54c ("ACPI: PRM: Find EFI_MEMORY_RUNTIME block for PRM
-handler and context") introduced non-essential printing "Failed to find
-VA for GUID: xxxx, PA: 0x0" which may confuse users to think that
-something wrong is going on while it is not the case.
+The de clock is marked with CLK_SET_RATE_PARENT, which is really not
+necessary (as confirmed from experimentation) and significantly
+restricts flexibility for other clocks using the same parent.
 
-According to the PRM Spec Section 4.1.2 [1], both static data buffer
-address and ACPI parameter buffer address may be NULL if they are not
-needed, so there is no need to print out the "Failed to find VA ... "
-in those cases.
+In addition the source selection (parent) field is marked as using
+2 bits, when it the documentation reports that it uses 3.
 
-Link: https://uefi.org/sites/default/files/resources/Platform%20Runtime%20Mechanism%20-%20with%20legal%20notice.pdf # [1]
-Signed-off-by: Zhu Qiyu <qiyuzhu2@amd.com>
-Link: https://patch.msgid.link/20250704014104.82524-1-qiyuzhu2@amd.com
-[ rjw: Edits in new comments, subject and changelog ]
-Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
+Fix both issues in the de clock definition.
+
+Fixes: d0f11d14b0bc ("clk: sunxi-ng: add support for V3s CCU")
+Signed-off-by: Paul Kocialkowski <paulk@sys-base.io>
+Link: https://patch.msgid.link/20250704154008.3463257-1-paulk@sys-base.io
+Signed-off-by: Chen-Yu Tsai <wens@csie.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/acpi/prmt.c | 26 ++++++++++++++++++++++++--
- 1 file changed, 24 insertions(+), 2 deletions(-)
+ drivers/clk/sunxi-ng/ccu-sun8i-v3s.c | 3 +--
+ 1 file changed, 1 insertion(+), 2 deletions(-)
 
-diff --git a/drivers/acpi/prmt.c b/drivers/acpi/prmt.c
-index 7747ca4168ab..215ca8d60616 100644
---- a/drivers/acpi/prmt.c
-+++ b/drivers/acpi/prmt.c
-@@ -85,8 +85,6 @@ static u64 efi_pa_va_lookup(efi_guid_t *guid, u64 pa)
- 		}
- 	}
+diff --git a/drivers/clk/sunxi-ng/ccu-sun8i-v3s.c b/drivers/clk/sunxi-ng/ccu-sun8i-v3s.c
+index 0e36ca3bf3d5..4fddb489cdce 100644
+--- a/drivers/clk/sunxi-ng/ccu-sun8i-v3s.c
++++ b/drivers/clk/sunxi-ng/ccu-sun8i-v3s.c
+@@ -334,8 +334,7 @@ static SUNXI_CCU_GATE(dram_ohci_clk,	"dram-ohci",	"dram",
  
--	pr_warn("Failed to find VA for GUID: %pUL, PA: 0x%llx", guid, pa);
--
- 	return 0;
- }
+ static const char * const de_parents[] = { "pll-video", "pll-periph0" };
+ static SUNXI_CCU_M_WITH_MUX_GATE(de_clk, "de", de_parents,
+-				 0x104, 0, 4, 24, 2, BIT(31),
+-				 CLK_SET_RATE_PARENT);
++				 0x104, 0, 4, 24, 3, BIT(31), 0);
  
-@@ -154,13 +152,37 @@ acpi_parse_prmt(union acpi_subtable_headers *header, const unsigned long end)
- 		guid_copy(&th->guid, (guid_t *)handler_info->handler_guid);
- 		th->handler_addr =
- 			(void *)efi_pa_va_lookup(&th->guid, handler_info->handler_address);
-+		/*
-+		 * Print a warning message if handler_addr is zero which is not expected to
-+		 * ever happen.
-+		 */
-+		if (unlikely(!th->handler_addr))
-+			pr_warn("Failed to find VA of handler for GUID: %pUL, PA: 0x%llx",
-+				&th->guid, handler_info->handler_address);
- 
- 		th->static_data_buffer_addr =
- 			efi_pa_va_lookup(&th->guid, handler_info->static_data_buffer_address);
-+		/*
-+		 * According to the PRM specification, static_data_buffer_address can be zero,
-+		 * so avoid printing a warning message in that case.  Otherwise, if the
-+		 * return value of efi_pa_va_lookup() is zero, print the message.
-+		 */
-+		if (unlikely(!th->static_data_buffer_addr && handler_info->static_data_buffer_address))
-+			pr_warn("Failed to find VA of static data buffer for GUID: %pUL, PA: 0x%llx",
-+				&th->guid, handler_info->static_data_buffer_address);
- 
- 		th->acpi_param_buffer_addr =
- 			efi_pa_va_lookup(&th->guid, handler_info->acpi_param_buffer_address);
- 
-+		/*
-+		 * According to the PRM specification, acpi_param_buffer_address can be zero,
-+		 * so avoid printing a warning message in that case.  Otherwise, if the
-+		 * return value of efi_pa_va_lookup() is zero, print the message.
-+		 */
-+		if (unlikely(!th->acpi_param_buffer_addr && handler_info->acpi_param_buffer_address))
-+			pr_warn("Failed to find VA of acpi param buffer for GUID: %pUL, PA: 0x%llx",
-+				&th->guid, handler_info->acpi_param_buffer_address);
-+
- 	} while (++cur_handler < tm->handler_count && (handler_info = get_next_handler(handler_info)));
- 
- 	return 0;
+ static const char * const tcon_parents[] = { "pll-video" };
+ static SUNXI_CCU_M_WITH_MUX_GATE(tcon_clk, "tcon", tcon_parents,
 -- 
 2.39.5
 
