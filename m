@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-173364-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-174770-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id AF17BB35C9B
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 13:36:14 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 431DFB36413
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 15:35:39 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 677FF3A8C4A
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 11:36:08 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id B23967BE224
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 13:33:47 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 92E4E341642;
-	Tue, 26 Aug 2025 11:34:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2451D18A6C4;
+	Tue, 26 Aug 2025 13:34:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ob+z5G+1"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="hAQLpXdu"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 45D94267386;
-	Tue, 26 Aug 2025 11:34:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D597F200112;
+	Tue, 26 Aug 2025 13:34:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756208058; cv=none; b=D2h3K+Th7qJaiQdAYgzfOgCurDApqKFrAsoG0ExUKo+9nufnQmcE6R2UXptLogifFw0vKcPXqpKQ7oGDc0VAqSm1GZo0ftS8JgDRpBAjW+8uYXRj2TFU0HTTlAXITunD0vBChx6uhX4xwTK0c0rRDyWD5v41/Pf5Ghj2pgn176w=
+	t=1756215270; cv=none; b=qZc/OaQcVTvM0E4Slave4gEKRzgvq6kgv0Tgh8J07oq0YanbO2SDqti69nnJF23xM8G5bzlVfjAWlcBQSmB8jpa0lbpB5BdRQxRFsJofmoj+Pkcgkhr+CtyIQXigoFvxiSRfLPZYn36CDVYKCmyysbmW3zHPtScIdN9qs01wjCw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756208058; c=relaxed/simple;
-	bh=MBmP15HQajuJCAK3Inss2wAqLky66xLlKAwiV+y/UsY=;
+	s=arc-20240116; t=1756215270; c=relaxed/simple;
+	bh=vCF385YApu+OBBn4jkqkrBtTDaGcQJjBlUUdeL6uzSE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=h3AZ+vUIkN1eqg/M0r/m4s5iNXxj6e9LP+JrUkN2hE7xKPcxHoTGyPL5QOp3sF2+7Vh2qu/QaekncJOSnuUgP5fj0M+K5qszfItWNlwMrmyp8aRUZDQPKbgiPuXZFPjAFc3z7KrE7k8oLvjZojY7AS4EFZxrs6MiDwK7FV0eSbc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ob+z5G+1; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 80961C4CEF1;
-	Tue, 26 Aug 2025 11:34:15 +0000 (UTC)
+	 MIME-Version; b=n2dVMG9R20Wl4ucalYGyVYSdXmy3VL9eGpu9IdNj2B8lE8bQoD1gGEZhmSzPbqV0u0/kUf65hP/1JwHdolgIaPmBsKJxEX1lSJ7SIyF1vfQMTt7Cil+QS42bTv+XvfRlL3pW4icp/JZZ1ipfC+5wr8o68tkFlhUzbBT1I8axcQM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=hAQLpXdu; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6B9E2C4CEF1;
+	Tue, 26 Aug 2025 13:34:30 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1756208055;
-	bh=MBmP15HQajuJCAK3Inss2wAqLky66xLlKAwiV+y/UsY=;
+	s=korg; t=1756215270;
+	bh=vCF385YApu+OBBn4jkqkrBtTDaGcQJjBlUUdeL6uzSE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=ob+z5G+1zmWF5TUH5lorwJdbGMqeRirJFKCdSpc5rgCDE2T5WsI9E1YD2yLT0p/kc
-	 y1Gap6GtY9OMwc5qZj9h2PT6BSRpAQKoe7ZSyX/JXFc2CSJNjtil/IsK7CTz4IYv28
-	 vicjh313j2DIywzy4Qd3OpL8XNXn3U6kglw5oMyg=
+	b=hAQLpXduiWzvqITa32OckeUBe/aTm/4i5d75JbwSmPvqT7kop9dVe9ptGdHWMlM96
+	 xD0yNPGVbB0dhvMeaTSMPiukSIdMIOkEh13QD8JlNNYi9Ro96LPRE/YiMhKh+mzQnv
+	 iynxS9lf32DS+Kok8voLJto8lHu9+CQIfPytEDhU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Baihan Li <libaihan@huawei.com>,
-	Yongbang Shi <shiyongbang@huawei.com>,
-	Dmitry Baryshkov <dmitry.baryshkov@oss.qualcomm.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.16 389/457] drm/hisilicon/hibmc: fix irq_request()s irq name variable is local
+	stable <stable@kernel.org>,
+	Alan Stern <stern@rowland.harvard.edu>,
+	Thorsten Blum <thorsten.blum@linux.dev>
+Subject: [PATCH 6.1 420/482] usb: storage: realtek_cr: Use correct byte order for bcs->Residue
 Date: Tue, 26 Aug 2025 13:11:13 +0200
-Message-ID: <20250826110946.911131995@linuxfoundation.org>
+Message-ID: <20250826110941.203064655@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250826110937.289866482@linuxfoundation.org>
-References: <20250826110937.289866482@linuxfoundation.org>
+In-Reply-To: <20250826110930.769259449@linuxfoundation.org>
+References: <20250826110930.769259449@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,76 +62,40 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.16-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Baihan Li <libaihan@huawei.com>
+From: Thorsten Blum <thorsten.blum@linux.dev>
 
-[ Upstream commit 8bed4ec42a4e0dc8113172696ff076d1eb6d8bcb ]
+commit 98da66a70ad2396e5a508c4245367797ebc052ce upstream.
 
-The local variable is passed in request_irq (), and there will be use
-after free problem, which will make request_irq failed. Using the global
-irq name instead of it to fix.
+Since 'bcs->Residue' has the data type '__le32', convert it to the
+correct byte order of the CPU using this driver when assigning it to
+the local variable 'residue'.
 
-Fixes: b11bc1ae4658 ("drm/hisilicon/hibmc: Add MSI irq getting and requesting for HPD")
-Signed-off-by: Baihan Li <libaihan@huawei.com>
-Signed-off-by: Yongbang Shi <shiyongbang@huawei.com>
-Reviewed-by: Dmitry Baryshkov <dmitry.baryshkov@oss.qualcomm.com>
-Link: https://lore.kernel.org/r/20250813094238.3722345-4-shiyongbang@huawei.com
-Signed-off-by: Dmitry Baryshkov <dmitry.baryshkov@oss.qualcomm.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Cc: stable <stable@kernel.org>
+Fixes: 50a6cb932d5c ("USB: usb_storage: add ums-realtek driver")
+Suggested-by: Alan Stern <stern@rowland.harvard.edu>
+Acked-by: Alan Stern <stern@rowland.harvard.edu>
+Signed-off-by: Thorsten Blum <thorsten.blum@linux.dev>
+Link: https://lore.kernel.org/r/20250813145247.184717-3-thorsten.blum@linux.dev
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/gpu/drm/hisilicon/hibmc/hibmc_drm_drv.c | 10 +++-------
- 1 file changed, 3 insertions(+), 7 deletions(-)
+ drivers/usb/storage/realtek_cr.c |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/gpu/drm/hisilicon/hibmc/hibmc_drm_drv.c b/drivers/gpu/drm/hisilicon/hibmc/hibmc_drm_drv.c
-index 768b97f9e74a..4cdcc34070ee 100644
---- a/drivers/gpu/drm/hisilicon/hibmc/hibmc_drm_drv.c
-+++ b/drivers/gpu/drm/hisilicon/hibmc/hibmc_drm_drv.c
-@@ -32,7 +32,7 @@
+--- a/drivers/usb/storage/realtek_cr.c
++++ b/drivers/usb/storage/realtek_cr.c
+@@ -252,7 +252,7 @@ static int rts51x_bulk_transport(struct
+ 		return USB_STOR_TRANSPORT_ERROR;
+ 	}
  
- DEFINE_DRM_GEM_FOPS(hibmc_fops);
+-	residue = bcs->Residue;
++	residue = le32_to_cpu(bcs->Residue);
+ 	if (bcs->Tag != us->tag)
+ 		return USB_STOR_TRANSPORT_ERROR;
  
--static const char *g_irqs_names_map[HIBMC_MAX_VECTORS] = { "vblank", "hpd" };
-+static const char *g_irqs_names_map[HIBMC_MAX_VECTORS] = { "hibmc-vblank", "hibmc-hpd" };
- 
- static irqreturn_t hibmc_interrupt(int irq, void *arg)
- {
-@@ -277,7 +277,6 @@ static void hibmc_unload(struct drm_device *dev)
- static int hibmc_msi_init(struct drm_device *dev)
- {
- 	struct pci_dev *pdev = to_pci_dev(dev->dev);
--	char name[32] = {0};
- 	int valid_irq_num;
- 	int irq;
- 	int ret;
-@@ -292,9 +291,6 @@ static int hibmc_msi_init(struct drm_device *dev)
- 	valid_irq_num = ret;
- 
- 	for (int i = 0; i < valid_irq_num; i++) {
--		snprintf(name, ARRAY_SIZE(name) - 1, "%s-%s-%s",
--			 dev->driver->name, pci_name(pdev), g_irqs_names_map[i]);
--
- 		irq = pci_irq_vector(pdev, i);
- 
- 		if (i)
-@@ -302,10 +298,10 @@ static int hibmc_msi_init(struct drm_device *dev)
- 			ret = devm_request_threaded_irq(&pdev->dev, irq,
- 							hibmc_dp_interrupt,
- 							hibmc_dp_hpd_isr,
--							IRQF_SHARED, name, dev);
-+							IRQF_SHARED, g_irqs_names_map[i], dev);
- 		else
- 			ret = devm_request_irq(&pdev->dev, irq, hibmc_interrupt,
--					       IRQF_SHARED, name, dev);
-+					       IRQF_SHARED, g_irqs_names_map[i], dev);
- 		if (ret) {
- 			drm_err(dev, "install irq failed: %d\n", ret);
- 			return ret;
--- 
-2.50.1
-
 
 
 
