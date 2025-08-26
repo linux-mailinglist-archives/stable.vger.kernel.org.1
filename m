@@ -1,55 +1,56 @@
-Return-Path: <stable+bounces-174141-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-173573-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id DC5D0B3617E
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 15:10:00 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id C02E2B35E05
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 13:50:51 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id CED891893AC6
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 13:07:14 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 19BF8189CA96
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 11:44:13 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 47D8A23026B;
-	Tue, 26 Aug 2025 13:06:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 89BBB29C339;
+	Tue, 26 Aug 2025 11:43:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="F6m/SUxA"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="aMMAItbO"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 03F0B238C0B;
-	Tue, 26 Aug 2025 13:06:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 459C018DF9D;
+	Tue, 26 Aug 2025 11:43:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756213602; cv=none; b=fIIcBnRKiuZQoa6QkCfVO69lq5n9MSp9gJXo0RqzoAFxuqA6VvE2AhuctA8Zzw0haGhkPcGMevBcd0WkNHOFRdJ2BCNk488IlBJyR289RzhjNYCYJFhW5idma1/UDL3uCPfuR05xN0HLRp5eBcqBWXhC+SnHysBQjd1ibeBNQEg=
+	t=1756208600; cv=none; b=bjoNtRjbgqCxnOzXs2BsZpLhw0ccy05AKKT+g625IhXXaRak7cz4oBzltQt75tiQoes2e2Tsg3tKI6jfLqfHz5owGS5cpaSVobtu5kSQ33iZKxmFnfJ2MJ+JPtMUjNo/ua3L7ByHTNYLdLZE5hm6TTQO3Xj06KT13uQj+WGytDQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756213602; c=relaxed/simple;
-	bh=A4JH7ru4QuVWq+Ye4aeqKpPPZmKzBRoswaj8ITBe6B8=;
+	s=arc-20240116; t=1756208600; c=relaxed/simple;
+	bh=lp1G6qUvmEMfUeQD/TMr+4gkvv8hFvYoIvyfG4T54U8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=uldA+fNeKZ08Fe3iKW3rCdEfiSYA0wlDzyf8gD33eu5f+dR2iL0Jw6oFquuQfu2xBjemBmUdbS6NCSssgnPbyJR0Ane4/OtC29aHSdXRoNYwpMUXhTaLYDYrnezzRfOd45bxV2n1OYcv1Sjli2o662n/ir3oihDAWsnxbWAL1xE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=F6m/SUxA; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7F5EBC4CEF1;
-	Tue, 26 Aug 2025 13:06:41 +0000 (UTC)
+	 MIME-Version; b=dAg49cJ03QC0vX0tI4uMDfectEyRsAlxvLYczl6mh6v7xsx/yPWm1n4Dlbr4/Nmvdz6TD4FfLx8Czdj0fP4u54C5JfSXdLDt/hHxF+ispdBDlXCtGhyU8XPbfusyYthuAYoDQUoSPsKkC7cb05GYclrrRwlNvl938It2xmaLIRk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=aMMAItbO; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9889EC4CEF1;
+	Tue, 26 Aug 2025 11:43:19 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1756213601;
-	bh=A4JH7ru4QuVWq+Ye4aeqKpPPZmKzBRoswaj8ITBe6B8=;
+	s=korg; t=1756208600;
+	bh=lp1G6qUvmEMfUeQD/TMr+4gkvv8hFvYoIvyfG4T54U8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=F6m/SUxA/wj5f3R769OcLqCSOBk52Tt/vMX9SF8+PNtKbESQoqNYmIknN5gtU2MfS
-	 rWiyyyZWVhpwvL+8xU3nYiDBnDhlg3un4nSCBPrldE2vYX9IS+wNYiwg9RPnaHujLs
-	 cBsK+n2VCXWXOPVc4bYTOh7/cNf3DO3Gsu5uUbHE=
+	b=aMMAItbOg/CUsps6zoYRXHsgOmtphImlvPFTy69tX/s5AxUAExV0OQ6q5itL+A9pm
+	 uTFoLj6bn7BKtZ6GrByFwg03nPt/Ote5oYJzqJiPkhRQudK3Q8Xda4QSLrjfwb0PN0
+	 aEifBGMeHRP35T1kUDTx4XmEed1fenjSTqRuu5FI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Gui-Dong Han <hanguidong02@gmail.com>,
-	Hans Verkuil <hverkuil@xs4all.nl>
-Subject: [PATCH 6.6 408/587] media: rainshadow-cec: fix TOCTOU race condition in rain_interrupt()
+	Anand Jain <anand.jain@oracle.com>,
+	David Sterba <dsterba@suse.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.12 142/322] btrfs: qgroup: drop unused parameter fs_info from __del_qgroup_rb()
 Date: Tue, 26 Aug 2025 13:09:17 +0200
-Message-ID: <20250826111003.308108279@linuxfoundation.org>
+Message-ID: <20250826110919.310782129@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250826110952.942403671@linuxfoundation.org>
-References: <20250826110952.942403671@linuxfoundation.org>
+In-Reply-To: <20250826110915.169062587@linuxfoundation.org>
+References: <20250826110915.169062587@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,59 +62,55 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Gui-Dong Han <hanguidong02@gmail.com>
+From: David Sterba <dsterba@suse.com>
 
-commit 7af160aea26c7dc9e6734d19306128cce156ec40 upstream.
+[ Upstream commit 2651f43274109f2d09b74a404b82722213ef9b2d ]
 
-In the interrupt handler rain_interrupt(), the buffer full check on
-rain->buf_len is performed before acquiring rain->buf_lock. This
-creates a Time-of-Check to Time-of-Use (TOCTOU) race condition, as
-rain->buf_len is concurrently accessed and modified in the work
-handler rain_irq_work_handler() under the same lock.
+We don't need fs_info here, everything is reachable from qgroup.
 
-Multiple interrupt invocations can race, with each reading buf_len
-before it becomes full and then proceeding. This can lead to both
-interrupts attempting to write to the buffer, incrementing buf_len
-beyond its capacity (DATA_SIZE) and causing a buffer overflow.
-
-Fix this bug by moving the spin_lock() to before the buffer full
-check. This ensures that the check and the subsequent buffer modification
-are performed atomically, preventing the race condition. An corresponding
-spin_unlock() is added to the overflow path to correctly release the
-lock.
-
-This possible bug was found by an experimental static analysis tool
-developed by our team.
-
-Fixes: 0f314f6c2e77 ("[media] rainshadow-cec: new RainShadow Tech HDMI CEC driver")
-Cc: stable@vger.kernel.org
-Signed-off-by: Gui-Dong Han <hanguidong02@gmail.com>
-Signed-off-by: Hans Verkuil <hverkuil@xs4all.nl>
+Reviewed-by: Anand Jain <anand.jain@oracle.com>
+Signed-off-by: David Sterba <dsterba@suse.com>
+Stable-dep-of: e12496677503 ("btrfs: qgroup: fix race between quota disable and quota rescan ioctl")
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/media/cec/usb/rainshadow/rainshadow-cec.c |    3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+ fs/btrfs/qgroup.c |    7 +++----
+ 1 file changed, 3 insertions(+), 4 deletions(-)
 
---- a/drivers/media/cec/usb/rainshadow/rainshadow-cec.c
-+++ b/drivers/media/cec/usb/rainshadow/rainshadow-cec.c
-@@ -171,11 +171,12 @@ static irqreturn_t rain_interrupt(struct
- {
- 	struct rain *rain = serio_get_drvdata(serio);
+--- a/fs/btrfs/qgroup.c
++++ b/fs/btrfs/qgroup.c
+@@ -226,8 +226,7 @@ static struct btrfs_qgroup *add_qgroup_r
+ 	return qgroup;
+ }
  
-+	spin_lock(&rain->buf_lock);
- 	if (rain->buf_len == DATA_SIZE) {
-+		spin_unlock(&rain->buf_lock);
- 		dev_warn_once(rain->dev, "buffer overflow\n");
- 		return IRQ_HANDLED;
+-static void __del_qgroup_rb(struct btrfs_fs_info *fs_info,
+-			    struct btrfs_qgroup *qgroup)
++static void __del_qgroup_rb(struct btrfs_qgroup *qgroup)
+ {
+ 	struct btrfs_qgroup_list *list;
+ 
+@@ -258,7 +257,7 @@ static int del_qgroup_rb(struct btrfs_fs
+ 		return -ENOENT;
+ 
+ 	rb_erase(&qgroup->node, &fs_info->qgroup_tree);
+-	__del_qgroup_rb(fs_info, qgroup);
++	__del_qgroup_rb(qgroup);
+ 	return 0;
+ }
+ 
+@@ -643,7 +642,7 @@ void btrfs_free_qgroup_config(struct btr
+ 	while ((n = rb_first(&fs_info->qgroup_tree))) {
+ 		qgroup = rb_entry(n, struct btrfs_qgroup, node);
+ 		rb_erase(n, &fs_info->qgroup_tree);
+-		__del_qgroup_rb(fs_info, qgroup);
++		__del_qgroup_rb(qgroup);
+ 		btrfs_sysfs_del_one_qgroup(fs_info, qgroup);
+ 		kfree(qgroup);
  	}
--	spin_lock(&rain->buf_lock);
- 	rain->buf_len++;
- 	rain->buf[rain->buf_wr_idx] = data;
- 	rain->buf_wr_idx = (rain->buf_wr_idx + 1) & 0xff;
 
 
 
