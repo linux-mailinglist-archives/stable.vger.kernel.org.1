@@ -1,56 +1,58 @@
-Return-Path: <stable+bounces-174771-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-175909-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id A23F8B364BA
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 15:41:40 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 108CBB36B2C
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 16:43:45 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 8F8D88E4382
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 13:35:21 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 18CE21C41F07
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 14:27:37 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C3AAD341651;
-	Tue, 26 Aug 2025 13:34:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 164FB34DCDA;
+	Tue, 26 Aug 2025 14:24:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="QkE+lfEE"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="gES7wj5D"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 810CF21A420;
-	Tue, 26 Aug 2025 13:34:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C2F22341AA1;
+	Tue, 26 Aug 2025 14:24:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756215273; cv=none; b=uXClj9nASjoALVV8UmV4T3EJ7b/hxW1mfRfvLVEkP95p+dVZss3kvnuqL1bK0PE5CGRzI3MSQz1O/THEk2Kyvr9IrtMS/WEe5keJ8nYU2btxsSnau8eMnrCWDTYqNoZuUAeaVPDToT5XBtajWXTA0ez7dg48VB9J8sPDAsBRoSc=
+	t=1756218286; cv=none; b=f5XGqab+QFBraRJZJIuTEM3AwZEe4MWb408m8izGre9MUUdkpR0eH3CwTChn/UdVHt7lgJXZuVKI24G4N1cBFiBSLnETdvhcdYwe1rKHAuY0WXTnAD+MIT+kZmsH3vboNta5v9bPQod//5YtYuWVH9/0pVxG/233cu4+txbd6d0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756215273; c=relaxed/simple;
-	bh=LMnbToBiBlmeQ6coijPRaBQl4pkuaz38GyCNtxBsbhQ=;
+	s=arc-20240116; t=1756218286; c=relaxed/simple;
+	bh=ygYvH+ixK7d5pHIMs1JwqpPlt/5uqHdfzZ3a3P9kxWE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=II/ACEMTDF7xxBYgfqYZAYwb06J4JSUvDTuwzxYxW52eR3xeT6UeLCGGefRe0zIY231qrpl7JmYY9P9xHnsxlxSSxotgWBRwcMCkAlJxs+H8nGLwQ9jQBtAuDRk2SHq5Mc+zsyIejCHpNud2aOTCk8pNXIuCdJyLk9WOPcV4Yvc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=QkE+lfEE; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 10450C4CEF1;
-	Tue, 26 Aug 2025 13:34:32 +0000 (UTC)
+	 MIME-Version:Content-Type; b=sPbaoqss/lSehUtf5kGVdunK+gilcPB/hNf4hsbIG1plrOLM2TDBQTTssQ640eOFpML1At8wUY0CeCDO+FlX+7yAetwrLkOvV8yE/yEUW7z96Fk8iJJJ1bMBUrr85hRdkPhhEcLyFuQQfRiARhHskiBU3YD4x5Fsrmtx+OS57cs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=gES7wj5D; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 34507C4CEF1;
+	Tue, 26 Aug 2025 14:24:46 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1756215273;
-	bh=LMnbToBiBlmeQ6coijPRaBQl4pkuaz38GyCNtxBsbhQ=;
+	s=korg; t=1756218286;
+	bh=ygYvH+ixK7d5pHIMs1JwqpPlt/5uqHdfzZ3a3P9kxWE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=QkE+lfEEkErI4hcX+FaYVRfEh42Ae5VlmTvi8vNZ0VAqW9fcsIHS/x6CPhoQMlcPv
-	 eHiAxjXzQ7oGmWbtnwACXSyaQUkKIPEoZnEtpZCvR59w3JfMMmyCUe89sBnxvBX0v2
-	 dlx2G1FpsZcmXIQ9tAcLBXcmhmtrBOCViu1VqEbc=
+	b=gES7wj5DuTfn+TFxkIs598BiNmyuNZGWmRCcWVHRqrFeZ89B6PPlAJWG4TFw6PZ98
+	 aKKHWkLZsGJ2/s8j8kdYwEckBTCG2byGOodIlXVXKv3bdsnRXmhRvEU4qDxmyz8sSd
+	 286WHnd4e6e66VhecOHyAuXRkj7a7zCcIrfiNhvg=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	stable <stable@kernel.org>,
-	Zenm Chen <zenmchen@gmail.com>,
-	Alan Stern <stern@rowland.harvard.edu>
-Subject: [PATCH 6.1 421/482] USB: storage: Ignore driver CD mode for Realtek multi-mode Wi-Fi dongles
+	=?UTF-8?q?Andr=C3=A9=20Draszik?= <andre.draszik@linaro.org>,
+	Bart Van Assche <bvanassche@acm.org>,
+	Peter Griffin <peter.griffin@linaro.org>,
+	"Martin K. Petersen" <martin.petersen@oracle.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.10 464/523] scsi: ufs: exynos: Fix programming of HCI_UTRL_NEXUS_TYPE
 Date: Tue, 26 Aug 2025 13:11:14 +0200
-Message-ID: <20250826110941.227759075@linuxfoundation.org>
+Message-ID: <20250826110935.890760758@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250826110930.769259449@linuxfoundation.org>
-References: <20250826110930.769259449@linuxfoundation.org>
+In-Reply-To: <20250826110924.562212281@linuxfoundation.org>
+References: <20250826110924.562212281@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,86 +62,63 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Zenm Chen <zenmchen@gmail.com>
+From: André Draszik <andre.draszik@linaro.org>
 
-commit a3dc32c635bae0ae569f489e00de0e8f015bfc25 upstream.
+[ Upstream commit 01aad16c2257ab8ff33b152b972c9f2e1af47912 ]
 
-Many Realtek USB Wi-Fi dongles released in recent years have two modes:
-one is driver CD mode which has Windows driver onboard, another one is
-Wi-Fi mode. Add the US_FL_IGNORE_DEVICE quirk for these multi-mode devices.
-Otherwise, usb_modeswitch may fail to switch them to Wi-Fi mode.
+On Google gs101, the number of UTP transfer request slots (nutrs) is 32,
+and in this case the driver ends up programming the UTRL_NEXUS_TYPE
+incorrectly as 0.
 
-Currently there are only two USB IDs known to be used by these multi-mode
-Wi-Fi dongles: 0bda:1a2b and 0bda:a192.
+This is because the left hand side of the shift is 1, which is of type
+int, i.e. 31 bits wide. Shifting by more than that width results in
+undefined behaviour.
 
-Information about Mercury MW310UH in /sys/kernel/debug/usb/devices.
-T:  Bus=02 Lev=01 Prnt=01 Port=01 Cnt=01 Dev#= 12 Spd=480  MxCh= 0
-D:  Ver= 2.00 Cls=00(>ifc ) Sub=00 Prot=00 MxPS=64 #Cfgs=  1
-P:  Vendor=0bda ProdID=a192 Rev= 2.00
-S:  Manufacturer=Realtek
-S:  Product=DISK
-C:* #Ifs= 1 Cfg#= 1 Atr=80 MxPwr=500mA
-I:* If#= 0 Alt= 0 #EPs= 2 Cls=08(stor.) Sub=06 Prot=50 Driver=(none)
-E:  Ad=8a(I) Atr=02(Bulk) MxPS= 512 Ivl=0ms
-E:  Ad=0b(O) Atr=02(Bulk) MxPS= 512 Ivl=0ms
+Fix this by switching to the BIT() macro, which applies correct type
+casting as required. This ensures the correct value is written to
+UTRL_NEXUS_TYPE (0xffffffff on gs101), and it also fixes a UBSAN shift
+warning:
 
-Information about D-Link AX9U rev. A1 in /sys/kernel/debug/usb/devices.
-T:  Bus=03 Lev=01 Prnt=01 Port=02 Cnt=01 Dev#= 55 Spd=480  MxCh= 0
-D:  Ver= 2.00 Cls=00(>ifc ) Sub=00 Prot=00 MxPS=64 #Cfgs=  1
-P:  Vendor=0bda ProdID=1a2b Rev= 0.00
-S:  Manufacturer=Realtek
-S:  Product=DISK
-C:* #Ifs= 1 Cfg#= 1 Atr=e0 MxPwr=500mA
-I:* If#= 0 Alt= 0 #EPs= 2 Cls=08(stor.) Sub=06 Prot=50 Driver=(none)
-E:  Ad=84(I) Atr=02(Bulk) MxPS= 512 Ivl=0ms
-E:  Ad=05(O) Atr=02(Bulk) MxPS= 512 Ivl=0ms
+    UBSAN: shift-out-of-bounds in drivers/ufs/host/ufs-exynos.c:1113:21
+    shift exponent 32 is too large for 32-bit type 'int'
 
-Cc: stable <stable@kernel.org>
-Signed-off-by: Zenm Chen <zenmchen@gmail.com>
-Acked-by: Alan Stern <stern@rowland.harvard.edu>
-Link: https://lore.kernel.org/r/20250813162415.2630-1-zenmchen@gmail.com
+For consistency, apply the same change to the nutmrs / UTMRL_NEXUS_TYPE
+write.
+
+Fixes: 55f4b1f73631 ("scsi: ufs: ufs-exynos: Add UFS host support for Exynos SoCs")
+Cc: stable@vger.kernel.org
+Signed-off-by: André Draszik <andre.draszik@linaro.org>
+Link: https://lore.kernel.org/r/20250707-ufs-exynos-shift-v1-1-1418e161ae40@linaro.org
+Reviewed-by: Bart Van Assche <bvanassche@acm.org>
+Reviewed-by: Peter Griffin <peter.griffin@linaro.org>
+Signed-off-by: Martin K. Petersen <martin.petersen@oracle.com>
+[ Adjusted path from drivers/ufs/host to drivers/scsi/ufs ]
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/usb/storage/unusual_devs.h |   22 ++++++++++++++++++++++
- 1 file changed, 22 insertions(+)
+ drivers/scsi/ufs/ufs-exynos.c |    4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
---- a/drivers/usb/storage/unusual_devs.h
-+++ b/drivers/usb/storage/unusual_devs.h
-@@ -1501,6 +1501,28 @@ UNUSUAL_DEV( 0x0bc2, 0x3332, 0x0000, 0x9
- 		USB_SC_DEVICE, USB_PR_DEVICE, NULL,
- 		US_FL_NO_WP_DETECT ),
+--- a/drivers/scsi/ufs/ufs-exynos.c
++++ b/drivers/scsi/ufs/ufs-exynos.c
+@@ -850,8 +850,8 @@ static int exynos_ufs_post_link(struct u
+ 	hci_writel(ufs, 0xa, HCI_DATA_REORDER);
+ 	hci_writel(ufs, PRDT_SET_SIZE(12), HCI_TXPRDT_ENTRY_SIZE);
+ 	hci_writel(ufs, PRDT_SET_SIZE(12), HCI_RXPRDT_ENTRY_SIZE);
+-	hci_writel(ufs, (1 << hba->nutrs) - 1, HCI_UTRL_NEXUS_TYPE);
+-	hci_writel(ufs, (1 << hba->nutmrs) - 1, HCI_UTMRL_NEXUS_TYPE);
++	hci_writel(ufs, BIT(hba->nutrs) - 1, HCI_UTRL_NEXUS_TYPE);
++	hci_writel(ufs, BIT(hba->nutmrs) - 1, HCI_UTMRL_NEXUS_TYPE);
+ 	hci_writel(ufs, 0xf, HCI_AXIDMA_RWDATA_BURST_LEN);
  
-+/*
-+ * Reported by Zenm Chen <zenmchen@gmail.com>
-+ * Ignore driver CD mode, otherwise usb_modeswitch may fail to switch
-+ * the device into Wi-Fi mode.
-+ */
-+UNUSUAL_DEV( 0x0bda, 0x1a2b, 0x0000, 0xffff,
-+		"Realtek",
-+		"DISK",
-+		USB_SC_DEVICE, USB_PR_DEVICE, NULL,
-+		US_FL_IGNORE_DEVICE ),
-+
-+/*
-+ * Reported by Zenm Chen <zenmchen@gmail.com>
-+ * Ignore driver CD mode, otherwise usb_modeswitch may fail to switch
-+ * the device into Wi-Fi mode.
-+ */
-+UNUSUAL_DEV( 0x0bda, 0xa192, 0x0000, 0xffff,
-+		"Realtek",
-+		"DISK",
-+		USB_SC_DEVICE, USB_PR_DEVICE, NULL,
-+		US_FL_IGNORE_DEVICE ),
-+
- UNUSUAL_DEV(  0x0d49, 0x7310, 0x0000, 0x9999,
- 		"Maxtor",
- 		"USB to SATA",
+ 	if (ufs->opts & EXYNOS_UFS_OPT_SKIP_CONNECTION_ESTAB)
 
 
 
