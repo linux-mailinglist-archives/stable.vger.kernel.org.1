@@ -1,55 +1,56 @@
-Return-Path: <stable+bounces-174583-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-174103-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 461ECB3632C
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 15:27:28 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 86600B3617A
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 15:09:58 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 7098E7A452F
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 13:25:52 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 8EA92681EF6
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 13:05:33 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A0E9A227EA8;
-	Tue, 26 Aug 2025 13:26:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6F7961A256B;
+	Tue, 26 Aug 2025 13:05:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="mQ4Jj3Se"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="k9YzQQHy"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 52B68137932;
-	Tue, 26 Aug 2025 13:26:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2C5B41D47B4;
+	Tue, 26 Aug 2025 13:05:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756214777; cv=none; b=QAPNgMUsUfA7BLoRpPlNY3T24gYKTTkG0Z1Vm+etdKm/A0JR1h7PmG1v6X2AMyXCu+mxbMGhojPUllmyrOKf7LUwZXa9zdrCwsE3tb/ULToY3bmYwqT6lH0LZ/QIC+s7UOjqGHMQrqt3cCTL7JxjHrFDmEJcfFUmKHbX+u1UCF8=
+	t=1756213501; cv=none; b=DG+GugTmMK8Qvo0mHuaTHBQDCENUCpfaNqofrDOeMmVJwqWbGCHKrRknxn494xJHcQytyZ8L/4rbUWsWENkRT3Js7ouu/G6c/f9nmvkt9B7dPkFRnWglbOSOo1HXbY0vRfJgs+PgWHk4fs5+jGVrmzB626O3O/fWOs8ZusoCtBQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756214777; c=relaxed/simple;
-	bh=Mlzt0YmEe3t1a+XoA5Ez2AN5RtD6RbiOmkS9c0t95P8=;
+	s=arc-20240116; t=1756213501; c=relaxed/simple;
+	bh=O4riEdGRCyZZtOeNWaORi9vZiWJI9uqNaF+MSNsEhqA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=jOYF7163AvmaxXbwvtRW3S0ZtC3wGjK2hqIeUQ7dr7y7/Cw6efrY1KhtplKZ/b//CS+ufPYCJGLBY762KloSnxuRxMnDtzScCGFx9/u5BtnKY8OihzybLTNQy82LcoaZzeLv17ihEg52MWRnjB1BxAwVp59uPp0JxpuSHlYgNH8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=mQ4Jj3Se; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D9A42C4CEF1;
-	Tue, 26 Aug 2025 13:26:16 +0000 (UTC)
+	 MIME-Version; b=eM3nFV+M1v2p5zoEC8VZsXB7T6trEe/t9KSjRHCPKxTsFmzim3GEbiYtC0NafUCvssyEYYEJBgP5IRFAbH6ljfQuw1PdioBVoiG8DuJDkLCHsJAEuQWJlT00MZQJRVdjH6b5iBPJfOKHaJUMGKavTS6drzzqlfJjD7NIiRlSSTg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=k9YzQQHy; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B2F33C4CEF4;
+	Tue, 26 Aug 2025 13:05:00 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1756214777;
-	bh=Mlzt0YmEe3t1a+XoA5Ez2AN5RtD6RbiOmkS9c0t95P8=;
+	s=korg; t=1756213501;
+	bh=O4riEdGRCyZZtOeNWaORi9vZiWJI9uqNaF+MSNsEhqA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=mQ4Jj3SeWYlSMQHtyz+1jW9onDduWSNzX5sldtGIizD+GByY6DjAVkWOEqmoDZa3M
-	 1cTbHfuoMegjqr19DlL0dbUstpf+4XiYEyP6T+X5h7eagr2j9G9RK0ycRcF6AiFGFb
-	 vt6mBG26rZe6lCEvrtO6Y2eEGg6cxMkq9I+IcXnA=
+	b=k9YzQQHyr+uKOf8T3RN/ovYhadxINITGpySmEJ2x+YovhKuYKcVlm9K2Xkdzv0wWu
+	 w5llbW8pekQFrSjR1skiQI52pu0oTnXvz4uEgV5G3B6Z11PulnZmQqIokp3Gar1OpY
+	 m4qDNnBwUPYOY0PSWgp3CDLUROoPgAb3TDo6Jmj0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Aditya Garg <gargaditya08@live.com>,
-	Jiri Kosina <jkosina@suse.com>
-Subject: [PATCH 6.1 266/482] HID: apple: avoid setting up battery timer for devices without battery
+	Johan Hovold <johan+linaro@kernel.org>,
+	Baochen Qiang <quic_bqiang@quicinc.com>,
+	Jeff Johnson <jeff.johnson@oss.qualcomm.com>
+Subject: [PATCH 6.6 370/587] wifi: ath12k: fix dest ring-buffer corruption
 Date: Tue, 26 Aug 2025 13:08:39 +0200
-Message-ID: <20250826110937.338591221@linuxfoundation.org>
+Message-ID: <20250826111002.321279209@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250826110930.769259449@linuxfoundation.org>
-References: <20250826110930.769259449@linuxfoundation.org>
+In-Reply-To: <20250826110952.942403671@linuxfoundation.org>
+References: <20250826110952.942403671@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,60 +62,78 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Aditya Garg <gargaditya08@live.com>
+From: Johan Hovold <johan+linaro@kernel.org>
 
-commit c061046fe9ce3ff31fb9a807144a2630ad349c17 upstream.
+commit 8157ce533a60521f21d466eb4de45d9735b19484 upstream.
 
-Currently, the battery timer is set up for all devices using hid-apple,
-irrespective of whether they actually have a battery or not.
+Add the missing memory barrier to make sure that destination ring
+descriptors are read after the head pointers to avoid using stale data
+on weakly ordered architectures like aarch64.
 
-APPLE_RDESC_BATTERY is a quirk that indicates the device has a battery
-and needs the battery timer. This patch checks for this quirk before
-setting up the timer, ensuring that only devices with a battery will
-have the timer set up.
+The barrier is added to the ath12k_hal_srng_access_begin() helper for
+symmetry with follow-on fixes for source ring buffer corruption which
+will add barriers to ath12k_hal_srng_access_end().
 
-Fixes: 6e143293e17a ("HID: apple: Report Magic Keyboard battery over USB")
-Cc: stable@vger.kernel.org
-Signed-off-by: Aditya Garg <gargaditya08@live.com>
-Signed-off-by: Jiri Kosina <jkosina@suse.com>
+Tested-on: WCN7850 hw2.0 WLAN.HMT.1.0.c5-00481-QCAHMTSWPL_V1.0_V2.0_SILICONZ-3
+
+Fixes: d889913205cf ("wifi: ath12k: driver for Qualcomm Wi-Fi 7 devices")
+Cc: stable@vger.kernel.org	# 6.3
+Signed-off-by: Johan Hovold <johan+linaro@kernel.org>
+Reviewed-by: Baochen Qiang <quic_bqiang@quicinc.com>
+Link: https://patch.msgid.link/20250617084402.14475-2-johan+linaro@kernel.org
+Signed-off-by: Jeff Johnson <jeff.johnson@oss.qualcomm.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/hid/hid-apple.c |   13 ++++++++-----
- 1 file changed, 8 insertions(+), 5 deletions(-)
+ drivers/net/wireless/ath/ath12k/ce.c  |    3 ---
+ drivers/net/wireless/ath/ath12k/hal.c |   17 ++++++++++++++---
+ 2 files changed, 14 insertions(+), 6 deletions(-)
 
---- a/drivers/hid/hid-apple.c
-+++ b/drivers/hid/hid-apple.c
-@@ -824,10 +824,12 @@ static int apple_probe(struct hid_device
- 		return ret;
+--- a/drivers/net/wireless/ath/ath12k/ce.c
++++ b/drivers/net/wireless/ath/ath12k/ce.c
+@@ -343,9 +343,6 @@ static int ath12k_ce_completed_recv_next
+ 		goto err;
  	}
  
--	timer_setup(&asc->battery_timer, apple_battery_timer_tick, 0);
--	mod_timer(&asc->battery_timer,
--		  jiffies + msecs_to_jiffies(APPLE_BATTERY_TIMEOUT_MS));
--	apple_fetch_battery(hdev);
-+	if (quirks & APPLE_RDESC_BATTERY) {
-+		timer_setup(&asc->battery_timer, apple_battery_timer_tick, 0);
-+		mod_timer(&asc->battery_timer,
-+			  jiffies + msecs_to_jiffies(APPLE_BATTERY_TIMEOUT_MS));
-+		apple_fetch_battery(hdev);
-+	}
+-	/* Make sure descriptor is read after the head pointer. */
+-	dma_rmb();
+-
+ 	*nbytes = ath12k_hal_ce_dst_status_get_length(desc);
  
- 	if (quirks & APPLE_BACKLIGHT_CTL)
- 		apple_backlight_init(hdev);
-@@ -839,7 +841,8 @@ static void apple_remove(struct hid_devi
+ 	*skb = pipe->dest_ring->skb[sw_index];
+--- a/drivers/net/wireless/ath/ath12k/hal.c
++++ b/drivers/net/wireless/ath/ath12k/hal.c
+@@ -1728,13 +1728,24 @@ void *ath12k_hal_srng_src_get_next_reape
+ 
+ void ath12k_hal_srng_access_begin(struct ath12k_base *ab, struct hal_srng *srng)
  {
- 	struct apple_sc *asc = hid_get_drvdata(hdev);
++	u32 hp;
++
+ 	lockdep_assert_held(&srng->lock);
  
--	del_timer_sync(&asc->battery_timer);
-+	if (asc->quirks & APPLE_RDESC_BATTERY)
-+		del_timer_sync(&asc->battery_timer);
- 
- 	hid_hw_stop(hdev);
+-	if (srng->ring_dir == HAL_SRNG_DIR_SRC)
++	if (srng->ring_dir == HAL_SRNG_DIR_SRC) {
+ 		srng->u.src_ring.cached_tp =
+ 			*(volatile u32 *)srng->u.src_ring.tp_addr;
+-	else
+-		srng->u.dst_ring.cached_hp = READ_ONCE(*srng->u.dst_ring.hp_addr);
++	} else {
++		hp = READ_ONCE(*srng->u.dst_ring.hp_addr);
++
++		if (hp != srng->u.dst_ring.cached_hp) {
++			srng->u.dst_ring.cached_hp = hp;
++			/* Make sure descriptor is read after the head
++			 * pointer.
++			 */
++			dma_rmb();
++		}
++	}
  }
+ 
+ /* Update cached ring head/tail pointers to HW. ath12k_hal_srng_access_begin()
 
 
 
