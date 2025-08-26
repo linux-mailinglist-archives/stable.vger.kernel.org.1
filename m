@@ -1,58 +1,56 @@
-Return-Path: <stable+bounces-174569-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-173458-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9E2A6B363BC
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 15:32:49 +0200 (CEST)
+Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [IPv6:2605:f480:58:1:0:1994:3:14])
+	by mail.lfdr.de (Postfix) with ESMTPS id 58213B35CDC
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 13:39:30 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id EBC1A1BC7424
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 13:27:08 +0000 (UTC)
+	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 3FC8F4E2995
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 11:39:29 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E8DD433A015;
-	Tue, 26 Aug 2025 13:25:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 569C42F9992;
+	Tue, 26 Aug 2025 11:38:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="iGPiVN8n"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="LiLAQOUG"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A6BBD231A55;
-	Tue, 26 Aug 2025 13:25:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1342A23D7FA;
+	Tue, 26 Aug 2025 11:38:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756214740; cv=none; b=aczSy5/TRACkM54Ne4gbhB1AFjHAEvPvXLLVrArTzRBvSvF7uksbf+J8ufsiCljQ3f18daRU4nKx+2Ed9a/MBxCLyHE7GbklGmZ/Oh3+eOyOqgcotAUOeCdBT7WRYEHxS9pd7WuSOHnu/tgr+v7hXXdKAhEZaT2tcmUatHgq8a8=
+	t=1756208300; cv=none; b=PpnosAfk7FCVydT7d/qyF9OGVplWNMP2GzOwdW5Z0J+WO04ADrRgRzoWy/PkpN6hNh9sRACzgtUhZgcpWosTIr8anYvKZ3xcusnb0Jc/uNH8f1DfCanDH2cnHCZ/jRdueRPjZLQTKKV1AHm+uPV2SOse2UvXe+zIu8sr+yJgv0g=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756214740; c=relaxed/simple;
-	bh=FEVy77dV1/c8BvxAPd8kE7ae9zCY/j7MMXHvSLkwp8g=;
+	s=arc-20240116; t=1756208300; c=relaxed/simple;
+	bh=CxbY2KAHTC6vkbc3AYG4PWesFRwayRj1FmSvv4rdPVY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=kXfYTWv0ymNm6KqgR7ritPGuKaHM34rO6WQnvbYd/BCevJu9kjLDIfyN4WVj4RRNp2C8vmrg92BOfJLfLh1YkCBe5LigE1HXEeaXiR1ZppqK8WAYsFjHCMvxiOVpRsFDA6LrBtrJBtUNh/VGjmig/lEgd48mRPETag0Vv77n5sI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=iGPiVN8n; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 31248C4CEF1;
-	Tue, 26 Aug 2025 13:25:40 +0000 (UTC)
+	 MIME-Version; b=udg0BpQn6lKeUW6n3B7Fe8Xpr+x2PAfK3IQpGoVZcur5EhD6yMsZaU4rxLIqzegDebSd1YQU16+VnOfhIo+ZnRuHI3NkEUP4Tv3rnJPr/6uWa1YLi+S3vHD5WXjhvkHuo7D+T4b5Kg36POJlkFerTkFA0/CzZ2Km3LNtD31/pRw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=LiLAQOUG; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9CDFAC4CEF1;
+	Tue, 26 Aug 2025 11:38:19 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1756214740;
-	bh=FEVy77dV1/c8BvxAPd8kE7ae9zCY/j7MMXHvSLkwp8g=;
+	s=korg; t=1756208299;
+	bh=CxbY2KAHTC6vkbc3AYG4PWesFRwayRj1FmSvv4rdPVY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=iGPiVN8nwRM9vWFbp0QX01zKGNtOo0vuAV6UB5SCwI2RHN17KCX6tv1QUP3pr7JRn
-	 bin8hv2UNTysqlervihaD3biMxGOo7vhyGjPVjIdx2AY0JTYOLctX3kNB3ot+M68fk
-	 KOwVfDnI27RHHo6K/Ilk5/u9t+iFZnsC0++I4FDs=
+	b=LiLAQOUGxQmY9QA5Y2nYUF5Mh/pjmF96Ln9m0bBNBQJfqVuPnza1UvjBJBMhVstBL
+	 zn+p8lwTVKjOmpRmH73CN53TrcAK4diOJPLcb+SsOMK7JT0TcHurW8wEyAGpG4MVTA
+	 uLPS2ZDQp6GjNhjglmWhfpPaBRwhdMfnMBZIbQXg=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Shankari Anand <shankari.ak0208@gmail.com>,
-	Masahiro Yamada <masahiroy@kernel.org>,
-	Randy Dunlap <rdunlap@infradead.org>,
-	Nicolas Schier <n.schier@avm.de>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 220/482] kconfig: nconf: Ensure null termination where strncpy is used
+	Nathan Chancellor <nathan@kernel.org>,
+	Johannes Berg <johannes.berg@intel.com>,
+	Arend van Spriel <arend.vanspriel@broadcom.com>
+Subject: [PATCH 6.12 058/322] wifi: brcmsmac: Remove const from tbl_ptr parameter in wlc_lcnphy_common_read_table()
 Date: Tue, 26 Aug 2025 13:07:53 +0200
-Message-ID: <20250826110936.209801823@linuxfoundation.org>
+Message-ID: <20250826110916.965897068@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250826110930.769259449@linuxfoundation.org>
-References: <20250826110930.769259449@linuxfoundation.org>
+In-Reply-To: <20250826110915.169062587@linuxfoundation.org>
+References: <20250826110915.169062587@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,60 +62,51 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Shankari Anand <shankari.ak0208@gmail.com>
+From: Nathan Chancellor <nathan@kernel.org>
 
-[ Upstream commit f468992936894c9ce3b1659cf38c230d33b77a16 ]
+commit 81284e86bf8849f8e98e8ead3ff5811926b2107f upstream.
 
-strncpy() does not guarantee null-termination if the source string is
-longer than the destination buffer.
+A new warning in clang [1] complains that diq_start in
+wlc_lcnphy_tx_iqlo_cal() is passed uninitialized as a const pointer to
+wlc_lcnphy_common_read_table():
 
-Ensure the buffer is explicitly null-terminated to prevent potential
-string overflows or undefined behavior.
+  drivers/net/wireless/broadcom/brcm80211/brcmsmac/phy/phy_lcn.c:2728:13: error: variable 'diq_start' is uninitialized when passed as a const pointer argument here [-Werror,-Wuninitialized-const-pointer]
+   2728 |                                                      &diq_start, 1, 16, 69);
+        |                                                       ^~~~~~~~~
 
-Signed-off-by: Shankari Anand <shankari.ak0208@gmail.com>
-Signed-off-by: Masahiro Yamada <masahiroy@kernel.org>
-Acked-by: Randy Dunlap <rdunlap@infradead.org>
-Tested-by: Randy Dunlap <rdunlap@infradead.org>
-Tested-by: Nicolas Schier <n.schier@avm.de>
-Acked-by: Nicolas Schier <n.schier@avm.de>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+The table pointer passed to wlc_lcnphy_common_read_table() should not be
+considered constant, as wlc_phy_read_table() is ultimately going to
+update it. Remove the const qualifier from the tbl_ptr to clear up the
+warning.
+
+Cc: stable@vger.kernel.org
+Closes: https://github.com/ClangBuiltLinux/linux/issues/2108
+Fixes: 5b435de0d786 ("net: wireless: add brcm80211 drivers")
+Link: https://github.com/llvm/llvm-project/commit/00dacf8c22f065cb52efb14cd091d441f19b319e [1]
+Signed-off-by: Nathan Chancellor <nathan@kernel.org>
+Acked-by: Arend van Spriel <arend.vanspriel@broadcom.com>>
+Link: https://patch.msgid.link/20250715-brcmsmac-fix-uninit-const-pointer-v1-1-16e6a51a8ef4@kernel.org
+Signed-off-by: Johannes Berg <johannes.berg@intel.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- scripts/kconfig/nconf.c     | 2 ++
- scripts/kconfig/nconf.gui.c | 1 +
- 2 files changed, 3 insertions(+)
+ drivers/net/wireless/broadcom/brcm80211/brcmsmac/phy/phy_lcn.c |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/scripts/kconfig/nconf.c b/scripts/kconfig/nconf.c
-index 3ba8b1af390f..16a2db59432a 100644
---- a/scripts/kconfig/nconf.c
-+++ b/scripts/kconfig/nconf.c
-@@ -585,6 +585,8 @@ static void item_add_str(const char *fmt, ...)
- 		tmp_str,
- 		sizeof(k_menu_items[index].str));
+--- a/drivers/net/wireless/broadcom/brcm80211/brcmsmac/phy/phy_lcn.c
++++ b/drivers/net/wireless/broadcom/brcm80211/brcmsmac/phy/phy_lcn.c
+@@ -919,7 +919,7 @@ void wlc_lcnphy_read_table(struct brcms_
  
-+	k_menu_items[index].str[sizeof(k_menu_items[index].str) - 1] = '\0';
-+
- 	free_item(curses_menu_items[index]);
- 	curses_menu_items[index] = new_item(
- 			k_menu_items[index].str,
-diff --git a/scripts/kconfig/nconf.gui.c b/scripts/kconfig/nconf.gui.c
-index 9aedf40f1dc0..da06ea2afe08 100644
---- a/scripts/kconfig/nconf.gui.c
-+++ b/scripts/kconfig/nconf.gui.c
-@@ -349,6 +349,7 @@ int dialog_inputbox(WINDOW *main_window,
- 	x = (columns-win_cols)/2;
- 
- 	strncpy(result, init, *result_len);
-+	result[*result_len - 1] = '\0';
- 
- 	/* create the windows */
- 	win = newwin(win_lines, win_cols, y, x);
--- 
-2.39.5
-
+ static void
+ wlc_lcnphy_common_read_table(struct brcms_phy *pi, u32 tbl_id,
+-			     const u16 *tbl_ptr, u32 tbl_len,
++			     u16 *tbl_ptr, u32 tbl_len,
+ 			     u32 tbl_width, u32 tbl_offset)
+ {
+ 	struct phytbl_info tab;
 
 
 
