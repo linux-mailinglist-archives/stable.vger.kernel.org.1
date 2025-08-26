@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-173273-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-176291-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 38FA9B35D07
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 13:40:36 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 29733B36B83
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 16:46:44 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 58E3B46071D
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 11:32:49 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 458327BAD7A
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 14:43:12 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id DBCD923D7FA;
-	Tue, 26 Aug 2025 11:30:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C51CB352060;
+	Tue, 26 Aug 2025 14:41:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="p1BtHzSB"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="DvNpHzds"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9279434165A;
-	Tue, 26 Aug 2025 11:30:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 82E403568FB;
+	Tue, 26 Aug 2025 14:41:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756207820; cv=none; b=aKDXbfpumjcWq9jmFgq03Ytghr14uLWzhaYwnDnwvYDbDw3Sr+GE+YqSllx0iAkHCZZzlwz92V2RYK25Obpx7mePY5yEUHGw0QzWRE6SI5kpCOi/BywUi69Ie34zGE/5Gxz1nmquOTJH0WuyS7ktFf0jaLp3YvHVMxVvkMNeLTA=
+	t=1756219274; cv=none; b=VFRd8yT9g8UeRHZpx7DVII1LTsSM992gumQteCQ5pnoX7+zAwihfGoWFHmcnv8H61cA9B+dOObZ0V7/GbaGy1CNZ52uvGe0LasiZ0KfrmMfatHg0nqamLTqg38P2hTwXYyKDy/hjDup/B0LBixF3zbtyCYd3dPdY0bqEJxPgB7c=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756207820; c=relaxed/simple;
-	bh=h2kMCeDcT9D410Cm1MDTZuKVB2Tg5u9L4+omnCIqy8A=;
+	s=arc-20240116; t=1756219274; c=relaxed/simple;
+	bh=nbFuEM22kyThgSQCfI2u3KQ9hsu6WIt7M1/ZbhzABDY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Y2OPpZkN39Ih+psEgMYJ08vfpw92Sqv7CfOQdZwJwx7LYtskAg6RzjdK+koDHcj2IAw2rgboe2fojmluq784sp9GUL45Dyvg08Ts2jvKNw/aQB4q6ghq8TEUzrKaV985Gw/uVSkdTjXGhYYMxbDcoS28Do23rJlKM7NvZu6J8mQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=p1BtHzSB; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 23B23C4CEF1;
-	Tue, 26 Aug 2025 11:30:19 +0000 (UTC)
+	 MIME-Version; b=bdXXlpvICnSug/nuDtEZczF1N2+fUkdsQoBXmeSfZ+spdx2gfllGR6tapexoGBhiQ1KjStus0PaAWFz3+CovlA79M6EwHYZyGecCDt+raoaqiedOX5LyKNVaXtpTJkfRCzbSfpGO31Mv7MXWBORpBFfUPokaCKbZAAGCjPPDJP4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=DvNpHzds; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 14E41C4CEF1;
+	Tue, 26 Aug 2025 14:41:13 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1756207820;
-	bh=h2kMCeDcT9D410Cm1MDTZuKVB2Tg5u9L4+omnCIqy8A=;
+	s=korg; t=1756219274;
+	bh=nbFuEM22kyThgSQCfI2u3KQ9hsu6WIt7M1/ZbhzABDY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=p1BtHzSBVCTDnEPDCfRLZFjcvbvK+ZW/P+6QH3e4N7CAoKOEcescdp12xTm+nTdf8
-	 wdgK+9Ob8vDpw3pNwDznZ4h8EaysNc+6p57r06HXRc/ms2Vg9ub0zwQS084//UwL3h
-	 asmbqwUkoOq7/A1pNPYfnnAt1TehuWrkjrYXcaHo=
+	b=DvNpHzdshNhpCxOVTBj4Z+iBaKcbPL6GUSYvd+hmmB5EEE83ECRpZEKksSs9kNZ9e
+	 IqGXTJkC9vAQnlu1T/fCCVWFMyXHALHOLReJoBol0r96RT+aVr9P0EE43hOEvBCpRR
+	 HpMJume8kqNPO7rmhY9jjKcQdVcwidiVZUQhhg7Q=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Muhammad Alifa Ramdhan <ramdhan@starlabs.sg>,
-	Billy Jheng Bing-Jhong <billy@starlabs.sg>,
-	Sabrina Dubroca <sd@queasysnail.net>,
-	Jakub Kicinski <kuba@kernel.org>
-Subject: [PATCH 6.16 330/457] tls: fix handling of zero-length records on the rx_list
+	Myrrh Periwinkle <myrrhperiwinkle@qtmlabs.xyz>,
+	stable <stable@kernel.org>,
+	Jiri Slaby <jirislaby@kernel.org>
+Subject: [PATCH 5.4 288/403] vt: keyboard: Dont process Unicode characters in K_OFF mode
 Date: Tue, 26 Aug 2025 13:10:14 +0200
-Message-ID: <20250826110945.498306143@linuxfoundation.org>
+Message-ID: <20250826110914.768864113@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250826110937.289866482@linuxfoundation.org>
-References: <20250826110937.289866482@linuxfoundation.org>
+In-Reply-To: <20250826110905.607690791@linuxfoundation.org>
+References: <20250826110905.607690791@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,70 +62,40 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.16-stable review patch.  If anyone has any objections, please let me know.
+5.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jakub Kicinski <kuba@kernel.org>
+From: Myrrh Periwinkle <myrrhperiwinkle@qtmlabs.xyz>
 
-commit 62708b9452f8eb77513115b17c4f8d1a22ebf843 upstream.
+commit b1cc2092ea7a52e2c435aee6d2b1bcb773202663 upstream.
 
-Each recvmsg() call must process either
- - only contiguous DATA records (any number of them)
- - one non-DATA record
+We don't process Unicode characters if the virtual terminal is in raw
+mode, so there's no reason why we shouldn't do the same for K_OFF
+(especially since people would expect K_OFF to actually turn off all VT
+key processing).
 
-If the next record has different type than what has already been
-processed we break out of the main processing loop. If the record
-has already been decrypted (which may be the case for TLS 1.3 where
-we don't know type until decryption) we queue the pending record
-to the rx_list. Next recvmsg() will pick it up from there.
-
-Queuing the skb to rx_list after zero-copy decrypt is not possible,
-since in that case we decrypted directly to the user space buffer,
-and we don't have an skb to queue (darg.skb points to the ciphertext
-skb for access to metadata like length).
-
-Only data records are allowed zero-copy, and we break the processing
-loop after each non-data record. So we should never zero-copy and
-then find out that the record type has changed. The corner case
-we missed is when the initial record comes from rx_list, and it's
-zero length.
-
-Reported-by: Muhammad Alifa Ramdhan <ramdhan@starlabs.sg>
-Reported-by: Billy Jheng Bing-Jhong <billy@starlabs.sg>
-Fixes: 84c61fe1a75b ("tls: rx: do not use the standard strparser")
-Reviewed-by: Sabrina Dubroca <sd@queasysnail.net>
-Link: https://patch.msgid.link/20250820021952.143068-1-kuba@kernel.org
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Fixes: 9fc3de9c8356 ("vt: Add virtual console keyboard mode OFF")
+Signed-off-by: Myrrh Periwinkle <myrrhperiwinkle@qtmlabs.xyz>
+Cc: stable <stable@kernel.org>
+Reviewed-by: Jiri Slaby <jirislaby@kernel.org>
+Link: https://lore.kernel.org/r/20250702-vt-misc-unicode-fixes-v1-1-c27e143cc2eb@qtmlabs.xyz
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- net/tls/tls_sw.c |    7 ++++++-
- 1 file changed, 6 insertions(+), 1 deletion(-)
+ drivers/tty/vt/keyboard.c |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/net/tls/tls_sw.c
-+++ b/net/tls/tls_sw.c
-@@ -1808,6 +1808,9 @@ int decrypt_skb(struct sock *sk, struct
- 	return tls_decrypt_sg(sk, NULL, sgout, &darg);
- }
- 
-+/* All records returned from a recvmsg() call must have the same type.
-+ * 0 is not a valid content type. Use it as "no type reported, yet".
-+ */
- static int tls_record_content_type(struct msghdr *msg, struct tls_msg *tlm,
- 				   u8 *control)
- {
-@@ -2051,8 +2054,10 @@ int tls_sw_recvmsg(struct sock *sk,
- 	if (err < 0)
- 		goto end;
- 
-+	/* process_rx_list() will set @control if it processed any records */
- 	copied = err;
--	if (len <= copied || (copied && control != TLS_RECORD_TYPE_DATA) || rx_more)
-+	if (len <= copied || rx_more ||
-+	    (control && control != TLS_RECORD_TYPE_DATA))
- 		goto end;
- 
- 	target = sock_rcvlowat(sk, flags & MSG_WAITALL, len);
+--- a/drivers/tty/vt/keyboard.c
++++ b/drivers/tty/vt/keyboard.c
+@@ -1460,7 +1460,7 @@ static void kbd_keycode(unsigned int key
+ 		rc = atomic_notifier_call_chain(&keyboard_notifier_list,
+ 						KBD_UNICODE, &param);
+ 		if (rc != NOTIFY_STOP)
+-			if (down && !raw_mode)
++			if (down && !(raw_mode || kbd->kbdmode == VC_OFF))
+ 				k_unicode(vc, keysym, !down);
+ 		return;
+ 	}
 
 
 
