@@ -1,58 +1,55 @@
-Return-Path: <stable+bounces-175828-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-173256-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [IPv6:2605:f480:58:1:0:1994:3:14])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4F3F9B3690B
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 16:22:18 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2E017B35C35
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 13:32:37 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 1402F4E1536
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 14:22:17 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id AAF1C7B75DF
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 11:30:51 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D2AF72FE580;
-	Tue, 26 Aug 2025 14:21:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0E85D321457;
+	Tue, 26 Aug 2025 11:29:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="JRJ1K4mB"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="qiY8Fge2"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8AE662BE058;
-	Tue, 26 Aug 2025 14:21:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C10972FAC02;
+	Tue, 26 Aug 2025 11:29:35 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756218077; cv=none; b=j8QEg0BdMvr3NGPIKnmoXgTyD6u4bv00In36145IxsZYwLvjrJ4NKQ6mf+7X0xB1aVrCiLxV0KuxuxZJcqdCmhNxnJKIhgjeJKTT2+py7SNECRTxKyJyZpt3/BL2RtTu+KVm4DecP5S+3jWZbnBrH58pIRi5syXHfr+zXAsd1Jo=
+	t=1756207775; cv=none; b=aCyc4bfNgBrUGAx2Fi61o+AaaUvd/EyyKtIfp4shqfbG3gRnY1BqNpVYOITdee1KYg8SvhN9HiEtPjwYggwKPvInuhjXcOhy49nfTwBPb6TCTPbj6a9H0DmUGRZKjD9UiqBSz0w3aLmFQAQVlLqyO5Sx36wZxzgoRvqgZLnXRdI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756218077; c=relaxed/simple;
-	bh=urs2VZgSSh7QJPSZnhRQj8p+fKdkQs3C7VheCEAYZdg=;
+	s=arc-20240116; t=1756207775; c=relaxed/simple;
+	bh=DZL0ZvCuFC5jjLgSJ6UC4p7SwPkpyRmQETh9+VnFa+g=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=UxDgp4VAJ8EwWwhSC6IQwpLNPdarYmRtuyIAfPGqIokOM1Tlpc7UqwZHbKd3n7r7dAT/meiRckdHEUGP5RAzRQmK80DdPQe0CvDtEc/pbhLlyt4QM13nqZJZJD8zlyOTJ2lSgRthOoUQ9eMikDeYct4Q9V/ixZOIGDDm9H+vCS4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=JRJ1K4mB; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 12BBBC4CEF1;
-	Tue, 26 Aug 2025 14:21:16 +0000 (UTC)
+	 MIME-Version; b=jCAyu2RtqrgpnaZrjxI1Mu1LGEsjnk0Uw8SpU22iohqmd2O1boSM+KAn3huB0GXwjWVZgqpx7d7SE+dBIETCW/Yxt6D+7Xnj/jYEGUuz2kc8e0fVg5j98tW8O+x4x+TJBqeRuLVya4J2FCrE8NIrETYsgHNHCe6LAbLiUAsbNaw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=qiY8Fge2; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5130DC4CEF1;
+	Tue, 26 Aug 2025 11:29:35 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1756218077;
-	bh=urs2VZgSSh7QJPSZnhRQj8p+fKdkQs3C7VheCEAYZdg=;
+	s=korg; t=1756207775;
+	bh=DZL0ZvCuFC5jjLgSJ6UC4p7SwPkpyRmQETh9+VnFa+g=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=JRJ1K4mBBZ6V+bVR/ioIvMUXObwABOZF+VL37LHZRKsDdaLaRXLRCOuBg4bbGokg3
-	 3KlvZ8HTaoOrXjBj6NxiPsa/JHjj/1qSpryF12BzHksgiIff8NMjlAauSSo7TmTNkG
-	 iI6Nb1z1CPhxUBV7x6kOxIEzWoaQi/7jDDgzId1U=
+	b=qiY8Fge2wh/iaCh1TmIrkAyC8a5tRnpqzgp2wWIv6dmCpUj0eTsdfje458/6cwB32
+	 VN3ZoQptI4sOqIsPn0VJDnTmo5G0wB3E+/yQLDNAk3Kfe3LsHuU/teZPDNVI0zHK7d
+	 gBZmXWVE3sP5vrqA4KcyoQB0R3dYX0YKDzAykJoA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	stable@kernel.org,
-	syzbot+a81f2759d022496b40ab@syzkaller.appspotmail.com,
-	Jakub Acs <acsjakub@amazon.de>,
-	Eric Dumazet <edumazet@google.com>,
-	Jakub Kicinski <kuba@kernel.org>
-Subject: [PATCH 5.10 385/523] net, hsr: reject HSR frame if skb cant hold tag
+	Ian Abbott <abbotti@mev.co.uk>,
+	stable <stable@kernel.org>
+Subject: [PATCH 6.16 311/457] comedi: Make insn_rw_emulate_bits() do insn->n samples
 Date: Tue, 26 Aug 2025 13:09:55 +0200
-Message-ID: <20250826110933.957227484@linuxfoundation.org>
+Message-ID: <20250826110945.047154969@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250826110924.562212281@linuxfoundation.org>
-References: <20250826110924.562212281@linuxfoundation.org>
+In-Reply-To: <20250826110937.289866482@linuxfoundation.org>
+References: <20250826110937.289866482@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,194 +59,89 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+6.16-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jakub Acs <acsjakub@amazon.de>
+From: Ian Abbott <abbotti@mev.co.uk>
 
-commit 7af76e9d18a9fd6f8611b3313c86c190f9b6a5a7 upstream.
+commit 7afba9221f70d4cbce0f417c558879cba0eb5e66 upstream.
 
-Receiving HSR frame with insufficient space to hold HSR tag in the skb
-can result in a crash (kernel BUG):
+The `insn_rw_emulate_bits()` function is used as a default handler for
+`INSN_READ` instructions for subdevices that have a handler for
+`INSN_BITS` but not for `INSN_READ`.  Similarly, it is used as a default
+handler for `INSN_WRITE` instructions for subdevices that have a handler
+for `INSN_BITS` but not for `INSN_WRITE`. It works by emulating the
+`INSN_READ` or `INSN_WRITE` instruction handling with a constructed
+`INSN_BITS` instruction.  However, `INSN_READ` and `INSN_WRITE`
+instructions are supposed to be able read or write multiple samples,
+indicated by the `insn->n` value, but `insn_rw_emulate_bits()` currently
+only handles a single sample.  For `INSN_READ`, the comedi core will
+copy `insn->n` samples back to user-space.  (That triggered KASAN
+kernel-infoleak errors when `insn->n` was greater than 1, but that is
+being fixed more generally elsewhere in the comedi core.)
 
-[   45.390915] skbuff: skb_under_panic: text:ffffffff86f32cac len:26 put:14 head:ffff888042418000 data:ffff888042417ff4 tail:0xe end:0x180 dev:bridge_slave_1
-[   45.392559] ------------[ cut here ]------------
-[   45.392912] kernel BUG at net/core/skbuff.c:211!
-[   45.393276] Oops: invalid opcode: 0000 [#1] SMP DEBUG_PAGEALLOC KASAN NOPTI
-[   45.393809] CPU: 1 UID: 0 PID: 2496 Comm: reproducer Not tainted 6.15.0 #12 PREEMPT(undef)
-[   45.394433] Hardware name: QEMU Standard PC (i440FX + PIIX, 1996), BIOS rel-1.16.3-0-ga6ed6b701f0a-prebuilt.qemu.org 04/01/2014
-[   45.395273] RIP: 0010:skb_panic+0x15b/0x1d0
+Make `insn_rw_emulate_bits()` either handle `insn->n` samples, or return
+an error, to conform to the general expectation for `INSN_READ` and
+`INSN_WRITE` handlers.
 
-<snip registers, remove unreliable trace>
-
-[   45.402911] Call Trace:
-[   45.403105]  <IRQ>
-[   45.404470]  skb_push+0xcd/0xf0
-[   45.404726]  br_dev_queue_push_xmit+0x7c/0x6c0
-[   45.406513]  br_forward_finish+0x128/0x260
-[   45.408483]  __br_forward+0x42d/0x590
-[   45.409464]  maybe_deliver+0x2eb/0x420
-[   45.409763]  br_flood+0x174/0x4a0
-[   45.410030]  br_handle_frame_finish+0xc7c/0x1bc0
-[   45.411618]  br_handle_frame+0xac3/0x1230
-[   45.413674]  __netif_receive_skb_core.constprop.0+0x808/0x3df0
-[   45.422966]  __netif_receive_skb_one_core+0xb4/0x1f0
-[   45.424478]  __netif_receive_skb+0x22/0x170
-[   45.424806]  process_backlog+0x242/0x6d0
-[   45.425116]  __napi_poll+0xbb/0x630
-[   45.425394]  net_rx_action+0x4d1/0xcc0
-[   45.427613]  handle_softirqs+0x1a4/0x580
-[   45.427926]  do_softirq+0x74/0x90
-[   45.428196]  </IRQ>
-
-This issue was found by syzkaller.
-
-The panic happens in br_dev_queue_push_xmit() once it receives a
-corrupted skb with ETH header already pushed in linear data. When it
-attempts the skb_push() call, there's not enough headroom and
-skb_push() panics.
-
-The corrupted skb is put on the queue by HSR layer, which makes a
-sequence of unintended transformations when it receives a specific
-corrupted HSR frame (with incomplete TAG).
-
-Fix it by dropping and consuming frames that are not long enough to
-contain both ethernet and hsr headers.
-
-Alternative fix would be to check for enough headroom before skb_push()
-in br_dev_queue_push_xmit().
-
-In the reproducer, this is injected via AF_PACKET, but I don't easily
-see why it couldn't be sent over the wire from adjacent network.
-
-Further Details:
-
-In the reproducer, the following network interface chain is set up:
-
-┌────────────────┐   ┌────────────────┐
-│ veth0_to_hsr   ├───┤  hsr_slave0    ┼───┐
-└────────────────┘   └────────────────┘   │
-                                          │ ┌──────┐
-                                          ├─┤ hsr0 ├───┐
-                                          │ └──────┘   │
-┌────────────────┐   ┌────────────────┐   │            │┌────────┐
-│ veth1_to_hsr   ┼───┤  hsr_slave1    ├───┘            └┤        │
-└────────────────┘   └────────────────┘                ┌┼ bridge │
-                                                       ││        │
-                                                       │└────────┘
-                                                       │
-                                        ┌───────┐      │
-                                        │  ...  ├──────┘
-                                        └───────┘
-
-To trigger the events leading up to crash, reproducer sends a corrupted
-HSR frame with incomplete TAG, via AF_PACKET socket on 'veth0_to_hsr'.
-
-The first HSR-layer function to process this frame is
-hsr_handle_frame(). It and then checks if the
-protocol is ETH_P_PRP or ETH_P_HSR. If it is, it calls
-skb_set_network_header(skb, ETH_HLEN + HSR_HLEN), without checking that
-the skb is long enough. For the crashing frame it is not, and hence the
-skb->network_header and skb->mac_len fields are set incorrectly,
-pointing after the end of the linear buffer.
-
-I will call this a BUG#1 and it is what is addressed by this patch. In
-the crashing scenario before the fix, the skb continues to go down the
-hsr path as follows.
-
-hsr_handle_frame() then calls this sequence
-hsr_forward_skb()
-  fill_frame_info()
-    hsr->proto_ops->fill_frame_info()
-      hsr_fill_frame_info()
-
-hsr_fill_frame_info() contains a check that intends to check whether the
-skb actually contains the HSR header. But the check relies on the
-skb->mac_len field which was erroneously setup due to BUG#1, so the
-check passes and the execution continues  back in the hsr_forward_skb():
-
-hsr_forward_skb()
-  hsr_forward_do()
-    hsr->proto_ops->get_untagged_frame()
-      hsr_get_untagged_frame()
-        create_stripped_skb_hsr()
-
-In create_stripped_skb_hsr(), a copy of the skb is created and is
-further corrupted by operation that attempts to strip the HSR tag in a
-call to __pskb_copy().
-
-The skb enters create_stripped_skb_hsr() with ethernet header pushed in
-linear buffer. The skb_pull(skb_in, HSR_HLEN) thus pulls 6 bytes of
-ethernet header into the headroom, creating skb_in with a headroom of
-size 8. The subsequent __pskb_copy() then creates an skb with headroom
-of just 2 and skb->len of just 12, this is how it looks after the copy:
-
-gdb) p skb->len
-$10 = 12
-(gdb) p skb->data
-$11 = (unsigned char *) 0xffff888041e45382 "\252\252\252\252\252!\210\373",
-(gdb) p skb->head
-$12 = (unsigned char *) 0xffff888041e45380 ""
-
-It seems create_stripped_skb_hsr() assumes that ETH header is pulled
-in the headroom when it's entered, because it just pulls HSR header on
-top. But that is not the case in our code-path and we end up with the
-corrupted skb instead. I will call this BUG#2
-
-*I got confused here because it seems that under no conditions can
-create_stripped_skb_hsr() work well, the assumption it makes is not true
-during the processing of hsr frames - since the skb_push() in
-hsr_handle_frame to skb_pull in hsr_deliver_master(). I wonder whether I
-missed something here.*
-
-Next, the execution arrives in hsr_deliver_master(). It calls
-skb_pull(ETH_HLEN), which just returns NULL - the SKB does not have
-enough space for the pull (as it only has 12 bytes in total at this
-point).
-
-*The skb_pull() here further suggests that ethernet header is meant
-to be pushed through the whole hsr processing and
-create_stripped_skb_hsr() should pull it before doing the HSR header
-pull.*
-
-hsr_deliver_master() then puts the corrupted skb on the queue, it is
-then picked up from there by bridge frame handling layer and finally
-lands in br_dev_queue_push_xmit where it panics.
-
-Cc: stable@kernel.org
-Fixes: 48b491a5cc74 ("net: hsr: fix mac_len checks")
-Reported-by: syzbot+a81f2759d022496b40ab@syzkaller.appspotmail.com
-Signed-off-by: Jakub Acs <acsjakub@amazon.de>
-Reviewed-by: Eric Dumazet <edumazet@google.com>
-Link: https://patch.msgid.link/20250819082842.94378-1-acsjakub@amazon.de
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Fixes: ed9eccbe8970 ("Staging: add comedi core")
+Cc: stable <stable@kernel.org> # 5.13+
+Signed-off-by: Ian Abbott <abbotti@mev.co.uk>
+Link: https://lore.kernel.org/r/20250725141034.87297-1-abbotti@mev.co.uk
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- net/hsr/hsr_slave.c |    8 +++++++-
- 1 file changed, 7 insertions(+), 1 deletion(-)
+ drivers/comedi/drivers.c |   25 +++++++++++++------------
+ 1 file changed, 13 insertions(+), 12 deletions(-)
 
---- a/net/hsr/hsr_slave.c
-+++ b/net/hsr/hsr_slave.c
-@@ -60,8 +60,14 @@ static rx_handler_result_t hsr_handle_fr
- 	skb_push(skb, ETH_HLEN);
- 	skb_reset_mac_header(skb);
- 	if ((!hsr->prot_version && protocol == htons(ETH_P_PRP)) ||
--	    protocol == htons(ETH_P_HSR))
-+	    protocol == htons(ETH_P_HSR)) {
-+		if (!pskb_may_pull(skb, ETH_HLEN + HSR_HLEN)) {
-+			kfree_skb(skb);
-+			goto finish_consume;
-+		}
-+
- 		skb_set_network_header(skb, ETH_HLEN + HSR_HLEN);
-+	}
- 	skb_reset_mac_len(skb);
+--- a/drivers/comedi/drivers.c
++++ b/drivers/comedi/drivers.c
+@@ -620,11 +620,9 @@ static int insn_rw_emulate_bits(struct c
+ 	unsigned int chan = CR_CHAN(insn->chanspec);
+ 	unsigned int base_chan = (chan < 32) ? 0 : chan;
+ 	unsigned int _data[2];
++	unsigned int i;
+ 	int ret;
  
- 	hsr_forward_skb(skb, port);
+-	if (insn->n == 0)
+-		return 0;
+-
+ 	memset(_data, 0, sizeof(_data));
+ 	memset(&_insn, 0, sizeof(_insn));
+ 	_insn.insn = INSN_BITS;
+@@ -635,18 +633,21 @@ static int insn_rw_emulate_bits(struct c
+ 	if (insn->insn == INSN_WRITE) {
+ 		if (!(s->subdev_flags & SDF_WRITABLE))
+ 			return -EINVAL;
+-		_data[0] = 1U << (chan - base_chan);		     /* mask */
+-		_data[1] = data[0] ? (1U << (chan - base_chan)) : 0; /* bits */
++		_data[0] = 1U << (chan - base_chan);		/* mask */
+ 	}
++	for (i = 0; i < insn->n; i++) {
++		if (insn->insn == INSN_WRITE)
++			_data[1] = data[i] ? _data[0] : 0;	/* bits */
++
++		ret = s->insn_bits(dev, s, &_insn, _data);
++		if (ret < 0)
++			return ret;
+ 
+-	ret = s->insn_bits(dev, s, &_insn, _data);
+-	if (ret < 0)
+-		return ret;
+-
+-	if (insn->insn == INSN_READ)
+-		data[0] = (_data[1] >> (chan - base_chan)) & 1;
++		if (insn->insn == INSN_READ)
++			data[i] = (_data[1] >> (chan - base_chan)) & 1;
++	}
+ 
+-	return 1;
++	return insn->n;
+ }
+ 
+ static int __comedi_device_postconfig_async(struct comedi_device *dev,
 
 
 
