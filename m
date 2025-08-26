@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-173472-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-176098-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id E7723B35CE8
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 13:39:49 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 836ABB36CBC
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 17:00:16 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id A29237C577E
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 11:39:48 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id E86807C81C5
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 14:36:00 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id F253E30F55C;
-	Tue, 26 Aug 2025 11:38:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3E70F350847;
+	Tue, 26 Aug 2025 14:32:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="jEZOpjrt"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="u+uLuZU0"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AC884239573;
-	Tue, 26 Aug 2025 11:38:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F0B3035083D;
+	Tue, 26 Aug 2025 14:32:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756208336; cv=none; b=F1m9GReQ10Gr15fAyE4X5KmwPQu+o3QfCWRL4g0sZ/0v/c1nX2xkip+dHEXD6pB6NRkrQb2iRcs51fDFWx9It6u/FNxcvWi7xc3P+s1APYGKXf7ixkFG9Ec4Lrpn6A24zGrbqu4CTWVINIgZqULuvgrmUC8MznGxW0w1Ojldxzw=
+	t=1756218778; cv=none; b=Wsb9ROcjb0aPVhV+U7FNovY6bX3PIAqbAuERv9bYFj0np0BcvNdDw1JEFxaRttmLyRQJcP9fYqPCHuWerpdNVzu9y7BkndgImksAHC0QqV1hWPPKFyPO7QK0FctY7sEOIbgAjErHeCCWRPBI8+AXC8pE+DwLa9llzl6YYQbEU0s=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756208336; c=relaxed/simple;
-	bh=+XD3JnSFAqnylH62ix0K6PfgL1CGKhNXtZxWhhQh6Z0=;
+	s=arc-20240116; t=1756218778; c=relaxed/simple;
+	bh=NJQsJvFP+HYCWiZBOV4V3Vk4EaD6hilBwK5IOzVi+pI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=BglrsZVmXU69GnW63dTaNkM4XcszA1Lj5HJJJai4jSS7UmA1t+rF7opVwNxtDW1JWS/Rd7WKZLdOOFGkk72EC8i873Vm8bhg2VhtGVr27ahhivMvWZ/TIwHYMsUybMeenhWOP+C0lmihcxhMuxOUO/L4gqkV4HRpfibTG+3IuRs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=jEZOpjrt; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 15C65C4CEF1;
-	Tue, 26 Aug 2025 11:38:55 +0000 (UTC)
+	 MIME-Version; b=n2WBH89TxJOBZrBxXIEQxSZGJJV73EHNrNLdMyDyh+6+8xcNeC0ZAlliJ5d9XHSEEWl2IB5iqbzctApz9nDTMNeHpNk1I/NRB6SoSWy6Rni/rXeG3uYN+uyMRp70kZ2ZeJ59CiMQY9NZmfNcCBvp6TD6LGy7SlLfirZEjlg1s+M=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=u+uLuZU0; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 850E8C4CEF1;
+	Tue, 26 Aug 2025 14:32:57 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1756208336;
-	bh=+XD3JnSFAqnylH62ix0K6PfgL1CGKhNXtZxWhhQh6Z0=;
+	s=korg; t=1756218777;
+	bh=NJQsJvFP+HYCWiZBOV4V3Vk4EaD6hilBwK5IOzVi+pI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=jEZOpjrtjUDOiJ6bu5hXcq8GZdyzrpiE2hMyAlKGlQXEBnwiW6Y/z58/Jp9b7MrHe
-	 3WFE8Os0gJv7/3gZYemo9Pzw7XUTQqu+8uGJIcYmQVI8W+pQyEOVmcWEy0LT+avVdI
-	 EidUkheK0/68JRH+FivYq1cbDZTtIYOdx1aINsdA=
+	b=u+uLuZU0+D8/Mp8uohS1JV7GSPSJoAr5F2+kkAeDhxRFXBHVfmprZpE7ES8UR52A+
+	 gzLqyts1gnkfU7aLmvp104vt40vs+npXBV8gxkrLcRbWz3vyUNnnVftQcvvHoBYmSe
+	 DJziA5+uB2S56SQ6ZpSWrOxTd2YQqEFQkz98G7E4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Will McVicker <willmcvicker@google.com>,
-	Peter Griffin <peter.griffin@linaro.org>,
-	=?UTF-8?q?Andr=C3=A9=20Draszik?= <andre.draszik@linaro.org>,
-	Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
-Subject: [PATCH 6.12 041/322] arm64: dts: exynos: gs101: ufs: add dma-coherent property
+	Petr Pavlu <petr.pavlu@suse.com>,
+	Daniel Gomez <da.gomez@samsung.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.4 130/403] module: Restore the moduleparam prefix length check
 Date: Tue, 26 Aug 2025 13:07:36 +0200
-Message-ID: <20250826110916.387509362@linuxfoundation.org>
+Message-ID: <20250826110910.332607705@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250826110915.169062587@linuxfoundation.org>
-References: <20250826110915.169062587@linuxfoundation.org>
+In-Reply-To: <20250826110905.607690791@linuxfoundation.org>
+References: <20250826110905.607690791@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,48 +60,68 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+5.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Peter Griffin <peter.griffin@linaro.org>
+From: Petr Pavlu <petr.pavlu@suse.com>
 
-commit 4292564c71cffd8094abcc52dd4840870d05cd30 upstream.
+[ Upstream commit bdc877ba6b7ff1b6d2ebeff11e63da4a50a54854 ]
 
-ufs-exynos driver configures the sysreg shareability as
-cacheable for gs101 so we need to set the dma-coherent
-property so the descriptors are also allocated cacheable.
+The moduleparam code allows modules to provide their own definition of
+MODULE_PARAM_PREFIX, instead of using the default KBUILD_MODNAME ".".
 
-This fixes the UFS stability issues we have seen with
-the upstream UFS driver on gs101.
+Commit 730b69d22525 ("module: check kernel param length at compile time,
+not runtime") added a check to ensure the prefix doesn't exceed
+MODULE_NAME_LEN, as this is what param_sysfs_builtin() expects.
 
-Fixes: 4c65d7054b4c ("arm64: dts: exynos: gs101: Add ufs and ufs-phy dt nodes")
-Cc: stable@vger.kernel.org
-Suggested-by: Will McVicker <willmcvicker@google.com>
-Signed-off-by: Peter Griffin <peter.griffin@linaro.org>
-Tested-by: Will McVicker <willmcvicker@google.com>
-Tested-by: André Draszik <andre.draszik@linaro.org>
-Reviewed-by: André Draszik <andre.draszik@linaro.org>
-Link: https://lore.kernel.org/r/20250314-ufs-dma-coherent-v1-1-bdf9f9be2919@linaro.org
-Signed-off-by: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Later, commit 58f86cc89c33 ("VERIFY_OCTAL_PERMISSIONS: stricter checking
+for sysfs perms.") removed this check, but there is no indication this was
+intentional.
+
+Since the check is still useful for param_sysfs_builtin() to function
+properly, reintroduce it in __module_param_call(), but in a modernized form
+using static_assert().
+
+While here, clean up the __module_param_call() comments. In particular,
+remove the comment "Default value instead of permissions?", which comes
+from commit 9774a1f54f17 ("[PATCH] Compile-time check re world-writeable
+module params"). This comment was related to the test variable
+__param_perm_check_##name, which was removed in the previously mentioned
+commit 58f86cc89c33.
+
+Fixes: 58f86cc89c33 ("VERIFY_OCTAL_PERMISSIONS: stricter checking for sysfs perms.")
+Signed-off-by: Petr Pavlu <petr.pavlu@suse.com>
+Reviewed-by: Daniel Gomez <da.gomez@samsung.com>
+Link: https://lore.kernel.org/r/20250630143535.267745-4-petr.pavlu@suse.com
+Signed-off-by: Daniel Gomez <da.gomez@samsung.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/arm64/boot/dts/exynos/google/gs101.dtsi |    1 +
- 1 file changed, 1 insertion(+)
+ include/linux/moduleparam.h | 5 ++---
+ 1 file changed, 2 insertions(+), 3 deletions(-)
 
---- a/arch/arm64/boot/dts/exynos/google/gs101.dtsi
-+++ b/arch/arm64/boot/dts/exynos/google/gs101.dtsi
-@@ -1360,6 +1360,7 @@
- 				 <&cmu_hsi2 CLK_GOUT_HSI2_SYSREG_HSI2_PCLK>;
- 			clock-names = "core_clk", "sclk_unipro_main", "fmp",
- 				      "aclk", "pclk", "sysreg";
-+			dma-coherent;
- 			freq-table-hz = <0 0>, <0 0>, <0 0>, <0 0>, <0 0>, <0 0>;
- 			pinctrl-0 = <&ufs_rst_n &ufs_refclk_out>;
- 			pinctrl-names = "default";
+diff --git a/include/linux/moduleparam.h b/include/linux/moduleparam.h
+index 4d5a851cafe8..6e9062caa7df 100644
+--- a/include/linux/moduleparam.h
++++ b/include/linux/moduleparam.h
+@@ -214,10 +214,9 @@ struct kparam_array
+ #define __moduleparam_const const
+ #endif
+ 
+-/* This is the fundamental function for registering boot/module
+-   parameters. */
++/* This is the fundamental function for registering boot/module parameters. */
+ #define __module_param_call(prefix, name, ops, arg, perm, level, flags)	\
+-	/* Default value instead of permissions? */			\
++	static_assert(sizeof(""prefix) - 1 <= MAX_PARAM_PREFIX_LEN);	\
+ 	static const char __param_str_##name[] = prefix #name;		\
+ 	static struct kernel_param __moduleparam_const __param_##name	\
+ 	__used								\
+-- 
+2.39.5
+
 
 
 
