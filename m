@@ -1,56 +1,58 @@
-Return-Path: <stable+bounces-175731-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-174079-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3E515B36A35
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 16:35:29 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 56976B36161
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 15:09:09 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id E0E1A1BC499D
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 14:19:29 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 1E0B43BA29B
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 13:04:56 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id AC1CF3568E0;
-	Tue, 26 Aug 2025 14:17:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0ABC624166F;
+	Tue, 26 Aug 2025 13:03:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="QSKa2bFq"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="v0v1TlgE"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 691E735082F;
-	Tue, 26 Aug 2025 14:17:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BC6E421B9DA;
+	Tue, 26 Aug 2025 13:03:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756217821; cv=none; b=iDuzVChEwy2poWT8wpPoHvoVXDWHRgi+WWE53M25yHSPmZEw9zkQLXOKVU9wKPOQZVWKcZhMP5VOfmVC00ZtmBHSfGjeXvbr0shEctrYaithYOONozALECJjZpYblFP6GG6XIaWwYqz+Spzxa+Pd+t96TkLRf/o5L0iNsB5te+c=
+	t=1756213435; cv=none; b=LIZtOTEMaCZrOavAbYL6EcNv0T3yPajt/grAzNebK0TyCGb7oXoJMZbQX2235I2Gqy7gZvwAlbNFA+LUmeBd+g6NV1cFA2VPpHGkQ80RSFVbFHpp+RMLnErppguaYAqnfZDwFW5AOR94FyDKEMMY6RQqIIBlQj9y0hfJa29wDak=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756217821; c=relaxed/simple;
-	bh=c66/yoow2rJUf4gZZMNCdUCnXZEqozf6XRGPYUH/llc=;
+	s=arc-20240116; t=1756213435; c=relaxed/simple;
+	bh=7y+CgFMq3cCSRMGZ/yBrPwLenK+wC/Pmb2zrgENipoo=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=PG4HE/WULbcjuK+QQbt04F7zGwUlqsyWKHuo5tZIy22m2QTuJcDKyitjDgbv+8EQt/HpEyNkeaolv/aV+pmAyiCsFWHQAoDqSV8a0FZMt1E0IdCv1CgsPZeM2qCNx6/NA8M36ZhhFhJEh3p5Hx9+UTr/tgXn7kbX/uaduv8kppo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=QSKa2bFq; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id F3086C4CEF1;
-	Tue, 26 Aug 2025 14:17:00 +0000 (UTC)
+	 MIME-Version; b=sDr3c8iM7iJsVI66h6eDw+UDFgkPNUW71r2TwPHZ2rHARnafCnxOJVU218KBxkTNxQ5S9NUw5q+/rVwrtfBcLYuM7hUAhiH0/GnioXa3/F4iMmtCcBHx+NqO9F4dSz9ZE+F6qMB6oz8jK04t7nIbEscxx4zD2fDtpfouTnfKZTM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=v0v1TlgE; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4F618C4CEF1;
+	Tue, 26 Aug 2025 13:03:55 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1756217821;
-	bh=c66/yoow2rJUf4gZZMNCdUCnXZEqozf6XRGPYUH/llc=;
+	s=korg; t=1756213435;
+	bh=7y+CgFMq3cCSRMGZ/yBrPwLenK+wC/Pmb2zrgENipoo=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=QSKa2bFqQR7GWt4Qlkd4n2KzZIGruBsQZj3kPFaZ+USneMNSba6vVgWB+X/cukqXV
-	 tsNhzExy3X4CP+MiowioNCxHH7SZs9roZ/BLkiOrT8SaeQKWHIzw+iUWS7OYOylh9b
-	 ggG6haeusAt/rzVxAygbTnqLJtRpW8aGq0VV6B3Y=
+	b=v0v1TlgESf+hd0b9EHHDyL04JruakXoJM52hu8SMg/mjXndodRiEbttUHNk39o/lE
+	 tYtr9CD+THqCU7yZdqFMhEnwBN4DavbM08i/Osd3ZWbcUwRpuP5rfyxevIWQet64Dy
+	 ht3/wrHGIA8ryiom81jkGrB9+Wlj8PJfv42MMCuE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Emily Deng <Emily.Deng@amd.com>,
-	=?UTF-8?q?Christian=20K=C3=B6nig?= <christian.koenig@amd.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 287/523] drm/ttm: Should to return the evict error
+	Andreas Dilger <adilger@whamcloud.com>,
+	Li Dongyang <dongyangli@ddn.com>,
+	Alex Zhuravlev <bzzz@whamcloud.com>,
+	Oleg Drokin <green@whamcloud.com>,
+	Theodore Tso <tytso@mit.edu>
+Subject: [PATCH 6.6 348/587] ext4: check fast symlink for ea_inode correctly
 Date: Tue, 26 Aug 2025 13:08:17 +0200
-Message-ID: <20250826110931.522704226@linuxfoundation.org>
+Message-ID: <20250826111001.767542279@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250826110924.562212281@linuxfoundation.org>
-References: <20250826110924.562212281@linuxfoundation.org>
+In-Reply-To: <20250826110952.942403671@linuxfoundation.org>
+References: <20250826110952.942403671@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,50 +62,70 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Emily Deng <Emily.Deng@amd.com>
+From: Andreas Dilger <adilger@dilger.ca>
 
-[ Upstream commit 4e16a9a00239db5d819197b9a00f70665951bf50 ]
+commit b4cc4a4077268522e3d0d34de4b2dc144e2330fa upstream.
 
-For the evict fail case, the evict error should be returned.
+The check for a fast symlink in the presence of only an
+external xattr inode is incorrect.  If a fast symlink does
+not have an xattr block (i_file_acl == 0), but does have
+an external xattr inode that increases inode i_blocks, then
+the check for a fast symlink will incorrectly fail and
+__ext4_iget()->ext4_ind_check_inode() will report the inode
+is corrupt when it "validates" i_data[] on the next read:
 
-v2: Consider ENOENT case.
+    # ln -s foo /mnt/tmp/bar
+    # setfattr -h -n trusted.test \
+               -v "$(yes | head -n 4000)" /mnt/tmp/bar
+    # umount /mnt/tmp
+    # mount /mnt/tmp
+    # ls -l /mnt/tmp
+    ls: cannot access '/mnt/tmp/bar': Structure needs cleaning
+    total 4
+     ? l?????????? ? ?    ?        ?            ? bar
+    # dmesg | tail -1
+    EXT4-fs error (device dm-8): __ext4_iget:5098:
+        inode #24578: block 7303014: comm ls: invalid block
 
-v3: Abort directly when the eviction failed for some reason (except for -ENOENT)
- and not wait for the move to finish
+(note that "block 7303014" = 0x6f6f66 = "foo" in LE order).
 
-Signed-off-by: Emily Deng <Emily.Deng@amd.com>
-Reviewed-by: Christian König <christian.koenig@amd.com>
-Signed-off-by: Christian König <christian.koenig@amd.com>
-Link: https://lore.kernel.org/r/20250603091154.3472646-1-Emily.Deng@amd.com
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+ext4_inode_is_fast_symlink() should check the superblock
+EXT4_FEATURE_INCOMPAT_EA_INODE feature flag, not the inode
+EXT4_EA_INODE_FL, since the latter is only set on the xattr
+inode itself, and not on the inode that uses this xattr.
+
+Cc: stable@vger.kernel.org
+Fixes: fc82228a5e38 ("ext4: support fast symlinks from ext3 file systems")
+Signed-off-by: Andreas Dilger <adilger@whamcloud.com>
+Reviewed-by: Li Dongyang <dongyangli@ddn.com>
+Reviewed-by: Alex Zhuravlev <bzzz@whamcloud.com>
+Reviewed-by: Oleg Drokin <green@whamcloud.com>
+Reviewed-on: https://review.whamcloud.com/59879
+Lustre-bug-id: https://jira.whamcloud.com/browse/LU-19121
+Link: https://patch.msgid.link/20250717063709.757077-1-adilger@dilger.ca
+Signed-off-by: Theodore Ts'o <tytso@mit.edu>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/gpu/drm/ttm/ttm_resource.c | 3 +++
- 1 file changed, 3 insertions(+)
+ fs/ext4/inode.c |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/gpu/drm/ttm/ttm_resource.c b/drivers/gpu/drm/ttm/ttm_resource.c
-index b325b9264203..e6db512ff581 100644
---- a/drivers/gpu/drm/ttm/ttm_resource.c
-+++ b/drivers/gpu/drm/ttm/ttm_resource.c
-@@ -113,6 +113,9 @@ int ttm_resource_manager_force_list_clean(struct ttm_bo_device *bdev,
- 	}
- 	spin_unlock(&glob->lru_lock);
+--- a/fs/ext4/inode.c
++++ b/fs/ext4/inode.c
+@@ -146,7 +146,7 @@ static int ext4_meta_trans_blocks(struct
+  */
+ int ext4_inode_is_fast_symlink(struct inode *inode)
+ {
+-	if (!(EXT4_I(inode)->i_flags & EXT4_EA_INODE_FL)) {
++	if (!ext4_has_feature_ea_inode(inode->i_sb)) {
+ 		int ea_blocks = EXT4_I(inode)->i_file_acl ?
+ 				EXT4_CLUSTER_SIZE(inode->i_sb) >> 9 : 0;
  
-+	if (ret && ret != -ENOENT)
-+		return ret;
-+
- 	spin_lock(&man->move_lock);
- 	fence = dma_fence_get(man->move);
- 	spin_unlock(&man->move_lock);
--- 
-2.39.5
-
 
 
 
