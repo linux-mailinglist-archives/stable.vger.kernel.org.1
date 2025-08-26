@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-174457-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-175148-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id A95F6B362D6
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 15:22:51 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id DA39DB366D0
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 16:00:40 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id C67557AE288
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 13:21:15 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 6F224466862
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 13:52:47 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 86233139579;
-	Tue, 26 Aug 2025 13:20:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2B951352060;
+	Tue, 26 Aug 2025 13:51:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="HjcUkqKM"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ymJ15KGI"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 427F8AD4B;
-	Tue, 26 Aug 2025 13:20:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CD538226861;
+	Tue, 26 Aug 2025 13:51:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756214443; cv=none; b=bYC8IrAl8cEZs5XyquheCzL/OPaPJ9M3/A0kwMcxaRPFtGuqWadbVZYwDqyB/BZ/tuvJDxfUVAoUcRELKfMaEoSvaKOfPlfEFJqbdcgKCJhTAoSOwuP5Zmik6zj+WPYUkBwfkNOAaEhntjud2pGmJX4Zj7kUbJu6tOfBfDbxeak=
+	t=1756216268; cv=none; b=FSvnQv+Vl2GrePihl1UVYkMaEo1boVTNNjMTV16Yt2sLWkiksgFji5WyXCNJUTsGWIaJpGR5IRKp84CHJRExcqikmHfc58soRTOlJjFbPG3NFd+R+6VPK7yEJLBg1Tbuo1zqVz8lBSlqa65w5qRapVIiB87GzLFrd4e6iFHnU9E=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756214443; c=relaxed/simple;
-	bh=hCiMe5XgobARM+Q/Vb3qN0MsTLH+Ll6cVEa9P9zYUHM=;
+	s=arc-20240116; t=1756216268; c=relaxed/simple;
+	bh=k3ayMHXioL7ByMl/KSUr6PPIctDMzuLilqWKGMBqIeg=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Ru3z9ljFqu+AmP1ePrQPOHEdZWByNc4xcU7GaW3miy8pNlGzock/Kc26wHjFBI5azX0z83ksaLj/5dvHCuQWEQzi1ILBdj0W53r9qMolH1krOV1CNsupSOp2Ibe6TwaaXPabhAc7LTTmw8UCw/Z6+x1OYwGGusuWo2qtMBD1pDk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=HjcUkqKM; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9F62AC4CEF1;
-	Tue, 26 Aug 2025 13:20:42 +0000 (UTC)
+	 MIME-Version; b=ZF1IhMAddeJRKfK7gONANrxbyXqjTOX5uZ+KWGGb8mN7n7GgwQC2BSZW0H0GKxQvi6huuDIWtU7p4YD+twT5o+dk7j0VMtU5Rtv+EUw5JEsecDNfiU6es+ayuCZuQlWe26efHJP+uczknfI84HUfvANPnGWxFK92olcznwROUU4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ymJ15KGI; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5B788C4CEF1;
+	Tue, 26 Aug 2025 13:51:08 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1756214443;
-	bh=hCiMe5XgobARM+Q/Vb3qN0MsTLH+Ll6cVEa9P9zYUHM=;
+	s=korg; t=1756216268;
+	bh=k3ayMHXioL7ByMl/KSUr6PPIctDMzuLilqWKGMBqIeg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=HjcUkqKMo3j+xby+ewlckZYBqifQmVQXY4Bnp3HZLJUe/bbwfJZ3KuZ068knZBqyF
-	 SsfFCcO8Otcw2QBjvwyndCK8vWcLK0+5NoCNlP9OCrGh+GS5OUAvIA5WstQRuPc4lG
-	 YJvtyyjL9XYG3i1lKiAbOLyTh+G5a+6s/gVFGVnQ=
+	b=ymJ15KGIV9VWmGhMBIrOEFoiLSDSsu55qyYcGZKiXpJ6WY7/CHflFlSQ4HB1BqtAU
+	 9vDWg4CC5nfOmVcZn6rQPE1MrDZqneAoP0Z7+2lSq3KBoYuVCdCv47IYb0MQgtjeoU
+	 iBZJ0PP07jH4jpBt0GR4DqZcPhA6Js+r/1wni8FY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Mark Rutland <mark.rutland@arm.com>,
-	Mark Brown <broonie@kernel.org>,
-	Catalin Marinas <catalin.marinas@arm.com>,
+	Mario Limonciello <mario.limonciello@amd.com>,
+	Mathias Nyman <mathias.nyman@linux.intel.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 139/482] kselftest/arm64: Specify SVE data when testing VL set in sve-ptrace
+Subject: [PATCH 5.15 301/644] usb: xhci: Avoid showing errors during surprise removal
 Date: Tue, 26 Aug 2025 13:06:32 +0200
-Message-ID: <20250826110934.253126855@linuxfoundation.org>
+Message-ID: <20250826110953.844450590@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250826110930.769259449@linuxfoundation.org>
-References: <20250826110930.769259449@linuxfoundation.org>
+In-Reply-To: <20250826110946.507083938@linuxfoundation.org>
+References: <20250826110946.507083938@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,51 +62,62 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Mark Brown <broonie@kernel.org>
+From: Mario Limonciello <mario.limonciello@amd.com>
 
-[ Upstream commit 9e8ebfe677f9101bbfe1f75d548a5aec581e8213 ]
+[ Upstream commit 4b9c60e440525b729ac5f071e00bcee12e0a7e84 ]
 
-Since f916dd32a943 ("arm64/fpsimd: ptrace: Mandate SVE payload for
-streaming-mode state") we reject attempts to write to the streaming mode
-regset even if there is no register data supplied, causing the tests for
-setting vector lengths and setting SVE_VL_INHERIT in sve-ptrace to
-spuriously fail. Set the flag to avoid the issue, we still support not
-supplying register data.
+When a USB4 dock is unplugged from a system it won't respond to ring
+events. The PCI core handles the surprise removal event and notifies
+all PCI drivers. The XHCI PCI driver sets a flag that the device is
+being removed as well.
 
-Acked-by: Mark Rutland <mark.rutland@arm.com>
-Signed-off-by: Mark Brown <broonie@kernel.org>
-Link: https://lore.kernel.org/r/20250609-kselftest-arm64-ssve-fixups-v2-3-998fcfa6f240@kernel.org
-Signed-off-by: Catalin Marinas <catalin.marinas@arm.com>
+When that flag is set don't show messages in the cleanup path for
+marking the controller dead.
+
+Signed-off-by: Mario Limonciello <mario.limonciello@amd.com>
+Signed-off-by: Mathias Nyman <mathias.nyman@linux.intel.com>
+Acked-by: Mathias Nyman <mathias.nyman@linux.intel.com>
+Link: https://lore.kernel.org/r/20250717073107.488599-2-mathias.nyman@linux.intel.com
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- tools/testing/selftests/arm64/fp/sve-ptrace.c | 3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+ drivers/usb/host/xhci-ring.c | 7 +++++--
+ 1 file changed, 5 insertions(+), 2 deletions(-)
 
-diff --git a/tools/testing/selftests/arm64/fp/sve-ptrace.c b/tools/testing/selftests/arm64/fp/sve-ptrace.c
-index 91dd31629ffe..9f5461cd5b8f 100644
---- a/tools/testing/selftests/arm64/fp/sve-ptrace.c
-+++ b/tools/testing/selftests/arm64/fp/sve-ptrace.c
-@@ -158,7 +158,7 @@ static void ptrace_set_get_inherit(pid_t child, const struct vec_type *type)
- 	memset(&sve, 0, sizeof(sve));
- 	sve.size = sizeof(sve);
- 	sve.vl = sve_vl_from_vq(SVE_VQ_MIN);
--	sve.flags = SVE_PT_VL_INHERIT;
-+	sve.flags = SVE_PT_VL_INHERIT | SVE_PT_REGS_SVE;
- 	ret = set_sve(child, type, &sve);
- 	if (ret != 0) {
- 		ksft_test_result_fail("Failed to set %s SVE_PT_VL_INHERIT\n",
-@@ -223,6 +223,7 @@ static void ptrace_set_get_vl(pid_t child, const struct vec_type *type,
- 	/* Set the VL by doing a set with no register payload */
- 	memset(&sve, 0, sizeof(sve));
- 	sve.size = sizeof(sve);
-+	sve.flags = SVE_PT_REGS_SVE;
- 	sve.vl = vl;
- 	ret = set_sve(child, type, &sve);
- 	if (ret != 0) {
+diff --git a/drivers/usb/host/xhci-ring.c b/drivers/usb/host/xhci-ring.c
+index 626f02605192..d56740af8160 100644
+--- a/drivers/usb/host/xhci-ring.c
++++ b/drivers/usb/host/xhci-ring.c
+@@ -1297,12 +1297,15 @@ static void xhci_kill_endpoint_urbs(struct xhci_hcd *xhci,
+  */
+ void xhci_hc_died(struct xhci_hcd *xhci)
+ {
++	bool notify;
+ 	int i, j;
+ 
+ 	if (xhci->xhc_state & XHCI_STATE_DYING)
+ 		return;
+ 
+-	xhci_err(xhci, "xHCI host controller not responding, assume dead\n");
++	notify = !(xhci->xhc_state & XHCI_STATE_REMOVING);
++	if (notify)
++		xhci_err(xhci, "xHCI host controller not responding, assume dead\n");
+ 	xhci->xhc_state |= XHCI_STATE_DYING;
+ 
+ 	xhci_cleanup_command_queue(xhci);
+@@ -1316,7 +1319,7 @@ void xhci_hc_died(struct xhci_hcd *xhci)
+ 	}
+ 
+ 	/* inform usb core hc died if PCI remove isn't already handling it */
+-	if (!(xhci->xhc_state & XHCI_STATE_REMOVING))
++	if (notify)
+ 		usb_hc_died(xhci_to_hcd(xhci));
+ }
+ 
 -- 
 2.39.5
 
