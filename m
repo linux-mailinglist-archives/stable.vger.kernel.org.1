@@ -1,55 +1,56 @@
-Return-Path: <stable+bounces-173139-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-176155-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 08890B35BDA
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 13:28:43 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 16F4CB36BA5
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 16:47:54 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 9A9801885BC8
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 11:24:58 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 19040582233
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 14:38:17 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 181E717332C;
-	Tue, 26 Aug 2025 11:24:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8B7EF356904;
+	Tue, 26 Aug 2025 14:35:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Nrw2rNIH"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="YsurrsYx"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CAB3B1A256B;
-	Tue, 26 Aug 2025 11:24:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 45159340D95;
+	Tue, 26 Aug 2025 14:35:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756207473; cv=none; b=XVx87Mfgcp57/vcTW/knUrgQwSlh4glfgunXVueK/daKSrirISE/zmjytHQaKkBd3Y4gKRkqjBnoSY1VRiwyD1breoI4+INIxRHlGQ9I4OKRSkuOps8F2Hkb8Vncsb/j/XiaiAdmE7+lYRVXgdj/dKDV9JgHQYsH4qRxzXog6KU=
+	t=1756218923; cv=none; b=lCeKRFFtLTB+s+q90EPCdtHVhaRH85XJfaPZdBvgXW59BON0YsiD8Gj9NJXrL48mDfttVaHvPLf4AnDJBEjNUZ4yxjntK5/+ZtzX2nabp1U2rYIz5jSmi+h7h+Z97ClAIueKRijuTAGmHLYlnwJVxwYBUdHYlztUdFnAZAjbgsM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756207473; c=relaxed/simple;
-	bh=qNy/Kl/DtA7e8Dh7wozSGcOVJX994g8ITC4IJgS4qDc=;
+	s=arc-20240116; t=1756218923; c=relaxed/simple;
+	bh=OpuqXS3shJHNDG57Wg9Ctu4nUQkpQJrZpJtAYbdqkmk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=JB9FCQlgQD+9vxZDvDKvNd4/ohxukBS1LEVSp0G1JkxXjbNcurpETqc5NYoEvDVIDWguwZTuX00fPH+uTx+AqHAWXGIQbMOWbLiPeiIu8WZikQsAmwjD8dhe6vlxOVh/pms0geCeaXGbXJIMgMn33xFgv+8Kb+8BDKhs7sTVREg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Nrw2rNIH; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5F38FC113CF;
-	Tue, 26 Aug 2025 11:24:33 +0000 (UTC)
+	 MIME-Version; b=oYg6TFw8lBzl1bhEDeJ/RKFdEo9R5vluzdBUWuefJBLEMX6MccXysHY1UhcjXGl1/tPLTHNflrMCMhE1IUE6ayB5/ef2LJ3+qbHF7KE2PziMCJx1qF5HKU2qAaxqeb6lPAFbMeQp9KxFfD/4yom+Oc2dPE7hjPDj62gdX87eMdw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=YsurrsYx; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id CE1FBC4CEF1;
+	Tue, 26 Aug 2025 14:35:22 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1756207473;
-	bh=qNy/Kl/DtA7e8Dh7wozSGcOVJX994g8ITC4IJgS4qDc=;
+	s=korg; t=1756218923;
+	bh=OpuqXS3shJHNDG57Wg9Ctu4nUQkpQJrZpJtAYbdqkmk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Nrw2rNIHIpSv5dnbnHFUOUwmk7cGCzpzKh59DxFVY38h0KUNFoIDjDhESBEjgMlxf
-	 2Y9PmjMV30lHclDWrzkXQ9g8FQqrKAJk3nvXuLfoMtUdVV43K0gnaeS+thuqrQ3ifq
-	 hWCi7trcIob7Hc7iUUJ1OGiLwdgRAvg4Xy3KD/Vw=
+	b=YsurrsYxu6Eldmkqvv7MqemCqDDWfE4MDDYGdfAdVVaGFDdVCf8g5NswZF6oIRWKJ
+	 +hllxRwyKvGWv/dioV4u/Tc+aneqHaWWcNk3Bqat6SI5knscjhlfm0wlWLCLDq0IJG
+	 xbJ71yZPzDO0MhUUcMMIobnzpLlKt16KQOZcBi6E=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Bibo Mao <maobibo@loongson.cn>,
-	Huacai Chen <chenhuacai@loongson.cn>
-Subject: [PATCH 6.16 196/457] LoongArch: KVM: Add address alignment check in pch_pic register access
+	stable@kernel.org,
+	Jiaxun Yang <jiaxun.yang@flygoat.com>,
+	Thomas Bogendoerfer <tsbogend@alpha.franken.de>
+Subject: [PATCH 5.4 154/403] MIPS: mm: tlb-r4k: Uniquify TLB entries on init
 Date: Tue, 26 Aug 2025 13:08:00 +0200
-Message-ID: <20250826110942.211122654@linuxfoundation.org>
+Message-ID: <20250826110911.134465967@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250826110937.289866482@linuxfoundation.org>
-References: <20250826110937.289866482@linuxfoundation.org>
+In-Reply-To: <20250826110905.607690791@linuxfoundation.org>
+References: <20250826110905.607690791@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,53 +62,103 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.16-stable review patch.  If anyone has any objections, please let me know.
+5.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Bibo Mao <maobibo@loongson.cn>
+From: Jiaxun Yang <jiaxun.yang@flygoat.com>
 
-commit 538c06e3964a8e94b645686cc58ccc4a06fa6330 upstream.
+commit 35ad7e181541aa5757f9f316768d3e64403ec843 upstream.
 
-With pch_pic device, its register is based on MMIO address space,
-different access size 1/2/4/8 is supported. And base address should
-be naturally aligned with its access size, here add alignment check
-in its register access emulation function.
+Hardware or bootloader will initialize TLB entries to any value, which
+may collide with kernel's UNIQUE_ENTRYHI value. On MIPS microAptiv/M5150
+family of cores this will trigger machine check exception and cause boot
+failure. On M5150 simulation this could happen 7 times out of 1000 boots.
 
-Cc: stable@vger.kernel.org
-Signed-off-by: Bibo Mao <maobibo@loongson.cn>
-Signed-off-by: Huacai Chen <chenhuacai@loongson.cn>
+Replace local_flush_tlb_all() with r4k_tlb_uniquify() which probes each
+TLB ENTRIHI unique value for collisions before it's written, and in case
+of collision try a different ASID.
+
+Cc: stable@kernel.org
+Signed-off-by: Jiaxun Yang <jiaxun.yang@flygoat.com>
+Signed-off-by: Thomas Bogendoerfer <tsbogend@alpha.franken.de>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- arch/loongarch/kvm/intc/pch_pic.c |   10 ++++++++++
- 1 file changed, 10 insertions(+)
+ arch/mips/mm/tlb-r4k.c |   56 ++++++++++++++++++++++++++++++++++++++++++++++++-
+ 1 file changed, 55 insertions(+), 1 deletion(-)
 
---- a/arch/loongarch/kvm/intc/pch_pic.c
-+++ b/arch/loongarch/kvm/intc/pch_pic.c
-@@ -195,6 +195,11 @@ static int kvm_pch_pic_read(struct kvm_v
- 		return -EINVAL;
- 	}
+--- a/arch/mips/mm/tlb-r4k.c
++++ b/arch/mips/mm/tlb-r4k.c
+@@ -497,6 +497,60 @@ static int __init set_ntlb(char *str)
  
-+	if (addr & (len - 1)) {
-+		kvm_err("%s: pch pic not aligned addr %llx len %d\n", __func__, addr, len);
-+		return -EINVAL;
+ __setup("ntlb=", set_ntlb);
+ 
++/* Initialise all TLB entries with unique values */
++static void r4k_tlb_uniquify(void)
++{
++	int entry = num_wired_entries();
++
++	htw_stop();
++	write_c0_entrylo0(0);
++	write_c0_entrylo1(0);
++
++	while (entry < current_cpu_data.tlbsize) {
++		unsigned long asid_mask = cpu_asid_mask(&current_cpu_data);
++		unsigned long asid = 0;
++		int idx;
++
++		/* Skip wired MMID to make ginvt_mmid work */
++		if (cpu_has_mmid)
++			asid = MMID_KERNEL_WIRED + 1;
++
++		/* Check for match before using UNIQUE_ENTRYHI */
++		do {
++			if (cpu_has_mmid) {
++				write_c0_memorymapid(asid);
++				write_c0_entryhi(UNIQUE_ENTRYHI(entry));
++			} else {
++				write_c0_entryhi(UNIQUE_ENTRYHI(entry) | asid);
++			}
++			mtc0_tlbw_hazard();
++			tlb_probe();
++			tlb_probe_hazard();
++			idx = read_c0_index();
++			/* No match or match is on current entry */
++			if (idx < 0 || idx == entry)
++				break;
++			/*
++			 * If we hit a match, we need to try again with
++			 * a different ASID.
++			 */
++			asid++;
++		} while (asid < asid_mask);
++
++		if (idx >= 0 && idx != entry)
++			panic("Unable to uniquify TLB entry %d", idx);
++
++		write_c0_index(entry);
++		mtc0_tlbw_hazard();
++		tlb_write_indexed();
++		entry++;
 +	}
 +
- 	/* statistics of pch pic reading */
- 	vcpu->kvm->stat.pch_pic_read_exits++;
- 	ret = loongarch_pch_pic_read(s, addr, len, val);
-@@ -302,6 +307,11 @@ static int kvm_pch_pic_write(struct kvm_
- 		return -EINVAL;
- 	}
- 
-+	if (addr & (len - 1)) {
-+		kvm_err("%s: pch pic not aligned addr %llx len %d\n", __func__, addr, len);
-+		return -EINVAL;
-+	}
++	tlbw_use_hazard();
++	htw_start();
++	flush_micro_tlb();
++}
 +
- 	/* statistics of pch pic writing */
- 	vcpu->kvm->stat.pch_pic_write_exits++;
- 	ret = loongarch_pch_pic_write(s, addr, len, val);
+ /*
+  * Configure TLB (for init or after a CPU has been powered off).
+  */
+@@ -536,7 +590,7 @@ static void r4k_tlb_configure(void)
+ 	temp_tlb_entry = current_cpu_data.tlbsize - 1;
+ 
+ 	/* From this point on the ARC firmware is dead.	 */
+-	local_flush_tlb_all();
++	r4k_tlb_uniquify();
+ 
+ 	/* Did I tell you that ARC SUCKS?  */
+ }
 
 
 
