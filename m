@@ -1,58 +1,57 @@
-Return-Path: <stable+bounces-175579-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-173897-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id CAF1DB36911
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 16:22:30 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 16378B3604C
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 14:59:18 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 977AC5830D2
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 14:12:36 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 1AC4A1BC01B6
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 12:56:54 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2FD9534F46B;
-	Tue, 26 Aug 2025 14:10:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4B11D20DD42;
+	Tue, 26 Aug 2025 12:55:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="MCqEvdym"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="seid9e9a"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E276A341651;
-	Tue, 26 Aug 2025 14:10:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F091C1F1538;
+	Tue, 26 Aug 2025 12:55:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756217420; cv=none; b=PWPhFFM8mjiZsJC16124d3qhCCDax6BSJlc98E/F0ih4FkpBew+Jg5biMSJkj12MdvF7U+sjbfJOFubWbMFBuyy7mk8Gutv0vtNrb7AI5RwKP23hWlrhmD6lYONfDZUM7J9Taai+PFZolVeHpMtcXqvYG3BFSv2lCYdtfWw1l8U=
+	t=1756212954; cv=none; b=JV72frEmEUFMjZRQX3fpyCetp1tKPyong9Bn0Xe8Nrgq7mWKYjQ2qtBDTsKRERXG8MH2k9jJlyM/rsfdCbWmlDQPPXHMnqD5YDMp4lHwTzOi2aTXpFnBCUKJenSRGBKBUolqEBaNBGGPE3i5or5Z8x7QFwofd9OUhgekNaBoZAo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756217420; c=relaxed/simple;
-	bh=YNL1OrU8/l+ncfuzCuRp5vgYt5YRheF49vds671WHPM=;
+	s=arc-20240116; t=1756212954; c=relaxed/simple;
+	bh=XVh05h5ECCrzW8YhMPt9MRY/GCynD+MEtckNA4DDCoI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=nimAMN9oGg99fui8CViSm6Gdl/nK05lX7CbSRXHQSIVB2lM1aZerKIJQs49SipN3rmNLAAHaBFMv7+oAVytIhgD9i6YHLaS3/37TP73ZGP+U3UJv1gnhJZjnJGhrmJIJT9ZbtUlwaLmhdCsUJppqnCOwS7rcuBHGV14VCXO6XAg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=MCqEvdym; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 748ECC4CEF1;
-	Tue, 26 Aug 2025 14:10:19 +0000 (UTC)
+	 MIME-Version; b=Tz0mqWYHNTZvf0QmtGsfV5n8tbF0W3OAshWQTiYC5bnOahqqF8zo9qf0CNF2wU6Tyl0k/vege3jwz4OkYtYwN/32XImf8XFK0pfLSsW/IRC9cOJuqxDdAxyDz71Vo6pkax6Ap8tmDhQnQLoSsfmJ/jAg9An2S3e+fEwOCnTokQs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=seid9e9a; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7DAB8C4CEF1;
+	Tue, 26 Aug 2025 12:55:53 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1756217419;
-	bh=YNL1OrU8/l+ncfuzCuRp5vgYt5YRheF49vds671WHPM=;
+	s=korg; t=1756212953;
+	bh=XVh05h5ECCrzW8YhMPt9MRY/GCynD+MEtckNA4DDCoI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=MCqEvdymXh0O+xs6faLlzB5ylePp6YEQfTljFsB59rV/nBQeMG0jhOFefWy8hf7BF
-	 CpAcD+RkS8uDdADck9QAKfnu8WJzX44n2DI/7rXkx2xaeTzfWMQjImb0zuXFNzh+Nx
-	 AnH4XADuMT4DIQGAaNrCYA4vAdC01gj0WWfEWKSY=
+	b=seid9e9aAnUfTB4BJHQIry+dExNRxTdUP7QCxrx7DWDJxVas3thJk07u0Bj1HyCz7
+	 kbd4aFlqmb7+jtnkECvjwIEn7O8RMcO+b6eWFmyokknqOlt44byH46NfDosKmAkDUV
+	 RKmvKt4+r4wNUUF6qj7yxYxu/EmkxzWVNTxNDrEs=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Alexey Khoroshilov <khoroshilov@ispras.ru>,
-	Fedor Pchelkin <pchelkin@ispras.ru>,
-	Florian Westphal <fw@strlen.de>,
-	Pablo Neira Ayuso <pablo@netfilter.org>,
+	Thomas Fourier <fourier.thomas@gmail.com>,
+	Christophe Leroy <christophe.leroy@csgroup.eu>,
+	Madhavan Srinivasan <maddy@linux.ibm.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 105/523] netfilter: nf_tables: adjust lockdep assertions handling
+Subject: [PATCH 6.6 166/587] (powerpc/512) Fix possible `dma_unmap_single()` on uninitialized pointer
 Date: Tue, 26 Aug 2025 13:05:15 +0200
-Message-ID: <20250826110927.127006469@linuxfoundation.org>
+Message-ID: <20250826110957.168319013@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250826110924.562212281@linuxfoundation.org>
-References: <20250826110924.562212281@linuxfoundation.org>
+In-Reply-To: <20250826110952.942403671@linuxfoundation.org>
+References: <20250826110952.942403671@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,53 +63,44 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Fedor Pchelkin <pchelkin@ispras.ru>
+From: Thomas Fourier <fourier.thomas@gmail.com>
 
-[ Upstream commit 8df1b40de76979bb8e975201d07b71103d5de820 ]
+[ Upstream commit 760b9b4f6de9a33ca56a05f950cabe82138d25bd ]
 
-It's needed to check the return value of lockdep_commit_lock_is_held(),
-otherwise there's no point in this assertion as it doesn't print any
-debug information on itself.
+If the device configuration fails (if `dma_dev->device_config()`),
+`sg_dma_address(&sg)` is not initialized and the jump to `err_dma_prep`
+leads to calling `dma_unmap_single()` on `sg_dma_address(&sg)`.
 
-Found by Linux Verification Center (linuxtesting.org) with Svace static
-analysis tool.
-
-Fixes: b04df3da1b5c ("netfilter: nf_tables: do not defer rule destruction via call_rcu")
-Reported-by: Alexey Khoroshilov <khoroshilov@ispras.ru>
-Signed-off-by: Fedor Pchelkin <pchelkin@ispras.ru>
-Acked-by: Florian Westphal <fw@strlen.de>
-Signed-off-by: Pablo Neira Ayuso <pablo@netfilter.org>
+Signed-off-by: Thomas Fourier <fourier.thomas@gmail.com>
+Reviewed-by: Christophe Leroy <christophe.leroy@csgroup.eu>
+Signed-off-by: Madhavan Srinivasan <maddy@linux.ibm.com>
+Link: https://patch.msgid.link/20250610142918.169540-2-fourier.thomas@gmail.com
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/netfilter/nf_tables_api.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ arch/powerpc/platforms/512x/mpc512x_lpbfifo.c | 6 ++----
+ 1 file changed, 2 insertions(+), 4 deletions(-)
 
-diff --git a/net/netfilter/nf_tables_api.c b/net/netfilter/nf_tables_api.c
-index ff419ecb268a..8e799848cbcc 100644
---- a/net/netfilter/nf_tables_api.c
-+++ b/net/netfilter/nf_tables_api.c
-@@ -3347,7 +3347,7 @@ void nf_tables_rule_destroy(const struct nft_ctx *ctx, struct nft_rule *rule)
- /* can only be used if rule is no longer visible to dumps */
- static void nf_tables_rule_release(const struct nft_ctx *ctx, struct nft_rule *rule)
- {
--	lockdep_commit_lock_is_held(ctx->net);
-+	WARN_ON_ONCE(!lockdep_commit_lock_is_held(ctx->net));
+diff --git a/arch/powerpc/platforms/512x/mpc512x_lpbfifo.c b/arch/powerpc/platforms/512x/mpc512x_lpbfifo.c
+index 4a25b6b48615..f1e353fc6594 100644
+--- a/arch/powerpc/platforms/512x/mpc512x_lpbfifo.c
++++ b/arch/powerpc/platforms/512x/mpc512x_lpbfifo.c
+@@ -240,10 +240,8 @@ static int mpc512x_lpbfifo_kick(void)
+ 	dma_conf.src_addr_width = DMA_SLAVE_BUSWIDTH_4_BYTES;
  
- 	nft_rule_expr_deactivate(ctx, rule, NFT_TRANS_RELEASE);
- 	nf_tables_rule_destroy(ctx, rule);
-@@ -4860,7 +4860,7 @@ void nf_tables_deactivate_set(const struct nft_ctx *ctx, struct nft_set *set,
- 			      struct nft_set_binding *binding,
- 			      enum nft_trans_phase phase)
- {
--	lockdep_commit_lock_is_held(ctx->net);
-+	WARN_ON_ONCE(!lockdep_commit_lock_is_held(ctx->net));
+ 	/* Make DMA channel work with LPB FIFO data register */
+-	if (dma_dev->device_config(lpbfifo.chan, &dma_conf)) {
+-		ret = -EINVAL;
+-		goto err_dma_prep;
+-	}
++	if (dma_dev->device_config(lpbfifo.chan, &dma_conf))
++		return -EINVAL;
  
- 	switch (phase) {
- 	case NFT_TRANS_PREPARE_ERROR:
+ 	sg_init_table(&sg, 1);
+ 
 -- 
 2.39.5
 
