@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-173057-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-175075-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5897BB35B8B
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 13:25:38 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8E372B3663A
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 15:55:07 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id DE7281BA30B2
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 11:22:40 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 2BE3A1BC591B
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 13:49:21 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id CB5E72BE7A7;
-	Tue, 26 Aug 2025 11:21:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E4BBB34F48B;
+	Tue, 26 Aug 2025 13:47:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Q6LfhOp2"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="gY+Txd12"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 875941A256B;
-	Tue, 26 Aug 2025 11:21:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9A42534F484;
+	Tue, 26 Aug 2025 13:47:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756207262; cv=none; b=K3SZ1qoZnMAbJEs3425m8CvkQpUbLicb3zR2dt2gvvW25m7QshQWtVt2ewL5wotWRVIWFuIvMfFcySgxgu1U1AtQBBzWYtsUnutSfEeWsj9o1/nJscdMyVoWVn8ULuZzWR0j4FiFmy3EQEAjlOxpAft/J1S3X80pviJMKrgyB/g=
+	t=1756216074; cv=none; b=DouquPDdL9uBjRrARwT7+fxV7jtlNlTjb1wdB7CXntPO8/BJ7bRN93ZrlwuXob/bfr10iD7esw0cyVWGsIDE7oKwUOpmJrF3xJ6kBIioSL17umf/llvAcdXBfCSsjtoP7t2uRBQKRpDGOQIiiyepA6VmBIA/c8/qQBptJtP8UYQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756207262; c=relaxed/simple;
-	bh=nydIqm+vr5UsQWtiRszQMXtbfvE6HSM2QhPrZeTvXZk=;
+	s=arc-20240116; t=1756216074; c=relaxed/simple;
+	bh=mNQ8s86myPV5XnwSEewQtYknTKzXTQ/lW5OaJ8NY9J4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=FmLEgSiQfoJoq3067aahgQzQDQYc/D3LQM3jdwiqNqFEw5XfBZ3epbN2TaoA/wO82SBiGPz5BelUGU2vs1cTfTC22L3nrAmS0ZKzJVE5TDQP8metEo8eC5x5nJnBej2q7UoZRtZuhIg0eSifAyseRS72Q2BXMKlVVlv75Cs1J0Y=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Q6LfhOp2; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 19A74C4CEF1;
-	Tue, 26 Aug 2025 11:21:01 +0000 (UTC)
+	 MIME-Version; b=aqmBqm0G19OYRhP5p25p8cgKxdHsPeRxDj9QxocFcmyS4Ty7XHXktBrliOep7DA48+pnsdSDVYHKKwrFH1d2u0LAzo1GxknTj5sVXZYwjPitmhQS0HWNDN4Kiw+WQCTHq0Z2eD4ALToJAS9tgFq6dkdus3EQA+QgGtC22hWSl/I=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=gY+Txd12; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2D4AFC4CEF1;
+	Tue, 26 Aug 2025 13:47:54 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1756207262;
-	bh=nydIqm+vr5UsQWtiRszQMXtbfvE6HSM2QhPrZeTvXZk=;
+	s=korg; t=1756216074;
+	bh=mNQ8s86myPV5XnwSEewQtYknTKzXTQ/lW5OaJ8NY9J4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Q6LfhOp2ulnQtX6THM7xyGsaL7cxL05XrbgspQVAbQOQGMqDg4VWQkyMDmnZFCopr
-	 De1q2RXnwA70xA3k7groQTyNurPQiguL8A04aHy7O5xuz+4EIgzM0Diy6z+u+uTVR+
-	 k4zwZbgYLaZIHAp6Y67WG0X66GjF/34sa7wcA2b8=
+	b=gY+Txd12DR7kbHEPa3jVpsj9Ko9XfCF4gG14trE+UarGOEHLb1r+rpY3h0LUa0QZj
+	 wg0W+5O4O7zgl6utfgd9dZ5ZCSXLAzTC5sesv7otZQ3ZrgaSYEG/sRxLT667OWuyuC
+	 Wk60B14hASAl7OnDSyOC3qD3H7q+5iNvuAAfDRhI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Johan Hovold <johan+linaro@kernel.org>,
-	Baochen Qiang <quic_bqiang@quicinc.com>,
-	Jeff Johnson <jeff.johnson@oss.qualcomm.com>
-Subject: [PATCH 6.16 082/457] wifi: ath12k: fix source ring-buffer corruption
+	Florian Westphal <fw@strlen.de>,
+	Pablo Neira Ayuso <pablo@netfilter.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.15 275/644] netfilter: ctnetlink: fix refcount leak on table dump
 Date: Tue, 26 Aug 2025 13:06:06 +0200
-Message-ID: <20250826110939.403655518@linuxfoundation.org>
+Message-ID: <20250826110953.189873877@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250826110937.289866482@linuxfoundation.org>
-References: <20250826110937.289866482@linuxfoundation.org>
+In-Reply-To: <20250826110946.507083938@linuxfoundation.org>
+References: <20250826110946.507083938@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,61 +62,134 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.16-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Johan Hovold <johan+linaro@kernel.org>
+From: Florian Westphal <fw@strlen.de>
 
-commit e834da4cbd6fe1d24f89368bf0c80adcad212726 upstream.
+[ Upstream commit de788b2e6227462b6dcd0e07474e72c089008f74 ]
 
-Add the missing memory barrier to make sure that LMAC source ring
-descriptors are written before updating the head pointer to avoid
-passing stale data to the firmware on weakly ordered architectures like
-aarch64.
+There is a reference count leak in ctnetlink_dump_table():
+      if (res < 0) {
+                nf_conntrack_get(&ct->ct_general); // HERE
+                cb->args[1] = (unsigned long)ct;
+                ...
 
-Note that non-LMAC rings use MMIO write accessors which have the
-required write memory barrier.
+While its very unlikely, its possible that ct == last.
+If this happens, then the refcount of ct was already incremented.
+This 2nd increment is never undone.
 
-Tested-on: WCN7850 hw2.0 WLAN.HMT.1.0.c5-00481-QCAHMTSWPL_V1.0_V2.0_SILICONZ-3
+This prevents the conntrack object from being released, which in turn
+keeps prevents cnet->count from dropping back to 0.
 
-Fixes: d889913205cf ("wifi: ath12k: driver for Qualcomm Wi-Fi 7 devices")
-Cc: stable@vger.kernel.org      # 6.3
-Signed-off-by: Johan Hovold <johan+linaro@kernel.org>
-Reviewed-by: Baochen Qiang <quic_bqiang@quicinc.com>
-Link: https://patch.msgid.link/20250617084402.14475-4-johan+linaro@kernel.org
-Signed-off-by: Jeff Johnson <jeff.johnson@oss.qualcomm.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+This will then block the netns dismantle (or conntrack rmmod) as
+nf_conntrack_cleanup_net_list() will wait forever.
+
+This can be reproduced by running conntrack_resize.sh selftest in a loop.
+It takes ~20 minutes for me on a preemptible kernel on average before
+I see a runaway kworker spinning in nf_conntrack_cleanup_net_list.
+
+One fix would to change this to:
+        if (res < 0) {
+		if (ct != last)
+	                nf_conntrack_get(&ct->ct_general);
+
+But this reference counting isn't needed in the first place.
+We can just store a cookie value instead.
+
+A followup patch will do the same for ctnetlink_exp_dump_table,
+it looks to me as if this has the same problem and like
+ctnetlink_dump_table, we only need a 'skip hint', not the actual
+object so we can apply the same cookie strategy there as well.
+
+Fixes: d205dc40798d ("[NETFILTER]: ctnetlink: fix deadlock in table dumping")
+Signed-off-by: Florian Westphal <fw@strlen.de>
+Signed-off-by: Pablo Neira Ayuso <pablo@netfilter.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/wireless/ath/ath12k/hal.c |   10 +++++++++-
- 1 file changed, 9 insertions(+), 1 deletion(-)
+ net/netfilter/nf_conntrack_netlink.c | 24 +++++++++++++-----------
+ 1 file changed, 13 insertions(+), 11 deletions(-)
 
---- a/drivers/net/wireless/ath/ath12k/hal.c
-+++ b/drivers/net/wireless/ath/ath12k/hal.c
-@@ -2178,7 +2178,11 @@ void ath12k_hal_srng_access_end(struct a
- 		if (srng->ring_dir == HAL_SRNG_DIR_SRC) {
- 			srng->u.src_ring.last_tp =
- 				*(volatile u32 *)srng->u.src_ring.tp_addr;
--			*srng->u.src_ring.hp_addr = srng->u.src_ring.hp;
-+			/* Make sure descriptor is written before updating the
-+			 * head pointer.
-+			 */
-+			dma_wmb();
-+			WRITE_ONCE(*srng->u.src_ring.hp_addr, srng->u.src_ring.hp);
- 		} else {
- 			srng->u.dst_ring.last_hp = *srng->u.dst_ring.hp_addr;
- 			*srng->u.dst_ring.tp_addr = srng->u.dst_ring.tp;
-@@ -2187,6 +2191,10 @@ void ath12k_hal_srng_access_end(struct a
- 		if (srng->ring_dir == HAL_SRNG_DIR_SRC) {
- 			srng->u.src_ring.last_tp =
- 				*(volatile u32 *)srng->u.src_ring.tp_addr;
-+			/* Assume implementation use an MMIO write accessor
-+			 * which has the required wmb() so that the descriptor
-+			 * is written before the updating the head pointer.
-+			 */
- 			ath12k_hif_write32(ab,
- 					   (unsigned long)srng->u.src_ring.hp_addr -
- 					   (unsigned long)ab->mem,
+diff --git a/net/netfilter/nf_conntrack_netlink.c b/net/netfilter/nf_conntrack_netlink.c
+index 585103c16a8a..50f7531221c3 100644
+--- a/net/netfilter/nf_conntrack_netlink.c
++++ b/net/netfilter/nf_conntrack_netlink.c
+@@ -848,8 +848,6 @@ ctnetlink_conntrack_event(unsigned int events, const struct nf_ct_event *item)
+ 
+ static int ctnetlink_done(struct netlink_callback *cb)
+ {
+-	if (cb->args[1])
+-		nf_ct_put((struct nf_conn *)cb->args[1]);
+ 	kfree(cb->data);
+ 	return 0;
+ }
+@@ -1164,19 +1162,26 @@ static int ctnetlink_filter_match(struct nf_conn *ct, void *data)
+ 	return 0;
+ }
+ 
++static unsigned long ctnetlink_get_id(const struct nf_conn *ct)
++{
++	unsigned long id = nf_ct_get_id(ct);
++
++	return id ? id : 1;
++}
++
+ static int
+ ctnetlink_dump_table(struct sk_buff *skb, struct netlink_callback *cb)
+ {
+ 	unsigned int flags = cb->data ? NLM_F_DUMP_FILTERED : 0;
+ 	struct net *net = sock_net(skb->sk);
+-	struct nf_conn *ct, *last;
++	unsigned long last_id = cb->args[1];
+ 	struct nf_conntrack_tuple_hash *h;
+ 	struct hlist_nulls_node *n;
+ 	struct nf_conn *nf_ct_evict[8];
++	struct nf_conn *ct;
+ 	int res, i;
+ 	spinlock_t *lockp;
+ 
+-	last = (struct nf_conn *)cb->args[1];
+ 	i = 0;
+ 
+ 	local_bh_disable();
+@@ -1211,7 +1216,7 @@ ctnetlink_dump_table(struct sk_buff *skb, struct netlink_callback *cb)
+ 				continue;
+ 
+ 			if (cb->args[1]) {
+-				if (ct != last)
++				if (ctnetlink_get_id(ct) != last_id)
+ 					continue;
+ 				cb->args[1] = 0;
+ 			}
+@@ -1224,8 +1229,7 @@ ctnetlink_dump_table(struct sk_buff *skb, struct netlink_callback *cb)
+ 					    NFNL_MSG_TYPE(cb->nlh->nlmsg_type),
+ 					    ct, true, flags);
+ 			if (res < 0) {
+-				nf_conntrack_get(&ct->ct_general);
+-				cb->args[1] = (unsigned long)ct;
++				cb->args[1] = ctnetlink_get_id(ct);
+ 				spin_unlock(lockp);
+ 				goto out;
+ 			}
+@@ -1238,12 +1242,10 @@ ctnetlink_dump_table(struct sk_buff *skb, struct netlink_callback *cb)
+ 	}
+ out:
+ 	local_bh_enable();
+-	if (last) {
++	if (last_id) {
+ 		/* nf ct hash resize happened, now clear the leftover. */
+-		if ((struct nf_conn *)cb->args[1] == last)
++		if (cb->args[1] == last_id)
+ 			cb->args[1] = 0;
+-
+-		nf_ct_put(last);
+ 	}
+ 
+ 	while (i) {
+-- 
+2.50.1
+
 
 
 
