@@ -1,58 +1,56 @@
-Return-Path: <stable+bounces-172983-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-174388-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4480FB35B39
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 13:21:37 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id A03C7B362F2
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 15:24:21 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 37951361D32
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 11:19:00 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 487241886D59
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 13:20:23 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0F8E3312803;
-	Tue, 26 Aug 2025 11:17:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 743A8225390;
+	Tue, 26 Aug 2025 13:17:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="v/bThEuP"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="DfGOc7sA"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B777833A01B;
-	Tue, 26 Aug 2025 11:17:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 28F5C3090E1;
+	Tue, 26 Aug 2025 13:17:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756207070; cv=none; b=Qqdjy/pzo2A8g1IEE0E/8tT1IEeCgiV0cHbeFn0LRrZzXH2A58IO1htabjD0JfXw4ue9yd4fpUmP3Vsd6iIeV9BNKfYGJQh09wpfsVsOo2s18ll/az87oKoHr9GGqOEAJitolc3gzpp9lQ3M0+xTkanc9bsOAuQ9XXYDCIqZP1o=
+	t=1756214258; cv=none; b=HYuZvb6JzIY28kutTZRAnx7JzOJt4+EyCgQe3WLNjKtPyqPc9OHHkNOA/JyaF4Ly8Zmlb788yEazmeicdPnaN7vebGIvfACgneOqaKzK9sCPIiTU6VxxsZI/GFaDtd+uVfIoMNgsGRqELBHYFkVNHeIt5wHo99i08qF7SI0niEA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756207070; c=relaxed/simple;
-	bh=2l+gTs1Ue6mA6SiKYfoQs8kfRHWdjQae51tSYr/UUOA=;
+	s=arc-20240116; t=1756214258; c=relaxed/simple;
+	bh=5ks2XxIFfe9eRHXFxg0zlwCvtiFD4jFyahhytnik1Ns=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=AjwUsi+xNMTduICS0jHEcYAxbn8MZ4yky4bbrbkdHzhF0bAdecXqMCKxdgppwPKObMCfKDBen+Xj0/UHyaJPnzhj6QeZAerXlMyOk0N1proXgGm07UJj/SfbXXCY1Mfbo84rT8oGby0kyRfsCmCYfCqQd7HQMr9cXe9Pn5NjGzE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=v/bThEuP; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 00551C4CEF4;
-	Tue, 26 Aug 2025 11:17:49 +0000 (UTC)
+	 MIME-Version; b=YrL3EWzwERM1/G7gh79SCrI+pzrlUPYwLzvlC6BLqIUz9xnh0Ai72rqcSeH6dE9+M/kXjekItY2aoi5D9utO3md3B2ZhYaScU+8bksOTRHQ81rWd7mmcLHAkVWSHoMXvAt51Iq8Zs9gwQRoASqGoQ7kjsbmJgfMTI2M8hpB+lKo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=DfGOc7sA; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A9EE4C4CEF1;
+	Tue, 26 Aug 2025 13:17:37 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1756207070;
-	bh=2l+gTs1Ue6mA6SiKYfoQs8kfRHWdjQae51tSYr/UUOA=;
+	s=korg; t=1756214258;
+	bh=5ks2XxIFfe9eRHXFxg0zlwCvtiFD4jFyahhytnik1Ns=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=v/bThEuPEg6U2UtpcK+drJYAyao0dq6xWadw+j2hWhO3uu4BGIY+ZpuiAuJr5xFVQ
-	 aAi4WzCYLDnrRh5zq1QBTDsfhhfPIpRy8XA8loXK4s7RzP49Ewg/q++L/OjhKPRZbi
-	 hfPPVGl4y7Ig287msSn5oqcKIUji2OETNbxuLKwY=
+	b=DfGOc7sAWY0M1n1AtEpKborCFxGbJjpRVI/Dq5z7oX2MeAoPpGuhCchq+9piLaP9y
+	 M7W1/7jkS9YXfbruNqUup2bOWkVGOtTvq6+h/zccjZ0727UNVrbiSQ8OrRF8Ucz9Oy
+	 H4oxkbWgvqLqXArWTm6JPH9QTH4tmQr6Lm88VIBo=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	stable@kernel.org,
-	Disha Goel <disgoel@linux.ibm.com>,
-	Ojaswin Mujoo <ojaswin@linux.ibm.com>,
-	"Darrick J. Wong" <djwong@kernel.org>,
-	Theodore Tso <tytso@mit.edu>
-Subject: [PATCH 6.16 039/457] ext4: fix fsmap end of range reporting with bigalloc
+	Jay Chen <shawn2000100@gmail.com>,
+	Mathias Nyman <mathias.nyman@linux.intel.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.1 070/482] usb: xhci: Set avg_trb_len = 8 for EP0 during Address Device Command
 Date: Tue, 26 Aug 2025 13:05:23 +0200
-Message-ID: <20250826110938.312812900@linuxfoundation.org>
+Message-ID: <20250826110932.565793466@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250826110937.289866482@linuxfoundation.org>
-References: <20250826110937.289866482@linuxfoundation.org>
+In-Reply-To: <20250826110930.769259449@linuxfoundation.org>
+References: <20250826110930.769259449@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,125 +62,66 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.16-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Ojaswin Mujoo <ojaswin@linux.ibm.com>
+From: Jay Chen <shawn2000100@gmail.com>
 
-commit bae76c035bf0852844151e68098c9b7cd63ef238 upstream.
+[ Upstream commit f72b9aa821a2bfe4b6dfec4be19f264d0673b008 ]
 
-With bigalloc enabled, the logic to report last extent has a bug since
-we try to use cluster units instead of block units. This can cause an
-issue where extra incorrect entries might be returned back to the
-user. This was flagged by generic/365 with 64k bs and -O bigalloc.
+There is a subtle contradiction between sections of the xHCI 1.2 spec
+regarding the initialization of Input Endpoint Context fields. Section
+4.8.2 ("Endpoint Context Initialization") states that all fields should
+be initialized to 0. However, Section 6.2.3 ("Endpoint Context", p.453)
+specifies that the Average TRB Length (avg_trb_len) field shall be
+greater than 0, and explicitly notes (p.454): "Software shall set
+Average TRB Length to '8' for control endpoints."
 
-** Details of issue **
+Strictly setting all fields to 0 during initialization conflicts with
+the specific recommendation for control endpoints. In practice, setting
+avg_trb_len = 0 is not meaningful for the hardware/firmware, as the
+value is used for bandwidth calculation.
 
-The issue was noticed on 5G 64k blocksize FS with -O bigalloc which has
-only 1 bg.
+Motivation: Our company is developing a custom Virtual xHC hardware
+platform that strictly follows the xHCI spec and its recommendations.
+During validation, we observed that enumeration fails and a parameter
+error (TRB Completion Code = 5) is reported if avg_trb_len for EP0 is
+not set to 8 as recommended by Section 6.2.3. This demonstrates the
+importance of assigning a meaningful, non-zero value to avg_trb_len,
+even in virtualized or emulated environments.
 
-$ xfs_io -c "fsmap -d" /mnt/scratch
+This patch explicitly sets avg_trb_len to 8 for EP0 in
+xhci_setup_addressable_virt_dev(), as recommended in Section 6.2.3, to
+prevent potential issues with xHCI host controllers that enforce the
+spec strictly.
 
-  0: 253:48 [0..127]: static fs metadata 128   /* sb */
-  1: 253:48 [128..255]: special 102:1 128   /* gdt */
-  3: 253:48 [256..383]: special 102:3 128   /* block bitmap */
-  4: 253:48 [384..2303]: unknown 1920       /* flex bg empty space */
-  5: 253:48 [2304..2431]: special 102:4 128   /* inode bitmap */
-  6: 253:48 [2432..4351]: unknown 1920      /* flex bg empty space */
-  7: 253:48 [4352..6911]: inodes 2560
-  8: 253:48 [6912..538623]: unknown 531712
-  9: 253:48 [538624..10485759]: free space 9947136
-
-The issue can be seen with:
-
-$ xfs_io -c "fsmap -d 0 3" /mnt/scratch
-
-  0: 253:48 [0..127]: static fs metadata 128
-  1: 253:48 [384..2047]: unknown 1664
-
-Only the first entry was expected to be returned but we get 2. This is
-because:
-
-ext4_getfsmap_datadev()
-  first_cluster, last_cluster = 0
-  ...
-  info->gfi_last = true;
-  ext4_getfsmap_datadev_helper(sb, end_ag, last_cluster + 1, 0, info);
-    fsb = C2B(1) = 16
-    fslen = 0
-    ...
-    /* Merge in any relevant extents from the meta_list */
-    list_for_each_entry_safe(p, tmp, &info->gfi_meta_list, fmr_list) {
-      ...
-      // since fsb = 16, considers all metadata which starts before 16 blockno
-      iter 1: error = ext4_getfsmap_helper(sb, info, p);  // p = sb (0,1), nop
-        info->gfi_next_fsblk = 1
-      iter 2: error = ext4_getfsmap_helper(sb, info, p);  // p = gdt (1,2), nop
-        info->gfi_next_fsblk = 2
-      iter 3: error = ext4_getfsmap_helper(sb, info, p);  // p = blk bitmap (2,3), nop
-        info->gfi_next_fsblk = 3
-      iter 4: error = ext4_getfsmap_helper(sb, info, p);  // p = ino bitmap (18,19)
-        if (rec_blk > info->gfi_next_fsblk) { // (18 > 3)
-          // emits an extra entry ** BUG **
-        }
-    }
-
-Fix this by directly calling ext4_getfsmap_datadev() with a dummy
-record that has fmr_physical set to (end_fsb + 1) instead of
-last_cluster + 1. By using the block instead of cluster we get the
-correct behavior.
-
-Replacing ext4_getfsmap_datadev_helper() with ext4_getfsmap_helper()
-is okay since the gfi_lastfree and metadata checks in
-ext4_getfsmap_datadev_helper() are anyways redundant when we only want
-to emit the last allocated block of the range, as we have already
-taken care of emitting metadata and any last free blocks.
-
-Cc: stable@kernel.org
-Reported-by: Disha Goel <disgoel@linux.ibm.com>
-Fixes: 4a622e4d477b ("ext4: fix FS_IOC_GETFSMAP handling")
-Signed-off-by: Ojaswin Mujoo <ojaswin@linux.ibm.com>
-Reviewed-by: Darrick J. Wong <djwong@kernel.org>
-Link: https://patch.msgid.link/e7472c8535c9c5ec10f425f495366864ea12c9da.1754377641.git.ojaswin@linux.ibm.com
-Signed-off-by: Theodore Ts'o <tytso@mit.edu>
+Link: https://bugzilla.kernel.org/show_bug.cgi?id=220033
+Signed-off-by: Jay Chen <shawn2000100@gmail.com>
+Signed-off-by: Mathias Nyman <mathias.nyman@linux.intel.com>
+Link: https://lore.kernel.org/r/20250717073107.488599-4-mathias.nyman@linux.intel.com
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/ext4/fsmap.c |   15 ++++++++++++---
- 1 file changed, 12 insertions(+), 3 deletions(-)
+ drivers/usb/host/xhci-mem.c | 2 ++
+ 1 file changed, 2 insertions(+)
 
---- a/fs/ext4/fsmap.c
-+++ b/fs/ext4/fsmap.c
-@@ -526,6 +526,7 @@ static int ext4_getfsmap_datadev(struct
- 	ext4_group_t end_ag;
- 	ext4_grpblk_t first_cluster;
- 	ext4_grpblk_t last_cluster;
-+	struct ext4_fsmap irec;
- 	int error = 0;
+diff --git a/drivers/usb/host/xhci-mem.c b/drivers/usb/host/xhci-mem.c
+index 537a0bc0f5e1..57f739f93321 100644
+--- a/drivers/usb/host/xhci-mem.c
++++ b/drivers/usb/host/xhci-mem.c
+@@ -1200,6 +1200,8 @@ int xhci_setup_addressable_virt_dev(struct xhci_hcd *xhci, struct usb_device *ud
+ 	ep0_ctx->deq = cpu_to_le64(dev->eps[0].ring->first_seg->dma |
+ 				   dev->eps[0].ring->cycle_state);
  
- 	bofs = le32_to_cpu(sbi->s_es->s_first_data_block);
-@@ -609,10 +610,18 @@ static int ext4_getfsmap_datadev(struct
- 			goto err;
- 	}
- 
--	/* Report any gaps at the end of the bg */
-+	/*
-+	 * The dummy record below will cause ext4_getfsmap_helper() to report
-+	 * any allocated blocks at the end of the range.
-+	 */
-+	irec.fmr_device = 0;
-+	irec.fmr_physical = end_fsb + 1;
-+	irec.fmr_length = 0;
-+	irec.fmr_owner = EXT4_FMR_OWN_FREE;
-+	irec.fmr_flags = 0;
++	ep0_ctx->tx_info = cpu_to_le32(EP_AVG_TRB_LENGTH(8));
 +
- 	info->gfi_last = true;
--	error = ext4_getfsmap_datadev_helper(sb, end_ag, last_cluster + 1,
--					     0, info);
-+	error = ext4_getfsmap_helper(sb, info, &irec);
- 	if (error)
- 		goto err;
+ 	trace_xhci_setup_addressable_virt_device(dev);
  
+ 	/* Steps 7 and 8 were done in xhci_alloc_virt_device() */
+-- 
+2.39.5
+
 
 
 
