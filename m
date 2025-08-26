@@ -1,56 +1,61 @@
-Return-Path: <stable+bounces-174745-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-175922-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id BD2F8B36528
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 15:45:29 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 57DE0B36B63
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 16:45:38 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id BA589562026
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 13:34:46 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 74F1C8A6BB9
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 14:27:40 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id DDFE52FAC0A;
-	Tue, 26 Aug 2025 13:33:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id AAA0C350D47;
+	Tue, 26 Aug 2025 14:25:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="W+eYysWV"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Gdsk6Le5"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 93986279788;
-	Tue, 26 Aug 2025 13:33:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 58E5E3570A2;
+	Tue, 26 Aug 2025 14:25:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756215204; cv=none; b=EJFHVZtE440b9neHy7lJiE4tc5Ao0PhP2rTod8gdE6xumRGisUy+yoc2b0+OYdBqHVwuQLnm8XNZItwZOL2Mi+Y05apmaBpBsmrY9FjEpJbNSMgTzN8dA6ML2hREM3qidueMrRE7L2clTbJshicQ3APxGced3m70ydi+zuftQwU=
+	t=1756218320; cv=none; b=CxbufMeNvtdmAt56WcQtF4iph6l4rmEKEHnCm1whaY64AxmPsfey3fqY4Wmapcqb1RJY2oQHg3GN2Jfs790HpYEsmHlx+xMIG10HDu99JZUHqnXaGkjA3EnBliAc+dryGcMa7fcnsHzITIg4xorGAEQOuOePbF134F4UUuyT19g=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756215204; c=relaxed/simple;
-	bh=/16hrxrdTpnygDZb4EXxOhzUQMDB3BjkmQphy8fbfN4=;
+	s=arc-20240116; t=1756218320; c=relaxed/simple;
+	bh=ueGbey6dsvTYAELy8mGO3x1zi7p24jrdSGXbL6Tsox0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=QSFY68vfjfWyonXl0229Xthp2S/65KPKz6t37S2TMcSE6NKVIkuwQz8znp2XPUAp6/cmNneiMbdUD7TLmGPwPBRMz6mP4Lj9LFDqlTLjdtt6pu0RvtSTtwYPwzcQTtIIsipSFrgpj857tv6rR56lZN6lZ1LS+plmG0+6UFZBQo8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=W+eYysWV; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 229AFC4CEF1;
-	Tue, 26 Aug 2025 13:33:23 +0000 (UTC)
+	 MIME-Version; b=YPhc6DKrzOdsMhvcZUDRuRh/1Q4kYNyUG/1f/++GL3G9g3h6PjIMpxm2zBTDnhWZ4jIOEdDPT1ykNRTWAOhEjJYKj8lt42zZ4xSL71OZ6+I2BwfRplqIHd3EFKtJpAhyS1yhJzGtB5ntNUcZHACyhg1LniUE3tAWaSrckMSGMwY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Gdsk6Le5; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B3D73C4CEF1;
+	Tue, 26 Aug 2025 14:25:19 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1756215204;
-	bh=/16hrxrdTpnygDZb4EXxOhzUQMDB3BjkmQphy8fbfN4=;
+	s=korg; t=1756218320;
+	bh=ueGbey6dsvTYAELy8mGO3x1zi7p24jrdSGXbL6Tsox0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=W+eYysWVgEsP7+pLS8ojNXo+rQTVB0DudoLfWKUDY0mia4A8wTiAKN/7upcvIRD0Q
-	 WLUdjeouN7/zaBgMhwOh5FIHnkSG9tebPx0yzv+8j9QaWbXbQeXKTCwtoR7+1+zP/l
-	 o373uspnEykvrQUi+nk82i3ILG4VKAQUFPoWcUYE=
+	b=Gdsk6Le5KjF4Hvm03L3LxEhsTrjuKU+5Vcth5PBuP8EiNLDVyq21wNkGPG3qsKenk
+	 1Bb1JpK3LduBClU+IBWiLz0qb4FYiG8ZgTRlRdLZioXa4KuUwfW9rX7ibn2+qHpQpN
+	 7CRHSr/zc/WnP607ozUsVTyJj0y26nvJD2y0QpTY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Ranjan Kumar <ranjan.kumar@broadcom.com>,
-	"Martin K. Petersen" <martin.petersen@oracle.com>,
+	David Laight <david.laight@aculab.com>,
+	Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
+	Christoph Hellwig <hch@infradead.org>,
+	"Jason A. Donenfeld" <Jason@zx2c4.com>,
+	Linus Torvalds <torvalds@linux-foundation.org>,
+	"Matthew Wilcox (Oracle)" <willy@infradead.org>,
+	Andrew Morton <akpm@linux-foundation.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 427/482] scsi: mpi3mr: Drop unnecessary volatile from __iomem pointers
+Subject: [PATCH 5.10 470/523] minmax: add umin(a, b) and umax(a, b)
 Date: Tue, 26 Aug 2025 13:11:20 +0200
-Message-ID: <20250826110941.379285590@linuxfoundation.org>
+Message-ID: <20250826110936.036541711@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250826110930.769259449@linuxfoundation.org>
-References: <20250826110930.769259449@linuxfoundation.org>
+In-Reply-To: <20250826110924.562212281@linuxfoundation.org>
+References: <20250826110924.562212281@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,58 +67,143 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Ranjan Kumar <ranjan.kumar@broadcom.com>
+From: David Laight <David.Laight@ACULAB.COM>
 
-[ Upstream commit 6853885b21cb1d7157cc14c9d30cc17141565bae ]
+[ Upstream commit 80fcac55385ccb710d33a20dc1caaef29bd5a921 ]
 
-The volatile qualifier is redundant for __iomem pointers.
+Patch series "minmax: Relax type checks in min() and max()", v4.
 
-Cleaned up usage in mpi3mr_writeq() and sysif_regs pointer as per
-Upstream compliance.
+The min() (etc) functions in minmax.h require that the arguments have
+exactly the same types.
 
-Signed-off-by: Ranjan Kumar <ranjan.kumar@broadcom.com>
-Link: https://lore.kernel.org/r/20250627194539.48851-3-ranjan.kumar@broadcom.com
-Signed-off-by: Martin K. Petersen <martin.petersen@oracle.com>
-Stable-dep-of: c91e140c82eb ("scsi: mpi3mr: Serialize admin queue BAR writes on 32-bit systems")
+However when the type check fails, rather than look at the types and fix
+the type of a variable/constant, everyone seems to jump on min_t().  In
+reality min_t() ought to be rare - when something unusual is being done,
+not normality.
+
+The orginal min() (added in 2.4.9) replaced several inline functions and
+included the type - so matched the implicit casting of the function call.
+This was renamed min_t() in 2.4.10 and the current min() added.  There is
+no actual indication that the conversion of negatve values to large
+unsigned values has ever been an actual problem.
+
+A quick grep shows 5734 min() and 4597 min_t().  Having the casts on
+almost half of the calls shows that something is clearly wrong.
+
+If the wrong type is picked (and it is far too easy to pick the type of
+the result instead of the larger input) then significant bits can get
+discarded.
+
+Pretty much the worst example is in the derived clamp_val(), consider:
+        unsigned char x = 200u;
+        y = clamp_val(x, 10u, 300u);
+
+I also suspect that many of the min_t(u16, ...) are actually wrong.  For
+example copy_data() in printk_ringbuffer.c contains:
+
+        data_size = min_t(u16, buf_size, len);
+
+Here buf_size is 'unsigned int' and len 'u16', pass a 64k buffer (can you
+prove that doesn't happen?) and no data is returned.  Apparantly it did -
+and has since been fixed.
+
+The only reason that most of the min_t() are 'fine' is that pretty much
+all the values in the kernel are between 0 and INT_MAX.
+
+Patch 1 adds umin(), this uses integer promotions to convert both
+arguments to 'unsigned long long'.  It can be used to compare a signed
+type that is known to contain a non-negative value with an unsigned type.
+The compiler typically optimises it all away.  Added first so that it can
+be referred to in patch 2.
+
+Patch 2 replaces the 'same type' check with a 'same signedness' one.  This
+makes min(unsigned_int_var, sizeof()) be ok.  The error message is also
+improved and will contain the expanded form of both arguments (useful for
+seeing how constants are defined).
+
+Patch 3 just fixes some whitespace.
+
+Patch 4 allows comparisons of 'unsigned char' and 'unsigned short' to
+signed types.  The integer promotion rules convert them both to 'signed
+int' prior to the comparison so they can never cause a negative value be
+converted to a large positive one.
+
+Patch 5 (rewritted for v4) allows comparisons of unsigned values against
+non-negative constant integer expressions.  This makes
+min(unsigned_int_var, 4) be ok.
+
+The only common case that is still errored is the comparison of signed
+values against unsigned constant integer expressions below __INT_MAX__.
+Typcally min(int_val, sizeof (foo)), the real fix for this is casting the
+constant: min(int_var, (int)sizeof (foo)).
+
+With all the patches applied pretty much all the min_t() could be replaced
+by min(), and most of the rest by umin().  However they all need careful
+inspection due to code like:
+
+        sz = min_t(unsigned char, sz - 1, LIM - 1) + 1;
+
+which converts 0 to LIM.
+
+This patch (of 6):
+
+umin() and umax() can be used when min()/max() errors a signed v unsigned
+compare when the signed value is known to be non-negative.
+
+Unlike min_t(some_unsigned_type, a, b) umin() will never mask off high
+bits if an inappropriate type is selected.
+
+The '+ 0u + 0ul + 0ull' may look strange.
+The '+ 0u' is needed for 'signed int' on 64bit systems.
+The '+ 0ul' is needed for 'signed long' on 32bit systems.
+The '+ 0ull' is needed for 'signed long long'.
+
+Link: https://lkml.kernel.org/r/b97faef60ad24922b530241c5d7c933c@AcuMS.aculab.com
+Link: https://lkml.kernel.org/r/41d93ca827a248698ec64bf57e0c05a5@AcuMS.aculab.com
+Signed-off-by: David Laight <david.laight@aculab.com>
+Cc: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+Cc: Christoph Hellwig <hch@infradead.org>
+Cc: Jason A. Donenfeld <Jason@zx2c4.com>
+Cc: Linus Torvalds <torvalds@linux-foundation.org>
+Cc: Matthew Wilcox (Oracle) <willy@infradead.org>
+Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
+Stable-dep-of: 02c7f7219ac0 ("ext4: fix hole length calculation overflow in non-extent inodes")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/scsi/mpi3mr/mpi3mr.h    |    2 +-
- drivers/scsi/mpi3mr/mpi3mr_fw.c |    4 ++--
- 2 files changed, 3 insertions(+), 3 deletions(-)
+ include/linux/minmax.h |   17 +++++++++++++++++
+ 1 file changed, 17 insertions(+)
 
---- a/drivers/scsi/mpi3mr/mpi3mr.h
-+++ b/drivers/scsi/mpi3mr/mpi3mr.h
-@@ -1035,7 +1035,7 @@ struct mpi3mr_ioc {
- 	char name[MPI3MR_NAME_LENGTH];
- 	char driver_name[MPI3MR_NAME_LENGTH];
+--- a/include/linux/minmax.h
++++ b/include/linux/minmax.h
+@@ -52,6 +52,23 @@
+ #define max(x, y)	__careful_cmp(x, y, >)
  
--	volatile struct mpi3_sysif_registers __iomem *sysif_regs;
-+	struct mpi3_sysif_registers __iomem *sysif_regs;
- 	resource_size_t sysif_regs_phys;
- 	int bars;
- 	u64 dma_mask;
---- a/drivers/scsi/mpi3mr/mpi3mr_fw.c
-+++ b/drivers/scsi/mpi3mr/mpi3mr_fw.c
-@@ -23,12 +23,12 @@ module_param(poll_queues, int, 0444);
- MODULE_PARM_DESC(poll_queues, "Number of queues for io_uring poll mode. (Range 1 - 126)");
- 
- #if defined(writeq) && defined(CONFIG_64BIT)
--static inline void mpi3mr_writeq(__u64 b, volatile void __iomem *addr)
-+static inline void mpi3mr_writeq(__u64 b, void __iomem *addr)
- {
- 	writeq(b, addr);
- }
- #else
--static inline void mpi3mr_writeq(__u64 b, volatile void __iomem *addr)
-+static inline void mpi3mr_writeq(__u64 b, void __iomem *addr)
- {
- 	__u64 data_out = b;
- 
+ /**
++ * umin - return minimum of two non-negative values
++ *   Signed types are zero extended to match a larger unsigned type.
++ * @x: first value
++ * @y: second value
++ */
++#define umin(x, y)	\
++	__careful_cmp((x) + 0u + 0ul + 0ull, (y) + 0u + 0ul + 0ull, <)
++
++/**
++ * umax - return maximum of two non-negative values
++ * @x: first value
++ * @y: second value
++ */
++#define umax(x, y)	\
++	__careful_cmp((x) + 0u + 0ul + 0ull, (y) + 0u + 0ul + 0ull, >)
++
++/**
+  * min3 - return minimum of three values
+  * @x: first value
+  * @y: second value
 
 
 
