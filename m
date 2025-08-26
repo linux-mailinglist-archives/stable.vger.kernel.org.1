@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-172957-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-173874-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id F1E16B35B01
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 13:17:06 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6135FB36043
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 14:58:56 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 7347E188C5E4
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 11:17:15 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 650C53BC220
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 12:55:56 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 43A572D6E6B;
-	Tue, 26 Aug 2025 11:16:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 476DC2C033C;
+	Tue, 26 Aug 2025 12:54:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="EQxg+PNM"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="oHSy9fG4"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F173A2C17A0;
-	Tue, 26 Aug 2025 11:16:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 00D9F299920;
+	Tue, 26 Aug 2025 12:54:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756207005; cv=none; b=ATlQKQjsZkoIDfTuFPXSYOxhjkAWJui1gTNFWXc/rwVamfw9nNUm3nC/l+x4f52tC5yPvcPTE+UJ3r9UygSlQbsqkxZoxXoW/nGiPBFs3u0iHwLoAc5l3JNIQrfDEKCfc59VGEofrUCiJ0hrB/T42wsDx1tkQ5UiJhNjVUnidUc=
+	t=1756212894; cv=none; b=QHQ7f41jVyVGPY6aB8BvQbFa4SAYEV5LAlQTJXw5sy8nrFDEAMQ9Nu6db9lIFXK8qO7sSxo52M5ev1O9KuNfbNBlRBbNv2zCcw15mOC7wBYpmQpnrqAQk0e4h3EylKc9/eW5A66OWyDdPqzyd0sG/LriAqE9pHuQRQhCR8veQyE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756207005; c=relaxed/simple;
-	bh=dcgfOvKxbb6+TGHkALIkJHN0jIg1n0uU2DxSC6EQcFE=;
+	s=arc-20240116; t=1756212894; c=relaxed/simple;
+	bh=Opxs6SRnGtInvnf+Osqr0PIMosKIoUoNkLc8ruTctaA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=uR6TnwBTBENcbt0UyfuAH0B1jkmCZDfDAvzITSMpC9bB6J31vJL2TBTKLWkShZLmh575bp6jaRJbP6IxP2u46MXeYbMFPAKoYePbm10d4C+kNICJEk8gySMIejDXpUjuYsG0sEZ9SFDTTqiKp7MRSTTyOUmk/AuYD8qsbQDIm0Q=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=EQxg+PNM; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 24CBFC4CEF1;
-	Tue, 26 Aug 2025 11:16:43 +0000 (UTC)
+	 MIME-Version; b=BVNTRBV5hO7us/xOZplpz7uCyUh7zI1ABNN7EBPiYGZxHkjSUX1JvhqM/oIbiecUvG0JL3ZFgVl1MJa/dR/ZKVInEVXC9IblcXsI/cBkRrHKd94bpfgfq2YA3bE9r1gKNpy+SaOKJsf3J0iEcZwgxrk9JfFESrfz79EFO/tVC/k=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=oHSy9fG4; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 88661C116B1;
+	Tue, 26 Aug 2025 12:54:53 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1756207004;
-	bh=dcgfOvKxbb6+TGHkALIkJHN0jIg1n0uU2DxSC6EQcFE=;
+	s=korg; t=1756212893;
+	bh=Opxs6SRnGtInvnf+Osqr0PIMosKIoUoNkLc8ruTctaA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=EQxg+PNMnVYpCjURf3hrZiETPhPBsJzkgJ3dF09Fv3zBdLPwDzZuxkWLJ3pZsOTVC
-	 /e7KxDWj248tlyezA4kVAh+Ra4SsMplQa0l40XaUKaV/wILw56x0GeEAaCvjTV8Q9P
-	 EFgD1AOo03Zb2K+mvBAyLKxe70q/JBV7FgGqUP5Q=
+	b=oHSy9fG429ZvvqSZ6yQoyeETcizHrt/mQnLt3H3NpeTpT/myiT7RH93YF50MgrvGo
+	 GeZl8FcOv50e+y1lBppW+n60Rya/ZLdQo3lTLzn/uwQ4z7jsKZyjrrdDk9NgNcvS0x
+	 u6T9PTwRM3m5YVEHZBjckioF+xUqilgSnlncGh2M=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Damien Le Moal <dlemoal@kernel.org>,
-	Mikulas Patocka <mpatocka@redhat.com>,
-	Jens Axboe <axboe@kernel.dk>
-Subject: [PATCH 6.16 006/457] dm: dm-crypt: Do not partially accept write BIOs with zoned targets
-Date: Tue, 26 Aug 2025 13:04:50 +0200
-Message-ID: <20250826110937.461902934@linuxfoundation.org>
+	Oliver Neukum <oneukum@suse.com>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.6 142/587] net: usb: cdc-ncm: check for filtering capability
+Date: Tue, 26 Aug 2025 13:04:51 +0200
+Message-ID: <20250826110956.565401177@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250826110937.289866482@linuxfoundation.org>
-References: <20250826110937.289866482@linuxfoundation.org>
+In-Reply-To: <20250826110952.942403671@linuxfoundation.org>
+References: <20250826110952.942403671@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,155 +62,108 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.16-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Damien Le Moal <dlemoal@kernel.org>
+From: Oliver Neukum <oneukum@suse.com>
 
-commit e549663849e5bb3b985dc2d293069f0d9747ae72 upstream.
+[ Upstream commit 61c3e8940f2d8b5bfeaeec4bedc2f3e7d873abb3 ]
 
-Read and write operations issued to a dm-crypt target may be split
-according to the dm-crypt internal limits defined by the max_read_size
-and max_write_size module parameters (default is 128 KB). The intent is
-to improve processing time of large BIOs by splitting them into smaller
-operations that can be parallelized on different CPUs.
+If the decice does not support filtering, filtering
+must not be used and all packets delivered for the
+upper layers to sort.
 
-For zoned dm-crypt targets, this BIO splitting is still done but without
-the parallel execution to ensure that the issuing order of write
-operations to the underlying devices remains sequential. However, the
-splitting itself causes other problems:
-
-1) Since dm-crypt relies on the block layer zone write plugging to
-   handle zone append emulation using regular write operations, the
-   reminder of a split write BIO will always be plugged into the target
-   zone write plugged. Once the on-going write BIO finishes, this
-   reminder BIO is unplugged and issued from the zone write plug work.
-   If this reminder BIO itself needs to be split, the reminder will be
-   re-issued and plugged again, but that causes a call to a
-   blk_queue_enter(), which may block if a queue freeze operation was
-   initiated. This results in a deadlock as DM submission still holds
-   BIOs that the queue freeze side is waiting for.
-
-2) dm-crypt relies on the emulation done by the block layer using
-   regular write operations for processing zone append operations. This
-   still requires to properly return the written sector as the BIO
-   sector of the original BIO. However, this can be done correctly only
-   and only if there is a single clone BIO used for processing the
-   original zone append operation issued by the user. If the size of a
-   zone append operation is larger than dm-crypt max_write_size, then
-   the orginal BIO will be split and processed as a chain of regular
-   write operations. Such chaining result in an incorrect written sector
-   being returned to the zone append issuer using the original BIO
-   sector.  This in turn results in file system data corruptions using
-   xfs or btrfs.
-
-Fix this by modifying get_max_request_size() to always return the size
-of the BIO to avoid it being split with dm_accpet_partial_bio() in
-crypt_map(). get_max_request_size() is renamed to
-get_max_request_sectors() to clarify the unit of the value returned
-and its interface is changed to take a struct dm_target pointer and a
-pointer to the struct bio being processed. In addition to this change,
-to ensure that crypt_alloc_buffer() works correctly, set the dm-crypt
-device max_hw_sectors limit to be at most
-BIO_MAX_VECS << PAGE_SECTORS_SHIFT (1 MB with a 4KB page architecture).
-This forces DM core to split write BIOs before passing them to
-crypt_map(), and thus guaranteeing that dm-crypt can always accept an
-entire write BIO without needing to split it.
-
-This change does not have any effect on the read path of dm-crypt. Read
-operations can still be split and the BIO fragments processed in
-parallel. There is also no impact on the performance of the write path
-given that all zone write BIOs were already processed inline instead of
-in parallel.
-
-This change also does not affect in any way regular dm-crypt block
-devices.
-
-Fixes: f211268ed1f9 ("dm: Use the block layer zone append emulation")
-Cc: stable@vger.kernel.org
-Signed-off-by: Damien Le Moal <dlemoal@kernel.org>
-Reviewed-by: Mikulas Patocka <mpatocka@redhat.com>
-Link: https://lore.kernel.org/r/20250625093327.548866-5-dlemoal@kernel.org
-Signed-off-by: Jens Axboe <axboe@kernel.dk>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Signed-off-by: Oliver Neukum <oneukum@suse.com>
+Link: https://patch.msgid.link/20250717120649.2090929-1-oneukum@suse.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/md/dm-crypt.c |   47 ++++++++++++++++++++++++++++++++++++++---------
- 1 file changed, 38 insertions(+), 9 deletions(-)
+ drivers/net/usb/cdc_ncm.c   | 20 ++++++++++++++++----
+ include/linux/usb/cdc_ncm.h |  1 +
+ 2 files changed, 17 insertions(+), 4 deletions(-)
 
---- a/drivers/md/dm-crypt.c
-+++ b/drivers/md/dm-crypt.c
-@@ -253,17 +253,35 @@ MODULE_PARM_DESC(max_read_size, "Maximum
- static unsigned int max_write_size = 0;
- module_param(max_write_size, uint, 0644);
- MODULE_PARM_DESC(max_write_size, "Maximum size of a write request");
--static unsigned get_max_request_size(struct crypt_config *cc, bool wrt)
-+
-+static unsigned get_max_request_sectors(struct dm_target *ti, struct bio *bio)
- {
-+	struct crypt_config *cc = ti->private;
- 	unsigned val, sector_align;
--	val = !wrt ? READ_ONCE(max_read_size) : READ_ONCE(max_write_size);
--	if (likely(!val))
--		val = !wrt ? DM_CRYPT_DEFAULT_MAX_READ_SIZE : DM_CRYPT_DEFAULT_MAX_WRITE_SIZE;
--	if (wrt || cc->used_tag_size) {
--		if (unlikely(val > BIO_MAX_VECS << PAGE_SHIFT))
--			val = BIO_MAX_VECS << PAGE_SHIFT;
-+	bool wrt = op_is_write(bio_op(bio));
-+
-+	if (wrt) {
-+		/*
-+		 * For zoned devices, splitting write operations creates the
-+		 * risk of deadlocking queue freeze operations with zone write
-+		 * plugging BIO work when the reminder of a split BIO is
-+		 * issued. So always allow the entire BIO to proceed.
-+		 */
-+		if (ti->emulate_zone_append)
-+			return bio_sectors(bio);
-+
-+		val = min_not_zero(READ_ONCE(max_write_size),
-+				   DM_CRYPT_DEFAULT_MAX_WRITE_SIZE);
-+	} else {
-+		val = min_not_zero(READ_ONCE(max_read_size),
-+				   DM_CRYPT_DEFAULT_MAX_READ_SIZE);
+diff --git a/drivers/net/usb/cdc_ncm.c b/drivers/net/usb/cdc_ncm.c
+index db05622f1f70..d9792fd515a9 100644
+--- a/drivers/net/usb/cdc_ncm.c
++++ b/drivers/net/usb/cdc_ncm.c
+@@ -893,6 +893,10 @@ int cdc_ncm_bind_common(struct usbnet *dev, struct usb_interface *intf, u8 data_
+ 		}
  	}
--	sector_align = max(bdev_logical_block_size(cc->dev->bdev), (unsigned)cc->sector_size);
-+
-+	if (wrt || cc->used_tag_size)
-+		val = min(val, BIO_MAX_VECS << PAGE_SHIFT);
-+
-+	sector_align = max(bdev_logical_block_size(cc->dev->bdev),
-+			   (unsigned)cc->sector_size);
- 	val = round_down(val, sector_align);
- 	if (unlikely(!val))
- 		val = sector_align;
-@@ -3496,7 +3514,7 @@ static int crypt_map(struct dm_target *t
- 	/*
- 	 * Check if bio is too large, split as needed.
- 	 */
--	max_sectors = get_max_request_size(cc, bio_data_dir(bio) == WRITE);
-+	max_sectors = get_max_request_sectors(ti, bio);
- 	if (unlikely(bio_sectors(bio) > max_sectors))
- 		dm_accept_partial_bio(bio, max_sectors);
  
-@@ -3733,6 +3751,17 @@ static void crypt_io_hints(struct dm_tar
- 		max_t(unsigned int, limits->physical_block_size, cc->sector_size);
- 	limits->io_min = max_t(unsigned int, limits->io_min, cc->sector_size);
- 	limits->dma_alignment = limits->logical_block_size - 1;
++	if (ctx->func_desc)
++		ctx->filtering_supported = !!(ctx->func_desc->bmNetworkCapabilities
++			& USB_CDC_NCM_NCAP_ETH_FILTER);
 +
-+	/*
-+	 * For zoned dm-crypt targets, there will be no internal splitting of
-+	 * write BIOs to avoid exceeding BIO_MAX_VECS vectors per BIO. But
-+	 * without respecting this limit, crypt_alloc_buffer() will trigger a
-+	 * BUG(). Avoid this by forcing DM core to split write BIOs to this
-+	 * limit.
-+	 */
-+	if (ti->emulate_zone_append)
-+		limits->max_hw_sectors = min(limits->max_hw_sectors,
-+					     BIO_MAX_VECS << PAGE_SECTORS_SHIFT);
+ 	iface_no = ctx->data->cur_altsetting->desc.bInterfaceNumber;
+ 
+ 	/* Device-specific flags */
+@@ -1898,6 +1902,14 @@ static void cdc_ncm_status(struct usbnet *dev, struct urb *urb)
+ 	}
  }
  
- static struct target_type crypt_target = {
++static void cdc_ncm_update_filter(struct usbnet *dev)
++{
++	struct cdc_ncm_ctx *ctx = (struct cdc_ncm_ctx *)dev->data[0];
++
++	if (ctx->filtering_supported)
++		usbnet_cdc_update_filter(dev);
++}
++
+ static const struct driver_info cdc_ncm_info = {
+ 	.description = "CDC NCM (NO ZLP)",
+ 	.flags = FLAG_POINTTOPOINT | FLAG_NO_SETINT | FLAG_MULTI_PACKET
+@@ -1908,7 +1920,7 @@ static const struct driver_info cdc_ncm_info = {
+ 	.status = cdc_ncm_status,
+ 	.rx_fixup = cdc_ncm_rx_fixup,
+ 	.tx_fixup = cdc_ncm_tx_fixup,
+-	.set_rx_mode = usbnet_cdc_update_filter,
++	.set_rx_mode = cdc_ncm_update_filter,
+ };
+ 
+ /* Same as cdc_ncm_info, but with FLAG_SEND_ZLP  */
+@@ -1922,7 +1934,7 @@ static const struct driver_info cdc_ncm_zlp_info = {
+ 	.status = cdc_ncm_status,
+ 	.rx_fixup = cdc_ncm_rx_fixup,
+ 	.tx_fixup = cdc_ncm_tx_fixup,
+-	.set_rx_mode = usbnet_cdc_update_filter,
++	.set_rx_mode = cdc_ncm_update_filter,
+ };
+ 
+ /* Same as cdc_ncm_info, but with FLAG_WWAN */
+@@ -1936,7 +1948,7 @@ static const struct driver_info wwan_info = {
+ 	.status = cdc_ncm_status,
+ 	.rx_fixup = cdc_ncm_rx_fixup,
+ 	.tx_fixup = cdc_ncm_tx_fixup,
+-	.set_rx_mode = usbnet_cdc_update_filter,
++	.set_rx_mode = cdc_ncm_update_filter,
+ };
+ 
+ /* Same as wwan_info, but with FLAG_NOARP  */
+@@ -1950,7 +1962,7 @@ static const struct driver_info wwan_noarp_info = {
+ 	.status = cdc_ncm_status,
+ 	.rx_fixup = cdc_ncm_rx_fixup,
+ 	.tx_fixup = cdc_ncm_tx_fixup,
+-	.set_rx_mode = usbnet_cdc_update_filter,
++	.set_rx_mode = cdc_ncm_update_filter,
+ };
+ 
+ static const struct usb_device_id cdc_devs[] = {
+diff --git a/include/linux/usb/cdc_ncm.h b/include/linux/usb/cdc_ncm.h
+index 2d207cb4837d..4ac082a63173 100644
+--- a/include/linux/usb/cdc_ncm.h
++++ b/include/linux/usb/cdc_ncm.h
+@@ -119,6 +119,7 @@ struct cdc_ncm_ctx {
+ 	u32 timer_interval;
+ 	u32 max_ndp_size;
+ 	u8 is_ndp16;
++	u8 filtering_supported;
+ 	union {
+ 		struct usb_cdc_ncm_ndp16 *delayed_ndp16;
+ 		struct usb_cdc_ncm_ndp32 *delayed_ndp32;
+-- 
+2.39.5
+
 
 
 
