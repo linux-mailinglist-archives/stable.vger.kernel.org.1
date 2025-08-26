@@ -1,175 +1,171 @@
-Return-Path: <stable+bounces-172918-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-172919-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1BBBEB3531D
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 07:16:45 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4E902B3536D
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 07:39:01 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id B5F183B01D9
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 05:16:43 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 10469172D30
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 05:39:01 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D52351A23B9;
-	Tue, 26 Aug 2025 05:16:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 880F22ED15D;
+	Tue, 26 Aug 2025 05:38:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b="tZIXCni+"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="BB7Lme5P"
 X-Original-To: stable@vger.kernel.org
-Received: from out-176.mta1.migadu.com (out-176.mta1.migadu.com [95.215.58.176])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pl1-f182.google.com (mail-pl1-f182.google.com [209.85.214.182])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A99DF11CA9;
-	Tue, 26 Aug 2025 05:16:37 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=95.215.58.176
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D56E011CA9;
+	Tue, 26 Aug 2025 05:38:54 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.182
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756185399; cv=none; b=RYDEFMsAmgSlCsJeYPkE6QPzti21+syusYG5ccOO8niZoFWpqhM3wLlYM3pF9Uc9vQEQcPlOhebWdQtQGpzxu6b5X1PVpwkYmMU9Uy+7iS5yINQmthTWX1Rt/0hqz9+tTiYdweTWb6gKd8qCheJvUj8no5s52bhyGt5pCZcGs1M=
+	t=1756186736; cv=none; b=tYZHE+u92eOKRgboVGU9yPQS5EUn4UtqwxoNoV+Ww3YcmF0AJ5tvilyfOfkcWvaZrd8ewC0nk+C+f1zw8a9ew7ZmqXxaZrvJopeDjtXJkqVPt8J1faFuEOPpU93KJdR26J4cW8JBzL9AtMPhugTBIvwUTibmU6Yo4dlARYOpHmA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756185399; c=relaxed/simple;
-	bh=2jbbXl6GDwJvfi5DE0nXIK0RqpNAJHPFS3yDlEfn2QY=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=YQXgI96uAF2cc8zdIT0vSGD8UxCh1r0dXBEOETUwU6bQ+4BrAAuzjEH/q+i7kUJSe8YV9SSNLUNYunc+0AKQrvjBdSgcn24yoRqjC8zaX78XK3mNQkXQnG1IukP2HWxVORw8423v9d+ubSX/mvEJg7tNBYpZTOxTshAF18VzlMw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev; spf=pass smtp.mailfrom=linux.dev; dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b=tZIXCni+; arc=none smtp.client-ip=95.215.58.176
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.dev
-Message-ID: <1edc08b2-801f-4968-8198-ebb0d7c3accb@linux.dev>
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
-	t=1756185395;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=Ci1PdBuzNcOaR7y0193uhT7DsHMGCXsYNxvG0Vv+L28=;
-	b=tZIXCni+4wK0EP62V+S2BZuZBIQQws2yaAgZvU3Iqj4kP9q8pHcuR98QSThIliOFz8mmYN
-	XzdzZG5TMOKZnf63CvCg34Rft41XAaxTCJNEoym1yhUTRb0yum5IlLr0e9D/SkU455HAF8
-	X/kcqfcjs/Oa1OwV1AsjPa0+mB7bBfY=
-Date: Tue, 26 Aug 2025 13:16:25 +0800
+	s=arc-20240116; t=1756186736; c=relaxed/simple;
+	bh=fkEI3+r7fkyCvE6gJngNZ+Zm3/fQ8nxEzZgG4A1l2I4=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=jPMHcs5y+diGAI5hft9EBtoY4FQphEpMpm/iT8VuOVUbVEikkP7UPNeIotCGJZbx8dAb2btNQJfmzOuOfwzzvc5dN9Qsmira0IyyW0YBXK1ajuFsgtQqz3jGCgo0mio/p5R6iFW+3OlTCduceZDNJG38joaRtC06Qjaw0f20mIo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=BB7Lme5P; arc=none smtp.client-ip=209.85.214.182
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-pl1-f182.google.com with SMTP id d9443c01a7336-24458272c00so60601745ad.3;
+        Mon, 25 Aug 2025 22:38:54 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1756186734; x=1756791534; darn=vger.kernel.org;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:from:to:cc:subject:date:message-id:reply-to;
+        bh=Axk4UMbWJGlYVE8LjjJYFMnLZB/ZM8rZIyTcTh59eoY=;
+        b=BB7Lme5PwH/P7dyvtRCeQuP6LHy5RosuwE/pN2nLHEt9B48HIZ98viX8WlNBTZdgJx
+         Q7vgLAsTB3TlBtXOAuuFveQIYG4mFXdyTwTtfLknh7b3HbxG75hFfR2Vh8TBmvyCGszG
+         oRywDG8C76cPmVVlutESFmX7L+vo++9zHslNT+68tt9LodV9Hu4cFim9UR2HlHYVHLbR
+         SJ0Ia4GflUKhtp/RSBwvU8WPNje9F2bK613aF20vXVUsUK5cs46uzzi0dP2iqxo1Cc+P
+         HN9/xWTnch/8iDZXfQqdYv+1c+xbATtpwl3Gf2oyucfEeolZO9SRnPinsx24UCMkoigM
+         ci4A==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1756186734; x=1756791534;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=Axk4UMbWJGlYVE8LjjJYFMnLZB/ZM8rZIyTcTh59eoY=;
+        b=NDcfJd1XqqbP6d15TQB7wEd6UYh+c+dNnVpBVp/NBfkpNRHhgkn39+PimHTGD9sQXQ
+         swWbGcb+T/wcz+VmSved7jqvR6MaHKkM1H8qzHby7r9W80zEZZZuFZuObahISI/XxGWK
+         R4AbHHIgVQbvEdtoSmUY7IrwiNJ7nVPOnW0ntGJhTVDDfC2AhOWinkROiYfRoV4NIitQ
+         RcTxNMO8BHVUkTrVrxFh9sDpLk9DPk94YjJK9QHutO8ZiGoTfOxzxJLJrlMok/AnH+4N
+         QwoZp29sfiMEBfTSQKPvdkqggPXTXd+oBeAOmoS/R5vA1G7EwfDkYMctGhOvy1Q5rGEG
+         aHTA==
+X-Forwarded-Encrypted: i=1; AJvYcCW6i6eGtWxTxit30COyvAH91HP3gbXHKWAuzIOKJQZKIxt2Q/aIiiYREKEmd0mH7TF70RXfSg/p@vger.kernel.org, AJvYcCXAqeruvUBPQW6zO5zFGjGTHJyvuCpeLKGLTM1/JQARAlXeCE6W3rr03nI1/QIahiBBsF4GQauJ040DX6U=@vger.kernel.org
+X-Gm-Message-State: AOJu0YygJprlPn+sSVla5BQ9mtS0bbD41V6+YFLzK1Sx+CrlrLFn4IiL
+	T5p2ulV8JTgMowL3Rm03KCHDseKtaRLZ2Xe1VGhRIqVIORdYsAiuaV6Ve9QZqstFRSv04eikXKo
+	laE3L+Az0JR7R6awIo11EBOTNiqLbGHs=
+X-Gm-Gg: ASbGncteGuWAh+4vxTMqfkkHRVJ7ohET36qVpckYa0+T6myN2VDCKPXRboPn8HYWG2Z
+	NdUhlZTDhOXKCkatj3EAPmJIOoiKpA/HmTzD9uLkYbysNGgGF6Wt0MZ/62ye0r7H8hoW3peTC1B
+	GpY6rjo801JyJo0Nbi9D5ZO5YGTTn7gG51hI6KRjWOiKKcBSMjg0FTXiIMc+nvJqzM8X9BKuuy4
+	CwHKty1cg==
+X-Google-Smtp-Source: AGHT+IF4WuKBgonA7wU0ychyL9+0BwzHp/2OyDxJKY+LcRtfGkh/0Hes5UCWFkbHCHBvEeIsWBm5YuUo9FxCtDtnwqo=
+X-Received: by 2002:a17:902:d54a:b0:246:eac1:50cf with SMTP id
+ d9443c01a7336-246eac1548cmr69886865ad.12.1756186733913; Mon, 25 Aug 2025
+ 22:38:53 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Subject: Re: [PATCH 1/1] hung_task: fix warnings by enforcing alignment on
- lock structures
-Content-Language: en-US
-To: "Masami Hiramatsu (Google)" <mhiramat@kernel.org>
-Cc: akpm@linux-foundation.org, fthain@linux-m68k.org, geert@linux-m68k.org,
- senozhatsky@chromium.org, amaindex@outlook.com, anna.schumaker@oracle.com,
- boqun.feng@gmail.com, ioworker0@gmail.com, joel.granados@kernel.org,
- jstultz@google.com, kent.overstreet@linux.dev, leonylgao@tencent.com,
- linux-kernel@vger.kernel.org, linux-m68k@lists.linux-m68k.org,
- longman@redhat.com, mingo@redhat.com, mingzhe.yang@ly.com,
- oak@helsinkinet.fi, peterz@infradead.org, rostedt@goodmis.org,
- tfiga@chromium.org, will@kernel.org, stable@vger.kernel.org
-References: <f79735e1-1625-4746-98ce-a3c40123c5af@linux.dev>
- <20250823074048.92498-1-lance.yang@linux.dev>
- <20250826140217.7f566d2b404ac5ece8b36fa3@kernel.org>
-X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
-From: Lance Yang <lance.yang@linux.dev>
-In-Reply-To: <20250826140217.7f566d2b404ac5ece8b36fa3@kernel.org>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-X-Migadu-Flow: FLOW_OUT
+References: <20250823182115.1193563-1-aha310510@gmail.com>
+In-Reply-To: <20250823182115.1193563-1-aha310510@gmail.com>
+From: Jeongjun Park <aha310510@gmail.com>
+Date: Tue, 26 Aug 2025 14:38:46 +0900
+X-Gm-Features: Ac12FXzfcd38LF-GMC-8K74D550K73mNo7BnkYALEHmVGNLD52tzBppBnZCL1DI
+Message-ID: <CAO9qdTF1OZRX0mbcG9hQy8m32RvrZaEBa0EWpDREBjfBSqrrYg@mail.gmail.com>
+Subject: Re: [PATCH v2] mm/hugetlb: add missing hugetlb_lock in __unmap_hugepage_range()
+To: muchun.song@linux.dev, osalvador@suse.de, david@redhat.com, 
+	akpm@linux-foundation.org
+Cc: leitao@debian.org, sidhartha.kumar@oracle.com, linux-mm@kvack.org, 
+	linux-kernel@vger.kernel.org, stable@vger.kernel.org, 
+	syzbot+417aeb05fd190f3a6da9@syzkaller.appspotmail.com
+Content-Type: text/plain; charset="UTF-8"
 
+Jeongjun Park <aha310510@gmail.com> wrote:
+>
+> When restoring a reservation for an anonymous page, we need to check to
+> freeing a surplus. However, __unmap_hugepage_range() causes data race
+> because it reads h->surplus_huge_pages without the protection of
+> hugetlb_lock.
+>
+> And adjust_reservation is a boolean variable that indicates whether
+> reservations for anonymous pages in each folio should be restored.
+> Therefore, it should be initialized to false for each round of the loop.
+> However, this variable is not initialized to false except when defining
+> the current adjust_reservation variable.
+>
+> This means that once adjust_reservation is set to true even once within
+> the loop, reservations for anonymous pages will be restored
+> unconditionally in all subsequent rounds, regardless of the folio's state.
+>
+> To fix this, we need to add the missing hugetlb_lock, unlock the
+> page_table_lock earlier so that we don't lock the hugetlb_lock inside the
+> page_table_lock lock, and initialize adjust_reservation to false on each
+> round within the loop.
+>
+> Cc: <stable@vger.kernel.org>
+> Reported-by: syzbot+417aeb05fd190f3a6da9@syzkaller.appspotmail.com
+> Closes: https://syzkaller.appspot.com/bug?extid=417aeb05fd190f3a6da9
+> Fixes: df7a6d1f6405 ("mm/hugetlb: restore the reservation if needed")
 
+Reviewed-by: Sidhartha Kumar <sidhartha.kumar@oracle.com>
 
-On 2025/8/26 13:02, Masami Hiramatsu (Google) wrote:
-> Hi Lence,
-> 
-> On Sat, 23 Aug 2025 15:40:48 +0800
-> Lance Yang <lance.yang@linux.dev> wrote:
-> 
->> From: Lance Yang <lance.yang@linux.dev>
->>
->> The blocker tracking mechanism assumes that lock pointers are at least
->> 4-byte aligned to use their lower bits for type encoding.
->>
->> However, as reported by Geert Uytterhoeven, some architectures like m68k
->> only guarantee 2-byte alignment of 32-bit values. This breaks the
->> assumption and causes two related WARN_ON_ONCE checks to trigger.
->>
->> To fix this, enforce a minimum of 4-byte alignment on the core lock
->> structures supported by the blocker tracking mechanism. This ensures the
->> algorithm's alignment assumption now holds true on all architectures.
->>
->> This patch adds __aligned(4) to the definitions of "struct mutex",
->> "struct semaphore", and "struct rw_semaphore", resolving the warnings.
-> 
-> Instead of putting the type flags in the blocker address (pointer),
-> can't we record the type information outside? It is hard to enforce
+Sorry, I forgot to add the reviewed-by tag.
 
-Yes. Of course. The current pointer-encoding is a tricky trade-off ...
-
-> the alignment to the locks, because it is embedded in the data
-> structure. Instead, it is better to record the type as blocker_type
-> in current task_struct.
-
-TODO +1. Separating the type into its own field in task_struct is the
-right long-term solution ;)
-
-Cheers,
-Lance
-
-> 
-> Thank you,
-> 
->>
->> Thanks to Geert for bisecting!
->>
->> Reported-by: Geert Uytterhoeven <geert@linux-m68k.org>
->> Closes: https://lore.kernel.org/lkml/CAMuHMdW7Ab13DdGs2acMQcix5ObJK0O2dG_Fxzr8_g58Rc1_0g@mail.gmail.com
->> Fixes: e711faaafbe5 ("hung_task: replace blocker_mutex with encoded blocker")
->> Cc: <stable@vger.kernel.org>
->> Signed-off-by: Lance Yang <lance.yang@linux.dev>
->> ---
->>   include/linux/mutex_types.h | 2 +-
->>   include/linux/rwsem.h       | 2 +-
->>   include/linux/semaphore.h   | 2 +-
->>   3 files changed, 3 insertions(+), 3 deletions(-)
->>
->> diff --git a/include/linux/mutex_types.h b/include/linux/mutex_types.h
->> index fdf7f515fde8..de798bfbc4c7 100644
->> --- a/include/linux/mutex_types.h
->> +++ b/include/linux/mutex_types.h
->> @@ -51,7 +51,7 @@ struct mutex {
->>   #ifdef CONFIG_DEBUG_LOCK_ALLOC
->>   	struct lockdep_map	dep_map;
->>   #endif
->> -};
->> +} __aligned(4); /* For hung_task blocker tracking, which encodes type in LSBs */
->>   
->>   #else /* !CONFIG_PREEMPT_RT */
->>   /*
->> diff --git a/include/linux/rwsem.h b/include/linux/rwsem.h
->> index f1aaf676a874..f6ecf4a4710d 100644
->> --- a/include/linux/rwsem.h
->> +++ b/include/linux/rwsem.h
->> @@ -64,7 +64,7 @@ struct rw_semaphore {
->>   #ifdef CONFIG_DEBUG_LOCK_ALLOC
->>   	struct lockdep_map	dep_map;
->>   #endif
->> -};
->> +} __aligned(4); /* For hung_task blocker tracking, which encodes type in LSBs */
->>   
->>   #define RWSEM_UNLOCKED_VALUE		0UL
->>   #define RWSEM_WRITER_LOCKED		(1UL << 0)
->> diff --git a/include/linux/semaphore.h b/include/linux/semaphore.h
->> index 89706157e622..ac9b9c87bfb7 100644
->> --- a/include/linux/semaphore.h
->> +++ b/include/linux/semaphore.h
->> @@ -20,7 +20,7 @@ struct semaphore {
->>   #ifdef CONFIG_DETECT_HUNG_TASK_BLOCKER
->>   	unsigned long		last_holder;
->>   #endif
->> -};
->> +} __aligned(4); /* For hung_task blocker tracking, which encodes type in LSBs */
->>   
->>   #ifdef CONFIG_DETECT_HUNG_TASK_BLOCKER
->>   #define __LAST_HOLDER_SEMAPHORE_INITIALIZER				\
->> -- 
->> 2.49.0
->>
-> 
-> 
-
+> Signed-off-by: Jeongjun Park <aha310510@gmail.com>
+> ---
+> v2: Fix issues with changing the page_table_lock unlock location and initializing adjust_reservation
+> - Link to v1: https://lore.kernel.org/all/20250822055857.1142454-1-aha310510@gmail.com/
+> ---
+>  mm/hugetlb.c | 9 ++++++---
+>  1 file changed, 6 insertions(+), 3 deletions(-)
+>
+> diff --git a/mm/hugetlb.c b/mm/hugetlb.c
+> index 753f99b4c718..eed59cfb5d21 100644
+> --- a/mm/hugetlb.c
+> +++ b/mm/hugetlb.c
+> @@ -5851,7 +5851,7 @@ void __unmap_hugepage_range(struct mmu_gather *tlb, struct vm_area_struct *vma,
+>         spinlock_t *ptl;
+>         struct hstate *h = hstate_vma(vma);
+>         unsigned long sz = huge_page_size(h);
+> -       bool adjust_reservation = false;
+> +       bool adjust_reservation;
+>         unsigned long last_addr_mask;
+>         bool force_flush = false;
+>
+> @@ -5944,6 +5944,7 @@ void __unmap_hugepage_range(struct mmu_gather *tlb, struct vm_area_struct *vma,
+>                                         sz);
+>                 hugetlb_count_sub(pages_per_huge_page(h), mm);
+>                 hugetlb_remove_rmap(folio);
+> +               spin_unlock(ptl);
+>
+>                 /*
+>                  * Restore the reservation for anonymous page, otherwise the
+> @@ -5951,14 +5952,16 @@ void __unmap_hugepage_range(struct mmu_gather *tlb, struct vm_area_struct *vma,
+>                  * If there we are freeing a surplus, do not set the restore
+>                  * reservation bit.
+>                  */
+> +               adjust_reservation = false;
+> +
+> +               spin_lock_irq(&hugetlb_lock);
+>                 if (!h->surplus_huge_pages && __vma_private_lock(vma) &&
+>                     folio_test_anon(folio)) {
+>                         folio_set_hugetlb_restore_reserve(folio);
+>                         /* Reservation to be adjusted after the spin lock */
+>                         adjust_reservation = true;
+>                 }
+> -
+> -               spin_unlock(ptl);
+> +               spin_unlock_irq(&hugetlb_lock);
+>
+>                 /*
+>                  * Adjust the reservation for the region that will have the
+> --
 
