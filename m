@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-174692-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-175861-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4CF41B3647E
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 15:39:14 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0597FB36A1D
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 16:34:17 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 0181B8A58D6
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 13:32:19 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id CBDF81C20C26
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 14:24:59 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5E4E03090CE;
-	Tue, 26 Aug 2025 13:31:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5228A35082E;
+	Tue, 26 Aug 2025 14:22:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="uJnAjWJW"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="EBSSPr3u"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 19C9626FDBF;
-	Tue, 26 Aug 2025 13:31:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0E13B2FF64C;
+	Tue, 26 Aug 2025 14:22:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756215064; cv=none; b=AOZAATTQJSaYh49RYGgldpyUILAzE/47LPJYoi9/0t33D5MoIKb4Z0vS7j2/0pFuupyk1tyFv1zx76zUSRFgzU/k83YlVA2UIYclxAgAFrwpUCSIKU1ihK3SlkbsEVGUUc0IGD6QLrJK4YreYXDi5GwlkrHHp0v94QEXGxzc+N4=
+	t=1756218162; cv=none; b=Vt5Lop9k5WduTcOIOnJJr4tV+0zsE9ZZ2/orfnZarrVUA8Vlc96xuC2pl5rwyfnlg+CHiQkNredP0Z6ZO7g6R2Rh0qHclwWwOxaJpRXPVww7IMK2eKM/b3dmwCOxbZakOYJnEHHy92PysQhyz7lVPongWMQDorycIFugvG20OjY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756215064; c=relaxed/simple;
-	bh=fL/YotxKjVovk4b4b4ce2fbxqJZgEEnxGxqL6IvdTb0=;
+	s=arc-20240116; t=1756218162; c=relaxed/simple;
+	bh=3L5LtoWEwaBIombD1AASC/fPMobhtaNphtJuTghT5Dk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=PVnbr7sWyPDkXkIiRWsEXOuz4OK+YkQJra4Jo1/FiO5UjEQzLgwSCZmFWLzg/+eWWOtf5/+5sc7BFKqmV13DoaADBLVcYAY3VPoqlOmzngF8dEZ+ZAtVk/NIDgbR12CG/yLjiWVAX0MDigXwC+d281J8oj8jBYOVy1vtAOQTDzI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=uJnAjWJW; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5CFD1C4CEF1;
-	Tue, 26 Aug 2025 13:31:03 +0000 (UTC)
+	 MIME-Version; b=O/DXvoe2+CtZdhNDCtyyzgNr6Ftnloh5ofL/iy0+mZ8vNfqBMXh/zp0j0B+HIeyuFkA7JY2660Y4ufvKTZikO8qKOOWuhsARyn1PqxUu6uoxG24jNNny5DNlewWUeDZDdx918EnFeB076Kd5bbtbsycdPfavxA7CsvY9HxJrLKk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=EBSSPr3u; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 93C5BC4CEF1;
+	Tue, 26 Aug 2025 14:22:41 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1756215063;
-	bh=fL/YotxKjVovk4b4b4ce2fbxqJZgEEnxGxqL6IvdTb0=;
+	s=korg; t=1756218161;
+	bh=3L5LtoWEwaBIombD1AASC/fPMobhtaNphtJuTghT5Dk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=uJnAjWJWwL4el0LRP0Ry4wJl7C6kcye7YMeGZQExBIacGB2XQe79F4XQ0Imh2Yapv
-	 4Rb+cPVVEajHOxzORPWNvYeGwRD7J98t8kHcFKtKUTUbbtjSjb+T03VUx4a1ql0aHC
-	 SXVNPGzC2rHys01UE0XAWytgx+iPBc8vgj0bQq8Q=
+	b=EBSSPr3u+Tjqnr4AlLsdGstkL7mW2kYLBDNG1It6eDbj++4fE9wfw6tOlLobK9O0O
+	 Bv7YY7+7XEiwkXjYGOCKjT2xrPaT49OvrawrAm04Ict/DGC+KFKAN+1u1lyiE9yR09
+	 d4giJuIup+8cbZHkfeBUz/dLuuOr0PpILx7iImsI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Benson Leung <bleung@chromium.org>,
-	Tzung-Bi Shih <tzungbi@kernel.org>,
+	Zhang Lixu <lixu.zhang@intel.com>,
+	Srinivas Pandruvada <srinivas.pandruvada@linux.intel.com>,
+	Jonathan Cameron <Jonathan.Cameron@huawei.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 373/482] platform/chrome: cros_ec: Unregister notifier in cros_ec_unregister()
-Date: Tue, 26 Aug 2025 13:10:26 +0200
-Message-ID: <20250826110940.047982546@linuxfoundation.org>
+Subject: [PATCH 5.10 417/523] iio: hid-sensor-prox: Fix incorrect OFFSET calculation
+Date: Tue, 26 Aug 2025 13:10:27 +0200
+Message-ID: <20250826110934.741272833@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250826110930.769259449@linuxfoundation.org>
-References: <20250826110930.769259449@linuxfoundation.org>
+In-Reply-To: <20250826110924.562212281@linuxfoundation.org>
+References: <20250826110924.562212281@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,42 +63,44 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Tzung-Bi Shih <tzungbi@kernel.org>
+From: Zhang Lixu <lixu.zhang@intel.com>
 
-[ Upstream commit e2374953461947eee49f69b3e3204ff080ef31b1 ]
+[ Upstream commit 79dabbd505210e41c88060806c92c052496dd61c ]
 
-The blocking notifier is registered in cros_ec_register(); however, it
-isn't unregistered in cros_ec_unregister().
+The OFFSET calculation in the prox_read_raw() was incorrectly using the
+unit exponent, which is intended for SCALE calculations.
 
-Fix it.
+Remove the incorrect OFFSET calculation and set it to a fixed value of 0.
 
-Fixes: 42cd0ab476e2 ("platform/chrome: cros_ec: Query EC protocol version if EC transitions between RO/RW")
 Cc: stable@vger.kernel.org
-Reviewed-by: Benson Leung <bleung@chromium.org>
-Link: https://lore.kernel.org/r/20250722120513.234031-1-tzungbi@kernel.org
-Signed-off-by: Tzung-Bi Shih <tzungbi@kernel.org>
+Fixes: 39a3a0138f61 ("iio: hid-sensors: Added Proximity Sensor Driver")
+Signed-off-by: Zhang Lixu <lixu.zhang@intel.com>
+Acked-by: Srinivas Pandruvada <srinivas.pandruvada@linux.intel.com>
+Link: https://patch.msgid.link/20250331055022.1149736-4-lixu.zhang@intel.com
+Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
+[ adapted prox_attr array access to single structure member access ]
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/platform/chrome/cros_ec.c |    3 +++
- 1 file changed, 3 insertions(+)
+ drivers/iio/light/hid-sensor-prox.c |    3 +--
+ 1 file changed, 1 insertion(+), 2 deletions(-)
 
---- a/drivers/platform/chrome/cros_ec.c
-+++ b/drivers/platform/chrome/cros_ec.c
-@@ -311,6 +311,9 @@ EXPORT_SYMBOL(cros_ec_register);
-  */
- void cros_ec_unregister(struct cros_ec_device *ec_dev)
- {
-+	if (ec_dev->mkbp_event_supported)
-+		blocking_notifier_chain_unregister(&ec_dev->event_notifier,
-+						   &ec_dev->notifier_ready);
- 	platform_device_unregister(ec_dev->pd);
- 	platform_device_unregister(ec_dev->ec);
- 	mutex_destroy(&ec_dev->lock);
+--- a/drivers/iio/light/hid-sensor-prox.c
++++ b/drivers/iio/light/hid-sensor-prox.c
+@@ -101,8 +101,7 @@ static int prox_read_raw(struct iio_dev
+ 		ret_type = prox_state->scale_precision;
+ 		break;
+ 	case IIO_CHAN_INFO_OFFSET:
+-		*val = hid_sensor_convert_exponent(
+-				prox_state->prox_attr.unit_expo);
++		*val = 0;
+ 		ret_type = IIO_VAL_INT;
+ 		break;
+ 	case IIO_CHAN_INFO_SAMP_FREQ:
 
 
 
