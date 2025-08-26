@@ -1,58 +1,57 @@
-Return-Path: <stable+bounces-175649-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-174449-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4130AB3695A
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 16:25:57 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 87CF8B36361
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 15:29:05 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 2BD0658441D
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 14:15:51 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 80ED18A305A
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 13:22:21 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 811E935209E;
-	Tue, 26 Aug 2025 14:13:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 19F8E34A320;
+	Tue, 26 Aug 2025 13:20:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="sOCQlFYt"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="svQSWqJZ"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3EDDE35083A;
-	Tue, 26 Aug 2025 14:13:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CAA2B2FC870;
+	Tue, 26 Aug 2025 13:20:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756217604; cv=none; b=N1dxt8DExQBYdvDLYqFNMTv15SMBRN5c7pBW1E6UmTQtgoWuiaxdS2icUtj3hILtx/Fha3coZI7Sb/oDMBhUQBzHbEHddypVpMKpsqGvj3dRdczNjdF0xocYGdYAUGtIL5wiJ1EsA4mvGIx7J1FDg6vSCSH/Q5hmF1/TMIJhvhE=
+	t=1756214421; cv=none; b=jV0+wsHDxmQ10YCaUYotnNeq7thia5seJkwSBVGTlYL8gSB4lH0wLdtBHyD3hzcshjeVxGPtmQFY1V5ow6bDNL4gd4uHLa9zrgqloHhvKfNIODDUV/A74s6ttEJW0OeEkw6F48E+y8S35/hwKCnSSDjK4zAheq0Exl+Cl/ojO+g=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756217604; c=relaxed/simple;
-	bh=Sg/W74+1ZrGEahTOgWtvWLW3EdCrqJShySsw5xYvnSk=;
+	s=arc-20240116; t=1756214421; c=relaxed/simple;
+	bh=htOjEuGLbMaDw4T2lm6MK5sj9ZCQTwtG27PU92v6bYY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=sJBL73zvBbWJyu2nZMjgwVqr27sSQWTfJj2pUDGsTmjeiTs2CtaFRC5Dc89FWdqg0YxqHhAn2Jh5kyXjXKkAH0w/gpk/UtVUZE1pGkYsVb0d//wc2jNNbrE0o8NQ5cGvh9fzqcgebkvpcoorZGDnPRWxOJ1xLrbAzN5UeuIkREQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=sOCQlFYt; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7C4D8C113CF;
-	Tue, 26 Aug 2025 14:13:23 +0000 (UTC)
+	 MIME-Version; b=Oa0CI6V368dLIxC9vPDFRk9Z/W3wrD7r9rldlmx7qyMW5RnscuUGceZXVDjShxpDPrkNhpaAAI/9SgHjAss64xLheW8/CkkxwSvWpD6iryd1nTpGDwRpq1VKXJTciMq/hthnkVZWFTQs2m+jKYHYUrdCK6ndUd6P8z3ujuzcXVc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=svQSWqJZ; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 53E51C113D0;
+	Tue, 26 Aug 2025 13:20:21 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1756217603;
-	bh=Sg/W74+1ZrGEahTOgWtvWLW3EdCrqJShySsw5xYvnSk=;
+	s=korg; t=1756214421;
+	bh=htOjEuGLbMaDw4T2lm6MK5sj9ZCQTwtG27PU92v6bYY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=sOCQlFYtVa9PCHWYDAXO79rNk1AfG8gdRTPWma/Vozq+xNN3Z0AP8N8RLRWaUfM9X
-	 LbZzmi+YYc+ILifhoGapIEyyxUd9e9Z64kySk2tMnYQHnKK0WzlF/AuKqPz6REkdUO
-	 sJ/9GsNa3cdpt6h6lhjlx+WZsDHw0hf83jnomjyI=
+	b=svQSWqJZckBDgP5ARoqOQmKEn6QTRf+b7E2OlCpM3Xqwqqkpm1Prr4Mbt3695SYNd
+	 KCDj85GCeV8ZBVRHvr/v7/0y7/LUsKKqoq/ZBrCG92T6/laP4fbgsobSW+oFhTeUb2
+	 7/LJeZYtHMWJbRbEtVJyr+6iiSVYHJQ8dou1QVA0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Paolo Abeni <pabeni@redhat.com>,
-	Jason Wang <jasowang@redhat.com>,
-	Xuan Zhuo <xuanzhuo@linux.alibaba.com>,
-	Jakub Kicinski <kuba@kernel.org>,
+	Chris Mason <clm@fb.com>,
+	"Peter Zijlstra (Intel)" <peterz@infradead.org>,
+	Vincent Guittot <vincent.guittot@linaro.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 174/523] netpoll: prevent hanging NAPI when netcons gets enabled
-Date: Tue, 26 Aug 2025 13:06:24 +0200
-Message-ID: <20250826110928.753531645@linuxfoundation.org>
+Subject: [PATCH 6.1 132/482] sched/fair: Bump sd->max_newidle_lb_cost when newidle balance fails
+Date: Tue, 26 Aug 2025 13:06:25 +0200
+Message-ID: <20250826110934.079809499@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250826110924.562212281@linuxfoundation.org>
-References: <20250826110924.562212281@linuxfoundation.org>
+In-Reply-To: <20250826110930.769259449@linuxfoundation.org>
+References: <20250826110930.769259449@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,97 +63,92 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jakub Kicinski <kuba@kernel.org>
+From: Chris Mason <clm@fb.com>
 
-[ Upstream commit 2da4def0f487f24bbb0cece3bb2bcdcb918a0b72 ]
+[ Upstream commit 155213a2aed42c85361bf4f5c817f5cb68951c3b ]
 
-Paolo spotted hangs in NIPA running driver tests against virtio.
-The tests hang in virtnet_close() -> virtnet_napi_tx_disable().
+schbench (https://github.com/masoncl/schbench.git) is showing a
+regression from previous production kernels that bisected down to:
 
-The problem is only reproducible if running multiple of our tests
-in sequence (I used TEST_PROGS="xdp.py ping.py netcons_basic.sh \
-netpoll_basic.py stats.py"). Initial suspicion was that this is
-a simple case of double-disable of NAPI, but instrumenting the
-code reveals:
+sched/fair: Remove sysctl_sched_migration_cost condition (c5b0a7eefc)
 
- Deadlocked on NAPI ffff888007cd82c0 (virtnet_poll_tx):
-   state: 0x37, disabled: false, owner: 0, listed: false, weight: 64
+The schbench command line was:
 
-The NAPI was not in fact disabled, owner is 0 (rather than -1),
-so the NAPI "thinks" it's scheduled for CPU 0 but it's not listed
-(!list_empty(&n->poll_list) => false). It seems odd that normal NAPI
-processing would wedge itself like this.
+schbench -L -m 4 -M auto -t 256 -n 0 -r 0 -s 0
 
-Better suspicion is that netpoll gets enabled while NAPI is polling,
-and also grabs the NAPI instance. This confuses napi_complete_done():
+This creates 4 message threads pinned to CPUs 0-3, and 256x4 worker
+threads spread across the rest of the CPUs.  Neither the worker threads
+or the message threads do any work, they just wake each other up and go
+back to sleep as soon as possible.
 
-  [netpoll]                                   [normal NAPI]
-                                        napi_poll()
-                                          have = netpoll_poll_lock()
-                                            rcu_access_pointer(dev->npinfo)
-                                              return NULL # no netpoll
-                                          __napi_poll()
-					    ->poll(->weight)
-  poll_napi()
-    cmpxchg(->poll_owner, -1, cpu)
-      poll_one_napi()
-        set_bit(NAPI_STATE_NPSVC, ->state)
-                                              napi_complete_done()
-                                                if (NAPIF_STATE_NPSVC)
-                                                  return false
-                                           # exit without clearing SCHED
+The end result is the first 4 CPUs are pegged waking up those 1024
+workers, and the rest of the CPUs are constantly banging in and out of
+idle.  If I take a v6.9 Linus kernel and revert that one commit,
+performance goes from 3.4M RPS to 5.4M RPS.
 
-This feels very unlikely, but perhaps virtio has some interactions
-with the hypervisor in the NAPI ->poll that makes the race window
-larger?
+schedstat shows there are ~100x  more new idle balance operations, and
+profiling shows the worker threads are spending ~20% of their CPU time
+on new idle balance.  schedstats also shows that almost all of these new
+idle balance attemps are failing to find busy groups.
 
-Best I could to to prove the theory was to add and trigger this
-warning in napi_poll (just before netpoll_poll_unlock()):
+The fix used here is to crank up the cost of the newidle balance whenever it
+fails.  Since we don't want sd->max_newidle_lb_cost to grow out of
+control, this also changes update_newidle_cost() to use
+sysctl_sched_migration_cost as the upper limit on max_newidle_lb_cost.
 
-      WARN_ONCE(!have && rcu_access_pointer(n->dev->npinfo) &&
-                napi_is_scheduled(n) && list_empty(&n->poll_list),
-                "NAPI race with netpoll %px", n);
-
-If this warning hits the next virtio_close() will hang.
-
-This patch survived 30 test iterations without a hang (without it
-the longest clean run was around 10). Credit for triggering this
-goes to Breno's recent netconsole tests.
-
-Fixes: 1da177e4c3f4 ("Linux-2.6.12-rc2")
-Reported-by: Paolo Abeni <pabeni@redhat.com>
-Link: https://lore.kernel.org/c5a93ed1-9abe-4880-a3bb-8d1678018b1d@redhat.com
-Acked-by: Jason Wang <jasowang@redhat.com>
-Reviewed-by: Xuan Zhuo <xuanzhuo@linux.alibaba.com>
-Link: https://patch.msgid.link/20250726010846.1105875-1-kuba@kernel.org
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Signed-off-by: Chris Mason <clm@fb.com>
+Signed-off-by: Peter Zijlstra (Intel) <peterz@infradead.org>
+Acked-by: Vincent Guittot <vincent.guittot@linaro.org>
+Link: https://lkml.kernel.org/r/20250626144017.1510594-2-clm@fb.com
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/core/netpoll.c | 7 +++++++
- 1 file changed, 7 insertions(+)
+ kernel/sched/fair.c | 19 ++++++++++++++++---
+ 1 file changed, 16 insertions(+), 3 deletions(-)
 
-diff --git a/net/core/netpoll.c b/net/core/netpoll.c
-index 66a6f6241239..db18154aa238 100644
---- a/net/core/netpoll.c
-+++ b/net/core/netpoll.c
-@@ -812,6 +812,13 @@ int netpoll_setup(struct netpoll *np)
- 		goto put;
+diff --git a/kernel/sched/fair.c b/kernel/sched/fair.c
+index d30e0936cfec..2deb896883d3 100644
+--- a/kernel/sched/fair.c
++++ b/kernel/sched/fair.c
+@@ -10941,8 +10941,14 @@ static inline bool update_newidle_cost(struct sched_domain *sd, u64 cost)
+ 		/*
+ 		 * Track max cost of a domain to make sure to not delay the
+ 		 * next wakeup on the CPU.
++		 *
++		 * sched_balance_newidle() bumps the cost whenever newidle
++		 * balance fails, and we don't want things to grow out of
++		 * control.  Use the sysctl_sched_migration_cost as the upper
++		 * limit, plus a litle extra to avoid off by ones.
+ 		 */
+-		sd->max_newidle_lb_cost = cost;
++		sd->max_newidle_lb_cost =
++			min(cost, sysctl_sched_migration_cost + 200);
+ 		sd->last_decay_max_lb_cost = jiffies;
+ 	} else if (time_after(jiffies, sd->last_decay_max_lb_cost + HZ)) {
+ 		/*
+@@ -11624,10 +11630,17 @@ static int newidle_balance(struct rq *this_rq, struct rq_flags *rf)
  
- 	rtnl_unlock();
+ 			t1 = sched_clock_cpu(this_cpu);
+ 			domain_cost = t1 - t0;
+-			update_newidle_cost(sd, domain_cost);
+-
+ 			curr_cost += domain_cost;
+ 			t0 = t1;
 +
-+	/* Make sure all NAPI polls which started before dev->npinfo
-+	 * was visible have exited before we start calling NAPI poll.
-+	 * NAPI skips locking if dev->npinfo is NULL.
-+	 */
-+	synchronize_rcu();
++			/*
++			 * Failing newidle means it is not effective;
++			 * bump the cost so we end up doing less of it.
++			 */
++			if (!pulled_task)
++				domain_cost = (3 * sd->max_newidle_lb_cost) / 2;
 +
- 	return 0;
++			update_newidle_cost(sd, domain_cost);
+ 		}
  
- put:
+ 		/*
 -- 
 2.39.5
 
