@@ -1,65 +1,56 @@
-Return-Path: <stable+bounces-173181-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-176164-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 35705B35C31
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 13:32:24 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9F0DFB36C4C
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 16:54:37 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 9ACDC16CAFA
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 11:26:28 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id BBCE31C823BD
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 14:38:49 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2F45D2F9982;
-	Tue, 26 Aug 2025 11:26:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B6371352FD7;
+	Tue, 26 Aug 2025 14:35:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="T6r0NbPi"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="rlTPDxNz"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DDD552BEC34;
-	Tue, 26 Aug 2025 11:26:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6A4AC34DCCB;
+	Tue, 26 Aug 2025 14:35:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756207582; cv=none; b=gj3XN9S8uNQon2hsKaI6O4gaOaea4Ijc8oUealFoYh2gSmvLzok9Yk7BbTjjpzy2+5QvOtTsKTftrk0lFjU0hILOif/klSKKvTReoYjenhgz3I4AoTyv0f4Gm/fwMfJYTyBl3k7n/cBKN8lcUnZn/B35ON4Ftv7vaI+QKkcayJo=
+	t=1756218946; cv=none; b=dgw9Jk+FXIxiI+ET0uDNZOjvMMhQKwALypTB08D7CpO/C/ifqfWoGwTlhKgkhNmYljKvVaA4RkKfEnXbq2AFy9J4XcsH6gAba4CA8l7RQpHVNAeLpqaNCiH5U/Zd+iN59q/zPBuOzkoDNGoPDm/SYAM8swRVBVY5PZKf2cPLBq4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756207582; c=relaxed/simple;
-	bh=p6Vl2qw9JchiluDQWoO66G+jgQWucUJmEQHBVEv/2TQ=;
+	s=arc-20240116; t=1756218946; c=relaxed/simple;
+	bh=zyJUoGb84GuPRm9w6GKNQ3jJtFxW00DAzs4Pl5DFR7Y=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=aAofNhZkRCQaIf1NTwKOznmcBomKd4pvfU9rdKjVOE+A97/4fQEn5wngCPv7s1t+KopdsnKCSWBjbna1RYRmvVHlRk7r11MrdLUFa4xAUJSrk4U8f+c6PV+xVc2IlvxTC1ljn4Sra9qCqFnFWhzE4vemo2ybxWaidDZJTe/Tfew=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=T6r0NbPi; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4B8C7C4CEF1;
-	Tue, 26 Aug 2025 11:26:21 +0000 (UTC)
+	 MIME-Version; b=D/bjrpQt25xDqnfd5PzoxTXlU91k7HTL7QgN/vhWAVih6UR5TQ++TE1YiRLVLUpeRP6U3Pm/1WgSyVixoiyMkda7fVtDqXA+fI9V3cZy/MAsaRcmFgU9z2TLAMaveexcIzxRGHu5Ydo6lz6XVq39Va7Qf7fFC8e6yRFituAL/WU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=rlTPDxNz; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id F3C96C113CF;
+	Tue, 26 Aug 2025 14:35:45 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1756207581;
-	bh=p6Vl2qw9JchiluDQWoO66G+jgQWucUJmEQHBVEv/2TQ=;
+	s=korg; t=1756218946;
+	bh=zyJUoGb84GuPRm9w6GKNQ3jJtFxW00DAzs4Pl5DFR7Y=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=T6r0NbPiz/qVAsxlvRr0YT4rzxbSQDlvOyHa5Rgns+U3EtZf8jw7kkMT2YqjZA63t
-	 lUmg/CbKcFD+feavFlVlepFPG+b830Et78soxtFIxaJgfkuPQbDj6OO0WOodUGrNBg
-	 qoiIJZztuPsQ+u0OkZIxi920tpSbS9EubFDqfehc=
+	b=rlTPDxNzIkPUgNt/QsEXWDrXaARXTcQUc2hab45rP9tbVOYfF77RNHDQMoSzUWpQp
+	 gq311EFVMXrS0ZoRz97H6tBLCcbg36wdiAUVJ9AQIzOl78V9yhZAr5sVfij7j+5Z9r
+	 QkO0cwx1hIeEGO9qEoM1WS3h7YNomuG0DlJL7Gqo=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Pasha Tatashin <pasha.tatashin@soleen.com>,
-	"Mike Rapoport (Microsoft)" <rppt@kernel.org>,
-	Alexander Graf <graf@amazon.com>,
-	Arnd Bergmann <arnd@arndb.de>,
-	Baoquan He <bhe@redhat.com>,
-	Changyuan Lyu <changyuanl@google.com>,
-	Coiby Xu <coxu@redhat.com>,
-	Dave Vasilevsky <dave@vasilevsky.ca>,
-	Eric Biggers <ebiggers@google.com>,
-	Kees Cook <kees@kernel.org>,
-	Pratyush Yadav <pratyush@kernel.org>,
-	Andrew Morton <akpm@linux-foundation.org>
-Subject: [PATCH 6.16 237/457] kho: init new_physxa->phys_bits to fix lockdep
+	Sebastian Ott <sebott@redhat.com>,
+	"Rafael J. Wysocki" <rafael.j.wysocki@intel.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.4 195/403] ACPI: processor: fix acpi_object initialization
 Date: Tue, 26 Aug 2025 13:08:41 +0200
-Message-ID: <20250826110943.231792760@linuxfoundation.org>
+Message-ID: <20250826110912.257478643@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250826110937.289866482@linuxfoundation.org>
-References: <20250826110937.289866482@linuxfoundation.org>
+In-Reply-To: <20250826110905.607690791@linuxfoundation.org>
+References: <20250826110905.607690791@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -71,116 +62,45 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.16-stable review patch.  If anyone has any objections, please let me know.
+5.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Pasha Tatashin <pasha.tatashin@soleen.com>
+From: Sebastian Ott <sebott@redhat.com>
 
-commit 63b17b653df30e90f95338083cb44c35d64bcae4 upstream.
+[ Upstream commit 13edf7539211d8f7d0068ce3ed143005f1da3547 ]
 
-Patch series "Several KHO Hotfixes".
+Initialization of the local acpi_object in acpi_processor_get_info()
+only sets the first 4 bytes to zero and is thus incomplete. This is
+indicated by messages like:
+	acpi ACPI0007:be: Invalid PBLK length [166288104]
 
-Three unrelated fixes for Kexec Handover.
+Fix this by initializing all 16 bytes of the processor member of that
+union.
 
-
-This patch (of 3):
-
-Lockdep shows the following warning:
-
-INFO: trying to register non-static key.  The code is fine but needs
-lockdep annotation, or maybe you didn't initialize this object before use?
-turning off the locking correctness validator.
-
-[<ffffffff810133a6>] dump_stack_lvl+0x66/0xa0
-[<ffffffff8136012c>] assign_lock_key+0x10c/0x120
-[<ffffffff81358bb4>] register_lock_class+0xf4/0x2f0
-[<ffffffff813597ff>] __lock_acquire+0x7f/0x2c40
-[<ffffffff81360cb0>] ? __pfx_hlock_conflict+0x10/0x10
-[<ffffffff811707be>] ? native_flush_tlb_global+0x8e/0xa0
-[<ffffffff8117096e>] ? __flush_tlb_all+0x4e/0xa0
-[<ffffffff81172fc2>] ? __kernel_map_pages+0x112/0x140
-[<ffffffff813ec327>] ? xa_load_or_alloc+0x67/0xe0
-[<ffffffff81359556>] lock_acquire+0xe6/0x280
-[<ffffffff813ec327>] ? xa_load_or_alloc+0x67/0xe0
-[<ffffffff8100b9e0>] _raw_spin_lock+0x30/0x40
-[<ffffffff813ec327>] ? xa_load_or_alloc+0x67/0xe0
-[<ffffffff813ec327>] xa_load_or_alloc+0x67/0xe0
-[<ffffffff813eb4c0>] kho_preserve_folio+0x90/0x100
-[<ffffffff813ebb7f>] __kho_finalize+0xcf/0x400
-[<ffffffff813ebef4>] kho_finalize+0x34/0x70
-
-This is becase xa has its own lock, that is not initialized in
-xa_load_or_alloc.
-
-Modifiy __kho_preserve_order(), to properly call
-xa_init(&new_physxa->phys_bits);
-
-Link: https://lkml.kernel.org/r/20250808201804.772010-2-pasha.tatashin@soleen.com
-Fixes: fc33e4b44b27 ("kexec: enable KHO support for memory preservation")
-Signed-off-by: Pasha Tatashin <pasha.tatashin@soleen.com>
-Acked-by: Mike Rapoport (Microsoft) <rppt@kernel.org>
-Cc: Alexander Graf <graf@amazon.com>
-Cc: Arnd Bergmann <arnd@arndb.de>
-Cc: Baoquan He <bhe@redhat.com>
-Cc: Changyuan Lyu <changyuanl@google.com>
-Cc: Coiby Xu <coxu@redhat.com>
-Cc: Dave Vasilevsky <dave@vasilevsky.ca>
-Cc: Eric Biggers <ebiggers@google.com>
-Cc: Kees Cook <kees@kernel.org>
-Cc: Pratyush Yadav <pratyush@kernel.org>
-Cc: <stable@vger.kernel.org>
-Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Signed-off-by: Sebastian Ott <sebott@redhat.com>
+Link: https://patch.msgid.link/20250703124215.12522-1-sebott@redhat.com
+Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- kernel/kexec_handover.c | 28 ++++++++++++++++++++++++----
- 1 file changed, 24 insertions(+), 4 deletions(-)
+ drivers/acpi/acpi_processor.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/kernel/kexec_handover.c b/kernel/kexec_handover.c
-index e49743ae52c5..65145972d6d6 100644
---- a/kernel/kexec_handover.c
-+++ b/kernel/kexec_handover.c
-@@ -144,14 +144,34 @@ static int __kho_preserve_order(struct kho_mem_track *track, unsigned long pfn,
- 				unsigned int order)
+diff --git a/drivers/acpi/acpi_processor.c b/drivers/acpi/acpi_processor.c
+index c8338d627857..9cbf0593da05 100644
+--- a/drivers/acpi/acpi_processor.c
++++ b/drivers/acpi/acpi_processor.c
+@@ -228,7 +228,7 @@ static inline int acpi_processor_hotadd_init(struct acpi_processor *pr)
+ 
+ static int acpi_processor_get_info(struct acpi_device *device)
  {
- 	struct kho_mem_phys_bits *bits;
--	struct kho_mem_phys *physxa;
-+	struct kho_mem_phys *physxa, *new_physxa;
- 	const unsigned long pfn_high = pfn >> order;
- 
- 	might_sleep();
- 
--	physxa = xa_load_or_alloc(&track->orders, order, sizeof(*physxa));
--	if (IS_ERR(physxa))
--		return PTR_ERR(physxa);
-+	physxa = xa_load(&track->orders, order);
-+	if (!physxa) {
-+		int err;
-+
-+		new_physxa = kzalloc(sizeof(*physxa), GFP_KERNEL);
-+		if (!new_physxa)
-+			return -ENOMEM;
-+
-+		xa_init(&new_physxa->phys_bits);
-+		physxa = xa_cmpxchg(&track->orders, order, NULL, new_physxa,
-+				    GFP_KERNEL);
-+
-+		err = xa_err(physxa);
-+		if (err || physxa) {
-+			xa_destroy(&new_physxa->phys_bits);
-+			kfree(new_physxa);
-+
-+			if (err)
-+				return err;
-+		} else {
-+			physxa = new_physxa;
-+		}
-+	}
- 
- 	bits = xa_load_or_alloc(&physxa->phys_bits, pfn_high / PRESERVE_BITS,
- 				sizeof(*bits));
+-	union acpi_object object = { 0 };
++	union acpi_object object = { .processor = { 0 } };
+ 	struct acpi_buffer buffer = { sizeof(union acpi_object), &object };
+ 	struct acpi_processor *pr = acpi_driver_data(device);
+ 	int device_declaration = 0;
 -- 
-2.50.1
+2.39.5
 
 
 
