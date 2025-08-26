@@ -1,56 +1,58 @@
-Return-Path: <stable+bounces-175213-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-175736-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 763FFB36667
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 15:56:46 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 544ACB36983
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 16:27:55 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 5DC83B60BE2
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 13:54:14 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id B52401BC6DC0
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 14:19:48 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 17FFE350D46;
-	Tue, 26 Aug 2025 13:54:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 645C6352FD3;
+	Tue, 26 Aug 2025 14:17:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="CgrHdUAu"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="0mPpC7KN"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CABBB34A32E;
-	Tue, 26 Aug 2025 13:53:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2216830AAD8;
+	Tue, 26 Aug 2025 14:17:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756216439; cv=none; b=fxHrsihJXIieDNYlqArj2qD4uSgaA2+TZL72sENYRY+cGQNlruNu9Fn7NEGlgPA2ynP9kcPk1ZaRKacbYJA8DCWbtgVo/H7933El8WfnpWc1+Q1OSfVlA9MUoC+csz+M5sOQGy7ChdTYdeRp8dbh6h8qUqsz5rosm5yRA8CGe0Y=
+	t=1756217837; cv=none; b=f4qio5BggfQi6JQOAoPaQkAWyWT1W4l+cD9a3s2PTR25Hib+FOEdHOZcHZrHr7boaF3KQkHiZQh2LtIsKuO4uycTwJH4u7pporSeu+kvnoKvuuEDsVVzf4EMe+kIjJqttzZLHT5Bkv1KUBNIR4ntXXq0Wl7wZerw9F/sznaXo1s=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756216439; c=relaxed/simple;
-	bh=Kg+uFIP3JL74zLaZVy61VCAvBKqKzUPNuxFbqXjPa+8=;
+	s=arc-20240116; t=1756217837; c=relaxed/simple;
+	bh=NdN/qUTtzbG2CVtNoUPeMdITj7L2p25v/uB37hA9VvE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=jlpcOQKf58etOmwsv2B/S9cq2A9hWs/TnJbvzupzLyxS31i3l6ZYLHBnaI4DNOkrH4frru4FsNen9IpxpuVVPTbwE9xCt9QrbcJPbOS1dHKpv03czWpweIPeWtk92DCqnLHbLXTQ35c0i4JFNUfM3M7oWZnKobSwR8PCARdlYyI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=CgrHdUAu; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5F8A5C113CF;
-	Tue, 26 Aug 2025 13:53:59 +0000 (UTC)
+	 MIME-Version; b=TrsaXCIU3Y4zz06QyXw7IB/5NjR+X6TDR4EFL6HKlgaR+E5o1A/TnHn1RHhv8iOkD7pa0EIaoBun7IbMINw/YRxIgCS+lWBioCwiOZw1kW8d6JsjtTcslNvgKKoHgKGsTyAqW1f7Ndnn6SvJ8sLUnH3IgBFzZ8DAGFpHETweCWg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=0mPpC7KN; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A3F50C113CF;
+	Tue, 26 Aug 2025 14:17:16 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1756216439;
-	bh=Kg+uFIP3JL74zLaZVy61VCAvBKqKzUPNuxFbqXjPa+8=;
+	s=korg; t=1756217837;
+	bh=NdN/qUTtzbG2CVtNoUPeMdITj7L2p25v/uB37hA9VvE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=CgrHdUAutooMluiUwgWbWmEhcNC23D8x690e5+6TT1pND8vc8NTGRUKfAih2v60V6
-	 /QiSR5sfl5iUbIhMGPzrlsYastCgwJ0T3uxytdpiEXMPRm+UbM4SA6fWsFa7g/V65S
-	 NaIQ+JCjfWXdVX1BL8tf4iZAUOVX4THULaKE27R8=
+	b=0mPpC7KNiUCwwMKP/dB4YFqxp6coqRMqg2m6Yz3n0HeH8umnjbb79DMifkvBiHQhA
+	 TEsHIm9khB1YSuxub5XEQOJ/w337d2NpulyTO46bn6Te9bScF5+kXNlWvPq+yVoF7n
+	 841j5ZfmXOnZVxPLWMam3jlOM5b7TLJdttIysa94=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Purva Yeshi <purvayeshi550@gmail.com>,
-	Mikulas Patocka <mpatocka@redhat.com>,
+	Showrya M N <showrya@chelsio.com>,
+	Potnuri Bharat Teja <bharat@chelsio.com>,
+	Chris Leech <cleech@redhat.com>,
+	"Martin K. Petersen" <martin.petersen@oracle.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 412/644] md: dm-zoned-target: Initialize return variable r to avoid uninitialized use
+Subject: [PATCH 5.10 293/523] scsi: libiscsi: Initialize iscsi_conn->dd_data only if memory is allocated
 Date: Tue, 26 Aug 2025 13:08:23 +0200
-Message-ID: <20250826110956.666495675@linuxfoundation.org>
+Message-ID: <20250826110931.674662164@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250826110946.507083938@linuxfoundation.org>
-References: <20250826110946.507083938@linuxfoundation.org>
+In-Reply-To: <20250826110924.562212281@linuxfoundation.org>
+References: <20250826110924.562212281@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,46 +64,64 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Purva Yeshi <purvayeshi550@gmail.com>
+From: Showrya M N <showrya@chelsio.com>
 
-[ Upstream commit 487767bff572d46f7c37ad846c4078f6d6c9cc55 ]
+[ Upstream commit 3ea3a256ed81f95ab0f3281a0e234b01a9cae605 ]
 
-Fix Smatch-detected error:
-drivers/md/dm-zoned-target.c:1073 dmz_iterate_devices()
-error: uninitialized symbol 'r'.
+In case of an ib_fast_reg_mr allocation failure during iSER setup, the
+machine hits a panic because iscsi_conn->dd_data is initialized
+unconditionally, even when no memory is allocated (dd_size == 0).  This
+leads invalid pointer dereference during connection teardown.
 
-Smatch detects a possible use of the uninitialized variable 'r' in
-dmz_iterate_devices() because if dmz->nr_ddevs is zero, the loop is
-skipped and 'r' is returned without being set, leading to undefined
-behavior.
+Fix by setting iscsi_conn->dd_data only if memory is actually allocated.
 
-Initialize 'r' to 0 before the loop. This ensures that if there are no
-devices to iterate over, the function still returns a defined value.
+Panic trace:
+------------
+ iser: iser_create_fastreg_desc: Failed to allocate ib_fast_reg_mr err=-12
+ iser: iser_alloc_rx_descriptors: failed allocating rx descriptors / data buffers
+ BUG: unable to handle page fault for address: fffffffffffffff8
+ RIP: 0010:swake_up_locked.part.5+0xa/0x40
+ Call Trace:
+  complete+0x31/0x40
+  iscsi_iser_conn_stop+0x88/0xb0 [ib_iser]
+  iscsi_stop_conn+0x66/0xc0 [scsi_transport_iscsi]
+  iscsi_if_stop_conn+0x14a/0x150 [scsi_transport_iscsi]
+  iscsi_if_rx+0x1135/0x1834 [scsi_transport_iscsi]
+  ? netlink_lookup+0x12f/0x1b0
+  ? netlink_deliver_tap+0x2c/0x200
+  netlink_unicast+0x1ab/0x280
+  netlink_sendmsg+0x257/0x4f0
+  ? _copy_from_user+0x29/0x60
+  sock_sendmsg+0x5f/0x70
 
-Signed-off-by: Purva Yeshi <purvayeshi550@gmail.com>
-Signed-off-by: Mikulas Patocka <mpatocka@redhat.com>
+Signed-off-by: Showrya M N <showrya@chelsio.com>
+Signed-off-by: Potnuri Bharat Teja <bharat@chelsio.com>
+Link: https://lore.kernel.org/r/20250627112329.19763-1-showrya@chelsio.com
+Reviewed-by: Chris Leech <cleech@redhat.com>
+Signed-off-by: Martin K. Petersen <martin.petersen@oracle.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/md/dm-zoned-target.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/scsi/libiscsi.c | 3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/md/dm-zoned-target.c b/drivers/md/dm-zoned-target.c
-index 48b56d6434f7..98c3c8be3bcc 100644
---- a/drivers/md/dm-zoned-target.c
-+++ b/drivers/md/dm-zoned-target.c
-@@ -1066,7 +1066,7 @@ static int dmz_iterate_devices(struct dm_target *ti,
- 	struct dmz_target *dmz = ti->private;
- 	unsigned int zone_nr_sectors = dmz_zone_nr_sectors(dmz->metadata);
- 	sector_t capacity;
--	int i, r;
-+	int i, r = 0;
+diff --git a/drivers/scsi/libiscsi.c b/drivers/scsi/libiscsi.c
+index 05799b41974d..bad5730bf7ab 100644
+--- a/drivers/scsi/libiscsi.c
++++ b/drivers/scsi/libiscsi.c
+@@ -2949,7 +2949,8 @@ iscsi_conn_setup(struct iscsi_cls_session *cls_session, int dd_size,
+ 	conn = cls_conn->dd_data;
+ 	memset(conn, 0, sizeof(*conn) + dd_size);
  
- 	for (i = 0; i < dmz->nr_ddevs; i++) {
- 		capacity = dmz->dev[i].capacity & ~(zone_nr_sectors - 1);
+-	conn->dd_data = cls_conn->dd_data + sizeof(*conn);
++	if (dd_size)
++		conn->dd_data = cls_conn->dd_data + sizeof(*conn);
+ 	conn->session = session;
+ 	conn->cls_conn = cls_conn;
+ 	conn->c_stage = ISCSI_CONN_INITIAL_STAGE;
 -- 
 2.39.5
 
