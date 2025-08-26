@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-173934-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-174417-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id A5B3AB3607B
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 15:01:10 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 98DECB3632F
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 15:27:41 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 4204E1BA5A2E
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 12:58:11 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 0E73B2A7AE8
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 13:21:05 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6E71F1F12F4;
-	Tue, 26 Aug 2025 12:57:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B88FB341ABD;
+	Tue, 26 Aug 2025 13:18:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="kAv+ZLqp"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Eaj6EGke"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2CF281B0420;
-	Tue, 26 Aug 2025 12:57:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 74D9D22DF99;
+	Tue, 26 Aug 2025 13:18:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756213051; cv=none; b=S/kY5sY2D8DvT/ufMxhPaN3REdFT4KB7GOmuY72bywpBG7IQIEwLC6eVyVYudcyqMSLOUe1y65JQ5h4MijyReenr+Uvfsv6PMtrpS1Qgurze8yzxi/DXIRd+vjjpVHkyrEspc0ofd2ZwKUeM2m+55yaRDBEJA2zDyWF5u4LUj1w=
+	t=1756214334; cv=none; b=VFcVClAfGpYdpZKXBkGcRQpNlI1gRFH+51aS22vNhTyfL5eBBjFMmdjZxqr1TDZA5CHdQeE87ljcz+7EU7IQJxt1yDs7k6mu3WEO2DUPHMExT5YFKC6pzvF/hno3vakJ/Mkh/Ls3sWOp07/CNOD49rXWhAl1Zami7KoVc3r7pX8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756213051; c=relaxed/simple;
-	bh=Hu4hS/9B+gFUbEdBF3gQzW6VT0KLGjeTqSJ8qjMKcH4=;
+	s=arc-20240116; t=1756214334; c=relaxed/simple;
+	bh=6NQHH2yU+c3di1Nsz7mTR1pv+94G/g6NtGAkulLpGv8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=hPu8YxEtgC2G9H2tpbsAZW1ADDJDMI138PYfP0naz9kAFG0Bjp87AsFsx+lo/ZIfA74igRXzmS8yA37k/yNQwALbWPhc/ZJRFi8nQ2jx2aIFYpCwhTyjAFmBWKQLvijIeOjNme4D2DMJJnaJnr3KRzPYzdks9E4U2qR6r8ovkY4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=kAv+ZLqp; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B48EFC4CEF1;
-	Tue, 26 Aug 2025 12:57:30 +0000 (UTC)
+	 MIME-Version; b=JwN0pLxtV7A1K86vOc+rPb/k5MrvT0hD6/pvYMrrbgnol6Qb8hGRkZhxf3F4fmZww/rkfdf7C3ygyf04QrWtOvch/NuuIZUs6YbHl2giIT5l2Xacz0GXfUjom9Kaznxp+br7mufKgPnIVjVphXVMu9YxNkv63a6r+R7aN8KTpIs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Eaj6EGke; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id BA54EC4CEF1;
+	Tue, 26 Aug 2025 13:18:53 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1756213051;
-	bh=Hu4hS/9B+gFUbEdBF3gQzW6VT0KLGjeTqSJ8qjMKcH4=;
+	s=korg; t=1756214334;
+	bh=6NQHH2yU+c3di1Nsz7mTR1pv+94G/g6NtGAkulLpGv8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=kAv+ZLqpfu1hQlee2GdMqNuMyLuoelEgzURbejLacgUp6AGKSR9KVcthOPPmMMa9q
-	 t1gmHnYJ1NeRSL/tKskwwo+a5GnG34oEp9Er2yw+IvssgYQkzueeBSJX4tuf+AbFnN
-	 lPU/Etl0xAmjMGSaCGl/GAi2WYTq4lEsFOlRa3Ok=
+	b=Eaj6EGkeFR+ucbuVCxOiEScJLzfYhTCAq0x9WhPyT6BXF/Pz51+Zcl0+7NM3fqVj5
+	 y9A/ug3CkD+L6RCBeHHNag3EMKXyZqKgmc7BNnHRe/FeowjjXsuaEdox66zos2DqqT
+	 7nrXFtq26Zg7TfDYjKcBKVDRqeyTPgtgRtVE7o+4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Thomas Fourier <fourier.thomas@gmail.com>,
-	Ping-Ke Shih <pkshih@realtek.com>,
+	Borislav Petkov <bp@alien8.de>,
+	Pawan Gupta <pawan.kumar.gupta@linux.intel.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 203/587] wifi: rtlwifi: fix possible skb memory leak in _rtl_pci_init_one_rxdesc()
+Subject: [PATCH 6.1 099/482] x86/bugs: Avoid warning when overriding return thunk
 Date: Tue, 26 Aug 2025 13:05:52 +0200
-Message-ID: <20250826110958.103391229@linuxfoundation.org>
+Message-ID: <20250826110933.273139685@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250826110952.942403671@linuxfoundation.org>
-References: <20250826110952.942403671@linuxfoundation.org>
+In-Reply-To: <20250826110930.769259449@linuxfoundation.org>
+References: <20250826110930.769259449@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,44 +62,48 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Thomas Fourier <fourier.thomas@gmail.com>
+From: Pawan Gupta <pawan.kumar.gupta@linux.intel.com>
 
-[ Upstream commit 76b3e5078d76f0eeadb7aacf9845399f8473da0d ]
+[ Upstream commit 9f85fdb9fc5a1bd308a10a0a7d7e34f2712ba58b ]
 
-When `dma_mapping_error()` is true, if a new `skb` has been allocated,
-then it must be de-allocated.
+The purpose of the warning is to prevent an unexpected change to the return
+thunk mitigation. However, there are legitimate cases where the return
+thunk is intentionally set more than once. For example, ITS and SRSO both
+can set the return thunk after retbleed has set it. In both the cases
+retbleed is still mitigated.
 
-Compile tested only
+Replace the warning with an info about the active return thunk.
 
-Signed-off-by: Thomas Fourier <fourier.thomas@gmail.com>
-Signed-off-by: Ping-Ke Shih <pkshih@realtek.com>
-Link: https://patch.msgid.link/20250613074014.69856-2-fourier.thomas@gmail.com
+Suggested-by: Borislav Petkov <bp@alien8.de>
+Signed-off-by: Pawan Gupta <pawan.kumar.gupta@linux.intel.com>
+Signed-off-by: Borislav Petkov (AMD) <bp@alien8.de>
+Link: https://lore.kernel.org/20250611-eibrs-fix-v4-3-5ff86cac6c61@linux.intel.com
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/wireless/realtek/rtlwifi/pci.c | 5 ++++-
- 1 file changed, 4 insertions(+), 1 deletion(-)
+ arch/x86/kernel/cpu/bugs.c | 5 ++---
+ 1 file changed, 2 insertions(+), 3 deletions(-)
 
-diff --git a/drivers/net/wireless/realtek/rtlwifi/pci.c b/drivers/net/wireless/realtek/rtlwifi/pci.c
-index 6264ef7805d6..40112b2c3777 100644
---- a/drivers/net/wireless/realtek/rtlwifi/pci.c
-+++ b/drivers/net/wireless/realtek/rtlwifi/pci.c
-@@ -573,8 +573,11 @@ static int _rtl_pci_init_one_rxdesc(struct ieee80211_hw *hw,
- 		dma_map_single(&rtlpci->pdev->dev, skb_tail_pointer(skb),
- 			       rtlpci->rxbuffersize, DMA_FROM_DEVICE);
- 	bufferaddress = *((dma_addr_t *)skb->cb);
--	if (dma_mapping_error(&rtlpci->pdev->dev, bufferaddress))
-+	if (dma_mapping_error(&rtlpci->pdev->dev, bufferaddress)) {
-+		if (!new_skb)
-+			kfree_skb(skb);
- 		return 0;
-+	}
- 	rtlpci->rx_ring[rxring_idx].rx_buf[desc_idx] = skb;
- 	if (rtlpriv->use_new_trx_flow) {
- 		/* skb->cb may be 64 bit address */
+diff --git a/arch/x86/kernel/cpu/bugs.c b/arch/x86/kernel/cpu/bugs.c
+index dba5262e1509..4fbb5b15ab75 100644
+--- a/arch/x86/kernel/cpu/bugs.c
++++ b/arch/x86/kernel/cpu/bugs.c
+@@ -70,10 +70,9 @@ void (*x86_return_thunk)(void) __ro_after_init = &__x86_return_thunk;
+ 
+ static void __init set_return_thunk(void *thunk)
+ {
+-	if (x86_return_thunk != __x86_return_thunk)
+-		pr_warn("x86/bugs: return thunk changed\n");
+-
+ 	x86_return_thunk = thunk;
++
++	pr_info("active return thunk: %ps\n", thunk);
+ }
+ 
+ /* Update SPEC_CTRL MSR and its cached copy unconditionally */
 -- 
 2.39.5
 
