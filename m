@@ -1,55 +1,57 @@
-Return-Path: <stable+bounces-173226-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-176179-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 25B1EB35BFE
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 13:30:14 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id DBAD4B36CFD
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 17:04:34 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 228593B0202
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 11:30:06 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id B4BD63BD794
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 14:39:18 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A489A343D6C;
-	Tue, 26 Aug 2025 11:28:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 78C30353346;
+	Tue, 26 Aug 2025 14:36:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="aqzmZi2Y"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="QSHO8569"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 60C7934320F;
-	Tue, 26 Aug 2025 11:28:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 372C7352077;
+	Tue, 26 Aug 2025 14:36:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756207697; cv=none; b=rXwRU0BWrPiBbpXeC6BA8tBeDGzHI9/RZAV32b/K/iS9BMGhcP6cNZ2SHJ5wgIxuwd3AFhSKN0aDLJjXUwkSOKAntjubbw99yO+tJOle/ilPrZOmAZ0G698iapLWf0BESibuTd40uyQeBJhhfNvATUJN+SoT89tKQA9FwOEsS+k=
+	t=1756218988; cv=none; b=aZr/3rdvM3Oh9GZLtWDNUeZTk6Z5Eq6j+eAvD32dDkzUWoPTTzbRFzMDrc4qekgq4nBEEI6Q/XhuEDZPeD6Fg89H1kZpU8pL3uF/QiqglhVkzJ7+YsHugRg2eIn15opeN7J2VDPTTimHEKpHUt86lApgg8itEw8AMraNM+ZnHzU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756207697; c=relaxed/simple;
-	bh=E/tVS9LmXIZQI3FAwGdbznoapdEt+sMQiYVTMSwhYYQ=;
+	s=arc-20240116; t=1756218988; c=relaxed/simple;
+	bh=CsPCV7L8OYFxUqPv2yl/EsEGg4xwEscNOVySSKpAzvo=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=FgrcGl95N1f2tL50UcH/IPjjuZbwMuh+5tiQ7WcpDcSqrr1zWo/XA2QAo4liC1S336izaKFDdCWTI9G3kzp1vvJB7ydLAaKHBUuDdqKoUC6A+JOYZoemVBNvphrPlRXSfcehBr06OEnwp394tVcxsRnuF2bQNM5cXfnRYN6t9bA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=aqzmZi2Y; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 87415C4CEF1;
-	Tue, 26 Aug 2025 11:28:15 +0000 (UTC)
+	 MIME-Version; b=O/h+gwGRked6NeeXGWgnP+1ofTAUtSe3RoRX5tAU8MotZO04NKPMZYSPUYGj8UIc0+hqQiQIZWFuQiUXgTb+NV2WVZ/UgKTtgFQ1v0cuzfZPIcOw0DL7hJiTjcKvJnlbkdZrUQE2eOtFP+i59fx6WGeJuq+L/ZylKyPcClyDQxU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=QSHO8569; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6E7D7C4CEF1;
+	Tue, 26 Aug 2025 14:36:27 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1756207695;
-	bh=E/tVS9LmXIZQI3FAwGdbznoapdEt+sMQiYVTMSwhYYQ=;
+	s=korg; t=1756218987;
+	bh=CsPCV7L8OYFxUqPv2yl/EsEGg4xwEscNOVySSKpAzvo=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=aqzmZi2YpY1bnsYF2hIw4JlVIO88XnsYiEq6SdIAmTjqRNecKSDn2Y08LGzMnCxPy
-	 tBdLehLaxK5eHU3/ETw6pw2BEeAqise5uHxymYpM3Kli5qSi/7kbpdZwaQXH6UdFMQ
-	 lNvVyjjHlHN+EkEtEV6uc4B0iKxw0o/Ev3aOd4ss=
+	b=QSHO856960kSWxBUJiQWlUSm1ZjKpFohXevGEnKuWBiHjVpcqoJPZq0vsRHfMGaIH
+	 NxbrsY09ytbg/zxA5AaGnDsVNzg/FIwKwt5C5nuUH87gHJT5fam2Pe6DawbCz2OlTn
+	 pOG4KordRvzk6vavQU9157KYaUGSdy5qzJSShaG8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Evgeniy Harchenko <evgeniyharchenko.dev@gmail.com>,
-	Takashi Iwai <tiwai@suse.de>
-Subject: [PATCH 6.16 251/457] ALSA: hda/realtek: Add support for HP EliteBook x360 830 G6 and EliteBook 830 G6
+	Alok Tiwari <alok.a.tiwari@oracle.com>,
+	Simon Horman <horms@kernel.org>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.4 209/403] be2net: Use correct byte order and format string for TCP seq and ack_seq
 Date: Tue, 26 Aug 2025 13:08:55 +0200
-Message-ID: <20250826110943.565080924@linuxfoundation.org>
+Message-ID: <20250826110912.619249275@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250826110937.289866482@linuxfoundation.org>
-References: <20250826110937.289866482@linuxfoundation.org>
+In-Reply-To: <20250826110905.607690791@linuxfoundation.org>
+References: <20250826110905.607690791@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,38 +63,57 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.16-stable review patch.  If anyone has any objections, please let me know.
+5.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Evgeniy Harchenko <evgeniyharchenko.dev@gmail.com>
+From: Alok Tiwari <alok.a.tiwari@oracle.com>
 
-commit eafae0fdd115a71b3a200ef1a31f86da04bac77f upstream.
+[ Upstream commit 4701ee5044fb3992f1c910630a9673c2dc600ce5 ]
 
-The HP EliteBook x360 830 G6 and HP EliteBook 830 G6 have
-Realtek HDA codec ALC215. It needs the ALC285_FIXUP_HP_GPIO_LED
-quirk to enable the mute LED.
+The TCP header fields seq and ack_seq are 32-bit values in network
+byte order as (__be32). these fields were earlier printed using
+ntohs(), which converts only 16-bit values and produces incorrect
+results for 32-bit fields. This patch is changeing the conversion
+to ntohl(), ensuring correct interpretation of these sequence numbers.
 
-Cc: <stable@vger.kernel.org>
-Signed-off-by: Evgeniy Harchenko <evgeniyharchenko.dev@gmail.com>
-Link: https://patch.msgid.link/20250815095814.75845-1-evgeniyharchenko.dev@gmail.com
-Signed-off-by: Takashi Iwai <tiwai@suse.de>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Notably, the format specifier is updated from %d to %u to reflect the
+unsigned nature of these fields.
+
+improves the accuracy of debug log messages for TCP sequence and
+acknowledgment numbers during TX timeouts.
+
+Signed-off-by: Alok Tiwari <alok.a.tiwari@oracle.com>
+Reviewed-by: Simon Horman <horms@kernel.org>
+Link: https://patch.msgid.link/20250717193552.3648791-1-alok.a.tiwari@oracle.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- sound/pci/hda/patch_realtek.c |    2 ++
- 1 file changed, 2 insertions(+)
+ drivers/net/ethernet/emulex/benet/be_main.c | 8 ++++----
+ 1 file changed, 4 insertions(+), 4 deletions(-)
 
---- a/sound/pci/hda/patch_realtek.c
-+++ b/sound/pci/hda/patch_realtek.c
-@@ -10662,6 +10662,8 @@ static const struct hda_quirk alc269_fix
- 	SND_PCI_QUIRK(0x103c, 0x84e7, "HP Pavilion 15", ALC269_FIXUP_HP_MUTE_LED_MIC3),
- 	SND_PCI_QUIRK(0x103c, 0x8519, "HP Spectre x360 15-df0xxx", ALC285_FIXUP_HP_SPECTRE_X360),
- 	SND_PCI_QUIRK(0x103c, 0x8537, "HP ProBook 440 G6", ALC236_FIXUP_HP_MUTE_LED_MICMUTE_VREF),
-+	SND_PCI_QUIRK(0x103c, 0x8548, "HP EliteBook x360 830 G6", ALC285_FIXUP_HP_GPIO_LED),
-+	SND_PCI_QUIRK(0x103c, 0x854a, "HP EliteBook 830 G6", ALC285_FIXUP_HP_GPIO_LED),
- 	SND_PCI_QUIRK(0x103c, 0x85c6, "HP Pavilion x360 Convertible 14-dy1xxx", ALC295_FIXUP_HP_MUTE_LED_COEFBIT11),
- 	SND_PCI_QUIRK(0x103c, 0x85de, "HP Envy x360 13-ar0xxx", ALC285_FIXUP_HP_ENVY_X360),
- 	SND_PCI_QUIRK(0x103c, 0x860f, "HP ZBook 15 G6", ALC285_FIXUP_HP_GPIO_AMP_INIT),
+diff --git a/drivers/net/ethernet/emulex/benet/be_main.c b/drivers/net/ethernet/emulex/benet/be_main.c
+index 4b9380003c85..ce235def334f 100644
+--- a/drivers/net/ethernet/emulex/benet/be_main.c
++++ b/drivers/net/ethernet/emulex/benet/be_main.c
+@@ -1467,10 +1467,10 @@ static void be_tx_timeout(struct net_device *netdev)
+ 						 ntohs(tcphdr->source));
+ 					dev_info(dev, "TCP dest port %d\n",
+ 						 ntohs(tcphdr->dest));
+-					dev_info(dev, "TCP sequence num %d\n",
+-						 ntohs(tcphdr->seq));
+-					dev_info(dev, "TCP ack_seq %d\n",
+-						 ntohs(tcphdr->ack_seq));
++					dev_info(dev, "TCP sequence num %u\n",
++						 ntohl(tcphdr->seq));
++					dev_info(dev, "TCP ack_seq %u\n",
++						 ntohl(tcphdr->ack_seq));
+ 				} else if (ip_hdr(skb)->protocol ==
+ 					   IPPROTO_UDP) {
+ 					udphdr = udp_hdr(skb);
+-- 
+2.39.5
+
 
 
 
