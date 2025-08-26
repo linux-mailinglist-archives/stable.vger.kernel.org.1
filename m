@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-173869-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-174352-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id A0F6BB36030
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 14:58:07 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id DED0CB36251
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 15:17:51 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 2C2B81BA6AF6
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 12:55:55 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id D797F7BC6F7
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 13:16:12 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 330311C84BD;
-	Tue, 26 Aug 2025 12:54:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C83E21FBCB1;
+	Tue, 26 Aug 2025 13:16:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="CJbO/1xJ"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="P5wjuEAK"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E260F7081F;
-	Tue, 26 Aug 2025 12:54:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 84B5A139579;
+	Tue, 26 Aug 2025 13:16:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756212881; cv=none; b=XN2ZtM/IF8dDI+V9QIBt263iZ1+dq5ig+hc1o0JEm3o+Mwur0ljeZaQoYUmRD5MwTgH9YGEOYYJ+Adyjee5aMbgpyz0ZsVjYD5n9KrBnhYVSUwPvO7iUHknyTVet1m3U1JP5wZ5L6Uh/UgiKwEQQKc1BfJ3ICieHgnD8QvcbJhI=
+	t=1756214163; cv=none; b=IfCv2q6MIGqkh/bZNdbqvt+O1gYk93D4O1htuczJSWNONVC1DrVw2qVtvN90mO0eK6q40zSl1GSB2m5PHCRkDJjRskEFXKSdYVByF+oTlgfcxOMqQyecodEnYobYWLFsUhr6nCre3QnRP7z2D4MogGWJGOB+BZFAKZeV+FxamqY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756212881; c=relaxed/simple;
-	bh=fPsUold0XErEmiNdH3Ruy1/oI188YK8EvL27SBAIhW4=;
+	s=arc-20240116; t=1756214163; c=relaxed/simple;
+	bh=+X4Wce1AWQbr1I+lIV7vLaabySBmu9voMnHlOZS1jJE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=QEtyZ0OJjMH44SGwWReVnrdUAvIOpDiuNCeiIwH3vj9ZPwkai5a0vXbMBNzmBeAsJ6SrXyjQO+/+m4ffg+XdSF5aLH3jkIRXDoTJKQLPO2Af8xdQkOO2PtIGNBcYY+st04TXPV7BCOxlvjaz17j2E4T1NLDLoz72AuXeHQw9ar4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=CJbO/1xJ; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7627AC4CEF1;
-	Tue, 26 Aug 2025 12:54:40 +0000 (UTC)
+	 MIME-Version; b=cKueS0YyiTUpg4VFEB6yIUWBR9wqytfO6Q3bzatqYwvAskmE5ua88xrRxuijAeHh+nlXqJrzLZVDSrtKGwSrgovVc3QPUZGjZzpdSOPwImNtK3Vi7ppgoKveeIxFIge4VmlveowCQW5++pL7akm9eGzbCAlY1jzkHiL4gR2XNzg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=P5wjuEAK; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 13820C4CEF1;
+	Tue, 26 Aug 2025 13:16:02 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1756212880;
-	bh=fPsUold0XErEmiNdH3Ruy1/oI188YK8EvL27SBAIhW4=;
+	s=korg; t=1756214163;
+	bh=+X4Wce1AWQbr1I+lIV7vLaabySBmu9voMnHlOZS1jJE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=CJbO/1xJF05mnTxIfWrsH/G5tl3bkn7GElduecwhy9+jtZmTleBEbLJjf33WBqKgm
-	 KpQv0InLLXCLDr2D11pQKG83O7xycec0zugBpsfUkRaFoOtTfCXo3tt0AZ3PvxEEbh
-	 teyBGhqDA/MIY9YbOYgwGoaLUtMjrh3S/ysh1caI=
+	b=P5wjuEAKXGy+c4MrHZ4TaEkXWTelOebi1r2Hr5sIfSFiBG3l5fab1LeKRRwCMPaHD
+	 1wk13uoKWbK+ShlaAFYHrMM92uQO2Jpx/RN1Dlrs2WlpXTT2Sfdg5A1J5yDaAzWXQE
+	 Jbqh6erCvC0nDnF8+Gvg1cxpQQ2TYw391cRSN2+I=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Srinivas Kandagatla <srini@kernel.org>,
-	Kuninori Morimoto <kuninori.morimoto.gx@renesas.com>,
-	Mark Brown <broonie@kernel.org>,
+	Maxim Levitsky <mlevitsk@redhat.com>,
+	Sean Christopherson <seanjc@google.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 138/587] ASoC: qcom: use drvdata instead of component to keep id
+Subject: [PATCH 6.1 034/482] KVM: x86: Plumb "force_immediate_exit" into kvm_entry() tracepoint
 Date: Tue, 26 Aug 2025 13:04:47 +0200
-Message-ID: <20250826110956.462163926@linuxfoundation.org>
+Message-ID: <20250826110931.650259456@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250826110952.942403671@linuxfoundation.org>
-References: <20250826110952.942403671@linuxfoundation.org>
+In-Reply-To: <20250826110930.769259449@linuxfoundation.org>
+References: <20250826110930.769259449@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,145 +62,134 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Srinivas Kandagatla <srini@kernel.org>
+From: Sean Christopherson <seanjc@google.com>
 
-[ Upstream commit 8167f4f42572818fa8153be2b03e4c2120846603 ]
+[ Upstream commit 9c9025ea003a03f967affd690f39b4ef3452c0f5 ]
 
-Qcom lpass is using component->id to keep DAI ID (A).
+Annotate the kvm_entry() tracepoint with "immediate exit" when KVM is
+forcing a VM-Exit immediately after VM-Enter, e.g. when KVM wants to
+inject an event but needs to first complete some other operation.
+Knowing that KVM is (or isn't) forcing an exit is useful information when
+debugging issues related to event injection.
 
-(S)	static int lpass_platform_pcmops_open(
-				sruct snd_soc_component *component,
-				struct snd_pcm_substream *substream)
-	{			                          ^^^^^^^^^(B0)
-		...
-(B1)		struct snd_soc_pcm_runtime *soc_runtime = snd_soc_substream_to_rtd(substream);
-(B2)		struct snd_soc_dai *cpu_dai = snd_soc_rtd_to_cpu(soc_runtime, 0);
-		...
-(B3)		unsigned int dai_id = cpu_dai->driver->id;
-
-(A)		component->id = dai_id;
-		...
-	}
-
-This driver can get dai_id from substream (B0 - B3).
-In this driver, below functions get dai_id from component->id (A).
-
-(X)	lpass_platform_pcmops_suspend()
-(Y)	lpass_platform_pcmops_resume()
-(Z)	lpass_platform_copy()
-
-Here, (Z) can get it from substream (B0 - B3), don't need to use
-component->id (A). On suspend/resume (X)(Y), dai_id can only be obtained
-from component->id (A), because there is no substream (B0) in function
-parameter.
-
-But, component->id (A) itself should not be used for such purpose.
-It is intilialized at snd_soc_component_initialize(), and parsed its ID
-(= component->id) from device name (a).
-
-	int snd_soc_component_initialize(...)
-	{
-		...
-		if (!component->name) {
-(a)			component->name = fmt_single_name(dev, &component->id);
-			...                                     ^^^^^^^^^^^^^
-		}
-		...
-	}
-
-Unfortunately, current code is broken to start with.
-
-There are many regmaps that the driver cares about, however its only
-managing one (either dp or i2s) in component suspend/resume path.
-
-I2S regmap is mandatory however other regmaps are setup based on flags
-like "hdmi_port_enable" and "codec_dma_enable".
-
-Correct thing for suspend/resume path to handle is by checking these
-flags, instead of using component->id.
-
-Signed-off-by: Srinivas Kandagatla <srini@kernel.org>
-Suggested-by: Kuninori Morimoto <kuninori.morimoto.gx@renesas.com>
-Signed-off-by: Kuninori Morimoto <kuninori.morimoto.gx@renesas.com>
-Link: https://patch.msgid.link/87a56ouuob.wl-kuninori.morimoto.gx@renesas.com
-Signed-off-by: Mark Brown <broonie@kernel.org>
+Suggested-by: Maxim Levitsky <mlevitsk@redhat.com>
+Link: https://lore.kernel.org/r/20240110012705.506918-2-seanjc@google.com
+Signed-off-by: Sean Christopherson <seanjc@google.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- sound/soc/qcom/lpass-platform.c | 27 +++++++++++++++++----------
- 1 file changed, 17 insertions(+), 10 deletions(-)
+ arch/x86/include/asm/kvm_host.h | 3 ++-
+ arch/x86/kvm/svm/svm.c          | 5 +++--
+ arch/x86/kvm/trace.h            | 9 ++++++---
+ arch/x86/kvm/vmx/vmx.c          | 4 ++--
+ arch/x86/kvm/x86.c              | 2 +-
+ 5 files changed, 14 insertions(+), 9 deletions(-)
 
-diff --git a/sound/soc/qcom/lpass-platform.c b/sound/soc/qcom/lpass-platform.c
-index f918d9e16dc0..f342bc4b3a14 100644
---- a/sound/soc/qcom/lpass-platform.c
-+++ b/sound/soc/qcom/lpass-platform.c
-@@ -201,7 +201,6 @@ static int lpass_platform_pcmops_open(struct snd_soc_component *component,
- 	struct regmap *map;
- 	unsigned int dai_id = cpu_dai->driver->id;
+diff --git a/arch/x86/include/asm/kvm_host.h b/arch/x86/include/asm/kvm_host.h
+index 555c7bf35e28..93f523762854 100644
+--- a/arch/x86/include/asm/kvm_host.h
++++ b/arch/x86/include/asm/kvm_host.h
+@@ -1528,7 +1528,8 @@ struct kvm_x86_ops {
+ 	void (*flush_tlb_guest)(struct kvm_vcpu *vcpu);
  
--	component->id = dai_id;
- 	data = kzalloc(sizeof(*data), GFP_KERNEL);
- 	if (!data)
- 		return -ENOMEM;
-@@ -1189,13 +1188,14 @@ static int lpass_platform_pcmops_suspend(struct snd_soc_component *component)
- {
- 	struct lpass_data *drvdata = snd_soc_component_get_drvdata(component);
- 	struct regmap *map;
--	unsigned int dai_id = component->id;
- 
--	if (dai_id == LPASS_DP_RX)
-+	if (drvdata->hdmi_port_enable) {
- 		map = drvdata->hdmiif_map;
--	else
--		map = drvdata->lpaif_map;
-+		regcache_cache_only(map, true);
-+		regcache_mark_dirty(map);
-+	}
- 
-+	map = drvdata->lpaif_map;
- 	regcache_cache_only(map, true);
- 	regcache_mark_dirty(map);
- 
-@@ -1206,14 +1206,19 @@ static int lpass_platform_pcmops_resume(struct snd_soc_component *component)
- {
- 	struct lpass_data *drvdata = snd_soc_component_get_drvdata(component);
- 	struct regmap *map;
--	unsigned int dai_id = component->id;
-+	int ret;
- 
--	if (dai_id == LPASS_DP_RX)
-+	if (drvdata->hdmi_port_enable) {
- 		map = drvdata->hdmiif_map;
--	else
--		map = drvdata->lpaif_map;
-+		regcache_cache_only(map, false);
-+		ret = regcache_sync(map);
-+		if (ret)
-+			return ret;
-+	}
- 
-+	map = drvdata->lpaif_map;
- 	regcache_cache_only(map, false);
-+
- 	return regcache_sync(map);
+ 	int (*vcpu_pre_run)(struct kvm_vcpu *vcpu);
+-	enum exit_fastpath_completion (*vcpu_run)(struct kvm_vcpu *vcpu);
++	enum exit_fastpath_completion (*vcpu_run)(struct kvm_vcpu *vcpu,
++						  bool force_immediate_exit);
+ 	int (*handle_exit)(struct kvm_vcpu *vcpu,
+ 		enum exit_fastpath_completion exit_fastpath);
+ 	int (*skip_emulated_instruction)(struct kvm_vcpu *vcpu);
+diff --git a/arch/x86/kvm/svm/svm.c b/arch/x86/kvm/svm/svm.c
+index 2c0f9c7d1242..b4283c2358a6 100644
+--- a/arch/x86/kvm/svm/svm.c
++++ b/arch/x86/kvm/svm/svm.c
+@@ -4005,12 +4005,13 @@ static noinstr void svm_vcpu_enter_exit(struct kvm_vcpu *vcpu, bool spec_ctrl_in
+ 	guest_state_exit_irqoff();
  }
  
-@@ -1223,7 +1228,9 @@ static int lpass_platform_copy(struct snd_soc_component *component,
- 			       unsigned long bytes)
+-static __no_kcsan fastpath_t svm_vcpu_run(struct kvm_vcpu *vcpu)
++static __no_kcsan fastpath_t svm_vcpu_run(struct kvm_vcpu *vcpu,
++					  bool force_immediate_exit)
  {
- 	struct snd_pcm_runtime *rt = substream->runtime;
--	unsigned int dai_id = component->id;
-+	struct snd_soc_pcm_runtime *soc_runtime = snd_soc_substream_to_rtd(substream);
-+	struct snd_soc_dai *cpu_dai = snd_soc_rtd_to_cpu(soc_runtime, 0);
-+	unsigned int dai_id = cpu_dai->driver->id;
- 	int ret = 0;
+ 	struct vcpu_svm *svm = to_svm(vcpu);
+ 	bool spec_ctrl_intercepted = msr_write_intercepted(vcpu, MSR_IA32_SPEC_CTRL);
  
- 	void __iomem *dma_buf = (void __iomem *) (rt->dma_area + pos +
+-	trace_kvm_entry(vcpu);
++	trace_kvm_entry(vcpu, force_immediate_exit);
+ 
+ 	svm->vmcb->save.rax = vcpu->arch.regs[VCPU_REGS_RAX];
+ 	svm->vmcb->save.rsp = vcpu->arch.regs[VCPU_REGS_RSP];
+diff --git a/arch/x86/kvm/trace.h b/arch/x86/kvm/trace.h
+index 6c1dcf44c4fa..ab407bc00d84 100644
+--- a/arch/x86/kvm/trace.h
++++ b/arch/x86/kvm/trace.h
+@@ -15,20 +15,23 @@
+  * Tracepoint for guest mode entry.
+  */
+ TRACE_EVENT(kvm_entry,
+-	TP_PROTO(struct kvm_vcpu *vcpu),
+-	TP_ARGS(vcpu),
++	TP_PROTO(struct kvm_vcpu *vcpu, bool force_immediate_exit),
++	TP_ARGS(vcpu, force_immediate_exit),
+ 
+ 	TP_STRUCT__entry(
+ 		__field(	unsigned int,	vcpu_id		)
+ 		__field(	unsigned long,	rip		)
++		__field(	bool,		immediate_exit	)
+ 	),
+ 
+ 	TP_fast_assign(
+ 		__entry->vcpu_id        = vcpu->vcpu_id;
+ 		__entry->rip		= kvm_rip_read(vcpu);
++		__entry->immediate_exit	= force_immediate_exit;
+ 	),
+ 
+-	TP_printk("vcpu %u, rip 0x%lx", __entry->vcpu_id, __entry->rip)
++	TP_printk("vcpu %u, rip 0x%lx%s", __entry->vcpu_id, __entry->rip,
++		  __entry->immediate_exit ? "[immediate exit]" : "")
+ );
+ 
+ /*
+diff --git a/arch/x86/kvm/vmx/vmx.c b/arch/x86/kvm/vmx/vmx.c
+index 390af16d9a67..0b495979a02b 100644
+--- a/arch/x86/kvm/vmx/vmx.c
++++ b/arch/x86/kvm/vmx/vmx.c
+@@ -7171,7 +7171,7 @@ static noinstr void vmx_vcpu_enter_exit(struct kvm_vcpu *vcpu,
+ 	guest_state_exit_irqoff();
+ }
+ 
+-static fastpath_t vmx_vcpu_run(struct kvm_vcpu *vcpu)
++static fastpath_t vmx_vcpu_run(struct kvm_vcpu *vcpu, bool force_immediate_exit)
+ {
+ 	struct vcpu_vmx *vmx = to_vmx(vcpu);
+ 	unsigned long cr3, cr4;
+@@ -7198,7 +7198,7 @@ static fastpath_t vmx_vcpu_run(struct kvm_vcpu *vcpu)
+ 		return EXIT_FASTPATH_NONE;
+ 	}
+ 
+-	trace_kvm_entry(vcpu);
++	trace_kvm_entry(vcpu, force_immediate_exit);
+ 
+ 	if (vmx->ple_window_dirty) {
+ 		vmx->ple_window_dirty = false;
+diff --git a/arch/x86/kvm/x86.c b/arch/x86/kvm/x86.c
+index d224180c56f5..08c3da88f402 100644
+--- a/arch/x86/kvm/x86.c
++++ b/arch/x86/kvm/x86.c
+@@ -10856,7 +10856,7 @@ static int vcpu_enter_guest(struct kvm_vcpu *vcpu)
+ 		WARN_ON_ONCE((kvm_vcpu_apicv_activated(vcpu) != kvm_vcpu_apicv_active(vcpu)) &&
+ 			     (kvm_get_apic_mode(vcpu) != LAPIC_MODE_DISABLED));
+ 
+-		exit_fastpath = static_call(kvm_x86_vcpu_run)(vcpu);
++		exit_fastpath = static_call(kvm_x86_vcpu_run)(vcpu, req_immediate_exit);
+ 		if (likely(exit_fastpath != EXIT_FASTPATH_REENTER_GUEST))
+ 			break;
+ 
 -- 
-2.39.5
+2.50.1
 
 
 
