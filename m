@@ -1,59 +1,57 @@
-Return-Path: <stable+bounces-175590-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-173017-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 880E4B36923
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 16:23:18 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6929DB35B63
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 13:23:49 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 497BD562244
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 14:13:09 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 34314189C366
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 11:21:29 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 576B9352098;
-	Tue, 26 Aug 2025 14:10:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9BA5C3376BD;
+	Tue, 26 Aug 2025 11:19:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="jCOpvEEM"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="B2yy9Wss"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 13542374C4;
-	Tue, 26 Aug 2025 14:10:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 59144319858;
+	Tue, 26 Aug 2025 11:19:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756217448; cv=none; b=L3YWtccmcC1/Jx1+Q7FK/W5+nvSjUb9RC/PRYll+TOh3G3bsYO61PeSl51qFkOky3at077CMPsVY5Jg1dJZfuKkDZUpguwo1SrIjrA+Zo6dp1d+lTSmRnwZiYMILbEYfx4VJV3sm3zEvQaz3Dgjk39D18tu3EuuGrWTz6z0gxnA=
+	t=1756207160; cv=none; b=rEiwLUDpT80+o4UuYjc1/N7KQO+a4wPPpUmUg3rQAT9RgYIPafWX3JBTQIBnSClB9NWA1In+R/NqZmft7QvLz0B/m7KYI7BbPJKZ1QcZJeoQkdOZi2ZSRc0WzQzz+24xK53gtJuZDyJ9vSds7lp/lGsgwlJOHYKOTfc4nPrpnU0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756217448; c=relaxed/simple;
-	bh=bM3y/3G5CnOY/5fz7d+xUT/r5z3Wo3FRjqRhzl1EMB8=;
+	s=arc-20240116; t=1756207160; c=relaxed/simple;
+	bh=JdBPwEhmHzyRTkRpVZUa2mqp1Z6qBWLUUg774w3AoCw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=N+071ELW4VTxa/NJyA3Jt84rsdMAWRA9MQG8CPk2iRmiiWJoDMD/hqpXIuK9wmUtz4oy0/eRTXB1zFWBQD5VWy4I1j5kXvaFGsknCvyHf3CN1OgTAZICNHN9QX5bXsK+gV8RGVF8pGdCIjedjCLVJ+wDEXbnBT6tcEk7XlXhRrc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=jCOpvEEM; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 903CEC4CEF1;
-	Tue, 26 Aug 2025 14:10:47 +0000 (UTC)
+	 MIME-Version; b=h+UPIxSecXXvkHMFW4W4uewqd8cg4utR6n/m48X7PzTPH9nfJjHl7T2jilTJzgHtmVyilVOjmK77OWPHTN9kpD3m7/FH5gw3Wg24bIql13CTG6pWxZbU/usIqHfR1OqIMekZNIeu9DoX0zeQRZGaqPPZ9w9WYAn6yWi94oZFlCw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=B2yy9Wss; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9C803C4CEF4;
+	Tue, 26 Aug 2025 11:19:19 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1756217447;
-	bh=bM3y/3G5CnOY/5fz7d+xUT/r5z3Wo3FRjqRhzl1EMB8=;
+	s=korg; t=1756207159;
+	bh=JdBPwEhmHzyRTkRpVZUa2mqp1Z6qBWLUUg774w3AoCw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=jCOpvEEMIjor/6xS5XTrBKeHbSj2opapoDDnBCdRZbvjBnQfolHjhIe19df6ksEE5
-	 LR8KEup1EXnbsjXe1F1V7qu6RxQTzRD3vOJiZvV0IPYrvxZ39BPKj06/+7uN4MMixc
-	 HyIkn+52iTbTZoYa2mUVP+dQqU8NXcx1PRiu/Pzs=
+	b=B2yy9WssXdaLGwsU6heV6LiQmCeaWOIAEe0Utq8UsMogBt65SyTpWOVCHb2SDNntX
+	 ANhqtLEexaYZxoaEgRaMyGbLJki2/1ccoREX7R34yAjtS/haKXSVcJYSHzkKlrJ5tf
+	 TUBpsHTTZ4ZyE45PEw4FuA/zseVq9jyflPscNGy0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	syzbot+ccac90e482b2a81d74aa@syzkaller.appspotmail.com,
-	Paul Chaignon <paul.chaignon@gmail.com>,
-	Yonghong Song <yonghong.song@linux.dev>,
-	Eduard Zingerman <eddyz87@gmail.com>,
-	Alexei Starovoitov <ast@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 147/523] bpf: Check flow_dissector ctx accesses are aligned
+	Doug Anderson <dianders@chromium.org>,
+	Bjorn Andersson <bjorn.andersson@oss.qualcomm.com>,
+	Dmitry Baryshkov <dmitry.baryshkov@oss.qualcomm.com>,
+	Bjorn Andersson <andersson@kernel.org>
+Subject: [PATCH 6.16 073/457] soc: qcom: mdt_loader: Ensure we dont read past the ELF header
 Date: Tue, 26 Aug 2025 13:05:57 +0200
-Message-ID: <20250826110928.115234561@linuxfoundation.org>
+Message-ID: <20250826110939.176951489@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250826110924.562212281@linuxfoundation.org>
-References: <20250826110924.562212281@linuxfoundation.org>
+In-Reply-To: <20250826110937.289866482@linuxfoundation.org>
+References: <20250826110937.289866482@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -65,53 +63,114 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+6.16-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Paul Chaignon <paul.chaignon@gmail.com>
+From: Bjorn Andersson <bjorn.andersson@oss.qualcomm.com>
 
-[ Upstream commit ead3d7b2b6afa5ee7958620c4329982a7d9c2b78 ]
+commit 9f9967fed9d066ed3dae9372b45ffa4f6fccfeef upstream.
 
-flow_dissector_is_valid_access doesn't check that the context access is
-aligned. As a consequence, an unaligned access within one of the exposed
-field is considered valid and later rejected by
-flow_dissector_convert_ctx_access when we try to convert it.
+When the MDT loader is used in remoteproc, the ELF header is sanitized
+beforehand, but that's not necessary the case for other clients.
 
-The later rejection is problematic because it's reported as a verifier
-bug with a kernel warning and doesn't point to the right instruction in
-verifier logs.
+Validate the size of the firmware buffer to ensure that we don't read
+past the end as we iterate over the header. e_phentsize and e_shentsize
+are validated as well, to ensure that the assumptions about step size in
+the traversal are valid.
 
-Fixes: d58e468b1112 ("flow_dissector: implements flow dissector BPF hook")
-Reported-by: syzbot+ccac90e482b2a81d74aa@syzkaller.appspotmail.com
-Closes: https://syzkaller.appspot.com/bug?extid=ccac90e482b2a81d74aa
-Signed-off-by: Paul Chaignon <paul.chaignon@gmail.com>
-Acked-by: Yonghong Song <yonghong.song@linux.dev>
-Acked-by: Eduard Zingerman <eddyz87@gmail.com>
-Link: https://lore.kernel.org/r/cc1b036be484c99be45eddf48bd78cc6f72839b1.1754039605.git.paul.chaignon@gmail.com
-Signed-off-by: Alexei Starovoitov <ast@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Fixes: 2aad40d911ee ("remoteproc: Move qcom_mdt_loader into drivers/soc/qcom")
+Cc: stable@vger.kernel.org
+Reported-by: Doug Anderson <dianders@chromium.org>
+Signed-off-by: Bjorn Andersson <bjorn.andersson@oss.qualcomm.com>
+Reviewed-by: Dmitry Baryshkov <dmitry.baryshkov@oss.qualcomm.com>
+Link: https://lore.kernel.org/r/20250610-mdt-loader-validation-and-fixes-v2-1-f7073e9ab899@oss.qualcomm.com
+Signed-off-by: Bjorn Andersson <andersson@kernel.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- net/core/filter.c | 3 +++
- 1 file changed, 3 insertions(+)
+ drivers/soc/qcom/mdt_loader.c |   43 ++++++++++++++++++++++++++++++++++++++++++
+ 1 file changed, 43 insertions(+)
 
-diff --git a/net/core/filter.c b/net/core/filter.c
-index 2018001d16bf..076b317c3594 100644
---- a/net/core/filter.c
-+++ b/net/core/filter.c
-@@ -8318,6 +8318,9 @@ static bool flow_dissector_is_valid_access(int off, int size,
- 	if (off < 0 || off >= sizeof(struct __sk_buff))
- 		return false;
+--- a/drivers/soc/qcom/mdt_loader.c
++++ b/drivers/soc/qcom/mdt_loader.c
+@@ -18,6 +18,37 @@
+ #include <linux/slab.h>
+ #include <linux/soc/qcom/mdt_loader.h>
  
-+	if (off % size != 0)
++static bool mdt_header_valid(const struct firmware *fw)
++{
++	const struct elf32_hdr *ehdr;
++	size_t phend;
++	size_t shend;
++
++	if (fw->size < sizeof(*ehdr))
 +		return false;
 +
- 	if (type == BPF_WRITE)
- 		return false;
++	ehdr = (struct elf32_hdr *)fw->data;
++
++	if (memcmp(ehdr->e_ident, ELFMAG, SELFMAG))
++		return false;
++
++	if (ehdr->e_phentsize != sizeof(struct elf32_phdr))
++		return -EINVAL;
++
++	phend = size_add(size_mul(sizeof(struct elf32_phdr), ehdr->e_phnum), ehdr->e_phoff);
++	if (phend > fw->size)
++		return false;
++
++	if (ehdr->e_shentsize != sizeof(struct elf32_shdr))
++		return -EINVAL;
++
++	shend = size_add(size_mul(sizeof(struct elf32_shdr), ehdr->e_shnum), ehdr->e_shoff);
++	if (shend > fw->size)
++		return false;
++
++	return true;
++}
++
+ static bool mdt_phdr_valid(const struct elf32_phdr *phdr)
+ {
+ 	if (phdr->p_type != PT_LOAD)
+@@ -82,6 +113,9 @@ ssize_t qcom_mdt_get_size(const struct f
+ 	phys_addr_t max_addr = 0;
+ 	int i;
  
--- 
-2.39.5
-
++	if (!mdt_header_valid(fw))
++		return -EINVAL;
++
+ 	ehdr = (struct elf32_hdr *)fw->data;
+ 	phdrs = (struct elf32_phdr *)(fw->data + ehdr->e_phoff);
+ 
+@@ -134,6 +168,9 @@ void *qcom_mdt_read_metadata(const struc
+ 	ssize_t ret;
+ 	void *data;
+ 
++	if (!mdt_header_valid(fw))
++		return ERR_PTR(-EINVAL);
++
+ 	ehdr = (struct elf32_hdr *)fw->data;
+ 	phdrs = (struct elf32_phdr *)(fw->data + ehdr->e_phoff);
+ 
+@@ -214,6 +251,9 @@ int qcom_mdt_pas_init(struct device *dev
+ 	int ret;
+ 	int i;
+ 
++	if (!mdt_header_valid(fw))
++		return -EINVAL;
++
+ 	ehdr = (struct elf32_hdr *)fw->data;
+ 	phdrs = (struct elf32_phdr *)(fw->data + ehdr->e_phoff);
+ 
+@@ -310,6 +350,9 @@ static int __qcom_mdt_load(struct device
+ 	if (!fw || !mem_region || !mem_phys || !mem_size)
+ 		return -EINVAL;
+ 
++	if (!mdt_header_valid(fw))
++		return -EINVAL;
++
+ 	is_split = qcom_mdt_bins_are_split(fw, fw_name);
+ 	ehdr = (struct elf32_hdr *)fw->data;
+ 	phdrs = (struct elf32_phdr *)(fw->data + ehdr->e_phoff);
 
 
 
