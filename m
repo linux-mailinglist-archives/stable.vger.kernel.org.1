@@ -1,56 +1,58 @@
-Return-Path: <stable+bounces-174143-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-173542-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 40CF6B36181
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 15:10:03 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id F2349B35DD9
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 13:48:43 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 8C7B61BC107F
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 13:07:17 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id CF3B3189004D
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 11:42:24 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 74BAC23C4F4;
-	Tue, 26 Aug 2025 13:06:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id F38812820B1;
+	Tue, 26 Aug 2025 11:41:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="VvDOowap"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="nlklQ4CE"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3291823D294;
-	Tue, 26 Aug 2025 13:06:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AED71199935;
+	Tue, 26 Aug 2025 11:41:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756213607; cv=none; b=ja4kJd/svV+JfzhbR2M6sKF+mHt8RdZF1aZba6QUtx8rBzi4krmscq1jELQ9+DN6haHviH0Cz2IVGDUpo9Gh6pRh4N1g9VSNC7/5ADYlR13Ohbfn+wrl83CPwqIUs8FKwTulCA+NcSwcdmDiT+7TdcvpBqCYKrZ1N5V+1OXir18=
+	t=1756208519; cv=none; b=iEuVj13S7wyPrAuzLBUvbSz/pqm2HeIvmzM+g2AOc+VGqOGNeryFhzhqIB6o+Iaq7MND723tejhdRa1Xx25nfOf6Gr6CYeeSYc3jtwnD0qwSztQpi9orOq9Cbel18UI8QH4XRqNEjEzFoitpWa3xCqQb6YEUTQ12QK4xq3IfEdo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756213607; c=relaxed/simple;
-	bh=1levFNngVgwxV6kQvYwY9bVjsF7YkL5A/EwRy4CxH00=;
+	s=arc-20240116; t=1756208519; c=relaxed/simple;
+	bh=uB1UCPiPqOY7SLHpNFsb9+i1WA/K2Vob+CJYUMTgeOU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=DpUpbo1XBpXFlTx88wGC6WIptatTiZun3EOTwaeB2LkUGpbdnngWJsF6NemFloEOq0JJARjPUouZjzVZcr4UBaPblL0Al51qeCNS5fxXW/ZJz1inX2XT4DD8eJ0Nm72XjSZJizM5vMl4o7lzGnjDn6m6d4HRI/xMQdXfltcM/HY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=VvDOowap; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B7856C4CEF1;
-	Tue, 26 Aug 2025 13:06:46 +0000 (UTC)
+	 MIME-Version; b=p8zF+/TolXBxgrK8clJp47ynYgPH35tATmsrVxFhFx9HoSVLOHfWScM2pYZTquvhLsat+xoeDVUwA8STVm531irPwAdv33YUsiR2/1VM57VXpW4Me/7Kea0sI+q2xOhBhZy0lNa7r3CYbl3TruCAcwNHQw2tX4obHSLDzEng3Ls=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=nlklQ4CE; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 410B6C4CEF1;
+	Tue, 26 Aug 2025 11:41:59 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1756213607;
-	bh=1levFNngVgwxV6kQvYwY9bVjsF7YkL5A/EwRy4CxH00=;
+	s=korg; t=1756208519;
+	bh=uB1UCPiPqOY7SLHpNFsb9+i1WA/K2Vob+CJYUMTgeOU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=VvDOowapvad0oxNbraK+DzguAgT2ovH/J4FPnaXvp3dYCBNzS5DdDKfZgz1ZHKtOk
-	 bJY53QGwupLOUoKLxfeoE+mNXBFDJgs59Iv76LjbMaI9c+xmNkwsGaLh0s7CxtaeaQ
-	 dbA8sdOUZoRCmDFyNNoNUfdo4ctA1h39dsP2pzWg=
+	b=nlklQ4CEiUaU1Oya9X6V5dwXRIJMr3XZy1F7lqR8a0cCTQ0oa/WMUCBvbXiug+iYe
+	 jhHoQsZP1flYDcMB0B7ioR1sAye5syFS9eI8JFigTA6urcmZflRFRh6StmueKgtvAo
+	 rXorPOtsS2UBVVvZul9/UCVp+v+ABYIEC0qkhbQc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	=?UTF-8?q?Uwe=20Kleine-K=C3=B6nig?= <u.kleine-koenig@baylibre.com>,
-	AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>,
-	=?UTF-8?q?Uwe=20Kleine-K=C3=B6nig?= <ukleinek@kernel.org>
-Subject: [PATCH 6.6 378/587] pwm: mediatek: Fix duty and period setting
+	Vedang Nagar <quic_vnagar@quicinc.com>,
+	Dikshita Agarwal <quic_dikshita@quicinc.com>,
+	Bryan ODonoghue <bryan.odonoghue@linaro.org>,
+	Bryan ODonoghue <bod@kernel.org>,
+	Hans Verkuil <hverkuil@xs4all.nl>
+Subject: [PATCH 6.12 112/322] media: venus: Add a check for packet size after reading from shared memory
 Date: Tue, 26 Aug 2025 13:08:47 +0200
-Message-ID: <20250826111002.522155930@linuxfoundation.org>
+Message-ID: <20250826110918.554048902@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250826110952.942403671@linuxfoundation.org>
-References: <20250826110952.942403671@linuxfoundation.org>
+In-Reply-To: <20250826110915.169062587@linuxfoundation.org>
+References: <20250826110915.169062587@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,86 +62,54 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Uwe Kleine-König <u.kleine-koenig@baylibre.com>
+From: Vedang Nagar <quic_vnagar@quicinc.com>
 
-commit f21d136caf8171f94159d975ea4620c164431bd9 upstream.
+commit 49befc830daa743e051a65468c05c2ff9e8580e6 upstream.
 
-The period generated by the hardware is
+Add a check to ensure that the packet size does not exceed the number of
+available words after reading the packet header from shared memory. This
+ensures that the size provided by the firmware is safe to process and
+prevent potential out-of-bounds memory access.
 
-	(PWMDWIDTH + 1) << CLKDIV) / freq
-
-according to my tests with a signal analyser and also the documentation.
-
-The current algorithm doesn't consider the `+ 1` part and so configures
-slightly too high periods. The same issue exists for the duty cycle
-setting. So subtract 1 from both the register values for period and
-duty cycle. If period is 0, bail out, if duty_cycle is 0, just disable
-the PWM which results in a constant low output.
-
-Fixes: caf065f8fd58 ("pwm: Add MediaTek PWM support")
-Signed-off-by: Uwe Kleine-König <u.kleine-koenig@baylibre.com>
-Reviewed-by: AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>
-Link: https://lore.kernel.org/r/6d1fa87a76f8020bfe3171529b8e19baffceab10.1753717973.git.u.kleine-koenig@baylibre.com
+Fixes: d96d3f30c0f2 ("[media] media: venus: hfi: add Venus HFI files")
 Cc: stable@vger.kernel.org
-Signed-off-by: Uwe Kleine-König <ukleinek@kernel.org>
+Signed-off-by: Vedang Nagar <quic_vnagar@quicinc.com>
+Co-developed-by: Dikshita Agarwal <quic_dikshita@quicinc.com>
+Signed-off-by: Dikshita Agarwal <quic_dikshita@quicinc.com>
+Reviewed-by: Bryan O'Donoghue <bryan.odonoghue@linaro.org>
+Signed-off-by: Bryan O'Donoghue <bod@kernel.org>
+Signed-off-by: Hans Verkuil <hverkuil@xs4all.nl>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/pwm/pwm-mediatek.c |   21 ++++++++++++++-------
- 1 file changed, 14 insertions(+), 7 deletions(-)
+ drivers/media/platform/qcom/venus/hfi_venus.c |    4 ++++
+ 1 file changed, 4 insertions(+)
 
---- a/drivers/pwm/pwm-mediatek.c
-+++ b/drivers/pwm/pwm-mediatek.c
-@@ -167,7 +167,10 @@ static int pwm_mediatek_config(struct pw
- 	do_div(resolution, clk_rate);
- 
- 	cnt_period = DIV_ROUND_CLOSEST_ULL((u64)period_ns * 1000, resolution);
--	while (cnt_period > 8191) {
-+	if (!cnt_period)
-+		return -EINVAL;
-+
-+	while (cnt_period > 8192) {
- 		resolution *= 2;
- 		clkdiv++;
- 		cnt_period = DIV_ROUND_CLOSEST_ULL((u64)period_ns * 1000,
-@@ -190,9 +193,16 @@ static int pwm_mediatek_config(struct pw
- 	}
- 
- 	cnt_duty = DIV_ROUND_CLOSEST_ULL((u64)duty_ns * 1000, resolution);
-+
- 	pwm_mediatek_writel(pc, pwm->hwpwm, PWMCON, BIT(15) | clkdiv);
--	pwm_mediatek_writel(pc, pwm->hwpwm, reg_width, cnt_period);
--	pwm_mediatek_writel(pc, pwm->hwpwm, reg_thres, cnt_duty);
-+	pwm_mediatek_writel(pc, pwm->hwpwm, reg_width, cnt_period - 1);
-+
-+	if (cnt_duty) {
-+		pwm_mediatek_writel(pc, pwm->hwpwm, reg_thres, cnt_duty - 1);
-+		pwm_mediatek_enable(chip, pwm);
-+	} else {
-+		pwm_mediatek_disable(chip, pwm);
-+	}
- 
- out:
- 	pwm_mediatek_clk_disable(chip, pwm);
-@@ -221,11 +231,8 @@ static int pwm_mediatek_apply(struct pwm
- 	if (err)
- 		return err;
- 
--	if (!pwm->state.enabled) {
-+	if (!pwm->state.enabled)
- 		err = pwm_mediatek_clk_enable(chip, pwm);
--		if (!err)
--			pwm_mediatek_enable(chip, pwm);
--	}
- 
- 	return err;
- }
+--- a/drivers/media/platform/qcom/venus/hfi_venus.c
++++ b/drivers/media/platform/qcom/venus/hfi_venus.c
+@@ -239,6 +239,7 @@ static int venus_write_queue(struct venu
+ static int venus_read_queue(struct venus_hfi_device *hdev,
+ 			    struct iface_queue *queue, void *pkt, u32 *tx_req)
+ {
++	struct hfi_pkt_hdr *pkt_hdr = NULL;
+ 	struct hfi_queue_header *qhdr;
+ 	u32 dwords, new_rd_idx;
+ 	u32 rd_idx, wr_idx, type, qsize;
+@@ -304,6 +305,9 @@ static int venus_read_queue(struct venus
+ 			memcpy(pkt, rd_ptr, len);
+ 			memcpy(pkt + len, queue->qmem.kva, new_rd_idx << 2);
+ 		}
++		pkt_hdr = (struct hfi_pkt_hdr *)(pkt);
++		if ((pkt_hdr->size >> 2) != dwords)
++			return -EINVAL;
+ 	} else {
+ 		/* bad packet received, dropping */
+ 		new_rd_idx = qhdr->write_idx;
 
 
 
