@@ -1,57 +1,55 @@
-Return-Path: <stable+bounces-176238-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-173253-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id B1B2CB36BE1
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 16:49:55 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 25E2BB35CF3
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 13:40:16 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id E92614681B0
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 14:41:57 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id C470C460322
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 11:32:20 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 85E0835CEDF;
-	Tue, 26 Aug 2025 14:38:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4E50B2FAC1C;
+	Tue, 26 Aug 2025 11:29:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="UZPk7g2v"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="03kZwv3V"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3D18B239E8B;
-	Tue, 26 Aug 2025 14:38:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0BF75284B5B;
+	Tue, 26 Aug 2025 11:29:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756219136; cv=none; b=cnse2LrecNB3pA0AjAfnNO844nbK1QfIm7UEAmahZve+iTgDyrr9bN+qO5gabi4pU2o/7FucfOREQFPoJNaam7k24wqahOHrWHK+SRjtwqFxplWXxdDYrHT5atO2ozoAEk0mZZ/x5jP+SE5CIpSOrzeDcPgiAotFHd8V3gyIV+s=
+	t=1756207768; cv=none; b=QhPjvmi0nmHzZvD4NTP7uZZ6Wkj0xcq7ncqfov2rf25e3aZWPiT+C1zCpJtg+2GJoPs2TU+cm4pnl3NZbrIbbObEnCMJkV60PP0Nmx3dY/06+UIlltMmoUGR0aUm7WFfpKEIPs2j6sJyMnt4uKqWvNX5lZyc9RNwRBgOSW34RSU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756219136; c=relaxed/simple;
-	bh=+i9a+WWHrI4ixR8iaZx/IZTobwGPi8hqedAaZ6IYWaQ=;
+	s=arc-20240116; t=1756207768; c=relaxed/simple;
+	bh=LPDv9LfLoSwIFi43w66/QJS4jCTYonbZWAi0uDztqlE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=evBplre6Wn5E6T8bGMplN4pOoqwWTEkKki1dAI9jYVhK7Z9Ga+ge7jlS8VUvN9W0GYuYxBJ5J6ZRg2mT6lezt0uc/iD1HNpBR7Bk8D+KCL8rWkR5rCHuTRmbBVoxe9v1QSg41we9wmx9GKsCkdrp8mePDIA7odm2sB0Mdv7RBs0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=UZPk7g2v; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C2448C4CEF1;
-	Tue, 26 Aug 2025 14:38:55 +0000 (UTC)
+	 MIME-Version; b=kLZvUGUnyIndGLAWPRYyUeTSOwA3VR02GYru722C1/L910Oxp2+DO00gyazQKIhkTJq3sHujNm+XWBUqN3MukUu5rRpIT41zJFtdsXLm4eXZhO/fSAKaV2sSiUp+jT0TFV0G5Brv8tOnSMY5Sd69aBBnG6QzXLuEbV7ryq/Yyhw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=03kZwv3V; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 463ADC4CEF1;
+	Tue, 26 Aug 2025 11:29:27 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1756219136;
-	bh=+i9a+WWHrI4ixR8iaZx/IZTobwGPi8hqedAaZ6IYWaQ=;
+	s=korg; t=1756207767;
+	bh=LPDv9LfLoSwIFi43w66/QJS4jCTYonbZWAi0uDztqlE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=UZPk7g2v7la4nKOvn4Hjn2AMrWJA2z13f1sWPvXwyJce35EGyFFEHG4On4rr/fKhz
-	 9gHFK1gS+Qq4AGShp2Ig4e/o1S6cbIsaeejT3tIAKFJUu6oIwhvo4U+kVblItLlO/N
-	 wIL5DC9yJWFZf8ZiV6Ww5DOH+nIWbVax52Nt/N7E=
+	b=03kZwv3V9bExnBlL5x1QRbIUwuWCXKc4qMr18ZNsZ3XexV8fB/S4zMQXEYGmb/UBg
+	 zVtYBS7V9NzOltR4y1DVYLV8OjpE4mJtS4GaXTb06PZWVTUpRdxGaWz7AAT2KvwfE3
+	 bPYuDh8XyWULyiD3QVG7LY6ZwEK5gQLfZGxhtJYE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Sergey Bashirov <sergeybashirov@gmail.com>,
-	Christoph Hellwig <hch@lst.de>,
-	Trond Myklebust <trond.myklebust@hammerspace.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.4 267/403] pNFS: Fix stripe mapping in block/scsi layout
+	stable <stable@kernel.org>,
+	Thorsten Blum <thorsten.blum@linux.dev>
+Subject: [PATCH 6.16 309/457] cdx: Fix off-by-one error in cdx_rpmsg_probe()
 Date: Tue, 26 Aug 2025 13:09:53 +0200
-Message-ID: <20250826110914.181640237@linuxfoundation.org>
+Message-ID: <20250826110945.000750462@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250826110905.607690791@linuxfoundation.org>
-References: <20250826110905.607690791@linuxfoundation.org>
+In-Reply-To: <20250826110937.289866482@linuxfoundation.org>
+References: <20250826110937.289866482@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,62 +61,43 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.4-stable review patch.  If anyone has any objections, please let me know.
+6.16-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Sergey Bashirov <sergeybashirov@gmail.com>
+From: Thorsten Blum <thorsten.blum@linux.dev>
 
-[ Upstream commit 81438498a285759f31e843ac4800f82a5ce6521f ]
+commit 300a0cfe9f375b2843bcb331bcfa7503475ef5dd upstream.
 
-Because of integer division, we need to carefully calculate the
-disk offset. Consider the example below for a stripe of 6 volumes,
-a chunk size of 4096, and an offset of 70000.
+In cdx_rpmsg_probe(), strscpy() is incorrectly called with the length of
+the source string (excluding the NUL terminator) rather than the size of
+the destination buffer. This results in one character less being copied
+from 'cdx_rpmsg_id_table[0].name' to 'chinfo.name'.
 
-chunk = div_u64(offset, dev->chunk_size) = 70000 / 4096 = 17
-offset = chunk * dev->chunk_size = 17 * 4096 = 69632
-disk_offset_wrong = div_u64(offset, dev->nr_children) = 69632 / 6 = 11605
-disk_chunk = div_u64(chunk, dev->nr_children) = 17 / 6 = 2
-disk_offset = disk_chunk * dev->chunk_size = 2 * 4096 = 8192
+Use the destination buffer size instead to ensure the name is copied
+correctly.
 
-Signed-off-by: Sergey Bashirov <sergeybashirov@gmail.com>
-Reviewed-by: Christoph Hellwig <hch@lst.de>
-Link: https://lore.kernel.org/r/20250701122341.199112-1-sergeybashirov@gmail.com
-Signed-off-by: Trond Myklebust <trond.myklebust@hammerspace.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Cc: stable <stable@kernel.org>
+Fixes: 2a226927d9b8 ("cdx: add rpmsg communication channel for CDX")
+Signed-off-by: Thorsten Blum <thorsten.blum@linux.dev>
+Link: https://lore.kernel.org/r/20250806090512.121260-2-thorsten.blum@linux.dev
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- fs/nfs/blocklayout/dev.c | 5 +++--
- 1 file changed, 3 insertions(+), 2 deletions(-)
+ drivers/cdx/controller/cdx_rpmsg.c |    3 +--
+ 1 file changed, 1 insertion(+), 2 deletions(-)
 
-diff --git a/fs/nfs/blocklayout/dev.c b/fs/nfs/blocklayout/dev.c
-index 6e3a14fdff9c..007d68a3a616 100644
---- a/fs/nfs/blocklayout/dev.c
-+++ b/fs/nfs/blocklayout/dev.c
-@@ -199,10 +199,11 @@ static bool bl_map_stripe(struct pnfs_block_dev *dev, u64 offset,
- 	struct pnfs_block_dev *child;
- 	u64 chunk;
- 	u32 chunk_idx;
-+	u64 disk_chunk;
- 	u64 disk_offset;
+--- a/drivers/cdx/controller/cdx_rpmsg.c
++++ b/drivers/cdx/controller/cdx_rpmsg.c
+@@ -129,8 +129,7 @@ static int cdx_rpmsg_probe(struct rpmsg_
  
- 	chunk = div_u64(offset, dev->chunk_size);
--	div_u64_rem(chunk, dev->nr_children, &chunk_idx);
-+	disk_chunk = div_u64_rem(chunk, dev->nr_children, &chunk_idx);
+ 	chinfo.src = RPMSG_ADDR_ANY;
+ 	chinfo.dst = rpdev->dst;
+-	strscpy(chinfo.name, cdx_rpmsg_id_table[0].name,
+-		strlen(cdx_rpmsg_id_table[0].name));
++	strscpy(chinfo.name, cdx_rpmsg_id_table[0].name, sizeof(chinfo.name));
  
- 	if (chunk_idx >= dev->nr_children) {
- 		dprintk("%s: invalid chunk idx %d (%lld/%lld)\n",
-@@ -215,7 +216,7 @@ static bool bl_map_stripe(struct pnfs_block_dev *dev, u64 offset,
- 	offset = chunk * dev->chunk_size;
- 
- 	/* disk offset of the stripe */
--	disk_offset = div_u64(offset, dev->nr_children);
-+	disk_offset = disk_chunk * dev->chunk_size;
- 
- 	child = &dev->children[chunk_idx];
- 	child->map(child, disk_offset, map);
--- 
-2.39.5
-
+ 	cdx_mcdi->ept = rpmsg_create_ept(rpdev, cdx_rpmsg_cb, NULL, chinfo);
+ 	if (!cdx_mcdi->ept) {
 
 
 
