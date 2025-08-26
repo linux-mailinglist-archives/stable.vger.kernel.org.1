@@ -1,55 +1,56 @@
-Return-Path: <stable+bounces-174283-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-173360-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 17E9DB362B6
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 15:21:26 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 80C87B35D2E
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 13:42:01 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id F2B4C465988
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 13:14:49 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id F18DF1BA683C
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 11:36:09 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C89AE230BDF;
-	Tue, 26 Aug 2025 13:12:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 835303431FC;
+	Tue, 26 Aug 2025 11:34:06 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="bH2s0kKE"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Ytph8qbn"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 85D9C1A83ED;
-	Tue, 26 Aug 2025 13:12:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 402923093BA;
+	Tue, 26 Aug 2025 11:34:05 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756213978; cv=none; b=l7Y2GvYQdoeVhOMgOk9jpS8/T5n5o4IODFXQAV487w19nd4x1hOpqvqPlPSpH/d3RzLYzdw1D2R/0m74RrL3x62LaQQqKc1hXfnA5hOmIqkk0iR4h50q7LZyR4C700v14h5hW3XJgdjZw/KSrmLZmD0nROZKTWckEzc3KnOzfgQ=
+	t=1756208046; cv=none; b=tmTKf38mZ1VBJ/QNaaUXuMJF6P9zmDTyc1V8HuAKtNDLk7oUes7EdF2q6LWhfuEz5XKEtmnzo9lsVTWv2AyVJ2RDXJlVy3yU2WA0+si6ZlLxxCTtSfgJaLATpr7aSahKpfNZBroyzjoskSwK2ct1/3eQNWfVPuxuSm9MbL2ynMo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756213978; c=relaxed/simple;
-	bh=jHZF5qmAOV/ks/Z0DCkox/m3Zeo+xH5T+0XrxveoJg8=;
+	s=arc-20240116; t=1756208046; c=relaxed/simple;
+	bh=nUfO/4sM6pzkEdxw1r4fnsczKnElt5o/172FhEMtFi8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=qsQDSnO9J9uVI74ONV3+xMS6fXgHnSrVYTye5rbl+MaosJ7yusFYt162Uh520XrvT/svyAw261pyuSrFo38hnl9zC8dsh+af0wpCBDuAKg7LKQakya+WoF1YT0Rpt+MJztajXCmuPew69fQ+jeCPbjhxmldOUUCkPGPJLBxfHF0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=bH2s0kKE; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 84124C113CF;
-	Tue, 26 Aug 2025 13:12:57 +0000 (UTC)
+	 MIME-Version; b=dD6czi+J+/+Nr4EhUmB+JgmLAZLq7zvAXSeaSjwgtz7gh0qCRyq4QJB0mbAFFUwnCguzdMvAPiVkvmfNrj6krp6t1SixetwyUkf3n+2sOaZsTrqSU0rg1Vhrc8xYSWlXQ1hUcxXHL5jUhOhbCp70Yyt0CgCN2/MnnSusiJ+wUcA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Ytph8qbn; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 72D7BC4CEF1;
+	Tue, 26 Aug 2025 11:34:05 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1756213978;
-	bh=jHZF5qmAOV/ks/Z0DCkox/m3Zeo+xH5T+0XrxveoJg8=;
+	s=korg; t=1756208045;
+	bh=nUfO/4sM6pzkEdxw1r4fnsczKnElt5o/172FhEMtFi8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=bH2s0kKECEKY6U99jx884uBUpo3Q051h3RVLq+R/L3ikTnWpRuRLBCvf8fCO5JFQg
-	 /sxpFthduPxXSBx8d96LRYwv64W4247TA94RUJxmMZm48Ampsoker61QJVdDLazAra
-	 av5YdAlKaO5JJ7cWif5660MFrb4CdW6b6p0NN4XU=
+	b=Ytph8qbns8IhCuEeOINEVmiW25rqK0D9g9hk5NRqAOWfXmbYMWJN9ixVQ81XoaEts
+	 q640iJz3RXpbLtQaTRfSvhiwDQZ8w76k39QfFv+G0ieP0uiciJSgxAgk+ZaB83DH5u
+	 sFYb77F+GZ+IdNInXim3aEqD6QUH68yrkmeaTliA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Ian Abbott <abbotti@mev.co.uk>,
-	stable <stable@kernel.org>
-Subject: [PATCH 6.6 520/587] comedi: Make insn_rw_emulate_bits() do insn->n samples
+	Zheng Qixing <zhengqixing@huawei.com>,
+	Yu Kuai <yukuai3@huawei.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.16 385/457] md: add helper rdev_needs_recovery()
 Date: Tue, 26 Aug 2025 13:11:09 +0200
-Message-ID: <20250826111006.224679468@linuxfoundation.org>
+Message-ID: <20250826110946.813615792@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250826110952.942403671@linuxfoundation.org>
-References: <20250826110952.942403671@linuxfoundation.org>
+In-Reply-To: <20250826110937.289866482@linuxfoundation.org>
+References: <20250826110937.289866482@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,87 +62,76 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.16-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Ian Abbott <abbotti@mev.co.uk>
+From: Zheng Qixing <zhengqixing@huawei.com>
 
-commit 7afba9221f70d4cbce0f417c558879cba0eb5e66 upstream.
+[ Upstream commit cb0780ad4333040a98e10f014b593ef738a3f31e ]
 
-The `insn_rw_emulate_bits()` function is used as a default handler for
-`INSN_READ` instructions for subdevices that have a handler for
-`INSN_BITS` but not for `INSN_READ`.  Similarly, it is used as a default
-handler for `INSN_WRITE` instructions for subdevices that have a handler
-for `INSN_BITS` but not for `INSN_WRITE`. It works by emulating the
-`INSN_READ` or `INSN_WRITE` instruction handling with a constructed
-`INSN_BITS` instruction.  However, `INSN_READ` and `INSN_WRITE`
-instructions are supposed to be able read or write multiple samples,
-indicated by the `insn->n` value, but `insn_rw_emulate_bits()` currently
-only handles a single sample.  For `INSN_READ`, the comedi core will
-copy `insn->n` samples back to user-space.  (That triggered KASAN
-kernel-infoleak errors when `insn->n` was greater than 1, but that is
-being fixed more generally elsewhere in the comedi core.)
+Add a helper for checking if an rdev needs recovery.
 
-Make `insn_rw_emulate_bits()` either handle `insn->n` samples, or return
-an error, to conform to the general expectation for `INSN_READ` and
-`INSN_WRITE` handlers.
-
-Fixes: ed9eccbe8970 ("Staging: add comedi core")
-Cc: stable <stable@kernel.org> # 5.13+
-Signed-off-by: Ian Abbott <abbotti@mev.co.uk>
-Link: https://lore.kernel.org/r/20250725141034.87297-1-abbotti@mev.co.uk
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Signed-off-by: Zheng Qixing <zhengqixing@huawei.com>
+Link: https://lore.kernel.org/linux-raid/20250816002534.1754356-2-zhengqixing@huaweicloud.com
+Signed-off-by: Yu Kuai <yukuai3@huawei.com>
+Stable-dep-of: b7ee30f0efd1 ("md: fix sync_action incorrect display during resync")
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/comedi/drivers.c |   25 +++++++++++++------------
- 1 file changed, 13 insertions(+), 12 deletions(-)
+ drivers/md/md.c | 23 ++++++++++++-----------
+ 1 file changed, 12 insertions(+), 11 deletions(-)
 
---- a/drivers/comedi/drivers.c
-+++ b/drivers/comedi/drivers.c
-@@ -619,11 +619,9 @@ static int insn_rw_emulate_bits(struct c
- 	unsigned int chan = CR_CHAN(insn->chanspec);
- 	unsigned int base_chan = (chan < 32) ? 0 : chan;
- 	unsigned int _data[2];
-+	unsigned int i;
- 	int ret;
+diff --git a/drivers/md/md.c b/drivers/md/md.c
+index 80470bcf4383..0348b5f3adc5 100644
+--- a/drivers/md/md.c
++++ b/drivers/md/md.c
+@@ -4822,6 +4822,15 @@ metadata_store(struct mddev *mddev, const char *buf, size_t len)
+ static struct md_sysfs_entry md_metadata =
+ __ATTR_PREALLOC(metadata_version, S_IRUGO|S_IWUSR, metadata_show, metadata_store);
  
--	if (insn->n == 0)
--		return 0;
--
- 	memset(_data, 0, sizeof(_data));
- 	memset(&_insn, 0, sizeof(_insn));
- 	_insn.insn = INSN_BITS;
-@@ -634,18 +632,21 @@ static int insn_rw_emulate_bits(struct c
- 	if (insn->insn == INSN_WRITE) {
- 		if (!(s->subdev_flags & SDF_WRITABLE))
- 			return -EINVAL;
--		_data[0] = 1U << (chan - base_chan);		     /* mask */
--		_data[1] = data[0] ? (1U << (chan - base_chan)) : 0; /* bits */
-+		_data[0] = 1U << (chan - base_chan);		/* mask */
- 	}
-+	for (i = 0; i < insn->n; i++) {
-+		if (insn->insn == INSN_WRITE)
-+			_data[1] = data[i] ? _data[0] : 0;	/* bits */
++static bool rdev_needs_recovery(struct md_rdev *rdev, sector_t sectors)
++{
++	return rdev->raid_disk >= 0 &&
++	       !test_bit(Journal, &rdev->flags) &&
++	       !test_bit(Faulty, &rdev->flags) &&
++	       !test_bit(In_sync, &rdev->flags) &&
++	       rdev->recovery_offset < sectors;
++}
 +
-+		ret = s->insn_bits(dev, s, &_insn, _data);
-+		if (ret < 0)
-+			return ret;
+ enum sync_action md_sync_action(struct mddev *mddev)
+ {
+ 	unsigned long recovery = mddev->recovery;
+@@ -8959,11 +8968,7 @@ static sector_t md_sync_position(struct mddev *mddev, enum sync_action action)
+ 		start = MaxSector;
+ 		rcu_read_lock();
+ 		rdev_for_each_rcu(rdev, mddev)
+-			if (rdev->raid_disk >= 0 &&
+-			    !test_bit(Journal, &rdev->flags) &&
+-			    !test_bit(Faulty, &rdev->flags) &&
+-			    !test_bit(In_sync, &rdev->flags) &&
+-			    rdev->recovery_offset < start)
++			if (rdev_needs_recovery(rdev, start))
+ 				start = rdev->recovery_offset;
+ 		rcu_read_unlock();
  
--	ret = s->insn_bits(dev, s, &_insn, _data);
--	if (ret < 0)
--		return ret;
--
--	if (insn->insn == INSN_READ)
--		data[0] = (_data[1] >> (chan - base_chan)) & 1;
-+		if (insn->insn == INSN_READ)
-+			data[i] = (_data[1] >> (chan - base_chan)) & 1;
-+	}
- 
--	return 1;
-+	return insn->n;
- }
- 
- static int __comedi_device_postconfig_async(struct comedi_device *dev,
+@@ -9322,12 +9327,8 @@ void md_do_sync(struct md_thread *thread)
+ 			    test_bit(MD_RECOVERY_RECOVER, &mddev->recovery)) {
+ 				rcu_read_lock();
+ 				rdev_for_each_rcu(rdev, mddev)
+-					if (rdev->raid_disk >= 0 &&
+-					    mddev->delta_disks >= 0 &&
+-					    !test_bit(Journal, &rdev->flags) &&
+-					    !test_bit(Faulty, &rdev->flags) &&
+-					    !test_bit(In_sync, &rdev->flags) &&
+-					    rdev->recovery_offset < mddev->curr_resync)
++					if (mddev->delta_disks >= 0 &&
++					    rdev_needs_recovery(rdev, mddev->curr_resync))
+ 						rdev->recovery_offset = mddev->curr_resync;
+ 				rcu_read_unlock();
+ 			}
+-- 
+2.50.1
+
 
 
 
