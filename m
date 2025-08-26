@@ -1,58 +1,56 @@
-Return-Path: <stable+bounces-174524-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-176101-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4321BB3638E
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 15:31:09 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id E1E63B36C13
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 16:52:28 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id D526A1BC6224
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 13:25:35 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 3FA4C583D85
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 14:36:22 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7A6F83376BD;
-	Tue, 26 Aug 2025 13:23:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 61ACE35E4F8;
+	Tue, 26 Aug 2025 14:33:06 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="hniNYROn"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="GHPzkhw6"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 37DDD393DF2;
-	Tue, 26 Aug 2025 13:23:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1F898352FDB;
+	Tue, 26 Aug 2025 14:33:06 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756214620; cv=none; b=iLznqHAIG5V8uS7fm9u3e1iRtiYcmhh4vtSCvL9jMiFDZ1hBsDEhajCs8VeNwqAujlO8ljNEjBtYEQUy2s59VF3NpCEb4NVV4zS1KAiYdL1x8PHu909j2G9o1eWGI/rCNP3zWMu245uesuZa+EV/z63LTZv0jN4JyP3nCi9QIsM=
+	t=1756218786; cv=none; b=LXQjFRCmBSCWuFQ9fZZp2b/riZOwDaRdKpipTdmFgFwZWjrxdUnB2+NXkb1s8RxjFZ/aP8qZS9rfVNdm8l0RH0N4aNlhJzVLOpTiV4MOZ+w9XetjJ1e2KlHNOgwmYpCINO1pSt6I6ssj+6teHiFzowgs53puSthK1lsbb1Hk1kA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756214620; c=relaxed/simple;
-	bh=2fSK2hovzdtTbBXY4m+AIwwcB8BvMH5rikBKQDH86p0=;
+	s=arc-20240116; t=1756218786; c=relaxed/simple;
+	bh=DJZRV0Yc/k1NOjqilRpNzGyNkuKZ7PRSkLpwV9OVRs4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=ABH6zXlHaItIBbA38Yt9UPUBhZJXbbj8ZfOoRx2/34X5eZY1pQ2goqY9jcd26V475ptbkJj94jxDZFGv2pydD5UX+6KRrnrzXyc22W8W++BLZZjHOKcLB7an/Q5X/KmLcFd4k3+C1sWp3y8JfMS4wIYwjVsSEprck99zhJgwafk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=hniNYROn; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id BED7DC4CEF1;
-	Tue, 26 Aug 2025 13:23:39 +0000 (UTC)
+	 MIME-Version; b=WqcDeTrC51xhQMsfcKyFtFi/4CcIAcQjNZciyLwio8sRfg1ABZvojJrq0u3P2yrN6EFYrFQzn7rs44Rh9JdX7dodbkCQ9u77idf1msiFBNaNy4OwyoxpHY7Nk2TYvY7QYhPoJpCp37bKBuRPLBdj90D30m/siQ81t6ONpIp3C0k=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=GHPzkhw6; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9AF65C4CEF1;
+	Tue, 26 Aug 2025 14:33:05 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1756214620;
-	bh=2fSK2hovzdtTbBXY4m+AIwwcB8BvMH5rikBKQDH86p0=;
+	s=korg; t=1756218786;
+	bh=DJZRV0Yc/k1NOjqilRpNzGyNkuKZ7PRSkLpwV9OVRs4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=hniNYROnjx6u6dbFli6VrS2guwMjWHrpZV3yCMnCUScishJ7ksasHe5J1+3lchoj+
-	 b3h9FX+zogd10lS/M8HqO6juZlHMO4SofkrW+agNQbm8O5daGIu1Q3yjtwPUXXYxQa
-	 rWuycHYnci888VQcrAC1UfF5NXHWhgx9yIiqJSYA=
+	b=GHPzkhw6P1735GXY6MZmbUx51Qswds/oKCNPJMvu+4IORC4lKntFP/U8Z3MSru9ZM
+	 o2yZfi9pjz/xdkFAjr/ng3wLayQzAt6g/U8GIEIs4RLzdCXx4/Knch002YxBL859pm
+	 OoaaTJ+/GOijD+0EiFLiwy49LE8lQYhZHQ1G0Y2M=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	chenchangcheng <chenchangcheng@kylinos.cn>,
-	Ricardo Ribalda <ribalda@chromium.org>,
-	Laurent Pinchart <laurent.pinchart@ideasonboard.com>,
-	Hans Verkuil <hverkuil@xs4all.nl>,
+	Brian Masney <bmasney@redhat.com>,
+	Alexandre Belloni <alexandre.belloni@bootlin.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 206/482] media: uvcvideo: Fix bandwidth issue for Alcor camera
+Subject: [PATCH 5.4 133/403] rtc: pcf8563: fix incorrect maximum clock rate handling
 Date: Tue, 26 Aug 2025 13:07:39 +0200
-Message-ID: <20250826110935.875169670@linuxfoundation.org>
+Message-ID: <20250826110910.416716288@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250826110930.769259449@linuxfoundation.org>
-References: <20250826110930.769259449@linuxfoundation.org>
+In-Reply-To: <20250826110905.607690791@linuxfoundation.org>
+References: <20250826110905.607690791@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,54 +62,42 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+5.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: chenchangcheng <chenchangcheng@kylinos.cn>
+From: Brian Masney <bmasney@redhat.com>
 
-[ Upstream commit 9764401bf6f8a20eb11c2e78470f20fee91a9ea7 ]
+[ Upstream commit 906726a5efeefe0ef0103ccff5312a09080c04ae ]
 
-Some broken device return wrong dwMaxPayloadTransferSize fields as
-follows:
+When pcf8563_clkout_round_rate() is called with a requested rate higher
+than the highest supported rate, it currently returns 0, which disables
+the clock. According to the clk API, round_rate() should instead return
+the highest supported rate. Update the function to return the maximum
+supported rate in this case.
 
-[  218.632537] uvcvideo: Device requested 2752512 B/frame bandwidth.
-[  218.632598] uvcvideo: No fast enough alt setting for requested bandwidth.
-
-When dwMaxPayloadTransferSize is greater than maxpsize, it will prevent
-the camera from starting. So use the bandwidth of maxpsize.
-
-Signed-off-by: chenchangcheng <chenchangcheng@kylinos.cn>
-Reviewed-by: Ricardo Ribalda <ribalda@chromium.org>
-Reviewed-by: Laurent Pinchart <laurent.pinchart@ideasonboard.com>
-Link: https://lore.kernel.org/r/20250510061803.811433-1-ccc194101@163.com
-Signed-off-by: Laurent Pinchart <laurent.pinchart@ideasonboard.com>
-Signed-off-by: Hans Verkuil <hverkuil@xs4all.nl>
+Fixes: a39a6405d5f94 ("rtc: pcf8563: add CLKOUT to common clock framework")
+Signed-off-by: Brian Masney <bmasney@redhat.com>
+Link: https://lore.kernel.org/r/20250710-rtc-clk-round-rate-v1-5-33140bb2278e@redhat.com
+Signed-off-by: Alexandre Belloni <alexandre.belloni@bootlin.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/media/usb/uvc/uvc_video.c | 9 +++++++++
- 1 file changed, 9 insertions(+)
+ drivers/rtc/rtc-pcf8563.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/media/usb/uvc/uvc_video.c b/drivers/media/usb/uvc/uvc_video.c
-index aa0a879a9c64..29efccd5aa09 100644
---- a/drivers/media/usb/uvc/uvc_video.c
-+++ b/drivers/media/usb/uvc/uvc_video.c
-@@ -234,6 +234,15 @@ static void uvc_fixup_video_ctrl(struct uvc_streaming *stream,
+diff --git a/drivers/rtc/rtc-pcf8563.c b/drivers/rtc/rtc-pcf8563.c
+index 24baa4767b11..9e4fdfe9d86a 100644
+--- a/drivers/rtc/rtc-pcf8563.c
++++ b/drivers/rtc/rtc-pcf8563.c
+@@ -421,7 +421,7 @@ static long pcf8563_clkout_round_rate(struct clk_hw *hw, unsigned long rate,
+ 		if (clkout_rates[i] <= rate)
+ 			return clkout_rates[i];
  
- 		ctrl->dwMaxPayloadTransferSize = bandwidth;
- 	}
-+
-+	if (stream->intf->num_altsetting > 1 &&
-+	    ctrl->dwMaxPayloadTransferSize > stream->maxpsize) {
-+		dev_warn_ratelimited(&stream->intf->dev,
-+				     "UVC non compliance: the max payload transmission size (%u) exceeds the size of the ep max packet (%u). Using the max size.\n",
-+				     ctrl->dwMaxPayloadTransferSize,
-+				     stream->maxpsize);
-+		ctrl->dwMaxPayloadTransferSize = stream->maxpsize;
-+	}
+-	return 0;
++	return clkout_rates[0];
  }
  
- static size_t uvc_video_ctrl_size(struct uvc_streaming *stream)
+ static int pcf8563_clkout_set_rate(struct clk_hw *hw, unsigned long rate,
 -- 
 2.39.5
 
