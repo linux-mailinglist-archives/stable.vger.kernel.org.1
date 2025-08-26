@@ -1,58 +1,56 @@
-Return-Path: <stable+bounces-175659-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-173411-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id B6832B369A6
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 16:28:56 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 96189B35DB2
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 13:47:22 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id C0C875846CF
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 14:16:14 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id C7F6E3677AE
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 11:37:50 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 84206353366;
-	Tue, 26 Aug 2025 14:13:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 32EC732142D;
+	Tue, 26 Aug 2025 11:36:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="XAMPsjQL"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="a9/XmEj9"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 407E0343D63;
-	Tue, 26 Aug 2025 14:13:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E3D9D2BEC34;
+	Tue, 26 Aug 2025 11:36:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756217630; cv=none; b=C7p2ysh+ezK7Yn7zma7cZzHxE3JekGSMj051K2x5eF/+2hM8KE15+tUSDt5q2knEZe7YnFrEDXzdanYRMTa93G6nqqCdZsDme4xaDBo+hvTn/vvdUe90MOkXVnETvu/MRpCp4POe39HsOCJgA5c0JX4STieZwWnGcP4OoWqhRLk=
+	t=1756208179; cv=none; b=MnowbuvsVJ01T1z0cPJui6NAUxW1YMN4iIJ6BzwhezfPjGRds3LqX2Q2ZU8GiM0qygmY2Dg4YF91BXc+KA2L1OST1Mo9idM7P5y75MZJEPrhAaU2SXpoQv7BTGOFL3oEDG4ON6uGk+RB5X44d65retfJKv5RDJl9V8e5X1vm2hQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756217630; c=relaxed/simple;
-	bh=XnaBzZC0pGIJ8zoOAjZssTabaJJ1TO7qveUcuhSzROM=;
+	s=arc-20240116; t=1756208179; c=relaxed/simple;
+	bh=KHR+mUHy2di2bVh/izGch6c7PWhgLDEevpTdzd/98yo=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=dFKVZvXiuyK1Sq2f5KOkWCMkKkLWqBg1wiHousiURlI/Thm1WwjsXwrW5AqIwzN6nh3d5/V+2YPQ1ZpCQrQpqVIY05ENO3/q+e1tp9bXEuPYtZWnRsPotekZAonY4w8uFtQ7GtYZ2EmyZA7h1NlgctrH4RwQqrYlxKEtdbMYw+Q=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=XAMPsjQL; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C8285C4CEF1;
-	Tue, 26 Aug 2025 14:13:49 +0000 (UTC)
+	 MIME-Version; b=OAwa1CKYriKmDpk/hc7AVcDl1nxg1hz6ehWN676uA+JEYdbnYTCNkCfPlcjnNzoA5cdrWjVRf2+Xb0g+wVTSvm6e7TtoEhvlsov81o9lNhCCujsfYToQ0hS9NL+x+zkHjz59gJaESJ1s7mstcHP9jiUW0i9ECqmAPc1OKLfUrqo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=a9/XmEj9; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6BE56C4CEF1;
+	Tue, 26 Aug 2025 11:36:18 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1756217630;
-	bh=XnaBzZC0pGIJ8zoOAjZssTabaJJ1TO7qveUcuhSzROM=;
+	s=korg; t=1756208178;
+	bh=KHR+mUHy2di2bVh/izGch6c7PWhgLDEevpTdzd/98yo=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=XAMPsjQLEV21pCx6Qjj8/d1ZL0uOog9mOCrr8J1FduG6VVZ1uviEj4bkxHMnwihq8
-	 A/L0+qSXTswgj8F2xRxJ7JfdM06DdK363AW+o5fStLot9TYBA3nKGgpGXJgn2qEOo4
-	 Lh3nfesa4neDj0tbvv9qR01tIF5wQiTQWyNCiwz4=
+	b=a9/XmEj9sjLJrfEWw5nS0B1KxNs3GyfQCtXdUH8ZeC62fDmk2dZtgMpbAz+LXPMUv
+	 SeKk/VZNBpO4dxyIm0tPXsymjdqZ1BpeHz5WXCsWRQzsdVtx8bbK/DZJPWsS2NcAcM
+	 Yj1VLPz2DUYVEE6aifwNvrgwZZZMYJmxFd074/d4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Sarah Newman <srn@prgmr.com>,
-	Lars Ellenberg <lars@linbit.com>,
-	=?UTF-8?q?Christoph=20B=C3=B6hmwalder?= <christoph.boehmwalder@linbit.com>,
-	Jens Axboe <axboe@kernel.dk>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 216/523] drbd: add missing kref_get in handle_write_conflicts
-Date: Tue, 26 Aug 2025 13:07:06 +0200
-Message-ID: <20250826110929.791052651@linuxfoundation.org>
+	Neil Armstrong <neil.armstrong@linaro.org>,
+	Johan Hovold <johan@kernel.org>,
+	Martin Blumenstingl <martin.blumenstingl@googlemail.com>
+Subject: [PATCH 6.12 012/322] usb: dwc3: meson-g12a: fix device leaks at unbind
+Date: Tue, 26 Aug 2025 13:07:07 +0200
+Message-ID: <20250826110915.537898126@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250826110924.562212281@linuxfoundation.org>
-References: <20250826110924.562212281@linuxfoundation.org>
+In-Reply-To: <20250826110915.169062587@linuxfoundation.org>
+References: <20250826110915.169062587@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,70 +60,42 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Sarah Newman <srn@prgmr.com>
+From: Johan Hovold <johan@kernel.org>
 
-[ Upstream commit 00c9c9628b49e368d140cfa61d7df9b8922ec2a8 ]
+commit 93b400f4951404d040197943a25d6fef9f8ccabb upstream.
 
-With `two-primaries` enabled, DRBD tries to detect "concurrent" writes
-and handle write conflicts, so that even if you write to the same sector
-simultaneously on both nodes, they end up with the identical data once
-the writes are completed.
+Make sure to drop the references taken to the child devices by
+of_find_device_by_node() during probe on driver unbind.
 
-In handling "superseeded" writes, we forgot a kref_get,
-resulting in a premature drbd_destroy_device and use after free,
-and further to kernel crashes with symptoms.
-
-Relevance: No one should use DRBD as a random data generator, and apparently
-all users of "two-primaries" handle concurrent writes correctly on layer up.
-That is cluster file systems use some distributed lock manager,
-and live migration in virtualization environments stops writes on one node
-before starting writes on the other node.
-
-Which means that other than for "test cases",
-this code path is never taken in real life.
-
-FYI, in DRBD 9, things are handled differently nowadays.  We still detect
-"write conflicts", but no longer try to be smart about them.
-We decided to disconnect hard instead: upper layers must not submit concurrent
-writes. If they do, that's their fault.
-
-Signed-off-by: Sarah Newman <srn@prgmr.com>
-Signed-off-by: Lars Ellenberg <lars@linbit.com>
-Signed-off-by: Christoph Böhmwalder <christoph.boehmwalder@linbit.com>
-Link: https://lore.kernel.org/r/20250627095728.800688-1-christoph.boehmwalder@linbit.com
-Signed-off-by: Jens Axboe <axboe@kernel.dk>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Fixes: c99993376f72 ("usb: dwc3: Add Amlogic G12A DWC3 glue")
+Cc: stable@vger.kernel.org	# 5.2
+Cc: Neil Armstrong <neil.armstrong@linaro.org>
+Signed-off-by: Johan Hovold <johan@kernel.org>
+Reviewed-by: Martin Blumenstingl <martin.blumenstingl@googlemail.com>
+Link: https://lore.kernel.org/r/20250724091910.21092-3-johan@kernel.org
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/block/drbd/drbd_receiver.c | 6 +++++-
- 1 file changed, 5 insertions(+), 1 deletion(-)
+ drivers/usb/dwc3/dwc3-meson-g12a.c |    3 +++
+ 1 file changed, 3 insertions(+)
 
-diff --git a/drivers/block/drbd/drbd_receiver.c b/drivers/block/drbd/drbd_receiver.c
-index 405e09575f08..b4d4e4a41b08 100644
---- a/drivers/block/drbd/drbd_receiver.c
-+++ b/drivers/block/drbd/drbd_receiver.c
-@@ -2532,7 +2532,11 @@ static int handle_write_conflicts(struct drbd_device *device,
- 			peer_req->w.cb = superseded ? e_send_superseded :
- 						   e_send_retry_write;
- 			list_add_tail(&peer_req->w.list, &device->done_ee);
--			queue_work(connection->ack_sender, &peer_req->peer_device->send_acks_work);
-+			/* put is in drbd_send_acks_wf() */
-+			kref_get(&device->kref);
-+			if (!queue_work(connection->ack_sender,
-+					&peer_req->peer_device->send_acks_work))
-+				kref_put(&device->kref, drbd_destroy_device);
+--- a/drivers/usb/dwc3/dwc3-meson-g12a.c
++++ b/drivers/usb/dwc3/dwc3-meson-g12a.c
+@@ -837,6 +837,9 @@ static void dwc3_meson_g12a_remove(struc
  
- 			err = -ENOENT;
- 			goto out;
--- 
-2.39.5
-
+ 	usb_role_switch_unregister(priv->role_switch);
+ 
++	put_device(priv->switch_desc.udc);
++	put_device(priv->switch_desc.usb2_port);
++
+ 	of_platform_depopulate(dev);
+ 
+ 	for (i = 0 ; i < PHY_COUNT ; ++i) {
 
 
 
