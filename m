@@ -1,59 +1,56 @@
-Return-Path: <stable+bounces-173307-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-174231-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 23151B35D25
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 13:41:36 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 36EE1B36233
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 15:16:48 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 13A8B460C2E
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 11:34:03 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 4181E16275F
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 13:11:13 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8D13434A30C;
-	Tue, 26 Aug 2025 11:31:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 62E062BE058;
+	Tue, 26 Aug 2025 13:10:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="c8Y9+16U"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="VaK4yIoh"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4B19D2BE653;
-	Tue, 26 Aug 2025 11:31:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 215CD252904;
+	Tue, 26 Aug 2025 13:10:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756207908; cv=none; b=IKW3H0U9yGGNtez6Nfi9db84hO6I69xH3T9ttWyH6UiWMU1Yzd7z6iwDydkAwHuoNzFsc2CJdCb/Nk+mp6cCmYP/JLVNQhsE9fFjLOqdDSvXWDIN0eAys4Mq9lzfk9PEUQ1G6YUkUYUxEk5XrmU7JbeB21j0Gi0oRkEtzZh0eRg=
+	t=1756213841; cv=none; b=Fu/mPpp1bS1N/yTlKa8izAYG3M24tUHpaZJGFOOMrmfvUZkUGYi8if1XXNcR1qATmkL8BaLFx5vVgcGJJFZExYaj2bkY0HdqiJLQnWAO69Nn2bs2GNHv6ifZWvnsLCGb0cFt6VYmHWLUsfB9eJrZJEEeTApWLW3QY9ElvwqHErY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756207908; c=relaxed/simple;
-	bh=qhLlmRlpUoLijS70Gpf0fLyHP5ksweq4vOgqo9O9FHo=;
+	s=arc-20240116; t=1756213841; c=relaxed/simple;
+	bh=hOBhgce1DeCTO0lhHdheeoiBXAtuvzeEkaj0tfymgH4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=KeUwD07b+bzbMfcW6iSGY/SZcbWqf3NMC/ScFvFaZBgqab4clqFQqCpXXbey9s2jCMbeAhcWM6efkguBVdttyCl8S8EGPiKU8kxAib6N97/FRh1ckp7gTmJe70Nplee3vbs1TNRogUtSaKVYg076Cmrusx/J9IYrHMVhvDa8/Sc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=c8Y9+16U; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 85D92C4CEF1;
-	Tue, 26 Aug 2025 11:31:47 +0000 (UTC)
+	 MIME-Version; b=UbN26PAZDOIL28khvOdyBxyD+IyhZz8aYWtPgjpMEVdV4wgM0+2zCu1cDoap2Htq1eP6reS4jfgCiZ19yJk9AV9Naw7e+/v+kbjomG7LRgo2dLi9NaVWTgYB0glvtvb8FfXmGPzYDjivu4odvAki2z2Q/iJpgy8jWvkfUb1VeoI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=VaK4yIoh; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A6CB6C4CEF1;
+	Tue, 26 Aug 2025 13:10:40 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1756207907;
-	bh=qhLlmRlpUoLijS70Gpf0fLyHP5ksweq4vOgqo9O9FHo=;
+	s=korg; t=1756213841;
+	bh=hOBhgce1DeCTO0lhHdheeoiBXAtuvzeEkaj0tfymgH4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=c8Y9+16UPDv+trMD1Fc27ldGl07Tv6vTVRUR9p1dQaedZN7i+84ZOjzOUfpcIjXEf
-	 +moClOB2bNeBb1VkgJ0SuwEE1uQSVNoGxjqTdfCLdS0uaUq73SmMvogo/AT3VFGuLQ
-	 WgfW7aC4VcpsQTCJWIyz/zWUN9N0GhOpz2JDlmXw=
+	b=VaK4yIohM3qWYrX3U9X0Rc8WhSc2N3YLbeLmcZvIxnzvw4MXATM90zDr/oHFYZcsl
+	 gLtWDjmxRPz3HFihxA1Y6o8S+CSqgzV7dSNmtuorqY2IX3Jdv8IBdB8VPpR9tulvY0
+	 SP3HkxuLy/vPzvDqlyC/IEseMSnEB2TkWDWG5HIU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Anantha Prabhu <anantha.prabhu@broadcom.com>,
-	Saravanan Vajravel <saravanan.vajravel@broadcom.com>,
-	Selvin Xavier <selvin.xavier@broadcom.com>,
-	Kalesh AP <kalesh-anakkur.purayil@broadcom.com>,
-	Leon Romanovsky <leon@kernel.org>,
+	Ranjan Kumar <ranjan.kumar@broadcom.com>,
+	"Martin K. Petersen" <martin.petersen@oracle.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.16 364/457] RDMA/bnxt_re: Fix to initialize the PBL array
+Subject: [PATCH 6.6 499/587] scsi: mpi3mr: Serialize admin queue BAR writes on 32-bit systems
 Date: Tue, 26 Aug 2025 13:10:48 +0200
-Message-ID: <20250826110946.304386758@linuxfoundation.org>
+Message-ID: <20250826111005.678674546@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250826110937.289866482@linuxfoundation.org>
-References: <20250826110937.289866482@linuxfoundation.org>
+In-Reply-To: <20250826110952.942403671@linuxfoundation.org>
+References: <20250826110952.942403671@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -65,52 +62,106 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.16-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Anantha Prabhu <anantha.prabhu@broadcom.com>
+From: Ranjan Kumar <ranjan.kumar@broadcom.com>
 
-[ Upstream commit 806b9f494f62791ee6d68f515a8056c615a0e7b2 ]
+[ Upstream commit c91e140c82eb58724c435f623702e51cc7896646 ]
 
-memset the PBL page pointer and page map arrays before
-populating the SGL addresses of the HWQ.
+On 32-bit systems, 64-bit BAR writes to admin queue registers are
+performed as two 32-bit writes. Without locking, this can cause partial
+writes when accessed concurrently.
 
-Fixes: 0c4dcd602817 ("RDMA/bnxt_re: Refactor hardware queue memory allocation")
-Signed-off-by: Anantha Prabhu <anantha.prabhu@broadcom.com>
-Reviewed-by: Saravanan Vajravel <saravanan.vajravel@broadcom.com>
-Reviewed-by: Selvin Xavier <selvin.xavier@broadcom.com>
-Signed-off-by: Kalesh AP <kalesh-anakkur.purayil@broadcom.com>
-Link: https://patch.msgid.link/20250805101000.233310-5-kalesh-anakkur.purayil@broadcom.com
-Signed-off-by: Leon Romanovsky <leon@kernel.org>
+Updated per-queue spinlocks is used to serialize these writes and prevent
+race conditions.
+
+Fixes: 824a156633df ("scsi: mpi3mr: Base driver code")
+Cc: stable@vger.kernel.org
+Signed-off-by: Ranjan Kumar <ranjan.kumar@broadcom.com>
+Link: https://lore.kernel.org/r/20250627194539.48851-4-ranjan.kumar@broadcom.com
+Signed-off-by: Martin K. Petersen <martin.petersen@oracle.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/infiniband/hw/bnxt_re/qplib_res.c | 2 ++
- 1 file changed, 2 insertions(+)
+ drivers/scsi/mpi3mr/mpi3mr.h    |    4 ++++
+ drivers/scsi/mpi3mr/mpi3mr_fw.c |   15 +++++++++++----
+ drivers/scsi/mpi3mr/mpi3mr_os.c |    2 ++
+ 3 files changed, 17 insertions(+), 4 deletions(-)
 
-diff --git a/drivers/infiniband/hw/bnxt_re/qplib_res.c b/drivers/infiniband/hw/bnxt_re/qplib_res.c
-index 6cd05207ffed..cc5c82d96839 100644
---- a/drivers/infiniband/hw/bnxt_re/qplib_res.c
-+++ b/drivers/infiniband/hw/bnxt_re/qplib_res.c
-@@ -121,6 +121,7 @@ static int __alloc_pbl(struct bnxt_qplib_res *res,
- 	pbl->pg_arr = vmalloc_array(pages, sizeof(void *));
- 	if (!pbl->pg_arr)
- 		return -ENOMEM;
-+	memset(pbl->pg_arr, 0, pages * sizeof(void *));
+--- a/drivers/scsi/mpi3mr/mpi3mr.h
++++ b/drivers/scsi/mpi3mr/mpi3mr.h
+@@ -1025,6 +1025,8 @@ struct scmd_priv {
+  * @logdata_buf: Circular buffer to store log data entries
+  * @logdata_buf_idx: Index of entry in buffer to store
+  * @logdata_entry_sz: log data entry size
++ * @adm_req_q_bar_writeq_lock: Admin request queue lock
++ * @adm_reply_q_bar_writeq_lock: Admin reply queue lock
+  * @pend_large_data_sz: Counter to track pending large data
+  * @io_throttle_data_length: I/O size to track in 512b blocks
+  * @io_throttle_high: I/O size to start throttle in 512b blocks
+@@ -1207,6 +1209,8 @@ struct mpi3mr_ioc {
+ 	u8 *logdata_buf;
+ 	u16 logdata_buf_idx;
+ 	u16 logdata_entry_sz;
++	spinlock_t adm_req_q_bar_writeq_lock;
++	spinlock_t adm_reply_q_bar_writeq_lock;
  
- 	pbl->pg_map_arr = vmalloc_array(pages, sizeof(dma_addr_t));
- 	if (!pbl->pg_map_arr) {
-@@ -128,6 +129,7 @@ static int __alloc_pbl(struct bnxt_qplib_res *res,
- 		pbl->pg_arr = NULL;
- 		return -ENOMEM;
- 	}
-+	memset(pbl->pg_map_arr, 0, pages * sizeof(dma_addr_t));
- 	pbl->pg_count = 0;
- 	pbl->pg_size = sginfo->pgsize;
+ 	atomic_t pend_large_data_sz;
+ 	u32 io_throttle_data_length;
+--- a/drivers/scsi/mpi3mr/mpi3mr_fw.c
++++ b/drivers/scsi/mpi3mr/mpi3mr_fw.c
+@@ -23,17 +23,22 @@ module_param(poll_queues, int, 0444);
+ MODULE_PARM_DESC(poll_queues, "Number of queues for io_uring poll mode. (Range 1 - 126)");
  
--- 
-2.50.1
-
+ #if defined(writeq) && defined(CONFIG_64BIT)
+-static inline void mpi3mr_writeq(__u64 b, void __iomem *addr)
++static inline void mpi3mr_writeq(__u64 b, void __iomem *addr,
++	spinlock_t *write_queue_lock)
+ {
+ 	writeq(b, addr);
+ }
+ #else
+-static inline void mpi3mr_writeq(__u64 b, void __iomem *addr)
++static inline void mpi3mr_writeq(__u64 b, void __iomem *addr,
++	spinlock_t *write_queue_lock)
+ {
+ 	__u64 data_out = b;
++	unsigned long flags;
+ 
++	spin_lock_irqsave(write_queue_lock, flags);
+ 	writel((u32)(data_out), addr);
+ 	writel((u32)(data_out >> 32), (addr + 4));
++	spin_unlock_irqrestore(write_queue_lock, flags);
+ }
+ #endif
+ 
+@@ -2666,9 +2671,11 @@ static int mpi3mr_setup_admin_qpair(stru
+ 	    (mrioc->num_admin_req);
+ 	writel(num_admin_entries, &mrioc->sysif_regs->admin_queue_num_entries);
+ 	mpi3mr_writeq(mrioc->admin_req_dma,
+-	    &mrioc->sysif_regs->admin_request_queue_address);
++		&mrioc->sysif_regs->admin_request_queue_address,
++		&mrioc->adm_req_q_bar_writeq_lock);
+ 	mpi3mr_writeq(mrioc->admin_reply_dma,
+-	    &mrioc->sysif_regs->admin_reply_queue_address);
++		&mrioc->sysif_regs->admin_reply_queue_address,
++		&mrioc->adm_reply_q_bar_writeq_lock);
+ 	writel(mrioc->admin_req_pi, &mrioc->sysif_regs->admin_request_queue_pi);
+ 	writel(mrioc->admin_reply_ci, &mrioc->sysif_regs->admin_reply_queue_ci);
+ 	return retval;
+--- a/drivers/scsi/mpi3mr/mpi3mr_os.c
++++ b/drivers/scsi/mpi3mr/mpi3mr_os.c
+@@ -5102,6 +5102,8 @@ mpi3mr_probe(struct pci_dev *pdev, const
+ 	spin_lock_init(&mrioc->tgtdev_lock);
+ 	spin_lock_init(&mrioc->watchdog_lock);
+ 	spin_lock_init(&mrioc->chain_buf_lock);
++	spin_lock_init(&mrioc->adm_req_q_bar_writeq_lock);
++	spin_lock_init(&mrioc->adm_reply_q_bar_writeq_lock);
+ 	spin_lock_init(&mrioc->sas_node_lock);
+ 
+ 	INIT_LIST_HEAD(&mrioc->fwevt_list);
 
 
 
