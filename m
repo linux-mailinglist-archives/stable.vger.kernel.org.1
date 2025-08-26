@@ -1,59 +1,57 @@
-Return-Path: <stable+bounces-175830-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-173582-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 08115B369FE
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 16:33:07 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id EFFC2B35E12
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 13:51:40 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 93C4058620B
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 14:22:27 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id C3BC31BA7BC1
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 11:44:57 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9CBB1352FC5;
-	Tue, 26 Aug 2025 14:21:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 331062BF3E2;
+	Tue, 26 Aug 2025 11:43:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="QSaWHj9A"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="2KHygSOI"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 44F20352FC1;
-	Tue, 26 Aug 2025 14:21:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E2B0A199935;
+	Tue, 26 Aug 2025 11:43:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756218084; cv=none; b=QiQzhmqTFjuugS+Buq6EDIwKhdrDpa5AdzdP+Z6l5a+uGrMBDNqEDs+2ASESfIXak4CiD9Y532FHf1YxnnbKzDNpTisWPgKYgXGHZcO3O17SamMjy97aS86J5e+Cy/Ziua1KdQU6H2trmGbL/1fA49RrnlbX/uUJcHOWZ/YXn2A=
+	t=1756208623; cv=none; b=WLMD6VtZDMiPIwSHKNG2wLqt2ALoXqWfQMV51mfDsVGoPHVXIyfwtVvu3MolQWyNkaMiqirkkSo6/b82ZXmUt1SDMVuA8pb9L6VbpxgXd/j+48iNEUVsJvanZ+Q7TiedfdTfcKe4bFZEN25TH3MTenfyCjNx9e9UVCZPD9XiQJA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756218084; c=relaxed/simple;
-	bh=qXR8XAuHfgrP1IAXewDzkNYGZj9fPLFk+fIjU7bmOJs=;
+	s=arc-20240116; t=1756208623; c=relaxed/simple;
+	bh=nYC8nL4sNFI2sP5w7c03ZEAUxSp3C2z9XTaEMptK+VI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=pS0N9ofP5MjM9Zpadg4ck8fX29mXmL8cUlG6Wo45o7MdLIxZT5XNAxDfM6b3VRx/m3uEhC8Ffz7j2vV8SOrR0s7mkGp5wU6nKDy0kRjooDRjEHy8x5RIYuubIDWvSb6AchsMFJ3O5lAlAtblL/67OpSnUAhnGaLgYM2U/LxvdNI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=QSaWHj9A; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 68B29C16AAE;
-	Tue, 26 Aug 2025 14:21:22 +0000 (UTC)
+	 MIME-Version:Content-Type; b=Nry5LKDhwV+zsQU3jtV0Lz2yb6trRk5uVRsUOWgmcj96GeLkJWzC/gvMDj9zDxnbMwhzbbGGMOiVAAn0zG3yZ2jTnPwBDd+EjN8q6LRfpopLQOegK+t+kmnDoZV2vnRa1+rZ88x7rMMmKGbBgdfBYSFAUJGXRdDLe+5h3IWaFXY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=2KHygSOI; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7D073C4CEF1;
+	Tue, 26 Aug 2025 11:43:42 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1756218082;
-	bh=qXR8XAuHfgrP1IAXewDzkNYGZj9fPLFk+fIjU7bmOJs=;
+	s=korg; t=1756208622;
+	bh=nYC8nL4sNFI2sP5w7c03ZEAUxSp3C2z9XTaEMptK+VI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=QSaWHj9AhIZpKZ+EeLPByx+AnifKvG4TiU9khT20tB2P9xTtlV1Z3RiTrXDHxCvX7
-	 JJ1k+olc7IGtZWWA3rhm7T+IhDP0or/0NpGnm6XuuZrtMEoVm9HiHDV5FZ8yzc89Y+
-	 RTg5lDAV7UGjYEaBrgNYULgDiMKrj7NjOlAdoPDY=
+	b=2KHygSOIvCtygfo/AG21UzDg3F2KPLlibysx/m6QnTmnyBcFpR9iqJxKRsu4ot7vh
+	 f/6XPRX38HMDEET/if3MjBmONb7eOzhF6uVG/88Ts+n4jbq90mpENbcK56Hgsp0JWF
+	 IxXCJDx5opOT5LVDTSk8p4tkizJTrGIKaPwTqCFw=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Gerrard Tai <gerrard.tai@starlabs.sg>,
-	Cong Wang <xiyou.wangcong@gmail.com>,
-	Simon Horman <horms@kernel.org>,
-	Jamal Hadi Salim <jhs@mojatatu.com>,
-	Paolo Abeni <pabeni@redhat.com>,
-	Siddh Raman Pant <siddh.raman.pant@oracle.com>
-Subject: [PATCH 5.10 387/523] sch_drr: make drr_qlen_notify() idempotent
-Date: Tue, 26 Aug 2025 13:09:57 +0200
-Message-ID: <20250826110934.004343773@linuxfoundation.org>
+	=?UTF-8?q?Timur=20Krist=C3=B3f?= <timur.kristof@gmail.com>,
+	Alex Deucher <alexander.deucher@amd.com>,
+	Rodrigo Siqueira <siqueira@igalia.com>,
+	Alex Hung <alex.hung@amd.com>
+Subject: [PATCH 6.12 183/322] drm/amd/display: Fix fractional fb divider in set_pixel_clock_v3
+Date: Tue, 26 Aug 2025 13:09:58 +0200
+Message-ID: <20250826110920.384444661@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250826110924.562212281@linuxfoundation.org>
-References: <20250826110924.562212281@linuxfoundation.org>
+In-Reply-To: <20250826110915.169062587@linuxfoundation.org>
+References: <20250826110915.169062587@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,73 +61,58 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Cong Wang <xiyou.wangcong@gmail.com>
+From: Timur Kristóf <timur.kristof@gmail.com>
 
-commit df008598b3a00be02a8051fde89ca0fbc416bd55 upstream.
+commit 10507478468f165ea681605d133991ed05cdff62 upstream.
 
-drr_qlen_notify() always deletes the DRR class from its active list
-with list_del(), therefore, it is not idempotent and not friendly
-to its callers, like fq_codel_dequeue().
+For later VBIOS versions, the fractional feedback divider is
+calculated as the remainder of dividing the feedback divider by
+a factor, which is set to 1000000. For reference, see:
+- calculate_fb_and_fractional_fb_divider
+- calc_pll_max_vco_construct
 
-Let's make it idempotent to ease qdisc_tree_reduce_backlog() callers'
-life. Also change other list_del()'s to list_del_init() just to be
-extra safe.
+However, in case of old VBIOS versions that have
+set_pixel_clock_v3, they only have 1 byte available for the
+fractional feedback divider, and it's expected to be set to the
+remainder from dividing the feedback divider by 10.
+For reference see the legacy display code:
+- amdgpu_pll_compute
+- amdgpu_atombios_crtc_program_pll
 
-Reported-by: Gerrard Tai <gerrard.tai@starlabs.sg>
-Signed-off-by: Cong Wang <xiyou.wangcong@gmail.com>
-Reviewed-by: Simon Horman <horms@kernel.org>
-Link: https://patch.msgid.link/20250403211033.166059-3-xiyou.wangcong@gmail.com
-Acked-by: Jamal Hadi Salim <jhs@mojatatu.com>
-Signed-off-by: Paolo Abeni <pabeni@redhat.com>
-Signed-off-by: Siddh Raman Pant <siddh.raman.pant@oracle.com>
+This commit fixes set_pixel_clock_v3 by dividing the fractional
+feedback divider passed to the function by 100000.
+
+Fixes: 4562236b3bc0 ("drm/amd/dc: Add dc display driver (v2)")
+Signed-off-by: Timur Kristóf <timur.kristof@gmail.com>
+Acked-by: Alex Deucher <alexander.deucher@amd.com>
+Reviewed-by: Rodrigo Siqueira <siqueira@igalia.com>
+Reviewed-by: Alex Hung <alex.hung@amd.com>
+Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
+(cherry picked from commit 027e7acc7e17802ebf28e1edb88a404836ad50d6)
+Cc: stable@vger.kernel.org
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- net/sched/sch_drr.c |    7 ++++---
- 1 file changed, 4 insertions(+), 3 deletions(-)
+ drivers/gpu/drm/amd/display/dc/bios/command_table.c |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/net/sched/sch_drr.c
-+++ b/net/sched/sch_drr.c
-@@ -111,6 +111,7 @@ static int drr_change_class(struct Qdisc
- 	if (cl == NULL)
- 		return -ENOBUFS;
+--- a/drivers/gpu/drm/amd/display/dc/bios/command_table.c
++++ b/drivers/gpu/drm/amd/display/dc/bios/command_table.c
+@@ -993,7 +993,7 @@ static enum bp_result set_pixel_clock_v3
+ 	allocation.sPCLKInput.usFbDiv =
+ 			cpu_to_le16((uint16_t)bp_params->feedback_divider);
+ 	allocation.sPCLKInput.ucFracFbDiv =
+-			(uint8_t)bp_params->fractional_feedback_divider;
++			(uint8_t)(bp_params->fractional_feedback_divider / 100000);
+ 	allocation.sPCLKInput.ucPostDiv =
+ 			(uint8_t)bp_params->pixel_clock_post_divider;
  
-+	INIT_LIST_HEAD(&cl->alist);
- 	cl->common.classid = classid;
- 	cl->quantum	   = quantum;
- 	cl->qdisc	   = qdisc_create_dflt(sch->dev_queue,
-@@ -234,7 +235,7 @@ static void drr_qlen_notify(struct Qdisc
- {
- 	struct drr_class *cl = (struct drr_class *)arg;
- 
--	list_del(&cl->alist);
-+	list_del_init(&cl->alist);
- }
- 
- static int drr_dump_class(struct Qdisc *sch, unsigned long arg,
-@@ -401,7 +402,7 @@ static struct sk_buff *drr_dequeue(struc
- 			if (unlikely(skb == NULL))
- 				goto out;
- 			if (cl->qdisc->q.qlen == 0)
--				list_del(&cl->alist);
-+				list_del_init(&cl->alist);
- 
- 			bstats_update(&cl->bstats, skb);
- 			qdisc_bstats_update(sch, skb);
-@@ -442,7 +443,7 @@ static void drr_reset_qdisc(struct Qdisc
- 	for (i = 0; i < q->clhash.hashsize; i++) {
- 		hlist_for_each_entry(cl, &q->clhash.hash[i], common.hnode) {
- 			if (cl->qdisc->q.qlen)
--				list_del(&cl->alist);
-+				list_del_init(&cl->alist);
- 			qdisc_reset(cl->qdisc);
- 		}
- 	}
 
 
 
