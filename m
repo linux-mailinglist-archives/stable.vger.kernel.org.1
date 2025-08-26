@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-173966-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-175095-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id D472BB36089
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 15:01:46 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 44A39B36665
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 15:56:44 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 2B9E217B960
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 12:58:57 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 59891565E96
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 13:50:13 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E789D1E5B62;
-	Tue, 26 Aug 2025 12:58:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2C708239E8B;
+	Tue, 26 Aug 2025 13:48:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="GS2rKMg8"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Na32kBnp"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A13F11A5BBC;
-	Tue, 26 Aug 2025 12:58:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D098134DCD2;
+	Tue, 26 Aug 2025 13:48:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756213135; cv=none; b=UNqWCLTmHoYabzweS671gGPa9dv85i0osdNDzjCIOFZZb9WPb6p677RvlxEaEyVBPL3hXxLG9w3YZdsZCIvvVAz7KC5sypYuxzbKLO6/gAP60UtyAY5vgtrd9Fbd9wrh6ZvwG9sOQP8LtMvugEHKFU1qhfou77cAICZDoLcbfzo=
+	t=1756216126; cv=none; b=GIaAnLkbL/l9d5dOlwLGW3lvPtEpk7t/sGQqD5MeRWz0SYEnOLd4yDxmCpZ9AFT5h5Jmiyn3QpMqvmKGEKM+vRgKcZTttb9WUr2osQaOHdWFCE9BYlYdvtHMXqZXplqqpNtB8l93gHs/45OyuI9XAXlcp7PMHdYyWEQnD4I+2xk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756213135; c=relaxed/simple;
-	bh=c2zv+YD1gV8Y2i2b5hfqWBadwhwqmVcCpo11t3W9OyM=;
+	s=arc-20240116; t=1756216126; c=relaxed/simple;
+	bh=thAw4G5zxeJWY6eIdnQyacWHS9CC6gSydX0i+eGzOus=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=qLfjX+inQ9b4sBg6f4046rmvuHo9DLmTt6n8FI8ekf21byM5C75Hh8X89f+EH5h2jjavOEXGMK7fMdvECYKjNBlahy5xwzo0JHuxmhQV/I7odw2TtegjRL6V2B/g5aw9agOV6Ba7vdQVyldx4WbbH17DL+jkdRTTKllOPvS3kCc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=GS2rKMg8; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D35D0C4CEF1;
-	Tue, 26 Aug 2025 12:58:54 +0000 (UTC)
+	 MIME-Version; b=I47kfhxESx12/L7iMSAVwPo3wEtHPm88655Hroh+6DQ7v1vtpj7Vnj9kaaNNA2uYPCU4LtoWhiOmGPzeuzHZESjlphB+65bQvNPaZuFHkUwdOPv3WE2zYkbdua3ipe6t2UW1F2UqkanCxt2SAdb9htjMuxnhwQ0ThR8qvTzLy0M=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Na32kBnp; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5FD2AC4CEF1;
+	Tue, 26 Aug 2025 13:48:46 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1756213135;
-	bh=c2zv+YD1gV8Y2i2b5hfqWBadwhwqmVcCpo11t3W9OyM=;
+	s=korg; t=1756216126;
+	bh=thAw4G5zxeJWY6eIdnQyacWHS9CC6gSydX0i+eGzOus=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=GS2rKMg8HJbOyRaeQLFeKEZ/mPw7UMcA8gpPvDgi9pEq1t0AceA2uuc2KsG5j2gY0
-	 tPWwQDlxYtbo1ZNgDo7Yc2kxYtnQqbj1hd6N0q9uupaMiH/Nei2rBsO+XYLIXunoO5
-	 DodnZbS45kYSOCVSY2OMrBvS1oDRIdbamMlJOg58=
+	b=Na32kBnpf/nBLzERlutknO8anntk+QvNZFDyFv5P2ThlwWJYhiBZfvQH7MtTSWWAy
+	 UH3j1Odv83jCXnhIkw4SOQs2wXi9P6I80rlJ1ZnXqsTfDzVhYix5I4rPJiEW4WX5Cd
+	 JnRBNqW4061RfYOj62ZITgzHkWm9Co+ve/205pJg=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	syzbot+6e516bb515d93230bc7b@syzkaller.appspotmail.com,
-	Lizhi Xu <lizhi.xu@windriver.com>,
-	Dave Kleikamp <dave.kleikamp@oracle.com>,
+	Wei Gao <wegao@suse.com>,
+	Jan Kara <jack@suse.cz>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 235/587] jfs: truncate good inode pages when hard link is 0
+Subject: [PATCH 5.15 293/644] ext2: Handle fiemap on empty files to prevent EINVAL
 Date: Tue, 26 Aug 2025 13:06:24 +0200
-Message-ID: <20250826110958.912213301@linuxfoundation.org>
+Message-ID: <20250826110953.643499249@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250826110952.942403671@linuxfoundation.org>
-References: <20250826110952.942403671@linuxfoundation.org>
+In-Reply-To: <20250826110946.507083938@linuxfoundation.org>
+References: <20250826110946.507083938@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,43 +62,53 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Lizhi Xu <lizhi.xu@windriver.com>
+From: Wei Gao <wegao@suse.com>
 
-[ Upstream commit 2d91b3765cd05016335cd5df5e5c6a29708ec058 ]
+[ Upstream commit a099b09a3342a0b28ea330e405501b5b4d0424b4 ]
 
-The fileset value of the inode copy from the disk by the reproducer is
-AGGR_RESERVED_I. When executing evict, its hard link number is 0, so its
-inode pages are not truncated. This causes the bugon to be triggered when
-executing clear_inode() because nrpages is greater than 0.
+Previously, ext2_fiemap would unconditionally apply "len = min_t(u64, len,
+i_size_read(inode));", When inode->i_size was 0 (for an empty file), this
+would reduce the requested len to 0. Passing len = 0 to iomap_fiemap could
+then result in an -EINVAL error, even for valid queries on empty files.
 
-Reported-by: syzbot+6e516bb515d93230bc7b@syzkaller.appspotmail.com
-Closes: https://syzkaller.appspot.com/bug?extid=6e516bb515d93230bc7b
-Signed-off-by: Lizhi Xu <lizhi.xu@windriver.com>
-Signed-off-by: Dave Kleikamp <dave.kleikamp@oracle.com>
+Link: https://github.com/linux-test-project/ltp/issues/1246
+Signed-off-by: Wei Gao <wegao@suse.com>
+Signed-off-by: Jan Kara <jack@suse.cz>
+Link: https://patch.msgid.link/20250613152402.3432135-1-wegao@suse.com
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/jfs/inode.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ fs/ext2/inode.c | 12 +++++++++++-
+ 1 file changed, 11 insertions(+), 1 deletion(-)
 
-diff --git a/fs/jfs/inode.c b/fs/jfs/inode.c
-index 920d58a1566b..66c38ef5e571 100644
---- a/fs/jfs/inode.c
-+++ b/fs/jfs/inode.c
-@@ -145,9 +145,9 @@ void jfs_evict_inode(struct inode *inode)
- 	if (!inode->i_nlink && !is_bad_inode(inode)) {
- 		dquot_initialize(inode);
+diff --git a/fs/ext2/inode.c b/fs/ext2/inode.c
+index 333fa62661d5..85b6a76378ee 100644
+--- a/fs/ext2/inode.c
++++ b/fs/ext2/inode.c
+@@ -856,9 +856,19 @@ int ext2_fiemap(struct inode *inode, struct fiemap_extent_info *fieinfo,
+ 		u64 start, u64 len)
+ {
+ 	int ret;
++	loff_t i_size;
  
-+		truncate_inode_pages_final(&inode->i_data);
- 		if (JFS_IP(inode)->fileset == FILESYSTEM_I) {
- 			struct inode *ipimap = JFS_SBI(inode->i_sb)->ipimap;
--			truncate_inode_pages_final(&inode->i_data);
+ 	inode_lock(inode);
+-	len = min_t(u64, len, i_size_read(inode));
++	i_size = i_size_read(inode);
++	/*
++	 * iomap_fiemap() returns EINVAL for 0 length. Make sure we don't trim
++	 * length to 0 but still trim the range as much as possible since
++	 * ext2_get_blocks() iterates unmapped space block by block which is
++	 * slow.
++	 */
++	if (i_size == 0)
++		i_size = 1;
++	len = min_t(u64, len, i_size);
+ 	ret = iomap_fiemap(inode, fieinfo, start, len, &ext2_iomap_ops);
+ 	inode_unlock(inode);
  
- 			if (test_cflag(COMMIT_Freewmap, inode))
- 				jfs_free_zero_link(inode);
 -- 
 2.39.5
 
