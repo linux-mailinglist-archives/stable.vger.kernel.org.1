@@ -1,55 +1,56 @@
-Return-Path: <stable+bounces-174427-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-175569-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id C038BB36345
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 15:28:22 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 867FAB36901
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 16:21:40 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 216298A81CF
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 13:21:29 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 0B7911C24D98
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 14:12:24 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6C6C734A301;
-	Tue, 26 Aug 2025 13:19:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2BDC23570C5;
+	Tue, 26 Aug 2025 14:09:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="khgP1SFC"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="OF+wZTbw"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2911F2BE058;
-	Tue, 26 Aug 2025 13:19:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DB13C3570C4;
+	Tue, 26 Aug 2025 14:09:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756214361; cv=none; b=uXsLIPYALJqUhs4KuC20OoxZNsfT7HHhO/k3cDzWl1O0BNSx0w+q/fTS2nYPpnYe1s6FFk3KqZx8/dHJ3l+K8lfQ67wCGzJZlvIsN1whDSNMqxm7n5sDC2EziSTKQ/gzf7/GmeDeZUo9hjFn+Z6CRywyvfGV/g5rJoeJXfO4BHs=
+	t=1756217390; cv=none; b=r5f3Un7y5Iu+hV6Fp8W60RZc86fFgJI2iUtHTiRV3p4LFBYpTnlWMDSPjn82KBPTa4XVYbVgV248jln/Nj1zeYyz0JjFilnUVRFM9AfvnysiopcOEGnOlmEyRPuZY68t/53HBtFz/ADY5w9s4GkM28JUDNXYdDaVhhvNz2CymqA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756214361; c=relaxed/simple;
-	bh=w3/dzM9tKMhtXkCE/J6z9MsZrJ+QQvjMc24FVxqzKns=;
+	s=arc-20240116; t=1756217390; c=relaxed/simple;
+	bh=r2bgp7xW3FHTmttCDBDkX+6zj3mu9N6cih92iNvTa88=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=EtQFjF+VjhCQHJfnRzf0Rgq0UeZQz9igea84ksUAp3TmtQDlKZT71jALXc2Lpy0N9VqEyiZDFoRB3BoKWoezrOLi7TpthZ+YYj5qn+DOokS3RVYpNBwMaoAdYckQTU0Erznc8cQcpOJNBO1xsSnMrWYeEOkCdTejquIhvlRexxE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=khgP1SFC; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 83C4BC4CEF1;
-	Tue, 26 Aug 2025 13:19:20 +0000 (UTC)
+	 MIME-Version; b=P4Q92z0EDa7WKnfMTxQB2/wZc7EkjerJIoiT6FqgNdQpz8kYaKkNMYCteFyCuv/bLIvktn1fylv62zQ3XBYElczNbqkR09ZSaFXFai6Gmq+y4AIXnqkWg3l2nDFX6X5FmxlqhQoAWRPiLxr2DiKZ0kMTfIEq9cdZZICqKF8rqIU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=OF+wZTbw; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 66067C113D0;
+	Tue, 26 Aug 2025 14:09:50 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1756214360;
-	bh=w3/dzM9tKMhtXkCE/J6z9MsZrJ+QQvjMc24FVxqzKns=;
+	s=korg; t=1756217390;
+	bh=r2bgp7xW3FHTmttCDBDkX+6zj3mu9N6cih92iNvTa88=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=khgP1SFCPsTMzL559dtRjqOONd7MXQ3d22Z5LIJT21zbFBoJbc45wR/3W+EaX8XRZ
-	 i41Y8n5yQj+HR7L/WQ5UiQrxzCzacqCqWujiTkxghGanvE3yj2GaAQgHq9l9b/Ds00
-	 oJ6JxZCXQc2davN51OHOTof6mWga6oyINoe8hp14=
+	b=OF+wZTbwm00oJR3tXVkDSGDVJrS5tC6CTEXDw4AFJddfOiKZ2AokVCf0EP0Is1Xuy
+	 5PvtglCROwMitcN+Ia9D5AMuTxBxYfu2lZ8/8IZ8bWXAUgkG+l4SyTMtERm1li5t3H
+	 VGbxuSyfKBwNC2LtJIcR9jKIgagf++ATFNiDSGus=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Bartosz Golaszewski <bartosz.golaszewski@linaro.org>,
+	Yuan Chen <chenyuan@kylinos.cn>,
+	Linus Walleij <linus.walleij@linaro.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 082/482] gpio: tps65912: check the return value of regmap_update_bits()
+Subject: [PATCH 5.10 125/523] pinctrl: sunxi: Fix memory leak on krealloc failure
 Date: Tue, 26 Aug 2025 13:05:35 +0200
-Message-ID: <20250826110932.857469904@linuxfoundation.org>
+Message-ID: <20250826110927.594768029@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250826110930.769259449@linuxfoundation.org>
-References: <20250826110930.769259449@linuxfoundation.org>
+In-Reply-To: <20250826110924.562212281@linuxfoundation.org>
+References: <20250826110924.562212281@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,44 +62,57 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Bartosz Golaszewski <bartosz.golaszewski@linaro.org>
+From: Yuan Chen <chenyuan@kylinos.cn>
 
-[ Upstream commit a0b2a6bbff8c26aafdecd320f38f52c341d5cafa ]
+[ Upstream commit e3507c56cbb208d4f160942748c527ef6a528ba1 ]
 
-regmap_update_bits() can fail, check its return value like we do
-elsewhere in the driver.
+In sunxi_pctrl_dt_node_to_map(), when krealloc() fails to resize
+the pinctrl_map array, the function returns -ENOMEM directly
+without freeing the previously allocated *map buffer. This results
+in a memory leak of the original kmalloc_array allocation.
 
-Link: https://lore.kernel.org/r/20250707-gpiochip-set-rv-gpio-round4-v1-2-35668aaaf6d2@linaro.org
-Signed-off-by: Bartosz Golaszewski <bartosz.golaszewski@linaro.org>
+Fixes: e11dee2e98f8 ("pinctrl: sunxi: Deal with configless pins")
+Signed-off-by: Yuan Chen <chenyuan@kylinos.cn>
+Link: https://lore.kernel.org/20250620012708.16709-1-chenyuan_fl@163.com
+Signed-off-by: Linus Walleij <linus.walleij@linaro.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpio/gpio-tps65912.c | 7 +++++--
- 1 file changed, 5 insertions(+), 2 deletions(-)
+ drivers/pinctrl/sunxi/pinctrl-sunxi.c | 11 ++++++++---
+ 1 file changed, 8 insertions(+), 3 deletions(-)
 
-diff --git a/drivers/gpio/gpio-tps65912.c b/drivers/gpio/gpio-tps65912.c
-index fab771cb6a87..bac757c191c2 100644
---- a/drivers/gpio/gpio-tps65912.c
-+++ b/drivers/gpio/gpio-tps65912.c
-@@ -49,10 +49,13 @@ static int tps65912_gpio_direction_output(struct gpio_chip *gc,
- 					  unsigned offset, int value)
- {
- 	struct tps65912_gpio *gpio = gpiochip_get_data(gc);
-+	int ret;
+diff --git a/drivers/pinctrl/sunxi/pinctrl-sunxi.c b/drivers/pinctrl/sunxi/pinctrl-sunxi.c
+index e4b41cc6c586..0a50f37c63f4 100644
+--- a/drivers/pinctrl/sunxi/pinctrl-sunxi.c
++++ b/drivers/pinctrl/sunxi/pinctrl-sunxi.c
+@@ -335,6 +335,7 @@ static int sunxi_pctrl_dt_node_to_map(struct pinctrl_dev *pctldev,
+ 	const char *function, *pin_prop;
+ 	const char *group;
+ 	int ret, npins, nmaps, configlen = 0, i = 0;
++	struct pinctrl_map *new_map;
  
- 	/* Set the initial value */
--	regmap_update_bits(gpio->tps->regmap, TPS65912_GPIO1 + offset,
--			   GPIO_SET_MASK, value ? GPIO_SET_MASK : 0);
-+	ret = regmap_update_bits(gpio->tps->regmap, TPS65912_GPIO1 + offset,
-+				 GPIO_SET_MASK, value ? GPIO_SET_MASK : 0);
-+	if (ret)
-+		return ret;
+ 	*map = NULL;
+ 	*num_maps = 0;
+@@ -409,9 +410,13 @@ static int sunxi_pctrl_dt_node_to_map(struct pinctrl_dev *pctldev,
+ 	 * We know have the number of maps we need, we can resize our
+ 	 * map array
+ 	 */
+-	*map = krealloc(*map, i * sizeof(struct pinctrl_map), GFP_KERNEL);
+-	if (!*map)
+-		return -ENOMEM;
++	new_map = krealloc(*map, i * sizeof(struct pinctrl_map), GFP_KERNEL);
++	if (!new_map) {
++		ret = -ENOMEM;
++		goto err_free_map;
++	}
++
++	*map = new_map;
  
- 	return regmap_update_bits(gpio->tps->regmap, TPS65912_GPIO1 + offset,
- 				  GPIO_CFG_MASK, GPIO_CFG_MASK);
+ 	return 0;
+ 
 -- 
 2.39.5
 
