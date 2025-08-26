@@ -1,55 +1,59 @@
-Return-Path: <stable+bounces-174754-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-175906-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8829FB3657E
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 15:48:28 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id A6CBEB36AD9
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 16:41:17 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 1C7D65656BA
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 13:34:59 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 44FB6A018DB
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 14:27:11 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id BBC332BE653;
-	Tue, 26 Aug 2025 13:33:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 327A5352FDC;
+	Tue, 26 Aug 2025 14:24:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="NabkhMOE"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="mxsjku2W"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 78DD71ADFFE;
-	Tue, 26 Aug 2025 13:33:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E2BC9350D46;
+	Tue, 26 Aug 2025 14:24:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756215228; cv=none; b=Go+5zuSdKXqAwkGb531MQvvVwLNc8w5MvYcTFyZgOzsN7MT4fJfLuG6EQi/oORmwyp163sLvshgm3R8HKdNwt7gLL0KrehjSwntQ7oApBbivvlWIyrNr88AGEedaGbWa4gUOmVkxBUz6rFcj8PfIpTvPJrUMjRSEDhMwNCLpywU=
+	t=1756218279; cv=none; b=lWeQAvQUEKuvEwoMdeqOIUyFbFaY++v4eCZ3jhTHmzELSyHXtqR0Cy+xx68I513Ya5gQx13EVhc5yPhK9Z+KcnwIc7Or4RcOVMM4B8+YaLSaHyiKjUdPQ118FECI9262wGSPmt4OpxNknDHYK6xdfzIXPWHxIEFK44+bo2dLRk0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756215228; c=relaxed/simple;
-	bh=EfM1qeyhZiXrkzaLQ6A/WbMxDqMh2O2wRwBJBzfatf8=;
+	s=arc-20240116; t=1756218279; c=relaxed/simple;
+	bh=W2Dm5IF1SUk8PTmpbpE4t/7MvnIZniro4T3DOvNfRIg=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=pprNfGjTpyMHgHzQ/P6edgd0n/BCn6OACClkLgmuFr5IoFvirz6xD/ySSabTsUegty3vIC3+evWno5y24SclGFRMei9sPNabPi11hTBUOhOHgExmT3zMD5iMbNKHhx2cY6lOTPHiSuphUYnmRjNUatZUiZO5RhjKHEnagHUqvSM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=NabkhMOE; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 082CCC113D0;
-	Tue, 26 Aug 2025 13:33:47 +0000 (UTC)
+	 MIME-Version; b=m1TcCqz0tdnzLCzwB779FHFC+FXDjD/B5k2RdQCh7nWmFTmb8f9NAJMBoPzLc7jjexGsTlN+M915kfSKXoCNqV8maysMHKYwNJBdSotdF2HNqVXFdCN1d0tUjRpPG4CorekJzCLqNmnae4dDmFg8cHVGeEd/QvELuy11TCFtDOQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=mxsjku2W; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 72B51C4CEF1;
+	Tue, 26 Aug 2025 14:24:38 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1756215228;
-	bh=EfM1qeyhZiXrkzaLQ6A/WbMxDqMh2O2wRwBJBzfatf8=;
+	s=korg; t=1756218278;
+	bh=W2Dm5IF1SUk8PTmpbpE4t/7MvnIZniro4T3DOvNfRIg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=NabkhMOEAG1PdazjX8T2kQUBjpYfertUduRXE/KLK9QhibZtmLfsmE4YkHQjayVFQ
-	 qgux1JSny7MYKNhnJsDjGWtzqOp2PWdJAxaII4khLk7DH3RP+bU222hQtnM4Yb0bS0
-	 SoZXe3CCiNrdOxcKdQQsbtZWhB+GC1IjnT4msAx0=
+	b=mxsjku2WEMchxH/moXamxIPiGUYM8eqF4eYMOYUfs3yyjlvcGgoBJv2+IA1JYdSTl
+	 cBzSyX8nt9DBTc0rvFJcIzNsgzO/ouWWi+sd1RHONzXiw9XL5qotAS9NvXl1o8jRJ7
+	 FZDdckOEHvIpp78CkSaKVgxtClNZV+1MXg87Qh3A=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	stable <stable@kernel.org>,
-	Marek Vasut <marek.vasut+renesas@mailbox.org>
-Subject: [PATCH 6.1 418/482] usb: renesas-xhci: Fix External ROM access timeouts
+	Li Shuang <shuali@redhat.com>,
+	Petr Machata <petrm@nvidia.com>,
+	Ivan Vecera <ivecera@redhat.com>,
+	Davide Caratti <dcaratti@redhat.com>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.10 461/523] net/sched: ets: use old nbands while purging unused classes
 Date: Tue, 26 Aug 2025 13:11:11 +0200
-Message-ID: <20250826110941.153767446@linuxfoundation.org>
+Message-ID: <20250826110935.817311777@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250826110930.769259449@linuxfoundation.org>
-References: <20250826110930.769259449@linuxfoundation.org>
+In-Reply-To: <20250826110924.562212281@linuxfoundation.org>
+References: <20250826110924.562212281@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -59,77 +63,123 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Marek Vasut <marek.vasut+renesas@mailbox.org>
+From: Davide Caratti <dcaratti@redhat.com>
 
-commit f9420f4757752f056144896024d5ea89e5a611f1 upstream.
+[ Upstream commit 87c6efc5ce9c126ae4a781bc04504b83780e3650 ]
 
-Increase the External ROM access timeouts to prevent failures during
-programming of External SPI EEPROM chips. The current timeouts are
-too short for some SPI EEPROMs used with uPD720201 controllers.
+Shuang reported sch_ets test-case [1] crashing in ets_class_qlen_notify()
+after recent changes from Lion [2]. The problem is: in ets_qdisc_change()
+we purge unused DWRR queues; the value of 'q->nbands' is the new one, and
+the cleanup should be done with the old one. The problem is here since my
+first attempts to fix ets_qdisc_change(), but it surfaced again after the
+recent qdisc len accounting fixes. Fix it purging idle DWRR queues before
+assigning a new value of 'q->nbands', so that all purge operations find a
+consistent configuration:
 
-The current timeout for Chip Erase in renesas_rom_erase() is 100 ms ,
-the current timeout for Sector Erase issued by the controller before
-Page Program in renesas_fw_download_image() is also 100 ms. Neither
-timeout is sufficient for e.g. the Macronix MX25L5121E or MX25V5126F.
+ - old 'q->nbands' because it's needed by ets_class_find()
+ - old 'q->nstrict' because it's needed by ets_class_is_strict()
 
-MX25L5121E reference manual [1] page 35 section "ERASE AND PROGRAMMING
-PERFORMANCE" and page 23 section "Table 8. AC CHARACTERISTICS (Temperature
-= 0°C to 70°C for Commercial grade, VCC = 2.7V ~ 3.6V)" row "tCE" indicate
-that the maximum time required for Chip Erase opcode to complete is 2 s,
-and for Sector Erase it is 300 ms .
+ BUG: kernel NULL pointer dereference, address: 0000000000000000
+ #PF: supervisor read access in kernel mode
+ #PF: error_code(0x0000) - not-present page
+ PGD 0 P4D 0
+ Oops: Oops: 0000 [#1] SMP NOPTI
+ CPU: 62 UID: 0 PID: 39457 Comm: tc Kdump: loaded Not tainted 6.12.0-116.el10.x86_64 #1 PREEMPT(voluntary)
+ Hardware name: Dell Inc. PowerEdge R640/06DKY5, BIOS 2.12.2 07/09/2021
+ RIP: 0010:__list_del_entry_valid_or_report+0x4/0x80
+ Code: ff 4c 39 c7 0f 84 39 19 8e ff b8 01 00 00 00 c3 cc cc cc cc 66 90 90 90 90 90 90 90 90 90 90 90 90 90 90 90 90 90 f3 0f 1e fa <48> 8b 17 48 8b 4f 08 48 85 d2 0f 84 56 19 8e ff 48 85 c9 0f 84 ab
+ RSP: 0018:ffffba186009f400 EFLAGS: 00010202
+ RAX: 00000000000000d6 RBX: 0000000000000000 RCX: 0000000000000004
+ RDX: ffff9f0fa29b69c0 RSI: 0000000000000000 RDI: 0000000000000000
+ RBP: ffffffffc12c2400 R08: 0000000000000008 R09: 0000000000000004
+ R10: ffffffffffffffff R11: 0000000000000004 R12: 0000000000000000
+ R13: ffff9f0f8cfe0000 R14: 0000000000100005 R15: 0000000000000000
+ FS:  00007f2154f37480(0000) GS:ffff9f269c1c0000(0000) knlGS:0000000000000000
+ CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
+ CR2: 0000000000000000 CR3: 00000001530be001 CR4: 00000000007726f0
+ DR0: 0000000000000000 DR1: 0000000000000000 DR2: 0000000000000000
+ DR3: 0000000000000000 DR6: 00000000fffe0ff0 DR7: 0000000000000400
+ PKRU: 55555554
+ Call Trace:
+  <TASK>
+  ets_class_qlen_notify+0x65/0x90 [sch_ets]
+  qdisc_tree_reduce_backlog+0x74/0x110
+  ets_qdisc_change+0x630/0xa40 [sch_ets]
+  __tc_modify_qdisc.constprop.0+0x216/0x7f0
+  tc_modify_qdisc+0x7c/0x120
+  rtnetlink_rcv_msg+0x145/0x3f0
+  netlink_rcv_skb+0x53/0x100
+  netlink_unicast+0x245/0x390
+  netlink_sendmsg+0x21b/0x470
+  ____sys_sendmsg+0x39d/0x3d0
+  ___sys_sendmsg+0x9a/0xe0
+  __sys_sendmsg+0x7a/0xd0
+  do_syscall_64+0x7d/0x160
+  entry_SYSCALL_64_after_hwframe+0x76/0x7e
+ RIP: 0033:0x7f2155114084
+ Code: 89 02 b8 ff ff ff ff eb bb 66 2e 0f 1f 84 00 00 00 00 00 0f 1f 00 f3 0f 1e fa 80 3d 25 f0 0c 00 00 74 13 b8 2e 00 00 00 0f 05 <48> 3d 00 f0 ff ff 77 54 c3 0f 1f 00 48 83 ec 28 89 54 24 1c 48 89
+ RSP: 002b:00007fff1fd7a988 EFLAGS: 00000202 ORIG_RAX: 000000000000002e
+ RAX: ffffffffffffffda RBX: 0000560ec063e5e0 RCX: 00007f2155114084
+ RDX: 0000000000000000 RSI: 00007fff1fd7a9f0 RDI: 0000000000000003
+ RBP: 00007fff1fd7aa60 R08: 0000000000000010 R09: 000000000000003f
+ R10: 0000560ee9b3a010 R11: 0000000000000202 R12: 00007fff1fd7aae0
+ R13: 000000006891ccde R14: 0000560ec063e5e0 R15: 00007fff1fd7aad0
+  </TASK>
 
-MX25V5126F reference manual [2] page 47 section "13. ERASE AND PROGRAMMING
-PERFORMANCE (2.3V - 3.6V)" and page 42 section "Table 8. AC CHARACTERISTICS
-(Temperature = -40°C to 85°C for Industrial grade, VCC = 2.3V - 3.6V)" row
-"tCE" indicate that the maximum time required for Chip Erase opcode to
-complete is 3.2 s, and for Sector Erase it is 400 ms .
+ [1] https://lore.kernel.org/netdev/e08c7f4a6882f260011909a868311c6e9b54f3e4.1639153474.git.dcaratti@redhat.com/
+ [2] https://lore.kernel.org/netdev/d912cbd7-193b-4269-9857-525bee8bbb6a@gmail.com/
 
-Update the timeouts such, that Chip Erase timeout is set to 5 seconds,
-and Sector Erase timeout is set to 500 ms. Such lengthy timeouts ought
-to be sufficient for majority of SPI EEPROM chips.
-
-[1] https://www.macronix.com/Lists/Datasheet/Attachments/8634/MX25L5121E,%203V,%20512Kb,%20v1.3.pdf
-[2] https://www.macronix.com/Lists/Datasheet/Attachments/8750/MX25V5126F,%202.5V,%20512Kb,%20v1.1.pdf
-
-Fixes: 2478be82de44 ("usb: renesas-xhci: Add ROM loader for uPD720201")
-Cc: stable <stable@kernel.org>
-Signed-off-by: Marek Vasut <marek.vasut+renesas@mailbox.org>
-Link: https://lore.kernel.org/r/20250802225526.25431-1-marek.vasut+renesas@mailbox.org
+Cc: stable@vger.kernel.org
+Fixes: 103406b38c60 ("net/sched: Always pass notifications when child class becomes empty")
+Fixes: c062f2a0b04d ("net/sched: sch_ets: don't remove idle classes from the round-robin list")
+Fixes: dcc68b4d8084 ("net: sch_ets: Add a new Qdisc")
+Reported-by: Li Shuang <shuali@redhat.com>
+Closes: https://issues.redhat.com/browse/RHEL-108026
+Reviewed-by: Petr Machata <petrm@nvidia.com>
+Co-developed-by: Ivan Vecera <ivecera@redhat.com>
+Signed-off-by: Ivan Vecera <ivecera@redhat.com>
+Signed-off-by: Davide Caratti <dcaratti@redhat.com>
+Link: https://patch.msgid.link/7928ff6d17db47a2ae7cc205c44777b1f1950545.1755016081.git.dcaratti@redhat.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/usb/host/xhci-pci-renesas.c |    7 ++++---
- 1 file changed, 4 insertions(+), 3 deletions(-)
+ net/sched/sch_ets.c |   11 ++++++-----
+ 1 file changed, 6 insertions(+), 5 deletions(-)
 
---- a/drivers/usb/host/xhci-pci-renesas.c
-+++ b/drivers/usb/host/xhci-pci-renesas.c
-@@ -47,8 +47,9 @@
- #define RENESAS_ROM_ERASE_MAGIC				0x5A65726F
- #define RENESAS_ROM_WRITE_MAGIC				0x53524F4D
+--- a/net/sched/sch_ets.c
++++ b/net/sched/sch_ets.c
+@@ -664,6 +664,12 @@ static int ets_qdisc_change(struct Qdisc
  
--#define RENESAS_RETRY	10000
--#define RENESAS_DELAY	10
-+#define RENESAS_RETRY			50000	/* 50000 * RENESAS_DELAY ~= 500ms */
-+#define RENESAS_CHIP_ERASE_RETRY	500000	/* 500000 * RENESAS_DELAY ~= 5s */
-+#define RENESAS_DELAY			10
+ 	sch_tree_lock(sch);
  
- static int renesas_fw_download_image(struct pci_dev *dev,
- 				     const u32 *fw, size_t step, bool rom)
-@@ -405,7 +406,7 @@ static void renesas_rom_erase(struct pci
- 	/* sleep a bit while ROM is erased */
- 	msleep(20);
++	for (i = nbands; i < oldbands; i++) {
++		if (i >= q->nstrict && q->classes[i].qdisc->q.qlen)
++			list_del_init(&q->classes[i].alist);
++		qdisc_purge_queue(q->classes[i].qdisc);
++	}
++
+ 	WRITE_ONCE(q->nbands, nbands);
+ 	for (i = nstrict; i < q->nstrict; i++) {
+ 		if (q->classes[i].qdisc->q.qlen) {
+@@ -671,11 +677,6 @@ static int ets_qdisc_change(struct Qdisc
+ 			q->classes[i].deficit = quanta[i];
+ 		}
+ 	}
+-	for (i = q->nbands; i < oldbands; i++) {
+-		if (i >= q->nstrict && q->classes[i].qdisc->q.qlen)
+-			list_del_init(&q->classes[i].alist);
+-		qdisc_purge_queue(q->classes[i].qdisc);
+-	}
+ 	WRITE_ONCE(q->nstrict, nstrict);
+ 	memcpy(q->prio2band, priomap, sizeof(priomap));
  
--	for (i = 0; i < RENESAS_RETRY; i++) {
-+	for (i = 0; i < RENESAS_CHIP_ERASE_RETRY; i++) {
- 		retval = pci_read_config_byte(pdev, RENESAS_ROM_STATUS,
- 					      &status);
- 		status &= RENESAS_ROM_STATUS_ERASE;
 
 
 
