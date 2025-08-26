@@ -1,56 +1,55 @@
-Return-Path: <stable+bounces-173311-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-174716-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id D2F22B35D30
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 13:42:04 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 8780AB3649A
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 15:40:22 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id F11E62A45AF
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 11:34:14 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 2774E564ED0
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 13:33:15 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id DFECF8635C;
-	Tue, 26 Aug 2025 11:31:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id DBB9323817D;
+	Tue, 26 Aug 2025 13:32:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="j7vV6sdE"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="AliWMM2F"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9D71B3375DC;
-	Tue, 26 Aug 2025 11:31:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 97B9320CCCA;
+	Tue, 26 Aug 2025 13:32:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756207918; cv=none; b=hZS0vHUVCjabFRBiGE+xHXpMTEZnYal0wvZOmq6b9C7toDWVbEw3jcytCqMqWCmoSd5AOrj+8e48qu9BUUkJezn7XMJXypn/MK/Klk+jBF7ofm7W09hRA+PzpLZ2sGpartlbH0fsK3of4bS7KBSXhUHCXbyfPAVGo5idbGQBSMk=
+	t=1756215128; cv=none; b=Dg7AOfn5QHOqB4Gao6FvYPqfJ5aXJXLXlKpc0uCpnrmhYIfvZeDqlzWYP2DL612kufPWTviMZSU4mReokrwivcs/Sb16AUlyCQLKF9abI28LQm51l3SUoQp1+TDWfsO0OmDSdYnh92QD7I9bIP/OpxQvjoRfn23ISxXX09Yp4Z8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756207918; c=relaxed/simple;
-	bh=XWVhs+WtVy7y4FnBPcHUkipLSS/Ne/UVL9ysUAaCxcY=;
+	s=arc-20240116; t=1756215128; c=relaxed/simple;
+	bh=fJHBRDQI51JUvnow1Ce/q66X8LTi59T7+V9IMEVUA5M=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=iBV4gwGZdpXjqsH/ThHX9MWFlF1uZ7ChD7+TqvgcU0fy9PEOyJN7AJPTsreaHUeRFKSi1xAQkDY6cE0qqsQ/Jwm5YkwHFsaFPHDK4A08ptGePJLrfXMATkEg3TMBcC3RfO+sMlJpuHS5rZL72+LE0CbAa1NlMar/h7faCWez5Aw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=j7vV6sdE; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id DF289C4CEF1;
-	Tue, 26 Aug 2025 11:31:57 +0000 (UTC)
+	 MIME-Version; b=gTivCzWmISlWZkQtobArecNBixgZT3uosHbVxlQoABJpnCDS88Pl5agEK3cEtrKR/547FO9KwSE2rIvNsrCRKEc5Be3/WiSG22QxOK8h8nypU6IJFMl65hSzCeNCB75tzlEx8SYHsQ7UBVV35abY8Jm/Jr22MTYIoA2OQXBX0XE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=AliWMM2F; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0AA15C4CEF1;
+	Tue, 26 Aug 2025 13:32:07 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1756207918;
-	bh=XWVhs+WtVy7y4FnBPcHUkipLSS/Ne/UVL9ysUAaCxcY=;
+	s=korg; t=1756215128;
+	bh=fJHBRDQI51JUvnow1Ce/q66X8LTi59T7+V9IMEVUA5M=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=j7vV6sdEaZ/SgoVRw36YKdmZXqE9osTqrd7KFvnhFOtxz9m8kGFWDtzMWSNzkEHq5
-	 PzfOlTjnftinYvHmu73HktJBksA/1mftJlebBAyRfMptsx0QrWug/GRysYZO0hYKVv
-	 WzlNjg++KiZd+PiXJeJ6Nrm3/7YvEvEWFFor209s=
+	b=AliWMM2FtXGoqdjgAaalOQfREUzjeF71Bz8URSYLFbDOH85Hhv8pEYsBFwnQnPo+V
+	 MXOSEXeP7aDySyN79i+XoWd5Us1WgcJwV7dbD0eMFEBbmRkpiPqS4Q+Pg+Rqpeipje
+	 eAP/XKiWE6i9yMlV6N3ZVtM4ltEI0t7V5LShvJQ4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Suraj Gupta <suraj.gupta2@amd.com>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.16 367/457] net: xilinx: axienet: Fix RX skb ring management in DMAengine mode
+	Evgeniy Harchenko <evgeniyharchenko.dev@gmail.com>,
+	Takashi Iwai <tiwai@suse.de>
+Subject: [PATCH 6.1 398/482] ALSA: hda/realtek: Add support for HP EliteBook x360 830 G6 and EliteBook 830 G6
 Date: Tue, 26 Aug 2025 13:10:51 +0200
-Message-ID: <20250826110946.375790600@linuxfoundation.org>
+Message-ID: <20250826110940.660211400@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250826110937.289866482@linuxfoundation.org>
-References: <20250826110937.289866482@linuxfoundation.org>
+In-Reply-To: <20250826110930.769259449@linuxfoundation.org>
+References: <20250826110930.769259449@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,77 +61,38 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.16-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Suraj Gupta <suraj.gupta2@amd.com>
+From: Evgeniy Harchenko <evgeniyharchenko.dev@gmail.com>
 
-[ Upstream commit fd980bf6e9cdae885105685259421164f843ca55 ]
+commit eafae0fdd115a71b3a200ef1a31f86da04bac77f upstream.
 
-Submit multiple descriptors in axienet_rx_cb() to fill Rx skb ring. This
-ensures the ring "catches up" on previously missed allocations.
+The HP EliteBook x360 830 G6 and HP EliteBook 830 G6 have
+Realtek HDA codec ALC215. It needs the ALC285_FIXUP_HP_GPIO_LED
+quirk to enable the mute LED.
 
-Increment Rx skb ring head pointer after BD is successfully allocated.
-Previously, head pointer was incremented before verifying if descriptor is
-successfully allocated and has valid entries, which could lead to ring
-state inconsistency if descriptor setup failed.
-
-These changes improve reliability by maintaining adequate descriptor
-availability and ensuring proper ring buffer state management.
-
-Fixes: 6a91b846af85 ("net: axienet: Introduce dmaengine support")
-Signed-off-by: Suraj Gupta <suraj.gupta2@amd.com>
-Link: https://patch.msgid.link/20250813135559.1555652-1-suraj.gupta2@amd.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Cc: <stable@vger.kernel.org>
+Signed-off-by: Evgeniy Harchenko <evgeniyharchenko.dev@gmail.com>
+Link: https://patch.msgid.link/20250815095814.75845-1-evgeniyharchenko.dev@gmail.com
+Signed-off-by: Takashi Iwai <tiwai@suse.de>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/net/ethernet/xilinx/xilinx_axienet_main.c | 8 ++++++--
- 1 file changed, 6 insertions(+), 2 deletions(-)
+ sound/pci/hda/patch_realtek.c |    2 ++
+ 1 file changed, 2 insertions(+)
 
-diff --git a/drivers/net/ethernet/xilinx/xilinx_axienet_main.c b/drivers/net/ethernet/xilinx/xilinx_axienet_main.c
-index 6011d7eae0c7..0d8a05fe541a 100644
---- a/drivers/net/ethernet/xilinx/xilinx_axienet_main.c
-+++ b/drivers/net/ethernet/xilinx/xilinx_axienet_main.c
-@@ -1160,6 +1160,7 @@ static void axienet_dma_rx_cb(void *data, const struct dmaengine_result *result)
- 	struct axienet_local *lp = data;
- 	struct sk_buff *skb;
- 	u32 *app_metadata;
-+	int i;
- 
- 	skbuf_dma = axienet_get_rx_desc(lp, lp->rx_ring_tail++);
- 	skb = skbuf_dma->skb;
-@@ -1178,7 +1179,10 @@ static void axienet_dma_rx_cb(void *data, const struct dmaengine_result *result)
- 	u64_stats_add(&lp->rx_packets, 1);
- 	u64_stats_add(&lp->rx_bytes, rx_len);
- 	u64_stats_update_end(&lp->rx_stat_sync);
--	axienet_rx_submit_desc(lp->ndev);
-+
-+	for (i = 0; i < CIRC_SPACE(lp->rx_ring_head, lp->rx_ring_tail,
-+				   RX_BUF_NUM_DEFAULT); i++)
-+		axienet_rx_submit_desc(lp->ndev);
- 	dma_async_issue_pending(lp->rx_chan);
- }
- 
-@@ -1457,7 +1461,6 @@ static void axienet_rx_submit_desc(struct net_device *ndev)
- 	if (!skbuf_dma)
- 		return;
- 
--	lp->rx_ring_head++;
- 	skb = netdev_alloc_skb(ndev, lp->max_frm_size);
- 	if (!skb)
- 		return;
-@@ -1482,6 +1485,7 @@ static void axienet_rx_submit_desc(struct net_device *ndev)
- 	skbuf_dma->desc = dma_rx_desc;
- 	dma_rx_desc->callback_param = lp;
- 	dma_rx_desc->callback_result = axienet_dma_rx_cb;
-+	lp->rx_ring_head++;
- 	dmaengine_submit(dma_rx_desc);
- 
- 	return;
--- 
-2.50.1
-
+--- a/sound/pci/hda/patch_realtek.c
++++ b/sound/pci/hda/patch_realtek.c
+@@ -9915,6 +9915,8 @@ static const struct snd_pci_quirk alc269
+ 	SND_PCI_QUIRK(0x103c, 0x84e7, "HP Pavilion 15", ALC269_FIXUP_HP_MUTE_LED_MIC3),
+ 	SND_PCI_QUIRK(0x103c, 0x8519, "HP Spectre x360 15-df0xxx", ALC285_FIXUP_HP_SPECTRE_X360),
+ 	SND_PCI_QUIRK(0x103c, 0x8537, "HP ProBook 440 G6", ALC236_FIXUP_HP_MUTE_LED_MICMUTE_VREF),
++	SND_PCI_QUIRK(0x103c, 0x8548, "HP EliteBook x360 830 G6", ALC285_FIXUP_HP_GPIO_LED),
++	SND_PCI_QUIRK(0x103c, 0x854a, "HP EliteBook 830 G6", ALC285_FIXUP_HP_GPIO_LED),
+ 	SND_PCI_QUIRK(0x103c, 0x85c6, "HP Pavilion x360 Convertible 14-dy1xxx", ALC295_FIXUP_HP_MUTE_LED_COEFBIT11),
+ 	SND_PCI_QUIRK(0x103c, 0x85de, "HP Envy x360 13-ar0xxx", ALC285_FIXUP_HP_ENVY_X360),
+ 	SND_PCI_QUIRK(0x103c, 0x860f, "HP ZBook 15 G6", ALC285_FIXUP_HP_GPIO_AMP_INIT),
 
 
 
