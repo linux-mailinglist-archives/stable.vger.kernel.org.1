@@ -1,59 +1,58 @@
-Return-Path: <stable+bounces-175877-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-173601-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7F93BB36B4D
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 16:44:51 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id DC33FB35D8B
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 13:46:00 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id BA132A00EA2
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 14:25:27 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 18BB97BB720
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 11:44:25 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2519222DFA7;
-	Tue, 26 Aug 2025 14:23:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4A07A3431E9;
+	Tue, 26 Aug 2025 11:44:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="UfpP9eD2"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="K5ZavOM0"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D50B525DB0A;
-	Tue, 26 Aug 2025 14:23:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 05C3E342CA3;
+	Tue, 26 Aug 2025 11:44:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756218203; cv=none; b=RsybSb0dlTw/sSAASfbPpFJRnNjOlKm/kCi2JAFBem5q/Wr0UL18AZUTQ4HDAuQ9yWfR2umzJXyVBeHIHgFCyMAgsrglKjr282YlTfyD51mOhZ110L5TvZ0kkOSAeCGcAYbnXHwf2m+ER3PuflXArjrxtY+SnZh66ymsGdEPDLU=
+	t=1756208672; cv=none; b=IyLpdCcYI8mHx1C7htgwKwKOsT3wsqUYXGAacB9d/5PqiTL2vCcWtRp4Un54dD35dNmJi//R715xYlkboVJImT32zrg0GVcaEdW3NLTrLLcR+NqlZT5DbNvMJcl+JamS32axyT7gDvIaDWIv2WsbWFfskIaSePTogFczCISN15E=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756218203; c=relaxed/simple;
-	bh=qoeD5YRW++onCQbc8RLl+g8U4V+g1OCHVuFqL+6SFPA=;
+	s=arc-20240116; t=1756208672; c=relaxed/simple;
+	bh=SkGNm1l1EmM3IZh2ZcAfREALVAN1qGRxgUYtRTy33JI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=bpnDKWjxpUblz8fSAGWXeIwUcHRS2djuQDv26AYkJdZmIxJrqXgkFcQ8csRQp3X/x6YHz90GiMySwmkzqUcWVN49KyCez4CYJ8SXbWPs/zY3tVy95cgZ+RPMtQ9b7+gr6pqLqlHMuWzhXURrN64h86db/d2sYDiJ8Afo4VKEwhw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=UfpP9eD2; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 62C66C4CEF1;
-	Tue, 26 Aug 2025 14:23:23 +0000 (UTC)
+	 MIME-Version; b=VYR68rKQ7FwK2ghQtaij9dFUgTCYaqOXQmwaaP6Fiv801HSM1VaeYC1y5sdl8F/vxMhymgs5noIdWW284OWoAcDUqkkkaL4MbwZeHdXD0VOJD6OJn2dvn7PudRqs3P7FgaD19YluJZ63avEMOQFFeO3RokcCZ665l2SzWz1TQmI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=K5ZavOM0; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5025BC4CEF1;
+	Tue, 26 Aug 2025 11:44:30 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1756218203;
-	bh=qoeD5YRW++onCQbc8RLl+g8U4V+g1OCHVuFqL+6SFPA=;
+	s=korg; t=1756208670;
+	bh=SkGNm1l1EmM3IZh2ZcAfREALVAN1qGRxgUYtRTy33JI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=UfpP9eD2SBMWeheYeHgveRfAJwsMcB3YK4BcmRX75h6FO1L9GTNvpG4o61k/Y3V/n
-	 IV+iNDYMcq8/5BZjjnb78c0LbkH0oPijk9s4Abygk1qc5bIrgiVqcesHYtJeFAsKBI
-	 wFgSlOZEqRqqeTpiRQbtvhdzSpeeZdidIY/3Oobg=
+	b=K5ZavOM0YwRMehsDQK2DGYeEDtkt+5aWXdw+JXS1W0bNrK8Z0ShI/0ZVPptPsGxvs
+	 4dP9GXlOrBEteoLKUyDTJu5CbyL4B3jUnrZn+f/YgNt3tpqQx7N8AaERl1sOyjKy/m
+	 RKC88mpk4SsTlQh0dMC0ETKl+w+zHCrdNRYVRvhM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Masami Hiramatsu <mhiramat@kernel.org>,
-	Mathieu Desnoyers <mathieu.desnoyers@efficios.com>,
-	Nathan Chancellor <nathan@kernel.org>,
-	Linus Torvalds <torvalds@linux-foundation.org>,
-	Tengda Wu <wutengda@huaweicloud.com>,
-	"Steven Rostedt (Google)" <rostedt@goodmis.org>
-Subject: [PATCH 5.10 405/523] ftrace: Also allocate and copy hash for reading of filter files
+	stable@kernel.org,
+	Baokun Li <libaokun1@huawei.com>,
+	Jan Kara <jack@suse.cz>,
+	Theodore Tso <tytso@mit.edu>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.12 200/322] ext4: preserve SB_I_VERSION on remount
 Date: Tue, 26 Aug 2025 13:10:15 +0200
-Message-ID: <20250826110934.451043911@linuxfoundation.org>
+Message-ID: <20250826110920.806723530@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250826110924.562212281@linuxfoundation.org>
-References: <20250826110924.562212281@linuxfoundation.org>
+In-Reply-To: <20250826110915.169062587@linuxfoundation.org>
+References: <20250826110915.169062587@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -65,80 +64,62 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Steven Rostedt <rostedt@goodmis.org>
+From: Baokun Li <libaokun1@huawei.com>
 
-commit bfb336cf97df7b37b2b2edec0f69773e06d11955 upstream.
+[ Upstream commit f2326fd14a224e4cccbab89e14c52279ff79b7ec ]
 
-Currently the reader of set_ftrace_filter and set_ftrace_notrace just adds
-the pointer to the global tracer hash to its iterator. Unlike the writer
-that allocates a copy of the hash, the reader keeps the pointer to the
-filter hashes. This is problematic because this pointer is static across
-function calls that release the locks that can update the global tracer
-hashes. This can cause UAF and similar bugs.
+IMA testing revealed that after an ext4 remount, file accesses triggered
+full measurements even without modifications, instead of skipping as
+expected when i_version is unchanged.
 
-Allocate and copy the hash for reading the filter files like it is done
-for the writers. This not only fixes UAF bugs, but also makes the code a
-bit simpler as it doesn't have to differentiate when to free the
-iterator's hash between writers and readers.
+Debugging showed `SB_I_VERSION` was cleared in reconfigure_super() during
+remount due to commit 1ff20307393e ("ext4: unconditionally enable the
+i_version counter") removing the fix from commit 960e0ab63b2e ("ext4: fix
+i_version handling on remount").
 
-Cc: stable@vger.kernel.org
-Cc: Masami Hiramatsu <mhiramat@kernel.org>
-Cc: Mathieu Desnoyers <mathieu.desnoyers@efficios.com>
-Cc: Nathan Chancellor <nathan@kernel.org>
-Cc: Linus Torvalds <torvalds@linux-foundation.org>
-Link: https://lore.kernel.org/20250822183606.12962cc3@batman.local.home
-Fixes: c20489dad156 ("ftrace: Assign iter->hash to filter or notrace hashes on seq read")
-Closes: https://lore.kernel.org/all/20250813023044.2121943-1-wutengda@huaweicloud.com/
-Closes: https://lore.kernel.org/all/20250822192437.GA458494@ax162/
-Reported-by: Tengda Wu <wutengda@huaweicloud.com>
-Tested-by: Tengda Wu <wutengda@huaweicloud.com>
-Tested-by: Nathan Chancellor <nathan@kernel.org>
-Signed-off-by: Steven Rostedt (Google) <rostedt@goodmis.org>
+To rectify this, `SB_I_VERSION` is always set for `fc->sb_flags` in
+ext4_init_fs_context(), instead of `sb->s_flags` in __ext4_fill_super(),
+ensuring it persists across all mounts.
+
+Cc: stable@kernel.org
+Fixes: 1ff20307393e ("ext4: unconditionally enable the i_version counter")
+Signed-off-by: Baokun Li <libaokun1@huawei.com>
+Reviewed-by: Jan Kara <jack@suse.cz>
+Link: https://patch.msgid.link/20250703073903.6952-2-libaokun@huaweicloud.com
+Signed-off-by: Theodore Ts'o <tytso@mit.edu>
+[ Adjust context ]
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- kernel/trace/ftrace.c |   19 ++++++++++---------
- 1 file changed, 10 insertions(+), 9 deletions(-)
+ fs/ext4/super.c |    6 +++---
+ 1 file changed, 3 insertions(+), 3 deletions(-)
 
---- a/kernel/trace/ftrace.c
-+++ b/kernel/trace/ftrace.c
-@@ -3829,13 +3829,17 @@ ftrace_regex_open(struct ftrace_ops *ops
- 	        } else {
- 			iter->hash = alloc_and_copy_ftrace_hash(size_bits, hash);
- 		}
-+	} else {
-+		if (hash)
-+			iter->hash = alloc_and_copy_ftrace_hash(hash->size_bits, hash);
-+		else
-+			iter->hash = EMPTY_HASH;
-+	}
+--- a/fs/ext4/super.c
++++ b/fs/ext4/super.c
+@@ -2019,6 +2019,9 @@ int ext4_init_fs_context(struct fs_conte
+ 	fc->fs_private = ctx;
+ 	fc->ops = &ext4_context_ops;
  
--		if (!iter->hash) {
--			trace_parser_put(&iter->parser);
--			goto out_unlock;
--		}
--	} else
--		iter->hash = hash;
-+	if (!iter->hash) {
-+		trace_parser_put(&iter->parser);
-+		goto out_unlock;
-+	}
++	/* i_version is always enabled now */
++	fc->sb_flags |= SB_I_VERSION;
++
+ 	return 0;
+ }
  
- 	ret = 0;
+@@ -5277,9 +5280,6 @@ static int __ext4_fill_super(struct fs_c
+ 	sb->s_flags = (sb->s_flags & ~SB_POSIXACL) |
+ 		(test_opt(sb, POSIX_ACL) ? SB_POSIXACL : 0);
  
-@@ -5707,9 +5711,6 @@ int ftrace_regex_release(struct inode *i
- 		ret = ftrace_hash_move_and_update_ops(iter->ops, orig_hash,
- 						      iter->hash, filter_hash);
- 		mutex_unlock(&ftrace_lock);
--	} else {
--		/* For read only, the hash is the ops hash */
--		iter->hash = NULL;
- 	}
- 
- 	mutex_unlock(&iter->ops->func_hash->regex_lock);
+-	/* i_version is always enabled now */
+-	sb->s_flags |= SB_I_VERSION;
+-
+ 	err = ext4_check_feature_compatibility(sb, es, silent);
+ 	if (err)
+ 		goto failed_mount;
 
 
 
