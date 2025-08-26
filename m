@@ -1,55 +1,56 @@
-Return-Path: <stable+bounces-173502-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-176192-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id DE4F2B35D17
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 13:41:04 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 23E7FB36B9B
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 16:47:40 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 0285D5E341D
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 11:40:43 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 6AA9C1C4173C
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 14:40:17 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5F38523B628;
-	Tue, 26 Aug 2025 11:40:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 448E835E4EC;
+	Tue, 26 Aug 2025 14:36:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="R3P/Y7MG"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="bjCtX6NM"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1D81C393DD1;
-	Tue, 26 Aug 2025 11:40:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id ED33C25DB0A;
+	Tue, 26 Aug 2025 14:36:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756208415; cv=none; b=lWT0Nsk0E5wGfHk5CtGjBkvWKJRNSGkce6742XrHuIQZHWlYpRifB4ovnpCnnfENzPRl1t/TC9hk/c2iOG9mZRdyztkwH+QB/zfDmJYf5AFHyuYRfMAad8SZTrmi7yOwKZAPOxQlzf91MbxjCN56wRGn3rOT1CkFXtsRxnratDA=
+	t=1756219019; cv=none; b=oneyNQkL3JFPY82UGSKmVwDuHTOzOP3TUcf/Ow3K8CszK7ihHOmNQx7VpAaOrOWawUb/t1k90M+Gcp8GEz1OjOVkxWzxL6NMNqc9WVrC84u/DIS7LxzY9Uk/dpgySD2oUfNkfRNjjXZRGipEe838O6v9LgPgHGGdlu9d6PJVHtk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756208415; c=relaxed/simple;
-	bh=bWAnAXfEDWa7l1d56u5HtxITqnu4soxigcoYy5DngKU=;
+	s=arc-20240116; t=1756219019; c=relaxed/simple;
+	bh=V00XOKQuvShrlOyg+HawaU64p5mVEkWMC/zBjhYkOFs=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=mqASQO6eZzZZwXsVUgANQfou7Gpd9IZY53PKmz2txN5OP6coeuyexsSiwX6Pbpyssj24PDy7a1K6rLBOochbW/xrzo8mbko5a2OcfM47j/xPdXumJVb1Qe1EupPLgnu8tRER+l5dGyOioxdOny0resJaRbAUeiINAwkTWADbJ+0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=R3P/Y7MG; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A8727C4CEF1;
-	Tue, 26 Aug 2025 11:40:14 +0000 (UTC)
+	 MIME-Version; b=mxJNZtycig5wgAd/xcU++8Qw0Ivj97Zu6HMPsPBZctxIYDaRlmjD5EGMyT9ab+jjy2IbR2N6umpQOHJgMnYXor1uzbM6lGbKqYJ29qFP4Nfbtv6a13qMp4y4YRtt5//KS+e4X7bYzqX12DUAkLEYM3q6zTB12AGlUxZs0OVAn7g=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=bjCtX6NM; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 72E86C4CEF1;
+	Tue, 26 Aug 2025 14:36:58 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1756208415;
-	bh=bWAnAXfEDWa7l1d56u5HtxITqnu4soxigcoYy5DngKU=;
+	s=korg; t=1756219018;
+	bh=V00XOKQuvShrlOyg+HawaU64p5mVEkWMC/zBjhYkOFs=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=R3P/Y7MG+UtV3Q2ZdSirS86IfVhg/0dLYBpBvexO5FNxicdy2rWcjJt8NYPx5WRfg
-	 YJTbYzLmiyPJ2kEw/zvaCZz7owh0rH+YCJcNvhiEDgsvNrt6zXlQoybcvmyPeY8M3r
-	 VfSfEaHuKql4eKWoEQPsF1+mq2SS18TxqHT27Z9A=
+	b=bjCtX6NMnWT4z56v8EMGPEZOVDJ+wdTo/lEwc7khGiNeDspYwvvTVnQP1M3OI9v1U
+	 8CJsvAeqtMnQmc24hNTqcvCofyxbMi1ChyDxORWKbO593VhBaIarbsHjlGybMqd6cd
+	 e+2fG+7cZZThb1UI6g0m4D0f1kjMUKwbCbOdhROM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Sakari Ailus <sakari.ailus@linux.intel.com>,
-	Hans Verkuil <hverkuil@xs4all.nl>
-Subject: [PATCH 6.12 101/322] media: ipu6: isys: Use correct pads for xlate_streams()
+	Aaron Kling <webgeek1234@gmail.com>,
+	Thierry Reding <treding@nvidia.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.4 190/403] ARM: tegra: Use I/O memcpy to write to IRAM
 Date: Tue, 26 Aug 2025 13:08:36 +0200
-Message-ID: <20250826110918.204054789@linuxfoundation.org>
+Message-ID: <20250826110912.124599368@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250826110915.169062587@linuxfoundation.org>
-References: <20250826110915.169062587@linuxfoundation.org>
+In-Reply-To: <20250826110905.607690791@linuxfoundation.org>
+References: <20250826110905.607690791@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,55 +62,41 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+5.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Sakari Ailus <sakari.ailus@linux.intel.com>
+From: Aaron Kling <webgeek1234@gmail.com>
 
-commit ff49672a28f3a856717f09d61380e524e243121f upstream.
+[ Upstream commit 398e67e0f5ae04b29bcc9cbf342e339fe9d3f6f1 ]
 
-The pad argument to v4l2_subdev_state_xlate_streams() is incorrect, static
-pad number is used for the source pad even though the pad number is
-dependent on the stream. Fix it.
+Kasan crashes the kernel trying to check boundaries when using the
+normal memcpy.
 
-Fixes: 3a5c59ad926b ("media: ipu6: Rework CSI-2 sub-device streaming control")
-Cc: stable@vger.kernel.org
-Signed-off-by: Sakari Ailus <sakari.ailus@linux.intel.com>
-Signed-off-by: Hans Verkuil <hverkuil@xs4all.nl>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Signed-off-by: Aaron Kling <webgeek1234@gmail.com>
+Link: https://lore.kernel.org/r/20250522-mach-tegra-kasan-v1-1-419041b8addb@gmail.com
+Signed-off-by: Thierry Reding <treding@nvidia.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/media/pci/intel/ipu6/ipu6-isys-csi2.c |   12 ++++++------
- 1 file changed, 6 insertions(+), 6 deletions(-)
+ arch/arm/mach-tegra/reset.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/drivers/media/pci/intel/ipu6/ipu6-isys-csi2.c
-+++ b/drivers/media/pci/intel/ipu6/ipu6-isys-csi2.c
-@@ -360,9 +360,9 @@ static int ipu6_isys_csi2_enable_streams
- 	remote_pad = media_pad_remote_pad_first(&sd->entity.pads[CSI2_PAD_SINK]);
- 	remote_sd = media_entity_to_v4l2_subdev(remote_pad->entity);
+diff --git a/arch/arm/mach-tegra/reset.c b/arch/arm/mach-tegra/reset.c
+index 76a65df42d10..dce0cb1fdd6f 100644
+--- a/arch/arm/mach-tegra/reset.c
++++ b/arch/arm/mach-tegra/reset.c
+@@ -63,7 +63,7 @@ static void __init tegra_cpu_reset_handler_enable(void)
+ 	BUG_ON(is_enabled);
+ 	BUG_ON(tegra_cpu_reset_handler_size > TEGRA_IRAM_RESET_HANDLER_SIZE);
  
--	sink_streams = v4l2_subdev_state_xlate_streams(state, CSI2_PAD_SRC,
--						       CSI2_PAD_SINK,
--						       &streams_mask);
-+	sink_streams =
-+		v4l2_subdev_state_xlate_streams(state, pad, CSI2_PAD_SINK,
-+						&streams_mask);
+-	memcpy(iram_base, (void *)__tegra_cpu_reset_handler_start,
++	memcpy_toio(iram_base, (void *)__tegra_cpu_reset_handler_start,
+ 			tegra_cpu_reset_handler_size);
  
- 	ret = ipu6_isys_csi2_calc_timing(csi2, &timing, CSI2_ACCINV);
- 	if (ret)
-@@ -390,9 +390,9 @@ static int ipu6_isys_csi2_disable_stream
- 	struct media_pad *remote_pad;
- 	u64 sink_streams;
- 
--	sink_streams = v4l2_subdev_state_xlate_streams(state, CSI2_PAD_SRC,
--						       CSI2_PAD_SINK,
--						       &streams_mask);
-+	sink_streams =
-+		v4l2_subdev_state_xlate_streams(state, pad, CSI2_PAD_SINK,
-+						&streams_mask);
- 
- 	remote_pad = media_pad_remote_pad_first(&sd->entity.pads[CSI2_PAD_SINK]);
- 	remote_sd = media_entity_to_v4l2_subdev(remote_pad->entity);
+ 	err = call_firmware_op(set_cpu_boot_addr, 0, reset_address);
+-- 
+2.39.5
+
 
 
 
