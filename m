@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-175221-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-176183-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2FCC6B3673A
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 16:04:53 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 26C8EB36CA6
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 16:58:39 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 9330A1C24A5B
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 13:56:20 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 308D2585026
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 14:39:35 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3158F345726;
-	Tue, 26 Aug 2025 13:54:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E43DB35E4F0;
+	Tue, 26 Aug 2025 14:36:35 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="CACjJggE"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="qNpS9gku"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E1CCE2FFDEB;
-	Tue, 26 Aug 2025 13:54:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A235E35E4EA;
+	Tue, 26 Aug 2025 14:36:35 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756216463; cv=none; b=CFD+YbIrw71nq42kvfEE/duN9AAXKEdLBlY+BjzjGP5fU+J4kJPRLYXQrj4x7NBSwvo+o48oTT60QsxFU6gnbE2ijG+vpcNed42f9X9Y7Ph9RV3NBNq8PlACEWSzWceE/hgc4FeNI91gdA8MYhqLUj4fyn102JkrooD1OTxArpA=
+	t=1756218995; cv=none; b=tbBqJNleX5ZmDKQR5UGWcGq4EJ2qFrL3QysKSZV0uYPmFv4i+8ljPMsjlCTdpXMlIa/d1HB2K18fA7fRjFBz+r42c9e2JT5JvZ5T4lekDBjTaMFa9YZ2+PWQ+ub4EtKGkaBd0qHLEh4ZBOr2zwrepug8b/0dPhIeIA7tzNnKYW4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756216463; c=relaxed/simple;
-	bh=ysuZ3CMpgH1n4qV8n3DIboKLWX8KyqugXmNknFtBHqQ=;
+	s=arc-20240116; t=1756218995; c=relaxed/simple;
+	bh=kf5FfVf8uFQ7QmXvGxgEkcMYZL6GoyRpEIBjz6MtDTI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Oyg6i6DJQ2EGXXRrV3/gqmyUUAx7ngpK2u+pTxNZqPnDwPWoozqtlX5DJ4Ahj332UYLbacuF6Wa7iC//uXyqkEE9WQP4To9cisaEEly5qZfqoP6SJpg+ZWJNfbEide0xTLZBfQwdIcrq81jJL/ArYdXKF2aqKKECy8/ayd2BDOc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=CACjJggE; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 77C61C4CEF1;
-	Tue, 26 Aug 2025 13:54:22 +0000 (UTC)
+	 MIME-Version; b=X0POKym7fD5XvozJAEJj/FF3cFtFeckHuCeJa1pgZpx4+SGME3UTL+rX7/71riUs51AhN6SRN2/BvLprCaC0ckLCyxMReghAKxBovJyoDPGuQsqK/Hv2zSH4Uq89lUuJeOFWJCeUmjOLwBn9a3DOsU3wodR7CwghZURgoIXTVXw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=qNpS9gku; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 361ABC4CEF1;
+	Tue, 26 Aug 2025 14:36:35 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1756216462;
-	bh=ysuZ3CMpgH1n4qV8n3DIboKLWX8KyqugXmNknFtBHqQ=;
+	s=korg; t=1756218995;
+	bh=kf5FfVf8uFQ7QmXvGxgEkcMYZL6GoyRpEIBjz6MtDTI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=CACjJggEmfT151uoF9lNb9jbrL22u6L0VxXROUH8254Pw5vxgGMpktitf99iKiazM
-	 flRzPtG615kyDNdWde04DvhJLyIB709d9Ejrpl+WkA6ynE/TrqB5adxUw2ZyCOUX1R
-	 bjb1BJkp8aLYU8tBa/HFnRJ9rayfImQSs2PvZPvM=
+	b=qNpS9gkuqYEmZEghP8fWhP4jMW3PwpkrlCE2107tAW6KaJHuduWYGPILmkSfEjp0b
+	 3Mv200mNkw96hFK7I6lfnlxwaUuWp5GbqqzPCk+KHV/Way/nyPcMIYZQqh+TjSB59j
+	 Zmva0msO4fpbIaYPmlZAsv0QSXFWevtxJwPm35co=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Ranjan Kumar <ranjan.kumar@broadcom.com>,
-	"Martin K. Petersen" <martin.petersen@oracle.com>,
+	Mario Limonciello <mario.limonciello@amd.com>,
+	Mathias Nyman <mathias.nyman@linux.intel.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 420/644] scsi: Fix sas_user_scan() to handle wildcard and multi-channel scans
+Subject: [PATCH 5.4 185/403] usb: xhci: Avoid showing errors during surprise removal
 Date: Tue, 26 Aug 2025 13:08:31 +0200
-Message-ID: <20250826110956.866062658@linuxfoundation.org>
+Message-ID: <20250826110911.993080913@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250826110946.507083938@linuxfoundation.org>
-References: <20250826110946.507083938@linuxfoundation.org>
+In-Reply-To: <20250826110905.607690791@linuxfoundation.org>
+References: <20250826110905.607690791@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,137 +62,61 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+5.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Ranjan Kumar <ranjan.kumar@broadcom.com>
+From: Mario Limonciello <mario.limonciello@amd.com>
 
-[ Upstream commit 37c4e72b0651e7697eb338cd1fb09feef472cc1a ]
+[ Upstream commit 4b9c60e440525b729ac5f071e00bcee12e0a7e84 ]
 
-sas_user_scan() did not fully process wildcard channel scans
-(SCAN_WILD_CARD) when a transport-specific user_scan() callback was
-present. Only channel 0 would be scanned via user_scan(), while the
-remaining channels were skipped, potentially missing devices.
+When a USB4 dock is unplugged from a system it won't respond to ring
+events. The PCI core handles the surprise removal event and notifies
+all PCI drivers. The XHCI PCI driver sets a flag that the device is
+being removed as well.
 
-user_scan() invokes updated sas_user_scan() for channel 0, and if
-successful, iteratively scans remaining channels (1 to
-shost->max_channel) via scsi_scan_host_selected().  This ensures complete
-wildcard scanning without affecting transport-specific scanning behavior.
+When that flag is set don't show messages in the cleanup path for
+marking the controller dead.
 
-Signed-off-by: Ranjan Kumar <ranjan.kumar@broadcom.com>
-Link: https://lore.kernel.org/r/20250624061649.17990-1-ranjan.kumar@broadcom.com
-Signed-off-by: Martin K. Petersen <martin.petersen@oracle.com>
+Signed-off-by: Mario Limonciello <mario.limonciello@amd.com>
+Signed-off-by: Mathias Nyman <mathias.nyman@linux.intel.com>
+Acked-by: Mathias Nyman <mathias.nyman@linux.intel.com>
+Link: https://lore.kernel.org/r/20250717073107.488599-2-mathias.nyman@linux.intel.com
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/scsi/scsi_scan.c          |  2 +-
- drivers/scsi/scsi_transport_sas.c | 60 ++++++++++++++++++++++++-------
- 2 files changed, 49 insertions(+), 13 deletions(-)
+ drivers/usb/host/xhci-ring.c | 7 +++++--
+ 1 file changed, 5 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/scsi/scsi_scan.c b/drivers/scsi/scsi_scan.c
-index f00b4624e46b..e39648762896 100644
---- a/drivers/scsi/scsi_scan.c
-+++ b/drivers/scsi/scsi_scan.c
-@@ -1762,7 +1762,7 @@ int scsi_scan_host_selected(struct Scsi_Host *shost, unsigned int channel,
- 
- 	return 0;
- }
--
-+EXPORT_SYMBOL(scsi_scan_host_selected);
- static void scsi_sysfs_add_devices(struct Scsi_Host *shost)
+diff --git a/drivers/usb/host/xhci-ring.c b/drivers/usb/host/xhci-ring.c
+index 71b17a00d3ed..47326fb8b1fc 100644
+--- a/drivers/usb/host/xhci-ring.c
++++ b/drivers/usb/host/xhci-ring.c
+@@ -973,12 +973,15 @@ static void xhci_kill_endpoint_urbs(struct xhci_hcd *xhci,
+  */
+ void xhci_hc_died(struct xhci_hcd *xhci)
  {
- 	struct scsi_device *sdev;
-diff --git a/drivers/scsi/scsi_transport_sas.c b/drivers/scsi/scsi_transport_sas.c
-index 8649608faec2..87c5ed56e47b 100644
---- a/drivers/scsi/scsi_transport_sas.c
-+++ b/drivers/scsi/scsi_transport_sas.c
-@@ -41,6 +41,8 @@
- #include <scsi/scsi_transport_sas.h>
++	bool notify;
+ 	int i, j;
  
- #include "scsi_sas_internal.h"
-+#include "scsi_priv.h"
-+
- struct sas_host_attrs {
- 	struct list_head rphy_list;
- 	struct mutex lock;
-@@ -1681,32 +1683,66 @@ int scsi_is_sas_rphy(const struct device *dev)
- }
- EXPORT_SYMBOL(scsi_is_sas_rphy);
+ 	if (xhci->xhc_state & XHCI_STATE_DYING)
+ 		return;
  
--
--/*
-- * SCSI scan helper
-- */
--
--static int sas_user_scan(struct Scsi_Host *shost, uint channel,
--		uint id, u64 lun)
-+static void scan_channel_zero(struct Scsi_Host *shost, uint id, u64 lun)
- {
- 	struct sas_host_attrs *sas_host = to_sas_host_attrs(shost);
- 	struct sas_rphy *rphy;
+-	xhci_err(xhci, "xHCI host controller not responding, assume dead\n");
++	notify = !(xhci->xhc_state & XHCI_STATE_REMOVING);
++	if (notify)
++		xhci_err(xhci, "xHCI host controller not responding, assume dead\n");
+ 	xhci->xhc_state |= XHCI_STATE_DYING;
  
--	mutex_lock(&sas_host->lock);
- 	list_for_each_entry(rphy, &sas_host->rphy_list, list) {
- 		if (rphy->identify.device_type != SAS_END_DEVICE ||
- 		    rphy->scsi_target_id == -1)
- 			continue;
- 
--		if ((channel == SCAN_WILD_CARD || channel == 0) &&
--		    (id == SCAN_WILD_CARD || id == rphy->scsi_target_id)) {
-+		if (id == SCAN_WILD_CARD || id == rphy->scsi_target_id) {
- 			scsi_scan_target(&rphy->dev, 0, rphy->scsi_target_id,
- 					 lun, SCSI_SCAN_MANUAL);
- 		}
+ 	xhci_cleanup_command_queue(xhci);
+@@ -992,7 +995,7 @@ void xhci_hc_died(struct xhci_hcd *xhci)
  	}
--	mutex_unlock(&sas_host->lock);
-+}
  
--	return 0;
-+/*
-+ * SCSI scan helper
-+ */
-+
-+static int sas_user_scan(struct Scsi_Host *shost, uint channel,
-+		uint id, u64 lun)
-+{
-+	struct sas_host_attrs *sas_host = to_sas_host_attrs(shost);
-+	int res = 0;
-+	int i;
-+
-+	switch (channel) {
-+	case 0:
-+		mutex_lock(&sas_host->lock);
-+		scan_channel_zero(shost, id, lun);
-+		mutex_unlock(&sas_host->lock);
-+		break;
-+
-+	case SCAN_WILD_CARD:
-+		mutex_lock(&sas_host->lock);
-+		scan_channel_zero(shost, id, lun);
-+		mutex_unlock(&sas_host->lock);
-+
-+		for (i = 1; i <= shost->max_channel; i++) {
-+			res = scsi_scan_host_selected(shost, i, id, lun,
-+						      SCSI_SCAN_MANUAL);
-+			if (res)
-+				goto exit_scan;
-+		}
-+		break;
-+
-+	default:
-+		if (channel < shost->max_channel) {
-+			res = scsi_scan_host_selected(shost, channel, id, lun,
-+						      SCSI_SCAN_MANUAL);
-+		} else {
-+			res = -EINVAL;
-+		}
-+		break;
-+	}
-+
-+exit_scan:
-+	return res;
+ 	/* inform usb core hc died if PCI remove isn't already handling it */
+-	if (!(xhci->xhc_state & XHCI_STATE_REMOVING))
++	if (notify)
+ 		usb_hc_died(xhci_to_hcd(xhci));
  }
- 
  
 -- 
 2.39.5
