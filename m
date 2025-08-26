@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-174314-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-173686-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 68E24B362E1
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 15:23:32 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9DE38B35E6A
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 13:57:18 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 4C0A2466622
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 13:16:06 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id EA96E1BA6617
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 11:48:35 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5B77326158C;
-	Tue, 26 Aug 2025 13:14:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 15AE626C3A4;
+	Tue, 26 Aug 2025 11:48:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="1KkLizAy"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="mq1sdYtc"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1A002FBF0;
-	Tue, 26 Aug 2025 13:14:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C8BB120330;
+	Tue, 26 Aug 2025 11:48:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756214061; cv=none; b=ua+1QCt8zxq7kNUTWwVkXil7OQJ9HAc4lh4y29iTH9Je05+/oEZev7E1ZcQws/37rmpvMFYUlSZrDNiWGqJOcB7YQPtrIRDnOx8cczPImbO8t+c31rea/yL9jOfufHICvDbM3BCRadJx3g4WvMhfdSdnBnwVueN/9ArhqZlSUu4=
+	t=1756208892; cv=none; b=TUTcwj7T89ahJWplv3Y9buxfH+hXZ0zPpQm44D0C6Fg/eTTccXzcyrxh+iRyC5CEezdLF5xnPnxsddWBTwEX7HjxQG098y7NA+CkQfLXEId59j3p7NPX7JQDMDgtpd0wsN5KwPPpUCUcD0ALhM+XNAjzg/1Zx5ZT1yafwh2wQuo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756214061; c=relaxed/simple;
-	bh=iz+TOzIs+SgoO98dcDiw8J436hWZggtmCeil8cSGcrU=;
+	s=arc-20240116; t=1756208892; c=relaxed/simple;
+	bh=Qh/nra2OsacmAPogS8JnlTcet/7GRpDVsSWI5mIpt18=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=gxHCcYlBZdVFLCmgASNDwudMxBJwcbG/qjFd5TJeZrgLyfxe674WI3fYLaq0Dlma1aKPcLHDmwFdDvFrzrKGHlE1E8PjD1PLXLl30hVBpQ365zmgbp/uRJ51XQwxIQjGKvknV3Tk4P4KdA87sdXoEvGbmJWhVQ9jU2sd+kwx2s8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=1KkLizAy; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 46E77C4CEF1;
-	Tue, 26 Aug 2025 13:14:20 +0000 (UTC)
+	 MIME-Version; b=NZkY/vfKfvorV84gVcOuil5P4jFhHowCUd/7hnP1lNLHGrpTyrIXNOVDKc5DRdXM83lS8S/PmYhQ5kvyXqytqufNh4D+QRlK7ZlfYe5NQYBZIE4kP4M3PzV3D38lRZ/klLvQDnK68D/g1FCL2iMFz7cjWsLK2iuu/15PbBdumJM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=mq1sdYtc; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 58822C4CEF1;
+	Tue, 26 Aug 2025 11:48:12 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1756214060;
-	bh=iz+TOzIs+SgoO98dcDiw8J436hWZggtmCeil8cSGcrU=;
+	s=korg; t=1756208892;
+	bh=Qh/nra2OsacmAPogS8JnlTcet/7GRpDVsSWI5mIpt18=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=1KkLizAyQZyz8oRjjRvTa+PxCxQLstYlVKl4v0d0mQS5JKZ1BNH//olJJ/fbEin4l
-	 +YfVJXwst0fHaoNpBdN7CI6WjXMCuZzAp1cxETwtO2sy43xTzrzcjEB8VazShBkpY2
-	 ZkKUIo3lxis/JbDaApY2QbNuLyR13jwUKDl/3ENI=
+	b=mq1sdYtcK0l9I7E7orkt1Kga7jU1j73TfyT1zT5keEpMUZYSJWfYettkbOenV2GvA
+	 9oCZhIadrwn0iRArKBWvqbmvewU911yT1C7cttbbN8ecRaXfjUHqUuufAkC3JCu2CC
+	 flYCQHw8EFMYI+KUsfqgB2xUCh3xHN2ALJdBCFb4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Nitin Gote <nitin.r.gote@intel.com>,
-	Andi Shyti <andi.shyti@linux.intel.com>,
-	Thomas Zimmermann <tzimmermann@suse.de>,
+	Baihan Li <libaihan@huawei.com>,
+	Yongbang Shi <shiyongbang@huawei.com>,
+	Dmitry Baryshkov <dmitry.baryshkov@oss.qualcomm.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 551/587] iosys-map: Fix undefined behavior in iosys_map_clear()
-Date: Tue, 26 Aug 2025 13:11:40 +0200
-Message-ID: <20250826111007.038542880@linuxfoundation.org>
+Subject: [PATCH 6.12 286/322] drm/hisilicon/hibmc: fix the hibmc loaded failed bug
+Date: Tue, 26 Aug 2025 13:11:41 +0200
+Message-ID: <20250826110922.975760272@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250826110952.942403671@linuxfoundation.org>
-References: <20250826110952.942403671@linuxfoundation.org>
+In-Reply-To: <20250826110915.169062587@linuxfoundation.org>
+References: <20250826110915.169062587@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,57 +63,50 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Nitin Gote <nitin.r.gote@intel.com>
+From: Baihan Li <libaihan@huawei.com>
 
-[ Upstream commit 5634c8cb298a7146b4e38873473e280b50e27a2c ]
+[ Upstream commit 93a08f856fcc5aaeeecad01f71bef3088588216a ]
 
-The current iosys_map_clear() implementation reads the potentially
-uninitialized 'is_iomem' boolean field to decide which union member
-to clear. This causes undefined behavior when called on uninitialized
-structures, as 'is_iomem' may contain garbage values like 0xFF.
+When hibmc loaded failed, the driver use hibmc_unload to free the
+resource, but the mutexes in mode.config are not init, which will
+access an NULL pointer. Just change goto statement to return, because
+hibnc_hw_init() doesn't need to free anything.
 
-UBSAN detects this as:
-    UBSAN: invalid-load in include/linux/iosys-map.h:267
-    load of value 255 is not a valid value for type '_Bool'
-
-Fix by unconditionally clearing the entire structure with memset(),
-eliminating the need to read uninitialized data and ensuring all
-fields are set to known good values.
-
-Closes: https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/14639
-Fixes: 01fd30da0474 ("dma-buf: Add struct dma-buf-map for storing struct dma_buf.vaddr_ptr")
-Signed-off-by: Nitin Gote <nitin.r.gote@intel.com>
-Reviewed-by: Andi Shyti <andi.shyti@linux.intel.com>
-Reviewed-by: Thomas Zimmermann <tzimmermann@suse.de>
-Signed-off-by: Thomas Zimmermann <tzimmermann@suse.de>
-Link: https://lore.kernel.org/r/20250718105051.2709487-1-nitin.r.gote@intel.com
+Fixes: b3df5e65cc03 ("drm/hibmc: Drop drm_vblank_cleanup")
+Signed-off-by: Baihan Li <libaihan@huawei.com>
+Signed-off-by: Yongbang Shi <shiyongbang@huawei.com>
+Reviewed-by: Dmitry Baryshkov <dmitry.baryshkov@oss.qualcomm.com>
+Link: https://lore.kernel.org/r/20250813094238.3722345-5-shiyongbang@huawei.com
+Signed-off-by: Dmitry Baryshkov <dmitry.baryshkov@oss.qualcomm.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- include/linux/iosys-map.h | 7 +------
- 1 file changed, 1 insertion(+), 6 deletions(-)
+ drivers/gpu/drm/hisilicon/hibmc/hibmc_drm_drv.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/include/linux/iosys-map.h b/include/linux/iosys-map.h
-index cb71aa616bd3..631d58d0b838 100644
---- a/include/linux/iosys-map.h
-+++ b/include/linux/iosys-map.h
-@@ -264,12 +264,7 @@ static inline bool iosys_map_is_set(const struct iosys_map *map)
-  */
- static inline void iosys_map_clear(struct iosys_map *map)
- {
--	if (map->is_iomem) {
--		map->vaddr_iomem = NULL;
--		map->is_iomem = false;
--	} else {
--		map->vaddr = NULL;
--	}
-+	memset(map, 0, sizeof(*map));
- }
+diff --git a/drivers/gpu/drm/hisilicon/hibmc/hibmc_drm_drv.c b/drivers/gpu/drm/hisilicon/hibmc/hibmc_drm_drv.c
+index 9f9b19ea0587..1640609cdbc0 100644
+--- a/drivers/gpu/drm/hisilicon/hibmc/hibmc_drm_drv.c
++++ b/drivers/gpu/drm/hisilicon/hibmc/hibmc_drm_drv.c
+@@ -258,13 +258,13 @@ static int hibmc_load(struct drm_device *dev)
  
- /**
+ 	ret = hibmc_hw_init(priv);
+ 	if (ret)
+-		goto err;
++		return ret;
+ 
+ 	ret = drmm_vram_helper_init(dev, pci_resource_start(pdev, 0),
+ 				    pci_resource_len(pdev, 0));
+ 	if (ret) {
+ 		drm_err(dev, "Error initializing VRAM MM; %d\n", ret);
+-		goto err;
++		return ret;
+ 	}
+ 
+ 	ret = hibmc_kms_init(priv);
 -- 
 2.50.1
 
