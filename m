@@ -1,55 +1,55 @@
-Return-Path: <stable+bounces-175481-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-173825-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 49C76B36851
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 16:15:16 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id B1A96B35FF9
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 14:55:47 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id D9B88567F52
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 14:07:37 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id C96A31BA3D95
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 12:54:08 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E829A1E7C08;
-	Tue, 26 Aug 2025 14:05:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 02ECC1F461D;
+	Tue, 26 Aug 2025 12:52:45 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="QHUWdcVd"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="XqjSyk06"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9E47A22DFA7;
-	Tue, 26 Aug 2025 14:05:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B4DF41F1534;
+	Tue, 26 Aug 2025 12:52:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756217158; cv=none; b=Dw4nvN2ZOT2zOLGjkPmaagaFwwyIGm6lZnonVk8re9wtQgHgSdo+2fTHUFfw50ASQsPo7Hpdga9Q+h7y06ZiHdFma+PhtIXIoomy8k9s0c+QlEDOtmfdckWaXqJgIJxO68ece0DpTX4UFyC1EbKdnzESULfs5w5szNN6GWiBc3w=
+	t=1756212764; cv=none; b=L27fWVS7TFTrKiVpyc66ltkv+T3LiZsGtACBlxq4Bs6xKvmvKlIc/OlOQONiilJAPaexyPikOoicZX2u081CqaLx+SBQjTVKuCCTN24HprSbkw8P1+SI8Q5sZVCII94h1RgcDsLWWVvHE9fXmfuLsnEDGQkNYTAXPwNKsid0J/A=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756217158; c=relaxed/simple;
-	bh=v34+NypjJPbN/LMr+S9g/g3y8EgonSFuExLagXlbMN8=;
+	s=arc-20240116; t=1756212764; c=relaxed/simple;
+	bh=TAFWezDF02gl5ZDzoYYGb5qlXVBWzmyzwLS+l4vDKH4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Bukr710HAPcGPv4azxcgta7ppe2yC4IjqjsgVzN7ro1zK5lVSRdUNOOIJeqafLr2C728X5d0s8uBSKwtjgXiVfoa9E2dwOp0rt9pn94yrvUcltal79yvObDah+BGEGSBPfnES9aV/3emrVBB7HAL3s+kUnflOwU0k/85x6Us1Os=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=QHUWdcVd; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id CD7D5C4CEF1;
-	Tue, 26 Aug 2025 14:05:57 +0000 (UTC)
+	 MIME-Version; b=EbmP5H3gBeVWcmGycwqjYv+vSXxct26Me2w/F0lWndb0nNcGDlDNyrIIwK7gdiQBGM4c8gxt8KYdIItjAn1GXr9nLxXZOYn9Zfdb7Mt/h5vfRunYUsBd6WcshZrCBCrKh/a4ZhyDYAtgqjoE9DCaCBDE7ptYWch2EeHXxT+Nzkk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=XqjSyk06; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 463F1C4CEF1;
+	Tue, 26 Aug 2025 12:52:44 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1756217158;
-	bh=v34+NypjJPbN/LMr+S9g/g3y8EgonSFuExLagXlbMN8=;
+	s=korg; t=1756212764;
+	bh=TAFWezDF02gl5ZDzoYYGb5qlXVBWzmyzwLS+l4vDKH4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=QHUWdcVdabWSbFgH53HMyZTAOtCJnHGNR0BuY+BqZvX8uhnv6etfwaOYrsZpLZeoO
-	 AM/op7Ww1RwaBqOU0sir6xyBncNDbHCDxgUv4/gUFs4SlLFGehmXpJ3+ToeaA71xWw
-	 YhLOnBH+t2agzzNefFNlUpyW3UcWX/HHkTWv9Lrw=
+	b=XqjSyk067ptphz4HhDnWvgTnsJhrckn70pVxBbwnq8ioWViLO4QMYgKkdBM4czYSG
+	 UMPn1DAmU1W+wgWCusIu6iuzeHp+La3+ee3IV6tetqfvzxKBVZDoOs3WVjuqGRqwNI
+	 XRK40AL3N6EegFsOS95LPSQk2/bX3XNStjKcgamk=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Fabio Porcedda <fabio.porcedda@gmail.com>,
-	Johan Hovold <johan@kernel.org>
-Subject: [PATCH 5.10 002/523] USB: serial: option: add Telit Cinterion FE910C04 (ECM) composition
+	Viacheslav Dubeyko <slava@dubeyko.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.6 063/587] hfs: fix slab-out-of-bounds in hfs_bnode_read()
 Date: Tue, 26 Aug 2025 13:03:32 +0200
-Message-ID: <20250826110924.631496747@linuxfoundation.org>
+Message-ID: <20250826110954.539540033@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250826110924.562212281@linuxfoundation.org>
-References: <20250826110924.562212281@linuxfoundation.org>
+In-Reply-To: <20250826110952.942403671@linuxfoundation.org>
+References: <20250826110952.942403671@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,62 +61,171 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Fabio Porcedda <fabio.porcedda@gmail.com>
+From: Viacheslav Dubeyko <slava@dubeyko.com>
 
-commit 252f4ac08cd2f16ecd20e4c5e41ac2a17dd86942 upstream.
+[ Upstream commit a431930c9bac518bf99d6b1da526a7f37ddee8d8 ]
 
-Add Telit Cinterion FE910C04 (ECM) composition:
-0x10c7: ECM + tty (AT) + tty (AT) + tty (diag)
+This patch introduces is_bnode_offset_valid() method that checks
+the requested offset value. Also, it introduces
+check_and_correct_requested_length() method that checks and
+correct the requested length (if it is necessary). These methods
+are used in hfs_bnode_read(), hfs_bnode_write(), hfs_bnode_clear(),
+hfs_bnode_copy(), and hfs_bnode_move() with the goal to prevent
+the access out of allocated memory and triggering the crash.
 
-usb-devices output:
-T:  Bus=01 Lev=01 Prnt=01 Port=00 Cnt=01 Dev#=  7 Spd=480 MxCh= 0
-D:  Ver= 2.00 Cls=00(>ifc ) Sub=00 Prot=00 MxPS=64 #Cfgs=  1
-P:  Vendor=1bc7 ProdID=10c7 Rev=05.15
-S:  Manufacturer=Telit Cinterion
-S:  Product=FE910
-S:  SerialNumber=f71b8b32
-C:  #Ifs= 5 Cfg#= 1 Atr=e0 MxPwr=500mA
-I:  If#= 0 Alt= 0 #EPs= 1 Cls=02(commc) Sub=06 Prot=00 Driver=cdc_ether
-E:  Ad=82(I) Atr=03(Int.) MxPS=  16 Ivl=32ms
-I:  If#= 1 Alt= 1 #EPs= 2 Cls=0a(data ) Sub=00 Prot=00 Driver=cdc_ether
-E:  Ad=01(O) Atr=02(Bulk) MxPS= 512 Ivl=0ms
-E:  Ad=81(I) Atr=02(Bulk) MxPS= 512 Ivl=0ms
-I:  If#= 2 Alt= 0 #EPs= 3 Cls=ff(vend.) Sub=ff Prot=40 Driver=option
-E:  Ad=02(O) Atr=02(Bulk) MxPS= 512 Ivl=0ms
-E:  Ad=83(I) Atr=02(Bulk) MxPS= 512 Ivl=0ms
-E:  Ad=84(I) Atr=03(Int.) MxPS=  10 Ivl=32ms
-I:  If#= 3 Alt= 0 #EPs= 3 Cls=ff(vend.) Sub=ff Prot=40 Driver=option
-E:  Ad=03(O) Atr=02(Bulk) MxPS= 512 Ivl=0ms
-E:  Ad=85(I) Atr=02(Bulk) MxPS= 512 Ivl=0ms
-E:  Ad=86(I) Atr=03(Int.) MxPS=  10 Ivl=32ms
-I:  If#= 4 Alt= 0 #EPs= 2 Cls=ff(vend.) Sub=ff Prot=30 Driver=option
-E:  Ad=04(O) Atr=02(Bulk) MxPS= 512 Ivl=0ms
-E:  Ad=87(I) Atr=02(Bulk) MxPS= 512 Ivl=0ms
-
-Cc: stable@vger.kernel.org
-Signed-off-by: Fabio Porcedda <fabio.porcedda@gmail.com>
-Signed-off-by: Johan Hovold <johan@kernel.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Signed-off-by: Viacheslav Dubeyko <slava@dubeyko.com>
+Link: https://lore.kernel.org/r/20250703214912.244138-1-slava@dubeyko.com
+Signed-off-by: Viacheslav Dubeyko <slava@dubeyko.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/usb/serial/option.c |    3 +++
- 1 file changed, 3 insertions(+)
+ fs/hfs/bnode.c | 92 ++++++++++++++++++++++++++++++++++++++++++++++++++
+ 1 file changed, 92 insertions(+)
 
---- a/drivers/usb/serial/option.c
-+++ b/drivers/usb/serial/option.c
-@@ -1415,6 +1415,9 @@ static const struct usb_device_id option
- 	  .driver_info = NCTRL(5) },
- 	{ USB_DEVICE_AND_INTERFACE_INFO(TELIT_VENDOR_ID, 0x10d0, 0xff, 0xff, 0x40) },
- 	{ USB_DEVICE_AND_INTERFACE_INFO(TELIT_VENDOR_ID, 0x10d0, 0xff, 0xff, 0x60) },
-+	{ USB_DEVICE_AND_INTERFACE_INFO(TELIT_VENDOR_ID, 0x10c7, 0xff, 0xff, 0x30),	/* Telit FE910C04 (ECM) */
-+	  .driver_info = NCTRL(4) },
-+	{ USB_DEVICE_AND_INTERFACE_INFO(TELIT_VENDOR_ID, 0x10c7, 0xff, 0xff, 0x40) },
- 	{ USB_DEVICE_AND_INTERFACE_INFO(TELIT_VENDOR_ID, 0x10d1, 0xff, 0xff, 0x30),	/* Telit FN990B (MBIM) */
- 	  .driver_info = NCTRL(6) },
- 	{ USB_DEVICE_AND_INTERFACE_INFO(TELIT_VENDOR_ID, 0x10d1, 0xff, 0xff, 0x40) },
+diff --git a/fs/hfs/bnode.c b/fs/hfs/bnode.c
+index cb823a8a6ba9..1dac5d9c055f 100644
+--- a/fs/hfs/bnode.c
++++ b/fs/hfs/bnode.c
+@@ -15,6 +15,48 @@
+ 
+ #include "btree.h"
+ 
++static inline
++bool is_bnode_offset_valid(struct hfs_bnode *node, int off)
++{
++	bool is_valid = off < node->tree->node_size;
++
++	if (!is_valid) {
++		pr_err("requested invalid offset: "
++		       "NODE: id %u, type %#x, height %u, "
++		       "node_size %u, offset %d\n",
++		       node->this, node->type, node->height,
++		       node->tree->node_size, off);
++	}
++
++	return is_valid;
++}
++
++static inline
++int check_and_correct_requested_length(struct hfs_bnode *node, int off, int len)
++{
++	unsigned int node_size;
++
++	if (!is_bnode_offset_valid(node, off))
++		return 0;
++
++	node_size = node->tree->node_size;
++
++	if ((off + len) > node_size) {
++		int new_len = (int)node_size - off;
++
++		pr_err("requested length has been corrected: "
++		       "NODE: id %u, type %#x, height %u, "
++		       "node_size %u, offset %d, "
++		       "requested_len %d, corrected_len %d\n",
++		       node->this, node->type, node->height,
++		       node->tree->node_size, off, len, new_len);
++
++		return new_len;
++	}
++
++	return len;
++}
++
+ void hfs_bnode_read(struct hfs_bnode *node, void *buf, int off, int len)
+ {
+ 	struct page *page;
+@@ -22,6 +64,20 @@ void hfs_bnode_read(struct hfs_bnode *node, void *buf, int off, int len)
+ 	int bytes_read;
+ 	int bytes_to_read;
+ 
++	if (!is_bnode_offset_valid(node, off))
++		return;
++
++	if (len == 0) {
++		pr_err("requested zero length: "
++		       "NODE: id %u, type %#x, height %u, "
++		       "node_size %u, offset %d, len %d\n",
++		       node->this, node->type, node->height,
++		       node->tree->node_size, off, len);
++		return;
++	}
++
++	len = check_and_correct_requested_length(node, off, len);
++
+ 	off += node->page_offset;
+ 	pagenum = off >> PAGE_SHIFT;
+ 	off &= ~PAGE_MASK; /* compute page offset for the first page */
+@@ -80,6 +136,20 @@ void hfs_bnode_write(struct hfs_bnode *node, void *buf, int off, int len)
+ {
+ 	struct page *page;
+ 
++	if (!is_bnode_offset_valid(node, off))
++		return;
++
++	if (len == 0) {
++		pr_err("requested zero length: "
++		       "NODE: id %u, type %#x, height %u, "
++		       "node_size %u, offset %d, len %d\n",
++		       node->this, node->type, node->height,
++		       node->tree->node_size, off, len);
++		return;
++	}
++
++	len = check_and_correct_requested_length(node, off, len);
++
+ 	off += node->page_offset;
+ 	page = node->page[0];
+ 
+@@ -104,6 +174,20 @@ void hfs_bnode_clear(struct hfs_bnode *node, int off, int len)
+ {
+ 	struct page *page;
+ 
++	if (!is_bnode_offset_valid(node, off))
++		return;
++
++	if (len == 0) {
++		pr_err("requested zero length: "
++		       "NODE: id %u, type %#x, height %u, "
++		       "node_size %u, offset %d, len %d\n",
++		       node->this, node->type, node->height,
++		       node->tree->node_size, off, len);
++		return;
++	}
++
++	len = check_and_correct_requested_length(node, off, len);
++
+ 	off += node->page_offset;
+ 	page = node->page[0];
+ 
+@@ -119,6 +203,10 @@ void hfs_bnode_copy(struct hfs_bnode *dst_node, int dst,
+ 	hfs_dbg(BNODE_MOD, "copybytes: %u,%u,%u\n", dst, src, len);
+ 	if (!len)
+ 		return;
++
++	len = check_and_correct_requested_length(src_node, src, len);
++	len = check_and_correct_requested_length(dst_node, dst, len);
++
+ 	src += src_node->page_offset;
+ 	dst += dst_node->page_offset;
+ 	src_page = src_node->page[0];
+@@ -136,6 +224,10 @@ void hfs_bnode_move(struct hfs_bnode *node, int dst, int src, int len)
+ 	hfs_dbg(BNODE_MOD, "movebytes: %u,%u,%u\n", dst, src, len);
+ 	if (!len)
+ 		return;
++
++	len = check_and_correct_requested_length(node, src, len);
++	len = check_and_correct_requested_length(node, dst, len);
++
+ 	src += node->page_offset;
+ 	dst += node->page_offset;
+ 	page = node->page[0];
+-- 
+2.39.5
+
 
 
 
