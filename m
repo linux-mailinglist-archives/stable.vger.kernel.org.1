@@ -1,57 +1,58 @@
-Return-Path: <stable+bounces-174313-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-175934-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 962F0B3627C
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 15:19:29 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2E96CB36A77
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 16:37:43 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 82E071896A88
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 13:16:25 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 09AA25665BA
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 14:28:27 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6E0FF298CA7;
-	Tue, 26 Aug 2025 13:14:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id DE96C352093;
+	Tue, 26 Aug 2025 14:25:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="VYz6Rpbb"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="uo3bSlF7"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2861226158C;
-	Tue, 26 Aug 2025 13:14:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9C1E2481CD;
+	Tue, 26 Aug 2025 14:25:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756214058; cv=none; b=lp2JlLgKmAdPihQ40T/Q/JD0IVIlxq8MT9Md8tOFTH5CAQFEHsrVf5JxzucK1mrZyvAN4g20q60n4Q0eD34T6uXK4ssMGgFvmrPQAt4FAC6Xzy6qHdxHlgIjZadP07UdnEXAbhQzxW7cueqsP7hwVAj1aU/fV9q6sey/peGoe+I=
+	t=1756218351; cv=none; b=ON4XpLltDdpbkQg97jfdHrCE1xcG0idWO94u6ghnI/1AsTGMlpo0+ecSQmkQppbNTKlpUhp5MwsDFjK2qIrheCZIvDfU9QD9YvDiKecvy+hAhJQqSnIo0tdIx193Mojyv2wC02FuBIJJaGsQmnJi3DINs+B8ChEXYKBD1gcdQmw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756214058; c=relaxed/simple;
-	bh=+MbRgZ/cdqe5KeOOhXjNdF28Bd5UP7m0eTNuDJ1QIDk=;
+	s=arc-20240116; t=1756218351; c=relaxed/simple;
+	bh=46KiQmCnR02Fb7DKusQn4FBBelMP6i0pcOtF6HmxKyE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=unMA23BAXHA7ZFG8Zbrwf5IflJUkYrgtQktlh109ZiYg2k8OIr5EOc7JD+Grd9X87mCkzAd07h0BosKsmfCe5ggwD7E6aYduVGWQQYpNQ0ZlyAy7jFd1Te8nUoVE2HPT+R6XBUTo5tHVGVM+IYq+JYhjoJdUUdWBetvzM4ZGLZU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=VYz6Rpbb; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id AB1DBC4CEF1;
-	Tue, 26 Aug 2025 13:14:17 +0000 (UTC)
+	 MIME-Version:Content-Type; b=nEawl9LSTc2XqlwcyG7V0DHpC1+Mz+5accusXzSM4TRPpS2+wECF+oHsyVSCTqqJW6lcxD5gtb3YzwYvhR4WfwuPZcONJvmfpG91UMWHZqJwcFStyHt4tKxHne1erY71st4B+aK/Mt/Hjqio3qb861FRxz/z+vQ9a04inYQM6BU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=uo3bSlF7; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 32385C4CEF1;
+	Tue, 26 Aug 2025 14:25:51 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1756214058;
-	bh=+MbRgZ/cdqe5KeOOhXjNdF28Bd5UP7m0eTNuDJ1QIDk=;
+	s=korg; t=1756218351;
+	bh=46KiQmCnR02Fb7DKusQn4FBBelMP6i0pcOtF6HmxKyE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=VYz6Rpbbv8AyCu4UXTPnzFBiVgfdzYakorMKn6lhpAD1FNCsCmxe16Z0obqm32lkx
-	 Lk9fIdYVOoHiq7qC2sqTGIG1vj2qiwDwtBE0FPGt7tBYmeGFBFQdW3Al8wphu9Ti3g
-	 dFDPOo6KGS84ZIORRzG64NE1XNX2UIvqDFs2eLkM=
+	b=uo3bSlF71syKhfPiSlwWOqDgNyktW7orvfOeldXt1kfcSyMRA3o+K+yl4iQBDcrcj
+	 WMz/khXT8SBg2k9pT+NBGNAcDTS+Z0QmukJi/ngL8L/GoQuHlPp1k52EFAJS8G4Ajf
+	 Et2vu2nKtsSpSSXPEC/60/Lhp8a4kBDIApNbnQrM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Waiman Long <longman@redhat.com>,
-	Juri Lelli <juri.lelli@redhat.com>,
-	Tejun Heo <tj@kernel.org>,
+	=?UTF-8?q?Ville=20Syrj=C3=A4l=C3=A4?= <ville.syrjala@linux.intel.com>,
+	Jani Nikula <jani.nikula@linux.intel.com>,
+	Jani Nikula <jani.nikula@intel.com>,
+	Imre Deak <imre.deak@intel.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 550/587] cgroup/cpuset: Use static_branch_enable_cpuslocked() on cpusets_insane_config_key
+Subject: [PATCH 5.10 489/523] drm/dp: Change AUX DPCD probe address from DPCD_REV to LANE0_1_STATUS
 Date: Tue, 26 Aug 2025 13:11:39 +0200
-Message-ID: <20250826111007.010954585@linuxfoundation.org>
+Message-ID: <20250826110936.507069438@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250826110952.942403671@linuxfoundation.org>
-References: <20250826110952.942403671@linuxfoundation.org>
+In-Reply-To: <20250826110924.562212281@linuxfoundation.org>
+References: <20250826110924.562212281@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,79 +62,55 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Waiman Long <longman@redhat.com>
+From: Imre Deak <imre.deak@intel.com>
 
-[ Upstream commit 65f97cc81b0adc5f49cf6cff5d874be0058e3f41 ]
+[ Upstream commit a40c5d727b8111b5db424a1e43e14a1dcce1e77f ]
 
-The following lockdep splat was observed.
+Reading DPCD registers has side-effects in general. In particular
+accessing registers outside of the link training register range
+(0x102-0x106, 0x202-0x207, 0x200c-0x200f, 0x2216) is explicitly
+forbidden by the DP v2.1 Standard, see
 
-[  812.359086] ============================================
-[  812.359089] WARNING: possible recursive locking detected
-[  812.359097] --------------------------------------------
-[  812.359100] runtest.sh/30042 is trying to acquire lock:
-[  812.359105] ffffffffa7f27420 (cpu_hotplug_lock){++++}-{0:0}, at: static_key_enable+0xe/0x20
-[  812.359131]
-[  812.359131] but task is already holding lock:
-[  812.359134] ffffffffa7f27420 (cpu_hotplug_lock){++++}-{0:0}, at: cpuset_write_resmask+0x98/0xa70
-     :
-[  812.359267] Call Trace:
-[  812.359272]  <TASK>
-[  812.359367]  cpus_read_lock+0x3c/0xe0
-[  812.359382]  static_key_enable+0xe/0x20
-[  812.359389]  check_insane_mems_config.part.0+0x11/0x30
-[  812.359398]  cpuset_write_resmask+0x9f2/0xa70
-[  812.359411]  cgroup_file_write+0x1c7/0x660
-[  812.359467]  kernfs_fop_write_iter+0x358/0x530
-[  812.359479]  vfs_write+0xabe/0x1250
-[  812.359529]  ksys_write+0xf9/0x1d0
-[  812.359558]  do_syscall_64+0x5f/0xe0
+3.6.5.1 DPTX AUX Transaction Handling Mandates
+3.6.7.4 128b/132b DP Link Layer LTTPR Link Training Mandates
 
-Since commit d74b27d63a8b ("cgroup/cpuset: Change cpuset_rwsem
-and hotplug lock order"), the ordering of cpu hotplug lock
-and cpuset_mutex had been reversed. That patch correctly
-used the cpuslocked version of the static branch API to enable
-cpusets_pre_enable_key and cpusets_enabled_key, but it didn't do the
-same for cpusets_insane_config_key.
+Based on my tests, accessing the DPCD_REV register during the link
+training of an UHBR TBT DP tunnel sink leads to link training failures.
 
-The cpusets_insane_config_key can be enabled in the
-check_insane_mems_config() which is called from update_nodemask()
-or cpuset_hotplug_update_tasks() with both cpu hotplug lock and
-cpuset_mutex held. Deadlock can happen with a pending hotplug event that
-tries to acquire the cpu hotplug write lock which will block further
-cpus_read_lock() attempt from check_insane_mems_config(). Fix that by
-switching to use static_branch_enable_cpuslocked().
+Solve the above by using the DP_LANE0_1_STATUS (0x202) register for the
+DPCD register access quirk.
 
-Fixes: d74b27d63a8b ("cgroup/cpuset: Change cpuset_rwsem and hotplug lock order")
-Signed-off-by: Waiman Long <longman@redhat.com>
-Reviewed-by: Juri Lelli <juri.lelli@redhat.com>
-Signed-off-by: Tejun Heo <tj@kernel.org>
+Cc: <stable@vger.kernel.org>
+Cc: Ville Syrjälä <ville.syrjala@linux.intel.com>
+Cc: Jani Nikula <jani.nikula@linux.intel.com>
+Acked-by: Jani Nikula <jani.nikula@intel.com>
+Signed-off-by: Imre Deak <imre.deak@intel.com>
+Link: https://lore.kernel.org/r/20250605082850.65136-2-imre.deak@intel.com
+[ call to drm_dp_dpcd_access() instead of drm_dp_dpcd_probe() ]
 Signed-off-by: Sasha Levin <sashal@kernel.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- kernel/cgroup/cpuset.c | 2 +-
+ drivers/gpu/drm/drm_dp_helper.c |    2 +-
  1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/kernel/cgroup/cpuset.c b/kernel/cgroup/cpuset.c
-index ad8b62202bdc..eadb028916c8 100644
---- a/kernel/cgroup/cpuset.c
-+++ b/kernel/cgroup/cpuset.c
-@@ -432,7 +432,7 @@ static inline void check_insane_mems_config(nodemask_t *nodes)
- {
- 	if (!cpusets_insane_config() &&
- 		movable_only_nodes(nodes)) {
--		static_branch_enable(&cpusets_insane_config_key);
-+		static_branch_enable_cpuslocked(&cpusets_insane_config_key);
- 		pr_info("Unsupported (movable nodes only) cpuset configuration detected (nmask=%*pbl)!\n"
- 			"Cpuset allocations might fail even with a lot of memory available.\n",
- 			nodemask_pr_args(nodes));
--- 
-2.50.1
-
+--- a/drivers/gpu/drm/drm_dp_helper.c
++++ b/drivers/gpu/drm/drm_dp_helper.c
+@@ -299,7 +299,7 @@ ssize_t drm_dp_dpcd_read(struct drm_dp_a
+ 	 * monitor doesn't power down exactly after the throw away read.
+ 	 */
+ 	if (!aux->is_remote) {
+-		ret = drm_dp_dpcd_access(aux, DP_AUX_NATIVE_READ, DP_DPCD_REV,
++		ret = drm_dp_dpcd_access(aux, DP_AUX_NATIVE_READ, DP_LANE0_1_STATUS,
+ 					 buffer, 1);
+ 		if (ret != 1)
+ 			goto out;
 
 
 
