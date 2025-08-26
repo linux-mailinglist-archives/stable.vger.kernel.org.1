@@ -1,56 +1,58 @@
-Return-Path: <stable+bounces-175550-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-175019-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5A34AB3689E
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 16:17:44 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6D48EB365E5
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 15:51:41 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id B85E75804A1
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 14:09:58 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 090921C21667
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 13:46:03 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7910134DCCE;
-	Tue, 26 Aug 2025 14:09:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C79A9341655;
+	Tue, 26 Aug 2025 13:45:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="O3uMUWNg"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="vOVvFMa6"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 35F8E223335;
-	Tue, 26 Aug 2025 14:09:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8516A28314A;
+	Tue, 26 Aug 2025 13:45:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756217340; cv=none; b=gqoMvgg8ItCwO5pT0w4DFztdRLnpT1cc9ErQvLgpSxmK2y9fTE3GaD4oaqPgItTm0bTuPIRTA4SzgdqoCucUfztSbxNjFeBOtypnH+06kM5WsolIFrCI0rPHkP//EuwBQ/xJY6twYCBPNUiyNmzbBkhj0XoFZEBJ1z3My1H6guc=
+	t=1756215927; cv=none; b=WJPh8AJI1ZtbNNGsQJKRrng8VHxk2hREVoCoKz7nw36ckEWKZlkhiLFXGce8PlIN6uD4rOoM4hvE5DB8OPqS46RHTMiSQbbLAFwQvgjxAyfgVtgR4QuUUZuVhBn91WW+gwHlU4+boYM8SMlCts+6hIz9hRuagM41M74Ulw5hcaQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756217340; c=relaxed/simple;
-	bh=GKPS+JdvbQcz14xq8aFh5DNxBhOS+a/pg02RAoEmMDo=;
+	s=arc-20240116; t=1756215927; c=relaxed/simple;
+	bh=ugJMkPStTIE3hE9QdNf5QxQqNkg7mQIKN0GFuKZbjQM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=LJqbRQZ5VJ6qaCetOOWstJqMD42dYVIRRG5sSOmfCjcg27+MSllVbfkWEImb/5eOB4F/HLsGD4KP6ysb0v4HIdC4QixSlpZ1NkV6IMCFtd/1czr+jHSdRzcc9Pg2UJHlHMEUitiGqghZSUngpt7S2uXxPqS1FO+CG3K5fR9dFcY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=O3uMUWNg; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id BAA83C4CEF1;
-	Tue, 26 Aug 2025 14:08:59 +0000 (UTC)
+	 MIME-Version; b=rnOPcGkOBFTXo4T9t/deBVl3YvHg/ky/GJkLzVP67/jlyTK2j9hWaEdPprkHtBMnoo87Finz2dB4y/dASWTgtb/XXBL8RfrZpzHaRNmz9/Gwc9tUa9H/AfwKmzPSfSBChxRFl/50t05DWXdE1zo38xx9MUha5/G5rqu1PyOx2k8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=vOVvFMa6; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B6343C4CEF1;
+	Tue, 26 Aug 2025 13:45:26 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1756217340;
-	bh=GKPS+JdvbQcz14xq8aFh5DNxBhOS+a/pg02RAoEmMDo=;
+	s=korg; t=1756215927;
+	bh=ugJMkPStTIE3hE9QdNf5QxQqNkg7mQIKN0GFuKZbjQM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=O3uMUWNg37qMypUsppvATvU5ycFsFqApJJrpSuVKIb4GM8mOg9NY65WEfXUeneUPW
-	 YHjznX4s5Yxc+rtn1hoxkLgSjCgbEW2HFKWBGRCzNGyXIxnkSItxhMi17x6uY5q5uM
-	 cFJKgoJTyreI8aaupe2/sdzIcDpKPLLidReQWhl4=
+	b=vOVvFMa6oEUj0Oo3NM4fKeg2oTZat3UFmwoDXOC9kynfPAzV0WqyimzsIjUyLbytV
+	 TzSyxLl5IP6ZBxduS8z5iYyT1h98UcNEH51B+b4Ax6z2Wjh9wcNQfHpsX+1nJfPH9t
+	 3qdabD8pWiOyOR6KrTEBUFgYq+iBoUwMSrpS1ZMk=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Xiu Jianfeng <xiujianfeng@huawei.com>,
-	Miri Korenblit <miriam.rachel.korenblit@intel.com>,
+	Seunghui Lee <sh043.lee@samsung.com>,
+	Bean Huo <beanhuo@micron.com>,
+	Bart Van Assche <bvanassche@acm.org>,
+	"Martin K. Petersen" <martin.petersen@oracle.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 099/523] wifi: iwlwifi: Fix memory leak in iwl_mvm_init()
+Subject: [PATCH 5.15 218/644] scsi: ufs: core: Use link recovery when h8 exit fails during runtime resume
 Date: Tue, 26 Aug 2025 13:05:09 +0200
-Message-ID: <20250826110926.981744579@linuxfoundation.org>
+Message-ID: <20250826110951.831210761@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250826110924.562212281@linuxfoundation.org>
-References: <20250826110924.562212281@linuxfoundation.org>
+In-Reply-To: <20250826110946.507083938@linuxfoundation.org>
+References: <20250826110946.507083938@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,42 +64,58 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Xiu Jianfeng <xiujianfeng@huawei.com>
+From: Seunghui Lee <sh043.lee@samsung.com>
 
-[ Upstream commit ed2e916c890944633d6826dce267579334f63ea5 ]
+[ Upstream commit 35dabf4503b94a697bababe94678a8bc989c3223 ]
 
-When iwl_opmode_register() fails, it does not unregster rate control,
-which will cause a memory leak issue, this patch fixes it.
+If the h8 exit fails during runtime resume process, the runtime thread
+enters runtime suspend immediately and the error handler operates at the
+same time.  It becomes stuck and cannot be recovered through the error
+handler.  To fix this, use link recovery instead of the error handler.
 
-Fixes: 9f66a397c877 ("iwlwifi: mvm: rs: add ops for the new rate scaling in the FW")
-Signed-off-by: Xiu Jianfeng <xiujianfeng@huawei.com>
-Link: https://patch.msgid.link/20221109035213.570-1-xiujianfeng@huawei.com
-Signed-off-by: Miri Korenblit <miriam.rachel.korenblit@intel.com>
+Fixes: 4db7a2360597 ("scsi: ufs: Fix concurrency of error handler and other error recovery paths")
+Signed-off-by: Seunghui Lee <sh043.lee@samsung.com>
+Link: https://lore.kernel.org/r/20250717081213.6811-1-sh043.lee@samsung.com
+Reviewed-by: Bean Huo <beanhuo@micron.com>
+Acked-by: Bart Van Assche <bvanassche@acm.org>
+Signed-off-by: Martin K. Petersen <martin.petersen@oracle.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/wireless/intel/iwlwifi/mvm/ops.c | 4 +++-
- 1 file changed, 3 insertions(+), 1 deletion(-)
+ drivers/scsi/ufs/ufshcd.c | 10 +++++++++-
+ 1 file changed, 9 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/net/wireless/intel/iwlwifi/mvm/ops.c b/drivers/net/wireless/intel/iwlwifi/mvm/ops.c
-index 9b1a1455a7d5..1f14636d6a3a 100644
---- a/drivers/net/wireless/intel/iwlwifi/mvm/ops.c
-+++ b/drivers/net/wireless/intel/iwlwifi/mvm/ops.c
-@@ -116,8 +116,10 @@ static int __init iwl_mvm_init(void)
+diff --git a/drivers/scsi/ufs/ufshcd.c b/drivers/scsi/ufs/ufshcd.c
+index 2b78cc96ccef..3d2b6ee50e2c 100644
+--- a/drivers/scsi/ufs/ufshcd.c
++++ b/drivers/scsi/ufs/ufshcd.c
+@@ -4013,7 +4013,7 @@ static int ufshcd_uic_pwr_ctrl(struct ufs_hba *hba, struct uic_command *cmd)
+ 	hba->uic_async_done = NULL;
+ 	if (reenable_intr)
+ 		ufshcd_enable_intr(hba, UIC_COMMAND_COMPL);
+-	if (ret) {
++	if (ret && !hba->pm_op_in_progress) {
+ 		ufshcd_set_link_broken(hba);
+ 		ufshcd_schedule_eh_work(hba);
  	}
+@@ -4021,6 +4021,14 @@ static int ufshcd_uic_pwr_ctrl(struct ufs_hba *hba, struct uic_command *cmd)
+ 	spin_unlock_irqrestore(hba->host->host_lock, flags);
+ 	mutex_unlock(&hba->uic_cmd_mutex);
  
- 	ret = iwl_opmode_register("iwlmvm", &iwl_mvm_ops);
--	if (ret)
-+	if (ret) {
- 		pr_err("Unable to register MVM op_mode: %d\n", ret);
-+		iwl_mvm_rate_control_unregister();
-+	}
- 
++	/*
++	 * If the h8 exit fails during the runtime resume process, it becomes
++	 * stuck and cannot be recovered through the error handler.  To fix
++	 * this, use link recovery instead of the error handler.
++	 */
++	if (ret && hba->pm_op_in_progress)
++		ret = ufshcd_link_recovery(hba);
++
  	return ret;
  }
+ 
 -- 
 2.39.5
 
