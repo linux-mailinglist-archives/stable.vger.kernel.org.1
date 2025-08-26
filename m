@@ -1,57 +1,58 @@
-Return-Path: <stable+bounces-174533-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-173128-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id DF6F8B36396
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 15:31:26 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 91844B35BD0
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 13:28:22 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 3C8901BC3E35
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 13:26:05 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id DDE3A1BA239C
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 11:24:43 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2767129BDB6;
-	Tue, 26 Aug 2025 13:24:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3F8332BE7A7;
+	Tue, 26 Aug 2025 11:24:06 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="LJwpHdwG"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="yOA0eNgl"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D97DF18A6C4;
-	Tue, 26 Aug 2025 13:24:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F016117332C;
+	Tue, 26 Aug 2025 11:24:05 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756214643; cv=none; b=kH/0TRcRTk2FtMZ0MsW8ZccoV6XBn+RFwgwiJ7ZJ/mDnfpM3Q1RQeO1CvBAEf5ir1651s1AiyzaNCogGyUW4nweU/lfbZ/1ZwXbhjgYDgT9IEMwEM/HOqBSrV9H5F9tHSZ0nXk6CrsiHpGc7R2+RMVsRisxhu08AURhYp8pgq4w=
+	t=1756207446; cv=none; b=nXfULno82huAOscrIB+Km2mi3/wjd5flh+Ax6RgF3uPLW0y4OOpRA7e1Tn8qNsXjrsVEwrREAkSUQanEnp5ovmVludSJ9BCspmfiffgAcDZW+NLNAkEfsVQ3k2lzTUSM69+RgVtI4cxKE+G2Qqw8TjQEu+b8W+dbWWk8jdU2KJs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756214643; c=relaxed/simple;
-	bh=iB/7C072X8c58BDA1B437rJokB3uTQjY/+hznbs41ec=;
+	s=arc-20240116; t=1756207446; c=relaxed/simple;
+	bh=76OoYE1XfQHGy0RBfP+YTDZmU8MBHbzxk++E4NQleE8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=npCtoHUNtUsjvsWngSQIE0ntr5dHLEY1bi1GRe4x80CMcKIXj8bJW5/w34R5vAT2PtUn6xiaQjKgeYh3P/cJXCiK1aBjjVLQRcEjtH+Y049AvKjjmO9NXNQKTS12WRSk1yYJ66VDKBdfQ1O7WEuMhCQJEFzOJU9uJAlTlwlWewk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=LJwpHdwG; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6D2CDC4CEF1;
-	Tue, 26 Aug 2025 13:24:03 +0000 (UTC)
+	 MIME-Version; b=Sq+Cm55XuMkIZxwY0zwEbbFWByly0ewK6l5z7AdQc2vzg7cZ1teSfE1FEqFNCu2muT6WDh7SmQA0nQhaKkzJgxNsqzG9LaR0O2vX7CizfN0tqIi1rC1jOXuD1p2c0yRX4+c8LP70Vfq+W2hgrDYB19atZhAkjC4/mXxaE2StO8E=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=yOA0eNgl; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7E121C4CEF4;
+	Tue, 26 Aug 2025 11:24:05 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1756214643;
-	bh=iB/7C072X8c58BDA1B437rJokB3uTQjY/+hznbs41ec=;
+	s=korg; t=1756207445;
+	bh=76OoYE1XfQHGy0RBfP+YTDZmU8MBHbzxk++E4NQleE8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=LJwpHdwGBrFrSI4kK7gXKMvB8c9cqNFz+mJG8FjdUo8kf1wAEkRnjm3G1uNZ0iJ9f
-	 f4f0jegj78nDQVawO5F0Ha9nzUYL1zwh/NVxSlMUNb4y3t1FVSygdzOo3ze/ciN4ME
-	 rKJEDwQ6wXpuQ2NIqi/s4nWxF+y2AFMZrQh2A7Gs=
+	b=yOA0eNglYDdqrLOyeecSbM7BVjKqvHkSfmqUAGmBUExfSsWkNPWqKhxKhmWEQU18L
+	 cCt6F7cyjbRsDz05CXGf4oTIcuYb4a3eWnWrCTJmjSv8lOxNaA18LPgTVAy2vRXppL
+	 0ZSJm2sx8fkBJtpn1VIMPmhL9zfrfVUPz944bF74=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Ziyan Fu <fuzy5@lenovo.com>,
-	Guenter Roeck <linux@roeck-us.net>,
-	Wim Van Sebroeck <wim@linux-watchdog.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 184/482] watchdog: iTCO_wdt: Report error if timeout configuration fails
+	Vikash Garodia <quic_vgarodia@quicinc.com>,
+	Dikshita Agarwal <quic_dikshita@quicinc.com>,
+	Bryan ODonoghue <bod@kernel.org>,
+	Hans Verkuil <hverkuil@xs4all.nl>,
+	Neil Armstrong <neil.armstrong@linaro.org>
+Subject: [PATCH 6.16 153/457] media: iris: Drop port check for session property response
 Date: Tue, 26 Aug 2025 13:07:17 +0200
-Message-ID: <20250826110935.352437584@linuxfoundation.org>
+Message-ID: <20250826110941.154187907@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250826110930.769259449@linuxfoundation.org>
-References: <20250826110930.769259449@linuxfoundation.org>
+In-Reply-To: <20250826110937.289866482@linuxfoundation.org>
+References: <20250826110937.289866482@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,58 +64,53 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.16-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Ziyan Fu <fuzy5@lenovo.com>
+From: Dikshita Agarwal <quic_dikshita@quicinc.com>
 
-[ Upstream commit 40efc43eb7ffb5a4e2f998c13b8cfb555e671b92 ]
+commit f3516f856d1f11d9dff7d72491d474a2bae1cf8e upstream.
 
-The driver probes with the invalid timeout value when
-'iTCO_wdt_set_timeout()' fails, as its return value is not checked. In
-this case, when executing "wdctl", we may get:
+Currently, port check enforces that session property response must
+arrive only on the BITSTREAM port. However, firmware can send some
+responses on other port as well.
 
-Device:        /dev/watchdog0
-Timeout:       30 seconds
-Timeleft:      613 seconds
+Remove the strict port validation to correctly handle session property
+responses from the firmware.
 
-The timeout value is the value of "heartbeat" or "WATCHDOG_TIMEOUT", and
-the timeleft value is calculated from the register value we actually read
-(0xffff) by masking with 0x3ff and converting ticks to seconds (* 6 / 10).
-
-Add error handling to return the failure code if 'iTCO_wdt_set_timeout()'
-fails, ensuring the driver probe fails and prevents invalid operation.
-
-Signed-off-by: Ziyan Fu <fuzy5@lenovo.com>
-Reviewed-by: Guenter Roeck <linux@roeck-us.net>
-Link: https://lore.kernel.org/r/20250704073518.7838-1-13281011316@163.com
-Signed-off-by: Guenter Roeck <linux@roeck-us.net>
-Signed-off-by: Wim Van Sebroeck <wim@linux-watchdog.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Cc: stable@vger.kernel.org
+Fixes: 3a19d7b9e08b ("media: iris: implement set properties to firmware during streamon")
+Acked-by: Vikash Garodia <quic_vgarodia@quicinc.com>
+Tested-by: Neil Armstrong <neil.armstrong@linaro.org> # on SM8550-QRD
+Tested-by: Neil Armstrong <neil.armstrong@linaro.org> # on SM8550-HDK
+Tested-by: Neil Armstrong <neil.armstrong@linaro.org> # on SM8650-QRD
+Tested-by: Neil Armstrong <neil.armstrong@linaro.org> # on SM8650-HDK
+Signed-off-by: Dikshita Agarwal <quic_dikshita@quicinc.com>
+Tested-by: Vikash Garodia <quic_vgarodia@quicinc.com> # on sa8775p-ride
+Signed-off-by: Bryan O'Donoghue <bod@kernel.org>
+Signed-off-by: Hans Verkuil <hverkuil@xs4all.nl>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/watchdog/iTCO_wdt.c | 6 +++++-
- 1 file changed, 5 insertions(+), 1 deletion(-)
+ drivers/media/platform/qcom/iris/iris_hfi_gen2_response.c | 3 ---
+ 1 file changed, 3 deletions(-)
 
-diff --git a/drivers/watchdog/iTCO_wdt.c b/drivers/watchdog/iTCO_wdt.c
-index 35ae40b35f55..75fb7cf7325b 100644
---- a/drivers/watchdog/iTCO_wdt.c
-+++ b/drivers/watchdog/iTCO_wdt.c
-@@ -601,7 +601,11 @@ static int iTCO_wdt_probe(struct platform_device *pdev)
- 	/* Check that the heartbeat value is within it's range;
- 	   if not reset to the default */
- 	if (iTCO_wdt_set_timeout(&p->wddev, heartbeat)) {
--		iTCO_wdt_set_timeout(&p->wddev, WATCHDOG_TIMEOUT);
-+		ret = iTCO_wdt_set_timeout(&p->wddev, WATCHDOG_TIMEOUT);
-+		if (ret != 0) {
-+			dev_err(dev, "Failed to set watchdog timeout (%d)\n", WATCHDOG_TIMEOUT);
-+			return ret;
-+		}
- 		dev_info(dev, "timeout value out of range, using %d\n",
- 			WATCHDOG_TIMEOUT);
- 	}
+diff --git a/drivers/media/platform/qcom/iris/iris_hfi_gen2_response.c b/drivers/media/platform/qcom/iris/iris_hfi_gen2_response.c
+index b75a01641d5d..d1a2a497a7b2 100644
+--- a/drivers/media/platform/qcom/iris/iris_hfi_gen2_response.c
++++ b/drivers/media/platform/qcom/iris/iris_hfi_gen2_response.c
+@@ -636,9 +636,6 @@ static int iris_hfi_gen2_handle_session_property(struct iris_inst *inst,
+ {
+ 	struct iris_inst_hfi_gen2 *inst_hfi_gen2 = to_iris_inst_hfi_gen2(inst);
+ 
+-	if (pkt->port != HFI_PORT_BITSTREAM)
+-		return 0;
+-
+ 	if (pkt->flags & HFI_FW_FLAGS_INFORMATION)
+ 		return 0;
+ 
 -- 
-2.39.5
+2.50.1
 
 
 
