@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-173203-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-175254-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2C488B35C4F
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 13:33:08 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1073BB367CF
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 16:10:25 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id C5AC117B671
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 11:27:19 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 7C4288A7561
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 13:57:12 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5E40F20C001;
-	Tue, 26 Aug 2025 11:27:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 10B4634AAE3;
+	Tue, 26 Aug 2025 13:55:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="kbbp1FNS"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="AZznz09Z"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1CC49239573;
-	Tue, 26 Aug 2025 11:27:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C165834DCC0;
+	Tue, 26 Aug 2025 13:55:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756207637; cv=none; b=CJAZCFNx1cEeB4EcvgU1LDieG9QGxvHC/vNgnZzo/1dDQuhM+lBds8yLcWsMIa/cEWlmMvkQQZQ7//arkH1oue6TYtGcGYNAHT6DHMYO2S6wKEZpKn3fw6wQH7erzgawdiRGPpl2pk0hZaeG7gr17naq2jQC6pyn43/jZvKWucU=
+	t=1756216551; cv=none; b=mejkiF/rz51JTfgu65OAdyu8WGb9gOenVLiBaGiy7lEc5y/mKuIUfQMVu4QYrX5K+0t6DFQIOQS34JNRSWs3hyHQj6w3FnrTzdnZwejxgoKIgQdm2faj/9NFrr3qUFuJ+3f6pjHnJM5wPDlovr9g+1FmFDqWJuBRkzRckrp0umw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756207637; c=relaxed/simple;
-	bh=5blUN8k3ESaKAo/tQWQm8ECbNZDG++6khP9t0UHQ3h8=;
+	s=arc-20240116; t=1756216551; c=relaxed/simple;
+	bh=zoRsgEOk9usi36a7Gb4fxUf3ByEKvaLi5cmxUNVC028=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=WNZIXmF7OT6KaSfwL0nNhzCaFW4dzDkTBBia3KWxVF3hQ5HfH1R73wuC6VVJfC+Lt4srt/kUcL+DdGX4as/PBXZPHhRd5iFBvBmEg+klvMZFDah5Kuz5HY+v+6KO6dsuBwhOVX8uniREAeQgeQ83GUCRg0kyYmaGAjqF48bnvF0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=kbbp1FNS; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id AC118C4CEF1;
-	Tue, 26 Aug 2025 11:27:16 +0000 (UTC)
+	 MIME-Version; b=UNkmXP0yfnMDEOGQZqUyrPaAxwT7m5686IZqIZwlH/6FTmjWO2YeRexg2Pb7gZvqsuJjMZF0iRoilWZigtA4JbQXaGNq0W7oR9MnJmTq6SKOdpBIQiJxo1ntUFWXHPKvhW9rvR9fajGCd5sfUxmJaWRzFOGxVINAM5jeaPrvwCQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=AZznz09Z; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0289AC4CEF1;
+	Tue, 26 Aug 2025 13:55:50 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1756207637;
-	bh=5blUN8k3ESaKAo/tQWQm8ECbNZDG++6khP9t0UHQ3h8=;
+	s=korg; t=1756216551;
+	bh=zoRsgEOk9usi36a7Gb4fxUf3ByEKvaLi5cmxUNVC028=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=kbbp1FNSLvv5xqNsr0Br+jETG+JEV42Ic46jcDdg/1GV1BayBY934no45KG0kVJs0
-	 fmz6gBABn9rWtFZJRRebLbyK9+xApE9L+F9MkkoYXImuIV9OJXO0Ft/TCw/HSHZrNg
-	 Zl6qBz5C6sDuSwfsLidr5d5+VbVyfVcfncDoes+I=
+	b=AZznz09ZyFGUpwGzpfvl2iCqf0wtBctIbxi2oIxRZHyfSsp/EYDzBNRnjOmUgX/KY
+	 qH1nqPKiBdiitO4l6ABtl9GkkikRLhg5UVZ8qkGCQDt0UTrGQrejq64LZEAGct9tEF
+	 z0wH4RI2UBsjrMd6c+GpIi33bI+z/4opYvjA+yZc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Sebastian Brzezinka <sebastian.brzezinka@intel.com>,
-	Andi Shyti <andi.shyti@linux.intel.com>,
-	Krzysztof Karas <krzysztof.karas@intel.com>,
-	Tvrtko Ursulin <tursulin@ursulin.net>
-Subject: [PATCH 6.16 260/457] drm/i915/gt: Relocate compression repacking WA for JSL/EHL
+	Youngjun Lee <yjjuny.lee@samsung.com>,
+	Laurent Pinchart <laurent.pinchart@ideasonboard.com>,
+	Ricardo Ribalda <ribalda@chromium.org>,
+	Hans Verkuil <hverkuil@xs4all.nl>
+Subject: [PATCH 5.15 453/644] media: uvcvideo: Fix 1-byte out-of-bounds read in uvc_parse_format()
 Date: Tue, 26 Aug 2025 13:09:04 +0200
-Message-ID: <20250826110943.783509060@linuxfoundation.org>
+Message-ID: <20250826110957.701215614@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250826110937.289866482@linuxfoundation.org>
-References: <20250826110937.289866482@linuxfoundation.org>
+In-Reply-To: <20250826110946.507083938@linuxfoundation.org>
+References: <20250826110946.507083938@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,81 +63,48 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.16-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Sebastian Brzezinka <sebastian.brzezinka@intel.com>
+From: Youngjun Lee <yjjuny.lee@samsung.com>
 
-commit 8236820fd767f400d1baefb71bc7e36e37730a1e upstream.
+commit 782b6a718651eda3478b1824b37a8b3185d2740c upstream.
 
-CACHE_MODE_0 registers should be saved and restored as part of
-the context, not during engine reset. Move the related workaround
-(Disable Repacking for Compression) from rcs_engine_wa_init()
-to icl_ctx_workarounds_init() for Jasper Lake and Elkhart
-Lake platforms. This ensures the WA is applied during context
-initialisation.
+The buffer length check before calling uvc_parse_format() only ensured
+that the buffer has at least 3 bytes (buflen > 2), buf the function
+accesses buffer[3], requiring at least 4 bytes.
 
-BSPEC: 11322
+This can lead to an out-of-bounds read if the buffer has exactly 3 bytes.
 
-Fixes: 0ddae025ab6c ("drm/i915: Disable compression tricks on JSL")
-Closes: Fixes: 0ddae025ab6c ("drm/i915: Disable compression tricks on JSL")
-Signed-off-by: Sebastian Brzezinka <sebastian.brzezinka@intel.com>
-Cc: stable@vger.kernel.org # v6.13+
-Reviewed-by: Andi Shyti <andi.shyti@linux.intel.com>
-Reviewed-by: Krzysztof Karas <krzysztof.karas@intel.com>
-Signed-off-by: Andi Shyti <andi.shyti@linux.intel.com>
-Link: https://lore.kernel.org/r/4feaa24094e019e000ceb6011d8cd419b0361b3f.1754902406.git.sebastian.brzezinka@intel.com
-(cherry picked from commit c9932f0d604e4c8f2c6018e598a322acb43c68a2)
-Signed-off-by: Tvrtko Ursulin <tursulin@ursulin.net>
+Fix it by checking that the buffer has at least 4 bytes in
+uvc_parse_format().
+
+Signed-off-by: Youngjun Lee <yjjuny.lee@samsung.com>
+Reviewed-by: Laurent Pinchart <laurent.pinchart@ideasonboard.com>
+Fixes: c0efd232929c ("V4L/DVB (8145a): USB Video Class driver")
+Cc: stable@vger.kernel.org
+Reviewed-by: Ricardo Ribalda <ribalda@chromium.org>
+Link: https://lore.kernel.org/r/20250610124107.37360-1-yjjuny.lee@samsung.com
+Signed-off-by: Laurent Pinchart <laurent.pinchart@ideasonboard.com>
+Signed-off-by: Hans Verkuil <hverkuil@xs4all.nl>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/gpu/drm/i915/gt/intel_workarounds.c |   20 +++++++++++---------
- 1 file changed, 11 insertions(+), 9 deletions(-)
+ drivers/media/usb/uvc/uvc_driver.c |    3 +++
+ 1 file changed, 3 insertions(+)
 
---- a/drivers/gpu/drm/i915/gt/intel_workarounds.c
-+++ b/drivers/gpu/drm/i915/gt/intel_workarounds.c
-@@ -634,6 +634,8 @@ static void cfl_ctx_workarounds_init(str
- static void icl_ctx_workarounds_init(struct intel_engine_cs *engine,
- 				     struct i915_wa_list *wal)
- {
-+	struct drm_i915_private *i915 = engine->i915;
+--- a/drivers/media/usb/uvc/uvc_driver.c
++++ b/drivers/media/usb/uvc/uvc_driver.c
+@@ -512,6 +512,9 @@ static int uvc_parse_format(struct uvc_d
+ 	unsigned int i, n;
+ 	u8 ftype;
+ 
++	if (buflen < 4)
++		return -EINVAL;
 +
- 	/* Wa_1406697149 (WaDisableBankHangMode:icl) */
- 	wa_write(wal, GEN8_L3CNTLREG, GEN8_ERRDETBCTRL);
+ 	format->type = buffer[2];
+ 	format->index = buffer[3];
  
-@@ -669,6 +671,15 @@ static void icl_ctx_workarounds_init(str
- 
- 	/* Wa_1406306137:icl,ehl */
- 	wa_mcr_masked_en(wal, GEN9_ROW_CHICKEN4, GEN11_DIS_PICK_2ND_EU);
-+
-+	if (IS_JASPERLAKE(i915) || IS_ELKHARTLAKE(i915)) {
-+		/*
-+		 * Disable Repacking for Compression (masked R/W access)
-+		 * before rendering compressed surfaces for display.
-+		 */
-+		wa_masked_en(wal, CACHE_MODE_0_GEN7,
-+			     DISABLE_REPACKING_FOR_COMPRESSION);
-+	}
- }
- 
- /*
-@@ -2306,15 +2317,6 @@ rcs_engine_wa_init(struct intel_engine_c
- 			     GEN8_RC_SEMA_IDLE_MSG_DISABLE);
- 	}
- 
--	if (IS_JASPERLAKE(i915) || IS_ELKHARTLAKE(i915)) {
--		/*
--		 * "Disable Repacking for Compression (masked R/W access)
--		 *  before rendering compressed surfaces for display."
--		 */
--		wa_masked_en(wal, CACHE_MODE_0_GEN7,
--			     DISABLE_REPACKING_FOR_COMPRESSION);
--	}
--
- 	if (GRAPHICS_VER(i915) == 11) {
- 		/* This is not an Wa. Enable for better image quality */
- 		wa_masked_en(wal,
 
 
 
