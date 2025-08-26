@@ -1,56 +1,58 @@
-Return-Path: <stable+bounces-174444-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-173039-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8E3F5B363AE
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 15:32:22 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id CE9DAB35BB0
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 13:26:59 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id A43B2560ABA
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 13:22:10 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 0F541179F0B
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 11:21:52 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0CFCC196C7C;
-	Tue, 26 Aug 2025 13:20:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C572D322A03;
+	Tue, 26 Aug 2025 11:20:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="oZMESrAW"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="wPL5wAOB"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BD6272139C9;
-	Tue, 26 Aug 2025 13:20:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 82DB721D00E;
+	Tue, 26 Aug 2025 11:20:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756214408; cv=none; b=TxgSioGOPZJOOQyQLCk58y1uQc97Fm2wJocstSCmCwCEF21+z8HHxv0wHFwZdeS+njZRYO71Gm/vMMvC0m/PtEWv4vSAaqvAE1Y9JHGklQuKoAdDwyypcRfeloVklsm0rzEGKbMPSAgpSIJhBMPmzf+MaMkL4YWZKz8uG2mJPTo=
+	t=1756207216; cv=none; b=uJfSvx0I8wRqO+6hgrx+EFxNWZKytBTnvwkGjIoC03AQhLXNRwABMr5TRriVXk8s0QwcIygVJuM7GDzI+RtOWAJt1d1sas6Z4ld24ElzlR7Wi5F2FEgjfvHUjzNXdKP9MCKWf6R/6Ua1EkcfLDZoKsYoZRbe81anLUMFgtfVbfc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756214408; c=relaxed/simple;
-	bh=F9jv9v5ibQFszP1jdD9tME/9BkqH82VFVo8/90vorPI=;
+	s=arc-20240116; t=1756207216; c=relaxed/simple;
+	bh=/sY/2tpCN6npTnUy18LW9l8yytKwSGP9G4A83O7+x9Q=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=pxYgOSj7Wqld/HB5atiuAn/4BAAJVnb48eZuG0gQjRCsoJ68fYKdHJZkWZUsaIbaT1xtAxxjE8LdRTLFVllu3WhybSmhTHvYWvFZd/sny8JiSMjZmp7VJ/Qf6ilvcBkg0NTBlLoki6Zv/+ktQMgdMNeSPi/4kU9aY1f3PQXaF70=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=oZMESrAW; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3BBA8C4CEF1;
-	Tue, 26 Aug 2025 13:20:08 +0000 (UTC)
+	 MIME-Version; b=tMcfW21FPOVEe9NW7xaLwJIvbTtkEG4b1nyOgmcs69d43LIxMc+VdxG1nuNaSmjUIxeO98ecn3/jM/+UjxftnSAZF/WRUOoVzMozuMhE2wQQArIprQ4dJ8rsh0+yyQoTgMqR4NTIwTJPHsvZNth7Jqc7BOpxqsZ+ZU8Ulx/iwJo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=wPL5wAOB; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1A20FC4CEF1;
+	Tue, 26 Aug 2025 11:20:15 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1756214408;
-	bh=F9jv9v5ibQFszP1jdD9tME/9BkqH82VFVo8/90vorPI=;
+	s=korg; t=1756207216;
+	bh=/sY/2tpCN6npTnUy18LW9l8yytKwSGP9G4A83O7+x9Q=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=oZMESrAWQDNsf0u7pfJJ0Qc/bFnauHAsyEdihc2L0bBlJcSdtZyhyGKRqDLuNOhco
-	 f3w/Ptg/Nr6dx7SnVcgQvs3iQqzoJsOiT6ig+KC82mTWpIPIXkuXeYTFqGiWfVp0pj
-	 /OrghY3EY94PjSAiox2WsMcXRwH+qp5Qoer4k0eY=
+	b=wPL5wAOB001IyppZ8tuNZSv5/4zsz4UuTyJTKv9ecFwLzxJpefnOjSF2mvimgo4xY
+	 gClD0KgKfVMEHclg6jUIO0jaiqsai2BrE3sc9kA+6IOC1VHdrH3qfVKdL+TxHBpV69
+	 DnG2rVpAD+qJUI6h393GxLOuDi89ZEE78hVWSdDM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Oscar Maes <oscmaes92@gmail.com>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 127/482] net: ipv4: fix incorrect MTU in broadcast routes
+	Chi Zhiling <chizhiling@kylinos.cn>,
+	Jan Kara <jack@suse.cz>,
+	Josef Bacik <josef@toxicpanda.com>,
+	"Matthew Wilcox (Oracle)" <willy@infradead.org>,
+	Andrew Morton <akpm@linux-foundation.org>
+Subject: [PATCH 6.16 096/457] readahead: fix return value of page_cache_next_miss() when no hole is found
 Date: Tue, 26 Aug 2025 13:06:20 +0200
-Message-ID: <20250826110933.960246505@linuxfoundation.org>
+Message-ID: <20250826110939.749740107@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250826110930.769259449@linuxfoundation.org>
-References: <20250826110930.769259449@linuxfoundation.org>
+In-Reply-To: <20250826110937.289866482@linuxfoundation.org>
+References: <20250826110937.289866482@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,56 +62,51 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.16-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Oscar Maes <oscmaes92@gmail.com>
+From: Chi Zhiling <chizhiling@kylinos.cn>
 
-[ Upstream commit 9e30ecf23b1b8f091f7d08b27968dea83aae7908 ]
+commit bbcaee20e03ecaeeecba32a703816a0d4502b6c4 upstream.
 
-Currently, __mkroute_output overrules the MTU value configured for
-broadcast routes.
+max_scan in page_cache_next_miss always decreases to zero when no hole is
+found, causing the return value to be index + 0.
 
-This buggy behaviour can be reproduced with:
+Fix this by preserving the max_scan value throughout the loop.
 
-ip link set dev eth1 mtu 9000
-ip route del broadcast 192.168.0.255 dev eth1 proto kernel scope link src 192.168.0.2
-ip route add broadcast 192.168.0.255 dev eth1 proto kernel scope link src 192.168.0.2 mtu 1500
+Jan said "From what I know and have seen in the past, wrong responses
+from page_cache_next_miss() can lead to readahead window reduction and
+thus reduced read speeds."
 
-The maximum packet size should be 1500, but it is actually 8000:
-
-ping -b 192.168.0.255 -s 8000
-
-Fix __mkroute_output to allow MTU values to be configured for
-for broadcast routes (to support a mixed-MTU local-area-network).
-
-Signed-off-by: Oscar Maes <oscmaes92@gmail.com>
-Link: https://patch.msgid.link/20250710142714.12986-1-oscmaes92@gmail.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Link: https://lkml.kernel.org/r/20250605054935.2323451-1-chizhiling@163.com
+Fixes: 901a269ff3d5 ("filemap: fix page_cache_next_miss() when no hole found")
+Signed-off-by: Chi Zhiling <chizhiling@kylinos.cn>
+Reviewed-by: Jan Kara <jack@suse.cz>
+Cc: Josef Bacik <josef@toxicpanda.com>
+Cc: Matthew Wilcox (Oracle) <willy@infradead.org>
+Cc: <stable@vger.kernel.org>
+Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- net/ipv4/route.c | 1 -
- 1 file changed, 1 deletion(-)
+ mm/filemap.c |    3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
-diff --git a/net/ipv4/route.c b/net/ipv4/route.c
-index 870108101017..c57a1cee98e2 100644
---- a/net/ipv4/route.c
-+++ b/net/ipv4/route.c
-@@ -2562,7 +2562,6 @@ static struct rtable *__mkroute_output(const struct fib_result *res,
- 	do_cache = true;
- 	if (type == RTN_BROADCAST) {
- 		flags |= RTCF_BROADCAST | RTCF_LOCAL;
--		fi = NULL;
- 	} else if (type == RTN_MULTICAST) {
- 		flags |= RTCF_MULTICAST | RTCF_LOCAL;
- 		if (!ip_check_mc_rcu(in_dev, fl4->daddr, fl4->saddr,
--- 
-2.39.5
-
+--- a/mm/filemap.c
++++ b/mm/filemap.c
+@@ -1778,8 +1778,9 @@ pgoff_t page_cache_next_miss(struct addr
+ 			     pgoff_t index, unsigned long max_scan)
+ {
+ 	XA_STATE(xas, &mapping->i_pages, index);
++	unsigned long nr = max_scan;
+ 
+-	while (max_scan--) {
++	while (nr--) {
+ 		void *entry = xas_next(&xas);
+ 		if (!entry || xa_is_value(entry))
+ 			return xas.xa_index;
 
 
 
