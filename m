@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-174470-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-173988-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1D247B3634C
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 15:28:34 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id C4DBCB360D1
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 15:04:19 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 328B61BC56A9
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 13:23:26 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id A18C53AFF82
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 13:00:01 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B05C13376BE;
-	Tue, 26 Aug 2025 13:21:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id AFFDD218858;
+	Tue, 26 Aug 2025 12:59:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="hz46Nbn6"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="tJRFFCCv"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6277422DF99;
-	Tue, 26 Aug 2025 13:21:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6AFBC216E1B;
+	Tue, 26 Aug 2025 12:59:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756214477; cv=none; b=pDwsK0tj8OHN1qWB9bhkGakfIN1SL1rmfCrE4v31qTiQKHJF7C3j/ycvvkrVZSyw1RFTxrndBv561EJnMHjq6jtvnCsOyt0nLm4Yqj8arbF+GlK9hYyRlA/8Ikj1t35xA1y/TyNIV6y1ttHrnxwV6A5ZLc7XDCQDpZnnCTxvZnA=
+	t=1756213195; cv=none; b=DASwwdyUtCc4fyI6WTixpqG0UET3bz6z8jOjRVqW8kSwEeBUqPgSNMNfv2til8DPEygcaz/Mg89EAWiM4lnULdlTcNPS/DPJS4qozNKDthmo25IJGQ6Z35/GhgzUgV2vUU3Hu4Dk3tlwa6NrjD70Fz2+MgbOvV3CzcDfC4cXHMU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756214477; c=relaxed/simple;
-	bh=nzgchX8C8eNujMPHih+P7schz/SWQJtjRdiwcFrxIUI=;
+	s=arc-20240116; t=1756213195; c=relaxed/simple;
+	bh=wSlwFxX0TDAMIonkgj2XYgGaMzISJ99Xq2VqXl+z/hw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=JOmOAYa/E0R0bW8BaTLOErMY2URnjHLS6utlJ+0uSzUz3whuFQ0Bgocx5NA3V4PfXsQEixoUvSaAVDk1mwb5PAemGvbMnc/hPnGf2z9hTz5pE0fKEQBu3+FF85snMO8QfomGxtn387BLg7LWfIqnFWtxWewMub5I7Pk6W/8gL0I=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=hz46Nbn6; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E1014C4CEF1;
-	Tue, 26 Aug 2025 13:21:16 +0000 (UTC)
+	 MIME-Version; b=bOIpTje5cLEO1Zkqzbrcx57yuCrRVZ7wGoE7SVw7s9nadIKzOYL0myBNk4Vo6khnyaX7ffYlYhC6uhDWuz34Fa/PIGRRtfUGBJjWsIG2I0mwdZw6R5XjLCLJZa+ABh1qMxuvFbKS1s0cGhWSdA+v4AImzNa4kau0qXNoyeXf1Y0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=tJRFFCCv; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9D554C4CEF4;
+	Tue, 26 Aug 2025 12:59:54 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1756214477;
-	bh=nzgchX8C8eNujMPHih+P7schz/SWQJtjRdiwcFrxIUI=;
+	s=korg; t=1756213195;
+	bh=wSlwFxX0TDAMIonkgj2XYgGaMzISJ99Xq2VqXl+z/hw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=hz46Nbn6hdfdxgkgYK45qVadQxXRgNUKkGNAdPF302wxF/GOP4R0O37fWcjO7Us/x
-	 YcRPqmE2s6KM2fJbwSVCIC1JJyxeLx3bRly6AowV3+UT5W/TnVXUIIq8NzUcFG7Zkp
-	 yJY2vlK8wk12ZlIZPeNk9vQI4K/Ac0AAZdkzXIgQ=
+	b=tJRFFCCvIHmee9CGSIQvEY5ZSmvgEwNuVprY7WMb0Tl7XUu0s1KcBCkhoMf7oM6eE
+	 glMDOPf1yY0ORT8SD2j/oWJOYPd68E/8mZIYUZviZkSRR559I5n4m6YkUnhHhGQfzg
+	 7kJz20ypNWfaE+yMmitmyjkrc7dTnm65PeDn3WXs=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Thomas Fourier <fourier.thomas@gmail.com>,
-	Simon Horman <horms@kernel.org>,
-	Jakub Kicinski <kuba@kernel.org>,
+	Chen-Yu Tsai <wens@csie.org>,
+	Lee Jones <lee@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 121/482] net: ag71xx: Add missing check after DMA map
+Subject: [PATCH 6.6 225/587] mfd: axp20x: Set explicit ID for AXP313 regulator
 Date: Tue, 26 Aug 2025 13:06:14 +0200
-Message-ID: <20250826110933.812078685@linuxfoundation.org>
+Message-ID: <20250826110958.659723222@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250826110930.769259449@linuxfoundation.org>
-References: <20250826110930.769259449@linuxfoundation.org>
+In-Reply-To: <20250826110952.942403671@linuxfoundation.org>
+References: <20250826110952.942403671@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,52 +62,51 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Thomas Fourier <fourier.thomas@gmail.com>
+From: Chen-Yu Tsai <wens@csie.org>
 
-[ Upstream commit 96a1e15e60216b52da0e6da5336b6d7f5b0188b0 ]
+[ Upstream commit 88828c7e940dd45d139ad4a39d702b23840a37c5 ]
 
-The DMA map functions can fail and should be tested for errors.
+On newer boards featuring the A523 SoC, the AXP323 (related to the
+AXP313) is paired with the AXP717 and serves as a secondary PMIC
+providing additional regulator outputs. However the MFD cells are all
+registered with PLATFORM_DEVID_NONE, which causes the regulator cells
+to conflict with each other.
 
-Signed-off-by: Thomas Fourier <fourier.thomas@gmail.com>
-Reviewed-by: Simon Horman <horms@kernel.org>
-Link: https://patch.msgid.link/20250716095733.37452-3-fourier.thomas@gmail.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Commit e37ec3218870 ("mfd: axp20x: Allow multiple regulators") attempted
+to fix this by switching to PLATFORM_DEVID_AUTO so that the device names
+would all be different, however that broke IIO channel mapping, which is
+also tied to the device names. As a result the change was later reverted.
+
+Instead, here we attempt to make sure the AXP313/AXP323 regulator cell
+does not conflict by explicitly giving it an ID number. This was
+previously done for the AXP809+AXP806 pair used with the A80 SoC.
+
+Signed-off-by: Chen-Yu Tsai <wens@csie.org>
+Link: https://lore.kernel.org/r/20250619173207.3367126-1-wens@kernel.org
+Signed-off-by: Lee Jones <lee@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/ethernet/atheros/ag71xx.c | 9 +++++++++
- 1 file changed, 9 insertions(+)
+ drivers/mfd/axp20x.c | 3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/net/ethernet/atheros/ag71xx.c b/drivers/net/ethernet/atheros/ag71xx.c
-index 4a1efe9b37d0..ff93b00dcd61 100644
---- a/drivers/net/ethernet/atheros/ag71xx.c
-+++ b/drivers/net/ethernet/atheros/ag71xx.c
-@@ -1234,6 +1234,11 @@ static bool ag71xx_fill_rx_buf(struct ag71xx *ag, struct ag71xx_buf *buf,
- 	buf->rx.rx_buf = data;
- 	buf->rx.dma_addr = dma_map_single(&ag->pdev->dev, data, ag->rx_buf_size,
- 					  DMA_FROM_DEVICE);
-+	if (dma_mapping_error(&ag->pdev->dev, buf->rx.dma_addr)) {
-+		skb_free_frag(data);
-+		buf->rx.rx_buf = NULL;
-+		return false;
-+	}
- 	desc->data = (u32)buf->rx.dma_addr + offset;
- 	return true;
- }
-@@ -1532,6 +1537,10 @@ static netdev_tx_t ag71xx_hard_start_xmit(struct sk_buff *skb,
+diff --git a/drivers/mfd/axp20x.c b/drivers/mfd/axp20x.c
+index 87603eeaa277..2b85da0fcf27 100644
+--- a/drivers/mfd/axp20x.c
++++ b/drivers/mfd/axp20x.c
+@@ -936,7 +936,8 @@ static const struct mfd_cell axp152_cells[] = {
+ };
  
- 	dma_addr = dma_map_single(&ag->pdev->dev, skb->data, skb->len,
- 				  DMA_TO_DEVICE);
-+	if (dma_mapping_error(&ag->pdev->dev, dma_addr)) {
-+		netif_dbg(ag, tx_err, ndev, "DMA mapping error\n");
-+		goto err_drop;
-+	}
+ static struct mfd_cell axp313a_cells[] = {
+-	MFD_CELL_NAME("axp20x-regulator"),
++	/* AXP323 is sometimes paired with AXP717 as sub-PMIC */
++	MFD_CELL_BASIC("axp20x-regulator", NULL, NULL, 0, 1),
+ 	MFD_CELL_RES("axp313a-pek", axp313a_pek_resources),
+ };
  
- 	i = ring->curr & ring_mask;
- 	desc = ag71xx_ring_desc(ring, i);
 -- 
 2.39.5
 
