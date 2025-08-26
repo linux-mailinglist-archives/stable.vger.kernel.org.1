@@ -1,56 +1,55 @@
-Return-Path: <stable+bounces-175966-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-175449-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id C6D00B36A86
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 16:38:11 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id E860FB36864
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 16:15:59 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 049BF585CB2
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 14:29:51 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 681361C27825
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 14:06:49 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D38F3341AA6;
-	Tue, 26 Aug 2025 14:27:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 67D3D345758;
+	Tue, 26 Aug 2025 14:04:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="2sk0QKJr"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="fESIpSgi"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 90740350D46;
-	Tue, 26 Aug 2025 14:27:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 256151E7C08;
+	Tue, 26 Aug 2025 14:04:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756218434; cv=none; b=GtNaXzKM0tMT2SdA/+RkLiMYanyQ1ysN6Q/FGVmsPbBEuGN6nMBVvtBhXJUALKOtPflTvP3dsCMqybhLmoLEIeqNTO7vKM5gEdN/zuRY6GuPqhF2sv/jIoLIyCSOo3OjMt9WUS7MYarXXpjoPlEFxAokYdF7NMcpcwXqDIFusps=
+	t=1756217073; cv=none; b=Kn9H33laZ0d8bU257CNqBInazJaj/efQb8b2LKBT5QoecK0hkO0YBvV7xSu/T97evlKfc2rJm9MxCXiPRVt7JpcwlV1kspdWANySS2pmMG1ISImiRVuU9b7z2VBxqOEp0Lu7Lw9Y5eSgKyJCUSZjV8fw3wdbkq1f3d8NOKJmqrc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756218434; c=relaxed/simple;
-	bh=7hQWE8WTZ+JoTpjO0auMkiJ0B8FRDJLnwZrvopPMecM=;
+	s=arc-20240116; t=1756217073; c=relaxed/simple;
+	bh=t7qOtwXdjOXw8cFvi99ESWlj/2qgOWhMpMBNKsgShKg=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Um+YFFaANahx79VbkRrWLw42MI3mhR1083Kc7VV7gvn/pML0zzUAmHK3pnNuaUCVMN9wUO3ASjrOZNoOQmbMMQlRqFxjZzcFYT9weCfF4TZj4CsE+qWg3LRPARyHggEfISKq5jamOC28qR6mYgdRGNvAatSxvaE5lbIlTZRaL0s=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=2sk0QKJr; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id DCEB1C4CEF1;
-	Tue, 26 Aug 2025 14:27:13 +0000 (UTC)
+	 MIME-Version; b=eCGCzhQwiMtvPR19OVMvpgHW7wn1mmfF+5vq8XBuHqKSNGi0OIi+65K5JcnFmdsT577WbufewdRlzrFPf76xbk0GAoUMyd/+kJ4h9AOK29gGNLGBq1tC98YOgFTVTOQXjISpLZ38BbUuFc2RSGwl5uJYEO2JP6iAP3So/pFlO1c=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=fESIpSgi; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id AF983C113D0;
+	Tue, 26 Aug 2025 14:04:32 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1756218434;
-	bh=7hQWE8WTZ+JoTpjO0auMkiJ0B8FRDJLnwZrvopPMecM=;
+	s=korg; t=1756217073;
+	bh=t7qOtwXdjOXw8cFvi99ESWlj/2qgOWhMpMBNKsgShKg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=2sk0QKJrKvoTQetqaavyVQ/LiyVM+n76UE7vCfUzgMXipGhsbQTdctCzeeNNTDum0
-	 JjrmHDNJG9VuJrcacm6JHXXUSejHs5Y0FwadlefEzVfEvb9piFBl0Z0bXu1AjYQCqw
-	 pO3mpP+/6CyFmGZW3J8ZsZtM5W9EFxbDgM+HnB2w=
+	b=fESIpSgi9LFj+IfLf/xlPgx7/SyGwkZrIGQbB4dNecGO5/bF+YkGOt6ybY36FumWv
+	 LlqKPcDYjgeQ8WJOKed4KQqWTMMJ1GPOyzSYD6FudsxlJDSdaSQ2nv+/qMdNvhPt4F
+	 pexnPpblNZu9TJmCIz4iIf7XrEK/pSfJPL8qmvkw=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	"Jose M. Guisado Gomez" <guigom@riseup.net>,
-	Pablo Neira Ayuso <pablo@netfilter.org>,
+	Takashi Iwai <tiwai@suse.de>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 521/523] netfilter: nft_reject: unify reject init and dump into nft_reject
+Subject: [PATCH 5.15 640/644] ALSA: usb-audio: Use correct sub-type for UAC3 feature unit validation
 Date: Tue, 26 Aug 2025 13:12:11 +0200
-Message-ID: <20250826110937.289702834@linuxfoundation.org>
+Message-ID: <20250826111002.419409516@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250826110924.562212281@linuxfoundation.org>
-References: <20250826110924.562212281@linuxfoundation.org>
+In-Reply-To: <20250826110946.507083938@linuxfoundation.org>
+References: <20250826110946.507083938@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,221 +61,39 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jose M. Guisado Gomez <guigom@riseup.net>
+From: Takashi Iwai <tiwai@suse.de>
 
-[ Upstream commit 312ca575a50543a886a5dfa2af1e72aa6a5b601e ]
+[ Upstream commit 8410fe81093ff231e964891e215b624dabb734b0 ]
 
-Bridge family is using the same static init and dump function as inet.
+The entry of the validators table for UAC3 feature unit is defined
+with a wrong sub-type UAC_FEATURE (= 0x06) while it should have been
+UAC3_FEATURE (= 0x07).  This patch corrects the entry value.
 
-This patch removes duplicate code unifying these functions body into
-nft_reject.c so they can be reused in the rest of families supporting
-reject verdict.
-
-Signed-off-by: Jose M. Guisado Gomez <guigom@riseup.net>
-Signed-off-by: Pablo Neira Ayuso <pablo@netfilter.org>
-Stable-dep-of: 91a79b792204 ("netfilter: nf_reject: don't leak dst refcount for loopback packets")
+Fixes: 57f8770620e9 ("ALSA: usb-audio: More validations of descriptor units")
+Link: https://patch.msgid.link/20250821150835.8894-1-tiwai@suse.de
+Signed-off-by: Takashi Iwai <tiwai@suse.de>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/bridge/netfilter/nft_reject_bridge.c | 60 +-----------------------
- net/netfilter/nft_reject.c               | 12 ++++-
- net/netfilter/nft_reject_inet.c          | 60 +-----------------------
- 3 files changed, 15 insertions(+), 117 deletions(-)
+ sound/usb/validate.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/net/bridge/netfilter/nft_reject_bridge.c b/net/bridge/netfilter/nft_reject_bridge.c
-index deae2c9a0f69..9ffadcd524f8 100644
---- a/net/bridge/netfilter/nft_reject_bridge.c
-+++ b/net/bridge/netfilter/nft_reject_bridge.c
-@@ -364,69 +364,13 @@ static int nft_reject_bridge_validate(const struct nft_ctx *ctx,
- 						    (1 << NF_BR_LOCAL_IN));
- }
- 
--static int nft_reject_bridge_init(const struct nft_ctx *ctx,
--				  const struct nft_expr *expr,
--				  const struct nlattr * const tb[])
--{
--	struct nft_reject *priv = nft_expr_priv(expr);
--	int icmp_code;
--
--	if (tb[NFTA_REJECT_TYPE] == NULL)
--		return -EINVAL;
--
--	priv->type = ntohl(nla_get_be32(tb[NFTA_REJECT_TYPE]));
--	switch (priv->type) {
--	case NFT_REJECT_ICMP_UNREACH:
--	case NFT_REJECT_ICMPX_UNREACH:
--		if (tb[NFTA_REJECT_ICMP_CODE] == NULL)
--			return -EINVAL;
--
--		icmp_code = nla_get_u8(tb[NFTA_REJECT_ICMP_CODE]);
--		if (priv->type == NFT_REJECT_ICMPX_UNREACH &&
--		    icmp_code > NFT_REJECT_ICMPX_MAX)
--			return -EINVAL;
--
--		priv->icmp_code = icmp_code;
--		break;
--	case NFT_REJECT_TCP_RST:
--		break;
--	default:
--		return -EINVAL;
--	}
--	return 0;
--}
--
--static int nft_reject_bridge_dump(struct sk_buff *skb,
--				  const struct nft_expr *expr)
--{
--	const struct nft_reject *priv = nft_expr_priv(expr);
--
--	if (nla_put_be32(skb, NFTA_REJECT_TYPE, htonl(priv->type)))
--		goto nla_put_failure;
--
--	switch (priv->type) {
--	case NFT_REJECT_ICMP_UNREACH:
--	case NFT_REJECT_ICMPX_UNREACH:
--		if (nla_put_u8(skb, NFTA_REJECT_ICMP_CODE, priv->icmp_code))
--			goto nla_put_failure;
--		break;
--	default:
--		break;
--	}
--
--	return 0;
--
--nla_put_failure:
--	return -1;
--}
--
- static struct nft_expr_type nft_reject_bridge_type;
- static const struct nft_expr_ops nft_reject_bridge_ops = {
- 	.type		= &nft_reject_bridge_type,
- 	.size		= NFT_EXPR_SIZE(sizeof(struct nft_reject)),
- 	.eval		= nft_reject_bridge_eval,
--	.init		= nft_reject_bridge_init,
--	.dump		= nft_reject_bridge_dump,
-+	.init		= nft_reject_init,
-+	.dump		= nft_reject_dump,
- 	.validate	= nft_reject_bridge_validate,
- };
- 
-diff --git a/net/netfilter/nft_reject.c b/net/netfilter/nft_reject.c
-index 61fb7e8afbf0..927ff8459bd9 100644
---- a/net/netfilter/nft_reject.c
-+++ b/net/netfilter/nft_reject.c
-@@ -40,6 +40,7 @@ int nft_reject_init(const struct nft_ctx *ctx,
- 		    const struct nlattr * const tb[])
- {
- 	struct nft_reject *priv = nft_expr_priv(expr);
-+	int icmp_code;
- 
- 	if (tb[NFTA_REJECT_TYPE] == NULL)
- 		return -EINVAL;
-@@ -47,9 +48,17 @@ int nft_reject_init(const struct nft_ctx *ctx,
- 	priv->type = ntohl(nla_get_be32(tb[NFTA_REJECT_TYPE]));
- 	switch (priv->type) {
- 	case NFT_REJECT_ICMP_UNREACH:
-+	case NFT_REJECT_ICMPX_UNREACH:
- 		if (tb[NFTA_REJECT_ICMP_CODE] == NULL)
- 			return -EINVAL;
--		priv->icmp_code = nla_get_u8(tb[NFTA_REJECT_ICMP_CODE]);
-+
-+		icmp_code = nla_get_u8(tb[NFTA_REJECT_ICMP_CODE]);
-+		if (priv->type == NFT_REJECT_ICMPX_UNREACH &&
-+		    icmp_code > NFT_REJECT_ICMPX_MAX)
-+			return -EINVAL;
-+
-+		priv->icmp_code = icmp_code;
-+		break;
- 	case NFT_REJECT_TCP_RST:
- 		break;
- 	default:
-@@ -69,6 +78,7 @@ int nft_reject_dump(struct sk_buff *skb, const struct nft_expr *expr)
- 
- 	switch (priv->type) {
- 	case NFT_REJECT_ICMP_UNREACH:
-+	case NFT_REJECT_ICMPX_UNREACH:
- 		if (nla_put_u8(skb, NFTA_REJECT_ICMP_CODE, priv->icmp_code))
- 			goto nla_put_failure;
- 		break;
-diff --git a/net/netfilter/nft_reject_inet.c b/net/netfilter/nft_reject_inet.c
-index c00b94a16682..115aa446f6d5 100644
---- a/net/netfilter/nft_reject_inet.c
-+++ b/net/netfilter/nft_reject_inet.c
-@@ -60,69 +60,13 @@ static void nft_reject_inet_eval(const struct nft_expr *expr,
- 	regs->verdict.code = NF_DROP;
- }
- 
--static int nft_reject_inet_init(const struct nft_ctx *ctx,
--				const struct nft_expr *expr,
--				const struct nlattr * const tb[])
--{
--	struct nft_reject *priv = nft_expr_priv(expr);
--	int icmp_code;
--
--	if (tb[NFTA_REJECT_TYPE] == NULL)
--		return -EINVAL;
--
--	priv->type = ntohl(nla_get_be32(tb[NFTA_REJECT_TYPE]));
--	switch (priv->type) {
--	case NFT_REJECT_ICMP_UNREACH:
--	case NFT_REJECT_ICMPX_UNREACH:
--		if (tb[NFTA_REJECT_ICMP_CODE] == NULL)
--			return -EINVAL;
--
--		icmp_code = nla_get_u8(tb[NFTA_REJECT_ICMP_CODE]);
--		if (priv->type == NFT_REJECT_ICMPX_UNREACH &&
--		    icmp_code > NFT_REJECT_ICMPX_MAX)
--			return -EINVAL;
--
--		priv->icmp_code = icmp_code;
--		break;
--	case NFT_REJECT_TCP_RST:
--		break;
--	default:
--		return -EINVAL;
--	}
--	return 0;
--}
--
--static int nft_reject_inet_dump(struct sk_buff *skb,
--				const struct nft_expr *expr)
--{
--	const struct nft_reject *priv = nft_expr_priv(expr);
--
--	if (nla_put_be32(skb, NFTA_REJECT_TYPE, htonl(priv->type)))
--		goto nla_put_failure;
--
--	switch (priv->type) {
--	case NFT_REJECT_ICMP_UNREACH:
--	case NFT_REJECT_ICMPX_UNREACH:
--		if (nla_put_u8(skb, NFTA_REJECT_ICMP_CODE, priv->icmp_code))
--			goto nla_put_failure;
--		break;
--	default:
--		break;
--	}
--
--	return 0;
--
--nla_put_failure:
--	return -1;
--}
--
- static struct nft_expr_type nft_reject_inet_type;
- static const struct nft_expr_ops nft_reject_inet_ops = {
- 	.type		= &nft_reject_inet_type,
- 	.size		= NFT_EXPR_SIZE(sizeof(struct nft_reject)),
- 	.eval		= nft_reject_inet_eval,
--	.init		= nft_reject_inet_init,
--	.dump		= nft_reject_inet_dump,
-+	.init		= nft_reject_init,
-+	.dump		= nft_reject_dump,
- 	.validate	= nft_reject_validate,
- };
- 
+diff --git a/sound/usb/validate.c b/sound/usb/validate.c
+index 4f4e8e87a14c..a0d55b77c994 100644
+--- a/sound/usb/validate.c
++++ b/sound/usb/validate.c
+@@ -285,7 +285,7 @@ static const struct usb_desc_validator audio_validators[] = {
+ 	/* UAC_VERSION_3, UAC3_EXTENDED_TERMINAL: not implemented yet */
+ 	FUNC(UAC_VERSION_3, UAC3_MIXER_UNIT, validate_mixer_unit),
+ 	FUNC(UAC_VERSION_3, UAC3_SELECTOR_UNIT, validate_selector_unit),
+-	FUNC(UAC_VERSION_3, UAC_FEATURE_UNIT, validate_uac3_feature_unit),
++	FUNC(UAC_VERSION_3, UAC3_FEATURE_UNIT, validate_uac3_feature_unit),
+ 	/*  UAC_VERSION_3, UAC3_EFFECT_UNIT: not implemented yet */
+ 	FUNC(UAC_VERSION_3, UAC3_PROCESSING_UNIT, validate_processing_unit),
+ 	FUNC(UAC_VERSION_3, UAC3_EXTENSION_UNIT, validate_processing_unit),
 -- 
 2.50.1
 
