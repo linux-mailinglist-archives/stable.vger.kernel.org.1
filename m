@@ -1,55 +1,56 @@
-Return-Path: <stable+bounces-176233-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-175821-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4C14AB36BD5
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 16:49:29 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id D4A08B369DE
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 16:31:46 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 14BE51C41B00
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 14:41:59 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id E16B1586098
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 14:22:07 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9CC542253F3;
-	Tue, 26 Aug 2025 14:38:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 69C00352066;
+	Tue, 26 Aug 2025 14:20:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="YHXBB2+l"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="BSF6dQk/"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 55C822FDC5C;
-	Tue, 26 Aug 2025 14:38:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 27C2A350D7F;
+	Tue, 26 Aug 2025 14:20:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756219123; cv=none; b=H77W544GxR7waB6u5ouwwqq05MCJROfA29GOvIvqNNxbNj85xFMVfYCKHCoKA9KInqnPvUOiZctcJWhdeAwyelM1MbxOggAW+xDP/6bXbFOH52tbLhIeMDb7AMJcxBxuThFxM3ZoMYfQgjfKo/29z/16hAXEDnOVupVQa19nhw0=
+	t=1756218059; cv=none; b=MDoO8++/yhW0FJDXI73f2LSGBOrJuB0qSgVuf5WPAxczvFsbSyaFjhK4FKm+mp0Kv0rJbYXjZR9UbZ5g7En6vWT9GT5A1lkTXzt78u40nOzrmpBl0txOewSGC+C5tTWdWVOu7qJ0RoyzE9/KJy5Tw06uNrYIetge72mJcUT5k7k=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756219123; c=relaxed/simple;
-	bh=W+l6RGLyTdqkx9beWQBwrb/LbwulZ154XBR4h5gq9b8=;
+	s=arc-20240116; t=1756218059; c=relaxed/simple;
+	bh=T+G28X2Qi8hWDk1qvHI5kWRwQJ71GlureO/3B32+JgU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=liYX8ViQ4p+ygWXL6M9poqhUlIAqnMvdWGDGKnTCMyUB3YJC+tN0b9g+3VKLdReovr9OGcZcUc0xSNr0nGRAoJCTgYKsxsJgYzxFk83flr2g/t7bGDCX/SZprbMp2AwcvElAh8wfcNu1rwNUcgDtWOd1os6Badr8UJaIKEbUCsE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=YHXBB2+l; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id CF452C4CEF1;
-	Tue, 26 Aug 2025 14:38:42 +0000 (UTC)
+	 MIME-Version; b=Rw3/NJm0FiLn/LYHoIQYpVxh7Ma9tfsi2zVnj3WRvMubz2Tr8gcmcoUG/bq2f0MZFHlOqx2Oh5+EVsAj2O8iyHja5GfjLObqmXWkX1/LmZI4HXNw+LVfN7tD8X3DWgO1MHoBVnDN+7ezOFdUmufcruwrv+yc6J1YN6hvu6eAq0s=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=BSF6dQk/; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A459FC4CEF1;
+	Tue, 26 Aug 2025 14:20:58 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1756219123;
-	bh=W+l6RGLyTdqkx9beWQBwrb/LbwulZ154XBR4h5gq9b8=;
+	s=korg; t=1756218059;
+	bh=T+G28X2Qi8hWDk1qvHI5kWRwQJ71GlureO/3B32+JgU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=YHXBB2+liay7AeyArOVq2oNIisdkes1MgwaGnsXVDtbcX5gIsj9b0s6+iqiwHS6y6
-	 TdfCP0algidMWEMv9b+niqm1Nc3iOyelPjAvhMjKg/BDalIlxB1TkTXMmlHP38TEDW
-	 uLYRRKb4QHFgorJ4q14RPyGWdNZI0kHRd7f6VwW8=
+	b=BSF6dQk/Wt/CJBSJ0km1mOXrCOK8PE/qd2uqHLlcf62JpFc8XcdhL5q+M/deEPttx
+	 qB6oYO1LvnK2z53nZNykFQJRBPJIK3XDUmo/Nz4KhAaM8YE3xY3MtHaCTTjRUpIAk5
+	 equgRON+xuqKH63ZhyiqZ8pWSp+nYueT0TWBhvQ4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Masahiro Yamada <masahiroy@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.4 262/403] kconfig: gconf: avoid hardcoding model2 in on_treeview2_cursor_changed()
+	Bingbu Cao <bingbu.cao@intel.com>,
+	Sakari Ailus <sakari.ailus@linux.intel.com>,
+	Hans Verkuil <hverkuil@xs4all.nl>
+Subject: [PATCH 5.10 378/523] media: hi556: correct the test pattern configuration
 Date: Tue, 26 Aug 2025 13:09:48 +0200
-Message-ID: <20250826110914.052870300@linuxfoundation.org>
+Message-ID: <20250826110933.787659214@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250826110905.607690791@linuxfoundation.org>
-References: <20250826110905.607690791@linuxfoundation.org>
+In-Reply-To: <20250826110924.562212281@linuxfoundation.org>
+References: <20250826110924.562212281@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,49 +62,100 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.4-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Masahiro Yamada <masahiroy@kernel.org>
+From: Bingbu Cao <bingbu.cao@intel.com>
 
-[ Upstream commit cae9cdbcd9af044810bcceeb43a87accca47c71d ]
+commit 020f602b068c9ce18d5056d02c8302199377d98d upstream.
 
-The on_treeview2_cursor_changed() handler is connected to both the left
-and right tree views, but it hardcodes model2 (the GtkTreeModel of the
-right tree view). This is incorrect. Get the associated model from the
-view.
+Hynix hi556 support 8 test pattern modes:
+hi556_test_pattern_menu[] = {
+{
+	"Disabled",
+	"Solid Colour",
+	"100% Colour Bars",
+	"Fade To Grey Colour Bars",
+	"PN9",
+	"Gradient Horizontal",
+	"Gradient Vertical",
+	"Check Board",
+	"Slant Pattern",
+}
 
-Signed-off-by: Masahiro Yamada <masahiroy@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+The test pattern is set by a 8-bit register according to the
+specification.
++--------+-------------------------------+
+| BIT[0] |  Solid color                  |
++--------+-------------------------------+
+| BIT[1] |  Color bar                    |
++--------+-------------------------------+
+| BIT[2] |  Fade to grey color bar       |
++--------+-------------------------------+
+| BIT[3] |  PN9                          |
++--------+-------------------------------+
+| BIT[4] |  Gradient horizontal          |
++--------+-------------------------------+
+| BIT[5] |  Gradient vertical            |
++--------+-------------------------------+
+| BIT[6] |  Check board                  |
++--------+-------------------------------+
+| BIT[7] |  Slant pattern                |
++--------+-------------------------------+
+Based on function above, current test pattern programming is wrong.
+This patch fixes it by 'BIT(pattern - 1)'. If pattern is 0, driver
+will disable the test pattern generation and set the pattern to 0.
+
+Fixes: e62138403a84 ("media: hi556: Add support for Hi-556 sensor")
+Cc: stable@vger.kernel.org
+Signed-off-by: Bingbu Cao <bingbu.cao@intel.com>
+Signed-off-by: Sakari Ailus <sakari.ailus@linux.intel.com>
+Signed-off-by: Hans Verkuil <hverkuil@xs4all.nl>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- scripts/kconfig/gconf.c | 5 +++--
- 1 file changed, 3 insertions(+), 2 deletions(-)
+ drivers/media/i2c/hi556.c |   28 +++++++++++++++-------------
+ 1 file changed, 15 insertions(+), 13 deletions(-)
 
-diff --git a/scripts/kconfig/gconf.c b/scripts/kconfig/gconf.c
-index 9b10f1248da1..bd1fdbd949cc 100644
---- a/scripts/kconfig/gconf.c
-+++ b/scripts/kconfig/gconf.c
-@@ -980,13 +980,14 @@ on_treeview2_key_press_event(GtkWidget * widget,
- void
- on_treeview2_cursor_changed(GtkTreeView * treeview, gpointer user_data)
- {
-+	GtkTreeModel *model = gtk_tree_view_get_model(treeview);
- 	GtkTreeSelection *selection;
- 	GtkTreeIter iter;
- 	struct menu *menu;
+--- a/drivers/media/i2c/hi556.c
++++ b/drivers/media/i2c/hi556.c
+@@ -602,21 +602,23 @@ static int hi556_test_pattern(struct hi5
+ 	int ret;
+ 	u32 val;
  
- 	selection = gtk_tree_view_get_selection(treeview);
--	if (gtk_tree_selection_get_selected(selection, &model2, &iter)) {
--		gtk_tree_model_get(model2, &iter, COL_MENU, &menu, -1);
-+	if (gtk_tree_selection_get_selected(selection, &model, &iter)) {
-+		gtk_tree_model_get(model, &iter, COL_MENU, &menu, -1);
- 		text_insert_help(menu);
- 	}
+-	if (pattern) {
+-		ret = hi556_read_reg(hi556, HI556_REG_ISP,
+-				     HI556_REG_VALUE_08BIT, &val);
+-		if (ret)
+-			return ret;
+-
+-		ret = hi556_write_reg(hi556, HI556_REG_ISP,
+-				      HI556_REG_VALUE_08BIT,
+-				      val | HI556_REG_ISP_TPG_EN);
+-		if (ret)
+-			return ret;
+-	}
++	ret = hi556_read_reg(hi556, HI556_REG_ISP,
++			     HI556_REG_VALUE_08BIT, &val);
++	if (ret)
++		return ret;
++
++	val = pattern ? (val | HI556_REG_ISP_TPG_EN) :
++		(val & ~HI556_REG_ISP_TPG_EN);
++
++	ret = hi556_write_reg(hi556, HI556_REG_ISP,
++			      HI556_REG_VALUE_08BIT, val);
++	if (ret)
++		return ret;
++
++	val = pattern ? BIT(pattern - 1) : 0;
+ 
+ 	return hi556_write_reg(hi556, HI556_REG_TEST_PATTERN,
+-			       HI556_REG_VALUE_08BIT, pattern);
++			       HI556_REG_VALUE_08BIT, val);
  }
--- 
-2.39.5
-
+ 
+ static int hi556_set_ctrl(struct v4l2_ctrl *ctrl)
 
 
 
