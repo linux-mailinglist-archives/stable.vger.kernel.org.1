@@ -1,56 +1,58 @@
-Return-Path: <stable+bounces-175193-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-173140-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3F658B36702
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 16:02:47 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8388AB35C13
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 13:31:05 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 67BD38E26A4
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 13:55:17 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 15322363253
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 11:24:39 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1E9A1345758;
-	Tue, 26 Aug 2025 13:53:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id BA95D29BDBA;
+	Tue, 26 Aug 2025 11:24:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="t42UOjyP"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="M1FnLBta"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CD20A350845;
-	Tue, 26 Aug 2025 13:53:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 78012227599;
+	Tue, 26 Aug 2025 11:24:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756216386; cv=none; b=UpvsBIPj7aBZ1ZAtAMXVKFVyaAFq7JbuxqiZSeDijDNZ5Nck/DaT3wqBV0AL2ccfo5rRYaHQ4FaNsICLQs8DmdH5GzwuIzZMk0wGVg5MJlQ+1A5Fj2vROF6v3UoVLgWic/ca1oIu67hKDovPl0LzCythh7imEJj0c8F9ZhR6dCE=
+	t=1756207476; cv=none; b=EiZAJVCDJP19KZw48wOsYxqppC7rDD1YXuzOTp4UKYP3rGUpdAZF1F6CUwLJ06NkG8H/eUp6ns012+bddcsh6TMwa3EpSRcSnLcpE7X/mjq8Ya9qENfluYeP2gulUG+qSaUqbU14xSzq5VaQyikTB09ECmiDj0JXxnhDL7n8k+w=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756216386; c=relaxed/simple;
-	bh=lqDitbajTS+g2KovjbqsVK5HiXWRmWNkozmNdSlqUrk=;
+	s=arc-20240116; t=1756207476; c=relaxed/simple;
+	bh=v0DnfDRZpkYvicNmJjp2uyfkRpsSEos6BjT3X/c35q0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=oytQGFePMzU6BYP8yKZ0KeGDuHKVApAhtrKWuZdBnE8aGCnXREfMl6dlkNVOuSnN57rmsKJZkhFnK7H9+QnGoLlMiC8CDF9ipMZgPP+zWY/Jev67JfCfyLM0rKMDqyWToItGR9W4JVwEd5QfthmvPJIiuxc7vXaOHZgfZLGI/JA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=t42UOjyP; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0E4F1C4CEF1;
-	Tue, 26 Aug 2025 13:53:05 +0000 (UTC)
+	 MIME-Version:Content-Type; b=N1LXehkO2A/LwaHlZXWoY40JbwpTPv/v3G0cgt8Sb5wzuxmZz4sxDG8MdSNgJoutIfcgbb1AgQ5Hv7vyWjp52U95gLpz2DbFdfexwOfBoO7AjtbYNBClzotjOoBYpb61reKIjzfNGjXNIju7CS0bQo6wZzKj9u2dcbeuHjIYwvA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=M1FnLBta; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id F3A6CC4CEF1;
+	Tue, 26 Aug 2025 11:24:35 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1756216386;
-	bh=lqDitbajTS+g2KovjbqsVK5HiXWRmWNkozmNdSlqUrk=;
+	s=korg; t=1756207476;
+	bh=v0DnfDRZpkYvicNmJjp2uyfkRpsSEos6BjT3X/c35q0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=t42UOjyPrfBSx8R4DcfBKkB13bmr9SjmRhjAwJCVHaTJyF9n/HCJfvWvCKScClZ5t
-	 aWR6MX0qsSBHDdA3nMYTvOEem9Nvn35Ggh0Ng8Pd20gtD6eSSaqgwGdDGiXkIeAkBH
-	 f52lqDgOGpE1U60H2U6Gvp9026kkbhdkTHi1Wwjc=
+	b=M1FnLBtaXuPL9Eownw0uy9e9t12F8AyBRtFPPVJhojMeuhAoGjJYDWel1MsWDNXJZ
+	 /FeFfFtajjG1JRlPV4hF0DTZ4r2j3C514cxaDbCmVau4/jh1iqwxUuJHUg7xvBkIlZ
+	 r64VHVUprtm1z/QY8xkH3z6vgdVBfHG0i8HqpToY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Shiji Yang <yangshiji66@outlook.com>,
-	Thomas Bogendoerfer <tsbogend@alpha.franken.de>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 390/644] MIPS: vpe-mt: add missing prototypes for vpe_{alloc,start,stop,free}
+	stable@kernel.org,
+	syzbot+a81f2759d022496b40ab@syzkaller.appspotmail.com,
+	Jakub Acs <acsjakub@amazon.de>,
+	Eric Dumazet <edumazet@google.com>,
+	Jakub Kicinski <kuba@kernel.org>
+Subject: [PATCH 6.16 197/457] net, hsr: reject HSR frame if skb cant hold tag
 Date: Tue, 26 Aug 2025 13:08:01 +0200
-Message-ID: <20250826110956.106184827@linuxfoundation.org>
+Message-ID: <20250826110942.235941068@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250826110946.507083938@linuxfoundation.org>
-References: <20250826110946.507083938@linuxfoundation.org>
+In-Reply-To: <20250826110937.289866482@linuxfoundation.org>
+References: <20250826110937.289866482@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,60 +62,194 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.16-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Shiji Yang <yangshiji66@outlook.com>
+From: Jakub Acs <acsjakub@amazon.de>
 
-[ Upstream commit 844615dd0f2d95c018ec66b943e08af22b62aff3 ]
+commit 7af76e9d18a9fd6f8611b3313c86c190f9b6a5a7 upstream.
 
-These functions are exported but their prototypes are not defined.
-This patch adds the missing function prototypes to fix the following
-compilation warnings:
+Receiving HSR frame with insufficient space to hold HSR tag in the skb
+can result in a crash (kernel BUG):
 
-arch/mips/kernel/vpe-mt.c:180:7: error: no previous prototype for 'vpe_alloc' [-Werror=missing-prototypes]
-  180 | void *vpe_alloc(void)
-      |       ^~~~~~~~~
-arch/mips/kernel/vpe-mt.c:198:5: error: no previous prototype for 'vpe_start' [-Werror=missing-prototypes]
-  198 | int vpe_start(void *vpe, unsigned long start)
-      |     ^~~~~~~~~
-arch/mips/kernel/vpe-mt.c:208:5: error: no previous prototype for 'vpe_stop' [-Werror=missing-prototypes]
-  208 | int vpe_stop(void *vpe)
-      |     ^~~~~~~~
-arch/mips/kernel/vpe-mt.c:229:5: error: no previous prototype for 'vpe_free' [-Werror=missing-prototypes]
-  229 | int vpe_free(void *vpe)
-      |     ^~~~~~~~
+[   45.390915] skbuff: skb_under_panic: text:ffffffff86f32cac len:26 put:14 head:ffff888042418000 data:ffff888042417ff4 tail:0xe end:0x180 dev:bridge_slave_1
+[   45.392559] ------------[ cut here ]------------
+[   45.392912] kernel BUG at net/core/skbuff.c:211!
+[   45.393276] Oops: invalid opcode: 0000 [#1] SMP DEBUG_PAGEALLOC KASAN NOPTI
+[   45.393809] CPU: 1 UID: 0 PID: 2496 Comm: reproducer Not tainted 6.15.0 #12 PREEMPT(undef)
+[   45.394433] Hardware name: QEMU Standard PC (i440FX + PIIX, 1996), BIOS rel-1.16.3-0-ga6ed6b701f0a-prebuilt.qemu.org 04/01/2014
+[   45.395273] RIP: 0010:skb_panic+0x15b/0x1d0
 
-Signed-off-by: Shiji Yang <yangshiji66@outlook.com>
-Signed-off-by: Thomas Bogendoerfer <tsbogend@alpha.franken.de>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+<snip registers, remove unreliable trace>
+
+[   45.402911] Call Trace:
+[   45.403105]  <IRQ>
+[   45.404470]  skb_push+0xcd/0xf0
+[   45.404726]  br_dev_queue_push_xmit+0x7c/0x6c0
+[   45.406513]  br_forward_finish+0x128/0x260
+[   45.408483]  __br_forward+0x42d/0x590
+[   45.409464]  maybe_deliver+0x2eb/0x420
+[   45.409763]  br_flood+0x174/0x4a0
+[   45.410030]  br_handle_frame_finish+0xc7c/0x1bc0
+[   45.411618]  br_handle_frame+0xac3/0x1230
+[   45.413674]  __netif_receive_skb_core.constprop.0+0x808/0x3df0
+[   45.422966]  __netif_receive_skb_one_core+0xb4/0x1f0
+[   45.424478]  __netif_receive_skb+0x22/0x170
+[   45.424806]  process_backlog+0x242/0x6d0
+[   45.425116]  __napi_poll+0xbb/0x630
+[   45.425394]  net_rx_action+0x4d1/0xcc0
+[   45.427613]  handle_softirqs+0x1a4/0x580
+[   45.427926]  do_softirq+0x74/0x90
+[   45.428196]  </IRQ>
+
+This issue was found by syzkaller.
+
+The panic happens in br_dev_queue_push_xmit() once it receives a
+corrupted skb with ETH header already pushed in linear data. When it
+attempts the skb_push() call, there's not enough headroom and
+skb_push() panics.
+
+The corrupted skb is put on the queue by HSR layer, which makes a
+sequence of unintended transformations when it receives a specific
+corrupted HSR frame (with incomplete TAG).
+
+Fix it by dropping and consuming frames that are not long enough to
+contain both ethernet and hsr headers.
+
+Alternative fix would be to check for enough headroom before skb_push()
+in br_dev_queue_push_xmit().
+
+In the reproducer, this is injected via AF_PACKET, but I don't easily
+see why it couldn't be sent over the wire from adjacent network.
+
+Further Details:
+
+In the reproducer, the following network interface chain is set up:
+
+┌────────────────┐   ┌────────────────┐
+│ veth0_to_hsr   ├───┤  hsr_slave0    ┼───┐
+└────────────────┘   └────────────────┘   │
+                                          │ ┌──────┐
+                                          ├─┤ hsr0 ├───┐
+                                          │ └──────┘   │
+┌────────────────┐   ┌────────────────┐   │            │┌────────┐
+│ veth1_to_hsr   ┼───┤  hsr_slave1    ├───┘            └┤        │
+└────────────────┘   └────────────────┘                ┌┼ bridge │
+                                                       ││        │
+                                                       │└────────┘
+                                                       │
+                                        ┌───────┐      │
+                                        │  ...  ├──────┘
+                                        └───────┘
+
+To trigger the events leading up to crash, reproducer sends a corrupted
+HSR frame with incomplete TAG, via AF_PACKET socket on 'veth0_to_hsr'.
+
+The first HSR-layer function to process this frame is
+hsr_handle_frame(). It and then checks if the
+protocol is ETH_P_PRP or ETH_P_HSR. If it is, it calls
+skb_set_network_header(skb, ETH_HLEN + HSR_HLEN), without checking that
+the skb is long enough. For the crashing frame it is not, and hence the
+skb->network_header and skb->mac_len fields are set incorrectly,
+pointing after the end of the linear buffer.
+
+I will call this a BUG#1 and it is what is addressed by this patch. In
+the crashing scenario before the fix, the skb continues to go down the
+hsr path as follows.
+
+hsr_handle_frame() then calls this sequence
+hsr_forward_skb()
+  fill_frame_info()
+    hsr->proto_ops->fill_frame_info()
+      hsr_fill_frame_info()
+
+hsr_fill_frame_info() contains a check that intends to check whether the
+skb actually contains the HSR header. But the check relies on the
+skb->mac_len field which was erroneously setup due to BUG#1, so the
+check passes and the execution continues  back in the hsr_forward_skb():
+
+hsr_forward_skb()
+  hsr_forward_do()
+    hsr->proto_ops->get_untagged_frame()
+      hsr_get_untagged_frame()
+        create_stripped_skb_hsr()
+
+In create_stripped_skb_hsr(), a copy of the skb is created and is
+further corrupted by operation that attempts to strip the HSR tag in a
+call to __pskb_copy().
+
+The skb enters create_stripped_skb_hsr() with ethernet header pushed in
+linear buffer. The skb_pull(skb_in, HSR_HLEN) thus pulls 6 bytes of
+ethernet header into the headroom, creating skb_in with a headroom of
+size 8. The subsequent __pskb_copy() then creates an skb with headroom
+of just 2 and skb->len of just 12, this is how it looks after the copy:
+
+gdb) p skb->len
+$10 = 12
+(gdb) p skb->data
+$11 = (unsigned char *) 0xffff888041e45382 "\252\252\252\252\252!\210\373",
+(gdb) p skb->head
+$12 = (unsigned char *) 0xffff888041e45380 ""
+
+It seems create_stripped_skb_hsr() assumes that ETH header is pulled
+in the headroom when it's entered, because it just pulls HSR header on
+top. But that is not the case in our code-path and we end up with the
+corrupted skb instead. I will call this BUG#2
+
+*I got confused here because it seems that under no conditions can
+create_stripped_skb_hsr() work well, the assumption it makes is not true
+during the processing of hsr frames - since the skb_push() in
+hsr_handle_frame to skb_pull in hsr_deliver_master(). I wonder whether I
+missed something here.*
+
+Next, the execution arrives in hsr_deliver_master(). It calls
+skb_pull(ETH_HLEN), which just returns NULL - the SKB does not have
+enough space for the pull (as it only has 12 bytes in total at this
+point).
+
+*The skb_pull() here further suggests that ethernet header is meant
+to be pushed through the whole hsr processing and
+create_stripped_skb_hsr() should pull it before doing the HSR header
+pull.*
+
+hsr_deliver_master() then puts the corrupted skb on the queue, it is
+then picked up from there by bridge frame handling layer and finally
+lands in br_dev_queue_push_xmit where it panics.
+
+Cc: stable@kernel.org
+Fixes: 48b491a5cc74 ("net: hsr: fix mac_len checks")
+Reported-by: syzbot+a81f2759d022496b40ab@syzkaller.appspotmail.com
+Signed-off-by: Jakub Acs <acsjakub@amazon.de>
+Reviewed-by: Eric Dumazet <edumazet@google.com>
+Link: https://patch.msgid.link/20250819082842.94378-1-acsjakub@amazon.de
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- arch/mips/include/asm/vpe.h | 8 ++++++++
- 1 file changed, 8 insertions(+)
+ net/hsr/hsr_slave.c |    8 +++++++-
+ 1 file changed, 7 insertions(+), 1 deletion(-)
 
-diff --git a/arch/mips/include/asm/vpe.h b/arch/mips/include/asm/vpe.h
-index ef7e07829607..0094709b617d 100644
---- a/arch/mips/include/asm/vpe.h
-+++ b/arch/mips/include/asm/vpe.h
-@@ -123,4 +123,12 @@ void cleanup_tc(struct tc *tc);
+--- a/net/hsr/hsr_slave.c
++++ b/net/hsr/hsr_slave.c
+@@ -63,8 +63,14 @@ static rx_handler_result_t hsr_handle_fr
+ 	skb_push(skb, ETH_HLEN);
+ 	skb_reset_mac_header(skb);
+ 	if ((!hsr->prot_version && protocol == htons(ETH_P_PRP)) ||
+-	    protocol == htons(ETH_P_HSR))
++	    protocol == htons(ETH_P_HSR)) {
++		if (!pskb_may_pull(skb, ETH_HLEN + HSR_HLEN)) {
++			kfree_skb(skb);
++			goto finish_consume;
++		}
++
+ 		skb_set_network_header(skb, ETH_HLEN + HSR_HLEN);
++	}
+ 	skb_reset_mac_len(skb);
  
- int __init vpe_module_init(void);
- void __exit vpe_module_exit(void);
-+
-+#ifdef CONFIG_MIPS_VPE_LOADER_MT
-+void *vpe_alloc(void);
-+int vpe_start(void *vpe, unsigned long start);
-+int vpe_stop(void *vpe);
-+int vpe_free(void *vpe);
-+#endif /* CONFIG_MIPS_VPE_LOADER_MT */
-+
- #endif /* _ASM_VPE_H */
--- 
-2.39.5
-
+ 	/* Only the frames received over the interlink port will assign a
 
 
 
