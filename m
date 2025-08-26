@@ -1,56 +1,58 @@
-Return-Path: <stable+bounces-175388-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-174260-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id B01CFB3673F
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 16:04:59 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id C7FF5B36219
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 15:16:01 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 699AB7B85DE
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 14:01:25 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 9FABB18841CE
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 13:13:24 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E03D12AE7F;
-	Tue, 26 Aug 2025 14:01:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5D2DD238C07;
+	Tue, 26 Aug 2025 13:11:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Dnw70PDk"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="XTVDkmjv"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9CE9D1494D9;
-	Tue, 26 Aug 2025 14:01:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 189B51B85F8;
+	Tue, 26 Aug 2025 13:11:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756216906; cv=none; b=lfBKtsTJuyo0UVGvgPX4KtWSUY9IbiibfvvsT7ZmV0W0q5oYKZQKhfUrLmv/RxeOg9wWekVD+B+Zp+G1GmVvk2uigRX31yfkHl+YUDIIjhqdyUh+dR7kKzkcFn4LtH1KznLCPhkKIFEOWasv/pUIYKuFXLdBETm/ZG+Wkw/gR0E=
+	t=1756213917; cv=none; b=EkmSNojVCL4yBLaMVagmeA9j+4b96HQaPzn7hQnWKfEeiXvF4mb/t/uvxnAxOAT6m0E2L3yNhqW5Xna0v+IfSdA1SX8BoofVquRaEX4W/FUMbY1WQMGWMxXO91Qm1aEfz2NEts2RCtBPIBOAXO8DdjcGQeeK2CZ5YB5MP+g1Pjg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756216906; c=relaxed/simple;
-	bh=AiR0L08PH/X80YsBHr+WvpxcsFLXX7vbtZOmKrJbDY0=;
+	s=arc-20240116; t=1756213917; c=relaxed/simple;
+	bh=dKryqYESpxFWyA2Zj2UpthW7AqliIHtATpp4UuawvsQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=q5K85D0TXJb2hP5q6D0QpoGTbEzXIPSOlk3GEXMwWoGCPPXAZZJJWW7UZEJ5HZZzQnLTpdotmTM/oz4m+3BKh3PPizvZ8SjjI27Nc4BwRsOVPlSBf//H0USGkLF0DAYk5W8tW5ItmV9QH8MCwDb7cpjC1d8PXnbQ4/iCHjZI1y8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Dnw70PDk; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2D7D0C4CEF1;
-	Tue, 26 Aug 2025 14:01:46 +0000 (UTC)
+	 MIME-Version; b=ew0kQaQga7YPJw5I9oPDoHX7hSNwrB5uDoNylrWK1VId+M23w1d8D+4id60HzjeQhRG9nUxgxMA/2Q9znPkjcYlbGgPqKSQhxa4TCuaADw2sG39tD74OXim7Xi/pZHFxe8mCrXA2Qw2BqVDjt91Z84agpWns7bRv25Ars709b3g=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=XTVDkmjv; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9C90EC116B1;
+	Tue, 26 Aug 2025 13:11:56 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1756216906;
-	bh=AiR0L08PH/X80YsBHr+WvpxcsFLXX7vbtZOmKrJbDY0=;
+	s=korg; t=1756213917;
+	bh=dKryqYESpxFWyA2Zj2UpthW7AqliIHtATpp4UuawvsQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Dnw70PDkqnmtoN+S0sy0Didg0Xw8U0xJJ2NtZw4WyecWK1/6C5ASMri1YdHmw1SB5
-	 oR2UDAV6eFoUyhRS4gB78U5PtS7jvHKI9Y26bJ+oTht68nu76iRCw2ZFBp82I/8Hon
-	 +nLvtS48JDbgDJ9kA7lfSvWKriEO2rIK8A7yPe8o=
+	b=XTVDkmjvspuZpmROQ+YMnCCG6vWrIVmyC4Z25x+Fy3INIDKLogSFFj6TH+8I2kvwX
+	 J805M8CBSAuxRxGhybFEDJ6CtHXv+iHXF6Nu43y99aY4/0LpHoOkAUMNR5KSbfCqDl
+	 9x8UdTSQPf2sk6BqJi4os+JuBySlYbPxz6khVepY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Mael GUERIN <mael.guerin@murena.io>,
 	stable <stable@kernel.org>,
-	Alan Stern <stern@rowland.harvard.edu>
-Subject: [PATCH 5.15 587/644] USB: storage: Add unusual-devs entry for Novatek NTK96550-based camera
+	Akash M <akash.m5@samsung.com>,
+	Selvarasu Ganesan <selvarasu.g@samsung.com>,
+	Thinh Nguyen <Thinh.Nguyen@synopsys.com>,
+	Sebastian Andrzej Siewior <bigeasy@linutronix.de>
+Subject: [PATCH 6.6 529/587] usb: dwc3: Remove WARN_ON for device endpoint command timeouts
 Date: Tue, 26 Aug 2025 13:11:18 +0200
-Message-ID: <20250826111001.082341641@linuxfoundation.org>
+Message-ID: <20250826111006.459447424@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250826110946.507083938@linuxfoundation.org>
-References: <20250826110946.507083938@linuxfoundation.org>
+In-Reply-To: <20250826110952.942403671@linuxfoundation.org>
+References: <20250826110952.942403671@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,62 +62,140 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Mael GUERIN <mael.guerin@murena.io>
+From: Selvarasu Ganesan <selvarasu.g@samsung.com>
 
-commit 6ca8af3c8fb584f3424a827f554ff74f898c27cd upstream.
+commit 45eae113dccaf8e502090ecf5b3d9e9b805add6f upstream.
 
-Add the US_FL_BULK_IGNORE_TAG quirk for Novatek NTK96550-based camera
-to fix USB resets after sending SCSI vendor commands due to CBW and
-CSW tags difference, leading to undesired slowness while communicating
-with the device.
+This commit addresses a rarely observed endpoint command timeout
+which causes kernel panic due to warn when 'panic_on_warn' is enabled
+and unnecessary call trace prints when 'panic_on_warn' is disabled.
+It is seen during fast software-controlled connect/disconnect testcases.
+The following is one such endpoint command timeout that we observed:
 
-Please find below the copy of /sys/kernel/debug/usb/devices with my
-device plugged in (listed as TechSys USB mass storage here, the
-underlying chipset being the Novatek NTK96550-based camera):
+1. Connect
+   =======
+->dwc3_thread_interrupt
+ ->dwc3_ep0_interrupt
+  ->configfs_composite_setup
+   ->composite_setup
+    ->usb_ep_queue
+     ->dwc3_gadget_ep0_queue
+      ->__dwc3_gadget_ep0_queue
+       ->__dwc3_ep0_do_control_data
+        ->dwc3_send_gadget_ep_cmd
 
-T:  Bus=03 Lev=01 Prnt=01 Port=00 Cnt=01 Dev#=  3 Spd=480  MxCh= 0
-D:  Ver= 2.00 Cls=00(>ifc ) Sub=00 Prot=00 MxPS=64 #Cfgs=  1
-P:  Vendor=0603 ProdID=8611 Rev= 0.01
-S:  Manufacturer=TechSys
-S:  Product=USB Mass Storage
-S:  SerialNumber=966110000000100
-C:* #Ifs= 1 Cfg#= 1 Atr=c0 MxPwr=100mA
-I:* If#= 0 Alt= 0 #EPs= 2 Cls=08(stor.) Sub=06 Prot=50 Driver=usb-storage
-E:  Ad=81(I) Atr=02(Bulk) MxPS= 512 Ivl=0ms
-E:  Ad=02(O) Atr=02(Bulk) MxPS= 512 Ivl=0ms
+2. Disconnect
+   ==========
+->dwc3_thread_interrupt
+ ->dwc3_gadget_disconnect_interrupt
+  ->dwc3_ep0_reset_state
+   ->dwc3_ep0_end_control_data
+    ->dwc3_send_gadget_ep_cmd
 
-Signed-off-by: Mael GUERIN <mael.guerin@murena.io>
+In the issue scenario, in Exynos platforms, we observed that control
+transfers for the previous connect have not yet been completed and end
+transfer command sent as a part of the disconnect sequence and
+processing of USB_ENDPOINT_HALT feature request from the host timeout.
+This maybe an expected scenario since the controller is processing EP
+commands sent as a part of the previous connect. It maybe better to
+remove WARN_ON in all places where device endpoint commands are sent to
+avoid unnecessary kernel panic due to warn.
+
 Cc: stable <stable@kernel.org>
-Acked-by: Alan Stern <stern@rowland.harvard.edu>
-Link: https://lore.kernel.org/r/20250806164406.43450-1-mael.guerin@murena.io
+Co-developed-by: Akash M <akash.m5@samsung.com>
+Signed-off-by: Akash M <akash.m5@samsung.com>
+Signed-off-by: Selvarasu Ganesan <selvarasu.g@samsung.com>
+Acked-by: Thinh Nguyen <Thinh.Nguyen@synopsys.com>
+Reviewed-by: Sebastian Andrzej Siewior <bigeasy@linutronix.de>
+Link: https://lore.kernel.org/r/20250808125315.1607-1-selvarasu.g@samsung.com
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/usb/storage/unusual_devs.h |    7 +++++++
- 1 file changed, 7 insertions(+)
+ drivers/usb/dwc3/ep0.c    |   20 ++++++++++++++++----
+ drivers/usb/dwc3/gadget.c |   10 ++++++++--
+ 2 files changed, 24 insertions(+), 6 deletions(-)
 
---- a/drivers/usb/storage/unusual_devs.h
-+++ b/drivers/usb/storage/unusual_devs.h
-@@ -934,6 +934,13 @@ UNUSUAL_DEV(  0x05e3, 0x0723, 0x9451, 0x
- 		USB_SC_DEVICE, USB_PR_DEVICE, NULL,
- 		US_FL_SANE_SENSE ),
- 
-+/* Added by Maël GUERIN <mael.guerin@murena.io> */
-+UNUSUAL_DEV(  0x0603, 0x8611, 0x0000, 0xffff,
-+		"Novatek",
-+		"NTK96550-based camera",
-+		USB_SC_SCSI, USB_PR_BULK, NULL,
-+		US_FL_BULK_IGNORE_TAG ),
+--- a/drivers/usb/dwc3/ep0.c
++++ b/drivers/usb/dwc3/ep0.c
+@@ -288,7 +288,9 @@ void dwc3_ep0_out_start(struct dwc3 *dwc
+ 	dwc3_ep0_prepare_one_trb(dep, dwc->ep0_trb_addr, 8,
+ 			DWC3_TRBCTL_CONTROL_SETUP, false);
+ 	ret = dwc3_ep0_start_trans(dep);
+-	WARN_ON(ret < 0);
++	if (ret < 0)
++		dev_err(dwc->dev, "ep0 out start transfer failed: %d\n", ret);
 +
- /*
-  * Reported by Hanno Boeck <hanno@gmx.de>
-  * Taken from the Lycoris Kernel
+ 	for (i = 2; i < DWC3_ENDPOINTS_NUM; i++) {
+ 		struct dwc3_ep *dwc3_ep;
+ 
+@@ -1061,7 +1063,9 @@ static void __dwc3_ep0_do_control_data(s
+ 		ret = dwc3_ep0_start_trans(dep);
+ 	}
+ 
+-	WARN_ON(ret < 0);
++	if (ret < 0)
++		dev_err(dwc->dev,
++			"ep0 data phase start transfer failed: %d\n", ret);
+ }
+ 
+ static int dwc3_ep0_start_control_status(struct dwc3_ep *dep)
+@@ -1078,7 +1082,12 @@ static int dwc3_ep0_start_control_status
+ 
+ static void __dwc3_ep0_do_control_status(struct dwc3 *dwc, struct dwc3_ep *dep)
+ {
+-	WARN_ON(dwc3_ep0_start_control_status(dep));
++	int	ret;
++
++	ret = dwc3_ep0_start_control_status(dep);
++	if (ret)
++		dev_err(dwc->dev,
++			"ep0 status phase start transfer failed: %d\n", ret);
+ }
+ 
+ static void dwc3_ep0_do_control_status(struct dwc3 *dwc,
+@@ -1121,7 +1130,10 @@ void dwc3_ep0_end_control_data(struct dw
+ 	cmd |= DWC3_DEPCMD_PARAM(dep->resource_index);
+ 	memset(&params, 0, sizeof(params));
+ 	ret = dwc3_send_gadget_ep_cmd(dep, cmd, &params);
+-	WARN_ON_ONCE(ret);
++	if (ret)
++		dev_err_ratelimited(dwc->dev,
++			"ep0 data phase end transfer failed: %d\n", ret);
++
+ 	dep->resource_index = 0;
+ }
+ 
+--- a/drivers/usb/dwc3/gadget.c
++++ b/drivers/usb/dwc3/gadget.c
+@@ -1765,7 +1765,11 @@ static int __dwc3_stop_active_transfer(s
+ 		dep->flags |= DWC3_EP_DELAY_STOP;
+ 		return 0;
+ 	}
+-	WARN_ON_ONCE(ret);
++
++	if (ret)
++		dev_err_ratelimited(dep->dwc->dev,
++				"end transfer failed: %d\n", ret);
++
+ 	dep->resource_index = 0;
+ 
+ 	if (!interrupt)
+@@ -4045,7 +4049,9 @@ static void dwc3_clear_stall_all_ep(stru
+ 		dep->flags &= ~DWC3_EP_STALL;
+ 
+ 		ret = dwc3_send_clear_stall_ep_cmd(dep);
+-		WARN_ON_ONCE(ret);
++		if (ret)
++			dev_err_ratelimited(dwc->dev,
++				"failed to clear STALL on %s\n", dep->name);
+ 	}
+ }
+ 
 
 
 
