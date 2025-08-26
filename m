@@ -1,55 +1,56 @@
-Return-Path: <stable+bounces-174712-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-176324-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1D0F3B36491
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 15:40:00 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4FCB2B36D2B
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 17:09:34 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 95F7B1891BF7
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 13:33:30 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 9196CA01D57
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 14:46:07 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2E398228C9D;
-	Tue, 26 Aug 2025 13:31:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 640223570A0;
+	Tue, 26 Aug 2025 14:42:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="NjVVvHZR"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="DS0Q/0bY"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DEBDF1DB127;
-	Tue, 26 Aug 2025 13:31:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1E27D352FE2;
+	Tue, 26 Aug 2025 14:42:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756215118; cv=none; b=Uu8a+CSLZaHX/V7R1rp9IbUrnw7530CwiZ/TTbPfBBXCAZkx92ms/hXU1cLyDpqwNmXaywpLtdmJ+Ulx5hrrKx2SBbla7lMtIKuoQr0e54JlUJh1k9AYwyFGzri89wWoRqkCIPHsuxi0dz5hjBLlEXGXPO2GOp8raKBA1BpOZD8=
+	t=1756219362; cv=none; b=rm71drM2HXb2V4E68ULvUGKgAZW9iY1NXkKD/KZXwnqJ3fe+V7G+ovaNcbTNIJSFNfgS3u3L5I5+udsfr+R2RB95r4I4IsmfSS1QlXuCNTT2BPxEeKp9wO/raR27zJSpO4WKLyiDSYzeZhYYY83DAW9Hp8iWTnR+sjUtlAYsLyQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756215118; c=relaxed/simple;
-	bh=aXTxOR/TM1+gQMN8zMwLaxs5erKAoLGE3MUrCkAq908=;
+	s=arc-20240116; t=1756219362; c=relaxed/simple;
+	bh=jSD+hVdZ2Gwa6KZHOTZR55gg69Up+ntj0uJnWO1TKhw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=tvPFC0zwNXywWzXilSxQ1hbaQUXbeyjXx4FhKSm7EZniFC4+Me2Rf9k7wdWdeF+ygw81c8zZyLPiBAX+FlbansWZnG3jDnjtsKamdFpppgxzXhWNcqM8Yy+gD5+VCE48YoyweBF8Wuu0EjSdZZ+n3NcQwHH82VmzTySx14Brsrw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=NjVVvHZR; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6481FC4CEF1;
-	Tue, 26 Aug 2025 13:31:57 +0000 (UTC)
+	 MIME-Version; b=QQp8snE1Cs1waEWq18gpCjskFyPrISy8JJRF1ndoxi5sS/nQ6Nzru4JwOUfLd+xuKxELNXfGTx11jNyzZeCDQI5M55KWcQ4RwoK14oI5eBF/i0XRFV9K6e1D9bos85MUEeDd90WgY3vgk+yyHyOsTHY/RraGeZ2v4oEwRzcU9UA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=DS0Q/0bY; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A1511C4CEF1;
+	Tue, 26 Aug 2025 14:42:41 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1756215117;
-	bh=aXTxOR/TM1+gQMN8zMwLaxs5erKAoLGE3MUrCkAq908=;
+	s=korg; t=1756219362;
+	bh=jSD+hVdZ2Gwa6KZHOTZR55gg69Up+ntj0uJnWO1TKhw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=NjVVvHZRzaIF9md+ZqizyfsbEqFUV4+cr7yj6CLgH72BEf5oRcxQqSBZ3s7LHddl6
-	 nfELTACK4V6LJGm490WopLzMuXAu9jSi8+ITqyb0c5IfbjvZUbOasYRUKxUzS+Xo9N
-	 yrvjGrVlf8pzXYyEjgxdq62ACHPY3YpSDFvh2wAs=
+	b=DS0Q/0bY0MkLbwoEaPtcGLhVdE+UMwkb33x6zPVaOvfQ61rs4scoRhDid4JipwHzn
+	 IDaBWVx17EEMw7X6on4A3fJDN7cAUtU0eWUOHAtZUx6hzSFGVQxhTIIDrQecqEqvY4
+	 4NcPPYhdYLtA63muHamFif/2mhLwbzCaVjj4tKmA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jiayi Li <lijiayi@kylinos.cn>,
-	Ulf Hansson <ulf.hansson@linaro.org>
-Subject: [PATCH 6.1 394/482] memstick: Fix deadlock by moving removing flag earlier
+	stable <stable@kernel.org>,
+	Zenm Chen <zenmchen@gmail.com>,
+	Alan Stern <stern@rowland.harvard.edu>
+Subject: [PATCH 5.4 321/403] USB: storage: Ignore driver CD mode for Realtek multi-mode Wi-Fi dongles
 Date: Tue, 26 Aug 2025 13:10:47 +0200
-Message-ID: <20250826110940.563438672@linuxfoundation.org>
+Message-ID: <20250826110915.676680042@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250826110930.769259449@linuxfoundation.org>
-References: <20250826110930.769259449@linuxfoundation.org>
+In-Reply-To: <20250826110905.607690791@linuxfoundation.org>
+References: <20250826110905.607690791@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,85 +62,84 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+5.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jiayi Li <lijiayi@kylinos.cn>
+From: Zenm Chen <zenmchen@gmail.com>
 
-commit 99d7ab8db9d8230b243f5ed20ba0229e54cc0dfa upstream.
+commit a3dc32c635bae0ae569f489e00de0e8f015bfc25 upstream.
 
-The existing memstick core patch: commit 62c59a8786e6 ("memstick: Skip
-allocating card when removing host") sets host->removing in
-memstick_remove_host(),but still exists a critical time window where
-memstick_check can run after host->eject is set but before removing is set.
+Many Realtek USB Wi-Fi dongles released in recent years have two modes:
+one is driver CD mode which has Windows driver onboard, another one is
+Wi-Fi mode. Add the US_FL_IGNORE_DEVICE quirk for these multi-mode devices.
+Otherwise, usb_modeswitch may fail to switch them to Wi-Fi mode.
 
-In the rtsx_usb_ms driver, the problematic sequence is:
+Currently there are only two USB IDs known to be used by these multi-mode
+Wi-Fi dongles: 0bda:1a2b and 0bda:a192.
 
-rtsx_usb_ms_drv_remove:          memstick_check:
-  host->eject = true
-  cancel_work_sync(handle_req)     if(!host->removing)
-  ...                              memstick_alloc_card()
-                                     memstick_set_rw_addr()
-                                       memstick_new_req()
-                                         rtsx_usb_ms_request()
-                                           if(!host->eject)
-                                           skip schedule_work
-                                       wait_for_completion()
-  memstick_remove_host:                [blocks indefinitely]
-    host->removing = true
-    flush_workqueue()
-    [block]
+Information about Mercury MW310UH in /sys/kernel/debug/usb/devices.
+T:  Bus=02 Lev=01 Prnt=01 Port=01 Cnt=01 Dev#= 12 Spd=480  MxCh= 0
+D:  Ver= 2.00 Cls=00(>ifc ) Sub=00 Prot=00 MxPS=64 #Cfgs=  1
+P:  Vendor=0bda ProdID=a192 Rev= 2.00
+S:  Manufacturer=Realtek
+S:  Product=DISK
+C:* #Ifs= 1 Cfg#= 1 Atr=80 MxPwr=500mA
+I:* If#= 0 Alt= 0 #EPs= 2 Cls=08(stor.) Sub=06 Prot=50 Driver=(none)
+E:  Ad=8a(I) Atr=02(Bulk) MxPS= 512 Ivl=0ms
+E:  Ad=0b(O) Atr=02(Bulk) MxPS= 512 Ivl=0ms
 
-1. rtsx_usb_ms_drv_remove sets host->eject = true
-2. cancel_work_sync(&host->handle_req) runs
-3. memstick_check work may be executed here <-- danger window
-4. memstick_remove_host sets removing = 1
+Information about D-Link AX9U rev. A1 in /sys/kernel/debug/usb/devices.
+T:  Bus=03 Lev=01 Prnt=01 Port=02 Cnt=01 Dev#= 55 Spd=480  MxCh= 0
+D:  Ver= 2.00 Cls=00(>ifc ) Sub=00 Prot=00 MxPS=64 #Cfgs=  1
+P:  Vendor=0bda ProdID=1a2b Rev= 0.00
+S:  Manufacturer=Realtek
+S:  Product=DISK
+C:* #Ifs= 1 Cfg#= 1 Atr=e0 MxPwr=500mA
+I:* If#= 0 Alt= 0 #EPs= 2 Cls=08(stor.) Sub=06 Prot=50 Driver=(none)
+E:  Ad=84(I) Atr=02(Bulk) MxPS= 512 Ivl=0ms
+E:  Ad=05(O) Atr=02(Bulk) MxPS= 512 Ivl=0ms
 
-During this window (step 3), memstick_check calls memstick_alloc_card,
-which may indefinitely waiting for mrq_complete completion that will
-never occur because rtsx_usb_ms_request sees eject=true and skips
-scheduling work, memstick_set_rw_addr waits forever for completion.
-
-This causes a deadlock when memstick_remove_host tries to flush_workqueue,
-waiting for memstick_check to complete, while memstick_check is blocked
-waiting for mrq_complete completion.
-
-Fix this by setting removing=true at the start of rtsx_usb_ms_drv_remove,
-before any work cancellation. This ensures memstick_check will see the
-removing flag immediately and exit early, avoiding the deadlock.
-
-Fixes: 62c59a8786e6 ("memstick: Skip allocating card when removing host")
-Signed-off-by: Jiayi Li <lijiayi@kylinos.cn>
-Cc: stable@vger.kernel.org
-Link: https://lore.kernel.org/r/20250804013604.1311218-1-lijiayi@kylinos.cn
-Signed-off-by: Ulf Hansson <ulf.hansson@linaro.org>
+Cc: stable <stable@kernel.org>
+Signed-off-by: Zenm Chen <zenmchen@gmail.com>
+Acked-by: Alan Stern <stern@rowland.harvard.edu>
+Link: https://lore.kernel.org/r/20250813162415.2630-1-zenmchen@gmail.com
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/memstick/core/memstick.c    |    1 -
- drivers/memstick/host/rtsx_usb_ms.c |    1 +
- 2 files changed, 1 insertion(+), 1 deletion(-)
+ drivers/usb/storage/unusual_devs.h |   22 ++++++++++++++++++++++
+ 1 file changed, 22 insertions(+)
 
---- a/drivers/memstick/core/memstick.c
-+++ b/drivers/memstick/core/memstick.c
-@@ -548,7 +548,6 @@ EXPORT_SYMBOL(memstick_add_host);
-  */
- void memstick_remove_host(struct memstick_host *host)
- {
--	host->removing = 1;
- 	flush_workqueue(workqueue);
- 	mutex_lock(&host->lock);
- 	if (host->card)
---- a/drivers/memstick/host/rtsx_usb_ms.c
-+++ b/drivers/memstick/host/rtsx_usb_ms.c
-@@ -812,6 +812,7 @@ static int rtsx_usb_ms_drv_remove(struct
- 	int err;
+--- a/drivers/usb/storage/unusual_devs.h
++++ b/drivers/usb/storage/unusual_devs.h
+@@ -1490,6 +1490,28 @@ UNUSUAL_DEV( 0x0bc2, 0x3332, 0x0000, 0x9
+ 		USB_SC_DEVICE, USB_PR_DEVICE, NULL,
+ 		US_FL_NO_WP_DETECT ),
  
- 	host->eject = true;
-+	msh->removing = true;
- 	cancel_work_sync(&host->handle_req);
- 	cancel_delayed_work_sync(&host->poll_card);
- 
++/*
++ * Reported by Zenm Chen <zenmchen@gmail.com>
++ * Ignore driver CD mode, otherwise usb_modeswitch may fail to switch
++ * the device into Wi-Fi mode.
++ */
++UNUSUAL_DEV( 0x0bda, 0x1a2b, 0x0000, 0xffff,
++		"Realtek",
++		"DISK",
++		USB_SC_DEVICE, USB_PR_DEVICE, NULL,
++		US_FL_IGNORE_DEVICE ),
++
++/*
++ * Reported by Zenm Chen <zenmchen@gmail.com>
++ * Ignore driver CD mode, otherwise usb_modeswitch may fail to switch
++ * the device into Wi-Fi mode.
++ */
++UNUSUAL_DEV( 0x0bda, 0xa192, 0x0000, 0xffff,
++		"Realtek",
++		"DISK",
++		USB_SC_DEVICE, USB_PR_DEVICE, NULL,
++		US_FL_IGNORE_DEVICE ),
++
+ UNUSUAL_DEV(  0x0d49, 0x7310, 0x0000, 0x9999,
+ 		"Maxtor",
+ 		"USB to SATA",
 
 
 
