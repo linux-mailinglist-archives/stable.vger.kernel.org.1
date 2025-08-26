@@ -1,56 +1,55 @@
-Return-Path: <stable+bounces-173246-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-174651-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8320BB35C2E
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 13:32:17 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 32BD8B36481
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 15:39:27 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 9EEFC7B7205
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 11:30:37 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id CC0A08E0299
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 13:30:33 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 06C862EE296;
-	Tue, 26 Aug 2025 11:29:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 596A92FC870;
+	Tue, 26 Aug 2025 13:29:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="c2VAJZBC"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="fu3mX4iY"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B7AC63376BD;
-	Tue, 26 Aug 2025 11:29:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1674729D28A;
+	Tue, 26 Aug 2025 13:29:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756207750; cv=none; b=rPS6NIE738MJAa9lYMsE6ND/N69CnJmGI6NZ4Gya8wOJ2sCr8J1bHTSwxWhy/tG4UMZowXtGRqqOTG8XInhCaaTE5nqyPxjG5uw8foCoU1M/MVliBQ44ziysXcw+PI5xyEYhufLdt5LI7BAqN1KUB5wekaOIogT++3jjzH2XP4o=
+	t=1756214954; cv=none; b=L5wCjpHBESRTfeOlMT6eLO8nakTX0+0CcjkMXVLSTaIiXzw6CRAec4m7FC2hNkgmDnnH4dHYnLM2dLZLZ1uAT269HhHRihfN02tRkHZUKKrrd0ycsQkYT8BuN7Krs49omje0NWTDpBDq1AsK11xJcpgeok8SMKnFG6NW5l3v0Pc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756207750; c=relaxed/simple;
-	bh=4Cf7UGTJdl9qvLzcBRBy8I6ta7jLtfIiB3DDRFbLF/c=;
+	s=arc-20240116; t=1756214954; c=relaxed/simple;
+	bh=M/ubwPFUn8dgtHByD94TG7DbCGJH/x8lbP/KaS87JI0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=fY9F3f5P49g/MeVwPWjrgO5jkK3/ZEdiAyiVvzrVTl+GYaj9SJHTr2rbYhKlHz7yuyGpVZwAHsWlo/nGo0EcfZ2CaWkI6e6RhcNs8+4bOqHQBTGcr7YBvrnJfUwUTmeDeQtBteOQVNYjBl4STCc9RyuZ4pzxrH0xmho9OIlrlg4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=c2VAJZBC; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 46BA6C4CEF1;
-	Tue, 26 Aug 2025 11:29:10 +0000 (UTC)
+	 MIME-Version; b=nCbI0qxXubaZmXfH2qescp2Qd/LN4C4O8CmzyweuavxcztCb3k5Yr798g8R0hc6SAiY02Hmh9ZPAUAkXeZIxadp3h3Ijn0JGQI6jyFUJaqRUf3+9oF5gB4ve9ZCQ2zBr2PVYToReN7Mix9/PpJo5HF2HYLHf8mW+0KXtemfHTdU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=fu3mX4iY; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9DA34C4CEF1;
+	Tue, 26 Aug 2025 13:29:13 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1756207750;
-	bh=4Cf7UGTJdl9qvLzcBRBy8I6ta7jLtfIiB3DDRFbLF/c=;
+	s=korg; t=1756214954;
+	bh=M/ubwPFUn8dgtHByD94TG7DbCGJH/x8lbP/KaS87JI0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=c2VAJZBCZcUtxIxA4xbv+eazr5l32vlY98OOjxUEQbK2FmAbfB4V+CAc6QHg3TURo
-	 zb6CkYC75GGsWpRpZc+P8mj+rBJiOaXQ82ZWZO+h3XD0Ql/RpcngJSwmwWX/HNAQNj
-	 5Ww77HRMGmO9XayynoZBzTAOFGQJMMxP7PbkNIq0=
+	b=fu3mX4iYYnJamU3mRTPtGfuKqubKPV+aClf017nH3wIlC2TUCk74lW2UWrrgFpS5B
+	 0c+oiGFegeezbQ+dexOS5tA/zZDiaViJaHBgG2pSEpETF+4aJRyWIn9uAv6c7/S3DF
+	 9BELxrLtHVA2ZPtid3EhM08H3BR/4UpciPRKMxcE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Claudiu Beznea <claudiu.beznea.uj@bp.renesas.com>,
-	Stable@vger.kernel.org,
-	Jonathan Cameron <Jonathan.Cameron@huawei.com>
-Subject: [PATCH 6.16 302/457] iio: adc: rzg2l_adc: Set driver data before enabling runtime PM
+	Alex Deucher <alexander.deucher@amd.com>,
+	Mario Limonciello <mario.limonciello@amd.com>
+Subject: [PATCH 6.1 333/482] drm/amd: Restore cached power limit during resume
 Date: Tue, 26 Aug 2025 13:09:46 +0200
-Message-ID: <20250826110944.837287059@linuxfoundation.org>
+Message-ID: <20250826110939.049320484@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250826110937.289866482@linuxfoundation.org>
-References: <20250826110937.289866482@linuxfoundation.org>
+In-Reply-To: <20250826110930.769259449@linuxfoundation.org>
+References: <20250826110930.769259449@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,52 +61,45 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.16-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Claudiu Beznea <claudiu.beznea.uj@bp.renesas.com>
+From: Mario Limonciello <mario.limonciello@amd.com>
 
-commit c69e13965f26b8058f538ea8bdbd2d7718cf1fbe upstream.
+commit ed4efe426a49729952b3dc05d20e33b94409bdd1 upstream.
 
-When stress-testing the system by repeatedly unbinding and binding the ADC
-device in a loop, and the ADC is a supplier for another device (e.g., a
-thermal hardware block that reads temperature through the ADC), it may
-happen that the ADC device is runtime-resumed immediately after runtime PM
-is enabled, triggered by its consumer. At this point, since drvdata is not
-yet set and the driver's runtime PM callbacks rely on it, a crash can
-occur. To avoid this, set drvdata just after it was allocated.
+The power limit will be cached in smu->current_power_limit but
+if the ASIC goes into S3 this value won't be restored.
 
-Fixes: 89ee8174e8c8 ("iio: adc: rzg2l_adc: Simplify the runtime PM code")
-Signed-off-by: Claudiu Beznea <claudiu.beznea.uj@bp.renesas.com>
-Link: https://patch.msgid.link/20250810123328.800104-3-claudiu.beznea.uj@bp.renesas.com
-Cc: <Stable@vger.kernel.org>
-Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
+Restore the value during SMU resume.
+
+Acked-by: Alex Deucher <alexander.deucher@amd.com>
+Link: https://lore.kernel.org/r/20250725031222.3015095-2-superm1@kernel.org
+Signed-off-by: Mario Limonciello <mario.limonciello@amd.com>
+Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
+(cherry picked from commit 26a609e053a6fc494403e95403bc6a2470383bec)
+Cc: stable@vger.kernel.org
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/iio/adc/rzg2l_adc.c |    4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ drivers/gpu/drm/amd/pm/swsmu/amdgpu_smu.c |    6 ++++++
+ 1 file changed, 6 insertions(+)
 
---- a/drivers/iio/adc/rzg2l_adc.c
-+++ b/drivers/iio/adc/rzg2l_adc.c
-@@ -428,6 +428,8 @@ static int rzg2l_adc_probe(struct platfo
- 	if (!indio_dev)
- 		return -ENOMEM;
+--- a/drivers/gpu/drm/amd/pm/swsmu/amdgpu_smu.c
++++ b/drivers/gpu/drm/amd/pm/swsmu/amdgpu_smu.c
+@@ -1738,6 +1738,12 @@ static int smu_resume(void *handle)
  
-+	platform_set_drvdata(pdev, indio_dev);
+ 	adev->pm.dpm_enabled = true;
+ 
++	if (smu->current_power_limit) {
++		ret = smu_set_power_limit(smu, smu->current_power_limit);
++		if (ret && ret != -EOPNOTSUPP)
++			return ret;
++	}
 +
- 	adc = iio_priv(indio_dev);
+ 	dev_info(adev->dev, "SMU is resumed successfully!\n");
  
- 	adc->hw_params = device_get_match_data(dev);
-@@ -460,8 +462,6 @@ static int rzg2l_adc_probe(struct platfo
- 	if (ret)
- 		return ret;
- 
--	platform_set_drvdata(pdev, indio_dev);
--
- 	ret = rzg2l_adc_hw_init(dev, adc);
- 	if (ret)
- 		return dev_err_probe(&pdev->dev, ret,
+ 	return 0;
 
 
 
