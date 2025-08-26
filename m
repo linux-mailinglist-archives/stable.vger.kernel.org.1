@@ -1,57 +1,58 @@
-Return-Path: <stable+bounces-173020-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-173943-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id C49DEB35B91
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 13:25:59 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0A415B36094
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 15:02:03 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id A12871627D6
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 11:21:17 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id EDF4B6877AB
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 12:58:00 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id BB39E33A010;
-	Tue, 26 Aug 2025 11:19:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D68911E32D7;
+	Tue, 26 Aug 2025 12:57:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="J1UPxvtX"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="TlGj321e"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7407627A917;
-	Tue, 26 Aug 2025 11:19:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9362C17A303;
+	Tue, 26 Aug 2025 12:57:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756207167; cv=none; b=P517YqyBX2UsX51+PM1kI0kwHbv561A0EOTn7jyBEYAhGUqsNlZsXkB+bcfjVBYP/QRL0/mmgPZQ3n+EHChjR3i14NLfVoM4lhqlEZDt/3kc/KiSfoo88fDrtd1emfOTl3sox2G1m1xBJQTovwlR/y4g+OkfTQZGXYw8qHMP7E8=
+	t=1756213074; cv=none; b=RqkPyiTRZECLueWd09PNG9bS8zwywW0JCrDwRP3uXB/URwaIWKxJrSPnbhTNYrjwNQnuRLLxV8bDjvm38VAIg6wXeVeVQLnyS8E/ylHA1SBccvnGsH1C83ojtnCH39dgzaCxazVdbSMTAEXRnkStNkPWT1sbk2YPHtdWDh7xlbU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756207167; c=relaxed/simple;
-	bh=pZfN5dPqyETPQ+vZesTXnuhL8oabO8Vb7O0Vc1jobJU=;
+	s=arc-20240116; t=1756213074; c=relaxed/simple;
+	bh=rJRoroA7T0hbpHaWvS4Vqfe4ozF9LkxUL5h9EFTaV8c=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=l7y0H1MUw3WPIsDQ/5puZJkVRKMoPvgO9TurfRiYPl4iTklWna47fpcZcOpOkJxEUi4YlHV+KRl5Be2lWHaveoIIxrdyA899fZcPXNaf4zhFJGeozCSmSApctYdbUYcwTXMD+PMXhaUmg60MSCy39aYZtnvHw9UtidlzkkbG/6Y=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=J1UPxvtX; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 03C02C4CEF1;
-	Tue, 26 Aug 2025 11:19:26 +0000 (UTC)
+	 MIME-Version; b=bICVVeet9UDbArGwi+/A+w0KbMwjUcf6kdlXKSeJ2QfhojpD/1UZ17aR+7Iy4SwhIMi41HJC4b34Q2WaInYc2p3tK9estTpUtDkhNSc0XYDADPerz9nEbLRbexr5jQqbswZjM4cN00Tph/zew430GW3qwbUMMxpGoGE+NUyYIAY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=TlGj321e; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 220E1C4CEF4;
+	Tue, 26 Aug 2025 12:57:53 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1756207167;
-	bh=pZfN5dPqyETPQ+vZesTXnuhL8oabO8Vb7O0Vc1jobJU=;
+	s=korg; t=1756213074;
+	bh=rJRoroA7T0hbpHaWvS4Vqfe4ozF9LkxUL5h9EFTaV8c=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=J1UPxvtX0iyzxbYM2ZvOopo2IL+g7kjFDHFzhhjn370rQ54C0kdrmXDESOOEwHEcA
-	 boNMwYP4qYxYoq2O4ly2zeX51Kg3pYj46NXxHpbi3D8aUpmulpRwNRQRe4Rq4iuLFg
-	 aD+A77xvPRnY7D5aNy+dFn8DkHl/QosL5uV3vxII=
+	b=TlGj321eKoZ/NmR6nk+v4giIaC57hu813+kvh2xj9AVILnIiOk75Dp7Gn0rvR4kwD
+	 lZCVu04UDLoyuvWtyi9F1I44rdby0DijTz+Eg+RTVxi80yb8+vJpgCNo1P+qgU6H+e
+	 Rk3lgCINqV8DKkOwnduZ1RvJXDPXgcQYgpKShwJA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	kernel test robot <lkp@intel.com>,
-	David Lechner <dlechner@baylibre.com>,
-	Stable@vger.kernel.org,
-	Jonathan Cameron <Jonathan.Cameron@huawei.com>
-Subject: [PATCH 6.16 075/457] iio: imu: bno055: fix OOB access of hw_xlate array
-Date: Tue, 26 Aug 2025 13:05:59 +0200
-Message-ID: <20250826110939.227271110@linuxfoundation.org>
+	Aurabindo Pillai <aurabindo.pillai@amd.com>,
+	Wayne Lin <Wayne.Lin@amd.com>,
+	Daniel Wheeler <daniel.wheeler@amd.com>,
+	Alex Deucher <alexander.deucher@amd.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.6 211/587] drm/amd/display: Avoid trying AUX transactions on disconnected ports
+Date: Tue, 26 Aug 2025 13:06:00 +0200
+Message-ID: <20250826110958.305311045@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250826110937.289866482@linuxfoundation.org>
-References: <20250826110937.289866482@linuxfoundation.org>
+In-Reply-To: <20250826110952.942403671@linuxfoundation.org>
+References: <20250826110952.942403671@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,86 +64,45 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.16-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: David Lechner <dlechner@baylibre.com>
+From: Wayne Lin <Wayne.Lin@amd.com>
 
-commit 399b883ec828e436f1a721bf8551b4da8727e65b upstream.
+[ Upstream commit deb24e64c8881c462b29e2c69afd9e6669058be5 ]
 
-Fix a potential out-of-bounds array access of the hw_xlate array in
-bno055.c.
+[Why & How]
+Observe that we try to access DPCD 0x600h of disconnected DP ports.
+In order not to wasting time on retrying these ports, call
+dpcd_write_rx_power_ctrl() after checking its connection status.
 
-In bno055_get_regmask(), hw_xlate was iterated over the length of the
-vals array instead of the length of the hw_xlate array. In the case of
-bno055_gyr_scale, the vals array is larger than the hw_xlate array,
-so this could result in an out-of-bounds access. In practice, this
-shouldn't happen though because a match should always be found which
-breaks out of the for loop before it iterates beyond the end of the
-hw_xlate array.
-
-By adding a new hw_xlate_len field to the bno055_sysfs_attr, we can be
-sure we are iterating over the correct length.
-
-Reported-by: kernel test robot <lkp@intel.com>
-Closes: https://lore.kernel.org/oe-kbuild-all/202507100510.rGt1YOOx-lkp@intel.com/
-Fixes: 4aefe1c2bd0c ("iio: imu: add Bosch Sensortec BNO055 core driver")
-Signed-off-by: David Lechner <dlechner@baylibre.com>
-Link: https://patch.msgid.link/20250709-iio-const-data-19-v2-1-fb3fc9191251@baylibre.com
-Cc: <Stable@vger.kernel.org>
-Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Reviewed-by: Aurabindo Pillai <aurabindo.pillai@amd.com>
+Signed-off-by: Wayne Lin <Wayne.Lin@amd.com>
+Tested-by: Daniel Wheeler <daniel.wheeler@amd.com>
+Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/iio/imu/bno055/bno055.c |   11 ++++++++---
- 1 file changed, 8 insertions(+), 3 deletions(-)
+ drivers/gpu/drm/amd/display/dc/link/link_dpms.c | 3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
---- a/drivers/iio/imu/bno055/bno055.c
-+++ b/drivers/iio/imu/bno055/bno055.c
-@@ -118,6 +118,7 @@ struct bno055_sysfs_attr {
- 	int len;
- 	int *fusion_vals;
- 	int *hw_xlate;
-+	int hw_xlate_len;
- 	int type;
- };
+diff --git a/drivers/gpu/drm/amd/display/dc/link/link_dpms.c b/drivers/gpu/drm/amd/display/dc/link/link_dpms.c
+index 9b470812d96a..2ce2d9ff7568 100644
+--- a/drivers/gpu/drm/amd/display/dc/link/link_dpms.c
++++ b/drivers/gpu/drm/amd/display/dc/link/link_dpms.c
+@@ -137,7 +137,8 @@ void link_blank_dp_stream(struct dc_link *link, bool hw_init)
+ 				}
+ 		}
  
-@@ -170,20 +171,24 @@ static int bno055_gyr_scale_vals[] = {
- 	1000, 1877467, 2000, 1877467,
- };
- 
-+static int bno055_gyr_scale_hw_xlate[] = {0, 1, 2, 3, 4};
- static struct bno055_sysfs_attr bno055_gyr_scale = {
- 	.vals = bno055_gyr_scale_vals,
- 	.len = ARRAY_SIZE(bno055_gyr_scale_vals),
- 	.fusion_vals = (int[]){1, 900},
--	.hw_xlate = (int[]){4, 3, 2, 1, 0},
-+	.hw_xlate = bno055_gyr_scale_hw_xlate,
-+	.hw_xlate_len = ARRAY_SIZE(bno055_gyr_scale_hw_xlate),
- 	.type = IIO_VAL_FRACTIONAL,
- };
- 
- static int bno055_gyr_lpf_vals[] = {12, 23, 32, 47, 64, 116, 230, 523};
-+static int bno055_gyr_lpf_hw_xlate[] = {5, 4, 7, 3, 6, 2, 1, 0};
- static struct bno055_sysfs_attr bno055_gyr_lpf = {
- 	.vals = bno055_gyr_lpf_vals,
- 	.len = ARRAY_SIZE(bno055_gyr_lpf_vals),
- 	.fusion_vals = (int[]){32},
--	.hw_xlate = (int[]){5, 4, 7, 3, 6, 2, 1, 0},
-+	.hw_xlate = bno055_gyr_lpf_hw_xlate,
-+	.hw_xlate_len = ARRAY_SIZE(bno055_gyr_lpf_hw_xlate),
- 	.type = IIO_VAL_INT,
- };
- 
-@@ -561,7 +566,7 @@ static int bno055_get_regmask(struct bno
- 
- 	idx = (hwval & mask) >> shift;
- 	if (attr->hw_xlate)
--		for (i = 0; i < attr->len; i++)
-+		for (i = 0; i < attr->hw_xlate_len; i++)
- 			if (attr->hw_xlate[i] == idx) {
- 				idx = i;
- 				break;
+-		if ((!link->wa_flags.dp_keep_receiver_powered) || hw_init)
++		if (((!link->wa_flags.dp_keep_receiver_powered) || hw_init) &&
++			(link->type != dc_connection_none))
+ 			dpcd_write_rx_power_ctrl(link, false);
+ 	}
+ }
+-- 
+2.39.5
+
 
 
 
