@@ -1,56 +1,55 @@
-Return-Path: <stable+bounces-174009-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-173442-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5048AB360E7
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 15:05:02 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id C8B1EB35CCF
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 13:38:54 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 586563BE8A0
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 13:00:52 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 7D2657C54F1
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 11:38:53 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0C7D5481B1;
-	Tue, 26 Aug 2025 13:00:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id CD65F340D9D;
+	Tue, 26 Aug 2025 11:37:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="psWW+cUf"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="NEvlF9Jw"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BE667101F2;
-	Tue, 26 Aug 2025 13:00:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7925B33A02E;
+	Tue, 26 Aug 2025 11:37:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756213251; cv=none; b=iRfBk6Zb25+abrTvwXBF6oovj4/qHpDAXteqMlS7YZHEhIfMtcjkPUBvkr0gFFofphZF4UH/i2KYwS5QI6C5s5yQAlSEXjzpiWKx9HWxih5BnJe2P0ZIdwuqE/Foxpd/UwWxltr/On6Ldmadi5hx8x9r2ZPy+eRfeAkdvWnRxiM=
+	t=1756208259; cv=none; b=jabPNfAQtPO7f+PGt/IMJc69dgGCmmBfj3+4jAhsOID/WEl9Yt6vG/lXI0mIZROPkkHbZH4IZnPh33CwDxNVMFrphxobUGYbviiTnI+uQLSpPuWFKVJ/ruJ8j8ye9zYt/uCqg+bK+iRgymmAfEadR05TERlFwDv5xIueyBGHdoQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756213251; c=relaxed/simple;
-	bh=/Oa6cqiqFtNWWE3f4QMsYOnzHYcEaeBMxRqNNcz9/ko=;
+	s=arc-20240116; t=1756208259; c=relaxed/simple;
+	bh=6EGUv9E+gAqBq2steQkp+QZtCXfj3HcfOleiZC6ZhnU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=FEWqT2veZyR/v5dl48IAiHHfyQwStR2S13/Ax2QGs68BwHvEXbVqUngHI2HUqE6yUrwKnuAnWjBAG2Gj1FugoA8ItVuPqWzIHP+K4kPNejb+2iCEyUudF3v3W3VziQ2E26xAKK5kElz7J6H6xGmDX/nsiyfM1ZlNDeF4xq5WhS4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=psWW+cUf; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D8100C4CEF1;
-	Tue, 26 Aug 2025 13:00:50 +0000 (UTC)
+	 MIME-Version; b=WCmuEd/czcuqZ/QrijoTEhcVcx9awG2ZwCscT4VQjJ8leqCgmAo1kpLjGyGLnkokGran/y9qhkykk8vBxF8SOVZEd08XhLAlqjIZyVhPKnXWBjoZdTUnDSkIK7B5NKC54l7L2ehG2QChuyuC3ALJ25x/FJV/dKRtSYnlxiBtalw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=NEvlF9Jw; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id F1847C4CEF1;
+	Tue, 26 Aug 2025 11:37:38 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1756213251;
-	bh=/Oa6cqiqFtNWWE3f4QMsYOnzHYcEaeBMxRqNNcz9/ko=;
+	s=korg; t=1756208259;
+	bh=6EGUv9E+gAqBq2steQkp+QZtCXfj3HcfOleiZC6ZhnU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=psWW+cUfBVG6oPh5PD8531nft6LecuhimJTfse2IOEAQ6uDs+mvzXpKQR1piFjzKO
-	 a+bAk5r3tmpC7eVHTBdibQzvXx/y7aV/PnfvmflPhqUGxTqxjN3CS3rPqjZANPr+zo
-	 YChgHZSEbvIGrOLwsgI6dqnUMh8Il8YHAHoUULIg=
+	b=NEvlF9JwO6MH9vY3h87ptvnqNly4vaVBWCfvFcTB27EOCKClwDImd2Ha35j+m8uXL
+	 aMQRZHlRQhCt5CH4H6TPvSdePUdFGBbTBsGt66YEQFx6tkxyARS9Qqwi1wNIXGGgU+
+	 ywaCFjGkQ7MUTBvo6/wVHxuWcoGr7+Z+N261R0s0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Ranjan Kumar <ranjan.kumar@broadcom.com>,
-	"Martin K. Petersen" <martin.petersen@oracle.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 277/587] scsi: Fix sas_user_scan() to handle wildcard and multi-channel scans
+	Roger Quadros <rogerq@kernel.org>,
+	Johan Hovold <johan@kernel.org>
+Subject: [PATCH 6.12 011/322] usb: musb: omap2430: fix device leak at unbind
 Date: Tue, 26 Aug 2025 13:07:06 +0200
-Message-ID: <20250826110959.974125782@linuxfoundation.org>
+Message-ID: <20250826110915.510152212@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250826110952.942403671@linuxfoundation.org>
-References: <20250826110952.942403671@linuxfoundation.org>
+In-Reply-To: <20250826110915.169062587@linuxfoundation.org>
+References: <20250826110915.169062587@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,141 +61,84 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Ranjan Kumar <ranjan.kumar@broadcom.com>
+From: Johan Hovold <johan@kernel.org>
 
-[ Upstream commit 37c4e72b0651e7697eb338cd1fb09feef472cc1a ]
+commit 1473e9e7679bd4f5a62d1abccae894fb86de280f upstream.
 
-sas_user_scan() did not fully process wildcard channel scans
-(SCAN_WILD_CARD) when a transport-specific user_scan() callback was
-present. Only channel 0 would be scanned via user_scan(), while the
-remaining channels were skipped, potentially missing devices.
+Make sure to drop the reference to the control device taken by
+of_find_device_by_node() during probe when the driver is unbound.
 
-user_scan() invokes updated sas_user_scan() for channel 0, and if
-successful, iteratively scans remaining channels (1 to
-shost->max_channel) via scsi_scan_host_selected().  This ensures complete
-wildcard scanning without affecting transport-specific scanning behavior.
-
-Signed-off-by: Ranjan Kumar <ranjan.kumar@broadcom.com>
-Link: https://lore.kernel.org/r/20250624061649.17990-1-ranjan.kumar@broadcom.com
-Signed-off-by: Martin K. Petersen <martin.petersen@oracle.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Fixes: 8934d3e4d0e7 ("usb: musb: omap2430: Don't use omap_get_control_dev()")
+Cc: stable@vger.kernel.org	# 3.13
+Cc: Roger Quadros <rogerq@kernel.org>
+Signed-off-by: Johan Hovold <johan@kernel.org>
+Link: https://lore.kernel.org/r/20250724091910.21092-5-johan@kernel.org
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/scsi/scsi_scan.c          |  2 +-
- drivers/scsi/scsi_transport_sas.c | 60 ++++++++++++++++++++++++-------
- 2 files changed, 49 insertions(+), 13 deletions(-)
+ drivers/usb/musb/omap2430.c |   14 +++++++++-----
+ 1 file changed, 9 insertions(+), 5 deletions(-)
 
-diff --git a/drivers/scsi/scsi_scan.c b/drivers/scsi/scsi_scan.c
-index cead0fbbe5db..8ee74dddef16 100644
---- a/drivers/scsi/scsi_scan.c
-+++ b/drivers/scsi/scsi_scan.c
-@@ -1851,7 +1851,7 @@ int scsi_scan_host_selected(struct Scsi_Host *shost, unsigned int channel,
+--- a/drivers/usb/musb/omap2430.c
++++ b/drivers/usb/musb/omap2430.c
+@@ -400,7 +400,7 @@ static int omap2430_probe(struct platfor
+ 	ret = platform_device_add_resources(musb, pdev->resource, pdev->num_resources);
+ 	if (ret) {
+ 		dev_err(&pdev->dev, "failed to add resources\n");
+-		goto err2;
++		goto err_put_control_otghs;
+ 	}
  
- 	return 0;
- }
--
-+EXPORT_SYMBOL(scsi_scan_host_selected);
- static void scsi_sysfs_add_devices(struct Scsi_Host *shost)
- {
- 	struct scsi_device *sdev;
-diff --git a/drivers/scsi/scsi_transport_sas.c b/drivers/scsi/scsi_transport_sas.c
-index 7fdd2b61fe85..7b4c4752e216 100644
---- a/drivers/scsi/scsi_transport_sas.c
-+++ b/drivers/scsi/scsi_transport_sas.c
-@@ -40,6 +40,8 @@
- #include <scsi/scsi_transport_sas.h>
+ 	if (populate_irqs) {
+@@ -413,7 +413,7 @@ static int omap2430_probe(struct platfor
+ 		res = platform_get_resource(pdev, IORESOURCE_MEM, 0);
+ 		if (!res) {
+ 			ret = -EINVAL;
+-			goto err2;
++			goto err_put_control_otghs;
+ 		}
  
- #include "scsi_sas_internal.h"
-+#include "scsi_priv.h"
-+
- struct sas_host_attrs {
- 	struct list_head rphy_list;
- 	struct mutex lock;
-@@ -1681,32 +1683,66 @@ int scsi_is_sas_rphy(const struct device *dev)
- }
- EXPORT_SYMBOL(scsi_is_sas_rphy);
- 
--
--/*
-- * SCSI scan helper
-- */
--
--static int sas_user_scan(struct Scsi_Host *shost, uint channel,
--		uint id, u64 lun)
-+static void scan_channel_zero(struct Scsi_Host *shost, uint id, u64 lun)
- {
- 	struct sas_host_attrs *sas_host = to_sas_host_attrs(shost);
- 	struct sas_rphy *rphy;
- 
--	mutex_lock(&sas_host->lock);
- 	list_for_each_entry(rphy, &sas_host->rphy_list, list) {
- 		if (rphy->identify.device_type != SAS_END_DEVICE ||
- 		    rphy->scsi_target_id == -1)
- 			continue;
- 
--		if ((channel == SCAN_WILD_CARD || channel == 0) &&
--		    (id == SCAN_WILD_CARD || id == rphy->scsi_target_id)) {
-+		if (id == SCAN_WILD_CARD || id == rphy->scsi_target_id) {
- 			scsi_scan_target(&rphy->dev, 0, rphy->scsi_target_id,
- 					 lun, SCSI_SCAN_MANUAL);
+ 		musb_res[i].start = res->start;
+@@ -441,14 +441,14 @@ static int omap2430_probe(struct platfor
+ 		ret = platform_device_add_resources(musb, musb_res, i);
+ 		if (ret) {
+ 			dev_err(&pdev->dev, "failed to add IRQ resources\n");
+-			goto err2;
++			goto err_put_control_otghs;
  		}
  	}
--	mutex_unlock(&sas_host->lock);
-+}
  
--	return 0;
-+/*
-+ * SCSI scan helper
-+ */
-+
-+static int sas_user_scan(struct Scsi_Host *shost, uint channel,
-+		uint id, u64 lun)
-+{
-+	struct sas_host_attrs *sas_host = to_sas_host_attrs(shost);
-+	int res = 0;
-+	int i;
-+
-+	switch (channel) {
-+	case 0:
-+		mutex_lock(&sas_host->lock);
-+		scan_channel_zero(shost, id, lun);
-+		mutex_unlock(&sas_host->lock);
-+		break;
-+
-+	case SCAN_WILD_CARD:
-+		mutex_lock(&sas_host->lock);
-+		scan_channel_zero(shost, id, lun);
-+		mutex_unlock(&sas_host->lock);
-+
-+		for (i = 1; i <= shost->max_channel; i++) {
-+			res = scsi_scan_host_selected(shost, i, id, lun,
-+						      SCSI_SCAN_MANUAL);
-+			if (res)
-+				goto exit_scan;
-+		}
-+		break;
-+
-+	default:
-+		if (channel < shost->max_channel) {
-+			res = scsi_scan_host_selected(shost, channel, id, lun,
-+						      SCSI_SCAN_MANUAL);
-+		} else {
-+			res = -EINVAL;
-+		}
-+		break;
-+	}
-+
-+exit_scan:
-+	return res;
+ 	ret = platform_device_add_data(musb, pdata, sizeof(*pdata));
+ 	if (ret) {
+ 		dev_err(&pdev->dev, "failed to add platform_data\n");
+-		goto err2;
++		goto err_put_control_otghs;
+ 	}
+ 
+ 	pm_runtime_enable(glue->dev);
+@@ -463,7 +463,9 @@ static int omap2430_probe(struct platfor
+ 
+ err3:
+ 	pm_runtime_disable(glue->dev);
+-
++err_put_control_otghs:
++	if (!IS_ERR(glue->control_otghs))
++		put_device(glue->control_otghs);
+ err2:
+ 	platform_device_put(musb);
+ 
+@@ -477,6 +479,8 @@ static void omap2430_remove(struct platf
+ 
+ 	platform_device_unregister(glue->musb);
+ 	pm_runtime_disable(glue->dev);
++	if (!IS_ERR(glue->control_otghs))
++		put_device(glue->control_otghs);
  }
  
- 
--- 
-2.39.5
-
+ #ifdef CONFIG_PM
 
 
 
