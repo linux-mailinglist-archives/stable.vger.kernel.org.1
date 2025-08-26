@@ -1,55 +1,57 @@
-Return-Path: <stable+bounces-173812-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-174938-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8993DB35FE6
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 14:55:14 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3D807B365FB
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 15:52:16 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id B17421BA59FA
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 12:53:44 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 0D17D564D04
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 13:41:57 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0016B1CDFAC;
-	Tue, 26 Aug 2025 12:52:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id BD542265CCD;
+	Tue, 26 Aug 2025 13:41:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="g9vUHArw"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="iaSUC4sO"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B40431A83ED;
-	Tue, 26 Aug 2025 12:52:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 778E423D28F;
+	Tue, 26 Aug 2025 13:41:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756212730; cv=none; b=cH8vMMEb3r3FZI++dhaJ1MEgvq62RB950tJdAbz7iz7vnndPBhlk7g+eWyWCvV2KkSAZ70888xGFzi7ysCBfIH5E8hNqrP1fO5MGfL+Jvnt4JYL+ESl0/XVx0CQhecf2adnKLbltKo9KjTviNNRmaltRqQlYbccukYpr7eOGSFA=
+	t=1756215714; cv=none; b=m4cz83XJkyJHhssMJOFbuGhEBn0pR8tzwrhNWnND0gfzhZ07Ow3P/3f2Tb3bYIftLCfWtaqOMddeLea4KtkwUmunjJbiB5lKnjkvGlOPqAub83qiZ6Z29xc1uTt6nqfJ4dV24STX00vVdd3+OjTv1eJBAwezo9gJw1xf8dPMDXQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756212730; c=relaxed/simple;
-	bh=bzSnO71OGMxwvYWKtkCp0JC+S1HiTX6DtvB5O0U6AZY=;
+	s=arc-20240116; t=1756215714; c=relaxed/simple;
+	bh=TsVRkOK2bQ3V7H03FX16XxcqEkgPNMUZa/uh6J2OrpY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=RXODUIQLL8U/OLeAvyaCmWMQ3lweNQjR6tkHXIkGKlW1Yp+CoZUPPGpbiHeRzLPsa28O1VjQRENfti9iEH1pW/BmB4DVy2035Fbub0CKtky3iFx9GSUW3yTyc4m1aDmZuHs02oXm113Y7RagmhHYgAWwE9o4xH2D1cx9Z15bsZo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=g9vUHArw; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4A4CFC4CEF1;
-	Tue, 26 Aug 2025 12:52:10 +0000 (UTC)
+	 MIME-Version; b=a8/4cTFLVNSpcV3jIZYoBi6kpAHGAaWllo+yAHW2KQOk+GcjrDRJYnOeiDV2vLCPs8oBgkWV8FSbOyU4op5nSw+oSvOH0pBFxBFg5Ht4XHBTvnr9b+RgO1Xui8AlOFdQ53yywCRpujufVRaXLxbz/jf7QIs0TcwYgAOgJrbvN4o=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=iaSUC4sO; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B05A6C113D0;
+	Tue, 26 Aug 2025 13:41:52 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1756212730;
-	bh=bzSnO71OGMxwvYWKtkCp0JC+S1HiTX6DtvB5O0U6AZY=;
+	s=korg; t=1756215713;
+	bh=TsVRkOK2bQ3V7H03FX16XxcqEkgPNMUZa/uh6J2OrpY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=g9vUHArw4xu29U0hvu2w5e6BPlq1F35h9njZNaQjUY2kuedWvNJOxnMphXhYeeAJU
-	 SQl1I6KF2wgmPbZBbGiMDX53J97NKnYV4fa/eaZqLtdUP9YA3J04hgg2C79BZC/8bF
-	 y07S4BCUgJH8iJr21NAVx+vR8jk76ji0UqgYVpGo=
+	b=iaSUC4sOpXDID6bpoPffpKS4iG1H9FhGE+yVZlN94bfaoR4hOPCZ5QXWSjsSoagUi
+	 +/Gi0udEkW0qdJvOAs9lUJl6qbvQZFPTF7G+gF1d8TH6pUEben0dQo0weI9D8WpiJq
+	 XlfYXNSGXJIoBgMhMSV5CpaLa+ERB5kRKOSCv96Y=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Al Viro <viro@zeniv.linux.org.uk>,
+	Yuan Chen <chenyuan@kylinos.cn>,
+	Quentin Monnet <qmo@kernel.org>,
+	Alexei Starovoitov <ast@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 080/587] fix locking in efi_secret_unlink()
+Subject: [PATCH 5.15 138/644] bpftool: Fix memory leak in dump_xx_nlmsg on realloc failure
 Date: Tue, 26 Aug 2025 13:03:49 +0200
-Message-ID: <20250826110954.970817422@linuxfoundation.org>
+Message-ID: <20250826110949.922152640@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250826110952.942403671@linuxfoundation.org>
-References: <20250826110952.942403671@linuxfoundation.org>
+In-Reply-To: <20250826110946.507083938@linuxfoundation.org>
+References: <20250826110946.507083938@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,48 +63,79 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Al Viro <viro@zeniv.linux.org.uk>
+From: Yuan Chen <chenyuan@kylinos.cn>
 
-[ Upstream commit 2c58d42de71f9c73e40afacc9d062892d2cc8862 ]
+[ Upstream commit 99fe8af069a9fa5b09140518b1364e35713a642e ]
 
-We used to need securityfs_remove() to undo simple_pin_fs() done when
-the file had been created and to drop the second extra reference
-taken at the same time.  Now that neither is needed (or done by
-securityfs_remove()), we can simply call simple_unlink() and be done
-with that - the broken games with locking had been there only for the
-sake of securityfs_remove().
+In function dump_xx_nlmsg(), when realloc() fails to allocate memory,
+the original pointer to the buffer is overwritten with NULL. This causes
+a memory leak because the previously allocated buffer becomes unreachable
+without being freed.
 
-Signed-off-by: Al Viro <viro@zeniv.linux.org.uk>
+Fixes: 7900efc19214 ("tools/bpf: bpftool: improve output format for bpftool net")
+Signed-off-by: Yuan Chen <chenyuan@kylinos.cn>
+Reviewed-by: Quentin Monnet <qmo@kernel.org>
+Link: https://lore.kernel.org/r/20250620012133.14819-1-chenyuan_fl@163.com
+Signed-off-by: Alexei Starovoitov <ast@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/virt/coco/efi_secret/efi_secret.c | 10 +---------
- 1 file changed, 1 insertion(+), 9 deletions(-)
+ tools/bpf/bpftool/net.c | 15 +++++++++------
+ 1 file changed, 9 insertions(+), 6 deletions(-)
 
-diff --git a/drivers/virt/coco/efi_secret/efi_secret.c b/drivers/virt/coco/efi_secret/efi_secret.c
-index e700a5ef7043..d996feb0509a 100644
---- a/drivers/virt/coco/efi_secret/efi_secret.c
-+++ b/drivers/virt/coco/efi_secret/efi_secret.c
-@@ -136,15 +136,7 @@ static int efi_secret_unlink(struct inode *dir, struct dentry *dentry)
- 		if (s->fs_files[i] == dentry)
- 			s->fs_files[i] = NULL;
+diff --git a/tools/bpf/bpftool/net.c b/tools/bpf/bpftool/net.c
+index 649053704bd7..18e5e5faa2aa 100644
+--- a/tools/bpf/bpftool/net.c
++++ b/tools/bpf/bpftool/net.c
+@@ -353,17 +353,18 @@ static int dump_link_nlmsg(void *cookie, void *msg, struct nlattr **tb)
+ {
+ 	struct bpf_netdev_t *netinfo = cookie;
+ 	struct ifinfomsg *ifinfo = msg;
++	struct ip_devname_ifindex *tmp;
  
--	/*
--	 * securityfs_remove tries to lock the directory's inode, but we reach
--	 * the unlink callback when it's already locked
--	 */
--	inode_unlock(dir);
--	securityfs_remove(dentry);
--	inode_lock(dir);
--
--	return 0;
-+	return simple_unlink(inode, dentry);
- }
+ 	if (netinfo->filter_idx > 0 && netinfo->filter_idx != ifinfo->ifi_index)
+ 		return 0;
  
- static const struct inode_operations efi_secret_dir_inode_operations = {
+ 	if (netinfo->used_len == netinfo->array_len) {
+-		netinfo->devices = realloc(netinfo->devices,
+-			(netinfo->array_len + 16) *
+-			sizeof(struct ip_devname_ifindex));
+-		if (!netinfo->devices)
++		tmp = realloc(netinfo->devices,
++			(netinfo->array_len + 16) * sizeof(struct ip_devname_ifindex));
++		if (!tmp)
+ 			return -ENOMEM;
+ 
++		netinfo->devices = tmp;
+ 		netinfo->array_len += 16;
+ 	}
+ 	netinfo->devices[netinfo->used_len].ifindex = ifinfo->ifi_index;
+@@ -382,6 +383,7 @@ static int dump_class_qdisc_nlmsg(void *cookie, void *msg, struct nlattr **tb)
+ {
+ 	struct bpf_tcinfo_t *tcinfo = cookie;
+ 	struct tcmsg *info = msg;
++	struct tc_kind_handle *tmp;
+ 
+ 	if (tcinfo->is_qdisc) {
+ 		/* skip clsact qdisc */
+@@ -393,11 +395,12 @@ static int dump_class_qdisc_nlmsg(void *cookie, void *msg, struct nlattr **tb)
+ 	}
+ 
+ 	if (tcinfo->used_len == tcinfo->array_len) {
+-		tcinfo->handle_array = realloc(tcinfo->handle_array,
++		tmp = realloc(tcinfo->handle_array,
+ 			(tcinfo->array_len + 16) * sizeof(struct tc_kind_handle));
+-		if (!tcinfo->handle_array)
++		if (!tmp)
+ 			return -ENOMEM;
+ 
++		tcinfo->handle_array = tmp;
+ 		tcinfo->array_len += 16;
+ 	}
+ 	tcinfo->handle_array[tcinfo->used_len].handle = info->tcm_handle;
 -- 
 2.39.5
 
