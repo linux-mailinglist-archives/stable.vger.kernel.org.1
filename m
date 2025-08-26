@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-173883-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-174983-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 00E1DB36041
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 14:58:53 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 4660EB365BA
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 15:50:19 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 5B14F1BA4814
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 12:56:31 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 22B891BC3A7F
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 13:44:51 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3C45122127D;
-	Tue, 26 Aug 2025 12:55:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A2A083376A5;
+	Tue, 26 Aug 2025 13:43:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="gwtO557l"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="YtAEIIkh"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EE34D1A5BBC;
-	Tue, 26 Aug 2025 12:55:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 616A829D291;
+	Tue, 26 Aug 2025 13:43:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756212919; cv=none; b=Upp+Fa05SVgPVLnvcO81wDfR23Dgrq5lCrIosnzhgBAw+uzVQmKOjNXoiqti9PuEKacWA1iv02Qj0VuGfmqvNf3IMBhQ0jvNJ4yC13B1tJ522d7J9eQvIkUaSiNBGA3BxyLWhjkOBhgXYK8bDXRgUviAM/bHq2DdUvuGHNeAmT4=
+	t=1756215831; cv=none; b=mqkSU1Wzi46NqbcuyNW3FsrXc71wyw5RoQeclUcl1Ww1rf0eZELbKiOa54UEZqmVoNMkNFpwjR4aSrj/j0B6bmNlWZaPwN8UgNRBwRbeMdMLj9Dn1MUzZS/0cANVE9943VlqTfWclHFhAsSAVfhk+UTmn6sVVIejja7zzEeqP+0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756212919; c=relaxed/simple;
-	bh=l66oGZdqiTcOQ2L/hTGaEIz+itd2O7u2VEMPIvU/SKc=;
+	s=arc-20240116; t=1756215831; c=relaxed/simple;
+	bh=g79q34uAc3yD0fWz592m/yZ1K4BP+IPLzOvtPkSYMDg=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=QQAEu9oB7md02WYlSFKQsERZe5gh/BbGOiSPmwDlN0Tu+m4IWaxDXTGdk4F2dlAHAEwaamdPPTk3/UMLH9La64Izih2ADPRAAWByTUSd1JUBZ0gH31DmwQZiQhjhH3NMEz6/whOVngNlP5twfnAbTgDFzKI30WL16Lj8jrI909Y=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=gwtO557l; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 22C9FC4CEF1;
-	Tue, 26 Aug 2025 12:55:16 +0000 (UTC)
+	 MIME-Version; b=KKr7xYZmBeWPh/d4RX0tglPTvrEuTogIL3ZmfQ+5XJr+8TLcjdPZ6wtUZw1CJnmAMLGDBAuzNnVZvAkssfS/y578mz/0sxa8ERjltItKM32VAx3fdcnpifUcZYaHdcdekK8wzt1g40lT+y7ZBVTvxtp3wTDU7rOBrPpVEAjBt3A=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=YtAEIIkh; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E6366C4CEF1;
+	Tue, 26 Aug 2025 13:43:50 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1756212917;
-	bh=l66oGZdqiTcOQ2L/hTGaEIz+itd2O7u2VEMPIvU/SKc=;
+	s=korg; t=1756215831;
+	bh=g79q34uAc3yD0fWz592m/yZ1K4BP+IPLzOvtPkSYMDg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=gwtO557lYjiB5bNDif5hg9j2pTlcC0gHA5o/XtQX4gzHG3i7f4Bd15MCO0H+3Kro0
-	 r3GO1v/XqTalsP4EPwqQq7Lq9CRBu/5XvvUUjGlA2CRCSQa7dN2u7CX0ZN9ZXaJZlu
-	 WV5AdTP0svmC8TSIJAohq1IZ293O/iBeq3wRIU3k=
+	b=YtAEIIkhDVerCxAHZpfdBnk8e9YBBSh+TecPwbAkyKcnocjzQCkqq3KWYWw9mXwh1
+	 gGtbkxZbhz5lZwNKaaNLlE60c3IWmf/vR/BhW8CPMjL0zgKlNwXUzaJ/WIsQSAxUr1
+	 wcLxejROXg3/n40Whqj0PYBKreqwuyMAjRhUgW6k=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Alok Tiwari <alok.a.tiwari@oracle.com>,
-	Takashi Iwai <tiwai@suse.de>,
+	Paul Kocialkowski <paulk@sys-base.io>,
+	Chen-Yu Tsai <wens@csie.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 124/587] ALSA: intel8x0: Fix incorrect codec index usage in mixer for ICH4
+Subject: [PATCH 5.15 182/644] clk: sunxi-ng: v3s: Fix de clock definition
 Date: Tue, 26 Aug 2025 13:04:33 +0200
-Message-ID: <20250826110956.109680727@linuxfoundation.org>
+Message-ID: <20250826110950.975473263@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250826110952.942403671@linuxfoundation.org>
-References: <20250826110952.942403671@linuxfoundation.org>
+In-Reply-To: <20250826110946.507083938@linuxfoundation.org>
+References: <20250826110946.507083938@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,39 +62,46 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Alok Tiwari <alok.a.tiwari@oracle.com>
+From: Paul Kocialkowski <paulk@sys-base.io>
 
-[ Upstream commit 87aafc8580acf87fcaf1a7e30ed858d8c8d37d81 ]
+[ Upstream commit e8ab346f9907a1a3aa2f0e5decf849925c06ae2e ]
 
-code mistakenly used a hardcoded index (codec[1]) instead of
-iterating, over the codec array using the loop variable i.
-Use codec[i] instead of codec[1] to match the loop iteration.
+The de clock is marked with CLK_SET_RATE_PARENT, which is really not
+necessary (as confirmed from experimentation) and significantly
+restricts flexibility for other clocks using the same parent.
 
-Signed-off-by: Alok Tiwari <alok.a.tiwari@oracle.com>
-Link: https://patch.msgid.link/20250621185233.4081094-1-alok.a.tiwari@oracle.com
-Signed-off-by: Takashi Iwai <tiwai@suse.de>
+In addition the source selection (parent) field is marked as using
+2 bits, when it the documentation reports that it uses 3.
+
+Fix both issues in the de clock definition.
+
+Fixes: d0f11d14b0bc ("clk: sunxi-ng: add support for V3s CCU")
+Signed-off-by: Paul Kocialkowski <paulk@sys-base.io>
+Link: https://patch.msgid.link/20250704154008.3463257-1-paulk@sys-base.io
+Signed-off-by: Chen-Yu Tsai <wens@csie.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- sound/pci/intel8x0.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/clk/sunxi-ng/ccu-sun8i-v3s.c | 3 +--
+ 1 file changed, 1 insertion(+), 2 deletions(-)
 
-diff --git a/sound/pci/intel8x0.c b/sound/pci/intel8x0.c
-index ae285c0a629c..f3df6fe2b7f1 100644
---- a/sound/pci/intel8x0.c
-+++ b/sound/pci/intel8x0.c
-@@ -2252,7 +2252,7 @@ static int snd_intel8x0_mixer(struct intel8x0 *chip, int ac97_clock,
- 			tmp |= chip->ac97_sdin[0] << ICH_DI1L_SHIFT;
- 			for (i = 1; i < 4; i++) {
- 				if (pcm->r[0].codec[i]) {
--					tmp |= chip->ac97_sdin[pcm->r[0].codec[1]->num] << ICH_DI2L_SHIFT;
-+					tmp |= chip->ac97_sdin[pcm->r[0].codec[i]->num] << ICH_DI2L_SHIFT;
- 					break;
- 				}
- 			}
+diff --git a/drivers/clk/sunxi-ng/ccu-sun8i-v3s.c b/drivers/clk/sunxi-ng/ccu-sun8i-v3s.c
+index ce150f83ab54..2501de774874 100644
+--- a/drivers/clk/sunxi-ng/ccu-sun8i-v3s.c
++++ b/drivers/clk/sunxi-ng/ccu-sun8i-v3s.c
+@@ -345,8 +345,7 @@ static SUNXI_CCU_GATE(dram_ohci_clk,	"dram-ohci",	"dram",
+ 
+ static const char * const de_parents[] = { "pll-video", "pll-periph0" };
+ static SUNXI_CCU_M_WITH_MUX_GATE(de_clk, "de", de_parents,
+-				 0x104, 0, 4, 24, 2, BIT(31),
+-				 CLK_SET_RATE_PARENT);
++				 0x104, 0, 4, 24, 3, BIT(31), 0);
+ 
+ static const char * const tcon_parents[] = { "pll-video" };
+ static SUNXI_CCU_M_WITH_MUX_GATE(tcon_clk, "tcon", tcon_parents,
 -- 
 2.39.5
 
