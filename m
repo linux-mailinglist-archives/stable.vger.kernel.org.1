@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-174235-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-175362-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id EE2BBB3623A
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 15:17:00 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id D9867B3683E
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 16:14:29 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 6C60116FAE2
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 13:11:19 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id D55B1981295
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 14:02:19 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id BEC1C30146A;
-	Tue, 26 Aug 2025 13:10:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A3F6F35208B;
+	Tue, 26 Aug 2025 14:00:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="P/ZqHt25"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="zPJLJdgS"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7B160217648;
-	Tue, 26 Aug 2025 13:10:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 62B4E352090;
+	Tue, 26 Aug 2025 14:00:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756213851; cv=none; b=oChNnEykRI/14ZthGR7TpvQ7oU11oDmi7O/+Wh6gVt0YlomCd+rFSMCkvz1iEYtsjKy1E/5wR/6tqy6ODygd4X1bOY7Gnkdbj93E7ga2dWDvzrbe+Hv+FWD14yER3mBonNUXgDifErmZxaf/46CdQVVjd++lfGCQ1286JFoPAH4=
+	t=1756216837; cv=none; b=PLoAtEtUEdYisDwjIEKyFbQE4B9avc/xxCb3W+Qn2W2olB28n21qIRpm9+8ejtk3buU5vMb1sipRlLrtaau7qs+vqLoNB1X95DxSXYxhHVM1l8VJ6En248ekti2OYvicloIPeK3sFEJNqbNTXjWaa26P4Bbjm1zFtyR/T8rZEZw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756213851; c=relaxed/simple;
-	bh=uRO/0GpwNrlFcrfnS1itL9fq7TGheP4iWC8KD8MY4/M=;
+	s=arc-20240116; t=1756216837; c=relaxed/simple;
+	bh=N2vtyKsd95oVPzsc0GmXoeAEZ1F68AfHIUEfj3uiduk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=pjbTxWyx3DifUMyTzKtFROjfJLAohhP27BLztkbVyrzgAxXtVlJq2ZSvTv7xrNUWWYpNju/rv5HwGEdtFIjqhpgU+N69IZKauMXNmnbFWjJ1a7NSYKNKocw9M5dZypn1PQ6Q8tq8PXYPk8Ew+2EhOJWViA8nUVc03GNfxZtKCpI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=P/ZqHt25; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0D3FAC4CEF1;
-	Tue, 26 Aug 2025 13:10:50 +0000 (UTC)
+	 MIME-Version; b=nFKlXM9xZwRclQzy3lAFDMwxg+4+Rud1oo6KOWipB/GL3h2+pU6a98vCtRcqJ+v+BYYMDhLOOWqFObiueqfBC23NhamxEeY2KmwmJf8oqpXiIu9EAXMwO6PksIqU1YmF3N52M0HH3o5ZT6RXETgRib3L3ZMq9cQKaRofJrIuSRo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=zPJLJdgS; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id ECC09C4CEF1;
+	Tue, 26 Aug 2025 14:00:36 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1756213851;
-	bh=uRO/0GpwNrlFcrfnS1itL9fq7TGheP4iWC8KD8MY4/M=;
+	s=korg; t=1756216837;
+	bh=N2vtyKsd95oVPzsc0GmXoeAEZ1F68AfHIUEfj3uiduk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=P/ZqHt259htQI9IcqSKnS/lSMmgEnyK+IMhh2IaPjQO17j3hIHndI5snFfnmjtnqP
-	 1Z+a9HBTDM3O5SEgFAXnwRC7nUcOVIcDZEYYzihVhAczTKzkdPLpY4OEtTztOwxe2E
-	 1oMkbNDcgvEkQLZr9bAQNXbcLtXKqFX1giBUUeMw=
+	b=zPJLJdgSh90aZ0/vIH9WlLTcbQ/g7cvQONpAqgl6pHwl6XgI32DDIgwg3/zf2xs0E
+	 NL99urHL9tc0m7joyzRXkxyPzanbs7Uf4jQ6c7p2inJiWwe2lLFHfMM6hm/ixvcqbC
+	 puGYvmPz48dsC1V2nmSFxg1rofhLYEuY2JajsCY8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Ye Bin <yebin10@huawei.com>,
-	"Matthew Wilcox (Oracle)" <willy@infradead.org>,
-	Christian Brauner <brauner@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 503/587] fs/buffer: fix use-after-free when call bh_read() helper
+	Archana Patni <archana.patni@intel.com>,
+	Bart Van Assche <bvanassche@acm.org>,
+	"Martin K. Petersen" <martin.petersen@oracle.com>,
+	Adrian Hunter <adrian.hunter@intel.com>
+Subject: [PATCH 5.15 561/644] scsi: ufs: ufs-pci: Fix hibernate state transition for Intel MTL-like host controllers
 Date: Tue, 26 Aug 2025 13:10:52 +0200
-Message-ID: <20250826111005.781939740@linuxfoundation.org>
+Message-ID: <20250826111000.431867216@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250826110952.942403671@linuxfoundation.org>
-References: <20250826110952.942403671@linuxfoundation.org>
+In-Reply-To: <20250826110946.507083938@linuxfoundation.org>
+References: <20250826110946.507083938@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,101 +63,78 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Ye Bin <yebin10@huawei.com>
+From: Archana Patni <archana.patni@intel.com>
 
-[ Upstream commit 7375f22495e7cd1c5b3b5af9dcc4f6dffe34ce49 ]
+commit 4428ddea832cfdb63e476eb2e5c8feb5d36057fe upstream.
 
-There's issue as follows:
-BUG: KASAN: stack-out-of-bounds in end_buffer_read_sync+0xe3/0x110
-Read of size 8 at addr ffffc9000168f7f8 by task swapper/3/0
-CPU: 3 UID: 0 PID: 0 Comm: swapper/3 Not tainted 6.16.0-862.14.0.6.x86_64
-Hardware name: QEMU Standard PC (i440FX + PIIX, 1996)
-Call Trace:
- <IRQ>
- dump_stack_lvl+0x55/0x70
- print_address_description.constprop.0+0x2c/0x390
- print_report+0xb4/0x270
- kasan_report+0xb8/0xf0
- end_buffer_read_sync+0xe3/0x110
- end_bio_bh_io_sync+0x56/0x80
- blk_update_request+0x30a/0x720
- scsi_end_request+0x51/0x2b0
- scsi_io_completion+0xe3/0x480
- ? scsi_device_unbusy+0x11e/0x160
- blk_complete_reqs+0x7b/0x90
- handle_softirqs+0xef/0x370
- irq_exit_rcu+0xa5/0xd0
- sysvec_apic_timer_interrupt+0x6e/0x90
- </IRQ>
+UFSHCD core disables the UIC completion interrupt when issuing UIC
+hibernation commands, and re-enables it afterwards if it was enabled to
+start with, refer ufshcd_uic_pwr_ctrl(). For Intel MTL-like host
+controllers, accessing the register to re-enable the interrupt disrupts
+the state transition.
 
- Above issue happens when do ntfs3 filesystem mount, issue may happens
- as follows:
-           mount                            IRQ
-ntfs_fill_super
-  read_cache_page
-    do_read_cache_folio
-      filemap_read_folio
-        mpage_read_folio
-	 do_mpage_readpage
-	  ntfs_get_block_vbo
-	   bh_read
-	     submit_bh
-	     wait_on_buffer(bh);
-	                            blk_complete_reqs
-				     scsi_io_completion
-				      scsi_end_request
-				       blk_update_request
-				        end_bio_bh_io_sync
-					 end_buffer_read_sync
-					  __end_buffer_read_notouch
-					   unlock_buffer
+Use hibern8_notify variant operation to disable the interrupt during the
+entire hibernation, thereby preventing the disruption.
 
-            wait_on_buffer(bh);--> return will return to caller
-
-					  put_bh
-					    --> trigger stack-out-of-bounds
-In the mpage_read_folio() function, the stack variable 'map_bh' is
-passed to ntfs_get_block_vbo(). Once unlock_buffer() unlocks and
-wait_on_buffer() returns to continue processing, the stack variable
-is likely to be reclaimed. Consequently, during the end_buffer_read_sync()
-process, calling put_bh() may result in stack overrun.
-
-If the bh is not allocated on the stack, it belongs to a folio.  Freeing
-a buffer head which belongs to a folio is done by drop_buffers() which
-will fail to free buffers which are still locked.  So it is safe to call
-put_bh() before __end_buffer_read_notouch().
-
-Fixes: 1da177e4c3f4 ("Linux-2.6.12-rc2")
-Signed-off-by: Ye Bin <yebin10@huawei.com>
-Link: https://lore.kernel.org/20250811141830.343774-1-yebin@huaweicloud.com
-Reviewed-by: Matthew Wilcox (Oracle) <willy@infradead.org>
-Signed-off-by: Christian Brauner <brauner@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Fixes: 4049f7acef3e ("scsi: ufs: ufs-pci: Add support for Intel MTL")
+Cc: stable@vger.kernel.org
+Signed-off-by: Archana Patni <archana.patni@intel.com>
+Link: https://lore.kernel.org/r/20250723165856.145750-2-adrian.hunter@intel.com
+Reviewed-by: Bart Van Assche <bvanassche@acm.org>
+Signed-off-by: Martin K. Petersen <martin.petersen@oracle.com>
+Signed-off-by: Adrian Hunter <adrian.hunter@intel.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- fs/buffer.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/scsi/ufs/ufshcd-pci.c |   27 +++++++++++++++++++++++++++
+ 1 file changed, 27 insertions(+)
 
-diff --git a/fs/buffer.c b/fs/buffer.c
-index 4b86e971efd8..32df6163ffed 100644
---- a/fs/buffer.c
-+++ b/fs/buffer.c
-@@ -157,8 +157,8 @@ static void __end_buffer_read_notouch(struct buffer_head *bh, int uptodate)
-  */
- void end_buffer_read_sync(struct buffer_head *bh, int uptodate)
- {
--	__end_buffer_read_notouch(bh, uptodate);
- 	put_bh(bh);
-+	__end_buffer_read_notouch(bh, uptodate);
+--- a/drivers/scsi/ufs/ufshcd-pci.c
++++ b/drivers/scsi/ufs/ufshcd-pci.c
+@@ -203,6 +203,32 @@ out:
+ 	return ret;
  }
- EXPORT_SYMBOL(end_buffer_read_sync);
  
--- 
-2.50.1
-
++static void ufs_intel_ctrl_uic_compl(struct ufs_hba *hba, bool enable)
++{
++	u32 set = ufshcd_readl(hba, REG_INTERRUPT_ENABLE);
++
++	if (enable)
++		set |= UIC_COMMAND_COMPL;
++	else
++		set &= ~UIC_COMMAND_COMPL;
++	ufshcd_writel(hba, set, REG_INTERRUPT_ENABLE);
++}
++
++static void ufs_intel_mtl_h8_notify(struct ufs_hba *hba,
++				    enum uic_cmd_dme cmd,
++				    enum ufs_notify_change_status status)
++{
++	/*
++	 * Disable UIC COMPL INTR to prevent access to UFSHCI after
++	 * checking HCS.UPMCRS
++	 */
++	if (status == PRE_CHANGE && cmd == UIC_CMD_DME_HIBER_ENTER)
++		ufs_intel_ctrl_uic_compl(hba, false);
++
++	if (status == POST_CHANGE && cmd == UIC_CMD_DME_HIBER_EXIT)
++		ufs_intel_ctrl_uic_compl(hba, true);
++}
++
+ #define INTEL_ACTIVELTR		0x804
+ #define INTEL_IDLELTR		0x808
+ 
+@@ -476,6 +502,7 @@ static struct ufs_hba_variant_ops ufs_in
+ 	.init			= ufs_intel_mtl_init,
+ 	.exit			= ufs_intel_common_exit,
+ 	.hce_enable_notify	= ufs_intel_hce_enable_notify,
++	.hibern8_notify		= ufs_intel_mtl_h8_notify,
+ 	.link_startup_notify	= ufs_intel_link_startup_notify,
+ 	.resume			= ufs_intel_resume,
+ 	.device_reset		= ufs_intel_device_reset,
 
 
 
