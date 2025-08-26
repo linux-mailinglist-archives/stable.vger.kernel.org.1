@@ -1,57 +1,55 @@
-Return-Path: <stable+bounces-175311-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-175835-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id A8A2DB36816
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 16:12:52 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1EF81B36A83
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 16:38:10 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id B17248E3F81
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 14:00:29 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 4F6536862C3
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 14:22:40 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 15DB835207B;
-	Tue, 26 Aug 2025 13:58:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3E1C5350820;
+	Tue, 26 Aug 2025 14:21:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="dJ2CUxML"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="tyGtmW2J"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C847D352080;
-	Tue, 26 Aug 2025 13:58:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id ED1E934AB0D;
+	Tue, 26 Aug 2025 14:21:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756216700; cv=none; b=LJaRDmcAR3eWX8wpi9uVK+TxSKeYhC64a3OemLy0USEu5t4JI4RhnkXdBlsdqHgKJIO0xXyiQbg7B1nzwieusiBjYUJkek8PBHs8f2SorJN9xoyN02rAJD6IZX9EOVwvlhFkzCtX2TJQJZ/b5cYAsQUfdxf42ceZdPRbADo9GHo=
+	t=1756218099; cv=none; b=qxCBt9XRmxQ3gzh0+2TAAvowgJQurcLao4M5T0swBiN4bHGrY+g/V/Dqjgf0MBGTd+H06KGZ2KbpS5SJVfSqsiMOD8Ys1KzGjQJnOsMWgw1DpoDpBvCzUEduCAy3h+547LcE+yuE9rx/a5se+Kje4NVOaUJd5Fg96bGh7at++n0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756216700; c=relaxed/simple;
-	bh=Md3e/sl1W3EZz7imY3uHTr8hfat6SkfsCRy1e6TYt5s=;
+	s=arc-20240116; t=1756218099; c=relaxed/simple;
+	bh=QWw42alUumDb3XOLVRfiZ8V0j3jDQbvJFkZbdsZ9zVI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=B/PVeKl8HEv8nl6kVRrU3ZK4jegZtT/NCzf/GHCRDCLah7sSY/QmsBSrfP26bgJWJ4PxGfOBfzBTfcHtnnoMHaj9F1Qt83YPpATdqvyO9DIPyJx6ot6e06MpBCK1TNvQC/+f8XIVkPJsTma1SFVC+iRuqYwFdAPk3QupKScGu9U=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=dJ2CUxML; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 557EBC4CEF1;
-	Tue, 26 Aug 2025 13:58:20 +0000 (UTC)
+	 MIME-Version; b=fGEvSLZZo0S5aHNTDX6yyP+48QcKEGhoA5vvp41gbF4YEYbKi8xh5PRxOdh92KKYkkc0AZ3VpmC58GaZDObiN3pPkMWYHTC6T70IvR+hHQkHf3HHckYwobLGd+B8G6H3ddbs03oAjq4tNhH0Wc4njCVCoI81meRfdyuCoZ9gI9U=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=tyGtmW2J; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 28857C113CF;
+	Tue, 26 Aug 2025 14:21:37 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1756216700;
-	bh=Md3e/sl1W3EZz7imY3uHTr8hfat6SkfsCRy1e6TYt5s=;
+	s=korg; t=1756218098;
+	bh=QWw42alUumDb3XOLVRfiZ8V0j3jDQbvJFkZbdsZ9zVI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=dJ2CUxML/gyVD2Rts6JiyVjuDX3V5nFyDtBsrujE4MnEAFm7wHSgGkehn6Wr9Y5X5
-	 zbdX84w049opQ8mrexpGEjO4uJ2nAKXGJlAl7h5YpthdpL7HNw1MkY6mvHjv2r+t6O
-	 RwRIaPZD82Xo5JfD0/jHda1CR8TcCkTFlM6ppuTM=
+	b=tyGtmW2JMARF7OWE8eTDCkIYU65d+sYuppEef55x21XfqfTFkmAUK3R2F4caXxoSo
+	 sJnLt/4KJKK2LeJLDvQdQUDJmn+86YgXWjUZn8wL4Zq8hha4CBEva9QTCOVgoBiRZ9
+	 VE+Dy0BbR+/noBAFtBiRQ8sQGmFP7j/XmxtuG6lA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	"Lin.Cao" <lincao12@amd.com>,
-	=?UTF-8?q?Christian=20K=C3=B6nig?= <christian.koenig@amd.com>,
-	Philipp Stanner <phasta@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 511/644] drm/sched: Remove optimization that causes hang when killing dependent jobs
+	Jiayi Li <lijiayi@kylinos.cn>,
+	Ulf Hansson <ulf.hansson@linaro.org>
+Subject: [PATCH 5.10 392/523] memstick: Fix deadlock by moving removing flag earlier
 Date: Tue, 26 Aug 2025 13:10:02 +0200
-Message-ID: <20250826110959.168031726@linuxfoundation.org>
+Message-ID: <20250826110934.128907118@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250826110946.507083938@linuxfoundation.org>
-References: <20250826110946.507083938@linuxfoundation.org>
+In-Reply-To: <20250826110924.562212281@linuxfoundation.org>
+References: <20250826110924.562212281@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,94 +59,87 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: "Lin.Cao" <lincao12@amd.com>
+From: Jiayi Li <lijiayi@kylinos.cn>
 
-[ Upstream commit 15f77764e90a713ee3916ca424757688e4f565b9 ]
+commit 99d7ab8db9d8230b243f5ed20ba0229e54cc0dfa upstream.
 
-When application A submits jobs and application B submits a job with a
-dependency on A's fence, the normal flow wakes up the scheduler after
-processing each job. However, the optimization in
-drm_sched_entity_add_dependency_cb() uses a callback that only clears
-dependencies without waking up the scheduler.
+The existing memstick core patch: commit 62c59a8786e6 ("memstick: Skip
+allocating card when removing host") sets host->removing in
+memstick_remove_host(),but still exists a critical time window where
+memstick_check can run after host->eject is set but before removing is set.
 
-When application A is killed before its jobs can run, the callback gets
-triggered but only clears the dependency without waking up the scheduler,
-causing the scheduler to enter sleep state and application B to hang.
+In the rtsx_usb_ms driver, the problematic sequence is:
 
-Remove the optimization by deleting drm_sched_entity_clear_dep() and its
-usage, ensuring the scheduler is always woken up when dependencies are
-cleared.
+rtsx_usb_ms_drv_remove:          memstick_check:
+  host->eject = true
+  cancel_work_sync(handle_req)     if(!host->removing)
+  ...                              memstick_alloc_card()
+                                     memstick_set_rw_addr()
+                                       memstick_new_req()
+                                         rtsx_usb_ms_request()
+                                           if(!host->eject)
+                                           skip schedule_work
+                                       wait_for_completion()
+  memstick_remove_host:                [blocks indefinitely]
+    host->removing = true
+    flush_workqueue()
+    [block]
 
-Fixes: 777dbd458c89 ("drm/amdgpu: drop a dummy wakeup scheduler")
-Cc: stable@vger.kernel.org # v4.6+
-Signed-off-by: Lin.Cao <lincao12@amd.com>
-Reviewed-by: Christian König <christian.koenig@amd.com>
-Signed-off-by: Philipp Stanner <phasta@kernel.org>
-Link: https://lore.kernel.org/r/20250717084453.921097-1-lincao12@amd.com
-[ Changed drm_sched_wakeup_if_can_queue() calls to drm_sched_wakeup() ]
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+1. rtsx_usb_ms_drv_remove sets host->eject = true
+2. cancel_work_sync(&host->handle_req) runs
+3. memstick_check work may be executed here <-- danger window
+4. memstick_remove_host sets removing = 1
+
+During this window (step 3), memstick_check calls memstick_alloc_card,
+which may indefinitely waiting for mrq_complete completion that will
+never occur because rtsx_usb_ms_request sees eject=true and skips
+scheduling work, memstick_set_rw_addr waits forever for completion.
+
+This causes a deadlock when memstick_remove_host tries to flush_workqueue,
+waiting for memstick_check to complete, while memstick_check is blocked
+waiting for mrq_complete completion.
+
+Fix this by setting removing=true at the start of rtsx_usb_ms_drv_remove,
+before any work cancellation. This ensures memstick_check will see the
+removing flag immediately and exit early, avoiding the deadlock.
+
+Fixes: 62c59a8786e6 ("memstick: Skip allocating card when removing host")
+Signed-off-by: Jiayi Li <lijiayi@kylinos.cn>
+Cc: stable@vger.kernel.org
+Link: https://lore.kernel.org/r/20250804013604.1311218-1-lijiayi@kylinos.cn
+Signed-off-by: Ulf Hansson <ulf.hansson@linaro.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/gpu/drm/scheduler/sched_entity.c |   27 ++++-----------------------
- 1 file changed, 4 insertions(+), 23 deletions(-)
+ drivers/memstick/core/memstick.c    |    1 -
+ drivers/memstick/host/rtsx_usb_ms.c |    1 +
+ 2 files changed, 1 insertion(+), 1 deletion(-)
 
---- a/drivers/gpu/drm/scheduler/sched_entity.c
-+++ b/drivers/gpu/drm/scheduler/sched_entity.c
-@@ -317,21 +317,8 @@ void drm_sched_entity_destroy(struct drm
- EXPORT_SYMBOL(drm_sched_entity_destroy);
- 
- /*
-- * drm_sched_entity_clear_dep - callback to clear the entities dependency
-- */
--static void drm_sched_entity_clear_dep(struct dma_fence *f,
--				       struct dma_fence_cb *cb)
--{
--	struct drm_sched_entity *entity =
--		container_of(cb, struct drm_sched_entity, cb);
--
--	entity->dependency = NULL;
--	dma_fence_put(f);
--}
--
--/*
-- * drm_sched_entity_clear_dep - callback to clear the entities dependency and
-- * wake up scheduler
-+ * drm_sched_entity_wakeup - callback to clear the entity's dependency and
-+ * wake up the scheduler
+--- a/drivers/memstick/core/memstick.c
++++ b/drivers/memstick/core/memstick.c
+@@ -550,7 +550,6 @@ EXPORT_SYMBOL(memstick_add_host);
   */
- static void drm_sched_entity_wakeup(struct dma_fence *f,
- 				    struct dma_fence_cb *cb)
-@@ -339,7 +326,8 @@ static void drm_sched_entity_wakeup(stru
- 	struct drm_sched_entity *entity =
- 		container_of(cb, struct drm_sched_entity, cb);
+ void memstick_remove_host(struct memstick_host *host)
+ {
+-	host->removing = 1;
+ 	flush_workqueue(workqueue);
+ 	mutex_lock(&host->lock);
+ 	if (host->card)
+--- a/drivers/memstick/host/rtsx_usb_ms.c
++++ b/drivers/memstick/host/rtsx_usb_ms.c
+@@ -812,6 +812,7 @@ static int rtsx_usb_ms_drv_remove(struct
+ 	int err;
  
--	drm_sched_entity_clear_dep(f, cb);
-+	entity->dependency = NULL;
-+	dma_fence_put(f);
- 	drm_sched_wakeup(entity->rq->sched);
- }
+ 	host->eject = true;
++	msh->removing = true;
+ 	cancel_work_sync(&host->handle_req);
+ 	cancel_delayed_work_sync(&host->poll_card);
  
-@@ -395,13 +383,6 @@ static bool drm_sched_entity_add_depende
- 		fence = dma_fence_get(&s_fence->scheduled);
- 		dma_fence_put(entity->dependency);
- 		entity->dependency = fence;
--		if (!dma_fence_add_callback(fence, &entity->cb,
--					    drm_sched_entity_clear_dep))
--			return true;
--
--		/* Ignore it when it is already scheduled */
--		dma_fence_put(fence);
--		return false;
- 	}
- 
- 	if (!dma_fence_add_callback(entity->dependency, &entity->cb,
 
 
 
