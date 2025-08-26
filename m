@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-173452-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-175703-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 64C88B35DD2
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 13:48:28 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2F92FB36A0A
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 16:33:36 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 2250C367E34
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 11:39:21 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 21B701C41CA4
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 14:18:33 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1C4063093AB;
-	Tue, 26 Aug 2025 11:38:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C26D7352071;
+	Tue, 26 Aug 2025 14:15:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="QtAmHTPD"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="bOdSKcpE"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CF7352BE03C;
-	Tue, 26 Aug 2025 11:38:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7F1D234DCC1;
+	Tue, 26 Aug 2025 14:15:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756208284; cv=none; b=FR6aiOf+L6/lfbIYv+KW0GfZoSFB59yNdqrP8J5j4froURwHXz7cQofGtrVgaDC+UTR0rIhIltaGUJotxv5GMzPBHciATyvlgFCxcnSqdo7TAa/Gg+XPxnilvVEG7oLPpoYBz0VDq8Y+fqNqgbRezM56g4710Yw2BZSFi1c6lNM=
+	t=1756217747; cv=none; b=eTXfXsZ5ojYkGxPyNOsK0cqhPrJ78GQ9qKA2AcVqNCvsJIrYaRqYtRLyvQlYSyHIZ13CJ12eao/z/PZ4Q1fTrYQnGDk3oIHlVAZnCimKPAQ99MAukBCeb/J+1ZncsVNyrKaZa8J9dB01/+PIkF5hPE5455EEOTJMxDJQfHatsAI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756208284; c=relaxed/simple;
-	bh=P82NRHfMNheHISOY/wBb5wLAp9ICnKPy4eNBVgibojw=;
+	s=arc-20240116; t=1756217747; c=relaxed/simple;
+	bh=I9xhHCfEOF88XcKHvgSJ8eBNQmZ9pe+CR784W/KsUMk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=sVtFi2vJTNL/ameWlZDjo0xdap+DS8qG0eRTR3Y7m0oioCg7MPqYCfRbrg20sYLZznzNptCousSGLNt8B5Za4ElTMtL64rfv7wq6YjAmjTQgPjcBPBxJFKX7+BMaTZoko49ugEzGjtCxRyh4EYt/M4y8HhwavTsMe9Gonw8BpLE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=QtAmHTPD; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 57CABC4CEF1;
-	Tue, 26 Aug 2025 11:38:04 +0000 (UTC)
+	 MIME-Version; b=Ep/fSlGnDq5UGD8DNCbyNu1vZFqqKojdJ3kAk9J/EIyYyu2bTYsHibz5xUTy8FlDqKqvhrbcg88bagFboZLHMLq0cJepXMIK/ozUSaVWZIinuwMu2oKpYJ75683v6RtRN96iwADSpohfe8Hx1ntm18L58xNCn/f6g/pF4kTAPdk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=bOdSKcpE; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E986EC4CEF1;
+	Tue, 26 Aug 2025 14:15:46 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1756208284;
-	bh=P82NRHfMNheHISOY/wBb5wLAp9ICnKPy4eNBVgibojw=;
+	s=korg; t=1756217747;
+	bh=I9xhHCfEOF88XcKHvgSJ8eBNQmZ9pe+CR784W/KsUMk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=QtAmHTPDuNGJIDyg3lD3rLybE4cqWyMJgsQzSFgAtTKTB8rm55aN5g3qzorN4TXAM
-	 OBpGnrnXxqQFwci0ynA+5QP63emKMRFuqelLYfBvQCa6yDyl2npMLhfAgkkSEsdR1z
-	 GIetb4/egT5tt+hxo/iQh9znyOaeWRpO0gB4n2HM=
+	b=bOdSKcpEXyzNpCnkl/1LGAA7jjSI6rXx7qguZBvBd/DAjmu/ZAR89L+gFykNszV35
+	 q5uNkLy5i7pY2/mFRLUosw6uQOwIEYSS3isLaR+iHWILf6iIHI1bjIz+Ehm0/hOoGx
+	 3Iv8Cbg+G/T6v8Ie+sHWqcvsDzYw2tKAYu6fhMYk=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Igor Pylypiv <ipylypiv@google.com>,
-	Niklas Cassel <cassel@kernel.org>,
-	Damien Le Moal <dlemoal@kernel.org>
-Subject: [PATCH 6.12 053/322] ata: libata-scsi: Fix CDL control
-Date: Tue, 26 Aug 2025 13:07:48 +0200
-Message-ID: <20250826110916.716718008@linuxfoundation.org>
+	"John Warthog9 Hawley" <warthog9@kernel.org>,
+	Dhaval Giani <dhaval.giani@gmail.com>,
+	Steven Rostedt <rostedt@goodmis.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.10 259/523] ktest.pl: Prevent recursion of default variable options
+Date: Tue, 26 Aug 2025 13:07:49 +0200
+Message-ID: <20250826110930.813306982@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250826110915.169062587@linuxfoundation.org>
-References: <20250826110915.169062587@linuxfoundation.org>
+In-Reply-To: <20250826110924.562212281@linuxfoundation.org>
+References: <20250826110924.562212281@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,67 +63,67 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Igor Pylypiv <ipylypiv@google.com>
+From: Steven Rostedt <rostedt@goodmis.org>
 
-commit 58768b0563916ddcb73d8ed26ede664915f8df31 upstream.
+[ Upstream commit 61f7e318e99d3b398670518dd3f4f8510d1800fc ]
 
-Delete extra checks for the ATA_DFLAG_CDL_ENABLED flag that prevent
-SET FEATURES command from being issued to a drive when NCQ commands
-are active.
+If a default variable contains itself, do not recurse on it.
 
-ata_mselect_control_ata_feature() sets / clears the ATA_DFLAG_CDL_ENABLED
-flag during the translation of MODE SELECT to SET FEATURES. If SET FEATURES
-gets deferred due to outstanding NCQ commands, the original MODE SELECT
-command will be re-queued. When the re-queued MODE SELECT goes through
-the ata_mselect_control_ata_feature() translation again, SET FEATURES
-will not be issued because ATA_DFLAG_CDL_ENABLED has been already set or
-cleared by the initial translation of MODE SELECT.
+For example:
 
-The ATA_DFLAG_CDL_ENABLED checks in ata_mselect_control_ata_feature()
-are safe to remove because scsi_cdl_enable() implements a similar logic
-that avoids enabling CDL if it has been enabled already.
+  ADD_CONFIG := ${CONFIG_DIR}/temp_config
+  DEFAULTS
+  ADD_CONFIG = ${CONFIG_DIR}/default_config ${ADD_CONFIG}
 
-Fixes: 17e897a45675 ("ata: libata-scsi: Improve CDL control")
-Cc: stable@vger.kernel.org
-Signed-off-by: Igor Pylypiv <ipylypiv@google.com>
-Reviewed-by: Niklas Cassel <cassel@kernel.org>
-Signed-off-by: Damien Le Moal <dlemoal@kernel.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+The above works because the temp variable ADD_CONFIG (is a temp because it
+is created with ":=") is already defined, it will be substituted in the
+variable option. But if it gets commented out:
+
+  # ADD_CONFIG := ${CONFIG_DIR}/temp_config
+  DEFAULTS
+  ADD_CONFIG = ${CONFIG_DIR}/default_config ${ADD_CONFIG}
+
+Then the above will go into a recursive loop where ${ADD_CONFIG} will
+get replaced with the current definition of ADD_CONFIG which contains the
+${ADD_CONFIG} and that will also try to get converted. ktest.pl will error
+after 100 attempts of recursion and fail.
+
+When replacing a variable with the default variable, if the default
+variable contains itself, do not replace it.
+
+Cc: "John Warthog9 Hawley" <warthog9@kernel.org>
+Cc: Dhaval Giani <dhaval.giani@gmail.com>
+Cc: Greg KH <gregkh@linuxfoundation.org>
+Link: https://lore.kernel.org/20250718202053.732189428@kernel.org
+Signed-off-by: Steven Rostedt <rostedt@goodmis.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/ata/libata-scsi.c |   11 +++--------
- 1 file changed, 3 insertions(+), 8 deletions(-)
+ tools/testing/ktest/ktest.pl | 5 ++++-
+ 1 file changed, 4 insertions(+), 1 deletion(-)
 
---- a/drivers/ata/libata-scsi.c
-+++ b/drivers/ata/libata-scsi.c
-@@ -3752,21 +3752,16 @@ static int ata_mselect_control_ata_featu
- 	/* Check cdl_ctrl */
- 	switch (buf[0] & 0x03) {
- 	case 0:
--		/* Disable CDL if it is enabled */
--		if (!(dev->flags & ATA_DFLAG_CDL_ENABLED))
--			return 0;
-+		/* Disable CDL */
- 		ata_dev_dbg(dev, "Disabling CDL\n");
- 		cdl_action = 0;
- 		dev->flags &= ~ATA_DFLAG_CDL_ENABLED;
- 		break;
- 	case 0x02:
- 		/*
--		 * Enable CDL if not already enabled. Since this is mutually
--		 * exclusive with NCQ priority, allow this only if NCQ priority
--		 * is disabled.
-+		 * Enable CDL. Since CDL is mutually exclusive with NCQ
-+		 * priority, allow this only if NCQ priority is disabled.
- 		 */
--		if (dev->flags & ATA_DFLAG_CDL_ENABLED)
--			return 0;
- 		if (dev->flags & ATA_DFLAG_NCQ_PRIO_ENABLED) {
- 			ata_dev_err(dev,
- 				"NCQ priority must be disabled to enable CDL\n");
+diff --git a/tools/testing/ktest/ktest.pl b/tools/testing/ktest/ktest.pl
+index 8ac30e2ac3ac..512a3cc586fd 100755
+--- a/tools/testing/ktest/ktest.pl
++++ b/tools/testing/ktest/ktest.pl
+@@ -1291,7 +1291,10 @@ sub __eval_option {
+ 	# If a variable contains itself, use the default var
+ 	if (($var eq $name) && defined($opt{$var})) {
+ 	    $o = $opt{$var};
+-	    $retval = "$retval$o";
++	    # Only append if the default doesn't contain itself
++	    if ($o !~ m/\$\{$var\}/) {
++		$retval = "$retval$o";
++	    }
+ 	} elsif (defined($opt{$o})) {
+ 	    $o = $opt{$o};
+ 	    $retval = "$retval$o";
+-- 
+2.39.5
+
 
 
 
