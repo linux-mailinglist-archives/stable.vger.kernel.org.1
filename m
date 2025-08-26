@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-173939-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-174421-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id B5932B3608E
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 15:01:51 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id A4682B36349
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 15:28:30 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 184007C79EC
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 12:57:56 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 1A30E8A6764
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 13:21:21 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 652751DE4F6;
-	Tue, 26 Aug 2025 12:57:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 37A5C345744;
+	Tue, 26 Aug 2025 13:19:05 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="LVmtH59b"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="zGXYX+/b"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 230E11B0420;
-	Tue, 26 Aug 2025 12:57:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EB09A8635C;
+	Tue, 26 Aug 2025 13:19:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756213064; cv=none; b=dCnShr+b/z07FOGc+R0c4LaHRn6ja0a3MimGRgBGuk09CUZhf6s3e1kY7MmGIvid/xEPSw84AaC0rsBC7YAenZFRqd78CUNt1zNGzyllqlU7OMoZG42YEaLxPb/yqzO/vKi2SAmS1D16F/7NOa4DH5z+ZSucOnz4vlZcVYIoBw0=
+	t=1756214345; cv=none; b=gX5Rr9WtchF2ZjW9zvrJfPG4fB/DWULhFWLfddT4NUzzIwOjdE07yfN0YniZnz9Ls3xp9UmZ5LyVnH7rfGXEFQXNLqS8vuM9PEDgBgrXDbBXpoCtX/Tmhx8aCAj/hawg8pq4FlFwEICgMVBtRmTAD8xRhzj9DSocbG9sicB5ia8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756213064; c=relaxed/simple;
-	bh=guvfyCVATM+ek7F70VHSEvUEz+NQa8vrAwk2vz6K1sI=;
+	s=arc-20240116; t=1756214345; c=relaxed/simple;
+	bh=OFkHCtw0CNoy5ErqMuOFdxCpsPjzf253kXOMMmayJZU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=NaxW+N2RfsDlRfYnwCJil6XPOdRCdqvXHvriFOy6HobC+j8X7XbdbRs+b1aI7yA6hvB388Z/RGBDQRFiKZP9hLZL2o1FHWPAyEpkPajfqj30rNS1hRnr8ug4ZiXnGpJfTFhvOh6ZCYAW9ByS3G+NzX0NWxbswbliNQGWSmMuwa8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=LVmtH59b; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A81C2C4CEF1;
-	Tue, 26 Aug 2025 12:57:43 +0000 (UTC)
+	 MIME-Version; b=Dsngq9QzcBL1CvpfMcJH0FJELLYbKCf8mLF48A5De60kOKBjxzspUP27lwIyQJjrd8bjcBcz2SIZQzrpv3kDfSSHPD9GhoEU5bc51uw6ToS4VqPTbZlb7bIzp2YIA5deI4g1MOPdZaKarJRW/0rr+KesMsT25dzcHlltLUGJZ0I=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=zGXYX+/b; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7AC1CC113CF;
+	Tue, 26 Aug 2025 13:19:04 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1756213064;
-	bh=guvfyCVATM+ek7F70VHSEvUEz+NQa8vrAwk2vz6K1sI=;
+	s=korg; t=1756214344;
+	bh=OFkHCtw0CNoy5ErqMuOFdxCpsPjzf253kXOMMmayJZU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=LVmtH59bPUUZ+41bpXE3Je4aXGfuHpaJDZg2Yq+BMILW6H+Pld4hC6U0g5SLWg/zh
-	 iSuA5eqzl5I7IPxmGsw4vQSs4biw1msANODPjELy8cVZAAYqvjoXp0C2UPHi8ymlxD
-	 i3S+AreaW7sa//cvvf2yca/2xJv/t3Eo8yOlpfRY=
+	b=zGXYX+/b0klAnGfPf6gL6j/o/CAaubB5Y6JZ/v3qKG7nw7Om2qPwpQHgmF3D80ArE
+	 49N52YVM5+ZB3JzRrzn2fUh0IMRCasC1k3djl13JuHpVh2SwBRRP9MjeQHGljm/CYs
+	 xS5ud7NUSRpgRYnxglgFX+uvUCYJwwjElSS5h9pU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Emily Deng <Emily.Deng@amd.com>,
-	=?UTF-8?q?Christian=20K=C3=B6nig?= <christian.koenig@amd.com>,
+	Tomasz Michalec <tmichalec@google.com>,
+	Heikki Krogerus <heikki.krogerus@linux.intel.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 207/587] drm/ttm: Should to return the evict error
+Subject: [PATCH 6.1 103/482] usb: typec: intel_pmc_mux: Defer probe if SCU IPC isnt present
 Date: Tue, 26 Aug 2025 13:05:56 +0200
-Message-ID: <20250826110958.203662771@linuxfoundation.org>
+Message-ID: <20250826110933.374722745@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250826110952.942403671@linuxfoundation.org>
-References: <20250826110952.942403671@linuxfoundation.org>
+In-Reply-To: <20250826110930.769259449@linuxfoundation.org>
+References: <20250826110930.769259449@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,47 +60,44 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Emily Deng <Emily.Deng@amd.com>
+From: Tomasz Michalec <tmichalec@google.com>
 
-[ Upstream commit 4e16a9a00239db5d819197b9a00f70665951bf50 ]
+[ Upstream commit df9a825f330e76c72d1985bc9bdc4b8981e3d15f ]
 
-For the evict fail case, the evict error should be returned.
+If pmc_usb_probe is called before SCU IPC is registered, pmc_usb_probe
+will fail.
 
-v2: Consider ENOENT case.
+Return -EPROBE_DEFER when pmc_usb_probe doesn't get SCU IPC device, so
+the probe function can be called again after SCU IPC is initialized.
 
-v3: Abort directly when the eviction failed for some reason (except for -ENOENT)
- and not wait for the move to finish
-
-Signed-off-by: Emily Deng <Emily.Deng@amd.com>
-Reviewed-by: Christian König <christian.koenig@amd.com>
-Signed-off-by: Christian König <christian.koenig@amd.com>
-Link: https://lore.kernel.org/r/20250603091154.3472646-1-Emily.Deng@amd.com
+Signed-off-by: Tomasz Michalec <tmichalec@google.com>
+Reviewed-by: Heikki Krogerus <heikki.krogerus@linux.intel.com>
+Link: https://lore.kernel.org/r/20250610154058.1859812-1-tmichalec@google.com
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/ttm/ttm_resource.c | 3 +++
- 1 file changed, 3 insertions(+)
+ drivers/usb/typec/mux/intel_pmc_mux.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/gpu/drm/ttm/ttm_resource.c b/drivers/gpu/drm/ttm/ttm_resource.c
-index 46ff9c75bb12..8f2423a15c71 100644
---- a/drivers/gpu/drm/ttm/ttm_resource.c
-+++ b/drivers/gpu/drm/ttm/ttm_resource.c
-@@ -437,6 +437,9 @@ int ttm_resource_manager_evict_all(struct ttm_device *bdev,
- 	}
- 	spin_unlock(&bdev->lru_lock);
+diff --git a/drivers/usb/typec/mux/intel_pmc_mux.c b/drivers/usb/typec/mux/intel_pmc_mux.c
+index 87e2c9130607..a6936fc59d1e 100644
+--- a/drivers/usb/typec/mux/intel_pmc_mux.c
++++ b/drivers/usb/typec/mux/intel_pmc_mux.c
+@@ -667,7 +667,7 @@ static int pmc_usb_probe(struct platform_device *pdev)
  
-+	if (ret && ret != -ENOENT)
-+		return ret;
-+
- 	spin_lock(&man->move_lock);
- 	fence = dma_fence_get(man->move);
- 	spin_unlock(&man->move_lock);
+ 	pmc->ipc = devm_intel_scu_ipc_dev_get(&pdev->dev);
+ 	if (!pmc->ipc)
+-		return -ENODEV;
++		return -EPROBE_DEFER;
+ 
+ 	pmc->dev = &pdev->dev;
+ 
 -- 
 2.39.5
 
