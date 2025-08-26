@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-173519-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-175244-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7F592B35E02
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 13:50:46 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9142EB3674D
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 16:05:31 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 97313460926
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 11:41:08 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 79A731C270F3
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 13:57:13 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8427D2BE7DD;
-	Tue, 26 Aug 2025 11:40:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A0B42350D40;
+	Tue, 26 Aug 2025 13:55:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="DibW79LN"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="kScTDsD1"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 34DCD393DD1;
-	Tue, 26 Aug 2025 11:40:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5D3A2302CA6;
+	Tue, 26 Aug 2025 13:55:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756208459; cv=none; b=mL4ddcYaplVBtIBkGDA129qcLPqdkJkAOZndwRxGOy2WV/1te0aCPN8pYfIMwU1fwj3bIkm9WjZhQ8BZvgoIzCtSE/WOmLJq45tYKK0aWJLm3eyIxAiZERqjHt4ecSbezV89J6ukYEU4pgBXLUhEKvm2qpMr4Z+jA0/iTHY9BpI=
+	t=1756216525; cv=none; b=H7Yn0Gx1zrljL6GGm0qhoRHQfX8q5TwyI24nfmHUUfi6R+OGtNi5tm5B+KZtJc8eFqZTX+zQC0x3f7HA/k2J9lIijDr8UcqULjdYPuGpTDsWSvxrj6bOtllnlVICsGQDnZo+WScNXGwg8j17PsyLr4e0QdDOYIS4vi3OGqKpUjI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756208459; c=relaxed/simple;
-	bh=ZtwuWAbVaRSHgWsmpmuOyxhlgrWCLHZ4ffROa6gacwQ=;
+	s=arc-20240116; t=1756216525; c=relaxed/simple;
+	bh=zRb9Fsh37uzIRmkywFEdVRH4LPD+ysg9bfxa/aex3jE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=kh1ng+iccusvU/7t4TIAFo01P0DyyvGjt+ga/TE1byUdyPHErb27JcIMuXiEBv/ccoIIYgQHy56GsQeyCHLhPaV9aW3beBPxvvqodVjw+W2M0G7XEp0TBGTOrJdjzI5lZ/xh1vEidxkSUx1trvyVZT8YLmiQYBY9jNz6EIDMxPk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=DibW79LN; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B8CA2C4CEF1;
-	Tue, 26 Aug 2025 11:40:58 +0000 (UTC)
+	 MIME-Version; b=NLic9uG7vPIyEUSR/d1eU9xIzjWspD0Z0LUgjKeKCCPO5G6gkLJRuNwvyqpM3WO+IOgDg5jqAnw7IOSr5AwsjwSmld/p8S953AfpsKWtnw3aktfFw81o6D8//rQ5we/AJJoEC55ptdx8oq0jq9UMHYn8uHKfRWuP2EW9PwXwCF4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=kScTDsD1; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E11F6C4CEF1;
+	Tue, 26 Aug 2025 13:55:24 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1756208459;
-	bh=ZtwuWAbVaRSHgWsmpmuOyxhlgrWCLHZ4ffROa6gacwQ=;
+	s=korg; t=1756216525;
+	bh=zRb9Fsh37uzIRmkywFEdVRH4LPD+ysg9bfxa/aex3jE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=DibW79LNTCI1pojS7aYKDEPYmb2nUgHKjdr4mCsR1iSCBBaGOqTEsYchJpA6TupWz
-	 dL+jBa7E6lERRChoBL24L/BvrAeJRCNSkElf3eBv9xTc1h8MtD46BzDtXK2kbZ/tOn
-	 xnj6JhLWvupFYESZfkwIOucHp3YcqpfDbTZiCfPE=
+	b=kScTDsD1+iBoVNpJwqe4RVYj9UsfqqtmGBNIiCftGMPVVWgrabz5d9AzJLSPnurnB
+	 C9Z1rXVzMf005u+feL/bO9CEGhS2VeLxQhjB/SZ9L6jg9s09BXzXjox5LRoAztOV/F
+	 fAxnRxRMJMJhni5nCS9NO9u8EjIi6KAtVS25ECg4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	=?UTF-8?q?Christian=20K=C3=B6nig?= <christian.koenig@amd.com>,
-	Gang Ba <Gang.Ba@amd.com>,
-	Alex Deucher <alexander.deucher@amd.com>
-Subject: [PATCH 6.12 120/322] drm/amdgpu: Avoid extra evict-restore process.
+	stable <stable@kernel.org>,
+	syzbot+01523a0ae5600aef5895@syzkaller.appspotmail.com,
+	Jens Axboe <axboe@kernel.dk>,
+	Ian Abbott <abbotti@mev.co.uk>
+Subject: [PATCH 5.15 444/644] comedi: fix race between polling and detaching
 Date: Tue, 26 Aug 2025 13:08:55 +0200
-Message-ID: <20250826110918.762420678@linuxfoundation.org>
+Message-ID: <20250826110957.470208969@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250826110915.169062587@linuxfoundation.org>
-References: <20250826110915.169062587@linuxfoundation.org>
+In-Reply-To: <20250826110946.507083938@linuxfoundation.org>
+References: <20250826110946.507083938@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,67 +61,164 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Gang Ba <Gang.Ba@amd.com>
+From: Ian Abbott <abbotti@mev.co.uk>
 
-commit 1f02f2044bda1db1fd995bc35961ab075fa7b5a2 upstream.
+commit 35b6fc51c666fc96355be5cd633ed0fe4ccf68b2 upstream.
 
-If vm belongs to another process, this is fclose after fork,
-wait may enable signaling KFD eviction fence and cause parent process queue evicted.
+syzbot reports a use-after-free in comedi in the below link, which is
+due to comedi gladly removing the allocated async area even though poll
+requests are still active on the wait_queue_head inside of it. This can
+cause a use-after-free when the poll entries are later triggered or
+removed, as the memory for the wait_queue_head has been freed.  We need
+to check there are no tasks queued on any of the subdevices' wait queues
+before allowing the device to be detached by the `COMEDI_DEVCONFIG`
+ioctl.
 
-[677852.634569]  amdkfd_fence_enable_signaling+0x56/0x70 [amdgpu]
-[677852.634814]  __dma_fence_enable_signaling+0x3e/0xe0
-[677852.634820]  dma_fence_wait_timeout+0x3a/0x140
-[677852.634825]  amddma_resv_wait_timeout+0x7f/0xf0 [amdkcl]
-[677852.634831]  amdgpu_vm_wait_idle+0x2d/0x60 [amdgpu]
-[677852.635026]  amdgpu_flush+0x34/0x50 [amdgpu]
-[677852.635208]  filp_flush+0x38/0x90
-[677852.635213]  filp_close+0x14/0x30
-[677852.635216]  do_close_on_exec+0xdd/0x130
-[677852.635221]  begin_new_exec+0x1da/0x490
-[677852.635225]  load_elf_binary+0x307/0xea0
-[677852.635231]  ? srso_alias_return_thunk+0x5/0xfbef5
-[677852.635235]  ? ima_bprm_check+0xa2/0xd0
-[677852.635240]  search_binary_handler+0xda/0x260
-[677852.635245]  exec_binprm+0x58/0x1a0
-[677852.635249]  bprm_execve.part.0+0x16f/0x210
-[677852.635254]  bprm_execve+0x45/0x80
-[677852.635257]  do_execveat_common.isra.0+0x190/0x200
+Tasks will read-lock `dev->attach_lock` before adding themselves to the
+subdevice wait queue, so fix the problem in the `COMEDI_DEVCONFIG` ioctl
+handler by write-locking `dev->attach_lock` before checking that all of
+the subdevices are safe to be deleted.  This includes testing for any
+sleepers on the subdevices' wait queues.  It remains locked until the
+device has been detached.  This requires the `comedi_device_detach()`
+function to be refactored slightly, moving the bulk of it into new
+function `comedi_device_detach_locked()`.
 
-Suggested-by: Christian König <christian.koenig@amd.com>
-Signed-off-by: Gang Ba <Gang.Ba@amd.com>
-Reviewed-by: Christian König <christian.koenig@amd.com>
-Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
-Cc: stable@vger.kernel.org
+Note that the refactor of `comedi_device_detach()` results in
+`comedi_device_cancel_all()` now being called while `dev->attach_lock`
+is write-locked, which wasn't the case previously, but that does not
+matter.
+
+Thanks to Jens Axboe for diagnosing the problem and co-developing this
+patch.
+
+Cc: stable <stable@kernel.org>
+Fixes: 2f3fdcd7ce93 ("staging: comedi: add rw_semaphore to protect against device detachment")
+Link: https://lore.kernel.org/all/687bd5fe.a70a0220.693ce.0091.GAE@google.com/
+Reported-by: syzbot+01523a0ae5600aef5895@syzkaller.appspotmail.com
+Closes: https://syzkaller.appspot.com/bug?extid=01523a0ae5600aef5895
+Co-developed-by: Jens Axboe <axboe@kernel.dk>
+Signed-off-by: Jens Axboe <axboe@kernel.dk>
+Signed-off-by: Ian Abbott <abbotti@mev.co.uk>
+Tested-by: Jens Axboe <axboe@kernel.dk>
+Link: https://lore.kernel.org/r/20250722155316.27432-1-abbotti@mev.co.uk
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/gpu/drm/amd/amdgpu/amdgpu_vm.c |    6 ++----
- 1 file changed, 2 insertions(+), 4 deletions(-)
+ drivers/comedi/comedi_fops.c     |   33 +++++++++++++++++++++++++--------
+ drivers/comedi/comedi_internal.h |    1 +
+ drivers/comedi/drivers.c         |   13 ++++++++++---
+ 3 files changed, 36 insertions(+), 11 deletions(-)
 
---- a/drivers/gpu/drm/amd/amdgpu/amdgpu_vm.c
-+++ b/drivers/gpu/drm/amd/amdgpu/amdgpu_vm.c
-@@ -2292,13 +2292,11 @@ void amdgpu_vm_adjust_size(struct amdgpu
-  */
- long amdgpu_vm_wait_idle(struct amdgpu_vm *vm, long timeout)
- {
--	timeout = dma_resv_wait_timeout(vm->root.bo->tbo.base.resv,
--					DMA_RESV_USAGE_BOOKKEEP,
--					true, timeout);
-+	timeout = drm_sched_entity_flush(&vm->immediate, timeout);
- 	if (timeout <= 0)
- 		return timeout;
+--- a/drivers/comedi/comedi_fops.c
++++ b/drivers/comedi/comedi_fops.c
+@@ -783,6 +783,7 @@ static int is_device_busy(struct comedi_
+ 	struct comedi_subdevice *s;
+ 	int i;
  
--	return dma_fence_wait_timeout(vm->last_unlocked, true, timeout);
-+	return drm_sched_entity_flush(&vm->delayed, timeout);
++	lockdep_assert_held_write(&dev->attach_lock);
+ 	lockdep_assert_held(&dev->mutex);
+ 	if (!dev->attached)
+ 		return 0;
+@@ -791,7 +792,16 @@ static int is_device_busy(struct comedi_
+ 		s = &dev->subdevices[i];
+ 		if (s->busy)
+ 			return 1;
+-		if (s->async && comedi_buf_is_mmapped(s))
++		if (!s->async)
++			continue;
++		if (comedi_buf_is_mmapped(s))
++			return 1;
++		/*
++		 * There may be tasks still waiting on the subdevice's wait
++		 * queue, although they should already be about to be removed
++		 * from it since the subdevice has no active async command.
++		 */
++		if (wq_has_sleeper(&s->async->wait_head))
+ 			return 1;
+ 	}
+ 
+@@ -821,15 +831,22 @@ static int do_devconfig_ioctl(struct com
+ 		return -EPERM;
+ 
+ 	if (!arg) {
+-		if (is_device_busy(dev))
+-			return -EBUSY;
+-		if (dev->attached) {
+-			struct module *driver_module = dev->driver->module;
++		int rc = 0;
+ 
+-			comedi_device_detach(dev);
+-			module_put(driver_module);
++		if (dev->attached) {
++			down_write(&dev->attach_lock);
++			if (is_device_busy(dev)) {
++				rc = -EBUSY;
++			} else {
++				struct module *driver_module =
++					dev->driver->module;
++
++				comedi_device_detach_locked(dev);
++				module_put(driver_module);
++			}
++			up_write(&dev->attach_lock);
+ 		}
+-		return 0;
++		return rc;
+ 	}
+ 
+ 	if (copy_from_user(&it, arg, sizeof(it)))
+--- a/drivers/comedi/comedi_internal.h
++++ b/drivers/comedi/comedi_internal.h
+@@ -50,6 +50,7 @@ extern struct mutex comedi_drivers_list_
+ int insn_inval(struct comedi_device *dev, struct comedi_subdevice *s,
+ 	       struct comedi_insn *insn, unsigned int *data);
+ 
++void comedi_device_detach_locked(struct comedi_device *dev);
+ void comedi_device_detach(struct comedi_device *dev);
+ int comedi_device_attach(struct comedi_device *dev,
+ 			 struct comedi_devconfig *it);
+--- a/drivers/comedi/drivers.c
++++ b/drivers/comedi/drivers.c
+@@ -159,7 +159,7 @@ static void comedi_device_detach_cleanup
+ 	int i;
+ 	struct comedi_subdevice *s;
+ 
+-	lockdep_assert_held(&dev->attach_lock);
++	lockdep_assert_held_write(&dev->attach_lock);
+ 	lockdep_assert_held(&dev->mutex);
+ 	if (dev->subdevices) {
+ 		for (i = 0; i < dev->n_subdevices; i++) {
+@@ -196,16 +196,23 @@ static void comedi_device_detach_cleanup
+ 	comedi_clear_hw_dev(dev);
  }
  
- static void amdgpu_vm_destroy_task_info(struct kref *kref)
+-void comedi_device_detach(struct comedi_device *dev)
++void comedi_device_detach_locked(struct comedi_device *dev)
+ {
++	lockdep_assert_held_write(&dev->attach_lock);
+ 	lockdep_assert_held(&dev->mutex);
+ 	comedi_device_cancel_all(dev);
+-	down_write(&dev->attach_lock);
+ 	dev->attached = false;
+ 	dev->detach_count++;
+ 	if (dev->driver)
+ 		dev->driver->detach(dev);
+ 	comedi_device_detach_cleanup(dev);
++}
++
++void comedi_device_detach(struct comedi_device *dev)
++{
++	lockdep_assert_held(&dev->mutex);
++	down_write(&dev->attach_lock);
++	comedi_device_detach_locked(dev);
+ 	up_write(&dev->attach_lock);
+ }
+ 
 
 
 
