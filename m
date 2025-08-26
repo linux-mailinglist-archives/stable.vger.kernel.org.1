@@ -1,59 +1,56 @@
-Return-Path: <stable+bounces-174648-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-175848-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 812D5B3644A
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 15:37:30 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id BB35EB36AAF
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 16:39:36 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id E95388E291F
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 13:30:26 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id DFDA21C23457
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 14:23:44 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 507F4345747;
-	Tue, 26 Aug 2025 13:29:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C484A352087;
+	Tue, 26 Aug 2025 14:22:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="nrNvJw41"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="aeyRKodC"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0D6A9345726;
-	Tue, 26 Aug 2025 13:29:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 80DFE343D63;
+	Tue, 26 Aug 2025 14:22:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756214946; cv=none; b=enQ/uotQEdl6zLw6PY+mtgFxejRmvJcrj7swbkd0Dkfjl0R88Ry60jir9BKufXrhopl61igd+Lu4F6/9AkiUDgK5h/m/o2lv1dhXFxctmTRP1AHG9/Cs+1vh+eaFPPvQ7fLfBB6Bq/m6rcV4mBCEwMW152akBuJepcJ/9WwaepQ=
+	t=1756218130; cv=none; b=QW0gWVn70yIKU59OhyR+vSbiXXcd/xRaeLlIcCgcguQPWg1IbXU4S4silKPNEjTYEzAQbcUJ0HJpJfGP0HatAu+avl5oIvdbvtEqqzw/v4PfKb8q3k7+jSkwIWnRZfdgbVfBqEjiZOllIJbycx64FFeqCb8YmJTD5x9PGCQfgWk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756214946; c=relaxed/simple;
-	bh=b4obmSk4bvzTyaN8FeO2GbUWl+h1YP/VYtEIwPv9/Ss=;
+	s=arc-20240116; t=1756218130; c=relaxed/simple;
+	bh=yc88o5phPGItJ9NYUPDo8iNzgGEbvDOjgVj3W0j1ZVs=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Vsql6jRvc2/Db55T8way0G2mQZfgu4hxZ3f5CebSy5idPUVNLE1g1aHSWxsM/bmZaxdCXQ3BPCaYt57xaHFKmJ6/Jm2fHKGvuJufAGG8gilyJA867fks3zieCVwJmXrbVQkUAFX6x8quMR9wN4sTg9tlfjKu2dQq40LvuSiaZJg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=nrNvJw41; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 96FD1C113CF;
-	Tue, 26 Aug 2025 13:29:05 +0000 (UTC)
+	 MIME-Version; b=FRweVUMrKbh/H/zbH8DI8dRYDNvzmL2CdNlJ+Iopv1VqNYPwi8n3do9LpbEBAzVEr7xYfrlWYSXCv9PCh57uZlBW33WwyMAnNuvF5FWzXZetxH0IoDAYlDa8xQOVQY6EpIniIxd1fu06XWljS3o4moUijBYFMixA3ucYphzOscM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=aeyRKodC; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0E8EDC116B1;
+	Tue, 26 Aug 2025 14:22:09 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1756214945;
-	bh=b4obmSk4bvzTyaN8FeO2GbUWl+h1YP/VYtEIwPv9/Ss=;
+	s=korg; t=1756218130;
+	bh=yc88o5phPGItJ9NYUPDo8iNzgGEbvDOjgVj3W0j1ZVs=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=nrNvJw41y5dMf8qCI29S9k0plfLlyKllEnsE/obh52ksk0wW+8bfaCOon5sunJ+fx
-	 tixfd+hUi/ZkCsr7FZB9K7qsTY+/SayhLrmV0Z03mIn7cJzIZ5IGaHH/dur/+Oz/Bp
-	 0DRIOjT8aa2NxM6DlqO0x/AXqvPbKGETT4GOteYI=
+	b=aeyRKodCCS48QKujLLQMyMWm55/p2iKwVUgODAzMQrcnj9eAo2d4vdYAiT8rbOFpy
+	 HEqh3yiPzIetconygJWdhfR2de/BxBniLBWUiN7/9mSGuU8v/sR7tNDMfAPlyIfnJi
+	 IfVODv3f/iYEkWWdf2/uvHTQKNC2oIWncAi1LjHE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jorge Ramirez-Ortiz <jorge.ramirez@oss.qualcomm.com>,
-	Bryan ODonoghue <bryan.odonoghue@linaro.org>,
-	Vikash Garodia <quic_vgarodia@quicinc.com>,
-	Dikshita Agarwal <quic_dikshita@quicinc.com>,
-	Bryan ODonoghue <bod@kernel.org>,
-	Hans Verkuil <hverkuil@xs4all.nl>
-Subject: [PATCH 6.1 330/482] media: venus: protect against spurious interrupts during probe
+	Damien Le Moal <dlemoal@kernel.org>,
+	Manivannan Sadhasivam <mani@kernel.org>,
+	Niklas Cassel <cassel@kernel.org>
+Subject: [PATCH 5.10 373/523] PCI: endpoint: Fix configfs group list head handling
 Date: Tue, 26 Aug 2025 13:09:43 +0200
-Message-ID: <20250826110938.968688011@linuxfoundation.org>
+Message-ID: <20250826110933.666425978@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250826110930.769259449@linuxfoundation.org>
-References: <20250826110930.769259449@linuxfoundation.org>
+In-Reply-To: <20250826110924.562212281@linuxfoundation.org>
+References: <20250826110924.562212281@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -65,56 +62,66 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jorge Ramirez-Ortiz <jorge.ramirez@oss.qualcomm.com>
+From: Damien Le Moal <dlemoal@kernel.org>
 
-commit 3200144a2fa4209dc084a19941b9b203b43580f0 upstream.
+commit d79123d79a8154b4318529b7b2ff7e15806f480b upstream.
 
-Make sure the interrupt handler is initialized before the interrupt is
-registered.
+Doing a list_del() on the epf_group field of struct pci_epf_driver in
+pci_epf_remove_cfs() is not correct as this field is a list head, not
+a list entry. This list_del() call triggers a KASAN warning when an
+endpoint function driver which has a configfs attribute group is torn
+down:
 
-If the IRQ is registered before hfi_create(), it's possible that an
-interrupt fires before the handler setup is complete, leading to a NULL
-dereference.
+==================================================================
+BUG: KASAN: slab-use-after-free in pci_epf_remove_cfs+0x17c/0x198
+Write of size 8 at addr ffff00010f4a0d80 by task rmmod/319
 
-This error condition has been observed during system boot on Rb3Gen2.
+CPU: 3 UID: 0 PID: 319 Comm: rmmod Not tainted 6.16.0-rc2 #1 NONE
+Hardware name: Radxa ROCK 5B (DT)
+Call trace:
+show_stack+0x2c/0x84 (C)
+dump_stack_lvl+0x70/0x98
+print_report+0x17c/0x538
+kasan_report+0xb8/0x190
+__asan_report_store8_noabort+0x20/0x2c
+pci_epf_remove_cfs+0x17c/0x198
+pci_epf_unregister_driver+0x18/0x30
+nvmet_pci_epf_cleanup_module+0x24/0x30 [nvmet_pci_epf]
+__arm64_sys_delete_module+0x264/0x424
+invoke_syscall+0x70/0x260
+el0_svc_common.constprop.0+0xac/0x230
+do_el0_svc+0x40/0x58
+el0_svc+0x48/0xdc
+el0t_64_sync_handler+0x10c/0x138
+el0t_64_sync+0x198/0x19c
+...
 
-Fixes: af2c3834c8ca ("[media] media: venus: adding core part and helper functions")
+Remove this incorrect list_del() call from pci_epf_remove_cfs().
+
+Fixes: ef1433f717a2 ("PCI: endpoint: Create configfs entry for each pci_epf_device_id table entry")
+Signed-off-by: Damien Le Moal <dlemoal@kernel.org>
+Signed-off-by: Manivannan Sadhasivam <mani@kernel.org>
+Reviewed-by: Niklas Cassel <cassel@kernel.org>
 Cc: stable@vger.kernel.org
-Signed-off-by: Jorge Ramirez-Ortiz <jorge.ramirez@oss.qualcomm.com>
-Reviewed-by: Bryan O'Donoghue <bryan.odonoghue@linaro.org>
-Reviewed-by: Vikash Garodia <quic_vgarodia@quicinc.com>
-Reviewed-by: Dikshita Agarwal <quic_dikshita@quicinc.com>
-Tested-by: Dikshita Agarwal <quic_dikshita@quicinc.com> # RB5
-Signed-off-by: Bryan O'Donoghue <bod@kernel.org>
-Signed-off-by: Hans Verkuil <hverkuil@xs4all.nl>
+Link: https://patch.msgid.link/20250624114544.342159-2-dlemoal@kernel.org
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/media/platform/qcom/venus/core.c |    8 ++++----
- 1 file changed, 4 insertions(+), 4 deletions(-)
+ drivers/pci/endpoint/pci-epf-core.c |    1 -
+ 1 file changed, 1 deletion(-)
 
---- a/drivers/media/platform/qcom/venus/core.c
-+++ b/drivers/media/platform/qcom/venus/core.c
-@@ -333,13 +333,13 @@ static int venus_probe(struct platform_d
- 	INIT_DELAYED_WORK(&core->work, venus_sys_error_handler);
- 	init_waitqueue_head(&core->sys_err_done);
- 
--	ret = devm_request_threaded_irq(dev, core->irq, hfi_isr, venus_isr_thread,
--					IRQF_TRIGGER_HIGH | IRQF_ONESHOT,
--					"venus", core);
-+	ret = hfi_create(core, &venus_core_ops);
- 	if (ret)
- 		goto err_core_put;
- 
--	ret = hfi_create(core, &venus_core_ops);
-+	ret = devm_request_threaded_irq(dev, core->irq, hfi_isr, venus_isr_thread,
-+					IRQF_TRIGGER_HIGH | IRQF_ONESHOT,
-+					"venus", core);
- 	if (ret)
- 		goto err_core_put;
+--- a/drivers/pci/endpoint/pci-epf-core.c
++++ b/drivers/pci/endpoint/pci-epf-core.c
+@@ -147,7 +147,6 @@ static void pci_epf_remove_cfs(struct pc
+ 	mutex_lock(&pci_epf_mutex);
+ 	list_for_each_entry_safe(group, tmp, &driver->epf_group, group_entry)
+ 		pci_ep_cfs_remove_epf_group(group);
+-	list_del(&driver->epf_group);
+ 	mutex_unlock(&pci_epf_mutex);
+ }
  
 
 
