@@ -1,58 +1,56 @@
-Return-Path: <stable+bounces-174679-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-174197-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 899C6B36470
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 15:38:31 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3F3C0B36208
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 15:15:10 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id C96681BC68DD
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 13:32:09 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 5EA0B2A83C7
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 13:09:57 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 32FF5340DA4;
-	Tue, 26 Aug 2025 13:30:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5A07A2676E9;
+	Tue, 26 Aug 2025 13:09:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="BWwcfUv0"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="tjE0g2he"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E35901E51E1;
-	Tue, 26 Aug 2025 13:30:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1979112CDA5;
+	Tue, 26 Aug 2025 13:09:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756215030; cv=none; b=E8JNYTwMymAVe5E4WDxcKV0DnpHzPBIQc2tsFUUndDqldgmfzrpwQIAF5Un2XZjmfyMDwLdfw3JYBBix5oTrR23Zp/4KXbX3RYtudILdyYcm1y8IahgDGrC9nUc9xz/GY8Je+8Mgo5aYI62oNEQxCgzaHTIPs0sTJn5vaAl6iso=
+	t=1756213750; cv=none; b=WcyruZ2KD/Nz9BdH58FhRMWlK28hSTNtm0WyIHGFmKl5YfCA6n74K1uMCsr9nOQfCLnxDsVTBb3DUBPnO1zvzpgNVZkGQbruCrj5iu8cmIevsyA9l/0hoCE5ldn7iy7Hw/V+Fx2b0hPOL6CbpQ1PMcmPcajQUd5TbF8crzqiZOI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756215030; c=relaxed/simple;
-	bh=MnbyQDFnk+kTuNXHstk7Iya+/EE5KgdZnzAWTOj2DVo=;
+	s=arc-20240116; t=1756213750; c=relaxed/simple;
+	bh=PgqtDdK7aMxS2BD2vgSZT4tEqLlLG6MOwxY3dP5R8Nw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=uLmC/iEfsWDXpwf+J6TbhDRnu735OgpZIScNJ7qpSlHPnBV4VGp6dycDlga3hFN8DP8NG1mZE1epJ40lK9ifvVvFqoc+e+kyH59ojVjfVjw2A03fxxmaRV+4fIZaMfGlW+k6eVr++Opj1sNLAx9zF3DsM6+JpQHRQ//OqkBsr28=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=BWwcfUv0; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 72FDDC4CEF1;
-	Tue, 26 Aug 2025 13:30:29 +0000 (UTC)
+	 MIME-Version; b=khrWvJ8fkLfDeCtqzzSAWEq9orchEQQPi97sKqeiaPvC5FeMsPACo8cFOnBaXuKsyQYEagAGaYOwhjU3+wLv+xLTeFyT9AknhgzhgLRKBrJpwxhZPFIf/1x89fbnfWAFOVVUvFwifIWwujYRHeyqAxaFV88fDaQDtVCVmPYaJ8s=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=tjE0g2he; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9E961C4CEF1;
+	Tue, 26 Aug 2025 13:09:09 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1756215029;
-	bh=MnbyQDFnk+kTuNXHstk7Iya+/EE5KgdZnzAWTOj2DVo=;
+	s=korg; t=1756213750;
+	bh=PgqtDdK7aMxS2BD2vgSZT4tEqLlLG6MOwxY3dP5R8Nw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=BWwcfUv0qN78bR3+2YFt3Qo/qLn/j5KFysfhWtAArP9Yu2s7FW2HxFAGyOs6VDquw
-	 a5+BTIJzhwCsIZ15IIoUIwpesbtcx0oYPupVdrJdDLc2ihraxynMyPq7OGESim+rnY
-	 v34EISzfkg9Cffi/qSwvF78vyNhMt6yicoPzVO8k=
+	b=tjE0g2helZvma00t+sH3RXALdDmXGp4iJ97MHAACr9PRuikBW/oaus4eXiiLSVuAj
+	 cuyGlwFXDtMjy5MFzOl+OMmfRUqUK7uwwhUrfcYPhUhH2ZAVtjM9cVfBPPuUEEInoE
+	 XoCXy6Lc9qJBaXwYz0XoqGeZGmlif+43c+Vdpro4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Daniel Vacek <neelx@suse.com>,
-	Qu Wenruo <wqu@suse.com>,
-	Filipe Manana <fdmanana@suse.com>,
-	David Sterba <dsterba@suse.com>,
+	Li Jun <jun.li@nxp.com>,
+	Johan Hovold <johan@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 361/482] btrfs: abort transaction on unexpected eb generation at btrfs_copy_root()
+Subject: [PATCH 6.6 465/587] usb: dwc3: imx8mp: fix device leak at unbind
 Date: Tue, 26 Aug 2025 13:10:14 +0200
-Message-ID: <20250826110939.753957954@linuxfoundation.org>
+Message-ID: <20250826111004.812748991@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250826110930.769259449@linuxfoundation.org>
-References: <20250826110930.769259449@linuxfoundation.org>
+In-Reply-To: <20250826110952.942403671@linuxfoundation.org>
+References: <20250826110952.942403671@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,50 +62,58 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Filipe Manana <fdmanana@suse.com>
+From: Johan Hovold <johan@kernel.org>
 
-[ Upstream commit 33e8f24b52d2796b8cfb28c19a1a7dd6476323a8 ]
+[ Upstream commit 086a0e516f7b3844e6328a5c69e2708b66b0ce18 ]
 
-If we find an unexpected generation for the extent buffer we are cloning
-at btrfs_copy_root(), we just WARN_ON() and don't error out and abort the
-transaction, meaning we allow to persist metadata with an unexpected
-generation. Instead of warning only, abort the transaction and return
--EUCLEAN.
+Make sure to drop the reference to the dwc3 device taken by
+of_find_device_by_node() on probe errors and on driver unbind.
 
-CC: stable@vger.kernel.org # 6.1+
-Reviewed-by: Daniel Vacek <neelx@suse.com>
-Reviewed-by: Qu Wenruo <wqu@suse.com>
-Signed-off-by: Filipe Manana <fdmanana@suse.com>
-Reviewed-by: David Sterba <dsterba@suse.com>
-Signed-off-by: David Sterba <dsterba@suse.com>
+Fixes: 6dd2565989b4 ("usb: dwc3: add imx8mp dwc3 glue layer driver")
+Cc: stable@vger.kernel.org	# 5.12
+Cc: Li Jun <jun.li@nxp.com>
+Signed-off-by: Johan Hovold <johan@kernel.org>
+Link: https://lore.kernel.org/r/20250724091910.21092-2-johan@kernel.org
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- fs/btrfs/ctree.c |    9 ++++++++-
- 1 file changed, 8 insertions(+), 1 deletion(-)
+ drivers/usb/dwc3/dwc3-imx8mp.c |    6 +++++-
+ 1 file changed, 5 insertions(+), 1 deletion(-)
 
---- a/fs/btrfs/ctree.c
-+++ b/fs/btrfs/ctree.c
-@@ -237,7 +237,14 @@ int btrfs_copy_root(struct btrfs_trans_h
+--- a/drivers/usb/dwc3/dwc3-imx8mp.c
++++ b/drivers/usb/dwc3/dwc3-imx8mp.c
+@@ -244,7 +244,7 @@ static int dwc3_imx8mp_probe(struct plat
+ 					IRQF_ONESHOT, dev_name(dev), dwc3_imx);
+ 	if (err) {
+ 		dev_err(dev, "failed to request IRQ #%d --> %d\n", irq, err);
+-		goto depopulate;
++		goto put_dwc3;
+ 	}
  
- 	write_extent_buffer_fsid(cow, fs_info->fs_devices->metadata_uuid);
+ 	device_set_wakeup_capable(dev, true);
+@@ -252,6 +252,8 @@ static int dwc3_imx8mp_probe(struct plat
  
--	WARN_ON(btrfs_header_generation(buf) > trans->transid);
-+	if (unlikely(btrfs_header_generation(buf) > trans->transid)) {
-+		btrfs_tree_unlock(cow);
-+		free_extent_buffer(cow);
-+		ret = -EUCLEAN;
-+		btrfs_abort_transaction(trans, ret);
-+		return ret;
-+	}
+ 	return 0;
+ 
++put_dwc3:
++	put_device(&dwc3_imx->dwc3->dev);
+ depopulate:
+ 	of_platform_depopulate(dev);
+ err_node_put:
+@@ -272,6 +274,8 @@ static void dwc3_imx8mp_remove(struct pl
+ 	struct dwc3_imx8mp *dwc3_imx = platform_get_drvdata(pdev);
+ 	struct device *dev = &pdev->dev;
+ 
++	put_device(&dwc3_imx->dwc3->dev);
 +
- 	if (new_root_objectid == BTRFS_TREE_RELOC_OBJECTID)
- 		ret = btrfs_inc_ref(trans, root, cow, 1);
- 	else
+ 	pm_runtime_get_sync(dev);
+ 	of_platform_depopulate(dev);
+ 
 
 
 
