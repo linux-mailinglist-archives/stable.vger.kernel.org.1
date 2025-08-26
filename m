@@ -1,55 +1,56 @@
-Return-Path: <stable+bounces-176277-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-174245-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 72F62B36CD2
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 17:01:55 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 86BE6B36243
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 15:17:15 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 8A7315873C9
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 14:43:29 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 159BB2027EF
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 13:11:32 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1EE6334DCFE;
-	Tue, 26 Aug 2025 14:40:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 00E1C26158C;
+	Tue, 26 Aug 2025 13:11:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="jO+IMw/I"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="IB1J7pwB"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CC1EF34AAF8;
-	Tue, 26 Aug 2025 14:40:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B379018F2FC;
+	Tue, 26 Aug 2025 13:11:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756219237; cv=none; b=Q1UxkDPFTi5sfu3D3HlS+DbBMaMD+NbD/onmPLQoyHxpFxGDNnC75+eRvRESJdBAhLb8qlf5x4fu6VFvkU8ZmY9tMamMdbnfuGuEICoJkA+XaSpMvTdYElFKnmCSa21WaGIWcu89r3zRq5khtuqv135b6UeoOOvnBPF3a08m6W4=
+	t=1756213877; cv=none; b=uxyML9BikJnPI5HK81DXabikqD2gdMJxS1468gsy8GFECPtiM9+n6H3kc6X8zocQF/OUmDlsGycf3Qzm+bjAYSIbqxZ0XuHvdDbFUxois9scxCbf5gLU0zReevM61PcDXUehPXJIi1oJeGzECdCehqLtkbGTPuzZeUg+qIBxbkQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756219237; c=relaxed/simple;
-	bh=pxPzXMhy/WdPbf7/OitDRUO5o+pRit7qw8HUHwYZV3c=;
+	s=arc-20240116; t=1756213877; c=relaxed/simple;
+	bh=nRxttC8r5Rzg9vH1XkZv7NnhqvkPCCxz1/gmVk2UxUo=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=uvbObQ7z0om1FS/KM2EAdybhVlHKcYH7AfVSjp/+UQ2K2jV9gnYwM6IB/sdTM4skdNY0/6ut5VAHF2HrQXVjITnYtUG59b0IXfnk7U8dJ3RH+g+tUHVg2NKlmFiGYCEe/PD5O8RXjwB3yKrGIX8Firf+YMdVivWho/4WyTow1xQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=jO+IMw/I; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5F9E2C4CEF1;
-	Tue, 26 Aug 2025 14:40:37 +0000 (UTC)
+	 MIME-Version; b=ph25ig3ANkQrq98t85S02XQlQ9gYZiSwQLwpA/amv5LxwkjwblGWooF5zEWIn+k4UTFQo+8bgS9gb3unn/ErNj9tneHAL8194bbt3vga/6NoXydVFCHRdjKHyWXmzcE+paT5o5MjA4rJIVTw1VPbr0BZ1UZn9lYDjOPc/reEqaM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=IB1J7pwB; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 382FCC4CEF1;
+	Tue, 26 Aug 2025 13:11:17 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1756219237;
-	bh=pxPzXMhy/WdPbf7/OitDRUO5o+pRit7qw8HUHwYZV3c=;
+	s=korg; t=1756213877;
+	bh=nRxttC8r5Rzg9vH1XkZv7NnhqvkPCCxz1/gmVk2UxUo=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=jO+IMw/IXJUdslKnbZW+FPpzqT/LYNDGfLMQppFu51miUbEWzLeDLDJj+zb530Fw8
-	 gBT9GSDcKS9NMS/b9pnQeL4rIQeKZYvtIm8d6nL35Uk29G47NXJzjp4aqVuAY/7gB5
-	 WoWRmwinIlWMIcjF7voYkx3w+Jylv65XBJ3PGtbs=
+	b=IB1J7pwBOz7dUzSmyTh8NkydyZp/VzbPv0o4yszqLoLShL7Wt4vuoRanH9z1njBHk
+	 dsMidqPdHnywm8e1B6c3/lrZeuseuIz5vmT/cxNFLZw0kTJ29NcJ66phhjKz0yWiyj
+	 ZIlkI5axeHQD2ovgSflpUtq7ge8YG7Mgyl+CXnZE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Ludwig Disterhof <ludwig@disterhof.eu>,
-	Hans Verkuil <hverkuil@xs4all.nl>
-Subject: [PATCH 5.4 305/403] media: usbtv: Lock resolution while streaming
+	Phillip Lougher <phillip@squashfs.org.uk>,
+	Scott GUO <scottzhguo@tencent.com>,
+	Andrew Morton <akpm@linux-foundation.org>
+Subject: [PATCH 6.6 482/587] squashfs: fix memory leak in squashfs_fill_super
 Date: Tue, 26 Aug 2025 13:10:31 +0200
-Message-ID: <20250826110915.244060855@linuxfoundation.org>
+Message-ID: <20250826111005.235399634@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250826110905.607690791@linuxfoundation.org>
-References: <20250826110905.607690791@linuxfoundation.org>
+In-Reply-To: <20250826110952.942403671@linuxfoundation.org>
+References: <20250826110952.942403671@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,44 +62,65 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.4-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Ludwig Disterhof <ludwig@disterhof.eu>
+From: Phillip Lougher <phillip@squashfs.org.uk>
 
-commit 7e40e0bb778907b2441bff68d73c3eb6b6cd319f upstream.
+commit b64700d41bdc4e9f82f1346c15a3678ebb91a89c upstream.
 
-When an program is streaming (ffplay) and another program (qv4l2)
-changes the TV standard from NTSC to PAL, the kernel crashes due to trying
-to copy to unmapped memory.
+If sb_min_blocksize returns 0, squashfs_fill_super exits without freeing
+allocated memory (sb->s_fs_info).
 
-Changing from NTSC to PAL increases the resolution in the usbtv struct,
-but the video plane buffer isn't adjusted, so it overflows.
+Fix this by moving the call to sb_min_blocksize to before memory is
+allocated.
 
-Fixes: 0e0fe3958fdd13d ("[media] usbtv: Add support for PAL video source")
-Cc: stable@vger.kernel.org
-Signed-off-by: Ludwig Disterhof <ludwig@disterhof.eu>
-Signed-off-by: Hans Verkuil <hverkuil@xs4all.nl>
-[hverkuil: call vb2_is_busy instead of vb2_is_streaming]
+Link: https://lkml.kernel.org/r/20250811223740.110392-1-phillip@squashfs.org.uk
+Fixes: 734aa85390ea ("Squashfs: check return result of sb_min_blocksize")
+Signed-off-by: Phillip Lougher <phillip@squashfs.org.uk>
+Reported-by: Scott GUO <scottzhguo@tencent.com>
+Closes: https://lore.kernel.org/all/20250811061921.3807353-1-scott_gzh@163.com
+Cc: <stable@vger.kernel.org>
+Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/media/usb/usbtv/usbtv-video.c |    4 ++++
- 1 file changed, 4 insertions(+)
+ fs/squashfs/super.c |   14 +++++++-------
+ 1 file changed, 7 insertions(+), 7 deletions(-)
 
---- a/drivers/media/usb/usbtv/usbtv-video.c
-+++ b/drivers/media/usb/usbtv/usbtv-video.c
-@@ -73,6 +73,10 @@ static int usbtv_configure_for_norm(stru
- 	}
+--- a/fs/squashfs/super.c
++++ b/fs/squashfs/super.c
+@@ -187,10 +187,15 @@ static int squashfs_fill_super(struct su
+ 	unsigned short flags;
+ 	unsigned int fragments;
+ 	u64 lookup_table_start, xattr_id_table_start, next_table;
+-	int err;
++	int err, devblksize = sb_min_blocksize(sb, SQUASHFS_DEVBLK_SIZE);
  
- 	if (params) {
-+		if (vb2_is_busy(&usbtv->vb2q) &&
-+		    (usbtv->width != params->cap_width ||
-+		     usbtv->height != params->cap_height))
-+			return -EBUSY;
- 		usbtv->width = params->cap_width;
- 		usbtv->height = params->cap_height;
- 		usbtv->n_chunks = usbtv->width * usbtv->height
+ 	TRACE("Entered squashfs_fill_superblock\n");
+ 
++	if (!devblksize) {
++		errorf(fc, "squashfs: unable to set blocksize\n");
++		return -EINVAL;
++	}
++
+ 	sb->s_fs_info = kzalloc(sizeof(*msblk), GFP_KERNEL);
+ 	if (sb->s_fs_info == NULL) {
+ 		ERROR("Failed to allocate squashfs_sb_info\n");
+@@ -201,12 +206,7 @@ static int squashfs_fill_super(struct su
+ 
+ 	msblk->panic_on_errors = (opts->errors == Opt_errors_panic);
+ 
+-	msblk->devblksize = sb_min_blocksize(sb, SQUASHFS_DEVBLK_SIZE);
+-	if (!msblk->devblksize) {
+-		errorf(fc, "squashfs: unable to set blocksize\n");
+-		return -EINVAL;
+-	}
+-
++	msblk->devblksize = devblksize;
+ 	msblk->devblksize_log2 = ffz(~msblk->devblksize);
+ 
+ 	mutex_init(&msblk->meta_index_mutex);
 
 
 
