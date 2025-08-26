@@ -1,55 +1,56 @@
-Return-Path: <stable+bounces-176132-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-175237-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6BF6CB36C01
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 16:51:36 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 344C5B36723
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 16:04:03 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 53DDE565759
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 14:37:41 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id C45D01C226D5
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 13:56:44 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3B59F35FC10;
-	Tue, 26 Aug 2025 14:34:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 73531341654;
+	Tue, 26 Aug 2025 13:55:05 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="I+AqHig3"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="H9XWYsCq"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id ECDA335CEB3;
-	Tue, 26 Aug 2025 14:34:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3069534F48B;
+	Tue, 26 Aug 2025 13:55:05 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756218864; cv=none; b=a5eD9rnQTgue+snLN9LEADLBQT65h0FE8w7T4TokOXjx1k3Zy2WV6JFhpz9ZSs7GqurVe150yH2SJyrSHE/VT0bvDEEImnrqQS6EtQfIPH6jykRYBWrzBIx2QKx+vTFiYd3iP5TgTFIT7c/WDSN90CkVzfJjRAVyMx4GZArJX3g=
+	t=1756216505; cv=none; b=pwiKFdQ8kM7PhKsdHIalLLlKSC5YKemkyzD4mdEIt/tw46abHzJ1PIIBgH5UyuYYPR/IaBGi4yH/hYb+fLqy/CrinqP4Cu3pFRZYxmeJCMRaOyIIkBzkuRCYi9oXgAHtdufbXN6WKdvlXtv/ZPwNfQvMR74KhC53BU29nRTDzR4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756218864; c=relaxed/simple;
-	bh=0qjg/4704ParXVyGPBMCnYiEQsRlKcn60Yjr4GGUCjA=;
+	s=arc-20240116; t=1756216505; c=relaxed/simple;
+	bh=4w6til42xhyOMiEj6ix+K5dP9il8X0T9bkWOtuf1snI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=qeT5Cn7SrvAoZ1/9sCnz7cfogbntee3By6IVeIRNc+WGrjIDZPyFO1wr137IxZqZRgN/Yc0mY+Gi1/Yn8oW1ixof8Q7qf2w3lNeScqHn5IStO1AZ/teoKo8x4U3NaTME4hyy8FC2svB769Xg/uXraUnq4YfJ4VZzWvvv9ESJzNY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=I+AqHig3; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7306BC4CEF1;
-	Tue, 26 Aug 2025 14:34:23 +0000 (UTC)
+	 MIME-Version; b=sPZS59vmtnZpYbn48/K20NGWUCFUtGtJ5HgeLk06ceGiu2lhnwuwRpRZOsZ2wZMcqHtKkhM5zDynm/TZob6/KRJoD0s2APfPjONch87gA6BF65WduclpQLJ9ijVUCi9ieNWqFmF5w+9eQv95Mbj9SiuW8o2hSx2PaVNYU6SY1LE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=H9XWYsCq; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B7B85C4CEF1;
+	Tue, 26 Aug 2025 13:55:04 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1756218863;
-	bh=0qjg/4704ParXVyGPBMCnYiEQsRlKcn60Yjr4GGUCjA=;
+	s=korg; t=1756216505;
+	bh=4w6til42xhyOMiEj6ix+K5dP9il8X0T9bkWOtuf1snI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=I+AqHig3cCH1UmpUD9luNp1itCOli95oMrjXQcebG9vq/J/LubDc9jV2LolAst/+K
-	 6qNfVjxxkTe5kOsTuewqvy034KqpGvvXjbeHUG3nicuI0/qkjPPYMXPbXVj4zWCBJv
-	 jdoim3YnThevUQsYDr2fflLMPTba90U+x5zWj+RU=
+	b=H9XWYsCq8g3WMFYBtHKRgzU0qW+JpUW/68MQY4dOU998xeP9kcaK7jvlB2sdNMFZe
+	 9easAixH0qd9Fsh+YN38ibhategEmfKXcxiUsbyhZd9n+6WjqiqJ4bjBreNHtIfKzh
+	 22/CFL7xLbSz7JvnT6nsU9WE/GQgD5oq703sK4k0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Ma Ke <make24@iscas.ac.cn>,
-	Jens Axboe <axboe@kernel.dk>
-Subject: [PATCH 5.4 163/403] sunvdc: Balance device refcount in vdc_port_mpgroup_check
-Date: Tue, 26 Aug 2025 13:08:09 +0200
-Message-ID: <20250826110911.394681255@linuxfoundation.org>
+	"Yury Norov [NVIDIA]" <yury.norov@gmail.com>,
+	Leon Romanovsky <leon@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.15 399/644] RDMA: hfi1: fix possible divide-by-zero in find_hw_thread_mask()
+Date: Tue, 26 Aug 2025 13:08:10 +0200
+Message-ID: <20250826110956.339946674@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250826110905.607690791@linuxfoundation.org>
-References: <20250826110905.607690791@linuxfoundation.org>
+In-Reply-To: <20250826110946.507083938@linuxfoundation.org>
+References: <20250826110946.507083938@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -59,53 +60,92 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-5.4-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Ma Ke <make24@iscas.ac.cn>
+From: Yury Norov [NVIDIA] <yury.norov@gmail.com>
 
-commit 63ce53724637e2e7ba51fe3a4f78351715049905 upstream.
+[ Upstream commit 59f7d2138591ef8f0e4e4ab5f1ab674e8181ad3a ]
 
-Using device_find_child() to locate a probed virtual-device-port node
-causes a device refcount imbalance, as device_find_child() internally
-calls get_device() to increment the device’s reference count before
-returning its pointer. vdc_port_mpgroup_check() directly returns true
-upon finding a matching device without releasing the reference via
-put_device(). We should call put_device() to decrement refcount.
+The function divides number of online CPUs by num_core_siblings, and
+later checks the divider by zero. This implies a possibility to get
+and divide-by-zero runtime error. Fix it by moving the check prior to
+division. This also helps to save one indentation level.
 
-As comment of device_find_child() says, 'NOTE: you will need to drop
-the reference with put_device() after use'.
-
-Found by code review.
-
-Cc: stable@vger.kernel.org
-Fixes: 3ee70591d6c4 ("sunvdc: prevent sunvdc panic when mpgroup disk added to guest domain")
-Signed-off-by: Ma Ke <make24@iscas.ac.cn>
-Link: https://lore.kernel.org/r/20250719075856.3447953-1-make24@iscas.ac.cn
-Signed-off-by: Jens Axboe <axboe@kernel.dk>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Signed-off-by: Yury Norov [NVIDIA] <yury.norov@gmail.com>
+Link: https://patch.msgid.link/20250604193947.11834-3-yury.norov@gmail.com
+Signed-off-by: Leon Romanovsky <leon@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/block/sunvdc.c |    4 +++-
- 1 file changed, 3 insertions(+), 1 deletion(-)
+ drivers/infiniband/hw/hfi1/affinity.c | 44 +++++++++++++++------------
+ 1 file changed, 24 insertions(+), 20 deletions(-)
 
---- a/drivers/block/sunvdc.c
-+++ b/drivers/block/sunvdc.c
-@@ -967,8 +967,10 @@ static bool vdc_port_mpgroup_check(struc
- 	dev = device_find_child(vdev->dev.parent, &port_data,
- 				vdc_device_probed);
+diff --git a/drivers/infiniband/hw/hfi1/affinity.c b/drivers/infiniband/hw/hfi1/affinity.c
+index 4c403d9e90cb..2b17acbb3569 100644
+--- a/drivers/infiniband/hw/hfi1/affinity.c
++++ b/drivers/infiniband/hw/hfi1/affinity.c
+@@ -967,31 +967,35 @@ static void find_hw_thread_mask(uint hw_thread_no, cpumask_var_t hw_thread_mask,
+ 				struct hfi1_affinity_node_list *affinity)
+ {
+ 	int possible, curr_cpu, i;
+-	uint num_cores_per_socket = node_affinity.num_online_cpus /
++	uint num_cores_per_socket;
++
++	cpumask_copy(hw_thread_mask, &affinity->proc.mask);
++
++	if (affinity->num_core_siblings == 0)
++		return;
++
++	num_cores_per_socket = node_affinity.num_online_cpus /
+ 					affinity->num_core_siblings /
+ 						node_affinity.num_online_nodes;
  
--	if (dev)
-+	if (dev) {
-+		put_device(dev);
- 		return true;
-+	}
+-	cpumask_copy(hw_thread_mask, &affinity->proc.mask);
+-	if (affinity->num_core_siblings > 0) {
+-		/* Removing other siblings not needed for now */
+-		possible = cpumask_weight(hw_thread_mask);
+-		curr_cpu = cpumask_first(hw_thread_mask);
+-		for (i = 0;
+-		     i < num_cores_per_socket * node_affinity.num_online_nodes;
+-		     i++)
+-			curr_cpu = cpumask_next(curr_cpu, hw_thread_mask);
+-
+-		for (; i < possible; i++) {
+-			cpumask_clear_cpu(curr_cpu, hw_thread_mask);
+-			curr_cpu = cpumask_next(curr_cpu, hw_thread_mask);
+-		}
++	/* Removing other siblings not needed for now */
++	possible = cpumask_weight(hw_thread_mask);
++	curr_cpu = cpumask_first(hw_thread_mask);
++	for (i = 0;
++	     i < num_cores_per_socket * node_affinity.num_online_nodes;
++	     i++)
++		curr_cpu = cpumask_next(curr_cpu, hw_thread_mask);
  
- 	return false;
+-		/* Identifying correct HW threads within physical cores */
+-		cpumask_shift_left(hw_thread_mask, hw_thread_mask,
+-				   num_cores_per_socket *
+-				   node_affinity.num_online_nodes *
+-				   hw_thread_no);
++	for (; i < possible; i++) {
++		cpumask_clear_cpu(curr_cpu, hw_thread_mask);
++		curr_cpu = cpumask_next(curr_cpu, hw_thread_mask);
+ 	}
++
++	/* Identifying correct HW threads within physical cores */
++	cpumask_shift_left(hw_thread_mask, hw_thread_mask,
++			   num_cores_per_socket *
++			   node_affinity.num_online_nodes *
++			   hw_thread_no);
  }
+ 
+ int hfi1_get_proc_affinity(int node)
+-- 
+2.39.5
+
 
 
 
