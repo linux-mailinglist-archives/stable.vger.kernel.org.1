@@ -1,56 +1,58 @@
-Return-Path: <stable+bounces-174785-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-175430-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id E2239B3652A
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 15:45:30 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 1C0E7B368E1
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 16:20:25 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id A14478A7CB2
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 13:35:40 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 8C8448E429D
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 14:05:38 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 47E8E24DD11;
-	Tue, 26 Aug 2025 13:35:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C825B353374;
+	Tue, 26 Aug 2025 14:03:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="swXqSt94"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="wvz2Xatv"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 04781227EA8;
-	Tue, 26 Aug 2025 13:35:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 816B3352FC4;
+	Tue, 26 Aug 2025 14:03:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756215312; cv=none; b=r2/32G9xYWEquljrb5Xv1hY1WQYxvGq7ji7KXaNhS+wTYqFM5/UgZy4DTVJbNbB6E/dM0mGBq/HOhOo1o0SHqU3NhW2GSnahdNmY7phSIysk2jsBpux54yU1esFEICxL+sjeSNyJpA6n3u79okKitIMw0SoiXeg8K0pbuYgdVNA=
+	t=1756217021; cv=none; b=cbBuwUexBhdVU8Z3H8trbD8XjgEpu3KAdiSunAMa6sLLICFAsOhMJm2Y7R5WY4PiCFiArIjIWz5dqwAak4T3ckh5xuhgTVvAQECwoMXehGbMI++BlqhOoPBTQrnuGEup6LXaGXUTb0FSsJ+iBAeXifJ2aCDda6vu1P4dWWiNRaY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756215312; c=relaxed/simple;
-	bh=yAPCpNAZEdcnroSqWGbenpavFmeIcJU1XrOz7LU7v3k=;
+	s=arc-20240116; t=1756217021; c=relaxed/simple;
+	bh=aSy7AJdhtX+FxIJKadzQoIiQpjebwAcgBxLJt/xREvk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=iZGSbug96trSz+QPXEkJa4e5RDGa32vuugmSlgSCYf3x8vhgvU4Ldzsu36E2VmEOkPcQQY71LSUtbSCF4zqxFvA+ZZS11OOLqQhVWrjfRiA0RBHnkwt7BpVHdczxrjGBYwKhkgU52xyazKzk7tUUlEqxB3O0E2LLRAIFYHD4Gdo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=swXqSt94; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 85F92C4CEF1;
-	Tue, 26 Aug 2025 13:35:11 +0000 (UTC)
+	 MIME-Version; b=ox/yQS0usgF18+OQ6QMdwSOR0Ne2zdt653DYlllyeLIEZXm9ALoJLUZiXwWsBYEQx8kt67JvHPmkupJyoGHKjfiBwzVPKJ9Cdz8i1DgdoMLUuf0x6wjpaCelQMrt5WK1/Y8ofsqzT6/cqnoCFPHL8qEw6/qcRA4yvFHzHdo9oKo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=wvz2Xatv; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0CC61C113D0;
+	Tue, 26 Aug 2025 14:03:40 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1756215311;
-	bh=yAPCpNAZEdcnroSqWGbenpavFmeIcJU1XrOz7LU7v3k=;
+	s=korg; t=1756217021;
+	bh=aSy7AJdhtX+FxIJKadzQoIiQpjebwAcgBxLJt/xREvk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=swXqSt94A9gqvSJFSaVULbpTWLJpzi6xgAL5BFsJZyt5rLYKYSUa3EFJtBZ2CiG60
-	 3bUxoUvjGa/LmnMLoz4bAEh6Uf+RBXdD5ooezSLuxbbyhLPb2GoI469vHmphCgtrnz
-	 scKIpn4RSUC7QBZ64AX+orV+8j4rwRcNS5os/UgU=
+	b=wvz2XatvUJz8H1iAYvH9NufRUpgtJWR4SWOC+cMIAf919x27l6/gIiDJx0tWnVNHl
+	 /6ZLcNj7W/ZS7fIaELAiWB4z6NCK0lMzkxIHQUddqedguUCEHn0bIVyWz15y9FYXsN
+	 5bvvnxW3CVz4gwdaKK5tBFoOT53DEPWM7C/OVzSQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Qingfang Deng <dqfext@gmail.com>,
-	Paolo Abeni <pabeni@redhat.com>,
+	Chenyuan Yang <chenyuan0y@gmail.com>,
+	Alex Hung <alex.hung@amd.com>,
+	Dan Wheeler <daniel.wheeler@amd.com>,
+	Alex Deucher <alexander.deucher@amd.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 467/482] net: ethernet: mtk_ppe: add RCU lock around dev_fill_forward_path
+Subject: [PATCH 5.15 629/644] drm/amd/display: Add null pointer check in mod_hdcp_hdcp1_create_session()
 Date: Tue, 26 Aug 2025 13:12:00 +0200
-Message-ID: <20250826110942.360222143@linuxfoundation.org>
+Message-ID: <20250826111002.144233059@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250826110930.769259449@linuxfoundation.org>
-References: <20250826110930.769259449@linuxfoundation.org>
+In-Reply-To: <20250826110946.507083938@linuxfoundation.org>
+References: <20250826110946.507083938@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,39 +64,50 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Qingfang Deng <dqfext@gmail.com>
+From: Chenyuan Yang <chenyuan0y@gmail.com>
 
-[ Upstream commit 62c30c544359aa18b8fb2734166467a07d435c2d ]
+[ Upstream commit 7a2ca2ea64b1b63c8baa94a8f5deb70b2248d119 ]
 
-Ensure ndo_fill_forward_path() is called with RCU lock held.
+The function mod_hdcp_hdcp1_create_session() calls the function
+get_first_active_display(), but does not check its return value.
+The return value is a null pointer if the display list is empty.
+This will lead to a null pointer dereference.
 
-Fixes: 2830e314778d ("net: ethernet: mtk-ppe: fix traffic offload with bridged wlan")
-Signed-off-by: Qingfang Deng <dqfext@gmail.com>
-Link: https://patch.msgid.link/20250814012559.3705-1-dqfext@gmail.com
-Signed-off-by: Paolo Abeni <pabeni@redhat.com>
+Add a null pointer check for get_first_active_display() and return
+MOD_HDCP_STATUS_DISPLAY_NOT_FOUND if the function return null.
+
+This is similar to the commit c3e9826a2202
+("drm/amd/display: Add null pointer check for get_first_active_display()").
+
+Fixes: 2deade5ede56 ("drm/amd/display: Remove hdcp display state with mst fix")
+Signed-off-by: Chenyuan Yang <chenyuan0y@gmail.com>
+Reviewed-by: Alex Hung <alex.hung@amd.com>
+Tested-by: Dan Wheeler <daniel.wheeler@amd.com>
+Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
+(cherry picked from commit 5e43eb3cd731649c4f8b9134f857be62a416c893)
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/ethernet/mediatek/mtk_ppe_offload.c | 2 ++
- 1 file changed, 2 insertions(+)
+ drivers/gpu/drm/amd/display/modules/hdcp/hdcp_psp.c | 3 +++
+ 1 file changed, 3 insertions(+)
 
-diff --git a/drivers/net/ethernet/mediatek/mtk_ppe_offload.c b/drivers/net/ethernet/mediatek/mtk_ppe_offload.c
-index 8cb8d47227f5..cc8f4f5decaf 100644
---- a/drivers/net/ethernet/mediatek/mtk_ppe_offload.c
-+++ b/drivers/net/ethernet/mediatek/mtk_ppe_offload.c
-@@ -101,7 +101,9 @@ mtk_flow_get_wdma_info(struct net_device *dev, const u8 *addr, struct mtk_wdma_i
- 	if (!IS_ENABLED(CONFIG_NET_MEDIATEK_SOC_WED))
- 		return -1;
+diff --git a/drivers/gpu/drm/amd/display/modules/hdcp/hdcp_psp.c b/drivers/gpu/drm/amd/display/modules/hdcp/hdcp_psp.c
+index b840da3f052a..b5a15b7aae66 100644
+--- a/drivers/gpu/drm/amd/display/modules/hdcp/hdcp_psp.c
++++ b/drivers/gpu/drm/amd/display/modules/hdcp/hdcp_psp.c
+@@ -256,6 +256,9 @@ enum mod_hdcp_status mod_hdcp_hdcp1_create_session(struct mod_hdcp *hdcp)
+ 		return MOD_HDCP_STATUS_FAILURE;
+ 	}
  
-+	rcu_read_lock();
- 	err = dev_fill_forward_path(dev, addr, &stack);
-+	rcu_read_unlock();
- 	if (err)
- 		return err;
++	if (!display)
++		return MOD_HDCP_STATUS_DISPLAY_NOT_FOUND;
++
+ 	hdcp_cmd = (struct ta_hdcp_shared_memory *)psp->hdcp_context.context.mem_context.shared_buf;
  
+ 	mutex_lock(&psp->hdcp_context.mutex);
 -- 
 2.50.1
 
