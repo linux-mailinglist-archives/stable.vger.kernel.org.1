@@ -1,58 +1,57 @@
-Return-Path: <stable+bounces-174876-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-173746-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 21E43B36610
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 15:52:58 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 9E2DFB35F77
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 14:49:32 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 92DE1464ED2
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 13:39:13 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 7B39C206990
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 12:49:32 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 584B520CCCA;
-	Tue, 26 Aug 2025 13:39:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8164B537F8;
+	Tue, 26 Aug 2025 12:49:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="nkJdNDAe"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="SSOtAxBb"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 162D5156F4A;
-	Tue, 26 Aug 2025 13:39:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3B47611187;
+	Tue, 26 Aug 2025 12:49:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756215549; cv=none; b=FUyMF+WwjKlf79xaSeeQ75KG8KKco1zb+eAainHN5vgeeUiZJK24Ct9g0x4lILmfspwhdX4D7CGEKW3yEfgQkCyWlOnrxbAexj5O/sXNGwHgqFj/kWvbz9QxkbYs/CsK/C44UpYSHy1lVSfCnu9ZNPBDE6MbnNFj+tVWoGvAMI8=
+	t=1756212565; cv=none; b=txO6gaxExS5PeRcs/57jB6valR2QwkMbNkBwM3ODkr3ngeYu1QG9rqr8GGgYH7GBTHoUH5wjRCGHdts40w4gajGtzRWXWBuVKBjnpEH6PGIHxaYoVp0F2+RL1XY0yXyRs/6RR3wHmO3+zRtERgfS372VfNU17pgd+XMulhVx5Zs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756215549; c=relaxed/simple;
-	bh=b9ZhaSOeYleKZ5VPKr50sW8wSLC9IqGw5kAtp0HBOcY=;
+	s=arc-20240116; t=1756212565; c=relaxed/simple;
+	bh=0q1HZL5oVhpzfQjTf/aAvb4aQF2JYwxEp35NBux3dJE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=stvHMW0rZ6drvNXH+XjwiGjgPBIwDsMsTEjQmDcYKmHqh6ARE/aF6uhfgKKHyTUv+1N50rbsVmkd1pR90ewfpSJAfE4LDR6SjJUdIK845q6l/m/I9lZBFjIdt4sFEprZedx20iwCnmbC2Bo77BW2Qgq19NWYyWd2wjHJFLobGN0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=nkJdNDAe; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 42D19C116B1;
-	Tue, 26 Aug 2025 13:39:08 +0000 (UTC)
+	 MIME-Version; b=WosE/CL/0TDguJL/SwhBk1K4dpWrr6yW6HgG5zJ/tuDtShhsYHgW9HD6kMJQCeJme53HwvvbSckdeYL5DDLb0QHFynfyNdYdC5JENpeCSiTRPBAh5q0zQKa3sor/mJSLTTyVohgIhonOf4u6aNpuQgXkJx69LgPBzrOttc6Dh/I=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=SSOtAxBb; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 30E02C4CEF4;
+	Tue, 26 Aug 2025 12:49:24 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1756215548;
-	bh=b9ZhaSOeYleKZ5VPKr50sW8wSLC9IqGw5kAtp0HBOcY=;
+	s=korg; t=1756212564;
+	bh=0q1HZL5oVhpzfQjTf/aAvb4aQF2JYwxEp35NBux3dJE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=nkJdNDAe68e6SK8NFnDkkGeAfwo5zjJqh8ViSGQCiKWiATGFZl+bk20nVMjaf0iB8
-	 goZ6HKmhsjGCo8fIwwqaHqfvh8PPjorJ6iCIJwPBWeENQsM2VHF5DlgQlrBUeCybB6
-	 IYNAkv8NUinf9Xof1ZXdzC9mvDebZG6qoZHTtiN4=
+	b=SSOtAxBbhl0gGdGXWEwkbJojeG5TzeAGqPu4TAW4Joiam42M6BeBejcjo6jDexV4t
+	 uq09yg10nqZMPfKG16ThQi9pnc2v8cZ2nLage4CwAcsdEB4hVK94YFqPlBjXKURwyp
+	 YpH73cO/wkQeUwJc2qywgY94P3LccD6Q9oAG3fz8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Sebastian Andrzej Siewior <bigeasy@linutronix.de>,
-	Fabrice Gasnier <fabrice.gasnier@foss.st.com>,
-	Gatien Chevallier <gatien.chevallier@foss.st.com>,
-	Dmitry Torokhov <dmitry.torokhov@gmail.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 076/644] Input: gpio-keys - fix a sleep while atomic with PREEMPT_RT
+	Roger Quadros <rogerq@kernel.org>,
+	Johan Hovold <johan@kernel.org>,
+	Simon Horman <horms@kernel.org>,
+	Jakub Kicinski <kuba@kernel.org>
+Subject: [PATCH 6.6 018/587] net: ti: icss-iep: fix device and OF node leaks at probe
 Date: Tue, 26 Aug 2025 13:02:47 +0200
-Message-ID: <20250826110948.381952222@linuxfoundation.org>
+Message-ID: <20250826110953.418046467@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250826110946.507083938@linuxfoundation.org>
-References: <20250826110946.507083938@linuxfoundation.org>
+In-Reply-To: <20250826110952.942403671@linuxfoundation.org>
+References: <20250826110952.942403671@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,73 +63,87 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Fabrice Gasnier <fabrice.gasnier@foss.st.com>
+From: Johan Hovold <johan@kernel.org>
 
-commit f4a8f561d08e39f7833d4a278ebfb12a41eef15f upstream.
+commit e05c54974a05ab19658433545d6ced88d9075cf0 upstream.
 
-When enabling PREEMPT_RT, the gpio_keys_irq_timer() callback runs in
-hard irq context, but the input_event() takes a spin_lock, which isn't
-allowed there as it is converted to a rt_spin_lock().
+Make sure to drop the references to the IEP OF node and device taken by
+of_parse_phandle() and of_find_device_by_node() when looking up IEP
+devices during probe.
 
-[ 4054.289999] BUG: sleeping function called from invalid context at kernel/locking/spinlock_rt.c:48
-[ 4054.290028] in_atomic(): 1, irqs_disabled(): 1, non_block: 0, pid: 0, name: swapper/0
-...
-[ 4054.290195]  __might_resched+0x13c/0x1f4
-[ 4054.290209]  rt_spin_lock+0x54/0x11c
-[ 4054.290219]  input_event+0x48/0x80
-[ 4054.290230]  gpio_keys_irq_timer+0x4c/0x78
-[ 4054.290243]  __hrtimer_run_queues+0x1a4/0x438
-[ 4054.290257]  hrtimer_interrupt+0xe4/0x240
-[ 4054.290269]  arch_timer_handler_phys+0x2c/0x44
-[ 4054.290283]  handle_percpu_devid_irq+0x8c/0x14c
-[ 4054.290297]  handle_irq_desc+0x40/0x58
-[ 4054.290307]  generic_handle_domain_irq+0x1c/0x28
-[ 4054.290316]  gic_handle_irq+0x44/0xcc
+Drop the bogus additional reference taken on successful lookup so that
+the device is released correctly by icss_iep_put().
 
-Considering the gpio_keys_irq_isr() can run in any context, e.g. it can
-be threaded, it seems there's no point in requesting the timer isr to
-run in hard irq context.
-
-Relax the hrtimer not to use the hard context.
-
-Fixes: 019002f20cb5 ("Input: gpio-keys - use hrtimer for release timer")
-Suggested-by: Sebastian Andrzej Siewior <bigeasy@linutronix.de>
-Signed-off-by: Fabrice Gasnier <fabrice.gasnier@foss.st.com>
-Signed-off-by: Gatien Chevallier <gatien.chevallier@foss.st.com>
-Link: https://lore.kernel.org/r/20250528-gpio_keys_preempt_rt-v2-1-3fc55a9c3619@foss.st.com
-Cc: stable@vger.kernel.org
-Signed-off-by: Dmitry Torokhov <dmitry.torokhov@gmail.com>
-[ adjusted context ]
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Fixes: c1e0230eeaab ("net: ti: icss-iep: Add IEP driver")
+Cc: stable@vger.kernel.org	# 6.6
+Cc: Roger Quadros <rogerq@kernel.org>
+Signed-off-by: Johan Hovold <johan@kernel.org>
+Reviewed-by: Simon Horman <horms@kernel.org>
+Link: https://patch.msgid.link/20250725171213.880-6-johan@kernel.org
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/input/keyboard/gpio_keys.c |    4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ drivers/net/ethernet/ti/icssg/icss_iep.c |   23 ++++++++++++++++++-----
+ 1 file changed, 18 insertions(+), 5 deletions(-)
 
---- a/drivers/input/keyboard/gpio_keys.c
-+++ b/drivers/input/keyboard/gpio_keys.c
-@@ -493,7 +493,7 @@ static irqreturn_t gpio_keys_irq_isr(int
- 	if (bdata->release_delay)
- 		hrtimer_start(&bdata->release_timer,
- 			      ms_to_ktime(bdata->release_delay),
--			      HRTIMER_MODE_REL_HARD);
-+			      HRTIMER_MODE_REL);
- out:
- 	spin_unlock_irqrestore(&bdata->lock, flags);
- 	return IRQ_HANDLED;
-@@ -633,7 +633,7 @@ static int gpio_keys_setup_key(struct pl
+--- a/drivers/net/ethernet/ti/icssg/icss_iep.c
++++ b/drivers/net/ethernet/ti/icssg/icss_iep.c
+@@ -702,11 +702,17 @@ struct icss_iep *icss_iep_get_idx(struct
+ 	struct platform_device *pdev;
+ 	struct device_node *iep_np;
+ 	struct icss_iep *iep;
++	int ret;
  
- 		bdata->release_delay = button->debounce_interval;
- 		hrtimer_init(&bdata->release_timer,
--			     CLOCK_REALTIME, HRTIMER_MODE_REL_HARD);
-+			     CLOCK_REALTIME, HRTIMER_MODE_REL);
- 		bdata->release_timer.function = gpio_keys_irq_timer;
+ 	iep_np = of_parse_phandle(np, "ti,iep", idx);
+-	if (!iep_np || !of_device_is_available(iep_np))
++	if (!iep_np)
+ 		return ERR_PTR(-ENODEV);
  
- 		isr = gpio_keys_irq_isr;
++	if (!of_device_is_available(iep_np)) {
++		of_node_put(iep_np);
++		return ERR_PTR(-ENODEV);
++	}
++
+ 	pdev = of_find_device_by_node(iep_np);
+ 	of_node_put(iep_np);
+ 
+@@ -715,21 +721,28 @@ struct icss_iep *icss_iep_get_idx(struct
+ 		return ERR_PTR(-EPROBE_DEFER);
+ 
+ 	iep = platform_get_drvdata(pdev);
+-	if (!iep)
+-		return ERR_PTR(-EPROBE_DEFER);
++	if (!iep) {
++		ret = -EPROBE_DEFER;
++		goto err_put_pdev;
++	}
+ 
+ 	device_lock(iep->dev);
+ 	if (iep->client_np) {
+ 		device_unlock(iep->dev);
+ 		dev_err(iep->dev, "IEP is already acquired by %s",
+ 			iep->client_np->name);
+-		return ERR_PTR(-EBUSY);
++		ret = -EBUSY;
++		goto err_put_pdev;
+ 	}
+ 	iep->client_np = np;
+ 	device_unlock(iep->dev);
+-	get_device(iep->dev);
+ 
+ 	return iep;
++
++err_put_pdev:
++	put_device(&pdev->dev);
++
++	return ERR_PTR(ret);
+ }
+ EXPORT_SYMBOL_GPL(icss_iep_get_idx);
+ 
 
 
 
