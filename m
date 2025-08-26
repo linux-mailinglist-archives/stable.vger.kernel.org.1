@@ -1,56 +1,63 @@
-Return-Path: <stable+bounces-174644-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-173564-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 44264B36376
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 15:30:09 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6D35FB35DEC
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 13:49:48 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 30BCD7AC548
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 13:28:33 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 66A80189490F
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 11:43:31 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B13772FC01F;
-	Tue, 26 Aug 2025 13:28:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 78C2D2FAC1C;
+	Tue, 26 Aug 2025 11:42:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="DQEA/mFG"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Q0gg7w3q"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6C8F53431F4;
-	Tue, 26 Aug 2025 13:28:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3524321D3C0;
+	Tue, 26 Aug 2025 11:42:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756214935; cv=none; b=AVP6Y4wjvDLaOKatkr3dp1FaZFD5XrF1uq2nV858DnEO5mYEcu+3O988pwCxlvoZRCcA7ys2AJFauchR38cE/R8zJf4sBk2oiJZmZKUSwbASc36gzjESFzwcVTQfOhrUaj54fEMLyVNoa6Ff5fTdT7MlXVbvkabrQcko6wssVyM=
+	t=1756208577; cv=none; b=I7vSBljM70QQPeuRHQAirUEVOf8SuLERiX4dZ11lmVejGxANXphZtqKaSO4mMQkRThi6Brj6C+/eQNsXw3WlK7PohbgvVTRFEhLdTCMGfpSZE3zQrbzYCFiXHnq60C4eQj1Rp4l66U4yeW4pcFStMVN0puzZ+5jDl6Tk/XwS75k=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756214935; c=relaxed/simple;
-	bh=58fUJVtT14MZR1U/4cZsAwUDpKdMmByJGIwiS5PB+Uw=;
+	s=arc-20240116; t=1756208577; c=relaxed/simple;
+	bh=km1kAcrntA8pLmP/QWWkEL4tKkHs1JFK28nNLu6bPo0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=oWYgUGKKPq2FZ9XhXlgUwxKWCObpONUHJX9BmvAGrr7AXA/N58OIqvowtlferR4WpvJL2zuABB5Oe+MiegDQBt1l3P9Am69//nlTtBuqkR7bwBQC8LDWjlIalfNWnyFR/LzdTUEljuEgGTDmlt9Tp7Vq4XyXH0T/63xBXEz3aoA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=DQEA/mFG; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id AB3CAC4CEF1;
-	Tue, 26 Aug 2025 13:28:54 +0000 (UTC)
+	 MIME-Version; b=irjGeSwX68h5kVibH3WR+SceT1pA96Tc3f3Dr9KpE7Oi/5QHgJTjEAC2KXSCLindort8jOmAO7+WW/AV2ybNmLpLBsJsdzicbOtNC7j2yv5cd8NBuzA+h9HhJg3a8U6vBT0injRSLfVvXp5Qt6M2cXQlq+4fIhMNus9c8k42Tzw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Q0gg7w3q; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 93365C4CEF1;
+	Tue, 26 Aug 2025 11:42:56 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1756214935;
-	bh=58fUJVtT14MZR1U/4cZsAwUDpKdMmByJGIwiS5PB+Uw=;
+	s=korg; t=1756208577;
+	bh=km1kAcrntA8pLmP/QWWkEL4tKkHs1JFK28nNLu6bPo0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=DQEA/mFGU2Y8rlfAbUu4phaIQbuIXWeTlOsR+8rlurtCT+fsrbfs0VOUcPrNpF+16
-	 CKnl83RWgyG58sN+HsDutCVYkZihjuzKDKU7wWSAy950orPjOzhrwnQaPyHzEKNX3M
-	 En+KPr2K7UpRnyb06HyDZIyGLXZ48Sn2qYnKqgzU=
+	b=Q0gg7w3q6BIpWLjipL5ZFeAKtnm61kpnU/MPo+HcIj8GWX5v14Tu5mQ6zBhoJZaec
+	 MorqcyAGtrNtyvYZr0WGk07VuXETlp/LOKDNxRD/1VoiR0lMhBngbL79HAA6qeS/JZ
+	 D17z9ye+BlkNbuxbdCJpTpzArg+xjRtCmFtwOhys=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Zhang Shurong <zhang_shurong@foxmail.com>,
-	Sakari Ailus <sakari.ailus@linux.intel.com>,
-	Hans Verkuil <hverkuil@xs4all.nl>
-Subject: [PATCH 6.1 326/482] media: ov2659: Fix memory leaks in ov2659_probe()
+	Dominique Martinet <asmadeus@codewreck.org>,
+	Maximilian Bosch <maximilian@mbosch.me>,
+	Ryan Lahfa <ryan@lahfa.xyz>,
+	Christian Theune <ct@flyingcircus.io>,
+	Arnout Engelen <arnout@bzzt.net>,
+	David Howells <dhowells@redhat.com>,
+	Al Viro <viro@zeniv.linux.org.uk>,
+	Christian Brauner <brauner@kernel.org>,
+	"Matthew Wilcox (Oracle)" <willy@infradead.org>,
+	Andrew Morton <akpm@linux-foundation.org>
+Subject: [PATCH 6.12 164/322] iov_iter: iterate_folioq: fix handling of offset >= folio size
 Date: Tue, 26 Aug 2025 13:09:39 +0200
-Message-ID: <20250826110938.866543428@linuxfoundation.org>
+Message-ID: <20250826110919.880310488@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250826110930.769259449@linuxfoundation.org>
-References: <20250826110930.769259449@linuxfoundation.org>
+In-Reply-To: <20250826110915.169062587@linuxfoundation.org>
+References: <20250826110915.169062587@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,47 +69,92 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Zhang Shurong <zhang_shurong@foxmail.com>
+From: Dominique Martinet <asmadeus@codewreck.org>
 
-commit 76142b137b968d47b35cdd8d1dc924677d319c8b upstream.
+commit 808471ddb0fa785559c3e7aee59be20a13b46ef5 upstream.
 
-ov2659_probe() doesn't properly free control handler resources in failure
-paths, causing memory leaks. Add v4l2_ctrl_handler_free() to prevent these
-memory leaks and reorder the ctrl_handler assignment for better code flow.
+It's apparently possible to get an iov advanced all the way up to the end
+of the current page we're looking at, e.g.
 
-Fixes: c4c0283ab3cd ("[media] media: i2c: add support for omnivision's ov2659 sensor")
-Cc: stable@vger.kernel.org
-Signed-off-by: Zhang Shurong <zhang_shurong@foxmail.com>
-Signed-off-by: Sakari Ailus <sakari.ailus@linux.intel.com>
-Signed-off-by: Hans Verkuil <hverkuil@xs4all.nl>
+(gdb) p *iter
+$24 = {iter_type = 4 '\004', nofault = false, data_source = false, iov_offset = 4096, {__ubuf_iovec = {
+      iov_base = 0xffff88800f5bc000, iov_len = 655}, {{__iov = 0xffff88800f5bc000, kvec = 0xffff88800f5bc000,
+        bvec = 0xffff88800f5bc000, folioq = 0xffff88800f5bc000, xarray = 0xffff88800f5bc000,
+        ubuf = 0xffff88800f5bc000}, count = 655}}, {nr_segs = 2, folioq_slot = 2 '\002', xarray_start = 2}}
+
+Where iov_offset is 4k with 4k-sized folios
+
+This should have been fine because we're only in the 2nd slot and there's
+another one after this, but iterate_folioq should not try to map a folio
+that skips the whole size, and more importantly part here does not end up
+zero (because 'PAGE_SIZE - skip % PAGE_SIZE' ends up PAGE_SIZE and not
+zero..), so skip forward to the "advance to next folio" code
+
+Link: https://lkml.kernel.org/r/20250813-iot_iter_folio-v3-0-a0ffad2b665a@codewreck.org
+Link: https://lkml.kernel.org/r/20250813-iot_iter_folio-v3-1-a0ffad2b665a@codewreck.org
+Signed-off-by: Dominique Martinet <asmadeus@codewreck.org>
+Fixes: db0aa2e9566f ("mm: Define struct folio_queue and ITER_FOLIOQ to handle a sequence of folios")
+Reported-by: Maximilian Bosch <maximilian@mbosch.me>
+Reported-by: Ryan Lahfa <ryan@lahfa.xyz>
+Reported-by: Christian Theune <ct@flyingcircus.io>
+Reported-by: Arnout Engelen <arnout@bzzt.net>
+Link: https://lkml.kernel.org/r/D4LHHUNLG79Y.12PI0X6BEHRHW@mbosch.me/
+Acked-by: David Howells <dhowells@redhat.com>
+Cc: Al Viro <viro@zeniv.linux.org.uk>
+Cc: Christian Brauner <brauner@kernel.org>
+Cc: Matthew Wilcox (Oracle) <willy@infradead.org>
+Cc: <stable@vger.kernel.org>	[6.12+]
+Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/media/i2c/ov2659.c |    3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+ include/linux/iov_iter.h | 20 +++++++++++---------
+ 1 file changed, 11 insertions(+), 9 deletions(-)
 
---- a/drivers/media/i2c/ov2659.c
-+++ b/drivers/media/i2c/ov2659.c
-@@ -1479,14 +1479,15 @@ static int ov2659_probe(struct i2c_clien
- 				     V4L2_CID_TEST_PATTERN,
- 				     ARRAY_SIZE(ov2659_test_pattern_menu) - 1,
- 				     0, 0, ov2659_test_pattern_menu);
--	ov2659->sd.ctrl_handler = &ov2659->ctrls;
+diff --git a/include/linux/iov_iter.h b/include/linux/iov_iter.h
+index c4aa58032faf..f9a17fbbd398 100644
+--- a/include/linux/iov_iter.h
++++ b/include/linux/iov_iter.h
+@@ -160,7 +160,7 @@ size_t iterate_folioq(struct iov_iter *iter, size_t len, void *priv, void *priv2
  
- 	if (ov2659->ctrls.error) {
- 		dev_err(&client->dev, "%s: control initialization error %d\n",
- 			__func__, ov2659->ctrls.error);
-+		v4l2_ctrl_handler_free(&ov2659->ctrls);
- 		return  ov2659->ctrls.error;
- 	}
+ 	do {
+ 		struct folio *folio = folioq_folio(folioq, slot);
+-		size_t part, remain, consumed;
++		size_t part, remain = 0, consumed;
+ 		size_t fsize;
+ 		void *base;
  
-+	ov2659->sd.ctrl_handler = &ov2659->ctrls;
- 	sd = &ov2659->sd;
- 	client->flags |= I2C_CLIENT_SCCB;
- #ifdef CONFIG_VIDEO_V4L2_SUBDEV_API
+@@ -168,14 +168,16 @@ size_t iterate_folioq(struct iov_iter *iter, size_t len, void *priv, void *priv2
+ 			break;
+ 
+ 		fsize = folioq_folio_size(folioq, slot);
+-		base = kmap_local_folio(folio, skip);
+-		part = umin(len, PAGE_SIZE - skip % PAGE_SIZE);
+-		remain = step(base, progress, part, priv, priv2);
+-		kunmap_local(base);
+-		consumed = part - remain;
+-		len -= consumed;
+-		progress += consumed;
+-		skip += consumed;
++		if (skip < fsize) {
++			base = kmap_local_folio(folio, skip);
++			part = umin(len, PAGE_SIZE - skip % PAGE_SIZE);
++			remain = step(base, progress, part, priv, priv2);
++			kunmap_local(base);
++			consumed = part - remain;
++			len -= consumed;
++			progress += consumed;
++			skip += consumed;
++		}
+ 		if (skip >= fsize) {
+ 			skip = 0;
+ 			slot++;
+-- 
+2.50.1
+
 
 
 
