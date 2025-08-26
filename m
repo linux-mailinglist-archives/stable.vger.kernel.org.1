@@ -1,59 +1,60 @@
-Return-Path: <stable+bounces-175681-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-175128-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0F6ABB369FB
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 16:33:05 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 01128B365E8
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 15:51:51 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 62B631C40E65
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 14:17:20 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 2574E7A9E7F
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 13:50:15 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id CF6103570A6;
-	Tue, 26 Aug 2025 14:14:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id AA28B352067;
+	Tue, 26 Aug 2025 13:50:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="vT9kbE5q"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="BpyGDekh"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 83905356919;
-	Tue, 26 Aug 2025 14:14:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6874134A33C;
+	Tue, 26 Aug 2025 13:50:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756217687; cv=none; b=UvTCLaDrfqzwKc+0yuoGWaEQRl/GAeNX0tFZxErlvGngQv8wGMffjmxl7xpZD1rrJEcZs2YNfkBt5l8PXBdm6fJzbBWCuL7OizVi4+fyeqVz+RVDl6GofN6v36rvtZpDX7CBQqKEF+ZWomOlp3zNj7KEqmgWAHgqmbOm7aa4r2w=
+	t=1756216215; cv=none; b=SHo8DyTop+qOXsA+qV2lo2wxaSrO62Bik6Hcdcl63Uq0DtB6v+QHs10gklufewOA7BB4FdAO1RgakIqXW05vHpUMIionOvGv+rzPGa7aEBaNdVNLfcPrpPFx3RBUR0vZaCtxLKFfXaSWAo4BpydBO6zyBQ2m9tEVlC7Z1oQEyQQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756217687; c=relaxed/simple;
-	bh=rWcKNwWAm1zfG6nNCOCEQTKD2QYyXt3wzcrgc0pwlNw=;
+	s=arc-20240116; t=1756216215; c=relaxed/simple;
+	bh=0ewIVQW4q+NZ26MWbCFEjfxY40gQMUtwVXYdB3SoNqE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=LL7TKchfpYIM25BXgJGpDTX43t0LNBUZF/i3ZsIlsUw03c7NyQeSdxEaDnO1ssZbtjpPpDfpR6KM1cBUz+FHclr7ppGw/8rs86Tzjm58o6AUEi2jYbH6TT0RjPPeqI1gZ2yY32Sga8rYiJa6k6o2ykZTQrbxfhymyzgJzABM4aQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=vT9kbE5q; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1530AC113CF;
-	Tue, 26 Aug 2025 14:14:46 +0000 (UTC)
+	 MIME-Version; b=BURwo15Gyc+YOdA4QREzSzfnheMF8ySGv6lleRDHPpSwRXpyjh87ROzFZCARvKJXLuFxtwqUetJpwpUVgj0tMQ1P3YDppu8J2rukVxd3Rb9Vazrp06vNJuzFqv0PbJ+0sXnc6JH4BPyYv9+ReZIH3k1V/BMEFFIOfdQfbOQ5UE8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=BpyGDekh; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D8FFDC113D0;
+	Tue, 26 Aug 2025 13:50:14 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1756217687;
-	bh=rWcKNwWAm1zfG6nNCOCEQTKD2QYyXt3wzcrgc0pwlNw=;
+	s=korg; t=1756216215;
+	bh=0ewIVQW4q+NZ26MWbCFEjfxY40gQMUtwVXYdB3SoNqE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=vT9kbE5qY6aTjLYEDCeo4Psl12uxCPSX2ukzcUTe8o7NhMw/p06jiiJ0iee9fYsNT
-	 xYymSXAAGT4LV94DZoZuorYmWz01fDPt0CYsQzm/GOmGsB4eUcq4Hb2HyO1tOin4Wq
-	 Ev7Tw337PXLrU7zyw0J/EUEJLfeTZJq7N8JC/lrQ=
+	b=BpyGDekh+hGN5WnU3sGlOlSzOhvhIK/1ZlL7UQktUTCmxZAiF2caQIysJGq377lSB
+	 5nRQXv3ui+LXb6zWA1gnrER+fWj17Y8l13T1YnlOok4ucsVo6BT1BBSTAXBfrqyA4c
+	 /lylCA5Asjud9ggwVp614vTbpdDgB5Bce+ttseG0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	syzbot+773e51afe420baaf0e2b@syzkaller.appspotmail.com,
-	syzbot+70a42f45e76bede082be@syzkaller.appspotmail.com,
-	Xin Long <lucien.xin@gmail.com>,
-	Marcelo Ricardo Leitner <marcelo.leitner@gmail.com>,
-	Jakub Kicinski <kuba@kernel.org>,
+	Peter Ujfalusi <peter.ujfalusi@linux.intel.com>,
+	Bard Liao <yung-chuan.liao@linux.intel.com>,
+	Ranjani Sridharan <ranjani.sridharan@linux.intel.com>,
+	Liam Girdwood <liam.r.girdwood@intel.com>,
+	Kai Vehmanen <kai.vehmanen@linux.intel.com>,
+	Mark Brown <broonie@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 207/523] sctp: linearize cloned gso packets in sctp_rcv
+Subject: [PATCH 5.15 326/644] ASoC: core: Check for rtd == NULL in snd_soc_remove_pcm_runtime()
 Date: Tue, 26 Aug 2025 13:06:57 +0200
-Message-ID: <20250826110929.551523276@linuxfoundation.org>
+Message-ID: <20250826110954.465534327@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250826110924.562212281@linuxfoundation.org>
-References: <20250826110924.562212281@linuxfoundation.org>
+In-Reply-To: <20250826110946.507083938@linuxfoundation.org>
+References: <20250826110946.507083938@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -65,77 +66,50 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Xin Long <lucien.xin@gmail.com>
+From: Peter Ujfalusi <peter.ujfalusi@linux.intel.com>
 
-[ Upstream commit fd60d8a086191fe33c2d719732d2482052fa6805 ]
+[ Upstream commit 2d91cb261cac6d885954b8f5da28b5c176c18131 ]
 
-A cloned head skb still shares these frag skbs in fraglist with the
-original head skb. It's not safe to access these frag skbs.
+snd_soc_remove_pcm_runtime() might be called with rtd == NULL which will
+leads to null pointer dereference.
+This was reproduced with topology loading and marking a link as ignore
+due to missing hardware component on the system.
+On module removal the soc_tplg_remove_link() would call
+snd_soc_remove_pcm_runtime() with rtd == NULL since the link was ignored,
+no runtime was created.
 
-syzbot reported two use-of-uninitialized-memory bugs caused by this:
-
-  BUG: KMSAN: uninit-value in sctp_inq_pop+0x15b7/0x1920 net/sctp/inqueue.c:211
-   sctp_inq_pop+0x15b7/0x1920 net/sctp/inqueue.c:211
-   sctp_assoc_bh_rcv+0x1a7/0xc50 net/sctp/associola.c:998
-   sctp_inq_push+0x2ef/0x380 net/sctp/inqueue.c:88
-   sctp_backlog_rcv+0x397/0xdb0 net/sctp/input.c:331
-   sk_backlog_rcv+0x13b/0x420 include/net/sock.h:1122
-   __release_sock+0x1da/0x330 net/core/sock.c:3106
-   release_sock+0x6b/0x250 net/core/sock.c:3660
-   sctp_wait_for_connect+0x487/0x820 net/sctp/socket.c:9360
-   sctp_sendmsg_to_asoc+0x1ec1/0x1f00 net/sctp/socket.c:1885
-   sctp_sendmsg+0x32b9/0x4a80 net/sctp/socket.c:2031
-   inet_sendmsg+0x25a/0x280 net/ipv4/af_inet.c:851
-   sock_sendmsg_nosec net/socket.c:718 [inline]
-
-and
-
-  BUG: KMSAN: uninit-value in sctp_assoc_bh_rcv+0x34e/0xbc0 net/sctp/associola.c:987
-   sctp_assoc_bh_rcv+0x34e/0xbc0 net/sctp/associola.c:987
-   sctp_inq_push+0x2a3/0x350 net/sctp/inqueue.c:88
-   sctp_backlog_rcv+0x3c7/0xda0 net/sctp/input.c:331
-   sk_backlog_rcv+0x142/0x420 include/net/sock.h:1148
-   __release_sock+0x1d3/0x330 net/core/sock.c:3213
-   release_sock+0x6b/0x270 net/core/sock.c:3767
-   sctp_wait_for_connect+0x458/0x820 net/sctp/socket.c:9367
-   sctp_sendmsg_to_asoc+0x223a/0x2260 net/sctp/socket.c:1886
-   sctp_sendmsg+0x3910/0x49f0 net/sctp/socket.c:2032
-   inet_sendmsg+0x269/0x2a0 net/ipv4/af_inet.c:851
-   sock_sendmsg_nosec net/socket.c:712 [inline]
-
-This patch fixes it by linearizing cloned gso packets in sctp_rcv().
-
-Fixes: 90017accff61 ("sctp: Add GSO support")
-Reported-by: syzbot+773e51afe420baaf0e2b@syzkaller.appspotmail.com
-Reported-by: syzbot+70a42f45e76bede082be@syzkaller.appspotmail.com
-Signed-off-by: Xin Long <lucien.xin@gmail.com>
-Reviewed-by: Marcelo Ricardo Leitner <marcelo.leitner@gmail.com>
-Link: https://patch.msgid.link/dd7dc337b99876d4132d0961f776913719f7d225.1754595611.git.lucien.xin@gmail.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Signed-off-by: Peter Ujfalusi <peter.ujfalusi@linux.intel.com>
+Reviewed-by: Bard Liao <yung-chuan.liao@linux.intel.com>
+Reviewed-by: Ranjani Sridharan <ranjani.sridharan@linux.intel.com>
+Reviewed-by: Liam Girdwood <liam.r.girdwood@intel.com>
+Reviewed-by: Kai Vehmanen <kai.vehmanen@linux.intel.com>
+Link: https://patch.msgid.link/20250619084222.559-3-peter.ujfalusi@linux.intel.com
+Signed-off-by: Mark Brown <broonie@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/sctp/input.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ sound/soc/soc-core.c | 3 +++
+ 1 file changed, 3 insertions(+)
 
-diff --git a/net/sctp/input.c b/net/sctp/input.c
-index 8fe1a74f0618..079b1bfc7d31 100644
---- a/net/sctp/input.c
-+++ b/net/sctp/input.c
-@@ -114,7 +114,7 @@ int sctp_rcv(struct sk_buff *skb)
- 	 * it's better to just linearize it otherwise crc computing
- 	 * takes longer.
- 	 */
--	if ((!is_gso && skb_linearize(skb)) ||
-+	if (((!is_gso || skb_cloned(skb)) && skb_linearize(skb)) ||
- 	    !pskb_may_pull(skb, sizeof(struct sctphdr)))
- 		goto discard_it;
+diff --git a/sound/soc/soc-core.c b/sound/soc/soc-core.c
+index 1c4d8b96f77b..d28261ef1d4c 100644
+--- a/sound/soc/soc-core.c
++++ b/sound/soc/soc-core.c
+@@ -959,6 +959,9 @@ static int soc_dai_link_sanity_check(struct snd_soc_card *card,
+ void snd_soc_remove_pcm_runtime(struct snd_soc_card *card,
+ 				struct snd_soc_pcm_runtime *rtd)
+ {
++	if (!rtd)
++		return;
++
+ 	lockdep_assert_held(&client_mutex);
  
+ 	/* release machine specific resources */
 -- 
-2.50.1
+2.39.5
 
 
 
