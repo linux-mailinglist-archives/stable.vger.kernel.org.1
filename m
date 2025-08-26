@@ -1,56 +1,55 @@
-Return-Path: <stable+bounces-174195-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-176285-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 899FCB36203
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 15:14:52 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 395D0B36CCE
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 17:01:17 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id C4D053A6A68
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 13:09:53 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 954F65A2A14
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 14:43:39 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9922A230BDF;
-	Tue, 26 Aug 2025 13:09:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id F1CCD352FCA;
+	Tue, 26 Aug 2025 14:40:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="2mzYxF3D"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="JC5Lrbqy"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4BBDC246790;
-	Tue, 26 Aug 2025 13:09:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B09052FC89C;
+	Tue, 26 Aug 2025 14:40:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756213746; cv=none; b=phSIcB5mB8KwSRs7d0UEF/9levdKWaaj+706OtbIErtsQyrAseVq/WRVTa8WqMg6a7hiRCJIZp020tE7NVfCzrJUvYetQbRThzDkyohpPgpXJXZjLrDrwwUf3vLGIFvzdWicmos3MCRSow9o2Hq0OeH3i+d2n7FRuoa+B+AVxEY=
+	t=1756219258; cv=none; b=DykuQGTPkEQD8I75YfgEC3LcbtJJaDE0bsyc1lMQX0OpBd4cPNwP+el5zxmAPvWlfltn/tfSYqqopTjVKC2DBd+HPd3obVeScxWeDVxI/I0XRpibHtGx/ZyYo0FQ6Ijxff2YaFyk3NAToTlxdeXubZkPrsam4zVqIALz0sPytKc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756213746; c=relaxed/simple;
-	bh=2PVrLuFdUTXDrykGiRZqQkmTUwAJPPI0qPYT5lLJmZc=;
+	s=arc-20240116; t=1756219258; c=relaxed/simple;
+	bh=Et7jdhk7XkMtYMn8A7Ax810llaiX7yCPtofZhYEPVyU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=aFd94+QqiNIRGu0ZNoF2YT7RX81cMY2mlxyGaCjF7gdaV/nOIU07OC3Fnl5ytGYGnKB5PIOKyEeG0Pj4B9OAi1xnVY8PBsTiLOzKykXzhRL2+nUr0kxyUiDRP1zz8qMWuY553WP3R+zb+HiCakksHEtAvUNBGQIqGwWMm0i83QA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=2mzYxF3D; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 78994C4CEF1;
-	Tue, 26 Aug 2025 13:09:04 +0000 (UTC)
+	 MIME-Version; b=hgjT0G6H0U5MTp/powWS113TyKMFFQxsNKudUJ1eUuKUcvQ5pPRpGhhqdNeJRiVa0lgF8nDtYbdUUpRAc6PMuMSMcR/xcOxT7xbjtUreBoEmWT64s896CmuVZ5v8guJ34xmV+ctlMaaxZu22cVo3C80aj+4++mzFNIKZ17+joAk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=JC5Lrbqy; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3FDE3C4CEF1;
+	Tue, 26 Aug 2025 14:40:58 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1756213744;
-	bh=2PVrLuFdUTXDrykGiRZqQkmTUwAJPPI0qPYT5lLJmZc=;
+	s=korg; t=1756219258;
+	bh=Et7jdhk7XkMtYMn8A7Ax810llaiX7yCPtofZhYEPVyU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=2mzYxF3DgB5juAH804YhLa5WtK/ZehXcqvL469PI+DUd17xw3M98I8O9GDOkCEidI
-	 aMzuelz7fxwouBBlPlqsG+Lm4fhmfAJTUEyxGmnF5+xWarzto2srGJUFAMbWI7eZaQ
-	 mdiKT22TpurG/5H5DfdYAeRJcSq44RNbWTtfb2d8=
+	b=JC5LrbqymOIeTuH/74ibmkdp+WBW1Dw26T+o36YbTxZ+kWBfpFIU7jDSsvN/1HrRp
+	 +bMWw9buq2F5IRqI20rbggD0uZwBoLxiXlmfKZv+IWlwG55xzWMYLrYzpadoMbko7a
+	 pMd5Zu/LnojTd7t0Fjp5QkeK/kc+UJ6LtNNyswHk=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Mikhail Lobanov <m.lobanov@rosa.ru>,
-	Johannes Berg <johannes.berg@intel.com>,
-	=?UTF-8?q?Hanne-Lotta=20M=C3=A4enp=C3=A4=C3=A4?= <hannelotta@gmail.com>
-Subject: [PATCH 6.6 463/587] wifi: mac80211: check basic rates validity in sta_link_apply_parameters
+	Yoshihiro Shimoda <yoshihiro.shimoda.uh@renesas.com>,
+	Johan Hovold <johan@kernel.org>
+Subject: [PATCH 5.4 286/403] usb: gadget: udc: renesas_usb3: fix device leak at unbind
 Date: Tue, 26 Aug 2025 13:10:12 +0200
-Message-ID: <20250826111004.757469290@linuxfoundation.org>
+Message-ID: <20250826110914.711235376@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250826110952.942403671@linuxfoundation.org>
-References: <20250826110952.942403671@linuxfoundation.org>
+In-Reply-To: <20250826110905.607690791@linuxfoundation.org>
+References: <20250826110905.607690791@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,62 +59,39 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+5.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Mikhail Lobanov <m.lobanov@rosa.ru>
+From: Johan Hovold <johan@kernel.org>
 
-commit 16ee3ea8faef8ff042acc15867a6c458c573de61 upstream.
+commit 868837b0a94c6b1b1fdbc04d3ba218ca83432393 upstream.
 
-When userspace sets supported rates for a new station via
-NL80211_CMD_NEW_STATION, it might send a list that's empty
-or contains only invalid values. Currently, we process these
-values in sta_link_apply_parameters() without checking the result of
-ieee80211_parse_bitrates(), which can lead to an empty rates bitmap.
+Make sure to drop the reference to the companion device taken during
+probe when the driver is unbound.
 
-A similar issue was addressed for NL80211_CMD_SET_BSS in commit
-ce04abc3fcc6 ("wifi: mac80211: check basic rates validity").
-This patch applies the same approach in sta_link_apply_parameters()
-for NL80211_CMD_NEW_STATION, ensuring there is at least one valid
-rate by inspecting the result of ieee80211_parse_bitrates().
-
-Found by Linux Verification Center (linuxtesting.org) with Syzkaller.
-
-Fixes: b95eb7f0eee4 ("wifi: cfg80211/mac80211: separate link params from station params")
-Signed-off-by: Mikhail Lobanov <m.lobanov@rosa.ru>
-Link: https://patch.msgid.link/20250317103139.17625-1-m.lobanov@rosa.ru
-Signed-off-by: Johannes Berg <johannes.berg@intel.com>
-Signed-off-by: "Hanne-Lotta Mäenpää" <hannelotta@gmail.com>
+Fixes: 39facfa01c9f ("usb: gadget: udc: renesas_usb3: Add register of usb role switch")
+Cc: stable@vger.kernel.org	# 4.19
+Cc: Yoshihiro Shimoda <yoshihiro.shimoda.uh@renesas.com>
+Signed-off-by: Johan Hovold <johan@kernel.org>
+Link: https://lore.kernel.org/r/20250724091910.21092-4-johan@kernel.org
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- net/mac80211/cfg.c |   12 ++++++------
- 1 file changed, 6 insertions(+), 6 deletions(-)
+ drivers/usb/gadget/udc/renesas_usb3.c |    1 +
+ 1 file changed, 1 insertion(+)
 
---- a/net/mac80211/cfg.c
-+++ b/net/mac80211/cfg.c
-@@ -1847,12 +1847,12 @@ static int sta_link_apply_parameters(str
- 	}
+--- a/drivers/usb/gadget/udc/renesas_usb3.c
++++ b/drivers/usb/gadget/udc/renesas_usb3.c
+@@ -2551,6 +2551,7 @@ static int renesas_usb3_remove(struct pl
+ 	struct renesas_usb3 *usb3 = platform_get_drvdata(pdev);
  
- 	if (params->supported_rates &&
--	    params->supported_rates_len) {
--		ieee80211_parse_bitrates(link->conf->chandef.width,
--					 sband, params->supported_rates,
--					 params->supported_rates_len,
--					 &link_sta->pub->supp_rates[sband->band]);
--	}
-+	    params->supported_rates_len &&
-+	    !ieee80211_parse_bitrates(link->conf->chandef.width,
-+				      sband, params->supported_rates,
-+				      params->supported_rates_len,
-+				      &link_sta->pub->supp_rates[sband->band]))
-+		return -EINVAL;
+ 	debugfs_remove_recursive(usb3->dentry);
++	put_device(usb3->host_dev);
+ 	device_remove_file(&pdev->dev, &dev_attr_role);
  
- 	if (params->ht_capa)
- 		ieee80211_ht_cap_ie_to_sta_ht_cap(sdata, sband,
+ 	cancel_work_sync(&usb3->role_work);
 
 
 
