@@ -1,55 +1,58 @@
-Return-Path: <stable+bounces-174596-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-175215-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id DA009B36492
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 15:40:11 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 10646B36732
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 16:04:33 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 13B59562DA9
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 13:27:43 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id E985F1C2498E
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 13:56:11 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C7A171494D9;
-	Tue, 26 Aug 2025 13:26:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4E07334DCD9;
+	Tue, 26 Aug 2025 13:54:05 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="TIKlemnq"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ZFKOwiUn"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 84A952857D2;
-	Tue, 26 Aug 2025 13:26:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0CB1834A32E;
+	Tue, 26 Aug 2025 13:54:05 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756214811; cv=none; b=NXv0P5ED7M3n/MvRl/o1DUTEJF+JpMytrfzi+RiNKhvI0IC0+gJ+7GyGScXLE6bbjcxqZWX70351AhMDHTeZZZs3NFErY1hj+cYSGtsMbdzvpzCI8oq2m+0KTPcIin9dyb2bNfRh4Or0I3503ESLACwr62JojA19+apHr8oHZpI=
+	t=1756216445; cv=none; b=A6Dr5E3xPtZ82hvgm9XfnELxI+4j5b3T1sdAZx6NXChIWOz/Yp9HMcFkIIwCLFZ5JEit++XlLZqIhR+rmORxCqvp0yhE0BcGRNBLFl56wPFhwunVBE5SpCFl/LMUnoO+0VaKMG97gRgLvbEE8bXfmb47zi+al4SfHPHcnRWAHko=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756214811; c=relaxed/simple;
-	bh=mZrVOWj6SxNyhScPPCq57GCxnUu5hpjNbXSpdgnC+1E=;
+	s=arc-20240116; t=1756216445; c=relaxed/simple;
+	bh=pDtt6UTzCpkWsT1AjM2xI0MWj4YCKzsMb2Gu/gTTGS4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=cIpC7Ir3ShbjXICBAUMme39Bn9852t78cSGpebBakkzFLrAjns03sbS2d1kvXzznP32NIsdfHHoxq9j0oogxujpo/7qfH/d8ONCVNouuB3oqO9Wax/6Ecjf8oBAqkQSgkfLOX5TzYtZ3t/ewjSP0Pb7CHOHVCrzYGkk8DfYPNRU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=TIKlemnq; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 15125C113CF;
-	Tue, 26 Aug 2025 13:26:50 +0000 (UTC)
+	 MIME-Version; b=Gtt4JpKDKiXbzbpalRlM2aKwCSUQdbLJriNqTlsDUaKUF2rMPASXTg9Usk1rV9T2R2T6lBzSz6m5zg5OQ0aoRh+mcC22OdFe4xdwtTbX3o1J9TVmzX+Xtq/fh63LFzgue8FCF//ZIAVU3Cs3mX4UKCY5gxNT0scg4xaHTwSfPKc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ZFKOwiUn; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 92EC1C4CEF1;
+	Tue, 26 Aug 2025 13:54:04 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1756214811;
-	bh=mZrVOWj6SxNyhScPPCq57GCxnUu5hpjNbXSpdgnC+1E=;
+	s=korg; t=1756216444;
+	bh=pDtt6UTzCpkWsT1AjM2xI0MWj4YCKzsMb2Gu/gTTGS4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=TIKlemnq0SHUdUO9JrW3pp205P66my1AYTTZRIwV8sZHQXiLCfZGNYBf5pczQb3be
-	 d/OWQm2fmWvNAPW9KIMccgNwqjWGCPchJksQ/bVIRv7PmxWwjnoYXtUEw4et/+SPfp
-	 dgJ+NXPTvDtkJzDeShW8CPqPawIMGKcaZVEsAZh4=
+	b=ZFKOwiUn7v5aqG5/nvbbP6xH9195Ug70X7wVSL9MTIRyM5dFEoxPnfzRlPL2GXdVj
+	 kUBTphQdam1ISCoQl2L9QyWVVqX/e+DYaYyraYx0YFBIGNWsWG7CiMUTIWFkVLJF/F
+	 cePPuU0a1SXiNn3B6iW2SoSdkhT5G03JFWlSF39k=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	stable <stable@kernel.org>,
-	Oliver Neukum <oneukum@suse.com>
-Subject: [PATCH 6.1 251/482] cdc-acm: fix race between initial clearing halt and open
-Date: Tue, 26 Aug 2025 13:08:24 +0200
-Message-ID: <20250826110936.969045813@linuxfoundation.org>
+	Meagan Lloyd <meaganlloyd@linux.microsoft.com>,
+	Tyler Hicks <code@tyhicks.com>,
+	Rodolfo Giometti <giometti@enneenne.com>,
+	Alexandre Belloni <alexandre.belloni@bootlin.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.15 414/644] rtc: ds1307: handle oscillator stop flag (OSF) for ds1341
+Date: Tue, 26 Aug 2025 13:08:25 +0200
+Message-ID: <20250826110956.717265704@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250826110930.769259449@linuxfoundation.org>
-References: <20250826110930.769259449@linuxfoundation.org>
+In-Reply-To: <20250826110946.507083938@linuxfoundation.org>
+References: <20250826110946.507083938@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,55 +64,68 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Oliver Neukum <oneukum@suse.com>
+From: Meagan Lloyd <meaganlloyd@linux.microsoft.com>
 
-commit 64690a90cd7c6db16d3af8616be1f4bf8d492850 upstream.
+[ Upstream commit 523923cfd5d622b8f4ba893fdaf29fa6adeb8c3e ]
 
-On the devices that need their endpoints to get an
-initial clear_halt, this needs to be done before
-the devices can be opened. That means it needs to be
-before the devices are registered.
+In using CONFIG_RTC_HCTOSYS, rtc_hctosys() will sync the RTC time to the
+kernel time as long as rtc_read_time() succeeds. In some power loss
+situations, our supercapacitor-backed DS1342 RTC comes up with either an
+unpredictable future time or the default 01/01/00 from the datasheet.
+The oscillator stop flag (OSF) is set in these scenarios due to the
+power loss and can be used to determine the validity of the RTC data.
 
-Fixes: 15bf722e6f6c0 ("cdc-acm: Add support of ATOL FPrint fiscal printers")
-Cc: stable <stable@kernel.org>
-Signed-off-by: Oliver Neukum <oneukum@suse.com>
-Link: https://lore.kernel.org/r/20250717141259.2345605-1-oneukum@suse.com
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+This change expands the oscillator stop flag (OSF) handling that has
+already been implemented for some chips to the ds1341 chip (DS1341 and
+DS1342 share a datasheet). This handling manages the validity of the RTC
+data in .read_time and .set_time based on the OSF.
+
+Signed-off-by: Meagan Lloyd <meaganlloyd@linux.microsoft.com>
+Reviewed-by: Tyler Hicks <code@tyhicks.com>
+Acked-by: Rodolfo Giometti <giometti@enneenne.com>
+Link: https://lore.kernel.org/r/1749665656-30108-3-git-send-email-meaganlloyd@linux.microsoft.com
+Signed-off-by: Alexandre Belloni <alexandre.belloni@bootlin.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/usb/class/cdc-acm.c |   11 ++++++-----
- 1 file changed, 6 insertions(+), 5 deletions(-)
+ drivers/rtc/rtc-ds1307.c | 11 +++++++++++
+ 1 file changed, 11 insertions(+)
 
---- a/drivers/usb/class/cdc-acm.c
-+++ b/drivers/usb/class/cdc-acm.c
-@@ -1496,6 +1496,12 @@ skip_countries:
- 			goto err_remove_files;
- 	}
- 
-+	if (quirks & CLEAR_HALT_CONDITIONS) {
-+		/* errors intentionally ignored */
-+		usb_clear_halt(usb_dev, acm->in);
-+		usb_clear_halt(usb_dev, acm->out);
-+	}
-+
- 	tty_dev = tty_port_register_device(&acm->port, acm_tty_driver, minor,
- 			&control_interface->dev);
- 	if (IS_ERR(tty_dev)) {
-@@ -1503,11 +1509,6 @@ skip_countries:
- 		goto err_release_data_interface;
- 	}
- 
--	if (quirks & CLEAR_HALT_CONDITIONS) {
--		usb_clear_halt(usb_dev, acm->in);
--		usb_clear_halt(usb_dev, acm->out);
--	}
--
- 	dev_info(&intf->dev, "ttyACM%d: USB ACM device\n", minor);
- 
- 	return 0;
+diff --git a/drivers/rtc/rtc-ds1307.c b/drivers/rtc/rtc-ds1307.c
+index 1e621080f666..f8e32f5c37e3 100644
+--- a/drivers/rtc/rtc-ds1307.c
++++ b/drivers/rtc/rtc-ds1307.c
+@@ -273,6 +273,13 @@ static int ds1307_get_time(struct device *dev, struct rtc_time *t)
+ 		if (tmp & DS1340_BIT_OSF)
+ 			return -EINVAL;
+ 		break;
++	case ds_1341:
++		ret = regmap_read(ds1307->regmap, DS1337_REG_STATUS, &tmp);
++		if (ret)
++			return ret;
++		if (tmp & DS1337_BIT_OSF)
++			return -EINVAL;
++		break;
+ 	case ds_1388:
+ 		ret = regmap_read(ds1307->regmap, DS1388_REG_FLAG, &tmp);
+ 		if (ret)
+@@ -371,6 +378,10 @@ static int ds1307_set_time(struct device *dev, struct rtc_time *t)
+ 		regmap_update_bits(ds1307->regmap, DS1340_REG_FLAG,
+ 				   DS1340_BIT_OSF, 0);
+ 		break;
++	case ds_1341:
++		regmap_update_bits(ds1307->regmap, DS1337_REG_STATUS,
++				   DS1337_BIT_OSF, 0);
++		break;
+ 	case ds_1388:
+ 		regmap_update_bits(ds1307->regmap, DS1388_REG_FLAG,
+ 				   DS1388_BIT_OSF, 0);
+-- 
+2.39.5
+
 
 
 
