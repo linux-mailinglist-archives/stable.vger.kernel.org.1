@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-174628-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-176207-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 34749B3649E
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 15:40:31 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8A8D3B36D07
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 17:05:46 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id A80A35636B0
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 13:29:15 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 3CF5F8A7F4E
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 14:40:42 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A2905242D7B;
-	Tue, 26 Aug 2025 13:28:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id CAA6335CEC1;
+	Tue, 26 Aug 2025 14:37:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="gtuhYvrG"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="tMU0HsF1"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 601CA1C860A;
-	Tue, 26 Aug 2025 13:28:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8904F35CEBE;
+	Tue, 26 Aug 2025 14:37:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756214893; cv=none; b=pIiygYzYVpxG2C/uFu+1FPZGbKqg5964ponGbIDLByPh9zAA/0XCaG/l+Um7ymXEJct34vSsOwUerNeecCabF+yLGVT6wutTuaKaRYky9kvQ+cg6d6EG49vn/1nFsFfm+poLeftPLZxcape2CMcs6cyze1muTw6EYNjYvVWM1RA=
+	t=1756219060; cv=none; b=Xn108mIY+GAmgR3w15ReRrVtdu1o1uao4MChfjEgb0T/M5sHqPVxkpYxfb9Ae5OAESnpBnPcindHZNbNLfhTL0gJDbeyl/AG2wLyDr0McTrRJchzJSeYYfWcd4Qg/g/Ltz27Uux62OjvTllLqMEXGFno4MY2X61w686Nkw799f8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756214893; c=relaxed/simple;
-	bh=7fNXjj4YTAlvZt/52vAgi5o3G4DFgN6UKlNosnahfvM=;
+	s=arc-20240116; t=1756219060; c=relaxed/simple;
+	bh=ZU/3srY0aXpQQYG6ik6Ox5O//fHApD9saiRnYThKTOE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=FPn1h1vW5JMcLnMyzn3CsDTOxKqbdkQ6BpKEWqoIUlrlanhsCcJwz6rYmG3+aY3dYiEqDJr4Tp1pq/eq07WkwoeJFxvhDMcQiy0DME5GNC6ZJiK2dZTkKRZ83BFKE24tDFHvnk/zIH7Fqx1Go5i0hWYAqRUPlBzy6UcONmwBqHg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=gtuhYvrG; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id EA5DBC4CEF1;
-	Tue, 26 Aug 2025 13:28:12 +0000 (UTC)
+	 MIME-Version; b=SBtXZ2xardQL+a+QocN/PxDMbICX6yXUMcQoETS+45C2d3LM9WtBIgg+1+PO/Zda1iBqw6uMrwOqMizX22AyedRxEf9/Cz0GnJCzgj/8Cwk45VrRlazgCOF198IZAQclLlXwDWQvi+mSUaHKm2BEoNDmHB1rD+iGYKn5ul7tfc8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=tMU0HsF1; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id AAD89C116B1;
+	Tue, 26 Aug 2025 14:37:37 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1756214893;
-	bh=7fNXjj4YTAlvZt/52vAgi5o3G4DFgN6UKlNosnahfvM=;
+	s=korg; t=1756219058;
+	bh=ZU/3srY0aXpQQYG6ik6Ox5O//fHApD9saiRnYThKTOE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=gtuhYvrGMivO0iZDseTmUHYXKwnTH4r3ZM45EZn4bSiPTHNdLzG+wcuJohE5hH9DX
-	 Ib1kWXGO8bB/AeAN/ucNsEW6X71z0Zli5G699DcdcHVPvKBUMo7QT1Csm2uZ8biUn5
-	 c6HpbK239RrJWLyw7RghYmZ4etF9+EAxeeAk/YBw=
+	b=tMU0HsF1YPpxktx+pht1OhkUzf8QfyTQtL+YiTs+p8wLFzJ745OoNiOmXljzUSeCB
+	 LDyp849NQuxvhXqBlkB9Cu/O6G8rA+od0ny4UYs9TbKFrjtz9OYyMTreP/rxBoBDGz
+	 M1mcsORMRPGbyjHAtdCFPiai0jrpyoGxjLX1q6b4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Will Deacon <will@kernel.org>,
-	"Michael S. Tsirkin" <mst@redhat.com>,
-	Stefano Garzarella <sgarzare@redhat.com>
-Subject: [PATCH 6.1 309/482] vsock/virtio: Validate length in packet header before skb_put()
+	Sebastian Reichel <sebastian.reichel@collabora.com>,
+	Guenter Roeck <linux@roeck-us.net>,
+	Wim Van Sebroeck <wim@linux-watchdog.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.4 236/403] watchdog: dw_wdt: Fix default timeout
 Date: Tue, 26 Aug 2025 13:09:22 +0200
-Message-ID: <20250826110938.434297588@linuxfoundation.org>
+Message-ID: <20250826110913.352410994@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250826110930.769259449@linuxfoundation.org>
-References: <20250826110930.769259449@linuxfoundation.org>
+In-Reply-To: <20250826110905.607690791@linuxfoundation.org>
+References: <20250826110905.607690791@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,67 +63,48 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+5.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Will Deacon <will@kernel.org>
+From: Sebastian Reichel <sebastian.reichel@collabora.com>
 
-commit 0dab92484474587b82e8e0455839eaf5ac7bf894 upstream.
+[ Upstream commit ac3dbb91e0167d017f44701dd51c1efe30d0c256 ]
 
-When receiving a vsock packet in the guest, only the virtqueue buffer
-size is validated prior to virtio_vsock_skb_rx_put(). Unfortunately,
-virtio_vsock_skb_rx_put() uses the length from the packet header as the
-length argument to skb_put(), potentially resulting in SKB overflow if
-the host has gone wonky.
+The Synopsys Watchdog driver sets the default timeout to 30 seconds,
+but on some devices this is not a valid timeout. E.g. on RK3588 the
+actual timeout being used is 44 seconds instead.
 
-Validate the length as advertised by the packet header before calling
-virtio_vsock_skb_rx_put().
+Once the watchdog is started the value is updated accordingly, but
+it would be better to expose a sensible timeout to userspace without
+the need to first start the watchdog.
 
-Cc: <stable@vger.kernel.org>
-Fixes: 71dc9ec9ac7d ("virtio/vsock: replace virtio_vsock_pkt with sk_buff")
-Signed-off-by: Will Deacon <will@kernel.org>
-Message-Id: <20250717090116.11987-3-will@kernel.org>
-Signed-off-by: Michael S. Tsirkin <mst@redhat.com>
-Reviewed-by: Stefano Garzarella <sgarzare@redhat.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Signed-off-by: Sebastian Reichel <sebastian.reichel@collabora.com>
+Reviewed-by: Guenter Roeck <linux@roeck-us.net>
+Link: https://lore.kernel.org/r/20250717-dw-wdt-fix-initial-timeout-v1-1-86dc864d48dd@kernel.org
+Signed-off-by: Guenter Roeck <linux@roeck-us.net>
+Signed-off-by: Wim Van Sebroeck <wim@linux-watchdog.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/vmw_vsock/virtio_transport.c |   12 ++++++++++--
- 1 file changed, 10 insertions(+), 2 deletions(-)
+ drivers/watchdog/dw_wdt.c | 2 ++
+ 1 file changed, 2 insertions(+)
 
---- a/net/vmw_vsock/virtio_transport.c
-+++ b/net/vmw_vsock/virtio_transport.c
-@@ -494,8 +494,9 @@ static void virtio_transport_rx_work(str
- 	do {
- 		virtqueue_disable_cb(vq);
- 		for (;;) {
-+			unsigned int len, payload_len;
-+			struct virtio_vsock_hdr *hdr;
- 			struct sk_buff *skb;
--			unsigned int len;
+diff --git a/drivers/watchdog/dw_wdt.c b/drivers/watchdog/dw_wdt.c
+index fef7c61f5555..72dc5f4f6eb8 100644
+--- a/drivers/watchdog/dw_wdt.c
++++ b/drivers/watchdog/dw_wdt.c
+@@ -289,6 +289,8 @@ static int dw_wdt_drv_probe(struct platform_device *pdev)
+ 	} else {
+ 		wdd->timeout = DW_WDT_DEFAULT_SECONDS;
+ 		watchdog_init_timeout(wdd, 0, dev);
++		/* Limit timeout value to hardware constraints. */
++		dw_wdt_set_timeout(wdd, wdd->timeout);
+ 	}
  
- 			if (!virtio_transport_more_replies(vsock)) {
- 				/* Stop rx until the device processes already
-@@ -512,11 +513,18 @@ static void virtio_transport_rx_work(str
- 			vsock->rx_buf_nr--;
- 
- 			/* Drop short/long packets */
--			if (unlikely(len < sizeof(struct virtio_vsock_hdr) ||
-+			if (unlikely(len < sizeof(*hdr) ||
- 				     len > virtio_vsock_skb_len(skb))) {
- 				kfree_skb(skb);
- 				continue;
- 			}
-+
-+			hdr = virtio_vsock_hdr(skb);
-+			payload_len = le32_to_cpu(hdr->len);
-+			if (unlikely(payload_len > len - sizeof(*hdr))) {
-+				kfree_skb(skb);
-+				continue;
-+			}
- 
- 			virtio_vsock_skb_rx_put(skb);
- 			virtio_transport_deliver_tap_pkt(skb);
+ 	platform_set_drvdata(pdev, dw_wdt);
+-- 
+2.39.5
+
 
 
 
