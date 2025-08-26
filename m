@@ -1,58 +1,56 @@
-Return-Path: <stable+bounces-173156-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-173479-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id E24D0B35B8E
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 13:25:43 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 6008CB35CF6
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 13:40:21 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 851323ACE8F
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 11:25:18 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 34D9F3A604C
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 11:39:58 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1C12227A917;
-	Tue, 26 Aug 2025 11:25:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1CB2930BF55;
+	Tue, 26 Aug 2025 11:39:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="POyM9Z9P"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Zm/Jai9p"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CD50F2248A5;
-	Tue, 26 Aug 2025 11:25:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CADA82F9982;
+	Tue, 26 Aug 2025 11:39:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756207517; cv=none; b=LBzcaKHCnpcYvGU2q2PNsCudIp28yFziGxY2/5T4lGsJy6D60UMHaX5YO8DuA1tDwQ5Y1wcrw7VP6I/QuEng3Rg7q3wyXYiasqsydVurNT65BOi2ulQqb8KAwRADXQ5JLtnsq99lFPSEVcIhf1DTdzmaXwp1Z7XDnf/wuziLKwA=
+	t=1756208355; cv=none; b=u2WdbycAMhpPphcePBQawJh975ixRUtX9JoYZah+M//3c8/UTFWM/1TshQEH7i7Su5WSgvofKYO8vs0gu+ZSr8IyU3PTYbNFJnxjnKtCW7miGoXaw7kqaKoDfaNdWoA8BBqQ4ksnFBJuWZsRQtt8BvgyH080DVxZQ5ic9Ij+lLg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756207517; c=relaxed/simple;
-	bh=ov55nVNNwVeMROSEGkoQ9mEJdlP1htV+SYVttTDfWIM=;
+	s=arc-20240116; t=1756208355; c=relaxed/simple;
+	bh=hH1tWKL/ifosvRhcXHBKbrR5obmGK57mhij/aE0KHE4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=CQlevJ0STH0XFv5GYONEiJ9cn1e7KuqDF2pUF6W++FVk5nG6ZHKRlUWeRpXTuMTHF7LARtXa7GmsHoXU1UN3mSypwPR8Np8ecL3GYcugfk4oCLBs7cKG7+OHdkg61QWirfIfXmP5w/iDKUSEbwsA5S2/cWlqv0cA6qpxnt0h1TA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=POyM9Z9P; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5BC7DC4CEF1;
-	Tue, 26 Aug 2025 11:25:17 +0000 (UTC)
+	 MIME-Version; b=aotzNgKZuuMxtAmOihL67f//lmqwrVpfzcbDYOWY3Fq3ZMNlrvG86ouYK8qvvF4B564Q9kZhA5FWtN9fUC/Qzi6PdCawGd6PQuATX+qKkT/bwIndRdQA8MLq+uYG1d/ZvjBnhid4ZNXHsxWW/BAntmZo3Gh27MGFASXdIbtT+H0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Zm/Jai9p; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5581EC4CEF1;
+	Tue, 26 Aug 2025 11:39:15 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1756207517;
-	bh=ov55nVNNwVeMROSEGkoQ9mEJdlP1htV+SYVttTDfWIM=;
+	s=korg; t=1756208355;
+	bh=hH1tWKL/ifosvRhcXHBKbrR5obmGK57mhij/aE0KHE4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=POyM9Z9PfyZaUqP4V6zDYSVs0BbEu4Wrgk7wDDYfV2efJa8NwA0g3rFz6k9mSGk79
-	 dbAh6xNI8NVWfz+KZZUSb98CKBxDzJBnH+4+4pqegglY5gUfLOSFtDtCVbOSCiYJsh
-	 ALIYi9bJGQcVCZQ3x9Xi5IKXhFwe1U2nVZQbq6hE=
+	b=Zm/Jai9pOYh5Ozu6Q6txVDVvExpqirzxtq8XZD7I8anYM5jMSBeDV9S1qmU7tEeSp
+	 v/oyNMsCas0xbadufaBbbuYYa+krKDFwjDTXEBKgLJ/aGZXJnic+JYqGcJaic7rI1Q
+	 cUrPpuTESIalK9obpKNVZL8xCQsDVteyXrxzHE1Q=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	SeongJae Park <sj@kernel.org>,
-	Joshua Hahn <joshua.hahnjy@gmail.com>,
-	Honggyu Kim <honggyu.kim@sk.com>,
-	Hyeongtak Ji <hyeongtak.ji@sk.com>,
-	Andrew Morton <akpm@linux-foundation.org>
-Subject: [PATCH 6.16 211/457] mm/damon/ops-common: ignore migration request to invalid nodes
+	Will Deacon <will@kernel.org>,
+	"Michael S. Tsirkin" <mst@redhat.com>,
+	Stefano Garzarella <sgarzare@redhat.com>
+Subject: [PATCH 6.12 080/322] vsock/virtio: Validate length in packet header before skb_put()
 Date: Tue, 26 Aug 2025 13:08:15 +0200
-Message-ID: <20250826110942.578024640@linuxfoundation.org>
+Message-ID: <20250826110917.592976636@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250826110937.289866482@linuxfoundation.org>
-References: <20250826110937.289866482@linuxfoundation.org>
+In-Reply-To: <20250826110915.169062587@linuxfoundation.org>
+References: <20250826110915.169062587@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,68 +62,67 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.16-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: SeongJae Park <sj@kernel.org>
+From: Will Deacon <will@kernel.org>
 
-commit 7e6c3130690a01076efdf45aa02ba5d5c16849a0 upstream.
+commit 0dab92484474587b82e8e0455839eaf5ac7bf894 upstream.
 
-damon_migrate_pages() tries migration even if the target node is invalid.
-If users mistakenly make such invalid requests via
-DAMOS_MIGRATE_{HOT,COLD} action, the below kernel BUG can happen.
+When receiving a vsock packet in the guest, only the virtqueue buffer
+size is validated prior to virtio_vsock_skb_rx_put(). Unfortunately,
+virtio_vsock_skb_rx_put() uses the length from the packet header as the
+length argument to skb_put(), potentially resulting in SKB overflow if
+the host has gone wonky.
 
-    [ 7831.883495] BUG: unable to handle page fault for address: 0000000000001f48
-    [ 7831.884160] #PF: supervisor read access in kernel mode
-    [ 7831.884681] #PF: error_code(0x0000) - not-present page
-    [ 7831.885203] PGD 0 P4D 0
-    [ 7831.885468] Oops: Oops: 0000 [#1] SMP PTI
-    [ 7831.885852] CPU: 31 UID: 0 PID: 94202 Comm: kdamond.0 Not tainted 6.16.0-rc5-mm-new-damon+ #93 PREEMPT(voluntary)
-    [ 7831.886913] Hardware name: QEMU Standard PC (i440FX + PIIX, 1996), BIOS 1.16.3-4.el9 04/01/2014
-    [ 7831.887777] RIP: 0010:__alloc_frozen_pages_noprof (include/linux/mmzone.h:1724 include/linux/mmzone.h:1750 mm/page_alloc.c:4936 mm/page_alloc.c:5137)
-    [...]
-    [ 7831.895953] Call Trace:
-    [ 7831.896195]  <TASK>
-    [ 7831.896397] __folio_alloc_noprof (mm/page_alloc.c:5183 mm/page_alloc.c:5192)
-    [ 7831.896787] migrate_pages_batch (mm/migrate.c:1189 mm/migrate.c:1851)
-    [ 7831.897228] ? __pfx_alloc_migration_target (mm/migrate.c:2137)
-    [ 7831.897735] migrate_pages (mm/migrate.c:2078)
-    [ 7831.898141] ? __pfx_alloc_migration_target (mm/migrate.c:2137)
-    [ 7831.898664] damon_migrate_folio_list (mm/damon/ops-common.c:321 mm/damon/ops-common.c:354)
-    [ 7831.899140] damon_migrate_pages (mm/damon/ops-common.c:405)
-    [...]
+Validate the length as advertised by the packet header before calling
+virtio_vsock_skb_rx_put().
 
-Add a target node validity check in damon_migrate_pages().  The validity
-check is stolen from that of do_pages_move(), which is being used for the
-move_pages() system call.
-
-Link: https://lkml.kernel.org/r/20250720185822.1451-1-sj@kernel.org
-Fixes: b51820ebea65 ("mm/damon/paddr: introduce DAMOS_MIGRATE_COLD action for demotion")	[6.11.x]
-Signed-off-by: SeongJae Park <sj@kernel.org>
-Reviewed-by: Joshua Hahn <joshua.hahnjy@gmail.com>
-Cc: Honggyu Kim <honggyu.kim@sk.com>
-Cc: Hyeongtak Ji <hyeongtak.ji@sk.com>
 Cc: <stable@vger.kernel.org>
-Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
+Fixes: 71dc9ec9ac7d ("virtio/vsock: replace virtio_vsock_pkt with sk_buff")
+Signed-off-by: Will Deacon <will@kernel.org>
+Message-Id: <20250717090116.11987-3-will@kernel.org>
+Signed-off-by: Michael S. Tsirkin <mst@redhat.com>
+Reviewed-by: Stefano Garzarella <sgarzare@redhat.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- mm/damon/paddr.c |    4 ++++
- 1 file changed, 4 insertions(+)
+ net/vmw_vsock/virtio_transport.c |   12 ++++++++++--
+ 1 file changed, 10 insertions(+), 2 deletions(-)
 
---- a/mm/damon/paddr.c
-+++ b/mm/damon/paddr.c
-@@ -476,6 +476,10 @@ static unsigned long damon_pa_migrate_pa
- 	if (list_empty(folio_list))
- 		return nr_migrated;
+--- a/net/vmw_vsock/virtio_transport.c
++++ b/net/vmw_vsock/virtio_transport.c
+@@ -624,8 +624,9 @@ static void virtio_transport_rx_work(str
+ 	do {
+ 		virtqueue_disable_cb(vq);
+ 		for (;;) {
++			unsigned int len, payload_len;
++			struct virtio_vsock_hdr *hdr;
+ 			struct sk_buff *skb;
+-			unsigned int len;
  
-+	if (target_nid < 0 || target_nid >= MAX_NUMNODES ||
-+			!node_state(target_nid, N_MEMORY))
-+		return nr_migrated;
+ 			if (!virtio_transport_more_replies(vsock)) {
+ 				/* Stop rx until the device processes already
+@@ -642,11 +643,18 @@ static void virtio_transport_rx_work(str
+ 			vsock->rx_buf_nr--;
+ 
+ 			/* Drop short/long packets */
+-			if (unlikely(len < sizeof(struct virtio_vsock_hdr) ||
++			if (unlikely(len < sizeof(*hdr) ||
+ 				     len > virtio_vsock_skb_len(skb))) {
+ 				kfree_skb(skb);
+ 				continue;
+ 			}
 +
- 	noreclaim_flag = memalloc_noreclaim_save();
++			hdr = virtio_vsock_hdr(skb);
++			payload_len = le32_to_cpu(hdr->len);
++			if (unlikely(payload_len > len - sizeof(*hdr))) {
++				kfree_skb(skb);
++				continue;
++			}
  
- 	nid = folio_nid(lru_to_folio(folio_list));
+ 			virtio_vsock_skb_rx_put(skb);
+ 			virtio_transport_deliver_tap_pkt(skb);
 
 
 
