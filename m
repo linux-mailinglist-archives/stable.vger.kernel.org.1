@@ -1,58 +1,59 @@
-Return-Path: <stable+bounces-175934-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-176345-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2E96CB36A77
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 16:37:43 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 68569B36CC0
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 17:00:27 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 09AA25665BA
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 14:28:27 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id BFA411C40EED
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 14:46:56 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id DE96C352093;
-	Tue, 26 Aug 2025 14:25:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 520603568E1;
+	Tue, 26 Aug 2025 14:43:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="uo3bSlF7"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Shw5+v8x"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9C1E2481CD;
-	Tue, 26 Aug 2025 14:25:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 033A1350D46;
+	Tue, 26 Aug 2025 14:43:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756218351; cv=none; b=ON4XpLltDdpbkQg97jfdHrCE1xcG0idWO94u6ghnI/1AsTGMlpo0+ecSQmkQppbNTKlpUhp5MwsDFjK2qIrheCZIvDfU9QD9YvDiKecvy+hAhJQqSnIo0tdIx193Mojyv2wC02FuBIJJaGsQmnJi3DINs+B8ChEXYKBD1gcdQmw=
+	t=1756219417; cv=none; b=pR4uBhUXb6ZnW7esQbFSCs3tDXLqi14VhLiDjU/qV/hWYUeiSnzuAlZDSbOya8irNg3e3gjbKOcO8zHt1jdA9BwTQP6cXvcJpAA2KpOmCUqVI2VCU8ZLSjBfWm00rCZ0J977s0Y+ZiSJfpYyFTHYEMOjxeuEjc5KbyYOmOK9ARc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756218351; c=relaxed/simple;
-	bh=46KiQmCnR02Fb7DKusQn4FBBelMP6i0pcOtF6HmxKyE=;
+	s=arc-20240116; t=1756219417; c=relaxed/simple;
+	bh=J6zaCaLxDN2mID9zVUMdixePf0Twx3m5butJTvaMa/Y=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=nEawl9LSTc2XqlwcyG7V0DHpC1+Mz+5accusXzSM4TRPpS2+wECF+oHsyVSCTqqJW6lcxD5gtb3YzwYvhR4WfwuPZcONJvmfpG91UMWHZqJwcFStyHt4tKxHne1erY71st4B+aK/Mt/Hjqio3qb861FRxz/z+vQ9a04inYQM6BU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=uo3bSlF7; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 32385C4CEF1;
-	Tue, 26 Aug 2025 14:25:51 +0000 (UTC)
+	 MIME-Version; b=rIK4dt+o38tbRyzvW8LB8z3MzGhWYnQXFlgBNF/jH/6juxREjv8U63ifjMwy1WtycGyddbGZEPXo36ju9zXxcOdOq2WSjdHG6fS9pMr11YrfPJikDuFZF8YieC+rjCT275VAtMHAz98ruM+Tp0l0e9QdcGb6wyL7IhK8cOryJLE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Shw5+v8x; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8D3A9C4CEF1;
+	Tue, 26 Aug 2025 14:43:36 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1756218351;
-	bh=46KiQmCnR02Fb7DKusQn4FBBelMP6i0pcOtF6HmxKyE=;
+	s=korg; t=1756219416;
+	bh=J6zaCaLxDN2mID9zVUMdixePf0Twx3m5butJTvaMa/Y=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=uo3bSlF71syKhfPiSlwWOqDgNyktW7orvfOeldXt1kfcSyMRA3o+K+yl4iQBDcrcj
-	 WMz/khXT8SBg2k9pT+NBGNAcDTS+Z0QmukJi/ngL8L/GoQuHlPp1k52EFAJS8G4Ajf
-	 Et2vu2nKtsSpSSXPEC/60/Lhp8a4kBDIApNbnQrM=
+	b=Shw5+v8xn9pcjS4ttQUcZB7RwQ48nHfhrfcWW9qAROqQUMPIZB0hi0WB3kqP1/Bfh
+	 gYbFYgYYDMbzC7UbozQR2ZQoS3/FzFQ2+b32AS6kzqfPAluz6StDc3d0eXQMqOsjYX
+	 c9QqgPWeHh5y2wBspZDMCCGmGvGd15XFgIpgQiwE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	=?UTF-8?q?Ville=20Syrj=C3=A4l=C3=A4?= <ville.syrjala@linux.intel.com>,
-	Jani Nikula <jani.nikula@linux.intel.com>,
-	Jani Nikula <jani.nikula@intel.com>,
-	Imre Deak <imre.deak@intel.com>,
+	Jorge Ramirez-Ortiz <jorge.ramirez@oss.qualcomm.com>,
+	Dikshita Agarwal <quic_dikshita@quicinc.com>,
+	Bryan ODonoghue <bryan.odonoghue@linaro.org>,
+	Bryan ODonoghue <bod@kernel.org>,
+	Hans Verkuil <hverkuil@xs4all.nl>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 489/523] drm/dp: Change AUX DPCD probe address from DPCD_REV to LANE0_1_STATUS
+Subject: [PATCH 5.4 373/403] media: venus: hfi: explicitly release IRQ during teardown
 Date: Tue, 26 Aug 2025 13:11:39 +0200
-Message-ID: <20250826110936.507069438@linuxfoundation.org>
+Message-ID: <20250826110917.321043179@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250826110924.562212281@linuxfoundation.org>
-References: <20250826110924.562212281@linuxfoundation.org>
+In-Reply-To: <20250826110905.607690791@linuxfoundation.org>
+References: <20250826110905.607690791@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,55 +63,47 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+5.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Imre Deak <imre.deak@intel.com>
+From: Jorge Ramirez-Ortiz <jorge.ramirez@oss.qualcomm.com>
 
-[ Upstream commit a40c5d727b8111b5db424a1e43e14a1dcce1e77f ]
+[ Upstream commit 640803003cd903cea73dc6a86bf6963e238e2b3f ]
 
-Reading DPCD registers has side-effects in general. In particular
-accessing registers outside of the link training register range
-(0x102-0x106, 0x202-0x207, 0x200c-0x200f, 0x2216) is explicitly
-forbidden by the DP v2.1 Standard, see
+Ensure the IRQ is disabled - and all pending handlers completed - before
+dismantling the interrupt routing and clearing related pointers.
 
-3.6.5.1 DPTX AUX Transaction Handling Mandates
-3.6.7.4 128b/132b DP Link Layer LTTPR Link Training Mandates
+This prevents any possibility of the interrupt triggering after the
+handler context has been invalidated.
 
-Based on my tests, accessing the DPCD_REV register during the link
-training of an UHBR TBT DP tunnel sink leads to link training failures.
-
-Solve the above by using the DP_LANE0_1_STATUS (0x202) register for the
-DPCD register access quirk.
-
-Cc: <stable@vger.kernel.org>
-Cc: Ville Syrjälä <ville.syrjala@linux.intel.com>
-Cc: Jani Nikula <jani.nikula@linux.intel.com>
-Acked-by: Jani Nikula <jani.nikula@intel.com>
-Signed-off-by: Imre Deak <imre.deak@intel.com>
-Link: https://lore.kernel.org/r/20250605082850.65136-2-imre.deak@intel.com
-[ call to drm_dp_dpcd_access() instead of drm_dp_dpcd_probe() ]
+Fixes: d96d3f30c0f2 ("[media] media: venus: hfi: add Venus HFI files")
+Cc: stable@vger.kernel.org
+Signed-off-by: Jorge Ramirez-Ortiz <jorge.ramirez@oss.qualcomm.com>
+Reviewed-by: Dikshita Agarwal <quic_dikshita@quicinc.com>
+Tested-by: Dikshita Agarwal <quic_dikshita@quicinc.com> # RB5
+Reviewed-by: Bryan O'Donoghue <bryan.odonoghue@linaro.org>
+Signed-off-by: Bryan O'Donoghue <bod@kernel.org>
+Signed-off-by: Hans Verkuil <hverkuil@xs4all.nl>
+[ Adjust context ]
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/gpu/drm/drm_dp_helper.c |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/media/platform/qcom/venus/hfi_venus.c |    1 +
+ 1 file changed, 1 insertion(+)
 
---- a/drivers/gpu/drm/drm_dp_helper.c
-+++ b/drivers/gpu/drm/drm_dp_helper.c
-@@ -299,7 +299,7 @@ ssize_t drm_dp_dpcd_read(struct drm_dp_a
- 	 * monitor doesn't power down exactly after the throw away read.
- 	 */
- 	if (!aux->is_remote) {
--		ret = drm_dp_dpcd_access(aux, DP_AUX_NATIVE_READ, DP_DPCD_REV,
-+		ret = drm_dp_dpcd_access(aux, DP_AUX_NATIVE_READ, DP_LANE0_1_STATUS,
- 					 buffer, 1);
- 		if (ret != 1)
- 			goto out;
+--- a/drivers/media/platform/qcom/venus/hfi_venus.c
++++ b/drivers/media/platform/qcom/venus/hfi_venus.c
+@@ -1608,6 +1608,7 @@ void venus_hfi_destroy(struct venus_core
+ 	mutex_destroy(&hdev->lock);
+ 	kfree(hdev);
+ 	core->priv = NULL;
++	disable_irq(core->irq);
+ 	core->ops = NULL;
+ }
+ 
 
 
 
