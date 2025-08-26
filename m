@@ -1,59 +1,57 @@
-Return-Path: <stable+bounces-173348-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-175953-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id A650FB35C8D
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 13:35:40 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id BDBB5B36B77
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 16:46:08 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 6C7907C407C
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 11:35:23 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id BF8191C473E7
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 14:29:28 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B05E3340DA4;
-	Tue, 26 Aug 2025 11:33:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 17D2134166B;
+	Tue, 26 Aug 2025 14:26:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="jXJqZt5J"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="iyMikoeY"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6CBBD341653;
-	Tue, 26 Aug 2025 11:33:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C98CB2459F3;
+	Tue, 26 Aug 2025 14:26:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756208013; cv=none; b=BMllb2KdpN2KC79mo8Fe+iikSHLy0bK1TuOVzXDgBH6DDxWBluf9pwAaeM7DCEaDAUpPYwF0ge4KFroC75IQLm5ANwbr0Epq83PH643/gwPEMy6+kKQvVIqljbo8NsRrDOBXzfKH9lnbj9faypleuJSC86wyvp8dCYqDX9Fy260=
+	t=1756218402; cv=none; b=U77EnfsbWIRJy9sS6c9lTmiKtCLcDEfjMsuR3MF3UbWF3W/gmPOK4rlTJp79zPgkIjvltGjg4z6oR1NAmNi8PN/RMTsRTjljVK1QFBwtOSVifMiWyUPtNcRbjaH6qbnRNsG4sukcGheOwfjr8Kpv23vO5f8peMbMm+1/2wV1gog=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756208013; c=relaxed/simple;
-	bh=uJC0/8nm8gECnu5VgCRXG1dLn7sg6ZQdt5M0OYabdns=;
+	s=arc-20240116; t=1756218402; c=relaxed/simple;
+	bh=/maB5Ie5NbBWKSGqlb1Ed1lggQU4NGjctZh86HKJ4QE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=TBkd2lWa5ozB4peyM3FAdIVJjZeUOmf41o2JuE7nKEW9C86VCnr5hsSd94MA4VkdqHT7nltyQwBWTyJ0ByO1e+eKYr0SUw8tHXQnflBUJX4mFK8SEB1FubfLM5Rp0gRIQA0gzWwYd7jqse4j7GsqCsiLuFEm1d+GuR7ISPCJrbQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=jXJqZt5J; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id AA6BDC4CEF1;
-	Tue, 26 Aug 2025 11:33:32 +0000 (UTC)
+	 MIME-Version:Content-Type; b=QOl7yVzRR9wxlIRM9v1Cn1++VUC/yFVYf5HKegnDXd/bilaJwY/xrgTKJC8mmapb2irDOg6geew09HVReBPBgvyqu1YBKfoanHdhZ4pk7HCjdaTNfwB/kB0aR4S2yhHspBjLjMzF5768aIINvuu/AS0QV/4yzMO19wbxj1eL/aY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=iyMikoeY; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 340E4C4CEF1;
+	Tue, 26 Aug 2025 14:26:42 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1756208013;
-	bh=uJC0/8nm8gECnu5VgCRXG1dLn7sg6ZQdt5M0OYabdns=;
+	s=korg; t=1756218402;
+	bh=/maB5Ie5NbBWKSGqlb1Ed1lggQU4NGjctZh86HKJ4QE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=jXJqZt5JTx+YfxSSkhpP8BZMXwJzu5EuyHlgheckncq40ShWAJu07xyL8t3fntdUE
-	 43SbPNP7hWxeAIfkASUjmL4A2DUVCDUTJeMho0mvHBf77aFV84/4T8kIWmJ3I7y3XP
-	 7a4JFawylkn0CqXH2/Nv7abpkgOlt11461doUCTg=
+	b=iyMikoeYfE60QsHx87isXOHm60oW4j7Omt2m+bkYC1TRyIyAm1uB5BRjgQuXSy2ic
+	 NexzjyksJLkMMSfveE2xGlGWxcTfXxkZJFpgSx/eLee7c3NkEW+Rk5Hb14YpFk/rin
+	 d222LPQ1aVMgFLaW4k4dU2Yuw9npSBXH/c6X0KPU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>,
-	Thomas Gleixner <tglx@linutronix.de>,
-	James Bottomley <James.Bottomley@HansenPartnership.com>,
-	Nitin Rawat <quic_nitirawa@quicinc.com>,
-	"Martin K. Petersen" <martin.petersen@oracle.com>,
+	=?UTF-8?q?Uwe=20Kleine-K=C3=B6nig?= <u.kleine-koenig@baylibre.com>,
+	AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>,
+	=?UTF-8?q?Uwe=20Kleine-K=C3=B6nig?= <ukleinek@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.16 404/457] scsi: ufs: ufs-qcom: Fix ESI null pointer dereference
+Subject: [PATCH 5.10 478/523] pwm: mediatek: Fix duty and period setting
 Date: Tue, 26 Aug 2025 13:11:28 +0200
-Message-ID: <20250826110947.278931100@linuxfoundation.org>
+Message-ID: <20250826110936.235988510@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250826110937.289866482@linuxfoundation.org>
-References: <20250826110937.289866482@linuxfoundation.org>
+In-Reply-To: <20250826110924.562212281@linuxfoundation.org>
+References: <20250826110924.562212281@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,135 +61,87 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.16-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Nitin Rawat <quic_nitirawa@quicinc.com>
+From: Uwe Kleine-König <u.kleine-koenig@baylibre.com>
 
-[ Upstream commit 6300d5c5438724c0876828da2f6e2c1a661871fc ]
+[ Upstream commit f21d136caf8171f94159d975ea4620c164431bd9 ]
 
-ESI/MSI is a performance optimization feature that provides dedicated
-interrupts per MCQ hardware queue. This is optional feature and UFS MCQ
-should work with and without ESI feature.
+The period generated by the hardware is
 
-Commit e46a28cea29a ("scsi: ufs: qcom: Remove the MSI descriptor abuse")
-brings a regression in ESI (Enhanced System Interrupt) configuration that
-causes a null pointer dereference when Platform MSI allocation fails.
+	(PWMDWIDTH + 1) << CLKDIV) / freq
 
-The issue occurs in when platform_device_msi_init_and_alloc_irqs() in
-ufs_qcom_config_esi() fails (returns -EINVAL) but the current code uses
-__free() macro for automatic cleanup free MSI resources that were never
-successfully allocated.
+according to my tests with a signal analyser and also the documentation.
 
-Unable to handle kernel NULL pointer dereference at virtual
-address 0000000000000008
+The current algorithm doesn't consider the `+ 1` part and so configures
+slightly too high periods. The same issue exists for the duty cycle
+setting. So subtract 1 from both the register values for period and
+duty cycle. If period is 0, bail out, if duty_cycle is 0, just disable
+the PWM which results in a constant low output.
 
-  Call trace:
-  mutex_lock+0xc/0x54 (P)
-  platform_device_msi_free_irqs_all+0x1c/0x40
-  ufs_qcom_config_esi+0x1d0/0x220 [ufs_qcom]
-  ufshcd_config_mcq+0x28/0x104
-  ufshcd_init+0xa3c/0xf40
-  ufshcd_pltfrm_init+0x504/0x7d4
-  ufs_qcom_probe+0x20/0x58 [ufs_qcom]
-
-Fix by restructuring the ESI configuration to try MSI allocation first,
-before any other resource allocation and instead use explicit cleanup
-instead of __free() macro to avoid cleanup of unallocated resources.
-
-Tested on SM8750 platform with MCQ enabled, both with and without
-Platform ESI support.
-
-Fixes: e46a28cea29a ("scsi: ufs: qcom: Remove the MSI descriptor abuse")
-Cc: Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>
-Cc: Thomas Gleixner <tglx@linutronix.de>
-Cc: James Bottomley <James.Bottomley@HansenPartnership.com>
-Signed-off-by: Nitin Rawat <quic_nitirawa@quicinc.com>
-Link: https://lore.kernel.org/r/20250811073330.20230-1-quic_nitirawa@quicinc.com
-Signed-off-by: Martin K. Petersen <martin.petersen@oracle.com>
+Fixes: caf065f8fd58 ("pwm: Add MediaTek PWM support")
+Signed-off-by: Uwe Kleine-König <u.kleine-koenig@baylibre.com>
+Reviewed-by: AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>
+Link: https://lore.kernel.org/r/6d1fa87a76f8020bfe3171529b8e19baffceab10.1753717973.git.u.kleine-koenig@baylibre.com
+Cc: stable@vger.kernel.org
+Signed-off-by: Uwe Kleine-König <ukleinek@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/ufs/host/ufs-qcom.c | 39 ++++++++++++++-----------------------
- 1 file changed, 15 insertions(+), 24 deletions(-)
+ drivers/pwm/pwm-mediatek.c |   21 ++++++++++++++-------
+ 1 file changed, 14 insertions(+), 7 deletions(-)
 
-diff --git a/drivers/ufs/host/ufs-qcom.c b/drivers/ufs/host/ufs-qcom.c
-index 53301a2c27be..2e4edc192e8e 100644
---- a/drivers/ufs/host/ufs-qcom.c
-+++ b/drivers/ufs/host/ufs-qcom.c
-@@ -2053,17 +2053,6 @@ static irqreturn_t ufs_qcom_mcq_esi_handler(int irq, void *data)
- 	return IRQ_HANDLED;
- }
+--- a/drivers/pwm/pwm-mediatek.c
++++ b/drivers/pwm/pwm-mediatek.c
+@@ -169,7 +169,10 @@ static int pwm_mediatek_config(struct pw
+ 	do_div(resolution, clk_rate);
  
--static void ufs_qcom_irq_free(struct ufs_qcom_irq *uqi)
--{
--	for (struct ufs_qcom_irq *q = uqi; q->irq; q++)
--		devm_free_irq(q->hba->dev, q->irq, q->hba);
--
--	platform_device_msi_free_irqs_all(uqi->hba->dev);
--	devm_kfree(uqi->hba->dev, uqi);
--}
--
--DEFINE_FREE(ufs_qcom_irq, struct ufs_qcom_irq *, if (_T) ufs_qcom_irq_free(_T))
--
- static int ufs_qcom_config_esi(struct ufs_hba *hba)
- {
- 	struct ufs_qcom_host *host = ufshcd_get_variant(hba);
-@@ -2078,18 +2067,18 @@ static int ufs_qcom_config_esi(struct ufs_hba *hba)
- 	 */
- 	nr_irqs = hba->nr_hw_queues - hba->nr_queues[HCTX_TYPE_POLL];
+ 	cnt_period = DIV_ROUND_CLOSEST_ULL((u64)period_ns * 1000, resolution);
+-	while (cnt_period > 8191) {
++	if (!cnt_period)
++		return -EINVAL;
++
++	while (cnt_period > 8192) {
+ 		resolution *= 2;
+ 		clkdiv++;
+ 		cnt_period = DIV_ROUND_CLOSEST_ULL((u64)period_ns * 1000,
+@@ -192,9 +195,16 @@ static int pwm_mediatek_config(struct pw
+ 	}
  
--	struct ufs_qcom_irq *qi __free(ufs_qcom_irq) =
--		devm_kcalloc(hba->dev, nr_irqs, sizeof(*qi), GFP_KERNEL);
--	if (!qi)
--		return -ENOMEM;
--	/* Preset so __free() has a pointer to hba in all error paths */
--	qi[0].hba = hba;
--
- 	ret = platform_device_msi_init_and_alloc_irqs(hba->dev, nr_irqs,
- 						      ufs_qcom_write_msi_msg);
- 	if (ret) {
--		dev_err(hba->dev, "Failed to request Platform MSI %d\n", ret);
--		return ret;
-+		dev_warn(hba->dev, "Platform MSI not supported or failed, continuing without ESI\n");
-+		return ret; /* Continue without ESI */
+ 	cnt_duty = DIV_ROUND_CLOSEST_ULL((u64)duty_ns * 1000, resolution);
++
+ 	pwm_mediatek_writel(pc, pwm->hwpwm, PWMCON, BIT(15) | clkdiv);
+-	pwm_mediatek_writel(pc, pwm->hwpwm, reg_width, cnt_period);
+-	pwm_mediatek_writel(pc, pwm->hwpwm, reg_thres, cnt_duty);
++	pwm_mediatek_writel(pc, pwm->hwpwm, reg_width, cnt_period - 1);
++
++	if (cnt_duty) {
++		pwm_mediatek_writel(pc, pwm->hwpwm, reg_thres, cnt_duty - 1);
++		pwm_mediatek_enable(chip, pwm);
++	} else {
++		pwm_mediatek_disable(chip, pwm);
 +	}
-+
-+	struct ufs_qcom_irq *qi = devm_kcalloc(hba->dev, nr_irqs, sizeof(*qi), GFP_KERNEL);
-+
-+	if (!qi) {
-+		platform_device_msi_free_irqs_all(hba->dev);
-+		return -ENOMEM;
- 	}
  
- 	for (int idx = 0; idx < nr_irqs; idx++) {
-@@ -2100,15 +2089,17 @@ static int ufs_qcom_config_esi(struct ufs_hba *hba)
- 		ret = devm_request_irq(hba->dev, qi[idx].irq, ufs_qcom_mcq_esi_handler,
- 				       IRQF_SHARED, "qcom-mcq-esi", qi + idx);
- 		if (ret) {
--			dev_err(hba->dev, "%s: Fail to request IRQ for %d, err = %d\n",
-+			dev_err(hba->dev, "%s: Failed to request IRQ for %d, err = %d\n",
- 				__func__, qi[idx].irq, ret);
--			qi[idx].irq = 0;
-+			/* Free previously allocated IRQs */
-+			for (int j = 0; j < idx; j++)
-+				devm_free_irq(hba->dev, qi[j].irq, qi + j);
-+			platform_device_msi_free_irqs_all(hba->dev);
-+			devm_kfree(hba->dev, qi);
- 			return ret;
- 		}
- 	}
+ out:
+ 	pwm_mediatek_clk_disable(chip, pwm);
+@@ -223,11 +233,8 @@ static int pwm_mediatek_apply(struct pwm
+ 	if (err)
+ 		return err;
  
--	retain_and_null_ptr(qi);
--
- 	if (host->hw_ver.major >= 6) {
- 		ufshcd_rmwl(hba, ESI_VEC_MASK, FIELD_PREP(ESI_VEC_MASK, MAX_ESI_VEC - 1),
- 			    REG_UFS_CFG3);
--- 
-2.50.1
-
+-	if (!pwm->state.enabled) {
++	if (!pwm->state.enabled)
+ 		err = pwm_mediatek_clk_enable(chip, pwm);
+-		if (!err)
+-			pwm_mediatek_enable(chip, pwm);
+-	}
+ 
+ 	return err;
+ }
 
 
 
