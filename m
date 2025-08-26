@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-173152-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-175239-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9ECBBB35C0F
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 13:30:58 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8E344B367F8
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 16:11:40 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 840C23635DD
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 11:25:09 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 0006A8E1813
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 13:56:25 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4D35729D26A;
-	Tue, 26 Aug 2025 11:25:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id AB4D4352071;
+	Tue, 26 Aug 2025 13:55:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Ok2RrMoK"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="tGrzekZF"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0995D267386;
-	Tue, 26 Aug 2025 11:25:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 65E86350838;
+	Tue, 26 Aug 2025 13:55:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756207508; cv=none; b=SSFWIYnraruvTEsNuWKMTUe2ne7V2hXVDKr5ZE8FJ80alMOAd0wz2I7CSrIG5C9JEJ3aa3X9z9b30WfsbRoKwtlRv+nxtcxGqaoEP3JoZ2XYhbU235JRVkidYfeBjeuJ6i9DFfApj8gA5q82zg4pV16UsSe2Y7h+bAM7K0s1UqY=
+	t=1756216510; cv=none; b=lPEDHpdRY8D5oqLwbzZROJpQPQ0XaU6NejbYWPiUhz0GU3xgbB+tuwyDOld8WK9Jid4T5KnWAT2EscnYIYN5dW0qBHZnohyI779Ikaqa6O+wjzHryY55b7W9nWx0uOwOOMEE8KwJOafcJYj9/SB2ujlsRp+mbI5OCKZ3gwi5WgA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756207508; c=relaxed/simple;
-	bh=XyqpZzIoCQiIr2rW1cKCq5/cZjka5kvzJjnAQXtZ61o=;
+	s=arc-20240116; t=1756216510; c=relaxed/simple;
+	bh=MrF3xe6+BYtDFLLut41tIrEGRlVZo++caH/J80l5+RU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=fkszq0GNlRH5wVXYu7tLV+JRMZfrlYjdT/DCkdAFAfIHQW35E/1oIS/tuh+C0JufPY3zb2lFq4Fjl/vqqQ5LqW3XAuT2dLHRTPBMPw99CvzOfGMBlLDPXi3b/+JycmpXlIpyR4akPbEwaK0D95XTK4QXiPOxcCfkMDL5EhNtzKg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Ok2RrMoK; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3901EC4CEF1;
-	Tue, 26 Aug 2025 11:25:07 +0000 (UTC)
+	 MIME-Version; b=Ewzi2HXeI5LJ73o6THFodAKpa8Iy7EJpbLxSsUDnPFcB4jOvklUzV/XG+0Wt6B6xCyxsQwSCKUsDJ0wFSVKAURsVhm4AICVaKEGl8vi/W7S8q0PreAKyLh3Ux+qw1CETZVdJOadcxTqKcVlJiYruo7VWcVXRCaVb8eIOYvoFn2Y=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=tGrzekZF; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E993EC2BC87;
+	Tue, 26 Aug 2025 13:55:09 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1756207507;
-	bh=XyqpZzIoCQiIr2rW1cKCq5/cZjka5kvzJjnAQXtZ61o=;
+	s=korg; t=1756216510;
+	bh=MrF3xe6+BYtDFLLut41tIrEGRlVZo++caH/J80l5+RU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Ok2RrMoKx7IrnpP2YZ0LpEeP+c6e7m4CE/jCYOyv82nayXz2T9nstn2/X5MvGVFW2
-	 wwazX6Y13jrnsKbmldYwSk9kqyKvVA3XKJSctVYxMBUpWfJ1waIvDrZUZl7eGIFPCG
-	 GBvxvNAmBgPjz8DibDXCFj+c9B9l5g3C8LUDAQYQ=
+	b=tGrzekZFQY5VB4CS6BuyBUg+7q4Apg93H+5teMRnVQqPyqPEDXW4johF42/ygpQbl
+	 qVPj6a1jxRLsRcQuuMQA9d0q6gLt/dLBOe+m+vL67gDaYG3SJbMGcDvuy92hmWlbpe
+	 75I6wt/A9NYvbfiqXGoqbPDoJJnINhXnB+px8CuU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Mat Martineau <martineau@kernel.org>,
-	"Matthieu Baerts (NGI0)" <matttbe@kernel.org>,
-	Jakub Kicinski <kuba@kernel.org>
-Subject: [PATCH 6.16 208/457] selftests: mptcp: pm: check flush doesnt reset limits
+	Justin Tee <justin.tee@broadcom.com>,
+	"Martin K. Petersen" <martin.petersen@oracle.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.15 401/644] scsi: lpfc: Check for hdwq null ptr when cleaning up lpfc_vport structure
 Date: Tue, 26 Aug 2025 13:08:12 +0200
-Message-ID: <20250826110942.506600733@linuxfoundation.org>
+Message-ID: <20250826110956.388387449@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250826110937.289866482@linuxfoundation.org>
-References: <20250826110937.289866482@linuxfoundation.org>
+In-Reply-To: <20250826110946.507083938@linuxfoundation.org>
+References: <20250826110946.507083938@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,46 +62,48 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.16-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Matthieu Baerts (NGI0) <matttbe@kernel.org>
+From: Justin Tee <justin.tee@broadcom.com>
 
-commit 452690be7de2f91cc0de68cb9e95252875b33503 upstream.
+[ Upstream commit 6698796282e828733cde3329c887b4ae9e5545e9 ]
 
-This modification is linked to the parent commit where the received
-ADD_ADDR limit was accidentally reset when the endpoints were flushed.
+If a call to lpfc_sli4_read_rev() from lpfc_sli4_hba_setup() fails, the
+resultant cleanup routine lpfc_sli4_vport_delete_fcp_xri_aborted() may
+occur before sli4_hba.hdwqs are allocated.  This may result in a null
+pointer dereference when attempting to take the abts_io_buf_list_lock for
+the first hardware queue.  Fix by adding a null ptr check on
+phba->sli4_hba.hdwq and early return because this situation means there
+must have been an error during port initialization.
 
-To validate that, the test is now flushing endpoints after having set
-new limits, and before checking them.
-
-The 'Fixes' tag here below is the same as the one from the previous
-commit: this patch here is not fixing anything wrong in the selftests,
-but it validates the previous fix for an issue introduced by this commit
-ID.
-
-Fixes: 01cacb00b35c ("mptcp: add netlink-based PM")
-Cc: stable@vger.kernel.org
-Reviewed-by: Mat Martineau <martineau@kernel.org>
-Signed-off-by: Matthieu Baerts (NGI0) <matttbe@kernel.org>
-Link: https://patch.msgid.link/20250815-net-mptcp-misc-fixes-6-17-rc2-v1-3-521fe9957892@kernel.org
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Signed-off-by: Justin Tee <justin.tee@broadcom.com>
+Link: https://lore.kernel.org/r/20250618192138.124116-4-justintee8345@gmail.com
+Signed-off-by: Martin K. Petersen <martin.petersen@oracle.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- tools/testing/selftests/net/mptcp/pm_netlink.sh |    1 +
- 1 file changed, 1 insertion(+)
+ drivers/scsi/lpfc/lpfc_scsi.c | 4 ++++
+ 1 file changed, 4 insertions(+)
 
---- a/tools/testing/selftests/net/mptcp/pm_netlink.sh
-+++ b/tools/testing/selftests/net/mptcp/pm_netlink.sh
-@@ -198,6 +198,7 @@ set_limits 1 9 2>/dev/null
- check "get_limits" "${default_limits}" "subflows above hard limit"
+diff --git a/drivers/scsi/lpfc/lpfc_scsi.c b/drivers/scsi/lpfc/lpfc_scsi.c
+index d9fb5e09fb53..520491a8b56e 100644
+--- a/drivers/scsi/lpfc/lpfc_scsi.c
++++ b/drivers/scsi/lpfc/lpfc_scsi.c
+@@ -454,6 +454,10 @@ lpfc_sli4_vport_delete_fcp_xri_aborted(struct lpfc_vport *vport)
+ 	if (!(vport->cfg_enable_fc4_type & LPFC_ENABLE_FCP))
+ 		return;
  
- set_limits 8 8
-+flush_endpoint  ## to make sure it doesn't affect the limits
- check "get_limits" "$(format_limits 8 8)" "set limits"
- 
- flush_endpoint
++	/* may be called before queues established if hba_setup fails */
++	if (!phba->sli4_hba.hdwq)
++		return;
++
+ 	spin_lock_irqsave(&phba->hbalock, iflag);
+ 	for (idx = 0; idx < phba->cfg_hdw_queue; idx++) {
+ 		qp = &phba->sli4_hba.hdwq[idx];
+-- 
+2.39.5
+
 
 
 
