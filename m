@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-176148-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-174541-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 90BF6B36C23
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 16:53:13 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 58DF5B363F9
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 15:34:46 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 6ED6E5A177E
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 14:38:07 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id D83E38A155F
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 13:25:54 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id EBCA92676E9;
-	Tue, 26 Aug 2025 14:35:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 13CEA340D93;
+	Tue, 26 Aug 2025 13:24:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="d1l18RKX"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="qHAs+rpu"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9C61A352060;
-	Tue, 26 Aug 2025 14:35:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C502533471E;
+	Tue, 26 Aug 2025 13:24:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756218905; cv=none; b=tReXi4lZXTkbSL6q4glAHXr/PGywFsD879FLOVMJXGscwZ6AGv0V4eS7O1vN7QfrHK/PZJIg1ZtulagPXv28wFoDOYHX6HtDwM0sEneFHTLWBlbV+p4pGo9AQlbaBfACi3djtef+DY6FndY0P4tnOHNU7NnnSY/wMIvPgxfZsY4=
+	t=1756214664; cv=none; b=R36bl3dA4bK+IdWKx2TuLCLngUALEuxwqmL8kFcIYDeO31Rn6wT8Ab/94yq6w7QXEHULxl586G+T4U2lNPTSOuRxiJkKtIHNIyL8bsM53E+W77uhnGrGltiFq66SDExT4piGS0jnoYfKopv8RjVjaEm6PD8iAbpS/iXNSsEqbN4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756218905; c=relaxed/simple;
-	bh=Wy4VdjflSxxJvdE7cnx6PNcosV1qz0W2u08db/Xqk3c=;
+	s=arc-20240116; t=1756214664; c=relaxed/simple;
+	bh=Yo3sSFe6FbCeIyU78Er8Lo4i0LdwVa6NSdASueXNhcw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=kTaHr3zRS15yEeG6bMbf+KEuDuVnOBbzwidOqpEET/7WWlb92lJAnk6z4sVXp9Jaos0U4vBl1Ps5mVijSz8KQLhKJK9oju8ca4Re9brG0LvISS0JT7DiPD6siBZJMDNZGu/xfXsj1MXah+gcsS76gJbsEUeBF5jRY7qIsdkOEiQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=d1l18RKX; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id DA3ACC4CEF1;
-	Tue, 26 Aug 2025 14:35:04 +0000 (UTC)
+	 MIME-Version; b=VUTEHUJ0J8se67FjoC5pLrQCWUG7CTOEDpEGo5QdH1WvQeZzTQtYzH0nDwGXdEWd1ez7yh+uLA89e61tkDVS1/a6PDenRk1ZA7bwswUUpWKxWMZVH4fTnQPRv0dtGdimvDRiHymwp1ZBkFQZBBWqP+EKnYMHNODA5NxeTreiL48=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=qHAs+rpu; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 53429C4CEF1;
+	Tue, 26 Aug 2025 13:24:24 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1756218905;
-	bh=Wy4VdjflSxxJvdE7cnx6PNcosV1qz0W2u08db/Xqk3c=;
+	s=korg; t=1756214664;
+	bh=Yo3sSFe6FbCeIyU78Er8Lo4i0LdwVa6NSdASueXNhcw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=d1l18RKX2jUDxT0Ll12w+MDvj9ZSUN+G1860FHjAm4bp9T2+wsEpoXKN7agTg8mUl
-	 dOW7WF74lFOvJz3ZW3sH06HhZNqHVZT5uzWpzFUakuV/9SiM6Zhl1PwZCCmSKekx77
-	 SNTtmL3yElQfNV1SActsK8YK+UmL2+q7qSBgDUK0=
+	b=qHAs+rpueLFRawgUpV0KBoQMmx6KAoYcuwMVeBy6173bzVGlI+X9n23OT2UuG5vxT
+	 F8Qvv+RIg/tUkiDSCHcvKG+G6haQJgvwFCfi9AKeNWfn6v988S2LPCYm8PoHOYntMA
+	 /RmAohldrLhUpMg0G0gju8stc6hp1/GhNhZqHkww=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Quang Le <quanglex97@gmail.com>,
-	Willem de Bruijn <willemb@google.com>,
-	Jakub Kicinski <kuba@kernel.org>
-Subject: [PATCH 5.4 151/403] net/packet: fix a race in packet_set_ring() and packet_notifier()
+	Alex Williamson <alex.williamson@redhat.com>,
+	Artem Sadovnikov <a.sadovnikov@ispras.ru>,
+	Yishai Hadas <yishaih@nvidia.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.1 224/482] vfio/mlx5: fix possible overflow in tracking max message size
 Date: Tue, 26 Aug 2025 13:07:57 +0200
-Message-ID: <20250826110911.047635612@linuxfoundation.org>
+Message-ID: <20250826110936.309763066@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250826110905.607690791@linuxfoundation.org>
-References: <20250826110905.607690791@linuxfoundation.org>
+In-Reply-To: <20250826110930.769259449@linuxfoundation.org>
+References: <20250826110930.769259449@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,69 +63,51 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.4-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Quang Le <quanglex97@gmail.com>
+From: Artem Sadovnikov <a.sadovnikov@ispras.ru>
 
-commit 01d3c8417b9c1b884a8a981a3b886da556512f36 upstream.
+[ Upstream commit b3060198483bac43ec113c62ae3837076f61f5de ]
 
-When packet_set_ring() releases po->bind_lock, another thread can
-run packet_notifier() and process an NETDEV_UP event.
+MLX cap pg_track_log_max_msg_size consists of 5 bits, value of which is
+used as power of 2 for max_msg_size. This can lead to multiplication
+overflow between max_msg_size (u32) and integer constant, and afterwards
+incorrect value is being written to rq_size.
 
-This race and the fix are both similar to that of commit 15fe076edea7
-("net/packet: fix a race in packet_bind() and packet_notifier()").
+Fix this issue by extending integer constant to u64 type.
 
-There too the packet_notifier NETDEV_UP event managed to run while a
-po->bind_lock critical section had to be temporarily released. And
-the fix was similarly to temporarily set po->num to zero to keep
-the socket unhooked until the lock is retaken.
+Found by Linux Verification Center (linuxtesting.org) with SVACE.
 
-The po->bind_lock in packet_set_ring and packet_notifier precede the
-introduction of git history.
-
-Fixes: 1da177e4c3f4 ("Linux-2.6.12-rc2")
-Cc: stable@vger.kernel.org
-Signed-off-by: Quang Le <quanglex97@gmail.com>
-Signed-off-by: Willem de Bruijn <willemb@google.com>
-Link: https://patch.msgid.link/20250801175423.2970334-1-willemdebruijn.kernel@gmail.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Suggested-by: Alex Williamson <alex.williamson@redhat.com>
+Signed-off-by: Artem Sadovnikov <a.sadovnikov@ispras.ru>
+Reviewed-by: Yishai Hadas <yishaih@nvidia.com>
+Link: https://lore.kernel.org/r/20250701144017.2410-2-a.sadovnikov@ispras.ru
+Signed-off-by: Alex Williamson <alex.williamson@redhat.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/packet/af_packet.c |   12 ++++++------
- 1 file changed, 6 insertions(+), 6 deletions(-)
+ drivers/vfio/pci/mlx5/cmd.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
---- a/net/packet/af_packet.c
-+++ b/net/packet/af_packet.c
-@@ -4504,10 +4504,10 @@ static int packet_set_ring(struct sock *
- 	spin_lock(&po->bind_lock);
- 	was_running = po->running;
- 	num = po->num;
--	if (was_running) {
--		WRITE_ONCE(po->num, 0);
-+	WRITE_ONCE(po->num, 0);
-+	if (was_running)
- 		__unregister_prot_hook(sk, false);
--	}
-+
- 	spin_unlock(&po->bind_lock);
+diff --git a/drivers/vfio/pci/mlx5/cmd.c b/drivers/vfio/pci/mlx5/cmd.c
+index 3f93b5c3f099..06794c48170c 100644
+--- a/drivers/vfio/pci/mlx5/cmd.c
++++ b/drivers/vfio/pci/mlx5/cmd.c
+@@ -1127,8 +1127,8 @@ int mlx5vf_start_page_tracker(struct vfio_device *vdev,
+ 	log_max_msg_size = MLX5_CAP_ADV_VIRTUALIZATION(mdev, pg_track_log_max_msg_size);
+ 	max_msg_size = (1ULL << log_max_msg_size);
+ 	/* The RQ must hold at least 4 WQEs/messages for successful QP creation */
+-	if (rq_size < 4 * max_msg_size)
+-		rq_size = 4 * max_msg_size;
++	if (rq_size < 4ULL * max_msg_size)
++		rq_size = 4ULL * max_msg_size;
  
- 	synchronize_net();
-@@ -4539,10 +4539,10 @@ static int packet_set_ring(struct sock *
- 	mutex_unlock(&po->pg_vec_lock);
- 
- 	spin_lock(&po->bind_lock);
--	if (was_running) {
--		WRITE_ONCE(po->num, num);
-+	WRITE_ONCE(po->num, num);
-+	if (was_running)
- 		register_prot_hook(sk);
--	}
-+
- 	spin_unlock(&po->bind_lock);
- 	if (pg_vec && (po->tp_version > TPACKET_V2)) {
- 		/* Because we don't support block-based V3 on tx-ring */
+ 	memset(tracker, 0, sizeof(*tracker));
+ 	tracker->uar = mlx5_get_uars_page(mdev);
+-- 
+2.39.5
+
 
 
 
