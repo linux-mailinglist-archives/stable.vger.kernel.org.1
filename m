@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-174869-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-173757-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 84FDBB3653A
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 15:45:51 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8A67DB35F85
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 14:50:17 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 2F2A78E2F54
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 13:38:54 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 8508C1899BDD
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 12:50:21 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8E3F9393DF2;
-	Tue, 26 Aug 2025 13:38:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id CD7D413DDAA;
+	Tue, 26 Aug 2025 12:49:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="qsQnj0QT"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="U9JrgcjX"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4B6581B87E8;
-	Tue, 26 Aug 2025 13:38:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 88A8C12C499;
+	Tue, 26 Aug 2025 12:49:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756215530; cv=none; b=KUvls06DNryCzPtlzuTbVeMhIPC2T46NvlhLkcfzim4JZmMjgmfgitaZy2rJqU+H3JrMjcKFuK7b37K1gr62hJ2RwZMBZxrdkHdgXlkuhw/bS+co+45bPhxb62LRpVKNze1nadBRf9sj6isI18nFooV8LOI+4eQFs3BP6TFAbDE=
+	t=1756212591; cv=none; b=Vn6z8mqsrfiHWAa6LOgmOtPeuQfIK2ijw9jL+UBIPa3PBG5XnxM4IgtEFvehscgM3N8HZVYlDIAZqv16xUgbD1wPdwSy/PUBT3+oBFmX3CMNSNqVEYfG2jrs1ckAUq+pn8BxhsLmz+gYSqP4Q+f4jhIqVvl2k/HRfywRgdzLnWo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756215530; c=relaxed/simple;
-	bh=TElNZdWboIa2XCrmG4AufI7EsZyH8xD/fM0keTMUQFs=;
+	s=arc-20240116; t=1756212591; c=relaxed/simple;
+	bh=bJ5n0bNoIZRnVeYav3p0IGBfU6OpidyO2ErOqmSPWTY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Ezm9kL5Vff/ohcAc0xO3hJeTMdZE67QnRtAkPcG+h7ySl7c2GeDakuodupWgmBnG6exsz8aE0iHFjuW3db7E4NdA41VOoOy+PKDiJJX1xA6ZNa1VZOsE/xOxcGSobACEu6+A1BgKV8eGw30wTPeFlhn/30Ld/3z+sHBouI2wxoY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=qsQnj0QT; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C7691C4CEF1;
-	Tue, 26 Aug 2025 13:38:49 +0000 (UTC)
+	 MIME-Version; b=LmNNUqtDx0krndkt4YL/jA4uRBS1pXDfpHnXZN+27S6twK/map7OU0HP5PNJkhkJjSAOaYaPcueeXFRNyfv12sM2CTHJnfT/EVfop+AGEqUhXVAsw3uRqLqAsYFGIn8IE49gQ26tTZyPDR1tQIpmUnXkpHDCGCNZL6oypHKIR8I=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=U9JrgcjX; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C82AEC4CEF1;
+	Tue, 26 Aug 2025 12:49:50 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1756215530;
-	bh=TElNZdWboIa2XCrmG4AufI7EsZyH8xD/fM0keTMUQFs=;
+	s=korg; t=1756212591;
+	bh=bJ5n0bNoIZRnVeYav3p0IGBfU6OpidyO2ErOqmSPWTY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=qsQnj0QT9iMX979TCnNpsdLSIqE6f+GKNSZqb9w1zkb7Yx0Nq0a5DCxBCEVOhAY3Q
-	 bu8ej/A2BGBiKYO/1gj5cS5i8CyNvADrWRSs/Yjh/2LXc+2vy5z3DE8VcWmcQhnfkR
-	 H0hpEujWxEvmKeieTuTWSIY3DH43KXI6AZABBcoo=
+	b=U9JrgcjX6pWE1bAk8F/bVLItiTyySYTu5kgj2gKqQB5+tB2UswDuoeGyFyJm/RAJE
+	 XdKdQndXVay31liOaK5TjeCdh97zfVWPN7LFo56qt1m2QxfFg5jD4hJEW4C9xKo604
+	 IAP7n4eR+c5QT1KnXoZ+EVy8I660x0z5xTuBtY0w=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Srinivas Pandruvada <srinivas.pandruvada@linux.intel.com>,
-	Zhang Rui <rui.zhang@intel.com>,
-	"Rafael J. Wysocki" <rafael.j.wysocki@intel.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 069/644] powercap: intel_rapl: Do not change CLAMPING bit if ENABLE bit cannot be changed
+	David Thompson <davthompson@nvidia.com>,
+	Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
+	Bartosz Golaszewski <bartosz.golaszewski@linaro.org>
+Subject: [PATCH 6.6 011/587] gpio: mlxbf3: use platform_get_irq_optional()
 Date: Tue, 26 Aug 2025 13:02:40 +0200
-Message-ID: <20250826110948.208019659@linuxfoundation.org>
+Message-ID: <20250826110953.237963149@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250826110946.507083938@linuxfoundation.org>
-References: <20250826110946.507083938@linuxfoundation.org>
+In-Reply-To: <20250826110952.942403671@linuxfoundation.org>
+References: <20250826110952.942403671@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,80 +62,43 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Zhang Rui <rui.zhang@intel.com>
+From: David Thompson <davthompson@nvidia.com>
 
-commit 964209202ebe1569c858337441e87ef0f9d71416 upstream.
+commit 810bd9066fb1871b8a9528f31f2fdbf2a8b73bf2 upstream.
 
-PL1 cannot be disabled on some platforms. The ENABLE bit is still set
-after software clears it. This behavior leads to a scenario where, upon
-user request to disable the Power Limit through the powercap sysfs, the
-ENABLE bit remains set while the CLAMPING bit is inadvertently cleared.
+The gpio-mlxbf3 driver interfaces with two GPIO controllers,
+device instance 0 and 1. There is a single IRQ resource shared
+between the two controllers, and it is found in the ACPI table for
+device instance 0. The driver should not use platform_get_irq(),
+otherwise this error is logged when probing instance 1:
+    mlxbf3_gpio MLNXBF33:01: error -ENXIO: IRQ index 0 not found
 
-According to the Intel Software Developer's Manual, the CLAMPING bit,
-"When set, allows the processor to go below the OS requested P states in
-order to maintain the power below specified Platform Power Limit value."
-
-Thus this means the system may operate at higher power levels than
-intended on such platforms.
-
-Enhance the code to check ENABLE bit after writing to it, and stop
-further processing if ENABLE bit cannot be changed.
-
-Reported-by: Srinivas Pandruvada <srinivas.pandruvada@linux.intel.com>
-Fixes: 2d281d8196e3 ("PowerCap: Introduce Intel RAPL power capping driver")
-Cc: All applicable <stable@vger.kernel.org>
-Signed-off-by: Zhang Rui <rui.zhang@intel.com>
-Link: https://patch.msgid.link/20250619071340.384782-1-rui.zhang@intel.com
-[ rjw: Use str_enabled_disabled() instead of open-coded equivalent ]
-Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
-[ replaced rapl_write_pl_data() and rapl_read_pl_data() with rapl_write_data_raw() and rapl_read_data_raw() ]
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Cc: stable@vger.kernel.org
+Fixes: cd33f216d241 ("gpio: mlxbf3: Add gpio driver support")
+Signed-off-by: David Thompson <davthompson@nvidia.com>
+Reviewed-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+Link: https://lore.kernel.org/r/ce70b98a201ce82b9df9aa80ac7a5eeaa2268e52.1754928650.git.davthompson@nvidia.com
+Signed-off-by: Bartosz Golaszewski <bartosz.golaszewski@linaro.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/powercap/intel_rapl_common.c |   23 ++++++++++++++++++++++-
- 1 file changed, 22 insertions(+), 1 deletion(-)
+ drivers/gpio/gpio-mlxbf3.c |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/drivers/powercap/intel_rapl_common.c
-+++ b/drivers/powercap/intel_rapl_common.c
-@@ -212,12 +212,33 @@ static int find_nr_power_limit(struct ra
- static int set_domain_enable(struct powercap_zone *power_zone, bool mode)
- {
- 	struct rapl_domain *rd = power_zone_to_rapl_domain(power_zone);
-+	u64 val;
-+	int ret;
+--- a/drivers/gpio/gpio-mlxbf3.c
++++ b/drivers/gpio/gpio-mlxbf3.c
+@@ -227,7 +227,7 @@ static int mlxbf3_gpio_probe(struct plat
+ 	gc->owner = THIS_MODULE;
+ 	gc->add_pin_ranges = mlxbf3_gpio_add_pin_ranges;
  
- 	if (rd->state & DOMAIN_STATE_BIOS_LOCKED)
- 		return -EACCES;
- 
- 	cpus_read_lock();
--	rapl_write_data_raw(rd, PL1_ENABLE, mode);
-+	ret = rapl_write_data_raw(rd, PL1_ENABLE, mode);
-+	if (ret) {
-+		cpus_read_unlock();
-+		return ret;
-+	}
-+
-+	/* Check if the ENABLE bit was actually changed */
-+	ret = rapl_read_data_raw(rd, PL1_ENABLE, true, &val);
-+	if (ret) {
-+		cpus_read_unlock();
-+		return ret;
-+	}
-+
-+	if (mode != val) {
-+		pr_debug("%s cannot be %s\n", power_zone->name,
-+			 mode ? "enabled" : "disabled");
-+		cpus_read_unlock();
-+		return 0;
-+	}
-+
- 	if (rapl_defaults->set_floor_freq)
- 		rapl_defaults->set_floor_freq(rd, mode);
- 	cpus_read_unlock();
+-	irq = platform_get_irq(pdev, 0);
++	irq = platform_get_irq_optional(pdev, 0);
+ 	if (irq >= 0) {
+ 		girq = &gs->gc.irq;
+ 		gpio_irq_chip_set_chip(girq, &gpio_mlxbf3_irqchip);
 
 
 
