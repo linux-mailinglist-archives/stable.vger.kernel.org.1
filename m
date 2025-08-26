@@ -1,59 +1,57 @@
-Return-Path: <stable+bounces-173127-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-175200-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6575CB35C0B
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 13:30:52 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id C7DA1B367F5
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 16:11:34 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id CE16436302F
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 11:24:21 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id E338F8E5522
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 13:55:27 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9ACE12BEC2B;
-	Tue, 26 Aug 2025 11:24:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3BF44350D5D;
+	Tue, 26 Aug 2025 13:53:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="a+uIIbAc"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="W7UluNDD"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5805317332C;
-	Tue, 26 Aug 2025 11:24:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D5FD1350D54;
+	Tue, 26 Aug 2025 13:53:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756207443; cv=none; b=ppGz3LL6iqRWt6KjJ5kRrYpGVc0O7VCqVEDMSIJkhTcztBLDoi+yzJs3uk60xccb8xMrrIECBBPnNoK/gFEuUrMuSW1xS64eWv42ubiV1mGHFt75vZkpTbT5mlcw7OFekmxdVxIZZIjlEnTrnmRQ23HQckb67kC/lIBz14/np7k=
+	t=1756216404; cv=none; b=uZrrsDzvKI28eRzteRSLDfoV9nVS4PkEGFLl6I4NJTSyE3jTRwZkJr2L6rxQS9u2smH6yDTt2cTWuVBusO01Jbzhtf0h+FcTdpwfcr8hbDKOcWlkVX8MRmYjVNfHifTTTWsPHjxgjDiewDXjXUJHtZmD0zGNcdisVzFcYXevBSc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756207443; c=relaxed/simple;
-	bh=ebRAafDNC6ZFUmsaZK/yiIMn5DSEyqbDJtN/Q7HjNkw=;
+	s=arc-20240116; t=1756216404; c=relaxed/simple;
+	bh=6NFMBSEUHzo85Oh6w4PXDR48KZykZz+kGqL2ORi0RY4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=AnDDmHx1EJJwHSHLyUe03pTNeAFmL69jrBvLpwQrA0FCsW0HoASTBlDuDu7PwKxFsGrgXFWeS5tYKeO+YuzX44zDBQRUG5Ev1dmD7eM4YoepaET43PrQxiYbVmI7Fg8csnuKKwsLQSesgWukxQk84fF5w57oFhojW9QZeF5g+Xs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=a+uIIbAc; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id DC704C4CEF4;
-	Tue, 26 Aug 2025 11:24:02 +0000 (UTC)
+	 MIME-Version; b=i8tJGS6Ua18dl3ThLlx1f8VMXvB1LraOLe7atmxOyCZ89LPoGpT7rJzoKpjlUYaGn550T6npUNo4Y3Elj3YYkB8VOnJIzyDQpJwAxo79rpThRL/lkobi+hfJ7WTsm1NeyLBcjse5KZND/zef/L2/2W1HACKyVkgp0hw7kfnNuec=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=W7UluNDD; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 67B2BC113D0;
+	Tue, 26 Aug 2025 13:53:24 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1756207443;
-	bh=ebRAafDNC6ZFUmsaZK/yiIMn5DSEyqbDJtN/Q7HjNkw=;
+	s=korg; t=1756216404;
+	bh=6NFMBSEUHzo85Oh6w4PXDR48KZykZz+kGqL2ORi0RY4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=a+uIIbAcRQDolOU1TaiKWAipGmkp2WgeETyYrtlPT1ddpIU9LJvJnUAucoPAeweFV
-	 aERr8vHGolR8yhEU9vsLTBNyWgRix76/Yif8ZsmyP4ZYc7XDKfqrkt34VKuHnYQf0r
-	 9BBpeF/SNfcbpKgklAshAV4kiKM+GATpYC3CqD+4=
+	b=W7UluNDDB44tXusiVsyfV3nq6fy0JYVS9boJRHBzGqKkx9dmWoRk8E60Lz+W1oKga
+	 zc++r27hhzf73MtCVrJrrmwkRCeDa62Mw2n4iDozPz2BWHUXfUGk+zVKlwIOaFaerV
+	 ALcXli6GOhBdiajgbcTzcvVwgQNBHULneIoQb89A=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Bryan ODonoghue <bryan.odonoghue@linaro.org>,
-	Dikshita Agarwal <quic_dikshita@quicinc.com>,
-	Bryan ODonoghue <bod@kernel.org>,
-	Hans Verkuil <hverkuil@xs4all.nl>,
-	Neil Armstrong <neil.armstrong@linaro.org>,
-	Vikash Garodia <quic_vgarodia@quicinc.com>
-Subject: [PATCH 6.16 152/457] media: iris: Avoid updating frame size to firmware during reconfig
+	Breno Leitao <leitao@debian.org>,
+	Mark Rutland <mark.rutland@arm.com>,
+	Will Deacon <will@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.15 345/644] arm64: Mark kernel as tainted on SAE and SError panic
 Date: Tue, 26 Aug 2025 13:07:16 +0200
-Message-ID: <20250826110941.129011120@linuxfoundation.org>
+Message-ID: <20250826110954.945779802@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250826110937.289866482@linuxfoundation.org>
-References: <20250826110937.289866482@linuxfoundation.org>
+In-Reply-To: <20250826110946.507083938@linuxfoundation.org>
+References: <20250826110946.507083938@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -65,86 +63,60 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.16-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Dikshita Agarwal <quic_dikshita@quicinc.com>
+From: Breno Leitao <leitao@debian.org>
 
-commit caf2055487694b6cb52f2ecb161c6c5de660dd72 upstream.
+[ Upstream commit d7ce7e3a84642aadf7c4787f7ec4f58eb163d129 ]
 
-During reconfig, the firmware sends the resolution aligned to 8 bytes.
-If the driver sends the same resolution back to the firmware the resolution
-will be aligned to 16 bytes not 8.
+Set TAINT_MACHINE_CHECK when SError or Synchronous External Abort (SEA)
+interrupts trigger a panic to flag potential hardware faults. This
+tainting mechanism aids in debugging and enables correlation of
+hardware-related crashes in large-scale deployments.
 
-The alignment mismatch would then subsequently cause the firmware to
-send another redundant sequence change event.
+This change aligns with similar patches[1] that mark machine check
+events when the system crashes due to hardware errors.
 
-Fix this by not setting the resolution property during reconfig.
-
-Cc: stable@vger.kernel.org
-Fixes: 3a19d7b9e08b ("media: iris: implement set properties to firmware during streamon")
-Reviewed-by: Bryan O'Donoghue <bryan.odonoghue@linaro.org>
-Tested-by: Neil Armstrong <neil.armstrong@linaro.org> # on SM8550-QRD
-Tested-by: Neil Armstrong <neil.armstrong@linaro.org> # on SM8550-HDK
-Tested-by: Neil Armstrong <neil.armstrong@linaro.org> # on SM8650-QRD
-Tested-by: Neil Armstrong <neil.armstrong@linaro.org> # on SM8650-HDK
-Signed-off-by: Dikshita Agarwal <quic_dikshita@quicinc.com>
-Tested-by: Vikash Garodia <quic_vgarodia@quicinc.com> # on sa8775p-ride
-Signed-off-by: Bryan O'Donoghue <bod@kernel.org>
-Signed-off-by: Hans Verkuil <hverkuil@xs4all.nl>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Link: https://lore.kernel.org/all/20250702-add_tain-v1-1-9187b10914b9@debian.org/ [1]
+Signed-off-by: Breno Leitao <leitao@debian.org>
+Acked-by: Mark Rutland <mark.rutland@arm.com>
+Link: https://lore.kernel.org/r/20250716-vmcore_hw_error-v2-1-f187f7d62aba@debian.org
+Signed-off-by: Will Deacon <will@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/media/platform/qcom/iris/iris_hfi_gen1_command.c |   15 ++++++++-------
- drivers/media/platform/qcom/iris/iris_state.c            |    2 +-
- drivers/media/platform/qcom/iris/iris_state.h            |    1 +
- 3 files changed, 10 insertions(+), 8 deletions(-)
+ arch/arm64/kernel/traps.c | 1 +
+ arch/arm64/mm/fault.c     | 1 +
+ 2 files changed, 2 insertions(+)
 
---- a/drivers/media/platform/qcom/iris/iris_hfi_gen1_command.c
-+++ b/drivers/media/platform/qcom/iris/iris_hfi_gen1_command.c
-@@ -546,14 +546,15 @@ static int iris_hfi_gen1_set_resolution(
- 	struct hfi_framesize fs;
- 	int ret;
+diff --git a/arch/arm64/kernel/traps.c b/arch/arm64/kernel/traps.c
+index c71074cb2bef..6debe95f8a62 100644
+--- a/arch/arm64/kernel/traps.c
++++ b/arch/arm64/kernel/traps.c
+@@ -883,6 +883,7 @@ void panic_bad_stack(struct pt_regs *regs, unsigned long esr, unsigned long far)
  
--	fs.buffer_type = HFI_BUFFER_INPUT;
--	fs.width = inst->fmt_src->fmt.pix_mp.width;
--	fs.height = inst->fmt_src->fmt.pix_mp.height;
--
--	ret = hfi_gen1_set_property(inst, ptype, &fs, sizeof(fs));
--	if (ret)
--		return ret;
-+	if (!iris_drc_pending(inst)) {
-+		fs.buffer_type = HFI_BUFFER_INPUT;
-+		fs.width = inst->fmt_src->fmt.pix_mp.width;
-+		fs.height = inst->fmt_src->fmt.pix_mp.height;
- 
-+		ret = hfi_gen1_set_property(inst, ptype, &fs, sizeof(fs));
-+		if (ret)
-+			return ret;
-+	}
- 	fs.buffer_type = HFI_BUFFER_OUTPUT2;
- 	fs.width = inst->fmt_dst->fmt.pix_mp.width;
- 	fs.height = inst->fmt_dst->fmt.pix_mp.height;
---- a/drivers/media/platform/qcom/iris/iris_state.c
-+++ b/drivers/media/platform/qcom/iris/iris_state.c
-@@ -245,7 +245,7 @@ int iris_inst_sub_state_change_pause(str
- 	return iris_inst_change_sub_state(inst, 0, set_sub_state);
- }
- 
--static inline bool iris_drc_pending(struct iris_inst *inst)
-+bool iris_drc_pending(struct iris_inst *inst)
+ void __noreturn arm64_serror_panic(struct pt_regs *regs, unsigned long esr)
  {
- 	return inst->sub_state & IRIS_INST_SUB_DRC &&
- 		inst->sub_state & IRIS_INST_SUB_DRC_LAST;
---- a/drivers/media/platform/qcom/iris/iris_state.h
-+++ b/drivers/media/platform/qcom/iris/iris_state.h
-@@ -140,5 +140,6 @@ int iris_inst_sub_state_change_drain_las
- int iris_inst_sub_state_change_drc_last(struct iris_inst *inst);
- int iris_inst_sub_state_change_pause(struct iris_inst *inst, u32 plane);
- bool iris_allow_cmd(struct iris_inst *inst, u32 cmd);
-+bool iris_drc_pending(struct iris_inst *inst);
++	add_taint(TAINT_MACHINE_CHECK, LOCKDEP_STILL_OK);
+ 	console_verbose();
  
- #endif
+ 	pr_crit("SError Interrupt on CPU%d, code 0x%016lx -- %s\n",
+diff --git a/arch/arm64/mm/fault.c b/arch/arm64/mm/fault.c
+index 632762039714..d293aac8c554 100644
+--- a/arch/arm64/mm/fault.c
++++ b/arch/arm64/mm/fault.c
+@@ -726,6 +726,7 @@ static int do_sea(unsigned long far, unsigned long esr, struct pt_regs *regs)
+ 		 */
+ 		siaddr  = untagged_addr(far);
+ 	}
++	add_taint(TAINT_MACHINE_CHECK, LOCKDEP_STILL_OK);
+ 	arm64_notify_die(inf->name, regs, inf->sig, inf->code, siaddr, esr);
+ 
+ 	return 0;
+-- 
+2.39.5
+
 
 
 
