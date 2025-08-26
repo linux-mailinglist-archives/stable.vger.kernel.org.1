@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-174224-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-174738-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 47332B36221
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 15:16:12 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id D842DB364D5
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 15:42:17 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 5F6217C6753
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 13:11:03 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 324228E0EA7
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 13:34:15 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E257B259CB2;
-	Tue, 26 Aug 2025 13:10:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4F7D92BDC2F;
+	Tue, 26 Aug 2025 13:33:06 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="kxXnMYiM"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="iVhwphxo"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9D6D318F2FC;
-	Tue, 26 Aug 2025 13:10:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0C63B2FFDF2;
+	Tue, 26 Aug 2025 13:33:06 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756213822; cv=none; b=YNIgKTcOmjxuhbiF2RuBNGBgi+Rz7JOIOst+LB4IlXEg3z4doUl13mgAY40vVJXj6Cqf6BDFF397lBu+085f41vPky2jXWMQvvnSD9FSW+EtjnBb3uWr/R6dA5kU4m2rboKMzutyFi1GnuudmUaR6sellVKJBTOWZyBFazAaOjE=
+	t=1756215186; cv=none; b=GIPGn4VGmtUqF7WyfWqGwdvlHMD2m7cgS+SrQ4BgUKB1LQInCc+vV0c4aKMZGPHA4ilgQb6tPzSmQqk7vu8+8bGweBbShpwUfRMdi6mc7UV5+NAMr9NQvOaslPK6hRJ3vbbcfrV4Yqd3S9r7UZcfDwQEcHHVWIDncRdkddeUL6o=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756213822; c=relaxed/simple;
-	bh=8dhwG1XZYOpk91ZA33hAQa9k/MjZFvr2j5fUCusyTdA=;
+	s=arc-20240116; t=1756215186; c=relaxed/simple;
+	bh=sxVPEBfzxk1wyowvRMvQnTV+rxuIFQSKRQOoEo04vuY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=CYFAw/3WykDM7jpxFFCHVH+OlnYP/DeDMvJJr2x3OCT70IfLJrR8N4JARV6do/5KgS+MSQgMxqpn/I8L/81YumFbmqFLG1tzi0K6zOuqqHWJVGFG5pOsVIjfOMjHxo5cgtAjrl5nrODOpfrSKVQTD80H0VnFq3z4PCnK8O0j1Eg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=kxXnMYiM; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2F700C4CEF1;
-	Tue, 26 Aug 2025 13:10:22 +0000 (UTC)
+	 MIME-Version:Content-Type; b=UjvfB3Rb4YlT6eiENa0+9abIIyNFeWN/S2NH0R1OMSs4inwvkYEc6Dbzy3SkauhbudAGP5Bkn4K4X2vNOHkEKS9QRKVF3TAGs3xv1TeGIk5gH1nubZiK/ZwBIOmazJiz2g/pwxFH0917I7DG1IP9PwWG4bQYlEpO0PufeUL3+ow=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=iVhwphxo; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9173CC113D0;
+	Tue, 26 Aug 2025 13:33:05 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1756213822;
-	bh=8dhwG1XZYOpk91ZA33hAQa9k/MjZFvr2j5fUCusyTdA=;
+	s=korg; t=1756215185;
+	bh=sxVPEBfzxk1wyowvRMvQnTV+rxuIFQSKRQOoEo04vuY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=kxXnMYiMJNhZG99dRTdiMb6gDFSQjbG/YNzHJ/0ss/m64Unr6nZIXv4Djci9rjgkv
-	 oigxbwT12CpQpsEruXfsgxKwH+4Cq40q795DJvmHHxh3HvC77kQ44eUls6vvgvdGLt
-	 NNP1pHFVxjMrtqIfbzwg5FhCj1j29LTvTCRwDqVY=
+	b=iVhwphxojLsPMU4Xv5Bh+qDxVsXifVbXLGtrfQIF7uDglBSWratp6x+ZO4Jm9V4/J
+	 Aa3rL0hxfuUTZwOaqBtzD6uwqKgJXr9YOux0Lp5VJm0s/2ZnP7waVAsD7gp9z6cGGn
+	 S71n9mxYJFnxiGsR66ehTAqEqxFiLrIVshk19pW4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Bjorn Helgaas <bhelgaas@google.com>,
-	Geraldo Nascimento <geraldogabriel@gmail.com>,
-	Manivannan Sadhasivam <mani@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 493/587] PCI: rockchip: Use standard PCIe definitions
+	=?UTF-8?q?Thomas=20Wei=C3=9Fschuh?= <thomas.weissschuh@linutronix.de>,
+	Nathan Chancellor <nathan@kernel.org>,
+	Masahiro Yamada <masahiroy@kernel.org>
+Subject: [PATCH 6.1 389/482] kbuild: userprogs: use correct linker when mixing clang and GNU ld
 Date: Tue, 26 Aug 2025 13:10:42 +0200
-Message-ID: <20250826111005.520320320@linuxfoundation.org>
+Message-ID: <20250826110940.438746717@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250826110952.942403671@linuxfoundation.org>
-References: <20250826110952.942403671@linuxfoundation.org>
+In-Reply-To: <20250826110930.769259449@linuxfoundation.org>
+References: <20250826110930.769259449@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,166 +60,49 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Geraldo Nascimento <geraldogabriel@gmail.com>
+From: Thomas Weißschuh <thomas.weissschuh@linutronix.de>
 
-[ Upstream commit cbbfe9f683f0f9b6a1da2eaa53b995a4b5961086 ]
+commit 936599ca514973d44a766b7376c6bbdc96b6a8cc upstream.
 
-Current code uses custom-defined register offsets and bitfields for the
-standard PCIe registers. This creates duplication as the PCI header already
-defines them. So, switch to using the standard PCIe definitions and drop
-the custom ones.
+The userprogs infrastructure does not expect clang being used with GNU ld
+and in that case uses /usr/bin/ld for linking, not the configured $(LD).
+This fallback is problematic as it will break when cross-compiling.
+Mixing clang and GNU ld is used for example when building for SPARC64,
+as ld.lld is not sufficient; see Documentation/kbuild/llvm.rst.
 
-Suggested-by: Bjorn Helgaas <bhelgaas@google.com>
-Signed-off-by: Geraldo Nascimento <geraldogabriel@gmail.com>
-[mani: commit message rewording]
-Signed-off-by: Manivannan Sadhasivam <mani@kernel.org>
-[bhelgaas: include bitfield.h]
-Signed-off-by: Bjorn Helgaas <bhelgaas@google.com>
-Link: https://patch.msgid.link/e81700ef4b49f584bc8834bfb07b6d8995fc1f42.1751322015.git.geraldogabriel@gmail.com
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Relax the check around --ld-path so it gets used for all linkers.
+
+Fixes: dfc1b168a8c4 ("kbuild: userprogs: use correct lld when linking through clang")
+Cc: stable@vger.kernel.org
+Signed-off-by: Thomas Weißschuh <thomas.weissschuh@linutronix.de>
+Reviewed-by: Nathan Chancellor <nathan@kernel.org>
+Signed-off-by: Masahiro Yamada <masahiroy@kernel.org>
+[nathan: Work around wrapping '--ld-path' in cc-option in older stable
+         branches due to older minimum LLVM version]
+Signed-off-by: Nathan Chancellor <nathan@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/pci/controller/pcie-rockchip-host.c |   45 ++++++++++++++--------------
- drivers/pci/controller/pcie-rockchip.h      |   11 ------
- 2 files changed, 24 insertions(+), 32 deletions(-)
+ Makefile |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/drivers/pci/controller/pcie-rockchip-host.c
-+++ b/drivers/pci/controller/pcie-rockchip-host.c
-@@ -11,6 +11,7 @@
-  * ARM PCI Host generic driver.
-  */
+--- a/Makefile
++++ b/Makefile
+@@ -1143,7 +1143,7 @@ KBUILD_USERCFLAGS  += $(filter -m32 -m64
+ KBUILD_USERLDFLAGS += $(filter -m32 -m64 --target=%, $(KBUILD_CPPFLAGS) $(KBUILD_CFLAGS))
  
-+#include <linux/bitfield.h>
- #include <linux/bitrev.h>
- #include <linux/clk.h>
- #include <linux/delay.h>
-@@ -40,18 +41,18 @@ static void rockchip_pcie_enable_bw_int(
- {
- 	u32 status;
+ # userspace programs are linked via the compiler, use the correct linker
+-ifeq ($(CONFIG_CC_IS_CLANG)$(CONFIG_LD_IS_LLD),yy)
++ifdef CONFIG_CC_IS_CLANG
+ KBUILD_USERLDFLAGS += $(call cc-option, --ld-path=$(LD))
+ endif
  
--	status = rockchip_pcie_read(rockchip, PCIE_RC_CONFIG_LCS);
-+	status = rockchip_pcie_read(rockchip, PCIE_RC_CONFIG_CR + PCI_EXP_LNKCTL);
- 	status |= (PCI_EXP_LNKCTL_LBMIE | PCI_EXP_LNKCTL_LABIE);
--	rockchip_pcie_write(rockchip, status, PCIE_RC_CONFIG_LCS);
-+	rockchip_pcie_write(rockchip, status, PCIE_RC_CONFIG_CR + PCI_EXP_LNKCTL);
- }
- 
- static void rockchip_pcie_clr_bw_int(struct rockchip_pcie *rockchip)
- {
- 	u32 status;
- 
--	status = rockchip_pcie_read(rockchip, PCIE_RC_CONFIG_LCS);
-+	status = rockchip_pcie_read(rockchip, PCIE_RC_CONFIG_CR + PCI_EXP_LNKCTL);
- 	status |= (PCI_EXP_LNKSTA_LBMS | PCI_EXP_LNKSTA_LABS) << 16;
--	rockchip_pcie_write(rockchip, status, PCIE_RC_CONFIG_LCS);
-+	rockchip_pcie_write(rockchip, status, PCIE_RC_CONFIG_CR + PCI_EXP_LNKCTL);
- }
- 
- static void rockchip_pcie_update_txcredit_mui(struct rockchip_pcie *rockchip)
-@@ -269,7 +270,7 @@ static void rockchip_pcie_set_power_limi
- 	scale = 3; /* 0.001x */
- 	curr = curr / 1000; /* convert to mA */
- 	power = (curr * 3300) / 1000; /* milliwatt */
--	while (power > PCIE_RC_CONFIG_DCR_CSPL_LIMIT) {
-+	while (power > FIELD_MAX(PCI_EXP_DEVCAP_PWR_VAL)) {
- 		if (!scale) {
- 			dev_warn(rockchip->dev, "invalid power supply\n");
- 			return;
-@@ -278,10 +279,10 @@ static void rockchip_pcie_set_power_limi
- 		power = power / 10;
- 	}
- 
--	status = rockchip_pcie_read(rockchip, PCIE_RC_CONFIG_DCR);
--	status |= (power << PCIE_RC_CONFIG_DCR_CSPL_SHIFT) |
--		  (scale << PCIE_RC_CONFIG_DCR_CPLS_SHIFT);
--	rockchip_pcie_write(rockchip, status, PCIE_RC_CONFIG_DCR);
-+	status = rockchip_pcie_read(rockchip, PCIE_RC_CONFIG_CR + PCI_EXP_DEVCAP);
-+	status |= FIELD_PREP(PCI_EXP_DEVCAP_PWR_VAL, power);
-+	status |= FIELD_PREP(PCI_EXP_DEVCAP_PWR_SCL, scale);
-+	rockchip_pcie_write(rockchip, status, PCIE_RC_CONFIG_CR + PCI_EXP_DEVCAP);
- }
- 
- /**
-@@ -309,14 +310,14 @@ static int rockchip_pcie_host_init_port(
- 	rockchip_pcie_set_power_limit(rockchip);
- 
- 	/* Set RC's clock architecture as common clock */
--	status = rockchip_pcie_read(rockchip, PCIE_RC_CONFIG_LCS);
-+	status = rockchip_pcie_read(rockchip, PCIE_RC_CONFIG_CR + PCI_EXP_LNKCTL);
- 	status |= PCI_EXP_LNKSTA_SLC << 16;
--	rockchip_pcie_write(rockchip, status, PCIE_RC_CONFIG_LCS);
-+	rockchip_pcie_write(rockchip, status, PCIE_RC_CONFIG_CR + PCI_EXP_LNKCTL);
- 
- 	/* Set RC's RCB to 128 */
--	status = rockchip_pcie_read(rockchip, PCIE_RC_CONFIG_LCS);
-+	status = rockchip_pcie_read(rockchip, PCIE_RC_CONFIG_CR + PCI_EXP_LNKCTL);
- 	status |= PCI_EXP_LNKCTL_RCB;
--	rockchip_pcie_write(rockchip, status, PCIE_RC_CONFIG_LCS);
-+	rockchip_pcie_write(rockchip, status, PCIE_RC_CONFIG_CR + PCI_EXP_LNKCTL);
- 
- 	/* Enable Gen1 training */
- 	rockchip_pcie_write(rockchip, PCIE_CLIENT_LINK_TRAIN_ENABLE,
-@@ -338,9 +339,9 @@ static int rockchip_pcie_host_init_port(
- 		 * Enable retrain for gen2. This should be configured only after
- 		 * gen1 finished.
- 		 */
--		status = rockchip_pcie_read(rockchip, PCIE_RC_CONFIG_LCS);
-+		status = rockchip_pcie_read(rockchip, PCIE_RC_CONFIG_CR + PCI_EXP_LNKCTL);
- 		status |= PCI_EXP_LNKCTL_RL;
--		rockchip_pcie_write(rockchip, status, PCIE_RC_CONFIG_LCS);
-+		rockchip_pcie_write(rockchip, status, PCIE_RC_CONFIG_CR + PCI_EXP_LNKCTL);
- 
- 		err = readl_poll_timeout(rockchip->apb_base + PCIE_CORE_CTRL,
- 					 status, PCIE_LINK_IS_GEN2(status), 20,
-@@ -377,15 +378,15 @@ static int rockchip_pcie_host_init_port(
- 
- 	/* Clear L0s from RC's link cap */
- 	if (of_property_read_bool(dev->of_node, "aspm-no-l0s")) {
--		status = rockchip_pcie_read(rockchip, PCIE_RC_CONFIG_LINK_CAP);
--		status &= ~PCIE_RC_CONFIG_LINK_CAP_L0S;
--		rockchip_pcie_write(rockchip, status, PCIE_RC_CONFIG_LINK_CAP);
-+		status = rockchip_pcie_read(rockchip, PCIE_RC_CONFIG_CR + PCI_EXP_LNKCAP);
-+		status &= ~PCI_EXP_LNKCAP_ASPM_L0S;
-+		rockchip_pcie_write(rockchip, status, PCIE_RC_CONFIG_CR + PCI_EXP_LNKCAP);
- 	}
- 
--	status = rockchip_pcie_read(rockchip, PCIE_RC_CONFIG_DCSR);
--	status &= ~PCIE_RC_CONFIG_DCSR_MPS_MASK;
--	status |= PCIE_RC_CONFIG_DCSR_MPS_256;
--	rockchip_pcie_write(rockchip, status, PCIE_RC_CONFIG_DCSR);
-+	status = rockchip_pcie_read(rockchip, PCIE_RC_CONFIG_CR + PCI_EXP_DEVCTL);
-+	status &= ~PCI_EXP_DEVCTL_PAYLOAD;
-+	status |= PCI_EXP_DEVCTL_PAYLOAD_256B;
-+	rockchip_pcie_write(rockchip, status, PCIE_RC_CONFIG_CR + PCI_EXP_DEVCTL);
- 
- 	return 0;
- err_power_off_phy:
---- a/drivers/pci/controller/pcie-rockchip.h
-+++ b/drivers/pci/controller/pcie-rockchip.h
-@@ -144,16 +144,7 @@
- #define PCIE_EP_CONFIG_BASE		0xa00000
- #define PCIE_EP_CONFIG_DID_VID		(PCIE_EP_CONFIG_BASE + 0x00)
- #define PCIE_RC_CONFIG_RID_CCR		(PCIE_RC_CONFIG_BASE + 0x08)
--#define PCIE_RC_CONFIG_DCR		(PCIE_RC_CONFIG_BASE + 0xc4)
--#define   PCIE_RC_CONFIG_DCR_CSPL_SHIFT		18
--#define   PCIE_RC_CONFIG_DCR_CSPL_LIMIT		0xff
--#define   PCIE_RC_CONFIG_DCR_CPLS_SHIFT		26
--#define PCIE_RC_CONFIG_DCSR		(PCIE_RC_CONFIG_BASE + 0xc8)
--#define   PCIE_RC_CONFIG_DCSR_MPS_MASK		GENMASK(7, 5)
--#define   PCIE_RC_CONFIG_DCSR_MPS_256		(0x1 << 5)
--#define PCIE_RC_CONFIG_LINK_CAP		(PCIE_RC_CONFIG_BASE + 0xcc)
--#define   PCIE_RC_CONFIG_LINK_CAP_L0S		BIT(10)
--#define PCIE_RC_CONFIG_LCS		(PCIE_RC_CONFIG_BASE + 0xd0)
-+#define PCIE_RC_CONFIG_CR		(PCIE_RC_CONFIG_BASE + 0xc0)
- #define PCIE_RC_CONFIG_L1_SUBSTATE_CTRL2 (PCIE_RC_CONFIG_BASE + 0x90c)
- #define PCIE_RC_CONFIG_THP_CAP		(PCIE_RC_CONFIG_BASE + 0x274)
- #define   PCIE_RC_CONFIG_THP_CAP_NEXT_MASK	GENMASK(31, 20)
 
 
 
