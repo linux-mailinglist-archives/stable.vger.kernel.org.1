@@ -1,55 +1,58 @@
-Return-Path: <stable+bounces-173469-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-174547-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id C32E0B35E11
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 13:51:40 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6E123B3639C
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 15:31:48 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 807ED367F18
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 11:39:45 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 31CF51BC6CFA
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 13:26:25 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5222720330;
-	Tue, 26 Aug 2025 11:38:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B1DBD3376BA;
+	Tue, 26 Aug 2025 13:24:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="F4C2uxua"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="NscE90uZ"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0BE1D29BDBA;
-	Tue, 26 Aug 2025 11:38:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6F42A199949;
+	Tue, 26 Aug 2025 13:24:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756208328; cv=none; b=ljANcG4h+SQQsE4WdDhGByX2ELiXNQK2EUPYDimROOyjfodke3v0q2xxWMoGhGFN7QokDS0b5YrIo0jV60HQ/3Xohkf84z7VpcO8efw2VfSnLGkfbFxwxAEe+Z0FbaZtudsrq46dMzWX2rndeda5wj8U3CMvwahvJBX7z7NxyiI=
+	t=1756214682; cv=none; b=DNJ9+ZLuTw2Sovg8QNGevrv6aGBtjUjQF6a9kM9BjafCl4hWnIEPKpiJucyvHCoKj+Df67HDarivG/aDBfQF6+zW6wRbx6HTQLE5o1zMDVwVvepYQOxpXTtPZtsfedIqdVM44Rm38GzyCmerJtzWHZqyCvA61z9LBx+gFJTLXOI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756208328; c=relaxed/simple;
-	bh=X6TFNQrNTKyfA0V1Vqq0B0Rkt3URPoMwG+9UMedB2r8=;
+	s=arc-20240116; t=1756214682; c=relaxed/simple;
+	bh=DCWFVjZ1n9uW8c7jnPvOzkIpy14YC7DDzfxlwQWwOdk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=n4D3XE3hlp3/uO/MwQkxZ3VebE35oym+0X0HZcjixQYO0+gQ19UBK7TCPWphkrq62nLLGJo+1RBMH9RIssWwGcWcl9G9Un5jitqoC4raq57WdYpc1R8GbXlmqBF0/AU/nX7RiREK2eN+aE+kU2d808yb0Nt8qej314Yq+4LRrvw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=F4C2uxua; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8FC58C4CEF1;
-	Tue, 26 Aug 2025 11:38:47 +0000 (UTC)
+	 MIME-Version:Content-Type; b=gct042ZkXCGCQuHPO6quoKipaCqCRdZXyxOidjcKgUyfkXdZqFG4C72vO6ELl/JfuFvcKOug3DjAH/o0u2eiUj6R87rNIhabVlq6VdCQ8np/ZY6Cr9bWllThWV1foDnm7y7uHG2tPoDE+t7pfrcr5yOqxPXSrp30ciPh8xTJBGU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=NscE90uZ; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E1EDFC4CEF1;
+	Tue, 26 Aug 2025 13:24:41 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1756208327;
-	bh=X6TFNQrNTKyfA0V1Vqq0B0Rkt3URPoMwG+9UMedB2r8=;
+	s=korg; t=1756214682;
+	bh=DCWFVjZ1n9uW8c7jnPvOzkIpy14YC7DDzfxlwQWwOdk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=F4C2uxuayCgWN+xzSs6eaCknqCclAQ/NNQwKhAG6Q4/gLig/Rmf3CmY7/CDR4KaRd
-	 TyDeZVLFx/4gNsKXITjM20Dx9HB6fiUdgSJDIYCPyyhRAmAdpirp2z+vVe+lj9OQRg
-	 HrH0mXqlDWKK5A+FE431WUJul4KfEpEIvHbQlpMI=
+	b=NscE90uZWvRlLyU93wv+RHU7e41VaYshyuqZYhwbaFha+Gdln8mjZTfRyEmecagDf
+	 GxeTPyNNo8EcnpqweXaF7ptVyDGIEgwpFkbgBfb13gq3/x5eOFpyl0Bxr/6unYIH67
+	 vomPOjJnURbKLZU0XH7PDsUKyBzwbjjuNu2dXoX8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Tim Harvey <tharvey@gateworks.com>,
-	Guenter Roeck <linux@roeck-us.net>
-Subject: [PATCH 6.12 068/322] hwmon: (gsc-hwmon) fix fan pwm setpoint show functions
+	Buday Csaba <buday.csaba@prolan.hu>,
+	=?UTF-8?q?Cs=C3=B3k=C3=A1s=20Bence?= <csokas.bence@prolan.hu>,
+	Andrew Lunn <andrew@lunn.ch>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.1 230/482] net: phy: smsc: add proper reset flags for LAN8710A
 Date: Tue, 26 Aug 2025 13:08:03 +0200
-Message-ID: <20250826110917.249708272@linuxfoundation.org>
+Message-ID: <20250826110936.456907505@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250826110915.169062587@linuxfoundation.org>
-References: <20250826110915.169062587@linuxfoundation.org>
+In-Reply-To: <20250826110930.769259449@linuxfoundation.org>
+References: <20250826110930.769259449@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -59,66 +62,46 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Tim Harvey <tharvey@gateworks.com>
+From: Buday Csaba <buday.csaba@prolan.hu>
 
-commit 9c62e2282900332c8b711d9f9e37af369a8ef71b upstream.
+[ Upstream commit 57ec5a8735dc5dccd1ee68afdb1114956a3fce0d ]
 
-The Linux hwmon sysfs API values for pwmX_auto_pointY_pwm represent an
-integer value between 0 (0%) to 255 (100%) and the pwmX_auto_pointY_temp
-represent millidegrees Celcius.
+According to the LAN8710A datasheet (Rev. B, section 3.8.5.1), a hardware
+reset is required after power-on, and the reference clock (REF_CLK) must be
+established before asserting reset.
 
-Commit a6d80df47ee2 ("hwmon: (gsc-hwmon) fix fan pwm temperature
-scaling") properly addressed the incorrect scaling in the
-pwm_auto_point_temp_store implementation but erroneously scaled
-the pwm_auto_point_pwm_show (pwm value) instead of the
-pwm_auto_point_temp_show (temp value) resulting in:
- # cat /sys/class/hwmon/hwmon0/pwm1_auto_point6_pwm
- 25500
- # cat /sys/class/hwmon/hwmon0/pwm1_auto_point6_temp
- 4500
-
-Fix the scaling of these attributes:
- # cat /sys/class/hwmon/hwmon0/pwm1_auto_point6_pwm
- 255
- # cat /sys/class/hwmon/hwmon0/pwm1_auto_point6_temp
- 45000
-
-Fixes: a6d80df47ee2 ("hwmon: (gsc-hwmon) fix fan pwm temperature scaling")
-Cc: stable@vger.kernel.org
-Signed-off-by: Tim Harvey <tharvey@gateworks.com>
-Link: https://lore.kernel.org/r/20250718200259.1840792-1-tharvey@gateworks.com
-Signed-off-by: Guenter Roeck <linux@roeck-us.net>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Signed-off-by: Buday Csaba <buday.csaba@prolan.hu>
+Cc: Csókás Bence <csokas.bence@prolan.hu>
+Reviewed-by: Andrew Lunn <andrew@lunn.ch>
+Link: https://patch.msgid.link/20250728152916.46249-2-csokas.bence@prolan.hu
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/hwmon/gsc-hwmon.c |    4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ drivers/net/phy/smsc.c | 1 +
+ 1 file changed, 1 insertion(+)
 
---- a/drivers/hwmon/gsc-hwmon.c
-+++ b/drivers/hwmon/gsc-hwmon.c
-@@ -65,7 +65,7 @@ static ssize_t pwm_auto_point_temp_show(
- 		return ret;
+diff --git a/drivers/net/phy/smsc.c b/drivers/net/phy/smsc.c
+index 5186cc97c655..cf72aae88fbd 100644
+--- a/drivers/net/phy/smsc.c
++++ b/drivers/net/phy/smsc.c
+@@ -424,6 +424,7 @@ static struct phy_driver smsc_phy_driver[] = {
  
- 	ret = regs[0] | regs[1] << 8;
--	return sprintf(buf, "%d\n", ret * 10);
-+	return sprintf(buf, "%d\n", ret * 100);
- }
+ 	/* PHY_BASIC_FEATURES */
  
- static ssize_t pwm_auto_point_temp_store(struct device *dev,
-@@ -100,7 +100,7 @@ static ssize_t pwm_auto_point_pwm_show(s
- {
- 	struct sensor_device_attribute *attr = to_sensor_dev_attr(devattr);
++	.flags		= PHY_RST_AFTER_CLK_EN,
+ 	.probe		= smsc_phy_probe,
  
--	return sprintf(buf, "%d\n", 255 * (50 + (attr->index * 10)));
-+	return sprintf(buf, "%d\n", 255 * (50 + (attr->index * 10)) / 100);
- }
- 
- static SENSOR_DEVICE_ATTR_RO(pwm1_auto_point1_pwm, pwm_auto_point_pwm, 0);
+ 	/* basic functions */
+-- 
+2.39.5
+
 
 
 
