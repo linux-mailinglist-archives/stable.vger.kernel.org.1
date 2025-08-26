@@ -1,58 +1,56 @@
-Return-Path: <stable+bounces-175930-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-174763-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4CD62B36994
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 16:28:24 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 06418B36409
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 15:35:26 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 4B1867B5525
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 14:26:48 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 310307BE16C
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 13:33:38 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id EC03735A2B1;
-	Tue, 26 Aug 2025 14:25:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C5D6033CEB0;
+	Tue, 26 Aug 2025 13:34:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="EekyAxQ4"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="rIlLOwav"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AA330352094;
-	Tue, 26 Aug 2025 14:25:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 81F3B334717;
+	Tue, 26 Aug 2025 13:34:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756218342; cv=none; b=I6riUhGdjthEFywJ9SPSCxIRoldTsmekiQ8zbXPTrDvWyEf4juQjWpwDnTa0So32jwfXujxea+tew3iJkxRr3E9ESVHznkhbWWf6zQLs53MwbvVPl7VYrk+4K+FqGVExtGprOzSSnj6xNLUc/jSCDlNFy56EPIR1mLJgNAgcETI=
+	t=1756215252; cv=none; b=ZCFH6H4A8wp3gm3c+gTzrz62tb0wNKeBit6auwBCJNp/cfQKjig/6Lx9XiHN5AHMen+R0cmijg0g4+w+8ezNg3KusMwdZGwRNucRb9FrSMvEtikkVi3YPVSHnbrg1cVjTijO9kBYNlTc8gR//V0fPbdEb1FsEPejEWICdhe5gvA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756218342; c=relaxed/simple;
-	bh=nwpVbHk/S0xs63emuI/90EKL3cXkEUkxFxq3A75/MC0=;
+	s=arc-20240116; t=1756215252; c=relaxed/simple;
+	bh=bfDnmWsSETdMDxgFTni/qf35fIzwvEO0eKnkrfOBDe4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=bSgugdAkAcej5hv9T53wOdDUDUluqS3IUxqV0vfrBolCFk+BfoPaLHcxGP87VwrhGzwjLZJl0mdM9fc4UKJc9kgCWatQTTdGH12qP6k8xMSNO9D4BbEdd8yYPdDHrGvwhCNM/JtUaJOj5dBeYX0X+YHBgz8J3Z3SQ1SUavLVnjU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=EekyAxQ4; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id CE99EC4CEF1;
-	Tue, 26 Aug 2025 14:25:40 +0000 (UTC)
+	 MIME-Version:Content-Type; b=ZZ9Ii9823a3NDqgXaWKXsQTkYsKy6TWd6UVEKP4RLMwP79BrlpRzZv5kL0erg1r8nwioZ0770AMYQRzsMtw0B2YORAuuW62ui5jWkdG7tlBx3v608Q8J1grhsFS0Wg0rgRDzkExZoVa1z5RcS20g3I6u51EMA887K1pkHB+FrgA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=rIlLOwav; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 14F8BC4CEF1;
+	Tue, 26 Aug 2025 13:34:11 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1756218341;
-	bh=nwpVbHk/S0xs63emuI/90EKL3cXkEUkxFxq3A75/MC0=;
+	s=korg; t=1756215252;
+	bh=bfDnmWsSETdMDxgFTni/qf35fIzwvEO0eKnkrfOBDe4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=EekyAxQ4lUzmJ7pT72au5RkdKYX5ivfmJlrVg6bDwuWUThkNGFym109nPIjC2k3td
-	 8+IY6jXKfxS492AuOlw/ffryN8LguRyQaghgRCw1I4lS49ffYv9v8rTkZvqic3VAPG
-	 Fx27hLK71Qi8M2GERoQC6jOE9jdHq37VvlhFVfdM=
+	b=rIlLOwavUYJVnUJczlq+UXlCNdj2+nrJhn+V5nDGlXCEit270aLWyerp18joraOow
+	 AU2unO9/Nt7RQg4vOvTyOCc9mT31v/gOZwzuN+BjG5bEZsXLFntlesgfzQdHOfO6jT
+	 kW0+mcwlLUnC5wr4gMa24EP8M9ois+RNDUyIJ4jo=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Stanimir Varbanov <stanimir.varbanov@linaro.org>,
-	Dikshita Agarwal <quic_dikshita@quicinc.com>,
-	Stephen Boyd <swboyd@chromium.org>,
-	Mauro Carvalho Chehab <mchehab@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 486/523] media: venus: Add support for SSR trigger using fault injection
-Date: Tue, 26 Aug 2025 13:11:36 +0200
-Message-ID: <20250826110936.434713312@linuxfoundation.org>
+	Mikhail Lobanov <m.lobanov@rosa.ru>,
+	Johannes Berg <johannes.berg@intel.com>,
+	=?UTF-8?q?Hanne-Lotta=20M=C3=A4enp=C3=A4=C3=A4?= <hannelotta@gmail.com>
+Subject: [PATCH 6.1 444/482] wifi: mac80211: check basic rates validity in sta_link_apply_parameters
+Date: Tue, 26 Aug 2025 13:11:37 +0200
+Message-ID: <20250826110941.799148884@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250826110924.562212281@linuxfoundation.org>
-References: <20250826110924.562212281@linuxfoundation.org>
+In-Reply-To: <20250826110930.769259449@linuxfoundation.org>
+References: <20250826110930.769259449@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,116 +60,69 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Dikshita Agarwal <quic_dikshita@quicinc.com>
+From: Mikhail Lobanov <m.lobanov@rosa.ru>
 
-[ Upstream commit 748b080f21678f2988b0da2d2b396a6f928d9b2c ]
+commit 16ee3ea8faef8ff042acc15867a6c458c573de61 upstream.
 
-Here we introduce a new fault injection for SSR trigger.
+When userspace sets supported rates for a new station via
+NL80211_CMD_NEW_STATION, it might send a list that's empty
+or contains only invalid values. Currently, we process these
+values in sta_link_apply_parameters() without checking the result of
+ieee80211_parse_bitrates(), which can lead to an empty rates bitmap.
 
-To trigger the SSR:
- echo 100 >  /sys/kernel/debug/venus/fail_ssr/probability
- echo 1 >  /sys/kernel/debug/venus/fail_ssr/times
+A similar issue was addressed for NL80211_CMD_SET_BSS in commit
+ce04abc3fcc6 ("wifi: mac80211: check basic rates validity").
+This patch applies the same approach in sta_link_apply_parameters()
+for NL80211_CMD_NEW_STATION, ensuring there is at least one valid
+rate by inspecting the result of ieee80211_parse_bitrates().
 
-Co-developed-by: Stanimir Varbanov <stanimir.varbanov@linaro.org>
-Signed-off-by: Stanimir Varbanov <stanimir.varbanov@linaro.org>
-Signed-off-by: Dikshita Agarwal <quic_dikshita@quicinc.com>
-Reviewed-by: Stephen Boyd <swboyd@chromium.org>
-Signed-off-by: Mauro Carvalho Chehab <mchehab@kernel.org>
-Stable-dep-of: 3200144a2fa4 ("media: venus: protect against spurious interrupts during probe")
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Found by Linux Verification Center (linuxtesting.org) with Syzkaller.
+
+Fixes: b95eb7f0eee4 ("wifi: cfg80211/mac80211: separate link params from station params")
+Signed-off-by: Mikhail Lobanov <m.lobanov@rosa.ru>
+Link: https://patch.msgid.link/20250317103139.17625-1-m.lobanov@rosa.ru
+Signed-off-by: Johannes Berg <johannes.berg@intel.com>
+[ Summary of conflict resolutions:
+  - The function ieee80211_parse_bitrates() takes channel width as
+    its first parameter, and the chandef struct has been refactored
+    in kernel version 6.9, in commit
+    6092077ad09ce880c61735c314060f0bd79ae4aa so that the width is
+    contained in chanreq.oper.width. In kernel version 6.1 the
+    width parameter is defined directly in the chandef struct. ]
+Signed-off-by: Hanne-Lotta Mäenpää <hannelotta@gmail.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/media/platform/qcom/venus/core.c  |   15 ++++++++++++++-
- drivers/media/platform/qcom/venus/dbgfs.c |    9 +++++++++
- drivers/media/platform/qcom/venus/dbgfs.h |   13 +++++++++++++
- 3 files changed, 36 insertions(+), 1 deletion(-)
+ net/mac80211/cfg.c |   12 ++++++------
+ 1 file changed, 6 insertions(+), 6 deletions(-)
 
---- a/drivers/media/platform/qcom/venus/core.c
-+++ b/drivers/media/platform/qcom/venus/core.c
-@@ -220,6 +220,19 @@ static void venus_assign_register_offset
- 	core->wrapper_base = core->base + WRAPPER_BASE;
- }
+--- a/net/mac80211/cfg.c
++++ b/net/mac80211/cfg.c
+@@ -1735,12 +1735,12 @@ static int sta_link_apply_parameters(str
+ 	}
  
-+static irqreturn_t venus_isr_thread(int irq, void *dev_id)
-+{
-+	struct venus_core *core = dev_id;
-+	irqreturn_t ret;
-+
-+	ret = hfi_isr_thread(irq, dev_id);
-+
-+	if (ret == IRQ_HANDLED && venus_fault_inject_ssr())
-+		hfi_core_trigger_ssr(core, HFI_TEST_SSR_SW_ERR_FATAL);
-+
-+	return ret;
-+}
-+
- static int venus_probe(struct platform_device *pdev)
- {
- 	struct device *dev = &pdev->dev;
-@@ -276,7 +289,7 @@ static int venus_probe(struct platform_d
- 	mutex_init(&core->lock);
- 	INIT_DELAYED_WORK(&core->work, venus_sys_error_handler);
+ 	if (params->supported_rates &&
+-	    params->supported_rates_len) {
+-		ieee80211_parse_bitrates(link->conf->chandef.width,
+-					 sband, params->supported_rates,
+-					 params->supported_rates_len,
+-					 &link_sta->pub->supp_rates[sband->band]);
+-	}
++	    params->supported_rates_len &&
++	    !ieee80211_parse_bitrates(link->conf->chandef.width,
++				      sband, params->supported_rates,
++				      params->supported_rates_len,
++				      &link_sta->pub->supp_rates[sband->band]))
++		return -EINVAL;
  
--	ret = devm_request_threaded_irq(dev, core->irq, hfi_isr, hfi_isr_thread,
-+	ret = devm_request_threaded_irq(dev, core->irq, hfi_isr, venus_isr_thread,
- 					IRQF_TRIGGER_HIGH | IRQF_ONESHOT,
- 					"venus", core);
- 	if (ret)
---- a/drivers/media/platform/qcom/venus/dbgfs.c
-+++ b/drivers/media/platform/qcom/venus/dbgfs.c
-@@ -4,13 +4,22 @@
-  */
- 
- #include <linux/debugfs.h>
-+#include <linux/fault-inject.h>
- 
- #include "core.h"
- 
-+#ifdef CONFIG_FAULT_INJECTION
-+DECLARE_FAULT_ATTR(venus_ssr_attr);
-+#endif
-+
- void venus_dbgfs_init(struct venus_core *core)
- {
- 	core->root = debugfs_create_dir("venus", NULL);
- 	debugfs_create_x32("fw_level", 0644, core->root, &venus_fw_debug);
-+
-+#ifdef CONFIG_FAULT_INJECTION
-+	fault_create_debugfs_attr("fail_ssr", core->root, &venus_ssr_attr);
-+#endif
- }
- 
- void venus_dbgfs_deinit(struct venus_core *core)
---- a/drivers/media/platform/qcom/venus/dbgfs.h
-+++ b/drivers/media/platform/qcom/venus/dbgfs.h
-@@ -4,8 +4,21 @@
- #ifndef __VENUS_DBGFS_H__
- #define __VENUS_DBGFS_H__
- 
-+#include <linux/fault-inject.h>
-+
- struct venus_core;
- 
-+#ifdef CONFIG_FAULT_INJECTION
-+extern struct fault_attr venus_ssr_attr;
-+static inline bool venus_fault_inject_ssr(void)
-+{
-+	return should_fail(&venus_ssr_attr, 1);
-+}
-+#else
-+static inline bool venus_fault_inject_ssr(void) { return false; }
-+#endif
-+
-+
- void venus_dbgfs_init(struct venus_core *core);
- void venus_dbgfs_deinit(struct venus_core *core);
- 
+ 	if (params->ht_capa)
+ 		ieee80211_ht_cap_ie_to_sta_ht_cap(sdata, sband,
 
 
 
