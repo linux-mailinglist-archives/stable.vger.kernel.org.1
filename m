@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-175647-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-175093-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7135EB3692D
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 16:23:36 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id BFCA5B36718
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 16:03:43 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 804BF5818F2
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 14:15:42 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id C6A6098020E
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 13:50:09 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0003F352074;
-	Tue, 26 Aug 2025 14:13:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 366D03469EE;
+	Tue, 26 Aug 2025 13:48:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="jFIbpMHs"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="C2vWF6ES"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AF44B22DFA7;
-	Tue, 26 Aug 2025 14:13:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E8C2030146A;
+	Tue, 26 Aug 2025 13:48:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756217598; cv=none; b=M6RLcmmc48wFyI77gEs6iCzjcEouVSIj6/Mo7/D5v4hkKW07UQAGzoehTQR0J7L6lN3M1cEv4q71uvbbtovfBjcmuBU1IkbJ7xeubTeiw1OqFl9kJSi+kqJhnCYqHAPxGvxOmD2ZHIO709JHx/cBLgiDhA4Oas42OsbumISU0DU=
+	t=1756216122; cv=none; b=RXzj27jMmm6agzYgiPPtfMwnyAcQgS7ztwCE3GHd5SOPFYL1Be6onKajVThbLjcJJoNf6I/j5VkZnQxJNCtvPKyJD60INrGKVPIaIDld2pzF+FFymZGYKA9VB3jVkGUSKA0BO9a+reTtK6STwAchE5kejVoR7hlE/hCiJT6RJac=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756217598; c=relaxed/simple;
-	bh=GakCd+xnFUoxoyuis0s/ZK2T7uR/E6MpSKGqN3UYLI4=;
+	s=arc-20240116; t=1756216122; c=relaxed/simple;
+	bh=ZnE8Q8T/M4a/wir1K4UcK0nh6adHAbYdvPnyCdYblCU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=lDANimOrHKKWNj6UzjVAmE0kZSUo1DNndqirvGjpQRbM3kdVVdH2AludcyIXbZjCQtShvb9c+46GmhE4gArT4kzJOlJXOYZ+CTr73y2ch6S5A40h774+91UNYQZ/CSGvYcmUgs7LB6BjBuyRt7TTaT6s/6WSbzRERVPi7K4o3gk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=jFIbpMHs; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 442B7C113D0;
-	Tue, 26 Aug 2025 14:13:18 +0000 (UTC)
+	 MIME-Version; b=BwRrYQVgrdPKt3YsshRw7wTvw0rKEXWHj+sKLmDtwauZHJknnFsC7GEIs7cgnhD1nNcAfUADmPL2sf5i7SvKgl6h5oauVlRZoUyQx6JMDS2kbBY3+WkzWlzYfhrXR08HL9RHBuxaZWr5JQ65V8I4PpncCSTnRAR1N7ry0aSp7ZA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=C2vWF6ES; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3FB74C4CEF1;
+	Tue, 26 Aug 2025 13:48:41 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1756217598;
-	bh=GakCd+xnFUoxoyuis0s/ZK2T7uR/E6MpSKGqN3UYLI4=;
+	s=korg; t=1756216121;
+	bh=ZnE8Q8T/M4a/wir1K4UcK0nh6adHAbYdvPnyCdYblCU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=jFIbpMHsV5u0gV1xMuD4LyEQ0BKteMuH+3prA3K76ThrP4ZMzKPxsFjguTroxiMm4
-	 HPUPKDpsRT34hoB5f+uaDN9/TACzEH2PGi+hRqOCE6/TzJzCL7nl+JnEDzXvzRMDMs
-	 8GnRf+35IESYRuhgFUtzAsrXHqK7FJ8eWOsxniQk=
+	b=C2vWF6ESjIqKg/Umeure30Lw6efBf3QegwDRpts/mNbZx7DFLDn2+1HwGHlskT5Ny
+	 62oaF0g4D3/UkHkkUuQN87jSDcB4va9HpfkcQAmRrpPRt35zNn/nyJWKhdbhPmkC9I
+	 FjJh5ToV7KPGinFBwOojNVuuvIo4ilmAoot9CxDE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Nikolay Borisov <nborisov@suse.com>,
-	"Matthew Wilcox (Oracle)" <willy@infradead.org>,
+	syzbot+598057afa0f49e62bd23@syzkaller.appspotmail.com,
+	Lizhi Xu <lizhi.xu@windriver.com>,
+	Konstantin Komarov <almaz.alexandrovich@paragon-software.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 172/523] XArray: Add calls to might_alloc()
+Subject: [PATCH 5.15 291/644] fs/ntfs3: Add sanity check for file name
 Date: Tue, 26 Aug 2025 13:06:22 +0200
-Message-ID: <20250826110928.708792261@linuxfoundation.org>
+Message-ID: <20250826110953.593437345@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250826110924.562212281@linuxfoundation.org>
-References: <20250826110924.562212281@linuxfoundation.org>
+In-Reply-To: <20250826110946.507083938@linuxfoundation.org>
+References: <20250826110946.507083938@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,161 +63,39 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Matthew Wilcox (Oracle) <willy@infradead.org>
+From: Lizhi Xu <lizhi.xu@windriver.com>
 
-[ Upstream commit 1dd685c414a7b9fdb3d23aca3aedae84f0b998ae ]
+[ Upstream commit e841ecb139339602bc1853f5f09daa5d1ea920a2 ]
 
-Catch bogus GFP flags deterministically, instead of occasionally
-when we actually have to allocate memory.
+The length of the file name should be smaller than the directory entry size.
 
-Reported-by: Nikolay Borisov <nborisov@suse.com>
-Signed-off-by: Matthew Wilcox (Oracle) <willy@infradead.org>
-Stable-dep-of: 99765233ab42 ("NFS: Fixup allocation flags for nfsiod's __GFP_NORETRY")
+Reported-by: syzbot+598057afa0f49e62bd23@syzkaller.appspotmail.com
+Closes: https://syzkaller.appspot.com/bug?extid=598057afa0f49e62bd23
+Signed-off-by: Lizhi Xu <lizhi.xu@windriver.com>
+Signed-off-by: Konstantin Komarov <almaz.alexandrovich@paragon-software.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- include/linux/xarray.h         | 15 +++++++++++++++
- tools/include/linux/sched/mm.h |  2 ++
- 2 files changed, 17 insertions(+)
+ fs/ntfs3/dir.c | 3 +++
+ 1 file changed, 3 insertions(+)
 
-diff --git a/include/linux/xarray.h b/include/linux/xarray.h
-index 92c0160b3352..05c025c5c100 100644
---- a/include/linux/xarray.h
-+++ b/include/linux/xarray.h
-@@ -15,6 +15,7 @@
- #include <linux/kconfig.h>
- #include <linux/kernel.h>
- #include <linux/rcupdate.h>
-+#include <linux/sched/mm.h>
- #include <linux/spinlock.h>
- #include <linux/types.h>
+diff --git a/fs/ntfs3/dir.c b/fs/ntfs3/dir.c
+index a4ab0164d150..c49e64ebbd0a 100644
+--- a/fs/ntfs3/dir.c
++++ b/fs/ntfs3/dir.c
+@@ -304,6 +304,9 @@ static inline bool ntfs_dir_emit(struct ntfs_sb_info *sbi,
+ 	if (sbi->options->nohidden && (fname->dup.fa & FILE_ATTRIBUTE_HIDDEN))
+ 		return true;
  
-@@ -583,6 +584,7 @@ static inline void *xa_store_bh(struct xarray *xa, unsigned long index,
- {
- 	void *curr;
- 
-+	might_alloc(gfp);
- 	xa_lock_bh(xa);
- 	curr = __xa_store(xa, index, entry, gfp);
- 	xa_unlock_bh(xa);
-@@ -609,6 +611,7 @@ static inline void *xa_store_irq(struct xarray *xa, unsigned long index,
- {
- 	void *curr;
- 
-+	might_alloc(gfp);
- 	xa_lock_irq(xa);
- 	curr = __xa_store(xa, index, entry, gfp);
- 	xa_unlock_irq(xa);
-@@ -684,6 +687,7 @@ static inline void *xa_cmpxchg(struct xarray *xa, unsigned long index,
- {
- 	void *curr;
- 
-+	might_alloc(gfp);
- 	xa_lock(xa);
- 	curr = __xa_cmpxchg(xa, index, old, entry, gfp);
- 	xa_unlock(xa);
-@@ -711,6 +715,7 @@ static inline void *xa_cmpxchg_bh(struct xarray *xa, unsigned long index,
- {
- 	void *curr;
- 
-+	might_alloc(gfp);
- 	xa_lock_bh(xa);
- 	curr = __xa_cmpxchg(xa, index, old, entry, gfp);
- 	xa_unlock_bh(xa);
-@@ -738,6 +743,7 @@ static inline void *xa_cmpxchg_irq(struct xarray *xa, unsigned long index,
- {
- 	void *curr;
- 
-+	might_alloc(gfp);
- 	xa_lock_irq(xa);
- 	curr = __xa_cmpxchg(xa, index, old, entry, gfp);
- 	xa_unlock_irq(xa);
-@@ -767,6 +773,7 @@ static inline int __must_check xa_insert(struct xarray *xa,
- {
- 	int err;
- 
-+	might_alloc(gfp);
- 	xa_lock(xa);
- 	err = __xa_insert(xa, index, entry, gfp);
- 	xa_unlock(xa);
-@@ -796,6 +803,7 @@ static inline int __must_check xa_insert_bh(struct xarray *xa,
- {
- 	int err;
- 
-+	might_alloc(gfp);
- 	xa_lock_bh(xa);
- 	err = __xa_insert(xa, index, entry, gfp);
- 	xa_unlock_bh(xa);
-@@ -825,6 +833,7 @@ static inline int __must_check xa_insert_irq(struct xarray *xa,
- {
- 	int err;
- 
-+	might_alloc(gfp);
- 	xa_lock_irq(xa);
- 	err = __xa_insert(xa, index, entry, gfp);
- 	xa_unlock_irq(xa);
-@@ -854,6 +863,7 @@ static inline __must_check int xa_alloc(struct xarray *xa, u32 *id,
- {
- 	int err;
- 
-+	might_alloc(gfp);
- 	xa_lock(xa);
- 	err = __xa_alloc(xa, id, entry, limit, gfp);
- 	xa_unlock(xa);
-@@ -883,6 +893,7 @@ static inline int __must_check xa_alloc_bh(struct xarray *xa, u32 *id,
- {
- 	int err;
- 
-+	might_alloc(gfp);
- 	xa_lock_bh(xa);
- 	err = __xa_alloc(xa, id, entry, limit, gfp);
- 	xa_unlock_bh(xa);
-@@ -912,6 +923,7 @@ static inline int __must_check xa_alloc_irq(struct xarray *xa, u32 *id,
- {
- 	int err;
- 
-+	might_alloc(gfp);
- 	xa_lock_irq(xa);
- 	err = __xa_alloc(xa, id, entry, limit, gfp);
- 	xa_unlock_irq(xa);
-@@ -945,6 +957,7 @@ static inline int xa_alloc_cyclic(struct xarray *xa, u32 *id, void *entry,
- {
- 	int err;
- 
-+	might_alloc(gfp);
- 	xa_lock(xa);
- 	err = __xa_alloc_cyclic(xa, id, entry, limit, next, gfp);
- 	xa_unlock(xa);
-@@ -978,6 +991,7 @@ static inline int xa_alloc_cyclic_bh(struct xarray *xa, u32 *id, void *entry,
- {
- 	int err;
- 
-+	might_alloc(gfp);
- 	xa_lock_bh(xa);
- 	err = __xa_alloc_cyclic(xa, id, entry, limit, next, gfp);
- 	xa_unlock_bh(xa);
-@@ -1011,6 +1025,7 @@ static inline int xa_alloc_cyclic_irq(struct xarray *xa, u32 *id, void *entry,
- {
- 	int err;
- 
-+	might_alloc(gfp);
- 	xa_lock_irq(xa);
- 	err = __xa_alloc_cyclic(xa, id, entry, limit, next, gfp);
- 	xa_unlock_irq(xa);
-diff --git a/tools/include/linux/sched/mm.h b/tools/include/linux/sched/mm.h
-index c8d9f19c1f35..967294b8edcf 100644
---- a/tools/include/linux/sched/mm.h
-+++ b/tools/include/linux/sched/mm.h
-@@ -1,4 +1,6 @@
- #ifndef _TOOLS_PERF_LINUX_SCHED_MM_H
- #define _TOOLS_PERF_LINUX_SCHED_MM_H
- 
-+#define might_alloc(gfp)	do { } while (0)
++	if (fname->name_len + sizeof(struct NTFS_DE) > le16_to_cpu(e->size))
++		return true;
 +
- #endif  /* _TOOLS_PERF_LINUX_SCHED_MM_H */
+ 	name_len = ntfs_utf16_to_nls(sbi, fname->name, fname->name_len, name,
+ 				     PATH_MAX);
+ 	if (name_len <= 0) {
 -- 
 2.39.5
 
