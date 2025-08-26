@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-173048-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-175622-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9ACD0B35B48
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 13:22:38 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 23033B3687C
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 16:16:38 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id DAB353AF840
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 11:22:01 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 8F9EC7A05A6
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 14:13:17 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B8DAF326D48;
-	Tue, 26 Aug 2025 11:20:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D225D1ADFFE;
+	Tue, 26 Aug 2025 14:12:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="kKh9cm10"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="NZx9v+lc"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 770EF2F83C1;
-	Tue, 26 Aug 2025 11:20:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 89CF534A325;
+	Tue, 26 Aug 2025 14:12:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756207239; cv=none; b=tfg3tUU0xBjz0Z1DiraUDxcDxGlC0Oo0aqT2bpTKTn3XPHzwckXwrZ/ccXWExF91NULeZpXnlaNnBob8mYf11iB+xoFnIKMMMDXQMJf8RGt5XhgTRaVW4dUm0bCuMhMojYtmtUsPszXUNjqxDpl50eA9qG4aNCKLZTU5ntHyqQA=
+	t=1756217532; cv=none; b=kYrDZTdmEq2Jr5IcOqMYwTpUUqGEcWFOWHCmPMEQq2Idjbk+XXliwOoqtGJ1C2lI0edJI7dc15wsZBcp0OpoXOsUagjPXnNe/j/Sqlpwlb6GATY6i/tGowZ3NIg/nmuB5m+uy/8LveVrb1/a+pBMaCoMB9aUgzIEsPucwpMfoTA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756207239; c=relaxed/simple;
-	bh=Qu37dA89Z1rTLHkH11U4P5sJro6VkYjjUWnBV6Q2qz4=;
+	s=arc-20240116; t=1756217532; c=relaxed/simple;
+	bh=MqLWtnh/KJ4qHiHdUVtaZ2STsKpeKFOviDzgv6lGGLk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=SvCpyg4XdqJS5FvWLAckanK+hjtfHm35t5ciGHE4T2HPgDJ9JSCGHwe4dDIMxsBbdcu78B2opGmqhiTzPvaQVkFMcVNi9LzLATyXKEjP129jT7IrCDuzw6osTnP7DEil/8V10fBXz0hiJ8pVnHmV7kmyMbsskxL9i+5KgH4zb7E=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=kKh9cm10; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 08831C4CEF1;
-	Tue, 26 Aug 2025 11:20:38 +0000 (UTC)
+	 MIME-Version; b=rlwHl8cXwge0s+srzMoYxBPm3qI+foSjZAYJNnicUKq16DzI4gO/YukEsWB23c4KfhkOtAuY45MyRBa69/HmaULOo1mvgoRSruUmgUC8nOG0FX1Lbjw5veCSzCg00yuxsiqlR2BKNn/86l2JVC8qrmxGf+wRASCcvmIGs43Otd0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=NZx9v+lc; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1A629C4CEF1;
+	Tue, 26 Aug 2025 14:12:11 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1756207239;
-	bh=Qu37dA89Z1rTLHkH11U4P5sJro6VkYjjUWnBV6Q2qz4=;
+	s=korg; t=1756217532;
+	bh=MqLWtnh/KJ4qHiHdUVtaZ2STsKpeKFOviDzgv6lGGLk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=kKh9cm10lhglU2xFwHzHD277uyC6Wqb9/MWMVDdm66AiIu0FgtH4ta3564p1Jh+Tc
-	 tl/GQxdLzXK2A13WGflgK+5evQHRGVyb1oY09h41cLHlCNXjO27Ln3pEl53b5kyfXF
-	 LnXlnOTmpkWc074SU7pklrEaJ3I5rCnrg4R+Xt3g=
+	b=NZx9v+lc1iNX2PTAC0AJ76uFm3+yEbl0pMLgBDhjYCILMZQmBQgM2+GfgYwU504Ct
+	 OfaUr8rDWrZeaLgq8BMXg2wngGVqLGrgVxoM91XmXm1C7mNkzUXPbnwIWUxdNqKgLW
+	 2D1KmtWS0aHY/Txl2YTHyrPrXih+0UReFmuX9keo=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Richard Zhu <hongxing.zhu@nxp.com>,
-	Manivannan Sadhasivam <mani@kernel.org>,
-	Bjorn Helgaas <bhelgaas@google.com>,
-	Frank Li <Frank.Li@nxp.com>
-Subject: [PATCH 6.16 104/457] PCI: imx6: Delay link start until configfs start written
-Date: Tue, 26 Aug 2025 13:06:28 +0200
-Message-ID: <20250826110939.946909758@linuxfoundation.org>
+	Michal Schmidt <mschmidt@redhat.com>,
+	Nikolay Aleksandrov <razor@blackwall.org>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.10 179/523] benet: fix BUG when creating VFs
+Date: Tue, 26 Aug 2025 13:06:29 +0200
+Message-ID: <20250826110928.873043044@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250826110937.289866482@linuxfoundation.org>
-References: <20250826110937.289866482@linuxfoundation.org>
+In-Reply-To: <20250826110924.562212281@linuxfoundation.org>
+References: <20250826110924.562212281@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,49 +63,66 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.16-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Richard Zhu <hongxing.zhu@nxp.com>
+From: Michal Schmidt <mschmidt@redhat.com>
 
-commit 2e6ea70690ddd1ffa422423fd0d4523e4dfe4b62 upstream.
+[ Upstream commit 5a40f8af2ba1b9bdf46e2db10e8c9710538fbc63 ]
 
-According to Documentation/PCI/endpoint/pci-endpoint-cfs.rst, the Endpoint
-controller (EPC) should only start the link when userspace writes '1' to
-the '/sys/kernel/config/pci_ep/controllers/<EPC>/start' attribute, which
-ultimately results in calling imx_pcie_start_link() via
-pci_epc_start_store().
+benet crashes as soon as SRIOV VFs are created:
 
-To align with the documented behavior, do not start the link automatically
-when adding the EP controller.
+ kernel BUG at mm/vmalloc.c:3457!
+ Oops: invalid opcode: 0000 [#1] SMP KASAN NOPTI
+ CPU: 4 UID: 0 PID: 7408 Comm: test.sh Kdump: loaded Not tainted 6.16.0+ #1 PREEMPT(voluntary)
+ [...]
+ RIP: 0010:vunmap+0x5f/0x70
+ [...]
+ Call Trace:
+  <TASK>
+  __iommu_dma_free+0xe8/0x1c0
+  be_cmd_set_mac_list+0x3fe/0x640 [be2net]
+  be_cmd_set_mac+0xaf/0x110 [be2net]
+  be_vf_eth_addr_config+0x19f/0x330 [be2net]
+  be_vf_setup+0x4f7/0x990 [be2net]
+  be_pci_sriov_configure+0x3a1/0x470 [be2net]
+  sriov_numvfs_store+0x20b/0x380
+  kernfs_fop_write_iter+0x354/0x530
+  vfs_write+0x9b9/0xf60
+  ksys_write+0xf3/0x1d0
+  do_syscall_64+0x8c/0x3d0
 
-Fixes: 75c2f26da03f ("PCI: imx6: Add i.MX PCIe EP mode support")
-Signed-off-by: Richard Zhu <hongxing.zhu@nxp.com>
-[mani: reworded commit subject and description]
-Signed-off-by: Manivannan Sadhasivam <mani@kernel.org>
-[bhelgaas: commit log]
-Signed-off-by: Bjorn Helgaas <bhelgaas@google.com>
-Reviewed-by: Frank Li <Frank.Li@nxp.com>
-Cc: stable@vger.kernel.org
-Link: https://patch.msgid.link/20250709033722.2924372-3-hongxing.zhu@nxp.com
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+be_cmd_set_mac_list() calls dma_free_coherent() under a spin_lock_bh.
+Fix it by freeing only after the lock has been released.
+
+Fixes: 1a82d19ca2d6 ("be2net: fix sleeping while atomic bugs in be_ndo_bridge_getlink")
+Signed-off-by: Michal Schmidt <mschmidt@redhat.com>
+Reviewed-by: Nikolay Aleksandrov <razor@blackwall.org>
+Link: https://patch.msgid.link/20250801101338.72502-1-mschmidt@redhat.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/pci/controller/dwc/pci-imx6.c |    3 ---
- 1 file changed, 3 deletions(-)
+ drivers/net/ethernet/emulex/benet/be_cmds.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/drivers/pci/controller/dwc/pci-imx6.c
-+++ b/drivers/pci/controller/dwc/pci-imx6.c
-@@ -1468,9 +1468,6 @@ static int imx_add_pcie_ep(struct imx_pc
+diff --git a/drivers/net/ethernet/emulex/benet/be_cmds.c b/drivers/net/ethernet/emulex/benet/be_cmds.c
+index d9bceb26f4e5..d6984c179bae 100644
+--- a/drivers/net/ethernet/emulex/benet/be_cmds.c
++++ b/drivers/net/ethernet/emulex/benet/be_cmds.c
+@@ -3851,8 +3851,8 @@ int be_cmd_set_mac_list(struct be_adapter *adapter, u8 *mac_array,
+ 	status = be_mcc_notify_wait(adapter);
  
- 	pci_epc_init_notify(ep->epc);
- 
--	/* Start LTSSM. */
--	imx_pcie_ltssm_enable(dev);
--
- 	return 0;
+ err:
+-	dma_free_coherent(&adapter->pdev->dev, cmd.size, cmd.va, cmd.dma);
+ 	spin_unlock_bh(&adapter->mcc_lock);
++	dma_free_coherent(&adapter->pdev->dev, cmd.size, cmd.va, cmd.dma);
+ 	return status;
  }
  
+-- 
+2.39.5
+
 
 
 
