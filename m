@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-173930-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-173009-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 263A1B36083
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 15:01:36 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 814A6B35B7F
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 13:25:07 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id D77583B6324
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 12:57:44 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id B04B2170233
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 11:20:58 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C6BE414A4DB;
-	Tue, 26 Aug 2025 12:57:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id BEF2829BDBA;
+	Tue, 26 Aug 2025 11:18:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="OiUwZGVO"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="nDDmEK6X"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 850441B424F;
-	Tue, 26 Aug 2025 12:57:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 79F02334392;
+	Tue, 26 Aug 2025 11:18:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756213040; cv=none; b=Uom3JsXLAPy1GoSvd/gSVlhGH94bTYCLPM/nQdZpQjM8stXmYkJR48QG8N0hYfI278ri+TbrohC+i6CwOBeUxrGH5yIGFZ8yzHgKMz6p5yOr0fjHljQJ5jjoGCR4t5RKclNa53a3kRPOvmHp3QWttlJbXJVDOkYXUDP5utYsr1U=
+	t=1756207139; cv=none; b=aSvpTbeudZhUY+uhZ0qm61/57NS2oA4jaz9f+9XZlj37giY+I8ai1aCNYMOt3yiWUkmKa6wjZooZ4nnImtHzXjWhd330mpUo42vgDLb9E0DxSLUr+SVU/PIkGybsD3SZ13hH8QLNTClWFAkEOteDShrAJS1dFo7gur6+XIGcTsg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756213040; c=relaxed/simple;
-	bh=gDCJ9UUXkbf7C0/25wf/MgHdfgDiwLi/B6UOzfH5Onk=;
+	s=arc-20240116; t=1756207139; c=relaxed/simple;
+	bh=3eZ9OwRysDGjrAsBGyT7JU9QMj0ogduLdLexiXK4CiM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=STyTMQ7ZA/fiMgHCXJYdlKFaxFdM2M9CH98zjAMu2oXzNUYMRe4brQZ8Sie+d1xMFwdqHmvhs2yUJSwf1vtyHKPQSH0KIP4uqcCkTgILWdRAjyAI+1rwV9bN1k4Tm3LGsR37xjRMN7zfCp8xfH9zcJQTblcI37JpyxNhTvcmSwo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=OiUwZGVO; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 17D47C4CEF1;
-	Tue, 26 Aug 2025 12:57:19 +0000 (UTC)
+	 MIME-Version; b=FJ/kDIY5buSWEt4lvU9jK+v907r991AXNMRPC5bWsbhw8e3pGRG6cCnXfwRO7/VtdZNpVjJv0ES/H1WAF0w60dq8oDBzSYvuY7u8mzUoEfoVX+9OvmZ5/EHh1NQSg4UYvuKlykXGTgTPxa1dyvgJBfBfYznIxQW2kYBkI1A7elk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=nDDmEK6X; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 08CDEC4CEF1;
+	Tue, 26 Aug 2025 11:18:58 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1756213040;
-	bh=gDCJ9UUXkbf7C0/25wf/MgHdfgDiwLi/B6UOzfH5Onk=;
+	s=korg; t=1756207139;
+	bh=3eZ9OwRysDGjrAsBGyT7JU9QMj0ogduLdLexiXK4CiM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=OiUwZGVO3Dpub76HDL1IQKv0YkK8ZLF/CuNoY54CbLlelKSO0NoWA50V+FbRcR+JJ
-	 4RUeFvg7P4f5E9mo4Y4vM6En2Mnxeb3XcOTlV0q+Fm15qwqYZhsqZpr8pVSQFQl7CV
-	 Aqn/sr/OHKhNyYSVcd8uU/+X1Es9obu36FMl47uc=
+	b=nDDmEK6XKPDbvV9od2jOjv0aF010rQE7oFU1MzEWCi7W0GyVUF2dG+niFVG6HlSEy
+	 Db0f6eyPCyjTns5NGCe7qu4ruhmPdH/OEzFL/3qjQf0qwFVhKn5TueXooQ9r2Q+uTD
+	 vcVhllK8vqfCRxVdNWE7gBnLuZ951RBtAHVSkOv4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Florian Fainelli <florian.fainelli@broadcom.com>,
-	=?UTF-8?q?=C3=81lvaro=20Fern=C3=A1ndez=20Rojas?= <noltari@gmail.com>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 199/587] net: dsa: b53: prevent DIS_LEARNING access on BCM5325
-Date: Tue, 26 Aug 2025 13:05:48 +0200
-Message-ID: <20250826110958.003963254@linuxfoundation.org>
+	Macpaul Lin <macpaul.lin@mediatek.com>,
+	"Rob Herring (Arm)" <robh@kernel.org>,
+	Peter Wang <peter.wang@mediatek.com>,
+	"Martin K. Petersen" <martin.petersen@oracle.com>
+Subject: [PATCH 6.16 065/457] scsi: dt-bindings: mediatek,ufs: Add ufs-disable-mcq flag for UFS host
+Date: Tue, 26 Aug 2025 13:05:49 +0200
+Message-ID: <20250826110938.967253492@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250826110952.942403671@linuxfoundation.org>
-References: <20250826110952.942403671@linuxfoundation.org>
+In-Reply-To: <20250826110937.289866482@linuxfoundation.org>
+References: <20250826110937.289866482@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,61 +61,47 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.16-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Álvaro Fernández Rojas <noltari@gmail.com>
+From: Macpaul Lin <macpaul.lin@mediatek.com>
 
-[ Upstream commit 800728abd9f83bda4de62a30ce62a8b41c242020 ]
+commit 794ff7a0a6e76af93c5ec09a49b86fe73373ca59 upstream.
 
-BCM5325 doesn't implement DIS_LEARNING register so we should avoid reading
-or writing it.
+Add the 'mediatek,ufs-disable-mcq' property to the UFS device-tree
+bindings. This flag corresponds to the UFS_MTK_CAP_DISABLE_MCQ host
+capability recently introduced in the UFS host driver, allowing it to
+disable the Multiple Circular Queue (MCQ) feature when present.  The
+binding schema has also been updated to resolve DTBS check errors.
 
-Reviewed-by: Florian Fainelli <florian.fainelli@broadcom.com>
-Signed-off-by: Álvaro Fernández Rojas <noltari@gmail.com>
-Link: https://patch.msgid.link/20250614080000.1884236-10-noltari@gmail.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Cc: stable@vger.kernel.org
+Fixes: 46bd3e31d74b ("scsi: ufs: mediatek: Add UFS_MTK_CAP_DISABLE_MCQ")
+Signed-off-by: Macpaul Lin <macpaul.lin@mediatek.com>
+Link: https://lore.kernel.org/r/20250722085721.2062657-2-macpaul.lin@mediatek.com
+Reviewed-by: Rob Herring (Arm) <robh@kernel.org>
+Reviewed-by: Peter Wang <peter.wang@mediatek.com>
+Signed-off-by: Martin K. Petersen <martin.petersen@oracle.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/net/dsa/b53/b53_common.c | 11 ++++++++++-
- 1 file changed, 10 insertions(+), 1 deletion(-)
+ Documentation/devicetree/bindings/ufs/mediatek,ufs.yaml |    4 ++++
+ 1 file changed, 4 insertions(+)
 
-diff --git a/drivers/net/dsa/b53/b53_common.c b/drivers/net/dsa/b53/b53_common.c
-index 9e4d66b8ad39..5daefb60885e 100644
---- a/drivers/net/dsa/b53/b53_common.c
-+++ b/drivers/net/dsa/b53/b53_common.c
-@@ -561,6 +561,9 @@ static void b53_port_set_learning(struct b53_device *dev, int port,
- {
- 	u16 reg;
+--- a/Documentation/devicetree/bindings/ufs/mediatek,ufs.yaml
++++ b/Documentation/devicetree/bindings/ufs/mediatek,ufs.yaml
+@@ -33,6 +33,10 @@ properties:
  
-+	if (is5325(dev))
-+		return;
-+
- 	b53_read16(dev, B53_CTRL_PAGE, B53_DIS_LEARNING, &reg);
- 	if (learning)
- 		reg &= ~BIT(port);
-@@ -2062,7 +2065,13 @@ int b53_br_flags_pre(struct dsa_switch *ds, int port,
- 		     struct switchdev_brport_flags flags,
- 		     struct netlink_ext_ack *extack)
- {
--	if (flags.mask & ~(BR_FLOOD | BR_MCAST_FLOOD | BR_LEARNING))
-+	struct b53_device *dev = ds->priv;
-+	unsigned long mask = (BR_FLOOD | BR_MCAST_FLOOD);
-+
-+	if (!is5325(dev))
-+		mask |= BR_LEARNING;
-+
-+	if (flags.mask & ~mask)
- 		return -EINVAL;
+   vcc-supply: true
  
- 	return 0;
--- 
-2.39.5
-
++  mediatek,ufs-disable-mcq:
++    $ref: /schemas/types.yaml#/definitions/flag
++    description: The mask to disable MCQ (Multi-Circular Queue) for UFS host.
++
+ required:
+   - compatible
+   - clocks
 
 
 
