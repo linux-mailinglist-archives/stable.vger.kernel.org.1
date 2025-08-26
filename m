@@ -1,55 +1,58 @@
-Return-Path: <stable+bounces-174323-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-175451-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 119C7B362BE
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 15:21:40 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 116B3B368E9
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 16:20:43 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 33294463547
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 13:16:19 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 1097D98504D
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 14:06:31 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E759A33CE97;
-	Tue, 26 Aug 2025 13:14:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id BBAFC286881;
+	Tue, 26 Aug 2025 14:04:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="SRp2AQen"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="IXycDpch"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A52BB33A015;
-	Tue, 26 Aug 2025 13:14:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 79DAA2192F2;
+	Tue, 26 Aug 2025 14:04:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756214086; cv=none; b=fcNvJ7gyE2NjPgLS2zHPdj+p0eLD7UHh4o/C3De+kMVoQo5hCfFC4e93X0UwJUBuIdkedsrJLTzJ2GuPinebB9APIVM8NjDiV29UPQ8EFGwWqruyGMc4HY8vB1V1Zxk8L8UAVa3m7qdqKDKH9BCsMBwfLb7sPJC1jC/WJHXQYvU=
+	t=1756217078; cv=none; b=tcRDIvogFhGZruaLKc7DvWDzcfoIyGbVb4mTl+v7JzaglOraX8uNYEJqfyU3hgBI1yFB//GtJzsjy9wZ4185Ssg2nA1E3LStzdn/4V4Un0IYLNxSdRaPnmH5fbto71ztRMX/yjnoSlJCL6dyyxWzWzr59qU0Vy4adqn7mtBJBMI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756214086; c=relaxed/simple;
-	bh=A+JlO42FZDFZX2MVQ6Gxq6NUBbIq0gG5iemPLm5Mc80=;
+	s=arc-20240116; t=1756217078; c=relaxed/simple;
+	bh=cB1Pfo9b9izaeWhFf3gJGURiqRNLXcgIA4t3PTkXwvo=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=mtkxJLoqcxtQYhGpM518Hk76C0GC4HyzWKBGhjJKCsLtKndLy/JmlkNqGTXqul3gigkQKVFFyzAOg9VQOVP3X4GLCnI/qgnYplu/QthBT0PFOQA6HqY05SxfrAe7O2AIRk3Br9mF2ep3Jx9hqxi4e1ruuBInDkvzr7JAUzxaxs8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=SRp2AQen; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2812BC4CEF1;
-	Tue, 26 Aug 2025 13:14:45 +0000 (UTC)
+	 MIME-Version; b=OjCSev1lwZfd5ctH9bytBaYbZAsRfRWvkwfL1xpwvU5bTUSY/Ipt5hzcD0V1ekpeTx3DGPDBad5dqarwTc4xSrpGf8lUA96Uat3CGkZ3RwQUSZtHDmi5GXSU6/wFjyDjv3FTk3oM/0RS6Hgxu4SdjhQbqKJWlQpmVjUnxJC8Shg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=IXycDpch; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0B932C4CEF1;
+	Tue, 26 Aug 2025 14:04:37 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1756214086;
-	bh=A+JlO42FZDFZX2MVQ6Gxq6NUBbIq0gG5iemPLm5Mc80=;
+	s=korg; t=1756217078;
+	bh=cB1Pfo9b9izaeWhFf3gJGURiqRNLXcgIA4t3PTkXwvo=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=SRp2AQenoLyBxvIJdl0B0pKc0iu7+KMG0Q7faU9mh2y8X7CZM/OyknLJ4DxugEHpD
-	 iCJZMlbAfBEdzayykLDKc8aDy3g0YNHe/1teCXYtmtQnGFbtfmzYTl9lvXxTuA8F5Z
-	 ShHwboRp4uMwP5F076Kcd2cLNrEnrBPAhg5ZbsIo=
+	b=IXycDpchpFeDQOcVaRzugGDeGEiWztHpfW44YHLklqXV+7b5z8KGdQQtnylsh2VPe
+	 hNTdqAIcKoAi2i4zQWcHMPCMINnfOQIvj7boM94slPhWMxOowWjZify1WvzEHDGqs7
+	 +PLAPNnJYeoYMbVQIowgjjiO1NHpsIzzl02mliew=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Takashi Iwai <tiwai@suse.de>,
+	Mete Durlu <meted@linux.ibm.com>,
+	Vasily Gorbik <gor@linux.ibm.com>,
+	Peter Oberparleiter <oberpar@linux.ibm.com>,
+	Alexander Gordeev <agordeev@linux.ibm.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 584/587] ALSA: usb-audio: Use correct sub-type for UAC3 feature unit validation
+Subject: [PATCH 5.15 642/644] s390/hypfs: Enable limited access during lockdown
 Date: Tue, 26 Aug 2025 13:12:13 +0200
-Message-ID: <20250826111007.891488937@linuxfoundation.org>
+Message-ID: <20250826111002.471639566@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250826110952.942403671@linuxfoundation.org>
-References: <20250826110952.942403671@linuxfoundation.org>
+In-Reply-To: <20250826110946.507083938@linuxfoundation.org>
+References: <20250826110946.507083938@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,39 +64,59 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Takashi Iwai <tiwai@suse.de>
+From: Peter Oberparleiter <oberpar@linux.ibm.com>
 
-[ Upstream commit 8410fe81093ff231e964891e215b624dabb734b0 ]
+[ Upstream commit 3868f910440c47cd5d158776be4ba4e2186beda7 ]
 
-The entry of the validators table for UAC3 feature unit is defined
-with a wrong sub-type UAC_FEATURE (= 0x06) while it should have been
-UAC3_FEATURE (= 0x07).  This patch corrects the entry value.
+When kernel lockdown is active, debugfs_locked_down() blocks access to
+hypfs files that register ioctl callbacks, even if the ioctl interface
+is not required for a function. This unnecessarily breaks userspace
+tools that only rely on read operations.
 
-Fixes: 57f8770620e9 ("ALSA: usb-audio: More validations of descriptor units")
-Link: https://patch.msgid.link/20250821150835.8894-1-tiwai@suse.de
-Signed-off-by: Takashi Iwai <tiwai@suse.de>
+Resolve this by registering a minimal set of file operations during
+lockdown, avoiding ioctl registration and preserving access for affected
+tooling.
+
+Note that this change restores hypfs functionality when lockdown is
+active from early boot (e.g. via lockdown=integrity kernel parameter),
+but does not apply to scenarios where lockdown is enabled dynamically
+while Linux is running.
+
+Tested-by: Mete Durlu <meted@linux.ibm.com>
+Reviewed-by: Vasily Gorbik <gor@linux.ibm.com>
+Fixes: 5496197f9b08 ("debugfs: Restrict debugfs when the kernel is locked down")
+Signed-off-by: Peter Oberparleiter <oberpar@linux.ibm.com>
+Signed-off-by: Alexander Gordeev <agordeev@linux.ibm.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- sound/usb/validate.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ arch/s390/hypfs/hypfs_dbfs.c | 3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
-diff --git a/sound/usb/validate.c b/sound/usb/validate.c
-index 4f4e8e87a14c..a0d55b77c994 100644
---- a/sound/usb/validate.c
-+++ b/sound/usb/validate.c
-@@ -285,7 +285,7 @@ static const struct usb_desc_validator audio_validators[] = {
- 	/* UAC_VERSION_3, UAC3_EXTENDED_TERMINAL: not implemented yet */
- 	FUNC(UAC_VERSION_3, UAC3_MIXER_UNIT, validate_mixer_unit),
- 	FUNC(UAC_VERSION_3, UAC3_SELECTOR_UNIT, validate_selector_unit),
--	FUNC(UAC_VERSION_3, UAC_FEATURE_UNIT, validate_uac3_feature_unit),
-+	FUNC(UAC_VERSION_3, UAC3_FEATURE_UNIT, validate_uac3_feature_unit),
- 	/*  UAC_VERSION_3, UAC3_EFFECT_UNIT: not implemented yet */
- 	FUNC(UAC_VERSION_3, UAC3_PROCESSING_UNIT, validate_processing_unit),
- 	FUNC(UAC_VERSION_3, UAC3_EXTENSION_UNIT, validate_processing_unit),
+diff --git a/arch/s390/hypfs/hypfs_dbfs.c b/arch/s390/hypfs/hypfs_dbfs.c
+index c5f53dc3dbbc..5848f2e374a6 100644
+--- a/arch/s390/hypfs/hypfs_dbfs.c
++++ b/arch/s390/hypfs/hypfs_dbfs.c
+@@ -6,6 +6,7 @@
+  * Author(s): Michael Holzheu <holzheu@linux.vnet.ibm.com>
+  */
+ 
++#include <linux/security.h>
+ #include <linux/slab.h>
+ #include "hypfs.h"
+ 
+@@ -83,7 +84,7 @@ void hypfs_dbfs_create_file(struct hypfs_dbfs_file *df)
+ {
+ 	const struct file_operations *fops = &dbfs_ops;
+ 
+-	if (df->unlocked_ioctl)
++	if (df->unlocked_ioctl && !security_locked_down(LOCKDOWN_DEBUGFS))
+ 		fops = &dbfs_ops_ioctl;
+ 	df->dentry = debugfs_create_file(df->name, 0400, dbfs_dir, df, fops);
+ 	mutex_init(&df->lock);
 -- 
 2.50.1
 
