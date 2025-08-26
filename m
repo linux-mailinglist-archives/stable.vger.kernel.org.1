@@ -1,55 +1,56 @@
-Return-Path: <stable+bounces-175921-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-176308-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7DCA8B36A1C
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 16:34:14 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 54A75B36CBB
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 17:00:10 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id C53BF1C4677D
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 14:27:52 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 2045F6865CF
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 14:45:25 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E9BFD350847;
-	Tue, 26 Aug 2025 14:25:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 18CB935AABA;
+	Tue, 26 Aug 2025 14:42:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Bh5+X/Fj"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="JuOM8Qde"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A6ECF2C0F60;
-	Tue, 26 Aug 2025 14:25:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BC263350D75;
+	Tue, 26 Aug 2025 14:42:00 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756218317; cv=none; b=dNVDRZGySlG12OXWxuqa+DCARt1avLlu2jaw1FduADtb01wjrhfNeoWgYgQq2MgCDF/CpIFlbouAGMdvzb0ezmkWiphpk0Hs9VD25NzgmT4WC8PN97J3dE9Bv1vCCI8zzlqB7vEdkAuFC1tW/NaQrFDeFkpz/4YkGu9+H6PdzAk=
+	t=1756219320; cv=none; b=kvccIa4/t9y7wIHlOkYiq2+iGZCnHduZBuKx5rQ4l8e9pTzvKJ04OF9pkQrKNDd8YuayxZpct77IfLFiO09khXUAXJ8lw8gAu/pZVkdV79Bagb0hBoEH7awXulUbh/v6ZW2fipNqIV9zugUMMqLTAUBiY7Gb7OlHWXEpTdXMBG4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756218317; c=relaxed/simple;
-	bh=xpj8jN0E3M9Jr206p0zasaGyfgGAjFEpdkRXf5Vwuf4=;
+	s=arc-20240116; t=1756219320; c=relaxed/simple;
+	bh=hpDYuBygdIJZjsNipRWlnFBXSvuCelLzJ1UsZreDKbs=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=RqiJtEISXzFzehYEW4diQV5Rz97eO6R6nj+oUW/z5qDvoCIw3QokMc1OQMtgVcbNgbp+9IwRg24dEHEVrf3xez6N/9Mb5jX/qewa5sNMxUxGwl0SFZHeL2ol6bY5HAqwu2sDiEbuT6Aa2OqHoLK4tjDJ7u9ZbpjfyIahY6UnklM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Bh5+X/Fj; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 39A7DC4CEF1;
-	Tue, 26 Aug 2025 14:25:17 +0000 (UTC)
+	 MIME-Version:Content-Type; b=FbBP+k+5iPqeqT6NmvTYWR4qDIdFbmyDMNzps1yn32hFxhVu/yRiwDZLVIRTyKoOGYPVjtX5kDbY/l01keCTEfQLfXeNpCqdddBVYVsYEYyLM6suujKFkaWDOdcloHQ6XD7VrQFS59PSC0pZ6AAgiZ5s4ZJDvCiySpvRCT4C7tU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=JuOM8Qde; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 24E84C4CEF1;
+	Tue, 26 Aug 2025 14:41:59 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1756218317;
-	bh=xpj8jN0E3M9Jr206p0zasaGyfgGAjFEpdkRXf5Vwuf4=;
+	s=korg; t=1756219320;
+	bh=hpDYuBygdIJZjsNipRWlnFBXSvuCelLzJ1UsZreDKbs=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Bh5+X/FjqgvxE7l+TCQ47/wGBBeKMxhhy5Wnw33iHq19qmKUeSeTff6i8Ftg239wd
-	 ohdX4I6yQ9U6ZkTCFhJzJSBSqyGNDZPMhGPBc0ky/zB6rYW+KKQcHk1NUQI+qJKTo8
-	 URCpAjP7t9r6tH3fZQx3ZbFrmsNF7/jziFRd7V1c=
+	b=JuOM8QdeByOcH2ziSeLDrbZ0Yh6MoFSKNrtw53ONC3p16cHmiYij19iUW7zwzTz0M
+	 4j8giotwVOjIwTXs1/5HbLgq1o0WBK3She68qkH9W+/cEuJ/nGpfjI6PIau9jNFLjC
+	 bovxDgiT2tfQpltdgYYbpSpkZNaIBxpIlRzGNlsY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Johan Hovold <johan@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 435/523] USB: cdc-acm: do not log successful probe on later errors
+	Mael GUERIN <mael.guerin@murena.io>,
+	stable <stable@kernel.org>,
+	Alan Stern <stern@rowland.harvard.edu>
+Subject: [PATCH 5.4 319/403] USB: storage: Add unusual-devs entry for Novatek NTK96550-based camera
 Date: Tue, 26 Aug 2025 13:10:45 +0200
-Message-ID: <20250826110935.185526070@linuxfoundation.org>
+Message-ID: <20250826110915.624294119@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250826110924.562212281@linuxfoundation.org>
-References: <20250826110924.562212281@linuxfoundation.org>
+In-Reply-To: <20250826110905.607690791@linuxfoundation.org>
+References: <20250826110905.607690791@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -59,49 +60,62 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+5.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Johan Hovold <johan@kernel.org>
+From: Mael GUERIN <mael.guerin@murena.io>
 
-[ Upstream commit 79579411826647fd573dbe301c4d933bc90e4be7 ]
+commit 6ca8af3c8fb584f3424a827f554ff74f898c27cd upstream.
 
-Do not log the successful-probe message until the tty device has been
-registered.
+Add the US_FL_BULK_IGNORE_TAG quirk for Novatek NTK96550-based camera
+to fix USB resets after sending SCSI vendor commands due to CBW and
+CSW tags difference, leading to undesired slowness while communicating
+with the device.
 
-Signed-off-by: Johan Hovold <johan@kernel.org>
-Link: https://lore.kernel.org/r/20210322155318.9837-9-johan@kernel.org
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Stable-dep-of: 64690a90cd7c ("cdc-acm: fix race between initial clearing halt and open")
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Please find below the copy of /sys/kernel/debug/usb/devices with my
+device plugged in (listed as TechSys USB mass storage here, the
+underlying chipset being the Novatek NTK96550-based camera):
+
+T:  Bus=03 Lev=01 Prnt=01 Port=00 Cnt=01 Dev#=  3 Spd=480  MxCh= 0
+D:  Ver= 2.00 Cls=00(>ifc ) Sub=00 Prot=00 MxPS=64 #Cfgs=  1
+P:  Vendor=0603 ProdID=8611 Rev= 0.01
+S:  Manufacturer=TechSys
+S:  Product=USB Mass Storage
+S:  SerialNumber=966110000000100
+C:* #Ifs= 1 Cfg#= 1 Atr=c0 MxPwr=100mA
+I:* If#= 0 Alt= 0 #EPs= 2 Cls=08(stor.) Sub=06 Prot=50 Driver=usb-storage
+E:  Ad=81(I) Atr=02(Bulk) MxPS= 512 Ivl=0ms
+E:  Ad=02(O) Atr=02(Bulk) MxPS= 512 Ivl=0ms
+
+Signed-off-by: Mael GUERIN <mael.guerin@murena.io>
+Cc: stable <stable@kernel.org>
+Acked-by: Alan Stern <stern@rowland.harvard.edu>
+Link: https://lore.kernel.org/r/20250806164406.43450-1-mael.guerin@murena.io
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/usb/class/cdc-acm.c |    4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ drivers/usb/storage/unusual_devs.h |    7 +++++++
+ 1 file changed, 7 insertions(+)
 
---- a/drivers/usb/class/cdc-acm.c
-+++ b/drivers/usb/class/cdc-acm.c
-@@ -1510,8 +1510,6 @@ skip_countries:
- 	acm->nb_index = 0;
- 	acm->nb_size = 0;
+--- a/drivers/usb/storage/unusual_devs.h
++++ b/drivers/usb/storage/unusual_devs.h
+@@ -934,6 +934,13 @@ UNUSUAL_DEV(  0x05e3, 0x0723, 0x9451, 0x
+ 		USB_SC_DEVICE, USB_PR_DEVICE, NULL,
+ 		US_FL_SANE_SENSE ),
  
--	dev_info(&intf->dev, "ttyACM%d: USB ACM device\n", minor);
--
- 	acm->line.dwDTERate = cpu_to_le32(9600);
- 	acm->line.bDataBits = 8;
- 	acm_set_line(acm, &acm->line);
-@@ -1531,6 +1529,8 @@ skip_countries:
- 		usb_clear_halt(usb_dev, acm->out);
- 	}
- 
-+	dev_info(&intf->dev, "ttyACM%d: USB ACM device\n", minor);
++/* Added by Maël GUERIN <mael.guerin@murena.io> */
++UNUSUAL_DEV(  0x0603, 0x8611, 0x0000, 0xffff,
++		"Novatek",
++		"NTK96550-based camera",
++		USB_SC_SCSI, USB_PR_BULK, NULL,
++		US_FL_BULK_IGNORE_TAG ),
 +
- 	return 0;
- alloc_fail6:
- 	if (!acm->combined_interfaces) {
+ /*
+  * Reported by Hanno Boeck <hanno@gmx.de>
+  * Taken from the Lycoris Kernel
 
 
 
