@@ -1,55 +1,56 @@
-Return-Path: <stable+bounces-174585-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-175213-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id EA24DB36419
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 15:35:46 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 763FFB36667
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 15:56:46 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 6E334562BE3
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 13:27:28 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 5DC83B60BE2
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 13:54:14 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id AD205137932;
-	Tue, 26 Aug 2025 13:26:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 17FFE350D46;
+	Tue, 26 Aug 2025 13:54:00 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Rcb2xyWy"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="CgrHdUAu"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6967A1E502;
-	Tue, 26 Aug 2025 13:26:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CABBB34A32E;
+	Tue, 26 Aug 2025 13:53:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756214782; cv=none; b=saoZkUFn+CltT/DYBg0cxg2wWmDXh4XEPRUQmXVj3iKtDuJqB+bZWxEYXY0OCW3qt04SzrBx3OHj5//oj+zp0iTxI3jjGMSaEqYqDsruCYIkBMu059bexVOQkRXQgXo85jXxphmNMFJixgrTVxYpa2ST1MPmFsOtBM4ceZZCzjg=
+	t=1756216439; cv=none; b=fxHrsihJXIieDNYlqArj2qD4uSgaA2+TZL72sENYRY+cGQNlruNu9Fn7NEGlgPA2ynP9kcPk1ZaRKacbYJA8DCWbtgVo/H7933El8WfnpWc1+Q1OSfVlA9MUoC+csz+M5sOQGy7ChdTYdeRp8dbh6h8qUqsz5rosm5yRA8CGe0Y=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756214782; c=relaxed/simple;
-	bh=oxRj9kAuVRkj4cZmno7Ne0Ch3EfJSekAtY0MtD/j2UY=;
+	s=arc-20240116; t=1756216439; c=relaxed/simple;
+	bh=Kg+uFIP3JL74zLaZVy61VCAvBKqKzUPNuxFbqXjPa+8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=iiiy1QV4i/irPqghYJZ/q/1GJUZabSqdXDJ6a4R4fUKfp9VceazRp4FMpKid0IyIsqAI9YnBmqQ1faLjR16x4hYwtUwVA4Pe1QARaAaBOuXSXD/L/gkjmUhuFiZtnRz1uFSciixcyCa9AEoPQe6UenOw5XJReZSewGJcPZV/VAc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Rcb2xyWy; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id F148EC4CEF1;
-	Tue, 26 Aug 2025 13:26:21 +0000 (UTC)
+	 MIME-Version; b=jlpcOQKf58etOmwsv2B/S9cq2A9hWs/TnJbvzupzLyxS31i3l6ZYLHBnaI4DNOkrH4frru4FsNen9IpxpuVVPTbwE9xCt9QrbcJPbOS1dHKpv03czWpweIPeWtk92DCqnLHbLXTQ35c0i4JFNUfM3M7oWZnKobSwR8PCARdlYyI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=CgrHdUAu; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5F8A5C113CF;
+	Tue, 26 Aug 2025 13:53:59 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1756214782;
-	bh=oxRj9kAuVRkj4cZmno7Ne0Ch3EfJSekAtY0MtD/j2UY=;
+	s=korg; t=1756216439;
+	bh=Kg+uFIP3JL74zLaZVy61VCAvBKqKzUPNuxFbqXjPa+8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Rcb2xyWyFOagkT7OzmD2LvPzTpmwzo+EQddvcnX/0ZBWdePQ+oE1uJVNcZBoLeimi
-	 dY39xZfh1DZqCFw4R8qKb/ahcPqT0dPRvtm+Ntgufa8clTrR64b2pah7bknavk9Hka
-	 dTeufuDKFuWm4j8wm3892colpadu8qsVaDi1GgXs=
+	b=CgrHdUAutooMluiUwgWbWmEhcNC23D8x690e5+6TT1pND8vc8NTGRUKfAih2v60V6
+	 /QiSR5sfl5iUbIhMGPzrlsYastCgwJ0T3uxytdpiEXMPRm+UbM4SA6fWsFa7g/V65S
+	 NaIQ+JCjfWXdVX1BL8tf4iZAUOVX4THULaKE27R8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	stable <stable@kernel.org>,
-	Eric Biggers <ebiggers@kernel.org>
-Subject: [PATCH 6.1 250/482] thunderbolt: Fix copy+paste error in match_service_id()
+	Purva Yeshi <purvayeshi550@gmail.com>,
+	Mikulas Patocka <mpatocka@redhat.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.15 412/644] md: dm-zoned-target: Initialize return variable r to avoid uninitialized use
 Date: Tue, 26 Aug 2025 13:08:23 +0200
-Message-ID: <20250826110936.944396008@linuxfoundation.org>
+Message-ID: <20250826110956.666495675@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250826110930.769259449@linuxfoundation.org>
-References: <20250826110930.769259449@linuxfoundation.org>
+In-Reply-To: <20250826110946.507083938@linuxfoundation.org>
+References: <20250826110946.507083938@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,37 +62,49 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Eric Biggers <ebiggers@kernel.org>
+From: Purva Yeshi <purvayeshi550@gmail.com>
 
-commit 5cc1f66cb23cccc704e3def27ad31ed479e934a5 upstream.
+[ Upstream commit 487767bff572d46f7c37ad846c4078f6d6c9cc55 ]
 
-The second instance of TBSVC_MATCH_PROTOCOL_VERSION seems to have been
-intended to be TBSVC_MATCH_PROTOCOL_REVISION.
+Fix Smatch-detected error:
+drivers/md/dm-zoned-target.c:1073 dmz_iterate_devices()
+error: uninitialized symbol 'r'.
 
-Fixes: d1ff70241a27 ("thunderbolt: Add support for XDomain discovery protocol")
-Cc: stable <stable@kernel.org>
-Signed-off-by: Eric Biggers <ebiggers@kernel.org>
-Link: https://lore.kernel.org/r/20250721050136.30004-1-ebiggers@kernel.org
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Smatch detects a possible use of the uninitialized variable 'r' in
+dmz_iterate_devices() because if dmz->nr_ddevs is zero, the loop is
+skipped and 'r' is returned without being set, leading to undefined
+behavior.
+
+Initialize 'r' to 0 before the loop. This ensures that if there are no
+devices to iterate over, the function still returns a defined value.
+
+Signed-off-by: Purva Yeshi <purvayeshi550@gmail.com>
+Signed-off-by: Mikulas Patocka <mpatocka@redhat.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/thunderbolt/domain.c |    2 +-
+ drivers/md/dm-zoned-target.c | 2 +-
  1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/drivers/thunderbolt/domain.c
-+++ b/drivers/thunderbolt/domain.c
-@@ -36,7 +36,7 @@ static bool match_service_id(const struc
- 			return false;
- 	}
+diff --git a/drivers/md/dm-zoned-target.c b/drivers/md/dm-zoned-target.c
+index 48b56d6434f7..98c3c8be3bcc 100644
+--- a/drivers/md/dm-zoned-target.c
++++ b/drivers/md/dm-zoned-target.c
+@@ -1066,7 +1066,7 @@ static int dmz_iterate_devices(struct dm_target *ti,
+ 	struct dmz_target *dmz = ti->private;
+ 	unsigned int zone_nr_sectors = dmz_zone_nr_sectors(dmz->metadata);
+ 	sector_t capacity;
+-	int i, r;
++	int i, r = 0;
  
--	if (id->match_flags & TBSVC_MATCH_PROTOCOL_VERSION) {
-+	if (id->match_flags & TBSVC_MATCH_PROTOCOL_REVISION) {
- 		if (id->protocol_revision != svc->prtcrevs)
- 			return false;
- 	}
+ 	for (i = 0; i < dmz->nr_ddevs; i++) {
+ 		capacity = dmz->dev[i].capacity & ~(zone_nr_sectors - 1);
+-- 
+2.39.5
+
 
 
 
