@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-175923-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-173349-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id CAC0EB36988
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 16:27:59 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id A48BDB35D58
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 13:43:54 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 7DF0C7B52F5
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 14:26:23 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id D7C9B3610B8
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 11:35:25 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3349135A28A;
-	Tue, 26 Aug 2025 14:25:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4EB90335BAA;
+	Tue, 26 Aug 2025 11:33:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="WitZCS6f"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ZFwU6K+l"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E612D35A281;
-	Tue, 26 Aug 2025 14:25:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0ADFE341659;
+	Tue, 26 Aug 2025 11:33:35 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756218323; cv=none; b=VD27vwGFr8k2alBWELsvGf3dej1AhGZmuCNbBhmbt7NW8/CCVA/+Sl1kcypS8+qsMvZbindET6ah1tREgeB+qOcXpHBnJt7BCLapl3adms5oFCoCfTmd1XAUKDiZMx9H5cigXFuIlgfDlod3I2q7+xevuMhNKrUIK4q8cbo0IhM=
+	t=1756208018; cv=none; b=VlIQ/chtgER0IORA6YZ/sKZi76Qv9Up5Okk1LFkPh2fdo6D3LhsTAqy5K4rQT8cWPSDvKuzHLz+8IVVhpeCmCftceOouuScoMJX3EEAqmqI8GWDFRZP6XUXUJ+KRySjKTxymd1ppuoK44Iq0EunkqLj5SV5zlo5nR4712wYfYfk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756218323; c=relaxed/simple;
-	bh=TQbOCuB4338I/a72sbfPNWAxUtH3PhfaOnN36mUfCds=;
+	s=arc-20240116; t=1756208018; c=relaxed/simple;
+	bh=Yw7erqmMwLDTaDWdYm5Lt/6FWmswBUWZUkvFMu9BSsg=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=TGqI0kTsFW6w7rX9AJqDYewv6UX/B0Vxbf1MXQ0+3tdN6eGv2IWTlrGyvs4Mtuc3QcnXnvphdz51/qIcDmJ0cxkrhSAQ9qBnVtEeSWIijypmZ/ETggRJL193z5ce0cVVSbGfCrt74Q/7KWBx/g2MlbGVlyuFQHPILgbiQcoQmaw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=WitZCS6f; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7908BC113D0;
-	Tue, 26 Aug 2025 14:25:22 +0000 (UTC)
+	 MIME-Version; b=to1MNuOOlHj7ssLt3QtZlQbTK6hSUPkND0FQ60aOy91mtPrlVWWSEcBwY1Qaosx26+ulTf9R0yVx86FjHFtPV6+kksMjcfy/xHJ8bfp12COTq5VAZiEoTw52QrjJYt5lY6Z7xjZtZ4eAdDmziFs0+pbhA7SY09JdQrHssYCTfT8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ZFwU6K+l; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 34A7BC4CEF4;
+	Tue, 26 Aug 2025 11:33:35 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1756218322;
-	bh=TQbOCuB4338I/a72sbfPNWAxUtH3PhfaOnN36mUfCds=;
+	s=korg; t=1756208015;
+	bh=Yw7erqmMwLDTaDWdYm5Lt/6FWmswBUWZUkvFMu9BSsg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=WitZCS6fOaqhjCZGu69QLnzirG34nDXqRhOmDDe9V9lwktnoifGWED45PlMiDGXbB
-	 we/BPA7MbHOuw4WAUr7Y+Kz1oz8AZaXwv5n/D0tvP7P3YUxtL9XcqNifBtoukD+nCp
-	 bZO8p9fuIy7CuE9Ya2/tDjq1hMJO2VD+eIrrnuh4=
+	b=ZFwU6K+lI5n1HQrttZg1fEA0K6OoF0icJdgxOmWxa9IjS35nnESJuQ3TOVqhCWClO
+	 a48H44iWSLt0HN+0zx3Q5+wHigZ8ZIqId7OKUcHUxkTmBG3nhJxHY7NXMkKqvyxIjS
+	 IVgTOt/yPpkXVZDs3yiSS4M2jlfWD3jwclX0pfEg=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Marco Elver <elver@google.com>,
-	"Paul E. McKenney" <paulmck@kernel.org>,
+	Qingfang Deng <dqfext@gmail.com>,
+	Paolo Abeni <pabeni@redhat.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 479/523] locking/barriers, kcsan: Support generic instrumentation
+Subject: [PATCH 6.16 405/457] net: ethernet: mtk_ppe: add RCU lock around dev_fill_forward_path
 Date: Tue, 26 Aug 2025 13:11:29 +0200
-Message-ID: <20250826110936.260418982@linuxfoundation.org>
+Message-ID: <20250826110947.304291685@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250826110924.562212281@linuxfoundation.org>
-References: <20250826110924.562212281@linuxfoundation.org>
+In-Reply-To: <20250826110937.289866482@linuxfoundation.org>
+References: <20250826110937.289866482@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,72 +62,42 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+6.16-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Marco Elver <elver@google.com>
+From: Qingfang Deng <dqfext@gmail.com>
 
-[ Upstream commit 2505a51ac6f249956735e0a369e2404f96eebef0 ]
+[ Upstream commit 62c30c544359aa18b8fb2734166467a07d435c2d ]
 
-Thus far only smp_*() barriers had been defined by asm-generic/barrier.h
-based on __smp_*() barriers, because the !SMP case is usually generic.
+Ensure ndo_fill_forward_path() is called with RCU lock held.
 
-With the introduction of instrumentation, it also makes sense to have
-asm-generic/barrier.h assist in the definition of instrumented versions
-of mb(), rmb(), wmb(), dma_rmb(), and dma_wmb().
-
-Because there is no requirement to distinguish the !SMP case, the
-definition can be simpler: we can avoid also providing fallbacks for the
-__ prefixed cases, and only check if `defined(__<barrier>)`, to finally
-define the KCSAN-instrumented versions.
-
-This also allows for the compiler to complain if an architecture
-accidentally defines both the normal and __ prefixed variant.
-
-Signed-off-by: Marco Elver <elver@google.com>
-Signed-off-by: Paul E. McKenney <paulmck@kernel.org>
-Stable-dep-of: aa6956150f82 ("wifi: ath11k: fix dest ring-buffer corruption when ring is full")
+Fixes: 2830e314778d ("net: ethernet: mtk-ppe: fix traffic offload with bridged wlan")
+Signed-off-by: Qingfang Deng <dqfext@gmail.com>
+Link: https://patch.msgid.link/20250814012559.3705-1-dqfext@gmail.com
+Signed-off-by: Paolo Abeni <pabeni@redhat.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- include/asm-generic/barrier.h |   25 +++++++++++++++++++++++++
- 1 file changed, 25 insertions(+)
+ drivers/net/ethernet/mediatek/mtk_ppe_offload.c | 2 ++
+ 1 file changed, 2 insertions(+)
 
---- a/include/asm-generic/barrier.h
-+++ b/include/asm-generic/barrier.h
-@@ -21,6 +21,31 @@
- #endif
+diff --git a/drivers/net/ethernet/mediatek/mtk_ppe_offload.c b/drivers/net/ethernet/mediatek/mtk_ppe_offload.c
+index c855fb799ce1..e9bd32741983 100644
+--- a/drivers/net/ethernet/mediatek/mtk_ppe_offload.c
++++ b/drivers/net/ethernet/mediatek/mtk_ppe_offload.c
+@@ -101,7 +101,9 @@ mtk_flow_get_wdma_info(struct net_device *dev, const u8 *addr, struct mtk_wdma_i
+ 	if (!IS_ENABLED(CONFIG_NET_MEDIATEK_SOC_WED))
+ 		return -1;
  
- /*
-+ * Architectures that want generic instrumentation can define __ prefixed
-+ * variants of all barriers.
-+ */
-+
-+#ifdef __mb
-+#define mb()	do { kcsan_mb(); __mb(); } while (0)
-+#endif
-+
-+#ifdef __rmb
-+#define rmb()	do { kcsan_rmb(); __rmb(); } while (0)
-+#endif
-+
-+#ifdef __wmb
-+#define wmb()	do { kcsan_wmb(); __wmb(); } while (0)
-+#endif
-+
-+#ifdef __dma_rmb
-+#define dma_rmb()	do { kcsan_rmb(); __dma_rmb(); } while (0)
-+#endif
-+
-+#ifdef __dma_wmb
-+#define dma_wmb()	do { kcsan_wmb(); __dma_wmb(); } while (0)
-+#endif
-+
-+/*
-  * Force strict CPU ordering. And yes, this is required on UP too when we're
-  * talking to devices.
-  *
++	rcu_read_lock();
+ 	err = dev_fill_forward_path(dev, addr, &stack);
++	rcu_read_unlock();
+ 	if (err)
+ 		return err;
+ 
+-- 
+2.50.1
+
 
 
 
