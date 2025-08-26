@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-173828-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-174957-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 70ACFB35FFE
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 14:56:05 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id CEC98B365E1
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 15:51:28 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 64678464720
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 12:54:07 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 076E48E37FD
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 13:42:45 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4151C1F8BA6;
-	Tue, 26 Aug 2025 12:52:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7A30128314A;
+	Tue, 26 Aug 2025 13:42:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="mS5RpWDU"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="LUokh3rX"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F1CD128EA72;
-	Tue, 26 Aug 2025 12:52:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3717024DD11;
+	Tue, 26 Aug 2025 13:42:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756212773; cv=none; b=eMKCorwdF4QyXh/MLdkx821JaysvXMs97/rK1RLVUKgux8FqXlOtUW0E/4vW6a2O9dIZulUd52EYgGYOiOnl05TTWJC08Wg5iEXM2obJ++tqyW6GTT9knRvCEEqlU4hkTIHDeiLDanCAuDRcuREB+WoYFESVOT2wnQqOa4E5r+o=
+	t=1756215763; cv=none; b=dVRSYPbvm1E7NbJM+AsCiMKMps/R2HHt2nmeYQ6lCvAs+gzMbeCdjNPSYqj93LdZPgCbnoEeVwl/6qHaNY/rMKj1x24vaOwGH3GI15asMJezT+uS7lAevZUi6FrIvDVS5Nzfif2v8romPN9BL2pMh5lyc8hcdL+3PdZgYgklIV4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756212773; c=relaxed/simple;
-	bh=dY1j3Qc8Uq4Ut1wMCymVWL0w0/gh6n8L1+LZ5MPvRUw=;
+	s=arc-20240116; t=1756215763; c=relaxed/simple;
+	bh=cg+zPy7KZj78hAV1DGCOLLa1Wf+A63kjtGPrm+Ctq/E=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=FSaiRJyfVia5+4jObFFxDACEwRmOe31unoCsu902H4RpoNNyVBqHV3ndV1coToqTzNP4o7gZpsNsbFD4Dg0FZMYMohHumMF942u/WF3hZOxP+vXMDXJEso3xRWaes4HNfAp3krEaRkB9tJ6Z/LL9EhdQdzkomGAiYKFb2EoC6jQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=mS5RpWDU; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 30D60C4CEF4;
-	Tue, 26 Aug 2025 12:52:52 +0000 (UTC)
+	 MIME-Version; b=qWWz8UO/8nZNZ+GXcjPLsctORSKAej24tHRLQHsX1OpwF63coZzX8vCq97x6aCLsv8lUofyx+CPe6BSWXGZ5ag3iiUYgrPZGnmWsgl9/MxofbaILYE4IIZi5QETHI/JlkSynunWQBR3vhwRwYr9ff1w5oOwdVU78qBoyyNQ4D9w=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=LUokh3rX; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6E16AC4CEF1;
+	Tue, 26 Aug 2025 13:42:42 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1756212772;
-	bh=dY1j3Qc8Uq4Ut1wMCymVWL0w0/gh6n8L1+LZ5MPvRUw=;
+	s=korg; t=1756215762;
+	bh=cg+zPy7KZj78hAV1DGCOLLa1Wf+A63kjtGPrm+Ctq/E=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=mS5RpWDUbEhjPyIvhjGUCU01haaYkC+Ip/tAhPKWXsPUiB06DkDGZAPEe6txA+s5U
-	 dZqemh+RbBRyeqBMm2OetgmVj1EngKhq2S/YXj9M1Wln3k/+vWdu2v0d6v/xMmKw3f
-	 eYsk+CiVfR2ut6StEfR45Gsbu0zjMh8lOpHvy32w=
+	b=LUokh3rXqxlBiNAeqM4iYt2Nfo2jx/u5O3k+6SedNaKSJiqrLPPOkzzuuhdHqs3B0
+	 XoZXf9B5v5NPe8UjMH5nv4rtuRE2e3YIhpGS0+3GEIet3arfFFaT44bnzqqQg2RVnp
+	 f/r5MKlEX0U+smf/bfa0tNsssAiPg5FCprFGWsQ4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Lifeng Zheng <zhenglifeng1@huawei.com>,
-	Chanwoo Choi <cw00.choi@samsung.com>,
+	Thomas Fourier <fourier.thomas@gmail.com>,
+	Johannes Berg <johannes.berg@intel.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 097/587] PM / devfreq: governor: Replace sscanf() with kstrtoul() in set_freq_store()
+Subject: [PATCH 5.15 155/644] mwl8k: Add missing check after DMA map
 Date: Tue, 26 Aug 2025 13:04:06 +0200
-Message-ID: <20250826110955.410885099@linuxfoundation.org>
+Message-ID: <20250826110950.321781127@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250826110952.942403671@linuxfoundation.org>
-References: <20250826110952.942403671@linuxfoundation.org>
+In-Reply-To: <20250826110946.507083938@linuxfoundation.org>
+References: <20250826110946.507083938@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,52 +62,41 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Lifeng Zheng <zhenglifeng1@huawei.com>
+From: Thomas Fourier <fourier.thomas@gmail.com>
 
-[ Upstream commit 914cc799b28f17d369d5b4db3b941957d18157e8 ]
+[ Upstream commit 50459501b9a212dbe7a673727589ee105a8a9954 ]
 
-Replace sscanf() with kstrtoul() in set_freq_store() and check the result
-to avoid invalid input.
+The DMA map functions can fail and should be tested for errors.
+If the mapping fails, unmap and return an error.
 
-Signed-off-by: Lifeng Zheng <zhenglifeng1@huawei.com>
-Link: https://lore.kernel.org/lkml/20250421030020.3108405-2-zhenglifeng1@huawei.com/
-Signed-off-by: Chanwoo Choi <cw00.choi@samsung.com>
+Fixes: 788838ebe8a4 ("mwl8k: use pci_unmap_addr{,set}() to keep track of unmap addresses on rx")
+Signed-off-by: Thomas Fourier <fourier.thomas@gmail.com>
+Link: https://patch.msgid.link/20250709111339.25360-2-fourier.thomas@gmail.com
+Signed-off-by: Johannes Berg <johannes.berg@intel.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/devfreq/governor_userspace.c | 6 +++++-
- 1 file changed, 5 insertions(+), 1 deletion(-)
+ drivers/net/wireless/marvell/mwl8k.c | 4 ++++
+ 1 file changed, 4 insertions(+)
 
-diff --git a/drivers/devfreq/governor_userspace.c b/drivers/devfreq/governor_userspace.c
-index d69672ccacc4..8d057cea09d5 100644
---- a/drivers/devfreq/governor_userspace.c
-+++ b/drivers/devfreq/governor_userspace.c
-@@ -9,6 +9,7 @@
- #include <linux/slab.h>
- #include <linux/device.h>
- #include <linux/devfreq.h>
-+#include <linux/kstrtox.h>
- #include <linux/pm.h>
- #include <linux/mutex.h>
- #include <linux/module.h>
-@@ -39,10 +40,13 @@ static ssize_t set_freq_store(struct device *dev, struct device_attribute *attr,
- 	unsigned long wanted;
- 	int err = 0;
+diff --git a/drivers/net/wireless/marvell/mwl8k.c b/drivers/net/wireless/marvell/mwl8k.c
+index ad9678186c58..6cef5a0d6a6e 100644
+--- a/drivers/net/wireless/marvell/mwl8k.c
++++ b/drivers/net/wireless/marvell/mwl8k.c
+@@ -1222,6 +1222,10 @@ static int rxq_refill(struct ieee80211_hw *hw, int index, int limit)
  
-+	err = kstrtoul(buf, 0, &wanted);
-+	if (err)
-+		return err;
-+
- 	mutex_lock(&devfreq->lock);
- 	data = devfreq->governor_data;
+ 		addr = dma_map_single(&priv->pdev->dev, skb->data,
+ 				      MWL8K_RX_MAXSZ, DMA_FROM_DEVICE);
++		if (dma_mapping_error(&priv->pdev->dev, addr)) {
++			kfree_skb(skb);
++			break;
++		}
  
--	sscanf(buf, "%lu", &wanted);
- 	data->user_frequency = wanted;
- 	data->valid = true;
- 	err = update_devfreq(devfreq);
+ 		rxq->rxd_count++;
+ 		rx = rxq->tail++;
 -- 
 2.39.5
 
