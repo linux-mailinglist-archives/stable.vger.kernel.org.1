@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-174244-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-173331-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id C002EB361FF
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 15:14:35 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0DEE0B35C81
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 13:35:08 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 7156B188DDFE
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 13:11:51 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 452263A985F
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 11:34:56 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5793A252904;
-	Tue, 26 Aug 2025 13:11:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 039EC338F41;
+	Tue, 26 Aug 2025 11:32:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Xvbuu6lb"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="BSbfCuXJ"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 103A44C6D;
-	Tue, 26 Aug 2025 13:11:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B40DD322A03;
+	Tue, 26 Aug 2025 11:32:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756213875; cv=none; b=gGiW+tWQMBsMQgizNpm98aBkPfhY6GHOtE25B/7iPNsnDxUamV/45afZb1tCvvVf5ihJFRvMsx+K3k5mUfqUDqXoI10YJkBlI6EhGEInyoWMHvbivmQR0LaxJMhgZjYH3gzEY6Boxw2F4F1XHyFGc3mYlklD3J/ieCxlu9v4jg8=
+	t=1756207969; cv=none; b=b4cpRAwUsYLN4Z8oEsYyv2ghAR6Z1Mg+wbrkbOKikvuP9RDu8VIlZujvywXO9Optrhog4WVqOXMaeiFeXVReXB5fy/VQ249HY3G+ZyWsfjT35CApiaH7L/Y9adORJludg8nID+fJfu/xDtRIxuoekS37649sPbHNWGU6ZOc1UJ4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756213875; c=relaxed/simple;
-	bh=Nrdl1pXBFaqBcOTlEECAUlrrovYH08BVoXI5SxBxVCk=;
+	s=arc-20240116; t=1756207969; c=relaxed/simple;
+	bh=k7PaaNhdxJ7GgtYVjI08AXc3UY1cq+Pedh8vyCt68xk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=n0eEW1mI0gexwG5rueCjXqhWgxOKm5qHw528cPxPTXR0lqV79Ybn1oEkjOiKAj7NopZCRPmL18NdBEP+h2oS9yxjnyN+DnGQ6GKRVWQ7IqheF3CJ08DAj7O7jr5zJQ0W9szMpViGR3UZMluV7P0pmt6SskDQ29Sa2g6Ayj8mYog=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Xvbuu6lb; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 955FDC4CEF1;
-	Tue, 26 Aug 2025 13:11:14 +0000 (UTC)
+	 MIME-Version; b=EDGtKi/sIWmrZqyoGY2fOoek7CKdNu8ijZ+PWtrs9g04CRxiqYBFWm3yyLsZXGO9Qpg5/Vi2q4m5PBQKP3EFIE4tzaZHobAvLGjo24xBCR8Q38DlOxAcnaFcr91B6rNrLRcNWlLIuW9TWMi6a1ffOUxDESGALjIqSvGm8YP8dJo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=BSbfCuXJ; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 45532C4CEF1;
+	Tue, 26 Aug 2025 11:32:49 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1756213874;
-	bh=Nrdl1pXBFaqBcOTlEECAUlrrovYH08BVoXI5SxBxVCk=;
+	s=korg; t=1756207969;
+	bh=k7PaaNhdxJ7GgtYVjI08AXc3UY1cq+Pedh8vyCt68xk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Xvbuu6lb59h8P68AkMbhaqUjHpIB9ca/vkj8veieQBw2PWHkBMiGz4MU6Tl5nz8yw
-	 zUKvvT9+4TmclBkIBhHvpmikZxZ26b3+2byBh8Ax0HJgbwuLIqA27JxwvbV4eWSbuv
-	 hHH7DXsTAkSrOZqBMJA6pjRvcCoVrdvywp395elY=
+	b=BSbfCuXJXaMotlVxkPvAeRJVcB9RRmV1Zx4wB7R8fXeZ+07E0RqubZALM68Brqtmy
+	 0/pibc7aRnT2DUXliQV7loKUdIcMrKHP4SrL2QZ4DpnPbOI27dgGMnqj/oESxHebwm
+	 r1/X/ZJCQbu/icHD/HlTdLSXLb2yTB2aZteFWgWg=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Victor Shih <victor.shih@genesyslogic.com.tw>,
-	Adrian Hunter <adrian.hunter@intel.com>,
-	Ulf Hansson <ulf.hansson@linaro.org>
-Subject: [PATCH 6.6 481/587] mmc: sdhci-pci-gli: GL9763e: Rename the gli_set_gl9763e() for consistency
+	Waiman Long <longman@redhat.com>,
+	Juri Lelli <juri.lelli@redhat.com>,
+	Tejun Heo <tj@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.16 346/457] cgroup/cpuset: Use static_branch_enable_cpuslocked() on cpusets_insane_config_key
 Date: Tue, 26 Aug 2025 13:10:30 +0200
-Message-ID: <20250826111005.209193051@linuxfoundation.org>
+Message-ID: <20250826110945.879753293@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250826110952.942403671@linuxfoundation.org>
-References: <20250826110952.942403671@linuxfoundation.org>
+In-Reply-To: <20250826110937.289866482@linuxfoundation.org>
+References: <20250826110937.289866482@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,48 +63,77 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.16-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Victor Shih <victor.shih@genesyslogic.com.tw>
+From: Waiman Long <longman@redhat.com>
 
-commit 293ed0f5f34e1e9df888456af4b0a021f57b5f54 upstream.
+[ Upstream commit 65f97cc81b0adc5f49cf6cff5d874be0058e3f41 ]
 
-In preparation to fix replay timer timeout, rename the
-gli_set_gl9763e() to gl9763e_hw_setting() for consistency.
+The following lockdep splat was observed.
 
-Signed-off-by: Victor Shih <victor.shih@genesyslogic.com.tw>
-Fixes: 1ae1d2d6e555 ("mmc: sdhci-pci-gli: Add Genesys Logic GL9763E support")
-Cc: stable@vger.kernel.org
-Acked-by: Adrian Hunter <adrian.hunter@intel.com>
-Link: https://lore.kernel.org/r/20250731065752.450231-3-victorshihgli@gmail.com
-Signed-off-by: Ulf Hansson <ulf.hansson@linaro.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+[  812.359086] ============================================
+[  812.359089] WARNING: possible recursive locking detected
+[  812.359097] --------------------------------------------
+[  812.359100] runtest.sh/30042 is trying to acquire lock:
+[  812.359105] ffffffffa7f27420 (cpu_hotplug_lock){++++}-{0:0}, at: static_key_enable+0xe/0x20
+[  812.359131]
+[  812.359131] but task is already holding lock:
+[  812.359134] ffffffffa7f27420 (cpu_hotplug_lock){++++}-{0:0}, at: cpuset_write_resmask+0x98/0xa70
+     :
+[  812.359267] Call Trace:
+[  812.359272]  <TASK>
+[  812.359367]  cpus_read_lock+0x3c/0xe0
+[  812.359382]  static_key_enable+0xe/0x20
+[  812.359389]  check_insane_mems_config.part.0+0x11/0x30
+[  812.359398]  cpuset_write_resmask+0x9f2/0xa70
+[  812.359411]  cgroup_file_write+0x1c7/0x660
+[  812.359467]  kernfs_fop_write_iter+0x358/0x530
+[  812.359479]  vfs_write+0xabe/0x1250
+[  812.359529]  ksys_write+0xf9/0x1d0
+[  812.359558]  do_syscall_64+0x5f/0xe0
+
+Since commit d74b27d63a8b ("cgroup/cpuset: Change cpuset_rwsem
+and hotplug lock order"), the ordering of cpu hotplug lock
+and cpuset_mutex had been reversed. That patch correctly
+used the cpuslocked version of the static branch API to enable
+cpusets_pre_enable_key and cpusets_enabled_key, but it didn't do the
+same for cpusets_insane_config_key.
+
+The cpusets_insane_config_key can be enabled in the
+check_insane_mems_config() which is called from update_nodemask()
+or cpuset_hotplug_update_tasks() with both cpu hotplug lock and
+cpuset_mutex held. Deadlock can happen with a pending hotplug event that
+tries to acquire the cpu hotplug write lock which will block further
+cpus_read_lock() attempt from check_insane_mems_config(). Fix that by
+switching to use static_branch_enable_cpuslocked().
+
+Fixes: d74b27d63a8b ("cgroup/cpuset: Change cpuset_rwsem and hotplug lock order")
+Signed-off-by: Waiman Long <longman@redhat.com>
+Reviewed-by: Juri Lelli <juri.lelli@redhat.com>
+Signed-off-by: Tejun Heo <tj@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/mmc/host/sdhci-pci-gli.c |    4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ kernel/cgroup/cpuset.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/drivers/mmc/host/sdhci-pci-gli.c
-+++ b/drivers/mmc/host/sdhci-pci-gli.c
-@@ -1343,7 +1343,7 @@ cleanup:
- 	return ret;
- }
- 
--static void gli_set_gl9763e(struct sdhci_pci_slot *slot)
-+static void gl9763e_hw_setting(struct sdhci_pci_slot *slot)
+diff --git a/kernel/cgroup/cpuset.c b/kernel/cgroup/cpuset.c
+index 3bc4301466f3..77396bab071a 100644
+--- a/kernel/cgroup/cpuset.c
++++ b/kernel/cgroup/cpuset.c
+@@ -280,7 +280,7 @@ static inline void check_insane_mems_config(nodemask_t *nodes)
  {
- 	struct pci_dev *pdev = slot->chip->pdev;
- 	u32 value;
-@@ -1515,7 +1515,7 @@ static int gli_probe_slot_gl9763e(struct
- 	gli_pcie_enable_msi(slot);
- 	host->mmc_host_ops.hs400_enhanced_strobe =
- 					gl9763e_hs400_enhanced_strobe;
--	gli_set_gl9763e(slot);
-+	gl9763e_hw_setting(slot);
- 	sdhci_enable_v4_mode(host);
- 
- 	return 0;
+ 	if (!cpusets_insane_config() &&
+ 		movable_only_nodes(nodes)) {
+-		static_branch_enable(&cpusets_insane_config_key);
++		static_branch_enable_cpuslocked(&cpusets_insane_config_key);
+ 		pr_info("Unsupported (movable nodes only) cpuset configuration detected (nmask=%*pbl)!\n"
+ 			"Cpuset allocations might fail even with a lot of memory available.\n",
+ 			nodemask_pr_args(nodes));
+-- 
+2.50.1
+
 
 
 
