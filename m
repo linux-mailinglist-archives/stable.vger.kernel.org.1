@@ -1,59 +1,57 @@
-Return-Path: <stable+bounces-176345-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-175439-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 68569B36CC0
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 17:00:27 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 49FEEB36838
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 16:14:05 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id BFA411C40EED
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 14:46:56 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 73EDC581690
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 14:06:13 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 520603568E1;
-	Tue, 26 Aug 2025 14:43:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 94C97356910;
+	Tue, 26 Aug 2025 14:04:05 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Shw5+v8x"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="BjRVVBd7"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 033A1350D46;
-	Tue, 26 Aug 2025 14:43:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4EE81302CA6;
+	Tue, 26 Aug 2025 14:04:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756219417; cv=none; b=pR4uBhUXb6ZnW7esQbFSCs3tDXLqi14VhLiDjU/qV/hWYUeiSnzuAlZDSbOya8irNg3e3gjbKOcO8zHt1jdA9BwTQP6cXvcJpAA2KpOmCUqVI2VCU8ZLSjBfWm00rCZ0J977s0Y+ZiSJfpYyFTHYEMOjxeuEjc5KbyYOmOK9ARc=
+	t=1756217045; cv=none; b=Itf3Griyx8uZj3Ae3RCyA6lt7gv0anfXoGgCx5iX8VLRRwBieJcsG+QE/HbtYqLnEgTCEKje254CT0P76gTrQCnM17RyPPlkU/vVy1l62sMuPQF47vHvm0i1dG9nAS6mAd92/YVyPBwu6dcDf5VQRIf+Xuxwm2iUCiyksJdu0V0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756219417; c=relaxed/simple;
-	bh=J6zaCaLxDN2mID9zVUMdixePf0Twx3m5butJTvaMa/Y=;
+	s=arc-20240116; t=1756217045; c=relaxed/simple;
+	bh=T/B76OhovgdMVEyOkDhrURQqtNYkcrvzyV1KPJlPFJk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=rIK4dt+o38tbRyzvW8LB8z3MzGhWYnQXFlgBNF/jH/6juxREjv8U63ifjMwy1WtycGyddbGZEPXo36ju9zXxcOdOq2WSjdHG6fS9pMr11YrfPJikDuFZF8YieC+rjCT275VAtMHAz98ruM+Tp0l0e9QdcGb6wyL7IhK8cOryJLE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Shw5+v8x; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8D3A9C4CEF1;
-	Tue, 26 Aug 2025 14:43:36 +0000 (UTC)
+	 MIME-Version:Content-Type; b=JWJhKZOrjUIazIv4fTe2Q+ZP7vYcIEI0mbz0Ck29w8+NJ6fYdRghqgjHvMbOthtRdrMIML0BYpiVvTZ4q25R1FynpdmNi60bINdqZ323pk/4K7RT3RD4EkvlHFRUUFBLsKrXwKfBYVNzTPitoSiS4cjjgKARrk8eR6lWtjtKxZI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=BjRVVBd7; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 87328C113CF;
+	Tue, 26 Aug 2025 14:04:04 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1756219416;
-	bh=J6zaCaLxDN2mID9zVUMdixePf0Twx3m5butJTvaMa/Y=;
+	s=korg; t=1756217044;
+	bh=T/B76OhovgdMVEyOkDhrURQqtNYkcrvzyV1KPJlPFJk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Shw5+v8xn9pcjS4ttQUcZB7RwQ48nHfhrfcWW9qAROqQUMPIZB0hi0WB3kqP1/Bfh
-	 gYbFYgYYDMbzC7UbozQR2ZQoS3/FzFQ2+b32AS6kzqfPAluz6StDc3d0eXQMqOsjYX
-	 c9QqgPWeHh5y2wBspZDMCCGmGvGd15XFgIpgQiwE=
+	b=BjRVVBd7IDOwaRrnPLRoWhhD2PzMpazWdCO629xTslYkJmKNx22LlGgBJcxYS6I0F
+	 4E0GkGOqIdZjG+76gGudpVFQD5+6a+0IszaYInJAtRpz4nCdp4V7Vs2eHnsL9l/ycq
+	 FQrzYHLtW11i/OH4PDyYs90Z35pumPjq42ludQQg=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jorge Ramirez-Ortiz <jorge.ramirez@oss.qualcomm.com>,
-	Dikshita Agarwal <quic_dikshita@quicinc.com>,
-	Bryan ODonoghue <bryan.odonoghue@linaro.org>,
-	Bryan ODonoghue <bod@kernel.org>,
-	Hans Verkuil <hverkuil@xs4all.nl>,
+	=?UTF-8?q?Uwe=20Kleine-K=C3=B6nig?= <u.kleine-koenig@pengutronix.de>,
+	AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>,
+	Thierry Reding <thierry.reding@gmail.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.4 373/403] media: venus: hfi: explicitly release IRQ during teardown
+Subject: [PATCH 5.15 608/644] pwm: mediatek: Implement .apply() callback
 Date: Tue, 26 Aug 2025 13:11:39 +0200
-Message-ID: <20250826110917.321043179@linuxfoundation.org>
+Message-ID: <20250826111001.617622443@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250826110905.607690791@linuxfoundation.org>
-References: <20250826110905.607690791@linuxfoundation.org>
+In-Reply-To: <20250826110946.507083938@linuxfoundation.org>
+References: <20250826110946.507083938@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,46 +61,71 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-5.4-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jorge Ramirez-Ortiz <jorge.ramirez@oss.qualcomm.com>
+From: Uwe Kleine-König <u.kleine-koenig@pengutronix.de>
 
-[ Upstream commit 640803003cd903cea73dc6a86bf6963e238e2b3f ]
+[ Upstream commit 758de66f4bd2cac2b1d71db917c65c3d611d4e74 ]
 
-Ensure the IRQ is disabled - and all pending handlers completed - before
-dismantling the interrupt routing and clearing related pointers.
+To eventually get rid of all legacy drivers convert this driver to the
+modern world implementing .apply().
+This just pushed a variant of pwm_apply_legacy() into the driver that was
+slightly simplified because the driver doesn't provide a .set_polarity()
+callback.
 
-This prevents any possibility of the interrupt triggering after the
-handler context has been invalidated.
-
-Fixes: d96d3f30c0f2 ("[media] media: venus: hfi: add Venus HFI files")
-Cc: stable@vger.kernel.org
-Signed-off-by: Jorge Ramirez-Ortiz <jorge.ramirez@oss.qualcomm.com>
-Reviewed-by: Dikshita Agarwal <quic_dikshita@quicinc.com>
-Tested-by: Dikshita Agarwal <quic_dikshita@quicinc.com> # RB5
-Reviewed-by: Bryan O'Donoghue <bryan.odonoghue@linaro.org>
-Signed-off-by: Bryan O'Donoghue <bod@kernel.org>
-Signed-off-by: Hans Verkuil <hverkuil@xs4all.nl>
-[ Adjust context ]
+Signed-off-by: Uwe Kleine-König <u.kleine-koenig@pengutronix.de>
+Reviewed-by: AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>
+Signed-off-by: Thierry Reding <thierry.reding@gmail.com>
+Stable-dep-of: f21d136caf81 ("pwm: mediatek: Fix duty and period setting")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/media/platform/qcom/venus/hfi_venus.c |    1 +
- 1 file changed, 1 insertion(+)
+ drivers/pwm/pwm-mediatek.c |   29 ++++++++++++++++++++++++++---
+ 1 file changed, 26 insertions(+), 3 deletions(-)
 
---- a/drivers/media/platform/qcom/venus/hfi_venus.c
-+++ b/drivers/media/platform/qcom/venus/hfi_venus.c
-@@ -1608,6 +1608,7 @@ void venus_hfi_destroy(struct venus_core
- 	mutex_destroy(&hdev->lock);
- 	kfree(hdev);
- 	core->priv = NULL;
-+	disable_irq(core->irq);
- 	core->ops = NULL;
+--- a/drivers/pwm/pwm-mediatek.c
++++ b/drivers/pwm/pwm-mediatek.c
+@@ -205,10 +205,33 @@ static void pwm_mediatek_disable(struct
+ 	pwm_mediatek_clk_disable(chip, pwm);
  }
+ 
++static int pwm_mediatek_apply(struct pwm_chip *chip, struct pwm_device *pwm,
++			      const struct pwm_state *state)
++{
++	int err;
++
++	if (state->polarity != PWM_POLARITY_NORMAL)
++		return -EINVAL;
++
++	if (!state->enabled) {
++		if (pwm->state.enabled)
++			pwm_mediatek_disable(chip, pwm);
++
++		return 0;
++	}
++
++	err = pwm_mediatek_config(pwm->chip, pwm, state->duty_cycle, state->period);
++	if (err)
++		return err;
++
++	if (!pwm->state.enabled)
++		err = pwm_mediatek_enable(chip, pwm);
++
++	return err;
++}
++
+ static const struct pwm_ops pwm_mediatek_ops = {
+-	.config = pwm_mediatek_config,
+-	.enable = pwm_mediatek_enable,
+-	.disable = pwm_mediatek_disable,
++	.apply = pwm_mediatek_apply,
+ 	.owner = THIS_MODULE,
+ };
  
 
 
