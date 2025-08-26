@@ -1,57 +1,58 @@
-Return-Path: <stable+bounces-175815-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-173210-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1F03EB369DF
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 16:31:47 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 03D9CB35BCA
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 13:28:07 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id AFC4D564E60
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 14:21:57 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id B30B47C3F9A
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 11:28:05 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1AB9331985C;
-	Tue, 26 Aug 2025 14:20:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3860C322524;
+	Tue, 26 Aug 2025 11:27:35 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="rlExmqcw"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="E062t3mM"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C62822AE7F;
-	Tue, 26 Aug 2025 14:20:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EA3D53002B9;
+	Tue, 26 Aug 2025 11:27:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756218041; cv=none; b=S8lzs6Yic1Y8n7ZLShaHUX8dVi7IWBuEKBegKo4CGVGUNpMTVcj+Gt49uNMyCfIr9FMtHNgf3D7tBrlvfV4xN38TQitMMfv1p+OV/GMwQUGQtE6kDXZYZ1e/IYwym4vm/tLSgl3lYPznAC6Wt1/6sItP0p+z99tJo7Wk1Ju383E=
+	t=1756207655; cv=none; b=IUVTNlTHK7LbGiJr/nlaZk+pvbLwtlH0XqoB7GxQs+sXQQx/aBT8BiGJwzRGqNJG1/psUuLy/40bmbq9CR/+015bptIDQ6k2N5eZZsp4SyOjg7U7qpDyFIFBb17pEVktb33J0ROi5CQgUCf0fMJMI+GBDNn5SLzKglP81ePqXrY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756218041; c=relaxed/simple;
-	bh=5EKgokEl8AD1YbrdvLFFcnrKvUGDJU7q8gq2pQ2rBrI=;
+	s=arc-20240116; t=1756207655; c=relaxed/simple;
+	bh=VP9KTsmxZUNINOhI8B02GVA/Q0ewrTQwPjnYBPKU1sM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=DkP2rlh5vxxlyKdSwm9Aly4P5ug6dG9ZeoIJztmsbKtLGCBDI+UB0zuwZYJIWiL8qde+cC9kyGBrAHGvxA7vZv5pW0MtHmWDvtvQaX/yFy36Snq6sZBAOZ3j5Ub6UIz7b+U1iXGn6Ib5EQom86XRuT600V5z9CJ7ciqyP9yCh50=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=rlExmqcw; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 57804C4CEF1;
-	Tue, 26 Aug 2025 14:20:41 +0000 (UTC)
+	 MIME-Version; b=sxpCk6Hj+Q1kj1IXbarxl1sX8zKF7T2jxtUnqqRWkc5v7a/25j7RSnogxtt8kGjzhnMql1ec7R1vFksd8kQFoQfs+NXE18Yk8JIpm0YEemPWRdwYWJAhppcvzR/6Nlp8dyNVbNsIt0s4jBX6XnvHAZZcolPch9/xku+YPYrgO00=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=E062t3mM; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 71AEBC4CEF4;
+	Tue, 26 Aug 2025 11:27:34 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1756218041;
-	bh=5EKgokEl8AD1YbrdvLFFcnrKvUGDJU7q8gq2pQ2rBrI=;
+	s=korg; t=1756207654;
+	bh=VP9KTsmxZUNINOhI8B02GVA/Q0ewrTQwPjnYBPKU1sM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=rlExmqcwKLRcxZEUxR88kyXkzcwDcqiZsFB1LimVsqNmoFcKLcSlxrj8cDwLw1SM8
-	 YmPtNRxH4Jig0nZyQyau4EehcDiSzbkXKAr9Eh+XXVRa2GExcyr3jdhy1evqBWKpI6
-	 6dnYIJ9L1H73N+XTxkWdOwpidNlkcq0Lm3q8fOsA=
+	b=E062t3mMoQRQ/8Hu0Pyzvro4C5/qutu7AKH9m057m++hQp/pTC++xBbhuqUUsPA5u
+	 aPYv+4Zhagau7EruNfJUzb7fM+CnazNUVrUOQeU25MQx8u4DvPKXaw8aDQmCimERFH
+	 vys5UMXRCmt7Em5HmXNeZh5f31cISjUJ9OzL4h2I=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jack Xiao <Jack.Xiao@amd.com>,
-	Likun Gao <Likun.Gao@amd.com>,
+	Mario Limonciello <mario.limonciello@amd.com>,
 	Alex Deucher <alexander.deucher@amd.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 340/523] drm/amdgpu: fix incorrect vm flags to map bo
+	Harry Wentland <harry.wentland@amd.com>,
+	Alex Hung <alex.hung@amd.com>,
+	Dan Wheeler <daniel.wheeler@amd.com>
+Subject: [PATCH 6.16 266/457] drm/amd/display: Avoid a NULL pointer dereference
 Date: Tue, 26 Aug 2025 13:09:10 +0200
-Message-ID: <20250826110932.857992367@linuxfoundation.org>
+Message-ID: <20250826110943.951651857@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250826110924.562212281@linuxfoundation.org>
-References: <20250826110924.562212281@linuxfoundation.org>
+In-Reply-To: <20250826110937.289866482@linuxfoundation.org>
+References: <20250826110937.289866482@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,45 +64,47 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+6.16-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jack Xiao <Jack.Xiao@amd.com>
+From: Mario Limonciello <mario.limonciello@amd.com>
 
-[ Upstream commit 040bc6d0e0e9c814c9c663f6f1544ebaff6824a8 ]
+commit 07b93a5704b0b72002f0c4bd1076214af67dc661 upstream.
 
-It should use vm flags instead of pte flags
-to specify bo vm attributes.
+[WHY]
+Although unlikely drm_atomic_get_new_connector_state() or
+drm_atomic_get_old_connector_state() can return NULL.
 
-Fixes: 7946340fa389 ("drm/amdgpu: Move csa related code to separate file")
-Signed-off-by: Jack Xiao <Jack.Xiao@amd.com>
-Reviewed-by: Likun Gao <Likun.Gao@amd.com>
+[HOW]
+Check returns before dereference.
+
+Cc: Mario Limonciello <mario.limonciello@amd.com>
+Cc: Alex Deucher <alexander.deucher@amd.com>
+Reviewed-by: Harry Wentland <harry.wentland@amd.com>
+Signed-off-by: Mario Limonciello <mario.limonciello@amd.com>
+Signed-off-by: Alex Hung <alex.hung@amd.com>
+Tested-by: Dan Wheeler <daniel.wheeler@amd.com>
 Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
-(cherry picked from commit b08425fa77ad2f305fe57a33dceb456be03b653f)
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+(cherry picked from commit 1e5e8d672fec9f2ab352be121be971877bff2af9)
+Cc: stable@vger.kernel.org
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/gpu/drm/amd/amdgpu/amdgpu_csa.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm.c |    3 +++
+ 1 file changed, 3 insertions(+)
 
-diff --git a/drivers/gpu/drm/amd/amdgpu/amdgpu_csa.c b/drivers/gpu/drm/amd/amdgpu/amdgpu_csa.c
-index 08047bc4d588..2df9e81e2b49 100644
---- a/drivers/gpu/drm/amd/amdgpu/amdgpu_csa.c
-+++ b/drivers/gpu/drm/amd/amdgpu/amdgpu_csa.c
-@@ -94,8 +94,8 @@ int amdgpu_map_static_csa(struct amdgpu_device *adev, struct amdgpu_vm *vm,
- 	}
+--- a/drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm.c
++++ b/drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm.c
+@@ -7761,6 +7761,9 @@ amdgpu_dm_connector_atomic_check(struct
+ 	struct amdgpu_dm_connector *aconn = to_amdgpu_dm_connector(conn);
+ 	int ret;
  
- 	r = amdgpu_vm_bo_map(adev, *bo_va, csa_addr, 0, size,
--			     AMDGPU_PTE_READABLE | AMDGPU_PTE_WRITEABLE |
--			     AMDGPU_PTE_EXECUTABLE);
-+			     AMDGPU_VM_PAGE_READABLE | AMDGPU_VM_PAGE_WRITEABLE |
-+			     AMDGPU_VM_PAGE_EXECUTABLE);
++	if (WARN_ON(unlikely(!old_con_state || !new_con_state)))
++		return -EINVAL;
++
+ 	trace_amdgpu_dm_connector_atomic_check(new_con_state);
  
- 	if (r) {
- 		DRM_ERROR("failed to do bo_map on static CSA, err=%d\n", r);
--- 
-2.50.1
-
+ 	if (conn->connector_type == DRM_MODE_CONNECTOR_DisplayPort) {
 
 
 
