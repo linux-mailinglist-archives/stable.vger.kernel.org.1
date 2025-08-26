@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-173954-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-174437-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 74B91B3607C
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 15:01:11 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id C69E4B3635A
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 15:28:59 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id E34A0464781
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 12:58:28 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 9BAFF8A82F3
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 13:21:42 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 12FE81FF1C4;
-	Tue, 26 Aug 2025 12:58:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id DCE2634A337;
+	Tue, 26 Aug 2025 13:19:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="PUfF4w/i"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="UgGxvAZ6"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C4A7D1F790F;
-	Tue, 26 Aug 2025 12:58:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8BE7828FD;
+	Tue, 26 Aug 2025 13:19:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756213103; cv=none; b=r+vyKLPQkLoD8Sc/OMpCfua8odbJVrpv7+bP0onfk2rcPIpa71/XqtbowLK7IqLzzGCHGNyeCcFyumdyj2EqRXx1rbCLu3xtivKkcby0S8KzTXSuBMGed2nLuekTbWraefpX2mwYPtZWstITTuQm9nu4KHWRmwktx31XSnNMC5Y=
+	t=1756214390; cv=none; b=r4a375+wRVLnxJPT0FEbK7WHJUzc4bEho3X2Zyg5NJxRV7HMeuA0HrmHwFHwWGj8NnWsw5juYAeaPnD6B3WxbF4YMfPg8pzBslS7UuNo00wDqT+7oMp5YjIq/HjtHAOeNcjvkRe/o6VyEUSFXU7UiKLS23/gkMpeMEXu/V0Y8QA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756213103; c=relaxed/simple;
-	bh=MJAmZwZQlI1z4ilYhbcTnNE6eKFs71Twb/+k34AG3Vs=;
+	s=arc-20240116; t=1756214390; c=relaxed/simple;
+	bh=zLivDoERfX4JA+yfMKxnR0IXoQkYO/k5B6vW82HXzi0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=VQlw8san05reHWElqDxpRuHs7ebtBVcZ8uoYhmwb+H7PNy0TYHHpaidzNC/1t3wCV6EPqsuzkDCP/ZY0qE9EzbCuiLQPZ/w0OsOC/MJVNCCWtD6doLz5wugdCU3+qUGRDKzdaYMr/m8CLgldKp7svRBFv+4ViXrxhXKHSHrkK0s=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=PUfF4w/i; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id F4032C4CEF1;
-	Tue, 26 Aug 2025 12:58:22 +0000 (UTC)
+	 MIME-Version; b=oVVAascohclYY69zg+mhsS2Ifo/KcOlsvUMpIapLwv6tlIXykemAyqoZizqotvI1ByajaRu6fI8VbhlNxNlA+d58kl/q0CCNDBQCZ+iTHJtBN6dYHD4/mPW9joZz9XQYKsjiuv1lIuQbup/3jHjQZ6MgDLkt99Ji21OdD2w+1rI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=UgGxvAZ6; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9EB84C4CEF1;
+	Tue, 26 Aug 2025 13:19:49 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1756213103;
-	bh=MJAmZwZQlI1z4ilYhbcTnNE6eKFs71Twb/+k34AG3Vs=;
+	s=korg; t=1756214390;
+	bh=zLivDoERfX4JA+yfMKxnR0IXoQkYO/k5B6vW82HXzi0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=PUfF4w/i4ASPBGLKtDDBLXqpXXha2kp2Iv/UXVEbM+jiVeqH2X2RLGApxv66CBsNZ
-	 5hsnf71RgysGNPgo14hxVWCdVfFzKL3Ng7VVFoLomwBBvTO88j3nlfOjvOkdPJ+KCV
-	 qpCs5sjxhfqqV5lULWtuCO8SAIzIumCO0X6UsLiY=
+	b=UgGxvAZ6wH31nhd18Pbmow2jblmGUgu1L+wH9Rj5EpjqvIOjEUm/5+qlY4tFn+69i
+	 llK8nfXQRzlnQyxS94ncYUPuwQaSDKaQaKtmk3Ln3O937COIK27KHyActNTMIriEB2
+	 vKvzwqv7aFESrk1PzY1ObZrzYJUoPjyYiaunUu4I=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Nicolas Escande <nico.escande@gmail.com>,
-	Kuniyuki Iwashima <kuniyu@google.com>,
-	Jakub Kicinski <kuba@kernel.org>,
+	Hsin-Te Yuan <yuanhsinte@chromium.org>,
+	"Rafael J. Wysocki" <rafael.j.wysocki@intel.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 191/587] neighbour: add support for NUD_PERMANENT proxy entries
-Date: Tue, 26 Aug 2025 13:05:40 +0200
-Message-ID: <20250826110957.800284070@linuxfoundation.org>
+Subject: [PATCH 6.1 088/482] thermal: sysfs: Return ENODATA instead of EAGAIN for reads
+Date: Tue, 26 Aug 2025 13:05:41 +0200
+Message-ID: <20250826110933.003689035@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250826110952.942403671@linuxfoundation.org>
-References: <20250826110952.942403671@linuxfoundation.org>
+In-Reply-To: <20250826110930.769259449@linuxfoundation.org>
+References: <20250826110930.769259449@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,104 +62,55 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Nicolas Escande <nico.escande@gmail.com>
+From: Hsin-Te Yuan <yuanhsinte@chromium.org>
 
-[ Upstream commit c7d78566bbd30544a0618a6ffbc97bc0ddac7035 ]
+[ Upstream commit 1a4aabc27e95674837f2e25f4ef340c0469e6203 ]
 
-As discussesd before in [0] proxy entries (which are more configuration
-than runtime data) should stay when the link (carrier) goes does down.
-This is what happens for regular neighbour entries.
+According to POSIX spec, EAGAIN returned by read with O_NONBLOCK set
+means the read would block. Hence, the common implementation in
+nonblocking model will poll the file when the nonblocking read returns
+EAGAIN. However, when the target file is thermal zone, this mechanism
+will totally malfunction because thermal zone doesn't implement sysfs
+notification and thus the poll will never return.
 
-So lets fix this by:
-  - storing in proxy entries the fact that it was added as NUD_PERMANENT
-  - not removing NUD_PERMANENT proxy entries when the carrier goes down
-    (same as how it's done in neigh_flush_dev() for regular neigh entries)
+For example, the read in Golang implemnts such method and sometimes
+hangs at reading some thermal zones via sysfs.
 
-[0]: https://lore.kernel.org/netdev/c584ef7e-6897-01f3-5b80-12b53f7b4bf4@kernel.org/
+Change to return -ENODATA instead of -EAGAIN to userspace.
 
-Signed-off-by: Nicolas Escande <nico.escande@gmail.com>
-Reviewed-by: Kuniyuki Iwashima <kuniyu@google.com>
-Link: https://patch.msgid.link/20250617141334.3724863-1-nico.escande@gmail.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Signed-off-by: Hsin-Te Yuan <yuanhsinte@chromium.org>
+Link: https://patch.msgid.link/20250620-temp-v3-1-6becc6aeb66c@chromium.org
+Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- include/net/neighbour.h |  1 +
- net/core/neighbour.c    | 12 +++++++++---
- 2 files changed, 10 insertions(+), 3 deletions(-)
+ drivers/thermal/thermal_sysfs.c | 9 ++++++---
+ 1 file changed, 6 insertions(+), 3 deletions(-)
 
-diff --git a/include/net/neighbour.h b/include/net/neighbour.h
-index 0d28172193fa..d775906a65c7 100644
---- a/include/net/neighbour.h
-+++ b/include/net/neighbour.h
-@@ -180,6 +180,7 @@ struct pneigh_entry {
- 	netdevice_tracker	dev_tracker;
- 	u32			flags;
- 	u8			protocol;
-+	bool			permanent;
- 	u32			key[];
- };
+diff --git a/drivers/thermal/thermal_sysfs.c b/drivers/thermal/thermal_sysfs.c
+index bd7596125461..7ee89e99acbf 100644
+--- a/drivers/thermal/thermal_sysfs.c
++++ b/drivers/thermal/thermal_sysfs.c
+@@ -39,10 +39,13 @@ temp_show(struct device *dev, struct device_attribute *attr, char *buf)
  
-diff --git a/net/core/neighbour.c b/net/core/neighbour.c
-index 1e2e60ffe766..e6b36df482bc 100644
---- a/net/core/neighbour.c
-+++ b/net/core/neighbour.c
-@@ -55,7 +55,8 @@ static void __neigh_notify(struct neighbour *n, int type, int flags,
- 			   u32 pid);
- static void neigh_update_notify(struct neighbour *neigh, u32 nlmsg_pid);
- static int pneigh_ifdown_and_unlock(struct neigh_table *tbl,
--				    struct net_device *dev);
-+				    struct net_device *dev,
-+				    bool skip_perm);
+ 	ret = thermal_zone_get_temp(tz, &temperature);
  
- #ifdef CONFIG_PROC_FS
- static const struct seq_operations neigh_stat_seq_ops;
-@@ -444,7 +445,7 @@ static int __neigh_ifdown(struct neigh_table *tbl, struct net_device *dev,
- {
- 	write_lock_bh(&tbl->lock);
- 	neigh_flush_dev(tbl, dev, skip_perm);
--	pneigh_ifdown_and_unlock(tbl, dev);
-+	pneigh_ifdown_and_unlock(tbl, dev, skip_perm);
- 	pneigh_queue_purge(&tbl->proxy_queue, dev ? dev_net(dev) : NULL,
- 			   tbl->family);
- 	if (skb_queue_empty_lockless(&tbl->proxy_queue))
-@@ -845,7 +846,8 @@ int pneigh_delete(struct neigh_table *tbl, struct net *net, const void *pkey,
+-	if (ret)
+-		return ret;
++	if (!ret)
++		return sprintf(buf, "%d\n", temperature);
+ 
+-	return sprintf(buf, "%d\n", temperature);
++	if (ret == -EAGAIN)
++		return -ENODATA;
++
++	return ret;
  }
  
- static int pneigh_ifdown_and_unlock(struct neigh_table *tbl,
--				    struct net_device *dev)
-+				    struct net_device *dev,
-+				    bool skip_perm)
- {
- 	struct pneigh_entry *n, **np, *freelist = NULL;
- 	u32 h;
-@@ -853,12 +855,15 @@ static int pneigh_ifdown_and_unlock(struct neigh_table *tbl,
- 	for (h = 0; h <= PNEIGH_HASHMASK; h++) {
- 		np = &tbl->phash_buckets[h];
- 		while ((n = *np) != NULL) {
-+			if (skip_perm && n->permanent)
-+				goto skip;
- 			if (!dev || n->dev == dev) {
- 				*np = n->next;
- 				n->next = freelist;
- 				freelist = n;
- 				continue;
- 			}
-+skip:
- 			np = &n->next;
- 		}
- 	}
-@@ -2033,6 +2038,7 @@ static int neigh_add(struct sk_buff *skb, struct nlmsghdr *nlh,
- 		pn = pneigh_lookup(tbl, net, dst, dev, 1);
- 		if (pn) {
- 			pn->flags = ndm_flags;
-+			pn->permanent = !!(ndm->ndm_state & NUD_PERMANENT);
- 			if (protocol)
- 				pn->protocol = protocol;
- 			err = 0;
+ static ssize_t
 -- 
 2.39.5
 
