@@ -1,55 +1,58 @@
-Return-Path: <stable+bounces-173239-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-173565-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id D8309B35CD7
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 13:39:19 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7962BB35D4D
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 13:43:15 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id BB72A367FCC
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 11:32:00 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 3AF797C1FD4
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 11:43:14 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7199F31813A;
-	Tue, 26 Aug 2025 11:28:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0ED012BE65E;
+	Tue, 26 Aug 2025 11:43:00 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="LKt5pajH"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="sWTCpFm0"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2D277221FC3;
-	Tue, 26 Aug 2025 11:28:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C198A22D792;
+	Tue, 26 Aug 2025 11:42:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756207732; cv=none; b=X//ROV7Y79AL1/bKk9L+70avj1htdSCzweTLCK9gLb5V1BzVbzJ1tuYz/AGw8Rlf5hQhnsIM8SHGTAMKOiHy25HfjIXeimrGL8nmyRuPIyH7zpDJxATjc0SW/eyVDwCMNBo8FMHQZkZGjh5x6giijGduHSv2Ob2AcYUhYBjwH8U=
+	t=1756208579; cv=none; b=CckvZ00IpBA2bxjvOEWvX6w/Qct6Lha2ux3ikMjoJm++bpvNvAk04VmqhXTbDs4/6GU7SJALlQ09n/my+dk30s+d88QstSxzPYl69SiCale4nJNTjQWntNPVJWmW1V2kesKx/XBqk7BoHKJkGdmXPNr8TdCIMspVOYtDD9syeEs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756207732; c=relaxed/simple;
-	bh=ne4GpHa9o/aqFxwP+UIxUfqDzOBB53gKaaGcfK6uP5M=;
+	s=arc-20240116; t=1756208579; c=relaxed/simple;
+	bh=+5A3IbCx/wd+kq9L/Zi3a/X1WPrUeZ5dPrzyIFWLfk8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=uqMItFoVQKxT13QnZ9rfhgyEZmhgLe3+1VH74iLoAOTHwnvdS+a40/tXb7suJ5QMmagbE0puOaJR1Ray7A5VCd4ir7XZpyjlEOZJwBy80MQj+EqU48jGiVGkualHupmgsJarfIWepPiJaPQySLQhoI9Wx2csas2HckF/SrweH/c=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=LKt5pajH; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id AFACBC4CEF1;
-	Tue, 26 Aug 2025 11:28:51 +0000 (UTC)
+	 MIME-Version; b=ueNkwM7qVha6/3ShcZhAzIX5POw4pBwCNNLk9ZgNOa5q48o/zEBjwNKIcpoX9aM0CW1mTbMaASwfr/Ao8Eiqrgxi2XjvyU6cFPnj6qJPRvWXQQ13SBefwb2sjLeudOg35MsqvFEzGZF36iAmgS+9qGUF2HdCm95RWC3rnlg+mzI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=sWTCpFm0; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 50B84C16AAE;
+	Tue, 26 Aug 2025 11:42:59 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1756207732;
-	bh=ne4GpHa9o/aqFxwP+UIxUfqDzOBB53gKaaGcfK6uP5M=;
+	s=korg; t=1756208579;
+	bh=+5A3IbCx/wd+kq9L/Zi3a/X1WPrUeZ5dPrzyIFWLfk8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=LKt5pajH8IeQhgRRsMp1S4hXa68iUPsOVV4UZyiRwuMlS3US82SsMVuG9Xtz257fd
-	 70kACkZEbXt2ZKQjOnu0em8ZSA317Dau/rWr/9k6Vg67nuED8njUp5Oz5cMJRrNHBe
-	 ICvEgekVKAdqGmzXPNy00G01ignpb5EsDWKOggWw=
+	b=sWTCpFm0og3dQ2hnX2g/D7tHiV2g3OeF6HcfqoeQ7XMax9T10yBZzhLAjadJxxqP/
+	 Z9hvn+sQTenQscXjH0S9j62+st4JRcxOfq6+aqE7X8jhjWNv8HjNMpqH7VY+Zr2iIO
+	 1O57HQAzUTaaBaxHb5ob0bCcMSXK8jMpjLZJqqLA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	David Lechner <dlechner@baylibre.com>,
-	Jonathan Cameron <Jonathan.Cameron@huawei.com>
-Subject: [PATCH 6.16 296/457] iio: accel: sca3300: fix uninitialized iio scan data
+	Nicolin Chen <nicolinc@nvidia.com>,
+	Will Deacon <will@kernel.org>,
+	Jason Gunthorpe <jgg@nvidia.com>,
+	Pranjal Shrivastava <praan@google.com>,
+	Joerg Roedel <joerg.roedel@amd.com>
+Subject: [PATCH 6.12 165/322] iommu/arm-smmu-v3: Fix smmu_domain->nr_ats_masters decrement
 Date: Tue, 26 Aug 2025 13:09:40 +0200
-Message-ID: <20250826110944.694735478@linuxfoundation.org>
+Message-ID: <20250826110919.906732492@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250826110937.289866482@linuxfoundation.org>
-References: <20250826110937.289866482@linuxfoundation.org>
+In-Reply-To: <20250826110915.169062587@linuxfoundation.org>
+References: <20250826110915.169062587@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,37 +64,58 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.16-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: David Lechner <dlechner@baylibre.com>
+From: Nicolin Chen <nicolinc@nvidia.com>
 
-commit 4e5b705cc6147f0b9173c6219079f41416bdd3c0 upstream.
+commit 685ca577b408ffd9c5a4057a2acc0cd3e6978b36 upstream.
 
-Fix potential leak of uninitialized stack data to userspace by ensuring
-that the `channels` array is zeroed before use.
+The arm_smmu_attach_commit() updates master->ats_enabled before calling
+arm_smmu_remove_master_domain() that is supposed to clean up everything
+in the old domain, including the old domain's nr_ats_masters. So, it is
+supposed to use the old ats_enabled state of the device, not an updated
+state.
 
-Fixes: edeb67fbbf4b ("iio: accel: sca3300: use IIO_DECLARE_BUFFER_WITH_TS")
-Signed-off-by: David Lechner <dlechner@baylibre.com>
-Link: https://patch.msgid.link/20250723-iio-accel-sca3300-fix-uninitialized-iio-scan-data-v1-1-12dbfb3307b7@baylibre.com
-Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
+This isn't a problem if switching between two domains where:
+ - old ats_enabled = false; new ats_enabled = false
+ - old ats_enabled = true;  new ats_enabled = true
+but can fail cases where:
+ - old ats_enabled = false; new ats_enabled = true
+   (old domain should keep the counter but incorrectly decreased it)
+ - old ats_enabled = true;  new ats_enabled = false
+   (old domain needed to decrease the counter but incorrectly missed it)
+
+Update master->ats_enabled after arm_smmu_remove_master_domain() to fix
+this.
+
+Fixes: 7497f4211f4f ("iommu/arm-smmu-v3: Make changing domains be hitless for ATS")
+Cc: stable@vger.kernel.org
+Signed-off-by: Nicolin Chen <nicolinc@nvidia.com>
+Acked-by: Will Deacon <will@kernel.org>
+Reviewed-by: Jason Gunthorpe <jgg@nvidia.com>
+Reviewed-by: Pranjal Shrivastava <praan@google.com>
+Link: https://lore.kernel.org/r/20250801030127.2006979-1-nicolinc@nvidia.com
+Signed-off-by: Joerg Roedel <joerg.roedel@amd.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/iio/accel/sca3300.c |    2 +-
+ drivers/iommu/arm/arm-smmu-v3/arm-smmu-v3.c |    2 +-
  1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/drivers/iio/accel/sca3300.c
-+++ b/drivers/iio/accel/sca3300.c
-@@ -479,7 +479,7 @@ static irqreturn_t sca3300_trigger_handl
- 	struct iio_dev *indio_dev = pf->indio_dev;
- 	struct sca3300_data *data = iio_priv(indio_dev);
- 	int bit, ret, val, i = 0;
--	IIO_DECLARE_BUFFER_WITH_TS(s16, channels, SCA3300_SCAN_MAX);
-+	IIO_DECLARE_BUFFER_WITH_TS(s16, channels, SCA3300_SCAN_MAX) = { };
+--- a/drivers/iommu/arm/arm-smmu-v3/arm-smmu-v3.c
++++ b/drivers/iommu/arm/arm-smmu-v3/arm-smmu-v3.c
+@@ -2778,9 +2778,9 @@ static void arm_smmu_attach_commit(struc
+ 		/* ATS is being switched off, invalidate the entire ATC */
+ 		arm_smmu_atc_inv_master(master, IOMMU_NO_PASID);
+ 	}
+-	master->ats_enabled = state->ats_enabled;
  
- 	iio_for_each_active_channel(indio_dev, bit) {
- 		ret = sca3300_read_reg(data, indio_dev->channels[bit].address, &val);
+ 	arm_smmu_remove_master_domain(master, state->old_domain, state->ssid);
++	master->ats_enabled = state->ats_enabled;
+ }
+ 
+ static int arm_smmu_attach_dev(struct iommu_domain *domain, struct device *dev)
 
 
 
