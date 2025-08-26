@@ -1,59 +1,56 @@
-Return-Path: <stable+bounces-173124-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-176076-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id DB3E3B35C12
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 13:31:02 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 56225B36B59
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 16:45:08 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 1CA1A362FE6
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 11:24:18 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 856D2567AD9
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 14:34:50 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id DBACC29BDBA;
-	Tue, 26 Aug 2025 11:23:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 067DE11713;
+	Tue, 26 Aug 2025 14:32:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="wE9w/d09"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="TMvW2kyU"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9A8148635C;
-	Tue, 26 Aug 2025 11:23:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B6E41405F7;
+	Tue, 26 Aug 2025 14:32:00 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756207435; cv=none; b=ZAWQzUF64cHi1GV4iyuayqntjM4lCuX/3kyzOut98KrxqKFzmE2rZ1doO1BUpV2dzSAqoMy4zH7OTwcuAKlIdHjfnmkbjawA0E/ZOa8nq8iYU3LE0h64wzyGqb1oU6g9M3Ucnl9LscfxG0CznFlEDCOJOu36a0TIfNx0BPL3IHM=
+	t=1756218720; cv=none; b=LfSQMQTBWVc8tCe6J+KqLjocHUzvx5/GI2SYqOT/kZANkNn9tnqjR57cW9jyKlzY/wP4DQkBkUBrtBsqlI41pDOyz4bDjol2rRs8vySqpplxdxvXogeUMUhMnfHQg2+eHZ5Lir6KPmsIG19tQZXsBCH9tP27qqdHl8H1yFGJS6M=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756207435; c=relaxed/simple;
-	bh=EH7yMRKNF/8mCx8iuTRU4iLYMqaM0n/2cvoKtPeOqm4=;
+	s=arc-20240116; t=1756218720; c=relaxed/simple;
+	bh=gN+a1ya02CHna6gNJTRo8iCiycI5BJ+/aizhcyBzoHY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=QO6wXNqoXMYv37p83d+MEKNM4v3T2b/7Nz0w3s5hTxjZIfQh3VCoLe6itBMnDundFSD0hQQObrOPRTcWNu2W8wj0b8CcZ0W7eOCNKUu/AfUwjXZgnn7oI/1aJWVFI62No8pTpmE5JMM1URxP2BmCq0wFB7eBjJxn7SSJv8HfsUg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=wE9w/d09; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2991DC4CEF1;
-	Tue, 26 Aug 2025 11:23:55 +0000 (UTC)
+	 MIME-Version; b=b5in/DOgH+IoDg2Jw42r8p8YDtmM9Lykb69/L9SCX97+lwB1NhGIk5IajZNkSxoHt4VBjhl9gb+oVBw1C4hzAwK1X3tBK2PgnopRuYgMmPhYfJT0595Ya8B8uwVT5Smmpg3kE3HErC0lk5+V3/ibNnb+i6sj/0hvr/Eme1Bfy/U=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=TMvW2kyU; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4AA3BC4CEF1;
+	Tue, 26 Aug 2025 14:32:00 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1756207435;
-	bh=EH7yMRKNF/8mCx8iuTRU4iLYMqaM0n/2cvoKtPeOqm4=;
+	s=korg; t=1756218720;
+	bh=gN+a1ya02CHna6gNJTRo8iCiycI5BJ+/aizhcyBzoHY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=wE9w/d09QDw779gAp9tNpWZiXbtN3IlVYxP66SFEd5YJ7ZpM6g1EeoBvEoGlNQ6Dn
-	 xE3GxcTWFR7Xe7bmHxGVgZiW1MuRgOKCynMnJJRibUP9Jg2ohMkEg7J3Aui8rrOszR
-	 Nyir8wm8lDJ3EqgWPstcNj2NDPYpfezS6w3/0Scs=
+	b=TMvW2kyUjF7cPNxQ/3sXmsGbv1pNHM2i555DEQkT0IgQ643ePTl8VbYHHkJFTO5ev
+	 EgZJXf8hKhTbs36vorfei6jCmPFg4NUCs26tybD+g65IryFwmu7OsBU24ruj8YkwxW
+	 sWxlhQMvrYFX372Lf1ZHB0aljBkGFZoRH/JdRiFg=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jorge Ramirez-Ortiz <jorge.ramirez@oss.qualcomm.com>,
-	Bryan ODonoghue <bryan.odonoghue@linaro.org>,
-	Vikash Garodia <quic_vgarodia@quicinc.com>,
-	Dikshita Agarwal <quic_dikshita@quicinc.com>,
-	Bryan ODonoghue <bod@kernel.org>,
-	Hans Verkuil <hverkuil@xs4all.nl>
-Subject: [PATCH 6.16 149/457] media: venus: protect against spurious interrupts during probe
+	Ivan Stepchenko <sid@itb.spb.ru>,
+	Miquel Raynal <miquel.raynal@bootlin.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.4 107/403] mtd: fix possible integer overflow in erase_xfer()
 Date: Tue, 26 Aug 2025 13:07:13 +0200
-Message-ID: <20250826110941.053697944@linuxfoundation.org>
+Message-ID: <20250826110909.641822453@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250826110937.289866482@linuxfoundation.org>
-References: <20250826110937.289866482@linuxfoundation.org>
+In-Reply-To: <20250826110905.607690791@linuxfoundation.org>
+References: <20250826110905.607690791@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -65,57 +62,46 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.16-stable review patch.  If anyone has any objections, please let me know.
+5.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jorge Ramirez-Ortiz <jorge.ramirez@oss.qualcomm.com>
+From: Ivan Stepchenko <sid@itb.spb.ru>
 
-commit 3200144a2fa4209dc084a19941b9b203b43580f0 upstream.
+[ Upstream commit 9358bdb9f9f54d94ceafc650deffefd737d19fdd ]
 
-Make sure the interrupt handler is initialized before the interrupt is
-registered.
+The expression '1 << EraseUnitSize' is evaluated in int, which causes
+a negative result when shifting by 31 - the upper bound of the valid
+range [10, 31], enforced by scan_header(). This leads to incorrect
+extension when storing the result in 'erase->len' (uint64_t), producing
+a large unexpected value.
 
-If the IRQ is registered before hfi_create(), it's possible that an
-interrupt fires before the handler setup is complete, leading to a NULL
-dereference.
+Found by Linux Verification Center (linuxtesting.org) with Svace.
 
-This error condition has been observed during system boot on Rb3Gen2.
-
-Fixes: af2c3834c8ca ("[media] media: venus: adding core part and helper functions")
-Cc: stable@vger.kernel.org
-Signed-off-by: Jorge Ramirez-Ortiz <jorge.ramirez@oss.qualcomm.com>
-Reviewed-by: Bryan O'Donoghue <bryan.odonoghue@linaro.org>
-Reviewed-by: Vikash Garodia <quic_vgarodia@quicinc.com>
-Reviewed-by: Dikshita Agarwal <quic_dikshita@quicinc.com>
-Tested-by: Dikshita Agarwal <quic_dikshita@quicinc.com> # RB5
-Signed-off-by: Bryan O'Donoghue <bod@kernel.org>
-Signed-off-by: Hans Verkuil <hverkuil@xs4all.nl>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: 1da177e4c3f4 ("Linux-2.6.12-rc2")
+Signed-off-by: Ivan Stepchenko <sid@itb.spb.ru>
+Signed-off-by: Miquel Raynal <miquel.raynal@bootlin.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/media/platform/qcom/venus/core.c |    8 ++++----
- 1 file changed, 4 insertions(+), 4 deletions(-)
+ drivers/mtd/ftl.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/drivers/media/platform/qcom/venus/core.c
-+++ b/drivers/media/platform/qcom/venus/core.c
-@@ -424,13 +424,13 @@ static int venus_probe(struct platform_d
- 	INIT_DELAYED_WORK(&core->work, venus_sys_error_handler);
- 	init_waitqueue_head(&core->sys_err_done);
+diff --git a/drivers/mtd/ftl.c b/drivers/mtd/ftl.c
+index 2578f27914ef..ffe89209cf4b 100644
+--- a/drivers/mtd/ftl.c
++++ b/drivers/mtd/ftl.c
+@@ -344,7 +344,7 @@ static int erase_xfer(partition_t *part,
+             return -ENOMEM;
  
--	ret = devm_request_threaded_irq(dev, core->irq, hfi_isr, venus_isr_thread,
--					IRQF_TRIGGER_HIGH | IRQF_ONESHOT,
--					"venus", core);
-+	ret = hfi_create(core, &venus_core_ops);
- 	if (ret)
- 		goto err_core_put;
+     erase->addr = xfer->Offset;
+-    erase->len = 1 << part->header.EraseUnitSize;
++    erase->len = 1ULL << part->header.EraseUnitSize;
  
--	ret = hfi_create(core, &venus_core_ops);
-+	ret = devm_request_threaded_irq(dev, core->irq, hfi_isr, venus_isr_thread,
-+					IRQF_TRIGGER_HIGH | IRQF_ONESHOT,
-+					"venus", core);
- 	if (ret)
- 		goto err_core_put;
- 
+     ret = mtd_erase(part->mbd.mtd, erase);
+     if (!ret) {
+-- 
+2.39.5
+
 
 
 
