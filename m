@@ -1,58 +1,56 @@
-Return-Path: <stable+bounces-173119-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-174539-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6C357B35BBF
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 13:27:39 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id D28BCB36465
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 15:38:05 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id D2D4B1899F0E
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 11:24:12 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id C874E2A317C
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 13:25:52 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id CB125227599;
-	Tue, 26 Aug 2025 11:23:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id DA31530146D;
+	Tue, 26 Aug 2025 13:24:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="W6xIGlcG"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ju+NsOrW"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 87F1521D00E;
-	Tue, 26 Aug 2025 11:23:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 96F2418A6C4;
+	Tue, 26 Aug 2025 13:24:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756207422; cv=none; b=Ins07h32tibQfXhKnceUBCGkXAaQgU8yeVKLSxq9Qv6pfgN3Ji/nSekLEsD9n06TgNbp6TET2+ojWaVLi6xSGIOvUF8EKmieqSTbTSdtjU+kHC3JTK2pdSVood3BHZXoLRzNNjx8jOzxuq4y+lDKHgA/rKAxy755wqSpRjPpPtk=
+	t=1756214659; cv=none; b=RtpLDaZq6AVfTqAMxCbhA0ui+2N5fPlYN0Lula9VVqMECcuQhPVNQ5e+/JVD8MVpB+AktGZFihfPxjXL+FHMTK/hK4mpidwQum49e8IQqjwa3LxHODdwFIwEbxqy6q0u5B+hlsepmcTZ9OvubUczcf/qcikN8XLGAll1Cjc2EpE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756207422; c=relaxed/simple;
-	bh=7vnk67w4RqUh68D3mb7skYG0Lg9cIfJSNQFjsWs8p70=;
+	s=arc-20240116; t=1756214659; c=relaxed/simple;
+	bh=7BBsoc0FYbSDuDlnzkQgjTClQ+vnnTAwCIn/8TDd10k=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=LmkTedi8asRGU+fi8lClYK2izeBjYZKGf/zyVbMfxCiqCknLkSXbKA9/W/YF0AEMVEfjDzAgxDByvmKN2tbrt0Q0PVBdRHBEc6PyLg8PnNjnu4l7FtawdBNKzYG2zP2612LYNwNh6IWF0DdPbKGk59YBcqmfZPGT7l3faE0zv3A=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=W6xIGlcG; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 11073C4CEF1;
-	Tue, 26 Aug 2025 11:23:41 +0000 (UTC)
+	 MIME-Version; b=UWmgs7ICdPFwhrATJSEr3O/bgX4pi2oiJX/HZCiHcHroYB9hGfwAo3fsemxuPojurVqSwZ0GmXAz6ZdsDfme9tG3QNkFk5ZABLvSjXzyCh7DVM7BZDi7mGidCXbYCyJ8IvH6FhEuQk+xgi0q6PHjW/WC9+EtLWFLy9S3m9xCNUQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ju+NsOrW; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2D803C4CEF1;
+	Tue, 26 Aug 2025 13:24:19 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1756207422;
-	bh=7vnk67w4RqUh68D3mb7skYG0Lg9cIfJSNQFjsWs8p70=;
+	s=korg; t=1756214659;
+	bh=7BBsoc0FYbSDuDlnzkQgjTClQ+vnnTAwCIn/8TDd10k=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=W6xIGlcGYo52eLjMRzsIdbAcyUalUrkZ5AqEjfzsk17vs4vST+2jsrm/vtvy7ql/D
-	 ujT8bDHhycrw+4zAWhQ8IkU/tb5Dxz6oGAzDlwV1RhYfa/6sP3OMjyfHD7heTAYGch
-	 R/kldRT+SHvvYy3qg+wuzt1x+dzMHZf3ufcMDbfU=
+	b=ju+NsOrW/HhkLvq9ffxaTCQbeOKGoagP6SfjyKLcrUG7itNSPGtLToJrn9FupfJnO
+	 O0LZTnEevtJYJlN7DGXp7IUBf1Sm7g9jln4ghYhGxpQu0TC+OymP0SwlmaqKtP1jc7
+	 h82bacWygXHvP4A/CPM65vWv6esEOfiIEeoavvEA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jorge Ramirez-Ortiz <jorge.ramirez@oss.qualcomm.com>,
-	Dikshita Agarwal <quic_dikshita@quicinc.com>,
-	Bryan ODonoghue <bryan.odonoghue@linaro.org>,
-	Bryan ODonoghue <bod@kernel.org>,
-	Hans Verkuil <hverkuil@xs4all.nl>
-Subject: [PATCH 6.16 148/457] media: venus: hfi: explicitly release IRQ during teardown
-Date: Tue, 26 Aug 2025 13:07:12 +0200
-Message-ID: <20250826110941.029914999@linuxfoundation.org>
+	Amir Mohammad Jahangirzad <a.jahangirzad@gmail.com>,
+	Mike Marshall <hubcap@omnibond.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.1 180/482] fs/orangefs: use snprintf() instead of sprintf()
+Date: Tue, 26 Aug 2025 13:07:13 +0200
+Message-ID: <20250826110935.254830232@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250826110937.289866482@linuxfoundation.org>
-References: <20250826110937.289866482@linuxfoundation.org>
+In-Reply-To: <20250826110930.769259449@linuxfoundation.org>
+References: <20250826110930.769259449@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,43 +62,52 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.16-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jorge Ramirez-Ortiz <jorge.ramirez@oss.qualcomm.com>
+From: Amir Mohammad Jahangirzad <a.jahangirzad@gmail.com>
 
-commit 640803003cd903cea73dc6a86bf6963e238e2b3f upstream.
+[ Upstream commit cdfa1304657d6f23be8fd2bb0516380a3c89034e ]
 
-Ensure the IRQ is disabled - and all pending handlers completed - before
-dismantling the interrupt routing and clearing related pointers.
+sprintf() is discouraged for use with bounded destination buffers
+as it does not prevent buffer overflows when the formatted output
+exceeds the destination buffer size. snprintf() is a safer
+alternative as it limits the number of bytes written and ensures
+NUL-termination.
 
-This prevents any possibility of the interrupt triggering after the
-handler context has been invalidated.
+Replace sprintf() with snprintf() for copying the debug string
+into a temporary buffer, using ORANGEFS_MAX_DEBUG_STRING_LEN as
+the maximum size to ensure safe formatting and prevent memory
+corruption in edge cases.
 
-Fixes: d96d3f30c0f2 ("[media] media: venus: hfi: add Venus HFI files")
-Cc: stable@vger.kernel.org
-Signed-off-by: Jorge Ramirez-Ortiz <jorge.ramirez@oss.qualcomm.com>
-Reviewed-by: Dikshita Agarwal <quic_dikshita@quicinc.com>
-Tested-by: Dikshita Agarwal <quic_dikshita@quicinc.com> # RB5
-Reviewed-by: Bryan O'Donoghue <bryan.odonoghue@linaro.org>
-Signed-off-by: Bryan O'Donoghue <bod@kernel.org>
-Signed-off-by: Hans Verkuil <hverkuil@xs4all.nl>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+EDIT: After this patch sat on linux-next for a few days, Dan
+Carpenter saw it and suggested that I use scnprintf instead of
+snprintf. I made the change and retested.
+
+Signed-off-by: Amir Mohammad Jahangirzad <a.jahangirzad@gmail.com>
+Signed-off-by: Mike Marshall <hubcap@omnibond.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/media/platform/qcom/venus/hfi_venus.c |    1 +
- 1 file changed, 1 insertion(+)
+ fs/orangefs/orangefs-debugfs.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/drivers/media/platform/qcom/venus/hfi_venus.c
-+++ b/drivers/media/platform/qcom/venus/hfi_venus.c
-@@ -1682,6 +1682,7 @@ void venus_hfi_destroy(struct venus_core
- 	venus_interface_queues_release(hdev);
- 	mutex_destroy(&hdev->lock);
- 	kfree(hdev);
-+	disable_irq(core->irq);
- 	core->ops = NULL;
- }
+diff --git a/fs/orangefs/orangefs-debugfs.c b/fs/orangefs/orangefs-debugfs.c
+index b57140ebfad0..cd4bfd92ebd6 100644
+--- a/fs/orangefs/orangefs-debugfs.c
++++ b/fs/orangefs/orangefs-debugfs.c
+@@ -354,7 +354,7 @@ static ssize_t orangefs_debug_read(struct file *file,
+ 		goto out;
  
+ 	mutex_lock(&orangefs_debug_lock);
+-	sprintf_ret = sprintf(buf, "%s", (char *)file->private_data);
++	sprintf_ret = scnprintf(buf, ORANGEFS_MAX_DEBUG_STRING_LEN, "%s", (char *)file->private_data);
+ 	mutex_unlock(&orangefs_debug_lock);
+ 
+ 	read_ret = simple_read_from_buffer(ubuf, count, ppos, buf, sprintf_ret);
+-- 
+2.39.5
+
 
 
 
