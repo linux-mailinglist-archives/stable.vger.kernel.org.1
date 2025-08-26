@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-175715-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-173112-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 96250B36A05
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 16:33:23 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 456C9B35B6A
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 13:24:13 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 9ABB818876B2
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 14:18:50 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 78E3D7C35B1
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 11:23:35 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 84696352FC7;
-	Tue, 26 Aug 2025 14:16:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 71D9D1A256B;
+	Tue, 26 Aug 2025 11:23:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="si94a13D"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="KHT9XfY7"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3E4E7352FC2;
-	Tue, 26 Aug 2025 14:16:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2B79729BD87;
+	Tue, 26 Aug 2025 11:23:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756217781; cv=none; b=bzRpg/WjFrVsWXKan26UnW/FALFuyjqVm7PILlFB5d16MCDBpXRM3z3exblsGSsEDu9NgS55msBaaJrleKsL0MZhKh4jVNGHF17F0JV8GyfBCbMJH4b9HKqjRN/MdWs4k01PXACKAeYHgJFRswxoFIw+Y80DtGe7gSIxQsWPRGI=
+	t=1756207403; cv=none; b=tDo2fWnAi1t2QQm1FrMcMcx3d6eFJdDjHUFW3RDxEgDidpyRz/Gy5RTrp/Yq7w0hUME4nwDIBU3kqGqrsloYzPx1nfwdCc81czz1kQ0UTi2NxmAdMEViF93KbbD4NwotVP3GS0dGM9aiSjgY1fNjYEllcEO7dP8KsT0cN+phDMs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756217781; c=relaxed/simple;
-	bh=puOx0lUt/jJAsiXyX4kXp/zTNXhP0Ftqg+bOYQz5onY=;
+	s=arc-20240116; t=1756207403; c=relaxed/simple;
+	bh=X1BslSxcTA124aasO/YzMS8UjycengwLD2l3MTTeL0M=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=eBUslhXPJ27uUp7WsAeLb36zSQGf/vLCf9kFm1Q18YxyrSH7r+krONJvQ4kuibwc3dP1N+k2r3XjozTkMAmfiMNhW386mcfKzVX7yjpIKCSKop9fjVLVbMQaFWq2CsbpHJ2wa/LjsNVDqDiEviq3I9NZg87nUywBJ7B/SprjuMI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=si94a13D; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 64E4AC4CEF1;
-	Tue, 26 Aug 2025 14:16:19 +0000 (UTC)
+	 MIME-Version; b=VnRvhyGWOh6F/aauteBolL4/yRYgzq7YbpMfLdrop6QTITiOlGo9GK08aC+Ygjb6KoiOrc22KOf4mQROpxGIS2BofTyWC6ZyNquBDHdTTpAmfnkI6fU2KRfZvnLdMkoRTG1TlmPMS4hA2z6CqZd921VZvISjhqers+81uAhqkT0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=KHT9XfY7; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 633AFC4CEF1;
+	Tue, 26 Aug 2025 11:23:22 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1756217779;
-	bh=puOx0lUt/jJAsiXyX4kXp/zTNXhP0Ftqg+bOYQz5onY=;
+	s=korg; t=1756207402;
+	bh=X1BslSxcTA124aasO/YzMS8UjycengwLD2l3MTTeL0M=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=si94a13DZPGaWRovBymzgq801Ts4+pN8bHqTp/yup380tyPYqLwxHE/kxfht+dR1R
-	 VPZzz9Mt7digunhWwIBV+zktCNUUJR5Jvj6d5HVwkZusHwHT/4Iz6in8M9r7bo58gF
-	 URpltI/kXkUIUt33xdYbsZCdmYI02uAd3Y9C7kOo=
+	b=KHT9XfY7m7YmKE7UGnfPcZmxn2pKm1SjuBUFEUmn96B8a0vEQrcKl8cimOhneDhbG
+	 3I+uzt+qiPpRWQaQMpll5JLUj/aBAjUYHYLyDLEahSgpIkwpTkQMRAzvd9pllF+xsA
+	 NvDtZkpmqAHKxU/VXLudJPZKbjeng7fqnbbVTYOU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Breno Leitao <leitao@debian.org>,
-	Tony Luck <tony.luck@intel.com>,
-	"Rafael J. Wysocki" <rafael.j.wysocki@intel.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 241/523] ACPI: APEI: GHES: add TAINT_MACHINE_CHECK on GHES panic path
-Date: Tue, 26 Aug 2025 13:07:31 +0200
-Message-ID: <20250826110930.386471184@linuxfoundation.org>
+	"Vodapalli, Ravi Kumar" <ravi.kumar.vodapalli@intel.com>,
+	Shekhar Chauhan <shekhar.chauhan@intel.com>,
+	Matthew Auld <matthew.auld@intel.com>
+Subject: [PATCH 6.16 168/457] drm/xe/bmg: Add one additional PCI ID
+Date: Tue, 26 Aug 2025 13:07:32 +0200
+Message-ID: <20250826110941.527694527@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250826110924.562212281@linuxfoundation.org>
-References: <20250826110924.562212281@linuxfoundation.org>
+In-Reply-To: <20250826110937.289866482@linuxfoundation.org>
+References: <20250826110937.289866482@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,48 +62,39 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+6.16-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Breno Leitao <leitao@debian.org>
+From: Vodapalli, Ravi Kumar <ravi.kumar.vodapalli@intel.com>
 
-[ Upstream commit 4734c8b46b901cff2feda8b82abc710b65dc31c1 ]
+commit ccfb15b8158c11a8304204aeac354c7b1cfb18a3 upstream.
 
-When a GHES (Generic Hardware Error Source) triggers a panic, add the
-TAINT_MACHINE_CHECK taint flag to the kernel. This explicitly marks the
-kernel as tainted due to a machine check event, improving diagnostics
-and post-mortem analysis. The taint is set with LOCKDEP_STILL_OK to
-indicate lockdep remains valid.
+One additional PCI ID is added in Bspec for BMG, Add it so that
+driver recognizes this device with this new ID.
 
-At large scale deployment, this helps to quickly determine panics that
-are coming due to hardware failures.
-
-Signed-off-by: Breno Leitao <leitao@debian.org>
-Reviewed-by: Tony Luck <tony.luck@intel.com>
-Link: https://patch.msgid.link/20250702-add_tain-v1-1-9187b10914b9@debian.org
-Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Bspec: 68090
+Cc: stable@vger.kernel.org # v6.12+
+Signed-off-by: Vodapalli, Ravi Kumar <ravi.kumar.vodapalli@intel.com>
+Reviewed-by: Shekhar Chauhan <shekhar.chauhan@intel.com>
+Acked-by: Matthew Auld <matthew.auld@intel.com>
+Signed-off-by: Matthew Auld <matthew.auld@intel.com>
+Link: https://lore.kernel.org/r/20250704103527.100178-1-ravi.kumar.vodapalli@intel.com
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/acpi/apei/ghes.c | 2 ++
- 1 file changed, 2 insertions(+)
+ include/drm/intel/pciids.h |    1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/drivers/acpi/apei/ghes.c b/drivers/acpi/apei/ghes.c
-index 72087e05b5a5..250ea9ec5f0c 100644
---- a/drivers/acpi/apei/ghes.c
-+++ b/drivers/acpi/apei/ghes.c
-@@ -860,6 +860,8 @@ static void __ghes_panic(struct ghes *ghes,
- 
- 	__ghes_print_estatus(KERN_EMERG, ghes->generic, estatus);
- 
-+	add_taint(TAINT_MACHINE_CHECK, LOCKDEP_STILL_OK);
-+
- 	ghes_clear_estatus(ghes, estatus, buf_paddr, fixmap_idx);
- 
- 	if (!panic_timeout)
--- 
-2.39.5
-
+--- a/include/drm/intel/pciids.h
++++ b/include/drm/intel/pciids.h
+@@ -846,6 +846,7 @@
+ /* BMG */
+ #define INTEL_BMG_IDS(MACRO__, ...) \
+ 	MACRO__(0xE202, ## __VA_ARGS__), \
++	MACRO__(0xE209, ## __VA_ARGS__), \
+ 	MACRO__(0xE20B, ## __VA_ARGS__), \
+ 	MACRO__(0xE20C, ## __VA_ARGS__), \
+ 	MACRO__(0xE20D, ## __VA_ARGS__), \
 
 
 
