@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-175679-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-173998-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id C9215B36969
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 16:26:51 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 3C78FB360CB
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 15:04:03 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 967D01C243FA
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 14:17:17 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 9DE371BA6B59
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 13:00:44 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7AB1835691D;
-	Tue, 26 Aug 2025 14:14:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B98D222AE5D;
+	Tue, 26 Aug 2025 13:00:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="X+N1YBns"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="nScpUUHo"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 38C33343218;
-	Tue, 26 Aug 2025 14:14:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 77C161FBCB1;
+	Tue, 26 Aug 2025 13:00:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756217682; cv=none; b=GSOf6JetY71jcYweHbDUBsDZd0+1RSUIqc3ZchzvjX9GBwy1Y3ilLlOgYnpreUTkVgW13e10KAkwk7KKlaGuI4dnfzDTucEUBxLmz74FPi2bmw98Pn3V6ezmzseYegCJ65yU5EUmRt5q2ze7H0dQDsCuHethOaOzqDOGbpuQTPs=
+	t=1756213222; cv=none; b=OjLCZ8zNqm5PVW/1gcour4ZJYsHPfKEVN+fW/vm6DqJKWXqysj8Nudx4+eYCMMzWGGfhtg5MXzu6wrJ5Qfo4fDySVq6SX8kxX5ComNX9r4kUOvR5nHgOiw5kdRTaVVj8pLyQzi5whgxEtmnFJu7qsj6zm+1y2flWfbJ7tMWd8Og=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756217682; c=relaxed/simple;
-	bh=ZSDzhwrFjcZHkDosJtFDobGJW+dYGfwuJI83xHKRP3Y=;
+	s=arc-20240116; t=1756213222; c=relaxed/simple;
+	bh=QfgT9QgrPmp0YJZ3PyDO4ebJO+ZKrheFIHvjN8vKEL4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=qmRr4O1o1j2fnZuSbs2lmiMfuE+SVYadPB6va4aERHIxfVZJWclTVkI0f4Lxve4vGAWi/murUogHZtyrprBSlEprfKq9GVcA5Al9hY5cRQymDzWYl39QHTTDsAkaHQA4+yGv7JslXYtVCY2krnyWjnUuTPLqScaqq7t2Ihn3Dek=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=X+N1YBns; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B3855C4CEF1;
-	Tue, 26 Aug 2025 14:14:41 +0000 (UTC)
+	 MIME-Version; b=oOjLkBGZtFltg2igVfVvQ96r4Q+HXKsPZX4rMfH06fjK2jtpZXXDhAa3Us87oh5kkT1hAiUJsArQLjC9AqjNrHzh1Cc5Cje6/PyXwbM3ca6tywrW1nSEPw45aXWyr3oTAu0ykcGI2PNcsbjSBi06kKEsdYgTPcI8E55kxOWjhQ4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=nScpUUHo; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 07095C4CEF1;
+	Tue, 26 Aug 2025 13:00:21 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1756217682;
-	bh=ZSDzhwrFjcZHkDosJtFDobGJW+dYGfwuJI83xHKRP3Y=;
+	s=korg; t=1756213222;
+	bh=QfgT9QgrPmp0YJZ3PyDO4ebJO+ZKrheFIHvjN8vKEL4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=X+N1YBnsiqZei2nDDiOjOsHTZlAKAb7mRva4jhRGTr/D1oyT/z0iAiifwW17iJKf/
-	 Yvc0L9ar9GSiXqTtgsSUdo2sOR9uhLvjA0YVBX4TX/GIdo7SvHS047LOrbIxor5V5d
-	 3kEmok/0x4LiVCxwFl/PvhJhi9ys8Fd3IhK1EinY=
+	b=nScpUUHoBIra6cKKfDV7bnl7jNf0qTotjYBN8eOk/BPuVnrY8uwak5PTZVolqhewd
+	 LSDHLzSmfkIedWvF+0ipm5ss8jk08FdQVVMO4Ej9g3m1I5Z59gLQGkl7TwfkDZzoiP
+	 K6QiT4XPGJDJ5c3S3PkmsK43EzW9pJXzo1L/Q+wQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Sabrina Dubroca <sd@queasysnail.net>,
-	Steffen Klassert <steffen.klassert@secunet.com>,
+	Jorge Marques <jorge.marques@analog.com>,
+	Frank Li <Frank.Li@nxp.com>,
+	Alexandre Belloni <alexandre.belloni@bootlin.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 205/523] udp: also consider secpath when evaluating ipsec use for checksumming
-Date: Tue, 26 Aug 2025 13:06:55 +0200
-Message-ID: <20250826110929.502983230@linuxfoundation.org>
+Subject: [PATCH 6.6 267/587] i3c: master: Initialize ret in i3c_i2c_notifier_call()
+Date: Tue, 26 Aug 2025 13:06:56 +0200
+Message-ID: <20250826110959.719460587@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250826110924.562212281@linuxfoundation.org>
-References: <20250826110924.562212281@linuxfoundation.org>
+In-Reply-To: <20250826110952.942403671@linuxfoundation.org>
+References: <20250826110952.942403671@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,55 +63,41 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Sabrina Dubroca <sd@queasysnail.net>
+From: Jorge Marques <jorge.marques@analog.com>
 
-[ Upstream commit 1118aaa3b35157777890fffab91d8c1da841b20b ]
+[ Upstream commit 290ce8b2d0745e45a3155268184523a8c75996f1 ]
 
-Commit b40c5f4fde22 ("udp: disable inner UDP checksum offloads in
-IPsec case") tried to fix checksumming in UFO when the packets are
-going through IPsec, so that we can't rely on offloads because the UDP
-header and payload will be encrypted.
+Set ret to -EINVAL if i3c_i2c_notifier_call() receives an invalid
+action, resolving uninitialized warning.
 
-But when doing a TCP test over VXLAN going through IPsec transport
-mode with GSO enabled (esp4_offload module loaded), I'm seeing broken
-UDP checksums on the encap after successful decryption.
-
-The skbs get to udp4_ufo_fragment/__skb_udp_tunnel_segment via
-__dev_queue_xmit -> validate_xmit_skb -> skb_gso_segment and at this
-point we've already dropped the dst (unless the device sets
-IFF_XMIT_DST_RELEASE, which is not common), so need_ipsec is false and
-we proceed with checksum offload.
-
-Make need_ipsec also check the secpath, which is not dropped on this
-callpath.
-
-Fixes: b40c5f4fde22 ("udp: disable inner UDP checksum offloads in IPsec case")
-Signed-off-by: Sabrina Dubroca <sd@queasysnail.net>
-Signed-off-by: Steffen Klassert <steffen.klassert@secunet.com>
+Signed-off-by: Jorge Marques <jorge.marques@analog.com>
+Reviewed-by: Frank Li <Frank.Li@nxp.com>
+Link: https://lore.kernel.org/r/20250622-i3c-master-ret-uninitialized-v1-1-aabb5625c932@analog.com
+Signed-off-by: Alexandre Belloni <alexandre.belloni@bootlin.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/ipv4/udp_offload.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/i3c/master.c | 2 ++
+ 1 file changed, 2 insertions(+)
 
-diff --git a/net/ipv4/udp_offload.c b/net/ipv4/udp_offload.c
-index 73beaa7e2d70..5d4413fe4195 100644
---- a/net/ipv4/udp_offload.c
-+++ b/net/ipv4/udp_offload.c
-@@ -58,7 +58,7 @@ static struct sk_buff *__skb_udp_tunnel_segment(struct sk_buff *skb,
- 	remcsum = !!(skb_shinfo(skb)->gso_type & SKB_GSO_TUNNEL_REMCSUM);
- 	skb->remcsum_offload = remcsum;
+diff --git a/drivers/i3c/master.c b/drivers/i3c/master.c
+index 7e526da11524..b6995e767850 100644
+--- a/drivers/i3c/master.c
++++ b/drivers/i3c/master.c
+@@ -2430,6 +2430,8 @@ static int i3c_i2c_notifier_call(struct notifier_block *nb, unsigned long action
+ 	case BUS_NOTIFY_DEL_DEVICE:
+ 		ret = i3c_master_i2c_detach(adap, client);
+ 		break;
++	default:
++		ret = -EINVAL;
+ 	}
+ 	i3c_bus_maintenance_unlock(&master->bus);
  
--	need_ipsec = skb_dst(skb) && dst_xfrm(skb_dst(skb));
-+	need_ipsec = (skb_dst(skb) && dst_xfrm(skb_dst(skb))) || skb_sec_path(skb);
- 	/* Try to offload checksum if possible */
- 	offload_csum = !!(need_csum &&
- 			  !need_ipsec &&
 -- 
-2.50.1
+2.39.5
 
 
 
