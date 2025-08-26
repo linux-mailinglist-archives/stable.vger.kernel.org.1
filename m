@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-173459-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-174570-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id CC977B35CDD
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 13:39:31 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9EF15B363B3
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 15:32:37 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 8D4AA7C5691
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 11:39:30 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 507E01BC7455
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 13:27:10 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 59DFC29D26A;
-	Tue, 26 Aug 2025 11:38:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 938722BDC2F;
+	Tue, 26 Aug 2025 13:25:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="f/nkEs3P"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ptYP4I+T"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 14D89393DD1;
-	Tue, 26 Aug 2025 11:38:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4F5D51B87E8;
+	Tue, 26 Aug 2025 13:25:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756208303; cv=none; b=XCU+3o/1uOOp1wX9LA2LNxhmAQxcRk2pQI9ZcW0g7zFhu+tCtA7Sq7BK2rRKT95qtmMrOR3/Mj4oTru+VNbvRJZyl3v9O69OOH373TugoM2xIHFKdW4lwGx7wl7/Oaj5GzCuYOVp3FnuTtzR0tz3XUv9fsT3KJXaHBOt557KBDs=
+	t=1756214743; cv=none; b=i4AlNi6Ydl0RnrTTiYt3/zL2pf8P4MSesNGYbP4IzrNFT7YDZ1/Dv86bDg2dlbDLKUVbtytKWEiI9nt6TT9HuyQ6OWtzT91Luf0hyvYTgow8+ZW528clnEBloJj218oL7EusQ2nbkwOpAU259TS0wvpCw05vr2QmjkCb+URL/EA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756208303; c=relaxed/simple;
-	bh=deUyYWHBVrO8BWEPJsuimi/m+x36l3jKT0HpTqeKSM8=;
+	s=arc-20240116; t=1756214743; c=relaxed/simple;
+	bh=mPee21jYypR7zbeGhrinLgh5bY2EskoCd4euOcGbeOQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=YlOedPMbTYEJYk14xepPevKMu8YZwgPku/+m/s67C6ey8IFjvvidbZfXKZ3OhHPajKptbQU1ABsTeKoGoadl9W1ha+1rYMUF+kSL8IfutcVWNqmmUaTNXY7hXzt97f1uxbeB+vzzQ/9XSlQbyaudK4Xw5PN47Bo/laast562Sho=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=f/nkEs3P; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4378BC4CEF1;
-	Tue, 26 Aug 2025 11:38:22 +0000 (UTC)
+	 MIME-Version; b=M9W/Czp9ZCKEEO3+kyyVEGnznZ3rwxcVvTtt1+Ky2yM2+yNRgcbEp+nhWVdPI9ItiHyciykIrN75vXLqj7MNMP9ievFc8UjvJwA0VbSGjH/gmwsvdstswURR9DZaUgbBqFJttRnukHgPOJIAagZAu9blKt7+vfg+A58rTXsBBk8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ptYP4I+T; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id CFF1BC113CF;
+	Tue, 26 Aug 2025 13:25:42 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1756208302;
-	bh=deUyYWHBVrO8BWEPJsuimi/m+x36l3jKT0HpTqeKSM8=;
+	s=korg; t=1756214743;
+	bh=mPee21jYypR7zbeGhrinLgh5bY2EskoCd4euOcGbeOQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=f/nkEs3Pt4QF8UWlqoeiIvZpVAt2oSONbO2o8MzRBUe/Q0nibz+cRWPQanZislywS
-	 Zq5dC+wMojO0Mni7hqJqVfa3vo4o7wCuCbDShWmuXliSZLa/tbHtwC7e5h+9jBQAQA
-	 uONy8GCpgr+EJMHYpkiv6FSEl+kV1CufwTqve/fU=
+	b=ptYP4I+ToH4/E081nd8Ng+t6je5sK5/DX+/vpLK9fuj+Ui+xK53r2CFNbFPzE8t5R
+	 VxaT70aMhJ3b7s4IC4k958W7qkKQfCI2l/nmzldfcv60O/+XTTfd456f2q8s1rgnru
+	 uWTJd1Wm8Hk4kqPwfNaIVawDI8ijMkDU3joydiNo=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Johan Hovold <johan+linaro@kernel.org>,
-	Baochen Qiang <quic_bqiang@quicinc.com>,
-	Jeff Johnson <jeff.johnson@oss.qualcomm.com>
-Subject: [PATCH 6.12 059/322] wifi: ath12k: fix dest ring-buffer corruption
+	Ranjan Kumar <ranjan.kumar@broadcom.com>,
+	"Martin K. Petersen" <martin.petersen@oracle.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.1 221/482] scsi: Fix sas_user_scan() to handle wildcard and multi-channel scans
 Date: Tue, 26 Aug 2025 13:07:54 +0200
-Message-ID: <20250826110916.991745672@linuxfoundation.org>
+Message-ID: <20250826110936.234330951@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250826110915.169062587@linuxfoundation.org>
-References: <20250826110915.169062587@linuxfoundation.org>
+In-Reply-To: <20250826110930.769259449@linuxfoundation.org>
+References: <20250826110930.769259449@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,78 +62,141 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Johan Hovold <johan+linaro@kernel.org>
+From: Ranjan Kumar <ranjan.kumar@broadcom.com>
 
-commit 8157ce533a60521f21d466eb4de45d9735b19484 upstream.
+[ Upstream commit 37c4e72b0651e7697eb338cd1fb09feef472cc1a ]
 
-Add the missing memory barrier to make sure that destination ring
-descriptors are read after the head pointers to avoid using stale data
-on weakly ordered architectures like aarch64.
+sas_user_scan() did not fully process wildcard channel scans
+(SCAN_WILD_CARD) when a transport-specific user_scan() callback was
+present. Only channel 0 would be scanned via user_scan(), while the
+remaining channels were skipped, potentially missing devices.
 
-The barrier is added to the ath12k_hal_srng_access_begin() helper for
-symmetry with follow-on fixes for source ring buffer corruption which
-will add barriers to ath12k_hal_srng_access_end().
+user_scan() invokes updated sas_user_scan() for channel 0, and if
+successful, iteratively scans remaining channels (1 to
+shost->max_channel) via scsi_scan_host_selected().  This ensures complete
+wildcard scanning without affecting transport-specific scanning behavior.
 
-Tested-on: WCN7850 hw2.0 WLAN.HMT.1.0.c5-00481-QCAHMTSWPL_V1.0_V2.0_SILICONZ-3
-
-Fixes: d889913205cf ("wifi: ath12k: driver for Qualcomm Wi-Fi 7 devices")
-Cc: stable@vger.kernel.org	# 6.3
-Signed-off-by: Johan Hovold <johan+linaro@kernel.org>
-Reviewed-by: Baochen Qiang <quic_bqiang@quicinc.com>
-Link: https://patch.msgid.link/20250617084402.14475-2-johan+linaro@kernel.org
-Signed-off-by: Jeff Johnson <jeff.johnson@oss.qualcomm.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Signed-off-by: Ranjan Kumar <ranjan.kumar@broadcom.com>
+Link: https://lore.kernel.org/r/20250624061649.17990-1-ranjan.kumar@broadcom.com
+Signed-off-by: Martin K. Petersen <martin.petersen@oracle.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/wireless/ath/ath12k/ce.c  |    3 ---
- drivers/net/wireless/ath/ath12k/hal.c |   17 ++++++++++++++---
- 2 files changed, 14 insertions(+), 6 deletions(-)
+ drivers/scsi/scsi_scan.c          |  2 +-
+ drivers/scsi/scsi_transport_sas.c | 60 ++++++++++++++++++++++++-------
+ 2 files changed, 49 insertions(+), 13 deletions(-)
 
---- a/drivers/net/wireless/ath/ath12k/ce.c
-+++ b/drivers/net/wireless/ath/ath12k/ce.c
-@@ -343,9 +343,6 @@ static int ath12k_ce_completed_recv_next
- 		goto err;
- 	}
+diff --git a/drivers/scsi/scsi_scan.c b/drivers/scsi/scsi_scan.c
+index 69288303e600..6fb995153abd 100644
+--- a/drivers/scsi/scsi_scan.c
++++ b/drivers/scsi/scsi_scan.c
+@@ -1842,7 +1842,7 @@ int scsi_scan_host_selected(struct Scsi_Host *shost, unsigned int channel,
  
--	/* Make sure descriptor is read after the head pointer. */
--	dma_rmb();
+ 	return 0;
+ }
 -
- 	*nbytes = ath12k_hal_ce_dst_status_get_length(desc);
- 
- 	*skb = pipe->dest_ring->skb[sw_index];
---- a/drivers/net/wireless/ath/ath12k/hal.c
-+++ b/drivers/net/wireless/ath/ath12k/hal.c
-@@ -2107,13 +2107,24 @@ void *ath12k_hal_srng_src_get_next_reape
- 
- void ath12k_hal_srng_access_begin(struct ath12k_base *ab, struct hal_srng *srng)
++EXPORT_SYMBOL(scsi_scan_host_selected);
+ static void scsi_sysfs_add_devices(struct Scsi_Host *shost)
  {
-+	u32 hp;
-+
- 	lockdep_assert_held(&srng->lock);
+ 	struct scsi_device *sdev;
+diff --git a/drivers/scsi/scsi_transport_sas.c b/drivers/scsi/scsi_transport_sas.c
+index 6941d8cfb9ba..5a19de2c7006 100644
+--- a/drivers/scsi/scsi_transport_sas.c
++++ b/drivers/scsi/scsi_transport_sas.c
+@@ -40,6 +40,8 @@
+ #include <scsi/scsi_transport_sas.h>
  
--	if (srng->ring_dir == HAL_SRNG_DIR_SRC)
-+	if (srng->ring_dir == HAL_SRNG_DIR_SRC) {
- 		srng->u.src_ring.cached_tp =
- 			*(volatile u32 *)srng->u.src_ring.tp_addr;
--	else
--		srng->u.dst_ring.cached_hp = READ_ONCE(*srng->u.dst_ring.hp_addr);
-+	} else {
-+		hp = READ_ONCE(*srng->u.dst_ring.hp_addr);
+ #include "scsi_sas_internal.h"
++#include "scsi_priv.h"
 +
-+		if (hp != srng->u.dst_ring.cached_hp) {
-+			srng->u.dst_ring.cached_hp = hp;
-+			/* Make sure descriptor is read after the head
-+			 * pointer.
-+			 */
-+			dma_rmb();
+ struct sas_host_attrs {
+ 	struct list_head rphy_list;
+ 	struct mutex lock;
+@@ -1681,32 +1683,66 @@ int scsi_is_sas_rphy(const struct device *dev)
+ }
+ EXPORT_SYMBOL(scsi_is_sas_rphy);
+ 
+-
+-/*
+- * SCSI scan helper
+- */
+-
+-static int sas_user_scan(struct Scsi_Host *shost, uint channel,
+-		uint id, u64 lun)
++static void scan_channel_zero(struct Scsi_Host *shost, uint id, u64 lun)
+ {
+ 	struct sas_host_attrs *sas_host = to_sas_host_attrs(shost);
+ 	struct sas_rphy *rphy;
+ 
+-	mutex_lock(&sas_host->lock);
+ 	list_for_each_entry(rphy, &sas_host->rphy_list, list) {
+ 		if (rphy->identify.device_type != SAS_END_DEVICE ||
+ 		    rphy->scsi_target_id == -1)
+ 			continue;
+ 
+-		if ((channel == SCAN_WILD_CARD || channel == 0) &&
+-		    (id == SCAN_WILD_CARD || id == rphy->scsi_target_id)) {
++		if (id == SCAN_WILD_CARD || id == rphy->scsi_target_id) {
+ 			scsi_scan_target(&rphy->dev, 0, rphy->scsi_target_id,
+ 					 lun, SCSI_SCAN_MANUAL);
+ 		}
+ 	}
+-	mutex_unlock(&sas_host->lock);
++}
+ 
+-	return 0;
++/*
++ * SCSI scan helper
++ */
++
++static int sas_user_scan(struct Scsi_Host *shost, uint channel,
++		uint id, u64 lun)
++{
++	struct sas_host_attrs *sas_host = to_sas_host_attrs(shost);
++	int res = 0;
++	int i;
++
++	switch (channel) {
++	case 0:
++		mutex_lock(&sas_host->lock);
++		scan_channel_zero(shost, id, lun);
++		mutex_unlock(&sas_host->lock);
++		break;
++
++	case SCAN_WILD_CARD:
++		mutex_lock(&sas_host->lock);
++		scan_channel_zero(shost, id, lun);
++		mutex_unlock(&sas_host->lock);
++
++		for (i = 1; i <= shost->max_channel; i++) {
++			res = scsi_scan_host_selected(shost, i, id, lun,
++						      SCSI_SCAN_MANUAL);
++			if (res)
++				goto exit_scan;
 +		}
++		break;
++
++	default:
++		if (channel < shost->max_channel) {
++			res = scsi_scan_host_selected(shost, channel, id, lun,
++						      SCSI_SCAN_MANUAL);
++		} else {
++			res = -EINVAL;
++		}
++		break;
 +	}
++
++exit_scan:
++	return res;
  }
  
- /* Update cached ring head/tail pointers to HW. ath12k_hal_srng_access_begin()
+ 
+-- 
+2.39.5
+
 
 
 
