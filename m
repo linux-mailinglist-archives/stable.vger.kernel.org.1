@@ -1,58 +1,56 @@
-Return-Path: <stable+bounces-173097-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-174013-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 00637B35BED
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 13:29:26 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5B4FEB3607A
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 15:01:09 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id AE7DE361D9C
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 11:23:15 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 3D7817B6EB1
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 12:59:33 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3C4262F9C23;
-	Tue, 26 Aug 2025 11:22:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 517EB13BC3F;
+	Tue, 26 Aug 2025 13:01:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="R/CXI7N5"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="tXw6OPM+"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8D334321456;
-	Tue, 26 Aug 2025 11:22:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0EAE63A1B5;
+	Tue, 26 Aug 2025 13:01:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756207364; cv=none; b=e4LVrLiX9K71F4L9G7BZE/cq4Y+6sy7Ze1Y7pjX7GnRAh4J/yN854cSUTop6/iikFlXjZpLZf/coGIAYuhrYYGM6mRZI8UCSbm/I+SDXM614zP7k02+dOWJ9raoKOcdKdwuD3NFqpTm23jQwvUK1LDhjz8JNlN2o8m/Ufrmoh+w=
+	t=1756213262; cv=none; b=Oz5aGM8sKrYDcLYfv1xp2b1vH8vLZqbS+wkBLVlpBsVoJk/J3Y6SSa2/8Msr2uQUFZjcIky09riF6y+Ah27PHJy0C2OmDdtRRd2XSUx9zyUaD0mlDjfuGpwgq8560pjf7ZT+VFQ1MZigA3B5NpIzt2+oYwwoBqOhwWtcSpWGl/8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756207364; c=relaxed/simple;
-	bh=xKkLadYMUrcvnZAtnmwtmrG1OD7yq/2IXQNQTPhCxD4=;
+	s=arc-20240116; t=1756213262; c=relaxed/simple;
+	bh=Cs/E3KE0LHDOiHIT9YNzpvIje77QnNeuHZrOX2S+81k=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=G2donGJTjHDIPmZ3hR2Sh9MZVylRMwmW+7apmJYNZrOSZuCZNQajeAg8Z/lbVpza14q0MLI3BnhInuXgm940MBkI2yY4ajbEz68EKXZLNDgH6jvt0giP8K9s+OOxUIa384MUlUPELmjSjUBXXRDxrhhuJOkYUMFLamTQ3wYX5hw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=R/CXI7N5; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1E623C4CEF1;
-	Tue, 26 Aug 2025 11:22:43 +0000 (UTC)
+	 MIME-Version; b=sYMrxnsl3u+prhShiW0PKSg4Q23XkOShn32pbLCmqIAKOQF+lIpR3cM9UWRunpBGpItHvnk39AqktiDaFSmUIyTTXsyUnp+As+kw4VSeNIPf5zPKRCI7KSX69eRSL2NBelQn/6/iTYpUYnYSVR0hLeygCmUpXyrGg6jHAMT/DZQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=tXw6OPM+; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6172FC4CEF1;
+	Tue, 26 Aug 2025 13:01:01 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1756207364;
-	bh=xKkLadYMUrcvnZAtnmwtmrG1OD7yq/2IXQNQTPhCxD4=;
+	s=korg; t=1756213261;
+	bh=Cs/E3KE0LHDOiHIT9YNzpvIje77QnNeuHZrOX2S+81k=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=R/CXI7N5iP1Nr14D9xIhRQIatgK/Njs93nS0xRj6gPqc/+GWrA+puvg5QDK90I3/P
-	 pripH0pQZrS7TPU6A5GX1phbq/BVnf0INfUa8RT0MHmc6mX92bHtx4UpWIC7FCo0C+
-	 S9FV8Kg81K8UQ2x2zXrVRgHBDa5iyZ/lYt/P6ZME=
+	b=tXw6OPM+zDpWq8RtXFYGm3gKWGqAkSBZc9xjdgAnIR6+ZWAtxQJ4qDKbVFjl4aKOw
+	 c7DP80CBL4wiNmCuEIMmPZIxrxcTrnGwMWlz3/XVTnl5q7E21znHHMwCtmafkmXaZ8
+	 moclLRueKK2Uxr3cq8dqTJA6EwnBPuhfYfVBVEdg=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Vedang Nagar <quic_vnagar@quicinc.com>,
-	Dikshita Agarwal <quic_dikshita@quicinc.com>,
-	Bryan ODonoghue <bryan.odonoghue@linaro.org>,
-	Bryan ODonoghue <bod@kernel.org>,
-	Hans Verkuil <hverkuil@xs4all.nl>
-Subject: [PATCH 6.16 146/457] media: venus: Add a check for packet size after reading from shared memory
+	Breno Leitao <leitao@debian.org>,
+	Corey Minyard <corey@minyard.net>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.6 281/587] ipmi: Use dev_warn_ratelimited() for incorrect message warnings
 Date: Tue, 26 Aug 2025 13:07:10 +0200
-Message-ID: <20250826110940.980055232@linuxfoundation.org>
+Message-ID: <20250826111000.080899764@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250826110937.289866482@linuxfoundation.org>
-References: <20250826110937.289866482@linuxfoundation.org>
+In-Reply-To: <20250826110952.942403671@linuxfoundation.org>
+References: <20250826110952.942403671@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,52 +62,52 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.16-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Vedang Nagar <quic_vnagar@quicinc.com>
+From: Breno Leitao <leitao@debian.org>
 
-commit 49befc830daa743e051a65468c05c2ff9e8580e6 upstream.
+[ Upstream commit ec50ec378e3fd83bde9b3d622ceac3509a60b6b5 ]
 
-Add a check to ensure that the packet size does not exceed the number of
-available words after reading the packet header from shared memory. This
-ensures that the size provided by the firmware is safe to process and
-prevent potential out-of-bounds memory access.
+During BMC firmware upgrades on live systems, the ipmi_msghandler
+generates excessive "BMC returned incorrect response" warnings
+while the BMC is temporarily offline. This can flood system logs
+in large deployments.
 
-Fixes: d96d3f30c0f2 ("[media] media: venus: hfi: add Venus HFI files")
-Cc: stable@vger.kernel.org
-Signed-off-by: Vedang Nagar <quic_vnagar@quicinc.com>
-Co-developed-by: Dikshita Agarwal <quic_dikshita@quicinc.com>
-Signed-off-by: Dikshita Agarwal <quic_dikshita@quicinc.com>
-Reviewed-by: Bryan O'Donoghue <bryan.odonoghue@linaro.org>
-Signed-off-by: Bryan O'Donoghue <bod@kernel.org>
-Signed-off-by: Hans Verkuil <hverkuil@xs4all.nl>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Replace dev_warn() with dev_warn_ratelimited() to throttle these
+warnings and prevent log spam during BMC maintenance operations.
+
+Signed-off-by: Breno Leitao <leitao@debian.org>
+Message-ID: <20250710-ipmi_ratelimit-v1-1-6d417015ebe9@debian.org>
+Signed-off-by: Corey Minyard <corey@minyard.net>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/media/platform/qcom/venus/hfi_venus.c |    4 ++++
- 1 file changed, 4 insertions(+)
+ drivers/char/ipmi/ipmi_msghandler.c | 8 ++++----
+ 1 file changed, 4 insertions(+), 4 deletions(-)
 
---- a/drivers/media/platform/qcom/venus/hfi_venus.c
-+++ b/drivers/media/platform/qcom/venus/hfi_venus.c
-@@ -239,6 +239,7 @@ static int venus_write_queue(struct venu
- static int venus_read_queue(struct venus_hfi_device *hdev,
- 			    struct iface_queue *queue, void *pkt, u32 *tx_req)
- {
-+	struct hfi_pkt_hdr *pkt_hdr = NULL;
- 	struct hfi_queue_header *qhdr;
- 	u32 dwords, new_rd_idx;
- 	u32 rd_idx, wr_idx, type, qsize;
-@@ -304,6 +305,9 @@ static int venus_read_queue(struct venus
- 			memcpy(pkt, rd_ptr, len);
- 			memcpy(pkt + len, queue->qmem.kva, new_rd_idx << 2);
- 		}
-+		pkt_hdr = (struct hfi_pkt_hdr *)(pkt);
-+		if ((pkt_hdr->size >> 2) != dwords)
-+			return -EINVAL;
- 	} else {
- 		/* bad packet received, dropping */
- 		new_rd_idx = qhdr->write_idx;
+diff --git a/drivers/char/ipmi/ipmi_msghandler.c b/drivers/char/ipmi/ipmi_msghandler.c
+index db8f1dadaa9f..96f175bd6d9f 100644
+--- a/drivers/char/ipmi/ipmi_msghandler.c
++++ b/drivers/char/ipmi/ipmi_msghandler.c
+@@ -4618,10 +4618,10 @@ static int handle_one_recv_msg(struct ipmi_smi *intf,
+ 		 * The NetFN and Command in the response is not even
+ 		 * marginally correct.
+ 		 */
+-		dev_warn(intf->si_dev,
+-			 "BMC returned incorrect response, expected netfn %x cmd %x, got netfn %x cmd %x\n",
+-			 (msg->data[0] >> 2) | 1, msg->data[1],
+-			 msg->rsp[0] >> 2, msg->rsp[1]);
++		dev_warn_ratelimited(intf->si_dev,
++				     "BMC returned incorrect response, expected netfn %x cmd %x, got netfn %x cmd %x\n",
++				     (msg->data[0] >> 2) | 1, msg->data[1],
++				     msg->rsp[0] >> 2, msg->rsp[1]);
+ 
+ 		goto return_unspecified;
+ 	}
+-- 
+2.39.5
+
 
 
 
