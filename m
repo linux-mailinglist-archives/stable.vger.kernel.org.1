@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-173753-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-174896-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id F0FC9B35F82
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 14:49:57 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 92ED2B36565
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 15:47:50 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 263151883A15
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 12:50:03 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 276BE566E7B
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 13:40:10 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 05D1911187;
-	Tue, 26 Aug 2025 12:49:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 37D0D221290;
+	Tue, 26 Aug 2025 13:40:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="TPMFl8p6"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="PfBswuD2"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B3E8B18024;
-	Tue, 26 Aug 2025 12:49:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DF14D1F4CA9;
+	Tue, 26 Aug 2025 13:40:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756212580; cv=none; b=SB44j8CiE57M8NdvqtkeGy66LhQ5GQ/+Vyw3bYmbngj7OwUxS6BvHqLtLedA7NhWeiVzmH+nD8ldILhr3wT+zCm/Jy/thN0DKVUShsUIfo3jHyU1y7weoMzOhPfRB+HFTFvYdj1tEYmDxoPZutPySFKOcTyy5jpIpjVlvFr7l9c=
+	t=1756215603; cv=none; b=g6iiW+Hat5KnxYv2aCsH/ttuSl43UZWNXJPM+uCsM/F1pnyRAye+e8tcEXQcc/QLazKCP8huScfTp+cbNuQVu3aEyX66RkGoHIJkLoNQdHh/MUYDjDxT3Msdu911aUXEK3pOL1vQD+kx2ar5GE8/+tHHD2yhXRULVA4pbpkOgXc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756212580; c=relaxed/simple;
-	bh=1trdmzinmdL7tNJeVXIyiyfEm/N0moAjGzrOeTvJJWM=;
+	s=arc-20240116; t=1756215603; c=relaxed/simple;
+	bh=GUnfJXnZoxxQr2e3fXLUIJXB+UNqHnezqH2urso/nwo=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=BlERsbQQIj8YgpsT9RbthovNLUp28Oth3IMlfaz+ID24UzRKX/CTjVWOheeDu0Jp/DINssiJcGUkNwWKLsHkYJB43xs+mFAn57sgMWR/tAmhGbo/HgQabivwhNkzK1TiSn8xlqiVL+mQY+UJpitTaoFBRJL7LObvP0SVFbsD2A8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=TPMFl8p6; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 46B80C4CEF4;
-	Tue, 26 Aug 2025 12:49:40 +0000 (UTC)
+	 MIME-Version; b=gPw65Lay4VgEhmeNpk6mAQw2grAC0OnYsY6dwFPwoRq6JyrH9tHzGafWPTweEKhbp97GJZJ3one+sw5ZsYF+HHLbfWpoWRvHdMCvgHdw8mXxBTbhHWc121zUg586GZn6OYpVIIB1I3Iq7CyrO0KVD/uN7zKlDn/PBsTVpqmBd9c=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=PfBswuD2; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 447E2C4CEF1;
+	Tue, 26 Aug 2025 13:40:02 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1756212580;
-	bh=1trdmzinmdL7tNJeVXIyiyfEm/N0moAjGzrOeTvJJWM=;
+	s=korg; t=1756215602;
+	bh=GUnfJXnZoxxQr2e3fXLUIJXB+UNqHnezqH2urso/nwo=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=TPMFl8p6ns22z6Yg8V7Sid39HNLc8Zy0Dp+rAmQZWQ6TXcu3iOGRVTVSnx+W4/+q2
-	 pflXSW0EIkCnNVS16ztOFhVxLifx1CX18FnDlrV0fvqrM6NZsNZUeI6TUKVNWk/flU
-	 UwLi82TY4y3Zh6VtVtMm8umwFlvSmvz0FsRUUDJ0=
+	b=PfBswuD2tgBEtyM9bA0IjzjcR4eVfK5pPq5JBR42WKPvGN/mHtXVd5EKiEFCsYzzm
+	 DR4ykTTKM8Jv4VA2iZBoUNVWY59Fls7G8M5Fd30HD+SHvV0rhhqhVF5plhlafw8Vuj
+	 9Co/JUBFiuCUb67Tml/nnKJLyTRqphqY/HUbDEzw=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	"Paulo Alcantara (Red Hat)" <pc@manguebit.org>,
-	Wang Zhaolong <wangzhaolong@huaweicloud.com>,
-	Steve French <stfrench@microsoft.com>
-Subject: [PATCH 6.6 007/587] smb: client: remove redundant lstrp update in negotiate protocol
+	Yehowshua Immanuel <yehowshua.immanuel@twosixtech.com>,
+	Drew Hamilton <drew.hamilton@zetier.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.15 065/644] usb: musb: fix gadget state on disconnect
 Date: Tue, 26 Aug 2025 13:02:36 +0200
-Message-ID: <20250826110953.135556865@linuxfoundation.org>
+Message-ID: <20250826110948.110387786@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250826110952.942403671@linuxfoundation.org>
-References: <20250826110952.942403671@linuxfoundation.org>
+In-Reply-To: <20250826110946.507083938@linuxfoundation.org>
+References: <20250826110946.507083938@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,57 +62,53 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Wang Zhaolong <wangzhaolong@huaweicloud.com>
+From: Drew Hamilton <drew.hamilton@zetier.com>
 
-commit e19d8dd694d261ac26adb2a26121a37c107c81ad upstream.
+commit 67a59f82196c8c4f50c83329f0577acfb1349b50 upstream.
 
-Commit 34331d7beed7 ("smb: client: fix first command failure during
-re-negotiation") addressed a race condition by updating lstrp before
-entering negotiate state. However, this approach may have some unintended
-side effects.
+When unplugging the USB cable or disconnecting a gadget in usb peripheral mode with
+echo "" > /sys/kernel/config/usb_gadget/<your_gadget>/UDC,
+/sys/class/udc/musb-hdrc.0/state does not change from USB_STATE_CONFIGURED.
 
-The lstrp field is documented as "when we got last response from this
-server", and updating it before actually receiving a server response
-could potentially affect other mechanisms that rely on this timestamp.
-For example, the SMB echo detection logic also uses lstrp as a reference
-point. In scenarios with frequent user operations during reconnect states,
-the repeated calls to cifs_negotiate_protocol() might continuously
-update lstrp, which could interfere with the echo detection timing.
+Testing on dwc2/3 shows they both update the state to USB_STATE_NOTATTACHED.
 
-Additionally, commit 266b5d02e14f ("smb: client: fix race condition in
-negotiate timeout by using more precise timing") introduced a dedicated
-neg_start field specifically for tracking negotiate start time. This
-provides a more precise solution for the original race condition while
-preserving the intended semantics of lstrp.
+Add calls to usb_gadget_set_state in musb_g_disconnect and musb_gadget_stop
+to fix both cases.
 
-Since the race condition is now properly handled by the neg_start
-mechanism, the lstrp update in cifs_negotiate_protocol() is no longer
-necessary and can be safely removed.
-
-Fixes: 266b5d02e14f ("smb: client: fix race condition in negotiate timeout by using more precise timing")
+Fixes: 49401f4169c0 ("usb: gadget: introduce gadget state tracking")
 Cc: stable@vger.kernel.org
-Acked-by: Paulo Alcantara (Red Hat) <pc@manguebit.org>
-Signed-off-by: Wang Zhaolong <wangzhaolong@huaweicloud.com>
-Signed-off-by: Steve French <stfrench@microsoft.com>
+Co-authored-by: Yehowshua Immanuel <yehowshua.immanuel@twosixtech.com>
+Signed-off-by: Yehowshua Immanuel <yehowshua.immanuel@twosixtech.com>
+Signed-off-by: Drew Hamilton <drew.hamilton@zetier.com>
+Link: https://lore.kernel.org/r/20250701154126.8543-1-drew.hamilton@zetier.com
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- fs/smb/client/connect.c |    1 -
- 1 file changed, 1 deletion(-)
+ drivers/usb/musb/musb_gadget.c |    2 ++
+ 1 file changed, 2 insertions(+)
 
---- a/fs/smb/client/connect.c
-+++ b/fs/smb/client/connect.c
-@@ -3998,7 +3998,6 @@ retry:
- 		return 0;
- 	}
+--- a/drivers/usb/musb/musb_gadget.c
++++ b/drivers/usb/musb/musb_gadget.c
+@@ -1909,6 +1909,7 @@ static int musb_gadget_stop(struct usb_g
+ 	 * gadget driver here and have everything work;
+ 	 * that currently misbehaves.
+ 	 */
++	usb_gadget_set_state(g, USB_STATE_NOTATTACHED);
  
--	server->lstrp = jiffies;
- 	server->tcpStatus = CifsInNegotiate;
- 	server->neg_start = jiffies;
- 	spin_unlock(&server->srv_lock);
+ 	/* Force check of devctl register for PM runtime */
+ 	schedule_delayed_work(&musb->irq_work, 0);
+@@ -2017,6 +2018,7 @@ void musb_g_disconnect(struct musb *musb
+ 	case OTG_STATE_B_PERIPHERAL:
+ 	case OTG_STATE_B_IDLE:
+ 		musb_set_state(musb, OTG_STATE_B_IDLE);
++		usb_gadget_set_state(&musb->g, USB_STATE_NOTATTACHED);
+ 		break;
+ 	case OTG_STATE_B_SRP_INIT:
+ 		break;
 
 
 
