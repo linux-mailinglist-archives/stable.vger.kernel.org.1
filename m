@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-173508-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-174557-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 19A38B35D1A
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 13:41:13 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6284BB363A7
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 15:32:07 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 6FC193BA6DB
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 11:40:51 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 361CC1BC6FE9
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 13:26:39 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B804B2BE62B;
-	Tue, 26 Aug 2025 11:40:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8436E230BDF;
+	Tue, 26 Aug 2025 13:25:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="MSgdY9p9"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="v/1E66BL"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 76DB317332C;
-	Tue, 26 Aug 2025 11:40:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 400E51DAC95;
+	Tue, 26 Aug 2025 13:25:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756208430; cv=none; b=QhxiQWya31WI2MvdRCRkcq+ZhOEys6qzj8Zt3rlZTKb1tnx7WcIWWuG25GQrL4nE6KoaFILKtaAIha+lnDeVrMLpZsQVieIrmV8mHNrK9dKvwFWoJbnbWhRYsJ4t+uRIAVXZbo3fA2VLcVHUozTuMcgbGJPDzLpAmmc2mW0drMc=
+	t=1756214709; cv=none; b=rdNl2vMiH0knv/Y4M36hcsYzxzyX8F1VtTUEDrrktER1vtEAoRAQtFBPx5FK7iQnoMYm3inNC2tRa646mVy6ZUQqRWsGdGnPhSghu4MdhgKCRysUt7k3ht5XedxWcXFyRsuQPxu+7alknx0+zJelH+8kuXAg7l4ji969pr5tsr4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756208430; c=relaxed/simple;
-	bh=KfMzINjpr75HnO+R8AtsD8/11Krp55b98VmIl6VJ2do=;
+	s=arc-20240116; t=1756214709; c=relaxed/simple;
+	bh=SbpPKvf2VuYbt+YkYLpW828MuAsNjO1tTsjm6cRpRXU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=rqZEEZbLjrS4QeZZh0z0q1YCFpLIR+PbGskI7CIhRC6vNi/jDY1Oh8yZ7lF6gjW5CRYflxWRFsHuAcJjNaKOnuXIg9qUTQVAHUDaijDr7tw70l4bjUuYvLjSHJS9ina2Nkvub4+Fz/nSCBLlMSvSv3BjeAbaNBk1HFCu/qagPMY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=MSgdY9p9; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 08A26C4CEF1;
-	Tue, 26 Aug 2025 11:40:29 +0000 (UTC)
+	 MIME-Version; b=frcrmGVhoVxGTr6G6bTRY5HsNzPquhE5K82yBu3fM7eVQpHJZbitGPFQMeRyXsjJWwTQYr97kqfWPy89eo3tZSXPaG6eC6m0/iHEk1VNkJAQt5yEhYkSBk0s0beFhIetuLvpDd6sPJyn0rwKuE0QvlbIDwD8GBjuwuSyv9Wb5gg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=v/1E66BL; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B375DC4CEF1;
+	Tue, 26 Aug 2025 13:25:08 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1756208430;
-	bh=KfMzINjpr75HnO+R8AtsD8/11Krp55b98VmIl6VJ2do=;
+	s=korg; t=1756214709;
+	bh=SbpPKvf2VuYbt+YkYLpW828MuAsNjO1tTsjm6cRpRXU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=MSgdY9p9MmRz/idzUDu3L2EtXcG0HHzj0FPlXOzt7ONXyXvvRSnSZ2F9QLUNQVCrK
-	 Hb2RqB8Wn5GtMrINXxsL5A62/Fm8QcxEh7B82rXzxbDJHzgQUvcg74RhxIcXCmap/f
-	 MfKa6NsPA1XDltwtxPgQkdayQp5hrDNI+uVKxpGs=
+	b=v/1E66BLFRQnA1xRmFO8Esp3EhA+mq7J6QSBKc2FalNRBc4rNDG6AZgwTlwGGhXp/
+	 KPUNHzBwrooKvLB0F0FqWRfsGH7WTHZWHNUIbQwABaYErYQWnXrk5iLYjuYMiRpOl0
+	 Z2wV7GVZwh5+X4zmvF3a+rmsn3ssuvDIBLYpSTGA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Richard Zhu <hongxing.zhu@nxp.com>,
-	Bjorn Helgaas <bhelgaas@google.com>,
-	Frank Li <Frank.Li@nxp.com>
-Subject: [PATCH 6.12 077/322] PCI: imx6: Add IMX8MM_EP and IMX8MP_EP fixed 256-byte BAR 4 in epc_features
+	Kuninori Morimoto <kuninori.morimoto.gx@renesas.com>,
+	Mark Brown <broonie@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.1 239/482] ASoC: soc-dai.c: add missing flag check at snd_soc_pcm_dai_probe()
 Date: Tue, 26 Aug 2025 13:08:12 +0200
-Message-ID: <20250826110917.508754450@linuxfoundation.org>
+Message-ID: <20250826110936.677168162@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250826110915.169062587@linuxfoundation.org>
-References: <20250826110915.169062587@linuxfoundation.org>
+In-Reply-To: <20250826110930.769259449@linuxfoundation.org>
+References: <20250826110930.769259449@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,40 +62,81 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Richard Zhu <hongxing.zhu@nxp.com>
+From: Kuninori Morimoto <kuninori.morimoto.gx@renesas.com>
 
-commit 399444a87acdea5d21c218bc8e9b621fea1cd218 upstream.
+[ Upstream commit 5c5a7521e9364a40fe2c1b67ab79991e3e9085df ]
 
-For IMX8MM_EP and IMX8MP_EP, add fixed 256-byte BAR 4 and reserved BAR 5
-in imx8m_pcie_epc_features.
+dai->probed is used at snd_soc_pcm_dai_probe/remove(),
+and used to call real remove() function only when it was probed.
 
-Fixes: 75c2f26da03f ("PCI: imx6: Add i.MX PCIe EP mode support")
-Signed-off-by: Richard Zhu <hongxing.zhu@nxp.com>
-[bhelgaas: add details in subject]
-Signed-off-by: Bjorn Helgaas <bhelgaas@google.com>
-Reviewed-by: Frank Li <Frank.Li@nxp.com>
-Cc: stable@vger.kernel.org
-Link: https://patch.msgid.link/20250708091003.2582846-3-hongxing.zhu@nxp.com
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+	int snd_soc_pcm_dai_probe(...)
+	{
+		...
+		for_each_rtd_dais(rtd, i, dai) {
+			...
+
+			if (dai->driver->probe) {
+(A)				int ret = dai->driver->probe(dai);
+
+				if (ret < 0)
+					return soc_dai_ret(dai, ret);
+			}
+
+=>			dai->probed = 1;
+		}
+		...
+	}
+
+	int snd_soc_pcm_dai_remove(...)
+	{
+		...
+		for_each_rtd_dais(rtd, i, dai) {
+			...
+=>			if (dai->probed &&
+			    ...) {
+				...
+			}
+
+=>			dai->probed = 0;
+		}
+		...
+	}
+
+But on probe() case, we need to check dai->probed before calling
+real probe() function at (A), otherwise real probe() might be called
+multi times (but real remove() will be called only once).
+This patch checks it at probe().
+
+Signed-off-by: Kuninori Morimoto <kuninori.morimoto.gx@renesas.com>
+Link: https://lore.kernel.org/r/87wn3u64e6.wl-kuninori.morimoto.gx@renesas.com
+Signed-off-by: Mark Brown <broonie@kernel.org>
+Stable-dep-of: 0e270f32975f ("ASoC: fsl_sai: replace regmap_write with regmap_update_bits")
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/pci/controller/dwc/pci-imx6.c |    2 ++
- 1 file changed, 2 insertions(+)
+ sound/soc/soc-dai.c | 3 +++
+ 1 file changed, 3 insertions(+)
 
---- a/drivers/pci/controller/dwc/pci-imx6.c
-+++ b/drivers/pci/controller/dwc/pci-imx6.c
-@@ -1097,6 +1097,8 @@ static const struct pci_epc_features imx
- 	.msix_capable = false,
- 	.bar[BAR_1] = { .type = BAR_RESERVED, },
- 	.bar[BAR_3] = { .type = BAR_RESERVED, },
-+	.bar[BAR_4] = { .type = BAR_FIXED, .fixed_size = SZ_256, },
-+	.bar[BAR_5] = { .type = BAR_RESERVED, },
- 	.align = SZ_64K,
- };
+diff --git a/sound/soc/soc-dai.c b/sound/soc/soc-dai.c
+index ba8a99124869..5eac6a7559c7 100644
+--- a/sound/soc/soc-dai.c
++++ b/sound/soc/soc-dai.c
+@@ -548,6 +548,9 @@ int snd_soc_pcm_dai_probe(struct snd_soc_pcm_runtime *rtd, int order)
+ 		if (dai->driver->probe_order != order)
+ 			continue;
  
++		if (dai->probed)
++			continue;
++
+ 		if (dai->driver->probe) {
+ 			int ret = dai->driver->probe(dai);
+ 
+-- 
+2.50.1
+
 
 
 
