@@ -1,56 +1,62 @@
-Return-Path: <stable+bounces-175874-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-174732-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id D4D31B36B20
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 16:43:15 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 56CA2B364A1
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 15:40:42 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 67BA91C24F66
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 14:25:45 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 3E1C71BC7CA1
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 13:34:11 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8C123350D5D;
-	Tue, 26 Aug 2025 14:23:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B0C003009D5;
+	Tue, 26 Aug 2025 13:32:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Am4Sc5mR"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Akxmzvl8"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3A75E306D3F;
-	Tue, 26 Aug 2025 14:23:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6DEC71DE4CD;
+	Tue, 26 Aug 2025 13:32:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756218196; cv=none; b=bBX4NqXkqygItdZKURmO61/bewa7uttMI6TiOKhOihnKGe/F+dAj+m4YN18vLa3Q3AeUTORPnxcTtleRfRUtr8S7dvSb+Xw6Y9mLl2nfrGhFuQAacgsFZH24Kjb4RN/R1GL8fcDRuVG/XeRnfkruS+9jA7XWZp8I4lVylouhaBI=
+	t=1756215170; cv=none; b=ZHtpmj3UYTwXx6a3z6gEY2QWHV7RqSoCq/EXZW9RFnDV9nXLwBL+ROS35Z1gVdh0xf4qM1mnZSdS93oywPl9z2OpeGzgpKzSNXwR1Q5kTymHIsjgdga4LvJm/WbwfaytEer8J4R44THLUBVYtwyGwtq9nQRzcBCkqGEqP3KiDSk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756218196; c=relaxed/simple;
-	bh=R/pweSUh+99glOD47I5Y1pP55Y8dXmkAENo2uKTjeqU=;
+	s=arc-20240116; t=1756215170; c=relaxed/simple;
+	bh=UVWV0V4czHVxMadtHuIo0uOxc4NZzbNUV79VXETUyYI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=HJIvk6iidUWPfJ5xi4mb+blTO2JVoX4y6JmbaVWonieNAHWOjQkWWsH3iKk/PtNY+gJxt2dGCEuPuj7A32GQAFri84QbNAYeThuciRokFsyBA42l8YlbI8cQ0q0Tx5egvcns8ge9ZsLXDixl32nHg2l2/O7PsEE1dgb2B35SLzc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Am4Sc5mR; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C20C9C4CEF1;
-	Tue, 26 Aug 2025 14:23:15 +0000 (UTC)
+	 MIME-Version; b=Afp+MGAWsvFeneMdJzwIJjHg7kxRxZIBIoARmmzZql02Dx5v2lsMWrYxAdWlVz2G9P5IpuHexD5INXESHUtgPLLMdQCjCzEYnw5fsggb/9wvnnooSQup8zymKVyhocgr7uq4cyeYIJufvmVGT/cCxM16ZE7aGzD2TSsTClMGkZw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Akxmzvl8; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D1D1AC4CEF1;
+	Tue, 26 Aug 2025 13:32:49 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1756218196;
-	bh=R/pweSUh+99glOD47I5Y1pP55Y8dXmkAENo2uKTjeqU=;
+	s=korg; t=1756215170;
+	bh=UVWV0V4czHVxMadtHuIo0uOxc4NZzbNUV79VXETUyYI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Am4Sc5mR4og9IckbmZj5wK25nX6JtXeCiigErQ1PqUD3OWnFThHZVdShV+79TmtQu
-	 h2hST8OxZgRaHxgegkv+mhnkHGZNLvz/2h+lnBTyccES7df3PkRmugxKCA1wZfKRHn
-	 Dq54eCSACGGIO56/XRxYU5kOlX7hd48B9pLHO+IM=
+	b=Akxmzvl8zdEKb+GJPL+Uu5at6/BfZ4Q2KlmuFZ3YButvUziED4X1YahJ1SqqBCkOy
+	 bwpEevjPxnrYrBxYlU1mQPCs4TlNGxqvD4SOKvLvTL/0cEb6jOJ4p1sSWGbr7BK0Lr
+	 fHtBP+ZfrzSnsoiox1swKo3uvUrlwQFSBMlH8qoQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	"Geoffrey D. Bennett" <g@b4.vu>,
-	Takashi Iwai <tiwai@suse.de>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 429/523] ALSA: scarlett2: Add retry on -EPROTO from scarlett2_usb_tx()
+	Lorenzo Stoakes <lorenzo.stoakes@oracle.com>,
+	Julian Orth <ju.orth@gmail.com>,
+	Jann Horn <jannh@google.com>,
+	"Liam R. Howlett" <Liam.Howlett@Oracle.com>,
+	Linus Torvalds <torvalds@linux-foundation.org>,
+	Shuah Khan <shuah@kernel.org>,
+	Vlastimil Babka <vbabka@suse.cz>,
+	Andrew Morton <akpm@linux-foundation.org>,
+	"Isaac J. Manjarres" <isaacmanjarres@google.com>
+Subject: [PATCH 6.1 386/482] mm: reinstate ability to map write-sealed memfd mappings read-only
 Date: Tue, 26 Aug 2025 13:10:39 +0200
-Message-ID: <20250826110935.036748900@linuxfoundation.org>
+Message-ID: <20250826110940.363954864@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250826110924.562212281@linuxfoundation.org>
-References: <20250826110924.562212281@linuxfoundation.org>
+In-Reply-To: <20250826110930.769259449@linuxfoundation.org>
+References: <20250826110930.769259449@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,77 +68,236 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: "Geoffrey D. Bennett" <g@b4.vu>
+From: Lorenzo Stoakes <lorenzo.stoakes@oracle.com>
 
-[ Upstream commit 8a15ca0ca51399b652b1bbb23b590b220cf03d62 ]
+[ Upstream commit 8ec396d05d1b737c87311fb7311f753b02c2a6b1 ]
 
-During communication with Focusrite Scarlett Gen 2/3/4 USB audio
-interfaces, -EPROTO is sometimes returned from scarlett2_usb_tx(),
-snd_usb_ctl_msg() which can cause initialisation and control
-operations to fail intermittently.
+Patch series "mm: reinstate ability to map write-sealed memfd mappings
+read-only".
 
-This patch adds up to 5 retries in scarlett2_usb(), with a delay
-starting at 5ms and doubling each time. This follows the same approach
-as the fix for usb_set_interface() in endpoint.c (commit f406005e162b
-("ALSA: usb-audio: Add retry on -EPROTO from usb_set_interface()")),
-which resolved similar -EPROTO issues during device initialisation,
-and is the same approach as in fcp.c:fcp_usb().
+In commit 158978945f31 ("mm: perform the mapping_map_writable() check
+after call_mmap()") (and preceding changes in the same series) it became
+possible to mmap() F_SEAL_WRITE sealed memfd mappings read-only.
 
-Fixes: 9e4d5c1be21f ("ALSA: usb-audio: Scarlett Gen 2 mixer interface")
-Closes: https://github.com/geoffreybennett/linux-fcp/issues/41
-Cc: stable@vger.kernel.org
-Signed-off-by: Geoffrey D. Bennett <g@b4.vu>
-Link: https://patch.msgid.link/aIdDO6ld50WQwNim@m.b4.vu
-Signed-off-by: Takashi Iwai <tiwai@suse.de>
-[ Applied retry logic directly in scarlett2_usb() instead of scarlett2_usb_tx() ]
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Commit 5de195060b2e ("mm: resolve faulty mmap_region() error path
+behaviour") unintentionally undid this logic by moving the
+mapping_map_writable() check before the shmem_mmap() hook is invoked,
+thereby regressing this change.
+
+This series reworks how we both permit write-sealed mappings being mapped
+read-only and disallow mprotect() from undoing the write-seal, fixing this
+regression.
+
+We also add a regression test to ensure that we do not accidentally
+regress this in future.
+
+Thanks to Julian Orth for reporting this regression.
+
+This patch (of 2):
+
+In commit 158978945f31 ("mm: perform the mapping_map_writable() check
+after call_mmap()") (and preceding changes in the same series) it became
+possible to mmap() F_SEAL_WRITE sealed memfd mappings read-only.
+
+This was previously unnecessarily disallowed, despite the man page
+documentation indicating that it would be, thereby limiting the usefulness
+of F_SEAL_WRITE logic.
+
+We fixed this by adapting logic that existed for the F_SEAL_FUTURE_WRITE
+seal (one which disallows future writes to the memfd) to also be used for
+F_SEAL_WRITE.
+
+For background - the F_SEAL_FUTURE_WRITE seal clears VM_MAYWRITE for a
+read-only mapping to disallow mprotect() from overriding the seal - an
+operation performed by seal_check_write(), invoked from shmem_mmap(), the
+f_op->mmap() hook used by shmem mappings.
+
+By extending this to F_SEAL_WRITE and critically - checking
+mapping_map_writable() to determine if we may map the memfd AFTER we
+invoke shmem_mmap() - the desired logic becomes possible.  This is because
+mapping_map_writable() explicitly checks for VM_MAYWRITE, which we will
+have cleared.
+
+Commit 5de195060b2e ("mm: resolve faulty mmap_region() error path
+behaviour") unintentionally undid this logic by moving the
+mapping_map_writable() check before the shmem_mmap() hook is invoked,
+thereby regressing this change.
+
+We reinstate this functionality by moving the check out of shmem_mmap()
+and instead performing it in do_mmap() at the point at which VMA flags are
+being determined, which seems in any case to be a more appropriate place
+in which to make this determination.
+
+In order to achieve this we rework memfd seal logic to allow us access to
+this information using existing logic and eliminate the clearing of
+VM_MAYWRITE from seal_check_write() which we are performing in do_mmap()
+instead.
+
+Link: https://lkml.kernel.org/r/99fc35d2c62bd2e05571cf60d9f8b843c56069e0.1732804776.git.lorenzo.stoakes@oracle.com
+Fixes: 5de195060b2e ("mm: resolve faulty mmap_region() error path behaviour")
+Signed-off-by: Lorenzo Stoakes <lorenzo.stoakes@oracle.com>
+Reported-by: Julian Orth <ju.orth@gmail.com>
+Closes: https://lore.kernel.org/all/CAHijbEUMhvJTN9Xw1GmbM266FXXv=U7s4L_Jem5x3AaPZxrYpQ@mail.gmail.com/
+Cc: Jann Horn <jannh@google.com>
+Cc: Liam R. Howlett <Liam.Howlett@Oracle.com>
+Cc: Linus Torvalds <torvalds@linux-foundation.org>
+Cc: Shuah Khan <shuah@kernel.org>
+Cc: Vlastimil Babka <vbabka@suse.cz>
+Cc: <stable@vger.kernel.org>
+Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
+Signed-off-by: Isaac J. Manjarres <isaacmanjarres@google.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- sound/usb/mixer_scarlett_gen2.c |    8 ++++++++
- 1 file changed, 8 insertions(+)
+ include/linux/memfd.h |   14 ++++++++++++
+ include/linux/mm.h    |   58 ++++++++++++++++++++++++++++++++++----------------
+ mm/memfd.c            |    2 -
+ mm/mmap.c             |    4 +++
+ 4 files changed, 59 insertions(+), 19 deletions(-)
 
---- a/sound/usb/mixer_scarlett_gen2.c
-+++ b/sound/usb/mixer_scarlett_gen2.c
-@@ -95,6 +95,7 @@
- #include <linux/slab.h>
- #include <linux/usb.h>
- #include <linux/moduleparam.h>
-+#include <linux/delay.h>
+--- a/include/linux/memfd.h
++++ b/include/linux/memfd.h
+@@ -6,11 +6,25 @@
  
- #include <sound/control.h>
- #include <sound/tlv.h>
-@@ -591,6 +592,8 @@ static int scarlett2_usb(
- 	u16 req_buf_size = sizeof(struct scarlett2_usb_packet) + req_size;
- 	u16 resp_buf_size = sizeof(struct scarlett2_usb_packet) + resp_size;
- 	struct scarlett2_usb_packet *req = NULL, *resp = NULL;
-+	int retries = 0;
-+	const int max_retries = 5;
- 	int err = 0;
+ #ifdef CONFIG_MEMFD_CREATE
+ extern long memfd_fcntl(struct file *file, unsigned int cmd, unsigned long arg);
++unsigned int *memfd_file_seals_ptr(struct file *file);
+ #else
+ static inline long memfd_fcntl(struct file *f, unsigned int c, unsigned long a)
+ {
+ 	return -EINVAL;
+ }
++
++static inline unsigned int *memfd_file_seals_ptr(struct file *file)
++{
++	return NULL;
++}
+ #endif
  
- 	req = kmalloc(req_buf_size, GFP_KERNEL);
-@@ -614,6 +617,7 @@ static int scarlett2_usb(
- 	if (req_size)
- 		memcpy(req->data, req_data, req_size);
++/* Retrieve memfd seals associated with the file, if any. */
++static inline unsigned int memfd_file_seals(struct file *file)
++{
++	unsigned int *sealsp = memfd_file_seals_ptr(file);
++
++	return sealsp ? *sealsp : 0;
++}
++
+ #endif /* __LINUX_MEMFD_H */
+--- a/include/linux/mm.h
++++ b/include/linux/mm.h
+@@ -3525,6 +3525,37 @@ void mem_dump_obj(void *object);
+ static inline void mem_dump_obj(void *object) {}
+ #endif
  
-+retry:
- 	err = snd_usb_ctl_msg(mixer->chip->dev,
- 			usb_sndctrlpipe(mixer->chip->dev, 0),
- 			SCARLETT2_USB_VENDOR_SPECIFIC_CMD_REQ,
-@@ -624,6 +628,10 @@ static int scarlett2_usb(
- 			req_buf_size);
++static inline bool is_write_sealed(int seals)
++{
++	return seals & (F_SEAL_WRITE | F_SEAL_FUTURE_WRITE);
++}
++
++/**
++ * is_readonly_sealed - Checks whether write-sealed but mapped read-only,
++ *                      in which case writes should be disallowing moving
++ *                      forwards.
++ * @seals: the seals to check
++ * @vm_flags: the VMA flags to check
++ *
++ * Returns whether readonly sealed, in which case writess should be disallowed
++ * going forward.
++ */
++static inline bool is_readonly_sealed(int seals, vm_flags_t vm_flags)
++{
++	/*
++	 * Since an F_SEAL_[FUTURE_]WRITE sealed memfd can be mapped as
++	 * MAP_SHARED and read-only, take care to not allow mprotect to
++	 * revert protections on such mappings. Do this only for shared
++	 * mappings. For private mappings, don't need to mask
++	 * VM_MAYWRITE as we still want them to be COW-writable.
++	 */
++	if (is_write_sealed(seals) &&
++	    ((vm_flags & (VM_SHARED | VM_WRITE)) == VM_SHARED))
++		return true;
++
++	return false;
++}
++
+ /**
+  * seal_check_write - Check for F_SEAL_WRITE or F_SEAL_FUTURE_WRITE flags and
+  *                    handle them.
+@@ -3536,24 +3567,15 @@ static inline void mem_dump_obj(void *ob
+  */
+ static inline int seal_check_write(int seals, struct vm_area_struct *vma)
+ {
+-	if (seals & (F_SEAL_WRITE | F_SEAL_FUTURE_WRITE)) {
+-		/*
+-		 * New PROT_WRITE and MAP_SHARED mmaps are not allowed when
+-		 * write seals are active.
+-		 */
+-		if ((vma->vm_flags & VM_SHARED) && (vma->vm_flags & VM_WRITE))
+-			return -EPERM;
+-
+-		/*
+-		 * Since an F_SEAL_[FUTURE_]WRITE sealed memfd can be mapped as
+-		 * MAP_SHARED and read-only, take care to not allow mprotect to
+-		 * revert protections on such mappings. Do this only for shared
+-		 * mappings. For private mappings, don't need to mask
+-		 * VM_MAYWRITE as we still want them to be COW-writable.
+-		 */
+-		if (vma->vm_flags & VM_SHARED)
+-			vma->vm_flags &= ~(VM_MAYWRITE);
+-	}
++	if (!is_write_sealed(seals))
++		return 0;
++
++	/*
++	 * New PROT_WRITE and MAP_SHARED mmaps are not allowed when
++	 * write seals are active.
++	 */
++	if ((vma->vm_flags & VM_SHARED) && (vma->vm_flags & VM_WRITE))
++		return -EPERM;
  
- 	if (err != req_buf_size) {
-+		if (err == -EPROTO && ++retries <= max_retries) {
-+			msleep(5 * (1 << (retries - 1)));
-+			goto retry;
-+		}
- 		usb_audio_err(
- 			mixer->chip,
- 			"Scarlett Gen 2 USB request result cmd %x was %d\n",
+ 	return 0;
+ }
+--- a/mm/memfd.c
++++ b/mm/memfd.c
+@@ -133,7 +133,7 @@ static int memfd_wait_for_pins(struct ad
+ 	return error;
+ }
+ 
+-static unsigned int *memfd_file_seals_ptr(struct file *file)
++unsigned int *memfd_file_seals_ptr(struct file *file)
+ {
+ 	if (shmem_file(file))
+ 		return &SHMEM_I(file_inode(file))->seals;
+--- a/mm/mmap.c
++++ b/mm/mmap.c
+@@ -46,6 +46,7 @@
+ #include <linux/pkeys.h>
+ #include <linux/oom.h>
+ #include <linux/sched/mm.h>
++#include <linux/memfd.h>
+ 
+ #include <linux/uaccess.h>
+ #include <asm/cacheflush.h>
+@@ -1336,6 +1337,7 @@ unsigned long do_mmap(struct file *file,
+ 
+ 	if (file) {
+ 		struct inode *inode = file_inode(file);
++		unsigned int seals = memfd_file_seals(file);
+ 		unsigned long flags_mask;
+ 
+ 		if (!file_mmap_ok(file, inode, pgoff, len))
+@@ -1374,6 +1376,8 @@ unsigned long do_mmap(struct file *file,
+ 			vm_flags |= VM_SHARED | VM_MAYSHARE;
+ 			if (!(file->f_mode & FMODE_WRITE))
+ 				vm_flags &= ~(VM_MAYWRITE | VM_SHARED);
++			else if (is_readonly_sealed(seals, vm_flags))
++				vm_flags &= ~VM_MAYWRITE;
+ 			fallthrough;
+ 		case MAP_PRIVATE:
+ 			if (!(file->f_mode & FMODE_READ))
 
 
 
