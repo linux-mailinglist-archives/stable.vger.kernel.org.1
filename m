@@ -1,58 +1,57 @@
-Return-Path: <stable+bounces-173104-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-174509-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id C4356B35BDF
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 13:28:52 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3E049B363C2
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 15:33:04 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 6F3F23621A6
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 11:23:25 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id BF3068A5858
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 13:24:50 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 621B7309DA0;
-	Tue, 26 Aug 2025 11:23:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id AE995312803;
+	Tue, 26 Aug 2025 13:23:00 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="qdh4g+1P"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="p9kbv7py"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0E0532F83C1;
-	Tue, 26 Aug 2025 11:23:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 52C68244667;
+	Tue, 26 Aug 2025 13:23:00 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756207383; cv=none; b=n/Lhlb1cSnRF5aeofyUgmHkSVTaLjWosW/66mn64gIukHlUtae8d246cNKgE4ABIt5kRNCpPv/B3ba0HTA0IlEQ74SUniS4h9JvJEUtTbCuY3PN0vlbgT4WV/AQswdrelnhxrcKrlMstFN66IbLuYYm3CzQJ6hJyF8NlyVPLGkA=
+	t=1756214580; cv=none; b=q5WVWkD9BSdicQD4HaK8+OfTtawSbcxDKiNYEL78nzZ+14FjBu+r4x9NjbujS2jJI82tW6Paghn6A9GEDBSfhumhuZOlNV/R1yguQ1/mH/sZWRAjJZ9R4DQ/d2AXWnREgBi82YphuqKPI6iG6A+hJMdxt0aN+v00zgNrjpDQU+0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756207383; c=relaxed/simple;
-	bh=6PWf0LY+LcgE0nPB/el85vIFuF4jkOjIHFe7kSXIElw=;
+	s=arc-20240116; t=1756214580; c=relaxed/simple;
+	bh=n64Qwo/hJ2GoiKn5Gq9Zm0NrqOs12os5SlMoAObqUZc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=SQA7uhN1tKPl1kYO1bjIeT+5Mobh9gOoKN+d6r2jIlQiQhpo6hKsggMhc8v9gICzO8/1Ew9WU+9l5FCOS2BtdRZn1yQbscXRi4tqOjbMymGgJUgKwFllFJ57Bu6DYL/DBjsGXWagEPHJklFmWDalDSrYNItpRUTNSncpbDyTxd4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=qdh4g+1P; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3B0AEC4CEF1;
-	Tue, 26 Aug 2025 11:23:02 +0000 (UTC)
+	 MIME-Version; b=H4dRIKysUzjH7/kmoGa69zHt4u415ZHySfjzFSWlGKJiUn1tsWvoqmJTIDHASAG9a1OmiemfnSOFPhnn06KkzsH8/AlS8TmZuDVqlCsoEqnoKILbsSZKA9fGekMSzVFlFYLBfO+YkEcRItnjVftBq8sBXbSH5Ki1fxS2FgYLzDY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=p9kbv7py; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D8B6BC4CEF1;
+	Tue, 26 Aug 2025 13:22:59 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1756207382;
-	bh=6PWf0LY+LcgE0nPB/el85vIFuF4jkOjIHFe7kSXIElw=;
+	s=korg; t=1756214580;
+	bh=n64Qwo/hJ2GoiKn5Gq9Zm0NrqOs12os5SlMoAObqUZc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=qdh4g+1Pbzmot64SPU+O1HIdgxS/cairIIBO8s7cQXOWZwmJKhqyv42Ja3kUaB2t6
-	 g+hlrf6a3x8fapWbLuOMvvKMEJBsHvUI1jUjcNGTyn9GOiyCmfe6orhhrUw4h2eMnu
-	 42wFihX/P/2w4oBaSk2KQAmPLJBcAnUTi/dJUH2c=
+	b=p9kbv7pyETH1v+dnvdQCxQM0DxR6Kihx3SdYN1xTD3iQ+3UlMDYIoky5gQzF81JQv
+	 8lGYlXsNGMo5/F+uDz3sWF7kmzHtvgMak53VMRFbbgILreWAu6hlhF8741vHIs8tAj
+	 8vIASVOuJuD4fLrzMdrfR3bZaNCpK0kOLfaRfkFE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Vikash Garodia <quic_vgarodia@quicinc.com>,
-	Dikshita Agarwal <quic_dikshita@quicinc.com>,
-	Bryan ODonoghue <bod@kernel.org>,
-	Hans Verkuil <hverkuil@xs4all.nl>,
-	Neil Armstrong <neil.armstrong@linaro.org>
-Subject: [PATCH 6.16 161/457] media: iris: Send V4L2_BUF_FLAG_ERROR for capture buffers with 0 filled length
+	Johan Adolfsson <johan.adolfsson@axis.com>,
+	Jacek Anaszewski <jacek.anaszewski@gmail.com>,
+	Lee Jones <lee@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.1 192/482] leds: leds-lp50xx: Handle reg to get correct multi_index
 Date: Tue, 26 Aug 2025 13:07:25 +0200
-Message-ID: <20250826110941.355013414@linuxfoundation.org>
+Message-ID: <20250826110935.546325070@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250826110937.289866482@linuxfoundation.org>
-References: <20250826110937.289866482@linuxfoundation.org>
+In-Reply-To: <20250826110930.769259449@linuxfoundation.org>
+References: <20250826110930.769259449@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,56 +63,72 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.16-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Dikshita Agarwal <quic_dikshita@quicinc.com>
+From: Johan Adolfsson <johan.adolfsson@axis.com>
 
-commit 7adc11e6abf619d0bb0c05918d5da5b9d4bcb81e upstream.
+[ Upstream commit 2e84a5e5374232e6f356ce5c079a5658d7e4af2c ]
 
-Firmware sends capture buffers with 0 filled length which are not to be
-displayed and should be dropped by client.
-To achieve the same, add V4L2_BUF_FLAG_ERROR to such buffers by making
-sure:
-- These 0 length buffers are not returned as result of flush.
-- Its not a buffer with LAST flag enabled which will also have 0 filled
-  length.
+mc_subled used for multi_index needs well defined array indexes,
+to guarantee the desired result, use reg for that.
 
-Cc: stable@vger.kernel.org
-Fixes: d09100763bed ("media: iris: add support for drain sequence")
-Acked-by: Vikash Garodia <quic_vgarodia@quicinc.com>
-Tested-by: Neil Armstrong <neil.armstrong@linaro.org> # on SM8550-QRD
-Tested-by: Neil Armstrong <neil.armstrong@linaro.org> # on SM8550-HDK
-Tested-by: Neil Armstrong <neil.armstrong@linaro.org> # on SM8650-QRD
-Tested-by: Neil Armstrong <neil.armstrong@linaro.org> # on SM8650-HDK
-Signed-off-by: Dikshita Agarwal <quic_dikshita@quicinc.com>
-Tested-by: Vikash Garodia <quic_vgarodia@quicinc.com> # on sa8775p-ride
-Signed-off-by: Bryan O'Donoghue <bod@kernel.org>
-Signed-off-by: Hans Verkuil <hverkuil@xs4all.nl>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+If devicetree child nodes is processed in random or reverse order
+you may end up with multi_index "blue green red" instead of the expected
+"red green blue".
+If user space apps uses multi_index to deduce how to control the leds
+they would most likely be broken without this patch if devicetree
+processing is reversed (which it appears to be).
+
+arch/arm/boot/dts/aspeed/aspeed-bmc-facebook-fuji.dts has reg set
+but I don't see how it can have worked without this change.
+
+If reg is not set, an error is returned,
+If reg is out of range, an error is returned.
+reg within led child nodes starts with 0, to map to the iout in each bank.
+
+Signed-off-by: Johan Adolfsson <johan.adolfsson@axis.com>
+Reviewed-by: Jacek Anaszewski <jacek.anaszewski@gmail.com>
+Link: https://lore.kernel.org/r/20250617-led-fix-v7-1-cdbe8efc88fa@axis.com
+Signed-off-by: Lee Jones <lee@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/media/platform/qcom/iris/iris_hfi_gen2_response.c | 5 +++++
- 1 file changed, 5 insertions(+)
+ drivers/leds/leds-lp50xx.c | 11 ++++++++++-
+ 1 file changed, 10 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/media/platform/qcom/iris/iris_hfi_gen2_response.c b/drivers/media/platform/qcom/iris/iris_hfi_gen2_response.c
-index 4488540d1d41..d2cede2fe1b5 100644
---- a/drivers/media/platform/qcom/iris/iris_hfi_gen2_response.c
-+++ b/drivers/media/platform/qcom/iris/iris_hfi_gen2_response.c
-@@ -378,6 +378,11 @@ static int iris_hfi_gen2_handle_output_buffer(struct iris_inst *inst,
+diff --git a/drivers/leds/leds-lp50xx.c b/drivers/leds/leds-lp50xx.c
+index 28d6b39fa72d..cda62e3d3a3a 100644
+--- a/drivers/leds/leds-lp50xx.c
++++ b/drivers/leds/leds-lp50xx.c
+@@ -486,6 +486,7 @@ static int lp50xx_probe_dt(struct lp50xx *priv)
+ 		}
  
- 	buf->flags = iris_hfi_gen2_get_driver_buffer_flags(inst, hfi_buffer->flags);
+ 		fwnode_for_each_child_node(child, led_node) {
++			int multi_index;
+ 			ret = fwnode_property_read_u32(led_node, "color",
+ 						       &color_id);
+ 			if (ret) {
+@@ -493,8 +494,16 @@ static int lp50xx_probe_dt(struct lp50xx *priv)
+ 				dev_err(priv->dev, "Cannot read color\n");
+ 				goto child_out;
+ 			}
++			ret = fwnode_property_read_u32(led_node, "reg", &multi_index);
++			if (ret != 0) {
++				dev_err(priv->dev, "reg must be set\n");
++				return -EINVAL;
++			} else if (multi_index >= LP50XX_LEDS_PER_MODULE) {
++				dev_err(priv->dev, "reg %i out of range\n", multi_index);
++				return -EINVAL;
++			}
  
-+	if (!buf->data_size && inst->state == IRIS_INST_STREAMING &&
-+	    !(hfi_buffer->flags & HFI_BUF_FW_FLAG_LAST)) {
-+		buf->flags |= V4L2_BUF_FLAG_ERROR;
-+	}
-+
- 	return 0;
- }
+-			mc_led_info[num_colors].color_index = color_id;
++			mc_led_info[multi_index].color_index = color_id;
+ 			num_colors++;
+ 		}
  
 -- 
-2.50.1
+2.39.5
 
 
 
