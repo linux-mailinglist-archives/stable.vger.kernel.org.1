@@ -1,58 +1,57 @@
-Return-Path: <stable+bounces-174471-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-173989-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 21A1CB3638B
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 15:30:59 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id DABCCB360B1
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 15:03:19 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 3FD6E466D71
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 13:23:07 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id C20AC2A056C
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 13:00:03 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id DDA4E340DA1;
-	Tue, 26 Aug 2025 13:21:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1E58122157B;
+	Tue, 26 Aug 2025 12:59:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="hIg7YNIO"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="qC/N4K7B"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 694641DAC95;
-	Tue, 26 Aug 2025 13:21:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CD504CA5A;
+	Tue, 26 Aug 2025 12:59:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756214481; cv=none; b=mFZrO04xhJrFjh/gIgpIZ4E+fno9RI8mO10NQMGel/9mrYkRKRoxKTsO2R7SlkbZpFJs+txlG6GmuFtaL5dRSGHBZfNzAZ909NxNUW3jHC9Nlvk22ecLiAMBeW1RMMTIQOfPRDV/NSov/6vhzhD97Rfv3ajgBB68irIg2fqgxI0=
+	t=1756213197; cv=none; b=iFoHlZ+cJ+FiBJSzzjO9qESQMGTFldA9dPGQfKNpaPrSPLpO47uxMXsYRuMgAIHSRj+rloCRgWyI54e3uWtznLfUcq2Lf2DJEiX/T3YYAHTVwkgK4aBW6cv5VxNB3OAOqAGLv0UcaQihX3eJy9S+IDzQjcosCAcNyGobBXqPAmQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756214481; c=relaxed/simple;
-	bh=pEw/rkBdOMA4jZzSfjbzOfnj78hiATcSZZ3VSJ7N88M=;
+	s=arc-20240116; t=1756213197; c=relaxed/simple;
+	bh=U0W1/f83JiC2po/QrTN/idoO96LplUqtiQtl+Lal7cE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=qP+frA4NFXskfEYslh8b62iIUG5EXYJcJBBSVS26MYpU1SOo+fnQabIye77ck6zCJmpL2x1jgYiCg40O/3HjGnuyLwkeN1pPQip17/MODtoyjvEdMXwfa5fW2Pof3v/OK5IidcQ8gFwP//s7sKl+Keh5LzUkEoRayJqOmgKa+6M=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=hIg7YNIO; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8F9CEC4CEF1;
-	Tue, 26 Aug 2025 13:21:19 +0000 (UTC)
+	 MIME-Version; b=QtyVXr4h6jpseybodD7S8aSKwje3sfoM50SBNBv0gwSBUeGYlQPwU42wnrk98Z7HwCMVxBUN0iIX1A1GCqkKqso03TSNjWLFHcWEcuRvCHe/cdxEF+xfccxFIvJ7abqaPumE4g4rnbR1PlJv6BsHPHkwl+yWKDcB8JWrbhtnVf4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=qC/N4K7B; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1B929C4CEF1;
+	Tue, 26 Aug 2025 12:59:56 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1756214479;
-	bh=pEw/rkBdOMA4jZzSfjbzOfnj78hiATcSZZ3VSJ7N88M=;
+	s=korg; t=1756213197;
+	bh=U0W1/f83JiC2po/QrTN/idoO96LplUqtiQtl+Lal7cE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=hIg7YNIOnLavHa6kDKfAg2jKA/dYts+7GVQGuQY5nLi53f7AHFuZ65NGWmdNhfgdt
-	 tDzTNv9D7RukEdPT+3aZSnk8OVlYvZQWrD7gIuIYiLtSSFT7444Lbn/5+7BnXXwzUK
-	 07ATTnqlOY7U/uzqow0iAG6yA/5TikPIiueOEECM=
+	b=qC/N4K7Bw1mFMArLxQZ9i51eJMCTntd+Dr85+wuQS2IFBtXHgSIaC9f/FHfPo74I5
+	 MwfWbR846iRBsheuRRAFQ+bp3i1a8cKJJ+lnl1moPm+BT0vDd1+8HSKDh8XzKkMzYn
+	 c0Pn2EK34U7yZTWKj3nZCZCuoEcIe2OOR7qbkRWg=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Leon Romanovsky <leonro@nvidia.com>,
-	Tariq Toukan <tariqt@nvidia.com>,
-	Michal Swiatkowski <michal.swiatkowski@linux.intel.com>,
-	Jakub Kicinski <kuba@kernel.org>,
+	Neil Armstrong <neil.armstrong@linaro.org>,
+	Geraldo Nascimento <geraldogabriel@gmail.com>,
+	Vinod Koul <vkoul@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 122/482] net/mlx5e: Properly access RCU protected qdisc_sleeping variable
+Subject: [PATCH 6.6 226/587] phy: rockchip-pcie: Properly disable TEST_WRITE strobe signal
 Date: Tue, 26 Aug 2025 13:06:15 +0200
-Message-ID: <20250826110933.836770939@linuxfoundation.org>
+Message-ID: <20250826110958.684501034@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250826110930.769259449@linuxfoundation.org>
-References: <20250826110930.769259449@linuxfoundation.org>
+In-Reply-To: <20250826110952.942403671@linuxfoundation.org>
+References: <20250826110952.942403671@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,49 +63,44 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Leon Romanovsky <leonro@nvidia.com>
+From: Geraldo Nascimento <geraldogabriel@gmail.com>
 
-[ Upstream commit 2a601b2d35623065d31ebaf697b07502d54878c9 ]
+[ Upstream commit 25facbabc3fc33c794ad09d73f73268c0f8cbc7d ]
 
-qdisc_sleeping variable is declared as "struct Qdisc __rcu" and
-as such needs proper annotation while accessing it.
+pcie_conf is used to touch TEST_WRITE strobe signal. This signal should
+be enabled, a little time waited, and then disabled. Current code clearly
+was copy-pasted and never disables the strobe signal. Adjust the define.
+While at it, remove PHY_CFG_RD_MASK which has been unused since
+64cdc0360811 ("phy: rockchip-pcie: remove unused phy_rd_cfg function").
 
-Without rtnl_dereference(), the following error is generated by sparse:
-
-drivers/net/ethernet/mellanox/mlx5/core/en/qos.c:377:40: warning:
-  incorrect type in initializer (different address spaces)
-drivers/net/ethernet/mellanox/mlx5/core/en/qos.c:377:40:    expected
-  struct Qdisc *qdisc
-drivers/net/ethernet/mellanox/mlx5/core/en/qos.c:377:40:    got struct
-  Qdisc [noderef] __rcu *qdisc_sleeping
-
-Signed-off-by: Leon Romanovsky <leonro@nvidia.com>
-Signed-off-by: Tariq Toukan <tariqt@nvidia.com>
-Reviewed-by: Michal Swiatkowski <michal.swiatkowski@linux.intel.com>
-Link: https://patch.msgid.link/1752675472-201445-4-git-send-email-tariqt@nvidia.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Reviewed-by: Neil Armstrong <neil.armstrong@linaro.org>
+Signed-off-by: Geraldo Nascimento <geraldogabriel@gmail.com>
+Link: https://lore.kernel.org/r/d514d5d5627680caafa8b7548cbdfee4307f5440.1751322015.git.geraldogabriel@gmail.com
+Signed-off-by: Vinod Koul <vkoul@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/ethernet/mellanox/mlx5/core/en/qos.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/phy/rockchip/phy-rockchip-pcie.c | 3 +--
+ 1 file changed, 1 insertion(+), 2 deletions(-)
 
-diff --git a/drivers/net/ethernet/mellanox/mlx5/core/en/qos.c b/drivers/net/ethernet/mellanox/mlx5/core/en/qos.c
-index 1e887d640cff..c72ac4dbdb21 100644
---- a/drivers/net/ethernet/mellanox/mlx5/core/en/qos.c
-+++ b/drivers/net/ethernet/mellanox/mlx5/core/en/qos.c
-@@ -362,7 +362,7 @@ void mlx5e_reactivate_qos_sq(struct mlx5e_priv *priv, u16 qid, struct netdev_que
- void mlx5e_reset_qdisc(struct net_device *dev, u16 qid)
- {
- 	struct netdev_queue *dev_queue = netdev_get_tx_queue(dev, qid);
--	struct Qdisc *qdisc = dev_queue->qdisc_sleeping;
-+	struct Qdisc *qdisc = rtnl_dereference(dev_queue->qdisc_sleeping);
- 
- 	if (!qdisc)
- 		return;
+diff --git a/drivers/phy/rockchip/phy-rockchip-pcie.c b/drivers/phy/rockchip/phy-rockchip-pcie.c
+index 8234b83fdd88..cbf3c140a138 100644
+--- a/drivers/phy/rockchip/phy-rockchip-pcie.c
++++ b/drivers/phy/rockchip/phy-rockchip-pcie.c
+@@ -31,9 +31,8 @@
+ #define PHY_CFG_ADDR_SHIFT    1
+ #define PHY_CFG_DATA_MASK     0xf
+ #define PHY_CFG_ADDR_MASK     0x3f
+-#define PHY_CFG_RD_MASK       0x3ff
+ #define PHY_CFG_WR_ENABLE     1
+-#define PHY_CFG_WR_DISABLE    1
++#define PHY_CFG_WR_DISABLE    0
+ #define PHY_CFG_WR_SHIFT      0
+ #define PHY_CFG_WR_MASK       1
+ #define PHY_CFG_PLL_LOCK      0x10
 -- 
 2.39.5
 
