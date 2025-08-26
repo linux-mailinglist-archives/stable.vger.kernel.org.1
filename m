@@ -1,56 +1,61 @@
-Return-Path: <stable+bounces-176037-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-174460-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 08857B36BA9
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 16:48:02 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id E2519B36340
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 15:28:12 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 886601C44C78
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 14:32:54 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id ABF191BC5306
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 13:23:13 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C912E35082F;
-	Tue, 26 Aug 2025 14:30:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A042B26FDBF;
+	Tue, 26 Aug 2025 13:20:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="fvHmneYT"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="wkmQ/rIr"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 85E422A1BF;
-	Tue, 26 Aug 2025 14:30:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5C39A264A83;
+	Tue, 26 Aug 2025 13:20:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756218620; cv=none; b=jBnDgw15QswGx7aZS5Po8bg61BB8BjTnYxYSWPygbp3mU+Weddh2WkVauaivlSdN+6P3iJixNcEQm3NgsLLRi6w50DmGmu2wRrCLXdT2oJDJrc9vyzU17dtiMh0HQiGmfMl2N01Pze0ryL29f2+BQOvl2C0ArX8/73N2oa2ivJg=
+	t=1756214451; cv=none; b=ngf2tQAI6syNe0kTkKCdTFZa2eiH320OBXyJwTHx5JkPT5zIS9IzrQY/k3PT1C2QMOPAoxBwTHFjg9u7Mh8MrrqH9ogCJnZSqG9QBaKtkLVuEyNm9rvYIc62qUwqnSBWivk8aVE6Sn/w9fh0MGvRPpwEl5o4HlOmxQd4SwUA1nc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756218620; c=relaxed/simple;
-	bh=usYs1/DGh60cPwPczKl53Hg/u05vM71rYrkWJAWlPBA=;
+	s=arc-20240116; t=1756214451; c=relaxed/simple;
+	bh=2QjHAVRZkP5Ql8Y0csUb8rjDSL8XRQX/jkFbMiweMYg=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=TYGiMz/rHvxJ1Nkuv0tSwpysCD9eYRhXP7qn0u3lIubit4bBkogJAIjC0+cUEl758ifWebR9K0SQiiPUSDeTQg2mEvhNFIbMT6qZimH7fCDju19nu8ZJUoZaSJjvT0/MrIwwtrhcYRfMKZq6Yyi0uEZdsYL4p3dm2+HFNd7fG9U=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=fvHmneYT; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 16DE4C4CEF1;
-	Tue, 26 Aug 2025 14:30:19 +0000 (UTC)
+	 MIME-Version; b=riTPiVg0atQYkY4QPHxmMe2F9+5f+Q/nySROmZwOwGhql0q/KUpmHkx9lPFj/UEPfjs+tjVU7f7vJJH0oGQutzl5KG8h2vdzZulPHwxsLUC74VhR9OTs6zxsd/eViLyi/ZcaZ+IgrOzE/il2rXFjVE22QBzGBTKVwqUyg0Fc+d4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=wkmQ/rIr; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id ABB09C4CEF1;
+	Tue, 26 Aug 2025 13:20:50 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1756218620;
-	bh=usYs1/DGh60cPwPczKl53Hg/u05vM71rYrkWJAWlPBA=;
+	s=korg; t=1756214451;
+	bh=2QjHAVRZkP5Ql8Y0csUb8rjDSL8XRQX/jkFbMiweMYg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=fvHmneYTh8iZWF8/Fm6FbHOfqgUav/HYtQAiY+SR1E6SCmuiXLBZsCeuAHrxRjrJi
-	 cD3eDsr3/MaV3j9HNRK61dNzfSjNWjzY0wzfXaFMXkx6FwDCn7UxI1/Vs1lHCsKjkY
-	 I4t1X58f4H+7kTGSbj5eDOU1LTHXX9+EWESnRj4A=
+	b=wkmQ/rIr627oW7LhHpWDnYArd00yBwhXjiK/o9MOLj07Ck6kf3eZl6VoRTxYXmWkG
+	 4jLK9Bro7XpxS++c1OpEmlMJ/KSEMf3Y4vRVhU6wNNqoPhrIZmb8kosPwP6Z7sKTmB
+	 e5CpGO29QMxgWoO91grPdGHp/ruOesBuB5V4cVI8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Xu Yang <xu.yang_2@nxp.com>,
-	Peter Chen <peter.chen@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.4 069/403] usb: phy: mxs: disconnect line when USB charger is attached
+	Eric Work <work.eric@gmail.com>,
+	Igor Russkikh <irusskikh@marvell.com>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Sasha Levin <sashal@kernel.org>,
+	Mark Starovoitov <mstarovoitov@marvell.com>,
+	Dmitry Bogdanov <dbogdanov@marvell.com>,
+	Pavel Belous <pbelous@marvell.com>,
+	Nikita Danilov <ndanilov@marvell.com>
+Subject: [PATCH 6.1 142/482] net: atlantic: add set_power to fw_ops for atl2 to fix wol
 Date: Tue, 26 Aug 2025 13:06:35 +0200
-Message-ID: <20250826110908.084020709@linuxfoundation.org>
+Message-ID: <20250826110934.326847437@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250826110905.607690791@linuxfoundation.org>
-References: <20250826110905.607690791@linuxfoundation.org>
+In-Reply-To: <20250826110930.769259449@linuxfoundation.org>
+References: <20250826110930.769259449@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,50 +67,115 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.4-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Xu Yang <xu.yang_2@nxp.com>
+From: Eric Work <work.eric@gmail.com>
 
-[ Upstream commit 87ed257acb0934e08644568df6495988631afd4c ]
+[ Upstream commit fad9cf216597a71936ac87143d1618fbbcf97cbe ]
 
-For mxs PHY, if there is a vbus but the bus is not enumerated, we need
-to force the dp/dm as SE0 from the controller side. If not, there is
-possible USB wakeup due to unstable dp/dm, since there is possible no
-pull on dp/dm, such as there is a USB charger on the port.
+Aquantia AQC113(C) using ATL2FW doesn't properly prepare the NIC for
+enabling wake-on-lan. The FW operation `set_power` was only implemented
+for `hw_atl` and not `hw_atl2`. Implement the `set_power` functionality
+for `hw_atl2`.
 
-Signed-off-by: Xu Yang <xu.yang_2@nxp.com>
-Acked-by: Peter Chen <peter.chen@kernel.org>
-Link: https://lore.kernel.org/r/20230627110353.1879477-3-xu.yang_2@nxp.com
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Tested with both AQC113 and AQC113C devices. Confirmed you can shutdown
+the system and wake from S5 using magic packets. NIC was previously
+powered off when entering S5. If the NIC was configured for WOL by the
+Windows driver, loading the atlantic driver would disable WOL.
+
+Partially cherry-picks changes from commit,
+https://github.com/Aquantia/AQtion/commit/37bd5cc
+
+Attributing original authors from Marvell for the referenced commit.
+
+Closes: https://github.com/Aquantia/AQtion/issues/70
+Co-developed-by: Igor Russkikh <irusskikh@marvell.com>
+Co-developed-by: Mark Starovoitov <mstarovoitov@marvell.com>
+Co-developed-by: Dmitry Bogdanov <dbogdanov@marvell.com>
+Co-developed-by: Pavel Belous <pbelous@marvell.com>
+Co-developed-by: Nikita Danilov <ndanilov@marvell.com>
+Signed-off-by: Eric Work <work.eric@gmail.com>
+Reviewed-by: Igor Russkikh <irusskikh@marvell.com>
+Link: https://patch.msgid.link/20250629051535.5172-1-work.eric@gmail.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/usb/phy/phy-mxs-usb.c | 4 +++-
- 1 file changed, 3 insertions(+), 1 deletion(-)
+ .../net/ethernet/aquantia/atlantic/aq_hw.h    |  2 +
+ .../atlantic/hw_atl2/hw_atl2_utils_fw.c       | 39 +++++++++++++++++++
+ 2 files changed, 41 insertions(+)
 
-diff --git a/drivers/usb/phy/phy-mxs-usb.c b/drivers/usb/phy/phy-mxs-usb.c
-index 6dfecbd47d7a..7c81ccaaf2e9 100644
---- a/drivers/usb/phy/phy-mxs-usb.c
-+++ b/drivers/usb/phy/phy-mxs-usb.c
-@@ -394,6 +394,7 @@ static bool mxs_phy_is_otg_host(struct mxs_phy *mxs_phy)
- static void mxs_phy_disconnect_line(struct mxs_phy *mxs_phy, bool on)
+diff --git a/drivers/net/ethernet/aquantia/atlantic/aq_hw.h b/drivers/net/ethernet/aquantia/atlantic/aq_hw.h
+index dbd284660135..7f616abd3db2 100644
+--- a/drivers/net/ethernet/aquantia/atlantic/aq_hw.h
++++ b/drivers/net/ethernet/aquantia/atlantic/aq_hw.h
+@@ -113,6 +113,8 @@ struct aq_stats_s {
+ #define AQ_HW_POWER_STATE_D0   0U
+ #define AQ_HW_POWER_STATE_D3   3U
+ 
++#define	AQ_FW_WAKE_ON_LINK_RTPM BIT(10)
++
+ #define AQ_HW_FLAG_STARTED     0x00000004U
+ #define AQ_HW_FLAG_STOPPING    0x00000008U
+ #define AQ_HW_FLAG_RESETTING   0x00000010U
+diff --git a/drivers/net/ethernet/aquantia/atlantic/hw_atl2/hw_atl2_utils_fw.c b/drivers/net/ethernet/aquantia/atlantic/hw_atl2/hw_atl2_utils_fw.c
+index 58d426dda3ed..1c5c27a9f30d 100644
+--- a/drivers/net/ethernet/aquantia/atlantic/hw_atl2/hw_atl2_utils_fw.c
++++ b/drivers/net/ethernet/aquantia/atlantic/hw_atl2/hw_atl2_utils_fw.c
+@@ -462,6 +462,44 @@ static int aq_a2_fw_get_mac_temp(struct aq_hw_s *self, int *temp)
+ 	return aq_a2_fw_get_phy_temp(self, temp);
+ }
+ 
++static int aq_a2_fw_set_wol_params(struct aq_hw_s *self, const u8 *mac, u32 wol)
++{
++	struct mac_address_aligned_s mac_address;
++	struct link_control_s link_control;
++	struct wake_on_lan_s wake_on_lan;
++
++	memcpy(mac_address.aligned.mac_address, mac, ETH_ALEN);
++	hw_atl2_shared_buffer_write(self, mac_address, mac_address);
++
++	memset(&wake_on_lan, 0, sizeof(wake_on_lan));
++
++	if (wol & WAKE_MAGIC)
++		wake_on_lan.wake_on_magic_packet = 1U;
++
++	if (wol & (WAKE_PHY | AQ_FW_WAKE_ON_LINK_RTPM))
++		wake_on_lan.wake_on_link_up = 1U;
++
++	hw_atl2_shared_buffer_write(self, sleep_proxy, wake_on_lan);
++
++	hw_atl2_shared_buffer_get(self, link_control, link_control);
++	link_control.mode = AQ_HOST_MODE_SLEEP_PROXY;
++	hw_atl2_shared_buffer_write(self, link_control, link_control);
++
++	return hw_atl2_shared_buffer_finish_ack(self);
++}
++
++static int aq_a2_fw_set_power(struct aq_hw_s *self, unsigned int power_state,
++			      const u8 *mac)
++{
++	u32 wol = self->aq_nic_cfg->wol;
++	int err = 0;
++
++	if (wol)
++		err = aq_a2_fw_set_wol_params(self, mac, wol);
++
++	return err;
++}
++
+ static int aq_a2_fw_set_eee_rate(struct aq_hw_s *self, u32 speed)
  {
- 	bool vbus_is_on = false;
-+	enum usb_phy_events last_event = mxs_phy->phy.last_event;
- 
- 	/* If the SoCs don't need to disconnect line without vbus, quit */
- 	if (!(mxs_phy->data->flags & MXS_PHY_DISCONNECT_LINE_WITHOUT_VBUS))
-@@ -405,7 +406,8 @@ static void mxs_phy_disconnect_line(struct mxs_phy *mxs_phy, bool on)
- 
- 	vbus_is_on = mxs_phy_get_vbus_status(mxs_phy);
- 
--	if (on && !vbus_is_on && !mxs_phy_is_otg_host(mxs_phy))
-+	if (on && ((!vbus_is_on && !mxs_phy_is_otg_host(mxs_phy))
-+		|| (last_event == USB_EVENT_VBUS)))
- 		__mxs_phy_disconnect_line(mxs_phy, true);
- 	else
- 		__mxs_phy_disconnect_line(mxs_phy, false);
+ 	struct link_options_s link_options;
+@@ -605,6 +643,7 @@ const struct aq_fw_ops aq_a2_fw_ops = {
+ 	.set_state          = aq_a2_fw_set_state,
+ 	.update_link_status = aq_a2_fw_update_link_status,
+ 	.update_stats       = aq_a2_fw_update_stats,
++	.set_power          = aq_a2_fw_set_power,
+ 	.get_mac_temp       = aq_a2_fw_get_mac_temp,
+ 	.get_phy_temp       = aq_a2_fw_get_phy_temp,
+ 	.set_eee_rate       = aq_a2_fw_set_eee_rate,
 -- 
 2.39.5
 
