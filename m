@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-176251-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-174188-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4979BB36C55
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 16:55:10 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 91091B361F2
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 15:14:17 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 03DB058780B
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 14:42:31 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 6E6AB8A191F
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 13:09:27 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 639CB352FEE;
-	Tue, 26 Aug 2025 14:39:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id BB218184540;
+	Tue, 26 Aug 2025 13:08:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="RizYOz/D"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="zeF1uFbL"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1E4A1352077;
-	Tue, 26 Aug 2025 14:39:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7713124A066;
+	Tue, 26 Aug 2025 13:08:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756219170; cv=none; b=hbCAoBXtKjN+3UH6mBwWy68pSoMKvOw8ASXdmLoRhoZ821AQqaG34WK/eYb5Dj/R4Lss4DU9X3yKD5N6F0dtI1vjP8nMIQNJlu041dnsvrWDzQeh7IuZhSwiXMIEGAToRE9xZXDX6gagixN25mbEYLjQbiTpcWE+SwWs1VmWUIs=
+	t=1756213726; cv=none; b=pXUz47UfRbzYx7HDsOT8y2amfrEz9zEK4EhJlxQyRMcdxJJTXSsOfJ4IhHOUzD39K5fCIOIAPh3/hpgi4/PfVk+EJ3m85jQZmWUOfTSWjK3SDgpSycSbIqoW1ZmWnhgvKnMJbvKlg48zk/Iph8aeR0zvjQGtWp9cZbmmyUtK4iA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756219170; c=relaxed/simple;
-	bh=Xf/4AUYMsArd68Gg3tiKwuhS1wmhzPZyBPpbloaT3a4=;
+	s=arc-20240116; t=1756213726; c=relaxed/simple;
+	bh=PvvlqgNRZjRueoTIsDjePHJX0H/0j6bvCKV4gKZBJ7Y=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=OQB+rGwEdiNBS2n9uKwQFMf62gDT6HGb6mKHkg13CrdVcIa4HBePQzfAMEHJ1vbQkiAYW+aG2N2JtAxD78EK4nTCPg7SMmORj8dlIyhl5qNncxJigZi0dtupKe4QobYljUYus30uH77xnyT0Dzl0g+L0E+TzQRWSP/kE62w+mOo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=RizYOz/D; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9E677C4CEF1;
-	Tue, 26 Aug 2025 14:39:29 +0000 (UTC)
+	 MIME-Version; b=SCtCuXYQJEc9rkJn+OdorS+3xsMA3UWc3a5ShbmNt1wb2YMg6SxbhDcvx0n0j4+5zOS46F8Gs2XR5oWDi+0WqBQLUG6uv3+9210nZxTU80YkrnrsFwsmQr37CMwOSm/uL4nFyuQ90kCb9du151s/rbQCoRIbVL3Up1aeAa7EA0E=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=zeF1uFbL; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 09888C4CEF1;
+	Tue, 26 Aug 2025 13:08:45 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1756219170;
-	bh=Xf/4AUYMsArd68Gg3tiKwuhS1wmhzPZyBPpbloaT3a4=;
+	s=korg; t=1756213726;
+	bh=PvvlqgNRZjRueoTIsDjePHJX0H/0j6bvCKV4gKZBJ7Y=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=RizYOz/Du0dkIIfT/oTihCKLXCj1lBDfKqI5llRsGvKmxvG/CYIV0wK16lX6U+W83
-	 QHDIcysIgsDa3xruyxishNztnJtFwK+lT51CQ6GfEh1ibt1He8tlWBNUjtd8I6pCDl
-	 vIRXl66H5mEI5V4wJXjIt4GAqLdn9VU2AL+Ae/sA=
+	b=zeF1uFbLpuvY6CDnGVsEEu0QyVFj1Q3XhMnCbj92YqRIWaXK01xvRgFKvw+j9vLXF
+	 EE61JL+H2AryD3fEV2Uxj6onkXEOMIQhr1BKWS53ipbLu0tEsDqxNCw7WIPRv0wjmQ
+	 tPtTKGFqSN3C9eCsA2lEeMTFkA+n8v+HKsnfZQb8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Waiman Long <longman@redhat.com>,
-	Catalin Marinas <catalin.marinas@arm.com>,
-	Andrew Morton <akpm@linux-foundation.org>
-Subject: [PATCH 5.4 279/403] mm/kmemleak: avoid soft lockup in __kmemleak_do_cleanup()
-Date: Tue, 26 Aug 2025 13:10:05 +0200
-Message-ID: <20250826110914.509556162@linuxfoundation.org>
+	Filipe Manana <fdmanana@suse.com>,
+	David Sterba <dsterba@suse.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.6 457/587] btrfs: send: keep the current inodes path cached
+Date: Tue, 26 Aug 2025 13:10:06 +0200
+Message-ID: <20250826111004.594138128@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250826110905.607690791@linuxfoundation.org>
-References: <20250826110905.607690791@linuxfoundation.org>
+In-Reply-To: <20250826110952.942403671@linuxfoundation.org>
+References: <20250826110952.942403671@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,70 +62,189 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.4-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Waiman Long <longman@redhat.com>
+From: Filipe Manana <fdmanana@suse.com>
 
-commit d1534ae23c2b6be350c8ab060803fbf6e9682adc upstream.
+[ Upstream commit fc746acb7aa9aeaa2cb5dcba449323319ba5c8eb ]
 
-A soft lockup warning was observed on a relative small system x86-64
-system with 16 GB of memory when running a debug kernel with kmemleak
-enabled.
+Whenever we need to send a command for the current inode, like sending
+writes, xattr updates, truncates, utimes, etc, we compute the inode's
+path each time, which implies doing some memory allocations and traversing
+the inode hierarchy to extract the name of the inode and each ancestor
+directory, and that implies doing lookups in the subvolume tree amongst
+other operations.
 
-  watchdog: BUG: soft lockup - CPU#8 stuck for 33s! [kworker/8:1:134]
+Most of the time, by far, the current inode's path doesn't change while
+we are processing it (like if we need to issue 100 write commands, the
+path remains the same and it's pointless to compute it 100 times).
 
-The test system was running a workload with hot unplug happening in
-parallel.  Then kemleak decided to disable itself due to its inability to
-allocate more kmemleak objects.  The debug kernel has its
-CONFIG_DEBUG_KMEMLEAK_MEM_POOL_SIZE set to 40,000.
+To avoid this keep the current inode's path cached in the send context
+and invalidate it or update it whenever it's needed (after unlinks or
+renames).
 
-The soft lockup happened in kmemleak_do_cleanup() when the existing
-kmemleak objects were being removed and deleted one-by-one in a loop via a
-workqueue.  In this particular case, there are at least 40,000 objects
-that need to be processed and given the slowness of a debug kernel and the
-fact that a raw_spinlock has to be acquired and released in
-__delete_object(), it could take a while to properly handle all these
-objects.
+A performance test, and its results, is mentioned in the next patch in
+the series (subject: "btrfs: send: avoid path allocation for the current
+inode when issuing commands").
 
-As kmemleak has been disabled in this case, the object removal and
-deletion process can be further optimized as locking isn't really needed.
-However, it is probably not worth the effort to optimize for such an edge
-case that should rarely happen.  So the simple solution is to call
-cond_resched() at periodic interval in the iteration loop to avoid soft
-lockup.
-
-Link: https://lkml.kernel.org/r/20250728190248.605750-1-longman@redhat.com
-Signed-off-by: Waiman Long <longman@redhat.com>
-Acked-by: Catalin Marinas <catalin.marinas@arm.com>
-Cc: <stable@vger.kernel.org>
-Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
+Signed-off-by: Filipe Manana <fdmanana@suse.com>
+Reviewed-by: David Sterba <dsterba@suse.com>
+Signed-off-by: David Sterba <dsterba@suse.com>
+Stable-dep-of: 005b0a0c24e1 ("btrfs: send: use fallocate for hole punching with send stream v2")
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- mm/kmemleak.c |    5 +++++
- 1 file changed, 5 insertions(+)
+ fs/btrfs/send.c |   53 ++++++++++++++++++++++++++++++++++++++++++++++++-----
+ 1 file changed, 48 insertions(+), 5 deletions(-)
 
---- a/mm/kmemleak.c
-+++ b/mm/kmemleak.c
-@@ -1849,6 +1849,7 @@ static const struct file_operations kmem
- static void __kmemleak_do_cleanup(void)
- {
- 	struct kmemleak_object *object, *tmp;
-+	unsigned int cnt = 0;
- 
- 	/*
- 	 * Kmemleak has already been disabled, no need for RCU list traversal
-@@ -1857,6 +1858,10 @@ static void __kmemleak_do_cleanup(void)
- 	list_for_each_entry_safe(object, tmp, &object_list, object_list) {
- 		__remove_object(object);
- 		__delete_object(object);
-+
-+		/* Call cond_resched() once per 64 iterations to avoid soft lockup */
-+		if (!(++cnt & 0x3f))
-+			cond_resched();
+--- a/fs/btrfs/send.c
++++ b/fs/btrfs/send.c
+@@ -179,6 +179,7 @@ struct send_ctx {
+ 	u64 cur_inode_rdev;
+ 	u64 cur_inode_last_extent;
+ 	u64 cur_inode_next_write_offset;
++	struct fs_path cur_inode_path;
+ 	bool cur_inode_new;
+ 	bool cur_inode_new_gen;
+ 	bool cur_inode_deleted;
+@@ -436,6 +437,14 @@ static void fs_path_reset(struct fs_path
  	}
  }
+ 
++static void init_path(struct fs_path *p)
++{
++	p->reversed = 0;
++	p->buf = p->inline_buf;
++	p->buf_len = FS_PATH_INLINE_SIZE;
++	fs_path_reset(p);
++}
++
+ static struct fs_path *fs_path_alloc(void)
+ {
+ 	struct fs_path *p;
+@@ -443,10 +452,7 @@ static struct fs_path *fs_path_alloc(voi
+ 	p = kmalloc(sizeof(*p), GFP_KERNEL);
+ 	if (!p)
+ 		return NULL;
+-	p->reversed = 0;
+-	p->buf = p->inline_buf;
+-	p->buf_len = FS_PATH_INLINE_SIZE;
+-	fs_path_reset(p);
++	init_path(p);
+ 	return p;
+ }
+ 
+@@ -624,6 +630,14 @@ static void fs_path_unreverse(struct fs_
+ 	p->reversed = 0;
+ }
+ 
++static inline bool is_current_inode_path(const struct send_ctx *sctx,
++					 const struct fs_path *path)
++{
++	const struct fs_path *cur = &sctx->cur_inode_path;
++
++	return (strncmp(path->start, cur->start, fs_path_len(cur)) == 0);
++}
++
+ static struct btrfs_path *alloc_path_for_send(void)
+ {
+ 	struct btrfs_path *path;
+@@ -2450,6 +2464,14 @@ static int get_cur_path(struct send_ctx
+ 	u64 parent_inode = 0;
+ 	u64 parent_gen = 0;
+ 	int stop = 0;
++	const bool is_cur_inode = (ino == sctx->cur_ino && gen == sctx->cur_inode_gen);
++
++	if (is_cur_inode && fs_path_len(&sctx->cur_inode_path) > 0) {
++		if (dest != &sctx->cur_inode_path)
++			return fs_path_copy(dest, &sctx->cur_inode_path);
++
++		return 0;
++	}
+ 
+ 	name = fs_path_alloc();
+ 	if (!name) {
+@@ -2501,8 +2523,12 @@ static int get_cur_path(struct send_ctx
+ 
+ out:
+ 	fs_path_free(name);
+-	if (!ret)
++	if (!ret) {
+ 		fs_path_unreverse(dest);
++		if (is_cur_inode && dest != &sctx->cur_inode_path)
++			ret = fs_path_copy(&sctx->cur_inode_path, dest);
++	}
++
+ 	return ret;
+ }
+ 
+@@ -3113,6 +3139,11 @@ static int orphanize_inode(struct send_c
+ 		goto out;
+ 
+ 	ret = send_rename(sctx, path, orphan);
++	if (ret < 0)
++		goto out;
++
++	if (ino == sctx->cur_ino && gen == sctx->cur_inode_gen)
++		ret = fs_path_copy(&sctx->cur_inode_path, orphan);
+ 
+ out:
+ 	fs_path_free(orphan);
+@@ -4176,6 +4207,10 @@ static int rename_current_inode(struct s
+ 	if (ret < 0)
+ 		return ret;
+ 
++	ret = fs_path_copy(&sctx->cur_inode_path, new_path);
++	if (ret < 0)
++		return ret;
++
+ 	return fs_path_copy(current_path, new_path);
+ }
+ 
+@@ -4369,6 +4404,7 @@ static int process_recorded_refs(struct
+ 				if (ret > 0) {
+ 					orphanized_ancestor = true;
+ 					fs_path_reset(valid_path);
++					fs_path_reset(&sctx->cur_inode_path);
+ 					ret = get_cur_path(sctx, sctx->cur_ino,
+ 							   sctx->cur_inode_gen,
+ 							   valid_path);
+@@ -4568,6 +4604,8 @@ static int process_recorded_refs(struct
+ 				ret = send_unlink(sctx, cur->full_path);
+ 				if (ret < 0)
+ 					goto out;
++				if (is_current_inode_path(sctx, cur->full_path))
++					fs_path_reset(&sctx->cur_inode_path);
+ 			}
+ 			ret = dup_ref(cur, &check_dirs);
+ 			if (ret < 0)
+@@ -6900,6 +6938,7 @@ static int changed_inode(struct send_ctx
+ 	sctx->cur_inode_last_extent = (u64)-1;
+ 	sctx->cur_inode_next_write_offset = 0;
+ 	sctx->ignore_cur_inode = false;
++	fs_path_reset(&sctx->cur_inode_path);
+ 
+ 	/*
+ 	 * Set send_progress to current inode. This will tell all get_cur_xxx
+@@ -8190,6 +8229,7 @@ long btrfs_ioctl_send(struct inode *inod
+ 		goto out;
+ 	}
+ 
++	init_path(&sctx->cur_inode_path);
+ 	INIT_LIST_HEAD(&sctx->new_refs);
+ 	INIT_LIST_HEAD(&sctx->deleted_refs);
+ 
+@@ -8475,6 +8515,9 @@ out:
+ 		btrfs_lru_cache_clear(&sctx->dir_created_cache);
+ 		btrfs_lru_cache_clear(&sctx->dir_utimes_cache);
+ 
++		if (sctx->cur_inode_path.buf != sctx->cur_inode_path.inline_buf)
++			kfree(sctx->cur_inode_path.buf);
++
+ 		kfree(sctx);
+ 	}
  
 
 
