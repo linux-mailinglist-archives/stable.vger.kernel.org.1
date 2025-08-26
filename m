@@ -1,58 +1,55 @@
-Return-Path: <stable+bounces-174887-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-173788-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5D07EB36537
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 15:45:48 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id E1DF4B35FC1
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 14:53:29 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 7785D8A5570
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 13:39:39 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 6019F4634CA
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 12:52:08 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 26D1922AE5D;
-	Tue, 26 Aug 2025 13:39:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6F8201B424F;
+	Tue, 26 Aug 2025 12:51:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="bsCntY3f"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="km4fmuTD"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D7D7F221290;
-	Tue, 26 Aug 2025 13:39:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2CC071ACEDE;
+	Tue, 26 Aug 2025 12:51:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756215578; cv=none; b=pDXxstpMXFnpfmgVzgMxUNZowO2P99dIecCoxvlQOLf17NUSDWMc5PbS3+rum5RG5aUlZ0MTkVx5sHuylag5Tl9bv0l7O4e93ylptN5Q1bsSt2yDK0KvtKs6BEszkReM1nScTRqV3dMh5lb6rFO2NEYAzpSoDJnJvVKu+jkJ2YM=
+	t=1756212672; cv=none; b=u0oNILVziK1PI+34zECZH6e15qwNaGHdZgxGBtIynAFcWnHCownUQf/ivldRjW2WFd1j7DQ6PKoYhD8daOLpkamRpx5lI6xUdPuxl+OLE9S7hQwFl/yBVjqt4hfuwHKsRwzX2NJuMCSy6WMfqpBHrS7Ap/3VWo7B8YuS6YP8mlk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756215578; c=relaxed/simple;
-	bh=6ceVsoXvQA6aOTZgAzE6HV9DYJh/ZHRyLjcCQk8fowc=;
+	s=arc-20240116; t=1756212672; c=relaxed/simple;
+	bh=qTI4aa9C3+fMbz6WLvUcAO+/n7KPccKszytl2vRMg8g=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=O7JKl7UxB8jnJSTn7gi0PYxFnIB943EaDtd8UNSu+kpPO5q212ZWSYTJQ4ZI7KcaT+1PHGlzjIQdzaCO93/2ZWTBBe0tBb4B74sFBcyFAsRCc4zc5cBQ6zQB8RL1egy4n1vMJsHM8DxrM+XpdcgGtaFX2mbkQx7cHAhEELC16Q4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=bsCntY3f; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 095AEC4CEF1;
-	Tue, 26 Aug 2025 13:39:36 +0000 (UTC)
+	 MIME-Version; b=DHT7BkqjyyyjZbkOFcntaHNgHV6W0xDCYFe1DDC5MeyCgd8whkkibHK+RACV0/4Pe7m1rmSOFQzom7zxOiiQellFCsHw/yM8bPQze0Q9QvIiki6xU8G6r7LQcXg2gWC/HNgoWZcFIS1Wg+EzpeHHLkw03FBtizJDlJEu9zKbXTw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=km4fmuTD; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B2711C4CEF1;
+	Tue, 26 Aug 2025 12:51:11 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1756215577;
-	bh=6ceVsoXvQA6aOTZgAzE6HV9DYJh/ZHRyLjcCQk8fowc=;
+	s=korg; t=1756212672;
+	bh=qTI4aa9C3+fMbz6WLvUcAO+/n7KPccKszytl2vRMg8g=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=bsCntY3fis2gTJARD3r35vEpgQ5r8HQnSQ4UihGjRAD2uim+9DkDE7999hbpRs1vO
-	 ImAQE7QnR74jk6Tn89SG9o9c65AerLH1+4pxOIbbApJzYFlQkXuQPbVjEjmI9cADmg
-	 BHMUSpk4ye+QQjvpT2ho1NvnbgmNPAgy3Zrm21Mc=
+	b=km4fmuTDR/rQJkXZl50dvp5ELOkL9chywIjpVBmrbyAVKCa6Mzq7rLctHaB5nmpEF
+	 h3OqUXmftgTGKwzycoB9V1sxHhxfOg2fBtjIY76lbprCDTiT2+KyDbOoe9jSACDAWK
+	 7KQxLGPC1bWZjIe1uesDqTAFPolacu6LCFp/Ti7E=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Yonglong Liu <liuyonglong@huawei.com>,
-	Jijie Shao <shaojijie@huawei.com>,
-	Simon Horman <horms@kernel.org>,
-	Paolo Abeni <pabeni@redhat.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 086/644] net: hns3: disable interrupt when ptp init failed
+	Sasha Levin <sashal@kernel.org>,
+	Christian Brauner <brauner@kernel.org>
+Subject: [PATCH 6.6 028/587] fs: Prevent file descriptor table allocations exceeding INT_MAX
 Date: Tue, 26 Aug 2025 13:02:57 +0200
-Message-ID: <20250826110948.628571984@linuxfoundation.org>
+Message-ID: <20250826110953.666871765@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250826110946.507083938@linuxfoundation.org>
-References: <20250826110946.507083938@linuxfoundation.org>
+In-Reply-To: <20250826110952.942403671@linuxfoundation.org>
+References: <20250826110952.942403671@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,71 +61,109 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Yonglong Liu <liuyonglong@huawei.com>
+From: Sasha Levin <sashal@kernel.org>
 
-[ Upstream commit cde304655f25d94a996c45b0f9956e7dcc2bc4c0 ]
+commit 04a2c4b4511d186b0fce685da21085a5d4acd370 upstream.
 
-When ptp init failed, we'd better disable the interrupt and clear the
-flag, to avoid early report interrupt at next probe.
+When sysctl_nr_open is set to a very high value (for example, 1073741816
+as set by systemd), processes attempting to use file descriptors near
+the limit can trigger massive memory allocation attempts that exceed
+INT_MAX, resulting in a WARNING in mm/slub.c:
 
-Fixes: 0bf5eb788512 ("net: hns3: add support for PTP")
-Signed-off-by: Yonglong Liu <liuyonglong@huawei.com>
-Signed-off-by: Jijie Shao <shaojijie@huawei.com>
-Reviewed-by: Simon Horman <horms@kernel.org>
-Link: https://patch.msgid.link/20250722125423.1270673-3-shaojijie@huawei.com
-Signed-off-by: Paolo Abeni <pabeni@redhat.com>
+  WARNING: CPU: 0 PID: 44 at mm/slub.c:5027 __kvmalloc_node_noprof+0x21a/0x288
+
+This happens because kvmalloc_array() and kvmalloc() check if the
+requested size exceeds INT_MAX and emit a warning when the allocation is
+not flagged with __GFP_NOWARN.
+
+Specifically, when nr_open is set to 1073741816 (0x3ffffff8) and a
+process calls dup2(oldfd, 1073741880), the kernel attempts to allocate:
+- File descriptor array: 1073741880 * 8 bytes = 8,589,935,040 bytes
+- Multiple bitmaps: ~400MB
+- Total allocation size: > 8GB (exceeding INT_MAX = 2,147,483,647)
+
+Reproducer:
+1. Set /proc/sys/fs/nr_open to 1073741816:
+   # echo 1073741816 > /proc/sys/fs/nr_open
+
+2. Run a program that uses a high file descriptor:
+   #include <unistd.h>
+   #include <sys/resource.h>
+
+   int main() {
+       struct rlimit rlim = {1073741824, 1073741824};
+       setrlimit(RLIMIT_NOFILE, &rlim);
+       dup2(2, 1073741880);  // Triggers the warning
+       return 0;
+   }
+
+3. Observe WARNING in dmesg at mm/slub.c:5027
+
+systemd commit a8b627a introduced automatic bumping of fs.nr_open to the
+maximum possible value. The rationale was that systems with memory
+control groups (memcg) no longer need separate file descriptor limits
+since memory is properly accounted. However, this change overlooked
+that:
+
+1. The kernel's allocation functions still enforce INT_MAX as a maximum
+   size regardless of memcg accounting
+2. Programs and tests that legitimately test file descriptor limits can
+   inadvertently trigger massive allocations
+3. The resulting allocations (>8GB) are impractical and will always fail
+
+systemd's algorithm starts with INT_MAX and keeps halving the value
+until the kernel accepts it. On most systems, this results in nr_open
+being set to 1073741816 (0x3ffffff8), which is just under 1GB of file
+descriptors.
+
+While processes rarely use file descriptors near this limit in normal
+operation, certain selftests (like
+tools/testing/selftests/core/unshare_test.c) and programs that test file
+descriptor limits can trigger this issue.
+
+Fix this by adding a check in alloc_fdtable() to ensure the requested
+allocation size does not exceed INT_MAX. This causes the operation to
+fail with -EMFILE instead of triggering a kernel warning and avoids the
+impractical >8GB memory allocation request.
+
+Fixes: 9cfe015aa424 ("get rid of NR_OPEN and introduce a sysctl_nr_open")
+Cc: stable@vger.kernel.org
 Signed-off-by: Sasha Levin <sashal@kernel.org>
+Link: https://lore.kernel.org/20250629074021.1038845-1-sashal@kernel.org
+Signed-off-by: Christian Brauner <brauner@kernel.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/net/ethernet/hisilicon/hns3/hns3pf/hclge_ptp.c | 9 ++++++---
- 1 file changed, 6 insertions(+), 3 deletions(-)
+ fs/file.c |   15 +++++++++++++++
+ 1 file changed, 15 insertions(+)
 
-diff --git a/drivers/net/ethernet/hisilicon/hns3/hns3pf/hclge_ptp.c b/drivers/net/ethernet/hisilicon/hns3/hns3pf/hclge_ptp.c
-index b7cf9fbf97183..6d7aeac600128 100644
---- a/drivers/net/ethernet/hisilicon/hns3/hns3pf/hclge_ptp.c
-+++ b/drivers/net/ethernet/hisilicon/hns3/hns3pf/hclge_ptp.c
-@@ -509,14 +509,14 @@ int hclge_ptp_init(struct hclge_dev *hdev)
- 	if (ret) {
- 		dev_err(&hdev->pdev->dev,
- 			"failed to init freq, ret = %d\n", ret);
--		goto out;
-+		goto out_clear_int;
- 	}
+--- a/fs/file.c
++++ b/fs/file.c
+@@ -126,6 +126,21 @@ static struct fdtable * alloc_fdtable(un
+ 	if (unlikely(nr > sysctl_nr_open))
+ 		nr = ((sysctl_nr_open - 1) | (BITS_PER_LONG - 1)) + 1;
  
- 	ret = hclge_ptp_set_ts_mode(hdev, &hdev->ptp->ts_cfg);
- 	if (ret) {
- 		dev_err(&hdev->pdev->dev,
- 			"failed to init ts mode, ret = %d\n", ret);
--		goto out;
-+		goto out_clear_int;
- 	}
- 
- 	ktime_get_real_ts64(&ts);
-@@ -524,7 +524,7 @@ int hclge_ptp_init(struct hclge_dev *hdev)
- 	if (ret) {
- 		dev_err(&hdev->pdev->dev,
- 			"failed to init ts time, ret = %d\n", ret);
--		goto out;
-+		goto out_clear_int;
- 	}
- 
- 	set_bit(HCLGE_STATE_PTP_EN, &hdev->state);
-@@ -532,6 +532,9 @@ int hclge_ptp_init(struct hclge_dev *hdev)
- 
- 	return 0;
- 
-+out_clear_int:
-+	clear_bit(HCLGE_PTP_FLAG_EN, &hdev->ptp->flags);
-+	hclge_ptp_int_en(hdev, false);
- out:
- 	hclge_ptp_destroy_clock(hdev);
- 
--- 
-2.39.5
-
++	/*
++	 * Check if the allocation size would exceed INT_MAX. kvmalloc_array()
++	 * and kvmalloc() will warn if the allocation size is greater than
++	 * INT_MAX, as filp_cachep objects are not __GFP_NOWARN.
++	 *
++	 * This can happen when sysctl_nr_open is set to a very high value and
++	 * a process tries to use a file descriptor near that limit. For example,
++	 * if sysctl_nr_open is set to 1073741816 (0x3ffffff8) - which is what
++	 * systemd typically sets it to - then trying to use a file descriptor
++	 * close to that value will require allocating a file descriptor table
++	 * that exceeds 8GB in size.
++	 */
++	if (unlikely(nr > INT_MAX / sizeof(struct file *)))
++		return ERR_PTR(-EMFILE);
++
+ 	fdt = kmalloc(sizeof(struct fdtable), GFP_KERNEL_ACCOUNT);
+ 	if (!fdt)
+ 		goto out;
 
 
 
