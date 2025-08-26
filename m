@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-173447-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-175173-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id A2A96B35CD4
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 13:39:14 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 18482B366E5
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 16:01:33 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 5A7E57C5548
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 11:39:13 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id A8AA71899BF4
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 13:54:45 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 783DE2F9982;
-	Tue, 26 Aug 2025 11:37:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B448B34F468;
+	Tue, 26 Aug 2025 13:52:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="uIimbmZl"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="trVipTv0"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 33976267386;
-	Tue, 26 Aug 2025 11:37:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 721CB34DCF6;
+	Tue, 26 Aug 2025 13:52:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756208272; cv=none; b=ukhmMXH38dgJF7LD6oW+Lie0aDf2FZ/+fy7c2xxXP8HQtYkrFgrxrrhRoKtWjU4XyPyEZC50FnLLT/ryN9zw+zkLvsxenqwInKIR2S7tbWmN7q4zcwz19XdBjTM9FWnURfstaosNJP1WnyqpLkqG2aDwzfr8xSr7YTyTt4B6J5A=
+	t=1756216334; cv=none; b=gx7c0AMT3vl9KUuVSacxtg2K5PsyHFCrZvBxLv/rmtx8eUzWVaztwCBFiKJy1yAiEbRh4cl9lZOocIiYi7bPDPp3IemIvoQxUlYW/oiQRNiUB06Am+ezvPa+V65XKNUfqaRi76QaycBr0d20M+UIT8SQFyiXxoDCxcyLnTr4rnw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756208272; c=relaxed/simple;
-	bh=iHb8W5X+qlpMbJ39YeJTBxM7lS41xNLsM8GrH5+cbUs=;
+	s=arc-20240116; t=1756216334; c=relaxed/simple;
+	bh=HVa81Vjk7QxlNRUW3A1FvmRJAaLFfG9ZxbEGJw3swao=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=lMF6zVGM+YW3tc25RvapUz+L4D09Oko7AZswmxPMnDBQ0fGcICNvyeugoJ9rWLnzM2hKL/b5DFcNHc3HPzJk4zgDrIxE12lqQGECJqUugdQBED3hxZigUExbKmFVV6/DahjYyp8zFHsGxgFLIgAB0KmJgWBLpTuizN2rDF51QbI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=uIimbmZl; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id BFAC8C4CEF1;
-	Tue, 26 Aug 2025 11:37:51 +0000 (UTC)
+	 MIME-Version:Content-Type; b=QJpcG/aq4NA/fqkWg3QA9ycBXE7P51/AJdZjBRS1SfyIkbYgD9WdTwwwGpyBbBnML9axmpijmz4sosbjtn3x6lPS6XRoi9eVHovOZaEihssAUsQgQ6Bj78VU4EGwqn8MfAS6kr94qM2iBm+vQCi0XpMXQJ3wM7ec/pxiyjJ5o5s=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=trVipTv0; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C9A39C4CEF1;
+	Tue, 26 Aug 2025 13:52:13 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1756208272;
-	bh=iHb8W5X+qlpMbJ39YeJTBxM7lS41xNLsM8GrH5+cbUs=;
+	s=korg; t=1756216334;
+	bh=HVa81Vjk7QxlNRUW3A1FvmRJAaLFfG9ZxbEGJw3swao=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=uIimbmZlDRYBe4CaFCUNUYODPpMT3/EvQkw5UBfTzhaSBUXq7k5QKUTW1tHCYatnH
-	 uEPbzLdfxmsXL8zBAAU86KqTUmIrkZ5TotEZdW/sAwZun7ehVjUGx8uUk8cjcWlvIZ
-	 VNLf4RrQMqAClv3wxpTu1Q8FltYXXyA0VeLwlvzU=
+	b=trVipTv0jV87dKl/Q3e2B/0OdrCX6k1krPPtgUZkvyXJWknWh7ur1qVFOYP2TN024
+	 m1II7PEp0Y2Hsw3UVHnwTcydW9iiELWkECcHX3nLXqaU05qLZ+J73e9CAN/Bb9tc7x
+	 +Nrp7tyUy3pSSk8y7XCx8O7HSVHpuvCJsnKwwL+I=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	=?UTF-8?q?Andr=C3=A9=20Draszik?= <andre.draszik@linaro.org>,
-	Bart Van Assche <bvanassche@acm.org>,
-	Peter Griffin <peter.griffin@linaro.org>,
-	"Martin K. Petersen" <martin.petersen@oracle.com>
-Subject: [PATCH 6.12 048/322] scsi: ufs: exynos: Fix programming of HCI_UTRL_NEXUS_TYPE
+	Florian Fainelli <florian.fainelli@broadcom.com>,
+	=?UTF-8?q?=C3=81lvaro=20Fern=C3=A1ndez=20Rojas?= <noltari@gmail.com>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.15 372/644] net: dsa: b53: fix b53_imp_vlan_setup for BCM5325
 Date: Tue, 26 Aug 2025 13:07:43 +0200
-Message-ID: <20250826110916.582117027@linuxfoundation.org>
+Message-ID: <20250826110955.637235314@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250826110915.169062587@linuxfoundation.org>
-References: <20250826110915.169062587@linuxfoundation.org>
+In-Reply-To: <20250826110946.507083938@linuxfoundation.org>
+References: <20250826110946.507083938@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,58 +64,44 @@ MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: André Draszik <andre.draszik@linaro.org>
+From: Álvaro Fernández Rojas <noltari@gmail.com>
 
-commit 01aad16c2257ab8ff33b152b972c9f2e1af47912 upstream.
+[ Upstream commit c00df1018791185ea398f78af415a2a0aaa0c79c ]
 
-On Google gs101, the number of UTP transfer request slots (nutrs) is 32,
-and in this case the driver ends up programming the UTRL_NEXUS_TYPE
-incorrectly as 0.
+CPU port should be B53_CPU_PORT instead of B53_CPU_PORT_25 for
+B53_PVLAN_PORT_MASK register.
 
-This is because the left hand side of the shift is 1, which is of type
-int, i.e. 31 bits wide. Shifting by more than that width results in
-undefined behaviour.
-
-Fix this by switching to the BIT() macro, which applies correct type
-casting as required. This ensures the correct value is written to
-UTRL_NEXUS_TYPE (0xffffffff on gs101), and it also fixes a UBSAN shift
-warning:
-
-    UBSAN: shift-out-of-bounds in drivers/ufs/host/ufs-exynos.c:1113:21
-    shift exponent 32 is too large for 32-bit type 'int'
-
-For consistency, apply the same change to the nutmrs / UTMRL_NEXUS_TYPE
-write.
-
-Fixes: 55f4b1f73631 ("scsi: ufs: ufs-exynos: Add UFS host support for Exynos SoCs")
-Cc: stable@vger.kernel.org
-Signed-off-by: André Draszik <andre.draszik@linaro.org>
-Link: https://lore.kernel.org/r/20250707-ufs-exynos-shift-v1-1-1418e161ae40@linaro.org
-Reviewed-by: Bart Van Assche <bvanassche@acm.org>
-Reviewed-by: Peter Griffin <peter.griffin@linaro.org>
-Signed-off-by: Martin K. Petersen <martin.petersen@oracle.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Reviewed-by: Florian Fainelli <florian.fainelli@broadcom.com>
+Signed-off-by: Álvaro Fernández Rojas <noltari@gmail.com>
+Link: https://patch.msgid.link/20250614080000.1884236-14-noltari@gmail.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/ufs/host/ufs-exynos.c |    4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ drivers/net/dsa/b53/b53_common.c | 4 ++++
+ 1 file changed, 4 insertions(+)
 
---- a/drivers/ufs/host/ufs-exynos.c
-+++ b/drivers/ufs/host/ufs-exynos.c
-@@ -1078,8 +1078,8 @@ static int exynos_ufs_post_link(struct u
- 	hci_writel(ufs, val, HCI_TXPRDT_ENTRY_SIZE);
+diff --git a/drivers/net/dsa/b53/b53_common.c b/drivers/net/dsa/b53/b53_common.c
+index 3bd0d1632b65..091ca9ca49aa 100644
+--- a/drivers/net/dsa/b53/b53_common.c
++++ b/drivers/net/dsa/b53/b53_common.c
+@@ -507,6 +507,10 @@ void b53_imp_vlan_setup(struct dsa_switch *ds, int cpu_port)
+ 	unsigned int i;
+ 	u16 pvlan;
  
- 	hci_writel(ufs, ilog2(DATA_UNIT_SIZE), HCI_RXPRDT_ENTRY_SIZE);
--	hci_writel(ufs, (1 << hba->nutrs) - 1, HCI_UTRL_NEXUS_TYPE);
--	hci_writel(ufs, (1 << hba->nutmrs) - 1, HCI_UTMRL_NEXUS_TYPE);
-+	hci_writel(ufs, BIT(hba->nutrs) - 1, HCI_UTRL_NEXUS_TYPE);
-+	hci_writel(ufs, BIT(hba->nutmrs) - 1, HCI_UTMRL_NEXUS_TYPE);
- 	hci_writel(ufs, 0xf, HCI_AXIDMA_RWDATA_BURST_LEN);
- 
- 	if (ufs->opts & EXYNOS_UFS_OPT_SKIP_CONNECTION_ESTAB)
++	/* BCM5325 CPU port is at 8 */
++	if ((is5325(dev) || is5365(dev)) && cpu_port == B53_CPU_PORT_25)
++		cpu_port = B53_CPU_PORT;
++
+ 	/* Enable the IMP port to be in the same VLAN as the other ports
+ 	 * on a per-port basis such that we only have Port i and IMP in
+ 	 * the same VLAN.
+-- 
+2.39.5
+
 
 
 
