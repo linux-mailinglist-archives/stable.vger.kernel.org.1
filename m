@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-174136-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-174591-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [IPv6:2605:f480:58:1:0:1994:3:14])
-	by mail.lfdr.de (Postfix) with ESMTPS id C9482B3611E
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 15:06:48 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7EA46B363DF
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 15:33:56 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id BB9774E446D
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 13:06:47 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 0FFD01BC2257
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 13:27:57 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0D14F231A55;
-	Tue, 26 Aug 2025 13:06:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 97E942B2DA;
+	Tue, 26 Aug 2025 13:26:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="pzSpR2Ng"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ZDNoYI18"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BD78A18F2FC;
-	Tue, 26 Aug 2025 13:06:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 53C71AD4B;
+	Tue, 26 Aug 2025 13:26:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756213588; cv=none; b=nSdBBHN0AvlcP9Zy12PpCYS7upEkGlk1MmVFM88KcsVNHzDsGN++x8KexNTRSdTNuQbwOt5iayZNI4wNSxu3NL7oGpHenOZfsVRkkuZ0TaB9XH5ZZHIFr3KQz0NSlLO2Gcbbo0Xo+wjIgGkEi+Tdr1bnfb7KgudcArTe+q6zMD0=
+	t=1756214798; cv=none; b=kp+4gx9cb/d6kjGk6+rV6Uno+NSJBoJOOxCczKcJUluX+4p3WlzwAZ7OMGlBjjSRqiI+TwUQwz89eJnn7ueziiMM2ZA2qEt8VjXcNl8hr8Mn/GDp4j5dzJVV+huOqUE+9x1UuoIlRywktJk/EQknB2YVqzurwp+QEL5vkSn1RMM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756213588; c=relaxed/simple;
-	bh=1h9EuLP6nj8sLwfkWxBeQ6vwXrfThpuL35+wGOiTArU=;
+	s=arc-20240116; t=1756214798; c=relaxed/simple;
+	bh=+G4Spnwx90eYuJNTDo1vJlYyuebyvfLEeE8DVNK9YMQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=n8QQHXdaBj1M4LpHvozfHmTgSaDHn5iGX6tnx95XPvMS51tVCfYLY/VPvexz2Y4Q3/g7kpaplym9DBTSBXPMPHyV+2r0nYxbaTb80ANt5sGr4UoLD7mVYXin/h8aP3hvJN0/QU0GQ195Jhzb7UqakPAdtAngq+K/VQ7+gTirnS4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=pzSpR2Ng; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4F97AC4CEF1;
-	Tue, 26 Aug 2025 13:06:28 +0000 (UTC)
+	 MIME-Version; b=CK4NAk661CCPrgzrMnCIht52XaA3ExjzebSmnrHJVQsEEiw6Qt98ghcyP2EF+LBsVfD5sTxCEH0/+/ngYlUbypX7CS2h/BHjCvIPYtty74a992xxV6PHMi/fAiBeSuQ8ikGTLqAHzlIbUZhr1g/NrUTt04ubnhJhiyxE6jnhg6A=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ZDNoYI18; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id DA667C4CEF1;
+	Tue, 26 Aug 2025 13:26:37 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1756213588;
-	bh=1h9EuLP6nj8sLwfkWxBeQ6vwXrfThpuL35+wGOiTArU=;
+	s=korg; t=1756214798;
+	bh=+G4Spnwx90eYuJNTDo1vJlYyuebyvfLEeE8DVNK9YMQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=pzSpR2NgkGYf9HkKCisAjh5tdguOENIOFjX8aqhj4MHgDBrcBY3QFr+nbcEeN3Yzf
-	 3jPJ7iqV10B3EW5ty9zZ6FEhrz4soxY80csfZGGhKNH4CFjSO3ytqBOObVkYajbJzv
-	 t8Q4L60s9UhIDQov+FJzQ3dc8GDqgxi5QrxlBixs=
+	b=ZDNoYI18pQ749mhk1rDBr9vC7pGdbdhiEMAp4Age59OQnzpAiXV2dNlFHZIjaXNIt
+	 7GvEgj3tGCn58BvI0DLRwkKUm2nFEop+gxUUWpVZgGBIUiPD1TvFJWHso8dVITlC6+
+	 fVzGdCDcAWXTmsVan25RVnXpLvV5ASXexn+HjATg=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	=?UTF-8?q?Uwe=20Kleine-K=C3=B6nig?= <u.kleine-koenig@baylibre.com>,
-	AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>,
-	=?UTF-8?q?Uwe=20Kleine-K=C3=B6nig?= <ukleinek@kernel.org>
-Subject: [PATCH 6.6 377/587] pwm: mediatek: Handle hardware enable and clock enable separately
+	Alexander Wilhelm <alexander.wilhelm@westermo.com>,
+	Manivannan Sadhasivam <mani@kernel.org>,
+	Jeff Hugo <jeff.hugo@oss.qualcomm.com>,
+	Krishna Chaitanya Chundru <krishna.chundru@oss.qualcomm.com>
+Subject: [PATCH 6.1 273/482] bus: mhi: host: Fix endianness of BHI vector table
 Date: Tue, 26 Aug 2025 13:08:46 +0200
-Message-ID: <20250826111002.496534880@linuxfoundation.org>
+Message-ID: <20250826110937.517289989@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250826110952.942403671@linuxfoundation.org>
-References: <20250826110952.942403671@linuxfoundation.org>
+In-Reply-To: <20250826110930.769259449@linuxfoundation.org>
+References: <20250826110930.769259449@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,126 +61,86 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Uwe Kleine-König <u.kleine-koenig@baylibre.com>
+From: Alexander Wilhelm <alexander.wilhelm@westermo.com>
 
-commit 704d918341c378c5f9505dfdf32d315e256d3846 upstream.
+commit f471578e8b1a90623674433a01a8845110bc76ce upstream.
 
-Stop handling the clocks in pwm_mediatek_enable() and
-pwm_mediatek_disable(). This is a preparing change for the next commit
-that requires that clocks and the enable bit are handled separately.
+On big endian platform like PowerPC, the MHI bus (which is little endian)
+does not start properly. The following example shows the error messages by
+using QCN9274 WLAN device with ath12k driver:
 
-Also move these two functions a bit further up in the source file to
-make them usable in pwm_mediatek_config(), which is needed in the next
-commit, too.
+    ath12k_pci 0001:01:00.0: BAR 0: assigned [mem 0xc00000000-0xc001fffff 64bit]
+    ath12k_pci 0001:01:00.0: MSI vectors: 1
+    ath12k_pci 0001:01:00.0: Hardware name: qcn9274 hw2.0
+    ath12k_pci 0001:01:00.0: failed to set mhi state: POWER_ON(2)
+    ath12k_pci 0001:01:00.0: failed to start mhi: -110
+    ath12k_pci 0001:01:00.0: failed to power up :-110
+    ath12k_pci 0001:01:00.0: failed to create soc core: -110
+    ath12k_pci 0001:01:00.0: failed to init core: -110
+    ath12k_pci: probe of 0001:01:00.0 failed with error -110
 
-Signed-off-by: Uwe Kleine-König <u.kleine-koenig@baylibre.com>
-Reviewed-by: AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>
-Link: https://lore.kernel.org/r/55c94fe2917ece152ee1e998f4675642a7716f13.1753717973.git.u.kleine-koenig@baylibre.com
+The issue seems to be with the incorrect DMA address/size used for
+transferring the firmware image over BHI. So fix it by converting the DMA
+address and size of the BHI vector table to little endian format before
+sending them to the device.
+
+Fixes: 6cd330ae76ff ("bus: mhi: core: Add support for ringing channel/event ring doorbells")
+Signed-off-by: Alexander Wilhelm <alexander.wilhelm@westermo.com>
+[mani: added stable tag and reworded commit message]
+Signed-off-by: Manivannan Sadhasivam <mani@kernel.org>
+Reviewed-by: Jeff Hugo <jeff.hugo@oss.qualcomm.com>
+Reviewed-by: Krishna Chaitanya Chundru <krishna.chundru@oss.qualcomm.com>
 Cc: stable@vger.kernel.org
-Signed-off-by: Uwe Kleine-König <ukleinek@kernel.org>
+Link: https://patch.msgid.link/20250519145837.958153-1-alexander.wilhelm@westermo.com
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/pwm/pwm-mediatek.c |   60 +++++++++++++++++++++------------------------
- 1 file changed, 28 insertions(+), 32 deletions(-)
+ drivers/bus/mhi/host/boot.c     |    8 ++++----
+ drivers/bus/mhi/host/internal.h |    4 ++--
+ 2 files changed, 6 insertions(+), 6 deletions(-)
 
---- a/drivers/pwm/pwm-mediatek.c
-+++ b/drivers/pwm/pwm-mediatek.c
-@@ -118,6 +118,26 @@ static inline void pwm_mediatek_writel(s
- 	writel(value, chip->regs + chip->soc->reg_offset[num] + offset);
- }
+--- a/drivers/bus/mhi/host/boot.c
++++ b/drivers/bus/mhi/host/boot.c
+@@ -31,8 +31,8 @@ int mhi_rddm_prepare(struct mhi_controll
+ 	int ret;
  
-+static void pwm_mediatek_enable(struct pwm_chip *chip, struct pwm_device *pwm)
-+{
-+	struct pwm_mediatek_chip *pc = to_pwm_mediatek_chip(chip);
-+	u32 value;
-+
-+	value = readl(pc->regs);
-+	value |= BIT(pwm->hwpwm);
-+	writel(value, pc->regs);
-+}
-+
-+static void pwm_mediatek_disable(struct pwm_chip *chip, struct pwm_device *pwm)
-+{
-+	struct pwm_mediatek_chip *pc = to_pwm_mediatek_chip(chip);
-+	u32 value;
-+
-+	value = readl(pc->regs);
-+	value &= ~BIT(pwm->hwpwm);
-+	writel(value, pc->regs);
-+}
-+
- static int pwm_mediatek_config(struct pwm_chip *chip, struct pwm_device *pwm,
- 			       int duty_ns, int period_ns)
- {
-@@ -180,35 +200,6 @@ out:
- 	return ret;
- }
- 
--static int pwm_mediatek_enable(struct pwm_chip *chip, struct pwm_device *pwm)
--{
--	struct pwm_mediatek_chip *pc = to_pwm_mediatek_chip(chip);
--	u32 value;
--	int ret;
--
--	ret = pwm_mediatek_clk_enable(chip, pwm);
--	if (ret < 0)
--		return ret;
--
--	value = readl(pc->regs);
--	value |= BIT(pwm->hwpwm);
--	writel(value, pc->regs);
--
--	return 0;
--}
--
--static void pwm_mediatek_disable(struct pwm_chip *chip, struct pwm_device *pwm)
--{
--	struct pwm_mediatek_chip *pc = to_pwm_mediatek_chip(chip);
--	u32 value;
--
--	value = readl(pc->regs);
--	value &= ~BIT(pwm->hwpwm);
--	writel(value, pc->regs);
--
--	pwm_mediatek_clk_disable(chip, pwm);
--}
--
- static int pwm_mediatek_apply(struct pwm_chip *chip, struct pwm_device *pwm,
- 			      const struct pwm_state *state)
- {
-@@ -218,8 +209,10 @@ static int pwm_mediatek_apply(struct pwm
- 		return -EINVAL;
- 
- 	if (!state->enabled) {
--		if (pwm->state.enabled)
-+		if (pwm->state.enabled) {
- 			pwm_mediatek_disable(chip, pwm);
-+			pwm_mediatek_clk_disable(chip, pwm);
-+		}
- 
- 		return 0;
+ 	for (i = 0; i < img_info->entries - 1; i++, mhi_buf++, bhi_vec++) {
+-		bhi_vec->dma_addr = mhi_buf->dma_addr;
+-		bhi_vec->size = mhi_buf->len;
++		bhi_vec->dma_addr = cpu_to_le64(mhi_buf->dma_addr);
++		bhi_vec->size = cpu_to_le64(mhi_buf->len);
  	}
-@@ -228,8 +221,11 @@ static int pwm_mediatek_apply(struct pwm
- 	if (err)
- 		return err;
  
--	if (!pwm->state.enabled)
--		err = pwm_mediatek_enable(chip, pwm);
-+	if (!pwm->state.enabled) {
-+		err = pwm_mediatek_clk_enable(chip, pwm);
-+		if (!err)
-+			pwm_mediatek_enable(chip, pwm);
-+	}
+ 	dev_dbg(dev, "BHIe programming for RDDM\n");
+@@ -379,8 +379,8 @@ static void mhi_firmware_copy(struct mhi
+ 	while (remainder) {
+ 		to_cpy = min(remainder, mhi_buf->len);
+ 		memcpy(mhi_buf->buf, buf, to_cpy);
+-		bhi_vec->dma_addr = mhi_buf->dma_addr;
+-		bhi_vec->size = to_cpy;
++		bhi_vec->dma_addr = cpu_to_le64(mhi_buf->dma_addr);
++		bhi_vec->size = cpu_to_le64(to_cpy);
  
- 	return err;
- }
+ 		buf += to_cpy;
+ 		remainder -= to_cpy;
+--- a/drivers/bus/mhi/host/internal.h
++++ b/drivers/bus/mhi/host/internal.h
+@@ -31,8 +31,8 @@ struct mhi_ctxt {
+ };
+ 
+ struct bhi_vec_entry {
+-	u64 dma_addr;
+-	u64 size;
++	__le64 dma_addr;
++	__le64 size;
+ };
+ 
+ enum mhi_ch_state_type {
 
 
 
