@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-173941-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-175591-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 467E0B36080
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 15:01:24 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6F125B368F7
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 16:21:19 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id F070E1BA6740
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 12:58:19 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id AD78D583474
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 14:13:10 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9CC4F1F1538;
-	Tue, 26 Aug 2025 12:57:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2515A352FE8;
+	Tue, 26 Aug 2025 14:10:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="szCjlizh"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="hRvLAN4x"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 581DE1ACEDE;
-	Tue, 26 Aug 2025 12:57:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D7A36352FE1;
+	Tue, 26 Aug 2025 14:10:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756213069; cv=none; b=sWLoauaaPOW4/SF+uQ4Ue7CYY06YblpLGYJNlHui3ECBfv+v1qdX8Y9k2XzXn3Irg9Fos28PWGGdThRLm7lUA2jz54agCGYifxaI8VudDp4rZO1SnIesV30W9XMh3krMBEL3RMyhU1Y4Wy5jSoWt56eE0HoEqTCE/loQ+vinfUs=
+	t=1756217450; cv=none; b=hmevhD9mf5/nkTHXlHRqeSgOH200KI2MhioyAApKSyVzEfQCRPoUWOw0hHEfz+Zf7loTL1oPFhnSM4K/4W+86W1kchm9GPyF3KjsmrFGkzZK5euOc+SZNnYgnOS7+Ryu19+8NgVHBG1VyUpw/ddpDnQauWDxJ+VeKW3vNHySLys=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756213069; c=relaxed/simple;
-	bh=SSHR8omCJ3ZqFae/j5ZlnPsLx7LobKpvJrk3Teh6XOM=;
+	s=arc-20240116; t=1756217450; c=relaxed/simple;
+	bh=ZzS+/68fUGCGxMKQrQIM4q+2YGlsUZkJBukL+cGoVUU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=RdtTMwJZHV9k2ddNqNdmr35ySdv7exa5gdZoJgix0gWzcJu2h1ehE8uN10KQT66KxivukXi5jn4DujgERQBMDMBpGF7iPMrPajMTnP/pvy9p5MwUNr1UIw9JdFLnOpfLfLX4L0pUyfQp2HthdLo1VghcA5QoBBOqYSh9khZxUWY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=szCjlizh; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E05DBC4CEF1;
-	Tue, 26 Aug 2025 12:57:48 +0000 (UTC)
+	 MIME-Version; b=Zt22ovSPb79lWNfAdxL3leSggrEXqE0vU98JVO5BRjeccF1UsQ9birEcrl41K8rq2QYwxSLWeUzO6puyq8xW2ryDu66TbQXS1Mbai4jOSx3BZXR9UGUhK+13+wCbZ+VRjhcHKPNVZfDEucjIQpwL9ddjBhjv/j994p6vQLnkU6w=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=hRvLAN4x; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 20AEFC4CEF1;
+	Tue, 26 Aug 2025 14:10:49 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1756213069;
-	bh=SSHR8omCJ3ZqFae/j5ZlnPsLx7LobKpvJrk3Teh6XOM=;
+	s=korg; t=1756217450;
+	bh=ZzS+/68fUGCGxMKQrQIM4q+2YGlsUZkJBukL+cGoVUU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=szCjlizhsv0+jXMww2oUeDOT6FNwW+dDzLnPZPFCiZ1TXTjVwq2NjFwpCk59refXs
-	 PMqA//rwUM9WVh4V8E1XwmzfBHnhEZja2PG3e3faaIy1An/IhjV7Zmm/UISXSM25BH
-	 m23EIpipf0u9PZrOjsvp+AmdcPtWFyycf9SEmYtc=
+	b=hRvLAN4xu6Hl+xW1XMNVyASaPIwthPuYGz/0+ICYdU52ZihLH49HQLl9Ot94bcKtY
+	 LWTR5kcoXKZUj5hV1LHKvWhiYN7u212wT0BfBamPnz5LSVdFLut2pTilF3uCnr8thC
+	 pssdGI1D9Bi+XmcI4fZ5cm5Ww8Z47Zt/hOf27010=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Ihor Solodrai <isolodrai@meta.com>,
-	Andrii Nakryiko <andrii@kernel.org>,
+	Ryan Lee <ryan.lee@canonical.com>,
+	John Johansen <john.johansen@canonical.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 209/587] bpf: Make reg_not_null() true for CONST_PTR_TO_MAP
+Subject: [PATCH 5.10 148/523] apparmor: ensure WB_HISTORY_SIZE value is a power of 2
 Date: Tue, 26 Aug 2025 13:05:58 +0200
-Message-ID: <20250826110958.254390301@linuxfoundation.org>
+Message-ID: <20250826110928.141127423@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250826110952.942403671@linuxfoundation.org>
-References: <20250826110952.942403671@linuxfoundation.org>
+In-Reply-To: <20250826110924.562212281@linuxfoundation.org>
+References: <20250826110924.562212281@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,67 +62,57 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Ihor Solodrai <isolodrai@meta.com>
+From: Ryan Lee <ryan.lee@canonical.com>
 
-[ Upstream commit 5534e58f2e9bd72b253d033ee0af6e68eb8ac96b ]
+[ Upstream commit 6c055e62560b958354625604293652753d82bcae ]
 
-When reg->type is CONST_PTR_TO_MAP, it can not be null. However the
-verifier explores the branches under rX == 0 in check_cond_jmp_op()
-even if reg->type is CONST_PTR_TO_MAP, because it was not checked for
-in reg_not_null().
+WB_HISTORY_SIZE was defined to be a value not a power of 2, despite a
+comment in the declaration of struct match_workbuf stating it is and a
+modular arithmetic usage in the inc_wb_pos macro assuming that it is. Bump
+WB_HISTORY_SIZE's value up to 32 and add a BUILD_BUG_ON_NOT_POWER_OF_2
+line to ensure that any future changes to the value of WB_HISTORY_SIZE
+respect this requirement.
 
-Fix this by adding CONST_PTR_TO_MAP to the set of types that are
-considered non nullable in reg_not_null().
+Fixes: 136db994852a ("apparmor: increase left match history buffer size")
 
-An old "unpriv: cmp map pointer with zero" selftest fails with this
-change, because now early out correctly triggers in
-check_cond_jmp_op(), making the verification to pass.
-
-In practice verifier may allow pointer to null comparison in unpriv,
-since in many cases the relevant branch and comparison op are removed
-as dead code. So change the expected test result to __success_unpriv.
-
-Signed-off-by: Ihor Solodrai <isolodrai@meta.com>
-Signed-off-by: Andrii Nakryiko <andrii@kernel.org>
-Acked-by: Andrii Nakryiko <andrii@kernel.org>
-Link: https://lore.kernel.org/bpf/20250609183024.359974-2-isolodrai@meta.com
+Signed-off-by: Ryan Lee <ryan.lee@canonical.com>
+Signed-off-by: John Johansen <john.johansen@canonical.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- kernel/bpf/verifier.c                               | 3 ++-
- tools/testing/selftests/bpf/progs/verifier_unpriv.c | 2 +-
- 2 files changed, 3 insertions(+), 2 deletions(-)
+ security/apparmor/include/match.h | 3 ++-
+ security/apparmor/match.c         | 1 +
+ 2 files changed, 3 insertions(+), 1 deletion(-)
 
-diff --git a/kernel/bpf/verifier.c b/kernel/bpf/verifier.c
-index 1f9ae600e445..7d6ee41f4b4f 100644
---- a/kernel/bpf/verifier.c
-+++ b/kernel/bpf/verifier.c
-@@ -460,7 +460,8 @@ static bool reg_not_null(const struct bpf_reg_state *reg)
- 		type == PTR_TO_MAP_KEY ||
- 		type == PTR_TO_SOCK_COMMON ||
- 		(type == PTR_TO_BTF_ID && is_trusted_reg(reg)) ||
--		type == PTR_TO_MEM;
-+		type == PTR_TO_MEM ||
-+		type == CONST_PTR_TO_MAP;
- }
+diff --git a/security/apparmor/include/match.h b/security/apparmor/include/match.h
+index 884489590588..29306ec87fd1 100644
+--- a/security/apparmor/include/match.h
++++ b/security/apparmor/include/match.h
+@@ -141,7 +141,8 @@ unsigned int aa_dfa_matchn_until(struct aa_dfa *dfa, unsigned int start,
  
- static bool type_is_ptr_alloc_obj(u32 type)
-diff --git a/tools/testing/selftests/bpf/progs/verifier_unpriv.c b/tools/testing/selftests/bpf/progs/verifier_unpriv.c
-index 7ea535bfbacd..e4ef82a6ee38 100644
---- a/tools/testing/selftests/bpf/progs/verifier_unpriv.c
-+++ b/tools/testing/selftests/bpf/progs/verifier_unpriv.c
-@@ -619,7 +619,7 @@ __naked void pass_pointer_to_tail_call(void)
+ void aa_dfa_free_kref(struct kref *kref);
  
- SEC("socket")
- __description("unpriv: cmp map pointer with zero")
--__success __failure_unpriv __msg_unpriv("R1 pointer comparison")
-+__success __success_unpriv
- __retval(0)
- __naked void cmp_map_pointer_with_zero(void)
- {
+-#define WB_HISTORY_SIZE 24
++/* This needs to be a power of 2 */
++#define WB_HISTORY_SIZE 32
+ struct match_workbuf {
+ 	unsigned int count;
+ 	unsigned int pos;
+diff --git a/security/apparmor/match.c b/security/apparmor/match.c
+index 3e9e1eaf990e..0e683ee323e3 100644
+--- a/security/apparmor/match.c
++++ b/security/apparmor/match.c
+@@ -672,6 +672,7 @@ unsigned int aa_dfa_matchn_until(struct aa_dfa *dfa, unsigned int start,
+ 
+ #define inc_wb_pos(wb)						\
+ do {								\
++	BUILD_BUG_ON_NOT_POWER_OF_2(WB_HISTORY_SIZE);			\
+ 	wb->pos = (wb->pos + 1) & (WB_HISTORY_SIZE - 1);		\
+ 	wb->len = (wb->len + 1) & (WB_HISTORY_SIZE - 1);		\
+ } while (0)
 -- 
 2.39.5
 
