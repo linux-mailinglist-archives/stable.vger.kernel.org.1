@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-175512-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-173830-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5826EB36869
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 16:16:13 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8B7DCB36003
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 14:56:15 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id C1EC456819F
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 14:09:01 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 03C2A1BA540F
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 12:54:31 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 54212352072;
-	Tue, 26 Aug 2025 14:07:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id EB848186E40;
+	Tue, 26 Aug 2025 12:52:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Y8ZZhrtv"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="jq79vKBW"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 09D56350D75;
-	Tue, 26 Aug 2025 14:07:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A9F02188000;
+	Tue, 26 Aug 2025 12:52:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756217240; cv=none; b=sjn/E05k42ZiRLlJ9JxOyHysGP05WoHK4sDgJZXhEK4EMCspsGDqRihy2BzHgf3JUQNgV6lo07HiSOASXdnnvun6Yce1QdBvdaW5Xo+UUVezjjWaGRvMHJzRa50ucOXcMWE7g4eteIq2KfEdP4p+3txu4ynzsmyNMkbFbjXomew=
+	t=1756212777; cv=none; b=oclKI24Wu1IQj2WXpSYlAJwJuLBQ7Ba4vrOZJiqUIJ+V95zNiKLB9PPaek6nQfZmtUa4SM46Pg0m44jG71RxEslYQrP3DF3I0KWOXrsshXJZ2NQ5ZwlwvIJF33daGavD3cke64RlPNGplxkOjkQLBY0iuEPf1eXIBg87JPRWF/o=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756217240; c=relaxed/simple;
-	bh=Er7byKv4ybw2J3KxfrRmXATo2yc3t8fYdc6jMrQfjTU=;
+	s=arc-20240116; t=1756212777; c=relaxed/simple;
+	bh=kq/kHp8s0006PVkqnfy2xOfC+NdYCZO6iilEilDHDUo=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=rod0JAtgqykLggbFMALyFVcPMt/I3l9lBZGC6bHFHgdJ220i9VSyabFCbUxdaSfHS4Yvlx9XBBoANwPFdsSPQoDnTNaaljxKT5/oBWLzOBYfb//WmAPRVyLL18q6rdGnoo/yU6AExjjF6yZ46NLXdr76N7ksGmRXSyxk4ECzp6I=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Y8ZZhrtv; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6B70EC4CEF1;
-	Tue, 26 Aug 2025 14:07:19 +0000 (UTC)
+	 MIME-Version; b=SQ1rnKEd0yoKSqe5MFocK9uFk6P6vuPO3YRegRNfbd+HGJ+9vKRskqXZwC0miq6hxblWP6VZx6oLvJniuqCZDARfaoIetjDVX7RDcwiSK/78Rn+A4k8qQj0/5gCamWOfO9ubOV/K/YLhcU7qVnAsSd7UBt/QL0vxnFy+GxiQDGQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=jq79vKBW; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3F274C4CEF1;
+	Tue, 26 Aug 2025 12:52:57 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1756217239;
-	bh=Er7byKv4ybw2J3KxfrRmXATo2yc3t8fYdc6jMrQfjTU=;
+	s=korg; t=1756212777;
+	bh=kq/kHp8s0006PVkqnfy2xOfC+NdYCZO6iilEilDHDUo=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Y8ZZhrtvLMTdH4uhMcagTys23cTPRnPzCRicQjojeaxWiKXSe1mkIdV4erINgPNMx
-	 n6sY0neh0Nhluo3BNDIqHwtIllmCKqekmNgx/mCs2ams8HBSqMazR+xTwSNVDQdVl+
-	 3Hp3dkxEf3ynoLeGpqTm/QnY+DQPO0yM8Wkvx81s=
+	b=jq79vKBWY6I9UzAZY8L3EGpLs+JTCSK6MG1xm+v8tNcXad4drSFZAmIeg2N8gPquu
+	 UN9/NScMa8kq9dQmTMP5LVoqAynuuV0tuf6y7dcYlh8c1jdt/urnpjFVhF4xBKGOaZ
+	 /JOFSrHQ7a9l7Esha2aq7R1srf0htWMoSW+HTWhk=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	syzbot+3bbbade4e1a7ab45ca3b@syzkaller.appspotmail.com,
-	Marius Zachmann <mail@mariuszachmann.de>,
-	Guenter Roeck <linux@roeck-us.net>,
+	Kuninori Morimoto <kuninori.morimoto.gx@renesas.com>,
+	Mark Brown <broonie@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 037/523] hwmon: (corsair-cpro) Validate the size of the received input buffer
-Date: Tue, 26 Aug 2025 13:04:07 +0200
-Message-ID: <20250826110925.514663904@linuxfoundation.org>
+Subject: [PATCH 6.6 099/587] ASoC: soc-dapm: set bias_level if snd_soc_dapm_set_bias_level() was successed
+Date: Tue, 26 Aug 2025 13:04:08 +0200
+Message-ID: <20250826110955.461386110@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250826110924.562212281@linuxfoundation.org>
-References: <20250826110924.562212281@linuxfoundation.org>
+In-Reply-To: <20250826110952.942403671@linuxfoundation.org>
+References: <20250826110952.942403671@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,58 +62,74 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Marius Zachmann <mail@mariuszachmann.de>
+From: Kuninori Morimoto <kuninori.morimoto.gx@renesas.com>
 
-[ Upstream commit 495a4f0dce9c8c4478c242209748f1ee9e4d5820 ]
+[ Upstream commit f40ecc2743652c0b0f19935f81baf57c601eb7f0 ]
 
-Add buffer_recv_size to store the size of the received bytes.
-Validate buffer_recv_size in send_usb_cmd().
+ASoC has 2 functions to set bias level.
+	(A) snd_soc_dapm_force_bias_level()
+	(B) snd_soc_dapm_set_bias_level()
 
-Reported-by: syzbot+3bbbade4e1a7ab45ca3b@syzkaller.appspotmail.com
-Closes: https://lore.kernel.org/linux-hwmon/61233ba1-e5ad-4d7a-ba31-3b5d0adcffcc@roeck-us.net
-Fixes: 40c3a4454225 ("hwmon: add Corsair Commander Pro driver")
-Signed-off-by: Marius Zachmann <mail@mariuszachmann.de>
-Link: https://lore.kernel.org/r/20250619132817.39764-5-mail@mariuszachmann.de
-Signed-off-by: Guenter Roeck <linux@roeck-us.net>
+snd_soc_dapm_force_bias_level() (A) will set dapm->bias_level (a) if
+successed.
+
+(A)	int snd_soc_dapm_force_bias_level(...)
+	{
+		...
+		if (ret == 0)
+(a)			dapm->bias_level = level;
+		...
+	}
+
+snd_soc_dapm_set_bias_level() (B) is also a function that sets bias_level.
+It will call snd_soc_dapm_force_bias_level() (A) inside, but doesn't
+set dapm->bias_level by itself. One note is that (A) might not be called.
+
+(B)	static int snd_soc_dapm_set_bias_level(...)
+	{
+		...
+		ret = snd_soc_card_set_bias_level(...);
+		...
+		if (dapm != &card->dapm)
+(A)			ret = snd_soc_dapm_force_bias_level(...);
+		...
+		ret = snd_soc_card_set_bias_level_post(...);
+		...
+	}
+
+dapm->bias_level will be set if (A) was called, but might not be set
+if (B) was called, even though it calles set_bias_level() function.
+
+We should set dapm->bias_level if we calls
+snd_soc_dapm_set_bias_level() (B), too.
+
+Signed-off-by: Kuninori Morimoto <kuninori.morimoto.gx@renesas.com>
+Link: https://patch.msgid.link/87qzyn4g4h.wl-kuninori.morimoto.gx@renesas.com
+Signed-off-by: Mark Brown <broonie@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/hwmon/corsair-cpro.c | 5 +++++
- 1 file changed, 5 insertions(+)
+ sound/soc/soc-dapm.c | 4 ++++
+ 1 file changed, 4 insertions(+)
 
-diff --git a/drivers/hwmon/corsair-cpro.c b/drivers/hwmon/corsair-cpro.c
-index 05df31cab2e52..074f812332e89 100644
---- a/drivers/hwmon/corsair-cpro.c
-+++ b/drivers/hwmon/corsair-cpro.c
-@@ -84,6 +84,7 @@ struct ccp_device {
- 	struct mutex mutex; /* whenever buffer is used, lock before send_usb_cmd */
- 	u8 *cmd_buffer;
- 	u8 *buffer;
-+	int buffer_recv_size; /* number of received bytes in buffer */
- 	int target[6];
- 	DECLARE_BITMAP(temp_cnct, NUM_TEMP_SENSORS);
- 	DECLARE_BITMAP(fan_cnct, NUM_FANS);
-@@ -139,6 +140,9 @@ static int send_usb_cmd(struct ccp_device *ccp, u8 command, u8 byte1, u8 byte2,
- 	if (!t)
- 		return -ETIMEDOUT;
+diff --git a/sound/soc/soc-dapm.c b/sound/soc/soc-dapm.c
+index 7729f8f4d5e6..7facb7b2dba1 100644
+--- a/sound/soc/soc-dapm.c
++++ b/sound/soc/soc-dapm.c
+@@ -734,6 +734,10 @@ static int snd_soc_dapm_set_bias_level(struct snd_soc_dapm_context *dapm,
+ out:
+ 	trace_snd_soc_bias_level_done(card, level);
  
-+	if (ccp->buffer_recv_size != IN_BUFFER_SIZE)
-+		return -EPROTO;
++	/* success */
++	if (ret == 0)
++		snd_soc_dapm_init_bias_level(dapm, level);
 +
- 	return ccp_get_errno(ccp);
+ 	return ret;
  }
  
-@@ -150,6 +154,7 @@ static int ccp_raw_event(struct hid_device *hdev, struct hid_report *report, u8
- 	spin_lock(&ccp->wait_input_report_lock);
- 	if (!completion_done(&ccp->wait_input_report)) {
- 		memcpy(ccp->buffer, data, min(IN_BUFFER_SIZE, size));
-+		ccp->buffer_recv_size = size;
- 		complete_all(&ccp->wait_input_report);
- 	}
- 	spin_unlock(&ccp->wait_input_report_lock);
 -- 
 2.39.5
 
