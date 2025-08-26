@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-173546-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-175303-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 85549B35E13
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 13:51:58 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id B272AB36788
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 16:07:58 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 87F2D2A4643
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 11:42:22 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 2FCDB566A96
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 14:00:03 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 036052F9992;
-	Tue, 26 Aug 2025 11:42:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 146D4350D60;
+	Tue, 26 Aug 2025 13:58:00 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="G4ucS3+T"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="g2onOCEP"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A89301A256B;
-	Tue, 26 Aug 2025 11:42:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C6EA21EEA55;
+	Tue, 26 Aug 2025 13:57:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756208529; cv=none; b=Ib7Y4arO5/0ubgULsFGsZo7MHDYti252SqoMNSVLWerOxps91kgKbgitg7ymo0iatvgHWRq54rQLb/Q3jE+j86Oi5YFV1lg8jBkFW1zwQzVpuHTKO8i7XpYidyTBiBGpb1R8oHaYNvMXyXomJchrsC1xhIUuQncb6KvUKbt5/JY=
+	t=1756216679; cv=none; b=BHT4RSoiRoaHhLn3hkWwY3y0unD1hRsqeowcoG86yx0Tdw3s1MThjo5vewzWxOSzTk1ixEeDUqUz0FumcogRZAi+EnqP3L6Cw2gT+C8Nx48GFuf+oEMIREbx8DYdN+4rSDwoJrlHaknd1gppG1VS3Z4y7JuCvgpJCcsqzXXkNC0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756208529; c=relaxed/simple;
-	bh=mF77cpGWMaXcsm2rlZGvEtWJ46c+xqzcLdN0n1PkGRc=;
+	s=arc-20240116; t=1756216679; c=relaxed/simple;
+	bh=E8arlKsTUKT5S2EQ55UasQO9tHpBpZ05czHWBqBE4Qg=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=VGPm0LfaGu2q9cYK/F3AC8x9qOOwmOWq7LFSfptQYNfAKCFTUF18fSzlnarFENVD36XNt4V1b6KmnPd4HDFtbyr4Nxd9QlpZ51UA8rfCuwHltXz4hyq5fc+uoDhdqq95HnF5v8omzKE52lf6W1HBNnVZeM1h08wXq9MRz6bSwVs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=G4ucS3+T; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 423EEC16AAE;
-	Tue, 26 Aug 2025 11:42:09 +0000 (UTC)
+	 MIME-Version; b=Ot+Dtn6oRpZjaGqsmBdUMUpLMoLp1JpYrXrD2jKowwlNVdQw153l2/2w2Jum3JEo0NHUV2lDtOtNWvJOPikH3XRAMpebGDv/9KLy9JImQ4a92b8fMkUDdSoGymbONa+6NxOxiD3qO5CMLUoJTZD2NgoAp+ZfkkPxtLGd1CMFF0s=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=g2onOCEP; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5B058C4CEF1;
+	Tue, 26 Aug 2025 13:57:59 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1756208529;
-	bh=mF77cpGWMaXcsm2rlZGvEtWJ46c+xqzcLdN0n1PkGRc=;
+	s=korg; t=1756216679;
+	bh=E8arlKsTUKT5S2EQ55UasQO9tHpBpZ05czHWBqBE4Qg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=G4ucS3+Ts6Oq0LLUDiaFAr0MLRDFPt/5Ak5f6RoCt68K8uTohNg2zormVt+ypqlK7
-	 GNOE7jcHSB5H19uRHQ+yXjEQL5PexT8cZR+jmp9MWTvqj02Wpt2MAka9lTbA0hGDvW
-	 Gg/3tcLaFqqpsj+PqV3Y21n1iSWG18G8ZPGcZW+E=
+	b=g2onOCEP+l6+P8HS5t1n9aXYtl3x86org8svot0OAq+QOZGIrLvPmuoBUlUjsUyFi
+	 1t/VNu+0GsoPGEspM7bmPgBHqGoomQa9RUTY0EfAOeFiasj8wc+Ge4WWZ4XUeTFoEc
+	 8PVZNsL/kcFCBrroBJQp5FpBGIQIsX4fZ/aJm75k=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Filipe Manana <fdmanana@suse.com>,
-	Boris Burkov <boris@bur.io>,
-	David Sterba <dsterba@suse.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 147/322] btrfs: explicitly ref count block_group on new_bgs list
+	stable@kernel.org,
+	Liao Yuanhong <liaoyuanhong@vivo.com>,
+	Theodore Tso <tytso@mit.edu>
+Subject: [PATCH 5.15 471/644] ext4: use kmalloc_array() for array space allocation
 Date: Tue, 26 Aug 2025 13:09:22 +0200
-Message-ID: <20250826110919.438496207@linuxfoundation.org>
+Message-ID: <20250826110958.154006578@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250826110915.169062587@linuxfoundation.org>
-References: <20250826110915.169062587@linuxfoundation.org>
+In-Reply-To: <20250826110946.507083938@linuxfoundation.org>
+References: <20250826110946.507083938@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,68 +62,40 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Boris Burkov <boris@bur.io>
+From: Liao Yuanhong <liaoyuanhong@vivo.com>
 
-[ Upstream commit 7cbce3cb4c5cfffd8b08f148e2136afc1ec1ba94 ]
+commit 76dba1fe277f6befd6ef650e1946f626c547387a upstream.
 
-All other users of the bg_list list_head increment the refcount when
-adding to a list and decrement it when deleting from the list. Just for
-the sake of uniformity and to try to avoid refcounting bugs, do it for
-this list as well.
+Replace kmalloc(size * sizeof) with kmalloc_array() for safer memory
+allocation and overflow prevention.
 
-This does not fix any known ref-counting bug, as the reference belongs
-to a single task (trans_handle is not shared and this represents
-trans_handle->new_bgs linkage) and will not lose its original refcount
-while that thread is running. And BLOCK_GROUP_FLAG_NEW protects against
-ref-counting errors "moving" the block group to the unused list without
-taking a ref.
-
-With that said, I still believe it is simpler to just hold the extra ref
-count for this list user as well.
-
-Reviewed-by: Filipe Manana <fdmanana@suse.com>
-Signed-off-by: Boris Burkov <boris@bur.io>
-Signed-off-by: David Sterba <dsterba@suse.com>
-Stable-dep-of: 62be7afcc13b ("btrfs: zoned: requeue to unused block group list if zone finish failed")
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Cc: stable@kernel.org
+Signed-off-by: Liao Yuanhong <liaoyuanhong@vivo.com>
+Link: https://patch.msgid.link/20250811125816.570142-1-liaoyuanhong@vivo.com
+Signed-off-by: Theodore Ts'o <tytso@mit.edu>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- fs/btrfs/block-group.c |    2 ++
- fs/btrfs/transaction.c |    1 +
- 2 files changed, 3 insertions(+)
+ fs/ext4/orphan.c |    5 +++--
+ 1 file changed, 3 insertions(+), 2 deletions(-)
 
---- a/fs/btrfs/block-group.c
-+++ b/fs/btrfs/block-group.c
-@@ -2807,6 +2807,7 @@ next:
- 		spin_lock(&fs_info->unused_bgs_lock);
- 		list_del_init(&block_group->bg_list);
- 		clear_bit(BLOCK_GROUP_FLAG_NEW, &block_group->runtime_flags);
-+		btrfs_put_block_group(block_group);
- 		spin_unlock(&fs_info->unused_bgs_lock);
- 
- 		/*
-@@ -2945,6 +2946,7 @@ struct btrfs_block_group *btrfs_make_blo
+--- a/fs/ext4/orphan.c
++++ b/fs/ext4/orphan.c
+@@ -590,8 +590,9 @@ int ext4_init_orphan_info(struct super_b
  	}
- #endif
- 
-+	btrfs_get_block_group(cache);
- 	list_add_tail(&cache->bg_list, &trans->new_bgs);
- 	btrfs_inc_delayed_refs_rsv_bg_inserts(fs_info);
- 
---- a/fs/btrfs/transaction.c
-+++ b/fs/btrfs/transaction.c
-@@ -2113,6 +2113,7 @@ static void btrfs_cleanup_pending_block_
- 		*/
- 	       spin_lock(&fs_info->unused_bgs_lock);
-                list_del_init(&block_group->bg_list);
-+	       btrfs_put_block_group(block_group);
- 	       spin_unlock(&fs_info->unused_bgs_lock);
-        }
- }
+ 	oi->of_blocks = inode->i_size >> sb->s_blocksize_bits;
+ 	oi->of_csum_seed = EXT4_I(inode)->i_csum_seed;
+-	oi->of_binfo = kmalloc(oi->of_blocks*sizeof(struct ext4_orphan_block),
+-			       GFP_KERNEL);
++	oi->of_binfo = kmalloc_array(oi->of_blocks,
++				     sizeof(struct ext4_orphan_block),
++				     GFP_KERNEL);
+ 	if (!oi->of_binfo) {
+ 		ret = -ENOMEM;
+ 		goto out_put;
 
 
 
