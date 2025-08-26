@@ -1,55 +1,55 @@
-Return-Path: <stable+bounces-174733-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-174280-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6D9A0B364F0
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 15:43:06 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id E6E9DB3628C
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 15:20:05 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id ADE3C565294
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 13:34:06 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 27C3A8A5F7C
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 13:14:31 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 52F86345741;
-	Tue, 26 Aug 2025 13:32:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D7B683376BE;
+	Tue, 26 Aug 2025 13:12:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ebpNoNg2"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="aEdHGM5n"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0A992345758;
-	Tue, 26 Aug 2025 13:32:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8847E299A94;
+	Tue, 26 Aug 2025 13:12:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756215173; cv=none; b=DsiMY75HNGUKWZsESQxinAm8dEB4I/eFfyx0qUNguTrX3Q4u3Dkrydx/THyZh6hC1Xmwg2prqz0faZyo1zPob/H7sJKjBNUq5+q1k0Sv0liFSGM55tjtT+bGjCZogJIUwx3LpAMAhFuVzj/1P9w1efNeujb/Pm4WPSmCg+S8V2Y=
+	t=1756213970; cv=none; b=GpXQd0Q0OrpPDc650oeoJEyMp5L7PszcW/D7j4JCvOe9G8fhiYlD0QRK9se0itWwyYWMhUG56175tvsU4jWeiDUTN2w7ULx24U2+t4LOUeV7mSee4ignwDra4TZi/i4bn/96dDvdXJT8QAK8Q6U+531j36foj7XsXf58ZwmaVU8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756215173; c=relaxed/simple;
-	bh=ry4E59uLPPzOjTS33TFBw0L6S7l3pnPyPIfKPt/ChA8=;
+	s=arc-20240116; t=1756213970; c=relaxed/simple;
+	bh=ImaaN4mw6LXqUH5ewBs4s42dGEorvSWwwcmK57WeyrI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=gT/Pgp/T2M7MDBVEEObrL2rSzgw2U3E2FutiNHzq2cjEKyd3rG3nlJatP/bbwUJRaanKEOwp2N8Jt6mvzoDnO7WwaWnuHNxgy3J5opCmVTKu1HdpVrpZS34UBv2C42uNZ7yv+IPqC1Oh2pI+61APiw8TXqexiHXCRqhNxzT4Eyo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ebpNoNg2; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 92261C4CEF1;
-	Tue, 26 Aug 2025 13:32:52 +0000 (UTC)
+	 MIME-Version; b=JuafyuZdnTZR6AxapA5Fdxggew5o/aPsb/dnXPoGjzPHmDkfIL6wDnhK/DU0jqhdY9A54tvjUz0FEvxLN5HJY5hJP14xUN27BaClBYCbs6oC/49tUIhBlUFKDG9HA8anaAMSVBcjedWPKkTyiciRSjlj8Nk5S8GsZPmv2SzyIso=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=aEdHGM5n; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id AF44EC4CEF1;
+	Tue, 26 Aug 2025 13:12:49 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1756215172;
-	bh=ry4E59uLPPzOjTS33TFBw0L6S7l3pnPyPIfKPt/ChA8=;
+	s=korg; t=1756213970;
+	bh=ImaaN4mw6LXqUH5ewBs4s42dGEorvSWwwcmK57WeyrI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=ebpNoNg2XbIvOziw+vgyterBvYYSqrcr4IFr5DkR0HJmaFK4NvoEC9q3WKyIpPwnZ
-	 /k8NBTSF6mNGxNeT6IMHCblbQSjdIrHGnHUwf0+zlpRrZY2p/QpWiBKGNr1P5QCAj8
-	 FVWy+dwMoez98zQqb3l+1La6r8pqT3D25D9EPFUg=
+	b=aEdHGM5nJ9V/i7sKtbcI3OlwH0FM/9IS5+Rygkhh2mGZmTdq2Kq1q3DosVbdoPRtk
+	 QdlGmy9ciRQxM9hCnMiFJzk3+gf6FQjaBvHaOpmy7RlMJeuFLmfUPz0dWK3DtYZkVr
+	 5B4D1NSUGZtytCm2v80N3cHDiLlzvaVMy2uMTD0Y=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Miao Li <limiao@kylinos.cn>,
-	stable <stable@kernel.org>
-Subject: [PATCH 6.1 413/482] usb: quirks: Add DELAY_INIT quick for another SanDisk 3.2Gen1 Flash Drive
+	stable <stable@kernel.org>,
+	Miaoqian Lin <linmq006@gmail.com>
+Subject: [PATCH 6.6 517/587] most: core: Drop device reference after usage in get_channel()
 Date: Tue, 26 Aug 2025 13:11:06 +0200
-Message-ID: <20250826110941.029790415@linuxfoundation.org>
+Message-ID: <20250826111006.148015879@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250826110930.769259449@linuxfoundation.org>
-References: <20250826110930.769259449@linuxfoundation.org>
+In-Reply-To: <20250826110952.942403671@linuxfoundation.org>
+References: <20250826110952.942403671@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,36 +61,39 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Miao Li <limiao@kylinos.cn>
+From: Miaoqian Lin <linmq006@gmail.com>
 
-commit e664036cf36480414936cd91f4cfa2179a3d8367 upstream.
+commit b47b493d6387ae437098112936f32be27f73516c upstream.
 
-Another SanDisk 3.2Gen1 Flash Drive also need DELAY_INIT quick,
-or it will randomly work incorrectly on Huawei hisi platforms
-when doing reboot test.
+In get_channel(), the reference obtained by bus_find_device_by_name()
+was dropped via put_device() before accessing the device's driver data
+Move put_device() after usage to avoid potential issues.
 
-Signed-off-by: Miao Li <limiao@kylinos.cn>
+Fixes: 2485055394be ("staging: most: core: drop device reference")
 Cc: stable <stable@kernel.org>
-Link: https://lore.kernel.org/r/20250801082728.469406-1-limiao870622@163.com
+Signed-off-by: Miaoqian Lin <linmq006@gmail.com>
+Link: https://lore.kernel.org/r/20250804082955.3621026-1-linmq006@gmail.com
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/usb/core/quirks.c |    1 +
- 1 file changed, 1 insertion(+)
+ drivers/most/core.c |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/drivers/usb/core/quirks.c
-+++ b/drivers/usb/core/quirks.c
-@@ -371,6 +371,7 @@ static const struct usb_device_id usb_qu
- 	{ USB_DEVICE(0x0781, 0x5591), .driver_info = USB_QUIRK_NO_LPM },
- 
- 	/* SanDisk Corp. SanDisk 3.2Gen1 */
-+	{ USB_DEVICE(0x0781, 0x5596), .driver_info = USB_QUIRK_DELAY_INIT },
- 	{ USB_DEVICE(0x0781, 0x55a3), .driver_info = USB_QUIRK_DELAY_INIT },
- 
- 	/* SanDisk Extreme 55AE */
+--- a/drivers/most/core.c
++++ b/drivers/most/core.c
+@@ -538,8 +538,8 @@ static struct most_channel *get_channel(
+ 	dev = bus_find_device_by_name(&mostbus, NULL, mdev);
+ 	if (!dev)
+ 		return NULL;
+-	put_device(dev);
+ 	iface = dev_get_drvdata(dev);
++	put_device(dev);
+ 	list_for_each_entry_safe(c, tmp, &iface->p->channel_list, list) {
+ 		if (!strcmp(dev_name(&c->dev), mdev_ch))
+ 			return c;
 
 
 
