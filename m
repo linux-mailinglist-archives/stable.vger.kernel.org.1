@@ -1,55 +1,56 @@
-Return-Path: <stable+bounces-175817-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-175262-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 72F8CB36A1E
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 16:34:19 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 780A6B3676B
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 16:06:14 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id A86DC585FEA
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 14:22:02 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 755BA565FE0
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 13:57:25 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9E2E2352077;
-	Tue, 26 Aug 2025 14:20:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D6E7434DCF6;
+	Tue, 26 Aug 2025 13:56:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="DZ4bRf5I"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="wMTD7Z1v"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4B75435206F;
-	Tue, 26 Aug 2025 14:20:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 92752345726;
+	Tue, 26 Aug 2025 13:56:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756218047; cv=none; b=B7XcMi2Yj3ZxreHnxxaD+R8B1FsLPjF4jmlSSu/6nvbMas0SDwPhoN0MPtqfHepsV5oCI3Wtqq7UJRcIhQ3P7+BA9VYjQCOdp3dAuunTdT+uUZNRwlILO6Rm0cY7BDHCtnhBpfdX3oeIJZdppjnBBaQYXFU8eilvoKZVkMpp2hA=
+	t=1756216572; cv=none; b=Aoiz57R8vI/ZhluVXHqN//7z+e04uIGa6G4c3Jl8KwkyFokajQ/dgREgOjpaM2SyJF2v5FewibkAyQi/bfQBuTrMIf5Aj8Fn2MNYyNvS2A/j2QQTTqlFLA37FnJhOv4vWEO9oMK5qrHl+wG6nf0goqggsb3cRNe//unJjy4rnXs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756218047; c=relaxed/simple;
-	bh=QF6mKFb0V6KkkYcnig9tO7yoCh7G4Ea7ZE0dfZI+T8c=;
+	s=arc-20240116; t=1756216572; c=relaxed/simple;
+	bh=y4yruIGLKLx8a8tlW5WWP/p4Ur9zbotlzGyrIgmJZGs=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=iMjU8Cn2dwBppWpVGQMITb+C7ojOun0ZzGN5IGZL/Lcw0cHSNbmRdA48mVsKsF2dSyU574X8SHfn2ECGabzR10UXJq8kRn075BPxIXnN4Xbwxg+dQOPWOTRgVCfb/m2RwSRld+jnl0IHYzk2d2T467IJni3I+0V2ZHJ4iLyPQfU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=DZ4bRf5I; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8ACB9C113D0;
-	Tue, 26 Aug 2025 14:20:46 +0000 (UTC)
+	 MIME-Version; b=lyXlUoayVk609rqQ7tJbve11VxqKMSld7srq7KtRYmW6sKwMU4M/49rvXcP1iyFG9XjIlZJLz56fzy24MeblxM4lxFIs8yIj/6ySpmLju6TZooD/d5rtOBFL7Vcc9AOb0FtWJ8gMey7dX+JEvuZi4g5kPVLCctjwmFicqanONG4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=wMTD7Z1v; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 22471C113D0;
+	Tue, 26 Aug 2025 13:56:11 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1756218046;
-	bh=QF6mKFb0V6KkkYcnig9tO7yoCh7G4Ea7ZE0dfZI+T8c=;
+	s=korg; t=1756216572;
+	bh=y4yruIGLKLx8a8tlW5WWP/p4Ur9zbotlzGyrIgmJZGs=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=DZ4bRf5IzbJE0mwfeebrxw14lQ5ErVnEjJ9GWt26djpvpd3mOQj9sNO2ZXkUrVRp6
-	 9JfKRhcaoitQ+pSsDF3qNDKM+mQbiMeWMfL8tjJrXlVlxJ4aZusUYiqo/lUin2e7hx
-	 pItTYMyB+LiOcQNQ53bloDWiIE11csKMa0cDvsa4=
+	b=wMTD7Z1vEsKWxyANuwxRjpauUQp2jUnPtfUGMODTm2VyeaT4oX5kQNc8OxYNdBkHC
+	 KIcoOYpnmpUVEJu/emqXgTAVszrrGAsCi8DANkOexritQ3T4ErdubDzvzimF97AfAX
+	 d6cYeo74zOJ0lrL7HcoVxqNg9GP1i23kEpy59AV4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Ricky Wu <ricky_wu@realtek.com>,
-	Ulf Hansson <ulf.hansson@linaro.org>
-Subject: [PATCH 5.10 342/523] misc: rtsx: usb: Ensure mmc child device is active when card is present
+	Neil Armstrong <neil.armstrong@linaro.org>,
+	Johan Hovold <johan@kernel.org>,
+	Martin Blumenstingl <martin.blumenstingl@googlemail.com>
+Subject: [PATCH 5.15 461/644] usb: dwc3: meson-g12a: fix device leaks at unbind
 Date: Tue, 26 Aug 2025 13:09:12 +0200
-Message-ID: <20250826110932.905553383@linuxfoundation.org>
+Message-ID: <20250826110957.900601308@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250826110924.562212281@linuxfoundation.org>
-References: <20250826110924.562212281@linuxfoundation.org>
+In-Reply-To: <20250826110946.507083938@linuxfoundation.org>
+References: <20250826110946.507083938@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,74 +62,40 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Ricky Wu <ricky_wu@realtek.com>
+From: Johan Hovold <johan@kernel.org>
 
-commit 966c5cd72be8989c8a559ddef8e8ff07a37c5eb0 upstream.
+commit 93b400f4951404d040197943a25d6fef9f8ccabb upstream.
 
-When a card is present in the reader, the driver currently defers
-autosuspend by returning -EAGAIN during the suspend callback to
-trigger USB remote wakeup signaling. However, this does not guarantee
-that the mmc child device has been resumed, which may cause issues if
-it remains suspended while the card is accessible.
-This patch ensures that all child devices, including the mmc host
-controller, are explicitly resumed before returning -EAGAIN. This
-fixes a corner case introduced by earlier remote wakeup handling,
-improving reliability of runtime PM when a card is inserted.
+Make sure to drop the references taken to the child devices by
+of_find_device_by_node() during probe on driver unbind.
 
-Fixes: 883a87ddf2f1 ("misc: rtsx_usb: Use USB remote wakeup signaling for card insertion detection")
-Cc: stable@vger.kernel.org
-Signed-off-by: Ricky Wu <ricky_wu@realtek.com>
-Reviewed-by: Ulf Hansson <ulf.hansson@linaro.org>
-Link: https://lore.kernel.org/r/20250711140143.2105224-1-ricky_wu@realtek.com
+Fixes: c99993376f72 ("usb: dwc3: Add Amlogic G12A DWC3 glue")
+Cc: stable@vger.kernel.org	# 5.2
+Cc: Neil Armstrong <neil.armstrong@linaro.org>
+Signed-off-by: Johan Hovold <johan@kernel.org>
+Reviewed-by: Martin Blumenstingl <martin.blumenstingl@googlemail.com>
+Link: https://lore.kernel.org/r/20250724091910.21092-3-johan@kernel.org
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/misc/cardreader/rtsx_usb.c |   16 +++++++++-------
- 1 file changed, 9 insertions(+), 7 deletions(-)
+ drivers/usb/dwc3/dwc3-meson-g12a.c |    3 +++
+ 1 file changed, 3 insertions(+)
 
---- a/drivers/misc/cardreader/rtsx_usb.c
-+++ b/drivers/misc/cardreader/rtsx_usb.c
-@@ -698,6 +698,12 @@ static void rtsx_usb_disconnect(struct u
- }
+--- a/drivers/usb/dwc3/dwc3-meson-g12a.c
++++ b/drivers/usb/dwc3/dwc3-meson-g12a.c
+@@ -847,6 +847,9 @@ static int dwc3_meson_g12a_remove(struct
+ 	if (priv->drvdata->otg_switch_supported)
+ 		usb_role_switch_unregister(priv->role_switch);
  
- #ifdef CONFIG_PM
-+static int rtsx_usb_resume_child(struct device *dev, void *data)
-+{
-+	pm_request_resume(dev);
-+	return 0;
-+}
++	put_device(priv->switch_desc.udc);
++	put_device(priv->switch_desc.usb2_port);
 +
- static int rtsx_usb_suspend(struct usb_interface *intf, pm_message_t message)
- {
- 	struct rtsx_ucr *ucr =
-@@ -713,8 +719,10 @@ static int rtsx_usb_suspend(struct usb_i
- 			mutex_unlock(&ucr->dev_mutex);
+ 	of_platform_depopulate(dev);
  
- 			/* Defer the autosuspend if card exists */
--			if (val & (SD_CD | MS_CD))
-+			if (val & (SD_CD | MS_CD)) {
-+				device_for_each_child(&intf->dev, NULL, rtsx_usb_resume_child);
- 				return -EAGAIN;
-+			}
- 		} else {
- 			/* There is an ongoing operation*/
- 			return -EAGAIN;
-@@ -724,12 +732,6 @@ static int rtsx_usb_suspend(struct usb_i
- 	return 0;
- }
- 
--static int rtsx_usb_resume_child(struct device *dev, void *data)
--{
--	pm_request_resume(dev);
--	return 0;
--}
--
- static int rtsx_usb_resume(struct usb_interface *intf)
- {
- 	device_for_each_child(&intf->dev, NULL, rtsx_usb_resume_child);
+ 	for (i = 0 ; i < PHY_COUNT ; ++i) {
 
 
 
