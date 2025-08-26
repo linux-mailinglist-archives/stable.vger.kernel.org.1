@@ -1,57 +1,64 @@
-Return-Path: <stable+bounces-173265-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-175338-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2A4F9B35C46
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 13:32:56 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9937EB367A1
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 16:08:47 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id CDEB87B78F6
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 11:31:04 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 3B4AA1C222FA
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 14:01:47 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A93A4301486;
-	Tue, 26 Aug 2025 11:29:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 496F235083D;
+	Tue, 26 Aug 2025 13:59:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="0XAxPNlE"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="t4gkor7d"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6787732144F;
-	Tue, 26 Aug 2025 11:29:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0575734DCC3;
+	Tue, 26 Aug 2025 13:59:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756207799; cv=none; b=BrCRMmNZ94bzZMUI769BzAQ4MPCqmpPIBu/VYr/xG9hDXoWhbnRgukLQyY4VIgzIi1RiREF6bME2fmMZKi85CJKNZ2Xs34D9hdlaf7x5rwV3amMaooZT+b5F51iACVitfWy8hoyCdNgZdfK+BVyYt9sing7kOyo63hqi3ZrbC3A=
+	t=1756216771; cv=none; b=E5Z9LUvepDoUvfqLhPONHvgYcHKnQp6Pm9XYmJcioZYUFNH1zFSxldb2OzxOD8AeCeedUdv9xNuq+bqSFNMhbSjukYMPyOjrR+YO4hSA1IsGm5ODznMg5rtizGylg7ruASdvcYlUH0cZg4HG9I+BBXrCaAlS5rPdO6IExb2JVdk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756207799; c=relaxed/simple;
-	bh=BPkMZuIWuco2pyGPWmdfQ16c4QhJ+qt6IpC/nx403i8=;
+	s=arc-20240116; t=1756216771; c=relaxed/simple;
+	bh=1rF6PAVFdyQ8cqS4IfXF36w1W3dcdPfBIXKEQ8UDiVY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=oUpq2NHnFJSJc4w+k1UMsCMEpo4WEZeJkryX9HP2sRbC4bQhZrhkSyJ3k3OcohQVOle09DI1rWdfHKNOaEX2UtSiWDbTutClIHdNawbFpmsDIF6r9BOG6YHs3H4t7PG20cpS6qluWWRoiF8gAD1F/lirE8BeD1ZDGtBvWHaXWz0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=0XAxPNlE; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id AC84BC4CEF1;
-	Tue, 26 Aug 2025 11:29:58 +0000 (UTC)
+	 MIME-Version; b=pqROPNmySuamW+uWbQdR26ZmMpx7JcFbBU2ZDzKfN1RPNPxLkX0/gIO4Kse2jW4M92z/ri7t5771PwX5lTyii5Os1Slt0oQH0TQ5wLsmkHb/Qzb26LGeHs9rO2hqJfq9uIZM1nigjr/4bgMLtS8DtpOlgCCkPY6aGHThd++0dq8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=t4gkor7d; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 67B4CC113CF;
+	Tue, 26 Aug 2025 13:59:30 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1756207799;
-	bh=BPkMZuIWuco2pyGPWmdfQ16c4QhJ+qt6IpC/nx403i8=;
+	s=korg; t=1756216770;
+	bh=1rF6PAVFdyQ8cqS4IfXF36w1W3dcdPfBIXKEQ8UDiVY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=0XAxPNlEAOOEJ7/kF4814JTmdGJJZJd4arzi7xx+FuwtT48hVUSsRPBp+Coiq2/zU
-	 FyI3sBmzEWiQMVYeaxoJBbOXApfOEZYqXtjsmeKxSJaOH9FpWw+HwG4Slu+DdSxCoh
-	 ce4mL5p9L8nD3aKixLXruhsDi0oQS7EE67y8SQb4=
+	b=t4gkor7dPXk0I8OemruAtxnLnWtWst8b4pQh1Uh1lrFOoXgIDYHFDPmJR1+yU09hz
+	 uMssB61aOfFBiO0NGmJEyU4w0xlcAnG35guJOn0i5GBiDGkP61XHGAo3bGieu3bArY
+	 dE1I73/3uDHHUf/NQfFnsejz3kLKJNqTU+Gb/uH8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	stable <stable@kernel.org>,
-	Jun Li <jun.li@nxp.com>,
-	Xu Yang <xu.yang_2@nxp.com>,
-	Alan Stern <stern@rowland.harvard.edu>
-Subject: [PATCH 6.16 314/457] usb: core: hcd: fix accessing unmapped memory in SINGLE_STEP_SET_FEATURE test
+	Lorenzo Stoakes <lstoakes@gmail.com>,
+	Jan Kara <jack@suse.cz>,
+	Alexander Viro <viro@zeniv.linux.org.uk>,
+	Andy Lutomirski <luto@kernel.org>,
+	Christian Brauner <brauner@kernel.org>,
+	Hugh Dickins <hughd@google.com>,
+	"Matthew Wilcox (Oracle)" <willy@infradead.org>,
+	Mike Kravetz <mike.kravetz@oracle.com>,
+	Muchun Song <muchun.song@linux.dev>,
+	Andrew Morton <akpm@linux-foundation.org>,
+	"Isaac J. Manjarres" <isaacmanjarres@google.com>
+Subject: [PATCH 5.15 507/644] mm: update memfd seal write check to include F_SEAL_WRITE
 Date: Tue, 26 Aug 2025 13:09:58 +0200
-Message-ID: <20250826110945.120158170@linuxfoundation.org>
+Message-ID: <20250826110959.063545441@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250826110937.289866482@linuxfoundation.org>
-References: <20250826110937.289866482@linuxfoundation.org>
+In-Reply-To: <20250826110946.507083938@linuxfoundation.org>
+References: <20250826110946.507083938@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,63 +70,106 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.16-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Xu Yang <xu.yang_2@nxp.com>
+From: Lorenzo Stoakes <lstoakes@gmail.com>
 
-commit 8fe06185e11ae753414aa6117f0e798aa77567ff upstream.
+[ Upstream commit 28464bbb2ddc199433383994bcb9600c8034afa1 ]
 
-The USB core will unmap urb->transfer_dma after SETUP stage completes.
-Then the USB controller will access unmapped memory when it received
-device descriptor. If iommu is equipped, the entire test can't be
-completed due to the memory accessing is blocked.
+The seal_check_future_write() function is called by shmem_mmap() or
+hugetlbfs_file_mmap() to disallow any future writable mappings of an memfd
+sealed this way.
 
-Fix it by calling map_urb_for_dma() again for IN stage. To reduce
-redundant map for urb->transfer_buffer, this will also set
-URB_NO_TRANSFER_DMA_MAP flag before first map_urb_for_dma() to skip
-dma map for urb->transfer_buffer and clear URB_NO_TRANSFER_DMA_MAP
-flag before second map_urb_for_dma().
+The F_SEAL_WRITE flag is not checked here, as that is handled via the
+mapping->i_mmap_writable mechanism and so any attempt at a mapping would
+fail before this could be run.
 
-Fixes: 216e0e563d81 ("usb: core: hcd: use map_urb_for_dma for single step set feature urb")
-Cc: stable <stable@kernel.org>
-Reviewed-by: Jun Li <jun.li@nxp.com>
-Signed-off-by: Xu Yang <xu.yang_2@nxp.com>
-Acked-by: Alan Stern <stern@rowland.harvard.edu>
-Link: https://lore.kernel.org/r/20250806083955.3325299-1-xu.yang_2@nxp.com
+However we intend to change this, meaning this check can be performed for
+F_SEAL_WRITE mappings also.
+
+The logic here is equally applicable to both flags, so update this
+function to accommodate both and rename it accordingly.
+
+Link: https://lkml.kernel.org/r/913628168ce6cce77df7d13a63970bae06a526e0.1697116581.git.lstoakes@gmail.com
+Signed-off-by: Lorenzo Stoakes <lstoakes@gmail.com>
+Reviewed-by: Jan Kara <jack@suse.cz>
+Cc: Alexander Viro <viro@zeniv.linux.org.uk>
+Cc: Andy Lutomirski <luto@kernel.org>
+Cc: Christian Brauner <brauner@kernel.org>
+Cc: Hugh Dickins <hughd@google.com>
+Cc: Matthew Wilcox (Oracle) <willy@infradead.org>
+Cc: Mike Kravetz <mike.kravetz@oracle.com>
+Cc: Muchun Song <muchun.song@linux.dev>
+Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
+Cc: stable@vger.kernel.org
+Signed-off-by: Isaac J. Manjarres <isaacmanjarres@google.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/usb/core/hcd.c |    8 +++++++-
- 1 file changed, 7 insertions(+), 1 deletion(-)
+ fs/hugetlbfs/inode.c |    2 +-
+ include/linux/mm.h   |   15 ++++++++-------
+ mm/shmem.c           |    2 +-
+ 3 files changed, 10 insertions(+), 9 deletions(-)
 
---- a/drivers/usb/core/hcd.c
-+++ b/drivers/usb/core/hcd.c
-@@ -2151,7 +2151,7 @@ static struct urb *request_single_step_s
- 	urb->complete = usb_ehset_completion;
- 	urb->status = -EINPROGRESS;
- 	urb->actual_length = 0;
--	urb->transfer_flags = URB_DIR_IN;
-+	urb->transfer_flags = URB_DIR_IN | URB_NO_TRANSFER_DMA_MAP;
- 	usb_get_urb(urb);
- 	atomic_inc(&urb->use_count);
- 	atomic_inc(&urb->dev->urbnum);
-@@ -2215,9 +2215,15 @@ int ehset_single_step_set_feature(struct
+--- a/fs/hugetlbfs/inode.c
++++ b/fs/hugetlbfs/inode.c
+@@ -148,7 +148,7 @@ static int hugetlbfs_file_mmap(struct fi
+ 	vma->vm_flags |= VM_HUGETLB | VM_DONTEXPAND;
+ 	vma->vm_ops = &hugetlb_vm_ops;
  
- 	/* Complete remaining DATA and STATUS stages using the same URB */
- 	urb->status = -EINPROGRESS;
-+	urb->transfer_flags &= ~URB_NO_TRANSFER_DMA_MAP;
- 	usb_get_urb(urb);
- 	atomic_inc(&urb->use_count);
- 	atomic_inc(&urb->dev->urbnum);
-+	if (map_urb_for_dma(hcd, urb, GFP_KERNEL)) {
-+		usb_put_urb(urb);
-+		goto out1;
-+	}
-+
- 	retval = hcd->driver->submit_single_step_set_feature(hcd, urb, 0);
- 	if (!retval && !wait_for_completion_timeout(&done,
- 						msecs_to_jiffies(2000))) {
+-	ret = seal_check_future_write(info->seals, vma);
++	ret = seal_check_write(info->seals, vma);
+ 	if (ret)
+ 		return ret;
+ 
+--- a/include/linux/mm.h
++++ b/include/linux/mm.h
+@@ -3287,25 +3287,26 @@ static inline void mem_dump_obj(void *ob
+ #endif
+ 
+ /**
+- * seal_check_future_write - Check for F_SEAL_FUTURE_WRITE flag and handle it
++ * seal_check_write - Check for F_SEAL_WRITE or F_SEAL_FUTURE_WRITE flags and
++ *                    handle them.
+  * @seals: the seals to check
+  * @vma: the vma to operate on
+  *
+- * Check whether F_SEAL_FUTURE_WRITE is set; if so, do proper check/handling on
+- * the vma flags.  Return 0 if check pass, or <0 for errors.
++ * Check whether F_SEAL_WRITE or F_SEAL_FUTURE_WRITE are set; if so, do proper
++ * check/handling on the vma flags.  Return 0 if check pass, or <0 for errors.
+  */
+-static inline int seal_check_future_write(int seals, struct vm_area_struct *vma)
++static inline int seal_check_write(int seals, struct vm_area_struct *vma)
+ {
+-	if (seals & F_SEAL_FUTURE_WRITE) {
++	if (seals & (F_SEAL_WRITE | F_SEAL_FUTURE_WRITE)) {
+ 		/*
+ 		 * New PROT_WRITE and MAP_SHARED mmaps are not allowed when
+-		 * "future write" seal active.
++		 * write seals are active.
+ 		 */
+ 		if ((vma->vm_flags & VM_SHARED) && (vma->vm_flags & VM_WRITE))
+ 			return -EPERM;
+ 
+ 		/*
+-		 * Since an F_SEAL_FUTURE_WRITE sealed memfd can be mapped as
++		 * Since an F_SEAL_[FUTURE_]WRITE sealed memfd can be mapped as
+ 		 * MAP_SHARED and read-only, take care to not allow mprotect to
+ 		 * revert protections on such mappings. Do this only for shared
+ 		 * mappings. For private mappings, don't need to mask
+--- a/mm/shmem.c
++++ b/mm/shmem.c
+@@ -2262,7 +2262,7 @@ static int shmem_mmap(struct file *file,
+ 	struct shmem_inode_info *info = SHMEM_I(file_inode(file));
+ 	int ret;
+ 
+-	ret = seal_check_future_write(info->seals, vma);
++	ret = seal_check_write(info->seals, vma);
+ 	if (ret)
+ 		return ret;
+ 
 
 
 
