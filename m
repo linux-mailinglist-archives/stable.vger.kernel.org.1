@@ -1,59 +1,57 @@
-Return-Path: <stable+bounces-173647-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-174719-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id AB8ACB35DAE
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 13:47:17 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 39C54B36548
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 15:46:35 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 86FA57A7C88
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 11:45:41 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 50114564F49
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 13:33:19 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9DE362BEFF0;
-	Tue, 26 Aug 2025 11:46:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B153920CCCA;
+	Tue, 26 Aug 2025 13:32:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="yzt64rO8"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="zmV8MJI2"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5B838319858;
-	Tue, 26 Aug 2025 11:46:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6DE481ADFFE;
+	Tue, 26 Aug 2025 13:32:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756208791; cv=none; b=Ba5xOfzGsJns9MaidEdba+OCKOu6zGA44EfTJ5hmqWCNcBEXFRgWU/NRxgyGeBa57tubyNd64wiJ/kbUQ6OOBXm6ua5rz3396o+QzmzieNsXMRiz7LWjBmYXBcPOPQLqOj4ZiVqj+VU7kLgvOJ46h/IbcQFom8W6s/No5W9BxgI=
+	t=1756215136; cv=none; b=h0Jjwl3/xNVm4RHvheAkDqBw2+177dDkiSpCih7IyDUVXVqbBD4php7UFNZDzs2nSsmsPMGSZs+ep+MCZ0Yf5VFja6eVVGt+hMl0sU2CXcU+FsN/2+U0ImC37uF/4vRdLbwDiK5GlG2Cahq2nwj4sp9ySGoEY5mosawMmfcnfas=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756208791; c=relaxed/simple;
-	bh=EdlS1CpFaehbFnZLTMCV4zAqBXAZa8WPXE1xnsCeMZw=;
+	s=arc-20240116; t=1756215136; c=relaxed/simple;
+	bh=zdWAc5yeIqOcMwiu1d3hcfaK+HJbKEzorYUUJC4fUXY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=BL9ru3aO8sjES15nMq7zB56v4ea+eFPv5Z1x65JZ31b2j2Prz2GaaV4vWkmR1GObFC3TpyCJjYQdYT6MVgnv3Ja0jfADdhs7MBrIL/XqiieZFeQGF0wwcCrVUIB0ROsTqRly6c10pKjkmDoRrwso1AqTu+nhhLbXN5+OEuhjrK4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=yzt64rO8; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9534DC4CEF1;
-	Tue, 26 Aug 2025 11:46:30 +0000 (UTC)
+	 MIME-Version:Content-Type; b=Uwaijs9MaSe5oF67rqB7kzBSh75e4ddY2hnfcsnCY5pSFoGKrqjKefW7uSVUzLFt+z7LQ/KZftSnyQIDlvaZ1/XagZ0s+Xicq7PPOceRS1+yO7cH7BJLwD5RiSjkTqACrxFOQqDca0ZkAjYCSYhaszfy1eNaC7fPnjKChT1oB0U=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=zmV8MJI2; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id F1F83C4CEF1;
+	Tue, 26 Aug 2025 13:32:15 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1756208790;
-	bh=EdlS1CpFaehbFnZLTMCV4zAqBXAZa8WPXE1xnsCeMZw=;
+	s=korg; t=1756215136;
+	bh=zdWAc5yeIqOcMwiu1d3hcfaK+HJbKEzorYUUJC4fUXY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=yzt64rO8zDxXSW5gL0+GKneSq+3k8RabN2/LJgjvg2XufHCyyK8JP3J/XW7YBbE++
-	 /ca9gDG3iO7EwhXxWtpEhQgT70Be+hfowj2KRB7S7vSSQGf6YcYxeQHdKy9MjLrcDL
-	 8tdjtDu7Wjv2UrvRwcfAcCjEcjvGZZOle5Pr975o=
+	b=zmV8MJI2EuuJcIsPhBIkmWqGAdm4cV4cJi4bF5sxEMpCtkiendeD3gIqtFAd7iJYe
+	 e1yEWm0PY8XfFphp3nDuRm0OV3eexNStN4JoUx0C0u0G3aKfIfnjVL4q20TX5a9lJb
+	 brnSXbUHYVJEP2M+TJ1/gXDGhFvkRlDt7gJsAb8w=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Masami Hiramatsu <mhiramat@kernel.org>,
-	Mark Rutland <mark.rutland@arm.com>,
-	Mathieu Desnoyers <mathieu.desnoyers@efficios.com>,
-	Andrew Morton <akpm@linux-foundation.org>,
-	"Steven Rostedt (Google)" <rostedt@goodmis.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 239/322] tracing: Remove unneeded goto out logic
+	=?UTF-8?q?Timur=20Krist=C3=B3f?= <timur.kristof@gmail.com>,
+	Alex Deucher <alexander.deucher@amd.com>,
+	Rodrigo Siqueira <siqueira@igalia.com>,
+	Alex Hung <alex.hung@amd.com>
+Subject: [PATCH 6.1 401/482] drm/amd/display: Fix fractional fb divider in set_pixel_clock_v3
 Date: Tue, 26 Aug 2025 13:10:54 +0200
-Message-ID: <20250826110921.810973929@linuxfoundation.org>
+Message-ID: <20250826110940.733379107@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250826110915.169062587@linuxfoundation.org>
-References: <20250826110915.169062587@linuxfoundation.org>
+In-Reply-To: <20250826110930.769259449@linuxfoundation.org>
+References: <20250826110930.769259449@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,155 +61,57 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Steven Rostedt <rostedt@goodmis.org>
+From: Timur Kristóf <timur.kristof@gmail.com>
 
-[ Upstream commit c89504a703fb779052213add0e8ed642f4a4f1c8 ]
+commit 10507478468f165ea681605d133991ed05cdff62 upstream.
 
-Several places in the trace.c file there's a goto out where the out is
-simply a return. There's no reason to jump to the out label if it's not
-doing any more logic but simply returning from the function.
+For later VBIOS versions, the fractional feedback divider is
+calculated as the remainder of dividing the feedback divider by
+a factor, which is set to 1000000. For reference, see:
+- calculate_fb_and_fractional_fb_divider
+- calc_pll_max_vco_construct
 
-Replace the goto outs with a return and remove the out labels.
+However, in case of old VBIOS versions that have
+set_pixel_clock_v3, they only have 1 byte available for the
+fractional feedback divider, and it's expected to be set to the
+remainder from dividing the feedback divider by 10.
+For reference see the legacy display code:
+- amdgpu_pll_compute
+- amdgpu_atombios_crtc_program_pll
 
-Cc: Masami Hiramatsu <mhiramat@kernel.org>
-Cc: Mark Rutland <mark.rutland@arm.com>
-Cc: Mathieu Desnoyers <mathieu.desnoyers@efficios.com>
-Cc: Andrew Morton <akpm@linux-foundation.org>
-Link: https://lore.kernel.org/20250801203857.538726745@kernel.org
-Signed-off-by: Steven Rostedt (Google) <rostedt@goodmis.org>
-Stable-dep-of: 6a909ea83f22 ("tracing: Limit access to parser->buffer when trace_get_user failed")
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+This commit fixes set_pixel_clock_v3 by dividing the fractional
+feedback divider passed to the function by 100000.
+
+Fixes: 4562236b3bc0 ("drm/amd/dc: Add dc display driver (v2)")
+Signed-off-by: Timur Kristóf <timur.kristof@gmail.com>
+Acked-by: Alex Deucher <alexander.deucher@amd.com>
+Reviewed-by: Rodrigo Siqueira <siqueira@igalia.com>
+Reviewed-by: Alex Hung <alex.hung@amd.com>
+Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
+(cherry picked from commit 027e7acc7e17802ebf28e1edb88a404836ad50d6)
+Cc: stable@vger.kernel.org
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- kernel/trace/trace.c |   38 +++++++++++++++-----------------------
- 1 file changed, 15 insertions(+), 23 deletions(-)
+ drivers/gpu/drm/amd/display/dc/bios/command_table.c |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/kernel/trace/trace.c
-+++ b/kernel/trace/trace.c
-@@ -1754,7 +1754,7 @@ int trace_get_user(struct trace_parser *
- 
- 	ret = get_user(ch, ubuf++);
- 	if (ret)
--		goto out;
-+		return ret;
- 
- 	read++;
- 	cnt--;
-@@ -1768,7 +1768,7 @@ int trace_get_user(struct trace_parser *
- 		while (cnt && isspace(ch)) {
- 			ret = get_user(ch, ubuf++);
- 			if (ret)
--				goto out;
-+				return ret;
- 			read++;
- 			cnt--;
- 		}
-@@ -1778,8 +1778,7 @@ int trace_get_user(struct trace_parser *
- 		/* only spaces were written */
- 		if (isspace(ch) || !ch) {
- 			*ppos += read;
--			ret = read;
--			goto out;
-+			return read;
- 		}
- 	}
- 
-@@ -1787,13 +1786,12 @@ int trace_get_user(struct trace_parser *
- 	while (cnt && !isspace(ch) && ch) {
- 		if (parser->idx < parser->size - 1)
- 			parser->buffer[parser->idx++] = ch;
--		else {
--			ret = -EINVAL;
--			goto out;
--		}
-+		else
-+			return -EINVAL;
-+
- 		ret = get_user(ch, ubuf++);
- 		if (ret)
--			goto out;
-+			return ret;
- 		read++;
- 		cnt--;
- 	}
-@@ -1808,15 +1806,11 @@ int trace_get_user(struct trace_parser *
- 		/* Make sure the parsed string always terminates with '\0'. */
- 		parser->buffer[parser->idx] = 0;
- 	} else {
--		ret = -EINVAL;
--		goto out;
-+		return -EINVAL;
- 	}
- 
- 	*ppos += read;
--	ret = read;
--
--out:
--	return ret;
-+	return read;
- }
- 
- /* TODO add a seq_buf_to_buffer() */
-@@ -2318,10 +2312,10 @@ int __init register_tracer(struct tracer
- 	mutex_unlock(&trace_types_lock);
- 
- 	if (ret || !default_bootup_tracer)
--		goto out_unlock;
-+		return ret;
- 
- 	if (strncmp(default_bootup_tracer, type->name, MAX_TRACER_SIZE))
--		goto out_unlock;
-+		return 0;
- 
- 	printk(KERN_INFO "Starting tracer '%s'\n", type->name);
- 	/* Do we want this tracer to start on bootup? */
-@@ -2333,8 +2327,7 @@ int __init register_tracer(struct tracer
- 	/* disable other selftests, since this will break it. */
- 	disable_tracing_selftest("running a tracer");
- 
-- out_unlock:
--	return ret;
-+	return 0;
- }
- 
- static void tracing_reset_cpu(struct array_buffer *buf, int cpu)
-@@ -8563,12 +8556,12 @@ ftrace_trace_snapshot_callback(struct tr
-  out_reg:
- 	ret = tracing_arm_snapshot(tr);
- 	if (ret < 0)
--		goto out;
-+		return ret;
- 
- 	ret = register_ftrace_function_probe(glob, tr, ops, count);
- 	if (ret < 0)
- 		tracing_disarm_snapshot(tr);
-- out:
-+
- 	return ret < 0 ? ret : 0;
- }
- 
-@@ -10469,7 +10462,7 @@ __init static int tracer_alloc_buffers(v
- 	BUILD_BUG_ON(TRACE_ITER_LAST_BIT > TRACE_FLAGS_MAX_SIZE);
- 
- 	if (!alloc_cpumask_var(&tracing_buffer_mask, GFP_KERNEL))
--		goto out;
-+		return -ENOMEM;
- 
- 	if (!alloc_cpumask_var(&global_trace.tracing_cpumask, GFP_KERNEL))
- 		goto out_free_buffer_mask;
-@@ -10582,7 +10575,6 @@ out_free_cpumask:
- 	free_cpumask_var(global_trace.tracing_cpumask);
- out_free_buffer_mask:
- 	free_cpumask_var(tracing_buffer_mask);
--out:
- 	return ret;
- }
+--- a/drivers/gpu/drm/amd/display/dc/bios/command_table.c
++++ b/drivers/gpu/drm/amd/display/dc/bios/command_table.c
+@@ -993,7 +993,7 @@ static enum bp_result set_pixel_clock_v3
+ 	allocation.sPCLKInput.usFbDiv =
+ 			cpu_to_le16((uint16_t)bp_params->feedback_divider);
+ 	allocation.sPCLKInput.ucFracFbDiv =
+-			(uint8_t)bp_params->fractional_feedback_divider;
++			(uint8_t)(bp_params->fractional_feedback_divider / 100000);
+ 	allocation.sPCLKInput.ucPostDiv =
+ 			(uint8_t)bp_params->pixel_clock_post_divider;
  
 
 
