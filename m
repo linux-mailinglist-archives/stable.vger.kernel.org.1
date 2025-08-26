@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-173831-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-175000-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id E1F66B35FFB
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 14:55:54 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id C962BB3661A
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 15:53:28 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 81AD37C7478
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 12:54:10 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 4F69E46781C
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 13:45:06 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 282D4223DE5;
-	Tue, 26 Aug 2025 12:53:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C8A713090CE;
+	Tue, 26 Aug 2025 13:44:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="puCJB9vZ"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="FI1Fh0ei"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D7706188000;
-	Tue, 26 Aug 2025 12:53:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 853D229D291;
+	Tue, 26 Aug 2025 13:44:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756212780; cv=none; b=LNPcEkLmg2yCOrxYJ67+v7ZZhC3EP+l1B9cAdIRJo6nm8soCY4AP7i65/y+pVMa9BxGTcsbCrSDEzJoFMfvXnqvhDFoTz9e7gIsszClxOLnPmMgFTFIoI8AxMaYegI6v8LlcCNi+6qCGMnQIbNnPWQSvEwDK7i/v/ZK32WoyEZc=
+	t=1756215876; cv=none; b=AJgHXELsCv+xNdDjMZBcBC2IR62mtYvEHST7xrNvLdA/3uYnMsOZ+FsuK5lA7n78vvwXD1/DiRV+cHj5/XQUhRuFFyTivxTKsnjW6mGwE6fmYZBcqttHrGrO7TzqYY3PJNL35GtB6sQFDsM5fkmqtCon2nGNwdMLYYCgDQtvLiI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756212780; c=relaxed/simple;
-	bh=8kH1M4sMlEflfySN+BkxVyeSyfBLRpddDwgfp1v8reM=;
+	s=arc-20240116; t=1756215876; c=relaxed/simple;
+	bh=wIu1A+KeBCKM/12UgldH4b2nOOfACVINeUI/vYvmSj0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Zeb+ZE8PW/lSzgKwkrCWhEcnrWPNeHaTxYQwU+WHoC1OLqoYDNFw8mzqXnSsMvmKZOFR/IEAwj75pMgerj+EVLl1PrMPmfM+iPEFmOde9WXhSxkzvFNsweKgh6UFQ288eLvpa39xoM/6SAM6P4qtfQL77rbuxn2bbSMM/n3HVqc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=puCJB9vZ; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D126FC4CEF1;
-	Tue, 26 Aug 2025 12:52:59 +0000 (UTC)
+	 MIME-Version; b=LYi15ycjugLzqZOPGRScqE0K6ZPOBLceSLkbNEBzCrRint6Cns+ZMeiFVxOCfqXPr5fQKBdpFTBZ0Gy98ygCeLepBlj6rVTafWHg05Bpc094mJuwM3EkTZXu0+/HmA7AZNpmpBb+tEu/v0WUAKjIkTNvNcz5E5l7YCjruKSZegA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=FI1Fh0ei; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B20F2C4CEF1;
+	Tue, 26 Aug 2025 13:44:35 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1756212780;
-	bh=8kH1M4sMlEflfySN+BkxVyeSyfBLRpddDwgfp1v8reM=;
+	s=korg; t=1756215876;
+	bh=wIu1A+KeBCKM/12UgldH4b2nOOfACVINeUI/vYvmSj0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=puCJB9vZPuGR7vvpXuZNxLXvRR5+HYNCWS7o6GpX2FYC7saIWj+emdKL4cqTK5kCh
-	 g18p1ww3xgkUCGL96fkkmpRqydwHVNmUnTmu9W8hl/FwgjlHPZosgEWbwhGT7QYgWo
-	 HL/wbUCrm/2Gnot6l/Ng1CnU9rxOuIRVFg5coOYc=
+	b=FI1Fh0eiS6agrsQBPjpQ4xZH4s7Ji7GzdHuKlKGibO+6Q46p4OVfvgTPi2v0YJUDc
+	 0IJzYS7+WxFMCcidWRo0enco9YYtiyD0FtO2D09cv2md0HgR4fwhU2uix+Ml2vVv6i
+	 hc+VnXDeGwi5vdoK30TEIzoiDim0RUG5Fa033b7o=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	David Collins <david.collins@oss.qualcomm.com>,
-	Anjelique Melendez <anjelique.melendez@oss.qualcomm.com>,
-	Daniel Lezcano <daniel.lezcano@linaro.org>,
+	Remi Pommarel <repk@triplefau.lt>,
+	Johannes Berg <johannes.berg@intel.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 100/587] thermal/drivers/qcom-spmi-temp-alarm: Enable stage 2 shutdown when required
+Subject: [PATCH 5.15 158/644] Reapply "wifi: mac80211: Update skbs control block key in ieee80211_tx_dequeue()"
 Date: Tue, 26 Aug 2025 13:04:09 +0200
-Message-ID: <20250826110955.487150578@linuxfoundation.org>
+Message-ID: <20250826110950.391754632@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250826110952.942403671@linuxfoundation.org>
-References: <20250826110952.942403671@linuxfoundation.org>
+In-Reply-To: <20250826110946.507083938@linuxfoundation.org>
+References: <20250826110946.507083938@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,157 +62,41 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: David Collins <david.collins@oss.qualcomm.com>
+From: Remi Pommarel <repk@triplefau.lt>
 
-[ Upstream commit f8e157ff2df46ddabd930815d196895976227831 ]
+[ Upstream commit 754fe848b3b297fc85ec24cd959bad22b6df8cb8 ]
 
-Certain TEMP_ALARM GEN2 PMIC peripherals need over-temperature stage 2
-automatic PMIC partial shutdown. This will ensure that in the event of
-reaching the hotter stage 3 over-temperature threshold, repeated faults
-will be avoided during the automatic PMIC hardware full shutdown.
-Modify the stage 2 shutdown control logic to ensure that stage 2
-shutdown is enabled on all affected PMICs. Read the digital major
-and minor revision registers to identify these PMICs.
+This reverts commit 0937cb5f345c ("Revert "wifi: mac80211: Update
+skb's control block key in ieee80211_tx_dequeue()"").
 
-Signed-off-by: David Collins <david.collins@oss.qualcomm.com>
-Signed-off-by: Anjelique Melendez <anjelique.melendez@oss.qualcomm.com>
-Link: https://lore.kernel.org/r/20250710224555.3047790-2-anjelique.melendez@oss.qualcomm.com
-Signed-off-by: Daniel Lezcano <daniel.lezcano@linaro.org>
+This commit broke TX with 802.11 encapsulation HW offloading, now that
+this is fixed, reapply it.
+
+Fixes: bb42f2d13ffc ("mac80211: Move reorder-sensitive TX handlers to after TXQ dequeue")
+Signed-off-by: Remi Pommarel <repk@triplefau.lt>
+Link: https://patch.msgid.link/66b8fc39fb0194fa06c9ca7eeb6ffe0118dcb3ec.1752765971.git.repk@triplefau.lt
+Signed-off-by: Johannes Berg <johannes.berg@intel.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/thermal/qcom/qcom-spmi-temp-alarm.c | 43 ++++++++++++++++-----
- 1 file changed, 34 insertions(+), 9 deletions(-)
+ net/mac80211/tx.c | 1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/drivers/thermal/qcom/qcom-spmi-temp-alarm.c b/drivers/thermal/qcom/qcom-spmi-temp-alarm.c
-index 78c5cfe6a0c0..eeccf905f83e 100644
---- a/drivers/thermal/qcom/qcom-spmi-temp-alarm.c
-+++ b/drivers/thermal/qcom/qcom-spmi-temp-alarm.c
-@@ -1,6 +1,7 @@
- // SPDX-License-Identifier: GPL-2.0-only
- /*
-  * Copyright (c) 2011-2015, 2017, 2020, The Linux Foundation. All rights reserved.
-+ * Copyright (c) Qualcomm Technologies, Inc. and/or its subsidiaries.
-  */
- 
- #include <linux/bitops.h>
-@@ -16,6 +17,7 @@
- 
- #include "../thermal_hwmon.h"
- 
-+#define QPNP_TM_REG_DIG_MINOR		0x00
- #define QPNP_TM_REG_DIG_MAJOR		0x01
- #define QPNP_TM_REG_TYPE		0x04
- #define QPNP_TM_REG_SUBTYPE		0x05
-@@ -31,7 +33,7 @@
- #define STATUS_GEN2_STATE_MASK		GENMASK(6, 4)
- #define STATUS_GEN2_STATE_SHIFT		4
- 
--#define SHUTDOWN_CTRL1_OVERRIDE_S2	BIT(6)
-+#define SHUTDOWN_CTRL1_OVERRIDE_STAGE2	BIT(6)
- #define SHUTDOWN_CTRL1_THRESHOLD_MASK	GENMASK(1, 0)
- 
- #define SHUTDOWN_CTRL1_RATE_25HZ	BIT(3)
-@@ -79,6 +81,7 @@ struct qpnp_tm_chip {
- 	/* protects .thresh, .stage and chip registers */
- 	struct mutex			lock;
- 	bool				initialized;
-+	bool				require_stage2_shutdown;
- 
- 	struct iio_channel		*adc;
- 	const long			(*temp_map)[THRESH_COUNT][STAGE_COUNT];
-@@ -221,13 +224,13 @@ static int qpnp_tm_update_critical_trip_temp(struct qpnp_tm_chip *chip,
- {
- 	long stage2_threshold_min = (*chip->temp_map)[THRESH_MIN][1];
- 	long stage2_threshold_max = (*chip->temp_map)[THRESH_MAX][1];
--	bool disable_s2_shutdown = false;
-+	bool disable_stage2_shutdown = false;
- 	u8 reg;
- 
- 	WARN_ON(!mutex_is_locked(&chip->lock));
- 
- 	/*
--	 * Default: S2 and S3 shutdown enabled, thresholds at
-+	 * Default: Stage 2 and Stage 3 shutdown enabled, thresholds at
- 	 * lowest threshold set, monitoring at 25Hz
+diff --git a/net/mac80211/tx.c b/net/mac80211/tx.c
+index 4ab891c8416d..a5be5fe5c6b4 100644
+--- a/net/mac80211/tx.c
++++ b/net/mac80211/tx.c
+@@ -3711,6 +3711,7 @@ struct sk_buff *ieee80211_tx_dequeue(struct ieee80211_hw *hw,
+ 	 * The key can be removed while the packet was queued, so need to call
+ 	 * this here to get the current key.
  	 */
- 	reg = SHUTDOWN_CTRL1_RATE_25HZ;
-@@ -242,12 +245,12 @@ static int qpnp_tm_update_critical_trip_temp(struct qpnp_tm_chip *chip,
- 		chip->thresh = THRESH_MAX -
- 			((stage2_threshold_max - temp) /
- 			 TEMP_THRESH_STEP);
--		disable_s2_shutdown = true;
-+		disable_stage2_shutdown = true;
- 	} else {
- 		chip->thresh = THRESH_MAX;
- 
- 		if (chip->adc)
--			disable_s2_shutdown = true;
-+			disable_stage2_shutdown = true;
- 		else
- 			dev_warn(chip->dev,
- 				 "No ADC is configured and critical temperature %d mC is above the maximum stage 2 threshold of %ld mC! Configuring stage 2 shutdown at %ld mC.\n",
-@@ -256,8 +259,8 @@ static int qpnp_tm_update_critical_trip_temp(struct qpnp_tm_chip *chip,
- 
- skip:
- 	reg |= chip->thresh;
--	if (disable_s2_shutdown)
--		reg |= SHUTDOWN_CTRL1_OVERRIDE_S2;
-+	if (disable_stage2_shutdown && !chip->require_stage2_shutdown)
-+		reg |= SHUTDOWN_CTRL1_OVERRIDE_STAGE2;
- 
- 	return qpnp_tm_write(chip, QPNP_TM_REG_SHUTDOWN_CTRL1, reg);
- }
-@@ -371,8 +374,8 @@ static int qpnp_tm_probe(struct platform_device *pdev)
- {
- 	struct qpnp_tm_chip *chip;
- 	struct device_node *node;
--	u8 type, subtype, dig_major;
--	u32 res;
-+	u8 type, subtype, dig_major, dig_minor;
-+	u32 res, dig_revision;
- 	int ret, irq;
- 
- 	node = pdev->dev.of_node;
-@@ -424,6 +427,11 @@ static int qpnp_tm_probe(struct platform_device *pdev)
- 		return dev_err_probe(&pdev->dev, ret,
- 				     "could not read dig_major\n");
- 
-+	ret = qpnp_tm_read(chip, QPNP_TM_REG_DIG_MINOR, &dig_minor);
-+	if (ret < 0)
-+		return dev_err_probe(&pdev->dev, ret,
-+				     "could not read dig_minor\n");
-+
- 	if (type != QPNP_TM_TYPE || (subtype != QPNP_TM_SUBTYPE_GEN1
- 				     && subtype != QPNP_TM_SUBTYPE_GEN2)) {
- 		dev_err(&pdev->dev, "invalid type 0x%02x or subtype 0x%02x\n",
-@@ -437,6 +445,23 @@ static int qpnp_tm_probe(struct platform_device *pdev)
- 	else
- 		chip->temp_map = &temp_map_gen1;
- 
-+	if (chip->subtype == QPNP_TM_SUBTYPE_GEN2) {
-+		dig_revision = (dig_major << 8) | dig_minor;
-+		/*
-+		 * Check if stage 2 automatic partial shutdown must remain
-+		 * enabled to avoid potential repeated faults upon reaching
-+		 * over-temperature stage 3.
-+		 */
-+		switch (dig_revision) {
-+		case 0x0001:
-+		case 0x0002:
-+		case 0x0100:
-+		case 0x0101:
-+			chip->require_stage2_shutdown = true;
-+			break;
-+		}
-+	}
-+
- 	/*
- 	 * Register the sensor before initializing the hardware to be able to
- 	 * read the trip points. get_temp() returns the default temperature
++	info->control.hw_key = NULL;
+ 	r = ieee80211_tx_h_select_key(&tx);
+ 	if (r != TX_CONTINUE) {
+ 		ieee80211_free_txskb(&local->hw, skb);
 -- 
 2.39.5
 
