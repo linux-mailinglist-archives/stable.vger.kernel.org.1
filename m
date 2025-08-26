@@ -1,58 +1,56 @@
-Return-Path: <stable+bounces-173352-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-175926-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 089A9B35D53
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 13:43:38 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1617FB36ACC
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 16:40:51 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id A71C1362D04
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 11:35:30 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 39DC5580CA6
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 14:28:05 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 63596341660;
-	Tue, 26 Aug 2025 11:33:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 00D582F83BA;
+	Tue, 26 Aug 2025 14:25:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="XhO5/gWu"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="EqW+N5qQ"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 20DDA26AEC;
-	Tue, 26 Aug 2025 11:33:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B1BA7352071;
+	Tue, 26 Aug 2025 14:25:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756208023; cv=none; b=ghyTl5oke27DBFb29SwciRGN30M9QG0SJOwW2F/hG2h5Xrk3pfyVFwk2ee1B2xuBmZ/GDe30iHmw6UCk68SUXgIL619bx3tgkVgPjeTWcSHrDFW2dO6p3mJXFtOFelWqV6hOWnPZywofJtsukbs8XKYYbFve7UrMCWIrfqd1so0=
+	t=1756218330; cv=none; b=g+NpzCj4Xc8NgLphd4+7vo5WVPXiTyB75DSJPXc168WVd7vO/4+lREh+s8KJhWoc+ZeLuAfBxUgQQ0iz1czjJE665W21vJk9PNgPB6wp8+8e+1w4/gkfRUhIS3bjtY1EhmsTLSJcek081pyXhDTZ3LvUVjSgGeBNU0geFEvYPic=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756208023; c=relaxed/simple;
-	bh=pOgpfR0WO1+XJIJ28zlO7QbQObHQkL8MXSgegfMN+iE=;
+	s=arc-20240116; t=1756218330; c=relaxed/simple;
+	bh=arHZagiNgOh76IbkJycol58ky1jjJWlQVHWUHDlIuWM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=T3SVpPSeA/FldurkMZl73d58o4WAwDlngwT6qcmKCZfbGb+giu20wdE6M3cTlm/Jv5SB/fXizWOmEqFUsQv7GPaOFjTppIIphnpy5LK0h/z1bMnnCxAnA6QJYhMRsinTeTvBB6M3ccFIJJWRsdDGn0a97m4njAiO0EkhOK9lKEY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=XhO5/gWu; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id AE017C4CEF1;
-	Tue, 26 Aug 2025 11:33:42 +0000 (UTC)
+	 MIME-Version; b=Yj9T6pvlrKHB+YICZwrDEsU7mP3gitYOtjk6Q0WBs3XxEv/zGBVHN+UaSTQst1hHT3J9hz+yzAxuVAr0dIQKqrvvYy2x8fWvG07He/oUrWLdAB2g0emjcJbR62/RWz1tSmxzdINcEeqeniXDpc62DkuNe3QyuaBVmI9yvUFMM3U=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=EqW+N5qQ; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 44266C4CEF1;
+	Tue, 26 Aug 2025 14:25:30 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1756208023;
-	bh=pOgpfR0WO1+XJIJ28zlO7QbQObHQkL8MXSgegfMN+iE=;
+	s=korg; t=1756218330;
+	bh=arHZagiNgOh76IbkJycol58ky1jjJWlQVHWUHDlIuWM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=XhO5/gWu1uSYoaYdOsHd8VVpw9lUKar7RIAQOqnctsXRsCfe8EUIFm6O6NqtxSrGc
-	 ULIid6NZAC/6Vi92rDFQ2Dqykgwj7aOq39/t4dsLIP8cdhmp8xSNEXL23d0yvQTfjT
-	 y0+PZWEFIE6ZAjPDqvhZipl8iEL2eB3gRKFttP3M=
+	b=EqW+N5qQ17j09Jv3Ch72hk4c/1QUtMjOH1T9ovtgLHFm762toc8c3WJ1P2PNT+5gD
+	 hCslWmwpsBZtzAxo8EBkq4KExuEuQS71OZJmRVwUTZst0e4BGwyrlfUMXro0ffOPyP
+	 kaID3QOgyQjYD1kq+kC0wbrxlwfEFfcx9G+2Mdz4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	=?UTF-8?q?Piotr=20Pi=C3=B3rkowski?= <piotr.piorkowski@intel.com>,
-	Matthew Auld <matthew.auld@intel.com>,
-	=?UTF-8?q?Micha=C5=82=20Winiarski?= <michal.winiarski@intel.com>,
-	Rodrigo Vivi <rodrigo.vivi@intel.com>,
+	Hans Verkuil <hverkuil-cisco@xs4all.nl>,
+	Mauro Carvalho Chehab <mchehab+huawei@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.16 408/457] drm/xe: Assign ioctl xe file handler to vm in xe_vm_create
+Subject: [PATCH 5.10 482/523] media: v4l2-ctrls: always copy the controls on completion
 Date: Tue, 26 Aug 2025 13:11:32 +0200
-Message-ID: <20250826110947.378230740@linuxfoundation.org>
+Message-ID: <20250826110936.334777577@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250826110937.289866482@linuxfoundation.org>
-References: <20250826110937.289866482@linuxfoundation.org>
+In-Reply-To: <20250826110924.562212281@linuxfoundation.org>
+References: <20250826110924.562212281@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,143 +60,98 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.16-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Piotr Piórkowski <piotr.piorkowski@intel.com>
+From: Hans Verkuil <hverkuil-cisco@xs4all.nl>
 
-[ Upstream commit 658a1c8e0a66d0777e0e37a11ba19f27a81e77f4 ]
+[ Upstream commit c3bf5129f33923c92bf3bddaf4359b7b25ecb4ba ]
 
-In several code paths, such as xe_pt_create(), the vm->xef field is used
-to determine whether a VM originates from userspace or the kernel.
+When v4l2_ctrl_request_complete() is called and there is no control
+handler object found in the request, then create such an object so
+that all controls at completion state can be stored and are available
+to userspace.
 
-Previously, this handler was only assigned in xe_vm_create_ioctl(),
-after the VM was created by xe_vm_create(). However, xe_vm_create()
-triggers page table creation, and that function assumes vm->xef should
-be already set. This could lead to incorrect origin detection.
+Otherwise any attempt by userspace to read the completed request data
+will fail.
 
-To fix this problem and ensure consistency in the initialization of
-the VM object, let's move the assignment of this handler to
-xe_vm_create.
+If allocating the control handler object failed, then indicate that
+by returning ENOMEM when attempting to get the controls from the
+completed request instead of returning ENOENT.
 
-v2:
- - take reference to the xe file object only when xef is not NULL
- - release the reference to the xe file object on the error path (Matthew)
-
-Fixes: 7f387e6012b6 ("drm/xe: add XE_BO_FLAG_PINNED_LATE_RESTORE")
-Signed-off-by: Piotr Piórkowski <piotr.piorkowski@intel.com>
-Cc: Matthew Auld <matthew.auld@intel.com>
-Reviewed-by: Matthew Auld <matthew.auld@intel.com>
-Link: https://lore.kernel.org/r/20250811104358.2064150-2-piotr.piorkowski@intel.com
-Signed-off-by: Michał Winiarski <michal.winiarski@intel.com>
-(cherry picked from commit 9337166fa1d80f7bb7c7d3a8f901f21c348c0f2a)
-Signed-off-by: Rodrigo Vivi <rodrigo.vivi@intel.com>
+Signed-off-by: Hans Verkuil <hverkuil-cisco@xs4all.nl>
+Signed-off-by: Mauro Carvalho Chehab <mchehab+huawei@kernel.org>
+Stable-dep-of: 5a0400aca5fa ("media: v4l2-ctrls: Don't reset handler's error in v4l2_ctrl_handler_free()")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/gpu/drm/xe/xe_migrate.c    |  2 +-
- drivers/gpu/drm/xe/xe_pxp_submit.c |  2 +-
- drivers/gpu/drm/xe/xe_vm.c         | 11 ++++++-----
- drivers/gpu/drm/xe/xe_vm.h         |  2 +-
- 4 files changed, 9 insertions(+), 8 deletions(-)
+ drivers/media/v4l2-core/v4l2-ctrls.c |   36 +++++++++++++++++++++++++++++++----
+ 1 file changed, 32 insertions(+), 4 deletions(-)
 
-diff --git a/drivers/gpu/drm/xe/xe_migrate.c b/drivers/gpu/drm/xe/xe_migrate.c
-index 1e3fd139dfcb..0a481190f3e6 100644
---- a/drivers/gpu/drm/xe/xe_migrate.c
-+++ b/drivers/gpu/drm/xe/xe_migrate.c
-@@ -408,7 +408,7 @@ struct xe_migrate *xe_migrate_init(struct xe_tile *tile)
+--- a/drivers/media/v4l2-core/v4l2-ctrls.c
++++ b/drivers/media/v4l2-core/v4l2-ctrls.c
+@@ -3767,8 +3767,19 @@ v4l2_ctrls_find_req_obj(struct v4l2_ctrl
+ 	obj = media_request_object_find(req, &req_ops, hdl);
+ 	if (obj)
+ 		return obj;
++	/*
++	 * If there are no controls in this completed request,
++	 * then that can only happen if:
++	 *
++	 * 1) no controls were present in the queued request, and
++	 * 2) v4l2_ctrl_request_complete() could not allocate a
++	 *    control handler object to store the completed state in.
++	 *
++	 * So return ENOMEM to indicate that there was an out-of-memory
++	 * error.
++	 */
+ 	if (!set)
+-		return ERR_PTR(-ENOENT);
++		return ERR_PTR(-ENOMEM);
  
- 	/* Special layout, prepared below.. */
- 	vm = xe_vm_create(xe, XE_VM_FLAG_MIGRATION |
--			  XE_VM_FLAG_SET_TILE_ID(tile));
-+			  XE_VM_FLAG_SET_TILE_ID(tile), NULL);
- 	if (IS_ERR(vm))
- 		return ERR_CAST(vm);
- 
-diff --git a/drivers/gpu/drm/xe/xe_pxp_submit.c b/drivers/gpu/drm/xe/xe_pxp_submit.c
-index d92ec0f515b0..ca95f2a4d4ef 100644
---- a/drivers/gpu/drm/xe/xe_pxp_submit.c
-+++ b/drivers/gpu/drm/xe/xe_pxp_submit.c
-@@ -101,7 +101,7 @@ static int allocate_gsc_client_resources(struct xe_gt *gt,
- 	xe_assert(xe, hwe);
- 
- 	/* PXP instructions must be issued from PPGTT */
--	vm = xe_vm_create(xe, XE_VM_FLAG_GSC);
-+	vm = xe_vm_create(xe, XE_VM_FLAG_GSC, NULL);
- 	if (IS_ERR(vm))
- 		return PTR_ERR(vm);
- 
-diff --git a/drivers/gpu/drm/xe/xe_vm.c b/drivers/gpu/drm/xe/xe_vm.c
-index 861577746929..7251f23b919c 100644
---- a/drivers/gpu/drm/xe/xe_vm.c
-+++ b/drivers/gpu/drm/xe/xe_vm.c
-@@ -1612,7 +1612,7 @@ static void xe_vm_free_scratch(struct xe_vm *vm)
- 	}
- }
- 
--struct xe_vm *xe_vm_create(struct xe_device *xe, u32 flags)
-+struct xe_vm *xe_vm_create(struct xe_device *xe, u32 flags, struct xe_file *xef)
- {
- 	struct drm_gem_object *vm_resv_obj;
- 	struct xe_vm *vm;
-@@ -1633,9 +1633,10 @@ struct xe_vm *xe_vm_create(struct xe_device *xe, u32 flags)
- 	vm->xe = xe;
- 
- 	vm->size = 1ull << xe->info.va_bits;
+ 	new_hdl = kzalloc(sizeof(*new_hdl), GFP_KERNEL);
+ 	if (!new_hdl)
+@@ -3779,8 +3790,8 @@ v4l2_ctrls_find_req_obj(struct v4l2_ctrl
+ 	if (!ret)
+ 		ret = v4l2_ctrl_request_bind(req, new_hdl, hdl);
+ 	if (ret) {
++		v4l2_ctrl_handler_free(new_hdl);
+ 		kfree(new_hdl);
 -
- 	vm->flags = flags;
- 
-+	if (xef)
-+		vm->xef = xe_file_get(xef);
- 	/**
- 	 * GSC VMs are kernel-owned, only used for PXP ops and can sometimes be
- 	 * manipulated under the PXP mutex. However, the PXP mutex can be taken
-@@ -1786,6 +1787,8 @@ struct xe_vm *xe_vm_create(struct xe_device *xe, u32 flags)
- 	for_each_tile(tile, xe, id)
- 		xe_range_fence_tree_fini(&vm->rftree[id]);
- 	ttm_lru_bulk_move_fini(&xe->ttm, &vm->lru_bulk_move);
-+	if (vm->xef)
-+		xe_file_put(vm->xef);
- 	kfree(vm);
- 	if (flags & XE_VM_FLAG_LR_MODE)
- 		xe_pm_runtime_put(xe);
-@@ -2069,7 +2072,7 @@ int xe_vm_create_ioctl(struct drm_device *dev, void *data,
- 	if (args->flags & DRM_XE_VM_CREATE_FLAG_FAULT_MODE)
- 		flags |= XE_VM_FLAG_FAULT_MODE;
- 
--	vm = xe_vm_create(xe, flags);
-+	vm = xe_vm_create(xe, flags, xef);
- 	if (IS_ERR(vm))
- 		return PTR_ERR(vm);
- 
-@@ -2085,8 +2088,6 @@ int xe_vm_create_ioctl(struct drm_device *dev, void *data,
- 		vm->usm.asid = asid;
+ 		return ERR_PTR(ret);
  	}
  
--	vm->xef = xe_file_get(xef);
--
- 	/* Record BO memory for VM pagetable created against client */
- 	for_each_tile(tile, xe, id)
- 		if (vm->pt_root[id])
-diff --git a/drivers/gpu/drm/xe/xe_vm.h b/drivers/gpu/drm/xe/xe_vm.h
-index 494af6bdc646..0158ec0ae3b2 100644
---- a/drivers/gpu/drm/xe/xe_vm.h
-+++ b/drivers/gpu/drm/xe/xe_vm.h
-@@ -26,7 +26,7 @@ struct xe_sync_entry;
- struct xe_svm_range;
- struct drm_exec;
+@@ -4369,8 +4380,25 @@ void v4l2_ctrl_request_complete(struct m
+ 	 * wants to leave the controls unchanged.
+ 	 */
+ 	obj = media_request_object_find(req, &req_ops, main_hdl);
+-	if (!obj)
+-		return;
++	if (!obj) {
++		int ret;
++
++		/* Create a new request so the driver can return controls */
++		hdl = kzalloc(sizeof(*hdl), GFP_KERNEL);
++		if (!hdl)
++			return;
++
++		ret = v4l2_ctrl_handler_init(hdl, (main_hdl->nr_of_buckets - 1) * 8);
++		if (!ret)
++			ret = v4l2_ctrl_request_bind(req, hdl, main_hdl);
++		if (ret) {
++			v4l2_ctrl_handler_free(hdl);
++			kfree(hdl);
++			return;
++		}
++		hdl->request_is_queued = true;
++		obj = media_request_object_find(req, &req_ops, main_hdl);
++	}
+ 	hdl = container_of(obj, struct v4l2_ctrl_handler, req_obj);
  
--struct xe_vm *xe_vm_create(struct xe_device *xe, u32 flags);
-+struct xe_vm *xe_vm_create(struct xe_device *xe, u32 flags, struct xe_file *xef);
- 
- struct xe_vm *xe_vm_lookup(struct xe_file *xef, u32 id);
- int xe_vma_cmp_vma_cb(const void *key, const struct rb_node *node);
--- 
-2.50.1
-
+ 	list_for_each_entry(ref, &hdl->ctrl_refs, node) {
 
 
 
