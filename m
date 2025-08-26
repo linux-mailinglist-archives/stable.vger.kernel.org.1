@@ -1,55 +1,57 @@
-Return-Path: <stable+bounces-175704-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-173456-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6C36FB369B4
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 16:29:31 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 56C27B35CDB
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 13:39:27 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id E5963585419
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 14:18:13 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 11AF37C55A5
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 11:39:26 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3B5BF34AAE3;
-	Tue, 26 Aug 2025 14:15:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 40F7D29D280;
+	Tue, 26 Aug 2025 11:38:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="dMFtlZXH"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="eK37tD0B"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id ECC1F22DFA7;
-	Tue, 26 Aug 2025 14:15:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F17F523B628;
+	Tue, 26 Aug 2025 11:38:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756217751; cv=none; b=X8yvNWZGxqtqRrEesGPxLpchr8LEiHx04UfK+4oRps4tbvI/smO6g0+LlfA7uWkJs3zH7z9VY/8ZZeMXHHgal5oUwJW/gz0nq6chj7IItNEV2nN5iHE5DcB3a2TB3+BlvT3h7Mj+g/HWBiaQG1gGZN4oNRBduOQeiWTuID7wcU8=
+	t=1756208295; cv=none; b=QnLqkSIRGKXEZOSS94uzf+B8BYDfKPgXVndZ37jv1iKSQLja1wpPZ+nwIAJIUxoIW+Cel4olNZkv2aiC+IN2WV/oS6F0Fc/0npaZ3YGHEojH6UZitgnh1U2/rhxnlAaoKjRICu1UZJqw2qdefSNws3WAGIBWxhIgxaP15MCockY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756217751; c=relaxed/simple;
-	bh=Hpsmnqwyhl0BLODxfeGdt9l1qEZgmupFp85gQe1/yMs=;
+	s=arc-20240116; t=1756208295; c=relaxed/simple;
+	bh=ygJXn6UXGhShkQYhDRG6rym/9IUmdDPq2W3deg6iFq0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=pEQ+3CZrqKcVyMuA3I347g012f7yaPpwLcbnvUbzFOd5kaxA+KD2XrCZcqjr4x0Q1OpSkiRcScg4uxhe/NnDTDP0otzYsTUyHzaGlGJ+GcXKMd8AADScCJ8se9Mcn7LIguhkPEi/2lN4hz0XcAyXpSJYkpe8D8ur7o6I3pwhNw8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=dMFtlZXH; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 25F5DC4CEF1;
-	Tue, 26 Aug 2025 14:15:49 +0000 (UTC)
+	 MIME-Version; b=Bsoy6sYZAGHcTtY5utGjLHLCU8MYAUPEs45Om636xZLZDBvJpFAUxp8rhlZHPrJKA6G23V1557LQCvTCPFfjq1d0N9e3UilKEHXNFXUQFop0iL9S0k32JoEbtcYZ+9BvCgHG4r0smbAcYyitc9QdN4ntQxApdbTIsi3bex8UPwU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=eK37tD0B; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7A913C4CEF1;
+	Tue, 26 Aug 2025 11:38:14 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1756217750;
-	bh=Hpsmnqwyhl0BLODxfeGdt9l1qEZgmupFp85gQe1/yMs=;
+	s=korg; t=1756208294;
+	bh=ygJXn6UXGhShkQYhDRG6rym/9IUmdDPq2W3deg6iFq0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=dMFtlZXHkoAp+uB1omhOcAZMI3m4133gFaFP/4wRFH6kxvBFyreIgO5ma+/Sl+9Y7
-	 7u08BekxbJFSEDuCN1ANYVoTCbtOP+q1fTao8EdrcNQeVPm7Ur6jLUk3mD90NSOm3c
-	 YDsJUqI3c9b+fVVTodpz+Lq/rwc0opOFHvp8rg18=
+	b=eK37tD0BultAa7L05hUl7LWvyUm3lFrOfb3v2MF/xm/X9z3cOtSGVIo21V6gqrcRI
+	 YDo/9Ft3DLq8fdtseluXRT9x6Jp9CcvTukfTjjykyNv/XSsjAXO6M9VwcsEH2ixKNY
+	 P8WGb9j3l5kXQcrXoKb/uFksfy8sOgfIkq/rOJZ8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Johannes Berg <johannes.berg@intel.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 260/523] wifi: cfg80211: reject HTC bit for management frames
-Date: Tue, 26 Aug 2025 13:07:50 +0200
-Message-ID: <20250826110930.839002823@linuxfoundation.org>
+	kernel test robot <lkp@intel.com>,
+	David Lechner <dlechner@baylibre.com>,
+	Stable@vger.kernel.org,
+	Jonathan Cameron <Jonathan.Cameron@huawei.com>
+Subject: [PATCH 6.12 056/322] iio: imu: bno055: fix OOB access of hw_xlate array
+Date: Tue, 26 Aug 2025 13:07:51 +0200
+Message-ID: <20250826110916.899651277@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250826110924.562212281@linuxfoundation.org>
-References: <20250826110924.562212281@linuxfoundation.org>
+In-Reply-To: <20250826110915.169062587@linuxfoundation.org>
+References: <20250826110915.169062587@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,43 +63,86 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Johannes Berg <johannes.berg@intel.com>
+From: David Lechner <dlechner@baylibre.com>
 
-[ Upstream commit be06a8c7313943109fa870715356503c4c709cbc ]
+commit 399b883ec828e436f1a721bf8551b4da8727e65b upstream.
 
-Management frames sent by userspace should never have the
-order/HTC bit set, reject that. It could also cause some
-confusion with the length of the buffer and the header so
-the validation might end up wrong.
+Fix a potential out-of-bounds array access of the hw_xlate array in
+bno055.c.
 
-Link: https://patch.msgid.link/20250718202307.97a0455f0f35.I1805355c7e331352df16611839bc8198c855a33f@changeid
-Signed-off-by: Johannes Berg <johannes.berg@intel.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+In bno055_get_regmask(), hw_xlate was iterated over the length of the
+vals array instead of the length of the hw_xlate array. In the case of
+bno055_gyr_scale, the vals array is larger than the hw_xlate array,
+so this could result in an out-of-bounds access. In practice, this
+shouldn't happen though because a match should always be found which
+breaks out of the for loop before it iterates beyond the end of the
+hw_xlate array.
+
+By adding a new hw_xlate_len field to the bno055_sysfs_attr, we can be
+sure we are iterating over the correct length.
+
+Reported-by: kernel test robot <lkp@intel.com>
+Closes: https://lore.kernel.org/oe-kbuild-all/202507100510.rGt1YOOx-lkp@intel.com/
+Fixes: 4aefe1c2bd0c ("iio: imu: add Bosch Sensortec BNO055 core driver")
+Signed-off-by: David Lechner <dlechner@baylibre.com>
+Link: https://patch.msgid.link/20250709-iio-const-data-19-v2-1-fb3fc9191251@baylibre.com
+Cc: <Stable@vger.kernel.org>
+Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- net/wireless/mlme.c | 3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+ drivers/iio/imu/bno055/bno055.c |   11 ++++++++---
+ 1 file changed, 8 insertions(+), 3 deletions(-)
 
-diff --git a/net/wireless/mlme.c b/net/wireless/mlme.c
-index 6dcfc5a34874..8fce621a3f01 100644
---- a/net/wireless/mlme.c
-+++ b/net/wireless/mlme.c
-@@ -657,7 +657,8 @@ int cfg80211_mlme_mgmt_tx(struct cfg80211_registered_device *rdev,
+--- a/drivers/iio/imu/bno055/bno055.c
++++ b/drivers/iio/imu/bno055/bno055.c
+@@ -118,6 +118,7 @@ struct bno055_sysfs_attr {
+ 	int len;
+ 	int *fusion_vals;
+ 	int *hw_xlate;
++	int hw_xlate_len;
+ 	int type;
+ };
  
- 	mgmt = (const struct ieee80211_mgmt *)params->buf;
+@@ -170,20 +171,24 @@ static int bno055_gyr_scale_vals[] = {
+ 	1000, 1877467, 2000, 1877467,
+ };
  
--	if (!ieee80211_is_mgmt(mgmt->frame_control))
-+	if (!ieee80211_is_mgmt(mgmt->frame_control) ||
-+	    ieee80211_has_order(mgmt->frame_control))
- 		return -EINVAL;
++static int bno055_gyr_scale_hw_xlate[] = {0, 1, 2, 3, 4};
+ static struct bno055_sysfs_attr bno055_gyr_scale = {
+ 	.vals = bno055_gyr_scale_vals,
+ 	.len = ARRAY_SIZE(bno055_gyr_scale_vals),
+ 	.fusion_vals = (int[]){1, 900},
+-	.hw_xlate = (int[]){4, 3, 2, 1, 0},
++	.hw_xlate = bno055_gyr_scale_hw_xlate,
++	.hw_xlate_len = ARRAY_SIZE(bno055_gyr_scale_hw_xlate),
+ 	.type = IIO_VAL_FRACTIONAL,
+ };
  
- 	stype = le16_to_cpu(mgmt->frame_control) & IEEE80211_FCTL_STYPE;
--- 
-2.39.5
-
+ static int bno055_gyr_lpf_vals[] = {12, 23, 32, 47, 64, 116, 230, 523};
++static int bno055_gyr_lpf_hw_xlate[] = {5, 4, 7, 3, 6, 2, 1, 0};
+ static struct bno055_sysfs_attr bno055_gyr_lpf = {
+ 	.vals = bno055_gyr_lpf_vals,
+ 	.len = ARRAY_SIZE(bno055_gyr_lpf_vals),
+ 	.fusion_vals = (int[]){32},
+-	.hw_xlate = (int[]){5, 4, 7, 3, 6, 2, 1, 0},
++	.hw_xlate = bno055_gyr_lpf_hw_xlate,
++	.hw_xlate_len = ARRAY_SIZE(bno055_gyr_lpf_hw_xlate),
+ 	.type = IIO_VAL_INT,
+ };
+ 
+@@ -561,7 +566,7 @@ static int bno055_get_regmask(struct bno
+ 
+ 	idx = (hwval & mask) >> shift;
+ 	if (attr->hw_xlate)
+-		for (i = 0; i < attr->len; i++)
++		for (i = 0; i < attr->hw_xlate_len; i++)
+ 			if (attr->hw_xlate[i] == idx) {
+ 				idx = i;
+ 				break;
 
 
 
