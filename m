@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-173353-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-174318-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 28C68B35D1C
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 13:41:19 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id AB5C2B362C7
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 15:21:54 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id C20CF188ED78
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 11:35:52 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 0848C7C65B6
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 13:16:11 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 672A3341AA9;
-	Tue, 26 Aug 2025 11:33:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2BC653376A9;
+	Tue, 26 Aug 2025 13:14:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="r3i9SEu9"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="zHLQuk8c"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 220CF26AEC;
-	Tue, 26 Aug 2025 11:33:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DE049186E40;
+	Tue, 26 Aug 2025 13:14:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756208026; cv=none; b=utf7suWGhQMKLeIni9K6rpu5Q3qZ9ebF9cQTw+ClPZEWyKrGqT1Z2Y3LjMjDQyBG7Fla6/aoF06NnghtTe6XOZs2tRqKy6Y+7IEu1g7FqGiGJfAhdQDZTjH7+O4bavL6wZ+x/OPNvR+fyMd8+iMgwK7k4k+Tb/pgUwL2DyiD4zE=
+	t=1756214073; cv=none; b=Y/VRiGkch8AdpJ1uClrKleeMb5zj843PR05lma/ZfYPHyeiDZtzdGA8teLqNOuBEldn+OQDTEbjZR4zwepTiCFAFRIemTjyakxRnOH14mRr2Zchni4gOGcHmw0mS9MVGMh+1+C9DJNdcnxXcsyDCsVXABGKEj08WBsrf/VPLKF8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756208026; c=relaxed/simple;
-	bh=FgiwsldzhmF0a/r3t70MfVU1hLYHQtcfQUebCfd3rkw=;
+	s=arc-20240116; t=1756214073; c=relaxed/simple;
+	bh=53QjcfJoVj0jE8EzvIUJcE5hF6avBdqNGbpygTwFcTo=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=hI61eoQHBfLGNvo81rRk0unWFiX0aRnn2ti4r4NEqFpF8lOtxIhgMkPj6GjvhSx8BgoJyojGVjPts+sF66KNMe+WHVpKFvN1GY8dI9WdBnlvUOfHv+MQNgK0w5j9heZYmXikd2A0qztSrPY/YO3DeJmBl20YNcTkHu1x++0yLj8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=r3i9SEu9; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4E3DCC4CEF1;
-	Tue, 26 Aug 2025 11:33:45 +0000 (UTC)
+	 MIME-Version; b=avbBOmluTVrz0yST/H0vgWZ/8dL2Jz4LLrDlt0Gkf03d/bGnkCKfd0xsVRKQq0juoEnMQiMpWLzQTaEFkodBxju4MbUE7KKEpH+8018LRBh6qcCZOk5ZDlPuU82R6w+qOcksHROnP8E6TSq3/PYw28zkbb4DV9ZUo9UF5gr8n9U=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=zHLQuk8c; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 707CAC4CEF1;
+	Tue, 26 Aug 2025 13:14:32 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1756208025;
-	bh=FgiwsldzhmF0a/r3t70MfVU1hLYHQtcfQUebCfd3rkw=;
+	s=korg; t=1756214072;
+	bh=53QjcfJoVj0jE8EzvIUJcE5hF6avBdqNGbpygTwFcTo=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=r3i9SEu9bPonnsoVRDizuVKJIY1LUF3lRqX+S3RigTf2aDHTMKpPFXjSovNzsOn2i
-	 qY4wk20KuSFRT8iCza3/rxF9w5kd3b3wED64xj6tg3IJfu/OEdvWtyiWPPaJRrSwDe
-	 DrgMwNou/9TOCZtUVvBYeHZgv/hHpE5zKjuVCobo=
+	b=zHLQuk8cmkekZpuADEJJm3smIK3TnFUSyiTIEDIY01GO/MVUD3FJ4h2rU+vyIAnxV
+	 1cHoNAg2XcEBnYYHI8c+DVTWcAtKbMX54O5E4m3zuWL0an/6BvWi7qKePrIcWxkUH3
+	 2SFgj2MgoIlXv/4W7G/YgBmn3RY+N5vyuxcnk738=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Dan Carpenter <dan.carpenter@linaro.org>,
-	Mark Brown <broonie@kernel.org>,
+	stable <stable@kernel.org>,
+	Amit Sunil Dhamne <amitsd@google.com>,
+	Badhri Jagan Sridharan <badhri@google.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.16 409/457] regulator: tps65219: regulator: tps65219: Fix error codes in probe()
-Date: Tue, 26 Aug 2025 13:11:33 +0200
-Message-ID: <20250826110947.403347737@linuxfoundation.org>
+Subject: [PATCH 6.6 545/587] usb: typec: maxim_contaminant: re-enable cc toggle if cc is open and port is clean
+Date: Tue, 26 Aug 2025 13:11:34 +0200
+Message-ID: <20250826111006.882532061@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250826110937.289866482@linuxfoundation.org>
-References: <20250826110937.289866482@linuxfoundation.org>
+In-Reply-To: <20250826110952.942403671@linuxfoundation.org>
+References: <20250826110952.942403671@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,63 +63,119 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.16-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Dan Carpenter <dan.carpenter@linaro.org>
+From: Amit Sunil Dhamne <amitsd@google.com>
 
-[ Upstream commit 11cd7a5c21db020b8001aedcae27bd3fa9e1e901 ]
+[ Upstream commit a381c6d6f646226924809d0ad01a9465786da463 ]
 
-There is a copy and paste error and we accidentally use "PTR_ERR(rdev)"
-instead of "error".  The "rdev" pointer is valid at this point.
+Presently in `max_contaminant_is_contaminant()` if there's no
+contaminant detected previously, CC is open & stopped toggling and no
+contaminant is currently present, TCPC.RC would be programmed to do DRP
+toggling. However, it didn't actively look for a connection. This would
+lead to Type-C not detect *any* new connections. Hence, in the above
+situation, re-enable toggling & program TCPC to look for a new
+connection.
 
-Also there is no need to print the error code in the error message
-because dev_err_probe() already prints that.  So clean up the error
-message a bit.
+Also, return early if TCPC was looking for connection as this indicates
+TCPC has neither detected a potential connection nor a change in
+contaminant state.
 
-Fixes: 38c9f98db20a ("regulator: tps65219: Add support for TPS65215 Regulator IRQs")
-Signed-off-by: Dan Carpenter <dan.carpenter@linaro.org>
-Link: https://patch.msgid.link/aKRGmVdbvT1HBvm8@stanley.mountain
-Signed-off-by: Mark Brown <broonie@kernel.org>
+In addition, once dry detection is complete (port is dry), restart
+toggling.
+
+Fixes: 02b332a06397e ("usb: typec: maxim_contaminant: Implement check_contaminant callback")
+Cc: stable <stable@kernel.org>
+Signed-off-by: Amit Sunil Dhamne <amitsd@google.com>
+Reviewed-by: Badhri Jagan Sridharan <badhri@google.com>
+Link: https://lore.kernel.org/r/20250815-fix-upstream-contaminant-v2-2-6c8d6c3adafb@google.com
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/regulator/tps65219-regulator.c | 12 ++++++------
- 1 file changed, 6 insertions(+), 6 deletions(-)
+ drivers/usb/typec/tcpm/maxim_contaminant.c |   48 +++++++++++++++++++++++++++++
+ 1 file changed, 48 insertions(+)
 
-diff --git a/drivers/regulator/tps65219-regulator.c b/drivers/regulator/tps65219-regulator.c
-index 5e67fdc88f49..d77ca486879f 100644
---- a/drivers/regulator/tps65219-regulator.c
-+++ b/drivers/regulator/tps65219-regulator.c
-@@ -454,9 +454,9 @@ static int tps65219_regulator_probe(struct platform_device *pdev)
- 						  irq_type->irq_name,
- 						  irq_data);
- 		if (error)
--			return dev_err_probe(tps->dev, PTR_ERR(rdev),
--					     "Failed to request %s IRQ %d: %d\n",
--					     irq_type->irq_name, irq, error);
-+			return dev_err_probe(tps->dev, error,
-+					     "Failed to request %s IRQ %d\n",
-+					     irq_type->irq_name, irq);
- 	}
- 
- 	for (i = 0; i < pmic->dev_irq_size; ++i) {
-@@ -477,9 +477,9 @@ static int tps65219_regulator_probe(struct platform_device *pdev)
- 						  irq_type->irq_name,
- 						  irq_data);
- 		if (error)
--			return dev_err_probe(tps->dev, PTR_ERR(rdev),
--					     "Failed to request %s IRQ %d: %d\n",
--					     irq_type->irq_name, irq, error);
-+			return dev_err_probe(tps->dev, error,
-+					     "Failed to request %s IRQ %d\n",
-+					     irq_type->irq_name, irq);
- 	}
- 
+--- a/drivers/usb/typec/tcpm/maxim_contaminant.c
++++ b/drivers/usb/typec/tcpm/maxim_contaminant.c
+@@ -322,6 +322,34 @@ static int max_contaminant_enable_dry_de
  	return 0;
--- 
-2.50.1
-
+ }
+ 
++static int max_contaminant_enable_toggling(struct max_tcpci_chip *chip)
++{
++	struct regmap *regmap = chip->data.regmap;
++	int ret;
++
++	/* Disable dry detection if enabled. */
++	ret = regmap_update_bits(regmap, TCPC_VENDOR_CC_CTRL2, CCLPMODESEL_MASK,
++				 ULTRA_LOW_POWER_MODE);
++	if (ret)
++		return ret;
++
++	ret = regmap_update_bits(regmap, TCPC_VENDOR_CC_CTRL1, CCCONNDRY, 0);
++	if (ret)
++		return ret;
++
++	ret = max_tcpci_write8(chip, TCPC_ROLE_CTRL, TCPC_ROLE_CTRL_DRP | 0xA);
++	if (ret)
++		return ret;
++
++	ret = regmap_update_bits(regmap, TCPC_TCPC_CTRL,
++				 TCPC_TCPC_CTRL_EN_LK4CONN_ALRT,
++				 TCPC_TCPC_CTRL_EN_LK4CONN_ALRT);
++	if (ret)
++		return ret;
++
++	return max_tcpci_write8(chip, TCPC_COMMAND, TCPC_CMD_LOOK4CONNECTION);
++}
++
+ bool max_contaminant_is_contaminant(struct max_tcpci_chip *chip, bool disconnect_while_debounce)
+ {
+ 	u8 cc_status, pwr_cntl;
+@@ -335,6 +363,12 @@ bool max_contaminant_is_contaminant(stru
+ 	if (ret < 0)
+ 		return false;
+ 
++	if (cc_status & TCPC_CC_STATUS_TOGGLING) {
++		if (chip->contaminant_state == DETECTED)
++			return true;
++		return false;
++	}
++
+ 	if (chip->contaminant_state == NOT_DETECTED || chip->contaminant_state == SINK) {
+ 		if (!disconnect_while_debounce)
+ 			msleep(100);
+@@ -367,6 +401,12 @@ bool max_contaminant_is_contaminant(stru
+ 				max_contaminant_enable_dry_detection(chip);
+ 				return true;
+ 			}
++
++			ret = max_contaminant_enable_toggling(chip);
++			if (ret)
++				dev_err(chip->dev,
++					"Failed to enable toggling, ret=%d",
++					ret);
+ 		}
+ 		return false;
+ 	} else if (chip->contaminant_state == DETECTED) {
+@@ -375,6 +415,14 @@ bool max_contaminant_is_contaminant(stru
+ 			if (chip->contaminant_state == DETECTED) {
+ 				max_contaminant_enable_dry_detection(chip);
+ 				return true;
++			} else {
++				ret = max_contaminant_enable_toggling(chip);
++				if (ret) {
++					dev_err(chip->dev,
++						"Failed to enable toggling, ret=%d",
++						ret);
++					return true;
++				}
+ 			}
+ 		}
+ 	}
 
 
 
