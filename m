@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-176012-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-173060-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id ECE6BB36B3F
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 16:44:22 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 6EB5EB35BC9
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 13:28:05 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 4D321585B08
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 14:31:51 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 6E2B72A1875
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 11:22:24 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C3F79352FCA;
-	Tue, 26 Aug 2025 14:29:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 77C49318146;
+	Tue, 26 Aug 2025 11:21:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="zP4npiEk"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="DxzX9NKu"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7F89E260586;
-	Tue, 26 Aug 2025 14:29:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3449C312806;
+	Tue, 26 Aug 2025 11:21:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756218554; cv=none; b=gp4QUL13oT5KmEY5TUORyUnFyE5sVjR0BRpFGCDGcVYdvBZHAWJdS/HICayE6gDDDa3uPIYdbc+lAK5SNbWNhT+bUbt9w/KD0+mbdc7KUEz+3CPAF7rms1zapCA4PWf8ibhwVff9ygsQi/d1y0731xjNuNkLhRB/tClUWIYrhjQ=
+	t=1756207270; cv=none; b=L+9jdFO4wbwRU2IHOqNHRd6I1Wac4ZWAAzFmoZmoifg9WqjmbV5Gj4YG+fUqTKTdVUdgK5SDk+Bmk1AhxlSYtburYRnNBcdeHU6NvOYpFJmT29pCS+PnFvXNA1xmMTU+ZDYDH0qPk9Ipr84g4FzDMDWhd0qYKe3mhw+SOAkb7vU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756218554; c=relaxed/simple;
-	bh=jjMXoI7LDzuCmy1GxBTe+4raM5wG4caeOIRFoXhukuo=;
+	s=arc-20240116; t=1756207270; c=relaxed/simple;
+	bh=ITbHW2dg2zSHytsO4KKkYjQ1HIVXWdZRLLJpeyOIIYA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=LLR5FAAwgo66c+ZnEaiCfHr1IjoInr0HBHUcTiJrSy1rZcCCvZI2lw6WHsNuLiwkrlf8p2ZCTBYm00HEeuckNAXpjHJZFL8R3iTo+3TpZwiDJk+6PT5H6QLZs96OKhi/XvZULVR3P8cLjiqxS6hXqrMKcckiYiB3oCl9untaL74=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=zP4npiEk; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 11098C113CF;
-	Tue, 26 Aug 2025 14:29:13 +0000 (UTC)
+	 MIME-Version; b=nPdRkFmLDeaSTY6WRmIO3uFzQ2RosvOmlt4Wl1St/+lc2mrwokJ5QDlRm9tp2jW7o2fm3t96HVBSJNYmjNIDbMyFCffKIV8l/QICo9MxzIgfs+qSApFJsTvGHYqDmSRy1GpS7HT5D/ayjshuEGLE7FOnvnPSiEKG5NyzvufGn2w=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=DxzX9NKu; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id BBB3EC4CEF1;
+	Tue, 26 Aug 2025 11:21:09 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1756218554;
-	bh=jjMXoI7LDzuCmy1GxBTe+4raM5wG4caeOIRFoXhukuo=;
+	s=korg; t=1756207270;
+	bh=ITbHW2dg2zSHytsO4KKkYjQ1HIVXWdZRLLJpeyOIIYA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=zP4npiEkja+ouX7375g9NtDUrdqbdtYWhDhU7QzPdFePY1LP9IjEN3Uarz5JAkxvL
-	 6eUDNthrU+B4Z9m9b/iCncKQU6s69a5aR2K4kk0/+LxZbIfYiDI/2MLEY4Y5IZ9AsR
-	 m8goo1FW6yMwuLKSdIBSypjptMUy6oH5O9Z9aDo8=
+	b=DxzX9NKuXYaQxl7cWRY1pUnUNGp2MgCECYlgndcUSfzJPci1+Pw+EwEh3hQtDlB9k
+	 i8ReI42fXCdcBaP4nfdycxifPj7zUstC9ssGnXPSeY6cRjA7e3Bi6cWn6RhedRBe0W
+	 W0KxIBfQ8z7JMCu1nTepTpo7N4A/drsLdtfYCRac=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Bui Quang Minh <minhquangbui99@gmail.com>,
-	Jason Wang <jasowang@redhat.com>,
-	Paolo Abeni <pabeni@redhat.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.4 043/403] virtio-net: ensure the received length does not exceed allocated size
+	Johan Hovold <johan+linaro@kernel.org>,
+	Baochen Qiang <quic_bqiang@quicinc.com>,
+	Jeff Johnson <jeff.johnson@oss.qualcomm.com>
+Subject: [PATCH 6.16 085/457] wifi: ath11k: fix source ring-buffer corruption
 Date: Tue, 26 Aug 2025 13:06:09 +0200
-Message-ID: <20250826110907.016284633@linuxfoundation.org>
+Message-ID: <20250826110939.479820946@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250826110905.607690791@linuxfoundation.org>
-References: <20250826110905.607690791@linuxfoundation.org>
+In-Reply-To: <20250826110937.289866482@linuxfoundation.org>
+References: <20250826110937.289866482@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,117 +62,61 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.4-stable review patch.  If anyone has any objections, please let me know.
+6.16-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Bui Quang Minh <minhquangbui99@gmail.com>
+From: Johan Hovold <johan+linaro@kernel.org>
 
-commit 315dbdd7cdf6aa533829774caaf4d25f1fd20e73 upstream.
+commit 6efa0df54022c6c9fd4d294b87622c7fcdc418c8 upstream.
 
-In xdp_linearize_page, when reading the following buffers from the ring,
-we forget to check the received length with the true allocate size. This
-can lead to an out-of-bound read. This commit adds that missing check.
+Add the missing memory barrier to make sure that LMAC source ring
+descriptors are written before updating the head pointer to avoid
+passing stale data to the firmware on weakly ordered architectures like
+aarch64.
 
-Cc: <stable@vger.kernel.org>
-Fixes: 4941d472bf95 ("virtio-net: do not reset during XDP set")
-Signed-off-by: Bui Quang Minh <minhquangbui99@gmail.com>
-Acked-by: Jason Wang <jasowang@redhat.com>
-Link: https://patch.msgid.link/20250630144212.48471-2-minhquangbui99@gmail.com
-Signed-off-by: Paolo Abeni <pabeni@redhat.com>
-[ adapted virtqueue_get_buf() to virtqueue_get_buf_ctx() ]
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Note that non-LMAC rings use MMIO write accessors which have the
+required write memory barrier.
+
+Tested-on: WCN6855 hw2.1 WLAN.HSP.1.1-03125-QCAHSPSWPL_V1_V2_SILICONZ_LITE-3.6510.41
+
+Fixes: d5c65159f289 ("ath11k: driver for Qualcomm IEEE 802.11ax devices")
+Cc: stable@vger.kernel.org      # 5.6
+Signed-off-by: Johan Hovold <johan+linaro@kernel.org>
+Reviewed-by: Baochen Qiang <quic_bqiang@quicinc.com>
+Link: https://patch.msgid.link/20250604143457.26032-5-johan+linaro@kernel.org
+Signed-off-by: Jeff Johnson <jeff.johnson@oss.qualcomm.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/net/virtio_net.c |   38 ++++++++++++++++++++++++++++++++++----
- 1 file changed, 34 insertions(+), 4 deletions(-)
+ drivers/net/wireless/ath/ath11k/hal.c |   10 +++++++++-
+ 1 file changed, 9 insertions(+), 1 deletion(-)
 
---- a/drivers/net/virtio_net.c
-+++ b/drivers/net/virtio_net.c
-@@ -394,6 +394,26 @@ static unsigned int mergeable_ctx_to_tru
- 	return (unsigned long)mrg_ctx & ((1 << MRG_CTX_HEADER_SHIFT) - 1);
- }
- 
-+static int check_mergeable_len(struct net_device *dev, void *mrg_ctx,
-+			       unsigned int len)
-+{
-+	unsigned int headroom, tailroom, room, truesize;
-+
-+	truesize = mergeable_ctx_to_truesize(mrg_ctx);
-+	headroom = mergeable_ctx_to_headroom(mrg_ctx);
-+	tailroom = headroom ? sizeof(struct skb_shared_info) : 0;
-+	room = SKB_DATA_ALIGN(headroom + tailroom);
-+
-+	if (len > truesize - room) {
-+		pr_debug("%s: rx error: len %u exceeds truesize %lu\n",
-+			 dev->name, len, (unsigned long)(truesize - room));
-+		dev->stats.rx_length_errors++;
-+		return -1;
-+	}
-+
-+	return 0;
-+}
-+
- /* Called from bottom half context */
- static struct sk_buff *page_to_skb(struct virtnet_info *vi,
- 				   struct receive_queue *rq,
-@@ -639,7 +659,8 @@ static unsigned int virtnet_get_headroom
-  * across multiple buffers (num_buf > 1), and we make sure buffers
-  * have enough headroom.
-  */
--static struct page *xdp_linearize_page(struct receive_queue *rq,
-+static struct page *xdp_linearize_page(struct net_device *dev,
-+				       struct receive_queue *rq,
- 				       u16 *num_buf,
- 				       struct page *p,
- 				       int offset,
-@@ -659,18 +680,27 @@ static struct page *xdp_linearize_page(s
- 	memcpy(page_address(page) + page_off, page_address(p) + offset, *len);
- 	page_off += *len;
- 
-+	/* Only mergeable mode can go inside this while loop. In small mode,
-+	 * *num_buf == 1, so it cannot go inside.
-+	 */
- 	while (--*num_buf) {
- 		unsigned int buflen;
- 		void *buf;
-+		void *ctx;
- 		int off;
- 
--		buf = virtqueue_get_buf(rq->vq, &buflen);
-+		buf = virtqueue_get_buf_ctx(rq->vq, &buflen, &ctx);
- 		if (unlikely(!buf))
- 			goto err_buf;
- 
- 		p = virt_to_head_page(buf);
- 		off = buf - page_address(p);
- 
-+		if (check_mergeable_len(dev, ctx, buflen)) {
-+			put_page(p);
-+			goto err_buf;
-+		}
-+
- 		/* guard against a misconfigured or uncooperative backend that
- 		 * is sending packet larger than the MTU.
- 		 */
-@@ -745,7 +775,7 @@ static struct sk_buff *receive_small(str
- 			headroom = vi->hdr_len + header_offset;
- 			buflen = SKB_DATA_ALIGN(GOOD_PACKET_LEN + headroom) +
- 				 SKB_DATA_ALIGN(sizeof(struct skb_shared_info));
--			xdp_page = xdp_linearize_page(rq, &num_buf, page,
-+			xdp_page = xdp_linearize_page(dev, rq, &num_buf, page,
- 						      offset, header_offset,
- 						      &tlen);
- 			if (!xdp_page)
-@@ -910,7 +940,7 @@ static struct sk_buff *receive_mergeable
- 		if (unlikely(num_buf > 1 ||
- 			     headroom < virtnet_get_headroom(vi))) {
- 			/* linearize data for XDP */
--			xdp_page = xdp_linearize_page(rq, &num_buf,
-+			xdp_page = xdp_linearize_page(dev, rq, &num_buf,
- 						      page, offset,
- 						      VIRTIO_XDP_HEADROOM,
- 						      &len);
+--- a/drivers/net/wireless/ath/ath11k/hal.c
++++ b/drivers/net/wireless/ath/ath11k/hal.c
+@@ -862,7 +862,11 @@ void ath11k_hal_srng_access_end(struct a
+ 		if (srng->ring_dir == HAL_SRNG_DIR_SRC) {
+ 			srng->u.src_ring.last_tp =
+ 				*(volatile u32 *)srng->u.src_ring.tp_addr;
+-			*srng->u.src_ring.hp_addr = srng->u.src_ring.hp;
++			/* Make sure descriptor is written before updating the
++			 * head pointer.
++			 */
++			dma_wmb();
++			WRITE_ONCE(*srng->u.src_ring.hp_addr, srng->u.src_ring.hp);
+ 		} else {
+ 			srng->u.dst_ring.last_hp = *srng->u.dst_ring.hp_addr;
+ 			*srng->u.dst_ring.tp_addr = srng->u.dst_ring.tp;
+@@ -871,6 +875,10 @@ void ath11k_hal_srng_access_end(struct a
+ 		if (srng->ring_dir == HAL_SRNG_DIR_SRC) {
+ 			srng->u.src_ring.last_tp =
+ 				*(volatile u32 *)srng->u.src_ring.tp_addr;
++			/* Assume implementation use an MMIO write accessor
++			 * which has the required wmb() so that the descriptor
++			 * is written before the updating the head pointer.
++			 */
+ 			ath11k_hif_write32(ab,
+ 					   (unsigned long)srng->u.src_ring.hp_addr -
+ 					   (unsigned long)ab->mem,
 
 
 
