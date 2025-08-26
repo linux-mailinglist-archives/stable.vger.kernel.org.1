@@ -1,55 +1,55 @@
-Return-Path: <stable+bounces-175376-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-173321-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id F28EEB3673D
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 16:04:58 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7695DB35C7C
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 13:34:51 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 6313CB62403
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 14:01:07 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 3FE5B7C4BCA
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 11:34:42 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5AEF7223335;
-	Tue, 26 Aug 2025 14:01:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7082B321438;
+	Tue, 26 Aug 2025 11:32:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="lExETfRC"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="XDiE/Rxb"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 195662BEC45;
-	Tue, 26 Aug 2025 14:01:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 208A52F9C23;
+	Tue, 26 Aug 2025 11:32:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756216875; cv=none; b=j3hhpX/JWe1d28MB2ZrbfAeIlB60yGybTdTxBwiKeAhMIXLTAHGOY+VGYNgfZacH1j3Q0dX/5dWDEvqVyFMqzyTX4bOAX6isxa20d5kRLGiMzDg6fMRiQ+edVm+O+Unvm8xseyJoFVyYJoMDnqUlNB1W33UbUs4L4pzfEeK+/6A=
+	t=1756207944; cv=none; b=siMaFa9X8y6iVce73oW+zUF04/nNIqjJqxvqaljJ3+ckjZHmH4dP8gl+V5KlRW3pauPHvnnw4NpicVCHyHYuN1CsglzlNqqHmYlbdP9gfvPTWseNmWa40M2iNjbNmPndFJWNWDon2bETqZzchJ+awSZ/lygYaCd76VSqK6V5/m8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756216875; c=relaxed/simple;
-	bh=J77Ud1Cxbr3xeVKlBoX0QWon8N9R8TlCnJFbL5mjJjo=;
+	s=arc-20240116; t=1756207944; c=relaxed/simple;
+	bh=4P1SBD4A/b15JK6ihwThcF0mrZyMYxpHc50Tfwe3PCE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=ct59ybPhfvAsluYEQh9OPwPNeDKKq8kGGgK6mx/wOoiSvAYsXTnViDdbda5b0eWQ9kWteZo2xPokzdmnRZL2TzSHWs62AkdkflFaF+QoTZMLqufzjGHioJWgioqGFin9kCK8WzQ/jn6xlOxSl4TUZXuAKwygP4cjO/6T5VEvJH0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=lExETfRC; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9F501C4CEF1;
-	Tue, 26 Aug 2025 14:01:14 +0000 (UTC)
+	 MIME-Version; b=DQHWT91LoX0NyoXpgxbtADiTJCZ+augdFbQDSJ+xkiUjn8uaapx7igffXf+7Fp8pfbdUfp5wYFjdywI8U/1Qohm7hSdcQabrJGU63+9sUFP/yT1rvbywSLqWLNYqfT/STSEXVevycxYrFOG+LfaNTR/1PUmTLtv5GllvIr0x+ZU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=XDiE/Rxb; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5B02FC4CEF1;
+	Tue, 26 Aug 2025 11:32:23 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1756216875;
-	bh=J77Ud1Cxbr3xeVKlBoX0QWon8N9R8TlCnJFbL5mjJjo=;
+	s=korg; t=1756207943;
+	bh=4P1SBD4A/b15JK6ihwThcF0mrZyMYxpHc50Tfwe3PCE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=lExETfRC2oQjlijCd/tHKdrWKuFM47MddOqSK0o6Nvz08OC8uXZT4etk25e+IT4mK
-	 X9O7/J14UXuYfZB7uz7j3Dxm9jjXgxFlIyH4vAJ3yIgZuxji7ShqbFJ3JhMI8tU5Ck
-	 FyuG1tuuR3IX6Kt5PgVfacK0Fxi9vqAfxvbfl5hE=
+	b=XDiE/RxbVN1xLVRENtwfwrHtj1YUYwrHXD1c6Ecyl0zPDrB8YwSyFtnYU/9eEazxU
+	 DKh/spQmhOUvSelw2jGH8jNISvC3YBshhvsPBrZfhiELfygC3vXomux/QV/SAFpjCt
+	 3a0L4oM/f5/JITzcZ3JV9a/8Axk3Y2/M7HUWJysY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Evgeniy Harchenko <evgeniyharchenko.dev@gmail.com>,
-	Takashi Iwai <tiwai@suse.de>
-Subject: [PATCH 5.15 568/644] ALSA: hda/realtek: Add support for HP EliteBook x360 830 G6 and EliteBook 830 G6
-Date: Tue, 26 Aug 2025 13:10:59 +0200
-Message-ID: <20250826111000.606581604@linuxfoundation.org>
+	Luiz Augusto von Dentz <luiz.von.dentz@intel.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.16 376/457] Bluetooth: hci_core: Fix using ll_privacy_capable for current settings
+Date: Tue, 26 Aug 2025 13:11:00 +0200
+Message-ID: <20250826110946.588893764@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250826110946.507083938@linuxfoundation.org>
-References: <20250826110946.507083938@linuxfoundation.org>
+In-Reply-To: <20250826110937.289866482@linuxfoundation.org>
+References: <20250826110937.289866482@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,38 +61,54 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.16-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Evgeniy Harchenko <evgeniyharchenko.dev@gmail.com>
+From: Luiz Augusto von Dentz <luiz.von.dentz@intel.com>
 
-commit eafae0fdd115a71b3a200ef1a31f86da04bac77f upstream.
+[ Upstream commit 3dcf7175f2c04bd3a7d50db3fa42a0bd933b6e23 ]
 
-The HP EliteBook x360 830 G6 and HP EliteBook 830 G6 have
-Realtek HDA codec ALC215. It needs the ALC285_FIXUP_HP_GPIO_LED
-quirk to enable the mute LED.
+ll_privacy_capable only indicates that the controller supports the
+feature but it doesnt' check that LE is enabled so it end up being
+marked as active in the current settings when it shouldn't.
 
-Cc: <stable@vger.kernel.org>
-Signed-off-by: Evgeniy Harchenko <evgeniyharchenko.dev@gmail.com>
-Link: https://patch.msgid.link/20250815095814.75845-1-evgeniyharchenko.dev@gmail.com
-Signed-off-by: Takashi Iwai <tiwai@suse.de>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: ad383c2c65a5 ("Bluetooth: hci_sync: Enable advertising when LL privacy is enabled")
+Signed-off-by: Luiz Augusto von Dentz <luiz.von.dentz@intel.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- sound/pci/hda/patch_realtek.c |    2 ++
- 1 file changed, 2 insertions(+)
+ include/net/bluetooth/hci_core.h | 1 +
+ net/bluetooth/mgmt.c             | 2 +-
+ 2 files changed, 2 insertions(+), 1 deletion(-)
 
---- a/sound/pci/hda/patch_realtek.c
-+++ b/sound/pci/hda/patch_realtek.c
-@@ -9319,6 +9319,8 @@ static const struct snd_pci_quirk alc269
- 	SND_PCI_QUIRK(0x103c, 0x84e7, "HP Pavilion 15", ALC269_FIXUP_HP_MUTE_LED_MIC3),
- 	SND_PCI_QUIRK(0x103c, 0x8519, "HP Spectre x360 15-df0xxx", ALC285_FIXUP_HP_SPECTRE_X360),
- 	SND_PCI_QUIRK(0x103c, 0x8537, "HP ProBook 440 G6", ALC236_FIXUP_HP_MUTE_LED_MICMUTE_VREF),
-+	SND_PCI_QUIRK(0x103c, 0x8548, "HP EliteBook x360 830 G6", ALC285_FIXUP_HP_GPIO_LED),
-+	SND_PCI_QUIRK(0x103c, 0x854a, "HP EliteBook 830 G6", ALC285_FIXUP_HP_GPIO_LED),
- 	SND_PCI_QUIRK(0x103c, 0x85c6, "HP Pavilion x360 Convertible 14-dy1xxx", ALC295_FIXUP_HP_MUTE_LED_COEFBIT11),
- 	SND_PCI_QUIRK(0x103c, 0x85de, "HP Envy x360 13-ar0xxx", ALC285_FIXUP_HP_ENVY_X360),
- 	SND_PCI_QUIRK(0x103c, 0x860f, "HP ZBook 15 G6", ALC285_FIXUP_HP_GPIO_AMP_INIT),
+diff --git a/include/net/bluetooth/hci_core.h b/include/net/bluetooth/hci_core.h
+index e77cb840deee..2fcd62fdbc87 100644
+--- a/include/net/bluetooth/hci_core.h
++++ b/include/net/bluetooth/hci_core.h
+@@ -1951,6 +1951,7 @@ void hci_conn_del_sysfs(struct hci_conn *conn);
+ 			 ((dev)->le_rx_def_phys & HCI_LE_SET_PHY_CODED))
+ 
+ #define ll_privacy_capable(dev) ((dev)->le_features[0] & HCI_LE_LL_PRIVACY)
++#define ll_privacy_enabled(dev) (le_enabled(dev) && ll_privacy_capable(dev))
+ 
+ #define privacy_mode_capable(dev) (ll_privacy_capable(dev) && \
+ 				   ((dev)->commands[39] & 0x04))
+diff --git a/net/bluetooth/mgmt.c b/net/bluetooth/mgmt.c
+index 7a75309e6fd4..d4405d3d9bc1 100644
+--- a/net/bluetooth/mgmt.c
++++ b/net/bluetooth/mgmt.c
+@@ -934,7 +934,7 @@ static u32 get_current_settings(struct hci_dev *hdev)
+ 	if (sync_recv_enabled(hdev))
+ 		settings |= MGMT_SETTING_ISO_SYNC_RECEIVER;
+ 
+-	if (ll_privacy_capable(hdev))
++	if (ll_privacy_enabled(hdev))
+ 		settings |= MGMT_SETTING_LL_PRIVACY;
+ 
+ 	return settings;
+-- 
+2.50.1
+
 
 
 
