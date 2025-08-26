@@ -1,58 +1,57 @@
-Return-Path: <stable+bounces-174030-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-175195-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id E5377B360E8
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 15:05:03 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2019BB36736
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 16:04:39 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 172491BC0F49
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 13:02:09 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 7A9D58E7AC9
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 13:55:20 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 41D2617C211;
-	Tue, 26 Aug 2025 13:01:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0BA93350D4E;
+	Tue, 26 Aug 2025 13:53:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="mKoiadKy"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="trlSsKIM"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F2F662BAF7;
-	Tue, 26 Aug 2025 13:01:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BE1E1350D4C;
+	Tue, 26 Aug 2025 13:53:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756213307; cv=none; b=FoMdze1qabp2+l6M7nBpHuCMGFf4CrGOTbWn6aCv1ceW1GcV5n75ClIbIIXioPWR+Whkyk/7DaisreBTFBCfEgvbCkkoy/mvlJ2Fa2Jyb+LTdfxYoNLFOlYG5DoOfiz24RwPHTiuXaipA1Bw/XFREQh0jNi+CKh6zJihX0wiVNw=
+	t=1756216391; cv=none; b=gWJ7YUSapZ4L6LkMtUsiWIgjI4U2Z+sjNsk8awxykvXXo3XgWb5BhAD8r9f0ppqJkemsKpOl+2HJ676iSNc62Qx8hrdi4lvKydYIeWeAv2wW1A15jSqY5TUjw46EU2ErrAqY0eUzF+8rC78PtvUQ3DLLk9aVwBWejU4oLbldfRs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756213307; c=relaxed/simple;
-	bh=3HE1bemLJjow/1tQzNFqWl3RghntReju/bNjSNIAVZk=;
+	s=arc-20240116; t=1756216391; c=relaxed/simple;
+	bh=tgefX0eQH97VBRlET0FKOoZRukQiRYV2OtWuSmrcIiQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=lhinrG3vq+V7l7uZ6X/U4qKVezReuDQr81oiE0lYuG5MeZmc4VcIHKYlXKMYGjzUo/Z4gxToEDz07EndwX6axeH8o5uenGONyUp+LvULfcDtVjOBBoFzZFYwXoNid5nzPRPE2gFP+HTMjJYZUfSSkFG8i72NrAqCqNl3JGQDkwo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=mKoiadKy; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 77316C4CEF1;
-	Tue, 26 Aug 2025 13:01:46 +0000 (UTC)
+	 MIME-Version:Content-Type; b=SD3mp97I4m7UggokiuzBwlf2VmXruxfjuZjfTZQ91vxqgl5cZ2RNNXDELzmCYPpAGLGw9ldhn+9iTapQYciqyl61x839gTHQX56l5vh8RDR3T994nzgyrGtX0RkTI9fX5IWVLd8R5JJyoe+tM48BeqUqDTaay2X3zI2um09THUY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=trlSsKIM; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4CE9DC4CEF1;
+	Tue, 26 Aug 2025 13:53:11 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1756213306;
-	bh=3HE1bemLJjow/1tQzNFqWl3RghntReju/bNjSNIAVZk=;
+	s=korg; t=1756216391;
+	bh=tgefX0eQH97VBRlET0FKOoZRukQiRYV2OtWuSmrcIiQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=mKoiadKyCmEUjuXFzrll1FkDG0J0eE0z7/piM2El/R46r5PSZYpkeGm7YrfK8c0qC
-	 pu6PKnl7JMpc0Ib7Zjs/4KWUrrpTdGOZD2NBMatpFlfEjSqwGTK4MZYaPB99Lf5hBy
-	 3WwwayjLFUdxlmuCmw+8OZaFk9rwDWFnjdwd8GsQ=
+	b=trlSsKIMnnjfiZv5C7b2P1sSF0+ZRGNBGA+YtARO1tP1plnhc9BRXe+JzvAUAcz3U
+	 2IXLWqpvJlxccrOyxJTi76MWDi61wJAullpZn9VSyqICnu4FlotOgqxtiRkv8UqHPv
+	 9w20Q0BuyZMasnPXeIECpp7gyXq4//oPSQWVSisg=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Konstantin Evtushenko <koevtushenko@yandex.com>,
-	Sergey Bashirov <sergeybashirov@gmail.com>,
-	Christoph Hellwig <hch@lst.de>,
-	Trond Myklebust <trond.myklebust@hammerspace.com>,
+	Alok Tiwari <alok.a.tiwari@oracle.com>,
+	Simon Horman <horms@kernel.org>,
+	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 291/587] pNFS: Handle RPC size limit for layoutcommits
-Date: Tue, 26 Aug 2025 13:07:20 +0200
-Message-ID: <20250826111000.330553400@linuxfoundation.org>
+Subject: [PATCH 5.15 350/644] net: thunderx: Fix format-truncation warning in bgx_acpi_match_id()
+Date: Tue, 26 Aug 2025 13:07:21 +0200
+Message-ID: <20250826110955.071098347@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250826110952.942403671@linuxfoundation.org>
-References: <20250826110952.942403671@linuxfoundation.org>
+In-Reply-To: <20250826110946.507083938@linuxfoundation.org>
+References: <20250826110946.507083938@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,71 +61,68 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Sergey Bashirov <sergeybashirov@gmail.com>
+From: Alok Tiwari <alok.a.tiwari@oracle.com>
 
-[ Upstream commit d897d81671bc4615c80f4f3bd5e6b218f59df50c ]
+[ Upstream commit 53d20606c40678d425cc03f0978c614dca51f25e ]
 
-When there are too many block extents for a layoutcommit, they may not
-all fit into the maximum-sized RPC. This patch allows the generic pnfs
-code to properly handle -ENOSPC returned by the block/scsi layout driver
-and trigger additional layoutcommits if necessary.
+The buffer bgx_sel used in snprintf() was too small to safely hold
+the formatted string "BGX%d" for all valid bgx_id values. This caused
+a -Wformat-truncation warning with `Werror` enabled during build.
 
-Co-developed-by: Konstantin Evtushenko <koevtushenko@yandex.com>
-Signed-off-by: Konstantin Evtushenko <koevtushenko@yandex.com>
-Signed-off-by: Sergey Bashirov <sergeybashirov@gmail.com>
-Reviewed-by: Christoph Hellwig <hch@lst.de>
-Link: https://lore.kernel.org/r/20250630183537.196479-5-sergeybashirov@gmail.com
-Signed-off-by: Trond Myklebust <trond.myklebust@hammerspace.com>
+Increase the buffer size from 5 to 7 and use `sizeof(bgx_sel)` in
+snprintf() to ensure safety and suppress the warning.
+
+Build warning:
+  CC      drivers/net/ethernet/cavium/thunder/thunder_bgx.o
+  drivers/net/ethernet/cavium/thunder/thunder_bgx.c: In function
+‘bgx_acpi_match_id’:
+  drivers/net/ethernet/cavium/thunder/thunder_bgx.c:1434:27: error: ‘%d’
+directive output may be truncated writing between 1 and 3 bytes into a
+region of size 2 [-Werror=format-truncation=]
+    snprintf(bgx_sel, 5, "BGX%d", bgx->bgx_id);
+                             ^~
+  drivers/net/ethernet/cavium/thunder/thunder_bgx.c:1434:23: note:
+directive argument in the range [0, 255]
+    snprintf(bgx_sel, 5, "BGX%d", bgx->bgx_id);
+                         ^~~~~~~
+  drivers/net/ethernet/cavium/thunder/thunder_bgx.c:1434:2: note:
+‘snprintf’ output between 5 and 7 bytes into a destination of size 5
+    snprintf(bgx_sel, 5, "BGX%d", bgx->bgx_id);
+
+compiler warning due to insufficient snprintf buffer size.
+
+Signed-off-by: Alok Tiwari <alok.a.tiwari@oracle.com>
+Reviewed-by: Simon Horman <horms@kernel.org>
+Link: https://patch.msgid.link/20250711140532.2463602-1-alok.a.tiwari@oracle.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/nfs/pnfs.c | 11 ++++++++---
- 1 file changed, 8 insertions(+), 3 deletions(-)
+ drivers/net/ethernet/cavium/thunder/thunder_bgx.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/fs/nfs/pnfs.c b/fs/nfs/pnfs.c
-index 79d1ffdcbebd..b40c20bd364b 100644
---- a/fs/nfs/pnfs.c
-+++ b/fs/nfs/pnfs.c
-@@ -3216,6 +3216,7 @@ pnfs_layoutcommit_inode(struct inode *inode, bool sync)
- 	struct nfs_inode *nfsi = NFS_I(inode);
- 	loff_t end_pos;
- 	int status;
-+	bool mark_as_dirty = false;
+diff --git a/drivers/net/ethernet/cavium/thunder/thunder_bgx.c b/drivers/net/ethernet/cavium/thunder/thunder_bgx.c
+index daaffae1a89f..1831066c7647 100644
+--- a/drivers/net/ethernet/cavium/thunder/thunder_bgx.c
++++ b/drivers/net/ethernet/cavium/thunder/thunder_bgx.c
+@@ -1427,9 +1427,9 @@ static acpi_status bgx_acpi_match_id(acpi_handle handle, u32 lvl,
+ {
+ 	struct acpi_buffer string = { ACPI_ALLOCATE_BUFFER, NULL };
+ 	struct bgx *bgx = context;
+-	char bgx_sel[5];
++	char bgx_sel[7];
  
- 	if (!pnfs_layoutcommit_outstanding(inode))
- 		return 0;
-@@ -3267,19 +3268,23 @@ pnfs_layoutcommit_inode(struct inode *inode, bool sync)
- 	if (ld->prepare_layoutcommit) {
- 		status = ld->prepare_layoutcommit(&data->args);
- 		if (status) {
--			put_cred(data->cred);
-+			if (status != -ENOSPC)
-+				put_cred(data->cred);
- 			spin_lock(&inode->i_lock);
- 			set_bit(NFS_INO_LAYOUTCOMMIT, &nfsi->flags);
- 			if (end_pos > nfsi->layout->plh_lwb)
- 				nfsi->layout->plh_lwb = end_pos;
--			goto out_unlock;
-+			if (status != -ENOSPC)
-+				goto out_unlock;
-+			spin_unlock(&inode->i_lock);
-+			mark_as_dirty = true;
- 		}
- 	}
- 
- 
- 	status = nfs4_proc_layoutcommit(data, sync);
- out:
--	if (status)
-+	if (status || mark_as_dirty)
- 		mark_inode_dirty_sync(inode);
- 	dprintk("<-- %s status %d\n", __func__, status);
- 	return status;
+-	snprintf(bgx_sel, 5, "BGX%d", bgx->bgx_id);
++	snprintf(bgx_sel, sizeof(bgx_sel), "BGX%d", bgx->bgx_id);
+ 	if (ACPI_FAILURE(acpi_get_name(handle, ACPI_SINGLE_NAME, &string))) {
+ 		pr_warn("Invalid link device\n");
+ 		return AE_OK;
 -- 
 2.39.5
 
