@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-173380-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-174785-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 24A67B35D79
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 13:45:17 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id E2239B3652A
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 15:45:30 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 24F5D362EF2
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 11:36:52 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id A14478A7CB2
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 13:35:40 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id CBE3E2F9C23;
-	Tue, 26 Aug 2025 11:34:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 47E8E24DD11;
+	Tue, 26 Aug 2025 13:35:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="kN1eo6f9"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="swXqSt94"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 87624301486;
-	Tue, 26 Aug 2025 11:34:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 04781227EA8;
+	Tue, 26 Aug 2025 13:35:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756208097; cv=none; b=KRWuTRIa56OcaLQMgK6CLJA/ZHYZEUB/lSeyAJ1kErtVdfmMa+CdCU9N/3QPEzYswPkmjWSmXnMlwAInMaJSNUpZsAMKsZytwkuEKFGEleFE2CuyQ0yb43JW/SSElFJdEH1WlOc9HXSN8SCDuohWFgtIifhioGseAioRWMffsJ0=
+	t=1756215312; cv=none; b=r2/32G9xYWEquljrb5Xv1hY1WQYxvGq7ji7KXaNhS+wTYqFM5/UgZy4DTVJbNbB6E/dM0mGBq/HOhOo1o0SHqU3NhW2GSnahdNmY7phSIysk2jsBpux54yU1esFEICxL+sjeSNyJpA6n3u79okKitIMw0SoiXeg8K0pbuYgdVNA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756208097; c=relaxed/simple;
-	bh=iF5mqqMdo3J6gJ7BfvYlhrgE5ufTJ9rVfthM+gBd8DU=;
+	s=arc-20240116; t=1756215312; c=relaxed/simple;
+	bh=yAPCpNAZEdcnroSqWGbenpavFmeIcJU1XrOz7LU7v3k=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=daMNZixj5QavKvkabMF4dQ/t+PShYwHhhLudnHKrOBDXxuX61T3rff8QqdseFcye+xoNtJ9Ltw+lrOPdy5F0ltR9LoTc3MdPpH1HHA64bDGAyqLNNrBd5S2E65Lwm+zcvMwZJdSh9+ilndgIbJqKE6v54pmHkco8hJTkRGlAaG4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=kN1eo6f9; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 21625C4CEF1;
-	Tue, 26 Aug 2025 11:34:56 +0000 (UTC)
+	 MIME-Version; b=iZGSbug96trSz+QPXEkJa4e5RDGa32vuugmSlgSCYf3x8vhgvU4Ldzsu36E2VmEOkPcQQY71LSUtbSCF4zqxFvA+ZZS11OOLqQhVWrjfRiA0RBHnkwt7BpVHdczxrjGBYwKhkgU52xyazKzk7tUUlEqxB3O0E2LLRAIFYHD4Gdo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=swXqSt94; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 85F92C4CEF1;
+	Tue, 26 Aug 2025 13:35:11 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1756208097;
-	bh=iF5mqqMdo3J6gJ7BfvYlhrgE5ufTJ9rVfthM+gBd8DU=;
+	s=korg; t=1756215311;
+	bh=yAPCpNAZEdcnroSqWGbenpavFmeIcJU1XrOz7LU7v3k=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=kN1eo6f9epQyNYGfwcbVZP5w+zWq6gf7It1n4HHvasZGmR2iRkud/nGki3mlxY2Wx
-	 C2kwgKLjteVzBagjnrLYOKT0a1ZGGT89J9rlzoUGk5A6veFMBlVxj01SC4XGhKRpJP
-	 kTBMpjdLpnJqLOGwrQWAuIZw81rFhZ4wdveqPkik=
+	b=swXqSt94A9gqvSJFSaVULbpTWLJpzi6xgAL5BFsJZyt5rLYKYSUa3EFJtBZ2CiG60
+	 3bUxoUvjGa/LmnMLoz4bAEh6Uf+RBXdD5ooezSLuxbbyhLPb2GoI469vHmphCgtrnz
+	 scKIpn4RSUC7QBZ64AX+orV+8j4rwRcNS5os/UgU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Dewei Meng <mengdewei@cqsoftware.com.cn>,
-	Takashi Iwai <tiwai@suse.de>,
+	Qingfang Deng <dqfext@gmail.com>,
+	Paolo Abeni <pabeni@redhat.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.16 436/457] ALSA: timer: fix ida_free call while not allocated
+Subject: [PATCH 6.1 467/482] net: ethernet: mtk_ppe: add RCU lock around dev_fill_forward_path
 Date: Tue, 26 Aug 2025 13:12:00 +0200
-Message-ID: <20250826110948.063166851@linuxfoundation.org>
+Message-ID: <20250826110942.360222143@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250826110937.289866482@linuxfoundation.org>
-References: <20250826110937.289866482@linuxfoundation.org>
+In-Reply-To: <20250826110930.769259449@linuxfoundation.org>
+References: <20250826110930.769259449@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,85 +62,39 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.16-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Dewei Meng <mengdewei@cqsoftware.com.cn>
+From: Qingfang Deng <dqfext@gmail.com>
 
-[ Upstream commit 5003a65790ed66be882d1987cc2ca86af0de3db1 ]
+[ Upstream commit 62c30c544359aa18b8fb2734166467a07d435c2d ]
 
-In the snd_utimer_create() function, if the kasprintf() function return
-NULL, snd_utimer_put_id() will be called, finally use ida_free()
-to free the unallocated id 0.
+Ensure ndo_fill_forward_path() is called with RCU lock held.
 
-the syzkaller reported the following information:
-  ------------[ cut here ]------------
-  ida_free called for id=0 which is not allocated.
-  WARNING: CPU: 1 PID: 1286 at lib/idr.c:592 ida_free+0x1fd/0x2f0 lib/idr.c:592
-  Modules linked in:
-  CPU: 1 UID: 0 PID: 1286 Comm: syz-executor164 Not tainted 6.15.8 #3 PREEMPT(lazy)
-  Hardware name: QEMU Standard PC (i440FX + PIIX, 1996), BIOS 1.16.3-4.fc42 04/01/2014
-  RIP: 0010:ida_free+0x1fd/0x2f0 lib/idr.c:592
-  Code: f8 fc 41 83 fc 3e 76 69 e8 70 b2 f8 (...)
-  RSP: 0018:ffffc900007f79c8 EFLAGS: 00010282
-  RAX: 0000000000000000 RBX: 1ffff920000fef3b RCX: ffffffff872176a5
-  RDX: ffff88800369d200 RSI: 0000000000000000 RDI: ffff88800369d200
-  RBP: 0000000000000000 R08: ffffffff87ba60a5 R09: 0000000000000000
-  R10: 0000000000000001 R11: 0000000000000000 R12: 0000000000000000
-  R13: 0000000000000002 R14: 0000000000000000 R15: 0000000000000000
-  FS:  00007f6f1abc1740(0000) GS:ffff8880d76a0000(0000) knlGS:0000000000000000
-  CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
-  CR2: 00007f6f1ad7a784 CR3: 000000007a6e2000 CR4: 00000000000006f0
-  Call Trace:
-   <TASK>
-   snd_utimer_put_id sound/core/timer.c:2043 [inline] [snd_timer]
-   snd_utimer_create+0x59b/0x6a0 sound/core/timer.c:2184 [snd_timer]
-   snd_utimer_ioctl_create sound/core/timer.c:2202 [inline] [snd_timer]
-   __snd_timer_user_ioctl.isra.0+0x724/0x1340 sound/core/timer.c:2287 [snd_timer]
-   snd_timer_user_ioctl+0x75/0xc0 sound/core/timer.c:2298 [snd_timer]
-   vfs_ioctl fs/ioctl.c:51 [inline]
-   __do_sys_ioctl fs/ioctl.c:907 [inline]
-   __se_sys_ioctl fs/ioctl.c:893 [inline]
-   __x64_sys_ioctl+0x198/0x200 fs/ioctl.c:893
-   do_syscall_x64 arch/x86/entry/syscall_64.c:63 [inline]
-   do_syscall_64+0x7b/0x160 arch/x86/entry/syscall_64.c:94
-   entry_SYSCALL_64_after_hwframe+0x76/0x7e
-  [...]
-
-The utimer->id should be set properly before the kasprintf() function,
-ensures the snd_utimer_put_id() function will free the allocated id.
-
-Fixes: 37745918e0e75 ("ALSA: timer: Introduce virtual userspace-driven timers")
-Signed-off-by: Dewei Meng <mengdewei@cqsoftware.com.cn>
-Link: https://patch.msgid.link/20250821014317.40786-1-mengdewei@cqsoftware.com.cn
-Signed-off-by: Takashi Iwai <tiwai@suse.de>
+Fixes: 2830e314778d ("net: ethernet: mtk-ppe: fix traffic offload with bridged wlan")
+Signed-off-by: Qingfang Deng <dqfext@gmail.com>
+Link: https://patch.msgid.link/20250814012559.3705-1-dqfext@gmail.com
+Signed-off-by: Paolo Abeni <pabeni@redhat.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- sound/core/timer.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ drivers/net/ethernet/mediatek/mtk_ppe_offload.c | 2 ++
+ 1 file changed, 2 insertions(+)
 
-diff --git a/sound/core/timer.c b/sound/core/timer.c
-index 8072183c33d3..a352247519be 100644
---- a/sound/core/timer.c
-+++ b/sound/core/timer.c
-@@ -2139,14 +2139,14 @@ static int snd_utimer_create(struct snd_timer_uinfo *utimer_info,
- 		goto err_take_id;
- 	}
+diff --git a/drivers/net/ethernet/mediatek/mtk_ppe_offload.c b/drivers/net/ethernet/mediatek/mtk_ppe_offload.c
+index 8cb8d47227f5..cc8f4f5decaf 100644
+--- a/drivers/net/ethernet/mediatek/mtk_ppe_offload.c
++++ b/drivers/net/ethernet/mediatek/mtk_ppe_offload.c
+@@ -101,7 +101,9 @@ mtk_flow_get_wdma_info(struct net_device *dev, const u8 *addr, struct mtk_wdma_i
+ 	if (!IS_ENABLED(CONFIG_NET_MEDIATEK_SOC_WED))
+ 		return -1;
  
-+	utimer->id = utimer_id;
-+
- 	utimer->name = kasprintf(GFP_KERNEL, "snd-utimer%d", utimer_id);
- 	if (!utimer->name) {
- 		err = -ENOMEM;
- 		goto err_get_name;
- 	}
++	rcu_read_lock();
+ 	err = dev_fill_forward_path(dev, addr, &stack);
++	rcu_read_unlock();
+ 	if (err)
+ 		return err;
  
--	utimer->id = utimer_id;
--
- 	tid.dev_sclass = SNDRV_TIMER_SCLASS_APPLICATION;
- 	tid.dev_class = SNDRV_TIMER_CLASS_GLOBAL;
- 	tid.card = -1;
 -- 
 2.50.1
 
