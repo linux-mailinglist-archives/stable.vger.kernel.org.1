@@ -1,56 +1,59 @@
-Return-Path: <stable+bounces-173687-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-176349-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id B5725B35E91
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 13:59:27 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id E334CB36CBF
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 17:00:26 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id EE8B8364AEB
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 11:48:16 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 4B4311C44A83
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 14:47:37 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B58BE288511;
-	Tue, 26 Aug 2025 11:48:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 453E735E4D5;
+	Tue, 26 Aug 2025 14:43:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="yp6KyEOe"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="YOgL7l30"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7269121D3C0;
-	Tue, 26 Aug 2025 11:48:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DB248352FC2;
+	Tue, 26 Aug 2025 14:43:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756208895; cv=none; b=ZUzdlhBBZ4VlBHjJ1F/UCg4LfHBJIk1PG0YT5kQi9adZBXpLyRHMqoftSxxy3fMf0gRLbyxF7OlKz4My89lVPx+PDKKj2rl5pt3RsdH5p+7XpKS3DuhK13cJUVtQY4TYwqQb0T4C+eY6gc3JuWA9pSRZuszIv1ct/nV0dOKdQ58=
+	t=1756219427; cv=none; b=sBMXb87zfdvNwszbXfwSeOpRp6Wn4FNp7uKmbFNnGRzTKB2PA1zWx0Emk3Hp1K/HOcgyJYfOgpABk6TsINxIJrQ8dSgS/TV5jzErZrRCYhlrk52GpVApCMUJ9rRkBdJKc8oUp5PHqYH2IzmMm7c8Q0eX5rs4O+E4VLekICIIGfw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756208895; c=relaxed/simple;
-	bh=zkwYJgsP9eVvkmog9HQLiL3Oc/wZMouKho8CSMFW8Z8=;
+	s=arc-20240116; t=1756219427; c=relaxed/simple;
+	bh=sTYwLo+jVaKAq3PJB5BO2CTBQ1fbQLu9Z+ejsWG2cbY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=qODlFbFEtfFfQFFC3ZfGJ8WZ7qoQBkxwDY273SlVwqQGD4uVNcLx8ZaYfs6Rd1+MuRsluFN3IzyZZ5ndnuMB5YCxX+OZ+mZUdvHgre3eiKPdg3yoLlwALY7O590WQhGQzjwT6PV6EAVx5qvUeE6FDWZNRRts3bS04pcRBw9N4eQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=yp6KyEOe; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0448DC4CEF1;
-	Tue, 26 Aug 2025 11:48:14 +0000 (UTC)
+	 MIME-Version; b=pzbctJUfdkstj4DwuhptVKrDUJL5HIm2aGLI4u4pjoy+L86sewkOXUoI1Ow6L3MrILdiYmf7qo5/kt58V1DUEQFhX8gxvi+VfMH9HsXSKlUdlr3CcEwOKUJaSyVMW/LwfbdzSl6FehxRxKX/iA44zQe/LVUIKlzqXLS/NFfKPpQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=YOgL7l30; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0F7D1C4CEF1;
+	Tue, 26 Aug 2025 14:43:46 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1756208895;
-	bh=zkwYJgsP9eVvkmog9HQLiL3Oc/wZMouKho8CSMFW8Z8=;
+	s=korg; t=1756219427;
+	bh=sTYwLo+jVaKAq3PJB5BO2CTBQ1fbQLu9Z+ejsWG2cbY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=yp6KyEOeYyMcqkO+e54GhyIz3Z5fg8fazhGHn3R3/nRjAeAY7ZVAfOimqsGaQ9jH3
-	 84vlxj0LjfUPbRHiSxndCuBHu8RVKPD1hZR6ySbb290mIS6ULOBIdWRQe+2zCzw5aC
-	 xJlMjyF3JF48eSbo1W8piOpAxlA6Yo1UfCLBCbgA=
+	b=YOgL7l30vXyI2ceX7bcmGMkB7UEgJCRIOzxgExT03SKjv2FfEeURDJOD3UdubkRpH
+	 L9o6KSJ9RZ69TQbSiIJ4zw5QKdkeA1MgnN1f5NLNnuLuestNJSVTf8iJPkpdUojiRU
+	 5/47V+P2Ouyw2DwM2mB/PgPORq6Ly5Cjf62gnADM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Dan Carpenter <dan.carpenter@linaro.org>,
-	Takashi Iwai <tiwai@suse.de>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 287/322] ALSA: usb-audio: Fix size validation in convert_chmap_v3()
-Date: Tue, 26 Aug 2025 13:11:42 +0200
-Message-ID: <20250826110922.998713520@linuxfoundation.org>
+	Gerrard Tai <gerrard.tai@starlabs.sg>,
+	Cong Wang <xiyou.wangcong@gmail.com>,
+	Simon Horman <horms@kernel.org>,
+	Jamal Hadi Salim <jhs@mojatatu.com>,
+	Paolo Abeni <pabeni@redhat.com>,
+	Siddh Raman Pant <siddh.raman.pant@oracle.com>
+Subject: [PATCH 5.4 377/403] sch_qfq: make qfq_qlen_notify() idempotent
+Date: Tue, 26 Aug 2025 13:11:43 +0200
+Message-ID: <20250826110917.435503588@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250826110915.169062587@linuxfoundation.org>
-References: <20250826110915.169062587@linuxfoundation.org>
+In-Reply-To: <20250826110905.607690791@linuxfoundation.org>
+References: <20250826110905.607690791@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,42 +65,72 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+5.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Dan Carpenter <dan.carpenter@linaro.org>
+From: Cong Wang <xiyou.wangcong@gmail.com>
 
-[ Upstream commit 89f0addeee3cb2dc49837599330ed9c4612f05b0 ]
+commit 55f9eca4bfe30a15d8656f915922e8c98b7f0728 upstream.
 
-The "p" pointer is void so sizeof(*p) is 1.  The intent was to check
-sizeof(*cs_desc), which is 3, instead.
+qfq_qlen_notify() always deletes its class from its active list
+with list_del_init() _and_ calls qfq_deactivate_agg() when the whole list
+becomes empty.
 
-Fixes: ecfd41166b72 ("ALSA: usb-audio: Validate UAC3 cluster segment descriptors")
-Signed-off-by: Dan Carpenter <dan.carpenter@linaro.org>
-Link: https://patch.msgid.link/aKL5kftC1qGt6lpv@stanley.mountain
-Signed-off-by: Takashi Iwai <tiwai@suse.de>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+To make it idempotent, just skip everything when it is not in the active
+list.
+
+Also change other list_del()'s to list_del_init() just to be extra safe.
+
+Reported-by: Gerrard Tai <gerrard.tai@starlabs.sg>
+Signed-off-by: Cong Wang <xiyou.wangcong@gmail.com>
+Reviewed-by: Simon Horman <horms@kernel.org>
+Link: https://patch.msgid.link/20250403211033.166059-5-xiyou.wangcong@gmail.com
+Acked-by: Jamal Hadi Salim <jhs@mojatatu.com>
+Signed-off-by: Paolo Abeni <pabeni@redhat.com>
+Signed-off-by: Siddh Raman Pant <siddh.raman.pant@oracle.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- sound/usb/stream.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ net/sched/sch_qfq.c |    7 +++++--
+ 1 file changed, 5 insertions(+), 2 deletions(-)
 
-diff --git a/sound/usb/stream.c b/sound/usb/stream.c
-index 1cb52373e70f..db2c9bac00ad 100644
---- a/sound/usb/stream.c
-+++ b/sound/usb/stream.c
-@@ -349,7 +349,7 @@ snd_pcm_chmap_elem *convert_chmap_v3(struct uac3_cluster_header_descriptor
- 		u16 cs_len;
- 		u8 cs_type;
+--- a/net/sched/sch_qfq.c
++++ b/net/sched/sch_qfq.c
+@@ -348,7 +348,7 @@ static void qfq_deactivate_class(struct
+ 	struct qfq_aggregate *agg = cl->agg;
  
--		if (len < sizeof(*p))
-+		if (len < sizeof(*cs_desc))
- 			break;
- 		cs_len = le16_to_cpu(cs_desc->wLength);
- 		if (len < cs_len)
--- 
-2.50.1
-
+ 
+-	list_del(&cl->alist); /* remove from RR queue of the aggregate */
++	list_del_init(&cl->alist); /* remove from RR queue of the aggregate */
+ 	if (list_empty(&agg->active)) /* agg is now inactive */
+ 		qfq_deactivate_agg(q, agg);
+ }
+@@ -482,6 +482,7 @@ static int qfq_change_class(struct Qdisc
+ 
+ 	cl->common.classid = classid;
+ 	cl->deficit = lmax;
++	INIT_LIST_HEAD(&cl->alist);
+ 
+ 	cl->qdisc = qdisc_create_dflt(sch->dev_queue, &pfifo_qdisc_ops,
+ 				      classid, NULL);
+@@ -1001,7 +1002,7 @@ static struct sk_buff *agg_dequeue(struc
+ 	cl->deficit -= (int) len;
+ 
+ 	if (cl->qdisc->q.qlen == 0) /* no more packets, remove from list */
+-		list_del(&cl->alist);
++		list_del_init(&cl->alist);
+ 	else if (cl->deficit < qdisc_pkt_len(cl->qdisc->ops->peek(cl->qdisc))) {
+ 		cl->deficit += agg->lmax;
+ 		list_move_tail(&cl->alist, &agg->active);
+@@ -1433,6 +1434,8 @@ static void qfq_qlen_notify(struct Qdisc
+ 	struct qfq_sched *q = qdisc_priv(sch);
+ 	struct qfq_class *cl = (struct qfq_class *)arg;
+ 
++	if (list_empty(&cl->alist))
++		return;
+ 	qfq_deactivate_class(q, cl);
+ }
+ 
 
 
 
