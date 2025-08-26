@@ -1,56 +1,55 @@
-Return-Path: <stable+bounces-176060-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-173078-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id B9397B36BEF
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 16:50:36 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id A8A9DB35B9B
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 13:26:16 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id DED2A1C41608
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 14:34:33 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 476151892649
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 11:23:10 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 95612350D4E;
-	Tue, 26 Aug 2025 14:31:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 349242BEFF0;
+	Tue, 26 Aug 2025 11:21:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="WJ1GCTrG"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="wWL4guLZ"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5136635209B;
-	Tue, 26 Aug 2025 14:31:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E4B4421D00E;
+	Tue, 26 Aug 2025 11:21:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756218679; cv=none; b=UxM4XszO1TO/uAI1yK6MzLiDiJqroSXZ5YmLIFT6B/LseWdtx8XAD75L1yZB2rqx04vb1Nm9HcrsMoSVGE6ddHJtFXyT9c4AbOLVdc4Kfu9nIVM6HTCBzzWArwvfCUU2SyDOXwO5KJUndE6eR53K910yimA5mt3I+oiCObcDFaA=
+	t=1756207316; cv=none; b=sp1JTugW0LkzSOzLX4ywV+DpC8gAcmHeN8WqQPI+RmL3ZUscHekHmLZBdw3RGJF+djFdNm5RHxJtOhWjaKILHzeJjt+CHjOPFVSSVsL+CgxM0PJxbuN+5wweQz2lqYEnEkFjRAI6ItYfkzfge/BvJN2avCMIZO3Y7YVFO/Gxg+I=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756218679; c=relaxed/simple;
-	bh=kyTjIkcEIt3nrxbBT33t5eviiC79XzHwWsnm/JVWTWU=;
+	s=arc-20240116; t=1756207316; c=relaxed/simple;
+	bh=LG6oV8+txay3YxL7Z2EWLLvZ0u0CfsOtWzBn0uHTp7M=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=gK0QclG0yY0oYe9rv1TN1t+FSrr++YSMDFaYgKct08zgyG4phaNVBjd+tt8UV1IhGQOgkl46xChu3HvcFNpb7CTDZWbXHWQ0PrQU17u1drlfCqJ78dc64vFvcicL36WlvDKb4UtQZAzcdrLJ71biemxy2YfDCcAXQZTVysPBv2E=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=WJ1GCTrG; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D547CC113CF;
-	Tue, 26 Aug 2025 14:31:18 +0000 (UTC)
+	 MIME-Version; b=bo0/Qyjy/VloctEippyzWz1WkvZdmYJcVYaXZbJ2xiyU9zwXJv4pZTd4TxF8OdOsdqVysogjTWPDeHgS/heo52+0Ifh9vJJJZ9wREhYM3VAHyZ3mB7VhcGxyEXwDVP1/uV2T31Ph77e7SdA/jbrNyK01dpt5SctBlEmDNEJRgSA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=wWL4guLZ; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 77EEEC4CEF1;
+	Tue, 26 Aug 2025 11:21:55 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1756218679;
-	bh=kyTjIkcEIt3nrxbBT33t5eviiC79XzHwWsnm/JVWTWU=;
+	s=korg; t=1756207315;
+	bh=LG6oV8+txay3YxL7Z2EWLLvZ0u0CfsOtWzBn0uHTp7M=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=WJ1GCTrG8F0O9Q03QEye8ne23xRk/vJW8YfHFhRE5KCcTGHu7AOgTP756KVE1YARn
-	 a3xB/Z6c6YwoPBzF0zJIp0eFNWr95CEt94fR0si8hKI4QqeTacSG0RBmQE4Q5DONLr
-	 YI7z5NcD1BMNoamM/yVyboU4JU0/eSEOHxmBv4e0=
+	b=wWL4guLZbmr34lsdb+QOFbh5EOphNbPsShFL/HMLVuiPn93xPKIgtf+iTb1MiTinL
+	 gqjg/CErVzGvRaQPfYhKPLmqqNVe10P/5azoZKC9DmyomZAVhkevJ+E/uCAhpyQZAs
+	 TVdi2qpy+Yx6/49tEiIK+t1Hzt/NvvEtHCKCnfaw=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Fedor Pchelkin <pchelkin@ispras.ru>,
-	Alex Deucher <alexander.deucher@amd.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.4 092/403] drm/amd/pm/powerplay/hwmgr/smu_helper: fix order of mask and value
+	Hans Verkuil <hverkuil@xs4all.nl>,
+	Mauro Carvalho Chehab <mchehab+huawei@kernel.org>
+Subject: [PATCH 6.16 134/457] media: vivid: fix wrong pixel_array control size
 Date: Tue, 26 Aug 2025 13:06:58 +0200
-Message-ID: <20250826110909.210742937@linuxfoundation.org>
+Message-ID: <20250826110940.686069619@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250826110905.607690791@linuxfoundation.org>
-References: <20250826110905.607690791@linuxfoundation.org>
+In-Reply-To: <20250826110937.289866482@linuxfoundation.org>
+References: <20250826110937.289866482@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,49 +61,57 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.4-stable review patch.  If anyone has any objections, please let me know.
+6.16-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Fedor Pchelkin <pchelkin@ispras.ru>
+From: Hans Verkuil <hverkuil@xs4all.nl>
 
-[ Upstream commit a54e4639c4ef37a0241bac7d2a77f2e6ffb57099 ]
+commit 3e43442d4994c9e1e202c98129a87e330f7faaed upstream.
 
-There is a small typo in phm_wait_on_indirect_register().
+The pixel_array control size was calculated incorrectly:
+the dimensions were swapped (dims[0] should be the height), and the
+values should be the width or height divided by PIXEL_ARRAY_DIV
+and rounded up. So don't use roundup, but use DIV_ROUND_UP instead.
 
-Swap mask and value arguments provided to phm_wait_on_register() so that
-they satisfy the function signature and actual usage scheme.
+This bug is harmless in the sense that nothing will break, except that
+it consumes way too much memory for this control.
 
-Found by Linux Verification Center (linuxtesting.org) with Svace static
-analysis tool.
-
-In practice this doesn't fix any issues because the only place this
-function is used uses the same value for the value and mask.
-
-Fixes: 3bace3591493 ("drm/amd/powerplay: add hardware manager sub-component")
-Signed-off-by: Fedor Pchelkin <pchelkin@ispras.ru>
-Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Fixes: 6bc7643d1b9c ("media: vivid: add pixel_array test control")
+Cc: <stable@vger.kernel.org>
+Signed-off-by: Hans Verkuil <hverkuil@xs4all.nl>
+Signed-off-by: Mauro Carvalho Chehab <mchehab+huawei@kernel.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/gpu/drm/amd/powerplay/hwmgr/smu_helper.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/media/test-drivers/vivid/vivid-ctrls.c   |    3 ++-
+ drivers/media/test-drivers/vivid/vivid-vid-cap.c |    4 ++--
+ 2 files changed, 4 insertions(+), 3 deletions(-)
 
-diff --git a/drivers/gpu/drm/amd/powerplay/hwmgr/smu_helper.c b/drivers/gpu/drm/amd/powerplay/hwmgr/smu_helper.c
-index d09690fca452..8a1ad9305a21 100644
---- a/drivers/gpu/drm/amd/powerplay/hwmgr/smu_helper.c
-+++ b/drivers/gpu/drm/amd/powerplay/hwmgr/smu_helper.c
-@@ -148,7 +148,7 @@ int phm_wait_on_indirect_register(struct pp_hwmgr *hwmgr,
- 	}
+--- a/drivers/media/test-drivers/vivid/vivid-ctrls.c
++++ b/drivers/media/test-drivers/vivid/vivid-ctrls.c
+@@ -244,7 +244,8 @@ static const struct v4l2_ctrl_config viv
+ 	.min = 0x00,
+ 	.max = 0xff,
+ 	.step = 1,
+-	.dims = { 640 / PIXEL_ARRAY_DIV, 360 / PIXEL_ARRAY_DIV },
++	.dims = { DIV_ROUND_UP(360, PIXEL_ARRAY_DIV),
++		  DIV_ROUND_UP(640, PIXEL_ARRAY_DIV) },
+ };
  
- 	cgs_write_register(hwmgr->device, indirect_port, index);
--	return phm_wait_on_register(hwmgr, indirect_port + 1, mask, value);
-+	return phm_wait_on_register(hwmgr, indirect_port + 1, value, mask);
+ static const struct v4l2_ctrl_config vivid_ctrl_s32_array = {
+--- a/drivers/media/test-drivers/vivid/vivid-vid-cap.c
++++ b/drivers/media/test-drivers/vivid/vivid-vid-cap.c
+@@ -454,8 +454,8 @@ void vivid_update_format_cap(struct vivi
+ 	if (keep_controls)
+ 		return;
+ 
+-	dims[0] = roundup(dev->src_rect.width, PIXEL_ARRAY_DIV);
+-	dims[1] = roundup(dev->src_rect.height, PIXEL_ARRAY_DIV);
++	dims[0] = DIV_ROUND_UP(dev->src_rect.height, PIXEL_ARRAY_DIV);
++	dims[1] = DIV_ROUND_UP(dev->src_rect.width, PIXEL_ARRAY_DIV);
+ 	v4l2_ctrl_modify_dimensions(dev->pixel_array, dims);
  }
  
- int phm_wait_for_register_unequal(struct pp_hwmgr *hwmgr,
--- 
-2.39.5
-
 
 
 
