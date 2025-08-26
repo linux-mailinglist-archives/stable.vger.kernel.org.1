@@ -1,55 +1,55 @@
-Return-Path: <stable+bounces-175665-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-174014-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 59483B36938
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 16:24:24 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id B9810B360EA
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 15:05:11 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id A74BD2A81A5
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 14:16:23 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 450E05E00CF
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 13:01:05 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1018C35336E;
-	Tue, 26 Aug 2025 14:14:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D152B3A1B5;
+	Tue, 26 Aug 2025 13:01:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="l6JLYmRd"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="yQYv8W55"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C2B9F34F490;
-	Tue, 26 Aug 2025 14:14:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 90E59101F2;
+	Tue, 26 Aug 2025 13:01:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756217645; cv=none; b=EgQkfZJZO+kAy+VmeVKTHpzKCsg7IDwIyawSjQLwmv8x1rygNk+Go/k6PmFXFexKbXDNxKJp1ga+LsYlFBz63g1iP7m1i61PONB/2FEHX+mh6J0cHx7BZInlpP+OeWBE1Ydy0yQ+uDPakkTGjLw/WK+s+Dg0Sx/eud05pEv3Nxg=
+	t=1756213264; cv=none; b=ANxjHuFR8jclPTMEfmsbWCFmvkveV/08IyW6PywDIE6aSz7AYkanLbGeSw4WtUCnpPGkQLBC4hn2CMob1MfC5MtKt7dWD1qLKGJnX60DgsfNgXa3JrWpT59GpJuYtnwnUiRLYWIk3CJmh3lPWy1lj4W6ZtrJXXR6j0R6sinlnnQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756217645; c=relaxed/simple;
-	bh=lsFx3SB3CmxW9iuvx9kAJu/QcU7twZyQKb4tdWtbZOU=;
+	s=arc-20240116; t=1756213264; c=relaxed/simple;
+	bh=gsOMGmr7/O0qul8vYCKh+Y8cQ0LP32rvXgIbsEde5Kc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=TAwHIfUYKL5uRK2yIA/Mr2sDFowJlP0KhAX6XjOSW4owFQAlOyAUToU9J74l9G/y4hjZ5aUDjlKGJ/eRWroyvmADqRIVv6O/ETdglAZxoEmW5KrMObjV6YaByBIrjwaCk181Vf2OcL/f8VohoNJcv8OaH2bo1g+3E6i3W7O3rGA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=l6JLYmRd; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 54049C4CEF1;
-	Tue, 26 Aug 2025 14:14:05 +0000 (UTC)
+	 MIME-Version; b=i5Pxf9Cn1lQ5K26BqCcg6kmuemTE8yygyEr7RqBV/6ZapbvJ1d24zxJuT7M+afPyazASpuad3YrwCedHsVczEIa5JPmdvdu8a8v5VRimnq3GGxySyLex04nEDSCqyiFntaUVS1ia16oG+SxnXcCH/5JoxIH7eLwqfTY8ANeIr4s=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=yQYv8W55; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 25233C4CEF1;
+	Tue, 26 Aug 2025 13:01:03 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1756217645;
-	bh=lsFx3SB3CmxW9iuvx9kAJu/QcU7twZyQKb4tdWtbZOU=;
+	s=korg; t=1756213264;
+	bh=gsOMGmr7/O0qul8vYCKh+Y8cQ0LP32rvXgIbsEde5Kc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=l6JLYmRdXRNgY2XUlVwoJ3bA6EQD/c+SJlcMpN5JDlWm8MjAWox/M3NI71f/yBrGZ
-	 8dT5BfpEfznecatThNAGNGxoslV076G8Sw/s6matr+uTiMxTewXP0TEQHRNwuZIsGp
-	 y1PNv/JbPEKOqGN2QBX1J99/qbeapEe7d/99dvEQ=
+	b=yQYv8W55uQuCWWxqLbqMaGxyClntQ2t3XAfdmx24iMpAEDJlKUMQ7H8SB6dAZzp7Q
+	 F70x4sHA7e5pjhyo4B01arSyRTnr7TIKjJZ3DsKzPJVMHEu4fdOVC3MQKYvgbsO63T
+	 I4fpi6tGyqA/k6P85CgfoQFmGY0S/24E5bz3IH8k=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Su Hui <suhui@nfschina.com>,
+	Masahiro Yamada <masahiroy@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 221/523] usb: xhci: print xhci->xhc_state when queue_command failed
+Subject: [PATCH 6.6 282/587] kconfig: gconf: avoid hardcoding model2 in on_treeview2_cursor_changed()
 Date: Tue, 26 Aug 2025 13:07:11 +0200
-Message-ID: <20250826110929.910940399@linuxfoundation.org>
+Message-ID: <20250826111000.105531171@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250826110924.562212281@linuxfoundation.org>
-References: <20250826110924.562212281@linuxfoundation.org>
+In-Reply-To: <20250826110952.942403671@linuxfoundation.org>
+References: <20250826110952.942403671@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,44 +61,46 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Su Hui <suhui@nfschina.com>
+From: Masahiro Yamada <masahiroy@kernel.org>
 
-[ Upstream commit 7919407eca2ef562fa6c98c41cfdf6f6cdd69d92 ]
+[ Upstream commit cae9cdbcd9af044810bcceeb43a87accca47c71d ]
 
-When encounters some errors like these:
-xhci_hcd 0000:4a:00.2: xHCI dying or halted, can't queue_command
-xhci_hcd 0000:4a:00.2: FIXME: allocate a command ring segment
-usb usb5-port6: couldn't allocate usb_device
+The on_treeview2_cursor_changed() handler is connected to both the left
+and right tree views, but it hardcodes model2 (the GtkTreeModel of the
+right tree view). This is incorrect. Get the associated model from the
+view.
 
-It's hard to know whether xhc_state is dying or halted. So it's better
-to print xhc_state's value which can help locate the resaon of the bug.
-
-Signed-off-by: Su Hui <suhui@nfschina.com>
-Link: https://lore.kernel.org/r/20250725060117.1773770-1-suhui@nfschina.com
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Signed-off-by: Masahiro Yamada <masahiroy@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/usb/host/xhci-ring.c | 3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+ scripts/kconfig/gconf.c | 5 +++--
+ 1 file changed, 3 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/usb/host/xhci-ring.c b/drivers/usb/host/xhci-ring.c
-index 954cd962e113..c026e7cc0af1 100644
---- a/drivers/usb/host/xhci-ring.c
-+++ b/drivers/usb/host/xhci-ring.c
-@@ -4183,7 +4183,8 @@ static int queue_command(struct xhci_hcd *xhci, struct xhci_command *cmd,
+diff --git a/scripts/kconfig/gconf.c b/scripts/kconfig/gconf.c
+index 9e52c7360e55..a9f78e167e2e 100644
+--- a/scripts/kconfig/gconf.c
++++ b/scripts/kconfig/gconf.c
+@@ -974,13 +974,14 @@ on_treeview2_key_press_event(GtkWidget * widget,
+ void
+ on_treeview2_cursor_changed(GtkTreeView * treeview, gpointer user_data)
+ {
++	GtkTreeModel *model = gtk_tree_view_get_model(treeview);
+ 	GtkTreeSelection *selection;
+ 	GtkTreeIter iter;
+ 	struct menu *menu;
  
- 	if ((xhci->xhc_state & XHCI_STATE_DYING) ||
- 		(xhci->xhc_state & XHCI_STATE_HALTED)) {
--		xhci_dbg(xhci, "xHCI dying or halted, can't queue_command\n");
-+		xhci_dbg(xhci, "xHCI dying or halted, can't queue_command. state: 0x%x\n",
-+			 xhci->xhc_state);
- 		return -ESHUTDOWN;
+ 	selection = gtk_tree_view_get_selection(treeview);
+-	if (gtk_tree_selection_get_selected(selection, &model2, &iter)) {
+-		gtk_tree_model_get(model2, &iter, COL_MENU, &menu, -1);
++	if (gtk_tree_selection_get_selected(selection, &model, &iter)) {
++		gtk_tree_model_get(model, &iter, COL_MENU, &menu, -1);
+ 		text_insert_help(menu);
  	}
- 
+ }
 -- 
 2.39.5
 
