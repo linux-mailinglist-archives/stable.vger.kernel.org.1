@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-174197-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-175866-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3F3C0B36208
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 15:15:10 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2CB1CB36A04
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 16:33:21 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 5EA0B2A83C7
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 13:09:57 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 28F20983A90
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 14:25:00 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5A07A2676E9;
-	Tue, 26 Aug 2025 13:09:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4763534AAE3;
+	Tue, 26 Aug 2025 14:22:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="tjE0g2he"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="EdxQ5MTd"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1979112CDA5;
-	Tue, 26 Aug 2025 13:09:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 068CD3570C7;
+	Tue, 26 Aug 2025 14:22:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756213750; cv=none; b=WcyruZ2KD/Nz9BdH58FhRMWlK28hSTNtm0WyIHGFmKl5YfCA6n74K1uMCsr9nOQfCLnxDsVTBb3DUBPnO1zvzpgNVZkGQbruCrj5iu8cmIevsyA9l/0hoCE5ldn7iy7Hw/V+Fx2b0hPOL6CbpQ1PMcmPcajQUd5TbF8crzqiZOI=
+	t=1756218175; cv=none; b=En5wPh4Dk5u0cxTmh7qUe2KLsHZaYWSfWgiNfivq54LvSBOXVS+6kzFyHW5gSWUfYwNp+UH8ciqLi8UzCIyuP/xTcyhBoDEx3/rDoNyLFi37oFSBC8lblosthpTUTmc0C8/CIgIe5ey6B4fvbsOCgNxAhVhZj+XIclbDGrUkqr0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756213750; c=relaxed/simple;
-	bh=PgqtDdK7aMxS2BD2vgSZT4tEqLlLG6MOwxY3dP5R8Nw=;
+	s=arc-20240116; t=1756218175; c=relaxed/simple;
+	bh=hhuawsx+Vr9wGxze5RH3unQRD9JX4GcgiDtQ/6pD3Eo=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=khrWvJ8fkLfDeCtqzzSAWEq9orchEQQPi97sKqeiaPvC5FeMsPACo8cFOnBaXuKsyQYEagAGaYOwhjU3+wLv+xLTeFyT9AknhgzhgLRKBrJpwxhZPFIf/1x89fbnfWAFOVVUvFwifIWwujYRHeyqAxaFV88fDaQDtVCVmPYaJ8s=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=tjE0g2he; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9E961C4CEF1;
-	Tue, 26 Aug 2025 13:09:09 +0000 (UTC)
+	 MIME-Version; b=lOsPvkC5Nfi86hxZaes1o5yaWmN91Cr2XwnIc20UJf39JFIV28S6tZptc/fVGjRPB/RUxmTZzRm+Vpz7wvt8sZSi4XM45c/ZH/elA4o+3yYwOFHNhJNSsOo87kVx56D7Zj+hUwfN4SeIwXnm6sKV8/Y+V51QtD7EMR74/VY9cwI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=EdxQ5MTd; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8D184C113CF;
+	Tue, 26 Aug 2025 14:22:54 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1756213750;
-	bh=PgqtDdK7aMxS2BD2vgSZT4tEqLlLG6MOwxY3dP5R8Nw=;
+	s=korg; t=1756218174;
+	bh=hhuawsx+Vr9wGxze5RH3unQRD9JX4GcgiDtQ/6pD3Eo=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=tjE0g2helZvma00t+sH3RXALdDmXGp4iJ97MHAACr9PRuikBW/oaus4eXiiLSVuAj
-	 cuyGlwFXDtMjy5MFzOl+OMmfRUqUK7uwwhUrfcYPhUhH2ZAVtjM9cVfBPPuUEEInoE
-	 XoCXy6Lc9qJBaXwYz0XoqGeZGmlif+43c+Vdpro4=
+	b=EdxQ5MTdfei0z1M9gWAMGJ8XEtIBOfr0PpJ7Kg03IBfeU8ks4mS3WJ3o8L0p38ehd
+	 zytUeO1K98/KaBcP7IjgZt3Ihgb4zblvyHQTvOVrIe9lZzl58Md7SlNpnPoXnUpNz/
+	 gbFL/ARwkvRpbxjeVifU5lU2I8p/PIC9uh4aDMhk=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Li Jun <jun.li@nxp.com>,
-	Johan Hovold <johan@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 465/587] usb: dwc3: imx8mp: fix device leak at unbind
+	Pavel Pisa <pisa@fel.cvut.cz>,
+	Jason Gunthorpe <jgg@nvidia.com>,
+	Marek Szyprowski <m.szyprowski@samsung.com>,
+	Xu Yilun <yilun.xu@linux.intel.com>
+Subject: [PATCH 5.10 404/523] fpga: zynq_fpga: Fix the wrong usage of dma_map_sgtable()
 Date: Tue, 26 Aug 2025 13:10:14 +0200
-Message-ID: <20250826111004.812748991@linuxfoundation.org>
+Message-ID: <20250826110934.425661058@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250826110952.942403671@linuxfoundation.org>
-References: <20250826110952.942403671@linuxfoundation.org>
+In-Reply-To: <20250826110924.562212281@linuxfoundation.org>
+References: <20250826110924.562212281@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,58 +63,49 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Johan Hovold <johan@kernel.org>
+From: Xu Yilun <yilun.xu@linux.intel.com>
 
-[ Upstream commit 086a0e516f7b3844e6328a5c69e2708b66b0ce18 ]
+commit 1ca61060de92a4320d73adfe5dc8d335653907ac upstream.
 
-Make sure to drop the reference to the dwc3 device taken by
-of_find_device_by_node() on probe errors and on driver unbind.
+dma_map_sgtable() returns only 0 or the error code. Read sgt->nents to
+get the number of mapped segments.
 
-Fixes: 6dd2565989b4 ("usb: dwc3: add imx8mp dwc3 glue layer driver")
-Cc: stable@vger.kernel.org	# 5.12
-Cc: Li Jun <jun.li@nxp.com>
-Signed-off-by: Johan Hovold <johan@kernel.org>
-Link: https://lore.kernel.org/r/20250724091910.21092-2-johan@kernel.org
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Fixes: 37e00703228a ("zynq_fpga: use sgtable-based scatterlist wrappers")
+Reported-by: Pavel Pisa <pisa@fel.cvut.cz>
+Closes: https://lore.kernel.org/linux-fpga/202508041548.22955.pisa@fel.cvut.cz/
+Reviewed-by: Jason Gunthorpe <jgg@nvidia.com>
+Reviewed-by: Marek Szyprowski <m.szyprowski@samsung.com>
+Signed-off-by: Xu Yilun <yilun.xu@linux.intel.com>
+Tested-by: Pavel Pisa <pisa@fel.cvut.cz>
+Link: https://lore.kernel.org/r/20250806070605.1920909-2-yilun.xu@linux.intel.com
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/usb/dwc3/dwc3-imx8mp.c |    6 +++++-
- 1 file changed, 5 insertions(+), 1 deletion(-)
+ drivers/fpga/zynq-fpga.c |    8 ++++----
+ 1 file changed, 4 insertions(+), 4 deletions(-)
 
---- a/drivers/usb/dwc3/dwc3-imx8mp.c
-+++ b/drivers/usb/dwc3/dwc3-imx8mp.c
-@@ -244,7 +244,7 @@ static int dwc3_imx8mp_probe(struct plat
- 					IRQF_ONESHOT, dev_name(dev), dwc3_imx);
- 	if (err) {
- 		dev_err(dev, "failed to request IRQ #%d --> %d\n", irq, err);
--		goto depopulate;
-+		goto put_dwc3;
+--- a/drivers/fpga/zynq-fpga.c
++++ b/drivers/fpga/zynq-fpga.c
+@@ -405,12 +405,12 @@ static int zynq_fpga_ops_write(struct fp
+ 		}
  	}
  
- 	device_set_wakeup_capable(dev, true);
-@@ -252,6 +252,8 @@ static int dwc3_imx8mp_probe(struct plat
+-	priv->dma_nelms =
+-	    dma_map_sgtable(mgr->dev.parent, sgt, DMA_TO_DEVICE, 0);
+-	if (priv->dma_nelms == 0) {
++	err = dma_map_sgtable(mgr->dev.parent, sgt, DMA_TO_DEVICE, 0);
++	if (err) {
+ 		dev_err(&mgr->dev, "Unable to DMA map (TO_DEVICE)\n");
+-		return -ENOMEM;
++		return err;
+ 	}
++	priv->dma_nelms = sgt->nents;
  
- 	return 0;
- 
-+put_dwc3:
-+	put_device(&dwc3_imx->dwc3->dev);
- depopulate:
- 	of_platform_depopulate(dev);
- err_node_put:
-@@ -272,6 +274,8 @@ static void dwc3_imx8mp_remove(struct pl
- 	struct dwc3_imx8mp *dwc3_imx = platform_get_drvdata(pdev);
- 	struct device *dev = &pdev->dev;
- 
-+	put_device(&dwc3_imx->dwc3->dev);
-+
- 	pm_runtime_get_sync(dev);
- 	of_platform_depopulate(dev);
- 
+ 	/* enable clock */
+ 	err = clk_enable(priv->clk);
 
 
 
