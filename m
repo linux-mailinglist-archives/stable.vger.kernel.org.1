@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-176254-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-174189-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8A0FBB36B3C
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 16:44:11 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 49092B36178
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 15:09:56 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 65EA07B7DAD
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 14:41:03 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 46BF17B9B35
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 13:08:11 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 33F0835AACA;
-	Tue, 26 Aug 2025 14:39:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7C28A3376BE;
+	Tue, 26 Aug 2025 13:08:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="CtBBJT40"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="qR0IoHUs"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D3DB1338F51;
-	Tue, 26 Aug 2025 14:39:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 399A12FAC0A;
+	Tue, 26 Aug 2025 13:08:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756219177; cv=none; b=M6kHuYfEGXEB0gMNss6I9x6NgPsA6k9GOSVUljIAARXTta09dgYZRx9t1XuRJnDKKPY8oxeHAGj9MbuDYAaEAhwBvarP3lLugOUKS+d6P6gweS6TwspfT5asw61ITioMpIDNry4r7LiNvOgBc4BhxGwmOffyN1Zuw8CqDfH1Tdg=
+	t=1756213729; cv=none; b=nJZpvxHS1hUjTN4q7eJjfiYp3+folgjBC56nG03wr7RmgcEDhK+j1m83bQgZt3c1Spg9yWcehg3gzoarmJ8DChLjZiqc2yFUetmTfLPDfiyMUB4FzxJofkunPjS3GoojNDUbT26UUMsu5wkCaTGnUyYW3T205qthOMi49kdjRH0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756219177; c=relaxed/simple;
-	bh=0e6dNxri774Li+pmpGMg0HxMZFBE3LNJv5i1JnOehpI=;
+	s=arc-20240116; t=1756213729; c=relaxed/simple;
+	bh=Y68OZcjhoWxIf5lGqrrsfdvO9vd0vYBepbTKYPZqivY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=LI0IvkPBEELyJtNd18LCpJP7ifF5Wrf8y222094rCx9tbzptvzVMKfcwDuNsArAXK3NoCSsEZYsOk0cQIKDMF3eStdzLIuK5D0Ugw09j25g2jo9WkRZ+MCT2Ap6DkvitPiqXqY6VD+QQ1N8AjsUUXQCR1SoSewkvuD6wIf0ovoQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=CtBBJT40; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 64386C4CEF1;
-	Tue, 26 Aug 2025 14:39:37 +0000 (UTC)
+	 MIME-Version; b=A1N0fe89i31PXniFCVq7SNq3UdQYgHsWzBA3u3rUTSFEzm13+gyeUCJbA0eM6vFwcQ5Gx9KLNABj0KvpSR9wX90XlEDSVDUK8eHiCrYR70lxFsqnX1KUkipGgSLB1JKDs7mixNcpk/2FqVgPrnzxL5Xr0iZDT/McaDSdWbqLE6c=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=qR0IoHUs; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B9B24C4CEF4;
+	Tue, 26 Aug 2025 13:08:48 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1756219177;
-	bh=0e6dNxri774Li+pmpGMg0HxMZFBE3LNJv5i1JnOehpI=;
+	s=korg; t=1756213729;
+	bh=Y68OZcjhoWxIf5lGqrrsfdvO9vd0vYBepbTKYPZqivY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=CtBBJT40mwGU9b9gxjpAYzdSJO4RnigMQjqXXv3us4dRD8KlFfqpTgflvEFvyfykX
-	 Yo8TN4sNNFfVuWaMdenekvVI/HmB9WQq0DSl6VcEvJgvoN/XyU/I7fn/E0bL6bD1hD
-	 4tie77o/JCXs5cenmrTDkfsQm/jEgWc3ckhWNIuQ=
+	b=qR0IoHUsuzYeuUp72Ylo9guS87puQ5ri2VmeyyCbBDLQUkFtpo+MwQrHqULyHCjr8
+	 qk1QM/nHRFXfI+8t4wVo+2QhRHn6VMW8xP39aa1vvo2cid+RiVx0aZQGae1orN0vGI
+	 aK22+PFIDTsKOahuQ/dVhv3LVtDepMBli1qDfHLk=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Laurent Pinchart <laurent.pinchart@ideasonboard.com>,
-	Hans de Goede <hansg@kernel.org>,
-	Ricardo Ribalda <ribalda@chromium.org>,
-	Hans Verkuil <hverkuil@xs4all.nl>
-Subject: [PATCH 5.4 281/403] media: uvcvideo: Do not mark valid metadata as invalid
+	Filipe Manana <fdmanana@suse.com>,
+	David Sterba <dsterba@suse.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.6 458/587] btrfs: send: avoid path allocation for the current inode when issuing commands
 Date: Tue, 26 Aug 2025 13:10:07 +0200
-Message-ID: <20250826110914.568962503@linuxfoundation.org>
+Message-ID: <20250826111004.620847557@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250826110905.607690791@linuxfoundation.org>
-References: <20250826110905.607690791@linuxfoundation.org>
+In-Reply-To: <20250826110952.942403671@linuxfoundation.org>
+References: <20250826110952.942403671@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,63 +62,554 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.4-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Ricardo Ribalda <ribalda@chromium.org>
+From: Filipe Manana <fdmanana@suse.com>
 
-commit bda2859bff0b9596a19648f3740c697ce4c71496 upstream.
+[ Upstream commit 374d45af6435534a11b01b88762323abf03dd755 ]
 
-Currently, the driver performs a length check of the metadata buffer
-before the actual metadata size is known and before the metadata is
-decided to be copied. This results in valid metadata buffers being
-incorrectly marked as invalid.
+Whenever we issue a command we allocate a path and then compute it. For
+the current inode this is not necessary since we have one preallocated
+and computed in the send context structure, so we can use it instead
+and avoid allocating and freeing a path.
 
-Move the length check to occur after the metadata size is determined and
-is decided to be copied.
+For example if we have 100 extents to send (100 write commands) for a
+file, we are allocating and freeing paths 100 times.
 
-Cc: stable@vger.kernel.org
-Fixes: 088ead255245 ("media: uvcvideo: Add a metadata device node")
-Reviewed-by: Laurent Pinchart <laurent.pinchart@ideasonboard.com>
-Reviewed-by: Hans de Goede <hansg@kernel.org>
-Signed-off-by: Ricardo Ribalda <ribalda@chromium.org>
-Link: https://lore.kernel.org/r/20250707-uvc-meta-v8-1-ed17f8b1218b@chromium.org
-Signed-off-by: Hans de Goede <hansg@kernel.org>
-Signed-off-by: Hans Verkuil <hverkuil@xs4all.nl>
+So improve on this by avoiding path allocation and freeing whenever a
+command is for the current inode by using the current inode's path
+stored in the send context structure.
+
+A test was run before applying this patch and the previous one in the
+series:
+
+  "btrfs: send: keep the current inode's path cached"
+
+The test script is the following:
+
+  $ cat test.sh
+  #!/bin/bash
+
+  DEV=/dev/nullb0
+  MNT=/mnt/nullb0
+
+  mkfs.btrfs -f $DEV > /dev/null
+  mount $DEV $MNT
+
+  DIR="$MNT/one/two/three/four"
+  FILE="$DIR/foobar"
+
+  mkdir -p $DIR
+
+  # Create some empty files to get a deeper btree and therefore make
+  # path computations slower.
+  for ((i = 1; i <= 30000; i++)); do
+      echo -n > "$DIR/filler_$i"
+  done
+
+  for ((i = 0; i < 10000; i += 2)); do
+     offset=$(( i * 4096 ))
+     xfs_io -f -c "pwrite -S 0xab $offset 4K" $FILE > /dev/null
+  done
+
+  btrfs subvolume snapshot -r $MNT $MNT/snap
+
+  start=$(date +%s%N)
+  btrfs send -f /dev/null $MNT/snap
+  end=$(date +%s%N)
+
+  echo -e "\nsend took $(( (end - start) / 1000000 )) milliseconds"
+
+  umount $MNT
+
+Result before applying the 2 patches:  1121 milliseconds
+Result after applying the 2 patches:    815 milliseconds  (-31.6%)
+
+Signed-off-by: Filipe Manana <fdmanana@suse.com>
+Reviewed-by: David Sterba <dsterba@suse.com>
+Signed-off-by: David Sterba <dsterba@suse.com>
+Stable-dep-of: 005b0a0c24e1 ("btrfs: send: use fallocate for hole punching with send stream v2")
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/media/usb/uvc/uvc_video.c |   12 ++++++------
- 1 file changed, 6 insertions(+), 6 deletions(-)
+ fs/btrfs/send.c |  215 +++++++++++++++++++++++++-------------------------------
+ 1 file changed, 97 insertions(+), 118 deletions(-)
 
---- a/drivers/media/usb/uvc/uvc_video.c
-+++ b/drivers/media/usb/uvc/uvc_video.c
-@@ -1309,12 +1309,6 @@ static void uvc_video_decode_meta(struct
- 	if (!meta_buf || length == 2)
- 		return;
+--- a/fs/btrfs/send.c
++++ b/fs/btrfs/send.c
+@@ -2623,6 +2623,47 @@ out:
+ 	return ret;
+ }
  
--	if (meta_buf->length - meta_buf->bytesused <
--	    length + sizeof(meta->ns) + sizeof(meta->sof)) {
--		meta_buf->error = 1;
--		return;
--	}
--
- 	has_pts = mem[1] & UVC_STREAM_PTS;
- 	has_scr = mem[1] & UVC_STREAM_SCR;
- 
-@@ -1335,6 +1329,12 @@ static void uvc_video_decode_meta(struct
- 				  !memcmp(scr, stream->clock.last_scr, 6)))
- 		return;
- 
-+	if (meta_buf->length - meta_buf->bytesused <
-+	    length + sizeof(meta->ns) + sizeof(meta->sof)) {
-+		meta_buf->error = 1;
-+		return;
++static struct fs_path *get_cur_inode_path(struct send_ctx *sctx)
++{
++	if (fs_path_len(&sctx->cur_inode_path) == 0) {
++		int ret;
++
++		ret = get_cur_path(sctx, sctx->cur_ino, sctx->cur_inode_gen,
++				   &sctx->cur_inode_path);
++		if (ret < 0)
++			return ERR_PTR(ret);
 +	}
 +
- 	meta = (struct uvc_meta_buf *)((u8 *)meta_buf->mem + meta_buf->bytesused);
- 	local_irq_save(flags);
- 	time = uvc_video_get_time();
++	return &sctx->cur_inode_path;
++}
++
++static struct fs_path *get_path_for_command(struct send_ctx *sctx, u64 ino, u64 gen)
++{
++	struct fs_path *path;
++	int ret;
++
++	if (ino == sctx->cur_ino && gen == sctx->cur_inode_gen)
++		return get_cur_inode_path(sctx);
++
++	path = fs_path_alloc();
++	if (!path)
++		return ERR_PTR(-ENOMEM);
++
++	ret = get_cur_path(sctx, ino, gen, path);
++	if (ret < 0) {
++		fs_path_free(path);
++		return ERR_PTR(ret);
++	}
++
++	return path;
++}
++
++static void free_path_for_command(const struct send_ctx *sctx, struct fs_path *path)
++{
++	if (path != &sctx->cur_inode_path)
++		fs_path_free(path);
++}
++
+ static int send_truncate(struct send_ctx *sctx, u64 ino, u64 gen, u64 size)
+ {
+ 	struct btrfs_fs_info *fs_info = sctx->send_root->fs_info;
+@@ -2631,17 +2672,14 @@ static int send_truncate(struct send_ctx
+ 
+ 	btrfs_debug(fs_info, "send_truncate %llu size=%llu", ino, size);
+ 
+-	p = fs_path_alloc();
+-	if (!p)
+-		return -ENOMEM;
++	p = get_path_for_command(sctx, ino, gen);
++	if (IS_ERR(p))
++		return PTR_ERR(p);
+ 
+ 	ret = begin_cmd(sctx, BTRFS_SEND_C_TRUNCATE);
+ 	if (ret < 0)
+ 		goto out;
+ 
+-	ret = get_cur_path(sctx, ino, gen, p);
+-	if (ret < 0)
+-		goto out;
+ 	TLV_PUT_PATH(sctx, BTRFS_SEND_A_PATH, p);
+ 	TLV_PUT_U64(sctx, BTRFS_SEND_A_SIZE, size);
+ 
+@@ -2649,7 +2687,7 @@ static int send_truncate(struct send_ctx
+ 
+ tlv_put_failure:
+ out:
+-	fs_path_free(p);
++	free_path_for_command(sctx, p);
+ 	return ret;
+ }
+ 
+@@ -2661,17 +2699,14 @@ static int send_chmod(struct send_ctx *s
+ 
+ 	btrfs_debug(fs_info, "send_chmod %llu mode=%llu", ino, mode);
+ 
+-	p = fs_path_alloc();
+-	if (!p)
+-		return -ENOMEM;
++	p = get_path_for_command(sctx, ino, gen);
++	if (IS_ERR(p))
++		return PTR_ERR(p);
+ 
+ 	ret = begin_cmd(sctx, BTRFS_SEND_C_CHMOD);
+ 	if (ret < 0)
+ 		goto out;
+ 
+-	ret = get_cur_path(sctx, ino, gen, p);
+-	if (ret < 0)
+-		goto out;
+ 	TLV_PUT_PATH(sctx, BTRFS_SEND_A_PATH, p);
+ 	TLV_PUT_U64(sctx, BTRFS_SEND_A_MODE, mode & 07777);
+ 
+@@ -2679,7 +2714,7 @@ static int send_chmod(struct send_ctx *s
+ 
+ tlv_put_failure:
+ out:
+-	fs_path_free(p);
++	free_path_for_command(sctx, p);
+ 	return ret;
+ }
+ 
+@@ -2694,17 +2729,14 @@ static int send_fileattr(struct send_ctx
+ 
+ 	btrfs_debug(fs_info, "send_fileattr %llu fileattr=%llu", ino, fileattr);
+ 
+-	p = fs_path_alloc();
+-	if (!p)
+-		return -ENOMEM;
++	p = get_path_for_command(sctx, ino, gen);
++	if (IS_ERR(p))
++		return PTR_ERR(p);
+ 
+ 	ret = begin_cmd(sctx, BTRFS_SEND_C_FILEATTR);
+ 	if (ret < 0)
+ 		goto out;
+ 
+-	ret = get_cur_path(sctx, ino, gen, p);
+-	if (ret < 0)
+-		goto out;
+ 	TLV_PUT_PATH(sctx, BTRFS_SEND_A_PATH, p);
+ 	TLV_PUT_U64(sctx, BTRFS_SEND_A_FILEATTR, fileattr);
+ 
+@@ -2712,7 +2744,7 @@ static int send_fileattr(struct send_ctx
+ 
+ tlv_put_failure:
+ out:
+-	fs_path_free(p);
++	free_path_for_command(sctx, p);
+ 	return ret;
+ }
+ 
+@@ -2725,17 +2757,14 @@ static int send_chown(struct send_ctx *s
+ 	btrfs_debug(fs_info, "send_chown %llu uid=%llu, gid=%llu",
+ 		    ino, uid, gid);
+ 
+-	p = fs_path_alloc();
+-	if (!p)
+-		return -ENOMEM;
++	p = get_path_for_command(sctx, ino, gen);
++	if (IS_ERR(p))
++		return PTR_ERR(p);
+ 
+ 	ret = begin_cmd(sctx, BTRFS_SEND_C_CHOWN);
+ 	if (ret < 0)
+ 		goto out;
+ 
+-	ret = get_cur_path(sctx, ino, gen, p);
+-	if (ret < 0)
+-		goto out;
+ 	TLV_PUT_PATH(sctx, BTRFS_SEND_A_PATH, p);
+ 	TLV_PUT_U64(sctx, BTRFS_SEND_A_UID, uid);
+ 	TLV_PUT_U64(sctx, BTRFS_SEND_A_GID, gid);
+@@ -2744,7 +2773,7 @@ static int send_chown(struct send_ctx *s
+ 
+ tlv_put_failure:
+ out:
+-	fs_path_free(p);
++	free_path_for_command(sctx, p);
+ 	return ret;
+ }
+ 
+@@ -2761,9 +2790,9 @@ static int send_utimes(struct send_ctx *
+ 
+ 	btrfs_debug(fs_info, "send_utimes %llu", ino);
+ 
+-	p = fs_path_alloc();
+-	if (!p)
+-		return -ENOMEM;
++	p = get_path_for_command(sctx, ino, gen);
++	if (IS_ERR(p))
++		return PTR_ERR(p);
+ 
+ 	path = alloc_path_for_send();
+ 	if (!path) {
+@@ -2788,9 +2817,6 @@ static int send_utimes(struct send_ctx *
+ 	if (ret < 0)
+ 		goto out;
+ 
+-	ret = get_cur_path(sctx, ino, gen, p);
+-	if (ret < 0)
+-		goto out;
+ 	TLV_PUT_PATH(sctx, BTRFS_SEND_A_PATH, p);
+ 	TLV_PUT_BTRFS_TIMESPEC(sctx, BTRFS_SEND_A_ATIME, eb, &ii->atime);
+ 	TLV_PUT_BTRFS_TIMESPEC(sctx, BTRFS_SEND_A_MTIME, eb, &ii->mtime);
+@@ -2802,7 +2828,7 @@ static int send_utimes(struct send_ctx *
+ 
+ tlv_put_failure:
+ out:
+-	fs_path_free(p);
++	free_path_for_command(sctx, p);
+ 	btrfs_free_path(path);
+ 	return ret;
+ }
+@@ -4930,13 +4956,9 @@ static int send_set_xattr(struct send_ct
+ 	struct fs_path *path;
+ 	int ret;
+ 
+-	path = fs_path_alloc();
+-	if (!path)
+-		return -ENOMEM;
+-
+-	ret = get_cur_path(sctx, sctx->cur_ino, sctx->cur_inode_gen, path);
+-	if (ret < 0)
+-		goto out;
++	path = get_cur_inode_path(sctx);
++	if (IS_ERR(path))
++		return PTR_ERR(path);
+ 
+ 	ret = begin_cmd(sctx, BTRFS_SEND_C_SET_XATTR);
+ 	if (ret < 0)
+@@ -4950,8 +4972,6 @@ static int send_set_xattr(struct send_ct
+ 
+ tlv_put_failure:
+ out:
+-	fs_path_free(path);
+-
+ 	return ret;
+ }
+ 
+@@ -5009,23 +5029,14 @@ static int __process_deleted_xattr(int n
+ 				   const char *name, int name_len,
+ 				   const char *data, int data_len, void *ctx)
+ {
+-	int ret;
+ 	struct send_ctx *sctx = ctx;
+ 	struct fs_path *p;
+ 
+-	p = fs_path_alloc();
+-	if (!p)
+-		return -ENOMEM;
+-
+-	ret = get_cur_path(sctx, sctx->cur_ino, sctx->cur_inode_gen, p);
+-	if (ret < 0)
+-		goto out;
+-
+-	ret = send_remove_xattr(sctx, p, name, name_len);
++	p = get_cur_inode_path(sctx);
++	if (IS_ERR(p))
++		return PTR_ERR(p);
+ 
+-out:
+-	fs_path_free(p);
+-	return ret;
++	return send_remove_xattr(sctx, p, name, name_len);
+ }
+ 
+ static int process_new_xattr(struct send_ctx *sctx)
+@@ -5259,21 +5270,13 @@ static int process_verity(struct send_ct
+ 	if (ret < 0)
+ 		goto iput;
+ 
+-	p = fs_path_alloc();
+-	if (!p) {
+-		ret = -ENOMEM;
++	p = get_cur_inode_path(sctx);
++	if (IS_ERR(p)) {
++		ret = PTR_ERR(p);
+ 		goto iput;
+ 	}
+-	ret = get_cur_path(sctx, sctx->cur_ino, sctx->cur_inode_gen, p);
+-	if (ret < 0)
+-		goto free_path;
+ 
+ 	ret = send_verity(sctx, p, sctx->verity_descriptor);
+-	if (ret < 0)
+-		goto free_path;
+-
+-free_path:
+-	fs_path_free(p);
+ iput:
+ 	iput(inode);
+ 	return ret;
+@@ -5388,31 +5391,25 @@ static int send_write(struct send_ctx *s
+ 	int ret = 0;
+ 	struct fs_path *p;
+ 
+-	p = fs_path_alloc();
+-	if (!p)
+-		return -ENOMEM;
+-
+ 	btrfs_debug(fs_info, "send_write offset=%llu, len=%d", offset, len);
+ 
+-	ret = begin_cmd(sctx, BTRFS_SEND_C_WRITE);
+-	if (ret < 0)
+-		goto out;
++	p = get_cur_inode_path(sctx);
++	if (IS_ERR(p))
++		return PTR_ERR(p);
+ 
+-	ret = get_cur_path(sctx, sctx->cur_ino, sctx->cur_inode_gen, p);
++	ret = begin_cmd(sctx, BTRFS_SEND_C_WRITE);
+ 	if (ret < 0)
+-		goto out;
++		return ret;
+ 
+ 	TLV_PUT_PATH(sctx, BTRFS_SEND_A_PATH, p);
+ 	TLV_PUT_U64(sctx, BTRFS_SEND_A_FILE_OFFSET, offset);
+ 	ret = put_file_data(sctx, offset, len);
+ 	if (ret < 0)
+-		goto out;
++		return ret;
+ 
+ 	ret = send_cmd(sctx);
+ 
+ tlv_put_failure:
+-out:
+-	fs_path_free(p);
+ 	return ret;
+ }
+ 
+@@ -5425,6 +5422,7 @@ static int send_clone(struct send_ctx *s
+ {
+ 	int ret = 0;
+ 	struct fs_path *p;
++	struct fs_path *cur_inode_path;
+ 	u64 gen;
+ 
+ 	btrfs_debug(sctx->send_root->fs_info,
+@@ -5432,6 +5430,10 @@ static int send_clone(struct send_ctx *s
+ 		    offset, len, clone_root->root->root_key.objectid,
+ 		    clone_root->ino, clone_root->offset);
+ 
++	cur_inode_path = get_cur_inode_path(sctx);
++	if (IS_ERR(cur_inode_path))
++		return PTR_ERR(cur_inode_path);
++
+ 	p = fs_path_alloc();
+ 	if (!p)
+ 		return -ENOMEM;
+@@ -5440,13 +5442,9 @@ static int send_clone(struct send_ctx *s
+ 	if (ret < 0)
+ 		goto out;
+ 
+-	ret = get_cur_path(sctx, sctx->cur_ino, sctx->cur_inode_gen, p);
+-	if (ret < 0)
+-		goto out;
+-
+ 	TLV_PUT_U64(sctx, BTRFS_SEND_A_FILE_OFFSET, offset);
+ 	TLV_PUT_U64(sctx, BTRFS_SEND_A_CLONE_LEN, len);
+-	TLV_PUT_PATH(sctx, BTRFS_SEND_A_PATH, p);
++	TLV_PUT_PATH(sctx, BTRFS_SEND_A_PATH, cur_inode_path);
+ 
+ 	if (clone_root->root == sctx->send_root) {
+ 		ret = get_inode_gen(sctx->send_root, clone_root->ino, &gen);
+@@ -5497,17 +5495,13 @@ static int send_update_extent(struct sen
+ 	int ret = 0;
+ 	struct fs_path *p;
+ 
+-	p = fs_path_alloc();
+-	if (!p)
+-		return -ENOMEM;
++	p = get_cur_inode_path(sctx);
++	if (IS_ERR(p))
++		return PTR_ERR(p);
+ 
+ 	ret = begin_cmd(sctx, BTRFS_SEND_C_UPDATE_EXTENT);
+ 	if (ret < 0)
+-		goto out;
+-
+-	ret = get_cur_path(sctx, sctx->cur_ino, sctx->cur_inode_gen, p);
+-	if (ret < 0)
+-		goto out;
++		return ret;
+ 
+ 	TLV_PUT_PATH(sctx, BTRFS_SEND_A_PATH, p);
+ 	TLV_PUT_U64(sctx, BTRFS_SEND_A_FILE_OFFSET, offset);
+@@ -5516,8 +5510,6 @@ static int send_update_extent(struct sen
+ 	ret = send_cmd(sctx);
+ 
+ tlv_put_failure:
+-out:
+-	fs_path_free(p);
+ 	return ret;
+ }
+ 
+@@ -5546,12 +5538,10 @@ static int send_hole(struct send_ctx *sc
+ 	if (sctx->flags & BTRFS_SEND_FLAG_NO_FILE_DATA)
+ 		return send_update_extent(sctx, offset, end - offset);
+ 
+-	p = fs_path_alloc();
+-	if (!p)
+-		return -ENOMEM;
+-	ret = get_cur_path(sctx, sctx->cur_ino, sctx->cur_inode_gen, p);
+-	if (ret < 0)
+-		goto tlv_put_failure;
++	p = get_cur_inode_path(sctx);
++	if (IS_ERR(p))
++		return PTR_ERR(p);
++
+ 	while (offset < end) {
+ 		u64 len = min(end - offset, read_size);
+ 
+@@ -5572,7 +5562,6 @@ static int send_hole(struct send_ctx *sc
+ 	}
+ 	sctx->cur_inode_next_write_offset = offset;
+ tlv_put_failure:
+-	fs_path_free(p);
+ 	return ret;
+ }
+ 
+@@ -5595,9 +5584,9 @@ static int send_encoded_inline_extent(st
+ 	if (IS_ERR(inode))
+ 		return PTR_ERR(inode);
+ 
+-	fspath = fs_path_alloc();
+-	if (!fspath) {
+-		ret = -ENOMEM;
++	fspath = get_cur_inode_path(sctx);
++	if (IS_ERR(fspath)) {
++		ret = PTR_ERR(fspath);
+ 		goto out;
+ 	}
+ 
+@@ -5605,10 +5594,6 @@ static int send_encoded_inline_extent(st
+ 	if (ret < 0)
+ 		goto out;
+ 
+-	ret = get_cur_path(sctx, sctx->cur_ino, sctx->cur_inode_gen, fspath);
+-	if (ret < 0)
+-		goto out;
+-
+ 	btrfs_item_key_to_cpu(leaf, &key, path->slots[0]);
+ 	ei = btrfs_item_ptr(leaf, path->slots[0], struct btrfs_file_extent_item);
+ 	ram_bytes = btrfs_file_extent_ram_bytes(leaf, ei);
+@@ -5637,7 +5622,6 @@ static int send_encoded_inline_extent(st
+ 
+ tlv_put_failure:
+ out:
+-	fs_path_free(fspath);
+ 	iput(inode);
+ 	return ret;
+ }
+@@ -5662,9 +5646,9 @@ static int send_encoded_extent(struct se
+ 	if (IS_ERR(inode))
+ 		return PTR_ERR(inode);
+ 
+-	fspath = fs_path_alloc();
+-	if (!fspath) {
+-		ret = -ENOMEM;
++	fspath = get_cur_inode_path(sctx);
++	if (IS_ERR(fspath)) {
++		ret = PTR_ERR(fspath);
+ 		goto out;
+ 	}
+ 
+@@ -5672,10 +5656,6 @@ static int send_encoded_extent(struct se
+ 	if (ret < 0)
+ 		goto out;
+ 
+-	ret = get_cur_path(sctx, sctx->cur_ino, sctx->cur_inode_gen, fspath);
+-	if (ret < 0)
+-		goto out;
+-
+ 	btrfs_item_key_to_cpu(leaf, &key, path->slots[0]);
+ 	ei = btrfs_item_ptr(leaf, path->slots[0], struct btrfs_file_extent_item);
+ 	disk_bytenr = btrfs_file_extent_disk_bytenr(leaf, ei);
+@@ -5742,7 +5722,6 @@ static int send_encoded_extent(struct se
+ 
+ tlv_put_failure:
+ out:
+-	fs_path_free(fspath);
+ 	iput(inode);
+ 	return ret;
+ }
 
 
 
