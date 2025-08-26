@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-175244-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-174117-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9142EB3674D
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 16:05:31 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id C9137B36185
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 15:10:15 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 79A731C270F3
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 13:57:13 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 15A972019CB
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 13:06:01 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A0B42350D40;
-	Tue, 26 Aug 2025 13:55:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3739D23D7DD;
+	Tue, 26 Aug 2025 13:05:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="kScTDsD1"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="BW3gAvHM"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5D3A2302CA6;
-	Tue, 26 Aug 2025 13:55:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E2469DF49;
+	Tue, 26 Aug 2025 13:05:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756216525; cv=none; b=H7Yn0Gx1zrljL6GGm0qhoRHQfX8q5TwyI24nfmHUUfi6R+OGtNi5tm5B+KZtJc8eFqZTX+zQC0x3f7HA/k2J9lIijDr8UcqULjdYPuGpTDsWSvxrj6bOtllnlVICsGQDnZo+WScNXGwg8j17PsyLr4e0QdDOYIS4vi3OGqKpUjI=
+	t=1756213539; cv=none; b=aG2Ll6lrRY35sRBStIrBE3hrMLmUeoP4bCvukANUgvWSZGmWZVVH2hKdv0Wi0M8Uh5RkqZA4g0Al/qwVndmHbnyAR0u6hHfC3x9FMtxenGO0xlNmX+B9TN5X7g5pFTMqreVzsUVfHyFqnGx0ult74Jq9j2zbF/o066WkuCStaec=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756216525; c=relaxed/simple;
-	bh=zRb9Fsh37uzIRmkywFEdVRH4LPD+ysg9bfxa/aex3jE=;
+	s=arc-20240116; t=1756213539; c=relaxed/simple;
+	bh=DHTm4LDJ2HJG4PWLL2pkFpVpiXw/ehTThQh29z0putc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=NLic9uG7vPIyEUSR/d1eU9xIzjWspD0Z0LUgjKeKCCPO5G6gkLJRuNwvyqpM3WO+IOgDg5jqAnw7IOSr5AwsjwSmld/p8S953AfpsKWtnw3aktfFw81o6D8//rQ5we/AJJoEC55ptdx8oq0jq9UMHYn8uHKfRWuP2EW9PwXwCF4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=kScTDsD1; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E11F6C4CEF1;
-	Tue, 26 Aug 2025 13:55:24 +0000 (UTC)
+	 MIME-Version; b=Y//VK7m4LE2jEeYQK43UJxD5Ms0CO+mLzWZZgCuKtyYkPDLi8YSK74I5X2jCGMVLmQnlUudJXu+93GbB3jpSVb7x9Iv4VPUOAOX4m6Ps8MsQSwPwsU8MPLgVl8BiZBkGAQJNXgID42Zn/n9f7EJge9gM0roQNoCZ+n/jgt/DNlY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=BW3gAvHM; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 55819C4CEF1;
+	Tue, 26 Aug 2025 13:05:38 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1756216525;
-	bh=zRb9Fsh37uzIRmkywFEdVRH4LPD+ysg9bfxa/aex3jE=;
+	s=korg; t=1756213538;
+	bh=DHTm4LDJ2HJG4PWLL2pkFpVpiXw/ehTThQh29z0putc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=kScTDsD1+iBoVNpJwqe4RVYj9UsfqqtmGBNIiCftGMPVVWgrabz5d9AzJLSPnurnB
-	 C9Z1rXVzMf005u+feL/bO9CEGhS2VeLxQhjB/SZ9L6jg9s09BXzXjox5LRoAztOV/F
-	 fAxnRxRMJMJhni5nCS9NO9u8EjIi6KAtVS25ECg4=
+	b=BW3gAvHMXrXuOwkffnGaIiqAoWgBCrsbMeohJokU6Colha/FlX3nZeaHLVTryPZUf
+	 3L/6PaZNZNBdehNQswQeNnxC+xrw69+ufE1izcIAs1B2Y3mx6kIrkvZXqvm3WC+vlg
+	 pyZ+4CVcsBGL0LFfj8n/UGsuL2GPkZVOPWmVdnIg=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	stable <stable@kernel.org>,
-	syzbot+01523a0ae5600aef5895@syzkaller.appspotmail.com,
-	Jens Axboe <axboe@kernel.dk>,
-	Ian Abbott <abbotti@mev.co.uk>
-Subject: [PATCH 5.15 444/644] comedi: fix race between polling and detaching
+	Will Deacon <will@kernel.org>,
+	"Michael S. Tsirkin" <mst@redhat.com>,
+	Stefano Garzarella <sgarzare@redhat.com>
+Subject: [PATCH 6.6 386/587] vsock/virtio: Validate length in packet header before skb_put()
 Date: Tue, 26 Aug 2025 13:08:55 +0200
-Message-ID: <20250826110957.470208969@linuxfoundation.org>
+Message-ID: <20250826111002.732328216@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250826110946.507083938@linuxfoundation.org>
-References: <20250826110946.507083938@linuxfoundation.org>
+In-Reply-To: <20250826110952.942403671@linuxfoundation.org>
+References: <20250826110952.942403671@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,162 +62,67 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Ian Abbott <abbotti@mev.co.uk>
+From: Will Deacon <will@kernel.org>
 
-commit 35b6fc51c666fc96355be5cd633ed0fe4ccf68b2 upstream.
+commit 0dab92484474587b82e8e0455839eaf5ac7bf894 upstream.
 
-syzbot reports a use-after-free in comedi in the below link, which is
-due to comedi gladly removing the allocated async area even though poll
-requests are still active on the wait_queue_head inside of it. This can
-cause a use-after-free when the poll entries are later triggered or
-removed, as the memory for the wait_queue_head has been freed.  We need
-to check there are no tasks queued on any of the subdevices' wait queues
-before allowing the device to be detached by the `COMEDI_DEVCONFIG`
-ioctl.
+When receiving a vsock packet in the guest, only the virtqueue buffer
+size is validated prior to virtio_vsock_skb_rx_put(). Unfortunately,
+virtio_vsock_skb_rx_put() uses the length from the packet header as the
+length argument to skb_put(), potentially resulting in SKB overflow if
+the host has gone wonky.
 
-Tasks will read-lock `dev->attach_lock` before adding themselves to the
-subdevice wait queue, so fix the problem in the `COMEDI_DEVCONFIG` ioctl
-handler by write-locking `dev->attach_lock` before checking that all of
-the subdevices are safe to be deleted.  This includes testing for any
-sleepers on the subdevices' wait queues.  It remains locked until the
-device has been detached.  This requires the `comedi_device_detach()`
-function to be refactored slightly, moving the bulk of it into new
-function `comedi_device_detach_locked()`.
+Validate the length as advertised by the packet header before calling
+virtio_vsock_skb_rx_put().
 
-Note that the refactor of `comedi_device_detach()` results in
-`comedi_device_cancel_all()` now being called while `dev->attach_lock`
-is write-locked, which wasn't the case previously, but that does not
-matter.
-
-Thanks to Jens Axboe for diagnosing the problem and co-developing this
-patch.
-
-Cc: stable <stable@kernel.org>
-Fixes: 2f3fdcd7ce93 ("staging: comedi: add rw_semaphore to protect against device detachment")
-Link: https://lore.kernel.org/all/687bd5fe.a70a0220.693ce.0091.GAE@google.com/
-Reported-by: syzbot+01523a0ae5600aef5895@syzkaller.appspotmail.com
-Closes: https://syzkaller.appspot.com/bug?extid=01523a0ae5600aef5895
-Co-developed-by: Jens Axboe <axboe@kernel.dk>
-Signed-off-by: Jens Axboe <axboe@kernel.dk>
-Signed-off-by: Ian Abbott <abbotti@mev.co.uk>
-Tested-by: Jens Axboe <axboe@kernel.dk>
-Link: https://lore.kernel.org/r/20250722155316.27432-1-abbotti@mev.co.uk
+Cc: <stable@vger.kernel.org>
+Fixes: 71dc9ec9ac7d ("virtio/vsock: replace virtio_vsock_pkt with sk_buff")
+Signed-off-by: Will Deacon <will@kernel.org>
+Message-Id: <20250717090116.11987-3-will@kernel.org>
+Signed-off-by: Michael S. Tsirkin <mst@redhat.com>
+Reviewed-by: Stefano Garzarella <sgarzare@redhat.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/comedi/comedi_fops.c     |   33 +++++++++++++++++++++++++--------
- drivers/comedi/comedi_internal.h |    1 +
- drivers/comedi/drivers.c         |   13 ++++++++++---
- 3 files changed, 36 insertions(+), 11 deletions(-)
+ net/vmw_vsock/virtio_transport.c |   12 ++++++++++--
+ 1 file changed, 10 insertions(+), 2 deletions(-)
 
---- a/drivers/comedi/comedi_fops.c
-+++ b/drivers/comedi/comedi_fops.c
-@@ -783,6 +783,7 @@ static int is_device_busy(struct comedi_
- 	struct comedi_subdevice *s;
- 	int i;
+--- a/net/vmw_vsock/virtio_transport.c
++++ b/net/vmw_vsock/virtio_transport.c
+@@ -497,8 +497,9 @@ static void virtio_transport_rx_work(str
+ 	do {
+ 		virtqueue_disable_cb(vq);
+ 		for (;;) {
++			unsigned int len, payload_len;
++			struct virtio_vsock_hdr *hdr;
+ 			struct sk_buff *skb;
+-			unsigned int len;
  
-+	lockdep_assert_held_write(&dev->attach_lock);
- 	lockdep_assert_held(&dev->mutex);
- 	if (!dev->attached)
- 		return 0;
-@@ -791,7 +792,16 @@ static int is_device_busy(struct comedi_
- 		s = &dev->subdevices[i];
- 		if (s->busy)
- 			return 1;
--		if (s->async && comedi_buf_is_mmapped(s))
-+		if (!s->async)
-+			continue;
-+		if (comedi_buf_is_mmapped(s))
-+			return 1;
-+		/*
-+		 * There may be tasks still waiting on the subdevice's wait
-+		 * queue, although they should already be about to be removed
-+		 * from it since the subdevice has no active async command.
-+		 */
-+		if (wq_has_sleeper(&s->async->wait_head))
- 			return 1;
- 	}
+ 			if (!virtio_transport_more_replies(vsock)) {
+ 				/* Stop rx until the device processes already
+@@ -515,11 +516,18 @@ static void virtio_transport_rx_work(str
+ 			vsock->rx_buf_nr--;
  
-@@ -821,15 +831,22 @@ static int do_devconfig_ioctl(struct com
- 		return -EPERM;
- 
- 	if (!arg) {
--		if (is_device_busy(dev))
--			return -EBUSY;
--		if (dev->attached) {
--			struct module *driver_module = dev->driver->module;
-+		int rc = 0;
- 
--			comedi_device_detach(dev);
--			module_put(driver_module);
-+		if (dev->attached) {
-+			down_write(&dev->attach_lock);
-+			if (is_device_busy(dev)) {
-+				rc = -EBUSY;
-+			} else {
-+				struct module *driver_module =
-+					dev->driver->module;
+ 			/* Drop short/long packets */
+-			if (unlikely(len < sizeof(struct virtio_vsock_hdr) ||
++			if (unlikely(len < sizeof(*hdr) ||
+ 				     len > virtio_vsock_skb_len(skb))) {
+ 				kfree_skb(skb);
+ 				continue;
+ 			}
 +
-+				comedi_device_detach_locked(dev);
-+				module_put(driver_module);
++			hdr = virtio_vsock_hdr(skb);
++			payload_len = le32_to_cpu(hdr->len);
++			if (unlikely(payload_len > len - sizeof(*hdr))) {
++				kfree_skb(skb);
++				continue;
 +			}
-+			up_write(&dev->attach_lock);
- 		}
--		return 0;
-+		return rc;
- 	}
  
- 	if (copy_from_user(&it, arg, sizeof(it)))
---- a/drivers/comedi/comedi_internal.h
-+++ b/drivers/comedi/comedi_internal.h
-@@ -50,6 +50,7 @@ extern struct mutex comedi_drivers_list_
- int insn_inval(struct comedi_device *dev, struct comedi_subdevice *s,
- 	       struct comedi_insn *insn, unsigned int *data);
- 
-+void comedi_device_detach_locked(struct comedi_device *dev);
- void comedi_device_detach(struct comedi_device *dev);
- int comedi_device_attach(struct comedi_device *dev,
- 			 struct comedi_devconfig *it);
---- a/drivers/comedi/drivers.c
-+++ b/drivers/comedi/drivers.c
-@@ -159,7 +159,7 @@ static void comedi_device_detach_cleanup
- 	int i;
- 	struct comedi_subdevice *s;
- 
--	lockdep_assert_held(&dev->attach_lock);
-+	lockdep_assert_held_write(&dev->attach_lock);
- 	lockdep_assert_held(&dev->mutex);
- 	if (dev->subdevices) {
- 		for (i = 0; i < dev->n_subdevices; i++) {
-@@ -196,16 +196,23 @@ static void comedi_device_detach_cleanup
- 	comedi_clear_hw_dev(dev);
- }
- 
--void comedi_device_detach(struct comedi_device *dev)
-+void comedi_device_detach_locked(struct comedi_device *dev)
- {
-+	lockdep_assert_held_write(&dev->attach_lock);
- 	lockdep_assert_held(&dev->mutex);
- 	comedi_device_cancel_all(dev);
--	down_write(&dev->attach_lock);
- 	dev->attached = false;
- 	dev->detach_count++;
- 	if (dev->driver)
- 		dev->driver->detach(dev);
- 	comedi_device_detach_cleanup(dev);
-+}
-+
-+void comedi_device_detach(struct comedi_device *dev)
-+{
-+	lockdep_assert_held(&dev->mutex);
-+	down_write(&dev->attach_lock);
-+	comedi_device_detach_locked(dev);
- 	up_write(&dev->attach_lock);
- }
- 
+ 			virtio_vsock_skb_rx_put(skb);
+ 			virtio_transport_deliver_tap_pkt(skb);
 
 
 
