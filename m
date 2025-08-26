@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-173409-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-175966-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id C8E7FB35D5D
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 13:44:06 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id C6D00B36A86
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 16:38:11 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 85DD11BA7737
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 11:38:08 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 049BF585CB2
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 14:29:51 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1D1AA341AA1;
-	Tue, 26 Aug 2025 11:36:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D38F3341AA6;
+	Tue, 26 Aug 2025 14:27:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="xN2AwFPo"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="2sk0QKJr"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CEDB63090E1;
-	Tue, 26 Aug 2025 11:36:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 90740350D46;
+	Tue, 26 Aug 2025 14:27:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756208173; cv=none; b=VozRPto0lqVArCKLsFPhkTxpBe1CvYe/vMS2wVFkIbLNX9yNH1gMwzZK64ud/K3aeG/P2UxpPWID1GhdXyJ3xwAVOEtm97HD5LFauxxwwfXR23a+Ni49EslNvDYxkmMwwCQywWnqRb9O2D7BZ0FpDcpGpGsSyXD41XtQmG65WaU=
+	t=1756218434; cv=none; b=GtNaXzKM0tMT2SdA/+RkLiMYanyQ1ysN6Q/FGVmsPbBEuGN6nMBVvtBhXJUALKOtPflTvP3dsCMqybhLmoLEIeqNTO7vKM5gEdN/zuRY6GuPqhF2sv/jIoLIyCSOo3OjMt9WUS7MYarXXpjoPlEFxAokYdF7NMcpcwXqDIFusps=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756208173; c=relaxed/simple;
-	bh=P2E8mxXKmL/zLHvA5axU9XtaC7GW3eYXV4wrVxc/K6Y=;
+	s=arc-20240116; t=1756218434; c=relaxed/simple;
+	bh=7hQWE8WTZ+JoTpjO0auMkiJ0B8FRDJLnwZrvopPMecM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=HlFLlqs646Cq6DLJuIZFw6RUS5BWRcCfVEWnbgsBS6JJPPX0L6JytTLIoGHAsid33hOvE9VeD24R5BtTeq2GuG1j7+p26eq+IGbRIl7ADUmI5yCAQTESPPUSuhGDbzRolzP99s9T45U+mI0mHDb/Quz6Mj5PnKp6vJWDjmfMxbU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=xN2AwFPo; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5A914C4CEF1;
-	Tue, 26 Aug 2025 11:36:13 +0000 (UTC)
+	 MIME-Version; b=Um+YFFaANahx79VbkRrWLw42MI3mhR1083Kc7VV7gvn/pML0zzUAmHK3pnNuaUCVMN9wUO3ASjrOZNoOQmbMMQlRqFxjZzcFYT9weCfF4TZj4CsE+qWg3LRPARyHggEfISKq5jamOC28qR6mYgdRGNvAatSxvaE5lbIlTZRaL0s=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=2sk0QKJr; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id DCEB1C4CEF1;
+	Tue, 26 Aug 2025 14:27:13 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1756208173;
-	bh=P2E8mxXKmL/zLHvA5axU9XtaC7GW3eYXV4wrVxc/K6Y=;
+	s=korg; t=1756218434;
+	bh=7hQWE8WTZ+JoTpjO0auMkiJ0B8FRDJLnwZrvopPMecM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=xN2AwFPo5IW74DqMaATS4TxKclJOdc9mhOd1slGRpuasMq9VNRODRiFFyWoTrlECi
-	 ghcvnvqxok4D7Nspq++6355ikCRXHvvgdAP85h2GO2/nhW7UUbRVsn8JDkv6taUpFB
-	 Os4YAwBYEmuVVhUWWZzwQ/vB3w9GMDJODQoLENtg=
+	b=2sk0QKJrKvoTQetqaavyVQ/LiyVM+n76UE7vCfUzgMXipGhsbQTdctCzeeNNTDum0
+	 JjrmHDNJG9VuJrcacm6JHXXUSejHs5Y0FwadlefEzVfEvb9piFBl0Z0bXu1AjYQCqw
+	 pO3mpP+/6CyFmGZW3J8ZsZtM5W9EFxbDgM+HnB2w=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Hariprasad Kelam <hkelam@marvell.com>,
-	Jakub Kicinski <kuba@kernel.org>,
+	"Jose M. Guisado Gomez" <guigom@riseup.net>,
+	Pablo Neira Ayuso <pablo@netfilter.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.16 447/457] Octeontx2-af: Skip overlap check for SPI field
+Subject: [PATCH 5.10 521/523] netfilter: nft_reject: unify reject init and dump into nft_reject
 Date: Tue, 26 Aug 2025 13:12:11 +0200
-Message-ID: <20250826110948.333385254@linuxfoundation.org>
+Message-ID: <20250826110937.289702834@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250826110937.289866482@linuxfoundation.org>
-References: <20250826110937.289866482@linuxfoundation.org>
+In-Reply-To: <20250826110924.562212281@linuxfoundation.org>
+References: <20250826110924.562212281@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,69 +62,220 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.16-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Hariprasad Kelam <hkelam@marvell.com>
+From: Jose M. Guisado Gomez <guigom@riseup.net>
 
-[ Upstream commit 8c5d95988c34f0aeba1f34cd5e4ba69494c90c5f ]
+[ Upstream commit 312ca575a50543a886a5dfa2af1e72aa6a5b601e ]
 
-Octeontx2/CN10K silicon supports generating a 256-bit key per packet.
-The specific fields to be extracted from a packet for key generation
-are configurable via a Key Extraction (MKEX) Profile.
+Bridge family is using the same static init and dump function as inet.
 
-The AF driver scans the configured extraction profile to ensure that
-fields from upper layers do not overwrite fields from lower layers in
-the key.
+This patch removes duplicate code unifying these functions body into
+nft_reject.c so they can be reused in the rest of families supporting
+reject verdict.
 
-Example Packet Field Layout:
-LA: DMAC + SMAC
-LB: VLAN
-LC: IPv4/IPv6
-LD: TCP/UDP
-
-Valid MKEX Profile Configuration:
-
-LA   -> DMAC   -> key_offset[0-5]
-LC   -> SIP    -> key_offset[20-23]
-LD   -> SPORT  -> key_offset[30-31]
-
-Invalid MKEX profile configuration:
-
-LA   -> DMAC   -> key_offset[0-5]
-LC   -> SIP    -> key_offset[20-23]
-LD   -> SPORT  -> key_offset[2-3]  // Overlaps with DMAC field
-
-In another scenario, if the MKEX profile is configured to extract
-the SPI field from both AH and ESP headers at the same key offset,
-the driver rejecting this configuration. In a regular traffic,
-ipsec packet will be having either AH(LD) or ESP (LE). This patch
-relaxes the check for the same.
-
-Fixes: 12aa0a3b93f3 ("octeontx2-af: Harden rule validation.")
-Signed-off-by: Hariprasad Kelam <hkelam@marvell.com>
-Link: https://patch.msgid.link/20250820063919.1463518-1-hkelam@marvell.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Signed-off-by: Jose M. Guisado Gomez <guigom@riseup.net>
+Signed-off-by: Pablo Neira Ayuso <pablo@netfilter.org>
+Stable-dep-of: 91a79b792204 ("netfilter: nf_reject: don't leak dst refcount for loopback packets")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/ethernet/marvell/octeontx2/af/rvu_npc_fs.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ net/bridge/netfilter/nft_reject_bridge.c | 60 +-----------------------
+ net/netfilter/nft_reject.c               | 12 ++++-
+ net/netfilter/nft_reject_inet.c          | 60 +-----------------------
+ 3 files changed, 15 insertions(+), 117 deletions(-)
 
-diff --git a/drivers/net/ethernet/marvell/octeontx2/af/rvu_npc_fs.c b/drivers/net/ethernet/marvell/octeontx2/af/rvu_npc_fs.c
-index 1b765045aa63..b56395ac5a74 100644
---- a/drivers/net/ethernet/marvell/octeontx2/af/rvu_npc_fs.c
-+++ b/drivers/net/ethernet/marvell/octeontx2/af/rvu_npc_fs.c
-@@ -606,8 +606,8 @@ static void npc_set_features(struct rvu *rvu, int blkaddr, u8 intf)
- 		if (!npc_check_field(rvu, blkaddr, NPC_LB, intf))
- 			*features &= ~BIT_ULL(NPC_OUTER_VID);
+diff --git a/net/bridge/netfilter/nft_reject_bridge.c b/net/bridge/netfilter/nft_reject_bridge.c
+index deae2c9a0f69..9ffadcd524f8 100644
+--- a/net/bridge/netfilter/nft_reject_bridge.c
++++ b/net/bridge/netfilter/nft_reject_bridge.c
+@@ -364,69 +364,13 @@ static int nft_reject_bridge_validate(const struct nft_ctx *ctx,
+ 						    (1 << NF_BR_LOCAL_IN));
+ }
  
--	/* Set SPI flag only if AH/ESP and IPSEC_SPI are in the key */
--	if (npc_check_field(rvu, blkaddr, NPC_IPSEC_SPI, intf) &&
-+	/* Allow extracting SPI field from AH and ESP headers at same offset */
-+	if (npc_is_field_present(rvu, NPC_IPSEC_SPI, intf) &&
- 	    (*features & (BIT_ULL(NPC_IPPROTO_ESP) | BIT_ULL(NPC_IPPROTO_AH))))
- 		*features |= BIT_ULL(NPC_IPSEC_SPI);
+-static int nft_reject_bridge_init(const struct nft_ctx *ctx,
+-				  const struct nft_expr *expr,
+-				  const struct nlattr * const tb[])
+-{
+-	struct nft_reject *priv = nft_expr_priv(expr);
+-	int icmp_code;
+-
+-	if (tb[NFTA_REJECT_TYPE] == NULL)
+-		return -EINVAL;
+-
+-	priv->type = ntohl(nla_get_be32(tb[NFTA_REJECT_TYPE]));
+-	switch (priv->type) {
+-	case NFT_REJECT_ICMP_UNREACH:
+-	case NFT_REJECT_ICMPX_UNREACH:
+-		if (tb[NFTA_REJECT_ICMP_CODE] == NULL)
+-			return -EINVAL;
+-
+-		icmp_code = nla_get_u8(tb[NFTA_REJECT_ICMP_CODE]);
+-		if (priv->type == NFT_REJECT_ICMPX_UNREACH &&
+-		    icmp_code > NFT_REJECT_ICMPX_MAX)
+-			return -EINVAL;
+-
+-		priv->icmp_code = icmp_code;
+-		break;
+-	case NFT_REJECT_TCP_RST:
+-		break;
+-	default:
+-		return -EINVAL;
+-	}
+-	return 0;
+-}
+-
+-static int nft_reject_bridge_dump(struct sk_buff *skb,
+-				  const struct nft_expr *expr)
+-{
+-	const struct nft_reject *priv = nft_expr_priv(expr);
+-
+-	if (nla_put_be32(skb, NFTA_REJECT_TYPE, htonl(priv->type)))
+-		goto nla_put_failure;
+-
+-	switch (priv->type) {
+-	case NFT_REJECT_ICMP_UNREACH:
+-	case NFT_REJECT_ICMPX_UNREACH:
+-		if (nla_put_u8(skb, NFTA_REJECT_ICMP_CODE, priv->icmp_code))
+-			goto nla_put_failure;
+-		break;
+-	default:
+-		break;
+-	}
+-
+-	return 0;
+-
+-nla_put_failure:
+-	return -1;
+-}
+-
+ static struct nft_expr_type nft_reject_bridge_type;
+ static const struct nft_expr_ops nft_reject_bridge_ops = {
+ 	.type		= &nft_reject_bridge_type,
+ 	.size		= NFT_EXPR_SIZE(sizeof(struct nft_reject)),
+ 	.eval		= nft_reject_bridge_eval,
+-	.init		= nft_reject_bridge_init,
+-	.dump		= nft_reject_bridge_dump,
++	.init		= nft_reject_init,
++	.dump		= nft_reject_dump,
+ 	.validate	= nft_reject_bridge_validate,
+ };
+ 
+diff --git a/net/netfilter/nft_reject.c b/net/netfilter/nft_reject.c
+index 61fb7e8afbf0..927ff8459bd9 100644
+--- a/net/netfilter/nft_reject.c
++++ b/net/netfilter/nft_reject.c
+@@ -40,6 +40,7 @@ int nft_reject_init(const struct nft_ctx *ctx,
+ 		    const struct nlattr * const tb[])
+ {
+ 	struct nft_reject *priv = nft_expr_priv(expr);
++	int icmp_code;
+ 
+ 	if (tb[NFTA_REJECT_TYPE] == NULL)
+ 		return -EINVAL;
+@@ -47,9 +48,17 @@ int nft_reject_init(const struct nft_ctx *ctx,
+ 	priv->type = ntohl(nla_get_be32(tb[NFTA_REJECT_TYPE]));
+ 	switch (priv->type) {
+ 	case NFT_REJECT_ICMP_UNREACH:
++	case NFT_REJECT_ICMPX_UNREACH:
+ 		if (tb[NFTA_REJECT_ICMP_CODE] == NULL)
+ 			return -EINVAL;
+-		priv->icmp_code = nla_get_u8(tb[NFTA_REJECT_ICMP_CODE]);
++
++		icmp_code = nla_get_u8(tb[NFTA_REJECT_ICMP_CODE]);
++		if (priv->type == NFT_REJECT_ICMPX_UNREACH &&
++		    icmp_code > NFT_REJECT_ICMPX_MAX)
++			return -EINVAL;
++
++		priv->icmp_code = icmp_code;
++		break;
+ 	case NFT_REJECT_TCP_RST:
+ 		break;
+ 	default:
+@@ -69,6 +78,7 @@ int nft_reject_dump(struct sk_buff *skb, const struct nft_expr *expr)
+ 
+ 	switch (priv->type) {
+ 	case NFT_REJECT_ICMP_UNREACH:
++	case NFT_REJECT_ICMPX_UNREACH:
+ 		if (nla_put_u8(skb, NFTA_REJECT_ICMP_CODE, priv->icmp_code))
+ 			goto nla_put_failure;
+ 		break;
+diff --git a/net/netfilter/nft_reject_inet.c b/net/netfilter/nft_reject_inet.c
+index c00b94a16682..115aa446f6d5 100644
+--- a/net/netfilter/nft_reject_inet.c
++++ b/net/netfilter/nft_reject_inet.c
+@@ -60,69 +60,13 @@ static void nft_reject_inet_eval(const struct nft_expr *expr,
+ 	regs->verdict.code = NF_DROP;
+ }
+ 
+-static int nft_reject_inet_init(const struct nft_ctx *ctx,
+-				const struct nft_expr *expr,
+-				const struct nlattr * const tb[])
+-{
+-	struct nft_reject *priv = nft_expr_priv(expr);
+-	int icmp_code;
+-
+-	if (tb[NFTA_REJECT_TYPE] == NULL)
+-		return -EINVAL;
+-
+-	priv->type = ntohl(nla_get_be32(tb[NFTA_REJECT_TYPE]));
+-	switch (priv->type) {
+-	case NFT_REJECT_ICMP_UNREACH:
+-	case NFT_REJECT_ICMPX_UNREACH:
+-		if (tb[NFTA_REJECT_ICMP_CODE] == NULL)
+-			return -EINVAL;
+-
+-		icmp_code = nla_get_u8(tb[NFTA_REJECT_ICMP_CODE]);
+-		if (priv->type == NFT_REJECT_ICMPX_UNREACH &&
+-		    icmp_code > NFT_REJECT_ICMPX_MAX)
+-			return -EINVAL;
+-
+-		priv->icmp_code = icmp_code;
+-		break;
+-	case NFT_REJECT_TCP_RST:
+-		break;
+-	default:
+-		return -EINVAL;
+-	}
+-	return 0;
+-}
+-
+-static int nft_reject_inet_dump(struct sk_buff *skb,
+-				const struct nft_expr *expr)
+-{
+-	const struct nft_reject *priv = nft_expr_priv(expr);
+-
+-	if (nla_put_be32(skb, NFTA_REJECT_TYPE, htonl(priv->type)))
+-		goto nla_put_failure;
+-
+-	switch (priv->type) {
+-	case NFT_REJECT_ICMP_UNREACH:
+-	case NFT_REJECT_ICMPX_UNREACH:
+-		if (nla_put_u8(skb, NFTA_REJECT_ICMP_CODE, priv->icmp_code))
+-			goto nla_put_failure;
+-		break;
+-	default:
+-		break;
+-	}
+-
+-	return 0;
+-
+-nla_put_failure:
+-	return -1;
+-}
+-
+ static struct nft_expr_type nft_reject_inet_type;
+ static const struct nft_expr_ops nft_reject_inet_ops = {
+ 	.type		= &nft_reject_inet_type,
+ 	.size		= NFT_EXPR_SIZE(sizeof(struct nft_reject)),
+ 	.eval		= nft_reject_inet_eval,
+-	.init		= nft_reject_inet_init,
+-	.dump		= nft_reject_inet_dump,
++	.init		= nft_reject_init,
++	.dump		= nft_reject_dump,
+ 	.validate	= nft_reject_validate,
+ };
  
 -- 
 2.50.1
