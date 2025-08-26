@@ -1,55 +1,57 @@
-Return-Path: <stable+bounces-173092-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-175112-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3A756B35BA5
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 13:26:40 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9075CB36681
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 15:57:54 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 8EEB51896D13
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 11:23:29 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id CBF701C251E2
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 13:51:32 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id EE6C1312806;
-	Tue, 26 Aug 2025 11:22:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 64D9F350834;
+	Tue, 26 Aug 2025 13:49:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="dXWG+2Ur"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="hHL24PE8"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A46012264A3;
-	Tue, 26 Aug 2025 11:22:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1D841350D51;
+	Tue, 26 Aug 2025 13:49:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756207351; cv=none; b=CoG9S4jWz3Tsz2mt3gXiO0TZQJOXJP+wEIA1dZlXG8dw4oJ/enBm5kl46+0/fDnYOlyWMYfShvO4t3fYqtzRAJlFB5gLw+ZxIoNYJ6IKdHGhhYv9cZXeN+nptS+dnClrZBqdd4RUq3lpeHQSad/MQIgCRL6NuBnRA5yOeNl0h0Y=
+	t=1756216171; cv=none; b=mOEjBEcE1mX1gzMjv7Zkg8M5fqb2tO/skL9oJdOOsM5yRIAqUP0NNbvk8pX3ruQQm3o8QtGVtFDhZgxAHOisSWZcox+MMASRb6iefkArIlz1KvtMQUpEbOJQaCKg6NBS5qC9dR3uZov8YOMFw8jGGRNM2V3VkxY72iDj04zhubc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756207351; c=relaxed/simple;
-	bh=1dI8eJoX9bMq3N2uBWHEJu1Ic4Uiuo4Rt7nGfoU4SeQ=;
+	s=arc-20240116; t=1756216171; c=relaxed/simple;
+	bh=3L9RcfrhNYYh2U+sf5T/OG3xdQYzsfQ6p3jCmMtQ9N0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=aJhdYaCX9u6CGX4iWcQIZi6O6x4+OyB1jIC61PP5496EpB4H7gA5qJxOal0mB4Cm/J2S61q74LSKX/RJTHDT7ljK8EMCPXDQZPv3LKSSk93PdDHZryyVyz0PcW1at9sTX3+BgyL4tMVwnBlZy/Wgd2n9QKw50bP8mXBVIaM4tLY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=dXWG+2Ur; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 392BEC4CEF1;
-	Tue, 26 Aug 2025 11:22:31 +0000 (UTC)
+	 MIME-Version; b=N/C/7HO19OaaCddxI7isF4SsXwmQFgFh3N0m9gb3+oY8FuVNar1BmNUkGKOrA8UpQ2ns86xpxADllavRa6BrfHrdKIvlJXyeSIPWTqJ9FdNdXvvRGQ82YRbMmDe9/PYR1DotT0E7guYaQafDendOcxH/NlGN7dHdNplP2qSKbh4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=hHL24PE8; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A4F9AC4CEF1;
+	Tue, 26 Aug 2025 13:49:30 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1756207351;
-	bh=1dI8eJoX9bMq3N2uBWHEJu1Ic4Uiuo4Rt7nGfoU4SeQ=;
+	s=korg; t=1756216171;
+	bh=3L9RcfrhNYYh2U+sf5T/OG3xdQYzsfQ6p3jCmMtQ9N0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=dXWG+2Ur83Kcjle3OC95GEPSbm8TAH84Oda8l/6Z4EeL4SVoPmhERIcemn6W+/CWE
-	 X+2ZO7DhLUqy70oag2/c+7Z1MfA80aWVuTNV9rUFAqUiurj5m8ngG8WoiV8oZzPAUF
-	 7A+rXsDaZxl9ZyqBEtZgOCi5sV9VibJ0uL+tLGr0=
+	b=hHL24PE8t6P/hPO5AXEM0lbO1QjSNSy+GESmJ1SdSMN8W6Est+mHBEncDkMwgxmtr
+	 GsYh4QFRAS5JsTULO+5GHG7EbLZGMtOeO0/fvUsgpyyyJhER4iONh1jwu+FU5Zzz+v
+	 OzpJmk6ILoQclxUgfWvs+UtCafSA2KWW9FjwIfoo=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Aleksa Sarai <cyphar@cyphar.com>,
-	Christian Brauner <brauner@kernel.org>
-Subject: [PATCH 6.16 118/457] open_tree_attr: do not allow id-mapping changes without OPEN_TREE_CLONE
-Date: Tue, 26 Aug 2025 13:06:42 +0200
-Message-ID: <20250826110940.290389338@linuxfoundation.org>
+	"Masami Hiramatsu (Google)" <mhiramat@kernel.org>,
+	"Steven Rostedt (Google)" <rostedt@goodmis.org>,
+	Shuah Khan <skhan@linuxfoundation.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.15 312/644] selftests: tracing: Use mutex_unlock for testing glob filter
+Date: Tue, 26 Aug 2025 13:06:43 +0200
+Message-ID: <20250826110954.116186246@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250826110937.289866482@linuxfoundation.org>
-References: <20250826110937.289866482@linuxfoundation.org>
+In-Reply-To: <20250826110946.507083938@linuxfoundation.org>
+References: <20250826110946.507083938@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,52 +63,46 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.16-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Aleksa Sarai <cyphar@cyphar.com>
+From: Masami Hiramatsu (Google) <mhiramat@kernel.org>
 
-commit 9308366f062129d52e0ee3f7a019f7dd41db33df upstream.
+[ Upstream commit a089bb2822a49b0c5777a8936f82c1f8629231fb ]
 
-As described in commit 7a54947e727b ('Merge patch series "fs: allow
-changing idmappings"'), open_tree_attr(2) was necessary in order to
-allow for a detached mount to be created and have its idmappings changed
-without the risk of any racing threads operating on it. For this reason,
-mount_setattr(2) still does not allow for id-mappings to be changed.
+Since commit c5b6ababd21a ("locking/mutex: implement
+mutex_trylock_nested") makes mutex_trylock() as an inlined
+function if CONFIG_DEBUG_LOCK_ALLOC=y, we can not use
+mutex_trylock() for testing the glob filter of ftrace.
 
-However, there was a bug in commit 2462651ffa76 ("fs: allow changing
-idmappings") which allowed users to bypass this restriction by calling
-open_tree_attr(2) *without* OPEN_TREE_CLONE.
+Use mutex_unlock instead.
 
-can_idmap_mount() prevented this bug from allowing an attached
-mountpoint's id-mapping from being modified (thanks to an is_anon_ns()
-check), but this still allows for detached (but visible) mounts to have
-their be id-mapping changed. This risks the same UAF and locking issues
-as described in the merge commit, and was likely unintentional.
-
-Fixes: 2462651ffa76 ("fs: allow changing idmappings")
-Cc: stable@vger.kernel.org # v6.15+
-Signed-off-by: Aleksa Sarai <cyphar@cyphar.com>
-Link: https://lore.kernel.org/20250808-open_tree_attr-bugfix-idmap-v1-1-0ec7bc05646c@cyphar.com
-Signed-off-by: Christian Brauner <brauner@kernel.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Link: https://lore.kernel.org/r/175151680309.2149615.9795104805153538717.stgit@mhiramat.tok.corp.google.com
+Signed-off-by: Masami Hiramatsu (Google) <mhiramat@kernel.org>
+Acked-by: Steven Rostedt (Google) <rostedt@goodmis.org>
+Signed-off-by: Shuah Khan <skhan@linuxfoundation.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/namespace.c |    3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+ .../testing/selftests/ftrace/test.d/ftrace/func-filter-glob.tc  | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/fs/namespace.c
-+++ b/fs/namespace.c
-@@ -5302,7 +5302,8 @@ SYSCALL_DEFINE5(open_tree_attr, int, dfd
- 		int ret;
- 		struct mount_kattr kattr = {};
+diff --git a/tools/testing/selftests/ftrace/test.d/ftrace/func-filter-glob.tc b/tools/testing/selftests/ftrace/test.d/ftrace/func-filter-glob.tc
+index 4b994b6df5ac..ed81eaf2afd6 100644
+--- a/tools/testing/selftests/ftrace/test.d/ftrace/func-filter-glob.tc
++++ b/tools/testing/selftests/ftrace/test.d/ftrace/func-filter-glob.tc
+@@ -29,7 +29,7 @@ ftrace_filter_check 'schedule*' '^schedule.*$'
+ ftrace_filter_check '*pin*lock' '.*pin.*lock$'
  
--		kattr.kflags = MOUNT_KATTR_IDMAP_REPLACE;
-+		if (flags & OPEN_TREE_CLONE)
-+			kattr.kflags = MOUNT_KATTR_IDMAP_REPLACE;
- 		if (flags & AT_RECURSIVE)
- 			kattr.kflags |= MOUNT_KATTR_RECURSE;
+ # filter by start*mid*
+-ftrace_filter_check 'mutex*try*' '^mutex.*try.*'
++ftrace_filter_check 'mutex*unl*' '^mutex.*unl.*'
  
+ # Advanced full-glob matching feature is recently supported.
+ # Skip the tests if we are sure the kernel does not support it.
+-- 
+2.39.5
+
 
 
 
