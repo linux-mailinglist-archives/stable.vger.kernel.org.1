@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-175854-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-176241-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3DAECB36A40
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 16:35:53 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id CA57AB36BE6
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 16:50:10 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 1DBF35654A2
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 14:24:02 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 360D458291B
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 14:42:18 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1A30C3568F5;
-	Tue, 26 Aug 2025 14:22:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8E478352071;
+	Tue, 26 Aug 2025 14:39:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="w9YcMhWm"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="iJnka9Iu"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C0347223335;
-	Tue, 26 Aug 2025 14:22:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 49C35350D54;
+	Tue, 26 Aug 2025 14:39:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756218143; cv=none; b=UzGS7TBVCFizKeF+1lL6nLSE123MvTP0g+ucrs4dNq1yJWidmmYiak86b0IZTXIL4z0eRu8pPsmw5vMrYCg+6oEKyf/Ni10n0lDrbZKN/AoZlS/hdLAZ2cT8qtek37JUe7QpbemJaY+LWEDb8F+w3T8lPz8sPpkqICMZ2rCYvfI=
+	t=1756219144; cv=none; b=dj+LX6MUviiIDALB84x55HtMiVdP1QDsbAobD1k3YSNrDn5RXGj43xVPFbJSWiEaHhuWIXb3jwkGTkVkUHb0MLd4CNSEV0k/5FYTCq25mOvxpIxfSGnVRL7kNWpohN9gQ+aHYF3eeg37SZwi0CI0tPqD6vGjmUEWigIHdo8cBHA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756218143; c=relaxed/simple;
-	bh=E0M5ZlWki2lu7O7VSRgvPibs4Sevspkt2q4wYNUO5LE=;
+	s=arc-20240116; t=1756219144; c=relaxed/simple;
+	bh=VzJsjKsz/h/Fc6pGivXYVWLEsmtg1/xkhFlMQigwn6I=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=SBoXKKo4u8OMrf3MKfsXE2r5SwY+ZJ4L2qiKYwQrFLyn976qozlt0IzNywucIrSD8garsIDCgYOI4yYJZGw2UP7jEUhWksEro2BDCgHptDNI4B2GOIR/3t0M8WEPrEljQ1mj8puLH/tvtIdPzrQzaugwjhjH86mLbci829dmtZI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=w9YcMhWm; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 53327C4CEF1;
-	Tue, 26 Aug 2025 14:22:23 +0000 (UTC)
+	 MIME-Version; b=fuTvPHbMUjXY7I0dKl73ykKS92Eu4w5fmFIJE8MD6055OECAgOc6RZM0Iermi0GAwpJqrU+taRb4N3npMA3oc+w0wfCX/0c4tz2dRMrzr6yos0YI4IdlFifMZTJxbOO2fqhreTLhjBconr1cOjcKtUT9TSK2CPRcKuSMY4nYDhY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=iJnka9Iu; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 81B71C4CEF1;
+	Tue, 26 Aug 2025 14:39:03 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1756218143;
-	bh=E0M5ZlWki2lu7O7VSRgvPibs4Sevspkt2q4wYNUO5LE=;
+	s=korg; t=1756219143;
+	bh=VzJsjKsz/h/Fc6pGivXYVWLEsmtg1/xkhFlMQigwn6I=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=w9YcMhWm8h0a0dcwOrDUffEFYA+0KE5RrGCFXeGPw8xzP7U9LWtPO9Q6KGQnQm/vT
-	 HXZansiYODR0YJ4YOfeEr5ms0+0g5obZuGu7TavTTuow3e7dDiAk/4oX9Owx6EXLYY
-	 Hz4cvGxeosFlbx9YTt7RKayGFGj8GrNV/4STZw6c=
+	b=iJnka9IuBVu8qAGKN3zAGXyYdEfiUDJwUm3WWTELv8pfiCOqVXwivb1PDE+DlUAzj
+	 GrR9kk5bpf0lfZjCrcIBKgITxZbXkb3uFLYXIJbDd8gEENMeWTqJ5w7cNJd5V7dSVM
+	 hpu/EkajZFY1/voa3X/NI25qq/hbz6nmt8aexx7k=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Nathan Chancellor <nathan@kernel.org>,
-	Johannes Berg <johannes.berg@intel.com>,
-	Arend van Spriel <arend.vanspriel@broadcom.com>
-Subject: [PATCH 5.10 368/523] wifi: brcmsmac: Remove const from tbl_ptr parameter in wlc_lcnphy_common_read_table()
+	Alex Guo <alexguo1023@gmail.com>,
+	Mauro Carvalho Chehab <mchehab+huawei@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.4 252/403] media: dvb-frontends: w7090p: fix null-ptr-deref in w7090p_tuner_write_serpar and w7090p_tuner_read_serpar
 Date: Tue, 26 Aug 2025 13:09:38 +0200
-Message-ID: <20250826110933.544737094@linuxfoundation.org>
+Message-ID: <20250826110913.784466478@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250826110924.562212281@linuxfoundation.org>
-References: <20250826110924.562212281@linuxfoundation.org>
+In-Reply-To: <20250826110905.607690791@linuxfoundation.org>
+References: <20250826110905.607690791@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,51 +62,52 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+5.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Nathan Chancellor <nathan@kernel.org>
+From: Alex Guo <alexguo1023@gmail.com>
 
-commit 81284e86bf8849f8e98e8ead3ff5811926b2107f upstream.
+[ Upstream commit ed0234c8458b3149f15e496b48a1c9874dd24a1b ]
 
-A new warning in clang [1] complains that diq_start in
-wlc_lcnphy_tx_iqlo_cal() is passed uninitialized as a const pointer to
-wlc_lcnphy_common_read_table():
+In w7090p_tuner_write_serpar, msg is controlled by user. When msg[0].buf is null and msg[0].len is zero, former checks on msg[0].buf would be passed. If accessing msg[0].buf[2] without sanity check, null pointer deref would happen. We add
+check on msg[0].len to prevent crash.
 
-  drivers/net/wireless/broadcom/brcm80211/brcmsmac/phy/phy_lcn.c:2728:13: error: variable 'diq_start' is uninitialized when passed as a const pointer argument here [-Werror,-Wuninitialized-const-pointer]
-   2728 |                                                      &diq_start, 1, 16, 69);
-        |                                                       ^~~~~~~~~
+Similar commit: commit 0ed554fd769a ("media: dvb-usb: az6027: fix null-ptr-deref in az6027_i2c_xfer()")
 
-The table pointer passed to wlc_lcnphy_common_read_table() should not be
-considered constant, as wlc_phy_read_table() is ultimately going to
-update it. Remove the const qualifier from the tbl_ptr to clear up the
-warning.
-
-Cc: stable@vger.kernel.org
-Closes: https://github.com/ClangBuiltLinux/linux/issues/2108
-Fixes: 5b435de0d786 ("net: wireless: add brcm80211 drivers")
-Link: https://github.com/llvm/llvm-project/commit/00dacf8c22f065cb52efb14cd091d441f19b319e [1]
-Signed-off-by: Nathan Chancellor <nathan@kernel.org>
-Acked-by: Arend van Spriel <arend.vanspriel@broadcom.com>>
-Link: https://patch.msgid.link/20250715-brcmsmac-fix-uninit-const-pointer-v1-1-16e6a51a8ef4@kernel.org
-Signed-off-by: Johannes Berg <johannes.berg@intel.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Signed-off-by: Alex Guo <alexguo1023@gmail.com>
+Link: https://lore.kernel.org/r/20250616013353.738790-1-alexguo1023@gmail.com
+Signed-off-by: Mauro Carvalho Chehab <mchehab+huawei@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/wireless/broadcom/brcm80211/brcmsmac/phy/phy_lcn.c |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/media/dvb-frontends/dib7000p.c | 4 ++++
+ 1 file changed, 4 insertions(+)
 
---- a/drivers/net/wireless/broadcom/brcm80211/brcmsmac/phy/phy_lcn.c
-+++ b/drivers/net/wireless/broadcom/brcm80211/brcmsmac/phy/phy_lcn.c
-@@ -919,7 +919,7 @@ void wlc_lcnphy_read_table(struct brcms_
+diff --git a/drivers/media/dvb-frontends/dib7000p.c b/drivers/media/dvb-frontends/dib7000p.c
+index d31ce5c7104d..41dcbabdc193 100644
+--- a/drivers/media/dvb-frontends/dib7000p.c
++++ b/drivers/media/dvb-frontends/dib7000p.c
+@@ -2198,6 +2198,8 @@ static int w7090p_tuner_write_serpar(struct i2c_adapter *i2c_adap, struct i2c_ms
+ 	struct dib7000p_state *state = i2c_get_adapdata(i2c_adap);
+ 	u8 n_overflow = 1;
+ 	u16 i = 1000;
++	if (msg[0].len < 3)
++		return -EOPNOTSUPP;
+ 	u16 serpar_num = msg[0].buf[0];
  
- static void
- wlc_lcnphy_common_read_table(struct brcms_phy *pi, u32 tbl_id,
--			     const u16 *tbl_ptr, u32 tbl_len,
-+			     u16 *tbl_ptr, u32 tbl_len,
- 			     u32 tbl_width, u32 tbl_offset)
- {
- 	struct phytbl_info tab;
+ 	while (n_overflow == 1 && i) {
+@@ -2217,6 +2219,8 @@ static int w7090p_tuner_read_serpar(struct i2c_adapter *i2c_adap, struct i2c_msg
+ 	struct dib7000p_state *state = i2c_get_adapdata(i2c_adap);
+ 	u8 n_overflow = 1, n_empty = 1;
+ 	u16 i = 1000;
++	if (msg[0].len < 1 || msg[1].len < 2)
++		return -EOPNOTSUPP;
+ 	u16 serpar_num = msg[0].buf[0];
+ 	u16 read_word;
+ 
+-- 
+2.39.5
+
 
 
 
