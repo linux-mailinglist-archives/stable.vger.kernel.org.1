@@ -1,58 +1,56 @@
-Return-Path: <stable+bounces-174657-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-176236-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 087BBB364DF
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 15:42:31 +0200 (CEST)
+Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [IPv6:2605:f480:58:1:0:1994:3:14])
+	by mail.lfdr.de (Postfix) with ESMTPS id C3DE0B36AE8
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 16:41:51 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 0B7C856061F
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 13:30:57 +0000 (UTC)
+	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id A6C1D4E28A4
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 14:41:50 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 068483451D5;
-	Tue, 26 Aug 2025 13:29:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A9B2E35CEC2;
+	Tue, 26 Aug 2025 14:38:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="k7W24ICX"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="uKF3dWXp"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B68F9319867;
-	Tue, 26 Aug 2025 13:29:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 649B1223335;
+	Tue, 26 Aug 2025 14:38:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756214969; cv=none; b=K23zNnGlWE5BUnsOxuQL9cpNA8NvXZaTtQX7yyxcZmNOru3qqUg9kLCGh4fw+mw5qXhW5rJASpxRyYjpOj15/cSTjByTHRoTTCN1CgQZcyuAMH0x91iPRA2HGj6soUllYYubv6KrH2gm2UHHlyEdWig3MhGG6BZLjjA4kF7gtww=
+	t=1756219131; cv=none; b=eX8n2ZWn4q94nfYw3Vmxb88TQdNpF7rzycD/5hecHhX4IGr/HxmaU80XH9TSC8IlEj9/VwyRGlMqSiiuZ277xJQ0HyyijlEB42K4cfsvGpnE5rThBarT6XtTZfL+/Dk+6Y0RbZc4zpKZwrTw9sa/1DxF7Kjui54+krCvvRd2cW4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756214969; c=relaxed/simple;
-	bh=xz+d4phyaJ/BBQR4SLjGxDl+WVL1miUknUkxJjmNK9o=;
+	s=arc-20240116; t=1756219131; c=relaxed/simple;
+	bh=oLa1j9307947sg8k9v3/JT1yq25QIXWtVqskmnVenZ0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=Tk/EyyjF5bVHPXGygdpgO7FjMfwJ8rdToAJpoX9IQ6YpKHRefltpKp7eTcRodraujLnOg8vTnI4MyEz90F37GBV9e0lXpklhNMuf0SX++Qcq6Ho3R+xgtmrSPteoZ2btqyoqo32dIN+OvtdKz4SIFwkRzam2FRSRbWTYbPKSa2c=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=k7W24ICX; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4324EC4CEF1;
-	Tue, 26 Aug 2025 13:29:29 +0000 (UTC)
+	 MIME-Version; b=GwuZWr/4fTteREX7wP4qXOUwZEwfjPel1TOK9O77WmuyuTCCAYEJrb5aasMzrZjNJsFlWPlNiHUim1EzUeVptcWZWW5CtQAYgMUwHTGJQ9wRpklEYuIvyDnoeykkUCH5YiQrZxWn4Sm/uceOL2+YoW9kJGztGVjMGk0z7Nf/B0w=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=uKF3dWXp; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8F21EC4CEF1;
+	Tue, 26 Aug 2025 14:38:50 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1756214969;
-	bh=xz+d4phyaJ/BBQR4SLjGxDl+WVL1miUknUkxJjmNK9o=;
+	s=korg; t=1756219130;
+	bh=oLa1j9307947sg8k9v3/JT1yq25QIXWtVqskmnVenZ0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=k7W24ICXzZKfsQJTuRst3/tG3crGrWD4RIngG0JyATJ2b7QStTk4FQ03o5b3UAbb7
-	 QNNDpUPdHUgb9mXG0fCuAYH/uBmzrNnfQHPVOFxZkJWA3L/klmQm3AKXdqEobsmA1f
-	 jcIDAuUsWPhFC7fmI54AfPvFvTUGgqMSLOh98Ahk=
+	b=uKF3dWXp6Tucnt42ER0He866AURq7D7kI+ftvFyV62t+Ow3TcI9FW16hvqDYNVuSS
+	 YrVEp4ZP3NHuVOnPxccgnsxVNvtlL/TNIlWNzFWbackAo+AGa2bhGJRsNXOH9hsaW4
+	 T2M9TER0eCaRn35OPf3Lm6lwHzBSDRYttkpmvur0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	stable@kernel.org,
-	syzbot+a81f2759d022496b40ab@syzkaller.appspotmail.com,
-	Jakub Acs <acsjakub@amazon.de>,
-	Eric Dumazet <edumazet@google.com>,
-	Jakub Kicinski <kuba@kernel.org>
-Subject: [PATCH 6.1 338/482] net, hsr: reject HSR frame if skb cant hold tag
+	kernel test robot <lkp@intel.com>,
+	Corey Minyard <corey@minyard.net>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.4 265/403] ipmi: Fix strcpy source and destination the same
 Date: Tue, 26 Aug 2025 13:09:51 +0200
-Message-ID: <20250826110939.177813070@linuxfoundation.org>
+Message-ID: <20250826110914.131098804@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250826110930.769259449@linuxfoundation.org>
-References: <20250826110930.769259449@linuxfoundation.org>
+In-Reply-To: <20250826110905.607690791@linuxfoundation.org>
+References: <20250826110905.607690791@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,194 +60,157 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+5.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jakub Acs <acsjakub@amazon.de>
+From: Corey Minyard <corey@minyard.net>
 
-commit 7af76e9d18a9fd6f8611b3313c86c190f9b6a5a7 upstream.
+[ Upstream commit 8ffcb7560b4a15faf821df95e3ab532b2b020f8c ]
 
-Receiving HSR frame with insufficient space to hold HSR tag in the skb
-can result in a crash (kernel BUG):
+The source and destination of some strcpy operations was the same.
+Split out the part of the operations that needed to be done for those
+particular calls so the unnecessary copy wasn't done.
 
-[   45.390915] skbuff: skb_under_panic: text:ffffffff86f32cac len:26 put:14 head:ffff888042418000 data:ffff888042417ff4 tail:0xe end:0x180 dev:bridge_slave_1
-[   45.392559] ------------[ cut here ]------------
-[   45.392912] kernel BUG at net/core/skbuff.c:211!
-[   45.393276] Oops: invalid opcode: 0000 [#1] SMP DEBUG_PAGEALLOC KASAN NOPTI
-[   45.393809] CPU: 1 UID: 0 PID: 2496 Comm: reproducer Not tainted 6.15.0 #12 PREEMPT(undef)
-[   45.394433] Hardware name: QEMU Standard PC (i440FX + PIIX, 1996), BIOS rel-1.16.3-0-ga6ed6b701f0a-prebuilt.qemu.org 04/01/2014
-[   45.395273] RIP: 0010:skb_panic+0x15b/0x1d0
-
-<snip registers, remove unreliable trace>
-
-[   45.402911] Call Trace:
-[   45.403105]  <IRQ>
-[   45.404470]  skb_push+0xcd/0xf0
-[   45.404726]  br_dev_queue_push_xmit+0x7c/0x6c0
-[   45.406513]  br_forward_finish+0x128/0x260
-[   45.408483]  __br_forward+0x42d/0x590
-[   45.409464]  maybe_deliver+0x2eb/0x420
-[   45.409763]  br_flood+0x174/0x4a0
-[   45.410030]  br_handle_frame_finish+0xc7c/0x1bc0
-[   45.411618]  br_handle_frame+0xac3/0x1230
-[   45.413674]  __netif_receive_skb_core.constprop.0+0x808/0x3df0
-[   45.422966]  __netif_receive_skb_one_core+0xb4/0x1f0
-[   45.424478]  __netif_receive_skb+0x22/0x170
-[   45.424806]  process_backlog+0x242/0x6d0
-[   45.425116]  __napi_poll+0xbb/0x630
-[   45.425394]  net_rx_action+0x4d1/0xcc0
-[   45.427613]  handle_softirqs+0x1a4/0x580
-[   45.427926]  do_softirq+0x74/0x90
-[   45.428196]  </IRQ>
-
-This issue was found by syzkaller.
-
-The panic happens in br_dev_queue_push_xmit() once it receives a
-corrupted skb with ETH header already pushed in linear data. When it
-attempts the skb_push() call, there's not enough headroom and
-skb_push() panics.
-
-The corrupted skb is put on the queue by HSR layer, which makes a
-sequence of unintended transformations when it receives a specific
-corrupted HSR frame (with incomplete TAG).
-
-Fix it by dropping and consuming frames that are not long enough to
-contain both ethernet and hsr headers.
-
-Alternative fix would be to check for enough headroom before skb_push()
-in br_dev_queue_push_xmit().
-
-In the reproducer, this is injected via AF_PACKET, but I don't easily
-see why it couldn't be sent over the wire from adjacent network.
-
-Further Details:
-
-In the reproducer, the following network interface chain is set up:
-
-┌────────────────┐   ┌────────────────┐
-│ veth0_to_hsr   ├───┤  hsr_slave0    ┼───┐
-└────────────────┘   └────────────────┘   │
-                                          │ ┌──────┐
-                                          ├─┤ hsr0 ├───┐
-                                          │ └──────┘   │
-┌────────────────┐   ┌────────────────┐   │            │┌────────┐
-│ veth1_to_hsr   ┼───┤  hsr_slave1    ├───┘            └┤        │
-└────────────────┘   └────────────────┘                ┌┼ bridge │
-                                                       ││        │
-                                                       │└────────┘
-                                                       │
-                                        ┌───────┐      │
-                                        │  ...  ├──────┘
-                                        └───────┘
-
-To trigger the events leading up to crash, reproducer sends a corrupted
-HSR frame with incomplete TAG, via AF_PACKET socket on 'veth0_to_hsr'.
-
-The first HSR-layer function to process this frame is
-hsr_handle_frame(). It and then checks if the
-protocol is ETH_P_PRP or ETH_P_HSR. If it is, it calls
-skb_set_network_header(skb, ETH_HLEN + HSR_HLEN), without checking that
-the skb is long enough. For the crashing frame it is not, and hence the
-skb->network_header and skb->mac_len fields are set incorrectly,
-pointing after the end of the linear buffer.
-
-I will call this a BUG#1 and it is what is addressed by this patch. In
-the crashing scenario before the fix, the skb continues to go down the
-hsr path as follows.
-
-hsr_handle_frame() then calls this sequence
-hsr_forward_skb()
-  fill_frame_info()
-    hsr->proto_ops->fill_frame_info()
-      hsr_fill_frame_info()
-
-hsr_fill_frame_info() contains a check that intends to check whether the
-skb actually contains the HSR header. But the check relies on the
-skb->mac_len field which was erroneously setup due to BUG#1, so the
-check passes and the execution continues  back in the hsr_forward_skb():
-
-hsr_forward_skb()
-  hsr_forward_do()
-    hsr->proto_ops->get_untagged_frame()
-      hsr_get_untagged_frame()
-        create_stripped_skb_hsr()
-
-In create_stripped_skb_hsr(), a copy of the skb is created and is
-further corrupted by operation that attempts to strip the HSR tag in a
-call to __pskb_copy().
-
-The skb enters create_stripped_skb_hsr() with ethernet header pushed in
-linear buffer. The skb_pull(skb_in, HSR_HLEN) thus pulls 6 bytes of
-ethernet header into the headroom, creating skb_in with a headroom of
-size 8. The subsequent __pskb_copy() then creates an skb with headroom
-of just 2 and skb->len of just 12, this is how it looks after the copy:
-
-gdb) p skb->len
-$10 = 12
-(gdb) p skb->data
-$11 = (unsigned char *) 0xffff888041e45382 "\252\252\252\252\252!\210\373",
-(gdb) p skb->head
-$12 = (unsigned char *) 0xffff888041e45380 ""
-
-It seems create_stripped_skb_hsr() assumes that ETH header is pulled
-in the headroom when it's entered, because it just pulls HSR header on
-top. But that is not the case in our code-path and we end up with the
-corrupted skb instead. I will call this BUG#2
-
-*I got confused here because it seems that under no conditions can
-create_stripped_skb_hsr() work well, the assumption it makes is not true
-during the processing of hsr frames - since the skb_push() in
-hsr_handle_frame to skb_pull in hsr_deliver_master(). I wonder whether I
-missed something here.*
-
-Next, the execution arrives in hsr_deliver_master(). It calls
-skb_pull(ETH_HLEN), which just returns NULL - the SKB does not have
-enough space for the pull (as it only has 12 bytes in total at this
-point).
-
-*The skb_pull() here further suggests that ethernet header is meant
-to be pushed through the whole hsr processing and
-create_stripped_skb_hsr() should pull it before doing the HSR header
-pull.*
-
-hsr_deliver_master() then puts the corrupted skb on the queue, it is
-then picked up from there by bridge frame handling layer and finally
-lands in br_dev_queue_push_xmit where it panics.
-
-Cc: stable@kernel.org
-Fixes: 48b491a5cc74 ("net: hsr: fix mac_len checks")
-Reported-by: syzbot+a81f2759d022496b40ab@syzkaller.appspotmail.com
-Signed-off-by: Jakub Acs <acsjakub@amazon.de>
-Reviewed-by: Eric Dumazet <edumazet@google.com>
-Link: https://patch.msgid.link/20250819082842.94378-1-acsjakub@amazon.de
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Reported-by: kernel test robot <lkp@intel.com>
+Closes: https://lore.kernel.org/oe-kbuild-all/202506140756.EFXXvIP4-lkp@intel.com/
+Signed-off-by: Corey Minyard <corey@minyard.net>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/hsr/hsr_slave.c |    8 +++++++-
- 1 file changed, 7 insertions(+), 1 deletion(-)
+ drivers/char/ipmi/ipmi_watchdog.c | 59 ++++++++++++++++++++++---------
+ 1 file changed, 42 insertions(+), 17 deletions(-)
 
---- a/net/hsr/hsr_slave.c
-+++ b/net/hsr/hsr_slave.c
-@@ -62,8 +62,14 @@ static rx_handler_result_t hsr_handle_fr
- 	skb_push(skb, ETH_HLEN);
- 	skb_reset_mac_header(skb);
- 	if ((!hsr->prot_version && protocol == htons(ETH_P_PRP)) ||
--	    protocol == htons(ETH_P_HSR))
-+	    protocol == htons(ETH_P_HSR)) {
-+		if (!pskb_may_pull(skb, ETH_HLEN + HSR_HLEN)) {
-+			kfree_skb(skb);
-+			goto finish_consume;
-+		}
-+
- 		skb_set_network_header(skb, ETH_HLEN + HSR_HLEN);
-+	}
- 	skb_reset_mac_len(skb);
+diff --git a/drivers/char/ipmi/ipmi_watchdog.c b/drivers/char/ipmi/ipmi_watchdog.c
+index ccb62c480bdd..ac2099f3f41a 100644
+--- a/drivers/char/ipmi/ipmi_watchdog.c
++++ b/drivers/char/ipmi/ipmi_watchdog.c
+@@ -1192,14 +1192,8 @@ static struct ipmi_smi_watcher smi_watcher = {
+ 	.smi_gone = ipmi_smi_gone
+ };
  
- 	hsr_forward_skb(skb, port);
+-static int action_op(const char *inval, char *outval)
++static int action_op_set_val(const char *inval)
+ {
+-	if (outval)
+-		strcpy(outval, action);
+-
+-	if (!inval)
+-		return 0;
+-
+ 	if (strcmp(inval, "reset") == 0)
+ 		action_val = WDOG_TIMEOUT_RESET;
+ 	else if (strcmp(inval, "none") == 0)
+@@ -1210,18 +1204,26 @@ static int action_op(const char *inval, char *outval)
+ 		action_val = WDOG_TIMEOUT_POWER_DOWN;
+ 	else
+ 		return -EINVAL;
+-	strcpy(action, inval);
+ 	return 0;
+ }
+ 
+-static int preaction_op(const char *inval, char *outval)
++static int action_op(const char *inval, char *outval)
+ {
++	int rv;
++
+ 	if (outval)
+-		strcpy(outval, preaction);
++		strcpy(outval, action);
+ 
+ 	if (!inval)
+ 		return 0;
++	rv = action_op_set_val(inval);
++	if (!rv)
++		strcpy(action, inval);
++	return rv;
++}
+ 
++static int preaction_op_set_val(const char *inval)
++{
+ 	if (strcmp(inval, "pre_none") == 0)
+ 		preaction_val = WDOG_PRETIMEOUT_NONE;
+ 	else if (strcmp(inval, "pre_smi") == 0)
+@@ -1234,18 +1236,26 @@ static int preaction_op(const char *inval, char *outval)
+ 		preaction_val = WDOG_PRETIMEOUT_MSG_INT;
+ 	else
+ 		return -EINVAL;
+-	strcpy(preaction, inval);
+ 	return 0;
+ }
+ 
+-static int preop_op(const char *inval, char *outval)
++static int preaction_op(const char *inval, char *outval)
+ {
++	int rv;
++
+ 	if (outval)
+-		strcpy(outval, preop);
++		strcpy(outval, preaction);
+ 
+ 	if (!inval)
+ 		return 0;
++	rv = preaction_op_set_val(inval);
++	if (!rv)
++		strcpy(preaction, inval);
++	return 0;
++}
+ 
++static int preop_op_set_val(const char *inval)
++{
+ 	if (strcmp(inval, "preop_none") == 0)
+ 		preop_val = WDOG_PREOP_NONE;
+ 	else if (strcmp(inval, "preop_panic") == 0)
+@@ -1254,7 +1264,22 @@ static int preop_op(const char *inval, char *outval)
+ 		preop_val = WDOG_PREOP_GIVE_DATA;
+ 	else
+ 		return -EINVAL;
+-	strcpy(preop, inval);
++	return 0;
++}
++
++static int preop_op(const char *inval, char *outval)
++{
++	int rv;
++
++	if (outval)
++		strcpy(outval, preop);
++
++	if (!inval)
++		return 0;
++
++	rv = preop_op_set_val(inval);
++	if (!rv)
++		strcpy(preop, inval);
+ 	return 0;
+ }
+ 
+@@ -1291,18 +1316,18 @@ static int __init ipmi_wdog_init(void)
+ {
+ 	int rv;
+ 
+-	if (action_op(action, NULL)) {
++	if (action_op_set_val(action)) {
+ 		action_op("reset", NULL);
+ 		pr_info("Unknown action '%s', defaulting to reset\n", action);
+ 	}
+ 
+-	if (preaction_op(preaction, NULL)) {
++	if (preaction_op_set_val(preaction)) {
+ 		preaction_op("pre_none", NULL);
+ 		pr_info("Unknown preaction '%s', defaulting to none\n",
+ 			preaction);
+ 	}
+ 
+-	if (preop_op(preop, NULL)) {
++	if (preop_op_set_val(preop)) {
+ 		preop_op("preop_none", NULL);
+ 		pr_info("Unknown preop '%s', defaulting to none\n", preop);
+ 	}
+-- 
+2.39.5
+
 
 
 
