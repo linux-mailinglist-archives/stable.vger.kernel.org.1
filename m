@@ -1,55 +1,56 @@
-Return-Path: <stable+bounces-174589-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-173540-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0887AB363FB
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 15:34:48 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8C507B35DD5
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 13:48:32 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 22D0F8E1570
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 13:27:33 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 817421883063
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 11:42:16 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4E90824169D;
-	Tue, 26 Aug 2025 13:26:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id AFE8B239573;
+	Tue, 26 Aug 2025 11:41:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="2QFGoXBs"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="APi4qGLC"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0465D23D7DD;
-	Tue, 26 Aug 2025 13:26:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6C30817332C;
+	Tue, 26 Aug 2025 11:41:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756214793; cv=none; b=VhBvQg/w7JVgFSYfDHLDtb+1MdRtlE9FVTxOnLbqO+yE3Q85GvtC1UFmVbYxvfKJAZPSn1Wphm8fYrTHm5keOfpt7AyiaHug2ez7SAID3CF7v/3QQ1OiyynLJBcf7CrFe/NDROpya5uDfP7jBjBSZ5uNkztxRg4gqqaTWTYyU3U=
+	t=1756208514; cv=none; b=uChPpCfTGW+mTKsMGzN5JziA5/OzXliVXRN66lPlfk2iBRbwXrDr3DGdD/5mz3bz/StFaWDjNnC8sNlT2pXhETKaNxlGTxnXbXKVX8eKBdexS0SBGGEriP4rswZR14r5RZkpKvWlOC1DtiEqB5y60AmxVgb6GLCWqAcGQOE7OVg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756214793; c=relaxed/simple;
-	bh=uCzyHbZs13tx7Tz7HYrQmk3p6OP+3+yly9o8AFvtuCA=;
+	s=arc-20240116; t=1756208514; c=relaxed/simple;
+	bh=Xs+VxmLplExeo1if4QpBZwnVZhgsbqaRFcozi6DrJG0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=GOGE7BFwXOkD9XoqahMf9ygjLxKyrwAHHbsOikpooW8NMrzeDTOkcFgzgXqB+KXIaHvN8ExI6sMCJnE8JtEI2YmyATWtNqlA7bq1DdrlRH0m/1fz3aqe0qfEOy01hW1o/BOgDBEAUYgCl8U6aUXWlY6Utewe2XlnZ8ZvOmCJtms=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=2QFGoXBs; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8324CC4CEF1;
-	Tue, 26 Aug 2025 13:26:32 +0000 (UTC)
+	 MIME-Version; b=hFHD0RdhL9XromRBdke1KbEcUTsqpGbIuy7shAWuqnzjihCzBxssGit7nbCZPxF5C5v68YXkH0rZ7AbVItqE9yAeJSBuGaGYtvtA4bpE7DYkdrCfR6L77t3SRuXKhRSFrZ4aENWsMAoBk/oDXj4iuOtYWtJhug1k05xF4hM+XpU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=APi4qGLC; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E8AB9C4CEF1;
+	Tue, 26 Aug 2025 11:41:53 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1756214792;
-	bh=uCzyHbZs13tx7Tz7HYrQmk3p6OP+3+yly9o8AFvtuCA=;
+	s=korg; t=1756208514;
+	bh=Xs+VxmLplExeo1if4QpBZwnVZhgsbqaRFcozi6DrJG0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=2QFGoXBsvY6/eNZnZw7kzW4WGnV3lZfVikcAdiX/9aOoj96NupfeA2DHj85bvYlpB
-	 cjCt+J97lHm9AaVpFhzmR4HTtRL8MFkED9ACepCEbDBWcVQnAugeecFdTJTbznvDxX
-	 lxeQrXbZRq+MsdAHS6YwG3dOiWnXWvlAhlgPzQBo=
+	b=APi4qGLCQ2bjXmVh9nQVlOyNuqP+rbByxywmtccM+iJAI4zWy6YCs3dPc7cyurtPi
+	 M+/N/h04Fii72HJcf6BD95/WV0TrCkPhPmg+KlYiJvZr+Du3sNBqR8lR6a3C0N8Na6
+	 2qCkBAUHlA1XbmQXmNDft6Bn8W+a8yJ1gr2yRLa8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Yoshihiro Shimoda <yoshihiro.shimoda.uh@renesas.com>,
-	Johan Hovold <johan@kernel.org>
-Subject: [PATCH 6.1 271/482] usb: gadget: udc: renesas_usb3: fix device leak at unbind
-Date: Tue, 26 Aug 2025 13:08:44 +0200
-Message-ID: <20250826110937.464620177@linuxfoundation.org>
+	Hans de Goede <hansg@kernel.org>,
+	Sakari Ailus <sakari.ailus@linux.intel.com>,
+	Hans Verkuil <hverkuil@xs4all.nl>
+Subject: [PATCH 6.12 110/322] media: ivsc: Fix crash at shutdown due to missing mei_cldev_disable() calls
+Date: Tue, 26 Aug 2025 13:08:45 +0200
+Message-ID: <20250826110918.499328173@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250826110930.769259449@linuxfoundation.org>
-References: <20250826110930.769259449@linuxfoundation.org>
+In-Reply-To: <20250826110915.169062587@linuxfoundation.org>
+References: <20250826110915.169062587@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,37 +62,87 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Johan Hovold <johan@kernel.org>
+From: Hans de Goede <hansg@kernel.org>
 
-commit 868837b0a94c6b1b1fdbc04d3ba218ca83432393 upstream.
+commit 0c92c49fc688cfadacc47ae99b06a31237702e9e upstream.
 
-Make sure to drop the reference to the companion device taken during
-probe when the driver is unbound.
+Both the ACE and CSI driver are missing a mei_cldev_disable() call in
+their remove() function.
 
-Fixes: 39facfa01c9f ("usb: gadget: udc: renesas_usb3: Add register of usb role switch")
-Cc: stable@vger.kernel.org	# 4.19
-Cc: Yoshihiro Shimoda <yoshihiro.shimoda.uh@renesas.com>
-Signed-off-by: Johan Hovold <johan@kernel.org>
-Link: https://lore.kernel.org/r/20250724091910.21092-4-johan@kernel.org
+This causes the mei_cl client to stay part of the mei_device->file_list
+list even though its memory is freed by mei_cl_bus_dev_release() calling
+kfree(cldev->cl).
+
+This leads to a use-after-free when mei_vsc_remove() runs mei_stop()
+which first removes all mei bus devices calling mei_ace_remove() and
+mei_csi_remove() followed by mei_cl_bus_dev_release() and then calls
+mei_cl_all_disconnect() which walks over mei_device->file_list dereferecing
+the just freed cldev->cl.
+
+And mei_vsc_remove() it self is run at shutdown because of the
+platform_device_unregister(tp->pdev) in vsc_tp_shutdown()
+
+When building a kernel with KASAN this leads to the following KASAN report:
+
+[ 106.634504] ==================================================================
+[ 106.634623] BUG: KASAN: slab-use-after-free in mei_cl_set_disconnected (drivers/misc/mei/client.c:783) mei
+[ 106.634683] Read of size 4 at addr ffff88819cb62018 by task systemd-shutdow/1
+[ 106.634729]
+[ 106.634767] Tainted: [E]=UNSIGNED_MODULE
+[ 106.634770] Hardware name: Dell Inc. XPS 16 9640/09CK4V, BIOS 1.12.0 02/10/2025
+[ 106.634773] Call Trace:
+[ 106.634777]  <TASK>
+...
+[ 106.634871] kasan_report (mm/kasan/report.c:221 mm/kasan/report.c:636)
+[ 106.634901] mei_cl_set_disconnected (drivers/misc/mei/client.c:783) mei
+[ 106.634921] mei_cl_all_disconnect (drivers/misc/mei/client.c:2165 (discriminator 4)) mei
+[ 106.634941] mei_reset (drivers/misc/mei/init.c:163) mei
+...
+[ 106.635042] mei_stop (drivers/misc/mei/init.c:348) mei
+[ 106.635062] mei_vsc_remove (drivers/misc/mei/mei_dev.h:784 drivers/misc/mei/platform-vsc.c:393) mei_vsc
+[ 106.635066] platform_remove (drivers/base/platform.c:1424)
+
+Add the missing mei_cldev_disable() calls so that the mei_cl gets removed
+from mei_device->file_list before it is freed to fix this.
+
+Fixes: 78876f71b3e9 ("media: pci: intel: ivsc: Add ACE submodule")
+Fixes: 29006e196a56 ("media: pci: intel: ivsc: Add CSI submodule")
+Cc: stable@vger.kernel.org
+Signed-off-by: Hans de Goede <hansg@kernel.org>
+Signed-off-by: Sakari Ailus <sakari.ailus@linux.intel.com>
+Signed-off-by: Hans Verkuil <hverkuil@xs4all.nl>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/usb/gadget/udc/renesas_usb3.c |    1 +
- 1 file changed, 1 insertion(+)
+ drivers/media/pci/intel/ivsc/mei_ace.c |    2 ++
+ drivers/media/pci/intel/ivsc/mei_csi.c |    2 ++
+ 2 files changed, 4 insertions(+)
 
---- a/drivers/usb/gadget/udc/renesas_usb3.c
-+++ b/drivers/usb/gadget/udc/renesas_usb3.c
-@@ -2594,6 +2594,7 @@ static int renesas_usb3_remove(struct pl
- 	struct renesas_usb3 *usb3 = platform_get_drvdata(pdev);
+--- a/drivers/media/pci/intel/ivsc/mei_ace.c
++++ b/drivers/media/pci/intel/ivsc/mei_ace.c
+@@ -529,6 +529,8 @@ static void mei_ace_remove(struct mei_cl
  
- 	debugfs_remove_recursive(usb3->dentry);
-+	put_device(usb3->host_dev);
- 	device_remove_file(&pdev->dev, &dev_attr_role);
+ 	ace_set_camera_owner(ace, ACE_CAMERA_IVSC);
  
- 	cancel_work_sync(&usb3->role_work);
++	mei_cldev_disable(cldev);
++
+ 	mutex_destroy(&ace->lock);
+ }
+ 
+--- a/drivers/media/pci/intel/ivsc/mei_csi.c
++++ b/drivers/media/pci/intel/ivsc/mei_csi.c
+@@ -786,6 +786,8 @@ static void mei_csi_remove(struct mei_cl
+ 
+ 	pm_runtime_disable(&cldev->dev);
+ 
++	mei_cldev_disable(cldev);
++
+ 	mutex_destroy(&csi->lock);
+ }
+ 
 
 
 
