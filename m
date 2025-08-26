@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-176271-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-173643-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 17AEEB36BF2
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 16:50:41 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4C314B35E37
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 13:54:26 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 909C2582FD8
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 14:43:12 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id D5EFC1BC0DBE
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 11:47:23 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9A9D835E4DA;
-	Tue, 26 Aug 2025 14:40:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 093A72BD5AE;
+	Tue, 26 Aug 2025 11:46:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="YLa6oWDD"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="mYq7vm5R"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 56185356905;
-	Tue, 26 Aug 2025 14:40:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BC1A629D26A;
+	Tue, 26 Aug 2025 11:46:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756219222; cv=none; b=NvTFKniN3Y4p65wJ3ley3f+6LM2Qlpgzs4pZCixMa0ogWHcuUOchwfEsyf4o/+S5m4qeUNbxjoOCf+JQw2Bb1TQmlJbFCqJdF7HH9Q/B+1Pmlw0Ix3KZrC6alfqNZs6MrYxx1g/S+L1pxr3zzs+cXGkjwmz63FmQCrmunCaxLoI=
+	t=1756208780; cv=none; b=IUnKtmIV9L9PucKR9AuCVUFCyWeLx8cguQuUEC5aYHmaQ28lun64lDjov3LzBoqiZ97eoo7KuTZbwCLVUbJwqVPdTd1OkVrtrQo+QrEZC9OJoQvkag0SATReos67j7y8WJRCAqGqxFlFJwqegLZAgqDYMfbBCZEkExKoT/wjooU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756219222; c=relaxed/simple;
-	bh=ljBbVJZejX0OpxfpdbnWpOCf/rB8S9q0me8CUMNAxns=;
+	s=arc-20240116; t=1756208780; c=relaxed/simple;
+	bh=1X7gXNOV/wETFpSsc4ZrsKLAuP6ZkbGbwfVgEco9PMk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=CBPELKUTUIHOIscXuugAPtl9+Cew/Jawjlbx4ErJ3e62cVvZ+zAI4ipENQRVMKFvTxEZhyWqCTP1Q6s2MQYDy47UruTUiDbCSG080hGxEnLukU+aIbF3GveXaRf2/ZGC85IhF+Ktoooxtdy6dOovIercfhG8HlAD1XPYKPIglK8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=YLa6oWDD; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D3705C4CEF1;
-	Tue, 26 Aug 2025 14:40:21 +0000 (UTC)
+	 MIME-Version; b=ZT1b3HajZJzQuyyYodmDISSoq9ue6HEU+i3SHIdGfbxqrGz+Cv7zrinswIzWDIUflgEG0Mwvuk+3T7/dUTY4MJmYL0BnB3xUytWDATYvo7TuyK2uLWDbwwSpdQgv5M9s2V7TM5jIGyhwIJod3Qku7JL1sL8Xp+LnDRaAK8QqiZU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=mYq7vm5R; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4C6D5C113CF;
+	Tue, 26 Aug 2025 11:46:20 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1756219222;
-	bh=ljBbVJZejX0OpxfpdbnWpOCf/rB8S9q0me8CUMNAxns=;
+	s=korg; t=1756208780;
+	bh=1X7gXNOV/wETFpSsc4ZrsKLAuP6ZkbGbwfVgEco9PMk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=YLa6oWDDi4KL3KRxBVrSBxIwpio9HClbHx2kbG512+9e+GjqxA23sLiVHejilkYJE
-	 R27YqxVqguGB0PbprF+1QGYKeQzqo2wJWu1CB2tS56uDodbY7LdbFQP/TfISZ07MhG
-	 B9/ZH2cgFYMTNLURyl6oVOD9ofvgdt8QJjGv+LQ8=
+	b=mYq7vm5REkI5uMfqCDu4FKmio2a9FTGCL2X1iAddZ5c3rkrQvEZmyKqL/37ZqxA2V
+	 K60KiKMCwU0+Dirm9YoVPpf6PXxTJ43ICug6OBt1HjOSlbF56dEPpyS+Z/0CClmTVl
+	 YCp4gEVj2KcN9/29K0rTjQBU7qkjrqWMYqqvUhBo=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Damien Le Moal <dlemoal@kernel.org>,
-	Manivannan Sadhasivam <mani@kernel.org>,
-	Niklas Cassel <cassel@kernel.org>
-Subject: [PATCH 5.4 300/403] PCI: endpoint: Fix configfs group removal on driver teardown
+	"Rafael J. Wysocki" <rafael.j.wysocki@intel.com>,
+	Christian Loehle <christian.loehle@arm.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.12 211/322] cpuidle: governors: menu: Avoid selecting states with too much latency
 Date: Tue, 26 Aug 2025 13:10:26 +0200
-Message-ID: <20250826110915.100630924@linuxfoundation.org>
+Message-ID: <20250826110921.079800680@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250826110905.607690791@linuxfoundation.org>
-References: <20250826110905.607690791@linuxfoundation.org>
+In-Reply-To: <20250826110915.169062587@linuxfoundation.org>
+References: <20250826110915.169062587@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,58 +62,128 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.4-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Damien Le Moal <dlemoal@kernel.org>
+From: "Rafael J. Wysocki" <rafael.j.wysocki@intel.com>
 
-commit 910bdb8197f9322790c738bb32feaa11dba26909 upstream.
+[ Upstream commit 779b1a1cb13ae17028aeddb2fbbdba97357a1e15 ]
 
-An endpoint driver configfs attributes group is added to the
-epf_group list of struct pci_epf_driver by pci_epf_add_cfs() but an
-added group is not removed from this list when the attribute group is
-unregistered with pci_ep_cfs_remove_epf_group().
+Occasionally, the exit latency of the idle state selected by the menu
+governor may exceed the PM QoS CPU wakeup latency limit.  Namely, if the
+scheduler tick has been stopped already and predicted_ns is greater than
+the tick period length, the governor may return an idle state whose exit
+latency exceeds latency_req because that decision is made before
+checking the current idle state's exit latency.
 
-Add the missing list_del() call in pci_ep_cfs_remove_epf_group()
-to correctly remove the attribute group from the driver list.
+For instance, say that there are 3 idle states, 0, 1, and 2.  For idle
+states 0 and 1, the exit latency is equal to the target residency and
+the values are 0 and 5 us, respectively.  State 2 is deeper and has the
+exit latency and target residency of 200 us and 2 ms (which is greater
+than the tick period length), respectively.
 
-With this change, once the loop over all attribute groups in
-pci_epf_remove_cfs() completes, the driver epf_group list should be
-empty. Add a WARN_ON() to make sure of that.
+Say that predicted_ns is equal to TICK_NSEC and the PM QoS latency
+limit is 20 us.  After the first two iterations of the main loop in
+menu_select(), idx becomes 1 and in the third iteration of it the target
+residency of the current state (state 2) is greater than predicted_ns.
+State 2 is not a polling one and predicted_ns is not less than TICK_NSEC,
+so the check on whether or not the tick has been stopped is done.  Say
+that the tick has been stopped already and there are no imminent timers
+(that is, delta_tick is greater than the target residency of state 2).
+In that case, idx becomes 2 and it is returned immediately, but the exit
+latency of state 2 exceeds the latency limit.
 
-Fixes: ef1433f717a2 ("PCI: endpoint: Create configfs entry for each pci_epf_device_id table entry")
-Signed-off-by: Damien Le Moal <dlemoal@kernel.org>
-Signed-off-by: Manivannan Sadhasivam <mani@kernel.org>
-Reviewed-by: Niklas Cassel <cassel@kernel.org>
-Cc: stable@vger.kernel.org
-Link: https://patch.msgid.link/20250624114544.342159-3-dlemoal@kernel.org
+Address this issue by modifying the code to compare the exit latency of
+the current idle state (idle state i) with the latency limit before
+comparing its target residency with predicted_ns, which allows one
+more exit_latency_ns check that becomes redundant to be dropped.
+
+However, after the above change, latency_req cannot take the predicted_ns
+value any more, which takes place after commit 38f83090f515 ("cpuidle:
+menu: Remove iowait influence"), because it may cause a polling state
+to be returned prematurely.
+
+In the context of the previous example say that predicted_ns is 3000 and
+the PM QoS latency limit is still 20 us.  Additionally, say that idle
+state 0 is a polling one.  Moving the exit_latency_ns check before the
+target_residency_ns one causes the loop to terminate in the second
+iteration, before the target_residency_ns check, so idle state 0 will be
+returned even though previously state 1 would be returned if there were
+no imminent timers.
+
+For this reason, remove the assignment of the predicted_ns value to
+latency_req from the code.
+
+Fixes: 5ef499cd571c ("cpuidle: menu: Handle stopped tick more aggressively")
+Cc: 4.17+ <stable@vger.kernel.org> # 4.17+
+Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
+Reviewed-by: Christian Loehle <christian.loehle@arm.com>
+Link: https://patch.msgid.link/5043159.31r3eYUQgx@rafael.j.wysocki
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/pci/endpoint/pci-ep-cfs.c   |    1 +
- drivers/pci/endpoint/pci-epf-core.c |    1 +
- 2 files changed, 2 insertions(+)
+ drivers/cpuidle/governors/menu.c |   29 ++++++++++++-----------------
+ 1 file changed, 12 insertions(+), 17 deletions(-)
 
---- a/drivers/pci/endpoint/pci-ep-cfs.c
-+++ b/drivers/pci/endpoint/pci-ep-cfs.c
-@@ -480,6 +480,7 @@ void pci_ep_cfs_remove_epf_group(struct
- 	if (IS_ERR_OR_NULL(group))
- 		return;
+--- a/drivers/cpuidle/governors/menu.c
++++ b/drivers/cpuidle/governors/menu.c
+@@ -293,20 +293,15 @@ static int menu_select(struct cpuidle_dr
+ 		return 0;
+ 	}
  
-+	list_del(&group->group_entry);
- 	configfs_unregister_default_group(group);
- }
- EXPORT_SYMBOL(pci_ep_cfs_remove_epf_group);
---- a/drivers/pci/endpoint/pci-epf-core.c
-+++ b/drivers/pci/endpoint/pci-epf-core.c
-@@ -155,6 +155,7 @@ static void pci_epf_remove_cfs(struct pc
- 	mutex_lock(&pci_epf_mutex);
- 	list_for_each_entry_safe(group, tmp, &driver->epf_group, group_entry)
- 		pci_ep_cfs_remove_epf_group(group);
-+	WARN_ON(!list_empty(&driver->epf_group));
- 	mutex_unlock(&pci_epf_mutex);
- }
+-	if (tick_nohz_tick_stopped()) {
+-		/*
+-		 * If the tick is already stopped, the cost of possible short
+-		 * idle duration misprediction is much higher, because the CPU
+-		 * may be stuck in a shallow idle state for a long time as a
+-		 * result of it.  In that case say we might mispredict and use
+-		 * the known time till the closest timer event for the idle
+-		 * state selection.
+-		 */
+-		if (predicted_ns < TICK_NSEC)
+-			predicted_ns = data->next_timer_ns;
+-	} else if (latency_req > predicted_ns) {
+-		latency_req = predicted_ns;
+-	}
++	/*
++	 * If the tick is already stopped, the cost of possible short idle
++	 * duration misprediction is much higher, because the CPU may be stuck
++	 * in a shallow idle state for a long time as a result of it.  In that
++	 * case, say we might mispredict and use the known time till the closest
++	 * timer event for the idle state selection.
++	 */
++	if (tick_nohz_tick_stopped() && predicted_ns < TICK_NSEC)
++		predicted_ns = data->next_timer_ns;
  
+ 	/*
+ 	 * Find the idle state with the lowest power while satisfying
+@@ -322,13 +317,15 @@ static int menu_select(struct cpuidle_dr
+ 		if (idx == -1)
+ 			idx = i; /* first enabled state */
+ 
++		if (s->exit_latency_ns > latency_req)
++			break;
++
+ 		if (s->target_residency_ns > predicted_ns) {
+ 			/*
+ 			 * Use a physical idle state, not busy polling, unless
+ 			 * a timer is going to trigger soon enough.
+ 			 */
+ 			if ((drv->states[idx].flags & CPUIDLE_FLAG_POLLING) &&
+-			    s->exit_latency_ns <= latency_req &&
+ 			    s->target_residency_ns <= data->next_timer_ns) {
+ 				predicted_ns = s->target_residency_ns;
+ 				idx = i;
+@@ -360,8 +357,6 @@ static int menu_select(struct cpuidle_dr
+ 
+ 			return idx;
+ 		}
+-		if (s->exit_latency_ns > latency_req)
+-			break;
+ 
+ 		idx = i;
+ 	}
 
 
 
