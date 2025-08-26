@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-172999-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-173954-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 50F17B35B54
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 13:23:13 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 74B91B3607C
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 15:01:11 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id E03231897CA9
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 11:21:06 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id E34A0464781
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 12:58:28 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0BD08334375;
-	Tue, 26 Aug 2025 11:18:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 12FE81FF1C4;
+	Tue, 26 Aug 2025 12:58:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="AE6gNtUc"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="PUfF4w/i"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A8576296BDF;
-	Tue, 26 Aug 2025 11:18:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C4A7D1F790F;
+	Tue, 26 Aug 2025 12:58:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756207113; cv=none; b=lSzr6MEJJqzOEsYJ2SXOU1kbhHNveo1FIZgZ4D34mkapW2lgmbOAddK5gqtNMY2V73FUQZ6zQVjP8fkn0d+K6PmR+YiLhadzbD8gh2Qzq47bw2tJn59Pog6ZZos6C2xWK1wc3ss7oAdIwVCu3kNWcHnvsaSsvwROomZNE/Axffc=
+	t=1756213103; cv=none; b=r+vyKLPQkLoD8Sc/OMpCfua8odbJVrpv7+bP0onfk2rcPIpa71/XqtbowLK7IqLzzGCHGNyeCcFyumdyj2EqRXx1rbCLu3xtivKkcby0S8KzTXSuBMGed2nLuekTbWraefpX2mwYPtZWstITTuQm9nu4KHWRmwktx31XSnNMC5Y=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756207113; c=relaxed/simple;
-	bh=6Moach80SfYFhqa+D3+lVM65WiwKpwIRW5cnqWskXoU=;
+	s=arc-20240116; t=1756213103; c=relaxed/simple;
+	bh=MJAmZwZQlI1z4ilYhbcTnNE6eKFs71Twb/+k34AG3Vs=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Z7nLystFDmfOY6j7DlX8qJWAgmNYC+d0RrXW6uigCKXa3q0LhaPI/5xn/ROM5RHA9755ZNN2T1ldcTJtJ9+LN/5UYltpdpEJ9WQRO2gMr1mtyiNiEmOb0QotFNsYAN5wefseisBl5o9SZICy2DUY1bAuMyL8ZIGnYssK1WehSc0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=AE6gNtUc; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 375D8C4CEF1;
-	Tue, 26 Aug 2025 11:18:33 +0000 (UTC)
+	 MIME-Version; b=VQlw8san05reHWElqDxpRuHs7ebtBVcZ8uoYhmwb+H7PNy0TYHHpaidzNC/1t3wCV6EPqsuzkDCP/ZY0qE9EzbCuiLQPZ/w0OsOC/MJVNCCWtD6doLz5wugdCU3+qUGRDKzdaYMr/m8CLgldKp7svRBFv+4ViXrxhXKHSHrkK0s=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=PUfF4w/i; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id F4032C4CEF1;
+	Tue, 26 Aug 2025 12:58:22 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1756207113;
-	bh=6Moach80SfYFhqa+D3+lVM65WiwKpwIRW5cnqWskXoU=;
+	s=korg; t=1756213103;
+	bh=MJAmZwZQlI1z4ilYhbcTnNE6eKFs71Twb/+k34AG3Vs=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=AE6gNtUc0stPFF3CJaJ2iuVwhlGjYeETrxNsbxX6dviAq/Iri+edn1ZpKBa/u5TgU
-	 D/u9HJaD6708cRaVXCGUyt+Ju0g5fne5djSZvcYzbqpinULf8WacvN2nQvA++qiZdz
-	 zb8kInvwV/SSEbW2eTzo0sf2mVxt6fOmYBw185CU=
+	b=PUfF4w/i4ASPBGLKtDDBLXqpXXha2kp2Iv/UXVEbM+jiVeqH2X2RLGApxv66CBsNZ
+	 5hsnf71RgysGNPgo14hxVWCdVfFzKL3Ng7VVFoLomwBBvTO88j3nlfOjvOkdPJ+KCV
+	 qpCs5sjxhfqqV5lULWtuCO8SAIzIumCO0X6UsLiY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Hong Guan <hguan@ti.com>,
-	Bryan Brattlof <bb@ti.com>,
-	Vignesh Raghavendra <vigneshr@ti.com>
-Subject: [PATCH 6.16 056/457] arm64: dts: ti: k3-am62a7-sk: fix pinmux for main_uart1
+	Nicolas Escande <nico.escande@gmail.com>,
+	Kuniyuki Iwashima <kuniyu@google.com>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.6 191/587] neighbour: add support for NUD_PERMANENT proxy entries
 Date: Tue, 26 Aug 2025 13:05:40 +0200
-Message-ID: <20250826110938.740031260@linuxfoundation.org>
+Message-ID: <20250826110957.800284070@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250826110937.289866482@linuxfoundation.org>
-References: <20250826110937.289866482@linuxfoundation.org>
+In-Reply-To: <20250826110952.942403671@linuxfoundation.org>
+References: <20250826110952.942403671@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,43 +63,107 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.16-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Hong Guan <hguan@ti.com>
+From: Nicolas Escande <nico.escande@gmail.com>
 
-commit 8e44ac61abaae56fc6eb537a04ed78b458c5b984 upstream.
+[ Upstream commit c7d78566bbd30544a0618a6ffbc97bc0ddac7035 ]
 
-main_uart1 reserved for TIFS firmware traces is routed to the
-onboard FT4232 via a FET switch which is connected to pin A21 and
-B21 of the SoC and not E17 and C17. Fix it.
+As discussesd before in [0] proxy entries (which are more configuration
+than runtime data) should stay when the link (carrier) goes does down.
+This is what happens for regular neighbour entries.
 
-Fixes: cf39ff15cc01a ("arm64: dts: ti: k3-am62a7-sk: Describe main_uart1 and wkup_uart")
-Cc: stable@vger.kernel.org
-Signed-off-by: Hong Guan <hguan@ti.com>
-[bb@ti.com: expanded commit message]
-Signed-off-by: Bryan Brattlof <bb@ti.com>
-Link: https://lore.kernel.org/r/20250707-uart-fixes-v1-1-8164147218b0@ti.com
-Signed-off-by: Vignesh Raghavendra <vigneshr@ti.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+So lets fix this by:
+  - storing in proxy entries the fact that it was added as NUD_PERMANENT
+  - not removing NUD_PERMANENT proxy entries when the carrier goes down
+    (same as how it's done in neigh_flush_dev() for regular neigh entries)
+
+[0]: https://lore.kernel.org/netdev/c584ef7e-6897-01f3-5b80-12b53f7b4bf4@kernel.org/
+
+Signed-off-by: Nicolas Escande <nico.escande@gmail.com>
+Reviewed-by: Kuniyuki Iwashima <kuniyu@google.com>
+Link: https://patch.msgid.link/20250617141334.3724863-1-nico.escande@gmail.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/arm64/boot/dts/ti/k3-am62a7-sk.dts |    4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ include/net/neighbour.h |  1 +
+ net/core/neighbour.c    | 12 +++++++++---
+ 2 files changed, 10 insertions(+), 3 deletions(-)
 
---- a/arch/arm64/boot/dts/ti/k3-am62a7-sk.dts
-+++ b/arch/arm64/boot/dts/ti/k3-am62a7-sk.dts
-@@ -301,8 +301,8 @@
+diff --git a/include/net/neighbour.h b/include/net/neighbour.h
+index 0d28172193fa..d775906a65c7 100644
+--- a/include/net/neighbour.h
++++ b/include/net/neighbour.h
+@@ -180,6 +180,7 @@ struct pneigh_entry {
+ 	netdevice_tracker	dev_tracker;
+ 	u32			flags;
+ 	u8			protocol;
++	bool			permanent;
+ 	u32			key[];
+ };
  
- 	main_uart1_pins_default: main-uart1-default-pins {
- 		pinctrl-single,pins = <
--			AM62AX_IOPAD(0x01e8, PIN_INPUT, 1) /* (C17) I2C1_SCL.UART1_RXD */
--			AM62AX_IOPAD(0x01ec, PIN_OUTPUT, 1) /* (E17) I2C1_SDA.UART1_TXD */
-+			AM62AX_IOPAD(0x01ac, PIN_INPUT, 2) /* (B21) MCASP0_AFSR.UART1_RXD */
-+			AM62AX_IOPAD(0x01b0, PIN_OUTPUT, 2) /* (A21) MCASP0_ACLKR.UART1_TXD */
- 			AM62AX_IOPAD(0x0194, PIN_INPUT, 2) /* (C19) MCASP0_AXR3.UART1_CTSn */
- 			AM62AX_IOPAD(0x0198, PIN_OUTPUT, 2) /* (B19) MCASP0_AXR2.UART1_RTSn */
- 		>;
+diff --git a/net/core/neighbour.c b/net/core/neighbour.c
+index 1e2e60ffe766..e6b36df482bc 100644
+--- a/net/core/neighbour.c
++++ b/net/core/neighbour.c
+@@ -55,7 +55,8 @@ static void __neigh_notify(struct neighbour *n, int type, int flags,
+ 			   u32 pid);
+ static void neigh_update_notify(struct neighbour *neigh, u32 nlmsg_pid);
+ static int pneigh_ifdown_and_unlock(struct neigh_table *tbl,
+-				    struct net_device *dev);
++				    struct net_device *dev,
++				    bool skip_perm);
+ 
+ #ifdef CONFIG_PROC_FS
+ static const struct seq_operations neigh_stat_seq_ops;
+@@ -444,7 +445,7 @@ static int __neigh_ifdown(struct neigh_table *tbl, struct net_device *dev,
+ {
+ 	write_lock_bh(&tbl->lock);
+ 	neigh_flush_dev(tbl, dev, skip_perm);
+-	pneigh_ifdown_and_unlock(tbl, dev);
++	pneigh_ifdown_and_unlock(tbl, dev, skip_perm);
+ 	pneigh_queue_purge(&tbl->proxy_queue, dev ? dev_net(dev) : NULL,
+ 			   tbl->family);
+ 	if (skb_queue_empty_lockless(&tbl->proxy_queue))
+@@ -845,7 +846,8 @@ int pneigh_delete(struct neigh_table *tbl, struct net *net, const void *pkey,
+ }
+ 
+ static int pneigh_ifdown_and_unlock(struct neigh_table *tbl,
+-				    struct net_device *dev)
++				    struct net_device *dev,
++				    bool skip_perm)
+ {
+ 	struct pneigh_entry *n, **np, *freelist = NULL;
+ 	u32 h;
+@@ -853,12 +855,15 @@ static int pneigh_ifdown_and_unlock(struct neigh_table *tbl,
+ 	for (h = 0; h <= PNEIGH_HASHMASK; h++) {
+ 		np = &tbl->phash_buckets[h];
+ 		while ((n = *np) != NULL) {
++			if (skip_perm && n->permanent)
++				goto skip;
+ 			if (!dev || n->dev == dev) {
+ 				*np = n->next;
+ 				n->next = freelist;
+ 				freelist = n;
+ 				continue;
+ 			}
++skip:
+ 			np = &n->next;
+ 		}
+ 	}
+@@ -2033,6 +2038,7 @@ static int neigh_add(struct sk_buff *skb, struct nlmsghdr *nlh,
+ 		pn = pneigh_lookup(tbl, net, dst, dev, 1);
+ 		if (pn) {
+ 			pn->flags = ndm_flags;
++			pn->permanent = !!(ndm->ndm_state & NUD_PERMANENT);
+ 			if (protocol)
+ 				pn->protocol = protocol;
+ 			err = 0;
+-- 
+2.39.5
+
 
 
 
