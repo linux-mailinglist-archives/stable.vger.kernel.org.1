@@ -1,159 +1,193 @@
-Return-Path: <stable+bounces-176400-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-176401-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 15431B37137
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 19:20:22 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 34DA6B37141
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 19:22:08 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 046691BA3508
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 17:20:42 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id DF9BA681C1D
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 17:22:06 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B86CC2E7F25;
-	Tue, 26 Aug 2025 17:20:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 07A912E3705;
+	Tue, 26 Aug 2025 17:22:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="m0YL40+p"
+	dkim=permerror (0-bit key) header.d=uniroma2.it header.i=@uniroma2.it header.b="102IUmBb";
+	dkim=pass (2048-bit key) header.d=uniroma2.it header.i=@uniroma2.it header.b="oE9ZWqIT"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-qk1-f171.google.com (mail-qk1-f171.google.com [209.85.222.171])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.uniroma2.it (smtp.uniroma2.it [160.80.4.42])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0E4BF2E3B00;
-	Tue, 26 Aug 2025 17:20:08 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.222.171
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B59472E1EF2;
+	Tue, 26 Aug 2025 17:21:57 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=160.80.4.42
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756228810; cv=none; b=qsLMbRR8otl9lm4RjQcOzZjdqYQUtCeIZH/ZqXfMZpZk9BP3AoMEdOYiZM1+Hxd5Zkq5fMS6dwMiez1YgVGGksjDeLtvXTzIO3W/6TvFS9s5Kzg1ln3bO72VEymiJsKY/aLjpI/5SRMhfEKvz7JctehwagiW9xtWKHsNwbSrPog=
+	t=1756228922; cv=none; b=IuqakYU1Xh9ylxk697FO4TRgldvhE562NlyyaFM2binY4KEyk44VFHw/2SRBb1uPq8dlTFEUPMtJu7UmJ+5DrUDTs0sdqxYMySUvZjxebOgega9bB0iDDuMYVM9wTKfJzSbFzaQI6mzn5ofcY5pMKtwds+3nAv+Px3L2jqgaxfU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756228810; c=relaxed/simple;
-	bh=OneTPVvGf5CtKTfVmDcbn/EPX4wa9VHKlSdVCjaigTc=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=Tvn8J4mqmfKAzIfct0cpgPh0iUeE0VNxelPFlDzfJf81f136yZx0oP+r2lDb/NWs/r92CbxcXNSA0Fbbk7V0AtWOjxUvRKlkdFxkpsx+nBoghUgB0prviD/KTKw2hgHi4hjsTo7fqGw1Xf5zgxh4XqaQZipV1LXlz6GNoldWDck=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=m0YL40+p; arc=none smtp.client-ip=209.85.222.171
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-qk1-f171.google.com with SMTP id af79cd13be357-7e8704da966so401797085a.1;
-        Tue, 26 Aug 2025 10:20:08 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1756228808; x=1756833608; darn=vger.kernel.org;
-        h=content-transfer-encoding:in-reply-to:autocrypt:from
-         :content-language:references:cc:to:subject:user-agent:mime-version
-         :date:message-id:from:to:cc:subject:date:message-id:reply-to;
-        bh=JSKLhsuTTKWaNe2Iz7phwf88flDafRwaCX2Joa67Vn8=;
-        b=m0YL40+pwXmPi+VgdNSLoiJEM/UX+y/F/YrJURBw34xV9/MPjKFZQP8hnxGTLTvQMj
-         WcCqLv5XBsW4V+Or8U+F5T36dHoct9nxY4Z++nKtFoJ8Wd7ZTbcSNjL/l6AwdcbtaZ40
-         jNxmq+yvchMIIfZuClvCkgFaX8GSG8IofpdTHL7ekSLy6HecYzmcIgJYtGYvh/4tlWkW
-         mRxtgqUpOQe9mnBQc0w8v+98miPrL1YkszuHpfKQOZaQQUXjKaOKaNoTmvO5SffK2/E0
-         dFOCxevI58eZNWjgu8WvitLyyLzxqFFJLAXOggMO/Q92tFPb3u6XgIcGVhWnZu17ZLH8
-         iQ8A==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1756228808; x=1756833608;
-        h=content-transfer-encoding:in-reply-to:autocrypt:from
-         :content-language:references:cc:to:subject:user-agent:mime-version
-         :date:message-id:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=JSKLhsuTTKWaNe2Iz7phwf88flDafRwaCX2Joa67Vn8=;
-        b=fdR86qyqcqF/LR1NgYokeJOZmJujDsctQ19oqTjP68rK+ggJ0eH56ga9YCgiIfNdHi
-         HblG2/skuGObsTJFmbq1bGKka6d6sEIWEmv944agBeMk+lmXN5qtQojWn8yT8SYHFbj/
-         eZYDeWFmxQfTcy25v90ljh0W3I5QB3zxGWuqU2XCiYGhTOOQIB2z9VxjFLF0RaRiIGU9
-         +lpkKsvCgH26PEQjo8tW2pikWrFEWYNAakCgh2mN5565vsNQJTLsTP9cE0k7lk+4wOuV
-         X74gTKJBskRD9ehsnoNGbAf82NpOGzijsZDIKYv4PjqtMGxDi7Oqli9GeKT1Tk9EqpBH
-         4tww==
-X-Forwarded-Encrypted: i=1; AJvYcCVqicfxIDuga8lJkZwxVkGCakVSeoDlDIHwQ1t6cdM5K4++kBfPq3f0rD4exeUxyyBdrLpVrL1Q@vger.kernel.org, AJvYcCWFUqHGziUK1wZpLCcq6sJHimt92ZdDiRONd+K7p9kpR1aOiFRVsGzvsI8t7H04QuAQRmOQ5wvExan2tcc=@vger.kernel.org
-X-Gm-Message-State: AOJu0YwH2GFJ+IvaTQElmcadVC7OUIJJF5cB1LttepNgcsnrSgqm7jwv
-	VCErNoAeptLP1ZvfFQwRjYWuov4h38jg6zPuFE8Jic1gIsDBlDAViuPn
-X-Gm-Gg: ASbGncs5J5Ouv70PQKQoAqR8au5hffdTFUzmT3Cc0EJ1p87BCjbMAuIcCMNt08gQY44
-	HvzR9Tcslo6dF9M6RswbhgovvGT0L5D6cA1XRdSdNAu2aheFn+G3wu6irtctIB2l1njMvviO2Ig
-	8n75HbshoKuwgQ92+tnkJR3tuRFo5L6jfOnkFsBe97QGJxuILiHNoHTP4QUXsxQ5eluSEHxVQrH
-	d1AMXEoG4VFPMN4XsGKrms0Hfp820w8f57jxJk6eljXPRzJghBPHfFaFgUbEC7mxLPfqnUCuBUs
-	a48SApJFzzY9zfZC7nAfCheGqzib71jUvUE3vtRyc/jnCmvAyaGpODWrAl5uUk5Dn+SJqivcys4
-	XbVSDId/Pz84iGCe5zdj1gAQ4RzlnyZpkr/t7ZuYvj97vsjmR6zPTwI6ZUgGu
-X-Google-Smtp-Source: AGHT+IExeNvwjRjJf0kFxGHZgI4IqJ8wYKpZjQFsHmzmUaPm5gzD5mD7E/3CGXYv/RyZ24Sn9V36HQ==
-X-Received: by 2002:a05:620a:4305:b0:7e9:f81f:ceb4 with SMTP id af79cd13be357-7ea1108e2bfmr1670461685a.78.1756228807932;
-        Tue, 26 Aug 2025 10:20:07 -0700 (PDT)
-Received: from [10.67.48.245] ([192.19.223.252])
-        by smtp.gmail.com with ESMTPSA id 6a1803df08f44-70da7283decsm68502276d6.41.2025.08.26.10.20.03
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Tue, 26 Aug 2025 10:20:07 -0700 (PDT)
-Message-ID: <fece2c26-4434-48db-9be8-42bd882c51e0@gmail.com>
-Date: Tue, 26 Aug 2025 10:20:02 -0700
+	s=arc-20240116; t=1756228922; c=relaxed/simple;
+	bh=SjBOXldlVtyTO1rVvTQT4inDDhNHA6OlzRlvyaHWM5w=;
+	h=Date:From:To:Cc:Subject:Message-Id:In-Reply-To:References:
+	 Mime-Version:Content-Type; b=BSgFT5GhBhXqJaUfyNMpGiBMGA1izaoCIYlAYm8bWm6TOBUyFfh3SIJe2KQGrPbUfwrwGI0hX+tPx6FyxK38mWMSXLp3dW2LOJ/rJTDu8oSFHVNvsIuAXCnV/NnQ3g4UJyHqji+NN0wLr6pp25B5tyZeqiWq3jCEPPGWQYfUHF4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=uniroma2.it; spf=pass smtp.mailfrom=uniroma2.it; dkim=permerror (0-bit key) header.d=uniroma2.it header.i=@uniroma2.it header.b=102IUmBb; dkim=pass (2048-bit key) header.d=uniroma2.it header.i=@uniroma2.it header.b=oE9ZWqIT; arc=none smtp.client-ip=160.80.4.42
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=uniroma2.it
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=uniroma2.it
+Received: from smtpauth-2019-1.uniroma2.it (smtpauth.uniroma2.it [160.80.5.46])
+	by smtp-2015.uniroma2.it (8.14.4/8.14.4/Debian-8) with ESMTP id 57QHLUUg014664;
+	Tue, 26 Aug 2025 19:21:36 +0200
+Received: from lubuntu-18.04 (unknown [160.80.103.126])
+	by smtpauth-2019-1.uniroma2.it (Postfix) with ESMTPSA id 8B3161203EC;
+	Tue, 26 Aug 2025 19:21:24 +0200 (CEST)
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=uniroma2.it;
+	s=ed201904; t=1756228886; h=from:from:sender:reply-to:subject:subject:date:date:
+	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=nRPnemMRjIqS8FLYYPeKQSBIW++wmsT0i3d527WY1QQ=;
+	b=102IUmBbew/idnRZVrXRcJobmTaRbZf3e7ywGOS3DVJKsjYUXYLjlCEVVIhxGOVXWX3WB4
+	aqZk76di7uZr7GBg==
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=uniroma2.it; s=rsa201904;
+	t=1756228886; h=from:from:sender:reply-to:subject:subject:date:date:
+	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=nRPnemMRjIqS8FLYYPeKQSBIW++wmsT0i3d527WY1QQ=;
+	b=oE9ZWqITK6kmNw6wJvBabqgVC9BdeSk27UpSMn0CUew/4dj770o89XUX3FeHN8S9CveZXb
+	/gmBma5fSVGu7OtAoq3sLBxdHVIsJL9A/tQAQQGPuiG5KYzSducGmGBuzzSS3LsmUBzpeB
+	I8VvfJTJfs5N59w+yViL9Rn5id2q9vF87wCSSd7HvSS/gZnP4wxlEUbBlVJc320gsuhw3c
+	encQz+b5TT0JyJ+jIytiH7W8kK/m3AWwn5bcuFhuFyGM2+fWoOlHP8eixoQV0Z9qYFxH07
+	AqYpiY2+V/s4CDEiwWSah8g+t3sePrIL+z4KwC6gHcpaMgGSgNXlYxQhKi647A==
+Date: Tue, 26 Aug 2025 19:21:23 +0200
+From: Andrea Mayer <andrea.mayer@uniroma2.it>
+To: Eric Dumazet <edumazet@google.com>
+Cc: "David S. Miller" <davem@davemloft.net>, Jakub Kicinski
+ <kuba@kernel.org>,
+        Paolo Abeni <pabeni@redhat.com>, David Ahern
+ <dsahern@kernel.org>,
+        Simon Horman <horms@kernel.org>, linux-kernel@vger.kernel.org,
+        netdev@vger.kernel.org, Eric Biggers
+ <ebiggers@kernel.org>,
+        David Lebrun <dlebrun@google.com>,
+        Stefano Salsano
+ <stefano.salsano@uniroma2.it>,
+        Paolo Lungaroni
+ <paolo.lungaroni@uniroma2.it>,
+        Ahmed Abdelsalam <ahabdels.dev@gmail.com>, stable@vger.kernel.org,
+        Andrea Mayer <andrea.mayer@uniroma2.it>
+Subject: Re: [PATCH net] ipv6: sr: fix destroy of seg6_hmac_info to prevent
+ HMAC data leak
+Message-Id: <20250826192123.612cd0eabbbb57795a0bbdbc@uniroma2.it>
+In-Reply-To: <CANn89i+UTv8nJ=cc67iKky=MLXOnzF5XyVRsV-TMXz7wUQ6Yvw@mail.gmail.com>
+References: <20250825190715.1690-1-andrea.mayer@uniroma2.it>
+	<CANn89i+UTv8nJ=cc67iKky=MLXOnzF5XyVRsV-TMXz7wUQ6Yvw@mail.gmail.com>
+X-Mailer: Sylpheed 3.5.1 (GTK+ 2.24.32; x86_64-pc-linux-gnu)
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 5.15 000/644] 5.15.190-rc1 review
-To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>, stable@vger.kernel.org
-Cc: patches@lists.linux.dev, linux-kernel@vger.kernel.org,
- torvalds@linux-foundation.org, akpm@linux-foundation.org,
- linux@roeck-us.net, shuah@kernel.org, patches@kernelci.org,
- lkft-triage@lists.linaro.org, pavel@denx.de, jonathanh@nvidia.com,
- sudipm.mukherjee@gmail.com, srw@sladewatkins.net, rwarsow@gmx.de,
- conor@kernel.org, hargar@microsoft.com, broonie@kernel.org, achill@achill.org
-References: <20250826110946.507083938@linuxfoundation.org>
-Content-Language: en-US
-From: Florian Fainelli <f.fainelli@gmail.com>
-Autocrypt: addr=f.fainelli@gmail.com; keydata=
- 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
- WlfRzlpjIPmdjgoicA==
-In-Reply-To: <20250826110946.507083938@linuxfoundation.org>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
+Mime-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+X-Virus-Scanned: clamav-milter 0.100.0 at smtp-2015
+X-Virus-Status: Clean
 
-On 8/26/25 04:01, Greg Kroah-Hartman wrote:
-> This is the start of the stable review cycle for the 5.15.190 release.
-> There are 644 patches in this series, all will be posted as a response
-> to this one.  If anyone has any issues with these being applied, please
-> let me know.
-> 
-> Responses should be made by Thu, 28 Aug 2025 11:08:21 +0000.
-> Anything received after that time might be too late.
-> 
-> The whole patch series can be found in one patch at:
-> 	https://www.kernel.org/pub/linux/kernel/v5.x/stable-review/patch-5.15.190-rc1.gz
-> or in the git tree and branch at:
-> 	git://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stable-rc.git linux-5.15.y
-> and the diffstat can be found below.
-> 
-> thanks,
-> 
-> greg k-h
+On Mon, 25 Aug 2025 12:33:26 -0700
+Eric Dumazet <edumazet@google.com> wrote:
 
-On ARCH_BRCMSTB using 32-bit and 64-bit ARM kernels, build tested on 
-BMIPS_GENERIC:
+> On Mon, Aug 25, 2025 at 12:08 PM Andrea Mayer <andrea.mayer@uniroma2.it> wrote:
+> >
+> > The seg6_hmac_info structure stores information related to SRv6 HMAC
+> > configurations, including the secret key, HMAC ID, and hashing algorithm
+> > used to authenticate and secure SRv6 packets.
+> >
+> > When a seg6_hmac_info object is no longer needed, it is destroyed via
+> > seg6_hmac_info_del(), which eventually calls seg6_hinfo_release(). This
+> > function uses kfree_rcu() to safely deallocate memory after an RCU grace
+> > period has elapsed.
+> > The kfree_rcu() releases memory without sanitization (e.g., zeroing out
+> > the memory). Consequently, sensitive information such as the HMAC secret
+> > and its length may remain in freed memory, potentially leading to data
+> > leaks.
+> >
+> > To address this risk, we replaced kfree_rcu() with a custom RCU
+> > callback, seg6_hinfo_free_callback_rcu(). Within this callback, we
+> > explicitly sanitize the seg6_hmac_info object before deallocating it
+> > safely using kfree_sensitive(). This approach ensures the memory is
+> > securely freed and prevents potential HMAC info leaks.
+> > Additionally, in the control path, we ensure proper cleanup of
+> > seg6_hmac_info objects when seg6_hmac_info_add() fails: such objects are
+> > freed using kfree_sensitive() instead of kfree().
+> >
+> > Fixes: 4f4853dc1c9c ("ipv6: sr: implement API to control SR HMAC structure")
+> > Fixes: bf355b8d2c30 ("ipv6: sr: add core files for SR HMAC support")
+> 
+> Not sure if you are fixing a bug worth backports.
+> 
 
-Tested-by: Florian Fainelli <florian.fainelli@broadcom.com>
--- 
-Florian
+I believe failing to delete sensitive data, such as HMAC keys, from memory
+before releasing it could pose security risks.
+Therefore, I considered this a bug to be fixed in the stable versions.
+
+> > Cc: stable@vger.kernel.org
+> > Signed-off-by: Andrea Mayer <andrea.mayer@uniroma2.it>
+> > ---
+> >  net/ipv6/seg6.c      |  2 +-
+> >  net/ipv6/seg6_hmac.c | 10 +++++++++-
+> >  2 files changed, 10 insertions(+), 2 deletions(-)
+> >
+> > diff --git a/net/ipv6/seg6.c b/net/ipv6/seg6.c
+> > index 180da19c148c..88782bdab843 100644
+> > --- a/net/ipv6/seg6.c
+> > +++ b/net/ipv6/seg6.c
+> > @@ -215,7 +215,7 @@ static int seg6_genl_sethmac(struct sk_buff *skb, struct genl_info *info)
+> >
+> >         err = seg6_hmac_info_add(net, hmackeyid, hinfo);
+> >         if (err)
+> > -               kfree(hinfo);
+> > +               kfree_sensitive(hinfo);
+> >
+> >  out_unlock:
+> >         mutex_unlock(&sdata->lock);
+> > diff --git a/net/ipv6/seg6_hmac.c b/net/ipv6/seg6_hmac.c
+> > index fd58426f222b..19cdf3791ebf 100644
+> > --- a/net/ipv6/seg6_hmac.c
+> > +++ b/net/ipv6/seg6_hmac.c
+> > @@ -57,9 +57,17 @@ static int seg6_hmac_cmpfn(struct rhashtable_compare_arg *arg, const void *obj)
+> >         return (hinfo->hmackeyid != *(__u32 *)arg->key);
+> >  }
+> >
+> > +static void seg6_hinfo_free_callback_rcu(struct rcu_head *head)
+> > +{
+> > +       struct seg6_hmac_info *hinfo;
+> > +
+> > +       hinfo = container_of(head, struct seg6_hmac_info, rcu);
+> > +       kfree_sensitive(hinfo);
+> > +}
+> > +
+> >  static inline void seg6_hinfo_release(struct seg6_hmac_info *hinfo)
+> >  {
+> > -       kfree_rcu(hinfo, rcu);
+> > +       call_rcu(&hinfo->rcu, seg6_hinfo_free_callback_rcu);
+> >  }
+> 
+> If we worry a lot about sensitive data waiting too much in RCU land,
+> perhaps use call_rcu_hurry() here ?
+
+My concern is not so much about how long the sensitive data remains in RCU
+land. Instead, I would like to ensure that the memory associated with the
+seg6_hmac_info object is properly zeroed out before it is freed. I believe that
+using call_rcu() (with seg6_hinfo_free_callback_rcu()) would be sufficient to
+achieve this goal.
+
+---
+
+Aside from improving the commit message (thanks to Eric Bigger), what other
+changes should we consider implementing for version 2?
+Should we classify this patch as an enhancement rather than a bug fix?
+
+Thank you all for your time,
+Andrea
 
