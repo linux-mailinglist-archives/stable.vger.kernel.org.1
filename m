@@ -1,56 +1,55 @@
-Return-Path: <stable+bounces-174241-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-173317-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 38A44B361FB
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 15:14:32 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 498ABB35CED
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 13:40:04 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 9A293188DAE7
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 13:11:47 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id A7B761BA5F00
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 11:34:56 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8AF48259CB2;
-	Tue, 26 Aug 2025 13:11:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8FC8D338F32;
+	Tue, 26 Aug 2025 11:32:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="p7oFTyox"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="JrdWroQU"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 477EB18DB01;
-	Tue, 26 Aug 2025 13:11:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4E2D3338F51;
+	Tue, 26 Aug 2025 11:32:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756213867; cv=none; b=rEBDK+apoyvbXBIEPX1YZ9a7f8b4dE66OjtdhKi9MJrZpEfnS8uRqeoCifxFAjFW27zkMbhZ7qN3g59smBWZ5/KIU65T+jxtdpQpYVJ2wo7ElwYawxPVgWciG+OZl7lLeC9cWLbFOeBElE+cjvPVISif6WhrSE98UVRURmWb/NA=
+	t=1756207933; cv=none; b=ZVF+jjtJ/GtKKP14Eg2cVpUCMZmXdWST3PPs0doRNWNQX1Pd3LERxeVZ/WYGyFhPoOxydk2905ahUTEcVXuc+0x5tavOWbwd7bfeWFN41Ca8rMurtUoUIRhsPPi68lcUR0jdMd+31Y6GOLtzqbDWEwd+DmKyurZgRaMGCxzbvvo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756213867; c=relaxed/simple;
-	bh=cPbmyBhzTWVzE3SX389CWsGl0eL4kT975pwbXro78YQ=;
+	s=arc-20240116; t=1756207933; c=relaxed/simple;
+	bh=kYZJiJtyO0vA4fBO8xtbsxd3je3GiPm4V5N0cle3EzE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=WRr15ehsZaCqV3LoXFSi7j5B3Q96YhsQ4d8kjHI0Cz+hgjEPgSqPSNt+YLWIUtJiY8X4NguP667Mfud5+eHc+0NKpSXxphZP7Fb+TVEloFEI5XPShYObd3cRi7m2gVR8om5wCgzS80g3/2TTEuohM0/ie5Cb+LiKUS15SFXuj8Y=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=p7oFTyox; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D0956C4CEF1;
-	Tue, 26 Aug 2025 13:11:06 +0000 (UTC)
+	 MIME-Version; b=WkY5psyCfFmCeWhrXqac5LFchlL8HHxKroDYE0uA5Fdmv087HBp6+/yTJPQojmnFklNne5+193zmUkD3dEIlxWU3ipV7+TDdioGbb+V7414+5ZgDLw3cimB4pKHlOX2JQdQDj4xi7cv1Kz0/Iq5aDPTCrpS/7fUQKfRFhtbwrCI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=JrdWroQU; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D5077C4CEF4;
+	Tue, 26 Aug 2025 11:32:12 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1756213867;
-	bh=cPbmyBhzTWVzE3SX389CWsGl0eL4kT975pwbXro78YQ=;
+	s=korg; t=1756207933;
+	bh=kYZJiJtyO0vA4fBO8xtbsxd3je3GiPm4V5N0cle3EzE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=p7oFTyoxImIuyTy8im2SmIJ9FVNyJN8M6qmqBnfveMjTVH83PhorL4BaMIjdQeBN0
-	 FuN6eJwALB6gWn8m7oGfGrpVB3kbZ5lWhjfMfSiGRM6ut0LVgLgg5lyksq0yZSlE6c
-	 9gbb3hXh796wDXZI8YSPjlWFr2Xb55fL+Ho2gSdk=
+	b=JrdWroQU2vLAhxcUS4iNAQUSbKnK4KE2oKrq80snf0I61i6t8EkpaFpKkJet52zC2
+	 /g4hWzlKLfXMNqwvGSMf40357LjB/N5KAQiEB2jmgRjfGMML7Ud1kpApOKciHiaDa1
+	 MM96hSSHuIB2cuwUo5X57sKsJ/f9eiX+fhfDgiUc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Bjorn Helgaas <bhelgaas@google.com>,
-	Ulf Hansson <ulf.hansson@linaro.org>,
+	Luiz Augusto von Dentz <luiz.von.dentz@intel.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 508/587] mmc: sdhci-pci-gli: Use PCI AER definitions, not hard-coded values
+Subject: [PATCH 6.16 373/457] Bluetooth: hci_sync: Fix scan state after PA Sync has been established
 Date: Tue, 26 Aug 2025 13:10:57 +0200
-Message-ID: <20250826111005.911907431@linuxfoundation.org>
+Message-ID: <20250826110946.516834527@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250826110952.942403671@linuxfoundation.org>
-References: <20250826110952.942403671@linuxfoundation.org>
+In-Reply-To: <20250826110937.289866482@linuxfoundation.org>
+References: <20250826110937.289866482@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,105 +61,54 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.16-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Bjorn Helgaas <bhelgaas@google.com>
+From: Luiz Augusto von Dentz <luiz.von.dentz@intel.com>
 
-[ Upstream commit 951b7ccc54591ba48755b5e0c7fc8b9623a64640 ]
+[ Upstream commit ca88be1a2725a42f8dbad579181611d9dcca8e88 ]
 
-015c9cbcf0ad ("mmc: sdhci-pci-gli: GL9750: Mask the replay timer timeout of
-AER") added PCI_GLI_9750_CORRERR_MASK, the offset of the AER Capability in
-config space, and PCI_GLI_9750_CORRERR_MASK_REPLAY_TIMER_TIMEOUT, the
-Replay Timer Timeout bit in the AER Correctable Error Status register.
+Passive scanning is used to program the address of the peer to be
+synchronized, so once HCI_EV_LE_PA_SYNC_ESTABLISHED is received it
+needs to be updated after clearing HCI_PA_SYNC then call
+hci_update_passive_scan_sync to return it to its original state.
 
-Use pci_find_ext_capability() to locate the AER Capability and use the
-existing PCI_ERR_COR_REP_TIMER definition to mask the bit.
-
-This removes a little bit of unnecessarily device-specific code and makes
-AER-related things more greppable.
-
-Signed-off-by: Bjorn Helgaas <bhelgaas@google.com>
-Link: https://lore.kernel.org/r/20240327214831.1544595-2-helgaas@kernel.org
-Signed-off-by: Ulf Hansson <ulf.hansson@linaro.org>
-Stable-dep-of: dec8b38be4b3 ("mmc: sdhci-pci-gli: Add a new function to simplify the code")
+Fixes: 6d0417e4e1cf ("Bluetooth: hci_conn: Fix not setting conn_timeout for Broadcast Receiver")
+Signed-off-by: Luiz Augusto von Dentz <luiz.von.dentz@intel.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/mmc/host/sdhci-pci-gli.c |   26 ++++++++++++++------------
- 1 file changed, 14 insertions(+), 12 deletions(-)
+ net/bluetooth/hci_sync.c | 7 +++++--
+ 1 file changed, 5 insertions(+), 2 deletions(-)
 
---- a/drivers/mmc/host/sdhci-pci-gli.c
-+++ b/drivers/mmc/host/sdhci-pci-gli.c
-@@ -28,9 +28,6 @@
- #define PCI_GLI_9750_PM_CTRL	0xFC
- #define   PCI_GLI_9750_PM_STATE	  GENMASK(1, 0)
+diff --git a/net/bluetooth/hci_sync.c b/net/bluetooth/hci_sync.c
+index 7938c004071c..6c3218bac116 100644
+--- a/net/bluetooth/hci_sync.c
++++ b/net/bluetooth/hci_sync.c
+@@ -6985,8 +6985,6 @@ static void create_pa_complete(struct hci_dev *hdev, void *data, int err)
  
--#define PCI_GLI_9750_CORRERR_MASK				0x214
--#define   PCI_GLI_9750_CORRERR_MASK_REPLAY_TIMER_TIMEOUT	  BIT(12)
+ 	hci_dev_lock(hdev);
+ 
+-	hci_dev_clear_flag(hdev, HCI_PA_SYNC);
 -
- #define SDHCI_GLI_9750_CFG2          0x848
- #define   SDHCI_GLI_9750_CFG2_L1DLY    GENMASK(28, 24)
- #define   GLI_9750_CFG2_L1DLY_VALUE    0x1F
-@@ -155,9 +152,6 @@
- #define PCI_GLI_9755_PM_CTRL     0xFC
- #define   PCI_GLI_9755_PM_STATE    GENMASK(1, 0)
+ 	if (!hci_conn_valid(hdev, conn))
+ 		clear_bit(HCI_CONN_CREATE_PA_SYNC, &conn->flags);
  
--#define PCI_GLI_9755_CORRERR_MASK				0x214
--#define   PCI_GLI_9755_CORRERR_MASK_REPLAY_TIMER_TIMEOUT	  BIT(12)
--
- #define SDHCI_GLI_9767_GM_BURST_SIZE			0x510
- #define   SDHCI_GLI_9767_GM_BURST_SIZE_AXI_ALWAYS_SET	  BIT(8)
+@@ -7080,6 +7078,11 @@ static int hci_le_pa_create_sync(struct hci_dev *hdev, void *data)
+ 		__hci_cmd_sync_status(hdev, HCI_OP_LE_PA_CREATE_SYNC_CANCEL,
+ 				      0, NULL, HCI_CMD_TIMEOUT);
  
-@@ -547,6 +541,7 @@ static void gl9750_hw_setting(struct sdh
- {
- 	struct sdhci_pci_slot *slot = sdhci_priv(host);
- 	struct pci_dev *pdev;
-+	int aer;
- 	u32 value;
- 
- 	pdev = slot->chip->pdev;
-@@ -568,9 +563,12 @@ static void gl9750_hw_setting(struct sdh
- 	pci_write_config_dword(pdev, PCI_GLI_9750_PM_CTRL, value);
- 
- 	/* mask the replay timer timeout of AER */
--	pci_read_config_dword(pdev, PCI_GLI_9750_CORRERR_MASK, &value);
--	value |= PCI_GLI_9750_CORRERR_MASK_REPLAY_TIMER_TIMEOUT;
--	pci_write_config_dword(pdev, PCI_GLI_9750_CORRERR_MASK, value);
-+	aer = pci_find_ext_capability(pdev, PCI_EXT_CAP_ID_ERR);
-+	if (aer) {
-+		pci_read_config_dword(pdev, aer + PCI_ERR_COR_MASK, &value);
-+		value |= PCI_ERR_COR_REP_TIMER;
-+		pci_write_config_dword(pdev, aer + PCI_ERR_COR_MASK, value);
-+	}
- 
- 	gl9750_wt_off(host);
++	hci_dev_clear_flag(hdev, HCI_PA_SYNC);
++
++	/* Update passive scan since HCI_PA_SYNC flag has been cleared */
++	hci_update_passive_scan_sync(hdev);
++
+ 	return err;
  }
-@@ -745,6 +743,7 @@ static void sdhci_gl9755_set_clock(struc
- static void gl9755_hw_setting(struct sdhci_pci_slot *slot)
- {
- 	struct pci_dev *pdev = slot->chip->pdev;
-+	int aer;
- 	u32 value;
  
- 	gl9755_wt_on(pdev);
-@@ -782,9 +781,12 @@ static void gl9755_hw_setting(struct sdh
- 	pci_write_config_dword(pdev, PCI_GLI_9755_PM_CTRL, value);
- 
- 	/* mask the replay timer timeout of AER */
--	pci_read_config_dword(pdev, PCI_GLI_9755_CORRERR_MASK, &value);
--	value |= PCI_GLI_9755_CORRERR_MASK_REPLAY_TIMER_TIMEOUT;
--	pci_write_config_dword(pdev, PCI_GLI_9755_CORRERR_MASK, value);
-+	aer = pci_find_ext_capability(pdev, PCI_EXT_CAP_ID_ERR);
-+	if (aer) {
-+		pci_read_config_dword(pdev, aer + PCI_ERR_COR_MASK, &value);
-+		value |= PCI_ERR_COR_REP_TIMER;
-+		pci_write_config_dword(pdev, aer + PCI_ERR_COR_MASK, value);
-+	}
- 
- 	gl9755_wt_off(pdev);
- }
+-- 
+2.50.1
+
 
 
 
