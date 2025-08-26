@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-172978-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-173900-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id B81AFB35B13
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 13:18:08 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id B51FCB36066
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 15:00:11 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 9DD9A7A7569
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 11:16:32 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 00A7268054B
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 12:56:55 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 025663218C9;
-	Tue, 26 Aug 2025 11:17:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3BAFA23B60A;
+	Tue, 26 Aug 2025 12:56:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="m6+G5vNB"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="JOzJxCY9"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A642432144B;
-	Tue, 26 Aug 2025 11:17:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EE1BC1EB9F2;
+	Tue, 26 Aug 2025 12:56:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756207057; cv=none; b=TCQY/Lo+6hinyJOehMo5pF+fXAMiapUf2tSIh8pBOsYPY999JyYJ8P11baggj2bTGNt6hikRUaALLnSZUt22qv1R+GBBjcYldGAyTzMwJKqro4T1wYSvmIwWFUrnWpkZ3igVQnCoAXceRPHKA9wciST+1BwZJ/Fn8l5W5werY1E=
+	t=1756212962; cv=none; b=jdSWf8IOV4/h6d8sTFz+Y7kvbu3sSMYurcGxo2GrR5dt9lZLcIR6UFCFZdq4q1r6qtEPKHwTPTjeY7L+NQY+NS4ujoZFmNDUmuiPboZ4Hgy5Hb6JeCI8HERQaLyvgZk9rUIr9zCzNGKvQqfr7kZlGTnLiwamlVIIsNaaWL/44EU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756207057; c=relaxed/simple;
-	bh=a/Dcr/ECzc27RN4V/Ncif98amfeDLxXwjyuzV68mpoE=;
+	s=arc-20240116; t=1756212962; c=relaxed/simple;
+	bh=+EVIEPoVrZaeEgbCoXtp5AzCI8ZyLy4HDVqxEOlFePw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=mtqG/E3rjgq0sh+hcMyzWCTQEAu2c1oPLh/FUf2EX4INlUhNH8VihnI72Mrt7nbGsBadutFVDQYI1ck7dJmW0HyB+2krkKb1Du1SL+Rhj45Gtr1xRD9R5KWLpsC2jqdlnN0RPaS5+M0FuXoPvGp05wgW7qsbRomyN5PJgARDX1k=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=m6+G5vNB; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 40B40C113CF;
-	Tue, 26 Aug 2025 11:17:37 +0000 (UTC)
+	 MIME-Version; b=R1YfXXVahyUpvF6ysyxuK9fpPBfB6+Py4qHG9sLnxAQVFHfjiD7kRdzAtTOJbBMRW65D8HJPvwLJgyPByBU9c2jSv+GotuZRVE5WjMtU3ERHt5grDoi2hAp44dRLsXTVx31OozHMvHzmB2XEccoCIRBd7mpX9dggbQfvob/YgBc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=JOzJxCY9; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7B35DC4CEF1;
+	Tue, 26 Aug 2025 12:56:01 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1756207057;
-	bh=a/Dcr/ECzc27RN4V/Ncif98amfeDLxXwjyuzV68mpoE=;
+	s=korg; t=1756212961;
+	bh=+EVIEPoVrZaeEgbCoXtp5AzCI8ZyLy4HDVqxEOlFePw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=m6+G5vNBmrMba6RyqUQkQYGtlFca1xiSvtFuEX92hZFvvRJr2Tg0Atg4qOsbYYJFq
-	 mi2f4D3wHxEkq+XVPUe2VT9tJXg59NqJSbM6JpnNL6mreIdOxCWIW2ozpOS8KTFOPG
-	 5uq5CmJcKXNQc19nNSQhDdQGINE7CSLq7reFG/60=
+	b=JOzJxCY9N+WD7QzUkVZyTE90u91LmN24GwrAKVO8o2Z+QfypkX40JDhujZO319N/8
+	 xrz5kbvrsOjMdIexyMXqENB9C9+rFzO/Nz320vnfsjSGNyBgMakFwjowvb0sXG5ZWx
+	 b1+s8KSGNzZKguRiwrUSwUyqUr8tBmxoYu4U+aUY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Ziyan Xu <ziyan@securitygossip.com>,
-	Namjae Jeon <linkinjeon@kernel.org>,
-	Steve French <stfrench@microsoft.com>
-Subject: [PATCH 6.16 034/457] ksmbd: fix refcount leak causing resource not released
+	Rob Clark <robdclark@chromium.org>,
+	Rob Clark <robin.clark@oss.qualcomm.com>,
+	Antonino Maniscalco <antomani103@gmail.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.6 169/587] drm/msm: use trylock for debugfs
 Date: Tue, 26 Aug 2025 13:05:18 +0200
-Message-ID: <20250826110938.184287364@linuxfoundation.org>
+Message-ID: <20250826110957.245400560@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250826110937.289866482@linuxfoundation.org>
-References: <20250826110937.289866482@linuxfoundation.org>
+In-Reply-To: <20250826110952.942403671@linuxfoundation.org>
+References: <20250826110952.942403671@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,66 +63,70 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.16-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Ziyan Xu <ziyan@securitygossip.com>
+From: Rob Clark <robdclark@chromium.org>
 
-commit 89bb430f621124af39bb31763c4a8b504c9651e2 upstream.
+[ Upstream commit 0a1ff88ec5b60b41ba830c5bf08b6cd8f45ab411 ]
 
-When ksmbd_conn_releasing(opinfo->conn) returns true,the refcount was not
-decremented properly, causing a refcount leak that prevents the count from
-reaching zero and the memory from being released.
+This resolves a potential deadlock vs msm_gem_vm_close().  Otherwise for
+_NO_SHARE buffers msm_gem_describe() could be trying to acquire the
+shared vm resv, while already holding priv->obj_lock.  But _vm_close()
+might drop the last reference to a GEM obj while already holding the vm
+resv, and msm_gem_free_object() needs to grab priv->obj_lock, a locking
+inversion.
 
-Cc: stable@vger.kernel.org
-Signed-off-by: Ziyan Xu <ziyan@securitygossip.com>
-Signed-off-by: Namjae Jeon <linkinjeon@kernel.org>
-Signed-off-by: Steve French <stfrench@microsoft.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+OTOH this is only for debugfs and it isn't critical if we undercount by
+skipping a locked obj.  So just use trylock() and move along if we can't
+get the lock.
+
+Signed-off-by: Rob Clark <robdclark@chromium.org>
+Signed-off-by: Rob Clark <robin.clark@oss.qualcomm.com>
+Tested-by: Antonino Maniscalco <antomani103@gmail.com>
+Reviewed-by: Antonino Maniscalco <antomani103@gmail.com>
+Patchwork: https://patchwork.freedesktop.org/patch/661525/
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/smb/server/oplock.c |   13 ++++++++++---
- 1 file changed, 10 insertions(+), 3 deletions(-)
+ drivers/gpu/drm/msm/msm_gem.c | 3 ++-
+ drivers/gpu/drm/msm/msm_gem.h | 6 ++++++
+ 2 files changed, 8 insertions(+), 1 deletion(-)
 
---- a/fs/smb/server/oplock.c
-+++ b/fs/smb/server/oplock.c
-@@ -1102,8 +1102,10 @@ void smb_send_parent_lease_break_noti(st
- 			if (!atomic_inc_not_zero(&opinfo->refcount))
- 				continue;
+diff --git a/drivers/gpu/drm/msm/msm_gem.c b/drivers/gpu/drm/msm/msm_gem.c
+index 1113e6b2ec8e..aaf7c338eb96 100644
+--- a/drivers/gpu/drm/msm/msm_gem.c
++++ b/drivers/gpu/drm/msm/msm_gem.c
+@@ -928,7 +928,8 @@ void msm_gem_describe(struct drm_gem_object *obj, struct seq_file *m,
+ 	uint64_t off = drm_vma_node_start(&obj->vma_node);
+ 	const char *madv;
  
--			if (ksmbd_conn_releasing(opinfo->conn))
-+			if (ksmbd_conn_releasing(opinfo->conn)) {
-+				opinfo_put(opinfo);
- 				continue;
-+			}
+-	msm_gem_lock(obj);
++	if (!msm_gem_trylock(obj))
++		return;
  
- 			oplock_break(opinfo, SMB2_OPLOCK_LEVEL_NONE, NULL);
- 			opinfo_put(opinfo);
-@@ -1139,8 +1141,11 @@ void smb_lazy_parent_lease_break_close(s
- 			if (!atomic_inc_not_zero(&opinfo->refcount))
- 				continue;
+ 	stats->all.count++;
+ 	stats->all.size += obj->size;
+diff --git a/drivers/gpu/drm/msm/msm_gem.h b/drivers/gpu/drm/msm/msm_gem.h
+index 8ddef5443140..631a9aa129bd 100644
+--- a/drivers/gpu/drm/msm/msm_gem.h
++++ b/drivers/gpu/drm/msm/msm_gem.h
+@@ -183,6 +183,12 @@ msm_gem_lock(struct drm_gem_object *obj)
+ 	dma_resv_lock(obj->resv, NULL);
+ }
  
--			if (ksmbd_conn_releasing(opinfo->conn))
-+			if (ksmbd_conn_releasing(opinfo->conn)) {
-+				opinfo_put(opinfo);
- 				continue;
-+			}
++static inline bool __must_check
++msm_gem_trylock(struct drm_gem_object *obj)
++{
++	return dma_resv_trylock(obj->resv);
++}
 +
- 			oplock_break(opinfo, SMB2_OPLOCK_LEVEL_NONE, NULL);
- 			opinfo_put(opinfo);
- 		}
-@@ -1343,8 +1348,10 @@ void smb_break_all_levII_oplock(struct k
- 		if (!atomic_inc_not_zero(&brk_op->refcount))
- 			continue;
- 
--		if (ksmbd_conn_releasing(brk_op->conn))
-+		if (ksmbd_conn_releasing(brk_op->conn)) {
-+			opinfo_put(brk_op);
- 			continue;
-+		}
- 
- 		if (brk_op->is_lease && (brk_op->o_lease->state &
- 		    (~(SMB2_LEASE_READ_CACHING_LE |
+ static inline int
+ msm_gem_lock_interruptible(struct drm_gem_object *obj)
+ {
+-- 
+2.39.5
+
 
 
 
