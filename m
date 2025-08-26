@@ -1,57 +1,55 @@
-Return-Path: <stable+bounces-175405-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-174731-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 44172B367FB
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 16:11:47 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1AB56B364A7
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 15:41:01 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id BF4CC1C26DCF
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 14:04:44 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 264A856224D
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 13:33:49 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id DE283352098;
-	Tue, 26 Aug 2025 14:02:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 12205321457;
+	Tue, 26 Aug 2025 13:32:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ptgugnfY"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ORip5vfG"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9A687350D75;
-	Tue, 26 Aug 2025 14:02:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C51022B2DA;
+	Tue, 26 Aug 2025 13:32:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756216958; cv=none; b=GBawPZIpTVebclcuqEE70SCU4Hf2Qy2WCPGUdB/aI8EFjYFe3fY/0zynbsJN5U/lC31QMv0EPVhEvVmsZveKKuO3C4ntaIqs4WaXVfPDhnmwBRnp8JF6nuz2BKjWbbUttHfMyUdvImSAPQ0OyAJPYFUFsTyz83SO39KZdJrYQbM=
+	t=1756215167; cv=none; b=VTjPTIc9PljVj0XtYM//5imwMm8+Y7pAtCw9tFZqPWGkXBh9bWYDmy+tdLsSOgzhvhqRTy5HEWlz/BXHMlgXFZv9rlUHaBgANXtkbletR1AcRyOXhTFWVsrG3tH2DDTRvgSbdIxMwx3RF4//f3bF351rqpwX+/8QCyWXE3dLfao=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756216958; c=relaxed/simple;
-	bh=5TbxwRKVGABm3PGMxJWLDRCAt6QQviBVSbj3LgcQxQY=;
+	s=arc-20240116; t=1756215167; c=relaxed/simple;
+	bh=gnI+JicFiN8PDcxLumzGH0N6zsLJFjfwNjS/ywaMFfQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=EUcgnNJkabN3NXw55UiQ+BSiaC3+i99psGH+SYJ4IuJJisbO9FmGqvcdPwfFt50qT4Xci1kj9N3pJc6eVIiyoMevEmHMY14bDtsLJP+goudMkzzqnKpNFoaYEdFQRJA+vB++MB+R0w1jngjxp8YKbJPmIFy3U6M2nAf/3HGf5u0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ptgugnfY; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id BC5F5C4CEF1;
-	Tue, 26 Aug 2025 14:02:35 +0000 (UTC)
+	 MIME-Version; b=dHgC5sJSsN8b28xIJaxVwoCiaNaOuIU40Z0Nrm8kuKZywjtONFP8pObocRVD7zN8mKcLx8kq6q35zodHYkOtj1VtYwgpOTYR5X0aOwuXLmUOvV5eRGuF12s1NOQSar+hVWfDl2jBxYbUBqvjyBFwi68ZLyPhinfNGgDLDhnjw8s=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ORip5vfG; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 55985C113CF;
+	Tue, 26 Aug 2025 13:32:47 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1756216956;
-	bh=5TbxwRKVGABm3PGMxJWLDRCAt6QQviBVSbj3LgcQxQY=;
+	s=korg; t=1756215167;
+	bh=gnI+JicFiN8PDcxLumzGH0N6zsLJFjfwNjS/ywaMFfQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=ptgugnfYl1fkIkYwibmNOQL76x1evl3JtIi3ly32o38lv+z1gTn9rKM5kNeSMbmUU
-	 lexnThG6ruhuGxL4yRtyNUqz1vhVGe4ZPoTfk1XIdGhI3YRB3R6lGGeQZ6gImJmlEk
-	 xn0kvXqi+xbtEg5a4nlFG4xvtWcAXihvWy5tiNCo=
+	b=ORip5vfGNq69aifOIAJOL0tysNQ3zFJoqto8eI9jV5JGCnqVv3D58loxpTLaDqpmW
+	 2UrXS7wCoDQiqCJeX2TKsIZS76VToEHGrgfwak7EroTMChwttRCxpNHIGjkzaoJ+Fs
+	 qA/8gqKNrAYuF8LNtvLUZxa4g7/g891v6hPD+LHU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	=?UTF-8?q?Timur=20Krist=C3=B3f?= <timur.kristof@gmail.com>,
-	Alex Deucher <alexander.deucher@amd.com>,
-	Rodrigo Siqueira <siqueira@igalia.com>,
-	Alex Hung <alex.hung@amd.com>
-Subject: [PATCH 5.15 573/644] drm/amd/display: Fill display clock and vblank time in dce110_fill_display_configs
-Date: Tue, 26 Aug 2025 13:11:04 +0200
-Message-ID: <20250826111000.732108440@linuxfoundation.org>
+	stable <stable@kernel.org>,
+	Miaoqian Lin <linmq006@gmail.com>
+Subject: [PATCH 6.1 412/482] most: core: Drop device reference after usage in get_channel()
+Date: Tue, 26 Aug 2025 13:11:05 +0200
+Message-ID: <20250826110941.005953127@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250826110946.507083938@linuxfoundation.org>
-References: <20250826110946.507083938@linuxfoundation.org>
+In-Reply-To: <20250826110930.769259449@linuxfoundation.org>
+References: <20250826110930.769259449@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,83 +59,41 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Timur Kristóf <timur.kristof@gmail.com>
+From: Miaoqian Lin <linmq006@gmail.com>
 
-commit 7d07140d37f792f01cfdb8ca9a6a792ab1d29126 upstream.
+commit b47b493d6387ae437098112936f32be27f73516c upstream.
 
-Also needed by DCE 6.
-This way the code that gathers this info can be shared between
-different DCE versions and doesn't have to be repeated.
+In get_channel(), the reference obtained by bus_find_device_by_name()
+was dropped via put_device() before accessing the device's driver data
+Move put_device() after usage to avoid potential issues.
 
-Signed-off-by: Timur Kristóf <timur.kristof@gmail.com>
-Acked-by: Alex Deucher <alexander.deucher@amd.com>
-Reviewed-by: Rodrigo Siqueira <siqueira@igalia.com>
-Reviewed-by: Alex Hung <alex.hung@amd.com>
-Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
-(cherry picked from commit 8107432dff37db26fcb641b6cebeae8981cd73a0)
-Cc: stable@vger.kernel.org
+Fixes: 2485055394be ("staging: most: core: drop device reference")
+Cc: stable <stable@kernel.org>
+Signed-off-by: Miaoqian Lin <linmq006@gmail.com>
+Link: https://lore.kernel.org/r/20250804082955.3621026-1-linmq006@gmail.com
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/gpu/drm/amd/display/dc/clk_mgr/dce100/dce_clk_mgr.c    |    2 --
- drivers/gpu/drm/amd/display/dc/clk_mgr/dce110/dce110_clk_mgr.c |   10 +++-------
- drivers/gpu/drm/amd/display/dc/clk_mgr/dce60/dce60_clk_mgr.c   |    2 --
- 3 files changed, 3 insertions(+), 11 deletions(-)
+ drivers/most/core.c |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/drivers/gpu/drm/amd/display/dc/clk_mgr/dce100/dce_clk_mgr.c
-+++ b/drivers/gpu/drm/amd/display/dc/clk_mgr/dce100/dce_clk_mgr.c
-@@ -384,8 +384,6 @@ static void dce_pplib_apply_display_requ
- {
- 	struct dm_pp_display_configuration *pp_display_cfg = &context->pp_display_cfg;
- 
--	pp_display_cfg->avail_mclk_switch_time_us = dce110_get_min_vblank_time_us(context);
--
- 	dce110_fill_display_configs(context, pp_display_cfg);
- 
- 	if (memcmp(&dc->current_state->pp_display_cfg, pp_display_cfg, sizeof(*pp_display_cfg)) !=  0)
---- a/drivers/gpu/drm/amd/display/dc/clk_mgr/dce110/dce110_clk_mgr.c
-+++ b/drivers/gpu/drm/amd/display/dc/clk_mgr/dce110/dce110_clk_mgr.c
-@@ -124,6 +124,9 @@ void dce110_fill_display_configs(
- 	int j;
- 	int num_cfgs = 0;
- 
-+	pp_display_cfg->avail_mclk_switch_time_us = dce110_get_min_vblank_time_us(context);
-+	pp_display_cfg->disp_clk_khz = dc->clk_mgr->clks.dispclk_khz;
-+	pp_display_cfg->avail_mclk_switch_time_in_disp_active_us = 0;
- 	pp_display_cfg->crtc_index = dc->res_pool->res_cap->num_timing_generator;
- 
- 	for (j = 0; j < context->stream_count; j++) {
-@@ -243,13 +246,6 @@ void dce11_pplib_apply_display_requireme
- 	pp_display_cfg->min_engine_clock_deep_sleep_khz
- 			= context->bw_ctx.bw.dce.sclk_deep_sleep_khz;
- 
--	pp_display_cfg->avail_mclk_switch_time_us =
--						dce110_get_min_vblank_time_us(context);
--	/* TODO: dce11.2*/
--	pp_display_cfg->avail_mclk_switch_time_in_disp_active_us = 0;
--
--	pp_display_cfg->disp_clk_khz = dc->clk_mgr->clks.dispclk_khz;
--
- 	dce110_fill_display_configs(context, pp_display_cfg);
- 
- 	if (memcmp(&dc->current_state->pp_display_cfg, pp_display_cfg, sizeof(*pp_display_cfg)) !=  0)
---- a/drivers/gpu/drm/amd/display/dc/clk_mgr/dce60/dce60_clk_mgr.c
-+++ b/drivers/gpu/drm/amd/display/dc/clk_mgr/dce60/dce60_clk_mgr.c
-@@ -100,8 +100,6 @@ static void dce60_pplib_apply_display_re
- {
- 	struct dm_pp_display_configuration *pp_display_cfg = &context->pp_display_cfg;
- 
--	pp_display_cfg->avail_mclk_switch_time_us = dce110_get_min_vblank_time_us(context);
--
- 	dce110_fill_display_configs(context, pp_display_cfg);
- 
- 	if (memcmp(&dc->current_state->pp_display_cfg, pp_display_cfg, sizeof(*pp_display_cfg)) !=  0)
+--- a/drivers/most/core.c
++++ b/drivers/most/core.c
+@@ -538,8 +538,8 @@ static struct most_channel *get_channel(
+ 	dev = bus_find_device_by_name(&mostbus, NULL, mdev);
+ 	if (!dev)
+ 		return NULL;
+-	put_device(dev);
+ 	iface = dev_get_drvdata(dev);
++	put_device(dev);
+ 	list_for_each_entry_safe(c, tmp, &iface->p->channel_list, list) {
+ 		if (!strcmp(dev_name(&c->dev), mdev_ch))
+ 			return c;
 
 
 
