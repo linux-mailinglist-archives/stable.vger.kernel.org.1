@@ -1,56 +1,69 @@
-Return-Path: <stable+bounces-174202-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-174684-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9DC7DB36215
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 15:15:46 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id C5EB7B363AB
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 15:32:13 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id A7AE1200D27
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 13:10:27 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 6D16D7B76EB
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 13:30:28 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 381E233CE88;
-	Tue, 26 Aug 2025 13:09:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0874C3431FD;
+	Tue, 26 Aug 2025 13:30:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Rhe45Voj"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="L+YdfRzt"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D722C312803;
-	Tue, 26 Aug 2025 13:09:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BAEA23019A3;
+	Tue, 26 Aug 2025 13:30:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756213764; cv=none; b=DlwWDD9AX+1h0I4YbrkoNOL5Z2Jn5sv9GTBa6xVgj+EP4s2h8sRTMrI9/sv4BHe2gwkHPzZqRvdJGpa2XRgCN6hqMc8If/2K8bxsQAhDk+XGpK58nRZAqMNyoyBEi5q22VTzD/tB3m5vaMTzRsrrZuFKMKCh/UXgCwk2E90dgCo=
+	t=1756215042; cv=none; b=U/57v32MMlB4fZ66HnZcqa3hvapZEwIa6v5CiUFuEPAuAdhPmCwyWY9mJhRFkmWBAVctiZgvVVl/1mY8DoVW8UwfqNANtYao9magfoQX3Ye6IcE5pOFjzNlxQDHJwBXcirSPrzOtU7GIGNb/+Yh3UVdE2Qt50gpKvbrolPyDtHA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756213764; c=relaxed/simple;
-	bh=FToD9ysu1iCZY1EEs2zA0f0tkQmhRxBry9SptAdTMBQ=;
+	s=arc-20240116; t=1756215042; c=relaxed/simple;
+	bh=+jyoG6wStOd9X+l2F10eB6Wx0TBSFwAnOcena8YFeuU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=fvGq/yGzKWfj+h5xrCJlme9rSEVORqGu5qIkIoO8WLS1cU7/CmneEGrZ+FkmsEQjWvmZ6nqeVHzQFLCdgDdqp1d4F4GylK4hvTrhaPEd+uwanlDs6+2LB6jvA6PWI2ZBqacHVXC/vUefH4DXJ3OjX5cK1PYo5mut1ann+YmXnps=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Rhe45Voj; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6C539C4CEF1;
-	Tue, 26 Aug 2025 13:09:24 +0000 (UTC)
+	 MIME-Version; b=pSeElRAsv48GkxqMtdNXPoh/NR9nHHHFrA6eo49J5LxJX7tdMWkgP15h2j5TDS1So2NEqKMeum78QoWIhkg+Ef1V+sl+PL4RCuy7TcE0+w45qEyslYWZYWc0ZXgK8VnWhmWkyddRcwCIDLH9n9gDuDAjkHraR54CMWJlI/JrQ30=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=L+YdfRzt; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2AB61C4CEF1;
+	Tue, 26 Aug 2025 13:30:42 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1756213764;
-	bh=FToD9ysu1iCZY1EEs2zA0f0tkQmhRxBry9SptAdTMBQ=;
+	s=korg; t=1756215042;
+	bh=+jyoG6wStOd9X+l2F10eB6Wx0TBSFwAnOcena8YFeuU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Rhe45VojRkETA18RAkh7sOCCy9t8k7fyxpKSdlSfLBGKclR2oWZJo1/eBfPzc6waH
-	 0vb8ymZZZs6Pr91mR+hyaGn3loPG3lrWQ5eFgmToLPrnhsn3v9RkWe76OFSVBt+Ou0
-	 P9iUMzyXBk/9yV7newnQZG+M52vKR123BYf2dBRE=
+	b=L+YdfRztQCLK9uMOPqxDaBnCdRXbCSR3a2O5dGuEe7eitnVsYoxPzd9dgX2pOh8ZN
+	 L/dHojm8FUwzm/Ceo6GCL6QWRoSQ/iAe6reoOurcyxANkvexrZyL8SPIqr7YDhfVNk
+	 Z3TDXB0Li0Bz4oelVGFSeHC5scSE3S4kqbAUXcwc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	=?UTF-8?q?Thomas=20Wei=C3=9Fschuh?= <thomas.weissschuh@linutronix.de>,
-	Nathan Chancellor <nathan@kernel.org>,
-	Masahiro Yamada <masahiroy@kernel.org>
-Subject: [PATCH 6.6 470/587] kbuild: userprogs: use correct linker when mixing clang and GNU ld
+	Anshuman Khandual <anshuman.khandual@arm.com>,
+	David Hildenbrand <david@redhat.com>,
+	Dev Jain <dev.jain@arm.com>,
+	Catalin Marinas <catalin.marinas@arm.com>,
+	Will Deacon <will@kernel.org>,
+	Ryan Roberts <ryan.roberts@arm.com>,
+	Paul Walmsley <paul.walmsley@sifive.com>,
+	Palmer Dabbelt <palmer@dabbelt.com>,
+	Alexander Gordeev <agordeev@linux.ibm.com>,
+	Gerald Schaefer <gerald.schaefer@linux.ibm.com>,
+	Heiko Carstens <hca@linux.ibm.com>,
+	Vasily Gorbik <gor@linux.ibm.com>,
+	Christian Borntraeger <borntraeger@linux.ibm.com>,
+	Sven Schnelle <svens@linux.ibm.com>,
+	Andrew Morton <akpm@linux-foundation.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.1 366/482] mm/ptdump: take the memory hotplug lock inside ptdump_walk_pgd()
 Date: Tue, 26 Aug 2025 13:10:19 +0200
-Message-ID: <20250826111004.931105136@linuxfoundation.org>
+Message-ID: <20250826110939.876525500@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250826110952.942403671@linuxfoundation.org>
-References: <20250826110952.942403671@linuxfoundation.org>
+In-Reply-To: <20250826110930.769259449@linuxfoundation.org>
+References: <20250826110930.769259449@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,49 +73,118 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Thomas Weißschuh <thomas.weissschuh@linutronix.de>
+From: Anshuman Khandual <anshuman.khandual@arm.com>
 
-commit 936599ca514973d44a766b7376c6bbdc96b6a8cc upstream.
+[ Upstream commit 59305202c67fea50378dcad0cc199dbc13a0e99a ]
 
-The userprogs infrastructure does not expect clang being used with GNU ld
-and in that case uses /usr/bin/ld for linking, not the configured $(LD).
-This fallback is problematic as it will break when cross-compiling.
-Mixing clang and GNU ld is used for example when building for SPARC64,
-as ld.lld is not sufficient; see Documentation/kbuild/llvm.rst.
+Memory hot remove unmaps and tears down various kernel page table regions
+as required.  The ptdump code can race with concurrent modifications of
+the kernel page tables.  When leaf entries are modified concurrently, the
+dump code may log stale or inconsistent information for a VA range, but
+this is otherwise not harmful.
 
-Relax the check around --ld-path so it gets used for all linkers.
+But when intermediate levels of kernel page table are freed, the dump code
+will continue to use memory that has been freed and potentially
+reallocated for another purpose.  In such cases, the ptdump code may
+dereference bogus addresses, leading to a number of potential problems.
 
-Fixes: dfc1b168a8c4 ("kbuild: userprogs: use correct lld when linking through clang")
-Cc: stable@vger.kernel.org
-Signed-off-by: Thomas Weißschuh <thomas.weissschuh@linutronix.de>
-Reviewed-by: Nathan Chancellor <nathan@kernel.org>
-Signed-off-by: Masahiro Yamada <masahiroy@kernel.org>
-[nathan: Work around wrapping '--ld-path' in cc-option in older stable
-         branches due to older minimum LLVM version]
-Signed-off-by: Nathan Chancellor <nathan@kernel.org>
+To avoid the above mentioned race condition, platforms such as arm64,
+riscv and s390 take memory hotplug lock, while dumping kernel page table
+via the sysfs interface /sys/kernel/debug/kernel_page_tables.
+
+Similar race condition exists while checking for pages that might have
+been marked W+X via /sys/kernel/debug/kernel_page_tables/check_wx_pages
+which in turn calls ptdump_check_wx().  Instead of solving this race
+condition again, let's just move the memory hotplug lock inside generic
+ptdump_check_wx() which will benefit both the scenarios.
+
+Drop get_online_mems() and put_online_mems() combination from all existing
+platform ptdump code paths.
+
+Link: https://lkml.kernel.org/r/20250620052427.2092093-1-anshuman.khandual@arm.com
+Fixes: bbd6ec605c0f ("arm64/mm: Enable memory hot remove")
+Signed-off-by: Anshuman Khandual <anshuman.khandual@arm.com>
+Acked-by: David Hildenbrand <david@redhat.com>
+Reviewed-by: Dev Jain <dev.jain@arm.com>
+Acked-by: Alexander Gordeev <agordeev@linux.ibm.com>	[s390]
+Cc: Catalin Marinas <catalin.marinas@arm.com>
+Cc: Will Deacon <will@kernel.org>
+Cc: Ryan Roberts <ryan.roberts@arm.com>
+Cc: Paul Walmsley <paul.walmsley@sifive.com>
+Cc: Palmer Dabbelt <palmer@dabbelt.com>
+Cc: Alexander Gordeev <agordeev@linux.ibm.com>
+Cc: Gerald Schaefer <gerald.schaefer@linux.ibm.com>
+Cc: Heiko Carstens <hca@linux.ibm.com>
+Cc: Vasily Gorbik <gor@linux.ibm.com>
+Cc: Christian Borntraeger <borntraeger@linux.ibm.com>
+Cc: Sven Schnelle <svens@linux.ibm.com>
+Cc: <stable@vger.kernel.org>
+Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- Makefile |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ arch/arm64/mm/ptdump_debugfs.c |    3 ---
+ arch/s390/mm/dump_pagetables.c |    2 --
+ mm/ptdump.c                    |    2 ++
+ 3 files changed, 2 insertions(+), 5 deletions(-)
 
---- a/Makefile
-+++ b/Makefile
-@@ -1061,7 +1061,7 @@ KBUILD_USERCFLAGS  += $(filter -m32 -m64
- KBUILD_USERLDFLAGS += $(filter -m32 -m64 --target=%, $(KBUILD_CPPFLAGS) $(KBUILD_CFLAGS))
+--- a/arch/arm64/mm/ptdump_debugfs.c
++++ b/arch/arm64/mm/ptdump_debugfs.c
+@@ -1,6 +1,5 @@
+ // SPDX-License-Identifier: GPL-2.0
+ #include <linux/debugfs.h>
+-#include <linux/memory_hotplug.h>
+ #include <linux/seq_file.h>
  
- # userspace programs are linked via the compiler, use the correct linker
--ifeq ($(CONFIG_CC_IS_CLANG)$(CONFIG_LD_IS_LLD),yy)
-+ifdef CONFIG_CC_IS_CLANG
- KBUILD_USERLDFLAGS += $(call cc-option, --ld-path=$(LD))
- endif
+ #include <asm/ptdump.h>
+@@ -9,9 +8,7 @@ static int ptdump_show(struct seq_file *
+ {
+ 	struct ptdump_info *info = m->private;
  
+-	get_online_mems();
+ 	ptdump_walk(m, info);
+-	put_online_mems();
+ 	return 0;
+ }
+ DEFINE_SHOW_ATTRIBUTE(ptdump);
+--- a/arch/s390/mm/dump_pagetables.c
++++ b/arch/s390/mm/dump_pagetables.c
+@@ -249,11 +249,9 @@ static int ptdump_show(struct seq_file *
+ 		.marker = address_markers,
+ 	};
+ 
+-	get_online_mems();
+ 	mutex_lock(&cpa_mutex);
+ 	ptdump_walk_pgd(&st.ptdump, &init_mm, NULL);
+ 	mutex_unlock(&cpa_mutex);
+-	put_online_mems();
+ 	return 0;
+ }
+ DEFINE_SHOW_ATTRIBUTE(ptdump);
+--- a/mm/ptdump.c
++++ b/mm/ptdump.c
+@@ -152,6 +152,7 @@ void ptdump_walk_pgd(struct ptdump_state
+ {
+ 	const struct ptdump_range *range = st->range;
+ 
++	get_online_mems();
+ 	mmap_write_lock(mm);
+ 	while (range->start != range->end) {
+ 		walk_page_range_novma(mm, range->start, range->end,
+@@ -159,6 +160,7 @@ void ptdump_walk_pgd(struct ptdump_state
+ 		range++;
+ 	}
+ 	mmap_write_unlock(mm);
++	put_online_mems();
+ 
+ 	/* Flush out the last page */
+ 	st->note_page(st, 0, -1, 0);
 
 
 
