@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-172989-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-175008-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 00E90B35B3D
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 13:21:55 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 394AFB36623
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 15:53:51 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 833C41888736
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 11:20:14 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id F13E08E5315
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 13:45:25 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 96A66343214;
-	Tue, 26 Aug 2025 11:18:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4B75C345726;
+	Tue, 26 Aug 2025 13:44:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="bePoTgH3"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="E7QjAsqc"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5081E3431F5;
-	Tue, 26 Aug 2025 11:18:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 096713431FD;
+	Tue, 26 Aug 2025 13:44:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756207086; cv=none; b=juAfpLBtFA9bhkYE6W7uec80cbJQUfZoyVr/kE/AckEjWy9kwTpe6C/8vrhr+PVOYs5HYHc735jwqZqhuYfQyJnTjGBuHzlo07vpFSQPzVsha8eGQNuTtELuH7WC56PsfoZTMPamWhGnjPeQDo348ffWkHTLxFuRUsUMEG1uWDI=
+	t=1756215897; cv=none; b=TccbS8FlJNMpXOxCoyO22zPKz6lmV1fgf+1jr580lGePpAJTq0ceAIFid3H1Nw6JOAHt1IrOi9Vd9SRS/rD9woUwLftv9l9jW+AoJ6ojHvLvW3jPAwaVuZlLJCshBa9KBjkv6dapWqPaFLRY91o1qaq0FdSMMFD7sCO6bj1Kj4Y=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756207086; c=relaxed/simple;
-	bh=e66bVIWDX0se20iTh0LXCvnmU3ho3VTIda+FXWjhH6Y=;
+	s=arc-20240116; t=1756215897; c=relaxed/simple;
+	bh=XUUwuuQhXeMhU7yUX6JdWrdgnn3c2a08WPUK5333qRk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=OxeQ2PMA7MPMod2R8FfscYCNkqwSdh9BcxrVAGKXgwVXCVtdpJT7zX/mc6ejXfKRpGiKRmn4ei2LBcwyWDtJMppGyNJ60oUBbU3XVPoOqgFnR/aUIDDKVI9SiIZizUVCyNlThdzMANv+oKnzT8esp+ktI13wonVM6Xku977JmQ4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=bePoTgH3; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id DD45EC19421;
-	Tue, 26 Aug 2025 11:18:05 +0000 (UTC)
+	 MIME-Version; b=udRlwJe0Pql0Txkjv0loXIlrZDtXmK/PGZU4F0EcgM6xh/25EZjmH8E1fBlKqoAYST30LOP0eH/rOlQbzZOW9G9U3QynofxsPS13wgJPse3ouzc6D7IfpDozuc1SVJsz/gPlo0LgAG/qN5MyqWnBychgrw+F1ceJESIR1XJEpBE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=E7QjAsqc; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8FF6BC4CEF1;
+	Tue, 26 Aug 2025 13:44:56 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1756207086;
-	bh=e66bVIWDX0se20iTh0LXCvnmU3ho3VTIda+FXWjhH6Y=;
+	s=korg; t=1756215896;
+	bh=XUUwuuQhXeMhU7yUX6JdWrdgnn3c2a08WPUK5333qRk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=bePoTgH3WC/7FIRyi05ZQRIVjOLUlO1ViyHvwbJusQ91MeJnuQnXZxN4kXFxtYsWM
-	 xNnQ1uHL0FX5ngUdk3ZvvxkraqnYfwAkS7NYkf1IlGtOmYvqeYChKCg0fT2rf+Ccyw
-	 k21R4P+pdPL0N621QedAbqHdSrRhraS0uXwcokqI=
+	b=E7QjAsqc5aksdP+8QPuKLsTARP+XgCFV/lp1HHvHOGiRxexliAHknImcEQ1HsPd31
+	 IF4sMmnvou3jB3pr+UBMOrN/IUcdghx+gE6hecTXRN1wiFIQPgxIuNrh6W9PGHcior
+	 6uoUGYR2HNUvlPnMEyQuhCP3toyYdccQ8OPtFI4c=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Alexander Wilhelm <alexander.wilhelm@westermo.com>,
-	Manivannan Sadhasivam <mani@kernel.org>,
-	Jeff Hugo <jeff.hugo@oss.qualcomm.com>,
-	Krishna Chaitanya Chundru <krishna.chundru@oss.qualcomm.com>
-Subject: [PATCH 6.16 015/457] bus: mhi: host: Fix endianness of BHI vector table
+	Brian Masney <bmasney@redhat.com>,
+	Alexandre Belloni <alexandre.belloni@bootlin.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.15 208/644] rtc: hym8563: fix incorrect maximum clock rate handling
 Date: Tue, 26 Aug 2025 13:04:59 +0200
-Message-ID: <20250826110937.699949552@linuxfoundation.org>
+Message-ID: <20250826110951.597345243@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250826110937.289866482@linuxfoundation.org>
-References: <20250826110937.289866482@linuxfoundation.org>
+In-Reply-To: <20250826110946.507083938@linuxfoundation.org>
+References: <20250826110946.507083938@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,84 +62,45 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.16-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Alexander Wilhelm <alexander.wilhelm@westermo.com>
+From: Brian Masney <bmasney@redhat.com>
 
-commit f471578e8b1a90623674433a01a8845110bc76ce upstream.
+[ Upstream commit d0a518eb0a692a2ab8357e844970660c5ea37720 ]
 
-On big endian platform like PowerPC, the MHI bus (which is little endian)
-does not start properly. The following example shows the error messages by
-using QCN9274 WLAN device with ath12k driver:
+When hym8563_clkout_round_rate() is called with a requested rate higher
+than the highest supported rate, it currently returns 0, which disables
+the clock. According to the clk API, round_rate() should instead return
+the highest supported rate. Update the function to return the maximum
+supported rate in this case.
 
-    ath12k_pci 0001:01:00.0: BAR 0: assigned [mem 0xc00000000-0xc001fffff 64bit]
-    ath12k_pci 0001:01:00.0: MSI vectors: 1
-    ath12k_pci 0001:01:00.0: Hardware name: qcn9274 hw2.0
-    ath12k_pci 0001:01:00.0: failed to set mhi state: POWER_ON(2)
-    ath12k_pci 0001:01:00.0: failed to start mhi: -110
-    ath12k_pci 0001:01:00.0: failed to power up :-110
-    ath12k_pci 0001:01:00.0: failed to create soc core: -110
-    ath12k_pci 0001:01:00.0: failed to init core: -110
-    ath12k_pci: probe of 0001:01:00.0 failed with error -110
-
-The issue seems to be with the incorrect DMA address/size used for
-transferring the firmware image over BHI. So fix it by converting the DMA
-address and size of the BHI vector table to little endian format before
-sending them to the device.
-
-Fixes: 6cd330ae76ff ("bus: mhi: core: Add support for ringing channel/event ring doorbells")
-Signed-off-by: Alexander Wilhelm <alexander.wilhelm@westermo.com>
-[mani: added stable tag and reworded commit message]
-Signed-off-by: Manivannan Sadhasivam <mani@kernel.org>
-Reviewed-by: Jeff Hugo <jeff.hugo@oss.qualcomm.com>
-Reviewed-by: Krishna Chaitanya Chundru <krishna.chundru@oss.qualcomm.com>
-Cc: stable@vger.kernel.org
-Link: https://patch.msgid.link/20250519145837.958153-1-alexander.wilhelm@westermo.com
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: dcaf038493525 ("rtc: add hym8563 rtc-driver")
+Signed-off-by: Brian Masney <bmasney@redhat.com>
+Link: https://lore.kernel.org/r/20250710-rtc-clk-round-rate-v1-2-33140bb2278e@redhat.com
+Signed-off-by: Alexandre Belloni <alexandre.belloni@bootlin.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/bus/mhi/host/boot.c     |    8 ++++----
- drivers/bus/mhi/host/internal.h |    4 ++--
- 2 files changed, 6 insertions(+), 6 deletions(-)
+ drivers/rtc/rtc-hym8563.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/drivers/bus/mhi/host/boot.c
-+++ b/drivers/bus/mhi/host/boot.c
-@@ -31,8 +31,8 @@ int mhi_rddm_prepare(struct mhi_controll
- 	int ret;
+diff --git a/drivers/rtc/rtc-hym8563.c b/drivers/rtc/rtc-hym8563.c
+index 0751cae27285..93fd182d440b 100644
+--- a/drivers/rtc/rtc-hym8563.c
++++ b/drivers/rtc/rtc-hym8563.c
+@@ -312,7 +312,7 @@ static long hym8563_clkout_round_rate(struct clk_hw *hw, unsigned long rate,
+ 		if (clkout_rates[i] <= rate)
+ 			return clkout_rates[i];
  
- 	for (i = 0; i < img_info->entries - 1; i++, mhi_buf++, bhi_vec++) {
--		bhi_vec->dma_addr = mhi_buf->dma_addr;
--		bhi_vec->size = mhi_buf->len;
-+		bhi_vec->dma_addr = cpu_to_le64(mhi_buf->dma_addr);
-+		bhi_vec->size = cpu_to_le64(mhi_buf->len);
- 	}
+-	return 0;
++	return clkout_rates[0];
+ }
  
- 	dev_dbg(dev, "BHIe programming for RDDM\n");
-@@ -431,8 +431,8 @@ static void mhi_firmware_copy_bhie(struc
- 	while (remainder) {
- 		to_cpy = min(remainder, mhi_buf->len);
- 		memcpy(mhi_buf->buf, buf, to_cpy);
--		bhi_vec->dma_addr = mhi_buf->dma_addr;
--		bhi_vec->size = to_cpy;
-+		bhi_vec->dma_addr = cpu_to_le64(mhi_buf->dma_addr);
-+		bhi_vec->size = cpu_to_le64(to_cpy);
- 
- 		buf += to_cpy;
- 		remainder -= to_cpy;
---- a/drivers/bus/mhi/host/internal.h
-+++ b/drivers/bus/mhi/host/internal.h
-@@ -25,8 +25,8 @@ struct mhi_ctxt {
- };
- 
- struct bhi_vec_entry {
--	u64 dma_addr;
--	u64 size;
-+	__le64 dma_addr;
-+	__le64 size;
- };
- 
- enum mhi_fw_load_type {
+ static int hym8563_clkout_set_rate(struct clk_hw *hw, unsigned long rate,
+-- 
+2.39.5
+
 
 
 
