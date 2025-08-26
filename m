@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-174111-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-175238-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id DF248B36182
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 15:10:03 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 77446B3674F
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 16:05:33 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 2971B2A60F4
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 13:05:51 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 8D86B9821B7
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 13:56:24 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3C9B6259CB2;
-	Tue, 26 Aug 2025 13:05:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 00A2134F48B;
+	Tue, 26 Aug 2025 13:55:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="2lYEaegt"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="pCkWSHJf"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EDF7A22A4E5;
-	Tue, 26 Aug 2025 13:05:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B2F58286881;
+	Tue, 26 Aug 2025 13:55:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756213523; cv=none; b=jPLJjUf6It3Tjxn7awW/NkeFEkjHOqv8HNt2X2tDcM29suA64a7L46LkGbJxOr9dxcTdRhTb76uBG5xaXyWoPOWhbcS/1tbC1pdC7npq3pSa2Zj7bPf3FXWW4Z+6TCdUkxJ2CM5rXa4nS2Xkwf7LxHlWNWOpBgbeG2HJ8cyurgI=
+	t=1756216507; cv=none; b=tq4Czf6Oug/zxb5D2DD852N2WMP8CzpHOVvbYi2ibD8I25RMmLjewA5WgNT9zssxAtgLrfKEMgl5QHCEbjCJEF5CafRGuP6rxwI70EeaYbtUtjk4sPUrj34Uv1FG/v6SnOjOd5WYCUvHVWH9KEbmoN7iZXng3NomDCyVLkxCJqQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756213523; c=relaxed/simple;
-	bh=aQN8c0l4/RS7SWsFuEPLuPJKnoKYky4NNJQDc5xNkkE=;
+	s=arc-20240116; t=1756216507; c=relaxed/simple;
+	bh=Hxrv10zO2ASsDsUIfyi/BcFUc2HFUNrN71TI2lC8PPc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=dkrDCZkEAT0FCLZgb4Z70sL9vrVvcyvtGQ3wcOITZNLzq08DIfEk0r3nyte/E/A7KZ3hE+SawJLwTieABz7xXWBbvn0FSoHiUhSPv8+kogxmVFXPVCEXmbibAJgpRhlj0E6nMmBYRE2hTScV13OF7ij94oEsb8w3lz7QvhvrSIo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=2lYEaegt; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 72852C113CF;
-	Tue, 26 Aug 2025 13:05:22 +0000 (UTC)
+	 MIME-Version; b=dgssvkSJ5hHSWEjUURfiazquByIGi3fzSQcgMsAl7y9QkTSKknyhPucOZU15NWYB79tBRmTntEcL5ZjQe4PHsbLtAKSSVEgyub4SOwwVO7mK3bANOuD2AvNqSJTK7W52+80MWeOFA1EH5fINenH/kKJUZH1a8xgaibIC7Qt1Xwo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=pCkWSHJf; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 48B1CC4CEF1;
+	Tue, 26 Aug 2025 13:55:07 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1756213522;
-	bh=aQN8c0l4/RS7SWsFuEPLuPJKnoKYky4NNJQDc5xNkkE=;
+	s=korg; t=1756216507;
+	bh=Hxrv10zO2ASsDsUIfyi/BcFUc2HFUNrN71TI2lC8PPc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=2lYEaegtf9/rEvqBlBdYPoa9CGaOTxvA6QFHVc2U7yEmKkhNEttD5WJJ8XH5bXd5Q
-	 fQ7KtL2prnsqBk3FuUYZ6tkTWV3nxHLFgrl5LXXRJ6pMmBm1p0CfY8cbWb5+M8vLcu
-	 Nc+H0Whf/FihOvYvhhUBpedV11dqGvuD7NV3bZiE=
+	b=pCkWSHJf3cGWZgYrmcJSNwYEwN7XB9ue/uVWKuiXuPT+8ulcHsMKSerB9Z+QhlBVq
+	 0GzIln6lf7eKaeayt+wmKCegm/rO1205uv2cz6LhaXFpJWOwOQb7TJKjKPUV0Gq3F6
+	 lM/Pi8XZbXo5/n0Hcls1rGp/ILksnhrt+mzGo2p8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Giovanni Cabiddu <giovanni.cabiddu@intel.com>,
-	Eric Biggers <ebiggers@kernel.org>,
-	Herbert Xu <herbert@gondor.apana.org.au>
-Subject: [PATCH 6.6 342/587] crypto: qat - lower priority for skcipher and aead algorithms
+	Arnd Bergmann <arnd@arndb.de>,
+	Leon Romanovsky <leon@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.15 400/644] RDMA/core: reduce stack using in nldev_stat_get_doit()
 Date: Tue, 26 Aug 2025 13:08:11 +0200
-Message-ID: <20250826111001.615416150@linuxfoundation.org>
+Message-ID: <20250826110956.363379434@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250826110952.942403671@linuxfoundation.org>
-References: <20250826110952.942403671@linuxfoundation.org>
+In-Reply-To: <20250826110946.507083938@linuxfoundation.org>
+References: <20250826110946.507083938@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,86 +62,82 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Giovanni Cabiddu <giovanni.cabiddu@intel.com>
+From: Arnd Bergmann <arnd@arndb.de>
 
-commit 8024774190a5ef2af2c5846f60a50b23e0980a32 upstream.
+[ Upstream commit 43163f4c30f94d2103c948a247cdf2cda5068ca7 ]
 
-Most kernel applications utilizing the crypto API operate synchronously
-and on small buffer sizes, therefore do not benefit from QAT acceleration.
+In the s390 defconfig, gcc-10 and earlier end up inlining three functions
+into nldev_stat_get_doit(), and each of them uses some 600 bytes of stack.
 
-Reduce the priority of QAT implementations for both skcipher and aead
-algorithms, allowing more suitable alternatives to be selected by default.
+The result is a function with an overly large stack frame and a warning:
 
-Signed-off-by: Giovanni Cabiddu <giovanni.cabiddu@intel.com>
-Link: https://lore.kernel.org/all/20250613012357.GA3603104@google.com/
-Cc: stable@vger.kernel.org
-Acked-by: Eric Biggers <ebiggers@kernel.org>
-Signed-off-by: Herbert Xu <herbert@gondor.apana.org.au>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+drivers/infiniband/core/nldev.c:2466:1: error: the frame size of 1720 bytes is larger than 1280 bytes [-Werror=frame-larger-than=]
+
+Mark the three functions noinline_for_stack to prevent this, ensuring
+that only one copy of the nlattr array is on the stack of each function.
+
+Signed-off-by: Arnd Bergmann <arnd@arndb.de>
+Link: https://patch.msgid.link/20250620113335.3776965-1-arnd@kernel.org
+Signed-off-by: Leon Romanovsky <leon@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/crypto/intel/qat/qat_common/qat_algs.c |   12 ++++++------
- 1 file changed, 6 insertions(+), 6 deletions(-)
+ drivers/infiniband/core/nldev.c | 22 ++++++++++++----------
+ 1 file changed, 12 insertions(+), 10 deletions(-)
 
---- a/drivers/crypto/intel/qat/qat_common/qat_algs.c
-+++ b/drivers/crypto/intel/qat/qat_common/qat_algs.c
-@@ -1277,7 +1277,7 @@ static struct aead_alg qat_aeads[] = { {
- 	.base = {
- 		.cra_name = "authenc(hmac(sha1),cbc(aes))",
- 		.cra_driver_name = "qat_aes_cbc_hmac_sha1",
--		.cra_priority = 4001,
-+		.cra_priority = 100,
- 		.cra_flags = CRYPTO_ALG_ASYNC | CRYPTO_ALG_ALLOCATES_MEMORY,
- 		.cra_blocksize = AES_BLOCK_SIZE,
- 		.cra_ctxsize = sizeof(struct qat_alg_aead_ctx),
-@@ -1294,7 +1294,7 @@ static struct aead_alg qat_aeads[] = { {
- 	.base = {
- 		.cra_name = "authenc(hmac(sha256),cbc(aes))",
- 		.cra_driver_name = "qat_aes_cbc_hmac_sha256",
--		.cra_priority = 4001,
-+		.cra_priority = 100,
- 		.cra_flags = CRYPTO_ALG_ASYNC | CRYPTO_ALG_ALLOCATES_MEMORY,
- 		.cra_blocksize = AES_BLOCK_SIZE,
- 		.cra_ctxsize = sizeof(struct qat_alg_aead_ctx),
-@@ -1311,7 +1311,7 @@ static struct aead_alg qat_aeads[] = { {
- 	.base = {
- 		.cra_name = "authenc(hmac(sha512),cbc(aes))",
- 		.cra_driver_name = "qat_aes_cbc_hmac_sha512",
--		.cra_priority = 4001,
-+		.cra_priority = 100,
- 		.cra_flags = CRYPTO_ALG_ASYNC | CRYPTO_ALG_ALLOCATES_MEMORY,
- 		.cra_blocksize = AES_BLOCK_SIZE,
- 		.cra_ctxsize = sizeof(struct qat_alg_aead_ctx),
-@@ -1329,7 +1329,7 @@ static struct aead_alg qat_aeads[] = { {
- static struct skcipher_alg qat_skciphers[] = { {
- 	.base.cra_name = "cbc(aes)",
- 	.base.cra_driver_name = "qat_aes_cbc",
--	.base.cra_priority = 4001,
-+	.base.cra_priority = 100,
- 	.base.cra_flags = CRYPTO_ALG_ASYNC | CRYPTO_ALG_ALLOCATES_MEMORY,
- 	.base.cra_blocksize = AES_BLOCK_SIZE,
- 	.base.cra_ctxsize = sizeof(struct qat_alg_skcipher_ctx),
-@@ -1347,7 +1347,7 @@ static struct skcipher_alg qat_skciphers
- }, {
- 	.base.cra_name = "ctr(aes)",
- 	.base.cra_driver_name = "qat_aes_ctr",
--	.base.cra_priority = 4001,
-+	.base.cra_priority = 100,
- 	.base.cra_flags = CRYPTO_ALG_ASYNC | CRYPTO_ALG_ALLOCATES_MEMORY,
- 	.base.cra_blocksize = 1,
- 	.base.cra_ctxsize = sizeof(struct qat_alg_skcipher_ctx),
-@@ -1365,7 +1365,7 @@ static struct skcipher_alg qat_skciphers
- }, {
- 	.base.cra_name = "xts(aes)",
- 	.base.cra_driver_name = "qat_aes_xts",
--	.base.cra_priority = 4001,
-+	.base.cra_priority = 100,
- 	.base.cra_flags = CRYPTO_ALG_ASYNC | CRYPTO_ALG_NEED_FALLBACK |
- 			  CRYPTO_ALG_ALLOCATES_MEMORY,
- 	.base.cra_blocksize = AES_BLOCK_SIZE,
+diff --git a/drivers/infiniband/core/nldev.c b/drivers/infiniband/core/nldev.c
+index 050bafc7c52d..1bfa957b8775 100644
+--- a/drivers/infiniband/core/nldev.c
++++ b/drivers/infiniband/core/nldev.c
+@@ -1391,10 +1391,11 @@ static const struct nldev_fill_res_entry fill_entries[RDMA_RESTRACK_MAX] = {
+ 
+ };
+ 
+-static int res_get_common_doit(struct sk_buff *skb, struct nlmsghdr *nlh,
+-			       struct netlink_ext_ack *extack,
+-			       enum rdma_restrack_type res_type,
+-			       res_fill_func_t fill_func)
++static noinline_for_stack int
++res_get_common_doit(struct sk_buff *skb, struct nlmsghdr *nlh,
++		    struct netlink_ext_ack *extack,
++		    enum rdma_restrack_type res_type,
++		    res_fill_func_t fill_func)
+ {
+ 	const struct nldev_fill_res_entry *fe = &fill_entries[res_type];
+ 	struct nlattr *tb[RDMA_NLDEV_ATTR_MAX];
+@@ -2041,10 +2042,10 @@ static int nldev_stat_del_doit(struct sk_buff *skb, struct nlmsghdr *nlh,
+ 	return ret;
+ }
+ 
+-static int stat_get_doit_default_counter(struct sk_buff *skb,
+-					 struct nlmsghdr *nlh,
+-					 struct netlink_ext_ack *extack,
+-					 struct nlattr *tb[])
++static noinline_for_stack int
++stat_get_doit_default_counter(struct sk_buff *skb, struct nlmsghdr *nlh,
++			      struct netlink_ext_ack *extack,
++			      struct nlattr *tb[])
+ {
+ 	struct rdma_hw_stats *stats;
+ 	struct nlattr *table_attr;
+@@ -2130,8 +2131,9 @@ static int stat_get_doit_default_counter(struct sk_buff *skb,
+ 	return ret;
+ }
+ 
+-static int stat_get_doit_qp(struct sk_buff *skb, struct nlmsghdr *nlh,
+-			    struct netlink_ext_ack *extack, struct nlattr *tb[])
++static noinline_for_stack int
++stat_get_doit_qp(struct sk_buff *skb, struct nlmsghdr *nlh,
++		 struct netlink_ext_ack *extack, struct nlattr *tb[])
+ 
+ {
+ 	static enum rdma_nl_counter_mode mode;
+-- 
+2.39.5
+
 
 
 
