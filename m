@@ -1,58 +1,59 @@
-Return-Path: <stable+bounces-176295-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-174683-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id F2D07B36C7E
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 16:56:42 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2982EB364DB
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 15:42:27 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id B3AFA565402
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 14:44:50 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 088DC683E33
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 13:31:54 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 179C234DCCE;
-	Tue, 26 Aug 2025 14:41:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 85821228C9D;
+	Tue, 26 Aug 2025 13:30:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="u05SqBeT"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="TZGo/ApY"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C96B11A76B1;
-	Tue, 26 Aug 2025 14:41:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3F4951F4CA9;
+	Tue, 26 Aug 2025 13:30:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756219286; cv=none; b=ALdVjG+xfHAPIWE4QzhloLDXG4vuD4SX0TuoIg6Po8IqKQ4ciP2bjPija3qdy/vuxlje3Zmoae5X1mosSUDnfZJg7tgslBfwa+Wsxq8YsQ85vSlgF0cJ8+9sgwX57tA8nnaTjTY0aG+VP8qibIrt2NqPz1LnjPtwjGGq/QhUFng=
+	t=1756215040; cv=none; b=NP/LMsw42uR1PV+Se7+7tpq4cxDiK/wBQMzsdDCgmTGnzPDgLr1MVYQRbfo5lq9ML67qBQ/BbnnhTsYV5Bl+WedOPNXtHrQn/YGIm9jHuFyG3HT5y0+ZOSAiR3JjLdOsvqzRVm9mEWl1kxcjKygZ4dtduuFwlsL9Tz8od4tD6/s=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756219286; c=relaxed/simple;
-	bh=oILPJaDegUtJx5tcvCZyUZ9E5CueGys8wcnjTRAL1ic=;
+	s=arc-20240116; t=1756215040; c=relaxed/simple;
+	bh=eEdOOeOYiUxGbveVQ0VKuLqes7S8XJ6S7V29TLYM2yw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Yx3v45A7ZnOkN0JVrlcHhSw+qGM35jfpUfX4Y+5PuUgLl9KmadrWMO/m5rmD+P8GsklAuaVBAEsSgxLXeNvYkiNvKs/ZU9Zu+aBz9eEzUsNblrlnI7R61SKVs5zaC/G5iHJXHhBJ6CiPhjc9baWpHiTPj8CVgOpaVtGpxbGpVWA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=u05SqBeT; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5A533C4CEF1;
-	Tue, 26 Aug 2025 14:41:26 +0000 (UTC)
+	 MIME-Version; b=eBR7HJE7Jk9yuYm7I8KvyIew8nO13SFeF1xoz44ii7xH7edXj4y/wXJ7mQ3sbmsp5Dij/Oe6Ru5YJr+Ugfdz1NGm4bGrpfc7FaYPpDbQHOe92tPjFpE8GKbYduWfGPOyCuBA27Z2tXptIfneZrGFpW8M773aaHetNJUHTLlk8Ik=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=TZGo/ApY; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C690CC4CEF1;
+	Tue, 26 Aug 2025 13:30:39 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1756219286;
-	bh=oILPJaDegUtJx5tcvCZyUZ9E5CueGys8wcnjTRAL1ic=;
+	s=korg; t=1756215040;
+	bh=eEdOOeOYiUxGbveVQ0VKuLqes7S8XJ6S7V29TLYM2yw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=u05SqBeTyaKN0Jd0ytsnOMiFqwmsgOSS2m0lUZWPTX1uMqGM2Kfn9r1PPNxDXVswq
-	 yOCiZKiRWOEKJC42vP2vOgkmxdbnx3ALnmT/KHvoGunn8iIJYSB0pL2GuISjK6TPDA
-	 8zLvBueVLWyBkXcugoQsejcRJHzgMnHl5X+7BCrg=
+	b=TZGo/ApYHxnyFBG66Kog9gBTDfitqyrgy075B1c+mOxPujyguor6+pNZkUmhCeSPr
+	 x/lSHsLhOnaXxDvE/p6RTJrmbM9x+An887y1F1CDln2VPqDDjtJkZsP57qYmCnZoPC
+	 mKw3MH02HNXwfIpmT4iSHLxWjg9rF57DVn4FI9vQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	stable@kernel.org,
-	Disha Goel <disgoel@linux.ibm.com>,
-	Ojaswin Mujoo <ojaswin@linux.ibm.com>,
-	"Darrick J. Wong" <djwong@kernel.org>,
-	Theodore Tso <tytso@mit.edu>
-Subject: [PATCH 5.4 292/403] ext4: fix fsmap end of range reporting with bigalloc
+	Li Shuang <shuali@redhat.com>,
+	Petr Machata <petrm@nvidia.com>,
+	Ivan Vecera <ivecera@redhat.com>,
+	Davide Caratti <dcaratti@redhat.com>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.1 365/482] net/sched: ets: use old nbands while purging unused classes
 Date: Tue, 26 Aug 2025 13:10:18 +0200
-Message-ID: <20250826110914.877276988@linuxfoundation.org>
+Message-ID: <20250826110939.852457479@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250826110905.607690791@linuxfoundation.org>
-References: <20250826110905.607690791@linuxfoundation.org>
+In-Reply-To: <20250826110930.769259449@linuxfoundation.org>
+References: <20250826110930.769259449@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,124 +65,120 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.4-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Ojaswin Mujoo <ojaswin@linux.ibm.com>
+From: Davide Caratti <dcaratti@redhat.com>
 
-commit bae76c035bf0852844151e68098c9b7cd63ef238 upstream.
+[ Upstream commit 87c6efc5ce9c126ae4a781bc04504b83780e3650 ]
 
-With bigalloc enabled, the logic to report last extent has a bug since
-we try to use cluster units instead of block units. This can cause an
-issue where extra incorrect entries might be returned back to the
-user. This was flagged by generic/365 with 64k bs and -O bigalloc.
+Shuang reported sch_ets test-case [1] crashing in ets_class_qlen_notify()
+after recent changes from Lion [2]. The problem is: in ets_qdisc_change()
+we purge unused DWRR queues; the value of 'q->nbands' is the new one, and
+the cleanup should be done with the old one. The problem is here since my
+first attempts to fix ets_qdisc_change(), but it surfaced again after the
+recent qdisc len accounting fixes. Fix it purging idle DWRR queues before
+assigning a new value of 'q->nbands', so that all purge operations find a
+consistent configuration:
 
-** Details of issue **
+ - old 'q->nbands' because it's needed by ets_class_find()
+ - old 'q->nstrict' because it's needed by ets_class_is_strict()
 
-The issue was noticed on 5G 64k blocksize FS with -O bigalloc which has
-only 1 bg.
+ BUG: kernel NULL pointer dereference, address: 0000000000000000
+ #PF: supervisor read access in kernel mode
+ #PF: error_code(0x0000) - not-present page
+ PGD 0 P4D 0
+ Oops: Oops: 0000 [#1] SMP NOPTI
+ CPU: 62 UID: 0 PID: 39457 Comm: tc Kdump: loaded Not tainted 6.12.0-116.el10.x86_64 #1 PREEMPT(voluntary)
+ Hardware name: Dell Inc. PowerEdge R640/06DKY5, BIOS 2.12.2 07/09/2021
+ RIP: 0010:__list_del_entry_valid_or_report+0x4/0x80
+ Code: ff 4c 39 c7 0f 84 39 19 8e ff b8 01 00 00 00 c3 cc cc cc cc 66 90 90 90 90 90 90 90 90 90 90 90 90 90 90 90 90 90 f3 0f 1e fa <48> 8b 17 48 8b 4f 08 48 85 d2 0f 84 56 19 8e ff 48 85 c9 0f 84 ab
+ RSP: 0018:ffffba186009f400 EFLAGS: 00010202
+ RAX: 00000000000000d6 RBX: 0000000000000000 RCX: 0000000000000004
+ RDX: ffff9f0fa29b69c0 RSI: 0000000000000000 RDI: 0000000000000000
+ RBP: ffffffffc12c2400 R08: 0000000000000008 R09: 0000000000000004
+ R10: ffffffffffffffff R11: 0000000000000004 R12: 0000000000000000
+ R13: ffff9f0f8cfe0000 R14: 0000000000100005 R15: 0000000000000000
+ FS:  00007f2154f37480(0000) GS:ffff9f269c1c0000(0000) knlGS:0000000000000000
+ CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
+ CR2: 0000000000000000 CR3: 00000001530be001 CR4: 00000000007726f0
+ DR0: 0000000000000000 DR1: 0000000000000000 DR2: 0000000000000000
+ DR3: 0000000000000000 DR6: 00000000fffe0ff0 DR7: 0000000000000400
+ PKRU: 55555554
+ Call Trace:
+  <TASK>
+  ets_class_qlen_notify+0x65/0x90 [sch_ets]
+  qdisc_tree_reduce_backlog+0x74/0x110
+  ets_qdisc_change+0x630/0xa40 [sch_ets]
+  __tc_modify_qdisc.constprop.0+0x216/0x7f0
+  tc_modify_qdisc+0x7c/0x120
+  rtnetlink_rcv_msg+0x145/0x3f0
+  netlink_rcv_skb+0x53/0x100
+  netlink_unicast+0x245/0x390
+  netlink_sendmsg+0x21b/0x470
+  ____sys_sendmsg+0x39d/0x3d0
+  ___sys_sendmsg+0x9a/0xe0
+  __sys_sendmsg+0x7a/0xd0
+  do_syscall_64+0x7d/0x160
+  entry_SYSCALL_64_after_hwframe+0x76/0x7e
+ RIP: 0033:0x7f2155114084
+ Code: 89 02 b8 ff ff ff ff eb bb 66 2e 0f 1f 84 00 00 00 00 00 0f 1f 00 f3 0f 1e fa 80 3d 25 f0 0c 00 00 74 13 b8 2e 00 00 00 0f 05 <48> 3d 00 f0 ff ff 77 54 c3 0f 1f 00 48 83 ec 28 89 54 24 1c 48 89
+ RSP: 002b:00007fff1fd7a988 EFLAGS: 00000202 ORIG_RAX: 000000000000002e
+ RAX: ffffffffffffffda RBX: 0000560ec063e5e0 RCX: 00007f2155114084
+ RDX: 0000000000000000 RSI: 00007fff1fd7a9f0 RDI: 0000000000000003
+ RBP: 00007fff1fd7aa60 R08: 0000000000000010 R09: 000000000000003f
+ R10: 0000560ee9b3a010 R11: 0000000000000202 R12: 00007fff1fd7aae0
+ R13: 000000006891ccde R14: 0000560ec063e5e0 R15: 00007fff1fd7aad0
+  </TASK>
 
-$ xfs_io -c "fsmap -d" /mnt/scratch
+ [1] https://lore.kernel.org/netdev/e08c7f4a6882f260011909a868311c6e9b54f3e4.1639153474.git.dcaratti@redhat.com/
+ [2] https://lore.kernel.org/netdev/d912cbd7-193b-4269-9857-525bee8bbb6a@gmail.com/
 
-  0: 253:48 [0..127]: static fs metadata 128   /* sb */
-  1: 253:48 [128..255]: special 102:1 128   /* gdt */
-  3: 253:48 [256..383]: special 102:3 128   /* block bitmap */
-  4: 253:48 [384..2303]: unknown 1920       /* flex bg empty space */
-  5: 253:48 [2304..2431]: special 102:4 128   /* inode bitmap */
-  6: 253:48 [2432..4351]: unknown 1920      /* flex bg empty space */
-  7: 253:48 [4352..6911]: inodes 2560
-  8: 253:48 [6912..538623]: unknown 531712
-  9: 253:48 [538624..10485759]: free space 9947136
-
-The issue can be seen with:
-
-$ xfs_io -c "fsmap -d 0 3" /mnt/scratch
-
-  0: 253:48 [0..127]: static fs metadata 128
-  1: 253:48 [384..2047]: unknown 1664
-
-Only the first entry was expected to be returned but we get 2. This is
-because:
-
-ext4_getfsmap_datadev()
-  first_cluster, last_cluster = 0
-  ...
-  info->gfi_last = true;
-  ext4_getfsmap_datadev_helper(sb, end_ag, last_cluster + 1, 0, info);
-    fsb = C2B(1) = 16
-    fslen = 0
-    ...
-    /* Merge in any relevant extents from the meta_list */
-    list_for_each_entry_safe(p, tmp, &info->gfi_meta_list, fmr_list) {
-      ...
-      // since fsb = 16, considers all metadata which starts before 16 blockno
-      iter 1: error = ext4_getfsmap_helper(sb, info, p);  // p = sb (0,1), nop
-        info->gfi_next_fsblk = 1
-      iter 2: error = ext4_getfsmap_helper(sb, info, p);  // p = gdt (1,2), nop
-        info->gfi_next_fsblk = 2
-      iter 3: error = ext4_getfsmap_helper(sb, info, p);  // p = blk bitmap (2,3), nop
-        info->gfi_next_fsblk = 3
-      iter 4: error = ext4_getfsmap_helper(sb, info, p);  // p = ino bitmap (18,19)
-        if (rec_blk > info->gfi_next_fsblk) { // (18 > 3)
-          // emits an extra entry ** BUG **
-        }
-    }
-
-Fix this by directly calling ext4_getfsmap_datadev() with a dummy
-record that has fmr_physical set to (end_fsb + 1) instead of
-last_cluster + 1. By using the block instead of cluster we get the
-correct behavior.
-
-Replacing ext4_getfsmap_datadev_helper() with ext4_getfsmap_helper()
-is okay since the gfi_lastfree and metadata checks in
-ext4_getfsmap_datadev_helper() are anyways redundant when we only want
-to emit the last allocated block of the range, as we have already
-taken care of emitting metadata and any last free blocks.
-
-Cc: stable@kernel.org
-Reported-by: Disha Goel <disgoel@linux.ibm.com>
-Fixes: 4a622e4d477b ("ext4: fix FS_IOC_GETFSMAP handling")
-Signed-off-by: Ojaswin Mujoo <ojaswin@linux.ibm.com>
-Reviewed-by: Darrick J. Wong <djwong@kernel.org>
-Link: https://patch.msgid.link/e7472c8535c9c5ec10f425f495366864ea12c9da.1754377641.git.ojaswin@linux.ibm.com
-Signed-off-by: Theodore Ts'o <tytso@mit.edu>
+Cc: stable@vger.kernel.org
+Fixes: 103406b38c60 ("net/sched: Always pass notifications when child class becomes empty")
+Fixes: c062f2a0b04d ("net/sched: sch_ets: don't remove idle classes from the round-robin list")
+Fixes: dcc68b4d8084 ("net: sch_ets: Add a new Qdisc")
+Reported-by: Li Shuang <shuali@redhat.com>
+Closes: https://issues.redhat.com/browse/RHEL-108026
+Reviewed-by: Petr Machata <petrm@nvidia.com>
+Co-developed-by: Ivan Vecera <ivecera@redhat.com>
+Signed-off-by: Ivan Vecera <ivecera@redhat.com>
+Signed-off-by: Davide Caratti <dcaratti@redhat.com>
+Link: https://patch.msgid.link/7928ff6d17db47a2ae7cc205c44777b1f1950545.1755016081.git.dcaratti@redhat.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- fs/ext4/fsmap.c |   15 ++++++++++++---
- 1 file changed, 12 insertions(+), 3 deletions(-)
+ net/sched/sch_ets.c |   11 ++++++-----
+ 1 file changed, 6 insertions(+), 5 deletions(-)
 
---- a/fs/ext4/fsmap.c
-+++ b/fs/ext4/fsmap.c
-@@ -526,6 +526,7 @@ static int ext4_getfsmap_datadev(struct
- 	ext4_group_t end_ag;
- 	ext4_grpblk_t first_cluster;
- 	ext4_grpblk_t last_cluster;
-+	struct ext4_fsmap irec;
- 	int error = 0;
+--- a/net/sched/sch_ets.c
++++ b/net/sched/sch_ets.c
+@@ -651,6 +651,12 @@ static int ets_qdisc_change(struct Qdisc
  
- 	bofs = le32_to_cpu(sbi->s_es->s_first_data_block);
-@@ -609,10 +610,18 @@ static int ext4_getfsmap_datadev(struct
- 			goto err;
- 	}
+ 	sch_tree_lock(sch);
  
--	/* Report any gaps at the end of the bg */
-+	/*
-+	 * The dummy record below will cause ext4_getfsmap_helper() to report
-+	 * any allocated blocks at the end of the range.
-+	 */
-+	irec.fmr_device = 0;
-+	irec.fmr_physical = end_fsb + 1;
-+	irec.fmr_length = 0;
-+	irec.fmr_owner = EXT4_FMR_OWN_FREE;
-+	irec.fmr_flags = 0;
++	for (i = nbands; i < oldbands; i++) {
++		if (i >= q->nstrict && q->classes[i].qdisc->q.qlen)
++			list_del_init(&q->classes[i].alist);
++		qdisc_purge_queue(q->classes[i].qdisc);
++	}
 +
- 	info->gfi_last = true;
--	error = ext4_getfsmap_datadev_helper(sb, end_ag, last_cluster + 1,
--					     0, info);
-+	error = ext4_getfsmap_helper(sb, info, &irec);
- 	if (error)
- 		goto err;
+ 	WRITE_ONCE(q->nbands, nbands);
+ 	for (i = nstrict; i < q->nstrict; i++) {
+ 		if (q->classes[i].qdisc->q.qlen) {
+@@ -658,11 +664,6 @@ static int ets_qdisc_change(struct Qdisc
+ 			q->classes[i].deficit = quanta[i];
+ 		}
+ 	}
+-	for (i = q->nbands; i < oldbands; i++) {
+-		if (i >= q->nstrict && q->classes[i].qdisc->q.qlen)
+-			list_del_init(&q->classes[i].alist);
+-		qdisc_purge_queue(q->classes[i].qdisc);
+-	}
+ 	WRITE_ONCE(q->nstrict, nstrict);
+ 	memcpy(q->prio2band, priomap, sizeof(priomap));
  
 
 
