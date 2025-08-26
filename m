@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-175564-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-175980-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id C5F2FB368BD
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 16:19:05 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id AAC64B36ADF
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 16:41:27 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id D393E58112B
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 14:11:43 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id A350646557B
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 14:30:11 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1A59A3570A9;
-	Tue, 26 Aug 2025 14:09:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8B7FD35083A;
+	Tue, 26 Aug 2025 14:27:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="P4l0O3rQ"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="uDhk1e+6"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CD0C2356908;
-	Tue, 26 Aug 2025 14:09:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 396E134F48A;
+	Tue, 26 Aug 2025 14:27:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756217377; cv=none; b=oAv7SwD6igWFQyZwnJ1KA5qkLjOQWwTvj4FjRjoRWgkZ06iD4Ce/RyPFG2gc6XyCPcxFGmej/wbG1tvLucUHf5BdhLEe9SwNT6z+4aHawI7f83URbrXkELru+b7yF5SkM5MhC2CvhxjkBy8OgxNHNqFKhqOhx/I38qWELxlmzRY=
+	t=1756218471; cv=none; b=kQTgd7HApefOyB/q8pJM09D3Yc1zD0TZ3W1F4xCquxQOOH5fa+vXhy8ph8EUCtFyQZneZRAn3d0brxGL2jGWq2K1acwrNgHhmjbpW+ivhpJe2vOChExz7MxMiWf0u7QKztk4S12+cAc0XP3nAZACRAWfeI40FTitFisn6UtAWtA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756217377; c=relaxed/simple;
-	bh=L9+4kEGMKrfkcJ5g4+rUUUMU6AgMpGkDkNxUIdoxhc0=;
+	s=arc-20240116; t=1756218471; c=relaxed/simple;
+	bh=G0FvC5IcrAn6ELlvhvI21c9DyZ3p7LLG5Pfg4nnJ+FY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=LSjx8+5H/93K+8C/Wv8WF3C4LXa+18/6slHPX8Y0kqtl5hukojlFA6zU9RVkgq4uTzLhNfEdlG8rGrQwLOWNwZnv1/Ag537xgABXdOFa57PvCRl7FozeF22CNilHu4FRIMyvdf5B3E1kBsAh0JiU6ZtTq5nAihe/dFgqzvRJzHE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=P4l0O3rQ; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5777EC116B1;
-	Tue, 26 Aug 2025 14:09:37 +0000 (UTC)
+	 MIME-Version:Content-Type; b=S+5WnHFkJSOLfohoX036abo1IN3RiquIIRVunE7QF3+m71nHyhJ4Jx7nRkB0Rv4E/lmqsdgCO9QEgVqNo+AxqKP4dW8XytDxoBiV6hraM8HNIJuBV8iK34GNaL9Iv5yKJ8d6h02dsvEBReSXFsx3jV7rXCqrOUm6IOPrneEFHa4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=uDhk1e+6; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5257BC4CEF1;
+	Tue, 26 Aug 2025 14:27:50 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1756217377;
-	bh=L9+4kEGMKrfkcJ5g4+rUUUMU6AgMpGkDkNxUIdoxhc0=;
+	s=korg; t=1756218470;
+	bh=G0FvC5IcrAn6ELlvhvI21c9DyZ3p7LLG5Pfg4nnJ+FY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=P4l0O3rQ/v+sZxwoZ0tmLC6Xzi/ZwlBfOoRzdwmYgFE9XQqUWsqIKpKwprBqPnT/W
-	 BF2tA2jq/9LstWAw7mrGbzQqcLuVyrJaxinKZa7LtFRgKJps2SuHmIb4zEdQbaO1gx
-	 AgxLfo/XVByipO11XNz9ONtxnlXA81Vb1LS7XKXQ=
+	b=uDhk1e+6oFDnye70vw1x0a31qS6d/onfzjMh9KuofK62IPcwsGkHKaBVCRCmqtVWG
+	 rqZWYFV7xBx6dEYvLLtNqrjPLzqTXkHY5gYnRmwP52qkXgj08VViE1bZxk2bmOWSJ1
+	 QRpb0aUWc8C5EO1dEwy784LKd67OeNH9BMqvwP0A=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Hans Zhang <18255117159@163.com>,
-	Manivannan Sadhasivam <mani@kernel.org>,
-	Shawn Lin <shawn.lin@rock-chips.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 120/523] PCI: rockchip-host: Fix "Unexpected Completion" log message
-Date: Tue, 26 Aug 2025 13:05:30 +0200
-Message-ID: <20250826110927.477561097@linuxfoundation.org>
+	=?UTF-8?q?Cl=C3=A9ment=20Le=20Goffic?= <clement.legoffic@foss.st.com>,
+	Alain Volmat <alain.volmat@foss.st.com>,
+	Andi Shyti <andi.shyti@kernel.org>
+Subject: [PATCH 5.4 005/403] i2c: stm32: fix the device used for the DMA map
+Date: Tue, 26 Aug 2025 13:05:31 +0200
+Message-ID: <20250826110905.772959239@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250826110924.562212281@linuxfoundation.org>
-References: <20250826110924.562212281@linuxfoundation.org>
+In-Reply-To: <20250826110905.607690791@linuxfoundation.org>
+References: <20250826110905.607690791@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,48 +60,82 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+5.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Hans Zhang <18255117159@163.com>
+From: Clément Le Goffic <clement.legoffic@foss.st.com>
 
-[ Upstream commit fcc5f586c4edbcc10de23fb9b8c0972a84e945cd ]
+commit c870cbbd71fccda71d575f0acd4a8d2b7cd88861 upstream.
 
-Fix the debug message for the PCIE_CORE_INT_UCR interrupt to clearly
-indicate "Unexpected Completion" instead of a duplicate "malformed TLP"
-message.
+If the DMA mapping failed, it produced an error log with the wrong
+device name:
+"stm32-dma3 40400000.dma-controller: rejecting DMA map of vmalloc memory"
+Fix this issue by replacing the dev with the I2C dev.
 
-Fixes: e77f847df54c ("PCI: rockchip: Add Rockchip PCIe controller support")
-Signed-off-by: Hans Zhang <18255117159@163.com>
-[mani: added fixes tag]
-Signed-off-by: Manivannan Sadhasivam <mani@kernel.org>
-Reviewed-by: Manivannan Sadhasivam <mani@kernel.org>
-Acked-by: Shawn Lin <shawn.lin@rock-chips.com>
-Link: https://patch.msgid.link/20250607160201.807043-2-18255117159@163.com
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Fixes: bb8822cbbc53 ("i2c: i2c-stm32: Add generic DMA API")
+Signed-off-by: Clément Le Goffic <clement.legoffic@foss.st.com>
+Cc: <stable@vger.kernel.org> # v4.18+
+Acked-by: Alain Volmat <alain.volmat@foss.st.com>
+Signed-off-by: Andi Shyti <andi.shyti@kernel.org>
+Link: https://lore.kernel.org/r/20250704-i2c-upstream-v4-1-84a095a2c728@foss.st.com
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/pci/controller/pcie-rockchip-host.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/i2c/busses/i2c-stm32.c   |    8 +++-----
+ drivers/i2c/busses/i2c-stm32f7.c |    4 ++--
+ 2 files changed, 5 insertions(+), 7 deletions(-)
 
-diff --git a/drivers/pci/controller/pcie-rockchip-host.c b/drivers/pci/controller/pcie-rockchip-host.c
-index 0d6df73bb918..86bb4f82048a 100644
---- a/drivers/pci/controller/pcie-rockchip-host.c
-+++ b/drivers/pci/controller/pcie-rockchip-host.c
-@@ -442,7 +442,7 @@ static irqreturn_t rockchip_pcie_subsys_irq_handler(int irq, void *arg)
- 			dev_dbg(dev, "malformed TLP received from the link\n");
+--- a/drivers/i2c/busses/i2c-stm32.c
++++ b/drivers/i2c/busses/i2c-stm32.c
+@@ -98,7 +98,6 @@ int stm32_i2c_prep_dma_xfer(struct devic
+ 			    void *dma_async_param)
+ {
+ 	struct dma_async_tx_descriptor *txdesc;
+-	struct device *chan_dev;
+ 	int ret;
  
- 		if (sub_reg & PCIE_CORE_INT_UCR)
--			dev_dbg(dev, "malformed TLP received from the link\n");
-+			dev_dbg(dev, "Unexpected Completion received from the link\n");
+ 	if (rd_wr) {
+@@ -112,11 +111,10 @@ int stm32_i2c_prep_dma_xfer(struct devic
+ 	}
  
- 		if (sub_reg & PCIE_CORE_INT_FCE)
- 			dev_dbg(dev, "an error was observed in the flow control advertisements from the other side\n");
--- 
-2.39.5
-
+ 	dma->dma_len = len;
+-	chan_dev = dma->chan_using->device->dev;
+ 
+-	dma->dma_buf = dma_map_single(chan_dev, buf, dma->dma_len,
++	dma->dma_buf = dma_map_single(dev, buf, dma->dma_len,
+ 				      dma->dma_data_dir);
+-	if (dma_mapping_error(chan_dev, dma->dma_buf)) {
++	if (dma_mapping_error(dev, dma->dma_buf)) {
+ 		dev_err(dev, "DMA mapping failed\n");
+ 		return -EINVAL;
+ 	}
+@@ -146,7 +144,7 @@ int stm32_i2c_prep_dma_xfer(struct devic
+ 	return 0;
+ 
+ err:
+-	dma_unmap_single(chan_dev, dma->dma_buf, dma->dma_len,
++	dma_unmap_single(dev, dma->dma_buf, dma->dma_len,
+ 			 dma->dma_data_dir);
+ 	return ret;
+ }
+--- a/drivers/i2c/busses/i2c-stm32f7.c
++++ b/drivers/i2c/busses/i2c-stm32f7.c
+@@ -632,10 +632,10 @@ static void stm32f7_i2c_dma_callback(voi
+ {
+ 	struct stm32f7_i2c_dev *i2c_dev = (struct stm32f7_i2c_dev *)arg;
+ 	struct stm32_i2c_dma *dma = i2c_dev->dma;
+-	struct device *dev = dma->chan_using->device->dev;
+ 
+ 	stm32f7_i2c_disable_dma_req(i2c_dev);
+-	dma_unmap_single(dev, dma->dma_buf, dma->dma_len, dma->dma_data_dir);
++	dma_unmap_single(i2c_dev->dev, dma->dma_buf, dma->dma_len,
++			 dma->dma_data_dir);
+ 	complete(&dma->dma_complete);
+ }
+ 
 
 
 
