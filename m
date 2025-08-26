@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-173324-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-175404-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 71404B35CF4
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 13:40:16 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3692FB3683F
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 16:14:31 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id AA0551BA612B
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 11:35:07 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id AA644984715
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 14:04:21 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 807272FAC02;
-	Tue, 26 Aug 2025 11:32:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id CDE1B350D70;
+	Tue, 26 Aug 2025 14:02:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="BqLEWj/o"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="VYgQ/e0N"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3F66B17332C;
-	Tue, 26 Aug 2025 11:32:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8235B345741;
+	Tue, 26 Aug 2025 14:02:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756207951; cv=none; b=eamGltbpHaszceWIdhF52OpFL9j2YDVrAuL0CTN48rz8IZk4RhIwpDJKYnpz5EZRz7K1yqHsWoM5qCLLgwxrxXpfaNxSfdTfDNJa4oR8kyYTvyzJQrXJ5E1zEH1I5Glu1vMixFBuSOMPk3+EDNazP3dTfz9yPw2IRJ5+BT0FJE0=
+	t=1756216953; cv=none; b=jOUYfRo/1GXh8G2l679pPQYXq0rqVWEs+9iayWJKQ9QPVer23TTdXlNmZ55gObejCMX2XMLtexAN7txvstburb9qSBhIBJJDRT6YgYKwFiGNj2In8DppkT+EeBJw9VNf4vm7wjv8/2tjMzAWvhChXmpCScpj9Y4Ew7rFRTCNHGc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756207951; c=relaxed/simple;
-	bh=PQvG66Pv2KwdZSyHyLYm54AwgODdy6ov7gOI1fl3cxM=;
+	s=arc-20240116; t=1756216953; c=relaxed/simple;
+	bh=SpEv1jHkpOeCQ3YrH5Vle+zu0F+Sm2mBrMYcP8RQttU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=FoaEmK+9gsB3YL79V/j73NreIsNBRWeZQAUNpopv3RN1Y6GM9TAaKoyqCx3xKLgctjw4vdgZRGRCK/WX5nT1FxU7dTG8yizuMcrqU4h5hAPcSChFF6MuU3S/bjWQXVu/q3gdB/X8rq2d4qbWn3tOUxJcjOcgCpmZKAiG0RgcJj8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=BqLEWj/o; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C38CFC4CEF1;
-	Tue, 26 Aug 2025 11:32:30 +0000 (UTC)
+	 MIME-Version:Content-Type; b=RkrzgWnlba/0RPJ1G1yI2VMm0aGEBmwsO/j8B7UitdiRUiuDOU1R/6L2jGMODJa0XnLasvL7CsMQzEZATeOZ3y8FybWyLkBfQCN6ToyBTYvY6vFmdwfyqdUiwNlYM8dSHEPkzO9I9u5ZIwN5f1Ae6hUbPyDpboPcejcJEU/SBk4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=VYgQ/e0N; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 14256C4CEF1;
+	Tue, 26 Aug 2025 14:02:32 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1756207951;
-	bh=PQvG66Pv2KwdZSyHyLYm54AwgODdy6ov7gOI1fl3cxM=;
+	s=korg; t=1756216953;
+	bh=SpEv1jHkpOeCQ3YrH5Vle+zu0F+Sm2mBrMYcP8RQttU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=BqLEWj/oLmbROcmHbojAARm5/3CgCfkt03jbU9g9lJAW4B/quL50K/1vopgT6tk4d
-	 T4d5bTVhW0esUis2EcMNBQlq19jou7anFG9lu94Y9Mf2Fwz3iTJ7ML/WzRAYq9eKn1
-	 lLhZB1drSouc9XAMHJEF6TxBDZI+2zt4ilUMDEWY=
+	b=VYgQ/e0NJRKrvUIcW1PZZY6PK5EQGTkaEwfJk6jb3f7tZJzPS0CeIPlu9QM6EieGA
+	 ADcrEn3EZnp/DYvNL6D4dxJswgWN1+LOIyixeFjXKQ6WLtkROQ7MS6HVEp/m5dG1Ow
+	 1g06/ipmvJub6GdHMMBgHozyckfb/2BWXvTiUlCc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Sergey Shtylyov <s.shtylyov@omp.ru>,
-	Paul Menzel <pmenzel@molgen.mpg.de>,
-	Luiz Augusto von Dentz <luiz.von.dentz@intel.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.16 379/457] Bluetooth: hci_conn: do return error from hci_enhanced_setup_sync()
+	=?UTF-8?q?Timur=20Krist=C3=B3f?= <timur.kristof@gmail.com>,
+	Alex Deucher <alexander.deucher@amd.com>,
+	Rodrigo Siqueira <siqueira@igalia.com>,
+	Alex Hung <alex.hung@amd.com>
+Subject: [PATCH 5.15 572/644] drm/amd/display: Find first CRTC and its line time in dce110_fill_display_configs
 Date: Tue, 26 Aug 2025 13:11:03 +0200
-Message-ID: <20250826110946.662665473@linuxfoundation.org>
+Message-ID: <20250826111000.706710089@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250826110937.289866482@linuxfoundation.org>
-References: <20250826110937.289866482@linuxfoundation.org>
+In-Reply-To: <20250826110946.507083938@linuxfoundation.org>
+References: <20250826110946.507083938@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,50 +61,89 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.16-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Sergey Shtylyov <s.shtylyov@omp.ru>
+From: Timur Kristóf <timur.kristof@gmail.com>
 
-[ Upstream commit 0eaf7c7e85da7495c0e03a99375707fc954f5e7b ]
+commit 669f73a26f6112eedbadac53a2f2707ac6d0b9c8 upstream.
 
-The commit e07a06b4eb41 ("Bluetooth: Convert SCO configure_datapath to
-hci_sync") missed to update the *return* statement under the *case* of
-BT_CODEC_TRANSPARENT in hci_enhanced_setup_sync(), which led to returning
-success (0) instead of the negative error code (-EINVAL).  However, the
-result of hci_enhanced_setup_sync() seems to be ignored anyway, since NULL
-gets passed to hci_cmd_sync_queue() as the last argument in that case and
-the only function interested in that result is specified by that argument.
+dce110_fill_display_configs is shared between DCE 6-11, and
+finding the first CRTC and its line time is relevant to DCE 6 too.
+Move the code to find it from DCE 11 specific code.
 
-Fixes: e07a06b4eb41 ("Bluetooth: Convert SCO configure_datapath to hci_sync")
-Signed-off-by: Sergey Shtylyov <s.shtylyov@omp.ru>
-Reviewed-by: Paul Menzel <pmenzel@molgen.mpg.de>
-Signed-off-by: Luiz Augusto von Dentz <luiz.von.dentz@intel.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Signed-off-by: Timur Kristóf <timur.kristof@gmail.com>
+Acked-by: Alex Deucher <alexander.deucher@amd.com>
+Reviewed-by: Rodrigo Siqueira <siqueira@igalia.com>
+Reviewed-by: Alex Hung <alex.hung@amd.com>
+Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
+(cherry picked from commit 4ab09785f8d5d03df052827af073d5c508ff5f63)
+Cc: stable@vger.kernel.org
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- net/bluetooth/hci_conn.c | 3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+ drivers/gpu/drm/amd/display/dc/clk_mgr/dce110/dce110_clk_mgr.c |   30 ++++++----
+ 1 file changed, 20 insertions(+), 10 deletions(-)
 
-diff --git a/net/bluetooth/hci_conn.c b/net/bluetooth/hci_conn.c
-index f5cd935490ad..2d4cbc483e77 100644
---- a/net/bluetooth/hci_conn.c
-+++ b/net/bluetooth/hci_conn.c
-@@ -339,7 +339,8 @@ static int hci_enhanced_setup_sync(struct hci_dev *hdev, void *data)
- 	case BT_CODEC_TRANSPARENT:
- 		if (!find_next_esco_param(conn, esco_param_msbc,
- 					  ARRAY_SIZE(esco_param_msbc)))
--			return false;
-+			return -EINVAL;
+--- a/drivers/gpu/drm/amd/display/dc/clk_mgr/dce110/dce110_clk_mgr.c
++++ b/drivers/gpu/drm/amd/display/dc/clk_mgr/dce110/dce110_clk_mgr.c
+@@ -120,9 +120,12 @@ void dce110_fill_display_configs(
+ 	const struct dc_state *context,
+ 	struct dm_pp_display_configuration *pp_display_cfg)
+ {
++	struct dc *dc = context->clk_mgr->ctx->dc;
+ 	int j;
+ 	int num_cfgs = 0;
+ 
++	pp_display_cfg->crtc_index = dc->res_pool->res_cap->num_timing_generator;
 +
- 		param = &esco_param_msbc[conn->attempt - 1];
- 		cp.tx_coding_format.id = 0x03;
- 		cp.rx_coding_format.id = 0x03;
--- 
-2.50.1
-
+ 	for (j = 0; j < context->stream_count; j++) {
+ 		int k;
+ 
+@@ -164,6 +167,23 @@ void dce110_fill_display_configs(
+ 		cfg->v_refresh /= stream->timing.h_total;
+ 		cfg->v_refresh = (cfg->v_refresh + stream->timing.v_total / 2)
+ 							/ stream->timing.v_total;
++
++		/* Find first CRTC index and calculate its line time.
++		 * This is necessary for DPM on SI GPUs.
++		 */
++		if (cfg->pipe_idx < pp_display_cfg->crtc_index) {
++			const struct dc_crtc_timing *timing =
++				&context->streams[0]->timing;
++
++			pp_display_cfg->crtc_index = cfg->pipe_idx;
++			pp_display_cfg->line_time_in_us =
++				timing->h_total * 10000 / timing->pix_clk_100hz;
++		}
++	}
++
++	if (!num_cfgs) {
++		pp_display_cfg->crtc_index = 0;
++		pp_display_cfg->line_time_in_us = 0;
+ 	}
+ 
+ 	pp_display_cfg->display_count = num_cfgs;
+@@ -232,16 +252,6 @@ void dce11_pplib_apply_display_requireme
+ 
+ 	dce110_fill_display_configs(context, pp_display_cfg);
+ 
+-	/* TODO: is this still applicable?*/
+-	if (pp_display_cfg->display_count == 1) {
+-		const struct dc_crtc_timing *timing =
+-			&context->streams[0]->timing;
+-
+-		pp_display_cfg->crtc_index =
+-			pp_display_cfg->disp_configs[0].pipe_idx;
+-		pp_display_cfg->line_time_in_us = timing->h_total * 10000 / timing->pix_clk_100hz;
+-	}
+-
+ 	if (memcmp(&dc->current_state->pp_display_cfg, pp_display_cfg, sizeof(*pp_display_cfg)) !=  0)
+ 		dm_pp_apply_display_requirements(dc->ctx, pp_display_cfg);
+ }
 
 
 
