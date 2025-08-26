@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-173924-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-174375-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id EB9CFB36060
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 15:00:10 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id CDF00B362FA
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 15:24:53 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 41B2646431C
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 12:57:26 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 140F98A76D6
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 13:18:58 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id EAEA11B532F;
-	Tue, 26 Aug 2025 12:57:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 526BD34A325;
+	Tue, 26 Aug 2025 13:17:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="bSuFe0It"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="XoaW/9Di"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A6022165F13;
-	Tue, 26 Aug 2025 12:57:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0F1542BE058;
+	Tue, 26 Aug 2025 13:17:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756213024; cv=none; b=M388XD/Dl13r/Sc8V3zDCvejAaeJSMcyojhyNWuUDqvydt4M25VeleAqQTwftpuCqj0l1gaDL6sAaYF3+cL9BShnsFqHTyk6TevBux4Klymc78uJqkUXsy5C4JZjSKcAENBbHtiOoVl7zmEzew+N6EatLKw2Jta0Npu/y/IqtdE=
+	t=1756214224; cv=none; b=IMgwu3pJQDU2HBwBQqER8rHnkemHOoh6C03ctCoFaoD9UwCeDFRUMRoB8t/sFdHmN9n2FeZ91rMRRYNTxV36uCZB+SW4H0g2RzrAgKIk9I19NN/Tk48oPIhqGi8bEqq/LVgXCO8RvH+pH0pwDSko7HY/Ko7aiuMV8npTEVpHtYw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756213024; c=relaxed/simple;
-	bh=Ri+xdoM7QXVBmQMHJfwdUgw5e+EEtokO1y2tL5WVpVo=;
+	s=arc-20240116; t=1756214224; c=relaxed/simple;
+	bh=1PTrbylr8Tz+b+YL259XIWH+be4WNI2bAmWIIe5Kg7M=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=QtQ4osuhVFAK7mweq54gc9b+6OpGmW4cPbDDEfOsuWYhB7CkF/Eg565eRfMFmESXtaVHOO7Cq4FAPKeOXLyjG1b2hPMwhzfF9pHnXshJLb6LEMa+En/7SiW5kzN0wmyhUcv6Ix9E1mzo+nIy1dzIPZmJhpZfLwYvmE3qv0GsB1k=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=bSuFe0It; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 35D0AC4CEF1;
-	Tue, 26 Aug 2025 12:57:04 +0000 (UTC)
+	 MIME-Version; b=ItpguBiKT1gkMJh2N+zNa/b0LygCKtvlJz/W6tLPH56s3+fAARECPr0uYk6b56VULwChEL62SZmonblxWBBLGQ8ErXdS7z0O1YXG7a9MSwJ0XRwsRQWS7ef0JP4/Xc+V/XMsW8wywz4sz50/FLVUWKuiCfr7oXXGdbSv3Aqcqbc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=XoaW/9Di; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 990D3C4CEF1;
+	Tue, 26 Aug 2025 13:17:03 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1756213024;
-	bh=Ri+xdoM7QXVBmQMHJfwdUgw5e+EEtokO1y2tL5WVpVo=;
+	s=korg; t=1756214223;
+	bh=1PTrbylr8Tz+b+YL259XIWH+be4WNI2bAmWIIe5Kg7M=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=bSuFe0ItYiKCvWh5xp2Z+FbbpMpx2GRU81TaH27GMIRi8W+HCt8hgOeHcw69whmnm
-	 5b9wEiyL8+17/3M8rzSTvHiGofnXEdO3p/fYhHjvXk67JHqMvAeVYq8pzUrTB0PxBM
-	 EBK3rtGn5ctHNsvViD3FXqyv3py7GdTXNJncdqX8=
+	b=XoaW/9Did+/UZTZXSbvaatqyBpb5ikPkGmWJcqz35UtxrvciGkANUi6YV21cZlcz1
+	 plcwZq0qYoNPM1l8i49VCXa4Iuh8ufix7uUmr0P6uaKAXwUYzf5mS9+RsA2AzFpibK
+	 9bN4EF1yaQg0qWxBJ8gWj+t2rHhzTiwYOGcI9+xU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Avraham Stern <avraham.stern@intel.com>,
-	Ilan Peer <ilan.peer@intel.com>,
-	Miri Korenblit <miriam.rachel.korenblit@intel.com>,
+	syzbot+169de184e9defe7fe709@syzkaller.appspotmail.com,
+	Al Viro <viro@zeniv.linux.org.uk>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 162/587] wifi: iwlwifi: mvm: fix scan request validation
+Subject: [PATCH 6.1 058/482] better lockdep annotations for simple_recursive_removal()
 Date: Tue, 26 Aug 2025 13:05:11 +0200
-Message-ID: <20250826110957.068002537@linuxfoundation.org>
+Message-ID: <20250826110932.256182890@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250826110952.942403671@linuxfoundation.org>
-References: <20250826110952.942403671@linuxfoundation.org>
+In-Reply-To: <20250826110930.769259449@linuxfoundation.org>
+References: <20250826110930.769259449@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,39 +62,59 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Avraham Stern <avraham.stern@intel.com>
+From: Al Viro <viro@zeniv.linux.org.uk>
 
-[ Upstream commit 7c2f3ec7707188d8d5269ae2dce97d7be3e9f261 ]
+[ Upstream commit 2a8061ee5e41034eb14170ec4517b5583dbeff9f ]
 
-The scan request validation function uses bitwise and instead
-of logical and. Fix it.
+We want a class that nests outside of I_MUTEX_NORMAL (for the sake of
+callbacks that might want to lock the victim) and inside I_MUTEX_PARENT
+(so that a variant of that could be used with parent of the victim
+held locked by the caller).
 
-Signed-off-by: Avraham Stern <avraham.stern@intel.com>
-Reviewed-by: Ilan Peer <ilan.peer@intel.com>
-Signed-off-by: Miri Korenblit <miriam.rachel.korenblit@intel.com>
-Link: https://patch.msgid.link/20250709230308.3fbc1f27871b.I7a8ee91f463c1a2d9d8561c8232e196885d02c43@changeid
+In reality, simple_recursive_removal()
+	* never holds two locks at once
+	* holds the lock on parent of dentry passed to callback
+	* is used only on the trees with fixed topology, so the depths
+are not changing.
+
+So the locking order is actually fine.
+
+AFAICS, the best solution is to assign I_MUTEX_CHILD to the locks
+grabbed by that thing.
+
+Reported-by: syzbot+169de184e9defe7fe709@syzkaller.appspotmail.com
+Signed-off-by: Al Viro <viro@zeniv.linux.org.uk>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/wireless/intel/iwlwifi/mvm/scan.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ fs/libfs.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/net/wireless/intel/iwlwifi/mvm/scan.c b/drivers/net/wireless/intel/iwlwifi/mvm/scan.c
-index cc866401aad0..8b22779e5b3e 100644
---- a/drivers/net/wireless/intel/iwlwifi/mvm/scan.c
-+++ b/drivers/net/wireless/intel/iwlwifi/mvm/scan.c
-@@ -828,7 +828,7 @@ static inline bool iwl_mvm_scan_fits(struct iwl_mvm *mvm, int n_ssids,
- 				     int n_channels)
- {
- 	return ((n_ssids <= PROBE_OPTION_MAX) &&
--		(n_channels <= mvm->fw->ucode_capa.n_scan_channels) &
-+		(n_channels <= mvm->fw->ucode_capa.n_scan_channels) &&
- 		(ies->common_ie_len +
- 		 ies->len[NL80211_BAND_2GHZ] + ies->len[NL80211_BAND_5GHZ] +
- 		 ies->len[NL80211_BAND_6GHZ] <=
+diff --git a/fs/libfs.c b/fs/libfs.c
+index aada4e7c8713..cbd42d76fbd0 100644
+--- a/fs/libfs.c
++++ b/fs/libfs.c
+@@ -274,7 +274,7 @@ void simple_recursive_removal(struct dentry *dentry,
+ 		struct dentry *victim = NULL, *child;
+ 		struct inode *inode = this->d_inode;
+ 
+-		inode_lock(inode);
++		inode_lock_nested(inode, I_MUTEX_CHILD);
+ 		if (d_is_dir(this))
+ 			inode->i_flags |= S_DEAD;
+ 		while ((child = find_next_child(this, victim)) == NULL) {
+@@ -286,7 +286,7 @@ void simple_recursive_removal(struct dentry *dentry,
+ 			victim = this;
+ 			this = this->d_parent;
+ 			inode = this->d_inode;
+-			inode_lock(inode);
++			inode_lock_nested(inode, I_MUTEX_CHILD);
+ 			if (simple_positive(victim)) {
+ 				d_invalidate(victim);	// avoid lost mounts
+ 				if (d_is_dir(victim))
 -- 
 2.39.5
 
