@@ -1,55 +1,57 @@
-Return-Path: <stable+bounces-175986-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-173028-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 18306B36B91
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 16:47:26 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7008BB35B6D
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 13:24:25 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 2209C1C47C9E
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 14:30:41 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 1EF4F1BA2680
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 11:21:54 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A36E52FDC44;
-	Tue, 26 Aug 2025 14:28:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D5AC033EAE2;
+	Tue, 26 Aug 2025 11:19:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="G41aAe59"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="DxGnw2v8"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 61B6D22370D;
-	Tue, 26 Aug 2025 14:28:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 92867319858;
+	Tue, 26 Aug 2025 11:19:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756218486; cv=none; b=Od/hr29d9cHwN90S6eZXpFouRoT/S6lwBCDBO5qhbMT/tC4BctKDQJzW0S390/ARqKLhyk3MKDOqVwdapvpk9l1Ru8agkNiIQh4qBHIKWhy8dsqHjn6b/aPxw7kjW4YOQyQpsxQUi3piVIHChUtYCDuZzvFRs7D6eXWgpE8ZWAQ=
+	t=1756207188; cv=none; b=swk4exOQqF82wKAW8b0n3gDAxlOTM47dPBY3/uqFcfzROFoycDV2DpllPU+mHph+QuOr/d20o/+/zA9wbW5fH/Fd/xEcDW8p3w0pcyQN7RtWnRxRhPe1mzsK1GVb2al03L4nYDrOhvxlcchvcjxx8dLu3C7iraeb4G40YNSp+V0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756218486; c=relaxed/simple;
-	bh=38GfBvmAvoC95LoskYKrWBoW8qQDm6A0oKL2SrQt+Xs=;
+	s=arc-20240116; t=1756207188; c=relaxed/simple;
+	bh=qizmUg1M6vB6Z1bRPMa8fO1stp0koCRbK8XBqXTbOq8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=uEwVnoHTbvcn7sGtLFTWsGs7GsF5Z0aEM438mjk/+62o53N5K7WyVdchNJT/3MxHZQw+0/t8HeVmm4G+lycKbMqKRGhrkURGZFkZ8JFMSNIKfHFn3QaNzNDqD29uf7QHAyWJwRDEdZNK3hrCiPGH0kvPgVo26RAFVyvUFDgEssM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=G41aAe59; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E8336C4CEF1;
-	Tue, 26 Aug 2025 14:28:05 +0000 (UTC)
+	 MIME-Version; b=R/0dmFk8p1CZf7w4xvntn07g31rRnPlsunFnmsi0A1y+Vf/RlJp/RrdebV31z4bWNpiZaNyVZHHKt5PsS30Pj/zX2h8vie+cnT2v9bGHU2MPzu9smnx5t/2qxBrSsqBkh41g0dQAlBaJLn/4rwOkStb1FYSTYoMGO9gIbac28xo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=DxGnw2v8; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 16C94C4CEF1;
+	Tue, 26 Aug 2025 11:19:47 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1756218486;
-	bh=38GfBvmAvoC95LoskYKrWBoW8qQDm6A0oKL2SrQt+Xs=;
+	s=korg; t=1756207188;
+	bh=qizmUg1M6vB6Z1bRPMa8fO1stp0koCRbK8XBqXTbOq8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=G41aAe59lmC17lXqA4EFHnVY2X6cf6o/Y5sAJdcARjJ1QrleGFUwfNhbzGsf1AXAu
-	 BoI/KcjKso63YBe5zHRAARx5d26Z4q9hg7+xHTmnIZx/K4SK8lMoFy0bGZiHptCeW9
-	 8Ur5FPfNqBSFJQYMKiQnVoa87GEvBeYk1O43xJ6I=
+	b=DxGnw2v8qBPjOG9CxzA6A3bw3DYqZXjZAg+88PT1c269JrWn1D6E/TJ2KdhfGynZw
+	 gkdqPDsPPwvBRxpF/pRg3tVF+B7sjf2mew0nuZnMO2ruKzurpPp8MHLDf5YKrmCJs9
+	 B2vLDZk0I8shQ7xC0NyPwUBKYIQiQXYVp4Xy4T0o=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Nathan Chancellor <nathan@kernel.org>,
-	Jakub Kicinski <kuba@kernel.org>
-Subject: [PATCH 5.4 011/403] phonet/pep: Move call to pn_skb_get_dst_sockaddr() earlier in pep_sock_accept()
+	Cristian Ciocaltea <cristian.ciocaltea@collabora.com>,
+	Detlev Casanova <detlev.casanova@collabora.com>,
+	Nicolas Frattaroli <nicolas.frattaroli@collabora.com>,
+	Heiko Stuebner <heiko@sntech.de>
+Subject: [PATCH 6.16 053/457] arm64: dts: rockchip: Add HDMI PHY PLL clock source to VOP2 on rk3576
 Date: Tue, 26 Aug 2025 13:05:37 +0200
-Message-ID: <20250826110905.998778655@linuxfoundation.org>
+Message-ID: <20250826110938.663703449@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250826110905.607690791@linuxfoundation.org>
-References: <20250826110905.607690791@linuxfoundation.org>
+In-Reply-To: <20250826110937.289866482@linuxfoundation.org>
+References: <20250826110937.289866482@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,55 +63,67 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.4-stable review patch.  If anyone has any objections, please let me know.
+6.16-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Nathan Chancellor <nathan@kernel.org>
+From: Cristian Ciocaltea <cristian.ciocaltea@collabora.com>
 
-commit 17ba793f381eb813596d6de1cc6820bcbda5ed8b upstream.
+commit 4ab8b8ac952fb08d03655e1da0cfee07589e428f upstream.
 
-A new warning in clang [1] points out a place in pep_sock_accept() where
-dst is uninitialized then passed as a const pointer to pep_find_pipe():
+Since commit c871a311edf0 ("phy: rockchip: samsung-hdptx: Setup TMDS
+char rate via phy_configure_opts_hdmi"), the workaround of passing the
+rate from DW HDMI QP bridge driver via phy_set_bus_width() became
+partially broken, as it cannot reliably handle mode switches anymore.
 
-  net/phonet/pep.c:829:37: error: variable 'dst' is uninitialized when passed as a const pointer argument here [-Werror,-Wuninitialized-const-pointer]
-    829 |         newsk = pep_find_pipe(&pn->hlist, &dst, pipe_handle);
-        |                                            ^~~:
+Attempting to fix this up at PHY level would not only introduce
+additional hacks, but it would also fail to adequately resolve the
+display issues that are a consequence of the system CRU limitations.
 
-Move the call to pn_skb_get_dst_sockaddr(), which initializes dst, to
-before the call to pep_find_pipe(), so that dst is consistently used
-initialized throughout the function.
+Instead, proceed with the solution already implemented for RK3588: make
+use of the HDMI PHY PLL as a better suited DCLK source for VOP2. This
+will not only address the aforementioned problem, but it should also
+facilitate the proper operation of display modes up to 4K@60Hz.
 
+It's worth noting that anything above 4K@30Hz still requires high TMDS
+clock ratio and scrambling support, which hasn't been mainlined yet.
+
+Fixes: d74b842cab08 ("arm64: dts: rockchip: Add vop for rk3576")
 Cc: stable@vger.kernel.org
-Fixes: f7ae8d59f661 ("Phonet: allocate sock from accept syscall rather than soft IRQ")
-Link: https://github.com/llvm/llvm-project/commit/00dacf8c22f065cb52efb14cd091d441f19b319e [1]
-Closes: https://github.com/ClangBuiltLinux/linux/issues/2101
-Signed-off-by: Nathan Chancellor <nathan@kernel.org>
-Link: https://patch.msgid.link/20250715-net-phonet-fix-uninit-const-pointer-v1-1-8efd1bd188b3@kernel.org
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Signed-off-by: Cristian Ciocaltea <cristian.ciocaltea@collabora.com>
+Tested-By: Detlev Casanova <detlev.casanova@collabora.com>
+Tested-by: Nicolas Frattaroli <nicolas.frattaroli@collabora.com>
+Link: https://lore.kernel.org/r/20250612-rk3576-hdmitx-fix-v1-3-4b11007d8675@collabora.com
+Signed-off-by: Heiko Stuebner <heiko@sntech.de>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- net/phonet/pep.c |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ arch/arm64/boot/dts/rockchip/rk3576.dtsi | 6 ++++--
+ 1 file changed, 4 insertions(+), 2 deletions(-)
 
---- a/net/phonet/pep.c
-+++ b/net/phonet/pep.c
-@@ -825,6 +825,7 @@ static struct sock *pep_sock_accept(stru
- 	}
- 
- 	/* Check for duplicate pipe handle */
-+	pn_skb_get_dst_sockaddr(skb, &dst);
- 	newsk = pep_find_pipe(&pn->hlist, &dst, pipe_handle);
- 	if (unlikely(newsk)) {
- 		__sock_put(newsk);
-@@ -849,7 +850,6 @@ static struct sock *pep_sock_accept(stru
- 	newsk->sk_destruct = pipe_destruct;
- 
- 	newpn = pep_sk(newsk);
--	pn_skb_get_dst_sockaddr(skb, &dst);
- 	pn_skb_get_src_sockaddr(skb, &src);
- 	newpn->pn_sk.sobject = pn_sockaddr_get_object(&dst);
- 	newpn->pn_sk.dobject = pn_sockaddr_get_object(&src);
+diff --git a/arch/arm64/boot/dts/rockchip/rk3576.dtsi b/arch/arm64/boot/dts/rockchip/rk3576.dtsi
+index 9fc18384f609..1fec0ecea91d 100644
+--- a/arch/arm64/boot/dts/rockchip/rk3576.dtsi
++++ b/arch/arm64/boot/dts/rockchip/rk3576.dtsi
+@@ -1155,12 +1155,14 @@
+ 				 <&cru HCLK_VOP>,
+ 				 <&cru DCLK_VP0>,
+ 				 <&cru DCLK_VP1>,
+-				 <&cru DCLK_VP2>;
++				 <&cru DCLK_VP2>,
++				 <&hdptxphy>;
+ 			clock-names = "aclk",
+ 				      "hclk",
+ 				      "dclk_vp0",
+ 				      "dclk_vp1",
+-				      "dclk_vp2";
++				      "dclk_vp2",
++				      "pll_hdmiphy0";
+ 			iommus = <&vop_mmu>;
+ 			power-domains = <&power RK3576_PD_VOP>;
+ 			rockchip,grf = <&sys_grf>;
+-- 
+2.50.1
+
 
 
 
