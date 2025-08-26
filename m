@@ -1,56 +1,55 @@
-Return-Path: <stable+bounces-173464-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-174065-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id CB343B35CE1
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 13:39:38 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id B5539B360B6
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 15:03:26 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 8D1497C56F0
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 11:39:37 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id E49717A2D07
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 13:01:50 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0270A2F9C23;
-	Tue, 26 Aug 2025 11:38:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 624041E51EC;
+	Tue, 26 Aug 2025 13:03:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="RMbL0hzO"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="kZLNoDAX"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B2ACB1FECAB;
-	Tue, 26 Aug 2025 11:38:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1FD121A8F84;
+	Tue, 26 Aug 2025 13:03:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756208315; cv=none; b=Ao8yDSE5uBmLa+z53jZC0l+h4xVgYDmLM/Qvrs/WD1VWTCmAUH+/bMtCTooUIestUQ/2ux1ZR+9iIZqZdJGXvfdjOrdlB2+raxCLKPhcEZEzMYTuAFPARj0wWew9uxQ3Yq3hdFE8zkq4oqtZfwOX/SgQEVyx35B2l8s9h9OKeNo=
+	t=1756213399; cv=none; b=b5n1MhXme32lWOfoTDXTqHsZycOzROeAO/2MzUJdZanqXCeA0Ct46vzTuQ7XSBFKkv2uaUaiFJTdoUXCtsAHLhx/VUY8LYwY/Uwr2frQpcrceFvld1/x368AQN9T2JLqVMi1nhtAEIIStn8QoXBQJl+pFpE13m7deDZ0SUbQbPs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756208315; c=relaxed/simple;
-	bh=l6PFUXcMVzyX0FOkMbiYNo90rdtTJnTGE+Eq0ckmOp4=;
+	s=arc-20240116; t=1756213399; c=relaxed/simple;
+	bh=oDC5CNYj+ffOx7tTfGFNm6co/7t4hqQs0AXpuJE7juM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=FMwhCfix0L4RuKMJKksWS6NC56PrOIs7sQJJcrrrsE2WWmJ9UPW9bmf5DIR/eQzprUr3P8uCnRxnbRQgY5VvPfhrtvJC80gI0j2NBKsAPNGs57K3mnL9mgYwv9sIaUHgSnFWyNhUOYWfuy5WabGHCOcY4GTBCgsp1oKog8jhBWQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=RMbL0hzO; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id F1AACC4CEF1;
-	Tue, 26 Aug 2025 11:38:34 +0000 (UTC)
+	 MIME-Version; b=ub/97wQJEGTzAJqknjhLZVwarSRg3aHh+HpuAh90trA+UjzHXE0jdH34s5ixBu4KkzFAd6Pgr3wZoAl8Isux6cdaFfJumITn0fmzkQdJKKuL1wkgTx3QjIuP99TpWFiib0RmkEgkWx96NK0SZ2phuZ88hZJx9U8xBazm9yqN5gg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=kZLNoDAX; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7C148C4CEF1;
+	Tue, 26 Aug 2025 13:03:18 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1756208315;
-	bh=l6PFUXcMVzyX0FOkMbiYNo90rdtTJnTGE+Eq0ckmOp4=;
+	s=korg; t=1756213399;
+	bh=oDC5CNYj+ffOx7tTfGFNm6co/7t4hqQs0AXpuJE7juM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=RMbL0hzOIKx4Re1McFzSAXoc6SRD8nY14iOOIyZ7dNu5IY7dFf4ETT3/Qvgqudil1
-	 6Mr42v71QlgFeqmrCyBs9INQRc3tjwxgEhRJNkCs+1VP4xqWX2M9ul5mGHOkWj28oZ
-	 6r4ko3e8o63x5M3q532J/e/lDoJCiykOdCF4B6r0=
+	b=kZLNoDAXTz33Tned36PTguB9hgpklg+65p7MqKpJSYhXfO4G52/yQxiFZxp4ctrm/
+	 SAZNN+WCL6+dy/xBduT1yzMNHzE+JwQcOVWQAUITOtY29h7nCfYNECLeQuzQOE0uab
+	 CJroJb7EepMuOOhtwDf5O0MNXFvu0CJfGOGUfzZE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Johan Hovold <johan+linaro@kernel.org>,
-	Baochen Qiang <quic_bqiang@quicinc.com>,
-	Jeff Johnson <jeff.johnson@oss.qualcomm.com>
-Subject: [PATCH 6.12 064/322] wifi: ath11k: fix dest ring-buffer corruption when ring is full
-Date: Tue, 26 Aug 2025 13:07:59 +0200
-Message-ID: <20250826110917.138419411@linuxfoundation.org>
+	Benson Leung <bleung@chromium.org>,
+	Tzung-Bi Shih <tzungbi@kernel.org>
+Subject: [PATCH 6.6 331/587] platform/chrome: cros_ec: Unregister notifier in cros_ec_unregister()
+Date: Tue, 26 Aug 2025 13:08:00 +0200
+Message-ID: <20250826111001.336423104@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250826110915.169062587@linuxfoundation.org>
-References: <20250826110915.169062587@linuxfoundation.org>
+In-Reply-To: <20250826110952.942403671@linuxfoundation.org>
+References: <20250826110952.942403671@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,66 +61,41 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Johan Hovold <johan+linaro@kernel.org>
+From: Tzung-Bi Shih <tzungbi@kernel.org>
 
-commit aa6956150f820e6a6deba44be325ddfcb5b10f88 upstream.
+commit e2374953461947eee49f69b3e3204ff080ef31b1 upstream.
 
-Add the missing memory barriers to make sure that destination ring
-descriptors are read before updating the tail pointer (and passing
-ownership to the device) to avoid memory corruption on weakly ordered
-architectures like aarch64 when the ring is full.
+The blocking notifier is registered in cros_ec_register(); however, it
+isn't unregistered in cros_ec_unregister().
 
-Tested-on: WCN6855 hw2.1 WLAN.HSP.1.1-03125-QCAHSPSWPL_V1_V2_SILICONZ_LITE-3.6510.41
+Fix it.
 
-Fixes: d5c65159f289 ("ath11k: driver for Qualcomm IEEE 802.11ax devices")
-Cc: stable@vger.kernel.org      # 5.6
-Signed-off-by: Johan Hovold <johan+linaro@kernel.org>
-Reviewed-by: Baochen Qiang <quic_bqiang@quicinc.com>
-Link: https://patch.msgid.link/20250604143457.26032-6-johan+linaro@kernel.org
-Signed-off-by: Jeff Johnson <jeff.johnson@oss.qualcomm.com>
+Fixes: 42cd0ab476e2 ("platform/chrome: cros_ec: Query EC protocol version if EC transitions between RO/RW")
+Cc: stable@vger.kernel.org
+Reviewed-by: Benson Leung <bleung@chromium.org>
+Link: https://lore.kernel.org/r/20250722120513.234031-1-tzungbi@kernel.org
+Signed-off-by: Tzung-Bi Shih <tzungbi@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/net/wireless/ath/ath11k/hal.c |   11 +++++++++--
- 1 file changed, 9 insertions(+), 2 deletions(-)
+ drivers/platform/chrome/cros_ec.c |    3 +++
+ 1 file changed, 3 insertions(+)
 
---- a/drivers/net/wireless/ath/ath11k/hal.c
-+++ b/drivers/net/wireless/ath/ath11k/hal.c
-@@ -854,7 +854,6 @@ void ath11k_hal_srng_access_end(struct a
+--- a/drivers/platform/chrome/cros_ec.c
++++ b/drivers/platform/chrome/cros_ec.c
+@@ -313,6 +313,9 @@ EXPORT_SYMBOL(cros_ec_register);
+  */
+ void cros_ec_unregister(struct cros_ec_device *ec_dev)
  {
- 	lockdep_assert_held(&srng->lock);
- 
--	/* TODO: See if we need a write memory barrier here */
- 	if (srng->flags & HAL_SRNG_FLAGS_LMAC_RING) {
- 		/* For LMAC rings, ring pointer updates are done through FW and
- 		 * hence written to a shared memory location that is read by FW
-@@ -869,7 +868,11 @@ void ath11k_hal_srng_access_end(struct a
- 			WRITE_ONCE(*srng->u.src_ring.hp_addr, srng->u.src_ring.hp);
- 		} else {
- 			srng->u.dst_ring.last_hp = *srng->u.dst_ring.hp_addr;
--			*srng->u.dst_ring.tp_addr = srng->u.dst_ring.tp;
-+			/* Make sure descriptor is read before updating the
-+			 * tail pointer.
-+			 */
-+			dma_mb();
-+			WRITE_ONCE(*srng->u.dst_ring.tp_addr, srng->u.dst_ring.tp);
- 		}
- 	} else {
- 		if (srng->ring_dir == HAL_SRNG_DIR_SRC) {
-@@ -885,6 +888,10 @@ void ath11k_hal_srng_access_end(struct a
- 					   srng->u.src_ring.hp);
- 		} else {
- 			srng->u.dst_ring.last_hp = *srng->u.dst_ring.hp_addr;
-+			/* Make sure descriptor is read before updating the
-+			 * tail pointer.
-+			 */
-+			mb();
- 			ath11k_hif_write32(ab,
- 					   (unsigned long)srng->u.dst_ring.tp_addr -
- 					   (unsigned long)ab->mem,
++	if (ec_dev->mkbp_event_supported)
++		blocking_notifier_chain_unregister(&ec_dev->event_notifier,
++						   &ec_dev->notifier_ready);
+ 	platform_device_unregister(ec_dev->pd);
+ 	platform_device_unregister(ec_dev->ec);
+ 	mutex_destroy(&ec_dev->lock);
 
 
 
