@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-175212-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-174085-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5D113B36725
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 16:04:09 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id BBD50B36165
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 15:09:13 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 66E19562030
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 13:55:46 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 20F72171EF4
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 13:05:14 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7D0B434DCCA;
-	Tue, 26 Aug 2025 13:53:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 94E1B1B85F8;
+	Tue, 26 Aug 2025 13:04:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="UmJD3Bt1"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="uBArTxvx"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3B311258A;
-	Tue, 26 Aug 2025 13:53:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4C66F22AE5D;
+	Tue, 26 Aug 2025 13:04:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756216437; cv=none; b=MacQ9F2bbL2k94UcMhwpAFDdCdbyb9bovv2bRKtqYJTz56JtMqi1hTy017x4SnHGthviNAO++hrHSZj6CmsTNLbtqB1//7lPU9t/VwWw5wK05+0N/Prc/yy1WoqpkLi4oruWMQgQHKTB+JRLjTdEnmyFh/cLwfQirv9k3CNJGBk=
+	t=1756213453; cv=none; b=BOPpeAkcGK/D6D99QkC1DC0jUr+PJfKyG+HbNNRKXqR7OdNB0DcYdDou5lnafsVKUAPLXZvxYT9kUauSOdNk6g1zrYO+pO0ShEfTa0ianrgA/v86g9rOUCCIp28o1TMNaxyC+BWm4hkktDDh1RPcKfb0XJ1oS72l03ROz2fV3Eg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756216437; c=relaxed/simple;
-	bh=Y/9VjIpaAvV6bQmgdgmyYDdtffqIAizN+RPnj1kE4mo=;
+	s=arc-20240116; t=1756213453; c=relaxed/simple;
+	bh=KbWbew5kukgwLAeg3M6VaTI4TT0Aj3gDJpnVxZcT3hU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Fd9wk2hdTFic/qxjMPquFNnjBYcUCQzjMPi3YnM7qt29cWVgrSOc4itHAe0MdsrvaEklBngqG/ZWs/zw9v97g3sWJPuQl1PYlAEelZnwvQcSmcUYWrUo0UJlZIeM2LqiE1Wop6AE3o7mlX+iWUxW2+P8keUqzJL9n8XVTgbsFg0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=UmJD3Bt1; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id BB2E1C4CEF1;
-	Tue, 26 Aug 2025 13:53:56 +0000 (UTC)
+	 MIME-Version; b=NYBv8Pt300BsDpWr6HbVFMZvAhcnGnL4RepEG6Ylp3dYEOBxn2kISfsGDGrtKAUxzhVRuaemxCNVXyEwT8GkG9Iz8rPytnS9mIdHVKiYgwo9lWRYJr2I13zHfehK4y+bx63hBPLPDi8SpnvA9BQLFs4O03kOoZx3+gel5NYIstY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=uBArTxvx; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9059CC4CEF1;
+	Tue, 26 Aug 2025 13:04:12 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1756216437;
-	bh=Y/9VjIpaAvV6bQmgdgmyYDdtffqIAizN+RPnj1kE4mo=;
+	s=korg; t=1756213453;
+	bh=KbWbew5kukgwLAeg3M6VaTI4TT0Aj3gDJpnVxZcT3hU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=UmJD3Bt1qMcF5mEo2tD/h+67KN36xyFhYiDAPxTZWM1zmEvweqsD18LtMwSCbdgCA
-	 kbhlYCO19EKzMfsd+TYgNyhMMwXeIFZ66U5K9XO+V+sOTy6uQB18TPtT4OXmRUJFm0
-	 aPpfdrF+/rJJdriu8mVA/zUz6VJ/4e7i+aQQjxVI=
+	b=uBArTxvxYr4erY5PjZdCu6PQieiUJetFNH5WTfDB1bTxgE6hKO0jCmCqAkh9UMMMU
+	 hrpsK00dTtokP2V37BSDNCnuy/fWMGM3/BPNm1kdKEGlJWiSuhhsRJvWbjmN2FWEhG
+	 lPmS7fl0UiLu+rLuMlDwAVAAz773Mkq1b5WYaCT4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	syzbot+630f6d40b3ccabc8e96e@syzkaller.appspotmail.com,
-	Edward Adam Davis <eadavis@qq.com>,
-	Dave Kleikamp <dave.kleikamp@oracle.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 394/644] jfs: Regular file corruption check
+	Neil Armstrong <neil.armstrong@linaro.org>,
+	Johan Hovold <johan@kernel.org>,
+	Martin Blumenstingl <martin.blumenstingl@googlemail.com>
+Subject: [PATCH 6.6 336/587] usb: dwc3: meson-g12a: fix device leaks at unbind
 Date: Tue, 26 Aug 2025 13:08:05 +0200
-Message-ID: <20250826110956.212674820@linuxfoundation.org>
+Message-ID: <20250826111001.465562339@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250826110946.507083938@linuxfoundation.org>
-References: <20250826110946.507083938@linuxfoundation.org>
+In-Reply-To: <20250826110952.942403671@linuxfoundation.org>
+References: <20250826110952.942403671@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,44 +62,40 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Edward Adam Davis <eadavis@qq.com>
+From: Johan Hovold <johan@kernel.org>
 
-[ Upstream commit 2d04df8116426b6c7b9f8b9b371250f666a2a2fb ]
+commit 93b400f4951404d040197943a25d6fef9f8ccabb upstream.
 
-The reproducer builds a corrupted file on disk with a negative i_size value.
-Add a check when opening this file to avoid subsequent operation failures.
+Make sure to drop the references taken to the child devices by
+of_find_device_by_node() during probe on driver unbind.
 
-Reported-by: syzbot+630f6d40b3ccabc8e96e@syzkaller.appspotmail.com
-Closes: https://syzkaller.appspot.com/bug?extid=630f6d40b3ccabc8e96e
-Tested-by: syzbot+630f6d40b3ccabc8e96e@syzkaller.appspotmail.com
-Signed-off-by: Edward Adam Davis <eadavis@qq.com>
-Signed-off-by: Dave Kleikamp <dave.kleikamp@oracle.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Fixes: c99993376f72 ("usb: dwc3: Add Amlogic G12A DWC3 glue")
+Cc: stable@vger.kernel.org	# 5.2
+Cc: Neil Armstrong <neil.armstrong@linaro.org>
+Signed-off-by: Johan Hovold <johan@kernel.org>
+Reviewed-by: Martin Blumenstingl <martin.blumenstingl@googlemail.com>
+Link: https://lore.kernel.org/r/20250724091910.21092-3-johan@kernel.org
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- fs/jfs/file.c | 3 +++
+ drivers/usb/dwc3/dwc3-meson-g12a.c |    3 +++
  1 file changed, 3 insertions(+)
 
-diff --git a/fs/jfs/file.c b/fs/jfs/file.c
-index 1d732fd223d4..5c28883eee4e 100644
---- a/fs/jfs/file.c
-+++ b/fs/jfs/file.c
-@@ -44,6 +44,9 @@ static int jfs_open(struct inode *inode, struct file *file)
- {
- 	int rc;
+--- a/drivers/usb/dwc3/dwc3-meson-g12a.c
++++ b/drivers/usb/dwc3/dwc3-meson-g12a.c
+@@ -837,6 +837,9 @@ static void dwc3_meson_g12a_remove(struc
  
-+	if (S_ISREG(inode->i_mode) && inode->i_size < 0)
-+		return -EIO;
+ 	usb_role_switch_unregister(priv->role_switch);
+ 
++	put_device(priv->switch_desc.udc);
++	put_device(priv->switch_desc.usb2_port);
 +
- 	if ((rc = dquot_file_open(inode, file)))
- 		return rc;
+ 	of_platform_depopulate(dev);
  
--- 
-2.39.5
-
+ 	for (i = 0 ; i < PHY_COUNT ; ++i) {
 
 
 
