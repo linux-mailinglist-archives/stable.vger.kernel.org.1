@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-174384-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-175046-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8BE15B3635D
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 15:29:02 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4DCB5B3668C
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 15:58:07 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id C1319464D44
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 13:19:57 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 46A21580A92
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 13:46:48 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 391BA34A317;
-	Tue, 26 Aug 2025 13:17:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9FA403451DE;
+	Tue, 26 Aug 2025 13:46:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="h8HnFBl4"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="2SQV0AHR"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EB30F321433;
-	Tue, 26 Aug 2025 13:17:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5B2562F0671;
+	Tue, 26 Aug 2025 13:46:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756214248; cv=none; b=raEDQ/ixQGgXJC91lHciFBYzcOuHx5LZYGE2+MMqu8eHYpq1jWCZqByeNIatnTqC9uH8Qt2MDG3zUhXjsAGDOZHkVV5rfrvvyOkDUKb2Y7nj6YthMptdCT4KkAVUsJ3rI+LUl0Vb1CzD5lWM3cfECw7LHm53lvuGC1BklUHrOok=
+	t=1756215998; cv=none; b=RisqPkRMtjDZX60p+5t2WGBPYzpMN8mqRBb9I+lF0/nQhfv4bUFh55o8ygt3LtDMfSFv9uPKjUMM0wMZMaphG/gLrJbBLMIkx3irHWfmpI1cb+41J1rbl782Lv8o9ikz9chficFI//4K+Zf9/IveHIIy6CcWVxZ4y8W3kD9Qk7s=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756214248; c=relaxed/simple;
-	bh=4Uvg+QYcFwWOvsiRdkFkdYRCapig87V5Hz0+p170hNs=;
+	s=arc-20240116; t=1756215998; c=relaxed/simple;
+	bh=/sp1+kAdxVk576aATu0PNy9cNdpcIlDsTdJ9nDkhqeA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=GGQYE4fzPf/99KDEtN+O2jHn3cAZ+HvC7+T4J8Ge50e8hTRZ1js6+31mYntTTi36/DfJ8f8ZZ0kH3Y7SkkqyZ6DjPfHmyciwKJs2sd5vfr5gfJwretmbv+Y7kk0a33W6qkl76xKAI+RgAcLOPZgTN/w9j4MHEzdnFBQaZkPkt5I=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=h8HnFBl4; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 33058C4CEF1;
-	Tue, 26 Aug 2025 13:17:27 +0000 (UTC)
+	 MIME-Version; b=EaKf42tK/w3+du6TTtOZ5fWgg5ZvQUPeI0Xp1RAHzcxKQKvBZ+h8u7hFdJCHhI7+Ixanv0QaJHph+Dah40YsspQ1l05L8M8RUu2eMJdDKIFuBQtiLgmLgA7BvgYPaqERxylWFwZvWTy92/snVz++cCX+iSXpFcSjQTzu78cl+W0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=2SQV0AHR; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id DEF10C4CEF1;
+	Tue, 26 Aug 2025 13:46:37 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1756214247;
-	bh=4Uvg+QYcFwWOvsiRdkFkdYRCapig87V5Hz0+p170hNs=;
+	s=korg; t=1756215998;
+	bh=/sp1+kAdxVk576aATu0PNy9cNdpcIlDsTdJ9nDkhqeA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=h8HnFBl4L58hFV1tsOrFSvxmIOqA3EvO/e7tgYy2AZopgBlSZHXzminf7StEllcJK
-	 TQeKPEtVnQfAJmpg5aXL5QpVKOw9Zs2WjK9d7Lyj5bbAmvAgvufsiIVgYHSxdHoC/F
-	 p1ig+4gz3ewlcLw/i8qinhnDGMQZXkISF9no1VTI=
+	b=2SQV0AHRb3/4mWrbAovevGBQftYlmKDXDpW1/WJe4QjrL1HXKd1HX5knuAW9/lOLs
+	 lXgyse7OERaIn3D5MEg/Ti7xS7/wk4sJMYWkdMPHJtlxf/RekqLuVOdbgc/zMknC0S
+	 M4S45heZ081eSpvOUkGF/nJWchW328WCz/+vO4ec=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	"Rafael J. Wysocki" <rafael.j.wysocki@intel.com>,
-	Prashant Malani <pmalani@google.com>,
-	Viresh Kumar <viresh.kumar@linaro.org>,
+	Olga Kornievskaia <okorniev@redhat.com>,
+	Trond Myklebust <trond.myklebust@hammerspace.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 066/482] cpufreq: CPPC: Mark driver with NEED_UPDATE_LIMITS flag
+Subject: [PATCH 5.15 228/644] NFSv4.2: another fix for listxattr
 Date: Tue, 26 Aug 2025 13:05:19 +0200
-Message-ID: <20250826110932.461942559@linuxfoundation.org>
+Message-ID: <20250826110952.066195598@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250826110930.769259449@linuxfoundation.org>
-References: <20250826110930.769259449@linuxfoundation.org>
+In-Reply-To: <20250826110946.507083938@linuxfoundation.org>
+References: <20250826110946.507083938@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,53 +62,55 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Prashant Malani <pmalani@google.com>
+From: Olga Kornievskaia <okorniev@redhat.com>
 
-[ Upstream commit 0a1416a49e63c320f6e6c1c8d07e1b58c0d4a3f3 ]
+[ Upstream commit 9acb237deff7667b0f6b10fe6b1b70c4429ea049 ]
 
-AMU counters on certain CPPC-based platforms tend to yield inaccurate
-delivered performance measurements on systems that are idle/mostly idle.
-This results in an inaccurate frequency being stored by cpufreq in its
-policy structure when the CPU is brought online. [1]
+Currently, when the server supports NFS4.1 security labels then
+security.selinux label in included twice. Instead, only add it
+when the server doesn't possess security label support.
 
-Consequently, if the userspace governor tries to set the frequency to a
-new value, there is a possibility that it would be the erroneous value
-stored earlier. In such a scenario, cpufreq would assume that the
-requested frequency has already been set and return early, resulting in
-the correct/new frequency request never making it to the hardware.
-
-Since the operating frequency is liable to this sort of inconsistency,
-mark the CPPC driver with CPUFREQ_NEED_UPDATE_LIMITS so that it is always
-invoked when a target frequency update is requested.
-
-Link: https://lore.kernel.org/linux-pm/20250619000925.415528-3-pmalani@google.com/ [1]
-Suggested-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
-Signed-off-by: Prashant Malani <pmalani@google.com>
-Acked-by: Viresh Kumar <viresh.kumar@linaro.org>
-Link: https://patch.msgid.link/20250722055611.130574-2-pmalani@google.com
-Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
+Fixes: 243fea134633 ("NFSv4.2: fix listxattr to return selinux security label")
+Signed-off-by: Olga Kornievskaia <okorniev@redhat.com>
+Link: https://lore.kernel.org/r/20250722205641.79394-1-okorniev@redhat.com
+Signed-off-by: Trond Myklebust <trond.myklebust@hammerspace.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/cpufreq/cppc_cpufreq.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ fs/nfs/nfs4proc.c | 10 ++++++----
+ 1 file changed, 6 insertions(+), 4 deletions(-)
 
-diff --git a/drivers/cpufreq/cppc_cpufreq.c b/drivers/cpufreq/cppc_cpufreq.c
-index cfa2e3f0e56b..d77e4aa209d9 100644
---- a/drivers/cpufreq/cppc_cpufreq.c
-+++ b/drivers/cpufreq/cppc_cpufreq.c
-@@ -809,7 +809,7 @@ static struct freq_attr *cppc_cpufreq_attr[] = {
- };
+diff --git a/fs/nfs/nfs4proc.c b/fs/nfs/nfs4proc.c
+index 9d4e4146efef..528e904f5475 100644
+--- a/fs/nfs/nfs4proc.c
++++ b/fs/nfs/nfs4proc.c
+@@ -10528,7 +10528,7 @@ const struct nfs4_minor_version_ops *nfs_v4_minor_ops[] = {
  
- static struct cpufreq_driver cppc_cpufreq_driver = {
--	.flags = CPUFREQ_CONST_LOOPS,
-+	.flags = CPUFREQ_CONST_LOOPS | CPUFREQ_NEED_UPDATE_LIMITS,
- 	.verify = cppc_verify_policy,
- 	.target = cppc_cpufreq_set_target,
- 	.get = cppc_cpufreq_get_rate,
+ static ssize_t nfs4_listxattr(struct dentry *dentry, char *list, size_t size)
+ {
+-	ssize_t error, error2, error3, error4;
++	ssize_t error, error2, error3, error4 = 0;
+ 	size_t left = size;
+ 
+ 	error = generic_listxattr(dentry, list, left);
+@@ -10556,9 +10556,11 @@ static ssize_t nfs4_listxattr(struct dentry *dentry, char *list, size_t size)
+ 		left -= error3;
+ 	}
+ 
+-	error4 = security_inode_listsecurity(d_inode(dentry), list, left);
+-	if (error4 < 0)
+-		return error4;
++	if (!nfs_server_capable(d_inode(dentry), NFS_CAP_SECURITY_LABEL)) {
++		error4 = security_inode_listsecurity(d_inode(dentry), list, left);
++		if (error4 < 0)
++			return error4;
++	}
+ 
+ 	error += error2 + error3 + error4;
+ 	if (size && error > size)
 -- 
 2.39.5
 
