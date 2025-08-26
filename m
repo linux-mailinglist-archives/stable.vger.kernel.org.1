@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-173913-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-175564-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id DAF24B36068
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 15:00:12 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id C5F2FB368BD
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 16:19:05 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 38A451BC0D25
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 12:57:33 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id D393E58112B
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 14:11:43 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 558E31DE4C2;
-	Tue, 26 Aug 2025 12:56:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1A59A3570A9;
+	Tue, 26 Aug 2025 14:09:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="IIn8xOb2"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="P4l0O3rQ"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 13F49145B3E;
-	Tue, 26 Aug 2025 12:56:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CD0C2356908;
+	Tue, 26 Aug 2025 14:09:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756212996; cv=none; b=D8Wl+pXyc81Hc/pU0WUdxISS+6sTRTRbl0lJNmC6/xSHjGc/TE7mZGkQTtJNgN4je+g7fpSGl+4hiFgGH3peZBWAwqYhRlX7yADosmMVnxN6+1AYn4WSeMvCHwSJHn0KjlTdlEzFOflyv9cbgdiGPlt0Qjd4TFSbDXvuvkXsEXw=
+	t=1756217377; cv=none; b=oAv7SwD6igWFQyZwnJ1KA5qkLjOQWwTvj4FjRjoRWgkZ06iD4Ce/RyPFG2gc6XyCPcxFGmej/wbG1tvLucUHf5BdhLEe9SwNT6z+4aHawI7f83URbrXkELru+b7yF5SkM5MhC2CvhxjkBy8OgxNHNqFKhqOhx/I38qWELxlmzRY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756212996; c=relaxed/simple;
-	bh=MV3onLz/Tai9CDwer0NzcxVtOzDEuYsvAtw+dz/+9y0=;
+	s=arc-20240116; t=1756217377; c=relaxed/simple;
+	bh=L9+4kEGMKrfkcJ5g4+rUUUMU6AgMpGkDkNxUIdoxhc0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=b9mK/ddzGQupfNB22DqZ6ibMV471icoSjq5gc8J7QjxbvBFYlBCn1HwI3xQs7Bp/VKDvb4MSAc12d3ca5FvfLVP09eyhzN1BfgnYcw7ADr5Dtr9N68GYA9AWAXkGlGbslbJ5WONEAFnofr9pwcSQ+5s4Y6A6wwd7AJ67KR5YM70=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=IIn8xOb2; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 939C4C4CEF1;
-	Tue, 26 Aug 2025 12:56:35 +0000 (UTC)
+	 MIME-Version; b=LSjx8+5H/93K+8C/Wv8WF3C4LXa+18/6slHPX8Y0kqtl5hukojlFA6zU9RVkgq4uTzLhNfEdlG8rGrQwLOWNwZnv1/Ag537xgABXdOFa57PvCRl7FozeF22CNilHu4FRIMyvdf5B3E1kBsAh0JiU6ZtTq5nAihe/dFgqzvRJzHE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=P4l0O3rQ; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5777EC116B1;
+	Tue, 26 Aug 2025 14:09:37 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1756212996;
-	bh=MV3onLz/Tai9CDwer0NzcxVtOzDEuYsvAtw+dz/+9y0=;
+	s=korg; t=1756217377;
+	bh=L9+4kEGMKrfkcJ5g4+rUUUMU6AgMpGkDkNxUIdoxhc0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=IIn8xOb2WB9voMzckBUJ+2PXyzARJCD11hm0PXbyH1vOgUM2JYDwrT3p8XCAT4X5K
-	 RoWfdTK9sen/Kbl94k7WS6va3+I/Rqm/d8tzDqZkLeiCVUaSG+c4CPDXOwj/5Rvger
-	 s8ddcGTcS1SR3/dRi4Vg55EgV53nYSU/P5cVjY6g=
+	b=P4l0O3rQ/v+sZxwoZ0tmLC6Xzi/ZwlBfOoRzdwmYgFE9XQqUWsqIKpKwprBqPnT/W
+	 BF2tA2jq/9LstWAw7mrGbzQqcLuVyrJaxinKZa7LtFRgKJps2SuHmIb4zEdQbaO1gx
+	 AgxLfo/XVByipO11XNz9ONtxnlXA81Vb1LS7XKXQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Rand Deeb <rand.sec96@gmail.com>,
-	Miri Korenblit <miriam.rachel.korenblit@intel.com>,
+	Hans Zhang <18255117159@163.com>,
+	Manivannan Sadhasivam <mani@kernel.org>,
+	Shawn Lin <shawn.lin@rock-chips.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 181/587] wifi: iwlwifi: dvm: fix potential overflow in rs_fill_link_cmd()
+Subject: [PATCH 5.10 120/523] PCI: rockchip-host: Fix "Unexpected Completion" log message
 Date: Tue, 26 Aug 2025 13:05:30 +0200
-Message-ID: <20250826110957.547007945@linuxfoundation.org>
+Message-ID: <20250826110927.477561097@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250826110952.942403671@linuxfoundation.org>
-References: <20250826110952.942403671@linuxfoundation.org>
+In-Reply-To: <20250826110924.562212281@linuxfoundation.org>
+References: <20250826110924.562212281@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,46 +63,43 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Rand Deeb <rand.sec96@gmail.com>
+From: Hans Zhang <18255117159@163.com>
 
-[ Upstream commit e3ad987e9dc7d1e12e3f2f1e623f0e174cd0ca78 ]
+[ Upstream commit fcc5f586c4edbcc10de23fb9b8c0972a84e945cd ]
 
-The 'index' variable in the rs_fill_link_cmd() function can reach
-LINK_QUAL_MAX_RETRY_NUM during the execution of the inner loop. This
-variable is used as an index for the lq_cmd->rs_table array, which has a
-size of LINK_QUAL_MAX_RETRY_NUM, without proper validation.
+Fix the debug message for the PCIE_CORE_INT_UCR interrupt to clearly
+indicate "Unexpected Completion" instead of a duplicate "malformed TLP"
+message.
 
-Modify the condition of the inner loop to ensure that the 'index' variable
-does not exceed LINK_QUAL_MAX_RETRY_NUM - 1, thereby preventing any
-potential overflow issues.
-
-Found by Linux Verification Center (linuxtesting.org) with SVACE.
-
-Signed-off-by: Rand Deeb <rand.sec96@gmail.com>
-Link: https://patch.msgid.link/20240313101755.269209-1-rand.sec96@gmail.com
-Signed-off-by: Miri Korenblit <miriam.rachel.korenblit@intel.com>
+Fixes: e77f847df54c ("PCI: rockchip: Add Rockchip PCIe controller support")
+Signed-off-by: Hans Zhang <18255117159@163.com>
+[mani: added fixes tag]
+Signed-off-by: Manivannan Sadhasivam <mani@kernel.org>
+Reviewed-by: Manivannan Sadhasivam <mani@kernel.org>
+Acked-by: Shawn Lin <shawn.lin@rock-chips.com>
+Link: https://patch.msgid.link/20250607160201.807043-2-18255117159@163.com
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/wireless/intel/iwlwifi/dvm/rs.c | 2 +-
+ drivers/pci/controller/pcie-rockchip-host.c | 2 +-
  1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/net/wireless/intel/iwlwifi/dvm/rs.c b/drivers/net/wireless/intel/iwlwifi/dvm/rs.c
-index f4a6f76cf193..e70024525eb9 100644
---- a/drivers/net/wireless/intel/iwlwifi/dvm/rs.c
-+++ b/drivers/net/wireless/intel/iwlwifi/dvm/rs.c
-@@ -2904,7 +2904,7 @@ static void rs_fill_link_cmd(struct iwl_priv *priv,
- 		/* Repeat initial/next rate.
- 		 * For legacy IWL_NUMBER_TRY == 1, this loop will not execute.
- 		 * For HT IWL_HT_NUMBER_TRY == 3, this executes twice. */
--		while (repeat_rate > 0 && (index < LINK_QUAL_MAX_RETRY_NUM)) {
-+		while (repeat_rate > 0 && index < (LINK_QUAL_MAX_RETRY_NUM - 1)) {
- 			if (is_legacy(tbl_type.lq_type)) {
- 				if (ant_toggle_cnt < NUM_TRY_BEFORE_ANT_TOGGLE)
- 					ant_toggle_cnt++;
+diff --git a/drivers/pci/controller/pcie-rockchip-host.c b/drivers/pci/controller/pcie-rockchip-host.c
+index 0d6df73bb918..86bb4f82048a 100644
+--- a/drivers/pci/controller/pcie-rockchip-host.c
++++ b/drivers/pci/controller/pcie-rockchip-host.c
+@@ -442,7 +442,7 @@ static irqreturn_t rockchip_pcie_subsys_irq_handler(int irq, void *arg)
+ 			dev_dbg(dev, "malformed TLP received from the link\n");
+ 
+ 		if (sub_reg & PCIE_CORE_INT_UCR)
+-			dev_dbg(dev, "malformed TLP received from the link\n");
++			dev_dbg(dev, "Unexpected Completion received from the link\n");
+ 
+ 		if (sub_reg & PCIE_CORE_INT_FCE)
+ 			dev_dbg(dev, "an error was observed in the flow control advertisements from the other side\n");
 -- 
 2.39.5
 
