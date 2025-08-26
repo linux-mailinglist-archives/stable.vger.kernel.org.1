@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-175539-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-175014-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id E42B2B368DF
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 16:20:20 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 414A8B36671
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 15:57:13 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 874DD1C23CCA
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 14:10:02 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 09009564432
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 13:45:35 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C4B0BC133;
-	Tue, 26 Aug 2025 14:08:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9104434A306;
+	Tue, 26 Aug 2025 13:45:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="I06gPPGn"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="o7Rs7VT/"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 812452B9A7;
-	Tue, 26 Aug 2025 14:08:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4CFE6341660;
+	Tue, 26 Aug 2025 13:45:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756217311; cv=none; b=rLtOmZrni9xOIQosg1jK6MKkUt2tsd+qX8bq+aXlnu1B+5n7VOX31MJyXIUgqEw5RYTKqKC1OKJbuNfgUvpUoX5yb+/PE1AC7zHKkF6ehNKBv6DpPxgLNY4wy7DtSXv8vg9MKOJ4kSRRo9/dACqb6dzn00EaQywsXF/b4PSq9q4=
+	t=1756215914; cv=none; b=g54dsm8XhXTT+LOSzE0/Je8erHpuuNVGePudgMzPFxu6LZzeCws3TdJmJ1N4jDmNKapWOyEu5flAdtzUXLJpelH9DUUu+ejrJC0pQSvXtkdkHseDqwL5sWBrk1HIgUm3p8233zB7PX4oZdLBGZT5qWx/9cDu//OYe7zKLOrBnqU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756217311; c=relaxed/simple;
-	bh=jJ8sdRyzhUnYTAREakBiSz2kdlrZHervtoqpZORKSJw=;
+	s=arc-20240116; t=1756215914; c=relaxed/simple;
+	bh=EMGnNm0wX9+J4iKqWtnU4b+OiEJDQElESWUI7h4kHeI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Tk/grJpZmeXwYx7uaF7cb1rK9mIl3vuwhK/27qCK7tp8I4Ftr6azGkFD7CRlDs5F9pXd/62kPKvbA4j1aiGd3ICtsecP0caLIkjiMtWI1FmefLjHJ0jkvkZA4FuoxENqpbCaxh+juOA1RCH8XgcA+kZiRjxiD84hi2WXVDMBX/4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=I06gPPGn; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0E245C4CEF1;
-	Tue, 26 Aug 2025 14:08:30 +0000 (UTC)
+	 MIME-Version; b=pOdh1qsdKCVTlgJ+MdQKqC7HgRaSy4EqGvx+1Rv9Cp94LCmGpKuVSPtep50kHWha35ciJBO64n2aiXQktW7AH+cSuFPnkACrHJaZOVCUzXV229oqiuBuODIOUkKFQoLQ9lIL4DgJI9ufdva1Ee6bs0waWNifGSaz4CXHF39WoY8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=o7Rs7VT/; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D5351C4CEF1;
+	Tue, 26 Aug 2025 13:45:13 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1756217311;
-	bh=jJ8sdRyzhUnYTAREakBiSz2kdlrZHervtoqpZORKSJw=;
+	s=korg; t=1756215914;
+	bh=EMGnNm0wX9+J4iKqWtnU4b+OiEJDQElESWUI7h4kHeI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=I06gPPGnuy+ouees5831QFMA1y8f+oqcO6iEUf9jpZ/4sswTCNUbvhfxScYtmDU32
-	 n2pIQPKDFLI9Ym3wM5YxS0PYuvQIhrA6LC4Xmh/fnQ0RJ2nnrfpliC3Mln4MHXP5ey
-	 x10TKnvFXq6MwGOz3dZtYOewxb+Z0unuVGolx4f0=
+	b=o7Rs7VT/oQu+2deGqOC0OtG+TamlBYg6smVQyRJbZTMxI0m06dxGfxPqVVnGdyc1E
+	 vQAqA6C3CWEmvIeTL6VsrKGD6lHNPkE6fu9S2ZJrCZjFE3hCwl9zhyrhhT3MTXzNas
+	 r4uF+TZXEKEaa++SNr/vsfT9kWzaRm5KsMW9WKhQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Andy Yan <andy.yan@rock-chips.com>,
-	Heiko Stuebner <heiko@sntech.de>,
+	Chao Yu <chao@kernel.org>,
+	Jaegeuk Kim <jaegeuk@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 094/523] drm/rockchip: cleanup fb when drm_gem_fb_afbc_init failed
+Subject: [PATCH 5.15 213/644] f2fs: doc: fix wrong quota mount option description
 Date: Tue, 26 Aug 2025 13:05:04 +0200
-Message-ID: <20250826110926.865637238@linuxfoundation.org>
+Message-ID: <20250826110951.712843703@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250826110924.562212281@linuxfoundation.org>
-References: <20250826110924.562212281@linuxfoundation.org>
+In-Reply-To: <20250826110946.507083938@linuxfoundation.org>
+References: <20250826110946.507083938@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,54 +62,42 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Andy Yan <andy.yan@rock-chips.com>
+From: Chao Yu <chao@kernel.org>
 
-[ Upstream commit 099593a28138b48feea5be8ce700e5bc4565e31d ]
+[ Upstream commit 81b6ecca2f15922e8d653dc037df5871e754be6e ]
 
-In the function drm_gem_fb_init_with_funcs, the framebuffer (fb)
-and its corresponding object ID have already been registered.
+We should use "{usr,grp,prj}jquota=" to disable journaled quota,
+rather than using off{usr,grp,prj}jquota.
 
-So we need to cleanup the drm framebuffer if the subsequent
-execution of drm_gem_fb_afbc_init fails.
-
-Directly call drm_framebuffer_put to ensure that all fb related
-resources are cleanup.
-
-Fixes: 7707f7227f09 ("drm/rockchip: Add support for afbc")
-Signed-off-by: Andy Yan <andy.yan@rock-chips.com>
-Signed-off-by: Heiko Stuebner <heiko@sntech.de>
-Link: https://lore.kernel.org/r/20250509031607.2542187-1-andyshrk@163.com
+Fixes: 4b2414d04e99 ("f2fs: support journalled quota")
+Signed-off-by: Chao Yu <chao@kernel.org>
+Signed-off-by: Jaegeuk Kim <jaegeuk@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/rockchip/rockchip_drm_fb.c | 9 +--------
- 1 file changed, 1 insertion(+), 8 deletions(-)
+ Documentation/filesystems/f2fs.rst | 6 +++---
+ 1 file changed, 3 insertions(+), 3 deletions(-)
 
-diff --git a/drivers/gpu/drm/rockchip/rockchip_drm_fb.c b/drivers/gpu/drm/rockchip/rockchip_drm_fb.c
-index 3aa37e177667..b386c17e8668 100644
---- a/drivers/gpu/drm/rockchip/rockchip_drm_fb.c
-+++ b/drivers/gpu/drm/rockchip/rockchip_drm_fb.c
-@@ -81,16 +81,9 @@ rockchip_fb_create(struct drm_device *dev, struct drm_file *file,
- 	}
- 
- 	if (drm_is_afbc(mode_cmd->modifier[0])) {
--		int ret, i;
--
- 		ret = drm_gem_fb_afbc_init(dev, mode_cmd, afbc_fb);
- 		if (ret) {
--			struct drm_gem_object **obj = afbc_fb->base.obj;
--
--			for (i = 0; i < info->num_planes; ++i)
--				drm_gem_object_put(obj[i]);
--
--			kfree(afbc_fb);
-+			drm_framebuffer_put(&afbc_fb->base);
- 			return ERR_PTR(ret);
- 		}
- 	}
+diff --git a/Documentation/filesystems/f2fs.rst b/Documentation/filesystems/f2fs.rst
+index 7fe50b0bccde..f3e9ba8d6892 100644
+--- a/Documentation/filesystems/f2fs.rst
++++ b/Documentation/filesystems/f2fs.rst
+@@ -211,9 +211,9 @@ usrjquota=<file>	 Appoint specified file and type during mount, so that quota
+ grpjquota=<file>	 information can be properly updated during recovery flow,
+ prjjquota=<file>	 <quota file>: must be in root directory;
+ jqfmt=<quota type>	 <quota type>: [vfsold,vfsv0,vfsv1].
+-offusrjquota		 Turn off user journalled quota.
+-offgrpjquota		 Turn off group journalled quota.
+-offprjjquota		 Turn off project journalled quota.
++usrjquota=		 Turn off user journalled quota.
++grpjquota=		 Turn off group journalled quota.
++prjjquota=		 Turn off project journalled quota.
+ quota			 Enable plain user disk quota accounting.
+ noquota			 Disable all plain disk quota option.
+ whint_mode=%s		 Control which write hints are passed down to block
 -- 
 2.39.5
 
