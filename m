@@ -1,57 +1,59 @@
-Return-Path: <stable+bounces-176184-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-175247-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 95E87B36B7C
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 16:46:22 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0F576B36753
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 16:05:49 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 262D0585178
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 14:39:37 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id E85F51C22A0F
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 13:57:23 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 78BAD35AACA;
-	Tue, 26 Aug 2025 14:36:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6E0CD350D57;
+	Tue, 26 Aug 2025 13:55:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="RhMLERAL"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Dw35ZsEC"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 31B3135E4DF;
-	Tue, 26 Aug 2025 14:36:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 29250302CA6;
+	Tue, 26 Aug 2025 13:55:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756218998; cv=none; b=a8MQHedhY6BCQBJxOKdCez7Z0I7whkiQT+fB09iWY2v2SCTmHxEaNeomZS0MgnUMuPCElbkrbKrLIdVwxomAjGdlFjz2QysyZClvO4b6iq+bFjfUM6FCLpSxIYQBOfwpKXKY99KIxRJf31Pu+umNcWiA2lbbcuKne9wsN+ebcoc=
+	t=1756216533; cv=none; b=YQljBPwlvnlAxzvYfNy8512NWcbOsALBrdAmZYG2GABRvFlp722joj/95KftJbGKNeBtcZb5x51y9Hi4/htM3hdnLXW8xMWMVNvmixEe2/LTm7SSwDg/WYZqlIe4m2QHR5XH5SS/tW9mwgCpp8u90T+bzFz/jo+lf0C4k3an5cY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756218998; c=relaxed/simple;
-	bh=iQr7XKlmi0fhQL2WlHh/e1/B34U70D5K1HH1T4GP5Jg=;
+	s=arc-20240116; t=1756216533; c=relaxed/simple;
+	bh=CKyqkLKWW7VvJqG1WNPnvOdsrTDfDqYKVn/3LrWBUIU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=YGGRxljxPA4khHGwM3r/SKjRsOT6BiAqw66HyCX3lPuKD9H2aOy8IzTXxgZIAmMkTQtElRPwod5WJPN+k1HswhT7ESws2DdESvBTCA+oDaL6Rb00Gn/0hHG3cApgT502/1jcmaWrO0IlGbr3jGRCKIm3LI50R13W856XSovzEsE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=RhMLERAL; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id BB4ABC4CEF1;
-	Tue, 26 Aug 2025 14:36:37 +0000 (UTC)
+	 MIME-Version; b=s381ZMZsbtrsJMZKhIPGgU6QgGhR+n7+vXhCUKGKOn7I6/UCM6idnN6RkMsHxczVJsrW4+8EDB1GlgVM0k1UebCt9L0hQMbxFssn5XgYLEPmg/OxXeTTkf6IfwJwMDTJjzeEv/06kPq8wO5VLJB5sqvdt+fXxTLN1rDOUnCSsSI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Dw35ZsEC; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B31F1C4CEF1;
+	Tue, 26 Aug 2025 13:55:32 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1756218998;
-	bh=iQr7XKlmi0fhQL2WlHh/e1/B34U70D5K1HH1T4GP5Jg=;
+	s=korg; t=1756216533;
+	bh=CKyqkLKWW7VvJqG1WNPnvOdsrTDfDqYKVn/3LrWBUIU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=RhMLERALyxT0kEBNxqSRxVkrhAnKHm5vXYIT3UmRY/EY2o6Mx7/GsWnET2aAvjOfR
-	 sqdERTLGs63QemOOxu6UqZlj3p/6ePD9mLOcA9vmqe4g8FOcy0AbaMRBCIajd3UgP5
-	 IGq8y2hd1ZP3PQ6p+RMregeY86mQNHA968OUukQc=
+	b=Dw35ZsECA1DnA0cHOGkEwS5781SXZrr6ARdjaBec/qn6vM478QfNORsLwIJPuBMGx
+	 Z+FqYWzlpgcOiOmhiwnGmPxQWDxo6cUE++g7OB0ME98LBzJ5mh54EfSduU8kBKWMf2
+	 /pEJYB0i67T011F3L/6a/KC54CB31ktn5xtMNKyE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	"Paul E. McKenney" <paulmck@kernel.org>,
-	Frederic Weisbecker <frederic@kernel.org>,
-	"Neeraj Upadhyay (AMD)" <neeraj.upadhyay@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.4 212/403] rcu: Protect ->defer_qs_iw_pending from data race
+	Peter Jung <ptr1337@cachyos.org>,
+	burneddi <burneddi@protonmail.com>,
+	Russell Haley <yumpusamongus@gmail.com>,
+	Boris Burkov <boris@bur.io>,
+	Filipe Manana <fdmanana@suse.com>,
+	David Sterba <dsterba@suse.com>
+Subject: [PATCH 5.15 447/644] btrfs: fix log tree replay failure due to file with 0 links and extents
 Date: Tue, 26 Aug 2025 13:08:58 +0200
-Message-ID: <20250826110912.697124453@linuxfoundation.org>
+Message-ID: <20250826110957.548362745@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250826110905.607690791@linuxfoundation.org>
-References: <20250826110905.607690791@linuxfoundation.org>
+In-Reply-To: <20250826110946.507083938@linuxfoundation.org>
+References: <20250826110946.507083938@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,102 +65,152 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.4-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Paul E. McKenney <paulmck@kernel.org>
+From: Filipe Manana <fdmanana@suse.com>
 
-[ Upstream commit 90c09d57caeca94e6f3f87c49e96a91edd40cbfd ]
+commit 0a32e4f0025a74c70dcab4478e9b29c22f5ecf2f upstream.
 
-On kernels built with CONFIG_IRQ_WORK=y, when rcu_read_unlock() is
-invoked within an interrupts-disabled region of code [1], it will invoke
-rcu_read_unlock_special(), which uses an irq-work handler to force the
-system to notice when the RCU read-side critical section actually ends.
-That end won't happen until interrupts are enabled at the soonest.
+If we log a new inode (not persisted in a past transaction) that has 0
+links and extents, then log another inode with an higher inode number, we
+end up with failing to replay the log tree with -EINVAL. The steps for
+this are:
 
-In some kernels, such as those booted with rcutree.use_softirq=y, the
-irq-work handler is used unconditionally.
+1) create new file A
+2) write some data to file A
+3) open an fd on file A
+4) unlink file A
+5) fsync file A using the previously open fd
+6) create file B (has higher inode number than file A)
+7) fsync file B
+8) power fail before current transaction commits
 
-The per-CPU rcu_data structure's ->defer_qs_iw_pending field is
-updated by the irq-work handler and is both read and updated by
-rcu_read_unlock_special().  This resulted in the following KCSAN splat:
+Now when attempting to mount the fs, the log replay will fail with
+-ENOENT at replay_one_extent() when attempting to replay the first
+extent of file A. The failure comes when trying to open the inode for
+file A in the subvolume tree, since it doesn't exist.
 
-------------------------------------------------------------------------
+Before commit 5f61b961599a ("btrfs: fix inode lookup error handling
+during log replay"), the returned error was -EIO instead of -ENOENT,
+since we converted any errors when attempting to read an inode during
+log replay to -EIO.
 
-BUG: KCSAN: data-race in rcu_preempt_deferred_qs_handler / rcu_read_unlock_special
+The reason for this is that the log replay procedure fails to ignore
+the current inode when we are at the stage LOG_WALK_REPLAY_ALL, our
+current inode has 0 links and last inode we processed in the previous
+stage has a non 0 link count. In other words, the issue is that at
+replay_one_extent() we only update wc->ignore_cur_inode if the current
+replay stage is LOG_WALK_REPLAY_INODES.
 
-read to 0xffff96b95f42d8d8 of 1 bytes by task 90 on cpu 8:
- rcu_read_unlock_special+0x175/0x260
- __rcu_read_unlock+0x92/0xa0
- rt_spin_unlock+0x9b/0xc0
- __local_bh_enable+0x10d/0x170
- __local_bh_enable_ip+0xfb/0x150
- rcu_do_batch+0x595/0xc40
- rcu_cpu_kthread+0x4e9/0x830
- smpboot_thread_fn+0x24d/0x3b0
- kthread+0x3bd/0x410
- ret_from_fork+0x35/0x40
- ret_from_fork_asm+0x1a/0x30
+Fix this by updating wc->ignore_cur_inode whenever we find an inode item
+regardless of the current replay stage. This is a simple solution and easy
+to backport, but later we can do other alternatives like avoid logging
+extents or inode items other than the inode item for inodes with a link
+count of 0.
 
-write to 0xffff96b95f42d8d8 of 1 bytes by task 88 on cpu 8:
- rcu_preempt_deferred_qs_handler+0x1e/0x30
- irq_work_single+0xaf/0x160
- run_irq_workd+0x91/0xc0
- smpboot_thread_fn+0x24d/0x3b0
- kthread+0x3bd/0x410
- ret_from_fork+0x35/0x40
- ret_from_fork_asm+0x1a/0x30
+The problem with the wc->ignore_cur_inode logic has been around since
+commit f2d72f42d5fa ("Btrfs: fix warning when replaying log after fsync
+of a tmpfile") but it only became frequent to hit since the more recent
+commit 5e85262e542d ("btrfs: fix fsync of files with no hard links not
+persisting deletion"), because we stopped skipping inodes with a link
+count of 0 when logging, while before the problem would only be triggered
+if trying to replay a log tree created with an older kernel which has a
+logged inode with 0 links.
 
-no locks held by irq_work/8/88.
-irq event stamp: 200272
-hardirqs last  enabled at (200272): [<ffffffffb0f56121>] finish_task_switch+0x131/0x320
-hardirqs last disabled at (200271): [<ffffffffb25c7859>] __schedule+0x129/0xd70
-softirqs last  enabled at (0): [<ffffffffb0ee093f>] copy_process+0x4df/0x1cc0
-softirqs last disabled at (0): [<0000000000000000>] 0x0
+A test case for fstests will be submitted soon.
 
-------------------------------------------------------------------------
-
-The problem is that irq-work handlers run with interrupts enabled, which
-means that rcu_preempt_deferred_qs_handler() could be interrupted,
-and that interrupt handler might contain an RCU read-side critical
-section, which might invoke rcu_read_unlock_special().  In the strict
-KCSAN mode of operation used by RCU, this constitutes a data race on
-the ->defer_qs_iw_pending field.
-
-This commit therefore disables interrupts across the portion of the
-rcu_preempt_deferred_qs_handler() that updates the ->defer_qs_iw_pending
-field.  This suffices because this handler is not a fast path.
-
-Signed-off-by: Paul E. McKenney <paulmck@kernel.org>
-Reviewed-by: Frederic Weisbecker <frederic@kernel.org>
-Signed-off-by: Neeraj Upadhyay (AMD) <neeraj.upadhyay@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Reported-by: Peter Jung <ptr1337@cachyos.org>
+Link: https://lore.kernel.org/linux-btrfs/fce139db-4458-4788-bb97-c29acf6cb1df@cachyos.org/
+Reported-by: burneddi <burneddi@protonmail.com>
+Link: https://lore.kernel.org/linux-btrfs/lh4W-Lwc0Mbk-QvBhhQyZxf6VbM3E8VtIvU3fPIQgweP_Q1n7wtlUZQc33sYlCKYd-o6rryJQfhHaNAOWWRKxpAXhM8NZPojzsJPyHMf2qY=@protonmail.com/#t
+Reported-by: Russell Haley <yumpusamongus@gmail.com>
+Link: https://lore.kernel.org/linux-btrfs/598ecc75-eb80-41b3-83c2-f2317fbb9864@gmail.com/
+Fixes: f2d72f42d5fa ("Btrfs: fix warning when replaying log after fsync of a tmpfile")
+CC: stable@vger.kernel.org # 5.4+
+Reviewed-by: Boris Burkov <boris@bur.io>
+Signed-off-by: Filipe Manana <fdmanana@suse.com>
+Signed-off-by: David Sterba <dsterba@suse.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- kernel/rcu/tree_plugin.h | 3 +++
- 1 file changed, 3 insertions(+)
+ fs/btrfs/tree-log.c |   48 ++++++++++++++++++++++++++++++------------------
+ 1 file changed, 30 insertions(+), 18 deletions(-)
 
-diff --git a/kernel/rcu/tree_plugin.h b/kernel/rcu/tree_plugin.h
-index 1d9f2831b54e..197fefa82d18 100644
---- a/kernel/rcu/tree_plugin.h
-+++ b/kernel/rcu/tree_plugin.h
-@@ -582,10 +582,13 @@ static void rcu_preempt_deferred_qs(struct task_struct *t)
-  */
- static void rcu_preempt_deferred_qs_handler(struct irq_work *iwp)
- {
-+	unsigned long flags;
- 	struct rcu_data *rdp;
+--- a/fs/btrfs/tree-log.c
++++ b/fs/btrfs/tree-log.c
+@@ -313,8 +313,7 @@ struct walk_control {
  
- 	rdp = container_of(iwp, struct rcu_data, defer_qs_iw);
-+	local_irq_save(flags);
- 	rdp->defer_qs_iw_pending = false;
-+	local_irq_restore(flags);
- }
+ 	/*
+ 	 * Ignore any items from the inode currently being processed. Needs
+-	 * to be set every time we find a BTRFS_INODE_ITEM_KEY and we are in
+-	 * the LOG_WALK_REPLAY_INODES stage.
++	 * to be set every time we find a BTRFS_INODE_ITEM_KEY.
+ 	 */
+ 	bool ignore_cur_inode;
  
- /*
--- 
-2.39.5
-
+@@ -2581,23 +2580,30 @@ static int replay_one_buffer(struct btrf
+ 
+ 	nritems = btrfs_header_nritems(eb);
+ 	for (i = 0; i < nritems; i++) {
+-		btrfs_item_key_to_cpu(eb, &key, i);
++		struct btrfs_inode_item *inode_item;
+ 
+-		/* inode keys are done during the first stage */
+-		if (key.type == BTRFS_INODE_ITEM_KEY &&
+-		    wc->stage == LOG_WALK_REPLAY_INODES) {
+-			struct btrfs_inode_item *inode_item;
+-			u32 mode;
++		btrfs_item_key_to_cpu(eb, &key, i);
+ 
+-			inode_item = btrfs_item_ptr(eb, i,
+-					    struct btrfs_inode_item);
++		if (key.type == BTRFS_INODE_ITEM_KEY) {
++			inode_item = btrfs_item_ptr(eb, i, struct btrfs_inode_item);
+ 			/*
+-			 * If we have a tmpfile (O_TMPFILE) that got fsync'ed
+-			 * and never got linked before the fsync, skip it, as
+-			 * replaying it is pointless since it would be deleted
+-			 * later. We skip logging tmpfiles, but it's always
+-			 * possible we are replaying a log created with a kernel
+-			 * that used to log tmpfiles.
++			 * An inode with no links is either:
++			 *
++			 * 1) A tmpfile (O_TMPFILE) that got fsync'ed and never
++			 *    got linked before the fsync, skip it, as replaying
++			 *    it is pointless since it would be deleted later.
++			 *    We skip logging tmpfiles, but it's always possible
++			 *    we are replaying a log created with a kernel that
++			 *    used to log tmpfiles;
++			 *
++			 * 2) A non-tmpfile which got its last link deleted
++			 *    while holding an open fd on it and later got
++			 *    fsynced through that fd. We always log the
++			 *    parent inodes when inode->last_unlink_trans is
++			 *    set to the current transaction, so ignore all the
++			 *    inode items for this inode. We will delete the
++			 *    inode when processing the parent directory with
++			 *    replay_dir_deletes().
+ 			 */
+ 			if (btrfs_inode_nlink(eb, inode_item) == 0) {
+ 				wc->ignore_cur_inode = true;
+@@ -2605,8 +2611,14 @@ static int replay_one_buffer(struct btrf
+ 			} else {
+ 				wc->ignore_cur_inode = false;
+ 			}
+-			ret = replay_xattr_deletes(wc->trans, root, log,
+-						   path, key.objectid);
++		}
++
++		/* Inode keys are done during the first stage. */
++		if (key.type == BTRFS_INODE_ITEM_KEY &&
++		    wc->stage == LOG_WALK_REPLAY_INODES) {
++			u32 mode;
++
++			ret = replay_xattr_deletes(wc->trans, root, log, path, key.objectid);
+ 			if (ret)
+ 				break;
+ 			mode = btrfs_inode_mode(eb, inode_item);
 
 
 
