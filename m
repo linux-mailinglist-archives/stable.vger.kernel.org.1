@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-176008-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-174472-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id EDE75B36B11
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 16:42:46 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5B954B3638A
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 15:30:56 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 79B8A1C45347
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 14:31:51 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id AF3753BF3E5
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 13:23:07 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 66F38353373;
-	Tue, 26 Aug 2025 14:29:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 337D222DF99;
+	Tue, 26 Aug 2025 13:21:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="J2KUsB5e"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="WjLlnjJr"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 221BA2FC89C;
-	Tue, 26 Aug 2025 14:29:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DC05727707;
+	Tue, 26 Aug 2025 13:21:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756218544; cv=none; b=h4eAlTYPcMaMBV1xgkw1mA99xlN5q7knlqiY8hbrjWr1zzPdIvlluH491gboT/AkA9qoEnTa31f70qcMtm3XTyiK+voX7Fqy1zwWVaTQkXcFcN4VTD2yLnj9OaMoM6VXsqnKzNcckenf5ISM6uuWm/vue1H5sqCQZz1T9Lo3OZk=
+	t=1756214483; cv=none; b=vEChougGXoi54RThxgD1F63lRP6PPgb92T9b5M6tbwjVQLB+BF+iKnOjDPhX/RWPNdlG8ksD3H2IT7764uwitmsJMGcnwpDOZHP75FMD67JT3rQ3EuGFKdbYDJJXPjjqU/PRXmvp1F69vdYf57sSmrMdYbptDx8iJQdG72OiPSY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756218544; c=relaxed/simple;
-	bh=3CDN/iTDGdSb7mnlWXzyoa6/xzmhg7zjEXr++NvRqQQ=;
+	s=arc-20240116; t=1756214483; c=relaxed/simple;
+	bh=tjbw/xX5Rq26RUrd7O+C7/oTB8yCRBKsje/KEhqiXco=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=j3skOVfxe5fBqO6qoXt7I1lpHSBuOYjKxVHqA5BVr7mniowxyFsV/Q5kiIoJuTM9ivOQ0XeuzkfKVkW1mbFo0tejtLHI7nFdE3xFMjjVT4Fi356QpwK8WEVYawVmzkyKWrDYCpZT4Ao7+0hPQ3OBketH9xv3g52/kjs9xKGjN+Y=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=J2KUsB5e; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9FDA5C4CEF1;
-	Tue, 26 Aug 2025 14:29:03 +0000 (UTC)
+	 MIME-Version; b=pydXPHHm5AXNK6mpP42bFsq7ctGWlwrLGYneoEPLi+qfXAI4S4LOTFcFlFAV6r4rYw9aheeYueawdj0o5ggfAXPItXplfZMwqqN2vsrl0yAWCHdKeiYPKTpPjXRPqmR/vnl3Yj0O83SVPv8CxpTvSJ6y9FILGj1/nHcelihbaCo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=WjLlnjJr; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2D584C4CEF1;
+	Tue, 26 Aug 2025 13:21:22 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1756218544;
-	bh=3CDN/iTDGdSb7mnlWXzyoa6/xzmhg7zjEXr++NvRqQQ=;
+	s=korg; t=1756214482;
+	bh=tjbw/xX5Rq26RUrd7O+C7/oTB8yCRBKsje/KEhqiXco=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=J2KUsB5eXCDcSqXIaItXvp0JjWKq1vaJkQ48CeLd/rh7zPMg2SjpBMyaDVBDRpJkx
-	 MW2j8WBc6DSGZpLLP6vhXJ3D94z01l111HwZLke9oWeKjnAhL1lmQzaTFzKMAQbTQu
-	 cKdRiO6iu6hziTSUlfIEWROz1PIFHbpNPMukFSm8=
+	b=WjLlnjJrazPjPatkjqBUfpdk8c1Ko3M5W1Y0GNOtUN5ouDAl1/4zdihZjOfUTr1GN
+	 /PoV0fwRy4TXgcSueI6H9EZiCca+LWFg7AZPxJUWZOlKmj84zHSON7e6kiqDip34A6
+	 kn2mFXvt/bPqeU0v0Ih3MWVEO22uYG3cHGqwepr0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Yehowshua Immanuel <yehowshua.immanuel@twosixtech.com>,
-	Drew Hamilton <drew.hamilton@zetier.com>,
+	Anthoine Bourgeois <anthoine.bourgeois@vates.tech>,
+	Juergen Gross <jgross@suse.com>,
+	Elliott Mitchell <ehem+xen@m5p.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.4 040/403] usb: musb: fix gadget state on disconnect
+Subject: [PATCH 6.1 113/482] xen/netfront: Fix TX response spurious interrupts
 Date: Tue, 26 Aug 2025 13:06:06 +0200
-Message-ID: <20250826110906.923920683@linuxfoundation.org>
+Message-ID: <20250826110933.619386362@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250826110905.607690791@linuxfoundation.org>
-References: <20250826110905.607690791@linuxfoundation.org>
+In-Reply-To: <20250826110930.769259449@linuxfoundation.org>
+References: <20250826110930.769259449@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,54 +63,113 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.4-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Drew Hamilton <drew.hamilton@zetier.com>
+From: Anthoine Bourgeois <anthoine.bourgeois@vates.tech>
 
-commit 67a59f82196c8c4f50c83329f0577acfb1349b50 upstream.
+[ Upstream commit 114a2de6fa86d99ed9546cc9113a3cad58beef79 ]
 
-When unplugging the USB cable or disconnecting a gadget in usb peripheral mode with
-echo "" > /sys/kernel/config/usb_gadget/<your_gadget>/UDC,
-/sys/class/udc/musb-hdrc.0/state does not change from USB_STATE_CONFIGURED.
+We found at Vates that there are lot of spurious interrupts when
+benchmarking the xen-net PV driver frontend. This issue appeared with a
+patch that addresses security issue XSA-391 (b27d47950e48 "xen/netfront:
+harden netfront against event channel storms"). On an iperf benchmark,
+spurious interrupts can represent up to 50% of the interrupts.
 
-Testing on dwc2/3 shows they both update the state to USB_STATE_NOTATTACHED.
+Spurious interrupts are interrupts that are rised for nothing, there is
+no work to do. This appends because the function that handles the
+interrupts ("xennet_tx_buf_gc") is also called at the end of the request
+path to garbage collect the responses received during the transmission
+load.
 
-Add calls to usb_gadget_set_state in musb_g_disconnect and musb_gadget_stop
-to fix both cases.
+The request path is doing the work that the interrupt handler should
+have done otherwise. This is particurary true when there is more than
+one vcpu and get worse linearly with the number of vcpu/queue.
 
-Fixes: 49401f4169c0 ("usb: gadget: introduce gadget state tracking")
-Cc: stable@vger.kernel.org
-Co-authored-by: Yehowshua Immanuel <yehowshua.immanuel@twosixtech.com>
-Signed-off-by: Yehowshua Immanuel <yehowshua.immanuel@twosixtech.com>
-Signed-off-by: Drew Hamilton <drew.hamilton@zetier.com>
-Link: https://lore.kernel.org/r/20250701154126.8543-1-drew.hamilton@zetier.com
-[ replaced musb_set_state() call with direct otg state assignment ]
+Moreover, this problem is amplifyed by the penalty imposed by a spurious
+interrupt. When an interrupt is found spurious the interrupt chip will
+delay the EOI to slowdown the backend. This delay will allow more
+responses to be handled by the request path and then there will be more
+chance the next interrupt will not find any work to do, creating a new
+spurious interrupt.
+
+This causes performance issue. The solution here is to remove the calls
+from the request path and let the interrupt handler do the processing of
+the responses. This approch removes most of the spurious interrupts
+(<0.05%) and also has the benefit of freeing up cycles in the request
+path, allowing it to process more work, which improves performance
+compared to masking the spurious interrupt one way or another.
+
+This optimization changes a part of the code that is present since the
+net frontend driver was upstreamed. There is no similar pattern in the
+other xen PV drivers. Since the first commit of xen-netfront is a blob
+that doesn't explain all the design choices I can only guess why this
+specific mecanism was here. This could have been introduce to compensate
+a slow backend at the time (maybe the backend was fixed or optimize
+later) or a small queue. In 18 years, both frontend and backend gain lot
+of features and optimizations that could have obsolete the feature of
+reaping completions from the TX path.
+
+Some vif throughput performance figures from a 8 vCPUs, 4GB of RAM HVM
+guest(s):
+
+Without this patch on the :
+vm -> dom0: 4.5Gb/s
+vm -> vm:   7.0Gb/s
+
+Without XSA-391 patch (revert of b27d47950e48):
+vm -> dom0: 8.3Gb/s
+vm -> vm:   8.7Gb/s
+
+With XSA-391 and this patch:
+vm -> dom0: 11.5Gb/s
+vm -> vm:   12.6Gb/s
+
+v2:
+- add revewed and tested by tags
+- resend with the maintainers in the recipients list
+
+v3:
+- remove Fixes tag but keep the commit ref in the explanation
+- add a paragraph on why this code was here
+
+Signed-off-by: Anthoine Bourgeois <anthoine.bourgeois@vates.tech>
+Reviewed-by: Juergen Gross <jgross@suse.com>
+Tested-by: Elliott Mitchell <ehem+xen@m5p.com>
+Signed-off-by: Juergen Gross <jgross@suse.com>
+Message-ID: <20250721093316.23560-1-anthoine.bourgeois@vates.tech>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/usb/musb/musb_gadget.c |    2 ++
- 1 file changed, 2 insertions(+)
+ drivers/net/xen-netfront.c | 5 -----
+ 1 file changed, 5 deletions(-)
 
---- a/drivers/usb/musb/musb_gadget.c
-+++ b/drivers/usb/musb/musb_gadget.c
-@@ -1910,6 +1910,7 @@ static int musb_gadget_stop(struct usb_g
- 	 * gadget driver here and have everything work;
- 	 * that currently misbehaves.
- 	 */
-+	usb_gadget_set_state(g, USB_STATE_NOTATTACHED);
+diff --git a/drivers/net/xen-netfront.c b/drivers/net/xen-netfront.c
+index 69ef50fb2e1b..74925e166462 100644
+--- a/drivers/net/xen-netfront.c
++++ b/drivers/net/xen-netfront.c
+@@ -637,8 +637,6 @@ static int xennet_xdp_xmit_one(struct net_device *dev,
+ 	tx_stats->packets++;
+ 	u64_stats_update_end(&tx_stats->syncp);
  
- 	/* Force check of devctl register for PM runtime */
- 	schedule_delayed_work(&musb->irq_work, 0);
-@@ -2018,6 +2019,7 @@ void musb_g_disconnect(struct musb *musb
- 	case OTG_STATE_B_PERIPHERAL:
- 	case OTG_STATE_B_IDLE:
- 		musb->xceiv->otg->state = OTG_STATE_B_IDLE;
-+		usb_gadget_set_state(&musb->g, USB_STATE_NOTATTACHED);
- 		break;
- 	case OTG_STATE_B_SRP_INIT:
- 		break;
+-	xennet_tx_buf_gc(queue);
+-
+ 	return 0;
+ }
+ 
+@@ -848,9 +846,6 @@ static netdev_tx_t xennet_start_xmit(struct sk_buff *skb, struct net_device *dev
+ 	tx_stats->packets++;
+ 	u64_stats_update_end(&tx_stats->syncp);
+ 
+-	/* Note: It is not safe to access skb after xennet_tx_buf_gc()! */
+-	xennet_tx_buf_gc(queue);
+-
+ 	if (!netfront_tx_slot_available(queue))
+ 		netif_tx_stop_queue(netdev_get_tx_queue(dev, queue->id));
+ 
+-- 
+2.39.5
+
 
 
 
