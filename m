@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-175238-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-175724-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 77446B3674F
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 16:05:33 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 612B3B36A06
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 16:33:29 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 8D86B9821B7
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 13:56:24 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id B3C987C1858
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 14:18:58 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 00A2134F48B;
-	Tue, 26 Aug 2025 13:55:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C794B2E88B7;
+	Tue, 26 Aug 2025 14:16:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="pCkWSHJf"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="qS016TDD"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B2F58286881;
-	Tue, 26 Aug 2025 13:55:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 84C22352FDF;
+	Tue, 26 Aug 2025 14:16:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756216507; cv=none; b=tq4Czf6Oug/zxb5D2DD852N2WMP8CzpHOVvbYi2ibD8I25RMmLjewA5WgNT9zssxAtgLrfKEMgl5QHCEbjCJEF5CafRGuP6rxwI70EeaYbtUtjk4sPUrj34Uv1FG/v6SnOjOd5WYCUvHVWH9KEbmoN7iZXng3NomDCyVLkxCJqQ=
+	t=1756217803; cv=none; b=iwGlt5Ovnh213BaTMgdWuMVe7xqYfOQIUwlpIGCkDY/lFmP9XsSkigFy8yv5fp6nVR4XsiSLSACGqfenNsW11JVetg6sJ7VtThSBgZrSsW6/WQyIMdndO7xmx6AcoHowrtPJv2f4Nc1yyAXlHo8YaW57yzkGm64G0qWGTu8ghMU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756216507; c=relaxed/simple;
-	bh=Hxrv10zO2ASsDsUIfyi/BcFUc2HFUNrN71TI2lC8PPc=;
+	s=arc-20240116; t=1756217803; c=relaxed/simple;
+	bh=aKXPoLXFkmCVvOKdW0rUmlrFnQ0F3QEQWD/Jdtk0oa0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=dgssvkSJ5hHSWEjUURfiazquByIGi3fzSQcgMsAl7y9QkTSKknyhPucOZU15NWYB79tBRmTntEcL5ZjQe4PHsbLtAKSSVEgyub4SOwwVO7mK3bANOuD2AvNqSJTK7W52+80MWeOFA1EH5fINenH/kKJUZH1a8xgaibIC7Qt1Xwo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=pCkWSHJf; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 48B1CC4CEF1;
-	Tue, 26 Aug 2025 13:55:07 +0000 (UTC)
+	 MIME-Version; b=SUKSGIX800TiUFJtX76rlXeuXFeqeD3gXP/pTdJy3RL3O89QZvIgGrvv0uqvZKThuGxkm5ubtGW2PvttK+1j4yoY3jH1rjq3Y8gk5e4t8GxJAVhDZc6JRxPh0rfup6qrDUF1SDSwIQct0U1tWYE2A+MBSCdtBnVB1fIBnzolRfk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=qS016TDD; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1AE15C4CEF1;
+	Tue, 26 Aug 2025 14:16:42 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1756216507;
-	bh=Hxrv10zO2ASsDsUIfyi/BcFUc2HFUNrN71TI2lC8PPc=;
+	s=korg; t=1756217803;
+	bh=aKXPoLXFkmCVvOKdW0rUmlrFnQ0F3QEQWD/Jdtk0oa0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=pCkWSHJf3cGWZgYrmcJSNwYEwN7XB9ue/uVWKuiXuPT+8ulcHsMKSerB9Z+QhlBVq
-	 0GzIln6lf7eKaeayt+wmKCegm/rO1205uv2cz6LhaXFpJWOwOQb7TJKjKPUV0Gq3F6
-	 lM/Pi8XZbXo5/n0Hcls1rGp/ILksnhrt+mzGo2p8=
+	b=qS016TDDsuTFCLGWPuNlNRrVg0bkZ8/1q7YhBSGbBsShvTfnjgyVDRVLlQiq1QyUJ
+	 Iq+JwkO+cVYf5z4LhT0AA7uZzERK5fN6avV9tbhGUSbUOxaFpb0yg51HjDuuYGfzec
+	 aboiz1syX7W6fHRVOfh+a4+Hb/QasA/aO054XXzE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Arnd Bergmann <arnd@arndb.de>,
-	Leon Romanovsky <leon@kernel.org>,
+	Alok Tiwari <alok.a.tiwari@oracle.com>,
+	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 400/644] RDMA/core: reduce stack using in nldev_stat_get_doit()
+Subject: [PATCH 5.10 281/523] gve: Return error for unknown admin queue command
 Date: Tue, 26 Aug 2025 13:08:11 +0200
-Message-ID: <20250826110956.363379434@linuxfoundation.org>
+Message-ID: <20250826110931.368269989@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250826110946.507083938@linuxfoundation.org>
-References: <20250826110946.507083938@linuxfoundation.org>
+In-Reply-To: <20250826110924.562212281@linuxfoundation.org>
+References: <20250826110924.562212281@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,79 +62,43 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Arnd Bergmann <arnd@arndb.de>
+From: Alok Tiwari <alok.a.tiwari@oracle.com>
 
-[ Upstream commit 43163f4c30f94d2103c948a247cdf2cda5068ca7 ]
+[ Upstream commit b11344f63fdd9e8c5121148a6965b41079071dd2 ]
 
-In the s390 defconfig, gcc-10 and earlier end up inlining three functions
-into nldev_stat_get_doit(), and each of them uses some 600 bytes of stack.
+In gve_adminq_issue_cmd(), return -EINVAL instead of 0 when an unknown
+admin queue command opcode is encountered.
 
-The result is a function with an overly large stack frame and a warning:
+This prevents the function from silently succeeding on invalid input
+and prevents undefined behavior by ensuring the function fails gracefully
+when an unrecognized opcode is provided.
 
-drivers/infiniband/core/nldev.c:2466:1: error: the frame size of 1720 bytes is larger than 1280 bytes [-Werror=frame-larger-than=]
+These changes improve error handling.
 
-Mark the three functions noinline_for_stack to prevent this, ensuring
-that only one copy of the nlattr array is on the stack of each function.
-
-Signed-off-by: Arnd Bergmann <arnd@arndb.de>
-Link: https://patch.msgid.link/20250620113335.3776965-1-arnd@kernel.org
-Signed-off-by: Leon Romanovsky <leon@kernel.org>
+Signed-off-by: Alok Tiwari <alok.a.tiwari@oracle.com>
+Link: https://patch.msgid.link/20250616054504.1644770-2-alok.a.tiwari@oracle.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/infiniband/core/nldev.c | 22 ++++++++++++----------
- 1 file changed, 12 insertions(+), 10 deletions(-)
+ drivers/net/ethernet/google/gve/gve_adminq.c | 1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/drivers/infiniband/core/nldev.c b/drivers/infiniband/core/nldev.c
-index 050bafc7c52d..1bfa957b8775 100644
---- a/drivers/infiniband/core/nldev.c
-+++ b/drivers/infiniband/core/nldev.c
-@@ -1391,10 +1391,11 @@ static const struct nldev_fill_res_entry fill_entries[RDMA_RESTRACK_MAX] = {
+diff --git a/drivers/net/ethernet/google/gve/gve_adminq.c b/drivers/net/ethernet/google/gve/gve_adminq.c
+index 67f2b9a61463..f02b3f01a557 100644
+--- a/drivers/net/ethernet/google/gve/gve_adminq.c
++++ b/drivers/net/ethernet/google/gve/gve_adminq.c
+@@ -246,6 +246,7 @@ static int gve_adminq_issue_cmd(struct gve_priv *priv,
+ 		break;
+ 	default:
+ 		dev_err(&priv->pdev->dev, "unknown AQ command opcode %d\n", opcode);
++		return -EINVAL;
+ 	}
  
- };
- 
--static int res_get_common_doit(struct sk_buff *skb, struct nlmsghdr *nlh,
--			       struct netlink_ext_ack *extack,
--			       enum rdma_restrack_type res_type,
--			       res_fill_func_t fill_func)
-+static noinline_for_stack int
-+res_get_common_doit(struct sk_buff *skb, struct nlmsghdr *nlh,
-+		    struct netlink_ext_ack *extack,
-+		    enum rdma_restrack_type res_type,
-+		    res_fill_func_t fill_func)
- {
- 	const struct nldev_fill_res_entry *fe = &fill_entries[res_type];
- 	struct nlattr *tb[RDMA_NLDEV_ATTR_MAX];
-@@ -2041,10 +2042,10 @@ static int nldev_stat_del_doit(struct sk_buff *skb, struct nlmsghdr *nlh,
- 	return ret;
- }
- 
--static int stat_get_doit_default_counter(struct sk_buff *skb,
--					 struct nlmsghdr *nlh,
--					 struct netlink_ext_ack *extack,
--					 struct nlattr *tb[])
-+static noinline_for_stack int
-+stat_get_doit_default_counter(struct sk_buff *skb, struct nlmsghdr *nlh,
-+			      struct netlink_ext_ack *extack,
-+			      struct nlattr *tb[])
- {
- 	struct rdma_hw_stats *stats;
- 	struct nlattr *table_attr;
-@@ -2130,8 +2131,9 @@ static int stat_get_doit_default_counter(struct sk_buff *skb,
- 	return ret;
- }
- 
--static int stat_get_doit_qp(struct sk_buff *skb, struct nlmsghdr *nlh,
--			    struct netlink_ext_ack *extack, struct nlattr *tb[])
-+static noinline_for_stack int
-+stat_get_doit_qp(struct sk_buff *skb, struct nlmsghdr *nlh,
-+		 struct netlink_ext_ack *extack, struct nlattr *tb[])
- 
- {
- 	static enum rdma_nl_counter_mode mode;
+ 	return 0;
 -- 
 2.39.5
 
