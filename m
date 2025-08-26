@@ -1,56 +1,55 @@
-Return-Path: <stable+bounces-174002-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-175653-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2E8A5B360BD
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 15:03:43 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id D033EB3688C
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 16:17:16 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 5D2C52A0DEF
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 13:00:34 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 905C47AA2F1
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 14:14:23 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2883C8635D;
-	Tue, 26 Aug 2025 13:00:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 221F91F790F;
+	Tue, 26 Aug 2025 14:13:35 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="NsFU0wv/"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="zvQo9i5I"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DB0FA13957E;
-	Tue, 26 Aug 2025 13:00:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C6807350831;
+	Tue, 26 Aug 2025 14:13:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756213232; cv=none; b=TzMfdk8zSe7U7hHwOUg8j0Q1GNFrJUQXRCtFoTH0adRmbnktIMpW3/T7XjQGdY5zbfZgiVeUy3jrieqBYonoTITatop36PTVRK7GO75Jm+mdu6QQulowcAR/QigrqkkVKwM2qM6rYlLbjJ8gxV5hUlbjLnsHf1ftf6RppoYBhXw=
+	t=1756217614; cv=none; b=AAI2DmYK1GQo/iN7YqfIabgsZXjSS47b51+f44LlaTKtaJN3/JoJC48A8hR8oXaF8+isD9euSy7Tv80NAjiauFm+gbieSzivd8FofeJBZSgpSxdfz3iwPp96ujLeLj7DMU9yJgngSbKepYYtOxJ+yiWcJEKm+XYxOYnm0j4on+E=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756213232; c=relaxed/simple;
-	bh=mls6SrePn/VZfJApGF5Ju9RPcf7bjw0IfDjSAZcHTNI=;
+	s=arc-20240116; t=1756217614; c=relaxed/simple;
+	bh=anh/CgUYDXoM52dDVI7VP9cB2h3kUzsUNqS9zEjsj8Q=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=axJDXhJgxot8Ia1hMWNHQG62JrQrPT0NTEgLz0dQrAyE1AeV8+n1gXw6naRYU8Rfs2ZDgPYpMyyp43g5RQzwFG4uZf0mO4YMNAYn5x5dfoienSIZbGkY6rAXSLCqsVv2FX7VYfdu4nwNHsESIhyvqp2t2eACOfDCURGymaTr6FA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=NsFU0wv/; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 61F56C4CEF1;
-	Tue, 26 Aug 2025 13:00:32 +0000 (UTC)
+	 MIME-Version; b=qUYqCT0SIK1/t2mq//Oy1v2hGe8/W2txtEl1ty8Bc03xIJmbJuQjsTw+JCdiDYioSttNBfHjItP/XhlGP4FstRcuKSRw2EzjlqFgw4AX8u50RNoXcdf8ENhXCYZEK2Wld45o9upBrk2guLJpUk8z30rFaRi3wA3F/D5+GH/mRoA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=zvQo9i5I; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E7619C4CEF1;
+	Tue, 26 Aug 2025 14:13:33 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1756213232;
-	bh=mls6SrePn/VZfJApGF5Ju9RPcf7bjw0IfDjSAZcHTNI=;
+	s=korg; t=1756217614;
+	bh=anh/CgUYDXoM52dDVI7VP9cB2h3kUzsUNqS9zEjsj8Q=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=NsFU0wv/6oxGKx7AtIQBsSQQgl60JTP6A9q1Je3dTTmsNhGq+8hxjpP8+/xiQ7lqQ
-	 5g8NqwmstIkFAjWxXLw7vhR9qvt9Ez7FOl3eu/r1sK+7Ak7j7AcEWm10o4JeHlMmZK
-	 n3u7J0PbGLJd+00AWKmWo9GSRCEj/HhsDiQwKA64=
+	b=zvQo9i5Ir6Y3CbmmUNEXfiFRT2wjYXmA3H6YDf958+8vfbxDd1P3dK14Jy73OSuAP
+	 v2mX7YZEGRIdG+7uInGWT7QZcAnwerMtb0ygbfNO5XW0AA/7jX30fRWn+r0ldtL2HK
+	 LTQxM056glttCr2TWKBipQ3Cs2jNbZkqb3fFHUmA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	"fangzhong.zhou" <myth5@myth5.com>,
-	Wolfram Sang <wsa+renesas@sang-engineering.com>,
+	Viacheslav Dubeyko <slava@dubeyko.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 271/587] i2c: Force DLL0945 touchpad i2c freq to 100khz
+Subject: [PATCH 5.10 210/523] hfs: fix slab-out-of-bounds in hfs_bnode_read()
 Date: Tue, 26 Aug 2025 13:07:00 +0200
-Message-ID: <20250826110959.822153317@linuxfoundation.org>
+Message-ID: <20250826110929.623741477@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250826110952.942403671@linuxfoundation.org>
-References: <20250826110952.942403671@linuxfoundation.org>
+In-Reply-To: <20250826110924.562212281@linuxfoundation.org>
+References: <20250826110924.562212281@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,41 +61,168 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: fangzhong.zhou <myth5@myth5.com>
+From: Viacheslav Dubeyko <slava@dubeyko.com>
 
-[ Upstream commit 0b7c9528facdb5a73ad78fea86d2e95a6c48dbc4 ]
+[ Upstream commit a431930c9bac518bf99d6b1da526a7f37ddee8d8 ]
 
-This patch fixes an issue where the touchpad cursor movement becomes
-slow on the Dell Precision 5560. Force the touchpad freq to 100khz
-as a workaround.
+This patch introduces is_bnode_offset_valid() method that checks
+the requested offset value. Also, it introduces
+check_and_correct_requested_length() method that checks and
+correct the requested length (if it is necessary). These methods
+are used in hfs_bnode_read(), hfs_bnode_write(), hfs_bnode_clear(),
+hfs_bnode_copy(), and hfs_bnode_move() with the goal to prevent
+the access out of allocated memory and triggering the crash.
 
-Tested on Dell Precision 5560 with 6.14 to 6.14.6. Cursor movement
-is now smooth and responsive.
-
-Signed-off-by: fangzhong.zhou <myth5@myth5.com>
-[wsa: kept sorting and removed unnecessary parts from commit msg]
-Signed-off-by: Wolfram Sang <wsa+renesas@sang-engineering.com>
+Signed-off-by: Viacheslav Dubeyko <slava@dubeyko.com>
+Link: https://lore.kernel.org/r/20250703214912.244138-1-slava@dubeyko.com
+Signed-off-by: Viacheslav Dubeyko <slava@dubeyko.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/i2c/i2c-core-acpi.c | 1 +
- 1 file changed, 1 insertion(+)
+ fs/hfs/bnode.c | 92 ++++++++++++++++++++++++++++++++++++++++++++++++++
+ 1 file changed, 92 insertions(+)
 
-diff --git a/drivers/i2c/i2c-core-acpi.c b/drivers/i2c/i2c-core-acpi.c
-index d2499f302b50..f43067f6797e 100644
---- a/drivers/i2c/i2c-core-acpi.c
-+++ b/drivers/i2c/i2c-core-acpi.c
-@@ -370,6 +370,7 @@ static const struct acpi_device_id i2c_acpi_force_100khz_device_ids[] = {
- 	 * the device works without issues on Windows at what is expected to be
- 	 * a 400KHz frequency. The root cause of the issue is not known.
- 	 */
-+	{ "DLL0945", 0 },
- 	{ "ELAN06FA", 0 },
- 	{}
- };
+diff --git a/fs/hfs/bnode.c b/fs/hfs/bnode.c
+index 2251286cd83f..2039cb6d5f66 100644
+--- a/fs/hfs/bnode.c
++++ b/fs/hfs/bnode.c
+@@ -15,6 +15,48 @@
+ 
+ #include "btree.h"
+ 
++static inline
++bool is_bnode_offset_valid(struct hfs_bnode *node, int off)
++{
++	bool is_valid = off < node->tree->node_size;
++
++	if (!is_valid) {
++		pr_err("requested invalid offset: "
++		       "NODE: id %u, type %#x, height %u, "
++		       "node_size %u, offset %d\n",
++		       node->this, node->type, node->height,
++		       node->tree->node_size, off);
++	}
++
++	return is_valid;
++}
++
++static inline
++int check_and_correct_requested_length(struct hfs_bnode *node, int off, int len)
++{
++	unsigned int node_size;
++
++	if (!is_bnode_offset_valid(node, off))
++		return 0;
++
++	node_size = node->tree->node_size;
++
++	if ((off + len) > node_size) {
++		int new_len = (int)node_size - off;
++
++		pr_err("requested length has been corrected: "
++		       "NODE: id %u, type %#x, height %u, "
++		       "node_size %u, offset %d, "
++		       "requested_len %d, corrected_len %d\n",
++		       node->this, node->type, node->height,
++		       node->tree->node_size, off, len, new_len);
++
++		return new_len;
++	}
++
++	return len;
++}
++
+ void hfs_bnode_read(struct hfs_bnode *node, void *buf, int off, int len)
+ {
+ 	struct page *page;
+@@ -23,6 +65,20 @@ void hfs_bnode_read(struct hfs_bnode *node, void *buf, int off, int len)
+ 	int bytes_to_read;
+ 	void *vaddr;
+ 
++	if (!is_bnode_offset_valid(node, off))
++		return;
++
++	if (len == 0) {
++		pr_err("requested zero length: "
++		       "NODE: id %u, type %#x, height %u, "
++		       "node_size %u, offset %d, len %d\n",
++		       node->this, node->type, node->height,
++		       node->tree->node_size, off, len);
++		return;
++	}
++
++	len = check_and_correct_requested_length(node, off, len);
++
+ 	off += node->page_offset;
+ 	pagenum = off >> PAGE_SHIFT;
+ 	off &= ~PAGE_MASK; /* compute page offset for the first page */
+@@ -83,6 +139,20 @@ void hfs_bnode_write(struct hfs_bnode *node, void *buf, int off, int len)
+ {
+ 	struct page *page;
+ 
++	if (!is_bnode_offset_valid(node, off))
++		return;
++
++	if (len == 0) {
++		pr_err("requested zero length: "
++		       "NODE: id %u, type %#x, height %u, "
++		       "node_size %u, offset %d, len %d\n",
++		       node->this, node->type, node->height,
++		       node->tree->node_size, off, len);
++		return;
++	}
++
++	len = check_and_correct_requested_length(node, off, len);
++
+ 	off += node->page_offset;
+ 	page = node->page[0];
+ 
+@@ -108,6 +178,20 @@ void hfs_bnode_clear(struct hfs_bnode *node, int off, int len)
+ {
+ 	struct page *page;
+ 
++	if (!is_bnode_offset_valid(node, off))
++		return;
++
++	if (len == 0) {
++		pr_err("requested zero length: "
++		       "NODE: id %u, type %#x, height %u, "
++		       "node_size %u, offset %d, len %d\n",
++		       node->this, node->type, node->height,
++		       node->tree->node_size, off, len);
++		return;
++	}
++
++	len = check_and_correct_requested_length(node, off, len);
++
+ 	off += node->page_offset;
+ 	page = node->page[0];
+ 
+@@ -124,6 +208,10 @@ void hfs_bnode_copy(struct hfs_bnode *dst_node, int dst,
+ 	hfs_dbg(BNODE_MOD, "copybytes: %u,%u,%u\n", dst, src, len);
+ 	if (!len)
+ 		return;
++
++	len = check_and_correct_requested_length(src_node, src, len);
++	len = check_and_correct_requested_length(dst_node, dst, len);
++
+ 	src += src_node->page_offset;
+ 	dst += dst_node->page_offset;
+ 	src_page = src_node->page[0];
+@@ -143,6 +231,10 @@ void hfs_bnode_move(struct hfs_bnode *node, int dst, int src, int len)
+ 	hfs_dbg(BNODE_MOD, "movebytes: %u,%u,%u\n", dst, src, len);
+ 	if (!len)
+ 		return;
++
++	len = check_and_correct_requested_length(node, src, len);
++	len = check_and_correct_requested_length(node, dst, len);
++
+ 	src += node->page_offset;
+ 	dst += node->page_offset;
+ 	page = node->page[0];
 -- 
 2.39.5
 
