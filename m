@@ -1,56 +1,55 @@
-Return-Path: <stable+bounces-176317-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-174754-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8545AB36CAA
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 16:58:50 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 8829FB3657E
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 15:48:28 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 99802585013
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 14:45:58 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 1C7D65656BA
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 13:34:59 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 60D99350D54;
-	Tue, 26 Aug 2025 14:42:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id BBC332BE653;
+	Tue, 26 Aug 2025 13:33:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="0CjMK4TE"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="NabkhMOE"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1B7F5350843;
-	Tue, 26 Aug 2025 14:42:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 78DD71ADFFE;
+	Tue, 26 Aug 2025 13:33:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756219344; cv=none; b=rIlI9PbQlv7QuCOq+gbqj5X0wn6Dud2y7OIvCiXtWa3BKSBc0bAs09Ea4yS2IgkQvjh4zUHRG0VhOof0dXBBV1S0Hi0KBiYBQb9Eg6qoY0ccsbMdECOc6B/b6S/poEwcdYPeajeFz4qR+ttdAIYRENwg1rTwYylkB+7c5ddaCwE=
+	t=1756215228; cv=none; b=Go+5zuSdKXqAwkGb531MQvvVwLNc8w5MvYcTFyZgOzsN7MT4fJfLuG6EQi/oORmwyp163sLvshgm3R8HKdNwt7gLL0KrehjSwntQ7oApBbivvlWIyrNr88AGEedaGbWa4gUOmVkxBUz6rFcj8PfIpTvPJrUMjRSEDhMwNCLpywU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756219344; c=relaxed/simple;
-	bh=yntLBfZpsI2YZJ3VwexHWKx9ER9WiBVFCJyGfNxbtRg=;
+	s=arc-20240116; t=1756215228; c=relaxed/simple;
+	bh=EfM1qeyhZiXrkzaLQ6A/WbMxDqMh2O2wRwBJBzfatf8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=UsB12GmJVQ7rZ1UayZAfIb0fQ4tT8owjZNCuiwJ1ZDYfSFbZFJXtAUTjMb8N+rEeD8liHdQJGbxtKJPxRMtXguq5eMHnqy+3E08GhJQ8CEyoATrbZ74ZwIyg57Br3O606p2A+c/P0G7aSKqXRlH27xGWGo2a7L/kzxLX0qqq2Wo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=0CjMK4TE; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A5D78C4CEF1;
-	Tue, 26 Aug 2025 14:42:23 +0000 (UTC)
+	 MIME-Version:Content-Type; b=pprNfGjTpyMHgHzQ/P6edgd0n/BCn6OACClkLgmuFr5IoFvirz6xD/ySSabTsUegty3vIC3+evWno5y24SclGFRMei9sPNabPi11hTBUOhOHgExmT3zMD5iMbNKHhx2cY6lOTPHiSuphUYnmRjNUatZUiZO5RhjKHEnagHUqvSM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=NabkhMOE; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 082CCC113D0;
+	Tue, 26 Aug 2025 13:33:47 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1756219344;
-	bh=yntLBfZpsI2YZJ3VwexHWKx9ER9WiBVFCJyGfNxbtRg=;
+	s=korg; t=1756215228;
+	bh=EfM1qeyhZiXrkzaLQ6A/WbMxDqMh2O2wRwBJBzfatf8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=0CjMK4TE91l+cjxyCtNrdXXJ3F+Xte62Wd2izg4Hnl4nl9OAVc76MplpdskncrpOK
-	 cVzymPqhw7s4Fw/BDhHRMcw3PJzHf7S2my/EGKoBmk+sbYZfdCbM+w2JEFn8n4wJln
-	 bhhfPVparDLSvjy8m1T6BOxXa/w+cO75lwnnimNI=
+	b=NabkhMOEAG1PdazjX8T2kQUBjpYfertUduRXE/KLK9QhibZtmLfsmE4YkHQjayVFQ
+	 qgux1JSny7MYKNhnJsDjGWtzqOp2PWdJAxaII4khLk7DH3RP+bU222hQtnM4Yb0bS0
+	 SoZXe3CCiNrdOxcKdQQsbtZWhB+GC1IjnT4msAx0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Maulik Shah <maulik.shah@oss.qualcomm.com>,
-	Ulf Hansson <ulf.hansson@linaro.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.4 345/403] pmdomain: governor: Consider CPU latency tolerance from pm_domain_cpu_gov
+	stable <stable@kernel.org>,
+	Marek Vasut <marek.vasut+renesas@mailbox.org>
+Subject: [PATCH 6.1 418/482] usb: renesas-xhci: Fix External ROM access timeouts
 Date: Tue, 26 Aug 2025 13:11:11 +0200
-Message-ID: <20250826110916.392609668@linuxfoundation.org>
+Message-ID: <20250826110941.153767446@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250826110905.607690791@linuxfoundation.org>
-References: <20250826110905.607690791@linuxfoundation.org>
+In-Reply-To: <20250826110930.769259449@linuxfoundation.org>
+References: <20250826110930.769259449@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,118 +59,77 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-5.4-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Maulik Shah <maulik.shah@oss.qualcomm.com>
+From: Marek Vasut <marek.vasut+renesas@mailbox.org>
 
-[ Upstream commit 500ba33284416255b9a5b50ace24470b6fe77ea5 ]
+commit f9420f4757752f056144896024d5ea89e5a611f1 upstream.
 
-pm_domain_cpu_gov is selecting a cluster idle state but does not consider
-latency tolerance of child CPUs. This results in deeper cluster idle state
-whose latency does not meet latency tolerance requirement.
+Increase the External ROM access timeouts to prevent failures during
+programming of External SPI EEPROM chips. The current timeouts are
+too short for some SPI EEPROMs used with uPD720201 controllers.
 
-Select deeper idle state only if global and device latency tolerance of all
-child CPUs meet.
+The current timeout for Chip Erase in renesas_rom_erase() is 100 ms ,
+the current timeout for Sector Erase issued by the controller before
+Page Program in renesas_fw_download_image() is also 100 ms. Neither
+timeout is sufficient for e.g. the Macronix MX25L5121E or MX25V5126F.
 
-Test results on SM8750 with 300 usec PM-QoS on CPU0 which is less than
-domain idle state entry (2150) + exit (1983) usec latency mentioned in
-devicetree, demonstrate the issue.
+MX25L5121E reference manual [1] page 35 section "ERASE AND PROGRAMMING
+PERFORMANCE" and page 23 section "Table 8. AC CHARACTERISTICS (Temperature
+= 0°C to 70°C for Commercial grade, VCC = 2.7V ~ 3.6V)" row "tCE" indicate
+that the maximum time required for Chip Erase opcode to complete is 2 s,
+and for Sector Erase it is 300 ms .
 
-	# echo 300 > /sys/devices/system/cpu/cpu0/power/pm_qos_resume_latency_us
+MX25V5126F reference manual [2] page 47 section "13. ERASE AND PROGRAMMING
+PERFORMANCE (2.3V - 3.6V)" and page 42 section "Table 8. AC CHARACTERISTICS
+(Temperature = -40°C to 85°C for Industrial grade, VCC = 2.3V - 3.6V)" row
+"tCE" indicate that the maximum time required for Chip Erase opcode to
+complete is 3.2 s, and for Sector Erase it is 400 ms .
 
-Before: (Usage is incrementing)
-======
-	# cat /sys/kernel/debug/pm_genpd/power-domain-cluster0/idle_states
-	State          Time Spent(ms) Usage      Rejected   Above      Below
-	S0             29817          537        8          270        0
+Update the timeouts such, that Chip Erase timeout is set to 5 seconds,
+and Sector Erase timeout is set to 500 ms. Such lengthy timeouts ought
+to be sufficient for majority of SPI EEPROM chips.
 
-	# cat /sys/kernel/debug/pm_genpd/power-domain-cluster0/idle_states
-	State          Time Spent(ms) Usage      Rejected   Above      Below
-	S0             30348          542        8          271        0
+[1] https://www.macronix.com/Lists/Datasheet/Attachments/8634/MX25L5121E,%203V,%20512Kb,%20v1.3.pdf
+[2] https://www.macronix.com/Lists/Datasheet/Attachments/8750/MX25V5126F,%202.5V,%20512Kb,%20v1.1.pdf
 
-After: (Usage is not incrementing due to latency tolerance)
-======
-	# cat /sys/kernel/debug/pm_genpd/power-domain-cluster0/idle_states
-	State          Time Spent(ms) Usage      Rejected   Above      Below
-	S0             39319          626        14         307        0
-
-	# cat /sys/kernel/debug/pm_genpd/power-domain-cluster0/idle_states
-	State          Time Spent(ms) Usage      Rejected   Above      Below
-	S0             39319          626        14         307        0
-
-Signed-off-by: Maulik Shah <maulik.shah@oss.qualcomm.com>
-Fixes: e94999688e3a ("PM / Domains: Add genpd governor for CPUs")
-Cc: stable@vger.kernel.org
-Link: https://lore.kernel.org/r/20250709-pmdomain_qos-v2-1-976b12257899@oss.qualcomm.com
-Signed-off-by: Ulf Hansson <ulf.hansson@linaro.org>
-[ replaced cpu_latency_qos_limit() with pm_qos_request(PM_QOS_CPU_DMA_LATENCY) ]
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Fixes: 2478be82de44 ("usb: renesas-xhci: Add ROM loader for uPD720201")
+Cc: stable <stable@kernel.org>
+Signed-off-by: Marek Vasut <marek.vasut+renesas@mailbox.org>
+Link: https://lore.kernel.org/r/20250802225526.25431-1-marek.vasut+renesas@mailbox.org
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/base/power/domain_governor.c |   18 ++++++++++++++++--
- 1 file changed, 16 insertions(+), 2 deletions(-)
+ drivers/usb/host/xhci-pci-renesas.c |    7 ++++---
+ 1 file changed, 4 insertions(+), 3 deletions(-)
 
---- a/drivers/base/power/domain_governor.c
-+++ b/drivers/base/power/domain_governor.c
-@@ -8,6 +8,7 @@
- #include <linux/pm_domain.h>
- #include <linux/pm_qos.h>
- #include <linux/hrtimer.h>
-+#include <linux/cpu.h>
- #include <linux/cpuidle.h>
- #include <linux/cpumask.h>
- #include <linux/ktime.h>
-@@ -254,6 +255,8 @@ static bool cpu_power_down_ok(struct dev
- 	struct generic_pm_domain *genpd = pd_to_genpd(pd);
- 	struct cpuidle_device *dev;
- 	ktime_t domain_wakeup, next_hrtimer;
-+	struct device *cpu_dev;
-+	s64 cpu_constraint, global_constraint;
- 	s64 idle_duration_ns;
- 	int cpu, i;
+--- a/drivers/usb/host/xhci-pci-renesas.c
++++ b/drivers/usb/host/xhci-pci-renesas.c
+@@ -47,8 +47,9 @@
+ #define RENESAS_ROM_ERASE_MAGIC				0x5A65726F
+ #define RENESAS_ROM_WRITE_MAGIC				0x53524F4D
  
-@@ -264,6 +267,7 @@ static bool cpu_power_down_ok(struct dev
- 	if (!(genpd->flags & GENPD_FLAG_CPU_DOMAIN))
- 		return true;
+-#define RENESAS_RETRY	10000
+-#define RENESAS_DELAY	10
++#define RENESAS_RETRY			50000	/* 50000 * RENESAS_DELAY ~= 500ms */
++#define RENESAS_CHIP_ERASE_RETRY	500000	/* 500000 * RENESAS_DELAY ~= 5s */
++#define RENESAS_DELAY			10
  
-+	global_constraint = pm_qos_request(PM_QOS_CPU_DMA_LATENCY);
- 	/*
- 	 * Find the next wakeup for any of the online CPUs within the PM domain
- 	 * and its subdomains. Note, we only need the genpd->cpus, as it already
-@@ -277,8 +281,16 @@ static bool cpu_power_down_ok(struct dev
- 			if (ktime_before(next_hrtimer, domain_wakeup))
- 				domain_wakeup = next_hrtimer;
- 		}
-+
-+		cpu_dev = get_cpu_device(cpu);
-+		if (cpu_dev) {
-+			cpu_constraint = dev_pm_qos_raw_resume_latency(cpu_dev);
-+			if (cpu_constraint < global_constraint)
-+				global_constraint = cpu_constraint;
-+		}
- 	}
+ static int renesas_fw_download_image(struct pci_dev *dev,
+ 				     const u32 *fw, size_t step, bool rom)
+@@ -405,7 +406,7 @@ static void renesas_rom_erase(struct pci
+ 	/* sleep a bit while ROM is erased */
+ 	msleep(20);
  
-+	global_constraint *= NSEC_PER_USEC;
- 	/* The minimum idle duration is from now - until the next wakeup. */
- 	idle_duration_ns = ktime_to_ns(ktime_sub(domain_wakeup, ktime_get()));
- 	if (idle_duration_ns <= 0)
-@@ -291,8 +303,10 @@ static bool cpu_power_down_ok(struct dev
- 	 */
- 	i = genpd->state_idx;
- 	do {
--		if (idle_duration_ns >= (genpd->states[i].residency_ns +
--		    genpd->states[i].power_off_latency_ns)) {
-+		if ((idle_duration_ns >= (genpd->states[i].residency_ns +
-+		    genpd->states[i].power_off_latency_ns)) &&
-+		    (global_constraint >= (genpd->states[i].power_on_latency_ns +
-+		    genpd->states[i].power_off_latency_ns))) {
- 			genpd->state_idx = i;
- 			return true;
- 		}
+-	for (i = 0; i < RENESAS_RETRY; i++) {
++	for (i = 0; i < RENESAS_CHIP_ERASE_RETRY; i++) {
+ 		retval = pci_read_config_byte(pdev, RENESAS_ROM_STATUS,
+ 					      &status);
+ 		status &= RENESAS_ROM_STATUS_ERASE;
 
 
 
