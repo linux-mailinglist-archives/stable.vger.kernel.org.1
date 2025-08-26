@@ -1,55 +1,58 @@
-Return-Path: <stable+bounces-176156-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-174545-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4325EB36C2F
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 16:53:35 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id BC4FBB363A2
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 15:32:00 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 8B7FD5A1909
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 14:38:18 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 3A8D31BC6B71
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 13:26:22 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6544D35AAAC;
-	Tue, 26 Aug 2025 14:35:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id CE25B33CE88;
+	Tue, 26 Aug 2025 13:24:35 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="uLrzm4YY"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="vdUoFv5F"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 223CA35335B;
-	Tue, 26 Aug 2025 14:35:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8C2F4196C7C;
+	Tue, 26 Aug 2025 13:24:35 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756218926; cv=none; b=L12uyUtcfkOD5CgbMpby+IBTM87GvWPJy6bIQgDcAk+T/CpEBGiTUPrmSI5qJyzdZBKaGvYZkl50QR7lhtdhln6bJitjfbZLL8iD2dTV544NUPSucrItzOg32gK9Dw5l1gquUXhBxAyQGee2wBhjS6wP6OdymNmEbVIstIrzYEA=
+	t=1756214675; cv=none; b=SexLUSvgvW7Hg+MXFMmlPq3htyqx9IpJUGtvhDeKzBgrAbdMpWdmRkgdIbohw/NioFChl09stH0IxZaanYf3Qp2Cg2aDRo6pNmA6Tf6/ATTjksrHUihV4CANvKZ0bhbbFIcGNJIkE3WBVD2BHVwKaeVFKYCAyDHc7X+W/KqnDa0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756218926; c=relaxed/simple;
-	bh=/+DrbinamiedXzwnRHAfn6Wt/YnG38r8NpDpqhN5HA8=;
+	s=arc-20240116; t=1756214675; c=relaxed/simple;
+	bh=akiTtjaLbkKJctAvH/zFO9FHEAqlRpzVnM74YoCK5zs=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=pJGgJrlcErrRqLzpjndN1OqXBL1y7Ul4+oZKX+BNYMY5fkAe/wpbDH0TcYtrfuvhLsbpHxSWXaAXnRE35g4fVuNnPpvDpJ5puUywYv5Zwtr0LtZjPUsln7EQAVjTVdAl2wr+X4NGnrqnRoF4S5+CqOGGBcnhUunmlYhVM6Q3Nho=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=uLrzm4YY; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 67B98C4CEF1;
-	Tue, 26 Aug 2025 14:35:25 +0000 (UTC)
+	 MIME-Version; b=LwO9mUA3Dj9ZXR9KdngR235cYawwAEVqhtM9SFMW87KP6jKf74rIo7oTK8+1MxUDG9pjgj1J6Z71Ct2Mu2B3EI52wzmrW+/V/0IvGjUe3R/NBj/0vFfpYCohZwQVK+Ha0vPdtMxu3wL9Vm41s37dIqWLwwzYvKiM5yT5z4Uj30k=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=vdUoFv5F; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 02329C4CEF1;
+	Tue, 26 Aug 2025 13:24:34 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1756218925;
-	bh=/+DrbinamiedXzwnRHAfn6Wt/YnG38r8NpDpqhN5HA8=;
+	s=korg; t=1756214675;
+	bh=akiTtjaLbkKJctAvH/zFO9FHEAqlRpzVnM74YoCK5zs=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=uLrzm4YYhJCpuWIkrbKhl8J7lm2IyYl4/WUqjwkA6a3jklaeUp75wdWUrzGqkPMmI
-	 B14EPyIaBL6j+wF6xpA1qiq9+SN1IuYqCWvVOVp0YEcBONT9e6ZrZuWnerhGaUXrbJ
-	 lsBzE1h+YKzLPqkWEh+wV+rJk634LFPNpbSU+ni4=
+	b=vdUoFv5F/Rr5uLP6/3ghtGEuLXa80gUP0bBrZ3/gOl2uTzRZT3BRWwLhsgDD8XKHJ
+	 gr1PXajh4AbcriNU3jMcRfvndQPT5i2wpJuBMX/CVZWJCKZj913Vf08UtUVnda1GV+
+	 aPzIIwf9H8i0/SN0zzHURUtZpZ0RzX01aG1HK0E4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	stable <stable@kernel.org>,
-	Tao Xue <xuetao09@huawei.com>
-Subject: [PATCH 5.4 155/403] usb: gadget : fix use-after-free in composite_dev_cleanup()
+	"Yann E. MORIN" <yann.morin.1998@free.fr>,
+	Peter Korsgaard <peter@korsgaard.com>,
+	Cherniaev Andrei <dungeonlords789@naver.com>,
+	Masahiro Yamada <masahiroy@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.1 228/482] kconfig: lxdialog: fix space to (de)select options
 Date: Tue, 26 Aug 2025 13:08:01 +0200
-Message-ID: <20250826110911.162542281@linuxfoundation.org>
+Message-ID: <20250826110936.408430874@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250826110905.607690791@linuxfoundation.org>
-References: <20250826110905.607690791@linuxfoundation.org>
+In-Reply-To: <20250826110930.769259449@linuxfoundation.org>
+References: <20250826110930.769259449@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,56 +64,54 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.4-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Tao Xue <xuetao09@huawei.com>
+From: Yann E. MORIN <yann.morin.1998@free.fr>
 
-commit 151c0aa896c47a4459e07fee7d4843f44c1bb18e upstream.
+[ Upstream commit 694174f94ebeeb5ec5cc0e9de9b40c82057e1d95 ]
 
-1. In func configfs_composite_bind() -> composite_os_desc_req_prepare():
-if kmalloc fails, the pointer cdev->os_desc_req will be freed but not
-set to NULL. Then it will return a failure to the upper-level function.
-2. in func configfs_composite_bind() -> composite_dev_cleanup():
-it will checks whether cdev->os_desc_req is NULL. If it is not NULL, it
-will attempt to use it.This will lead to a use-after-free issue.
+In case a menu has comment without letters/numbers (eg. characters
+matching the regexp '^[^[:alpha:][:digit:]]+$', for example - or *),
+hitting space will cycle through those comments, rather than
+selecting/deselecting the currently-highlighted option.
 
-BUG: KASAN: use-after-free in composite_dev_cleanup+0xf4/0x2c0
-Read of size 8 at addr 0000004827837a00 by task init/1
+This is the behaviour of hitting any letter/digit: jump to the next
+option which prompt starts with that letter. The only letters that
+do not behave as such are 'y' 'm' and 'n'. Prompts that start with
+one of those three letters are instead matched on the first letter
+that is not 'y', 'm' or 'n'.
 
-CPU: 10 PID: 1 Comm: init Tainted: G           O      5.10.97-oh #1
- kasan_report+0x188/0x1cc
- __asan_load8+0xb4/0xbc
- composite_dev_cleanup+0xf4/0x2c0
- configfs_composite_bind+0x210/0x7ac
- udc_bind_to_driver+0xb4/0x1ec
- usb_gadget_probe_driver+0xec/0x21c
- gadget_dev_desc_UDC_store+0x264/0x27c
+Fix that by treating 'space' as we treat y/m/n, ie. as an action key,
+not as shortcut to jump to  prompt.
 
-Fixes: 37a3a533429e ("usb: gadget: OS Feature Descriptors support")
-Cc: stable <stable@kernel.org>
-Signed-off-by: Tao Xue <xuetao09@huawei.com>
-Link: https://lore.kernel.org/r/20250721093908.14967-1-xuetao09@huawei.com
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Signed-off-by: Yann E. MORIN <yann.morin.1998@free.fr>
+Signed-off-by: Peter Korsgaard <peter@korsgaard.com>
+Signed-off-by: Cherniaev Andrei <dungeonlords789@naver.com>
+[masahiro: took from Buildroot, adjusted the commit subject]
+Signed-off-by: Masahiro Yamada <masahiroy@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/usb/gadget/composite.c |    5 +++++
- 1 file changed, 5 insertions(+)
+ scripts/kconfig/lxdialog/menubox.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/drivers/usb/gadget/composite.c
-+++ b/drivers/usb/gadget/composite.c
-@@ -2241,6 +2241,11 @@ int composite_os_desc_req_prepare(struct
- 	if (!cdev->os_desc_req->buf) {
- 		ret = -ENOMEM;
- 		usb_ep_free_request(ep0, cdev->os_desc_req);
-+		/*
-+		 * Set os_desc_req to NULL so that composite_dev_cleanup()
-+		 * will not try to free it again.
-+		 */
-+		cdev->os_desc_req = NULL;
- 		goto end;
- 	}
- 	cdev->os_desc_req->context = cdev;
+diff --git a/scripts/kconfig/lxdialog/menubox.c b/scripts/kconfig/lxdialog/menubox.c
+index 58c2f8afe59b..7e10e919fbdc 100644
+--- a/scripts/kconfig/lxdialog/menubox.c
++++ b/scripts/kconfig/lxdialog/menubox.c
+@@ -272,7 +272,7 @@ int dialog_menu(const char *title, const char *prompt,
+ 		if (key < 256 && isalpha(key))
+ 			key = tolower(key);
+ 
+-		if (strchr("ynmh", key))
++		if (strchr("ynmh ", key))
+ 			i = max_choice;
+ 		else {
+ 			for (i = choice + 1; i < max_choice; i++) {
+-- 
+2.39.5
+
 
 
 
