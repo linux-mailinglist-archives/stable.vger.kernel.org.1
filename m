@@ -1,55 +1,56 @@
-Return-Path: <stable+bounces-175096-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-173045-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5282DB366C2
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 16:00:07 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 8DC52B35B45
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 13:22:34 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id E5E838E38D4
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 13:50:13 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 245253ACC89
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 11:21:58 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id BABF642050;
-	Tue, 26 Aug 2025 13:48:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7708632143C;
+	Tue, 26 Aug 2025 11:20:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="RBuFBfVG"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="B/2L7RVq"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 653D61E5710;
-	Tue, 26 Aug 2025 13:48:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 331D9239573;
+	Tue, 26 Aug 2025 11:20:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756216129; cv=none; b=Kwxldgwq0VgKPYQ6DGz0XjlIvTnoK9fbFuY/yj2ZaXLp5dJ9GS7AZwKRk+TDLB4hItV/M/kZ4n1y8z9RGhfZov+LrmVqSfDQXWOaSFG2eSyLaSeFfiFOG7FoYsM+htLV9qygrccQcvfSNbgNLhcT+H1dlL07bQEnY+fcdjqdk2Q=
+	t=1756207232; cv=none; b=pD/Fod/yhRtQlWKwrkCS99FZSS/kYcoDPOwYXjkAJib1NEU/9XHlVbRxainA9+Mqg0dFZRPt9/qP/yNh3eUsG5TgczDk7iIAuzJH0JURHGpd+YMbQtUW99FNTBKzO+LXkPua/rgItNc8d+MZeMMBZXEfzKReFlbgGoxbcifhzjI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756216129; c=relaxed/simple;
-	bh=sGhVW17/jfp32+r3t2eLC12SiL5BUCNYIj9QQZOVUiU=;
+	s=arc-20240116; t=1756207232; c=relaxed/simple;
+	bh=gmx9hlMVe+MoKcfpAtdKs0EWwy4QGn4i0EwRzi8klBg=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=VWITk9hQhxczWwQvx2oGQwrCSBFO1Feoom2l5CEPfpUPm9VZAkxdGX1CA0VERNFlmZzf1o3wXiFOy6OTannXI9xh53jTPOxjD0mU55U6ulgnqXA6t2kmTQOxsJGJIHboPollxFuXsUZHzj6adsioSvO+qyaBiWZ4X0sgKLMANmE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=RBuFBfVG; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id ECCF4C4CEF1;
-	Tue, 26 Aug 2025 13:48:48 +0000 (UTC)
+	 MIME-Version; b=PYp72RZ1utW0snfEhNM0NckjwLy0J7VcwuA5Y3cDQ3wuk8W4gLRXMxQwqBIumpAgXABaOvPI5V2Hx1c5s4phZrsNXK7w30dFhLlWwvezxq+C45D+rpHwCn3MqZ9joaf8uax/JvV1s66w+Tl924uxO9ltcTIRhhtClQRIRgCZXCI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=B/2L7RVq; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 64A30C4CEF1;
+	Tue, 26 Aug 2025 11:20:31 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1756216129;
-	bh=sGhVW17/jfp32+r3t2eLC12SiL5BUCNYIj9QQZOVUiU=;
+	s=korg; t=1756207231;
+	bh=gmx9hlMVe+MoKcfpAtdKs0EWwy4QGn4i0EwRzi8klBg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=RBuFBfVGTcFEyAVh+47iYd4jzipJ4rlw2QqS9CQNkkDJxdo6zMY6T0XyqmiMlgRzY
-	 CP3sK3tD40j4folcktTjuVzKtDO7eEyV9uy2TM9pV+pbrbNHrvvs74t+yna/tgET0v
-	 lkXFZe/VWMCuf37zdF9cBC5uCTQNNyyrhd1yOheA=
+	b=B/2L7RVqDeSdieA18Fq57+hK1qRin2uCVWZKt9arZ8K8xnryEqM2YZ/ieWEbYh2ze
+	 osP5vG3LaIZKlEvEPx5oe46GQNY7rh130lgYovSc3vrAM2D9RPcVaowRaZG394fgSE
+	 UF5Yt7F0akcb+Ob5BAAU/v+D8lZqiIx+7H907JMM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Al Viro <viro@zeniv.linux.org.uk>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 294/644] securityfs: dont pin dentries twice, once is enough...
+	Richard Zhu <hongxing.zhu@nxp.com>,
+	Bjorn Helgaas <bhelgaas@google.com>,
+	Frank Li <Frank.Li@nxp.com>
+Subject: [PATCH 6.16 101/457] PCI: imx6: Add IMX8MQ_EP third 64-bit BAR in epc_features
 Date: Tue, 26 Aug 2025 13:06:25 +0200
-Message-ID: <20250826110953.667481713@linuxfoundation.org>
+Message-ID: <20250826110939.872645348@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250826110946.507083938@linuxfoundation.org>
-References: <20250826110946.507083938@linuxfoundation.org>
+In-Reply-To: <20250826110937.289866482@linuxfoundation.org>
+References: <20250826110937.289866482@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,49 +62,41 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.16-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Al Viro <viro@zeniv.linux.org.uk>
+From: Richard Zhu <hongxing.zhu@nxp.com>
 
-[ Upstream commit 27cd1bf1240d482e4f02ca4f9812e748f3106e4f ]
+commit c523fa63ac1d452abeeb4e699560ec3365037f32 upstream.
 
-incidentally, securityfs_recursive_remove() is broken without that -
-it leaks dentries, since simple_recursive_removal() does not expect
-anything of that sort.  It could be worked around by dput() in
-remove_one() callback, but it's easier to just drop that double-get
-stuff.
+IMX8MQ_EP has three 64-bit BAR0/2/4 capable and programmable BARs. For
+IMX8MQ_EP, use imx8q_pcie_epc_features (64-bit BARs 0, 2, 4) instead
+of imx8m_pcie_epc_features (64-bit BARs 0, 2).
 
-Signed-off-by: Al Viro <viro@zeniv.linux.org.uk>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Fixes: 75c2f26da03f ("PCI: imx6: Add i.MX PCIe EP mode support")
+Signed-off-by: Richard Zhu <hongxing.zhu@nxp.com>
+[bhelgaas: add details in subject]
+Signed-off-by: Bjorn Helgaas <bhelgaas@google.com>
+Reviewed-by: Frank Li <Frank.Li@nxp.com>
+Cc: stable@vger.kernel.org
+Link: https://patch.msgid.link/20250708091003.2582846-2-hongxing.zhu@nxp.com
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- security/inode.c | 2 --
- 1 file changed, 2 deletions(-)
+ drivers/pci/controller/dwc/pci-imx6.c |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/security/inode.c b/security/inode.c
-index 6c326939750d..e6e07787eec9 100644
---- a/security/inode.c
-+++ b/security/inode.c
-@@ -159,7 +159,6 @@ static struct dentry *securityfs_create_dentry(const char *name, umode_t mode,
- 		inode->i_fop = fops;
- 	}
- 	d_instantiate(dentry, inode);
--	dget(dentry);
- 	inode_unlock(dir);
- 	return dentry;
- 
-@@ -306,7 +305,6 @@ void securityfs_remove(struct dentry *dentry)
- 			simple_rmdir(dir, dentry);
- 		else
- 			simple_unlink(dir, dentry);
--		dput(dentry);
- 	}
- 	inode_unlock(dir);
- 	simple_release_fs(&mount, &mount_count);
--- 
-2.39.5
-
+--- a/drivers/pci/controller/dwc/pci-imx6.c
++++ b/drivers/pci/controller/dwc/pci-imx6.c
+@@ -1912,7 +1912,7 @@ static const struct imx_pcie_drvdata drv
+ 		.mode_mask[0] = IMX6Q_GPR12_DEVICE_TYPE,
+ 		.mode_off[1] = IOMUXC_GPR12,
+ 		.mode_mask[1] = IMX8MQ_GPR12_PCIE2_CTRL_DEVICE_TYPE,
+-		.epc_features = &imx8m_pcie_epc_features,
++		.epc_features = &imx8q_pcie_epc_features,
+ 		.init_phy = imx8mq_pcie_init_phy,
+ 		.enable_ref_clk = imx8mm_pcie_enable_ref_clk,
+ 	},
 
 
 
