@@ -1,56 +1,55 @@
-Return-Path: <stable+bounces-174134-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-175816-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 80A01B361A6
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 15:11:20 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 37D15B36A2B
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 16:35:00 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 3B0E98A2F0F
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 13:06:45 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 51670585FB9
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 14:22:01 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E679526FA57;
-	Tue, 26 Aug 2025 13:06:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A3B43352072;
+	Tue, 26 Aug 2025 14:20:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="1MjswQ7r"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ncRmq0WA"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9FF20242D88;
-	Tue, 26 Aug 2025 13:06:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 62E9C352060;
+	Tue, 26 Aug 2025 14:20:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756213583; cv=none; b=dMPG21spw6YU2/al7jeqm3aOsthsgwGovvFeea7QYOM+n13XDXXbqU7xhPB4VrZj3L/WcZM9IDqiUgIa6Ydtgdpb4hARe40VSSUrhJn8c+9C8JVrb7wn2M9w96Ye54BUo6CJOGw40paAhymXpsBQNkg7nqv3ahYf19c/kQMHfdM=
+	t=1756218044; cv=none; b=DKBF8/fqx8k8msv7q1JJJ7k8f5MDmcB3OHoVtHo82HF3fbAQnAqSo6r//Qgavb8P6ztTRAohx59Y+H0EGp5x/9IO2ARaSeyvcg88cW2LsAoJUmHE3hJ9S27gA5xHcydEh9vD7mCSOLQAsga5JG7cVF4gJR6L8grtcFZ1HArH158=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756213583; c=relaxed/simple;
-	bh=xxQ26/7+CeVOK2RXcb9kkIbUu31EsVuQm4CwtPs2F+M=;
+	s=arc-20240116; t=1756218044; c=relaxed/simple;
+	bh=nPquoF8xUsXDPt0JpTMB021AuModGs1/g8pQpYBQuf4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=aZComSXedj6VVPBzvkNU+lDFI2d3SZx9VUs2q4ocTl6ogKnTuMy5QcGA5Uxs4fYtrwLA5LvSM99FZbbRbETb3Byy8cYvhEmClVnyAYoRufpngU4z3iqDhm+RO59y/bwjuaAT3+hnolGasSYqMxoCarcWeaGxRk0sEDMDNvCGbSQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=1MjswQ7r; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2D8E1C4CEF1;
-	Tue, 26 Aug 2025 13:06:22 +0000 (UTC)
+	 MIME-Version; b=KIngwiWhaw6BuWwttivfvjIXlfO0KWYwKw1R8taYrwxIFFhHMBYnQgJLYmKmzEw2PUEOCEFjVz7b2M8Th8gLYE0IwAPaU9h5bI8nzEHl3Eoh9vOeTMcHoY8apvw/Q7eVc99t1lOeou+fdDPUfE72Ae2RUJ7WTabZlyX1VGVRr4Y=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ncRmq0WA; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id EBBBEC4CEF1;
+	Tue, 26 Aug 2025 14:20:43 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1756213583;
-	bh=xxQ26/7+CeVOK2RXcb9kkIbUu31EsVuQm4CwtPs2F+M=;
+	s=korg; t=1756218044;
+	bh=nPquoF8xUsXDPt0JpTMB021AuModGs1/g8pQpYBQuf4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=1MjswQ7rIPIeUgB580r5QmiVb29RsUYe4Dyiqdy5LPqmgoFmZCLSkRYe6SAGF2L8/
-	 LKo57J045vUQ/TxtO4+8TGMTtQXM8ASIVh3CVi05BkwPZJ89CoJyFPAApUDzK7+uP3
-	 A+sUO2m9XeY/hL7N3ish1ZxytXUVsqfC0SroyvFY=
+	b=ncRmq0WAp+F9Spla8Gerwrm7KQRwIeSB0vP8785DlAbdcJG6YkM5nzvCEs+FELp49
+	 HjNg1TS49tltewkmdRWoqZycXaBh8+eu2KkHeU27gz+uGrXmwBNBOaplUjHPKbm7va
+	 PtcEET8pGkeOO6D0y4NNTuia+yzOS4RVPpTkOl7I=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Bingbu Cao <bingbu.cao@intel.com>,
-	Sakari Ailus <sakari.ailus@linux.intel.com>,
-	Hans Verkuil <hverkuil@xs4all.nl>
-Subject: [PATCH 6.6 402/587] media: hi556: correct the test pattern configuration
+	Xinyu Liu <katieeliu@tencent.com>,
+	stable <stable@kernel.org>
+Subject: [PATCH 5.10 341/523] usb: core: config: Prevent OOB read in SS endpoint companion parsing
 Date: Tue, 26 Aug 2025 13:09:11 +0200
-Message-ID: <20250826111003.154380653@linuxfoundation.org>
+Message-ID: <20250826110932.881332957@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250826110952.942403671@linuxfoundation.org>
-References: <20250826110952.942403671@linuxfoundation.org>
+In-Reply-To: <20250826110924.562212281@linuxfoundation.org>
+References: <20250826110924.562212281@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,100 +61,46 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Bingbu Cao <bingbu.cao@intel.com>
+From: Xinyu Liu <katieeliu@tencent.com>
 
-commit 020f602b068c9ce18d5056d02c8302199377d98d upstream.
+commit cf16f408364efd8a68f39011a3b073c83a03612d upstream.
 
-Hynix hi556 support 8 test pattern modes:
-hi556_test_pattern_menu[] = {
-{
-	"Disabled",
-	"Solid Colour",
-	"100% Colour Bars",
-	"Fade To Grey Colour Bars",
-	"PN9",
-	"Gradient Horizontal",
-	"Gradient Vertical",
-	"Check Board",
-	"Slant Pattern",
-}
+usb_parse_ss_endpoint_companion() checks descriptor type before length,
+enabling a potentially odd read outside of the buffer size.
 
-The test pattern is set by a 8-bit register according to the
-specification.
-+--------+-------------------------------+
-| BIT[0] |  Solid color                  |
-+--------+-------------------------------+
-| BIT[1] |  Color bar                    |
-+--------+-------------------------------+
-| BIT[2] |  Fade to grey color bar       |
-+--------+-------------------------------+
-| BIT[3] |  PN9                          |
-+--------+-------------------------------+
-| BIT[4] |  Gradient horizontal          |
-+--------+-------------------------------+
-| BIT[5] |  Gradient vertical            |
-+--------+-------------------------------+
-| BIT[6] |  Check board                  |
-+--------+-------------------------------+
-| BIT[7] |  Slant pattern                |
-+--------+-------------------------------+
-Based on function above, current test pattern programming is wrong.
-This patch fixes it by 'BIT(pattern - 1)'. If pattern is 0, driver
-will disable the test pattern generation and set the pattern to 0.
+Fix this up by checking the size first before looking at any of the
+fields in the descriptor.
 
-Fixes: e62138403a84 ("media: hi556: Add support for Hi-556 sensor")
-Cc: stable@vger.kernel.org
-Signed-off-by: Bingbu Cao <bingbu.cao@intel.com>
-Signed-off-by: Sakari Ailus <sakari.ailus@linux.intel.com>
-Signed-off-by: Hans Verkuil <hverkuil@xs4all.nl>
+Signed-off-by: Xinyu Liu <katieeliu@tencent.com>
+Cc: stable <stable@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/media/i2c/hi556.c |   28 +++++++++++++++-------------
- 1 file changed, 15 insertions(+), 13 deletions(-)
+ drivers/usb/core/config.c |   10 ++++++++--
+ 1 file changed, 8 insertions(+), 2 deletions(-)
 
---- a/drivers/media/i2c/hi556.c
-+++ b/drivers/media/i2c/hi556.c
-@@ -689,21 +689,23 @@ static int hi556_test_pattern(struct hi5
- 	int ret;
- 	u32 val;
+--- a/drivers/usb/core/config.c
++++ b/drivers/usb/core/config.c
+@@ -81,8 +81,14 @@ static void usb_parse_ss_endpoint_compan
+ 	 */
+ 	desc = (struct usb_ss_ep_comp_descriptor *) buffer;
  
--	if (pattern) {
--		ret = hi556_read_reg(hi556, HI556_REG_ISP,
--				     HI556_REG_VALUE_08BIT, &val);
--		if (ret)
--			return ret;
--
--		ret = hi556_write_reg(hi556, HI556_REG_ISP,
--				      HI556_REG_VALUE_08BIT,
--				      val | HI556_REG_ISP_TPG_EN);
--		if (ret)
--			return ret;
--	}
-+	ret = hi556_read_reg(hi556, HI556_REG_ISP,
-+			     HI556_REG_VALUE_08BIT, &val);
-+	if (ret)
-+		return ret;
+-	if (desc->bDescriptorType != USB_DT_SS_ENDPOINT_COMP ||
+-			size < USB_DT_SS_EP_COMP_SIZE) {
++	if (size < USB_DT_SS_EP_COMP_SIZE) {
++		dev_notice(ddev,
++			   "invalid SuperSpeed endpoint companion descriptor "
++			   "of length %d, skipping\n", size);
++		return;
++	}
 +
-+	val = pattern ? (val | HI556_REG_ISP_TPG_EN) :
-+		(val & ~HI556_REG_ISP_TPG_EN);
-+
-+	ret = hi556_write_reg(hi556, HI556_REG_ISP,
-+			      HI556_REG_VALUE_08BIT, val);
-+	if (ret)
-+		return ret;
-+
-+	val = pattern ? BIT(pattern - 1) : 0;
- 
- 	return hi556_write_reg(hi556, HI556_REG_TEST_PATTERN,
--			       HI556_REG_VALUE_08BIT, pattern);
-+			       HI556_REG_VALUE_08BIT, val);
- }
- 
- static int hi556_set_ctrl(struct v4l2_ctrl *ctrl)
++	if (desc->bDescriptorType != USB_DT_SS_ENDPOINT_COMP) {
+ 		dev_notice(ddev, "No SuperSpeed endpoint companion for config %d "
+ 				" interface %d altsetting %d ep %d: "
+ 				"using minimum values\n",
 
 
 
