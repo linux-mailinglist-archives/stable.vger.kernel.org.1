@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-175533-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-172990-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4FED7B368F4
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 16:21:15 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3C472B35B2C
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 13:20:28 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id B24111892E6F
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 14:09:53 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 170C63A4250
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 11:20:03 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B2E69352067;
-	Tue, 26 Aug 2025 14:08:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5BA0F3451CC;
+	Tue, 26 Aug 2025 11:18:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="NbssmULo"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="b/Z8clM8"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 710EB342CA7;
-	Tue, 26 Aug 2025 14:08:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 13B9C343D98;
+	Tue, 26 Aug 2025 11:18:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756217295; cv=none; b=c2AMsV8alXGPwVYvUBMuVsG3qWkWUOlzMATpq2MiaKDHgAy6Mp2wrT/yqaX2ArenhSDFjRbuvLaWxg1SAt0aBcRQCKZqgiV4D9jwmKPijbN0zisk2v7nBiCYpprnJXp1IWRnW9nfQ9rlss1U0X3tpcFR0504YpZSQp4QDS00Mpk=
+	t=1756207089; cv=none; b=ia5GBBM8UrE2sxLrV3rSuwRLFlCxIN+vUayXsx0RjafgXMjcg7pVoToxnvu+QZ1u5brHsSwvqyhE2iV08IsppzPSW4SzfgWBS7rvVd0tB0AMc99cxtdb3GhQFoh6eFaPZMuSUQ5ZdGw2SeUNXYg4NzuMIaMUYrvBdkNzHDOzYw0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756217295; c=relaxed/simple;
-	bh=hvtYllONwQsXFsEWln5gQUvtOSQZaaMw/vWdY61SVys=;
+	s=arc-20240116; t=1756207089; c=relaxed/simple;
+	bh=I9VgBjxsh8MFEevcHigTZMEvOLwk8bbht7wrBpINJhw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Uz2/kbBt4VjL+upQ3a4j1QDJTkOkMj9ztSkU18Bt7ynnkJT/n2xHkrebNWrPodVfDPiRrHQi+/702c/3chzgGrY8Ol3XW3gtNA4lN5x/MoA9lIus5cKQKQt9lxQg0gE7brmgwK9KRVPixQ/CIEJ62KkysqKDU7AGF2EIt5jzoT8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=NbssmULo; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 00B60C113CF;
-	Tue, 26 Aug 2025 14:08:14 +0000 (UTC)
+	 MIME-Version; b=GcEqq4HIyvdFChA5AwJQSg2LbbaZnHN5p1UDNpzwl1AFvVkRYzhcrAsHJyMRVrLftUqwiMYvAKq0nV1qdcoNxp1w552N/wz1ffnOVrAal5p2cPLX0/4C3JFL2OsknemO0fVNyJz4jimKMYIeBh05W1yTZfwGXgHxT+4PHV2evS8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=b/Z8clM8; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 478D3C4CEF4;
+	Tue, 26 Aug 2025 11:18:08 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1756217295;
-	bh=hvtYllONwQsXFsEWln5gQUvtOSQZaaMw/vWdY61SVys=;
+	s=korg; t=1756207088;
+	bh=I9VgBjxsh8MFEevcHigTZMEvOLwk8bbht7wrBpINJhw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=NbssmULooh+F5Q7SboxVheo7rGaimGuzD6xqPOCmtE72lt2varNFLk8Iuj+kHJ1Jo
-	 189r71lqF+0l9sx2QdOusqzzFBALjFhOPnMYl4ZSYVTb0wKJI+RETApXfu7maVOkyf
-	 W0vVFKLAe9pcYL5jM3Ni7KMXWoI327av4zTZRyaw=
+	b=b/Z8clM8qoSFBQ6cBSp65Rhn1cf2KMVV4+idyOf4R138eBbITg65jCXT/+dPGDzTz
+	 CnwW7QXlSN3NqHduGsyq/KeYEG7ufSkTmA7YiLZHkR66jrmxSNz2NVG1PO35P8PP87
+	 TveNPHPWvK5qV8Vy1RXrMX06BdcrXTERpH5Ww+4c=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Lifeng Zheng <zhenglifeng1@huawei.com>,
-	"Rafael J. Wysocki" <rafael.j.wysocki@intel.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 089/523] cpufreq: Initialize cpufreq-based frequency-invariance later
-Date: Tue, 26 Aug 2025 13:04:59 +0200
-Message-ID: <20250826110926.747222425@linuxfoundation.org>
+	Youssef Samir <quic_yabdulra@quicinc.com>,
+	Manivannan Sadhasivam <mani@kernel.org>,
+	Jeff Hugo <jeff.hugo@oss.qualcomm.com>
+Subject: [PATCH 6.16 016/457] bus: mhi: host: Detect events pointing to unexpected TREs
+Date: Tue, 26 Aug 2025 13:05:00 +0200
+Message-ID: <20250826110937.724127749@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250826110924.562212281@linuxfoundation.org>
-References: <20250826110924.562212281@linuxfoundation.org>
+In-Reply-To: <20250826110937.289866482@linuxfoundation.org>
+References: <20250826110937.289866482@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,68 +62,80 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+6.16-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Lifeng Zheng <zhenglifeng1@huawei.com>
+From: Youssef Samir <quic_yabdulra@quicinc.com>
 
-[ Upstream commit 2a6c727387062a2ea79eb6cf5004820cb1b0afe2 ]
+commit 5bd398e20f0833ae8a1267d4f343591a2dd20185 upstream.
 
-The cpufreq-based invariance is enabled in cpufreq_register_driver(),
-but never disabled after registration fails. Move the invariance
-initialization to where all other initializations have been successfully
-done to solve this problem.
+When a remote device sends a completion event to the host, it contains a
+pointer to the consumed TRE. The host uses this pointer to process all of
+the TREs between it and the host's local copy of the ring's read pointer.
+This works when processing completion for chained transactions, but can
+lead to nasty results if the device sends an event for a single-element
+transaction with a read pointer that is multiple elements ahead of the
+host's read pointer.
 
-Fixes: 874f63531064 ("cpufreq: report whether cpufreq supports Frequency Invariance (FI)")
-Signed-off-by: Lifeng Zheng <zhenglifeng1@huawei.com>
-Link: https://patch.msgid.link/20250709104145.2348017-2-zhenglifeng1@huawei.com
-[ rjw: New subject ]
-Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+For instance, if the host accesses an event ring while the device is
+updating it, the pointer inside of the event might still point to an old
+TRE. If the host uses the channel's xfer_cb() to directly free the buffer
+pointed to by the TRE, the buffer will be double-freed.
+
+This behavior was observed on an ep that used upstream EP stack without
+'commit 6f18d174b73d ("bus: mhi: ep: Update read pointer only after buffer
+is written")'. Where the device updated the events ring pointer before
+updating the event contents, so it left a window where the host was able to
+access the stale data the event pointed to, before the device had the
+chance to update them. The usual pattern was that the host received an
+event pointing to a TRE that is not immediately after the last processed
+one, so it got treated as if it was a chained transaction, processing all
+of the TREs in between the two read pointers.
+
+This commit aims to harden the host by ensuring transactions where the
+event points to a TRE that isn't local_rp + 1 are chained.
+
+Fixes: 1d3173a3bae7 ("bus: mhi: core: Add support for processing events from client device")
+Signed-off-by: Youssef Samir <quic_yabdulra@quicinc.com>
+[mani: added stable tag and reworded commit message]
+Signed-off-by: Manivannan Sadhasivam <mani@kernel.org>
+Reviewed-by: Jeff Hugo <jeff.hugo@oss.qualcomm.com>
+Cc: stable@vger.kernel.org
+Link: https://patch.msgid.link/20250714163039.3438985-1-quic_yabdulra@quicinc.com
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/cpufreq/cpufreq.c | 18 +++++++++---------
- 1 file changed, 9 insertions(+), 9 deletions(-)
+ drivers/bus/mhi/host/main.c |   12 +++++++++++-
+ 1 file changed, 11 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/cpufreq/cpufreq.c b/drivers/cpufreq/cpufreq.c
-index 6294e10657b4..6e03526ee759 100644
---- a/drivers/cpufreq/cpufreq.c
-+++ b/drivers/cpufreq/cpufreq.c
-@@ -2780,15 +2780,6 @@ int cpufreq_register_driver(struct cpufreq_driver *driver_data)
- 	cpufreq_driver = driver_data;
- 	write_unlock_irqrestore(&cpufreq_driver_lock, flags);
+--- a/drivers/bus/mhi/host/main.c
++++ b/drivers/bus/mhi/host/main.c
+@@ -602,7 +602,7 @@ static int parse_xfer_event(struct mhi_c
+ 	{
+ 		dma_addr_t ptr = MHI_TRE_GET_EV_PTR(event);
+ 		struct mhi_ring_element *local_rp, *ev_tre;
+-		void *dev_rp;
++		void *dev_rp, *next_rp;
+ 		struct mhi_buf_info *buf_info;
+ 		u16 xfer_len;
  
--	/*
--	 * Mark support for the scheduler's frequency invariance engine for
--	 * drivers that implement target(), target_index() or fast_switch().
--	 */
--	if (!cpufreq_driver->setpolicy) {
--		static_branch_enable_cpuslocked(&cpufreq_freq_invariance);
--		pr_debug("supports frequency invariance");
--	}
--
- 	if (driver_data->setpolicy)
- 		driver_data->flags |= CPUFREQ_CONST_LOOPS;
+@@ -621,6 +621,16 @@ static int parse_xfer_event(struct mhi_c
+ 		result.dir = mhi_chan->dir;
  
-@@ -2820,6 +2811,15 @@ int cpufreq_register_driver(struct cpufreq_driver *driver_data)
- 	hp_online = ret;
- 	ret = 0;
- 
-+	/*
-+	 * Mark support for the scheduler's frequency invariance engine for
-+	 * drivers that implement target(), target_index() or fast_switch().
-+	 */
-+	if (!cpufreq_driver->setpolicy) {
-+		static_branch_enable_cpuslocked(&cpufreq_freq_invariance);
-+		pr_debug("supports frequency invariance");
-+	}
+ 		local_rp = tre_ring->rp;
 +
- 	pr_debug("driver %s up and running\n", driver_data->name);
- 	goto out;
- 
--- 
-2.39.5
-
++		next_rp = local_rp + 1;
++		if (next_rp >= tre_ring->base + tre_ring->len)
++			next_rp = tre_ring->base;
++		if (dev_rp != next_rp && !MHI_TRE_DATA_GET_CHAIN(local_rp)) {
++			dev_err(&mhi_cntrl->mhi_dev->dev,
++				"Event element points to an unexpected TRE\n");
++			break;
++		}
++
+ 		while (local_rp != dev_rp) {
+ 			buf_info = buf_ring->rp;
+ 			/* If it's the last TRE, get length from the event */
 
 
 
