@@ -1,59 +1,56 @@
-Return-Path: <stable+bounces-173402-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-175452-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9234AB35CB5
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 13:37:37 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id C3483B367DB
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 16:10:40 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 2D95A7C509B
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 11:37:36 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 2BBC97B91EB
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 14:05:00 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7AC7E341654;
-	Tue, 26 Aug 2025 11:35:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 54A0921D3F2;
+	Tue, 26 Aug 2025 14:04:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ufhA4fhW"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Yv7T4p7a"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3741D34164F;
-	Tue, 26 Aug 2025 11:35:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 085611494D9;
+	Tue, 26 Aug 2025 14:04:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756208155; cv=none; b=DRnAwewDH8Q4niCavRF4stac/e/aZa00QBBGztUo/OraV5cfE0J1GZEyH6tJSAfTOBZf8vvZIOuriiARpRTSyPh7y8qzbw/C0qkeCW4nk03k7NnwAjouZDmw45BK7hXxwvzFwMntnEiPFIfKwJs3J+oZlG/hLFqyUHt7LNIGTQs=
+	t=1756217081; cv=none; b=U1fpUvPvHla6q1lkcELAFtKREGjpcUf/ya6TrVHcssur98nEx7ixfhG1+vG4Wl14IKroWEb2TcLnRYV9nUOvvAErLC5Gjf4f7y+2UqS3O3ejVSSzN8IW0Qf8/SfEsfgt+TIt/Y5se3TzyXeP21Vaxu7WH6OdZ7xSxq4akhFjhtw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756208155; c=relaxed/simple;
-	bh=1UbWemT8sQUeMnNuGx7bCxMfwxM2xObP735a62p+kKA=;
+	s=arc-20240116; t=1756217081; c=relaxed/simple;
+	bh=oLKK4bYDVgAF903BYTj0drVRPZz4VgAnhEYxeJY0A1k=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Eu0Bjy9Ibm+jEMI3MgYWpv3RXOd4umwQFruDYylBD0xCY4HGwXIub9P21q1w6VzedzXh0gdSTGN23BTZ5mSIJ7a1+Q4hL9WjnYFR0G1R9xr+1a5y63aK6aB0/HujT7m1F5qVX16C+3+w62HFNpmt5UQ4U2MhqS9e6fFvnwp+ZAY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ufhA4fhW; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8CFC8C4CEF4;
-	Tue, 26 Aug 2025 11:35:54 +0000 (UTC)
+	 MIME-Version; b=YgzPpBrMu9gQ2IWO49Zle8lNLNdbvWsHxST223+UIssvs9eParn6Igw3EhMmBCx5+JwiCSl2DPU8+/JxPQ73ywstmKkgAiktYgN44TmMYQ9Kf/4jclAe1v6ZIh91yTFh9mSv4PPTd8V6aut8yXLZH0WVP7HceI/gXy3M860oADQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Yv7T4p7a; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 92890C4CEF1;
+	Tue, 26 Aug 2025 14:04:40 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1756208155;
-	bh=1UbWemT8sQUeMnNuGx7bCxMfwxM2xObP735a62p+kKA=;
+	s=korg; t=1756217080;
+	bh=oLKK4bYDVgAF903BYTj0drVRPZz4VgAnhEYxeJY0A1k=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=ufhA4fhWcjQGzrKuuigExvfz4Y8mA/EM+aWagMNRUqoRUUPj70lcKBdaSOJ/B74uN
-	 +M+JMJsLxQxzgbXnwCHklpRz9crZIS5s6Auwj1l7D1vw78XqBFRtV6ll5zl62zveVt
-	 g62pIR8nm1/YTZbJRE6eE1ad+aRHTVFP8pWr3ADI=
+	b=Yv7T4p7a9KKKuT0JWWKy7f48LswP61YZrH6cwVvT4EZfsoQW0opQ68ur7XQfCLXXQ
+	 CwBXth6P+GUCuWqhDZl1ESjifYrObaYbhRUAKJ7XZs4oQBajk4bna6jebFnZLABUTc
+	 ZJX2n43KmyG6UaR4n8NXiN/85PzbqnEDMfWB6JvQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Alexei Lazar <alazar@nvidia.com>,
-	Shahar Shitrit <shshitrit@nvidia.com>,
-	Dragos Tatulea <dtatulea@nvidia.com>,
-	Mark Bloch <mbloch@nvidia.com>,
+	Florian Westphal <fw@strlen.de>,
 	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.16 450/457] net/mlx5e: Query FW for buffer ownership
+Subject: [PATCH 5.15 643/644] netfilter: nf_reject: dont leak dst refcount for loopback packets
 Date: Tue, 26 Aug 2025 13:12:14 +0200
-Message-ID: <20250826110948.407216667@linuxfoundation.org>
+Message-ID: <20250826111002.497495608@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250826110937.289866482@linuxfoundation.org>
-References: <20250826110937.289866482@linuxfoundation.org>
+In-Reply-To: <20250826110946.507083938@linuxfoundation.org>
+References: <20250826110946.507083938@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -65,145 +62,90 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.16-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Alexei Lazar <alazar@nvidia.com>
+From: Florian Westphal <fw@strlen.de>
 
-[ Upstream commit 451d2849ea66659040b59ae3cb7e50cc97404733 ]
+[ Upstream commit 91a79b792204313153e1bdbbe5acbfc28903b3a5 ]
 
-The SW currently saves local buffer ownership when setting
-the buffer.
-This means that the SW assumes it has ownership of the buffer
-after the command is set.
+recent patches to add a WARN() when replacing skb dst entry found an
+old bug:
 
-If setting the buffer fails and we remain in FW ownership,
-the local buffer ownership state incorrectly remains as SW-owned.
-This leads to incorrect behavior in subsequent PFC commands,
-causing failures.
+WARNING: include/linux/skbuff.h:1165 skb_dst_check_unset include/linux/skbuff.h:1164 [inline]
+WARNING: include/linux/skbuff.h:1165 skb_dst_set include/linux/skbuff.h:1210 [inline]
+WARNING: include/linux/skbuff.h:1165 nf_reject_fill_skb_dst+0x2a4/0x330 net/ipv4/netfilter/nf_reject_ipv4.c:234
+[..]
+Call Trace:
+ nf_send_unreach+0x17b/0x6e0 net/ipv4/netfilter/nf_reject_ipv4.c:325
+ nft_reject_inet_eval+0x4bc/0x690 net/netfilter/nft_reject_inet.c:27
+ expr_call_ops_eval net/netfilter/nf_tables_core.c:237 [inline]
+ ..
 
-Instead of saving local buffer ownership in SW,
-query the FW for buffer ownership when setting the buffer.
-This ensures that the buffer ownership state is accurately
-reflected, avoiding the issues caused by incorrect ownership
-states.
+This is because blamed commit forgot about loopback packets.
+Such packets already have a dst_entry attached, even at PRE_ROUTING stage.
 
-Fixes: ecdf2dadee8e ("net/mlx5e: Receive buffer support for DCBX")
-Signed-off-by: Alexei Lazar <alazar@nvidia.com>
-Reviewed-by: Shahar Shitrit <shshitrit@nvidia.com>
-Reviewed-by: Dragos Tatulea <dtatulea@nvidia.com>
-Signed-off-by: Mark Bloch <mbloch@nvidia.com>
-Link: https://patch.msgid.link/20250820133209.389065-8-mbloch@nvidia.com
+Instead of checking hook just check if the skb already has a route
+attached to it.
+
+Fixes: f53b9b0bdc59 ("netfilter: introduce support for reject at prerouting stage")
+Signed-off-by: Florian Westphal <fw@strlen.de>
+Link: https://patch.msgid.link/20250820123707.10671-1-fw@strlen.de
 Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- .../ethernet/mellanox/mlx5/core/en/dcbnl.h    |  1 -
- .../ethernet/mellanox/mlx5/core/en_dcbnl.c    | 12 ++++++++---
- .../ethernet/mellanox/mlx5/core/mlx5_core.h   |  2 ++
- .../net/ethernet/mellanox/mlx5/core/port.c    | 20 +++++++++++++++++++
- 4 files changed, 31 insertions(+), 4 deletions(-)
+ net/ipv4/netfilter/nf_reject_ipv4.c | 6 ++----
+ net/ipv6/netfilter/nf_reject_ipv6.c | 5 ++---
+ 2 files changed, 4 insertions(+), 7 deletions(-)
 
-diff --git a/drivers/net/ethernet/mellanox/mlx5/core/en/dcbnl.h b/drivers/net/ethernet/mellanox/mlx5/core/en/dcbnl.h
-index b59aee75de94..2c98a5299df3 100644
---- a/drivers/net/ethernet/mellanox/mlx5/core/en/dcbnl.h
-+++ b/drivers/net/ethernet/mellanox/mlx5/core/en/dcbnl.h
-@@ -26,7 +26,6 @@ struct mlx5e_dcbx {
- 	u8                         cap;
+diff --git a/net/ipv4/netfilter/nf_reject_ipv4.c b/net/ipv4/netfilter/nf_reject_ipv4.c
+index 350aaca12618..c1f5ca847c8a 100644
+--- a/net/ipv4/netfilter/nf_reject_ipv4.c
++++ b/net/ipv4/netfilter/nf_reject_ipv4.c
+@@ -247,8 +247,7 @@ void nf_send_reset(struct net *net, struct sock *sk, struct sk_buff *oldskb,
+ 	if (!oth)
+ 		return;
  
- 	/* Buffer configuration */
--	bool                       manual_buffer;
- 	u32                        cable_len;
- 	u32                        xoff;
- 	u16                        port_buff_cell_sz;
-diff --git a/drivers/net/ethernet/mellanox/mlx5/core/en_dcbnl.c b/drivers/net/ethernet/mellanox/mlx5/core/en_dcbnl.c
-index 5fe016e477b3..d166c0d5189e 100644
---- a/drivers/net/ethernet/mellanox/mlx5/core/en_dcbnl.c
-+++ b/drivers/net/ethernet/mellanox/mlx5/core/en_dcbnl.c
-@@ -362,6 +362,7 @@ static int mlx5e_dcbnl_ieee_getpfc(struct net_device *dev,
- static int mlx5e_dcbnl_ieee_setpfc(struct net_device *dev,
- 				   struct ieee_pfc *pfc)
- {
-+	u8 buffer_ownership = MLX5_BUF_OWNERSHIP_UNKNOWN;
- 	struct mlx5e_priv *priv = netdev_priv(dev);
- 	struct mlx5_core_dev *mdev = priv->mdev;
- 	u32 old_cable_len = priv->dcbx.cable_len;
-@@ -389,7 +390,14 @@ static int mlx5e_dcbnl_ieee_setpfc(struct net_device *dev,
+-	if ((hook == NF_INET_PRE_ROUTING || hook == NF_INET_INGRESS) &&
+-	    nf_reject_fill_skb_dst(oldskb) < 0)
++	if (!skb_dst(oldskb) && nf_reject_fill_skb_dst(oldskb) < 0)
+ 		return;
  
- 	if (MLX5_BUFFER_SUPPORTED(mdev)) {
- 		pfc_new.pfc_en = (changed & MLX5E_PORT_BUFFER_PFC) ? pfc->pfc_en : curr_pfc_en;
--		if (priv->dcbx.manual_buffer)
-+		ret = mlx5_query_port_buffer_ownership(mdev,
-+						       &buffer_ownership);
-+		if (ret)
-+			netdev_err(dev,
-+				   "%s, Failed to get buffer ownership: %d\n",
-+				   __func__, ret);
-+
-+		if (buffer_ownership == MLX5_BUF_OWNERSHIP_SW_OWNED)
- 			ret = mlx5e_port_manual_buffer_config(priv, changed,
- 							      dev->mtu, &pfc_new,
- 							      NULL, NULL);
-@@ -982,7 +990,6 @@ static int mlx5e_dcbnl_setbuffer(struct net_device *dev,
- 	if (!changed)
- 		return 0;
+ 	if (skb_rtable(oldskb)->rt_flags & (RTCF_BROADCAST | RTCF_MULTICAST))
+@@ -317,8 +316,7 @@ void nf_send_unreach(struct sk_buff *skb_in, int code, int hook)
+ 	if (iph->frag_off & htons(IP_OFFSET))
+ 		return;
  
--	priv->dcbx.manual_buffer = true;
- 	err = mlx5e_port_manual_buffer_config(priv, changed, dev->mtu, NULL,
- 					      buffer_size, prio2buffer);
- 	return err;
-@@ -1252,7 +1259,6 @@ void mlx5e_dcbnl_initialize(struct mlx5e_priv *priv)
- 		priv->dcbx.cap |= DCB_CAP_DCBX_HOST;
+-	if ((hook == NF_INET_PRE_ROUTING || hook == NF_INET_INGRESS) &&
+-	    nf_reject_fill_skb_dst(skb_in) < 0)
++	if (!skb_dst(skb_in) && nf_reject_fill_skb_dst(skb_in) < 0)
+ 		return;
  
- 	priv->dcbx.port_buff_cell_sz = mlx5e_query_port_buffers_cell_size(priv);
--	priv->dcbx.manual_buffer = false;
- 	priv->dcbx.cable_len = MLX5E_DEFAULT_CABLE_LEN;
+ 	if (skb_csum_unnecessary(skb_in) || !nf_reject_verify_csum(proto)) {
+diff --git a/net/ipv6/netfilter/nf_reject_ipv6.c b/net/ipv6/netfilter/nf_reject_ipv6.c
+index 8208490e05a3..ca39b83c2a5d 100644
+--- a/net/ipv6/netfilter/nf_reject_ipv6.c
++++ b/net/ipv6/netfilter/nf_reject_ipv6.c
+@@ -295,7 +295,7 @@ void nf_send_reset6(struct net *net, struct sock *sk, struct sk_buff *oldskb,
+ 	fl6.fl6_sport = otcph->dest;
+ 	fl6.fl6_dport = otcph->source;
  
- 	mlx5e_ets_init(priv);
-diff --git a/drivers/net/ethernet/mellanox/mlx5/core/mlx5_core.h b/drivers/net/ethernet/mellanox/mlx5/core/mlx5_core.h
-index 2e02bdea8361..c2f6d205ddb1 100644
---- a/drivers/net/ethernet/mellanox/mlx5/core/mlx5_core.h
-+++ b/drivers/net/ethernet/mellanox/mlx5/core/mlx5_core.h
-@@ -358,6 +358,8 @@ int mlx5_query_port_dcbx_param(struct mlx5_core_dev *mdev, u32 *out);
- int mlx5_set_port_dcbx_param(struct mlx5_core_dev *mdev, u32 *in);
- int mlx5_set_trust_state(struct mlx5_core_dev *mdev, u8 trust_state);
- int mlx5_query_trust_state(struct mlx5_core_dev *mdev, u8 *trust_state);
-+int mlx5_query_port_buffer_ownership(struct mlx5_core_dev *mdev,
-+				     u8 *buffer_ownership);
- int mlx5_set_dscp2prio(struct mlx5_core_dev *mdev, u8 dscp, u8 prio);
- int mlx5_query_dscp2prio(struct mlx5_core_dev *mdev, u8 *dscp2prio);
+-	if (hook == NF_INET_PRE_ROUTING || hook == NF_INET_INGRESS) {
++	if (!skb_dst(oldskb)) {
+ 		nf_ip6_route(net, &dst, flowi6_to_flowi(&fl6), false);
+ 		if (!dst)
+ 			return;
+@@ -394,8 +394,7 @@ void nf_send_unreach6(struct net *net, struct sk_buff *skb_in,
+ 	if (hooknum == NF_INET_LOCAL_OUT && skb_in->dev == NULL)
+ 		skb_in->dev = net->loopback_dev;
  
-diff --git a/drivers/net/ethernet/mellanox/mlx5/core/port.c b/drivers/net/ethernet/mellanox/mlx5/core/port.c
-index 549f1066d2a5..2d7adf7444ba 100644
---- a/drivers/net/ethernet/mellanox/mlx5/core/port.c
-+++ b/drivers/net/ethernet/mellanox/mlx5/core/port.c
-@@ -968,6 +968,26 @@ int mlx5_query_trust_state(struct mlx5_core_dev *mdev, u8 *trust_state)
- 	return err;
- }
+-	if ((hooknum == NF_INET_PRE_ROUTING || hooknum == NF_INET_INGRESS) &&
+-	    nf_reject6_fill_skb_dst(skb_in) < 0)
++	if (!skb_dst(skb_in) && nf_reject6_fill_skb_dst(skb_in) < 0)
+ 		return;
  
-+int mlx5_query_port_buffer_ownership(struct mlx5_core_dev *mdev,
-+				     u8 *buffer_ownership)
-+{
-+	u32 out[MLX5_ST_SZ_DW(pfcc_reg)] = {};
-+	int err;
-+
-+	if (!MLX5_CAP_PCAM_FEATURE(mdev, buffer_ownership)) {
-+		*buffer_ownership = MLX5_BUF_OWNERSHIP_UNKNOWN;
-+		return 0;
-+	}
-+
-+	err = mlx5_query_pfcc_reg(mdev, out, sizeof(out));
-+	if (err)
-+		return err;
-+
-+	*buffer_ownership = MLX5_GET(pfcc_reg, out, buf_ownership);
-+
-+	return 0;
-+}
-+
- int mlx5_set_dscp2prio(struct mlx5_core_dev *mdev, u8 dscp, u8 prio)
- {
- 	int sz = MLX5_ST_SZ_BYTES(qpdpm_reg);
+ 	icmpv6_send(skb_in, ICMPV6_DEST_UNREACH, code, 0);
 -- 
 2.50.1
 
