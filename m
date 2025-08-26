@@ -1,95 +1,51 @@
-Return-Path: <stable+bounces-172901-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-172904-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id D3B37B3508B
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 02:56:03 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 61CB9B350BC
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 03:07:00 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 5B1961A87A5B
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 00:56:23 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 263D9244EC9
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 01:07:00 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A3DB7267386;
-	Tue, 26 Aug 2025 00:55:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 14E0023E32E;
+	Tue, 26 Aug 2025 01:06:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=amd.com header.i=@amd.com header.b="RVCBfS8X"
+	dkim=pass (1024-bit key) header.d=mails.tsinghua.edu.cn header.i=@mails.tsinghua.edu.cn header.b="gNQRQzHN"
 X-Original-To: stable@vger.kernel.org
-Received: from NAM12-MW2-obe.outbound.protection.outlook.com (mail-mw2nam12on2057.outbound.protection.outlook.com [40.107.244.57])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E081C26A1A4;
-	Tue, 26 Aug 2025 00:55:37 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.244.57
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756169740; cv=fail; b=LeHsdKolXG2Ipdg+BXvRNoHz05YZjaO6+0lDIwmMZiU2eaffT3mvPDZi/HpitCaVCXM5i9zhrrfn2A/7uDqzGKueCzwOLyh7c4fXrO95VjEn/9Z7pv+/nWvfOFmkmcjyQV3uCMwuESdp7tPfEC90GYwGfoBI62y+Il/a1qHQNfM=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756169740; c=relaxed/simple;
-	bh=qv5ToFVTYgmb0DbdsCyl16Vmhyv0T3JEw1SfObgKvbE=;
-	h=From:To:CC:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=fWxXSIfetbpenbLaTVeCdQRFSy0nUnUvL47/OvexXbZuH9uCiOlLOHlpoK76aQANC7Sjr/IwPurwqvyu1PC27UkiI2Z/UJ0kVZorM7CEziMVQDRqK7/ATHB2S+mJStlt6CtehmmR6Ql5WRffMh0cY0RQg7AWqR5SeBXekpc0vN4=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amd.com; spf=fail smtp.mailfrom=amd.com; dkim=pass (1024-bit key) header.d=amd.com header.i=@amd.com header.b=RVCBfS8X; arc=fail smtp.client-ip=40.107.244.57
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amd.com
-Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=amd.com
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=iyU3wxYGpiISoh/ORueFSlytgk+9QjxHWrrI+iS77I8904KH0bmveF6N9VU+okulfnrkePT4SD1RTIlTsRJRFdqSsnj0EpyUYr1ICpkXCd46C+tG+0ptUNybsT08+kFyDL4l2qOi4/q9i3kuueuodtlNyDtQDABrJLUGuUK8Art/hVD6eiraEXYcx08GmVvMoUIn3EXRXPEOgeRFbcXEBGMPCmiY+I0vTHMxsP+/gre5C+FBhzLoC1bVWRN7eFayeHZpD5+t7wSF2hNHl9XVbAWaKA1do+edtNX6IDiOAyAr+U6aRO0roXycbudLXzcB1PIytZz+gksNnNgbBABi5w==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=vhSEPF8a35m/xTcBty/l8kD6Fit9wlVpONLWs4x9hHc=;
- b=G26YkfVD81nINmHApXz4ZmP6moCflXuXTcTRFWEFE85quKSoF8RIPPr+N3vhXtGt//Ns1qSKuiHp01TwhZHEdZ+5Pfid2lSutwQl0gg7vOZvO7GbG5mKkf56huNfiAP1BDqp4+SaRb67OkZEw5DPKPBhlBVHSiVvzkc7DhUOOWC7wtzm1poByNeNFKruVvK4rKDR9MpF9X3qBr26+mxvd59qe5Rqdynfs8ZRurR3Nr4pKezYW9H1WPvKaRyg0gf7fMjIMKIfLrvV9Py9HOU3Qr1spfyCoJ4FWmrjdd/fcapJ4Ppv7rkqW8ugr/v79qoJwI/U8usU+r+ZzHm67Flm7Q==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass (sender ip is
- 165.204.84.17) smtp.rcpttodomain=suse.com smtp.mailfrom=amd.com; dmarc=pass
- (p=quarantine sp=quarantine pct=100) action=none header.from=amd.com;
- dkim=none (message not signed); arc=none (0)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=amd.com; s=selector1;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=vhSEPF8a35m/xTcBty/l8kD6Fit9wlVpONLWs4x9hHc=;
- b=RVCBfS8XKocgZAYHQbndIsv6uFJPNsX+hv+3pDf92Soh59aeNbp4tm5g4EP3ZW04EQqxlkT10ebS+DBZHOZBtPm2sQFv+U9odzWu/wTiQVD6eECd3C3IlTN38iVnGUOMYOIXRH/pgSHGK1NuHxZvu7dJKG4CBag/l1hEt/PD4G8=
-Received: from DM6PR14CA0055.namprd14.prod.outlook.com (2603:10b6:5:18f::32)
- by MN2PR12MB4272.namprd12.prod.outlook.com (2603:10b6:208:1de::14) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9052.14; Tue, 26 Aug
- 2025 00:55:34 +0000
-Received: from CY4PEPF0000EDD6.namprd03.prod.outlook.com
- (2603:10b6:5:18f:cafe::47) by DM6PR14CA0055.outlook.office365.com
- (2603:10b6:5:18f::32) with Microsoft SMTP Server (version=TLS1_3,
- cipher=TLS_AES_256_GCM_SHA384) id 15.20.9052.21 via Frontend Transport; Tue,
- 26 Aug 2025 00:55:34 +0000
-X-MS-Exchange-Authentication-Results: spf=pass (sender IP is 165.204.84.17)
- smtp.mailfrom=amd.com; dkim=none (message not signed)
- header.d=none;dmarc=pass action=none header.from=amd.com;
-Received-SPF: Pass (protection.outlook.com: domain of amd.com designates
- 165.204.84.17 as permitted sender) receiver=protection.outlook.com;
- client-ip=165.204.84.17; helo=SATLEXMB03.amd.com; pr=C
-Received: from SATLEXMB03.amd.com (165.204.84.17) by
- CY4PEPF0000EDD6.mail.protection.outlook.com (10.167.241.202) with Microsoft
- SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.20.9073.11 via Frontend Transport; Tue, 26 Aug 2025 00:55:33 +0000
-Received: from SATLEXMB05.amd.com (10.181.40.146) by SATLEXMB03.amd.com
- (10.181.40.144) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2507.39; Mon, 25 Aug
- 2025 19:55:27 -0500
-Received: from SATLEXMB03.amd.com (10.181.40.144) by SATLEXMB05.amd.com
- (10.181.40.146) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2507.39; Mon, 25 Aug
- 2025 19:55:27 -0500
-Received: from fedora.mshome.net (10.180.168.240) by SATLEXMB03.amd.com
- (10.181.40.144) with Microsoft SMTP Server id 15.1.2507.39 via Frontend
- Transport; Mon, 25 Aug 2025 19:55:26 -0500
-From: Jason Andryuk <jason.andryuk@amd.com>
-To: Juergen Gross <jgross@suse.com>, Stefano Stabellini
-	<sstabellini@kernel.org>, Oleksandr Tyshchenko
-	<oleksandr_tyshchenko@epam.com>, Chris Wright <chrisw@sous-sol.org>, "Jeremy
- Fitzhardinge" <jeremy@xensource.com>
-CC: Jason Andryuk <jason.andryuk@amd.com>, <stable@vger.kernel.org>,
-	<xen-devel@lists.xenproject.org>, <linux-kernel@vger.kernel.org>
-Subject: [PATCH v2 3/3] xen/events: Update virq_to_irq on migration
-Date: Mon, 25 Aug 2025 20:55:15 -0400
-Message-ID: <20250826005517.41547-4-jason.andryuk@amd.com>
-X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250826005517.41547-1-jason.andryuk@amd.com>
-References: <20250826005517.41547-1-jason.andryuk@amd.com>
+Received: from sgoci-sdnproxy-4.icoremail.net (sgoci-sdnproxy-4.icoremail.net [129.150.39.64])
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6C3A3273F9;
+	Tue, 26 Aug 2025 01:06:49 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=129.150.39.64
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1756170414; cv=none; b=YdyEJdKDzBYBivOTPwHKtHnbmlVz3GuEQadKCUKQhAOlWw9XbsfEqYFGDZaJh7j6nqkmPZz1s3E2bg9eqovzYuR9raHZibOH9Jd6kCxRXHGC4qT86H27+Q+CmUC6WhVJAMdSz/RdVTQZ/CnPPMBz4kbIkwz3x/SOuTZRamcnb2U=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1756170414; c=relaxed/simple;
+	bh=2Ho7cC/QIRp0Nf1M5vwKTw1qpgnUTOb+pHhtsLDR8lM=;
+	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=eKXd9UFhBCV0O7GQBR/fdo+JBMTW493k7KPL5LQi1ZxejEu5Y7pV8GeMRIGblGgJZR8PpQTuCz5dsKGLo57gN4O0c2oH9L1F/7VYC2kUpYZ5+0tM6GEkB4YguZGb4BgODpiSSM3gMcscdck9986iwuFuju3tiRhDUN6WolkiJ38=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=mails.tsinghua.edu.cn; spf=pass smtp.mailfrom=mails.tsinghua.edu.cn; dkim=pass (1024-bit key) header.d=mails.tsinghua.edu.cn header.i=@mails.tsinghua.edu.cn header.b=gNQRQzHN; arc=none smtp.client-ip=129.150.39.64
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=mails.tsinghua.edu.cn
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=mails.tsinghua.edu.cn
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+	d=mails.tsinghua.edu.cn; s=dkim; h=Received:From:To:Cc:Subject:
+	Date:Message-Id:MIME-Version:Content-Transfer-Encoding; bh=2PWa4
+	RDVbm9vqx+uSESMnuoRp/E021uZvmdOICI1JZM=; b=gNQRQzHNsqU0rVR+w+7ta
+	4rjgqK85BcNKf73FkUIqc0d3RqEVZdwC4nR326NWDMf7RaGGJ+MFgVu1vNFaHPTP
+	oK224flH5C0xegh5LgygQk2fty/BOVlOtxeY0cBkDRyVTdRbAKBNABsHdQi3xc94
+	Ib25UGqMN8U6khyZWPcO94=
+Received: from estar-Super-Server.. (unknown [103.233.162.254])
+	by web4 (Coremail) with SMTP id ywQGZQCnsjcfCK1oXLtKIA--.57357S2;
+	Tue, 26 Aug 2025 09:04:40 +0800 (CST)
+From: Yizhou Zhao <zhaoyz24@mails.tsinghua.edu.cn>
+To: netdev@vger.kernel.org
+Cc: Yizhou Zhao <zhaoyz24@mails.tsinghua.edu.cn>,
+	stable@vger.kernel.org
+Subject: [PATCH] net/dccp: validate Reset/Close/CloseReq in DCCP_REQUESTING
+Date: Tue, 26 Aug 2025 09:03:46 +0800
+Message-Id: <20250826010346.1374390-1-zhaoyz24@mails.tsinghua.edu.cn>
+X-Mailer: git-send-email 2.34.1
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -97,115 +53,133 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Content-Type: text/plain
-Received-SPF: None (SATLEXMB05.amd.com: jason.andryuk@amd.com does not
- designate permitted sender hosts)
-X-EOPAttributedMessage: 0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: CY4PEPF0000EDD6:EE_|MN2PR12MB4272:EE_
-X-MS-Office365-Filtering-Correlation-Id: 257c7527-1b1a-433b-18bb-08dde43b4337
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|1800799024|82310400026|36860700013|376014;
-X-Microsoft-Antispam-Message-Info:
-	=?us-ascii?Q?nMu5kN6+I6t6UvBysYvjl1/MEYUrCnNC8IwTMUiApM6Y7vjcU5L7+M2ajHCD?=
- =?us-ascii?Q?fm1E04TgLfivlaY/KFpx/OBXiRVFWeSJt4HfkEglYRNUqCUJVW7xdlX/ESS4?=
- =?us-ascii?Q?vo8bpZqUeUCIMQxSaY2wZiDof6geiz/JyGw6W9jHMLqrWO33opFWTKOE3mG7?=
- =?us-ascii?Q?AivaUi5VktkKg/vNRYmshmMkvDxlasVH47xXY2Nx56YIyin61gDNGwWcQtjO?=
- =?us-ascii?Q?P1+KWpnSWMR0bVPQTGf5h/gOr80x8N4np0ZJwafstEU4qCPM1KsFVQ8QEd+M?=
- =?us-ascii?Q?SVEDfgGUW4wLHNDFoU51KIc5ZULnsfv35s7lR/org0HSwDACOGU/20RQco9f?=
- =?us-ascii?Q?99FEOryKLszZ6v9KGyeHpuTRhYku1n53KcTZhHMmaU/juJlwdycxTxRZJS1n?=
- =?us-ascii?Q?LrTxbJ4E8tAotqBtD6kUj3GaW2XMACJjWygKwl11mBJx9Tf0gBr2prrL1mHR?=
- =?us-ascii?Q?T4gTczicMx8C/xgckO+miyL2mns3q5tBNUoP1agh5Cyoo41TnHtVWnlvER8r?=
- =?us-ascii?Q?xTAvFr6rWe8ThzSOwSthdHcxJRlYpvNTUXiLziVp1MgTtSUCQpPAYMLDXMv1?=
- =?us-ascii?Q?tXoPs/dtEkYfO5Y2SYIzFAB49JbZN/M2oXjE2+onWoadlFVjtXQuYlCP3GiQ?=
- =?us-ascii?Q?4W3+CF5a28GBiyoRGIs92SwcM24971eCdefuOL7ufVZAZ/7e4dmH0ZHmGIde?=
- =?us-ascii?Q?FjMOWGPBlz6RXnG+GbBpCIvG4TS48hhRae/39OtZqKAFBPEUKi6IBA7M0Utg?=
- =?us-ascii?Q?oKvMilWMMZteVwD5/f9EUaTLcaugmrG3GjF/4sPDpSP5DLBTENFPhy0WHHKo?=
- =?us-ascii?Q?sxpr4u+NPW6EK2WD8zL3J9vAlQBG3O8fA4qQybwshy4b/RvYeJv529byUyfz?=
- =?us-ascii?Q?AAGWmAmFKNwFE26HzvOVBG3DIIeO0+MIlcztVkhWdQYGYQzz+/H8G01+OqJH?=
- =?us-ascii?Q?d2w4QDk1DwCbOK2mOFfkC02qZAKUenToIQfyOaNwurdUEfus7yJs/gRg0iec?=
- =?us-ascii?Q?kYXJJ6wWJaY5Nt9sJYkr+jSwRffnBucwH1ruJJfHwtG5okUylSUcRy94D2Lg?=
- =?us-ascii?Q?+reSQ4ypSSvEQlivuZKGa1VmV2HTu12f35b3fGW5Cy1wFTHaRtM9uutAEcNM?=
- =?us-ascii?Q?WbNbqpNXLwuLW168eTNjWY4E/G3sGteGmPdZrWEoCrW+bMcNYR/eS+OOSC7L?=
- =?us-ascii?Q?GVxbEmPzlIlizGHekFE56hQRrluaRhe/a00yhvdsr8bVqgCo7krGflPF9oLR?=
- =?us-ascii?Q?vZ6/ARt5r98MWPx4qKGnH39aGx/IfucC0TpPx7/4dIQmtW3RyDKN0+PrIwhY?=
- =?us-ascii?Q?vVIgJIuyy81QV3bea/owOwxHVRrw5CYi3m5bEZ8nFGlw4ZuU0ybFs7947HVx?=
- =?us-ascii?Q?MJsS+vQYboQ5q+Gc+1jp1tzI5cjtQXQPjGbx5JyfQvmsqim0HNfvuUORUANU?=
- =?us-ascii?Q?O4hwTi1b3Y1tW72mPpjeUPea+ylza4Un1fbzXHHXJ8nbpbk3mG5dFqTLPvVk?=
- =?us-ascii?Q?XmZFJ5f3NvQcIeXnA72fgPKyULIXqfFzSher?=
-X-Forefront-Antispam-Report:
-	CIP:165.204.84.17;CTRY:US;LANG:en;SCL:1;SRV:;IPV:CAL;SFV:NSPM;H:SATLEXMB03.amd.com;PTR:InfoDomainNonexistent;CAT:NONE;SFS:(13230040)(1800799024)(82310400026)(36860700013)(376014);DIR:OUT;SFP:1101;
-X-OriginatorOrg: amd.com
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 26 Aug 2025 00:55:33.7475
- (UTC)
-X-MS-Exchange-CrossTenant-Network-Message-Id: 257c7527-1b1a-433b-18bb-08dde43b4337
-X-MS-Exchange-CrossTenant-Id: 3dd8961f-e488-4e60-8e11-a82d994e183d
-X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=3dd8961f-e488-4e60-8e11-a82d994e183d;Ip=[165.204.84.17];Helo=[SATLEXMB03.amd.com]
-X-MS-Exchange-CrossTenant-AuthSource:
-	CY4PEPF0000EDD6.namprd03.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Anonymous
-X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: MN2PR12MB4272
+X-CM-TRANSID:ywQGZQCnsjcfCK1oXLtKIA--.57357S2
+X-Coremail-Antispam: 1UD129KBjvJXoWxGrWktFyUurWxWF1xtw1kXwb_yoWrGF17pa
+	4xKFZIkr1UJFyxtFnayw4DXr15Cr4kAryfGFnFqry8ZF1DJryfZ39IkrWjvry5CFZ3C342
+	g3y7WFWrCr47Ja7anT9S1TB71UUUUU7qnTZGkaVYY2UrUUUUjbIjqfuFe4nvWSU5nxnvy2
+	9KBjDU0xBIdaVrnRJUUUvv14x267AKxVWUJVW8JwAFc2x0x2IEx4CE42xK8VAvwI8IcIk0
+	rVWrJVCq3wAFIxvE14AKwVWUJVWUGwA2ocxC64kIII0Yj41l84x0c7CEw4AK67xGY2AK02
+	1l84ACjcxK6xIIjxv20xvE14v26ryj6F1UM28EF7xvwVC0I7IYx2IY6xkF7I0E14v26r4j
+	6F4UM28EF7xvwVC2z280aVAFwI0_Gr1j6F4UJwA2z4x0Y4vEx4A2jsIEc7CjxVAFwI0_Cr
+	1j6rxdM2vYz4IE04k24VAvwVAKI4IrM2AIxVAIcxkEcVAq07x20xvEncxIr21l5I8CrVAC
+	Y4xI64kE6c02F40Ex7xfMcIj6xIIjxv20xvE14v26r1j6r18McIj6I8E87Iv67AKxVWUJV
+	W8JwAm72CE4IkC6x0Yz7v_Jr0_Gr1lF7xvr2IYc2Ij64vIr41lF7I21c0EjII2zVCS5cI2
+	0VAGYxC7MxkIecxEwVAFwVWkMxAIw28IcxkI7VAKI48JMxC20s026xCaFVCjc4AY6r1j6r
+	4UMI8I3I0E5I8CrVAFwI0_Jr0_Jr4lx2IqxVCjr7xvwVAFwI0_JrI_JrWlx4CE17CEb7AF
+	67AKxVWUXVWUAwCIc40Y0x0EwIxGrwCI42IY6xIIjxv20xvE14v26r1j6r1xMIIF0xvE2I
+	x0cI8IcVCY1x0267AKxVWUJVW8JwCI42IY6xAIw20EY4v20xvaj40_Jr0_JF4lIxAIcVC2
+	z280aVAFwI0_Jr0_Gr1lIxAIcVC2z280aVCY1x0267AKxVWUJVW8JbIYCTnIWIevJa73Uj
+	IFyTuYvjfU5eHqDUUUU
+X-CM-SenderInfo: 52kd05r2suqzpdlo2hxwvl0wxkxdhvlgxou0/1tbiAQEGAWis2dorJAABsO
 
-VIRQs come in 3 flavors, per-VPU, per-domain, and global, and the VIRQs
-are tracked in per-cpu virq_to_irq arrays.
+DCCP sockets in DCCP_REQUESTING state do not check the sequence number
+or acknowledgment number for incoming Reset, CloseReq, and Close packets.
 
-Per-domain and global VIRQs must be bound on CPU 0, and
-bind_virq_to_irq() sets the per_cpu virq_to_irq at registration time
-Later, the interrupt can migrate, and info->cpu is updated.  When
-calling __unbind_from_irq(), the per-cpu virq_to_irq is cleared for a
-different cpu.  If bind_virq_to_irq() is called again with CPU 0, the
-stale irq is returned.  There won't be any irq_info for the irq, so
-things break.
+As a result, an attacker can send a spoofed Reset packet while the client
+is in the requesting state. The client will accept the packet without
+verification and immediately close the connection, causing a denial of
+service (DoS) attack.
 
-Make xen_rebind_evtchn_to_cpu() update the per_cpu virq_to_irq mappings
-to keep them update to date with the current cpu.  This ensures the
-correct virq_to_irq is cleared in __unbind_from_irq().
+This patch moves the processing of Reset, Close, and CloseReq packets
+into dccp_rcv_request_sent_state_process() and validates the ack number
+before accepting them.
 
-Fixes: e46cdb66c8fc ("xen: event channels")
+This fix should apply to stable versions *only* in Linux 5.x and 6.x.
+Note that DCCP was removed in Linux 6.16, so this patch is only relevant
+for older versions. We tested it on Ubuntu 24.04 LTS (Linux 6.8) and
+it worked as expected.
+
+Signed-off-by: Yizhou Zhao <zhaoyz24@mails.tsinghua.edu.cn>
 Cc: stable@vger.kernel.org
-Signed-off-by: Jason Andryuk <jason.andryuk@amd.com>
+Signed-off-by: Yizhou Zhao <zhaoyz24@mails.tsinghua.edu.cn>
 ---
-V2:
-Different approach changing virq_to_irq
----
- drivers/xen/events/events_base.c | 11 +++++++++++
- 1 file changed, 11 insertions(+)
+ net/dccp/input.c | 54 ++++++++++++++++++++++++++++--------------------
+ 1 file changed, 32 insertions(+), 22 deletions(-)
 
-diff --git a/drivers/xen/events/events_base.c b/drivers/xen/events/events_base.c
-index a85bc43f4344..4e9db7b92dde 100644
---- a/drivers/xen/events/events_base.c
-+++ b/drivers/xen/events/events_base.c
-@@ -1772,6 +1772,7 @@ static int xen_rebind_evtchn_to_cpu(struct irq_info *info, unsigned int tcpu)
- {
- 	struct evtchn_bind_vcpu bind_vcpu;
- 	evtchn_port_t evtchn = info ? info->evtchn : 0;
-+	int old_cpu = info ? info->cpu : tcpu;
- 
- 	if (!VALID_EVTCHN(evtchn))
- 		return -1;
-@@ -1795,8 +1796,18 @@ static int xen_rebind_evtchn_to_cpu(struct irq_info *info, unsigned int tcpu)
- 	 * it, but don't do the xenlinux-level rebind in that case.
- 	 */
- 	if (HYPERVISOR_event_channel_op(EVTCHNOP_bind_vcpu, &bind_vcpu) >= 0)
-+	{
- 		bind_evtchn_to_cpu(info, tcpu, false);
- 
-+		if (info->type == IRQT_VIRQ) {
-+			int virq = info->u.virq;
-+			int irq = per_cpu(virq_to_irq, old_cpu)[virq];
+diff --git a/net/dccp/input.c b/net/dccp/input.c
+index 2cbb757a8..0b1ffb044 100644
+--- a/net/dccp/input.c
++++ b/net/dccp/input.c
+@@ -397,21 +397,22 @@ static int dccp_rcv_request_sent_state_process(struct sock *sk,
+ 	 *	     / * Response processing continues in Step 10; Reset
+ 	 *		processing continues in Step 9 * /
+ 	*/
++	struct dccp_sock *dp = dccp_sk(sk);
 +
-+			per_cpu(virq_to_irq, old_cpu)[virq] = -1;
-+			per_cpu(virq_to_irq, tcpu)[virq] = irq;
-+		}
++	if (!between48(DCCP_SKB_CB(skb)->dccpd_ack_seq,
++				dp->dccps_awl, dp->dccps_awh)) {
++		dccp_pr_debug("invalid ackno: S.AWL=%llu, "
++					"P.ackno=%llu, S.AWH=%llu\n",
++					(unsigned long long)dp->dccps_awl,
++			(unsigned long long)DCCP_SKB_CB(skb)->dccpd_ack_seq,
++					(unsigned long long)dp->dccps_awh);
++		goto out_invalid_packet;
 +	}
 +
- 	do_unmask(info, EVT_MASK_REASON_TEMPORARY);
+ 	if (dh->dccph_type == DCCP_PKT_RESPONSE) {
+ 		const struct inet_connection_sock *icsk = inet_csk(sk);
+-		struct dccp_sock *dp = dccp_sk(sk);
+-		long tstamp = dccp_timestamp();
+-
+-		if (!between48(DCCP_SKB_CB(skb)->dccpd_ack_seq,
+-			       dp->dccps_awl, dp->dccps_awh)) {
+-			dccp_pr_debug("invalid ackno: S.AWL=%llu, "
+-				      "P.ackno=%llu, S.AWH=%llu\n",
+-				      (unsigned long long)dp->dccps_awl,
+-			   (unsigned long long)DCCP_SKB_CB(skb)->dccpd_ack_seq,
+-				      (unsigned long long)dp->dccps_awh);
+-			goto out_invalid_packet;
+-		}
  
- 	return 0;
++		long tstamp = dccp_timestamp();
+ 		/*
+ 		 * If option processing (Step 8) failed, return 1 here so that
+ 		 * dccp_v4_do_rcv() sends a Reset. The Reset code depends on
+@@ -496,6 +497,13 @@ static int dccp_rcv_request_sent_state_process(struct sock *sk,
+ 		}
+ 		dccp_send_ack(sk);
+ 		return -1;
++	} else if (dh->dccph_type == DCCP_PKT_RESET) {
++		dccp_rcv_reset(sk, skb);
++		return 0;
++	} else if (dh->dccph_type == DCCP_PKT_CLOSEREQ) {
++		return dccp_rcv_closereq(sk, skb);
++	} else if (dh->dccph_type == DCCP_PKT_CLOSE) {
++		return dccp_rcv_close(sk, skb);
+ 	}
+ 
+ out_invalid_packet:
+@@ -658,17 +666,19 @@ int dccp_rcv_state_process(struct sock *sk, struct sk_buff *skb,
+ 	 *		Set TIMEWAIT timer
+ 	 *		Drop packet and return
+ 	 */
+-	if (dh->dccph_type == DCCP_PKT_RESET) {
+-		dccp_rcv_reset(sk, skb);
+-		return 0;
+-	} else if (dh->dccph_type == DCCP_PKT_CLOSEREQ) {	/* Step 13 */
+-		if (dccp_rcv_closereq(sk, skb))
+-			return 0;
+-		goto discard;
+-	} else if (dh->dccph_type == DCCP_PKT_CLOSE) {		/* Step 14 */
+-		if (dccp_rcv_close(sk, skb))
++	if (sk->sk_state != DCCP_REQUESTING) {
++		if (dh->dccph_type == DCCP_PKT_RESET) {
++			dccp_rcv_reset(sk, skb);
+ 			return 0;
+-		goto discard;
++		} else if (dh->dccph_type == DCCP_PKT_CLOSEREQ) {	/* Step 13 */
++			if (dccp_rcv_closereq(sk, skb))
++				return 0;
++			goto discard;
++		} else if (dh->dccph_type == DCCP_PKT_CLOSE) {		/* Step 14 */
++			if (dccp_rcv_close(sk, skb))
++				return 0;
++			goto discard;
++		}
+ 	}
+ 
+ 	switch (sk->sk_state) {
 -- 
-2.50.1
+2.34.1
 
 
