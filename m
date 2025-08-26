@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-173234-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-175810-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 34051B35CE6
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 13:39:47 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 99E9FB369AF
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 16:29:20 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 5D0C6367EA9
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 11:31:54 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 894041C43B58
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 14:22:11 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 56739337688;
-	Tue, 26 Aug 2025 11:28:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D7F84350D48;
+	Tue, 26 Aug 2025 14:20:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="k5K/Kmis"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="shSIFZw0"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 11EEA338F2B;
-	Tue, 26 Aug 2025 11:28:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 96C4210E0;
+	Tue, 26 Aug 2025 14:20:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756207718; cv=none; b=iRzUrAm63YZ0KEL6pPQDW3bflnUItbEBsy9YdIybLYgeVpcoTis+3PmjdafuAFa32Yte0N1Lbimsjk5GzIH95FCkAqjDjUiS6vXE9oT12zJ6wPK/D4ofKxpbl/TlBtklKXiA3TzpOR0nG5mxkd7CPR+/v1T2VEuTfROwRy67m7M=
+	t=1756218028; cv=none; b=uadlUudRuyxfUg+sM5ITTP6KjytOe1MLXa3+sUOJ8R1NZdXiFshzRfnxSPS4WiYbtTzakPvqVsjVRtPUd3QKxeEbgTqHS7lXOyuyaJnaZe+4WfsFZ7QzjxlO92CgPSXmvLMcd619WlsnVPPoPHDSRNlDtY3R5EA7WI776NHG6WQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756207718; c=relaxed/simple;
-	bh=JhONq3QSevt60GhPQcgdYd1POPxzEOeflbLzGot74LQ=;
+	s=arc-20240116; t=1756218028; c=relaxed/simple;
+	bh=wt0tV6Y+R6A3TCvHJq8Fz+HQtE50zpTp5Xz8PBbQxPs=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=HjAt3JtBrPeA0tvG+MDcm2vOHG2LQViLicqq+OcfVeCWyyOEz139qdNo+vef84Hokcp47icJVnPV/b5QSG0dKAzwi8xnlwf43dAev7sX+1CMJs+SCnWTsiQWLgXuFXKR4E7jxDt6ZLcE4ynzIFtmcQx/jIE0Zo8ZdSF8OGbO8Dg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=k5K/Kmis; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 43CCAC4CEF1;
-	Tue, 26 Aug 2025 11:28:36 +0000 (UTC)
+	 MIME-Version; b=LqCMjn3/zrSevTsjDrOtRVfFM1cOyJ2qtJiNI7ztwXczQ0ZnK8HZfc45qP/f5JAu/Ev58vx1H1cUxex+hcLmPSahsX/3zj9S+Dk89XFNrn+oPU/E24qJQQsrskwnsoUGMjo69RmkOLAwZuuv6VsRh3vCJSO/vIUJyZXSyY2wHEw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=shSIFZw0; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 21C59C4CEF1;
+	Tue, 26 Aug 2025 14:20:27 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1756207716;
-	bh=JhONq3QSevt60GhPQcgdYd1POPxzEOeflbLzGot74LQ=;
+	s=korg; t=1756218028;
+	bh=wt0tV6Y+R6A3TCvHJq8Fz+HQtE50zpTp5Xz8PBbQxPs=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=k5K/Kmisq6j1D6nFE7rYuS3T7IjOuYAnuzOKS8G3z+QMikROZ6HtcWbl6jwke8gVf
-	 wexU6PfiGk/F9Xjto1PTGewQI/U/v+KCpGycJ+QONhn9tVgUAqV5dI+GKBEW28QNCY
-	 Mktlc0PvdUNyzujd/UVcp+dHNvK/YDF0gqYDM6iQ=
+	b=shSIFZw0u94iXbc+psftz25P5JV1poHCTS5GrOSYzjGY1j796H7TbUi+4DguyttlE
+	 4lgkOAriEMwOnfd3zWxUQuLpk6W3xe78ljLs73PnS2RAUEcdkPsxysDhs6z4fvvLbO
+	 0hh0zCmElKT6DebX9PV3HTN4BeSi9fTRs3aIZQPs=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Robin Murphy <robin.murphy@arm.com>,
-	Eric Auger <eric.auger@redhat.com>,
-	Joerg Roedel <joerg.roedel@amd.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.16 291/457] iommu/virtio: Make instance lookup robust
+	stable@kernel.org,
+	Ojaswin Mujoo <ojaswin@linux.ibm.com>,
+	"Darrick J. Wong" <djwong@kernel.org>,
+	Theodore Tso <tytso@mit.edu>
+Subject: [PATCH 5.10 365/523] ext4: fix reserved gdt blocks handling in fsmap
 Date: Tue, 26 Aug 2025 13:09:35 +0200
-Message-ID: <20250826110944.574925253@linuxfoundation.org>
+Message-ID: <20250826110933.473043858@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250826110937.289866482@linuxfoundation.org>
-References: <20250826110937.289866482@linuxfoundation.org>
+In-Reply-To: <20250826110924.562212281@linuxfoundation.org>
+References: <20250826110924.562212281@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,84 +63,58 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.16-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Robin Murphy <robin.murphy@arm.com>
+From: Ojaswin Mujoo <ojaswin@linux.ibm.com>
 
-[ Upstream commit 72b6f7cd89cea8251979b65528d302f9c0ed37bf ]
+commit 3ffbdd1f1165f1b2d6a94d1b1aabef57120deaf7 upstream.
 
-Much like arm-smmu in commit 7d835134d4e1 ("iommu/arm-smmu: Make
-instance lookup robust"), virtio-iommu appears to have the same issue
-where iommu_device_register() makes the IOMMU instance visible to other
-API callers (including itself) straight away, but internally the
-instance isn't ready to recognise itself for viommu_probe_device() to
-work correctly until after viommu_probe() has returned. This matters a
-lot more now that bus_iommu_probe() has the DT/VIOT knowledge to probe
-client devices the way that was always intended. Tweak the lookup and
-initialisation in much the same way as for arm-smmu, to ensure that what
-we register is functional and ready to go.
+In some cases like small FSes with no meta_bg and where the resize
+doesn't need extra gdt blocks as it can fit in the current one,
+s_reserved_gdt_blocks is set as 0, which causes fsmap to emit a 0
+length entry, which is incorrect.
 
-Cc: stable@vger.kernel.org
-Fixes: bcb81ac6ae3c ("iommu: Get DT/ACPI parsing into the proper probe path")
-Signed-off-by: Robin Murphy <robin.murphy@arm.com>
-Tested-by: Eric Auger <eric.auger@redhat.com>
-Link: https://lore.kernel.org/r/308911aaa1f5be32a3a709996c7bd6cf71d30f33.1755190036.git.robin.murphy@arm.com
-Signed-off-by: Joerg Roedel <joerg.roedel@amd.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+  $ mkfs.ext4 -b 65536 -O bigalloc /dev/sda 5G
+  $ mount /dev/sda /mnt/scratch
+  $ xfs_io -c "fsmap -d" /mnt/scartch
+
+        0: 253:48 [0..127]: static fs metadata 128
+        1: 253:48 [128..255]: special 102:1 128
+        2: 253:48 [256..255]: special 102:2 0     <---- 0 len entry
+        3: 253:48 [256..383]: special 102:3 128
+
+Fix this by adding a check for this case.
+
+Cc: stable@kernel.org
+Fixes: 0c9ec4beecac ("ext4: support GETFSMAP ioctls")
+Signed-off-by: Ojaswin Mujoo <ojaswin@linux.ibm.com>
+Reviewed-by: Darrick J. Wong <djwong@kernel.org>
+Link: https://patch.msgid.link/08781b796453a5770112aa96ad14c864fbf31935.1754377641.git.ojaswin@linux.ibm.com
+Signed-off-by: Theodore Ts'o <tytso@mit.edu>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/iommu/virtio-iommu.c |   15 +++++++++------
- 1 file changed, 9 insertions(+), 6 deletions(-)
+ fs/ext4/fsmap.c |    8 ++++++++
+ 1 file changed, 8 insertions(+)
 
---- a/drivers/iommu/virtio-iommu.c
-+++ b/drivers/iommu/virtio-iommu.c
-@@ -998,8 +998,7 @@ static void viommu_get_resv_regions(stru
- 	iommu_dma_get_resv_regions(dev, head);
- }
- 
--static const struct iommu_ops viommu_ops;
--static struct virtio_driver virtio_iommu_drv;
-+static const struct bus_type *virtio_bus_type;
- 
- static int viommu_match_node(struct device *dev, const void *data)
- {
-@@ -1008,8 +1007,9 @@ static int viommu_match_node(struct devi
- 
- static struct viommu_dev *viommu_get_by_fwnode(struct fwnode_handle *fwnode)
- {
--	struct device *dev = driver_find_device(&virtio_iommu_drv.driver, NULL,
--						fwnode, viommu_match_node);
-+	struct device *dev = bus_find_device(virtio_bus_type, NULL, fwnode,
-+					     viommu_match_node);
+--- a/fs/ext4/fsmap.c
++++ b/fs/ext4/fsmap.c
+@@ -393,6 +393,14 @@ static unsigned int ext4_getfsmap_find_s
+ 	/* Reserved GDT blocks */
+ 	if (!ext4_has_feature_meta_bg(sb) || metagroup < first_meta_bg) {
+ 		len = le16_to_cpu(sbi->s_es->s_reserved_gdt_blocks);
 +
- 	put_device(dev);
- 
- 	return dev ? dev_to_virtio(dev)->priv : NULL;
-@@ -1160,6 +1160,9 @@ static int viommu_probe(struct virtio_de
- 	if (!viommu)
- 		return -ENOMEM;
- 
-+	/* Borrow this for easy lookups later */
-+	virtio_bus_type = dev->bus;
++		/*
++		 * mkfs.ext4 can set s_reserved_gdt_blocks as 0 in some cases,
++		 * check for that.
++		 */
++		if (!len)
++			return 0;
 +
- 	spin_lock_init(&viommu->request_lock);
- 	ida_init(&viommu->domain_ids);
- 	viommu->dev = dev;
-@@ -1229,10 +1232,10 @@ static int viommu_probe(struct virtio_de
- 	if (ret)
- 		goto err_free_vqs;
- 
--	iommu_device_register(&viommu->iommu, &viommu_ops, parent_dev);
--
- 	vdev->priv = viommu;
- 
-+	iommu_device_register(&viommu->iommu, &viommu_ops, parent_dev);
-+
- 	dev_info(dev, "input address: %u bits\n",
- 		 order_base_2(viommu->geometry.aperture_end));
- 	dev_info(dev, "page mask: %#llx\n", viommu->pgsize_bitmap);
+ 		error = ext4_getfsmap_fill(meta_list, fsb, len,
+ 					   EXT4_FMR_OWN_RESV_GDT);
+ 		if (error)
 
 
 
