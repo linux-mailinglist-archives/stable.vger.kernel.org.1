@@ -1,56 +1,60 @@
-Return-Path: <stable+bounces-174983-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-173887-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4660EB365BA
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 15:50:19 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 21FBCB36054
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 14:59:27 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 22B891BC3A7F
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 13:44:51 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id C70923BF72B
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 12:56:14 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A2A083376A5;
-	Tue, 26 Aug 2025 13:43:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 913AF1B0420;
+	Tue, 26 Aug 2025 12:55:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="YtAEIIkh"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="BRD7PQD4"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 616A829D291;
-	Tue, 26 Aug 2025 13:43:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4BF871A00F0;
+	Tue, 26 Aug 2025 12:55:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756215831; cv=none; b=mqkSU1Wzi46NqbcuyNW3FsrXc71wyw5RoQeclUcl1Ww1rf0eZELbKiOa54UEZqmVoNMkNFpwjR4aSrj/j0B6bmNlWZaPwN8UgNRBwRbeMdMLj9Dn1MUzZS/0cANVE9943VlqTfWclHFhAsSAVfhk+UTmn6sVVIejja7zzEeqP+0=
+	t=1756212928; cv=none; b=XxKwpDgT5h3pcUDMJ35qnmgHJ+3sJBHxwvya2TvRr9qygNsc1QFUR2tee3eVOasA2giQYrnUn7U0AHtw0PGEjQYKN89hcsjDWLBZabVE4PdnxEslfCrcsjdl0kGbb17cbD1N/YdbeiAuyhVnb4bWXkjWk3xvJG/gvpab67DbQMs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756215831; c=relaxed/simple;
-	bh=g79q34uAc3yD0fWz592m/yZ1K4BP+IPLzOvtPkSYMDg=;
+	s=arc-20240116; t=1756212928; c=relaxed/simple;
+	bh=kS+pKd4+tD9opOmQggITggADeqUtgGzq1FalZbnN9zY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=KKr7xYZmBeWPh/d4RX0tglPTvrEuTogIL3ZmfQ+5XJr+8TLcjdPZ6wtUZw1CJnmAMLGDBAuzNnVZvAkssfS/y578mz/0sxa8ERjltItKM32VAx3fdcnpifUcZYaHdcdekK8wzt1g40lT+y7ZBVTvxtp3wTDU7rOBrPpVEAjBt3A=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=YtAEIIkh; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E6366C4CEF1;
-	Tue, 26 Aug 2025 13:43:50 +0000 (UTC)
+	 MIME-Version; b=QyRLGJ0sVbu+XBHlCcCbLJnitUfi5qmlRZZMw7/TZiJ33REAbw1qscwCq+VBe/3BXqEMw1AO7f4MB3Qv1CvK0PTUoVXgIdaaGcPX4S9Lz1Eo5W5k0fj8J8x1aGL7xUSI9Cr8NSyXLRL9BqbuDTFcOWvhMl2QCLZyLbNl8BLlSDo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=BRD7PQD4; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 70D71C4CEF1;
+	Tue, 26 Aug 2025 12:55:27 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1756215831;
-	bh=g79q34uAc3yD0fWz592m/yZ1K4BP+IPLzOvtPkSYMDg=;
+	s=korg; t=1756212927;
+	bh=kS+pKd4+tD9opOmQggITggADeqUtgGzq1FalZbnN9zY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=YtAEIIkhDVerCxAHZpfdBnk8e9YBBSh+TecPwbAkyKcnocjzQCkqq3KWYWw9mXwh1
-	 gGtbkxZbhz5lZwNKaaNLlE60c3IWmf/vR/BhW8CPMjL0zgKlNwXUzaJ/WIsQSAxUr1
-	 wcLxejROXg3/n40Whqj0PYBKreqwuyMAjRhUgW6k=
+	b=BRD7PQD4KvLzqLSK68kUjhSjQdxzpaZG+DjiOS5ceXJ+b/CWsWrOAW/GEf8cNci7O
+	 oQhacJhABy1UEaoKViTIsJzv2Txl3deQWyiaq6OHpY/JzOORbT/C8eFyEx1D2Nx9Qs
+	 /NjaftMd6u748gzb/me7sI7mAOtoBUgFzpMecI7Y=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Paul Kocialkowski <paulk@sys-base.io>,
-	Chen-Yu Tsai <wens@csie.org>,
+	Peter Ujfalusi <peter.ujfalusi@linux.intel.com>,
+	Bard Liao <yung-chuan.liao@linux.intel.com>,
+	Ranjani Sridharan <ranjani.sridharan@linux.intel.com>,
+	Liam Girdwood <liam.r.girdwood@intel.com>,
+	Kai Vehmanen <kai.vehmanen@linux.intel.com>,
+	Mark Brown <broonie@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 182/644] clk: sunxi-ng: v3s: Fix de clock definition
-Date: Tue, 26 Aug 2025 13:04:33 +0200
-Message-ID: <20250826110950.975473263@linuxfoundation.org>
+Subject: [PATCH 6.6 125/587] ASoC: core: Check for rtd == NULL in snd_soc_remove_pcm_runtime()
+Date: Tue, 26 Aug 2025 13:04:34 +0200
+Message-ID: <20250826110956.134924685@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250826110946.507083938@linuxfoundation.org>
-References: <20250826110946.507083938@linuxfoundation.org>
+In-Reply-To: <20250826110952.942403671@linuxfoundation.org>
+References: <20250826110952.942403671@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,46 +66,48 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Paul Kocialkowski <paulk@sys-base.io>
+From: Peter Ujfalusi <peter.ujfalusi@linux.intel.com>
 
-[ Upstream commit e8ab346f9907a1a3aa2f0e5decf849925c06ae2e ]
+[ Upstream commit 2d91cb261cac6d885954b8f5da28b5c176c18131 ]
 
-The de clock is marked with CLK_SET_RATE_PARENT, which is really not
-necessary (as confirmed from experimentation) and significantly
-restricts flexibility for other clocks using the same parent.
+snd_soc_remove_pcm_runtime() might be called with rtd == NULL which will
+leads to null pointer dereference.
+This was reproduced with topology loading and marking a link as ignore
+due to missing hardware component on the system.
+On module removal the soc_tplg_remove_link() would call
+snd_soc_remove_pcm_runtime() with rtd == NULL since the link was ignored,
+no runtime was created.
 
-In addition the source selection (parent) field is marked as using
-2 bits, when it the documentation reports that it uses 3.
-
-Fix both issues in the de clock definition.
-
-Fixes: d0f11d14b0bc ("clk: sunxi-ng: add support for V3s CCU")
-Signed-off-by: Paul Kocialkowski <paulk@sys-base.io>
-Link: https://patch.msgid.link/20250704154008.3463257-1-paulk@sys-base.io
-Signed-off-by: Chen-Yu Tsai <wens@csie.org>
+Signed-off-by: Peter Ujfalusi <peter.ujfalusi@linux.intel.com>
+Reviewed-by: Bard Liao <yung-chuan.liao@linux.intel.com>
+Reviewed-by: Ranjani Sridharan <ranjani.sridharan@linux.intel.com>
+Reviewed-by: Liam Girdwood <liam.r.girdwood@intel.com>
+Reviewed-by: Kai Vehmanen <kai.vehmanen@linux.intel.com>
+Link: https://patch.msgid.link/20250619084222.559-3-peter.ujfalusi@linux.intel.com
+Signed-off-by: Mark Brown <broonie@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/clk/sunxi-ng/ccu-sun8i-v3s.c | 3 +--
- 1 file changed, 1 insertion(+), 2 deletions(-)
+ sound/soc/soc-core.c | 3 +++
+ 1 file changed, 3 insertions(+)
 
-diff --git a/drivers/clk/sunxi-ng/ccu-sun8i-v3s.c b/drivers/clk/sunxi-ng/ccu-sun8i-v3s.c
-index ce150f83ab54..2501de774874 100644
---- a/drivers/clk/sunxi-ng/ccu-sun8i-v3s.c
-+++ b/drivers/clk/sunxi-ng/ccu-sun8i-v3s.c
-@@ -345,8 +345,7 @@ static SUNXI_CCU_GATE(dram_ohci_clk,	"dram-ohci",	"dram",
+diff --git a/sound/soc/soc-core.c b/sound/soc/soc-core.c
+index 7eea70eea68b..dc95b6f41555 100644
+--- a/sound/soc/soc-core.c
++++ b/sound/soc/soc-core.c
+@@ -1025,6 +1025,9 @@ static int soc_dai_link_sanity_check(struct snd_soc_card *card,
+ void snd_soc_remove_pcm_runtime(struct snd_soc_card *card,
+ 				struct snd_soc_pcm_runtime *rtd)
+ {
++	if (!rtd)
++		return;
++
+ 	lockdep_assert_held(&client_mutex);
  
- static const char * const de_parents[] = { "pll-video", "pll-periph0" };
- static SUNXI_CCU_M_WITH_MUX_GATE(de_clk, "de", de_parents,
--				 0x104, 0, 4, 24, 2, BIT(31),
--				 CLK_SET_RATE_PARENT);
-+				 0x104, 0, 4, 24, 3, BIT(31), 0);
- 
- static const char * const tcon_parents[] = { "pll-video" };
- static SUNXI_CCU_M_WITH_MUX_GATE(tcon_clk, "tcon", tcon_parents,
+ 	/*
 -- 
 2.39.5
 
