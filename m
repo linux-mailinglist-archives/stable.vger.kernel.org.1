@@ -1,59 +1,57 @@
-Return-Path: <stable+bounces-175347-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-176284-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 41538B367D0
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 16:10:25 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id E08BEB36CCF
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 17:01:24 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 71EB3565FF2
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 14:01:39 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 53E785835D1
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 14:43:38 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4E3E034DCCD;
-	Tue, 26 Aug 2025 13:59:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5994834F46F;
+	Tue, 26 Aug 2025 14:40:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="SbsSZWvh"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="EzvA0mP8"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E0C05239E8B;
-	Tue, 26 Aug 2025 13:59:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 16A821E0E08;
+	Tue, 26 Aug 2025 14:40:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756216795; cv=none; b=CpHVwGGEFHXDlgbSOWp7wFlNl58bKHPRHudRFVT+mfFcLMLalZIdyKfvq7nprMAqBsiX7jvSt4JswLecfv0fjZ0BSDLYwnRF/0TnEoxM7EpXIuhX9VmVm3NBWYpga0JNfp1LXDr71evd+4FEFhO5p/LpTZk0/ZsGs+NE3s2uuZE=
+	t=1756219256; cv=none; b=D9Y91ckFHPJyY1xth1Nl9mqeZiqBq4MGODU9DskYrhTqzrSJ5spoluCNFWHO21gQt7T+BF169jFwL7LqllHO/Byr7qSMW1VQD8cG2O/buuY/3zkSIJRUT3FvblOxMOxzkKCDinRaezUX/YenGvZesYpH86FbN1DQQLmm4HBDrcQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756216795; c=relaxed/simple;
-	bh=C6rgaEU+UlTNFdzQaQi3/gufCXB8uaY1dSzljFSY/Oo=;
+	s=arc-20240116; t=1756219256; c=relaxed/simple;
+	bh=xjTeQd17avjDyN+VnypBo0FwcPKio0MZq8HELqs52HY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=ZSzgIMNDHI8Ir4fqIHBYTEgM1hKM2LNSexaq6J5trmfzjZ3BRns2jiaSHGQkE6n+C5qcEf9t36BM0AbL0wYIU2hE2jb4+l8Lt+VDdc34XPz1gzRk/Dk6Lf7bQ5BMeu8qGumdwOW7ZFCNAibX8g2rYGCiQYqC6VJT+LR7QCrEWfQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=SbsSZWvh; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 33F93C113CF;
-	Tue, 26 Aug 2025 13:59:54 +0000 (UTC)
+	 MIME-Version; b=Eb+5lQfu1A9b40/CMRfyucOOLmUz/cozcuEQM7P9WA3BzCMHjTlm0pSpckAZuYInS470L1fzoX/p35p0Ats2NR0deGrs9reS7N1w69ysgiJgnz/queqiBCORgUypSRKnQXyXYDDvcJRG2KeZP4GxZ0iWZXTBnrCb/xKUduNID4Y=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=EzvA0mP8; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 95B0DC4CEF1;
+	Tue, 26 Aug 2025 14:40:55 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1756216794;
-	bh=C6rgaEU+UlTNFdzQaQi3/gufCXB8uaY1dSzljFSY/Oo=;
+	s=korg; t=1756219255;
+	bh=xjTeQd17avjDyN+VnypBo0FwcPKio0MZq8HELqs52HY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=SbsSZWvhEyQdFyJ4QKEKlfbm/YlSpVmTOPfGo6jHw+eAe9AuGC3sioFHtCcxkrAvO
-	 kQQJzpEkT4r8awx/p2aoo7HVvKAIE1C4Pg30mlkAw0hIcUEHCmQZTKm1mlKSvR4QYs
-	 bT8S7E4LOicyDCmnJP4wcaDvrnt3ZTOEsdAh+PQA=
+	b=EzvA0mP8s7zGHnQgR/oHP/utNj/WjTrXOH2E/BAxIcW5IIWyCIcPFxphI7yGeG6Hg
+	 7OdBXd5NxNxVSjU83jEyY7ymgob6IkMPgDbpRxYTOI8mio/DymZ+ztOEWWi8uWY9Zh
+	 xZmDy+KvK6l79+5DNelH+SblbqTwRtP/OMpim8iA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Gerrard Tai <gerrard.tai@starlabs.sg>,
-	Cong Wang <xiyou.wangcong@gmail.com>,
-	Simon Horman <horms@kernel.org>,
-	Jamal Hadi Salim <jhs@mojatatu.com>,
-	Paolo Abeni <pabeni@redhat.com>,
-	Siddh Raman Pant <siddh.raman.pant@oracle.com>
-Subject: [PATCH 5.15 547/644] codel: remove sch->q.qlen check before qdisc_tree_reduce_backlog()
+	Ye Bin <yebin10@huawei.com>,
+	"Matthew Wilcox (Oracle)" <willy@infradead.org>,
+	Christian Brauner <brauner@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.4 312/403] fs/buffer: fix use-after-free when call bh_read() helper
 Date: Tue, 26 Aug 2025 13:10:38 +0200
-Message-ID: <20250826111000.082239565@linuxfoundation.org>
+Message-ID: <20250826110915.437209772@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250826110946.507083938@linuxfoundation.org>
-References: <20250826110946.507083938@linuxfoundation.org>
+In-Reply-To: <20250826110905.607690791@linuxfoundation.org>
+References: <20250826110905.607690791@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -65,62 +63,101 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+5.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Cong Wang <xiyou.wangcong@gmail.com>
+From: Ye Bin <yebin10@huawei.com>
 
-commit 342debc12183b51773b3345ba267e9263bdfaaef upstream.
+[ Upstream commit 7375f22495e7cd1c5b3b5af9dcc4f6dffe34ce49 ]
 
-After making all ->qlen_notify() callbacks idempotent, now it is safe to
-remove the check of qlen!=0 from both fq_codel_dequeue() and
-codel_qdisc_dequeue().
+There's issue as follows:
+BUG: KASAN: stack-out-of-bounds in end_buffer_read_sync+0xe3/0x110
+Read of size 8 at addr ffffc9000168f7f8 by task swapper/3/0
+CPU: 3 UID: 0 PID: 0 Comm: swapper/3 Not tainted 6.16.0-862.14.0.6.x86_64
+Hardware name: QEMU Standard PC (i440FX + PIIX, 1996)
+Call Trace:
+ <IRQ>
+ dump_stack_lvl+0x55/0x70
+ print_address_description.constprop.0+0x2c/0x390
+ print_report+0xb4/0x270
+ kasan_report+0xb8/0xf0
+ end_buffer_read_sync+0xe3/0x110
+ end_bio_bh_io_sync+0x56/0x80
+ blk_update_request+0x30a/0x720
+ scsi_end_request+0x51/0x2b0
+ scsi_io_completion+0xe3/0x480
+ ? scsi_device_unbusy+0x11e/0x160
+ blk_complete_reqs+0x7b/0x90
+ handle_softirqs+0xef/0x370
+ irq_exit_rcu+0xa5/0xd0
+ sysvec_apic_timer_interrupt+0x6e/0x90
+ </IRQ>
 
-Reported-by: Gerrard Tai <gerrard.tai@starlabs.sg>
-Fixes: 4b549a2ef4be ("fq_codel: Fair Queue Codel AQM")
-Fixes: 76e3cc126bb2 ("codel: Controlled Delay AQM")
-Signed-off-by: Cong Wang <xiyou.wangcong@gmail.com>
-Reviewed-by: Simon Horman <horms@kernel.org>
-Link: https://patch.msgid.link/20250403211636.166257-1-xiyou.wangcong@gmail.com
-Acked-by: Jamal Hadi Salim <jhs@mojatatu.com>
-Signed-off-by: Paolo Abeni <pabeni@redhat.com>
-Signed-off-by: Siddh Raman Pant <siddh.raman.pant@oracle.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+ Above issue happens when do ntfs3 filesystem mount, issue may happens
+ as follows:
+           mount                            IRQ
+ntfs_fill_super
+  read_cache_page
+    do_read_cache_folio
+      filemap_read_folio
+        mpage_read_folio
+	 do_mpage_readpage
+	  ntfs_get_block_vbo
+	   bh_read
+	     submit_bh
+	     wait_on_buffer(bh);
+	                            blk_complete_reqs
+				     scsi_io_completion
+				      scsi_end_request
+				       blk_update_request
+				        end_bio_bh_io_sync
+					 end_buffer_read_sync
+					  __end_buffer_read_notouch
+					   unlock_buffer
+
+            wait_on_buffer(bh);--> return will return to caller
+
+					  put_bh
+					    --> trigger stack-out-of-bounds
+In the mpage_read_folio() function, the stack variable 'map_bh' is
+passed to ntfs_get_block_vbo(). Once unlock_buffer() unlocks and
+wait_on_buffer() returns to continue processing, the stack variable
+is likely to be reclaimed. Consequently, during the end_buffer_read_sync()
+process, calling put_bh() may result in stack overrun.
+
+If the bh is not allocated on the stack, it belongs to a folio.  Freeing
+a buffer head which belongs to a folio is done by drop_buffers() which
+will fail to free buffers which are still locked.  So it is safe to call
+put_bh() before __end_buffer_read_notouch().
+
+Fixes: 1da177e4c3f4 ("Linux-2.6.12-rc2")
+Signed-off-by: Ye Bin <yebin10@huawei.com>
+Link: https://lore.kernel.org/20250811141830.343774-1-yebin@huaweicloud.com
+Reviewed-by: Matthew Wilcox (Oracle) <willy@infradead.org>
+Signed-off-by: Christian Brauner <brauner@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/sched/sch_codel.c    |    5 +----
- net/sched/sch_fq_codel.c |    6 ++----
- 2 files changed, 3 insertions(+), 8 deletions(-)
+ fs/buffer.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/net/sched/sch_codel.c
-+++ b/net/sched/sch_codel.c
-@@ -95,10 +95,7 @@ static struct sk_buff *codel_qdisc_deque
- 			    &q->stats, qdisc_pkt_len, codel_get_enqueue_time,
- 			    drop_func, dequeue_func);
+diff --git a/fs/buffer.c b/fs/buffer.c
+index 4ec88d08d04e..e0da5e56e499 100644
+--- a/fs/buffer.c
++++ b/fs/buffer.c
+@@ -161,8 +161,8 @@ static void __end_buffer_read_notouch(struct buffer_head *bh, int uptodate)
+  */
+ void end_buffer_read_sync(struct buffer_head *bh, int uptodate)
+ {
+-	__end_buffer_read_notouch(bh, uptodate);
+ 	put_bh(bh);
++	__end_buffer_read_notouch(bh, uptodate);
+ }
+ EXPORT_SYMBOL(end_buffer_read_sync);
  
--	/* We cant call qdisc_tree_reduce_backlog() if our qlen is 0,
--	 * or HTB crashes. Defer it for next round.
--	 */
--	if (q->stats.drop_count && sch->q.qlen) {
-+	if (q->stats.drop_count) {
- 		qdisc_tree_reduce_backlog(sch, q->stats.drop_count, q->stats.drop_len);
- 		q->stats.drop_count = 0;
- 		q->stats.drop_len = 0;
---- a/net/sched/sch_fq_codel.c
-+++ b/net/sched/sch_fq_codel.c
-@@ -314,10 +314,8 @@ begin:
- 	}
- 	qdisc_bstats_update(sch, skb);
- 	flow->deficit -= qdisc_pkt_len(skb);
--	/* We cant call qdisc_tree_reduce_backlog() if our qlen is 0,
--	 * or HTB crashes. Defer it for next round.
--	 */
--	if (q->cstats.drop_count && sch->q.qlen) {
-+
-+	if (q->cstats.drop_count) {
- 		qdisc_tree_reduce_backlog(sch, q->cstats.drop_count,
- 					  q->cstats.drop_len);
- 		q->cstats.drop_count = 0;
+-- 
+2.50.1
+
 
 
 
