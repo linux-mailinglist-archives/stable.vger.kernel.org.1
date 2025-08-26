@@ -1,58 +1,56 @@
-Return-Path: <stable+bounces-176374-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-174795-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7CC35B36C83
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 16:56:48 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id E1CCBB3651E
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 15:45:11 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id A26FA8E3F76
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 14:47:49 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 61C00467DC3
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 13:36:08 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A9B7D352FCE;
-	Tue, 26 Aug 2025 14:44:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 142032BF019;
+	Tue, 26 Aug 2025 13:35:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="BAYcbsuJ"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="X0f7gOBZ"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 66EBA296BDF;
-	Tue, 26 Aug 2025 14:44:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C35D42192EA;
+	Tue, 26 Aug 2025 13:35:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756219492; cv=none; b=UILscP67UJSOoC6XeFLdqW7T29BzHwDXNAqcDVf2U++Ubgl+H+V+oJHKOjRqw9hP4Mzx7Dd3XpMtE3WqZFgoqbytWrScvuD6t3m8zuBJSQZOqE/F7tIQZZhIiJInijAkFiljYh420SqH48IRpNA1pOdfReH9W7WH85fMf+4EpLM=
+	t=1756215338; cv=none; b=sgLhxlrJkYvAfsBqEO+hucysApoof58kVeKPXknVS5Tq/lWm+O3rsjOUOPlsqRgPHiYMkhLYCl0w+R7qmbiurp0krpblBj530rtCtFnQs5Eecp/N+GuT+8qBpnQYK+Mji1hqoKDrZuPYbmR3FonOQU2g+nzWNfDdYxtbWpkg+Rw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756219492; c=relaxed/simple;
-	bh=5bmVF2pJ81A1F+14sPcz6rXnxQytUH1NaMnnI65zEtM=;
+	s=arc-20240116; t=1756215338; c=relaxed/simple;
+	bh=ucPS2bfKpJI236Awuba795sLBfoOioSpOTVSKxtEYqY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=n1bTBUXof/MKAW14YSG4EskutGgVVm4hkaDThQkjQ0SsFGVy8YcGke8YKXRXTtTYFrOccmi5D57KRwoGvnNaUt7743Raiz3xSnq6z5inNPQn09PU5PG2hAeXNKjDCH9ozEwJ+8Qdi/ccYr+K1GZyz6W17WFmacBMsmo9y+Nhedg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=BAYcbsuJ; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id EF1E3C4CEF1;
-	Tue, 26 Aug 2025 14:44:51 +0000 (UTC)
+	 MIME-Version; b=Eh1jOYwC55gPRmGSLSX5w2LodgwnLP7GUfRXUuqmdKNwYIji/c8QxoAe0YTVZHjSefa/80m/jMivgvwqN2tVmPCbfSz9VcgumcnYMvN0Ub+9J3ysGlKTxPh7OadRVzHFq7POh8ZzTHHeHI3yPCZYXbnhySyYKm5mVktkO9AXA5o=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=X0f7gOBZ; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 03D2EC4CEF1;
+	Tue, 26 Aug 2025 13:35:37 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1756219492;
-	bh=5bmVF2pJ81A1F+14sPcz6rXnxQytUH1NaMnnI65zEtM=;
+	s=korg; t=1756215338;
+	bh=ucPS2bfKpJI236Awuba795sLBfoOioSpOTVSKxtEYqY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=BAYcbsuJmEgqB6nxDbPqnNkoAVnSqJHCmg02l+L9+v5hYPW4rnJs2CZeWpU8IiBsg
-	 UwtQ71vUlUUxwC5Z9x4FQAsg29ndGqwzSctxsqjPsC3P0080d8LLUXhIIuFzkGZwK5
-	 KlNcsFnU0N8PM1gbt8mVkCWDc8hw+lxmtDzWmc0A=
+	b=X0f7gOBZ6Ob/u+oPh7nwg6RfA+yyBm3xBF5pdajIrwMRwylXQ2tAIXWXy4YbtnO3q
+	 vl5bmwOVBfjbY4t3NJj4n3Leh93H79yHrQGfp89Ob+5sk//BBg0uuHSG2qEDtM6UXL
+	 XUScqVWXvV4TQ6gU1m2cr1czNhXzHFE3C7uO7+vU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Mete Durlu <meted@linux.ibm.com>,
-	Vasily Gorbik <gor@linux.ibm.com>,
-	Peter Oberparleiter <oberpar@linux.ibm.com>,
-	Alexander Gordeev <agordeev@linux.ibm.com>,
+	Hangbin Liu <liuhangbin@gmail.com>,
+	Paolo Abeni <pabeni@redhat.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.4 403/403] s390/hypfs: Enable limited access during lockdown
+Subject: [PATCH 6.1 476/482] bonding: update LACP activity flag after setting lacp_active
 Date: Tue, 26 Aug 2025 13:12:09 +0200
-Message-ID: <20250826110918.174424369@linuxfoundation.org>
+Message-ID: <20250826110942.578080695@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250826110905.607690791@linuxfoundation.org>
-References: <20250826110905.607690791@linuxfoundation.org>
+In-Reply-To: <20250826110930.769259449@linuxfoundation.org>
+References: <20250826110930.769259449@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,59 +62,88 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.4-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Peter Oberparleiter <oberpar@linux.ibm.com>
+From: Hangbin Liu <liuhangbin@gmail.com>
 
-[ Upstream commit 3868f910440c47cd5d158776be4ba4e2186beda7 ]
+[ Upstream commit b64d035f77b1f02ab449393342264b44950a75ae ]
 
-When kernel lockdown is active, debugfs_locked_down() blocks access to
-hypfs files that register ioctl callbacks, even if the ioctl interface
-is not required for a function. This unnecessarily breaks userspace
-tools that only rely on read operations.
+The port's actor_oper_port_state activity flag should be updated immediately
+after changing the lacp_active option to reflect the current mode correctly.
 
-Resolve this by registering a minimal set of file operations during
-lockdown, avoiding ioctl registration and preserving access for affected
-tooling.
-
-Note that this change restores hypfs functionality when lockdown is
-active from early boot (e.g. via lockdown=integrity kernel parameter),
-but does not apply to scenarios where lockdown is enabled dynamically
-while Linux is running.
-
-Tested-by: Mete Durlu <meted@linux.ibm.com>
-Reviewed-by: Vasily Gorbik <gor@linux.ibm.com>
-Fixes: 5496197f9b08 ("debugfs: Restrict debugfs when the kernel is locked down")
-Signed-off-by: Peter Oberparleiter <oberpar@linux.ibm.com>
-Signed-off-by: Alexander Gordeev <agordeev@linux.ibm.com>
+Fixes: 3a755cd8b7c6 ("bonding: add new option lacp_active")
+Signed-off-by: Hangbin Liu <liuhangbin@gmail.com>
+Link: https://patch.msgid.link/20250815062000.22220-2-liuhangbin@gmail.com
+Signed-off-by: Paolo Abeni <pabeni@redhat.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/s390/hypfs/hypfs_dbfs.c | 3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+ drivers/net/bonding/bond_3ad.c     | 25 +++++++++++++++++++++++++
+ drivers/net/bonding/bond_options.c |  1 +
+ include/net/bond_3ad.h             |  1 +
+ 3 files changed, 27 insertions(+)
 
-diff --git a/arch/s390/hypfs/hypfs_dbfs.c b/arch/s390/hypfs/hypfs_dbfs.c
-index c5f53dc3dbbc..5848f2e374a6 100644
---- a/arch/s390/hypfs/hypfs_dbfs.c
-+++ b/arch/s390/hypfs/hypfs_dbfs.c
-@@ -6,6 +6,7 @@
-  * Author(s): Michael Holzheu <holzheu@linux.vnet.ibm.com>
-  */
+diff --git a/drivers/net/bonding/bond_3ad.c b/drivers/net/bonding/bond_3ad.c
+index 9270977e6c7f..7557c525615e 100644
+--- a/drivers/net/bonding/bond_3ad.c
++++ b/drivers/net/bonding/bond_3ad.c
+@@ -2725,6 +2725,31 @@ void bond_3ad_update_lacp_rate(struct bonding *bond)
+ 	spin_unlock_bh(&bond->mode_lock);
+ }
  
-+#include <linux/security.h>
- #include <linux/slab.h>
- #include "hypfs.h"
- 
-@@ -83,7 +84,7 @@ void hypfs_dbfs_create_file(struct hypfs_dbfs_file *df)
++/**
++ * bond_3ad_update_lacp_active - change the lacp active
++ * @bond: bonding struct
++ *
++ * Update actor_oper_port_state when lacp_active is modified.
++ */
++void bond_3ad_update_lacp_active(struct bonding *bond)
++{
++	struct port *port = NULL;
++	struct list_head *iter;
++	struct slave *slave;
++	int lacp_active;
++
++	lacp_active = bond->params.lacp_active;
++	spin_lock_bh(&bond->mode_lock);
++	bond_for_each_slave(bond, slave, iter) {
++		port = &(SLAVE_AD_INFO(slave)->port);
++		if (lacp_active)
++			port->actor_oper_port_state |= LACP_STATE_LACP_ACTIVITY;
++		else
++			port->actor_oper_port_state &= ~LACP_STATE_LACP_ACTIVITY;
++	}
++	spin_unlock_bh(&bond->mode_lock);
++}
++
+ size_t bond_3ad_stats_size(void)
  {
- 	const struct file_operations *fops = &dbfs_ops;
+ 	return nla_total_size_64bit(sizeof(u64)) + /* BOND_3AD_STAT_LACPDU_RX */
+diff --git a/drivers/net/bonding/bond_options.c b/drivers/net/bonding/bond_options.c
+index 21ca95cdef42..8a24c016f667 100644
+--- a/drivers/net/bonding/bond_options.c
++++ b/drivers/net/bonding/bond_options.c
+@@ -1634,6 +1634,7 @@ static int bond_option_lacp_active_set(struct bonding *bond,
+ 	netdev_dbg(bond->dev, "Setting LACP active to %s (%llu)\n",
+ 		   newval->string, newval->value);
+ 	bond->params.lacp_active = newval->value;
++	bond_3ad_update_lacp_active(bond);
  
--	if (df->unlocked_ioctl)
-+	if (df->unlocked_ioctl && !security_locked_down(LOCKDOWN_DEBUGFS))
- 		fops = &dbfs_ops_ioctl;
- 	df->dentry = debugfs_create_file(df->name, 0400, dbfs_dir, df, fops);
- 	mutex_init(&df->lock);
+ 	return 0;
+ }
+diff --git a/include/net/bond_3ad.h b/include/net/bond_3ad.h
+index a016f275cb01..2d9596dba84d 100644
+--- a/include/net/bond_3ad.h
++++ b/include/net/bond_3ad.h
+@@ -303,6 +303,7 @@ int bond_3ad_lacpdu_recv(const struct sk_buff *skb, struct bonding *bond,
+ int bond_3ad_set_carrier(struct bonding *bond);
+ void bond_3ad_update_lacp_active(struct bonding *bond);
+ void bond_3ad_update_lacp_rate(struct bonding *bond);
++void bond_3ad_update_lacp_active(struct bonding *bond);
+ void bond_3ad_update_ad_actor_settings(struct bonding *bond);
+ int bond_3ad_stats_fill(struct sk_buff *skb, struct bond_3ad_stats *stats);
+ size_t bond_3ad_stats_size(void);
 -- 
 2.50.1
 
