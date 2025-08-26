@@ -1,56 +1,58 @@
-Return-Path: <stable+bounces-173486-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-173192-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 56258B35CF0
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 13:40:11 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 609F9B35C3D
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 13:32:45 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 6C66C7AB329
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 11:38:35 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id EE630173A5B
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 11:26:50 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D922317332C;
-	Tue, 26 Aug 2025 11:39:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B39282BE643;
+	Tue, 26 Aug 2025 11:26:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="iXEc32bI"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="WrVp09g+"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 94EBF283FDF;
-	Tue, 26 Aug 2025 11:39:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 71DC721ADA7;
+	Tue, 26 Aug 2025 11:26:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756208374; cv=none; b=BMN+JIh+SXjDDy+Z7MS8BZ69Ssvy3evVYiGFWEJMPe5e6niR1osNTsSfPuk3NZhGSBmbV0z7qx/yaDgS50BEKBlTrJL5r2J2YJhWWjtaIza07/IM+gKkYEp5UUiATnY2a/7SsLLSU4oYXeiWFm79aSGJ9JGJ7JReZbU2cBryLkY=
+	t=1756207609; cv=none; b=A0YA+XxcsxRPflP8jdP4Uvpft/LEWjHEDGcs8aJYMCldUxLSQfgMAJmaWwLmgqxHHezhMJW3LDfhida0TTwaRH80VfdXUpHEHvg4tNaS1442UllW+KxCYi/6LhxFs7b9c9LM19rOy7lb61TSbwPFN41GeHfNaPwOZUWnAhbrH8E=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756208374; c=relaxed/simple;
-	bh=torqszSfg/TKo70gm55gG0xrvIjxkwrK/rZcRTlZjVA=;
+	s=arc-20240116; t=1756207609; c=relaxed/simple;
+	bh=MOlBwrCoY4lXJ6hJdll0HDZD3913GVi2izViPXXEop4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=kdV96XDN+vlw/n3jmVJlsuPJPusJSlavtHjtD34mkjK7BerdUoI4zJTmRAak5L6mp8CiRXcFw0d3ZVd92J57i2HV76qx+r3c4yvmlBWVuliYvewH9s6cynQKv/Po4ftrfVpO87x90nsYc6LsSwqlqIwLYQaiwO5cxOpeC7eonzw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=iXEc32bI; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id DE8AFC4CEF1;
-	Tue, 26 Aug 2025 11:39:33 +0000 (UTC)
+	 MIME-Version; b=ZWIGdps58AIIEo4IdYXGzVs43zYRvMfe7OXq++O/7eXitCVz81ayPg0++W7m9ugvsjQz3NJt2Cv4Yx5AfczLKV309nphlrIxRgtRKRNIpsNMtoqMn8RanXto9JlWVHM3yAI08r+0DaDaHgRLlDyXtZ1TljsnaYpyOlu5rqy/QZg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=WrVp09g+; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0A7DDC4CEF1;
+	Tue, 26 Aug 2025 11:26:48 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1756208374;
-	bh=torqszSfg/TKo70gm55gG0xrvIjxkwrK/rZcRTlZjVA=;
+	s=korg; t=1756207609;
+	bh=MOlBwrCoY4lXJ6hJdll0HDZD3913GVi2izViPXXEop4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=iXEc32bILVD/19ZSz0mes1Eah5f8hhT6ZuK7//vuCX0k99g37L1lCHwrUSz9P4Ss2
-	 hSC8gYgutK1XTsZ0kc2jMrhAi44tChnbWcfTecnkHvb66zoBYWmFANOBukjZWi033V
-	 ZYrbGbIrdmlQ/U/pfMo2YOcJrE5hr8lXvzX74JHs=
+	b=WrVp09g+spvtwwrVBTU8o6P+MoHvh4s/+86oO4Mrgir1HpmuzqYfidvhlfi6YIbKd
+	 sfN04DH+Wc5Yz12gNK44U7LU832WeWGF34JG+I/Qjpt6ByDNrRa6pcNmhlArncuvg6
+	 anMjaCCXEMprV5QGD9FFYjiI6uhxmglTWYPfLyRk=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	=?UTF-8?q?Thomas=20Wei=C3=9Fschuh?= <thomas.weissschuh@linutronix.de>,
-	Nathan Chancellor <nathan@kernel.org>,
-	Masahiro Yamada <masahiroy@kernel.org>
-Subject: [PATCH 6.12 087/322] kbuild: userprogs: use correct linker when mixing clang and GNU ld
+	Boris Burkov <boris@bur.io>,
+	Qu Wenruo <wqu@suse.com>,
+	Leo Martins <loemra.dev@gmail.com>,
+	David Sterba <dsterba@suse.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.16 218/457] btrfs: fix subpage deadlock in try_release_subpage_extent_buffer()
 Date: Tue, 26 Aug 2025 13:08:22 +0200
-Message-ID: <20250826110917.801449430@linuxfoundation.org>
+Message-ID: <20250826110942.751860408@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250826110915.169062587@linuxfoundation.org>
-References: <20250826110915.169062587@linuxfoundation.org>
+In-Reply-To: <20250826110937.289866482@linuxfoundation.org>
+References: <20250826110937.289866482@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,46 +62,207 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.16-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Thomas Weißschuh <thomas.weissschuh@linutronix.de>
+From: Leo Martins <loemra.dev@gmail.com>
 
-commit 936599ca514973d44a766b7376c6bbdc96b6a8cc upstream.
+[ Upstream commit ad580dfa388fabb52af033e3f8cc5d04be985e54 ]
 
-The userprogs infrastructure does not expect clang being used with GNU ld
-and in that case uses /usr/bin/ld for linking, not the configured $(LD).
-This fallback is problematic as it will break when cross-compiling.
-Mixing clang and GNU ld is used for example when building for SPARC64,
-as ld.lld is not sufficient; see Documentation/kbuild/llvm.rst.
+There is a potential deadlock that can happen in
+try_release_subpage_extent_buffer() because the irq-safe xarray spin
+lock fs_info->buffer_tree is being acquired before the irq-unsafe
+eb->refs_lock.
 
-Relax the check around --ld-path so it gets used for all linkers.
+This leads to the potential race:
+// T1 (random eb->refs user)                  // T2 (release folio)
 
-Fixes: dfc1b168a8c4 ("kbuild: userprogs: use correct lld when linking through clang")
-Cc: stable@vger.kernel.org
-Signed-off-by: Thomas Weißschuh <thomas.weissschuh@linutronix.de>
-Reviewed-by: Nathan Chancellor <nathan@kernel.org>
-Signed-off-by: Masahiro Yamada <masahiroy@kernel.org>
+spin_lock(&eb->refs_lock);
+// interrupt
+end_bbio_meta_write()
+  btrfs_meta_folio_clear_writeback()
+                                              btree_release_folio()
+                                                folio_test_writeback() //false
+                                                try_release_extent_buffer()
+                                                  try_release_subpage_extent_buffer()
+                                                    xa_lock_irq(&fs_info->buffer_tree)
+                                                    spin_lock(&eb->refs_lock); // blocked; held by T1
+  buffer_tree_clear_mark()
+    xas_lock_irqsave() // blocked; held by T2
+
+I believe that the spin lock can safely be replaced by an rcu_read_lock.
+The xa_for_each loop does not need the spin lock as it's already
+internally protected by the rcu_read_lock. The extent buffer is also
+protected by the rcu_read_lock so it won't be freed before we take the
+eb->refs_lock and check the ref count.
+
+The rcu_read_lock is taken and released every iteration, just like the
+spin lock, which means we're not protected against concurrent
+insertions into the xarray. This is fine because we rely on
+folio->private to detect if there are any ebs remaining in the folio.
+
+There is already some precedent for this with find_extent_buffer_nolock,
+which loads an extent buffer from the xarray with only rcu_read_lock.
+
+lockdep warning:
+
+            =====================================================
+            WARNING: HARDIRQ-safe -> HARDIRQ-unsafe lock order detected
+            6.16.0-0_fbk701_debug_rc0_123_g4c06e63b9203 #1 Tainted: G E    N
+            -----------------------------------------------------
+            kswapd0/66 [HC0[0]:SC0[0]:HE0:SE1] is trying to acquire:
+            ffff000011ffd600 (&eb->refs_lock){+.+.}-{3:3}, at: try_release_extent_buffer+0x18c/0x560
+
+and this task is already holding:
+            ffff0000c1d91b88 (&buffer_xa_class){-.-.}-{3:3}, at: try_release_extent_buffer+0x13c/0x560
+            which would create a new lock dependency:
+             (&buffer_xa_class){-.-.}-{3:3} -> (&eb->refs_lock){+.+.}-{3:3}
+
+but this new dependency connects a HARDIRQ-irq-safe lock:
+             (&buffer_xa_class){-.-.}-{3:3}
+
+... which became HARDIRQ-irq-safe at:
+              lock_acquire+0x178/0x358
+              _raw_spin_lock_irqsave+0x60/0x88
+              buffer_tree_clear_mark+0xc4/0x160
+              end_bbio_meta_write+0x238/0x398
+              btrfs_bio_end_io+0x1f8/0x330
+              btrfs_orig_write_end_io+0x1c4/0x2c0
+              bio_endio+0x63c/0x678
+              blk_update_request+0x1c4/0xa00
+              blk_mq_end_request+0x54/0x88
+              virtblk_request_done+0x124/0x1d0
+              blk_mq_complete_request+0x84/0xa0
+              virtblk_done+0x130/0x238
+              vring_interrupt+0x130/0x288
+              __handle_irq_event_percpu+0x1e8/0x708
+              handle_irq_event+0x98/0x1b0
+              handle_fasteoi_irq+0x264/0x7c0
+              generic_handle_domain_irq+0xa4/0x108
+              gic_handle_irq+0x7c/0x1a0
+              do_interrupt_handler+0xe4/0x148
+              el1_interrupt+0x30/0x50
+              el1h_64_irq_handler+0x14/0x20
+              el1h_64_irq+0x6c/0x70
+              _raw_spin_unlock_irq+0x38/0x70
+              __run_timer_base+0xdc/0x5e0
+              run_timer_softirq+0xa0/0x138
+              handle_softirqs.llvm.13542289750107964195+0x32c/0xbd0
+              ____do_softirq.llvm.17674514681856217165+0x18/0x28
+              call_on_irq_stack+0x24/0x30
+              __irq_exit_rcu+0x164/0x430
+              irq_exit_rcu+0x18/0x88
+              el1_interrupt+0x34/0x50
+              el1h_64_irq_handler+0x14/0x20
+              el1h_64_irq+0x6c/0x70
+              arch_local_irq_enable+0x4/0x8
+              do_idle+0x1a0/0x3b8
+              cpu_startup_entry+0x60/0x80
+              rest_init+0x204/0x228
+              start_kernel+0x394/0x3f0
+              __primary_switched+0x8c/0x8958
+
+to a HARDIRQ-irq-unsafe lock:
+             (&eb->refs_lock){+.+.}-{3:3}
+
+... which became HARDIRQ-irq-unsafe at:
+            ...
+              lock_acquire+0x178/0x358
+              _raw_spin_lock+0x4c/0x68
+              free_extent_buffer_stale+0x2c/0x170
+              btrfs_read_sys_array+0x1b0/0x338
+              open_ctree+0xeb0/0x1df8
+              btrfs_get_tree+0xb60/0x1110
+              vfs_get_tree+0x8c/0x250
+              fc_mount+0x20/0x98
+              btrfs_get_tree+0x4a4/0x1110
+              vfs_get_tree+0x8c/0x250
+              do_new_mount+0x1e0/0x6c0
+              path_mount+0x4ec/0xa58
+              __arm64_sys_mount+0x370/0x490
+              invoke_syscall+0x6c/0x208
+              el0_svc_common+0x14c/0x1b8
+              do_el0_svc+0x4c/0x60
+              el0_svc+0x4c/0x160
+              el0t_64_sync_handler+0x70/0x100
+              el0t_64_sync+0x168/0x170
+
+other info that might help us debug this:
+             Possible interrupt unsafe locking scenario:
+                   CPU0                    CPU1
+                   ----                    ----
+              lock(&eb->refs_lock);
+                                           local_irq_disable();
+                                           lock(&buffer_xa_class);
+                                           lock(&eb->refs_lock);
+              <Interrupt>
+                lock(&buffer_xa_class);
+
+  *** DEADLOCK ***
+            2 locks held by kswapd0/66:
+             #0: ffff800085506e40 (fs_reclaim){+.+.}-{0:0}, at: balance_pgdat+0xe8/0xe50
+             #1: ffff0000c1d91b88 (&buffer_xa_class){-.-.}-{3:3}, at: try_release_extent_buffer+0x13c/0x560
+
+Link: https://www.kernel.org/doc/Documentation/locking/lockdep-design.rst#:~:text=Multi%2Dlock%20dependency%20rules%3A
+Fixes: 19d7f65f032f ("btrfs: convert the buffer_radix to an xarray")
+CC: stable@vger.kernel.org # 6.16+
+Reviewed-by: Boris Burkov <boris@bur.io>
+Reviewed-by: Qu Wenruo <wqu@suse.com>
+Signed-off-by: Leo Martins <loemra.dev@gmail.com>
+Signed-off-by: David Sterba <dsterba@suse.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- Makefile |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ fs/btrfs/extent_io.c |   11 ++++++-----
+ 1 file changed, 6 insertions(+), 5 deletions(-)
 
---- a/Makefile
-+++ b/Makefile
-@@ -1069,7 +1069,7 @@ KBUILD_USERCFLAGS  += $(filter -m32 -m64
- KBUILD_USERLDFLAGS += $(filter -m32 -m64 --target=%, $(KBUILD_CPPFLAGS) $(KBUILD_CFLAGS))
+--- a/fs/btrfs/extent_io.c
++++ b/fs/btrfs/extent_io.c
+@@ -4304,15 +4304,18 @@ static int try_release_subpage_extent_bu
+ 	unsigned long end = index + (PAGE_SIZE >> fs_info->sectorsize_bits) - 1;
+ 	int ret;
  
- # userspace programs are linked via the compiler, use the correct linker
--ifeq ($(CONFIG_CC_IS_CLANG)$(CONFIG_LD_IS_LLD),yy)
-+ifdef CONFIG_CC_IS_CLANG
- KBUILD_USERLDFLAGS += --ld-path=$(LD)
- endif
+-	xa_lock_irq(&fs_info->buffer_tree);
++	rcu_read_lock();
+ 	xa_for_each_range(&fs_info->buffer_tree, index, eb, start, end) {
+ 		/*
+ 		 * The same as try_release_extent_buffer(), to ensure the eb
+ 		 * won't disappear out from under us.
+ 		 */
+ 		spin_lock(&eb->refs_lock);
++		rcu_read_unlock();
++
+ 		if (refcount_read(&eb->refs) != 1 || extent_buffer_under_io(eb)) {
+ 			spin_unlock(&eb->refs_lock);
++			rcu_read_lock();
+ 			continue;
+ 		}
  
+@@ -4331,11 +4334,10 @@ static int try_release_subpage_extent_bu
+ 		 * check the folio private at the end.  And
+ 		 * release_extent_buffer() will release the refs_lock.
+ 		 */
+-		xa_unlock_irq(&fs_info->buffer_tree);
+ 		release_extent_buffer(eb);
+-		xa_lock_irq(&fs_info->buffer_tree);
++		rcu_read_lock();
+ 	}
+-	xa_unlock_irq(&fs_info->buffer_tree);
++	rcu_read_unlock();
+ 
+ 	/*
+ 	 * Finally to check if we have cleared folio private, as if we have
+@@ -4348,7 +4350,6 @@ static int try_release_subpage_extent_bu
+ 		ret = 0;
+ 	spin_unlock(&folio->mapping->i_private_lock);
+ 	return ret;
+-
+ }
+ 
+ int try_release_extent_buffer(struct folio *folio)
 
 
 
