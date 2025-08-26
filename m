@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-175202-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-175726-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7F7F6B36707
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 16:03:06 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 57B25B3699A
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 16:28:33 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 477571C248B9
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 13:55:52 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 698928E6CA7
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 14:19:01 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8F7D1350D5B;
-	Tue, 26 Aug 2025 13:53:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3532321D3F2;
+	Tue, 26 Aug 2025 14:16:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="m0I3UIDx"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ZwWnoYvq"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4960234166C;
-	Tue, 26 Aug 2025 13:53:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DEC473568E1;
+	Tue, 26 Aug 2025 14:16:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756216410; cv=none; b=kzu4cDokqY9XSgjmfLJAE9+rfx8x+Lt0y+/FSOcjLloOG75w0WYGPdklbeA1PhmUibFfJlEZ464ddvHEcndOYABNsfdiGexuEmAMyoRhNYSNsqYTrpKDfwJFQAX4hsvQkmP+Pr2NCYaalED9oMyxwDLGs0+JWck37+X/GoWB/Pc=
+	t=1756217809; cv=none; b=K8jnsJKb1yzvtCAt9P0IsJ2geFy8jOa6m0A7XaNTlRwG2Zzmmc1Oynq1LhooEcSgNp6ynSBtEAglx8Po+TOu0M5zZraOqYEiZbTiX5Vf9OXGBb/WuOsJNaccTNTYxF8CyBSdKmNRMxhH5ZpQ51YHuckyV9iwM3fXvIq14GrJdyo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756216410; c=relaxed/simple;
-	bh=Zw3R4+0VR5QUyR/bB/lt18PHi+o97+8MGXQyt9Ynr5s=;
+	s=arc-20240116; t=1756217809; c=relaxed/simple;
+	bh=AKdkKRIzZOyMbvsrsBxEx+McYmrdzfV4DLsMxEfg08Q=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=hnJRI4ybuF7B4f+ndQuGBsdtxGPyaybvxAvJkBTo/8HmIm2ju2G3xn8qDO3RbU3P2Za70/oXuLO1x24OAjvxGHnIifmnfo+a12q0aKoE6eh6A2rzbwQpPh54oqTemfeSC1E+uw1BvA33PPrLZZaGk70lnMesXuYiTgciryLdSMY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=m0I3UIDx; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C9B16C4CEF1;
-	Tue, 26 Aug 2025 13:53:29 +0000 (UTC)
+	 MIME-Version:Content-Type; b=UmoYh6hnzKLubOPTfNTGsfJ6rWjGggu4UXuM53iTCP2qyS0Zq9qo6mHdeqdAhUlnQOPugYDqxPD9pfNRzPaP+IPyRG0JZTi3m2n0tAr7zUBRDCq5UCltQ3pdpSirV3nINKynnJFMYgvbna7tjz5WuPsN4SdgoWTYgys+qvq/+tU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ZwWnoYvq; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 15ADAC4CEF1;
+	Tue, 26 Aug 2025 14:16:47 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1756216410;
-	bh=Zw3R4+0VR5QUyR/bB/lt18PHi+o97+8MGXQyt9Ynr5s=;
+	s=korg; t=1756217808;
+	bh=AKdkKRIzZOyMbvsrsBxEx+McYmrdzfV4DLsMxEfg08Q=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=m0I3UIDxKK1RNj9fe9uNZXFDYJE+cMNMb7wcJ9/uHnAyxtagC1MDIRgXEoGU7AQNN
-	 Zi0TndRA3OkmcObsk3WqK7MmxSz7l7j5p2W5IdVnqcIsHtcxY++VXoddswUoSP29f/
-	 s/ltm/zTlspzLtwyBO8iZhffuch+9qX+DrWUNG4w=
+	b=ZwWnoYvqAMowJg1cA2w4R3KdN0WAXO1C34I75IARqXd78RrcGqrGzVoTNmsRzz9es
+	 N/XL63JaGnyRhbUAmi2MgUjd6JFNvaxmN9nNHvSQoJo/9z15bbwMIqCoOZYfN23Qhm
+	 Fmi5JDFmdyfXEpaAVXIIC/0+W0zVPHML7+GJuPro=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Damien Le Moal <dlemoal@kernel.org>,
-	Yafang Shao <laoar.shao@gmail.com>,
-	"Martin K. Petersen" <martin.petersen@oracle.com>,
+	Florian Fainelli <florian.fainelli@broadcom.com>,
+	=?UTF-8?q?=C3=81lvaro=20Fern=C3=A1ndez=20Rojas?= <noltari@gmail.com>,
+	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 402/644] scsi: mpt3sas: Correctly handle ATA device errors
+Subject: [PATCH 5.10 283/523] net: dsa: b53: prevent GMII_PORT_OVERRIDE_CTRL access on BCM5325
 Date: Tue, 26 Aug 2025 13:08:13 +0200
-Message-ID: <20250826110956.413916154@linuxfoundation.org>
+Message-ID: <20250826110931.417641140@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250826110946.507083938@linuxfoundation.org>
-References: <20250826110946.507083938@linuxfoundation.org>
+In-Reply-To: <20250826110924.562212281@linuxfoundation.org>
+References: <20250826110924.562212281@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,89 +61,90 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Damien Le Moal <dlemoal@kernel.org>
+From: Álvaro Fernández Rojas <noltari@gmail.com>
 
-[ Upstream commit 15592a11d5a5c8411ac8494ec49736b658f6fbff ]
+[ Upstream commit 37883bbc45a8555d6eca88d3a9730504d2dac86c ]
 
-With the ATA error model, an NCQ command failure always triggers an abort
-(termination) of all NCQ commands queued on the device. In such case, the
-SAT or the host must handle the failed command according to the command
-sense data and immediately retry all other NCQ commands that were aborted
-due to the failed NCQ command.
+BCM5325 doesn't implement GMII_PORT_OVERRIDE_CTRL register so we should
+avoid reading or writing it.
+PORT_OVERRIDE_RX_FLOW and PORT_OVERRIDE_TX_FLOW aren't defined on BCM5325
+and we should use PORT_OVERRIDE_LP_FLOW_25 instead.
 
-For SAS HBAs controlled by the mpt3sas driver, NCQ command aborts are not
-handled by the HBA SAT and sent back to the host, with an ioc log
-information equal to 0x31080000 (IOC_LOGINFO_PREFIX_PL with the PL code
-PL_LOGINFO_CODE_SATA_NCQ_FAIL_ALL_CMDS_AFTR_ERR). The function
-_scsih_io_done() always forces a retry of commands terminated with the
-status MPI2_IOCSTATUS_SCSI_IOC_TERMINATED using the SCSI result
-DID_SOFT_ERROR, regardless of the log_info for the command.  This
-correctly forces the retry of collateral NCQ abort commands, but with the
-retry counter for the command being incremented. If a command to an ATA
-device is subject to too many retries due to other NCQ commands failing
-(e.g. read commands trying to access unreadable sectors), the collateral
-NCQ abort commands may be terminated with an error as they run out of
-retries. This violates the SAT specification and causes hard-to-debug
-command errors.
-
-Solve this issue by modifying the handling of the
-MPI2_IOCSTATUS_SCSI_IOC_TERMINATED status to check if a command is for an
-ATA device and if the command loginfo indicates an NCQ collateral
-abort. If that is the case, force the command retry using the SCSI result
-DID_IMM_RETRY to avoid incrementing the command retry count.
-
-Signed-off-by: Damien Le Moal <dlemoal@kernel.org>
-Link: https://lore.kernel.org/r/20250606052747.742998-3-dlemoal@kernel.org
-Tested-by: Yafang Shao <laoar.shao@gmail.com>
-Signed-off-by: Martin K. Petersen <martin.petersen@oracle.com>
+Reviewed-by: Florian Fainelli <florian.fainelli@broadcom.com>
+Signed-off-by: Álvaro Fernández Rojas <noltari@gmail.com>
+Link: https://patch.msgid.link/20250614080000.1884236-12-noltari@gmail.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/scsi/mpt3sas/mpt3sas_scsih.c | 19 +++++++++++++++++++
- 1 file changed, 19 insertions(+)
+ drivers/net/dsa/b53/b53_common.c | 21 +++++++++++++++++----
+ drivers/net/dsa/b53/b53_regs.h   |  1 +
+ 2 files changed, 18 insertions(+), 4 deletions(-)
 
-diff --git a/drivers/scsi/mpt3sas/mpt3sas_scsih.c b/drivers/scsi/mpt3sas/mpt3sas_scsih.c
-index 055929021818..0066a99587d9 100644
---- a/drivers/scsi/mpt3sas/mpt3sas_scsih.c
-+++ b/drivers/scsi/mpt3sas/mpt3sas_scsih.c
-@@ -197,6 +197,14 @@ struct sense_info {
- #define MPT3SAS_PORT_ENABLE_COMPLETE (0xFFFD)
- #define MPT3SAS_ABRT_TASK_SET (0xFFFE)
- #define MPT3SAS_REMOVE_UNRESPONDING_DEVICES (0xFFFF)
+diff --git a/drivers/net/dsa/b53/b53_common.c b/drivers/net/dsa/b53/b53_common.c
+index 971c134cd71a..5840001ea3e7 100644
+--- a/drivers/net/dsa/b53/b53_common.c
++++ b/drivers/net/dsa/b53/b53_common.c
+@@ -1106,6 +1106,8 @@ static void b53_force_link(struct b53_device *dev, int port, int link)
+ 	if (port == dev->imp_port) {
+ 		off = B53_PORT_OVERRIDE_CTRL;
+ 		val = PORT_OVERRIDE_EN;
++	} else if (is5325(dev)) {
++		return;
+ 	} else {
+ 		off = B53_GMII_PORT_OVERRIDE_CTRL(port);
+ 		val = GMII_PO_EN;
+@@ -1130,6 +1132,8 @@ static void b53_force_port_config(struct b53_device *dev, int port,
+ 	if (port == dev->imp_port) {
+ 		off = B53_PORT_OVERRIDE_CTRL;
+ 		val = PORT_OVERRIDE_EN;
++	} else if (is5325(dev)) {
++		return;
+ 	} else {
+ 		off = B53_GMII_PORT_OVERRIDE_CTRL(port);
+ 		val = GMII_PO_EN;
+@@ -1160,10 +1164,19 @@ static void b53_force_port_config(struct b53_device *dev, int port,
+ 		return;
+ 	}
+ 
+-	if (rx_pause)
+-		reg |= PORT_OVERRIDE_RX_FLOW;
+-	if (tx_pause)
+-		reg |= PORT_OVERRIDE_TX_FLOW;
++	if (rx_pause) {
++		if (is5325(dev))
++			reg |= PORT_OVERRIDE_LP_FLOW_25;
++		else
++			reg |= PORT_OVERRIDE_RX_FLOW;
++	}
 +
-+/*
-+ * SAS Log info code for a NCQ collateral abort after an NCQ error:
-+ * IOC_LOGINFO_PREFIX_PL | PL_LOGINFO_CODE_SATA_NCQ_FAIL_ALL_CMDS_AFTR_ERR
-+ * See: drivers/message/fusion/lsi/mpi_log_sas.h
-+ */
-+#define IOC_LOGINFO_SATA_NCQ_FAIL_AFTER_ERR	0x31080000
-+
- /**
-  * struct fw_event_work - firmware event struct
-  * @list: link list framework
-@@ -5812,6 +5820,17 @@ _scsih_io_done(struct MPT3SAS_ADAPTER *ioc, u16 smid, u8 msix_index, u32 reply)
- 			scmd->result = DID_TRANSPORT_DISRUPTED << 16;
- 			goto out;
- 		}
-+		if (log_info == IOC_LOGINFO_SATA_NCQ_FAIL_AFTER_ERR) {
-+			/*
-+			 * This is a ATA NCQ command aborted due to another NCQ
-+			 * command failure. We must retry this command
-+			 * immediately but without incrementing its retry
-+			 * counter.
-+			 */
-+			WARN_ON_ONCE(xfer_cnt != 0);
-+			scmd->result = DID_IMM_RETRY << 16;
-+			break;
-+		}
- 		if (log_info == 0x31110630) {
- 			if (scmd->retries > 2) {
- 				scmd->result = DID_NO_CONNECT << 16;
++	if (tx_pause) {
++		if (is5325(dev))
++			reg |= PORT_OVERRIDE_LP_FLOW_25;
++		else
++			reg |= PORT_OVERRIDE_TX_FLOW;
++	}
+ 
+ 	b53_write8(dev, B53_CTRL_PAGE, off, reg);
+ }
+diff --git a/drivers/net/dsa/b53/b53_regs.h b/drivers/net/dsa/b53/b53_regs.h
+index b2c539a42154..e5776545a8a0 100644
+--- a/drivers/net/dsa/b53/b53_regs.h
++++ b/drivers/net/dsa/b53/b53_regs.h
+@@ -92,6 +92,7 @@
+ #define   PORT_OVERRIDE_SPEED_10M	(0 << PORT_OVERRIDE_SPEED_S)
+ #define   PORT_OVERRIDE_SPEED_100M	(1 << PORT_OVERRIDE_SPEED_S)
+ #define   PORT_OVERRIDE_SPEED_1000M	(2 << PORT_OVERRIDE_SPEED_S)
++#define   PORT_OVERRIDE_LP_FLOW_25	BIT(3) /* BCM5325 only */
+ #define   PORT_OVERRIDE_RV_MII_25	BIT(4) /* BCM5325 only */
+ #define   PORT_OVERRIDE_RX_FLOW		BIT(4)
+ #define   PORT_OVERRIDE_TX_FLOW		BIT(5)
 -- 
 2.39.5
 
