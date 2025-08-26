@@ -1,57 +1,55 @@
-Return-Path: <stable+bounces-175622-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-176030-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 23033B3687C
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 16:16:38 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 56F6AB36AEB
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 16:41:54 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 8F9EC7A05A6
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 14:13:17 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id DDCB758796D
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 14:32:23 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D225D1ADFFE;
-	Tue, 26 Aug 2025 14:12:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 69AE835207C;
+	Tue, 26 Aug 2025 14:30:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="NZx9v+lc"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="UQe9lQk6"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 89CF534A325;
-	Tue, 26 Aug 2025 14:12:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 27583341AA1;
+	Tue, 26 Aug 2025 14:30:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756217532; cv=none; b=kYrDZTdmEq2Jr5IcOqMYwTpUUqGEcWFOWHCmPMEQq2Idjbk+XXliwOoqtGJ1C2lI0edJI7dc15wsZBcp0OpoXOsUagjPXnNe/j/Sqlpwlb6GATY6i/tGowZ3NIg/nmuB5m+uy/8LveVrb1/a+pBMaCoMB9aUgzIEsPucwpMfoTA=
+	t=1756218602; cv=none; b=s1HCP6/n28VjKhU7nbmgb+xOwV0wGDG+IdIG62MVQoyrr9y+AgUX4Wo/VVQcCR7qMKiXl2KReJksdp6D/4pREmP0/uHriWaTAVrPg1cQKcXnZcEoe8ZLxrzCYndawB11sCLFtLO/tZbqgt0Zw2siQXOt0cXxSBTJK4lW1cZ9KYQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756217532; c=relaxed/simple;
-	bh=MqLWtnh/KJ4qHiHdUVtaZ2STsKpeKFOviDzgv6lGGLk=;
+	s=arc-20240116; t=1756218602; c=relaxed/simple;
+	bh=VmwON/ubGKqSd/ZgU/Ex8O8da8yxzYBv4Amr61JM1wk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=rlwHl8cXwge0s+srzMoYxBPm3qI+foSjZAYJNnicUKq16DzI4gO/YukEsWB23c4KfhkOtAuY45MyRBa69/HmaULOo1mvgoRSruUmgUC8nOG0FX1Lbjw5veCSzCg00yuxsiqlR2BKNn/86l2JVC8qrmxGf+wRASCcvmIGs43Otd0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=NZx9v+lc; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1A629C4CEF1;
-	Tue, 26 Aug 2025 14:12:11 +0000 (UTC)
+	 MIME-Version; b=WZlCtpZMeCtpGqq1lAs671MDfvnYez8xenztxQVuD/Q7h+CsF4USKXHK6JSgjgA/cXZ/1b3pxKZg73KH65xwzX/6TTucOiHWZnyOwD9hVfzQF+YPt/tjDtFzXeXzBRPgImw19FnKTgIbDYHvNuNqvACGmG3+Fc4U74Q18rrKMhQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=UQe9lQk6; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 09329C4CEF1;
+	Tue, 26 Aug 2025 14:30:00 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1756217532;
-	bh=MqLWtnh/KJ4qHiHdUVtaZ2STsKpeKFOviDzgv6lGGLk=;
+	s=korg; t=1756218602;
+	bh=VmwON/ubGKqSd/ZgU/Ex8O8da8yxzYBv4Amr61JM1wk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=NZx9v+lc1iNX2PTAC0AJ76uFm3+yEbl0pMLgBDhjYCILMZQmBQgM2+GfgYwU504Ct
-	 OfaUr8rDWrZeaLgq8BMXg2wngGVqLGrgVxoM91XmXm1C7mNkzUXPbnwIWUxdNqKgLW
-	 2D1KmtWS0aHY/Txl2YTHyrPrXih+0UReFmuX9keo=
+	b=UQe9lQk6IKy/w1u8fiuc+zuKwl+gukDcvyZ2231w44WxNhqLsU/rA7DuAA6Ds/iIp
+	 hc26L40wyAv8Tstvtyxr3mWti41LbHKbLxUN+RUez+5Hnwz/C12dsJQrUt9qWp2AJ2
+	 VcoUDNivV7FBMZprgVTfVltBVBb7DuFhodkiLtFs=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Michal Schmidt <mschmidt@redhat.com>,
-	Nikolay Aleksandrov <razor@blackwall.org>,
-	Jakub Kicinski <kuba@kernel.org>,
+	Ian Abbott <abbotti@mev.co.uk>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 179/523] benet: fix BUG when creating VFs
+Subject: [PATCH 5.4 063/403] comedi: comedi_test: Fix possible deletion of uninitialized timers
 Date: Tue, 26 Aug 2025 13:06:29 +0200
-Message-ID: <20250826110928.873043044@linuxfoundation.org>
+Message-ID: <20250826110907.786510019@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250826110924.562212281@linuxfoundation.org>
-References: <20250826110924.562212281@linuxfoundation.org>
+In-Reply-To: <20250826110905.607690791@linuxfoundation.org>
+References: <20250826110905.607690791@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,66 +61,47 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+5.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Michal Schmidt <mschmidt@redhat.com>
+From: Ian Abbott <abbotti@mev.co.uk>
 
-[ Upstream commit 5a40f8af2ba1b9bdf46e2db10e8c9710538fbc63 ]
+commit 1b98304c09a0192598d0767f1eb8c83d7e793091 upstream.
 
-benet crashes as soon as SRIOV VFs are created:
+In `waveform_common_attach()`, the two timers `&devpriv->ai_timer` and
+`&devpriv->ao_timer` are initialized after the allocation of the device
+private data by `comedi_alloc_devpriv()` and the subdevices by
+`comedi_alloc_subdevices()`.  The function may return with an error
+between those function calls.  In that case, `waveform_detach()` will be
+called by the Comedi core to clean up.  The check that
+`waveform_detach()` uses to decide whether to delete the timers is
+incorrect.  It only checks that the device private data was allocated,
+but that does not guarantee that the timers were initialized.  It also
+needs to check that the subdevices were allocated.  Fix it.
 
- kernel BUG at mm/vmalloc.c:3457!
- Oops: invalid opcode: 0000 [#1] SMP KASAN NOPTI
- CPU: 4 UID: 0 PID: 7408 Comm: test.sh Kdump: loaded Not tainted 6.16.0+ #1 PREEMPT(voluntary)
- [...]
- RIP: 0010:vunmap+0x5f/0x70
- [...]
- Call Trace:
-  <TASK>
-  __iommu_dma_free+0xe8/0x1c0
-  be_cmd_set_mac_list+0x3fe/0x640 [be2net]
-  be_cmd_set_mac+0xaf/0x110 [be2net]
-  be_vf_eth_addr_config+0x19f/0x330 [be2net]
-  be_vf_setup+0x4f7/0x990 [be2net]
-  be_pci_sriov_configure+0x3a1/0x470 [be2net]
-  sriov_numvfs_store+0x20b/0x380
-  kernfs_fop_write_iter+0x354/0x530
-  vfs_write+0x9b9/0xf60
-  ksys_write+0xf3/0x1d0
-  do_syscall_64+0x8c/0x3d0
-
-be_cmd_set_mac_list() calls dma_free_coherent() under a spin_lock_bh.
-Fix it by freeing only after the lock has been released.
-
-Fixes: 1a82d19ca2d6 ("be2net: fix sleeping while atomic bugs in be_ndo_bridge_getlink")
-Signed-off-by: Michal Schmidt <mschmidt@redhat.com>
-Reviewed-by: Nikolay Aleksandrov <razor@blackwall.org>
-Link: https://patch.msgid.link/20250801101338.72502-1-mschmidt@redhat.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Fixes: 73e0e4dfed4c ("staging: comedi: comedi_test: fix timer lock-up")
+Cc: stable@vger.kernel.org # 6.15+
+Signed-off-by: Ian Abbott <abbotti@mev.co.uk>
+Link: https://lore.kernel.org/r/20250708130627.21743-1-abbotti@mev.co.uk
+[ file location from drivers/comedi to drivers/staging/comedi and timer_delete_sync() to del_timer_sync(). ]
 Signed-off-by: Sasha Levin <sashal@kernel.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/net/ethernet/emulex/benet/be_cmds.c | 2 +-
+ drivers/staging/comedi/drivers/comedi_test.c |    2 +-
  1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/net/ethernet/emulex/benet/be_cmds.c b/drivers/net/ethernet/emulex/benet/be_cmds.c
-index d9bceb26f4e5..d6984c179bae 100644
---- a/drivers/net/ethernet/emulex/benet/be_cmds.c
-+++ b/drivers/net/ethernet/emulex/benet/be_cmds.c
-@@ -3851,8 +3851,8 @@ int be_cmd_set_mac_list(struct be_adapter *adapter, u8 *mac_array,
- 	status = be_mcc_notify_wait(adapter);
+--- a/drivers/staging/comedi/drivers/comedi_test.c
++++ b/drivers/staging/comedi/drivers/comedi_test.c
+@@ -790,7 +790,7 @@ static void waveform_detach(struct comed
+ {
+ 	struct waveform_private *devpriv = dev->private;
  
- err:
--	dma_free_coherent(&adapter->pdev->dev, cmd.size, cmd.va, cmd.dma);
- 	spin_unlock_bh(&adapter->mcc_lock);
-+	dma_free_coherent(&adapter->pdev->dev, cmd.size, cmd.va, cmd.dma);
- 	return status;
- }
- 
--- 
-2.39.5
-
+-	if (devpriv) {
++	if (devpriv && dev->n_subdevices) {
+ 		del_timer_sync(&devpriv->ai_timer);
+ 		del_timer_sync(&devpriv->ao_timer);
+ 	}
 
 
 
