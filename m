@@ -1,55 +1,57 @@
-Return-Path: <stable+bounces-175941-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-173691-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id C32E9B36B73
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 16:46:01 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id DF51EB35DE3
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 13:49:16 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id F123A987B3C
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 14:28:35 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 970F07C3FEF
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 11:48:26 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E769F353363;
-	Tue, 26 Aug 2025 14:26:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4721026C3A4;
+	Tue, 26 Aug 2025 11:48:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="kp52/eHS"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="t5QuxSi5"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A14F1343D63;
-	Tue, 26 Aug 2025 14:26:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 06D75749C;
+	Tue, 26 Aug 2025 11:48:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756218371; cv=none; b=UUlSH0aZrHsBqnzRjOgf3NkaoUJmYmQqoMEKEhwKVR0Rs/jeXWDDt0ixUnoBmslHrGfNmfpuWCszNSaGjrRsuUqwOi3yclbTaJSBRYqYcZ1m5eMRzRtjNVFGxAzzgMutIqZ9/MVdPg+uH8IoSBoVsmI28cNSjHHgDDV8vXTJ3ls=
+	t=1756208906; cv=none; b=YmiVnhVRtShmBzruaRBfX3+yiPU6boUOPW8tt3t8/yKAlColvhUUpcahOP4gAG7PN/A8ei9/xGtQl+lB2LrhUNM7kP8eKJEhwNRHNWDB8meF1u+if5ffz2jWponBhpIOYu9XJ6gDSgJUlR6gLIoZd3Ehr4a0GM0N3Xca/5yprQ4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756218371; c=relaxed/simple;
-	bh=T1Vt421JVg5JQBGWel1dqi4KMnNrJZ4Xj/rl6hDAaDQ=;
+	s=arc-20240116; t=1756208906; c=relaxed/simple;
+	bh=KYXxTBks21uVp+5VKoCrsKW9rE2DCNVDR0uVo+Qd38U=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=WMqAPHOk+vbgvwTDWftdynU50SBa9YTFSRcDBdG+CnJtCI23hdWS1eYiag070xa7imZHR8MGMeaq+gn28CQx2GVTF/HF+o5hPDny7wvL4tnJU2JouOTyq1zvu2QVpv8tdqN87nIsa4vLkPtz+pyymxecoHEGb+33acJcljd6EWA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=kp52/eHS; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 24D4CC4CEF1;
-	Tue, 26 Aug 2025 14:26:10 +0000 (UTC)
+	 MIME-Version; b=Ls2nZmRJ9luZkNbedBMNQsw/1txXLB8xf+2hmTpgK35f2R91/5LaHsnITR2FQ5R6TnyBOnb4u1P9/Q0RdsE1RGgzZeAIIRXmSFzUlzCMEkzng6QRCzD1ADR5W7hUWW2EuGsABafgqZH4z1hIv7nzKyBRsHEqz8Kx2W2QCwMsW2U=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=t5QuxSi5; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 90FFCC4CEF4;
+	Tue, 26 Aug 2025 11:48:25 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1756218371;
-	bh=T1Vt421JVg5JQBGWel1dqi4KMnNrJZ4Xj/rl6hDAaDQ=;
+	s=korg; t=1756208905;
+	bh=KYXxTBks21uVp+5VKoCrsKW9rE2DCNVDR0uVo+Qd38U=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=kp52/eHSsIl8itXo1+tgZ2UyP3iNaxveAHH7V6IrnBG8GjDfOg84W3W/f1yTzmwc1
-	 4P6xoL43cEfZKDqHKoFiFXEPTDRRmMmC+vZ3uvg1jogOz2qLCYXFOp2gTFN8t1IqsV
-	 yNKCU0AfGxdt6/laub64qvGo+kD1DhmG4Ib2QQIo=
+	b=t5QuxSi5TKsA4yPjZcIG3mkcCX6Yr1mRamZ5hBlDVxFJyL/ZQy1xr/xfTbYetQAaw
+	 U3dFMaZBOyIRC46FAiz43Oup9iY2AYbY7MDmVAnExVU3TCot6C1n0/cgKYcS1oWnXJ
+	 wtoc01vsc3ltaZiwppsatdvqfWDQScDSm3RXT9MA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Wesley Cheng <quic_wcheng@quicinc.com>,
-	Selvarasu Ganesan <selvarasu.g@samsung.com>
-Subject: [PATCH 5.10 496/523] usb: dwc3: Remove DWC3 locking during gadget suspend/resume
+	Minhong He <heminhong@kylinos.cn>,
+	Kuniyuki Iwashima <kuniyu@google.com>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.12 291/322] ipv6: sr: validate HMAC algorithm ID in seg6_hmac_info_add
 Date: Tue, 26 Aug 2025 13:11:46 +0200
-Message-ID: <20250826110936.676705120@linuxfoundation.org>
+Message-ID: <20250826110923.094171042@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250826110924.562212281@linuxfoundation.org>
-References: <20250826110924.562212281@linuxfoundation.org>
+In-Reply-To: <20250826110915.169062587@linuxfoundation.org>
+References: <20250826110915.169062587@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,69 +63,47 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Wesley Cheng <quic_wcheng@quicinc.com>
+From: Minhong He <heminhong@kylinos.cn>
 
-commit 5265397f94424eaea596026fd34dc7acf474dcec upstream.
+[ Upstream commit 84967deee9d9870b15bc4c3acb50f1d401807902 ]
 
-Remove the need for making dwc3_gadget_suspend() and dwc3_gadget_resume()
-to be called in a spinlock, as dwc3_gadget_run_stop() could potentially
-take some time to complete.
+The seg6_genl_sethmac() directly uses the algorithm ID provided by the
+userspace without verifying whether it is an HMAC algorithm supported
+by the system.
+If an unsupported HMAC algorithm ID is configured, packets using SRv6 HMAC
+will be dropped during encapsulation or decapsulation.
 
-Signed-off-by: Wesley Cheng <quic_wcheng@quicinc.com>
-Link: https://lore.kernel.org/r/20220901193625.8727-3-quic_wcheng@quicinc.com
-Signed-off-by: Selvarasu Ganesan <selvarasu.g@samsung.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: 4f4853dc1c9c ("ipv6: sr: implement API to control SR HMAC structure")
+Signed-off-by: Minhong He <heminhong@kylinos.cn>
+Reviewed-by: Kuniyuki Iwashima <kuniyu@google.com>
+Link: https://patch.msgid.link/20250815063845.85426-1-heminhong@kylinos.cn
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/usb/dwc3/core.c   |    4 ----
- drivers/usb/dwc3/gadget.c |    5 +++++
- 2 files changed, 5 insertions(+), 4 deletions(-)
+ net/ipv6/seg6_hmac.c | 3 +++
+ 1 file changed, 3 insertions(+)
 
---- a/drivers/usb/dwc3/core.c
-+++ b/drivers/usb/dwc3/core.c
-@@ -1742,9 +1742,7 @@ static int dwc3_suspend_common(struct dw
- 	case DWC3_GCTL_PRTCAP_DEVICE:
- 		if (pm_runtime_suspended(dwc->dev))
- 			break;
--		spin_lock_irqsave(&dwc->lock, flags);
- 		dwc3_gadget_suspend(dwc);
--		spin_unlock_irqrestore(&dwc->lock, flags);
- 		synchronize_irq(dwc->irq_gadget);
- 		dwc3_core_exit(dwc);
- 		break;
-@@ -1805,9 +1803,7 @@ static int dwc3_resume_common(struct dwc
- 			return ret;
+diff --git a/net/ipv6/seg6_hmac.c b/net/ipv6/seg6_hmac.c
+index e955008e732b..5d21a74c1165 100644
+--- a/net/ipv6/seg6_hmac.c
++++ b/net/ipv6/seg6_hmac.c
+@@ -296,6 +296,9 @@ int seg6_hmac_info_add(struct net *net, u32 key, struct seg6_hmac_info *hinfo)
+ 	struct seg6_pernet_data *sdata = seg6_pernet(net);
+ 	int err;
  
- 		dwc3_set_prtcap(dwc, DWC3_GCTL_PRTCAP_DEVICE);
--		spin_lock_irqsave(&dwc->lock, flags);
- 		dwc3_gadget_resume(dwc);
--		spin_unlock_irqrestore(&dwc->lock, flags);
- 		break;
- 	case DWC3_GCTL_PRTCAP_HOST:
- 		if (!PMSG_IS_AUTO(msg)) {
---- a/drivers/usb/dwc3/gadget.c
-+++ b/drivers/usb/dwc3/gadget.c
-@@ -4115,12 +4115,17 @@ void dwc3_gadget_exit(struct dwc3 *dwc)
- 
- int dwc3_gadget_suspend(struct dwc3 *dwc)
- {
-+	unsigned long flags;
++	if (!__hmac_get_algo(hinfo->alg_id))
++		return -EINVAL;
 +
- 	if (!dwc->gadget_driver)
- 		return 0;
+ 	err = rhashtable_lookup_insert_fast(&sdata->hmac_infos, &hinfo->node,
+ 					    rht_params);
  
- 	dwc3_gadget_run_stop(dwc, false, false);
-+
-+	spin_lock_irqsave(&dwc->lock, flags);
- 	dwc3_disconnect_gadget(dwc);
- 	__dwc3_gadget_stop(dwc);
-+	spin_unlock_irqrestore(&dwc->lock, flags);
- 
- 	return 0;
- }
+-- 
+2.50.1
+
 
 
 
