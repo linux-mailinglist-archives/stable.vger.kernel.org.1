@@ -1,58 +1,55 @@
-Return-Path: <stable+bounces-174883-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-173781-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 81F59B36547
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 15:46:32 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6A5C6B35FB2
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 14:52:48 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 915461BC730D
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 13:39:49 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 85E9C367A21
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 12:51:40 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 986D92264B8;
-	Tue, 26 Aug 2025 13:39:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 899DE1FBCB1;
+	Tue, 26 Aug 2025 12:50:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="x6MKIvpo"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="mJoo7+Jp"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 544171DB127;
-	Tue, 26 Aug 2025 13:39:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 431F81F1518;
+	Tue, 26 Aug 2025 12:50:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756215567; cv=none; b=m6AqrMdGSxhQkSzqWGhRwBuAakInAwrJvFpJ+uRS3qxB3R1v4kRamxkKUWb6bsKd1J2/uM0vbpCwnD8K0Cef0JvCQqUxKnjKqewA5bTIi72YzJxul8+nSMb59p+ofOuZmuQrZjLaV42lnTdiBlSWKo030si/LS3+zRk5UZlLXeU=
+	t=1756212654; cv=none; b=WFi6uVVPS9x3e5SrI6pU4CRhOiInJmCHtpGNRuv0k/D6AkoUGAuXu9UqSIXgnNRrP45bXf9kFfqFbaPbJVo8Jhr7vjtRJRF5sFf55Sj8d2vWaXqaZK01WQxtzb3293Hp9YUDzMCuURH/nSunvwZsiQsZgtV8J+Y+gOY4/rJ12Vo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756215567; c=relaxed/simple;
-	bh=WTdc1ddzF2A6nhx+9pUeDckjcK0era9QOabeux7KtWc=;
+	s=arc-20240116; t=1756212654; c=relaxed/simple;
+	bh=nNMuxw9Bc7hblqowVqYJnc+DcNAbB5VlLbXYIi882Vw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=CqlAjhXe2/2JQ8UTme0ebZ0zRMvs57i7KunpYBhkmnWGVYCAY9APupDpnBuT8OkSlx9Xbdjsefbibn+2fripGw7gnrADtYUfkoUz3/TEOQb3ewlCfRqUdlTsLEL3jnsDdDNVgfSYfNt9FdK/npXp20Pr8xtKdiW1L78PTBXFbhE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=x6MKIvpo; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 78FAFC4CEF1;
-	Tue, 26 Aug 2025 13:39:26 +0000 (UTC)
+	 MIME-Version; b=OaGYVVRKBWAB4kYKofEOgNF4L7muXx6B9Zt6GmtotkEw4Qx2O+MytJIckUrXqcNPKJG71orWGMPt7OtWOuuPmBWGAIoA1rwgVH1C2SiXrQ3tLlv6eL3FBFrGJ17ZVafbwy3OgK8Kl9WBBWjGSUBch820IuoFfqi2BnwrY8k6b5o=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=mJoo7+Jp; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id CAB7AC4CEF4;
+	Tue, 26 Aug 2025 12:50:53 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1756215566;
-	bh=WTdc1ddzF2A6nhx+9pUeDckjcK0era9QOabeux7KtWc=;
+	s=korg; t=1756212654;
+	bh=nNMuxw9Bc7hblqowVqYJnc+DcNAbB5VlLbXYIi882Vw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=x6MKIvpo+JKsBYY0iWRBNfmCaAV8ZNnIeWVYs1r+lCIhtft+O26M/eG0d+oD/KQDd
-	 F71uXkLlgnUgEq79BDFIg34rxhCjPGOrcydgpsk5L9wZw7O56JF5b4K7/yciShYd5I
-	 UszncI1vZodvtT66EwWyE2jJ8rE3ZzLxH9DNtbZg=
+	b=mJoo7+Jp7T/gbGZFvMHAndnAoe8roG23qjG9X9TWvjcJ342wp4Yi2EnjcI0UX64CK
+	 f56U66dfjxVo+tWB0s8V7+SF3W6dLJckTBkhtNsk2xIaZ1gPt6iW470emuFT7JKcSy
+	 9h03o9yjlEGSCdUi0waXQbpmDjBbBuY+71aWml7M=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Dennis Chen <dechen@redhat.com>,
-	Simon Horman <horms@kernel.org>,
-	Rafal Romanowski <rafal.romanowski@intel.com>,
-	Tony Nguyen <anthony.l.nguyen@intel.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 082/644] i40e: report VF tx_dropped with tx_errors instead of tx_discards
+	Benjamin Coddington <bcodding@redhat.com>,
+	Trond Myklebust <trond.myklebust@hammerspace.com>
+Subject: [PATCH 6.6 024/587] NFS: Fix the setting of capabilities when automounting a new filesystem
 Date: Tue, 26 Aug 2025 13:02:53 +0200
-Message-ID: <20250826110948.530598359@linuxfoundation.org>
+Message-ID: <20250826110953.569198008@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250826110946.507083938@linuxfoundation.org>
-References: <20250826110946.507083938@linuxfoundation.org>
+In-Reply-To: <20250826110952.942403671@linuxfoundation.org>
+References: <20250826110952.942403671@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,113 +61,169 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Dennis Chen <dechen@redhat.com>
+From: Trond Myklebust <trond.myklebust@hammerspace.com>
 
-[ Upstream commit 50b2af451597ca6eefe9d4543f8bbf8de8aa00e7 ]
+commit b01f21cacde9f2878492cf318fee61bf4ccad323 upstream.
 
-Currently the tx_dropped field in VF stats is not updated correctly
-when reading stats from the PF. This is because it reads from
-i40e_eth_stats.tx_discards which seems to be unused for per VSI stats,
-as it is not updated by i40e_update_eth_stats() and the corresponding
-register, GLV_TDPC, is not implemented[1].
+Capabilities cannot be inherited when we cross into a new filesystem.
+They need to be reset to the minimal defaults, and then probed for
+again.
 
-Use i40e_eth_stats.tx_errors instead, which is actually updated by
-i40e_update_eth_stats() by reading from GLV_TEPC.
-
-To test, create a VF and try to send bad packets through it:
-
-$ echo 1 > /sys/class/net/enp2s0f0/device/sriov_numvfs
-$ cat test.py
-from scapy.all import *
-
-vlan_pkt = Ether(dst="ff:ff:ff:ff:ff:ff") / Dot1Q(vlan=999) / IP(dst="192.168.0.1") / ICMP()
-ttl_pkt = IP(dst="8.8.8.8", ttl=0) / ICMP()
-
-print("Send packet with bad VLAN tag")
-sendp(vlan_pkt, iface="enp2s0f0v0")
-print("Send packet with TTL=0")
-sendp(ttl_pkt, iface="enp2s0f0v0")
-$ ip -s link show dev enp2s0f0
-16: enp2s0f0: <BROADCAST,MULTICAST,UP,LOWER_UP> mtu 1500 qdisc mq state UP mode DEFAULT group default qlen 1000
-    link/ether 3c:ec:ef:b7:e0:ac brd ff:ff:ff:ff:ff:ff
-    RX:  bytes packets errors dropped  missed   mcast
-             0       0      0       0       0       0
-    TX:  bytes packets errors dropped carrier collsns
-             0       0      0       0       0       0
-    vf 0     link/ether e2:c6:fd:c1:1e:92 brd ff:ff:ff:ff:ff:ff, spoof checking on, link-state auto, trust off
-    RX: bytes  packets  mcast   bcast   dropped
-             0        0       0       0        0
-    TX: bytes  packets   dropped
-             0        0        0
-$ python test.py
-Send packet with bad VLAN tag
-.
-Sent 1 packets.
-Send packet with TTL=0
-.
-Sent 1 packets.
-$ ip -s link show dev enp2s0f0
-16: enp2s0f0: <BROADCAST,MULTICAST,UP,LOWER_UP> mtu 1500 qdisc mq state UP mode DEFAULT group default qlen 1000
-    link/ether 3c:ec:ef:b7:e0:ac brd ff:ff:ff:ff:ff:ff
-    RX:  bytes packets errors dropped  missed   mcast
-             0       0      0       0       0       0
-    TX:  bytes packets errors dropped carrier collsns
-             0       0      0       0       0       0
-    vf 0     link/ether e2:c6:fd:c1:1e:92 brd ff:ff:ff:ff:ff:ff, spoof checking on, link-state auto, trust off
-    RX: bytes  packets  mcast   bcast   dropped
-             0        0       0       0        0
-    TX: bytes  packets   dropped
-             0        0        0
-
-A packet with non-existent VLAN tag and a packet with TTL = 0 are sent,
-but tx_dropped is not incremented.
-
-After patch:
-
-$ ip -s link show dev enp2s0f0
-19: enp2s0f0: <BROADCAST,MULTICAST,UP,LOWER_UP> mtu 1500 qdisc mq state UP mode DEFAULT group default qlen 1000
-    link/ether 3c:ec:ef:b7:e0:ac brd ff:ff:ff:ff:ff:ff
-    RX:  bytes packets errors dropped  missed   mcast
-             0       0      0       0       0       0
-    TX:  bytes packets errors dropped carrier collsns
-             0       0      0       0       0       0
-    vf 0     link/ether 4a:b7:3d:37:f7:56 brd ff:ff:ff:ff:ff:ff, spoof checking on, link-state auto, trust off
-    RX: bytes  packets  mcast   bcast   dropped
-             0        0       0       0        0
-    TX: bytes  packets   dropped
-             0        0        2
-
-Fixes: dc645daef9af5bcbd9c ("i40e: implement VF stats NDO")
-Signed-off-by: Dennis Chen <dechen@redhat.com>
-Link: https://www.intel.com/content/www/us/en/content-details/596333/intel-ethernet-controller-x710-tm4-at2-carlsville-datasheet.html
-Reviewed-by: Simon Horman <horms@kernel.org>
-Tested-by: Rafal Romanowski <rafal.romanowski@intel.com>
-Signed-off-by: Tony Nguyen <anthony.l.nguyen@intel.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Fixes: 54ceac451598 ("NFS: Share NFS superblocks per-protocol per-server per-FSID")
+Cc: stable@vger.kernel.org
+Reviewed-by: Benjamin Coddington <bcodding@redhat.com>
+Signed-off-by: Trond Myklebust <trond.myklebust@hammerspace.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/net/ethernet/intel/i40e/i40e_virtchnl_pf.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ fs/nfs/client.c     |   44 ++++++++++++++++++++++++++++++++++++++++++--
+ fs/nfs/internal.h   |    2 +-
+ fs/nfs/nfs4client.c |   20 +-------------------
+ fs/nfs/nfs4proc.c   |    2 +-
+ 4 files changed, 45 insertions(+), 23 deletions(-)
 
-diff --git a/drivers/net/ethernet/intel/i40e/i40e_virtchnl_pf.c b/drivers/net/ethernet/intel/i40e/i40e_virtchnl_pf.c
-index cc0c775d5d057..7673ce2be1c02 100644
---- a/drivers/net/ethernet/intel/i40e/i40e_virtchnl_pf.c
-+++ b/drivers/net/ethernet/intel/i40e/i40e_virtchnl_pf.c
-@@ -4880,7 +4880,7 @@ int i40e_get_vf_stats(struct net_device *netdev, int vf_id,
- 	vf_stats->broadcast  = stats->rx_broadcast;
- 	vf_stats->multicast  = stats->rx_multicast;
- 	vf_stats->rx_dropped = stats->rx_discards + stats->rx_discards_other;
--	vf_stats->tx_dropped = stats->tx_discards;
-+	vf_stats->tx_dropped = stats->tx_errors;
- 
- 	return 0;
+--- a/fs/nfs/client.c
++++ b/fs/nfs/client.c
+@@ -668,6 +668,44 @@ struct nfs_client *nfs_init_client(struc
  }
--- 
-2.39.5
-
+ EXPORT_SYMBOL_GPL(nfs_init_client);
+ 
++static void nfs4_server_set_init_caps(struct nfs_server *server)
++{
++#if IS_ENABLED(CONFIG_NFS_V4)
++	/* Set the basic capabilities */
++	server->caps = server->nfs_client->cl_mvops->init_caps;
++	if (server->flags & NFS_MOUNT_NORDIRPLUS)
++		server->caps &= ~NFS_CAP_READDIRPLUS;
++	if (server->nfs_client->cl_proto == XPRT_TRANSPORT_RDMA)
++		server->caps &= ~NFS_CAP_READ_PLUS;
++
++	/*
++	 * Don't use NFS uid/gid mapping if we're using AUTH_SYS or lower
++	 * authentication.
++	 */
++	if (nfs4_disable_idmapping &&
++	    server->client->cl_auth->au_flavor == RPC_AUTH_UNIX)
++		server->caps |= NFS_CAP_UIDGID_NOMAP;
++#endif
++}
++
++void nfs_server_set_init_caps(struct nfs_server *server)
++{
++	switch (server->nfs_client->rpc_ops->version) {
++	case 2:
++		server->caps = NFS_CAP_HARDLINKS | NFS_CAP_SYMLINKS;
++		break;
++	case 3:
++		server->caps = NFS_CAP_HARDLINKS | NFS_CAP_SYMLINKS;
++		if (!(server->flags & NFS_MOUNT_NORDIRPLUS))
++			server->caps |= NFS_CAP_READDIRPLUS;
++		break;
++	default:
++		nfs4_server_set_init_caps(server);
++		break;
++	}
++}
++EXPORT_SYMBOL_GPL(nfs_server_set_init_caps);
++
+ /*
+  * Create a version 2 or 3 client
+  */
+@@ -709,7 +747,6 @@ static int nfs_init_server(struct nfs_se
+ 	/* Initialise the client representation from the mount data */
+ 	server->flags = ctx->flags;
+ 	server->options = ctx->options;
+-	server->caps |= NFS_CAP_HARDLINKS | NFS_CAP_SYMLINKS;
+ 
+ 	switch (clp->rpc_ops->version) {
+ 	case 2:
+@@ -745,6 +782,8 @@ static int nfs_init_server(struct nfs_se
+ 	if (error < 0)
+ 		goto error;
+ 
++	nfs_server_set_init_caps(server);
++
+ 	/* Preserve the values of mount_server-related mount options */
+ 	if (ctx->mount_server.addrlen) {
+ 		memcpy(&server->mountd_address, &ctx->mount_server.address,
+@@ -919,7 +958,6 @@ void nfs_server_copy_userdata(struct nfs
+ 	target->acregmax = source->acregmax;
+ 	target->acdirmin = source->acdirmin;
+ 	target->acdirmax = source->acdirmax;
+-	target->caps = source->caps;
+ 	target->options = source->options;
+ 	target->auth_info = source->auth_info;
+ 	target->port = source->port;
+@@ -1145,6 +1183,8 @@ struct nfs_server *nfs_clone_server(stru
+ 	if (error < 0)
+ 		goto out_free_server;
+ 
++	nfs_server_set_init_caps(server);
++
+ 	/* probe the filesystem info for this server filesystem */
+ 	error = nfs_probe_server(server, fh);
+ 	if (error < 0)
+--- a/fs/nfs/internal.h
++++ b/fs/nfs/internal.h
+@@ -223,7 +223,7 @@ extern struct nfs_client *
+ nfs4_find_client_sessionid(struct net *, const struct sockaddr *,
+ 				struct nfs4_sessionid *, u32);
+ extern struct nfs_server *nfs_create_server(struct fs_context *);
+-extern void nfs4_server_set_init_caps(struct nfs_server *);
++extern void nfs_server_set_init_caps(struct nfs_server *);
+ extern struct nfs_server *nfs4_create_server(struct fs_context *);
+ extern struct nfs_server *nfs4_create_referral_server(struct fs_context *);
+ extern int nfs4_update_server(struct nfs_server *server, const char *hostname,
+--- a/fs/nfs/nfs4client.c
++++ b/fs/nfs/nfs4client.c
+@@ -1079,24 +1079,6 @@ static void nfs4_session_limit_xasize(st
+ #endif
+ }
+ 
+-void nfs4_server_set_init_caps(struct nfs_server *server)
+-{
+-	/* Set the basic capabilities */
+-	server->caps |= server->nfs_client->cl_mvops->init_caps;
+-	if (server->flags & NFS_MOUNT_NORDIRPLUS)
+-			server->caps &= ~NFS_CAP_READDIRPLUS;
+-	if (server->nfs_client->cl_proto == XPRT_TRANSPORT_RDMA)
+-		server->caps &= ~NFS_CAP_READ_PLUS;
+-
+-	/*
+-	 * Don't use NFS uid/gid mapping if we're using AUTH_SYS or lower
+-	 * authentication.
+-	 */
+-	if (nfs4_disable_idmapping &&
+-			server->client->cl_auth->au_flavor == RPC_AUTH_UNIX)
+-		server->caps |= NFS_CAP_UIDGID_NOMAP;
+-}
+-
+ static int nfs4_server_common_setup(struct nfs_server *server,
+ 		struct nfs_fh *mntfh, bool auth_probe)
+ {
+@@ -1111,7 +1093,7 @@ static int nfs4_server_common_setup(stru
+ 	if (error < 0)
+ 		goto out;
+ 
+-	nfs4_server_set_init_caps(server);
++	nfs_server_set_init_caps(server);
+ 
+ 	/* Probe the root fh to retrieve its FSID and filehandle */
+ 	error = nfs4_get_rootfh(server, mntfh, auth_probe);
+--- a/fs/nfs/nfs4proc.c
++++ b/fs/nfs/nfs4proc.c
+@@ -3951,7 +3951,7 @@ int nfs4_server_capabilities(struct nfs_
+ 	};
+ 	int err;
+ 
+-	nfs4_server_set_init_caps(server);
++	nfs_server_set_init_caps(server);
+ 	do {
+ 		err = nfs4_handle_exception(server,
+ 				_nfs4_server_capabilities(server, fhandle),
 
 
 
