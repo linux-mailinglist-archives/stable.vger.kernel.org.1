@@ -1,58 +1,56 @@
-Return-Path: <stable+bounces-176082-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-175165-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 154F7B36B02
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 16:42:28 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 049EBB366E1
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 16:01:24 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 3CADE5A07F5
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 14:35:26 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 5AC751C260C4
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 13:54:23 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9EA3635AAA3;
-	Tue, 26 Aug 2025 14:32:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E451135335B;
+	Tue, 26 Aug 2025 13:51:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="0h8k0P8t"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="jcNDJkHH"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5D4CF356903;
-	Tue, 26 Aug 2025 14:32:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9FDA534DCD2;
+	Tue, 26 Aug 2025 13:51:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756218736; cv=none; b=Gu3euAe1eEOKzjZAsrPLalVu+sNPqNuWCuksIsR6aoiAPAwFkVaCcdiRed8HHK/biMhLzYkWEG62YB7FSEVbMMUe5qn+pXZODkUeRgJNKCWBl0ZWnWmxgjStL+rBgs4uVezDK6U09HryZzhCTi7xF5M7JXxeRRyETqj870sY6G0=
+	t=1756216314; cv=none; b=eC1iLB+lDQ6rBl3KFkS5mQu1C34kTMj1tuGaR3OT/veQ/hkrGgsoYdbkDRc4lIZMo0tROFXeSoVtocow1mua6i7PzThyZ1e2dS28ZQe2WibX2SFpcjve8gXFbI6yjnvo7JQKPH1pGEbyu7k0ovHM93oUyBkgJHk5TMFseLNfeWg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756218736; c=relaxed/simple;
-	bh=sKZrVs4grnqZ8pjMIRhIag673saw3A/Y/BoxoR5oXng=;
+	s=arc-20240116; t=1756216314; c=relaxed/simple;
+	bh=N7VNfiZur9ggPcVH9a/Cu0/0BV0ZHYeD1s2dN5rmDXo=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=oJzie+fFgB2K/kuqWLVH8mBaPybrXZPjaXlWGCwpe4X0AryV6cDJTGW2dknJ1PCa36WwOWgU8EcqMrIYFi9VNi1Sp0CKjku+wjfr8oREbnfr0XEUWyB6c+1McrrXsxA+px8NB6d4zEJ3Oys5hfz1Mtc9U9SdVFJC3UyGsd6HEec=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=0h8k0P8t; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E321DC4CEF1;
-	Tue, 26 Aug 2025 14:32:15 +0000 (UTC)
+	 MIME-Version; b=OpYby9od08z1Jnuth0sWAmz766Yz6LD1JehEmx5U3R/P94EqaDnASaKEgjB/eJkHw81kAzKRgv0UK6JMpN3oKcZRL0NT6bIrS0R8zFmn7h4qTRe4oBbRTke03u7/Qd9dR0I+qdhC16wPpnLtuxfgq1Y0WyJlbfzUFJXdHKGDLzs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=jcNDJkHH; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id AC3E5C113D0;
+	Tue, 26 Aug 2025 13:51:52 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1756218736;
-	bh=sKZrVs4grnqZ8pjMIRhIag673saw3A/Y/BoxoR5oXng=;
+	s=korg; t=1756216313;
+	bh=N7VNfiZur9ggPcVH9a/Cu0/0BV0ZHYeD1s2dN5rmDXo=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=0h8k0P8tKje9YHUoyfeHZ1JJaCj9ULSwQdTGXtpym3BXv/0p9CsoWySAlETVOp8pP
-	 meLA3aXftfHhwdcJ825oFUcv4OB67ko3akO47poOnazTzVzVeoY+GmdlCoF2NJHtZa
-	 kwvj67N47QhNwrdtk2K9RmxFjo3eir1PeAR5bbTY=
+	b=jcNDJkHHL+10CpYvDpnxbqoVD/MdChWipF6f3TWKCKeLbX9PH9WEC/pyxLrRW7owP
+	 Wa8Kp8AvTavNSp1NQUPadW3nH6pKFyn2/k8DZPrKwMIbeH0h2oqQ8jAQ1RTNtCXvr2
+	 lN67kWyQqTF5rF9p8zqP4dWk88PUV3kMMQfQKy7o=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Aishwarya TCV <aishwarya.tcv@arm.com>,
-	Leo Yan <leo.yan@arm.com>,
-	Ian Rogers <irogers@google.com>,
-	Namhyung Kim <namhyung@kernel.org>,
+	Matt Johnston <matt@codeconstruct.com.au>,
+	Paolo Abeni <pabeni@redhat.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.4 112/403] perf tests bp_account: Fix leaked file descriptor
+Subject: [PATCH 5.15 347/644] net: mctp: Prevent duplicate binds
 Date: Tue, 26 Aug 2025 13:07:18 +0200
-Message-ID: <20250826110909.813273170@linuxfoundation.org>
+Message-ID: <20250826110954.994590181@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250826110905.607690791@linuxfoundation.org>
-References: <20250826110905.607690791@linuxfoundation.org>
+In-Reply-To: <20250826110946.507083938@linuxfoundation.org>
+References: <20250826110946.507083938@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,59 +62,81 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.4-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Leo Yan <leo.yan@arm.com>
+From: Matt Johnston <matt@codeconstruct.com.au>
 
-[ Upstream commit 4a6cdecaa1497f1fbbd1d5307a225b6ca5a62a90 ]
+[ Upstream commit 3954502377ec05a1b37e2dc9bef0bacd4bbd71b2 ]
 
-Since the commit e9846f5ead26 ("perf test: In forked mode add check that
-fds aren't leaked"), the test "Breakpoint accounting" reports the error:
+Disallow bind() calls that have the same arguments as existing bound
+sockets.  Previously multiple sockets could bind() to the same
+type/local address, with an arbitrary socket receiving matched messages.
 
-  # perf test -vvv "Breakpoint accounting"
-  20: Breakpoint accounting:
-  --- start ---
-  test child forked, pid 373
-  failed opening event 0
-  failed opening event 0
-  watchpoints count 4, breakpoints count 6, has_ioctl 1, share 0
-  wp 0 created
-  wp 1 created
-  wp 2 created
-  wp 3 created
-  wp 0 modified to bp
-  wp max created
-  ---- end(0) ----
-  Leak of file descriptor 7 that opened: 'anon_inode:[perf_event]'
+This is only a partial fix, a future commit will define precedence order
+for MCTP_ADDR_ANY versus specific EID bind(), which are allowed to exist
+together.
 
-A watchpoint's file descriptor was not properly released. This patch
-fixes the leak.
-
-Fixes: 032db28e5fa3 ("perf tests: Add breakpoint accounting/modify test")
-Reported-by: Aishwarya TCV <aishwarya.tcv@arm.com>
-Signed-off-by: Leo Yan <leo.yan@arm.com>
-Reviewed-by: Ian Rogers <irogers@google.com>
-Link: https://lore.kernel.org/r/20250711-perf_fix_breakpoint_accounting-v1-1-b314393023f9@arm.com
-Signed-off-by: Namhyung Kim <namhyung@kernel.org>
+Signed-off-by: Matt Johnston <matt@codeconstruct.com.au>
+Link: https://patch.msgid.link/20250710-mctp-bind-v4-2-8ec2f6460c56@codeconstruct.com.au
+Signed-off-by: Paolo Abeni <pabeni@redhat.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- tools/perf/tests/bp_account.c | 1 +
- 1 file changed, 1 insertion(+)
+ net/mctp/af_mctp.c | 26 +++++++++++++++++++++++---
+ 1 file changed, 23 insertions(+), 3 deletions(-)
 
-diff --git a/tools/perf/tests/bp_account.c b/tools/perf/tests/bp_account.c
-index 55a9de311d7b..e1ff0faa0149 100644
---- a/tools/perf/tests/bp_account.c
-+++ b/tools/perf/tests/bp_account.c
-@@ -93,6 +93,7 @@ static int bp_accounting(int wp_cnt, int share)
- 		fd_wp = wp_event((void *)&the_var, &attr_new);
- 		TEST_ASSERT_VAL("failed to create max wp\n", fd_wp != -1);
- 		pr_debug("wp max created\n");
-+		close(fd_wp);
- 	}
+diff --git a/net/mctp/af_mctp.c b/net/mctp/af_mctp.c
+index 53b3a294b042..61476eb6aac7 100644
+--- a/net/mctp/af_mctp.c
++++ b/net/mctp/af_mctp.c
+@@ -60,7 +60,6 @@ static int mctp_bind(struct socket *sock, struct sockaddr *addr, int addrlen)
  
- 	for (i = 0; i < wp_cnt; i++)
+ 	lock_sock(sk);
+ 
+-	/* TODO: allow rebind */
+ 	if (sk_hashed(sk)) {
+ 		rc = -EADDRINUSE;
+ 		goto out_release;
+@@ -252,15 +251,36 @@ static void mctp_sk_close(struct sock *sk, long timeout)
+ static int mctp_sk_hash(struct sock *sk)
+ {
+ 	struct net *net = sock_net(sk);
++	struct sock *existing;
++	struct mctp_sock *msk;
++	int rc;
++
++	msk = container_of(sk, struct mctp_sock, sk);
+ 
+ 	/* Bind lookup runs under RCU, remain live during that. */
+ 	sock_set_flag(sk, SOCK_RCU_FREE);
+ 
+ 	mutex_lock(&net->mctp.bind_lock);
++
++	/* Prevent duplicate binds. */
++	sk_for_each(existing, &net->mctp.binds) {
++		struct mctp_sock *mex =
++			container_of(existing, struct mctp_sock, sk);
++
++		if (mex->bind_type == msk->bind_type &&
++		    mex->bind_addr == msk->bind_addr &&
++		    mex->bind_net == msk->bind_net) {
++			rc = -EADDRINUSE;
++			goto out;
++		}
++	}
++
+ 	sk_add_node_rcu(sk, &net->mctp.binds);
+-	mutex_unlock(&net->mctp.bind_lock);
++	rc = 0;
+ 
+-	return 0;
++out:
++	mutex_unlock(&net->mctp.bind_lock);
++	return rc;
+ }
+ 
+ static void mctp_sk_unhash(struct sock *sk)
 -- 
 2.39.5
 
