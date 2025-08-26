@@ -1,56 +1,58 @@
-Return-Path: <stable+bounces-175118-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-174504-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 830C0B366C9
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 16:00:25 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id A67F8B363CB
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 15:33:13 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id D798F8A7DAF
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 13:51:19 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 715A78A74A1
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 13:24:42 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id CDDCF350D72;
-	Tue, 26 Aug 2025 13:49:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id ACEEE27EFE7;
+	Tue, 26 Aug 2025 13:22:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="1hUuIz0T"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="XIFoKV55"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8B21A34A315;
-	Tue, 26 Aug 2025 13:49:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6A32F23FC41;
+	Tue, 26 Aug 2025 13:22:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756216187; cv=none; b=l8PwY5Pd24daQohWWjZp6rwhshQoKJJrLEL9KhweKnc/enNPT5fx9W9UKhiTEJAxq2JIqNtcUe7R14uWGgu70LaQQxskEYDq5tHVjxrdaoErb94GZMBkvV1GgwP95t4+G57DWYUQQDprRImbmIkP/5R3ifVXeRK51VC49kOclPE=
+	t=1756214567; cv=none; b=nKsWpjhzkW8RDXDncKQ3xui37tZSBaf4EQxUWEK4gThWQkFbmSYUUYU5aPjAZJBhz4USX0ixEty67Q+TdTv//XO2EvLTaI/iCoDiHRDLOmJInK3dKLjgBzR450RcQnOgGKEVoLYMSz34h6GPRktM6jKZUqKZ8uxnLatOjjrP4fs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756216187; c=relaxed/simple;
-	bh=NdLUW2TJC5t7Seh1FbTJng8Xr8eWf7WUJIHza+QhdYk=;
+	s=arc-20240116; t=1756214567; c=relaxed/simple;
+	bh=cgNWnGYeNOsvMpzayROKu1PR43kTSzq7MvX0k5+tDzY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=EZ2LcysTTmLLLKEpEhhNofEHnxm58qyZKdFPtmdPXcVNgzEi7kYErU2NH0mMpTATBgil+oiJEzDkoJvx5Lk/67ba83vVqFT/RJ9dr9Yw6pjBdEmS9aY6rdb2oZ4OclOCU2XYkGxsu0HiNYDvG2Yg98qVfB9rHiiyViHpg1kJdL8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=1hUuIz0T; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id BDF76C4CEF1;
-	Tue, 26 Aug 2025 13:49:46 +0000 (UTC)
+	 MIME-Version; b=UVei4QwU30py99ZMXISeDJAYsr3iQMXUf+uunXkJ1vVU1ABmtnRaxUvWnJeAbYCSOUq5fSgjV5eRFAPT2TL77PA7Z7OfWPQcO6TS/ct4oHIo0XjCxbzqrYUo2i3Zio9AxUDeIbzHjCTDaIcGL9E8a4QOv+jUprhm4iVDjfOszhI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=XIFoKV55; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id EA8DAC4CEF1;
+	Tue, 26 Aug 2025 13:22:46 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1756216187;
-	bh=NdLUW2TJC5t7Seh1FbTJng8Xr8eWf7WUJIHza+QhdYk=;
+	s=korg; t=1756214567;
+	bh=cgNWnGYeNOsvMpzayROKu1PR43kTSzq7MvX0k5+tDzY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=1hUuIz0Tcrz6RkCnP7AZGjvdYfV3mJ5eJ4Aq2JZxSsbfZr0sQkBAY4VJot3qxhPvN
-	 nOv4M+1hM+cM/gS5POt1kerEK2RVOM790/oo9dzAeucg/NYNpgKks/9t+Ne5Z4itQ8
-	 heqx3t1P4ZfB6AEWInRKLMn6zQGmrHORXf9rP3xU=
+	b=XIFoKV55PdtT2u/InYRSJEOwdM3EWlmxClvwFHcZHc9v3Nn9os6R6sIdJmrETWkcn
+	 xk9YJ0RbTHyGk4rg2XMTHl9qkuYzmY/Szj0JEXlw6RQ4xdao0Iv1Rf72oaoo77es7Y
+	 eIn9YsMXC5wjjoJjoPVx79rqkNNRPEEutk04A/D0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Sebastian Ott <sebott@redhat.com>,
-	"Rafael J. Wysocki" <rafael.j.wysocki@intel.com>,
+	Alex Lazar <alazar@nvidia.com>,
+	Dragos Tatulea <dtatulea@nvidia.com>,
+	Gal Pressman <gal@nvidia.com>,
+	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 317/644] ACPI: processor: fix acpi_object initialization
-Date: Tue, 26 Aug 2025 13:06:48 +0200
-Message-ID: <20250826110954.242236328@linuxfoundation.org>
+Subject: [PATCH 6.1 156/482] net: vlan: Replace BUG() with WARN_ON_ONCE() in vlan_dev_* stubs
+Date: Tue, 26 Aug 2025 13:06:49 +0200
+Message-ID: <20250826110934.667627222@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250826110946.507083938@linuxfoundation.org>
-References: <20250826110946.507083938@linuxfoundation.org>
+In-Reply-To: <20250826110930.769259449@linuxfoundation.org>
+References: <20250826110930.769259449@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,43 +64,58 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Sebastian Ott <sebott@redhat.com>
+From: Gal Pressman <gal@nvidia.com>
 
-[ Upstream commit 13edf7539211d8f7d0068ce3ed143005f1da3547 ]
+[ Upstream commit 60a8b1a5d0824afda869f18dc0ecfe72f8dfda42 ]
 
-Initialization of the local acpi_object in acpi_processor_get_info()
-only sets the first 4 bytes to zero and is thus incomplete. This is
-indicated by messages like:
-	acpi ACPI0007:be: Invalid PBLK length [166288104]
+When CONFIG_VLAN_8021Q=n, a set of stub helpers are used, three of these
+helpers use BUG() unconditionally.
 
-Fix this by initializing all 16 bytes of the processor member of that
-union.
+This code should not be reached, as callers of these functions should
+always check for is_vlan_dev() first, but the usage of BUG() is not
+recommended, replace it with WARN_ON() instead.
 
-Signed-off-by: Sebastian Ott <sebott@redhat.com>
-Link: https://patch.msgid.link/20250703124215.12522-1-sebott@redhat.com
-Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
+Reviewed-by: Alex Lazar <alazar@nvidia.com>
+Reviewed-by: Dragos Tatulea <dtatulea@nvidia.com>
+Signed-off-by: Gal Pressman <gal@nvidia.com>
+Link: https://patch.msgid.link/20250616132626.1749331-3-gal@nvidia.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/acpi/acpi_processor.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ include/linux/if_vlan.h | 6 +++---
+ 1 file changed, 3 insertions(+), 3 deletions(-)
 
-diff --git a/drivers/acpi/acpi_processor.c b/drivers/acpi/acpi_processor.c
-index 8bd5c4fa91f2..cfa75b14caa2 100644
---- a/drivers/acpi/acpi_processor.c
-+++ b/drivers/acpi/acpi_processor.c
-@@ -216,7 +216,7 @@ static inline int acpi_processor_hotadd_init(struct acpi_processor *pr)
+diff --git a/include/linux/if_vlan.h b/include/linux/if_vlan.h
+index 9f7dbbb34094..f4eb8dd7308a 100644
+--- a/include/linux/if_vlan.h
++++ b/include/linux/if_vlan.h
+@@ -253,19 +253,19 @@ vlan_for_each(struct net_device *dev,
  
- static int acpi_processor_get_info(struct acpi_device *device)
+ static inline struct net_device *vlan_dev_real_dev(const struct net_device *dev)
  {
--	union acpi_object object = { 0 };
-+	union acpi_object object = { .processor = { 0 } };
- 	struct acpi_buffer buffer = { sizeof(union acpi_object), &object };
- 	struct acpi_processor *pr = acpi_driver_data(device);
- 	int device_declaration = 0;
+-	BUG();
++	WARN_ON_ONCE(1);
+ 	return NULL;
+ }
+ 
+ static inline u16 vlan_dev_vlan_id(const struct net_device *dev)
+ {
+-	BUG();
++	WARN_ON_ONCE(1);
+ 	return 0;
+ }
+ 
+ static inline __be16 vlan_dev_vlan_proto(const struct net_device *dev)
+ {
+-	BUG();
++	WARN_ON_ONCE(1);
+ 	return 0;
+ }
+ 
 -- 
 2.39.5
 
