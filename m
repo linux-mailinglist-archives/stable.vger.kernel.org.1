@@ -1,56 +1,55 @@
-Return-Path: <stable+bounces-174544-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-173139-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id D4CEEB36310
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 15:26:02 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 08890B35BDA
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 13:28:43 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id BB9E57B23DA
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 13:24:26 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 9A9801885BC8
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 11:24:58 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 614AC341AA6;
-	Tue, 26 Aug 2025 13:24:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 181E717332C;
+	Tue, 26 Aug 2025 11:24:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Rg5Np2og"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Nrw2rNIH"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1E98B196C7C;
-	Tue, 26 Aug 2025 13:24:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CAB3B1A256B;
+	Tue, 26 Aug 2025 11:24:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756214673; cv=none; b=jtgXq83tTJ7FZNK4H+DtqKR+3DxYdHJ5MTOm0O3SmvU+3FlpAOmiLlH95MJQzfoUXE8u6/8B6cw8RrVR6r1SOQtvh7QCWxmxtq5ygAtUxI3SBe6g3t6histkvOUCpDMV2UEymIu/FfERc9HQ3eC0ZnTbhdvMsuE467rXRvgdfSk=
+	t=1756207473; cv=none; b=XVx87Mfgcp57/vcTW/knUrgQwSlh4glfgunXVueK/daKSrirISE/zmjytHQaKkBd3Y4gKRkqjBnoSY1VRiwyD1breoI4+INIxRHlGQ9I4OKRSkuOps8F2Hkb8Vncsb/j/XiaiAdmE7+lYRVXgdj/dKDV9JgHQYsH4qRxzXog6KU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756214673; c=relaxed/simple;
-	bh=izvSYM7MB/GBKFHcRvzlAdYEsQ+9mf+e9O+UmzZhRU4=;
+	s=arc-20240116; t=1756207473; c=relaxed/simple;
+	bh=qNy/Kl/DtA7e8Dh7wozSGcOVJX994g8ITC4IJgS4qDc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=NHwsnr5LvLyQz/A24WDbHTeULK92d7duaPtgybD3w71jWZY7M6t9xTLSdp846bU0Iw+W63X3BmSumd6ItZu1jEu80BK/YeuYOBeQFiD2pPyW+vui+wdFmGyrIAgXOS1YKDOUjuunjSUT8Hz2xm3hMmmNjORrSoWvmCM8fW8rg1E=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Rg5Np2og; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4BAABC4CEF1;
-	Tue, 26 Aug 2025 13:24:32 +0000 (UTC)
+	 MIME-Version; b=JB9FCQlgQD+9vxZDvDKvNd4/ohxukBS1LEVSp0G1JkxXjbNcurpETqc5NYoEvDVIDWguwZTuX00fPH+uTx+AqHAWXGIQbMOWbLiPeiIu8WZikQsAmwjD8dhe6vlxOVh/pms0geCeaXGbXJIMgMn33xFgv+8Kb+8BDKhs7sTVREg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Nrw2rNIH; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5F38FC113CF;
+	Tue, 26 Aug 2025 11:24:33 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1756214672;
-	bh=izvSYM7MB/GBKFHcRvzlAdYEsQ+9mf+e9O+UmzZhRU4=;
+	s=korg; t=1756207473;
+	bh=qNy/Kl/DtA7e8Dh7wozSGcOVJX994g8ITC4IJgS4qDc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Rg5Np2og73Xy3oElM8yPGoNurRXEpkw+bbLC4BIateWfuRgxi8XBs3VaDLPgWwiHJ
-	 N7nmrRWsIWlE1D6uH4VT53D1zLa3LYhLcNkS6Mocn3qinkP0Sxa7P5zmaDb+3k2vWX
-	 pBj1HdKh9TJ46LI8UyigbzWJaa15d0CEZ+wUYBEY=
+	b=Nrw2rNIHIpSv5dnbnHFUOUwmk7cGCzpzKh59DxFVY38h0KUNFoIDjDhESBEjgMlxf
+	 2Y9PmjMV30lHclDWrzkXQ9g8FQqrKAJk3nvXuLfoMtUdVV43K0gnaeS+thuqrQ3ifq
+	 hWCi7trcIob7Hc7iUUJ1OGiLwdgRAvg4Xy3KD/Vw=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Masahiro Yamada <masahiroy@kernel.org>,
-	Randy Dunlap <rdunlap@infradead.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 227/482] kconfig: gconf: fix potential memory leak in renderer_edited()
+	Bibo Mao <maobibo@loongson.cn>,
+	Huacai Chen <chenhuacai@loongson.cn>
+Subject: [PATCH 6.16 196/457] LoongArch: KVM: Add address alignment check in pch_pic register access
 Date: Tue, 26 Aug 2025 13:08:00 +0200
-Message-ID: <20250826110936.384181573@linuxfoundation.org>
+Message-ID: <20250826110942.211122654@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250826110930.769259449@linuxfoundation.org>
-References: <20250826110930.769259449@linuxfoundation.org>
+In-Reply-To: <20250826110937.289866482@linuxfoundation.org>
+References: <20250826110937.289866482@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,47 +61,53 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.16-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Masahiro Yamada <masahiroy@kernel.org>
+From: Bibo Mao <maobibo@loongson.cn>
 
-[ Upstream commit f72ed4c6a375e52a3f4b75615e4a89d29d8acea7 ]
+commit 538c06e3964a8e94b645686cc58ccc4a06fa6330 upstream.
 
-If gtk_tree_model_get_iter() fails, gtk_tree_path_free() is not called.
+With pch_pic device, its register is based on MMIO address space,
+different access size 1/2/4/8 is supported. And base address should
+be naturally aligned with its access size, here add alignment check
+in its register access emulation function.
 
-Signed-off-by: Masahiro Yamada <masahiroy@kernel.org>
-Acked-by: Randy Dunlap <rdunlap@infradead.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Cc: stable@vger.kernel.org
+Signed-off-by: Bibo Mao <maobibo@loongson.cn>
+Signed-off-by: Huacai Chen <chenhuacai@loongson.cn>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- scripts/kconfig/gconf.c | 3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+ arch/loongarch/kvm/intc/pch_pic.c |   10 ++++++++++
+ 1 file changed, 10 insertions(+)
 
-diff --git a/scripts/kconfig/gconf.c b/scripts/kconfig/gconf.c
-index 87f8a4db5bc6..3c726ead8f7e 100644
---- a/scripts/kconfig/gconf.c
-+++ b/scripts/kconfig/gconf.c
-@@ -783,7 +783,7 @@ static void renderer_edited(GtkCellRendererText * cell,
- 	struct symbol *sym;
+--- a/arch/loongarch/kvm/intc/pch_pic.c
++++ b/arch/loongarch/kvm/intc/pch_pic.c
+@@ -195,6 +195,11 @@ static int kvm_pch_pic_read(struct kvm_v
+ 		return -EINVAL;
+ 	}
  
- 	if (!gtk_tree_model_get_iter(model2, &iter, path))
--		return;
-+		goto free;
++	if (addr & (len - 1)) {
++		kvm_err("%s: pch pic not aligned addr %llx len %d\n", __func__, addr, len);
++		return -EINVAL;
++	}
++
+ 	/* statistics of pch pic reading */
+ 	vcpu->kvm->stat.pch_pic_read_exits++;
+ 	ret = loongarch_pch_pic_read(s, addr, len, val);
+@@ -302,6 +307,11 @@ static int kvm_pch_pic_write(struct kvm_
+ 		return -EINVAL;
+ 	}
  
- 	gtk_tree_model_get(model2, &iter, COL_MENU, &menu, -1);
- 	sym = menu->sym;
-@@ -795,6 +795,7 @@ static void renderer_edited(GtkCellRendererText * cell,
- 
- 	update_tree(&rootmenu, NULL);
- 
-+free:
- 	gtk_tree_path_free(path);
- }
- 
--- 
-2.39.5
-
++	if (addr & (len - 1)) {
++		kvm_err("%s: pch pic not aligned addr %llx len %d\n", __func__, addr, len);
++		return -EINVAL;
++	}
++
+ 	/* statistics of pch pic writing */
+ 	vcpu->kvm->stat.pch_pic_write_exits++;
+ 	ret = loongarch_pch_pic_write(s, addr, len, val);
 
 
 
