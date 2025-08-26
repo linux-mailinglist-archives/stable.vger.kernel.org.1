@@ -1,56 +1,58 @@
-Return-Path: <stable+bounces-175868-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-176279-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3E5E2B369EA
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 16:32:31 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 59904B36C12
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 16:52:26 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id B2D0D1B20328
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 14:25:30 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 127C9587D98
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 14:43:32 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 89E7F350D50;
-	Tue, 26 Aug 2025 14:23:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 28FD835337D;
+	Tue, 26 Aug 2025 14:40:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="x/xBE2Iw"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="YvlsO8hf"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4604B13C3F2;
-	Tue, 26 Aug 2025 14:23:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D7093353360;
+	Tue, 26 Aug 2025 14:40:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756218180; cv=none; b=W7mu0oq4Df3Maa7C16+mD2AMYzkM5R5Qck9RmPr0/a/ff8bVU7khmy8UTI+m67ZNaNJQBzpIvryuW1XHS7PxKfTNhqW5qULbROy2d+uKapYOx0vkNV2MuuOqzM2E97ibW8pOM7a9MBTnfT16FBNEe8Rw3yz8NRpzCk1nKeVgiEM=
+	t=1756219242; cv=none; b=mMJKHnZYLdWACDOP2IeNmybGGcolrtH7OI66nkUIva9Cw1AiFEzz6JEcRtiVMh9xpsbZis/rsUMyuBYhDrenestiiIoLVB+TZed3YAF8+oz2fK/TWYZsoQijjyN8Cr2CALV1VYkWoa34OuLGySxr9kMCyPcCKtdIOVXL52++tfc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756218180; c=relaxed/simple;
-	bh=YKoWhk+G5lDC+Xl6DuqRgjxsJ3npF18iFqcMjGP6p+k=;
+	s=arc-20240116; t=1756219242; c=relaxed/simple;
+	bh=y7ErCXkuP6m5ultr5E8aADI3l3damcNGGLw02EILQLk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=CKioCRakZIb+GJXuhigoqXBgJjnys90I+la0RAzqFGaMSPD3Hq1nyO9bjwMb6OgOxaaq7o0U9fDMgMePJEs3FvPUvPGCdPdcYw9XYJl3qnhLmRR/Ccuje4ETHHPdSshIX/bWnvWw+YrviZ1vd/NoWcS689th+90CMI33LfpmYqI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=x/xBE2Iw; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id CB679C4CEF1;
-	Tue, 26 Aug 2025 14:22:59 +0000 (UTC)
+	 MIME-Version; b=u3pUUlTcRCDQ6/zMnS17DLpU2JpQZL8/vlqSlXOH5GV7mr+z0PpxMgsPxCqAatXkmZbm7rt7vhRXGe5vxkrgZCLYNWSVnXnBsrFklD+2Lh2RjdAaD9WMPzcQyTMQZVnpVxgIiQzG/VVl84VBw2YC0H43ITDOXYm58pq7R7pQzvY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=YvlsO8hf; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6E99DC4CEF1;
+	Tue, 26 Aug 2025 14:40:42 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1756218180;
-	bh=YKoWhk+G5lDC+Xl6DuqRgjxsJ3npF18iFqcMjGP6p+k=;
+	s=korg; t=1756219242;
+	bh=y7ErCXkuP6m5ultr5E8aADI3l3damcNGGLw02EILQLk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=x/xBE2IwgXeBhDYfU096kfqyViuGJzmEiUeesg9O/IriRA0Zpsx8PxQbGjK0D+iC0
-	 kBR/GYRPxojo05/2fqu3hQYFSm3+5BjU5BNxh4DqwvgnAWRFaPhH9zaSpw9sIOZJ1e
-	 B8BZAWJgofMcu2pE3KfXtgLRFC64lc14HAqO1k44=
+	b=YvlsO8hfDtAl8Q+/HiY0QhyJ6f8IIw79po8H4VGkMkfGVp7TmNtkLY+33OMkM8kVq
+	 LnmXfvIjpnay/tSFrNu8SPEoD/SrXXvs5m2ng7Er/HMBLlZGYtSG9yVoNqryzQ810Y
+	 moNMLI7tgY39puIJjcV1PZYFF5WO64ZRz1AjmI58=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Maulik Shah <maulik.shah@oss.qualcomm.com>,
-	Ulf Hansson <ulf.hansson@linaro.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 423/523] pmdomain: governor: Consider CPU latency tolerance from pm_domain_cpu_gov
+	Vedang Nagar <quic_vnagar@quicinc.com>,
+	Dikshita Agarwal <quic_dikshita@quicinc.com>,
+	Bryan ODonoghue <bryan.odonoghue@linaro.org>,
+	Bryan ODonoghue <bod@kernel.org>,
+	Hans Verkuil <hverkuil@xs4all.nl>
+Subject: [PATCH 5.4 307/403] media: venus: Add a check for packet size after reading from shared memory
 Date: Tue, 26 Aug 2025 13:10:33 +0200
-Message-ID: <20250826110934.891148368@linuxfoundation.org>
+Message-ID: <20250826110915.295734298@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250826110924.562212281@linuxfoundation.org>
-References: <20250826110924.562212281@linuxfoundation.org>
+In-Reply-To: <20250826110905.607690791@linuxfoundation.org>
+References: <20250826110905.607690791@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,116 +64,52 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+5.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Maulik Shah <maulik.shah@oss.qualcomm.com>
+From: Vedang Nagar <quic_vnagar@quicinc.com>
 
-[ Upstream commit 500ba33284416255b9a5b50ace24470b6fe77ea5 ]
+commit 49befc830daa743e051a65468c05c2ff9e8580e6 upstream.
 
-pm_domain_cpu_gov is selecting a cluster idle state but does not consider
-latency tolerance of child CPUs. This results in deeper cluster idle state
-whose latency does not meet latency tolerance requirement.
+Add a check to ensure that the packet size does not exceed the number of
+available words after reading the packet header from shared memory. This
+ensures that the size provided by the firmware is safe to process and
+prevent potential out-of-bounds memory access.
 
-Select deeper idle state only if global and device latency tolerance of all
-child CPUs meet.
-
-Test results on SM8750 with 300 usec PM-QoS on CPU0 which is less than
-domain idle state entry (2150) + exit (1983) usec latency mentioned in
-devicetree, demonstrate the issue.
-
-	# echo 300 > /sys/devices/system/cpu/cpu0/power/pm_qos_resume_latency_us
-
-Before: (Usage is incrementing)
-======
-	# cat /sys/kernel/debug/pm_genpd/power-domain-cluster0/idle_states
-	State          Time Spent(ms) Usage      Rejected   Above      Below
-	S0             29817          537        8          270        0
-
-	# cat /sys/kernel/debug/pm_genpd/power-domain-cluster0/idle_states
-	State          Time Spent(ms) Usage      Rejected   Above      Below
-	S0             30348          542        8          271        0
-
-After: (Usage is not incrementing due to latency tolerance)
-======
-	# cat /sys/kernel/debug/pm_genpd/power-domain-cluster0/idle_states
-	State          Time Spent(ms) Usage      Rejected   Above      Below
-	S0             39319          626        14         307        0
-
-	# cat /sys/kernel/debug/pm_genpd/power-domain-cluster0/idle_states
-	State          Time Spent(ms) Usage      Rejected   Above      Below
-	S0             39319          626        14         307        0
-
-Signed-off-by: Maulik Shah <maulik.shah@oss.qualcomm.com>
-Fixes: e94999688e3a ("PM / Domains: Add genpd governor for CPUs")
+Fixes: d96d3f30c0f2 ("[media] media: venus: hfi: add Venus HFI files")
 Cc: stable@vger.kernel.org
-Link: https://lore.kernel.org/r/20250709-pmdomain_qos-v2-1-976b12257899@oss.qualcomm.com
-Signed-off-by: Ulf Hansson <ulf.hansson@linaro.org>
-[ adapted file path from drivers/pmdomain/governor.c to drivers/base/power/domain_governor.c ]
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Signed-off-by: Vedang Nagar <quic_vnagar@quicinc.com>
+Co-developed-by: Dikshita Agarwal <quic_dikshita@quicinc.com>
+Signed-off-by: Dikshita Agarwal <quic_dikshita@quicinc.com>
+Reviewed-by: Bryan O'Donoghue <bryan.odonoghue@linaro.org>
+Signed-off-by: Bryan O'Donoghue <bod@kernel.org>
+Signed-off-by: Hans Verkuil <hverkuil@xs4all.nl>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/base/power/domain_governor.c |   18 ++++++++++++++++--
- 1 file changed, 16 insertions(+), 2 deletions(-)
+ drivers/media/platform/qcom/venus/hfi_venus.c |    4 ++++
+ 1 file changed, 4 insertions(+)
 
---- a/drivers/base/power/domain_governor.c
-+++ b/drivers/base/power/domain_governor.c
-@@ -8,6 +8,7 @@
- #include <linux/pm_domain.h>
- #include <linux/pm_qos.h>
- #include <linux/hrtimer.h>
-+#include <linux/cpu.h>
- #include <linux/cpuidle.h>
- #include <linux/cpumask.h>
- #include <linux/ktime.h>
-@@ -254,6 +255,8 @@ static bool cpu_power_down_ok(struct dev
- 	struct generic_pm_domain *genpd = pd_to_genpd(pd);
- 	struct cpuidle_device *dev;
- 	ktime_t domain_wakeup, next_hrtimer;
-+	struct device *cpu_dev;
-+	s64 cpu_constraint, global_constraint;
- 	s64 idle_duration_ns;
- 	int cpu, i;
- 
-@@ -264,6 +267,7 @@ static bool cpu_power_down_ok(struct dev
- 	if (!(genpd->flags & GENPD_FLAG_CPU_DOMAIN))
- 		return true;
- 
-+	global_constraint = cpu_latency_qos_limit();
- 	/*
- 	 * Find the next wakeup for any of the online CPUs within the PM domain
- 	 * and its subdomains. Note, we only need the genpd->cpus, as it already
-@@ -277,8 +281,16 @@ static bool cpu_power_down_ok(struct dev
- 			if (ktime_before(next_hrtimer, domain_wakeup))
- 				domain_wakeup = next_hrtimer;
+--- a/drivers/media/platform/qcom/venus/hfi_venus.c
++++ b/drivers/media/platform/qcom/venus/hfi_venus.c
+@@ -240,6 +240,7 @@ static int venus_write_queue(struct venu
+ static int venus_read_queue(struct venus_hfi_device *hdev,
+ 			    struct iface_queue *queue, void *pkt, u32 *tx_req)
+ {
++	struct hfi_pkt_hdr *pkt_hdr = NULL;
+ 	struct hfi_queue_header *qhdr;
+ 	u32 dwords, new_rd_idx;
+ 	u32 rd_idx, wr_idx, type, qsize;
+@@ -305,6 +306,9 @@ static int venus_read_queue(struct venus
+ 			memcpy(pkt, rd_ptr, len);
+ 			memcpy(pkt + len, queue->qmem.kva, new_rd_idx << 2);
  		}
-+
-+		cpu_dev = get_cpu_device(cpu);
-+		if (cpu_dev) {
-+			cpu_constraint = dev_pm_qos_raw_resume_latency(cpu_dev);
-+			if (cpu_constraint < global_constraint)
-+				global_constraint = cpu_constraint;
-+		}
- 	}
- 
-+	global_constraint *= NSEC_PER_USEC;
- 	/* The minimum idle duration is from now - until the next wakeup. */
- 	idle_duration_ns = ktime_to_ns(ktime_sub(domain_wakeup, ktime_get()));
- 	if (idle_duration_ns <= 0)
-@@ -291,8 +303,10 @@ static bool cpu_power_down_ok(struct dev
- 	 */
- 	i = genpd->state_idx;
- 	do {
--		if (idle_duration_ns >= (genpd->states[i].residency_ns +
--		    genpd->states[i].power_off_latency_ns)) {
-+		if ((idle_duration_ns >= (genpd->states[i].residency_ns +
-+		    genpd->states[i].power_off_latency_ns)) &&
-+		    (global_constraint >= (genpd->states[i].power_on_latency_ns +
-+		    genpd->states[i].power_off_latency_ns))) {
- 			genpd->state_idx = i;
- 			return true;
- 		}
++		pkt_hdr = (struct hfi_pkt_hdr *)(pkt);
++		if ((pkt_hdr->size >> 2) != dwords)
++			return -EINVAL;
+ 	} else {
+ 		/* bad packet received, dropping */
+ 		new_rd_idx = qhdr->write_idx;
 
 
 
