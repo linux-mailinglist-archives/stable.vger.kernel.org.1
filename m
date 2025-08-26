@@ -1,59 +1,55 @@
-Return-Path: <stable+bounces-174175-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-175824-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id EB116B361D4
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 15:12:46 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 321C5B369BA
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 16:29:57 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 5F9E95E7673
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 13:08:12 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 160EE563442
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 14:22:12 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1194A23026B;
-	Tue, 26 Aug 2025 13:08:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9272035209C;
+	Tue, 26 Aug 2025 14:21:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="EFWnl19C"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="bnVoif/J"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C4C87184540;
-	Tue, 26 Aug 2025 13:08:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3DB43352067;
+	Tue, 26 Aug 2025 14:21:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756213691; cv=none; b=A58jmgyulfiLIPm8rnjQvG33ebyOYWRj/jUXd0f4/WrTit4P7XcjhoB0uK7onZEFQ+tboLgFTI6FL4kd+J0zbqKJvOPIUpeskIIZs8IXMY4d+RU41oyd8D+761TBZkliKm744TvmiUqRu4Oi61Xmh9Sjv0LoStm8Hjj/ub/urMI=
+	t=1756218067; cv=none; b=g8HsfpmedN9CI0WWvzrAdq3fQH5E1bxjEbNYjHLZf6UTBChzjPd9xYLatmh4c1oxqwuVQmD+rjto3hOBXXE9qQJGJYJAyGugpuJKBd6TaT3fs+9BOqHi1VJv2912/UE7MRC15eoHcrR5PhxzjrB3+w9MYVlLvQAqHzfxABHm1Zw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756213691; c=relaxed/simple;
-	bh=O7el+eekOKPGNIsTXoA1cYKtLXGGCoQYEfn0GGIENL4=;
+	s=arc-20240116; t=1756218067; c=relaxed/simple;
+	bh=yHmpKuJusqM14UMOksodTrjM95biyJp+WXj6kiFU2fY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=OfO3oqi8vEjVPnvfyH+v+2a9q1iPwBCdRQ43bWPc+4NREYlyDrenwupk/pkkuVajgg8cXrng6zBWebomdOGzRGDluI5Vq4Se7Git/Jfjzh79bvQ5Z/SidUfYS7E4f0d3IPBt3YkymVj/7yBWL9frMmV6LQ2XHJ3epCfTjZOv+nA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=EFWnl19C; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 52D0BC4CEF1;
-	Tue, 26 Aug 2025 13:08:11 +0000 (UTC)
+	 MIME-Version; b=bcVqGF0SzaqWDv0Z+yXcW8DlDixQYf0TEsLWe4ymY8Uyv1i9OOhRpckTcwgiYCBUO5XZCld1e+VHnoFpQJy4Oux0t0HT1FycLW9a5VnMPIZHxZVRS7af4MVbWyutoNJ5B0UrH805IwyOSD0baroZVFSxf4nuaDtLe+fHpwF1pkQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=bnVoif/J; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B7085C4CEF1;
+	Tue, 26 Aug 2025 14:21:06 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1756213691;
-	bh=O7el+eekOKPGNIsTXoA1cYKtLXGGCoQYEfn0GGIENL4=;
+	s=korg; t=1756218067;
+	bh=yHmpKuJusqM14UMOksodTrjM95biyJp+WXj6kiFU2fY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=EFWnl19C3HhxD3cn7H9xpZWbuhG6ph2j17+DPINxj+vembac9D4LLVCHbAioltLEs
-	 Fr6XKiCVfYnt5vsbDltx3tDwGSVSE7QpNIFlRAJhIIX3kOsY0am9Cpq+qqFJkRf5K+
-	 /7BGjZSZSVKozTlpBq4UlibBS3Bislv77rnMink4=
+	b=bnVoif/JuuGm8y6Jj3uvQYXYJOSLcp3jDIYfAYrd4iCJOOU6UNgkfCHWenWgYmAb7
+	 24CKAXHWKig5p7jDcLamA01I7Vi7BJOEi0eXGobc4id4IF2tclevq7kA5lhr/LG/ce
+	 FltJavbT9wNFQCbdlUaDjsBzRXnrzlk+HiCIzZpg=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Laurent Bigonville <bigon@bigon.be>,
-	Mario Limonciello <mario.limonciello@amd.com>,
-	Lukas Wunner <lukas@wunner.de>,
-	Bjorn Helgaas <bhelgaas@google.com>,
-	"Rafael J. Wysocki" <rafael@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 442/587] PCI/ACPI: Fix runtime PM ref imbalance on Hot-Plug Capable ports
+	Gui-Dong Han <hanguidong02@gmail.com>,
+	Hans Verkuil <hverkuil@xs4all.nl>
+Subject: [PATCH 5.10 381/523] media: rainshadow-cec: fix TOCTOU race condition in rain_interrupt()
 Date: Tue, 26 Aug 2025 13:09:51 +0200
-Message-ID: <20250826111004.200426493@linuxfoundation.org>
+Message-ID: <20250826110933.861572078@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250826110952.942403671@linuxfoundation.org>
-References: <20250826110952.942403671@linuxfoundation.org>
+In-Reply-To: <20250826110924.562212281@linuxfoundation.org>
+References: <20250826110924.562212281@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -65,143 +61,59 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Lukas Wunner <lukas@wunner.de>
+From: Gui-Dong Han <hanguidong02@gmail.com>
 
-[ Upstream commit 6cff20ce3b92ffbf2fc5eb9e5a030b3672aa414a ]
+commit 7af160aea26c7dc9e6734d19306128cce156ec40 upstream.
 
-pci_bridge_d3_possible() is called from both pcie_portdrv_probe() and
-pcie_portdrv_remove() to determine whether runtime power management shall
-be enabled (on probe) or disabled (on remove) on a PCIe port.
+In the interrupt handler rain_interrupt(), the buffer full check on
+rain->buf_len is performed before acquiring rain->buf_lock. This
+creates a Time-of-Check to Time-of-Use (TOCTOU) race condition, as
+rain->buf_len is concurrently accessed and modified in the work
+handler rain_irq_work_handler() under the same lock.
 
-The underlying assumption is that pci_bridge_d3_possible() always returns
-the same value, else a runtime PM reference imbalance would occur.  That
-assumption is not given if the PCIe port is inaccessible on remove due to
-hot-unplug:  pci_bridge_d3_possible() calls pciehp_is_native(), which
-accesses Config Space to determine whether the port is Hot-Plug Capable.
-An inaccessible port returns "all ones", which is converted to "all
-zeroes" by pcie_capability_read_dword().  Hence the port no longer seems
-Hot-Plug Capable on remove even though it was on probe.
+Multiple interrupt invocations can race, with each reading buf_len
+before it becomes full and then proceeding. This can lead to both
+interrupts attempting to write to the buffer, incrementing buf_len
+beyond its capacity (DATA_SIZE) and causing a buffer overflow.
 
-The resulting runtime PM ref imbalance causes warning messages such as:
+Fix this bug by moving the spin_lock() to before the buffer full
+check. This ensures that the check and the subsequent buffer modification
+are performed atomically, preventing the race condition. An corresponding
+spin_unlock() is added to the overflow path to correctly release the
+lock.
 
-  pcieport 0000:02:04.0: Runtime PM usage count underflow!
+This possible bug was found by an experimental static analysis tool
+developed by our team.
 
-Avoid the Config Space access (and thus the runtime PM ref imbalance) by
-caching the Hot-Plug Capable bit in struct pci_dev.
-
-The struct already contains an "is_hotplug_bridge" flag, which however is
-not only set on Hot-Plug Capable PCIe ports, but also Conventional PCI
-Hot-Plug bridges and ACPI slots.  The flag identifies bridges which are
-allocated additional MMIO and bus number resources to allow for hierarchy
-expansion.
-
-The kernel is somewhat sloppily using "is_hotplug_bridge" in a number of
-places to identify Hot-Plug Capable PCIe ports, even though the flag
-encompasses other devices.  Subsequent commits replace these occurrences
-with the new flag to clearly delineate Hot-Plug Capable PCIe ports from
-other kinds of hotplug bridges.
-
-Document the existing "is_hotplug_bridge" and the new "is_pciehp" flag
-and document the (non-obvious) requirement that pci_bridge_d3_possible()
-always returns the same value across the entire lifetime of a bridge,
-including its hot-removal.
-
-Fixes: 5352a44a561d ("PCI: pciehp: Make pciehp_is_native() stricter")
-Reported-by: Laurent Bigonville <bigon@bigon.be>
-Closes: https://bugzilla.kernel.org/show_bug.cgi?id=220216
-Reported-by: Mario Limonciello <mario.limonciello@amd.com>
-Closes: https://lore.kernel.org/r/20250609020223.269407-3-superm1@kernel.org/
-Link: https://lore.kernel.org/all/20250620025535.3425049-3-superm1@kernel.org/T/#u
-Signed-off-by: Lukas Wunner <lukas@wunner.de>
-Signed-off-by: Bjorn Helgaas <bhelgaas@google.com>
-Acked-by: Rafael J. Wysocki <rafael@kernel.org>
-Cc: stable@vger.kernel.org # v4.18+
-Link: https://patch.msgid.link/fe5dcc3b2e62ee1df7905d746bde161eb1b3291c.1752390101.git.lukas@wunner.de
-[ changed "recent enough PCIe ports" comment to "some PCIe ports" ]
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Fixes: 0f314f6c2e77 ("[media] rainshadow-cec: new RainShadow Tech HDMI CEC driver")
+Cc: stable@vger.kernel.org
+Signed-off-by: Gui-Dong Han <hanguidong02@gmail.com>
+Signed-off-by: Hans Verkuil <hverkuil@xs4all.nl>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/pci/pci-acpi.c |    4 +---
- drivers/pci/pci.c      |    8 ++++++--
- drivers/pci/probe.c    |    2 +-
- include/linux/pci.h    |   10 +++++++++-
- 4 files changed, 17 insertions(+), 7 deletions(-)
+ drivers/media/cec/usb/rainshadow/rainshadow-cec.c |    3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
---- a/drivers/pci/pci-acpi.c
-+++ b/drivers/pci/pci-acpi.c
-@@ -793,13 +793,11 @@ int pci_acpi_program_hp_params(struct pc
- bool pciehp_is_native(struct pci_dev *bridge)
+--- a/drivers/media/cec/usb/rainshadow/rainshadow-cec.c
++++ b/drivers/media/cec/usb/rainshadow/rainshadow-cec.c
+@@ -171,11 +171,12 @@ static irqreturn_t rain_interrupt(struct
  {
- 	const struct pci_host_bridge *host;
--	u32 slot_cap;
+ 	struct rain *rain = serio_get_drvdata(serio);
  
- 	if (!IS_ENABLED(CONFIG_HOTPLUG_PCI_PCIE))
- 		return false;
- 
--	pcie_capability_read_dword(bridge, PCI_EXP_SLTCAP, &slot_cap);
--	if (!(slot_cap & PCI_EXP_SLTCAP_HPC))
-+	if (!bridge->is_pciehp)
- 		return false;
- 
- 	if (pcie_ports_native)
---- a/drivers/pci/pci.c
-+++ b/drivers/pci/pci.c
-@@ -3065,8 +3065,12 @@ static const struct dmi_system_id bridge
-  * pci_bridge_d3_possible - Is it possible to put the bridge into D3
-  * @bridge: Bridge to check
-  *
-- * This function checks if it is possible to move the bridge to D3.
-- * Currently we only allow D3 for recent enough PCIe ports and Thunderbolt.
-+ * Currently we only allow D3 for some PCIe ports and for Thunderbolt.
-+ *
-+ * Return: Whether it is possible to move the bridge to D3.
-+ *
-+ * The return value is guaranteed to be constant across the entire lifetime
-+ * of the bridge, including its hot-removal.
-  */
- bool pci_bridge_d3_possible(struct pci_dev *bridge)
- {
---- a/drivers/pci/probe.c
-+++ b/drivers/pci/probe.c
-@@ -1594,7 +1594,7 @@ void set_pcie_hotplug_bridge(struct pci_
- 
- 	pcie_capability_read_dword(pdev, PCI_EXP_SLTCAP, &reg32);
- 	if (reg32 & PCI_EXP_SLTCAP_HPC)
--		pdev->is_hotplug_bridge = 1;
-+		pdev->is_hotplug_bridge = pdev->is_pciehp = 1;
- }
- 
- static void set_pcie_thunderbolt(struct pci_dev *dev)
---- a/include/linux/pci.h
-+++ b/include/linux/pci.h
-@@ -318,7 +318,14 @@ struct pci_sriov;
- struct pci_p2pdma;
- struct rcec_ea;
- 
--/* The pci_dev structure describes PCI devices */
-+/* struct pci_dev - describes a PCI device
-+ *
-+ * @is_hotplug_bridge:	Hotplug bridge of any kind (e.g. PCIe Hot-Plug Capable,
-+ *			Conventional PCI Hot-Plug, ACPI slot).
-+ *			Such bridges are allocated additional MMIO and bus
-+ *			number resources to allow for hierarchy expansion.
-+ * @is_pciehp:		PCIe Hot-Plug Capable bridge.
-+ */
- struct pci_dev {
- 	struct list_head bus_list;	/* Node in per-bus list */
- 	struct pci_bus	*bus;		/* Bus this device is on */
-@@ -439,6 +446,7 @@ struct pci_dev {
- 	unsigned int	is_physfn:1;
- 	unsigned int	is_virtfn:1;
- 	unsigned int	is_hotplug_bridge:1;
-+	unsigned int	is_pciehp:1;
- 	unsigned int	shpc_managed:1;		/* SHPC owned by shpchp */
- 	unsigned int	is_thunderbolt:1;	/* Thunderbolt controller */
- 	/*
++	spin_lock(&rain->buf_lock);
+ 	if (rain->buf_len == DATA_SIZE) {
++		spin_unlock(&rain->buf_lock);
+ 		dev_warn_once(rain->dev, "buffer overflow\n");
+ 		return IRQ_HANDLED;
+ 	}
+-	spin_lock(&rain->buf_lock);
+ 	rain->buf_len++;
+ 	rain->buf[rain->buf_wr_idx] = data;
+ 	rain->buf_wr_idx = (rain->buf_wr_idx + 1) & 0xff;
 
 
 
