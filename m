@@ -1,55 +1,56 @@
-Return-Path: <stable+bounces-173857-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-175509-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 637C6B36020
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 14:57:31 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id E16D7B368F5
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 16:21:16 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id D54621BA50D3
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 12:55:21 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id BA7F11C23994
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 14:09:17 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E516923026B;
-	Tue, 26 Aug 2025 12:54:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 76170350842;
+	Tue, 26 Aug 2025 14:07:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="bPgHegfY"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="H8e9FZbE"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9F4D42222BA;
-	Tue, 26 Aug 2025 12:54:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 32D1A35082F;
+	Tue, 26 Aug 2025 14:07:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756212849; cv=none; b=spsLWIJUO2Iyg8ZYhmxE98L3J2f0mVmbF+0v4x+aA5jC5KMLZWTZWoo1lkG6j9m1lTqtB04vQkY5lDWSob2vhR6TK4IPJY+ZrhbVcLNCSVKVUCofzrVHU6dPyRylWoM4ViDCCUfsFSgYA1ArSUxmpvSeEAF1qkuwwtZR+yQfb7Q=
+	t=1756217232; cv=none; b=igY7pZQvpdQIarwuTXBMGIyf9nth7n9VcjkM2yLpr9rcQD7F5pzV8UF3jDCVFS7t0yvr6m2c4N6Ns7rZjWi3oq2m1tufURXErG+lZZh1a/yyEd1V0Sp+ckGV6duZDW5dSSUeClwMoXsikQ7oqTLTDFwK0IO9sjtRwIdUjebw8MU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756212849; c=relaxed/simple;
-	bh=IZWEiLrz2CNhB59RSFbH2/t3UhZs3hvZaknL6Cs7Itw=;
+	s=arc-20240116; t=1756217232; c=relaxed/simple;
+	bh=Y6bKuuyNiSeOpOgiG0RxfcJx7Vu4CFyyzp4sLKl8x70=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=feTJM8ntZKITDAHH1RbBwLXWcdDm8ReQtrtDaftMdLWpwgJoIFzOY0B+kL5qDeFHY/NE82J0cqUAyxno0ei5+pUaPIr2z/QlfC6l+wDQ61sMfSg7aQLKkGI2Ulp1RQOUHl2NtkLnwuIHyEfx4JLB6uTvVGCSDI/Q6ZrkDX68Avo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=bPgHegfY; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 32C81C4CEF1;
-	Tue, 26 Aug 2025 12:54:09 +0000 (UTC)
+	 MIME-Version; b=Xb+bBuXV/f8Qi+ucB/aKwOK7Dd6wXDyJ+C3XtBRlGXrR4aI4L5enUNdb5z7MRQkWKwcdfRhTR+EulVj3FCgjrQ2U5jWDacHGInJICg9RODwBswrrrrhS/71I+OOGfW5/WvUlRvCJqi9ey4tpqOAO4ICS2MbvXyTCbuom6RPgZaI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=H8e9FZbE; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B1506C113D0;
+	Tue, 26 Aug 2025 14:07:11 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1756212849;
-	bh=IZWEiLrz2CNhB59RSFbH2/t3UhZs3hvZaknL6Cs7Itw=;
+	s=korg; t=1756217232;
+	bh=Y6bKuuyNiSeOpOgiG0RxfcJx7Vu4CFyyzp4sLKl8x70=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=bPgHegfYTtdkuYiZuEV3+c9LtB4CRSXA5rqKO6e8VLoeWj1jwjFS1JO+RDBT4g3u3
-	 v1IW97aWMaM6nwRUWesiV6vEvfmbuf+WrGszu37tMZVI3AdFHvzvoiwZqpnh1WES6R
-	 KAxEw8ni0b3UBSclnJbaWPFZ05DagDVC0RKmo6qo=
+	b=H8e9FZbEx+Y2D0hzctzLp3UzL2i3QmnLJ24s7u9uIbfZAn3p3F0f4LgX1KsLFZTF+
+	 23RuGBckY5sKnzb4k43EDxRXTdpPvTacu7ZAnlV0tX5HdCN6o6nQ55ottwcJor08mZ
+	 CsqqbxP51wsKa/JE1vRnhhgp5sEYOxkRweRrt9Ig=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Bartosz Golaszewski <bartosz.golaszewski@linaro.org>,
+	Alok Tiwari <alok.a.tiwari@oracle.com>,
+	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 094/587] gpio: wcd934x: check the return value of regmap_update_bits()
-Date: Tue, 26 Aug 2025 13:04:03 +0200
-Message-ID: <20250826110955.331640492@linuxfoundation.org>
+Subject: [PATCH 5.10 034/523] net: emaclite: Fix missing pointer increment in aligned_read()
+Date: Tue, 26 Aug 2025 13:04:04 +0200
+Message-ID: <20250826110925.443765110@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250826110952.942403671@linuxfoundation.org>
-References: <20250826110952.942403671@linuxfoundation.org>
+In-Reply-To: <20250826110924.562212281@linuxfoundation.org>
+References: <20250826110924.562212281@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,44 +62,42 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Bartosz Golaszewski <bartosz.golaszewski@linaro.org>
+From: Alok Tiwari <alok.a.tiwari@oracle.com>
 
-[ Upstream commit ff0f0d7c6587e38c308be9905e36f86e98fb9c1f ]
+[ Upstream commit 7727ec1523d7973defa1dff8f9c0aad288d04008 ]
 
-regmap_update_bits() can fail so check its return value in
-wcd_gpio_direction_output() for consistency with the rest of the code
-and propagate any errors.
+Add missing post-increment operators for byte pointers in the
+loop that copies remaining bytes in xemaclite_aligned_read().
+Without the increment, the same byte was written repeatedly
+to the destination.
+This update aligns with xemaclite_aligned_write()
 
-Link: https://lore.kernel.org/r/20250709-gpiochip-set-rv-gpio-remaining-v1-2-b8950f69618d@linaro.org
-Signed-off-by: Bartosz Golaszewski <bartosz.golaszewski@linaro.org>
+Fixes: bb81b2ddfa19 ("net: add Xilinx emac lite device driver")
+Signed-off-by: Alok Tiwari <alok.a.tiwari@oracle.com>
+Link: https://patch.msgid.link/20250710173849.2381003-1-alok.a.tiwari@oracle.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpio/gpio-wcd934x.c | 7 +++++--
- 1 file changed, 5 insertions(+), 2 deletions(-)
+ drivers/net/ethernet/xilinx/xilinx_emaclite.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/gpio/gpio-wcd934x.c b/drivers/gpio/gpio-wcd934x.c
-index 2bba27b13947..cfa7b0a50c8e 100644
---- a/drivers/gpio/gpio-wcd934x.c
-+++ b/drivers/gpio/gpio-wcd934x.c
-@@ -46,9 +46,12 @@ static int wcd_gpio_direction_output(struct gpio_chip *chip, unsigned int pin,
- 				     int val)
- {
- 	struct wcd_gpio_data *data = gpiochip_get_data(chip);
-+	int ret;
+diff --git a/drivers/net/ethernet/xilinx/xilinx_emaclite.c b/drivers/net/ethernet/xilinx/xilinx_emaclite.c
+index 02b95afe25066..c8bd4880b609d 100644
+--- a/drivers/net/ethernet/xilinx/xilinx_emaclite.c
++++ b/drivers/net/ethernet/xilinx/xilinx_emaclite.c
+@@ -293,7 +293,7 @@ static void xemaclite_aligned_read(u32 *src_ptr, u8 *dest_ptr,
  
--	regmap_update_bits(data->map, WCD_REG_DIR_CTL_OFFSET,
--			   WCD_PIN_MASK(pin), WCD_PIN_MASK(pin));
-+	ret = regmap_update_bits(data->map, WCD_REG_DIR_CTL_OFFSET,
-+				 WCD_PIN_MASK(pin), WCD_PIN_MASK(pin));
-+	if (ret)
-+		return ret;
+ 		/* Read the remaining data */
+ 		for (; length > 0; length--)
+-			*to_u8_ptr = *from_u8_ptr;
++			*to_u8_ptr++ = *from_u8_ptr++;
+ 	}
+ }
  
- 	return regmap_update_bits(data->map, WCD_REG_VAL_CTL_OFFSET,
- 				  WCD_PIN_MASK(pin),
 -- 
 2.39.5
 
