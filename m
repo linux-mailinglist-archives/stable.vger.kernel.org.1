@@ -1,58 +1,57 @@
-Return-Path: <stable+bounces-174154-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-173262-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [142.0.200.124])
-	by mail.lfdr.de (Postfix) with ESMTPS id 040CAB3612A
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 15:07:20 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8B124B35CF5
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 13:40:19 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 9E18D4E446D
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 13:07:18 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id D444D16E897
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 11:32:33 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A5F47347C3;
-	Tue, 26 Aug 2025 13:07:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8157C33A010;
+	Tue, 26 Aug 2025 11:29:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="u+dC9nPM"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="b0R0ivn2"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 621A928FD;
-	Tue, 26 Aug 2025 13:07:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3B261299959;
+	Tue, 26 Aug 2025 11:29:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756213636; cv=none; b=FZZ4cBO8sKfMTuxNRK5ZHQytuSkZ7t/H5fYR4i0x4rEqk2076pNXjbOmfgysxJDkBMOMFTknPAflhAVHDvpLIE9O5LTeQMpvsFe3lVBeokDQBX0SfAm/p09VZAlBx+iun7v1s+pKpH4iXo12xDroHmKfy7grQRruQTXrOMTF4AM=
+	t=1756207791; cv=none; b=oN5CnbJ+I/YgyG7EpPaI3FlZnp+n2H/Exg8G75XafZnwiiwbck+EG+8GjjYdbGt9M3Yu2qAMwPNl+KMdO/xljBYScpnsy1Zij45BfzRFDKFxbqvefUcNeRt4TwU8J9crd1XhgRXHpqFYiWutyKSGwCfB9KePwoG8ojmCdpEhUlY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756213636; c=relaxed/simple;
-	bh=/t0IN2wWt+00JqyzB3qxcUGFrd4cNy4Gj31QNGjjr+Q=;
+	s=arc-20240116; t=1756207791; c=relaxed/simple;
+	bh=lANnqWj56TndussZWKWp+dbvIWO27NIl2plU+s0tTyw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=JOrTKPoj70khlCDYd+qYE5h0vnbN2cqyUdUmfsiQYEoOMm09CEx3d1GfppTu4WV7XsXv61OCkxVByT4Iwfw0TGtLQfr8hOf6kuISeWpJwqNhaWil++ZMescWFAXJk+FzBWz2HGosOl9RCoe6TUE+asgP8OwR2CDMH2On51kAlgo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=u+dC9nPM; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E9313C4CEF1;
-	Tue, 26 Aug 2025 13:07:15 +0000 (UTC)
+	 MIME-Version; b=kk7FqQ286hNgtAo8XBbQkk4Q+aekGWg2Wu7c9PxHXuFR9Q6T703Tow+Fl2zT5zE591l6QlowJq2W11Pv7zoMTX0pJ83HK9r86CftozVMBR8z8hW2GKjPqDs1L1J0nF1FltiCLffo9t8AyNaW+bjMmzQ2NsqQRm4Bm9iF6gnNDK4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=b0R0ivn2; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C0484C4CEF4;
+	Tue, 26 Aug 2025 11:29:50 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1756213636;
-	bh=/t0IN2wWt+00JqyzB3qxcUGFrd4cNy4Gj31QNGjjr+Q=;
+	s=korg; t=1756207791;
+	bh=lANnqWj56TndussZWKWp+dbvIWO27NIl2plU+s0tTyw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=u+dC9nPMV1MSF5knDSqd+BTlDtnjKSVThZPPuYHt0Ker8hKBc1QRWC5Qxk4mF8l+a
-	 Is/iCoWG2mG+uvqSNQw11ZNKc1l7an7PeaEd4VQbORA+bvwp4i78XtMBlotsQKVuYN
-	 I6TVf3ruiM0fwBeXL32F/AGwXQpoPFAsIwTe7PW8=
+	b=b0R0ivn2toTXFy+TPd/0mBL1Bz9IT4ixaytKLwSGOFoIbGDUC3lJD8knGB5U0fYM+
+	 5O2SvhhHs3jwoVcjn+Uuj64nmX63vjJi/DmUntgC5bYtTIjx8qhgGFS6K25/25oa94
+	 QHrRP90YloaJxB95YqoQiTLJ1dQNxY2hh84o//HE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	stable@kernel.org,
-	syzbot+a81f2759d022496b40ab@syzkaller.appspotmail.com,
-	Jakub Acs <acsjakub@amazon.de>,
-	Eric Dumazet <edumazet@google.com>,
-	Jakub Kicinski <kuba@kernel.org>
-Subject: [PATCH 6.6 423/587] net, hsr: reject HSR frame if skb cant hold tag
+	"Adrian Huang (Lenovo)" <adrianhuang0701@gmail.com>,
+	Lorenzo Stoakes <lorenzo.stoakes@oracle.com>,
+	Christian Brauner <brauner@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.16 288/457] signal: Fix memory leak for PIDFD_SELF* sentinels
 Date: Tue, 26 Aug 2025 13:09:32 +0200
-Message-ID: <20250826111003.699013188@linuxfoundation.org>
+Message-ID: <20250826110944.500942028@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250826110952.942403671@linuxfoundation.org>
-References: <20250826110952.942403671@linuxfoundation.org>
+In-Reply-To: <20250826110937.289866482@linuxfoundation.org>
+References: <20250826110937.289866482@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,194 +61,78 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.16-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jakub Acs <acsjakub@amazon.de>
+From: Adrian Huang (Lenovo) <adrianhuang0701@gmail.com>
 
-commit 7af76e9d18a9fd6f8611b3313c86c190f9b6a5a7 upstream.
+[ Upstream commit a2c1f82618b0b65f1ef615aa9cfdac8122537d69 ]
 
-Receiving HSR frame with insufficient space to hold HSR tag in the skb
-can result in a crash (kernel BUG):
+Commit f08d0c3a7111 ("pidfd: add PIDFD_SELF* sentinels to refer to own
+thread/process") introduced a leak by acquiring a pid reference through
+get_task_pid(), which increments pid->count but never drops it with
+put_pid().
 
-[   45.390915] skbuff: skb_under_panic: text:ffffffff86f32cac len:26 put:14 head:ffff888042418000 data:ffff888042417ff4 tail:0xe end:0x180 dev:bridge_slave_1
-[   45.392559] ------------[ cut here ]------------
-[   45.392912] kernel BUG at net/core/skbuff.c:211!
-[   45.393276] Oops: invalid opcode: 0000 [#1] SMP DEBUG_PAGEALLOC KASAN NOPTI
-[   45.393809] CPU: 1 UID: 0 PID: 2496 Comm: reproducer Not tainted 6.15.0 #12 PREEMPT(undef)
-[   45.394433] Hardware name: QEMU Standard PC (i440FX + PIIX, 1996), BIOS rel-1.16.3-0-ga6ed6b701f0a-prebuilt.qemu.org 04/01/2014
-[   45.395273] RIP: 0010:skb_panic+0x15b/0x1d0
+As a result, kmemleak reports unreferenced pid objects after running
+tools/testing/selftests/pidfd/pidfd_test, for example:
 
-<snip registers, remove unreliable trace>
+  unreferenced object 0xff1100206757a940 (size 160):
+    comm "pidfd_test", pid 16965, jiffies 4294853028
+    hex dump (first 32 bytes):
+      01 00 00 00 00 00 00 00 00 00 00 00 fd 57 50 04  .............WP.
+      5e 44 00 00 00 00 00 00 18 de 34 17 01 00 11 ff  ^D........4.....
+    backtrace (crc cd8844d4):
+      kmem_cache_alloc_noprof+0x2f4/0x3f0
+      alloc_pid+0x54/0x3d0
+      copy_process+0xd58/0x1740
+      kernel_clone+0x99/0x3b0
+      __do_sys_clone3+0xbe/0x100
+      do_syscall_64+0x7b/0x2c0
+      entry_SYSCALL_64_after_hwframe+0x76/0x7e
 
-[   45.402911] Call Trace:
-[   45.403105]  <IRQ>
-[   45.404470]  skb_push+0xcd/0xf0
-[   45.404726]  br_dev_queue_push_xmit+0x7c/0x6c0
-[   45.406513]  br_forward_finish+0x128/0x260
-[   45.408483]  __br_forward+0x42d/0x590
-[   45.409464]  maybe_deliver+0x2eb/0x420
-[   45.409763]  br_flood+0x174/0x4a0
-[   45.410030]  br_handle_frame_finish+0xc7c/0x1bc0
-[   45.411618]  br_handle_frame+0xac3/0x1230
-[   45.413674]  __netif_receive_skb_core.constprop.0+0x808/0x3df0
-[   45.422966]  __netif_receive_skb_one_core+0xb4/0x1f0
-[   45.424478]  __netif_receive_skb+0x22/0x170
-[   45.424806]  process_backlog+0x242/0x6d0
-[   45.425116]  __napi_poll+0xbb/0x630
-[   45.425394]  net_rx_action+0x4d1/0xcc0
-[   45.427613]  handle_softirqs+0x1a4/0x580
-[   45.427926]  do_softirq+0x74/0x90
-[   45.428196]  </IRQ>
+Fix this by calling put_pid() after do_pidfd_send_signal() returns.
 
-This issue was found by syzkaller.
-
-The panic happens in br_dev_queue_push_xmit() once it receives a
-corrupted skb with ETH header already pushed in linear data. When it
-attempts the skb_push() call, there's not enough headroom and
-skb_push() panics.
-
-The corrupted skb is put on the queue by HSR layer, which makes a
-sequence of unintended transformations when it receives a specific
-corrupted HSR frame (with incomplete TAG).
-
-Fix it by dropping and consuming frames that are not long enough to
-contain both ethernet and hsr headers.
-
-Alternative fix would be to check for enough headroom before skb_push()
-in br_dev_queue_push_xmit().
-
-In the reproducer, this is injected via AF_PACKET, but I don't easily
-see why it couldn't be sent over the wire from adjacent network.
-
-Further Details:
-
-In the reproducer, the following network interface chain is set up:
-
-┌────────────────┐   ┌────────────────┐
-│ veth0_to_hsr   ├───┤  hsr_slave0    ┼───┐
-└────────────────┘   └────────────────┘   │
-                                          │ ┌──────┐
-                                          ├─┤ hsr0 ├───┐
-                                          │ └──────┘   │
-┌────────────────┐   ┌────────────────┐   │            │┌────────┐
-│ veth1_to_hsr   ┼───┤  hsr_slave1    ├───┘            └┤        │
-└────────────────┘   └────────────────┘                ┌┼ bridge │
-                                                       ││        │
-                                                       │└────────┘
-                                                       │
-                                        ┌───────┐      │
-                                        │  ...  ├──────┘
-                                        └───────┘
-
-To trigger the events leading up to crash, reproducer sends a corrupted
-HSR frame with incomplete TAG, via AF_PACKET socket on 'veth0_to_hsr'.
-
-The first HSR-layer function to process this frame is
-hsr_handle_frame(). It and then checks if the
-protocol is ETH_P_PRP or ETH_P_HSR. If it is, it calls
-skb_set_network_header(skb, ETH_HLEN + HSR_HLEN), without checking that
-the skb is long enough. For the crashing frame it is not, and hence the
-skb->network_header and skb->mac_len fields are set incorrectly,
-pointing after the end of the linear buffer.
-
-I will call this a BUG#1 and it is what is addressed by this patch. In
-the crashing scenario before the fix, the skb continues to go down the
-hsr path as follows.
-
-hsr_handle_frame() then calls this sequence
-hsr_forward_skb()
-  fill_frame_info()
-    hsr->proto_ops->fill_frame_info()
-      hsr_fill_frame_info()
-
-hsr_fill_frame_info() contains a check that intends to check whether the
-skb actually contains the HSR header. But the check relies on the
-skb->mac_len field which was erroneously setup due to BUG#1, so the
-check passes and the execution continues  back in the hsr_forward_skb():
-
-hsr_forward_skb()
-  hsr_forward_do()
-    hsr->proto_ops->get_untagged_frame()
-      hsr_get_untagged_frame()
-        create_stripped_skb_hsr()
-
-In create_stripped_skb_hsr(), a copy of the skb is created and is
-further corrupted by operation that attempts to strip the HSR tag in a
-call to __pskb_copy().
-
-The skb enters create_stripped_skb_hsr() with ethernet header pushed in
-linear buffer. The skb_pull(skb_in, HSR_HLEN) thus pulls 6 bytes of
-ethernet header into the headroom, creating skb_in with a headroom of
-size 8. The subsequent __pskb_copy() then creates an skb with headroom
-of just 2 and skb->len of just 12, this is how it looks after the copy:
-
-gdb) p skb->len
-$10 = 12
-(gdb) p skb->data
-$11 = (unsigned char *) 0xffff888041e45382 "\252\252\252\252\252!\210\373",
-(gdb) p skb->head
-$12 = (unsigned char *) 0xffff888041e45380 ""
-
-It seems create_stripped_skb_hsr() assumes that ETH header is pulled
-in the headroom when it's entered, because it just pulls HSR header on
-top. But that is not the case in our code-path and we end up with the
-corrupted skb instead. I will call this BUG#2
-
-*I got confused here because it seems that under no conditions can
-create_stripped_skb_hsr() work well, the assumption it makes is not true
-during the processing of hsr frames - since the skb_push() in
-hsr_handle_frame to skb_pull in hsr_deliver_master(). I wonder whether I
-missed something here.*
-
-Next, the execution arrives in hsr_deliver_master(). It calls
-skb_pull(ETH_HLEN), which just returns NULL - the SKB does not have
-enough space for the pull (as it only has 12 bytes in total at this
-point).
-
-*The skb_pull() here further suggests that ethernet header is meant
-to be pushed through the whole hsr processing and
-create_stripped_skb_hsr() should pull it before doing the HSR header
-pull.*
-
-hsr_deliver_master() then puts the corrupted skb on the queue, it is
-then picked up from there by bridge frame handling layer and finally
-lands in br_dev_queue_push_xmit where it panics.
-
-Cc: stable@kernel.org
-Fixes: 48b491a5cc74 ("net: hsr: fix mac_len checks")
-Reported-by: syzbot+a81f2759d022496b40ab@syzkaller.appspotmail.com
-Signed-off-by: Jakub Acs <acsjakub@amazon.de>
-Reviewed-by: Eric Dumazet <edumazet@google.com>
-Link: https://patch.msgid.link/20250819082842.94378-1-acsjakub@amazon.de
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: f08d0c3a7111 ("pidfd: add PIDFD_SELF* sentinels to refer to own thread/process")
+Signed-off-by: Adrian Huang (Lenovo) <adrianhuang0701@gmail.com>
+Link: https://lore.kernel.org/20250818134310.12273-1-adrianhuang0701@gmail.com
+Tested-by: Lorenzo Stoakes <lorenzo.stoakes@oracle.com>
+Reviewed-by: Lorenzo Stoakes <lorenzo.stoakes@oracle.com>
+Signed-off-by: Christian Brauner <brauner@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/hsr/hsr_slave.c |    8 +++++++-
- 1 file changed, 7 insertions(+), 1 deletion(-)
+ kernel/signal.c | 6 +++++-
+ 1 file changed, 5 insertions(+), 1 deletion(-)
 
---- a/net/hsr/hsr_slave.c
-+++ b/net/hsr/hsr_slave.c
-@@ -62,8 +62,14 @@ static rx_handler_result_t hsr_handle_fr
- 	skb_push(skb, ETH_HLEN);
- 	skb_reset_mac_header(skb);
- 	if ((!hsr->prot_version && protocol == htons(ETH_P_PRP)) ||
--	    protocol == htons(ETH_P_HSR))
-+	    protocol == htons(ETH_P_HSR)) {
-+		if (!pskb_may_pull(skb, ETH_HLEN + HSR_HLEN)) {
-+			kfree_skb(skb);
-+			goto finish_consume;
-+		}
-+
- 		skb_set_network_header(skb, ETH_HLEN + HSR_HLEN);
-+	}
- 	skb_reset_mac_len(skb);
+diff --git a/kernel/signal.c b/kernel/signal.c
+index 148082db9a55..6b1493558a3d 100644
+--- a/kernel/signal.c
++++ b/kernel/signal.c
+@@ -4067,6 +4067,7 @@ SYSCALL_DEFINE4(pidfd_send_signal, int, pidfd, int, sig,
+ {
+ 	struct pid *pid;
+ 	enum pid_type type;
++	int ret;
  
- 	hsr_forward_skb(skb, port);
+ 	/* Enforce flags be set to 0 until we add an extension. */
+ 	if (flags & ~PIDFD_SEND_SIGNAL_FLAGS)
+@@ -4108,7 +4109,10 @@ SYSCALL_DEFINE4(pidfd_send_signal, int, pidfd, int, sig,
+ 	}
+ 	}
+ 
+-	return do_pidfd_send_signal(pid, sig, type, info, flags);
++	ret = do_pidfd_send_signal(pid, sig, type, info, flags);
++	put_pid(pid);
++
++	return ret;
+ }
+ 
+ static int
+-- 
+2.50.1
+
 
 
 
