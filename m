@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-176155-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-175192-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 16F4CB36BA5
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 16:47:54 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9AECCB36726
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 16:04:09 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 19040582233
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 14:38:17 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 07C7956591D
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 13:55:17 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8B7EF356904;
-	Tue, 26 Aug 2025 14:35:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 37CF8350D48;
+	Tue, 26 Aug 2025 13:53:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="YsurrsYx"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="PMWA8KBu"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 45159340D95;
-	Tue, 26 Aug 2025 14:35:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E9314350820;
+	Tue, 26 Aug 2025 13:53:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756218923; cv=none; b=lCeKRFFtLTB+s+q90EPCdtHVhaRH85XJfaPZdBvgXW59BON0YsiD8Gj9NJXrL48mDfttVaHvPLf4AnDJBEjNUZ4yxjntK5/+ZtzX2nabp1U2rYIz5jSmi+h7h+Z97ClAIueKRijuTAGmHLYlnwJVxwYBUdHYlztUdFnAZAjbgsM=
+	t=1756216384; cv=none; b=mhcBzk+RWTXeZ2XbakaALCVJMueH4p46VUIQuyeaHl0JYvuVg77nhqvWXIF4oXB4IEOHPH+j1TJPe/F8c8PRq1qR1tcoOrql5HDP5LpyLEaLkxsXxOjgOcVGloEA3iostCE9d/EYcK/YZ0u2Y3bwEA+jFGJwzNyEMeFRtPFZZLw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756218923; c=relaxed/simple;
-	bh=OpuqXS3shJHNDG57Wg9Ctu4nUQkpQJrZpJtAYbdqkmk=;
+	s=arc-20240116; t=1756216384; c=relaxed/simple;
+	bh=2p5xWN40606tJVQ64ha9ImZrRDDgoh9WUq7ikEHk+kc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=oYg6TFw8lBzl1bhEDeJ/RKFdEo9R5vluzdBUWuefJBLEMX6MccXysHY1UhcjXGl1/tPLTHNflrMCMhE1IUE6ayB5/ef2LJ3+qbHF7KE2PziMCJx1qF5HKU2qAaxqeb6lPAFbMeQp9KxFfD/4yom+Oc2dPE7hjPDj62gdX87eMdw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=YsurrsYx; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id CE1FBC4CEF1;
-	Tue, 26 Aug 2025 14:35:22 +0000 (UTC)
+	 MIME-Version; b=VcRrAPJ9Mr37oXyPtdDFkQqQwDKWAM/i4a6vcK2eifSrSLs1uO1STGx13O1qVPEF2yPjpWFx9M6IvBnmVDo3j4iVeHNvMptxGAfBg/k2ZTyZtYhVMr10IB8MRaxdYiZSUqrv2S85mIAEFPMq0ItRn+nOcQGZdxSe8nCTRfCFcNA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=PMWA8KBu; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 77DE6C4CEF1;
+	Tue, 26 Aug 2025 13:53:03 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1756218923;
-	bh=OpuqXS3shJHNDG57Wg9Ctu4nUQkpQJrZpJtAYbdqkmk=;
+	s=korg; t=1756216383;
+	bh=2p5xWN40606tJVQ64ha9ImZrRDDgoh9WUq7ikEHk+kc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=YsurrsYxu6Eldmkqvv7MqemCqDDWfE4MDDYGdfAdVVaGFDdVCf8g5NswZF6oIRWKJ
-	 +hllxRwyKvGWv/dioV4u/Tc+aneqHaWWcNk3Bqat6SI5knscjhlfm0wlWLCLDq0IJG
-	 xbJ71yZPzDO0MhUUcMMIobnzpLlKt16KQOZcBi6E=
+	b=PMWA8KBuSdgiYjCArlIVrieNjni8xt3bUIVz8ZGywkxwEBHkeJ6r9popTL7PY6TXO
+	 7rdR6sc5EbWiiZhV34eUHSPWc8SmR63rgeQFvc9Wy//Aj01bejn/GshBMC0IWHXK8V
+	 DeAWQDD5i9Ckd6igEykitdObjP4iFt+h99mycR6k=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	stable@kernel.org,
-	Jiaxun Yang <jiaxun.yang@flygoat.com>,
-	Thomas Bogendoerfer <tsbogend@alpha.franken.de>
-Subject: [PATCH 5.4 154/403] MIPS: mm: tlb-r4k: Uniquify TLB entries on init
+	Sebastian Reichel <sebastian.reichel@collabora.com>,
+	Guenter Roeck <linux@roeck-us.net>,
+	Wim Van Sebroeck <wim@linux-watchdog.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.15 389/644] watchdog: dw_wdt: Fix default timeout
 Date: Tue, 26 Aug 2025 13:08:00 +0200
-Message-ID: <20250826110911.134465967@linuxfoundation.org>
+Message-ID: <20250826110956.080056143@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250826110905.607690791@linuxfoundation.org>
-References: <20250826110905.607690791@linuxfoundation.org>
+In-Reply-To: <20250826110946.507083938@linuxfoundation.org>
+References: <20250826110946.507083938@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,103 +63,48 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.4-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jiaxun Yang <jiaxun.yang@flygoat.com>
+From: Sebastian Reichel <sebastian.reichel@collabora.com>
 
-commit 35ad7e181541aa5757f9f316768d3e64403ec843 upstream.
+[ Upstream commit ac3dbb91e0167d017f44701dd51c1efe30d0c256 ]
 
-Hardware or bootloader will initialize TLB entries to any value, which
-may collide with kernel's UNIQUE_ENTRYHI value. On MIPS microAptiv/M5150
-family of cores this will trigger machine check exception and cause boot
-failure. On M5150 simulation this could happen 7 times out of 1000 boots.
+The Synopsys Watchdog driver sets the default timeout to 30 seconds,
+but on some devices this is not a valid timeout. E.g. on RK3588 the
+actual timeout being used is 44 seconds instead.
 
-Replace local_flush_tlb_all() with r4k_tlb_uniquify() which probes each
-TLB ENTRIHI unique value for collisions before it's written, and in case
-of collision try a different ASID.
+Once the watchdog is started the value is updated accordingly, but
+it would be better to expose a sensible timeout to userspace without
+the need to first start the watchdog.
 
-Cc: stable@kernel.org
-Signed-off-by: Jiaxun Yang <jiaxun.yang@flygoat.com>
-Signed-off-by: Thomas Bogendoerfer <tsbogend@alpha.franken.de>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Signed-off-by: Sebastian Reichel <sebastian.reichel@collabora.com>
+Reviewed-by: Guenter Roeck <linux@roeck-us.net>
+Link: https://lore.kernel.org/r/20250717-dw-wdt-fix-initial-timeout-v1-1-86dc864d48dd@kernel.org
+Signed-off-by: Guenter Roeck <linux@roeck-us.net>
+Signed-off-by: Wim Van Sebroeck <wim@linux-watchdog.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/mips/mm/tlb-r4k.c |   56 ++++++++++++++++++++++++++++++++++++++++++++++++-
- 1 file changed, 55 insertions(+), 1 deletion(-)
+ drivers/watchdog/dw_wdt.c | 2 ++
+ 1 file changed, 2 insertions(+)
 
---- a/arch/mips/mm/tlb-r4k.c
-+++ b/arch/mips/mm/tlb-r4k.c
-@@ -497,6 +497,60 @@ static int __init set_ntlb(char *str)
+diff --git a/drivers/watchdog/dw_wdt.c b/drivers/watchdog/dw_wdt.c
+index 498c1c403fc9..7571fc2df541 100644
+--- a/drivers/watchdog/dw_wdt.c
++++ b/drivers/watchdog/dw_wdt.c
+@@ -660,6 +660,8 @@ static int dw_wdt_drv_probe(struct platform_device *pdev)
+ 	} else {
+ 		wdd->timeout = DW_WDT_DEFAULT_SECONDS;
+ 		watchdog_init_timeout(wdd, 0, dev);
++		/* Limit timeout value to hardware constraints. */
++		dw_wdt_set_timeout(wdd, wdd->timeout);
+ 	}
  
- __setup("ntlb=", set_ntlb);
- 
-+/* Initialise all TLB entries with unique values */
-+static void r4k_tlb_uniquify(void)
-+{
-+	int entry = num_wired_entries();
-+
-+	htw_stop();
-+	write_c0_entrylo0(0);
-+	write_c0_entrylo1(0);
-+
-+	while (entry < current_cpu_data.tlbsize) {
-+		unsigned long asid_mask = cpu_asid_mask(&current_cpu_data);
-+		unsigned long asid = 0;
-+		int idx;
-+
-+		/* Skip wired MMID to make ginvt_mmid work */
-+		if (cpu_has_mmid)
-+			asid = MMID_KERNEL_WIRED + 1;
-+
-+		/* Check for match before using UNIQUE_ENTRYHI */
-+		do {
-+			if (cpu_has_mmid) {
-+				write_c0_memorymapid(asid);
-+				write_c0_entryhi(UNIQUE_ENTRYHI(entry));
-+			} else {
-+				write_c0_entryhi(UNIQUE_ENTRYHI(entry) | asid);
-+			}
-+			mtc0_tlbw_hazard();
-+			tlb_probe();
-+			tlb_probe_hazard();
-+			idx = read_c0_index();
-+			/* No match or match is on current entry */
-+			if (idx < 0 || idx == entry)
-+				break;
-+			/*
-+			 * If we hit a match, we need to try again with
-+			 * a different ASID.
-+			 */
-+			asid++;
-+		} while (asid < asid_mask);
-+
-+		if (idx >= 0 && idx != entry)
-+			panic("Unable to uniquify TLB entry %d", idx);
-+
-+		write_c0_index(entry);
-+		mtc0_tlbw_hazard();
-+		tlb_write_indexed();
-+		entry++;
-+	}
-+
-+	tlbw_use_hazard();
-+	htw_start();
-+	flush_micro_tlb();
-+}
-+
- /*
-  * Configure TLB (for init or after a CPU has been powered off).
-  */
-@@ -536,7 +590,7 @@ static void r4k_tlb_configure(void)
- 	temp_tlb_entry = current_cpu_data.tlbsize - 1;
- 
- 	/* From this point on the ARC firmware is dead.	 */
--	local_flush_tlb_all();
-+	r4k_tlb_uniquify();
- 
- 	/* Did I tell you that ARC SUCKS?  */
- }
+ 	platform_set_drvdata(pdev, dw_wdt);
+-- 
+2.39.5
+
 
 
 
