@@ -1,57 +1,58 @@
-Return-Path: <stable+bounces-176334-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-174274-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1B340B36C98
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 16:57:40 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id A2E3CB3623D
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 15:17:06 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 2ACFB985118
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 14:46:21 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 2C43C188AF10
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 13:14:34 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id DB6983570B3;
-	Tue, 26 Aug 2025 14:43:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id CD3F8343D87;
+	Tue, 26 Aug 2025 13:12:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="s4LZ2Yiv"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="dNCXb7Vl"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 96BD2350830;
-	Tue, 26 Aug 2025 14:43:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 825CA29D28A;
+	Tue, 26 Aug 2025 13:12:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756219388; cv=none; b=eHU56QsHi9O7vlYUlyjhKeXyGN7jAwIKIGdyoHmn6cO4nKSNUoBUv9Azta9y5/3ALK4zL1M5LuFom2YvHXh8bLTtsTqNz/oP20i1tpk6AzbhWQ08AArsjeiuy7/nUQCW/hnHl0DegUbumUBKjLwELQn7r+JQ9Az7HC8iqi77Te4=
+	t=1756213954; cv=none; b=cUC5Wyyfo/v1a0eSRBMnmY+VCRi0mqpu9PpUnMdckb6yVNWrfh1vODrjhbECa8Lk+4d0p+gMWPZT31DXEkG/ngut5wXB4Evp8uTHzBguHpDSQpQ7bZfj2YncOmCu5BDv4ytlyZDg9l62+4o2KULzj1RyVCl29pHnm7b8UYtW1QA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756219388; c=relaxed/simple;
-	bh=cfaoWJ0UhYBXtMUVrk+LMqXdNKP/PmNsQaswjaCaiZI=;
+	s=arc-20240116; t=1756213954; c=relaxed/simple;
+	bh=W3D1Es0iCMkCNLRBj1xHV2A2WOnFtSuUvJ3nqc63TlA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=pQ3yCzNZrkmRFRVp9duNEIfWD5G/pxTXjudMN0rWgwsNdlMdmZcmvnL3OOEK1NsQd2JGmg4VELsuKVxWj4y50FYoXHutUT1XbKSe3r26zIkGwZzWi6ArNZUvsijG/GsC9grvJYNJz77T4sk1DgnNyeXFvHt5gbxeG+AZC+WAFf0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=s4LZ2Yiv; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C6362C4CEF1;
-	Tue, 26 Aug 2025 14:43:07 +0000 (UTC)
+	 MIME-Version:Content-Type; b=tMjPcbKQY3jTLh8J59brvKyHv0EJ86VHeq8Ssc5hy56Slq1ObpIvhWUK3hgepQNDEzMqAoJA/GICYq26LUA44THSsBhp/jz0oNQoeB74YAtfkiEBfJVM1A/mF51SQS6T7WVyYNKuS8dWx7bDeNQWp2Nq0p+88rh9xVCCYL69imI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=dNCXb7Vl; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1452BC4CEF1;
+	Tue, 26 Aug 2025 13:12:33 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1756219388;
-	bh=cfaoWJ0UhYBXtMUVrk+LMqXdNKP/PmNsQaswjaCaiZI=;
+	s=korg; t=1756213954;
+	bh=W3D1Es0iCMkCNLRBj1xHV2A2WOnFtSuUvJ3nqc63TlA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=s4LZ2YivHbcgWRAySLOyFVdTU/jWjOtVvoCu3Kh9T1d2t2KLIScuVgORH011gFbLc
-	 gZsZ9psklP6uJJ5YsyaJeFVg6pYL1aV2B/icbVxM1H935zcp0Cm2kDBwls3BR+TIPq
-	 vUwd8AJL+A9ajC2rv7e7qYuLcswbNRxDYyydXljc=
+	b=dNCXb7VlEAE+2yr9jd0oL8c873hKoTJ5WwuEsjo5tOKZdgViAfdoN2Bvn27s44DII
+	 4lfSMB6tneBesuLt16mahV6VBc2WjiZpeYvIXJkBe21hexEZR0kLjRhHbRWK5bQdU6
+	 A4vjdVJCWUpC2eecBypH5onr+6gTmmdeZrfsyRTk=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Sakari Ailus <sakari.ailus@linux.intel.com>,
-	Hans Verkuil <hverkuil@xs4all.nl>,
-	Laurent Pinchart <laurent.pinchart@ideasonboard.com>,
+	David Lechner <dlechner@baylibre.com>,
+	=?UTF-8?q?Nuno=20S=C3=A1?= <nuno.sa@analog.com>,
+	Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
+	Jonathan Cameron <Jonathan.Cameron@huawei.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.4 363/403] media: v4l2-ctrls: Dont reset handlers error in v4l2_ctrl_handler_free()
-Date: Tue, 26 Aug 2025 13:11:29 +0200
-Message-ID: <20250826110917.029426329@linuxfoundation.org>
+Subject: [PATCH 6.6 541/587] iio: imu: inv_icm42600: use = { } instead of memset()
+Date: Tue, 26 Aug 2025 13:11:30 +0200
+Message-ID: <20250826111006.779356374@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250826110905.607690791@linuxfoundation.org>
-References: <20250826110905.607690791@linuxfoundation.org>
+In-Reply-To: <20250826110952.942403671@linuxfoundation.org>
+References: <20250826110952.942403671@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,53 +62,75 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-5.4-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Sakari Ailus <sakari.ailus@linux.intel.com>
+From: David Lechner <dlechner@baylibre.com>
 
-[ Upstream commit 5a0400aca5fa7c6b8ba456c311a460e733571c88 ]
+[ Upstream commit 352112e2d9aab6a156c2803ae14eb89a9fd93b7d ]
 
-It's a common pattern in drivers to free the control handler's resources
-and then return the handler's error code on drivers' error handling paths.
-Alas, the v4l2_ctrl_handler_free() function also zeroes the error field,
-effectively indicating successful return to the caller.
+Use { } instead of memset() to zero-initialize stack memory to simplify
+the code.
 
-There's no apparent need to touch the error field while releasing the
-control handler's resources and cleaning up stale pointers. Not touching
-the handler's error field is a more certain way to address this problem
-than changing all the users, in which case the pattern would be likely to
-re-emerge in new drivers.
-
-Do just that, don't touch the control handler's error field in
-v4l2_ctrl_handler_free().
-
-Fixes: 0996517cf8ea ("V4L/DVB: v4l2: Add new control handling framework")
-Cc: stable@vger.kernel.org
-Signed-off-by: Sakari Ailus <sakari.ailus@linux.intel.com>
-Reviewed-by: Hans Verkuil <hverkuil@xs4all.nl>
-Reviewed-by: Laurent Pinchart <laurent.pinchart@ideasonboard.com>
-Signed-off-by: Hans Verkuil <hverkuil@xs4all.nl>
-[ v4l2-ctrls.c => v4l2-ctrls-core.c ]
+Signed-off-by: David Lechner <dlechner@baylibre.com>
+Reviewed-by: Nuno Sá <nuno.sa@analog.com>
+Reviewed-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+Link: https://patch.msgid.link/20250611-iio-zero-init-stack-with-instead-of-memset-v1-16-ebb2d0a24302@baylibre.com
+Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
+Stable-dep-of: dfdc31e7ccf3 ("iio: imu: inv_icm42600: change invalid data error to -EBUSY")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/media/v4l2-core/v4l2-ctrls.c |    1 -
- 1 file changed, 1 deletion(-)
+ drivers/iio/imu/inv_icm42600/inv_icm42600_accel.c |    5 ++---
+ drivers/iio/imu/inv_icm42600/inv_icm42600_gyro.c  |    5 ++---
+ 2 files changed, 4 insertions(+), 6 deletions(-)
 
---- a/drivers/media/v4l2-core/v4l2-ctrls.c
-+++ b/drivers/media/v4l2-core/v4l2-ctrls.c
-@@ -2187,7 +2187,6 @@ void v4l2_ctrl_handler_free(struct v4l2_
- 	kvfree(hdl->buckets);
- 	hdl->buckets = NULL;
- 	hdl->cached = NULL;
--	hdl->error = 0;
- 	mutex_unlock(hdl->lock);
- 	mutex_destroy(&hdl->_lock);
- }
+--- a/drivers/iio/imu/inv_icm42600/inv_icm42600_accel.c
++++ b/drivers/iio/imu/inv_icm42600/inv_icm42600_accel.c
+@@ -755,7 +755,8 @@ int inv_icm42600_accel_parse_fifo(struct
+ 	const int8_t *temp;
+ 	unsigned int odr;
+ 	int64_t ts_val;
+-	struct inv_icm42600_accel_buffer buffer;
++	/* buffer is copied to userspace, zeroing it to avoid any data leak */
++	struct inv_icm42600_accel_buffer buffer = { };
+ 
+ 	/* parse all fifo packets */
+ 	for (i = 0, no = 0; i < st->fifo.count; i += size, ++no) {
+@@ -774,8 +775,6 @@ int inv_icm42600_accel_parse_fifo(struct
+ 			inv_sensors_timestamp_apply_odr(ts, st->fifo.period,
+ 							st->fifo.nb.total, no);
+ 
+-		/* buffer is copied to userspace, zeroing it to avoid any data leak */
+-		memset(&buffer, 0, sizeof(buffer));
+ 		memcpy(&buffer.accel, accel, sizeof(buffer.accel));
+ 		/* convert 8 bits FIFO temperature in high resolution format */
+ 		buffer.temp = temp ? (*temp * 64) : 0;
+--- a/drivers/iio/imu/inv_icm42600/inv_icm42600_gyro.c
++++ b/drivers/iio/imu/inv_icm42600/inv_icm42600_gyro.c
+@@ -767,7 +767,8 @@ int inv_icm42600_gyro_parse_fifo(struct
+ 	const int8_t *temp;
+ 	unsigned int odr;
+ 	int64_t ts_val;
+-	struct inv_icm42600_gyro_buffer buffer;
++	/* buffer is copied to userspace, zeroing it to avoid any data leak */
++	struct inv_icm42600_gyro_buffer buffer = { };
+ 
+ 	/* parse all fifo packets */
+ 	for (i = 0, no = 0; i < st->fifo.count; i += size, ++no) {
+@@ -786,8 +787,6 @@ int inv_icm42600_gyro_parse_fifo(struct
+ 			inv_sensors_timestamp_apply_odr(ts, st->fifo.period,
+ 							st->fifo.nb.total, no);
+ 
+-		/* buffer is copied to userspace, zeroing it to avoid any data leak */
+-		memset(&buffer, 0, sizeof(buffer));
+ 		memcpy(&buffer.gyro, gyro, sizeof(buffer.gyro));
+ 		/* convert 8 bits FIFO temperature in high resolution format */
+ 		buffer.temp = temp ? (*temp * 64) : 0;
 
 
 
