@@ -1,55 +1,55 @@
-Return-Path: <stable+bounces-173471-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-175688-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id CE904B35E1C
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 13:52:32 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id E2288B369AB
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 16:29:10 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 20DE0462E7F
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 11:39:48 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id A61D01C41301
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 14:17:44 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id AD92D322530;
-	Tue, 26 Aug 2025 11:38:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E2C9F35A291;
+	Tue, 26 Aug 2025 14:15:06 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="q7Ddohx8"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="gW5ig4e9"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 55EED32144B;
-	Tue, 26 Aug 2025 11:38:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A050C34DCCB;
+	Tue, 26 Aug 2025 14:15:06 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756208333; cv=none; b=pG5ie51DAuDjEo9uk3wy/0Q2AsGgiogA+rOH7maZRgHBZZV+rl1DHeCGUy9qRRy0qLhjUPzEU+Uu6MaoG3C2McBy6TvN+RhahaHDuCCYXIupUhEKQ/XVrVJaVFf3EOYMYm0UNs8rkL4g3WWbZfyQZfMzrNmaLzJ7KmOo9VJA5VM=
+	t=1756217706; cv=none; b=VJ9c+0qyo8d48Ctu7YykXcfAWgFNSOXl7Gq8/+y+OgB1LnSR+Tn7uMq7hHfhKJwqUTIgIWNS1dt193Do961HWPR5zRs3Unw8zJv9HGW2WrUJcbVaY7TQWNYlQSPDHFSFi593XC0eB3GA1RlD/987xQBl+mlVMOQRFitoo38iB0U=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756208333; c=relaxed/simple;
-	bh=n7Xx6eUvvD14cThD+oBujrd+OMuEIDiiFpztLRkwIBU=;
+	s=arc-20240116; t=1756217706; c=relaxed/simple;
+	bh=3Kxy39XfT9P5o2HUlen4TpNTOeQOiFhvXHIN6Df/STA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=CyKau4SOO24ggBWu2VGUsYEA9WB46rLvs8blA73osw+zeSY8DT800miWLOm7r/Rldepa8SelWeoY8ItEzqew1+tpxuffHg+Bpv8brdFWa0JI3B5ectTswkFgTSM3W5YEHqsIuEs+of3PgDSeh8ue4i+sseca4kOjHqIn0OjkIvE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=q7Ddohx8; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id DAF26C4CEF1;
-	Tue, 26 Aug 2025 11:38:52 +0000 (UTC)
+	 MIME-Version; b=DjEHQ0JDeb0FBgrlXaCmYVzNi4F/F9+lVkiGuTtJCCGBeWj0Y9LQJ0ef8eOuVWjSlzJiib1UBDdv7fz6IdwoI4DxC8BB1ZWGaZLMRyk5HTMRg9VxsKPCAyD6BwqinmD/0YwU0A2dOvVysRc8iUpDKAhnwmHJsplAEoaUZPx3jrc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=gW5ig4e9; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2EBE3C4CEF1;
+	Tue, 26 Aug 2025 14:15:06 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1756208333;
-	bh=n7Xx6eUvvD14cThD+oBujrd+OMuEIDiiFpztLRkwIBU=;
+	s=korg; t=1756217706;
+	bh=3Kxy39XfT9P5o2HUlen4TpNTOeQOiFhvXHIN6Df/STA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=q7Ddohx8E4txT13gQOoaL9S9+9qRydLTjCz7kgMmvRQZ0O67yxufi+dWg49SqzFmF
-	 MmsUjmz+asWBRjOtPT7oBeHAnPtLJS3C+brbJYQcM0SzEt0Evk9h1TF+cdWl+8QtKt
-	 4VZhapH59Y/u+DcktSzbo8PkifoIEYQtU+aTS+I0=
+	b=gW5ig4e9E3UZCX2MSDRE8Jhqt5dhYUtQ6d3baQMaR1zgVgP/6GBep2QYXXYgzBu1r
+	 RwWxXc08GICUAwofMdFahyFoMDsQNivCbUcViOroWOsWPsBM6hBAacSzXchZ11wQ4N
+	 kjT0UBtS7EL0NqPCqVqDqqbRIcEl2t0Mm16HPKQs=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Alexander Sverdlin <alexander.sverdlin@siemens.com>,
-	Vignesh Raghavendra <vigneshr@ti.com>
-Subject: [PATCH 6.12 040/322] arm64: dts: ti: k3-pinctrl: Enable Schmitt Trigger by default
+	Mark Brown <broonie@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.10 245/523] ASoC: hdac_hdmi: Rate limit logging on connection and disconnection
 Date: Tue, 26 Aug 2025 13:07:35 +0200
-Message-ID: <20250826110916.360315497@linuxfoundation.org>
+Message-ID: <20250826110930.480411089@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250826110915.169062587@linuxfoundation.org>
-References: <20250826110915.169062587@linuxfoundation.org>
+In-Reply-To: <20250826110924.562212281@linuxfoundation.org>
+References: <20250826110924.562212281@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,72 +61,73 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Alexander Sverdlin <alexander.sverdlin@siemens.com>
+From: Mark Brown <broonie@kernel.org>
 
-commit 5b272127884bded21576a6ddceca13725a351c63 upstream.
+[ Upstream commit c4ca928a6db1593802cd945f075a7e21dd0430c1 ]
 
-Switch Schmitt Trigger functions for PIN_INPUT* macros by default. This is
-HW PoR configuration, the slew rate requirements without ST enabled are
-pretty tough for these devices. We've noticed spurious GPIO interrupts even
-with noise-free edges but not meeting slew rate requirements (3.3E+6 V/s
-for 3.3v LVCMOS).
+We currently log parse failures for ELD data and some disconnection events
+as errors without rate limiting. These log messages can be triggered very
+frequently in some situations, especially ELD parsing when there is nothing
+connected to a HDMI port which will generate:
 
-It's not obvious why one might want to disable the PoR-enabled ST on any
-pin. Just enable it by default. As it's not possible to provide OR-able
-macros to disable the ST, shall anyone require it, provide a set of
-new macros with _NOST suffix.
+hdmi-audio-codec hdmi-audio-codec.1.auto: HDMI: Unknown ELD version 0
 
-Fixes: fe49f2d776f7 ("arm64: dts: ti: Use local header for pinctrl register values")
-Cc: stable@vger.kernel.org
-Signed-off-by: Alexander Sverdlin <alexander.sverdlin@siemens.com>
-Link: https://lore.kernel.org/r/20250701105437.3539924-1-alexander.sverdlin@siemens.com
-[vigneshr@ti.com: Add Fixes tag]
-Signed-off-by: Vignesh Raghavendra <vigneshr@ti.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+While there's doubtless work that could be done on reducing the number of
+connection notification callbacks it's possible these may be legitimately
+generated by poor quality physical connections so let's use rate limiting
+to mitigate the log spam for the parse errors and lower the severity for
+disconnect logging to debug level.
+
+Signed-off-by: Mark Brown <broonie@kernel.org>
+Link: https://patch.msgid.link/20250613-asoc-hdmi-eld-logging-v1-1-76d64154d969@kernel.org
+Signed-off-by: Mark Brown <broonie@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/arm64/boot/dts/ti/k3-pinctrl.h |   15 ++++++++++++---
- 1 file changed, 12 insertions(+), 3 deletions(-)
+ sound/soc/codecs/hdac_hdmi.c | 10 ++++++----
+ 1 file changed, 6 insertions(+), 4 deletions(-)
 
---- a/arch/arm64/boot/dts/ti/k3-pinctrl.h
-+++ b/arch/arm64/boot/dts/ti/k3-pinctrl.h
-@@ -8,11 +8,16 @@
- #ifndef DTS_ARM64_TI_K3_PINCTRL_H
- #define DTS_ARM64_TI_K3_PINCTRL_H
+diff --git a/sound/soc/codecs/hdac_hdmi.c b/sound/soc/codecs/hdac_hdmi.c
+index 6de3e47b92d8..76e06c88f279 100644
+--- a/sound/soc/codecs/hdac_hdmi.c
++++ b/sound/soc/codecs/hdac_hdmi.c
+@@ -1230,7 +1230,8 @@ static int hdac_hdmi_parse_eld(struct hdac_device *hdev,
+ 						>> DRM_ELD_VER_SHIFT;
  
-+#define ST_EN_SHIFT		(14)
- #define PULLUDEN_SHIFT		(16)
- #define PULLTYPESEL_SHIFT	(17)
- #define RXACTIVE_SHIFT		(18)
- #define DEBOUNCE_SHIFT		(11)
+ 	if (ver != ELD_VER_CEA_861D && ver != ELD_VER_PARTIAL) {
+-		dev_err(&hdev->dev, "HDMI: Unknown ELD version %d\n", ver);
++		dev_err_ratelimited(&hdev->dev,
++				    "HDMI: Unknown ELD version %d\n", ver);
+ 		return -EINVAL;
+ 	}
  
-+/* Schmitt trigger configuration */
-+#define ST_DISABLE		(0 << ST_EN_SHIFT)
-+#define ST_ENABLE		(1 << ST_EN_SHIFT)
-+
- #define PULL_DISABLE		(1 << PULLUDEN_SHIFT)
- #define PULL_ENABLE		(0 << PULLUDEN_SHIFT)
+@@ -1238,7 +1239,8 @@ static int hdac_hdmi_parse_eld(struct hdac_device *hdev,
+ 		DRM_ELD_MNL_MASK) >> DRM_ELD_MNL_SHIFT;
  
-@@ -26,9 +31,13 @@
- #define PIN_OUTPUT		(INPUT_DISABLE | PULL_DISABLE)
- #define PIN_OUTPUT_PULLUP	(INPUT_DISABLE | PULL_UP)
- #define PIN_OUTPUT_PULLDOWN	(INPUT_DISABLE | PULL_DOWN)
--#define PIN_INPUT		(INPUT_EN | PULL_DISABLE)
--#define PIN_INPUT_PULLUP	(INPUT_EN | PULL_UP)
--#define PIN_INPUT_PULLDOWN	(INPUT_EN | PULL_DOWN)
-+#define PIN_INPUT		(INPUT_EN | ST_ENABLE | PULL_DISABLE)
-+#define PIN_INPUT_PULLUP	(INPUT_EN | ST_ENABLE | PULL_UP)
-+#define PIN_INPUT_PULLDOWN	(INPUT_EN | ST_ENABLE | PULL_DOWN)
-+/* Input configurations with Schmitt Trigger disabled */
-+#define PIN_INPUT_NOST		(INPUT_EN | PULL_DISABLE)
-+#define PIN_INPUT_PULLUP_NOST	(INPUT_EN | PULL_UP)
-+#define PIN_INPUT_PULLDOWN_NOST	(INPUT_EN | PULL_DOWN)
+ 	if (mnl > ELD_MAX_MNL) {
+-		dev_err(&hdev->dev, "HDMI: MNL Invalid %d\n", mnl);
++		dev_err_ratelimited(&hdev->dev,
++				    "HDMI: MNL Invalid %d\n", mnl);
+ 		return -EINVAL;
+ 	}
  
- #define PIN_DEBOUNCE_DISABLE	(0 << DEBOUNCE_SHIFT)
- #define PIN_DEBOUNCE_CONF1	(1 << DEBOUNCE_SHIFT)
+@@ -1297,8 +1299,8 @@ static void hdac_hdmi_present_sense(struct hdac_hdmi_pin *pin,
+ 
+ 	if (!port->eld.monitor_present || !port->eld.eld_valid) {
+ 
+-		dev_err(&hdev->dev, "%s: disconnect for pin:port %d:%d\n",
+-						__func__, pin->nid, port->id);
++		dev_dbg(&hdev->dev, "%s: disconnect for pin:port %d:%d\n",
++			__func__, pin->nid, port->id);
+ 
+ 		/*
+ 		 * PCMs are not registered during device probe, so don't
+-- 
+2.39.5
+
 
 
 
