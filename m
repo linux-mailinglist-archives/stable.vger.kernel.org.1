@@ -1,59 +1,56 @@
-Return-Path: <stable+bounces-174888-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-173790-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 54D1AB365AF
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 15:49:55 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id AA518B35FC2
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 14:53:30 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 6C1675610A0
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 13:39:42 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id E28597C0C2D
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 12:52:09 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4E47F230BDF;
-	Tue, 26 Aug 2025 13:39:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A1AF81D5147;
+	Tue, 26 Aug 2025 12:51:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="0srtNlRu"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Rh2Zm7Kv"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 087F52264B8;
-	Tue, 26 Aug 2025 13:39:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5D7B815A8;
+	Tue, 26 Aug 2025 12:51:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756215580; cv=none; b=BDwsBhr8IgQWlyrKbrJXmaeIzIP3BNu2QrzxBE8xMgNhoBvyrndw4bkLnATWVHOypFkhTZvk6xhV4B6WltVJcZCwuqaHEVT5DwDeaKGPynxxtspPI0y3NSTpqP/94KRnE49E4ScMByo96y4mSbu7KJoyJcV+kfWS7bT8n+7CCt0=
+	t=1756212677; cv=none; b=ikItTvt/Jq0IKfaad+Guj77/2SrhPC2SaEfItoGaDBkHJcARe0osHOPeI+vxCC1wquVe4/GA9Ts5wGdxb4edBNXIjRAWmzwzpkbMDtCf2HYQ1rCAdhw26P7fgNvdYpMkqoWF885fyEITfNERUWWU6mgVZ3c+O885MJCVunz9Kc4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756215580; c=relaxed/simple;
-	bh=Mn9WCSfdWsCOLSnMrvC0cLXcUIvTWwj3X+KE1jJdD5s=;
+	s=arc-20240116; t=1756212677; c=relaxed/simple;
+	bh=E5A0+n7gyyMby6sJy4R+urjMPQobZzJRvczsnwrjNzQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=SOttOgJbXWkgFlWD10+c2hclArf7f+2duGE1fUxq4aw8caCUffjgRRD62r1IeoW+yoSE630scwNxlUj0fHFLlF3Iz5UNtHMTBk3A8tFF9Yw/RkYub8won8NXlUe5vel2DNR6BKxxjnehalztzayJvkgUzZL8LIbDkEbsAL37n14=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=0srtNlRu; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8298FC113CF;
-	Tue, 26 Aug 2025 13:39:39 +0000 (UTC)
+	 MIME-Version; b=DjwpKNXAKC5aC9thPsIVxKYaoP0XjOC1FAdyifNQ/NVs5XLE4TTYwKawJj5JieCWV0pX06R4zmElVJL07Lw1KyG20GqI6e6U4xhPmoF4jPWGFM4X6gW+OI5J+icf5BZK5xROA2s7bm42AbD2jFbbhOSoscmNl7BM00phaCY8WKs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Rh2Zm7Kv; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E45CCC4CEF1;
+	Tue, 26 Aug 2025 12:51:16 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1756215579;
-	bh=Mn9WCSfdWsCOLSnMrvC0cLXcUIvTWwj3X+KE1jJdD5s=;
+	s=korg; t=1756212677;
+	bh=E5A0+n7gyyMby6sJy4R+urjMPQobZzJRvczsnwrjNzQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=0srtNlRukfPR6H1WQWvqdNaBPdMBxvrScByqSOB5vObi1xwvNhw1zx0HqiiI6fiMV
-	 g7iGCqys/N9h+4NzlBY+4b5OKdguniu756hkesbQpRdywXn5Hm1xmvGr1TQ6ezIZuy
-	 cjPxy846l6up5qiBVUDv7BirK4NnZgld08IkJiSA=
+	b=Rh2Zm7KvlS/oI3Igt0xombYxC5gUsnB580CPS9uZytcPGhKuHIbL6jTd+L1W/Hofh
+	 C1ZXQ4arCcsBr57DLbEx/tY0llKZaT1LEpVnSlVj8I/sN9g5xiMukvTpdC6Ss+uQOb
+	 4rPkIq+4g3h2dDxrGJxyXj/E2pffado3AySBzy2c=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jian Shen <shenjian15@huawei.com>,
-	Hao Lan <lanhao@huawei.com>,
-	Jijie Shao <shaojijie@huawei.com>,
-	Simon Horman <horms@kernel.org>,
-	Paolo Abeni <pabeni@redhat.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 087/644] net: hns3: fixed vf get max channels bug
-Date: Tue, 26 Aug 2025 13:02:58 +0200
-Message-ID: <20250826110948.652990568@linuxfoundation.org>
+	Yevhen Kondrashyn <e.kondrashyn@gmail.com>,
+	Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
+	"Rafael J. Wysocki" <rafael.j.wysocki@intel.com>
+Subject: [PATCH 6.6 030/587] Documentation: ACPI: Fix parent device references
+Date: Tue, 26 Aug 2025 13:02:59 +0200
+Message-ID: <20250826110953.720255321@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250826110946.507083938@linuxfoundation.org>
-References: <20250826110946.507083938@linuxfoundation.org>
+In-Reply-To: <20250826110952.942403671@linuxfoundation.org>
+References: <20250826110952.942403671@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -65,50 +62,77 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jian Shen <shenjian15@huawei.com>
+From: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
 
-[ Upstream commit b3e75c0bcc53f647311960bc1b0970b9b480ca5a ]
+commit e65cb011349e653ded541dddd6469c2ca813edcf upstream.
 
-Currently, the queried maximum of vf channels is the maximum of channels
-supported by each TC. However, the actual maximum of channels is
-the maximum of channels supported by the device.
+The _CRS resources in many cases want to have ResourceSource field
+to be a type of ACPI String. This means that to compile properly
+we need to enclosure the name path into double quotes. This will
+in practice defer the interpretation to a run-time stage, However,
+this may be interpreted differently on different OSes and ACPI
+interpreter implementations. In particular ACPICA might not correctly
+recognize the leading '^' (caret) character and will not resolve
+the relative name path properly. On top of that, this piece may be
+used in SSDTs which are loaded after the DSDT and on itself may also
+not resolve relative name paths outside of their own scopes.
+With this all said, fix documentation to use fully-qualified name
+paths always to avoid any misinterpretations, which is proven to
+work.
 
-Fixes: 849e46077689 ("net: hns3: add ethtool_ops.get_channels support for VF")
-Signed-off-by: Jian Shen <shenjian15@huawei.com>
-Signed-off-by: Hao Lan <lanhao@huawei.com>
-Signed-off-by: Jijie Shao <shaojijie@huawei.com>
-Reviewed-by: Simon Horman <horms@kernel.org>
-Link: https://patch.msgid.link/20250722125423.1270673-4-shaojijie@huawei.com
-Signed-off-by: Paolo Abeni <pabeni@redhat.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Fixes: 8eb5c87a92c0 ("i2c: add ACPI support for I2C mux ports")
+Reported-by: Yevhen Kondrashyn <e.kondrashyn@gmail.com>
+Cc: All applicable <stable@vger.kernel.org>
+Signed-off-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+Link: https://patch.msgid.link/20250710170225.961303-1-andriy.shevchenko@linux.intel.com
+Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/net/ethernet/hisilicon/hns3/hns3vf/hclgevf_main.c | 6 +-----
- 1 file changed, 1 insertion(+), 5 deletions(-)
+ Documentation/firmware-guide/acpi/i2c-muxes.rst |    8 ++++----
+ 1 file changed, 4 insertions(+), 4 deletions(-)
 
-diff --git a/drivers/net/ethernet/hisilicon/hns3/hns3vf/hclgevf_main.c b/drivers/net/ethernet/hisilicon/hns3/hns3vf/hclgevf_main.c
-index 628d5c5ad75de..94e615177ff14 100644
---- a/drivers/net/ethernet/hisilicon/hns3/hns3vf/hclgevf_main.c
-+++ b/drivers/net/ethernet/hisilicon/hns3/hns3vf/hclgevf_main.c
-@@ -3571,11 +3571,7 @@ static void hclgevf_uninit_ae_dev(struct hnae3_ae_dev *ae_dev)
+--- a/Documentation/firmware-guide/acpi/i2c-muxes.rst
++++ b/Documentation/firmware-guide/acpi/i2c-muxes.rst
+@@ -14,7 +14,7 @@ Consider this topology::
+     |      |   | 0x70 |--CH01--> i2c client B (0x50)
+     +------+   +------+
  
- static u32 hclgevf_get_max_channels(struct hclgevf_dev *hdev)
- {
--	struct hnae3_handle *nic = &hdev->nic;
--	struct hnae3_knic_private_info *kinfo = &nic->kinfo;
--
--	return min_t(u32, hdev->rss_size_max,
--		     hdev->num_tqps / kinfo->tc_info.num_tc);
-+	return min(hdev->rss_size_max, hdev->num_tqps);
- }
+-which corresponds to the following ASL::
++which corresponds to the following ASL (in the scope of \_SB)::
  
- /**
--- 
-2.39.5
-
+     Device (SMB1)
+     {
+@@ -24,7 +24,7 @@ which corresponds to the following ASL::
+             Name (_HID, ...)
+             Name (_CRS, ResourceTemplate () {
+                 I2cSerialBus (0x70, ControllerInitiated, I2C_SPEED,
+-                            AddressingMode7Bit, "^SMB1", 0x00,
++                            AddressingMode7Bit, "\\_SB.SMB1", 0x00,
+                             ResourceConsumer,,)
+             }
+ 
+@@ -37,7 +37,7 @@ which corresponds to the following ASL::
+                     Name (_HID, ...)
+                     Name (_CRS, ResourceTemplate () {
+                         I2cSerialBus (0x50, ControllerInitiated, I2C_SPEED,
+-                                    AddressingMode7Bit, "^CH00", 0x00,
++                                    AddressingMode7Bit, "\\_SB.SMB1.CH00", 0x00,
+                                     ResourceConsumer,,)
+                     }
+                 }
+@@ -52,7 +52,7 @@ which corresponds to the following ASL::
+                     Name (_HID, ...)
+                     Name (_CRS, ResourceTemplate () {
+                         I2cSerialBus (0x50, ControllerInitiated, I2C_SPEED,
+-                                    AddressingMode7Bit, "^CH01", 0x00,
++                                    AddressingMode7Bit, "\\_SB.SMB1.CH01", 0x00,
+                                     ResourceConsumer,,)
+                     }
+                 }
 
 
 
