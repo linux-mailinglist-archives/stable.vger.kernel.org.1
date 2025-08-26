@@ -1,59 +1,56 @@
-Return-Path: <stable+bounces-174168-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-175851-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 69FB1B361D0
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 15:12:44 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id BD71AB369DD
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 16:31:46 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 77C782A3BC5
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 13:07:56 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id E2F021C44BC5
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 14:24:00 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E2672231A55;
-	Tue, 26 Aug 2025 13:07:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 84FC2343D63;
+	Tue, 26 Aug 2025 14:22:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="FSttAz+T"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="fKKtWLbN"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1BF6318F2FC;
-	Tue, 26 Aug 2025 13:07:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 37E2F350825;
+	Tue, 26 Aug 2025 14:22:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756213674; cv=none; b=gJKfL1Rvu070asQnuDgLh1qZangALA+FBjP9Xg2a6UN4DEXX8NGUfYZCKEIheNgJHf76x0sOaKNKFqi3gPUSQ4zb5wvDKOsDM/4vdfZIIz///vv0zW4lRuD+WPOf+Camt1eOv7HgZcrENS4zswr773nW7WxpfDv+RTNc2JhY7kg=
+	t=1756218136; cv=none; b=DcNrRbIF2Bwl+Wae//JfaNZb+VUJi2sYVSV2kOIlSWWdlRpr41rxyRPeJVcMN3Xfd6E/pyBdihgPKhXVl9WZI73HsrAoVYkV8XF/UAjs9fRGio1vADrFeDLScQAP71a8SxFo3ma6tODvxoNizVrejZo15uGqBuG4qZLKMsVclBo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756213674; c=relaxed/simple;
-	bh=76mSP3bCM+vhpIBL23gDj8qYjaRCszJw6tfopYAeYLU=;
+	s=arc-20240116; t=1756218136; c=relaxed/simple;
+	bh=iNB0LE7nFGX2UtI2XQ5yHaqcfPG1KDJoMKi1FkisQOY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=DLCBQSz5eIZScCCFOM3FCIFQCOVKr1Kfssl6FaLVCR7cghConD500z9Z9E7YQB1l0k4b7eQcCpoGNN4cVxG58/mI1UpVt8duTtIapTxXJI50502/IoFMmWp0EB3PFJPi6ES/yR50HHbp9LKfO3okp4+pzBmjFWNWL+fTk9viRJA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=FSttAz+T; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 10ED0C4CEF1;
-	Tue, 26 Aug 2025 13:07:52 +0000 (UTC)
+	 MIME-Version; b=GVmfJuHzFXxjXDCAx5Bb4VKJN1c2imHCF2R16Zc3FQBbyfCrIPYPdCknFcQOaWX8wjLhUcEvv43N4RM+vEwgRVgkf3Bj5xV6WU/pZOwGpgg6HieXB9DDtHOOuz2fe+dgy4i05aKilnwClp/gvzAvIbZkttYnt0NfY6mCvOh9BNE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=fKKtWLbN; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7518AC4CEF1;
+	Tue, 26 Aug 2025 14:22:15 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1756213673;
-	bh=76mSP3bCM+vhpIBL23gDj8qYjaRCszJw6tfopYAeYLU=;
+	s=korg; t=1756218135;
+	bh=iNB0LE7nFGX2UtI2XQ5yHaqcfPG1KDJoMKi1FkisQOY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=FSttAz+T10urtfAZacMLF85gdhwTJlw+kGTF4Lr6KFCpJ8SSlF21vjLHaAOpUut05
-	 Dj7bhwIZK0MUukctiRQGXEPCNXnEyYvROrcgf7MP59ISkSZdjDcb/sCVNhfOPkqHBB
-	 bqsokBQq7BfXb/bVLquPOfSryq7STvpLn9OFgJjk=
+	b=fKKtWLbNyFVDn2MIz+uZhSiNgZxvmvEQJ6eJBD7xlhaoUAfOf8FSGGgP/q3VQjKUD
+	 BvrbQ7v1sYqQLPmLSJq6QHUM/gjUeBm1RjfZ8KmWfPpvHptN9QfnejPIt47b5DEeeQ
+	 uA+xIm4szcBmUFGTL3n5IvXLRTDbdcia/67QW0N8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Li Shuang <shuali@redhat.com>,
-	Petr Machata <petrm@nvidia.com>,
-	Ivan Vecera <ivecera@redhat.com>,
-	Davide Caratti <dcaratti@redhat.com>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 436/587] net/sched: ets: use old nbands while purging unused classes
+	stable@kernel.org,
+	Baokun Li <libaokun1@huawei.com>,
+	Theodore Tso <tytso@mit.edu>
+Subject: [PATCH 5.10 375/523] jbd2: prevent softlockup in jbd2_log_do_checkpoint()
 Date: Tue, 26 Aug 2025 13:09:45 +0200
-Message-ID: <20250826111004.042082487@linuxfoundation.org>
+Message-ID: <20250826110933.715197041@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250826110952.942403671@linuxfoundation.org>
-References: <20250826110952.942403671@linuxfoundation.org>
+In-Reply-To: <20250826110924.562212281@linuxfoundation.org>
+References: <20250826110924.562212281@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -65,121 +62,78 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Davide Caratti <dcaratti@redhat.com>
+From: Baokun Li <libaokun1@huawei.com>
 
-[ Upstream commit 87c6efc5ce9c126ae4a781bc04504b83780e3650 ]
+commit 9d98cf4632258720f18265a058e62fde120c0151 upstream.
 
-Shuang reported sch_ets test-case [1] crashing in ets_class_qlen_notify()
-after recent changes from Lion [2]. The problem is: in ets_qdisc_change()
-we purge unused DWRR queues; the value of 'q->nbands' is the new one, and
-the cleanup should be done with the old one. The problem is here since my
-first attempts to fix ets_qdisc_change(), but it surfaced again after the
-recent qdisc len accounting fixes. Fix it purging idle DWRR queues before
-assigning a new value of 'q->nbands', so that all purge operations find a
-consistent configuration:
+Both jbd2_log_do_checkpoint() and jbd2_journal_shrink_checkpoint_list()
+periodically release j_list_lock after processing a batch of buffers to
+avoid long hold times on the j_list_lock. However, since both functions
+contend for j_list_lock, the combined time spent waiting and processing
+can be significant.
 
- - old 'q->nbands' because it's needed by ets_class_find()
- - old 'q->nstrict' because it's needed by ets_class_is_strict()
+jbd2_journal_shrink_checkpoint_list() explicitly calls cond_resched() when
+need_resched() is true to avoid softlockups during prolonged operations.
+But jbd2_log_do_checkpoint() only exits its loop when need_resched() is
+true, relying on potentially sleeping functions like __flush_batch() or
+wait_on_buffer() to trigger rescheduling. If those functions do not sleep,
+the kernel may hit a softlockup.
 
- BUG: kernel NULL pointer dereference, address: 0000000000000000
- #PF: supervisor read access in kernel mode
- #PF: error_code(0x0000) - not-present page
- PGD 0 P4D 0
- Oops: Oops: 0000 [#1] SMP NOPTI
- CPU: 62 UID: 0 PID: 39457 Comm: tc Kdump: loaded Not tainted 6.12.0-116.el10.x86_64 #1 PREEMPT(voluntary)
- Hardware name: Dell Inc. PowerEdge R640/06DKY5, BIOS 2.12.2 07/09/2021
- RIP: 0010:__list_del_entry_valid_or_report+0x4/0x80
- Code: ff 4c 39 c7 0f 84 39 19 8e ff b8 01 00 00 00 c3 cc cc cc cc 66 90 90 90 90 90 90 90 90 90 90 90 90 90 90 90 90 90 f3 0f 1e fa <48> 8b 17 48 8b 4f 08 48 85 d2 0f 84 56 19 8e ff 48 85 c9 0f 84 ab
- RSP: 0018:ffffba186009f400 EFLAGS: 00010202
- RAX: 00000000000000d6 RBX: 0000000000000000 RCX: 0000000000000004
- RDX: ffff9f0fa29b69c0 RSI: 0000000000000000 RDI: 0000000000000000
- RBP: ffffffffc12c2400 R08: 0000000000000008 R09: 0000000000000004
- R10: ffffffffffffffff R11: 0000000000000004 R12: 0000000000000000
- R13: ffff9f0f8cfe0000 R14: 0000000000100005 R15: 0000000000000000
- FS:  00007f2154f37480(0000) GS:ffff9f269c1c0000(0000) knlGS:0000000000000000
- CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
- CR2: 0000000000000000 CR3: 00000001530be001 CR4: 00000000007726f0
- DR0: 0000000000000000 DR1: 0000000000000000 DR2: 0000000000000000
- DR3: 0000000000000000 DR6: 00000000fffe0ff0 DR7: 0000000000000400
- PKRU: 55555554
- Call Trace:
-  <TASK>
-  ets_class_qlen_notify+0x65/0x90 [sch_ets]
-  qdisc_tree_reduce_backlog+0x74/0x110
-  ets_qdisc_change+0x630/0xa40 [sch_ets]
-  __tc_modify_qdisc.constprop.0+0x216/0x7f0
-  tc_modify_qdisc+0x7c/0x120
-  rtnetlink_rcv_msg+0x145/0x3f0
-  netlink_rcv_skb+0x53/0x100
-  netlink_unicast+0x245/0x390
-  netlink_sendmsg+0x21b/0x470
-  ____sys_sendmsg+0x39d/0x3d0
-  ___sys_sendmsg+0x9a/0xe0
-  __sys_sendmsg+0x7a/0xd0
-  do_syscall_64+0x7d/0x160
-  entry_SYSCALL_64_after_hwframe+0x76/0x7e
- RIP: 0033:0x7f2155114084
- Code: 89 02 b8 ff ff ff ff eb bb 66 2e 0f 1f 84 00 00 00 00 00 0f 1f 00 f3 0f 1e fa 80 3d 25 f0 0c 00 00 74 13 b8 2e 00 00 00 0f 05 <48> 3d 00 f0 ff ff 77 54 c3 0f 1f 00 48 83 ec 28 89 54 24 1c 48 89
- RSP: 002b:00007fff1fd7a988 EFLAGS: 00000202 ORIG_RAX: 000000000000002e
- RAX: ffffffffffffffda RBX: 0000560ec063e5e0 RCX: 00007f2155114084
- RDX: 0000000000000000 RSI: 00007fff1fd7a9f0 RDI: 0000000000000003
- RBP: 00007fff1fd7aa60 R08: 0000000000000010 R09: 000000000000003f
- R10: 0000560ee9b3a010 R11: 0000000000000202 R12: 00007fff1fd7aae0
- R13: 000000006891ccde R14: 0000560ec063e5e0 R15: 00007fff1fd7aad0
-  </TASK>
+watchdog: BUG: soft lockup - CPU#3 stuck for 156s! [kworker/u129:2:373]
+CPU: 3 PID: 373 Comm: kworker/u129:2 Kdump: loaded Not tainted 6.6.0+ #10
+Hardware name: Huawei TaiShan 2280 /BC11SPCD, BIOS 1.27 06/13/2017
+Workqueue: writeback wb_workfn (flush-7:2)
+pstate: 20000005 (nzCv daif -PAN -UAO -TCO -DIT -SSBS BTYPE=--)
+pc : native_queued_spin_lock_slowpath+0x358/0x418
+lr : jbd2_log_do_checkpoint+0x31c/0x438 [jbd2]
+Call trace:
+ native_queued_spin_lock_slowpath+0x358/0x418
+ jbd2_log_do_checkpoint+0x31c/0x438 [jbd2]
+ __jbd2_log_wait_for_space+0xfc/0x2f8 [jbd2]
+ add_transaction_credits+0x3bc/0x418 [jbd2]
+ start_this_handle+0xf8/0x560 [jbd2]
+ jbd2__journal_start+0x118/0x228 [jbd2]
+ __ext4_journal_start_sb+0x110/0x188 [ext4]
+ ext4_do_writepages+0x3dc/0x740 [ext4]
+ ext4_writepages+0xa4/0x190 [ext4]
+ do_writepages+0x94/0x228
+ __writeback_single_inode+0x48/0x318
+ writeback_sb_inodes+0x204/0x590
+ __writeback_inodes_wb+0x54/0xf8
+ wb_writeback+0x2cc/0x3d8
+ wb_do_writeback+0x2e0/0x2f8
+ wb_workfn+0x80/0x2a8
+ process_one_work+0x178/0x3e8
+ worker_thread+0x234/0x3b8
+ kthread+0xf0/0x108
+ ret_from_fork+0x10/0x20
 
- [1] https://lore.kernel.org/netdev/e08c7f4a6882f260011909a868311c6e9b54f3e4.1639153474.git.dcaratti@redhat.com/
- [2] https://lore.kernel.org/netdev/d912cbd7-193b-4269-9857-525bee8bbb6a@gmail.com/
+So explicitly call cond_resched() in jbd2_log_do_checkpoint() to avoid
+softlockup.
 
-Cc: stable@vger.kernel.org
-Fixes: 103406b38c60 ("net/sched: Always pass notifications when child class becomes empty")
-Fixes: c062f2a0b04d ("net/sched: sch_ets: don't remove idle classes from the round-robin list")
-Fixes: dcc68b4d8084 ("net: sch_ets: Add a new Qdisc")
-Reported-by: Li Shuang <shuali@redhat.com>
-Closes: https://issues.redhat.com/browse/RHEL-108026
-Reviewed-by: Petr Machata <petrm@nvidia.com>
-Co-developed-by: Ivan Vecera <ivecera@redhat.com>
-Signed-off-by: Ivan Vecera <ivecera@redhat.com>
-Signed-off-by: Davide Caratti <dcaratti@redhat.com>
-Link: https://patch.msgid.link/7928ff6d17db47a2ae7cc205c44777b1f1950545.1755016081.git.dcaratti@redhat.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Cc: stable@kernel.org
+Signed-off-by: Baokun Li <libaokun1@huawei.com>
+Link: https://patch.msgid.link/20250812063752.912130-1-libaokun@huaweicloud.com
+Signed-off-by: Theodore Ts'o <tytso@mit.edu>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- net/sched/sch_ets.c |   11 ++++++-----
- 1 file changed, 6 insertions(+), 5 deletions(-)
+ fs/jbd2/checkpoint.c |    1 +
+ 1 file changed, 1 insertion(+)
 
---- a/net/sched/sch_ets.c
-+++ b/net/sched/sch_ets.c
-@@ -651,6 +651,12 @@ static int ets_qdisc_change(struct Qdisc
- 
- 	sch_tree_lock(sch);
- 
-+	for (i = nbands; i < oldbands; i++) {
-+		if (i >= q->nstrict && q->classes[i].qdisc->q.qlen)
-+			list_del_init(&q->classes[i].alist);
-+		qdisc_purge_queue(q->classes[i].qdisc);
-+	}
-+
- 	WRITE_ONCE(q->nbands, nbands);
- 	for (i = nstrict; i < q->nstrict; i++) {
- 		if (q->classes[i].qdisc->q.qlen) {
-@@ -658,11 +664,6 @@ static int ets_qdisc_change(struct Qdisc
- 			q->classes[i].deficit = quanta[i];
- 		}
+--- a/fs/jbd2/checkpoint.c
++++ b/fs/jbd2/checkpoint.c
+@@ -321,6 +321,7 @@ restart:
+ 		retry:
+ 			if (batch_count)
+ 				__flush_batch(journal, &batch_count);
++			cond_resched();
+ 			spin_lock(&journal->j_list_lock);
+ 			goto restart;
  	}
--	for (i = q->nbands; i < oldbands; i++) {
--		if (i >= q->nstrict && q->classes[i].qdisc->q.qlen)
--			list_del_init(&q->classes[i].alist);
--		qdisc_purge_queue(q->classes[i].qdisc);
--	}
- 	WRITE_ONCE(q->nstrict, nstrict);
- 	memcpy(q->prio2band, priomap, sizeof(priomap));
- 
 
 
 
