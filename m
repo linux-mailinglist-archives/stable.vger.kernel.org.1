@@ -1,58 +1,56 @@
-Return-Path: <stable+bounces-176250-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-174186-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [142.0.200.124])
-	by mail.lfdr.de (Postfix) with ESMTPS id D0E8EB36B08
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 16:42:36 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8309AB361F0
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 15:14:14 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 1DD9E4E2CD4
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 14:42:29 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 07E523BD717
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 13:09:25 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id DDEC7352FE2;
-	Tue, 26 Aug 2025 14:39:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C48DE2D320B;
+	Tue, 26 Aug 2025 13:08:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="jeWzgX3Y"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="SBs6dYPK"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 95DEA352FD9;
-	Tue, 26 Aug 2025 14:39:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7E67427EFE7;
+	Tue, 26 Aug 2025 13:08:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756219167; cv=none; b=a2sUy2eTiS7DA2/veVtGJC0I43ymUeOTQmHoA/gZ+v4FGFFAIDHnc6pU+z3Zase6xFt4lei3Y9Efm7iRh+CFC41/vCS3HRkvwG7CkaB1YMiYRKWXV6xjjjXZZaELvGA887+psXb0qFVC1ly0QyuPGnqYuNHlRIZno55lK+rqW/c=
+	t=1756213722; cv=none; b=mixv7gZf5yatm0LJwcr1GALql18jYoLfFZgGZSi27fepniVcL4UHdSUu/qAlMEEs8S7DfgxpTHug9RtZxHjC1RmEgX0It1u6YLTkwXmuxIceai6nWZcvfsev8sClDO+HodL05UlzmbEunHO5kL6MRN9YIxyVB8bJm8ci33wnTxE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756219167; c=relaxed/simple;
-	bh=xuqdUlLD7tnOdj/e0qjbCN1vwSWp9UGMpwcJ0YedjY8=;
+	s=arc-20240116; t=1756213722; c=relaxed/simple;
+	bh=foVhemS0ESquAHrYGZEhRhHcX2CGc86G99anwlNPyAY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=F4tbmHASVXJ88z1QHlaodNwUiobNAxmaXiYBWU26srMCfng98sTGj9GmrrTrxcRFlRDSuGChq9+zquktltAINk1Cz2aeLm6aEaqJFoFJ+6gFyDUAISt8EerV6shwC0xtFBLlPuFx5eePlgg47Htnwd21J2OPyMQiDzs+FrWl62s=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=jeWzgX3Y; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 19A07C4CEF1;
-	Tue, 26 Aug 2025 14:39:26 +0000 (UTC)
+	 MIME-Version; b=UjuO+VkWsEkb8DHtH1hv5M+Q3SiWLYldVEIL3x8Sqsb+LPSofDECoFWXO8KTTUCNb0XPd2zT1iluYAlyicte96HtT3e2sryJAt8hIt9aGJ/I0sEsm0fK4qXBi+F/sgFtsYV+JgOqxSMQTk7DyKFE77nN9v4gg/wXj7DmLW4+Tik=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=SBs6dYPK; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A7E9AC4CEF1;
+	Tue, 26 Aug 2025 13:08:40 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1756219167;
-	bh=xuqdUlLD7tnOdj/e0qjbCN1vwSWp9UGMpwcJ0YedjY8=;
+	s=korg; t=1756213721;
+	bh=foVhemS0ESquAHrYGZEhRhHcX2CGc86G99anwlNPyAY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=jeWzgX3YOPRfQ7CRw46iTcqCV9t0SszICg1uG9rFGMnhxL+yVDwSAv1UtSDaCi9Rf
-	 MuYHCusC81IEPGTFoUR2BTJhrOqoko67RAH6N7a5fssoMMEbWhaRfMRvNCpNRWvNFV
-	 OJCMvyoMWvFljbfx9VDOqxWe1oLibYFMp65hIx0Q=
+	b=SBs6dYPKSN2ABFo0q3jI1Nh6x0J3ZoqEhMyIIdJwm0zhE19gYmMzb8kRST85sTDs6
+	 /NLHnsMnG6MvOffiIuLnI0UJIcUsL9HPkHfKY8BObGsLhJPQ/tsOk13OgKPfqOxqez
+	 9ouuKbmKlmOMD6SxmOnweJmWB9gUV641nrDLMdSs=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Randy Dunlap <rdunlap@infradead.org>,
-	Masahiro Yamada <masahiroy@kernel.org>,
-	"James E.J. Bottomley" <James.Bottomley@HansenPartnership.com>,
-	Helge Deller <deller@gmx.de>,
-	linux-parisc@vger.kernel.org
-Subject: [PATCH 5.4 278/403] parisc: Makefile: fix a typo in palo.conf
+	Filipe Manana <fdmanana@suse.com>,
+	David Sterba <dsterba@suse.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.6 455/587] btrfs: send: only use boolean variables at process_recorded_refs()
 Date: Tue, 26 Aug 2025 13:10:04 +0200
-Message-ID: <20250826110914.477838065@linuxfoundation.org>
+Message-ID: <20250826111004.538391338@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250826110905.607690791@linuxfoundation.org>
-References: <20250826110905.607690791@linuxfoundation.org>
+In-Reply-To: <20250826110952.942403671@linuxfoundation.org>
+References: <20250826110952.942403671@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,40 +62,78 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.4-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Randy Dunlap <rdunlap@infradead.org>
+From: Filipe Manana <fdmanana@suse.com>
 
-commit 963f1b20a8d2a098954606b9725cd54336a2a86c upstream.
+[ Upstream commit 9453fe329789073d9a971de01da5902c32c1a01a ]
 
-Correct "objree" to "objtree". "objree" is not defined.
+We have several local variables at process_recorded_refs() that are used
+as booleans, with some of them having a 'bool' type while two of them
+having an 'int' type. Change this to make them all use the 'bool' type
+which is more clear and to make everything more consistent.
 
-Fixes: 75dd47472b92 ("kbuild: remove src and obj from the top Makefile")
-Signed-off-by: Randy Dunlap <rdunlap@infradead.org>
-Cc: Masahiro Yamada <masahiroy@kernel.org>
-Cc: "James E.J. Bottomley" <James.Bottomley@HansenPartnership.com>
-Cc: Helge Deller <deller@gmx.de>
-Cc: linux-parisc@vger.kernel.org
-Signed-off-by: Helge Deller <deller@gmx.de>
-Cc: stable@vger.kernel.org # v5.3+
+Signed-off-by: Filipe Manana <fdmanana@suse.com>
+Reviewed-by: David Sterba <dsterba@suse.com>
+Signed-off-by: David Sterba <dsterba@suse.com>
+Stable-dep-of: 005b0a0c24e1 ("btrfs: send: use fallocate for hole punching with send stream v2")
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- arch/parisc/Makefile |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ fs/btrfs/send.c |   12 ++++++------
+ 1 file changed, 6 insertions(+), 6 deletions(-)
 
---- a/arch/parisc/Makefile
-+++ b/arch/parisc/Makefile
-@@ -134,7 +134,7 @@ palo lifimage: vmlinuz
- 	fi
- 	@if test ! -f "$(PALOCONF)"; then \
- 		cp $(srctree)/arch/parisc/defpalo.conf $(objtree)/palo.conf; \
--		echo 'A generic palo config file ($(objree)/palo.conf) has been created for you.'; \
-+		echo 'A generic palo config file ($(objtree)/palo.conf) has been created for you.'; \
- 		echo 'You should check it and re-run "make palo".'; \
- 		echo 'WARNING: the "lifimage" file is now placed in this directory by default!'; \
- 		false; \
+--- a/fs/btrfs/send.c
++++ b/fs/btrfs/send.c
+@@ -4180,9 +4180,9 @@ static int process_recorded_refs(struct
+ 	u64 ow_inode = 0;
+ 	u64 ow_gen;
+ 	u64 ow_mode;
+-	int did_overwrite = 0;
+-	int is_orphan = 0;
+ 	u64 last_dir_ino_rm = 0;
++	bool did_overwrite = false;
++	bool is_orphan = false;
+ 	bool can_rename = true;
+ 	bool orphanized_dir = false;
+ 	bool orphanized_ancestor = false;
+@@ -4224,14 +4224,14 @@ static int process_recorded_refs(struct
+ 		if (ret < 0)
+ 			goto out;
+ 		if (ret)
+-			did_overwrite = 1;
++			did_overwrite = true;
+ 	}
+ 	if (sctx->cur_inode_new || did_overwrite) {
+ 		ret = gen_unique_name(sctx, sctx->cur_ino,
+ 				sctx->cur_inode_gen, valid_path);
+ 		if (ret < 0)
+ 			goto out;
+-		is_orphan = 1;
++		is_orphan = true;
+ 	} else {
+ 		ret = get_cur_path(sctx, sctx->cur_ino, sctx->cur_inode_gen,
+ 				valid_path);
+@@ -4454,7 +4454,7 @@ static int process_recorded_refs(struct
+ 			ret = send_rename(sctx, valid_path, cur->full_path);
+ 			if (ret < 0)
+ 				goto out;
+-			is_orphan = 0;
++			is_orphan = false;
+ 			ret = fs_path_copy(valid_path, cur->full_path);
+ 			if (ret < 0)
+ 				goto out;
+@@ -4515,7 +4515,7 @@ static int process_recorded_refs(struct
+ 					sctx->cur_inode_gen, valid_path);
+ 			if (ret < 0)
+ 				goto out;
+-			is_orphan = 1;
++			is_orphan = true;
+ 		}
+ 
+ 		list_for_each_entry(cur, &sctx->deleted_refs, list) {
 
 
 
