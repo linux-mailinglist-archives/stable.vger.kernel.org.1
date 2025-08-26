@@ -1,59 +1,56 @@
-Return-Path: <stable+bounces-174937-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-173811-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id EE0A0B364C8
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 15:41:59 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 76AA6B35FE2
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 14:55:07 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id D1A6A7BA524
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 13:40:18 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id CBE4D46426C
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 12:53:22 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B927F24DD11;
-	Tue, 26 Aug 2025 13:41:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id BA4281A9FB0;
+	Tue, 26 Aug 2025 12:52:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="AoOmNm/H"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="J5Edch3I"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 780151E480;
-	Tue, 26 Aug 2025 13:41:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 788ED1A83ED;
+	Tue, 26 Aug 2025 12:52:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756215710; cv=none; b=TlrduJP6FtBpI+SIxe7rpRmQMCevNHuQPXPG00FuloLqp9A9PwqsnfRfM4EAcitHTYwIrhCwvQ5WRdUL39Z4BWm9la1hvFd6hwG+hRVRIZ6HdM8m8LeG3zUHWltzFp7M+9AGQ1uoKl6wR55W1G3ZObdbYMTvvwbApcvK/oxXFks=
+	t=1756212728; cv=none; b=hesAoBZ3MI5NlDXfdc6He3FPGcsAiKHu/oWoi/CqOSdnWOinaT6KOfO0jCtkWjvuZy78Q1yzXRp6mHeSqblGFJLTKwUJrEhUYwaTXW9Es62L835xObL4oM/EoIDlbrtLXW1C5p++lYUkimjVwCeVsZEK84c5R4CUTBw2dYphl6A=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756215710; c=relaxed/simple;
-	bh=3sN0Jap7/25NmhDvQ8/pCRV4zNg3PJFt7TwBb+16dYE=;
+	s=arc-20240116; t=1756212728; c=relaxed/simple;
+	bh=ikQ18/Zd4dpI+iv6BGQzT/e05zQuX0Quw3DtJkJmiUI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=G41mULyNVbajSvc7FiEPXN6R/y5EtOXh46rJeENb8E+WREsLho9rb6dtepEwvcvsQkeZKKeMV7EkhsVJxEnieqWHQe1Qify867QK4mFRTrnzdlJY7UFa5rCEcLuRuPnukIaeCAMdTNEqTzMqp34otjjbeH4oxSVFBu4m7dnXK8c=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=AoOmNm/H; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 02B31C113D0;
-	Tue, 26 Aug 2025 13:41:49 +0000 (UTC)
+	 MIME-Version; b=XnHkDQvxca/mELxYFxIcSgmccPQCwRUkq9qEh4MoT5BhSA8mEXb/BwP73FRKV4XcMLVjt8RvH1iBPV/AxsFa8Ulx4RQkgILEyV2ipYp1MvNRCx/XQoi/1YofucjBCcdlE8zzMn08Nn6e19uyNipv/hQybNgccpXS9zUPaLg8f8s=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=J5Edch3I; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B0060C4CEF1;
+	Tue, 26 Aug 2025 12:52:07 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1756215710;
-	bh=3sN0Jap7/25NmhDvQ8/pCRV4zNg3PJFt7TwBb+16dYE=;
+	s=korg; t=1756212728;
+	bh=ikQ18/Zd4dpI+iv6BGQzT/e05zQuX0Quw3DtJkJmiUI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=AoOmNm/H7k2uoI0OI8V+SS5qlUpyQd6XrnzP4kn/1x5GL0cFOiTMoLXJFMWVD3jaI
-	 ukxYeFDKBJV6GgnAKieNG6bWGC8caT+KsMwKo/urySLm1e3riwA2HI57oO+pJ3pvhc
-	 4lTYQYTNoRWPjXPZEh2Q7ErKiU46UKN0KSdecPlE=
+	b=J5Edch3IAttz1UpRabJxcaKliGhN+WcqBm6McqJP4Hizy6vlaF36FfUjeuhCkQx54
+	 gAIUEjgloJXm71EIMXWfmAh9NlZ8AqnDNB0E6bEy3Hc/sGEPEGkoniwUXzPrn2oh/+
+	 6+5v4cRKg+gJUgklrkUTNYYx8j08kL3UHow0ddaA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Cong Wang <xiyou.wangcong@gmail.com>,
-	Jiayuan Chen <jiayuan.chen@linux.dev>,
-	Daniel Borkmann <daniel@iogearbox.net>,
-	John Fastabend <john.fastabend@gmail.com>,
-	Jakub Kicinski <kuba@kernel.org>,
+	Wei Gao <wegao@suse.com>,
+	Jan Kara <jack@suse.cz>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 137/644] bpf, ktls: Fix data corruption when using bpf_msg_pop_data() in ktls
+Subject: [PATCH 6.6 079/587] ext2: Handle fiemap on empty files to prevent EINVAL
 Date: Tue, 26 Aug 2025 13:03:48 +0200
-Message-ID: <20250826110949.896586447@linuxfoundation.org>
+Message-ID: <20250826110954.944931144@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250826110946.507083938@linuxfoundation.org>
-References: <20250826110946.507083938@linuxfoundation.org>
+In-Reply-To: <20250826110952.942403671@linuxfoundation.org>
+References: <20250826110952.942403671@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -65,61 +62,53 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jiayuan Chen <jiayuan.chen@linux.dev>
+From: Wei Gao <wegao@suse.com>
 
-[ Upstream commit 178f6a5c8cb3b6be1602de0964cd440243f493c9 ]
+[ Upstream commit a099b09a3342a0b28ea330e405501b5b4d0424b4 ]
 
-When sending plaintext data, we initially calculated the corresponding
-ciphertext length. However, if we later reduced the plaintext data length
-via socket policy, we failed to recalculate the ciphertext length.
+Previously, ext2_fiemap would unconditionally apply "len = min_t(u64, len,
+i_size_read(inode));", When inode->i_size was 0 (for an empty file), this
+would reduce the requested len to 0. Passing len = 0 to iomap_fiemap could
+then result in an -EINVAL error, even for valid queries on empty files.
 
-This results in transmitting buffers containing uninitialized data during
-ciphertext transmission.
-
-This causes uninitialized bytes to be appended after a complete
-"Application Data" packet, leading to errors on the receiving end when
-parsing TLS record.
-
-Fixes: d3b18ad31f93 ("tls: add bpf support to sk_msg handling")
-Reported-by: Cong Wang <xiyou.wangcong@gmail.com>
-Signed-off-by: Jiayuan Chen <jiayuan.chen@linux.dev>
-Signed-off-by: Daniel Borkmann <daniel@iogearbox.net>
-Reviewed-by: John Fastabend <john.fastabend@gmail.com>
-Acked-by: Jakub Kicinski <kuba@kernel.org>
-Link: https://lore.kernel.org/bpf/20250609020910.397930-2-jiayuan.chen@linux.dev
+Link: https://github.com/linux-test-project/ltp/issues/1246
+Signed-off-by: Wei Gao <wegao@suse.com>
+Signed-off-by: Jan Kara <jack@suse.cz>
+Link: https://patch.msgid.link/20250613152402.3432135-1-wegao@suse.com
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/tls/tls_sw.c | 13 +++++++++++++
- 1 file changed, 13 insertions(+)
+ fs/ext2/inode.c | 12 +++++++++++-
+ 1 file changed, 11 insertions(+), 1 deletion(-)
 
-diff --git a/net/tls/tls_sw.c b/net/tls/tls_sw.c
-index 6648008f5da7..6b0fd0e5fc88 100644
---- a/net/tls/tls_sw.c
-+++ b/net/tls/tls_sw.c
-@@ -857,6 +857,19 @@ static int bpf_exec_tx_verdict(struct sk_msg *msg, struct sock *sk,
- 		delta = msg->sg.size;
- 		psock->eval = sk_psock_msg_verdict(sk, psock, msg);
- 		delta -= msg->sg.size;
-+
-+		if ((s32)delta > 0) {
-+			/* It indicates that we executed bpf_msg_pop_data(),
-+			 * causing the plaintext data size to decrease.
-+			 * Therefore the encrypted data size also needs to
-+			 * correspondingly decrease. We only need to subtract
-+			 * delta to calculate the new ciphertext length since
-+			 * ktls does not support block encryption.
-+			 */
-+			struct sk_msg *enc = &ctx->open_rec->msg_encrypted;
-+
-+			sk_msg_trim(sk, enc, enc->sg.size - delta);
-+		}
- 	}
- 	if (msg->cork_bytes && msg->cork_bytes > msg->sg.size &&
- 	    !enospc && !full_record) {
+diff --git a/fs/ext2/inode.c b/fs/ext2/inode.c
+index 314b415ee518..6ff1f8f29a3c 100644
+--- a/fs/ext2/inode.c
++++ b/fs/ext2/inode.c
+@@ -895,9 +895,19 @@ int ext2_fiemap(struct inode *inode, struct fiemap_extent_info *fieinfo,
+ 		u64 start, u64 len)
+ {
+ 	int ret;
++	loff_t i_size;
+ 
+ 	inode_lock(inode);
+-	len = min_t(u64, len, i_size_read(inode));
++	i_size = i_size_read(inode);
++	/*
++	 * iomap_fiemap() returns EINVAL for 0 length. Make sure we don't trim
++	 * length to 0 but still trim the range as much as possible since
++	 * ext2_get_blocks() iterates unmapped space block by block which is
++	 * slow.
++	 */
++	if (i_size == 0)
++		i_size = 1;
++	len = min_t(u64, len, i_size);
+ 	ret = iomap_fiemap(inode, fieinfo, start, len, &ext2_iomap_ops);
+ 	inode_unlock(inode);
+ 
 -- 
 2.39.5
 
