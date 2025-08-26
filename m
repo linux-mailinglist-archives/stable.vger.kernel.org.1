@@ -1,58 +1,58 @@
-Return-Path: <stable+bounces-174750-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-176361-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id CDBA7B364B9
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 15:41:37 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id AB584B36D06
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 17:05:45 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 28A621893F4A
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 13:35:14 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id D2F065881E6
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 14:47:32 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4028A2BF019;
-	Tue, 26 Aug 2025 13:33:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E9F42341AA5;
+	Tue, 26 Aug 2025 14:44:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="kxHStqLV"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="OI42PMQP"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EF8781ADFFE;
-	Tue, 26 Aug 2025 13:33:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A4590260586;
+	Tue, 26 Aug 2025 14:44:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756215218; cv=none; b=lFQmyZkrOT0g8iDRAIh9K01WfN2PcdxkyBpgs+D7X489uAvlm55pvUE6FB0SZQkoYuUn4D5t6FSBGg4XYd3kSs6WdJC4Qzvb1XlDU0doqsVU0UCHLiyWtHjagBKcy98Cexn3dL9YzklUu2ZKeJITDm7smj1Ud2f2NJCdMhNO1bU=
+	t=1756219458; cv=none; b=sSxsMWLcXbEqxCPFznsMrQdOVLw+BC24B43wGa8F3JTbfIIITCgobovKif/qunTHBfB+SmwzZlYO97uSLIOWQgUPN7qzYaIr1HRFbLOabJhhPqC/BJXr0m1BWuqzRuFM+qNoNgLQvHxzMRvOs1H8feeuTOhZON5H3FCAoZCeq+w=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756215218; c=relaxed/simple;
-	bh=JKK/PR1bHygcnRHOsaHtYfuCEKosKfE8aS99zBwMibs=;
+	s=arc-20240116; t=1756219458; c=relaxed/simple;
+	bh=7R7qkQzF4JrwktBAWypXs3iVrbUfzNKofc0k/HeNSA0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=HumPiaZncH0CEK8my1nRZc7dxcY018cNIb8y3NUevzitjJuhAwZNX4IQbwZhFaTppQJ+05sx3BJh2Jq7hwNVTCltG8fLACvPFCUhf5H6HJpy8z4oywnMMZPw5KpJrSGoC4AdxdadXK5aKYPuAg8cUkeDpBPhhXrd2m9UWuXoK6Q=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=kxHStqLV; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4079CC116D0;
-	Tue, 26 Aug 2025 13:33:37 +0000 (UTC)
+	 MIME-Version; b=NHgbFEqAk8p3ox1CV1m+EU+qfoWuBOlEjoq0QIHLrxUO1UaPUM3NR2Nh4G+RFT4ge+zDP4l1LCXuVSiSSlP5cN88b0TK1/t4oK0EfdoP/bu5XnHdYsM2496EW3/CxSwx1O2DritqGBwv5WoE3w8kdEa3kHEdMOiX9nZeq4ESDtA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=OI42PMQP; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 32306C4CEF1;
+	Tue, 26 Aug 2025 14:44:18 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1756215217;
-	bh=JKK/PR1bHygcnRHOsaHtYfuCEKosKfE8aS99zBwMibs=;
+	s=korg; t=1756219458;
+	bh=7R7qkQzF4JrwktBAWypXs3iVrbUfzNKofc0k/HeNSA0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=kxHStqLVZF7NuNqqJJS8sR1oxf6RBvr9sDy21M3AED1/KISSA0y0ydLi945iTY+ck
-	 N6R/MRIVv01zWpP3GWEKgnMPsB33eXAX7r/Nd+4DFVBaCzVGZelEhGo7HiZlQaTK6h
-	 OvXxHgevy85zHB9Qsf2qOjYVOeeQc9Ta66jNLfA4=
+	b=OI42PMQPaIgQEivLul8bSgknz7MQ9CvBmVkQZYTfG8JqnOhF2mT9euSK5MZc+SseF
+	 2RmKeOdKWzsmcU8WhwoGKGF4BKnl+HaoYJITU7DGA4amRATPFJD+/YNZ+crHz49JVl
+	 ZByTpCoUclcVApLhqMwTf9rbpQWKEYJzoyWcdeRY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-To: stable@vger.kernel.org
+To: stable@vger.kernel.org,
+	sashal@kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Doug Anderson <dianders@chromium.org>,
-	Bjorn Andersson <bjorn.andersson@oss.qualcomm.com>,
-	Dmitry Baryshkov <dmitry.baryshkov@oss.qualcomm.com>,
-	Bjorn Andersson <andersson@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 432/482] soc: qcom: mdt_loader: Ensure we dont read past the ELF header
+	Meagan Lloyd <meaganlloyd@linux.microsoft.com>,
+	Tyler Hicks <code@tyhicks.com>,
+	Rodolfo Giometti <giometti@enneenne.com>,
+	Alexandre Belloni <alexandre.belloni@bootlin.com>
+Subject: [PATCH 5.4 359/403] rtc: ds1307: handle oscillator stop flag (OSF) for ds1341
 Date: Tue, 26 Aug 2025 13:11:25 +0200
-Message-ID: <20250826110941.503440506@linuxfoundation.org>
+Message-ID: <20250826110916.913829002@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250826110930.769259449@linuxfoundation.org>
-References: <20250826110930.769259449@linuxfoundation.org>
+In-Reply-To: <20250826110905.607690791@linuxfoundation.org>
+References: <20250826110905.607690791@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,115 +64,71 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+5.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Bjorn Andersson <bjorn.andersson@oss.qualcomm.com>
+From: Meagan Lloyd <meaganlloyd@linux.microsoft.com>
 
-[ Upstream commit 9f9967fed9d066ed3dae9372b45ffa4f6fccfeef ]
+[ Upstream commit 523923cfd5d622b8f4ba893fdaf29fa6adeb8c3e ]
 
-When the MDT loader is used in remoteproc, the ELF header is sanitized
-beforehand, but that's not necessary the case for other clients.
+In using CONFIG_RTC_HCTOSYS, rtc_hctosys() will sync the RTC time to the
+kernel time as long as rtc_read_time() succeeds. In some power loss
+situations, our supercapacitor-backed DS1342 RTC comes up with either an
+unpredictable future time or the default 01/01/00 from the datasheet.
+The oscillator stop flag (OSF) is set in these scenarios due to the
+power loss and can be used to determine the validity of the RTC data.
 
-Validate the size of the firmware buffer to ensure that we don't read
-past the end as we iterate over the header. e_phentsize and e_shentsize
-are validated as well, to ensure that the assumptions about step size in
-the traversal are valid.
+This change expands the oscillator stop flag (OSF) handling that has
+already been implemented for some chips to the ds1341 chip (DS1341 and
+DS1342 share a datasheet). This handling manages the validity of the RTC
+data in .read_time and .set_time based on the OSF.
 
-Fixes: 2aad40d911ee ("remoteproc: Move qcom_mdt_loader into drivers/soc/qcom")
-Cc: stable@vger.kernel.org
-Reported-by: Doug Anderson <dianders@chromium.org>
-Signed-off-by: Bjorn Andersson <bjorn.andersson@oss.qualcomm.com>
-Reviewed-by: Dmitry Baryshkov <dmitry.baryshkov@oss.qualcomm.com>
-Link: https://lore.kernel.org/r/20250610-mdt-loader-validation-and-fixes-v2-1-f7073e9ab899@oss.qualcomm.com
-Signed-off-by: Bjorn Andersson <andersson@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Signed-off-by: Meagan Lloyd <meaganlloyd@linux.microsoft.com>
+Reviewed-by: Tyler Hicks <code@tyhicks.com>
+Acked-by: Rodolfo Giometti <giometti@enneenne.com>
+Link: https://lore.kernel.org/r/1749665656-30108-3-git-send-email-meaganlloyd@linux.microsoft.com
+Signed-off-by: Alexandre Belloni <alexandre.belloni@bootlin.com>
+
+[ Git was trying to insert the code above the ds_1388 case statement block (in
+each respective function) which don't exist in the v5.4.296 rtc-ds1307 driver,
+thus a manual fixup was required. ]
+Signed-off-by: Meagan Lloyd <meaganlloyd@linux.microsoft.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/soc/qcom/mdt_loader.c |   43 ++++++++++++++++++++++++++++++++++++++++++
- 1 file changed, 43 insertions(+)
+Here's the backport of patch 2/2 of the series for v5.4.
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+---
+ drivers/rtc/rtc-ds1307.c |   11 +++++++++++
+ 1 file changed, 11 insertions(+)
 
---- a/drivers/soc/qcom/mdt_loader.c
-+++ b/drivers/soc/qcom/mdt_loader.c
-@@ -17,6 +17,37 @@
- #include <linux/slab.h>
- #include <linux/soc/qcom/mdt_loader.h>
- 
-+static bool mdt_header_valid(const struct firmware *fw)
-+{
-+	const struct elf32_hdr *ehdr;
-+	size_t phend;
-+	size_t shend;
-+
-+	if (fw->size < sizeof(*ehdr))
-+		return false;
-+
-+	ehdr = (struct elf32_hdr *)fw->data;
-+
-+	if (memcmp(ehdr->e_ident, ELFMAG, SELFMAG))
-+		return false;
-+
-+	if (ehdr->e_phentsize != sizeof(struct elf32_phdr))
-+		return -EINVAL;
-+
-+	phend = size_add(size_mul(sizeof(struct elf32_phdr), ehdr->e_phnum), ehdr->e_phoff);
-+	if (phend > fw->size)
-+		return false;
-+
-+	if (ehdr->e_shentsize != sizeof(struct elf32_shdr))
-+		return -EINVAL;
-+
-+	shend = size_add(size_mul(sizeof(struct elf32_shdr), ehdr->e_shnum), ehdr->e_shoff);
-+	if (shend > fw->size)
-+		return false;
-+
-+	return true;
-+}
-+
- static bool mdt_phdr_valid(const struct elf32_phdr *phdr)
- {
- 	if (phdr->p_type != PT_LOAD)
-@@ -84,6 +115,9 @@ ssize_t qcom_mdt_get_size(const struct f
- 	phys_addr_t max_addr = 0;
- 	int i;
- 
-+	if (!mdt_header_valid(fw))
-+		return -EINVAL;
-+
- 	ehdr = (struct elf32_hdr *)fw->data;
- 	phdrs = (struct elf32_phdr *)(ehdr + 1);
- 
-@@ -136,6 +170,9 @@ void *qcom_mdt_read_metadata(const struc
- 	ssize_t ret;
- 	void *data;
- 
-+	if (!mdt_header_valid(fw))
-+		return ERR_PTR(-EINVAL);
-+
- 	ehdr = (struct elf32_hdr *)fw->data;
- 	phdrs = (struct elf32_phdr *)(ehdr + 1);
- 
-@@ -216,6 +253,9 @@ int qcom_mdt_pas_init(struct device *dev
- 	int ret;
- 	int i;
- 
-+	if (!mdt_header_valid(fw))
-+		return -EINVAL;
-+
- 	ehdr = (struct elf32_hdr *)fw->data;
- 	phdrs = (struct elf32_phdr *)(ehdr + 1);
- 
-@@ -304,6 +344,9 @@ static int __qcom_mdt_load(struct device
- 	if (!fw || !mem_region || !mem_phys || !mem_size)
- 		return -EINVAL;
- 
-+	if (!mdt_header_valid(fw))
-+		return -EINVAL;
-+
- 	is_split = qcom_mdt_bins_are_split(fw, fw_name);
- 	ehdr = (struct elf32_hdr *)fw->data;
- 	phdrs = (struct elf32_phdr *)(ehdr + 1);
+--- a/drivers/rtc/rtc-ds1307.c
++++ b/drivers/rtc/rtc-ds1307.c
+@@ -252,6 +252,13 @@ static int ds1307_get_time(struct device
+ 		if (tmp & DS1340_BIT_OSF)
+ 			return -EINVAL;
+ 		break;
++	case ds_1341:
++		ret = regmap_read(ds1307->regmap, DS1337_REG_STATUS, &tmp);
++		if (ret)
++			return ret;
++		if (tmp & DS1337_BIT_OSF)
++			return -EINVAL;
++		break;
+ 	case mcp794xx:
+ 		if (!(tmp & MCP794XX_BIT_ST))
+ 			return -EINVAL;
+@@ -343,6 +350,10 @@ static int ds1307_set_time(struct device
+ 		regmap_update_bits(ds1307->regmap, DS1340_REG_FLAG,
+ 				   DS1340_BIT_OSF, 0);
+ 		break;
++	case ds_1341:
++		regmap_update_bits(ds1307->regmap, DS1337_REG_STATUS,
++				   DS1337_BIT_OSF, 0);
++		break;
+ 	case mcp794xx:
+ 		/*
+ 		 * these bits were cleared when preparing the date/time
 
 
 
