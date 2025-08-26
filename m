@@ -1,56 +1,55 @@
-Return-Path: <stable+bounces-175132-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-173081-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id A51A0B366A5
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 15:59:03 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 95467B35BDE
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 13:28:50 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 5D3B71C234C8
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 13:52:15 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id B808D2A50BC
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 11:22:53 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8088730146A;
-	Tue, 26 Aug 2025 13:50:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6F2263277A4;
+	Tue, 26 Aug 2025 11:22:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="GeMZwIB9"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="AhzM/OV4"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3E7C522128B;
-	Tue, 26 Aug 2025 13:50:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2C358301486;
+	Tue, 26 Aug 2025 11:22:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756216226; cv=none; b=WiL1bGjP41EoNsm1CikGGTv/IaDnE9EHNtBHNgS7fQwsgyAUvWX0Yjny4DLIwF9/7NfJzjKRo4UA8eupUpb/tW7hX9qF/989laTjdCQ02WCTlHAoalXSOdWYk+fZUN94byozAXpGS0mgprdHtjU2lMBNQhl2ryNOymAoXoh3KjQ=
+	t=1756207324; cv=none; b=iP7Hh907C+bKMUgy9AFRZDTiZxqBE4W0+EbAJZi8Nn1D/8AwcDDWtPjfoxVaFuUo36ccLcZ0tOvsq9yjVXURZGS/oxU+MQ7vDMUzvVzHH+gwsAQ79iLjkoLSTt1AE0rLsyTaD+mbxeCob94wot8C7M9tk//3ccMVuDXGNDQuy1I=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756216226; c=relaxed/simple;
-	bh=Cz7iKNJmVLc14TVStTppvEQqKqmcuGismEzGyx9P9U4=;
+	s=arc-20240116; t=1756207324; c=relaxed/simple;
+	bh=lUWbbZhT+YRRFbQwP/9f9/SSfGAOtqHYO0XhoDV/Fxo=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=rtmYORPz90LfVJW3agHI6g03AzC66GW//oCrdoAbAmuU4MSaNllF/7HBmwkKHNfnsf+zZZTUb+9q98Fo52LOAIhBhS8SOzt782MNi65Dmoc2dbPiGhQFmbE68QS+/sc0CtaITNeEaNbrxhZZLer6+qiYwZgKk63KEsJyC5mFCdw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=GeMZwIB9; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C12A0C113CF;
-	Tue, 26 Aug 2025 13:50:25 +0000 (UTC)
+	 MIME-Version; b=WpuNoSEqHeNSinrhvnvPMAxqcZIBLUAHohmvrvf6YmwjR73x4tGlOTi1eEjgL+0zXrPoi8sjRJEOho18u66ukC5Z7Ovv7S9b2ieO8fupWqUTtoYZ51fug1+Pa96SpmpbLtW1PxX4PKNtc+NuYhHOUdsC3WfYlUXvmD3sRN+8Ass=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=AhzM/OV4; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5ECE4C4CEF1;
+	Tue, 26 Aug 2025 11:22:03 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1756216226;
-	bh=Cz7iKNJmVLc14TVStTppvEQqKqmcuGismEzGyx9P9U4=;
+	s=korg; t=1756207323;
+	bh=lUWbbZhT+YRRFbQwP/9f9/SSfGAOtqHYO0XhoDV/Fxo=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=GeMZwIB9VSlSFHSy0WjYIr/6rbom28YfcH9Rf9UIKo0ay3TyvSKUvaWKd/EBTKLrZ
-	 LjoYFsTnXcsNnYLFFuTUzAHHFeq2nm503jvQmPB6tfnkuNQEdezWAewApoAkHVSRIl
-	 L0xub2VSqlK8zZg2nVmrz/Z5CSy8KF94IJWY6Y6A=
+	b=AhzM/OV4o9T4C5vfI4yykbSX78tr9nQ+O8sc/lYsVUYUQ0UITcgrEgsAvw1YZ8fLt
+	 vG5yOOe7JpSFWtMIzcSzv0eVG7L+gqebNGzMPI9MDT6fgdn5GF1Ls80/kQ47+rqu48
+	 HnYAyN3NuSWQfORTidv8jvwDK5+sbkf2LQ8aI2C4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Kees Cook <kees@kernel.org>,
-	=?UTF-8?q?Ilpo=20J=C3=A4rvinen?= <ilpo.jarvinen@linux.intel.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 330/644] platform/x86: thinkpad_acpi: Handle KCOV __init vs inline mismatches
+	Ludwig Disterhof <ludwig@disterhof.eu>,
+	Hans Verkuil <hverkuil@xs4all.nl>
+Subject: [PATCH 6.16 137/457] media: usbtv: Lock resolution while streaming
 Date: Tue, 26 Aug 2025 13:07:01 +0200
-Message-ID: <20250826110954.564344123@linuxfoundation.org>
+Message-ID: <20250826110940.759349217@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250826110946.507083938@linuxfoundation.org>
-References: <20250826110946.507083938@linuxfoundation.org>
+In-Reply-To: <20250826110937.289866482@linuxfoundation.org>
+References: <20250826110937.289866482@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,55 +59,46 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.16-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Kees Cook <kees@kernel.org>
+From: Ludwig Disterhof <ludwig@disterhof.eu>
 
-[ Upstream commit 6418a8504187dc7f5b6f9d0649c03e362cb0664b ]
+commit 7e40e0bb778907b2441bff68d73c3eb6b6cd319f upstream.
 
-When KCOV is enabled all functions get instrumented, unless the
-__no_sanitize_coverage attribute is used. To prepare for
-__no_sanitize_coverage being applied to __init functions[1], we have
-to handle differences in how GCC's inline optimizations get resolved.
-For thinkpad_acpi routines, this means forcing two functions to be
-inline with __always_inline.
+When an program is streaming (ffplay) and another program (qv4l2)
+changes the TV standard from NTSC to PAL, the kernel crashes due to trying
+to copy to unmapped memory.
 
-Link: https://lore.kernel.org/lkml/20250523043935.2009972-11-kees@kernel.org/ [1]
-Signed-off-by: Kees Cook <kees@kernel.org>
-Link: https://lore.kernel.org/r/20250529181831.work.439-kees@kernel.org
-Signed-off-by: Ilpo Järvinen <ilpo.jarvinen@linux.intel.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Changing from NTSC to PAL increases the resolution in the usbtv struct,
+but the video plane buffer isn't adjusted, so it overflows.
+
+Fixes: 0e0fe3958fdd13d ("[media] usbtv: Add support for PAL video source")
+Cc: stable@vger.kernel.org
+Signed-off-by: Ludwig Disterhof <ludwig@disterhof.eu>
+Signed-off-by: Hans Verkuil <hverkuil@xs4all.nl>
+[hverkuil: call vb2_is_busy instead of vb2_is_streaming]
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/platform/x86/thinkpad_acpi.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ drivers/media/usb/usbtv/usbtv-video.c |    4 ++++
+ 1 file changed, 4 insertions(+)
 
-diff --git a/drivers/platform/x86/thinkpad_acpi.c b/drivers/platform/x86/thinkpad_acpi.c
-index 9b700a3ad7b2..89a8e074c16d 100644
---- a/drivers/platform/x86/thinkpad_acpi.c
-+++ b/drivers/platform/x86/thinkpad_acpi.c
-@@ -523,12 +523,12 @@ static unsigned long __init tpacpi_check_quirks(
- 	return 0;
- }
+--- a/drivers/media/usb/usbtv/usbtv-video.c
++++ b/drivers/media/usb/usbtv/usbtv-video.c
+@@ -73,6 +73,10 @@ static int usbtv_configure_for_norm(stru
+ 	}
  
--static inline bool __pure __init tpacpi_is_lenovo(void)
-+static __always_inline bool __pure __init tpacpi_is_lenovo(void)
- {
- 	return thinkpad_id.vendor == PCI_VENDOR_ID_LENOVO;
- }
- 
--static inline bool __pure __init tpacpi_is_ibm(void)
-+static __always_inline bool __pure __init tpacpi_is_ibm(void)
- {
- 	return thinkpad_id.vendor == PCI_VENDOR_ID_IBM;
- }
--- 
-2.39.5
-
+ 	if (params) {
++		if (vb2_is_busy(&usbtv->vb2q) &&
++		    (usbtv->width != params->cap_width ||
++		     usbtv->height != params->cap_height))
++			return -EBUSY;
+ 		usbtv->width = params->cap_width;
+ 		usbtv->height = params->cap_height;
+ 		usbtv->n_chunks = usbtv->width * usbtv->height
 
 
 
