@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-175591-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-176000-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6F125B368F7
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 16:21:19 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8FC4BB36B90
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 16:47:25 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id AD78D583474
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 14:13:10 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 28F45A0368D
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 14:31:17 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2515A352FE8;
-	Tue, 26 Aug 2025 14:10:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 94D8A350D4E;
+	Tue, 26 Aug 2025 14:28:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="hRvLAN4x"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="KOWoIygr"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D7A36352FE1;
-	Tue, 26 Aug 2025 14:10:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 536F6350D7B;
+	Tue, 26 Aug 2025 14:28:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756217450; cv=none; b=hmevhD9mf5/nkTHXlHRqeSgOH200KI2MhioyAApKSyVzEfQCRPoUWOw0hHEfz+Zf7loTL1oPFhnSM4K/4W+86W1kchm9GPyF3KjsmrFGkzZK5euOc+SZNnYgnOS7+Ryu19+8NgVHBG1VyUpw/ddpDnQauWDxJ+VeKW3vNHySLys=
+	t=1756218524; cv=none; b=rFsLT/ytRqZzRxyIFyMW0be3zWVJAdCDBrM6YKP2GmJFtD9mexO83u8h1A9mbBXiBsRkaPjnIJ98ZQQrUBheXNX8mz2Nu7+JE224b37v9f6linrWrDMCV7oygX0GLi1bMiurCMHBc2X2003puHUSOEnP6BXBl5bCxovjTPxpIug=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756217450; c=relaxed/simple;
-	bh=ZzS+/68fUGCGxMKQrQIM4q+2YGlsUZkJBukL+cGoVUU=;
+	s=arc-20240116; t=1756218524; c=relaxed/simple;
+	bh=g3U+DKNokvO0aULl4qewBZiuNiENhCozaD+VLnhrzBU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Zt22ovSPb79lWNfAdxL3leSggrEXqE0vU98JVO5BRjeccF1UsQ9birEcrl41K8rq2QYwxSLWeUzO6puyq8xW2ryDu66TbQXS1Mbai4jOSx3BZXR9UGUhK+13+wCbZ+VRjhcHKPNVZfDEucjIQpwL9ddjBhjv/j994p6vQLnkU6w=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=hRvLAN4x; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 20AEFC4CEF1;
-	Tue, 26 Aug 2025 14:10:49 +0000 (UTC)
+	 MIME-Version; b=Zz12kWmrcufquajkR0dyhBe2cY7XI8ZjLkd0EPNkyDg6u0IkZt7xyYbuhGFuKiWc+GxHHflYzLP9h6FHUgjWvgq9D03O8jY+Tfwb74jHh/863KjEydLMfq/4tSeGk1M7XsNB/JAdt0IWNjiO0GBHxDYKSLf8r87Uow5QKd03+vo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=KOWoIygr; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8D64DC4CEF1;
+	Tue, 26 Aug 2025 14:28:42 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1756217450;
-	bh=ZzS+/68fUGCGxMKQrQIM4q+2YGlsUZkJBukL+cGoVUU=;
+	s=korg; t=1756218522;
+	bh=g3U+DKNokvO0aULl4qewBZiuNiENhCozaD+VLnhrzBU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=hRvLAN4xu6Hl+xW1XMNVyASaPIwthPuYGz/0+ICYdU52ZihLH49HQLl9Ot94bcKtY
-	 LWTR5kcoXKZUj5hV1LHKvWhiYN7u212wT0BfBamPnz5LSVdFLut2pTilF3uCnr8thC
-	 pssdGI1D9Bi+XmcI4fZ5cm5Ww8Z47Zt/hOf27010=
+	b=KOWoIygrfxgYeV0aWk+B1e7BDVM8QstmFn7D5Le770CuQjz6oqBBZ9y2t6ApDGt8X
+	 FQgtT2j2B/o/61CRthAQ5Lcl3r8lerkRoxB8ODtIGXGnJFn4AMBdMmoaZLUqnpSMkv
+	 Z5P1+4QE+9qeQo4jHdmhcKEEGX2Rx9IkJzvmLNfc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Ryan Lee <ryan.lee@canonical.com>,
-	John Johansen <john.johansen@canonical.com>,
+	Xiang Mei <xmei5@asu.edu>,
+	Cong Wang <xiyou.wangcong@gmail.com>,
+	"David S. Miller" <davem@davemloft.net>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 148/523] apparmor: ensure WB_HISTORY_SIZE value is a power of 2
+Subject: [PATCH 5.4 032/403] net/sched: sch_qfq: Fix race condition on qfq_aggregate
 Date: Tue, 26 Aug 2025 13:05:58 +0200
-Message-ID: <20250826110928.141127423@linuxfoundation.org>
+Message-ID: <20250826110906.701306665@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250826110924.562212281@linuxfoundation.org>
-References: <20250826110924.562212281@linuxfoundation.org>
+In-Reply-To: <20250826110905.607690791@linuxfoundation.org>
+References: <20250826110905.607690791@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,57 +63,117 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+5.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Ryan Lee <ryan.lee@canonical.com>
+From: Xiang Mei <xmei5@asu.edu>
 
-[ Upstream commit 6c055e62560b958354625604293652753d82bcae ]
+[ Upstream commit 5e28d5a3f774f118896aec17a3a20a9c5c9dfc64 ]
 
-WB_HISTORY_SIZE was defined to be a value not a power of 2, despite a
-comment in the declaration of struct match_workbuf stating it is and a
-modular arithmetic usage in the inc_wb_pos macro assuming that it is. Bump
-WB_HISTORY_SIZE's value up to 32 and add a BUILD_BUG_ON_NOT_POWER_OF_2
-line to ensure that any future changes to the value of WB_HISTORY_SIZE
-respect this requirement.
+A race condition can occur when 'agg' is modified in qfq_change_agg
+(called during qfq_enqueue) while other threads access it
+concurrently. For example, qfq_dump_class may trigger a NULL
+dereference, and qfq_delete_class may cause a use-after-free.
 
-Fixes: 136db994852a ("apparmor: increase left match history buffer size")
+This patch addresses the issue by:
 
-Signed-off-by: Ryan Lee <ryan.lee@canonical.com>
-Signed-off-by: John Johansen <john.johansen@canonical.com>
+1. Moved qfq_destroy_class into the critical section.
+
+2. Added sch_tree_lock protection to qfq_dump_class and
+qfq_dump_class_stats.
+
+Fixes: 462dbc9101ac ("pkt_sched: QFQ Plus: fair-queueing service at DRR cost")
+Signed-off-by: Xiang Mei <xmei5@asu.edu>
+Reviewed-by: Cong Wang <xiyou.wangcong@gmail.com>
+Signed-off-by: David S. Miller <davem@davemloft.net>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- security/apparmor/include/match.h | 3 ++-
- security/apparmor/match.c         | 1 +
- 2 files changed, 3 insertions(+), 1 deletion(-)
+ net/sched/sch_qfq.c | 30 +++++++++++++++++++++---------
+ 1 file changed, 21 insertions(+), 9 deletions(-)
 
-diff --git a/security/apparmor/include/match.h b/security/apparmor/include/match.h
-index 884489590588..29306ec87fd1 100644
---- a/security/apparmor/include/match.h
-+++ b/security/apparmor/include/match.h
-@@ -141,7 +141,8 @@ unsigned int aa_dfa_matchn_until(struct aa_dfa *dfa, unsigned int start,
+diff --git a/net/sched/sch_qfq.c b/net/sched/sch_qfq.c
+index c466d255f7865..2a4331a084949 100644
+--- a/net/sched/sch_qfq.c
++++ b/net/sched/sch_qfq.c
+@@ -408,7 +408,7 @@ static int qfq_change_class(struct Qdisc *sch, u32 classid, u32 parentid,
+ 	bool existing = false;
+ 	struct nlattr *tb[TCA_QFQ_MAX + 1];
+ 	struct qfq_aggregate *new_agg = NULL;
+-	u32 weight, lmax, inv_w;
++	u32 weight, lmax, inv_w, old_weight, old_lmax;
+ 	int err;
+ 	int delta_w;
  
- void aa_dfa_free_kref(struct kref *kref);
+@@ -444,12 +444,16 @@ static int qfq_change_class(struct Qdisc *sch, u32 classid, u32 parentid,
+ 	inv_w = ONE_FP / weight;
+ 	weight = ONE_FP / inv_w;
  
--#define WB_HISTORY_SIZE 24
-+/* This needs to be a power of 2 */
-+#define WB_HISTORY_SIZE 32
- struct match_workbuf {
- 	unsigned int count;
- 	unsigned int pos;
-diff --git a/security/apparmor/match.c b/security/apparmor/match.c
-index 3e9e1eaf990e..0e683ee323e3 100644
---- a/security/apparmor/match.c
-+++ b/security/apparmor/match.c
-@@ -672,6 +672,7 @@ unsigned int aa_dfa_matchn_until(struct aa_dfa *dfa, unsigned int start,
+-	if (cl != NULL &&
+-	    lmax == cl->agg->lmax &&
+-	    weight == cl->agg->class_weight)
+-		return 0; /* nothing to change */
++	if (cl != NULL) {
++		sch_tree_lock(sch);
++		old_weight = cl->agg->class_weight;
++		old_lmax   = cl->agg->lmax;
++		sch_tree_unlock(sch);
++		if (lmax == old_lmax && weight == old_weight)
++			return 0; /* nothing to change */
++	}
  
- #define inc_wb_pos(wb)						\
- do {								\
-+	BUILD_BUG_ON_NOT_POWER_OF_2(WB_HISTORY_SIZE);			\
- 	wb->pos = (wb->pos + 1) & (WB_HISTORY_SIZE - 1);		\
- 	wb->len = (wb->len + 1) & (WB_HISTORY_SIZE - 1);		\
- } while (0)
+-	delta_w = weight - (cl ? cl->agg->class_weight : 0);
++	delta_w = weight - (cl ? old_weight : 0);
+ 
+ 	if (q->wsum + delta_w > QFQ_MAX_WSUM) {
+ 		pr_notice("qfq: total weight out of range (%d + %u)\n",
+@@ -550,10 +554,10 @@ static int qfq_delete_class(struct Qdisc *sch, unsigned long arg)
+ 
+ 	qdisc_purge_queue(cl->qdisc);
+ 	qdisc_class_hash_remove(&q->clhash, &cl->common);
++	qfq_destroy_class(sch, cl);
+ 
+ 	sch_tree_unlock(sch);
+ 
+-	qfq_destroy_class(sch, cl);
+ 	return 0;
+ }
+ 
+@@ -620,6 +624,7 @@ static int qfq_dump_class(struct Qdisc *sch, unsigned long arg,
+ {
+ 	struct qfq_class *cl = (struct qfq_class *)arg;
+ 	struct nlattr *nest;
++	u32 class_weight, lmax;
+ 
+ 	tcm->tcm_parent	= TC_H_ROOT;
+ 	tcm->tcm_handle	= cl->common.classid;
+@@ -628,8 +633,13 @@ static int qfq_dump_class(struct Qdisc *sch, unsigned long arg,
+ 	nest = nla_nest_start_noflag(skb, TCA_OPTIONS);
+ 	if (nest == NULL)
+ 		goto nla_put_failure;
+-	if (nla_put_u32(skb, TCA_QFQ_WEIGHT, cl->agg->class_weight) ||
+-	    nla_put_u32(skb, TCA_QFQ_LMAX, cl->agg->lmax))
++
++	sch_tree_lock(sch);
++	class_weight	= cl->agg->class_weight;
++	lmax		= cl->agg->lmax;
++	sch_tree_unlock(sch);
++	if (nla_put_u32(skb, TCA_QFQ_WEIGHT, class_weight) ||
++	    nla_put_u32(skb, TCA_QFQ_LMAX, lmax))
+ 		goto nla_put_failure;
+ 	return nla_nest_end(skb, nest);
+ 
+@@ -646,8 +656,10 @@ static int qfq_dump_class_stats(struct Qdisc *sch, unsigned long arg,
+ 
+ 	memset(&xstats, 0, sizeof(xstats));
+ 
++	sch_tree_lock(sch);
+ 	xstats.weight = cl->agg->class_weight;
+ 	xstats.lmax = cl->agg->lmax;
++	sch_tree_unlock(sch);
+ 
+ 	if (gnet_stats_copy_basic(qdisc_root_sleeping_running(sch),
+ 				  d, NULL, &cl->bstats) < 0 ||
 -- 
 2.39.5
 
