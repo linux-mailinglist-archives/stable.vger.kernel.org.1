@@ -1,55 +1,55 @@
-Return-Path: <stable+bounces-173332-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-175900-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4AF1EB35D00
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 13:40:29 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 16126B36AC6
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 16:40:41 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 5EF0F1BA62CB
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 11:35:19 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 4A8FF1C46416
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 14:27:24 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6DEF1338F3E;
-	Tue, 26 Aug 2025 11:32:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A791035AACC;
+	Tue, 26 Aug 2025 14:24:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="D/4j4/b1"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="dgxYFjXf"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 29E66321459;
-	Tue, 26 Aug 2025 11:32:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 625D0356908;
+	Tue, 26 Aug 2025 14:24:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756207972; cv=none; b=ujMEtQtJPfqAr3ku4s52HTGN/+0rw/LlOgIjJzgdb9PQ5oX2fkPCxpLVwPfWEEBa61dPqjjH7mGZT4qllt8Y2bzyxNyCL3DWWYHUk0ONbiADVdZN15fYapoV7PZDOWe91z7vUvKyfuJ/os55VnbtkxxNrIMIqsqz8YGWjATWLMA=
+	t=1756218263; cv=none; b=OB4MJ5wZGBTDy/cTBzKCEzHXNW8yQfhmWS4uAqTOr+YXGmzApTacxN3WH52hXE0CF4BuiAYEoeu6ZdJJ2vBFoHg008c6tDoaRmMhoD+o0daCfkcJqv/FAt7nNxI1LJ4O9FT85CCczqygZcUEPicMgmB6ARKI4IqCtb/s/cQfLEk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756207972; c=relaxed/simple;
-	bh=5JDp/tiXFmwCBEiWr7AqnosU9OEn/t9NOuxUYJGLfjg=;
+	s=arc-20240116; t=1756218263; c=relaxed/simple;
+	bh=YUrGJII0nxAEE+6EjIVI5zmXgTfxQSnjKHGuCD6Keqw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Ndq8ioBmfw5T09I3wz17csFO36YDXWoYFs8Qmqwik57/AJ26D1e4m3pmARJoUIlW4WYORN7T+t82DvplL/l2Qyh7DXTIE61U22RJD9j+5DHtW83j9w5iCbYiGaW4z/Cpw29srxqhh3l4H2/b2XbRWav/+atz/gMtqeVjclRROO4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=D/4j4/b1; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id ABAACC4CEF1;
-	Tue, 26 Aug 2025 11:32:51 +0000 (UTC)
+	 MIME-Version; b=W5A2v/PFakMe2521G9pRHK1Dg+aI73pd2PuW7xn5nw99vcQZSXUftju7+BnoxMcN/p4wyW5K/hOWMusfWL3PvwICu1wrSEp/xI7Ns25Yq+sKKAyEO9b+xgOyNQ6rA5Va5RoHYfMCpFNaW6bsUEcVQ4QGqasO4hpSjywdnuBjFRo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=dgxYFjXf; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E76E5C4CEF1;
+	Tue, 26 Aug 2025 14:24:22 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1756207972;
-	bh=5JDp/tiXFmwCBEiWr7AqnosU9OEn/t9NOuxUYJGLfjg=;
+	s=korg; t=1756218263;
+	bh=YUrGJII0nxAEE+6EjIVI5zmXgTfxQSnjKHGuCD6Keqw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=D/4j4/b1C71lRJhryMSOWVUuSH5fVVdu0o50fc64Xs7o8WXX8WLvfnWPMDNkII3+Q
-	 tOOaaW95FpfpAWuCoKsKGljFhKHscLlqi0mtQf05zIPuK6DKCe0B+8oJBMf3BA+iqt
-	 ZZN5nyVhvEhrdHQ4cghbCVu5XWQI3lrl9xnw1ChM=
+	b=dgxYFjXfsSEuXaSfom5lmKZ29kk43u1BWCEbBZg5p/XXsL3uiR+9ZzW1ttndcZzzx
+	 4QjT7N0Cg3PXynUz56sxVpOOTSn4B+Zw31y+wiaEPoL9plXRGltTuxhfNRqlACIgJi
+	 F+LbbBamMcOpJrZElSml0zWZk3anfo6ZuoAZ88Qk=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Luiz Augusto von Dentz <luiz.von.dentz@intel.com>,
+	Trond Myklebust <trond.myklebust@hammerspace.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.16 381/457] Bluetooth: hci_core: Fix not accounting for BIS/CIS/PA links separately
+Subject: [PATCH 5.10 455/523] NFS: Dont set NFS_INO_REVAL_PAGECACHE in the inode cache validity
 Date: Tue, 26 Aug 2025 13:11:05 +0200
-Message-ID: <20250826110946.712477643@linuxfoundation.org>
+Message-ID: <20250826110935.672866348@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250826110937.289866482@linuxfoundation.org>
-References: <20250826110937.289866482@linuxfoundation.org>
+In-Reply-To: <20250826110924.562212281@linuxfoundation.org>
+References: <20250826110924.562212281@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,106 +61,75 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.16-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Luiz Augusto von Dentz <luiz.von.dentz@intel.com>
+From: Trond Myklebust <trond.myklebust@hammerspace.com>
 
-[ Upstream commit 9d4b01a0bf8d2163ae129c9c537cb0753ad5a2aa ]
+[ Upstream commit 36a9346c225270262d9f34e66c91aa1723fa903f ]
 
-This fixes the likes of hci_conn_num(CIS_LINK) returning the total of
-ISO connection which includes BIS_LINK as well, so this splits the
-iso_num into each link type and introduces hci_iso_num that can be used
-in places where the total number of ISO connection still needs to be
-used.
+It is no longer necessary to preserve the NFS_INO_REVAL_PAGECACHE flag.
 
-Fixes: 23205562ffc8 ("Bluetooth: separate CIS_LINK and BIS_LINK link types")
-Fixes: a7bcffc673de ("Bluetooth: Add PA_LINK to distinguish BIG sync and PA sync connections")
-Signed-off-by: Luiz Augusto von Dentz <luiz.von.dentz@intel.com>
+Signed-off-by: Trond Myklebust <trond.myklebust@hammerspace.com>
+Stable-dep-of: b01f21cacde9 ("NFS: Fix the setting of capabilities when automounting a new filesystem")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- include/net/bluetooth/hci_core.h | 30 +++++++++++++++++++++++++-----
- 1 file changed, 25 insertions(+), 5 deletions(-)
+ fs/nfs/inode.c    |    6 ++----
+ fs/nfs/nfs4proc.c |    1 -
+ 2 files changed, 2 insertions(+), 5 deletions(-)
 
-diff --git a/include/net/bluetooth/hci_core.h b/include/net/bluetooth/hci_core.h
-index 459f26d63451..439bc124ce70 100644
---- a/include/net/bluetooth/hci_core.h
-+++ b/include/net/bluetooth/hci_core.h
-@@ -129,7 +129,9 @@ struct hci_conn_hash {
- 	struct list_head list;
- 	unsigned int     acl_num;
- 	unsigned int     sco_num;
--	unsigned int     iso_num;
-+	unsigned int     cis_num;
-+	unsigned int     bis_num;
-+	unsigned int     pa_num;
- 	unsigned int     le_num;
- 	unsigned int     le_num_peripheral;
- };
-@@ -1014,9 +1016,13 @@ static inline void hci_conn_hash_add(struct hci_dev *hdev, struct hci_conn *c)
- 		h->sco_num++;
- 		break;
- 	case CIS_LINK:
-+		h->cis_num++;
-+		break;
- 	case BIS_LINK:
-+		h->bis_num++;
-+		break;
- 	case PA_LINK:
--		h->iso_num++;
-+		h->pa_num++;
- 		break;
- 	}
- }
-@@ -1042,9 +1048,13 @@ static inline void hci_conn_hash_del(struct hci_dev *hdev, struct hci_conn *c)
- 		h->sco_num--;
- 		break;
- 	case CIS_LINK:
-+		h->cis_num--;
-+		break;
- 	case BIS_LINK:
-+		h->bis_num--;
-+		break;
- 	case PA_LINK:
--		h->iso_num--;
-+		h->pa_num--;
- 		break;
- 	}
- }
-@@ -1061,9 +1071,11 @@ static inline unsigned int hci_conn_num(struct hci_dev *hdev, __u8 type)
- 	case ESCO_LINK:
- 		return h->sco_num;
- 	case CIS_LINK:
-+		return h->cis_num;
- 	case BIS_LINK:
-+		return h->bis_num;
- 	case PA_LINK:
--		return h->iso_num;
-+		return h->pa_num;
- 	default:
- 		return 0;
- 	}
-@@ -1073,7 +1085,15 @@ static inline unsigned int hci_conn_count(struct hci_dev *hdev)
- {
- 	struct hci_conn_hash *c = &hdev->conn_hash;
+--- a/fs/nfs/inode.c
++++ b/fs/nfs/inode.c
+@@ -217,11 +217,12 @@ static void nfs_set_cache_invalid(struct
+ 			flags &= ~NFS_INO_INVALID_OTHER;
+ 		flags &= ~(NFS_INO_INVALID_CHANGE
+ 				| NFS_INO_INVALID_SIZE
+-				| NFS_INO_REVAL_PAGECACHE
+ 				| NFS_INO_INVALID_XATTR);
+ 	} else if (flags & NFS_INO_REVAL_PAGECACHE)
+ 		flags |= NFS_INO_INVALID_CHANGE | NFS_INO_INVALID_SIZE;
  
--	return c->acl_num + c->sco_num + c->le_num + c->iso_num;
-+	return c->acl_num + c->sco_num + c->le_num + c->cis_num + c->bis_num +
-+		c->pa_num;
-+}
++	flags &= ~NFS_INO_REVAL_PAGECACHE;
 +
-+static inline unsigned int hci_iso_count(struct hci_dev *hdev)
-+{
-+	struct hci_conn_hash *c = &hdev->conn_hash;
-+
-+	return c->cis_num + c->bis_num;
- }
+ 	if (!nfs_has_xattr_cache(nfsi))
+ 		flags &= ~NFS_INO_INVALID_XATTR;
+ 	if (inode->i_mapping->nrpages == 0)
+@@ -1900,7 +1901,6 @@ static int nfs_update_inode(struct inode
+ 	nfsi->cache_validity &= ~(NFS_INO_INVALID_ATTR
+ 			| NFS_INO_INVALID_ATIME
+ 			| NFS_INO_REVAL_FORCED
+-			| NFS_INO_REVAL_PAGECACHE
+ 			| NFS_INO_INVALID_BLOCKS);
  
- static inline bool hci_conn_valid(struct hci_dev *hdev, struct hci_conn *conn)
--- 
-2.50.1
-
+ 	/* Do atomic weak cache consistency updates */
+@@ -1942,7 +1942,6 @@ static int nfs_update_inode(struct inode
+ 	} else {
+ 		nfsi->cache_validity |= save_cache_validity &
+ 				(NFS_INO_INVALID_CHANGE
+-				| NFS_INO_REVAL_PAGECACHE
+ 				| NFS_INO_REVAL_FORCED);
+ 		cache_revalidated = false;
+ 	}
+@@ -1988,7 +1987,6 @@ static int nfs_update_inode(struct inode
+ 	} else {
+ 		nfsi->cache_validity |= save_cache_validity &
+ 				(NFS_INO_INVALID_SIZE
+-				| NFS_INO_REVAL_PAGECACHE
+ 				| NFS_INO_REVAL_FORCED);
+ 		cache_revalidated = false;
+ 	}
+--- a/fs/nfs/nfs4proc.c
++++ b/fs/nfs/nfs4proc.c
+@@ -1213,7 +1213,6 @@ nfs4_update_changeattr_locked(struct ino
+ 		| cache_validity;
+ 
+ 	if (cinfo->atomic && cinfo->before == inode_peek_iversion_raw(inode)) {
+-		nfsi->cache_validity &= ~NFS_INO_REVAL_PAGECACHE;
+ 		nfsi->attrtimeo_timestamp = jiffies;
+ 	} else {
+ 		if (S_ISDIR(inode->i_mode)) {
 
 
 
