@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-176134-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-173507-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 89CEAB36B86
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 16:47:06 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8C54BB35D19
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 13:41:11 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 5EB94468250
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 14:37:45 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 0249F6802EA
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 11:40:50 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3A2B235A28D;
-	Tue, 26 Aug 2025 14:34:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 20E822BE7DD;
+	Tue, 26 Aug 2025 11:40:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="deRFo8nA"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Xpf3xC62"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EB3E235A281;
-	Tue, 26 Aug 2025 14:34:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D42BC29D292;
+	Tue, 26 Aug 2025 11:40:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756218869; cv=none; b=VSFyuV8rK/CjKw/rHKt/G1SRCXC6Ux9W8Z7D0F3fSjIyTtJucrvqO0OzkH9GwHqyrvxDWSrnQ7YmlZwfe8/1InUi4ovOueLcaWBsgVYiBAfHplLG6GZR6WkIOmu4Zd/P84NQsO5sVEsiBvv7Nh4IF+qCG5iicMpgbkJ0oOQBiQQ=
+	t=1756208427; cv=none; b=a+1tA+0Pb/x5YpRsnUhtf5jJoW7v6LJB8NMziCtEmOLmD1knO16DpplOs3NDCX56gfFYKm2i20WLcqvsT50ZtTbgJoNVyEvWGvBW7HEW51Sj6ujlPH17Wh2UtnfNMpWvwsWolyUkGtSuW0L5ZFK0IDU/X9VExMg7OBMXLBhyM3s=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756218869; c=relaxed/simple;
-	bh=jk4UjswWnEytUM626PQH5n8mAkUvloxGP7ygpWnAYH4=;
+	s=arc-20240116; t=1756208427; c=relaxed/simple;
+	bh=mt57IDL936qb85nFr10b/C94eIMFNXDoNiQ38owuLyA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=jAgUH0PDq+r3VE3gEhV9SOsM/RGEqP6k57RPs5tAI/8l3E8uX7XPrQp/n+1HdbLCR2Kp+wPmIegdI9sfqAlp6M6PhKmjtO/Hqn7FU/qB/XgB6v7Amhm/fDhfPxUaijKn/ARc6BVyc9wPyJAyugqdWIstbI4ai1ZWxkl10VEZ/78=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=deRFo8nA; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 76682C4CEF1;
-	Tue, 26 Aug 2025 14:34:28 +0000 (UTC)
+	 MIME-Version; b=TroIJdjM9Vor278lU/+bK0uBnq9ny4cFuwVPzZ1ZB0xHrl3POS23TXqSBSPB0658TT2i5aTn4xhnqs2tnlodgwOCVTG4Tq4ixVL8GqJvh07Am9iR1Mpcfk5pRZ+NFqKUBsYvyRCmmrSmyLAoAOPQjTRW845H9COdOb98wX0t9EM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Xpf3xC62; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6DC54C4CEF1;
+	Tue, 26 Aug 2025 11:40:27 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1756218868;
-	bh=jk4UjswWnEytUM626PQH5n8mAkUvloxGP7ygpWnAYH4=;
+	s=korg; t=1756208427;
+	bh=mt57IDL936qb85nFr10b/C94eIMFNXDoNiQ38owuLyA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=deRFo8nAKjINHM20JgBHj7MI5azJcvCdFxg2r5ivZwqk0iVhK5GLkYiG1+IU/6nY+
-	 XqWSGnNUSgGH1x/FHJzr9b2Szjp4tToQQAuxijDs//e2dWl2WVOBGS4vUuu5rmvumt
-	 Fl2sZbVX5eMnFFYYnk75kSU2zFGn/61h13W0Xldw=
+	b=Xpf3xC62ulkkPkCN+dtAdLgqT+rSObxEEXwMDuvmg02Y6bww6A/K2VDg74dQ8QPCs
+	 hDl0O1PLSh3+mBYD8H4I7myd/cQrZdH4w35rQal5toQtyB8tCEX7wkvEen7m9TFfAO
+	 NoS/1ElxqsAmI54LICQRPbb0irc9mcy5NRN0YLaQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Yevhen Kondrashyn <e.kondrashyn@gmail.com>,
-	Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
-	"Rafael J. Wysocki" <rafael.j.wysocki@intel.com>
-Subject: [PATCH 5.4 165/403] Documentation: ACPI: Fix parent device references
+	Damien Le Moal <dlemoal@kernel.org>,
+	Manivannan Sadhasivam <mani@kernel.org>,
+	Niklas Cassel <cassel@kernel.org>
+Subject: [PATCH 6.12 076/322] PCI: endpoint: Fix configfs group removal on driver teardown
 Date: Tue, 26 Aug 2025 13:08:11 +0200
-Message-ID: <20250826110911.448568370@linuxfoundation.org>
+Message-ID: <20250826110917.482013908@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250826110905.607690791@linuxfoundation.org>
-References: <20250826110905.607690791@linuxfoundation.org>
+In-Reply-To: <20250826110915.169062587@linuxfoundation.org>
+References: <20250826110915.169062587@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,77 +62,58 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.4-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+From: Damien Le Moal <dlemoal@kernel.org>
 
-commit e65cb011349e653ded541dddd6469c2ca813edcf upstream.
+commit 910bdb8197f9322790c738bb32feaa11dba26909 upstream.
 
-The _CRS resources in many cases want to have ResourceSource field
-to be a type of ACPI String. This means that to compile properly
-we need to enclosure the name path into double quotes. This will
-in practice defer the interpretation to a run-time stage, However,
-this may be interpreted differently on different OSes and ACPI
-interpreter implementations. In particular ACPICA might not correctly
-recognize the leading '^' (caret) character and will not resolve
-the relative name path properly. On top of that, this piece may be
-used in SSDTs which are loaded after the DSDT and on itself may also
-not resolve relative name paths outside of their own scopes.
-With this all said, fix documentation to use fully-qualified name
-paths always to avoid any misinterpretations, which is proven to
-work.
+An endpoint driver configfs attributes group is added to the
+epf_group list of struct pci_epf_driver by pci_epf_add_cfs() but an
+added group is not removed from this list when the attribute group is
+unregistered with pci_ep_cfs_remove_epf_group().
 
-Fixes: 8eb5c87a92c0 ("i2c: add ACPI support for I2C mux ports")
-Reported-by: Yevhen Kondrashyn <e.kondrashyn@gmail.com>
-Cc: All applicable <stable@vger.kernel.org>
-Signed-off-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
-Link: https://patch.msgid.link/20250710170225.961303-1-andriy.shevchenko@linux.intel.com
-Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
+Add the missing list_del() call in pci_ep_cfs_remove_epf_group()
+to correctly remove the attribute group from the driver list.
+
+With this change, once the loop over all attribute groups in
+pci_epf_remove_cfs() completes, the driver epf_group list should be
+empty. Add a WARN_ON() to make sure of that.
+
+Fixes: ef1433f717a2 ("PCI: endpoint: Create configfs entry for each pci_epf_device_id table entry")
+Signed-off-by: Damien Le Moal <dlemoal@kernel.org>
+Signed-off-by: Manivannan Sadhasivam <mani@kernel.org>
+Reviewed-by: Niklas Cassel <cassel@kernel.org>
+Cc: stable@vger.kernel.org
+Link: https://patch.msgid.link/20250624114544.342159-3-dlemoal@kernel.org
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- Documentation/firmware-guide/acpi/i2c-muxes.rst |    8 ++++----
- 1 file changed, 4 insertions(+), 4 deletions(-)
+ drivers/pci/endpoint/pci-ep-cfs.c   |    1 +
+ drivers/pci/endpoint/pci-epf-core.c |    1 +
+ 2 files changed, 2 insertions(+)
 
---- a/Documentation/firmware-guide/acpi/i2c-muxes.rst
-+++ b/Documentation/firmware-guide/acpi/i2c-muxes.rst
-@@ -14,7 +14,7 @@ Consider this topology::
-     |      |   | 0x70 |--CH01--> i2c client B (0x50)
-     +------+   +------+
+--- a/drivers/pci/endpoint/pci-ep-cfs.c
++++ b/drivers/pci/endpoint/pci-ep-cfs.c
+@@ -691,6 +691,7 @@ void pci_ep_cfs_remove_epf_group(struct
+ 	if (IS_ERR_OR_NULL(group))
+ 		return;
  
--which corresponds to the following ASL::
-+which corresponds to the following ASL (in the scope of \_SB)::
++	list_del(&group->group_entry);
+ 	configfs_unregister_default_group(group);
+ }
+ EXPORT_SYMBOL(pci_ep_cfs_remove_epf_group);
+--- a/drivers/pci/endpoint/pci-epf-core.c
++++ b/drivers/pci/endpoint/pci-epf-core.c
+@@ -334,6 +334,7 @@ static void pci_epf_remove_cfs(struct pc
+ 	mutex_lock(&pci_epf_mutex);
+ 	list_for_each_entry_safe(group, tmp, &driver->epf_group, group_entry)
+ 		pci_ep_cfs_remove_epf_group(group);
++	WARN_ON(!list_empty(&driver->epf_group));
+ 	mutex_unlock(&pci_epf_mutex);
+ }
  
-     Device (SMB1)
-     {
-@@ -24,7 +24,7 @@ which corresponds to the following ASL::
-             Name (_HID, ...)
-             Name (_CRS, ResourceTemplate () {
-                 I2cSerialBus (0x70, ControllerInitiated, I2C_SPEED,
--                            AddressingMode7Bit, "^SMB1", 0x00,
-+                            AddressingMode7Bit, "\\_SB.SMB1", 0x00,
-                             ResourceConsumer,,)
-             }
- 
-@@ -37,7 +37,7 @@ which corresponds to the following ASL::
-                     Name (_HID, ...)
-                     Name (_CRS, ResourceTemplate () {
-                         I2cSerialBus (0x50, ControllerInitiated, I2C_SPEED,
--                                    AddressingMode7Bit, "^CH00", 0x00,
-+                                    AddressingMode7Bit, "\\_SB.SMB1.CH00", 0x00,
-                                     ResourceConsumer,,)
-                     }
-                 }
-@@ -52,7 +52,7 @@ which corresponds to the following ASL::
-                     Name (_HID, ...)
-                     Name (_CRS, ResourceTemplate () {
-                         I2cSerialBus (0x50, ControllerInitiated, I2C_SPEED,
--                                    AddressingMode7Bit, "^CH01", 0x00,
-+                                    AddressingMode7Bit, "\\_SB.SMB1.CH01", 0x00,
-                                     ResourceConsumer,,)
-                     }
-                 }
 
 
 
