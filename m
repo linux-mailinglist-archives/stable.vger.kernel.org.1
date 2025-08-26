@@ -1,56 +1,55 @@
-Return-Path: <stable+bounces-175218-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-173493-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8292BB36724
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 16:04:04 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 21D2CB35DD8
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 13:48:42 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 920705650B8
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 13:55:55 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 22F07175DB0
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 11:40:23 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 41DC6352077;
-	Tue, 26 Aug 2025 13:54:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E9629312806;
+	Tue, 26 Aug 2025 11:39:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="JH9FEgHw"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="JLDRRRK8"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F273D35206B;
-	Tue, 26 Aug 2025 13:54:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A657529BDBA;
+	Tue, 26 Aug 2025 11:39:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756216453; cv=none; b=pfe108MVBeuXlFNkFsqxtLzbXYrZ0MN37QwieFEtaH4p1NUS3iQ8JggN2Sen4u98GpTpfJX3yzIiA/567r9kfKPxB8EZCAyjCjomSnrLX3WWxL5xmm8G+14zb9NhJzvagTyBJEUMdWxwriQM2udf9+tE0cHeDwCYzNtAQwcbP98=
+	t=1756208392; cv=none; b=CkJIbihVYx7MJY0HfC2YMXQhSd+zU9GNbUobLA1WJ8wiwhUm+J5SNijyappmh9tPGmP0XYibAtSd5zbeVcFQFy68ccGffCzhlvg2mnucYGRFOx34BhCp4vxf4ik9zSTfhADOI9bEZ9UuBq4o/gWIN8TJa9yevVwsI4/OSqkgQc8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756216453; c=relaxed/simple;
-	bh=iSpNi5nCW5319nOtwsw3UQX6rUGo/LA0kRoLxk+przE=;
+	s=arc-20240116; t=1756208392; c=relaxed/simple;
+	bh=yp2K05Q7bEQFV0glmBHBZORIrjMtq8N329TDOpmO0mo=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=VPgzj1R6zXC4Qn7LWCcdrgEawXJ418CId+h/C/1e3m7RXRTm7arcRCW+nRpfwnwrUu0i21TV4Khss6hrti3hkAwtMBfuASN/Q9ekWUeH8VepBzax4xlSLCxesv7Z96Qli6WYIzVkw/VmPoXWPudIHMapgevNhcQ4x1cd2bzF3o4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=JH9FEgHw; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 84D3AC4CEF1;
-	Tue, 26 Aug 2025 13:54:12 +0000 (UTC)
+	 MIME-Version; b=nKtvQY35rmT5Bf3FzfJp6BNymzVrb5KS3CCGHNrKsqi1EHHBo3Q7A9Kq1zpXjDApygrhI431WHhD6vPGuyomUo02LBx5o2C9idt5W5ydpUbT6xUSOxRuUVO0CKZ7dAuscBTh2uH/Xghq6iacdNHiWPuRFDYqLp5zESbfQ07hZBw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=JLDRRRK8; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 38B60C4CEF4;
+	Tue, 26 Aug 2025 11:39:52 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1756216452;
-	bh=iSpNi5nCW5319nOtwsw3UQX6rUGo/LA0kRoLxk+przE=;
+	s=korg; t=1756208392;
+	bh=yp2K05Q7bEQFV0glmBHBZORIrjMtq8N329TDOpmO0mo=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=JH9FEgHwxftLX1AZF6ga1zVpEYuUm8lw8WtYuAFAUG127ygTLQPxbqOICEE0iai4w
-	 xbh3TgwfdlSzqdnutZqqmCineVgafesV47DnrMLCb49sgQazZGB64sEz0XuTAyyok2
-	 ZC6rm5Bu7k2/1pgLBQ/sy+WylJ3YdqV5W+aeDO6M=
+	b=JLDRRRK85FmBtA7hUPA+FelZYVsdSf/9UEe2iddct56dJw0QRZ6K/Bo1gzJCO7lnd
+	 dshoOaA/WuEObyfcRrWEZsyjqam3zW197aHYCuR7ZnVMDtzv7K7aAhS61SXxKQO51E
+	 Xjpfrt/jdGa1HtdvGzZYs7JnZmwbhfBHUwENpwDQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	"fangzhong.zhou" <myth5@myth5.com>,
-	Wolfram Sang <wsa+renesas@sang-engineering.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 417/644] i2c: Force DLL0945 touchpad i2c freq to 100khz
+	John David Anglin <dave.anglin@bell.net>,
+	Helge Deller <deller@gmx.de>
+Subject: [PATCH 6.12 093/322] parisc: Rename pte_needs_flush() to pte_needs_cache_flush() in cache.c
 Date: Tue, 26 Aug 2025 13:08:28 +0200
-Message-ID: <20250826110956.791602535@linuxfoundation.org>
+Message-ID: <20250826110917.970412225@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250826110946.507083938@linuxfoundation.org>
-References: <20250826110946.507083938@linuxfoundation.org>
+In-Reply-To: <20250826110915.169062587@linuxfoundation.org>
+References: <20250826110915.169062587@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,44 +61,45 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: fangzhong.zhou <myth5@myth5.com>
+From: John David Anglin <dave.anglin@bell.net>
 
-[ Upstream commit 0b7c9528facdb5a73ad78fea86d2e95a6c48dbc4 ]
+commit 52ce9406a9625c4498c4eaa51e7a7ed9dcb9db16 upstream.
 
-This patch fixes an issue where the touchpad cursor movement becomes
-slow on the Dell Precision 5560. Force the touchpad freq to 100khz
-as a workaround.
+The local name used in cache.c conflicts the declaration in
+include/asm-generic/tlb.h.
 
-Tested on Dell Precision 5560 with 6.14 to 6.14.6. Cursor movement
-is now smooth and responsive.
-
-Signed-off-by: fangzhong.zhou <myth5@myth5.com>
-[wsa: kept sorting and removed unnecessary parts from commit msg]
-Signed-off-by: Wolfram Sang <wsa+renesas@sang-engineering.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Signed-off-by: John David Anglin <dave.anglin@bell.net>
+Signed-off-by: Helge Deller <deller@gmx.de>
+Cc: stable@vger.kernel.org # v5.12+
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/i2c/i2c-core-acpi.c | 1 +
- 1 file changed, 1 insertion(+)
+ arch/parisc/kernel/cache.c |    4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/i2c/i2c-core-acpi.c b/drivers/i2c/i2c-core-acpi.c
-index 8b06f5d4a4c3..3fabf4b1f6fd 100644
---- a/drivers/i2c/i2c-core-acpi.c
-+++ b/drivers/i2c/i2c-core-acpi.c
-@@ -342,6 +342,7 @@ static const struct acpi_device_id i2c_acpi_force_100khz_device_ids[] = {
- 	 * the device works without issues on Windows at what is expected to be
- 	 * a 400KHz frequency. The root cause of the issue is not known.
- 	 */
-+	{ "DLL0945", 0 },
- 	{ "ELAN06FA", 0 },
- 	{}
- };
--- 
-2.39.5
-
+--- a/arch/parisc/kernel/cache.c
++++ b/arch/parisc/kernel/cache.c
+@@ -429,7 +429,7 @@ static inline pte_t *get_ptep(struct mm_
+ 	return ptep;
+ }
+ 
+-static inline bool pte_needs_flush(pte_t pte)
++static inline bool pte_needs_cache_flush(pte_t pte)
+ {
+ 	return (pte_val(pte) & (_PAGE_PRESENT | _PAGE_ACCESSED | _PAGE_NO_CACHE))
+ 		== (_PAGE_PRESENT | _PAGE_ACCESSED);
+@@ -630,7 +630,7 @@ static void flush_cache_page_if_present(
+ 	ptep = get_ptep(vma->vm_mm, vmaddr);
+ 	if (ptep) {
+ 		pte = ptep_get(ptep);
+-		needs_flush = pte_needs_flush(pte);
++		needs_flush = pte_needs_cache_flush(pte);
+ 		pte_unmap(ptep);
+ 	}
+ 	if (needs_flush)
 
 
 
