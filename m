@@ -1,56 +1,55 @@
-Return-Path: <stable+bounces-173458-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-174057-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [IPv6:2605:f480:58:1:0:1994:3:14])
-	by mail.lfdr.de (Postfix) with ESMTPS id 58213B35CDC
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 13:39:30 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 10E3FB36102
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 15:05:56 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 3FC8F4E2995
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 11:39:29 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 8FAB81BA73D5
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 13:03:21 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 569C42F9992;
-	Tue, 26 Aug 2025 11:38:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A4C2B1D47B4;
+	Tue, 26 Aug 2025 13:02:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="LiLAQOUG"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Zo57DXqc"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1342A23D7FA;
-	Tue, 26 Aug 2025 11:38:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 644FA1A8F84;
+	Tue, 26 Aug 2025 13:02:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756208300; cv=none; b=PpnosAfk7FCVydT7d/qyF9OGVplWNMP2GzOwdW5Z0J+WO04ADrRgRzoWy/PkpN6hNh9sRACzgtUhZgcpWosTIr8anYvKZ3xcusnb0Jc/uNH8f1DfCanDH2cnHCZ/jRdueRPjZLQTKKV1AHm+uPV2SOse2UvXe+zIu8sr+yJgv0g=
+	t=1756213378; cv=none; b=aEkwGA4dO3UsOBHgVcJi4lKLJvNg5FStYg8GhFLLamx3W/dBCE/6kFZIPzsD8G4euKeA6kPy2ORiszt8LNr/yFYJqxaggcGH1kWoLix+Ijd+TlJMNbtSYFaT4zzJJwWx/6nWjpxEipPQ0LZ3jLWk1bcyEIwh5E+rrMKGjT5OfFA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756208300; c=relaxed/simple;
-	bh=CxbY2KAHTC6vkbc3AYG4PWesFRwayRj1FmSvv4rdPVY=;
+	s=arc-20240116; t=1756213378; c=relaxed/simple;
+	bh=e//mKeeXZ9E7TrBks+96fAO+9//IayJM5rRfXbBsGco=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=udg0BpQn6lKeUW6n3B7Fe8Xpr+x2PAfK3IQpGoVZcur5EhD6yMsZaU4rxLIqzegDebSd1YQU16+VnOfhIo+ZnRuHI3NkEUP4Tv3rnJPr/6uWa1YLi+S3vHD5WXjhvkHuo7D+T4b5Kg36POJlkFerTkFA0/CzZ2Km3LNtD31/pRw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=LiLAQOUG; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9CDFAC4CEF1;
-	Tue, 26 Aug 2025 11:38:19 +0000 (UTC)
+	 MIME-Version:Content-Type; b=nFDBlPQ4GreQXmbdCxerFiMDmNgZk6boiVuuyZjcRL9j8yKTYnXONxvl5+lhdgVLhTmmt2JHvOmFCNE79XI/eBpcpoPhuPAuHZfAuAZ0i8KFrRENUhPxSw1glIqIe/hbxJYwKbbi+ujcJCxS1zLNtOERqYCtR3IttiIWOfB8Eus=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Zo57DXqc; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8C16EC4CEF1;
+	Tue, 26 Aug 2025 13:02:57 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1756208299;
-	bh=CxbY2KAHTC6vkbc3AYG4PWesFRwayRj1FmSvv4rdPVY=;
+	s=korg; t=1756213377;
+	bh=e//mKeeXZ9E7TrBks+96fAO+9//IayJM5rRfXbBsGco=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=LiLAQOUGxQmY9QA5Y2nYUF5Mh/pjmF96Ln9m0bBNBQJfqVuPnza1UvjBJBMhVstBL
-	 zn+p8lwTVKjOmpRmH73CN53TrcAK4diOJPLcb+SsOMK7JT0TcHurW8wEyAGpG4MVTA
-	 uLPS2ZDQp6GjNhjglmWhfpPaBRwhdMfnMBZIbQXg=
+	b=Zo57DXqcOpABbbHOBve0MnNtOBvj5YXDUUpO31MYaQfmXY5qlXU9x+25mvt5sRZiQ
+	 LKmtQSqSPXUI9nT7Pjk4Fq9nayDL8WcGlS94v2Hj9Is8q4j9f+pAOVWxZPY0VLkFyP
+	 ZYDN3kxDXtYF6bHfFLdNy1r8q7fM33Y53zUMvkus=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Nathan Chancellor <nathan@kernel.org>,
-	Johannes Berg <johannes.berg@intel.com>,
-	Arend van Spriel <arend.vanspriel@broadcom.com>
-Subject: [PATCH 6.12 058/322] wifi: brcmsmac: Remove const from tbl_ptr parameter in wlc_lcnphy_common_read_table()
+	=?UTF-8?q?Thomas=20Wei=C3=9Fschuh?= <linux@weissschuh.net>,
+	Willy Tarreau <w@1wt.eu>
+Subject: [PATCH 6.6 324/587] tools/nolibc: fix spelling of FD_SETBITMASK in FD_* macros
 Date: Tue, 26 Aug 2025 13:07:53 +0200
-Message-ID: <20250826110916.965897068@linuxfoundation.org>
+Message-ID: <20250826111001.159904618@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250826110915.169062587@linuxfoundation.org>
-References: <20250826110915.169062587@linuxfoundation.org>
+In-Reply-To: <20250826110952.942403671@linuxfoundation.org>
+References: <20250826110952.942403671@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,53 +59,51 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Nathan Chancellor <nathan@kernel.org>
+From: Willy Tarreau <w@1wt.eu>
 
-commit 81284e86bf8849f8e98e8ead3ff5811926b2107f upstream.
+commit a477629baa2a0e9991f640af418e8c973a1c08e3 upstream.
 
-A new warning in clang [1] complains that diq_start in
-wlc_lcnphy_tx_iqlo_cal() is passed uninitialized as a const pointer to
-wlc_lcnphy_common_read_table():
+While nolibc-test does test syscalls, it doesn't test as much the rest
+of the macros, and a wrong spelling of FD_SETBITMASK in commit
+feaf75658783a broke programs using either FD_SET() or FD_CLR() without
+being noticed. Let's fix these macros.
 
-  drivers/net/wireless/broadcom/brcm80211/brcmsmac/phy/phy_lcn.c:2728:13: error: variable 'diq_start' is uninitialized when passed as a const pointer argument here [-Werror,-Wuninitialized-const-pointer]
-   2728 |                                                      &diq_start, 1, 16, 69);
-        |                                                       ^~~~~~~~~
-
-The table pointer passed to wlc_lcnphy_common_read_table() should not be
-considered constant, as wlc_phy_read_table() is ultimately going to
-update it. Remove the const qualifier from the tbl_ptr to clear up the
-warning.
-
-Cc: stable@vger.kernel.org
-Closes: https://github.com/ClangBuiltLinux/linux/issues/2108
-Fixes: 5b435de0d786 ("net: wireless: add brcm80211 drivers")
-Link: https://github.com/llvm/llvm-project/commit/00dacf8c22f065cb52efb14cd091d441f19b319e [1]
-Signed-off-by: Nathan Chancellor <nathan@kernel.org>
-Acked-by: Arend van Spriel <arend.vanspriel@broadcom.com>>
-Link: https://patch.msgid.link/20250715-brcmsmac-fix-uninit-const-pointer-v1-1-16e6a51a8ef4@kernel.org
-Signed-off-by: Johannes Berg <johannes.berg@intel.com>
+Fixes: feaf75658783a ("nolibc: fix fd_set type")
+Cc: stable@vger.kernel.org # v6.2+
+Acked-by: Thomas Weißschuh <linux@weissschuh.net>
+Signed-off-by: Willy Tarreau <w@1wt.eu>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/net/wireless/broadcom/brcm80211/brcmsmac/phy/phy_lcn.c |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ tools/include/nolibc/types.h |    4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
---- a/drivers/net/wireless/broadcom/brcm80211/brcmsmac/phy/phy_lcn.c
-+++ b/drivers/net/wireless/broadcom/brcm80211/brcmsmac/phy/phy_lcn.c
-@@ -919,7 +919,7 @@ void wlc_lcnphy_read_table(struct brcms_
+--- a/tools/include/nolibc/types.h
++++ b/tools/include/nolibc/types.h
+@@ -128,7 +128,7 @@ typedef struct {
+ 		int __fd = (fd);					\
+ 		if (__fd >= 0)						\
+ 			__set->fds[__fd / FD_SETIDXMASK] &=		\
+-				~(1U << (__fd & FX_SETBITMASK));	\
++				~(1U << (__fd & FD_SETBITMASK));	\
+ 	} while (0)
  
- static void
- wlc_lcnphy_common_read_table(struct brcms_phy *pi, u32 tbl_id,
--			     const u16 *tbl_ptr, u32 tbl_len,
-+			     u16 *tbl_ptr, u32 tbl_len,
- 			     u32 tbl_width, u32 tbl_offset)
- {
- 	struct phytbl_info tab;
+ #define FD_SET(fd, set) do {						\
+@@ -145,7 +145,7 @@ typedef struct {
+ 		int __r = 0;						\
+ 		if (__fd >= 0)						\
+ 			__r = !!(__set->fds[__fd / FD_SETIDXMASK] &	\
+-1U << (__fd & FD_SET_BITMASK));						\
++1U << (__fd & FD_SETBITMASK));						\
+ 		__r;							\
+ 	})
+ 
 
 
 
