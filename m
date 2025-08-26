@@ -1,58 +1,58 @@
-Return-Path: <stable+bounces-174808-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-173698-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0DDE1B3643F
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 15:37:04 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 30A8CB35E95
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 13:59:34 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id AFB117B95E3
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 13:35:15 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 568A35612A9
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 11:49:00 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id CEC4B20CCCA;
-	Tue, 26 Aug 2025 13:36:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A062229BDAC;
+	Tue, 26 Aug 2025 11:48:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="eB70x2UU"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="uJrhFnvF"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 892021FBCB5;
-	Tue, 26 Aug 2025 13:36:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5CA68283FDF;
+	Tue, 26 Aug 2025 11:48:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756215372; cv=none; b=q9RtP2DxotYzTIVXCfAyNHx091x3oFIfspIkQgUmtt/JT8YfLP/p9onjHUuD552P1+SC7A+H71U7ZN185V8iAGCgHOQLvO9enEkkA8blUAprL6NeDB0J8tnvhw8ZY4yS8DUOq1y7LFiGjjVHNgtqxZntjR7r2903QS9rlMfA2xU=
+	t=1756208924; cv=none; b=Ba9kF9BhqhWU4Rs+lJpcdUejC2zCoqUbOrXDXkGwdmFCAz52Bg3LeImTtyRNLhxW0SIxNzynhzH4R7+ZHkMinkIZMNvy4CPmL0UOln4H++IVpt+Ba76iSJNEOEtDlsMRSjGnYCSKyFf1WUxjgrVPb8hKR/pEJKptmb2Y5vRbXI0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756215372; c=relaxed/simple;
-	bh=dKVKNbYww0INRtnksZx9BCBsqvuuovdxw4PF81GR78Y=;
+	s=arc-20240116; t=1756208924; c=relaxed/simple;
+	bh=L6B7D6bk66U+m7tbzMdbJUUiH+cVc9pudzSyp7BFuKg=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=V6yz3lAeFQM80xO68o2j5NC05Ct675xfTHOM8T6BiNMQZSWppSjf21qbcbN7DgDg5qo0KS12jsFzYBHYfXSy19Y//T/MRXeY+QSJQNP/LdkFspSkQAphgbEGtIAJrwCp95M8eQcU9oroMccrSdYHwNQNrqa83TOLR+qb/89HzQU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=eB70x2UU; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1ACF0C4CEF1;
-	Tue, 26 Aug 2025 13:36:11 +0000 (UTC)
+	 MIME-Version; b=nJeTSJBEnktSHqBmZIaY+FCUA051vXokU7YF26+XQZhL3HJTDGyrDDuTH0vjfMFPanGvjVQfkBUUg5FMxnHB+jJ+sDXWqeuYt6J6PmSVdX3VtZXKfGMN3O6hAgIqH66Ak+TSDOa7M0pmpnhWakRfwIKGi/mIdrNH33gsfND5iys=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=uJrhFnvF; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id DEAEBC4CEF1;
+	Tue, 26 Aug 2025 11:48:43 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1756215372;
-	bh=dKVKNbYww0INRtnksZx9BCBsqvuuovdxw4PF81GR78Y=;
+	s=korg; t=1756208924;
+	bh=L6B7D6bk66U+m7tbzMdbJUUiH+cVc9pudzSyp7BFuKg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=eB70x2UUWKChXHRTTxPM0NSmpC6furJzDNqBJ/lZ5rjY56XcHBLokDywKlx93zpW2
-	 kj2odSzRwNXR3j08Du06UY3SkrRTI0IANvrmtiiqlOxLPsuLYv9LqV8vY3ae43eM+1
-	 ng43H3qkiIrVWXwTlMba1rfjbtgv+QqmWWV/2x80=
+	b=uJrhFnvFo0JRRIaz4mylqqbrAlL3dBY+Ei4xlxSRFDuK5OspmTGe3n4mO9LmucVnH
+	 ktAKP7UpJQSxHX0NsXz37mJTiwPA/ME+CgzWDrS/PvfVhNw7mR+I4mjlmt6DTkVqFB
+	 Tm0hKUZfkrYL6Fyk+uNi2P6np7gKVY9PDBGOqNpY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Simcha Kosman <simcha.kosman@cyberark.com>,
-	Kees Cook <kees@kernel.org>,
-	Ankit Soni <Ankit.Soni@amd.com>,
-	Joerg Roedel <joerg.roedel@amd.com>,
+	syzbot+20537064367a0f98d597@syzkaller.appspotmail.com,
+	Yuichiro Tsuji <yuichtsu@amazon.com>,
+	Andrew Lunn <andrew@lunn.ch>,
+	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 459/482] iommu/amd: Avoid stack buffer overflow from kernel cmdline
+Subject: [PATCH 6.12 297/322] net: usb: asix_devices: Fix PHY address mask in MDIO bus initialization
 Date: Tue, 26 Aug 2025 13:11:52 +0200
-Message-ID: <20250826110942.164136705@linuxfoundation.org>
+Message-ID: <20250826110923.234111373@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250826110930.769259449@linuxfoundation.org>
-References: <20250826110930.769259449@linuxfoundation.org>
+In-Reply-To: <20250826110915.169062587@linuxfoundation.org>
+References: <20250826110915.169062587@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,52 +64,49 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Kees Cook <kees@kernel.org>
+From: Yuichiro Tsuji <yuichtsu@amazon.com>
 
-[ Upstream commit 8503d0fcb1086a7cfe26df67ca4bd9bd9e99bdec ]
+[ Upstream commit 24ef2f53c07f273bad99173e27ee88d44d135b1c ]
 
-While the kernel command line is considered trusted in most environments,
-avoid writing 1 byte past the end of "acpiid" if the "str" argument is
-maximum length.
+Syzbot reported shift-out-of-bounds exception on MDIO bus initialization.
 
-Reported-by: Simcha Kosman <simcha.kosman@cyberark.com>
-Closes: https://lore.kernel.org/all/AS8P193MB2271C4B24BCEDA31830F37AE84A52@AS8P193MB2271.EURP193.PROD.OUTLOOK.COM
-Fixes: b6b26d86c61c ("iommu/amd: Add a length limitation for the ivrs_acpihid command-line parameter")
-Signed-off-by: Kees Cook <kees@kernel.org>
-Reviewed-by: Ankit Soni <Ankit.Soni@amd.com>
-Link: https://lore.kernel.org/r/20250804154023.work.970-kees@kernel.org
-Signed-off-by: Joerg Roedel <joerg.roedel@amd.com>
+The PHY address should be masked to 5 bits (0-31). Without this
+mask, invalid PHY addresses could be used, potentially causing issues
+with MDIO bus operations.
+
+Fix this by masking the PHY address with 0x1f (31 decimal) to ensure
+it stays within the valid range.
+
+Fixes: 4faff70959d5 ("net: usb: asix_devices: add phy_mask for ax88772 mdio bus")
+Reported-by: syzbot+20537064367a0f98d597@syzkaller.appspotmail.com
+Closes: https://syzkaller.appspot.com/bug?extid=20537064367a0f98d597
+Tested-by: syzbot+20537064367a0f98d597@syzkaller.appspotmail.com
+Signed-off-by: Yuichiro Tsuji <yuichtsu@amazon.com>
+Reviewed-by: Andrew Lunn <andrew@lunn.ch>
+Link: https://patch.msgid.link/20250818084541.1958-1-yuichtsu@amazon.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/iommu/amd/init.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ drivers/net/usb/asix_devices.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/iommu/amd/init.c b/drivers/iommu/amd/init.c
-index bc78e8665551..23804270eda1 100644
---- a/drivers/iommu/amd/init.c
-+++ b/drivers/iommu/amd/init.c
-@@ -3553,7 +3553,7 @@ static int __init parse_ivrs_acpihid(char *str)
- {
- 	u32 seg = 0, bus, dev, fn;
- 	char *hid, *uid, *p, *addr;
--	char acpiid[ACPIID_LEN] = {0};
-+	char acpiid[ACPIID_LEN + 1] = { }; /* size with NULL terminator */
- 	int i;
- 
- 	addr = strchr(str, '@');
-@@ -3579,7 +3579,7 @@ static int __init parse_ivrs_acpihid(char *str)
- 	/* We have the '@', make it the terminator to get just the acpiid */
- 	*addr++ = 0;
- 
--	if (strlen(str) > ACPIID_LEN + 1)
-+	if (strlen(str) > ACPIID_LEN)
- 		goto not_found;
- 
- 	if (sscanf(str, "=%s", acpiid) != 1)
+diff --git a/drivers/net/usb/asix_devices.c b/drivers/net/usb/asix_devices.c
+index d9f5942ccc44..792ddda1ad49 100644
+--- a/drivers/net/usb/asix_devices.c
++++ b/drivers/net/usb/asix_devices.c
+@@ -676,7 +676,7 @@ static int ax88772_init_mdio(struct usbnet *dev)
+ 	priv->mdio->read = &asix_mdio_bus_read;
+ 	priv->mdio->write = &asix_mdio_bus_write;
+ 	priv->mdio->name = "Asix MDIO Bus";
+-	priv->mdio->phy_mask = ~(BIT(priv->phy_addr) | BIT(AX_EMBD_PHY_ADDR));
++	priv->mdio->phy_mask = ~(BIT(priv->phy_addr & 0x1f) | BIT(AX_EMBD_PHY_ADDR));
+ 	/* mii bus name is usb-<usb bus number>-<usb device number> */
+ 	snprintf(priv->mdio->id, MII_BUS_ID_SIZE, "usb-%03d:%03d",
+ 		 dev->udev->bus->busnum, dev->udev->devnum);
 -- 
 2.50.1
 
