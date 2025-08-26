@@ -1,56 +1,58 @@
-Return-Path: <stable+bounces-173322-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-175895-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5D6A8B35C7D
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 13:34:52 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3E4F3B36A27
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 16:34:52 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 79FE1687BAA
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 11:34:43 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 92A601C4617A
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 14:27:00 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7EA852F9C23;
-	Tue, 26 Aug 2025 11:32:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C255B352FCA;
+	Tue, 26 Aug 2025 14:24:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="VyiFOyw5"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="nXYv3y7q"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3B66529D26A;
-	Tue, 26 Aug 2025 11:32:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7D8BD350D51;
+	Tue, 26 Aug 2025 14:24:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756207946; cv=none; b=UvVy/LvK8KIei2rmqmJVJ79jese+0ACChJeaAszsPvDIB8iUw8PRCiQwHIXeH15VVhRuE3JDJzHTkhAt+i/t69xp00CxHQ+Shv/LmqQo57wgypRN7jgHnKSK1dwd9b+ilNLq1mBWhmOUDB30Ql8Dq58C4x7AWWkJA480aawfd5I=
+	t=1756218250; cv=none; b=njg++kOSUzPNSgy1fDwC36T9m4q+l0s1jlqqymAglzU8yDFmV6BcyD3DrD/a72l7jWlh+73Wwrbou4+U21oqiv1uCet3F5jhhXoQnSKlpPy9AFoZeN98rZgtH4jDzDnjAff+lLWgKgBK/1aUY0HIAYLWIht3vuav3LGxvsC/5M0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756207946; c=relaxed/simple;
-	bh=3BXOM1lvB0rKQyx9/iwnsqJfK5VaY8B6plEwtOLF6Zc=;
+	s=arc-20240116; t=1756218250; c=relaxed/simple;
+	bh=eYZm/5/tcTBymDZhFs42ix9e6ZOJBSX+2e6ZXvZeQ8o=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=YGtP4aHico70oF7swqpvuh0+yV3cy60I99DRNa5XSap0gTGL2DqMdRFuGEuip3MoTyjbl+PQpFqVepS/2hka00X6B3GPEQj1MfumowX6wncD5G0yLdj12gpKiSW4fmmNJBpP86MWMJK23BqAg6P9huL3uJP525GyWZ2liP+97YM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=VyiFOyw5; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C7CC6C4CEF1;
-	Tue, 26 Aug 2025 11:32:25 +0000 (UTC)
+	 MIME-Version; b=E200IqVLfajBBwjANrZ96+TeE5lc0KG27LPE/+pnufGNduKqs/CxZlZ4mHjs8o8WdQVRzfiGJd8RFo5a4gHNWNd7LDQSqH027Ff7ArUwSg34rT/BNu+kRdo2EDbWnbb0yrmfQfCY47zzVLpEwWcrDyswtEDYVklNMe+UACQFz88=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=nXYv3y7q; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0E42EC4CEF1;
+	Tue, 26 Aug 2025 14:24:09 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1756207946;
-	bh=3BXOM1lvB0rKQyx9/iwnsqJfK5VaY8B6plEwtOLF6Zc=;
+	s=korg; t=1756218250;
+	bh=eYZm/5/tcTBymDZhFs42ix9e6ZOJBSX+2e6ZXvZeQ8o=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=VyiFOyw5a+iLqjAaK1VTfCjw3AXUj0lZf6qN8gRcOMdfgr50CZFlo5ZXdqv4jk31z
-	 E40vXEwndA4azTul5x3lRta0/3L/603gMmjeS2O8V5oXmHyeci5k/pQ0wQ6EZR0h3O
-	 sOg9IR0cR1RMIpeWoBoF290y4cfUjR1dDzUgWeAs=
+	b=nXYv3y7qdmgEINC/9HIuJtJWj8gfjWAEzpZLpIufn15piP4hjHxOYKk/ngzevA4ZU
+	 jngkUYNb/cBgqsswa3HcYXIXAr+li+kEI+U95d8izHdy91dfrEL2L+RiptnULRty2y
+	 S37w2OwckPsF2GWooAuyAn3TX+Iq91OV4yl8W4Z8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Yang Li <yang.li@amlogic.com>,
-	Luiz Augusto von Dentz <luiz.von.dentz@intel.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.16 377/457] Bluetooth: hci_sync: Prevent unintended PA sync when SID is 0xFF
+	Andrey Grodzovsky <andrey.grodzovsky@amd.com>,
+	Guchun Chen <guchun.chen@amd.com>,
+	Alex Deucher <alexander.deucher@amd.com>,
+	Sasha Levin <sashal@kernel.org>,
+	Shivani Agarwal <shivani.agarwal@broadcom.com>
+Subject: [PATCH 5.10 451/523] drm/amdgpu: handle the case of pci_channel_io_frozen only in amdgpu_pci_resume
 Date: Tue, 26 Aug 2025 13:11:01 +0200
-Message-ID: <20250826110946.613392507@linuxfoundation.org>
+Message-ID: <20250826110935.576675411@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250826110937.289866482@linuxfoundation.org>
-References: <20250826110937.289866482@linuxfoundation.org>
+In-Reply-To: <20250826110924.562212281@linuxfoundation.org>
+References: <20250826110924.562212281@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,82 +64,72 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.16-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Yang Li <yang.li@amlogic.com>
+From: Guchun Chen <guchun.chen@amd.com>
 
-[ Upstream commit 4d19cd228bbe8ff84a63fe7b11bc756b4b4370c7 ]
+[ Upstream commit 248b061689a40f4fed05252ee2c89f87cf26d7d8 ]
 
-After LE Extended Scan times out, conn->sid remains 0xFF,
-so the PA sync creation process should be aborted.
+In current code, when a PCI error state pci_channel_io_normal is detectd,
+it will report PCI_ERS_RESULT_CAN_RECOVER status to PCI driver, and PCI
+driver will continue the execution of PCI resume callback report_resume by
+pci_walk_bridge, and the callback will go into amdgpu_pci_resume
+finally, where write lock is releasd unconditionally without acquiring
+such lock first. In this case, a deadlock will happen when other threads
+start to acquire the read lock.
 
-Btmon snippet from PA sync with SID=0xFF:
+To fix this, add a member in amdgpu_device strucutre to cache
+pci_channel_state, and only continue the execution in amdgpu_pci_resume
+when it's pci_channel_io_frozen.
 
-< HCI Command: LE Set Extended.. (0x08|0x0042) plen 6  #74726 [hci0] 863.107927
-        Extended scan: Enabled (0x01)
-        Filter duplicates: Enabled (0x01)
-        Duration: 0 msec (0x0000)
-        Period: 0.00 sec (0x0000)
-> HCI Event: Command Complete (0x0e) plen 4            #74727 [hci0] 863.109389
-      LE Set Extended Scan Enable (0x08|0x0042) ncmd 1
-        Status: Success (0x00)
-< HCI Command: LE Periodic Ad.. (0x08|0x0044) plen 14  #74728 [hci0] 865.141168
-        Options: 0x0000
-        Use advertising SID, Advertiser Address Type and address
-        Reporting initially enabled
-        SID: 0xff
-        Adv address type: Random (0x01)
-        Adv address: 0D:D7:2C:E7:42:46 (Non-Resolvable)
-        Skip: 0x0000
-        Sync timeout: 20000 msec (0x07d0)
-        Sync CTE type: 0x0000
-> HCI Event: Command Status (0x0f) plen 4              #74729 [hci0] 865.143223
-      LE Periodic Advertising Create Sync (0x08|0x0044) ncmd 1
-        Status: Success (0x00)
-
-Fixes: e2d471b7806b ("Bluetooth: ISO: Fix not using SID from adv report")
-Signed-off-by: Yang Li <yang.li@amlogic.com>
-Signed-off-by: Luiz Augusto von Dentz <luiz.von.dentz@intel.com>
+Fixes: c9a6b82f45e2 ("drm/amdgpu: Implement DPC recovery")
+Suggested-by: Andrey Grodzovsky <andrey.grodzovsky@amd.com>
+Signed-off-by: Guchun Chen <guchun.chen@amd.com>
+Reviewed-by: Andrey Grodzovsky <andrey.grodzovsky@amd.com>
+Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
+[Shivani: Modified to apply on 5.10.y]
+Signed-off-by: Shivani Agarwal <shivani.agarwal@broadcom.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- net/bluetooth/hci_sync.c | 12 ++++++++----
- 1 file changed, 8 insertions(+), 4 deletions(-)
+ drivers/gpu/drm/amd/amdgpu/amdgpu.h        |    1 +
+ drivers/gpu/drm/amd/amdgpu/amdgpu_device.c |    6 ++++++
+ 2 files changed, 7 insertions(+)
 
-diff --git a/net/bluetooth/hci_sync.c b/net/bluetooth/hci_sync.c
-index 892eca21c6c4..a1b063fde286 100644
---- a/net/bluetooth/hci_sync.c
-+++ b/net/bluetooth/hci_sync.c
-@@ -7045,10 +7045,13 @@ static int hci_le_pa_create_sync(struct hci_dev *hdev, void *data)
- 	/* SID has not been set listen for HCI_EV_LE_EXT_ADV_REPORT to update
- 	 * it.
- 	 */
--	if (conn->sid == HCI_SID_INVALID)
--		__hci_cmd_sync_status_sk(hdev, HCI_OP_NOP, 0, NULL,
--					 HCI_EV_LE_EXT_ADV_REPORT,
--					 conn->conn_timeout, NULL);
-+	if (conn->sid == HCI_SID_INVALID) {
-+		err = __hci_cmd_sync_status_sk(hdev, HCI_OP_NOP, 0, NULL,
-+					       HCI_EV_LE_EXT_ADV_REPORT,
-+					       conn->conn_timeout, NULL);
-+		if (err == -ETIMEDOUT)
-+			goto done;
-+	}
+--- a/drivers/gpu/drm/amd/amdgpu/amdgpu.h
++++ b/drivers/gpu/drm/amd/amdgpu/amdgpu.h
+@@ -997,6 +997,7 @@ struct amdgpu_device {
  
- 	memset(&cp, 0, sizeof(cp));
- 	cp.options = qos->bcast.options;
-@@ -7078,6 +7081,7 @@ static int hci_le_pa_create_sync(struct hci_dev *hdev, void *data)
- 		__hci_cmd_sync_status(hdev, HCI_OP_LE_PA_CREATE_SYNC_CANCEL,
- 				      0, NULL, HCI_CMD_TIMEOUT);
+ 	bool                            in_pci_err_recovery;
+ 	struct pci_saved_state          *pci_state;
++	pci_channel_state_t		pci_channel_state;
+ };
  
-+done:
- 	hci_dev_clear_flag(hdev, HCI_PA_SYNC);
+ static inline struct amdgpu_device *drm_to_adev(struct drm_device *ddev)
+--- a/drivers/gpu/drm/amd/amdgpu/amdgpu_device.c
++++ b/drivers/gpu/drm/amd/amdgpu/amdgpu_device.c
+@@ -4944,6 +4944,8 @@ pci_ers_result_t amdgpu_pci_error_detect
+ 		return PCI_ERS_RESULT_DISCONNECT;
+ 	}
  
- 	/* Update passive scan since HCI_PA_SYNC flag has been cleared */
--- 
-2.50.1
-
++	adev->pci_channel_state = state;
++
+ 	switch (state) {
+ 	case pci_channel_io_normal:
+ 		return PCI_ERS_RESULT_CAN_RECOVER;
+@@ -5079,6 +5081,10 @@ void amdgpu_pci_resume(struct pci_dev *p
+ 
+ 	DRM_INFO("PCI error: resume callback!!\n");
+ 
++	/* Only continue execution for the case of pci_channel_io_frozen */
++	if (adev->pci_channel_state != pci_channel_io_frozen)
++		return;
++
+ 	for (i = 0; i < AMDGPU_MAX_RINGS; ++i) {
+ 		struct amdgpu_ring *ring = adev->rings[i];
+ 
 
 
 
