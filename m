@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-174199-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-174682-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 120CDB3620A
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 15:15:13 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 813C1B3647B
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 15:39:05 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 5CCE87C088D
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 13:10:13 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 786BD4673A8
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 13:31:54 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 37EE1284678;
-	Tue, 26 Aug 2025 13:09:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id F298227EFE7;
+	Tue, 26 Aug 2025 13:30:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="mVzuj8jH"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="xWhOGZbq"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DD02C242D7B;
-	Tue, 26 Aug 2025 13:09:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AFA721B4F1F;
+	Tue, 26 Aug 2025 13:30:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756213759; cv=none; b=MgXoq8kI4t6C+7AovMtX07axgnZrXOx3mAg5LVRKRxki7gsscCKTUptxEI02CZiK4TZSQqoNPA7wgtKNAyqfqf7IgNWUFSD9YaI2XUpOzTX90wrVzptgyhmhEltC5K4k2Xdcdp8Mjwf31KgiZeGqlpey7cF848vn0sNXnLkvKFE=
+	t=1756215037; cv=none; b=E64PZiTdnKqRzOamXweg8fIQBAmH7Gur6WvSPbNSmp68lGD9VrcqfCGNqat/ZIeXgOwAP8H4SyZ04+Sg7OnTGb7YJ+m/YyAjtAdUjAykrB9eNMhcEHcJKW79KvmzgOG2XQXNj+VA3IqxI+fwzpBuhlTtOwnb+X4oEOpNoeBWhAU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756213759; c=relaxed/simple;
-	bh=lDkQzTOb4JQ5FXW9xWD9eYpX+tQDSKAF9VqSpkVM+bo=;
+	s=arc-20240116; t=1756215037; c=relaxed/simple;
+	bh=eV33mho/LclILNhXfmJFl7eeS4FZp4c3DE2aHmGRP+o=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=bwXIQwiiWiFtiozrSxkvH9UA8d2U5pFY77pVJfEWTr4FZ2t+TPuI48OemZXhzO8oI4x3vIO/TOaRsN2xwdktR6xf7jzhys89bgqwZn/vCEtuupJNR5qZTOdyMjMnGAUfI2zuC9F8JdvYqY/ZLClA8I4vGVZ68pklbY16xZksvMg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=mVzuj8jH; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 47AA9C4CEF1;
-	Tue, 26 Aug 2025 13:09:18 +0000 (UTC)
+	 MIME-Version; b=KN5NlSG7JrOtL0cS1fXXFafXkzNUmAm/eM0usQuCbM2+MEA4dl5q4oFz6jF4XzVTur5S9Fp98f6nISitvwMGKkhygieiWAm2Y4+sfuPq2DL9jTL4d5OyVykHxB99tr6b4PRNNJTtLlmHuIJpYKei0+qx3iSZE+3XGHW+vnVQTe0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=xWhOGZbq; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 40819C4CEF1;
+	Tue, 26 Aug 2025 13:30:37 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1756213758;
-	bh=lDkQzTOb4JQ5FXW9xWD9eYpX+tQDSKAF9VqSpkVM+bo=;
+	s=korg; t=1756215037;
+	bh=eV33mho/LclILNhXfmJFl7eeS4FZp4c3DE2aHmGRP+o=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=mVzuj8jHkxwY7KUlGok+Ehy2a1zzhLak5x54eJlzWuYUAuWFDY6wXvmx1Lcp8Rjnj
-	 RHPMUZmqxQLEqOJSSizTVYjHjCYSd/uyic+5dg4Pur36m2B82Wz7loYD/RZtTH3gMT
-	 y37AHIyjMk3IyOQfWhl2yRVN93AP4Dy310ywgFzs=
+	b=xWhOGZbq1+uW43dl8+28CpuwmMF4JTm7ZL8QfdbpMpvyt7JO+F78wjO3bWbaNDoQJ
+	 ICOZioffxJzyy3leDZmQ0/Bp1Gcq+NIK0rRDSkosLlVJhBUUbUqmS6PJRDso5lBKYF
+	 CGAPCEXURgjp9NBCflD2TnGG4CQU437RfZnzzEsA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	"Rafael J. Wysocki" <rafael.j.wysocki@intel.com>,
-	Ulf Hansson <ulf.hansson@linaro.org>,
-	Sakari Ailus <sakari.ailus@linux.intel.com>,
+	Eric Dumazet <edumazet@google.com>,
+	Simon Horman <horms@kernel.org>,
+	"David S. Miller" <davem@davemloft.net>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 468/587] PM: runtime: Take active children into account in pm_runtime_get_if_in_use()
+Subject: [PATCH 6.1 364/482] net_sched: sch_ets: implement lockless ets_dump()
 Date: Tue, 26 Aug 2025 13:10:17 +0200
-Message-ID: <20250826111004.882506640@linuxfoundation.org>
+Message-ID: <20250826110939.826019659@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250826110952.942403671@linuxfoundation.org>
-References: <20250826110952.942403671@linuxfoundation.org>
+In-Reply-To: <20250826110930.769259449@linuxfoundation.org>
+References: <20250826110930.769259449@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,87 +63,108 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: "Rafael J. Wysocki" <rafael.j.wysocki@intel.com>
+From: Eric Dumazet <edumazet@google.com>
 
-[ Upstream commit 51888393cc64dd0462d0b96c13ab94873abbc030 ]
+[ Upstream commit c5f1dde7f731e7bf2e7c169ca42cb4989fc2f8b9 ]
 
-For all practical purposes, there is no difference between the situation
-in which a given device is not ignoring children and its active child
-count is nonzero and the situation in which its runtime PM usage counter
-is nonzero.  However, pm_runtime_get_if_in_use() will only increment the
-device's usage counter and return 1 in the latter case.
+Instead of relying on RTNL, ets_dump() can use READ_ONCE()
+annotations, paired with WRITE_ONCE() ones in ets_change().
 
-For consistency, make it do so in the former case either by adjusting
-pm_runtime_get_conditional() and update the related kerneldoc comments
-accordingly.
-
-Fixes: c111566bea7c ("PM: runtime: Add pm_runtime_get_if_active()")
-Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
-Reviewed-by: Ulf Hansson <ulf.hansson@linaro.org>
-Reviewed-by: Sakari Ailus <sakari.ailus@linux.intel.com>
-Cc: 5.10+ <stable@vger.kernel.org> # 5.10+: c0ef3df8dbae: PM: runtime: Simplify pm_runtime_get_if_active() usage
-Cc: 5.10+ <stable@vger.kernel.org> # 5.10+
-Link: https://patch.msgid.link/12700973.O9o76ZdvQC@rjwysocki.net
+Signed-off-by: Eric Dumazet <edumazet@google.com>
+Reviewed-by: Simon Horman <horms@kernel.org>
+Signed-off-by: David S. Miller <davem@davemloft.net>
+Stable-dep-of: 87c6efc5ce9c ("net/sched: ets: use old 'nbands' while purging unused classes")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/base/power/runtime.c |   27 ++++++++++++++++++---------
- 1 file changed, 18 insertions(+), 9 deletions(-)
+ net/sched/sch_ets.c |   25 ++++++++++++++-----------
+ 1 file changed, 14 insertions(+), 11 deletions(-)
 
---- a/drivers/base/power/runtime.c
-+++ b/drivers/base/power/runtime.c
-@@ -1181,10 +1181,12 @@ EXPORT_SYMBOL_GPL(__pm_runtime_resume);
-  *
-  * Return -EINVAL if runtime PM is disabled for @dev.
-  *
-- * Otherwise, if the runtime PM status of @dev is %RPM_ACTIVE and either
-- * @ign_usage_count is %true or the runtime PM usage counter of @dev is not
-- * zero, increment the usage counter of @dev and return 1. Otherwise, return 0
-- * without changing the usage counter.
-+ * Otherwise, if its runtime PM status is %RPM_ACTIVE and (1) @ign_usage_count
-+ * is set, or (2) @dev is not ignoring children and its active child count is
-+ * nonero, or (3) the runtime PM usage counter of @dev is not zero, increment
-+ * the usage counter of @dev and return 1.
-+ *
-+ * Otherwise, return 0 without changing the usage counter.
-  *
-  * If @ign_usage_count is %true, this function can be used to prevent suspending
-  * the device when its runtime PM status is %RPM_ACTIVE.
-@@ -1206,7 +1208,8 @@ static int pm_runtime_get_conditional(st
- 		retval = -EINVAL;
- 	} else if (dev->power.runtime_status != RPM_ACTIVE) {
- 		retval = 0;
--	} else if (ign_usage_count) {
-+	} else if (ign_usage_count || (!dev->power.ignore_children &&
-+		   atomic_read(&dev->power.child_count) > 0)) {
- 		retval = 1;
- 		atomic_inc(&dev->power.usage_count);
- 	} else {
-@@ -1239,10 +1242,16 @@ EXPORT_SYMBOL_GPL(pm_runtime_get_if_acti
-  * @dev: Target device.
-  *
-  * Increment the runtime PM usage counter of @dev if its runtime PM status is
-- * %RPM_ACTIVE and its runtime PM usage counter is greater than 0, in which case
-- * it returns 1. If the device is in a different state or its usage_count is 0,
-- * 0 is returned. -EINVAL is returned if runtime PM is disabled for the device,
-- * in which case also the usage_count will remain unmodified.
-+ * %RPM_ACTIVE and its runtime PM usage counter is greater than 0 or it is not
-+ * ignoring children and its active child count is nonzero.  1 is returned in
-+ * this case.
-+ *
-+ * If @dev is in a different state or it is not in use (that is, its usage
-+ * counter is 0, or it is ignoring children, or its active child count is 0),
-+ * 0 is returned.
-+ *
-+ * -EINVAL is returned if runtime PM is disabled for the device, in which case
-+ * also the usage counter of @dev is not updated.
-  */
- int pm_runtime_get_if_in_use(struct device *dev)
- {
+--- a/net/sched/sch_ets.c
++++ b/net/sched/sch_ets.c
+@@ -651,7 +651,7 @@ static int ets_qdisc_change(struct Qdisc
+ 
+ 	sch_tree_lock(sch);
+ 
+-	q->nbands = nbands;
++	WRITE_ONCE(q->nbands, nbands);
+ 	for (i = nstrict; i < q->nstrict; i++) {
+ 		if (q->classes[i].qdisc->q.qlen) {
+ 			list_add_tail(&q->classes[i].alist, &q->active);
+@@ -663,11 +663,11 @@ static int ets_qdisc_change(struct Qdisc
+ 			list_del_init(&q->classes[i].alist);
+ 		qdisc_purge_queue(q->classes[i].qdisc);
+ 	}
+-	q->nstrict = nstrict;
++	WRITE_ONCE(q->nstrict, nstrict);
+ 	memcpy(q->prio2band, priomap, sizeof(priomap));
+ 
+ 	for (i = 0; i < q->nbands; i++)
+-		q->classes[i].quantum = quanta[i];
++		WRITE_ONCE(q->classes[i].quantum, quanta[i]);
+ 
+ 	for (i = oldbands; i < q->nbands; i++) {
+ 		q->classes[i].qdisc = queues[i];
+@@ -681,7 +681,7 @@ static int ets_qdisc_change(struct Qdisc
+ 	for (i = q->nbands; i < oldbands; i++) {
+ 		qdisc_put(q->classes[i].qdisc);
+ 		q->classes[i].qdisc = NULL;
+-		q->classes[i].quantum = 0;
++		WRITE_ONCE(q->classes[i].quantum, 0);
+ 		q->classes[i].deficit = 0;
+ 		gnet_stats_basic_sync_init(&q->classes[i].bstats);
+ 		memset(&q->classes[i].qstats, 0, sizeof(q->classes[i].qstats));
+@@ -738,6 +738,7 @@ static int ets_qdisc_dump(struct Qdisc *
+ 	struct ets_sched *q = qdisc_priv(sch);
+ 	struct nlattr *opts;
+ 	struct nlattr *nest;
++	u8 nbands, nstrict;
+ 	int band;
+ 	int prio;
+ 	int err;
+@@ -750,21 +751,22 @@ static int ets_qdisc_dump(struct Qdisc *
+ 	if (!opts)
+ 		goto nla_err;
+ 
+-	if (nla_put_u8(skb, TCA_ETS_NBANDS, q->nbands))
++	nbands = READ_ONCE(q->nbands);
++	if (nla_put_u8(skb, TCA_ETS_NBANDS, nbands))
+ 		goto nla_err;
+ 
+-	if (q->nstrict &&
+-	    nla_put_u8(skb, TCA_ETS_NSTRICT, q->nstrict))
++	nstrict = READ_ONCE(q->nstrict);
++	if (nstrict && nla_put_u8(skb, TCA_ETS_NSTRICT, nstrict))
+ 		goto nla_err;
+ 
+-	if (q->nbands > q->nstrict) {
++	if (nbands > nstrict) {
+ 		nest = nla_nest_start(skb, TCA_ETS_QUANTA);
+ 		if (!nest)
+ 			goto nla_err;
+ 
+-		for (band = q->nstrict; band < q->nbands; band++) {
++		for (band = nstrict; band < nbands; band++) {
+ 			if (nla_put_u32(skb, TCA_ETS_QUANTA_BAND,
+-					q->classes[band].quantum))
++					READ_ONCE(q->classes[band].quantum)))
+ 				goto nla_err;
+ 		}
+ 
+@@ -776,7 +778,8 @@ static int ets_qdisc_dump(struct Qdisc *
+ 		goto nla_err;
+ 
+ 	for (prio = 0; prio <= TC_PRIO_MAX; prio++) {
+-		if (nla_put_u8(skb, TCA_ETS_PRIOMAP_BAND, q->prio2band[prio]))
++		if (nla_put_u8(skb, TCA_ETS_PRIOMAP_BAND,
++			       READ_ONCE(q->prio2band[prio])))
+ 			goto nla_err;
+ 	}
+ 
 
 
 
