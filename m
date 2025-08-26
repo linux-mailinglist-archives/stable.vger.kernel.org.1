@@ -1,55 +1,55 @@
-Return-Path: <stable+bounces-173819-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-173860-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 318E2B35FEB
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 14:55:27 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7E85BB36021
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 14:57:31 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id C1E4F46447A
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 12:53:37 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 8816A3AEE9F
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 12:55:11 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9D73C1EEA49;
-	Tue, 26 Aug 2025 12:52:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2CBC121D3E8;
+	Tue, 26 Aug 2025 12:54:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Lom92OIc"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="CAf87ilY"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 585991EB5D6;
-	Tue, 26 Aug 2025 12:52:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D4E0D1F55FA;
+	Tue, 26 Aug 2025 12:54:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756212749; cv=none; b=AhOe7ZK7OsqDT/sCVuRWoTj9Em/YTOPVUjQDCX6z38gQhvBuLVKhLi5s5tUt2RfvlVImPJ4swXc5g0YnPfCkHEHAH4JCknGUvm4Y+Djw2/BOMUqo+ALPUTSCU47bR8tgsRa238BzZX2F/7HW4gxp6VBQmRgEiHzNkbmDL0K/Zak=
+	t=1756212859; cv=none; b=exBzGbmO70Bd0Pxpp2ptaaap6AYb16rUSIx1/Yxkv4/lGqN/1VAdSrxQQf3kIlpJ9I/h8F61bDR5kKXyzNayKCsB89FR1IBhN8q0XP+rFmWFEVLPJVOAYgDHynlDygX5uAz5XdXbqsQEX6OBY4PwxR9qEirLWqjaGSKW5LGZMps=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756212749; c=relaxed/simple;
-	bh=4KP9LS46yY6UXQpt9++Hv2osUhUXbNIl1DDWyOdrmAE=;
+	s=arc-20240116; t=1756212859; c=relaxed/simple;
+	bh=V6Mcp0G7TiMnJLvE7XxdFt+sI5bmoQQRBdtEcepHM04=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=nvqBLbU93CoVyX8fSPwcet3MipKk+jG30fa9KWl1I6AfsKXcNmbx2E06npn6L3Hasn89MIzb/7vlKFzUo1feNxLraRYLeBwEeAgjLRH8xwPh/8clyDTNVEhf+RAXCT86bo3dAUo1dnQIYx9tsg5av4S1VbUPXPuFX96jtBvNPvQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Lom92OIc; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9DDF7C4CEF1;
-	Tue, 26 Aug 2025 12:52:28 +0000 (UTC)
+	 MIME-Version; b=Tb1GHYoV+iJY5upLfhDX/8mnKnpUnDA1lWg/TbXmAA3t16UyMaDhZ3wGozgiRKkDK2lVyv+id6ZpNbMrg4LjuiZRVlFA0fN+h4QnimzGWjxChhxvCT0bpslTOSsZyMMIWp4eX8II98GP46D6MN0UOydqReqLgDn4KOStvHVLeR0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=CAf87ilY; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id EB468C4CEF1;
+	Tue, 26 Aug 2025 12:54:16 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1756212749;
-	bh=4KP9LS46yY6UXQpt9++Hv2osUhUXbNIl1DDWyOdrmAE=;
+	s=korg; t=1756212857;
+	bh=V6Mcp0G7TiMnJLvE7XxdFt+sI5bmoQQRBdtEcepHM04=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Lom92OIcSvZVIZbfvKt+vrFZY+rGtem4l8jBG1a9PiC556K4LNm/dp6QQBL4375Dh
-	 egtHAqyFdnb/xOfLIT9KnZsbU1xayUqHdDgx8MFHci4+crnEo0pgv7M96LeS2eRqt5
-	 BfU3n+nHYepoFnacXWYq1hXzcKEHD1IZANdNc9Hs=
+	b=CAf87ilYzuJcezbzpWgqz6XNRdjRMHQfhQw03MfA8l5bIe/iC15R6BXU35BhR32Mh
+	 3xzAT27/Xu7O/ld+UQ8nzEdfC1EBiQTm12yYnz31D8sXMxpXeJAmnuulG+fHDJAm8a
+	 Ru+De4YpGuFXxYY45tCytSpC9CK1d0yP5HJ382Lk=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Cynthia Huang <cynthia@andestech.com>,
-	Ben Zong-You Xie <ben717@andestech.com>,
-	Thomas Gleixner <tglx@linutronix.de>,
-	Muhammad Usama Anjum <usama.anjum@collabora.com>,
+	Benson Leung <bleung@chromium.org>,
+	Jameson Thies <jthies@google.com>,
+	Heikki Krogerus <heikki.krogerus@linux.intel.com>,
+	Sebastian Reichel <sebastian.reichel@collabora.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 086/587] selftests/futex: Define SYS_futex on 32-bit architectures with 64-bit time_t
-Date: Tue, 26 Aug 2025 13:03:55 +0200
-Message-ID: <20250826110955.120994210@linuxfoundation.org>
+Subject: [PATCH 6.6 087/587] usb: typec: ucsi: psy: Set current max to 100mA for BC 1.2 and Default
+Date: Tue, 26 Aug 2025 13:03:56 +0200
+Message-ID: <20250826110955.146055445@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
 In-Reply-To: <20250826110952.942403671@linuxfoundation.org>
 References: <20250826110952.942403671@linuxfoundation.org>
@@ -68,49 +68,65 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Cynthia Huang <cynthia@andestech.com>
+From: Benson Leung <bleung@chromium.org>
 
-[ Upstream commit 04850819c65c8242072818655d4341e70ae998b5 ]
+[ Upstream commit af833e7f7db3cf4c82f063668e1b52297a30ec18 ]
 
-The kernel does not provide sys_futex() on 32-bit architectures that do not
-support 32-bit time representations, such as riscv32.
+ucsi_psy_get_current_max would return 0mA as the maximum current if
+UCSI detected a BC or a Default USB Power sporce.
 
-As a result, glibc cannot define SYS_futex, causing compilation failures in
-tests that rely on this syscall. Define SYS_futex as SYS_futex_time64 in
-such cases to ensure successful compilation and compatibility.
+The comment in this function is true that we can't tell the difference
+between DCP/CDP or SDP chargers, but we can guarantee that at least 1-unit
+of USB 1.1/2.0 power is available, which is 100mA, which is a better
+fallback value than 0, which causes some userspaces, including the ChromeOS
+power manager, to regard this as a power source that is not providing
+any power.
 
-Signed-off-by: Cynthia Huang <cynthia@andestech.com>
-Signed-off-by: Ben Zong-You Xie <ben717@andestech.com>
-Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
-Reviewed-by: Muhammad Usama Anjum <usama.anjum@collabora.com>
-Link: https://lore.kernel.org/all/20250710103630.3156130-1-ben717@andestech.com
+In reality, 100mA is guaranteed from all sources in these classes.
+
+Signed-off-by: Benson Leung <bleung@chromium.org>
+Reviewed-by: Jameson Thies <jthies@google.com>
+Reviewed-by: Heikki Krogerus <heikki.krogerus@linux.intel.com>
+Reviewed-by: Sebastian Reichel <sebastian.reichel@collabora.com>
+Link: https://lore.kernel.org/r/20250717200805.3710473-1-bleung@chromium.org
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- tools/testing/selftests/futex/include/futextest.h | 11 +++++++++++
- 1 file changed, 11 insertions(+)
+ drivers/usb/typec/ucsi/psy.c  | 2 +-
+ drivers/usb/typec/ucsi/ucsi.h | 7 ++++---
+ 2 files changed, 5 insertions(+), 4 deletions(-)
 
-diff --git a/tools/testing/selftests/futex/include/futextest.h b/tools/testing/selftests/futex/include/futextest.h
-index ddbcfc9b7bac..7a5fd1d5355e 100644
---- a/tools/testing/selftests/futex/include/futextest.h
-+++ b/tools/testing/selftests/futex/include/futextest.h
-@@ -47,6 +47,17 @@ typedef volatile u_int32_t futex_t;
- 					 FUTEX_PRIVATE_FLAG)
- #endif
+diff --git a/drivers/usb/typec/ucsi/psy.c b/drivers/usb/typec/ucsi/psy.c
+index b35c6e07911e..9b0157063df0 100644
+--- a/drivers/usb/typec/ucsi/psy.c
++++ b/drivers/usb/typec/ucsi/psy.c
+@@ -163,7 +163,7 @@ static int ucsi_psy_get_current_max(struct ucsi_connector *con,
+ 	case UCSI_CONSTAT_PWR_OPMODE_DEFAULT:
+ 	/* UCSI can't tell b/w DCP/CDP or USB2/3x1/3x2 SDP chargers */
+ 	default:
+-		val->intval = 0;
++		val->intval = UCSI_TYPEC_DEFAULT_CURRENT * 1000;
+ 		break;
+ 	}
+ 	return 0;
+diff --git a/drivers/usb/typec/ucsi/ucsi.h b/drivers/usb/typec/ucsi/ucsi.h
+index 7706f4e95125..51e745117dcb 100644
+--- a/drivers/usb/typec/ucsi/ucsi.h
++++ b/drivers/usb/typec/ucsi/ucsi.h
+@@ -340,9 +340,10 @@ struct ucsi {
+ #define UCSI_MAX_SVID		5
+ #define UCSI_MAX_ALTMODES	(UCSI_MAX_SVID * 6)
  
-+/*
-+ * SYS_futex is expected from system C library, in glibc some 32-bit
-+ * architectures (e.g. RV32) are using 64-bit time_t, therefore it doesn't have
-+ * SYS_futex defined but just SYS_futex_time64. Define SYS_futex as
-+ * SYS_futex_time64 in this situation to ensure the compilation and the
-+ * compatibility.
-+ */
-+#if !defined(SYS_futex) && defined(SYS_futex_time64)
-+#define SYS_futex SYS_futex_time64
-+#endif
-+
- /**
-  * futex() - SYS_futex syscall wrapper
-  * @uaddr:	address of first futex
+-#define UCSI_TYPEC_VSAFE5V	5000
+-#define UCSI_TYPEC_1_5_CURRENT	1500
+-#define UCSI_TYPEC_3_0_CURRENT	3000
++#define UCSI_TYPEC_VSAFE5V		5000
++#define UCSI_TYPEC_DEFAULT_CURRENT	 100
++#define UCSI_TYPEC_1_5_CURRENT		1500
++#define UCSI_TYPEC_3_0_CURRENT		3000
+ 
+ struct ucsi_connector {
+ 	int num;
 -- 
 2.39.5
 
