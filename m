@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-176222-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-174610-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id E54C1B36C0C
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 16:52:09 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8BA29B36342
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 15:28:16 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id BB6B31C408F7
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 14:41:35 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id BAE1E7BD219
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 13:26:40 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 756AF352FC1;
-	Tue, 26 Aug 2025 14:38:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1C8B9252900;
+	Tue, 26 Aug 2025 13:27:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="M00aZfaW"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="UnA/2al0"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 322082676E9;
-	Tue, 26 Aug 2025 14:38:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CCAAC22DFA7;
+	Tue, 26 Aug 2025 13:27:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756219097; cv=none; b=BrgDusELlXdo+wZfwGoCrttNG+/KMVuLqsR6oYSJU4LR+RopYG2WxTQmm+Tdf4lxmew1fWoY9Kqw3bxvESs8kAC7uByuRySZ9Por3ZbKWcp5swTfBwwcZaqMmYP74iJembls8wItAR40h7+aFJoxgisRnGJz1TkAn5WnhIYoWJY=
+	t=1756214848; cv=none; b=FTttKNaVIpIJsOyOYi3SIW1zkguj5vkwmvoVlTUGg0Z59AIkxX1toaJ/+fiCPKRpv4Xz06N4YNiF5B+vMvbLbXyaCMNs1R3ROHP23q2yRkf4UDucrWQGXlHyHTmYKaYSnMDI5OzXUsB7psgbmoC8NCurQqKnqLmj1pWkn067ob8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756219097; c=relaxed/simple;
-	bh=gMkgl1pz0MaWPGp5iT1Z1e/4tr7iCls0Bbt05+MrUdc=;
+	s=arc-20240116; t=1756214848; c=relaxed/simple;
+	bh=JSHTg8gjy0Qkl2Z4s7FYwVIGXaL7r7UcXlvx7wFb5AA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=W1p6Y9urQt6pFXzRhH312opEKpTfPeH4fewzTSMzMfrsMoYb8muOKNMqHsMiBLXm250hplUDrdl/LGcxte4dVlbikCB2TZCnPiOmk/A7z/nW5hQwBjrx2GP0euhaqPkgTuS43E2ZmAYHiBfZwSd14c3tAn8lC7VFGTmtXuO8z4E=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=M00aZfaW; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B6AC3C4CEF1;
-	Tue, 26 Aug 2025 14:38:16 +0000 (UTC)
+	 MIME-Version; b=iPhtHgnic5VkBi/B3yWiQueOPNXtbXh4XCuhpea/ZblXGUT1SKfsF0yJ4RWaaMQG1y8OUrdp2QDT6o4XGeFRVRahc6SsxPCjsiHlMcgfHytlIl1sI51CmqazzG70EbSgislFbInhmFZap0UarcrtRZCpoVk0whRrGPVjG3HAi74=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=UnA/2al0; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 867F5C4CEF1;
+	Tue, 26 Aug 2025 13:27:28 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1756219097;
-	bh=gMkgl1pz0MaWPGp5iT1Z1e/4tr7iCls0Bbt05+MrUdc=;
+	s=korg; t=1756214848;
+	bh=JSHTg8gjy0Qkl2Z4s7FYwVIGXaL7r7UcXlvx7wFb5AA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=M00aZfaW7SXAIcq6nlo/BVdAq47SJIVKAa4TJhtX32GesZamEOhLessKF4dcuCvKU
-	 EPBmseHBzdma5qzPO0aM39pglZzRdJwnhztLX4wU7Y7kymNKWx71x5pDggu2znbXCi
-	 ZneLF0yGOlL3Gps6SctnWhVs29UdhvA4MJMFDj8Y=
+	b=UnA/2al0+bsZezdc/65Tsm/TTH8KtYPehBBnjQEkIQWDVJGGvf38xhMkiKgQe5U3O
+	 e3c/VxR7H7uLGWXb8/eJuD2T2zQVH0GFNHLTv1b0TXRM4q/Q4GghWjyMDKt2dqJNPX
+	 IVGoNRJvdcBYrV+4lyIidYRFcw3gbpteUH2Ys3Ig=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Rand Deeb <rand.sec96@gmail.com>,
-	Miri Korenblit <miriam.rachel.korenblit@intel.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.4 220/403] wifi: iwlwifi: dvm: fix potential overflow in rs_fill_link_cmd()
+	kernel test robot <lkp@intel.com>,
+	David Lechner <dlechner@baylibre.com>,
+	Stable@vger.kernel.org,
+	Jonathan Cameron <Jonathan.Cameron@huawei.com>
+Subject: [PATCH 6.1 293/482] iio: imu: bno055: fix OOB access of hw_xlate array
 Date: Tue, 26 Aug 2025 13:09:06 +0200
-Message-ID: <20250826110912.910165178@linuxfoundation.org>
+Message-ID: <20250826110938.031458484@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250826110905.607690791@linuxfoundation.org>
-References: <20250826110905.607690791@linuxfoundation.org>
+In-Reply-To: <20250826110930.769259449@linuxfoundation.org>
+References: <20250826110930.769259449@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,48 +63,90 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.4-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Rand Deeb <rand.sec96@gmail.com>
+From: David Lechner <dlechner@baylibre.com>
 
-[ Upstream commit e3ad987e9dc7d1e12e3f2f1e623f0e174cd0ca78 ]
+commit 399b883ec828e436f1a721bf8551b4da8727e65b upstream.
 
-The 'index' variable in the rs_fill_link_cmd() function can reach
-LINK_QUAL_MAX_RETRY_NUM during the execution of the inner loop. This
-variable is used as an index for the lq_cmd->rs_table array, which has a
-size of LINK_QUAL_MAX_RETRY_NUM, without proper validation.
+Fix a potential out-of-bounds array access of the hw_xlate array in
+bno055.c.
 
-Modify the condition of the inner loop to ensure that the 'index' variable
-does not exceed LINK_QUAL_MAX_RETRY_NUM - 1, thereby preventing any
-potential overflow issues.
+In bno055_get_regmask(), hw_xlate was iterated over the length of the
+vals array instead of the length of the hw_xlate array. In the case of
+bno055_gyr_scale, the vals array is larger than the hw_xlate array,
+so this could result in an out-of-bounds access. In practice, this
+shouldn't happen though because a match should always be found which
+breaks out of the for loop before it iterates beyond the end of the
+hw_xlate array.
 
-Found by Linux Verification Center (linuxtesting.org) with SVACE.
+By adding a new hw_xlate_len field to the bno055_sysfs_attr, we can be
+sure we are iterating over the correct length.
 
-Signed-off-by: Rand Deeb <rand.sec96@gmail.com>
-Link: https://patch.msgid.link/20240313101755.269209-1-rand.sec96@gmail.com
-Signed-off-by: Miri Korenblit <miriam.rachel.korenblit@intel.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Reported-by: kernel test robot <lkp@intel.com>
+Closes: https://lore.kernel.org/oe-kbuild-all/202507100510.rGt1YOOx-lkp@intel.com/
+Fixes: 4aefe1c2bd0c ("iio: imu: add Bosch Sensortec BNO055 core driver")
+Signed-off-by: David Lechner <dlechner@baylibre.com>
+Link: https://patch.msgid.link/20250709-iio-const-data-19-v2-1-fb3fc9191251@baylibre.com
+Cc: <Stable@vger.kernel.org>
+Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/net/wireless/intel/iwlwifi/dvm/rs.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/iio/imu/bno055/bno055.c | 11 ++++++++---
+ 1 file changed, 8 insertions(+), 3 deletions(-)
 
-diff --git a/drivers/net/wireless/intel/iwlwifi/dvm/rs.c b/drivers/net/wireless/intel/iwlwifi/dvm/rs.c
-index e68a13c33c45..19defdb43126 100644
---- a/drivers/net/wireless/intel/iwlwifi/dvm/rs.c
-+++ b/drivers/net/wireless/intel/iwlwifi/dvm/rs.c
-@@ -2935,7 +2935,7 @@ static void rs_fill_link_cmd(struct iwl_priv *priv,
- 		/* Repeat initial/next rate.
- 		 * For legacy IWL_NUMBER_TRY == 1, this loop will not execute.
- 		 * For HT IWL_HT_NUMBER_TRY == 3, this executes twice. */
--		while (repeat_rate > 0 && (index < LINK_QUAL_MAX_RETRY_NUM)) {
-+		while (repeat_rate > 0 && index < (LINK_QUAL_MAX_RETRY_NUM - 1)) {
- 			if (is_legacy(tbl_type.lq_type)) {
- 				if (ant_toggle_cnt < NUM_TRY_BEFORE_ANT_TOGGLE)
- 					ant_toggle_cnt++;
+diff --git a/drivers/iio/imu/bno055/bno055.c b/drivers/iio/imu/bno055/bno055.c
+index 3f4c18dc3ee9..0eb5e1334e55 100644
+--- a/drivers/iio/imu/bno055/bno055.c
++++ b/drivers/iio/imu/bno055/bno055.c
+@@ -118,6 +118,7 @@ struct bno055_sysfs_attr {
+ 	int len;
+ 	int *fusion_vals;
+ 	int *hw_xlate;
++	int hw_xlate_len;
+ 	int type;
+ };
+ 
+@@ -170,20 +171,24 @@ static int bno055_gyr_scale_vals[] = {
+ 	1000, 1877467, 2000, 1877467,
+ };
+ 
++static int bno055_gyr_scale_hw_xlate[] = {0, 1, 2, 3, 4};
+ static struct bno055_sysfs_attr bno055_gyr_scale = {
+ 	.vals = bno055_gyr_scale_vals,
+ 	.len = ARRAY_SIZE(bno055_gyr_scale_vals),
+ 	.fusion_vals = (int[]){1, 900},
+-	.hw_xlate = (int[]){4, 3, 2, 1, 0},
++	.hw_xlate = bno055_gyr_scale_hw_xlate,
++	.hw_xlate_len = ARRAY_SIZE(bno055_gyr_scale_hw_xlate),
+ 	.type = IIO_VAL_FRACTIONAL,
+ };
+ 
+ static int bno055_gyr_lpf_vals[] = {12, 23, 32, 47, 64, 116, 230, 523};
++static int bno055_gyr_lpf_hw_xlate[] = {5, 4, 7, 3, 6, 2, 1, 0};
+ static struct bno055_sysfs_attr bno055_gyr_lpf = {
+ 	.vals = bno055_gyr_lpf_vals,
+ 	.len = ARRAY_SIZE(bno055_gyr_lpf_vals),
+ 	.fusion_vals = (int[]){32},
+-	.hw_xlate = (int[]){5, 4, 7, 3, 6, 2, 1, 0},
++	.hw_xlate = bno055_gyr_lpf_hw_xlate,
++	.hw_xlate_len = ARRAY_SIZE(bno055_gyr_lpf_hw_xlate),
+ 	.type = IIO_VAL_INT,
+ };
+ 
+@@ -561,7 +566,7 @@ static int bno055_get_regmask(struct bno055_priv *priv, int *val, int *val2,
+ 
+ 	idx = (hwval & mask) >> shift;
+ 	if (attr->hw_xlate)
+-		for (i = 0; i < attr->len; i++)
++		for (i = 0; i < attr->hw_xlate_len; i++)
+ 			if (attr->hw_xlate[i] == idx) {
+ 				idx = i;
+ 				break;
 -- 
-2.39.5
+2.50.1
 
 
 
