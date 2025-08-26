@@ -1,56 +1,55 @@
-Return-Path: <stable+bounces-174497-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-175665-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id EA52BB3636F
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 15:29:55 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 59483B36938
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 16:24:24 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id D02321884894
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 13:24:29 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id A74BD2A81A5
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 14:16:23 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 740A730146D;
-	Tue, 26 Aug 2025 13:22:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1018C35336E;
+	Tue, 26 Aug 2025 14:14:06 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="KHVZ9ou+"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="l6JLYmRd"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 322C824169D;
-	Tue, 26 Aug 2025 13:22:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C2B9F34F490;
+	Tue, 26 Aug 2025 14:14:05 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756214549; cv=none; b=Szalb4gUz7eAWfhe6RGjKG/ZVwm03oH+NDtt+9JtNogh3a5fZEu0qJ/mjj4l6LrCusIli9ZeayLPYspjefk9MH7TIiArRkx1oA+LYVgp3inu0tKTC9q07MuN2pzYoIakRUBXd+ns2fOTE5J16978Jyrw58bixofON6sacrepggM=
+	t=1756217645; cv=none; b=EgQkfZJZO+kAy+VmeVKTHpzKCsg7IDwIyawSjQLwmv8x1rygNk+Go/k6PmFXFexKbXDNxKJp1ga+LsYlFBz63g1iP7m1i61PONB/2FEHX+mh6J0cHx7BZInlpP+OeWBE1Ydy0yQ+uDPakkTGjLw/WK+s+Dg0Sx/eud05pEv3Nxg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756214549; c=relaxed/simple;
-	bh=aaAMW922A1rj+pR4DJCtkSKJcMPT0y8SQiEMZILsx3o=;
+	s=arc-20240116; t=1756217645; c=relaxed/simple;
+	bh=lsFx3SB3CmxW9iuvx9kAJu/QcU7twZyQKb4tdWtbZOU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=qxKzMWgN8A/ddjyj+a5oFRlEa3pAxdv+BWyjNsdk+239AUMu55pPQIwuu9RDj8vnxddjixr2GyR7El1/cw63b6xiITf/yiNFaNPK23tsGh91+rm4XkJhYR52KXzroQs2WAoWk7Obq8UPIlzTl3Vb5TfWY+IHupP5O7VUgZH7PY4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=KHVZ9ou+; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5EC44C4CEF1;
-	Tue, 26 Aug 2025 13:22:28 +0000 (UTC)
+	 MIME-Version; b=TAwHIfUYKL5uRK2yIA/Mr2sDFowJlP0KhAX6XjOSW4owFQAlOyAUToU9J74l9G/y4hjZ5aUDjlKGJ/eRWroyvmADqRIVv6O/ETdglAZxoEmW5KrMObjV6YaByBIrjwaCk181Vf2OcL/f8VohoNJcv8OaH2bo1g+3E6i3W7O3rGA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=l6JLYmRd; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 54049C4CEF1;
+	Tue, 26 Aug 2025 14:14:05 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1756214548;
-	bh=aaAMW922A1rj+pR4DJCtkSKJcMPT0y8SQiEMZILsx3o=;
+	s=korg; t=1756217645;
+	bh=lsFx3SB3CmxW9iuvx9kAJu/QcU7twZyQKb4tdWtbZOU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=KHVZ9ou+BbTerwQXEe0wsfsE+HG21Xf203jQiQ0VaFc6JPSVTFJ5aDm+H+K8Kv9N0
-	 zrZ5QPcLIYjWvcEeWCDXkp0q4gTm5A2Uad40N2r8xrJoz7bUvgDrn1yHaF442+R598
-	 TNDDqqbE+Z1Q9kyd9FpkRNHcDruSHAmo91B8Q3CE=
+	b=l6JLYmRdXRNgY2XUlVwoJ3bA6EQD/c+SJlcMpN5JDlWm8MjAWox/M3NI71f/yBrGZ
+	 8dT5BfpEfznecatThNAGNGxoslV076G8Sw/s6matr+uTiMxTewXP0TEQHRNwuZIsGp
+	 y1PNv/JbPEKOqGN2QBX1J99/qbeapEe7d/99dvEQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	syzbot+544248a761451c0df72f@syzkaller.appspotmail.com,
-	Theodore Tso <tytso@mit.edu>,
+	Su Hui <suhui@nfschina.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 178/482] ext4: do not BUG when INLINE_DATA_FL lacks system.data xattr
+Subject: [PATCH 5.10 221/523] usb: xhci: print xhci->xhc_state when queue_command failed
 Date: Tue, 26 Aug 2025 13:07:11 +0200
-Message-ID: <20250826110935.204973064@linuxfoundation.org>
+Message-ID: <20250826110929.910940399@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250826110930.769259449@linuxfoundation.org>
-References: <20250826110930.769259449@linuxfoundation.org>
+In-Reply-To: <20250826110924.562212281@linuxfoundation.org>
+References: <20250826110924.562212281@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,75 +61,44 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Theodore Ts'o <tytso@mit.edu>
+From: Su Hui <suhui@nfschina.com>
 
-[ Upstream commit 099b847ccc6c1ad2f805d13cfbcc83f5b6d4bc42 ]
+[ Upstream commit 7919407eca2ef562fa6c98c41cfdf6f6cdd69d92 ]
 
-A syzbot fuzzed image triggered a BUG_ON in ext4_update_inline_data()
-when an inode had the INLINE_DATA_FL flag set but was missing the
-system.data extended attribute.
+When encounters some errors like these:
+xhci_hcd 0000:4a:00.2: xHCI dying or halted, can't queue_command
+xhci_hcd 0000:4a:00.2: FIXME: allocate a command ring segment
+usb usb5-port6: couldn't allocate usb_device
 
-Since this can happen due to a maiciouly fuzzed file system, we
-shouldn't BUG, but rather, report it as a corrupted file system.
+It's hard to know whether xhc_state is dying or halted. So it's better
+to print xhc_state's value which can help locate the resaon of the bug.
 
-Add similar replacements of BUG_ON with EXT4_ERROR_INODE() ii
-ext4_create_inline_data() and ext4_inline_data_truncate().
-
-Reported-by: syzbot+544248a761451c0df72f@syzkaller.appspotmail.com
-Signed-off-by: Theodore Ts'o <tytso@mit.edu>
+Signed-off-by: Su Hui <suhui@nfschina.com>
+Link: https://lore.kernel.org/r/20250725060117.1773770-1-suhui@nfschina.com
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/ext4/inline.c | 19 ++++++++++++++++---
- 1 file changed, 16 insertions(+), 3 deletions(-)
+ drivers/usb/host/xhci-ring.c | 3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
-diff --git a/fs/ext4/inline.c b/fs/ext4/inline.c
-index 312be3d7cfb3..af2d6e92cb7f 100644
---- a/fs/ext4/inline.c
-+++ b/fs/ext4/inline.c
-@@ -299,7 +299,11 @@ static int ext4_create_inline_data(handle_t *handle,
- 	if (error)
- 		goto out;
+diff --git a/drivers/usb/host/xhci-ring.c b/drivers/usb/host/xhci-ring.c
+index 954cd962e113..c026e7cc0af1 100644
+--- a/drivers/usb/host/xhci-ring.c
++++ b/drivers/usb/host/xhci-ring.c
+@@ -4183,7 +4183,8 @@ static int queue_command(struct xhci_hcd *xhci, struct xhci_command *cmd,
  
--	BUG_ON(!is.s.not_found);
-+	if (!is.s.not_found) {
-+		EXT4_ERROR_INODE(inode, "unexpected inline data xattr");
-+		error = -EFSCORRUPTED;
-+		goto out;
-+	}
+ 	if ((xhci->xhc_state & XHCI_STATE_DYING) ||
+ 		(xhci->xhc_state & XHCI_STATE_HALTED)) {
+-		xhci_dbg(xhci, "xHCI dying or halted, can't queue_command\n");
++		xhci_dbg(xhci, "xHCI dying or halted, can't queue_command. state: 0x%x\n",
++			 xhci->xhc_state);
+ 		return -ESHUTDOWN;
+ 	}
  
- 	error = ext4_xattr_ibody_set(handle, inode, &i, &is);
- 	if (error) {
-@@ -350,7 +354,11 @@ static int ext4_update_inline_data(handle_t *handle, struct inode *inode,
- 	if (error)
- 		goto out;
- 
--	BUG_ON(is.s.not_found);
-+	if (is.s.not_found) {
-+		EXT4_ERROR_INODE(inode, "missing inline data xattr");
-+		error = -EFSCORRUPTED;
-+		goto out;
-+	}
- 
- 	len -= EXT4_MIN_INLINE_DATA_SIZE;
- 	value = kzalloc(len, GFP_NOFS);
-@@ -2002,7 +2010,12 @@ int ext4_inline_data_truncate(struct inode *inode, int *has_inline)
- 			if ((err = ext4_xattr_ibody_find(inode, &i, &is)) != 0)
- 				goto out_error;
- 
--			BUG_ON(is.s.not_found);
-+			if (is.s.not_found) {
-+				EXT4_ERROR_INODE(inode,
-+						 "missing inline data xattr");
-+				err = -EFSCORRUPTED;
-+				goto out_error;
-+			}
- 
- 			value_len = le32_to_cpu(is.s.here->e_value_size);
- 			value = kmalloc(value_len, GFP_NOFS);
 -- 
 2.39.5
 
