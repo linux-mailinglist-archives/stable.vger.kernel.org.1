@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-174934-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-173798-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1655AB36566
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 15:47:53 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0B7A5B35FD0
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 14:54:12 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 3CED11C21FE5
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 13:42:07 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 72B264639BF
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 12:52:39 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C83D62367B3;
-	Tue, 26 Aug 2025 13:41:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 82C64188000;
+	Tue, 26 Aug 2025 12:51:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="brR65uXe"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="PvP5bfWa"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 84D722139C9;
-	Tue, 26 Aug 2025 13:41:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 40CA438DD8;
+	Tue, 26 Aug 2025 12:51:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756215702; cv=none; b=PQIiwjlhRF0A4gcBK8+E8+nE+WR5jm6QD62YbV3i45NayfRSE5Q8kJzfkN+C1G2l0m5XGGiamc1Ell+AcTbgTQNBQP5uR7x3c+6m0z8vdHf2qt99ZAOxKrBS6vqUJRLQRtBkigwxrPrsR/7wCVtlUfHI0N4iwtZEwebONlJDrLY=
+	t=1756212696; cv=none; b=MIkF28/PL4wq/JZnDLsIPyN8NNur23ytrOcJvDwVI0G8r7tRkRUhtElE4FI3o6CPlr0WcCIbZVxIyDykGJmzIXHsnJ5QvAWy/wbuXDYFUrFsPes7JPQwiHBHRrmpcxx0c7MEGS350vhBETgUcFtDzlNehNGGw7xvlGPbJORTbLU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756215702; c=relaxed/simple;
-	bh=DMI8fGjyp0P/NrFE2l7MhN7ev9YWtJKM3N+zmikD5NI=;
+	s=arc-20240116; t=1756212696; c=relaxed/simple;
+	bh=A1juVJRsVfOilUgpx7M6rxSTVXVmEnyxoikVGiIn4tI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=k/g6NKLdTRVyIRKd91VD9f4bcTI0F8nomBDk48PIMfQ0VXQcby6COawT3MfODs6nvEwQpxDmy+P66PyL+wH/QrqHaAFHyISPhoQU4bC3XYiFqs8mDln2cNgahfgFd1M7U/o0I+e9oaVsq6S0OkaeDo1YzueEw93CTQZrAClwwXU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=brR65uXe; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 09488C113CF;
-	Tue, 26 Aug 2025 13:41:41 +0000 (UTC)
+	 MIME-Version; b=M28XPwwal3dXPdGJLSHieuVfIfONCQybTNHWM9N9Ef2DA+z9AEmZXU34t2jryeDTIiZ+/Sa4PaXKMjO0X8TvzjQ8F+S7batDkB9kV9xt7jN8YUZy9ZrQSzlPR718p8zutU0rtuN4H/rPJAU0Ct2hg0yql/RyqvskU9z2UF0ddKw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=PvP5bfWa; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C8C1FC4CEF1;
+	Tue, 26 Aug 2025 12:51:35 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1756215702;
-	bh=DMI8fGjyp0P/NrFE2l7MhN7ev9YWtJKM3N+zmikD5NI=;
+	s=korg; t=1756212696;
+	bh=A1juVJRsVfOilUgpx7M6rxSTVXVmEnyxoikVGiIn4tI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=brR65uXeNG83v/te11o4QI722+VLCYUEHQ+hAAHGpQMaoaN2fq+hMF1P9TMHB4c4F
-	 QB3OgTUnQc52SeTiXLdsOp9eaF1/KpMgM8GDhCu77ngZPkOpWp3DGllk6+3xF96NzP
-	 M5zCiTuyyJhHyxBAr79eMfQ8FulIZDfx2jkrWVU4=
+	b=PvP5bfWaORfZa89GbM4vFXcNJkgoKfPFQ8RQEl75+gT6iFZM4wiT4/WWgJ2Hv8KID
+	 VmxMoGfG8/NTKKxEwoK+XAih9QFC2wZ7/tMn5q70AROs/8gOuQFS6k/TmLwrIShFMd
+	 ZnmyfaGvfaVu0hDQ5WcZprF2NuSxSBZHJvf5mPSI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Adam Ford <aford173@gmail.com>,
-	Fabio Estevam <festevam@gmail.com>,
-	Shawn Guo <shawnguo@kernel.org>,
+	NeilBrown <neil@brown.name>,
+	Namjae Jeon <linkinjeon@kernel.org>,
+	Steve French <stfrench@microsoft.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 126/644] arm64: dts: imx8mm-beacon: Fix HS400 USDHC clock speed
+Subject: [PATCH 6.6 068/587] smb/server: avoid deadlock when linking with ReplaceIfExists
 Date: Tue, 26 Aug 2025 13:03:37 +0200
-Message-ID: <20250826110949.637932484@linuxfoundation.org>
+Message-ID: <20250826110954.665029058@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250826110946.507083938@linuxfoundation.org>
-References: <20250826110946.507083938@linuxfoundation.org>
+In-Reply-To: <20250826110952.942403671@linuxfoundation.org>
+References: <20250826110952.942403671@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,43 +63,84 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Adam Ford <aford173@gmail.com>
+From: NeilBrown <neil@brown.name>
 
-[ Upstream commit f83f69097a302ed2a2775975ddcf12e6a5ac6ec3 ]
+[ Upstream commit d5fc1400a34b4ea5e8f2ce296ea12bf8c8421694 ]
 
-The reference manual for the i.MX8MM states the clock rate in
-MMC mode is 1/2 of the input clock, therefore to properly run
-at HS400 rates, the input clock must be 400MHz to operate at
-200MHz.  Currently the clock is set to 200MHz which is half the
-rate it should be, so the throughput is half of what it should be
-for HS400 operation.
+If smb2_create_link() is called with ReplaceIfExists set and the name
+does exist then a deadlock will happen.
 
-Fixes: 593816fa2f35 ("arm64: dts: imx: Add Beacon i.MX8m-Mini development kit")
-Signed-off-by: Adam Ford <aford173@gmail.com>
-Reviewed-by: Fabio Estevam <festevam@gmail.com>
-Signed-off-by: Shawn Guo <shawnguo@kernel.org>
+ksmbd_vfs_kern_path_locked() will return with success and the parent
+directory will be locked.  ksmbd_vfs_remove_file() will then remove the
+file.  ksmbd_vfs_link() will then be called while the parent is still
+locked.  It will try to lock the same parent and will deadlock.
+
+This patch moves the ksmbd_vfs_kern_path_unlock() call to *before*
+ksmbd_vfs_link() and then simplifies the code, removing the file_present
+flag variable.
+
+Signed-off-by: NeilBrown <neil@brown.name>
+Acked-by: Namjae Jeon <linkinjeon@kernel.org>
+Signed-off-by: Steve French <stfrench@microsoft.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/arm64/boot/dts/freescale/imx8mm-beacon-som.dtsi | 2 ++
- 1 file changed, 2 insertions(+)
+ fs/smb/server/smb2pdu.c | 16 ++++------------
+ 1 file changed, 4 insertions(+), 12 deletions(-)
 
-diff --git a/arch/arm64/boot/dts/freescale/imx8mm-beacon-som.dtsi b/arch/arm64/boot/dts/freescale/imx8mm-beacon-som.dtsi
-index 7ed267bf9b8f..c4b97cbb55d6 100644
---- a/arch/arm64/boot/dts/freescale/imx8mm-beacon-som.dtsi
-+++ b/arch/arm64/boot/dts/freescale/imx8mm-beacon-som.dtsi
-@@ -285,6 +285,8 @@ &usdhc3 {
- 	pinctrl-0 = <&pinctrl_usdhc3>;
- 	pinctrl-1 = <&pinctrl_usdhc3_100mhz>;
- 	pinctrl-2 = <&pinctrl_usdhc3_200mhz>;
-+	assigned-clocks = <&clk IMX8MM_CLK_USDHC3>;
-+	assigned-clock-rates = <400000000>;
- 	bus-width = <8>;
- 	non-removable;
- 	status = "okay";
+diff --git a/fs/smb/server/smb2pdu.c b/fs/smb/server/smb2pdu.c
+index d3dd3b9b4005..85e7bc3a2bd3 100644
+--- a/fs/smb/server/smb2pdu.c
++++ b/fs/smb/server/smb2pdu.c
+@@ -6011,7 +6011,6 @@ static int smb2_create_link(struct ksmbd_work *work,
+ {
+ 	char *link_name = NULL, *target_name = NULL, *pathname = NULL;
+ 	struct path path, parent_path;
+-	bool file_present = false;
+ 	int rc;
+ 
+ 	if (buf_len < (u64)sizeof(struct smb2_file_link_info) +
+@@ -6044,11 +6043,8 @@ static int smb2_create_link(struct ksmbd_work *work,
+ 	if (rc) {
+ 		if (rc != -ENOENT)
+ 			goto out;
+-	} else
+-		file_present = true;
+-
+-	if (file_info->ReplaceIfExists) {
+-		if (file_present) {
++	} else {
++		if (file_info->ReplaceIfExists) {
+ 			rc = ksmbd_vfs_remove_file(work, &path);
+ 			if (rc) {
+ 				rc = -EINVAL;
+@@ -6056,21 +6052,17 @@ static int smb2_create_link(struct ksmbd_work *work,
+ 					    link_name);
+ 				goto out;
+ 			}
+-		}
+-	} else {
+-		if (file_present) {
++		} else {
+ 			rc = -EEXIST;
+ 			ksmbd_debug(SMB, "link already exists\n");
+ 			goto out;
+ 		}
++		ksmbd_vfs_kern_path_unlock(&parent_path, &path);
+ 	}
+-
+ 	rc = ksmbd_vfs_link(work, target_name, link_name);
+ 	if (rc)
+ 		rc = -EINVAL;
+ out:
+-	if (file_present)
+-		ksmbd_vfs_kern_path_unlock(&parent_path, &path);
+ 
+ 	if (!IS_ERR(link_name))
+ 		kfree(link_name);
 -- 
 2.39.5
 
