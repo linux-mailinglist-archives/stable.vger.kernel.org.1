@@ -1,56 +1,59 @@
-Return-Path: <stable+bounces-173444-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-175161-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2BAC3B35D6A
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 13:44:45 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id CA1E6B367BD
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 16:09:48 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 3669B1BA7E6B
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 11:39:21 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id EA3B37C807B
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 13:53:40 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 42F9C34166B;
-	Tue, 26 Aug 2025 11:37:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1B58C352FF1;
+	Tue, 26 Aug 2025 13:51:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="mUwHCszH"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="R30mj0Lj"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AAE6E34165A;
-	Tue, 26 Aug 2025 11:37:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CB12C352FE8;
+	Tue, 26 Aug 2025 13:51:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756208264; cv=none; b=DL1eruQIvCuU4zG9g0FS0w1ApJpOnOaBuTOwBbPUSfIaVE+RCN9B46A2h6x9ll3reO0YpxCXeMlYbWc4TPDnlXxgduojepxkQ0BPcawMZNnqwZEJ4O0fJXDWAYXLfyaz1+AYJJb0EzBqYqw4izMBiIchkyZ9BemzRdlFtiAy38g=
+	t=1756216302; cv=none; b=jod8K7HELCnL/SDpJ6T43g085fqhuPgrLjc8f9I1WQ3uSKL1y7EnjMckVZDd3NAt5SDsGD9YXjBy1ds54JzdY2Vvzv0E4b5McYkJHxF4yUK6cWeT2xFwVdw1JsoOHsEtHFWS8bC7sEc7KIyho4fNrF0qAm1GfCGJQxuQ8SnfjdA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756208264; c=relaxed/simple;
-	bh=Cn7AnN6vQHwV2I6xJxY++nXiRzjMDCWS7gFLwHzOe1g=;
+	s=arc-20240116; t=1756216302; c=relaxed/simple;
+	bh=E4H1mRzL105X3nJqYAQ6IuHOCgXUAsScTQuzoK4Gn7o=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=DbNwh+4e6OE0z1mj7AoHuqEkg/Tx4qLfsX12FvAb6Ihm9visuZ9W9ViQb/Uh3kRTEoTPA0KukApEomvJVzN8zPXeXhbZzr6Vu0b5b76eDQmaGn+k5AcZFZQ3NNMczVlrG/1icr3Xv0LGWHOlTt1feFSw7Vkv/HoCpY4A/mYlSug=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=mUwHCszH; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 11C78C4CEF1;
-	Tue, 26 Aug 2025 11:37:43 +0000 (UTC)
+	 MIME-Version; b=KDSNQzwqhSaVIwNVbs6YoPtFZ4a7bEvbhL63dk6cKXum53P7b60t0yZ1UDiu2Chu8e3KfuZ//nH264A93WyykPIeye4H0Ui60KgMZy/1v0ZnvA0nZvXRKTKjxpc+NyS86w1mRLkJAcV36a5zizVMd69oEO3fYjm8EwznHXvYCi0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=R30mj0Lj; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5FD1DC113CF;
+	Tue, 26 Aug 2025 13:51:42 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1756208264;
-	bh=Cn7AnN6vQHwV2I6xJxY++nXiRzjMDCWS7gFLwHzOe1g=;
+	s=korg; t=1756216302;
+	bh=E4H1mRzL105X3nJqYAQ6IuHOCgXUAsScTQuzoK4Gn7o=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=mUwHCszHTF9bF5iG/xCydpZD+PTD8/cqoxoOIV35aaQyVY+c3dWRsQ9i8tYCUI0gw
-	 ZBaXiz0DxK5qffvH7CD4KmtwbVwrs1imoOp1to4OYuf14OxPYU+HJ5Y078uaudbp73
-	 dS7PfbsTEnE2f7jeAtogRvN4cnaAiSY/a8Y4IOH4=
+	b=R30mj0LjOY0u+3STc/VWDpyQ6AfwejfRKSn0YcVeJqU6FJq5PxGZlaEjRF6I9j+U9
+	 IgaiFmrOdUuwHjVBFtniUyDZ1my79Rb8xu5gj+pcBHxoKLfCSfUXBiLVYknxXp3yxt
+	 F5SVHBJb+bhJ9VHzgM4GR2FYXv853SNvRy5W1kHA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Qu Wenruo <wqu@suse.com>,
-	Kyoji Ogasawara <sawara04.o@gmail.com>,
-	David Sterba <dsterba@suse.com>
-Subject: [PATCH 6.12 037/322] btrfs: restore mount option info messages during mount
+	Nevenko Stupar <nevenko.stupar@amd.com>,
+	Ilya Bakoulin <Ilya.Bakoulin@amd.com>,
+	Ray Wu <ray.wu@amd.com>,
+	Daniel Wheeler <daniel.wheeler@amd.com>,
+	Alex Deucher <alexander.deucher@amd.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.15 361/644] drm/amd/display: Separate set_gsl from set_gsl_source_select
 Date: Tue, 26 Aug 2025 13:07:32 +0200
-Message-ID: <20250826110916.274152762@linuxfoundation.org>
+Message-ID: <20250826110955.357047016@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250826110915.169062587@linuxfoundation.org>
-References: <20250826110915.169062587@linuxfoundation.org>
+In-Reply-To: <20250826110946.507083938@linuxfoundation.org>
+References: <20250826110946.507083938@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,68 +65,54 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Kyoji Ogasawara <sawara04.o@gmail.com>
+From: Ilya Bakoulin <Ilya.Bakoulin@amd.com>
 
-commit b435ab556bea875c088485f271ef2709ca1d75f5 upstream.
+[ Upstream commit 660a467a5e7366cd6642de61f1aaeaf0d253ee68 ]
 
-After the fsconfig migration in 6.8, mount option info messages are no
-longer displayed during mount operations because btrfs_emit_options() is
-only called during remount, not during initial mount.
+[Why/How]
+Separate the checks for set_gsl and set_gsl_source_select, since
+source_select may not be implemented/necessary.
 
-Fix this by calling btrfs_emit_options() in btrfs_fill_super() after
-open_ctree() succeeds. Additionally, prevent log duplication by ensuring
-btrfs_check_options() handles validation with warn-level and err-level
-messages, while btrfs_emit_options() provides info-level messages.
-
-Fixes: eddb1a433f26 ("btrfs: add reconfigure callback for fs_context")
-CC: stable@vger.kernel.org # 6.8+
-Reviewed-by: Qu Wenruo <wqu@suse.com>
-Signed-off-by: Kyoji Ogasawara <sawara04.o@gmail.com>
-Reviewed-by: David Sterba <dsterba@suse.com>
-Signed-off-by: David Sterba <dsterba@suse.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Reviewed-by: Nevenko Stupar <nevenko.stupar@amd.com>
+Signed-off-by: Ilya Bakoulin <Ilya.Bakoulin@amd.com>
+Signed-off-by: Ray Wu <ray.wu@amd.com>
+Tested-by: Daniel Wheeler <daniel.wheeler@amd.com>
+Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/btrfs/super.c |    8 +++++---
- 1 file changed, 5 insertions(+), 3 deletions(-)
+ drivers/gpu/drm/amd/display/dc/dcn20/dcn20_hwseq.c | 9 ++++-----
+ 1 file changed, 4 insertions(+), 5 deletions(-)
 
---- a/fs/btrfs/super.c
-+++ b/fs/btrfs/super.c
-@@ -88,6 +88,9 @@ struct btrfs_fs_context {
- 	refcount_t refs;
- };
- 
-+static void btrfs_emit_options(struct btrfs_fs_info *info,
-+			       struct btrfs_fs_context *old);
-+
- enum {
- 	Opt_acl,
- 	Opt_clear_cache,
-@@ -697,12 +700,9 @@ bool btrfs_check_options(const struct bt
- 
- 	if (!test_bit(BTRFS_FS_STATE_REMOUNTING, &info->fs_state)) {
- 		if (btrfs_raw_test_opt(*mount_opt, SPACE_CACHE)) {
--			btrfs_info(info, "disk space caching is enabled");
- 			btrfs_warn(info,
- "space cache v1 is being deprecated and will be removed in a future release, please use -o space_cache=v2");
- 		}
--		if (btrfs_raw_test_opt(*mount_opt, FREE_SPACE_TREE))
--			btrfs_info(info, "using free-space-tree");
+diff --git a/drivers/gpu/drm/amd/display/dc/dcn20/dcn20_hwseq.c b/drivers/gpu/drm/amd/display/dc/dcn20/dcn20_hwseq.c
+index bf2a8f53694b..59d16c553800 100644
+--- a/drivers/gpu/drm/amd/display/dc/dcn20/dcn20_hwseq.c
++++ b/drivers/gpu/drm/amd/display/dc/dcn20/dcn20_hwseq.c
+@@ -160,14 +160,13 @@ static void dcn20_setup_gsl_group_as_lock(
  	}
  
- 	return ret;
-@@ -979,6 +979,8 @@ static int btrfs_fill_super(struct super
- 		return err;
- 	}
- 
-+	btrfs_emit_options(fs_info, NULL);
-+
- 	inode = btrfs_iget(BTRFS_FIRST_FREE_OBJECTID, fs_info->fs_root);
- 	if (IS_ERR(inode)) {
- 		err = PTR_ERR(inode);
+ 	/* at this point we want to program whether it's to enable or disable */
+-	if (pipe_ctx->stream_res.tg->funcs->set_gsl != NULL &&
+-		pipe_ctx->stream_res.tg->funcs->set_gsl_source_select != NULL) {
++	if (pipe_ctx->stream_res.tg->funcs->set_gsl != NULL) {
+ 		pipe_ctx->stream_res.tg->funcs->set_gsl(
+ 			pipe_ctx->stream_res.tg,
+ 			&gsl);
+-
+-		pipe_ctx->stream_res.tg->funcs->set_gsl_source_select(
+-			pipe_ctx->stream_res.tg, group_idx,	enable ? 4 : 0);
++		if (pipe_ctx->stream_res.tg->funcs->set_gsl_source_select != NULL)
++			pipe_ctx->stream_res.tg->funcs->set_gsl_source_select(
++				pipe_ctx->stream_res.tg, group_idx, enable ? 4 : 0);
+ 	} else
+ 		BREAK_TO_DEBUGGER();
+ }
+-- 
+2.39.5
+
 
 
 
