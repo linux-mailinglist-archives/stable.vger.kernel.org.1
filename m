@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-174178-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-176211-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 41307B361AE
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 15:11:45 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id E8BEAB36ADD
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 16:41:26 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id E54A71BA6B34
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 13:09:12 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id DEA687B5940
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 14:39:14 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4271E2C08A8;
-	Tue, 26 Aug 2025 13:08:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8E8E635FC02;
+	Tue, 26 Aug 2025 14:37:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="dNQsddBD"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="jn8+4+xs"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F1B142FDC38;
-	Tue, 26 Aug 2025 13:08:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B09DC3568E0;
+	Tue, 26 Aug 2025 14:37:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756213700; cv=none; b=J7t/xj4qatyJ1rZa6AWUgiAJ2WMTNKGzrq5k5ekloGVJUCxXSuOeohTdUpeSiTIXm09WxGP0vxwlyIgAxd9o6Y9sNnyugWDNzI5j9U/Z8V6WthEd8MBEuvGzg+JWKgEwSyoyqdYnQx+2DrmH6MdTCo8bjwUNFLRH56Q/FVXqPRk=
+	t=1756219068; cv=none; b=dtrBii6usc65KGiFzl2GAPbz2Iwle20L6Z3adSeLjvon8lHkfSWzaRug3LL/wAh3u+/kBhJwLpJFR2NqDLXGtMK6MG7rEscrNAn6ZpXvEn/heMtMjquT5DpCjfBDkUugh+d+Mv5LZIKKjZX3U9v1BhyrWBueBpkk1Hn0W5b4wqU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756213700; c=relaxed/simple;
-	bh=bCtS59WwfMaH0v1zcOo2BAPM4yM27HiiaeF4IA9JytY=;
+	s=arc-20240116; t=1756219068; c=relaxed/simple;
+	bh=TqhwU8nQGzgG6K4ipZ8Yomhp+l0fJ/8QetLzD3kpNPU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Es5E8yAIsVi6iH4mgxT35lsnLXPjYc4x32aA67z5NWwgRy4WeVBG3m8UPMZQuhnRYWM7+oWdUrChxeXrjtl90Vj1ccAz3RQratAi3PP78v/kpsOw8XV7yksMvbZo+7z/xY6GdvnrTQdmGIx3N1y9O2KbR7kHI2oHQIbl4tlxOsw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=dNQsddBD; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 34A07C113CF;
-	Tue, 26 Aug 2025 13:08:19 +0000 (UTC)
+	 MIME-Version; b=dsbrI8KcteyaAERQ+HXe9sntXnPH3Yyhl1itgEnwp4RGDO/z4rvYLeb2vM82ItwVoTyDxkrtoE4ww8foNJ6Z4Nwuv2sIv42hCyAveLPDKKWgRI88hCP5XP4An9Y9JVaKV5K9gZdzUSmW9cI7tpf5qb166buz3tWHuTiGecRvem0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=jn8+4+xs; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id CCEF9C4CEF1;
+	Tue, 26 Aug 2025 14:37:47 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1756213699;
-	bh=bCtS59WwfMaH0v1zcOo2BAPM4yM27HiiaeF4IA9JytY=;
+	s=korg; t=1756219068;
+	bh=TqhwU8nQGzgG6K4ipZ8Yomhp+l0fJ/8QetLzD3kpNPU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=dNQsddBD+DmJ/glAy7qMV2f5y1efLiSD1LmIwzePFamExbx+mG2RRZpKGwPxJ3FK9
-	 K2ltEuUeIAW7GE25YvOiaIaGM9FPFxK6hr4lOE/rIap9cAMYsYv4nIbeYUjk1bc9Yd
-	 b12frQrtaIoaHG10OBmIUAFLnVGGKg/D3F5Q50tI=
+	b=jn8+4+xsTkomExRxTEVjxcgcXhwdAzayel0o+9I/zijJfWisj0jGfzRgSiVCCzTG7
+	 /ggNDbc/8/RGRD9uQX1uKf2zhEm/xEPGdwpenD7wJMGulOoWOoc1DWDQB1CMZ33kUY
+	 DQLmwOO4dJr/MecvysS5TA28MEbl6Ue3FndSg1xU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Hans Verkuil <hverkuil@xs4all.nl>,
-	Ricardo Ribalda <ribalda@chromium.org>,
-	Bryan ODonoghue <bod@kernel.org>
-Subject: [PATCH 6.6 416/587] media: venus: venc: Clamp param smaller than 1fps and bigger than 240
-Date: Tue, 26 Aug 2025 13:09:25 +0200
-Message-ID: <20250826111003.521233244@linuxfoundation.org>
+	syzbot+630f6d40b3ccabc8e96e@syzkaller.appspotmail.com,
+	Edward Adam Davis <eadavis@qq.com>,
+	Dave Kleikamp <dave.kleikamp@oracle.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.4 240/403] jfs: Regular file corruption check
+Date: Tue, 26 Aug 2025 13:09:26 +0200
+Message-ID: <20250826110913.462403009@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250826110952.942403671@linuxfoundation.org>
-References: <20250826110952.942403671@linuxfoundation.org>
+In-Reply-To: <20250826110905.607690791@linuxfoundation.org>
+References: <20250826110905.607690791@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,50 +63,44 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+5.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Ricardo Ribalda <ribalda@chromium.org>
+From: Edward Adam Davis <eadavis@qq.com>
 
-commit 417c01b92ec278a1118a05c6ad8a796eaa0c9c52 upstream.
+[ Upstream commit 2d04df8116426b6c7b9f8b9b371250f666a2a2fb ]
 
-The driver uses "whole" fps in all its calculations (e.g. in
-load_per_instance()). Those calculation expect an fps bigger than 1, and
-not big enough to overflow.
+The reproducer builds a corrupted file on disk with a negative i_size value.
+Add a check when opening this file to avoid subsequent operation failures.
 
-Clamp the param if the user provides a value that will result in an invalid
-fps.
-
-Reported-by: Hans Verkuil <hverkuil@xs4all.nl>
-Closes: https://lore.kernel.org/linux-media/f11653a7-bc49-48cd-9cdb-1659147453e4@xs4all.nl/T/#m91cd962ac942834654f94c92206e2f85ff7d97f0
-Fixes: aaaa93eda64b ("[media] media: venus: venc: add video encoder files")
-Cc: stable@vger.kernel.org
-Signed-off-by: Ricardo Ribalda <ribalda@chromium.org>
-[bod: Change "parm" to "param"]
-Signed-off-by: Bryan O'Donoghue <bod@kernel.org>
-Signed-off-by: Hans Verkuil <hverkuil@xs4all.nl>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Reported-by: syzbot+630f6d40b3ccabc8e96e@syzkaller.appspotmail.com
+Closes: https://syzkaller.appspot.com/bug?extid=630f6d40b3ccabc8e96e
+Tested-by: syzbot+630f6d40b3ccabc8e96e@syzkaller.appspotmail.com
+Signed-off-by: Edward Adam Davis <eadavis@qq.com>
+Signed-off-by: Dave Kleikamp <dave.kleikamp@oracle.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/media/platform/qcom/venus/venc.c |    5 ++---
- 1 file changed, 2 insertions(+), 3 deletions(-)
+ fs/jfs/file.c | 3 +++
+ 1 file changed, 3 insertions(+)
 
---- a/drivers/media/platform/qcom/venus/venc.c
-+++ b/drivers/media/platform/qcom/venus/venc.c
-@@ -411,11 +411,10 @@ static int venc_s_parm(struct file *file
- 	us_per_frame = timeperframe->numerator * (u64)USEC_PER_SEC;
- 	do_div(us_per_frame, timeperframe->denominator);
+diff --git a/fs/jfs/file.c b/fs/jfs/file.c
+index 930d2701f206..44872daeca01 100644
+--- a/fs/jfs/file.c
++++ b/fs/jfs/file.c
+@@ -44,6 +44,9 @@ static int jfs_open(struct inode *inode, struct file *file)
+ {
+ 	int rc;
  
--	if (!us_per_frame)
--		return -EINVAL;
--
-+	us_per_frame = clamp(us_per_frame, 1, USEC_PER_SEC);
- 	fps = (u64)USEC_PER_SEC;
- 	do_div(fps, us_per_frame);
-+	fps = min(VENUS_MAX_FPS, fps);
++	if (S_ISREG(inode->i_mode) && inode->i_size < 0)
++		return -EIO;
++
+ 	if ((rc = dquot_file_open(inode, file)))
+ 		return rc;
  
- 	inst->timeperframe = *timeperframe;
- 	inst->fps = fps;
+-- 
+2.39.5
+
 
 
 
