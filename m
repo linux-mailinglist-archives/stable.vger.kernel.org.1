@@ -1,58 +1,58 @@
-Return-Path: <stable+bounces-173731-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-175976-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 11366B35E8E
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 13:59:19 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id A03D3B36AA5
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 16:39:17 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id A710A1BC41B3
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 11:50:49 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 744F81C47ACD
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 14:30:26 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id F16B320330;
-	Tue, 26 Aug 2025 11:50:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A0F4A34AB0D;
+	Tue, 26 Aug 2025 14:27:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="TABr+T9R"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="gOgoX/SQ"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B01222BD5BC;
-	Tue, 26 Aug 2025 11:50:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5CB948635D;
+	Tue, 26 Aug 2025 14:27:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756209010; cv=none; b=g4jMGTYUi2fDHsZwFThZLRcFr4SaMYtSkW1wz/6oHS2DZWEvczXdIBAFBvIzJIOOle0ffY1eptuAulJWA0sX0i7+HLjYl/QytKfvWycGuT0lmrJvtm2Zr+O0dIf4Vg9t6ITURhp6tLoCRSwipzP8BWeEMts5tGoodijSbstbEfA=
+	t=1756218460; cv=none; b=hidHCa9dbtK00ZkY/R9Fd6ckr38rTl4bhxCZLp+u0QZdWVuRkxuzUrdDReEum6QyZ2cfUeQ5XQB/L7Bb+PBs0ddV3K7mOIdh0iliBEFM9TEKqLui+cPI5ke9tVLbCPE/r/073zVkY2rdBVQH61fOQU42pRswMWYReLxlyuPTshQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756209010; c=relaxed/simple;
-	bh=3BXjM9o5zfr38dbvZQHoeT29KW5t8NNhgUKaxwjXSHk=;
+	s=arc-20240116; t=1756218460; c=relaxed/simple;
+	bh=zk5+4l5YJ99GyrCyI9tLlCfGVNkXxS/xmTZacC9JO1c=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=sSUCxoiSaqpP+AJSjFbAqtt0aWYkoQXE7RfjKuqZ3FPzdqn8cTdQkt/vpbL/0evJeQ+Qq4Gl6ZmY8vktFjngDdEVnCgBUvDJzd4exe2Asei/yqOmFH5jIm+b9mOz7lIbB7Nc2KoBwBSDZg0rP6rUS03yyip+Y2RyHMbtXuiYYuk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=TABr+T9R; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id DD80BC4CEF1;
-	Tue, 26 Aug 2025 11:50:09 +0000 (UTC)
+	 MIME-Version; b=WtOsji4rjCLtmT3oL46+L81DtoFg1CaXGP933QpqLy81EU1uGDHL9dc0Ho/A2GOjOQZpHtTHNyBq3v/9kkOtjyxjbvrZxFCCUHBX/ubmlGzYwFJztbp4cxU1C+9mzRKLJs4GB0xNyHXCAqMBQLsHQymt9v3zCVoGupOh+D4A/bQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=gOgoX/SQ; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E1647C4CEF1;
+	Tue, 26 Aug 2025 14:27:39 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1756209010;
-	bh=3BXjM9o5zfr38dbvZQHoeT29KW5t8NNhgUKaxwjXSHk=;
+	s=korg; t=1756218460;
+	bh=zk5+4l5YJ99GyrCyI9tLlCfGVNkXxS/xmTZacC9JO1c=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=TABr+T9Rt8wYV/ZdjltPWLHDy7C3QrIJEeWDW/9VgRhwrdhlcMHjcq7AFT1VMDPFO
-	 DkbzWcf5NEUmbL4H+16JTN0qJulF1+Fu/nJOykKqH2zze+3F08WALq76/mmX2Wmo+r
-	 mdb2RgUZgsz44EDUEq/4di5vottaaW3PxLlybpLM=
+	b=gOgoX/SQxjuDBWs4B4jwUu46bZgUP+3z6t+OiSISi/F6bnHVgpip+ChDayahermM9
+	 5v6BRJXYUyyEpi2v4v8/XGavGhlS6KHIX26p2gAeoGvry7vM/W4ZGZTpVZ7pLeZn9S
+	 KYS0k+dvxCF8qj5G3YLIZPe+s/EQ/854SFTmf6mE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Frieder Schrempf <frieder.schrempf@kontron.de>,
-	Tristram Ha <tristram.ha@microchip.com>,
-	=?UTF-8?q?=C5=81ukasz=20Majewski?= <lukma@nabladev.com>,
-	Jakub Kicinski <kuba@kernel.org>,
+	Simcha Kosman <simcha.kosman@cyberark.com>,
+	Kees Cook <kees@kernel.org>,
+	Ankit Soni <Ankit.Soni@amd.com>,
+	Joerg Roedel <joerg.roedel@amd.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 306/322] net: dsa: microchip: Fix KSZ9477 HSR port setup issue
+Subject: [PATCH 5.10 511/523] iommu/amd: Avoid stack buffer overflow from kernel cmdline
 Date: Tue, 26 Aug 2025 13:12:01 +0200
-Message-ID: <20250826110923.445955096@linuxfoundation.org>
+Message-ID: <20250826110937.044877590@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250826110915.169062587@linuxfoundation.org>
-References: <20250826110915.169062587@linuxfoundation.org>
+In-Reply-To: <20250826110924.562212281@linuxfoundation.org>
+References: <20250826110924.562212281@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,53 +62,54 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Tristram Ha <tristram.ha@microchip.com>
+From: Kees Cook <kees@kernel.org>
 
-[ Upstream commit e318cd6714592fb762fcab59c5684a442243a12f ]
+[ Upstream commit 8503d0fcb1086a7cfe26df67ca4bd9bd9e99bdec ]
 
-ksz9477_hsr_join() is called once to setup the HSR port membership, but
-the port can be enabled later, or disabled and enabled back and the port
-membership is not set correctly inside ksz_update_port_member().  The
-added code always use the correct HSR port membership for HSR port that
-is enabled.
+While the kernel command line is considered trusted in most environments,
+avoid writing 1 byte past the end of "acpiid" if the "str" argument is
+maximum length.
 
-Fixes: 2d61298fdd7b ("net: dsa: microchip: Enable HSR offloading for KSZ9477")
-Reported-by: Frieder Schrempf <frieder.schrempf@kontron.de>
-Signed-off-by: Tristram Ha <tristram.ha@microchip.com>
-Reviewed-by: Łukasz Majewski <lukma@nabladev.com>
-Tested-by: Frieder Schrempf <frieder.schrempf@kontron.de>
-Reviewed-by: Frieder Schrempf <frieder.schrempf@kontron.de>
-Link: https://patch.msgid.link/20250819010457.563286-1-Tristram.Ha@microchip.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Reported-by: Simcha Kosman <simcha.kosman@cyberark.com>
+Closes: https://lore.kernel.org/all/AS8P193MB2271C4B24BCEDA31830F37AE84A52@AS8P193MB2271.EURP193.PROD.OUTLOOK.COM
+Fixes: b6b26d86c61c ("iommu/amd: Add a length limitation for the ivrs_acpihid command-line parameter")
+Signed-off-by: Kees Cook <kees@kernel.org>
+Reviewed-by: Ankit Soni <Ankit.Soni@amd.com>
+Link: https://lore.kernel.org/r/20250804154023.work.970-kees@kernel.org
+Signed-off-by: Joerg Roedel <joerg.roedel@amd.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/dsa/microchip/ksz_common.c | 6 ++++++
- 1 file changed, 6 insertions(+)
+ drivers/iommu/amd/init.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/net/dsa/microchip/ksz_common.c b/drivers/net/dsa/microchip/ksz_common.c
-index bf26cd0abf6d..0a34fd6887fc 100644
---- a/drivers/net/dsa/microchip/ksz_common.c
-+++ b/drivers/net/dsa/microchip/ksz_common.c
-@@ -2208,6 +2208,12 @@ static void ksz_update_port_member(struct ksz_device *dev, int port)
- 		dev->dev_ops->cfg_port_member(dev, i, val | cpu_port);
- 	}
+diff --git a/drivers/iommu/amd/init.c b/drivers/iommu/amd/init.c
+index e09391ab3deb..1ba6adb5b912 100644
+--- a/drivers/iommu/amd/init.c
++++ b/drivers/iommu/amd/init.c
+@@ -3186,7 +3186,7 @@ static int __init parse_ivrs_acpihid(char *str)
+ {
+ 	u32 seg = 0, bus, dev, fn;
+ 	char *hid, *uid, *p, *addr;
+-	char acpiid[ACPIID_LEN] = {0};
++	char acpiid[ACPIID_LEN + 1] = { }; /* size with NULL terminator */
+ 	int i;
  
-+	/* HSR ports are setup once so need to use the assigned membership
-+	 * when the port is enabled.
-+	 */
-+	if (!port_member && p->stp_state == BR_STATE_FORWARDING &&
-+	    (dev->hsr_ports & BIT(port)))
-+		port_member = dev->hsr_ports;
- 	dev->dev_ops->cfg_port_member(dev, port, port_member | cpu_port);
- }
+ 	addr = strchr(str, '@');
+@@ -3212,7 +3212,7 @@ static int __init parse_ivrs_acpihid(char *str)
+ 	/* We have the '@', make it the terminator to get just the acpiid */
+ 	*addr++ = 0;
  
+-	if (strlen(str) > ACPIID_LEN + 1)
++	if (strlen(str) > ACPIID_LEN)
+ 		goto not_found;
+ 
+ 	if (sscanf(str, "=%s", acpiid) != 1)
 -- 
 2.50.1
 
