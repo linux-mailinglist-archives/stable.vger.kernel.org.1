@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-174605-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-174092-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 235FCB36424
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 15:36:13 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 21066B3614D
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 15:08:26 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 615438E1865
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 13:28:06 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 95C411BA659D
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 13:05:42 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D2DDC27EFE7;
-	Tue, 26 Aug 2025 13:27:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 829D7257859;
+	Tue, 26 Aug 2025 13:04:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="MjAVbF6X"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="1dzDp7ZB"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 919091FBCB1;
-	Tue, 26 Aug 2025 13:27:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3F4281D90C8;
+	Tue, 26 Aug 2025 13:04:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756214836; cv=none; b=jZTJ2xwpHZX+K6HmROPVy74TcMizc5C1hCWSuzL6eq1NoVkz1Qd/Gd3nHxWEQ1MSuoB7terHKTseO946v0UoH9KzOB6a+Kg0zgF3vTO3dBH3e36/piLOU3EpEz5JJvC7fMXil2nHpDLKZe4x04gsD+Etzu8JljnLVwGvhXYMt28=
+	t=1756213472; cv=none; b=bRlRH3JbtsWWRrydWcxZ7G9ZuDKxB43B3OIoQ5KldrQiuRmoClFuLdCX4M+bHNpzOY281pt+exWnsA1TRm95xJKoVu4FrDxl9nc7mn2N8GflZZ0PxJA3Z/xa7ZMyvhb9Wq7DzFoYTmstSvCqsMvw2qUPFam1wE2/0I8kxEIrqeg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756214836; c=relaxed/simple;
-	bh=5XvexmZ+i3+PZwRvhAYqVH4DXaR5W3C3vEWMmGh8rzQ=;
+	s=arc-20240116; t=1756213472; c=relaxed/simple;
+	bh=QReEHvCOdP+fTzXyJdX8//vSLtkr2SSaNy5KOrj2yVg=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=h3VjJDoAPYe4CWqbt26Lv4mc1bLWyZcR6zEYvGe9hFM1mrJaetT2YwChZdrWte60EgZjAZKhFxV2AOYRCgL1AsJfYyBaeL7wSUNLWrnuw0lTXP4DUA6JxcCIgiB47s5QEpwjrr2J4URXNN69Yhm3pUleM8ia3zVuuEPpZ/obbNM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=MjAVbF6X; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E86DEC4CEF1;
-	Tue, 26 Aug 2025 13:27:14 +0000 (UTC)
+	 MIME-Version; b=fAV9bLAN72X0/ypjWexfNi5T5u5DPbjJr8QNwhYNVSg9NkUliYnJ0ogqZSdin2rgrvxhrQZdlbzKtg2nj3+iVjMv8nyFo1S9arjcjMENapO9xsKBuYP4wQCD1KWAyab9xUH3/eAa2yP1e+f0uXflLXqYEb8fxr9ib3XGDR0EBWs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=1dzDp7ZB; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id BC2AFC4CEF1;
+	Tue, 26 Aug 2025 13:04:31 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1756214835;
-	bh=5XvexmZ+i3+PZwRvhAYqVH4DXaR5W3C3vEWMmGh8rzQ=;
+	s=korg; t=1756213472;
+	bh=QReEHvCOdP+fTzXyJdX8//vSLtkr2SSaNy5KOrj2yVg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=MjAVbF6XqKqA9MIzGAQtn1N0y+gqg3P7HZmo5pPGRifmkma4FwV8Q7UigSSKYz2Io
-	 4WgE17iyWrlBTY9v6oqMp/5G/EBhTZIxnseZBvklqHivF3cPyH/s28ukjuH9FMLuTA
-	 DNlnwU9Zd60yX1/9VPxoY3+nOEzOYRxn3NFuiHWw=
+	b=1dzDp7ZBUvp+SxxnYrjzpC91UOlB5a4aKE9SKB6hDz3HkNkZlw0HDxVqEqZkIkabL
+	 2uBdId+yFDgqslr6IkQhF6U07tcAh7PDGHsc7KURSEiWdCjxYmAB2zl9mJHU5jDx7d
+	 gpZqk6qcxADOX23uFlMiC7gwiSTBgpzVl9ISngLk=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Filipe Manana <fdmanana@suse.com>,
-	Qu Wenruo <wqu@suse.com>,
-	David Sterba <dsterba@suse.com>
-Subject: [PATCH 6.1 256/482] btrfs: do not allow relocation of partially dropped subvolumes
+	Chandrakanth Patil <chandrakanth.patil@broadcom.com>,
+	Ranjan Kumar <ranjan.kumar@broadcom.com>,
+	"Martin K. Petersen" <martin.petersen@oracle.com>
+Subject: [PATCH 6.6 360/587] scsi: mpi3mr: Fix race between config read submit and interrupt completion
 Date: Tue, 26 Aug 2025 13:08:29 +0200
-Message-ID: <20250826110937.092594773@linuxfoundation.org>
+Message-ID: <20250826111002.069713589@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250826110930.769259449@linuxfoundation.org>
-References: <20250826110930.769259449@linuxfoundation.org>
+In-Reply-To: <20250826110952.942403671@linuxfoundation.org>
+References: <20250826110952.942403671@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,129 +62,45 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Qu Wenruo <wqu@suse.com>
+From: Ranjan Kumar <ranjan.kumar@broadcom.com>
 
-commit 4289b494ac553e74e86fed1c66b2bf9530bc1082 upstream.
+commit e6327c4acf925bb6d6d387d76fc3bd94471e10d8 upstream.
 
-[BUG]
-There is an internal report that balance triggered transaction abort,
-with the following call trace:
+The "is_waiting" flag was updated after calling complete(), which could
+lead to a race where the waiting thread wakes up before the flag is
+cleared. This may cause a missed wakeup or stale state check.
 
-  item 85 key (594509824 169 0) itemoff 12599 itemsize 33
-          extent refs 1 gen 197740 flags 2
-          ref#0: tree block backref root 7
-  item 86 key (594558976 169 0) itemoff 12566 itemsize 33
-          extent refs 1 gen 197522 flags 2
-          ref#0: tree block backref root 7
- ...
- BTRFS error (device loop0): extent item not found for insert, bytenr 594526208 num_bytes 16384 parent 449921024 root_objectid 934 owner 1 offset 0
- BTRFS error (device loop0): failed to run delayed ref for logical 594526208 num_bytes 16384 type 182 action 1 ref_mod 1: -117
- ------------[ cut here ]------------
- BTRFS: Transaction aborted (error -117)
- WARNING: CPU: 1 PID: 6963 at ../fs/btrfs/extent-tree.c:2168 btrfs_run_delayed_refs+0xfa/0x110 [btrfs]
+Reorder the operations to update "is_waiting" before signaling completion
+to ensure consistent state.
 
-And btrfs check doesn't report anything wrong related to the extent
-tree.
-
-[CAUSE]
-The cause is a little complex, firstly the extent tree indeed doesn't
-have the backref for 594526208.
-
-The extent tree only have the following two backrefs around that bytenr
-on-disk:
-
-        item 65 key (594509824 METADATA_ITEM 0) itemoff 13880 itemsize 33
-                refs 1 gen 197740 flags TREE_BLOCK
-                tree block skinny level 0
-                (176 0x7) tree block backref root CSUM_TREE
-        item 66 key (594558976 METADATA_ITEM 0) itemoff 13847 itemsize 33
-                refs 1 gen 197522 flags TREE_BLOCK
-                tree block skinny level 0
-                (176 0x7) tree block backref root CSUM_TREE
-
-But the such missing backref item is not an corruption on disk, as the
-offending delayed ref belongs to subvolume 934, and that subvolume is
-being dropped:
-
-        item 0 key (934 ROOT_ITEM 198229) itemoff 15844 itemsize 439
-                generation 198229 root_dirid 256 bytenr 10741039104 byte_limit 0 bytes_used 345571328
-                last_snapshot 198229 flags 0x1000000000001(RDONLY) refs 0
-                drop_progress key (206324 EXTENT_DATA 2711650304) drop_level 2
-                level 2 generation_v2 198229
-
-And that offending tree block 594526208 is inside the dropped range of
-that subvolume.  That explains why there is no backref item for that
-bytenr and why btrfs check is not reporting anything wrong.
-
-But this also shows another problem, as btrfs will do all the orphan
-subvolume cleanup at a read-write mount.
-
-So half-dropped subvolume should not exist after an RW mount, and
-balance itself is also exclusive to subvolume cleanup, meaning we
-shouldn't hit a subvolume half-dropped during relocation.
-
-The root cause is, there is no orphan item for this subvolume.
-In fact there are 5 subvolumes from around 2021 that have the same
-problem.
-
-It looks like the original report has some older kernels running, and
-caused those zombie subvolumes.
-
-Thankfully upstream commit 8d488a8c7ba2 ("btrfs: fix subvolume/snapshot
-deletion not triggered on mount") has long fixed the bug.
-
-[ENHANCEMENT]
-For repairing such old fs, btrfs-progs will be enhanced.
-
-Considering how delayed the problem will show up (at run delayed ref
-time) and at that time we have to abort transaction already, it is too
-late.
-
-Instead here we reject any half-dropped subvolume for reloc tree at the
-earliest time, preventing confusion and extra time wasted on debugging
-similar bugs.
-
-CC: stable@vger.kernel.org # 5.15+
-Reviewed-by: Filipe Manana <fdmanana@suse.com>
-Signed-off-by: Qu Wenruo <wqu@suse.com>
-Signed-off-by: David Sterba <dsterba@suse.com>
+Fixes: 824a156633df ("scsi: mpi3mr: Base driver code")
+Cc: stable@vger.kernel.org
+Co-developed-by: Chandrakanth Patil <chandrakanth.patil@broadcom.com>
+Signed-off-by: Chandrakanth Patil <chandrakanth.patil@broadcom.com>
+Signed-off-by: Ranjan Kumar <ranjan.kumar@broadcom.com>
+Link: https://lore.kernel.org/r/20250627194539.48851-2-ranjan.kumar@broadcom.com
+Signed-off-by: Martin K. Petersen <martin.petersen@oracle.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- fs/btrfs/relocation.c |   19 +++++++++++++++++++
- 1 file changed, 19 insertions(+)
+ drivers/scsi/mpi3mr/mpi3mr_fw.c |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/fs/btrfs/relocation.c
-+++ b/fs/btrfs/relocation.c
-@@ -751,6 +751,25 @@ static struct btrfs_root *create_reloc_r
- 	if (root->root_key.objectid == objectid) {
- 		u64 commit_root_gen;
- 
-+		/*
-+		 * Relocation will wait for cleaner thread, and any half-dropped
-+		 * subvolume will be fully cleaned up at mount time.
-+		 * So here we shouldn't hit a subvolume with non-zero drop_progress.
-+		 *
-+		 * If this isn't the case, error out since it can make us attempt to
-+		 * drop references for extents that were already dropped before.
-+		 */
-+		if (unlikely(btrfs_disk_key_objectid(&root->root_item.drop_progress))) {
-+			struct btrfs_key cpu_key;
-+
-+			btrfs_disk_key_to_cpu(&cpu_key, &root->root_item.drop_progress);
-+			btrfs_err(fs_info,
-+	"cannot relocate partially dropped subvolume %llu, drop progress key (%llu %u %llu)",
-+				  objectid, cpu_key.objectid, cpu_key.type, cpu_key.offset);
-+			ret = -EUCLEAN;
-+			goto fail;
-+		}
-+
- 		/* called by btrfs_init_reloc_root */
- 		ret = btrfs_copy_root(trans, root, root->commit_root, &eb,
- 				      BTRFS_TREE_RELOC_OBJECTID);
+--- a/drivers/scsi/mpi3mr/mpi3mr_fw.c
++++ b/drivers/scsi/mpi3mr/mpi3mr_fw.c
+@@ -411,8 +411,8 @@ static void mpi3mr_process_admin_reply_d
+ 				       MPI3MR_SENSE_BUF_SZ);
+ 			}
+ 			if (cmdptr->is_waiting) {
+-				complete(&cmdptr->done);
+ 				cmdptr->is_waiting = 0;
++				complete(&cmdptr->done);
+ 			} else if (cmdptr->callback)
+ 				cmdptr->callback(mrioc, cmdptr);
+ 		}
 
 
 
