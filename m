@@ -1,59 +1,57 @@
-Return-Path: <stable+bounces-175974-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-174303-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8971DB36A7D
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 16:37:53 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id D8431B362B9
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 15:21:31 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 88C1658607E
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 14:30:02 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 6BA558A67FC
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 13:15:50 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 80922302CA6;
-	Tue, 26 Aug 2025 14:27:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3931F334723;
+	Tue, 26 Aug 2025 13:13:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="TcDzUMxM"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="0rEPlHgo"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3E5508635D;
-	Tue, 26 Aug 2025 14:27:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EBF3730146D;
+	Tue, 26 Aug 2025 13:13:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756218455; cv=none; b=f2cuVjocbWFQI7prPYLQctzKyH6BDJKAurVNQnUTxZUDnlQjBFkgG/iFMxrOe9/sMoTfFc+K8pDVD5pW2A8GoLYyEvZeq9g4MShl13y6fuF5Sc093ZMcEHNICdGVqSK+AjYu+gkhTSVmAGL5vriOh8bD4ShrMhSCMCdn/uqYzxc=
+	t=1756214032; cv=none; b=e7vCDXsRXqD1/czv/+QMVfx4NNs+N2ZGP2Mdb8Il/11XmWpqnq+vjAhHnDtV1m7O36EBskE5yrAU9o66Fd2eIZrIjh/TG1v0EMSv3NGDJ2AvF7mUIl9YHRckFArP6pY9KY/Qj2AKavNRzlnZ+YaUhLww1Tvw6vyA7ku2Fki9Cao=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756218455; c=relaxed/simple;
-	bh=QdtfZjIxppiX2J4a8zcuwoUwRhlbMufIfkm/L/WkUw0=;
+	s=arc-20240116; t=1756214032; c=relaxed/simple;
+	bh=7NK0pFe9PK9mHVYGtQg9YrnpL7UBbcSEQcMsX31LVPM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=H5Rvyf5cn+LrGAhOnPg2MTRjYRB+GCyO9U6lpYhj+tjBrIdWpAJ9tFoNpih+rHcEoSjm3pKJk7S44taJo8MjDjEvmybO+Q5ncZ2jq7Tj/9wMkJ2g1GksbNGARLriLCklrcswvfBUl6WqJMNSOcdkyLoH54w3WKSes4SGlm9CTjE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=TcDzUMxM; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C607DC4CEF1;
-	Tue, 26 Aug 2025 14:27:34 +0000 (UTC)
+	 MIME-Version; b=DNH5H7i9OZXATQ5wnMLT8C3b51dLOa+XxouLuadlHWJ0rmvW4M9yqQvLzVsCQQ5ynEw8FwSbPFN8hqLABD0pb+nU0pOr3Js8amISYiCUiNDrkPehIzoO98Cvv9OD76g0dRA/lzFElV5AD7U6XTs6OS6J8QJb7lhX1Gmij9eGgeI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=0rEPlHgo; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7E21DC4CEF1;
+	Tue, 26 Aug 2025 13:13:51 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1756218455;
-	bh=QdtfZjIxppiX2J4a8zcuwoUwRhlbMufIfkm/L/WkUw0=;
+	s=korg; t=1756214031;
+	bh=7NK0pFe9PK9mHVYGtQg9YrnpL7UBbcSEQcMsX31LVPM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=TcDzUMxMWXDDJXhSkQtc265YVjJ2r9uOBJtIo/exoo6ZPeaL4bduJ3Fwjzz8Yvj6z
-	 1MnnRFc2BNHRLcWOceJ6pXBVdbEm3FaXp6KT1CI+qUjoWHNLoFrXOxWC22qIcXxkLg
-	 0XoTreWoZx8tVeIrOrdkWyPhY1lpYc+SbUPovtsE=
+	b=0rEPlHgo06sSWqhBjcVMUIlX9c7qBPhUls2QSUgFPTARmfz8/4OnUJgb9lMVDXVB5
+	 mCE+zf5/+7Jnzke1oeSAoYifQFtrNl4cvpIclD1Rc7c7iAt3B2jfHtBjz4s4LINVXN
+	 TR2Zebmofv16HuxxSybmHvRkT2VlPOVQnQ4HV2LA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Anantha Prabhu <anantha.prabhu@broadcom.com>,
-	Saravanan Vajravel <saravanan.vajravel@broadcom.com>,
-	Selvin Xavier <selvin.xavier@broadcom.com>,
-	Kalesh AP <kalesh-anakkur.purayil@broadcom.com>,
-	Leon Romanovsky <leon@kernel.org>,
+	Jordan Rhee <jordanrhee@google.com>,
+	Jeroen de Borst <jeroendb@google.com>,
+	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 509/523] RDMA/bnxt_re: Fix to initialize the PBL array
-Date: Tue, 26 Aug 2025 13:11:59 +0200
-Message-ID: <20250826110936.996428601@linuxfoundation.org>
+Subject: [PATCH 6.6 571/587] gve: prevent ethtool ops after shutdown
+Date: Tue, 26 Aug 2025 13:12:00 +0200
+Message-ID: <20250826111007.561681984@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250826110924.562212281@linuxfoundation.org>
-References: <20250826110924.562212281@linuxfoundation.org>
+In-Reply-To: <20250826110952.942403671@linuxfoundation.org>
+References: <20250826110952.942403671@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -65,49 +63,56 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Anantha Prabhu <anantha.prabhu@broadcom.com>
+From: Jordan Rhee <jordanrhee@google.com>
 
-[ Upstream commit 806b9f494f62791ee6d68f515a8056c615a0e7b2 ]
+[ Upstream commit 75a9a46d67f46d608205888f9b34e315c1786345 ]
 
-memset the PBL page pointer and page map arrays before
-populating the SGL addresses of the HWQ.
+A crash can occur if an ethtool operation is invoked
+after shutdown() is called.
 
-Fixes: 0c4dcd602817 ("RDMA/bnxt_re: Refactor hardware queue memory allocation")
-Signed-off-by: Anantha Prabhu <anantha.prabhu@broadcom.com>
-Reviewed-by: Saravanan Vajravel <saravanan.vajravel@broadcom.com>
-Reviewed-by: Selvin Xavier <selvin.xavier@broadcom.com>
-Signed-off-by: Kalesh AP <kalesh-anakkur.purayil@broadcom.com>
-Link: https://patch.msgid.link/20250805101000.233310-5-kalesh-anakkur.purayil@broadcom.com
-Signed-off-by: Leon Romanovsky <leon@kernel.org>
+shutdown() is invoked during system shutdown to stop DMA operations
+without performing expensive deallocations. It is discouraged to
+unregister the netdev in this path, so the device may still be visible
+to userspace and kernel helpers.
+
+In gve, shutdown() tears down most internal data structures. If an
+ethtool operation is dispatched after shutdown(), it will dereference
+freed or NULL pointers, leading to a kernel panic. While graceful
+shutdown normally quiesces userspace before invoking the reboot
+syscall, forced shutdowns (as observed on GCP VMs) can still trigger
+this path.
+
+Fix by calling netif_device_detach() in shutdown().
+This marks the device as detached so the ethtool ioctl handler
+will skip dispatching operations to the driver.
+
+Fixes: 974365e51861 ("gve: Implement suspend/resume/shutdown")
+Signed-off-by: Jordan Rhee <jordanrhee@google.com>
+Signed-off-by: Jeroen de Borst <jeroendb@google.com>
+Link: https://patch.msgid.link/20250818211245.1156919-1-jeroendb@google.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/infiniband/hw/bnxt_re/qplib_res.c | 2 ++
+ drivers/net/ethernet/google/gve/gve_main.c | 2 ++
  1 file changed, 2 insertions(+)
 
-diff --git a/drivers/infiniband/hw/bnxt_re/qplib_res.c b/drivers/infiniband/hw/bnxt_re/qplib_res.c
-index af23e57fc78e..be98b23488b4 100644
---- a/drivers/infiniband/hw/bnxt_re/qplib_res.c
-+++ b/drivers/infiniband/hw/bnxt_re/qplib_res.c
-@@ -121,6 +121,7 @@ static int __alloc_pbl(struct bnxt_qplib_res *res,
- 	pbl->pg_arr = vmalloc(pages * sizeof(void *));
- 	if (!pbl->pg_arr)
- 		return -ENOMEM;
-+	memset(pbl->pg_arr, 0, pages * sizeof(void *));
+diff --git a/drivers/net/ethernet/google/gve/gve_main.c b/drivers/net/ethernet/google/gve/gve_main.c
+index ec189f0703f9..241a541b8edd 100644
+--- a/drivers/net/ethernet/google/gve/gve_main.c
++++ b/drivers/net/ethernet/google/gve/gve_main.c
+@@ -2373,6 +2373,8 @@ static void gve_shutdown(struct pci_dev *pdev)
+ 	struct gve_priv *priv = netdev_priv(netdev);
+ 	bool was_up = netif_carrier_ok(priv->dev);
  
- 	pbl->pg_map_arr = vmalloc(pages * sizeof(dma_addr_t));
- 	if (!pbl->pg_map_arr) {
-@@ -128,6 +129,7 @@ static int __alloc_pbl(struct bnxt_qplib_res *res,
- 		pbl->pg_arr = NULL;
- 		return -ENOMEM;
- 	}
-+	memset(pbl->pg_map_arr, 0, pages * sizeof(dma_addr_t));
- 	pbl->pg_count = 0;
- 	pbl->pg_size = sginfo->pgsize;
- 
++	netif_device_detach(netdev);
++
+ 	rtnl_lock();
+ 	if (was_up && gve_close(priv->dev)) {
+ 		/* If the dev was up, attempt to close, if close fails, reset */
 -- 
 2.50.1
 
