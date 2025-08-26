@@ -1,55 +1,58 @@
-Return-Path: <stable+bounces-176358-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-173668-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id ED853B36CFB
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 17:04:29 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id C25E6B35DD7
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 13:48:41 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id E5276A0383E
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 14:47:27 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 5ACA23B5C5C
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 11:47:42 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 47E1735E4DF;
-	Tue, 26 Aug 2025 14:44:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4194429BDAC;
+	Tue, 26 Aug 2025 11:47:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="cfcyBrfl"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="M53xr4Zp"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 00A88352081;
-	Tue, 26 Aug 2025 14:44:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F31F8749C;
+	Tue, 26 Aug 2025 11:47:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756219451; cv=none; b=uGf08hsF5tRDNwQWfeU8xWz48QnF+Zwnb8Rlu0FqSnEDmPY6KaG1ksma31pfH2//XIITPywKX9ZJWCFbB23EjqGl0hzKEHXvIcGbU1lZGTkrKYAtsHLWFM1rKXrJHk3xg/7scu4EPmRo6WOfpyZKKf8oVq/i/FoZyjKlljtg9no=
+	t=1756208846; cv=none; b=H0fjyG+OYUnShXjRzG6MHaTyjiWlweSBfkP666Ha65drILX+oBYL7NnSkfyrZqPbvbeeVUAtIh3dhantbZVW4DFx6ihUg8aiEfrFAlZ4yt+kELGPMS7VjUVrFefY+URzJtuUAiBPjipjaoYrR1o8ZOFxyhuPub9mz/0kpgk2AQM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756219451; c=relaxed/simple;
-	bh=153HfmSyorCxoOpzJAF7V3n+c/JUtVXxGtsupAxsTsk=;
+	s=arc-20240116; t=1756208846; c=relaxed/simple;
+	bh=RFMHr6fhGHK9ErDNtHSE1SggSZfCsk6nuyc8sjR/GCs=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=je0e7s2oz0e4jQorhljnD0/WdIXR6wiReMNkTmigbFdS6S/rftNtTGt+RnKlPndSvfsDL0WJGLaUtQzIkOGoBLpJDk8+NO3KZJIqrzec9Y1IhBNqVSJJTy/xRmJS3PFcfbrpPeBaABA6I8Pft7py0SKISMyOfsFDrRd2wMKFi3k=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=cfcyBrfl; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7E035C4CEF1;
-	Tue, 26 Aug 2025 14:44:10 +0000 (UTC)
+	 MIME-Version; b=J0NQtlhelLfcOhPGWi7APYzLM7BzqMkNPuDLnlEktP5e4v5wHBEeCng8BzkqU/SIOsq5oEGkagZqnPWF9foZ1dieaRdwDWrBQHwk9yjKrOF7tOY0qhbBHq/7aRT1eNRNEckkGiObdQaqm8YfuQ1diCrgbCEOhPOc7XW7U/TEwd0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=M53xr4Zp; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 82FBFC4CEF1;
+	Tue, 26 Aug 2025 11:47:25 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1756219450;
-	bh=153HfmSyorCxoOpzJAF7V3n+c/JUtVXxGtsupAxsTsk=;
+	s=korg; t=1756208845;
+	bh=RFMHr6fhGHK9ErDNtHSE1SggSZfCsk6nuyc8sjR/GCs=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=cfcyBrflvucSFqE7rBSsp3Q1vAagBx1pShkpft5u6wknl6CQmUjbkA/9APJXqYfx7
-	 /ubqJfomgU2fsR32ZUHX+sHyfRLzWsmut3eho4y0uh8WE1AMI8YLAPgcYS1eLsAx9a
-	 t2lBjPo0a7VKodmAUlY/Zb0iPyJ2xrPKIRW/GmyA=
+	b=M53xr4ZpASyq5qU4cfvIQCb5qWfWnU6nYjq11RKZsqrPA6wBpN7N7JA3lDXq9toTl
+	 4QOe/Eo/asOZgJNsjgx8IgyoNRDp0+2GkvkzPqtnTkaAW59zIGh50NPtCYHB9/JqJX
+	 xiWHYGJppQ1JWS73jYjOs9vmBsq7cgv2pQDbLa9g=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Trond Myklebust <trond.myklebust@hammerspace.com>,
+	Kashyap Desai <kashyap.desai@broadcom.com>,
+	Saravanan Vajravel <saravanan.vajravel@broadcom.com>,
+	Kalesh AP <kalesh-anakkur.purayil@broadcom.com>,
+	Leon Romanovsky <leon@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.4 356/403] NFS: Fix up handling of outstanding layoutcommit in nfs_update_inode()
+Subject: [PATCH 6.12 267/322] RDMA/bnxt_re: Fix to do SRQ armena by default
 Date: Tue, 26 Aug 2025 13:11:22 +0200
-Message-ID: <20250826110916.712230955@linuxfoundation.org>
+Message-ID: <20250826110922.524293522@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250826110905.607690791@linuxfoundation.org>
-References: <20250826110905.607690791@linuxfoundation.org>
+In-Reply-To: <20250826110915.169062587@linuxfoundation.org>
+References: <20250826110915.169062587@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,41 +64,49 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.4-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Trond Myklebust <trond.myklebust@hammerspace.com>
+From: Kashyap Desai <kashyap.desai@broadcom.com>
 
-[ Upstream commit 709fa5769914b377af87962bbe4ff81ffb019b2d ]
+[ Upstream commit 6296f9a5293ada28558f2867ac54c487e1e2b9f2 ]
 
-If there is an outstanding layoutcommit, then the list of attributes
-whose values are expected to change is not the full set. So let's
-be explicit about the full list.
+Whenever SRQ is created, make sure SRQ arm enable is always
+set. Driver is always ready to receive SRQ ASYNC event.
 
-Signed-off-by: Trond Myklebust <trond.myklebust@hammerspace.com>
-Stable-dep-of: b01f21cacde9 ("NFS: Fix the setting of capabilities when automounting a new filesystem")
+Additional note -
+There is no need to do srq arm enable conditionally.
+See bnxt_qplib_armen_db in bnxt_qplib_create_cq().
+
+Fixes: 37cb11acf1f7 ("RDMA/bnxt_re: Add SRQ support for Broadcom adapters")
+Signed-off-by: Kashyap Desai <kashyap.desai@broadcom.com>
+Signed-off-by: Saravanan Vajravel <saravanan.vajravel@broadcom.com>
+Link: https://patch.msgid.link/20250805101000.233310-2-kalesh-anakkur.purayil@broadcom.com
+Reviewed-by: Kalesh AP <kalesh-anakkur.purayil@broadcom.com>
+Signed-off-by: Leon Romanovsky <leon@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- fs/nfs/inode.c |    6 +++++-
- 1 file changed, 5 insertions(+), 1 deletion(-)
+ drivers/infiniband/hw/bnxt_re/qplib_fp.c | 3 +--
+ 1 file changed, 1 insertion(+), 2 deletions(-)
 
---- a/fs/nfs/inode.c
-+++ b/fs/nfs/inode.c
-@@ -1869,7 +1869,11 @@ static int nfs_update_inode(struct inode
- 	nfs_wcc_update_inode(inode, fattr);
+diff --git a/drivers/infiniband/hw/bnxt_re/qplib_fp.c b/drivers/infiniband/hw/bnxt_re/qplib_fp.c
+index 7436ce551579..3170a3e2df24 100644
+--- a/drivers/infiniband/hw/bnxt_re/qplib_fp.c
++++ b/drivers/infiniband/hw/bnxt_re/qplib_fp.c
+@@ -704,8 +704,7 @@ int bnxt_qplib_create_srq(struct bnxt_qplib_res *res,
+ 	srq->dbinfo.db = srq->dpi->dbr;
+ 	srq->dbinfo.max_slot = 1;
+ 	srq->dbinfo.priv_db = res->dpi_tbl.priv_db;
+-	if (srq->threshold)
+-		bnxt_qplib_armen_db(&srq->dbinfo, DBC_DBC_TYPE_SRQ_ARMENA);
++	bnxt_qplib_armen_db(&srq->dbinfo, DBC_DBC_TYPE_SRQ_ARMENA);
+ 	srq->arm_req = false;
  
- 	if (pnfs_layoutcommit_outstanding(inode)) {
--		nfsi->cache_validity |= save_cache_validity & NFS_INO_INVALID_ATTR;
-+		nfsi->cache_validity |=
-+			save_cache_validity &
-+			(NFS_INO_INVALID_CHANGE | NFS_INO_INVALID_CTIME |
-+			 NFS_INO_INVALID_MTIME | NFS_INO_INVALID_SIZE |
-+			 NFS_INO_REVAL_FORCED);
- 		cache_revalidated = false;
- 	}
- 
+ 	return 0;
+-- 
+2.50.1
+
 
 
 
