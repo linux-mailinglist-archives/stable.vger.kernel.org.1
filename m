@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-176094-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-173455-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 02780B36CCA
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 17:00:58 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5599DB35DE0
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 13:49:05 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 4449A987C4A
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 14:35:55 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 5F6F9462B33
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 11:39:25 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C774F22370D;
-	Tue, 26 Aug 2025 14:32:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id CE0E02BE65E;
+	Tue, 26 Aug 2025 11:38:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="MNltVAN+"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="IGiGFu/T"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 847CE2AD32;
-	Tue, 26 Aug 2025 14:32:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8C7151F560B;
+	Tue, 26 Aug 2025 11:38:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756218767; cv=none; b=cimfJcazocEISuKoxvUni1CcijBMedgk/5y3VE4Sv407vcPwoLZDxY7FmwnGdUIeTyliPLqTvouz7KupAysd8GTGebfkMG6pxXVX+jmMJAtUdRG0gZuKOPi6oNG+/nRfBIBz87HW5Y+cdKZgHSpjKQWm79qVX4Fn6EZJdiAI/h4=
+	t=1756208292; cv=none; b=MISY8nlpmcUciJcJJ5/p8c1saWiLTiMtiwAgq+yOA1WT7JvQUf44NoOtfJ1mdQ5mLVqGVAZRU1Vjde7e4/PRMTmQ7aHNbyS139KgF9YmEezKLtZdl3xo1dB1AXGHU+u8M/XChbFBpHo6B2sI+MzM0pBh/G6MPZFi6H1dMfWK2iU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756218767; c=relaxed/simple;
-	bh=izCwNyT877laCACwvlYbZ7W2E3rw/nER3vNRdx8tw3g=;
+	s=arc-20240116; t=1756208292; c=relaxed/simple;
+	bh=i6P5IxZQFmH1nIp2KlEM3sZ33LROn4MTS7BC5bvdKAk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=shHuRztMRCKzXEojQ5ReFydAQDxXm0rbV0mqk8WngpjLP3IyFUwY5KYintxBZVEgEYdrUBpQsyMf6rJQYpcHHzsKyaXb0WAJhJyzNrGiHGx702lwJoHv54xfXfZrr16mAVj4eKDimzdCgQc8Z6W00iLJP8alTdxI/hSFcltZgi4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=MNltVAN+; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 18C92C4CEF1;
-	Tue, 26 Aug 2025 14:32:46 +0000 (UTC)
+	 MIME-Version; b=eV7qtwz38VolxNX8+DpzlzXbxosXdF6J9O0hZWcLTgpSSxP6aatt9DtEd07XkuQBhEb8P2esUZl5MyyOBjIZqhk1bWJUM/EAGfbdVirRV/13vXQdO1Ag9cYLMxyRaxE1qW6f83WqsJiZxQAhsKdKG1ECuuLOm8ZEp+i2jnpqQ28=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=IGiGFu/T; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id BBB32C4CEF1;
+	Tue, 26 Aug 2025 11:38:11 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1756218767;
-	bh=izCwNyT877laCACwvlYbZ7W2E3rw/nER3vNRdx8tw3g=;
+	s=korg; t=1756208292;
+	bh=i6P5IxZQFmH1nIp2KlEM3sZ33LROn4MTS7BC5bvdKAk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=MNltVAN+K75Lj61ktnKjpPkkkYouR1KGba4gFhq1HGG8Vl03ctaXORzYIOxrgoQaN
-	 GRAZvDB1ywRXnI1muwIU5K53whrINcM3gMQ+qh4TpoeunBAQJMewvoBD0345D+llaW
-	 PCQAP1D4dDehDUUuylOxZcCqZU3vPTDe+hpaKmhc=
+	b=IGiGFu/TdiDxJRrHZWFkORydjweghue8Soq576C41byp6WxK4KWcJVm6jIGWOmSez
+	 Pp+HneAwM+WutQznyYyFspeuE2qAJ4KNouFYSbPsqFcCaGk6896QYt2eFl5ZgfT8Md
+	 3GesDg0eHktWR1j1WfTzSJKR2S1gKG9OzOfa5/sA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Zheng Yu <zheng.yu@northwestern.edu>,
-	Dave Kleikamp <dave.kleikamp@oracle.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.4 126/403] jfs: fix metapage reference count leak in dbAllocCtl
-Date: Tue, 26 Aug 2025 13:07:32 +0200
-Message-ID: <20250826110910.220955841@linuxfoundation.org>
+	Qu Wenruo <wqu@suse.com>,
+	Kyoji Ogasawara <sawara04.o@gmail.com>,
+	David Sterba <dsterba@suse.com>
+Subject: [PATCH 6.12 038/322] btrfs: fix printing of mount info messages for NODATACOW/NODATASUM
+Date: Tue, 26 Aug 2025 13:07:33 +0200
+Message-ID: <20250826110916.305892821@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250826110905.607690791@linuxfoundation.org>
-References: <20250826110905.607690791@linuxfoundation.org>
+In-Reply-To: <20250826110915.169062587@linuxfoundation.org>
+References: <20250826110915.169062587@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,50 +62,48 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.4-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Zheng Yu <zheng.yu@northwestern.edu>
+From: Kyoji Ogasawara <sawara04.o@gmail.com>
 
-[ Upstream commit 856db37592021e9155384094e331e2d4589f28b1 ]
+commit 74857fdc5dd2cdcdeb6e99bdf26976fd9299d2bb upstream.
 
-In dbAllocCtl(), read_metapage() increases the reference count of the
-metapage. However, when dp->tree.budmin < 0, the function returns -EIO
-without calling release_metapage() to decrease the reference count,
-leading to a memory leak.
+The NODATASUM message was printed twice by mistake and the NODATACOW was
+missing from the 'unset' part.  Fix the duplication and make the output
+look the same.
 
-Add release_metapage(mp) before the error return to properly manage
-the metapage reference count and prevent the leak.
-
-Fixes: a5f5e4698f8abbb25fe4959814093fb5bfa1aa9d ("jfs: fix shift-out-of-bounds in dbSplit")
-
-Signed-off-by: Zheng Yu <zheng.yu@northwestern.edu>
-Signed-off-by: Dave Kleikamp <dave.kleikamp@oracle.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Fixes: eddb1a433f26 ("btrfs: add reconfigure callback for fs_context")
+CC: stable@vger.kernel.org # 6.8+
+Reviewed-by: Qu Wenruo <wqu@suse.com>
+Signed-off-by: Kyoji Ogasawara <sawara04.o@gmail.com>
+Reviewed-by: David Sterba <dsterba@suse.com>
+Signed-off-by: David Sterba <dsterba@suse.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- fs/jfs/jfs_dmap.c | 4 +++-
- 1 file changed, 3 insertions(+), 1 deletion(-)
+ fs/btrfs/super.c |    3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
-diff --git a/fs/jfs/jfs_dmap.c b/fs/jfs/jfs_dmap.c
-index 8cffb5dd98cf..15f885d2fa3d 100644
---- a/fs/jfs/jfs_dmap.c
-+++ b/fs/jfs/jfs_dmap.c
-@@ -1875,8 +1875,10 @@ dbAllocCtl(struct bmap * bmp, s64 nblocks, int l2nb, s64 blkno, s64 * results)
- 			return -EIO;
- 		dp = (struct dmap *) mp->data;
+--- a/fs/btrfs/super.c
++++ b/fs/btrfs/super.c
+@@ -1438,7 +1438,7 @@ static void btrfs_emit_options(struct bt
+ {
+ 	btrfs_info_if_set(info, old, NODATASUM, "setting nodatasum");
+ 	btrfs_info_if_set(info, old, DEGRADED, "allowing degraded mounts");
+-	btrfs_info_if_set(info, old, NODATASUM, "setting nodatasum");
++	btrfs_info_if_set(info, old, NODATACOW, "setting nodatacow");
+ 	btrfs_info_if_set(info, old, SSD, "enabling ssd optimizations");
+ 	btrfs_info_if_set(info, old, SSD_SPREAD, "using spread ssd allocation scheme");
+ 	btrfs_info_if_set(info, old, NOBARRIER, "turning off barriers");
+@@ -1460,6 +1460,7 @@ static void btrfs_emit_options(struct bt
+ 	btrfs_info_if_set(info, old, IGNOREMETACSUMS, "ignoring meta csums");
+ 	btrfs_info_if_set(info, old, IGNORESUPERFLAGS, "ignoring unknown super block flags");
  
--		if (dp->tree.budmin < 0)
-+		if (dp->tree.budmin < 0) {
-+			release_metapage(mp);
- 			return -EIO;
-+		}
- 
- 		/* try to allocate the blocks.
- 		 */
--- 
-2.39.5
-
++	btrfs_info_if_unset(info, old, NODATASUM, "setting datasum");
+ 	btrfs_info_if_unset(info, old, NODATACOW, "setting datacow");
+ 	btrfs_info_if_unset(info, old, SSD, "not using ssd optimizations");
+ 	btrfs_info_if_unset(info, old, SSD_SPREAD, "not using spread ssd allocation scheme");
 
 
 
