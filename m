@@ -1,56 +1,58 @@
-Return-Path: <stable+bounces-173217-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-175790-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 79BE9B35C5A
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 13:33:31 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id EB193B369AD
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 16:29:14 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 0C01C1BA3090
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 11:29:22 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 69EE18E3E02
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 14:21:19 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8065F334717;
-	Tue, 26 Aug 2025 11:27:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 612001CD1F;
+	Tue, 26 Aug 2025 14:19:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="fKGv3DMM"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="h4Nzb+wP"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2660E3376BA;
-	Tue, 26 Aug 2025 11:27:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 19958223338;
+	Tue, 26 Aug 2025 14:19:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756207673; cv=none; b=F4wXSfrsRhpmuvwWoBDLyZp0jN8Tb+in/wuGdripB0F2uUHo2+n3xhsfz/nBVRT5zWakAu2avzKgzv1M65iOvxXGGEspPT7oT5fKGRQADodXslTcb8gzC51TKjxvDpH8d0OkFPCiXatCRtIgNDd0lRauDowENWslx/2mNadB6oQ=
+	t=1756217976; cv=none; b=Frq/8hW1CsRQYL6R07Y0Rskzha6/Cea8LDxoMluM6Jmw7V/5DKc0WCokL4DpUElLHZzc+AdioEbmWQfFMNsFmounVNxnh2mO92x1KO00GZCcbRrb7GFo4hvP4IY6V6mzrYo+FIoJ3DMaiMqL0gxiIBed7f1OyPSbUK/nchPd6MM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756207673; c=relaxed/simple;
-	bh=Pxb+Th4uZ4jVtX/oJkVnkRCAFCge3L2gK7UOBk/BSP4=;
+	s=arc-20240116; t=1756217976; c=relaxed/simple;
+	bh=go3AzjVbv6MRKBiY6KYTphkt6TB9GXG7pUQPsi8jCkc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=je5Nw6EIwzk03gwaQRCososw0iGAEFVhIYLsBFQOc9h6GH9VzrdeRDmLIy97tUmSFDQi1l1MHaxgOxwIdKOsElSMBuDuXJTc7fdbqwQIjgDAp3hsCIFHddtbmmk6oGtBxYfRoEBMhGkIaUBm3BL8AoeLW9RYYex+k3cIa8to2QA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=fKGv3DMM; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 60C98C4CEF4;
-	Tue, 26 Aug 2025 11:27:52 +0000 (UTC)
+	 MIME-Version; b=R/5CIheGIqCflezWSjqLOeky6ylrA9WvQWByGtb1tPEPgISBwMsZfhBMQnME3Uh9TwQmm8kljNbJVEYz7jkhnW1tFeRli3yoAbN0SQ9VdqnqabSzQQfd+lPyj5YCRmn1PSML8iThFUo4F0LFdunm7OPhr+PZmhasyJUig1hy0/0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=h4Nzb+wP; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9AD9DC113CF;
+	Tue, 26 Aug 2025 14:19:35 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1756207672;
-	bh=Pxb+Th4uZ4jVtX/oJkVnkRCAFCge3L2gK7UOBk/BSP4=;
+	s=korg; t=1756217976;
+	bh=go3AzjVbv6MRKBiY6KYTphkt6TB9GXG7pUQPsi8jCkc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=fKGv3DMM0MqjO1RvPe/2h0J6iB0McujFvaZ+RTQi6pXOn7j5fm2xIrTuYNi5kZdrq
-	 1w2aTk/gpQ7/YV+ODIYE8F8DCm0Vb0TcxSctLBdGzmIKVpUrv9mK7C1SkPAJK6vezF
-	 1QQh9iQDDu9mA9jESTI+GU1Es5xpMnyAh/FOeMl4=
+	b=h4Nzb+wPwVg33cZt5EGec7XQJEfljqUsW5hyAXchv3+AGdNTcGgBNpYHI8a6t57BD
+	 czGofjJm5xnJyEjSIy6onyHgmdyxJw01UPtW1W+AMr3FIdcXUZFppkoLwq+cyOulko
+	 wN+I2udy4mzf72W17KjxiJFAymgHGQQItSUkk6mA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Ranjan Kumar <ranjan.kumar@broadcom.com>,
-	"Martin K. Petersen" <martin.petersen@oracle.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.16 273/457] scsi: mpi3mr: Drop unnecessary volatile from __iomem pointers
+	Randy Dunlap <rdunlap@infradead.org>,
+	Masahiro Yamada <masahiroy@kernel.org>,
+	"James E.J. Bottomley" <James.Bottomley@HansenPartnership.com>,
+	Helge Deller <deller@gmx.de>,
+	linux-parisc@vger.kernel.org
+Subject: [PATCH 5.10 347/523] parisc: Makefile: fix a typo in palo.conf
 Date: Tue, 26 Aug 2025 13:09:17 +0200
-Message-ID: <20250826110944.126732452@linuxfoundation.org>
+Message-ID: <20250826110933.027297519@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250826110937.289866482@linuxfoundation.org>
-References: <20250826110937.289866482@linuxfoundation.org>
+In-Reply-To: <20250826110924.562212281@linuxfoundation.org>
+References: <20250826110924.562212281@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,58 +64,40 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.16-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Ranjan Kumar <ranjan.kumar@broadcom.com>
+From: Randy Dunlap <rdunlap@infradead.org>
 
-[ Upstream commit 6853885b21cb1d7157cc14c9d30cc17141565bae ]
+commit 963f1b20a8d2a098954606b9725cd54336a2a86c upstream.
 
-The volatile qualifier is redundant for __iomem pointers.
+Correct "objree" to "objtree". "objree" is not defined.
 
-Cleaned up usage in mpi3mr_writeq() and sysif_regs pointer as per
-Upstream compliance.
-
-Signed-off-by: Ranjan Kumar <ranjan.kumar@broadcom.com>
-Link: https://lore.kernel.org/r/20250627194539.48851-3-ranjan.kumar@broadcom.com
-Signed-off-by: Martin K. Petersen <martin.petersen@oracle.com>
-Stable-dep-of: c91e140c82eb ("scsi: mpi3mr: Serialize admin queue BAR writes on 32-bit systems")
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Fixes: 75dd47472b92 ("kbuild: remove src and obj from the top Makefile")
+Signed-off-by: Randy Dunlap <rdunlap@infradead.org>
+Cc: Masahiro Yamada <masahiroy@kernel.org>
+Cc: "James E.J. Bottomley" <James.Bottomley@HansenPartnership.com>
+Cc: Helge Deller <deller@gmx.de>
+Cc: linux-parisc@vger.kernel.org
+Signed-off-by: Helge Deller <deller@gmx.de>
+Cc: stable@vger.kernel.org # v5.3+
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/scsi/mpi3mr/mpi3mr.h    |    2 +-
- drivers/scsi/mpi3mr/mpi3mr_fw.c |    4 ++--
- 2 files changed, 3 insertions(+), 3 deletions(-)
+ arch/parisc/Makefile |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/drivers/scsi/mpi3mr/mpi3mr.h
-+++ b/drivers/scsi/mpi3mr/mpi3mr.h
-@@ -1185,7 +1185,7 @@ struct mpi3mr_ioc {
- 	char name[MPI3MR_NAME_LENGTH];
- 	char driver_name[MPI3MR_NAME_LENGTH];
- 
--	volatile struct mpi3_sysif_registers __iomem *sysif_regs;
-+	struct mpi3_sysif_registers __iomem *sysif_regs;
- 	resource_size_t sysif_regs_phys;
- 	int bars;
- 	u64 dma_mask;
---- a/drivers/scsi/mpi3mr/mpi3mr_fw.c
-+++ b/drivers/scsi/mpi3mr/mpi3mr_fw.c
-@@ -23,12 +23,12 @@ module_param(poll_queues, int, 0444);
- MODULE_PARM_DESC(poll_queues, "Number of queues for io_uring poll mode. (Range 1 - 126)");
- 
- #if defined(writeq) && defined(CONFIG_64BIT)
--static inline void mpi3mr_writeq(__u64 b, volatile void __iomem *addr)
-+static inline void mpi3mr_writeq(__u64 b, void __iomem *addr)
- {
- 	writeq(b, addr);
- }
- #else
--static inline void mpi3mr_writeq(__u64 b, volatile void __iomem *addr)
-+static inline void mpi3mr_writeq(__u64 b, void __iomem *addr)
- {
- 	__u64 data_out = b;
- 
+--- a/arch/parisc/Makefile
++++ b/arch/parisc/Makefile
+@@ -141,7 +141,7 @@ palo lifimage: vmlinuz
+ 	fi
+ 	@if test ! -f "$(PALOCONF)"; then \
+ 		cp $(srctree)/arch/parisc/defpalo.conf $(objtree)/palo.conf; \
+-		echo 'A generic palo config file ($(objree)/palo.conf) has been created for you.'; \
++		echo 'A generic palo config file ($(objtree)/palo.conf) has been created for you.'; \
+ 		echo 'You should check it and re-run "make palo".'; \
+ 		echo 'WARNING: the "lifimage" file is now placed in this directory by default!'; \
+ 		false; \
 
 
 
