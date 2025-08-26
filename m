@@ -1,56 +1,58 @@
-Return-Path: <stable+bounces-173903-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-174386-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id F384AB36055
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 14:59:30 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 491E0B362EF
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 15:24:13 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 6678D463C87
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 12:56:59 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 2665918866B1
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 13:20:21 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0BD8B22DFB8;
-	Tue, 26 Aug 2025 12:56:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1F5E834A31D;
+	Tue, 26 Aug 2025 13:17:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="VLWWOLkQ"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="AbLj87z2"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id ACDF9186E40;
-	Tue, 26 Aug 2025 12:56:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D06F7278771;
+	Tue, 26 Aug 2025 13:17:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756212969; cv=none; b=JuBg8cy2y83YZFLu+eBK2Rq0DxAUhIpwzijzY7lHKAMD7SLIg7JzoPmuFgjcr4/1lxODw856BFL1JBPwE+CopFqHvP7ZJevhf7GlCJlJVLPAeKOHa0kq9RI9d0XrhsU899MDFa1j83b0TC2h5OEFdbUWAyywOOlNDCBucQ9ESjg=
+	t=1756214252; cv=none; b=X/NKhXLfCFd9wupF7H823UsYIgrAdmwYf3we4qgY05E8Cj6Og+7Lri4HlfOyxAFG4SYajZ1ajriUQ7p5x67zO+yFVl2f5rgnXPHTaVwaa9Xdm/9u/QrHx4RACsTQReeb4Ogytak7j6nfl2UgDnLmZm2IPtEZWv1r98YDV3EOIKQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756212969; c=relaxed/simple;
-	bh=BSDTeq59FHEJpPcGGku+xu5M8whnQfTsiergUkqjGlQ=;
+	s=arc-20240116; t=1756214252; c=relaxed/simple;
+	bh=uPVYY4+uO7OvcgQpYwZhhp2JHm30Gp7WsopqLqY5cQ8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=JWrY2lZtfhHWVllVm66uEL1KKn1kZr5gHojQovrxadA+E35CCX2NoqZl2IG/oTSP++zydt3f1x/kX8T61BIEl/3XzgUPoX7i5EWJYXbqoc6rLqlnQaM/Sz+vfrJ2INVz/Y6k/R+BChhW/xjGOCXZr79QYIjW7YosUsyn1hlV89U=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=VLWWOLkQ; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 43740C4CEF4;
-	Tue, 26 Aug 2025 12:56:09 +0000 (UTC)
+	 MIME-Version; b=m5e38ggEH7MamlMbUFNHuQ/WPwTkGOINach/+qkdL/6+0rPLBI+JDuoq4MRfpTX0UHJwpDpM0O1BUo88i1m2qFYBTWwMmHJVLVebpCZ2QyzXUAOzzy1frOd8j7l6ljB8z8MGugHG5JoqXbToT3AyVE2ow2LmYuUBXHUmhxA4yMg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=AbLj87z2; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5AF0BC4CEF1;
+	Tue, 26 Aug 2025 13:17:32 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1756212969;
-	bh=BSDTeq59FHEJpPcGGku+xu5M8whnQfTsiergUkqjGlQ=;
+	s=korg; t=1756214252;
+	bh=uPVYY4+uO7OvcgQpYwZhhp2JHm30Gp7WsopqLqY5cQ8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=VLWWOLkQp8wD42RBPIs7rktsqmOyl3nsMGOUcNPYjucJcNmtU1FFdiqTp1TXn0BM6
-	 QZ78vyb+nmenDppSrzsWGcJAdcgg123mlVIfKR52kaHCYXIoBqB6KO0pSbjZr3nQAY
-	 B1fGh/0Z2+iUjym9pquT0+/ivp//KXIFKWFeoPwM=
+	b=AbLj87z2auqkV5Gkp9kDMIlsIUNUhlQSFsDmVRgDiFWrXOfuVw+Wde0BveACXA2x7
+	 GMB2EMc26iDiqIazymHy9Q2gy3hEtWKdisyL07dFlwvbWcE/IUQwej8vaI39ypAYAz
+	 9Ws9Su97uq4LReik3Of0RvrtbxqczeGm0VVFqP3U=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	David Bauer <mail@david-bauer.net>,
-	Felix Fietkau <nbd@nbd.name>,
+	Benson Leung <bleung@chromium.org>,
+	Jameson Thies <jthies@google.com>,
+	Heikki Krogerus <heikki.krogerus@linux.intel.com>,
+	Sebastian Reichel <sebastian.reichel@collabora.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 172/587] wifi: mt76: mt7915: mcu: re-init MCU before loading FW patch
+Subject: [PATCH 6.1 068/482] usb: typec: ucsi: psy: Set current max to 100mA for BC 1.2 and Default
 Date: Tue, 26 Aug 2025 13:05:21 +0200
-Message-ID: <20250826110957.320092380@linuxfoundation.org>
+Message-ID: <20250826110932.514651902@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250826110952.942403671@linuxfoundation.org>
-References: <20250826110952.942403671@linuxfoundation.org>
+In-Reply-To: <20250826110930.769259449@linuxfoundation.org>
+References: <20250826110930.769259449@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,68 +64,69 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: David Bauer <mail@david-bauer.net>
+From: Benson Leung <bleung@chromium.org>
 
-[ Upstream commit ac9c50c79eaef5fca0f165e45d0c5880606db53e ]
+[ Upstream commit af833e7f7db3cf4c82f063668e1b52297a30ec18 ]
 
-Restart the MCU and release the patch semaphore before loading the MCU
-patch firmware from the host.
+ucsi_psy_get_current_max would return 0mA as the maximum current if
+UCSI detected a BC or a Default USB Power sporce.
 
-This fixes failures upon error recovery in case the semaphore was
-previously taken and never released by the host.
+The comment in this function is true that we can't tell the difference
+between DCP/CDP or SDP chargers, but we can guarantee that at least 1-unit
+of USB 1.1/2.0 power is available, which is 100mA, which is a better
+fallback value than 0, which causes some userspaces, including the ChromeOS
+power manager, to regard this as a power source that is not providing
+any power.
 
-This happens from time to time upon triggering a full-chip error
-recovery. Under this circumstance, the hardware restart fails and the
-radio is rendered inoperational.
+In reality, 100mA is guaranteed from all sources in these classes.
 
-Signed-off-by: David Bauer <mail@david-bauer.net>
-Link: https://patch.msgid.link/20250402004528.1036715-3-mail@david-bauer.net
-Signed-off-by: Felix Fietkau <nbd@nbd.name>
+Signed-off-by: Benson Leung <bleung@chromium.org>
+Reviewed-by: Jameson Thies <jthies@google.com>
+Reviewed-by: Heikki Krogerus <heikki.krogerus@linux.intel.com>
+Reviewed-by: Sebastian Reichel <sebastian.reichel@collabora.com>
+Link: https://lore.kernel.org/r/20250717200805.3710473-1-bleung@chromium.org
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- .../net/wireless/mediatek/mt76/mt7915/mcu.c   | 25 +++++++++++--------
- 1 file changed, 15 insertions(+), 10 deletions(-)
+ drivers/usb/typec/ucsi/psy.c  | 2 +-
+ drivers/usb/typec/ucsi/ucsi.h | 7 ++++---
+ 2 files changed, 5 insertions(+), 4 deletions(-)
 
-diff --git a/drivers/net/wireless/mediatek/mt76/mt7915/mcu.c b/drivers/net/wireless/mediatek/mt76/mt7915/mcu.c
-index f0226db2e57c..fae9ec98da3b 100644
---- a/drivers/net/wireless/mediatek/mt76/mt7915/mcu.c
-+++ b/drivers/net/wireless/mediatek/mt76/mt7915/mcu.c
-@@ -2060,16 +2060,21 @@ static int mt7915_load_firmware(struct mt7915_dev *dev)
- {
- 	int ret;
- 
--	/* make sure fw is download state */
--	if (mt7915_firmware_state(dev, false)) {
--		/* restart firmware once */
--		mt76_connac_mcu_restart(&dev->mt76);
--		ret = mt7915_firmware_state(dev, false);
--		if (ret) {
--			dev_err(dev->mt76.dev,
--				"Firmware is not ready for download\n");
--			return ret;
--		}
-+	/* Release Semaphore if taken by previous failed attempt */
-+	ret = mt76_connac_mcu_patch_sem_ctrl(&dev->mt76, false);
-+	if (ret != PATCH_REL_SEM_SUCCESS) {
-+		dev_err(dev->mt76.dev, "Could not release semaphore\n");
-+		/* Continue anyways */
-+	}
-+
-+	/* Always restart MCU firmware */
-+	mt76_connac_mcu_restart(&dev->mt76);
-+
-+	/* Check if MCU is ready */
-+	ret = mt7915_firmware_state(dev, false);
-+	if (ret) {
-+		dev_err(dev->mt76.dev, "Firmware did not enter download state\n");
-+		return ret;
+diff --git a/drivers/usb/typec/ucsi/psy.c b/drivers/usb/typec/ucsi/psy.c
+index b35c6e07911e..9b0157063df0 100644
+--- a/drivers/usb/typec/ucsi/psy.c
++++ b/drivers/usb/typec/ucsi/psy.c
+@@ -163,7 +163,7 @@ static int ucsi_psy_get_current_max(struct ucsi_connector *con,
+ 	case UCSI_CONSTAT_PWR_OPMODE_DEFAULT:
+ 	/* UCSI can't tell b/w DCP/CDP or USB2/3x1/3x2 SDP chargers */
+ 	default:
+-		val->intval = 0;
++		val->intval = UCSI_TYPEC_DEFAULT_CURRENT * 1000;
+ 		break;
  	}
+ 	return 0;
+diff --git a/drivers/usb/typec/ucsi/ucsi.h b/drivers/usb/typec/ucsi/ucsi.h
+index 793a8307dded..0167239cdcd4 100644
+--- a/drivers/usb/typec/ucsi/ucsi.h
++++ b/drivers/usb/typec/ucsi/ucsi.h
+@@ -313,9 +313,10 @@ struct ucsi {
+ #define UCSI_MAX_SVID		5
+ #define UCSI_MAX_ALTMODES	(UCSI_MAX_SVID * 6)
  
- 	ret = mt76_connac2_load_patch(&dev->mt76, fw_name_var(dev, ROM_PATCH));
+-#define UCSI_TYPEC_VSAFE5V	5000
+-#define UCSI_TYPEC_1_5_CURRENT	1500
+-#define UCSI_TYPEC_3_0_CURRENT	3000
++#define UCSI_TYPEC_VSAFE5V		5000
++#define UCSI_TYPEC_DEFAULT_CURRENT	 100
++#define UCSI_TYPEC_1_5_CURRENT		1500
++#define UCSI_TYPEC_3_0_CURRENT		3000
+ 
+ struct ucsi_connector {
+ 	int num;
 -- 
 2.39.5
 
