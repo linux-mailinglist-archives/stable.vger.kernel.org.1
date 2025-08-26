@@ -1,56 +1,55 @@
-Return-Path: <stable+bounces-174048-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-173142-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id E5134B3611D
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 15:06:47 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2205AB35BE4
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 13:29:14 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 123945E2AF0
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 13:02:35 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 013741880791
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 11:25:04 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9F0531ADFFE;
-	Tue, 26 Aug 2025 13:02:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 108A62BE653;
+	Tue, 26 Aug 2025 11:24:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="0x9gXVMD"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="FWxmhqHE"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5C88B148850;
-	Tue, 26 Aug 2025 13:02:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BFCC2239573;
+	Tue, 26 Aug 2025 11:24:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756213354; cv=none; b=Cveqs/nnnz0pBC2/E5azU93Vrjd++yed1sA5S9o4No2f0uGVlvzkD9HrSpLbgRF6YdI4a9ZKlu/LHzJPmH8Wu4SuVWbX6fdvso717WlRrPfLg1ibGbWZcP+TAB6jpwmFzY+67mmbSI/zSlvSxfk+fA8452aBgWFFMwIU3bR2FJc=
+	t=1756207481; cv=none; b=uUqeOQBqT74J9Q7ZImDdckFp6h+L1FmUFOZOwPpXDcVtA1N1H/WxK9Qai8QR3SVdQIqbHQmLUeltAn1lA1yd2cwtFMU4sz1i7cQSBa/h54Hclfd4ztp3uku5YqXNnbEKLA54r8BMUStcC+HW4c/GsJMz09Q3yjlrFy456RwSoQY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756213354; c=relaxed/simple;
-	bh=kLKF/mFrruoRzW9Gfv/YqpjBbxwoXd6EJrGXra8Y0bQ=;
+	s=arc-20240116; t=1756207481; c=relaxed/simple;
+	bh=6l0MODiAOElRR1q4aiiL1XmQZNI/khEBCKT6Bt2p7G0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=M5BBkJR3EEO967RfluEs3xcoJm/taGHSN0FIvisD+eviBge77WZZh38QYLR3d2yuJ3isLW3IC1njk7crT6T9JqBclVF8pJ931wKUgsjPsKjiR0mXx4EI7Ha431BoqWkX31BOpw4HwiXwXSKv0e0tShBZO49PFlEgLb/KEIy/Dhw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=0x9gXVMD; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E6E38C4CEF1;
-	Tue, 26 Aug 2025 13:02:33 +0000 (UTC)
+	 MIME-Version; b=EN6BclC4I+4vpKTUZafnzsPdOHAXZL/BbjfH2mPtMFjTUNm1uTvxhj1N3BtpuQy97/uhHaO09/lZxS1y5mrwS1827QdYOWWbnjgtBuZ3ON+eXB1LVEK3DIMhMizHFkRBMMLHh0hG1Qz94M+/sv4O5TRH68C5p1v8yx8jxlSTvAA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=FWxmhqHE; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4F5D2C116D0;
+	Tue, 26 Aug 2025 11:24:41 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1756213354;
-	bh=kLKF/mFrruoRzW9Gfv/YqpjBbxwoXd6EJrGXra8Y0bQ=;
+	s=korg; t=1756207481;
+	bh=6l0MODiAOElRR1q4aiiL1XmQZNI/khEBCKT6Bt2p7G0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=0x9gXVMDNjGBNy0ZRMD/ssrNayCEx8vSI+Fewnc0Fipn053dh0nWTWFni31Dg9tjT
-	 xjomNECmifpJeRA4MxUuZiZje9ym7bjvrKPWfhxQRUFfgD09quy7bxxBE4OGXIV1nh
-	 pTSsk7LRTFZs8FdbF/c5RqAT+F3yhE7khMXR9VB4=
+	b=FWxmhqHEb1Izmvwnyj84PH9FBFCjIrLbAzj6MZhRH1TLIEoczNsX+N9JAPd8IMiMO
+	 uNYwtIt5Vfar4NX1+MTgmW/SHQ7e8n9Tqtg9negUtJ+44tVGFAcgfGW2UyvJxjz7cf
+	 4x+TLUKVBk0JqcMr2chYskCH7qiwbxxY2wzIDyCM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Sravan Kumar Gundu <sravankumarlpu@gmail.com>,
-	Helge Deller <deller@gmx.de>,
-	syzbot+c4b7aa0513823e2ea880@syzkaller.appspotmail.com
-Subject: [PATCH 6.6 316/587] fbdev: Fix vmalloc out-of-bounds write in fast_imageblit
+	"David (Ming Qiang) Wu" <David.Wu3@amd.com>,
+	Alex Deucher <alexander.deucher@amd.com>
+Subject: [PATCH 6.16 181/457] drm/amdgpu: update mmhub 3.0.1 client id mappings
 Date: Tue, 26 Aug 2025 13:07:45 +0200
-Message-ID: <20250826111000.956073840@linuxfoundation.org>
+Message-ID: <20250826110941.848450601@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250826110952.942403671@linuxfoundation.org>
-References: <20250826110952.942403671@linuxfoundation.org>
+In-Reply-To: <20250826110937.289866482@linuxfoundation.org>
+References: <20250826110937.289866482@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,74 +61,101 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.16-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Sravan Kumar Gundu <sravankumarlpu@gmail.com>
+From: Alex Deucher <alexander.deucher@amd.com>
 
-commit af0db3c1f898144846d4c172531a199bb3ca375d upstream.
+commit 0bae62cc989fa99ac9cb564eb573aad916d1eb61 upstream.
 
-This issue triggers when a userspace program does an ioctl
-FBIOPUT_CON2FBMAP by passing console number and frame buffer number.
-Ideally this maps console to frame buffer and updates the screen if
-console is visible.
+Update the client id mapping so the correct clients
+get printed when there is a mmhub page fault.
 
-As part of mapping it has to do resize of console according to frame
-buffer info. if this resize fails and returns from vc_do_resize() and
-continues further. At this point console and new frame buffer are mapped
-and sets display vars. Despite failure still it continue to proceed
-updating the screen at later stages where vc_data is related to previous
-frame buffer and frame buffer info and display vars are mapped to new
-frame buffer and eventully leading to out-of-bounds write in
-fast_imageblit(). This bheviour is excepted only when fg_console is
-equal to requested console which is a visible console and updates screen
-with invalid struct references in fbcon_putcs().
-
-Reported-and-tested-by: syzbot+c4b7aa0513823e2ea880@syzkaller.appspotmail.com
-Closes: https://syzkaller.appspot.com/bug?extid=c4b7aa0513823e2ea880
-Signed-off-by: Sravan Kumar Gundu <sravankumarlpu@gmail.com>
+Reviewed-by: David (Ming Qiang) Wu <David.Wu3@amd.com>
+Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
+(cherry picked from commit 2a2681eda73b99a2c1ee8cdb006099ea5d0c2505)
 Cc: stable@vger.kernel.org
-Signed-off-by: Helge Deller <deller@gmx.de>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/video/fbdev/core/fbcon.c |    9 +++++----
- 1 file changed, 5 insertions(+), 4 deletions(-)
+ drivers/gpu/drm/amd/amdgpu/mmhub_v3_0_1.c |   57 ++++++++++++++++--------------
+ 1 file changed, 32 insertions(+), 25 deletions(-)
 
---- a/drivers/video/fbdev/core/fbcon.c
-+++ b/drivers/video/fbdev/core/fbcon.c
-@@ -808,7 +808,8 @@ static void con2fb_init_display(struct v
- 				   fg_vc->vc_rows);
- 	}
+--- a/drivers/gpu/drm/amd/amdgpu/mmhub_v3_0_1.c
++++ b/drivers/gpu/drm/amd/amdgpu/mmhub_v3_0_1.c
+@@ -36,40 +36,47 @@
  
--	update_screen(vc_cons[fg_console].d);
-+	if (fg_console != unit)
-+		update_screen(vc_cons[fg_console].d);
- }
+ static const char *mmhub_client_ids_v3_0_1[][2] = {
+ 	[0][0] = "VMC",
++	[1][0] = "ISPXT",
++	[2][0] = "ISPIXT",
+ 	[4][0] = "DCEDMC",
+ 	[5][0] = "DCEVGA",
+ 	[6][0] = "MP0",
+ 	[7][0] = "MP1",
+-	[8][0] = "MPIO",
+-	[16][0] = "HDP",
+-	[17][0] = "LSDMA",
+-	[18][0] = "JPEG",
+-	[19][0] = "VCNU0",
+-	[21][0] = "VSCH",
+-	[22][0] = "VCNU1",
+-	[23][0] = "VCN1",
+-	[32+20][0] = "VCN0",
+-	[2][1] = "DBGUNBIO",
++	[8][0] = "MPM",
++	[12][0] = "ISPTNR",
++	[14][0] = "ISPCRD0",
++	[15][0] = "ISPCRD1",
++	[16][0] = "ISPCRD2",
++	[22][0] = "HDP",
++	[23][0] = "LSDMA",
++	[24][0] = "JPEG",
++	[27][0] = "VSCH",
++	[28][0] = "VCNU",
++	[29][0] = "VCN",
++	[1][1] = "ISPXT",
++	[2][1] = "ISPIXT",
+ 	[3][1] = "DCEDWB",
+ 	[4][1] = "DCEDMC",
+ 	[5][1] = "DCEVGA",
+ 	[6][1] = "MP0",
+ 	[7][1] = "MP1",
+-	[8][1] = "MPIO",
+-	[10][1] = "DBGU0",
+-	[11][1] = "DBGU1",
+-	[12][1] = "DBGU2",
+-	[13][1] = "DBGU3",
+-	[14][1] = "XDP",
+-	[15][1] = "OSSSYS",
+-	[16][1] = "HDP",
+-	[17][1] = "LSDMA",
+-	[18][1] = "JPEG",
+-	[19][1] = "VCNU0",
+-	[20][1] = "VCN0",
+-	[21][1] = "VSCH",
+-	[22][1] = "VCNU1",
+-	[23][1] = "VCN1",
++	[8][1] = "MPM",
++	[10][1] = "ISPMWR0",
++	[11][1] = "ISPMWR1",
++	[12][1] = "ISPTNR",
++	[13][1] = "ISPSWR",
++	[14][1] = "ISPCWR0",
++	[15][1] = "ISPCWR1",
++	[16][1] = "ISPCWR2",
++	[17][1] = "ISPCWR3",
++	[18][1] = "XDP",
++	[21][1] = "OSSSYS",
++	[22][1] = "HDP",
++	[23][1] = "LSDMA",
++	[24][1] = "JPEG",
++	[27][1] = "VSCH",
++	[28][1] = "VCNU",
++	[29][1] = "VCN",
+ };
  
- /**
-@@ -1353,6 +1354,7 @@ static void fbcon_set_disp(struct fb_inf
- 	struct vc_data *svc;
- 	struct fbcon_ops *ops = info->fbcon_par;
- 	int rows, cols;
-+	unsigned long ret = 0;
- 
- 	p = &fb_display[unit];
- 
-@@ -1403,11 +1405,10 @@ static void fbcon_set_disp(struct fb_inf
- 	rows = FBCON_SWAP(ops->rotate, info->var.yres, info->var.xres);
- 	cols /= vc->vc_font.width;
- 	rows /= vc->vc_font.height;
--	vc_resize(vc, cols, rows);
-+	ret = vc_resize(vc, cols, rows);
- 
--	if (con_is_visible(vc)) {
-+	if (con_is_visible(vc) && !ret)
- 		update_screen(vc);
--	}
- }
- 
- static __inline__ void ywrap_up(struct vc_data *vc, int count)
+ static uint32_t mmhub_v3_0_1_get_invalidate_req(unsigned int vmid,
 
 
 
