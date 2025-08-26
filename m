@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-175581-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-172976-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1FDECB368FD
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 16:21:28 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id DC191B35B10
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 13:17:55 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 744902A7B74
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 14:12:39 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 4EF9D3A6438
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 11:17:48 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3064B350830;
-	Tue, 26 Aug 2025 14:10:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2A7C030BF64;
+	Tue, 26 Aug 2025 11:17:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="rjFzdUh8"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="OxjNnXFz"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E21E234DCED;
-	Tue, 26 Aug 2025 14:10:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D7DA02264A3;
+	Tue, 26 Aug 2025 11:17:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756217423; cv=none; b=P9dPYv16x4WPC7xYHDBYID/S27/qMCexd4d6bCcZ5d0Kw2+cOwu/i+N41PHsmZTXIbDN8R3kRGcBeo9/sjT6N8QIShHzsFCsnFqRTUczXsZhm8JiNSoSEKWf9D7X3VS93qjpiA79kzCvHCTVClGKXxTG9ARuFJZYk6fq9Z6xzWo=
+	t=1756207052; cv=none; b=TiYoEPsj2i/KUjbQ+n7r/nDeXdQtgnL6unKrf5wTMG0NpPJQYpJyD678mm8rNEidtK/rUvBH7GvtEqhO33TOkVqanY6QzIR8gQ7I2LcB69j2xi7LdzYaup6QOM/SJwyMCCFQnlSwNKjZpoo9NdvwOA1aQ/s/9i6RASThyu6+9rg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756217423; c=relaxed/simple;
-	bh=YPv0qCtJ0gFtqLe6B7ksGJ8dk+KHf56ao35aWeqoiD0=;
+	s=arc-20240116; t=1756207052; c=relaxed/simple;
+	bh=kRMhd/EPPFSdVvvp4QWnGLdTNgrddedEk7A03524TgY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=aSERZErGQy2u+nnfpVhp2b5QgOaFunhvttmtIhe/L4Q/f0pA3ayOCgzbJ2Tq1ddU3f1E1dD1fGqARZbOyv5rYKgEltsLyzBCPxPX/0HV3fFix9JIT9gK4KklwonQapZppVmH//YQO6JJTIyU156VIB7P9GcSPwqFeLbJAgpd2fE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=rjFzdUh8; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 23DC5C4CEF1;
-	Tue, 26 Aug 2025 14:10:21 +0000 (UTC)
+	 MIME-Version; b=ZzxWqlEshsvz/GOkluRSpa/tBaxOhpaCDl6OLB0rJ35wJPMZW709mL++D0ly44Ve0W8RhkALV9AZY4H/5u/qAcf5UIkx7kE0tbhHJbNW9rF+s1P8MYyOLGQ13zQh/XmffEXJBwd9xLl1PqSK+OYmqfbKm5fHBpAjzt1cqnyf0bc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=OxjNnXFz; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3594DC113CF;
+	Tue, 26 Aug 2025 11:17:32 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1756217422;
-	bh=YPv0qCtJ0gFtqLe6B7ksGJ8dk+KHf56ao35aWeqoiD0=;
+	s=korg; t=1756207052;
+	bh=kRMhd/EPPFSdVvvp4QWnGLdTNgrddedEk7A03524TgY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=rjFzdUh8dsonsMrz/LqW6BsQc3385nyxWNWWcB7iGbV4wIzF2iSocTu24CmmAZWiw
-	 pah1ByD1mCq7SZIefNqbumoHSzscIkSN268ri5v8DG5iccyZ2jGt8v8joNn2Rbb6JB
-	 l9p6NhUCWFtoQeIwR7Xf0gya4aZtsqapqNdIxJjk=
+	b=OxjNnXFzJdMAyqX1GmRXAyg4gfiusKtUJJsEikNTGGRJqAhigtgM30XnFGLxYRQJx
+	 V5EYM1gZakUvQ+cPNEcRrIXC4x43RP9Imf9CtXxx6L1di27F0Q+s1DcMecAIaqSv+4
+	 84wNzptt/bvzwnXzB8AGDsUrDZF99YBqQFQWr46s=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Johan Korsnes <johan.korsnes@gmail.com>,
-	Christophe Leroy <christophe.leroy@csgroup.eu>,
-	Madhavan Srinivasan <maddy@linux.ibm.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 106/523] arch: powerpc: defconfig: Drop obsolete CONFIG_NET_CLS_TCINDEX
+	Ingo Franzki <ifranzki@linux.ibm.com>,
+	Eric Biggers <ebiggers@kernel.org>,
+	Herbert Xu <herbert@gondor.apana.org.au>
+Subject: [PATCH 6.16 032/457] crypto: hash - Increase HASH_MAX_DESCSIZE for hmac(sha3-224-s390)
 Date: Tue, 26 Aug 2025 13:05:16 +0200
-Message-ID: <20250826110927.150136481@linuxfoundation.org>
+Message-ID: <20250826110938.132866111@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250826110924.562212281@linuxfoundation.org>
-References: <20250826110924.562212281@linuxfoundation.org>
+In-Reply-To: <20250826110937.289866482@linuxfoundation.org>
+References: <20250826110937.289866482@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,42 +62,42 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+6.16-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Johan Korsnes <johan.korsnes@gmail.com>
+From: Herbert Xu <herbert@gondor.apana.org.au>
 
-[ Upstream commit 75cd37c5f28b85979fd5a65174013010f6b78f27 ]
+commit 9d9b193ed73a65ec47cf1fd39925b09da8216461 upstream.
 
-This option was removed from the Kconfig in commit
-8c710f75256b ("net/sched: Retire tcindex classifier") but it was not
-removed from the defconfigs.
+The value of HASH_MAX_DESCSIZE is off by one for hmac(sha3-224-s390).
+Fix this so that hmac(sha3-224-s390) can be registered.
 
-Fixes: 8c710f75256b ("net/sched: Retire tcindex classifier")
-Signed-off-by: Johan Korsnes <johan.korsnes@gmail.com>
-Reviewed-by: Christophe Leroy <christophe.leroy@csgroup.eu>
-Signed-off-by: Madhavan Srinivasan <maddy@linux.ibm.com>
-Link: https://patch.msgid.link/20250323191116.113482-1-johan.korsnes@gmail.com
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Reported-by: Ingo Franzki <ifranzki@linux.ibm.com>
+Reported-by: Eric Biggers <ebiggers@kernel.org>
+Fixes: 6f90ba706551 ("crypto: s390/sha3 - Use API partial block handling")
+Cc: <stable@vger.kernel.org>
+Signed-off-by: Herbert Xu <herbert@gondor.apana.org.au>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- arch/powerpc/configs/ppc6xx_defconfig | 1 -
- 1 file changed, 1 deletion(-)
+ include/crypto/hash.h | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/arch/powerpc/configs/ppc6xx_defconfig b/arch/powerpc/configs/ppc6xx_defconfig
-index 021da6736570..7c14fecc7154 100644
---- a/arch/powerpc/configs/ppc6xx_defconfig
-+++ b/arch/powerpc/configs/ppc6xx_defconfig
-@@ -265,7 +265,6 @@ CONFIG_NET_SCH_DSMARK=m
- CONFIG_NET_SCH_NETEM=m
- CONFIG_NET_SCH_INGRESS=m
- CONFIG_NET_CLS_BASIC=m
--CONFIG_NET_CLS_TCINDEX=m
- CONFIG_NET_CLS_ROUTE4=m
- CONFIG_NET_CLS_FW=m
- CONFIG_NET_CLS_U32=m
+diff --git a/include/crypto/hash.h b/include/crypto/hash.h
+index 6f6b9de12cd3..ed63b904837d 100644
+--- a/include/crypto/hash.h
++++ b/include/crypto/hash.h
+@@ -184,7 +184,7 @@ struct shash_desc {
+  * Worst case is hmac(sha3-224-s390).  Its context is a nested 'shash_desc'
+  * containing a 'struct s390_sha_ctx'.
+  */
+-#define HASH_MAX_DESCSIZE	(sizeof(struct shash_desc) + 360)
++#define HASH_MAX_DESCSIZE	(sizeof(struct shash_desc) + 361)
+ #define MAX_SYNC_HASH_REQSIZE	(sizeof(struct ahash_request) + \
+ 				 HASH_MAX_DESCSIZE)
+ 
 -- 
-2.39.5
+2.50.1
 
 
 
