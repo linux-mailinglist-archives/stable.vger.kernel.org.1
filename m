@@ -1,58 +1,56 @@
-Return-Path: <stable+bounces-175760-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-176170-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 307F3B36A52
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 16:36:36 +0200 (CEST)
+Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [142.0.200.124])
+	by mail.lfdr.de (Postfix) with ESMTPS id 54BEAB36A94
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 16:38:47 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id ECFDE1BC751D
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 14:20:48 +0000 (UTC)
+	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 07D8D4E136E
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 14:38:46 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id BCEC235206F;
-	Tue, 26 Aug 2025 14:18:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 54EFF35CED4;
+	Tue, 26 Aug 2025 14:36:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="myerU3lA"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="JU2l0Ylx"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7B9AC342CA7;
-	Tue, 26 Aug 2025 14:18:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 07F86286881;
+	Tue, 26 Aug 2025 14:36:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756217899; cv=none; b=MJ3JjFHrCYSsxf3FjYUuvgbUTfeDb5ilo21mFc5TubaX7VrNYH1RIega94hriNaTZxhRqP4i5G3st+s0zcLvTReVVlN72WRuxO5/fusWuKnkQrSPidfMlvcnwzzq2CEkyms44NOAXBcMd2X93H8aWWzH/kvEDfB+6aPC20mhKCY=
+	t=1756218962; cv=none; b=CxK+AolC+UN42V5YRILI18ezX0j3XR0S4aj7xE5FlBYOej1P8OMum/y66ihED4gfO559eUW1rxUyknbIhyPYZpLvKcuecyIUO8/DFDX9EOAJ4zKwnrZDuXE+G4GJAP50ctkemWAZJ/IorJ2J590is6pkgPqm7wFhseY/SHmU1tQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756217899; c=relaxed/simple;
-	bh=Giz9tc7fBxqv4HwHWY3PlP43FiLwKxAsGtPky+S8uCM=;
+	s=arc-20240116; t=1756218962; c=relaxed/simple;
+	bh=Dh4Zifi5vWlExY/CyfDSZISCYXpSOdVYS8tRxWpbspU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Jep6WsbKgorqcT5R//TGksT7XkMaxw/XsVNhi9QZMy26Xrzaj7ecv/xRKecVVQnJTt3aYh3HnQabDmtzK68PD94zIRXOL3tjlAFRl+PQec5xOyrEEuKGnx6fWFYtt/Py5x05mtTLQ7n9DkVz4xQbCocDJxi0kmjnpC6OtEht9G8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=myerU3lA; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C6E90C113CF;
-	Tue, 26 Aug 2025 14:18:16 +0000 (UTC)
+	 MIME-Version; b=ciAw7ZTRV41E0thEu+vrC0x9STRAwxbZJ6yg8caHyZSHU4pnbIYRkaM06x/5Sv7sSfyy6Ou/kE/Gh7Isf0bCESfs4LDrh5oSzxfSQC9AOcA8xgRyAoMkqDjZKBgoLe+Y+yNakznTKCh2JgGY6zyfvt43NFa/H6t38bageu66L0A=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=JU2l0Ylx; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8FC08C4CEF1;
+	Tue, 26 Aug 2025 14:36:01 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1756217897;
-	bh=Giz9tc7fBxqv4HwHWY3PlP43FiLwKxAsGtPky+S8uCM=;
+	s=korg; t=1756218961;
+	bh=Dh4Zifi5vWlExY/CyfDSZISCYXpSOdVYS8tRxWpbspU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=myerU3lACBNRKiNgXAtcWjY1YCzC/8DS5YuqJlCZSR4ngFG0eCj8ER9auov4DAocO
-	 03YCwp1uxHlvZ7MOO1cmTW2V2ePbx5q2ZEmj7UCRdlpj3cLc40jfe/Za9/KljJsy68
-	 nGQKFSsZoqNjp4bL+zqoKXVztlH3JevLPGR4f1hw=
+	b=JU2l0Ylx3Bukpw7GMSJfkpaMHg8ag+4EUzU2QIs1WqY2kOo/ztpiur51RZEV5USn6
+	 +zYtZEhJzvX3JOF1jpf8/YuH87AYQDYsRnOqaM+bT4nyaPAiGKlExWbKGvPvJtTLRt
+	 sQ1AA4Ij1kW9bSvbQ31FAJ7euUMVOqJ+bkl10uOU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Meagan Lloyd <meaganlloyd@linux.microsoft.com>,
-	Tyler Hicks <code@tyhicks.com>,
-	Rodolfo Giometti <giometti@enneenne.com>,
-	Alexandre Belloni <alexandre.belloni@bootlin.com>,
+	"Gautham R. Shenoy" <gautham.shenoy@amd.com>,
+	Shuah Khan <skhan@linuxfoundation.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 317/523] rtc: ds1307: handle oscillator stop flag (OSF) for ds1341
+Subject: [PATCH 5.4 201/403] pm: cpupower: Fix the snapshot-order of tsc,mperf, clock in mperf_stop()
 Date: Tue, 26 Aug 2025 13:08:47 +0200
-Message-ID: <20250826110932.283831687@linuxfoundation.org>
+Message-ID: <20250826110912.412304079@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250826110924.562212281@linuxfoundation.org>
-References: <20250826110924.562212281@linuxfoundation.org>
+In-Reply-To: <20250826110905.607690791@linuxfoundation.org>
+References: <20250826110905.607690791@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,65 +62,47 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+5.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Meagan Lloyd <meaganlloyd@linux.microsoft.com>
+From: Gautham R. Shenoy <gautham.shenoy@amd.com>
 
-[ Upstream commit 523923cfd5d622b8f4ba893fdaf29fa6adeb8c3e ]
+[ Upstream commit cda7ac8ce7de84cf32a3871ba5f318aa3b79381e ]
 
-In using CONFIG_RTC_HCTOSYS, rtc_hctosys() will sync the RTC time to the
-kernel time as long as rtc_read_time() succeeds. In some power loss
-situations, our supercapacitor-backed DS1342 RTC comes up with either an
-unpredictable future time or the default 01/01/00 from the datasheet.
-The oscillator stop flag (OSF) is set in these scenarios due to the
-power loss and can be used to determine the validity of the RTC data.
+In the function mperf_start(), mperf_monitor snapshots the time, tsc
+and finally the aperf,mperf MSRs. However, this order of snapshotting
+in is reversed in mperf_stop(). As a result, the C0 residency (which
+is computed as delta_mperf * 100 / delta_tsc) is under-reported on
+CPUs that is 100% busy.
 
-This change expands the oscillator stop flag (OSF) handling that has
-already been implemented for some chips to the ds1341 chip (DS1341 and
-DS1342 share a datasheet). This handling manages the validity of the RTC
-data in .read_time and .set_time based on the OSF.
+Fix this by snapshotting time, tsc and then aperf,mperf in
+mperf_stop() in the same order as in mperf_start().
 
-Signed-off-by: Meagan Lloyd <meaganlloyd@linux.microsoft.com>
-Reviewed-by: Tyler Hicks <code@tyhicks.com>
-Acked-by: Rodolfo Giometti <giometti@enneenne.com>
-Link: https://lore.kernel.org/r/1749665656-30108-3-git-send-email-meaganlloyd@linux.microsoft.com
-Signed-off-by: Alexandre Belloni <alexandre.belloni@bootlin.com>
+Link: https://lore.kernel.org/r/20250612122355.19629-2-gautham.shenoy@amd.com
+Signed-off-by: Gautham R. Shenoy <gautham.shenoy@amd.com>
+Signed-off-by: Shuah Khan <skhan@linuxfoundation.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/rtc/rtc-ds1307.c | 11 +++++++++++
- 1 file changed, 11 insertions(+)
+ tools/power/cpupower/utils/idle_monitor/mperf_monitor.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/rtc/rtc-ds1307.c b/drivers/rtc/rtc-ds1307.c
-index ba420201505c..a60362c69d87 100644
---- a/drivers/rtc/rtc-ds1307.c
-+++ b/drivers/rtc/rtc-ds1307.c
-@@ -275,6 +275,13 @@ static int ds1307_get_time(struct device *dev, struct rtc_time *t)
- 		if (tmp & DS1340_BIT_OSF)
- 			return -EINVAL;
- 		break;
-+	case ds_1341:
-+		ret = regmap_read(ds1307->regmap, DS1337_REG_STATUS, &tmp);
-+		if (ret)
-+			return ret;
-+		if (tmp & DS1337_BIT_OSF)
-+			return -EINVAL;
-+		break;
- 	case ds_1388:
- 		ret = regmap_read(ds1307->regmap, DS1388_REG_FLAG, &tmp);
- 		if (ret)
-@@ -373,6 +380,10 @@ static int ds1307_set_time(struct device *dev, struct rtc_time *t)
- 		regmap_update_bits(ds1307->regmap, DS1340_REG_FLAG,
- 				   DS1340_BIT_OSF, 0);
- 		break;
-+	case ds_1341:
-+		regmap_update_bits(ds1307->regmap, DS1337_REG_STATUS,
-+				   DS1337_BIT_OSF, 0);
-+		break;
- 	case ds_1388:
- 		regmap_update_bits(ds1307->regmap, DS1388_REG_FLAG,
- 				   DS1388_BIT_OSF, 0);
+diff --git a/tools/power/cpupower/utils/idle_monitor/mperf_monitor.c b/tools/power/cpupower/utils/idle_monitor/mperf_monitor.c
+index 0e8c0b879d4b..09c606760464 100644
+--- a/tools/power/cpupower/utils/idle_monitor/mperf_monitor.c
++++ b/tools/power/cpupower/utils/idle_monitor/mperf_monitor.c
+@@ -201,9 +201,9 @@ static int mperf_stop(void)
+ 	int cpu;
+ 
+ 	for (cpu = 0; cpu < cpu_count; cpu++) {
+-		mperf_measure_stats(cpu);
+-		mperf_get_tsc(&tsc_at_measure_end[cpu]);
+ 		clock_gettime(CLOCK_REALTIME, &time_end[cpu]);
++		mperf_get_tsc(&tsc_at_measure_end[cpu]);
++		mperf_measure_stats(cpu);
+ 	}
+ 
+ 	return 0;
 -- 
 2.39.5
 
