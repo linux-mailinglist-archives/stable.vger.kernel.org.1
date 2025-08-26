@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-173703-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-174756-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 61957B35DEF
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 13:49:54 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 95500B364B3
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 15:41:26 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 61FF17C7648
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 11:49:06 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 5F3611885B20
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 13:35:22 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 684D529D29B;
-	Tue, 26 Aug 2025 11:48:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 30EFD265CC0;
+	Tue, 26 Aug 2025 13:33:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Ta59N+eL"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="gBkLHbZs"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 244BA21D3C0;
-	Tue, 26 Aug 2025 11:48:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E102E2AD04;
+	Tue, 26 Aug 2025 13:33:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756208937; cv=none; b=QkfXgPypHo2ulOVy+e+04/4OTITMrEoK2qFhkL9SuZBcs7lPCc1yJTicl6y+Di08aZ4cDW9PrjBFhms3B6EBqzdmn2hL/VPIQeKdhtMRXMgrtn6e7FJEVzXlZvxf3MecLaur3hKcY37yrLjaXA893Tr+dD1rFfqBrMTO7EYlIag=
+	t=1756215234; cv=none; b=D39NXb/znqc/XUuzhUFX4xP9uh8m5OyugssCIaT/O2hqvEdli8IUpZhV5V2VpvQDOJweMTdop0PPVRfq4EIOy5fwph0EU6DvHLRHz0aujeSBB6VthO2mRqCHIqLhhlR2Pg4YfviWMsfsSvToMq+UGqTXA9ALGfEY4jlPSQL8+NM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756208937; c=relaxed/simple;
-	bh=a0rEK2kAzlsObCA1jgM1oawyJYGwTD0MvUqYqfJUR8o=;
+	s=arc-20240116; t=1756215234; c=relaxed/simple;
+	bh=c6UuT36KxkfWi4OInFIi9DjBvn5I0w0K3hdV/mawW6E=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Doo/3qTFW+sHZJH3SU051KpHRzwk6q31XEqi2BtUHC0lvTqoZohiGob6ulWP0hxx8hLys4DlWJi5t5DQf5bhDKbvJqwSAwSHnhCtYLqCBnUTQ91aSUCiz0CYPbXXv8BS5Z6Brnk64kSVovoMUtAZew4/IDLs7U/t61IH4hvrw5c=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Ta59N+eL; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id ABB9BC4CEF4;
-	Tue, 26 Aug 2025 11:48:56 +0000 (UTC)
+	 MIME-Version; b=QBnciwWU54NxudDmWy+iI6woRKwaunk5BbwAuUloX/A5CfjIL25DGQSAKwatUx999khgdwrVKBCSiC6B4UafBAISlV4C5eupxdlz7PfJowU4tViWrP94HPD4rngjrlf3csCPSV27COBBS3QQO3rr6/wrTtIPlucBwZZC/UrBhV0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=gBkLHbZs; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6FAFFC16AAE;
+	Tue, 26 Aug 2025 13:33:53 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1756208937;
-	bh=a0rEK2kAzlsObCA1jgM1oawyJYGwTD0MvUqYqfJUR8o=;
+	s=korg; t=1756215233;
+	bh=c6UuT36KxkfWi4OInFIi9DjBvn5I0w0K3hdV/mawW6E=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Ta59N+eLiNkrtJK8lG4eG7Am5osduhvjgUCZG88xc8OwRR222JHkfeZjVQRz6zznc
-	 zQ/ha9dtozpIAP3K7G6lpEdvZlXS3hKjD6uKZGqW0h1HaerXuwQ8HSqG47NuKA5d+L
-	 Lw6Ru9dnnpnpuu8b5pvtubnMpM+rOe0FjlF27UWs=
+	b=gBkLHbZsdcSgnE+WZd/kmAfoIKxOW3RFw7+S4/n62pnXj4GsIymaoRfCCJ8BXD8ug
+	 lcsWkMD+PD7W8WR23rC7YLRl7pW3plr857TFLR7ZPLQdWoP7reEjlvtBhtjrizM382
+	 YtXwhR3hheeER5X8eyF0qeqHM5zd52hDp4/qYcgg=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Dan Carpenter <dan.carpenter@linaro.org>,
-	Chris Leech <cleech@redhat.com>,
-	"Martin K. Petersen" <martin.petersen@oracle.com>,
+	Bjorn Helgaas <bhelgaas@google.com>,
+	Ulf Hansson <ulf.hansson@linaro.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 275/322] scsi: qla4xxx: Prevent a potential error pointer dereference
+Subject: [PATCH 6.1 437/482] mmc: sdhci-pci-gli: Use PCI AER definitions, not hard-coded values
 Date: Tue, 26 Aug 2025 13:11:30 +0200
-Message-ID: <20250826110922.714690279@linuxfoundation.org>
+Message-ID: <20250826110941.626731396@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250826110915.169062587@linuxfoundation.org>
-References: <20250826110915.169062587@linuxfoundation.org>
+In-Reply-To: <20250826110930.769259449@linuxfoundation.org>
+References: <20250826110930.769259449@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,45 +62,76 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Dan Carpenter <dan.carpenter@linaro.org>
+From: Bjorn Helgaas <bhelgaas@google.com>
 
-[ Upstream commit 9dcf111dd3e7ed5fce82bb108e3a3fc001c07225 ]
+[ Upstream commit 951b7ccc54591ba48755b5e0c7fc8b9623a64640 ]
 
-The qla4xxx_get_ep_fwdb() function is supposed to return NULL on error,
-but qla4xxx_ep_connect() returns error pointers.  Propagating the error
-pointers will lead to an Oops in the caller, so change the error pointers
-to NULL.
+015c9cbcf0ad ("mmc: sdhci-pci-gli: GL9750: Mask the replay timer timeout of
+AER") added PCI_GLI_9750_CORRERR_MASK, the offset of the AER Capability in
+config space, and PCI_GLI_9750_CORRERR_MASK_REPLAY_TIMER_TIMEOUT, the
+Replay Timer Timeout bit in the AER Correctable Error Status register.
 
-Fixes: 13483730a13b ("[SCSI] qla4xxx: fix flash/ddb support")
-Signed-off-by: Dan Carpenter <dan.carpenter@linaro.org>
-Link: https://lore.kernel.org/r/aJwnVKS9tHsw1tEu@stanley.mountain
-Reviewed-by: Chris Leech <cleech@redhat.com>
-Signed-off-by: Martin K. Petersen <martin.petersen@oracle.com>
+Use pci_find_ext_capability() to locate the AER Capability and use the
+existing PCI_ERR_COR_REP_TIMER definition to mask the bit.
+
+This removes a little bit of unnecessarily device-specific code and makes
+AER-related things more greppable.
+
+Signed-off-by: Bjorn Helgaas <bhelgaas@google.com>
+Link: https://lore.kernel.org/r/20240327214831.1544595-2-helgaas@kernel.org
+Signed-off-by: Ulf Hansson <ulf.hansson@linaro.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/scsi/qla4xxx/ql4_os.c | 2 ++
- 1 file changed, 2 insertions(+)
+ drivers/mmc/host/sdhci-pci-gli.c |   12 ++----------
+ 1 file changed, 2 insertions(+), 10 deletions(-)
 
-diff --git a/drivers/scsi/qla4xxx/ql4_os.c b/drivers/scsi/qla4xxx/ql4_os.c
-index 97e9ca5a2a02..59ff6bb11d84 100644
---- a/drivers/scsi/qla4xxx/ql4_os.c
-+++ b/drivers/scsi/qla4xxx/ql4_os.c
-@@ -6606,6 +6606,8 @@ static struct iscsi_endpoint *qla4xxx_get_ep_fwdb(struct scsi_qla_host *ha,
+--- a/drivers/mmc/host/sdhci-pci-gli.c
++++ b/drivers/mmc/host/sdhci-pci-gli.c
+@@ -27,8 +27,6 @@
+ #define PCI_GLI_9750_PM_CTRL	0xFC
+ #define   PCI_GLI_9750_PM_STATE	  GENMASK(1, 0)
  
- 	ep = qla4xxx_ep_connect(ha->host, (struct sockaddr *)dst_addr, 0);
- 	vfree(dst_addr);
-+	if (IS_ERR(ep))
-+		return NULL;
- 	return ep;
+-#define PCI_GLI_9750_CORRERR_MASK				0x214
+-#define   PCI_GLI_9750_CORRERR_MASK_REPLAY_TIMER_TIMEOUT	  BIT(12)
+ 
+ #define SDHCI_GLI_9750_CFG2          0x848
+ #define   SDHCI_GLI_9750_CFG2_L1DLY    GENMASK(28, 24)
+@@ -154,8 +152,6 @@
+ #define PCI_GLI_9755_PM_CTRL     0xFC
+ #define   PCI_GLI_9755_PM_STATE    GENMASK(1, 0)
+ 
+-#define PCI_GLI_9755_CORRERR_MASK				0x214
+-#define   PCI_GLI_9755_CORRERR_MASK_REPLAY_TIMER_TIMEOUT	  BIT(12)
+ 
+ #define GLI_MAX_TUNING_LOOP 40
+ 
+@@ -501,9 +497,7 @@ static void gl9750_hw_setting(struct sdh
+ 	pci_write_config_dword(pdev, PCI_GLI_9750_PM_CTRL, value);
+ 
+ 	/* mask the replay timer timeout of AER */
+-	pci_read_config_dword(pdev, PCI_GLI_9750_CORRERR_MASK, &value);
+-	value |= PCI_GLI_9750_CORRERR_MASK_REPLAY_TIMER_TIMEOUT;
+-	pci_write_config_dword(pdev, PCI_GLI_9750_CORRERR_MASK, value);
++	sdhci_gli_mask_replay_timer_timeout(pdev);
+ 
+ 	gl9750_wt_off(host);
  }
+@@ -715,9 +709,7 @@ static void gl9755_hw_setting(struct sdh
+ 	pci_write_config_dword(pdev, PCI_GLI_9755_PM_CTRL, value);
  
--- 
-2.50.1
-
+ 	/* mask the replay timer timeout of AER */
+-	pci_read_config_dword(pdev, PCI_GLI_9755_CORRERR_MASK, &value);
+-	value |= PCI_GLI_9755_CORRERR_MASK_REPLAY_TIMER_TIMEOUT;
+-	pci_write_config_dword(pdev, PCI_GLI_9755_CORRERR_MASK, value);
++	sdhci_gli_mask_replay_timer_timeout(pdev);
+ 
+ 	gl9755_wt_off(pdev);
+ }
 
 
 
