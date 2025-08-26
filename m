@@ -1,55 +1,58 @@
-Return-Path: <stable+bounces-176177-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-174599-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7DDD1B36CD0
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 17:01:25 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id D3B5CB363E3
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 15:34:02 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id C1912983998
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 14:39:04 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id C3A451891B52
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 13:28:07 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1CFB7350851;
-	Tue, 26 Aug 2025 14:36:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C2D9E27A455;
+	Tue, 26 Aug 2025 13:26:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="dpnkHafd"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Mje144OG"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C6F0F350D4D;
-	Tue, 26 Aug 2025 14:36:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7ED351A239A;
+	Tue, 26 Aug 2025 13:26:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756218982; cv=none; b=bYL1r6sKHHaHPxdeWHW51ZImJJ6hdfAkisKiKsrJ0jXffIH89VGUrQILyIdnNZi30Mi+gFtGur2Fkalc3iJakjAFQe9nQ/pd2wsnfUZtScY7NATnUx5Iq5jU5048dAkKJuUJkOJlUOcfVx2pkPyr93V/GzI6Rnih0j5i8FEDxbI=
+	t=1756214819; cv=none; b=EhovGxZuPMOuX6fu/3wGN/QoC/CuDei/YtXlavSjLQTmcm9BcHhLjHjlykcCUcM4qAn2K2IyJbYi3L5sDJNzK9qkt0If1tEyG46fQxx0XrBguZ4Hhxv6ag8F5wR+hc566QeZmhXuv/LfQ8AxOYnZJpQptXwwfBvWId9pgN6FyX4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756218982; c=relaxed/simple;
-	bh=fiT3rkmoAGnDFKheszxzAZjxbrQ7LYMj09f/FvoGnpA=;
+	s=arc-20240116; t=1756214819; c=relaxed/simple;
+	bh=3Jm4DBqDuGHu77dt2yfCUQMiYN6KlVmI/Hl81BvTuqk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=kZ1pftEJYOdWQcvoNK3/X2wECqGVCGy4BlAbqAN/Z3DefPPli+HYTJHHs9KPI54FtEezsSWEKjD8J8hpDimHuNMZ35CQl4t3Ih42aT8XEe3irxHcRqw+YJ6nOBcqQ2C+a/ZAvibJ4+pEVrwt+dwGjZHNPPVXm0dowZ5aodAtFsc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=dpnkHafd; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 59746C4CEF1;
-	Tue, 26 Aug 2025 14:36:22 +0000 (UTC)
+	 MIME-Version; b=HNLEpmUApsr2au2ia6U4poYQ+yqo35SCy0onXYAK9wN69T5GbL0hDFI0Adba0yrvM9H4IoS/EfwLywpBE5iSnq6IGPyPW3gyNQJrgbbsZrFOhMw6YlVbFom3nhgJfah+V7UveWvNX4IrDbzXJInr1zl9evqBm168/AdLmFomQU4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Mje144OG; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0A154C4CEF1;
+	Tue, 26 Aug 2025 13:26:58 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1756218982;
-	bh=fiT3rkmoAGnDFKheszxzAZjxbrQ7LYMj09f/FvoGnpA=;
+	s=korg; t=1756214819;
+	bh=3Jm4DBqDuGHu77dt2yfCUQMiYN6KlVmI/Hl81BvTuqk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=dpnkHafdFH3IiAKq5TtM10Q5GceHf3WUNK9GXyxew5R7xFGz4amJ+piUhnl+roCsK
-	 uPiE0VTujBGDaAekuv7wXhIuiqh1wGlst8Undg/3qpp1ebVl+k8WB4Ib78x74yLMQX
-	 ciqJ5F/tk9KnXI6sza8toMW1P0akDwN/X5GuZgTI=
+	b=Mje144OGiE+TcIPqHCwb2NUILezULWpIJ6X9gLTsD/aZkgfiNdhSj8cc/yh9MPnWy
+	 4Jo+hsZX+29TiXuetBYwZxMX2wQ2vDRb2AZ85s17CJlgaty7P6YjTR0Jc+pxP4pei9
+	 rN4DsOMhVztdEadW7ItOrusZ7w1rb50ucTdyEAbA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Johannes Berg <johannes.berg@intel.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.4 207/403] wifi: cfg80211: reject HTC bit for management frames
+	Andreas Dilger <adilger@whamcloud.com>,
+	Li Dongyang <dongyangli@ddn.com>,
+	Alex Zhuravlev <bzzz@whamcloud.com>,
+	Oleg Drokin <green@whamcloud.com>,
+	Theodore Tso <tytso@mit.edu>
+Subject: [PATCH 6.1 280/482] ext4: check fast symlink for ea_inode correctly
 Date: Tue, 26 Aug 2025 13:08:53 +0200
-Message-ID: <20250826110912.564709702@linuxfoundation.org>
+Message-ID: <20250826110937.698669954@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250826110905.607690791@linuxfoundation.org>
-References: <20250826110905.607690791@linuxfoundation.org>
+In-Reply-To: <20250826110930.769259449@linuxfoundation.org>
+References: <20250826110930.769259449@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,43 +64,68 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.4-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Johannes Berg <johannes.berg@intel.com>
+From: Andreas Dilger <adilger@dilger.ca>
 
-[ Upstream commit be06a8c7313943109fa870715356503c4c709cbc ]
+commit b4cc4a4077268522e3d0d34de4b2dc144e2330fa upstream.
 
-Management frames sent by userspace should never have the
-order/HTC bit set, reject that. It could also cause some
-confusion with the length of the buffer and the header so
-the validation might end up wrong.
+The check for a fast symlink in the presence of only an
+external xattr inode is incorrect.  If a fast symlink does
+not have an xattr block (i_file_acl == 0), but does have
+an external xattr inode that increases inode i_blocks, then
+the check for a fast symlink will incorrectly fail and
+__ext4_iget()->ext4_ind_check_inode() will report the inode
+is corrupt when it "validates" i_data[] on the next read:
 
-Link: https://patch.msgid.link/20250718202307.97a0455f0f35.I1805355c7e331352df16611839bc8198c855a33f@changeid
-Signed-off-by: Johannes Berg <johannes.berg@intel.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+    # ln -s foo /mnt/tmp/bar
+    # setfattr -h -n trusted.test \
+               -v "$(yes | head -n 4000)" /mnt/tmp/bar
+    # umount /mnt/tmp
+    # mount /mnt/tmp
+    # ls -l /mnt/tmp
+    ls: cannot access '/mnt/tmp/bar': Structure needs cleaning
+    total 4
+     ? l?????????? ? ?    ?        ?            ? bar
+    # dmesg | tail -1
+    EXT4-fs error (device dm-8): __ext4_iget:5098:
+        inode #24578: block 7303014: comm ls: invalid block
+
+(note that "block 7303014" = 0x6f6f66 = "foo" in LE order).
+
+ext4_inode_is_fast_symlink() should check the superblock
+EXT4_FEATURE_INCOMPAT_EA_INODE feature flag, not the inode
+EXT4_EA_INODE_FL, since the latter is only set on the xattr
+inode itself, and not on the inode that uses this xattr.
+
+Cc: stable@vger.kernel.org
+Fixes: fc82228a5e38 ("ext4: support fast symlinks from ext3 file systems")
+Signed-off-by: Andreas Dilger <adilger@whamcloud.com>
+Reviewed-by: Li Dongyang <dongyangli@ddn.com>
+Reviewed-by: Alex Zhuravlev <bzzz@whamcloud.com>
+Reviewed-by: Oleg Drokin <green@whamcloud.com>
+Reviewed-on: https://review.whamcloud.com/59879
+Lustre-bug-id: https://jira.whamcloud.com/browse/LU-19121
+Link: https://patch.msgid.link/20250717063709.757077-1-adilger@dilger.ca
+Signed-off-by: Theodore Ts'o <tytso@mit.edu>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- net/wireless/mlme.c | 3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+ fs/ext4/inode.c |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/net/wireless/mlme.c b/net/wireless/mlme.c
-index f9462010575f..ea75459ac272 100644
---- a/net/wireless/mlme.c
-+++ b/net/wireless/mlme.c
-@@ -598,7 +598,8 @@ int cfg80211_mlme_mgmt_tx(struct cfg80211_registered_device *rdev,
+--- a/fs/ext4/inode.c
++++ b/fs/ext4/inode.c
+@@ -146,7 +146,7 @@ static int ext4_meta_trans_blocks(struct
+  */
+ int ext4_inode_is_fast_symlink(struct inode *inode)
+ {
+-	if (!(EXT4_I(inode)->i_flags & EXT4_EA_INODE_FL)) {
++	if (!ext4_has_feature_ea_inode(inode->i_sb)) {
+ 		int ea_blocks = EXT4_I(inode)->i_file_acl ?
+ 				EXT4_CLUSTER_SIZE(inode->i_sb) >> 9 : 0;
  
- 	mgmt = (const struct ieee80211_mgmt *)params->buf;
- 
--	if (!ieee80211_is_mgmt(mgmt->frame_control))
-+	if (!ieee80211_is_mgmt(mgmt->frame_control) ||
-+	    ieee80211_has_order(mgmt->frame_control))
- 		return -EINVAL;
- 
- 	stype = le16_to_cpu(mgmt->frame_control) & IEEE80211_FCTL_STYPE;
--- 
-2.39.5
-
 
 
 
