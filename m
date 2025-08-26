@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-174139-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-173215-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1ADC0B361AA
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 15:11:31 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id D71F3B35C74
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 13:34:29 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id C92792A6419
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 13:06:51 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 0B83E2A640A
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 11:28:40 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id EBFBB20DD51;
-	Tue, 26 Aug 2025 13:06:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 958E9309DDC;
+	Tue, 26 Aug 2025 11:27:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="gQUTvsf7"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="sr35x+of"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AA31118F2FC;
-	Tue, 26 Aug 2025 13:06:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A5F758635C;
+	Tue, 26 Aug 2025 11:27:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756213596; cv=none; b=id3PkmmNNVG5SY1tUlKXLLyeLa8StlAPLf85Xw8sPuw8IvKu9vCUjoFAkVxlYaPzgPjPXifBUDGcJjCMAKGgL2udkEKhz7gb2bfpFEbaaFWl7dvX4n7UgoBmwOXKBmGAbQNQdqAyamzDj9u05ydEr4O/KVX5vm9V5eJ1kLgKxdQ=
+	t=1756207668; cv=none; b=E1s0F5dZa8y4K3rRKVq49o4wskc+W1Bx8jLSxKuwDU370ineR8t+C2wcCxRk59MybgpaPiZNnmlAZFR/KfoZOcRTTzb9ngVpfT+oj7VhvM2YsMEG/5VCK0gZQ3NANCoSJ6WUXDG9cYN1+OcL4aGwbEofCVhaBVjtPvmZpbwFNxQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756213596; c=relaxed/simple;
-	bh=FePxn+B35CSIZmHk8qrOb1C7GILlSRSRwLhl0yMkb9Q=;
+	s=arc-20240116; t=1756207668; c=relaxed/simple;
+	bh=Cwl3L9h8JRQONQb1TnqufCZAv31jvK/Q9oQawMPzEIk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=KAmmN1CbHKtOyMpAyhmwLoYmjdk8HAof9VWUI/nZtqgiOSCxRJ67deSIoHgKo05AIhj9sVNHEP31OMbb5tS9T432mg8xvts0AM8rGvtN7nwYpQtiSFrDSwuma/R97L6QmeMClJlXNqbXKZUetFCP3su1eULXsu6ey5qSg0FWdWQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=gQUTvsf7; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 36ACBC4CEF1;
-	Tue, 26 Aug 2025 13:06:36 +0000 (UTC)
+	 MIME-Version:Content-Type; b=OLlWahwmrjcyTkDz+r6rZEcpMFB1vtclsT4SVnI5IGOsVeY4lPqmfSkLK2TQOF12AAUyKJ0MhpmIWT6ouEKwrefkdZ8Kti0GSrZXViUaSI9JNE1Y7k03ZBJbWtguwiQudnLRbiT5KEjXp8UH5+SbrQR9FGARfdNZs8OngQmWgo0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=sr35x+of; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1BEF3C4CEF1;
+	Tue, 26 Aug 2025 11:27:46 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1756213596;
-	bh=FePxn+B35CSIZmHk8qrOb1C7GILlSRSRwLhl0yMkb9Q=;
+	s=korg; t=1756207667;
+	bh=Cwl3L9h8JRQONQb1TnqufCZAv31jvK/Q9oQawMPzEIk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=gQUTvsf73UvYoz1a9Hl9ZQnCg2hDp+Z5+nTj5dCFLVb2EhzLP+C0TSovO0pB4XHw1
-	 v53jM949Xs9Swj5OooUCkOKye+cY8PhwLi6O92Qu/RhaBBNehFw1Z8niH5WzxYhBTp
-	 Iz7E1nRYkxiFUInorCG9Tkk9t+a910OEfB8aT8e0=
+	b=sr35x+ofpy0sQERK6FgW/i1FV/ZtHPkQFMDakskF8Tb4F0/agrrQt6Q6tuVwVlPJT
+	 PlBxOIKJfhigsUsyzzVZgnX6qPUnwCGIct4piYyVIeCSxEh7XO25MMaxThgLS1B9wt
+	 Qo9g8W26J4DcXA29n4H0jwA4KC67oQUeEf4L0h1o=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Sakari Ailus <sakari.ailus@linux.intel.com>,
-	Hans Verkuil <hverkuil@xs4all.nl>,
-	Laurent Pinchart <laurent.pinchart@ideasonboard.com>
-Subject: [PATCH 6.6 406/587] media: v4l2-ctrls: Dont reset handlers error in v4l2_ctrl_handler_free()
+	=?UTF-8?q?Timur=20Krist=C3=B3f?= <timur.kristof@gmail.com>,
+	Alex Deucher <alexander.deucher@amd.com>,
+	Rodrigo Siqueira <siqueira@igalia.com>,
+	Alex Hung <alex.hung@amd.com>
+Subject: [PATCH 6.16 271/457] drm/amd/display: Find first CRTC and its line time in dce110_fill_display_configs
 Date: Tue, 26 Aug 2025 13:09:15 +0200
-Message-ID: <20250826111003.255431478@linuxfoundation.org>
+Message-ID: <20250826110944.076281441@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250826110952.942403671@linuxfoundation.org>
-References: <20250826110952.942403671@linuxfoundation.org>
+In-Reply-To: <20250826110937.289866482@linuxfoundation.org>
+References: <20250826110937.289866482@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,50 +61,88 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.16-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Sakari Ailus <sakari.ailus@linux.intel.com>
+From: Timur Kristóf <timur.kristof@gmail.com>
 
-commit 5a0400aca5fa7c6b8ba456c311a460e733571c88 upstream.
+commit 669f73a26f6112eedbadac53a2f2707ac6d0b9c8 upstream.
 
-It's a common pattern in drivers to free the control handler's resources
-and then return the handler's error code on drivers' error handling paths.
-Alas, the v4l2_ctrl_handler_free() function also zeroes the error field,
-effectively indicating successful return to the caller.
+dce110_fill_display_configs is shared between DCE 6-11, and
+finding the first CRTC and its line time is relevant to DCE 6 too.
+Move the code to find it from DCE 11 specific code.
 
-There's no apparent need to touch the error field while releasing the
-control handler's resources and cleaning up stale pointers. Not touching
-the handler's error field is a more certain way to address this problem
-than changing all the users, in which case the pattern would be likely to
-re-emerge in new drivers.
-
-Do just that, don't touch the control handler's error field in
-v4l2_ctrl_handler_free().
-
-Fixes: 0996517cf8ea ("V4L/DVB: v4l2: Add new control handling framework")
+Signed-off-by: Timur Kristóf <timur.kristof@gmail.com>
+Acked-by: Alex Deucher <alexander.deucher@amd.com>
+Reviewed-by: Rodrigo Siqueira <siqueira@igalia.com>
+Reviewed-by: Alex Hung <alex.hung@amd.com>
+Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
+(cherry picked from commit 4ab09785f8d5d03df052827af073d5c508ff5f63)
 Cc: stable@vger.kernel.org
-Signed-off-by: Sakari Ailus <sakari.ailus@linux.intel.com>
-Reviewed-by: Hans Verkuil <hverkuil@xs4all.nl>
-Reviewed-by: Laurent Pinchart <laurent.pinchart@ideasonboard.com>
-Signed-off-by: Hans Verkuil <hverkuil@xs4all.nl>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/media/v4l2-core/v4l2-ctrls-core.c |    1 -
- 1 file changed, 1 deletion(-)
+ drivers/gpu/drm/amd/display/dc/clk_mgr/dce110/dce110_clk_mgr.c |   30 ++++++----
+ 1 file changed, 20 insertions(+), 10 deletions(-)
 
---- a/drivers/media/v4l2-core/v4l2-ctrls-core.c
-+++ b/drivers/media/v4l2-core/v4l2-ctrls-core.c
-@@ -1578,7 +1578,6 @@ void v4l2_ctrl_handler_free(struct v4l2_
- 	kvfree(hdl->buckets);
- 	hdl->buckets = NULL;
- 	hdl->cached = NULL;
--	hdl->error = 0;
- 	mutex_unlock(hdl->lock);
- 	mutex_destroy(&hdl->_lock);
+--- a/drivers/gpu/drm/amd/display/dc/clk_mgr/dce110/dce110_clk_mgr.c
++++ b/drivers/gpu/drm/amd/display/dc/clk_mgr/dce110/dce110_clk_mgr.c
+@@ -120,9 +120,12 @@ void dce110_fill_display_configs(
+ 	const struct dc_state *context,
+ 	struct dm_pp_display_configuration *pp_display_cfg)
+ {
++	struct dc *dc = context->clk_mgr->ctx->dc;
+ 	int j;
+ 	int num_cfgs = 0;
+ 
++	pp_display_cfg->crtc_index = dc->res_pool->res_cap->num_timing_generator;
++
+ 	for (j = 0; j < context->stream_count; j++) {
+ 		int k;
+ 
+@@ -164,6 +167,23 @@ void dce110_fill_display_configs(
+ 		cfg->v_refresh /= stream->timing.h_total;
+ 		cfg->v_refresh = (cfg->v_refresh + stream->timing.v_total / 2)
+ 							/ stream->timing.v_total;
++
++		/* Find first CRTC index and calculate its line time.
++		 * This is necessary for DPM on SI GPUs.
++		 */
++		if (cfg->pipe_idx < pp_display_cfg->crtc_index) {
++			const struct dc_crtc_timing *timing =
++				&context->streams[0]->timing;
++
++			pp_display_cfg->crtc_index = cfg->pipe_idx;
++			pp_display_cfg->line_time_in_us =
++				timing->h_total * 10000 / timing->pix_clk_100hz;
++		}
++	}
++
++	if (!num_cfgs) {
++		pp_display_cfg->crtc_index = 0;
++		pp_display_cfg->line_time_in_us = 0;
+ 	}
+ 
+ 	pp_display_cfg->display_count = num_cfgs;
+@@ -232,16 +252,6 @@ void dce11_pplib_apply_display_requireme
+ 
+ 	dce110_fill_display_configs(context, pp_display_cfg);
+ 
+-	/* TODO: is this still applicable?*/
+-	if (pp_display_cfg->display_count == 1) {
+-		const struct dc_crtc_timing *timing =
+-			&context->streams[0]->timing;
+-
+-		pp_display_cfg->crtc_index =
+-			pp_display_cfg->disp_configs[0].pipe_idx;
+-		pp_display_cfg->line_time_in_us = timing->h_total * 10000 / timing->pix_clk_100hz;
+-	}
+-
+ 	if (memcmp(&dc->current_state->pp_display_cfg, pp_display_cfg, sizeof(*pp_display_cfg)) !=  0)
+ 		dm_pp_apply_display_requirements(dc->ctx, pp_display_cfg);
  }
 
 
