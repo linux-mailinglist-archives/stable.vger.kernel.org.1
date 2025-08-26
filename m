@@ -1,58 +1,56 @@
-Return-Path: <stable+bounces-174019-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-174517-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id B11D9B360D5
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 15:04:28 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id A8401B36447
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 15:37:25 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 8361216B565
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 13:01:21 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id DC3B8561BF7
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 13:25:04 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 24064196C7C;
-	Tue, 26 Aug 2025 13:01:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id CE5AC1B4F1F;
+	Tue, 26 Aug 2025 13:23:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="cir5KQg+"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="BR4GJjNR"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D61DD13957E;
-	Tue, 26 Aug 2025 13:01:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8C55B187554;
+	Tue, 26 Aug 2025 13:23:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756213277; cv=none; b=aFtHxcqON22TDFIeu/wqn23MR+XQuuv8io1ZLYdwUUK6azo3/251LB250hn1RNseZVr3rW1j29PNLBhiUCeImct4koHorHVNGk3g5/QXZFy1vNIOFRB3Wyq2A/bL6jfIaPAmggEk0FMttjUli56FeYv4Ht7wEh+o0IWj9H/7hbY=
+	t=1756214601; cv=none; b=g676haZKOtNitTHcCvKI43NJdvrVOz9t9R78C/oNxKHTBPr/t/SojgZhhjeBHEvQHN+PKWlRzYIid6ezZvz+vefHumwIb6K1nFHA2xLkcm39hyMbeNDIqCHxMeg2ZMWY2Lwe2AEsYVxcL+cypGAsA9WWI1TZU/HO/8kzPK4VguE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756213277; c=relaxed/simple;
-	bh=zhSKBxD/LL260WR5Bzj5D6HS7vfFANWyoNxyXnvp2fE=;
+	s=arc-20240116; t=1756214601; c=relaxed/simple;
+	bh=xwPxjvyvoVwpoXIU7uJKkWPsCY+CrF0f/0NAkhjeiME=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=g/EP9PiNzJEMrmgfKVFmmGCi37CJ0exZ34T+oPxkXdPW62bQwqJ6kwz+GD6Cl1YzHoaBhYX61eqgeTwc2ADCmJFE/UTdaNyF8KLqq3fFyMNvTUbPF8sjcmz5VyRMybkGc2GXVPEhpTfrPNGQJwmmaCmP6QOJlL4iwXCqA52U9sc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=cir5KQg+; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 674B9C4CEF4;
-	Tue, 26 Aug 2025 13:01:17 +0000 (UTC)
+	 MIME-Version; b=CiIMFOT2Da6ei0l/sJ8ArRPZ2y5jR7glVS3+zLKCzmA72UFkg2zklR7C98rb7msBIoNnoryFj1612qOVLasw2TpzeqLPgvX/2WaTghqntXx5xDymqEhiG8PwMSixdADhddiphG/L3DtrPKqAZlMh/ABCIml80vgusjlkP3u52E0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=BR4GJjNR; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1D6A9C4CEF1;
+	Tue, 26 Aug 2025 13:23:20 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1756213277;
-	bh=zhSKBxD/LL260WR5Bzj5D6HS7vfFANWyoNxyXnvp2fE=;
+	s=korg; t=1756214601;
+	bh=xwPxjvyvoVwpoXIU7uJKkWPsCY+CrF0f/0NAkhjeiME=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=cir5KQg+G59Bh/lQ5DvJQKeCBXwhUTfFToL9Z+iPWrLOhhkBvMleSH6eT3xrKyk/5
-	 ZlQAPWr7TyJDoKfi9rcDuNf1ismVWouxoo8fNTDcEVmgcY57t1DaEcbOuU5y/AL3ao
-	 2e7qS0f0UMRTAU/aPAfKJgYWnDRxwEpXi/Jp09hg=
+	b=BR4GJjNREN/7Ij7qdkfeim3GeagTHCHJQZDB8CQFYcdNC8jkNceWZxarV0vr9ErZA
+	 lwt4DgHFsQJTUDf5jww8qhLo9xLbHQNCHkKK7uCg0HEerODWtwOrfc2tP4nj97M0Bg
+	 REwyBxHqzacS4Ud6cNT20giVUDJuQ8EdUMWqVLVE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Buday Csaba <buday.csaba@prolan.hu>,
-	=?UTF-8?q?Cs=C3=B3k=C3=A1s=20Bence?= <csokas.bence@prolan.hu>,
-	Andrew Lunn <andrew@lunn.ch>,
-	Jakub Kicinski <kuba@kernel.org>,
+	Florin Leotescu <florin.leotescu@nxp.com>,
+	Guenter Roeck <linux@roeck-us.net>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 286/587] net: phy: smsc: add proper reset flags for LAN8710A
+Subject: [PATCH 6.1 182/482] hwmon: (emc2305) Set initial PWM minimum value during probe based on thermal state
 Date: Tue, 26 Aug 2025 13:07:15 +0200
-Message-ID: <20250826111000.207378190@linuxfoundation.org>
+Message-ID: <20250826110935.302267036@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250826110952.942403671@linuxfoundation.org>
-References: <20250826110952.942403671@linuxfoundation.org>
+In-Reply-To: <20250826110930.769259449@linuxfoundation.org>
+References: <20250826110930.769259449@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,43 +60,59 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Buday Csaba <buday.csaba@prolan.hu>
+From: Florin Leotescu <florin.leotescu@nxp.com>
 
-[ Upstream commit 57ec5a8735dc5dccd1ee68afdb1114956a3fce0d ]
+[ Upstream commit 0429415a084a15466e87d504e8c2a502488184a5 ]
 
-According to the LAN8710A datasheet (Rev. B, section 3.8.5.1), a hardware
-reset is required after power-on, and the reference clock (REF_CLK) must be
-established before asserting reset.
+Prevent the PWM value from being set to minimum when thermal zone
+temperature exceeds any trip point during driver probe. Otherwise, the
+PWM fan speed will remains at minimum speed and not respond to
+temperature changes.
 
-Signed-off-by: Buday Csaba <buday.csaba@prolan.hu>
-Cc: Csókás Bence <csokas.bence@prolan.hu>
-Reviewed-by: Andrew Lunn <andrew@lunn.ch>
-Link: https://patch.msgid.link/20250728152916.46249-2-csokas.bence@prolan.hu
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Signed-off-by: Florin Leotescu <florin.leotescu@nxp.com>
+Link: https://lore.kernel.org/r/20250603113125.3175103-5-florin.leotescu@oss.nxp.com
+Signed-off-by: Guenter Roeck <linux@roeck-us.net>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/phy/smsc.c | 1 +
- 1 file changed, 1 insertion(+)
+ drivers/hwmon/emc2305.c | 10 ++++++++--
+ 1 file changed, 8 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/net/phy/smsc.c b/drivers/net/phy/smsc.c
-index 4ca813c00947..5f9bb0ebe455 100644
---- a/drivers/net/phy/smsc.c
-+++ b/drivers/net/phy/smsc.c
-@@ -786,6 +786,7 @@ static struct phy_driver smsc_phy_driver[] = {
- 
- 	/* PHY_BASIC_FEATURES */
- 
-+	.flags		= PHY_RST_AFTER_CLK_EN,
- 	.probe		= smsc_phy_probe,
- 
- 	/* basic functions */
+diff --git a/drivers/hwmon/emc2305.c b/drivers/hwmon/emc2305.c
+index e42ae43f3de4..286582e99c28 100644
+--- a/drivers/hwmon/emc2305.c
++++ b/drivers/hwmon/emc2305.c
+@@ -301,6 +301,12 @@ static int emc2305_set_single_tz(struct device *dev, int idx)
+ 		dev_err(dev, "Failed to register cooling device %s\n", emc2305_fan_name[idx]);
+ 		return PTR_ERR(data->cdev_data[cdev_idx].cdev);
+ 	}
++
++	if (data->cdev_data[cdev_idx].cur_state > 0)
++		/* Update pwm when temperature is above trips */
++		pwm = EMC2305_PWM_STATE2DUTY(data->cdev_data[cdev_idx].cur_state,
++					     data->max_state, EMC2305_FAN_MAX);
++
+ 	/* Set minimal PWM speed. */
+ 	if (data->pwm_separate) {
+ 		ret = emc2305_set_pwm(dev, pwm, cdev_idx);
+@@ -314,10 +320,10 @@ static int emc2305_set_single_tz(struct device *dev, int idx)
+ 		}
+ 	}
+ 	data->cdev_data[cdev_idx].cur_state =
+-		EMC2305_PWM_DUTY2STATE(data->pwm_min[cdev_idx], data->max_state,
++		EMC2305_PWM_DUTY2STATE(pwm, data->max_state,
+ 				       EMC2305_FAN_MAX);
+ 	data->cdev_data[cdev_idx].last_hwmon_state =
+-		EMC2305_PWM_DUTY2STATE(data->pwm_min[cdev_idx], data->max_state,
++		EMC2305_PWM_DUTY2STATE(pwm, data->max_state,
+ 				       EMC2305_FAN_MAX);
+ 	return 0;
+ }
 -- 
 2.39.5
 
