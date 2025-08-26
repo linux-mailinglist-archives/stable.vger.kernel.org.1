@@ -1,55 +1,56 @@
-Return-Path: <stable+bounces-174113-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-173143-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1B03CB3615E
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 15:08:59 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 414FCB35BE5
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 13:29:18 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 544EC1BA6F8C
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 13:06:14 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id E6A801880A34
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 11:25:07 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A6E59260580;
-	Tue, 26 Aug 2025 13:05:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A5988299959;
+	Tue, 26 Aug 2025 11:24:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="JIBnkNAJ"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="zuL5VKUj"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6227D1FBE9B;
-	Tue, 26 Aug 2025 13:05:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6429117332C;
+	Tue, 26 Aug 2025 11:24:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756213528; cv=none; b=QY4HpKzWyzHCxSIP+mqzakewbSiLKioOsndUiP80WIxXiu7hrk+AuVdICthmT35MoD0W/IV44MX3jeCcgO2MQm0N6RgZTAXGtHvslPDT67q/pd3MpMQRnADEngdUM3f3irblItKHM630tMH3LhvQxPNxf+68mcH7KtH2ae0UJvs=
+	t=1756207484; cv=none; b=dCq+AdT7arVJfwxT3Z722JOsj9HCNV5Uek3rJqf/rVYw3GPl8fsIHIoN41IFm52fjf4GiHroYK8cTm9pjBZuFZd/R4Roo5WrFXrdmWIGYkkJpShRPNSonHLQXCkiDqribZXVJpeRvJdXC5+IOlOys728YrE28BUxzYEEpgLspZU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756213528; c=relaxed/simple;
-	bh=9DbaGQLtdH8k1LTm/UVPrZigHYaeu5m1tcG5J0NfVmU=;
+	s=arc-20240116; t=1756207484; c=relaxed/simple;
+	bh=qihUaS04Kp0Z/0myL/UrEaXMzU1B6dLu84UcX9mfE2c=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=ZUSsG1e3oaF4HilMsxmJ8nnxw+k+1jlfztyUUM2oi6EYoJ9trMry54Eyk7Z8F6+qXUmmUD+SM42fQK88RfgfhPU/kRcAlg9nhjZBW/tHJwJ9vDADzyVfCtic1/TG4JAkxVyN1aq9KyvIBJVnyU2TQftQx+Zf50dSUJ2GNYsLD5Y=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=JIBnkNAJ; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A2A38C4CEF1;
-	Tue, 26 Aug 2025 13:05:27 +0000 (UTC)
+	 MIME-Version; b=R+rJrg6S9rAxZebdUfr41mdDQdOtfUiI0aAE87gNe4vV/+Ok/TOWyxlCC20CWut4/C3Fes4VhaxFrcBlwkkkdSI2gbxIS8Vw9OXok0z5r01lBW35wQBVr5yTqAOYJ0EC0k6S+8qWxNsmVkQWUdaVAutVFam2Jhb3xt3HpVoLt+8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=zuL5VKUj; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id EA585C4CEF1;
+	Tue, 26 Aug 2025 11:24:43 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1756213528;
-	bh=9DbaGQLtdH8k1LTm/UVPrZigHYaeu5m1tcG5J0NfVmU=;
+	s=korg; t=1756207484;
+	bh=qihUaS04Kp0Z/0myL/UrEaXMzU1B6dLu84UcX9mfE2c=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=JIBnkNAJ3ttqa2bmrIsJAzQm3NsvFNAyk5Opinc3G0aQxz1Kc0U1XZehLCeRrJh7v
-	 wwAWTzOjfjOFbArrZsRDyJz5/+dEq7cQ3VTsPKJ0/l1ui/BfJRhMlrBCGUQKVXPqxZ
-	 4vRAGKtqzvCxeBRM0UmmRUyWS2IrG8kw80diMpxs=
+	b=zuL5VKUjBc1rINqijYWGUfPnywsXkqrZck0s0NemocMwtofdiJJlKOaSPBxlPHFbE
+	 7lvBloUdoMwWhecN6Tlx84E+NG1TnYR9pUShDIKQIr7LYD4FUTmQGfVSeGxH9+4+k9
+	 rTqYklNBzqgPYpErrmZpWC7LfQTivKt0u8Hdp4SM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Yoshihiro Shimoda <yoshihiro.shimoda.uh@renesas.com>,
-	Johan Hovold <johan@kernel.org>
-Subject: [PATCH 6.6 334/587] usb: gadget: udc: renesas_usb3: fix device leak at unbind
+	Eric Biggers <ebiggers@kernel.org>,
+	Andrea Mayer <andrea.mayer@uniroma2.it>,
+	Jakub Kicinski <kuba@kernel.org>
+Subject: [PATCH 6.16 199/457] ipv6: sr: Fix MAC comparison to be constant-time
 Date: Tue, 26 Aug 2025 13:08:03 +0200
-Message-ID: <20250826111001.413769553@linuxfoundation.org>
+Message-ID: <20250826110942.286051347@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250826110952.942403671@linuxfoundation.org>
-References: <20250826110952.942403671@linuxfoundation.org>
+In-Reply-To: <20250826110937.289866482@linuxfoundation.org>
+References: <20250826110937.289866482@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,37 +62,47 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.16-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Johan Hovold <johan@kernel.org>
+From: Eric Biggers <ebiggers@kernel.org>
 
-commit 868837b0a94c6b1b1fdbc04d3ba218ca83432393 upstream.
+commit a458b2902115b26a25d67393b12ddd57d1216aaa upstream.
 
-Make sure to drop the reference to the companion device taken during
-probe when the driver is unbound.
+To prevent timing attacks, MACs need to be compared in constant time.
+Use the appropriate helper function for this.
 
-Fixes: 39facfa01c9f ("usb: gadget: udc: renesas_usb3: Add register of usb role switch")
-Cc: stable@vger.kernel.org	# 4.19
-Cc: Yoshihiro Shimoda <yoshihiro.shimoda.uh@renesas.com>
-Signed-off-by: Johan Hovold <johan@kernel.org>
-Link: https://lore.kernel.org/r/20250724091910.21092-4-johan@kernel.org
+Fixes: bf355b8d2c30 ("ipv6: sr: add core files for SR HMAC support")
+Cc: stable@vger.kernel.org
+Signed-off-by: Eric Biggers <ebiggers@kernel.org>
+Reviewed-by: Andrea Mayer <andrea.mayer@uniroma2.it>
+Link: https://patch.msgid.link/20250818202724.15713-1-ebiggers@kernel.org
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/usb/gadget/udc/renesas_usb3.c |    1 +
- 1 file changed, 1 insertion(+)
+ net/ipv6/seg6_hmac.c |    3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
---- a/drivers/usb/gadget/udc/renesas_usb3.c
-+++ b/drivers/usb/gadget/udc/renesas_usb3.c
-@@ -2658,6 +2658,7 @@ static void renesas_usb3_remove(struct p
- 	struct renesas_usb3 *usb3 = platform_get_drvdata(pdev);
+--- a/net/ipv6/seg6_hmac.c
++++ b/net/ipv6/seg6_hmac.c
+@@ -35,6 +35,7 @@
+ #include <net/xfrm.h>
  
- 	debugfs_remove_recursive(usb3->dentry);
-+	put_device(usb3->host_dev);
- 	device_remove_file(&pdev->dev, &dev_attr_role);
+ #include <crypto/hash.h>
++#include <crypto/utils.h>
+ #include <net/seg6.h>
+ #include <net/genetlink.h>
+ #include <net/seg6_hmac.h>
+@@ -280,7 +281,7 @@ bool seg6_hmac_validate_skb(struct sk_bu
+ 	if (seg6_hmac_compute(hinfo, srh, &ipv6_hdr(skb)->saddr, hmac_output))
+ 		return false;
  
- 	cancel_work_sync(&usb3->role_work);
+-	if (memcmp(hmac_output, tlv->hmac, SEG6_HMAC_FIELD_LEN) != 0)
++	if (crypto_memneq(hmac_output, tlv->hmac, SEG6_HMAC_FIELD_LEN))
+ 		return false;
+ 
+ 	return true;
 
 
 
