@@ -1,57 +1,54 @@
-Return-Path: <stable+bounces-173237-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-173563-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 98A3EB35CD6
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 13:39:17 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2DE41B35DEA
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 13:49:35 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 1CEF6161FCD
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 11:31:58 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 511CB1B25194
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 11:43:20 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B14228635C;
-	Tue, 26 Aug 2025 11:28:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0936818DF9D;
+	Tue, 26 Aug 2025 11:42:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="xp84mVyi"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="DJTJBhkR"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6D7352BE03C;
-	Tue, 26 Aug 2025 11:28:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BA29D284B5B;
+	Tue, 26 Aug 2025 11:42:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756207726; cv=none; b=XnLT+wlByogP0GJhmfaZE4pWymr7QTdBdJ7pnurZGt8HSy/8P6A9VuJTtdgakXkMhMizUus5WSCa02xNsNODVguAzWNtRUB5JO0O2l9huq5Yr4a3hIUXD3fp1yhor0aeQBbhc1IsqpdCc7CvX9sW4fPN/CmoslBVrO7j3UMVrZE=
+	t=1756208574; cv=none; b=qY4ouPb8sWr1ka3v8g2QfIBGzFkv0ShVEDw+hdhpGnDzE5nca0rQb8jGnXGhx9+GzT9HpjNGQe7AtD+pnXl8NGr+zORuB8+5zplrpORsNkBuPLpWFErzzamfoJ/vqLvaal1CXaYg0XdiBj3swAuCp4428lvnVHDuKHhbsf7cdVg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756207726; c=relaxed/simple;
-	bh=fvNtfJf25K9AgTUrK4IXyDHy4/oxLgxj4DSg9zoe6mM=;
+	s=arc-20240116; t=1756208574; c=relaxed/simple;
+	bh=y61hu5+2eciFXatgzbpAYDf2g4kBUXHdpUpxLXudO/g=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=n/uRc2fDVT6WDOBMhBErtk43Om1IxNhBcU881jwXl0F4V/p1XLY+fVP+ZkKsxHHKC1q+j2rIWjvAFOaNZ/2DNay/Gw3zGNrUhxmyWWWP55/ZOapD6ljY9204yQrrVLXZlUo0sEtnE55scrCpTljVeKgn526sVm1+0bnrgWRWAqA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=xp84mVyi; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id DB59CC4CEF1;
-	Tue, 26 Aug 2025 11:28:45 +0000 (UTC)
+	 MIME-Version; b=AZKouktdxxlwIe8pM0JV8KqIM2zktAt0majx1SWaqkUHX1S/OBH/ItQgSuGb5pmRMsMmVDkYJIQFj4JCGSr3Nc/F8kCzMSa2X6aOrg6957wDSN8ExiwkVEZkZ0MRxGM9m21o0YKXgk+AXYPFaEPoTaUrzkSefJ+kmUafr/rsp1M=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=DJTJBhkR; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 45340C116B1;
+	Tue, 26 Aug 2025 11:42:54 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1756207726;
-	bh=fvNtfJf25K9AgTUrK4IXyDHy4/oxLgxj4DSg9zoe6mM=;
+	s=korg; t=1756208574;
+	bh=y61hu5+2eciFXatgzbpAYDf2g4kBUXHdpUpxLXudO/g=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=xp84mVyiBLfJhZYXA9meUv0OWMQQbYDysmCHI+nGuLJZxAKX0t5WCw6D3wqZ1VXra
-	 tNyFrK1rWoLllLNUVW58SvHEhrausyxrvu5gsXgSXRYDFUmg7wAI6WDFCo6qN6IqE4
-	 q2ptITweZzvb/qjbkD+kXNdLJLJLkRrjcw7x1DQA=
+	b=DJTJBhkR85FELLJPEWzoXcPS2mqFBCuaZTK5Sz/kGYEfHkTlqz1+4Xcd4Bj/0j2mC
+	 3dIc3WxRN0Fk29rCDKNwLXr0id9UfShZTFCO3OEpkITuiSk41Ht6CCu2NQHnE97t9p
+	 9ASfjqThr+Mp4cMZ3Ot8VLZIAvv38d9VhPj+S55s=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Pavel Pisa <pisa@fel.cvut.cz>,
-	Jason Gunthorpe <jgg@nvidia.com>,
-	Marek Szyprowski <m.szyprowski@samsung.com>,
-	Xu Yilun <yilun.xu@linux.intel.com>
-Subject: [PATCH 6.16 294/457] fpga: zynq_fpga: Fix the wrong usage of dma_map_sgtable()
+	Jens Axboe <axboe@kernel.dk>
+Subject: [PATCH 6.12 163/322] io_uring/futex: ensure io_futex_wait() cleans up properly on failure
 Date: Tue, 26 Aug 2025 13:09:38 +0200
-Message-ID: <20250826110944.648316785@linuxfoundation.org>
+Message-ID: <20250826110919.852004790@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250826110937.289866482@linuxfoundation.org>
-References: <20250826110937.289866482@linuxfoundation.org>
+In-Reply-To: <20250826110915.169062587@linuxfoundation.org>
+References: <20250826110915.169062587@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,49 +60,53 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.16-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Xu Yilun <yilun.xu@linux.intel.com>
+From: Jens Axboe <axboe@kernel.dk>
 
-commit 1ca61060de92a4320d73adfe5dc8d335653907ac upstream.
+commit 508c1314b342b78591f51c4b5dadee31a88335df upstream.
 
-dma_map_sgtable() returns only 0 or the error code. Read sgt->nents to
-get the number of mapped segments.
+The io_futex_data is allocated upfront and assigned to the io_kiocb
+async_data field, but the request isn't marked with REQ_F_ASYNC_DATA
+at that point. Those two should always go together, as the flag tells
+io_uring whether the field is valid or not.
 
-Fixes: 37e00703228a ("zynq_fpga: use sgtable-based scatterlist wrappers")
-Reported-by: Pavel Pisa <pisa@fel.cvut.cz>
-Closes: https://lore.kernel.org/linux-fpga/202508041548.22955.pisa@fel.cvut.cz/
-Reviewed-by: Jason Gunthorpe <jgg@nvidia.com>
-Reviewed-by: Marek Szyprowski <m.szyprowski@samsung.com>
-Signed-off-by: Xu Yilun <yilun.xu@linux.intel.com>
-Tested-by: Pavel Pisa <pisa@fel.cvut.cz>
-Link: https://lore.kernel.org/r/20250806070605.1920909-2-yilun.xu@linux.intel.com
+Additionally, on failure cleanup, the futex handler frees the data but
+does not clear ->async_data. Clear the data and the flag in the error
+path as well.
+
+Thanks to Trend Micro Zero Day Initiative and particularly ReDress for
+reporting this.
+
+Cc: stable@vger.kernel.org
+Fixes: 194bb58c6090 ("io_uring: add support for futex wake and wait")
+Signed-off-by: Jens Axboe <axboe@kernel.dk>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/fpga/zynq-fpga.c |    8 ++++----
- 1 file changed, 4 insertions(+), 4 deletions(-)
+ io_uring/futex.c |    3 +++
+ 1 file changed, 3 insertions(+)
 
---- a/drivers/fpga/zynq-fpga.c
-+++ b/drivers/fpga/zynq-fpga.c
-@@ -405,12 +405,12 @@ static int zynq_fpga_ops_write(struct fp
- 		}
+--- a/io_uring/futex.c
++++ b/io_uring/futex.c
+@@ -337,6 +337,7 @@ int io_futex_wait(struct io_kiocb *req,
+ 		goto done_unlock;
  	}
  
--	priv->dma_nelms =
--	    dma_map_sgtable(mgr->dev.parent, sgt, DMA_TO_DEVICE, 0);
--	if (priv->dma_nelms == 0) {
-+	err = dma_map_sgtable(mgr->dev.parent, sgt, DMA_TO_DEVICE, 0);
-+	if (err) {
- 		dev_err(&mgr->dev, "Unable to DMA map (TO_DEVICE)\n");
--		return -ENOMEM;
-+		return err;
- 	}
-+	priv->dma_nelms = sgt->nents;
- 
- 	/* enable clock */
- 	err = clk_enable(priv->clk);
++	req->flags |= REQ_F_ASYNC_DATA;
+ 	req->async_data = ifd;
+ 	ifd->q = futex_q_init;
+ 	ifd->q.bitset = iof->futex_mask;
+@@ -359,6 +360,8 @@ done:
+ 	if (ret < 0)
+ 		req_set_fail(req);
+ 	io_req_set_res(req, ret, 0);
++	req->async_data = NULL;
++	req->flags &= ~REQ_F_ASYNC_DATA;
+ 	kfree(ifd);
+ 	return IOU_OK;
+ }
 
 
 
