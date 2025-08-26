@@ -1,55 +1,55 @@
-Return-Path: <stable+bounces-174895-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-173752-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7088DB36540
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 15:46:11 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id B553EB35F7E
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 14:49:45 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id BB0A08E064B
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 13:40:02 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id ECCC81BA3C35
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 12:50:00 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id AC49D23FC41;
-	Tue, 26 Aug 2025 13:39:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D183B8462;
+	Tue, 26 Aug 2025 12:49:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="blCorchw"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="tM5ts5My"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 695AA22DFB8;
-	Tue, 26 Aug 2025 13:39:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8917018024;
+	Tue, 26 Aug 2025 12:49:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756215599; cv=none; b=TjWVze9tWJMc0ddPjpN6s+4x3oUcuG/cKKKpRxcYmna8lCsIaSMwZU81wESVQJgJqBMy3S9mVJFfugnEOnFZufLv6Xg0frMWa6tXZP9txUH2Y7FhivgfIoQuYckfQ7q1iRkNM16q9wGp2GKbOZboJ7+QxMq+eB3Z/PP/XcqUElk=
+	t=1756212578; cv=none; b=N7t2Tlg2x1bSnSpSB26JPN6g/+Mnx4plXWLK3TrUXAOhx4gtlkv5TOOKua7qXVblVZevrkSolZxeMgfQ2+7YDo+qyI22RYtVESmB0IGxLqCRrxwGKytlZpgwjbT94oXpoicj3wL16+JjvzF+Ct3brDRKIY+mu5nAV3m/dTKafBw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756215599; c=relaxed/simple;
-	bh=B6p27WyDCCistsUt03ri/J2UXiHQbzaz3HF5KZ9VNKc=;
+	s=arc-20240116; t=1756212578; c=relaxed/simple;
+	bh=/3NLM1Q2/tn7fPlr1qDi5kmu4IWMIFTjfY62XltiHL8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Yg4X3UretlkjZXGUuIhq7VGt3QTJAJo1fQX2w84F7XvFK2QxoKgw5lbdcmPOVqsX3lmc7BNWQic8ixN5nh8GXih+gKZqveXD4eaO0aE2yw+RX8vfor9+0jXB0JjZHxRtzCWImw/O8nNVoGvG4J3uOUV/eIDgC04PHtItJOxNUd0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=blCorchw; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C7D76C113D0;
-	Tue, 26 Aug 2025 13:39:58 +0000 (UTC)
+	 MIME-Version; b=qH08mJCrU+sLIinxfGkVK2L/8HZ1zEz05Ldv7M4B+n+GqLvzHhopuESk2fnFoBOe4e6SzYvrR29YShx8io1+qc7ibKtVadeVwI3EJ982X5ma3lwZ7ezKTapgOkvfYPxoIxYTH/IJK2GbuV/ZgLveQ+K2k7OoitHFf5uAdjb2xHU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=tM5ts5My; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A7821C113CF;
+	Tue, 26 Aug 2025 12:49:37 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1756215599;
-	bh=B6p27WyDCCistsUt03ri/J2UXiHQbzaz3HF5KZ9VNKc=;
+	s=korg; t=1756212578;
+	bh=/3NLM1Q2/tn7fPlr1qDi5kmu4IWMIFTjfY62XltiHL8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=blCorchwgo0lOH+PiGDgpVpqjxOacXS4YOgLAflSZsRWaYJPHKXEzmlh+hsR189ej
-	 UaRSVombSSbCTXviNVzd4JaP33NYAIWdiukS2dfnfw7LQGIyyG87ZtWPk8e96O1IeF
-	 lmXPlzF+vwmwWkRrTkTcnMgPjRmccGiMdquUxu2o=
+	b=tM5ts5MymXqErpIaaEqrJX15NGn+a6rLqOCGJRL8VrwIBwvoBg8BLcH4+Zo4LC9Sv
+	 1BGzZ+KcfZ1Ct/S0p2NtjMGMgqHncvThcHPKmz1mYWbfRrQa0lzGB7vgR3HZkA0M4g
+	 ZZXLGCAQLIpSnY4a6o+CrCc9++lty6ymGj9X+iV4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Paul Cercueil <paul@crapouillou.net>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 064/644] usb: musb: Add and use inline functions musb_{get,set}_state
+	Namjae Jeon <linkinjeon@kernel.org>,
+	Steve French <stfrench@microsoft.com>
+Subject: [PATCH 6.6 006/587] smb3: fix for slab out of bounds on mount to ksmbd
 Date: Tue, 26 Aug 2025 13:02:35 +0200
-Message-ID: <20250826110948.086351252@linuxfoundation.org>
+Message-ID: <20250826110953.108330346@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250826110946.507083938@linuxfoundation.org>
-References: <20250826110946.507083938@linuxfoundation.org>
+In-Reply-To: <20250826110952.942403671@linuxfoundation.org>
+References: <20250826110952.942403671@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,537 +61,100 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Paul Cercueil <paul@crapouillou.net>
+From: Steve French <stfrench@microsoft.com>
 
-commit 21acc656a06e912341d9db66c67b58cc7ed071e7 upstream.
+commit 7d34ec36abb84fdfb6632a0f2cbda90379ae21fc upstream.
 
-Instead of manipulating musb->xceiv->otg->state directly, use the newly
-introduced musb_get_state() and musb_set_state() inline functions.
+With KASAN enabled, it is possible to get a slab out of bounds
+during mount to ksmbd due to missing check in parse_server_interfaces()
+(see below):
 
-Later, these inline functions will be modified to get rid of the
-musb->xceiv dependency, which prevents the musb code from using the
-generic PHY subsystem.
+ BUG: KASAN: slab-out-of-bounds in
+ parse_server_interfaces+0x14ee/0x1880 [cifs]
+ Read of size 4 at addr ffff8881433dba98 by task mount/9827
 
-Signed-off-by: Paul Cercueil <paul@crapouillou.net>
-Link: https://lore.kernel.org/r/20221026182657.146630-2-paul@crapouillou.net
-Stable-dep-of: 67a59f82196c ("usb: musb: fix gadget state on disconnect")
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+ CPU: 5 UID: 0 PID: 9827 Comm: mount Tainted: G
+ OE       6.16.0-rc2-kasan #2 PREEMPT(voluntary)
+ Tainted: [O]=OOT_MODULE, [E]=UNSIGNED_MODULE
+ Hardware name: Dell Inc. Precision Tower 3620/0MWYPT,
+ BIOS 2.13.1 06/14/2019
+ Call Trace:
+  <TASK>
+ dump_stack_lvl+0x9f/0xf0
+ print_report+0xd1/0x670
+ __virt_addr_valid+0x22c/0x430
+ ? parse_server_interfaces+0x14ee/0x1880 [cifs]
+ ? kasan_complete_mode_report_info+0x2a/0x1f0
+ ? parse_server_interfaces+0x14ee/0x1880 [cifs]
+   kasan_report+0xd6/0x110
+   parse_server_interfaces+0x14ee/0x1880 [cifs]
+   __asan_report_load_n_noabort+0x13/0x20
+   parse_server_interfaces+0x14ee/0x1880 [cifs]
+ ? __pfx_parse_server_interfaces+0x10/0x10 [cifs]
+ ? trace_hardirqs_on+0x51/0x60
+ SMB3_request_interfaces+0x1ad/0x3f0 [cifs]
+ ? __pfx_SMB3_request_interfaces+0x10/0x10 [cifs]
+ ? SMB2_tcon+0x23c/0x15d0 [cifs]
+ smb3_qfs_tcon+0x173/0x2b0 [cifs]
+ ? __pfx_smb3_qfs_tcon+0x10/0x10 [cifs]
+ ? cifs_get_tcon+0x105d/0x2120 [cifs]
+ ? do_raw_spin_unlock+0x5d/0x200
+ ? cifs_get_tcon+0x105d/0x2120 [cifs]
+ ? __pfx_smb3_qfs_tcon+0x10/0x10 [cifs]
+ cifs_mount_get_tcon+0x369/0xb90 [cifs]
+ ? dfs_cache_find+0xe7/0x150 [cifs]
+ dfs_mount_share+0x985/0x2970 [cifs]
+ ? check_path.constprop.0+0x28/0x50
+ ? save_trace+0x54/0x370
+ ? __pfx_dfs_mount_share+0x10/0x10 [cifs]
+ ? __lock_acquire+0xb82/0x2ba0
+ ? __kasan_check_write+0x18/0x20
+ cifs_mount+0xbc/0x9e0 [cifs]
+ ? __pfx_cifs_mount+0x10/0x10 [cifs]
+ ? do_raw_spin_unlock+0x5d/0x200
+ ? cifs_setup_cifs_sb+0x29d/0x810 [cifs]
+ cifs_smb3_do_mount+0x263/0x1990 [cifs]
+
+Reported-by: Namjae Jeon <linkinjeon@kernel.org>
+Tested-by: Namjae Jeon <linkinjeon@kernel.org>
+Cc: stable@vger.kernel.org
+Signed-off-by: Steve French <stfrench@microsoft.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/usb/musb/musb_core.c    |   62 ++++++++++++++++++++--------------------
- drivers/usb/musb/musb_core.h    |   11 +++++++
- drivers/usb/musb/musb_debugfs.c |    6 +--
- drivers/usb/musb/musb_gadget.c  |   28 +++++++++---------
- drivers/usb/musb/musb_host.c    |    6 +--
- drivers/usb/musb/musb_virthub.c |   18 +++++------
- 6 files changed, 71 insertions(+), 60 deletions(-)
+ fs/smb/client/smb2ops.c |   11 ++++++++++-
+ 1 file changed, 10 insertions(+), 1 deletion(-)
 
---- a/drivers/usb/musb/musb_core.c
-+++ b/drivers/usb/musb/musb_core.c
-@@ -502,7 +502,7 @@ int musb_set_host(struct musb *musb)
- 
- init_data:
- 	musb->is_active = 1;
--	musb->xceiv->otg->state = OTG_STATE_A_IDLE;
-+	musb_set_state(musb, OTG_STATE_A_IDLE);
- 	MUSB_HST_MODE(musb);
- 
- 	return error;
-@@ -549,7 +549,7 @@ int musb_set_peripheral(struct musb *mus
- 
- init_data:
- 	musb->is_active = 0;
--	musb->xceiv->otg->state = OTG_STATE_B_IDLE;
-+	musb_set_state(musb, OTG_STATE_B_IDLE);
- 	MUSB_DEV_MODE(musb);
- 
- 	return error;
-@@ -599,12 +599,12 @@ static void musb_otg_timer_func(struct t
- 	unsigned long	flags;
- 
- 	spin_lock_irqsave(&musb->lock, flags);
--	switch (musb->xceiv->otg->state) {
-+	switch (musb_get_state(musb)) {
- 	case OTG_STATE_B_WAIT_ACON:
- 		musb_dbg(musb,
- 			"HNP: b_wait_acon timeout; back to b_peripheral");
- 		musb_g_disconnect(musb);
--		musb->xceiv->otg->state = OTG_STATE_B_PERIPHERAL;
-+		musb_set_state(musb, OTG_STATE_B_PERIPHERAL);
- 		musb->is_active = 0;
- 		break;
- 	case OTG_STATE_A_SUSPEND:
-@@ -612,7 +612,7 @@ static void musb_otg_timer_func(struct t
- 		musb_dbg(musb, "HNP: %s timeout",
- 			usb_otg_state_string(musb->xceiv->otg->state));
- 		musb_platform_set_vbus(musb, 0);
--		musb->xceiv->otg->state = OTG_STATE_A_WAIT_VFALL;
-+		musb_set_state(musb, OTG_STATE_A_WAIT_VFALL);
- 		break;
- 	default:
- 		musb_dbg(musb, "HNP: Unhandled mode %s",
-@@ -633,7 +633,7 @@ void musb_hnp_stop(struct musb *musb)
- 	musb_dbg(musb, "HNP: stop from %s",
- 			usb_otg_state_string(musb->xceiv->otg->state));
- 
--	switch (musb->xceiv->otg->state) {
-+	switch (musb_get_state(musb)) {
- 	case OTG_STATE_A_PERIPHERAL:
- 		musb_g_disconnect(musb);
- 		musb_dbg(musb, "HNP: back to %s",
-@@ -643,7 +643,7 @@ void musb_hnp_stop(struct musb *musb)
- 		musb_dbg(musb, "HNP: Disabling HR");
- 		if (hcd)
- 			hcd->self.is_b_host = 0;
--		musb->xceiv->otg->state = OTG_STATE_B_PERIPHERAL;
-+		musb_set_state(musb, OTG_STATE_B_PERIPHERAL);
- 		MUSB_DEV_MODE(musb);
- 		reg = musb_readb(mbase, MUSB_POWER);
- 		reg |= MUSB_POWER_SUSPENDM;
-@@ -671,7 +671,7 @@ static void musb_handle_intr_resume(stru
- 			usb_otg_state_string(musb->xceiv->otg->state));
- 
- 	if (devctl & MUSB_DEVCTL_HM) {
--		switch (musb->xceiv->otg->state) {
-+		switch (musb_get_state(musb)) {
- 		case OTG_STATE_A_SUSPEND:
- 			/* remote wakeup? */
- 			musb->port1_status |=
-@@ -679,14 +679,14 @@ static void musb_handle_intr_resume(stru
- 					| MUSB_PORT_STAT_RESUME;
- 			musb->rh_timer = jiffies
- 				+ msecs_to_jiffies(USB_RESUME_TIMEOUT);
--			musb->xceiv->otg->state = OTG_STATE_A_HOST;
-+			musb_set_state(musb, OTG_STATE_A_HOST);
- 			musb->is_active = 1;
- 			musb_host_resume_root_hub(musb);
- 			schedule_delayed_work(&musb->finish_resume_work,
- 				msecs_to_jiffies(USB_RESUME_TIMEOUT));
- 			break;
- 		case OTG_STATE_B_WAIT_ACON:
--			musb->xceiv->otg->state = OTG_STATE_B_PERIPHERAL;
-+			musb_set_state(musb, OTG_STATE_B_PERIPHERAL);
- 			musb->is_active = 1;
- 			MUSB_DEV_MODE(musb);
- 			break;
-@@ -696,10 +696,10 @@ static void musb_handle_intr_resume(stru
- 				usb_otg_state_string(musb->xceiv->otg->state));
- 		}
- 	} else {
--		switch (musb->xceiv->otg->state) {
-+		switch (musb_get_state(musb)) {
- 		case OTG_STATE_A_SUSPEND:
- 			/* possibly DISCONNECT is upcoming */
--			musb->xceiv->otg->state = OTG_STATE_A_HOST;
-+			musb_set_state(musb, OTG_STATE_A_HOST);
- 			musb_host_resume_root_hub(musb);
- 			break;
- 		case OTG_STATE_B_WAIT_ACON:
-@@ -750,7 +750,7 @@ static irqreturn_t musb_handle_intr_sess
- 	 */
- 	musb_writeb(mbase, MUSB_DEVCTL, MUSB_DEVCTL_SESSION);
- 	musb->ep0_stage = MUSB_EP0_START;
--	musb->xceiv->otg->state = OTG_STATE_A_IDLE;
-+	musb_set_state(musb, OTG_STATE_A_IDLE);
- 	MUSB_HST_MODE(musb);
- 	musb_platform_set_vbus(musb, 1);
- 
-@@ -777,7 +777,7 @@ static void musb_handle_intr_vbuserr(str
- 	 * REVISIT:  do delays from lots of DEBUG_KERNEL checks
- 	 * make trouble here, keeping VBUS < 4.4V ?
- 	 */
--	switch (musb->xceiv->otg->state) {
-+	switch (musb_get_state(musb)) {
- 	case OTG_STATE_A_HOST:
- 		/* recovery is dicey once we've gotten past the
- 		 * initial stages of enumeration, but if VBUS
-@@ -833,7 +833,7 @@ static void musb_handle_intr_suspend(str
- 	musb_dbg(musb, "SUSPEND (%s) devctl %02x",
- 		usb_otg_state_string(musb->xceiv->otg->state), devctl);
- 
--	switch (musb->xceiv->otg->state) {
-+	switch (musb_get_state(musb)) {
- 	case OTG_STATE_A_PERIPHERAL:
- 		/* We also come here if the cable is removed, since
- 		 * this silicon doesn't report ID-no-longer-grounded.
-@@ -858,7 +858,7 @@ static void musb_handle_intr_suspend(str
- 		musb_g_suspend(musb);
- 		musb->is_active = musb->g.b_hnp_enable;
- 		if (musb->is_active) {
--			musb->xceiv->otg->state = OTG_STATE_B_WAIT_ACON;
-+			musb_set_state(musb, OTG_STATE_B_WAIT_ACON);
- 			musb_dbg(musb, "HNP: Setting timer for b_ase0_brst");
- 			mod_timer(&musb->otg_timer, jiffies
- 				+ msecs_to_jiffies(
-@@ -871,7 +871,7 @@ static void musb_handle_intr_suspend(str
- 				+ msecs_to_jiffies(musb->a_wait_bcon));
- 		break;
- 	case OTG_STATE_A_HOST:
--		musb->xceiv->otg->state = OTG_STATE_A_SUSPEND;
-+		musb_set_state(musb, OTG_STATE_A_SUSPEND);
- 		musb->is_active = musb->hcd->self.b_hnp_enable;
- 		break;
- 	case OTG_STATE_B_HOST:
-@@ -909,7 +909,7 @@ static void musb_handle_intr_connect(str
- 		musb->port1_status |= USB_PORT_STAT_LOW_SPEED;
- 
- 	/* indicate new connection to OTG machine */
--	switch (musb->xceiv->otg->state) {
-+	switch (musb_get_state(musb)) {
- 	case OTG_STATE_B_PERIPHERAL:
- 		if (int_usb & MUSB_INTR_SUSPEND) {
- 			musb_dbg(musb, "HNP: SUSPEND+CONNECT, now b_host");
-@@ -921,7 +921,7 @@ static void musb_handle_intr_connect(str
- 	case OTG_STATE_B_WAIT_ACON:
- 		musb_dbg(musb, "HNP: CONNECT, now b_host");
- b_host:
--		musb->xceiv->otg->state = OTG_STATE_B_HOST;
-+		musb_set_state(musb, OTG_STATE_B_HOST);
- 		if (musb->hcd)
- 			musb->hcd->self.is_b_host = 1;
- 		del_timer(&musb->otg_timer);
-@@ -929,7 +929,7 @@ b_host:
- 	default:
- 		if ((devctl & MUSB_DEVCTL_VBUS)
- 				== (3 << MUSB_DEVCTL_VBUS_SHIFT)) {
--			musb->xceiv->otg->state = OTG_STATE_A_HOST;
-+			musb_set_state(musb, OTG_STATE_A_HOST);
- 			if (hcd)
- 				hcd->self.is_b_host = 0;
- 		}
-@@ -948,7 +948,7 @@ static void musb_handle_intr_disconnect(
- 			usb_otg_state_string(musb->xceiv->otg->state),
- 			MUSB_MODE(musb), devctl);
- 
--	switch (musb->xceiv->otg->state) {
-+	switch (musb_get_state(musb)) {
- 	case OTG_STATE_A_HOST:
- 	case OTG_STATE_A_SUSPEND:
- 		musb_host_resume_root_hub(musb);
-@@ -966,7 +966,7 @@ static void musb_handle_intr_disconnect(
- 		musb_root_disconnect(musb);
- 		if (musb->hcd)
- 			musb->hcd->self.is_b_host = 0;
--		musb->xceiv->otg->state = OTG_STATE_B_PERIPHERAL;
-+		musb_set_state(musb, OTG_STATE_B_PERIPHERAL);
- 		MUSB_DEV_MODE(musb);
- 		musb_g_disconnect(musb);
- 		break;
-@@ -1006,7 +1006,7 @@ static void musb_handle_intr_reset(struc
- 	} else {
- 		musb_dbg(musb, "BUS RESET as %s",
- 			usb_otg_state_string(musb->xceiv->otg->state));
--		switch (musb->xceiv->otg->state) {
-+		switch (musb_get_state(musb)) {
- 		case OTG_STATE_A_SUSPEND:
- 			musb_g_reset(musb);
- 			fallthrough;
-@@ -1025,11 +1025,11 @@ static void musb_handle_intr_reset(struc
- 		case OTG_STATE_B_WAIT_ACON:
- 			musb_dbg(musb, "HNP: RESET (%s), to b_peripheral",
- 				usb_otg_state_string(musb->xceiv->otg->state));
--			musb->xceiv->otg->state = OTG_STATE_B_PERIPHERAL;
-+			musb_set_state(musb, OTG_STATE_B_PERIPHERAL);
- 			musb_g_reset(musb);
- 			break;
- 		case OTG_STATE_B_IDLE:
--			musb->xceiv->otg->state = OTG_STATE_B_PERIPHERAL;
-+			musb_set_state(musb, OTG_STATE_B_PERIPHERAL);
- 			fallthrough;
- 		case OTG_STATE_B_PERIPHERAL:
- 			musb_g_reset(musb);
-@@ -1216,8 +1216,8 @@ void musb_start(struct musb *musb)
- 	 * (c) peripheral initiates, using SRP
- 	 */
- 	if (musb->port_mode != MUSB_HOST &&
--			musb->xceiv->otg->state != OTG_STATE_A_WAIT_BCON &&
--			(devctl & MUSB_DEVCTL_VBUS) == MUSB_DEVCTL_VBUS) {
-+	    musb_get_state(musb) != OTG_STATE_A_WAIT_BCON &&
-+	    (devctl & MUSB_DEVCTL_VBUS) == MUSB_DEVCTL_VBUS) {
- 		musb->is_active = 1;
- 	} else {
- 		devctl |= MUSB_DEVCTL_SESSION;
-@@ -1908,7 +1908,7 @@ vbus_store(struct device *dev, struct de
- 	spin_lock_irqsave(&musb->lock, flags);
- 	/* force T(a_wait_bcon) to be zero/unlimited *OR* valid */
- 	musb->a_wait_bcon = val ? max_t(int, val, OTG_TIME_A_WAIT_BCON) : 0 ;
--	if (musb->xceiv->otg->state == OTG_STATE_A_WAIT_BCON)
-+	if (musb_get_state(musb) == OTG_STATE_A_WAIT_BCON)
- 		musb->is_active = 0;
- 	musb_platform_try_idle(musb, jiffies + msecs_to_jiffies(val));
- 	spin_unlock_irqrestore(&musb->lock, flags);
-@@ -2089,8 +2089,8 @@ static void musb_irq_work(struct work_st
- 
- 	musb_pm_runtime_check_session(musb);
- 
--	if (musb->xceiv->otg->state != musb->xceiv_old_state) {
--		musb->xceiv_old_state = musb->xceiv->otg->state;
-+	if (musb_get_state(musb) != musb->xceiv_old_state) {
-+		musb->xceiv_old_state = musb_get_state(musb);
- 		sysfs_notify(&musb->controller->kobj, NULL, "mode");
- 	}
- 
-@@ -2532,7 +2532,7 @@ musb_init_controller(struct device *dev,
- 	}
- 
- 	MUSB_DEV_MODE(musb);
--	musb->xceiv->otg->state = OTG_STATE_B_IDLE;
-+	musb_set_state(musb, OTG_STATE_B_IDLE);
- 
- 	switch (musb->port_mode) {
- 	case MUSB_HOST:
---- a/drivers/usb/musb/musb_core.h
-+++ b/drivers/usb/musb/musb_core.h
-@@ -592,6 +592,17 @@ static inline void musb_platform_clear_e
- 		musb->ops->clear_ep_rxintr(musb, epnum);
- }
- 
-+static inline void musb_set_state(struct musb *musb,
-+				  enum usb_otg_state otg_state)
-+{
-+	musb->xceiv->otg->state = otg_state;
-+}
-+
-+static inline enum usb_otg_state musb_get_state(struct musb *musb)
-+{
-+	return musb->xceiv->otg->state;
-+}
-+
- /*
-  * gets the "dr_mode" property from DT and converts it into musb_mode
-  * if the property is not found or not recognized returns MUSB_OTG
---- a/drivers/usb/musb/musb_debugfs.c
-+++ b/drivers/usb/musb/musb_debugfs.c
-@@ -235,7 +235,7 @@ static int musb_softconnect_show(struct
- 	u8		reg;
- 	int		connect;
- 
--	switch (musb->xceiv->otg->state) {
-+	switch (musb_get_state(musb)) {
- 	case OTG_STATE_A_HOST:
- 	case OTG_STATE_A_WAIT_BCON:
- 		pm_runtime_get_sync(musb->controller);
-@@ -275,7 +275,7 @@ static ssize_t musb_softconnect_write(st
- 
- 	pm_runtime_get_sync(musb->controller);
- 	if (!strncmp(buf, "0", 1)) {
--		switch (musb->xceiv->otg->state) {
-+		switch (musb_get_state(musb)) {
- 		case OTG_STATE_A_HOST:
- 			musb_root_disconnect(musb);
- 			reg = musb_readb(musb->mregs, MUSB_DEVCTL);
-@@ -286,7 +286,7 @@ static ssize_t musb_softconnect_write(st
+--- a/fs/smb/client/smb2ops.c
++++ b/fs/smb/client/smb2ops.c
+@@ -730,6 +730,13 @@ next_iface:
+ 			bytes_left -= sizeof(*p);
  			break;
  		}
- 	} else if (!strncmp(buf, "1", 1)) {
--		switch (musb->xceiv->otg->state) {
-+		switch (musb_get_state(musb)) {
- 		case OTG_STATE_A_WAIT_BCON:
- 			/*
- 			 * musb_save_context() called in musb_runtime_suspend()
---- a/drivers/usb/musb/musb_gadget.c
-+++ b/drivers/usb/musb/musb_gadget.c
-@@ -1523,7 +1523,7 @@ static int musb_gadget_wakeup(struct usb
- 
- 	spin_lock_irqsave(&musb->lock, flags);
- 
--	switch (musb->xceiv->otg->state) {
-+	switch (musb_get_state(musb)) {
- 	case OTG_STATE_B_PERIPHERAL:
- 		/* NOTE:  OTG state machine doesn't include B_SUSPENDED;
- 		 * that's part of the standard usb 1.1 state machine, and
-@@ -1785,7 +1785,7 @@ int musb_gadget_setup(struct musb *musb)
- 	musb->g.speed = USB_SPEED_UNKNOWN;
- 
- 	MUSB_DEV_MODE(musb);
--	musb->xceiv->otg->state = OTG_STATE_B_IDLE;
-+	musb_set_state(musb, OTG_STATE_B_IDLE);
- 
- 	/* this "gadget" abstracts/virtualizes the controller */
- 	musb->g.name = musb_driver_name;
-@@ -1850,7 +1850,7 @@ static int musb_gadget_start(struct usb_
- 	musb->is_active = 1;
- 
- 	otg_set_peripheral(otg, &musb->g);
--	musb->xceiv->otg->state = OTG_STATE_B_IDLE;
-+	musb_set_state(musb, OTG_STATE_B_IDLE);
- 	spin_unlock_irqrestore(&musb->lock, flags);
- 
- 	musb_start(musb);
-@@ -1895,7 +1895,7 @@ static int musb_gadget_stop(struct usb_g
- 
- 	(void) musb_gadget_vbus_draw(&musb->g, 0);
- 
--	musb->xceiv->otg->state = OTG_STATE_UNDEFINED;
-+	musb_set_state(musb, OTG_STATE_UNDEFINED);
- 	musb_stop(musb);
- 	otg_set_peripheral(musb->xceiv->otg, NULL);
- 
-@@ -1926,7 +1926,7 @@ static int musb_gadget_stop(struct usb_g
- void musb_g_resume(struct musb *musb)
- {
- 	musb->is_suspended = 0;
--	switch (musb->xceiv->otg->state) {
-+	switch (musb_get_state(musb)) {
- 	case OTG_STATE_B_IDLE:
- 		break;
- 	case OTG_STATE_B_WAIT_ACON:
-@@ -1952,10 +1952,10 @@ void musb_g_suspend(struct musb *musb)
- 	devctl = musb_readb(musb->mregs, MUSB_DEVCTL);
- 	musb_dbg(musb, "musb_g_suspend: devctl %02x", devctl);
- 
--	switch (musb->xceiv->otg->state) {
-+	switch (musb_get_state(musb)) {
- 	case OTG_STATE_B_IDLE:
- 		if ((devctl & MUSB_DEVCTL_VBUS) == MUSB_DEVCTL_VBUS)
--			musb->xceiv->otg->state = OTG_STATE_B_PERIPHERAL;
-+			musb_set_state(musb, OTG_STATE_B_PERIPHERAL);
- 		break;
- 	case OTG_STATE_B_PERIPHERAL:
- 		musb->is_suspended = 1;
-@@ -2001,22 +2001,22 @@ void musb_g_disconnect(struct musb *musb
- 		spin_lock(&musb->lock);
++		/* Validate that Next doesn't point beyond the buffer */
++		if (next > bytes_left) {
++			cifs_dbg(VFS, "%s: invalid Next pointer %zu > %zd\n",
++				 __func__, next, bytes_left);
++			rc = -EINVAL;
++			goto out;
++		}
+ 		p = (struct network_interface_info_ioctl_rsp *)((u8 *)p+next);
+ 		bytes_left -= next;
+ 	}
+@@ -741,7 +748,9 @@ next_iface:
  	}
  
--	switch (musb->xceiv->otg->state) {
-+	switch (musb_get_state(musb)) {
- 	default:
- 		musb_dbg(musb, "Unhandled disconnect %s, setting a_idle",
- 			usb_otg_state_string(musb->xceiv->otg->state));
--		musb->xceiv->otg->state = OTG_STATE_A_IDLE;
-+		musb_set_state(musb, OTG_STATE_A_IDLE);
- 		MUSB_HST_MODE(musb);
- 		break;
- 	case OTG_STATE_A_PERIPHERAL:
--		musb->xceiv->otg->state = OTG_STATE_A_WAIT_BCON;
-+		musb_set_state(musb, OTG_STATE_A_WAIT_BCON);
- 		MUSB_HST_MODE(musb);
- 		break;
- 	case OTG_STATE_B_WAIT_ACON:
- 	case OTG_STATE_B_HOST:
- 	case OTG_STATE_B_PERIPHERAL:
- 	case OTG_STATE_B_IDLE:
--		musb->xceiv->otg->state = OTG_STATE_B_IDLE;
-+		musb_set_state(musb, OTG_STATE_B_IDLE);
- 		break;
- 	case OTG_STATE_B_SRP_INIT:
- 		break;
-@@ -2080,13 +2080,13 @@ __acquires(musb->lock)
- 		 * In that case, do not rely on devctl for setting
- 		 * peripheral mode.
- 		 */
--		musb->xceiv->otg->state = OTG_STATE_B_PERIPHERAL;
-+		musb_set_state(musb, OTG_STATE_B_PERIPHERAL);
- 		musb->g.is_a_peripheral = 0;
- 	} else if (devctl & MUSB_DEVCTL_BDEVICE) {
--		musb->xceiv->otg->state = OTG_STATE_B_PERIPHERAL;
-+		musb_set_state(musb, OTG_STATE_B_PERIPHERAL);
- 		musb->g.is_a_peripheral = 0;
- 	} else {
--		musb->xceiv->otg->state = OTG_STATE_A_PERIPHERAL;
-+		musb_set_state(musb, OTG_STATE_A_PERIPHERAL);
- 		musb->g.is_a_peripheral = 1;
- 	}
+ 	/* Azure rounds the buffer size up 8, to a 16 byte boundary */
+-	if ((bytes_left > 8) || p->Next)
++	if ((bytes_left > 8) ||
++	    (bytes_left >= offsetof(struct network_interface_info_ioctl_rsp, Next)
++	     + sizeof(p->Next) && p->Next))
+ 		cifs_dbg(VFS, "%s: incomplete interface info\n", __func__);
  
---- a/drivers/usb/musb/musb_host.c
-+++ b/drivers/usb/musb/musb_host.c
-@@ -2508,7 +2508,7 @@ static int musb_bus_suspend(struct usb_h
- 	if (!is_host_active(musb))
- 		return 0;
- 
--	switch (musb->xceiv->otg->state) {
-+	switch (musb_get_state(musb)) {
- 	case OTG_STATE_A_SUSPEND:
- 		return 0;
- 	case OTG_STATE_A_WAIT_VRISE:
-@@ -2518,7 +2518,7 @@ static int musb_bus_suspend(struct usb_h
- 		 */
- 		devctl = musb_readb(musb->mregs, MUSB_DEVCTL);
- 		if ((devctl & MUSB_DEVCTL_VBUS) == MUSB_DEVCTL_VBUS)
--			musb->xceiv->otg->state = OTG_STATE_A_WAIT_BCON;
-+			musb_set_state(musb, OTG_STATE_A_WAIT_BCON);
- 		break;
- 	default:
- 		break;
-@@ -2727,7 +2727,7 @@ int musb_host_setup(struct musb *musb, i
- 
- 	if (musb->port_mode == MUSB_HOST) {
- 		MUSB_HST_MODE(musb);
--		musb->xceiv->otg->state = OTG_STATE_A_IDLE;
-+		musb_set_state(musb, OTG_STATE_A_IDLE);
- 	}
- 	otg_set_host(musb->xceiv->otg, &hcd->self);
- 	/* don't support otg protocols */
---- a/drivers/usb/musb/musb_virthub.c
-+++ b/drivers/usb/musb/musb_virthub.c
-@@ -43,7 +43,7 @@ void musb_host_finish_resume(struct work
- 	musb->port1_status |= USB_PORT_STAT_C_SUSPEND << 16;
- 	usb_hcd_poll_rh_status(musb->hcd);
- 	/* NOTE: it might really be A_WAIT_BCON ... */
--	musb->xceiv->otg->state = OTG_STATE_A_HOST;
-+	musb_set_state(musb, OTG_STATE_A_HOST);
- 
- 	spin_unlock_irqrestore(&musb->lock, flags);
- }
-@@ -85,9 +85,9 @@ int musb_port_suspend(struct musb *musb,
- 		musb_dbg(musb, "Root port suspended, power %02x", power);
- 
- 		musb->port1_status |= USB_PORT_STAT_SUSPEND;
--		switch (musb->xceiv->otg->state) {
-+		switch (musb_get_state(musb)) {
- 		case OTG_STATE_A_HOST:
--			musb->xceiv->otg->state = OTG_STATE_A_SUSPEND;
-+			musb_set_state(musb, OTG_STATE_A_SUSPEND);
- 			musb->is_active = otg->host->b_hnp_enable;
- 			if (musb->is_active)
- 				mod_timer(&musb->otg_timer, jiffies
-@@ -96,7 +96,7 @@ int musb_port_suspend(struct musb *musb,
- 			musb_platform_try_idle(musb, 0);
- 			break;
- 		case OTG_STATE_B_HOST:
--			musb->xceiv->otg->state = OTG_STATE_B_WAIT_ACON;
-+			musb_set_state(musb, OTG_STATE_B_WAIT_ACON);
- 			musb->is_active = otg->host->b_hnp_enable;
- 			musb_platform_try_idle(musb, 0);
- 			break;
-@@ -123,7 +123,7 @@ void musb_port_reset(struct musb *musb,
- 	u8		power;
- 	void __iomem	*mbase = musb->mregs;
- 
--	if (musb->xceiv->otg->state == OTG_STATE_B_IDLE) {
-+	if (musb_get_state(musb) == OTG_STATE_B_IDLE) {
- 		musb_dbg(musb, "HNP: Returning from HNP; no hub reset from b_idle");
- 		musb->port1_status &= ~USB_PORT_STAT_RESET;
- 		return;
-@@ -204,20 +204,20 @@ void musb_root_disconnect(struct musb *m
- 	usb_hcd_poll_rh_status(musb->hcd);
- 	musb->is_active = 0;
- 
--	switch (musb->xceiv->otg->state) {
-+	switch (musb_get_state(musb)) {
- 	case OTG_STATE_A_SUSPEND:
- 		if (otg->host->b_hnp_enable) {
--			musb->xceiv->otg->state = OTG_STATE_A_PERIPHERAL;
-+			musb_set_state(musb, OTG_STATE_A_PERIPHERAL);
- 			musb->g.is_a_peripheral = 1;
- 			break;
- 		}
- 		fallthrough;
- 	case OTG_STATE_A_HOST:
--		musb->xceiv->otg->state = OTG_STATE_A_WAIT_BCON;
-+		musb_set_state(musb, OTG_STATE_A_WAIT_BCON);
- 		musb->is_active = 0;
- 		break;
- 	case OTG_STATE_A_WAIT_VFALL:
--		musb->xceiv->otg->state = OTG_STATE_B_IDLE;
-+		musb_set_state(musb, OTG_STATE_B_IDLE);
- 		break;
- 	default:
- 		musb_dbg(musb, "host disconnect (%s)",
+ 	ses->iface_last_update = jiffies;
 
 
 
