@@ -1,57 +1,55 @@
-Return-Path: <stable+bounces-173454-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-175182-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5252BB35CD9
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 13:39:24 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id E794BB3672B
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 16:04:18 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 0C6617C55F0
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 11:39:23 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 70CFD8E77EA
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 13:55:01 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D615D267386;
-	Tue, 26 Aug 2025 11:38:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id BF6C835083A;
+	Tue, 26 Aug 2025 13:52:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="bJ7GCieB"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="JNviLiVj"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 92395285CA9;
-	Tue, 26 Aug 2025 11:38:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7662D1E519;
+	Tue, 26 Aug 2025 13:52:35 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756208289; cv=none; b=J31y8TJ2O61xvqEHO0y9zznAtYUyKi8L7iUwfAaJ+w8/6XZ1YKuZT8ONap1Tx4PY/vmCKMvXL7uBPFW/nBPjY0ImLNxH3jzrz2oaCN5ESt3UdQsF/8gu8O9BfVYgOJzaYQbBzvhZY4WWs/mNT0Q54Tuqf6nYAIulkUabppjntTg=
+	t=1756216358; cv=none; b=hmn/9F19hwSoPo79rO3lKd9vrBvF34c6deQhN0/hK5z0J76LNrmpjrKY40fR5Zsnq75xnfdSNvhT4//3tm3EWOenhX69Z+4EhIVFGxaRnLNq9t6XwamvyGiRgF/30DHn/wGBMjzjh3oan829wUDwxEeBXrgT2BpkvSjhBpBv564=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756208289; c=relaxed/simple;
-	bh=hXqLF+aL/OW2i9sO3BswqfplI5EbxnHLR+mlj8qWqj0=;
+	s=arc-20240116; t=1756216358; c=relaxed/simple;
+	bh=axI1bPstp7dc6JoiM5aI0MRHgKyJhwSVDWYbA9LK4HE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=ZfGOhvEuRZjDJyc+8ZcD1W2N3UyFYr3fGZG0uG+Rc92hwPsHeJb6yiRJS61kaFE/wNErdmiC0yvYLMzLryRABmpsBlwOEamv8u2V9Oo3SfkW7WPGJts5pY6jrwlJtb/h50ex81AEH2gxRN8BMoh0/fM2qNP305sbJggj8VUMjxw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=bJ7GCieB; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 27763C4CEF1;
-	Tue, 26 Aug 2025 11:38:09 +0000 (UTC)
+	 MIME-Version:Content-Type; b=ItZqvnuTj1rbKtVHuKlmVuiY4+vn+x5+/9z68kUnW9jDyBEQ2q+zEZRNlHE1HaWpxCsYfTeisz4rmUUuX7jY+RuQ5Yqit1bPvPTVkStlpRQ504TCGG3TNkQKKYrrASTHSaiFrL+yvh88vTKo6fP+KflA4d2qUXZa1haFjNTXZcM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=JNviLiVj; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id BA25BC4CEF1;
+	Tue, 26 Aug 2025 13:52:34 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1756208289;
-	bh=hXqLF+aL/OW2i9sO3BswqfplI5EbxnHLR+mlj8qWqj0=;
+	s=korg; t=1756216355;
+	bh=axI1bPstp7dc6JoiM5aI0MRHgKyJhwSVDWYbA9LK4HE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=bJ7GCieBLKdHxiu6nwtrD5pGaIgrFOCbn3NGhOj6b2sQiqy4ICPw31X5CZFMAhD1d
-	 d4Owo8XBrfUoer61x+daE/ZhQsFdSr1gdNxpnshj6HHrWxsXWweFGU6er1ymjSwMHv
-	 kBTQk6N0406NLgMW/6sDhSG3l6tLVkbEg0cPTSmA=
+	b=JNviLiVjbk2P4DqgoAA7BzVGDegIXUKemSV23MRKZues+6fhVP/V9FSGyLSdp3Ixh
+	 1K8IwHkkDxRmIGHwf7ewIaaAXyRWTuny7XxPhtPvA9KbkTsIkG6iXYsFh4bDV9XIDS
+	 q0UAG4Nd+BGuPaRsTZHWVxdbzamSuDKUPQSRP9WY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Marek Szyprowski <m.szyprowski@samsung.com>,
-	Jason Gunthorpe <jgg@nvidia.com>,
-	Xu Yilun <yilun.xu@intel.com>,
-	Xu Yilun <yilun.xu@linux.intel.com>
-Subject: [PATCH 6.12 055/322] zynq_fpga: use sgtable-based scatterlist wrappers
+	Jakub Kicinski <kuba@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.15 379/644] uapi: in6: restore visibility of most IPv6 socket options
 Date: Tue, 26 Aug 2025 13:07:50 +0200
-Message-ID: <20250826110916.869102940@linuxfoundation.org>
+Message-ID: <20250826110955.818689978@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250826110915.169062587@linuxfoundation.org>
-References: <20250826110915.169062587@linuxfoundation.org>
+In-Reply-To: <20250826110946.507083938@linuxfoundation.org>
+References: <20250826110946.507083938@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,53 +59,107 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Marek Szyprowski <m.szyprowski@samsung.com>
+From: Jakub Kicinski <kuba@kernel.org>
 
-commit 37e00703228ab44d0aacc32a97809a4f6f58df1b upstream.
+[ Upstream commit 31557b3487b349464daf42bc4366153743c1e727 ]
 
-Use common wrappers operating directly on the struct sg_table objects to
-fix incorrect use of statterlists related calls. dma_unmap_sg() function
-has to be called with the number of elements originally passed to the
-dma_map_sg() function, not the one returned in sgtable's nents.
+A decade ago commit 6d08acd2d32e ("in6: fix conflict with glibc")
+hid the definitions of IPV6 options, because GCC was complaining
+about duplicates. The commit did not list the warnings seen, but
+trying to recreate them now I think they are (building iproute2):
 
-CC: stable@vger.kernel.org
-Fixes: 425902f5c8e3 ("fpga zynq: Use the scatterlist interface")
-Signed-off-by: Marek Szyprowski <m.szyprowski@samsung.com>
-Reviewed-by: Jason Gunthorpe <jgg@nvidia.com>
-Reviewed-by: Xu Yilun <yilun.xu@intel.com>
-Link: https://lore.kernel.org/r/20250616120932.1090614-1-m.szyprowski@samsung.com
-Signed-off-by: Xu Yilun <yilun.xu@linux.intel.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+In file included from ./include/uapi/rdma/rdma_user_cm.h:39,
+                 from rdma.h:16,
+                 from res.h:9,
+                 from res-ctx.c:7:
+../include/uapi/linux/in6.h:171:9: warning: ‘IPV6_ADD_MEMBERSHIP’ redefined
+  171 | #define IPV6_ADD_MEMBERSHIP     20
+      |         ^~~~~~~~~~~~~~~~~~~
+In file included from /usr/include/netinet/in.h:37,
+                 from rdma.h:13:
+/usr/include/bits/in.h:233:10: note: this is the location of the previous definition
+  233 | # define IPV6_ADD_MEMBERSHIP    IPV6_JOIN_GROUP
+      |          ^~~~~~~~~~~~~~~~~~~
+../include/uapi/linux/in6.h:172:9: warning: ‘IPV6_DROP_MEMBERSHIP’ redefined
+  172 | #define IPV6_DROP_MEMBERSHIP    21
+      |         ^~~~~~~~~~~~~~~~~~~~
+/usr/include/bits/in.h:234:10: note: this is the location of the previous definition
+  234 | # define IPV6_DROP_MEMBERSHIP   IPV6_LEAVE_GROUP
+      |          ^~~~~~~~~~~~~~~~~~~~
+
+Compilers don't complain about redefinition if the defines
+are identical, but here we have the kernel using the literal
+value, and glibc using an indirection (defining to a name
+of another define, with the same numerical value).
+
+Problem is, the commit in question hid all the IPV6 socket
+options, and glibc has a pretty sparse list. For instance
+it lacks Flow Label related options. Willem called this out
+in commit 3fb321fde22d ("selftests/net: ipv6 flowlabel"):
+
+  /* uapi/glibc weirdness may leave this undefined */
+  #ifndef IPV6_FLOWINFO
+  #define IPV6_FLOWINFO 11
+  #endif
+
+More interestingly some applications (socat) use
+a #ifdef IPV6_FLOWINFO to gate compilation of thier
+rudimentary flow label support. (For added confusion
+socat misspells it as IPV4_FLOWINFO in some places.)
+
+Hide only the two defines we know glibc has a problem
+with. If we discover more warnings we can hide more
+but we should avoid covering the entire block of
+defines for "IPV6 socket options".
+
+Link: https://patch.msgid.link/20250609143933.1654417-1-kuba@kernel.org
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/fpga/zynq-fpga.c |    4 ++--
+ include/uapi/linux/in6.h | 4 ++--
  1 file changed, 2 insertions(+), 2 deletions(-)
 
---- a/drivers/fpga/zynq-fpga.c
-+++ b/drivers/fpga/zynq-fpga.c
-@@ -406,7 +406,7 @@ static int zynq_fpga_ops_write(struct fp
- 	}
+diff --git a/include/uapi/linux/in6.h b/include/uapi/linux/in6.h
+index ff8d21f9e95b..5a47339ef7d7 100644
+--- a/include/uapi/linux/in6.h
++++ b/include/uapi/linux/in6.h
+@@ -152,7 +152,6 @@ struct in6_flowlabel_req {
+ /*
+  *	IPV6 socket options
+  */
+-#if __UAPI_DEF_IPV6_OPTIONS
+ #define IPV6_ADDRFORM		1
+ #define IPV6_2292PKTINFO	2
+ #define IPV6_2292HOPOPTS	3
+@@ -169,8 +168,10 @@ struct in6_flowlabel_req {
+ #define IPV6_MULTICAST_IF	17
+ #define IPV6_MULTICAST_HOPS	18
+ #define IPV6_MULTICAST_LOOP	19
++#if __UAPI_DEF_IPV6_OPTIONS
+ #define IPV6_ADD_MEMBERSHIP	20
+ #define IPV6_DROP_MEMBERSHIP	21
++#endif
+ #define IPV6_ROUTER_ALERT	22
+ #define IPV6_MTU_DISCOVER	23
+ #define IPV6_MTU		24
+@@ -203,7 +204,6 @@ struct in6_flowlabel_req {
+ #define IPV6_IPSEC_POLICY	34
+ #define IPV6_XFRM_POLICY	35
+ #define IPV6_HDRINCL		36
+-#endif
  
- 	priv->dma_nelms =
--	    dma_map_sg(mgr->dev.parent, sgt->sgl, sgt->nents, DMA_TO_DEVICE);
-+	    dma_map_sgtable(mgr->dev.parent, sgt, DMA_TO_DEVICE, 0);
- 	if (priv->dma_nelms == 0) {
- 		dev_err(&mgr->dev, "Unable to DMA map (TO_DEVICE)\n");
- 		return -ENOMEM;
-@@ -478,7 +478,7 @@ out_clk:
- 	clk_disable(priv->clk);
- 
- out_free:
--	dma_unmap_sg(mgr->dev.parent, sgt->sgl, sgt->nents, DMA_TO_DEVICE);
-+	dma_unmap_sgtable(mgr->dev.parent, sgt, DMA_TO_DEVICE, 0);
- 	return err;
- }
- 
+ /*
+  * Multicast:
+-- 
+2.39.5
+
 
 
 
