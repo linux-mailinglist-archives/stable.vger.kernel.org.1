@@ -1,57 +1,58 @@
-Return-Path: <stable+bounces-173257-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-175336-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id CBC96B35C45
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 13:32:55 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 924D6B367ED
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 16:11:17 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 6F8C87C46C1
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 11:32:25 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 2285D1C2611F
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 14:01:44 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id BF11817332C;
-	Tue, 26 Aug 2025 11:29:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 21D8A34AAF8;
+	Tue, 26 Aug 2025 13:59:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="zo8WsSPH"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="zN5WveUd"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7B5EE322524;
-	Tue, 26 Aug 2025 11:29:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CF122350D57;
+	Tue, 26 Aug 2025 13:59:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756207778; cv=none; b=krsb89bz0ML52xpeW5cDkSpQZFT/nqXHFerV8xFdoJduIFWPMPzPlCCYhQXfZedcWzqH8q8sq1DsQq9WjoKuThjOcZFW6WpfmQtV4MC5bT9xBvpvR1Xpe+1q7Q0FrZ9Ws4W6/4gmQ/ZTIUUS8kNf+xIKMPAaFnrMltimdvv5o5o=
+	t=1756216765; cv=none; b=Ocyc7taepgVdyVCVc747qTWoF2mZHwdxp/ujcIpZRbAQ36SasJCaGJ7Pl5Q3c1fSs22OvVBXb/2bNsQOOSXSQaPPrUqo2qV7JBny6a51/ILR2htA+1e+pVmLuaviAUoMQ7HaFsVRHpIMZ0N2moKoW0SNGYTzZgdZ/QYJEN6PcBY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756207778; c=relaxed/simple;
-	bh=mFZViN5VC1X9DzRVEqrm30rCdxZYcCisiLOd9e51B5k=;
+	s=arc-20240116; t=1756216765; c=relaxed/simple;
+	bh=zX6SqT+ueyoh6nEVC+HcgEaNVPgfccNSkRg3LWCjLIk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=dlt06XpNgvltLN1tOy9TgU7riRCkXv1Zz1tnWYNwzHxYDIM3kcrvv5ycqRhwGRfmbrimAqD880HY11nuRZRORL9s+NM0Xu4VylWN6erKvLitbS4fLDCsd+2jO5Um1YWsDt275RJX+cl1hWDplsj/B6QrD3UkXCkdlkrfioUYcLs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=zo8WsSPH; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0AD04C4CEF1;
-	Tue, 26 Aug 2025 11:29:37 +0000 (UTC)
+	 MIME-Version; b=M+5C7z34tibrGWPrtyEen0KYN5ULnADClVuvYUyYr0l3iA7yTh/hCRx0dMWI4t9DNCvjsLG93CSW0L37MKZBY/BZcF1UbjBxZ/NZKwtaxKHPcBkf3OwC44vj18eDEIzN4TlgxCoYyuBjppaU8Ld0H/9Jp+XhrQB94l4BlQQ4XG0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=zN5WveUd; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 64D5BC4CEF1;
+	Tue, 26 Aug 2025 13:59:25 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1756207778;
-	bh=mFZViN5VC1X9DzRVEqrm30rCdxZYcCisiLOd9e51B5k=;
+	s=korg; t=1756216765;
+	bh=zX6SqT+ueyoh6nEVC+HcgEaNVPgfccNSkRg3LWCjLIk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=zo8WsSPHTa1HVSFuUI2g8UtzrDtYIsDujRAqFLKf2in0kPFDtu+/XTavbaMxwkHC5
-	 TkkFCKJnHpnvDUruy4P1PbnUmXuy+0n4vhcINtm3Cw8A/iE6CidygBUEqftfS+pqlZ
-	 /jIzBrnoA99dh2uOPY7l7TrztBttfYIcyDPJSwsU=
+	b=zN5WveUdISm7eFfBTJdnusXXayTHn/ukZBKWtli45YEzOxdXcnocbzqO3lqzb9fPa
+	 HEIZOVlD0Qb9EUV8IC7rYmie20GyXmfhzs2ity8fTBle7UP1WdhEbn9vdcZ7C85hDT
+	 T5GOPmYps1RuLpbTLItfLqCScNTHBMASwDDXWbts=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	syzbot+5cd373521edd68bebcb3@syzkaller.appspotmail.com,
-	Edward Adam Davis <eadavis@qq.com>,
-	Ian Abbott <abbotti@mev.co.uk>,
-	stable <stable@kernel.org>
-Subject: [PATCH 6.16 312/457] comedi: pcl726: Prevent invalid irq number
+	Gerrard Tai <gerrard.tai@starlabs.sg>,
+	Cong Wang <xiyou.wangcong@gmail.com>,
+	Simon Horman <horms@kernel.org>,
+	Jamal Hadi Salim <jhs@mojatatu.com>,
+	Paolo Abeni <pabeni@redhat.com>
+Subject: [PATCH 5.15 505/644] sch_qfq: make qfq_qlen_notify() idempotent
 Date: Tue, 26 Aug 2025 13:09:56 +0200
-Message-ID: <20250826110945.071777415@linuxfoundation.org>
+Message-ID: <20250826110959.012799575@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250826110937.289866482@linuxfoundation.org>
-References: <20250826110937.289866482@linuxfoundation.org>
+In-Reply-To: <20250826110946.507083938@linuxfoundation.org>
+References: <20250826110946.507083938@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,55 +64,71 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.16-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Edward Adam Davis <eadavis@qq.com>
+From: Cong Wang <xiyou.wangcong@gmail.com>
 
-commit 96cb948408b3adb69df7e451ba7da9d21f814d00 upstream.
+commit 55f9eca4bfe30a15d8656f915922e8c98b7f0728 upstream.
 
-The reproducer passed in an irq number(0x80008000) that was too large,
-which triggered the oob.
+qfq_qlen_notify() always deletes its class from its active list
+with list_del_init() _and_ calls qfq_deactivate_agg() when the whole list
+becomes empty.
 
-Added an interrupt number check to prevent users from passing in an irq
-number that was too large.
+To make it idempotent, just skip everything when it is not in the active
+list.
 
-If `it->options[1]` is 31, then `1 << it->options[1]` is still invalid
-because it shifts a 1-bit into the sign bit (which is UB in C).
-Possible solutions include reducing the upper bound on the
-`it->options[1]` value to 30 or lower, or using `1U << it->options[1]`.
+Also change other list_del()'s to list_del_init() just to be extra safe.
 
-The old code would just not attempt to request the IRQ if the
-`options[1]` value were invalid.  And it would still configure the
-device without interrupts even if the call to `request_irq` returned an
-error.  So it would be better to combine this test with the test below.
-
-Fixes: fff46207245c ("staging: comedi: pcl726: enable the interrupt support code")
-Cc: stable <stable@kernel.org> # 5.13+
-Reported-by: syzbot+5cd373521edd68bebcb3@syzkaller.appspotmail.com
-Closes: https://syzkaller.appspot.com/bug?extid=5cd373521edd68bebcb3
-Tested-by: syzbot+5cd373521edd68bebcb3@syzkaller.appspotmail.com
-Signed-off-by: Edward Adam Davis <eadavis@qq.com>
-Reviewed-by: Ian Abbott <abbotti@mev.co.uk>
-Link: https://lore.kernel.org/r/tencent_3C66983CC1369E962436264A50759176BF09@qq.com
+Reported-by: Gerrard Tai <gerrard.tai@starlabs.sg>
+Signed-off-by: Cong Wang <xiyou.wangcong@gmail.com>
+Reviewed-by: Simon Horman <horms@kernel.org>
+Link: https://patch.msgid.link/20250403211033.166059-5-xiyou.wangcong@gmail.com
+Acked-by: Jamal Hadi Salim <jhs@mojatatu.com>
+Signed-off-by: Paolo Abeni <pabeni@redhat.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/comedi/drivers/pcl726.c |    3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+ net/sched/sch_qfq.c |    7 +++++--
+ 1 file changed, 5 insertions(+), 2 deletions(-)
 
---- a/drivers/comedi/drivers/pcl726.c
-+++ b/drivers/comedi/drivers/pcl726.c
-@@ -328,7 +328,8 @@ static int pcl726_attach(struct comedi_d
- 	 * Hook up the external trigger source interrupt only if the
- 	 * user config option is valid and the board supports interrupts.
- 	 */
--	if (it->options[1] && (board->irq_mask & (1 << it->options[1]))) {
-+	if (it->options[1] > 0 && it->options[1] < 16 &&
-+	    (board->irq_mask & (1U << it->options[1]))) {
- 		ret = request_irq(it->options[1], pcl726_interrupt, 0,
- 				  dev->board_name, dev);
- 		if (ret == 0) {
+--- a/net/sched/sch_qfq.c
++++ b/net/sched/sch_qfq.c
+@@ -354,7 +354,7 @@ static void qfq_deactivate_class(struct
+ 	struct qfq_aggregate *agg = cl->agg;
+ 
+ 
+-	list_del(&cl->alist); /* remove from RR queue of the aggregate */
++	list_del_init(&cl->alist); /* remove from RR queue of the aggregate */
+ 	if (list_empty(&agg->active)) /* agg is now inactive */
+ 		qfq_deactivate_agg(q, agg);
+ }
+@@ -486,6 +486,7 @@ static int qfq_change_class(struct Qdisc
+ 
+ 	cl->common.classid = classid;
+ 	cl->deficit = lmax;
++	INIT_LIST_HEAD(&cl->alist);
+ 
+ 	cl->qdisc = qdisc_create_dflt(sch->dev_queue, &pfifo_qdisc_ops,
+ 				      classid, NULL);
+@@ -1006,7 +1007,7 @@ static struct sk_buff *agg_dequeue(struc
+ 	cl->deficit -= (int) len;
+ 
+ 	if (cl->qdisc->q.qlen == 0) /* no more packets, remove from list */
+-		list_del(&cl->alist);
++		list_del_init(&cl->alist);
+ 	else if (cl->deficit < qdisc_pkt_len(cl->qdisc->ops->peek(cl->qdisc))) {
+ 		cl->deficit += agg->lmax;
+ 		list_move_tail(&cl->alist, &agg->active);
+@@ -1438,6 +1439,8 @@ static void qfq_qlen_notify(struct Qdisc
+ 	struct qfq_sched *q = qdisc_priv(sch);
+ 	struct qfq_class *cl = (struct qfq_class *)arg;
+ 
++	if (list_empty(&cl->alist))
++		return;
+ 	qfq_deactivate_class(q, cl);
+ }
+ 
 
 
 
