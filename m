@@ -1,58 +1,57 @@
-Return-Path: <stable+bounces-173881-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-172989-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id F3B1AB36048
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 14:59:04 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 00E90B35B3D
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 13:21:55 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 453E23BE7C1
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 12:56:07 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 833C41888736
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 11:20:14 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B22911FF1C4;
-	Tue, 26 Aug 2025 12:55:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 96A66343214;
+	Tue, 26 Aug 2025 11:18:06 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="LOGOUd77"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="bePoTgH3"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6E6E41A0BFD;
-	Tue, 26 Aug 2025 12:55:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5081E3431F5;
+	Tue, 26 Aug 2025 11:18:06 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756212912; cv=none; b=qtF9aidHkO6+RSE1VwUpEzv97KfrM1hznKr6zYeAZM3tRROlnoAGb2ImM7zTMC6VGo7IXMsaOaWEj5thArnHtYzkH4xVf5q9kIDtGwI6bSjWsTC7ar1i444VXMSDnYYavBZ/8PxqaBPVWUmLWJCoXefVQSGAJWmrtchykZ8AHVo=
+	t=1756207086; cv=none; b=juAfpLBtFA9bhkYE6W7uec80cbJQUfZoyVr/kE/AckEjWy9kwTpe6C/8vrhr+PVOYs5HYHc735jwqZqhuYfQyJnTjGBuHzlo07vpFSQPzVsha8eGQNuTtELuH7WC56PsfoZTMPamWhGnjPeQDo348ffWkHTLxFuRUsUMEG1uWDI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756212912; c=relaxed/simple;
-	bh=3fQnI8flut0aF+Zy1J8vEdgZTkgEh+RXy6DkkowOrkQ=;
+	s=arc-20240116; t=1756207086; c=relaxed/simple;
+	bh=e66bVIWDX0se20iTh0LXCvnmU3ho3VTIda+FXWjhH6Y=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=tRB9K7SQ9Q0UZamJRcgIQGoXlan0EJIWcC8W6mDJFyX1SDM1y9xxZaCYf/1TGbnLfHCh+x0Vjoy8iq4cjbcJ4k9US6iOAjmXJuqKIll4GYc7HwExIwMU9lNJsf9XmydFkQhTf63zPjzR+S94/Oq6up631m9MQzEtHItzN3hkKGc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=LOGOUd77; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E4CC5C4CEF1;
-	Tue, 26 Aug 2025 12:55:11 +0000 (UTC)
+	 MIME-Version; b=OxeQ2PMA7MPMod2R8FfscYCNkqwSdh9BcxrVAGKXgwVXCVtdpJT7zX/mc6ejXfKRpGiKRmn4ei2LBcwyWDtJMppGyNJ60oUBbU3XVPoOqgFnR/aUIDDKVI9SiIZizUVCyNlThdzMANv+oKnzT8esp+ktI13wonVM6Xku977JmQ4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=bePoTgH3; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id DD45EC19421;
+	Tue, 26 Aug 2025 11:18:05 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1756212912;
-	bh=3fQnI8flut0aF+Zy1J8vEdgZTkgEh+RXy6DkkowOrkQ=;
+	s=korg; t=1756207086;
+	bh=e66bVIWDX0se20iTh0LXCvnmU3ho3VTIda+FXWjhH6Y=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=LOGOUd77LdSD58nPaz3xARuZfW0oQGPqmY5VwQ4wEFALKXA4u+EsMI7BEmI3XNuXL
-	 RVt4oWRPylh6Yq/pCu32i7Du2eJLl7EcRo/pVWsJC5yvGA39GQF+otFdgNeF8MOnXc
-	 U0GgYWELNqmGUqtktZfVIio7enh/FZSvAskQ1+uc=
+	b=bePoTgH3WC/7FIRyi05ZQRIVjOLUlO1ViyHvwbJusQ91MeJnuQnXZxN4kXFxtYsWM
+	 xNnQ1uHL0FX5ngUdk3ZvvxkraqnYfwAkS7NYkf1IlGtOmYvqeYChKCg0fT2rf+Ccyw
+	 k21R4P+pdPL0N621QedAbqHdSrRhraS0uXwcokqI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Thomas Fourier <fourier.thomas@gmail.com>,
-	Mark Einon <mark.einon@gmail.com>,
-	Simon Horman <horms@kernel.org>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 149/587] et131x: Add missing check after DMA map
-Date: Tue, 26 Aug 2025 13:04:58 +0200
-Message-ID: <20250826110956.740809172@linuxfoundation.org>
+	Alexander Wilhelm <alexander.wilhelm@westermo.com>,
+	Manivannan Sadhasivam <mani@kernel.org>,
+	Jeff Hugo <jeff.hugo@oss.qualcomm.com>,
+	Krishna Chaitanya Chundru <krishna.chundru@oss.qualcomm.com>
+Subject: [PATCH 6.16 015/457] bus: mhi: host: Fix endianness of BHI vector table
+Date: Tue, 26 Aug 2025 13:04:59 +0200
+Message-ID: <20250826110937.699949552@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250826110952.942403671@linuxfoundation.org>
-References: <20250826110952.942403671@linuxfoundation.org>
+In-Reply-To: <20250826110937.289866482@linuxfoundation.org>
+References: <20250826110937.289866482@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,105 +63,84 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.16-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Thomas Fourier <fourier.thomas@gmail.com>
+From: Alexander Wilhelm <alexander.wilhelm@westermo.com>
 
-[ Upstream commit d61f6cb6f6ef3c70d2ccc0d9c85c508cb8017da9 ]
+commit f471578e8b1a90623674433a01a8845110bc76ce upstream.
 
-The DMA map functions can fail and should be tested for errors.
-If the mapping fails, unmap and return an error.
+On big endian platform like PowerPC, the MHI bus (which is little endian)
+does not start properly. The following example shows the error messages by
+using QCN9274 WLAN device with ath12k driver:
 
-Signed-off-by: Thomas Fourier <fourier.thomas@gmail.com>
-Acked-by: Mark Einon <mark.einon@gmail.com>
-Reviewed-by: Simon Horman <horms@kernel.org>
-Link: https://patch.msgid.link/20250716094733.28734-2-fourier.thomas@gmail.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+    ath12k_pci 0001:01:00.0: BAR 0: assigned [mem 0xc00000000-0xc001fffff 64bit]
+    ath12k_pci 0001:01:00.0: MSI vectors: 1
+    ath12k_pci 0001:01:00.0: Hardware name: qcn9274 hw2.0
+    ath12k_pci 0001:01:00.0: failed to set mhi state: POWER_ON(2)
+    ath12k_pci 0001:01:00.0: failed to start mhi: -110
+    ath12k_pci 0001:01:00.0: failed to power up :-110
+    ath12k_pci 0001:01:00.0: failed to create soc core: -110
+    ath12k_pci 0001:01:00.0: failed to init core: -110
+    ath12k_pci: probe of 0001:01:00.0 failed with error -110
+
+The issue seems to be with the incorrect DMA address/size used for
+transferring the firmware image over BHI. So fix it by converting the DMA
+address and size of the BHI vector table to little endian format before
+sending them to the device.
+
+Fixes: 6cd330ae76ff ("bus: mhi: core: Add support for ringing channel/event ring doorbells")
+Signed-off-by: Alexander Wilhelm <alexander.wilhelm@westermo.com>
+[mani: added stable tag and reworded commit message]
+Signed-off-by: Manivannan Sadhasivam <mani@kernel.org>
+Reviewed-by: Jeff Hugo <jeff.hugo@oss.qualcomm.com>
+Reviewed-by: Krishna Chaitanya Chundru <krishna.chundru@oss.qualcomm.com>
+Cc: stable@vger.kernel.org
+Link: https://patch.msgid.link/20250519145837.958153-1-alexander.wilhelm@westermo.com
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/net/ethernet/agere/et131x.c | 36 +++++++++++++++++++++++++++++
- 1 file changed, 36 insertions(+)
+ drivers/bus/mhi/host/boot.c     |    8 ++++----
+ drivers/bus/mhi/host/internal.h |    4 ++--
+ 2 files changed, 6 insertions(+), 6 deletions(-)
 
-diff --git a/drivers/net/ethernet/agere/et131x.c b/drivers/net/ethernet/agere/et131x.c
-index 3d9220f9c9fe..294dbe2c3797 100644
---- a/drivers/net/ethernet/agere/et131x.c
-+++ b/drivers/net/ethernet/agere/et131x.c
-@@ -2459,6 +2459,10 @@ static int nic_send_packet(struct et131x_adapter *adapter, struct tcb *tcb)
- 							  skb->data,
- 							  skb_headlen(skb),
- 							  DMA_TO_DEVICE);
-+				if (dma_mapping_error(&adapter->pdev->dev,
-+						      dma_addr))
-+					return -ENOMEM;
-+
- 				desc[frag].addr_lo = lower_32_bits(dma_addr);
- 				desc[frag].addr_hi = upper_32_bits(dma_addr);
- 				frag++;
-@@ -2468,6 +2472,10 @@ static int nic_send_packet(struct et131x_adapter *adapter, struct tcb *tcb)
- 							  skb->data,
- 							  skb_headlen(skb) / 2,
- 							  DMA_TO_DEVICE);
-+				if (dma_mapping_error(&adapter->pdev->dev,
-+						      dma_addr))
-+					return -ENOMEM;
-+
- 				desc[frag].addr_lo = lower_32_bits(dma_addr);
- 				desc[frag].addr_hi = upper_32_bits(dma_addr);
- 				frag++;
-@@ -2478,6 +2486,10 @@ static int nic_send_packet(struct et131x_adapter *adapter, struct tcb *tcb)
- 							  skb_headlen(skb) / 2,
- 							  skb_headlen(skb) / 2,
- 							  DMA_TO_DEVICE);
-+				if (dma_mapping_error(&adapter->pdev->dev,
-+						      dma_addr))
-+					goto unmap_first_out;
-+
- 				desc[frag].addr_lo = lower_32_bits(dma_addr);
- 				desc[frag].addr_hi = upper_32_bits(dma_addr);
- 				frag++;
-@@ -2489,6 +2501,9 @@ static int nic_send_packet(struct et131x_adapter *adapter, struct tcb *tcb)
- 						    0,
- 						    desc[frag].len_vlan,
- 						    DMA_TO_DEVICE);
-+			if (dma_mapping_error(&adapter->pdev->dev, dma_addr))
-+				goto unmap_out;
-+
- 			desc[frag].addr_lo = lower_32_bits(dma_addr);
- 			desc[frag].addr_hi = upper_32_bits(dma_addr);
- 			frag++;
-@@ -2578,6 +2593,27 @@ static int nic_send_packet(struct et131x_adapter *adapter, struct tcb *tcb)
- 		       &adapter->regs->global.watchdog_timer);
- 	}
- 	return 0;
-+
-+unmap_out:
-+	// Unmap the body of the packet with map_page
-+	while (--i) {
-+		frag--;
-+		dma_addr = desc[frag].addr_lo;
-+		dma_addr |= (u64)desc[frag].addr_hi << 32;
-+		dma_unmap_page(&adapter->pdev->dev, dma_addr,
-+			       desc[frag].len_vlan, DMA_TO_DEVICE);
-+	}
-+
-+unmap_first_out:
-+	// Unmap the header with map_single
-+	while (frag--) {
-+		dma_addr = desc[frag].addr_lo;
-+		dma_addr |= (u64)desc[frag].addr_hi << 32;
-+		dma_unmap_single(&adapter->pdev->dev, dma_addr,
-+				 desc[frag].len_vlan, DMA_TO_DEVICE);
-+	}
-+
-+	return -ENOMEM;
- }
+--- a/drivers/bus/mhi/host/boot.c
++++ b/drivers/bus/mhi/host/boot.c
+@@ -31,8 +31,8 @@ int mhi_rddm_prepare(struct mhi_controll
+ 	int ret;
  
- static int send_packet(struct sk_buff *skb, struct et131x_adapter *adapter)
--- 
-2.39.5
-
+ 	for (i = 0; i < img_info->entries - 1; i++, mhi_buf++, bhi_vec++) {
+-		bhi_vec->dma_addr = mhi_buf->dma_addr;
+-		bhi_vec->size = mhi_buf->len;
++		bhi_vec->dma_addr = cpu_to_le64(mhi_buf->dma_addr);
++		bhi_vec->size = cpu_to_le64(mhi_buf->len);
+ 	}
+ 
+ 	dev_dbg(dev, "BHIe programming for RDDM\n");
+@@ -431,8 +431,8 @@ static void mhi_firmware_copy_bhie(struc
+ 	while (remainder) {
+ 		to_cpy = min(remainder, mhi_buf->len);
+ 		memcpy(mhi_buf->buf, buf, to_cpy);
+-		bhi_vec->dma_addr = mhi_buf->dma_addr;
+-		bhi_vec->size = to_cpy;
++		bhi_vec->dma_addr = cpu_to_le64(mhi_buf->dma_addr);
++		bhi_vec->size = cpu_to_le64(to_cpy);
+ 
+ 		buf += to_cpy;
+ 		remainder -= to_cpy;
+--- a/drivers/bus/mhi/host/internal.h
++++ b/drivers/bus/mhi/host/internal.h
+@@ -25,8 +25,8 @@ struct mhi_ctxt {
+ };
+ 
+ struct bhi_vec_entry {
+-	u64 dma_addr;
+-	u64 size;
++	__le64 dma_addr;
++	__le64 size;
+ };
+ 
+ enum mhi_fw_load_type {
 
 
 
