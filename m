@@ -1,56 +1,55 @@
-Return-Path: <stable+bounces-173561-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-175285-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id AAD96B35DE7
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 13:49:27 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 93306B36773
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 16:06:39 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id B7CA41BA6FC9
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 11:43:12 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 75A6E568032
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 13:59:28 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D82FD271475;
-	Tue, 26 Aug 2025 11:42:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 21DA331985C;
+	Tue, 26 Aug 2025 13:57:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="pcnMT47t"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Y2bH71s+"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9615F284B5B;
-	Tue, 26 Aug 2025 11:42:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C9C62350852;
+	Tue, 26 Aug 2025 13:57:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756208569; cv=none; b=CdZsfu7aOZTs/OaVgJNZm+fNJ7xXA9D/4s+zzf6n6VRAMFYUNpkI6FkEOznQfzauE7/1iWjx2eZPqpb2ZCSiBE/qHwT3C9sY+mssE0cTgLOtHZCvlwlaTFMtPpileRQIL4GbVACWqJRW3o9KOHIrOzcW8gxYvDC9WcxvFgo86p4=
+	t=1756216632; cv=none; b=L1FnDeZAQGKAHlt3C4kIB0J1eaVUt3CxkyRS/0pvQp/SJI23w12UhjCm9METC0cp8lQENgpVJlNlWBA9uUT9JBO0+E3qPCdzXgELhi7ZZcT9fYHymHNvTa+SSV1yo1fAFaEE/TtK70pqcQrILx7qPEaujtqJG+Yd4LZdbAYWaJs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756208569; c=relaxed/simple;
-	bh=TbTZtA8AjrTp7ucGMuN/oi9v/115u1Df6QYuTCkmmaA=;
+	s=arc-20240116; t=1756216632; c=relaxed/simple;
+	bh=/KVzAV7whAXguTejE3XqoI8A356w3L1JU7bgSl8m034=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=ic1VsVUc8aLr7dOnrbYdLlymyiNFkI+iOwSVRPJInEHa2deti94SFNn2BtOkSlRO+psrXnv29OK4OnzQbsZCMDLsYEaFE51l9y3tTlbE+xHk6nMPQklsgsnjLJAhXhRgefWimgRWzkfVYHGhW9xdgrzVbjiU8El/HMQFxYGjbVU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=pcnMT47t; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 21690C4CEF1;
-	Tue, 26 Aug 2025 11:42:48 +0000 (UTC)
+	 MIME-Version; b=kVTv6SOLbLFeIUq5gIPSpMyOXWFepdKSgczY3EjHDjWGiwmY/ums4LOxyNh8Gt7fyAW4JziA+OThY9Ni39DUSog2CqzBN2xteNt28vrk6yyhjiNNU7+etBQmS4fCZTs9L/lrArb2nFvOJuaG4HSCLtzpACM4Xhjjt8AnMRevtqI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Y2bH71s+; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2E669C4CEF1;
+	Tue, 26 Aug 2025 13:57:12 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1756208569;
-	bh=TbTZtA8AjrTp7ucGMuN/oi9v/115u1Df6QYuTCkmmaA=;
+	s=korg; t=1756216632;
+	bh=/KVzAV7whAXguTejE3XqoI8A356w3L1JU7bgSl8m034=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=pcnMT47tTDJRKiv3e+J4wJAFmdTcLpLc2FvYKOrkbLcgLwnuvDKcC+dygJlMSV5b0
-	 i0gStO/8mx6N5j0YPoiXUizLzkjOytynVXkH6rmzXAvlZso8lcAM2G/jzOURf8HgNK
-	 4JVPhRERm2hH/XjzkNuy4JywZLq230Mm+dZDuRcY=
+	b=Y2bH71s+eAQWOXDRPrVwfXxZsqFERJ8FIK3gglnRRpst0KyWE1pVi6KoygH/B99I8
+	 pUuekPrgayVuR3DYTTQbAe7rl/ur1IZsl4FKJMcf42TDdzLXtsnecI1r2DYpvcSyCL
+	 XfHGDdUJ2zn8DIDSsLLpbSz/mAQ2nhoCaK5o4bkQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Andrea Righi <arighi@nvidia.com>,
-	Joel Fernandes <joelagnelf@nvidia.com>,
-	Tejun Heo <tj@kernel.org>
-Subject: [PATCH 6.12 161/322] sched_ext: initialize built-in idle state before ops.init()
+	Jon Hunter <jonathanh@nvidia.com>,
+	Ulf Hansson <ulf.hansson@linaro.org>
+Subject: [PATCH 5.15 485/644] soc/tegra: pmc: Ensure power-domains are in a known state
 Date: Tue, 26 Aug 2025 13:09:36 +0200
-Message-ID: <20250826110919.799414880@linuxfoundation.org>
+Message-ID: <20250826110958.507313225@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250826110915.169062587@linuxfoundation.org>
-References: <20250826110915.169062587@linuxfoundation.org>
+In-Reply-To: <20250826110946.507083938@linuxfoundation.org>
+References: <20250826110946.507083938@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,87 +61,142 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Andrea Righi <arighi@nvidia.com>
+From: Jon Hunter <jonathanh@nvidia.com>
 
-commit f0c6eab5e45c529f449fbc595873719e00de6d79 upstream.
+commit b6bcbce3359619d05bf387d4f5cc3af63668dbaa upstream.
 
-A BPF scheduler may want to use the built-in idle cpumasks in ops.init()
-before the scheduler is fully initialized, either directly or through a
-BPF timer for example.
+After commit 13a4b7fb6260 ("pmdomain: core: Leave powered-on genpds on
+until late_initcall_sync") was applied, the Tegra210 Jetson TX1 board
+failed to boot. Looking into this issue, before this commit was applied,
+if any of the Tegra power-domains were in 'on' state when the kernel
+booted, they were being turned off by the genpd core before any driver
+had chance to request them. This was purely by luck and a consequence of
+the power-domains being turned off earlier during boot. After this
+commit was applied, any power-domains in the 'on' state are kept on for
+longer during boot and therefore, may never transitioned to the off
+state before they are requested/used. The hang on the Tegra210 Jetson
+TX1 is caused because devices in some power-domains are accessed without
+the power-domain being turned off and on, indicating that the
+power-domain is not in a completely on state.
 
-However, this would result in an error, since the idle state has not
-been properly initialized yet.
+>From reviewing the Tegra PMC driver code, if a power-domain is in the
+'on' state there is no guarantee that all the necessary clocks
+associated with the power-domain are on and even if they are they would
+not have been requested via the clock framework and so could be turned
+off later. Some power-domains also have a 'clamping' register that needs
+to be configured as well. In short, if a power-domain is already 'on' it
+is difficult to know if it has been configured correctly. Given that the
+power-domains happened to be switched off during boot previously, to
+ensure that they are in a good known state on boot, fix this by
+switching off any power-domains that are on initially when registering
+the power-domains with the genpd framework.
 
-This can be easily verified by modifying scx_simple to call
-scx_bpf_get_idle_cpumask() in ops.init():
+Note that commit 05cfb988a4d0 ("soc/tegra: pmc: Initialise resets
+associated with a power partition") updated the
+tegra_powergate_of_get_resets() function to pass the 'off' to ensure
+that the resets for the power-domain are in the correct state on boot.
+However, now that we may power off a domain on boot, if it is on, it is
+better to move this logic into the tegra_powergate_add() function so
+that there is a single place where we are handling the initial state of
+the power-domain.
 
-$ sudo scx_simple
-
-DEBUG DUMP
-===========================================================================
-
-scx_simple[121] triggered exit kind 1024:
-  runtime error (built-in idle tracking is disabled)
-...
-
-Fix this by properly initializing the idle state before ops.init() is
-called. With this change applied:
-
-$ sudo scx_simple
-local=2 global=0
-local=19 global=11
-local=23 global=11
-...
-
-Fixes: d73249f88743d ("sched_ext: idle: Make idle static keys private")
-Signed-off-by: Andrea Righi <arighi@nvidia.com>
-Reviewed-by: Joel Fernandes <joelagnelf@nvidia.com>
-Signed-off-by: Tejun Heo <tj@kernel.org>
-[ Backport to 6.12:
-  - Original commit doesn't apply cleanly to 6.12 since d73249f88743d is
-    not present.
-  - This backport applies the same logical fix to prevent BPF scheduler
-    failures while accessing idle cpumasks from ops.init(). ]
-Signed-off-by: Andrea Righi <arighi@nvidia.com>
+Fixes: a38045121bf4 ("soc/tegra: pmc: Add generic PM domain support")
+Signed-off-by: Jon Hunter <jonathanh@nvidia.com>
+Cc: stable@vger.kernel.org
+Link: https://lore.kernel.org/r/20250731121832.213671-1-jonathanh@nvidia.com
+Signed-off-by: Ulf Hansson <ulf.hansson@linaro.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- kernel/sched/ext.c |   14 +++++++-------
- 1 file changed, 7 insertions(+), 7 deletions(-)
+ drivers/soc/tegra/pmc.c |   51 +++++++++++++++++++++++++++---------------------
+ 1 file changed, 29 insertions(+), 22 deletions(-)
 
---- a/kernel/sched/ext.c
-+++ b/kernel/sched/ext.c
-@@ -5220,6 +5220,13 @@ static int scx_ops_enable(struct sched_e
- 	for_each_possible_cpu(cpu)
- 		cpu_rq(cpu)->scx.cpuperf_target = SCX_CPUPERF_ONE;
+--- a/drivers/soc/tegra/pmc.c
++++ b/drivers/soc/tegra/pmc.c
+@@ -1174,7 +1174,7 @@ err:
+ }
  
-+	if (!ops->update_idle || (ops->flags & SCX_OPS_KEEP_BUILTIN_IDLE)) {
-+		reset_idle_masks();
-+		static_branch_enable(&scx_builtin_idle_enabled);
-+	} else {
-+		static_branch_disable(&scx_builtin_idle_enabled);
-+	}
-+
- 	/*
- 	 * Keep CPUs stable during enable so that the BPF scheduler can track
- 	 * online CPUs by watching ->on/offline_cpu() after ->init().
-@@ -5287,13 +5294,6 @@ static int scx_ops_enable(struct sched_e
- 	if (scx_ops.cpu_acquire || scx_ops.cpu_release)
- 		static_branch_enable(&scx_ops_cpu_preempt);
- 
--	if (!ops->update_idle || (ops->flags & SCX_OPS_KEEP_BUILTIN_IDLE)) {
--		reset_idle_masks();
--		static_branch_enable(&scx_builtin_idle_enabled);
--	} else {
--		static_branch_disable(&scx_builtin_idle_enabled);
+ static int tegra_powergate_of_get_resets(struct tegra_powergate *pg,
+-					 struct device_node *np, bool off)
++					 struct device_node *np)
+ {
+ 	struct device *dev = pg->pmc->dev;
+ 	int err;
+@@ -1189,22 +1189,6 @@ static int tegra_powergate_of_get_resets
+ 	err = reset_control_acquire(pg->reset);
+ 	if (err < 0) {
+ 		pr_err("failed to acquire resets: %d\n", err);
+-		goto out;
 -	}
 -
- 	/*
- 	 * Lock out forks, cgroup on/offlining and moves before opening the
- 	 * floodgate so that they don't wander into the operations prematurely.
+-	if (off) {
+-		err = reset_control_assert(pg->reset);
+-	} else {
+-		err = reset_control_deassert(pg->reset);
+-		if (err < 0)
+-			goto out;
+-
+-		reset_control_release(pg->reset);
+-	}
+-
+-out:
+-	if (err) {
+-		reset_control_release(pg->reset);
+ 		reset_control_put(pg->reset);
+ 	}
+ 
+@@ -1249,20 +1233,43 @@ static int tegra_powergate_add(struct te
+ 		goto set_available;
+ 	}
+ 
+-	err = tegra_powergate_of_get_resets(pg, np, off);
++	err = tegra_powergate_of_get_resets(pg, np);
+ 	if (err < 0) {
+ 		dev_err(dev, "failed to get resets for %pOFn: %d\n", np, err);
+ 		goto remove_clks;
+ 	}
+ 
+-	if (!IS_ENABLED(CONFIG_PM_GENERIC_DOMAINS)) {
+-		if (off)
+-			WARN_ON(tegra_powergate_power_up(pg, true));
++	/*
++	 * If the power-domain is off, then ensure the resets are asserted.
++	 * If the power-domain is on, then power down to ensure that when is
++	 * it turned on the power-domain, clocks and resets are all in the
++	 * expected state.
++	 */
++	if (off) {
++		err = reset_control_assert(pg->reset);
++		if (err) {
++			pr_err("failed to assert resets: %d\n", err);
++			goto remove_resets;
++		}
++	} else {
++		err = tegra_powergate_power_down(pg);
++		if (err) {
++			dev_err(dev, "failed to turn off PM domain %s: %d\n",
++				pg->genpd.name, err);
++			goto remove_resets;
++		}
++	}
+ 
++	/*
++	 * If PM_GENERIC_DOMAINS is not enabled, power-on
++	 * the domain and skip the genpd registration.
++	 */
++	if (!IS_ENABLED(CONFIG_PM_GENERIC_DOMAINS)) {
++		WARN_ON(tegra_powergate_power_up(pg, true));
+ 		goto remove_resets;
+ 	}
+ 
+-	err = pm_genpd_init(&pg->genpd, NULL, off);
++	err = pm_genpd_init(&pg->genpd, NULL, true);
+ 	if (err < 0) {
+ 		dev_err(dev, "failed to initialise PM domain %pOFn: %d\n", np,
+ 		       err);
 
 
 
