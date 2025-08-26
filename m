@@ -1,58 +1,55 @@
-Return-Path: <stable+bounces-173856-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-175493-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id C2027B3601B
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 14:57:05 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 05948B368BF
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 16:19:10 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id CA5A74609C5
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 12:54:52 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 4DA341C2599C
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 14:08:42 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 59CEA221729;
-	Tue, 26 Aug 2025 12:54:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7B755350D6A;
+	Tue, 26 Aug 2025 14:06:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="glNQte6s"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="izzDlsGi"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1752E221726;
-	Tue, 26 Aug 2025 12:54:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 38351345741;
+	Tue, 26 Aug 2025 14:06:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756212847; cv=none; b=Dcu3vKqty8Ua3LevkH7OwzBlwNN18FvVboStyUWZCMaDHYoXBJXeWJPf68mjwIIAYZ+hMlQg3/yMpjhaBKrmh5tJgs0BArUKrDwjveC5TpO79922uaU8MajbbBsebXHsDczTTJDqJzlrDRj4Hv5LT0B3NffYV/paoBscHdT+JdY=
+	t=1756217190; cv=none; b=gUQhRVrENmL8SwndWD6PlvEZWAc6P9aSgbwFeLL9AUubSzc2F7gWHjW7G5cTTmy4Xq1IBqvzOrO4pcBznY/kDLV1f0iWyFiuNs3Py9zJ0c2lKD0/nWUpR8/ej0xGic38NwU4FgHu1FXWfTojk3uux2JU6Fui+PEJlW7DfhE/U7Q=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756212847; c=relaxed/simple;
-	bh=MwgnKaC8qUJwie9RTcW7dW+abjp95hXTg03jC6aEGd8=;
+	s=arc-20240116; t=1756217190; c=relaxed/simple;
+	bh=OBzCbM90SzCMGmJR7P/3nkSqEMMR3meC8t/xGRm2lLk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=aHdLD04WPtk6dW0HfhiU3mEOckGDM2mDCi59BdcG4VPJFYjUdBDrtw5TrR2ZcVYZ2cEvyh1vWdlzXTWjs94TVi7BnMUgOlJMo8YdWU7avjEjIvioJPgX9TxsobGoD7A0qHp74wbHBPosERJK1srNAeM+MWFVLYHFt1AbRxAL3dU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=glNQte6s; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9CB59C4CEF1;
-	Tue, 26 Aug 2025 12:54:06 +0000 (UTC)
+	 MIME-Version; b=MuXw1GJqVBXF5JVotxOfhaQ2eeVfNIVmLgEKzCiE+zcZvTelya1jsmYq0LCriZTxKYlRcPBjYV98d3Om8nCmzk0vPnThj7xMzkqhLopzR/iGgrA2x+Y2OfbsALKKpUJnblOTc2JT0lMrU44hc7O/R/sxMiQaSHlqHPI22krotwg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=izzDlsGi; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 71C31C4CEF1;
+	Tue, 26 Aug 2025 14:06:29 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1756212847;
-	bh=MwgnKaC8qUJwie9RTcW7dW+abjp95hXTg03jC6aEGd8=;
+	s=korg; t=1756217189;
+	bh=OBzCbM90SzCMGmJR7P/3nkSqEMMR3meC8t/xGRm2lLk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=glNQte6stE+DVLu4kKtQwBtsS7yikxVtPBjNXy0Bt3Pw27y80BPNEf3zkbBCR22Vz
-	 4W0n1xB5/NE0ZxuiBeza6dxjD6a/qDlgz3DrHtNZnaOroi3mP6S+ONGgitgIvZ2X/g
-	 4yKJ75QWGoZfBeapG8tcK2bK5/07vmXo03i9GMVQ=
+	b=izzDlsGiruqolTZP+BVXxg8EmYtGa1pWiMqrHkF5/h+LUvPHYm0wd4WPGlqhfzbg2
+	 kF9LWhxS+UIX1UMwxrZubxm25yh/sVKViDv2gp7OV9lSboQYDs1AD6RIFOLRvd3Vwg
+	 4RviH3eUpo06htRoxgCmp1V6MVSxcmv0xel7Oocw=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Peng Fan <peng.fan@nxp.com>,
-	Ulf Hansson <ulf.hansson@linaro.org>,
-	Hiago De Franco <hiago.franco@toradex.com>,
-	Mathieu Poirier <mathieu.poirier@linaro.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 093/587] remoteproc: imx_rproc: skip clock enable when M-core is managed by the SCU
+	syzbot+cb96ec476fb4914445c9@syzkaller.appspotmail.com,
+	Ian Abbott <abbotti@mev.co.uk>
+Subject: [PATCH 5.10 032/523] comedi: Fix use of uninitialized data in insn_rw_emulate_bits()
 Date: Tue, 26 Aug 2025 13:04:02 +0200
-Message-ID: <20250826110955.303308652@linuxfoundation.org>
+Message-ID: <20250826110925.392306474@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250826110952.942403671@linuxfoundation.org>
-References: <20250826110952.942403671@linuxfoundation.org>
+In-Reply-To: <20250826110924.562212281@linuxfoundation.org>
+References: <20250826110924.562212281@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,63 +61,64 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Hiago De Franco <hiago.franco@toradex.com>
+From: Ian Abbott <abbotti@mev.co.uk>
 
-[ Upstream commit 496deecb020d14ba89ba7084fbc3024f91687023 ]
+commit e9cb26291d009243a4478a7ffb37b3a9175bfce9 upstream.
 
-For the i.MX8X and i.MX8 family SoCs, when the Cortex-M core is powered
-up and started by the Cortex-A core using the bootloader (e.g., via the
-U-Boot bootaux command), both M-core and Linux run within the same SCFW
-(System Controller Firmware) partition. With that, Linux has permission
-to control the M-core.
+For Comedi `INSN_READ` and `INSN_WRITE` instructions on "digital"
+subdevices (subdevice types `COMEDI_SUBD_DI`, `COMEDI_SUBD_DO`, and
+`COMEDI_SUBD_DIO`), it is common for the subdevice driver not to have
+`insn_read` and `insn_write` handler functions, but to have an
+`insn_bits` handler function for handling Comedi `INSN_BITS`
+instructions.  In that case, the subdevice's `insn_read` and/or
+`insn_write` function handler pointers are set to point to the
+`insn_rw_emulate_bits()` function by `__comedi_device_postconfig()`.
 
-But once the M-core is started by the bootloader, the SCFW automatically
-enables its clock and sets the clock rate. If Linux later attempts to
-enable the same clock via clk_prepare_enable(), the SCFW returns a
-'LOCKED' error, as the clock is already configured by the SCFW. This
-causes the probe function in imx_rproc.c to fail, leading to the M-core
-power domain being shut down while the core is still running. This
-results in a fault from the SCU (System Controller Unit) and triggers a
-system reset.
+For `INSN_WRITE`, `insn_rw_emulate_bits()` currently assumes that the
+supplied `data[0]` value is a valid copy from user memory.  It will at
+least exist because `do_insnlist_ioctl()` and `do_insn_ioctl()` in
+"comedi_fops.c" ensure at lease `MIN_SAMPLES` (16) elements are
+allocated.  However, if `insn->n` is 0 (which is allowable for
+`INSN_READ` and `INSN_WRITE` instructions, then `data[0]` may contain
+uninitialized data, and certainly contains invalid data, possibly from a
+different instruction in the array of instructions handled by
+`do_insnlist_ioctl()`.  This will result in an incorrect value being
+written to the digital output channel (or to the digital input/output
+channel if configured as an output), and may be reflected in the
+internal saved state of the channel.
 
-To address this issue, ignore handling the clk for i.MX8X and i.MX8
-M-core, as SCFW already takes care of enabling and configuring the
-clock.
+Fix it by returning 0 early if `insn->n` is 0, before reaching the code
+that accesses `data[0]`.  Previously, the function always returned 1 on
+success, but it is supposed to be the number of data samples actually
+read or written up to `insn->n`, which is 0 in this case.
 
-Suggested-by: Peng Fan <peng.fan@nxp.com>
-Reviewed-by: Ulf Hansson <ulf.hansson@linaro.org>
-Reviewed-by: Peng Fan <peng.fan@nxp.com>
-Signed-off-by: Hiago De Franco <hiago.franco@toradex.com>
-Acked-by: Mathieu Poirier <mathieu.poirier@linaro.org>
-Link: https://lore.kernel.org/r/20250629172512.14857-3-hiagofranco@gmail.com
-Signed-off-by: Ulf Hansson <ulf.hansson@linaro.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Reported-by: syzbot+cb96ec476fb4914445c9@syzkaller.appspotmail.com
+Closes: https://syzkaller.appspot.com/bug?extid=cb96ec476fb4914445c9
+Fixes: ed9eccbe8970 ("Staging: add comedi core")
+Cc: stable@vger.kernel.org # 5.13+
+Signed-off-by: Ian Abbott <abbotti@mev.co.uk>
+Link: https://lore.kernel.org/r/20250707153355.82474-1-abbotti@mev.co.uk
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/remoteproc/imx_rproc.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ drivers/staging/comedi/drivers.c |    3 +++
+ 1 file changed, 3 insertions(+)
 
-diff --git a/drivers/remoteproc/imx_rproc.c b/drivers/remoteproc/imx_rproc.c
-index 610a69928dff..251f9840d85b 100644
---- a/drivers/remoteproc/imx_rproc.c
-+++ b/drivers/remoteproc/imx_rproc.c
-@@ -1088,8 +1088,8 @@ static int imx_rproc_clk_enable(struct imx_rproc *priv)
- 	struct device *dev = priv->dev;
+--- a/drivers/staging/comedi/drivers.c
++++ b/drivers/staging/comedi/drivers.c
+@@ -615,6 +615,9 @@ static int insn_rw_emulate_bits(struct c
+ 	unsigned int _data[2];
  	int ret;
  
--	/* Remote core is not under control of Linux */
--	if (dcfg->method == IMX_RPROC_NONE)
-+	/* Remote core is not under control of Linux or it is managed by SCU API */
-+	if (dcfg->method == IMX_RPROC_NONE || dcfg->method == IMX_RPROC_SCU_API)
- 		return 0;
- 
- 	priv->clk = devm_clk_get(dev, NULL);
--- 
-2.39.5
-
++	if (insn->n == 0)
++		return 0;
++
+ 	memset(_data, 0, sizeof(_data));
+ 	memset(&_insn, 0, sizeof(_insn));
+ 	_insn.insn = INSN_BITS;
 
 
 
