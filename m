@@ -1,54 +1,58 @@
-Return-Path: <stable+bounces-176300-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-175889-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 49E6BB36C99
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 16:57:40 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id C4CCEB36962
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 16:26:31 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id F03F01C27047
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 14:45:17 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 8E4717A7BEB
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 14:24:55 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D7CC7280CC9;
-	Tue, 26 Aug 2025 14:41:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 20E4A35AABE;
+	Tue, 26 Aug 2025 14:23:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="V35JHJGn"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="BLuhnR0I"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 95DA413C3F2;
-	Tue, 26 Aug 2025 14:41:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D3DE3350842;
+	Tue, 26 Aug 2025 14:23:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756219299; cv=none; b=JschTl12EpHj1Qc7B7zxNU7v3rIbvtaz3G0chNjSY535Npk1sJk6nHUBSNNmvGgeKNQtojNcYen0PzR5UJ6VHdFtMH2t7sa4NW+9hkn8AswNBJpby5kG+j+l+TruSRLm1iZMVFKuIw72qZqEXHe8Wek6e2NOJpHrV5/g3Oaf9pE=
+	t=1756218234; cv=none; b=vACya14zAsFNYYLvsDP/jMy8gIVwvdjB81e1cwaf5dMELKdmIHFGeoZgqX3irvVoi58G01edZOP3mE2f0TGFjrCgXRyjyr4ko5z21B4701R1rOAF1C1Zysc6cw/wtK8cQvFHZnTmHvORJI+cjxZrFp05q8qza2bXl2eoByJpaYw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756219299; c=relaxed/simple;
-	bh=2oMM552oD3avaM71C9/A69GgI8qVXQvnPmCUqONu1b8=;
+	s=arc-20240116; t=1756218234; c=relaxed/simple;
+	bh=4xl5d6Tp7g1viq1GrOCzhPPvUsIZ5BKqbXVRCderySE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=ZBMTQxYqQeYzlPWexu4QYeGjmp2Vi5vbK4RkvxpaJ38lDdm4rp498OJcYERDQurMsolJeYL0O8mh32mQHdka1yOolctlqtlqTX03T9R/oeYbxCobGP+2PUh6xQiU3o5csTYsAs+ZfYC2pLwL6fgQrTUVSuEXwXmfioaERjyvPkU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=V35JHJGn; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2758AC4CEF1;
-	Tue, 26 Aug 2025 14:41:38 +0000 (UTC)
+	 MIME-Version; b=LT+W4i5eNnagdXf7ish5lOI4OxwjZYu+JnfW6Hpub56QcsHNNFLIFa6XQBlPRhtTJM+OOWLU70oH42FHNXBeXP+mutmVRtXjezq7ZlR69EUTZVliTgdj//36javNDzgL/L6uJB9AkcK+1lnhFU4OLEN6TN4KwYN6WIcttmjHz6o=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=BLuhnR0I; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5D100C4CEF1;
+	Tue, 26 Aug 2025 14:23:54 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1756219299;
-	bh=2oMM552oD3avaM71C9/A69GgI8qVXQvnPmCUqONu1b8=;
+	s=korg; t=1756218234;
+	bh=4xl5d6Tp7g1viq1GrOCzhPPvUsIZ5BKqbXVRCderySE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=V35JHJGneU7FcWk72dzgLsANy9jPAojyIBzaLTgAIiRX1/AZaKB569IFEl+bihuVz
-	 HT75FMnMgpM41D+Vt9g98pXxpzuJhHI8RuLeowhZHPZSgW9hn86HBWIYHJuiM1wLei
-	 0Z7uUQNafICijH6D9d68ouyFyjdIh7Ii9XwJb1ig=
+	b=BLuhnR0Id6j/KczqS8qUFn8Viik8id8af/+MQHTCDFJY6z+OfcAuvlj48tyRISKVU
+	 kpW8sTleD/PWaPpMiPXQEUpzA7DpNOQQd+8GohQpETjdYjRCOwZcXC5N16uTU1OZ+6
+	 xWJgBTOom1KEI/AAQzKqoGoqUq6Sk3hy3hqb6Wsc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Ian Abbott <abbotti@mev.co.uk>
-Subject: [PATCH 5.4 329/403] comedi: Fix initialization of data for instructions that write to subdevice
+	Ma Ke <make24@iscas.ac.cn>,
+	Ioana Ciornei <ioana.ciornei@nxp.com>,
+	Simon Horman <horms@kernel.org>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.10 445/523] dpaa2-eth: Fix device reference count leak in MAC endpoint handling
 Date: Tue, 26 Aug 2025 13:10:55 +0200
-Message-ID: <20250826110915.919222653@linuxfoundation.org>
+Message-ID: <20250826110935.427405113@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250826110905.607690791@linuxfoundation.org>
-References: <20250826110905.607690791@linuxfoundation.org>
+In-Reply-To: <20250826110924.562212281@linuxfoundation.org>
+References: <20250826110924.562212281@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,88 +64,74 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.4-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Ian Abbott <abbotti@mev.co.uk>
+From: Ma Ke <make24@iscas.ac.cn>
 
-[ Upstream commit 46d8c744136ce2454aa4c35c138cc06817f92b8e ]
+[ Upstream commit ee9f3a81ab08dfe0538dbd1746f81fd4d5147fdc ]
 
-Some Comedi subdevice instruction handlers are known to access
-instruction data elements beyond the first `insn->n` elements in some
-cases.  The `do_insn_ioctl()` and `do_insnlist_ioctl()` functions
-allocate at least `MIN_SAMPLES` (16) data elements to deal with this,
-but they do not initialize all of that.  For Comedi instruction codes
-that write to the subdevice, the first `insn->n` data elements are
-copied from user-space, but the remaining elements are left
-uninitialized.  That could be a problem if the subdevice instruction
-handler reads the uninitialized data.  Ensure that the first
-`MIN_SAMPLES` elements are initialized before calling these instruction
-handlers, filling the uncopied elements with 0.  For
-`do_insnlist_ioctl()`, the same data buffer elements are used for
-handling a list of instructions, so ensure the first `MIN_SAMPLES`
-elements are initialized for each instruction that writes to the
-subdevice.
+The fsl_mc_get_endpoint() function uses device_find_child() for
+localization, which implicitly calls get_device() to increment the
+device's reference count before returning the pointer. However, the
+caller dpaa2_eth_connect_mac() fails to properly release this
+reference in multiple scenarios. We should call put_device() to
+decrement reference count properly.
 
-Fixes: ed9eccbe8970 ("Staging: add comedi core")
-Cc: stable@vger.kernel.org # 5.13+
-Signed-off-by: Ian Abbott <abbotti@mev.co.uk>
-Link: https://lore.kernel.org/r/20250707161439.88385-1-abbotti@mev.co.uk
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-[ Reworked for before commit bac42fb21259 ("comedi: get rid of compat_alloc_user_space() mess in COMEDI_CMD{,TEST} compat") ]
-Signed-off-by: Ian Abbott <abbotti@mev.co.uk>
+As comment of device_find_child() says, 'NOTE: you will need to drop
+the reference with put_device() after use'.
+
+Found by code review.
+
+Cc: stable@vger.kernel.org
+Fixes: 719479230893 ("dpaa2-eth: add MAC/PHY support through phylink")
+Signed-off-by: Ma Ke <make24@iscas.ac.cn>
+Tested-by: Ioana Ciornei <ioana.ciornei@nxp.com>
+Reviewed-by: Ioana Ciornei <ioana.ciornei@nxp.com>
+Reviewed-by: Simon Horman <horms@kernel.org>
+Link: https://patch.msgid.link/20250717022309.3339976-2-make24@iscas.ac.cn
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
-v2: Fixed a patch application error due to fixing up the wrong commit.
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
----
- drivers/staging/comedi/comedi_fops.c |   14 ++++++++++++--
- 1 file changed, 12 insertions(+), 2 deletions(-)
+ drivers/net/ethernet/freescale/dpaa2/dpaa2-eth.c |   15 ++++++++++++---
+ 1 file changed, 12 insertions(+), 3 deletions(-)
 
---- a/drivers/staging/comedi/comedi_fops.c
-+++ b/drivers/staging/comedi/comedi_fops.c
-@@ -1584,21 +1584,27 @@ static int do_insnlist_ioctl(struct come
- 	}
+--- a/drivers/net/ethernet/freescale/dpaa2/dpaa2-eth.c
++++ b/drivers/net/ethernet/freescale/dpaa2/dpaa2-eth.c
+@@ -4138,12 +4138,19 @@ static int dpaa2_eth_connect_mac(struct
+ 	if (PTR_ERR(dpmac_dev) == -EPROBE_DEFER)
+ 		return PTR_ERR(dpmac_dev);
  
- 	for (i = 0; i < insnlist.n_insns; ++i) {
-+		unsigned int n = insns[i].n;
+-	if (IS_ERR(dpmac_dev) || dpmac_dev->dev.type != &fsl_mc_bus_dpmac_type)
++	if (IS_ERR(dpmac_dev))
+ 		return 0;
+ 
++	if (dpmac_dev->dev.type != &fsl_mc_bus_dpmac_type) {
++		err = 0;
++		goto out_put_device;
++	}
 +
- 		if (insns[i].insn & INSN_MASK_WRITE) {
- 			if (copy_from_user(data, insns[i].data,
--					   insns[i].n * sizeof(unsigned int))) {
-+					   n * sizeof(unsigned int))) {
- 				dev_dbg(dev->class_dev,
- 					"copy_from_user failed\n");
- 				ret = -EFAULT;
- 				goto error;
- 			}
-+			if (n < MIN_SAMPLES) {
-+				memset(&data[n], 0, (MIN_SAMPLES - n) *
-+						    sizeof(unsigned int));
-+			}
- 		}
- 		ret = parse_insn(dev, insns + i, data, file);
- 		if (ret < 0)
- 			goto error;
- 		if (insns[i].insn & INSN_MASK_READ) {
- 			if (copy_to_user(insns[i].data, data,
--					 insns[i].n * sizeof(unsigned int))) {
-+					 n * sizeof(unsigned int))) {
- 				dev_dbg(dev->class_dev,
- 					"copy_to_user failed\n");
- 				ret = -EFAULT;
-@@ -1665,6 +1671,10 @@ static int do_insn_ioctl(struct comedi_d
- 			ret = -EFAULT;
- 			goto error;
- 		}
-+		if (insn.n < MIN_SAMPLES) {
-+			memset(&data[insn.n], 0,
-+			       (MIN_SAMPLES - insn.n) * sizeof(unsigned int));
-+		}
- 	}
- 	ret = parse_insn(dev, &insn, data, file);
- 	if (ret < 0)
+ 	mac = kzalloc(sizeof(struct dpaa2_mac), GFP_KERNEL);
+-	if (!mac)
+-		return -ENOMEM;
++	if (!mac) {
++		err = -ENOMEM;
++		goto out_put_device;
++	}
+ 
+ 	mac->mc_dev = dpmac_dev;
+ 	mac->mc_io = priv->mc_io;
+@@ -4169,6 +4176,8 @@ err_close_mac:
+ 	priv->mac = NULL;
+ err_free_mac:
+ 	kfree(mac);
++out_put_device:
++	put_device(&dpmac_dev->dev);
+ 	return err;
+ }
+ 
 
 
 
