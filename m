@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-175239-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-175725-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8E344B367F8
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 16:11:40 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 39218B36AAB
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 16:39:34 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 0006A8E1813
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 13:56:25 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id F15C08E3693
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 14:18:59 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id AB4D4352071;
-	Tue, 26 Aug 2025 13:55:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 562013376BD;
+	Tue, 26 Aug 2025 14:16:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="tGrzekZF"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="yEoUiL7D"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 65E86350838;
-	Tue, 26 Aug 2025 13:55:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1356D35335B;
+	Tue, 26 Aug 2025 14:16:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756216510; cv=none; b=lPEDHpdRY8D5oqLwbzZROJpQPQ0XaU6NejbYWPiUhz0GU3xgbB+tuwyDOld8WK9Jid4T5KnWAT2EscnYIYN5dW0qBHZnohyI779Ikaqa6O+wjzHryY55b7W9nWx0uOwOOMEE8KwJOafcJYj9/SB2ujlsRp+mbI5OCKZ3gwi5WgA=
+	t=1756217806; cv=none; b=tVeIKngbu8NcxGyeHsKkdybBtardROApsiC0NWtzjXQuqAnLo0w5TYUERW6l+y6Cw+r3J0LuaqQ2DvOzAuoFzTBYsBagohCCNmtoTVifjuCujPLqlcv1w4QHKzIiFSKUpGiJEDCzwjxMWk9JAiqcvJHWbpUWTj8AVRvlSq97xsQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756216510; c=relaxed/simple;
-	bh=MrF3xe6+BYtDFLLut41tIrEGRlVZo++caH/J80l5+RU=;
+	s=arc-20240116; t=1756217806; c=relaxed/simple;
+	bh=J/4+S7lQXpq/nLBzx6O3wC7SwWC8Frv4t0DSdFs0W7Q=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Ewzi2HXeI5LJ73o6THFodAKpa8Iy7EJpbLxSsUDnPFcB4jOvklUzV/XG+0Wt6B6xCyxsQwSCKUsDJ0wFSVKAURsVhm4AICVaKEGl8vi/W7S8q0PreAKyLh3Ux+qw1CETZVdJOadcxTqKcVlJiYruo7VWcVXRCaVb8eIOYvoFn2Y=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=tGrzekZF; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E993EC2BC87;
-	Tue, 26 Aug 2025 13:55:09 +0000 (UTC)
+	 MIME-Version:Content-Type; b=tzKp/xjJD+kSe/tW7Pp0lENjg+JuNTxjdO9mgpxtnV7FBOGAAcWgRnvsKVOhhTgzqyL2XV5DK16GPYSB4CkZljlNDmOeVeYpAA5oSYrww7J4UoA2wmfq9V9333TbZarc+E75Xp2LfKMDNf/uR4vMma74kN4Dn9/PKI4DBvTASvI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=yEoUiL7D; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9AE53C4CEF1;
+	Tue, 26 Aug 2025 14:16:45 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1756216510;
-	bh=MrF3xe6+BYtDFLLut41tIrEGRlVZo++caH/J80l5+RU=;
+	s=korg; t=1756217805;
+	bh=J/4+S7lQXpq/nLBzx6O3wC7SwWC8Frv4t0DSdFs0W7Q=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=tGrzekZFQY5VB4CS6BuyBUg+7q4Apg93H+5teMRnVQqPyqPEDXW4johF42/ygpQbl
-	 qVPj6a1jxRLsRcQuuMQA9d0q6gLt/dLBOe+m+vL67gDaYG3SJbMGcDvuy92hmWlbpe
-	 75I6wt/A9NYvbfiqXGoqbPDoJJnINhXnB+px8CuU=
+	b=yEoUiL7D/PLQrzXA3ku1i+vZWKslONFZtlK9ePwe1oI09Z8Kuxy1NSLOEnC6y2vFq
+	 lvetbbIiaUIUCpdtW6oig2kikxbQatCvt5j+AosKoj6O6Dp7yoODp/zhp34XFJgBKv
+	 /UJyWBQ6c9ZUTm1qtXdYZmflMO3BB3apdZq3Dixk=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Justin Tee <justin.tee@broadcom.com>,
-	"Martin K. Petersen" <martin.petersen@oracle.com>,
+	Florian Fainelli <florian.fainelli@broadcom.com>,
+	=?UTF-8?q?=C3=81lvaro=20Fern=C3=A1ndez=20Rojas?= <noltari@gmail.com>,
+	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 401/644] scsi: lpfc: Check for hdwq null ptr when cleaning up lpfc_vport structure
+Subject: [PATCH 5.10 282/523] net: dsa: b53: fix b53_imp_vlan_setup for BCM5325
 Date: Tue, 26 Aug 2025 13:08:12 +0200
-Message-ID: <20250826110956.388387449@linuxfoundation.org>
+Message-ID: <20250826110931.392910885@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250826110946.507083938@linuxfoundation.org>
-References: <20250826110946.507083938@linuxfoundation.org>
+In-Reply-To: <20250826110924.562212281@linuxfoundation.org>
+References: <20250826110924.562212281@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,47 +61,44 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Justin Tee <justin.tee@broadcom.com>
+From: Álvaro Fernández Rojas <noltari@gmail.com>
 
-[ Upstream commit 6698796282e828733cde3329c887b4ae9e5545e9 ]
+[ Upstream commit c00df1018791185ea398f78af415a2a0aaa0c79c ]
 
-If a call to lpfc_sli4_read_rev() from lpfc_sli4_hba_setup() fails, the
-resultant cleanup routine lpfc_sli4_vport_delete_fcp_xri_aborted() may
-occur before sli4_hba.hdwqs are allocated.  This may result in a null
-pointer dereference when attempting to take the abts_io_buf_list_lock for
-the first hardware queue.  Fix by adding a null ptr check on
-phba->sli4_hba.hdwq and early return because this situation means there
-must have been an error during port initialization.
+CPU port should be B53_CPU_PORT instead of B53_CPU_PORT_25 for
+B53_PVLAN_PORT_MASK register.
 
-Signed-off-by: Justin Tee <justin.tee@broadcom.com>
-Link: https://lore.kernel.org/r/20250618192138.124116-4-justintee8345@gmail.com
-Signed-off-by: Martin K. Petersen <martin.petersen@oracle.com>
+Reviewed-by: Florian Fainelli <florian.fainelli@broadcom.com>
+Signed-off-by: Álvaro Fernández Rojas <noltari@gmail.com>
+Link: https://patch.msgid.link/20250614080000.1884236-14-noltari@gmail.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/scsi/lpfc/lpfc_scsi.c | 4 ++++
+ drivers/net/dsa/b53/b53_common.c | 4 ++++
  1 file changed, 4 insertions(+)
 
-diff --git a/drivers/scsi/lpfc/lpfc_scsi.c b/drivers/scsi/lpfc/lpfc_scsi.c
-index d9fb5e09fb53..520491a8b56e 100644
---- a/drivers/scsi/lpfc/lpfc_scsi.c
-+++ b/drivers/scsi/lpfc/lpfc_scsi.c
-@@ -454,6 +454,10 @@ lpfc_sli4_vport_delete_fcp_xri_aborted(struct lpfc_vport *vport)
- 	if (!(vport->cfg_enable_fc4_type & LPFC_ENABLE_FCP))
- 		return;
+diff --git a/drivers/net/dsa/b53/b53_common.c b/drivers/net/dsa/b53/b53_common.c
+index 39a56cedbc1f..971c134cd71a 100644
+--- a/drivers/net/dsa/b53/b53_common.c
++++ b/drivers/net/dsa/b53/b53_common.c
+@@ -504,6 +504,10 @@ void b53_imp_vlan_setup(struct dsa_switch *ds, int cpu_port)
+ 	unsigned int i;
+ 	u16 pvlan;
  
-+	/* may be called before queues established if hba_setup fails */
-+	if (!phba->sli4_hba.hdwq)
-+		return;
++	/* BCM5325 CPU port is at 8 */
++	if ((is5325(dev) || is5365(dev)) && cpu_port == B53_CPU_PORT_25)
++		cpu_port = B53_CPU_PORT;
 +
- 	spin_lock_irqsave(&phba->hbalock, iflag);
- 	for (idx = 0; idx < phba->cfg_hdw_queue; idx++) {
- 		qp = &phba->sli4_hba.hdwq[idx];
+ 	/* Enable the IMP port to be in the same VLAN as the other ports
+ 	 * on a per-port basis such that we only have Port i and IMP in
+ 	 * the same VLAN.
 -- 
 2.39.5
 
