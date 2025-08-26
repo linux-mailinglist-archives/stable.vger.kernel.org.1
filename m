@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-176195-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-173202-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id D296DB36BFE
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 16:51:18 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id DE7ABB35C4E
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 13:33:06 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 70FBCA05F8E
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 14:40:15 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 3BFBE17A3BF
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 11:27:16 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 71CC835209A;
-	Tue, 26 Aug 2025 14:37:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id EC53E2BF3E2;
+	Tue, 26 Aug 2025 11:27:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="NsWQchTG"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="RzqeVSwa"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 301053570B0;
-	Tue, 26 Aug 2025 14:37:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AA44C2BE653;
+	Tue, 26 Aug 2025 11:27:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756219027; cv=none; b=UmR6ghSSYeyC79ImJJTmX6opzsGYwVYtHqzfpPg7V+88uPJYsFSXupbc0MBiAkKTZ4aVCVlf83ahzy+3upNuZOP4cPaPbmida+yKwcDaS6ODGwOgqZ8LIWvj+rNmN7t/W+FTrIBgBh/KwL4E2M/4VXmbvE42EjnyNIlaw2oz9fI=
+	t=1756207634; cv=none; b=pCzL1MU/k32Rok17d9KmJKRM/nJB++VE8Qx6pqb+xmKH0+tjnhchIj9+d7EUeMUa+WwVonQ6uxuVVfl5DaPJadXNfMwi6kpUZXHBrhcfqQlXSK6K5MpO+vmhRu3oNXIVbGJtQiaFvO6Kg8kOpXadbA4jbi+0HU6XGeEzcLN6VNo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756219027; c=relaxed/simple;
-	bh=QC2zZuDuUaVWS/62hnhlN5ROYWtEA4kND+6XoC16maA=;
+	s=arc-20240116; t=1756207634; c=relaxed/simple;
+	bh=F8N0boz53m4NEFlwktTJZDORu3e189P9f4Zk8t0ZHyI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=aCOWw+x6QCmJp1X7GKNv2H5SI9pcusQicffdX32ryfaO3hnrvxPvtMHYtGTpbbZpQD/D7NsxYqLjX548heGDMNQm5p21LRu8zJf57Rd6t6iPwjEoDYJaJAP0D876vbPAC17K0JJSYUwk5sYh2XZ5eZ1iaosff9C4U3deLcNMbxE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=NsWQchTG; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5DD52C4CEF1;
-	Tue, 26 Aug 2025 14:37:06 +0000 (UTC)
+	 MIME-Version; b=VItyhJiBvsaZgJW0i1kc9yMif6YyzpfUhcVNYmR855q0rq/rnowCMkKonIhdJoopYDN8TJ4zDomiLApErZodwu8WVMaKta/l/utnEeCojPrPpVIk/mh10eXdOPNyg7wrm/VVb/y+xT3NfdYrvpKdqmXYlxS4hcV1fjUKOWGXiDI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=RzqeVSwa; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3C5AAC4CEF1;
+	Tue, 26 Aug 2025 11:27:14 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1756219026;
-	bh=QC2zZuDuUaVWS/62hnhlN5ROYWtEA4kND+6XoC16maA=;
+	s=korg; t=1756207634;
+	bh=F8N0boz53m4NEFlwktTJZDORu3e189P9f4Zk8t0ZHyI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=NsWQchTGTvcz4dRfbE/R3Yq0YPdYqjaO1oDECCBK5Nl5Ezv7iXUdwlOAk2A+WcMZL
-	 CEF1gXEL8VxPjPEc6uFrGykneBtuwU+FDPVb7vH5keMjTlOKQ6r5r4jGQ1wI3E7+Bs
-	 MZqzj7XwyLlabu7IJLPJBY1hioP4wmi9tlxqnjcU=
+	b=RzqeVSwaDh/McubqPcCfPfZKgyCTQw10Enh2ChKnOUxCBDkGCjNgZsa8a8bkWZJKT
+	 /ZT9QJcN5ePoyLfSjpImH2X/VSm16g4obr8KhUI3z03H6IxnvT2VrP5j4MST1UMAue
+	 MLbDVygvV3oHZlHC1Umy4E3Hyp61/vmEqrq8Zqgo=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Heiko Carstens <hca@linux.ibm.com>,
-	Sven Schnelle <svens@linux.ibm.com>,
-	Alexander Gordeev <agordeev@linux.ibm.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.4 217/403] s390/stp: Remove udelay from stp_sync_clock()
+	Qianfeng Rong <rongqianfeng@vivo.com>,
+	Timur Tabi <ttabi@nvidia.com>,
+	Zhi Wang <zhiw@nvidia.com>,
+	Danilo Krummrich <dakr@kernel.org>
+Subject: [PATCH 6.16 259/457] drm/nouveau/gsp: fix mismatched alloc/free for kvmalloc()
 Date: Tue, 26 Aug 2025 13:09:03 +0200
-Message-ID: <20250826110912.833225600@linuxfoundation.org>
+Message-ID: <20250826110943.755505792@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250826110905.607690791@linuxfoundation.org>
-References: <20250826110905.607690791@linuxfoundation.org>
+In-Reply-To: <20250826110937.289866482@linuxfoundation.org>
+References: <20250826110937.289866482@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,48 +63,54 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.4-stable review patch.  If anyone has any objections, please let me know.
+6.16-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Sven Schnelle <svens@linux.ibm.com>
+From: Qianfeng Rong <rongqianfeng@vivo.com>
 
-[ Upstream commit b367017cdac21781a74eff4e208d3d38e1f38d3f ]
+commit 989fe6771266bdb82a815d78802c5aa7c918fdfd upstream.
 
-When an stp sync check is handled on a system with multiple
-cpus each cpu gets a machine check but only the first one
-actually handles the sync operation. All other CPUs spin
-waiting for the first one to finish with a short udelay().
-But udelay can't be used here as the first CPU modifies tod_clock_base
-before performing the sync op. During this timeframe
-get_tod_clock_monotonic() might return a non-monotonic time.
+Replace kfree() with kvfree() for memory allocated by kvmalloc().
 
-The time spent waiting should be very short and udelay is a busy loop
-anyways, therefore simply remove the udelay.
+Compile-tested only.
 
-Reviewed-by: Heiko Carstens <hca@linux.ibm.com>
-Signed-off-by: Sven Schnelle <svens@linux.ibm.com>
-Signed-off-by: Alexander Gordeev <agordeev@linux.ibm.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Cc: stable@vger.kernel.org
+Fixes: 8a8b1ec5261f ("drm/nouveau/gsp: split rpc handling out on its own")
+Signed-off-by: Qianfeng Rong <rongqianfeng@vivo.com>
+Reviewed-by: Timur Tabi <ttabi@nvidia.com>
+Acked-by: Zhi Wang <zhiw@nvidia.com>
+Link: https://lore.kernel.org/r/20250813125412.96178-1-rongqianfeng@vivo.com
+Signed-off-by: Danilo Krummrich <dakr@kernel.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- arch/s390/kernel/time.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/gpu/drm/nouveau/nvkm/subdev/gsp/rm/r535/rpc.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/arch/s390/kernel/time.c b/arch/s390/kernel/time.c
-index 11c32b228f51..0e1925104fcf 100644
---- a/arch/s390/kernel/time.c
-+++ b/arch/s390/kernel/time.c
-@@ -642,7 +642,7 @@ static int stp_sync_clock(void *data)
- 		atomic_dec(&sync->cpus);
- 		/* Wait for in_sync to be set. */
- 		while (READ_ONCE(sync->in_sync) == 0)
--			__udelay(1);
-+			;
- 	}
- 	if (sync->in_sync != 1)
- 		/* Didn't work. Clear per-cpu in sync bit again. */
+diff --git a/drivers/gpu/drm/nouveau/nvkm/subdev/gsp/rm/r535/rpc.c b/drivers/gpu/drm/nouveau/nvkm/subdev/gsp/rm/r535/rpc.c
+index 9d06ff722fea..0dc4782df8c0 100644
+--- a/drivers/gpu/drm/nouveau/nvkm/subdev/gsp/rm/r535/rpc.c
++++ b/drivers/gpu/drm/nouveau/nvkm/subdev/gsp/rm/r535/rpc.c
+@@ -325,7 +325,7 @@ r535_gsp_msgq_recv(struct nvkm_gsp *gsp, u32 gsp_rpc_len, int *retries)
+ 
+ 		rpc = r535_gsp_msgq_peek(gsp, sizeof(*rpc), info.retries);
+ 		if (IS_ERR_OR_NULL(rpc)) {
+-			kfree(buf);
++			kvfree(buf);
+ 			return rpc;
+ 		}
+ 
+@@ -334,7 +334,7 @@ r535_gsp_msgq_recv(struct nvkm_gsp *gsp, u32 gsp_rpc_len, int *retries)
+ 
+ 		rpc = r535_gsp_msgq_recv_one_elem(gsp, &info);
+ 		if (IS_ERR_OR_NULL(rpc)) {
+-			kfree(buf);
++			kvfree(buf);
+ 			return rpc;
+ 		}
+ 
 -- 
-2.39.5
+2.50.1
 
 
 
