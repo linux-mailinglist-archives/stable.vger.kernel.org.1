@@ -1,56 +1,55 @@
-Return-Path: <stable+bounces-175191-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-173138-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 61491B3670A
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 16:03:14 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id D976DB35BD9
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 13:28:40 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 2233C1B67A28
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 13:55:36 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 6CE331BA28ED
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 11:24:57 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id F1DB435082F;
-	Tue, 26 Aug 2025 13:53:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 03C352BE647;
+	Tue, 26 Aug 2025 11:24:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="eUCg4Ehi"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="zwGxjV70"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A9FDD350855;
-	Tue, 26 Aug 2025 13:53:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AA38A1A256B;
+	Tue, 26 Aug 2025 11:24:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756216381; cv=none; b=SRyQ+E/T8dlw+QcscHTMdD5kUsrqIO63PWvgiLHmiXegQz/6l7oPtRwHcJRNfnBy1XHyFqIb5f/pgcJmE+S0RIAhRG25CeRFd8Kx+iWhGC29wU4mGnn6byFQfKx9ArzGN6vmHhfBO8seTlcjIHXA7/U8zTrecQPjWnzPvWUobYE=
+	t=1756207472; cv=none; b=fmFg1XIdJigQcyOwSa/J8qzM6f49A/m2NkBWgeGf7zNDTr9berXoFjFVFE9Up98mZ0ZmTRf50Oj+RPkdIwY/1fOEyrgkKOOIN/xF4S5smheFoJmBwLDlS2q7cm3Wscn2PhiWR4A44YKnv4kD5jGWXUIaf9m28wT9Wtej7vNujAg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756216381; c=relaxed/simple;
-	bh=J/J7h4beB/dSmhFrc3dCJRQi2o4damp7oq65fBJ4k1s=;
+	s=arc-20240116; t=1756207472; c=relaxed/simple;
+	bh=nffwfhQcrR8xClBf0e7iJxzWQj+yFECqae8tyAJYiQw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=nIdRo1U8PTARZ4QkYdXxYT6KqxhzITgA7sVnLksgf5smIgIuGHZ1wkjGSa7PqU33tlh40JsdE9Y7Bw+PTqglVa8T7xu8BeCeCqXj0BBG3S6/3PduYui98qtM9GfGfeosh/nyzYLxU/xixcK5wpZcAuMUT3iLhaynmdY23VRqlxc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=eUCg4Ehi; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id DDF76C4CEF1;
-	Tue, 26 Aug 2025 13:53:00 +0000 (UTC)
+	 MIME-Version; b=tTQGhNGXM4d6C7iE8gLtkFNg50BJL5eWPrmODK500+F3mkrg9nBPN6nu3qZhjgbXYOC9F9m32a6wpuvkIEtQven+L3cPecd8zBaPBztWw2sYpDCpDxza6qdQPMkWGcJHjZn2iafmG1VnPl+9cD41pS1EHjHzVTaUz2Ge3EbxIFU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=zwGxjV70; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E38FAC4CEF1;
+	Tue, 26 Aug 2025 11:24:30 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1756216381;
-	bh=J/J7h4beB/dSmhFrc3dCJRQi2o4damp7oq65fBJ4k1s=;
+	s=korg; t=1756207471;
+	bh=nffwfhQcrR8xClBf0e7iJxzWQj+yFECqae8tyAJYiQw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=eUCg4EhiuY2/3g3bY6q4/2s2N2PrTy3yfxLJ7X5ijK3SnvMcb6dTOvDS26FKUxdUO
-	 bhnVK0fuEmcmPrbmTizkbF5SSnf0k1wyaNefemje/7yVypL9FlAu3tecUaJs0uFrzT
-	 EgttewEleQPe5eBfaWjTnvhpijix2oNvfI8bE/IA=
+	b=zwGxjV70N39Z2MtfIDQABSlTUlrDhVRiHjrDCZvRc+W021rXST7wB8yJ88IOAgfAz
+	 aPHBNHdwxf8xNn+9mJxnurtMIlEj4kVdoNSi0tqmtPAEREq2j6dpKz72GyzEepGwkH
+	 EPCfr0ifAKLkkAdJl5zdi7CCdg7L+Fd4Oo9de5js=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Amir Mohammad Jahangirzad <a.jahangirzad@gmail.com>,
-	Mike Marshall <hubcap@omnibond.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 388/644] fs/orangefs: use snprintf() instead of sprintf()
+	Bibo Mao <maobibo@loongson.cn>,
+	Huacai Chen <chenhuacai@loongson.cn>
+Subject: [PATCH 6.16 195/457] LoongArch: KVM: Fix stack protector issue in send_ipi_data()
 Date: Tue, 26 Aug 2025 13:07:59 +0200
-Message-ID: <20250826110956.055992085@linuxfoundation.org>
+Message-ID: <20250826110942.187217489@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250826110946.507083938@linuxfoundation.org>
-References: <20250826110946.507083938@linuxfoundation.org>
+In-Reply-To: <20250826110937.289866482@linuxfoundation.org>
+References: <20250826110937.289866482@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,52 +61,86 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.16-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Amir Mohammad Jahangirzad <a.jahangirzad@gmail.com>
+From: Bibo Mao <maobibo@loongson.cn>
 
-[ Upstream commit cdfa1304657d6f23be8fd2bb0516380a3c89034e ]
+commit 5c68549c81bcca70fc464e305ffeefd9af968287 upstream.
 
-sprintf() is discouraged for use with bounded destination buffers
-as it does not prevent buffer overflows when the formatted output
-exceeds the destination buffer size. snprintf() is a safer
-alternative as it limits the number of bytes written and ensures
-NUL-termination.
+Function kvm_io_bus_read() is called in function send_ipi_data(), buffer
+size of parameter *val should be at least 8 bytes. Since some emulation
+functions like loongarch_ipi_readl() and kvm_eiointc_read() will write
+the buffer *val with 8 bytes signed extension regardless parameter len.
 
-Replace sprintf() with snprintf() for copying the debug string
-into a temporary buffer, using ORANGEFS_MAX_DEBUG_STRING_LEN as
-the maximum size to ensure safe formatting and prevent memory
-corruption in edge cases.
+Otherwise there will be buffer overflow issue when CONFIG_STACKPROTECTOR
+is enabled. The bug report is shown as follows:
 
-EDIT: After this patch sat on linux-next for a few days, Dan
-Carpenter saw it and suggested that I use scnprintf instead of
-snprintf. I made the change and retested.
+Kernel panic - not syncing: stack-protector: Kernel stack is corrupted in: send_ipi_data+0x194/0x1a0 [kvm]
+CPU: 11 UID: 107 PID: 2692 Comm: CPU 0/KVM Not tainted 6.17.0-rc1+ #102 PREEMPT(full)
+Stack : 9000000005901568 0000000000000000 9000000003af371c 900000013c68c000
+        900000013c68f850 900000013c68f858 0000000000000000 900000013c68f998
+        900000013c68f990 900000013c68f990 900000013c68f6c0 fffffffffffdb058
+        fffffffffffdb0e0 900000013c68f858 911e1d4d39cf0ec2 9000000105657a00
+        0000000000000001 fffffffffffffffe 0000000000000578 282049464555206e
+        6f73676e6f6f4c20 0000000000000001 00000000086b4000 0000000000000000
+        0000000000000000 0000000000000000 9000000005709968 90000000058f9000
+        900000013c68fa68 900000013c68fab4 90000000029279f0 900000010153f940
+        900000010001f360 0000000000000000 9000000003af3734 000000004390000c
+        00000000000000b0 0000000000000004 0000000000000000 0000000000071c1d
+        ...
+Call Trace:
+[<9000000003af3734>] show_stack+0x5c/0x180
+[<9000000003aed168>] dump_stack_lvl+0x6c/0x9c
+[<9000000003ad0ab0>] vpanic+0x108/0x2c4
+[<9000000003ad0ca8>] panic+0x3c/0x40
+[<9000000004eb0a1c>] __stack_chk_fail+0x14/0x18
+[<ffff8000023473f8>] send_ipi_data+0x190/0x1a0 [kvm]
+[<ffff8000023313e4>] __kvm_io_bus_write+0xa4/0xe8 [kvm]
+[<ffff80000233147c>] kvm_io_bus_write+0x54/0x90 [kvm]
+[<ffff80000233f9f8>] kvm_emu_iocsr+0x180/0x310 [kvm]
+[<ffff80000233fe08>] kvm_handle_gspr+0x280/0x478 [kvm]
+[<ffff8000023443e8>] kvm_handle_exit+0xc0/0x130 [kvm]
 
-Signed-off-by: Amir Mohammad Jahangirzad <a.jahangirzad@gmail.com>
-Signed-off-by: Mike Marshall <hubcap@omnibond.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Cc: stable@vger.kernel.org
+Fixes: daee2f9cae551 ("LoongArch: KVM: Add IPI read and write function")
+Signed-off-by: Bibo Mao <maobibo@loongson.cn>
+Signed-off-by: Huacai Chen <chenhuacai@loongson.cn>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- fs/orangefs/orangefs-debugfs.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ arch/loongarch/kvm/intc/ipi.c |    6 +++---
+ 1 file changed, 3 insertions(+), 3 deletions(-)
 
-diff --git a/fs/orangefs/orangefs-debugfs.c b/fs/orangefs/orangefs-debugfs.c
-index b57140ebfad0..cd4bfd92ebd6 100644
---- a/fs/orangefs/orangefs-debugfs.c
-+++ b/fs/orangefs/orangefs-debugfs.c
-@@ -354,7 +354,7 @@ static ssize_t orangefs_debug_read(struct file *file,
- 		goto out;
+--- a/arch/loongarch/kvm/intc/ipi.c
++++ b/arch/loongarch/kvm/intc/ipi.c
+@@ -99,7 +99,7 @@ static void write_mailbox(struct kvm_vcp
+ static int send_ipi_data(struct kvm_vcpu *vcpu, gpa_t addr, uint64_t data)
+ {
+ 	int i, idx, ret;
+-	uint32_t val = 0, mask = 0;
++	uint64_t val = 0, mask = 0;
  
- 	mutex_lock(&orangefs_debug_lock);
--	sprintf_ret = sprintf(buf, "%s", (char *)file->private_data);
-+	sprintf_ret = scnprintf(buf, ORANGEFS_MAX_DEBUG_STRING_LEN, "%s", (char *)file->private_data);
- 	mutex_unlock(&orangefs_debug_lock);
- 
- 	read_ret = simple_read_from_buffer(ubuf, count, ppos, buf, sprintf_ret);
--- 
-2.39.5
-
+ 	/*
+ 	 * Bit 27-30 is mask for byte writing.
+@@ -108,7 +108,7 @@ static int send_ipi_data(struct kvm_vcpu
+ 	if ((data >> 27) & 0xf) {
+ 		/* Read the old val */
+ 		idx = srcu_read_lock(&vcpu->kvm->srcu);
+-		ret = kvm_io_bus_read(vcpu, KVM_IOCSR_BUS, addr, sizeof(val), &val);
++		ret = kvm_io_bus_read(vcpu, KVM_IOCSR_BUS, addr, 4, &val);
+ 		srcu_read_unlock(&vcpu->kvm->srcu, idx);
+ 		if (unlikely(ret)) {
+ 			kvm_err("%s: : read data from addr %llx failed\n", __func__, addr);
+@@ -124,7 +124,7 @@ static int send_ipi_data(struct kvm_vcpu
+ 	}
+ 	val |= ((uint32_t)(data >> 32) & ~mask);
+ 	idx = srcu_read_lock(&vcpu->kvm->srcu);
+-	ret = kvm_io_bus_write(vcpu, KVM_IOCSR_BUS, addr, sizeof(val), &val);
++	ret = kvm_io_bus_write(vcpu, KVM_IOCSR_BUS, addr, 4, &val);
+ 	srcu_read_unlock(&vcpu->kvm->srcu, idx);
+ 	if (unlikely(ret))
+ 		kvm_err("%s: : write data to addr %llx failed\n", __func__, addr);
 
 
 
