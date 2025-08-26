@@ -1,55 +1,57 @@
-Return-Path: <stable+bounces-175292-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-173241-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id A93FEB3684C
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 16:15:03 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id B18D8B35C2B
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 13:32:11 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 3D0FC8E1977
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 13:59:43 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 15FA67B7082
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 11:30:31 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6679434DCCB;
-	Tue, 26 Aug 2025 13:57:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7A738319849;
+	Tue, 26 Aug 2025 11:28:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="MM5IYjAN"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="tmmEqsWX"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 242CE1F55F8;
-	Tue, 26 Aug 2025 13:57:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 382452BE643;
+	Tue, 26 Aug 2025 11:28:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756216651; cv=none; b=bpo7R9xuTdVDqiDGJkVEnDAWDFNJd6189j2kqPxHQx5nGt3Dpt2HJj8XHP9rOu1g6lKrx+OjksJmYZgRXKuYRSCMaappM5CQ99yMVlPRBtxw9jUJA6uYq1C25KEH7cm+NfGq/Fzw/thjejSmjVSqH/XOrV9SjhjkiXpfmd51lVc=
+	t=1756207737; cv=none; b=DytqL9ILLUj33kgAQ25cF82a4pLdN6ZEt5qTdf0fksidNGz2XdjLzz/LaQZ07X8deIRa1yaPJbw+whxn61E6Dl+sR60ywb363uxFuWt1D1pRQYN3pvokQwF4vFayc6YBCN2WvTx7TuSktqI6UpS4AyUkkorj1PQK+69yxAwcYiQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756216651; c=relaxed/simple;
-	bh=VL6k1nYWJcSnRCIw+1so85AEX5ujnQ1wdVtciOUkXUI=;
+	s=arc-20240116; t=1756207737; c=relaxed/simple;
+	bh=dvdrqdMp+bfRkL5042dt6oKMSpEqNJQJlOx0olH6JJs=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=au/H+XbiWgzWD1hmS4EC2Uaz/udmxAhBBkiXG+CefOf5C0Lz+gwDyTcubjwnQTNQtIkkg/fo+NWv3hIC3NX1hV/rreaoAVEfAwN8pqjEDQVcdZtGVyfNncYzhu0lMwAtyGdGEPzFGVXCbYXIf+jcd1LeH35GASbJ9WTXgDTnp8A=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=MM5IYjAN; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 79E1EC4CEF1;
-	Tue, 26 Aug 2025 13:57:30 +0000 (UTC)
+	 MIME-Version:Content-Type; b=S6k9zBlpWMh2LTtnSJEr7FN8gLc4kg3V9wXcVNC5Q2lDB0aSxHdAagttnJOd+OpoychuMRYD2MvtVn3iQy8etVm4H/dzR6WkgRHwbEG+Qyf06dRTXSa6p1784Tadr2wvtMD5dI/PEye/sa38N2vdj8wKQWtVh6x00pQ84ySNINs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=tmmEqsWX; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id BE1D7C4CEF1;
+	Tue, 26 Aug 2025 11:28:56 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1756216650;
-	bh=VL6k1nYWJcSnRCIw+1so85AEX5ujnQ1wdVtciOUkXUI=;
+	s=korg; t=1756207737;
+	bh=dvdrqdMp+bfRkL5042dt6oKMSpEqNJQJlOx0olH6JJs=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=MM5IYjANjRds+leDoaRvkNCR38fiI7s4Vxm1tW8qnKG2pcGMnnUvNU6acE9hMzEWT
-	 SS35ThYhHHeZTBRwr1b09Gga+OmsF6tsBQ+JHPBIDmGkUI7duc6TUuiAG1vjnkQIoQ
-	 MjgjHlYDXvZyRkiYaz7o8iGsq2A4xdUZIz0M/vZk=
+	b=tmmEqsWXE4vHzJw8oZsE/569KoPGoGl9wNujm9+n4grZLI/XXEhaFg/plSFu55RGk
+	 Zc1f5cK57x5RRZ2KhUe5lxIL13Pk4z4FJhbdyLh3Nfi1SodUJeVksqlBJq7bh1igoQ
+	 cfzp3ED+C5LrL4jhkLHUh3wARqLfaHExUH7dvEEM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Gui-Dong Han <hanguidong02@gmail.com>,
-	Hans Verkuil <hverkuil@xs4all.nl>
-Subject: [PATCH 5.15 491/644] media: rainshadow-cec: fix TOCTOU race condition in rain_interrupt()
+	David Lechner <dlechner@baylibre.com>,
+	=?UTF-8?q?Nuno=20S=C3=A1?= <nuno.sa@analog.com>,
+	Stable@vger.kernel.org,
+	Jonathan Cameron <Jonathan.Cameron@huawei.com>
+Subject: [PATCH 6.16 298/457] iio: temperature: maxim_thermocouple: use DMA-safe buffer for spi_read()
 Date: Tue, 26 Aug 2025 13:09:42 +0200
-Message-ID: <20250826110958.660009341@linuxfoundation.org>
+Message-ID: <20250826110944.742784139@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250826110946.507083938@linuxfoundation.org>
-References: <20250826110946.507083938@linuxfoundation.org>
+In-Reply-To: <20250826110937.289866482@linuxfoundation.org>
+References: <20250826110937.289866482@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -59,61 +61,98 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.16-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Gui-Dong Han <hanguidong02@gmail.com>
+From: David Lechner <dlechner@baylibre.com>
 
-commit 7af160aea26c7dc9e6734d19306128cce156ec40 upstream.
+commit ae5bc07ec9f73a41734270ef3f800c5c8a7e0ad3 upstream.
 
-In the interrupt handler rain_interrupt(), the buffer full check on
-rain->buf_len is performed before acquiring rain->buf_lock. This
-creates a Time-of-Check to Time-of-Use (TOCTOU) race condition, as
-rain->buf_len is concurrently accessed and modified in the work
-handler rain_irq_work_handler() under the same lock.
+Replace using stack-allocated buffers with a DMA-safe buffer for use
+with spi_read(). This allows the driver to be safely used with
+DMA-enabled SPI controllers.
 
-Multiple interrupt invocations can race, with each reading buf_len
-before it becomes full and then proceeding. This can lead to both
-interrupts attempting to write to the buffer, incrementing buf_len
-beyond its capacity (DATA_SIZE) and causing a buffer overflow.
+The buffer array is also converted to a struct with a union to make the
+usage of the memory in the buffer more clear and ensure proper alignment.
 
-Fix this bug by moving the spin_lock() to before the buffer full
-check. This ensures that the check and the subsequent buffer modification
-are performed atomically, preventing the race condition. An corresponding
-spin_unlock() is added to the overflow path to correctly release the
-lock.
-
-This possible bug was found by an experimental static analysis tool
-developed by our team.
-
-Fixes: 0f314f6c2e77 ("[media] rainshadow-cec: new RainShadow Tech HDMI CEC driver")
-Cc: stable@vger.kernel.org
-Signed-off-by: Gui-Dong Han <hanguidong02@gmail.com>
-Signed-off-by: Hans Verkuil <hverkuil@xs4all.nl>
+Fixes: 1f25ca11d84a ("iio: temperature: add support for Maxim thermocouple chips")
+Signed-off-by: David Lechner <dlechner@baylibre.com>
+Reviewed-by: Nuno Sá <nuno.sa@analog.com>
+Link: https://patch.msgid.link/20250721-iio-use-more-iio_declare_buffer_with_ts-3-v2-1-0c68d41ccf6c@baylibre.com
+Cc: <Stable@vger.kernel.org>
+Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/media/cec/usb/rainshadow/rainshadow-cec.c |    3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+ drivers/iio/temperature/maxim_thermocouple.c |   26 ++++++++++++++++----------
+ 1 file changed, 16 insertions(+), 10 deletions(-)
 
---- a/drivers/media/cec/usb/rainshadow/rainshadow-cec.c
-+++ b/drivers/media/cec/usb/rainshadow/rainshadow-cec.c
-@@ -171,11 +171,12 @@ static irqreturn_t rain_interrupt(struct
- {
- 	struct rain *rain = serio_get_drvdata(serio);
+--- a/drivers/iio/temperature/maxim_thermocouple.c
++++ b/drivers/iio/temperature/maxim_thermocouple.c
+@@ -11,6 +11,7 @@
+ #include <linux/module.h>
+ #include <linux/err.h>
+ #include <linux/spi/spi.h>
++#include <linux/types.h>
+ #include <linux/iio/iio.h>
+ #include <linux/iio/sysfs.h>
+ #include <linux/iio/trigger.h>
+@@ -121,8 +122,15 @@ struct maxim_thermocouple_data {
+ 	struct spi_device *spi;
+ 	const struct maxim_thermocouple_chip *chip;
+ 	char tc_type;
+-
+-	u8 buffer[16] __aligned(IIO_DMA_MINALIGN);
++	/* Buffer for reading up to 2 hardware channels. */
++	struct {
++		union {
++			__be16 raw16;
++			__be32 raw32;
++			__be16 raw[2];
++		};
++		aligned_s64 timestamp;
++	} buffer __aligned(IIO_DMA_MINALIGN);
+ };
  
-+	spin_lock(&rain->buf_lock);
- 	if (rain->buf_len == DATA_SIZE) {
-+		spin_unlock(&rain->buf_lock);
- 		dev_warn_once(rain->dev, "buffer overflow\n");
- 		return IRQ_HANDLED;
+ static int maxim_thermocouple_read(struct maxim_thermocouple_data *data,
+@@ -130,18 +138,16 @@ static int maxim_thermocouple_read(struc
+ {
+ 	unsigned int storage_bytes = data->chip->read_size;
+ 	unsigned int shift = chan->scan_type.shift + (chan->address * 8);
+-	__be16 buf16;
+-	__be32 buf32;
+ 	int ret;
+ 
+ 	switch (storage_bytes) {
+ 	case 2:
+-		ret = spi_read(data->spi, (void *)&buf16, storage_bytes);
+-		*val = be16_to_cpu(buf16);
++		ret = spi_read(data->spi, &data->buffer.raw16, storage_bytes);
++		*val = be16_to_cpu(data->buffer.raw16);
+ 		break;
+ 	case 4:
+-		ret = spi_read(data->spi, (void *)&buf32, storage_bytes);
+-		*val = be32_to_cpu(buf32);
++		ret = spi_read(data->spi, &data->buffer.raw32, storage_bytes);
++		*val = be32_to_cpu(data->buffer.raw32);
+ 		break;
+ 	default:
+ 		ret = -EINVAL;
+@@ -166,9 +172,9 @@ static irqreturn_t maxim_thermocouple_tr
+ 	struct maxim_thermocouple_data *data = iio_priv(indio_dev);
+ 	int ret;
+ 
+-	ret = spi_read(data->spi, data->buffer, data->chip->read_size);
++	ret = spi_read(data->spi, data->buffer.raw, data->chip->read_size);
+ 	if (!ret) {
+-		iio_push_to_buffers_with_ts(indio_dev, data->buffer,
++		iio_push_to_buffers_with_ts(indio_dev, &data->buffer,
+ 					    sizeof(data->buffer),
+ 					    iio_get_time_ns(indio_dev));
  	}
--	spin_lock(&rain->buf_lock);
- 	rain->buf_len++;
- 	rain->buf[rain->buf_wr_idx] = data;
- 	rain->buf_wr_idx = (rain->buf_wr_idx + 1) & 0xff;
 
 
 
