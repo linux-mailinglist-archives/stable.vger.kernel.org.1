@@ -1,59 +1,56 @@
-Return-Path: <stable+bounces-174208-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-175858-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8DAE3B36213
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 15:15:45 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id A7138B369D8
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 16:31:33 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 3FB4E7C3FC8
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 13:10:42 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 1675A567DBC
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 14:24:35 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E3DA6298CA7;
-	Tue, 26 Aug 2025 13:09:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id F21EE3570A7;
+	Tue, 26 Aug 2025 14:22:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Nox4rPcg"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="0CtJ//hi"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A098C321433;
-	Tue, 26 Aug 2025 13:09:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A203C3570BD;
+	Tue, 26 Aug 2025 14:22:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756213780; cv=none; b=EswigQkxHo914B3/ks8wZuCbIlbWorIo/QFjd7K6LlYkCZTz9j5+3spEgiP4573Jm7TtUuwF06/1k89IT9lGksNH6xQ58IuhF7fEhwqOTq9UChuleR268rgTIqjupVRyMmqCz5G2qM35F1JRFVxv1DFp8n5sfOj6ylMxSu8fqlc=
+	t=1756218156; cv=none; b=YICKbdZORvAXMn8KfCD8n1MoJRcfVpspzLQLYGQJglTMr1mHpPErbyUQUZndWnntKNXEcCAL1MX7ckE67m4TZIPcqYPLvF3oQCdhcfE91/PqyG5e9pYhUSkYbGqhJCMo+ngZ3gjRFTRYSmwGDVmq+b3XYtNNJQSHduiZqfOnw7o=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756213780; c=relaxed/simple;
-	bh=nAUxEYUxanzilZeodStjU+WPvbXwerUi22eJYSPqGiM=;
+	s=arc-20240116; t=1756218156; c=relaxed/simple;
+	bh=qXfCXq/Ho9qRtYen/p/nGJbM9UFtAt6rgSI7gnwmyHE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=lB8Cbr68DcTe41yIx5a1ij9PInv71aT/2yaqh+vuwRiBuqxzsdz18bBHQGSOX6bdDdi2MEfxWFgOvnTdZnmsFTWCCQ9BTO9aP0xkUjJXknmqADOM2e06jyyhButseshtcQvAzZC2IU20ZUrjMeJ0LFuRuT3jO/NABvb2NUDlHPw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Nox4rPcg; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 31447C4CEF1;
-	Tue, 26 Aug 2025 13:09:40 +0000 (UTC)
+	 MIME-Version; b=HBLc2/SGijq6dAJ25HAiyu+ldR9Ycch/2GOwTKT1yQunt2hwoimSuDXu4msdZd/CgpGq3hw37E1oK9GpFJ9XXBOVPHgY70i+BLOm6jwOc1LxqAnf8J+sKTgxdSU0bi77qTqQXUVNbwzvZi6qIrp/HbwbgP+q8m21Xg8omLLwkxk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=0CtJ//hi; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C7050C4CEF1;
+	Tue, 26 Aug 2025 14:22:33 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1756213780;
-	bh=nAUxEYUxanzilZeodStjU+WPvbXwerUi22eJYSPqGiM=;
+	s=korg; t=1756218154;
+	bh=qXfCXq/Ho9qRtYen/p/nGJbM9UFtAt6rgSI7gnwmyHE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Nox4rPcgOevCW/VA+JIzbCSXjV4mM789MCaMLMT0BJXGk1B8nuXWFauocJvZNDuQM
-	 axKhVoEL8JivktuXcCf74dbZ9VTuh3arR+D2Yltmgo+Z5L9mosbYpz3/14/0zuIfJR
-	 jh7UyUq7Bi8gFAw9YdoWCEQ5jwjefzFM/tH/qtOs=
+	b=0CtJ//hid+hEuG9EcuX5LDMvjVg5KS9141teGBPTITZWXqU4tKb4x/4mR44OkAeIW
+	 +0L9iDcMDDxokbQPAcrTYegI8vmClJM34ThBd+OX/asDiTeSwR/CPcrqS7Gz3/sX04
+	 7XnwqY8WMaESWcavqTe8rzVMM1TTTmz6vww8PHYQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Vincent Guittot <vincent.guittot@linaro.org>,
-	Ingo Molnar <mingo@kernel.org>,
-	Pierre Gondois <pierre.gondois@arm.com>,
-	Sudeep Holla <sudeep.holla@arm.com>,
-	Viresh Kumar <viresh.kumar@linaro.org>,
-	Wentao Guan <guanwentao@uniontech.com>
-Subject: [PATCH 6.6 475/587] cpufreq/cppc: Set the frequency used for computing the capacity
+	stable <stable@kernel.org>,
+	Kuen-Han Tsai <khtsai@google.com>,
+	Thinh Nguyen <Thinh.Nguyen@synopsys.com>
+Subject: [PATCH 5.10 414/523] usb: dwc3: Ignore late xferNotReady event to prevent halt timeout
 Date: Tue, 26 Aug 2025 13:10:24 +0200
-Message-ID: <20250826111005.051829599@linuxfoundation.org>
+Message-ID: <20250826110934.668337298@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250826110952.942403671@linuxfoundation.org>
-References: <20250826110952.942403671@linuxfoundation.org>
+In-Reply-To: <20250826110924.562212281@linuxfoundation.org>
+References: <20250826110924.562212281@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -65,71 +62,51 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Vincent Guittot <vincent.guittot@linaro.org>
+From: Kuen-Han Tsai <khtsai@google.com>
 
-commit 5477fa249b56c59c3baa1b237bf083cffa64c84a upstream.
+commit 58577118cc7cec9eb7c1836bf88f865ff2c5e3a3 upstream.
 
-Save the frequency associated to the performance that has been used when
-initializing the capacity of CPUs.
+During a device-initiated disconnect, the End Transfer command resets
+the event filter, allowing a new xferNotReady event to be generated
+before the controller is fully halted. Processing this late event
+incorrectly triggers a Start Transfer, which prevents the controller
+from halting and results in a DSTS.DEVCTLHLT bit polling timeout.
 
-Also, cppc cpufreq driver can register an artificial energy model. In such
-case, it needs the frequency for this compute capacity.
+Ignore the late xferNotReady event if the controller is already in a
+disconnected state.
 
-Signed-off-by: Vincent Guittot <vincent.guittot@linaro.org>
-Signed-off-by: Ingo Molnar <mingo@kernel.org>
-Tested-by: Pierre Gondois <pierre.gondois@arm.com>
-Acked-by: Sudeep Holla <sudeep.holla@arm.com>
-Acked-by: Viresh Kumar <viresh.kumar@linaro.org>
-Link: https://lore.kernel.org/r/20231211104855.558096-7-vincent.guittot@linaro.org
-Stable-dep-of: e37617c8e53a ("sched/fair: Fix frequency selection for non-invariant case")
-Signed-off-by: Wentao Guan <guanwentao@uniontech.com>
+Fixes: 72246da40f37 ("usb: Introduce DesignWare USB3 DRD Driver")
+Cc: stable <stable@kernel.org>
+Signed-off-by: Kuen-Han Tsai <khtsai@google.com>
+Acked-by: Thinh Nguyen <Thinh.Nguyen@synopsys.com>
+Link: https://lore.kernel.org/r/20250807090700.2397190-1-khtsai@google.com
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/base/arch_topology.c |   15 ++++++++++++++-
- 1 file changed, 14 insertions(+), 1 deletion(-)
+ drivers/usb/dwc3/gadget.c |    9 +++++++++
+ 1 file changed, 9 insertions(+)
 
---- a/drivers/base/arch_topology.c
-+++ b/drivers/base/arch_topology.c
-@@ -349,6 +349,7 @@ bool __init topology_parse_cpu_capacity(
- 
- void topology_init_cpu_capacity_cppc(void)
+--- a/drivers/usb/dwc3/gadget.c
++++ b/drivers/usb/dwc3/gadget.c
+@@ -3107,6 +3107,15 @@ static void dwc3_gadget_endpoint_transfe
+ static void dwc3_gadget_endpoint_transfer_not_ready(struct dwc3_ep *dep,
+ 		const struct dwc3_event_depevt *event)
  {
-+	u64 capacity, capacity_scale = 0;
- 	struct cppc_perf_caps perf_caps;
- 	int cpu;
- 
-@@ -365,6 +366,10 @@ void topology_init_cpu_capacity_cppc(voi
- 		    (perf_caps.highest_perf >= perf_caps.nominal_perf) &&
- 		    (perf_caps.highest_perf >= perf_caps.lowest_perf)) {
- 			raw_capacity[cpu] = perf_caps.highest_perf;
-+			capacity_scale = max_t(u64, capacity_scale, raw_capacity[cpu]);
++	/*
++	 * During a device-initiated disconnect, a late xferNotReady event can
++	 * be generated after the End Transfer command resets the event filter,
++	 * but before the controller is halted. Ignore it to prevent a new
++	 * transfer from starting.
++	 */
++	if (!dep->dwc->connected)
++		return;
 +
-+			per_cpu(capacity_freq_ref, cpu) = cppc_perf_to_khz(&perf_caps, raw_capacity[cpu]);
-+
- 			pr_debug("cpu_capacity: CPU%d cpu_capacity=%u (raw).\n",
- 				 cpu, raw_capacity[cpu]);
- 			continue;
-@@ -375,7 +380,15 @@ void topology_init_cpu_capacity_cppc(voi
- 		goto exit;
- 	}
+ 	dwc3_gadget_endpoint_frame_from_event(dep, event);
  
--	topology_normalize_cpu_scale();
-+	for_each_possible_cpu(cpu) {
-+		capacity = raw_capacity[cpu];
-+		capacity = div64_u64(capacity << SCHED_CAPACITY_SHIFT,
-+				     capacity_scale);
-+		topology_set_cpu_scale(cpu, capacity);
-+		pr_debug("cpu_capacity: CPU%d cpu_capacity=%lu\n",
-+			cpu, topology_get_cpu_scale(cpu));
-+	}
-+
- 	schedule_work(&update_topology_flags_work);
- 	pr_debug("cpu_capacity: cpu_capacity initialization done\n");
- 
+ 	/*
 
 
 
