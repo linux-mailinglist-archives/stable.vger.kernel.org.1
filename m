@@ -1,56 +1,64 @@
-Return-Path: <stable+bounces-175288-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-174160-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id AEC98B36786
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 16:07:55 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id D424EB361C7
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 15:12:27 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 6A070564748
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 13:59:38 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 0BC832A35D2
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 13:07:39 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C176C350D53;
-	Tue, 26 Aug 2025 13:57:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7A30F21B9DA;
+	Tue, 26 Aug 2025 13:07:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="x7WzoYR2"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Yo5/snpW"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7CAFF34A338;
-	Tue, 26 Aug 2025 13:57:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3375820F079;
+	Tue, 26 Aug 2025 13:07:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756216640; cv=none; b=exf7du/59LS5+m0Kv123Rty3P0n1sJTDmHGEJPA9oFmGhHv5Aj0ISqFyHa5TeugQVAQNdfXWEV7ymYBKIeu7t1V5eXVHLlz8jIcPxSymOUTthJJf3muFWyGyF+kWu55DqEsl6TIzYiWg6TDv2IKWzWj2IftVEAQ0rrrqcrG5AbY=
+	t=1756213652; cv=none; b=mbB2bvN33VSugyy4QKl4BkH5g/pqiOCQ76aWDe/DJ7j8yncglI12ICyUeP64Hf+vEpkESLy9rxLKeRLkVkPMtCgDICjgSMUesW4toyxo5GDteXaTpJ5EBkaFwEoYZboVwnEK2qrKfYDkX6UJS1gEhXRwdELkDZmByXfqHKkxWWE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756216640; c=relaxed/simple;
-	bh=NcqErEcuzN4l0Gv4IOENpPRR89qSStNZFXQ5yD9BZgY=;
+	s=arc-20240116; t=1756213652; c=relaxed/simple;
+	bh=p3VK4s1Andzji0srFuKqoKGkRdVFv0PaeNkEm/WaxiU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=L00PmHgF8m8v8ao8eT9OjdfqjsjXSnOxh0bUw2CB82gh+l1ZVg/ElD4/CguFv3IHpIQHn9ONt0YksqcESN6/XQe/bhwI5Cs1w8Gcg6N+OCqr6imt0RgwhB5yWTAee/jSH81sQ4sclcGphhMVN84O4WV8OyOKWgYO3KfFqqE4qRQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=x7WzoYR2; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0F9B8C4CEF1;
-	Tue, 26 Aug 2025 13:57:19 +0000 (UTC)
+	 MIME-Version; b=cyymC7KLWPwATY71+2amyxs6VRoZ51ScezppeM0iiRe5miP9TP5b8MRwkdrYs0y5w3/MbHz80eX2sRvUH6U/P/Gk2FlL71L6NX5XoRMBi30BmtLJSNs2i/l1jH8SZx4H9YMpvgNEK20UXWORzjwBQUGwdRebTbBZGBrLFyUjE1o=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Yo5/snpW; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 893ABC4CEF4;
+	Tue, 26 Aug 2025 13:07:31 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1756216640;
-	bh=NcqErEcuzN4l0Gv4IOENpPRR89qSStNZFXQ5yD9BZgY=;
+	s=korg; t=1756213652;
+	bh=p3VK4s1Andzji0srFuKqoKGkRdVFv0PaeNkEm/WaxiU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=x7WzoYR2mQ1nxCjtP/AKKlAIZ2flePwqsdNuHvr00chabwn4NiZ7icpBUVAbVqzVZ
-	 Nsy+n+WFXJ9edFvCgincaQge7QNtlqbGKz4Q5xOWDdz2FBeZulkODHgh6POfSLIDkc
-	 TM9/5eM6SL3iyRn5DBp3Wwhw9c1zcuzaDtnktNHg=
+	b=Yo5/snpWjnDV+yqn0aRQw0bbn9DkXMPo/m88mm0J75M9TQNhFPKqQPILVwGY2YaoB
+	 uCZtwQNGq7iNekcj4jFDqIWgPEl3/vMMT5R2mbpgocQumWsOsYs/au1EfKjbhrFEfk
+	 Go+Y1LnIpRCtFgI264euvPfjUJUNBnUW1ou2Slf4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Bingbu Cao <bingbu.cao@intel.com>,
-	Sakari Ailus <sakari.ailus@linux.intel.com>,
-	Hans Verkuil <hverkuil@xs4all.nl>
-Subject: [PATCH 5.15 487/644] media: hi556: correct the test pattern configuration
+	Lorenzo Stoakes <lstoakes@gmail.com>,
+	Jan Kara <jack@suse.cz>,
+	Alexander Viro <viro@zeniv.linux.org.uk>,
+	Andy Lutomirski <luto@kernel.org>,
+	Christian Brauner <brauner@kernel.org>,
+	Hugh Dickins <hughd@google.com>,
+	"Matthew Wilcox (Oracle)" <willy@infradead.org>,
+	Mike Kravetz <mike.kravetz@oracle.com>,
+	Muchun Song <muchun.song@linux.dev>,
+	Andrew Morton <akpm@linux-foundation.org>,
+	"Isaac J. Manjarres" <isaacmanjarres@google.com>
+Subject: [PATCH 6.6 429/587] mm: update memfd seal write check to include F_SEAL_WRITE
 Date: Tue, 26 Aug 2025 13:09:38 +0200
-Message-ID: <20250826110958.559644854@linuxfoundation.org>
+Message-ID: <20250826111003.856299371@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250826110946.507083938@linuxfoundation.org>
-References: <20250826110946.507083938@linuxfoundation.org>
+In-Reply-To: <20250826110952.942403671@linuxfoundation.org>
+References: <20250826110952.942403671@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,100 +70,108 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Bingbu Cao <bingbu.cao@intel.com>
+From: "Isaac J. Manjarres" <isaacmanjarres@google.com>
 
-commit 020f602b068c9ce18d5056d02c8302199377d98d upstream.
+From: Lorenzo Stoakes <lstoakes@gmail.com>
 
-Hynix hi556 support 8 test pattern modes:
-hi556_test_pattern_menu[] = {
-{
-	"Disabled",
-	"Solid Colour",
-	"100% Colour Bars",
-	"Fade To Grey Colour Bars",
-	"PN9",
-	"Gradient Horizontal",
-	"Gradient Vertical",
-	"Check Board",
-	"Slant Pattern",
-}
+[ Upstream commit 28464bbb2ddc199433383994bcb9600c8034afa1 ]
 
-The test pattern is set by a 8-bit register according to the
-specification.
-+--------+-------------------------------+
-| BIT[0] |  Solid color                  |
-+--------+-------------------------------+
-| BIT[1] |  Color bar                    |
-+--------+-------------------------------+
-| BIT[2] |  Fade to grey color bar       |
-+--------+-------------------------------+
-| BIT[3] |  PN9                          |
-+--------+-------------------------------+
-| BIT[4] |  Gradient horizontal          |
-+--------+-------------------------------+
-| BIT[5] |  Gradient vertical            |
-+--------+-------------------------------+
-| BIT[6] |  Check board                  |
-+--------+-------------------------------+
-| BIT[7] |  Slant pattern                |
-+--------+-------------------------------+
-Based on function above, current test pattern programming is wrong.
-This patch fixes it by 'BIT(pattern - 1)'. If pattern is 0, driver
-will disable the test pattern generation and set the pattern to 0.
+The seal_check_future_write() function is called by shmem_mmap() or
+hugetlbfs_file_mmap() to disallow any future writable mappings of an memfd
+sealed this way.
 
-Fixes: e62138403a84 ("media: hi556: Add support for Hi-556 sensor")
+The F_SEAL_WRITE flag is not checked here, as that is handled via the
+mapping->i_mmap_writable mechanism and so any attempt at a mapping would
+fail before this could be run.
+
+However we intend to change this, meaning this check can be performed for
+F_SEAL_WRITE mappings also.
+
+The logic here is equally applicable to both flags, so update this
+function to accommodate both and rename it accordingly.
+
+Link: https://lkml.kernel.org/r/913628168ce6cce77df7d13a63970bae06a526e0.1697116581.git.lstoakes@gmail.com
+Signed-off-by: Lorenzo Stoakes <lstoakes@gmail.com>
+Reviewed-by: Jan Kara <jack@suse.cz>
+Cc: Alexander Viro <viro@zeniv.linux.org.uk>
+Cc: Andy Lutomirski <luto@kernel.org>
+Cc: Christian Brauner <brauner@kernel.org>
+Cc: Hugh Dickins <hughd@google.com>
+Cc: Matthew Wilcox (Oracle) <willy@infradead.org>
+Cc: Mike Kravetz <mike.kravetz@oracle.com>
+Cc: Muchun Song <muchun.song@linux.dev>
+Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
 Cc: stable@vger.kernel.org
-Signed-off-by: Bingbu Cao <bingbu.cao@intel.com>
-Signed-off-by: Sakari Ailus <sakari.ailus@linux.intel.com>
-Signed-off-by: Hans Verkuil <hverkuil@xs4all.nl>
+Signed-off-by: Isaac J. Manjarres <isaacmanjarres@google.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/media/i2c/hi556.c |   28 +++++++++++++++-------------
- 1 file changed, 15 insertions(+), 13 deletions(-)
+ fs/hugetlbfs/inode.c |    2 +-
+ include/linux/mm.h   |   15 ++++++++-------
+ mm/shmem.c           |    2 +-
+ 3 files changed, 10 insertions(+), 9 deletions(-)
 
---- a/drivers/media/i2c/hi556.c
-+++ b/drivers/media/i2c/hi556.c
-@@ -602,21 +602,23 @@ static int hi556_test_pattern(struct hi5
+--- a/fs/hugetlbfs/inode.c
++++ b/fs/hugetlbfs/inode.c
+@@ -136,7 +136,7 @@ static int hugetlbfs_file_mmap(struct fi
+ 	vm_flags_set(vma, VM_HUGETLB | VM_DONTEXPAND);
+ 	vma->vm_ops = &hugetlb_vm_ops;
+ 
+-	ret = seal_check_future_write(info->seals, vma);
++	ret = seal_check_write(info->seals, vma);
+ 	if (ret)
+ 		return ret;
+ 
+--- a/include/linux/mm.h
++++ b/include/linux/mm.h
+@@ -4023,25 +4023,26 @@ static inline void mem_dump_obj(void *ob
+ #endif
+ 
+ /**
+- * seal_check_future_write - Check for F_SEAL_FUTURE_WRITE flag and handle it
++ * seal_check_write - Check for F_SEAL_WRITE or F_SEAL_FUTURE_WRITE flags and
++ *                    handle them.
+  * @seals: the seals to check
+  * @vma: the vma to operate on
+  *
+- * Check whether F_SEAL_FUTURE_WRITE is set; if so, do proper check/handling on
+- * the vma flags.  Return 0 if check pass, or <0 for errors.
++ * Check whether F_SEAL_WRITE or F_SEAL_FUTURE_WRITE are set; if so, do proper
++ * check/handling on the vma flags.  Return 0 if check pass, or <0 for errors.
+  */
+-static inline int seal_check_future_write(int seals, struct vm_area_struct *vma)
++static inline int seal_check_write(int seals, struct vm_area_struct *vma)
+ {
+-	if (seals & F_SEAL_FUTURE_WRITE) {
++	if (seals & (F_SEAL_WRITE | F_SEAL_FUTURE_WRITE)) {
+ 		/*
+ 		 * New PROT_WRITE and MAP_SHARED mmaps are not allowed when
+-		 * "future write" seal active.
++		 * write seals are active.
+ 		 */
+ 		if ((vma->vm_flags & VM_SHARED) && (vma->vm_flags & VM_WRITE))
+ 			return -EPERM;
+ 
+ 		/*
+-		 * Since an F_SEAL_FUTURE_WRITE sealed memfd can be mapped as
++		 * Since an F_SEAL_[FUTURE_]WRITE sealed memfd can be mapped as
+ 		 * MAP_SHARED and read-only, take care to not allow mprotect to
+ 		 * revert protections on such mappings. Do this only for shared
+ 		 * mappings. For private mappings, don't need to mask
+--- a/mm/shmem.c
++++ b/mm/shmem.c
+@@ -2396,7 +2396,7 @@ static int shmem_mmap(struct file *file,
+ 	struct shmem_inode_info *info = SHMEM_I(inode);
  	int ret;
- 	u32 val;
  
--	if (pattern) {
--		ret = hi556_read_reg(hi556, HI556_REG_ISP,
--				     HI556_REG_VALUE_08BIT, &val);
--		if (ret)
--			return ret;
--
--		ret = hi556_write_reg(hi556, HI556_REG_ISP,
--				      HI556_REG_VALUE_08BIT,
--				      val | HI556_REG_ISP_TPG_EN);
--		if (ret)
--			return ret;
--	}
-+	ret = hi556_read_reg(hi556, HI556_REG_ISP,
-+			     HI556_REG_VALUE_08BIT, &val);
-+	if (ret)
-+		return ret;
-+
-+	val = pattern ? (val | HI556_REG_ISP_TPG_EN) :
-+		(val & ~HI556_REG_ISP_TPG_EN);
-+
-+	ret = hi556_write_reg(hi556, HI556_REG_ISP,
-+			      HI556_REG_VALUE_08BIT, val);
-+	if (ret)
-+		return ret;
-+
-+	val = pattern ? BIT(pattern - 1) : 0;
+-	ret = seal_check_future_write(info->seals, vma);
++	ret = seal_check_write(info->seals, vma);
+ 	if (ret)
+ 		return ret;
  
- 	return hi556_write_reg(hi556, HI556_REG_TEST_PATTERN,
--			       HI556_REG_VALUE_08BIT, pattern);
-+			       HI556_REG_VALUE_08BIT, val);
- }
- 
- static int hi556_set_ctrl(struct v4l2_ctrl *ctrl)
 
 
 
