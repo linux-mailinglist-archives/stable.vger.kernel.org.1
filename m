@@ -1,55 +1,58 @@
-Return-Path: <stable+bounces-172985-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-173881-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3B5DAB35B2D
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 13:20:32 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id F3B1AB36048
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 14:59:04 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 0A8AA1B60068
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 11:19:39 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 453E23BE7C1
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 12:56:07 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id ACAB3341642;
-	Tue, 26 Aug 2025 11:17:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B22911FF1C4;
+	Tue, 26 Aug 2025 12:55:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="VwOQ+oNT"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="LOGOUd77"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 69466340DA7;
-	Tue, 26 Aug 2025 11:17:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6E6E41A0BFD;
+	Tue, 26 Aug 2025 12:55:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756207075; cv=none; b=jgp4KTO2wCDzueHtEskIWFDvT/VonDHsl0NEGfGKyBoOUVsQhobYaC8ViDJIALanqPVUbhIfc+RI4ho1WJn8mKHM95Fz0KJV5gTtpRe3fO6hgk4YaZ6ES/BUj9gUXJkGGTol2nUNbZ3B9/LuNp9RsbfOwQJS2bh6GcMFNAyKkhE=
+	t=1756212912; cv=none; b=qtF9aidHkO6+RSE1VwUpEzv97KfrM1hznKr6zYeAZM3tRROlnoAGb2ImM7zTMC6VGo7IXMsaOaWEj5thArnHtYzkH4xVf5q9kIDtGwI6bSjWsTC7ar1i444VXMSDnYYavBZ/8PxqaBPVWUmLWJCoXefVQSGAJWmrtchykZ8AHVo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756207075; c=relaxed/simple;
-	bh=afrC9Wuga2JXZSBU1X3hvj5L5lZzXzRLuFxCPImkx+k=;
+	s=arc-20240116; t=1756212912; c=relaxed/simple;
+	bh=3fQnI8flut0aF+Zy1J8vEdgZTkgEh+RXy6DkkowOrkQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=eg+C+pQoIMxsPE9cXCWlHy1VOSI6MgN0G5Wmkp0iXQjv0ZNGGMURq9TXWcMh44FQy+d2YTJz68Ugh1CuqW5rASw3k5z9V89Y6HVGSu9zPieR1PAe46vZfZPfJetv88Z1prh0RFKPd0j/+zyZOnEJsTQK6Zuchl/6ABziWzWtHMM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=VwOQ+oNT; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id EE1DCC116B1;
-	Tue, 26 Aug 2025 11:17:54 +0000 (UTC)
+	 MIME-Version; b=tRB9K7SQ9Q0UZamJRcgIQGoXlan0EJIWcC8W6mDJFyX1SDM1y9xxZaCYf/1TGbnLfHCh+x0Vjoy8iq4cjbcJ4k9US6iOAjmXJuqKIll4GYc7HwExIwMU9lNJsf9XmydFkQhTf63zPjzR+S94/Oq6up631m9MQzEtHItzN3hkKGc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=LOGOUd77; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E4CC5C4CEF1;
+	Tue, 26 Aug 2025 12:55:11 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1756207075;
-	bh=afrC9Wuga2JXZSBU1X3hvj5L5lZzXzRLuFxCPImkx+k=;
+	s=korg; t=1756212912;
+	bh=3fQnI8flut0aF+Zy1J8vEdgZTkgEh+RXy6DkkowOrkQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=VwOQ+oNTxgWqi9dh+2vqb1pvi8yqy8eBcwROdPaM8vWH7ZpPvis6Ne1B9VTppGVn+
-	 KCY5fOGFVbKwaAiHz6ZqMuzjE/7fkfU/aHZkGIKw1n8M2PmN6/xYftl8AftWK32qJl
-	 xVzDj9u479hRagF59DwqqrunO5SLgnV3nkygTDTc=
+	b=LOGOUd77LdSD58nPaz3xARuZfW0oQGPqmY5VwQ4wEFALKXA4u+EsMI7BEmI3XNuXL
+	 RVt4oWRPylh6Yq/pCu32i7Du2eJLl7EcRo/pVWsJC5yvGA39GQF+otFdgNeF8MOnXc
+	 U0GgYWELNqmGUqtktZfVIio7enh/FZSvAskQ1+uc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Li Jun <jun.li@nxp.com>,
-	Johan Hovold <johan@kernel.org>
-Subject: [PATCH 6.16 014/457] usb: dwc3: imx8mp: fix device leak at unbind
+	Thomas Fourier <fourier.thomas@gmail.com>,
+	Mark Einon <mark.einon@gmail.com>,
+	Simon Horman <horms@kernel.org>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.6 149/587] et131x: Add missing check after DMA map
 Date: Tue, 26 Aug 2025 13:04:58 +0200
-Message-ID: <20250826110937.674887010@linuxfoundation.org>
+Message-ID: <20250826110956.740809172@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250826110937.289866482@linuxfoundation.org>
-References: <20250826110937.289866482@linuxfoundation.org>
+In-Reply-To: <20250826110952.942403671@linuxfoundation.org>
+References: <20250826110952.942403671@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,59 +64,105 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.16-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Johan Hovold <johan@kernel.org>
+From: Thomas Fourier <fourier.thomas@gmail.com>
 
-commit 086a0e516f7b3844e6328a5c69e2708b66b0ce18 upstream.
+[ Upstream commit d61f6cb6f6ef3c70d2ccc0d9c85c508cb8017da9 ]
 
-Make sure to drop the reference to the dwc3 device taken by
-of_find_device_by_node() on probe errors and on driver unbind.
+The DMA map functions can fail and should be tested for errors.
+If the mapping fails, unmap and return an error.
 
-Fixes: 6dd2565989b4 ("usb: dwc3: add imx8mp dwc3 glue layer driver")
-Cc: stable@vger.kernel.org	# 5.12
-Cc: Li Jun <jun.li@nxp.com>
-Signed-off-by: Johan Hovold <johan@kernel.org>
-Link: https://lore.kernel.org/r/20250724091910.21092-2-johan@kernel.org
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Signed-off-by: Thomas Fourier <fourier.thomas@gmail.com>
+Acked-by: Mark Einon <mark.einon@gmail.com>
+Reviewed-by: Simon Horman <horms@kernel.org>
+Link: https://patch.msgid.link/20250716094733.28734-2-fourier.thomas@gmail.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/usb/dwc3/dwc3-imx8mp.c |    7 ++++++-
- 1 file changed, 6 insertions(+), 1 deletion(-)
+ drivers/net/ethernet/agere/et131x.c | 36 +++++++++++++++++++++++++++++
+ 1 file changed, 36 insertions(+)
 
---- a/drivers/usb/dwc3/dwc3-imx8mp.c
-+++ b/drivers/usb/dwc3/dwc3-imx8mp.c
-@@ -244,7 +244,7 @@ static int dwc3_imx8mp_probe(struct plat
- 					IRQF_ONESHOT, dev_name(dev), dwc3_imx);
- 	if (err) {
- 		dev_err(dev, "failed to request IRQ #%d --> %d\n", irq, err);
--		goto depopulate;
-+		goto put_dwc3;
- 	}
- 
- 	device_set_wakeup_capable(dev, true);
-@@ -252,6 +252,8 @@ static int dwc3_imx8mp_probe(struct plat
- 
- 	return 0;
- 
-+put_dwc3:
-+	put_device(&dwc3_imx->dwc3->dev);
- depopulate:
- 	of_platform_depopulate(dev);
- remove_swnode:
-@@ -265,8 +267,11 @@ disable_rpm:
- 
- static void dwc3_imx8mp_remove(struct platform_device *pdev)
- {
-+	struct dwc3_imx8mp *dwc3_imx = platform_get_drvdata(pdev);
- 	struct device *dev = &pdev->dev;
- 
-+	put_device(&dwc3_imx->dwc3->dev);
+diff --git a/drivers/net/ethernet/agere/et131x.c b/drivers/net/ethernet/agere/et131x.c
+index 3d9220f9c9fe..294dbe2c3797 100644
+--- a/drivers/net/ethernet/agere/et131x.c
++++ b/drivers/net/ethernet/agere/et131x.c
+@@ -2459,6 +2459,10 @@ static int nic_send_packet(struct et131x_adapter *adapter, struct tcb *tcb)
+ 							  skb->data,
+ 							  skb_headlen(skb),
+ 							  DMA_TO_DEVICE);
++				if (dma_mapping_error(&adapter->pdev->dev,
++						      dma_addr))
++					return -ENOMEM;
 +
- 	pm_runtime_get_sync(dev);
- 	of_platform_depopulate(dev);
- 	device_remove_software_node(dev);
+ 				desc[frag].addr_lo = lower_32_bits(dma_addr);
+ 				desc[frag].addr_hi = upper_32_bits(dma_addr);
+ 				frag++;
+@@ -2468,6 +2472,10 @@ static int nic_send_packet(struct et131x_adapter *adapter, struct tcb *tcb)
+ 							  skb->data,
+ 							  skb_headlen(skb) / 2,
+ 							  DMA_TO_DEVICE);
++				if (dma_mapping_error(&adapter->pdev->dev,
++						      dma_addr))
++					return -ENOMEM;
++
+ 				desc[frag].addr_lo = lower_32_bits(dma_addr);
+ 				desc[frag].addr_hi = upper_32_bits(dma_addr);
+ 				frag++;
+@@ -2478,6 +2486,10 @@ static int nic_send_packet(struct et131x_adapter *adapter, struct tcb *tcb)
+ 							  skb_headlen(skb) / 2,
+ 							  skb_headlen(skb) / 2,
+ 							  DMA_TO_DEVICE);
++				if (dma_mapping_error(&adapter->pdev->dev,
++						      dma_addr))
++					goto unmap_first_out;
++
+ 				desc[frag].addr_lo = lower_32_bits(dma_addr);
+ 				desc[frag].addr_hi = upper_32_bits(dma_addr);
+ 				frag++;
+@@ -2489,6 +2501,9 @@ static int nic_send_packet(struct et131x_adapter *adapter, struct tcb *tcb)
+ 						    0,
+ 						    desc[frag].len_vlan,
+ 						    DMA_TO_DEVICE);
++			if (dma_mapping_error(&adapter->pdev->dev, dma_addr))
++				goto unmap_out;
++
+ 			desc[frag].addr_lo = lower_32_bits(dma_addr);
+ 			desc[frag].addr_hi = upper_32_bits(dma_addr);
+ 			frag++;
+@@ -2578,6 +2593,27 @@ static int nic_send_packet(struct et131x_adapter *adapter, struct tcb *tcb)
+ 		       &adapter->regs->global.watchdog_timer);
+ 	}
+ 	return 0;
++
++unmap_out:
++	// Unmap the body of the packet with map_page
++	while (--i) {
++		frag--;
++		dma_addr = desc[frag].addr_lo;
++		dma_addr |= (u64)desc[frag].addr_hi << 32;
++		dma_unmap_page(&adapter->pdev->dev, dma_addr,
++			       desc[frag].len_vlan, DMA_TO_DEVICE);
++	}
++
++unmap_first_out:
++	// Unmap the header with map_single
++	while (frag--) {
++		dma_addr = desc[frag].addr_lo;
++		dma_addr |= (u64)desc[frag].addr_hi << 32;
++		dma_unmap_single(&adapter->pdev->dev, dma_addr,
++				 desc[frag].len_vlan, DMA_TO_DEVICE);
++	}
++
++	return -ENOMEM;
+ }
+ 
+ static int send_packet(struct sk_buff *skb, struct et131x_adapter *adapter)
+-- 
+2.39.5
+
 
 
 
