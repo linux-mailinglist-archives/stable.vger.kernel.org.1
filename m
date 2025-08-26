@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-174634-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-175276-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 204CDB36367
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 15:29:28 +0200 (CEST)
+Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [142.0.200.124])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2E80AB3669E
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 15:58:51 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id E41317BD4B7
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 13:27:51 +0000 (UTC)
+	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 099BF4E45CE
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 13:58:50 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6745D265CCD;
-	Tue, 26 Aug 2025 13:28:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 478F6352FD4;
+	Tue, 26 Aug 2025 13:56:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="YDt9k/ld"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="OXlN/fX8"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 22045196C7C;
-	Tue, 26 Aug 2025 13:28:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F4203352FFE;
+	Tue, 26 Aug 2025 13:56:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756214909; cv=none; b=n5wgfF6J4cujDWt8HXZGvewuueCR7q7ZLv+ZWtFVsCUNyHVSqlFh4bkMJ2+kytkU4TwLJ8ii7Xpw7Ag9y4wBOxJzK0PTHRogAMTy2kBuiG+4hZgJc97Y3Nm3NWbyuRlZpdzuS05L4hvqcPWClXKb/QyDgMuU8oVPyelk3S+olCA=
+	t=1756216609; cv=none; b=VkIlkjh1lj9RFIazl+QW9V36vzdxyzl78OpB7HyIiiGhRRBtATkrH5tEH9YWyZipH+qRICp7UTaGEZqu+yYe5G77KS8HqnajMcOPxKEWXmUlB3uubOQeZ9nkJIDyIv5HkWEjAo3EL6/GiuC/CZNvOtkTqc5/8+vAhOnSitFluzQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756214909; c=relaxed/simple;
-	bh=NJcANyMcr7nj4qtqahjWMFURurftgHdlcxPZSeOIKPA=;
+	s=arc-20240116; t=1756216609; c=relaxed/simple;
+	bh=Pwn7QalGwXgy82kICuMdI353EzukxSlrQOwIt71su2U=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=LW+PR9i6YueqOW8uymEDvkJSBnZik1yeH7ScKi8CKLU9xU4p86/1BYP87G5sD1upw7nzQE0OICwjdkwrt/f1ig2hz9/rAZCT6ihc9HlMTYM54o+kI2FXCvuPM7yT57E8cmlPFQFBuYVY6rsdNh7wtonSIaDf523qgZ9KncNVvnY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=YDt9k/ld; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5E4A8C4CEF1;
-	Tue, 26 Aug 2025 13:28:28 +0000 (UTC)
+	 MIME-Version; b=cgA0shvZKwJXu0hrP8HfFx7ttg4cRBiiFTtXOq69sDxUnHEsoD742exPIUaioMr27KSN8tDjt4fE9gUPFJQR/ghLg3q8gHEPNnH2543CuM1JaLZ8pKmgdlxW2MwgdP/YnpPZ+JdWEOeraNN9rZh4Xa2EiDN9X0ITGAMvEzaq+MM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=OXlN/fX8; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7B7CBC113CF;
+	Tue, 26 Aug 2025 13:56:48 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1756214908;
-	bh=NJcANyMcr7nj4qtqahjWMFURurftgHdlcxPZSeOIKPA=;
+	s=korg; t=1756216608;
+	bh=Pwn7QalGwXgy82kICuMdI353EzukxSlrQOwIt71su2U=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=YDt9k/ldfhOzCX1XZhM8KMMc8s7NJlOQfWG3A+6Kao6BNtV+mu8aqCflbzx6nzACd
-	 FTHphXSecUycTvd61ao74PA8Llq+m8lBCRJucf2HVapRtoJxPrF42n2vmj5Gvq5epz
-	 ZgKBwufOkD6o5Dkmq5rBhSl+bJb7GJq0SqO4HsYw=
+	b=OXlN/fX8ZEzgHS83tkdGUGq6JA5Ekh/idkJJLJVnyxEtJlM5o9rSlR9i0j3ZLNW9O
+	 pnnEQn+9nYBsB60wK+hceF2vkrdQetwZUrVWT6gxSjaGj0BSXnPRxwWCL4/evsTnlD
+	 VCOO2qZ7eJYP/rTy/drkoYEOKuXwbhLpJSf13MRw=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Randy Dunlap <rdunlap@infradead.org>,
-	"James E.J. Bottomley" <James.Bottomley@HansenPartnership.com>,
-	Helge Deller <deller@gmx.de>,
-	linux-parisc@vger.kernel.org
-Subject: [PATCH 6.1 314/482] parisc: Makefile: explain that 64BIT requires both 32-bit and 64-bit compilers
+	Nathan Chancellor <nathan@kernel.org>,
+	Johannes Berg <johannes.berg@intel.com>,
+	Arend van Spriel <arend.vanspriel@broadcom.com>
+Subject: [PATCH 5.15 476/644] wifi: brcmsmac: Remove const from tbl_ptr parameter in wlc_lcnphy_common_read_table()
 Date: Tue, 26 Aug 2025 13:09:27 +0200
-Message-ID: <20250826110938.561541011@linuxfoundation.org>
+Message-ID: <20250826110958.279014905@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250826110930.769259449@linuxfoundation.org>
-References: <20250826110930.769259449@linuxfoundation.org>
+In-Reply-To: <20250826110946.507083938@linuxfoundation.org>
+References: <20250826110946.507083938@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,42 +62,51 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Randy Dunlap <rdunlap@infradead.org>
+From: Nathan Chancellor <nathan@kernel.org>
 
-commit 305ab0a748c52eeaeb01d8cff6408842d19e5cb5 upstream.
+commit 81284e86bf8849f8e98e8ead3ff5811926b2107f upstream.
 
-For building a 64-bit kernel, both 32-bit and 64-bit VDSO binaries
-are built, so both 32-bit and 64-bit compilers (and tools) should be
-in the PATH environment variable.
+A new warning in clang [1] complains that diq_start in
+wlc_lcnphy_tx_iqlo_cal() is passed uninitialized as a const pointer to
+wlc_lcnphy_common_read_table():
 
-Signed-off-by: Randy Dunlap <rdunlap@infradead.org>
-Cc: "James E.J. Bottomley" <James.Bottomley@HansenPartnership.com>
-Cc: Helge Deller <deller@gmx.de>
-Cc: linux-parisc@vger.kernel.org
-Signed-off-by: Helge Deller <deller@gmx.de>
-Cc: stable@vger.kernel.org # v5.3+
+  drivers/net/wireless/broadcom/brcm80211/brcmsmac/phy/phy_lcn.c:2728:13: error: variable 'diq_start' is uninitialized when passed as a const pointer argument here [-Werror,-Wuninitialized-const-pointer]
+   2728 |                                                      &diq_start, 1, 16, 69);
+        |                                                       ^~~~~~~~~
+
+The table pointer passed to wlc_lcnphy_common_read_table() should not be
+considered constant, as wlc_phy_read_table() is ultimately going to
+update it. Remove the const qualifier from the tbl_ptr to clear up the
+warning.
+
+Cc: stable@vger.kernel.org
+Closes: https://github.com/ClangBuiltLinux/linux/issues/2108
+Fixes: 5b435de0d786 ("net: wireless: add brcm80211 drivers")
+Link: https://github.com/llvm/llvm-project/commit/00dacf8c22f065cb52efb14cd091d441f19b319e [1]
+Signed-off-by: Nathan Chancellor <nathan@kernel.org>
+Acked-by: Arend van Spriel <arend.vanspriel@broadcom.com>>
+Link: https://patch.msgid.link/20250715-brcmsmac-fix-uninit-const-pointer-v1-1-16e6a51a8ef4@kernel.org
+Signed-off-by: Johannes Berg <johannes.berg@intel.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- arch/parisc/Makefile |    4 +++-
- 1 file changed, 3 insertions(+), 1 deletion(-)
+ drivers/net/wireless/broadcom/brcm80211/brcmsmac/phy/phy_lcn.c |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/arch/parisc/Makefile
-+++ b/arch/parisc/Makefile
-@@ -39,7 +39,9 @@ endif
+--- a/drivers/net/wireless/broadcom/brcm80211/brcmsmac/phy/phy_lcn.c
++++ b/drivers/net/wireless/broadcom/brcm80211/brcmsmac/phy/phy_lcn.c
+@@ -919,7 +919,7 @@ void wlc_lcnphy_read_table(struct brcms_
  
- export LD_BFD
- 
--# Set default 32 bits cross compilers for vdso
-+# Set default 32 bits cross compilers for vdso.
-+# This means that for 64BIT, both the 64-bit tools and the 32-bit tools
-+# need to be in the path.
- CC_ARCHES_32 = hppa hppa2.0 hppa1.1
- CC_SUFFIXES  = linux linux-gnu unknown-linux-gnu suse-linux
- CROSS32_COMPILE := $(call cc-cross-prefix, \
+ static void
+ wlc_lcnphy_common_read_table(struct brcms_phy *pi, u32 tbl_id,
+-			     const u16 *tbl_ptr, u32 tbl_len,
++			     u16 *tbl_ptr, u32 tbl_len,
+ 			     u32 tbl_width, u32 tbl_offset)
+ {
+ 	struct phytbl_info tab;
 
 
 
