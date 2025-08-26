@@ -1,57 +1,52 @@
-Return-Path: <stable+bounces-174228-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-174239-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3B564B361EF
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 15:14:14 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id CBB56B3623C
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 15:17:05 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 05403188B3F0
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 13:11:30 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 7BB1E17A066
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 13:11:24 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7E220196C7C;
-	Tue, 26 Aug 2025 13:10:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5F69F252900;
+	Tue, 26 Aug 2025 13:11:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="FwVUHlqX"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="vLtk1tbC"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3978418F2FC;
-	Tue, 26 Aug 2025 13:10:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 190901AB52D;
+	Tue, 26 Aug 2025 13:11:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756213833; cv=none; b=B325THYWLl1wKAcBRbo6gfrWBD52HUcCnFRmfSzm1NQQj3CXsBQANrPB+PNqyEpuIBSeBNsmyAKE8Wz/gHN35GAnHKQGKupS1xCabmIIIr8EVsO1NaG1JqoMHWp+7tQ5PY92uy1D7/9GtCiW1PMmiHRV0OZ2jzey3TYaXtkjiSg=
+	t=1756213862; cv=none; b=V+WubK9ryoG+AskMx1N8SHdqY0bt+kddGxw8+13brevjwzyPaBTPw8r7J+CVD5DF4I77L20QLaYU1eGtikb+Ro97u7CqUXR5PiC+Bki2W2WhqrJqQA4V6sNG/YYpbgdENInqVEl4cAk0qodSU+E6QEKiwGYxiPX88+IjEJFDnkA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756213833; c=relaxed/simple;
-	bh=5lbFkjFY22Oga5Dn3hCbU9l/8kxntvvEU1nSNliJj6I=;
+	s=arc-20240116; t=1756213862; c=relaxed/simple;
+	bh=oUE6b4SuRP2WmIUSpyJ3ojy1mPa8ayyoLz1vMXm0+Q8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=QAkTZXAXjqDUrkEcRu/AjfdFBPMCE2iTkTfEhdH+y+cjaqtFp+ql1CpEUHoE595NnjOB7YpnompyJ73GT21GH2TnEhl0EgY29treM2LEjyJK8qoa612wSNavlot/n3Z1BkocSk72apW2jytvePFlfwdFa7JHOiAgSS7/0KFSLcs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=FwVUHlqX; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id BC951C4CEF1;
-	Tue, 26 Aug 2025 13:10:32 +0000 (UTC)
+	 MIME-Version; b=pM6OKrH2ke+17Avf2THNfPOdiIkyF0EvVyKEZr5pn6K/KV4iXk2EJJRaInhdNt/QXtld4FrenKh++CFiQ3tu0jUf9B4rIQEMHu/Ld2RvYi/Z07oJzAJ27XsZbgFReKfAIRWngIVjm15zZEv13oMNw6fHinyNsemGIEQrbkF3fV0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=vLtk1tbC; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9E108C4CEF1;
+	Tue, 26 Aug 2025 13:11:01 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1756213833;
-	bh=5lbFkjFY22Oga5Dn3hCbU9l/8kxntvvEU1nSNliJj6I=;
+	s=korg; t=1756213862;
+	bh=oUE6b4SuRP2WmIUSpyJ3ojy1mPa8ayyoLz1vMXm0+Q8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=FwVUHlqXgCYW3lsKamXi+5Bl2htTaCz/HrBeE72hSuUey24ABnaFjAbcuJeiZmW6T
-	 7cK+bRm5jkqkUeeeeEqxXRoNeK8AVrYVB8weQ+MVCaZ7cgNv+jNmyaSaUyojs8fDBQ
-	 0GIjxh2mVjF/UrwJk75UHHEQohO0s30Rif1lSdeg=
+	b=vLtk1tbCPLwi11PgJ5QW0DKe4l1wAE+4PVxYwBjunYt7PngjpQF9kDhb4SOpY5JI0
+	 U+9UI9rGu+qng9/Pn17bKUKajQ/kWCMpHRvWIxfCnUTo5v3nUEeaKcafvHCF0CP0Mj
+	 iQcHN4n65nQo+ZsVdw5Qx24kQf+PRhZ3UO4skEE4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Ard Biesheuvel <ardb@kernel.org>,
-	Lee Jones <lee@kernel.org>,
-	Sasha Levin <sashal@kernel.org>,
-	Mark Rutland <mark.rutland@arm.com>,
-	Fuad Tabba <tabba@google.com>,
-	Marc Zyngier <maz@kernel.org>,
-	Will Deacon <will@kernel.org>
-Subject: [PATCH 6.6 479/587] KVM: arm64: Fix kernel BUG() due to bad backport of FPSIMD/SVE/SME fix
-Date: Tue, 26 Aug 2025 13:10:28 +0200
-Message-ID: <20250826111005.155383016@linuxfoundation.org>
+	Jiayi Li <lijiayi@kylinos.cn>,
+	Ulf Hansson <ulf.hansson@linaro.org>
+Subject: [PATCH 6.6 480/587] memstick: Fix deadlock by moving removing flag earlier
+Date: Tue, 26 Aug 2025 13:10:29 +0200
+Message-ID: <20250826111005.183090433@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
 In-Reply-To: <20250826110952.942403671@linuxfoundation.org>
 References: <20250826110952.942403671@linuxfoundation.org>
@@ -70,84 +65,81 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Will Deacon <will@kernel.org>
+From: Jiayi Li <lijiayi@kylinos.cn>
 
-Upstream commit fbc7e61195e2 ("KVM: arm64: Unconditionally save+flush
-host FPSIMD/SVE/SME state") relies on interrupts being disabled during
-fpsimd_save_and_flush_cpu_state() so that a softirq cannot be taken
-while the host floating point context is being saved and potentially try
-to use kernel-mode NEON.
+commit 99d7ab8db9d8230b243f5ed20ba0229e54cc0dfa upstream.
 
-Unfortunately, stable kernels without 9b19700e623f ("arm64: fpsimd: Drop
-unneeded 'busy' flag") leave interrupts enabled in
-fpsimd_save_and_flush_cpu_state() and so the BUG_ON(!may_use_simd()) in
-kernel_neon_begin() has been observed to trigger in real-world usage:
+The existing memstick core patch: commit 62c59a8786e6 ("memstick: Skip
+allocating card when removing host") sets host->removing in
+memstick_remove_host(),but still exists a critical time window where
+memstick_check can run after host->eject is set but before removing is set.
 
- |  kernel BUG at arch/arm64/kernel/fpsimd.c:1904!
- |  Internal error: Oops - BUG: 00000000f2000800 [#1] PREEMPT SMP
- |
- |  Call trace:
- |   kernel_neon_begin+0xdc/0x12c
- |   ...
- |   crypto_aead_decrypt+0x5c/0x6c
- |   seqiv_aead_decrypt+0x88/0x9c
- |   crypto_aead_decrypt+0x5c/0x6c
- |   esp_input+0x280/0x364
- |   xfrm_input+0x6ac/0x16f8
- |   ...
- |   net_rx_action+0x13c/0x31c
- |   handle_softirqs+0x124/0x3d0
- |   __do_softirq+0x14/0x20
- |   ____do_softirq+0x10/0x20
- |   call_on_irq_stack+0x3c/0x74
- |   do_softirq_own_stack+0x1c/0x2c
- |   __irq_exit_rcu+0x54/0xb4
- |   irq_exit_rcu+0x10/0x1c
- |   el1_interrupt+0x38/0x58
- |   el1h_64_irq_handler+0x18/0x24
- |   el1h_64_irq+0x68/0x6c
- |   fpsimd_save+0xe4/0x130
- |   kvm_arch_vcpu_load_fp+0x2c/0x58
- |   kvm_arch_vcpu_load+0x88/0x26c
- |   kvm_sched_in+0x2c/0x3c
+In the rtsx_usb_ms driver, the problematic sequence is:
 
-Given that 9b19700e623f ("arm64: fpsimd: Drop unneeded 'busy' flag") is
-not a fix in its own right, has non-trivial dependencies and is a
-reasonably invasive change to the in-kernel use of fpsimd, opt instead
-for a simple fix to use the softirq-safe {get,put}_cpu_fpsimd_context()
-helpers in fpsimd_save_and_flush_cpu_state().
+rtsx_usb_ms_drv_remove:          memstick_check:
+  host->eject = true
+  cancel_work_sync(handle_req)     if(!host->removing)
+  ...                              memstick_alloc_card()
+                                     memstick_set_rw_addr()
+                                       memstick_new_req()
+                                         rtsx_usb_ms_request()
+                                           if(!host->eject)
+                                           skip schedule_work
+                                       wait_for_completion()
+  memstick_remove_host:                [blocks indefinitely]
+    host->removing = true
+    flush_workqueue()
+    [block]
 
-Cc: Ard Biesheuvel <ardb@kernel.org>
-Cc: Lee Jones <lee@kernel.org>
-Cc: Sasha Levin <sashal@kernel.org>
-Cc: Mark Rutland <mark.rutland@arm.com>
-Cc: Fuad Tabba <tabba@google.com>
-Cc: Marc Zyngier <maz@kernel.org>
-Cc: <stable@vger.kernel.org> # 5.15.y, 6.1.y and 6.6.y
-Fixes: 806d5c1e1d2e ("KVM: arm64: Unconditionally save+flush host FPSIMD/SVE/SME state") # 6.6.y
-Fixes: 04c50cc23a49 ("KVM: arm64: Unconditionally save+flush host FPSIMD/SVE/SME state") # 6.1.y
-Fixes: 5289ac43b69c ("KVM: arm64: Unconditionally save+flush host FPSIMD/SVE/SME state") # 5.15.y
-Signed-off-by: Will Deacon <will@kernel.org>
+1. rtsx_usb_ms_drv_remove sets host->eject = true
+2. cancel_work_sync(&host->handle_req) runs
+3. memstick_check work may be executed here <-- danger window
+4. memstick_remove_host sets removing = 1
+
+During this window (step 3), memstick_check calls memstick_alloc_card,
+which may indefinitely waiting for mrq_complete completion that will
+never occur because rtsx_usb_ms_request sees eject=true and skips
+scheduling work, memstick_set_rw_addr waits forever for completion.
+
+This causes a deadlock when memstick_remove_host tries to flush_workqueue,
+waiting for memstick_check to complete, while memstick_check is blocked
+waiting for mrq_complete completion.
+
+Fix this by setting removing=true at the start of rtsx_usb_ms_drv_remove,
+before any work cancellation. This ensures memstick_check will see the
+removing flag immediately and exit early, avoiding the deadlock.
+
+Fixes: 62c59a8786e6 ("memstick: Skip allocating card when removing host")
+Signed-off-by: Jiayi Li <lijiayi@kylinos.cn>
+Cc: stable@vger.kernel.org
+Link: https://lore.kernel.org/r/20250804013604.1311218-1-lijiayi@kylinos.cn
+Signed-off-by: Ulf Hansson <ulf.hansson@linaro.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- arch/arm64/kernel/fpsimd.c |    4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ drivers/memstick/core/memstick.c    |    1 -
+ drivers/memstick/host/rtsx_usb_ms.c |    1 +
+ 2 files changed, 1 insertion(+), 1 deletion(-)
 
---- a/arch/arm64/kernel/fpsimd.c
-+++ b/arch/arm64/kernel/fpsimd.c
-@@ -1876,10 +1876,10 @@ void fpsimd_save_and_flush_cpu_state(voi
- 	if (!system_supports_fpsimd())
- 		return;
- 	WARN_ON(preemptible());
--	__get_cpu_fpsimd_context();
-+	get_cpu_fpsimd_context();
- 	fpsimd_save();
- 	fpsimd_flush_cpu_state();
--	__put_cpu_fpsimd_context();
-+	put_cpu_fpsimd_context();
- }
+--- a/drivers/memstick/core/memstick.c
++++ b/drivers/memstick/core/memstick.c
+@@ -548,7 +548,6 @@ EXPORT_SYMBOL(memstick_add_host);
+  */
+ void memstick_remove_host(struct memstick_host *host)
+ {
+-	host->removing = 1;
+ 	flush_workqueue(workqueue);
+ 	mutex_lock(&host->lock);
+ 	if (host->card)
+--- a/drivers/memstick/host/rtsx_usb_ms.c
++++ b/drivers/memstick/host/rtsx_usb_ms.c
+@@ -812,6 +812,7 @@ static int rtsx_usb_ms_drv_remove(struct
+ 	int err;
  
- #ifdef CONFIG_KERNEL_MODE_NEON
+ 	host->eject = true;
++	msh->removing = true;
+ 	cancel_work_sync(&host->handle_req);
+ 	cancel_delayed_work_sync(&host->poll_card);
+ 
 
 
 
