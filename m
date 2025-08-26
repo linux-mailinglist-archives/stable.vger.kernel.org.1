@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-175948-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-176359-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 95EF3B36A68
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 16:37:14 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 04A7DB36CD9
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 17:02:11 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 476D91BC5A09
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 14:29:21 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id B65F41C80F4E
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 14:47:50 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 112673568E8;
-	Tue, 26 Aug 2025 14:26:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C0C6934AAF8;
+	Tue, 26 Aug 2025 14:44:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="agLFE0hX"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="g7lCfC+M"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C351135335B;
-	Tue, 26 Aug 2025 14:26:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7DF6A1E500C;
+	Tue, 26 Aug 2025 14:44:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756218389; cv=none; b=eCz0ovcHm5WGwI5Ofe9kQ451OZSDdoESPH+YeeUZSpfg35dCTxb9t3yBQrJ2+N20Uhjn/D5sVx1IcX7GWib28x8MPPt5QmIkKDHa6YycLSNXeofoORQ26Ks2zOy1o+cCYwWCwqhh4vZx7h36XW1KAUYv2rSbkIHRCahGimFW0HQ=
+	t=1756219453; cv=none; b=N/5rkjuGGntc0xxh68G8exR0Qy6y4OWo3LSv2EMtiq3mkLtx9MwvzGZrOtDoinNyDhz28Ew43CQy4TwnUpwKfNNA3LS/KC+d8+gRJqwo7bAFpo0lsVMcnriVGqBhmj7KPFNbheFCsVZsj5SIfjXzqiIhnqrkkAv0/ubs0ZQE3v0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756218389; c=relaxed/simple;
-	bh=pspQxnExUxQZQZtbc/TES+KjP3PBDStU5SOAosNI1yw=;
+	s=arc-20240116; t=1756219453; c=relaxed/simple;
+	bh=FNIqsqg+eUE2m4z9MxHW4GkZdrNOAv87nriPdPr4P2s=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=gPhhAYLo0R3ZuQnr3mfNbNdPEUTMGi8q2neQprk9+02peNhNeTTsuM0pjCT73xBOlSS9tyXLk3LTT/Cka87V0gYG1kreOkchzrZaXAEFhAOqH+YK/n+Ggxa6tOuWKd2iiosXZUKK049CfJv3XpKJKi1IBV9XaNf82756B1bw5QI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=agLFE0hX; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 55D4FC4CEF1;
-	Tue, 26 Aug 2025 14:26:29 +0000 (UTC)
+	 MIME-Version; b=Wn3aFWpaeZ0bXmQdmllQsrKivMwIsYO4MMorIfKU7YZTYhHsQBNGUZDSBm3L4ovsegN0dNqSbkAntscTk33D6bZ9BG7M21Yjg1sa6F+uJLhy9D4aOXb2lfoqRwpq/hQj+ssPQGQKRyqua6RBo984WNoB/+YLD1BvhFiR9Vcv+/k=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=g7lCfC+M; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1202DC4CEF1;
+	Tue, 26 Aug 2025 14:44:12 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1756218389;
-	bh=pspQxnExUxQZQZtbc/TES+KjP3PBDStU5SOAosNI1yw=;
+	s=korg; t=1756219453;
+	bh=FNIqsqg+eUE2m4z9MxHW4GkZdrNOAv87nriPdPr4P2s=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=agLFE0hXkhKE7beNkGzHvg4Iyj/9GskTQh45eojhQJlKWlJqUvl/h5oOCTEMVAIBk
-	 UzAlkGivYDo3ZMsY2bnXUx4ZaylM3EZP0g9//+VWMLQlDXVAotTkwWrbVxXgpF4J3W
-	 9q3OOM2dtqWbP09ezmIK2Mf3wFGTlKSSyDwqt2g8=
+	b=g7lCfC+M3TuMD00ZFLvwztYEKpnGiKz7zVy2aq6/s8TQseFDYiLokHHscWn8/rOAO
+	 NwHYUXDz7kWfknGEYYNrYrhfdXbSrNOtk6aJwiJrNxXWg1q1GxR7RpISPXG2gFGgix
+	 kjyN7IjQM4voyiAtNKsiT7QCeCncGXKR+Xy5uDHM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Chen-Yu Tsai <wenst@chromium.org>,
-	Tzung-Bi Shih <tzungbi@kernel.org>,
+	Benjamin Coddington <bcodding@redhat.com>,
+	Trond Myklebust <trond.myklebust@hammerspace.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 473/523] platform/chrome: cros_ec: Use per-device lockdep key
+Subject: [PATCH 5.4 357/403] NFS: Fix the setting of capabilities when automounting a new filesystem
 Date: Tue, 26 Aug 2025 13:11:23 +0200
-Message-ID: <20250826110936.112442337@linuxfoundation.org>
+Message-ID: <20250826110916.742674655@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250826110924.562212281@linuxfoundation.org>
-References: <20250826110924.562212281@linuxfoundation.org>
+In-Reply-To: <20250826110905.607690791@linuxfoundation.org>
+References: <20250826110905.607690791@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,146 +62,156 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+5.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Chen-Yu Tsai <wenst@chromium.org>
+From: Trond Myklebust <trond.myklebust@hammerspace.com>
 
-[ Upstream commit 961a325becd9a142ae5c8b258e5c2f221f8bfac8 ]
+[ Upstream commit b01f21cacde9f2878492cf318fee61bf4ccad323 ]
 
-Lockdep reports a bogus possible deadlock on MT8192 Chromebooks due to
-the following lock sequences:
+Capabilities cannot be inherited when we cross into a new filesystem.
+They need to be reset to the minimal defaults, and then probed for
+again.
 
-1. lock(i2c_register_adapter) [1]; lock(&ec_dev->lock)
-2. lock(&ec_dev->lock); lock(prepare_lock);
-
-The actual dependency chains are much longer. The shortened version
-looks somewhat like:
-
-1. cros-ec-rpmsg on mtk-scp
-   ec_dev->lock -> prepare_lock
-2. In rt5682_i2c_probe() on native I2C bus:
-   prepare_lock -> regmap->lock -> (possibly) i2c_adapter->bus_lock
-3. In rt5682_i2c_probe() on native I2C bus:
-   regmap->lock -> i2c_adapter->bus_lock
-4. In sbs_probe() on i2c-cros-ec-tunnel I2C bus attached on cros-ec:
-   i2c_adapter->bus_lock -> ec_dev->lock
-
-While lockdep is correct that the shared lockdep classes have a circular
-dependency, it is bogus because
-
-  a) 2+3 happen on a native I2C bus
-  b) 4 happens on the actual EC on ChromeOS devices
-  c) 1 happens on the SCP coprocessor on MediaTek Chromebooks that just
-     happens to expose a cros-ec interface, but does not have an
-     i2c-cros-ec-tunnel I2C bus
-
-In short, the "dependencies" are actually on different devices.
-
-Setup a per-device lockdep key for cros_ec devices so lockdep can tell
-the two instances apart. This helps with getting rid of the bogus
-lockdep warning. For ChromeOS devices that only have one cros-ec
-instance this doesn't change anything.
-
-Also add a missing mutex_destroy, just to make the teardown complete.
-
-[1] This is likely the per I2C bus lock with shared lockdep class
-
-Signed-off-by: Chen-Yu Tsai <wenst@chromium.org>
-Signed-off-by: Tzung-Bi Shih <tzungbi@kernel.org>
-Link: https://lore.kernel.org/r/20230111074146.2624496-1-wenst@chromium.org
-Stable-dep-of: e23749534619 ("platform/chrome: cros_ec: Unregister notifier in cros_ec_unregister()")
+Fixes: 54ceac451598 ("NFS: Share NFS superblocks per-protocol per-server per-FSID")
+Cc: stable@vger.kernel.org
+Reviewed-by: Benjamin Coddington <bcodding@redhat.com>
+Signed-off-by: Trond Myklebust <trond.myklebust@hammerspace.com>
+[ adapted to older fs_context-less API structures ]
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/platform/chrome/cros_ec.c           |   14 +++++++++++---
- include/linux/platform_data/cros_ec_proto.h |    4 ++++
- 2 files changed, 15 insertions(+), 3 deletions(-)
+ fs/nfs/client.c     |   44 ++++++++++++++++++++++++++++++++++++++++----
+ fs/nfs/internal.h   |    1 +
+ fs/nfs/nfs4client.c |   13 +------------
+ fs/nfs/nfs4proc.c   |    2 ++
+ 4 files changed, 44 insertions(+), 16 deletions(-)
 
---- a/drivers/platform/chrome/cros_ec.c
-+++ b/drivers/platform/chrome/cros_ec.c
-@@ -186,12 +186,14 @@ int cros_ec_register(struct cros_ec_devi
- 	if (!ec_dev->dout)
- 		return -ENOMEM;
- 
-+	lockdep_register_key(&ec_dev->lockdep_key);
- 	mutex_init(&ec_dev->lock);
-+	lockdep_set_class(&ec_dev->lock, &ec_dev->lockdep_key);
- 
- 	err = cros_ec_query_all(ec_dev);
- 	if (err) {
- 		dev_err(dev, "Cannot identify the EC: error %d\n", err);
--		return err;
-+		goto destroy_mutex;
- 	}
- 
- 	if (ec_dev->irq > 0) {
-@@ -203,7 +205,7 @@ int cros_ec_register(struct cros_ec_devi
- 		if (err) {
- 			dev_err(dev, "Failed to request IRQ %d: %d",
- 				ec_dev->irq, err);
--			return err;
-+			goto destroy_mutex;
- 		}
- 	}
- 
-@@ -214,7 +216,8 @@ int cros_ec_register(struct cros_ec_devi
- 	if (IS_ERR(ec_dev->ec)) {
- 		dev_err(ec_dev->dev,
- 			"Failed to create CrOS EC platform device\n");
--		return PTR_ERR(ec_dev->ec);
-+		err = PTR_ERR(ec_dev->ec);
-+		goto destroy_mutex;
- 	}
- 
- 	if (ec_dev->max_passthru) {
-@@ -273,6 +276,9 @@ int cros_ec_register(struct cros_ec_devi
- exit:
- 	platform_device_unregister(ec_dev->ec);
- 	platform_device_unregister(ec_dev->pd);
-+destroy_mutex:
-+	mutex_destroy(&ec_dev->lock);
-+	lockdep_unregister_key(&ec_dev->lockdep_key);
- 	return err;
+--- a/fs/nfs/client.c
++++ b/fs/nfs/client.c
+@@ -646,6 +646,42 @@ struct nfs_client *nfs_init_client(struc
  }
- EXPORT_SYMBOL(cros_ec_register);
-@@ -290,6 +296,8 @@ void cros_ec_unregister(struct cros_ec_d
- 	if (ec_dev->pd)
- 		platform_device_unregister(ec_dev->pd);
- 	platform_device_unregister(ec_dev->ec);
-+	mutex_destroy(&ec_dev->lock);
-+	lockdep_unregister_key(&ec_dev->lockdep_key);
- }
- EXPORT_SYMBOL(cros_ec_unregister);
+ EXPORT_SYMBOL_GPL(nfs_init_client);
  
---- a/include/linux/platform_data/cros_ec_proto.h
-+++ b/include/linux/platform_data/cros_ec_proto.h
-@@ -9,6 +9,7 @@
- #define __LINUX_CROS_EC_PROTO_H
++static void nfs4_server_set_init_caps(struct nfs_server *server)
++{
++#if IS_ENABLED(CONFIG_NFS_V4)
++	/* Set the basic capabilities */
++	server->caps = server->nfs_client->cl_mvops->init_caps;
++	if (server->flags & NFS_MOUNT_NORDIRPLUS)
++		server->caps &= ~NFS_CAP_READDIRPLUS;
++
++	/*
++	 * Don't use NFS uid/gid mapping if we're using AUTH_SYS or lower
++	 * authentication.
++	 */
++	if (nfs4_disable_idmapping &&
++	    server->client->cl_auth->au_flavor == RPC_AUTH_UNIX)
++		server->caps |= NFS_CAP_UIDGID_NOMAP;
++#endif
++}
++
++void nfs_server_set_init_caps(struct nfs_server *server)
++{
++	switch (server->nfs_client->rpc_ops->version) {
++	case 2:
++		server->caps = NFS_CAP_HARDLINKS | NFS_CAP_SYMLINKS;
++		break;
++	case 3:
++		server->caps = NFS_CAP_HARDLINKS | NFS_CAP_SYMLINKS;
++		if (!(server->flags & NFS_MOUNT_NORDIRPLUS))
++			server->caps |= NFS_CAP_READDIRPLUS;
++		break;
++	default:
++		nfs4_server_set_init_caps(server);
++		break;
++	}
++}
++EXPORT_SYMBOL_GPL(nfs_server_set_init_caps);
++
+ /*
+  * Create a version 2 or 3 client
+  */
+@@ -683,9 +719,6 @@ static int nfs_init_server(struct nfs_se
+ 	/* Initialise the client representation from the mount data */
+ 	server->flags = data->flags;
+ 	server->options = data->options;
+-	server->caps |= NFS_CAP_HARDLINKS|NFS_CAP_SYMLINKS|NFS_CAP_FILEID|
+-		NFS_CAP_MODE|NFS_CAP_NLINK|NFS_CAP_OWNER|NFS_CAP_OWNER_GROUP|
+-		NFS_CAP_ATIME|NFS_CAP_CTIME|NFS_CAP_MTIME;
  
- #include <linux/device.h>
-+#include <linux/lockdep_types.h>
- #include <linux/mutex.h>
- #include <linux/notifier.h>
+ 	if (data->rsize)
+ 		server->rsize = nfs_block_size(data->rsize, NULL);
+@@ -710,6 +743,8 @@ static int nfs_init_server(struct nfs_se
+ 	if (error < 0)
+ 		goto error;
  
-@@ -114,6 +115,8 @@ struct cros_ec_command {
-  *            command. The caller should check msg.result for the EC's result
-  *            code.
-  * @pkt_xfer: Send packet to EC and get response.
-+ * @lockdep_key: Lockdep class for each instance. Unused if CONFIG_LOCKDEP is
-+ *		 not enabled.
-  * @lock: One transaction at a time.
-  * @mkbp_event_supported: 0 if MKBP not supported. Otherwise its value is
-  *                        the maximum supported version of the MKBP host event
-@@ -159,6 +162,7 @@ struct cros_ec_device {
- 			struct cros_ec_command *msg);
- 	int (*pkt_xfer)(struct cros_ec_device *ec,
- 			struct cros_ec_command *msg);
-+	struct lock_class_key lockdep_key;
- 	struct mutex lock;
- 	u8 mkbp_event_supported;
- 	bool host_sleep_v1;
++	nfs_server_set_init_caps(server);
++
+ 	/* Preserve the values of mount_server-related mount options */
+ 	if (data->mount_server.addrlen) {
+ 		memcpy(&server->mountd_address, &data->mount_server.address,
+@@ -834,7 +869,6 @@ void nfs_server_copy_userdata(struct nfs
+ 	target->acregmax = source->acregmax;
+ 	target->acdirmin = source->acdirmin;
+ 	target->acdirmax = source->acdirmax;
+-	target->caps = source->caps;
+ 	target->options = source->options;
+ 	target->auth_info = source->auth_info;
+ 	target->port = source->port;
+@@ -1042,6 +1076,8 @@ struct nfs_server *nfs_clone_server(stru
+ 	if (error < 0)
+ 		goto out_free_server;
+ 
++	nfs_server_set_init_caps(server);
++
+ 	/* probe the filesystem info for this server filesystem */
+ 	error = nfs_probe_fsinfo(server, fh, fattr_fsinfo);
+ 	if (error < 0)
+--- a/fs/nfs/internal.h
++++ b/fs/nfs/internal.h
+@@ -172,6 +172,7 @@ nfs4_find_client_sessionid(struct net *,
+ 				struct nfs4_sessionid *, u32);
+ extern struct nfs_server *nfs_create_server(struct nfs_mount_info *,
+ 					struct nfs_subversion *);
++extern void nfs_server_set_init_caps(struct nfs_server *);
+ extern struct nfs_server *nfs4_create_server(
+ 					struct nfs_mount_info *,
+ 					struct nfs_subversion *);
+--- a/fs/nfs/nfs4client.c
++++ b/fs/nfs/nfs4client.c
+@@ -1011,18 +1011,7 @@ static int nfs4_server_common_setup(stru
+ 	if (error < 0)
+ 		goto out;
+ 
+-	/* Set the basic capabilities */
+-	server->caps |= server->nfs_client->cl_mvops->init_caps;
+-	if (server->flags & NFS_MOUNT_NORDIRPLUS)
+-			server->caps &= ~NFS_CAP_READDIRPLUS;
+-	/*
+-	 * Don't use NFS uid/gid mapping if we're using AUTH_SYS or lower
+-	 * authentication.
+-	 */
+-	if (nfs4_disable_idmapping &&
+-			server->client->cl_auth->au_flavor == RPC_AUTH_UNIX)
+-		server->caps |= NFS_CAP_UIDGID_NOMAP;
+-
++	nfs_server_set_init_caps(server);
+ 
+ 	/* Probe the root fh to retrieve its FSID and filehandle */
+ 	error = nfs4_get_rootfh(server, mntfh, auth_probe);
+--- a/fs/nfs/nfs4proc.c
++++ b/fs/nfs/nfs4proc.c
+@@ -3884,6 +3884,8 @@ int nfs4_server_capabilities(struct nfs_
+ 		.interruptible = true,
+ 	};
+ 	int err;
++
++	nfs_server_set_init_caps(server);
+ 	do {
+ 		err = nfs4_handle_exception(server,
+ 				_nfs4_server_capabilities(server, fhandle),
 
 
 
