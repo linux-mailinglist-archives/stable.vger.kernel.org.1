@@ -1,56 +1,58 @@
-Return-Path: <stable+bounces-174941-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-173817-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 68B1FB364D1
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 15:42:11 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id A1C20B35FF1
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 14:55:32 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 57DE77BA90B
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 13:40:33 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 25A091BA6ACE
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 12:53:56 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4B2502BEC20;
-	Tue, 26 Aug 2025 13:42:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 196DD20DD51;
+	Tue, 26 Aug 2025 12:52:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="13YEdzoT"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Bx+FVuma"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 06D5728505C;
-	Tue, 26 Aug 2025 13:42:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CC5C31D88AC;
+	Tue, 26 Aug 2025 12:52:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756215721; cv=none; b=rjeopzG/rjjkukHZ7PBmJjIdcAp+c/IXMvEB8N1hThXmTb/4HrXcY+5gKJAhoAJ8yhVPN37fH1/f9yPKWtkduHKC1zUVw3A73/yQmSsFj7XKL++vxp8o4LehcVafVJ4pm107g5xZZAnBqMF3EO5lPeTAYYVFRCXCLSLxPb51gJw=
+	t=1756212743; cv=none; b=AUNVroNDIAMXAIHQrUJw0RyZ+fCtuotyxgK2PJq/WRdbOtg1kpTBZQ3+UNL02/G8aSj3sBJEVnCUlW01TUvgEBG1zMAPbQRsS8uN5tyUsplUngBYnolkxGyRZxOSYpefvt7jV0TcQ+438U4ST4yhjtg1fzJV/cNe033FCt7S99c=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756215721; c=relaxed/simple;
-	bh=QGSkroNth1JJVQkw4tgWCoumyqSMQ2LvmPlPQFc9LV4=;
+	s=arc-20240116; t=1756212743; c=relaxed/simple;
+	bh=IYFCfQxkJg+qKCK27YcMaL4AYns0X/w3zZY870kHxIk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Ye8YX+Mgrqdz3ezpDDGJJuhN+Y7PTMrVetHVC19Lf9KqVQbw6MJ/pE+fXKI3f3zJ6Ck4tT22OmMiM73DwgDDGBMA3eAK3zmrEgrxYxn2JTWjww3HtOT96Pa+x0vk1LX4eUaI7HghO2is6Y7hLIFQwTVgJGT3q9xXQrIF92aIR/Q=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=13YEdzoT; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 53919C16AAE;
-	Tue, 26 Aug 2025 13:42:00 +0000 (UTC)
+	 MIME-Version:Content-Type; b=S1vNxmLUDvS/4qikbNWTCDiaWH5ZUuUGPGfChfI4yb+t8VuENS9KbWKTMpQf5Unhonu3tB3v/8WDnHR9Hxi1rohjEv4MQX64LDpf95mORHGXmhn/ELYZ4kB9iU//825ERY2g+8sRexr1bDTvJQiihBhjYwmY39I/ubXRV3wuWRU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Bx+FVuma; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5CE77C4CEF1;
+	Tue, 26 Aug 2025 12:52:23 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1756215720;
-	bh=QGSkroNth1JJVQkw4tgWCoumyqSMQ2LvmPlPQFc9LV4=;
+	s=korg; t=1756212743;
+	bh=IYFCfQxkJg+qKCK27YcMaL4AYns0X/w3zZY870kHxIk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=13YEdzoTjJACRI7sbKdLSPLhHUK9zYIVskeFDX166R9FiTDPCgMZAeU8h+WHbTR08
-	 PgHN4eu97CygqT+wRt7DLOjaA3U4vdoMWggcpgmqTbwr73wCqV4ZkWYaWuHjK493/Y
-	 9kQtL/oUnNbUKZEAXAOxRk/Hz7UlPB4hAGZqgb+Q=
+	b=Bx+FVumabaAKdz4av2+OCsGz1Ws54wcjxirFexPW7L4qFfBvuIBSvZIRznoE3SK0K
+	 61FPlV8DWSoVdP+ZB1IXk3+dCjGG74hCrm6xWjjdBocXVNY7bxNwBww+RaTQ2qMcco
+	 wzbYQH05+kmE0LjqtwEzsb7f/GW2EnG3rbIwgpUA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Xiu Jianfeng <xiujianfeng@huawei.com>,
-	Miri Korenblit <miriam.rachel.korenblit@intel.com>,
+	Adam Berglund <adam.f.berglund@hotmail.com>,
+	Mario Limonciello <mario.limonciello@amd.com>,
+	Hans de Goede <hansg@kernel.org>,
+	=?UTF-8?q?Ilpo=20J=C3=A4rvinen?= <ilpo.jarvinen@linux.intel.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 141/644] wifi: iwlwifi: Fix memory leak in iwl_mvm_init()
-Date: Tue, 26 Aug 2025 13:03:52 +0200
-Message-ID: <20250826110949.991237010@linuxfoundation.org>
+Subject: [PATCH 6.6 084/587] platform/x86/amd: pmc: Add Lenovo Yoga 6 13ALC6 to pmc quirk list
+Date: Tue, 26 Aug 2025 13:03:53 +0200
+Message-ID: <20250826110955.071221690@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250826110946.507083938@linuxfoundation.org>
-References: <20250826110946.507083938@linuxfoundation.org>
+In-Reply-To: <20250826110952.942403671@linuxfoundation.org>
+References: <20250826110952.942403671@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,44 +62,56 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Xiu Jianfeng <xiujianfeng@huawei.com>
+From: Mario Limonciello <mario.limonciello@amd.com>
 
-[ Upstream commit ed2e916c890944633d6826dce267579334f63ea5 ]
+[ Upstream commit 4ff3aeb664f7dfe824ba91ffb0b203397a8d431e ]
 
-When iwl_opmode_register() fails, it does not unregster rate control,
-which will cause a memory leak issue, this patch fixes it.
+The Lenovo Yoga 6 13ACL6 82ND has a similar BIOS problem as other Lenovo
+laptops from that vintage that causes a rather long resume from suspend.
 
-Fixes: 9f66a397c877 ("iwlwifi: mvm: rs: add ops for the new rate scaling in the FW")
-Signed-off-by: Xiu Jianfeng <xiujianfeng@huawei.com>
-Link: https://patch.msgid.link/20221109035213.570-1-xiujianfeng@huawei.com
-Signed-off-by: Miri Korenblit <miriam.rachel.korenblit@intel.com>
+Add it to the quirk list that manipulates the scratch register to avoid
+the issue.
+
+Reported-by: Adam Berglund <adam.f.berglund@hotmail.com>
+Closes: https://gitlab.freedesktop.org/drm/amd/-/issues/4434
+Tested-by: Adam Berglund <adam.f.berglund@hotmail.com>
+Signed-off-by: Mario Limonciello <mario.limonciello@amd.com>
+Reviewed-by: Hans de Goede <hansg@kernel.org>
+Link: https://lore.kernel.org/r/20250718172307.1928744-1-superm1@kernel.org
+Reviewed-by: Ilpo Järvinen <ilpo.jarvinen@linux.intel.com>
+Signed-off-by: Ilpo Järvinen <ilpo.jarvinen@linux.intel.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/wireless/intel/iwlwifi/mvm/ops.c | 4 +++-
- 1 file changed, 3 insertions(+), 1 deletion(-)
+ drivers/platform/x86/amd/pmc/pmc-quirks.c | 9 +++++++++
+ 1 file changed, 9 insertions(+)
 
-diff --git a/drivers/net/wireless/intel/iwlwifi/mvm/ops.c b/drivers/net/wireless/intel/iwlwifi/mvm/ops.c
-index e2c244ceaf70..05e1a6de8c2e 100644
---- a/drivers/net/wireless/intel/iwlwifi/mvm/ops.c
-+++ b/drivers/net/wireless/intel/iwlwifi/mvm/ops.c
-@@ -61,8 +61,10 @@ static int __init iwl_mvm_init(void)
- 	}
- 
- 	ret = iwl_opmode_register("iwlmvm", &iwl_mvm_ops);
--	if (ret)
-+	if (ret) {
- 		pr_err("Unable to register MVM op_mode: %d\n", ret);
-+		iwl_mvm_rate_control_unregister();
-+	}
- 
- 	return ret;
- }
+diff --git a/drivers/platform/x86/amd/pmc/pmc-quirks.c b/drivers/platform/x86/amd/pmc/pmc-quirks.c
+index 7ed12c1d3b34..04686ae1e976 100644
+--- a/drivers/platform/x86/amd/pmc/pmc-quirks.c
++++ b/drivers/platform/x86/amd/pmc/pmc-quirks.c
+@@ -189,6 +189,15 @@ static const struct dmi_system_id fwbug_list[] = {
+ 			DMI_MATCH(DMI_PRODUCT_NAME, "82XQ"),
+ 		}
+ 	},
++	/* https://gitlab.freedesktop.org/drm/amd/-/issues/4434 */
++	{
++		.ident = "Lenovo Yoga 6 13ALC6",
++		.driver_data = &quirk_s2idle_bug,
++		.matches = {
++			DMI_MATCH(DMI_BOARD_VENDOR, "LENOVO"),
++			DMI_MATCH(DMI_PRODUCT_NAME, "82ND"),
++		}
++	},
+ 	/* https://gitlab.freedesktop.org/drm/amd/-/issues/2684 */
+ 	{
+ 		.ident = "HP Laptop 15s-eq2xxx",
 -- 
 2.39.5
 
