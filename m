@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-173051-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-173974-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 03BC2B35B86
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 13:25:21 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 75D57B3609E
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 15:02:21 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 39BDB18896A5
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 11:22:27 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id DB853463B8F
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 12:59:28 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id AA80F2BF3E2;
-	Tue, 26 Aug 2025 11:20:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 946851F1534;
+	Tue, 26 Aug 2025 12:59:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="OLRZcF3K"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="OcqqFl0z"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 67C3E1A256B;
-	Tue, 26 Aug 2025 11:20:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4FEDC1DD0D4;
+	Tue, 26 Aug 2025 12:59:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756207247; cv=none; b=kA3IgDxqZchAZXoRWxwVy4IET1W0x98aEgn0FS/ZicGSBsLS9P5d7f9UjNsUrBcPL0ATtL9mEs4FSQYoNmiW6KwmxXuxVrkStaOnTfQ84jovESwWy9S8s2vbqMV8Kc78mlXx9Odu02Iup8UGq2kdEcw612zQjSkutcccFxsQWtI=
+	t=1756213158; cv=none; b=nY5qWlW4fMWs4LZNuv5TfjfDdPQhO5eK+9RCer3SQidvxRtIawq858LfdKUlCxJUb+w6VJiwDoTD7LZq7Jiup+LwGz+bjjMb3ZfzJVNSD9feXnCu5uYSPND8wkvyJgZqqCcH7wZtzByVWDbhnLZV5rt6Urq6S6lg7AcK85qf4mE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756207247; c=relaxed/simple;
-	bh=B2I1mm4EM+tEgXpxmnyKMb+7D/R9fGm8kU61vtLoQ+0=;
+	s=arc-20240116; t=1756213158; c=relaxed/simple;
+	bh=oWCcVC3pg0Oit8/aGJmit05xgOhLB7uaodmHFC4CMo4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=KUcB9raByYQB9q1aXIk3zv4OSWpg3OuHfLJDB8AZtq/rOVB1PieC5cCsZrDBz9mGn3lKjbP8zuU+3RqjXxygsdV/TanRZtVakxj7T+yOp/qs1hEp0Mf0nU9QiQc2eMl7tTo/KZ9lMAx4GXYxJiNhBHOMN3sMDzBSBR83ChYXYFw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=OLRZcF3K; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id AC2D9C4CEF1;
-	Tue, 26 Aug 2025 11:20:46 +0000 (UTC)
+	 MIME-Version; b=Hs1zVrcO9a0NjeLn8u6cpzFIQchUH3CjhYFJ1GqIrgou8HqeXcl8FcfJvrymEtI11GT25AkRSgePCt5oa/w14Sinkas/P3OlN7kBvQufIpl6oVJ7HNsFIS0R9k2zIpIC/KcjhQoXkY12xjVTng7p1uM6vjQh+7x2u121Z0Wj1V8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=OcqqFl0z; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C9A75C4CEF1;
+	Tue, 26 Aug 2025 12:59:17 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1756207247;
-	bh=B2I1mm4EM+tEgXpxmnyKMb+7D/R9fGm8kU61vtLoQ+0=;
+	s=korg; t=1756213158;
+	bh=oWCcVC3pg0Oit8/aGJmit05xgOhLB7uaodmHFC4CMo4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=OLRZcF3KfNMnR0XMcwCtDHlR1BcAml2GB5ZlhsGowzLVwZt8CHwBEVRzL0sEeyLKf
-	 Iht/t9pUCuaetyDy1IWTFcitOZSduos7U2HHJyBeC6ylPHnTrk/edj3tBjRNiZA/X1
-	 1Q8z8b99fkCaElcrBnHYI6Wl7l5UBBruBzo5oiuI=
+	b=OcqqFl0zeei3QfAyGccCeYON+xpJz7vbPr0A82ptHvF/XBaz/P/jEB5joPNyOPm63
+	 2szRw9kNTAcf9KHPxpQNX906RH7s8jB++VKyGLy3zoUd+fWwp3xNb4cjM9vI+i/TAZ
+	 x00+mzkuHbXwJqxZHYaH5fxNj4wWyY8iWlc0zSp8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	stable@kernel.org,
-	Kathiravan Thirumoorthy <kathiravan.thirumoorthy@oss.qualcomm.com>,
-	Konrad Dybcio <konrad.dybcio@oss.qualcomm.com>,
-	Vinod Koul <vkoul@kernel.org>
-Subject: [PATCH 6.16 107/457] phy: qcom: phy-qcom-m31: Update IPQ5332 M31 USB phy initialization sequence
+	Johan Adolfsson <johan.adolfsson@axis.com>,
+	Jacek Anaszewski <jacek.anaszewski@gmail.com>,
+	Lee Jones <lee@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.6 242/587] leds: leds-lp50xx: Handle reg to get correct multi_index
 Date: Tue, 26 Aug 2025 13:06:31 +0200
-Message-ID: <20250826110940.018042826@linuxfoundation.org>
+Message-ID: <20250826110959.088745647@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250826110937.289866482@linuxfoundation.org>
-References: <20250826110937.289866482@linuxfoundation.org>
+In-Reply-To: <20250826110952.942403671@linuxfoundation.org>
+References: <20250826110952.942403671@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,76 +63,73 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.16-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Kathiravan Thirumoorthy <kathiravan.thirumoorthy@oss.qualcomm.com>
+From: Johan Adolfsson <johan.adolfsson@axis.com>
 
-commit 4a3556b81b99f0c8c0358f7cc6801a62b4538fe2 upstream.
+[ Upstream commit 2e84a5e5374232e6f356ce5c079a5658d7e4af2c ]
 
-The current configuration used for the IPQ5332 M31 USB PHY fails the
-Near End High Speed Signal Quality compliance test. To resolve this,
-update the initialization sequence as specified in the Hardware Design
-Document.
+mc_subled used for multi_index needs well defined array indexes,
+to guarantee the desired result, use reg for that.
 
-Fixes: 08e49af50701 ("phy: qcom: Introduce M31 USB PHY driver")
-Cc: stable@kernel.org
-Signed-off-by: Kathiravan Thirumoorthy <kathiravan.thirumoorthy@oss.qualcomm.com>
-Reviewed-by: Konrad Dybcio <konrad.dybcio@oss.qualcomm.com>
-Link: https://lore.kernel.org/r/20250630-ipq5332_hsphy_complaince-v2-1-63621439ebdb@oss.qualcomm.com
-Signed-off-by: Vinod Koul <vkoul@kernel.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+If devicetree child nodes is processed in random or reverse order
+you may end up with multi_index "blue green red" instead of the expected
+"red green blue".
+If user space apps uses multi_index to deduce how to control the leds
+they would most likely be broken without this patch if devicetree
+processing is reversed (which it appears to be).
+
+arch/arm/boot/dts/aspeed/aspeed-bmc-facebook-fuji.dts has reg set
+but I don't see how it can have worked without this change.
+
+If reg is not set, an error is returned,
+If reg is out of range, an error is returned.
+reg within led child nodes starts with 0, to map to the iout in each bank.
+
+Signed-off-by: Johan Adolfsson <johan.adolfsson@axis.com>
+Reviewed-by: Jacek Anaszewski <jacek.anaszewski@gmail.com>
+Link: https://lore.kernel.org/r/20250617-led-fix-v7-1-cdbe8efc88fa@axis.com
+Signed-off-by: Lee Jones <lee@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/phy/qualcomm/phy-qcom-m31.c |   14 ++++++++++----
- 1 file changed, 10 insertions(+), 4 deletions(-)
+ drivers/leds/leds-lp50xx.c | 11 ++++++++++-
+ 1 file changed, 10 insertions(+), 1 deletion(-)
 
---- a/drivers/phy/qualcomm/phy-qcom-m31.c
-+++ b/drivers/phy/qualcomm/phy-qcom-m31.c
-@@ -58,14 +58,16 @@
-  #define USB2_0_TX_ENABLE		BIT(2)
+diff --git a/drivers/leds/leds-lp50xx.c b/drivers/leds/leds-lp50xx.c
+index 68c4d9967d68..182a590b0267 100644
+--- a/drivers/leds/leds-lp50xx.c
++++ b/drivers/leds/leds-lp50xx.c
+@@ -486,6 +486,7 @@ static int lp50xx_probe_dt(struct lp50xx *priv)
+ 		}
  
- #define USB2PHY_USB_PHY_M31_XCFGI_4	0xc8
-- #define HSTX_SLEW_RATE_565PS		GENMASK(1, 0)
-+ #define HSTX_SLEW_RATE_400PS		GENMASK(2, 0)
-  #define PLL_CHARGING_PUMP_CURRENT_35UA	GENMASK(4, 3)
-  #define ODT_VALUE_38_02_OHM		GENMASK(7, 6)
+ 		fwnode_for_each_child_node(child, led_node) {
++			int multi_index;
+ 			ret = fwnode_property_read_u32(led_node, "color",
+ 						       &color_id);
+ 			if (ret) {
+@@ -493,8 +494,16 @@ static int lp50xx_probe_dt(struct lp50xx *priv)
+ 				dev_err(priv->dev, "Cannot read color\n");
+ 				goto child_out;
+ 			}
++			ret = fwnode_property_read_u32(led_node, "reg", &multi_index);
++			if (ret != 0) {
++				dev_err(priv->dev, "reg must be set\n");
++				return -EINVAL;
++			} else if (multi_index >= LP50XX_LEDS_PER_MODULE) {
++				dev_err(priv->dev, "reg %i out of range\n", multi_index);
++				return -EINVAL;
++			}
  
- #define USB2PHY_USB_PHY_M31_XCFGI_5	0xcc
-- #define ODT_VALUE_45_02_OHM		BIT(2)
-  #define HSTX_PRE_EMPHASIS_LEVEL_0_55MA	BIT(0)
+-			mc_led_info[num_colors].color_index = color_id;
++			mc_led_info[multi_index].color_index = color_id;
+ 			num_colors++;
+ 		}
  
-+#define USB2PHY_USB_PHY_M31_XCFGI_9	0xdc
-+ #define HSTX_CURRENT_17_1MA_385MV	BIT(1)
-+
- #define USB2PHY_USB_PHY_M31_XCFGI_11	0xe4
-  #define XCFG_COARSE_TUNE_NUM		BIT(1)
-  #define XCFG_FINE_TUNE_NUM		BIT(3)
-@@ -164,7 +166,7 @@ static struct m31_phy_regs m31_ipq5332_r
- 	},
- 	{
- 		USB2PHY_USB_PHY_M31_XCFGI_4,
--		HSTX_SLEW_RATE_565PS | PLL_CHARGING_PUMP_CURRENT_35UA | ODT_VALUE_38_02_OHM,
-+		HSTX_SLEW_RATE_400PS | PLL_CHARGING_PUMP_CURRENT_35UA | ODT_VALUE_38_02_OHM,
- 		0
- 	},
- 	{
-@@ -174,10 +176,14 @@ static struct m31_phy_regs m31_ipq5332_r
- 	},
- 	{
- 		USB2PHY_USB_PHY_M31_XCFGI_5,
--		ODT_VALUE_45_02_OHM | HSTX_PRE_EMPHASIS_LEVEL_0_55MA,
-+		HSTX_PRE_EMPHASIS_LEVEL_0_55MA,
- 		4
- 	},
- 	{
-+		USB2PHY_USB_PHY_M31_XCFGI_9,
-+		HSTX_CURRENT_17_1MA_385MV,
-+	},
-+	{
- 		USB_PHY_UTMI_CTRL5,
- 		0x0,
- 		0
+-- 
+2.39.5
+
 
 
 
