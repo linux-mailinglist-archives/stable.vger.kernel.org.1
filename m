@@ -1,56 +1,59 @@
-Return-Path: <stable+bounces-173058-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-173951-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1B1F5B35B8C
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 13:25:40 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 93274B36036
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 14:58:20 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 652151BA30D9
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 11:22:42 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id B51887AB119
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 12:56:44 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 722BF312803;
-	Tue, 26 Aug 2025 11:21:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A4CCD1DD9D3;
+	Tue, 26 Aug 2025 12:58:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="iuv5MPv3"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ghWDnIkU"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2F7DB30BF55;
-	Tue, 26 Aug 2025 11:21:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 634A21A00F0;
+	Tue, 26 Aug 2025 12:58:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756207265; cv=none; b=eqy30JoStUgcf8TY6gdkIst8cQYxdYgQTb3TKB5m4RpL4k+xp0zqXUIG+u3vgNfUIfxObWG3ACmL6c155UlBy4ufs3Plk9ufAVmuKIDDsnSqvgEio1UmxrNupHOrC/XOb5ksRooZxS50W9+pjnV9y40pvXLPFE3xMpoFlALIZ0s=
+	t=1756213095; cv=none; b=sP6Ao2uFFJauZAkQFsyiSXIoT0+bYzXnKTj19YxXP7RKY0jjxHO/CPgAK2RNCfB3wSEzU+Ap1HSutLPLIsFPB7E5DfKzS0BKZfsbu7SppsBvZ/cdTRuwsJjhM+6pB0W90L9ugdZWZzOWCHGvA0Fj5TAuMDXndXmQBC71ET4lEPI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756207265; c=relaxed/simple;
-	bh=ugnuYTbGv0QMMoT87xFp3elCKQwN1KBHwVWM69e0OEE=;
+	s=arc-20240116; t=1756213095; c=relaxed/simple;
+	bh=AZ7o7r+b/WNY9JkPpOAXJvDwhRp5XRKfa191T6weFmQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=tGvRI6Nst/2haczWtJJn4Wvh6Pg6desMFKj5qd61THtTuT7wxwBDhqTaoollLfdpUqPrtvEb40u4Xsz+mHO+MxKRAKL80c/Wgg59e0DfAjqYM6NnO0QevkLpBIWJM0KYDdq4h3mJJzA8RMZExmp8wTTa3+VgxSpgDt7g2z6tRiI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=iuv5MPv3; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B5CADC4CEF1;
-	Tue, 26 Aug 2025 11:21:04 +0000 (UTC)
+	 MIME-Version; b=r09OuBFb3Bx/G8QsINgjKCzW+eA90v3ki8BVUUiqyPRoNrE+3NXuHddxR1EZEPUSOPXoFJJizXXvsWSmezOz1bo9GmrROshPAY3QabidqtHFCWzcjaUd/si1yXX6A3yjoWtU9NQTz7bVthKgV01LgrIgrkyLvD+1OanSg7haeUo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ghWDnIkU; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E8D52C4CEF1;
+	Tue, 26 Aug 2025 12:58:14 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1756207265;
-	bh=ugnuYTbGv0QMMoT87xFp3elCKQwN1KBHwVWM69e0OEE=;
+	s=korg; t=1756213095;
+	bh=AZ7o7r+b/WNY9JkPpOAXJvDwhRp5XRKfa191T6weFmQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=iuv5MPv3gZ19TnZ5WNJTGdy06YssUpcZ2vIcpfshlfJ88ZTBhO36HPTr6hhL9q37M
-	 6UQuGBtFK6qwzUcX5tBlyvLKa6Asf0QNfU1HC4PU0yuAL+rnDJVSXq2B1b3kpq3KPF
-	 PwnObhX4ublp6CTy4hDIpeQYXf8N3fiqz1vT2akE=
+	b=ghWDnIkU5V9Isim3P2Ixk67Q6uY6fZkqS8Xd8txiIox3Kuox2BaGAduzVZIEFLyC9
+	 oZnQ9maGCUImhP6PEdTOOa3TzsnxkC3Vi98FknmG2x2Ds3YV4ySocGnlIZ/tqsuB3J
+	 DQOVJEB/U/azKdEvngPkjNNWtAfxJTyliC+NyMW0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Johan Hovold <johan+linaro@kernel.org>,
-	Baochen Qiang <quic_bqiang@quicinc.com>,
-	Jeff Johnson <jeff.johnson@oss.qualcomm.com>
-Subject: [PATCH 6.16 083/457] wifi: ath12k: fix dest ring-buffer corruption when ring is full
+	"Sun peng (Leo) Li" <sunpeng.li@amd.com>,
+	Mario Limonciello <mario.limonciello@amd.com>,
+	Ivan Lipski <ivan.lipski@amd.com>,
+	Daniel Wheeler <daniel.wheeler@amd.com>,
+	Alex Deucher <alexander.deucher@amd.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.6 218/587] drm/amd/display: Avoid configuring PSR granularity if PSR-SU not supported
 Date: Tue, 26 Aug 2025 13:06:07 +0200
-Message-ID: <20250826110939.428897107@linuxfoundation.org>
+Message-ID: <20250826110958.481120069@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250826110937.289866482@linuxfoundation.org>
-References: <20250826110937.289866482@linuxfoundation.org>
+In-Reply-To: <20250826110952.942403671@linuxfoundation.org>
+References: <20250826110952.942403671@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,66 +65,53 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.16-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Johan Hovold <johan+linaro@kernel.org>
+From: Mario Limonciello <mario.limonciello@amd.com>
 
-commit ed32169be1ccb9b1a295275ba7746dc6bf103e80 upstream.
+[ Upstream commit a5ce8695d6d1b40d6960d2d298b579042c158f25 ]
 
-Add the missing memory barriers to make sure that destination ring
-descriptors are read before updating the tail pointer (and passing
-ownership to the device) to avoid memory corruption on weakly ordered
-architectures like aarch64 when the ring is full.
+[Why]
+If PSR-SU is disabled on the link, then configuring su_y granularity in
+mod_power_calc_psr_configs() can lead to assertions in
+psr_su_set_dsc_slice_height().
 
-Tested-on: WCN7850 hw2.0 WLAN.HMT.1.0.c5-00481-QCAHMTSWPL_V1.0_V2.0_SILICONZ-3
+[How]
+Check the PSR version in amdgpu_dm_link_setup_psr() to determine whether
+or not to configure granularity.
 
-Fixes: d889913205cf ("wifi: ath12k: driver for Qualcomm Wi-Fi 7 devices")
-Cc: stable@vger.kernel.org      # 6.3
-Signed-off-by: Johan Hovold <johan+linaro@kernel.org>
-Reviewed-by: Baochen Qiang <quic_bqiang@quicinc.com>
-Link: https://patch.msgid.link/20250617084402.14475-5-johan+linaro@kernel.org
-Signed-off-by: Jeff Johnson <jeff.johnson@oss.qualcomm.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Reviewed-by: Sun peng (Leo) Li <sunpeng.li@amd.com>
+Signed-off-by: Mario Limonciello <mario.limonciello@amd.com>
+Signed-off-by: Ivan Lipski <ivan.lipski@amd.com>
+Tested-by: Daniel Wheeler <daniel.wheeler@amd.com>
+Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/wireless/ath/ath12k/hal.c |   11 +++++++++--
- 1 file changed, 9 insertions(+), 2 deletions(-)
+ drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm_psr.c | 6 ++++--
+ 1 file changed, 4 insertions(+), 2 deletions(-)
 
---- a/drivers/net/wireless/ath/ath12k/hal.c
-+++ b/drivers/net/wireless/ath/ath12k/hal.c
-@@ -2170,7 +2170,6 @@ void ath12k_hal_srng_access_end(struct a
- {
- 	lockdep_assert_held(&srng->lock);
+diff --git a/drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm_psr.c b/drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm_psr.c
+index fe96bab7d05d..67972d25366e 100644
+--- a/drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm_psr.c
++++ b/drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm_psr.c
+@@ -124,8 +124,10 @@ bool amdgpu_dm_link_setup_psr(struct dc_stream_state *stream)
+ 		psr_config.allow_multi_disp_optimizations =
+ 			(amdgpu_dc_feature_mask & DC_PSR_ALLOW_MULTI_DISP_OPT);
  
--	/* TODO: See if we need a write memory barrier here */
- 	if (srng->flags & HAL_SRNG_FLAGS_LMAC_RING) {
- 		/* For LMAC rings, ring pointer updates are done through FW and
- 		 * hence written to a shared memory location that is read by FW
-@@ -2185,7 +2184,11 @@ void ath12k_hal_srng_access_end(struct a
- 			WRITE_ONCE(*srng->u.src_ring.hp_addr, srng->u.src_ring.hp);
- 		} else {
- 			srng->u.dst_ring.last_hp = *srng->u.dst_ring.hp_addr;
--			*srng->u.dst_ring.tp_addr = srng->u.dst_ring.tp;
-+			/* Make sure descriptor is read before updating the
-+			 * tail pointer.
-+			 */
-+			dma_mb();
-+			WRITE_ONCE(*srng->u.dst_ring.tp_addr, srng->u.dst_ring.tp);
- 		}
- 	} else {
- 		if (srng->ring_dir == HAL_SRNG_DIR_SRC) {
-@@ -2201,6 +2204,10 @@ void ath12k_hal_srng_access_end(struct a
- 					   srng->u.src_ring.hp);
- 		} else {
- 			srng->u.dst_ring.last_hp = *srng->u.dst_ring.hp_addr;
-+			/* Make sure descriptor is read before updating the
-+			 * tail pointer.
-+			 */
-+			mb();
- 			ath12k_hif_write32(ab,
- 					   (unsigned long)srng->u.dst_ring.tp_addr -
- 					   (unsigned long)ab->mem,
+-		if (!psr_su_set_dsc_slice_height(dc, link, stream, &psr_config))
+-			return false;
++		if (link->psr_settings.psr_version == DC_PSR_VERSION_SU_1) {
++			if (!psr_su_set_dsc_slice_height(dc, link, stream, &psr_config))
++				return false;
++		}
+ 
+ 		ret = dc_link_setup_psr(link, stream, &psr_config, &psr_context);
+ 
+-- 
+2.39.5
+
 
 
 
