@@ -1,55 +1,59 @@
-Return-Path: <stable+bounces-175842-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-173240-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 29FD1B36B17
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 16:42:55 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id D4955B35CD1
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 13:39:07 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id A1729A000BE
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 14:22:51 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 1436036806C
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 11:32:02 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C2DFB34F46B;
-	Tue, 26 Aug 2025 14:21:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E34662BE03C;
+	Tue, 26 Aug 2025 11:28:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="QUkgJOoP"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="iLHtXlZV"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 813DF2FDC5C;
-	Tue, 26 Aug 2025 14:21:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A1269319866;
+	Tue, 26 Aug 2025 11:28:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756218114; cv=none; b=GJDUNX7z+2Lzz3CqMZB38b24Vbl1MkKIfxb86BguBO50+B2Mme/N1ktNQPYCSVjtfvPpt3qhsqLskzh3ktdtlCnutvKq4RBmGC/+lb2UZJg0pxZPUIhAjVKGujBcz+KAISLu3Pd1dqZqDuQiJM9DbK7VCG7iflUcxfEwQ8elAl4=
+	t=1756207734; cv=none; b=PthkvLo2Mk1EQD+Sj2mQHAsZcRJWpleByo5gnq/T4TjIPuYHmKeGIURjhqjtl7UzayITSf7TJgTKxGSY7w1ezAYTyXJfyyCg5IyBI65lkcg1DpzdlD2/Ka3LEDkDHaco2UCbMr19DBKsByT9qj7pHmWkZeHjfuIO2eDOCmiuwEQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756218114; c=relaxed/simple;
-	bh=e528EYKKb59N/ihmvJ5KEoM1tTCTsbyyA4uVnRIItmk=;
+	s=arc-20240116; t=1756207734; c=relaxed/simple;
+	bh=1exOucgY1EIRq9pEePlxOKtR9c5cTtlSiq9bptPTDVQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Ys40Z1YR6fP/GsYv0IIR5iFgqiwcwZwyml/fzqPpZUOrauv3Jz4MBW/luItmbAQk4YiHAuTMStWD22/0fLEBA+HydeHtl1AcoaoqIiXrggWgrRLwgqiTvSNQq9zLpDELqvnYLTAc6wveHgdJUa2GAp8wso7Q/CvPNWC8d9qAwcQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=QUkgJOoP; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1106FC4CEF1;
-	Tue, 26 Aug 2025 14:21:53 +0000 (UTC)
+	 MIME-Version; b=rQoVi9ZIMypPUQVWTxRJFKyek7M67F3ZkLfrMR/LlI8qFG0hCY0hbNkci6mLGNuSqUuyYwwR/gBckwyYtzuwzobRVoRxXLp8AwIwuOIcEfvSDzE20EL5ui7X5bXPxJ9EQUPScOwnCd+5XPOP4dD60mncQxYm3eE/Nr4plZL0PhM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=iLHtXlZV; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2C365C4CEF1;
+	Tue, 26 Aug 2025 11:28:54 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1756218114;
-	bh=e528EYKKb59N/ihmvJ5KEoM1tTCTsbyyA4uVnRIItmk=;
+	s=korg; t=1756207734;
+	bh=1exOucgY1EIRq9pEePlxOKtR9c5cTtlSiq9bptPTDVQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=QUkgJOoPHmcSg2AWsy36GYX3ssvy5yGidfmQtn4/TXSQyVL9ZAkbWjWP1kCOWSqyh
-	 /9306TRBW1Sm/sAD8dueowJR+nrcxyi+X/66R5Ib8P4BKBC8S3WkgYRfPDlEapAdge
-	 PrMx1TLTtF44mCuiksbJaHrlrkWUhc99+xNdWfHU=
+	b=iLHtXlZVAHnNRfM8CJ/vzoj88azKBDJXqFu5QeUUiXlgLnMzV8lEh/E2U7kkAsbAz
+	 rFqRbEqqKXYi9/hKfeH36gcjd6QISSWYZo3YvGvuRtKgXXDNoyRzARY7uSUWiz0kYX
+	 ebCJsHRnfBzApzrvdtxjzL37997h0zN8YMrge0O0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Tim Harvey <tharvey@gateworks.com>,
-	Guenter Roeck <linux@roeck-us.net>
-Subject: [PATCH 5.10 371/523] hwmon: (gsc-hwmon) fix fan pwm setpoint show functions
+	Masami Hiramatsu <mhiramat@kernel.org>,
+	Mathieu Desnoyers <mathieu.desnoyers@efficios.com>,
+	Nathan Chancellor <nathan@kernel.org>,
+	Linus Torvalds <torvalds@linux-foundation.org>,
+	Tengda Wu <wutengda@huaweicloud.com>,
+	"Steven Rostedt (Google)" <rostedt@goodmis.org>
+Subject: [PATCH 6.16 297/457] ftrace: Also allocate and copy hash for reading of filter files
 Date: Tue, 26 Aug 2025 13:09:41 +0200
-Message-ID: <20250826110933.617942726@linuxfoundation.org>
+Message-ID: <20250826110944.719317758@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250826110924.562212281@linuxfoundation.org>
-References: <20250826110924.562212281@linuxfoundation.org>
+In-Reply-To: <20250826110937.289866482@linuxfoundation.org>
+References: <20250826110937.289866482@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,64 +65,80 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+6.16-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Tim Harvey <tharvey@gateworks.com>
+From: Steven Rostedt <rostedt@goodmis.org>
 
-commit 9c62e2282900332c8b711d9f9e37af369a8ef71b upstream.
+commit bfb336cf97df7b37b2b2edec0f69773e06d11955 upstream.
 
-The Linux hwmon sysfs API values for pwmX_auto_pointY_pwm represent an
-integer value between 0 (0%) to 255 (100%) and the pwmX_auto_pointY_temp
-represent millidegrees Celcius.
+Currently the reader of set_ftrace_filter and set_ftrace_notrace just adds
+the pointer to the global tracer hash to its iterator. Unlike the writer
+that allocates a copy of the hash, the reader keeps the pointer to the
+filter hashes. This is problematic because this pointer is static across
+function calls that release the locks that can update the global tracer
+hashes. This can cause UAF and similar bugs.
 
-Commit a6d80df47ee2 ("hwmon: (gsc-hwmon) fix fan pwm temperature
-scaling") properly addressed the incorrect scaling in the
-pwm_auto_point_temp_store implementation but erroneously scaled
-the pwm_auto_point_pwm_show (pwm value) instead of the
-pwm_auto_point_temp_show (temp value) resulting in:
- # cat /sys/class/hwmon/hwmon0/pwm1_auto_point6_pwm
- 25500
- # cat /sys/class/hwmon/hwmon0/pwm1_auto_point6_temp
- 4500
+Allocate and copy the hash for reading the filter files like it is done
+for the writers. This not only fixes UAF bugs, but also makes the code a
+bit simpler as it doesn't have to differentiate when to free the
+iterator's hash between writers and readers.
 
-Fix the scaling of these attributes:
- # cat /sys/class/hwmon/hwmon0/pwm1_auto_point6_pwm
- 255
- # cat /sys/class/hwmon/hwmon0/pwm1_auto_point6_temp
- 45000
-
-Fixes: a6d80df47ee2 ("hwmon: (gsc-hwmon) fix fan pwm temperature scaling")
 Cc: stable@vger.kernel.org
-Signed-off-by: Tim Harvey <tharvey@gateworks.com>
-Link: https://lore.kernel.org/r/20250718200259.1840792-1-tharvey@gateworks.com
-Signed-off-by: Guenter Roeck <linux@roeck-us.net>
+Cc: Masami Hiramatsu <mhiramat@kernel.org>
+Cc: Mathieu Desnoyers <mathieu.desnoyers@efficios.com>
+Cc: Nathan Chancellor <nathan@kernel.org>
+Cc: Linus Torvalds <torvalds@linux-foundation.org>
+Link: https://lore.kernel.org/20250822183606.12962cc3@batman.local.home
+Fixes: c20489dad156 ("ftrace: Assign iter->hash to filter or notrace hashes on seq read")
+Closes: https://lore.kernel.org/all/20250813023044.2121943-1-wutengda@huaweicloud.com/
+Closes: https://lore.kernel.org/all/20250822192437.GA458494@ax162/
+Reported-by: Tengda Wu <wutengda@huaweicloud.com>
+Tested-by: Tengda Wu <wutengda@huaweicloud.com>
+Tested-by: Nathan Chancellor <nathan@kernel.org>
+Signed-off-by: Steven Rostedt (Google) <rostedt@goodmis.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/hwmon/gsc-hwmon.c |    4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ kernel/trace/ftrace.c |   19 ++++++++++---------
+ 1 file changed, 10 insertions(+), 9 deletions(-)
 
---- a/drivers/hwmon/gsc-hwmon.c
-+++ b/drivers/hwmon/gsc-hwmon.c
-@@ -65,7 +65,7 @@ static ssize_t pwm_auto_point_temp_show(
- 		return ret;
+--- a/kernel/trace/ftrace.c
++++ b/kernel/trace/ftrace.c
+@@ -4665,13 +4665,17 @@ ftrace_regex_open(struct ftrace_ops *ops
+ 	        } else {
+ 			iter->hash = alloc_and_copy_ftrace_hash(size_bits, hash);
+ 		}
++	} else {
++		if (hash)
++			iter->hash = alloc_and_copy_ftrace_hash(hash->size_bits, hash);
++		else
++			iter->hash = EMPTY_HASH;
++	}
  
- 	ret = regs[0] | regs[1] << 8;
--	return sprintf(buf, "%d\n", ret * 10);
-+	return sprintf(buf, "%d\n", ret * 100);
- }
+-		if (!iter->hash) {
+-			trace_parser_put(&iter->parser);
+-			goto out_unlock;
+-		}
+-	} else
+-		iter->hash = hash;
++	if (!iter->hash) {
++		trace_parser_put(&iter->parser);
++		goto out_unlock;
++	}
  
- static ssize_t pwm_auto_point_temp_store(struct device *dev,
-@@ -100,7 +100,7 @@ static ssize_t pwm_auto_point_pwm_show(s
- {
- 	struct sensor_device_attribute *attr = to_sensor_dev_attr(devattr);
+ 	ret = 0;
  
--	return sprintf(buf, "%d\n", 255 * (50 + (attr->index * 10)));
-+	return sprintf(buf, "%d\n", 255 * (50 + (attr->index * 10)) / 100);
- }
+@@ -6547,9 +6551,6 @@ int ftrace_regex_release(struct inode *i
+ 		ftrace_hash_move_and_update_ops(iter->ops, orig_hash,
+ 						      iter->hash, filter_hash);
+ 		mutex_unlock(&ftrace_lock);
+-	} else {
+-		/* For read only, the hash is the ops hash */
+-		iter->hash = NULL;
+ 	}
  
- static SENSOR_DEVICE_ATTR_RO(pwm1_auto_point1_pwm, pwm_auto_point_pwm, 0);
+ 	mutex_unlock(&iter->ops->func_hash->regex_lock);
 
 
 
