@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-175398-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-173322-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8487EB36843
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 16:14:42 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5D6A8B35C7D
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 13:34:52 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 244DE1C40E37
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 14:04:34 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 79FE1687BAA
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 11:34:43 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4584235334B;
-	Tue, 26 Aug 2025 14:02:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7EA852F9C23;
+	Tue, 26 Aug 2025 11:32:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="SIRwnTTR"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="VyiFOyw5"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 028B9352067;
-	Tue, 26 Aug 2025 14:02:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3B66529D26A;
+	Tue, 26 Aug 2025 11:32:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756216933; cv=none; b=bRG0Fvito9Lj960lQSMEFWg5Rycsdkv8KURhaWqjiTGF6+wZnpk6BInzvJ+6AjzFXee8H/nPxwWrhC4CaOsAifPL8oPuilwU1IyUSamSAa5V+/YayQrAHyQ++FywTemp0L2qdd2Rl7XKXQDLi4vyLSuDRpox3qmOWjzfggkV36A=
+	t=1756207946; cv=none; b=UvVy/LvK8KIei2rmqmJVJ79jese+0ACChJeaAszsPvDIB8iUw8PRCiQwHIXeH15VVhRuE3JDJzHTkhAt+i/t69xp00CxHQ+Shv/LmqQo57wgypRN7jgHnKSK1dwd9b+ilNLq1mBWhmOUDB30Ql8Dq58C4x7AWWkJA480aawfd5I=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756216933; c=relaxed/simple;
-	bh=qbLUZMlzg6jo8SOvZVGSJ0zYnm9cykDswXO2UHlK5Bg=;
+	s=arc-20240116; t=1756207946; c=relaxed/simple;
+	bh=3BXOM1lvB0rKQyx9/iwnsqJfK5VaY8B6plEwtOLF6Zc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=Kj7pxVF+NXcIE3EgHmFUWzdd+mYHPwMjIAHaIH3qU+myQVZy9s+vQUpFcYkG0qXS3mLb1/Oz6N4Xo08U5r31ZrhksVNN+QCgIkvUpwFCJKVbxPbSgOCs9f5t6PpWGLfzdTqNHw9zKh1BLxd+cmFutyXtxKaaC7jaixsNgIGPl5w=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=SIRwnTTR; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 84DBEC113D0;
-	Tue, 26 Aug 2025 14:02:12 +0000 (UTC)
+	 MIME-Version; b=YGtP4aHico70oF7swqpvuh0+yV3cy60I99DRNa5XSap0gTGL2DqMdRFuGEuip3MoTyjbl+PQpFqVepS/2hka00X6B3GPEQj1MfumowX6wncD5G0yLdj12gpKiSW4fmmNJBpP86MWMJK23BqAg6P9huL3uJP525GyWZ2liP+97YM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=VyiFOyw5; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C7CC6C4CEF1;
+	Tue, 26 Aug 2025 11:32:25 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1756216932;
-	bh=qbLUZMlzg6jo8SOvZVGSJ0zYnm9cykDswXO2UHlK5Bg=;
+	s=korg; t=1756207946;
+	bh=3BXOM1lvB0rKQyx9/iwnsqJfK5VaY8B6plEwtOLF6Zc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=SIRwnTTR3yo64kTdRRY4AoBewPT2+iPb+Rn0rEII06UNLK03/QxsRwwAo/uqYcbxQ
-	 wl8Uc/PNqTtsoOP2/FEZrz5UVVwAfcr4WYVxgo1LcR3lqJbJMOZKFBsanmeKmlahn7
-	 P+VL53oUgKj+xEjIugIp2rCS1z3q1ZMFyQEUesrw=
+	b=VyiFOyw5a+iLqjAaK1VTfCjw3AXUj0lZf6qN8gRcOMdfgr50CZFlo5ZXdqv4jk31z
+	 E40vXEwndA4azTul5x3lRta0/3L/603gMmjeS2O8V5oXmHyeci5k/pQ0wQ6EZR0h3O
+	 sOg9IR0cR1RMIpeWoBoF290y4cfUjR1dDzUgWeAs=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	=?UTF-8?q?Timur=20Krist=C3=B3f?= <timur.kristof@gmail.com>,
-	Alex Deucher <alexander.deucher@amd.com>,
-	Rodrigo Siqueira <siqueira@igalia.com>,
-	Alex Hung <alex.hung@amd.com>
-Subject: [PATCH 5.15 570/644] drm/amd/display: Fix fractional fb divider in set_pixel_clock_v3
+	Yang Li <yang.li@amlogic.com>,
+	Luiz Augusto von Dentz <luiz.von.dentz@intel.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.16 377/457] Bluetooth: hci_sync: Prevent unintended PA sync when SID is 0xFF
 Date: Tue, 26 Aug 2025 13:11:01 +0200
-Message-ID: <20250826111000.656718193@linuxfoundation.org>
+Message-ID: <20250826110946.613392507@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250826110946.507083938@linuxfoundation.org>
-References: <20250826110946.507083938@linuxfoundation.org>
+In-Reply-To: <20250826110937.289866482@linuxfoundation.org>
+References: <20250826110937.289866482@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,58 +60,84 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.16-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Timur Kristóf <timur.kristof@gmail.com>
+From: Yang Li <yang.li@amlogic.com>
 
-commit 10507478468f165ea681605d133991ed05cdff62 upstream.
+[ Upstream commit 4d19cd228bbe8ff84a63fe7b11bc756b4b4370c7 ]
 
-For later VBIOS versions, the fractional feedback divider is
-calculated as the remainder of dividing the feedback divider by
-a factor, which is set to 1000000. For reference, see:
-- calculate_fb_and_fractional_fb_divider
-- calc_pll_max_vco_construct
+After LE Extended Scan times out, conn->sid remains 0xFF,
+so the PA sync creation process should be aborted.
 
-However, in case of old VBIOS versions that have
-set_pixel_clock_v3, they only have 1 byte available for the
-fractional feedback divider, and it's expected to be set to the
-remainder from dividing the feedback divider by 10.
-For reference see the legacy display code:
-- amdgpu_pll_compute
-- amdgpu_atombios_crtc_program_pll
+Btmon snippet from PA sync with SID=0xFF:
 
-This commit fixes set_pixel_clock_v3 by dividing the fractional
-feedback divider passed to the function by 100000.
+< HCI Command: LE Set Extended.. (0x08|0x0042) plen 6  #74726 [hci0] 863.107927
+        Extended scan: Enabled (0x01)
+        Filter duplicates: Enabled (0x01)
+        Duration: 0 msec (0x0000)
+        Period: 0.00 sec (0x0000)
+> HCI Event: Command Complete (0x0e) plen 4            #74727 [hci0] 863.109389
+      LE Set Extended Scan Enable (0x08|0x0042) ncmd 1
+        Status: Success (0x00)
+< HCI Command: LE Periodic Ad.. (0x08|0x0044) plen 14  #74728 [hci0] 865.141168
+        Options: 0x0000
+        Use advertising SID, Advertiser Address Type and address
+        Reporting initially enabled
+        SID: 0xff
+        Adv address type: Random (0x01)
+        Adv address: 0D:D7:2C:E7:42:46 (Non-Resolvable)
+        Skip: 0x0000
+        Sync timeout: 20000 msec (0x07d0)
+        Sync CTE type: 0x0000
+> HCI Event: Command Status (0x0f) plen 4              #74729 [hci0] 865.143223
+      LE Periodic Advertising Create Sync (0x08|0x0044) ncmd 1
+        Status: Success (0x00)
 
-Fixes: 4562236b3bc0 ("drm/amd/dc: Add dc display driver (v2)")
-Signed-off-by: Timur Kristóf <timur.kristof@gmail.com>
-Acked-by: Alex Deucher <alexander.deucher@amd.com>
-Reviewed-by: Rodrigo Siqueira <siqueira@igalia.com>
-Reviewed-by: Alex Hung <alex.hung@amd.com>
-Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
-(cherry picked from commit 027e7acc7e17802ebf28e1edb88a404836ad50d6)
-Cc: stable@vger.kernel.org
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: e2d471b7806b ("Bluetooth: ISO: Fix not using SID from adv report")
+Signed-off-by: Yang Li <yang.li@amlogic.com>
+Signed-off-by: Luiz Augusto von Dentz <luiz.von.dentz@intel.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/amd/display/dc/bios/command_table.c |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ net/bluetooth/hci_sync.c | 12 ++++++++----
+ 1 file changed, 8 insertions(+), 4 deletions(-)
 
---- a/drivers/gpu/drm/amd/display/dc/bios/command_table.c
-+++ b/drivers/gpu/drm/amd/display/dc/bios/command_table.c
-@@ -992,7 +992,7 @@ static enum bp_result set_pixel_clock_v3
- 	allocation.sPCLKInput.usFbDiv =
- 			cpu_to_le16((uint16_t)bp_params->feedback_divider);
- 	allocation.sPCLKInput.ucFracFbDiv =
--			(uint8_t)bp_params->fractional_feedback_divider;
-+			(uint8_t)(bp_params->fractional_feedback_divider / 100000);
- 	allocation.sPCLKInput.ucPostDiv =
- 			(uint8_t)bp_params->pixel_clock_post_divider;
+diff --git a/net/bluetooth/hci_sync.c b/net/bluetooth/hci_sync.c
+index 892eca21c6c4..a1b063fde286 100644
+--- a/net/bluetooth/hci_sync.c
++++ b/net/bluetooth/hci_sync.c
+@@ -7045,10 +7045,13 @@ static int hci_le_pa_create_sync(struct hci_dev *hdev, void *data)
+ 	/* SID has not been set listen for HCI_EV_LE_EXT_ADV_REPORT to update
+ 	 * it.
+ 	 */
+-	if (conn->sid == HCI_SID_INVALID)
+-		__hci_cmd_sync_status_sk(hdev, HCI_OP_NOP, 0, NULL,
+-					 HCI_EV_LE_EXT_ADV_REPORT,
+-					 conn->conn_timeout, NULL);
++	if (conn->sid == HCI_SID_INVALID) {
++		err = __hci_cmd_sync_status_sk(hdev, HCI_OP_NOP, 0, NULL,
++					       HCI_EV_LE_EXT_ADV_REPORT,
++					       conn->conn_timeout, NULL);
++		if (err == -ETIMEDOUT)
++			goto done;
++	}
  
+ 	memset(&cp, 0, sizeof(cp));
+ 	cp.options = qos->bcast.options;
+@@ -7078,6 +7081,7 @@ static int hci_le_pa_create_sync(struct hci_dev *hdev, void *data)
+ 		__hci_cmd_sync_status(hdev, HCI_OP_LE_PA_CREATE_SYNC_CANCEL,
+ 				      0, NULL, HCI_CMD_TIMEOUT);
+ 
++done:
+ 	hci_dev_clear_flag(hdev, HCI_PA_SYNC);
+ 
+ 	/* Update passive scan since HCI_PA_SYNC flag has been cleared */
+-- 
+2.50.1
+
 
 
 
