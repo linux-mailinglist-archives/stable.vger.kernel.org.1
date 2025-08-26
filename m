@@ -1,55 +1,58 @@
-Return-Path: <stable+bounces-174368-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-175506-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 62DFDB36311
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 15:26:09 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id F36AEB36815
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 16:12:49 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 1D76B2A5D1A
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 13:18:22 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id F06EBB6308A
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 14:07:07 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 317F533EAF9;
-	Tue, 26 Aug 2025 13:16:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 82F7134DCEC;
+	Tue, 26 Aug 2025 14:07:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ctyN9GEz"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="SXJ+FhzB"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E44CD4C6D;
-	Tue, 26 Aug 2025 13:16:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 406B434DCC0;
+	Tue, 26 Aug 2025 14:07:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756214206; cv=none; b=dTSPzaCfv6DJ1bBftWR3o7Z7v8TW69Mf2ZhN4ysumsTI6DIIu6KHr3Qw0IGQHnQESiKGZnO9v5zl9V2KPWtioZ8N7iDun8vxVI0inVHTj0wuS1cvKIuAUrNNb3PYQwrsxFkN3hGRXMKfPjfAJa98naQh17txyf/GK77qDlFb+qQ=
+	t=1756217224; cv=none; b=jEdlZANYr/wD6/+iXD5tAiq+wvX86rPQSXH6xcJls25ucQpEDAXimha//uzaeAm+5Udh64S4YTvZodrrrShz5L2devfmqBXq3vqxoitZgnqwEdc4X7mdfj0SYqPo67RTBCgGiVYOIhhOpseNwi6/qU9/Q+SIvEBtROpJY5lbbDM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756214206; c=relaxed/simple;
-	bh=zvJBujUZBtBRPIxoB0pqE6jr2htalqQENW9TuhkO798=;
+	s=arc-20240116; t=1756217224; c=relaxed/simple;
+	bh=v4OaJ3SU7uHGU/6LP9FJQRX6xhzVKikmMoAg2q2GrVg=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=pQvlMMGsgC92rzPZanvcCnIrvkf4zhbYYQ3aEu3cb7tqbwjRF27G/G4mocS06xeYlcU1M9mjy5+ZvwTFGW5GedNGG2hENbmZ8NRNkhW+V85jnCkCM4BX2MgWhVP/SlltPdM5n/VKR0JpvYx6yEZ+q3+AgS4jDsirOcSX4tEY5sE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ctyN9GEz; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2849DC4CEF1;
-	Tue, 26 Aug 2025 13:16:44 +0000 (UTC)
+	 MIME-Version; b=A+M1gi++tFBmSTg32njtFl3Q6uPUiqeZUJu/PY9V9HQBSgYE6etlOx7Ga/qrUmZ42m9AQ7WlTdhP0HwOc4HqQ9odzpq1mYRQ7lFhoVCJOKHb3U7xPSJC/WmRlEdj2cliZLl+aXJC0SolHpjfX2blv1rm1wnD4tW/jiAKKYM5yQ8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=SXJ+FhzB; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 841BDC113CF;
+	Tue, 26 Aug 2025 14:07:03 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1756214205;
-	bh=zvJBujUZBtBRPIxoB0pqE6jr2htalqQENW9TuhkO798=;
+	s=korg; t=1756217224;
+	bh=v4OaJ3SU7uHGU/6LP9FJQRX6xhzVKikmMoAg2q2GrVg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=ctyN9GEzFkyo71z+Pc9YjmtZzBLuRTKQsAVhGWl3pBLQyfgzrVa+ayxrH4I8PdRF7
-	 bmdtBOz+HTgeRsvFDZfIHRPdTMLeIdPPCVy/bYj/F7iVjA3ur4Z56eqmnSkMi71jVW
-	 h2zaOtEZryK4CKYX1++x7UaYZATMR/NFwE0F/jzs=
+	b=SXJ+FhzBcIVI2xJMhvS8+9drRiPBePTMD18GgR+8b7e1I6Ylr0gL6eSgWfIeiHpjp
+	 eXqN1g31KE5+oCtxfJ7fmCSmS9xywS0wGtIqh4yP6hrScy7jBm11s1kgligT2mD8KX
+	 MW4o7mKkTPMGfMpDnWHgjAJu9YbFvXHj8fQl/WiI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Benjamin Coddington <bcodding@redhat.com>,
-	Trond Myklebust <trond.myklebust@hammerspace.com>
-Subject: [PATCH 6.1 018/482] NFS: Fix the setting of capabilities when automounting a new filesystem
+	Dan Carpenter <dan.carpenter@linaro.org>,
+	Xiang Mei <xmei5@asu.edu>,
+	Cong Wang <xiyou.wangcong@gmail.com>,
+	Paolo Abeni <pabeni@redhat.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.10 061/523] net/sched: sch_qfq: Avoid triggering might_sleep in atomic context in qfq_delete_class
 Date: Tue, 26 Aug 2025 13:04:31 +0200
-Message-ID: <20250826110931.239422598@linuxfoundation.org>
+Message-ID: <20250826110926.090601659@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250826110930.769259449@linuxfoundation.org>
-References: <20250826110930.769259449@linuxfoundation.org>
+In-Reply-To: <20250826110924.562212281@linuxfoundation.org>
+References: <20250826110924.562212281@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,169 +64,78 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Trond Myklebust <trond.myklebust@hammerspace.com>
+From: Xiang Mei <xmei5@asu.edu>
 
-commit b01f21cacde9f2878492cf318fee61bf4ccad323 upstream.
+[ Upstream commit cf074eca0065bc5142e6004ae236bb35a2687fdf ]
 
-Capabilities cannot be inherited when we cross into a new filesystem.
-They need to be reset to the minimal defaults, and then probed for
-again.
+might_sleep could be trigger in the atomic context in qfq_delete_class.
 
-Fixes: 54ceac451598 ("NFS: Share NFS superblocks per-protocol per-server per-FSID")
-Cc: stable@vger.kernel.org
-Reviewed-by: Benjamin Coddington <bcodding@redhat.com>
-Signed-off-by: Trond Myklebust <trond.myklebust@hammerspace.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+qfq_destroy_class was moved into atomic context locked
+by sch_tree_lock to avoid a race condition bug on
+qfq_aggregate. However, might_sleep could be triggered by
+qfq_destroy_class, which introduced sleeping in atomic context (path:
+qfq_destroy_class->qdisc_put->__qdisc_destroy->lockdep_unregister_key
+->might_sleep).
+
+Considering the race is on the qfq_aggregate objects, keeping
+qfq_rm_from_agg in the lock but moving the left part out can solve
+this issue.
+
+Fixes: 5e28d5a3f774 ("net/sched: sch_qfq: Fix race condition on qfq_aggregate")
+Reported-by: Dan Carpenter <dan.carpenter@linaro.org>
+Signed-off-by: Xiang Mei <xmei5@asu.edu>
+Link: https://patch.msgid.link/4a04e0cc-a64b-44e7-9213-2880ed641d77@sabinyo.mountain
+Reviewed-by: Cong Wang <xiyou.wangcong@gmail.com>
+Reviewed-by: Dan Carpenter <dan.carpenter@linaro.org>
+Link: https://patch.msgid.link/20250717230128.159766-1-xmei5@asu.edu
+Signed-off-by: Paolo Abeni <pabeni@redhat.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/nfs/client.c     |   44 ++++++++++++++++++++++++++++++++++++++++++--
- fs/nfs/internal.h   |    2 +-
- fs/nfs/nfs4client.c |   20 +-------------------
- fs/nfs/nfs4proc.c   |    2 +-
- 4 files changed, 45 insertions(+), 23 deletions(-)
+ net/sched/sch_qfq.c | 7 +++----
+ 1 file changed, 3 insertions(+), 4 deletions(-)
 
---- a/fs/nfs/client.c
-+++ b/fs/nfs/client.c
-@@ -657,6 +657,44 @@ struct nfs_client *nfs_init_client(struc
- }
- EXPORT_SYMBOL_GPL(nfs_init_client);
+diff --git a/net/sched/sch_qfq.c b/net/sched/sch_qfq.c
+index e412340f639d2..d8e01cca576e7 100644
+--- a/net/sched/sch_qfq.c
++++ b/net/sched/sch_qfq.c
+@@ -538,9 +538,6 @@ static int qfq_change_class(struct Qdisc *sch, u32 classid, u32 parentid,
  
-+static void nfs4_server_set_init_caps(struct nfs_server *server)
-+{
-+#if IS_ENABLED(CONFIG_NFS_V4)
-+	/* Set the basic capabilities */
-+	server->caps = server->nfs_client->cl_mvops->init_caps;
-+	if (server->flags & NFS_MOUNT_NORDIRPLUS)
-+		server->caps &= ~NFS_CAP_READDIRPLUS;
-+	if (server->nfs_client->cl_proto == XPRT_TRANSPORT_RDMA)
-+		server->caps &= ~NFS_CAP_READ_PLUS;
-+
-+	/*
-+	 * Don't use NFS uid/gid mapping if we're using AUTH_SYS or lower
-+	 * authentication.
-+	 */
-+	if (nfs4_disable_idmapping &&
-+	    server->client->cl_auth->au_flavor == RPC_AUTH_UNIX)
-+		server->caps |= NFS_CAP_UIDGID_NOMAP;
-+#endif
-+}
-+
-+void nfs_server_set_init_caps(struct nfs_server *server)
-+{
-+	switch (server->nfs_client->rpc_ops->version) {
-+	case 2:
-+		server->caps = NFS_CAP_HARDLINKS | NFS_CAP_SYMLINKS;
-+		break;
-+	case 3:
-+		server->caps = NFS_CAP_HARDLINKS | NFS_CAP_SYMLINKS;
-+		if (!(server->flags & NFS_MOUNT_NORDIRPLUS))
-+			server->caps |= NFS_CAP_READDIRPLUS;
-+		break;
-+	default:
-+		nfs4_server_set_init_caps(server);
-+		break;
-+	}
-+}
-+EXPORT_SYMBOL_GPL(nfs_server_set_init_caps);
-+
- /*
-  * Create a version 2 or 3 client
-  */
-@@ -695,7 +733,6 @@ static int nfs_init_server(struct nfs_se
- 	/* Initialise the client representation from the mount data */
- 	server->flags = ctx->flags;
- 	server->options = ctx->options;
--	server->caps |= NFS_CAP_HARDLINKS | NFS_CAP_SYMLINKS;
- 
- 	switch (clp->rpc_ops->version) {
- 	case 2:
-@@ -731,6 +768,8 @@ static int nfs_init_server(struct nfs_se
- 	if (error < 0)
- 		goto error;
- 
-+	nfs_server_set_init_caps(server);
-+
- 	/* Preserve the values of mount_server-related mount options */
- 	if (ctx->mount_server.addrlen) {
- 		memcpy(&server->mountd_address, &ctx->mount_server.address,
-@@ -905,7 +944,6 @@ void nfs_server_copy_userdata(struct nfs
- 	target->acregmax = source->acregmax;
- 	target->acdirmin = source->acdirmin;
- 	target->acdirmax = source->acdirmax;
--	target->caps = source->caps;
- 	target->options = source->options;
- 	target->auth_info = source->auth_info;
- 	target->port = source->port;
-@@ -1112,6 +1150,8 @@ struct nfs_server *nfs_clone_server(stru
- 	if (error < 0)
- 		goto out_free_server;
- 
-+	nfs_server_set_init_caps(server);
-+
- 	/* probe the filesystem info for this server filesystem */
- 	error = nfs_probe_server(server, fh);
- 	if (error < 0)
---- a/fs/nfs/internal.h
-+++ b/fs/nfs/internal.h
-@@ -219,7 +219,7 @@ extern struct nfs_client *
- nfs4_find_client_sessionid(struct net *, const struct sockaddr *,
- 				struct nfs4_sessionid *, u32);
- extern struct nfs_server *nfs_create_server(struct fs_context *);
--extern void nfs4_server_set_init_caps(struct nfs_server *);
-+extern void nfs_server_set_init_caps(struct nfs_server *);
- extern struct nfs_server *nfs4_create_server(struct fs_context *);
- extern struct nfs_server *nfs4_create_referral_server(struct fs_context *);
- extern int nfs4_update_server(struct nfs_server *server, const char *hostname,
---- a/fs/nfs/nfs4client.c
-+++ b/fs/nfs/nfs4client.c
-@@ -1065,24 +1065,6 @@ static void nfs4_session_limit_xasize(st
- #endif
- }
- 
--void nfs4_server_set_init_caps(struct nfs_server *server)
--{
--	/* Set the basic capabilities */
--	server->caps |= server->nfs_client->cl_mvops->init_caps;
--	if (server->flags & NFS_MOUNT_NORDIRPLUS)
--			server->caps &= ~NFS_CAP_READDIRPLUS;
--	if (server->nfs_client->cl_proto == XPRT_TRANSPORT_RDMA)
--		server->caps &= ~NFS_CAP_READ_PLUS;
--
--	/*
--	 * Don't use NFS uid/gid mapping if we're using AUTH_SYS or lower
--	 * authentication.
--	 */
--	if (nfs4_disable_idmapping &&
--			server->client->cl_auth->au_flavor == RPC_AUTH_UNIX)
--		server->caps |= NFS_CAP_UIDGID_NOMAP;
--}
--
- static int nfs4_server_common_setup(struct nfs_server *server,
- 		struct nfs_fh *mntfh, bool auth_probe)
+ static void qfq_destroy_class(struct Qdisc *sch, struct qfq_class *cl)
  {
-@@ -1097,7 +1079,7 @@ static int nfs4_server_common_setup(stru
- 	if (error < 0)
- 		goto out;
+-	struct qfq_sched *q = qdisc_priv(sch);
+-
+-	qfq_rm_from_agg(q, cl);
+ 	gen_kill_estimator(&cl->rate_est);
+ 	qdisc_put(cl->qdisc);
+ 	kfree(cl);
+@@ -558,10 +555,11 @@ static int qfq_delete_class(struct Qdisc *sch, unsigned long arg)
  
--	nfs4_server_set_init_caps(server);
-+	nfs_server_set_init_caps(server);
+ 	qdisc_purge_queue(cl->qdisc);
+ 	qdisc_class_hash_remove(&q->clhash, &cl->common);
+-	qfq_destroy_class(sch, cl);
++	qfq_rm_from_agg(q, cl);
  
- 	/* Probe the root fh to retrieve its FSID and filehandle */
- 	error = nfs4_get_rootfh(server, mntfh, auth_probe);
---- a/fs/nfs/nfs4proc.c
-+++ b/fs/nfs/nfs4proc.c
-@@ -3957,7 +3957,7 @@ int nfs4_server_capabilities(struct nfs_
- 	};
- 	int err;
+ 	sch_tree_unlock(sch);
  
--	nfs4_server_set_init_caps(server);
-+	nfs_server_set_init_caps(server);
- 	do {
- 		err = nfs4_handle_exception(server,
- 				_nfs4_server_capabilities(server, fhandle),
++	qfq_destroy_class(sch, cl);
+ 	return 0;
+ }
+ 
+@@ -1509,6 +1507,7 @@ static void qfq_destroy_qdisc(struct Qdisc *sch)
+ 	for (i = 0; i < q->clhash.hashsize; i++) {
+ 		hlist_for_each_entry_safe(cl, next, &q->clhash.hash[i],
+ 					  common.hnode) {
++			qfq_rm_from_agg(q, cl);
+ 			qfq_destroy_class(sch, cl);
+ 		}
+ 	}
+-- 
+2.39.5
+
 
 
 
