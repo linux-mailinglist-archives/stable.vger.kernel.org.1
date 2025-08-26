@@ -1,56 +1,55 @@
-Return-Path: <stable+bounces-175056-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-176019-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1AF00B3667A
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 15:57:37 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 05985B36AE6
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 16:41:48 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 59DAA3B3A84
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 13:48:28 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 621481C27668
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 14:32:22 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id DA22834DCCA;
-	Tue, 26 Aug 2025 13:47:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C8AE030AAD8;
+	Tue, 26 Aug 2025 14:29:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="aNuljIHO"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="vaeSaV4W"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 94B1934DCC3;
-	Tue, 26 Aug 2025 13:47:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8587D35337E;
+	Tue, 26 Aug 2025 14:29:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756216024; cv=none; b=caXQtlm9+wdfYfRglupe67IkPq8lzUR/txC93d6gIakB9p15/BZWUmYp3Pr4HjmMmQZvs2vT54w3nTz/3IfnsHvzAWf+pv+HY7YrZPwLwVK0y51LIfWk32U2U8LULqs37KTeWm3hml5jAolYCPG/xX3PdNuwU5Nd30E8WQ8jVq4=
+	t=1756218572; cv=none; b=cqje426sv+GBtKrF5IeYSvmMy5TPI+bOo5Bp9bHyzgXGLWYLrnN/3YoGBu6Px+yIlpfDiMTsXN+UGij6YT8vpyFSg1IPk6RetFJlopFZrmSDAlbTeTxkAVD5gn1m876UEZfNJoX4od8jlhYIH/F52bofJiQsIbNm4a2dbFfkUVc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756216024; c=relaxed/simple;
-	bh=auo579tYFXwU3zuskgAAJskq7JIAZevlmxRSKWrLIPA=;
+	s=arc-20240116; t=1756218572; c=relaxed/simple;
+	bh=gD3nqlPKiAgAThqfTU/tU/tfBZ/tzC0p+dFmdB71tZ0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=WFVKCuB9sDxBk+aJWYt9wMWaznOFdmkIH9mLdkkz3JASC+eK8r2w5jHKMZAArXnwYnyEmxrIvWcW7kQOoRNsqDQaspuY8Gd7Aq/v0Wf31IiO8hJg+nOAqTgFDy5u1wufGruA5vYa840N5ToMNGLms4ekW30UGzqlsdgnBuKQfvQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=aNuljIHO; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1A393C4CEF1;
-	Tue, 26 Aug 2025 13:47:03 +0000 (UTC)
+	 MIME-Version; b=AOctExXOg1jNXFqQbKPkml2mKBiA3bJZktuusJyTYwNsJfjQN1gcomHY9JxiWIyYP0eRE+X77j3q2Cy19Uhz/Lmcf52Wdm5wKjlEgH7N0DjgiX35rHNJwGBAlrE33cCQZBznIvocjpS5VIEOVR9WcKNQ0EFKF/ygdblY3eeQN30=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=vaeSaV4W; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 164BAC4CEF1;
+	Tue, 26 Aug 2025 14:29:31 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1756216024;
-	bh=auo579tYFXwU3zuskgAAJskq7JIAZevlmxRSKWrLIPA=;
+	s=korg; t=1756218572;
+	bh=gD3nqlPKiAgAThqfTU/tU/tfBZ/tzC0p+dFmdB71tZ0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=aNuljIHOGBvT2Re5Y++fTgZjS2SreT8YAg10flNo+Nx9enDGPU28rlMrVZtLAxgWh
-	 WtCKuuTnjJFj61W9c0j/OnvMe0phAa8YJ3YYQE8foTpJBWjJxUAKJrfy8hrjgeoclN
-	 9kGAlMu5iIfYlWRolHl5DmrSwt848Fsz90Tgx0Ko=
+	b=vaeSaV4Wj4gJRz2rDhL1VEWwCrwJ0arlhs7sj5oc0KR4UxAvWsNgHPMbC5dBc6OVo
+	 3CxaBVoeBLxXvJ3hY1w9kwjRd81Wtz38KoktzvYvFa0+sNFt/m4O66UiL/LAHN3Q8L
+	 dpxUhr+CsDeyt3fZcLy2koxZOPedXlGaBoalPxuo=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	stable@kernel.org,
-	Jiaxun Yang <jiaxun.yang@flygoat.com>,
-	Thomas Bogendoerfer <tsbogend@alpha.franken.de>
-Subject: [PATCH 5.15 255/644] MIPS: mm: tlb-r4k: Uniquify TLB entries on init
+	Jean Delvare <jdelvare@suse.de>,
+	Andrew Jeffery <andrew@codeconstruct.com.au>
+Subject: [PATCH 5.4 020/403] soc: aspeed: lpc-snoop: Cleanup resources in stack-order
 Date: Tue, 26 Aug 2025 13:05:46 +0200
-Message-ID: <20250826110952.701658963@linuxfoundation.org>
+Message-ID: <20250826110906.326123108@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250826110946.507083938@linuxfoundation.org>
-References: <20250826110946.507083938@linuxfoundation.org>
+In-Reply-To: <20250826110905.607690791@linuxfoundation.org>
+References: <20250826110905.607690791@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,103 +61,41 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+5.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jiaxun Yang <jiaxun.yang@flygoat.com>
+From: Andrew Jeffery <andrew@codeconstruct.com.au>
 
-commit 35ad7e181541aa5757f9f316768d3e64403ec843 upstream.
+commit 8481d59be606d2338dbfe14b04cdbd1a3402c150 upstream.
 
-Hardware or bootloader will initialize TLB entries to any value, which
-may collide with kernel's UNIQUE_ENTRYHI value. On MIPS microAptiv/M5150
-family of cores this will trigger machine check exception and cause boot
-failure. On M5150 simulation this could happen 7 times out of 1000 boots.
+Free the kfifo after unregistering the miscdev in
+aspeed_lpc_disable_snoop() as the kfifo is initialised before the
+miscdev in aspeed_lpc_enable_snoop().
 
-Replace local_flush_tlb_all() with r4k_tlb_uniquify() which probes each
-TLB ENTRIHI unique value for collisions before it's written, and in case
-of collision try a different ASID.
-
-Cc: stable@kernel.org
-Signed-off-by: Jiaxun Yang <jiaxun.yang@flygoat.com>
-Signed-off-by: Thomas Bogendoerfer <tsbogend@alpha.franken.de>
+Fixes: 3772e5da4454 ("drivers/misc: Aspeed LPC snoop output using misc chardev")
+Cc: stable@vger.kernel.org
+Cc: Jean Delvare <jdelvare@suse.de>
+Acked-by: Jean Delvare <jdelvare@suse.de>
+Link: https://patch.msgid.link/20250616-aspeed-lpc-snoop-fixes-v2-1-3cdd59c934d3@codeconstruct.com.au
+Signed-off-by: Andrew Jeffery <andrew@codeconstruct.com.au>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- arch/mips/mm/tlb-r4k.c |   56 ++++++++++++++++++++++++++++++++++++++++++++++++-
- 1 file changed, 55 insertions(+), 1 deletion(-)
+ drivers/soc/aspeed/aspeed-lpc-snoop.c |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/arch/mips/mm/tlb-r4k.c
-+++ b/arch/mips/mm/tlb-r4k.c
-@@ -498,6 +498,60 @@ static int __init set_ntlb(char *str)
+--- a/drivers/soc/aspeed/aspeed-lpc-snoop.c
++++ b/drivers/soc/aspeed/aspeed-lpc-snoop.c
+@@ -265,8 +265,8 @@ static void aspeed_lpc_disable_snoop(str
+ 		return;
+ 	}
  
- __setup("ntlb=", set_ntlb);
- 
-+/* Initialise all TLB entries with unique values */
-+static void r4k_tlb_uniquify(void)
-+{
-+	int entry = num_wired_entries();
-+
-+	htw_stop();
-+	write_c0_entrylo0(0);
-+	write_c0_entrylo1(0);
-+
-+	while (entry < current_cpu_data.tlbsize) {
-+		unsigned long asid_mask = cpu_asid_mask(&current_cpu_data);
-+		unsigned long asid = 0;
-+		int idx;
-+
-+		/* Skip wired MMID to make ginvt_mmid work */
-+		if (cpu_has_mmid)
-+			asid = MMID_KERNEL_WIRED + 1;
-+
-+		/* Check for match before using UNIQUE_ENTRYHI */
-+		do {
-+			if (cpu_has_mmid) {
-+				write_c0_memorymapid(asid);
-+				write_c0_entryhi(UNIQUE_ENTRYHI(entry));
-+			} else {
-+				write_c0_entryhi(UNIQUE_ENTRYHI(entry) | asid);
-+			}
-+			mtc0_tlbw_hazard();
-+			tlb_probe();
-+			tlb_probe_hazard();
-+			idx = read_c0_index();
-+			/* No match or match is on current entry */
-+			if (idx < 0 || idx == entry)
-+				break;
-+			/*
-+			 * If we hit a match, we need to try again with
-+			 * a different ASID.
-+			 */
-+			asid++;
-+		} while (asid < asid_mask);
-+
-+		if (idx >= 0 && idx != entry)
-+			panic("Unable to uniquify TLB entry %d", idx);
-+
-+		write_c0_index(entry);
-+		mtc0_tlbw_hazard();
-+		tlb_write_indexed();
-+		entry++;
-+	}
-+
-+	tlbw_use_hazard();
-+	htw_start();
-+	flush_micro_tlb();
-+}
-+
- /*
-  * Configure TLB (for init or after a CPU has been powered off).
-  */
-@@ -537,7 +591,7 @@ static void r4k_tlb_configure(void)
- 	temp_tlb_entry = current_cpu_data.tlbsize - 1;
- 
- 	/* From this point on the ARC firmware is dead.	 */
--	local_flush_tlb_all();
-+	r4k_tlb_uniquify();
- 
- 	/* Did I tell you that ARC SUCKS?  */
+-	kfifo_free(&lpc_snoop->chan[channel].fifo);
+ 	misc_deregister(&lpc_snoop->chan[channel].miscdev);
++	kfifo_free(&lpc_snoop->chan[channel].fifo);
  }
+ 
+ static int aspeed_lpc_snoop_probe(struct platform_device *pdev)
 
 
 
