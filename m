@@ -1,57 +1,55 @@
-Return-Path: <stable+bounces-174011-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-173412-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 56E79B360E9
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 15:05:06 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9D092B35D89
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 13:45:55 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 4D0553BF40C
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 13:00:57 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 61D5536784C
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 11:37:52 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D9F503597C;
-	Tue, 26 Aug 2025 13:00:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0D2352BE62B;
+	Tue, 26 Aug 2025 11:36:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="wSPxj6/F"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="0W3ogkN8"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9764D481B1;
-	Tue, 26 Aug 2025 13:00:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BF2152BEC34;
+	Tue, 26 Aug 2025 11:36:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756213256; cv=none; b=Kxq29xQpvfFtwkWGHUyBJinIxiSuXaIuy4+FdT1Nm25+Cq48C2GUh5Zmi52+XovRLUyLdM6fuYKW6rOE7gD+swYX4GQxVufphcCx/NEbnNQvz1OT11ZZfFj3vkhm0nY3stNb4NyqjJ/M4+NFP6U+iQPLfbMGt/YdhkPhovadgzE=
+	t=1756208181; cv=none; b=CuxynZwpQ2Lr4HG9EzmEGP6EpM3OzN6gm/BQFIsDASrtB0Ej2N/U0BQzxo1tEgNXXwdaWeYBH1VNyoKsyA322owT2MBqO65SiwOhTTSpLMOz+DT3ZJ8Yy0nVhPeOnysOmoDxJuUYt2sypmFhNBwurvUU3qWs5U2A2ol0xTGdKZA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756213256; c=relaxed/simple;
-	bh=qmh2Xxfn6SmgORQvaWxspfcW3zPmw23oZy9vsNGFKyI=;
+	s=arc-20240116; t=1756208181; c=relaxed/simple;
+	bh=cbvH9394EeSeNJ8GAlyPrHHsB8M86vjvveRmIU6TidI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=XsQO9JmaPzbeFdzOG0uh+PjgwCXkVlyZLRNfgkGXQO3dYMW3jFoHWtOwQUsWtl0Sd9ePc3qYhYGZ0tKwpyuxkMFtnvdmDwSgfX8HC9iA5DIwmqYMI60sYFd78cGa/05F47UV4PhXteHxGZZI2vSMBVz/h62UoELrBS3CS9fIhXc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=wSPxj6/F; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2BCECC4CEF1;
-	Tue, 26 Aug 2025 13:00:56 +0000 (UTC)
+	 MIME-Version; b=nQ/z+QToSoy41sKDkgbNIFrfvFe3TxczUEo7kv9sWaYSV+nHSVwLE+Ya8Z9tbxfg3d9R8Bu56T0GOWN/T0kPFFQ+dErjrKN1irnkQ77Kz5aoZ5Q/G+nGuv7S8RXrrREdeQCnYbst+Q/WRCmmcFnpKsOm/4T6aXWcZdUJ0Ylj85U=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=0W3ogkN8; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 22994C4CEF1;
+	Tue, 26 Aug 2025 11:36:20 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1756213256;
-	bh=qmh2Xxfn6SmgORQvaWxspfcW3zPmw23oZy9vsNGFKyI=;
+	s=korg; t=1756208181;
+	bh=cbvH9394EeSeNJ8GAlyPrHHsB8M86vjvveRmIU6TidI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=wSPxj6/FCiTAnPG9F9ENQfxykgM4PxGeULKlMSKP2DjdhMY2MCDOMUo9pSJR1chPn
-	 rHpp5SO6gHrft5Ifx/izPgbSeihXsRa9QXQ5RtbNFvRgrYJk3nWA/iAAlRGUnQtgzy
-	 OAk9Y5hd6cm6gZE/gFROlLZ6d1wxSoMkny/p1JRo=
+	b=0W3ogkN8GPCxtBKBSAxr1fm8m5JH77OvM+dT3zXSreipE2HdamizPrvZBSVCfYIDg
+	 OE84ahdJJVzYiLzmv6WOdtqq8lw4dfEBqzdjWc67cAzwftyD3JJcoH3JnB7rHiSDXp
+	 4MzqrP/JFuZdaPizwreq7UYMdVSUvGIyRzMxbAA8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	John Garry <john.g.garry@oracle.com>,
-	John Meneghini <jmeneghi@redhat.com>,
-	"Martin K. Petersen" <martin.petersen@oracle.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 279/587] scsi: aacraid: Stop using PCI_IRQ_AFFINITY
+	Li Jun <jun.li@nxp.com>,
+	Johan Hovold <johan@kernel.org>
+Subject: [PATCH 6.12 013/322] usb: dwc3: imx8mp: fix device leak at unbind
 Date: Tue, 26 Aug 2025 13:07:08 +0200
-Message-ID: <20250826111000.029025745@linuxfoundation.org>
+Message-ID: <20250826110915.563942257@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250826110952.942403671@linuxfoundation.org>
-References: <20250826110952.942403671@linuxfoundation.org>
+In-Reply-To: <20250826110915.169062587@linuxfoundation.org>
+References: <20250826110915.169062587@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,74 +61,59 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: John Garry <john.g.garry@oracle.com>
+From: Johan Hovold <johan@kernel.org>
 
-[ Upstream commit dafeaf2c03e71255438ffe5a341d94d180e6c88e ]
+commit 086a0e516f7b3844e6328a5c69e2708b66b0ce18 upstream.
 
-When PCI_IRQ_AFFINITY is set for calling pci_alloc_irq_vectors(), it
-means interrupts are spread around the available CPUs. It also means that
-the interrupts become managed, which means that an interrupt is shutdown
-when all the CPUs in the interrupt affinity mask go offline.
+Make sure to drop the reference to the dwc3 device taken by
+of_find_device_by_node() on probe errors and on driver unbind.
 
-Using managed interrupts in this way means that we should ensure that
-completions should not occur on HW queues where the associated interrupt
-is shutdown. This is typically achieved by ensuring only CPUs which are
-online can generate IO completion traffic to the HW queue which they are
-mapped to (so that they can also serve completion interrupts for that HW
-queue).
-
-The problem in the driver is that a CPU can generate completions to a HW
-queue whose interrupt may be shutdown, as the CPUs in the HW queue
-interrupt affinity mask may be offline. This can cause IOs to never
-complete and hang the system. The driver maintains its own CPU <-> HW
-queue mapping for submissions, see aac_fib_vector_assign(), but this does
-not reflect the CPU <-> HW queue interrupt affinity mapping.
-
-Commit 9dc704dcc09e ("scsi: aacraid: Reply queue mapping to CPUs based on
-IRQ affinity") tried to remedy this issue may mapping CPUs properly to HW
-queue interrupts. However this was later reverted in commit c5becf57dd56
-("Revert "scsi: aacraid: Reply queue mapping to CPUs based on IRQ
-affinity") - it seems that there were other reports of hangs. I guess
-that this was due to some implementation issue in the original commit or
-maybe a HW issue.
-
-Fix the very original hang by just not using managed interrupts by not
-setting PCI_IRQ_AFFINITY.  In this way, all CPUs will be in each HW queue
-affinity mask, so should not create completion problems if any CPUs go
-offline.
-
-Signed-off-by: John Garry <john.g.garry@oracle.com>
-Link: https://lore.kernel.org/r/20250715111535.499853-1-john.g.garry@oracle.com
-Closes: https://lore.kernel.org/linux-scsi/20250618192427.3845724-1-jmeneghi@redhat.com/
-Reviewed-by: John Meneghini <jmeneghi@redhat.com>
-Tested-by: John Meneghini <jmeneghi@redhat.com>
-Signed-off-by: Martin K. Petersen <martin.petersen@oracle.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Fixes: 6dd2565989b4 ("usb: dwc3: add imx8mp dwc3 glue layer driver")
+Cc: stable@vger.kernel.org	# 5.12
+Cc: Li Jun <jun.li@nxp.com>
+Signed-off-by: Johan Hovold <johan@kernel.org>
+Link: https://lore.kernel.org/r/20250724091910.21092-2-johan@kernel.org
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/scsi/aacraid/comminit.c | 3 +--
- 1 file changed, 1 insertion(+), 2 deletions(-)
+ drivers/usb/dwc3/dwc3-imx8mp.c |    7 ++++++-
+ 1 file changed, 6 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/scsi/aacraid/comminit.c b/drivers/scsi/aacraid/comminit.c
-index 0f64b0244303..31b95e6c96c5 100644
---- a/drivers/scsi/aacraid/comminit.c
-+++ b/drivers/scsi/aacraid/comminit.c
-@@ -481,8 +481,7 @@ void aac_define_int_mode(struct aac_dev *dev)
- 	    pci_find_capability(dev->pdev, PCI_CAP_ID_MSIX)) {
- 		min_msix = 2;
- 		i = pci_alloc_irq_vectors(dev->pdev,
--					  min_msix, msi_count,
--					  PCI_IRQ_MSIX | PCI_IRQ_AFFINITY);
-+					  min_msix, msi_count, PCI_IRQ_MSIX);
- 		if (i > 0) {
- 			dev->msi_enabled = 1;
- 			msi_count = i;
--- 
-2.39.5
-
+--- a/drivers/usb/dwc3/dwc3-imx8mp.c
++++ b/drivers/usb/dwc3/dwc3-imx8mp.c
+@@ -244,7 +244,7 @@ static int dwc3_imx8mp_probe(struct plat
+ 					IRQF_ONESHOT, dev_name(dev), dwc3_imx);
+ 	if (err) {
+ 		dev_err(dev, "failed to request IRQ #%d --> %d\n", irq, err);
+-		goto depopulate;
++		goto put_dwc3;
+ 	}
+ 
+ 	device_set_wakeup_capable(dev, true);
+@@ -252,6 +252,8 @@ static int dwc3_imx8mp_probe(struct plat
+ 
+ 	return 0;
+ 
++put_dwc3:
++	put_device(&dwc3_imx->dwc3->dev);
+ depopulate:
+ 	of_platform_depopulate(dev);
+ remove_swnode:
+@@ -265,8 +267,11 @@ disable_rpm:
+ 
+ static void dwc3_imx8mp_remove(struct platform_device *pdev)
+ {
++	struct dwc3_imx8mp *dwc3_imx = platform_get_drvdata(pdev);
+ 	struct device *dev = &pdev->dev;
+ 
++	put_device(&dwc3_imx->dwc3->dev);
++
+ 	pm_runtime_get_sync(dev);
+ 	of_platform_depopulate(dev);
+ 	device_remove_software_node(dev);
 
 
 
