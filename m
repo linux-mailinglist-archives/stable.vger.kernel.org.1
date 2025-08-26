@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-176032-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-173051-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6C7B8B36B19
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 16:42:57 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 03BC2B35B86
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 13:25:21 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id D223A9858C2
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 14:32:25 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 39BDB18896A5
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 11:22:27 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A3F2532A3C8;
-	Tue, 26 Aug 2025 14:30:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id AA80F2BF3E2;
+	Tue, 26 Aug 2025 11:20:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ad2Ne+KY"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="OLRZcF3K"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6192934DCC1;
-	Tue, 26 Aug 2025 14:30:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 67C3E1A256B;
+	Tue, 26 Aug 2025 11:20:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756218607; cv=none; b=NuQMpdEAurGi5fNCdO7eHjb3HwEc3Hxg+Qv2k9BVftsZXDtbq0ahQ1ro+sIjNo9KWm5AqFNrFiRSyEUpQRih0x4zUwkaaT5PDm9gla+kfto6zGeScq/sDzqLJcktX7Pobi/Q4rzXSf7V3yV1EbOTWNHfMtlPCUKyS+qbWiLu9Kw=
+	t=1756207247; cv=none; b=kA3IgDxqZchAZXoRWxwVy4IET1W0x98aEgn0FS/ZicGSBsLS9P5d7f9UjNsUrBcPL0ATtL9mEs4FSQYoNmiW6KwmxXuxVrkStaOnTfQ84jovESwWy9S8s2vbqMV8Kc78mlXx9Odu02Iup8UGq2kdEcw612zQjSkutcccFxsQWtI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756218607; c=relaxed/simple;
-	bh=K4epvN9WHQNwwGp9/Sl4MA92mBW+hmNADKCKDjh2uJU=;
+	s=arc-20240116; t=1756207247; c=relaxed/simple;
+	bh=B2I1mm4EM+tEgXpxmnyKMb+7D/R9fGm8kU61vtLoQ+0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=nge6GSxsx6qJ+TCJx64p6u0jA7JKZvjiPdw+dJRUX682+/3hcRqVyOFbQATfM8RcAQGecs0kOms3dfGEqpVbT6s8th9xOW8+Ogyg3TFW+wQJvQ4trT+qvfPfAraGEBMOMwU/PVuJOT6PIBg97DHPGCFKRCFAJTVM+8ja15IPSEQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ad2Ne+KY; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id DD3E3C4CEF1;
-	Tue, 26 Aug 2025 14:30:06 +0000 (UTC)
+	 MIME-Version; b=KUcB9raByYQB9q1aXIk3zv4OSWpg3OuHfLJDB8AZtq/rOVB1PieC5cCsZrDBz9mGn3lKjbP8zuU+3RqjXxygsdV/TanRZtVakxj7T+yOp/qs1hEp0Mf0nU9QiQc2eMl7tTo/KZ9lMAx4GXYxJiNhBHOMN3sMDzBSBR83ChYXYFw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=OLRZcF3K; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id AC2D9C4CEF1;
+	Tue, 26 Aug 2025 11:20:46 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1756218607;
-	bh=K4epvN9WHQNwwGp9/Sl4MA92mBW+hmNADKCKDjh2uJU=;
+	s=korg; t=1756207247;
+	bh=B2I1mm4EM+tEgXpxmnyKMb+7D/R9fGm8kU61vtLoQ+0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=ad2Ne+KYGPrH6g7Jk5S6fyLNLpJxXtrsAAAGjyhPXS6icX1Punqjj8ywXV7owPF5Z
-	 1YQb1BPTk0MzBPyq12eBQLm2IzhAf4A51P20Mh6NywaSpDqwLShbRgGcUMeVnHP1RU
-	 k03h6AYZhzqmYFizN/lzshTpswNv6pub+vi22Ym0=
+	b=OLRZcF3KfNMnR0XMcwCtDHlR1BcAml2GB5ZlhsGowzLVwZt8CHwBEVRzL0sEeyLKf
+	 Iht/t9pUCuaetyDy1IWTFcitOZSduos7U2HHJyBeC6ylPHnTrk/edj3tBjRNiZA/X1
+	 1Q8z8b99fkCaElcrBnHYI6Wl7l5UBBruBzo5oiuI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Peter Chen <peter.chen@nxp.com>,
-	Jun Li <jun.li@nxp.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.4 065/403] usb: chipidea: udc: add new API ci_hdrc_gadget_connect
+	stable@kernel.org,
+	Kathiravan Thirumoorthy <kathiravan.thirumoorthy@oss.qualcomm.com>,
+	Konrad Dybcio <konrad.dybcio@oss.qualcomm.com>,
+	Vinod Koul <vkoul@kernel.org>
+Subject: [PATCH 6.16 107/457] phy: qcom: phy-qcom-m31: Update IPQ5332 M31 USB phy initialization sequence
 Date: Tue, 26 Aug 2025 13:06:31 +0200
-Message-ID: <20250826110907.874786249@linuxfoundation.org>
+Message-ID: <20250826110940.018042826@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250826110905.607690791@linuxfoundation.org>
-References: <20250826110905.607690791@linuxfoundation.org>
+In-Reply-To: <20250826110937.289866482@linuxfoundation.org>
+References: <20250826110937.289866482@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,119 +63,76 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.4-stable review patch.  If anyone has any objections, please let me know.
+6.16-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Peter Chen <peter.chen@nxp.com>
+From: Kathiravan Thirumoorthy <kathiravan.thirumoorthy@oss.qualcomm.com>
 
-[ Upstream commit d16ab536aad208421c5ed32cdcb01b5ab6aa1f19 ]
+commit 4a3556b81b99f0c8c0358f7cc6801a62b4538fe2 upstream.
 
-This API is used enable device function, it is called at below
-situations:
-- VBUS is connected during boots up
-- Hot plug occurs during runtime
+The current configuration used for the IPQ5332 M31 USB PHY fails the
+Near End High Speed Signal Quality compliance test. To resolve this,
+update the initialization sequence as specified in the Hardware Design
+Document.
 
-Signed-off-by: Peter Chen <peter.chen@nxp.com>
-Signed-off-by: Jun Li <jun.li@nxp.com>
-Stable-dep-of: b7a62611fab7 ("usb: chipidea: add USB PHY event")
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Fixes: 08e49af50701 ("phy: qcom: Introduce M31 USB PHY driver")
+Cc: stable@kernel.org
+Signed-off-by: Kathiravan Thirumoorthy <kathiravan.thirumoorthy@oss.qualcomm.com>
+Reviewed-by: Konrad Dybcio <konrad.dybcio@oss.qualcomm.com>
+Link: https://lore.kernel.org/r/20250630-ipq5332_hsphy_complaince-v2-1-63621439ebdb@oss.qualcomm.com
+Signed-off-by: Vinod Koul <vkoul@kernel.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/usb/chipidea/udc.c | 63 +++++++++++++++++++-------------------
- 1 file changed, 32 insertions(+), 31 deletions(-)
+ drivers/phy/qualcomm/phy-qcom-m31.c |   14 ++++++++++----
+ 1 file changed, 10 insertions(+), 4 deletions(-)
 
-diff --git a/drivers/usb/chipidea/udc.c b/drivers/usb/chipidea/udc.c
-index a6ce6b89b271..e9ef6271e20d 100644
---- a/drivers/usb/chipidea/udc.c
-+++ b/drivers/usb/chipidea/udc.c
-@@ -1533,6 +1533,33 @@ static const struct usb_ep_ops usb_ep_ops = {
- /******************************************************************************
-  * GADGET block
-  *****************************************************************************/
-+/**
-+ * ci_hdrc_gadget_connect: caller makes sure gadget driver is binded
-+ */
-+static void ci_hdrc_gadget_connect(struct usb_gadget *_gadget, int is_active)
-+{
-+	struct ci_hdrc *ci = container_of(_gadget, struct ci_hdrc, gadget);
+--- a/drivers/phy/qualcomm/phy-qcom-m31.c
++++ b/drivers/phy/qualcomm/phy-qcom-m31.c
+@@ -58,14 +58,16 @@
+  #define USB2_0_TX_ENABLE		BIT(2)
+ 
+ #define USB2PHY_USB_PHY_M31_XCFGI_4	0xc8
+- #define HSTX_SLEW_RATE_565PS		GENMASK(1, 0)
++ #define HSTX_SLEW_RATE_400PS		GENMASK(2, 0)
+  #define PLL_CHARGING_PUMP_CURRENT_35UA	GENMASK(4, 3)
+  #define ODT_VALUE_38_02_OHM		GENMASK(7, 6)
+ 
+ #define USB2PHY_USB_PHY_M31_XCFGI_5	0xcc
+- #define ODT_VALUE_45_02_OHM		BIT(2)
+  #define HSTX_PRE_EMPHASIS_LEVEL_0_55MA	BIT(0)
+ 
++#define USB2PHY_USB_PHY_M31_XCFGI_9	0xdc
++ #define HSTX_CURRENT_17_1MA_385MV	BIT(1)
 +
-+	if (is_active) {
-+		pm_runtime_get_sync(&_gadget->dev);
-+		hw_device_reset(ci);
-+		hw_device_state(ci, ci->ep0out->qh.dma);
-+		usb_gadget_set_state(_gadget, USB_STATE_POWERED);
-+		usb_udc_vbus_handler(_gadget, true);
-+	} else {
-+		usb_udc_vbus_handler(_gadget, false);
-+		if (ci->driver)
-+			ci->driver->disconnect(&ci->gadget);
-+		hw_device_state(ci, 0);
-+		if (ci->platdata->notify_event)
-+			ci->platdata->notify_event(ci,
-+			CI_HDRC_CONTROLLER_STOPPED_EVENT);
-+		_gadget_stop_activity(&ci->gadget);
-+		pm_runtime_put_sync(&_gadget->dev);
-+		usb_gadget_set_state(_gadget, USB_STATE_NOTATTACHED);
-+	}
-+}
-+
- static int ci_udc_vbus_session(struct usb_gadget *_gadget, int is_active)
- {
- 	struct ci_hdrc *ci = container_of(_gadget, struct ci_hdrc, gadget);
-@@ -1549,26 +1576,8 @@ static int ci_udc_vbus_session(struct usb_gadget *_gadget, int is_active)
- 		usb_phy_set_charger_state(ci->usb_phy, is_active ?
- 			USB_CHARGER_PRESENT : USB_CHARGER_ABSENT);
- 
--	if (gadget_ready) {
--		if (is_active) {
--			pm_runtime_get_sync(&_gadget->dev);
--			hw_device_reset(ci);
--			hw_device_state(ci, ci->ep0out->qh.dma);
--			usb_gadget_set_state(_gadget, USB_STATE_POWERED);
--			usb_udc_vbus_handler(_gadget, true);
--		} else {
--			usb_udc_vbus_handler(_gadget, false);
--			if (ci->driver)
--				ci->driver->disconnect(&ci->gadget);
--			hw_device_state(ci, 0);
--			if (ci->platdata->notify_event)
--				ci->platdata->notify_event(ci,
--				CI_HDRC_CONTROLLER_STOPPED_EVENT);
--			_gadget_stop_activity(&ci->gadget);
--			pm_runtime_put_sync(&_gadget->dev);
--			usb_gadget_set_state(_gadget, USB_STATE_NOTATTACHED);
--		}
--	}
-+	if (gadget_ready)
-+		ci_hdrc_gadget_connect(_gadget, is_active);
- 
- 	return 0;
- }
-@@ -1794,18 +1803,10 @@ static int ci_udc_start(struct usb_gadget *gadget,
- 		return retval;
- 	}
- 
--	pm_runtime_get_sync(&ci->gadget.dev);
--	if (ci->vbus_active) {
--		hw_device_reset(ci);
--	} else {
-+	if (ci->vbus_active)
-+		ci_hdrc_gadget_connect(gadget, 1);
-+	else
- 		usb_udc_vbus_handler(&ci->gadget, false);
--		pm_runtime_put_sync(&ci->gadget.dev);
--		return retval;
--	}
--
--	retval = hw_device_state(ci, ci->ep0out->qh.dma);
--	if (retval)
--		pm_runtime_put_sync(&ci->gadget.dev);
- 
- 	return retval;
- }
--- 
-2.39.5
-
+ #define USB2PHY_USB_PHY_M31_XCFGI_11	0xe4
+  #define XCFG_COARSE_TUNE_NUM		BIT(1)
+  #define XCFG_FINE_TUNE_NUM		BIT(3)
+@@ -164,7 +166,7 @@ static struct m31_phy_regs m31_ipq5332_r
+ 	},
+ 	{
+ 		USB2PHY_USB_PHY_M31_XCFGI_4,
+-		HSTX_SLEW_RATE_565PS | PLL_CHARGING_PUMP_CURRENT_35UA | ODT_VALUE_38_02_OHM,
++		HSTX_SLEW_RATE_400PS | PLL_CHARGING_PUMP_CURRENT_35UA | ODT_VALUE_38_02_OHM,
+ 		0
+ 	},
+ 	{
+@@ -174,10 +176,14 @@ static struct m31_phy_regs m31_ipq5332_r
+ 	},
+ 	{
+ 		USB2PHY_USB_PHY_M31_XCFGI_5,
+-		ODT_VALUE_45_02_OHM | HSTX_PRE_EMPHASIS_LEVEL_0_55MA,
++		HSTX_PRE_EMPHASIS_LEVEL_0_55MA,
+ 		4
+ 	},
+ 	{
++		USB2PHY_USB_PHY_M31_XCFGI_9,
++		HSTX_CURRENT_17_1MA_385MV,
++	},
++	{
+ 		USB_PHY_UTMI_CTRL5,
+ 		0x0,
+ 		0
 
 
 
