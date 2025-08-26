@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-174101-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-176193-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7BE6FB36153
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 15:08:37 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 728E0B36AC4
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 16:40:40 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 00B761BA690E
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 13:05:53 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id C541A7A6301
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 14:38:29 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2D0C223C4E3;
-	Tue, 26 Aug 2025 13:04:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D5E1135E4F7;
+	Tue, 26 Aug 2025 14:37:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ggliq5jH"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="eskpNStI"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DD3071D47B4;
-	Tue, 26 Aug 2025 13:04:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 90BA635CEAE;
+	Tue, 26 Aug 2025 14:37:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756213496; cv=none; b=pJDmlCk1j2OexJgNxV/p7fkDUiFfABRATc8XDZmd864PeABst6i43kTRTB24d1ULB0kTe7CvhiSf+mzGFaXfISpRobyDQdBCE187IjyG54zd0BermaNI+/JRleF/Q0SvJiYLV8kATHCjow1IxiYVA8FAzBA5Q1dCZ5hch+XICco=
+	t=1756219021; cv=none; b=fogbeMmJwXK7sDKETev7OP8SD7wz4zMPD8RPSb53vrn31TeZ7Yns75gbR5DltI0w412WUuwqBK+ufWpN5nsouJamOa7jOEgcx5b+hZeGaHA3O4sC23ytGjdhlD2p3+4Hl1Q2uV4sDrtxgWk4XqdgKUY2OOSChJ+k+FZYoqXCVWE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756213496; c=relaxed/simple;
-	bh=EbQ+bUp2BePYqPu6uIF3qWfizPjBsfYtLiOSL0enGQ8=;
+	s=arc-20240116; t=1756219021; c=relaxed/simple;
+	bh=oK36NFpHeyxaunZQXEsG4sGoUHw+NWB5E7mowQ8a1HM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=Q58RuLYDY71TVgZSxNmuNopnBkxMjntzoFIk8Mr7bhTbJ68Ln0T/GvjQMsFMQ+arkV/mxcOOzw0Jk5c+8XC6lSk17YeJCz2ZnXhj8BlKOMGolPw3oWMjZOJr4wrhuuPNhrkVsnqRSRJcTCsCVuyvLgZa5XwKTdYYlukAbK8N2SM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ggliq5jH; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 70895C4CEF1;
-	Tue, 26 Aug 2025 13:04:55 +0000 (UTC)
+	 MIME-Version; b=K/96U1eaqTMSQR/9s3+SjRd47TTX+VZlaKpm/dMNRUnkvJAcxWTGx7wWEm91Ez5Bn4gKHB9gYHJyYrNWedQdW0SEoy31gTeiGO3llneU6OA3B7raIFYZpbkEE+l61NsWF1wSwyzEL5nY6PUMfo3NTSibiJe4Lr5786X6UNz9XkQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=eskpNStI; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 21A32C4CEF1;
+	Tue, 26 Aug 2025 14:37:00 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1756213495;
-	bh=EbQ+bUp2BePYqPu6uIF3qWfizPjBsfYtLiOSL0enGQ8=;
+	s=korg; t=1756219021;
+	bh=oK36NFpHeyxaunZQXEsG4sGoUHw+NWB5E7mowQ8a1HM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=ggliq5jHwJ3H+BQPjjWkl0chgfToXPyaA/ulzhxIMQ6uhHgti0sSaHyumQvVC3Rrg
-	 Kz0vHd5lD4qCvqLYzfXZE306MwuXnjO5xeMM/nOAq1yztMnUKfABXJvSiw/HrPo4XY
-	 2TuJHpGlBh0FdBjV997eF5OXHKRVGSrnmpIwv3Zw=
+	b=eskpNStIQ1l6x0a2gzxR0pGMsEn9QmI6gF1Rx/ILnVjkfULeSoRsqSFRmK9SqWZXA
+	 OPa7vQfT1uucVresAYnbE+39bJ7luIx8GCdKjqtyySFKgilkEmjKP2Wgl5Him49ymC
+	 6CU3ZeQzEd0KETGsrDK0o6Ji7dWLDEFsIdL0P5bE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	David Lechner <dlechner@baylibre.com>,
-	=?UTF-8?q?Nuno=20S=C3=A1?= <nuno.sa@analog.com>,
-	Jonathan Cameron <Jonathan.Cameron@huawei.com>
-Subject: [PATCH 6.6 368/587] iio: adc: ad_sigma_delta: change to buffer predisable
+	"Masami Hiramatsu (Google)" <mhiramat@kernel.org>,
+	"Steven Rostedt (Google)" <rostedt@goodmis.org>,
+	Shuah Khan <skhan@linuxfoundation.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.4 191/403] selftests: tracing: Use mutex_unlock for testing glob filter
 Date: Tue, 26 Aug 2025 13:08:37 +0200
-Message-ID: <20250826111002.270543542@linuxfoundation.org>
+Message-ID: <20250826110912.149805031@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250826110952.942403671@linuxfoundation.org>
-References: <20250826110952.942403671@linuxfoundation.org>
+In-Reply-To: <20250826110905.607690791@linuxfoundation.org>
+References: <20250826110905.607690791@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,55 +61,48 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+5.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: David Lechner <dlechner@baylibre.com>
+From: Masami Hiramatsu (Google) <mhiramat@kernel.org>
 
-commit 66d4374d97f85516b5a22418c5e798aed2606dec upstream.
+[ Upstream commit a089bb2822a49b0c5777a8936f82c1f8629231fb ]
 
-Change the buffer disable callback from postdisable to predisable.
-This balances the existing posteanble callback. Using postdisable
-with posteanble can be problematic, for example, if update_scan_mode
-fails, it would call postdisable without ever having called posteanble,
-so the drivers using this would be in an unexpected state when
-postdisable was called.
+Since commit c5b6ababd21a ("locking/mutex: implement
+mutex_trylock_nested") makes mutex_trylock() as an inlined
+function if CONFIG_DEBUG_LOCK_ALLOC=y, we can not use
+mutex_trylock() for testing the glob filter of ftrace.
 
-Fixes: af3008485ea0 ("iio:adc: Add common code for ADI Sigma Delta devices")
-Signed-off-by: David Lechner <dlechner@baylibre.com>
-Reviewed-by: Nuno Sá <nuno.sa@analog.com>
-Link: https://patch.msgid.link/20250703-iio-adc-ad_sigma_delta-buffer-predisable-v1-1-f2ab85138f1f@baylibre.com
-Cc: <stable@vger.kernel.org>
-Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Use mutex_unlock instead.
+
+Link: https://lore.kernel.org/r/175151680309.2149615.9795104805153538717.stgit@mhiramat.tok.corp.google.com
+Signed-off-by: Masami Hiramatsu (Google) <mhiramat@kernel.org>
+Acked-by: Steven Rostedt (Google) <rostedt@goodmis.org>
+Signed-off-by: Shuah Khan <skhan@linuxfoundation.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/iio/adc/ad_sigma_delta.c |    4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ .../testing/selftests/ftrace/test.d/ftrace/func-filter-glob.tc  | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/drivers/iio/adc/ad_sigma_delta.c
-+++ b/drivers/iio/adc/ad_sigma_delta.c
-@@ -406,7 +406,7 @@ err_unlock:
- 	return ret;
- }
+diff --git a/tools/testing/selftests/ftrace/test.d/ftrace/func-filter-glob.tc b/tools/testing/selftests/ftrace/test.d/ftrace/func-filter-glob.tc
+index f4e92afab14b..9a7b7c62cbd9 100644
+--- a/tools/testing/selftests/ftrace/test.d/ftrace/func-filter-glob.tc
++++ b/tools/testing/selftests/ftrace/test.d/ftrace/func-filter-glob.tc
+@@ -33,7 +33,7 @@ ftrace_filter_check 'schedule*' '^schedule.*$'
+ ftrace_filter_check '*pin*lock' '.*pin.*lock$'
  
--static int ad_sd_buffer_postdisable(struct iio_dev *indio_dev)
-+static int ad_sd_buffer_predisable(struct iio_dev *indio_dev)
- {
- 	struct ad_sigma_delta *sigma_delta = iio_device_get_drvdata(indio_dev);
+ # filter by start*mid*
+-ftrace_filter_check 'mutex*try*' '^mutex.*try.*'
++ftrace_filter_check 'mutex*unl*' '^mutex.*unl.*'
  
-@@ -534,7 +534,7 @@ static bool ad_sd_validate_scan_mask(str
- 
- static const struct iio_buffer_setup_ops ad_sd_buffer_setup_ops = {
- 	.postenable = &ad_sd_buffer_postenable,
--	.postdisable = &ad_sd_buffer_postdisable,
-+	.predisable = &ad_sd_buffer_predisable,
- 	.validate_scan_mask = &ad_sd_validate_scan_mask,
- };
- 
+ # Advanced full-glob matching feature is recently supported.
+ # Skip the tests if we are sure the kernel does not support it.
+-- 
+2.39.5
+
 
 
 
