@@ -1,57 +1,59 @@
-Return-Path: <stable+bounces-173702-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-173375-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 25224B35DEE
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 13:49:53 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id E8627B35D77
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 13:45:10 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id EEDFD7C7620
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 11:49:04 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 3920C362FD6
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 11:36:44 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D3646267386;
-	Tue, 26 Aug 2025 11:48:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 79BB6321424;
+	Tue, 26 Aug 2025 11:34:45 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Ruy87f3e"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="zNKt50M2"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9117321D3C0;
-	Tue, 26 Aug 2025 11:48:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 371AF2F8BD9;
+	Tue, 26 Aug 2025 11:34:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756208934; cv=none; b=m6MfiqJ8pex/mSZNb1bVsORiJjUjsFHUz9iibtVuVtTMTEdBbJX7ERMEP/Oai7nMxQk331v2nlyeI0OomwnP0ThVUyOYDWDF1mjsN+lNnkcEMVC4Tj9V1UYAfwmpi1O83kafOMZJCccL6N+/+W+u66NuZEz1lheUOv9Nb3d9oKg=
+	t=1756208085; cv=none; b=lMfUnciXq+aqbnVyAL10KrrjulZ58AjOWyLNkqngAKVUF5BP8QEMAPDv5OjaY4OpTPSRQFbP4b8cOr/5mjQkQGwKUdsH9huagiAHlEgJZCcnk1yQEda6HSz8KNYpsVVMQwT32Y1pCOcHyJdTp8pAU00agZ3raXUZ7Q/JfDCTn8k=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756208934; c=relaxed/simple;
-	bh=f6pbjHKp+jII/+V61xo8pgbXaD8pL3ChuY5cgswSGpE=;
+	s=arc-20240116; t=1756208085; c=relaxed/simple;
+	bh=Vv63Z1ySRQypRrjWbRFawFmnRjapJMyYVwXOeOKMS4o=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=NhAqbtT67TxEPRzDRQzrb2O+7u5fNZNAof4rr2CMGs+C+j6TywGIQmN+wSWdsWTr/zeSuzMk8XbeWVo3Hxs1sPuVX47vx08iPXGSfaoLitv5LD72F7eqahXjgs5Uy7siNPJl4cXugTDsneC91KXhdzX90nF2QHZeLNax/+JCJT0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Ruy87f3e; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 28BB1C4CEF1;
-	Tue, 26 Aug 2025 11:48:54 +0000 (UTC)
+	 MIME-Version; b=ne55mNALlS4OR8u3UZsamA3qcmhdEFCT+7lGys0T/E3AVK97VebcdjzvXozta+FiJQoMKjKlUlOh5e1aapsKKk562omoU4MCoWjrwZ0/UgRYpiNv0ejDXPIo6xg/HCXj4MX4JYp9je4EkeikAlw3eLdBbmFAwG1GioQa1RV9C/M=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=zNKt50M2; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 61830C4CEF1;
+	Tue, 26 Aug 2025 11:34:44 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1756208934;
-	bh=f6pbjHKp+jII/+V61xo8pgbXaD8pL3ChuY5cgswSGpE=;
+	s=korg; t=1756208084;
+	bh=Vv63Z1ySRQypRrjWbRFawFmnRjapJMyYVwXOeOKMS4o=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Ruy87f3eYmELWNAf5t1nC0QXFtvOUP55puSqEt1RkU0IB0uARoYCa/wv4CVE6DExq
-	 bE3jqBu2eqiDZ9doQwRgkbbD+HaPzh7QPnPeBw1azQ7NMrKtQTbFb620V2KoGCwbtv
-	 Ss39VDGX2PMq6NBh5fwNgepXQcSKaOmEOZKxYUA8=
+	b=zNKt50M2tMK2Z1G82AD0hUBMHykXS+9wiJHAWUKR1d1sgNsfcs0/tWkKmtyAXpi1z
+	 AZPPm9Sqi63le+bYSNwCh5CE/X9BG/AFlzUILTQi65TC+AMV8vY/5nt+SEENdGma9A
+	 oiZCaUQWwCBz691zXir6aQrTci1hD54dpkFXqU/s=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Parthiban Veerasooran <parthiban.veerasooran@microchip.com>,
-	Vadim Fedorenko <vadim.fedorenko@linux.dev>,
+	ValdikSS <iam@valdikss.org.ru>,
+	Vitaly Lifshits <vitaly.lifshits@intel.com>,
+	Paul Menzel <pmenzel@molgen.mpg.de>,
+	Tony Nguyen <anthony.l.nguyen@intel.com>,
 	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 301/322] microchip: lan865x: fix missing Timer Increment config for Rev.B0/B1
+Subject: [PATCH 6.16 432/457] igc: fix disabling L1.2 PCI-E link substate on I226 on init
 Date: Tue, 26 Aug 2025 13:11:56 +0200
-Message-ID: <20250826110923.325910651@linuxfoundation.org>
+Message-ID: <20250826110947.965320214@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250826110915.169062587@linuxfoundation.org>
-References: <20250826110915.169062587@linuxfoundation.org>
+In-Reply-To: <20250826110937.289866482@linuxfoundation.org>
+References: <20250826110937.289866482@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,72 +65,81 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.16-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Parthiban Veerasooran <parthiban.veerasooran@microchip.com>
+From: ValdikSS <iam@valdikss.org.ru>
 
-[ Upstream commit 2cd58fec912acec273cb155911ab8f06ddbb131a ]
+[ Upstream commit 1468c1f97cf32418e34dbb40b784ed9333b9e123 ]
 
-Fix missing configuration for LAN865x silicon revisions B0 and B1 as per
-Microchip Application Note AN1760 (Rev F, June 2024).
+Device ID comparison in igc_is_device_id_i226 is performed before
+the ID is set, resulting in always failing check on init.
 
-The Timer Increment register was not being set, which is required for
-accurate timestamping. As per the application note, configure the MAC to
-set timestamping at the end of the Start of Frame Delimiter (SFD), and
-set the Timer Increment register to 40 ns (corresponding to a 25 MHz
-internal clock).
+Before the patch:
+* L1.2 is not disabled on init
+* L1.2 is properly disabled after suspend-resume cycle
 
-Link: https://www.microchip.com/en-us/application-notes/an1760
+With the patch:
+* L1.2 is properly disabled both on init and after suspend-resume
 
-Fixes: 5cd2340cb6a3 ("microchip: lan865x: add driver support for Microchip's LAN865X MAC-PHY")
-Signed-off-by: Parthiban Veerasooran <parthiban.veerasooran@microchip.com>
-Reviewed-by: Vadim Fedorenko <vadim.fedorenko@linux.dev>
-Link: https://patch.msgid.link/20250818060514.52795-3-parthiban.veerasooran@microchip.com
+How to test:
+Connect to the 1G link with 300+ mbit/s Internet speed, and run
+the download speed test, such as:
+
+    curl -o /dev/null http://speedtest.selectel.ru/1GB
+
+Without L1.2 disabled, the speed would be no more than ~200 mbit/s.
+With L1.2 disabled, the speed would reach 1 gbit/s.
+Note: it's required that the latency between your host and the remote
+be around 3-5 ms, the test inside LAN (<1 ms latency) won't trigger the
+issue.
+
+Link: https://lore.kernel.org/intel-wired-lan/15248b4f-3271-42dd-8e35-02bfc92b25e1@intel.com
+Fixes: 0325143b59c6 ("igc: disable L1.2 PCI-E link substate to avoid performance issue")
+Signed-off-by: ValdikSS <iam@valdikss.org.ru>
+Reviewed-by: Vitaly Lifshits <vitaly.lifshits@intel.com>
+Reviewed-by: Paul Menzel <pmenzel@molgen.mpg.de>
+Signed-off-by: Tony Nguyen <anthony.l.nguyen@intel.com>
+Link: https://patch.msgid.link/20250819222000.3504873-6-anthony.l.nguyen@intel.com
 Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- .../net/ethernet/microchip/lan865x/lan865x.c  | 19 +++++++++++++++++++
- 1 file changed, 19 insertions(+)
+ drivers/net/ethernet/intel/igc/igc_main.c | 14 +++++++-------
+ 1 file changed, 7 insertions(+), 7 deletions(-)
 
-diff --git a/drivers/net/ethernet/microchip/lan865x/lan865x.c b/drivers/net/ethernet/microchip/lan865x/lan865x.c
-index d03f5a8de58d..84c41f193561 100644
---- a/drivers/net/ethernet/microchip/lan865x/lan865x.c
-+++ b/drivers/net/ethernet/microchip/lan865x/lan865x.c
-@@ -32,6 +32,10 @@
- /* MAC Specific Addr 1 Top Reg */
- #define LAN865X_REG_MAC_H_SADDR1	0x00010023
+diff --git a/drivers/net/ethernet/intel/igc/igc_main.c b/drivers/net/ethernet/intel/igc/igc_main.c
+index 031c332f66c4..1b4465d6b2b7 100644
+--- a/drivers/net/ethernet/intel/igc/igc_main.c
++++ b/drivers/net/ethernet/intel/igc/igc_main.c
+@@ -7115,6 +7115,13 @@ static int igc_probe(struct pci_dev *pdev,
+ 	adapter->port_num = hw->bus.func;
+ 	adapter->msg_enable = netif_msg_init(debug, DEFAULT_MSG_ENABLE);
  
-+/* MAC TSU Timer Increment Register */
-+#define LAN865X_REG_MAC_TSU_TIMER_INCR		0x00010077
-+#define MAC_TSU_TIMER_INCR_COUNT_NANOSECONDS	0x0028
++	/* PCI config space info */
++	hw->vendor_id = pdev->vendor;
++	hw->device_id = pdev->device;
++	hw->revision_id = pdev->revision;
++	hw->subsystem_vendor_id = pdev->subsystem_vendor;
++	hw->subsystem_device_id = pdev->subsystem_device;
 +
- struct lan865x_priv {
- 	struct work_struct multicast_work;
- 	struct net_device *netdev;
-@@ -346,6 +350,21 @@ static int lan865x_probe(struct spi_device *spi)
- 		goto free_netdev;
- 	}
+ 	/* Disable ASPM L1.2 on I226 devices to avoid packet loss */
+ 	if (igc_is_device_id_i226(hw))
+ 		pci_disable_link_state(pdev, PCIE_LINK_STATE_L1_2);
+@@ -7141,13 +7148,6 @@ static int igc_probe(struct pci_dev *pdev,
+ 	netdev->mem_start = pci_resource_start(pdev, 0);
+ 	netdev->mem_end = pci_resource_end(pdev, 0);
  
-+	/* LAN865x Rev.B0/B1 configuration parameters from AN1760
-+	 * As per the Configuration Application Note AN1760 published in the
-+	 * link, https://www.microchip.com/en-us/application-notes/an1760
-+	 * Revision F (DS60001760G - June 2024), configure the MAC to set time
-+	 * stamping at the end of the Start of Frame Delimiter (SFD) and set the
-+	 * Timer Increment reg to 40 ns to be used as a 25 MHz internal clock.
-+	 */
-+	ret = oa_tc6_write_register(priv->tc6, LAN865X_REG_MAC_TSU_TIMER_INCR,
-+				    MAC_TSU_TIMER_INCR_COUNT_NANOSECONDS);
-+	if (ret) {
-+		dev_err(&spi->dev, "Failed to config TSU Timer Incr reg: %d\n",
-+			ret);
-+		goto oa_tc6_exit;
-+	}
-+
- 	/* As per the point s3 in the below errata, SPI receive Ethernet frame
- 	 * transfer may halt when starting the next frame in the same data block
- 	 * (chunk) as the end of a previous frame. The RFA field should be
+-	/* PCI config space info */
+-	hw->vendor_id = pdev->vendor;
+-	hw->device_id = pdev->device;
+-	hw->revision_id = pdev->revision;
+-	hw->subsystem_vendor_id = pdev->subsystem_vendor;
+-	hw->subsystem_device_id = pdev->subsystem_device;
+-
+ 	/* Copy the default MAC and PHY function pointers */
+ 	memcpy(&hw->mac.ops, ei->mac_ops, sizeof(hw->mac.ops));
+ 	memcpy(&hw->phy.ops, ei->phy_ops, sizeof(hw->phy.ops));
 -- 
 2.50.1
 
