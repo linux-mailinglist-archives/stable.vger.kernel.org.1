@@ -1,59 +1,58 @@
-Return-Path: <stable+bounces-173700-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-176377-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5E7EAB35E6E
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 13:57:34 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9AFD4B36CB3
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 16:59:30 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id B624E1BA6B28
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 11:49:23 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id A6F4B584F58
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 14:47:54 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2BC902BD5BC;
-	Tue, 26 Aug 2025 11:48:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4EA3534A32D;
+	Tue, 26 Aug 2025 14:45:00 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="WprGDHaH"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ep5c982Z"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DB52229D29B;
-	Tue, 26 Aug 2025 11:48:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 06D7813C3F2;
+	Tue, 26 Aug 2025 14:45:00 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756208929; cv=none; b=lSuxQwq2kI7ebI3DHlU0YPUsLbdFYAToQstkdz+Qdfi4d5hxqAoYWjWyQFAYCqFtwWBf46PWxTUAmU2e1elLmm+Gdtt3pLTc7TcIXkQH1/faLymriAENQZnhZk6EKcgghz8BDnBvhrxYtVodwEWI9MTZcvYQiqdVG7hrJ4F188g=
+	t=1756219500; cv=none; b=CVcT8kf1c24OL3Ysly7yaEvJAO4aHTV/Mcd8iY6vov+peKY/KUAxMvbKiy0Xvel62c/dUJKshNVYp7waVVV4Q0GtVf0HrKJjpdS1lRBGotDE54bEpbYmBbe+CYAx5BK91R7SZRp9KN2pqhzQVmS0oy1f02xTU84/Fe48jBnaJjg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756208929; c=relaxed/simple;
-	bh=LK9YftM8ksE4x1ydQELjrdnHLQZbvr3YVIl5WyaePQM=;
+	s=arc-20240116; t=1756219500; c=relaxed/simple;
+	bh=c6zrUih7j/OAo3rlr3bAMtsN3aK0TufSARZouivXNj0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=DvHPjEmgRTOCkL7tQ3wnfLNG8Vr/7O03e/tYufr2UQwDlCYmT7mjCoEBl2wnh081UY4TX3EyzrlpnHxeKDnn48vlL7XPVn4QUWnTFL8SYYSWynMiiVF9w8S0VP3T6K7n4dp+59/ZZJI/362zXKg6ko9S/Cwa3Suc5mbrqbB6Apw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=WprGDHaH; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 174F6C4CEF4;
-	Tue, 26 Aug 2025 11:48:48 +0000 (UTC)
+	 MIME-Version; b=DwUi3iLbxv3VyE8upRFjUO6der2ODmb9s846DpRIAB8OBdJaIWVEVFwwmFsLimNTiJX6ta/7w4oH7BVoo4HQsOPdQDLODawOx332gix0VTInfFyZ5AcaDaqyeakEaJPQ+A/HLGtiFPlwCVTEjTza1p0FcRKHdlR1XWe7Da05c30=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ep5c982Z; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8B8A7C4CEF1;
+	Tue, 26 Aug 2025 14:44:59 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1756208929;
-	bh=LK9YftM8ksE4x1ydQELjrdnHLQZbvr3YVIl5WyaePQM=;
+	s=korg; t=1756219499;
+	bh=c6zrUih7j/OAo3rlr3bAMtsN3aK0TufSARZouivXNj0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=WprGDHaHcq+yyOi/jCcwGUZazoNrIg1MnHz7Z6PGETeRFVxkZnvxUMLsdEez9GwlS
-	 b2FL7oox/5ijSrZ4CAnbLtDY5sUu/6YOVOyw+DLDbVPBWNz0dNZ9RdpXou8okjRm7Q
-	 BSUxsD1fk0gDkgbVsWC3Ki9/nqNxBci7ZYUpeUXs=
+	b=ep5c982ZSg6iOuug6yHk+Ooh0cCGvji1tlu3LLrW/mzFWGz9pWlMx8wZySPuJ24p6
+	 rnh6rghMbcS7GTE27PVms46551HfMWD/lu8E8N+4vJf9d+LjpLi4sR8UyKUNsOY3OV
+	 uNXKMO4o6P5AT5hF0bIUe6Bd/ugr+YznxeTxZyn8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	"D. Wythe" <alibuda@linux.alibaba.com>,
-	Guangguan Wang <guangguan.wang@linux.alibaba.com>,
-	Alexandra Winter <wintera@linux.ibm.com>,
-	Dust Li <dust.li@linux.alibaba.com>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 299/322] net/smc: fix UAF on smcsk after smc_listen_out()
+	Jamal Hadi Salim <jhs@mojatatu.com>,
+	Davide Caratti <dcaratti@redhat.com>,
+	Marcelo Ricardo Leitner <marcelo.leitner@gmail.com>,
+	Paolo Abeni <pabeni@redhat.com>,
+	Shubham Kulkarni <skulkarni@mvista.com>
+Subject: [PATCH 5.4 388/403] net/sched: act_mirred: better wording on protection against excessive stack growth
 Date: Tue, 26 Aug 2025 13:11:54 +0200
-Message-ID: <20250826110923.279052263@linuxfoundation.org>
+Message-ID: <20250826110917.740115289@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250826110915.169062587@linuxfoundation.org>
-References: <20250826110915.169062587@linuxfoundation.org>
+In-Reply-To: <20250826110905.607690791@linuxfoundation.org>
+References: <20250826110905.607690791@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -65,112 +64,90 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+5.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: D. Wythe <alibuda@linux.alibaba.com>
+From: Davide Caratti <dcaratti@redhat.com>
 
-[ Upstream commit d9cef55ed49117bd63695446fb84b4b91815c0b4 ]
+[ Upstream commit 78dcdffe0418ac8f3f057f26fe71ccf4d8ed851f ]
 
-BPF CI testing report a UAF issue:
+with commit e2ca070f89ec ("net: sched: protect against stack overflow in
+TC act_mirred"), act_mirred protected itself against excessive stack growth
+using per_cpu counter of nested calls to tcf_mirred_act(), and capping it
+to MIRRED_RECURSION_LIMIT. However, such protection does not detect
+recursion/loops in case the packet is enqueued to the backlog (for example,
+when the mirred target device has RPS or skb timestamping enabled). Change
+the wording from "recursion" to "nesting" to make it more clear to readers.
 
-  [   16.446633] BUG: kernel NULL pointer dereference, address: 000000000000003  0
-  [   16.447134] #PF: supervisor read access in kernel mod  e
-  [   16.447516] #PF: error_code(0x0000) - not-present pag  e
-  [   16.447878] PGD 0 P4D   0
-  [   16.448063] Oops: Oops: 0000 [#1] PREEMPT SMP NOPT  I
-  [   16.448409] CPU: 0 UID: 0 PID: 9 Comm: kworker/0:1 Tainted: G           OE      6.13.0-rc3-g89e8a75fda73-dirty #4  2
-  [   16.449124] Tainted: [O]=OOT_MODULE, [E]=UNSIGNED_MODUL  E
-  [   16.449502] Hardware name: QEMU Ubuntu 24.04 PC (i440FX + PIIX, 1996), BIOS 1.16.3-debian-1.16.3-2 04/01/201  4
-  [   16.450201] Workqueue: smc_hs_wq smc_listen_wor  k
-  [   16.450531] RIP: 0010:smc_listen_work+0xc02/0x159  0
-  [   16.452158] RSP: 0018:ffffb5ab40053d98 EFLAGS: 0001024  6
-  [   16.452526] RAX: 0000000000000001 RBX: 0000000000000002 RCX: 000000000000030  0
-  [   16.452994] RDX: 0000000000000280 RSI: 00003513840053f0 RDI: 000000000000000  0
-  [   16.453492] RBP: ffffa097808e3800 R08: ffffa09782dba1e0 R09: 000000000000000  5
-  [   16.453987] R10: 0000000000000000 R11: 0000000000000000 R12: ffffa0978274640  0
-  [   16.454497] R13: 0000000000000000 R14: 0000000000000000 R15: ffffa09782d4092  0
-  [   16.454996] FS:  0000000000000000(0000) GS:ffffa097bbc00000(0000) knlGS:000000000000000  0
-  [   16.455557] CS:  0010 DS: 0000 ES: 0000 CR0: 000000008005003  3
-  [   16.455961] CR2: 0000000000000030 CR3: 0000000102788004 CR4: 0000000000770ef  0
-  [   16.456459] PKRU: 5555555  4
-  [   16.456654] Call Trace  :
-  [   16.456832]  <TASK  >
-  [   16.456989]  ? __die+0x23/0x7  0
-  [   16.457215]  ? page_fault_oops+0x180/0x4c  0
-  [   16.457508]  ? __lock_acquire+0x3e6/0x249  0
-  [   16.457801]  ? exc_page_fault+0x68/0x20  0
-  [   16.458080]  ? asm_exc_page_fault+0x26/0x3  0
-  [   16.458389]  ? smc_listen_work+0xc02/0x159  0
-  [   16.458689]  ? smc_listen_work+0xc02/0x159  0
-  [   16.458987]  ? lock_is_held_type+0x8f/0x10  0
-  [   16.459284]  process_one_work+0x1ea/0x6d  0
-  [   16.459570]  worker_thread+0x1c3/0x38  0
-  [   16.459839]  ? __pfx_worker_thread+0x10/0x1  0
-  [   16.460144]  kthread+0xe0/0x11  0
-  [   16.460372]  ? __pfx_kthread+0x10/0x1  0
-  [   16.460640]  ret_from_fork+0x31/0x5  0
-  [   16.460896]  ? __pfx_kthread+0x10/0x1  0
-  [   16.461166]  ret_from_fork_asm+0x1a/0x3  0
-  [   16.461453]  </TASK  >
-  [   16.461616] Modules linked in: bpf_testmod(OE) [last unloaded: bpf_testmod(OE)  ]
-  [   16.462134] CR2: 000000000000003  0
-  [   16.462380] ---[ end trace 0000000000000000 ]---
-  [   16.462710] RIP: 0010:smc_listen_work+0xc02/0x1590
-
-The direct cause of this issue is that after smc_listen_out_connected(),
-newclcsock->sk may be NULL since it will releases the smcsk. Therefore,
-if the application closes the socket immediately after accept,
-newclcsock->sk can be NULL. A possible execution order could be as
-follows:
-
-smc_listen_work                                 | userspace
------------------------------------------------------------------
-lock_sock(sk)                                   |
-smc_listen_out_connected()                      |
-| \- smc_listen_out                             |
-|    | \- release_sock                          |
-     | |- sk->sk_data_ready()                   |
-                                                | fd = accept();
-                                                | close(fd);
-                                                |  \- socket->sk = NULL;
-/* newclcsock->sk is NULL now */
-SMC_STAT_SERV_SUCC_INC(sock_net(newclcsock->sk))
-
-Since smc_listen_out_connected() will not fail, simply swapping the order
-of the code can easily fix this issue.
-
-Fixes: 3b2dec2603d5 ("net/smc: restructure client and server code in af_smc")
-Signed-off-by: D. Wythe <alibuda@linux.alibaba.com>
-Reviewed-by: Guangguan Wang <guangguan.wang@linux.alibaba.com>
-Reviewed-by: Alexandra Winter <wintera@linux.ibm.com>
-Reviewed-by: Dust Li <dust.li@linux.alibaba.com>
-Link: https://patch.msgid.link/20250818054618.41615-1-alibuda@linux.alibaba.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+CC: Jamal Hadi Salim <jhs@mojatatu.com>
+Signed-off-by: Davide Caratti <dcaratti@redhat.com>
+Reviewed-by: Marcelo Ricardo Leitner <marcelo.leitner@gmail.com>
+Acked-by: Jamal Hadi Salim <jhs@mojatatu.com>
+Signed-off-by: Paolo Abeni <pabeni@redhat.com>
+[ skulkarni: Adjusted patch for file 'act_mirred.c' - hunk #4/4 wrt the mainline commit ]
+Stable-dep-of: ca22da2fbd69 ("act_mirred: use the backlog for nested calls to mirred ingress")
+Signed-off-by: Shubham Kulkarni <skulkarni@mvista.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- net/smc/af_smc.c | 3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+ net/sched/act_mirred.c |   16 ++++++++--------
+ 1 file changed, 8 insertions(+), 8 deletions(-)
 
-diff --git a/net/smc/af_smc.c b/net/smc/af_smc.c
-index cdd445d40b94..02e08ac1da3a 100644
---- a/net/smc/af_smc.c
-+++ b/net/smc/af_smc.c
-@@ -2565,8 +2565,9 @@ static void smc_listen_work(struct work_struct *work)
- 			goto out_decl;
+--- a/net/sched/act_mirred.c
++++ b/net/sched/act_mirred.c
+@@ -28,8 +28,8 @@
+ static LIST_HEAD(mirred_list);
+ static DEFINE_SPINLOCK(mirred_list_lock);
+ 
+-#define MIRRED_RECURSION_LIMIT    4
+-static DEFINE_PER_CPU(unsigned int, mirred_rec_level);
++#define MIRRED_NEST_LIMIT    4
++static DEFINE_PER_CPU(unsigned int, mirred_nest_level);
+ 
+ static bool tcf_mirred_is_act_redirect(int action)
+ {
+@@ -225,7 +225,7 @@ static int tcf_mirred_act(struct sk_buff
+ 	struct sk_buff *skb2 = skb;
+ 	bool m_mac_header_xmit;
+ 	struct net_device *dev;
+-	unsigned int rec_level;
++	unsigned int nest_level;
+ 	int retval, err = 0;
+ 	bool use_reinsert;
+ 	bool want_ingress;
+@@ -236,11 +236,11 @@ static int tcf_mirred_act(struct sk_buff
+ 	int mac_len;
+ 	bool at_nh;
+ 
+-	rec_level = __this_cpu_inc_return(mirred_rec_level);
+-	if (unlikely(rec_level > MIRRED_RECURSION_LIMIT)) {
++	nest_level = __this_cpu_inc_return(mirred_nest_level);
++	if (unlikely(nest_level > MIRRED_NEST_LIMIT)) {
+ 		net_warn_ratelimited("Packet exceeded mirred recursion limit on dev %s\n",
+ 				     netdev_name(skb->dev));
+-		__this_cpu_dec(mirred_rec_level);
++		__this_cpu_dec(mirred_nest_level);
+ 		return TC_ACT_SHOT;
  	}
  
--	smc_listen_out_connected(new_smc);
- 	SMC_STAT_SERV_SUCC_INC(sock_net(newclcsock->sk), ini);
-+	/* smc_listen_out() will release smcsk */
-+	smc_listen_out_connected(new_smc);
- 	goto out_free;
+@@ -310,7 +310,7 @@ static int tcf_mirred_act(struct sk_buff
+ 			err = tcf_mirred_forward(res->ingress, skb);
+ 			if (err)
+ 				tcf_action_inc_overlimit_qstats(&m->common);
+-			__this_cpu_dec(mirred_rec_level);
++			__this_cpu_dec(mirred_nest_level);
+ 			return TC_ACT_CONSUMED;
+ 		}
+ 	}
+@@ -322,7 +322,7 @@ out:
+ 		if (tcf_mirred_is_act_redirect(m_eaction))
+ 			retval = TC_ACT_SHOT;
+ 	}
+-	__this_cpu_dec(mirred_rec_level);
++	__this_cpu_dec(mirred_nest_level);
  
- out_unlock:
--- 
-2.50.1
-
+ 	return retval;
+ }
 
 
 
