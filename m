@@ -1,55 +1,58 @@
-Return-Path: <stable+bounces-172975-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-175579-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 794D9B35B0F
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 13:17:51 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id CAF1DB36911
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 16:22:30 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 912A93B54A5
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 11:17:44 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 977AC5830D2
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 14:12:36 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 818D83090E1;
-	Tue, 26 Aug 2025 11:17:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2FD9534F46B;
+	Tue, 26 Aug 2025 14:10:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="0sPkH6Qs"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="MCqEvdym"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3CBD02FE58A;
-	Tue, 26 Aug 2025 11:17:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E276A341651;
+	Tue, 26 Aug 2025 14:10:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756207050; cv=none; b=YCcIBbf8sXvR869u9gaJovXPTDtAl84bWpIVNi2CtQqR6iM386wFZpH3pfA8lu0An8ua5Yw/Pt8C9R9CHrWeTuxES4wAm9caZ4g9o9yrUzGMYf2/GEpLtkBNJ3gCT2I0lgzSB/+xqJMU0Qb7/Xx+nApVqRI60v59/0QZme486zw=
+	t=1756217420; cv=none; b=PWPhFFM8mjiZsJC16124d3qhCCDax6BSJlc98E/F0ih4FkpBew+Jg5biMSJkj12MdvF7U+sjbfJOFubWbMFBuyy7mk8Gutv0vtNrb7AI5RwKP23hWlrhmD6lYONfDZUM7J9Taai+PFZolVeHpMtcXqvYG3BFSv2lCYdtfWw1l8U=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756207050; c=relaxed/simple;
-	bh=MqaGYmalKEyDgh3pFSk5YWLms4D0r4ncd76zPw9+k6Q=;
+	s=arc-20240116; t=1756217420; c=relaxed/simple;
+	bh=YNL1OrU8/l+ncfuzCuRp5vgYt5YRheF49vds671WHPM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=RDXhTHR03oQU02twF7L1ibB+auDfGU1cFR2xydYYImf5cXKi1swgLM8sbACuPEDMhQj3jsV3ZKhRqeWQMMWVbz1+3ZlJ3cUAfp0RHWSJuGHvs+3ydHwrKIuD6/mg0JSz3kbWkPsVmhHJd6qnS8OBjUnDTjH4oX6yuUbyDmfhbS4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=0sPkH6Qs; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C0EDBC116B1;
-	Tue, 26 Aug 2025 11:17:29 +0000 (UTC)
+	 MIME-Version; b=nimAMN9oGg99fui8CViSm6Gdl/nK05lX7CbSRXHQSIVB2lM1aZerKIJQs49SipN3rmNLAAHaBFMv7+oAVytIhgD9i6YHLaS3/37TP73ZGP+U3UJv1gnhJZjnJGhrmJIJT9ZbtUlwaLmhdCsUJppqnCOwS7rcuBHGV14VCXO6XAg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=MCqEvdym; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 748ECC4CEF1;
+	Tue, 26 Aug 2025 14:10:19 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1756207050;
-	bh=MqaGYmalKEyDgh3pFSk5YWLms4D0r4ncd76zPw9+k6Q=;
+	s=korg; t=1756217419;
+	bh=YNL1OrU8/l+ncfuzCuRp5vgYt5YRheF49vds671WHPM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=0sPkH6QsYzWUCsmpjFohpRf0JICM796V1QB6KwDPWMnp7iadF1ZbcE9a3ugx0crtt
-	 /2RK/XyqXvC72aMneCnKgBUiXHqqYIU3o4j+ypRKdMZOZbM+ziivhqDDnuiVJvZr2W
-	 YwqFoUZCDoQKE3SsB0Ukdt9bgzmaltkzI5rfRGPE=
+	b=MCqEvdymXh0O+xs6faLlzB5ylePp6YEQfTljFsB59rV/nBQeMG0jhOFefWy8hf7BF
+	 CpAcD+RkS8uDdADck9QAKfnu8WJzX44n2DI/7rXkx2xaeTzfWMQjImb0zuXFNzh+Nx
+	 AnH4XADuMT4DIQGAaNrCYA4vAdC01gj0WWfEWKSY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Bharat Bhushan <bbhushan2@marvell.com>,
-	Herbert Xu <herbert@gondor.apana.org.au>
-Subject: [PATCH 6.16 031/457] crypto: octeontx2 - Fix address alignment on CN10KB and CN10KA-B0
+	Alexey Khoroshilov <khoroshilov@ispras.ru>,
+	Fedor Pchelkin <pchelkin@ispras.ru>,
+	Florian Westphal <fw@strlen.de>,
+	Pablo Neira Ayuso <pablo@netfilter.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.10 105/523] netfilter: nf_tables: adjust lockdep assertions handling
 Date: Tue, 26 Aug 2025 13:05:15 +0200
-Message-ID: <20250826110938.107238626@linuxfoundation.org>
+Message-ID: <20250826110927.127006469@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250826110937.289866482@linuxfoundation.org>
-References: <20250826110937.289866482@linuxfoundation.org>
+In-Reply-To: <20250826110924.562212281@linuxfoundation.org>
+References: <20250826110924.562212281@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,131 +64,56 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.16-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Bharat Bhushan <bbhushan2@marvell.com>
+From: Fedor Pchelkin <pchelkin@ispras.ru>
 
-commit a091a58b8a1eba2f243b0c05bcc82bdc2a4a338d upstream.
+[ Upstream commit 8df1b40de76979bb8e975201d07b71103d5de820 ]
 
-octeontx2 crypto driver allocates memory using kmalloc/kzalloc,
-and uses this memory for dma (does dma_map_single()). It assumes
-that kmalloc/kzalloc will return 128-byte aligned address. But
-kmalloc/kzalloc returns 8-byte aligned address after below changes:
-  "9382bc44b5f5 arm64: allow kmalloc() caches aligned to the
-   smaller cache_line_size()
+It's needed to check the return value of lockdep_commit_lock_is_held(),
+otherwise there's no point in this assertion as it doesn't print any
+debug information on itself.
 
-Memory allocated are used for following purpose:
- - Input data or scatter list address - 8-Byte alignment
- - Output data or gather list address - 8-Byte alignment
- - Completion address - 32-Byte alignment.
+Found by Linux Verification Center (linuxtesting.org) with Svace static
+analysis tool.
 
-This patch ensures all addresses are aligned as mentioned above.
-
-Signed-off-by: Bharat Bhushan <bbhushan2@marvell.com>
-Cc: <stable@vger.kernel.org> # v6.8+
-Signed-off-by: Herbert Xu <herbert@gondor.apana.org.au>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: b04df3da1b5c ("netfilter: nf_tables: do not defer rule destruction via call_rcu")
+Reported-by: Alexey Khoroshilov <khoroshilov@ispras.ru>
+Signed-off-by: Fedor Pchelkin <pchelkin@ispras.ru>
+Acked-by: Florian Westphal <fw@strlen.de>
+Signed-off-by: Pablo Neira Ayuso <pablo@netfilter.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/crypto/marvell/octeontx2/otx2_cpt_reqmgr.h |   61 +++++++++++++++------
- 1 file changed, 45 insertions(+), 16 deletions(-)
+ net/netfilter/nf_tables_api.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
---- a/drivers/crypto/marvell/octeontx2/otx2_cpt_reqmgr.h
-+++ b/drivers/crypto/marvell/octeontx2/otx2_cpt_reqmgr.h
-@@ -350,22 +350,48 @@ static inline struct otx2_cpt_inst_info
- cn10k_sgv2_info_create(struct pci_dev *pdev, struct otx2_cpt_req_info *req,
- 		       gfp_t gfp)
+diff --git a/net/netfilter/nf_tables_api.c b/net/netfilter/nf_tables_api.c
+index ff419ecb268a..8e799848cbcc 100644
+--- a/net/netfilter/nf_tables_api.c
++++ b/net/netfilter/nf_tables_api.c
+@@ -3347,7 +3347,7 @@ void nf_tables_rule_destroy(const struct nft_ctx *ctx, struct nft_rule *rule)
+ /* can only be used if rule is no longer visible to dumps */
+ static void nf_tables_rule_release(const struct nft_ctx *ctx, struct nft_rule *rule)
  {
--	u32 dlen = 0, g_len, sg_len, info_len;
--	int align = OTX2_CPT_DMA_MINALIGN;
-+	u32 dlen = 0, g_len, s_len, sg_len, info_len;
- 	struct otx2_cpt_inst_info *info;
--	u16 g_sz_bytes, s_sz_bytes;
- 	u32 total_mem_len;
- 	int i;
+-	lockdep_commit_lock_is_held(ctx->net);
++	WARN_ON_ONCE(!lockdep_commit_lock_is_held(ctx->net));
  
--	g_sz_bytes = ((req->in_cnt + 2) / 3) *
--		      sizeof(struct cn10kb_cpt_sglist_component);
--	s_sz_bytes = ((req->out_cnt + 2) / 3) *
--		      sizeof(struct cn10kb_cpt_sglist_component);
--
--	g_len = ALIGN(g_sz_bytes, align);
--	sg_len = ALIGN(g_len + s_sz_bytes, align);
--	info_len = ALIGN(sizeof(*info), align);
--	total_mem_len = sg_len + info_len + sizeof(union otx2_cpt_res_s);
-+	/* Allocate memory to meet below alignment requirement:
-+	 *  ------------------------------------
-+	 * |    struct otx2_cpt_inst_info       |
-+	 * |    (No alignment required)         |
-+	 * |    --------------------------------|
-+	 * |   | padding for ARCH_DMA_MINALIGN  |
-+	 * |   | alignment                      |
-+	 * |------------------------------------|
-+	 * |    SG List Gather/Input memory     |
-+	 * |    Length = multiple of 32Bytes    |
-+	 * |    Alignment = 8Byte               |
-+	 * |----------------------------------  |
-+	 * |    SG List Scatter/Output memory   |
-+	 * |    Length = multiple of 32Bytes    |
-+	 * |    Alignment = 8Byte               |
-+	 * |     -------------------------------|
-+	 * |    | padding for 32B alignment     |
-+	 * |------------------------------------|
-+	 * |    Result response memory          |
-+	 * |    Alignment = 32Byte              |
-+	 *  ------------------------------------
-+	 */
-+
-+	info_len = sizeof(*info);
-+
-+	g_len = ((req->in_cnt + 2) / 3) *
-+		 sizeof(struct cn10kb_cpt_sglist_component);
-+	s_len = ((req->out_cnt + 2) / 3) *
-+		 sizeof(struct cn10kb_cpt_sglist_component);
-+	sg_len = g_len + s_len;
-+
-+	/* Allocate extra memory for SG and response address alignment */
-+	total_mem_len = ALIGN(info_len, OTX2_CPT_DPTR_RPTR_ALIGN);
-+	total_mem_len += (ARCH_DMA_MINALIGN - 1) &
-+			  ~(OTX2_CPT_DPTR_RPTR_ALIGN - 1);
-+	total_mem_len += ALIGN(sg_len, OTX2_CPT_RES_ADDR_ALIGN);
-+	total_mem_len += sizeof(union otx2_cpt_res_s);
+ 	nft_rule_expr_deactivate(ctx, rule, NFT_TRANS_RELEASE);
+ 	nf_tables_rule_destroy(ctx, rule);
+@@ -4860,7 +4860,7 @@ void nf_tables_deactivate_set(const struct nft_ctx *ctx, struct nft_set *set,
+ 			      struct nft_set_binding *binding,
+ 			      enum nft_trans_phase phase)
+ {
+-	lockdep_commit_lock_is_held(ctx->net);
++	WARN_ON_ONCE(!lockdep_commit_lock_is_held(ctx->net));
  
- 	info = kzalloc(total_mem_len, gfp);
- 	if (unlikely(!info))
-@@ -375,7 +401,8 @@ cn10k_sgv2_info_create(struct pci_dev *p
- 		dlen += req->in[i].size;
- 
- 	info->dlen = dlen;
--	info->in_buffer = (u8 *)info + info_len;
-+	info->in_buffer = PTR_ALIGN((u8 *)info + info_len, ARCH_DMA_MINALIGN);
-+	info->out_buffer = info->in_buffer + g_len;
- 	info->gthr_sz = req->in_cnt;
- 	info->sctr_sz = req->out_cnt;
- 
-@@ -387,7 +414,7 @@ cn10k_sgv2_info_create(struct pci_dev *p
- 	}
- 
- 	if (sgv2io_components_setup(pdev, req->out, req->out_cnt,
--				    &info->in_buffer[g_len])) {
-+				    info->out_buffer)) {
- 		dev_err(&pdev->dev, "Failed to setup scatter list\n");
- 		goto destroy_info;
- 	}
-@@ -404,8 +431,10 @@ cn10k_sgv2_info_create(struct pci_dev *p
- 	 * Get buffer for union otx2_cpt_res_s response
- 	 * structure and its physical address
- 	 */
--	info->completion_addr = info->in_buffer + sg_len;
--	info->comp_baddr = info->dptr_baddr + sg_len;
-+	info->completion_addr = PTR_ALIGN((info->in_buffer + sg_len),
-+					  OTX2_CPT_RES_ADDR_ALIGN);
-+	info->comp_baddr = ALIGN((info->dptr_baddr + sg_len),
-+				 OTX2_CPT_RES_ADDR_ALIGN);
- 
- 	return info;
- 
+ 	switch (phase) {
+ 	case NFT_TRANS_PREPARE_ERROR:
+-- 
+2.39.5
+
 
 
 
