@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-175180-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-174562-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id A806FB3663C
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 15:55:08 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id EF4F8B363D4
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 15:33:35 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id E951FB60262
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 13:53:25 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id EF1178E107E
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 13:26:24 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id F2292350826;
-	Tue, 26 Aug 2025 13:52:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B01052F7473;
+	Tue, 26 Aug 2025 13:25:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="S69ls6A4"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="IjBzQShN"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id ACFAB302CA6;
-	Tue, 26 Aug 2025 13:52:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6AFA42BE058;
+	Tue, 26 Aug 2025 13:25:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756216352; cv=none; b=XPc4E9U5ZUgEgGVJep16n5SZje3efXjFtorBzFd8thkqb3xAa4OuDH7VVLz1qiRLsHeoDqNWXPtsc3hhIruZKiFOAT7BNqPj+O/phULIESlXB1Uf+tr/m+Z+YpzCSmdkOJXryOBN+6ULLHpwjYEMf2WwPYuN7Vmx7QK9CQTkTHc=
+	t=1756214722; cv=none; b=i2qnUv8JKtRySWNePvgYpzrn0WYI70y+frplxp5JGwX8bEw4s+k1/E3n2OgAgRZ8zB74FvJ7koXJC7kKRbJtHUQFXV+1x0nLPlpaFXmgm2AhP4ZIB4sOIMuWH4kcCPrbyN+pCVV2iXLkprXeTm1YaVjRmpvd6bN03TsWB6IxRH0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756216352; c=relaxed/simple;
-	bh=wRBi6UOqPD47LsN93uQu6yXGrvaLL40ofvMMb0umr3A=;
+	s=arc-20240116; t=1756214722; c=relaxed/simple;
+	bh=v6PRzoqXYUgWsJkr8aNIIB/CIm617VCTsVftjch/LVA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=rboWSRFN6wiYrNXWhUHYdWJnrUOMds0WGpYcsVv3Q1BA3uo31q0GpgewGjiRlmVXot0Uzw68BTIgY+Zhts77L1wh7BdUxzVrYn7qNNv0ELQwUOrRfN7NcNQYGu47F1sksfT8XUZGoafl5U4suvr6SWFR2+xw9SbNILEsJFPm8rk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=S69ls6A4; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3ABB8C4CEF1;
-	Tue, 26 Aug 2025 13:52:32 +0000 (UTC)
+	 MIME-Version; b=hY5xh07ULUqDVOV6jvmICJuJpii/rf/NzPbsSmjbh10dZjrCoN4tr3oo5ZGfoII7ehrjmsX40fJYJqZ2xcpexJ4Ba+89LaQUCyYH+Ee0PKmJE6YwhApeTDmlUmKy3LPM6ElO//CTimaIkfbcsVtKUwg2G1zU/DTgH3I57AgW/94=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=IjBzQShN; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id EBE33C4CEF1;
+	Tue, 26 Aug 2025 13:25:21 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1756216352;
-	bh=wRBi6UOqPD47LsN93uQu6yXGrvaLL40ofvMMb0umr3A=;
+	s=korg; t=1756214722;
+	bh=v6PRzoqXYUgWsJkr8aNIIB/CIm617VCTsVftjch/LVA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=S69ls6A4hlNfpOThJRIYAV0I+oaQ2v3QdUcmw3kCCChIVreq9w5Ga8b31Z7Y3UzUS
-	 zsqbFvDAP1UVYYaM+5ptI/RBwxcfLa5CmTs8w1r5YjSMTl2stZ5ar1DStJ69WyHOBC
-	 rl/yb/e35NDFeEvdNoT8CJL8IGCpsRbzTXTVSI4E=
+	b=IjBzQShN/ptb9qdY2qRW958M7nlKYy0fP54+Z+LF36bzngf0ysBGYI1cMNuH6RhqU
+	 edru5/c5QvWISz5fBE38IYzA2S3CP6RcCIC3dQr8UMvsHmAwQ4z46J14zqDswVA6Kt
+	 X5icdKwZKtbAA0ggHEh0G3pneF6tCfJynUqi4mpU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Emily Deng <Emily.Deng@amd.com>,
-	=?UTF-8?q?Christian=20K=C3=B6nig?= <christian.koenig@amd.com>,
+	"fangzhong.zhou" <myth5@myth5.com>,
+	Wolfram Sang <wsa+renesas@sang-engineering.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 378/644] drm/ttm: Should to return the evict error
-Date: Tue, 26 Aug 2025 13:07:49 +0200
-Message-ID: <20250826110955.789647801@linuxfoundation.org>
+Subject: [PATCH 6.1 217/482] i2c: Force DLL0945 touchpad i2c freq to 100khz
+Date: Tue, 26 Aug 2025 13:07:50 +0200
+Message-ID: <20250826110936.136113540@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250826110946.507083938@linuxfoundation.org>
-References: <20250826110946.507083938@linuxfoundation.org>
+In-Reply-To: <20250826110930.769259449@linuxfoundation.org>
+References: <20250826110930.769259449@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,47 +60,43 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Emily Deng <Emily.Deng@amd.com>
+From: fangzhong.zhou <myth5@myth5.com>
 
-[ Upstream commit 4e16a9a00239db5d819197b9a00f70665951bf50 ]
+[ Upstream commit 0b7c9528facdb5a73ad78fea86d2e95a6c48dbc4 ]
 
-For the evict fail case, the evict error should be returned.
+This patch fixes an issue where the touchpad cursor movement becomes
+slow on the Dell Precision 5560. Force the touchpad freq to 100khz
+as a workaround.
 
-v2: Consider ENOENT case.
+Tested on Dell Precision 5560 with 6.14 to 6.14.6. Cursor movement
+is now smooth and responsive.
 
-v3: Abort directly when the eviction failed for some reason (except for -ENOENT)
- and not wait for the move to finish
-
-Signed-off-by: Emily Deng <Emily.Deng@amd.com>
-Reviewed-by: Christian König <christian.koenig@amd.com>
-Signed-off-by: Christian König <christian.koenig@amd.com>
-Link: https://lore.kernel.org/r/20250603091154.3472646-1-Emily.Deng@amd.com
+Signed-off-by: fangzhong.zhou <myth5@myth5.com>
+[wsa: kept sorting and removed unnecessary parts from commit msg]
+Signed-off-by: Wolfram Sang <wsa+renesas@sang-engineering.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/ttm/ttm_resource.c | 3 +++
- 1 file changed, 3 insertions(+)
+ drivers/i2c/i2c-core-acpi.c | 1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/drivers/gpu/drm/ttm/ttm_resource.c b/drivers/gpu/drm/ttm/ttm_resource.c
-index 2c590b4c46cb..9a8f565aa6ad 100644
---- a/drivers/gpu/drm/ttm/ttm_resource.c
-+++ b/drivers/gpu/drm/ttm/ttm_resource.c
-@@ -150,6 +150,9 @@ int ttm_resource_manager_evict_all(struct ttm_device *bdev,
- 	}
- 	spin_unlock(&bdev->lru_lock);
- 
-+	if (ret && ret != -ENOENT)
-+		return ret;
-+
- 	spin_lock(&man->move_lock);
- 	fence = dma_fence_get(man->move);
- 	spin_unlock(&man->move_lock);
+diff --git a/drivers/i2c/i2c-core-acpi.c b/drivers/i2c/i2c-core-acpi.c
+index d2499f302b50..f43067f6797e 100644
+--- a/drivers/i2c/i2c-core-acpi.c
++++ b/drivers/i2c/i2c-core-acpi.c
+@@ -370,6 +370,7 @@ static const struct acpi_device_id i2c_acpi_force_100khz_device_ids[] = {
+ 	 * the device works without issues on Windows at what is expected to be
+ 	 * a 400KHz frequency. The root cause of the issue is not known.
+ 	 */
++	{ "DLL0945", 0 },
+ 	{ "ELAN06FA", 0 },
+ 	{}
+ };
 -- 
 2.39.5
 
