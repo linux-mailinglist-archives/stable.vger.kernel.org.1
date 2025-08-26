@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-173538-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-175756-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9712BB35D2B
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 13:41:55 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6F29BB36996
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 16:28:26 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 5B6ED7C5C24
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 11:41:49 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 1D4D91B67C97
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 14:20:31 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B745428F935;
-	Tue, 26 Aug 2025 11:41:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6D04610E0;
+	Tue, 26 Aug 2025 14:18:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="dPMDOuYS"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="AxCkDju2"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 73A4921D3C0;
-	Tue, 26 Aug 2025 11:41:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 29CC935083D;
+	Tue, 26 Aug 2025 14:18:06 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756208508; cv=none; b=ZvTtG/1H20BTU0CWM2QVnXg9QbX6nYU9xjLbCpinCTxKR8+g4Ei0G9Lxg41UMccECdhL2TzFzhSYN8sk08C5fg1RztHpbVs6lkd/vd3hsMVocomhZLhsIkSxCuhc9gRVZbaQMIjhhQ2GVH7+Nv93Y7EUNMp+LWL6G6O31QANhqE=
+	t=1756217887; cv=none; b=WBKqv60R4TZm7aIscJhWIHN7jfeGnkpWkRwc8fepp1CVgEthS3++kZJT5b7BR8/Ad9i3/TZJ9qNDoPspDS1rviFKY8qVyPIkRRCVcJDNUizXpj9piFRh0NF4E+LABmNhtQsePenEMdIsWgx9LBlQsL5TFiJ8jl48bLv8GZQjSKA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756208508; c=relaxed/simple;
-	bh=8zgqqfBSvN6Cxeb2+7vtGrz7o/AOleB7wjekqIWoeWw=;
+	s=arc-20240116; t=1756217887; c=relaxed/simple;
+	bh=xz2VJxeQtzwOwIHb1DB+BTsHuHcan+qEG0aHDgzTCSc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=mBBXDPZk9mTLENAtzyDWqeFsSRnxKoEfp4e+WRqtGD5Iyd8YyLAUv8KkuFqgHP56825Im/WJt9vEaw/7YIlTqkBTAzL9e9t/26E0AErGnnY0BLmO7/PSamHToOFaZXG5c0jub9EkO8Xdmo75sy/vqHEIAjz8wAkGFyrnkpBmGVQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=dPMDOuYS; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 04619C4CEF1;
-	Tue, 26 Aug 2025 11:41:47 +0000 (UTC)
+	 MIME-Version; b=XTnMZS9y7P+PIW5hFHfJdPV3bNx6AMhj5185tbZidrjQM/4Lbqe7SaCoWnW64WbnmssH5HsDdVlzTw+s4AJ/qs2bxWnDV+CslACVQltw3ItuX+93liZ/VT0cJXJIJ/NPWDukZpFGPQ/wOhZHSTn5Q06CwOkU64eb3ff8sgh3EsY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=AxCkDju2; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 58F3AC4CEF1;
+	Tue, 26 Aug 2025 14:18:06 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1756208508;
-	bh=8zgqqfBSvN6Cxeb2+7vtGrz7o/AOleB7wjekqIWoeWw=;
+	s=korg; t=1756217886;
+	bh=xz2VJxeQtzwOwIHb1DB+BTsHuHcan+qEG0aHDgzTCSc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=dPMDOuYSO5HfBJXAIqOMftaBgDE3TXMWInniFlXzswIWaawMe/IdWaObARqQUuhk9
-	 JaqYCfsGiMa0jifpVUvEKrZm55phLdpp7tBEmiQEFQ7QJAZMYYCnnbinUVDX5mSmjR
-	 Rsgn6TJNyuiBGjZ0Fc6NvleoHkuVyQtJGjsfYrcg=
+	b=AxCkDju2MlNmKD7fzbW2BTgexy1CRFsgJYNKGX1rniOFYlvngTGjhURSFNDW+HSFl
+	 pDiS/MXv/xm+8WHeVl3qrnPFzK4B2GdATubBQpSZN6UX0OvzZw3h0qUuJYAUg8lh7o
+	 fey10GrYHDXW2BMbAzovUY8LLpVM8pH4mn8HuUVg=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Zhang Shurong <zhang_shurong@foxmail.com>,
-	Sakari Ailus <sakari.ailus@linux.intel.com>,
-	Hans Verkuil <hverkuil@xs4all.nl>
-Subject: [PATCH 6.12 108/322] media: ov2659: Fix memory leaks in ov2659_probe()
+	Alex Guo <alexguo1023@gmail.com>,
+	Mauro Carvalho Chehab <mchehab+huawei@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.10 313/523] media: dvb-frontends: w7090p: fix null-ptr-deref in w7090p_tuner_write_serpar and w7090p_tuner_read_serpar
 Date: Tue, 26 Aug 2025 13:08:43 +0200
-Message-ID: <20250826110918.442691841@linuxfoundation.org>
+Message-ID: <20250826110932.182090029@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250826110915.169062587@linuxfoundation.org>
-References: <20250826110915.169062587@linuxfoundation.org>
+In-Reply-To: <20250826110924.562212281@linuxfoundation.org>
+References: <20250826110924.562212281@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,47 +62,52 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Zhang Shurong <zhang_shurong@foxmail.com>
+From: Alex Guo <alexguo1023@gmail.com>
 
-commit 76142b137b968d47b35cdd8d1dc924677d319c8b upstream.
+[ Upstream commit ed0234c8458b3149f15e496b48a1c9874dd24a1b ]
 
-ov2659_probe() doesn't properly free control handler resources in failure
-paths, causing memory leaks. Add v4l2_ctrl_handler_free() to prevent these
-memory leaks and reorder the ctrl_handler assignment for better code flow.
+In w7090p_tuner_write_serpar, msg is controlled by user. When msg[0].buf is null and msg[0].len is zero, former checks on msg[0].buf would be passed. If accessing msg[0].buf[2] without sanity check, null pointer deref would happen. We add
+check on msg[0].len to prevent crash.
 
-Fixes: c4c0283ab3cd ("[media] media: i2c: add support for omnivision's ov2659 sensor")
-Cc: stable@vger.kernel.org
-Signed-off-by: Zhang Shurong <zhang_shurong@foxmail.com>
-Signed-off-by: Sakari Ailus <sakari.ailus@linux.intel.com>
-Signed-off-by: Hans Verkuil <hverkuil@xs4all.nl>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Similar commit: commit 0ed554fd769a ("media: dvb-usb: az6027: fix null-ptr-deref in az6027_i2c_xfer()")
+
+Signed-off-by: Alex Guo <alexguo1023@gmail.com>
+Link: https://lore.kernel.org/r/20250616013353.738790-1-alexguo1023@gmail.com
+Signed-off-by: Mauro Carvalho Chehab <mchehab+huawei@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/media/i2c/ov2659.c |    3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+ drivers/media/dvb-frontends/dib7000p.c | 4 ++++
+ 1 file changed, 4 insertions(+)
 
---- a/drivers/media/i2c/ov2659.c
-+++ b/drivers/media/i2c/ov2659.c
-@@ -1469,14 +1469,15 @@ static int ov2659_probe(struct i2c_clien
- 				     V4L2_CID_TEST_PATTERN,
- 				     ARRAY_SIZE(ov2659_test_pattern_menu) - 1,
- 				     0, 0, ov2659_test_pattern_menu);
--	ov2659->sd.ctrl_handler = &ov2659->ctrls;
+diff --git a/drivers/media/dvb-frontends/dib7000p.c b/drivers/media/dvb-frontends/dib7000p.c
+index a4d060fb1bab..08b3ac8ff108 100644
+--- a/drivers/media/dvb-frontends/dib7000p.c
++++ b/drivers/media/dvb-frontends/dib7000p.c
+@@ -2198,6 +2198,8 @@ static int w7090p_tuner_write_serpar(struct i2c_adapter *i2c_adap, struct i2c_ms
+ 	struct dib7000p_state *state = i2c_get_adapdata(i2c_adap);
+ 	u8 n_overflow = 1;
+ 	u16 i = 1000;
++	if (msg[0].len < 3)
++		return -EOPNOTSUPP;
+ 	u16 serpar_num = msg[0].buf[0];
  
- 	if (ov2659->ctrls.error) {
- 		dev_err(&client->dev, "%s: control initialization error %d\n",
- 			__func__, ov2659->ctrls.error);
-+		v4l2_ctrl_handler_free(&ov2659->ctrls);
- 		return  ov2659->ctrls.error;
- 	}
+ 	while (n_overflow == 1 && i) {
+@@ -2217,6 +2219,8 @@ static int w7090p_tuner_read_serpar(struct i2c_adapter *i2c_adap, struct i2c_msg
+ 	struct dib7000p_state *state = i2c_get_adapdata(i2c_adap);
+ 	u8 n_overflow = 1, n_empty = 1;
+ 	u16 i = 1000;
++	if (msg[0].len < 1 || msg[1].len < 2)
++		return -EOPNOTSUPP;
+ 	u16 serpar_num = msg[0].buf[0];
+ 	u16 read_word;
  
-+	ov2659->sd.ctrl_handler = &ov2659->ctrls;
- 	sd = &ov2659->sd;
- 	client->flags |= I2C_CLIENT_SCCB;
- 
+-- 
+2.39.5
+
 
 
 
