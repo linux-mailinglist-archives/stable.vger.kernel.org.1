@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-174972-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-175497-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 95FF8B36595
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 15:49:14 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id B261FB368DD
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 16:20:15 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id BA0EB1C20E9E
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 13:43:45 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id ADE0C1BC795E
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 14:08:47 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C71EA2D0621;
-	Tue, 26 Aug 2025 13:43:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 883EB338F51;
+	Tue, 26 Aug 2025 14:06:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="R+oLyAfK"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="cOS0JPHo"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 83B9A1E480;
-	Tue, 26 Aug 2025 13:43:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 426FF2192F2;
+	Tue, 26 Aug 2025 14:06:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756215802; cv=none; b=SVXCH+SmPKn7eC+n/PVgxZkfRarprGGTnQW9jCnMx3BXdnKCRqXmogSKrs96WEAPPI/bySu02e9pdLP0HbvfhGMmtvGpecsoFl/lnAu1MAN0aYeHhoRYYmGQAi9C6KjZKBhFNO3jtgfM0/Eer56ciFfvx09vVdtiynTxx6jDowI=
+	t=1756217200; cv=none; b=oNqWSCPkUlYSXp6+Ctqo7XwlN8zdf0sKfWZ3U+0FnIMh9wdcbPmHedE/3v31Dn2IYEVQdu1yb6rrs+S/M0X8tNAfrGbNtcPFm3AhrMK7xEfH70o2zy2SktyhRkxzqck0d4KbI4bYDs5dB6DCWLJVEC8MUqkNCqzLIoNBBHjKz54=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756215802; c=relaxed/simple;
-	bh=E4F94PlqugWNCiigEGLJSutgBh3NAiJuyy6yjGyQwZo=;
+	s=arc-20240116; t=1756217200; c=relaxed/simple;
+	bh=luFQrnHwPf9684fAPp2uAqyGsRF8GZ9i8pKqJia7OFw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=QMdRQDDrZk8+rsr6zdu11Yd+kmoW9/5Oo4d6nFxNqsaPWEsylGhwRZkBNiRnXlI5uNF4cpox+ksL890Q9SmAbs21WHqz3KzTH3S0yxnRpPmnve+6EOULvvHpfuFc9H4WgtPQ6U0BSuMMindvco9ZVyB8xqEzW9pi0vPXTn2KBko=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=R+oLyAfK; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 14080C4CEF1;
-	Tue, 26 Aug 2025 13:43:21 +0000 (UTC)
+	 MIME-Version; b=XssJB611DzzW48CP8j3u0o0PtuC0eNC1M7gHDiKfkJq1mrjZnSOYsTNCpQoMd/pOTF8ppP1CTGdaqTfvOGUg27jaEbiJFgHQ9lp0/HF8DwS70L4c9CXrAFl//1Ck9Lvc3yNAOqZNxTuGX6juq1TOCsDUSpLqKYwjZX3Cbmj2OGg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=cOS0JPHo; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id CA71FC113CF;
+	Tue, 26 Aug 2025 14:06:39 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1756215802;
-	bh=E4F94PlqugWNCiigEGLJSutgBh3NAiJuyy6yjGyQwZo=;
+	s=korg; t=1756217200;
+	bh=luFQrnHwPf9684fAPp2uAqyGsRF8GZ9i8pKqJia7OFw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=R+oLyAfKiQ1qhvSsCnZildTlzlcCIiN3034ahxVSSRgDykn4O7Iy9KUpnsvuSnMyb
-	 GFrIIUUlzCLhE2RprC3IofPP/jmtTd200QNTet30raa63oYc0U4UQjnYEbVdIhGYG3
-	 Vy1PTjTUydYHG+QhKqhWeEof3FXu/Km2BBAKeUkU=
+	b=cOS0JPHoJi+UypARgZZyY3K1zJVZsy2y8KjzHzPjnJOStpLFyxFr9syJ20wXZBqqU
+	 N59086UAn/7l1SOj75Sw/yCh1ouYgfhjZnXW8bgZAMi3y/u9TUTMSsxNxt9ybBJKu+
+	 YQaCDdXaViot8EVcDl/K7zRsRsmscUgsXKXs14sU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Charles Han <hanchunchao@inspur.com>,
-	Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>,
-	Sebastian Reichel <sebastian.reichel@collabora.com>,
+	Bui Quang Minh <minhquangbui99@gmail.com>,
+	Jason Wang <jasowang@redhat.com>,
+	Paolo Abeni <pabeni@redhat.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 172/644] power: supply: max14577: Handle NULL pdata when CONFIG_OF is not set
+Subject: [PATCH 5.10 053/523] virtio-net: ensure the received length does not exceed allocated size
 Date: Tue, 26 Aug 2025 13:04:23 +0200
-Message-ID: <20250826110950.735984745@linuxfoundation.org>
+Message-ID: <20250826110925.903845524@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250826110946.507083938@linuxfoundation.org>
-References: <20250826110946.507083938@linuxfoundation.org>
+In-Reply-To: <20250826110924.562212281@linuxfoundation.org>
+References: <20250826110924.562212281@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,56 +63,117 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Charles Han <hanchunchao@inspur.com>
+From: Bui Quang Minh <minhquangbui99@gmail.com>
 
-[ Upstream commit 2937f5d2e24eefef8cb126244caec7fe3307f724 ]
+commit 315dbdd7cdf6aa533829774caaf4d25f1fd20e73 upstream.
 
-When the kernel is not configured  CONFIG_OF, the max14577_charger_dt_init
-function returns NULL. Fix the max14577_charger_probe functionby returning
--ENODATA instead of potentially passing a NULL pointer to PTR_ERR.
+In xdp_linearize_page, when reading the following buffers from the ring,
+we forget to check the received length with the true allocate size. This
+can lead to an out-of-bound read. This commit adds that missing check.
 
-This fixes the below smatch warning:
-max14577_charger_probe() warn: passing zero to 'PTR_ERR'
-
-Fixes: e30110e9c96f ("charger: max14577: Configure battery-dependent settings from DTS and sysfs")
-Signed-off-by: Charles Han <hanchunchao@inspur.com>
-Reviewed-by: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
-Link: https://lore.kernel.org/r/20250519061601.8755-1-hanchunchao@inspur.com
-Signed-off-by: Sebastian Reichel <sebastian.reichel@collabora.com>
+Cc: <stable@vger.kernel.org>
+Fixes: 4941d472bf95 ("virtio-net: do not reset during XDP set")
+Signed-off-by: Bui Quang Minh <minhquangbui99@gmail.com>
+Acked-by: Jason Wang <jasowang@redhat.com>
+Link: https://patch.msgid.link/20250630144212.48471-2-minhquangbui99@gmail.com
+Signed-off-by: Paolo Abeni <pabeni@redhat.com>
+[ adapted virtqueue_get_buf() to virtqueue_get_buf_ctx() ]
 Signed-off-by: Sasha Levin <sashal@kernel.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/power/supply/max14577_charger.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ drivers/net/virtio_net.c |   38 ++++++++++++++++++++++++++++++++++----
+ 1 file changed, 34 insertions(+), 4 deletions(-)
 
-diff --git a/drivers/power/supply/max14577_charger.c b/drivers/power/supply/max14577_charger.c
-index f244cd902eb9..e4461caecea3 100644
---- a/drivers/power/supply/max14577_charger.c
-+++ b/drivers/power/supply/max14577_charger.c
-@@ -501,7 +501,7 @@ static struct max14577_charger_platform_data *max14577_charger_dt_init(
- static struct max14577_charger_platform_data *max14577_charger_dt_init(
- 		struct platform_device *pdev)
- {
--	return NULL;
-+	return ERR_PTR(-ENODATA);
+--- a/drivers/net/virtio_net.c
++++ b/drivers/net/virtio_net.c
+@@ -394,6 +394,26 @@ static unsigned int mergeable_ctx_to_tru
+ 	return (unsigned long)mrg_ctx & ((1 << MRG_CTX_HEADER_SHIFT) - 1);
  }
- #endif /* CONFIG_OF */
  
-@@ -572,7 +572,7 @@ static int max14577_charger_probe(struct platform_device *pdev)
- 	chg->max14577 = max14577;
++static int check_mergeable_len(struct net_device *dev, void *mrg_ctx,
++			       unsigned int len)
++{
++	unsigned int headroom, tailroom, room, truesize;
++
++	truesize = mergeable_ctx_to_truesize(mrg_ctx);
++	headroom = mergeable_ctx_to_headroom(mrg_ctx);
++	tailroom = headroom ? sizeof(struct skb_shared_info) : 0;
++	room = SKB_DATA_ALIGN(headroom + tailroom);
++
++	if (len > truesize - room) {
++		pr_debug("%s: rx error: len %u exceeds truesize %lu\n",
++			 dev->name, len, (unsigned long)(truesize - room));
++		dev->stats.rx_length_errors++;
++		return -1;
++	}
++
++	return 0;
++}
++
+ /* Called from bottom half context */
+ static struct sk_buff *page_to_skb(struct virtnet_info *vi,
+ 				   struct receive_queue *rq,
+@@ -639,7 +659,8 @@ static unsigned int virtnet_get_headroom
+  * across multiple buffers (num_buf > 1), and we make sure buffers
+  * have enough headroom.
+  */
+-static struct page *xdp_linearize_page(struct receive_queue *rq,
++static struct page *xdp_linearize_page(struct net_device *dev,
++				       struct receive_queue *rq,
+ 				       u16 *num_buf,
+ 				       struct page *p,
+ 				       int offset,
+@@ -659,18 +680,27 @@ static struct page *xdp_linearize_page(s
+ 	memcpy(page_address(page) + page_off, page_address(p) + offset, *len);
+ 	page_off += *len;
  
- 	chg->pdata = max14577_charger_dt_init(pdev);
--	if (IS_ERR_OR_NULL(chg->pdata))
-+	if (IS_ERR(chg->pdata))
- 		return PTR_ERR(chg->pdata);
++	/* Only mergeable mode can go inside this while loop. In small mode,
++	 * *num_buf == 1, so it cannot go inside.
++	 */
+ 	while (--*num_buf) {
+ 		unsigned int buflen;
+ 		void *buf;
++		void *ctx;
+ 		int off;
  
- 	ret = max14577_charger_reg_init(chg);
--- 
-2.39.5
-
+-		buf = virtqueue_get_buf(rq->vq, &buflen);
++		buf = virtqueue_get_buf_ctx(rq->vq, &buflen, &ctx);
+ 		if (unlikely(!buf))
+ 			goto err_buf;
+ 
+ 		p = virt_to_head_page(buf);
+ 		off = buf - page_address(p);
+ 
++		if (check_mergeable_len(dev, ctx, buflen)) {
++			put_page(p);
++			goto err_buf;
++		}
++
+ 		/* guard against a misconfigured or uncooperative backend that
+ 		 * is sending packet larger than the MTU.
+ 		 */
+@@ -745,7 +775,7 @@ static struct sk_buff *receive_small(str
+ 			headroom = vi->hdr_len + header_offset;
+ 			buflen = SKB_DATA_ALIGN(GOOD_PACKET_LEN + headroom) +
+ 				 SKB_DATA_ALIGN(sizeof(struct skb_shared_info));
+-			xdp_page = xdp_linearize_page(rq, &num_buf, page,
++			xdp_page = xdp_linearize_page(dev, rq, &num_buf, page,
+ 						      offset, header_offset,
+ 						      &tlen);
+ 			if (!xdp_page)
+@@ -916,7 +946,7 @@ static struct sk_buff *receive_mergeable
+ 		if (unlikely(num_buf > 1 ||
+ 			     headroom < virtnet_get_headroom(vi))) {
+ 			/* linearize data for XDP */
+-			xdp_page = xdp_linearize_page(rq, &num_buf,
++			xdp_page = xdp_linearize_page(dev, rq, &num_buf,
+ 						      page, offset,
+ 						      VIRTIO_XDP_HEADROOM,
+ 						      &len);
 
 
 
