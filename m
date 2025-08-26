@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-174127-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-173203-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id CBEE9B36197
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 15:10:58 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2C488B35C4F
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 13:33:08 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 8C8AB8A2B8D
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 13:06:27 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id C5AC117B671
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 11:27:19 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6D6A723B60A;
-	Tue, 26 Aug 2025 13:06:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5E40F20C001;
+	Tue, 26 Aug 2025 11:27:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="kpIZPIE9"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="kbbp1FNS"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 294D0DF49;
-	Tue, 26 Aug 2025 13:06:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1CC49239573;
+	Tue, 26 Aug 2025 11:27:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756213565; cv=none; b=nz937XLPtVWt/uBgXI20/ZSrjAei4z1dyiN+O6Gk6oNM1LVeD9wVX34D/RIP0WwG5s78qFbMqN07A3lNwI+XJGmRyNWByF7Zdsh9eV3PZM2donkVNmUOP3Jg9Zc6ZqLfslY/poLWRQBHpR5RwNouhvXqZiFsjZuutkA7kQOCtZ0=
+	t=1756207637; cv=none; b=CJAZCFNx1cEeB4EcvgU1LDieG9QGxvHC/vNgnZzo/1dDQuhM+lBds8yLcWsMIa/cEWlmMvkQQZQ7//arkH1oue6TYtGcGYNAHT6DHMYO2S6wKEZpKn3fw6wQH7erzgawdiRGPpl2pk0hZaeG7gr17naq2jQC6pyn43/jZvKWucU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756213565; c=relaxed/simple;
-	bh=8iI2xos0uhPTYbqZV+yBTuKMqN879heue3iGpn4Z5gk=;
+	s=arc-20240116; t=1756207637; c=relaxed/simple;
+	bh=5blUN8k3ESaKAo/tQWQm8ECbNZDG++6khP9t0UHQ3h8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=S/vBHYn9Rgs5NBzpvoc0DbvnuHQ1h8V6Y6ws6xdSCz1r/txGF6t5AWXatkjKo8/WnUCLIONCzr6dsNIBVw0owS99kzAxZUmPJ+ls0/8aYqXUnT8BpBnSZYOqkAE72jM2Tmz9OXR2Dach4BMIWAPVxvxcOxjVMPbF2VnmdIQH8iU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=kpIZPIE9; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id AE1D7C4CEF1;
-	Tue, 26 Aug 2025 13:06:04 +0000 (UTC)
+	 MIME-Version; b=WNZIXmF7OT6KaSfwL0nNhzCaFW4dzDkTBBia3KWxVF3hQ5HfH1R73wuC6VVJfC+Lt4srt/kUcL+DdGX4as/PBXZPHhRd5iFBvBmEg+klvMZFDah5Kuz5HY+v+6KO6dsuBwhOVX8uniREAeQgeQ83GUCRg0kyYmaGAjqF48bnvF0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=kbbp1FNS; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id AC118C4CEF1;
+	Tue, 26 Aug 2025 11:27:16 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1756213565;
-	bh=8iI2xos0uhPTYbqZV+yBTuKMqN879heue3iGpn4Z5gk=;
+	s=korg; t=1756207637;
+	bh=5blUN8k3ESaKAo/tQWQm8ECbNZDG++6khP9t0UHQ3h8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=kpIZPIE9rB/2iEJeBow1icDegmoLg8DaoEZiVSejTYKCZO5aR2JQySAxvUCj6UDsh
-	 v3xHO8F18M7i2WC1YMri4mEYX+ZBWuM5SK3lDYFI5ADXQ6+GHDMTWXYFkAERrbleNl
-	 dUjiY96RdxoE8mvMa4PHnad6cEKwtyg3JmyGS8zc=
+	b=kbbp1FNSLvv5xqNsr0Br+jETG+JEV42Ic46jcDdg/1GV1BayBY934no45KG0kVJs0
+	 fmz6gBABn9rWtFZJRRebLbyK9+xApE9L+F9MkkoYXImuIV9OJXO0Ft/TCw/HSHZrNg
+	 Zl6qBz5C6sDuSwfsLidr5d5+VbVyfVcfncDoes+I=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Randy Dunlap <rdunlap@infradead.org>,
-	"James E.J. Bottomley" <James.Bottomley@HansenPartnership.com>,
-	Helge Deller <deller@gmx.de>,
-	linux-parisc@vger.kernel.org
-Subject: [PATCH 6.6 395/587] parisc: Makefile: explain that 64BIT requires both 32-bit and 64-bit compilers
+	Sebastian Brzezinka <sebastian.brzezinka@intel.com>,
+	Andi Shyti <andi.shyti@linux.intel.com>,
+	Krzysztof Karas <krzysztof.karas@intel.com>,
+	Tvrtko Ursulin <tursulin@ursulin.net>
+Subject: [PATCH 6.16 260/457] drm/i915/gt: Relocate compression repacking WA for JSL/EHL
 Date: Tue, 26 Aug 2025 13:09:04 +0200
-Message-ID: <20250826111002.970194964@linuxfoundation.org>
+Message-ID: <20250826110943.783509060@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250826110952.942403671@linuxfoundation.org>
-References: <20250826110952.942403671@linuxfoundation.org>
+In-Reply-To: <20250826110937.289866482@linuxfoundation.org>
+References: <20250826110937.289866482@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,42 +63,81 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.16-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Randy Dunlap <rdunlap@infradead.org>
+From: Sebastian Brzezinka <sebastian.brzezinka@intel.com>
 
-commit 305ab0a748c52eeaeb01d8cff6408842d19e5cb5 upstream.
+commit 8236820fd767f400d1baefb71bc7e36e37730a1e upstream.
 
-For building a 64-bit kernel, both 32-bit and 64-bit VDSO binaries
-are built, so both 32-bit and 64-bit compilers (and tools) should be
-in the PATH environment variable.
+CACHE_MODE_0 registers should be saved and restored as part of
+the context, not during engine reset. Move the related workaround
+(Disable Repacking for Compression) from rcs_engine_wa_init()
+to icl_ctx_workarounds_init() for Jasper Lake and Elkhart
+Lake platforms. This ensures the WA is applied during context
+initialisation.
 
-Signed-off-by: Randy Dunlap <rdunlap@infradead.org>
-Cc: "James E.J. Bottomley" <James.Bottomley@HansenPartnership.com>
-Cc: Helge Deller <deller@gmx.de>
-Cc: linux-parisc@vger.kernel.org
-Signed-off-by: Helge Deller <deller@gmx.de>
-Cc: stable@vger.kernel.org # v5.3+
+BSPEC: 11322
+
+Fixes: 0ddae025ab6c ("drm/i915: Disable compression tricks on JSL")
+Closes: Fixes: 0ddae025ab6c ("drm/i915: Disable compression tricks on JSL")
+Signed-off-by: Sebastian Brzezinka <sebastian.brzezinka@intel.com>
+Cc: stable@vger.kernel.org # v6.13+
+Reviewed-by: Andi Shyti <andi.shyti@linux.intel.com>
+Reviewed-by: Krzysztof Karas <krzysztof.karas@intel.com>
+Signed-off-by: Andi Shyti <andi.shyti@linux.intel.com>
+Link: https://lore.kernel.org/r/4feaa24094e019e000ceb6011d8cd419b0361b3f.1754902406.git.sebastian.brzezinka@intel.com
+(cherry picked from commit c9932f0d604e4c8f2c6018e598a322acb43c68a2)
+Signed-off-by: Tvrtko Ursulin <tursulin@ursulin.net>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- arch/parisc/Makefile |    4 +++-
- 1 file changed, 3 insertions(+), 1 deletion(-)
+ drivers/gpu/drm/i915/gt/intel_workarounds.c |   20 +++++++++++---------
+ 1 file changed, 11 insertions(+), 9 deletions(-)
 
---- a/arch/parisc/Makefile
-+++ b/arch/parisc/Makefile
-@@ -39,7 +39,9 @@ endif
+--- a/drivers/gpu/drm/i915/gt/intel_workarounds.c
++++ b/drivers/gpu/drm/i915/gt/intel_workarounds.c
+@@ -634,6 +634,8 @@ static void cfl_ctx_workarounds_init(str
+ static void icl_ctx_workarounds_init(struct intel_engine_cs *engine,
+ 				     struct i915_wa_list *wal)
+ {
++	struct drm_i915_private *i915 = engine->i915;
++
+ 	/* Wa_1406697149 (WaDisableBankHangMode:icl) */
+ 	wa_write(wal, GEN8_L3CNTLREG, GEN8_ERRDETBCTRL);
  
- export LD_BFD
+@@ -669,6 +671,15 @@ static void icl_ctx_workarounds_init(str
  
--# Set default 32 bits cross compilers for vdso
-+# Set default 32 bits cross compilers for vdso.
-+# This means that for 64BIT, both the 64-bit tools and the 32-bit tools
-+# need to be in the path.
- CC_ARCHES_32 = hppa hppa2.0 hppa1.1
- CC_SUFFIXES  = linux linux-gnu unknown-linux-gnu suse-linux
- CROSS32_COMPILE := $(call cc-cross-prefix, \
+ 	/* Wa_1406306137:icl,ehl */
+ 	wa_mcr_masked_en(wal, GEN9_ROW_CHICKEN4, GEN11_DIS_PICK_2ND_EU);
++
++	if (IS_JASPERLAKE(i915) || IS_ELKHARTLAKE(i915)) {
++		/*
++		 * Disable Repacking for Compression (masked R/W access)
++		 * before rendering compressed surfaces for display.
++		 */
++		wa_masked_en(wal, CACHE_MODE_0_GEN7,
++			     DISABLE_REPACKING_FOR_COMPRESSION);
++	}
+ }
+ 
+ /*
+@@ -2306,15 +2317,6 @@ rcs_engine_wa_init(struct intel_engine_c
+ 			     GEN8_RC_SEMA_IDLE_MSG_DISABLE);
+ 	}
+ 
+-	if (IS_JASPERLAKE(i915) || IS_ELKHARTLAKE(i915)) {
+-		/*
+-		 * "Disable Repacking for Compression (masked R/W access)
+-		 *  before rendering compressed surfaces for display."
+-		 */
+-		wa_masked_en(wal, CACHE_MODE_0_GEN7,
+-			     DISABLE_REPACKING_FOR_COMPRESSION);
+-	}
+-
+ 	if (GRAPHICS_VER(i915) == 11) {
+ 		/* This is not an Wa. Enable for better image quality */
+ 		wa_masked_en(wal,
 
 
 
