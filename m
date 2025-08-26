@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-174374-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-172969-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0396BB362FC
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 15:24:56 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 6A443B35B09
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 13:17:18 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 967598A591F
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 13:18:50 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 264973AA5F0
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 11:17:17 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C4A0A3451CD;
-	Tue, 26 Aug 2025 13:17:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id CAE4220B7EE;
+	Tue, 26 Aug 2025 11:17:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="JVJLIrC1"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="0+sX8ISr"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8075122DF99;
-	Tue, 26 Aug 2025 13:17:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8464021D00E;
+	Tue, 26 Aug 2025 11:17:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756214221; cv=none; b=KZ7ty9zna/2jxiW0f32PHHyX0zEDkCLh0yFHwboX4jYtSNnIaFdDocxOht0epCv1vSlx0Mzjs9NXuwyDesGDBy3morAD0fc0o7z7Nn1/XKxjZrvjJ6d6Pw1e46VA8OC2mLfP9R+sSkhNh5b32OrJWa4SPQoSCcMYdgRWaYT2weE=
+	t=1756207036; cv=none; b=J60nlEfzF9HA3s5Cf1z1rUAUTggg9pl5Poia3V5bMvJ9bw2a9J7fpxk4oj04Og/2k6clih7PSQ05NcQoQx5/TRye1U96mwCJtK2PMQ0X2pkOQWxwFejlMAcZw4EMNGvRrvRH8wMTPRUIn8lV2fmrh6TnifvOGj4quAj3cuczdWU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756214221; c=relaxed/simple;
-	bh=gJTZgtuPZTX5wS1ntM2pQUd1k5R5KiG0tdRIQuskka0=;
+	s=arc-20240116; t=1756207036; c=relaxed/simple;
+	bh=X5QCYkTA6Zwt0RVIhMbvwDB3I6kILR27xGm0RgdQo9g=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=WEJR+EE8Fc0jSjGb32TLE3jo7o6ugyyNyEZC0/aWJaS+LBH51dQ1dOEpjP58RLEZQzwIyxD7+K9MOS7OjtqCzZfyGjGB1sVoMYAYHwQ+Qx5fwfalUnpkfAAEKRr8DLI2vJ/A0Ee2T5++sdw1cm3yNKbcTrOat1CFywEDApv6JTU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=JVJLIrC1; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 10E78C4CEF1;
-	Tue, 26 Aug 2025 13:17:00 +0000 (UTC)
+	 MIME-Version; b=b2ISPv9Ml/K/GKvPdp2NlShLLttQY6IGj/Nh5h7GHMrr7DbaYclsLOuYtZ0dKFSp6FnCQRZrPfrg4LfvlrVhngR6s3yAizhgHQyP48zQhLXxgmBDAE1ZadY0JLyK+tPtshKhPzJAG9EikJklntTRSNK4hPc2dNrDJ0cEaFG5Al4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=0+sX8ISr; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B6782C4CEF1;
+	Tue, 26 Aug 2025 11:17:14 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1756214221;
-	bh=gJTZgtuPZTX5wS1ntM2pQUd1k5R5KiG0tdRIQuskka0=;
+	s=korg; t=1756207035;
+	bh=X5QCYkTA6Zwt0RVIhMbvwDB3I6kILR27xGm0RgdQo9g=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=JVJLIrC1Rw9la1gn3twIFXaZGy50j1NjVBux33qPyWgAKu9bYgGPglXic8D7ImuyQ
-	 e7Oj3Ry6TCn4UXWnrc/lmddBRzzh/PsnGBbAbQYyusNNXAOsmBJIag/Fbfj2cMo9lg
-	 n1sQUjGwBhL1lR+oAQMoAx82SzvswxKa5WCBOmFI=
+	b=0+sX8ISrzjpmpVPKE1yDOCY7uhJFSRZ1HhJLFJssxx7TrztaG9Nlq/0wBTp6EC5kw
+	 sjR0IEqT1h4/j5V4a34o4u2LBChLB2vpvtKencFx0T7moa8QwdqhrXGDolkRwtDcjL
+	 wcoB9DaEivfTd8u1KJfvoxntBOI/mgz/0MQ4GxCw=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Viacheslav Dubeyko <slava@dubeyko.com>,
-	Johannes Thumshirn <johannes.thumshirn@wdc.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 057/482] hfs: fix not erasing deleted b-tree node issue
+	Giovanni Cabiddu <giovanni.cabiddu@intel.com>,
+	Ahsan Atta <ahsan.atta@intel.com>,
+	Herbert Xu <herbert@gondor.apana.org.au>
+Subject: [PATCH 6.16 026/457] crypto: qat - flush misc workqueue during device shutdown
 Date: Tue, 26 Aug 2025 13:05:10 +0200
-Message-ID: <20250826110932.232383096@linuxfoundation.org>
+Message-ID: <20250826110937.982296312@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250826110930.769259449@linuxfoundation.org>
-References: <20250826110930.769259449@linuxfoundation.org>
+In-Reply-To: <20250826110937.289866482@linuxfoundation.org>
+References: <20250826110937.289866482@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,110 +62,88 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.16-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Viacheslav Dubeyko <slava@dubeyko.com>
+From: Giovanni Cabiddu <giovanni.cabiddu@intel.com>
 
-[ Upstream commit d3ed6d6981f4756f145766753c872482bc3b28d3 ]
+commit 3d4df408ba9bad2b205c7fb8afc1836a6a4ca88a upstream.
 
-The generic/001 test of xfstests suite fails and corrupts
-the HFS volume:
+Repeated loading and unloading of a device specific QAT driver, for
+example qat_4xxx, in a tight loop can lead to a crash due to a
+use-after-free scenario. This occurs when a power management (PM)
+interrupt triggers just before the device-specific driver (e.g.,
+qat_4xxx.ko) is unloaded, while the core driver (intel_qat.ko) remains
+loaded.
 
-sudo ./check generic/001
-FSTYP         -- hfs
-PLATFORM      -- Linux/x86_64 hfsplus-testing-0001 6.15.0-rc2+ #3 SMP PREEMPT_DYNAMIC Fri Apr 25 17:13:00 PDT 2>
-MKFS_OPTIONS  -- /dev/loop51
-MOUNT_OPTIONS -- /dev/loop51 /mnt/scratch
+Since the driver uses a shared workqueue (`qat_misc_wq`) across all
+devices and owned by intel_qat.ko, a deferred routine from the
+device-specific driver may still be pending in the queue. If this
+routine executes after the driver is unloaded, it can dereference freed
+memory, resulting in a page fault and kernel crash like the following:
 
-generic/001 32s ... _check_generic_filesystem: filesystem on /dev/loop50 is inconsistent
-(see /home/slavad/XFSTESTS-2/xfstests-dev/results//generic/001.full for details)
+    BUG: unable to handle page fault for address: ffa000002e50a01c
+    #PF: supervisor read access in kernel mode
+    RIP: 0010:pm_bh_handler+0x1d2/0x250 [intel_qat]
+    Call Trace:
+      pm_bh_handler+0x1d2/0x250 [intel_qat]
+      process_one_work+0x171/0x340
+      worker_thread+0x277/0x3a0
+      kthread+0xf0/0x120
+      ret_from_fork+0x2d/0x50
 
-Ran: generic/001
-Failures: generic/001
-Failed 1 of 1 tests
+To prevent this, flush the misc workqueue during device shutdown to
+ensure that all pending work items are completed before the driver is
+unloaded.
 
-fsck.hfs -d -n ./test-image.bin
-** ./test-image.bin (NO WRITE)
-	Using cacheBlockSize=32K cacheTotalBlock=1024 cacheSize=32768K.
-   Executing fsck_hfs (version 540.1-Linux).
-** Checking HFS volume.
-   The volume name is untitled
-** Checking extents overflow file.
-** Checking catalog file.
-   Unused node is not erased (node = 2)
-   Unused node is not erased (node = 4)
-<skipped>
-   Unused node is not erased (node = 253)
-   Unused node is not erased (node = 254)
-   Unused node is not erased (node = 255)
-   Unused node is not erased (node = 256)
-** Checking catalog hierarchy.
-** Checking volume bitmap.
-** Checking volume information.
-   Verify Status: VIStat = 0x0000, ABTStat = 0x0000 EBTStat = 0x0000
-                  CBTStat = 0x0004 CatStat = 0x00000000
-** The volume untitled was found corrupt and needs to be repaired.
-	volume type is HFS
-	primary MDB is at block 2 0x02
-	alternate MDB is at block 20971518 0x13ffffe
-	primary VHB is at block 0 0x00
-	alternate VHB is at block 0 0x00
-	sector size = 512 0x200
-	VolumeObject flags = 0x19
-	total sectors for volume = 20971520 0x1400000
-	total sectors for embedded volume = 0 0x00
+Note: This approach may slightly increase shutdown latency if the
+workqueue contains jobs from other devices, but it ensures correctness
+and stability.
 
-This patch adds logic of clearing the deleted b-tree node.
-
-sudo ./check generic/001
-FSTYP         -- hfs
-PLATFORM      -- Linux/x86_64 hfsplus-testing-0001 6.15.0-rc2+ #3 SMP PREEMPT_DYNAMIC Fri Apr 25 17:13:00 PDT 2025
-MKFS_OPTIONS  -- /dev/loop51
-MOUNT_OPTIONS -- /dev/loop51 /mnt/scratch
-
-generic/001 9s ...  32s
-Ran: generic/001
-Passed all 1 tests
-
-fsck.hfs -d -n ./test-image.bin
-** ./test-image.bin (NO WRITE)
-	Using cacheBlockSize=32K cacheTotalBlock=1024 cacheSize=32768K.
-   Executing fsck_hfs (version 540.1-Linux).
-** Checking HFS volume.
-   The volume name is untitled
-** Checking extents overflow file.
-** Checking catalog file.
-** Checking catalog hierarchy.
-** Checking volume bitmap.
-** Checking volume information.
-** The volume untitled appears to be OK.
-
-Signed-off-by: Viacheslav Dubeyko <slava@dubeyko.com>
-Reviewed-by: Johannes Thumshirn <johannes.thumshirn@wdc.com>
-Link: https://lore.kernel.org/r/20250430001211.1912533-1-slava@dubeyko.com
-Signed-off-by: Viacheslav Dubeyko <slava@dubeyko.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Fixes: e5745f34113b ("crypto: qat - enable power management for QAT GEN4")
+Signed-off-by: Giovanni Cabiddu <giovanni.cabiddu@intel.com>
+Cc: stable@vger.kernel.org
+Reviewed-by: Ahsan Atta <ahsan.atta@intel.com>
+Signed-off-by: Herbert Xu <herbert@gondor.apana.org.au>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- fs/hfs/bnode.c | 1 +
- 1 file changed, 1 insertion(+)
+ drivers/crypto/intel/qat/qat_common/adf_common_drv.h |    1 +
+ drivers/crypto/intel/qat/qat_common/adf_init.c       |    1 +
+ drivers/crypto/intel/qat/qat_common/adf_isr.c        |    5 +++++
+ 3 files changed, 7 insertions(+)
 
-diff --git a/fs/hfs/bnode.c b/fs/hfs/bnode.c
-index 1dac5d9c055f..e8cd1a31f247 100644
---- a/fs/hfs/bnode.c
-+++ b/fs/hfs/bnode.c
-@@ -574,6 +574,7 @@ void hfs_bnode_put(struct hfs_bnode *node)
- 		if (test_bit(HFS_BNODE_DELETED, &node->flags)) {
- 			hfs_bnode_unhash(node);
- 			spin_unlock(&tree->hash_lock);
-+			hfs_bnode_clear(node, 0, tree->node_size);
- 			hfs_bmap_free(node);
- 			hfs_bnode_free(node);
- 			return;
--- 
-2.39.5
-
+--- a/drivers/crypto/intel/qat/qat_common/adf_common_drv.h
++++ b/drivers/crypto/intel/qat/qat_common/adf_common_drv.h
+@@ -189,6 +189,7 @@ void adf_exit_misc_wq(void);
+ bool adf_misc_wq_queue_work(struct work_struct *work);
+ bool adf_misc_wq_queue_delayed_work(struct delayed_work *work,
+ 				    unsigned long delay);
++void adf_misc_wq_flush(void);
+ #if defined(CONFIG_PCI_IOV)
+ int adf_sriov_configure(struct pci_dev *pdev, int numvfs);
+ void adf_disable_sriov(struct adf_accel_dev *accel_dev);
+--- a/drivers/crypto/intel/qat/qat_common/adf_init.c
++++ b/drivers/crypto/intel/qat/qat_common/adf_init.c
+@@ -404,6 +404,7 @@ static void adf_dev_shutdown(struct adf_
+ 		hw_data->exit_admin_comms(accel_dev);
+ 
+ 	adf_cleanup_etr_data(accel_dev);
++	adf_misc_wq_flush();
+ 	adf_dev_restore(accel_dev);
+ }
+ 
+--- a/drivers/crypto/intel/qat/qat_common/adf_isr.c
++++ b/drivers/crypto/intel/qat/qat_common/adf_isr.c
+@@ -407,3 +407,8 @@ bool adf_misc_wq_queue_delayed_work(stru
+ {
+ 	return queue_delayed_work(adf_misc_wq, work, delay);
+ }
++
++void adf_misc_wq_flush(void)
++{
++	flush_workqueue(adf_misc_wq);
++}
 
 
 
