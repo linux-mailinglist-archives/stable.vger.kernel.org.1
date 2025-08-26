@@ -1,58 +1,57 @@
-Return-Path: <stable+bounces-175234-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-174552-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [IPv6:2605:f480:58:1:0:1994:3:14])
-	by mail.lfdr.de (Postfix) with ESMTPS id F33BEB3665C
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 15:56:19 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 394A3B363E1
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 15:34:00 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id E76324E458B
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 13:56:18 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id B06DF562357
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 13:26:11 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id CCC53350822;
-	Tue, 26 Aug 2025 13:54:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E32C323F439;
+	Tue, 26 Aug 2025 13:24:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="hw4+a3WY"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="oQvuKWbu"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8B1BC338F36;
-	Tue, 26 Aug 2025 13:54:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A1F5FAD4B;
+	Tue, 26 Aug 2025 13:24:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756216497; cv=none; b=VsEQnfZjIaSAkbOV2zbzbGkbYg+kXDCGfUVwq6vkbqoJZevn7msXJVorZSi527nSjkE1+meetverc+YTvXdSUJeBZUhGmp1GiC6vtP4fVoJ4fAvLJR7iI024FLOjnd/pz7thxl6Zxr/6BP86ACLqorY69s/8PA5rUZjG0jTMWxQ=
+	t=1756214695; cv=none; b=PhSM2vvwzUmCmvH3Vndyh8e5apBFINKCc65i4NJn+viIK+I73Kods3pOoVTvTcjWC2SFezKmI2+CQ0HoNjRcvkx1La6jRpLA56uy4K3x2WVsHJ8I0Iw+vWkQe8tIa69dDX/wJw1J0t/CSoM/aWSVgNBXd0cMrjtnMbYEJf8qpOE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756216497; c=relaxed/simple;
-	bh=4MiPttwCeFBXBDTvQZdzqvd22dBVW75Jdoff6gf/8I4=;
+	s=arc-20240116; t=1756214695; c=relaxed/simple;
+	bh=bbMyZN5dKZvALjeDCT53Jcd9EUSdcaALESqPv6t0gd8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=DnL5UB+kQXgAMV2V9GBXl/YTYyO6AaenOPUhPSCpgNTbyYLS1rZXiENsM709HO88zCT1Aqprutwc3qY++NNL9J8QWcPeBtjmak9xCG43rAdN0h34UpAzZ5k9Wt2RiXDWZayCjOa+uRX53cAv+AXaQ6ik1P5PiIS3BwHq6RHEgT0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=hw4+a3WY; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id BE6F1C4CEF1;
-	Tue, 26 Aug 2025 13:54:56 +0000 (UTC)
+	 MIME-Version; b=uCwto25T7m1/CxzvfgR5RuwWBuhJEHiaRKS6v3dzrUbjEWsITJobWLr46mYTZd8TGHphQ2kiJgcjeG8voR3NrrywKGgvMeABwMAXtizKH1gEZuQMYr49O5A5mHBh53Usq/aXasuXpym5L5mEmaaGUGBfVIGpifNLAFS8M5c0l2A=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=oQvuKWbu; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2EBE7C4CEF1;
+	Tue, 26 Aug 2025 13:24:55 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1756216497;
-	bh=4MiPttwCeFBXBDTvQZdzqvd22dBVW75Jdoff6gf/8I4=;
+	s=korg; t=1756214695;
+	bh=bbMyZN5dKZvALjeDCT53Jcd9EUSdcaALESqPv6t0gd8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=hw4+a3WYrq4e4I/pI0kVwObbMOwPl1f1n3ETYVJKn2W9Z/mY/PG/0YMhsQlCzWCLT
-	 Dr+P3LDBgjy+LYTtLBBJkW8uu9WebGc++3tQDr350V/aVPedicpN67aP3359dVeRQN
-	 MhP+hT0jUi6evjwZ8jvogQnPxN4PCgnIMenuCNFs=
+	b=oQvuKWbuSwQIXJXwJB+C9kwW3C70lnNZp2SntLA3cbLl0Q8ko/lmUHxZZApXrDRx6
+	 GaytYROISN48RK5cTJdwJA2R5WtdFJcRqBayd8l+Wz8LQKtJ2ivLdiMM0Ieq8kQeNZ
+	 0dNLMHRrNTZbi+lRRVKVe6GQmsuDYe5AW6j0KYhM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	=?UTF-8?q?Thomas=20Wei=C3=9Fschuh?= <thomas.weissschuh@linutronix.de>,
-	David Gow <davidgow@google.com>,
-	Huacai Chen <chenhuacai@loongson.cn>,
-	Thomas Bogendoerfer <tsbogend@alpha.franken.de>,
+	Sergey Bashirov <sergeybashirov@gmail.com>,
+	Christoph Hellwig <hch@lst.de>,
+	Trond Myklebust <trond.myklebust@hammerspace.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 396/644] MIPS: Dont crash in stack_top() for tasks without ABI or vDSO
+Subject: [PATCH 6.1 234/482] pNFS: Fix disk addr range check in block/scsi layout
 Date: Tue, 26 Aug 2025 13:08:07 +0200
-Message-ID: <20250826110956.264200250@linuxfoundation.org>
+Message-ID: <20250826110936.553406172@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250826110946.507083938@linuxfoundation.org>
-References: <20250826110946.507083938@linuxfoundation.org>
+In-Reply-To: <20250826110930.769259449@linuxfoundation.org>
+References: <20250826110930.769259449@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,81 +61,45 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Thomas Weißschuh <thomas.weissschuh@linutronix.de>
+From: Sergey Bashirov <sergeybashirov@gmail.com>
 
-[ Upstream commit e9f4a6b3421e936c3ee9d74710243897d74dbaa2 ]
+[ Upstream commit 7db6e66663681abda54f81d5916db3a3b8b1a13d ]
 
-Not all tasks have an ABI associated or vDSO mapped,
-for example kthreads never do.
-If such a task ever ends up calling stack_top(), it will derefence the
-NULL ABI pointer and crash.
+At the end of the isect translation, disc_addr represents the physical
+disk offset. Thus, end calculated from disk_addr is also a physical disk
+offset. Therefore, range checking should be done using map->disk_offset,
+not map->start.
 
-This can for example happen when using kunit:
-
-    mips_stack_top+0x28/0xc0
-    arch_pick_mmap_layout+0x190/0x220
-    kunit_vm_mmap_init+0xf8/0x138
-    __kunit_add_resource+0x40/0xa8
-    kunit_vm_mmap+0x88/0xd8
-    usercopy_test_init+0xb8/0x240
-    kunit_try_run_case+0x5c/0x1a8
-    kunit_generic_run_threadfn_adapter+0x28/0x50
-    kthread+0x118/0x240
-    ret_from_kernel_thread+0x14/0x1c
-
-Only dereference the ABI point if it is set.
-
-The GIC page is also included as it is specific to the vDSO.
-Also move the randomization adjustment into the same conditional.
-
-Signed-off-by: Thomas Weißschuh <thomas.weissschuh@linutronix.de>
-Reviewed-by: David Gow <davidgow@google.com>
-Reviewed-by: Huacai Chen <chenhuacai@loongson.cn>
-Signed-off-by: Thomas Bogendoerfer <tsbogend@alpha.franken.de>
+Signed-off-by: Sergey Bashirov <sergeybashirov@gmail.com>
+Reviewed-by: Christoph Hellwig <hch@lst.de>
+Link: https://lore.kernel.org/r/20250702133226.212537-1-sergeybashirov@gmail.com
+Signed-off-by: Trond Myklebust <trond.myklebust@hammerspace.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/mips/kernel/process.c | 16 +++++++++-------
- 1 file changed, 9 insertions(+), 7 deletions(-)
+ fs/nfs/blocklayout/blocklayout.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/arch/mips/kernel/process.c b/arch/mips/kernel/process.c
-index cbff1b974f88..b9ef72ab967f 100644
---- a/arch/mips/kernel/process.c
-+++ b/arch/mips/kernel/process.c
-@@ -688,18 +688,20 @@ unsigned long mips_stack_top(void)
- 	}
+diff --git a/fs/nfs/blocklayout/blocklayout.c b/fs/nfs/blocklayout/blocklayout.c
+index 6be13e0ec170..e498aade8c47 100644
+--- a/fs/nfs/blocklayout/blocklayout.c
++++ b/fs/nfs/blocklayout/blocklayout.c
+@@ -149,8 +149,8 @@ do_add_page_to_bio(struct bio *bio, int npg, enum req_op op, sector_t isect,
  
- 	/* Space for the VDSO, data page & GIC user page */
--	top -= PAGE_ALIGN(current->thread.abi->vdso->size);
--	top -= PAGE_SIZE;
--	top -= mips_gic_present() ? PAGE_SIZE : 0;
-+	if (current->thread.abi) {
-+		top -= PAGE_ALIGN(current->thread.abi->vdso->size);
-+		top -= PAGE_SIZE;
-+		top -= mips_gic_present() ? PAGE_SIZE : 0;
-+
-+		/* Space to randomize the VDSO base */
-+		if (current->flags & PF_RANDOMIZE)
-+			top -= VDSO_RANDOMIZE_SIZE;
-+	}
+ 	/* limit length to what the device mapping allows */
+ 	end = disk_addr + *len;
+-	if (end >= map->start + map->len)
+-		*len = map->start + map->len - disk_addr;
++	if (end >= map->disk_offset + map->len)
++		*len = map->disk_offset + map->len - disk_addr;
  
- 	/* Space for cache colour alignment */
- 	if (cpu_has_dc_aliases)
- 		top -= shm_align_mask + 1;
- 
--	/* Space to randomize the VDSO base */
--	if (current->flags & PF_RANDOMIZE)
--		top -= VDSO_RANDOMIZE_SIZE;
--
- 	return top;
- }
- 
+ retry:
+ 	if (!bio) {
 -- 
 2.39.5
 
