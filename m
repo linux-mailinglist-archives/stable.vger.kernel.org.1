@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-174068-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-175685-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id BB1CAB3612C
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 15:07:30 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id D79F4B36952
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 16:25:35 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id F2D373BEA09
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 13:03:27 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id BF64C9806A5
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 14:17:04 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A1F528635D;
-	Tue, 26 Aug 2025 13:03:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id DE5292FE580;
+	Tue, 26 Aug 2025 14:14:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="dUlpskAq"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="I4eJ43ai"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 321F71F0E29;
-	Tue, 26 Aug 2025 13:03:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9D409225390;
+	Tue, 26 Aug 2025 14:14:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756213407; cv=none; b=Eye548S2OIz1se5nAAN5S3OB3Vrm1VoAi80JWIjFalRpLvBZ0NvA0HpSc+EIEEovr3B3WBx/MEx2vMZSmEw8SbitMxfJHZvrOWsExkuyRLV5KjaDqGZM6K4KUbFOu6RS6Mipn5NT7YZzm8MpU1V4G2TarN2l62vxOY/y7VAdKek=
+	t=1756217698; cv=none; b=WD5O/te9keGimJrRdiEGki88T0yOVjiG+pki8VVu34TDWAYF5We9iTkUjAQ6BGqttTpo2eACqcS1J35R+rr+IoGV1z51eC6yElsm2Cu2uNlgwWN574m87OlNcY1mv1Ao+4EfUgDnKINOxrWkM9dmh3DdaDeQU85insAR72OF3Q0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756213407; c=relaxed/simple;
-	bh=rHfHjQXjCLfRjbA1Vq6EOs9urjrcy1Z26F1jlogl2q0=;
+	s=arc-20240116; t=1756217698; c=relaxed/simple;
+	bh=F7X7vOIw2AFiNLTDVB2RCdU/HCdDGK80ldKt4L2ngnM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=VX2VQndRDqBH6emQy5Qwc9oIP9jQA+1u0QiyeommOjsEnoDAd+oXIOqFXgLso5W0YHnjmzWKOl15UtjKEMp/zCnTcBRIPYLFG4L64EoEyfs1bJrBNl9uZeHUu8GgzOAWbwnn+z5JW7dGsWVgKuXcV5FSSX9IcJtCm0OWo1T6cKA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=dUlpskAq; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7F02CC4CEF4;
-	Tue, 26 Aug 2025 13:03:26 +0000 (UTC)
+	 MIME-Version; b=l909LX7nEyeWH/w4R6KO/6m7RenIUftztIKwLzk5RheZCw8BLFn3XU8tLtxQZTHJ3ua1DyO3kTJ8uZWYHPWtBpRmBDgVaMn4RJpxeQvccSiblzBngpyXymnKVL9YTxkL8bZa7E/xjln7KS9SK6F8S6oOCWTNzx+KNCu7SolGN7Y=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=I4eJ43ai; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 296BFC4CEF1;
+	Tue, 26 Aug 2025 14:14:58 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1756213406;
-	bh=rHfHjQXjCLfRjbA1Vq6EOs9urjrcy1Z26F1jlogl2q0=;
+	s=korg; t=1756217698;
+	bh=F7X7vOIw2AFiNLTDVB2RCdU/HCdDGK80ldKt4L2ngnM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=dUlpskAqpMPGO5PqLA8bvBZuwkn/ct6054OeThrdD4vPMkdKcsFlP2j2iPXuSS4ll
-	 Nk1wMGMhYdO6VcmrVGGge86HxrEdvDpLopog+3UZqq0ChsZslv957DkY5UqL2/lLcH
-	 bDZuUK20/JmMQmb8ZISd9JD2wk5IIl1OIIMgewqQ=
+	b=I4eJ43aimOS0JacidI/2M/wpBE/aW8we7zJ0X1G0zHRgdvm29BwuxgI1aGSNj/OQe
+	 z2uIvk4Cr+n2alHD/0dZOclOsXoBvVbxCyIXRe0JIcNvhWQEwacyR15sPYj1G3tu+z
+	 pBHRE9VSiFhPi2h5fPlu6b58KQNI2NFHAKbitGek=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Shengjiu Wang <shengjiu.wang@nxp.com>,
-	Mark Brown <broonie@kernel.org>,
+	Aaron Kling <webgeek1234@gmail.com>,
+	Thierry Reding <treding@nvidia.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 295/587] ASoC: fsl_sai: replace regmap_write with regmap_update_bits
+Subject: [PATCH 5.10 234/523] ARM: tegra: Use I/O memcpy to write to IRAM
 Date: Tue, 26 Aug 2025 13:07:24 +0200
-Message-ID: <20250826111000.431850194@linuxfoundation.org>
+Message-ID: <20250826110930.221258607@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250826110952.942403671@linuxfoundation.org>
-References: <20250826110952.942403671@linuxfoundation.org>
+In-Reply-To: <20250826110924.562212281@linuxfoundation.org>
+References: <20250826110924.562212281@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,79 +62,40 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Shengjiu Wang <shengjiu.wang@nxp.com>
+From: Aaron Kling <webgeek1234@gmail.com>
 
-[ Upstream commit 0e270f32975fd21874185ba53653630dd40bf560 ]
+[ Upstream commit 398e67e0f5ae04b29bcc9cbf342e339fe9d3f6f1 ]
 
-Use the regmap_write() for software reset in fsl_sai_config_disable would
-cause the FSL_SAI_CSR_BCE bit to be cleared. Refer to
-commit 197c53c8ecb34 ("ASoC: fsl_sai: Don't disable bitclock for i.MX8MP")
-FSL_SAI_CSR_BCE should not be cleared. So need to use regmap_update_bits()
-instead of regmap_write() for these bit operations.
+Kasan crashes the kernel trying to check boundaries when using the
+normal memcpy.
 
-Fixes: dc78f7e59169d ("ASoC: fsl_sai: Force a software reset when starting in consumer mode")
-Signed-off-by: Shengjiu Wang <shengjiu.wang@nxp.com>
-Link: https://patch.msgid.link/20250807020318.2143219-1-shengjiu.wang@nxp.com
-Signed-off-by: Mark Brown <broonie@kernel.org>
+Signed-off-by: Aaron Kling <webgeek1234@gmail.com>
+Link: https://lore.kernel.org/r/20250522-mach-tegra-kasan-v1-1-419041b8addb@gmail.com
+Signed-off-by: Thierry Reding <treding@nvidia.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- sound/soc/fsl/fsl_sai.c | 20 ++++++++++----------
- 1 file changed, 10 insertions(+), 10 deletions(-)
+ arch/arm/mach-tegra/reset.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/sound/soc/fsl/fsl_sai.c b/sound/soc/fsl/fsl_sai.c
-index 886f5c29939b..a6948a57636a 100644
---- a/sound/soc/fsl/fsl_sai.c
-+++ b/sound/soc/fsl/fsl_sai.c
-@@ -768,9 +768,9 @@ static void fsl_sai_config_disable(struct fsl_sai *sai, int dir)
- 	 * are running concurrently.
- 	 */
- 	/* Software Reset */
--	regmap_write(sai->regmap, FSL_SAI_xCSR(tx, ofs), FSL_SAI_CSR_SR);
-+	regmap_update_bits(sai->regmap, FSL_SAI_xCSR(tx, ofs), FSL_SAI_CSR_SR, FSL_SAI_CSR_SR);
- 	/* Clear SR bit to finish the reset */
--	regmap_write(sai->regmap, FSL_SAI_xCSR(tx, ofs), 0);
-+	regmap_update_bits(sai->regmap, FSL_SAI_xCSR(tx, ofs), FSL_SAI_CSR_SR, 0);
- }
+diff --git a/arch/arm/mach-tegra/reset.c b/arch/arm/mach-tegra/reset.c
+index d5c805adf7a8..ea706fac6358 100644
+--- a/arch/arm/mach-tegra/reset.c
++++ b/arch/arm/mach-tegra/reset.c
+@@ -63,7 +63,7 @@ static void __init tegra_cpu_reset_handler_enable(void)
+ 	BUG_ON(is_enabled);
+ 	BUG_ON(tegra_cpu_reset_handler_size > TEGRA_IRAM_RESET_HANDLER_SIZE);
  
- static int fsl_sai_trigger(struct snd_pcm_substream *substream, int cmd,
-@@ -889,11 +889,11 @@ static int fsl_sai_dai_probe(struct snd_soc_dai *cpu_dai)
- 	unsigned int ofs = sai->soc_data->reg_offset;
+-	memcpy(iram_base, (void *)__tegra_cpu_reset_handler_start,
++	memcpy_toio(iram_base, (void *)__tegra_cpu_reset_handler_start,
+ 			tegra_cpu_reset_handler_size);
  
- 	/* Software Reset for both Tx and Rx */
--	regmap_write(sai->regmap, FSL_SAI_TCSR(ofs), FSL_SAI_CSR_SR);
--	regmap_write(sai->regmap, FSL_SAI_RCSR(ofs), FSL_SAI_CSR_SR);
-+	regmap_update_bits(sai->regmap, FSL_SAI_TCSR(ofs), FSL_SAI_CSR_SR, FSL_SAI_CSR_SR);
-+	regmap_update_bits(sai->regmap, FSL_SAI_RCSR(ofs), FSL_SAI_CSR_SR, FSL_SAI_CSR_SR);
- 	/* Clear SR bit to finish the reset */
--	regmap_write(sai->regmap, FSL_SAI_TCSR(ofs), 0);
--	regmap_write(sai->regmap, FSL_SAI_RCSR(ofs), 0);
-+	regmap_update_bits(sai->regmap, FSL_SAI_TCSR(ofs), FSL_SAI_CSR_SR, 0);
-+	regmap_update_bits(sai->regmap, FSL_SAI_RCSR(ofs), FSL_SAI_CSR_SR, 0);
- 
- 	regmap_update_bits(sai->regmap, FSL_SAI_TCR1(ofs),
- 			   FSL_SAI_CR1_RFW_MASK(sai->soc_data->fifo_depth),
-@@ -1710,11 +1710,11 @@ static int fsl_sai_runtime_resume(struct device *dev)
- 
- 	regcache_cache_only(sai->regmap, false);
- 	regcache_mark_dirty(sai->regmap);
--	regmap_write(sai->regmap, FSL_SAI_TCSR(ofs), FSL_SAI_CSR_SR);
--	regmap_write(sai->regmap, FSL_SAI_RCSR(ofs), FSL_SAI_CSR_SR);
-+	regmap_update_bits(sai->regmap, FSL_SAI_TCSR(ofs), FSL_SAI_CSR_SR, FSL_SAI_CSR_SR);
-+	regmap_update_bits(sai->regmap, FSL_SAI_RCSR(ofs), FSL_SAI_CSR_SR, FSL_SAI_CSR_SR);
- 	usleep_range(1000, 2000);
--	regmap_write(sai->regmap, FSL_SAI_TCSR(ofs), 0);
--	regmap_write(sai->regmap, FSL_SAI_RCSR(ofs), 0);
-+	regmap_update_bits(sai->regmap, FSL_SAI_TCSR(ofs), FSL_SAI_CSR_SR, 0);
-+	regmap_update_bits(sai->regmap, FSL_SAI_RCSR(ofs), FSL_SAI_CSR_SR, 0);
- 
- 	ret = regcache_sync(sai->regmap);
- 	if (ret)
+ 	err = call_firmware_op(set_cpu_boot_addr, 0, reset_address);
 -- 
-2.50.1
+2.39.5
 
 
 
