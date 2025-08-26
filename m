@@ -1,59 +1,57 @@
-Return-Path: <stable+bounces-173109-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-174031-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id C3B4BB35B69
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 13:24:07 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 51BBAB36107
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 15:05:59 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 7040C7C3BAD
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 11:23:31 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 66B8C5E13B6
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 13:01:51 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 42B5131813A;
-	Tue, 26 Aug 2025 11:23:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D645F2D7BF;
+	Tue, 26 Aug 2025 13:01:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="MPpybz1G"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="vShtZB8S"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E453D1A256B;
-	Tue, 26 Aug 2025 11:23:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 90F071494D9;
+	Tue, 26 Aug 2025 13:01:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756207395; cv=none; b=KUChhZfdj6qoqcTbvR5gfll8ALXXQnmqfr2MGc37dk+OKik95geCUE1J/6AFmbNP2Rymwa5Yz+R957O53oSoepvXI1Wg6ZfM2bvJyim+4UmykUHRheuuxpXAZCuL75h41sS82+i7XFzIQLDNK6BNssqgCw337Ebh3pB+fE2uVAw=
+	t=1756213309; cv=none; b=JN5Sm5IXpPleeZGHtj1hikuHBT8YZz5mYYse0SX5Ul57xwDpOxjbYQdP4vPnklW3UGPp1HLAm3SyHmM0vFF41/cuv3TX/zyyDpnm3oDjYIY3THPimFSL900mSZIiqJUt/SZjA7L4chRphWZF8GIFcblDBD8is0F1QoS9cO2Vnao=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756207395; c=relaxed/simple;
-	bh=+iP5RkpYp8LB5l7LL5Aa5GnX5vdtTQGIZ8f467Q8Ft8=;
+	s=arc-20240116; t=1756213309; c=relaxed/simple;
+	bh=q1KmHII3Wr9UMy7UAG9wotlqfcR3/8YJG95SwviRQ0o=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=h+bclUU6vgL1mMzzfmV3yBQiR7BSdRLJfUo1o2JN2Up3rjXgsvIO1t6Ta5pkJDL5KZxTM/+5eXnh0Rap3OwsyeeSlvo6u0PIVJJmeecUw9RV458EOVfcUA5VaYc1wXIUuoQIG3BSNu1rGQHQuNbl93KOsyDmltuHlQMGADauEsU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=MPpybz1G; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7DC89C4CEF1;
-	Tue, 26 Aug 2025 11:23:14 +0000 (UTC)
+	 MIME-Version; b=ZcqVJvhkuvFLmx3OHTu7coWI9/ejmZh7FJMah38GfOcd55ai+QK7oO8kFheBCc5N6eS3UtJLZpwLFccUDwZrhBvrj5Mc50XOcZ8WLNdf+RmWzqzgZ+HA3TVyMf1Vn/FVqpEV9h7+cCDQ+XrSE6/e4ZTZNpzF/pzz7bRrM+BxCio=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=vShtZB8S; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2296CC4CEF1;
+	Tue, 26 Aug 2025 13:01:48 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1756207394;
-	bh=+iP5RkpYp8LB5l7LL5Aa5GnX5vdtTQGIZ8f467Q8Ft8=;
+	s=korg; t=1756213309;
+	bh=q1KmHII3Wr9UMy7UAG9wotlqfcR3/8YJG95SwviRQ0o=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=MPpybz1GDgU1lTyQrOazEkIMPBZZko7TiBeTNJAi8WN/KbGcXnNrB/KFSND/AKV5B
-	 L8wDPrcREHfhCs3hLvVBMaXLoSY583anEVpyd9ine2CLvGte0hDbXqfTGiGQgPvBy8
-	 Wl1JpW2xJthmmo7n0ethfiCmvWo3KZrFpDAuC+LE=
+	b=vShtZB8S7P+5TktxnedqqH8smWMDR0BdJEcv3LffwHHxdSxILIxQ9TZgaU8OeghNf
+	 jjsndXblaoIQhjQCApALCwkbEgNai+Sfr/hMnz8QW6tdpIBnO+KoAuddajhy0ZPqvC
+	 LYfHtm5TNGGJD5O2vNm+aXIqULh2EUAG7/luRbQ4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Bryan ODonoghue <bryan.odonoghue@linaro.org>,
-	Vikash Garodia <quic_vgarodia@quicinc.com>,
-	Dikshita Agarwal <quic_dikshita@quicinc.com>,
-	Bryan ODonoghue <bod@kernel.org>,
-	Hans Verkuil <hverkuil@xs4all.nl>,
-	Neil Armstrong <neil.armstrong@linaro.org>
-Subject: [PATCH 6.16 165/457] media: iris: Update CAPTURE format info based on OUTPUT format
+	syzbot+c2f65e2801743ca64e08@syzkaller.appspotmail.com,
+	Yi Liu <yi.l.liu@intel.com>,
+	Nicolin Chen <nicolinc@nvidia.com>,
+	Jason Gunthorpe <jgg@nvidia.com>
+Subject: [PATCH 6.6 300/587] iommufd: Prevent ALIGN() overflow
 Date: Tue, 26 Aug 2025 13:07:29 +0200
-Message-ID: <20250826110941.453515827@linuxfoundation.org>
+Message-ID: <20250826111000.556566735@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250826110937.289866482@linuxfoundation.org>
-References: <20250826110937.289866482@linuxfoundation.org>
+In-Reply-To: <20250826110952.942403671@linuxfoundation.org>
+References: <20250826110952.942403671@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -65,55 +63,104 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.16-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Dikshita Agarwal <quic_dikshita@quicinc.com>
+From: Jason Gunthorpe <jgg@nvidia.com>
 
-commit 8aadfd445373b74de4a5cd36736843ae01856636 upstream.
+commit b42497e3c0e74db061eafad41c0cd7243c46436b upstream.
 
-Update the width, height and buffer size of CAPTURE based on the
-resolution set to OUTPUT via VIDIOC_S_FMT. This is required to set the
-updated capture resolution to firmware when S_FMT is called only for
-OUTPUT.
+When allocating IOVA the candidate range gets aligned to the target
+alignment. If the range is close to ULONG_MAX then the ALIGN() can
+wrap resulting in a corrupted iova.
+
+Open code the ALIGN() using get_add_overflow() to prevent this.
+This simplifies the checks as we don't need to check for length earlier
+either.
+
+Consolidate the two copies of this code under a single helper.
+
+This bug would allow userspace to create a mapping that overlaps with some
+other mapping or a reserved range.
 
 Cc: stable@vger.kernel.org
-Fixes: b530b95de22c ("media: iris: implement s_fmt, g_fmt and try_fmt ioctls")
-Reviewed-by: Bryan O'Donoghue <bryan.odonoghue@linaro.org>
-Acked-by: Vikash Garodia <quic_vgarodia@quicinc.com>
-Tested-by: Neil Armstrong <neil.armstrong@linaro.org> # on SM8550-QRD
-Tested-by: Neil Armstrong <neil.armstrong@linaro.org> # on SM8550-HDK
-Tested-by: Neil Armstrong <neil.armstrong@linaro.org> # on SM8650-QRD
-Tested-by: Neil Armstrong <neil.armstrong@linaro.org> # on SM8650-HDK
-Signed-off-by: Dikshita Agarwal <quic_dikshita@quicinc.com>
-Tested-by: Vikash Garodia <quic_vgarodia@quicinc.com> # on sa8775p-ride
-Signed-off-by: Bryan O'Donoghue <bod@kernel.org>
-Signed-off-by: Hans Verkuil <hverkuil@xs4all.nl>
+Fixes: 51fe6141f0f6 ("iommufd: Data structure to provide IOVA to PFN mapping")
+Reported-by: syzbot+c2f65e2801743ca64e08@syzkaller.appspotmail.com
+Closes: https://lore.kernel.org/r/685af644.a00a0220.2e5631.0094.GAE@google.com
+Reviewed-by: Yi Liu <yi.l.liu@intel.com>
+Reviewed-by: Nicolin Chen <nicolinc@nvidia.com>
+Link: https://patch.msgid.link/all/1-v1-7b4a16fc390b+10f4-iommufd_alloc_overflow_jgg@nvidia.com/
+Signed-off-by: Jason Gunthorpe <jgg@nvidia.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/media/platform/qcom/iris/iris_vdec.c | 5 +++++
- 1 file changed, 5 insertions(+)
+ drivers/iommu/iommufd/io_pagetable.c |   41 +++++++++++++++++++++--------------
+ 1 file changed, 25 insertions(+), 16 deletions(-)
 
-diff --git a/drivers/media/platform/qcom/iris/iris_vdec.c b/drivers/media/platform/qcom/iris/iris_vdec.c
-index 9c049b9671cc..d342f733feb9 100644
---- a/drivers/media/platform/qcom/iris/iris_vdec.c
-+++ b/drivers/media/platform/qcom/iris/iris_vdec.c
-@@ -171,6 +171,11 @@ int iris_vdec_s_fmt(struct iris_inst *inst, struct v4l2_format *f)
- 		output_fmt->fmt.pix_mp.ycbcr_enc = f->fmt.pix_mp.ycbcr_enc;
- 		output_fmt->fmt.pix_mp.quantization = f->fmt.pix_mp.quantization;
+--- a/drivers/iommu/iommufd/io_pagetable.c
++++ b/drivers/iommu/iommufd/io_pagetable.c
+@@ -69,36 +69,45 @@ struct iopt_area *iopt_area_contig_next(
+ 	return iter->area;
+ }
  
-+		/* Update capture format based on new ip w/h */
-+		output_fmt->fmt.pix_mp.width = ALIGN(f->fmt.pix_mp.width, 128);
-+		output_fmt->fmt.pix_mp.height = ALIGN(f->fmt.pix_mp.height, 32);
-+		inst->buffers[BUF_OUTPUT].size = iris_get_buffer_size(inst, BUF_OUTPUT);
+-static bool __alloc_iova_check_hole(struct interval_tree_double_span_iter *span,
+-				    unsigned long length,
+-				    unsigned long iova_alignment,
+-				    unsigned long page_offset)
++static bool __alloc_iova_check_range(unsigned long *start, unsigned long last,
++				     unsigned long length,
++				     unsigned long iova_alignment,
++				     unsigned long page_offset)
+ {
+-	if (span->is_used || span->last_hole - span->start_hole < length - 1)
++	unsigned long aligned_start;
 +
- 		inst->crop.left = 0;
- 		inst->crop.top = 0;
- 		inst->crop.width = f->fmt.pix_mp.width;
--- 
-2.50.1
-
++	/* ALIGN_UP() */
++	if (check_add_overflow(*start, iova_alignment - 1, &aligned_start))
+ 		return false;
++	aligned_start &= ~(iova_alignment - 1);
++	aligned_start |= page_offset;
+ 
+-	span->start_hole = ALIGN(span->start_hole, iova_alignment) |
+-			   page_offset;
+-	if (span->start_hole > span->last_hole ||
+-	    span->last_hole - span->start_hole < length - 1)
++	if (aligned_start >= last || last - aligned_start < length - 1)
+ 		return false;
++	*start = aligned_start;
+ 	return true;
+ }
+ 
+-static bool __alloc_iova_check_used(struct interval_tree_span_iter *span,
++static bool __alloc_iova_check_hole(struct interval_tree_double_span_iter *span,
+ 				    unsigned long length,
+ 				    unsigned long iova_alignment,
+ 				    unsigned long page_offset)
+ {
+-	if (span->is_hole || span->last_used - span->start_used < length - 1)
++	if (span->is_used)
+ 		return false;
++	return __alloc_iova_check_range(&span->start_hole, span->last_hole,
++					length, iova_alignment, page_offset);
++}
+ 
+-	span->start_used = ALIGN(span->start_used, iova_alignment) |
+-			   page_offset;
+-	if (span->start_used > span->last_used ||
+-	    span->last_used - span->start_used < length - 1)
++static bool __alloc_iova_check_used(struct interval_tree_span_iter *span,
++				    unsigned long length,
++				    unsigned long iova_alignment,
++				    unsigned long page_offset)
++{
++	if (span->is_hole)
+ 		return false;
+-	return true;
++	return __alloc_iova_check_range(&span->start_used, span->last_used,
++					length, iova_alignment, page_offset);
+ }
+ 
+ /*
 
 
 
