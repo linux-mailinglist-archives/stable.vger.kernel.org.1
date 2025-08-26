@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-173248-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-174171-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 95E6EB35C3B
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 13:32:43 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8C8A1B3613D
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 15:08:06 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id AB48D7C368C
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 11:32:12 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 913077B3FFE
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 13:06:30 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D14222D6E6B;
-	Tue, 26 Aug 2025 11:29:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6B53E405F7;
+	Tue, 26 Aug 2025 13:08:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="mCTbw5PF"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="QYOnRRKe"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8E3AD3375D9;
-	Tue, 26 Aug 2025 11:29:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E459B1F0E29;
+	Tue, 26 Aug 2025 13:08:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756207755; cv=none; b=AZR80p+H8tWGUsL2hOVoSDeBuxbfuetpUVIxl9C6qotW6OPuTRtpiUXG7h2/K2pFuXtUlQvqOke10bpU0ZWqxhlMEKMSWhpPvvYZOq0ch8s5GJ/i4R6xYlondKnMYe2+dtI3EoS2dy3EoOk+GYIAxpChfgA4twkdlqGWSQKRmzQ=
+	t=1756213682; cv=none; b=tZLO0iBOR98BdQVKvngEexfcMjkzH0M/rfYhCIY6xzsm96Vn/4KeTN38JWkw8ch/KkWTVrj3KGkY+HUHE0ePQblpgSgivbLUgMqoG1881yjQAqVRiKPoOao6l+sH39VdFjacWIRYczEdKT+uVsHfCiDkjA3j+/7m+qzERZjW4lI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756207755; c=relaxed/simple;
-	bh=xB0BnQ74jhWQuAkzZPJB6pe63ashfLznKUJxh31lOj8=;
+	s=arc-20240116; t=1756213682; c=relaxed/simple;
+	bh=ZX+ZxY6V/u6Q22TW/8tHBaAa4GZm6ug68MqVG2R/dqA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=cTY/VfKw5GyeuXfD4TOEzk1BDegF/5ciDvPAPo//o4yxtcwXjvhJAOZ+qUVpSbsYyc8ILl3t7FKzrFeB2MRMaCiEL7PSg8aFCVNzA9/Eg550OBJ7dX9AI89JRzg8vTHTYZpJC4l0ofzxlzJ5pEnlMif2cAcb2nEaV2gflZ70EJ4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=mCTbw5PF; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 234D2C4CEF1;
-	Tue, 26 Aug 2025 11:29:14 +0000 (UTC)
+	 MIME-Version; b=owDQxdeOnHZTdu3oDzV/ZvAgDLAkVlfV+KEhRtGjbuZl9ro5yrHNTJNJe9UELMHfS1VhV8aG4J4yDujRCi4B3ZJW5MeWnk6r0SjcK1mnmInkH2D4mJrfW7H91yVqaGkeplg136SIJtsBH5WGV415gor38nRKO89kHL00hb+QukI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=QYOnRRKe; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C7DB2C4CEF1;
+	Tue, 26 Aug 2025 13:08:00 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1756207755;
-	bh=xB0BnQ74jhWQuAkzZPJB6pe63ashfLznKUJxh31lOj8=;
+	s=korg; t=1756213681;
+	bh=ZX+ZxY6V/u6Q22TW/8tHBaAa4GZm6ug68MqVG2R/dqA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=mCTbw5PF5eFsJWgPV9QNIcK2HU7cjRFUpR/zO5Y+/rkCUVUPbLL6tS/Qw9fVUE425
-	 SMCMErNPd1tKriFuhJOEySxn0FhD2yEO440cxiYA4ZCnnsMDsluJ+D+cUutiFqsNXo
-	 Z+Y1mWWbKEiwCvxYlGt9io7ZViTcTiBu6jEen3sg=
+	b=QYOnRRKejGIsaTZs4TuSzCe0GUr5oQIqmEeZMhZ/0rst+C1NimWYLd/g+hl/OQHfz
+	 FZKpVMqeL3/Nfp2wxpsgLKsF0kjsg1TUKnG1L2QNSKjNnVFomF0bei43qPD45PQCLG
+	 kZHq03BpR5LsNdgdzcQgnOM2XxY3tiLLFK8nFlN0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	David Lechner <dlechner@baylibre.com>,
-	Stable@vger.kernel.org,
-	Jonathan Cameron <Jonathan.Cameron@huawei.com>
-Subject: [PATCH 6.16 304/457] iio: adc: ad7173: prevent scan if too many setups requested
+	Ard Biesheuvel <ardb@kernel.org>,
+	Eric Biggers <ebiggers@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.6 439/587] fscrypt: Dont use problematic non-inline crypto engines
 Date: Tue, 26 Aug 2025 13:09:48 +0200
-Message-ID: <20250826110944.883749714@linuxfoundation.org>
+Message-ID: <20250826111004.121216203@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250826110937.289866482@linuxfoundation.org>
-References: <20250826110937.289866482@linuxfoundation.org>
+In-Reply-To: <20250826110952.942403671@linuxfoundation.org>
+References: <20250826110952.942403671@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,175 +62,250 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.16-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: David Lechner <dlechner@baylibre.com>
+From: Eric Biggers <ebiggers@kernel.org>
 
-commit 1cfb22c277c7274f54babaa5b416dfbc00181e16 upstream.
+[ Upstream commit b41c1d8d07906786c60893980d52688f31d114a6 ]
 
-Add a check to ad7173_update_scan_mode() to ensure that we didn't exceed
-the maximum number of unique channel configurations.
+Make fscrypt no longer use Crypto API drivers for non-inline crypto
+engines, even when the Crypto API prioritizes them over CPU-based code
+(which unfortunately it often does).  These drivers tend to be really
+problematic, especially for fscrypt's workload.  This commit has no
+effect on inline crypto engines, which are different and do work well.
 
-In the AD7173 family of chips, there are some chips that have 16
-CHANNELx registers but only 8 setups (combination of CONFIGx, FILTERx,
-GAINx and OFFSETx registers). Since commit 92c247216918 ("iio: adc:
-ad7173: fix num_slots"), it is possible to have more than 8 channels
-enabled in a scan at the same time, so it is possible to get a bad
-configuration when more than 8 channels are using unique configurations.
-This happens because the algorithm to allocate the setup slots only
-takes into account which slot has been least recently used and doesn't
-know about the maximum number of slots available.
+Specifically, exclude drivers that have CRYPTO_ALG_KERN_DRIVER_ONLY or
+CRYPTO_ALG_ALLOCATES_MEMORY set.  (Later, CRYPTO_ALG_ASYNC should be
+excluded too.  That's omitted for now to keep this commit backportable,
+since until recently some CPU-based code had CRYPTO_ALG_ASYNC set.)
 
-Since the algorithm to allocate the setup slots is quite complex, it is
-simpler to check after the fact if the current state is valid or not.
-So this patch adds a check in ad7173_update_scan_mode() after setting up
-all of the configurations to make sure that the actual setup still
-matches the requested setup for each enabled channel. If not, we prevent
-the scan from being enabled and return an error.
+There are two major issues with these drivers: bugs and performance.
 
-The setup comparison in ad7173_setup_equal() is refactored to a separate
-function since we need to call it in two places now.
+First, these drivers tend to be buggy.  They're fundamentally much more
+error-prone and harder to test than the CPU-based code.  They often
+don't get tested before kernel releases, and even if they do, the crypto
+self-tests don't properly test these drivers.  Released drivers have
+en/decrypted or hashed data incorrectly.  These bugs cause issues for
+fscrypt users who often didn't even want to use these drivers, e.g.:
 
-Fixes: 92c247216918 ("iio: adc: ad7173: fix num_slots")
-Signed-off-by: David Lechner <dlechner@baylibre.com>
-Link: https://patch.msgid.link/20250722-iio-adc-ad7173-fix-setup-use-limits-v2-1-8e96bdb72a9c@baylibre.com
-Cc: <Stable@vger.kernel.org>
-Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
+- https://github.com/google/fscryptctl/issues/32
+- https://github.com/google/fscryptctl/issues/9
+- https://lore.kernel.org/r/PH0PR02MB731916ECDB6C613665863B6CFFAA2@PH0PR02MB7319.namprd02.prod.outlook.com
+
+These drivers have also similarly caused issues for dm-crypt users,
+including data corruption and deadlocks.  Since Linux v5.10, dm-crypt
+has disabled most of them by excluding CRYPTO_ALG_ALLOCATES_MEMORY.
+
+Second, these drivers tend to be *much* slower than the CPU-based code.
+This may seem counterintuitive, but benchmarks clearly show it.  There's
+a *lot* of overhead associated with going to a hardware driver, off the
+CPU, and back again.  To prove this, I gathered as many systems with
+this type of crypto engine as I could, and I measured synchronous
+encryption of 4096-byte messages (which matches fscrypt's workload):
+
+Intel Emerald Rapids server:
+   AES-256-XTS:
+      xts-aes-vaes-avx512   16171 MB/s  [CPU-based, Vector AES]
+      qat_aes_xts             289 MB/s  [Offload, Intel QuickAssist]
+
+Qualcomm SM8650 HDK:
+   AES-256-XTS:
+      xts-aes-ce             4301 MB/s  [CPU-based, ARMv8 Crypto Extensions]
+      xts-aes-qce              73 MB/s  [Offload, Qualcomm Crypto Engine]
+
+i.MX 8M Nano LPDDR4 EVK:
+   AES-256-XTS:
+      xts-aes-ce              647 MB/s   [CPU-based, ARMv8 Crypto Extensions]
+      xts(ecb-aes-caam)        20 MB/s   [Offload, CAAM]
+   AES-128-CBC-ESSIV:
+      essiv(cbc-aes-caam,sha256-lib) 23 MB/s   [Offload, CAAM]
+
+STM32MP157F-DK2:
+   AES-256-XTS:
+      xts-aes-neonbs         13.2 MB/s   [CPU-based, ARM NEON]
+      xts(stm32-ecb-aes)     3.1 MB/s    [Offload, STM32 crypto engine]
+   AES-128-CBC-ESSIV:
+      essiv(cbc-aes-neonbs,sha256-lib)
+                             14.7 MB/s   [CPU-based, ARM NEON]
+      essiv(stm32-cbc-aes,sha256-lib)
+                             3.2 MB/s    [Offload, STM32 crypto engine]
+   Adiantum:
+      adiantum(xchacha12-arm,aes-arm,nhpoly1305-neon)
+                             52.8 MB/s   [CPU-based, ARM scalar + NEON]
+
+So, there was no case in which the crypto engine was even *close* to
+being faster.  On the first three, which have AES instructions in the
+CPU, the CPU was 30 to 55 times faster (!).  Even on STM32MP157F-DK2
+which has a Cortex-A7 CPU that doesn't have AES instructions, AES was
+over 4 times faster on the CPU.  And Adiantum encryption, which is what
+actually should be used on CPUs like that, was over 17 times faster.
+
+Other justifications that have been given for these non-inline crypto
+engines (almost always coming from the hardware vendors, not actual
+users) don't seem very plausible either:
+
+  - The crypto engine throughput could be improved by processing
+    multiple requests concurrently.  Currently irrelevant to fscrypt,
+    since it doesn't do that.  This would also be complex, and unhelpful
+    in many cases.  2 of the 4 engines I tested even had only one queue.
+
+  - Some of the engines, e.g. STM32, support hardware keys.  Also
+    currently irrelevant to fscrypt, since it doesn't support these.
+    Interestingly, the STM32 driver itself doesn't support this either.
+
+  - Free up CPU for other tasks and/or reduce energy usage.  Not very
+    plausible considering the "short" message length, driver overhead,
+    and scheduling overhead.  There's just very little time for the CPU
+    to do something else like run another task or enter low-power state,
+    before the message finishes and it's time to process the next one.
+
+  - Some of these engines resist power analysis and electromagnetic
+    attacks, while the CPU-based crypto generally does not.  In theory,
+    this sounds great.  In practice, if this benefit requires the use of
+    an off-CPU offload that massively regresses performance and has a
+    low-quality, buggy driver, the price for this hardening (which is
+    not relevant to most fscrypt users, and tends to be incomplete) is
+    just too high.  Inline crypto engines are much more promising here,
+    as are on-CPU solutions like RISC-V High Assurance Cryptography.
+
+Fixes: b30ab0e03407 ("ext4 crypto: add ext4 encryption facilities")
+Cc: stable@vger.kernel.org
+Acked-by: Ard Biesheuvel <ardb@kernel.org>
+Link: https://lore.kernel.org/r/20250704070322.20692-1-ebiggers@kernel.org
+Signed-off-by: Eric Biggers <ebiggers@kernel.org>
+[ Adjust context ]
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/iio/adc/ad7173.c |   87 ++++++++++++++++++++++++++++++++++++++++-------
- 1 file changed, 75 insertions(+), 12 deletions(-)
+ Documentation/filesystems/fscrypt.rst |   37 +++++++++++++---------------------
+ fs/crypto/fscrypt_private.h           |   16 ++++++++++++++
+ fs/crypto/hkdf.c                      |    2 -
+ fs/crypto/keysetup.c                  |    3 +-
+ fs/crypto/keysetup_v1.c               |    3 +-
+ 5 files changed, 36 insertions(+), 25 deletions(-)
 
---- a/drivers/iio/adc/ad7173.c
-+++ b/drivers/iio/adc/ad7173.c
-@@ -200,7 +200,7 @@ struct ad7173_channel_config {
- 	/*
- 	 * Following fields are used to compare equality. If you
- 	 * make adaptations in it, you most likely also have to adapt
--	 * ad7173_find_live_config(), too.
-+	 * ad7173_is_setup_equal(), too.
- 	 */
- 	struct_group(config_props,
- 		bool bipolar;
-@@ -562,12 +562,19 @@ static void ad7173_reset_usage_cnts(stru
- 	st->config_usage_counter = 0;
- }
+--- a/Documentation/filesystems/fscrypt.rst
++++ b/Documentation/filesystems/fscrypt.rst
+@@ -141,9 +141,8 @@ However, these ioctls have some limitati
+   CONFIG_PAGE_POISONING=y in your kernel config and add page_poison=1
+   to your kernel command line.  However, this has a performance cost.
  
--static struct ad7173_channel_config *
--ad7173_find_live_config(struct ad7173_state *st, struct ad7173_channel_config *cfg)
-+/**
-+ * ad7173_is_setup_equal - Compare two channel setups
-+ * @cfg1: First channel configuration
-+ * @cfg2: Second channel configuration
-+ *
-+ * Compares all configuration options that affect the registers connected to
-+ * SETUP_SEL, namely CONFIGx, FILTERx, GAINx and OFFSETx.
-+ *
-+ * Returns: true if the setups are identical, false otherwise
-+ */
-+static bool ad7173_is_setup_equal(const struct ad7173_channel_config *cfg1,
-+				  const struct ad7173_channel_config *cfg2)
- {
--	struct ad7173_channel_config *cfg_aux;
--	int i;
+-- Secret keys might still exist in CPU registers, in crypto
+-  accelerator hardware (if used by the crypto API to implement any of
+-  the algorithms), or in other places not explicitly considered here.
++- Secret keys might still exist in CPU registers or in other places
++  not explicitly considered here.
+ 
+ Limitations of v1 policies
+ ~~~~~~~~~~~~~~~~~~~~~~~~~~
+@@ -375,9 +374,12 @@ the work is done by XChaCha12, which is
+ acceleration is unavailable.  For more information about Adiantum, see
+ `the Adiantum paper <https://eprint.iacr.org/2018/720.pdf>`_.
+ 
+-The (AES-128-CBC-ESSIV, AES-128-CTS-CBC) pair exists only to support
+-systems whose only form of AES acceleration is an off-CPU crypto
+-accelerator such as CAAM or CESA that does not support XTS.
++The (AES-128-CBC-ESSIV, AES-128-CTS-CBC) pair was added to try to
++provide a more efficient option for systems that lack AES instructions
++in the CPU but do have a non-inline crypto engine such as CAAM or CESA
++that supports AES-CBC (and not AES-XTS).  This is deprecated.  It has
++been shown that just doing AES on the CPU is actually faster.
++Moreover, Adiantum is faster still and is recommended on such systems.
+ 
+ The remaining mode pairs are the "national pride ciphers":
+ 
+@@ -1231,22 +1233,13 @@ this by validating all top-level encrypt
+ Inline encryption support
+ =========================
+ 
+-By default, fscrypt uses the kernel crypto API for all cryptographic
+-operations (other than HKDF, which fscrypt partially implements
+-itself).  The kernel crypto API supports hardware crypto accelerators,
+-but only ones that work in the traditional way where all inputs and
+-outputs (e.g. plaintexts and ciphertexts) are in memory.  fscrypt can
+-take advantage of such hardware, but the traditional acceleration
+-model isn't particularly efficient and fscrypt hasn't been optimized
+-for it.
 -
- 	/*
- 	 * This is just to make sure that the comparison is adapted after
- 	 * struct ad7173_channel_config was changed.
-@@ -580,14 +587,22 @@ ad7173_find_live_config(struct ad7173_st
- 				     u8 ref_sel;
- 			     }));
+-Instead, many newer systems (especially mobile SoCs) have *inline
+-encryption hardware* that can encrypt/decrypt data while it is on its
+-way to/from the storage device.  Linux supports inline encryption
+-through a set of extensions to the block layer called *blk-crypto*.
+-blk-crypto allows filesystems to attach encryption contexts to bios
+-(I/O requests) to specify how the data will be encrypted or decrypted
+-in-line.  For more information about blk-crypto, see
++Many newer systems (especially mobile SoCs) have *inline encryption
++hardware* that can encrypt/decrypt data while it is on its way to/from
++the storage device.  Linux supports inline encryption through a set of
++extensions to the block layer called *blk-crypto*.  blk-crypto allows
++filesystems to attach encryption contexts to bios (I/O requests) to
++specify how the data will be encrypted or decrypted in-line.  For more
++information about blk-crypto, see
+ :ref:`Documentation/block/inline-encryption.rst <inline_encryption>`.
  
-+	return cfg1->bipolar == cfg2->bipolar &&
-+	       cfg1->input_buf == cfg2->input_buf &&
-+	       cfg1->odr == cfg2->odr &&
-+	       cfg1->ref_sel == cfg2->ref_sel;
-+}
-+
-+static struct ad7173_channel_config *
-+ad7173_find_live_config(struct ad7173_state *st, struct ad7173_channel_config *cfg)
-+{
-+	struct ad7173_channel_config *cfg_aux;
-+	int i;
-+
- 	for (i = 0; i < st->num_channels; i++) {
- 		cfg_aux = &st->channels[i].cfg;
+ On supported filesystems (currently ext4 and f2fs), fscrypt can use
+--- a/fs/crypto/fscrypt_private.h
++++ b/fs/crypto/fscrypt_private.h
+@@ -27,6 +27,22 @@
+  */
+ #define FSCRYPT_MIN_KEY_SIZE	16
  
--		if (cfg_aux->live &&
--		    cfg->bipolar == cfg_aux->bipolar &&
--		    cfg->input_buf == cfg_aux->input_buf &&
--		    cfg->odr == cfg_aux->odr &&
--		    cfg->ref_sel == cfg_aux->ref_sel)
-+		if (cfg_aux->live && ad7173_is_setup_equal(cfg, cfg_aux))
- 			return cfg_aux;
- 	}
- 	return NULL;
-@@ -1229,7 +1244,7 @@ static int ad7173_update_scan_mode(struc
- 				   const unsigned long *scan_mask)
- {
- 	struct ad7173_state *st = iio_priv(indio_dev);
--	int i, ret;
-+	int i, j, k, ret;
++/*
++ * This mask is passed as the third argument to the crypto_alloc_*() functions
++ * to prevent fscrypt from using the Crypto API drivers for non-inline crypto
++ * engines.  Those drivers have been problematic for fscrypt.  fscrypt users
++ * have reported hangs and even incorrect en/decryption with these drivers.
++ * Since going to the driver, off CPU, and back again is really slow, such
++ * drivers can be over 50 times slower than the CPU-based code for fscrypt's
++ * workload.  Even on platforms that lack AES instructions on the CPU, using the
++ * offloads has been shown to be slower, even staying with AES.  (Of course,
++ * Adiantum is faster still, and is the recommended option on such platforms...)
++ *
++ * Note that fscrypt also supports inline crypto engines.  Those don't use the
++ * Crypto API and work much better than the old-style (non-inline) engines.
++ */
++#define FSCRYPT_CRYPTOAPI_MASK \
++	(CRYPTO_ALG_ALLOCATES_MEMORY | CRYPTO_ALG_KERN_DRIVER_ONLY)
+ #define FSCRYPT_CONTEXT_V1	1
+ #define FSCRYPT_CONTEXT_V2	2
  
- 	for (i = 0; i < indio_dev->num_channels; i++) {
- 		if (test_bit(i, scan_mask))
-@@ -1240,6 +1255,54 @@ static int ad7173_update_scan_mode(struc
- 			return ret;
- 	}
+--- a/fs/crypto/hkdf.c
++++ b/fs/crypto/hkdf.c
+@@ -72,7 +72,7 @@ int fscrypt_init_hkdf(struct fscrypt_hkd
+ 	u8 prk[HKDF_HASHLEN];
+ 	int err;
  
-+	/*
-+	 * On some chips, there are more channels that setups, so if there were
-+	 * more unique setups requested than the number of available slots,
-+	 * ad7173_set_channel() will have written over some of the slots. We
-+	 * can detect this by making sure each assigned cfg_slot matches the
-+	 * requested configuration. If it doesn't, we know that the slot was
-+	 * overwritten by a different channel.
-+	 */
-+	for_each_set_bit(i, scan_mask, indio_dev->num_channels) {
-+		const struct ad7173_channel_config *cfg1, *cfg2;
-+
-+		cfg1 = &st->channels[i].cfg;
-+
-+		for_each_set_bit(j, scan_mask, indio_dev->num_channels) {
-+			cfg2 = &st->channels[j].cfg;
-+
-+			/*
-+			 * Only compare configs that are assigned to the same
-+			 * SETUP_SEL slot and don't compare channel to itself.
-+			 */
-+			if (i == j || cfg1->cfg_slot != cfg2->cfg_slot)
-+				continue;
-+
-+			/*
-+			 * If we find two different configs trying to use the
-+			 * same SETUP_SEL slot, then we know that the that we
-+			 * have too many unique configurations requested for
-+			 * the available slots and at least one was overwritten.
-+			 */
-+			if (!ad7173_is_setup_equal(cfg1, cfg2)) {
-+				/*
-+				 * At this point, there isn't a way to tell
-+				 * which setups are actually programmed in the
-+				 * ADC anymore, so we could read them back to
-+				 * see, but it is simpler to just turn off all
-+				 * of the live flags so that everything gets
-+				 * reprogramed on the next attempt read a sample.
-+				 */
-+				for (k = 0; k < st->num_channels; k++)
-+					st->channels[k].cfg.live = false;
-+
-+				dev_err(&st->sd.spi->dev,
-+					"Too many unique channel configurations requested for scan\n");
-+				return -EINVAL;
-+			}
-+		}
-+	}
-+
- 	return 0;
- }
+-	hmac_tfm = crypto_alloc_shash(HKDF_HMAC_ALG, 0, 0);
++	hmac_tfm = crypto_alloc_shash(HKDF_HMAC_ALG, 0, FSCRYPT_CRYPTOAPI_MASK);
+ 	if (IS_ERR(hmac_tfm)) {
+ 		fscrypt_err(NULL, "Error allocating " HKDF_HMAC_ALG ": %ld",
+ 			    PTR_ERR(hmac_tfm));
+--- a/fs/crypto/keysetup.c
++++ b/fs/crypto/keysetup.c
+@@ -103,7 +103,8 @@ fscrypt_allocate_skcipher(struct fscrypt
+ 	struct crypto_skcipher *tfm;
+ 	int err;
  
+-	tfm = crypto_alloc_skcipher(mode->cipher_str, 0, 0);
++	tfm = crypto_alloc_skcipher(mode->cipher_str, 0,
++				    FSCRYPT_CRYPTOAPI_MASK);
+ 	if (IS_ERR(tfm)) {
+ 		if (PTR_ERR(tfm) == -ENOENT) {
+ 			fscrypt_warn(inode,
+--- a/fs/crypto/keysetup_v1.c
++++ b/fs/crypto/keysetup_v1.c
+@@ -52,7 +52,8 @@ static int derive_key_aes(const u8 *mast
+ 	struct skcipher_request *req = NULL;
+ 	DECLARE_CRYPTO_WAIT(wait);
+ 	struct scatterlist src_sg, dst_sg;
+-	struct crypto_skcipher *tfm = crypto_alloc_skcipher("ecb(aes)", 0, 0);
++	struct crypto_skcipher *tfm =
++		crypto_alloc_skcipher("ecb(aes)", 0, FSCRYPT_CRYPTOAPI_MASK);
+ 
+ 	if (IS_ERR(tfm)) {
+ 		res = PTR_ERR(tfm);
 
 
 
