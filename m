@@ -1,58 +1,57 @@
-Return-Path: <stable+bounces-175021-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-175572-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 122D0B3665B
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 15:56:18 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id C854FB3694D
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 16:25:25 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 36DC98E6D77
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 13:45:58 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 2B71E985F31
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 14:12:25 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id BF3ED3469E3;
-	Tue, 26 Aug 2025 13:45:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1268034AAE3;
+	Tue, 26 Aug 2025 14:09:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="udyaxD0f"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="oUHM7PPm"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7C0FF1C3314;
-	Tue, 26 Aug 2025 13:45:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C202134A32E;
+	Tue, 26 Aug 2025 14:09:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756215932; cv=none; b=XuByZ7hN56WkKL810dIQik/oTIhYQDvY+KtVPB/hssBKHNO7XXLFv4OS5clGx6U0A5fvWhlWIiG5ek48VY52PfhtSS3LflLW1Fa8A9JlQ3/VKo3oUNbkQMhbUoRn+pmMCB/FHCbbRH3NuweqtQZQav/J05l9XIRge+7u78C/RXI=
+	t=1756217398; cv=none; b=aCajAjwDfi6O/XavKUYuiAm/J0LlMHiXsf4QnowygJeFRVRv0JYNKHGOV/qsnbT17/2KtbGS8W9RZKEe0+MwF9kRDdxl3wnNhyaM5XDjQhcu6rULD7ZP9GIhTPd6IfrIVuZfs6Nsha8BCzHmyOKlsspdThSGy4xTC8GupcbSaf8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756215932; c=relaxed/simple;
-	bh=+r7DAVHQURG+7BdMAkNOjIFvMc0WzagwWNu4c0TUiQ4=;
+	s=arc-20240116; t=1756217398; c=relaxed/simple;
+	bh=21oC9KU5Pnh03ScfWlQJj4+NbyLvMcMNAX0uqXv9fEo=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=gyUE49bHgL3O0gHJW5F9feyPAQ8ZkYtrvmQDVjAhOc4AkZPfECjO5DU1DwcMuYc4q3VrJCux+nLMlgbZV9mY7+FJ6rEgXTZGhjie/N4vQ4lANDX3P49sPYLQXm5wtkAJKxXcaR9d0vxTn0sBn+KOkoCy9bZMka3EUapGcufaO/4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=udyaxD0f; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0BD3DC4CEF1;
-	Tue, 26 Aug 2025 13:45:31 +0000 (UTC)
+	 MIME-Version; b=OATSR/XbEtIB5cQ7ROZPf/W0r/Wfsx9/oKUGTTtjN6bocwiHq1z5EFlJkXQpY0EkVrywFsvLiwxboiHkHclFpY9eUDh9M58wufL4LhG2O7t4NAfWJZyLSgtfjop133ZH2load154M7COtJvSugSAVl6T+wdFgH+FVKX1qCPdAVw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=oUHM7PPm; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 485DDC113D0;
+	Tue, 26 Aug 2025 14:09:58 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1756215932;
-	bh=+r7DAVHQURG+7BdMAkNOjIFvMc0WzagwWNu4c0TUiQ4=;
+	s=korg; t=1756217398;
+	bh=21oC9KU5Pnh03ScfWlQJj4+NbyLvMcMNAX0uqXv9fEo=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=udyaxD0fXheVV9y0UDgJwpAhgNTtKHEgrEW1zhAfOX6asN5uHOrIo4OL4vx7pWzUG
-	 BVZ98+0kvmKfhS1FKRx0u27bMIf0AUAclk8VfkCJIYu7ShxbFoceQPtBKZv6KTAkUl
-	 zLdemNjR3Vcqk7hBTnwzxEuUOUTS+Rj/nbLy65Mk=
+	b=oUHM7PPmGIZqHKYb4HtAf/W0XNDJawwAZiQ1r3eooly42RnOLISxpaPM4srA5RYLR
+	 u/usDMxE/PPtGX309z9kFrak6Do3XYSxK0lzNcJuBUfM5gxykQo/wI0ZH/9QT3kL62
+	 MdUgWae8pWk4WbyxnK4pCT95Vwr7ynehTVTyTB4Y=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Shawn Anastasio <sanastasio@raptorengineering.com>,
-	Timothy Pearson <tpearson@raptorengineering.com>,
-	Bjorn Helgaas <bhelgaas@google.com>,
-	Madhavan Srinivasan <maddy@linux.ibm.com>,
+	Sergey Senozhatsky <senozhatsky@chromium.org>,
+	Baochen Qiang <quic_bqiang@quicinc.com>,
+	Jeff Johnson <jeff.johnson@oss.qualcomm.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 220/644] PCI: pnv_php: Clean up allocated IRQs on unplug
+Subject: [PATCH 5.10 101/523] wifi: ath11k: clear initialized flag for deinit-ed srng lists
 Date: Tue, 26 Aug 2025 13:05:11 +0200
-Message-ID: <20250826110951.879517792@linuxfoundation.org>
+Message-ID: <20250826110927.031091662@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250826110946.507083938@linuxfoundation.org>
-References: <20250826110946.507083938@linuxfoundation.org>
+In-Reply-To: <20250826110924.562212281@linuxfoundation.org>
+References: <20250826110924.562212281@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,231 +63,99 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Timothy Pearson <tpearson@raptorengineering.com>
+From: Sergey Senozhatsky <senozhatsky@chromium.org>
 
-[ Upstream commit 4668619092554e1b95c9a5ac2941ca47ba6d548a ]
+[ Upstream commit a5b46aa7cf5f05c213316a018e49a8e086efd98e ]
 
-When the root of a nested PCIe bridge configuration is unplugged, the
-pnv_php driver leaked the allocated IRQ resources for the child bridges'
-hotplug event notifications, resulting in a panic.
+In a number of cases we see kernel panics on resume due
+to ath11k kernel page fault, which happens under the
+following circumstances:
 
-Fix this by walking all child buses and deallocating all its IRQ resources
-before calling pci_hp_remove_devices().
+1) First ath11k_hal_dump_srng_stats() call
 
-Also modify the lifetime of the workqueue at struct pnv_php_slot::wq so
-that it is only destroyed in pnv_php_free_slot(), instead of
-pnv_php_disable_irq(). This is required since pnv_php_disable_irq() will
-now be called by workers triggered by hot unplug interrupts, so the
-workqueue needs to stay allocated.
+ Last interrupt received for each group:
+ ath11k_pci 0000:01:00.0: group_id 0 22511ms before
+ ath11k_pci 0000:01:00.0: group_id 1 14440788ms before
+ [..]
+ ath11k_pci 0000:01:00.0: failed to receive control response completion, polling..
+ ath11k_pci 0000:01:00.0: Service connect timeout
+ ath11k_pci 0000:01:00.0: failed to connect to HTT: -110
+ ath11k_pci 0000:01:00.0: failed to start core: -110
+ ath11k_pci 0000:01:00.0: firmware crashed: MHI_CB_EE_RDDM
+ ath11k_pci 0000:01:00.0: already resetting count 2
+ ath11k_pci 0000:01:00.0: failed to wait wlan mode request (mode 4): -110
+ ath11k_pci 0000:01:00.0: qmi failed to send wlan mode off: -110
+ ath11k_pci 0000:01:00.0: failed to reconfigure driver on crash recovery
+ [..]
 
-The abridged kernel panic that occurs without this patch is as follows:
+2) At this point reconfiguration fails (we have 2 resets) and
+  ath11k_core_reconfigure_on_crash() calls ath11k_hal_srng_deinit()
+  which destroys srng lists.  However, it does not reset per-list
+  ->initialized flag.
 
-  WARNING: CPU: 0 PID: 687 at kernel/irq/msi.c:292 msi_device_data_release+0x6c/0x9c
-  CPU: 0 UID: 0 PID: 687 Comm: bash Not tainted 6.14.0-rc5+ #2
-  Call Trace:
-   msi_device_data_release+0x34/0x9c (unreliable)
-   release_nodes+0x64/0x13c
-   devres_release_all+0xc0/0x140
-   device_del+0x2d4/0x46c
-   pci_destroy_dev+0x5c/0x194
-   pci_hp_remove_devices+0x90/0x128
-   pci_hp_remove_devices+0x44/0x128
-   pnv_php_disable_slot+0x54/0xd4
-   power_write_file+0xf8/0x18c
-   pci_slot_attr_store+0x40/0x5c
-   sysfs_kf_write+0x64/0x78
-   kernfs_fop_write_iter+0x1b0/0x290
-   vfs_write+0x3bc/0x50c
-   ksys_write+0x84/0x140
-   system_call_exception+0x124/0x230
-   system_call_vectored_common+0x15c/0x2ec
+3) Second ath11k_hal_dump_srng_stats() call sees stale ->initialized
+  flag and attempts to dump srng stats:
 
-Signed-off-by: Shawn Anastasio <sanastasio@raptorengineering.com>
-Signed-off-by: Timothy Pearson <tpearson@raptorengineering.com>
-[bhelgaas: tidy comments]
-Signed-off-by: Bjorn Helgaas <bhelgaas@google.com>
-Signed-off-by: Madhavan Srinivasan <maddy@linux.ibm.com>
-Link: https://patch.msgid.link/2013845045.1359852.1752615367790.JavaMail.zimbra@raptorengineeringinc.com
+ Last interrupt received for each group:
+ ath11k_pci 0000:01:00.0: group_id 0 66785ms before
+ ath11k_pci 0000:01:00.0: group_id 1 14485062ms before
+ ath11k_pci 0000:01:00.0: group_id 2 14485062ms before
+ ath11k_pci 0000:01:00.0: group_id 3 14485062ms before
+ ath11k_pci 0000:01:00.0: group_id 4 14780845ms before
+ ath11k_pci 0000:01:00.0: group_id 5 14780845ms before
+ ath11k_pci 0000:01:00.0: group_id 6 14485062ms before
+ ath11k_pci 0000:01:00.0: group_id 7 66814ms before
+ ath11k_pci 0000:01:00.0: group_id 8 68997ms before
+ ath11k_pci 0000:01:00.0: group_id 9 67588ms before
+ ath11k_pci 0000:01:00.0: group_id 10 69511ms before
+ BUG: unable to handle page fault for address: ffffa007404eb010
+ #PF: supervisor read access in kernel mode
+ #PF: error_code(0x0000) - not-present page
+ PGD 100000067 P4D 100000067 PUD 10022d067 PMD 100b01067 PTE 0
+ Oops: 0000 [#1] PREEMPT SMP NOPTI
+ RIP: 0010:ath11k_hal_dump_srng_stats+0x2b4/0x3b0 [ath11k]
+ Call Trace:
+ <TASK>
+ ? __die_body+0xae/0xb0
+ ? page_fault_oops+0x381/0x3e0
+ ? exc_page_fault+0x69/0xa0
+ ? asm_exc_page_fault+0x22/0x30
+ ? ath11k_hal_dump_srng_stats+0x2b4/0x3b0 [ath11k (HASH:6cea 4)]
+ ath11k_qmi_driver_event_work+0xbd/0x1050 [ath11k (HASH:6cea 4)]
+ worker_thread+0x389/0x930
+ kthread+0x149/0x170
+
+Clear per-list ->initialized flag in ath11k_hal_srng_deinit().
+
+Signed-off-by: Sergey Senozhatsky <senozhatsky@chromium.org>
+Reviewed-by: Baochen Qiang <quic_bqiang@quicinc.com>
+Fixes: 5118935b1bc2 ("ath11k: dump SRNG stats during FW assert")
+Link: https://patch.msgid.link/20250612084551.702803-1-senozhatsky@chromium.org
+Signed-off-by: Jeff Johnson <jeff.johnson@oss.qualcomm.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/pci/hotplug/pnv_php.c | 96 ++++++++++++++++++++++++++++-------
- 1 file changed, 77 insertions(+), 19 deletions(-)
+ drivers/net/wireless/ath/ath11k/hal.c | 4 ++++
+ 1 file changed, 4 insertions(+)
 
-diff --git a/drivers/pci/hotplug/pnv_php.c b/drivers/pci/hotplug/pnv_php.c
-index e233f8402e8c..c1c1d30bd86b 100644
---- a/drivers/pci/hotplug/pnv_php.c
-+++ b/drivers/pci/hotplug/pnv_php.c
-@@ -3,6 +3,7 @@
-  * PCI Hotplug Driver for PowerPC PowerNV platform.
-  *
-  * Copyright Gavin Shan, IBM Corporation 2016.
-+ * Copyright (C) 2025 Raptor Engineering, LLC
-  */
- 
- #include <linux/libfdt.h>
-@@ -34,8 +35,10 @@ static void pnv_php_register(struct device_node *dn);
- static void pnv_php_unregister_one(struct device_node *dn);
- static void pnv_php_unregister(struct device_node *dn);
- 
-+static void pnv_php_enable_irq(struct pnv_php_slot *php_slot);
-+
- static void pnv_php_disable_irq(struct pnv_php_slot *php_slot,
--				bool disable_device)
-+				bool disable_device, bool disable_msi)
+diff --git a/drivers/net/wireless/ath/ath11k/hal.c b/drivers/net/wireless/ath/ath11k/hal.c
+index f3b9108ab6bd..33dfc9970bea 100644
+--- a/drivers/net/wireless/ath/ath11k/hal.c
++++ b/drivers/net/wireless/ath/ath11k/hal.c
+@@ -1290,6 +1290,10 @@ EXPORT_SYMBOL(ath11k_hal_srng_init);
+ void ath11k_hal_srng_deinit(struct ath11k_base *ab)
  {
- 	struct pci_dev *pdev = php_slot->pdev;
- 	u16 ctrl;
-@@ -51,19 +54,15 @@ static void pnv_php_disable_irq(struct pnv_php_slot *php_slot,
- 		php_slot->irq = 0;
- 	}
+ 	struct ath11k_hal *hal = &ab->hal;
++	int i;
++
++	for (i = 0; i < HAL_SRNG_RING_ID_MAX; i++)
++		ab->hal.srng_list[i].initialized = 0;
  
--	if (php_slot->wq) {
--		destroy_workqueue(php_slot->wq);
--		php_slot->wq = NULL;
--	}
--
--	if (disable_device) {
-+	if (disable_device || disable_msi) {
- 		if (pdev->msix_enabled)
- 			pci_disable_msix(pdev);
- 		else if (pdev->msi_enabled)
- 			pci_disable_msi(pdev);
-+	}
- 
-+	if (disable_device)
- 		pci_disable_device(pdev);
--	}
- }
- 
- static void pnv_php_free_slot(struct kref *kref)
-@@ -72,7 +71,8 @@ static void pnv_php_free_slot(struct kref *kref)
- 					struct pnv_php_slot, kref);
- 
- 	WARN_ON(!list_empty(&php_slot->children));
--	pnv_php_disable_irq(php_slot, false);
-+	pnv_php_disable_irq(php_slot, false, false);
-+	destroy_workqueue(php_slot->wq);
- 	kfree(php_slot->name);
- 	kfree(php_slot);
- }
-@@ -559,8 +559,58 @@ static int pnv_php_reset_slot(struct hotplug_slot *slot, bool probe)
- static int pnv_php_enable_slot(struct hotplug_slot *slot)
- {
- 	struct pnv_php_slot *php_slot = to_pnv_php_slot(slot);
-+	u32 prop32;
-+	int ret;
-+
-+	ret = pnv_php_enable(php_slot, true);
-+	if (ret)
-+		return ret;
-+
-+	/* (Re-)enable interrupt if the slot supports surprise hotplug */
-+	ret = of_property_read_u32(php_slot->dn, "ibm,slot-surprise-pluggable",
-+				   &prop32);
-+	if (!ret && prop32)
-+		pnv_php_enable_irq(php_slot);
- 
--	return pnv_php_enable(php_slot, true);
-+	return 0;
-+}
-+
-+/*
-+ * Disable any hotplug interrupts for all slots on the provided bus, as well as
-+ * all downstream slots in preparation for a hot unplug.
-+ */
-+static int pnv_php_disable_all_irqs(struct pci_bus *bus)
-+{
-+	struct pci_bus *child_bus;
-+	struct pci_slot *slot;
-+
-+	/* First go down child buses */
-+	list_for_each_entry(child_bus, &bus->children, node)
-+		pnv_php_disable_all_irqs(child_bus);
-+
-+	/* Disable IRQs for all pnv_php slots on this bus */
-+	list_for_each_entry(slot, &bus->slots, list) {
-+		struct pnv_php_slot *php_slot = to_pnv_php_slot(slot->hotplug);
-+
-+		pnv_php_disable_irq(php_slot, false, true);
-+	}
-+
-+	return 0;
-+}
-+
-+/*
-+ * Disable any hotplug interrupts for all downstream slots on the provided
-+ * bus in preparation for a hot unplug.
-+ */
-+static int pnv_php_disable_all_downstream_irqs(struct pci_bus *bus)
-+{
-+	struct pci_bus *child_bus;
-+
-+	/* Go down child buses, recursively deactivating their IRQs */
-+	list_for_each_entry(child_bus, &bus->children, node)
-+		pnv_php_disable_all_irqs(child_bus);
-+
-+	return 0;
- }
- 
- static int pnv_php_disable_slot(struct hotplug_slot *slot)
-@@ -577,6 +627,13 @@ static int pnv_php_disable_slot(struct hotplug_slot *slot)
- 	    php_slot->state != PNV_PHP_STATE_REGISTERED)
- 		return 0;
- 
-+	/*
-+	 * Free all IRQ resources from all child slots before remove.
-+	 * Note that we do not disable the root slot IRQ here as that
-+	 * would also deactivate the slot hot (re)plug interrupt!
-+	 */
-+	pnv_php_disable_all_downstream_irqs(php_slot->bus);
-+
- 	/* Remove all devices behind the slot */
- 	pci_lock_rescan_remove();
- 	pci_hp_remove_devices(php_slot->bus);
-@@ -645,6 +702,15 @@ static struct pnv_php_slot *pnv_php_alloc_slot(struct device_node *dn)
- 		return NULL;
- 	}
- 
-+	/* Allocate workqueue for this slot's interrupt handling */
-+	php_slot->wq = alloc_workqueue("pciehp-%s", 0, 0, php_slot->name);
-+	if (!php_slot->wq) {
-+		SLOT_WARN(php_slot, "Cannot alloc workqueue\n");
-+		kfree(php_slot->name);
-+		kfree(php_slot);
-+		return NULL;
-+	}
-+
- 	if (dn->child && PCI_DN(dn->child))
- 		php_slot->slot_no = PCI_SLOT(PCI_DN(dn->child)->devfn);
- 	else
-@@ -841,14 +907,6 @@ static void pnv_php_init_irq(struct pnv_php_slot *php_slot, int irq)
- 	u16 sts, ctrl;
- 	int ret;
- 
--	/* Allocate workqueue */
--	php_slot->wq = alloc_workqueue("pciehp-%s", 0, 0, php_slot->name);
--	if (!php_slot->wq) {
--		SLOT_WARN(php_slot, "Cannot alloc workqueue\n");
--		pnv_php_disable_irq(php_slot, true);
--		return;
--	}
--
- 	/* Check PDC (Presence Detection Change) is broken or not */
- 	ret = of_property_read_u32(php_slot->dn, "ibm,slot-broken-pdc",
- 				   &broken_pdc);
-@@ -867,7 +925,7 @@ static void pnv_php_init_irq(struct pnv_php_slot *php_slot, int irq)
- 	ret = request_irq(irq, pnv_php_interrupt, IRQF_SHARED,
- 			  php_slot->name, php_slot);
- 	if (ret) {
--		pnv_php_disable_irq(php_slot, true);
-+		pnv_php_disable_irq(php_slot, true, true);
- 		SLOT_WARN(php_slot, "Error %d enabling IRQ %d\n", ret, irq);
- 		return;
- 	}
+ 	ath11k_hal_unregister_srng_key(ab);
+ 	ath11k_hal_free_cont_rdp(ab);
 -- 
 2.39.5
 
