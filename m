@@ -1,55 +1,57 @@
-Return-Path: <stable+bounces-175688-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-174037-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id E2288B369AB
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 16:29:10 +0200 (CEST)
+Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [142.0.200.124])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9EF4EB3609C
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 15:02:17 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id A61D01C41301
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 14:17:44 +0000 (UTC)
+	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 9046E4E4328
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 13:02:16 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E2C9F35A291;
-	Tue, 26 Aug 2025 14:15:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C14AE188000;
+	Tue, 26 Aug 2025 13:02:05 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="gW5ig4e9"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Z7jKARA/"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A050C34DCCB;
-	Tue, 26 Aug 2025 14:15:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7DE4EFBF0;
+	Tue, 26 Aug 2025 13:02:05 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756217706; cv=none; b=VJ9c+0qyo8d48Ctu7YykXcfAWgFNSOXl7Gq8/+y+OgB1LnSR+Tn7uMq7hHfhKJwqUTIgIWNS1dt193Do961HWPR5zRs3Unw8zJv9HGW2WrUJcbVaY7TQWNYlQSPDHFSFi593XC0eB3GA1RlD/987xQBl+mlVMOQRFitoo38iB0U=
+	t=1756213325; cv=none; b=ixtK8MJOePrHjEpA6nIejBpPEayab0TKT6B7P5FuhdBbGlmqjDyAbfkwpJGG/zhgwna+r8tQ9/1JboCgeivSKaLGeKY2son6+TrAMMTXMLzyYUm4xzMU+HpLnxMVW0Dj5/a0iHB6SZX4XLsZobrtcXtj9WuWD053Xmy7zyxNaYw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756217706; c=relaxed/simple;
-	bh=3Kxy39XfT9P5o2HUlen4TpNTOeQOiFhvXHIN6Df/STA=;
+	s=arc-20240116; t=1756213325; c=relaxed/simple;
+	bh=rcOXuEHvBRFbCmyHmiRhtiWi2/ih43P0IXGPY1irnoE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=DjEHQ0JDeb0FBgrlXaCmYVzNi4F/F9+lVkiGuTtJCCGBeWj0Y9LQJ0ef8eOuVWjSlzJiib1UBDdv7fz6IdwoI4DxC8BB1ZWGaZLMRyk5HTMRg9VxsKPCAyD6BwqinmD/0YwU0A2dOvVysRc8iUpDKAhnwmHJsplAEoaUZPx3jrc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=gW5ig4e9; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2EBE3C4CEF1;
-	Tue, 26 Aug 2025 14:15:06 +0000 (UTC)
+	 MIME-Version; b=grn4UMCXD3/KTCjcIJcXahnnoAk8PZ8uK72XsAfu1uDGhfsdnWM8umW6rDdtYkU4LNE8Ji+BEUqvX28veoJg9xbB058Ng6OBTGk0TjMmv71dAnrImo6fT4lnJZ/xMJbCNkQPrBSARpLHFXlN2ZBDkGuSvhEoACBgptppXoD9zxQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Z7jKARA/; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 08358C4CEF4;
+	Tue, 26 Aug 2025 13:02:04 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1756217706;
-	bh=3Kxy39XfT9P5o2HUlen4TpNTOeQOiFhvXHIN6Df/STA=;
+	s=korg; t=1756213325;
+	bh=rcOXuEHvBRFbCmyHmiRhtiWi2/ih43P0IXGPY1irnoE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=gW5ig4e9E3UZCX2MSDRE8Jhqt5dhYUtQ6d3baQMaR1zgVgP/6GBep2QYXXYgzBu1r
-	 RwWxXc08GICUAwofMdFahyFoMDsQNivCbUcViOroWOsWPsBM6hBAacSzXchZ11wQ4N
-	 kjT0UBtS7EL0NqPCqVqDqqbRIcEl2t0Mm16HPKQs=
+	b=Z7jKARA/3xCw0S8I0Ba8ReHSNROwAPkCWwhDmEq/Ec86cGZq8TgqyhMnnQTebKGkI
+	 dZS2a85rnK13BZkei447qg2exlrlvFGtSyWLLlLBRckWfMwnZ0ld1QOpcEFfN0XAEg
+	 EJfjRo2uWRYXQOigWLG3JIlzs2A+3YswlHDQrg+U=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Mark Brown <broonie@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 245/523] ASoC: hdac_hdmi: Rate limit logging on connection and disconnection
+	stable <stable@kernel.org>,
+	syzbot+01523a0ae5600aef5895@syzkaller.appspotmail.com,
+	Jens Axboe <axboe@kernel.dk>,
+	Ian Abbott <abbotti@mev.co.uk>
+Subject: [PATCH 6.6 306/587] comedi: fix race between polling and detaching
 Date: Tue, 26 Aug 2025 13:07:35 +0200
-Message-ID: <20250826110930.480411089@linuxfoundation.org>
+Message-ID: <20250826111000.704859527@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250826110924.562212281@linuxfoundation.org>
-References: <20250826110924.562212281@linuxfoundation.org>
+In-Reply-To: <20250826110952.942403671@linuxfoundation.org>
+References: <20250826110952.942403671@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,73 +63,162 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Mark Brown <broonie@kernel.org>
+From: Ian Abbott <abbotti@mev.co.uk>
 
-[ Upstream commit c4ca928a6db1593802cd945f075a7e21dd0430c1 ]
+commit 35b6fc51c666fc96355be5cd633ed0fe4ccf68b2 upstream.
 
-We currently log parse failures for ELD data and some disconnection events
-as errors without rate limiting. These log messages can be triggered very
-frequently in some situations, especially ELD parsing when there is nothing
-connected to a HDMI port which will generate:
+syzbot reports a use-after-free in comedi in the below link, which is
+due to comedi gladly removing the allocated async area even though poll
+requests are still active on the wait_queue_head inside of it. This can
+cause a use-after-free when the poll entries are later triggered or
+removed, as the memory for the wait_queue_head has been freed.  We need
+to check there are no tasks queued on any of the subdevices' wait queues
+before allowing the device to be detached by the `COMEDI_DEVCONFIG`
+ioctl.
 
-hdmi-audio-codec hdmi-audio-codec.1.auto: HDMI: Unknown ELD version 0
+Tasks will read-lock `dev->attach_lock` before adding themselves to the
+subdevice wait queue, so fix the problem in the `COMEDI_DEVCONFIG` ioctl
+handler by write-locking `dev->attach_lock` before checking that all of
+the subdevices are safe to be deleted.  This includes testing for any
+sleepers on the subdevices' wait queues.  It remains locked until the
+device has been detached.  This requires the `comedi_device_detach()`
+function to be refactored slightly, moving the bulk of it into new
+function `comedi_device_detach_locked()`.
 
-While there's doubtless work that could be done on reducing the number of
-connection notification callbacks it's possible these may be legitimately
-generated by poor quality physical connections so let's use rate limiting
-to mitigate the log spam for the parse errors and lower the severity for
-disconnect logging to debug level.
+Note that the refactor of `comedi_device_detach()` results in
+`comedi_device_cancel_all()` now being called while `dev->attach_lock`
+is write-locked, which wasn't the case previously, but that does not
+matter.
 
-Signed-off-by: Mark Brown <broonie@kernel.org>
-Link: https://patch.msgid.link/20250613-asoc-hdmi-eld-logging-v1-1-76d64154d969@kernel.org
-Signed-off-by: Mark Brown <broonie@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Thanks to Jens Axboe for diagnosing the problem and co-developing this
+patch.
+
+Cc: stable <stable@kernel.org>
+Fixes: 2f3fdcd7ce93 ("staging: comedi: add rw_semaphore to protect against device detachment")
+Link: https://lore.kernel.org/all/687bd5fe.a70a0220.693ce.0091.GAE@google.com/
+Reported-by: syzbot+01523a0ae5600aef5895@syzkaller.appspotmail.com
+Closes: https://syzkaller.appspot.com/bug?extid=01523a0ae5600aef5895
+Co-developed-by: Jens Axboe <axboe@kernel.dk>
+Signed-off-by: Jens Axboe <axboe@kernel.dk>
+Signed-off-by: Ian Abbott <abbotti@mev.co.uk>
+Tested-by: Jens Axboe <axboe@kernel.dk>
+Link: https://lore.kernel.org/r/20250722155316.27432-1-abbotti@mev.co.uk
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- sound/soc/codecs/hdac_hdmi.c | 10 ++++++----
- 1 file changed, 6 insertions(+), 4 deletions(-)
+ drivers/comedi/comedi_fops.c     |   33 +++++++++++++++++++++++++--------
+ drivers/comedi/comedi_internal.h |    1 +
+ drivers/comedi/drivers.c         |   13 ++++++++++---
+ 3 files changed, 36 insertions(+), 11 deletions(-)
 
-diff --git a/sound/soc/codecs/hdac_hdmi.c b/sound/soc/codecs/hdac_hdmi.c
-index 6de3e47b92d8..76e06c88f279 100644
---- a/sound/soc/codecs/hdac_hdmi.c
-+++ b/sound/soc/codecs/hdac_hdmi.c
-@@ -1230,7 +1230,8 @@ static int hdac_hdmi_parse_eld(struct hdac_device *hdev,
- 						>> DRM_ELD_VER_SHIFT;
+--- a/drivers/comedi/comedi_fops.c
++++ b/drivers/comedi/comedi_fops.c
+@@ -787,6 +787,7 @@ static int is_device_busy(struct comedi_
+ 	struct comedi_subdevice *s;
+ 	int i;
  
- 	if (ver != ELD_VER_CEA_861D && ver != ELD_VER_PARTIAL) {
--		dev_err(&hdev->dev, "HDMI: Unknown ELD version %d\n", ver);
-+		dev_err_ratelimited(&hdev->dev,
-+				    "HDMI: Unknown ELD version %d\n", ver);
- 		return -EINVAL;
++	lockdep_assert_held_write(&dev->attach_lock);
+ 	lockdep_assert_held(&dev->mutex);
+ 	if (!dev->attached)
+ 		return 0;
+@@ -795,7 +796,16 @@ static int is_device_busy(struct comedi_
+ 		s = &dev->subdevices[i];
+ 		if (s->busy)
+ 			return 1;
+-		if (s->async && comedi_buf_is_mmapped(s))
++		if (!s->async)
++			continue;
++		if (comedi_buf_is_mmapped(s))
++			return 1;
++		/*
++		 * There may be tasks still waiting on the subdevice's wait
++		 * queue, although they should already be about to be removed
++		 * from it since the subdevice has no active async command.
++		 */
++		if (wq_has_sleeper(&s->async->wait_head))
+ 			return 1;
  	}
  
-@@ -1238,7 +1239,8 @@ static int hdac_hdmi_parse_eld(struct hdac_device *hdev,
- 		DRM_ELD_MNL_MASK) >> DRM_ELD_MNL_SHIFT;
+@@ -825,15 +835,22 @@ static int do_devconfig_ioctl(struct com
+ 		return -EPERM;
  
- 	if (mnl > ELD_MAX_MNL) {
--		dev_err(&hdev->dev, "HDMI: MNL Invalid %d\n", mnl);
-+		dev_err_ratelimited(&hdev->dev,
-+				    "HDMI: MNL Invalid %d\n", mnl);
- 		return -EINVAL;
+ 	if (!arg) {
+-		if (is_device_busy(dev))
+-			return -EBUSY;
+-		if (dev->attached) {
+-			struct module *driver_module = dev->driver->module;
++		int rc = 0;
+ 
+-			comedi_device_detach(dev);
+-			module_put(driver_module);
++		if (dev->attached) {
++			down_write(&dev->attach_lock);
++			if (is_device_busy(dev)) {
++				rc = -EBUSY;
++			} else {
++				struct module *driver_module =
++					dev->driver->module;
++
++				comedi_device_detach_locked(dev);
++				module_put(driver_module);
++			}
++			up_write(&dev->attach_lock);
+ 		}
+-		return 0;
++		return rc;
  	}
  
-@@ -1297,8 +1299,8 @@ static void hdac_hdmi_present_sense(struct hdac_hdmi_pin *pin,
+ 	if (copy_from_user(&it, arg, sizeof(it)))
+--- a/drivers/comedi/comedi_internal.h
++++ b/drivers/comedi/comedi_internal.h
+@@ -50,6 +50,7 @@ extern struct mutex comedi_drivers_list_
+ int insn_inval(struct comedi_device *dev, struct comedi_subdevice *s,
+ 	       struct comedi_insn *insn, unsigned int *data);
  
- 	if (!port->eld.monitor_present || !port->eld.eld_valid) {
++void comedi_device_detach_locked(struct comedi_device *dev);
+ void comedi_device_detach(struct comedi_device *dev);
+ int comedi_device_attach(struct comedi_device *dev,
+ 			 struct comedi_devconfig *it);
+--- a/drivers/comedi/drivers.c
++++ b/drivers/comedi/drivers.c
+@@ -158,7 +158,7 @@ static void comedi_device_detach_cleanup
+ 	int i;
+ 	struct comedi_subdevice *s;
  
--		dev_err(&hdev->dev, "%s: disconnect for pin:port %d:%d\n",
--						__func__, pin->nid, port->id);
-+		dev_dbg(&hdev->dev, "%s: disconnect for pin:port %d:%d\n",
-+			__func__, pin->nid, port->id);
+-	lockdep_assert_held(&dev->attach_lock);
++	lockdep_assert_held_write(&dev->attach_lock);
+ 	lockdep_assert_held(&dev->mutex);
+ 	if (dev->subdevices) {
+ 		for (i = 0; i < dev->n_subdevices; i++) {
+@@ -195,16 +195,23 @@ static void comedi_device_detach_cleanup
+ 	comedi_clear_hw_dev(dev);
+ }
  
- 		/*
- 		 * PCMs are not registered during device probe, so don't
--- 
-2.39.5
-
+-void comedi_device_detach(struct comedi_device *dev)
++void comedi_device_detach_locked(struct comedi_device *dev)
+ {
++	lockdep_assert_held_write(&dev->attach_lock);
+ 	lockdep_assert_held(&dev->mutex);
+ 	comedi_device_cancel_all(dev);
+-	down_write(&dev->attach_lock);
+ 	dev->attached = false;
+ 	dev->detach_count++;
+ 	if (dev->driver)
+ 		dev->driver->detach(dev);
+ 	comedi_device_detach_cleanup(dev);
++}
++
++void comedi_device_detach(struct comedi_device *dev)
++{
++	lockdep_assert_held(&dev->mutex);
++	down_write(&dev->attach_lock);
++	comedi_device_detach_locked(dev);
+ 	up_write(&dev->attach_lock);
+ }
+ 
 
 
 
