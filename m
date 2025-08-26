@@ -1,61 +1,56 @@
-Return-Path: <stable+bounces-175634-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-176042-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id CCF63B36939
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 16:24:25 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id BD749B36B0A
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 16:42:39 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 30F928E3546
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 14:15:08 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 142B0566305
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 14:32:41 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 14B0C34AB0D;
-	Tue, 26 Aug 2025 14:12:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A5A3835083A;
+	Tue, 26 Aug 2025 14:30:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="XTZFeG9W"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="oTnRmn3a"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C3EA828314A;
-	Tue, 26 Aug 2025 14:12:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6523A34F495;
+	Tue, 26 Aug 2025 14:30:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756217564; cv=none; b=A7UWjjKWYGMSz+cH72uI33iNKYey3QBAtY0l+ByWearhss4ZmqRRzcLhydqn0vaG1FusVC5Z0rBWbvDMF9N/lGBMseH38NcyK+fdjLByFMBnqkBCmAQLIbx2fhlZlxo1F0w7At3VnH0GOCZntD+lrRX/QzH2Fz4CwSYub4WJq30=
+	t=1756218633; cv=none; b=F6EiGb5kdwk40SZq9p8CKNGeBTLk5IeGMatlvKS375TP2EqFTVqoawcFOosHvqt3ZgH148l5pNhQ6blAGVFTZwTYmxyRS4si0QwW2CPzbR5fE1BY/x+tB9yUWxqZ4xLeNLlFRjKNN2eJMaZzgBI77uTzbKNBS7JilEq6TLfWCws=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756217564; c=relaxed/simple;
-	bh=vste3EivTYYHBO86+wOynmO5bX/wxnVPgpUd8PNO3DE=;
+	s=arc-20240116; t=1756218633; c=relaxed/simple;
+	bh=+EKYlxVaUaYcET/vOiqAthkRl8FRIbTcfshEHuqCvR0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=jf3mVjb79IZQjdEbRMJnB9xhkXueQdQBl7sEKmtWt5cPViyFIQ3TWHcvirahEuEtomGxzBMbFd+L21yb+SFTsuzHumqxFHRxt5gtIjsWWlvsT2tLMAl7P4ERfd7eHOH8xynRY5EnfR3uapGyjRoOQnjJVSn9JsK/BZJNwd+3tv8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=XTZFeG9W; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2C5EEC113CF;
-	Tue, 26 Aug 2025 14:12:44 +0000 (UTC)
+	 MIME-Version; b=aN7KK/i+WePsERjb7Sbv4TGdcFbFDTgVQuVvXfve7962aoCGePTNnuROYGMBburtnbw6gfv13yudTUjgVJ+BvukllzVhopRlPqvJItE+LULbefOo62Usts4t2yFVaiaBXvdskHrCLLnVzlXV7FeuWfxUouimsayzCXpVvvaSmwQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=oTnRmn3a; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id EAE95C4CEF1;
+	Tue, 26 Aug 2025 14:30:32 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1756217564;
-	bh=vste3EivTYYHBO86+wOynmO5bX/wxnVPgpUd8PNO3DE=;
+	s=korg; t=1756218633;
+	bh=+EKYlxVaUaYcET/vOiqAthkRl8FRIbTcfshEHuqCvR0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=XTZFeG9W067xxOw11J7LtjwgVC4Y5+8GITZ3B8gbC7pzMfd0ljyeWsX8o17DZn8Rt
-	 I8s2kV3Icb2LsCSpjBhwxSUBNBikJT14OFoy1OWwyVhh940GwIHwB+0MFCnp9lP9um
-	 t7n+6a57YLVReaK5SEnfhonycjv7iEugsm+vbDmk=
+	b=oTnRmn3a0at2v3YNT+YMrwCzyFVn2MW5GERjKazSygBmtmEbKhP7Jt1JqpkuLLy+2
+	 +lFEVgQ7fpGhaP8/AN6aHBvOHeyPEtgYxs4y9PZnybVM0U5WXsKSGrtBOFuBsrF+NE
+	 hCb5pwraKMReKhag9sZ7fSYpKHWmgBNDOu2k6Nr8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
-	Leon Romanovsky <leonro@nvidia.com>,
-	Alistair Popple <apopple@nvidia.com>,
-	Bill Wendling <morbo@google.com>,
-	Jerome Glisse <jglisse@redhat.com>,
-	Justin Stitt <justinstitt@google.com>,
-	Nathan Chancellor <nathan@kernel.org>,
-	Andrew Morton <akpm@linux-foundation.org>
-Subject: [PATCH 5.10 190/523] mm/hmm: move pmd_to_hmm_pfn_flags() to the respective #ifdeffery
+	Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>,
+	Shawn Guo <shawnguo@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.4 074/403] ARM: dts: vfxxx: Correctly use two tuples for timer address
 Date: Tue, 26 Aug 2025 13:06:40 +0200
-Message-ID: <20250826110929.137155534@linuxfoundation.org>
+Message-ID: <20250826110908.439078561@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250826110924.562212281@linuxfoundation.org>
-References: <20250826110924.562212281@linuxfoundation.org>
+In-Reply-To: <20250826110905.607690791@linuxfoundation.org>
+References: <20250826110905.607690791@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -67,61 +62,42 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+5.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+From: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
 
-commit 188cb385bbf04d486df3e52f28c47b3961f5f0c0 upstream.
+[ Upstream commit f3440dcf8b994197c968fbafe047ce27eed226e8 ]
 
-When pmd_to_hmm_pfn_flags() is unused, it prevents kernel builds with
-clang, `make W=1` and CONFIG_TRANSPARENT_HUGEPAGE=n:
+Address and size-cells are 1 and the ftm timer node takes two address
+spaces in "reg" property, so this should be in two <> tuples.  Change
+has no functional impact, but original code is confusing/less readable.
 
-  mm/hmm.c:186:29: warning: unused function 'pmd_to_hmm_pfn_flags' [-Wunused-function]
-
-Fix this by moving the function to the respective existing ifdeffery
-for its the only user.
-
-See also:
-
-  6863f5643dd7 ("kbuild: allow Clang to find unused static inline functions for W=1 build")
-
-Link: https://lkml.kernel.org/r/20250710082403.664093-1-andriy.shevchenko@linux.intel.com
-Fixes: 992de9a8b751 ("mm/hmm: allow to mirror vma of a file on a DAX backed filesystem")
-Signed-off-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
-Reviewed-by: Leon Romanovsky <leonro@nvidia.com>
-Reviewed-by: Alistair Popple <apopple@nvidia.com>
-Cc: Andriy Shevchenko <andriy.shevchenko@linux.intel.com>
-Cc: Bill Wendling <morbo@google.com>
-Cc: Jerome Glisse <jglisse@redhat.com>
-Cc: Justin Stitt <justinstitt@google.com>
-Cc: Nathan Chancellor <nathan@kernel.org>
-Cc: <stable@vger.kernel.org>
-Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: 07513e1330a9 ("ARM: dts: vf610: Add Freescale FlexTimer Module timer node.")
+Signed-off-by: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
+Signed-off-by: Shawn Guo <shawnguo@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- mm/hmm.c |    2 +-
+ arch/arm/boot/dts/vfxxx.dtsi | 2 +-
  1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/mm/hmm.c
-+++ b/mm/hmm.c
-@@ -171,6 +171,7 @@ static inline unsigned long hmm_pfn_flag
- 	return order << HMM_PFN_ORDER_SHIFT;
- }
+diff --git a/arch/arm/boot/dts/vfxxx.dtsi b/arch/arm/boot/dts/vfxxx.dtsi
+index fa248066d9d9..3679922bbabc 100644
+--- a/arch/arm/boot/dts/vfxxx.dtsi
++++ b/arch/arm/boot/dts/vfxxx.dtsi
+@@ -617,7 +617,7 @@ usbmisc1: usb@400b4800 {
  
-+#ifdef CONFIG_TRANSPARENT_HUGEPAGE
- static inline unsigned long pmd_to_hmm_pfn_flags(struct hmm_range *range,
- 						 pmd_t pmd)
- {
-@@ -181,7 +182,6 @@ static inline unsigned long pmd_to_hmm_p
- 	       hmm_pfn_flags_order(PMD_SHIFT - PAGE_SHIFT);
- }
- 
--#ifdef CONFIG_TRANSPARENT_HUGEPAGE
- static int hmm_vma_handle_pmd(struct mm_walk *walk, unsigned long addr,
- 			      unsigned long end, unsigned long hmm_pfns[],
- 			      pmd_t pmd)
+ 			ftm: ftm@400b8000 {
+ 				compatible = "fsl,ftm-timer";
+-				reg = <0x400b8000 0x1000 0x400b9000 0x1000>;
++				reg = <0x400b8000 0x1000>, <0x400b9000 0x1000>;
+ 				interrupts = <44 IRQ_TYPE_LEVEL_HIGH>;
+ 				clock-names = "ftm-evt", "ftm-src",
+ 					"ftm-evt-counter-en", "ftm-src-counter-en";
+-- 
+2.39.5
+
 
 
 
