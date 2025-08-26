@@ -1,55 +1,58 @@
-Return-Path: <stable+bounces-176273-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-175369-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 324BBB36CCC
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 17:01:07 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 857E9B367E4
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 16:11:02 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id E26E1987ACC
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 14:43:13 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id BD28E4642BD
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 14:02:30 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B483F1E500C;
-	Tue, 26 Aug 2025 14:40:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 05CF7352FC6;
+	Tue, 26 Aug 2025 14:00:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="0IuHxbTk"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="MjghfkTB"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 71530352FF0;
-	Tue, 26 Aug 2025 14:40:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B7A1F35208F;
+	Tue, 26 Aug 2025 14:00:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756219227; cv=none; b=bHfvnNMnsgDJqaHSRkaTZJifXndlDk4I71anUHQADnZH9XiSQoaoaZa2kLpzic48kUkXSiaLwQe7YvTfXWekv74689uVN5HoZ9znDB7+MIwxiY/o6Kxb3aN13p4Q4p4Yu+FVGyTm4KNEcKt0D2bHeuIxnFhlQ90e1iFuLLyhLEA=
+	t=1756216855; cv=none; b=ZbbPZLlZ2IYzxPanIybAH7SVSdbUyorwTw3GQpsSimh7c2wWSO4tbjjHiHz56FR5FTnjMBqj8/+BBARPrxPXCilppP/TGY4uKPVSaD3UK4G6I8iWrgMSat3ks1Ab2Rp2NkssOCVGBWL90LgPxiClvTEA/DTdYOD5vuUS0Helj4Q=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756219227; c=relaxed/simple;
-	bh=yBqlL3H4AHzzTUfGVkOHwYP6j74cfvlLgDI8uiJ3hCA=;
+	s=arc-20240116; t=1756216855; c=relaxed/simple;
+	bh=9zm2frS8Q69jGceeQEdkBGtSVezazd9wrUJs1reQjGw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=mJAQezkRGFQxOSM5RIe3s14nPMsW8EH2KY3VldC9gbNAkJA1qfusX7M5/zG8ZcP03Ud3okPvEzvKRccFwHly+z2hIajB5kJuKgAflV0+yZCm5tGDeK1ClXSS4fbaBYabkF6fd9dOaU6CSfEH+enU9al7JBrsmeJR75UHISiEjrY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=0IuHxbTk; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 03590C4CEF1;
-	Tue, 26 Aug 2025 14:40:26 +0000 (UTC)
+	 MIME-Version:Content-Type; b=aAszPmMgxKxAu9GC9LmOMow6qfLVIOoiFJzuB/W5AKzFwzsYSVplUeeSFOYMWMcNR0zXvP7EG8Qhp/NYVsG7VXIkNWODEe9w19gfAuYf8SQvPu/3K9xuoe3aGl3bTMNsVgCXedfHeBmDNuJk2HGNIBoBonrHyZlxQrWalbnqHtk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=MjghfkTB; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3B0CDC4CEF1;
+	Tue, 26 Aug 2025 14:00:55 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1756219227;
-	bh=yBqlL3H4AHzzTUfGVkOHwYP6j74cfvlLgDI8uiJ3hCA=;
+	s=korg; t=1756216855;
+	bh=9zm2frS8Q69jGceeQEdkBGtSVezazd9wrUJs1reQjGw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=0IuHxbTk+u2KinB5GGnj1+GCW1mmJPnOFF10mfEN4uoiB5GzZeno+580DNiVbbutu
-	 D5d5xj6TgM5BMb9bCyWPXgRzlXY3dWiAz7VmLNjNwnI8u5FD1eA+wVJIS1NocNb5pP
-	 DS/rSM5KPNyE5+BG9GTNqKUQ5RckZe3R54ni+n9o=
+	b=MjghfkTBj82rzdev60HdGYi8X/7iIsUOwwV8Fsbv6NAXllgVydvDpkAcPNkmIsm9/
+	 CXRokGotakuwz6rzDKMTm9hjq3i3pD/E3Sy69LYot5LDY+a2Yf0g5wMacpETw+gNSX
+	 JR8o/Te5ahFD51kiAiMJ+Ynk/5E9Xy6g2rOen86E=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jon Hunter <jonathanh@nvidia.com>,
-	Ulf Hansson <ulf.hansson@linaro.org>
-Subject: [PATCH 5.4 302/403] soc/tegra: pmc: Ensure power-domains are in a known state
+	Guenter Roeck <groeck@chromium.org>,
+	=?UTF-8?q?Uwe=20Kleine-K=C3=B6nig?= <u.kleine-koenig@pengutronix.de>,
+	Lee Jones <lee.jones@linaro.org>,
+	Mark Brown <broonie@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.15 537/644] platform/chrome: cros_ec: Make cros_ec_unregister() return void
 Date: Tue, 26 Aug 2025 13:10:28 +0200
-Message-ID: <20250826110915.156093736@linuxfoundation.org>
+Message-ID: <20250826110959.823261242@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250826110905.607690791@linuxfoundation.org>
-References: <20250826110905.607690791@linuxfoundation.org>
+In-Reply-To: <20250826110946.507083938@linuxfoundation.org>
+References: <20250826110946.507083938@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -59,144 +62,108 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-5.4-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jon Hunter <jonathanh@nvidia.com>
+From: Uwe Kleine-König <u.kleine-koenig@pengutronix.de>
 
-commit b6bcbce3359619d05bf387d4f5cc3af63668dbaa upstream.
+[ Upstream commit afb0a80e63d67e957b5d0eb4ade301aff6e13c8c ]
 
-After commit 13a4b7fb6260 ("pmdomain: core: Leave powered-on genpds on
-until late_initcall_sync") was applied, the Tegra210 Jetson TX1 board
-failed to boot. Looking into this issue, before this commit was applied,
-if any of the Tegra power-domains were in 'on' state when the kernel
-booted, they were being turned off by the genpd core before any driver
-had chance to request them. This was purely by luck and a consequence of
-the power-domains being turned off earlier during boot. After this
-commit was applied, any power-domains in the 'on' state are kept on for
-longer during boot and therefore, may never transitioned to the off
-state before they are requested/used. The hang on the Tegra210 Jetson
-TX1 is caused because devices in some power-domains are accessed without
-the power-domain being turned off and on, indicating that the
-power-domain is not in a completely on state.
+Up to now cros_ec_unregister() returns zero unconditionally. Make it
+return void instead which makes it easier to see in the callers that
+there is no error to handle.
 
->From reviewing the Tegra PMC driver code, if a power-domain is in the
-'on' state there is no guarantee that all the necessary clocks
-associated with the power-domain are on and even if they are they would
-not have been requested via the clock framework and so could be turned
-off later. Some power-domains also have a 'clamping' register that needs
-to be configured as well. In short, if a power-domain is already 'on' it
-is difficult to know if it has been configured correctly. Given that the
-power-domains happened to be switched off during boot previously, to
-ensure that they are in a good known state on boot, fix this by
-switching off any power-domains that are on initially when registering
-the power-domains with the genpd framework.
+Also the return value of i2c, platform and spi remove callbacks is
+ignored anyway.
 
-Note that commit 05cfb988a4d0 ("soc/tegra: pmc: Initialise resets
-associated with a power partition") updated the
-tegra_powergate_of_get_resets() function to pass the 'off' to ensure
-that the resets for the power-domain are in the correct state on boot.
-However, now that we may power off a domain on boot, if it is on, it is
-better to move this logic into the tegra_powergate_add() function so
-that there is a single place where we are handling the initial state of
-the power-domain.
-
-Fixes: a38045121bf4 ("soc/tegra: pmc: Add generic PM domain support")
-Signed-off-by: Jon Hunter <jonathanh@nvidia.com>
-Cc: stable@vger.kernel.org
-Link: https://lore.kernel.org/r/20250731121832.213671-1-jonathanh@nvidia.com
-Signed-off-by: Ulf Hansson <ulf.hansson@linaro.org>
+Reviewed-by: Guenter Roeck <groeck@chromium.org>
+Link: https://lore.kernel.org/r/20211020071753.wltjslmimb6wtlp5@pengutronix.de
+Signed-off-by: Uwe Kleine-König <u.kleine-koenig@pengutronix.de>
+Acked-by: Lee Jones <lee.jones@linaro.org>
+Link: https://lore.kernel.org/r/20220123175201.34839-5-u.kleine-koenig@pengutronix.de
+Signed-off-by: Mark Brown <broonie@kernel.org>
+Stable-dep-of: e23749534619 ("platform/chrome: cros_ec: Unregister notifier in cros_ec_unregister()")
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/soc/tegra/pmc.c |   51 +++++++++++++++++++++++++++---------------------
- 1 file changed, 29 insertions(+), 22 deletions(-)
+ drivers/platform/chrome/cros_ec.c     |    4 +---
+ drivers/platform/chrome/cros_ec.h     |    2 +-
+ drivers/platform/chrome/cros_ec_i2c.c |    4 +++-
+ drivers/platform/chrome/cros_ec_lpc.c |    4 +++-
+ drivers/platform/chrome/cros_ec_spi.c |    4 +++-
+ 5 files changed, 11 insertions(+), 7 deletions(-)
 
---- a/drivers/soc/tegra/pmc.c
-+++ b/drivers/soc/tegra/pmc.c
-@@ -950,7 +950,7 @@ err:
+--- a/drivers/platform/chrome/cros_ec.c
++++ b/drivers/platform/chrome/cros_ec.c
+@@ -306,13 +306,11 @@ EXPORT_SYMBOL(cros_ec_register);
+  *
+  * Return: 0 on success or negative error code.
+  */
+-int cros_ec_unregister(struct cros_ec_device *ec_dev)
++void cros_ec_unregister(struct cros_ec_device *ec_dev)
+ {
+ 	if (ec_dev->pd)
+ 		platform_device_unregister(ec_dev->pd);
+ 	platform_device_unregister(ec_dev->ec);
+-
+-	return 0;
+ }
+ EXPORT_SYMBOL(cros_ec_unregister);
+ 
+--- a/drivers/platform/chrome/cros_ec.h
++++ b/drivers/platform/chrome/cros_ec.h
+@@ -11,7 +11,7 @@
+ #include <linux/interrupt.h>
+ 
+ int cros_ec_register(struct cros_ec_device *ec_dev);
+-int cros_ec_unregister(struct cros_ec_device *ec_dev);
++void cros_ec_unregister(struct cros_ec_device *ec_dev);
+ 
+ int cros_ec_suspend(struct cros_ec_device *ec_dev);
+ int cros_ec_resume(struct cros_ec_device *ec_dev);
+--- a/drivers/platform/chrome/cros_ec_i2c.c
++++ b/drivers/platform/chrome/cros_ec_i2c.c
+@@ -313,7 +313,9 @@ static int cros_ec_i2c_remove(struct i2c
+ {
+ 	struct cros_ec_device *ec_dev = i2c_get_clientdata(client);
+ 
+-	return cros_ec_unregister(ec_dev);
++	cros_ec_unregister(ec_dev);
++
++	return 0;
  }
  
- static int tegra_powergate_of_get_resets(struct tegra_powergate *pg,
--					 struct device_node *np, bool off)
-+					 struct device_node *np)
+ #ifdef CONFIG_PM_SLEEP
+--- a/drivers/platform/chrome/cros_ec_lpc.c
++++ b/drivers/platform/chrome/cros_ec_lpc.c
+@@ -439,7 +439,9 @@ static int cros_ec_lpc_remove(struct pla
+ 		acpi_remove_notify_handler(adev->handle, ACPI_ALL_NOTIFY,
+ 					   cros_ec_lpc_acpi_notify);
+ 
+-	return cros_ec_unregister(ec_dev);
++	cros_ec_unregister(ec_dev);
++
++	return 0;
+ }
+ 
+ static const struct acpi_device_id cros_ec_lpc_acpi_device_ids[] = {
+--- a/drivers/platform/chrome/cros_ec_spi.c
++++ b/drivers/platform/chrome/cros_ec_spi.c
+@@ -790,7 +790,9 @@ static int cros_ec_spi_remove(struct spi
  {
- 	struct device *dev = pg->pmc->dev;
- 	int err;
-@@ -965,22 +965,6 @@ static int tegra_powergate_of_get_resets
- 	err = reset_control_acquire(pg->reset);
- 	if (err < 0) {
- 		pr_err("failed to acquire resets: %d\n", err);
--		goto out;
--	}
--
--	if (off) {
--		err = reset_control_assert(pg->reset);
--	} else {
--		err = reset_control_deassert(pg->reset);
--		if (err < 0)
--			goto out;
--
--		reset_control_release(pg->reset);
--	}
--
--out:
--	if (err) {
--		reset_control_release(pg->reset);
- 		reset_control_put(pg->reset);
- 	}
+ 	struct cros_ec_device *ec_dev = spi_get_drvdata(spi);
  
-@@ -1025,20 +1009,43 @@ static int tegra_powergate_add(struct te
- 		goto set_available;
- 	}
+-	return cros_ec_unregister(ec_dev);
++	cros_ec_unregister(ec_dev);
++
++	return 0;
+ }
  
--	err = tegra_powergate_of_get_resets(pg, np, off);
-+	err = tegra_powergate_of_get_resets(pg, np);
- 	if (err < 0) {
- 		dev_err(dev, "failed to get resets for %pOFn: %d\n", np, err);
- 		goto remove_clks;
- 	}
- 
--	if (!IS_ENABLED(CONFIG_PM_GENERIC_DOMAINS)) {
--		if (off)
--			WARN_ON(tegra_powergate_power_up(pg, true));
-+	/*
-+	 * If the power-domain is off, then ensure the resets are asserted.
-+	 * If the power-domain is on, then power down to ensure that when is
-+	 * it turned on the power-domain, clocks and resets are all in the
-+	 * expected state.
-+	 */
-+	if (off) {
-+		err = reset_control_assert(pg->reset);
-+		if (err) {
-+			pr_err("failed to assert resets: %d\n", err);
-+			goto remove_resets;
-+		}
-+	} else {
-+		err = tegra_powergate_power_down(pg);
-+		if (err) {
-+			dev_err(dev, "failed to turn off PM domain %s: %d\n",
-+				pg->genpd.name, err);
-+			goto remove_resets;
-+		}
-+	}
- 
-+	/*
-+	 * If PM_GENERIC_DOMAINS is not enabled, power-on
-+	 * the domain and skip the genpd registration.
-+	 */
-+	if (!IS_ENABLED(CONFIG_PM_GENERIC_DOMAINS)) {
-+		WARN_ON(tegra_powergate_power_up(pg, true));
- 		goto remove_resets;
- 	}
- 
--	err = pm_genpd_init(&pg->genpd, NULL, off);
-+	err = pm_genpd_init(&pg->genpd, NULL, true);
- 	if (err < 0) {
- 		dev_err(dev, "failed to initialise PM domain %pOFn: %d\n", np,
- 		       err);
+ #ifdef CONFIG_PM_SLEEP
 
 
 
