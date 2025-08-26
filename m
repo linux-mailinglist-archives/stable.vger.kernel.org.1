@@ -1,57 +1,55 @@
-Return-Path: <stable+bounces-173572-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-175267-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 75AFEB35D57
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 13:43:51 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5F40DB3676C
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 16:06:15 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 31FBD7C5E5F
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 11:43:50 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id E06822A839E
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 13:57:57 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id BEF9929D26A;
-	Tue, 26 Aug 2025 11:43:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id AEC1D352099;
+	Tue, 26 Aug 2025 13:56:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="gZq0J2Qp"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="y4VHZp28"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7916921D3C0;
-	Tue, 26 Aug 2025 11:43:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 60035350D78;
+	Tue, 26 Aug 2025 13:56:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756208597; cv=none; b=qwVoNYv5saGiKUlmsBO0D83RUKRTJ3n+Ds4MocA8TowL1VqR/7IMrpOBogPdR/rkx6Z6dUIGzbcd222VAlfX5ubmDyp9xhD1wD5S9gj0L8UhPxUwrjeQpl9KHSLkZAmx2o1wLl0FrKxzcGTXKD4KYwivq5dUfwmGoEx0OERE13Q=
+	t=1756216585; cv=none; b=VqV9LJ9Vl9EciZn7g0uWlyLF6QTHrksg6WyEYscmhIqK5USKeCkNTQpOmVdI1Xe8NhZsyDLoq/Gp5DxsCw0hqcb0aAVdEVPULBoZ3kgxOjxacOkvdQ9irhn+XYJefkvWUcWzZC9Giia22UnfWQ1GTBcEpnumZNf9i7DRRo0TOsk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756208597; c=relaxed/simple;
-	bh=gXudsqzRw0G5noqruPTsIwEzBZGBklOl0hRMk0H6efg=;
+	s=arc-20240116; t=1756216585; c=relaxed/simple;
+	bh=wSnbrnv26xUJHddkrNDbfaO/lMJaz/zszDXCRdBN7ow=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=a5MEy1QGrSwtDbI33grDpGc1cdCKx/+Kurz0hBlEuLEiycgSYert54c2tCpSi7XGmV0+HIYdsG7l2dXayyk3hbmHPrF4YlMudM7jpp6ZpGHdNrXI5aK4Ygga5jJWV9zWNH+JmHoV1v3NVuGrg6jWxe5cuRE8JtdaGF28qB0cAIY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=gZq0J2Qp; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0D909C4CEF1;
-	Tue, 26 Aug 2025 11:43:16 +0000 (UTC)
+	 MIME-Version; b=BTNRlZesQ5MnjaXfabJS8M75iZadqQpAVIdRigfhRDnRzbX8xKA+Rx4jYEF7mT0K6/9riIPqH7p0G38CPZ6hiB2km+wTOoF6fKnrNVvuNA3YZhq9rryQJjdHbaWmpxt4PK8PtbDyf96vzMdutEOY9+E09c8F1g4g6A+3AqHWqpg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=y4VHZp28; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id EA968C4CEF1;
+	Tue, 26 Aug 2025 13:56:24 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1756208597;
-	bh=gXudsqzRw0G5noqruPTsIwEzBZGBklOl0hRMk0H6efg=;
+	s=korg; t=1756216585;
+	bh=wSnbrnv26xUJHddkrNDbfaO/lMJaz/zszDXCRdBN7ow=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=gZq0J2QpSD3UU2q/pvW4F2M4LYiuJfLOb8mrhFlQpgT2ApMS01EDMB5SbxaIOUzz3
-	 NzEvf042HaxCcp4UgAZ7e+xi1EQrlfFkHOFYyF1bVnqCYgQOCdWvJ82bTrefX6zNaR
-	 B6hTuaoQ5ntBD84aTiArD8CZa06Nrk29FgC/jvz0=
+	b=y4VHZp28AiBcECya71WzApSwjoIP7li7xR+RrMqHLYJapvHBX/pSFIKLi41cK03RI
+	 wADR7VQYviKeHrSNcl/mdo3v2+pJ5ZU3+6rWXu98JXYrLU8os72pXFl50umPv68iX+
+	 iufSGtXnctiDNBvOlXkGAfIWXS/urkrc1mjEfcyQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	stable <stable@kernel.org>,
-	Sebastian Reichel <sebastian.reichel@collabora.com>,
-	Heikki Krogerus <heikki.krogerus@linux.intel.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 141/322] usb: typec: fusb302: cache PD RX state
+	kernel test robot <lkp@intel.com>,
+	Eric Biggers <ebiggers@kernel.org>
+Subject: [PATCH 5.15 465/644] lib/crypto: mips/chacha: Fix clang build and remove unneeded byteswap
 Date: Tue, 26 Aug 2025 13:09:16 +0200
-Message-ID: <20250826110919.285809992@linuxfoundation.org>
+Message-ID: <20250826110958.003403010@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250826110915.169062587@linuxfoundation.org>
-References: <20250826110915.169062587@linuxfoundation.org>
+In-Reply-To: <20250826110946.507083938@linuxfoundation.org>
+References: <20250826110946.507083938@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,99 +61,109 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Sebastian Reichel <sebastian.reichel@collabora.com>
+From: Eric Biggers <ebiggers@kernel.org>
 
-[ Upstream commit 1e61f6ab08786d66a11cfc51e13d6f08a6b06c56 ]
+commit 22375adaa0d9fbba9646c8e2b099c6e87c97bfae upstream.
 
-This patch fixes a race condition communication error, which ends up in
-PD hard resets when losing the race. Some systems, like the Radxa ROCK
-5B are powered through USB-C without any backup power source and use a
-FUSB302 chip to do the PD negotiation. This means it is quite important
-to avoid hard resets, since that effectively kills the system's
-power-supply.
+The MIPS32r2 ChaCha code has never been buildable with the clang
+assembler.  First, clang doesn't support the 'rotl' pseudo-instruction:
 
-I've found the following race condition while debugging unplanned power
-loss during booting the board every now and then:
+    error: unknown instruction, did you mean: rol, rotr?
 
-1. lots of TCPM/FUSB302/PD initialization stuff
-2. TCPM ends up in SNK_WAIT_CAPABILITIES (tcpm_set_pd_rx is enabled here)
-3. the remote PD source does not send anything, so TCPM does a SOFT RESET
-4. TCPM ends up in SNK_WAIT_CAPABILITIES for the second time
-   (tcpm_set_pd_rx is enabled again, even though it is still on)
+Second, clang requires that both operands of the 'wsbh' instruction be
+explicitly given:
 
-At this point I've seen broken CRC good messages being send by the
-FUSB302 with a logic analyzer sniffing the CC lines. Also it looks like
-messages are being lost and things generally going haywire with one of
-the two sides doing a hard reset once a broken CRC good message was send
-to the bus.
+    error: too few operands for instruction
 
-I think the system is running into a race condition, that the FIFOs are
-being cleared and/or the automatic good CRC message generation flag is
-being updated while a message is already arriving.
+To fix this, align the code with the real instruction set by (1) using
+the real instruction 'rotr' instead of the nonstandard pseudo-
+instruction 'rotl', and (2) explicitly giving both operands to 'wsbh'.
 
-Let's avoid this by caching the PD RX enabled state, as we have already
-processed anything in the FIFOs and are in a good state. As a side
-effect that this also optimizes I2C bus usage :)
+To make removing the use of 'rotl' a bit easier, also remove the
+unnecessary special-casing for big endian CPUs at
+.Lchacha_mips_xor_bytes.  The tail handling is actually
+endian-independent since it processes one byte at a time.  On big endian
+CPUs the old code byte-swapped SAVED_X, then iterated through it in
+reverse order.  But the byteswap and reverse iteration canceled out.
 
-As far as I can tell the problem theoretically also exists when TCPM
-enters SNK_WAIT_CAPABILITIES the first time, but I believe this is less
-critical for the following reason:
+Tested with chacha20poly1305-selftest in QEMU using "-M malta" with both
+little endian and big endian mips32r2 kernels.
 
-On devices like the ROCK 5B, which are powered through a TCPM backed
-USB-C port, the bootloader must have done some prior PD communication
-(initial communication must happen within 5 seconds after plugging the
-USB-C plug). This means the first time the kernel TCPM state machine
-reaches SNK_WAIT_CAPABILITIES, the remote side is not sending messages
-actively. On other devices a hard reset simply adds some extra delay and
-things should be good afterwards.
-
-Fixes: c034a43e72dda ("staging: typec: Fairchild FUSB302 Type-c chip driver")
-Cc: stable <stable@kernel.org>
-Signed-off-by: Sebastian Reichel <sebastian.reichel@collabora.com>
-Reviewed-by: Heikki Krogerus <heikki.krogerus@linux.intel.com>
-Link: https://lore.kernel.org/r/20250704-fusb302-race-condition-fix-v1-1-239012c0e27a@kernel.org
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Fixes: 49aa7c00eddf ("crypto: mips/chacha - import 32r2 ChaCha code from Zinc")
+Cc: stable@vger.kernel.org
+Reported-by: kernel test robot <lkp@intel.com>
+Closes: https://lore.kernel.org/oe-kbuild-all/202505080409.EujEBwA0-lkp@intel.com/
+Link: https://lore.kernel.org/r/20250619225535.679301-1-ebiggers@kernel.org
+Signed-off-by: Eric Biggers <ebiggers@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/usb/typec/tcpm/fusb302.c |    8 ++++++++
- 1 file changed, 8 insertions(+)
+ arch/mips/crypto/chacha-core.S |   20 +++++++-------------
+ 1 file changed, 7 insertions(+), 13 deletions(-)
 
---- a/drivers/usb/typec/tcpm/fusb302.c
-+++ b/drivers/usb/typec/tcpm/fusb302.c
-@@ -104,6 +104,7 @@ struct fusb302_chip {
- 	bool vconn_on;
- 	bool vbus_on;
- 	bool charge_on;
-+	bool pd_rx_on;
- 	bool vbus_present;
- 	enum typec_cc_polarity cc_polarity;
- 	enum typec_cc_status cc1;
-@@ -841,6 +842,11 @@ static int tcpm_set_pd_rx(struct tcpc_de
- 	int ret = 0;
+--- a/arch/mips/crypto/chacha-core.S
++++ b/arch/mips/crypto/chacha-core.S
+@@ -55,17 +55,13 @@
+ #if __BYTE_ORDER__ == __ORDER_BIG_ENDIAN__
+ #define MSB 0
+ #define LSB 3
+-#define ROTx rotl
+-#define ROTR(n) rotr n, 24
+ #define	CPU_TO_LE32(n) \
+-	wsbh	n; \
++	wsbh	n, n; \
+ 	rotr	n, 16;
+ #else
+ #define MSB 3
+ #define LSB 0
+-#define ROTx rotr
+ #define CPU_TO_LE32(n)
+-#define ROTR(n)
+ #endif
  
- 	mutex_lock(&chip->lock);
-+	if (chip->pd_rx_on == on) {
-+		fusb302_log(chip, "pd is already %s", str_on_off(on));
-+		goto done;
-+	}
-+
- 	ret = fusb302_pd_rx_flush(chip);
- 	if (ret < 0) {
- 		fusb302_log(chip, "cannot flush pd rx buffer, ret=%d", ret);
-@@ -863,6 +869,8 @@ static int tcpm_set_pd_rx(struct tcpc_de
- 			    str_on_off(on), ret);
- 		goto done;
- 	}
-+
-+	chip->pd_rx_on = on;
- 	fusb302_log(chip, "pd := %s", str_on_off(on));
- done:
- 	mutex_unlock(&chip->lock);
+ #define FOR_EACH_WORD(x) \
+@@ -192,10 +188,10 @@ CONCAT3(.Lchacha_mips_xor_aligned_, PLUS
+ 	xor	X(W), X(B); \
+ 	xor	X(Y), X(C); \
+ 	xor	X(Z), X(D); \
+-	rotl	X(V), S;    \
+-	rotl	X(W), S;    \
+-	rotl	X(Y), S;    \
+-	rotl	X(Z), S;
++	rotr	X(V), 32 - S; \
++	rotr	X(W), 32 - S; \
++	rotr	X(Y), 32 - S; \
++	rotr	X(Z), 32 - S;
+ 
+ .text
+ .set	reorder
+@@ -372,21 +368,19 @@ chacha_crypt_arch:
+ 	/* First byte */
+ 	lbu	T1, 0(IN)
+ 	addiu	$at, BYTES, 1
+-	CPU_TO_LE32(SAVED_X)
+-	ROTR(SAVED_X)
+ 	xor	T1, SAVED_X
+ 	sb	T1, 0(OUT)
+ 	beqz	$at, .Lchacha_mips_xor_done
+ 	/* Second byte */
+ 	lbu	T1, 1(IN)
+ 	addiu	$at, BYTES, 2
+-	ROTx	SAVED_X, 8
++	rotr	SAVED_X, 8
+ 	xor	T1, SAVED_X
+ 	sb	T1, 1(OUT)
+ 	beqz	$at, .Lchacha_mips_xor_done
+ 	/* Third byte */
+ 	lbu	T1, 2(IN)
+-	ROTx	SAVED_X, 8
++	rotr	SAVED_X, 8
+ 	xor	T1, SAVED_X
+ 	sb	T1, 2(OUT)
+ 	b	.Lchacha_mips_xor_done
 
 
 
