@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-175795-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-173546-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 24F6AB36A62
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 16:37:04 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 85549B35E13
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 13:51:58 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id BCFF0985E3C
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 14:21:28 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 87F2D2A4643
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 11:42:22 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id AE156350D43;
-	Tue, 26 Aug 2025 14:19:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 036052F9992;
+	Tue, 26 Aug 2025 11:42:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="EDu5NMtH"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="G4ucS3+T"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5ADF634F46B;
-	Tue, 26 Aug 2025 14:19:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A89301A256B;
+	Tue, 26 Aug 2025 11:42:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756217989; cv=none; b=FjijqhzbCX+xSZI8RcGrc5hY6bP63Zb7R/bLCsSVPFoOXGdrNmD7Xbc5j0Z4zv9qXNRC3iNEEombIC3tLId97oRVOL734X5JVYW/XOtcDEDom/rTNIk1mv7HQ/OP1sCVPXA8hrTJXCBwjCwejXrWa8C3XNxaU3bzItUHvDjCn+k=
+	t=1756208529; cv=none; b=Ib7Y4arO5/0ubgULsFGsZo7MHDYti252SqoMNSVLWerOxps91kgKbgitg7ymo0iatvgHWRq54rQLb/Q3jE+j86Oi5YFV1lg8jBkFW1zwQzVpuHTKO8i7XpYidyTBiBGpb1R8oHaYNvMXyXomJchrsC1xhIUuQncb6KvUKbt5/JY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756217989; c=relaxed/simple;
-	bh=I4foh68N7uE1/o9BYrAkUy/nkvur0w4fMqyVg4q/ZA4=;
+	s=arc-20240116; t=1756208529; c=relaxed/simple;
+	bh=mF77cpGWMaXcsm2rlZGvEtWJ46c+xqzcLdN0n1PkGRc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Hluv8RVjNs+a6zc786etkyYTKYggSP98afdoM4OI2Cw17Kk2Fno2CtH1yJ0R32EZKjS//pdfbBCD4sT+l+d5KnvGy+WNekkGZt9OSxOjuOA+BZF4qUeVX/qPt/rZ1Chs7Rz8p2cImUNsTmJMFKOeQssXHkyeV/W7L7TqosVlQck=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=EDu5NMtH; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E3FFDC4CEF1;
-	Tue, 26 Aug 2025 14:19:48 +0000 (UTC)
+	 MIME-Version; b=VGPm0LfaGu2q9cYK/F3AC8x9qOOwmOWq7LFSfptQYNfAKCFTUF18fSzlnarFENVD36XNt4V1b6KmnPd4HDFtbyr4Nxd9QlpZ51UA8rfCuwHltXz4hyq5fc+uoDhdqq95HnF5v8omzKE52lf6W1HBNnVZeM1h08wXq9MRz6bSwVs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=G4ucS3+T; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 423EEC16AAE;
+	Tue, 26 Aug 2025 11:42:09 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1756217989;
-	bh=I4foh68N7uE1/o9BYrAkUy/nkvur0w4fMqyVg4q/ZA4=;
+	s=korg; t=1756208529;
+	bh=mF77cpGWMaXcsm2rlZGvEtWJ46c+xqzcLdN0n1PkGRc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=EDu5NMtH9tDRXmsmxPFKR+3PNQpHTKkY61GTjtDSuR30bzJeoLo271aqb1Iy93Dad
-	 YOzExUi7lCEPqNX/l71dtLZS1vksgvwi3yyOCePaPJmVLRU4mi3yasnAmRpfnHVaMd
-	 y3QfChchm05C7hifqE1Zm3nuSk5N7J5GcMW7LxzQ=
+	b=G4ucS3+Ts6Oq0LLUDiaFAr0MLRDFPt/5Ak5f6RoCt68K8uTohNg2zormVt+ypqlK7
+	 GNOE7jcHSB5H19uRHQ+yXjEQL5PexT8cZR+jmp9MWTvqj02Wpt2MAka9lTbA0hGDvW
+	 Gg/3tcLaFqqpsj+PqV3Y21n1iSWG18G8ZPGcZW+E=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Yunhui Cui <cuiyunhui@bytedance.com>,
-	John Ogness <john.ogness@linutronix.de>,
-	stable <stable@kernel.org>,
+	Filipe Manana <fdmanana@suse.com>,
+	Boris Burkov <boris@bur.io>,
+	David Sterba <dsterba@suse.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 352/523] serial: 8250: fix panic due to PSLVERR
+Subject: [PATCH 6.12 147/322] btrfs: explicitly ref count block_group on new_bgs list
 Date: Tue, 26 Aug 2025 13:09:22 +0200
-Message-ID: <20250826110933.150213713@linuxfoundation.org>
+Message-ID: <20250826110919.438496207@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250826110924.562212281@linuxfoundation.org>
-References: <20250826110924.562212281@linuxfoundation.org>
+In-Reply-To: <20250826110915.169062587@linuxfoundation.org>
+References: <20250826110915.169062587@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,66 +63,68 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Yunhui Cui <cuiyunhui@bytedance.com>
+From: Boris Burkov <boris@bur.io>
 
-commit 7f8fdd4dbffc05982b96caf586f77a014b2a9353 upstream.
+[ Upstream commit 7cbce3cb4c5cfffd8b08f148e2136afc1ec1ba94 ]
 
-When the PSLVERR_RESP_EN parameter is set to 1, the device generates
-an error response if an attempt is made to read an empty RBR (Receive
-Buffer Register) while the FIFO is enabled.
+All other users of the bg_list list_head increment the refcount when
+adding to a list and decrement it when deleting from the list. Just for
+the sake of uniformity and to try to avoid refcounting bugs, do it for
+this list as well.
 
-In serial8250_do_startup(), calling serial_port_out(port, UART_LCR,
-UART_LCR_WLEN8) triggers dw8250_check_lcr(), which invokes
-dw8250_force_idle() and serial8250_clear_and_reinit_fifos(). The latter
-function enables the FIFO via serial_out(p, UART_FCR, p->fcr).
-Execution proceeds to the serial_port_in(port, UART_RX).
-This satisfies the PSLVERR trigger condition.
+This does not fix any known ref-counting bug, as the reference belongs
+to a single task (trans_handle is not shared and this represents
+trans_handle->new_bgs linkage) and will not lose its original refcount
+while that thread is running. And BLOCK_GROUP_FLAG_NEW protects against
+ref-counting errors "moving" the block group to the unused list without
+taking a ref.
 
-When another CPU (e.g., using printk()) is accessing the UART (UART
-is busy), the current CPU fails the check (value & ~UART_LCR_SPAR) ==
-(lcr & ~UART_LCR_SPAR) in dw8250_check_lcr(), causing it to enter
-dw8250_force_idle().
+With that said, I still believe it is simpler to just hold the extra ref
+count for this list user as well.
 
-Put serial_port_out(port, UART_LCR, UART_LCR_WLEN8) under the port->lock
-to fix this issue.
-
-Panic backtrace:
-[    0.442336] Oops - unknown exception [#1]
-[    0.442343] epc : dw8250_serial_in32+0x1e/0x4a
-[    0.442351]  ra : serial8250_do_startup+0x2c8/0x88e
-...
-[    0.442416] console_on_rootfs+0x26/0x70
-
-Fixes: c49436b657d0 ("serial: 8250_dw: Improve unwritable LCR workaround")
-Link: https://lore.kernel.org/all/84cydt5peu.fsf@jogness.linutronix.de/T/
-Signed-off-by: Yunhui Cui <cuiyunhui@bytedance.com>
-Reviewed-by: John Ogness <john.ogness@linutronix.de>
-Cc: stable <stable@kernel.org>
-Link: https://lore.kernel.org/r/20250723023322.464-2-cuiyunhui@bytedance.com
-[ Applied fix to serial8250_do_startup() instead of serial8250_initialize() ]
+Reviewed-by: Filipe Manana <fdmanana@suse.com>
+Signed-off-by: Boris Burkov <boris@bur.io>
+Signed-off-by: David Sterba <dsterba@suse.com>
+Stable-dep-of: 62be7afcc13b ("btrfs: zoned: requeue to unused block group list if zone finish failed")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/tty/serial/8250/8250_port.c |    3 +--
- 1 file changed, 1 insertion(+), 2 deletions(-)
+ fs/btrfs/block-group.c |    2 ++
+ fs/btrfs/transaction.c |    1 +
+ 2 files changed, 3 insertions(+)
 
---- a/drivers/tty/serial/8250/8250_port.c
-+++ b/drivers/tty/serial/8250/8250_port.c
-@@ -2329,9 +2329,8 @@ int serial8250_do_startup(struct uart_po
- 	/*
- 	 * Now, initialize the UART
- 	 */
--	serial_port_out(port, UART_LCR, UART_LCR_WLEN8);
--
- 	spin_lock_irqsave(&port->lock, flags);
-+	serial_port_out(port, UART_LCR, UART_LCR_WLEN8);
- 	if (up->port.flags & UPF_FOURPORT) {
- 		if (!up->port.irq)
- 			up->port.mctrl |= TIOCM_OUT1;
+--- a/fs/btrfs/block-group.c
++++ b/fs/btrfs/block-group.c
+@@ -2807,6 +2807,7 @@ next:
+ 		spin_lock(&fs_info->unused_bgs_lock);
+ 		list_del_init(&block_group->bg_list);
+ 		clear_bit(BLOCK_GROUP_FLAG_NEW, &block_group->runtime_flags);
++		btrfs_put_block_group(block_group);
+ 		spin_unlock(&fs_info->unused_bgs_lock);
+ 
+ 		/*
+@@ -2945,6 +2946,7 @@ struct btrfs_block_group *btrfs_make_blo
+ 	}
+ #endif
+ 
++	btrfs_get_block_group(cache);
+ 	list_add_tail(&cache->bg_list, &trans->new_bgs);
+ 	btrfs_inc_delayed_refs_rsv_bg_inserts(fs_info);
+ 
+--- a/fs/btrfs/transaction.c
++++ b/fs/btrfs/transaction.c
+@@ -2113,6 +2113,7 @@ static void btrfs_cleanup_pending_block_
+ 		*/
+ 	       spin_lock(&fs_info->unused_bgs_lock);
+                list_del_init(&block_group->bg_list);
++	       btrfs_put_block_group(block_group);
+ 	       spin_unlock(&fs_info->unused_bgs_lock);
+        }
+ }
 
 
 
