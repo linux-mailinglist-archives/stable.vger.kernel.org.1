@@ -1,55 +1,56 @@
-Return-Path: <stable+bounces-176167-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-174114-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id D18E8B36CD3
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 17:01:56 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 42D44B36104
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 15:05:57 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 0E9A19858AF
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 14:38:32 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 88E0F7B81A3
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 13:04:21 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A126934DCCA;
-	Tue, 26 Aug 2025 14:35:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0270923875D;
+	Tue, 26 Aug 2025 13:05:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="XKZqN4fp"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="w9qMNc9k"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5F6E2343218;
-	Tue, 26 Aug 2025 14:35:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AFF6A23D28F;
+	Tue, 26 Aug 2025 13:05:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756218954; cv=none; b=mZ8ztkUMJsZVyNblzUNjwmYCQQgWNABNvo6YzlMb2utNSj8q4/2n04IvplGoCuSX2V6pYbFRX5o8loPHSr/vSEC3FQASIZmVGnI2rLsC8yyPjVUlpjeBLz04CkvRIGwqRgMfl2/1hT6P/FAxDNwzVD9eo/1kBtgdZpzFlKwMANk=
+	t=1756213530; cv=none; b=my9S7bl1HfQGy/ybLub1onfh5TbIENEDQoYIWJMcuV/vVZdaRXPjxnBTc8+faR3yeEAjeaw1WYY9MQEKoIXxnnm3NHZ7RNktc6wgTVgpgd2bnArnCYG5VpwE7XCIZ7kKqjPjMQHaxQgTqLFbjsrSPcjTDwrCYGxMxvqJaEuTxg0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756218954; c=relaxed/simple;
-	bh=07sqLu1k4ODsoZEsOn/o5gP0H1kbb8JkNxSlsHJqiRU=;
+	s=arc-20240116; t=1756213530; c=relaxed/simple;
+	bh=vTJ599uXLQH8A+bqocKJr2GbxSw2jp+23Gjc4mgwJQo=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=qCgNVJ6tqATYuDwRZAwweJVca9AFFTbum0r1eM2MfISXU7W+93+Mxm71AcqoW49PbWKsdiLmIUJFfKlPE7i5UJ3j/FphjutjL1sHNczVeWnk5H9eEXS1itkZEaJy3uGSdrbW7R3IeuIv520ttgPmM0N/gMkIukR4rMGhfdiCuXI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=XKZqN4fp; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B2534C4CEF1;
-	Tue, 26 Aug 2025 14:35:53 +0000 (UTC)
+	 MIME-Version; b=YV4ydyAqaks//xfmFKMFEvnBtRWk8hNXDIdFRKRj6TLLbYOqrErsrsIhXX7/E1e4lkeh4XhVXr1tbvrWZofJQpKimqcU/899TlMrfJ6JdkIOFSvUk0YLTa5hDMKqg9UUeVTstMPMOzBsfeza8L36SGSb57a8n8yZFKOiKexn6XU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=w9qMNc9k; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 42C50C4CEF1;
+	Tue, 26 Aug 2025 13:05:30 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1756218954;
-	bh=07sqLu1k4ODsoZEsOn/o5gP0H1kbb8JkNxSlsHJqiRU=;
+	s=korg; t=1756213530;
+	bh=vTJ599uXLQH8A+bqocKJr2GbxSw2jp+23Gjc4mgwJQo=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=XKZqN4fpUitwpG4ACfyjqzqNCpHfNdCeIg2ziRrHLeaTe3n0K+xlxLof6EQ7z+/kx
-	 CEpSA6zWtB2Xzl/Vz+hlWjHSKeqoIqnaUWnF+Vo7IK4pym3W1Cq+/Rpe2toiQMTe2h
-	 v9+S000fr4JmhFdwUI2kqMyf7q9l6fRcVxkPNKG0=
+	b=w9qMNc9kdRO6b/rM4CYAkgkGG3aTgWXcIq1Sdr7nTutvwkjfe6OMK11BYPMzHnpmM
+	 QFRu1zHmPpz0KhbTjpP4f3iPLZFf0VYD4q/WG2RDqOYc0VpXtmLsbaRpcDC64hzTZJ
+	 6k891jZs2hKsvq/gexKNJZCKCUJf8kPMczmdbdWs=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Mark Brown <broonie@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.4 198/403] ASoC: hdac_hdmi: Rate limit logging on connection and disconnection
+	Johan Hovold <johan+linaro@kernel.org>,
+	Baochen Qiang <quic_bqiang@quicinc.com>,
+	Jeff Johnson <jeff.johnson@oss.qualcomm.com>
+Subject: [PATCH 6.6 375/587] wifi: ath11k: fix dest ring-buffer corruption when ring is full
 Date: Tue, 26 Aug 2025 13:08:44 +0200
-Message-ID: <20250826110912.334382443@linuxfoundation.org>
+Message-ID: <20250826111002.445233949@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250826110905.607690791@linuxfoundation.org>
-References: <20250826110905.607690791@linuxfoundation.org>
+In-Reply-To: <20250826110952.942403671@linuxfoundation.org>
+References: <20250826110952.942403671@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,73 +62,66 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.4-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Mark Brown <broonie@kernel.org>
+From: Johan Hovold <johan+linaro@kernel.org>
 
-[ Upstream commit c4ca928a6db1593802cd945f075a7e21dd0430c1 ]
+commit aa6956150f820e6a6deba44be325ddfcb5b10f88 upstream.
 
-We currently log parse failures for ELD data and some disconnection events
-as errors without rate limiting. These log messages can be triggered very
-frequently in some situations, especially ELD parsing when there is nothing
-connected to a HDMI port which will generate:
+Add the missing memory barriers to make sure that destination ring
+descriptors are read before updating the tail pointer (and passing
+ownership to the device) to avoid memory corruption on weakly ordered
+architectures like aarch64 when the ring is full.
 
-hdmi-audio-codec hdmi-audio-codec.1.auto: HDMI: Unknown ELD version 0
+Tested-on: WCN6855 hw2.1 WLAN.HSP.1.1-03125-QCAHSPSWPL_V1_V2_SILICONZ_LITE-3.6510.41
 
-While there's doubtless work that could be done on reducing the number of
-connection notification callbacks it's possible these may be legitimately
-generated by poor quality physical connections so let's use rate limiting
-to mitigate the log spam for the parse errors and lower the severity for
-disconnect logging to debug level.
-
-Signed-off-by: Mark Brown <broonie@kernel.org>
-Link: https://patch.msgid.link/20250613-asoc-hdmi-eld-logging-v1-1-76d64154d969@kernel.org
-Signed-off-by: Mark Brown <broonie@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Fixes: d5c65159f289 ("ath11k: driver for Qualcomm IEEE 802.11ax devices")
+Cc: stable@vger.kernel.org      # 5.6
+Signed-off-by: Johan Hovold <johan+linaro@kernel.org>
+Reviewed-by: Baochen Qiang <quic_bqiang@quicinc.com>
+Link: https://patch.msgid.link/20250604143457.26032-6-johan+linaro@kernel.org
+Signed-off-by: Jeff Johnson <jeff.johnson@oss.qualcomm.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- sound/soc/codecs/hdac_hdmi.c | 10 ++++++----
- 1 file changed, 6 insertions(+), 4 deletions(-)
+ drivers/net/wireless/ath/ath11k/hal.c |   11 +++++++++--
+ 1 file changed, 9 insertions(+), 2 deletions(-)
 
-diff --git a/sound/soc/codecs/hdac_hdmi.c b/sound/soc/codecs/hdac_hdmi.c
-index 78d5b4d31bb6..71d13b413418 100644
---- a/sound/soc/codecs/hdac_hdmi.c
-+++ b/sound/soc/codecs/hdac_hdmi.c
-@@ -1231,7 +1231,8 @@ static int hdac_hdmi_parse_eld(struct hdac_device *hdev,
- 						>> DRM_ELD_VER_SHIFT;
+--- a/drivers/net/wireless/ath/ath11k/hal.c
++++ b/drivers/net/wireless/ath/ath11k/hal.c
+@@ -827,7 +827,6 @@ void ath11k_hal_srng_access_end(struct a
+ {
+ 	lockdep_assert_held(&srng->lock);
  
- 	if (ver != ELD_VER_CEA_861D && ver != ELD_VER_PARTIAL) {
--		dev_err(&hdev->dev, "HDMI: Unknown ELD version %d\n", ver);
-+		dev_err_ratelimited(&hdev->dev,
-+				    "HDMI: Unknown ELD version %d\n", ver);
- 		return -EINVAL;
- 	}
- 
-@@ -1239,7 +1240,8 @@ static int hdac_hdmi_parse_eld(struct hdac_device *hdev,
- 		DRM_ELD_MNL_MASK) >> DRM_ELD_MNL_SHIFT;
- 
- 	if (mnl > ELD_MAX_MNL) {
--		dev_err(&hdev->dev, "HDMI: MNL Invalid %d\n", mnl);
-+		dev_err_ratelimited(&hdev->dev,
-+				    "HDMI: MNL Invalid %d\n", mnl);
- 		return -EINVAL;
- 	}
- 
-@@ -1293,8 +1295,8 @@ static void hdac_hdmi_present_sense(struct hdac_hdmi_pin *pin,
- 
- 	if (!port->eld.monitor_present || !port->eld.eld_valid) {
- 
--		dev_err(&hdev->dev, "%s: disconnect for pin:port %d:%d\n",
--						__func__, pin->nid, port->id);
-+		dev_dbg(&hdev->dev, "%s: disconnect for pin:port %d:%d\n",
-+			__func__, pin->nid, port->id);
- 
- 		/*
- 		 * PCMs are not registered during device probe, so don't
--- 
-2.39.5
-
+-	/* TODO: See if we need a write memory barrier here */
+ 	if (srng->flags & HAL_SRNG_FLAGS_LMAC_RING) {
+ 		/* For LMAC rings, ring pointer updates are done through FW and
+ 		 * hence written to a shared memory location that is read by FW
+@@ -842,7 +841,11 @@ void ath11k_hal_srng_access_end(struct a
+ 			WRITE_ONCE(*srng->u.src_ring.hp_addr, srng->u.src_ring.hp);
+ 		} else {
+ 			srng->u.dst_ring.last_hp = *srng->u.dst_ring.hp_addr;
+-			*srng->u.dst_ring.tp_addr = srng->u.dst_ring.tp;
++			/* Make sure descriptor is read before updating the
++			 * tail pointer.
++			 */
++			dma_mb();
++			WRITE_ONCE(*srng->u.dst_ring.tp_addr, srng->u.dst_ring.tp);
+ 		}
+ 	} else {
+ 		if (srng->ring_dir == HAL_SRNG_DIR_SRC) {
+@@ -858,6 +861,10 @@ void ath11k_hal_srng_access_end(struct a
+ 					   srng->u.src_ring.hp);
+ 		} else {
+ 			srng->u.dst_ring.last_hp = *srng->u.dst_ring.hp_addr;
++			/* Make sure descriptor is read before updating the
++			 * tail pointer.
++			 */
++			mb();
+ 			ath11k_hif_write32(ab,
+ 					   (unsigned long)srng->u.dst_ring.tp_addr -
+ 					   (unsigned long)ab->mem,
 
 
 
