@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-174551-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-173160-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id D25CDB363E4
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 15:34:03 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6B97DB35BF9
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 13:30:01 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 62B368E0F64
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 13:26:09 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 4E48518850A6
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 11:25:50 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4B47F28750C;
-	Tue, 26 Aug 2025 13:24:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2E3662248A5;
+	Tue, 26 Aug 2025 11:25:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="fT1VQJ0b"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="pvu1wuBg"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 093AF1917ED;
-	Tue, 26 Aug 2025 13:24:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E083F227599;
+	Tue, 26 Aug 2025 11:25:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756214693; cv=none; b=oHxHm49GWnv89CmesKlHv8G+g3ww1DNa3I1THCCtpFaeF4B8/9YWRPMZ0uhpeBlq1D13XB/pfj4DgN6hDoucIjZxbVvVx+agi99Sjib6VVKnXtnqMdY+gVPoHFXiwqCrSQeWhWKgjihnGIaXjbPZFgnLeCQbe21iVo8k6h1YwUE=
+	t=1756207528; cv=none; b=Kv6LIQQ/LoLcmF5rZ+EzgtjGavv+o3+uaHyW+7LoLFCNq7mDt1WTd3oLlEQKvGPmZwbzg8mAr5lSyU4XVYcaKdLYqxmMZLFF41/ajEahsPGzluye5kWPJNjHbrk+gfSrqT61ZCwuzC+9tVXTI+rBLgENJenoSu6/4XrjS5rhNug=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756214693; c=relaxed/simple;
-	bh=WkJgxodJhurwVObOmTorm2hue1PFGtUq0g8RkavUohM=;
+	s=arc-20240116; t=1756207528; c=relaxed/simple;
+	bh=FPl7iX8UEoOpdMF3zVDtD+Qpos/CN5o/Fhy+IJpJApQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=jiJBNEcFt+WJ2ZdbjDMquE4gWzov9GCzLOyS9LBJ7ZPEEsz2VpP68PwBZofam7omAX6sjQXJqlCc73UGExH+1mGYMxVuZANNUq0a8jmm19r+enqbhG7Y5CJLU862cNxkTcawIb74A0Qo6I1gaeQI777Nafn+0OajtAMIrfUSUVU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=fT1VQJ0b; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8D63CC4CEF1;
-	Tue, 26 Aug 2025 13:24:52 +0000 (UTC)
+	 MIME-Version; b=uQ0FPkE1p8zCfOSD7L43zCX+jSsqdP64f8sgMYzteVIRV4r4kp86hTwvTrlYPTkZr4zaKH8tZgTXU3BAABT2N+jP6c6eePIp7PynmLaTZ83RQxRr5+F+8s65QD9t7joMvqs9PWQt3s+iFEychmhFBEClKO9FrU8DqWpqZFff9WE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=pvu1wuBg; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 780EFC4CEF1;
+	Tue, 26 Aug 2025 11:25:27 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1756214692;
-	bh=WkJgxodJhurwVObOmTorm2hue1PFGtUq0g8RkavUohM=;
+	s=korg; t=1756207527;
+	bh=FPl7iX8UEoOpdMF3zVDtD+Qpos/CN5o/Fhy+IJpJApQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=fT1VQJ0bah/zunP3kAmRYwMeOqzWq+kP3rXRCCweDUwau3Z4x2rfioGrO3eAuTCWq
-	 ElnFfxu7bjMh2K99Qtb8bVDnQyyqrG7RNWKtEAX5YQTwyLZzynLk2J0LmfFF/HE2GL
-	 zekrB5Fc5NQjO4pZ2TcooHICtVVmsr2Wy5SgnhJY=
+	b=pvu1wuBgaX5IASL69juwAVkdHUYx4/89dLD2lFgBG4uUkknchBt81O5EiVzLpFepe
+	 UYPZcO4soa/75ZriyF+MyNP0mPnjO+Tn9bEwPpw3fVm8HYMDa8qTTBe7wfsaWcEWMe
+	 MzyB8WubOptBdXGVuCHGZtmOjZBYf36w3dN/a92w=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Mateusz Guzik <mjguzik@gmail.com>,
-	John Johansen <john.johansen@canonical.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 216/482] apparmor: use the condition in AA_BUG_FMT even with debug disabled
+	Amber Lin <Amber.Lin@amd.com>,
+	Eric Huang <jinhuieric.huang@amd.com>,
+	Alex Deucher <alexander.deucher@amd.com>
+Subject: [PATCH 6.16 185/457] drm/amdkfd: Destroy KFD debugfs after destroy KFD wq
 Date: Tue, 26 Aug 2025 13:07:49 +0200
-Message-ID: <20250826110936.113149277@linuxfoundation.org>
+Message-ID: <20250826110941.944675879@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250826110930.769259449@linuxfoundation.org>
-References: <20250826110930.769259449@linuxfoundation.org>
+In-Reply-To: <20250826110937.289866482@linuxfoundation.org>
+References: <20250826110937.289866482@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,50 +60,48 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.16-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Mateusz Guzik <mjguzik@gmail.com>
+From: Amber Lin <Amber.Lin@amd.com>
 
-[ Upstream commit 67e370aa7f968f6a4f3573ed61a77b36d1b26475 ]
+commit 2e58401a24e7b2d4ec619104e1a76590c1284a4c upstream.
 
-This follows the established practice and fixes a build failure for me:
-security/apparmor/file.c: In function ‘__file_sock_perm’:
-security/apparmor/file.c:544:24: error: unused variable ‘sock’ [-Werror=unused-variable]
-  544 |         struct socket *sock = (struct socket *) file->private_data;
-      |                        ^~~~
+Since KFD proc content was moved to kernel debugfs, we can't destroy KFD
+debugfs before kfd_process_destroy_wq. Move kfd_process_destroy_wq prior
+to kfd_debugfs_fini to fix a kernel NULL pointer problem. It happens
+when /sys/kernel/debug/kfd was already destroyed in kfd_debugfs_fini but
+kfd_process_destroy_wq calls kfd_debugfs_remove_process. This line
+    debugfs_remove_recursive(entry->proc_dentry);
+tries to remove /sys/kernel/debug/kfd/proc/<pid> while
+/sys/kernel/debug/kfd is already gone. It hangs the kernel by kernel
+NULL pointer.
 
-Signed-off-by: Mateusz Guzik <mjguzik@gmail.com>
-Signed-off-by: John Johansen <john.johansen@canonical.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Signed-off-by: Amber Lin <Amber.Lin@amd.com>
+Reviewed-by: Eric Huang <jinhuieric.huang@amd.com>
+Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
+(cherry picked from commit 0333052d90683d88531558dcfdbf2525cc37c233)
+Cc: stable@vger.kernel.org
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- security/apparmor/include/lib.h | 6 +++++-
- 1 file changed, 5 insertions(+), 1 deletion(-)
+ drivers/gpu/drm/amd/amdkfd/kfd_module.c |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/security/apparmor/include/lib.h b/security/apparmor/include/lib.h
-index d468c8b90298..fd57e9ffc139 100644
---- a/security/apparmor/include/lib.h
-+++ b/security/apparmor/include/lib.h
-@@ -46,7 +46,11 @@
- #define AA_BUG_FMT(X, fmt, args...)					\
- 	WARN((X), "AppArmor WARN %s: (" #X "): " fmt, __func__, ##args)
- #else
--#define AA_BUG_FMT(X, fmt, args...) no_printk(fmt, ##args)
-+#define AA_BUG_FMT(X, fmt, args...)					\
-+	do {								\
-+		BUILD_BUG_ON_INVALID(X);				\
-+		no_printk(fmt, ##args);					\
-+	} while (0)
- #endif
- 
- #define AA_ERROR(fmt, args...)						\
--- 
-2.39.5
-
+--- a/drivers/gpu/drm/amd/amdkfd/kfd_module.c
++++ b/drivers/gpu/drm/amd/amdkfd/kfd_module.c
+@@ -78,8 +78,8 @@ err_ioctl:
+ static void kfd_exit(void)
+ {
+ 	kfd_cleanup_processes();
+-	kfd_debugfs_fini();
+ 	kfd_process_destroy_wq();
++	kfd_debugfs_fini();
+ 	kfd_procfs_shutdown();
+ 	kfd_topology_shutdown();
+ 	kfd_chardev_exit();
 
 
 
