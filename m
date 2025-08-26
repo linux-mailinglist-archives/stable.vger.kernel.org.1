@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-173537-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-174615-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id B19B8B35D2A
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 13:41:50 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4BFB7B36402
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 15:35:08 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 900A27A5B76
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 11:40:14 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 2F3BD1BC5719
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 13:29:01 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 78406239573;
-	Tue, 26 Aug 2025 11:41:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B60A4340DA1;
+	Tue, 26 Aug 2025 13:27:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ltn0cK6c"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="uufWbuj2"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 36D9517332C;
-	Tue, 26 Aug 2025 11:41:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 42BCF33EAF2;
+	Tue, 26 Aug 2025 13:27:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756208506; cv=none; b=T76lcAVII9dhzhFdOboWXlwl0A+wKjmQSCH9CgEbfkO5UPQ/MplIM4POOHd7L/UGMZMBDRJ4tDemL09ZTv2a+j5y8NuSXmOL9wrlkJmxKs4mNWZcWT99Hcw8TwMaVMsCQyWLgeDr48evg3LsXjEwohoxxX+deBuvU22qnMJC4D4=
+	t=1756214862; cv=none; b=LaDlv0Ef4EpFJGEYKtSEGzWTAksYhwbTWXZJ7CzpzZLbiLkVSIi8WElQTyUf+u5nMvtaGAHap274Aa1kT72kv4XWln0tlzP18YGeDxfIDsieoDIsRrgd5VLU/Iu2Vf28Qb18Nons2AdvxEVOdJuzcvRLLHJyvVNWNbXALzW7hlQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756208506; c=relaxed/simple;
-	bh=+O3sSZvSCaK4gNRGps5hwNG8He4zhvYuyZXDzXXQess=;
+	s=arc-20240116; t=1756214862; c=relaxed/simple;
+	bh=NQLNQq/xM1fbZFIVukAxrznQ+aiH61wTu9TR54SOmK8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=DqOB+dgoitvUYPKCm0Ad63YleLALGRs9PmKuQOz2De1dlnuNUI9vaIQsjr7TYkOyLZGE+Gpjg4KdmfgvsZ4kk255kMTN9+AJBtcrYjQzivc1BY/lkrv1BxuyitoGJo4mlM6NCeFKxmKWpSPHCLVL7iWNBELPZlEnwwk1ZPt/NQI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ltn0cK6c; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 68C47C4CEF1;
-	Tue, 26 Aug 2025 11:41:45 +0000 (UTC)
+	 MIME-Version; b=sxwJEGPuSXNgndqUXZdhkpPCIhFd68lFnPP8/0816pOrzZP3KX2bjuskBSG1FIrvItYYeKBSIE8pESpwUGqg+LGazvvQJRwg7RrKHcOdnF6sBVxDbuPPPObV+Ig8/3cm77oe3thwB3Z/jE488aUsClAtVtmxCyzG6sJz9ZT4VAw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=uufWbuj2; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id CAE75C113D0;
+	Tue, 26 Aug 2025 13:27:41 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1756208505;
-	bh=+O3sSZvSCaK4gNRGps5hwNG8He4zhvYuyZXDzXXQess=;
+	s=korg; t=1756214862;
+	bh=NQLNQq/xM1fbZFIVukAxrznQ+aiH61wTu9TR54SOmK8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=ltn0cK6cV1fkYJ/Pe1A/feXkuNC3sqL594uMhMJrybkdD1POTggErEmDoB/AMk+Sk
-	 N9Pg712Sxg5opeaXKb1KkbVLkvdlIlbnO0AgCKKiIRMg+P5nph9KZOd33UnSNG6g12
-	 CjXwuAYeXoZPfKvy3+IR7AUwlJVMHkqoVAL2RnBI=
+	b=uufWbuj2ZfIaqXt0Ihi5FD6SCEGLT4n2JIgQwyorfoPqbuheEbahBgTYfvhspqOC+
+	 zao4X1D16TzGWZe7pfIcxk8fbaeIimKw2CB/9TFl8K2c+eQbR0jg13WRffUOIllL2z
+	 TzRrWBnF/g/tx7kKu5CAKw3PEDmO6AzTyBvuDHLQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Thomas Dreibholz <dreibh@simula.no>,
-	Mat Martineau <martineau@kernel.org>,
-	"Matthieu Baerts (NGI0)" <matttbe@kernel.org>,
-	Jakub Kicinski <kuba@kernel.org>
-Subject: [PATCH 6.12 136/322] mptcp: pm: kernel: flush: do not reset ADD_ADDR limit
+	Johan Hovold <johan+linaro@kernel.org>,
+	Baochen Qiang <quic_bqiang@quicinc.com>,
+	Jeff Johnson <jeff.johnson@oss.qualcomm.com>
+Subject: [PATCH 6.1 298/482] wifi: ath11k: fix dest ring-buffer corruption when ring is full
 Date: Tue, 26 Aug 2025 13:09:11 +0200
-Message-ID: <20250826110919.161727867@linuxfoundation.org>
+Message-ID: <20250826110938.158729910@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250826110915.169062587@linuxfoundation.org>
-References: <20250826110915.169062587@linuxfoundation.org>
+In-Reply-To: <20250826110930.769259449@linuxfoundation.org>
+References: <20250826110930.769259449@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,45 +62,66 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Matthieu Baerts (NGI0) <matttbe@kernel.org>
+From: Johan Hovold <johan+linaro@kernel.org>
 
-commit 68fc0f4b0d25692940cdc85c68e366cae63e1757 upstream.
+commit aa6956150f820e6a6deba44be325ddfcb5b10f88 upstream.
 
-A flush of the MPTCP endpoints should not affect the MPTCP limits. In
-other words, 'ip mptcp endpoint flush' should not change 'ip mptcp
-limits'.
+Add the missing memory barriers to make sure that destination ring
+descriptors are read before updating the tail pointer (and passing
+ownership to the device) to avoid memory corruption on weakly ordered
+architectures like aarch64 when the ring is full.
 
-But it was the case: the MPTCP_PM_ATTR_RCV_ADD_ADDRS (add_addr_accepted)
-limit was reset by accident. Removing the reset of this counter during a
-flush fixes this issue.
+Tested-on: WCN6855 hw2.1 WLAN.HSP.1.1-03125-QCAHSPSWPL_V1_V2_SILICONZ_LITE-3.6510.41
 
-Fixes: 01cacb00b35c ("mptcp: add netlink-based PM")
-Cc: stable@vger.kernel.org
-Reported-by: Thomas Dreibholz <dreibh@simula.no>
-Closes: https://github.com/multipath-tcp/mptcp_net-next/issues/579
-Reviewed-by: Mat Martineau <martineau@kernel.org>
-Signed-off-by: Matthieu Baerts (NGI0) <matttbe@kernel.org>
-Link: https://patch.msgid.link/20250815-net-mptcp-misc-fixes-6-17-rc2-v1-2-521fe9957892@kernel.org
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Fixes: d5c65159f289 ("ath11k: driver for Qualcomm IEEE 802.11ax devices")
+Cc: stable@vger.kernel.org      # 5.6
+Signed-off-by: Johan Hovold <johan+linaro@kernel.org>
+Reviewed-by: Baochen Qiang <quic_bqiang@quicinc.com>
+Link: https://patch.msgid.link/20250604143457.26032-6-johan+linaro@kernel.org
+Signed-off-by: Jeff Johnson <jeff.johnson@oss.qualcomm.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- net/mptcp/pm_netlink.c |    1 -
- 1 file changed, 1 deletion(-)
+ drivers/net/wireless/ath/ath11k/hal.c |   11 +++++++++--
+ 1 file changed, 9 insertions(+), 2 deletions(-)
 
---- a/net/mptcp/pm_netlink.c
-+++ b/net/mptcp/pm_netlink.c
-@@ -1737,7 +1737,6 @@ static void __flush_addrs(struct list_he
- static void __reset_counters(struct pm_nl_pernet *pernet)
+--- a/drivers/net/wireless/ath/ath11k/hal.c
++++ b/drivers/net/wireless/ath/ath11k/hal.c
+@@ -827,7 +827,6 @@ void ath11k_hal_srng_access_end(struct a
  {
- 	WRITE_ONCE(pernet->add_addr_signal_max, 0);
--	WRITE_ONCE(pernet->add_addr_accept_max, 0);
- 	WRITE_ONCE(pernet->local_addr_max, 0);
- 	pernet->addrs = 0;
- }
+ 	lockdep_assert_held(&srng->lock);
+ 
+-	/* TODO: See if we need a write memory barrier here */
+ 	if (srng->flags & HAL_SRNG_FLAGS_LMAC_RING) {
+ 		/* For LMAC rings, ring pointer updates are done through FW and
+ 		 * hence written to a shared memory location that is read by FW
+@@ -842,7 +841,11 @@ void ath11k_hal_srng_access_end(struct a
+ 			WRITE_ONCE(*srng->u.src_ring.hp_addr, srng->u.src_ring.hp);
+ 		} else {
+ 			srng->u.dst_ring.last_hp = *srng->u.dst_ring.hp_addr;
+-			*srng->u.dst_ring.tp_addr = srng->u.dst_ring.tp;
++			/* Make sure descriptor is read before updating the
++			 * tail pointer.
++			 */
++			dma_mb();
++			WRITE_ONCE(*srng->u.dst_ring.tp_addr, srng->u.dst_ring.tp);
+ 		}
+ 	} else {
+ 		if (srng->ring_dir == HAL_SRNG_DIR_SRC) {
+@@ -858,6 +861,10 @@ void ath11k_hal_srng_access_end(struct a
+ 					   srng->u.src_ring.hp);
+ 		} else {
+ 			srng->u.dst_ring.last_hp = *srng->u.dst_ring.hp_addr;
++			/* Make sure descriptor is read before updating the
++			 * tail pointer.
++			 */
++			mb();
+ 			ath11k_hif_write32(ab,
+ 					   (unsigned long)srng->u.dst_ring.tp_addr -
+ 					   (unsigned long)ab->mem,
 
 
 
