@@ -1,55 +1,57 @@
-Return-Path: <stable+bounces-172965-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-175541-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 584D7B35B08
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 13:17:17 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 029ECB36831
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 16:13:54 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id CBDA77BC1AB
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 11:15:35 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id C8C7B7BE908
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 14:08:11 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 610E227AC3E;
-	Tue, 26 Aug 2025 11:17:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 08F50341AA6;
+	Tue, 26 Aug 2025 14:08:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="hPQyS8nF"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="hg9ITMjj"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1BC0A20B7EE;
-	Tue, 26 Aug 2025 11:17:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B8CCE2B9A7;
+	Tue, 26 Aug 2025 14:08:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756207025; cv=none; b=S4P0wpkaJZJVyLXWUaZUIdE6Wj3y9oVXRZMsd/DoW+gB36iK6IPqIoxafPd3aVwGfoGlmFsAZ8Ng+u2vkGP9fNyBv1UIh2Dxtllf9pvGzStXNIpy1vazWJIRky7QVrucyzoWK363Wm58DcOPNl6oS4vufsyYIXmtWg81LUCD2Zw=
+	t=1756217316; cv=none; b=D7yjOS2SLrIi/roLhUlD2HSdTa5fgcXD6J7pbZmZPK7mYNclxSXdV+bpUgddo1EbWd0s1++GsRTJKEPnFehBoVOm0vCXFxT3yklwjzd77rTY+hQECxFw7Y+MCnyhhzD1NlMx3Go9HvgKCh0/evZG+/6xMjJG+Ri83+M0ifKRw68=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756207025; c=relaxed/simple;
-	bh=6Dsu5ZXvhA77KSqqrU9G4x48OcyUofydbqn2Ho0YiLw=;
+	s=arc-20240116; t=1756217316; c=relaxed/simple;
+	bh=MJYOqetB+qlIWyhXDF742keveYj1/KVMNVmqDYiB6zk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=uJmxR5QgHSu/oQ2iyuhTBVxpX0RKnrUFIVMa+Y3H+P2Sbz2MacLWExzvzDb3LSC4TWnRDD1QWMOGwExvr6VYq8GVCFahdLbzLhQFLsSfY45Qx4nxzoO6/BDPXx2F65BsTbGK5Ws5njL0p7eEpHOhpsit/yaZo5mCl1h8LMn+Sjk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=hPQyS8nF; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 45641C4CEF1;
-	Tue, 26 Aug 2025 11:17:04 +0000 (UTC)
+	 MIME-Version; b=ijeJsiEWOxxOJD97NE54CqkCGL2SanKl/9NMR5u5PjNN0lb/ajk8XssQLWt57dMlJVJZ+ZbfHbJFn6Ar/yXYjgwlRZ7mvOvDZ+oDscRrvzFRgmKb0VrjthNs+++htO6+nS+zKAiU0pXAdhKD71lHbCGSF6lfHtjaaeyVLDiBjYU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=hg9ITMjj; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4EAB1C116D0;
+	Tue, 26 Aug 2025 14:08:36 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1756207024;
-	bh=6Dsu5ZXvhA77KSqqrU9G4x48OcyUofydbqn2Ho0YiLw=;
+	s=korg; t=1756217316;
+	bh=MJYOqetB+qlIWyhXDF742keveYj1/KVMNVmqDYiB6zk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=hPQyS8nF4TmbQFkKnLktA5oDvObAP3XJrKIiEWysnBR94a5VtW6as2pkwkqMGFVwG
-	 U+uOUnLkIIrm3OgD+7T7Ui3QodU0nHAy/zdNLUTYHSP5FEEYqDoy1852flkqAOuemv
-	 7fV1Tv0b5zK4BwakEOCq+FG0tyJPsOJaXLEbA8Qc=
+	b=hg9ITMjjWpLM4eeaVUNuCwIH2SBCfWUPjh5Q4NfoRItikU3BXnIbOyjKoRLtrS4nx
+	 kGLUsubqVXhUyJpBxTcRLzF0lg0GduyC/1Mh9ijWU5GmRUU2voVFI1uqFM+mKHFpbb
+	 F5UF8Ghp70cRLbifEB0fnsv5UAFUTmzQZSgpMoTk=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Ard Biesheuvel <ardb@kernel.org>,
-	Eric Biggers <ebiggers@kernel.org>
-Subject: [PATCH 6.16 022/457] lib/crypto: arm64/poly1305: Fix register corruption in no-SIMD contexts
+	Yuan Chen <chenyuan@kylinos.cn>,
+	Quentin Monnet <qmo@kernel.org>,
+	Alexei Starovoitov <ast@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.10 096/523] bpftool: Fix memory leak in dump_xx_nlmsg on realloc failure
 Date: Tue, 26 Aug 2025 13:05:06 +0200
-Message-ID: <20250826110937.880487652@linuxfoundation.org>
+Message-ID: <20250826110926.912975531@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250826110937.289866482@linuxfoundation.org>
-References: <20250826110937.289866482@linuxfoundation.org>
+In-Reply-To: <20250826110924.562212281@linuxfoundation.org>
+References: <20250826110924.562212281@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,55 +63,82 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.16-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Eric Biggers <ebiggers@kernel.org>
+From: Yuan Chen <chenyuan@kylinos.cn>
 
-commit eec76ea5a7213c48529a46eed1b343e5cee3aaab upstream.
+[ Upstream commit 99fe8af069a9fa5b09140518b1364e35713a642e ]
 
-Restore the SIMD usability check that was removed by commit a59e5468a921
-("crypto: arm64/poly1305 - Add block-only interface").
+In function dump_xx_nlmsg(), when realloc() fails to allocate memory,
+the original pointer to the buffer is overwritten with NULL. This causes
+a memory leak because the previously allocated buffer becomes unreachable
+without being freed.
 
-This safety check is cheap and is well worth eliminating a footgun.
-While the Poly1305 functions should not be called when SIMD registers
-are unusable, if they are anyway, they should just do the right thing
-instead of corrupting random tasks' registers and/or computing incorrect
-MACs.  Fixing this is also needed for poly1305_kunit to pass.
-
-Just use may_use_simd() instead of the original crypto_simd_usable(),
-since poly1305_kunit won't rely on crypto_simd_disabled_for_test.
-
-Fixes: a59e5468a921 ("crypto: arm64/poly1305 - Add block-only interface")
-Cc: stable@vger.kernel.org
-Reviewed-by: Ard Biesheuvel <ardb@kernel.org>
-Link: https://lore.kernel.org/r/20250706231100.176113-4-ebiggers@kernel.org
-Signed-off-by: Eric Biggers <ebiggers@kernel.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: 7900efc19214 ("tools/bpf: bpftool: improve output format for bpftool net")
+Signed-off-by: Yuan Chen <chenyuan@kylinos.cn>
+Reviewed-by: Quentin Monnet <qmo@kernel.org>
+Link: https://lore.kernel.org/r/20250620012133.14819-1-chenyuan_fl@163.com
+Signed-off-by: Alexei Starovoitov <ast@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/arm64/lib/crypto/poly1305-glue.c |    3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+ tools/bpf/bpftool/net.c | 15 +++++++++------
+ 1 file changed, 9 insertions(+), 6 deletions(-)
 
---- a/arch/arm64/lib/crypto/poly1305-glue.c
-+++ b/arch/arm64/lib/crypto/poly1305-glue.c
-@@ -7,6 +7,7 @@
- 
- #include <asm/hwcap.h>
- #include <asm/neon.h>
-+#include <asm/simd.h>
- #include <crypto/internal/poly1305.h>
- #include <linux/cpufeature.h>
- #include <linux/jump_label.h>
-@@ -33,7 +34,7 @@ void poly1305_blocks_arch(struct poly130
- 			  unsigned int len, u32 padbit)
+diff --git a/tools/bpf/bpftool/net.c b/tools/bpf/bpftool/net.c
+index ff3aa0cf3997..7f0421713e1c 100644
+--- a/tools/bpf/bpftool/net.c
++++ b/tools/bpf/bpftool/net.c
+@@ -353,17 +353,18 @@ static int dump_link_nlmsg(void *cookie, void *msg, struct nlattr **tb)
  {
- 	len = round_down(len, POLY1305_BLOCK_SIZE);
--	if (static_branch_likely(&have_neon)) {
-+	if (static_branch_likely(&have_neon) && likely(may_use_simd())) {
- 		do {
- 			unsigned int todo = min_t(unsigned int, len, SZ_4K);
+ 	struct bpf_netdev_t *netinfo = cookie;
+ 	struct ifinfomsg *ifinfo = msg;
++	struct ip_devname_ifindex *tmp;
  
+ 	if (netinfo->filter_idx > 0 && netinfo->filter_idx != ifinfo->ifi_index)
+ 		return 0;
+ 
+ 	if (netinfo->used_len == netinfo->array_len) {
+-		netinfo->devices = realloc(netinfo->devices,
+-			(netinfo->array_len + 16) *
+-			sizeof(struct ip_devname_ifindex));
+-		if (!netinfo->devices)
++		tmp = realloc(netinfo->devices,
++			(netinfo->array_len + 16) * sizeof(struct ip_devname_ifindex));
++		if (!tmp)
+ 			return -ENOMEM;
+ 
++		netinfo->devices = tmp;
+ 		netinfo->array_len += 16;
+ 	}
+ 	netinfo->devices[netinfo->used_len].ifindex = ifinfo->ifi_index;
+@@ -382,6 +383,7 @@ static int dump_class_qdisc_nlmsg(void *cookie, void *msg, struct nlattr **tb)
+ {
+ 	struct bpf_tcinfo_t *tcinfo = cookie;
+ 	struct tcmsg *info = msg;
++	struct tc_kind_handle *tmp;
+ 
+ 	if (tcinfo->is_qdisc) {
+ 		/* skip clsact qdisc */
+@@ -393,11 +395,12 @@ static int dump_class_qdisc_nlmsg(void *cookie, void *msg, struct nlattr **tb)
+ 	}
+ 
+ 	if (tcinfo->used_len == tcinfo->array_len) {
+-		tcinfo->handle_array = realloc(tcinfo->handle_array,
++		tmp = realloc(tcinfo->handle_array,
+ 			(tcinfo->array_len + 16) * sizeof(struct tc_kind_handle));
+-		if (!tcinfo->handle_array)
++		if (!tmp)
+ 			return -ENOMEM;
+ 
++		tcinfo->handle_array = tmp;
+ 		tcinfo->array_len += 16;
+ 	}
+ 	tcinfo->handle_array[tcinfo->used_len].handle = info->tcm_handle;
+-- 
+2.39.5
+
 
 
 
