@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-176042-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-173090-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id BD749B36B0A
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 16:42:39 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 49303B35BCF
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 13:28:17 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 142B0566305
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 14:32:41 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 1DE5E3608C4
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 11:23:06 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A5A3835083A;
-	Tue, 26 Aug 2025 14:30:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id EA76C3002B9;
+	Tue, 26 Aug 2025 11:22:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="oTnRmn3a"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="mS7RLI3O"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6523A34F495;
-	Tue, 26 Aug 2025 14:30:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A61BB2BE7B2;
+	Tue, 26 Aug 2025 11:22:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756218633; cv=none; b=F6EiGb5kdwk40SZq9p8CKNGeBTLk5IeGMatlvKS375TP2EqFTVqoawcFOosHvqt3ZgH148l5pNhQ6blAGVFTZwTYmxyRS4si0QwW2CPzbR5fE1BY/x+tB9yUWxqZ4xLeNLlFRjKNN2eJMaZzgBI77uTzbKNBS7JilEq6TLfWCws=
+	t=1756207346; cv=none; b=WNL/zIWu4WztvKnksDE4C8tZEc8shi1KqCZoroZlObVljbN+6NAYo5MFUgRvM6sirjVWWQV1qBNbZCUcw7XUG6tbE0FFO/YLi9oOcSIgk2VtiTVtA1EdLsO2CaGihioakzUpLdtlaSHDmj2A+YKfjKQzf8/yO8hbLAvy3cmdwFo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756218633; c=relaxed/simple;
-	bh=+EKYlxVaUaYcET/vOiqAthkRl8FRIbTcfshEHuqCvR0=;
+	s=arc-20240116; t=1756207346; c=relaxed/simple;
+	bh=VK7DXIujM8EeHtVq3nd+kd9AHXwH5UMkpx1nMnIC3uI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=aN7KK/i+WePsERjb7Sbv4TGdcFbFDTgVQuVvXfve7962aoCGePTNnuROYGMBburtnbw6gfv13yudTUjgVJ+BvukllzVhopRlPqvJItE+LULbefOo62Usts4t2yFVaiaBXvdskHrCLLnVzlXV7FeuWfxUouimsayzCXpVvvaSmwQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=oTnRmn3a; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id EAE95C4CEF1;
-	Tue, 26 Aug 2025 14:30:32 +0000 (UTC)
+	 MIME-Version:Content-Type; b=oh9sttkHzaGuMHV7dPZjcEvweoiGUrlIDCSqJ9QJ+Y3AgvUhCjMocIvLftIW7AHtzdjbo3ioBuyFK5L4ZoeHilIt0NtfjgkxcljleA2IzISBTs8pCraZ0d4TJw62oxCPscLA0KnZcr98CxbLEg98M87xO7uAzO3MR+UAgMHptCc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=mS7RLI3O; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 36C97C4CEF1;
+	Tue, 26 Aug 2025 11:22:26 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1756218633;
-	bh=+EKYlxVaUaYcET/vOiqAthkRl8FRIbTcfshEHuqCvR0=;
+	s=korg; t=1756207346;
+	bh=VK7DXIujM8EeHtVq3nd+kd9AHXwH5UMkpx1nMnIC3uI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=oTnRmn3a0at2v3YNT+YMrwCzyFVn2MW5GERjKazSygBmtmEbKhP7Jt1JqpkuLLy+2
-	 +lFEVgQ7fpGhaP8/AN6aHBvOHeyPEtgYxs4y9PZnybVM0U5WXsKSGrtBOFuBsrF+NE
-	 hCb5pwraKMReKhag9sZ7fSYpKHWmgBNDOu2k6Nr8=
+	b=mS7RLI3OkI3np/ItjIHHGOrFZ5dK3zSHMz5Cbc5BRiFS9PGS2c+vh052wP+nUGgbr
+	 JMMBqcpmzHlciTrB++hyPo+mghIztKBMqcVlILdmrEx/A6BH+ZZ5bfZ2KkPxE8o31e
+	 tbivkClffU+Qz1REI99+pvODFe1YAcDKWV8soBUc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>,
-	Shawn Guo <shawnguo@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.4 074/403] ARM: dts: vfxxx: Correctly use two tuples for timer address
+	=?UTF-8?q?Thomas=20Wei=C3=9Fschuh?= <thomas.weissschuh@linutronix.de>,
+	Nathan Chancellor <nathan@kernel.org>,
+	Masahiro Yamada <masahiroy@kernel.org>
+Subject: [PATCH 6.16 116/457] kbuild: userprogs: use correct linker when mixing clang and GNU ld
 Date: Tue, 26 Aug 2025 13:06:40 +0200
-Message-ID: <20250826110908.439078561@linuxfoundation.org>
+Message-ID: <20250826110940.240504334@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250826110905.607690791@linuxfoundation.org>
-References: <20250826110905.607690791@linuxfoundation.org>
+In-Reply-To: <20250826110937.289866482@linuxfoundation.org>
+References: <20250826110937.289866482@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,44 +60,46 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-5.4-stable review patch.  If anyone has any objections, please let me know.
+6.16-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
+From: Thomas Weißschuh <thomas.weissschuh@linutronix.de>
 
-[ Upstream commit f3440dcf8b994197c968fbafe047ce27eed226e8 ]
+commit 936599ca514973d44a766b7376c6bbdc96b6a8cc upstream.
 
-Address and size-cells are 1 and the ftm timer node takes two address
-spaces in "reg" property, so this should be in two <> tuples.  Change
-has no functional impact, but original code is confusing/less readable.
+The userprogs infrastructure does not expect clang being used with GNU ld
+and in that case uses /usr/bin/ld for linking, not the configured $(LD).
+This fallback is problematic as it will break when cross-compiling.
+Mixing clang and GNU ld is used for example when building for SPARC64,
+as ld.lld is not sufficient; see Documentation/kbuild/llvm.rst.
 
-Fixes: 07513e1330a9 ("ARM: dts: vf610: Add Freescale FlexTimer Module timer node.")
-Signed-off-by: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
-Signed-off-by: Shawn Guo <shawnguo@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Relax the check around --ld-path so it gets used for all linkers.
+
+Fixes: dfc1b168a8c4 ("kbuild: userprogs: use correct lld when linking through clang")
+Cc: stable@vger.kernel.org
+Signed-off-by: Thomas Weißschuh <thomas.weissschuh@linutronix.de>
+Reviewed-by: Nathan Chancellor <nathan@kernel.org>
+Signed-off-by: Masahiro Yamada <masahiroy@kernel.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- arch/arm/boot/dts/vfxxx.dtsi | 2 +-
+ Makefile |    2 +-
  1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/arch/arm/boot/dts/vfxxx.dtsi b/arch/arm/boot/dts/vfxxx.dtsi
-index fa248066d9d9..3679922bbabc 100644
---- a/arch/arm/boot/dts/vfxxx.dtsi
-+++ b/arch/arm/boot/dts/vfxxx.dtsi
-@@ -617,7 +617,7 @@ usbmisc1: usb@400b4800 {
+--- a/Makefile
++++ b/Makefile
+@@ -1134,7 +1134,7 @@ KBUILD_USERCFLAGS  += $(filter -m32 -m64
+ KBUILD_USERLDFLAGS += $(filter -m32 -m64 --target=%, $(KBUILD_CPPFLAGS) $(KBUILD_CFLAGS))
  
- 			ftm: ftm@400b8000 {
- 				compatible = "fsl,ftm-timer";
--				reg = <0x400b8000 0x1000 0x400b9000 0x1000>;
-+				reg = <0x400b8000 0x1000>, <0x400b9000 0x1000>;
- 				interrupts = <44 IRQ_TYPE_LEVEL_HIGH>;
- 				clock-names = "ftm-evt", "ftm-src",
- 					"ftm-evt-counter-en", "ftm-src-counter-en";
--- 
-2.39.5
-
+ # userspace programs are linked via the compiler, use the correct linker
+-ifeq ($(CONFIG_CC_IS_CLANG)$(CONFIG_LD_IS_LLD),yy)
++ifdef CONFIG_CC_IS_CLANG
+ KBUILD_USERLDFLAGS += --ld-path=$(LD)
+ endif
+ 
 
 
 
