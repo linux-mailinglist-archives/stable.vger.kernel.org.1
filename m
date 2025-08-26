@@ -1,55 +1,56 @@
-Return-Path: <stable+bounces-173408-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-173400-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id CD14EB35CBB
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 13:37:46 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id DB9B0B35D8D
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 13:46:04 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 840087C5156
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 11:37:45 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id D5D9B3628D3
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 11:37:22 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9A9891A256B;
-	Tue, 26 Aug 2025 11:36:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3B06633A023;
+	Tue, 26 Aug 2025 11:35:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="tHNhuTVu"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="A02F7bEI"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5794D319858;
-	Tue, 26 Aug 2025 11:36:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EAF4720330;
+	Tue, 26 Aug 2025 11:35:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756208171; cv=none; b=nZ9VChVmE7yvp9eB9KXeDTzmWVddYrOJAfQNLJr9EXHyVcckvf1PB6hwvd1VDrMvpePYKhU/ZYBRNUZS3qdnur+0LaxXfmxBQFZqFtwIqJEWndNgo7ZFY9ZbHBxsSs3K59VGZ3SiVbdESbOUZ9ipf1OZ1srgs5NExcFSUae4PjE=
+	t=1756208150; cv=none; b=SU/7Gqe1X7ju7HeLGb/rea6DVEU5tmlYLxNd8MVbqSSK1WBIU8AgTjNiYaKnFN130cFyt9uhaYON2FOwgrG2Aleboq4cUPYvWzv6LeCHeJ/+X9PtwvSu6P1FeTNa5PfQzEMgDgdaxeANefrEkUm5IqLde7aP/eZ3D6rLxEpa3Bw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756208171; c=relaxed/simple;
-	bh=f17BPTL3u/zuW9pO3EU0cWGpb67SRntIuAHbaOGjzMM=;
+	s=arc-20240116; t=1756208150; c=relaxed/simple;
+	bh=dU1p1nFws2rS5qk10FFWWIVnKRRq7b3p4ydm1l7YPRk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=IhWllpORBfSoJq2621M77vhRnIUFNalFlwFcjt69B0AF9v4UMqqdYEn8dwmCDYlvkrWiScYjPqs2776xuY8mFw5e0uTQdPkEZlZD8b/ecnoBP7Au6Y8VyiQsHyNCxAdfdORSpnU5DwNNbtFFRNxZPhTnroK8PREXZjp75eiOeC8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=tHNhuTVu; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 90724C4CEF1;
-	Tue, 26 Aug 2025 11:36:10 +0000 (UTC)
+	 MIME-Version:Content-Type; b=ol1GTJ8K/0Gw/tr27x5VBBrjrU7C2fs4Sugm9b0ySbzZiYl7f0az2Nh2uegpXEPIc/LLCa/7E3KJmyKWM85vI2fV27gw1q8DCN/XcEzzoky3CI1YPor7FFMx65bhYJT+YpydeGuPP0l4q4Z7luxdelHGCBHw3QrlgMwnDCqp3FU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=A02F7bEI; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 78CB5C4CEF1;
+	Tue, 26 Aug 2025 11:35:49 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1756208170;
-	bh=f17BPTL3u/zuW9pO3EU0cWGpb67SRntIuAHbaOGjzMM=;
+	s=korg; t=1756208149;
+	bh=dU1p1nFws2rS5qk10FFWWIVnKRRq7b3p4ydm1l7YPRk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=tHNhuTVuQ3ETb922qrNDC2sBjO9r5e01VNMAQ1qZJpj5VoSqD/5+B36QRPi/yKcPa
-	 32l3a8qDJ9KCZgcvG+wt/PatRafTBxMgSUBDoE43H4arDwMUKGAQjClhgKm9wMli9o
-	 7miuxtyyNVnaj5+rlD/BkiwPJ1PeRTmgRjeweY1s=
+	b=A02F7bEIu3OPcVFDuAGgqIcsdzn8tJ3TQHuseNpYd6a96bX0nY7K79ngas1tpRIVq
+	 6rWY69U8ZZ0zLgMmU45lyGv+vzvl60ciGfpSTgnVQAPgYYr6XFON79W9l3ZLF/w3fq
+	 JarLuBqbAx8+omz+BnOsgL/QdBwyBMO2oZE98xq8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Matthew Auld <matthew.auld@intel.com>,
-	=?UTF-8?q?Piotr=20Pi=C3=B3rkowski?= <piotr.piorkowski@intel.com>,
-	=?UTF-8?q?Micha=C5=82=20Winiarski?= <michal.winiarski@intel.com>,
+	Matthew Brost <matthew.brost@intel.com>,
+	Himal Prasad Ghimiray <himal.prasad.ghimiray@intel.com>,
+	=?UTF-8?q?Thomas=20Hellstr=C3=B6m?= <thomas.hellstrom@linux.intel.com>,
+	Christoph Manszewski <christoph.manszewski@intel.com>,
 	Rodrigo Vivi <rodrigo.vivi@intel.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.16 456/457] drm/xe: Move ASID allocation and user PT BO tracking into xe_vm_create
-Date: Tue, 26 Aug 2025 13:12:20 +0200
-Message-ID: <20250826110948.554716426@linuxfoundation.org>
+Subject: [PATCH 6.16 457/457] drm/xe: Fix vm_bind_ioctl double free bug
+Date: Tue, 26 Aug 2025 13:12:21 +0200
+Message-ID: <20250826110948.578694551@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
 In-Reply-To: <20250826110937.289866482@linuxfoundation.org>
 References: <20250826110937.289866482@linuxfoundation.org>
@@ -69,94 +70,97 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Piotr Piórkowski <piotr.piorkowski@intel.com>
+From: Christoph Manszewski <christoph.manszewski@intel.com>
 
-[ Upstream commit 8a30114073639fd97f2c7390abbc34fb8711327a ]
+[ Upstream commit 111fb43a557726079a67ce3ab51f602ddbf7097e ]
 
-Currently, ASID assignment for user VMs and page-table BO accounting for
-client memory tracking are performed in xe_vm_create_ioctl.
-To consolidate VM object initialization, move this logic to
-xe_vm_create.
+If the argument check during an array bind fails, the bind_ops are freed
+twice as seen below. Fix this by setting bind_ops to NULL after freeing.
 
-v2:
- - removed unnecessary duplicate BO tracking code
- - using the local variable xef to verify whether the VM is being created
-   by userspace
+==================================================================
+BUG: KASAN: double-free in xe_vm_bind_ioctl+0x1b2/0x21f0 [xe]
+Free of addr ffff88813bb9b800 by task xe_vm/14198
 
-Fixes: 658a1c8e0a66 ("drm/xe: Assign ioctl xe file handler to vm in xe_vm_create")
-Suggested-by: Matthew Auld <matthew.auld@intel.com>
-Signed-off-by: Piotr Piórkowski <piotr.piorkowski@intel.com>
-Reviewed-by: Matthew Auld <matthew.auld@intel.com>
-Link: https://lore.kernel.org/r/20250811104358.2064150-3-piotr.piorkowski@intel.com
-Signed-off-by: Michał Winiarski <michal.winiarski@intel.com>
-(cherry picked from commit 30e0c3f43a414616e0b6ca76cf7f7b2cd387e1d4)
+CPU: 5 UID: 0 PID: 14198 Comm: xe_vm Not tainted 6.16.0-xe-eudebug-cmanszew+ #520 PREEMPT(full)
+Hardware name: Intel Corporation Alder Lake Client Platform/AlderLake-P DDR5 RVP, BIOS ADLPFWI1.R00.2411.A02.2110081023 10/08/2021
+Call Trace:
+ <TASK>
+ dump_stack_lvl+0x82/0xd0
+ print_report+0xcb/0x610
+ ? __virt_addr_valid+0x19a/0x300
+ ? xe_vm_bind_ioctl+0x1b2/0x21f0 [xe]
+ kasan_report_invalid_free+0xc8/0xf0
+ ? xe_vm_bind_ioctl+0x1b2/0x21f0 [xe]
+ ? xe_vm_bind_ioctl+0x1b2/0x21f0 [xe]
+ check_slab_allocation+0x102/0x130
+ kfree+0x10d/0x440
+ ? should_fail_ex+0x57/0x2f0
+ ? xe_vm_bind_ioctl+0x1b2/0x21f0 [xe]
+ xe_vm_bind_ioctl+0x1b2/0x21f0 [xe]
+ ? __pfx_xe_vm_bind_ioctl+0x10/0x10 [xe]
+ ? __lock_acquire+0xab9/0x27f0
+ ? lock_acquire+0x165/0x300
+ ? drm_dev_enter+0x53/0xe0 [drm]
+ ? find_held_lock+0x2b/0x80
+ ? drm_dev_exit+0x30/0x50 [drm]
+ ? drm_ioctl_kernel+0x128/0x1c0 [drm]
+ drm_ioctl_kernel+0x128/0x1c0 [drm]
+ ? __pfx_xe_vm_bind_ioctl+0x10/0x10 [xe]
+ ? find_held_lock+0x2b/0x80
+ ? __pfx_drm_ioctl_kernel+0x10/0x10 [drm]
+ ? should_fail_ex+0x57/0x2f0
+ ? __pfx_xe_vm_bind_ioctl+0x10/0x10 [xe]
+ drm_ioctl+0x352/0x620 [drm]
+ ? __pfx_drm_ioctl+0x10/0x10 [drm]
+ ? __pfx_rpm_resume+0x10/0x10
+ ? do_raw_spin_lock+0x11a/0x1b0
+ ? find_held_lock+0x2b/0x80
+ ? __pm_runtime_resume+0x61/0xc0
+ ? rcu_is_watching+0x20/0x50
+ ? trace_irq_enable.constprop.0+0xac/0xe0
+ xe_drm_ioctl+0x91/0xc0 [xe]
+ __x64_sys_ioctl+0xb2/0x100
+ ? rcu_is_watching+0x20/0x50
+ do_syscall_64+0x68/0x2e0
+ entry_SYSCALL_64_after_hwframe+0x76/0x7e
+RIP: 0033:0x7fa9acb24ded
+
+Fixes: b43e864af0d4 ("drm/xe/uapi: Add DRM_XE_VM_BIND_FLAG_CPU_ADDR_MIRROR")
+Cc: Matthew Brost <matthew.brost@intel.com>
+Cc: Himal Prasad Ghimiray <himal.prasad.ghimiray@intel.com>
+Cc: Thomas Hellström <thomas.hellstrom@linux.intel.com>
+Signed-off-by: Christoph Manszewski <christoph.manszewski@intel.com>
+Reviewed-by: Matthew Brost <matthew.brost@intel.com>
+Signed-off-by: Matthew Brost <matthew.brost@intel.com>
+Link: https://lore.kernel.org/r/20250813101231.196632-2-christoph.manszewski@intel.com
+(cherry picked from commit a01b704527c28a2fd43a17a85f8996b75ec8492a)
 Signed-off-by: Rodrigo Vivi <rodrigo.vivi@intel.com>
-[Rodrigo: Added fixes tag]
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/xe/xe_vm.c | 34 +++++++++++++++-------------------
- 1 file changed, 15 insertions(+), 19 deletions(-)
+ drivers/gpu/drm/xe/xe_vm.c | 3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
 diff --git a/drivers/gpu/drm/xe/xe_vm.c b/drivers/gpu/drm/xe/xe_vm.c
-index 7251f23b919c..3135de124c18 100644
+index 3135de124c18..3b11b1d52bee 100644
 --- a/drivers/gpu/drm/xe/xe_vm.c
 +++ b/drivers/gpu/drm/xe/xe_vm.c
-@@ -1767,6 +1767,20 @@ struct xe_vm *xe_vm_create(struct xe_device *xe, u32 flags, struct xe_file *xef)
- 	if (number_tiles > 1)
- 		vm->composite_fence_ctx = dma_fence_context_alloc(1);
+@@ -3200,6 +3200,7 @@ static int vm_bind_ioctl_check_args(struct xe_device *xe, struct xe_vm *vm,
+ free_bind_ops:
+ 	if (args->num_binds > 1)
+ 		kvfree(*bind_ops);
++	*bind_ops = NULL;
+ 	return err;
+ }
  
-+	if (xef && xe->info.has_asid) {
-+		u32 asid;
-+
-+		down_write(&xe->usm.lock);
-+		err = xa_alloc_cyclic(&xe->usm.asid_to_vm, &asid, vm,
-+				      XA_LIMIT(1, XE_MAX_ASID - 1),
-+				      &xe->usm.next_asid, GFP_KERNEL);
-+		up_write(&xe->usm.lock);
-+		if (err < 0)
-+			goto err_unlock_close;
-+
-+		vm->usm.asid = asid;
-+	}
-+
- 	trace_xe_vm_create(vm);
- 
- 	return vm;
-@@ -2034,9 +2048,8 @@ int xe_vm_create_ioctl(struct drm_device *dev, void *data,
- 	struct xe_device *xe = to_xe_device(dev);
- 	struct xe_file *xef = to_xe_file(file);
- 	struct drm_xe_vm_create *args = data;
--	struct xe_tile *tile;
- 	struct xe_vm *vm;
--	u32 id, asid;
-+	u32 id;
+@@ -3305,7 +3306,7 @@ int xe_vm_bind_ioctl(struct drm_device *dev, void *data, struct drm_file *file)
+ 	struct xe_exec_queue *q = NULL;
+ 	u32 num_syncs, num_ufence = 0;
+ 	struct xe_sync_entry *syncs = NULL;
+-	struct drm_xe_vm_bind_op *bind_ops;
++	struct drm_xe_vm_bind_op *bind_ops = NULL;
+ 	struct xe_vma_ops vops;
+ 	struct dma_fence *fence;
  	int err;
- 	u32 flags = 0;
- 
-@@ -2076,23 +2089,6 @@ int xe_vm_create_ioctl(struct drm_device *dev, void *data,
- 	if (IS_ERR(vm))
- 		return PTR_ERR(vm);
- 
--	if (xe->info.has_asid) {
--		down_write(&xe->usm.lock);
--		err = xa_alloc_cyclic(&xe->usm.asid_to_vm, &asid, vm,
--				      XA_LIMIT(1, XE_MAX_ASID - 1),
--				      &xe->usm.next_asid, GFP_KERNEL);
--		up_write(&xe->usm.lock);
--		if (err < 0)
--			goto err_close_and_put;
--
--		vm->usm.asid = asid;
--	}
--
--	/* Record BO memory for VM pagetable created against client */
--	for_each_tile(tile, xe, id)
--		if (vm->pt_root[id])
--			xe_drm_client_add_bo(vm->xef->client, vm->pt_root[id]->bo);
--
- #if IS_ENABLED(CONFIG_DRM_XE_DEBUG_MEM)
- 	/* Warning: Security issue - never enable by default */
- 	args->reserved[0] = xe_bo_main_addr(vm->pt_root[0]->bo, XE_PAGE_SIZE);
 -- 
 2.50.1
 
