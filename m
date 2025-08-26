@@ -1,55 +1,56 @@
-Return-Path: <stable+bounces-174581-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-174101-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 43C84B3640C
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 15:35:28 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7BE6FB36153
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 15:08:37 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 236C68A2140
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 13:27:22 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 00B761BA690E
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 13:05:53 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6BFC3341651;
-	Tue, 26 Aug 2025 13:26:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2D0C223C4E3;
+	Tue, 26 Aug 2025 13:04:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="jWzud7WM"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ggliq5jH"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 27D0B1DE4CD;
-	Tue, 26 Aug 2025 13:26:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DD3071D47B4;
+	Tue, 26 Aug 2025 13:04:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756214772; cv=none; b=iZ3juGH1Sfir6KjizKoK1iFp7c/+OxUs1X+/Sz9/3kPUI8/n5Dg5IekHiU+xeKj0QVjcFF5qyla2IxgH9jmkgfhl1XCLM92wrOyS5/SzvbziuGmv6ZuzNwHPA1aF2Nrfr09npnTnV9X0ZWZayO7H/LBKBCljaMHwn/d3V4vrbAI=
+	t=1756213496; cv=none; b=pJDmlCk1j2OexJgNxV/p7fkDUiFfABRATc8XDZmd864PeABst6i43kTRTB24d1ULB0kTe7CvhiSf+mzGFaXfISpRobyDQdBCE187IjyG54zd0BermaNI+/JRleF/Q0SvJiYLV8kATHCjow1IxiYVA8FAzBA5Q1dCZ5hch+XICco=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756214772; c=relaxed/simple;
-	bh=zy7d+9vG6PGoTQV8uoOOBR5cyA0gRqGcdL8/Vyw1qQA=;
+	s=arc-20240116; t=1756213496; c=relaxed/simple;
+	bh=EbQ+bUp2BePYqPu6uIF3qWfizPjBsfYtLiOSL0enGQ8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=nLM92GEeRlFUdlQYICUELKMDco5nrreahpr/LvUJHEex6AYjtC/tLJBG2z9ndojUpX8k2uQWBk3N36Hpp2MB1slgLkh9gwiG38+ZM1FVelf+glmAcD/Qf8Skv51blb5ZxH5iNTVqn6FPbwW7zg4iEzdW4oFJNq58DLhf9aqUiEs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=jWzud7WM; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id AC598C4CEF1;
-	Tue, 26 Aug 2025 13:26:11 +0000 (UTC)
+	 MIME-Version:Content-Type; b=Q58RuLYDY71TVgZSxNmuNopnBkxMjntzoFIk8Mr7bhTbJ68Ln0T/GvjQMsFMQ+arkV/mxcOOzw0Jk5c+8XC6lSk17YeJCz2ZnXhj8BlKOMGolPw3oWMjZOJr4wrhuuPNhrkVsnqRSRJcTCsCVuyvLgZa5XwKTdYYlukAbK8N2SM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ggliq5jH; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 70895C4CEF1;
+	Tue, 26 Aug 2025 13:04:55 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1756214772;
-	bh=zy7d+9vG6PGoTQV8uoOOBR5cyA0gRqGcdL8/Vyw1qQA=;
+	s=korg; t=1756213495;
+	bh=EbQ+bUp2BePYqPu6uIF3qWfizPjBsfYtLiOSL0enGQ8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=jWzud7WMoVxdz3fxEaWhg2OLMNaqc9tQPzhoE5Y/LgmiVm7Dgaj6q1wWlBUZuwkgJ
-	 d/03kbggI7/1dVLGSMkV8CCw+pL5OmvhiBHj196hodnE3E5W/stST6OKP2vKc3uqc7
-	 QBexCbAs5De12GENlbnDmbT5IQEirraDu6jwD+gg=
+	b=ggliq5jHwJ3H+BQPjjWkl0chgfToXPyaA/ulzhxIMQ6uhHgti0sSaHyumQvVC3Rrg
+	 Kz0vHd5lD4qCvqLYzfXZE306MwuXnjO5xeMM/nOAq1yztMnUKfABXJvSiw/HrPo4XY
+	 2TuJHpGlBh0FdBjV997eF5OXHKRVGSrnmpIwv3Zw=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	=?UTF-8?q?Thomas=20Wei=C3=9Fschuh?= <linux@weissschuh.net>,
-	Willy Tarreau <w@1wt.eu>
-Subject: [PATCH 6.1 264/482] tools/nolibc: fix spelling of FD_SETBITMASK in FD_* macros
+	David Lechner <dlechner@baylibre.com>,
+	=?UTF-8?q?Nuno=20S=C3=A1?= <nuno.sa@analog.com>,
+	Jonathan Cameron <Jonathan.Cameron@huawei.com>
+Subject: [PATCH 6.6 368/587] iio: adc: ad_sigma_delta: change to buffer predisable
 Date: Tue, 26 Aug 2025 13:08:37 +0200
-Message-ID: <20250826110937.289199807@linuxfoundation.org>
+Message-ID: <20250826111002.270543542@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250826110930.769259449@linuxfoundation.org>
-References: <20250826110930.769259449@linuxfoundation.org>
+In-Reply-To: <20250826110952.942403671@linuxfoundation.org>
+References: <20250826110952.942403671@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,47 +63,51 @@ MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Willy Tarreau <w@1wt.eu>
+From: David Lechner <dlechner@baylibre.com>
 
-commit a477629baa2a0e9991f640af418e8c973a1c08e3 upstream.
+commit 66d4374d97f85516b5a22418c5e798aed2606dec upstream.
 
-While nolibc-test does test syscalls, it doesn't test as much the rest
-of the macros, and a wrong spelling of FD_SETBITMASK in commit
-feaf75658783a broke programs using either FD_SET() or FD_CLR() without
-being noticed. Let's fix these macros.
+Change the buffer disable callback from postdisable to predisable.
+This balances the existing posteanble callback. Using postdisable
+with posteanble can be problematic, for example, if update_scan_mode
+fails, it would call postdisable without ever having called posteanble,
+so the drivers using this would be in an unexpected state when
+postdisable was called.
 
-Fixes: feaf75658783a ("nolibc: fix fd_set type")
-Cc: stable@vger.kernel.org # v6.2+
-Acked-by: Thomas Weißschuh <linux@weissschuh.net>
-Signed-off-by: Willy Tarreau <w@1wt.eu>
+Fixes: af3008485ea0 ("iio:adc: Add common code for ADI Sigma Delta devices")
+Signed-off-by: David Lechner <dlechner@baylibre.com>
+Reviewed-by: Nuno Sá <nuno.sa@analog.com>
+Link: https://patch.msgid.link/20250703-iio-adc-ad_sigma_delta-buffer-predisable-v1-1-f2ab85138f1f@baylibre.com
+Cc: <stable@vger.kernel.org>
+Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- tools/include/nolibc/types.h |    4 ++--
+ drivers/iio/adc/ad_sigma_delta.c |    4 ++--
  1 file changed, 2 insertions(+), 2 deletions(-)
 
---- a/tools/include/nolibc/types.h
-+++ b/tools/include/nolibc/types.h
-@@ -102,7 +102,7 @@ typedef struct {
- 		int __fd = (fd);					\
- 		if (__fd >= 0)						\
- 			__set->fds[__fd / FD_SETIDXMASK] &=		\
--				~(1U << (__fd & FX_SETBITMASK));	\
-+				~(1U << (__fd & FD_SETBITMASK));	\
- 	} while (0)
+--- a/drivers/iio/adc/ad_sigma_delta.c
++++ b/drivers/iio/adc/ad_sigma_delta.c
+@@ -406,7 +406,7 @@ err_unlock:
+ 	return ret;
+ }
  
- #define FD_SET(fd, set) do {						\
-@@ -119,7 +119,7 @@ typedef struct {
- 		int __r = 0;						\
- 		if (__fd >= 0)						\
- 			__r = !!(__set->fds[__fd / FD_SETIDXMASK] &	\
--1U << (__fd & FD_SET_BITMASK));						\
-+1U << (__fd & FD_SETBITMASK));						\
- 		__r;							\
- 	})
+-static int ad_sd_buffer_postdisable(struct iio_dev *indio_dev)
++static int ad_sd_buffer_predisable(struct iio_dev *indio_dev)
+ {
+ 	struct ad_sigma_delta *sigma_delta = iio_device_get_drvdata(indio_dev);
+ 
+@@ -534,7 +534,7 @@ static bool ad_sd_validate_scan_mask(str
+ 
+ static const struct iio_buffer_setup_ops ad_sd_buffer_setup_ops = {
+ 	.postenable = &ad_sd_buffer_postenable,
+-	.postdisable = &ad_sd_buffer_postdisable,
++	.predisable = &ad_sd_buffer_predisable,
+ 	.validate_scan_mask = &ad_sd_validate_scan_mask,
+ };
  
 
 
