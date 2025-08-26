@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-173014-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-174419-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 247A4B35B85
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 13:25:19 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3B6DBB36339
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 15:28:00 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 94870363772
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 11:21:04 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id DF7E88A806D
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 13:21:06 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A864D312803;
-	Tue, 26 Aug 2025 11:19:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0E58E343202;
+	Tue, 26 Aug 2025 13:19:00 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="jjIH0NR/"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="yqzobsps"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 58AD02FE069;
-	Tue, 26 Aug 2025 11:19:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C06EF3431E9;
+	Tue, 26 Aug 2025 13:18:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756207152; cv=none; b=hVZKCt9gqp2IqJTsRM+xMPfQI2hhVDmRExs4YSQKZ98D3L4/n+bM+T3fsTQVWToM2yLKEHAuRB3Zg50O/RN1CyyvAxxHHfZ1q+IQDLi2OT8K2HBbqrZfdWdIin9Poq2QnCq4vB184l/9dOVyAH4BnZsBx8TS7x/HyA+yXZb6jdY=
+	t=1756214339; cv=none; b=mPMggCH9rJb7ZPs1H59LBuRbYn9SYahsGBL7DMI22Cb5ld9D1ykKDiRSqHAZJut30N5I5emzqvqRvp9dgYMkzBhsJUWccrC0y5WMqKHbFKEExvoDO0fGMUT6P3UlMK3Pclgjm7kdGZ4ogAvF4I8HrldM9nOEldoQDEcin1KL6fA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756207152; c=relaxed/simple;
-	bh=3Dy2JuHu51vIwtqo1wgkzdXe5pKubOMC/gqREzni1RA=;
+	s=arc-20240116; t=1756214339; c=relaxed/simple;
+	bh=ocudBeZNDUtRNuyjRIbREox0eMoYJCdC1J/yrZQTH0w=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=UN+7HqcVv1PX2lM12p6RE3h8bZR5xJ1bhjemZc/w2mMQ+NJsKDfT0mpYpTKeid+FS5VCv2m8AgCT5j2f31LVWfqstU0FilnVw4VtfeBeJmQiC0XlmpnfOkgpSUukGw0WShRrGEvLx7R85KVNUbjgzS5as0QXpcL7bsFpD8xXGsA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=jjIH0NR/; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id DD324C4CEF1;
-	Tue, 26 Aug 2025 11:19:11 +0000 (UTC)
+	 MIME-Version; b=WeYtTkHM4QII7wWj5RCQlkKyTXGT7mrj2dgJyYOuni/FXXs/6sBceaIJrQ616ZLkuv4yGBMb+BH1lsZoScEm+2FdC6bX+G8C6ZvrTcAB6TUMzaDEE5CiMxzLgdWTmP1MymUInjuBtdQwIJJuZdGKxuV9Ja6v4psm4s+Z6Su0G9o=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=yqzobsps; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 05FA7C4CEF1;
+	Tue, 26 Aug 2025 13:18:58 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1756207152;
-	bh=3Dy2JuHu51vIwtqo1wgkzdXe5pKubOMC/gqREzni1RA=;
+	s=korg; t=1756214339;
+	bh=ocudBeZNDUtRNuyjRIbREox0eMoYJCdC1J/yrZQTH0w=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=jjIH0NR/euIO5fpeGHdaxfTvbHORtxTarH4bShCMfuEGPdiOQsu0N7XrRBpMfDsm7
-	 AxNAw6M4wam7+ALDtYaOa2dzerN8xRUX/0xlethZEHOkXQuAP3IpezRNKJtD3o+ume
-	 kGH1khnNjL+0mZb4QXmVy++S77Yir13y7N4zDksY=
+	b=yqzobspsAsvx6xHUsoW/LmdtUaFXMnu3PvFHKHch8Ut459U5k8/Dda5284vrdDLfX
+	 2iOoTF64BGOLD6cvfeR+zzWxVsI7TZADViKCjG8ntY8oAoz6MOpD0I6Mv9PMdAxPWf
+	 uXE0dU06fSxH09fESmCdjcuLL6wod0rntlvOxoxk=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Archana Patni <archana.patni@intel.com>,
-	Bart Van Assche <bvanassche@acm.org>,
-	"Martin K. Petersen" <martin.petersen@oracle.com>
-Subject: [PATCH 6.16 070/457] scsi: ufs: ufs-pci: Fix hibernate state transition for Intel MTL-like host controllers
+	Alok Tiwari <alok.a.tiwari@oracle.com>,
+	Takashi Iwai <tiwai@suse.de>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.1 101/482] ALSA: intel8x0: Fix incorrect codec index usage in mixer for ICH4
 Date: Tue, 26 Aug 2025 13:05:54 +0200
-Message-ID: <20250826110939.099856162@linuxfoundation.org>
+Message-ID: <20250826110933.323377227@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250826110937.289866482@linuxfoundation.org>
-References: <20250826110937.289866482@linuxfoundation.org>
+In-Reply-To: <20250826110930.769259449@linuxfoundation.org>
+References: <20250826110930.769259449@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,77 +62,42 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.16-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Archana Patni <archana.patni@intel.com>
+From: Alok Tiwari <alok.a.tiwari@oracle.com>
 
-commit 4428ddea832cfdb63e476eb2e5c8feb5d36057fe upstream.
+[ Upstream commit 87aafc8580acf87fcaf1a7e30ed858d8c8d37d81 ]
 
-UFSHCD core disables the UIC completion interrupt when issuing UIC
-hibernation commands, and re-enables it afterwards if it was enabled to
-start with, refer ufshcd_uic_pwr_ctrl(). For Intel MTL-like host
-controllers, accessing the register to re-enable the interrupt disrupts
-the state transition.
+code mistakenly used a hardcoded index (codec[1]) instead of
+iterating, over the codec array using the loop variable i.
+Use codec[i] instead of codec[1] to match the loop iteration.
 
-Use hibern8_notify variant operation to disable the interrupt during the
-entire hibernation, thereby preventing the disruption.
-
-Fixes: 4049f7acef3e ("scsi: ufs: ufs-pci: Add support for Intel MTL")
-Cc: stable@vger.kernel.org
-Signed-off-by: Archana Patni <archana.patni@intel.com>
-Link: https://lore.kernel.org/r/20250723165856.145750-2-adrian.hunter@intel.com
-Reviewed-by: Bart Van Assche <bvanassche@acm.org>
-Signed-off-by: Martin K. Petersen <martin.petersen@oracle.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Signed-off-by: Alok Tiwari <alok.a.tiwari@oracle.com>
+Link: https://patch.msgid.link/20250621185233.4081094-1-alok.a.tiwari@oracle.com
+Signed-off-by: Takashi Iwai <tiwai@suse.de>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/ufs/host/ufshcd-pci.c |   27 +++++++++++++++++++++++++++
- 1 file changed, 27 insertions(+)
+ sound/pci/intel8x0.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/drivers/ufs/host/ufshcd-pci.c
-+++ b/drivers/ufs/host/ufshcd-pci.c
-@@ -216,6 +216,32 @@ out:
- 	return ret;
- }
- 
-+static void ufs_intel_ctrl_uic_compl(struct ufs_hba *hba, bool enable)
-+{
-+	u32 set = ufshcd_readl(hba, REG_INTERRUPT_ENABLE);
-+
-+	if (enable)
-+		set |= UIC_COMMAND_COMPL;
-+	else
-+		set &= ~UIC_COMMAND_COMPL;
-+	ufshcd_writel(hba, set, REG_INTERRUPT_ENABLE);
-+}
-+
-+static void ufs_intel_mtl_h8_notify(struct ufs_hba *hba,
-+				    enum uic_cmd_dme cmd,
-+				    enum ufs_notify_change_status status)
-+{
-+	/*
-+	 * Disable UIC COMPL INTR to prevent access to UFSHCI after
-+	 * checking HCS.UPMCRS
-+	 */
-+	if (status == PRE_CHANGE && cmd == UIC_CMD_DME_HIBER_ENTER)
-+		ufs_intel_ctrl_uic_compl(hba, false);
-+
-+	if (status == POST_CHANGE && cmd == UIC_CMD_DME_HIBER_EXIT)
-+		ufs_intel_ctrl_uic_compl(hba, true);
-+}
-+
- #define INTEL_ACTIVELTR		0x804
- #define INTEL_IDLELTR		0x808
- 
-@@ -533,6 +559,7 @@ static struct ufs_hba_variant_ops ufs_in
- 	.init			= ufs_intel_mtl_init,
- 	.exit			= ufs_intel_common_exit,
- 	.hce_enable_notify	= ufs_intel_hce_enable_notify,
-+	.hibern8_notify		= ufs_intel_mtl_h8_notify,
- 	.link_startup_notify	= ufs_intel_link_startup_notify,
- 	.resume			= ufs_intel_resume,
- 	.device_reset		= ufs_intel_device_reset,
+diff --git a/sound/pci/intel8x0.c b/sound/pci/intel8x0.c
+index ae285c0a629c..f3df6fe2b7f1 100644
+--- a/sound/pci/intel8x0.c
++++ b/sound/pci/intel8x0.c
+@@ -2252,7 +2252,7 @@ static int snd_intel8x0_mixer(struct intel8x0 *chip, int ac97_clock,
+ 			tmp |= chip->ac97_sdin[0] << ICH_DI1L_SHIFT;
+ 			for (i = 1; i < 4; i++) {
+ 				if (pcm->r[0].codec[i]) {
+-					tmp |= chip->ac97_sdin[pcm->r[0].codec[1]->num] << ICH_DI2L_SHIFT;
++					tmp |= chip->ac97_sdin[pcm->r[0].codec[i]->num] << ICH_DI2L_SHIFT;
+ 					break;
+ 				}
+ 			}
+-- 
+2.39.5
+
 
 
 
