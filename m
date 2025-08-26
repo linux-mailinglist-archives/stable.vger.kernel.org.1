@@ -1,58 +1,58 @@
-Return-Path: <stable+bounces-173419-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-175147-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 217DAB35DC9
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 13:47:59 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6347AB366FC
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 16:02:34 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 2987036774B
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 11:38:02 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 044AE8E4768
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 13:52:45 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 247C42BEC34;
-	Tue, 26 Aug 2025 11:36:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 74721341650;
+	Tue, 26 Aug 2025 13:51:06 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="1V/9ugba"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="J6x+je3C"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D79E217332C;
-	Tue, 26 Aug 2025 11:36:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 29FC6345758;
+	Tue, 26 Aug 2025 13:51:06 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756208200; cv=none; b=VtmwYvl9Ll+v+p/K+jipqNdUQ3euANKDrHbYVzdPEJlUb2T5HU6ht0MMtBsQCIZEFcCMexzKTzP6CIU3ENP6JNbO4SQA1THxDoravhNN9ndVH/mlYsesxiWgyG7cv3arFxiNKOKAtOjNlmtH5a2rX2HgtYCqCPkLAp0PuQUyQ40=
+	t=1756216266; cv=none; b=gOdu7PAliBvzlWsu6sKQvCIT0aJ/Uf6oxC3HwWtyGMIN8EDpWc2f/PW7tjvS/QkZmSp8ShKv+6iSo3Fx0bJTRYS9gRnHthSyb/g5+1ghbwpQ7aWJ45iUVJMjI+/7IdW6N3zqPK0BlHnKnimJ6RUBu5a6OCIwMK4MxSLvl4WtkNU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756208200; c=relaxed/simple;
-	bh=LwlNlmV7Bflzyj2REHasSyiDRh5Ya6k+UPuQI0iw3Ro=;
+	s=arc-20240116; t=1756216266; c=relaxed/simple;
+	bh=P5UCxkHRw5t3aTNcRVIkBQPaMPOoXqXUShrR+gug6u0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Jdn09M6mmrMhpVudNQSeV1YJEZhxAyz5WvcyIQ3vnjFZdJl/lCHW4X1n6A9nAJzbbcnIXO3ptGMDfqv+D80WIvATBAGQXU5MmqT4d96UgTZCcScUdeL1rIFHhI4lLfrksYe7ZiF0XGbfYV5RRYhPR0bf12yjqokc9nYlP5x8/9s=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=1V/9ugba; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 13835C4CEF1;
-	Tue, 26 Aug 2025 11:36:39 +0000 (UTC)
+	 MIME-Version; b=banqwdp38DeDLP+xmp9/q1NyLIwQRyo3CBgpQ+8wQse4tEQnT8zipaA7jLe6ByhqTU8JROCMH21ZTAij8AwdwZJtlb4eBlK5Lb1kOZnjbVNry/OjORQF+qkPBqoeF5UD4QZi9ADAIo/L/uF0pwAPNeUMVxCC/by0gIKSee7XwxQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=J6x+je3C; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id AED9DC4CEF1;
+	Tue, 26 Aug 2025 13:51:05 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1756208200;
-	bh=LwlNlmV7Bflzyj2REHasSyiDRh5Ya6k+UPuQI0iw3Ro=;
+	s=korg; t=1756216266;
+	bh=P5UCxkHRw5t3aTNcRVIkBQPaMPOoXqXUShrR+gug6u0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=1V/9ugbaiznJzfkarMRTld2X8bRGNitXQ1qszXgZn2dyHTo0dI9rg0EnZTCuFNAPX
-	 xJ4yOZBauZW3x62kbo7FIedWnAdulWIUvv4d0b+I9pNfWY2RJwkWMC/iCmxVgUNztl
-	 Lx2LKQcq711Yd9yyaVUqK150nA62hxy6ttv7P1qg=
+	b=J6x+je3C+6pd5AfD88XQUTSkCVwXAnyO9agqv7hu7hHiDveHW8r+2TWszIPJxcVO4
+	 tTZeUQ3tmxrlovrRKMZBTvDGXGlmzI+8tbncyvLdm0i6ol3p5LZUj4v30PG8oPpeXM
+	 B5fxkevDPpOdyzE/2UeBOsXGxxYR5eIyf2hla57o=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	John Ernberg <john.ernberg@actia.se>,
-	Peng Fan <peng.fan@nxp.com>,
-	Frank Li <Frank.Li@nxp.com>,
-	Herbert Xu <herbert@gondor.apana.org.au>,
-	stable@kernel.org
-Subject: [PATCH 6.12 020/322] crypto: caam - Prevent crash on suspend with iMX8QM / iMX8ULP
+	Leon Romanovsky <leonro@nvidia.com>,
+	Tariq Toukan <tariqt@nvidia.com>,
+	Michal Swiatkowski <michal.swiatkowski@linux.intel.com>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.15 344/644] net/mlx5e: Properly access RCU protected qdisc_sleeping variable
 Date: Tue, 26 Aug 2025 13:07:15 +0200
-Message-ID: <20250826110915.764127203@linuxfoundation.org>
+Message-ID: <20250826110954.919267376@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250826110915.169062587@linuxfoundation.org>
-References: <20250826110915.169062587@linuxfoundation.org>
+In-Reply-To: <20250826110946.507083938@linuxfoundation.org>
+References: <20250826110946.507083938@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,121 +64,52 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: John Ernberg <john.ernberg@actia.se>
+From: Leon Romanovsky <leonro@nvidia.com>
 
-commit 5ffc47feddcf8eb4d8ac7b42111a02c8e8146512 upstream.
+[ Upstream commit 2a601b2d35623065d31ebaf697b07502d54878c9 ]
 
-Since the CAAM on these SoCs is managed by another ARM core, called the
-SECO (Security Controller) on iMX8QM and Secure Enclave on iMX8ULP, which
-also reserves access to register page 0 suspend operations cannot touch
-this page.
+qdisc_sleeping variable is declared as "struct Qdisc __rcu" and
+as such needs proper annotation while accessing it.
 
-This is similar to when running OPTEE, where OPTEE will reserve page 0.
+Without rtnl_dereference(), the following error is generated by sparse:
 
-Track this situation using a new state variable no_page0, reflecting if
-page 0 is reserved elsewhere, either by other management cores in SoC or
-by OPTEE.
+drivers/net/ethernet/mellanox/mlx5/core/en/qos.c:377:40: warning:
+  incorrect type in initializer (different address spaces)
+drivers/net/ethernet/mellanox/mlx5/core/en/qos.c:377:40:    expected
+  struct Qdisc *qdisc
+drivers/net/ethernet/mellanox/mlx5/core/en/qos.c:377:40:    got struct
+  Qdisc [noderef] __rcu *qdisc_sleeping
 
-Replace the optee_en check in suspend/resume with the new check.
-
-optee_en cannot go away as it's needed elsewhere to gate OPTEE specific
-situations.
-
-Fixes the following splat at suspend:
-
-    Internal error: synchronous external abort: 0000000096000010 [#1] SMP
-    Hardware name: Freescale i.MX8QXP ACU6C (DT)
-    pstate: 60400005 (nZCv daif +PAN -UAO -TCO -DIT -SSBS BTYPE=--)
-    pc : readl+0x0/0x18
-    lr : rd_reg32+0x18/0x3c
-    sp : ffffffc08192ba20
-    x29: ffffffc08192ba20 x28: ffffff8025190000 x27: 0000000000000000
-    x26: ffffffc0808ae808 x25: ffffffc080922338 x24: ffffff8020e89090
-    x23: 0000000000000000 x22: ffffffc080922000 x21: ffffff8020e89010
-    x20: ffffffc080387ef8 x19: ffffff8020e89010 x18: 000000005d8000d5
-    x17: 0000000030f35963 x16: 000000008f785f3f x15: 000000003b8ef57c
-    x14: 00000000c418aef8 x13: 00000000f5fea526 x12: 0000000000000001
-    x11: 0000000000000002 x10: 0000000000000001 x9 : 0000000000000000
-    x8 : ffffff8025190870 x7 : ffffff8021726880 x6 : 0000000000000002
-    x5 : ffffff80217268f0 x4 : ffffff8021726880 x3 : ffffffc081200000
-    x2 : 0000000000000001 x1 : ffffff8020e89010 x0 : ffffffc081200004
-    Call trace:
-     readl+0x0/0x18
-     caam_ctrl_suspend+0x30/0xdc
-     dpm_run_callback.constprop.0+0x24/0x5c
-     device_suspend+0x170/0x2e8
-     dpm_suspend+0xa0/0x104
-     dpm_suspend_start+0x48/0x50
-     suspend_devices_and_enter+0x7c/0x45c
-     pm_suspend+0x148/0x160
-     state_store+0xb4/0xf8
-     kobj_attr_store+0x14/0x24
-     sysfs_kf_write+0x38/0x48
-     kernfs_fop_write_iter+0xb4/0x178
-     vfs_write+0x118/0x178
-     ksys_write+0x6c/0xd0
-     __arm64_sys_write+0x14/0x1c
-     invoke_syscall.constprop.0+0x64/0xb0
-     do_el0_svc+0x90/0xb0
-     el0_svc+0x18/0x44
-     el0t_64_sync_handler+0x88/0x124
-     el0t_64_sync+0x150/0x154
-    Code: 88dffc21 88dffc21 5ac00800 d65f03c0 (b9400000)
-
-Fixes: d2835701d93c ("crypto: caam - i.MX8ULP donot have CAAM page0 access")
-Cc: stable@kernel.org # v6.10+
-Signed-off-by: John Ernberg <john.ernberg@actia.se>
-Reviewed-by: Peng Fan <peng.fan@nxp.com>
-Reviewed-by: Frank Li <Frank.Li@nxp.com>
-Signed-off-by: Herbert Xu <herbert@gondor.apana.org.au>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Signed-off-by: Leon Romanovsky <leonro@nvidia.com>
+Signed-off-by: Tariq Toukan <tariqt@nvidia.com>
+Reviewed-by: Michal Swiatkowski <michal.swiatkowski@linux.intel.com>
+Link: https://patch.msgid.link/1752675472-201445-4-git-send-email-tariqt@nvidia.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/crypto/caam/ctrl.c   |    5 +++--
- drivers/crypto/caam/intern.h |    1 +
- 2 files changed, 4 insertions(+), 2 deletions(-)
+ drivers/net/ethernet/mellanox/mlx5/core/en/qos.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/drivers/crypto/caam/ctrl.c
-+++ b/drivers/crypto/caam/ctrl.c
-@@ -830,7 +830,7 @@ static int caam_ctrl_suspend(struct devi
+diff --git a/drivers/net/ethernet/mellanox/mlx5/core/en/qos.c b/drivers/net/ethernet/mellanox/mlx5/core/en/qos.c
+index 965838893432..7291ccabecba 100644
+--- a/drivers/net/ethernet/mellanox/mlx5/core/en/qos.c
++++ b/drivers/net/ethernet/mellanox/mlx5/core/en/qos.c
+@@ -724,7 +724,7 @@ static void mlx5e_reactivate_qos_sq(struct mlx5e_priv *priv, u16 qid, struct net
+ static void mlx5e_reset_qdisc(struct net_device *dev, u16 qid)
  {
- 	const struct caam_drv_private *ctrlpriv = dev_get_drvdata(dev);
+ 	struct netdev_queue *dev_queue = netdev_get_tx_queue(dev, qid);
+-	struct Qdisc *qdisc = dev_queue->qdisc_sleeping;
++	struct Qdisc *qdisc = rtnl_dereference(dev_queue->qdisc_sleeping);
  
--	if (ctrlpriv->caam_off_during_pm && !ctrlpriv->optee_en)
-+	if (ctrlpriv->caam_off_during_pm && !ctrlpriv->no_page0)
- 		caam_state_save(dev);
- 
- 	return 0;
-@@ -841,7 +841,7 @@ static int caam_ctrl_resume(struct devic
- 	struct caam_drv_private *ctrlpriv = dev_get_drvdata(dev);
- 	int ret = 0;
- 
--	if (ctrlpriv->caam_off_during_pm && !ctrlpriv->optee_en) {
-+	if (ctrlpriv->caam_off_during_pm && !ctrlpriv->no_page0) {
- 		caam_state_restore(dev);
- 
- 		/* HW and rng will be reset so deinstantiation can be removed */
-@@ -907,6 +907,7 @@ static int caam_probe(struct platform_de
- 
- 		imx_soc_data = imx_soc_match->data;
- 		reg_access = reg_access && imx_soc_data->page0_access;
-+		ctrlpriv->no_page0 = !reg_access;
- 		/*
- 		 * CAAM clocks cannot be controlled from kernel.
- 		 */
---- a/drivers/crypto/caam/intern.h
-+++ b/drivers/crypto/caam/intern.h
-@@ -115,6 +115,7 @@ struct caam_drv_private {
- 	u8 blob_present;	/* Nonzero if BLOB support present in device */
- 	u8 mc_en;		/* Nonzero if MC f/w is active */
- 	u8 optee_en;		/* Nonzero if OP-TEE f/w is active */
-+	u8 no_page0;		/* Nonzero if register page 0 is not controlled by Linux */
- 	bool pr_support;        /* RNG prediction resistance available */
- 	int secvio_irq;		/* Security violation interrupt number */
- 	int virt_en;		/* Virtualization enabled in CAAM */
+ 	if (!qdisc)
+ 		return;
+-- 
+2.39.5
+
 
 
 
