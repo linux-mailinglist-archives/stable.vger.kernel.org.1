@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-174642-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-173519-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 02979B3636A
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 15:29:46 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7F592B35E02
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 13:50:46 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 0785F7BD593
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 13:28:10 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 97313460926
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 11:41:08 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 40F9D22DF99;
-	Tue, 26 Aug 2025 13:28:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8427D2BE7DD;
+	Tue, 26 Aug 2025 11:40:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="hY9RbUzc"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="DibW79LN"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F182220F079;
-	Tue, 26 Aug 2025 13:28:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 34DCD393DD1;
+	Tue, 26 Aug 2025 11:40:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756214930; cv=none; b=lue1dK+LDNb/srUk3ETVYv+jnKyFiYkEVKuPioy81rf/bzmNlNp3MeacQobFQxdSOFuTrQaWKViXExy6ylFTYHe3lVH5UnfRuNXC6PCB4D5ZYJYrABac6+X4KgS+SDJWJ736K+k+Oc91fVZH7knD69diEihVMaWsBBV6ixPhVQU=
+	t=1756208459; cv=none; b=mL4ddcYaplVBtIBkGDA129qcLPqdkJkAOZndwRxGOy2WV/1te0aCPN8pYfIMwU1fwj3bIkm9WjZhQ8BZvgoIzCtSE/WOmLJq45tYKK0aWJLm3eyIxAiZERqjHt4ecSbezV89J6ukYEU4pgBXLUhEKvm2qpMr4Z+jA0/iTHY9BpI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756214930; c=relaxed/simple;
-	bh=PyYPY7Wp816cY4H7k1qX1Xz8ATSvxeCZGh0MOu2UVrc=;
+	s=arc-20240116; t=1756208459; c=relaxed/simple;
+	bh=ZtwuWAbVaRSHgWsmpmuOyxhlgrWCLHZ4ffROa6gacwQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Pkcg1cjXEWAGE+lY1e+eObghaYGuEregIx60Wl1T+gypwk5vzeNiya2RhbZfhQCPKd/nr1Vi+Dqqkv7sbVuzQ2+I5ES/x9j2E4JA2JiG4tig/6IrlirfzvGuwQJ3Ot9/sCyKCpXzYXkCZ8Lbikv4aAeRpbsr/7ymjRSQUcAaAiM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=hY9RbUzc; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 83F02C4CEF1;
-	Tue, 26 Aug 2025 13:28:49 +0000 (UTC)
+	 MIME-Version:Content-Type; b=kh1ng+iccusvU/7t4TIAFo01P0DyyvGjt+ga/TE1byUdyPHErb27JcIMuXiEBv/ccoIIYgQHy56GsQeyCHLhPaV9aW3beBPxvvqodVjw+W2M0G7XEp0TBGTOrJdjzI5lZ/xh1vEidxkSUx1trvyVZT8YLmiQYBY9jNz6EIDMxPk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=DibW79LN; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B8CA2C4CEF1;
+	Tue, 26 Aug 2025 11:40:58 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1756214929;
-	bh=PyYPY7Wp816cY4H7k1qX1Xz8ATSvxeCZGh0MOu2UVrc=;
+	s=korg; t=1756208459;
+	bh=ZtwuWAbVaRSHgWsmpmuOyxhlgrWCLHZ4ffROa6gacwQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=hY9RbUzcc5G14VJX0JVNAVAULIUJ2LA3ycHh7pJZw/8NOFm40oNN5xvWr1RJmDbAb
-	 Fv9loNXiZxSY6+0kjZokMwZFE2OW4WP5aDUjDsQbbqYZ8xZK7NoPLkbCS09PdlCLBo
-	 15RtEuD8pjKxtoCO+X5iuYuECl4zq0v9ecipfb24=
+	b=DibW79LNTCI1pojS7aYKDEPYmb2nUgHKjdr4mCsR1iSCBBaGOqTEsYchJpA6TupWz
+	 dL+jBa7E6lERRChoBL24L/BvrAeJRCNSkElf3eBv9xTc1h8MtD46BzDtXK2kbZ/tOn
+	 xnj6JhLWvupFYESZfkwIOucHp3YcqpfDbTZiCfPE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	stable@kernel.org,
-	Ojaswin Mujoo <ojaswin@linux.ibm.com>,
-	"Darrick J. Wong" <djwong@kernel.org>,
-	Theodore Tso <tytso@mit.edu>
-Subject: [PATCH 6.1 282/482] ext4: fix reserved gdt blocks handling in fsmap
+	=?UTF-8?q?Christian=20K=C3=B6nig?= <christian.koenig@amd.com>,
+	Gang Ba <Gang.Ba@amd.com>,
+	Alex Deucher <alexander.deucher@amd.com>
+Subject: [PATCH 6.12 120/322] drm/amdgpu: Avoid extra evict-restore process.
 Date: Tue, 26 Aug 2025 13:08:55 +0200
-Message-ID: <20250826110937.750556933@linuxfoundation.org>
+Message-ID: <20250826110918.762420678@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250826110930.769259449@linuxfoundation.org>
-References: <20250826110930.769259449@linuxfoundation.org>
+In-Reply-To: <20250826110915.169062587@linuxfoundation.org>
+References: <20250826110915.169062587@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,60 +60,67 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Ojaswin Mujoo <ojaswin@linux.ibm.com>
+From: Gang Ba <Gang.Ba@amd.com>
 
-commit 3ffbdd1f1165f1b2d6a94d1b1aabef57120deaf7 upstream.
+commit 1f02f2044bda1db1fd995bc35961ab075fa7b5a2 upstream.
 
-In some cases like small FSes with no meta_bg and where the resize
-doesn't need extra gdt blocks as it can fit in the current one,
-s_reserved_gdt_blocks is set as 0, which causes fsmap to emit a 0
-length entry, which is incorrect.
+If vm belongs to another process, this is fclose after fork,
+wait may enable signaling KFD eviction fence and cause parent process queue evicted.
 
-  $ mkfs.ext4 -b 65536 -O bigalloc /dev/sda 5G
-  $ mount /dev/sda /mnt/scratch
-  $ xfs_io -c "fsmap -d" /mnt/scartch
+[677852.634569]  amdkfd_fence_enable_signaling+0x56/0x70 [amdgpu]
+[677852.634814]  __dma_fence_enable_signaling+0x3e/0xe0
+[677852.634820]  dma_fence_wait_timeout+0x3a/0x140
+[677852.634825]  amddma_resv_wait_timeout+0x7f/0xf0 [amdkcl]
+[677852.634831]  amdgpu_vm_wait_idle+0x2d/0x60 [amdgpu]
+[677852.635026]  amdgpu_flush+0x34/0x50 [amdgpu]
+[677852.635208]  filp_flush+0x38/0x90
+[677852.635213]  filp_close+0x14/0x30
+[677852.635216]  do_close_on_exec+0xdd/0x130
+[677852.635221]  begin_new_exec+0x1da/0x490
+[677852.635225]  load_elf_binary+0x307/0xea0
+[677852.635231]  ? srso_alias_return_thunk+0x5/0xfbef5
+[677852.635235]  ? ima_bprm_check+0xa2/0xd0
+[677852.635240]  search_binary_handler+0xda/0x260
+[677852.635245]  exec_binprm+0x58/0x1a0
+[677852.635249]  bprm_execve.part.0+0x16f/0x210
+[677852.635254]  bprm_execve+0x45/0x80
+[677852.635257]  do_execveat_common.isra.0+0x190/0x200
 
-        0: 253:48 [0..127]: static fs metadata 128
-        1: 253:48 [128..255]: special 102:1 128
-        2: 253:48 [256..255]: special 102:2 0     <---- 0 len entry
-        3: 253:48 [256..383]: special 102:3 128
-
-Fix this by adding a check for this case.
-
-Cc: stable@kernel.org
-Fixes: 0c9ec4beecac ("ext4: support GETFSMAP ioctls")
-Signed-off-by: Ojaswin Mujoo <ojaswin@linux.ibm.com>
-Reviewed-by: Darrick J. Wong <djwong@kernel.org>
-Link: https://patch.msgid.link/08781b796453a5770112aa96ad14c864fbf31935.1754377641.git.ojaswin@linux.ibm.com
-Signed-off-by: Theodore Ts'o <tytso@mit.edu>
+Suggested-by: Christian König <christian.koenig@amd.com>
+Signed-off-by: Gang Ba <Gang.Ba@amd.com>
+Reviewed-by: Christian König <christian.koenig@amd.com>
+Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
+Cc: stable@vger.kernel.org
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- fs/ext4/fsmap.c |    8 ++++++++
- 1 file changed, 8 insertions(+)
+ drivers/gpu/drm/amd/amdgpu/amdgpu_vm.c |    6 ++----
+ 1 file changed, 2 insertions(+), 4 deletions(-)
 
---- a/fs/ext4/fsmap.c
-+++ b/fs/ext4/fsmap.c
-@@ -393,6 +393,14 @@ static unsigned int ext4_getfsmap_find_s
- 	/* Reserved GDT blocks */
- 	if (!ext4_has_feature_meta_bg(sb) || metagroup < first_meta_bg) {
- 		len = le16_to_cpu(sbi->s_es->s_reserved_gdt_blocks);
-+
-+		/*
-+		 * mkfs.ext4 can set s_reserved_gdt_blocks as 0 in some cases,
-+		 * check for that.
-+		 */
-+		if (!len)
-+			return 0;
-+
- 		error = ext4_getfsmap_fill(meta_list, fsb, len,
- 					   EXT4_FMR_OWN_RESV_GDT);
- 		if (error)
+--- a/drivers/gpu/drm/amd/amdgpu/amdgpu_vm.c
++++ b/drivers/gpu/drm/amd/amdgpu/amdgpu_vm.c
+@@ -2292,13 +2292,11 @@ void amdgpu_vm_adjust_size(struct amdgpu
+  */
+ long amdgpu_vm_wait_idle(struct amdgpu_vm *vm, long timeout)
+ {
+-	timeout = dma_resv_wait_timeout(vm->root.bo->tbo.base.resv,
+-					DMA_RESV_USAGE_BOOKKEEP,
+-					true, timeout);
++	timeout = drm_sched_entity_flush(&vm->immediate, timeout);
+ 	if (timeout <= 0)
+ 		return timeout;
+ 
+-	return dma_fence_wait_timeout(vm->last_unlocked, true, timeout);
++	return drm_sched_entity_flush(&vm->delayed, timeout);
+ }
+ 
+ static void amdgpu_vm_destroy_task_info(struct kref *kref)
 
 
 
