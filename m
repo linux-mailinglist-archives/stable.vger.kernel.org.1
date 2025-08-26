@@ -1,58 +1,55 @@
-Return-Path: <stable+bounces-175889-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-175366-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id C4CCEB36962
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 16:26:31 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 79D05B367C1
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 16:10:01 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 8E4717A7BEB
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 14:24:55 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id E80F41C243E2
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 14:02:46 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 20E4A35AABE;
-	Tue, 26 Aug 2025 14:23:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 33BE134F496;
+	Tue, 26 Aug 2025 14:00:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="BLuhnR0I"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="tJDiGyxD"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D3DE3350842;
-	Tue, 26 Aug 2025 14:23:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E129235208F;
+	Tue, 26 Aug 2025 14:00:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756218234; cv=none; b=vACya14zAsFNYYLvsDP/jMy8gIVwvdjB81e1cwaf5dMELKdmIHFGeoZgqX3irvVoi58G01edZOP3mE2f0TGFjrCgXRyjyr4ko5z21B4701R1rOAF1C1Zysc6cw/wtK8cQvFHZnTmHvORJI+cjxZrFp05q8qza2bXl2eoByJpaYw=
+	t=1756216848; cv=none; b=I3lqMlz6RyG86kfvV+iOkqKtpWxzNdDbKtXi5XHljvHbfTuqUfr8djM753z6nEgecgmUsn7+8ZBML2vvaJCF4GVXo4CjlXE8QtvxFyxmyvpMyo4aSPTygh3hWJgMBpbsaptWy9Kk9ypaBdcJ+bneCsEk3LdGzYIYKP3nbW2cS6g=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756218234; c=relaxed/simple;
-	bh=4xl5d6Tp7g1viq1GrOCzhPPvUsIZ5BKqbXVRCderySE=;
+	s=arc-20240116; t=1756216848; c=relaxed/simple;
+	bh=ghC3mzWSkhiQdCv3/Q1GxYRWPHmCCgw3VhDaeN6LVS0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=LT+W4i5eNnagdXf7ish5lOI4OxwjZYu+JnfW6Hpub56QcsHNNFLIFa6XQBlPRhtTJM+OOWLU70oH42FHNXBeXP+mutmVRtXjezq7ZlR69EUTZVliTgdj//36javNDzgL/L6uJB9AkcK+1lnhFU4OLEN6TN4KwYN6WIcttmjHz6o=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=BLuhnR0I; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5D100C4CEF1;
-	Tue, 26 Aug 2025 14:23:54 +0000 (UTC)
+	 MIME-Version; b=dVFBHTOPevVm84qwtWmTW1xn5Vccx37memj9fGEBmx2VeZIYihlokT1XZYSLP+8ABUEPG2oQhHz4ED/bRik4upMiMZB63A1ANgKBH+WNxJtLT/1PejsDnUtISJ/l3AlaTHvlgpQ8vLF14edO1KxZmsOmGN5zG5iaydTRq++tQwU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=tJDiGyxD; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 73166C4CEF1;
+	Tue, 26 Aug 2025 14:00:47 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1756218234;
-	bh=4xl5d6Tp7g1viq1GrOCzhPPvUsIZ5BKqbXVRCderySE=;
+	s=korg; t=1756216847;
+	bh=ghC3mzWSkhiQdCv3/Q1GxYRWPHmCCgw3VhDaeN6LVS0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=BLuhnR0Id6j/KczqS8qUFn8Viik8id8af/+MQHTCDFJY6z+OfcAuvlj48tyRISKVU
-	 kpW8sTleD/PWaPpMiPXQEUpzA7DpNOQQd+8GohQpETjdYjRCOwZcXC5N16uTU1OZ+6
-	 xWJgBTOom1KEI/AAQzKqoGoqUq6Sk3hy3hqb6Wsc=
+	b=tJDiGyxDCQi0IImxUXkbLZQxw+iq307VomJrZk2Z2LyUPI1P6kvXauGP2EGjkLtdh
+	 1A3uydVfApz2N75Z7PnJnaRfX5hpdikZ3z3fpdudGhTCwrcY+L2M+pOAs+DOLe12wD
+	 b3Oxdk41a6ypDhUFX7B8tAw7nAdXw6zyl/h8cROc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Ma Ke <make24@iscas.ac.cn>,
-	Ioana Ciornei <ioana.ciornei@nxp.com>,
-	Simon Horman <horms@kernel.org>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 445/523] dpaa2-eth: Fix device reference count leak in MAC endpoint handling
+	Jiayi Li <lijiayi@kylinos.cn>,
+	Ulf Hansson <ulf.hansson@linaro.org>
+Subject: [PATCH 5.15 564/644] memstick: Fix deadlock by moving removing flag earlier
 Date: Tue, 26 Aug 2025 13:10:55 +0200
-Message-ID: <20250826110935.427405113@linuxfoundation.org>
+Message-ID: <20250826111000.507311054@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250826110924.562212281@linuxfoundation.org>
-References: <20250826110924.562212281@linuxfoundation.org>
+In-Reply-To: <20250826110946.507083938@linuxfoundation.org>
+References: <20250826110946.507083938@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,73 +61,84 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Ma Ke <make24@iscas.ac.cn>
+From: Jiayi Li <lijiayi@kylinos.cn>
 
-[ Upstream commit ee9f3a81ab08dfe0538dbd1746f81fd4d5147fdc ]
+commit 99d7ab8db9d8230b243f5ed20ba0229e54cc0dfa upstream.
 
-The fsl_mc_get_endpoint() function uses device_find_child() for
-localization, which implicitly calls get_device() to increment the
-device's reference count before returning the pointer. However, the
-caller dpaa2_eth_connect_mac() fails to properly release this
-reference in multiple scenarios. We should call put_device() to
-decrement reference count properly.
+The existing memstick core patch: commit 62c59a8786e6 ("memstick: Skip
+allocating card when removing host") sets host->removing in
+memstick_remove_host(),but still exists a critical time window where
+memstick_check can run after host->eject is set but before removing is set.
 
-As comment of device_find_child() says, 'NOTE: you will need to drop
-the reference with put_device() after use'.
+In the rtsx_usb_ms driver, the problematic sequence is:
 
-Found by code review.
+rtsx_usb_ms_drv_remove:          memstick_check:
+  host->eject = true
+  cancel_work_sync(handle_req)     if(!host->removing)
+  ...                              memstick_alloc_card()
+                                     memstick_set_rw_addr()
+                                       memstick_new_req()
+                                         rtsx_usb_ms_request()
+                                           if(!host->eject)
+                                           skip schedule_work
+                                       wait_for_completion()
+  memstick_remove_host:                [blocks indefinitely]
+    host->removing = true
+    flush_workqueue()
+    [block]
 
+1. rtsx_usb_ms_drv_remove sets host->eject = true
+2. cancel_work_sync(&host->handle_req) runs
+3. memstick_check work may be executed here <-- danger window
+4. memstick_remove_host sets removing = 1
+
+During this window (step 3), memstick_check calls memstick_alloc_card,
+which may indefinitely waiting for mrq_complete completion that will
+never occur because rtsx_usb_ms_request sees eject=true and skips
+scheduling work, memstick_set_rw_addr waits forever for completion.
+
+This causes a deadlock when memstick_remove_host tries to flush_workqueue,
+waiting for memstick_check to complete, while memstick_check is blocked
+waiting for mrq_complete completion.
+
+Fix this by setting removing=true at the start of rtsx_usb_ms_drv_remove,
+before any work cancellation. This ensures memstick_check will see the
+removing flag immediately and exit early, avoiding the deadlock.
+
+Fixes: 62c59a8786e6 ("memstick: Skip allocating card when removing host")
+Signed-off-by: Jiayi Li <lijiayi@kylinos.cn>
 Cc: stable@vger.kernel.org
-Fixes: 719479230893 ("dpaa2-eth: add MAC/PHY support through phylink")
-Signed-off-by: Ma Ke <make24@iscas.ac.cn>
-Tested-by: Ioana Ciornei <ioana.ciornei@nxp.com>
-Reviewed-by: Ioana Ciornei <ioana.ciornei@nxp.com>
-Reviewed-by: Simon Horman <horms@kernel.org>
-Link: https://patch.msgid.link/20250717022309.3339976-2-make24@iscas.ac.cn
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Link: https://lore.kernel.org/r/20250804013604.1311218-1-lijiayi@kylinos.cn
+Signed-off-by: Ulf Hansson <ulf.hansson@linaro.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/net/ethernet/freescale/dpaa2/dpaa2-eth.c |   15 ++++++++++++---
- 1 file changed, 12 insertions(+), 3 deletions(-)
+ drivers/memstick/core/memstick.c    |    1 -
+ drivers/memstick/host/rtsx_usb_ms.c |    1 +
+ 2 files changed, 1 insertion(+), 1 deletion(-)
 
---- a/drivers/net/ethernet/freescale/dpaa2/dpaa2-eth.c
-+++ b/drivers/net/ethernet/freescale/dpaa2/dpaa2-eth.c
-@@ -4138,12 +4138,19 @@ static int dpaa2_eth_connect_mac(struct
- 	if (PTR_ERR(dpmac_dev) == -EPROBE_DEFER)
- 		return PTR_ERR(dpmac_dev);
+--- a/drivers/memstick/core/memstick.c
++++ b/drivers/memstick/core/memstick.c
+@@ -548,7 +548,6 @@ EXPORT_SYMBOL(memstick_add_host);
+  */
+ void memstick_remove_host(struct memstick_host *host)
+ {
+-	host->removing = 1;
+ 	flush_workqueue(workqueue);
+ 	mutex_lock(&host->lock);
+ 	if (host->card)
+--- a/drivers/memstick/host/rtsx_usb_ms.c
++++ b/drivers/memstick/host/rtsx_usb_ms.c
+@@ -812,6 +812,7 @@ static int rtsx_usb_ms_drv_remove(struct
+ 	int err;
  
--	if (IS_ERR(dpmac_dev) || dpmac_dev->dev.type != &fsl_mc_bus_dpmac_type)
-+	if (IS_ERR(dpmac_dev))
- 		return 0;
- 
-+	if (dpmac_dev->dev.type != &fsl_mc_bus_dpmac_type) {
-+		err = 0;
-+		goto out_put_device;
-+	}
-+
- 	mac = kzalloc(sizeof(struct dpaa2_mac), GFP_KERNEL);
--	if (!mac)
--		return -ENOMEM;
-+	if (!mac) {
-+		err = -ENOMEM;
-+		goto out_put_device;
-+	}
- 
- 	mac->mc_dev = dpmac_dev;
- 	mac->mc_io = priv->mc_io;
-@@ -4169,6 +4176,8 @@ err_close_mac:
- 	priv->mac = NULL;
- err_free_mac:
- 	kfree(mac);
-+out_put_device:
-+	put_device(&dpmac_dev->dev);
- 	return err;
- }
+ 	host->eject = true;
++	msh->removing = true;
+ 	cancel_work_sync(&host->handle_req);
+ 	cancel_delayed_work_sync(&host->poll_card);
  
 
 
