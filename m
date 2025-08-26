@@ -1,56 +1,61 @@
-Return-Path: <stable+bounces-174396-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-175039-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1361EB362F9
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 15:24:47 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 97F89B36602
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 15:52:30 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id BA9E31888108
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 13:20:34 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 14D3B1C23814
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 13:46:56 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1D1B428EA72;
-	Tue, 26 Aug 2025 13:17:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 150A4343D87;
+	Tue, 26 Aug 2025 13:46:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="MM3RHauA"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="AQw2Rzv7"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CCD122512C8;
-	Tue, 26 Aug 2025 13:17:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C2B60393DC0;
+	Tue, 26 Aug 2025 13:46:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756214278; cv=none; b=PCwxjOYPQF+GeOQkB0r407eyBtaFve2BR7BLASs6tGix5s1EBRhpJdp3KVgka8OKFbw5mO9au5oBXGOqjDmv4MwWLfbwD/YtyhIAtffSoJHrxk0Sk4JreuK+uGQ4GoY0T0PtgQh0V54exPQYKo/ReFsPEeF5pAvOxshthXyHo2s=
+	t=1756215979; cv=none; b=jCtSVAIJ5b1dpCHSMRqsKV3+VFxcWR2WuPc0C1U5YfgMtlq7AZwtTgh1+vgSq8JiSAdujqBvm1IYz/5hAm1fECcytD37RMN4W+niqzvAB3qIIIhyVyqC1ViDaknhJlaTOpRJ8ZXeQ448dWIQw3jook8Lv/lml/aSvaJzZu89qDM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756214278; c=relaxed/simple;
-	bh=ikaPFJWjuwyhlu0GTRKuB5v2yAIulZ4SZxEvmheP6d4=;
+	s=arc-20240116; t=1756215979; c=relaxed/simple;
+	bh=jBd32yUU/8ZwdxsO7Uj08eANt8mo9ZuUcNDxPl8Bk2Q=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=kHAGRkIfWKAzAqXC2rQUpVhJIYjRkDg4OB7CMhJn7XVkqVFR+/bQyiRgZe6ECJ1y5xPurFKTji8bQJ9wmf/7LOl7NUxcLrXEl8Dfa12gGZy8+DoQvJuA3VzT6XZjYRBd+aQIYZf0lRMKrXpvUsWbfK7dB/I/BSBzzeYG4r23gDU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=MM3RHauA; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5AFC6C4CEF1;
-	Tue, 26 Aug 2025 13:17:58 +0000 (UTC)
+	 MIME-Version; b=NCR9mq776xLdHPqquyGD/B0yZvQ8i3ULoVuT1ec2ynWK9FWW+nEjNuBRNEsZUuSWyfFM22EZruDqhCAJ0niK3mZkDEnn0VCzyRFQ8/S8N/nT67CntxsD/TO5VKe9A6MHlMmlIITz3a/swxJ9CVdYEs3vwNpVmdWyTIRrmNF1sa8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=AQw2Rzv7; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2A610C4CEF1;
+	Tue, 26 Aug 2025 13:46:19 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1756214278;
-	bh=ikaPFJWjuwyhlu0GTRKuB5v2yAIulZ4SZxEvmheP6d4=;
+	s=korg; t=1756215979;
+	bh=jBd32yUU/8ZwdxsO7Uj08eANt8mo9ZuUcNDxPl8Bk2Q=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=MM3RHauA6SVQs4wobp1idKSgmLOYhGUfq5M5vgPHCRqmo/5baoy0ofYtJWZCkWMEX
-	 Ss/eyTKgGP97AR85K+F6rTl+sQHukfSNCXYOtZX//X4MUgWxYWhOHdRLaw8x2Uk3fm
-	 dVyx9/FmX771pWViNq4ajP4ivhauHR5H4ggP0KgY=
+	b=AQw2Rzv7/qb7mOOGwtq344kmTb/353ocOItDSBDd6U0FItneWp9r5y65p/fQa2OSo
+	 HSZZG3MTNIcLcB/Fl4SHXMnVARI/QUVtNtOORY6WmL7P2IQadTDNUX9KMbzIqj4brY
+	 /A2lrN9xTo+ZnaUlg5jZj3aOPAG6A965oQA6pvqI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Shubhrajyoti Datta <shubhrajyoti.datta@amd.com>,
-	"Borislav Petkov (AMD)" <bp@alien8.de>,
+	Steve French <smfrench@gmail.com>,
+	Tom Talpey <tom@talpey.com>,
+	linux-cifs@vger.kernel.org,
+	samba-technical@lists.samba.org,
+	Stefan Metzmacher <metze@samba.org>,
+	Namjae Jeon <linkinjeon@kernel.org>,
+	Steve French <stfrench@microsoft.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 077/482] EDAC/synopsys: Clear the ECC counters on init
+Subject: [PATCH 5.15 239/644] smb: server: remove separate empty_recvmsg_queue
 Date: Tue, 26 Aug 2025 13:05:30 +0200
-Message-ID: <20250826110932.735959848@linuxfoundation.org>
+Message-ID: <20250826110952.324314803@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250826110930.769259449@linuxfoundation.org>
-References: <20250826110930.769259449@linuxfoundation.org>
+In-Reply-To: <20250826110946.507083938@linuxfoundation.org>
+References: <20250826110946.507083938@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,204 +67,171 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Shubhrajyoti Datta <shubhrajyoti.datta@amd.com>
+From: Stefan Metzmacher <metze@samba.org>
 
-[ Upstream commit b1dc7f097b78eb8d25b071ead2384b07a549692b ]
+[ Upstream commit 01027a62b508c48c762096f347de925eedcbd008 ]
 
-Clear the ECC error and counter registers during initialization/probe to avoid
-reporting stale errors that may have occurred before EDAC registration.
+There's no need to maintain two lists, we can just
+have a single list of receive buffers, which are free to use.
 
-For that, unify the Zynq and ZynqMP ECC state reading paths and simplify the
-code.
-
-  [ bp: Massage commit message.
-    Fix an -Wsometimes-uninitialized warning as reported by
-    Reported-by: kernel test robot <lkp@intel.com>
-    Closes: https://lore.kernel.org/oe-kbuild-all/202507141048.obUv3ZUm-lkp@intel.com ]
-
-Signed-off-by: Shubhrajyoti Datta <shubhrajyoti.datta@amd.com>
-Signed-off-by: Borislav Petkov (AMD) <bp@alien8.de>
-Link: https://lore.kernel.org/20250713050753.7042-1-shubhrajyoti.datta@amd.com
+Cc: Steve French <smfrench@gmail.com>
+Cc: Tom Talpey <tom@talpey.com>
+Cc: linux-cifs@vger.kernel.org
+Cc: samba-technical@lists.samba.org
+Fixes: 0626e6641f6b ("cifsd: add server handler for central processing and tranport layers")
+Signed-off-by: Stefan Metzmacher <metze@samba.org>
+Acked-by: Namjae Jeon <linkinjeon@kernel.org>
+Signed-off-by: Steve French <stfrench@microsoft.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/edac/synopsys_edac.c | 97 +++++++++++++++++-------------------
- 1 file changed, 46 insertions(+), 51 deletions(-)
+ fs/ksmbd/transport_rdma.c | 60 ++++++---------------------------------
+ 1 file changed, 8 insertions(+), 52 deletions(-)
 
-diff --git a/drivers/edac/synopsys_edac.c b/drivers/edac/synopsys_edac.c
-index e7c18bb61f81..c02ad4f984ad 100644
---- a/drivers/edac/synopsys_edac.c
-+++ b/drivers/edac/synopsys_edac.c
-@@ -333,20 +333,26 @@ struct synps_edac_priv {
- #endif
- };
+diff --git a/fs/ksmbd/transport_rdma.c b/fs/ksmbd/transport_rdma.c
+index 91e663d5d5bc..2644117305c2 100644
+--- a/fs/ksmbd/transport_rdma.c
++++ b/fs/ksmbd/transport_rdma.c
+@@ -128,9 +128,6 @@ struct smb_direct_transport {
+ 	spinlock_t		recvmsg_queue_lock;
+ 	struct list_head	recvmsg_queue;
  
-+enum synps_platform_type {
-+	ZYNQ,
-+	ZYNQMP,
-+	SYNPS,
-+};
-+
- /**
-  * struct synps_platform_data -  synps platform data structure.
-+ * @platform:		Identifies the target hardware platform
-  * @get_error_info:	Get EDAC error info.
-  * @get_mtype:		Get mtype.
-  * @get_dtype:		Get dtype.
-- * @get_ecc_state:	Get ECC state.
-  * @get_mem_info:	Get EDAC memory info
-  * @quirks:		To differentiate IPs.
-  */
- struct synps_platform_data {
-+	enum synps_platform_type platform;
- 	int (*get_error_info)(struct synps_edac_priv *priv);
- 	enum mem_type (*get_mtype)(const void __iomem *base);
- 	enum dev_type (*get_dtype)(const void __iomem *base);
--	bool (*get_ecc_state)(void __iomem *base);
- #ifdef CONFIG_EDAC_DEBUG
- 	u64 (*get_mem_info)(struct synps_edac_priv *priv);
- #endif
-@@ -721,51 +727,38 @@ static enum dev_type zynqmp_get_dtype(const void __iomem *base)
- 	return dt;
+-	spinlock_t		empty_recvmsg_queue_lock;
+-	struct list_head	empty_recvmsg_queue;
+-
+ 	int			send_credit_target;
+ 	atomic_t		send_credits;
+ 	spinlock_t		lock_new_recv_credits;
+@@ -274,32 +271,6 @@ static void put_recvmsg(struct smb_direct_transport *t,
+ 	spin_unlock(&t->recvmsg_queue_lock);
  }
  
--/**
-- * zynq_get_ecc_state - Return the controller ECC enable/disable status.
-- * @base:	DDR memory controller base address.
-- *
-- * Get the ECC enable/disable status of the controller.
-- *
-- * Return: true if enabled, otherwise false.
-- */
--static bool zynq_get_ecc_state(void __iomem *base)
-+static bool get_ecc_state(struct synps_edac_priv *priv)
- {
-+	u32 ecctype, clearval;
- 	enum dev_type dt;
--	u32 ecctype;
+-static struct
+-smb_direct_recvmsg *get_empty_recvmsg(struct smb_direct_transport *t)
+-{
+-	struct smb_direct_recvmsg *recvmsg = NULL;
 -
--	dt = zynq_get_dtype(base);
--	if (dt == DEV_UNKNOWN)
--		return false;
- 
--	ecctype = readl(base + SCRUB_OFST) & SCRUB_MODE_MASK;
--	if ((ecctype == SCRUB_MODE_SECDED) && (dt == DEV_X2))
--		return true;
--
--	return false;
+-	spin_lock(&t->empty_recvmsg_queue_lock);
+-	if (!list_empty(&t->empty_recvmsg_queue)) {
+-		recvmsg = list_first_entry(&t->empty_recvmsg_queue,
+-					   struct smb_direct_recvmsg, list);
+-		list_del(&recvmsg->list);
+-	}
+-	spin_unlock(&t->empty_recvmsg_queue_lock);
+-	return recvmsg;
 -}
 -
--/**
-- * zynqmp_get_ecc_state - Return the controller ECC enable/disable status.
-- * @base:	DDR memory controller base address.
-- *
-- * Get the ECC enable/disable status for the controller.
-- *
-- * Return: a ECC status boolean i.e true/false - enabled/disabled.
-- */
--static bool zynqmp_get_ecc_state(void __iomem *base)
+-static void put_empty_recvmsg(struct smb_direct_transport *t,
+-			      struct smb_direct_recvmsg *recvmsg)
 -{
--	enum dev_type dt;
--	u32 ecctype;
+-	ib_dma_unmap_single(t->cm_id->device, recvmsg->sge.addr,
+-			    recvmsg->sge.length, DMA_FROM_DEVICE);
 -
--	dt = zynqmp_get_dtype(base);
--	if (dt == DEV_UNKNOWN)
--		return false;
+-	spin_lock(&t->empty_recvmsg_queue_lock);
+-	list_add_tail(&recvmsg->list, &t->empty_recvmsg_queue);
+-	spin_unlock(&t->empty_recvmsg_queue_lock);
+-}
 -
--	ecctype = readl(base + ECC_CFG0_OFST) & SCRUB_MODE_MASK;
--	if ((ecctype == SCRUB_MODE_SECDED) &&
--	    ((dt == DEV_X2) || (dt == DEV_X4) || (dt == DEV_X8)))
--		return true;
-+	if (priv->p_data->platform == ZYNQ) {
-+		dt = zynq_get_dtype(priv->baseaddr);
-+		if (dt == DEV_UNKNOWN)
-+			return false;
-+
-+		ecctype = readl(priv->baseaddr + SCRUB_OFST) & SCRUB_MODE_MASK;
-+		if (ecctype == SCRUB_MODE_SECDED && dt == DEV_X2) {
-+			clearval = ECC_CTRL_CLR_CE_ERR | ECC_CTRL_CLR_UE_ERR;
-+			writel(clearval, priv->baseaddr + ECC_CTRL_OFST);
-+			writel(0x0, priv->baseaddr + ECC_CTRL_OFST);
-+			return true;
-+		}
-+	} else {
-+		dt = zynqmp_get_dtype(priv->baseaddr);
-+		if (dt == DEV_UNKNOWN)
-+			return false;
-+
-+		ecctype = readl(priv->baseaddr + ECC_CFG0_OFST) & SCRUB_MODE_MASK;
-+		if (ecctype == SCRUB_MODE_SECDED &&
-+		    (dt == DEV_X2 || dt == DEV_X4 || dt == DEV_X8)) {
-+			clearval = readl(priv->baseaddr + ECC_CLR_OFST) |
-+			ECC_CTRL_CLR_CE_ERR | ECC_CTRL_CLR_CE_ERRCNT |
-+			ECC_CTRL_CLR_UE_ERR | ECC_CTRL_CLR_UE_ERRCNT;
-+			writel(clearval, priv->baseaddr + ECC_CLR_OFST);
-+			return true;
-+		}
-+	}
+ static void enqueue_reassembly(struct smb_direct_transport *t,
+ 			       struct smb_direct_recvmsg *recvmsg,
+ 			       int data_length)
+@@ -384,9 +355,6 @@ static struct smb_direct_transport *alloc_transport(struct rdma_cm_id *cm_id)
+ 	spin_lock_init(&t->recvmsg_queue_lock);
+ 	INIT_LIST_HEAD(&t->recvmsg_queue);
  
- 	return false;
- }
-@@ -935,18 +928,18 @@ static int setup_irq(struct mem_ctl_info *mci,
- }
+-	spin_lock_init(&t->empty_recvmsg_queue_lock);
+-	INIT_LIST_HEAD(&t->empty_recvmsg_queue);
+-
+ 	init_waitqueue_head(&t->wait_send_pending);
+ 	atomic_set(&t->send_pending, 0);
  
- static const struct synps_platform_data zynq_edac_def = {
-+	.platform = ZYNQ,
- 	.get_error_info	= zynq_get_error_info,
- 	.get_mtype	= zynq_get_mtype,
- 	.get_dtype	= zynq_get_dtype,
--	.get_ecc_state	= zynq_get_ecc_state,
- 	.quirks		= 0,
- };
+@@ -548,7 +516,7 @@ static void recv_done(struct ib_cq *cq, struct ib_wc *wc)
+ 			       wc->opcode);
+ 			smb_direct_disconnect_rdma_connection(t);
+ 		}
+-		put_empty_recvmsg(t, recvmsg);
++		put_recvmsg(t, recvmsg);
+ 		return;
+ 	}
  
- static const struct synps_platform_data zynqmp_edac_def = {
-+	.platform = ZYNQMP,
- 	.get_error_info	= zynqmp_get_error_info,
- 	.get_mtype	= zynqmp_get_mtype,
- 	.get_dtype	= zynqmp_get_dtype,
--	.get_ecc_state	= zynqmp_get_ecc_state,
- #ifdef CONFIG_EDAC_DEBUG
- 	.get_mem_info	= zynqmp_get_mem_info,
- #endif
-@@ -958,10 +951,10 @@ static const struct synps_platform_data zynqmp_edac_def = {
- };
+@@ -562,7 +530,7 @@ static void recv_done(struct ib_cq *cq, struct ib_wc *wc)
+ 	switch (recvmsg->type) {
+ 	case SMB_DIRECT_MSG_NEGOTIATE_REQ:
+ 		if (wc->byte_len < sizeof(struct smb_direct_negotiate_req)) {
+-			put_empty_recvmsg(t, recvmsg);
++			put_recvmsg(t, recvmsg);
+ 			return;
+ 		}
+ 		t->negotiation_requested = true;
+@@ -579,7 +547,7 @@ static void recv_done(struct ib_cq *cq, struct ib_wc *wc)
  
- static const struct synps_platform_data synopsys_edac_def = {
-+	.platform = SYNPS,
- 	.get_error_info	= zynqmp_get_error_info,
- 	.get_mtype	= zynqmp_get_mtype,
- 	.get_dtype	= zynqmp_get_dtype,
--	.get_ecc_state	= zynqmp_get_ecc_state,
- 	.quirks         = (DDR_ECC_INTR_SUPPORT | DDR_ECC_INTR_SELF_CLEAR
- #ifdef CONFIG_EDAC_DEBUG
- 			  | DDR_ECC_DATA_POISON_SUPPORT
-@@ -1393,10 +1386,6 @@ static int mc_probe(struct platform_device *pdev)
- 	if (!p_data)
- 		return -ENODEV;
+ 		if (wc->byte_len <
+ 		    offsetof(struct smb_direct_data_transfer, padding)) {
+-			put_empty_recvmsg(t, recvmsg);
++			put_recvmsg(t, recvmsg);
+ 			return;
+ 		}
  
--	if (!p_data->get_ecc_state(baseaddr)) {
--		edac_printk(KERN_INFO, EDAC_MC, "ECC not enabled\n");
--		return -ENXIO;
--	}
+@@ -587,7 +555,7 @@ static void recv_done(struct ib_cq *cq, struct ib_wc *wc)
+ 		if (data_length) {
+ 			if (wc->byte_len < sizeof(struct smb_direct_data_transfer) +
+ 			    (u64)data_length) {
+-				put_empty_recvmsg(t, recvmsg);
++				put_recvmsg(t, recvmsg);
+ 				return;
+ 			}
  
- 	layers[0].type = EDAC_MC_LAYER_CHIP_SELECT;
- 	layers[0].size = SYNPS_EDAC_NR_CSROWS;
-@@ -1416,6 +1405,12 @@ static int mc_probe(struct platform_device *pdev)
- 	priv = mci->pvt_info;
- 	priv->baseaddr = baseaddr;
- 	priv->p_data = p_data;
-+	if (!get_ecc_state(priv)) {
-+		edac_printk(KERN_INFO, EDAC_MC, "ECC not enabled\n");
-+		rc = -ENODEV;
-+		goto free_edac_mc;
-+	}
-+
- 	spin_lock_init(&priv->reglock);
+@@ -607,7 +575,7 @@ static void recv_done(struct ib_cq *cq, struct ib_wc *wc)
+ 			avail_recvmsg_count = t->count_avail_recvmsg;
+ 			spin_unlock(&t->receive_credit_lock);
+ 		} else {
+-			put_empty_recvmsg(t, recvmsg);
++			put_recvmsg(t, recvmsg);
  
- 	mc_init(mci, pdev);
+ 			spin_lock(&t->receive_credit_lock);
+ 			receive_credits = --(t->recv_credits);
+@@ -805,7 +773,6 @@ static void smb_direct_post_recv_credits(struct work_struct *work)
+ 	struct smb_direct_recvmsg *recvmsg;
+ 	int receive_credits, credits = 0;
+ 	int ret;
+-	int use_free = 1;
+ 
+ 	spin_lock(&t->receive_credit_lock);
+ 	receive_credits = t->recv_credits;
+@@ -813,18 +780,9 @@ static void smb_direct_post_recv_credits(struct work_struct *work)
+ 
+ 	if (receive_credits < t->recv_credit_target) {
+ 		while (true) {
+-			if (use_free)
+-				recvmsg = get_free_recvmsg(t);
+-			else
+-				recvmsg = get_empty_recvmsg(t);
+-			if (!recvmsg) {
+-				if (use_free) {
+-					use_free = 0;
+-					continue;
+-				} else {
+-					break;
+-				}
+-			}
++			recvmsg = get_free_recvmsg(t);
++			if (!recvmsg)
++				break;
+ 
+ 			recvmsg->type = SMB_DIRECT_MSG_DATA_TRANSFER;
+ 			recvmsg->first_segment = false;
+@@ -1800,8 +1758,6 @@ static void smb_direct_destroy_pools(struct smb_direct_transport *t)
+ 
+ 	while ((recvmsg = get_free_recvmsg(t)))
+ 		mempool_free(recvmsg, t->recvmsg_mempool);
+-	while ((recvmsg = get_empty_recvmsg(t)))
+-		mempool_free(recvmsg, t->recvmsg_mempool);
+ 
+ 	mempool_destroy(t->recvmsg_mempool);
+ 	t->recvmsg_mempool = NULL;
 -- 
 2.39.5
 
