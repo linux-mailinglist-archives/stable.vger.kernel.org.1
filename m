@@ -1,55 +1,58 @@
-Return-Path: <stable+bounces-175102-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-173944-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [IPv6:2605:f480:58:1:0:1994:3:14])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2E7EEB365C0
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 15:50:29 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1CF55B36081
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 15:01:30 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 225584E4261
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 13:50:28 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id C67E51BA6959
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 12:58:23 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4D22634F46B;
-	Tue, 26 Aug 2025 13:49:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id CBBB51DE4F6;
+	Tue, 26 Aug 2025 12:57:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="rthe1het"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="DuNWNe7A"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 096492D0621;
-	Tue, 26 Aug 2025 13:49:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 88D1A1E32DB;
+	Tue, 26 Aug 2025 12:57:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756216145; cv=none; b=Z8wv/vSBTFH7Qh0wl6Z2LLFE1G/SHCyEI9oegXAgxHAK5rvXWKfeFJblzDIsIyUFBKAPRbZvgTq2Msy7GFrgQUy6bUQrSjuLk/fUPyglbHR0qg8HHZnq24gqNNr8NGX91sxVF9Itd1srQHZunjgeclK5rIphgkwd2Abeyg9IHI4=
+	t=1756213077; cv=none; b=MOGlGVyBwbL6WzFmYJx7nfCCHjZFZoFilQOO/vHWZCH+MnhbfSOzkiX0Oh+ZW3STKmyntSYXmtMAeHpCZv8sgKyQn4XPYwlKJSKzl9Qjnrza7VWgcNDHSN3MSB3TH2UDKLEMf9RMGjHvNbfX1sWWRaLMik3J7Ngm+z2NnJ5Px2Q=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756216145; c=relaxed/simple;
-	bh=PfY62gJ88cbT8rmdS5gB3gWIa+5aWaiPzjG6U9JpLOY=;
+	s=arc-20240116; t=1756213077; c=relaxed/simple;
+	bh=MABcLdAtyfY6dy6btApWEM8+m1p7/nwqzUSuo1foL5k=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=mZjdILAJAvZz2kEWxBuB4cRTODAAds5vZd5hoOoA44bHnQWpIXsS0NtrjZmQVnEQcPvXx12zib+TQ2T7Py1u9M8fK2XRUmkFqjKT+uU/49i8Omd5uP4AzNQNS2wUEXFlOspFShMhcLb2wOf8rzp+QpX7TL9Zh4PB12ZSuCdTFLc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=rthe1het; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8FDB3C4CEF1;
-	Tue, 26 Aug 2025 13:49:04 +0000 (UTC)
+	 MIME-Version:Content-Type; b=Rda/a510XZMVO7iSdkergogTAM36J0Mc+ssWrqPc/yTn6glh4c71ZTsnbr1lp3370Ur7STQeSdq2zVv0moAx8OoZdCB8ifC17PvjnJDN9JnLv+aILZwwUTD3r3F2j6Wq/R8k0RPsCqdsi2OJJ/k2MwMw0+AGMm6Ye0DWLc0en18=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=DuNWNe7A; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id BFFD6C4CEF1;
+	Tue, 26 Aug 2025 12:57:56 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1756216144;
-	bh=PfY62gJ88cbT8rmdS5gB3gWIa+5aWaiPzjG6U9JpLOY=;
+	s=korg; t=1756213077;
+	bh=MABcLdAtyfY6dy6btApWEM8+m1p7/nwqzUSuo1foL5k=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=rthe1hetmeNPmF7P0Qvu01l69A48+2MIWiGzq3HfUmCoObNGxGiJi/ib3Pty4H3Is
-	 coeuAyaVw6DkBdzRh1AM+K2JR4FMkLOZyL55sX4EWMpYXtZDMGYmw38rufOX/0HaIN
-	 2yo1ncK1Lx2Co4jjh6geJtdbnMtim7cEkya7hq64=
+	b=DuNWNe7A48AB24J2U0Qef3nnhin+I4hpMCnMPASqREqcF9tjPrdWkXnGwvVtL8auT
+	 gYbgC8tpWxtsmtAFvTO+MKTtMnsHZmyPAX3xX8mymgDPoGHX91b3is/ZnOKR0jIvx9
+	 EIEB0fLFFK9tVs1Dwb8Jxfk+4a6osVVOnqUyizi4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Sasha Levin <sashal@kernel.org>,
-	Christian Brauner <brauner@kernel.org>
-Subject: [PATCH 5.15 269/644] fs: Prevent file descriptor table allocations exceeding INT_MAX
-Date: Tue, 26 Aug 2025 13:06:00 +0200
-Message-ID: <20250826110953.038641265@linuxfoundation.org>
+	Tvrtko Ursulin <tvrtko.ursulin@igalia.com>,
+	=?UTF-8?q?Christian=20K=C3=B6nig?= <christian.koenig@amd.com>,
+	=?UTF-8?q?Thomas=20Hellstr=C3=B6m?= <thomas.hellstrom@linux.intel.com>,
+	Tvrtko Ursulin <tursulin@ursulin.net>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.6 212/587] drm/ttm: Respect the shrinker core free target
+Date: Tue, 26 Aug 2025 13:06:01 +0200
+Message-ID: <20250826110958.330881889@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250826110946.507083938@linuxfoundation.org>
-References: <20250826110946.507083938@linuxfoundation.org>
+In-Reply-To: <20250826110952.942403671@linuxfoundation.org>
+References: <20250826110952.942403671@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -59,111 +62,81 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Sasha Levin <sashal@kernel.org>
+From: Tvrtko Ursulin <tvrtko.ursulin@igalia.com>
 
-commit 04a2c4b4511d186b0fce685da21085a5d4acd370 upstream.
+[ Upstream commit eac21f8ebeb4f84d703cf41dc3f81d16fa9dc00a ]
 
-When sysctl_nr_open is set to a very high value (for example, 1073741816
-as set by systemd), processes attempting to use file descriptors near
-the limit can trigger massive memory allocation attempts that exceed
-INT_MAX, resulting in a WARNING in mm/slub.c:
+Currently the TTM shrinker aborts shrinking as soon as it frees pages from
+any of the page order pools and by doing so it can fail to respect the
+freeing target which was configured by the shrinker core.
 
-  WARNING: CPU: 0 PID: 44 at mm/slub.c:5027 __kvmalloc_node_noprof+0x21a/0x288
+We use the wording "can fail" because the number of freed pages will
+depend on the presence of pages in the pools and the order of the pools on
+the LRU list. For example if there are no free pages in the high order
+pools the shrinker core may require multiple passes over the TTM shrinker
+before it will free the default target of 128 pages (assuming there are
+free pages in the low order pools). This inefficiency can be compounded by
+the pool LRU where multiple further calls into the TTM shrinker are
+required to end up looking at the pool with pages.
 
-This happens because kvmalloc_array() and kvmalloc() check if the
-requested size exceeds INT_MAX and emit a warning when the allocation is
-not flagged with __GFP_NOWARN.
+Improve this by never freeing less than the shrinker core has requested.
 
-Specifically, when nr_open is set to 1073741816 (0x3ffffff8) and a
-process calls dup2(oldfd, 1073741880), the kernel attempts to allocate:
-- File descriptor array: 1073741880 * 8 bytes = 8,589,935,040 bytes
-- Multiple bitmaps: ~400MB
-- Total allocation size: > 8GB (exceeding INT_MAX = 2,147,483,647)
+At the same time we start reporting the number of scanned pages (freed in
+this case), which prevents the core shrinker from giving up on the TTM
+shrinker too soon and moving on.
 
-Reproducer:
-1. Set /proc/sys/fs/nr_open to 1073741816:
-   # echo 1073741816 > /proc/sys/fs/nr_open
+v2:
+ * Simplify loop logic. (Christian)
+ * Improve commit message.
 
-2. Run a program that uses a high file descriptor:
-   #include <unistd.h>
-   #include <sys/resource.h>
-
-   int main() {
-       struct rlimit rlim = {1073741824, 1073741824};
-       setrlimit(RLIMIT_NOFILE, &rlim);
-       dup2(2, 1073741880);  // Triggers the warning
-       return 0;
-   }
-
-3. Observe WARNING in dmesg at mm/slub.c:5027
-
-systemd commit a8b627a introduced automatic bumping of fs.nr_open to the
-maximum possible value. The rationale was that systems with memory
-control groups (memcg) no longer need separate file descriptor limits
-since memory is properly accounted. However, this change overlooked
-that:
-
-1. The kernel's allocation functions still enforce INT_MAX as a maximum
-   size regardless of memcg accounting
-2. Programs and tests that legitimately test file descriptor limits can
-   inadvertently trigger massive allocations
-3. The resulting allocations (>8GB) are impractical and will always fail
-
-systemd's algorithm starts with INT_MAX and keeps halving the value
-until the kernel accepts it. On most systems, this results in nr_open
-being set to 1073741816 (0x3ffffff8), which is just under 1GB of file
-descriptors.
-
-While processes rarely use file descriptors near this limit in normal
-operation, certain selftests (like
-tools/testing/selftests/core/unshare_test.c) and programs that test file
-descriptor limits can trigger this issue.
-
-Fix this by adding a check in alloc_fdtable() to ensure the requested
-allocation size does not exceed INT_MAX. This causes the operation to
-fail with -EMFILE instead of triggering a kernel warning and avoids the
-impractical >8GB memory allocation request.
-
-Fixes: 9cfe015aa424 ("get rid of NR_OPEN and introduce a sysctl_nr_open")
-Cc: stable@vger.kernel.org
+Signed-off-by: Tvrtko Ursulin <tvrtko.ursulin@igalia.com>
+Cc: Christian König <christian.koenig@amd.com>
+Cc: Thomas Hellström <thomas.hellstrom@linux.intel.com>
+Reviewed-by: Christian König <christian.koenig@amd.com>
+Signed-off-by: Tvrtko Ursulin <tursulin@ursulin.net>
+Link: https://lore.kernel.org/r/20250603112750.34997-2-tvrtko.ursulin@igalia.com
 Signed-off-by: Sasha Levin <sashal@kernel.org>
-Link: https://lore.kernel.org/20250629074021.1038845-1-sashal@kernel.org
-Signed-off-by: Christian Brauner <brauner@kernel.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- fs/file.c |   15 +++++++++++++++
- 1 file changed, 15 insertions(+)
+ drivers/gpu/drm/ttm/ttm_pool.c | 8 +++++---
+ 1 file changed, 5 insertions(+), 3 deletions(-)
 
---- a/fs/file.c
-+++ b/fs/file.c
-@@ -126,6 +126,21 @@ static struct fdtable * alloc_fdtable(un
- 	if (unlikely(nr > sysctl_nr_open))
- 		nr = ((sysctl_nr_open - 1) | (BITS_PER_LONG - 1)) + 1;
+diff --git a/drivers/gpu/drm/ttm/ttm_pool.c b/drivers/gpu/drm/ttm/ttm_pool.c
+index 37c08fac7e7d..80ba34cabca3 100644
+--- a/drivers/gpu/drm/ttm/ttm_pool.c
++++ b/drivers/gpu/drm/ttm/ttm_pool.c
+@@ -615,7 +615,6 @@ void ttm_pool_fini(struct ttm_pool *pool)
+ }
+ EXPORT_SYMBOL(ttm_pool_fini);
  
-+	/*
-+	 * Check if the allocation size would exceed INT_MAX. kvmalloc_array()
-+	 * and kvmalloc() will warn if the allocation size is greater than
-+	 * INT_MAX, as filp_cachep objects are not __GFP_NOWARN.
-+	 *
-+	 * This can happen when sysctl_nr_open is set to a very high value and
-+	 * a process tries to use a file descriptor near that limit. For example,
-+	 * if sysctl_nr_open is set to 1073741816 (0x3ffffff8) - which is what
-+	 * systemd typically sets it to - then trying to use a file descriptor
-+	 * close to that value will require allocating a file descriptor table
-+	 * that exceeds 8GB in size.
-+	 */
-+	if (unlikely(nr > INT_MAX / sizeof(struct file *)))
-+		return ERR_PTR(-EMFILE);
+-/* As long as pages are available make sure to release at least one */
+ static unsigned long ttm_pool_shrinker_scan(struct shrinker *shrink,
+ 					    struct shrink_control *sc)
+ {
+@@ -623,9 +622,12 @@ static unsigned long ttm_pool_shrinker_scan(struct shrinker *shrink,
+ 
+ 	do
+ 		num_freed += ttm_pool_shrink();
+-	while (!num_freed && atomic_long_read(&allocated_pages));
++	while (num_freed < sc->nr_to_scan &&
++	       atomic_long_read(&allocated_pages));
+ 
+-	return num_freed;
++	sc->nr_scanned = num_freed;
 +
- 	fdt = kmalloc(sizeof(struct fdtable), GFP_KERNEL_ACCOUNT);
- 	if (!fdt)
- 		goto out;
++	return num_freed ?: SHRINK_STOP;
+ }
+ 
+ /* Return the number of pages available or SHRINK_EMPTY if we have none */
+-- 
+2.39.5
+
 
 
 
