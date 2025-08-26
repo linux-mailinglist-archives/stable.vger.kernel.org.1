@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-173782-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-174910-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 107F0B35FB7
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 14:53:06 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id F00DEB3655A
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 15:47:12 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 69A047C17DF
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 12:51:48 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 0A6A91BC7D66
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 13:41:02 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1D7E220468E;
-	Tue, 26 Aug 2025 12:50:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E011A221290;
+	Tue, 26 Aug 2025 13:40:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="aKGC9gzn"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="uRrngWjX"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CC2F212CDA5;
-	Tue, 26 Aug 2025 12:50:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9C96E1F4CA9;
+	Tue, 26 Aug 2025 13:40:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756212656; cv=none; b=AH3bcdLGyjSm2iJRiACDdyOzalh/I5m4pnq0YjclOAC7VueRUGMAf/xYqjKxMuAMfajy+pwN+S1JRfm+4mUWKSR9DJasQwrEtoqJw0L0DEr+c2eY8xLaNeRB4Lm8es+GzGf6Okm6aojXJhYgDIyMHuz+ImCYsIbJGSvh6axigik=
+	t=1756215639; cv=none; b=Qtyk3SJHIROnzyjJnJ3/3AOJmeFFxs9kfhh3BM4TXDNv5yTCYSr5vxs91o3G4b0qk8CMPRGTOZm7FO9jSX0YXh8q6LouxwEngt5EcxhJaqlKnRlmYP5/WU4oNDAst+5UXDqBpGndNumAe0tyQBkfUUbU/KD/EovdamSMF3FUZgY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756212656; c=relaxed/simple;
-	bh=nQEITT8/AdXw+8BZuM1jrZyLiTwzgVfLkub2CEL77MM=;
+	s=arc-20240116; t=1756215639; c=relaxed/simple;
+	bh=D2miHvlrqXhzPpExISCw0NSu/qOGzK/aOKmkEfr2maI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=XzJ3zvpMO9CRGyqcnuHseDreA3dwtx8aFsPbmrwaBlH10E5a5Lqm8WPA7Uw8cegAXVLGysJHnd+mR0JJ9u1gikJEs5zISBS0r+VBeo4fG/KPd28KwTR8dCr8sQRQUi22B2w6g8iZl93LgxyofBQtSKo3WnQ1h8iB/MI9RlWKRSs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=aKGC9gzn; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5EF93C113CF;
-	Tue, 26 Aug 2025 12:50:56 +0000 (UTC)
+	 MIME-Version; b=rnR+jsi4ynE1ZPrfFRu2ZJZ/DrtMYAjnrKbwzI4Ml+y9MBDJ3pFOxadUTKOyRvI6TapFiEU5kmVpZoqHL028fqKd0jvy1zkoQoRdMKwfdef0pHEFdOU7sW/ffuBSZXX/0Kss7UULPsWHUKXxXlUbTql4hB+RJwmP7dmP5B6rCmw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=uRrngWjX; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2E60AC4CEF1;
+	Tue, 26 Aug 2025 13:40:39 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1756212656;
-	bh=nQEITT8/AdXw+8BZuM1jrZyLiTwzgVfLkub2CEL77MM=;
+	s=korg; t=1756215639;
+	bh=D2miHvlrqXhzPpExISCw0NSu/qOGzK/aOKmkEfr2maI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=aKGC9gznck2j5E8dQ4EYKEdYBD+ieHQ/XEJksvkgiz57aGQUCyjIwHwzARz2u1kLk
-	 bWgH0D0xc8KMDHLF+fyNiMQVCQ4w0FuuN0d+UvBPMiYoJXCSooJVNwCvnS4Z9OTXIK
-	 ql0LS45j4HW7ZNZ1fCOf3ALhWTB0+1MMiawFrn0c=
+	b=uRrngWjXffIIMCAQ3MvADpSP4X0MxmlA1oaIS3oqqJOXRs0fUONOZtcInDcYM2isj
+	 nGTDUBvfuwUTnYgGKOZKcDmaKKdh1flEr4LBTEFl7ceXemOhh8YkS4/WlH/Jwl588z
+	 3uQZmIcehv9AcEH7ZcY+Lg4soBH6SSA7qJ9Npw9E=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Maxim Levitsky <mlevitsk@redhat.com>,
-	Sasha Levin <sashal@kernel.org>,
-	Sean Christopherson <seanjc@google.com>
-Subject: [PATCH 6.6 051/587] KVM: nVMX: Check vmcs12->guest_ia32_debugctl on nested VM-Enter
-Date: Tue, 26 Aug 2025 13:03:20 +0200
-Message-ID: <20250826110954.241591364@linuxfoundation.org>
+	Arnd Bergmann <arnd@arndb.de>,
+	Mark Brown <broonie@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.15 110/644] ASoC: Intel: fix SND_SOC_SOF dependencies
+Date: Tue, 26 Aug 2025 13:03:21 +0200
+Message-ID: <20250826110949.243642476@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250826110952.942403671@linuxfoundation.org>
-References: <20250826110952.942403671@linuxfoundation.org>
+In-Reply-To: <20250826110946.507083938@linuxfoundation.org>
+References: <20250826110946.507083938@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,121 +62,68 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Maxim Levitsky <mlevitsk@redhat.com>
+From: Arnd Bergmann <arnd@arndb.de>
 
-[ Upstream commit 095686e6fcb4150f0a55b1a25987fad3d8af58d6 ]
+[ Upstream commit e837b59f8b411b5baf5e3de7a5aea10b1c545a63 ]
 
-Add a consistency check for L2's guest_ia32_debugctl, as KVM only supports
-a subset of hardware functionality, i.e. KVM can't rely on hardware to
-detect illegal/unsupported values.  Failure to check the vmcs12 value
-would allow the guest to load any harware-supported value while running L2.
+It is currently possible to configure a kernel with all Intel SoC
+configs as loadable modules, but the board config as built-in. This
+causes a link failure in the reference to the snd_soc_sof.ko module:
 
-Take care to exempt BTF and LBR from the validity check in order to match
-KVM's behavior for writes via WRMSR, but without clobbering vmcs12.  Even
-if VM_EXIT_SAVE_DEBUG_CONTROLS is set in vmcs12, L1 can reasonably expect
-that vmcs12->guest_ia32_debugctl will not be modified if writes to the MSR
-are being intercepted.
+x86_64-linux-ld: sound/soc/intel/boards/sof_rt5682.o: in function `sof_rt5682_hw_params':
+sof_rt5682.c:(.text+0x1f9): undefined reference to `sof_dai_get_mclk'
+x86_64-linux-ld: sof_rt5682.c:(.text+0x234): undefined reference to `sof_dai_get_bclk'
+x86_64-linux-ld: sound/soc/intel/boards/sof_rt5682.o: in function `sof_rt5682_codec_init':
+sof_rt5682.c:(.text+0x3e0): undefined reference to `sof_dai_get_mclk'
+x86_64-linux-ld: sound/soc/intel/boards/sof_cs42l42.o: in function `sof_cs42l42_hw_params':
+sof_cs42l42.c:(.text+0x2a): undefined reference to `sof_dai_get_bclk'
+x86_64-linux-ld: sound/soc/intel/boards/sof_nau8825.o: in function `sof_nau8825_hw_params':
+sof_nau8825.c:(.text+0x7f): undefined reference to `sof_dai_get_bclk'
+x86_64-linux-ld: sound/soc/intel/boards/sof_da7219.o: in function `da7219_codec_init':
+sof_da7219.c:(.text+0xbf): undefined reference to `sof_dai_get_mclk'
+x86_64-linux-ld: sound/soc/intel/boards/sof_maxim_common.o: in function `max_98373_hw_params':
+sof_maxim_common.c:(.text+0x6f9): undefined reference to `sof_dai_get_tdm_slots'
+x86_64-linux-ld: sound/soc/intel/boards/sof_realtek_common.o: in function `rt1015_hw_params':
+sof_realtek_common.c:(.text+0x54c): undefined reference to `sof_dai_get_bclk'
+x86_64-linux-ld: sound/soc/intel/boards/sof_realtek_common.o: in function `rt1308_hw_params':
+sof_realtek_common.c:(.text+0x702): undefined reference to `sof_dai_get_mclk'
+x86_64-linux-ld: sound/soc/intel/boards/sof_cirrus_common.o: in function `cs35l41_hw_params':
+sof_cirrus_common.c:(.text+0x2f): undefined reference to `sof_dai_get_bclk'
 
-Arguably, KVM _should_ update vmcs12 if VM_EXIT_SAVE_DEBUG_CONTROLS is set
-*and* writes to MSR_IA32_DEBUGCTLMSR are not being intercepted by L1, but
-that would incur non-trivial complexity and wouldn't change the fact that
-KVM's handling of DEBUGCTL is blatantly broken.  I.e. the extra complexity
-is not worth carrying.
+Add an optional dependency on SND_SOC_SOF_INTEL_COMMON, to ensure that whenever
+the SOF support is in a loadable module, none of the board code can be built-in.
 
-Cc: stable@vger.kernel.org
-Signed-off-by: Maxim Levitsky <mlevitsk@redhat.com>
-Co-developed-by: Sean Christopherson <seanjc@google.com>
-Link: https://lore.kernel.org/r/20250610232010.162191-7-seanjc@google.com
-Stable-dep-of: 7d0cce6cbe71 ("KVM: VMX: Wrap all accesses to IA32_DEBUGCTL with getter/setter APIs")
-Signed-off-by: Sasha Levin <sashal@kernel.org>
-Signed-off-by: Sean Christopherson <seanjc@google.com>
+This may be be a little heavy-handed, but I also don't see a reason why one would
+want the boards to be built-in but not the SoC, so it shouldn't actually cause
+any usability problems.
+
+Signed-off-by: Arnd Bergmann <arnd@arndb.de>
+Link: https://patch.msgid.link/20250709145626.64125-1-arnd@kernel.org
+Signed-off-by: Mark Brown <broonie@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/x86/kvm/vmx/nested.c | 12 ++++++++++--
- arch/x86/kvm/vmx/vmx.c    |  5 ++---
- arch/x86/kvm/vmx/vmx.h    |  3 +++
- 3 files changed, 15 insertions(+), 5 deletions(-)
+ sound/soc/intel/boards/Kconfig | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/arch/x86/kvm/vmx/nested.c b/arch/x86/kvm/vmx/nested.c
-index fdf7503491f9..10236ecdad95 100644
---- a/arch/x86/kvm/vmx/nested.c
-+++ b/arch/x86/kvm/vmx/nested.c
-@@ -2564,7 +2564,8 @@ static int prepare_vmcs02(struct kvm_vcpu *vcpu, struct vmcs12 *vmcs12,
- 	if (vmx->nested.nested_run_pending &&
- 	    (vmcs12->vm_entry_controls & VM_ENTRY_LOAD_DEBUG_CONTROLS)) {
- 		kvm_set_dr(vcpu, 7, vmcs12->guest_dr7);
--		vmcs_write64(GUEST_IA32_DEBUGCTL, vmcs12->guest_ia32_debugctl);
-+		vmcs_write64(GUEST_IA32_DEBUGCTL, vmcs12->guest_ia32_debugctl &
-+						  vmx_get_supported_debugctl(vcpu, false));
- 	} else {
- 		kvm_set_dr(vcpu, 7, vcpu->arch.dr7);
- 		vmcs_write64(GUEST_IA32_DEBUGCTL, vmx->nested.pre_vmenter_debugctl);
-@@ -3045,7 +3046,8 @@ static int nested_vmx_check_guest_state(struct kvm_vcpu *vcpu,
- 		return -EINVAL;
+diff --git a/sound/soc/intel/boards/Kconfig b/sound/soc/intel/boards/Kconfig
+index 61b71d6c44cf..960a1bd79489 100644
+--- a/sound/soc/intel/boards/Kconfig
++++ b/sound/soc/intel/boards/Kconfig
+@@ -11,7 +11,7 @@ menuconfig SND_SOC_INTEL_MACH
+ 	 kernel: saying N will just cause the configurator to skip all
+ 	 the questions about Intel ASoC machine drivers.
  
- 	if ((vmcs12->vm_entry_controls & VM_ENTRY_LOAD_DEBUG_CONTROLS) &&
--	    CC(!kvm_dr7_valid(vmcs12->guest_dr7)))
-+	    (CC(!kvm_dr7_valid(vmcs12->guest_dr7)) ||
-+	     CC(!vmx_is_valid_debugctl(vcpu, vmcs12->guest_ia32_debugctl, false))))
- 		return -EINVAL;
+-if SND_SOC_INTEL_MACH
++if SND_SOC_INTEL_MACH && (SND_SOC_SOF_INTEL_COMMON || !SND_SOC_SOF_INTEL_COMMON)
  
- 	if ((vmcs12->vm_entry_controls & VM_ENTRY_LOAD_IA32_PAT) &&
-@@ -4435,6 +4437,12 @@ static void sync_vmcs02_to_vmcs12(struct kvm_vcpu *vcpu, struct vmcs12 *vmcs12)
- 		(vmcs12->vm_entry_controls & ~VM_ENTRY_IA32E_MODE) |
- 		(vm_entry_controls_get(to_vmx(vcpu)) & VM_ENTRY_IA32E_MODE);
- 
-+	/*
-+	 * Note!  Save DR7, but intentionally don't grab DEBUGCTL from vmcs02.
-+	 * Writes to DEBUGCTL that aren't intercepted by L1 are immediately
-+	 * propagated to vmcs12 (see vmx_set_msr()), as the value loaded into
-+	 * vmcs02 doesn't strictly track vmcs12.
-+	 */
- 	if (vmcs12->vm_exit_controls & VM_EXIT_SAVE_DEBUG_CONTROLS)
- 		kvm_get_dr(vcpu, 7, (unsigned long *)&vmcs12->guest_dr7);
- 
-diff --git a/arch/x86/kvm/vmx/vmx.c b/arch/x86/kvm/vmx/vmx.c
-index aaa767ed170e..32f1a38a1010 100644
---- a/arch/x86/kvm/vmx/vmx.c
-+++ b/arch/x86/kvm/vmx/vmx.c
-@@ -2149,7 +2149,7 @@ static u64 nested_vmx_truncate_sysenter_addr(struct kvm_vcpu *vcpu,
- 	return (unsigned long)data;
- }
- 
--static u64 vmx_get_supported_debugctl(struct kvm_vcpu *vcpu, bool host_initiated)
-+u64 vmx_get_supported_debugctl(struct kvm_vcpu *vcpu, bool host_initiated)
- {
- 	u64 debugctl = 0;
- 
-@@ -2168,8 +2168,7 @@ static u64 vmx_get_supported_debugctl(struct kvm_vcpu *vcpu, bool host_initiated
- 	return debugctl;
- }
- 
--static bool vmx_is_valid_debugctl(struct kvm_vcpu *vcpu, u64 data,
--				  bool host_initiated)
-+bool vmx_is_valid_debugctl(struct kvm_vcpu *vcpu, u64 data, bool host_initiated)
- {
- 	u64 invalid;
- 
-diff --git a/arch/x86/kvm/vmx/vmx.h b/arch/x86/kvm/vmx/vmx.h
-index 50d32d830890..5816fdd2dfa8 100644
---- a/arch/x86/kvm/vmx/vmx.h
-+++ b/arch/x86/kvm/vmx/vmx.h
-@@ -429,6 +429,9 @@ static inline void vmx_set_intercept_for_msr(struct kvm_vcpu *vcpu, u32 msr,
- 
- void vmx_update_cpu_dirty_logging(struct kvm_vcpu *vcpu);
- 
-+u64 vmx_get_supported_debugctl(struct kvm_vcpu *vcpu, bool host_initiated);
-+bool vmx_is_valid_debugctl(struct kvm_vcpu *vcpu, u64 data, bool host_initiated);
-+
- /*
-  * Note, early Intel manuals have the write-low and read-high bitmap offsets
-  * the wrong way round.  The bitmaps control MSRs 0x00000000-0x00001fff and
+ config SND_SOC_INTEL_USER_FRIENDLY_LONG_NAMES
+ 	bool "Use more user friendly long card names"
 -- 
-2.50.1
+2.39.5
 
 
 
