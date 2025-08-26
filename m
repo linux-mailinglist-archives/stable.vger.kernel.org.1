@@ -1,56 +1,59 @@
-Return-Path: <stable+bounces-175438-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-173366-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id C0244B36829
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 16:13:30 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 79B82B35C9D
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 13:36:16 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id C9484565BB2
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 14:06:11 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id A14B63BB4B2
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 11:36:11 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A60F235690F;
-	Tue, 26 Aug 2025 14:04:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5B0E62BEC34;
+	Tue, 26 Aug 2025 11:34:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="zpYqa1Jb"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="zwRwrdTd"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 62913374C4;
-	Tue, 26 Aug 2025 14:04:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 151033093AB;
+	Tue, 26 Aug 2025 11:34:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756217042; cv=none; b=j47RVjOUeXJ3kbYC6RwWr+wZjZ+8QsX1dl7d6fNxOCeaIxo+F0OaUUuG2RD5r+9C4AC+OHoimCeZTan9cZrLe4Mspk2HZaROj+EdcW9ZBhqBog0xHk4rZwyS4BWIG9qvLDwcC/nEGFK1fV0dVB2FtKACNcM4uGv9tnwU7r4KuQM=
+	t=1756208061; cv=none; b=eb7Wk6bvCqBYWLmncRqcq0FOeCOw4GGUcTwbgokCmtn46kRTViAXmEG03UJu4zCDlQ5scLmYqGn1JuUfHDe27AvtGxqdnHnekC6ni3Vn22SjMD9Kvy3iNoppR7wDURqrL6YRw6buTTi76DF8Z5iOHef6lGJwjRA0TQOHgPGRi2k=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756217042; c=relaxed/simple;
-	bh=9NEfD1/OC5isWRMXzY2VqQtVpIhmV83XnCeqx1x/Ebw=;
+	s=arc-20240116; t=1756208061; c=relaxed/simple;
+	bh=HcPcDJ0sdbE/aRPeJU4bNS71nqG4RmuXhJM4TQ9gnTg=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=NtTQy4HQetkhd3xIpphPWu6j6impZT3s/+CH/z053h/UeWcdNQj5B/wIozovySXhmnPMYP0M/Dbtt9nmMf7DXyIJiJIjV3h1PcPcyTmjhNrAoXw2ZsQt3y83+iq+ZNGOrAZXXOAsqlLIrQZrT4+mp3YZmetKQPq1914CnFMorBo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=zpYqa1Jb; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E9973C4CEF1;
-	Tue, 26 Aug 2025 14:04:01 +0000 (UTC)
+	 MIME-Version; b=WrIYb/ufhwAN1QA6eHHuQospz9AJxe58aNBjrNT8guOSUzGayXHEaBL0wcF4/9YgkW92ZYkSwGWeTBlPtP2NFpbKrWm7XxvZ6OPZq4ehN3XMgDaSG2vghiq8tfcDHQLYZV1Y31Ar8IUQdXGQw/hxTWpc1QVINrM0gX6Sj+FLjig=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=zwRwrdTd; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A49D2C4CEF1;
+	Tue, 26 Aug 2025 11:34:20 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1756217042;
-	bh=9NEfD1/OC5isWRMXzY2VqQtVpIhmV83XnCeqx1x/Ebw=;
+	s=korg; t=1756208061;
+	bh=HcPcDJ0sdbE/aRPeJU4bNS71nqG4RmuXhJM4TQ9gnTg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=zpYqa1JbvH33AWRZJiEWAQu0HI37sQiqPvhRKI8l2B51bHqTKivNSDD2Q92LpmJcV
-	 XJjHYbqjP+rVXWB+BbO58Pux1b6HHswaoeQL8TM8DnJiFjwUQ1GoMppnrXq5ahjCnK
-	 qDc4rutMNh9d6SI6PY/7kz/5AsX4ZAXrp+ttKj3g=
+	b=zwRwrdTdlXk/H7wmrBQRHU48on38HjDU2XQTbiIGBWOVpBNKIotiBEoxycbfnDUL8
+	 HfvGhJqKQ6kUUFgIN3tfyeqzaEI0JQTi0hrsfaSWBIkXhIf+AyQzM0UPSLF2hajpDY
+	 bmd82Q7NjxLnoQWRXYFxvSt6DuH7Vn8gXpMCowfA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Ranjan Kumar <ranjan.kumar@broadcom.com>,
-	"Martin K. Petersen" <martin.petersen@oracle.com>,
+	"D. Wythe" <alibuda@linux.alibaba.com>,
+	Guangguan Wang <guangguan.wang@linux.alibaba.com>,
+	Alexandra Winter <wintera@linux.ibm.com>,
+	Dust Li <dust.li@linux.alibaba.com>,
+	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 607/644] scsi: mpi3mr: Serialize admin queue BAR writes on 32-bit systems
-Date: Tue, 26 Aug 2025 13:11:38 +0200
-Message-ID: <20250826111001.592852705@linuxfoundation.org>
+Subject: [PATCH 6.16 415/457] net/smc: fix UAF on smcsk after smc_listen_out()
+Date: Tue, 26 Aug 2025 13:11:39 +0200
+Message-ID: <20250826110947.550085781@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250826110946.507083938@linuxfoundation.org>
-References: <20250826110946.507083938@linuxfoundation.org>
+In-Reply-To: <20250826110937.289866482@linuxfoundation.org>
+References: <20250826110937.289866482@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,107 +65,112 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.16-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Ranjan Kumar <ranjan.kumar@broadcom.com>
+From: D. Wythe <alibuda@linux.alibaba.com>
 
-[ Upstream commit c91e140c82eb58724c435f623702e51cc7896646 ]
+[ Upstream commit d9cef55ed49117bd63695446fb84b4b91815c0b4 ]
 
-On 32-bit systems, 64-bit BAR writes to admin queue registers are
-performed as two 32-bit writes. Without locking, this can cause partial
-writes when accessed concurrently.
+BPF CI testing report a UAF issue:
 
-Updated per-queue spinlocks is used to serialize these writes and prevent
-race conditions.
+  [   16.446633] BUG: kernel NULL pointer dereference, address: 000000000000003  0
+  [   16.447134] #PF: supervisor read access in kernel mod  e
+  [   16.447516] #PF: error_code(0x0000) - not-present pag  e
+  [   16.447878] PGD 0 P4D   0
+  [   16.448063] Oops: Oops: 0000 [#1] PREEMPT SMP NOPT  I
+  [   16.448409] CPU: 0 UID: 0 PID: 9 Comm: kworker/0:1 Tainted: G           OE      6.13.0-rc3-g89e8a75fda73-dirty #4  2
+  [   16.449124] Tainted: [O]=OOT_MODULE, [E]=UNSIGNED_MODUL  E
+  [   16.449502] Hardware name: QEMU Ubuntu 24.04 PC (i440FX + PIIX, 1996), BIOS 1.16.3-debian-1.16.3-2 04/01/201  4
+  [   16.450201] Workqueue: smc_hs_wq smc_listen_wor  k
+  [   16.450531] RIP: 0010:smc_listen_work+0xc02/0x159  0
+  [   16.452158] RSP: 0018:ffffb5ab40053d98 EFLAGS: 0001024  6
+  [   16.452526] RAX: 0000000000000001 RBX: 0000000000000002 RCX: 000000000000030  0
+  [   16.452994] RDX: 0000000000000280 RSI: 00003513840053f0 RDI: 000000000000000  0
+  [   16.453492] RBP: ffffa097808e3800 R08: ffffa09782dba1e0 R09: 000000000000000  5
+  [   16.453987] R10: 0000000000000000 R11: 0000000000000000 R12: ffffa0978274640  0
+  [   16.454497] R13: 0000000000000000 R14: 0000000000000000 R15: ffffa09782d4092  0
+  [   16.454996] FS:  0000000000000000(0000) GS:ffffa097bbc00000(0000) knlGS:000000000000000  0
+  [   16.455557] CS:  0010 DS: 0000 ES: 0000 CR0: 000000008005003  3
+  [   16.455961] CR2: 0000000000000030 CR3: 0000000102788004 CR4: 0000000000770ef  0
+  [   16.456459] PKRU: 5555555  4
+  [   16.456654] Call Trace  :
+  [   16.456832]  <TASK  >
+  [   16.456989]  ? __die+0x23/0x7  0
+  [   16.457215]  ? page_fault_oops+0x180/0x4c  0
+  [   16.457508]  ? __lock_acquire+0x3e6/0x249  0
+  [   16.457801]  ? exc_page_fault+0x68/0x20  0
+  [   16.458080]  ? asm_exc_page_fault+0x26/0x3  0
+  [   16.458389]  ? smc_listen_work+0xc02/0x159  0
+  [   16.458689]  ? smc_listen_work+0xc02/0x159  0
+  [   16.458987]  ? lock_is_held_type+0x8f/0x10  0
+  [   16.459284]  process_one_work+0x1ea/0x6d  0
+  [   16.459570]  worker_thread+0x1c3/0x38  0
+  [   16.459839]  ? __pfx_worker_thread+0x10/0x1  0
+  [   16.460144]  kthread+0xe0/0x11  0
+  [   16.460372]  ? __pfx_kthread+0x10/0x1  0
+  [   16.460640]  ret_from_fork+0x31/0x5  0
+  [   16.460896]  ? __pfx_kthread+0x10/0x1  0
+  [   16.461166]  ret_from_fork_asm+0x1a/0x3  0
+  [   16.461453]  </TASK  >
+  [   16.461616] Modules linked in: bpf_testmod(OE) [last unloaded: bpf_testmod(OE)  ]
+  [   16.462134] CR2: 000000000000003  0
+  [   16.462380] ---[ end trace 0000000000000000 ]---
+  [   16.462710] RIP: 0010:smc_listen_work+0xc02/0x1590
 
-Fixes: 824a156633df ("scsi: mpi3mr: Base driver code")
-Cc: stable@vger.kernel.org
-Signed-off-by: Ranjan Kumar <ranjan.kumar@broadcom.com>
-Link: https://lore.kernel.org/r/20250627194539.48851-4-ranjan.kumar@broadcom.com
-Signed-off-by: Martin K. Petersen <martin.petersen@oracle.com>
-[ Adapt context in struct mpi3mr_ioc ]
+The direct cause of this issue is that after smc_listen_out_connected(),
+newclcsock->sk may be NULL since it will releases the smcsk. Therefore,
+if the application closes the socket immediately after accept,
+newclcsock->sk can be NULL. A possible execution order could be as
+follows:
+
+smc_listen_work                                 | userspace
+-----------------------------------------------------------------
+lock_sock(sk)                                   |
+smc_listen_out_connected()                      |
+| \- smc_listen_out                             |
+|    | \- release_sock                          |
+     | |- sk->sk_data_ready()                   |
+                                                | fd = accept();
+                                                | close(fd);
+                                                |  \- socket->sk = NULL;
+/* newclcsock->sk is NULL now */
+SMC_STAT_SERV_SUCC_INC(sock_net(newclcsock->sk))
+
+Since smc_listen_out_connected() will not fail, simply swapping the order
+of the code can easily fix this issue.
+
+Fixes: 3b2dec2603d5 ("net/smc: restructure client and server code in af_smc")
+Signed-off-by: D. Wythe <alibuda@linux.alibaba.com>
+Reviewed-by: Guangguan Wang <guangguan.wang@linux.alibaba.com>
+Reviewed-by: Alexandra Winter <wintera@linux.ibm.com>
+Reviewed-by: Dust Li <dust.li@linux.alibaba.com>
+Link: https://patch.msgid.link/20250818054618.41615-1-alibuda@linux.alibaba.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/scsi/mpi3mr/mpi3mr.h    |    4 ++++
- drivers/scsi/mpi3mr/mpi3mr_fw.c |   15 +++++++++++----
- drivers/scsi/mpi3mr/mpi3mr_os.c |    2 ++
- 3 files changed, 17 insertions(+), 4 deletions(-)
+ net/smc/af_smc.c | 3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
---- a/drivers/scsi/mpi3mr/mpi3mr.h
-+++ b/drivers/scsi/mpi3mr/mpi3mr.h
-@@ -701,6 +701,8 @@ struct scmd_priv {
-  * @driver_info: Driver, Kernel, OS information to firmware
-  * @change_count: Topology change count
-  * @op_reply_q_offset: Operational reply queue offset with MSIx
-+ * @adm_req_q_bar_writeq_lock: Admin request queue lock
-+ * @adm_reply_q_bar_writeq_lock: Admin reply queue lock
-  */
- struct mpi3mr_ioc {
- 	struct list_head list;
-@@ -828,6 +830,8 @@ struct mpi3mr_ioc {
- 	struct mpi3_driver_info_layout driver_info;
- 	u16 change_count;
- 	u16 op_reply_q_offset;
-+	spinlock_t adm_req_q_bar_writeq_lock;
-+	spinlock_t adm_reply_q_bar_writeq_lock;
- };
+diff --git a/net/smc/af_smc.c b/net/smc/af_smc.c
+index 1882bab8e00e..dc72ff353813 100644
+--- a/net/smc/af_smc.c
++++ b/net/smc/af_smc.c
+@@ -2568,8 +2568,9 @@ static void smc_listen_work(struct work_struct *work)
+ 			goto out_decl;
+ 	}
  
- /**
---- a/drivers/scsi/mpi3mr/mpi3mr_fw.c
-+++ b/drivers/scsi/mpi3mr/mpi3mr_fw.c
-@@ -11,17 +11,22 @@
- #include <linux/io-64-nonatomic-lo-hi.h>
+-	smc_listen_out_connected(new_smc);
+ 	SMC_STAT_SERV_SUCC_INC(sock_net(newclcsock->sk), ini);
++	/* smc_listen_out() will release smcsk */
++	smc_listen_out_connected(new_smc);
+ 	goto out_free;
  
- #if defined(writeq) && defined(CONFIG_64BIT)
--static inline void mpi3mr_writeq(__u64 b, void __iomem *addr)
-+static inline void mpi3mr_writeq(__u64 b, void __iomem *addr,
-+	spinlock_t *write_queue_lock)
- {
- 	writeq(b, addr);
- }
- #else
--static inline void mpi3mr_writeq(__u64 b, void __iomem *addr)
-+static inline void mpi3mr_writeq(__u64 b, void __iomem *addr,
-+	spinlock_t *write_queue_lock)
- {
- 	__u64 data_out = b;
-+	unsigned long flags;
- 
-+	spin_lock_irqsave(write_queue_lock, flags);
- 	writel((u32)(data_out), addr);
- 	writel((u32)(data_out >> 32), (addr + 4));
-+	spin_unlock_irqrestore(write_queue_lock, flags);
- }
- #endif
- 
-@@ -2183,9 +2188,11 @@ static int mpi3mr_setup_admin_qpair(stru
- 	    (mrioc->num_admin_req);
- 	writel(num_admin_entries, &mrioc->sysif_regs->admin_queue_num_entries);
- 	mpi3mr_writeq(mrioc->admin_req_dma,
--	    &mrioc->sysif_regs->admin_request_queue_address);
-+		&mrioc->sysif_regs->admin_request_queue_address,
-+		&mrioc->adm_req_q_bar_writeq_lock);
- 	mpi3mr_writeq(mrioc->admin_reply_dma,
--	    &mrioc->sysif_regs->admin_reply_queue_address);
-+		&mrioc->sysif_regs->admin_reply_queue_address,
-+		&mrioc->adm_reply_q_bar_writeq_lock);
- 	writel(mrioc->admin_req_pi, &mrioc->sysif_regs->admin_request_queue_pi);
- 	writel(mrioc->admin_reply_ci, &mrioc->sysif_regs->admin_reply_queue_ci);
- 	return retval;
---- a/drivers/scsi/mpi3mr/mpi3mr_os.c
-+++ b/drivers/scsi/mpi3mr/mpi3mr_os.c
-@@ -3796,6 +3796,8 @@ mpi3mr_probe(struct pci_dev *pdev, const
- 	spin_lock_init(&mrioc->tgtdev_lock);
- 	spin_lock_init(&mrioc->watchdog_lock);
- 	spin_lock_init(&mrioc->chain_buf_lock);
-+	spin_lock_init(&mrioc->adm_req_q_bar_writeq_lock);
-+	spin_lock_init(&mrioc->adm_reply_q_bar_writeq_lock);
- 
- 	INIT_LIST_HEAD(&mrioc->fwevt_list);
- 	INIT_LIST_HEAD(&mrioc->tgtdev_list);
+ out_unlock:
+-- 
+2.50.1
+
 
 
 
