@@ -1,55 +1,56 @@
-Return-Path: <stable+bounces-173138-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-173464-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id D976DB35BD9
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 13:28:40 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id CB343B35CE1
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 13:39:38 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 6CE331BA28ED
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 11:24:57 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 8D1497C56F0
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 11:39:37 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 03C352BE647;
-	Tue, 26 Aug 2025 11:24:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0270A2F9C23;
+	Tue, 26 Aug 2025 11:38:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="zwGxjV70"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="RMbL0hzO"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AA38A1A256B;
-	Tue, 26 Aug 2025 11:24:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B2ACB1FECAB;
+	Tue, 26 Aug 2025 11:38:35 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756207472; cv=none; b=fmFg1XIdJigQcyOwSa/J8qzM6f49A/m2NkBWgeGf7zNDTr9berXoFjFVFE9Up98mZ0ZmTRf50Oj+RPkdIwY/1fOEyrgkKOOIN/xF4S5smheFoJmBwLDlS2q7cm3Wscn2PhiWR4A44YKnv4kD5jGWXUIaf9m28wT9Wtej7vNujAg=
+	t=1756208315; cv=none; b=Ao8yDSE5uBmLa+z53jZC0l+h4xVgYDmLM/Qvrs/WD1VWTCmAUH+/bMtCTooUIestUQ/2ux1ZR+9iIZqZdJGXvfdjOrdlB2+raxCLKPhcEZEzMYTuAFPARj0wWew9uxQ3Yq3hdFE8zkq4oqtZfwOX/SgQEVyx35B2l8s9h9OKeNo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756207472; c=relaxed/simple;
-	bh=nffwfhQcrR8xClBf0e7iJxzWQj+yFECqae8tyAJYiQw=;
+	s=arc-20240116; t=1756208315; c=relaxed/simple;
+	bh=l6PFUXcMVzyX0FOkMbiYNo90rdtTJnTGE+Eq0ckmOp4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=tTQGhNGXM4d6C7iE8gLtkFNg50BJL5eWPrmODK500+F3mkrg9nBPN6nu3qZhjgbXYOC9F9m32a6wpuvkIEtQven+L3cPecd8zBaPBztWw2sYpDCpDxza6qdQPMkWGcJHjZn2iafmG1VnPl+9cD41pS1EHjHzVTaUz2Ge3EbxIFU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=zwGxjV70; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E38FAC4CEF1;
-	Tue, 26 Aug 2025 11:24:30 +0000 (UTC)
+	 MIME-Version; b=FMwhCfix0L4RuKMJKksWS6NC56PrOIs7sQJJcrrrsE2WWmJ9UPW9bmf5DIR/eQzprUr3P8uCnRxnbRQgY5VvPfhrtvJC80gI0j2NBKsAPNGs57K3mnL9mgYwv9sIaUHgSnFWyNhUOYWfuy5WabGHCOcY4GTBCgsp1oKog8jhBWQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=RMbL0hzO; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id F1AACC4CEF1;
+	Tue, 26 Aug 2025 11:38:34 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1756207471;
-	bh=nffwfhQcrR8xClBf0e7iJxzWQj+yFECqae8tyAJYiQw=;
+	s=korg; t=1756208315;
+	bh=l6PFUXcMVzyX0FOkMbiYNo90rdtTJnTGE+Eq0ckmOp4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=zwGxjV70N39Z2MtfIDQABSlTUlrDhVRiHjrDCZvRc+W021rXST7wB8yJ88IOAgfAz
-	 aPHBNHdwxf8xNn+9mJxnurtMIlEj4kVdoNSi0tqmtPAEREq2j6dpKz72GyzEepGwkH
-	 EPCfr0ifAKLkkAdJl5zdi7CCdg7L+Fd4Oo9de5js=
+	b=RMbL0hzOIKx4Re1McFzSAXoc6SRD8nY14iOOIyZ7dNu5IY7dFf4ETT3/Qvgqudil1
+	 6Mr42v71QlgFeqmrCyBs9INQRc3tjwxgEhRJNkCs+1VP4xqWX2M9ul5mGHOkWj28oZ
+	 6r4ko3e8o63x5M3q532J/e/lDoJCiykOdCF4B6r0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Bibo Mao <maobibo@loongson.cn>,
-	Huacai Chen <chenhuacai@loongson.cn>
-Subject: [PATCH 6.16 195/457] LoongArch: KVM: Fix stack protector issue in send_ipi_data()
+	Johan Hovold <johan+linaro@kernel.org>,
+	Baochen Qiang <quic_bqiang@quicinc.com>,
+	Jeff Johnson <jeff.johnson@oss.qualcomm.com>
+Subject: [PATCH 6.12 064/322] wifi: ath11k: fix dest ring-buffer corruption when ring is full
 Date: Tue, 26 Aug 2025 13:07:59 +0200
-Message-ID: <20250826110942.187217489@linuxfoundation.org>
+Message-ID: <20250826110917.138419411@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250826110937.289866482@linuxfoundation.org>
-References: <20250826110937.289866482@linuxfoundation.org>
+In-Reply-To: <20250826110915.169062587@linuxfoundation.org>
+References: <20250826110915.169062587@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,86 +62,66 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.16-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Bibo Mao <maobibo@loongson.cn>
+From: Johan Hovold <johan+linaro@kernel.org>
 
-commit 5c68549c81bcca70fc464e305ffeefd9af968287 upstream.
+commit aa6956150f820e6a6deba44be325ddfcb5b10f88 upstream.
 
-Function kvm_io_bus_read() is called in function send_ipi_data(), buffer
-size of parameter *val should be at least 8 bytes. Since some emulation
-functions like loongarch_ipi_readl() and kvm_eiointc_read() will write
-the buffer *val with 8 bytes signed extension regardless parameter len.
+Add the missing memory barriers to make sure that destination ring
+descriptors are read before updating the tail pointer (and passing
+ownership to the device) to avoid memory corruption on weakly ordered
+architectures like aarch64 when the ring is full.
 
-Otherwise there will be buffer overflow issue when CONFIG_STACKPROTECTOR
-is enabled. The bug report is shown as follows:
+Tested-on: WCN6855 hw2.1 WLAN.HSP.1.1-03125-QCAHSPSWPL_V1_V2_SILICONZ_LITE-3.6510.41
 
-Kernel panic - not syncing: stack-protector: Kernel stack is corrupted in: send_ipi_data+0x194/0x1a0 [kvm]
-CPU: 11 UID: 107 PID: 2692 Comm: CPU 0/KVM Not tainted 6.17.0-rc1+ #102 PREEMPT(full)
-Stack : 9000000005901568 0000000000000000 9000000003af371c 900000013c68c000
-        900000013c68f850 900000013c68f858 0000000000000000 900000013c68f998
-        900000013c68f990 900000013c68f990 900000013c68f6c0 fffffffffffdb058
-        fffffffffffdb0e0 900000013c68f858 911e1d4d39cf0ec2 9000000105657a00
-        0000000000000001 fffffffffffffffe 0000000000000578 282049464555206e
-        6f73676e6f6f4c20 0000000000000001 00000000086b4000 0000000000000000
-        0000000000000000 0000000000000000 9000000005709968 90000000058f9000
-        900000013c68fa68 900000013c68fab4 90000000029279f0 900000010153f940
-        900000010001f360 0000000000000000 9000000003af3734 000000004390000c
-        00000000000000b0 0000000000000004 0000000000000000 0000000000071c1d
-        ...
-Call Trace:
-[<9000000003af3734>] show_stack+0x5c/0x180
-[<9000000003aed168>] dump_stack_lvl+0x6c/0x9c
-[<9000000003ad0ab0>] vpanic+0x108/0x2c4
-[<9000000003ad0ca8>] panic+0x3c/0x40
-[<9000000004eb0a1c>] __stack_chk_fail+0x14/0x18
-[<ffff8000023473f8>] send_ipi_data+0x190/0x1a0 [kvm]
-[<ffff8000023313e4>] __kvm_io_bus_write+0xa4/0xe8 [kvm]
-[<ffff80000233147c>] kvm_io_bus_write+0x54/0x90 [kvm]
-[<ffff80000233f9f8>] kvm_emu_iocsr+0x180/0x310 [kvm]
-[<ffff80000233fe08>] kvm_handle_gspr+0x280/0x478 [kvm]
-[<ffff8000023443e8>] kvm_handle_exit+0xc0/0x130 [kvm]
-
-Cc: stable@vger.kernel.org
-Fixes: daee2f9cae551 ("LoongArch: KVM: Add IPI read and write function")
-Signed-off-by: Bibo Mao <maobibo@loongson.cn>
-Signed-off-by: Huacai Chen <chenhuacai@loongson.cn>
+Fixes: d5c65159f289 ("ath11k: driver for Qualcomm IEEE 802.11ax devices")
+Cc: stable@vger.kernel.org      # 5.6
+Signed-off-by: Johan Hovold <johan+linaro@kernel.org>
+Reviewed-by: Baochen Qiang <quic_bqiang@quicinc.com>
+Link: https://patch.msgid.link/20250604143457.26032-6-johan+linaro@kernel.org
+Signed-off-by: Jeff Johnson <jeff.johnson@oss.qualcomm.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- arch/loongarch/kvm/intc/ipi.c |    6 +++---
- 1 file changed, 3 insertions(+), 3 deletions(-)
+ drivers/net/wireless/ath/ath11k/hal.c |   11 +++++++++--
+ 1 file changed, 9 insertions(+), 2 deletions(-)
 
---- a/arch/loongarch/kvm/intc/ipi.c
-+++ b/arch/loongarch/kvm/intc/ipi.c
-@@ -99,7 +99,7 @@ static void write_mailbox(struct kvm_vcp
- static int send_ipi_data(struct kvm_vcpu *vcpu, gpa_t addr, uint64_t data)
+--- a/drivers/net/wireless/ath/ath11k/hal.c
++++ b/drivers/net/wireless/ath/ath11k/hal.c
+@@ -854,7 +854,6 @@ void ath11k_hal_srng_access_end(struct a
  {
- 	int i, idx, ret;
--	uint32_t val = 0, mask = 0;
-+	uint64_t val = 0, mask = 0;
+ 	lockdep_assert_held(&srng->lock);
  
- 	/*
- 	 * Bit 27-30 is mask for byte writing.
-@@ -108,7 +108,7 @@ static int send_ipi_data(struct kvm_vcpu
- 	if ((data >> 27) & 0xf) {
- 		/* Read the old val */
- 		idx = srcu_read_lock(&vcpu->kvm->srcu);
--		ret = kvm_io_bus_read(vcpu, KVM_IOCSR_BUS, addr, sizeof(val), &val);
-+		ret = kvm_io_bus_read(vcpu, KVM_IOCSR_BUS, addr, 4, &val);
- 		srcu_read_unlock(&vcpu->kvm->srcu, idx);
- 		if (unlikely(ret)) {
- 			kvm_err("%s: : read data from addr %llx failed\n", __func__, addr);
-@@ -124,7 +124,7 @@ static int send_ipi_data(struct kvm_vcpu
- 	}
- 	val |= ((uint32_t)(data >> 32) & ~mask);
- 	idx = srcu_read_lock(&vcpu->kvm->srcu);
--	ret = kvm_io_bus_write(vcpu, KVM_IOCSR_BUS, addr, sizeof(val), &val);
-+	ret = kvm_io_bus_write(vcpu, KVM_IOCSR_BUS, addr, 4, &val);
- 	srcu_read_unlock(&vcpu->kvm->srcu, idx);
- 	if (unlikely(ret))
- 		kvm_err("%s: : write data to addr %llx failed\n", __func__, addr);
+-	/* TODO: See if we need a write memory barrier here */
+ 	if (srng->flags & HAL_SRNG_FLAGS_LMAC_RING) {
+ 		/* For LMAC rings, ring pointer updates are done through FW and
+ 		 * hence written to a shared memory location that is read by FW
+@@ -869,7 +868,11 @@ void ath11k_hal_srng_access_end(struct a
+ 			WRITE_ONCE(*srng->u.src_ring.hp_addr, srng->u.src_ring.hp);
+ 		} else {
+ 			srng->u.dst_ring.last_hp = *srng->u.dst_ring.hp_addr;
+-			*srng->u.dst_ring.tp_addr = srng->u.dst_ring.tp;
++			/* Make sure descriptor is read before updating the
++			 * tail pointer.
++			 */
++			dma_mb();
++			WRITE_ONCE(*srng->u.dst_ring.tp_addr, srng->u.dst_ring.tp);
+ 		}
+ 	} else {
+ 		if (srng->ring_dir == HAL_SRNG_DIR_SRC) {
+@@ -885,6 +888,10 @@ void ath11k_hal_srng_access_end(struct a
+ 					   srng->u.src_ring.hp);
+ 		} else {
+ 			srng->u.dst_ring.last_hp = *srng->u.dst_ring.hp_addr;
++			/* Make sure descriptor is read before updating the
++			 * tail pointer.
++			 */
++			mb();
+ 			ath11k_hif_write32(ab,
+ 					   (unsigned long)srng->u.dst_ring.tp_addr -
+ 					   (unsigned long)ab->mem,
 
 
 
