@@ -1,58 +1,55 @@
-Return-Path: <stable+bounces-174504-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-173068-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id A67F8B363CB
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 15:33:13 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 173DAB35BC7
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 13:28:01 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 715A78A74A1
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 13:24:42 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 6515A2A4243
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 11:22:35 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id ACEEE27EFE7;
-	Tue, 26 Aug 2025 13:22:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 94AB129B8CF;
+	Tue, 26 Aug 2025 11:21:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="XIFoKV55"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="lUz0ukmZ"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6A32F23FC41;
-	Tue, 26 Aug 2025 13:22:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 53242267386;
+	Tue, 26 Aug 2025 11:21:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756214567; cv=none; b=nKsWpjhzkW8RDXDncKQ3xui37tZSBaf4EQxUWEK4gThWQkFbmSYUUYU5aPjAZJBhz4USX0ixEty67Q+TdTv//XO2EvLTaI/iCoDiHRDLOmJInK3dKLjgBzR450RcQnOgGKEVoLYMSz34h6GPRktM6jKZUqKZ8uxnLatOjjrP4fs=
+	t=1756207290; cv=none; b=PYz1rrvXcoQpWUp15vf3kEfjKXmhXlGn08RWCM5ar/RWAxlqQJ7M8qGkFZtkwYqOHczpKYX1Ywpqh3I2iD2O+lFxSFBcKUkZTpsEjx5Saw2thdO1+Kwwct23jao1oROpXp+y3ox0AXqHuV3adJPttueGIS8QodmSJzamD6NvfS4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756214567; c=relaxed/simple;
-	bh=cgNWnGYeNOsvMpzayROKu1PR43kTSzq7MvX0k5+tDzY=;
+	s=arc-20240116; t=1756207290; c=relaxed/simple;
+	bh=h0pRl72BqCl4CaRQnTAgzXlp/2GZoZxHXmLjiDdNd9M=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=UVei4QwU30py99ZMXISeDJAYsr3iQMXUf+uunXkJ1vVU1ABmtnRaxUvWnJeAbYCSOUq5fSgjV5eRFAPT2TL77PA7Z7OfWPQcO6TS/ct4oHIo0XjCxbzqrYUo2i3Zio9AxUDeIbzHjCTDaIcGL9E8a4QOv+jUprhm4iVDjfOszhI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=XIFoKV55; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id EA8DAC4CEF1;
-	Tue, 26 Aug 2025 13:22:46 +0000 (UTC)
+	 MIME-Version; b=hGVdkP9H77WYG3KVneSLtIeqH1P5hrwPqq5pSic8xBiNqiENBY8ZSrjbSyGaH+Nmrc0Asq/LjSxjTOsAlD9/+9xJKLVHv8xYF+h2nJ2ouQEuH1HPKk+PdmxSoThVtiU1eZCJU/47OxERHoH1NtlHEu5K5VOz2Y4E3yESDa4yF9U=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=lUz0ukmZ; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D63E3C4CEF1;
+	Tue, 26 Aug 2025 11:21:29 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1756214567;
-	bh=cgNWnGYeNOsvMpzayROKu1PR43kTSzq7MvX0k5+tDzY=;
+	s=korg; t=1756207290;
+	bh=h0pRl72BqCl4CaRQnTAgzXlp/2GZoZxHXmLjiDdNd9M=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=XIFoKV55PdtT2u/InYRSJEOwdM3EWlmxClvwFHcZHc9v3Nn9os6R6sIdJmrETWkcn
-	 xk9YJ0RbTHyGk4rg2XMTHl9qkuYzmY/Szj0JEXlw6RQ4xdao0Iv1Rf72oaoo77es7Y
-	 eIn9YsMXC5wjjoJjoPVx79rqkNNRPEEutk04A/D0=
+	b=lUz0ukmZC/1b90bPRVTET3Lb4z5PcUsrKlkCdjRAaCXx4ZGpxNWmcAnln5Bq4t71s
+	 Na6P2WFfkqr9DxG6cosC7Q8gW0tIpVir9b6ppnYuNDS64A8smJE7auSVoKSY11s7bt
+	 gOjSq1lNc1FL9f4EuugD8DhcNFfPa+HylHGnSqVQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Alex Lazar <alazar@nvidia.com>,
-	Dragos Tatulea <dtatulea@nvidia.com>,
-	Gal Pressman <gal@nvidia.com>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 156/482] net: vlan: Replace BUG() with WARN_ON_ONCE() in vlan_dev_* stubs
+	John David Anglin <dave.anglin@bell.net>,
+	Helge Deller <deller@gmx.de>
+Subject: [PATCH 6.16 125/457] parisc: Rename pte_needs_flush() to pte_needs_cache_flush() in cache.c
 Date: Tue, 26 Aug 2025 13:06:49 +0200
-Message-ID: <20250826110934.667627222@linuxfoundation.org>
+Message-ID: <20250826110940.463628079@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250826110930.769259449@linuxfoundation.org>
-References: <20250826110930.769259449@linuxfoundation.org>
+In-Reply-To: <20250826110937.289866482@linuxfoundation.org>
+References: <20250826110937.289866482@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,61 +61,45 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.16-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Gal Pressman <gal@nvidia.com>
+From: John David Anglin <dave.anglin@bell.net>
 
-[ Upstream commit 60a8b1a5d0824afda869f18dc0ecfe72f8dfda42 ]
+commit 52ce9406a9625c4498c4eaa51e7a7ed9dcb9db16 upstream.
 
-When CONFIG_VLAN_8021Q=n, a set of stub helpers are used, three of these
-helpers use BUG() unconditionally.
+The local name used in cache.c conflicts the declaration in
+include/asm-generic/tlb.h.
 
-This code should not be reached, as callers of these functions should
-always check for is_vlan_dev() first, but the usage of BUG() is not
-recommended, replace it with WARN_ON() instead.
-
-Reviewed-by: Alex Lazar <alazar@nvidia.com>
-Reviewed-by: Dragos Tatulea <dtatulea@nvidia.com>
-Signed-off-by: Gal Pressman <gal@nvidia.com>
-Link: https://patch.msgid.link/20250616132626.1749331-3-gal@nvidia.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Signed-off-by: John David Anglin <dave.anglin@bell.net>
+Signed-off-by: Helge Deller <deller@gmx.de>
+Cc: stable@vger.kernel.org # v5.12+
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- include/linux/if_vlan.h | 6 +++---
- 1 file changed, 3 insertions(+), 3 deletions(-)
+ arch/parisc/kernel/cache.c |    4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/include/linux/if_vlan.h b/include/linux/if_vlan.h
-index 9f7dbbb34094..f4eb8dd7308a 100644
---- a/include/linux/if_vlan.h
-+++ b/include/linux/if_vlan.h
-@@ -253,19 +253,19 @@ vlan_for_each(struct net_device *dev,
- 
- static inline struct net_device *vlan_dev_real_dev(const struct net_device *dev)
- {
--	BUG();
-+	WARN_ON_ONCE(1);
- 	return NULL;
+--- a/arch/parisc/kernel/cache.c
++++ b/arch/parisc/kernel/cache.c
+@@ -429,7 +429,7 @@ static inline pte_t *get_ptep(struct mm_
+ 	return ptep;
  }
  
- static inline u16 vlan_dev_vlan_id(const struct net_device *dev)
+-static inline bool pte_needs_flush(pte_t pte)
++static inline bool pte_needs_cache_flush(pte_t pte)
  {
--	BUG();
-+	WARN_ON_ONCE(1);
- 	return 0;
- }
- 
- static inline __be16 vlan_dev_vlan_proto(const struct net_device *dev)
- {
--	BUG();
-+	WARN_ON_ONCE(1);
- 	return 0;
- }
- 
--- 
-2.39.5
-
+ 	return (pte_val(pte) & (_PAGE_PRESENT | _PAGE_ACCESSED | _PAGE_NO_CACHE))
+ 		== (_PAGE_PRESENT | _PAGE_ACCESSED);
+@@ -630,7 +630,7 @@ static void flush_cache_page_if_present(
+ 	ptep = get_ptep(vma->vm_mm, vmaddr);
+ 	if (ptep) {
+ 		pte = ptep_get(ptep);
+-		needs_flush = pte_needs_flush(pte);
++		needs_flush = pte_needs_cache_flush(pte);
+ 		pte_unmap(ptep);
+ 	}
+ 	if (needs_flush)
 
 
 
