@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-173925-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-174377-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id D2E35B36074
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 15:01:01 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id B133CB36314
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 15:26:16 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 65C883AE982
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 12:57:26 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 1F34D467D22
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 13:19:13 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6D16F1DD9D3;
-	Tue, 26 Aug 2025 12:57:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8321534DCCC;
+	Tue, 26 Aug 2025 13:17:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="KJSMtr39"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="pcLUzTQW"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2A9981A5BBC;
-	Tue, 26 Aug 2025 12:57:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 406E928314A;
+	Tue, 26 Aug 2025 13:17:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756213027; cv=none; b=EF+jpesSsfqLHTCP+Jkq9dcacaNrftM2Ee1b6oRwLNZCBpIMHb4ncWN/jnkAI+bXUDidhouy/4It3WvNpEGU5Tcuwe1EdrtWWydFABoL3K58fkUN6YDtuQUBrijttDyu/Nx2yH2CX12AEiiOD7T0jV3dsJoVKQuHtxZmFalZh8c=
+	t=1756214229; cv=none; b=Tn9toiDV1C0eeW0ixtWDyEOYLnHw8q7lsZHRQli6luc28KtMKp/mauRPk4gqBLQAZrySoP4VAj7Hm8e8fD9k1lZ1UnfWDoLTKW/So2XONMH0Vl11b9aQv98KuO7h2TAPZIiGgz3poLaYHy/VRFj/26/LHOtICg2hfEfYpQuJBKg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756213027; c=relaxed/simple;
-	bh=ObzE/I6lJUafSMJGOpSPwxkVzaap2HgmWbdCdcICxx8=;
+	s=arc-20240116; t=1756214229; c=relaxed/simple;
+	bh=xV57gHm7GEvDKeP3iWYn0JgTtjzKT693Mny0c7UgXA4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Kf/8+v94LZG7BYSO2tHdLizPjWlWt4xb0S500brQ0yJm+gH9PR0Q2svaVhRKrAqCKlDWmWNLP0HkxSeUXZXqs3VavEAPtc896AqMn4Pzol+pb90EkbhmEdTBj/YHiBjbtVUENlRaHB1lOSUt4LZ84pYp1xYrvKxO/EQ7PixelgE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=KJSMtr39; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B3965C4CEF1;
-	Tue, 26 Aug 2025 12:57:06 +0000 (UTC)
+	 MIME-Version; b=Jz5dDdPXj3SXFpyvG0Cfm1rz7QOo/gqMgjhyqgJAwZ+RWN/nV/oF0efV29ElUZibW/aKT0Waq1AL2Ox7vDOQqVSNZRPzTFarPHSkYT5CpKHhUvK2fhzOHlm/M3ZtbzIXPIHOtFNpy5zbDzPNjn3ULfKOytp0Z2tTIdWTGC81yXM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=pcLUzTQW; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C1D6AC4CEF1;
+	Tue, 26 Aug 2025 13:17:08 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1756213027;
-	bh=ObzE/I6lJUafSMJGOpSPwxkVzaap2HgmWbdCdcICxx8=;
+	s=korg; t=1756214229;
+	bh=xV57gHm7GEvDKeP3iWYn0JgTtjzKT693Mny0c7UgXA4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=KJSMtr39oRn4b+Zp4zMNizUPcYVUuXFmlcfJPzlqw0wVfPaeTI1sNPTWyMKNZvk80
-	 f/zEnGugIkv++TKKQ/fz4KzZHv1Cc0imTAAcXnapA3bM195XIPNHZZyYwmUXnTduZR
-	 +qUhU4wyoGazqjdtmU2jrYBp62iTdP37Dv3JNn14=
+	b=pcLUzTQWsGu8mEMfAA9yuspHe7gk0un/bCSYYnLyqFmzVdTEaUlfUsJKIH5eFDkUO
+	 WTBBpO2q92+ruCFT47gLR9Xm4QD2cmqDcbq4/9TOlYRyy9Hjqj5zXOS4bIw0eS9jff
+	 W7L0H6tXT8k3G3W8LhEwWCQPaVlWkZX/2tYrGj4I=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Heiko Carstens <hca@linux.ibm.com>,
-	Sven Schnelle <svens@linux.ibm.com>,
-	Alexander Gordeev <agordeev@linux.ibm.com>,
+	syzbot+598057afa0f49e62bd23@syzkaller.appspotmail.com,
+	Lizhi Xu <lizhi.xu@windriver.com>,
+	Konstantin Komarov <almaz.alexandrovich@paragon-software.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 163/587] s390/stp: Remove udelay from stp_sync_clock()
-Date: Tue, 26 Aug 2025 13:05:12 +0200
-Message-ID: <20250826110957.092116800@linuxfoundation.org>
+Subject: [PATCH 6.1 060/482] fs/ntfs3: Add sanity check for file name
+Date: Tue, 26 Aug 2025 13:05:13 +0200
+Message-ID: <20250826110932.305084468@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250826110952.942403671@linuxfoundation.org>
-References: <20250826110952.942403671@linuxfoundation.org>
+In-Reply-To: <20250826110930.769259449@linuxfoundation.org>
+References: <20250826110930.769259449@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,46 +63,39 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Sven Schnelle <svens@linux.ibm.com>
+From: Lizhi Xu <lizhi.xu@windriver.com>
 
-[ Upstream commit b367017cdac21781a74eff4e208d3d38e1f38d3f ]
+[ Upstream commit e841ecb139339602bc1853f5f09daa5d1ea920a2 ]
 
-When an stp sync check is handled on a system with multiple
-cpus each cpu gets a machine check but only the first one
-actually handles the sync operation. All other CPUs spin
-waiting for the first one to finish with a short udelay().
-But udelay can't be used here as the first CPU modifies tod_clock_base
-before performing the sync op. During this timeframe
-get_tod_clock_monotonic() might return a non-monotonic time.
+The length of the file name should be smaller than the directory entry size.
 
-The time spent waiting should be very short and udelay is a busy loop
-anyways, therefore simply remove the udelay.
-
-Reviewed-by: Heiko Carstens <hca@linux.ibm.com>
-Signed-off-by: Sven Schnelle <svens@linux.ibm.com>
-Signed-off-by: Alexander Gordeev <agordeev@linux.ibm.com>
+Reported-by: syzbot+598057afa0f49e62bd23@syzkaller.appspotmail.com
+Closes: https://syzkaller.appspot.com/bug?extid=598057afa0f49e62bd23
+Signed-off-by: Lizhi Xu <lizhi.xu@windriver.com>
+Signed-off-by: Konstantin Komarov <almaz.alexandrovich@paragon-software.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/s390/kernel/time.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ fs/ntfs3/dir.c | 3 +++
+ 1 file changed, 3 insertions(+)
 
-diff --git a/arch/s390/kernel/time.c b/arch/s390/kernel/time.c
-index d34d3548c046..086d3e3ffdea 100644
---- a/arch/s390/kernel/time.c
-+++ b/arch/s390/kernel/time.c
-@@ -579,7 +579,7 @@ static int stp_sync_clock(void *data)
- 		atomic_dec(&sync->cpus);
- 		/* Wait for in_sync to be set. */
- 		while (READ_ONCE(sync->in_sync) == 0)
--			__udelay(1);
-+			;
- 	}
- 	if (sync->in_sync != 1)
- 		/* Didn't work. Clear per-cpu in sync bit again. */
+diff --git a/fs/ntfs3/dir.c b/fs/ntfs3/dir.c
+index a4ab0164d150..c49e64ebbd0a 100644
+--- a/fs/ntfs3/dir.c
++++ b/fs/ntfs3/dir.c
+@@ -304,6 +304,9 @@ static inline bool ntfs_dir_emit(struct ntfs_sb_info *sbi,
+ 	if (sbi->options->nohidden && (fname->dup.fa & FILE_ATTRIBUTE_HIDDEN))
+ 		return true;
+ 
++	if (fname->name_len + sizeof(struct NTFS_DE) > le16_to_cpu(e->size))
++		return true;
++
+ 	name_len = ntfs_utf16_to_nls(sbi, fname->name, fname->name_len, name,
+ 				     PATH_MAX);
+ 	if (name_len <= 0) {
 -- 
 2.39.5
 
