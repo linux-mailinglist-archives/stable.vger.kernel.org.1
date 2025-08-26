@@ -1,57 +1,58 @@
-Return-Path: <stable+bounces-175425-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-175971-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 72FFBB3681C
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 16:13:06 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 0AFD8B36A81
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 16:38:05 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 89EEE2A2F46
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 14:05:09 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 2D648564842
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 14:29:58 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B5D5335206D;
-	Tue, 26 Aug 2025 14:03:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A61B52192F2;
+	Tue, 26 Aug 2025 14:27:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="haXMqXFD"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="tipO1mho"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7399C350D5D;
-	Tue, 26 Aug 2025 14:03:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 63D548635D;
+	Tue, 26 Aug 2025 14:27:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756217008; cv=none; b=iS9Jr3QKI0HS89meTOb26kYdS8JEnCffIl5ilylz9DRnWmRm08LSdH8pOASkemjDMAZ2+LIiiwlGxTCnSFN1pTq1NmWFIx7ap5yExw2435Usd+rI/x27G9j1sJQ7akzqEMnfTj3rwKGWAPqSLz2uPESMd/AD6U1KmOen7CieZoY=
+	t=1756218447; cv=none; b=AZ3KEMVjAveY0pU8ZFp/8YX4k2ufdCu5ygzFLSROjDzjIzAKnwonkYX3ETNEpqXySTHrbLlkN+M/tZErmxFmr7LvIsdcJQKIqiUSy5n1z2WjZC2fheZZdFIRmbH/i/DjIvAcpZQZ2zKVOjwKkvCypV5T+XIuEyqDgVIDcNN4u0M=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756217008; c=relaxed/simple;
-	bh=GmLehD7kMGtY0JSGqiqsvZLHu79BX6/18zL+6j428FQ=;
+	s=arc-20240116; t=1756218447; c=relaxed/simple;
+	bh=hoIQS54sba+yYZ/psNozBoPTyJ7uLhNH5acyVhzYZmI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=S/ZPM/SNNe9v1ntUtihLbYXyKvrp1drYUdn4e5Zuv0o6RTv7bSfy7umfdhyJoWYIKEe+MV/CW+euWPOzdGTs5xFpXsp/KEVHf/hJth3dZOiQ7CjhxaAm/0OfMoNHJh7JHyi8kwfjg9KGS5RtFRne5z3srGG6vlllqwBSEm0Tu20=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=haXMqXFD; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id AC0C1C4CEF1;
-	Tue, 26 Aug 2025 14:03:27 +0000 (UTC)
+	 MIME-Version; b=O2T342/to5UJ8LPEmZjHugEGwFHk7UgyzizpD5OQJXKXofdvaQHNU8i3El6vtdS42twjSJa2Qw71Y1n126RSTlnwoEno8l+JuIekghc4qeCHqjHdOwbWgcFMU0zYxqlnt2TFjujK85UjHEC4c/Ezdh88/K/zLmhiWJZDrNQVHE8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=tipO1mho; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E81A2C113D0;
+	Tue, 26 Aug 2025 14:27:26 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1756217008;
-	bh=GmLehD7kMGtY0JSGqiqsvZLHu79BX6/18zL+6j428FQ=;
+	s=korg; t=1756218447;
+	bh=hoIQS54sba+yYZ/psNozBoPTyJ7uLhNH5acyVhzYZmI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=haXMqXFD1mDg+pCnBnGGTGfPwSL8o4gggdGOKuxsvCIWPZCOtJnZsxRuMFK4MhWGQ
-	 RF4F52xTPSZlYg97FvXTD/FxeU4LVOEhE0btC38q//qWzNyAepyy/a5dG3PFTaYI18
-	 /s1r9wg9WDDLSGDWgcTB+VHEg4h9F+r3kKbT33f4=
+	b=tipO1mhoQlTGoR52PzzYxDIa3hxk224ssZsba1dImSwaiMdCvQrBfB6SfE//362Wl
+	 vxRa+vSpXaZ07UZHn0r6ZakEbM/wBE9UcUzhBlqiiirsG59/3nI0FWmL52ZKOkgGX2
+	 SzRwwITSw41460UKygDMphRylLEPt0NlH2E2coM8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Dan Carpenter <dan.carpenter@linaro.org>,
-	Chris Leech <cleech@redhat.com>,
-	"Martin K. Petersen" <martin.petersen@oracle.com>,
+	Matti Vaittinen <mazziesaccount@gmail.com>,
+	Andy Shevchenko <andy@kernel.org>,
+	Stable@vger.kernel.org,
+	Jonathan Cameron <Jonathan.Cameron@huawei.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 624/644] scsi: qla4xxx: Prevent a potential error pointer dereference
-Date: Tue, 26 Aug 2025 13:11:55 +0200
-Message-ID: <20250826111002.018856513@linuxfoundation.org>
+Subject: [PATCH 5.10 506/523] iio: light: as73211: Ensure buffer holes are zeroed
+Date: Tue, 26 Aug 2025 13:11:56 +0200
+Message-ID: <20250826110936.922852429@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250826110946.507083938@linuxfoundation.org>
-References: <20250826110946.507083938@linuxfoundation.org>
+In-Reply-To: <20250826110924.562212281@linuxfoundation.org>
+References: <20250826110924.562212281@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,45 +64,41 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Dan Carpenter <dan.carpenter@linaro.org>
+From: Jonathan Cameron <Jonathan.Cameron@huawei.com>
 
-[ Upstream commit 9dcf111dd3e7ed5fce82bb108e3a3fc001c07225 ]
+[ Upstream commit 433b99e922943efdfd62b9a8e3ad1604838181f2 ]
 
-The qla4xxx_get_ep_fwdb() function is supposed to return NULL on error,
-but qla4xxx_ep_connect() returns error pointers.  Propagating the error
-pointers will lead to an Oops in the caller, so change the error pointers
-to NULL.
+Given that the buffer is copied to a kfifo that ultimately user space
+can read, ensure we zero it.
 
-Fixes: 13483730a13b ("[SCSI] qla4xxx: fix flash/ddb support")
-Signed-off-by: Dan Carpenter <dan.carpenter@linaro.org>
-Link: https://lore.kernel.org/r/aJwnVKS9tHsw1tEu@stanley.mountain
-Reviewed-by: Chris Leech <cleech@redhat.com>
-Signed-off-by: Martin K. Petersen <martin.petersen@oracle.com>
+Fixes: 403e5586b52e ("iio: light: as73211: New driver")
+Reviewed-by: Matti Vaittinen <mazziesaccount@gmail.com>
+Reviewed-by: Andy Shevchenko <andy@kernel.org>
+Link: https://patch.msgid.link/20250802164436.515988-2-jic23@kernel.org
+Cc: <Stable@vger.kernel.org>
+Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
+[ Adjust context ]
 Signed-off-by: Sasha Levin <sashal@kernel.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/scsi/qla4xxx/ql4_os.c | 2 ++
- 1 file changed, 2 insertions(+)
+ drivers/iio/light/as73211.c |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/scsi/qla4xxx/ql4_os.c b/drivers/scsi/qla4xxx/ql4_os.c
-index ab89f3171a09..da2ed81673c4 100644
---- a/drivers/scsi/qla4xxx/ql4_os.c
-+++ b/drivers/scsi/qla4xxx/ql4_os.c
-@@ -6607,6 +6607,8 @@ static struct iscsi_endpoint *qla4xxx_get_ep_fwdb(struct scsi_qla_host *ha,
+--- a/drivers/iio/light/as73211.c
++++ b/drivers/iio/light/as73211.c
+@@ -574,7 +574,7 @@ static irqreturn_t as73211_trigger_handl
+ 	struct {
+ 		__le16 chan[4];
+ 		s64 ts __aligned(8);
+-	} scan;
++	} scan = { };
+ 	int data_result, ret;
  
- 	ep = qla4xxx_ep_connect(ha->host, (struct sockaddr *)dst_addr, 0);
- 	vfree(dst_addr);
-+	if (IS_ERR(ep))
-+		return NULL;
- 	return ep;
- }
- 
--- 
-2.50.1
-
+ 	mutex_lock(&data->mutex);
 
 
 
