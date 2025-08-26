@@ -1,58 +1,57 @@
-Return-Path: <stable+bounces-173990-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-174440-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id E80DCB360C5
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 15:03:52 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id E102EB363A6
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 15:32:06 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id A48F71BA58EF
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 13:00:25 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 78FD1466456
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 13:21:56 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6F9B9216E1B;
-	Tue, 26 Aug 2025 13:00:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 267CC30146A;
+	Tue, 26 Aug 2025 13:19:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="q2Sn2b1o"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="P3sLZJDn"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2A2671F4717;
-	Tue, 26 Aug 2025 13:00:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D584634DCCC;
+	Tue, 26 Aug 2025 13:19:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756213200; cv=none; b=UKGapQQ+TJNKKmQkJ6WPXqc4fcP64XHUd2X/GpuO6egvqn4L1lRetdQ/z3+w3y3K/y5cTO4sPqeUw9F/VIpdYEcuvXvz1VIHUgIff+Vg9Bw6xq+MIjO6K7W3wJdHQg9yeDergzOYdGNBHtqHF/Y/xlNecINRJSJtt7bzHopuqHI=
+	t=1756214397; cv=none; b=bgCR4WLFuQg3WDmjgKIAtIeEguSsOEuLTCTNwgGfC1C778g5McZ5bm4b2BIY0+34j32XJWBUgK1rITtoKNk76dtZbqj0TPzs7pfzwxvLyqYw3F3IFcGEQvdt5Ce7lNKf7xVqfTPXedNeI72J+rYmgFXbj8ki+Rfh3wevRqxUDPo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756213200; c=relaxed/simple;
-	bh=e6iGZmcT4OknIkVNmZ8V6haLuVWXWUyTtH8NyO+HrQs=;
+	s=arc-20240116; t=1756214397; c=relaxed/simple;
+	bh=U8GOPHrS9rWVmM9qF9lfJOt7x+C3J+AtK8sXwNa3nFs=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=uKoHtdMJgkLa58jxIsUhOEx1lFFLlq0tWnSREUyMQDZHRNuiVq96m56u0E/gZGBnTMK2oeiZUW8Ne8nRToe6m87dTbTRsquUxatMuPsMhHf3vxfxAGu1ldly8iayPMIlwX7h6IcPL+hQVHSPZ5mXitIysZ7FQVouZEZSqA/8zLI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=q2Sn2b1o; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id AF937C4CEF1;
-	Tue, 26 Aug 2025 12:59:59 +0000 (UTC)
+	 MIME-Version; b=pkYTOFUyhnLMs0MCiiWcmFriKwp0pvqHBeQedKNRtHtdSFpPZT8T6by0Erx8i8BI2rQUY2Pj4UaQrULJJDFkVj9WdnKlVDfDjV7PAIwPLvWkw2UoWW+O4aAbCdmF4hajEzCcSujIR8U6oz/SIoTOu9Ib7cw3qGhUKfuFQ8oSYgc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=P3sLZJDn; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 69B34C113D0;
+	Tue, 26 Aug 2025 13:19:57 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1756213200;
-	bh=e6iGZmcT4OknIkVNmZ8V6haLuVWXWUyTtH8NyO+HrQs=;
+	s=korg; t=1756214397;
+	bh=U8GOPHrS9rWVmM9qF9lfJOt7x+C3J+AtK8sXwNa3nFs=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=q2Sn2b1otbWxC+JIwcVk0/p8j+AAU0RIsXB22bNtdPzEh8PnG7twrM9HSyzBo9tlC
-	 psC+xWWTmt7TpeLkv7afsYpdkF8ob/ntgq8LfQEL8gNIdClPjzaKIjrG8Nz3ZXLA4v
-	 UKT0Gx7vPVna8JF4p2KpC57e/bBmPYI0bXyO1B08=
+	b=P3sLZJDnNqv+BzP6iI3KhIAZp5oIy5FoxSvw8jy6yO1fv+IOVeQiZdOoMXnJkdan0
+	 zC71QDLDgTNAEyZwJcjqz59uymR4J1DuFKm5YfPaH+7ZMq/+N5t10i8vEX9SmqTfXJ
+	 cIIT0XcKm0NP0tzfeSs9QbXRRA7sXPFRrcwwngH4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Showrya M N <showrya@chelsio.com>,
-	Potnuri Bharat Teja <bharat@chelsio.com>,
-	Chris Leech <cleech@redhat.com>,
-	"Martin K. Petersen" <martin.petersen@oracle.com>,
+	Breno Leitao <leitao@debian.org>,
+	Mark Rutland <mark.rutland@arm.com>,
+	Will Deacon <will@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 227/587] scsi: libiscsi: Initialize iscsi_conn->dd_data only if memory is allocated
+Subject: [PATCH 6.1 123/482] arm64: Mark kernel as tainted on SAE and SError panic
 Date: Tue, 26 Aug 2025 13:06:16 +0200
-Message-ID: <20250826110958.709064713@linuxfoundation.org>
+Message-ID: <20250826110933.861496586@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250826110952.942403671@linuxfoundation.org>
-References: <20250826110952.942403671@linuxfoundation.org>
+In-Reply-To: <20250826110930.769259449@linuxfoundation.org>
+References: <20250826110930.769259449@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,64 +63,57 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Showrya M N <showrya@chelsio.com>
+From: Breno Leitao <leitao@debian.org>
 
-[ Upstream commit 3ea3a256ed81f95ab0f3281a0e234b01a9cae605 ]
+[ Upstream commit d7ce7e3a84642aadf7c4787f7ec4f58eb163d129 ]
 
-In case of an ib_fast_reg_mr allocation failure during iSER setup, the
-machine hits a panic because iscsi_conn->dd_data is initialized
-unconditionally, even when no memory is allocated (dd_size == 0).  This
-leads invalid pointer dereference during connection teardown.
+Set TAINT_MACHINE_CHECK when SError or Synchronous External Abort (SEA)
+interrupts trigger a panic to flag potential hardware faults. This
+tainting mechanism aids in debugging and enables correlation of
+hardware-related crashes in large-scale deployments.
 
-Fix by setting iscsi_conn->dd_data only if memory is actually allocated.
+This change aligns with similar patches[1] that mark machine check
+events when the system crashes due to hardware errors.
 
-Panic trace:
-------------
- iser: iser_create_fastreg_desc: Failed to allocate ib_fast_reg_mr err=-12
- iser: iser_alloc_rx_descriptors: failed allocating rx descriptors / data buffers
- BUG: unable to handle page fault for address: fffffffffffffff8
- RIP: 0010:swake_up_locked.part.5+0xa/0x40
- Call Trace:
-  complete+0x31/0x40
-  iscsi_iser_conn_stop+0x88/0xb0 [ib_iser]
-  iscsi_stop_conn+0x66/0xc0 [scsi_transport_iscsi]
-  iscsi_if_stop_conn+0x14a/0x150 [scsi_transport_iscsi]
-  iscsi_if_rx+0x1135/0x1834 [scsi_transport_iscsi]
-  ? netlink_lookup+0x12f/0x1b0
-  ? netlink_deliver_tap+0x2c/0x200
-  netlink_unicast+0x1ab/0x280
-  netlink_sendmsg+0x257/0x4f0
-  ? _copy_from_user+0x29/0x60
-  sock_sendmsg+0x5f/0x70
-
-Signed-off-by: Showrya M N <showrya@chelsio.com>
-Signed-off-by: Potnuri Bharat Teja <bharat@chelsio.com>
-Link: https://lore.kernel.org/r/20250627112329.19763-1-showrya@chelsio.com
-Reviewed-by: Chris Leech <cleech@redhat.com>
-Signed-off-by: Martin K. Petersen <martin.petersen@oracle.com>
+Link: https://lore.kernel.org/all/20250702-add_tain-v1-1-9187b10914b9@debian.org/ [1]
+Signed-off-by: Breno Leitao <leitao@debian.org>
+Acked-by: Mark Rutland <mark.rutland@arm.com>
+Link: https://lore.kernel.org/r/20250716-vmcore_hw_error-v2-1-f187f7d62aba@debian.org
+Signed-off-by: Will Deacon <will@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/scsi/libiscsi.c | 3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+ arch/arm64/kernel/traps.c | 1 +
+ arch/arm64/mm/fault.c     | 1 +
+ 2 files changed, 2 insertions(+)
 
-diff --git a/drivers/scsi/libiscsi.c b/drivers/scsi/libiscsi.c
-index 0fda8905eabd..916c07648460 100644
---- a/drivers/scsi/libiscsi.c
-+++ b/drivers/scsi/libiscsi.c
-@@ -3184,7 +3184,8 @@ iscsi_conn_setup(struct iscsi_cls_session *cls_session, int dd_size,
- 		return NULL;
- 	conn = cls_conn->dd_data;
+diff --git a/arch/arm64/kernel/traps.c b/arch/arm64/kernel/traps.c
+index 23d281ed7621..09489e92ff94 100644
+--- a/arch/arm64/kernel/traps.c
++++ b/arch/arm64/kernel/traps.c
+@@ -911,6 +911,7 @@ void panic_bad_stack(struct pt_regs *regs, unsigned long esr, unsigned long far)
  
--	conn->dd_data = cls_conn->dd_data + sizeof(*conn);
-+	if (dd_size)
-+		conn->dd_data = cls_conn->dd_data + sizeof(*conn);
- 	conn->session = session;
- 	conn->cls_conn = cls_conn;
- 	conn->c_stage = ISCSI_CONN_INITIAL_STAGE;
+ void __noreturn arm64_serror_panic(struct pt_regs *regs, unsigned long esr)
+ {
++	add_taint(TAINT_MACHINE_CHECK, LOCKDEP_STILL_OK);
+ 	console_verbose();
+ 
+ 	pr_crit("SError Interrupt on CPU%d, code 0x%016lx -- %s\n",
+diff --git a/arch/arm64/mm/fault.c b/arch/arm64/mm/fault.c
+index 6b6b8a82f294..0776c98ad27f 100644
+--- a/arch/arm64/mm/fault.c
++++ b/arch/arm64/mm/fault.c
+@@ -710,6 +710,7 @@ static int do_sea(unsigned long far, unsigned long esr, struct pt_regs *regs)
+ 		 */
+ 		siaddr  = untagged_addr(far);
+ 	}
++	add_taint(TAINT_MACHINE_CHECK, LOCKDEP_STILL_OK);
+ 	arm64_notify_die(inf->name, regs, inf->sig, inf->code, siaddr, esr);
+ 
+ 	return 0;
 -- 
 2.39.5
 
