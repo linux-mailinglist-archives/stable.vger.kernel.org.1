@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-174157-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-173560-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id BB4CFB361C3
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 15:12:23 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 177FFB35D44
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 13:42:51 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 5A7EC2A6F33
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 13:07:35 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id CDDB43AA4F2
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 11:42:49 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7E63E24166F;
-	Tue, 26 Aug 2025 13:07:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8F62329B233;
+	Tue, 26 Aug 2025 11:42:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="mUH2QJBr"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="jIzCl93S"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 39E1BFBF0;
-	Tue, 26 Aug 2025 13:07:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4DF01393DD1;
+	Tue, 26 Aug 2025 11:42:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756213644; cv=none; b=NMcRzUGcv5VaettZ9OQXoTOwiOorEcgG9Ih6rStltJoIGgFQyYxnwUKBx9FjdpzCEBicihkZukflgJ9CvXvSQRVUefF8rbVQMLtdJDL9jwg8dxfd7yOz1RFccIx2NKFwUgdMzjlNDeK8hfnki/iVUgbgnFPjHcJbLAsZOTrkm1I=
+	t=1756208567; cv=none; b=lcnQV0C9l1t8VdBa226iIJsRTLK86EET74ON9dATaSP0Y6vkOeO4J1Bzj5vG9T3wPftyjRpW+pTqTo76p8E6ibyTm0VClJ0a1KFBiJKTWAAxIhIT0wvoBPtL55++hhd4W3M6I2y2IkSNF4MtM9vY+/NLTIf3UuC3eG/ftqlD5bQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756213644; c=relaxed/simple;
-	bh=FlCJYPn/6/JvlK7+6LYnqV+BPpUEmpt1RonR6GOD1II=;
+	s=arc-20240116; t=1756208567; c=relaxed/simple;
+	bh=6UMVWvmxOP5e+qYLz3EIOqScWQuKYYwiq+Ra+HG+ZV8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=q427T+romNnMl9QviYJac/NtPjsuG21sssKP0tm/zddioBIrOtvuxe6ucCplDwhLHAEHwZUXfU3/Buem2aJWNJ8aAnJuHWWZBZTuiKXHgclYEhapnUTZI1fgXVJRtnQa0paLHbOk5xF0FJwZIRW2mpP1Be/kw0EfkXZOAOrGAA0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=mUH2QJBr; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C180BC4CEF4;
-	Tue, 26 Aug 2025 13:07:23 +0000 (UTC)
+	 MIME-Version; b=Gb3t9BLAfON6sfP19Aeb7dPljCPxdpOH9e+1A5kxrima/tKPTt89MkWbfH54uZhRNKsL+4wncOZZMgfXjBT4Ut02iY2DuG6rdyjIzWawXSaR070I9LyQfnf9x8jKEQNx+SgqeCNhsgIPs7Fi5dYGM7U31B2nGLbIHudVeJoEeK0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=jIzCl93S; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 75147C4CEF1;
+	Tue, 26 Aug 2025 11:42:46 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1756213644;
-	bh=FlCJYPn/6/JvlK7+6LYnqV+BPpUEmpt1RonR6GOD1II=;
+	s=korg; t=1756208566;
+	bh=6UMVWvmxOP5e+qYLz3EIOqScWQuKYYwiq+Ra+HG+ZV8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=mUH2QJBrtFAgkBXPnwy28W26YM9wjTZ2zm+K7yvOY8CbA4qz/eWv4MCrjWpvjU/Au
-	 e38885SSEClkUeCX+aUMxEgsAulYinqwz3l/3R7nBjdjvUsOuR1FU/LidrF/x+p8X+
-	 fuFKk/V/WrMDmLgS/REV7IGLOZ4lyeE5qIyf52u8=
+	b=jIzCl93SDPd4janP+GmM6+bmRix8ar7GYJQDG8D596VQcq4yV7C4krf7W6CfBb3+y
+	 x4T/kSwy6IP1nNjpy9MQGFxDiJYYxnxQmPM3WO5ixjxS6uLJw/vxSBrorqKWYH1Pew
+	 +nb7PyXKS7ikogMmhXB+rdJ/q5Al4UBMSJxHycSM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Christoph Paasch <cpaasch@openai.com>,
-	"Matthieu Baerts (NGI0)" <matttbe@kernel.org>,
-	Jakub Kicinski <kuba@kernel.org>
-Subject: [PATCH 6.6 426/587] mptcp: drop skb if MPTCP skb extension allocation fails
+	Damien Le Moal <dlemoal@kernel.org>,
+	Hannes Reinecke <hare@suse.de>,
+	"Martin K. Petersen" <martin.petersen@oracle.com>
+Subject: [PATCH 6.12 160/322] ata: libata-scsi: Return aborted command when missing sense and result TF
 Date: Tue, 26 Aug 2025 13:09:35 +0200
-Message-ID: <20250826111003.777923602@linuxfoundation.org>
+Message-ID: <20250826110919.773177603@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250826110952.942403671@linuxfoundation.org>
-References: <20250826110952.942403671@linuxfoundation.org>
+In-Reply-To: <20250826110915.169062587@linuxfoundation.org>
+References: <20250826110915.169062587@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,67 +62,88 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Christoph Paasch <cpaasch@openai.com>
+From: Damien Le Moal <dlemoal@kernel.org>
 
-commit ccab044697980c6c01ab51f43f48f13b8a3e5c33 upstream.
+commit d2be9ea9a75550a35c5127a6c2633658bc38c76b upstream.
 
-When skb_ext_add(skb, SKB_EXT_MPTCP) fails in mptcp_incoming_options(),
-we used to return true, letting the segment proceed through the TCP
-receive path without a DSS mapping. Such segments can leave inconsistent
-mapping state and trigger a mid-stream fallback to TCP, which in testing
-collapsed (by artificially forcing failures in skb_ext_add) throughput
-to zero.
+ata_gen_ata_sense() is always called for a failed qc missing sense data
+so that a sense key, code and code qualifier can be generated using
+ata_to_sense_error() from the qc status and error fields of its result
+task file. However, if the qc does not have its result task file filled,
+ata_gen_ata_sense() returns early without setting a sense key.
 
-Return false instead so the TCP input path drops the skb (see
-tcp_data_queue() and step-7 processing). This is the safer choice
-under memory pressure: it preserves MPTCP correctness and provides
-backpressure to the sender.
+Improve this by defaulting to returning ABORTED COMMAND without any
+additional sense code, since we do not know the reason for the failure.
+The same fix is also applied in ata_gen_passthru_sense() with the
+additional check that the qc failed (qc->err_mask is set).
 
-Control packets remain unaffected: ACK updates and DATA_FIN handling
-happen before attempting the extension allocation, and tcp_reset()
-continues to ignore the return value.
-
-With this change, MPTCP continues to work at high throughput if we
-artificially inject failures into skb_ext_add.
-
-Fixes: 6787b7e350d3 ("mptcp: avoid processing packet if a subflow reset")
+Fixes: 816be86c7993 ("ata: libata-scsi: Check ATA_QCFLAG_RTF_FILLED before using result_tf")
 Cc: stable@vger.kernel.org
-Signed-off-by: Christoph Paasch <cpaasch@openai.com>
-Reviewed-by: Matthieu Baerts (NGI0) <matttbe@kernel.org>
-Signed-off-by: Matthieu Baerts (NGI0) <matttbe@kernel.org>
-Link: https://patch.msgid.link/20250815-net-mptcp-misc-fixes-6-17-rc2-v1-1-521fe9957892@kernel.org
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Signed-off-by: Damien Le Moal <dlemoal@kernel.org>
+Reviewed-by: Hannes Reinecke <hare@suse.de>
+Reviewed-by: Martin K. Petersen <martin.petersen@oracle.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- net/mptcp/options.c |    6 ++++--
- 1 file changed, 4 insertions(+), 2 deletions(-)
+ drivers/ata/libata-scsi.c |   27 +++++++++++++++------------
+ 1 file changed, 15 insertions(+), 12 deletions(-)
 
---- a/net/mptcp/options.c
-+++ b/net/mptcp/options.c
-@@ -1117,7 +1117,9 @@ static bool add_addr_hmac_valid(struct m
- 	return hmac == mp_opt->ahmac;
+--- a/drivers/ata/libata-scsi.c
++++ b/drivers/ata/libata-scsi.c
+@@ -934,6 +934,8 @@ static void ata_gen_passthru_sense(struc
+ 	if (!(qc->flags & ATA_QCFLAG_RTF_FILLED)) {
+ 		ata_dev_dbg(dev,
+ 			    "missing result TF: can't generate ATA PT sense data\n");
++		if (qc->err_mask)
++			ata_scsi_set_sense(dev, cmd, ABORTED_COMMAND, 0, 0);
+ 		return;
+ 	}
+ 
+@@ -991,8 +993,8 @@ static void ata_gen_ata_sense(struct ata
+ 
+ 	if (!(qc->flags & ATA_QCFLAG_RTF_FILLED)) {
+ 		ata_dev_dbg(dev,
+-			    "missing result TF: can't generate sense data\n");
+-		return;
++			    "Missing result TF: reporting aborted command\n");
++		goto aborted;
+ 	}
+ 
+ 	/* Use ata_to_sense_error() to map status register bits
+@@ -1003,19 +1005,20 @@ static void ata_gen_ata_sense(struct ata
+ 		ata_to_sense_error(tf->status, tf->error,
+ 				   &sense_key, &asc, &ascq);
+ 		ata_scsi_set_sense(dev, cmd, sense_key, asc, ascq);
+-	} else {
+-		/* Could not decode error */
+-		ata_dev_warn(dev, "could not decode error status 0x%x err_mask 0x%x\n",
+-			     tf->status, qc->err_mask);
+-		ata_scsi_set_sense(dev, cmd, ABORTED_COMMAND, 0, 0);
+-		return;
+-	}
+ 
+-	block = ata_tf_read_block(&qc->result_tf, dev);
+-	if (block == U64_MAX)
++		block = ata_tf_read_block(&qc->result_tf, dev);
++		if (block != U64_MAX)
++			scsi_set_sense_information(sb, SCSI_SENSE_BUFFERSIZE,
++						   block);
+ 		return;
++	}
+ 
+-	scsi_set_sense_information(sb, SCSI_SENSE_BUFFERSIZE, block);
++	/* Could not decode error */
++	ata_dev_warn(dev,
++		"Could not decode error 0x%x, status 0x%x (err_mask=0x%x)\n",
++		tf->error, tf->status, qc->err_mask);
++aborted:
++	ata_scsi_set_sense(dev, cmd, ABORTED_COMMAND, 0, 0);
  }
  
--/* Return false if a subflow has been reset, else return true */
-+/* Return false in case of error (or subflow has been reset),
-+ * else return true.
-+ */
- bool mptcp_incoming_options(struct sock *sk, struct sk_buff *skb)
- {
- 	struct mptcp_subflow_context *subflow = mptcp_subflow_ctx(sk);
-@@ -1221,7 +1223,7 @@ bool mptcp_incoming_options(struct sock
- 
- 	mpext = skb_ext_add(skb, SKB_EXT_MPTCP);
- 	if (!mpext)
--		return true;
-+		return false;
- 
- 	memset(mpext, 0, sizeof(*mpext));
- 
+ void ata_scsi_sdev_config(struct scsi_device *sdev)
 
 
 
