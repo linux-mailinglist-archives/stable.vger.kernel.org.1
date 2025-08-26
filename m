@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-173994-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-173061-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7FCA5B360CA
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 15:03:57 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7EB87B35B51
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 13:23:07 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 19E401BA5DD3
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 13:00:34 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id D071B7C3AD8
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 11:22:24 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2DE2E230BDF;
-	Tue, 26 Aug 2025 13:00:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D8C202BE7B2;
+	Tue, 26 Aug 2025 11:21:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="00rXSDZs"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="PXM+R94L"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DF0E222A4EE;
-	Tue, 26 Aug 2025 13:00:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 943AB319866;
+	Tue, 26 Aug 2025 11:21:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756213212; cv=none; b=SfO2DuXRB5eMdvhuBB6kDFVtR39LIHGUEBQZVh1dO1IhPKLNOPnSbWNTQx38cbVQDDBiPS03CmDBX6rdVej0/mJai6HPE2J1hzFSf4YevTMHPWB6QLM9JmfCtLUOKUNRmTyGIoXYBS93cHbbHkjWK46fit9UFYgsYlJzcxE+s0I=
+	t=1756207272; cv=none; b=MMIG8a7PyE6hmQOBJ7P6MTTZp+pJ13kV/U1rOBDS2ECfvYo0bNQku4uFK/HA1K8HSA5l8aN+3bsSOfZ0lr5wnAYGSh7WDWRyuCjWFje5Ze5wOhER+C37k6K2nl0J6LECbuhyySXX/M4vrhLSaDSQ3MBV8t6HcEDAnZLbxh9l/cY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756213212; c=relaxed/simple;
-	bh=lMGBQNwLdG3+T1N2Wn6QJ7yXauxDufGTSx0KTB7PXPI=;
+	s=arc-20240116; t=1756207272; c=relaxed/simple;
+	bh=dDP1H1on0Zro+s9Jnw145NUabrDTPFbwQmiRMo/ATrA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=kEd/EvjFVpv4x5jGqjkkRz9XDaIKEqwiSDue0TYTwg1Q6PszFgcRb7WwG3Ehin4y8BVAhS6tgDHyZS+X+mY2rqvZBVZp1+ugoHyXa50naWFVx+WH6E8wWYh8HU5UZVDuX3LsJmYCdL/es0NMumbNbVisZGVb7alsn35PIRPKnkw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=00rXSDZs; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 702FBC4CEF4;
-	Tue, 26 Aug 2025 13:00:11 +0000 (UTC)
+	 MIME-Version; b=qAErrRgykpAD7WuD+r1r0ZLswpaSp7tcBFG4RQzosBDgEJ2mwdyt11ajNenGKjnbgO6kxLKJRtNuP5E0S8JQn9Q0UVmej2ZA+f4YD51CFLq1KHSl4UG52eAoHBmTE3rnZTimZrDci9Km3wfb5MiMPV60wrj7EWI7lwHTKlfjmQ0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=PXM+R94L; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2956BC4CEF1;
+	Tue, 26 Aug 2025 11:21:12 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1756213211;
-	bh=lMGBQNwLdG3+T1N2Wn6QJ7yXauxDufGTSx0KTB7PXPI=;
+	s=korg; t=1756207272;
+	bh=dDP1H1on0Zro+s9Jnw145NUabrDTPFbwQmiRMo/ATrA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=00rXSDZsFf4BVT4BiB6LXHDCzPhSYHCJHG5hD00inLA2rSQ1fdpuMWCyn5cFASwGG
-	 HoC3zBf6//oD16FD+93GueXeb2/ju9cw/SCreMdulIZV3Tm0ihlUCfN00vGfU2ux87
-	 EddKBjOmwh+ALazhbEFHCBQZFhHnyQPLmDyUYGqU=
+	b=PXM+R94L+gtxXVKVhtDvQo1TXR64mQ3s/Pl4vBBOUBl8QHhcuwSMGUnfoU/07cW/v
+	 eyooS9ZBqsJcyQ++8VZc4v47wLf7UDziQWsrN0LIffUqjpN4f04YG/PBMyZaD8fna8
+	 Tidc4y+cf6jkmXT5e4aedXYFZSvotMr1myLBg89k=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Yongzhen Zhang <zhangyongzhen@kylinos.cn>,
-	Helge Deller <deller@gmx.de>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 221/587] fbdev: fix potential buffer overflow in do_register_framebuffer()
+	Johan Hovold <johan+linaro@kernel.org>,
+	Baochen Qiang <quic_bqiang@quicinc.com>,
+	Jeff Johnson <jeff.johnson@oss.qualcomm.com>
+Subject: [PATCH 6.16 086/457] wifi: ath11k: fix dest ring-buffer corruption when ring is full
 Date: Tue, 26 Aug 2025 13:06:10 +0200
-Message-ID: <20250826110958.560164512@linuxfoundation.org>
+Message-ID: <20250826110939.506888801@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250826110952.942403671@linuxfoundation.org>
-References: <20250826110952.942403671@linuxfoundation.org>
+In-Reply-To: <20250826110937.289866482@linuxfoundation.org>
+References: <20250826110937.289866482@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,45 +62,66 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.16-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Yongzhen Zhang <zhangyongzhen@kylinos.cn>
+From: Johan Hovold <johan+linaro@kernel.org>
 
-[ Upstream commit 523b84dc7ccea9c4d79126d6ed1cf9033cf83b05 ]
+commit aa6956150f820e6a6deba44be325ddfcb5b10f88 upstream.
 
-The current implementation may lead to buffer overflow when:
-1.  Unregistration creates NULL gaps in registered_fb[]
-2.  All array slots become occupied despite num_registered_fb < FB_MAX
-3.  The registration loop exceeds array bounds
+Add the missing memory barriers to make sure that destination ring
+descriptors are read before updating the tail pointer (and passing
+ownership to the device) to avoid memory corruption on weakly ordered
+architectures like aarch64 when the ring is full.
 
-Add boundary check to prevent registered_fb[FB_MAX] access.
+Tested-on: WCN6855 hw2.1 WLAN.HSP.1.1-03125-QCAHSPSWPL_V1_V2_SILICONZ_LITE-3.6510.41
 
-Signed-off-by: Yongzhen Zhang <zhangyongzhen@kylinos.cn>
-Signed-off-by: Helge Deller <deller@gmx.de>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Fixes: d5c65159f289 ("ath11k: driver for Qualcomm IEEE 802.11ax devices")
+Cc: stable@vger.kernel.org      # 5.6
+Signed-off-by: Johan Hovold <johan+linaro@kernel.org>
+Reviewed-by: Baochen Qiang <quic_bqiang@quicinc.com>
+Link: https://patch.msgid.link/20250604143457.26032-6-johan+linaro@kernel.org
+Signed-off-by: Jeff Johnson <jeff.johnson@oss.qualcomm.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/video/fbdev/core/fbmem.c | 3 +++
- 1 file changed, 3 insertions(+)
+ drivers/net/wireless/ath/ath11k/hal.c |   11 +++++++++--
+ 1 file changed, 9 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/video/fbdev/core/fbmem.c b/drivers/video/fbdev/core/fbmem.c
-index 52bd3af54369..942b942f6bf9 100644
---- a/drivers/video/fbdev/core/fbmem.c
-+++ b/drivers/video/fbdev/core/fbmem.c
-@@ -943,6 +943,9 @@ static int do_register_framebuffer(struct fb_info *fb_info)
- 		if (!registered_fb[i])
- 			break;
+--- a/drivers/net/wireless/ath/ath11k/hal.c
++++ b/drivers/net/wireless/ath/ath11k/hal.c
+@@ -854,7 +854,6 @@ void ath11k_hal_srng_access_end(struct a
+ {
+ 	lockdep_assert_held(&srng->lock);
  
-+	if (i >= FB_MAX)
-+		return -ENXIO;
-+
- 	if (!fb_info->modelist.prev || !fb_info->modelist.next)
- 		INIT_LIST_HEAD(&fb_info->modelist);
- 
--- 
-2.39.5
-
+-	/* TODO: See if we need a write memory barrier here */
+ 	if (srng->flags & HAL_SRNG_FLAGS_LMAC_RING) {
+ 		/* For LMAC rings, ring pointer updates are done through FW and
+ 		 * hence written to a shared memory location that is read by FW
+@@ -869,7 +868,11 @@ void ath11k_hal_srng_access_end(struct a
+ 			WRITE_ONCE(*srng->u.src_ring.hp_addr, srng->u.src_ring.hp);
+ 		} else {
+ 			srng->u.dst_ring.last_hp = *srng->u.dst_ring.hp_addr;
+-			*srng->u.dst_ring.tp_addr = srng->u.dst_ring.tp;
++			/* Make sure descriptor is read before updating the
++			 * tail pointer.
++			 */
++			dma_mb();
++			WRITE_ONCE(*srng->u.dst_ring.tp_addr, srng->u.dst_ring.tp);
+ 		}
+ 	} else {
+ 		if (srng->ring_dir == HAL_SRNG_DIR_SRC) {
+@@ -885,6 +888,10 @@ void ath11k_hal_srng_access_end(struct a
+ 					   srng->u.src_ring.hp);
+ 		} else {
+ 			srng->u.dst_ring.last_hp = *srng->u.dst_ring.hp_addr;
++			/* Make sure descriptor is read before updating the
++			 * tail pointer.
++			 */
++			mb();
+ 			ath11k_hif_write32(ab,
+ 					   (unsigned long)srng->u.dst_ring.tp_addr -
+ 					   (unsigned long)ab->mem,
 
 
 
