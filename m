@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-174976-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-174364-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id BB138B3662C
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 15:54:21 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 62E1CB362BF
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 15:21:41 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 29F85565E3F
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 13:44:16 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id E5F05188DAB5
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 13:18:35 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 43E842FDC44;
-	Tue, 26 Aug 2025 13:43:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3D997340D93;
+	Tue, 26 Aug 2025 13:16:35 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="LrWgCyHA"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="g1bzKEKK"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0021D3376BE;
-	Tue, 26 Aug 2025 13:43:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EF36833CE88;
+	Tue, 26 Aug 2025 13:16:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756215813; cv=none; b=OFwOlh0WryBMSaSFX9ZX+Z8k0nAS1SSPbbkx7UNLgofdbwA6pYVj9QKERKyBF66V5Uh89sFp2xYhO33K29oikNP5DKnVNuuy/OhzAty5nPj9/l4oyEowmoB0Lps4Cnpxog3KuiAj3xrRDLKYxixuDbJSEYgHC4V3TmdIGTqjZSI=
+	t=1756214195; cv=none; b=d7SF1KN/zSH5q0DQZ5Q1fjA49l2TD2ZNfaMrmk9zEGLeOZzuobCZmFt4/XeH+dNdASOTdTSn6eLrUSRvaDolE4TgMJoYhdNSUu204hQNtYRtU+G+Ez94b5YKlmoQaK6JGTR9+0Cd/HBcJUVX2LV4HF4xKSGBKMxbfq8RxVsUJ8g=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756215813; c=relaxed/simple;
-	bh=ho8KNqDjod76FrQ5MHMWI+QKskQ+qpt6qkAXK0/u84c=;
+	s=arc-20240116; t=1756214195; c=relaxed/simple;
+	bh=ylrZn/6oyXUhcP8hFM3mjnaMNHJS77/QXNDkTeDpBe8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=J2DDiqxECHmp0y/GOuf32P29qyyPUzHMhqe921h3kUw299tM9Oq+G8VHBhT93HfKlzsQm9EQ82sKemP8pdJ7QzWUh0Q584w6AJDZyHda9sRz3kMsJc++FqH0VheOvBe7Gyvreh1cDz6BLu16/QATULNAXr2K6x+qd5EF/dJO2uI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=LrWgCyHA; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 823A8C4CEF1;
-	Tue, 26 Aug 2025 13:43:32 +0000 (UTC)
+	 MIME-Version; b=dyayvYC//OksEkZbCcvIf2vQd5g0Sazb0obAzTs2hfVoaECpOVlrwVOVkyVoZs1GeZne4HQObO+4oqRURb+JSryw76q3sW88W2stLRwPjy+nKPXqeffIAK6f1EWZNZh590WHdD55dBKTMHmSpC1qC5Wo8iVIBMkPc1jXLkzzBKA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=g1bzKEKK; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 79CE1C113CF;
+	Tue, 26 Aug 2025 13:16:34 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1756215812;
-	bh=ho8KNqDjod76FrQ5MHMWI+QKskQ+qpt6qkAXK0/u84c=;
+	s=korg; t=1756214194;
+	bh=ylrZn/6oyXUhcP8hFM3mjnaMNHJS77/QXNDkTeDpBe8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=LrWgCyHAwS4660yMuxrHZZ4bUfJS69PHS+hXhkHUbvLVeC7aBjQGaao6ItfmJ0tnL
-	 AaSj58tBNsmuV8wicuPH0/tRA/VMsWCNi6CG3DYCIJq43opCb4B+aojO49tf+kNkOI
-	 mTp5EKfmH1hmr22XeDmy/tOlhYFpVs2eH9nEfi3U=
+	b=g1bzKEKK/jLRPfDiDdYFobGBZwtZXxDmmNowckm1Bi4JphQMzN5uj6dAbZPaPQ0JM
+	 Xt0KlKFha6MvpiZ7PFf+2MWCNIiLmlK1RjJuEcHGoU7pPAutB7EDKC7nkImVqOyV6+
+	 vOB4Vcx/J5S7EMUx/oWQj1g3l6BwNc0fVeL+yb1A=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Ian Rogers <irogers@google.com>,
-	Namhyung Kim <namhyung@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 176/644] perf sched: Fix memory leaks for evsel->priv in timehist
+	Yangbo Lu <yangbo.lu@nxp.com>,
+	Johan Hovold <johan@kernel.org>,
+	Simon Horman <horms@kernel.org>,
+	Jakub Kicinski <kuba@kernel.org>
+Subject: [PATCH 6.1 014/482] net: dpaa: fix device leak when querying time stamp info
 Date: Tue, 26 Aug 2025 13:04:27 +0200
-Message-ID: <20250826110950.830693048@linuxfoundation.org>
+Message-ID: <20250826110931.138822419@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250826110946.507083938@linuxfoundation.org>
-References: <20250826110946.507083938@linuxfoundation.org>
+In-Reply-To: <20250826110930.769259449@linuxfoundation.org>
+References: <20250826110930.769259449@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,106 +63,46 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Namhyung Kim <namhyung@kernel.org>
+From: Johan Hovold <johan@kernel.org>
 
-[ Upstream commit 117e5c33b1c44037af016d77ce6c0b086d55535f ]
+commit 3fa840230f534385b34a4f39c8dd313fbe723f05 upstream.
 
-It uses evsel->priv to save per-cpu timing information.  It should be
-freed when the evsel is released.
+Make sure to drop the reference to the ptp device taken by
+of_find_device_by_node() when querying the time stamping capabilities.
 
-Add the priv destructor for evsel same as thread to handle that.
+Note that holding a reference to the ptp device does not prevent its
+driver data from going away.
 
-Fixes: 49394a2a24c78ce0 ("perf sched timehist: Introduce timehist command")
-Reviewed-by: Ian Rogers <irogers@google.com>
-Tested-by: Ian Rogers <irogers@google.com>
-Link: https://lore.kernel.org/r/20250703014942.1369397-6-namhyung@kernel.org
-Signed-off-by: Namhyung Kim <namhyung@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Fixes: 17ae0b0ee9db ("dpaa_eth: add the get_ts_info interface for ethtool")
+Cc: stable@vger.kernel.org	# 4.19
+Cc: Yangbo Lu <yangbo.lu@nxp.com>
+Signed-off-by: Johan Hovold <johan@kernel.org>
+Reviewed-by: Simon Horman <horms@kernel.org>
+Link: https://patch.msgid.link/20250725171213.880-2-johan@kernel.org
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- tools/perf/builtin-sched.c | 12 ++++++++++++
- tools/perf/util/evsel.c    | 11 +++++++++++
- tools/perf/util/evsel.h    |  2 ++
- 3 files changed, 25 insertions(+)
+ drivers/net/ethernet/freescale/dpaa/dpaa_ethtool.c |    4 +++-
+ 1 file changed, 3 insertions(+), 1 deletion(-)
 
-diff --git a/tools/perf/builtin-sched.c b/tools/perf/builtin-sched.c
-index 19e96141e7b4..95a549fdabe0 100644
---- a/tools/perf/builtin-sched.c
-+++ b/tools/perf/builtin-sched.c
-@@ -1902,6 +1902,16 @@ static u64 evsel__get_time(struct evsel *evsel, u32 cpu)
- 	return r->last_time[cpu];
- }
+--- a/drivers/net/ethernet/freescale/dpaa/dpaa_ethtool.c
++++ b/drivers/net/ethernet/freescale/dpaa/dpaa_ethtool.c
+@@ -473,8 +473,10 @@ static int dpaa_get_ts_info(struct net_d
+ 		of_node_put(ptp_node);
+ 	}
  
-+static void timehist__evsel_priv_destructor(void *priv)
-+{
-+	struct evsel_runtime *r = priv;
-+
-+	if (r) {
-+		free(r->last_time);
-+		free(r);
+-	if (ptp_dev)
++	if (ptp_dev) {
+ 		ptp = platform_get_drvdata(ptp_dev);
++		put_device(&ptp_dev->dev);
 +	}
-+}
-+
- static int comm_width = 30;
  
- static char *timehist_get_commstr(struct thread *thread)
-@@ -3039,6 +3049,8 @@ static int perf_sched__timehist(struct perf_sched *sched)
- 
- 	setup_pager();
- 
-+	evsel__set_priv_destructor(timehist__evsel_priv_destructor);
-+
- 	/* prefer sched_waking if it is captured */
- 	if (evlist__find_tracepoint_by_name(session->evlist, "sched:sched_waking"))
- 		handlers[1].handler = timehist_sched_wakeup_ignore;
-diff --git a/tools/perf/util/evsel.c b/tools/perf/util/evsel.c
-index c19a583ca9f6..f14c83e6829a 100644
---- a/tools/perf/util/evsel.c
-+++ b/tools/perf/util/evsel.c
-@@ -1416,6 +1416,15 @@ static void evsel__free_config_terms(struct evsel *evsel)
- 	free_config_terms(&evsel->config_terms);
- }
- 
-+static void (*evsel__priv_destructor)(void *priv);
-+
-+void evsel__set_priv_destructor(void (*destructor)(void *priv))
-+{
-+	assert(evsel__priv_destructor == NULL);
-+
-+	evsel__priv_destructor = destructor;
-+}
-+
- void evsel__exit(struct evsel *evsel)
- {
- 	assert(list_empty(&evsel->core.node));
-@@ -1436,6 +1445,8 @@ void evsel__exit(struct evsel *evsel)
- 	hashmap__free(evsel->per_pkg_mask);
- 	evsel->per_pkg_mask = NULL;
- 	zfree(&evsel->metric_events);
-+	if (evsel__priv_destructor)
-+		evsel__priv_destructor(evsel->priv);
- 	perf_evsel__object.fini(evsel);
- }
- 
-diff --git a/tools/perf/util/evsel.h b/tools/perf/util/evsel.h
-index 0492cafac443..d39d8aab3769 100644
---- a/tools/perf/util/evsel.h
-+++ b/tools/perf/util/evsel.h
-@@ -231,6 +231,8 @@ void evsel__init(struct evsel *evsel, struct perf_event_attr *attr, int idx);
- void evsel__exit(struct evsel *evsel);
- void evsel__delete(struct evsel *evsel);
- 
-+void evsel__set_priv_destructor(void (*destructor)(void *priv));
-+
- struct callchain_param;
- 
- void evsel__config(struct evsel *evsel, struct record_opts *opts,
--- 
-2.39.5
-
+ 	if (ptp)
+ 		info->phc_index = ptp->phc_index;
 
 
 
