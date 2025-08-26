@@ -1,58 +1,56 @@
-Return-Path: <stable+bounces-175215-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-174088-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 10646B36732
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 16:04:33 +0200 (CEST)
+Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [IPv6:2605:f480:58:1:0:1994:3:14])
+	by mail.lfdr.de (Postfix) with ESMTPS id D8C4AB360EC
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 15:05:17 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id E985F1C2498E
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 13:56:11 +0000 (UTC)
+	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id CBA6F4E43A1
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 13:05:16 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4E07334DCD9;
-	Tue, 26 Aug 2025 13:54:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3A53824DD11;
+	Tue, 26 Aug 2025 13:04:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ZFKOwiUn"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="AcKUEoFw"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0CB1834A32E;
-	Tue, 26 Aug 2025 13:54:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E9FE7228C9D;
+	Tue, 26 Aug 2025 13:04:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756216445; cv=none; b=A6Dr5E3xPtZ82hvgm9XfnELxI+4j5b3T1sdAZx6NXChIWOz/Yp9HMcFkIIwCLFZ5JEit++XlLZqIhR+rmORxCqvp0yhE0BcGRNBLFl56wPFhwunVBE5SpCFl/LMUnoO+0VaKMG97gRgLvbEE8bXfmb47zi+al4SfHPHcnRWAHko=
+	t=1756213462; cv=none; b=NbIQuLJci4r67ohrkZI059kUKsAmPn+ZVSj67M5PyKv+Kw7J04H10oRFsyU+iGphF+z1SSNEvQBktmyk9B0cbnv/lQhj/hRgAMGo3sdcB3W/W5y5opvZqcAALZG+z04gha0b0sjbTZ3D6PRlvBK6XzP/mL7Twx6ttOJk6zwyGeg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756216445; c=relaxed/simple;
-	bh=pDtt6UTzCpkWsT1AjM2xI0MWj4YCKzsMb2Gu/gTTGS4=;
+	s=arc-20240116; t=1756213462; c=relaxed/simple;
+	bh=6XCM0+mn+HS/v1h94Lka7prg7LkItFW59lXGcNQJVnY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Gtt4JpKDKiXbzbpalRlM2aKwCSUQdbLJriNqTlsDUaKUF2rMPASXTg9Usk1rV9T2R2T6lBzSz6m5zg5OQ0aoRh+mcC22OdFe4xdwtTbX3o1J9TVmzX+Xtq/fh63LFzgue8FCF//ZIAVU3Cs3mX4UKCY5gxNT0scg4xaHTwSfPKc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ZFKOwiUn; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 92EC1C4CEF1;
-	Tue, 26 Aug 2025 13:54:04 +0000 (UTC)
+	 MIME-Version; b=Ib4Ij5o170WLhVyPf1p5YnDEtbfqjwn7/EPFRi4QxSs5M5Z8KOJlu+5o5fsLZJGKQMVwd6+L59jHaHbZMbsdYIDLFeWs/QCa8yfqZV/kYchw+6p5Gz5Hz4+4zYQDGa1GA+YqeijSxikS4sEzzcxPwhnvjwkpG4jE2zyu4CN7bK0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=AcKUEoFw; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1A27EC4CEF1;
+	Tue, 26 Aug 2025 13:04:20 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1756216444;
-	bh=pDtt6UTzCpkWsT1AjM2xI0MWj4YCKzsMb2Gu/gTTGS4=;
+	s=korg; t=1756213461;
+	bh=6XCM0+mn+HS/v1h94Lka7prg7LkItFW59lXGcNQJVnY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=ZFKOwiUn7v5aqG5/nvbbP6xH9195Ug70X7wVSL9MTIRyM5dFEoxPnfzRlPL2GXdVj
-	 kUBTphQdam1ISCoQl2L9QyWVVqX/e+DYaYyraYx0YFBIGNWsWG7CiMUTIWFkVLJF/F
-	 cePPuU0a1SXiNn3B6iW2SoSdkhT5G03JFWlSF39k=
+	b=AcKUEoFwTTY2+v/3ZWM6YiFN6YIZvb0HMhcBgUI7kcM0MlVBTsuQjlWhupveNxKFK
+	 EM7vrxtonQIMbDWmxAG5w9+WHHrBAAK0+fCp6sn+CmyNrC+PbgfLbuRgQ4gjT9jtSn
+	 HH9NsREqgFBAbneZHm37Fc10IJ0eooKuKvaV5Uqw=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Meagan Lloyd <meaganlloyd@linux.microsoft.com>,
-	Tyler Hicks <code@tyhicks.com>,
-	Rodolfo Giometti <giometti@enneenne.com>,
-	Alexandre Belloni <alexandre.belloni@bootlin.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 414/644] rtc: ds1307: handle oscillator stop flag (OSF) for ds1341
+	Hong Guan <hguan@ti.com>,
+	Bryan Brattlof <bb@ti.com>,
+	Vignesh Raghavendra <vigneshr@ti.com>
+Subject: [PATCH 6.6 356/587] arm64: dts: ti: k3-am62a7-sk: fix pinmux for main_uart1
 Date: Tue, 26 Aug 2025 13:08:25 +0200
-Message-ID: <20250826110956.717265704@linuxfoundation.org>
+Message-ID: <20250826111001.968811166@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250826110946.507083938@linuxfoundation.org>
-References: <20250826110946.507083938@linuxfoundation.org>
+In-Reply-To: <20250826110952.942403671@linuxfoundation.org>
+References: <20250826110952.942403671@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,68 +62,43 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Meagan Lloyd <meaganlloyd@linux.microsoft.com>
+From: Hong Guan <hguan@ti.com>
 
-[ Upstream commit 523923cfd5d622b8f4ba893fdaf29fa6adeb8c3e ]
+commit 8e44ac61abaae56fc6eb537a04ed78b458c5b984 upstream.
 
-In using CONFIG_RTC_HCTOSYS, rtc_hctosys() will sync the RTC time to the
-kernel time as long as rtc_read_time() succeeds. In some power loss
-situations, our supercapacitor-backed DS1342 RTC comes up with either an
-unpredictable future time or the default 01/01/00 from the datasheet.
-The oscillator stop flag (OSF) is set in these scenarios due to the
-power loss and can be used to determine the validity of the RTC data.
+main_uart1 reserved for TIFS firmware traces is routed to the
+onboard FT4232 via a FET switch which is connected to pin A21 and
+B21 of the SoC and not E17 and C17. Fix it.
 
-This change expands the oscillator stop flag (OSF) handling that has
-already been implemented for some chips to the ds1341 chip (DS1341 and
-DS1342 share a datasheet). This handling manages the validity of the RTC
-data in .read_time and .set_time based on the OSF.
-
-Signed-off-by: Meagan Lloyd <meaganlloyd@linux.microsoft.com>
-Reviewed-by: Tyler Hicks <code@tyhicks.com>
-Acked-by: Rodolfo Giometti <giometti@enneenne.com>
-Link: https://lore.kernel.org/r/1749665656-30108-3-git-send-email-meaganlloyd@linux.microsoft.com
-Signed-off-by: Alexandre Belloni <alexandre.belloni@bootlin.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Fixes: cf39ff15cc01a ("arm64: dts: ti: k3-am62a7-sk: Describe main_uart1 and wkup_uart")
+Cc: stable@vger.kernel.org
+Signed-off-by: Hong Guan <hguan@ti.com>
+[bb@ti.com: expanded commit message]
+Signed-off-by: Bryan Brattlof <bb@ti.com>
+Link: https://lore.kernel.org/r/20250707-uart-fixes-v1-1-8164147218b0@ti.com
+Signed-off-by: Vignesh Raghavendra <vigneshr@ti.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/rtc/rtc-ds1307.c | 11 +++++++++++
- 1 file changed, 11 insertions(+)
+ arch/arm64/boot/dts/ti/k3-am62a7-sk.dts |    4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/rtc/rtc-ds1307.c b/drivers/rtc/rtc-ds1307.c
-index 1e621080f666..f8e32f5c37e3 100644
---- a/drivers/rtc/rtc-ds1307.c
-+++ b/drivers/rtc/rtc-ds1307.c
-@@ -273,6 +273,13 @@ static int ds1307_get_time(struct device *dev, struct rtc_time *t)
- 		if (tmp & DS1340_BIT_OSF)
- 			return -EINVAL;
- 		break;
-+	case ds_1341:
-+		ret = regmap_read(ds1307->regmap, DS1337_REG_STATUS, &tmp);
-+		if (ret)
-+			return ret;
-+		if (tmp & DS1337_BIT_OSF)
-+			return -EINVAL;
-+		break;
- 	case ds_1388:
- 		ret = regmap_read(ds1307->regmap, DS1388_REG_FLAG, &tmp);
- 		if (ret)
-@@ -371,6 +378,10 @@ static int ds1307_set_time(struct device *dev, struct rtc_time *t)
- 		regmap_update_bits(ds1307->regmap, DS1340_REG_FLAG,
- 				   DS1340_BIT_OSF, 0);
- 		break;
-+	case ds_1341:
-+		regmap_update_bits(ds1307->regmap, DS1337_REG_STATUS,
-+				   DS1337_BIT_OSF, 0);
-+		break;
- 	case ds_1388:
- 		regmap_update_bits(ds1307->regmap, DS1388_REG_FLAG,
- 				   DS1388_BIT_OSF, 0);
--- 
-2.39.5
-
+--- a/arch/arm64/boot/dts/ti/k3-am62a7-sk.dts
++++ b/arch/arm64/boot/dts/ti/k3-am62a7-sk.dts
+@@ -144,8 +144,8 @@
+ 
+ 	main_uart1_pins_default: main-uart1-default-pins {
+ 		pinctrl-single,pins = <
+-			AM62AX_IOPAD(0x01e8, PIN_INPUT, 1) /* (C17) I2C1_SCL.UART1_RXD */
+-			AM62AX_IOPAD(0x01ec, PIN_OUTPUT, 1) /* (E17) I2C1_SDA.UART1_TXD */
++			AM62AX_IOPAD(0x01ac, PIN_INPUT, 2) /* (B21) MCASP0_AFSR.UART1_RXD */
++			AM62AX_IOPAD(0x01b0, PIN_OUTPUT, 2) /* (A21) MCASP0_ACLKR.UART1_TXD */
+ 			AM62AX_IOPAD(0x0194, PIN_INPUT, 2) /* (C19) MCASP0_AXR3.UART1_CTSn */
+ 			AM62AX_IOPAD(0x0198, PIN_OUTPUT, 2) /* (B19) MCASP0_AXR2.UART1_RTSn */
+ 		>;
 
 
 
