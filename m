@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-176074-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-174497-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8BA35B36C02
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 16:51:40 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id EA52BB3636F
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 15:29:55 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 3BE4AA046AF
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 14:34:47 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id D02321884894
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 13:24:29 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id EC81D352FF3;
-	Tue, 26 Aug 2025 14:31:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 740A730146D;
+	Tue, 26 Aug 2025 13:22:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="DtnCScys"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="KHVZ9ou+"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A86143376BD;
-	Tue, 26 Aug 2025 14:31:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 322C824169D;
+	Tue, 26 Aug 2025 13:22:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756218715; cv=none; b=Sor3L+X3QuXK5tYPVmNPNwVXU6H6R6MI38ZrSOrivXMhhwlv0roPPrrYEZOgayMPW+514TFKbOsavg2H787frJ9039peD5S5HC5HizmfGqlY5/1tXX5TvIUUC33dgUsSHXi7c4U7seytuqDIfch61Gr1J7auAaQkUDmJzGXi8no=
+	t=1756214549; cv=none; b=Szalb4gUz7eAWfhe6RGjKG/ZVwm03oH+NDtt+9JtNogh3a5fZEu0qJ/mjj4l6LrCusIli9ZeayLPYspjefk9MH7TIiArRkx1oA+LYVgp3inu0tKTC9q07MuN2pzYoIakRUBXd+ns2fOTE5J16978Jyrw58bixofON6sacrepggM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756218715; c=relaxed/simple;
-	bh=7siFfOyS5y8mCgZtsnjDagcz99bTdeCB3BPmen/oNoY=;
+	s=arc-20240116; t=1756214549; c=relaxed/simple;
+	bh=aaAMW922A1rj+pR4DJCtkSKJcMPT0y8SQiEMZILsx3o=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=ZJqmjNj4S0kXp7Gl6mw7yGRZguRStz5f/SJiA7Abv7BOoKiDLbKVWVo4agGdU0+8kJuZN3saPNG6PVTM8DFj/iZXVhAgzOTExoBG/HRjKBM/y+hET+g3ZuSv9qNmDidxDo4VVZb+CtMMHy2vj49S3Le7BArh9YAxsJCXnoXDl2o=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=DtnCScys; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3AD67C4CEF1;
-	Tue, 26 Aug 2025 14:31:55 +0000 (UTC)
+	 MIME-Version; b=qxKzMWgN8A/ddjyj+a5oFRlEa3pAxdv+BWyjNsdk+239AUMu55pPQIwuu9RDj8vnxddjixr2GyR7El1/cw63b6xiITf/yiNFaNPK23tsGh91+rm4XkJhYR52KXzroQs2WAoWk7Obq8UPIlzTl3Vb5TfWY+IHupP5O7VUgZH7PY4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=KHVZ9ou+; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5EC44C4CEF1;
+	Tue, 26 Aug 2025 13:22:28 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1756218715;
-	bh=7siFfOyS5y8mCgZtsnjDagcz99bTdeCB3BPmen/oNoY=;
+	s=korg; t=1756214548;
+	bh=aaAMW922A1rj+pR4DJCtkSKJcMPT0y8SQiEMZILsx3o=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=DtnCScysB/ChnyOm8s4repuUtlcRd1Uj8mYLrptneUF78qjkTTuHan4mkh/XkDzzH
-	 5qjt7Xj80JIUpaoPgVwutcQDcFMtLY5x5sRW6yr7xleGQCAzqaNluCztYpF8V1nhCd
-	 D+R3mMyIrrZjomZKrFtVPD/sA9xzHyX3OEQXHDZA=
+	b=KHVZ9ou+BbTerwQXEe0wsfsE+HG21Xf203jQiQ0VaFc6JPSVTFJ5aDm+H+K8Kv9N0
+	 zrZ5QPcLIYjWvcEeWCDXkp0q4gTm5A2Uad40N2r8xrJoz7bUvgDrn1yHaF442+R598
+	 TNDDqqbE+Z1Q9kyd9FpkRNHcDruSHAmo91B8Q3CE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Hans Zhang <18255117159@163.com>,
-	Manivannan Sadhasivam <mani@kernel.org>,
-	Shawn Lin <shawn.lin@rock-chips.com>,
+	syzbot+544248a761451c0df72f@syzkaller.appspotmail.com,
+	Theodore Tso <tytso@mit.edu>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.4 105/403] PCI: rockchip-host: Fix "Unexpected Completion" log message
+Subject: [PATCH 6.1 178/482] ext4: do not BUG when INLINE_DATA_FL lacks system.data xattr
 Date: Tue, 26 Aug 2025 13:07:11 +0200
-Message-ID: <20250826110909.581538244@linuxfoundation.org>
+Message-ID: <20250826110935.204973064@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250826110905.607690791@linuxfoundation.org>
-References: <20250826110905.607690791@linuxfoundation.org>
+In-Reply-To: <20250826110930.769259449@linuxfoundation.org>
+References: <20250826110930.769259449@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,43 +62,75 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.4-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Hans Zhang <18255117159@163.com>
+From: Theodore Ts'o <tytso@mit.edu>
 
-[ Upstream commit fcc5f586c4edbcc10de23fb9b8c0972a84e945cd ]
+[ Upstream commit 099b847ccc6c1ad2f805d13cfbcc83f5b6d4bc42 ]
 
-Fix the debug message for the PCIE_CORE_INT_UCR interrupt to clearly
-indicate "Unexpected Completion" instead of a duplicate "malformed TLP"
-message.
+A syzbot fuzzed image triggered a BUG_ON in ext4_update_inline_data()
+when an inode had the INLINE_DATA_FL flag set but was missing the
+system.data extended attribute.
 
-Fixes: e77f847df54c ("PCI: rockchip: Add Rockchip PCIe controller support")
-Signed-off-by: Hans Zhang <18255117159@163.com>
-[mani: added fixes tag]
-Signed-off-by: Manivannan Sadhasivam <mani@kernel.org>
-Reviewed-by: Manivannan Sadhasivam <mani@kernel.org>
-Acked-by: Shawn Lin <shawn.lin@rock-chips.com>
-Link: https://patch.msgid.link/20250607160201.807043-2-18255117159@163.com
+Since this can happen due to a maiciouly fuzzed file system, we
+shouldn't BUG, but rather, report it as a corrupted file system.
+
+Add similar replacements of BUG_ON with EXT4_ERROR_INODE() ii
+ext4_create_inline_data() and ext4_inline_data_truncate().
+
+Reported-by: syzbot+544248a761451c0df72f@syzkaller.appspotmail.com
+Signed-off-by: Theodore Ts'o <tytso@mit.edu>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/pci/controller/pcie-rockchip-host.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ fs/ext4/inline.c | 19 ++++++++++++++++---
+ 1 file changed, 16 insertions(+), 3 deletions(-)
 
-diff --git a/drivers/pci/controller/pcie-rockchip-host.c b/drivers/pci/controller/pcie-rockchip-host.c
-index ef8e677ce9d1..281ddde9d8cc 100644
---- a/drivers/pci/controller/pcie-rockchip-host.c
-+++ b/drivers/pci/controller/pcie-rockchip-host.c
-@@ -445,7 +445,7 @@ static irqreturn_t rockchip_pcie_subsys_irq_handler(int irq, void *arg)
- 			dev_dbg(dev, "malformed TLP received from the link\n");
+diff --git a/fs/ext4/inline.c b/fs/ext4/inline.c
+index 312be3d7cfb3..af2d6e92cb7f 100644
+--- a/fs/ext4/inline.c
++++ b/fs/ext4/inline.c
+@@ -299,7 +299,11 @@ static int ext4_create_inline_data(handle_t *handle,
+ 	if (error)
+ 		goto out;
  
- 		if (sub_reg & PCIE_CORE_INT_UCR)
--			dev_dbg(dev, "malformed TLP received from the link\n");
-+			dev_dbg(dev, "Unexpected Completion received from the link\n");
+-	BUG_ON(!is.s.not_found);
++	if (!is.s.not_found) {
++		EXT4_ERROR_INODE(inode, "unexpected inline data xattr");
++		error = -EFSCORRUPTED;
++		goto out;
++	}
  
- 		if (sub_reg & PCIE_CORE_INT_FCE)
- 			dev_dbg(dev, "an error was observed in the flow control advertisements from the other side\n");
+ 	error = ext4_xattr_ibody_set(handle, inode, &i, &is);
+ 	if (error) {
+@@ -350,7 +354,11 @@ static int ext4_update_inline_data(handle_t *handle, struct inode *inode,
+ 	if (error)
+ 		goto out;
+ 
+-	BUG_ON(is.s.not_found);
++	if (is.s.not_found) {
++		EXT4_ERROR_INODE(inode, "missing inline data xattr");
++		error = -EFSCORRUPTED;
++		goto out;
++	}
+ 
+ 	len -= EXT4_MIN_INLINE_DATA_SIZE;
+ 	value = kzalloc(len, GFP_NOFS);
+@@ -2002,7 +2010,12 @@ int ext4_inline_data_truncate(struct inode *inode, int *has_inline)
+ 			if ((err = ext4_xattr_ibody_find(inode, &i, &is)) != 0)
+ 				goto out_error;
+ 
+-			BUG_ON(is.s.not_found);
++			if (is.s.not_found) {
++				EXT4_ERROR_INODE(inode,
++						 "missing inline data xattr");
++				err = -EFSCORRUPTED;
++				goto out_error;
++			}
+ 
+ 			value_len = le32_to_cpu(is.s.here->e_value_size);
+ 			value = kmalloc(value_len, GFP_NOFS);
 -- 
 2.39.5
 
