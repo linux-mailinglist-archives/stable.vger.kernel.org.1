@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-173504-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-175229-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 450D9B35D18
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 13:41:07 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id AEE42B36733
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 16:04:36 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id CF49E5E4EC4
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 11:40:45 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 3844E1C225B6
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 13:56:33 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id AFFC5393DD1;
-	Tue, 26 Aug 2025 11:40:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1D12C22DFA7;
+	Tue, 26 Aug 2025 13:54:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="eo7oe7UH"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="KLZLg2FU"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6C4D317332C;
-	Tue, 26 Aug 2025 11:40:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CED1D34A33C;
+	Tue, 26 Aug 2025 13:54:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756208420; cv=none; b=uNO86oTawjeEDqH7TJG/lUHdr/xB9EnpX6LkgJ35jiAcyfYWi1U7iGHRoBdGfyxJEZETqMx0vr7xYum5t8d8Vc5e1eq//lAK6eNF8uZ4HTSR0vzcnY7MiQvMsz0wXj07dQH84cGNJ4DZb/b7hylcgC1E3g1gYslHVUZxD/nv66o=
+	t=1756216483; cv=none; b=mYuxttI/csNmijcdviIQWi9J8PXmAflMU7PNHJL4PRrMSaZp83LInbv6H6lEkBz1Pexs3PFgaK+ttVotnMDDIO1pwHq2zHMf1Y0CmyKFnYPFi04JI6nd3iEovoIttfyBbmwOPvez8CutfJiYNzVyAllLYyJKy8/0+yD4jB4q0Lk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756208420; c=relaxed/simple;
-	bh=eLZOQQ6YYkCu3xLQe/NcyTnvCAsgr5ZLhqbWS2imLWE=;
+	s=arc-20240116; t=1756216483; c=relaxed/simple;
+	bh=29F5Nn3yI8Q+awo+U90OVVnNaxhFSZJvL34y1wX8w8c=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=UlaDMeq5nM8Ht4AehHmy30dUJueNkZ1FoxEjMhtSfxXZZ2RO8MBD+POCfZceiIwKpg7KstESyo7oM8EaX60BwKyETniHov2kMFAqtF5BZBd6mx+X0MgKxOzGHQbTWfkMTevIXqOkDulkR12s6sMmfmOudqjppCbCVs9z7ZXc/OE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=eo7oe7UH; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E9F4BC4CEF1;
-	Tue, 26 Aug 2025 11:40:19 +0000 (UTC)
+	 MIME-Version; b=K8HH2qSpUew/bUQtXIzrBn8sw1WA7P9L/IO9cmOIe7aTy+0lxn0NTWLLCDLlbjs8O9t6RdcrVoY0HNPb/emtvYkDNVhTy20EO0RDCPKqAl2XZ50/PxOiUzm4tXZJD5TGWf0xogWwhhZ1o9TNLJfTpf3AYXPcTBUCmlaZ4rrpjvk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=KLZLg2FU; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 613A1C4CEF1;
+	Tue, 26 Aug 2025 13:54:43 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1756208420;
-	bh=eLZOQQ6YYkCu3xLQe/NcyTnvCAsgr5ZLhqbWS2imLWE=;
+	s=korg; t=1756216483;
+	bh=29F5Nn3yI8Q+awo+U90OVVnNaxhFSZJvL34y1wX8w8c=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=eo7oe7UHWEsGxCyk82grE7atA9gorwwQrsGWyEDevdH2fqns3siasTv3tYk6vc+UG
-	 fZVGFd7zVOmixWM9x/kvCElkvUaZX00PUDqeB6aBuoKlABCnYvUKVWFAgaZcg5GuTo
-	 hQ2V0zAfGC0feyaYqdXpeCfT3Qi+muz1KuT+208s=
+	b=KLZLg2FUYNzXTtiAeanTrYzzGocWIozWU0Wh8LPWsc6zae/2C4JpOq9xOBQAsoIaE
+	 JGor9cXB37A/M6RBJkjZafMyVpDF+cJ4trDvnZagFKrynEfHsriXgGVh37ts5oCsfD
+	 fvISUZMJweBo5u5bX00Auru0nP+WC2e9cmwnyb14=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Benjamin Gaignard <benjamin.gaignard@collabora.com>,
-	Philipp Zabel <p.zabel@pengutronix.de>,
-	Nicolas Dufresne <nicolas.dufresne@collabora.com>,
-	Hans Verkuil <hverkuil@xs4all.nl>
-Subject: [PATCH 6.12 103/322] media: verisilicon: Fix AV1 decoder clock frequency
+	kernel test robot <lkp@intel.com>,
+	Corey Minyard <corey@minyard.net>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.15 427/644] ipmi: Fix strcpy source and destination the same
 Date: Tue, 26 Aug 2025 13:08:38 +0200
-Message-ID: <20250826110918.263684213@linuxfoundation.org>
+Message-ID: <20250826110957.040502983@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250826110915.169062587@linuxfoundation.org>
-References: <20250826110915.169062587@linuxfoundation.org>
+In-Reply-To: <20250826110946.507083938@linuxfoundation.org>
+References: <20250826110946.507083938@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,62 +62,155 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Nicolas Dufresne <nicolas.dufresne@collabora.com>
+From: Corey Minyard <corey@minyard.net>
 
-commit 01350185fe02ae3ea2c12d578e06af0d5186f33e upstream.
+[ Upstream commit 8ffcb7560b4a15faf821df95e3ab532b2b020f8c ]
 
-The desired clock frequency was correctly set to 400MHz in the device tree
-but was lowered by the driver to 300MHz breaking 4K 60Hz content playback.
-Fix the issue by removing the driver call to clk_set_rate(), which reduce
-the amount of board specific code.
+The source and destination of some strcpy operations was the same.
+Split out the part of the operations that needed to be done for those
+particular calls so the unnecessary copy wasn't done.
 
-Fixes: 003afda97c65 ("media: verisilicon: Enable AV1 decoder on rk3588")
-Cc: stable@vger.kernel.org
-Reviewed-by: Benjamin Gaignard <benjamin.gaignard@collabora.com>
-Reviewed-by: Philipp Zabel <p.zabel@pengutronix.de>
-Signed-off-by: Nicolas Dufresne <nicolas.dufresne@collabora.com>
-Signed-off-by: Hans Verkuil <hverkuil@xs4all.nl>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Reported-by: kernel test robot <lkp@intel.com>
+Closes: https://lore.kernel.org/oe-kbuild-all/202506140756.EFXXvIP4-lkp@intel.com/
+Signed-off-by: Corey Minyard <corey@minyard.net>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/media/platform/verisilicon/rockchip_vpu_hw.c |    9 ---------
- 1 file changed, 9 deletions(-)
+ drivers/char/ipmi/ipmi_watchdog.c | 59 ++++++++++++++++++++++---------
+ 1 file changed, 42 insertions(+), 17 deletions(-)
 
---- a/drivers/media/platform/verisilicon/rockchip_vpu_hw.c
-+++ b/drivers/media/platform/verisilicon/rockchip_vpu_hw.c
-@@ -17,7 +17,6 @@
+diff --git a/drivers/char/ipmi/ipmi_watchdog.c b/drivers/char/ipmi/ipmi_watchdog.c
+index 883b4a341012..56be20f7485b 100644
+--- a/drivers/char/ipmi/ipmi_watchdog.c
++++ b/drivers/char/ipmi/ipmi_watchdog.c
+@@ -1198,14 +1198,8 @@ static struct ipmi_smi_watcher smi_watcher = {
+ 	.smi_gone = ipmi_smi_gone
+ };
  
- #define RK3066_ACLK_MAX_FREQ (300 * 1000 * 1000)
- #define RK3288_ACLK_MAX_FREQ (400 * 1000 * 1000)
--#define RK3588_ACLK_MAX_FREQ (300 * 1000 * 1000)
- 
- #define ROCKCHIP_VPU981_MIN_SIZE 64
- 
-@@ -440,13 +439,6 @@ static int rk3066_vpu_hw_init(struct han
+-static int action_op(const char *inval, char *outval)
++static int action_op_set_val(const char *inval)
+ {
+-	if (outval)
+-		strcpy(outval, action);
+-
+-	if (!inval)
+-		return 0;
+-
+ 	if (strcmp(inval, "reset") == 0)
+ 		action_val = WDOG_TIMEOUT_RESET;
+ 	else if (strcmp(inval, "none") == 0)
+@@ -1216,18 +1210,26 @@ static int action_op(const char *inval, char *outval)
+ 		action_val = WDOG_TIMEOUT_POWER_DOWN;
+ 	else
+ 		return -EINVAL;
+-	strcpy(action, inval);
  	return 0;
  }
  
--static int rk3588_vpu981_hw_init(struct hantro_dev *vpu)
--{
--	/* Bump ACLKs to max. possible freq. to improve performance. */
--	clk_set_rate(vpu->clocks[0].clk, RK3588_ACLK_MAX_FREQ);
--	return 0;
--}
--
- static int rockchip_vpu_hw_init(struct hantro_dev *vpu)
+-static int preaction_op(const char *inval, char *outval)
++static int action_op(const char *inval, char *outval)
  {
- 	/* Bump ACLK to max. possible freq. to improve performance. */
-@@ -807,7 +799,6 @@ const struct hantro_variant rk3588_vpu98
- 	.codec_ops = rk3588_vpu981_codec_ops,
- 	.irqs = rk3588_vpu981_irqs,
- 	.num_irqs = ARRAY_SIZE(rk3588_vpu981_irqs),
--	.init = rk3588_vpu981_hw_init,
- 	.clk_names = rk3588_vpu981_vpu_clk_names,
- 	.num_clocks = ARRAY_SIZE(rk3588_vpu981_vpu_clk_names)
- };
++	int rv;
++
+ 	if (outval)
+-		strcpy(outval, preaction);
++		strcpy(outval, action);
+ 
+ 	if (!inval)
+ 		return 0;
++	rv = action_op_set_val(inval);
++	if (!rv)
++		strcpy(action, inval);
++	return rv;
++}
+ 
++static int preaction_op_set_val(const char *inval)
++{
+ 	if (strcmp(inval, "pre_none") == 0)
+ 		preaction_val = WDOG_PRETIMEOUT_NONE;
+ 	else if (strcmp(inval, "pre_smi") == 0)
+@@ -1240,18 +1242,26 @@ static int preaction_op(const char *inval, char *outval)
+ 		preaction_val = WDOG_PRETIMEOUT_MSG_INT;
+ 	else
+ 		return -EINVAL;
+-	strcpy(preaction, inval);
+ 	return 0;
+ }
+ 
+-static int preop_op(const char *inval, char *outval)
++static int preaction_op(const char *inval, char *outval)
+ {
++	int rv;
++
+ 	if (outval)
+-		strcpy(outval, preop);
++		strcpy(outval, preaction);
+ 
+ 	if (!inval)
+ 		return 0;
++	rv = preaction_op_set_val(inval);
++	if (!rv)
++		strcpy(preaction, inval);
++	return 0;
++}
+ 
++static int preop_op_set_val(const char *inval)
++{
+ 	if (strcmp(inval, "preop_none") == 0)
+ 		preop_val = WDOG_PREOP_NONE;
+ 	else if (strcmp(inval, "preop_panic") == 0)
+@@ -1260,7 +1270,22 @@ static int preop_op(const char *inval, char *outval)
+ 		preop_val = WDOG_PREOP_GIVE_DATA;
+ 	else
+ 		return -EINVAL;
+-	strcpy(preop, inval);
++	return 0;
++}
++
++static int preop_op(const char *inval, char *outval)
++{
++	int rv;
++
++	if (outval)
++		strcpy(outval, preop);
++
++	if (!inval)
++		return 0;
++
++	rv = preop_op_set_val(inval);
++	if (!rv)
++		strcpy(preop, inval);
+ 	return 0;
+ }
+ 
+@@ -1297,18 +1322,18 @@ static int __init ipmi_wdog_init(void)
+ {
+ 	int rv;
+ 
+-	if (action_op(action, NULL)) {
++	if (action_op_set_val(action)) {
+ 		action_op("reset", NULL);
+ 		pr_info("Unknown action '%s', defaulting to reset\n", action);
+ 	}
+ 
+-	if (preaction_op(preaction, NULL)) {
++	if (preaction_op_set_val(preaction)) {
+ 		preaction_op("pre_none", NULL);
+ 		pr_info("Unknown preaction '%s', defaulting to none\n",
+ 			preaction);
+ 	}
+ 
+-	if (preop_op(preop, NULL)) {
++	if (preop_op_set_val(preop)) {
+ 		preop_op("preop_none", NULL);
+ 		pr_info("Unknown preop '%s', defaulting to none\n", preop);
+ 	}
+-- 
+2.39.5
+
 
 
 
