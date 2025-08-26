@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-175557-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-172984-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 46C89B3694E
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 16:25:26 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8548AB35B25
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 13:19:23 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 97E089843DB
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 14:10:47 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 37F7E3B2F0D
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 11:19:11 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 90DF535334D;
-	Tue, 26 Aug 2025 14:09:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1F70D340D82;
+	Tue, 26 Aug 2025 11:17:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="TNZJQ39S"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="YRhhOoBv"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4BD21352FFC;
-	Tue, 26 Aug 2025 14:09:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D11B6338F51;
+	Tue, 26 Aug 2025 11:17:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756217360; cv=none; b=T2aiLCsrulzVpbzxe0YA8cnPhTi7al7hzHGU4Qpt+lBTJdlTWgM7EjYtRYqhHwfOKDjBb4WPW9H2B1+ttT05COaI60yVYF0RU18yivhlWIOgj1h9HLj8x6ReI8Njy1BcwbOAwNVcufY9RgzPv5/rxb5rVb/b/sg9YTASku8nPUY=
+	t=1756207072; cv=none; b=n+tc8UTRs4580etLfdPxh/cBgm3VIa1Rke1JjIMWv4+WZ19gwDhpMbxm6Zfpf6bzKr7FykLL2oS5YX/s5eMBCgvw4388AYGQD/pyfOqVqpGJTp7TcmeTz2ZheYc3sGU0ymQuKkxePhZQ3T9fo3VJ1TU6cAWCEQVUihUh0OSoyqE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756217360; c=relaxed/simple;
-	bh=lz99SGiYtz0zcUwqM9NiPUkEFvzuXaOtut7YixvTAKM=;
+	s=arc-20240116; t=1756207072; c=relaxed/simple;
+	bh=wBcak2O8EDa+56oC2kSjJj1irIgimLjiNZsTo9Wgbv8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=dUquEC8YZ9/G1LSpFD/4S8Rx65HGpe3Q/qbhMO2MvtT+XngNyP2j5fhSkkzTvlslENVtAkQ/bTmzNGnTgTwQVIi6aiFumkkJVsBB0Eiz+C4kh2m2KrX50+38+VUmTH9Z+JKNts8jhYlYJxiXBEdCQyiqcPyQW8DG7CSEQOaX+6Q=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=TNZJQ39S; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 93D12C116D0;
-	Tue, 26 Aug 2025 14:09:18 +0000 (UTC)
+	 MIME-Version; b=TS49+fRF5FS1ZdUnF+poce+G6eJ60U/2ClZCql9GEE3dQ0tcihU/kpAGFHBvIUBpFhy/eXwInJ6Lpr3s7V2JpngRuOzQN03/Qz8qFNaC+qkUc4hfqh/FRvqC9Z4cFOSgDSigWqNU3m3ZybesoEfiJ+tpeDyPeN5jbvgu2jtNsI0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=YRhhOoBv; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6BBFCC4CEF4;
+	Tue, 26 Aug 2025 11:17:52 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1756217358;
-	bh=lz99SGiYtz0zcUwqM9NiPUkEFvzuXaOtut7YixvTAKM=;
+	s=korg; t=1756207072;
+	bh=wBcak2O8EDa+56oC2kSjJj1irIgimLjiNZsTo9Wgbv8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=TNZJQ39StlY9avE8LRjOviJmLOBVGHgYnyDJCMCln0gU8AJsy8vo1VGF9xqzLes13
-	 HHAD4sXZ78f1J/uILQrzX96X8IbHqeOhqbBideDvnFQ+pS2+WCybP1hFI+IKGXz01M
-	 2wxD6PJGmVU6lfXW8WbME9p5cQiqZ7LdofM2nsh0=
+	b=YRhhOoBvt0UcazrqCseNKkx5uhV3/pASwNLpzBIHM5ZUFuB2IdoZTIw6vP7JA4dsw
+	 Id6tnKEKPYvpnSmVWGXesZjbwR3DMSUGlCGRV/4j4Ntp128xLjuC6BaeqC1LK4T7aG
+	 BUdepNJPiR7ThpE9a4PDA22oslXzVfXzO/VtIPTs=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Gokul Sivakumar <gokulkumar.sivakumar@infineon.com>,
-	Arend van Spriel <arend.vanspriel@broadcom.com>,
-	Johannes Berg <johannes.berg@intel.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 114/523] wifi: brcmfmac: fix P2P discovery failure in P2P peer due to missing P2P IE
+	stable@kernel.org,
+	Ojaswin Mujoo <ojaswin@linux.ibm.com>,
+	"Darrick J. Wong" <djwong@kernel.org>,
+	Theodore Tso <tytso@mit.edu>
+Subject: [PATCH 6.16 040/457] ext4: fix reserved gdt blocks handling in fsmap
 Date: Tue, 26 Aug 2025 13:05:24 +0200
-Message-ID: <20250826110927.337145616@linuxfoundation.org>
+Message-ID: <20250826110938.337762530@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250826110924.562212281@linuxfoundation.org>
-References: <20250826110924.562212281@linuxfoundation.org>
+In-Reply-To: <20250826110937.289866482@linuxfoundation.org>
+References: <20250826110937.289866482@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,69 +63,58 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+6.16-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Gokul Sivakumar <gokulkumar.sivakumar@infineon.com>
+From: Ojaswin Mujoo <ojaswin@linux.ibm.com>
 
-[ Upstream commit 579bf8037b70b644a674c126a32bbb2212cf5c21 ]
+commit 3ffbdd1f1165f1b2d6a94d1b1aabef57120deaf7 upstream.
 
-After commit bd99a3013bdc ("brcmfmac: move configuration of probe request
-IEs"), the probe request MGMT IE addition operation brcmf_vif_set_mgmt_ie()
-got moved from the brcmf_p2p_scan_prep() to the brcmf_cfg80211_scan().
+In some cases like small FSes with no meta_bg and where the resize
+doesn't need extra gdt blocks as it can fit in the current one,
+s_reserved_gdt_blocks is set as 0, which causes fsmap to emit a 0
+length entry, which is incorrect.
 
-Because of this, as part of the scan request handler for the P2P Discovery,
-vif struct used for adding the Probe Request P2P IE in firmware got changed
-from the P2PAPI_BSSCFG_DEVICE vif to P2PAPI_BSSCFG_PRIMARY vif incorrectly.
-So the firmware stopped adding P2P IE to the outgoing P2P Discovery probe
-requests frames and the other P2P peers were unable to discover this device
-causing a regression on the P2P feature.
+  $ mkfs.ext4 -b 65536 -O bigalloc /dev/sda 5G
+  $ mount /dev/sda /mnt/scratch
+  $ xfs_io -c "fsmap -d" /mnt/scartch
 
-To fix this, while setting the P2P IE in firmware, properly use the vif of
-the P2P discovery wdev on which the driver received the P2P scan request.
-This is done by not changing the vif pointer, until brcmf_vif_set_mgmt_ie()
-is completed.
+        0: 253:48 [0..127]: static fs metadata 128
+        1: 253:48 [128..255]: special 102:1 128
+        2: 253:48 [256..255]: special 102:2 0     <---- 0 len entry
+        3: 253:48 [256..383]: special 102:3 128
 
-Fixes: bd99a3013bdc ("brcmfmac: move configuration of probe request IEs")
-Signed-off-by: Gokul Sivakumar <gokulkumar.sivakumar@infineon.com>
-Acked-by: Arend van Spriel <arend.vanspriel@broadcom.com>
-Link: https://patch.msgid.link/20250626050706.7271-1-gokulkumar.sivakumar@infineon.com
-Signed-off-by: Johannes Berg <johannes.berg@intel.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Fix this by adding a check for this case.
+
+Cc: stable@kernel.org
+Fixes: 0c9ec4beecac ("ext4: support GETFSMAP ioctls")
+Signed-off-by: Ojaswin Mujoo <ojaswin@linux.ibm.com>
+Reviewed-by: Darrick J. Wong <djwong@kernel.org>
+Link: https://patch.msgid.link/08781b796453a5770112aa96ad14c864fbf31935.1754377641.git.ojaswin@linux.ibm.com
+Signed-off-by: Theodore Ts'o <tytso@mit.edu>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- .../net/wireless/broadcom/brcm80211/brcmfmac/cfg80211.c   | 8 ++++----
- 1 file changed, 4 insertions(+), 4 deletions(-)
+ fs/ext4/fsmap.c |    8 ++++++++
+ 1 file changed, 8 insertions(+)
 
-diff --git a/drivers/net/wireless/broadcom/brcm80211/brcmfmac/cfg80211.c b/drivers/net/wireless/broadcom/brcm80211/brcmfmac/cfg80211.c
-index fbb5e29530e3..af06f31db0e2 100644
---- a/drivers/net/wireless/broadcom/brcm80211/brcmfmac/cfg80211.c
-+++ b/drivers/net/wireless/broadcom/brcm80211/brcmfmac/cfg80211.c
-@@ -1199,10 +1199,6 @@ brcmf_cfg80211_scan(struct wiphy *wiphy, struct cfg80211_scan_request *request)
- 		return -EAGAIN;
- 	}
- 
--	/* If scan req comes for p2p0, send it over primary I/F */
--	if (vif == cfg->p2p.bss_idx[P2PAPI_BSSCFG_DEVICE].vif)
--		vif = cfg->p2p.bss_idx[P2PAPI_BSSCFG_PRIMARY].vif;
--
- 	brcmf_dbg(SCAN, "START ESCAN\n");
- 
- 	cfg->scan_request = request;
-@@ -1218,6 +1214,10 @@ brcmf_cfg80211_scan(struct wiphy *wiphy, struct cfg80211_scan_request *request)
- 	if (err)
- 		goto scan_out;
- 
-+	/* If scan req comes for p2p0, send it over primary I/F */
-+	if (vif == cfg->p2p.bss_idx[P2PAPI_BSSCFG_DEVICE].vif)
-+		vif = cfg->p2p.bss_idx[P2PAPI_BSSCFG_PRIMARY].vif;
+--- a/fs/ext4/fsmap.c
++++ b/fs/ext4/fsmap.c
+@@ -393,6 +393,14 @@ static unsigned int ext4_getfsmap_find_s
+ 	/* Reserved GDT blocks */
+ 	if (!ext4_has_feature_meta_bg(sb) || metagroup < first_meta_bg) {
+ 		len = le16_to_cpu(sbi->s_es->s_reserved_gdt_blocks);
 +
- 	err = brcmf_do_escan(vif->ifp, request);
- 	if (err)
- 		goto scan_out;
--- 
-2.39.5
-
++		/*
++		 * mkfs.ext4 can set s_reserved_gdt_blocks as 0 in some cases,
++		 * check for that.
++		 */
++		if (!len)
++			return 0;
++
+ 		error = ext4_getfsmap_fill(meta_list, fsb, len,
+ 					   EXT4_FMR_OWN_RESV_GDT);
+ 		if (error)
 
 
 
