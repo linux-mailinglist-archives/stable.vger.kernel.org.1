@@ -1,55 +1,57 @@
-Return-Path: <stable+bounces-174565-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-175733-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6C67DB36403
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 15:35:08 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 73C14B368CD
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 16:19:28 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 6B5AF8A7C62
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 13:26:41 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 131207A870C
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 14:17:49 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 99A4B338F32;
-	Tue, 26 Aug 2025 13:25:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D6235356906;
+	Tue, 26 Aug 2025 14:17:06 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Fad3fOoe"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="KH4cqfmG"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4CFFF3375D9;
-	Tue, 26 Aug 2025 13:25:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 92CDA3568FC;
+	Tue, 26 Aug 2025 14:17:06 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756214730; cv=none; b=nh3j4OP/NraEd7Hk82Y8kw7IpXbe1extVNNcoIEqWJRoE899qNI6IKmLwPC/Ess3W7thPDAOjXp+qSrKlIc7sa46euJhFPF2OIcIikR350C9uo0bjhCevyhf6bf1L1Pj9zu2AcalZJ8Od7k7qSk5Kn1CpObbTg4RTh32EfHG80o=
+	t=1756217826; cv=none; b=aLsMbwDHCeGqhw33fUMAdg/q4nvruzvz0RnFTpsFDK5FSPPm6aFPzUWuXurX1yYiYJAuCECjHPQuT8Hhe+sfSQIbfUwqfvu21xqmWozPVTfqSaNEiO1rvd0NkVjdugnRvEfk/VXPCSqYNq+WLDeXnk1N8BSw8v7OCL8KETTAWJE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756214730; c=relaxed/simple;
-	bh=zclSNOYDwNQ2rxlynHAR8HliFpJxwOoinKoWyh5Rzsk=;
+	s=arc-20240116; t=1756217826; c=relaxed/simple;
+	bh=wq1cRX44NgzPocAgnoOina4+eVQxu9vR8MeOflUl/Z4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=hyRM5d+AJ5hk8mY2ka+/xy05suKWTGCy1SjKTUodjyMLM7I6UqS7DxWlqO/6CH1N/uHFuAfTBHyBrrmhQ72q4/2Q1J9VYgiE865ZDwTlIJN0QLoR1S0yzVHJPLw6X5MjqjKcIGN7TbEcHXfHwGwTvbl4d4tYZhRYfV5kDE+5akw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Fad3fOoe; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C96D0C4CEF1;
-	Tue, 26 Aug 2025 13:25:29 +0000 (UTC)
+	 MIME-Version:Content-Type; b=qxuFLdSL2kd7yfYETVMkgXqg8S8p0VAc4PdgHpPQeJo+ggI3yq2FIatrtAJ1ciwlc6jXn0qJUCof3sgGKqzkG4Xm6f+MYIG8FVKzs9jS/DHHJO4z8PVulDZZNfwPwiacQy1j5Nj8H0s1zA7si1/HGglWCjL6zKX9tHLGgfG1Iqc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=KH4cqfmG; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 27601C113CF;
+	Tue, 26 Aug 2025 14:17:06 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1756214730;
-	bh=zclSNOYDwNQ2rxlynHAR8HliFpJxwOoinKoWyh5Rzsk=;
+	s=korg; t=1756217826;
+	bh=wq1cRX44NgzPocAgnoOina4+eVQxu9vR8MeOflUl/Z4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Fad3fOoe5MxQaVGKiwa0GLMczLrOFUXMoJpa7A1+E2V885i7AtdbairRQuhoIgtD/
-	 6+/3oJzKWxOgRY0ecB80lmkOI+kAp4mKpiyVbsY09WIpxmQCY+ZNL2Q2qvIGfqCG2a
-	 ykCp3TZhbR/ElO0ZIoyh+PRLFc+WYhDa5ETYRb1s=
+	b=KH4cqfmGfwpf/6Rk61Clc58kwXDMeX1c/Tw0mT5nPv7ssiESMlTmaTKM/CBsCBeU8
+	 uKHAvEgtgvu5OINK8X8OwQJzZPVX+/5quXIoFDxMWMVvlIa7lkHZ9kZsfj+QFg/M98
+	 T/OS1hUdRGANHwsw1H7Ds4+kLcZMjS6D3SYSq/0Y=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Xinyu Liu <katieeliu@tencent.com>,
-	stable <stable@kernel.org>
-Subject: [PATCH 6.1 246/482] usb: core: config: Prevent OOB read in SS endpoint companion parsing
+	Florian Fainelli <florian.fainelli@broadcom.com>,
+	=?UTF-8?q?=C3=81lvaro=20Fern=C3=A1ndez=20Rojas?= <noltari@gmail.com>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.10 289/523] net: dsa: b53: fix IP_MULTICAST_CTRL on BCM5325
 Date: Tue, 26 Aug 2025 13:08:19 +0200
-Message-ID: <20250826110936.846718814@linuxfoundation.org>
+Message-ID: <20250826110931.573558278@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250826110930.769259449@linuxfoundation.org>
-References: <20250826110930.769259449@linuxfoundation.org>
+In-Reply-To: <20250826110924.562212281@linuxfoundation.org>
+References: <20250826110924.562212281@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -59,48 +61,74 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Xinyu Liu <katieeliu@tencent.com>
+From: Álvaro Fernández Rojas <noltari@gmail.com>
 
-commit cf16f408364efd8a68f39011a3b073c83a03612d upstream.
+[ Upstream commit 044d5ce2788b165798bfd173548e61bf7b6baf4d ]
 
-usb_parse_ss_endpoint_companion() checks descriptor type before length,
-enabling a potentially odd read outside of the buffer size.
+BCM5325 doesn't implement B53_UC_FWD_EN, B53_MC_FWD_EN or B53_IPMC_FWD_EN.
 
-Fix this up by checking the size first before looking at any of the
-fields in the descriptor.
-
-Signed-off-by: Xinyu Liu <katieeliu@tencent.com>
-Cc: stable <stable@kernel.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Reviewed-by: Florian Fainelli <florian.fainelli@broadcom.com>
+Signed-off-by: Álvaro Fernández Rojas <noltari@gmail.com>
+Link: https://patch.msgid.link/20250614080000.1884236-9-noltari@gmail.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/usb/core/config.c |   10 ++++++++--
- 1 file changed, 8 insertions(+), 2 deletions(-)
+ drivers/net/dsa/b53/b53_common.c | 18 +++++++++++-------
+ drivers/net/dsa/b53/b53_regs.h   |  1 +
+ 2 files changed, 12 insertions(+), 7 deletions(-)
 
---- a/drivers/usb/core/config.c
-+++ b/drivers/usb/core/config.c
-@@ -81,8 +81,14 @@ static void usb_parse_ss_endpoint_compan
- 	 */
- 	desc = (struct usb_ss_ep_comp_descriptor *) buffer;
+diff --git a/drivers/net/dsa/b53/b53_common.c b/drivers/net/dsa/b53/b53_common.c
+index cb341a4d7540..361f9be65386 100644
+--- a/drivers/net/dsa/b53/b53_common.c
++++ b/drivers/net/dsa/b53/b53_common.c
+@@ -344,14 +344,18 @@ static void b53_set_forwarding(struct b53_device *dev, int enable)
+ 		b53_read8(dev, B53_CTRL_PAGE, B53_SWITCH_CTRL, &mgmt);
+ 		mgmt |= B53_MII_DUMB_FWDG_EN;
+ 		b53_write8(dev, B53_CTRL_PAGE, B53_SWITCH_CTRL, mgmt);
+-	}
  
--	if (desc->bDescriptorType != USB_DT_SS_ENDPOINT_COMP ||
--			size < USB_DT_SS_EP_COMP_SIZE) {
-+	if (size < USB_DT_SS_EP_COMP_SIZE) {
-+		dev_notice(ddev,
-+			   "invalid SuperSpeed endpoint companion descriptor "
-+			   "of length %d, skipping\n", size);
-+		return;
+-	/* Look at B53_UC_FWD_EN and B53_MC_FWD_EN to decide whether
+-	 * frames should be flooded or not.
+-	 */
+-	b53_read8(dev, B53_CTRL_PAGE, B53_IP_MULTICAST_CTRL, &mgmt);
+-	mgmt |= B53_UC_FWD_EN | B53_MC_FWD_EN | B53_IPMC_FWD_EN;
+-	b53_write8(dev, B53_CTRL_PAGE, B53_IP_MULTICAST_CTRL, mgmt);
++		/* Look at B53_UC_FWD_EN and B53_MC_FWD_EN to decide whether
++		 * frames should be flooded or not.
++		 */
++		b53_read8(dev, B53_CTRL_PAGE, B53_IP_MULTICAST_CTRL, &mgmt);
++		mgmt |= B53_UC_FWD_EN | B53_MC_FWD_EN | B53_IPMC_FWD_EN;
++		b53_write8(dev, B53_CTRL_PAGE, B53_IP_MULTICAST_CTRL, mgmt);
++	} else {
++		b53_read8(dev, B53_CTRL_PAGE, B53_IP_MULTICAST_CTRL, &mgmt);
++		mgmt |= B53_IP_MCAST_25;
++		b53_write8(dev, B53_CTRL_PAGE, B53_IP_MULTICAST_CTRL, mgmt);
 +	}
-+
-+	if (desc->bDescriptorType != USB_DT_SS_ENDPOINT_COMP) {
- 		dev_notice(ddev, "No SuperSpeed endpoint companion for config %d "
- 				" interface %d altsetting %d ep %d: "
- 				"using minimum values\n",
+ }
+ 
+ static void b53_enable_vlan(struct b53_device *dev, bool enable,
+diff --git a/drivers/net/dsa/b53/b53_regs.h b/drivers/net/dsa/b53/b53_regs.h
+index e5776545a8a0..77fb7ae660b8 100644
+--- a/drivers/net/dsa/b53/b53_regs.h
++++ b/drivers/net/dsa/b53/b53_regs.h
+@@ -104,6 +104,7 @@
+ 
+ /* IP Multicast control (8 bit) */
+ #define B53_IP_MULTICAST_CTRL		0x21
++#define  B53_IP_MCAST_25		BIT(0)
+ #define  B53_IPMC_FWD_EN		BIT(1)
+ #define  B53_UC_FWD_EN			BIT(6)
+ #define  B53_MC_FWD_EN			BIT(7)
+-- 
+2.39.5
+
 
 
 
