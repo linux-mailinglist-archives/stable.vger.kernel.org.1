@@ -1,58 +1,55 @@
-Return-Path: <stable+bounces-176115-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-175704-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id C8DD3B36B6B
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 16:45:47 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 6C36FB369B4
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 16:29:31 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 68E895869AD
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 14:36:51 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id E5963585419
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 14:18:13 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3D7F535CEA3;
-	Tue, 26 Aug 2025 14:33:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3B5BF34AAE3;
+	Tue, 26 Aug 2025 14:15:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ir87nY9m"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="dMFtlZXH"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E870B35AAD3;
-	Tue, 26 Aug 2025 14:33:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id ECC1F22DFA7;
+	Tue, 26 Aug 2025 14:15:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756218820; cv=none; b=GUUXnmuDSJRn++bsgEXXlcNZA63m5/9V1ml2IE+MoxfURta6Yn58N+fZelYRHGvSg5K3eaI8AriB3/MgBW4D+vLusXmrCz9q2hL0Mmr7rEcy4/h6DuiUNpYNccDmylUTxMgYNBSJ8g2zGS8unpOQ0wz+Uv8ewSluAvSjGOS+NoY=
+	t=1756217751; cv=none; b=X8yvNWZGxqtqRrEesGPxLpchr8LEiHx04UfK+4oRps4tbvI/smO6g0+LlfA7uWkJs3zH7z9VY/8ZZeMXHHgal5oUwJW/gz0nq6chj7IItNEV2nN5iHE5DcB3a2TB3+BlvT3h7Mj+g/HWBiaQG1gGZN4oNRBduOQeiWTuID7wcU8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756218820; c=relaxed/simple;
-	bh=BycE/r143VwhuosRBiy0kZA9hjNwhDTLsQffzpF6EXY=;
+	s=arc-20240116; t=1756217751; c=relaxed/simple;
+	bh=Hpsmnqwyhl0BLODxfeGdt9l1qEZgmupFp85gQe1/yMs=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=KlBiq77xLz7S5S1Bq/Cjk0TBZEjI1HiDWLHdqNagWLdcqGIWGZZy+DYbCcGvf9y8xKmi0hd4eB0E7q6al1vzU3P9+uYsuNU1uf8c+AZSHrMq6VZdLi0s5EtaXSDZVtmre+fXtUBn1RBIDgHAYasV00v30jo5g48G1/ePzNt28Gk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ir87nY9m; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7925AC4CEF1;
-	Tue, 26 Aug 2025 14:33:39 +0000 (UTC)
+	 MIME-Version; b=pEQ+3CZrqKcVyMuA3I347g012f7yaPpwLcbnvUbzFOd5kaxA+KD2XrCZcqjr4x0Q1OpSkiRcScg4uxhe/NnDTDP0otzYsTUyHzaGlGJ+GcXKMd8AADScCJ8se9Mcn7LIguhkPEi/2lN4hz0XcAyXpSJYkpe8D8ur7o6I3pwhNw8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=dMFtlZXH; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 25F5DC4CEF1;
+	Tue, 26 Aug 2025 14:15:49 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1756218819;
-	bh=BycE/r143VwhuosRBiy0kZA9hjNwhDTLsQffzpF6EXY=;
+	s=korg; t=1756217750;
+	bh=Hpsmnqwyhl0BLODxfeGdt9l1qEZgmupFp85gQe1/yMs=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=ir87nY9miK0ZvW0xwk9ZZLEoJuMBRFvE+5aJN8tee6dEhJuOiEfUy08jurTOEfqMJ
-	 pNC8QIQ0FzVpQZWb4YTc49vuohqui8hwHKdpa9hA8obe6tj3u0bJHOzKJhFPQX4e4H
-	 Z2GTfehpIjg44mbZFOCMQiXYSPG6ZFYqo00Py5D0=
+	b=dMFtlZXHkoAp+uB1omhOcAZMI3m4133gFaFP/4wRFH6kxvBFyreIgO5ma+/Sl+9Y7
+	 7u08BekxbJFSEDuCN1ANYVoTCbtOP+q1fTao8EdrcNQeVPm7Ur6jLUk3mD90NSOm3c
+	 YDsJUqI3c9b+fVVTodpz+Lq/rwc0opOFHvp8rg18=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Willem de Bruijn <willemdebruijn.kernel@gmail.com>,
-	Wang Liang <wangliang74@huawei.com>,
-	Willem de Bruijn <willemb@google.com>,
-	Jakub Kicinski <kuba@kernel.org>,
+	Johannes Berg <johannes.berg@intel.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.4 144/403] net: drop UFO packets in udp_rcv_segment()
+Subject: [PATCH 5.10 260/523] wifi: cfg80211: reject HTC bit for management frames
 Date: Tue, 26 Aug 2025 13:07:50 +0200
-Message-ID: <20250826110910.739293180@linuxfoundation.org>
+Message-ID: <20250826110930.839002823@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250826110905.607690791@linuxfoundation.org>
-References: <20250826110905.607690791@linuxfoundation.org>
+In-Reply-To: <20250826110924.562212281@linuxfoundation.org>
+References: <20250826110924.562212281@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,124 +61,40 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.4-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Wang Liang <wangliang74@huawei.com>
+From: Johannes Berg <johannes.berg@intel.com>
 
-[ Upstream commit d46e51f1c78b9ab9323610feb14238d06d46d519 ]
+[ Upstream commit be06a8c7313943109fa870715356503c4c709cbc ]
 
-When sending a packet with virtio_net_hdr to tun device, if the gso_type
-in virtio_net_hdr is SKB_GSO_UDP and the gso_size is less than udphdr
-size, below crash may happen.
+Management frames sent by userspace should never have the
+order/HTC bit set, reject that. It could also cause some
+confusion with the length of the buffer and the header so
+the validation might end up wrong.
 
-  ------------[ cut here ]------------
-  kernel BUG at net/core/skbuff.c:4572!
-  Oops: invalid opcode: 0000 [#1] SMP NOPTI
-  CPU: 0 UID: 0 PID: 62 Comm: mytest Not tainted 6.16.0-rc7 #203 PREEMPT(voluntary)
-  Hardware name: QEMU Standard PC (i440FX + PIIX, 1996), BIOS 1.15.0-1 04/01/2014
-  RIP: 0010:skb_pull_rcsum+0x8e/0xa0
-  Code: 00 00 5b c3 cc cc cc cc 8b 93 88 00 00 00 f7 da e8 37 44 38 00 f7 d8 89 83 88 00 00 00 48 8b 83 c8 00 00 00 5b c3 cc cc cc cc <0f> 0b 0f 0b 66 66 2e 0f 1f 84 00 000
-  RSP: 0018:ffffc900001fba38 EFLAGS: 00000297
-  RAX: 0000000000000004 RBX: ffff8880040c1000 RCX: ffffc900001fb948
-  RDX: ffff888003e6d700 RSI: 0000000000000008 RDI: ffff88800411a062
-  RBP: ffff8880040c1000 R08: 0000000000000000 R09: 0000000000000001
-  R10: ffff888003606c00 R11: 0000000000000001 R12: 0000000000000000
-  R13: ffff888004060900 R14: ffff888004050000 R15: ffff888004060900
-  FS:  000000002406d3c0(0000) GS:ffff888084a19000(0000) knlGS:0000000000000000
-  CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
-  CR2: 0000000020000040 CR3: 0000000004007000 CR4: 00000000000006f0
-  Call Trace:
-   <TASK>
-   udp_queue_rcv_one_skb+0x176/0x4b0 net/ipv4/udp.c:2445
-   udp_queue_rcv_skb+0x155/0x1f0 net/ipv4/udp.c:2475
-   udp_unicast_rcv_skb+0x71/0x90 net/ipv4/udp.c:2626
-   __udp4_lib_rcv+0x433/0xb00 net/ipv4/udp.c:2690
-   ip_protocol_deliver_rcu+0xa6/0x160 net/ipv4/ip_input.c:205
-   ip_local_deliver_finish+0x72/0x90 net/ipv4/ip_input.c:233
-   ip_sublist_rcv_finish+0x5f/0x70 net/ipv4/ip_input.c:579
-   ip_sublist_rcv+0x122/0x1b0 net/ipv4/ip_input.c:636
-   ip_list_rcv+0xf7/0x130 net/ipv4/ip_input.c:670
-   __netif_receive_skb_list_core+0x21d/0x240 net/core/dev.c:6067
-   netif_receive_skb_list_internal+0x186/0x2b0 net/core/dev.c:6210
-   napi_complete_done+0x78/0x180 net/core/dev.c:6580
-   tun_get_user+0xa63/0x1120 drivers/net/tun.c:1909
-   tun_chr_write_iter+0x65/0xb0 drivers/net/tun.c:1984
-   vfs_write+0x300/0x420 fs/read_write.c:593
-   ksys_write+0x60/0xd0 fs/read_write.c:686
-   do_syscall_64+0x50/0x1c0 arch/x86/entry/syscall_64.c:63
-   </TASK>
-
-To trigger gso segment in udp_queue_rcv_skb(), we should also set option
-UDP_ENCAP_ESPINUDP to enable udp_sk(sk)->encap_rcv. When the encap_rcv
-hook return 1 in udp_queue_rcv_one_skb(), udp_csum_pull_header() will try
-to pull udphdr, but the skb size has been segmented to gso size, which
-leads to this crash.
-
-Previous commit cf329aa42b66 ("udp: cope with UDP GRO packet misdirection")
-introduces segmentation in UDP receive path only for GRO, which was never
-intended to be used for UFO, so drop UFO packets in udp_rcv_segment().
-
-Link: https://lore.kernel.org/netdev/20250724083005.3918375-1-wangliang74@huawei.com/
-Link: https://lore.kernel.org/netdev/20250729123907.3318425-1-wangliang74@huawei.com/
-Fixes: cf329aa42b66 ("udp: cope with UDP GRO packet misdirection")
-Suggested-by: Willem de Bruijn <willemdebruijn.kernel@gmail.com>
-Signed-off-by: Wang Liang <wangliang74@huawei.com>
-Reviewed-by: Willem de Bruijn <willemb@google.com>
-Link: https://patch.msgid.link/20250730101458.3470788-1-wangliang74@huawei.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Link: https://patch.msgid.link/20250718202307.97a0455f0f35.I1805355c7e331352df16611839bc8198c855a33f@changeid
+Signed-off-by: Johannes Berg <johannes.berg@intel.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- include/net/udp.h | 24 ++++++++++++++++++------
- 1 file changed, 18 insertions(+), 6 deletions(-)
+ net/wireless/mlme.c | 3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
-diff --git a/include/net/udp.h b/include/net/udp.h
-index 7323f72fed70..bab7b68c5f6d 100644
---- a/include/net/udp.h
-+++ b/include/net/udp.h
-@@ -471,6 +471,16 @@ static inline struct sk_buff *udp_rcv_segment(struct sock *sk,
- {
- 	netdev_features_t features = NETIF_F_SG;
- 	struct sk_buff *segs;
-+	int drop_count;
-+
-+	/*
-+	 * Segmentation in UDP receive path is only for UDP GRO, drop udp
-+	 * fragmentation offload (UFO) packets.
-+	 */
-+	if (skb_shinfo(skb)->gso_type & SKB_GSO_UDP) {
-+		drop_count = 1;
-+		goto drop;
-+	}
+diff --git a/net/wireless/mlme.c b/net/wireless/mlme.c
+index 6dcfc5a34874..8fce621a3f01 100644
+--- a/net/wireless/mlme.c
++++ b/net/wireless/mlme.c
+@@ -657,7 +657,8 @@ int cfg80211_mlme_mgmt_tx(struct cfg80211_registered_device *rdev,
  
- 	/* Avoid csum recalculation by skb_segment unless userspace explicitly
- 	 * asks for the final checksum values
-@@ -494,16 +504,18 @@ static inline struct sk_buff *udp_rcv_segment(struct sock *sk,
- 	 */
- 	segs = __skb_gso_segment(skb, features, false);
- 	if (IS_ERR_OR_NULL(segs)) {
--		int segs_nr = skb_shinfo(skb)->gso_segs;
--
--		atomic_add(segs_nr, &sk->sk_drops);
--		SNMP_ADD_STATS(__UDPX_MIB(sk, ipv4), UDP_MIB_INERRORS, segs_nr);
--		kfree_skb(skb);
--		return NULL;
-+		drop_count = skb_shinfo(skb)->gso_segs;
-+		goto drop;
- 	}
+ 	mgmt = (const struct ieee80211_mgmt *)params->buf;
  
- 	consume_skb(skb);
- 	return segs;
-+
-+drop:
-+	atomic_add(drop_count, &sk->sk_drops);
-+	SNMP_ADD_STATS(__UDPX_MIB(sk, ipv4), UDP_MIB_INERRORS, drop_count);
-+	kfree_skb(skb);
-+	return NULL;
- }
+-	if (!ieee80211_is_mgmt(mgmt->frame_control))
++	if (!ieee80211_is_mgmt(mgmt->frame_control) ||
++	    ieee80211_has_order(mgmt->frame_control))
+ 		return -EINVAL;
  
- #endif	/* _UDP_H */
+ 	stype = le16_to_cpu(mgmt->frame_control) & IEEE80211_FCTL_STYPE;
 -- 
 2.39.5
 
