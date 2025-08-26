@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-173651-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-176312-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [IPv6:2605:f480:58:1:0:1994:3:14])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1B022B35DB1
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 13:47:21 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 40FA1B36D03
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 17:05:00 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 985334E413E
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 11:47:19 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 55583585747
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 14:45:46 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 88B13318146;
-	Tue, 26 Aug 2025 11:46:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8C5FD35FC34;
+	Tue, 26 Aug 2025 14:42:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="PRQ55H6G"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="tlolKGt2"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 44C3C1FECAB;
-	Tue, 26 Aug 2025 11:46:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 489C435FC31;
+	Tue, 26 Aug 2025 14:42:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756208801; cv=none; b=JP7Fb5mRr0kjcfj0GbQH+CyLT/85JR4nmlgDEduwHwZVbxy/qUD4jOU0UVCUWMTsHYhLfsDCcvHDCLO8N2+ggLkTCATUj+LzXd7ADE+B97v4j3EAZkUKYol7cq7jOISF/NYBaN4UzavgYK5UreXkUVgdz7kSZ0q8dyT0QoUCWf4=
+	t=1756219331; cv=none; b=nfwTH7l67Gh0tVA1JCGj1KSepkHhlckTdFG/VkJYWUnxePl1KG6ciIDbzTVt8Wi6lmb5o6JeqhZ8FqHDdrV15uHL+UqBMZH9mgE0JInCAf5ipQWU4YVKx0r8T0Rlzshfz9nQ2DSA5xuVuitLOyHOV90TlTT7lnhB5tN0vG5GAWU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756208801; c=relaxed/simple;
-	bh=7fLRG5FYxnYQU91J9DfDgvnZocFixz91ni1EsEyDF/0=;
+	s=arc-20240116; t=1756219331; c=relaxed/simple;
+	bh=cwp4w3lBxG0JTMhkQpmaDsRl3TrXS1QWypZ2UBc6S0Q=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Jhfny1yZTJG+S+nK1sy0uFsUL/Y1ZeNqECHfWvXIQt9BXvaj1hTBpsc3J0StW2Wip+K8qm8djAIN0A51pdE7oYOa3d1z66s19JhyX6DAsWR67xWWilh+v48nDO27evsRfgQ7vEXuef+uL9Jn82mhxTP+EgVyhwRmhnap1mVx3N0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=PRQ55H6G; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 80ABAC113CF;
-	Tue, 26 Aug 2025 11:46:40 +0000 (UTC)
+	 MIME-Version; b=rfQiUR/v8O/qAktghp65/YOlkMlMZmgi0lIKAxIUTQRP5zQ+Oe4dsHNO+3BwF4+yoIG798f2ikul9MIbajGNNnQMpLSBejSBLywHQf1HKtYxWNqgtzfFMU6xgCypUKNcf4kJFPWGorYngn8a1UsTQH/AshMZOdd2/EjumiZA8D8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=tlolKGt2; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D113FC113CF;
+	Tue, 26 Aug 2025 14:42:10 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1756208800;
-	bh=7fLRG5FYxnYQU91J9DfDgvnZocFixz91ni1EsEyDF/0=;
+	s=korg; t=1756219331;
+	bh=cwp4w3lBxG0JTMhkQpmaDsRl3TrXS1QWypZ2UBc6S0Q=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=PRQ55H6GOZJca8d3oqETCw3XhFLLnPtc7LlmfQ3RH0ec2YQIXmEpPkrFJlXD83c4+
-	 rIBSmnl8cf126vy1u5Im926GdsU7O7GUlNsBb6doUhpBW3XVQ3eS4BXtI6cI0hEB+8
-	 4ahpKuWa2KPALf1CQCXDiuqzFs6VlbL0V9kD9zzg=
+	b=tlolKGt2/pM3YiRMEoMqKbEEvE/kULIUKqbVogDqSNRllf0czKzqc0deWjgAV1mLL
+	 BrUHGpgQzLHkP1E08WZt1RzdpmHvqlaWeVF3A402glDUQYrqBKCWVyRhAzk95A3Kch
+	 FYUlgWuprJ50zmL5nAEl09S2qJFy7DKJhs3UgXYs=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Tianxiang Peng <txpeng@tencent.com>,
-	"Borislav Petkov (AMD)" <bp@alien8.de>,
-	Hui Li <caelli@tencent.com>,
-	stable@kernel.org
-Subject: [PATCH 6.12 251/322] x86/cpu/hygon: Add missing resctrl_cpu_detect() in bsp_init helper
+	Zhang Lixu <lixu.zhang@intel.com>,
+	Srinivas Pandruvada <srinivas.pandruvada@linux.intel.com>,
+	Jonathan Cameron <Jonathan.Cameron@huawei.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.4 340/403] iio: hid-sensor-prox: Fix incorrect OFFSET calculation
 Date: Tue, 26 Aug 2025 13:11:06 +0200
-Message-ID: <20250826110922.127304928@linuxfoundation.org>
+Message-ID: <20250826110916.251339479@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250826110915.169062587@linuxfoundation.org>
-References: <20250826110915.169062587@linuxfoundation.org>
+In-Reply-To: <20250826110905.607690791@linuxfoundation.org>
+References: <20250826110905.607690791@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,61 +63,44 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+5.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Tianxiang Peng <txpeng@tencent.com>
+From: Zhang Lixu <lixu.zhang@intel.com>
 
-commit d8df126349dad855cdfedd6bbf315bad2e901c2f upstream.
+[ Upstream commit 79dabbd505210e41c88060806c92c052496dd61c ]
 
-Since
+The OFFSET calculation in the prox_read_raw() was incorrectly using the
+unit exponent, which is intended for SCALE calculations.
 
-  923f3a2b48bd ("x86/resctrl: Query LLC monitoring properties once during boot")
+Remove the incorrect OFFSET calculation and set it to a fixed value of 0.
 
-resctrl_cpu_detect() has been moved from common CPU initialization code to
-the vendor-specific BSP init helper, while Hygon didn't put that call in their
-code.
-
-This triggers a division by zero fault during early booting stage on our
-machines with X86_FEATURE_CQM* supported, where get_rdt_mon_resources() tries
-to calculate mon_l3_config with uninitialized boot_cpu_data.x86_cache_occ_scale.
-
-Add the missing resctrl_cpu_detect() in the Hygon BSP init helper.
-
-  [ bp: Massage commit message. ]
-
-Fixes: 923f3a2b48bd ("x86/resctrl: Query LLC monitoring properties once during boot")
-Signed-off-by: Tianxiang Peng <txpeng@tencent.com>
-Signed-off-by: Borislav Petkov (AMD) <bp@alien8.de>
-Reviewed-by: Hui Li <caelli@tencent.com>
-Cc: <stable@kernel.org>
-Link: https://lore.kernel.org/20250623093153.3016937-1-txpeng@tencent.com
-Signed-off-by: Tianxiang Peng <txpeng@tencent.com>
+Cc: stable@vger.kernel.org
+Fixes: 39a3a0138f61 ("iio: hid-sensors: Added Proximity Sensor Driver")
+Signed-off-by: Zhang Lixu <lixu.zhang@intel.com>
+Acked-by: Srinivas Pandruvada <srinivas.pandruvada@linux.intel.com>
+Link: https://patch.msgid.link/20250331055022.1149736-4-lixu.zhang@intel.com
+Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
+[ adapted prox_attr array access to single structure member access ]
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- arch/x86/kernel/cpu/hygon.c |    3 +++
- 1 file changed, 3 insertions(+)
+ drivers/iio/light/hid-sensor-prox.c |    3 +--
+ 1 file changed, 1 insertion(+), 2 deletions(-)
 
---- a/arch/x86/kernel/cpu/hygon.c
-+++ b/arch/x86/kernel/cpu/hygon.c
-@@ -15,6 +15,7 @@
- #include <asm/cacheinfo.h>
- #include <asm/spec-ctrl.h>
- #include <asm/delay.h>
-+#include <asm/resctrl.h>
- 
- #include "cpu.h"
- 
-@@ -116,6 +117,8 @@ static void bsp_init_hygon(struct cpuinf
- 			x86_amd_ls_cfg_ssbd_mask = 1ULL << 10;
- 		}
- 	}
-+
-+	resctrl_cpu_detect(c);
- }
- 
- static void early_init_hygon(struct cpuinfo_x86 *c)
+--- a/drivers/iio/light/hid-sensor-prox.c
++++ b/drivers/iio/light/hid-sensor-prox.c
+@@ -103,8 +103,7 @@ static int prox_read_raw(struct iio_dev
+ 		ret_type = prox_state->scale_precision;
+ 		break;
+ 	case IIO_CHAN_INFO_OFFSET:
+-		*val = hid_sensor_convert_exponent(
+-				prox_state->prox_attr.unit_expo);
++		*val = 0;
+ 		ret_type = IIO_VAL_INT;
+ 		break;
+ 	case IIO_CHAN_INFO_SAMP_FREQ:
 
 
 
