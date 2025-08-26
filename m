@@ -1,55 +1,56 @@
-Return-Path: <stable+bounces-175467-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-174942-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 156E4B3687A
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 16:16:35 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 309B0B36575
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 15:48:15 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 861008E50F2
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 14:07:15 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 51E0D1B67960
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 13:42:32 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 84CDE352092;
-	Tue, 26 Aug 2025 14:05:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id ADCD32D0621;
+	Tue, 26 Aug 2025 13:42:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="edCqaW2e"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="DaJpkm/x"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 42772352089;
-	Tue, 26 Aug 2025 14:05:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6B8A027EFE7;
+	Tue, 26 Aug 2025 13:42:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756217120; cv=none; b=UkN1jwvJ+FbXi2BxpS2vi5o7v2b4wpH1SdeFD+jEvzJPz7t+oEj/k2jblMThvfz3CCGSAd2OEq1e0WLajQNWAOsbkkz7JvxDtMHi7OX08Vq98LDsxIaL/rNJS8YQFDhjGuN3acUPoB74vzkmBU5n8QJ0gbyzFFrM/gPSmw6DZLs=
+	t=1756215723; cv=none; b=bbrosgu7KV6yjU2vGub/gaY8/GzOE7VKptGrEVkR9yaa4SYtjaac4C6CJ9iN0wr6L7Vy2R7Zs8ASEk1IAzFyuWptOABQ+dY6EHuWl6Wyi5H4zP7wYL/Qy+g/gfh9BS8JGgk7PB04Cs6i7ywF3W3uxr2/Py5FSgOxSZsPHsnrNgw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756217120; c=relaxed/simple;
-	bh=M6jOZIhYaHzIPlwYXj6cGElJB2tYk1MXfEYWbAXBKF8=;
+	s=arc-20240116; t=1756215723; c=relaxed/simple;
+	bh=/PcHBnnUIVAZkkxoXFb5uegMwDhHsP4dyKWKxcNVE/E=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=B3l0xabL6QP2/luH8QEHF+endzPjjPBOFMV/soBn3BLjBUiblA8IVoyQG+S8VHCwEFQbZOJSBI3k1+AGqdUaaDYa9wgZ44Pluq0KgxTsVZBpXxbSKf8rFzUxsifJjdcTC/MooZugNaPeTsbIUMZLV0vEe/Rj1FKPAXA/hD33uWY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=edCqaW2e; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id CA1ACC113CF;
-	Tue, 26 Aug 2025 14:05:19 +0000 (UTC)
+	 MIME-Version; b=giITP8uZYqd9oSNZwXF1gIDYf1FD31xHur6dIsYH8BKdAewdX54zNSrb+Se15iAALwMqk3nk9YRBkR0umZFMtbi2ICLK7zPE0SBcpBFxFsxDwyBMQ1Zp6yqoDE/GV25mdMIDr26FB2mzYSAFJTweczfgpTd+GczGS0aSUMQrA20=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=DaJpkm/x; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id EFC8BC4CEF1;
+	Tue, 26 Aug 2025 13:42:02 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1756217120;
-	bh=M6jOZIhYaHzIPlwYXj6cGElJB2tYk1MXfEYWbAXBKF8=;
+	s=korg; t=1756215723;
+	bh=/PcHBnnUIVAZkkxoXFb5uegMwDhHsP4dyKWKxcNVE/E=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=edCqaW2e2sxH1hOkTHZ9onUKL6Nj6r6OE8AHDITysjTaQfoD+hTzFI8H888igU5mv
-	 G5ctCXHAVGiCA7wuEF1bf6t4xrndCgoKlSNc4kpsfrPSdim6/e6dROyPXBqaAVB6qP
-	 CDrRfLVykr9CLWzXWmz1u/873vN5QtsXzDTs7SMQ=
+	b=DaJpkm/xC8oOHwgQgrVUEIESx5WJn7JercrNKJ4zDFQhq/CuHz2zQrhNf1tMa19MO
+	 vgsdxcd9nHjFeeHEymNBrIeCKf4mzZ9AET8Hd1vrzL781ivB8dZqpX6bvrkhaFAAvn
+	 kce71p2jB+7r/uyiu6fRwXnusaf7q6e7vS0mDDcU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jean Delvare <jdelvare@suse.de>,
-	Andrew Jeffery <andrew@codeconstruct.com.au>
-Subject: [PATCH 5.10 023/523] soc: aspeed: lpc-snoop: Dont disable channels that arent enabled
+	Jiasheng Jiang <jiasheng@iscas.ac.cn>,
+	Miri Korenblit <miriam.rachel.korenblit@intel.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.15 142/644] iwlwifi: Add missing check for alloc_ordered_workqueue
 Date: Tue, 26 Aug 2025 13:03:53 +0200
-Message-ID: <20250826110925.163776108@linuxfoundation.org>
+Message-ID: <20250826110950.012815399@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250826110924.562212281@linuxfoundation.org>
-References: <20250826110924.562212281@linuxfoundation.org>
+In-Reply-To: <20250826110946.507083938@linuxfoundation.org>
+References: <20250826110946.507083938@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,88 +62,74 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Andrew Jeffery <andrew@codeconstruct.com.au>
+From: Jiasheng Jiang <jiasheng@iscas.ac.cn>
 
-commit 56448e78a6bb4e1a8528a0e2efe94eff0400c247 upstream.
+[ Upstream commit 90a0d9f339960448a3acc1437a46730f975efd6a ]
 
-Mitigate e.g. the following:
+Add check for the return value of alloc_ordered_workqueue since it may
+return NULL pointer.
 
-    # echo 1e789080.lpc-snoop > /sys/bus/platform/drivers/aspeed-lpc-snoop/unbind
-    ...
-    [  120.363594] Unable to handle kernel NULL pointer dereference at virtual address 00000004 when write
-    [  120.373866] [00000004] *pgd=00000000
-    [  120.377910] Internal error: Oops: 805 [#1] SMP ARM
-    [  120.383306] CPU: 1 UID: 0 PID: 315 Comm: sh Not tainted 6.15.0-rc1-00009-g926217bc7d7d-dirty #20 NONE
-    ...
-    [  120.679543] Call trace:
-    [  120.679559]  misc_deregister from aspeed_lpc_snoop_remove+0x84/0xac
-    [  120.692462]  aspeed_lpc_snoop_remove from platform_remove+0x28/0x38
-    [  120.700996]  platform_remove from device_release_driver_internal+0x188/0x200
-    ...
-
-Fixes: 9f4f9ae81d0a ("drivers/misc: add Aspeed LPC snoop driver")
-Cc: stable@vger.kernel.org
-Cc: Jean Delvare <jdelvare@suse.de>
-Acked-by: Jean Delvare <jdelvare@suse.de>
-Link: https://patch.msgid.link/20250616-aspeed-lpc-snoop-fixes-v2-2-3cdd59c934d3@codeconstruct.com.au
-Signed-off-by: Andrew Jeffery <andrew@codeconstruct.com.au>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: b481de9ca074 ("[IWLWIFI]: add iwlwifi wireless drivers")
+Signed-off-by: Jiasheng Jiang <jiasheng@iscas.ac.cn>
+Link: https://patch.msgid.link/20230110014848.28226-1-jiasheng@iscas.ac.cn
+Signed-off-by: Miri Korenblit <miriam.rachel.korenblit@intel.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/soc/aspeed/aspeed-lpc-snoop.c |   11 +++++++++++
- 1 file changed, 11 insertions(+)
+ drivers/net/wireless/intel/iwlwifi/dvm/main.c | 11 +++++++++--
+ 1 file changed, 9 insertions(+), 2 deletions(-)
 
---- a/drivers/soc/aspeed/aspeed-lpc-snoop.c
-+++ b/drivers/soc/aspeed/aspeed-lpc-snoop.c
-@@ -60,6 +60,7 @@ struct aspeed_lpc_snoop_model_data {
- };
+diff --git a/drivers/net/wireless/intel/iwlwifi/dvm/main.c b/drivers/net/wireless/intel/iwlwifi/dvm/main.c
+index 69d1aae96bbb..0ff9b0a1bd18 100644
+--- a/drivers/net/wireless/intel/iwlwifi/dvm/main.c
++++ b/drivers/net/wireless/intel/iwlwifi/dvm/main.c
+@@ -1053,9 +1053,11 @@ static void iwl_bg_restart(struct work_struct *data)
+  *
+  *****************************************************************************/
  
- struct aspeed_lpc_snoop_channel {
-+	bool enabled;
- 	struct kfifo		fifo;
- 	wait_queue_head_t	wq;
- 	struct miscdevice	miscdev;
-@@ -192,6 +193,9 @@ static int aspeed_lpc_enable_snoop(struc
- 	const struct aspeed_lpc_snoop_model_data *model_data =
- 		of_device_get_match_data(dev);
- 
-+	if (WARN_ON(lpc_snoop->chan[channel].enabled))
-+		return -EBUSY;
-+
- 	init_waitqueue_head(&lpc_snoop->chan[channel].wq);
- 	/* Create FIFO datastructure */
- 	rc = kfifo_alloc(&lpc_snoop->chan[channel].fifo,
-@@ -238,6 +242,8 @@ static int aspeed_lpc_enable_snoop(struc
- 		regmap_update_bits(lpc_snoop->regmap, HICRB,
- 				hicrb_en, hicrb_en);
- 
-+	lpc_snoop->chan[channel].enabled = true;
-+
- 	return 0;
- 
- err_misc_deregister:
-@@ -250,6 +256,9 @@ err_free_fifo:
- static void aspeed_lpc_disable_snoop(struct aspeed_lpc_snoop *lpc_snoop,
- 				     int channel)
+-static void iwl_setup_deferred_work(struct iwl_priv *priv)
++static int iwl_setup_deferred_work(struct iwl_priv *priv)
  {
-+	if (!lpc_snoop->chan[channel].enabled)
-+		return;
-+
- 	switch (channel) {
- 	case 0:
- 		regmap_update_bits(lpc_snoop->regmap, HICR5,
-@@ -265,6 +274,8 @@ static void aspeed_lpc_disable_snoop(str
- 		return;
- 	}
+ 	priv->workqueue = alloc_ordered_workqueue(DRV_NAME, 0);
++	if (!priv->workqueue)
++		return -ENOMEM;
  
-+	lpc_snoop->chan[channel].enabled = false;
-+	/* Consider improving safety wrt concurrent reader(s) */
- 	misc_deregister(&lpc_snoop->chan[channel].miscdev);
- 	kfifo_free(&lpc_snoop->chan[channel].fifo);
+ 	INIT_WORK(&priv->restart, iwl_bg_restart);
+ 	INIT_WORK(&priv->beacon_update, iwl_bg_beacon_update);
+@@ -1072,6 +1074,8 @@ static void iwl_setup_deferred_work(struct iwl_priv *priv)
+ 	timer_setup(&priv->statistics_periodic, iwl_bg_statistics_periodic, 0);
+ 
+ 	timer_setup(&priv->ucode_trace, iwl_bg_ucode_trace, 0);
++
++	return 0;
  }
+ 
+ void iwl_cancel_deferred_work(struct iwl_priv *priv)
+@@ -1461,7 +1465,9 @@ static struct iwl_op_mode *iwl_op_mode_dvm_start(struct iwl_trans *trans,
+ 	/********************
+ 	 * 6. Setup services
+ 	 ********************/
+-	iwl_setup_deferred_work(priv);
++	if (iwl_setup_deferred_work(priv))
++		goto out_uninit_drv;
++
+ 	iwl_setup_rx_handlers(priv);
+ 
+ 	iwl_power_initialize(priv);
+@@ -1499,6 +1505,7 @@ static struct iwl_op_mode *iwl_op_mode_dvm_start(struct iwl_trans *trans,
+ 	iwl_cancel_deferred_work(priv);
+ 	destroy_workqueue(priv->workqueue);
+ 	priv->workqueue = NULL;
++out_uninit_drv:
+ 	iwl_uninit_drv(priv);
+ out_free_eeprom_blob:
+ 	kfree(priv->eeprom_blob);
+-- 
+2.39.5
+
 
 
 
