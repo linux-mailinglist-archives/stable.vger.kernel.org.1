@@ -1,58 +1,57 @@
-Return-Path: <stable+bounces-173682-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-173358-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 58B1EB35E5D
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 13:56:41 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 32FF9B35C98
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 13:36:03 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id A2A5F188E9AD
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 11:48:25 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id BBA647B313D
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 11:34:12 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id AAB2E749C;
-	Tue, 26 Aug 2025 11:48:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id F358632A3C8;
+	Tue, 26 Aug 2025 11:34:00 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="wmIoszMT"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="X3U/Tsk6"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 692D6200112;
-	Tue, 26 Aug 2025 11:48:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B14FA3093BA;
+	Tue, 26 Aug 2025 11:34:00 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756208882; cv=none; b=Po22EUuH+nI6bgcXNAef/YLKpdrCKf4aFkn0/VgOb/94fSeVQW92OZddvrslAX7QHXWCcgtrrDunn2aOaYTy1rkZiNUmbaSl5NhwARhlHsIy3JnGs8nttrCbkHIAJtqJGrdZ42DnwhjLvC1sEM7OtLXVTVwBuVl7OMr6PGTMF2c=
+	t=1756208040; cv=none; b=gsymKodtSiBsPBhgytp4MKxzU66LNs8nyAgSYQ8KOi5fJN+pPs2AkR4EFcujWHbH5kV4+yCMVPXh37oJfziHWPCcfbK63P7kp5jdqva/HYpjfNmTts1VXf5F6OWh1yOaXjCFXS6ktUbyyrqZSQkvMtRmUrnDPDDy5QTpKxJAxsU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756208882; c=relaxed/simple;
-	bh=8Zxy6UYmvc+xVS0ECn38l6TaDiz1II0i20M+C5CpOGY=;
+	s=arc-20240116; t=1756208040; c=relaxed/simple;
+	bh=HpFta0HVhpPpnUPrPrkpSZQHAwFaKUT8eDqZ6iO/EiI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=SYWOyJTafsFuMOcCsmhZmrz6G2q27JGpVtGZQBbZHwlGfvEc9A/gf84oZ/gvvaoJftcIr7jwYgcICpRJ+/PT8d5XT25zbDmOEDOBmhn1NAOOD+YbOnJ7ok3ANvI5IefxN+Y3j3IqEhA4c4hPEXDm0eBT6XAKU3OAjx3IR78HLl0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=wmIoszMT; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id ED203C4CEF1;
-	Tue, 26 Aug 2025 11:48:01 +0000 (UTC)
+	 MIME-Version; b=fX/QcOp0ZetuSf87FefgNidv9Z6daxylwtvJ9npOFeDwdKTjp/J7vEcFMES6Sf5WL4N4z3Miyf5vZXsd81nXbKPfP79xrVmt+mKENd2JGodfiP14xNa3UVAl2khGI+XuQuti8cbwDDNZ2yz7EtxBGzVhvsd6b0pGV/2dXIOaiSY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=X3U/Tsk6; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 15ABAC4CEF1;
+	Tue, 26 Aug 2025 11:33:59 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1756208882;
-	bh=8Zxy6UYmvc+xVS0ECn38l6TaDiz1II0i20M+C5CpOGY=;
+	s=korg; t=1756208040;
+	bh=HpFta0HVhpPpnUPrPrkpSZQHAwFaKUT8eDqZ6iO/EiI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=wmIoszMTd4ZVlaSapfusguzVXmTkpu81mormjFLwFIZHqat8KIFaIi9tS4x9cayga
-	 97nzr9TxK39Z0YjFD56Ltis1QbasZSG49CyJbSFzA9+WW0fsFiUaL8SURINBynqrVq
-	 9BgAmmPk03L+gF74NACyVj/IS5tDCIVo6UFkOqS4=
+	b=X3U/Tsk63hTof6CNuXUt1jgLuXBvkdoRz/goPu555ck3mctc5iIpUpnfAsCnhwx1R
+	 4xwGEUrxV1LuDXBINU1COg7qhbT00HE8Yl104aFoHiG2r5Zwt2aS2ylO0+3M6sllXM
+	 w3keEato7uU3brOMBvaLGPfHHWiy1RcYfMH7h3h8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Zoey Mertes <zoey@cloudflare.com>,
-	Ido Schimmel <idosch@nvidia.com>,
-	Petr Machata <petrm@nvidia.com>,
+	Jordan Rhee <jordanrhee@google.com>,
+	Jeroen de Borst <jeroendb@google.com>,
 	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 282/322] mlxsw: spectrum: Forward packets with an IPv4 link-local source IP
+Subject: [PATCH 6.16 413/457] gve: prevent ethtool ops after shutdown
 Date: Tue, 26 Aug 2025 13:11:37 +0200
-Message-ID: <20250826110922.886041169@linuxfoundation.org>
+Message-ID: <20250826110947.501326271@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250826110915.169062587@linuxfoundation.org>
-References: <20250826110915.169062587@linuxfoundation.org>
+In-Reply-To: <20250826110937.289866482@linuxfoundation.org>
+References: <20250826110937.289866482@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,59 +63,56 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.16-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Ido Schimmel <idosch@nvidia.com>
+From: Jordan Rhee <jordanrhee@google.com>
 
-[ Upstream commit f604d3aaf64ff0d90cc875295474d3abf4155629 ]
+[ Upstream commit 75a9a46d67f46d608205888f9b34e315c1786345 ]
 
-By default, the device does not forward IPv4 packets with a link-local
-source IP (i.e., 169.254.0.0/16). This behavior does not align with the
-kernel which does forward them.
+A crash can occur if an ethtool operation is invoked
+after shutdown() is called.
 
-Fix by instructing the device to forward such packets instead of
-dropping them.
+shutdown() is invoked during system shutdown to stop DMA operations
+without performing expensive deallocations. It is discouraged to
+unregister the netdev in this path, so the device may still be visible
+to userspace and kernel helpers.
 
-Fixes: ca360db4b825 ("mlxsw: spectrum: Disable DIP_LINK_LOCAL check in hardware pipeline")
-Reported-by: Zoey Mertes <zoey@cloudflare.com>
-Signed-off-by: Ido Schimmel <idosch@nvidia.com>
-Reviewed-by: Petr Machata <petrm@nvidia.com>
-Signed-off-by: Petr Machata <petrm@nvidia.com>
-Link: https://patch.msgid.link/6721e6b2c96feb80269e72ce8d0b426e2f32d99c.1755174341.git.petrm@nvidia.com
+In gve, shutdown() tears down most internal data structures. If an
+ethtool operation is dispatched after shutdown(), it will dereference
+freed or NULL pointers, leading to a kernel panic. While graceful
+shutdown normally quiesces userspace before invoking the reboot
+syscall, forced shutdowns (as observed on GCP VMs) can still trigger
+this path.
+
+Fix by calling netif_device_detach() in shutdown().
+This marks the device as detached so the ethtool ioctl handler
+will skip dispatching operations to the driver.
+
+Fixes: 974365e51861 ("gve: Implement suspend/resume/shutdown")
+Signed-off-by: Jordan Rhee <jordanrhee@google.com>
+Signed-off-by: Jeroen de Borst <jeroendb@google.com>
+Link: https://patch.msgid.link/20250818211245.1156919-1-jeroendb@google.com
 Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/ethernet/mellanox/mlxsw/spectrum.c | 2 ++
- drivers/net/ethernet/mellanox/mlxsw/trap.h     | 1 +
- 2 files changed, 3 insertions(+)
+ drivers/net/ethernet/google/gve/gve_main.c | 2 ++
+ 1 file changed, 2 insertions(+)
 
-diff --git a/drivers/net/ethernet/mellanox/mlxsw/spectrum.c b/drivers/net/ethernet/mellanox/mlxsw/spectrum.c
-index 3f5e5d99251b..26401bb57572 100644
---- a/drivers/net/ethernet/mellanox/mlxsw/spectrum.c
-+++ b/drivers/net/ethernet/mellanox/mlxsw/spectrum.c
-@@ -2507,6 +2507,8 @@ static const struct mlxsw_listener mlxsw_sp_listener[] = {
- 			     ROUTER_EXP, false),
- 	MLXSW_SP_RXL_NO_MARK(DISCARD_ING_ROUTER_DIP_LINK_LOCAL, FORWARD,
- 			     ROUTER_EXP, false),
-+	MLXSW_SP_RXL_NO_MARK(DISCARD_ING_ROUTER_SIP_LINK_LOCAL, FORWARD,
-+			     ROUTER_EXP, false),
- 	/* Multicast Router Traps */
- 	MLXSW_SP_RXL_MARK(ACL1, TRAP_TO_CPU, MULTICAST, false),
- 	MLXSW_SP_RXL_L3_MARK(ACL2, TRAP_TO_CPU, MULTICAST, false),
-diff --git a/drivers/net/ethernet/mellanox/mlxsw/trap.h b/drivers/net/ethernet/mellanox/mlxsw/trap.h
-index 83477c8e6971..5bfc1499347a 100644
---- a/drivers/net/ethernet/mellanox/mlxsw/trap.h
-+++ b/drivers/net/ethernet/mellanox/mlxsw/trap.h
-@@ -95,6 +95,7 @@ enum {
- 	MLXSW_TRAP_ID_DISCARD_ING_ROUTER_IPV4_SIP_BC = 0x16A,
- 	MLXSW_TRAP_ID_DISCARD_ING_ROUTER_IPV4_DIP_LOCAL_NET = 0x16B,
- 	MLXSW_TRAP_ID_DISCARD_ING_ROUTER_DIP_LINK_LOCAL = 0x16C,
-+	MLXSW_TRAP_ID_DISCARD_ING_ROUTER_SIP_LINK_LOCAL = 0x16D,
- 	MLXSW_TRAP_ID_DISCARD_ROUTER_IRIF_EN = 0x178,
- 	MLXSW_TRAP_ID_DISCARD_ROUTER_ERIF_EN = 0x179,
- 	MLXSW_TRAP_ID_DISCARD_ROUTER_LPM4 = 0x17B,
+diff --git a/drivers/net/ethernet/google/gve/gve_main.c b/drivers/net/ethernet/google/gve/gve_main.c
+index d1aeb722d48f..36a6d766b638 100644
+--- a/drivers/net/ethernet/google/gve/gve_main.c
++++ b/drivers/net/ethernet/google/gve/gve_main.c
+@@ -2726,6 +2726,8 @@ static void gve_shutdown(struct pci_dev *pdev)
+ 	struct gve_priv *priv = netdev_priv(netdev);
+ 	bool was_up = netif_running(priv->dev);
+ 
++	netif_device_detach(netdev);
++
+ 	rtnl_lock();
+ 	netdev_lock(netdev);
+ 	if (was_up && gve_close(priv->dev)) {
 -- 
 2.50.1
 
