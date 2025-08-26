@@ -1,59 +1,56 @@
-Return-Path: <stable+bounces-175346-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-173329-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id E8951B367C0
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 16:09:55 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 62504B35CFC
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 13:40:25 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 1CD128E5C15
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 14:01:37 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id EA71D188943A
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 11:35:14 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8E61034DCEC;
-	Tue, 26 Aug 2025 13:59:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id AADE830F55C;
+	Tue, 26 Aug 2025 11:32:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="wJB5eg2o"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="MhoL3y2G"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 475BC34DCD2;
-	Tue, 26 Aug 2025 13:59:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 68957284B5B;
+	Tue, 26 Aug 2025 11:32:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756216792; cv=none; b=CmvrzsJBSt78sad4yy2+C9YFBo8XnH88FtOKoAJD13If449seSCJm1+iOcTMyfUr9E9rGQnef6F6+pqXsgSG98+KLsY5XsqokvI201i0VymBqqtDr1fbb25ZSN7NVsMsXjAwBatIjeUBMGReopOJG5AGuSYELp1NDDJkI/Djx3Y=
+	t=1756207964; cv=none; b=MfhbHBbptvzqvxbZAu6RCuX6fhioGuazK4hcWEuga4eQhwm+v86tz7qF/zjuMhLMxE7VJ5Yi8/b4be6kp9TLnNCk/vI5tQHRvmPp7SI/uzVLy8y3XXWCnCw9uHbNryzXNJSIhhNbMp4QnMJvF2uh4d3MKqFqgjKoPr+WWT4D+t0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756216792; c=relaxed/simple;
-	bh=sJ6Jk2AQ1ZTUk3WSs4kElVlcJIy3tttq+NJHiWBGEQY=;
+	s=arc-20240116; t=1756207964; c=relaxed/simple;
+	bh=MPvLCWln+c8gFpQZz58uJAMOiI1yqOfOfytH70SeSXU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=knDkLncAhDFvKXShy9kZwo4diCGBb11Qtk8MdImGuWg7XzELqtLuq2qix1zS3S7Ybly5rwVbYelrFS94PvZKw9vYyXo6UZcvRlPOMSwrYXFTS5RaWCuPKDlJcxPpdBUxiRuxySSd04xKHWia4UeHdn7MvCVrHuwJq5A9HQgZOUE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=wJB5eg2o; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8AE00C4CEF1;
-	Tue, 26 Aug 2025 13:59:51 +0000 (UTC)
+	 MIME-Version; b=foOf+bGhR/IytWGeXCEC/rzFfDhJXSYNt8Oizui0ZPJLFFKTrNJue1CeSGaan2JajZH31gxtXmzOnzliJ6lXBNmzKivGV3tutdZst2ILs0FtNIg248zUzGzLuShkEyZu2TrCVtdyn0Mtcu3iz1GEnCz2TcZgTf8aBHaKAw4KgHw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=MhoL3y2G; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id EB4C3C16AAE;
+	Tue, 26 Aug 2025 11:32:43 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1756216791;
-	bh=sJ6Jk2AQ1ZTUk3WSs4kElVlcJIy3tttq+NJHiWBGEQY=;
+	s=korg; t=1756207964;
+	bh=MPvLCWln+c8gFpQZz58uJAMOiI1yqOfOfytH70SeSXU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=wJB5eg2oCqVPQ7fbtFYoVlpjVe5NDFMZRb574xIGwUArQ3BQR1bo6cDM0E1g3MlUc
-	 6WJjPzFhWt5i5X1c98IxAjKiSPQB1Q0Cfxg6Jz5BTH73iYVf0U+Zwjhjgzw3bfxqXC
-	 OkL9FHEpXOVTOOhsOTNPAjS9XHDRS+yzCP1RhDeI=
+	b=MhoL3y2GANwyOZdpYnXhJO9zVQO/wWFYTGX5DcYbB+O8watqXHYLVar4kO+7rNWLO
+	 UEx+CAJB/uPv5vK/hOksJrJ2CBpqcjvgCMjN+Uas3LxW2xOLtML/rK5cvOhcADNZ0O
+	 aGtlSy2FUcXWwCPLR72tFy64SR1pwvsEJycQxoR4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Gerrard Tai <gerrard.tai@starlabs.sg>,
-	Cong Wang <xiyou.wangcong@gmail.com>,
-	Simon Horman <horms@kernel.org>,
-	Jamal Hadi Salim <jhs@mojatatu.com>,
-	Paolo Abeni <pabeni@redhat.com>,
-	Siddh Raman Pant <siddh.raman.pant@oracle.com>
-Subject: [PATCH 5.15 546/644] sch_drr: make drr_qlen_notify() idempotent
-Date: Tue, 26 Aug 2025 13:10:37 +0200
-Message-ID: <20250826111000.057559587@linuxfoundation.org>
+	Benno Lossin <lossin@kernel.org>,
+	Danilo Krummrich <dakr@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.16 354/457] rust: drm: remove pin annotations from drm::Device
+Date: Tue, 26 Aug 2025 13:10:38 +0200
+Message-ID: <20250826110946.067905460@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250826110946.507083938@linuxfoundation.org>
-References: <20250826110946.507083938@linuxfoundation.org>
+In-Reply-To: <20250826110937.289866482@linuxfoundation.org>
+References: <20250826110937.289866482@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -65,71 +62,46 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.16-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Cong Wang <xiyou.wangcong@gmail.com>
+From: Danilo Krummrich <dakr@kernel.org>
 
-commit df008598b3a00be02a8051fde89ca0fbc416bd55 upstream.
+[ Upstream commit 0c04a81c1d0214d5b2025f805ccec1ac37c96b08 ]
 
-drr_qlen_notify() always deletes the DRR class from its active list
-with list_del(), therefore, it is not idempotent and not friendly
-to its callers, like fq_codel_dequeue().
+The #[pin_data] and #[pin] annotations are not necessary for
+drm::Device, since we don't use any pin-init macros, but only
+__pinned_init() on the impl PinInit<T::Data, Error> argument of
+drm::Device::new().
 
-Let's make it idempotent to ease qdisc_tree_reduce_backlog() callers'
-life. Also change other list_del()'s to list_del_init() just to be
-extra safe.
-
-Reported-by: Gerrard Tai <gerrard.tai@starlabs.sg>
-Signed-off-by: Cong Wang <xiyou.wangcong@gmail.com>
-Reviewed-by: Simon Horman <horms@kernel.org>
-Link: https://patch.msgid.link/20250403211033.166059-3-xiyou.wangcong@gmail.com
-Acked-by: Jamal Hadi Salim <jhs@mojatatu.com>
-Signed-off-by: Paolo Abeni <pabeni@redhat.com>
-Signed-off-by: Siddh Raman Pant <siddh.raman.pant@oracle.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: 1e4b8896c0f3 ("rust: drm: add device abstraction")
+Reviewed-by: Benno Lossin <lossin@kernel.org>
+Link: https://lore.kernel.org/r/20250731154919.4132-4-dakr@kernel.org
+Signed-off-by: Danilo Krummrich <dakr@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/sched/sch_drr.c |    7 ++++---
- 1 file changed, 4 insertions(+), 3 deletions(-)
+ rust/kernel/drm/device.rs | 2 --
+ 1 file changed, 2 deletions(-)
 
---- a/net/sched/sch_drr.c
-+++ b/net/sched/sch_drr.c
-@@ -111,6 +111,7 @@ static int drr_change_class(struct Qdisc
- 	if (cl == NULL)
- 		return -ENOBUFS;
- 
-+	INIT_LIST_HEAD(&cl->alist);
- 	cl->common.classid = classid;
- 	cl->quantum	   = quantum;
- 	cl->qdisc	   = qdisc_create_dflt(sch->dev_queue,
-@@ -235,7 +236,7 @@ static void drr_qlen_notify(struct Qdisc
- {
- 	struct drr_class *cl = (struct drr_class *)arg;
- 
--	list_del(&cl->alist);
-+	list_del_init(&cl->alist);
+diff --git a/rust/kernel/drm/device.rs b/rust/kernel/drm/device.rs
+index 6c1fc33cdc68..cb6bbd024a1e 100644
+--- a/rust/kernel/drm/device.rs
++++ b/rust/kernel/drm/device.rs
+@@ -54,10 +54,8 @@ macro_rules! drm_legacy_fields {
+ ///
+ /// `self.dev` is a valid instance of a `struct device`.
+ #[repr(C)]
+-#[pin_data]
+ pub struct Device<T: drm::Driver> {
+     dev: Opaque<bindings::drm_device>,
+-    #[pin]
+     data: T::Data,
  }
  
- static int drr_dump_class(struct Qdisc *sch, unsigned long arg,
-@@ -402,7 +403,7 @@ static struct sk_buff *drr_dequeue(struc
- 			if (unlikely(skb == NULL))
- 				goto out;
- 			if (cl->qdisc->q.qlen == 0)
--				list_del(&cl->alist);
-+				list_del_init(&cl->alist);
- 
- 			bstats_update(&cl->bstats, skb);
- 			qdisc_bstats_update(sch, skb);
-@@ -443,7 +444,7 @@ static void drr_reset_qdisc(struct Qdisc
- 	for (i = 0; i < q->clhash.hashsize; i++) {
- 		hlist_for_each_entry(cl, &q->clhash.hash[i], common.hnode) {
- 			if (cl->qdisc->q.qlen)
--				list_del(&cl->alist);
-+				list_del_init(&cl->alist);
- 			qdisc_reset(cl->qdisc);
- 		}
- 	}
+-- 
+2.50.1
+
 
 
 
