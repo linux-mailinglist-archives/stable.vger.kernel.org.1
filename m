@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-173839-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-175490-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id F3072B3600E
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 14:56:30 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7D1EDB3685E
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 16:15:49 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 98C911BA7327
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 12:54:41 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id C01DC562EA3
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 14:08:07 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9CC5B1946AA;
-	Tue, 26 Aug 2025 12:53:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4EBFE3568E9;
+	Tue, 26 Aug 2025 14:06:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="SnFlUmG/"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="DKrwBkZV"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 58C2B17A303;
-	Tue, 26 Aug 2025 12:53:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 08C7234DCF6;
+	Tue, 26 Aug 2025 14:06:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756212801; cv=none; b=JBzjc2K9H5YmSgZz3IsTe9Ldx9DkguaD7/GhtNgqufd+UiXhWV7rF38fXzIZTY6qekiZ8NM6A4qGXuoyn4NsAF6GiZFckjs0zO53oKNJ2X7HNSmviwh7JxP2/mFmBzAwS32gbGckHOzABDkySkfX0Fygl8Ow9R97KpK+wPwKWQM=
+	t=1756217182; cv=none; b=tmPQWHD3OQkwks124fijCvpw4OPBpNyJir6Y4ZR68pJ5iaQELjF8NmXpN2L+sq0UHBa/TA7Wld7d1XVih1ktnpSPpxDtn1H/kdSjCRqkECjU984nLarAkbpxCT/uV6mQ35mP86OLv/KBwZqG1Fzgd3NDXaMTp9A8uc2BpeQTt2A=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756212801; c=relaxed/simple;
-	bh=JYReefcxODb+cJdmL2hExkG0yM2zXbTnUI8B4Fv0xlY=;
+	s=arc-20240116; t=1756217182; c=relaxed/simple;
+	bh=E7d4TYsJtjOVwWZ0fwraHbL1HQXnv01Aa7F0V1fauYc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Qa7QqwxTuZuhOoFUsXWR6oL5vkTc0JEs7u6Vt+e+i7tqAz12rUvEsUiiiASALJ0n0lExJ5qKz5OrRcVhX/p8acb13uUI4klwx1To8CnJDO8USP6xa05845F3ZtIAAebEJgczb+gDjHQCUI0pmBIorzdeiukrPqq/4llonDSuQ3Q=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=SnFlUmG/; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id DB5A9C4CEF1;
-	Tue, 26 Aug 2025 12:53:20 +0000 (UTC)
+	 MIME-Version; b=ulnr3IxYmxDkXQJvyNCfgZhJ5fglKDdWkn4akBtGgPIgo3USP++wwFyi4e/i9A1gBHd0Oo0u+lobwqvUiVrMp35Ti7nV3CE+o/rngJ5WJY/JX5OYMIANowcEwWqdUHoVgExmgqYv+h+3OI2otQQKOr6/2thbyf84OErhV/jJkH8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=DKrwBkZV; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 94240C116B1;
+	Tue, 26 Aug 2025 14:06:21 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1756212801;
-	bh=JYReefcxODb+cJdmL2hExkG0yM2zXbTnUI8B4Fv0xlY=;
+	s=korg; t=1756217181;
+	bh=E7d4TYsJtjOVwWZ0fwraHbL1HQXnv01Aa7F0V1fauYc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=SnFlUmG/zLzxA+3R0+75GGlo9/WsF5IOig0Vq1QkyRMA3y59UmG1IBDWmqPlvBb+y
-	 akDDiF1/neVjjCbII8tl62pWLjjuRbBPrrDQHZXLuNJFc68yLaC5jDDKyURcoNuY6m
-	 vfv1UP8w4WPJmpeegul07qvpDhEh1Z6TvWfi2g4k=
+	b=DKrwBkZVelksliCuxKWskuA6XggOG6xOTb1e1aRox4JquJYnS/fh+xPRID70Ek9T6
+	 tId+Lb6Lh4BpM/RuZHuwJGslDqCQgNB+cV1zxtJSg6FtY7Y1mJqSBDQt7JIlb/I74P
+	 YmPCoTmF8DapvdK1TOk0lS9l6JXX/fhH0wiXjRgA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Zhu Qiyu <qiyuzhu2@amd.com>,
-	"Rafael J. Wysocki" <rafael.j.wysocki@intel.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 107/587] ACPI: PRM: Reduce unnecessary printing to avoid user confusion
-Date: Tue, 26 Aug 2025 13:04:16 +0200
-Message-ID: <20250826110955.662362553@linuxfoundation.org>
+	stable <stable@kernel.org>,
+	Mark Brown <broonie@kernel.org>,
+	Mathias Nyman <mathias.nyman@linux.intel.com>,
+	Konrad Dybcio <konrad.dybcio@oss.qualcomm.com>
+Subject: [PATCH 5.10 047/523] usb: hub: Fix flushing of delayed work used for post resume purposes
+Date: Tue, 26 Aug 2025 13:04:17 +0200
+Message-ID: <20250826110925.762227784@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250826110952.942403671@linuxfoundation.org>
-References: <20250826110952.942403671@linuxfoundation.org>
+In-Reply-To: <20250826110924.562212281@linuxfoundation.org>
+References: <20250826110924.562212281@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,88 +63,122 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Zhu Qiyu <qiyuzhu2@amd.com>
+From: Mathias Nyman <mathias.nyman@linux.intel.com>
 
-[ Upstream commit 3db5648c4d608b5483470efc1da9780b081242dd ]
+commit 9bd9c8026341f75f25c53104eb7e656e357ca1a2 upstream.
 
-Commit 088984c8d54c ("ACPI: PRM: Find EFI_MEMORY_RUNTIME block for PRM
-handler and context") introduced non-essential printing "Failed to find
-VA for GUID: xxxx, PA: 0x0" which may confuse users to think that
-something wrong is going on while it is not the case.
+Delayed work that prevents USB3 hubs from runtime-suspending too early
+needed to be flushed in hub_quiesce() to resolve issues detected on
+QC SC8280XP CRD board during suspend resume testing.
 
-According to the PRM Spec Section 4.1.2 [1], both static data buffer
-address and ACPI parameter buffer address may be NULL if they are not
-needed, so there is no need to print out the "Failed to find VA ... "
-in those cases.
+This flushing did however trigger new issues on Raspberry Pi 3B+, which
+doesn't have USB3 ports, and doesn't queue any post resume delayed work.
 
-Link: https://uefi.org/sites/default/files/resources/Platform%20Runtime%20Mechanism%20-%20with%20legal%20notice.pdf # [1]
-Signed-off-by: Zhu Qiyu <qiyuzhu2@amd.com>
-Link: https://patch.msgid.link/20250704014104.82524-1-qiyuzhu2@amd.com
-[ rjw: Edits in new comments, subject and changelog ]
-Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+The flushed 'hub->init_work' item is used for several purposes, and
+is originally initialized with a 'NULL' work function. The work function
+is also changed on the fly, which may contribute to the issue.
+
+Solve this by creating a dedicated delayed work item for post resume work,
+and flush that delayed work in hub_quiesce()
+
+Cc: stable <stable@kernel.org>
+Fixes: a49e1e2e785f ("usb: hub: Fix flushing and scheduling of delayed work that tunes runtime pm")
+Reported-by: Mark Brown <broonie@kernel.org>
+Closes: https://lore.kernel.org/linux-usb/aF5rNp1l0LWITnEB@finisterre.sirena.org.uk
+Signed-off-by: Mathias Nyman <mathias.nyman@linux.intel.com>
+Tested-by: Konrad Dybcio <konrad.dybcio@oss.qualcomm.com> # SC8280XP CRD
+Tested-by: Mark Brown <broonie@kernel.org>
+Link: https://lore.kernel.org/r/20250627164348.3982628-2-mathias.nyman@linux.intel.com
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/acpi/prmt.c | 26 ++++++++++++++++++++++++--
- 1 file changed, 24 insertions(+), 2 deletions(-)
+ drivers/usb/core/hub.c |   21 ++++++++-------------
+ drivers/usb/core/hub.h |    1 +
+ 2 files changed, 9 insertions(+), 13 deletions(-)
 
-diff --git a/drivers/acpi/prmt.c b/drivers/acpi/prmt.c
-index a34f7d37877c..eb8f2a1ce138 100644
---- a/drivers/acpi/prmt.c
-+++ b/drivers/acpi/prmt.c
-@@ -85,8 +85,6 @@ static u64 efi_pa_va_lookup(efi_guid_t *guid, u64 pa)
- 		}
+--- a/drivers/usb/core/hub.c
++++ b/drivers/usb/core/hub.c
+@@ -1031,12 +1031,11 @@ int usb_remove_device(struct usb_device
+ 
+ enum hub_activation_type {
+ 	HUB_INIT, HUB_INIT2, HUB_INIT3,		/* INITs must come first */
+-	HUB_POST_RESET, HUB_RESUME, HUB_RESET_RESUME, HUB_POST_RESUME,
++	HUB_POST_RESET, HUB_RESUME, HUB_RESET_RESUME,
+ };
+ 
+ static void hub_init_func2(struct work_struct *ws);
+ static void hub_init_func3(struct work_struct *ws);
+-static void hub_post_resume(struct work_struct *ws);
+ 
+ static void hub_activate(struct usb_hub *hub, enum hub_activation_type type)
+ {
+@@ -1060,12 +1059,6 @@ static void hub_activate(struct usb_hub
+ 		goto init3;
  	}
  
--	pr_warn("Failed to find VA for GUID: %pUL, PA: 0x%llx", guid, pa);
+-	if (type == HUB_POST_RESUME) {
+-		usb_autopm_put_interface_async(to_usb_interface(hub->intfdev));
+-		hub_put(hub);
+-		return;
+-	}
 -
- 	return 0;
+ 	hub_get(hub);
+ 
+ 	/* The superspeed hub except for root hub has to use Hub Depth
+@@ -1319,8 +1312,8 @@ static void hub_activate(struct usb_hub
+ 		usb_autopm_get_interface_no_resume(
+ 			to_usb_interface(hub->intfdev));
+ 
+-		INIT_DELAYED_WORK(&hub->init_work, hub_post_resume);
+-		queue_delayed_work(system_power_efficient_wq, &hub->init_work,
++		queue_delayed_work(system_power_efficient_wq,
++				   &hub->post_resume_work,
+ 				   msecs_to_jiffies(USB_SS_PORT_U0_WAKE_TIME));
+ 		return;
+ 	}
+@@ -1345,9 +1338,10 @@ static void hub_init_func3(struct work_s
+ 
+ static void hub_post_resume(struct work_struct *ws)
+ {
+-	struct usb_hub *hub = container_of(ws, struct usb_hub, init_work.work);
++	struct usb_hub *hub = container_of(ws, struct usb_hub, post_resume_work.work);
+ 
+-	hub_activate(hub, HUB_POST_RESUME);
++	usb_autopm_put_interface_async(to_usb_interface(hub->intfdev));
++	hub_put(hub);
  }
  
-@@ -154,13 +152,37 @@ acpi_parse_prmt(union acpi_subtable_headers *header, const unsigned long end)
- 		guid_copy(&th->guid, (guid_t *)handler_info->handler_guid);
- 		th->handler_addr =
- 			(void *)efi_pa_va_lookup(&th->guid, handler_info->handler_address);
-+		/*
-+		 * Print a warning message if handler_addr is zero which is not expected to
-+		 * ever happen.
-+		 */
-+		if (unlikely(!th->handler_addr))
-+			pr_warn("Failed to find VA of handler for GUID: %pUL, PA: 0x%llx",
-+				&th->guid, handler_info->handler_address);
+ enum hub_quiescing_type {
+@@ -1375,7 +1369,7 @@ static void hub_quiesce(struct usb_hub *
  
- 		th->static_data_buffer_addr =
- 			efi_pa_va_lookup(&th->guid, handler_info->static_data_buffer_address);
-+		/*
-+		 * According to the PRM specification, static_data_buffer_address can be zero,
-+		 * so avoid printing a warning message in that case.  Otherwise, if the
-+		 * return value of efi_pa_va_lookup() is zero, print the message.
-+		 */
-+		if (unlikely(!th->static_data_buffer_addr && handler_info->static_data_buffer_address))
-+			pr_warn("Failed to find VA of static data buffer for GUID: %pUL, PA: 0x%llx",
-+				&th->guid, handler_info->static_data_buffer_address);
- 
- 		th->acpi_param_buffer_addr =
- 			efi_pa_va_lookup(&th->guid, handler_info->acpi_param_buffer_address);
- 
-+		/*
-+		 * According to the PRM specification, acpi_param_buffer_address can be zero,
-+		 * so avoid printing a warning message in that case.  Otherwise, if the
-+		 * return value of efi_pa_va_lookup() is zero, print the message.
-+		 */
-+		if (unlikely(!th->acpi_param_buffer_addr && handler_info->acpi_param_buffer_address))
-+			pr_warn("Failed to find VA of acpi param buffer for GUID: %pUL, PA: 0x%llx",
-+				&th->guid, handler_info->acpi_param_buffer_address);
-+
- 	} while (++cur_handler < tm->handler_count && (handler_info = get_next_handler(handler_info)));
- 
- 	return 0;
--- 
-2.39.5
-
+ 	/* Stop hub_wq and related activity */
+ 	del_timer_sync(&hub->irq_urb_retry);
+-	flush_delayed_work(&hub->init_work);
++	flush_delayed_work(&hub->post_resume_work);
+ 	usb_kill_urb(hub->urb);
+ 	if (hub->has_indicators)
+ 		cancel_delayed_work_sync(&hub->leds);
+@@ -1932,6 +1926,7 @@ static int hub_probe(struct usb_interfac
+ 	hub->hdev = hdev;
+ 	INIT_DELAYED_WORK(&hub->leds, led_work);
+ 	INIT_DELAYED_WORK(&hub->init_work, NULL);
++	INIT_DELAYED_WORK(&hub->post_resume_work, hub_post_resume);
+ 	INIT_WORK(&hub->events, hub_event);
+ 	spin_lock_init(&hub->irq_urb_lock);
+ 	timer_setup(&hub->irq_urb_retry, hub_retry_irq_urb, 0);
+--- a/drivers/usb/core/hub.h
++++ b/drivers/usb/core/hub.h
+@@ -69,6 +69,7 @@ struct usb_hub {
+ 	u8			indicator[USB_MAXCHILDREN];
+ 	struct delayed_work	leds;
+ 	struct delayed_work	init_work;
++	struct delayed_work	post_resume_work;
+ 	struct work_struct      events;
+ 	spinlock_t		irq_urb_lock;
+ 	struct timer_list	irq_urb_retry;
 
 
 
