@@ -1,57 +1,55 @@
-Return-Path: <stable+bounces-176013-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-175080-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8A6DEB36BBE
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 16:48:29 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 80FEFB365A3
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 15:49:35 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id C5A4858764A
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 14:31:52 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 85F0A7BF46D
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 13:47:56 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C68CA345726;
-	Tue, 26 Aug 2025 14:29:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id F3A77350D52;
+	Tue, 26 Aug 2025 13:48:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Y7nVhLrd"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ZlaiOGMr"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 85959405F7;
-	Tue, 26 Aug 2025 14:29:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9E0FC350D4E;
+	Tue, 26 Aug 2025 13:48:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756218557; cv=none; b=GMlHbDpL+SeJslVLPNGtJlpllcOFFkmeWnqrL377LIAAei5zww42Ea7Fmfm2qq5JRv6xyVPSJrLb7uUI7J+G0edI4zfhmtUs6jouzb1aYhe3YKjCMbqE81+obCBHeTnwmtbebrhGDnxU4OD1KCpqY7e6jktulsJ8QqrxLYUl5yw=
+	t=1756216087; cv=none; b=Eqq9R/7fuhlWlfqtDa8BYEczjQJmqwfN6iAvESbXbbhBMGc2JTj2NHJGLAeSb0ZR6hiybNhw8QY0CIZeec44CqV6MjTYMICjSKWrzs5KHVEXbeGi1QPeiKZIoYYRd4K9SBU/azbnolBir6JZ+89tRgWAoTmA7iRxG7BrCQgz/WM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756218557; c=relaxed/simple;
-	bh=qO5zuwbXz7zMwSmKt3nrWfc7y/+pxQwmpQUM62eTQoE=;
+	s=arc-20240116; t=1756216087; c=relaxed/simple;
+	bh=VZq622Z+vk6VJS+ORl0Ba7VvBF6v67sSSqk+6YNG+EM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=q95aYeaCgYTAbSU/tZnTY4+xNS36xduePty51kz9bozwB+0HL5kItwoiMAgV8vT0QswJ3yIC7ooUXULklWcTBWANV5avkkiP/jPZ4oaqdGwHXYhdxGOSAtiNTkhCng5+SL5GV7x/ggCXiGvXMUR7PzXjJOyrr+uiqk/M6hWdOtU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Y7nVhLrd; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A2223C4CEF1;
-	Tue, 26 Aug 2025 14:29:16 +0000 (UTC)
+	 MIME-Version; b=uTaZOzRuS3/2wt6s8cXRXjvHRlUS8LRgO3+YIjDcx/p8POn+9pirIAmLqQu401A1mlgm3ltWlH3OM4uNkDWnj/8fiukOeHaugnqyjz7G636ZFWpfhbPZ7BtXUqbmWnONryhTuKqtvnN1jR027TxEYAglscrWJOsP5q29IaH0T5A=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ZlaiOGMr; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 32E35C113CF;
+	Tue, 26 Aug 2025 13:48:07 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1756218557;
-	bh=qO5zuwbXz7zMwSmKt3nrWfc7y/+pxQwmpQUM62eTQoE=;
+	s=korg; t=1756216087;
+	bh=VZq622Z+vk6VJS+ORl0Ba7VvBF6v67sSSqk+6YNG+EM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Y7nVhLrdeKoyM+3wxELNYzWZa0qQ2IyH5xhx9KKlXT6a961fkm0nyHaeLncz1kULw
-	 KAsYIba9RtNXl5qrurARzMwzRS0398XV2L+xZolzHuBiBLwVHeW2cVjY2Kb2Abgmy2
-	 /uubpVQN8iw99DlH1AqVwf1h+FcCNP5nhoEIpSWs=
+	b=ZlaiOGMr5nxXnCAegtJPtTQgsdCbPkaXgXrXl20eFj4mqnhYCIA2LFdomG3jGobEi
+	 xVVrh0js+Zm4C0ucZwJeV2Xi9PronalYKzgMSJdpGNVmyPeEC6jLsNtHA7NT5lU6f6
+	 VbndADTzL8A41MFRgaDy35yUqxP2mTyNCRdUhji8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	stable <stable@kernel.org>,
-	Hongyu Xie <xiehongyu1@kylinos.cn>,
-	Mathias Nyman <mathias.nyman@linux.intel.com>,
+	Viacheslav Dubeyko <slava@dubeyko.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.4 044/403] xhci: Disable stream for xHC controller with XHCI_BROKEN_STREAMS
-Date: Tue, 26 Aug 2025 13:06:10 +0200
-Message-ID: <20250826110907.045835620@linuxfoundation.org>
+Subject: [PATCH 5.15 280/644] hfs: fix slab-out-of-bounds in hfs_bnode_read()
+Date: Tue, 26 Aug 2025 13:06:11 +0200
+Message-ID: <20250826110953.313501599@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250826110905.607690791@linuxfoundation.org>
-References: <20250826110905.607690791@linuxfoundation.org>
+In-Reply-To: <20250826110946.507083938@linuxfoundation.org>
+References: <20250826110946.507083938@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,40 +61,171 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.4-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Hongyu Xie <xiehongyu1@kylinos.cn>
+From: Viacheslav Dubeyko <slava@dubeyko.com>
 
-commit cd65ee81240e8bc3c3119b46db7f60c80864b90b upstream.
+[ Upstream commit a431930c9bac518bf99d6b1da526a7f37ddee8d8 ]
 
-Disable stream for platform xHC controller with broken stream.
+This patch introduces is_bnode_offset_valid() method that checks
+the requested offset value. Also, it introduces
+check_and_correct_requested_length() method that checks and
+correct the requested length (if it is necessary). These methods
+are used in hfs_bnode_read(), hfs_bnode_write(), hfs_bnode_clear(),
+hfs_bnode_copy(), and hfs_bnode_move() with the goal to prevent
+the access out of allocated memory and triggering the crash.
 
-Fixes: 14aec589327a6 ("storage: accept some UAS devices if streams are unavailable")
-Cc: stable <stable@kernel.org>
-Signed-off-by: Hongyu Xie <xiehongyu1@kylinos.cn>
-Signed-off-by: Mathias Nyman <mathias.nyman@linux.intel.com>
-Link: https://lore.kernel.org/r/20250627144127.3889714-3-mathias.nyman@linux.intel.com
-[ removed xhci_get_usb3_hcd() call ]
+Signed-off-by: Viacheslav Dubeyko <slava@dubeyko.com>
+Link: https://lore.kernel.org/r/20250703214912.244138-1-slava@dubeyko.com
+Signed-off-by: Viacheslav Dubeyko <slava@dubeyko.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/usb/host/xhci-plat.c |    3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+ fs/hfs/bnode.c | 92 ++++++++++++++++++++++++++++++++++++++++++++++++++
+ 1 file changed, 92 insertions(+)
 
---- a/drivers/usb/host/xhci-plat.c
-+++ b/drivers/usb/host/xhci-plat.c
-@@ -333,7 +333,8 @@ static int xhci_plat_probe(struct platfo
- 	if (ret)
- 		goto disable_usb_phy;
+diff --git a/fs/hfs/bnode.c b/fs/hfs/bnode.c
+index 2251286cd83f..2039cb6d5f66 100644
+--- a/fs/hfs/bnode.c
++++ b/fs/hfs/bnode.c
+@@ -15,6 +15,48 @@
  
--	if (HCC_MAX_PSA(xhci->hcc_params) >= 4)
-+	if (HCC_MAX_PSA(xhci->hcc_params) >= 4 &&
-+	    !(xhci->quirks & XHCI_BROKEN_STREAMS))
- 		xhci->shared_hcd->can_do_streams = 1;
+ #include "btree.h"
  
- 	ret = usb_add_hcd(xhci->shared_hcd, irq, IRQF_SHARED);
++static inline
++bool is_bnode_offset_valid(struct hfs_bnode *node, int off)
++{
++	bool is_valid = off < node->tree->node_size;
++
++	if (!is_valid) {
++		pr_err("requested invalid offset: "
++		       "NODE: id %u, type %#x, height %u, "
++		       "node_size %u, offset %d\n",
++		       node->this, node->type, node->height,
++		       node->tree->node_size, off);
++	}
++
++	return is_valid;
++}
++
++static inline
++int check_and_correct_requested_length(struct hfs_bnode *node, int off, int len)
++{
++	unsigned int node_size;
++
++	if (!is_bnode_offset_valid(node, off))
++		return 0;
++
++	node_size = node->tree->node_size;
++
++	if ((off + len) > node_size) {
++		int new_len = (int)node_size - off;
++
++		pr_err("requested length has been corrected: "
++		       "NODE: id %u, type %#x, height %u, "
++		       "node_size %u, offset %d, "
++		       "requested_len %d, corrected_len %d\n",
++		       node->this, node->type, node->height,
++		       node->tree->node_size, off, len, new_len);
++
++		return new_len;
++	}
++
++	return len;
++}
++
+ void hfs_bnode_read(struct hfs_bnode *node, void *buf, int off, int len)
+ {
+ 	struct page *page;
+@@ -23,6 +65,20 @@ void hfs_bnode_read(struct hfs_bnode *node, void *buf, int off, int len)
+ 	int bytes_to_read;
+ 	void *vaddr;
+ 
++	if (!is_bnode_offset_valid(node, off))
++		return;
++
++	if (len == 0) {
++		pr_err("requested zero length: "
++		       "NODE: id %u, type %#x, height %u, "
++		       "node_size %u, offset %d, len %d\n",
++		       node->this, node->type, node->height,
++		       node->tree->node_size, off, len);
++		return;
++	}
++
++	len = check_and_correct_requested_length(node, off, len);
++
+ 	off += node->page_offset;
+ 	pagenum = off >> PAGE_SHIFT;
+ 	off &= ~PAGE_MASK; /* compute page offset for the first page */
+@@ -83,6 +139,20 @@ void hfs_bnode_write(struct hfs_bnode *node, void *buf, int off, int len)
+ {
+ 	struct page *page;
+ 
++	if (!is_bnode_offset_valid(node, off))
++		return;
++
++	if (len == 0) {
++		pr_err("requested zero length: "
++		       "NODE: id %u, type %#x, height %u, "
++		       "node_size %u, offset %d, len %d\n",
++		       node->this, node->type, node->height,
++		       node->tree->node_size, off, len);
++		return;
++	}
++
++	len = check_and_correct_requested_length(node, off, len);
++
+ 	off += node->page_offset;
+ 	page = node->page[0];
+ 
+@@ -108,6 +178,20 @@ void hfs_bnode_clear(struct hfs_bnode *node, int off, int len)
+ {
+ 	struct page *page;
+ 
++	if (!is_bnode_offset_valid(node, off))
++		return;
++
++	if (len == 0) {
++		pr_err("requested zero length: "
++		       "NODE: id %u, type %#x, height %u, "
++		       "node_size %u, offset %d, len %d\n",
++		       node->this, node->type, node->height,
++		       node->tree->node_size, off, len);
++		return;
++	}
++
++	len = check_and_correct_requested_length(node, off, len);
++
+ 	off += node->page_offset;
+ 	page = node->page[0];
+ 
+@@ -124,6 +208,10 @@ void hfs_bnode_copy(struct hfs_bnode *dst_node, int dst,
+ 	hfs_dbg(BNODE_MOD, "copybytes: %u,%u,%u\n", dst, src, len);
+ 	if (!len)
+ 		return;
++
++	len = check_and_correct_requested_length(src_node, src, len);
++	len = check_and_correct_requested_length(dst_node, dst, len);
++
+ 	src += src_node->page_offset;
+ 	dst += dst_node->page_offset;
+ 	src_page = src_node->page[0];
+@@ -143,6 +231,10 @@ void hfs_bnode_move(struct hfs_bnode *node, int dst, int src, int len)
+ 	hfs_dbg(BNODE_MOD, "movebytes: %u,%u,%u\n", dst, src, len);
+ 	if (!len)
+ 		return;
++
++	len = check_and_correct_requested_length(node, src, len);
++	len = check_and_correct_requested_length(node, dst, len);
++
+ 	src += node->page_offset;
+ 	dst += node->page_offset;
+ 	page = node->page[0];
+-- 
+2.39.5
+
 
 
 
