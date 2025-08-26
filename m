@@ -1,55 +1,55 @@
-Return-Path: <stable+bounces-174998-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-174329-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id D6457B3668D
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 15:58:08 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2ACCEB36235
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 15:16:50 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 8BD375682AD
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 13:45:03 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 324997B12D5
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 13:15:14 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2930A33EAE4;
-	Tue, 26 Aug 2025 13:44:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 479AB1A83ED;
+	Tue, 26 Aug 2025 13:15:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="vkRJNFZs"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="BUTx6uLn"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DAF893376BA;
-	Tue, 26 Aug 2025 13:44:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 065E2343D6A;
+	Tue, 26 Aug 2025 13:15:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756215870; cv=none; b=ZUsTlQd3Ou+oF8OsLAfMxRVTBTMjOO+HDJERbgpyiXc7WjHbUK1v5uQuITG+EQf2P/8bNcbZr3lwl6ZVBySuSd+aYI97BfLiJtQlxYaTEdgnZymFnet/lQzVSGZk11fAbfXnTms5nzTvbqWdV0H9GpEezRDCe0qLicpzp+kYYW8=
+	t=1756214103; cv=none; b=Fyd2Pbao50xeOtjF9viiXPbO31YrOWUmXAue5yvzXfD5kLUKqSY5Rj6skJXou7XBLSv7fpVvc2XqUlfJYHmES8KN/gOn2acv8XmDTM7ecYISDEXVVMCqVNOX0KGVTD5yEeJX23T8E3/lTysxSlXeideOdui4PRUgWAcHImXFtkY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756215870; c=relaxed/simple;
-	bh=L+nOrtWaE2PD0ka4F+YT2gqtlaDZVCMLUe07OR+i3hw=;
+	s=arc-20240116; t=1756214103; c=relaxed/simple;
+	bh=GIijY4ceGvQosf1loWBLWu2Pz8PXt3rz+8fWuWtHydk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=AXPfYiTGVdZIjZsYvc+6FpmBWm5lvGzeUYTC/wvq5CBTRTmSKnQ1hlxwrAcrK20OP3xXt/95UUwYnseHHHSFvs2cGC53LtutDfCQqu9Avdcm+1zlXtJCe6VNLgcmBRmJmymQnj7cPRwKZmtfG/ZMZzx1aETZr35xYo6Rdse3hU8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=vkRJNFZs; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6F11BC4CEF1;
-	Tue, 26 Aug 2025 13:44:30 +0000 (UTC)
+	 MIME-Version; b=ed5gd5h3ESGfR3Tjimn+DsUt0ejzNzR1jIlNAgK7llMbdgHvAWNjSgypF3AWXVdd9+8GMQw2xKow5xqRQ/bmPfj6oCIFr4TLXZD3nJtl1C0mYnnWiN9aYQmaw8PR78NXTSqFGAux4aWUatoHcHgAC+zDfpKaCzFZVjH4+usO500=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=BUTx6uLn; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 36CDDC113CF;
+	Tue, 26 Aug 2025 13:15:02 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1756215870;
-	bh=L+nOrtWaE2PD0ka4F+YT2gqtlaDZVCMLUe07OR+i3hw=;
+	s=korg; t=1756214102;
+	bh=GIijY4ceGvQosf1loWBLWu2Pz8PXt3rz+8fWuWtHydk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=vkRJNFZsaZQw0dVp/eF7d5EV3dspFzRWBJKY7HwObZgEW/yzFhmli5sRh2UC12ph1
-	 a5xKpSa2zVvL+jQ3kHw+Qv42cfbBmd0eXDcizveuVIAlNqVFNy/v1j5UN+8+p35Cwv
-	 M1EXlBa/h+HCo07BZWr1FaRg8mUr503E+xvT9nGU=
+	b=BUTx6uLn4AE8JbnjefO6+OHaFBVdEKM/gSY93YLLxvlR1ok8d6pkF2t2K23CgnxQN
+	 cgqVEb7BNwjQNzl4RrlnSOQS+rfik16Ng0Kcz/KvHjbaePfqTfniJAjv8Xsug3SJwd
+	 /HXeYUP9HpxaLU5DsuC9kmdXto5Mb4QBYTiLdg84=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Herbert Xu <herbert@gondor.apana.org.au>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 166/644] crypto: marvell/cesa - Fix engine load inaccuracy
+	Vasiliy Kovalev <kovalev@altlinux.org>,
+	Takashi Iwai <tiwai@suse.de>
+Subject: [PATCH 6.1 004/482] ALSA: hda/realtek: Fix headset mic on HONOR BRB-X
 Date: Tue, 26 Aug 2025 13:04:17 +0200
-Message-ID: <20250826110950.594652810@linuxfoundation.org>
+Message-ID: <20250826110930.887710265@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250826110946.507083938@linuxfoundation.org>
-References: <20250826110946.507083938@linuxfoundation.org>
+In-Reply-To: <20250826110930.769259449@linuxfoundation.org>
+References: <20250826110930.769259449@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,80 +61,36 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Herbert Xu <herbert@gondor.apana.org.au>
+From: Vasiliy Kovalev <kovalev@altlinux.org>
 
-[ Upstream commit 442134ab30e75b7229c4bfc1ac5641d245cffe27 ]
+commit b26e2afb3834d4a61ce54c8484ff6014bef0b4b7 upstream.
 
-If an error occurs during queueing the engine load will never be
-decremented.  Fix this by moving the engine load adjustment into
-the cleanup function.
+Add a PCI quirk to enable microphone input on the headphone jack on
+the HONOR BRB-X M1010 laptop.
 
-Fixes: bf8f91e71192 ("crypto: marvell - Add load balancing between engines")
-Signed-off-by: Herbert Xu <herbert@gondor.apana.org.au>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Signed-off-by: Vasiliy Kovalev <kovalev@altlinux.org>
+Cc: <stable@vger.kernel.org>
+Link: https://patch.msgid.link/20250811132716.45076-1-kovalev@altlinux.org
+Signed-off-by: Takashi Iwai <tiwai@suse.de>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/crypto/marvell/cesa/cipher.c | 4 +++-
- drivers/crypto/marvell/cesa/hash.c   | 5 +++--
- 2 files changed, 6 insertions(+), 3 deletions(-)
+ sound/pci/hda/patch_realtek.c |    1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/drivers/crypto/marvell/cesa/cipher.c b/drivers/crypto/marvell/cesa/cipher.c
-index 3876e3ce822f..eabed9d977df 100644
---- a/drivers/crypto/marvell/cesa/cipher.c
-+++ b/drivers/crypto/marvell/cesa/cipher.c
-@@ -75,9 +75,12 @@ mv_cesa_skcipher_dma_cleanup(struct skcipher_request *req)
- static inline void mv_cesa_skcipher_cleanup(struct skcipher_request *req)
- {
- 	struct mv_cesa_skcipher_req *creq = skcipher_request_ctx(req);
-+	struct mv_cesa_engine *engine = creq->base.engine;
- 
- 	if (mv_cesa_req_get_type(&creq->base) == CESA_DMA_REQ)
- 		mv_cesa_skcipher_dma_cleanup(req);
-+
-+	atomic_sub(req->cryptlen, &engine->load);
- }
- 
- static void mv_cesa_skcipher_std_step(struct skcipher_request *req)
-@@ -212,7 +215,6 @@ mv_cesa_skcipher_complete(struct crypto_async_request *req)
- 	struct mv_cesa_engine *engine = creq->base.engine;
- 	unsigned int ivsize;
- 
--	atomic_sub(skreq->cryptlen, &engine->load);
- 	ivsize = crypto_skcipher_ivsize(crypto_skcipher_reqtfm(skreq));
- 
- 	if (mv_cesa_req_get_type(&creq->base) == CESA_DMA_REQ) {
-diff --git a/drivers/crypto/marvell/cesa/hash.c b/drivers/crypto/marvell/cesa/hash.c
-index 72b0f863dee0..66ebe26e59cb 100644
---- a/drivers/crypto/marvell/cesa/hash.c
-+++ b/drivers/crypto/marvell/cesa/hash.c
-@@ -110,9 +110,12 @@ static inline void mv_cesa_ahash_dma_cleanup(struct ahash_request *req)
- static inline void mv_cesa_ahash_cleanup(struct ahash_request *req)
- {
- 	struct mv_cesa_ahash_req *creq = ahash_request_ctx(req);
-+	struct mv_cesa_engine *engine = creq->base.engine;
- 
- 	if (mv_cesa_req_get_type(&creq->base) == CESA_DMA_REQ)
- 		mv_cesa_ahash_dma_cleanup(req);
-+
-+	atomic_sub(req->nbytes, &engine->load);
- }
- 
- static void mv_cesa_ahash_last_cleanup(struct ahash_request *req)
-@@ -395,8 +398,6 @@ static void mv_cesa_ahash_complete(struct crypto_async_request *req)
- 			}
- 		}
- 	}
--
--	atomic_sub(ahashreq->nbytes, &engine->load);
- }
- 
- static void mv_cesa_ahash_prepare(struct crypto_async_request *req,
--- 
-2.39.5
-
+--- a/sound/pci/hda/patch_realtek.c
++++ b/sound/pci/hda/patch_realtek.c
+@@ -10440,6 +10440,7 @@ static const struct snd_pci_quirk alc269
+ 	SND_PCI_QUIRK(0x1d72, 0x1901, "RedmiBook 14", ALC256_FIXUP_ASUS_HEADSET_MIC),
+ 	SND_PCI_QUIRK(0x1d72, 0x1945, "Redmi G", ALC256_FIXUP_ASUS_HEADSET_MIC),
+ 	SND_PCI_QUIRK(0x1d72, 0x1947, "RedmiBook Air", ALC255_FIXUP_XIAOMI_HEADSET_MIC),
++	SND_PCI_QUIRK(0x1ee7, 0x2078, "HONOR BRB-X M1010", ALC2XX_FIXUP_HEADSET_MIC),
+ 	SND_PCI_QUIRK(0x1f66, 0x0105, "Ayaneo Portable Game Player", ALC287_FIXUP_CS35L41_I2C_2),
+ 	SND_PCI_QUIRK(0x2014, 0x800a, "Positivo ARN50", ALC269_FIXUP_LIMIT_INT_MIC_BOOST),
+ 	SND_PCI_QUIRK(0x2782, 0x0214, "VAIO VJFE-CL", ALC269_FIXUP_LIMIT_INT_MIC_BOOST),
 
 
 
