@@ -1,57 +1,55 @@
-Return-Path: <stable+bounces-173917-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-175983-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id BD666B36069
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 15:00:20 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id BB50DB36AE3
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 16:41:36 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id EC8591BC0DE1
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 12:57:37 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 08BBA564771
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 14:30:16 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A4E50202F8E;
-	Tue, 26 Aug 2025 12:56:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D5CFC350831;
+	Tue, 26 Aug 2025 14:27:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="XDFoBh8p"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="L9Pqhu1L"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5F4C31F9F73;
-	Tue, 26 Aug 2025 12:56:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 93B0F2FDC44;
+	Tue, 26 Aug 2025 14:27:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756213006; cv=none; b=tBO29dO5YEtlYjL7Ozn13e8eZe+8MjZyG4LnQf3q2XWmFp8nGgVcJAo2hZUT8BUathFKUGjE4hFELhOvFxYIso0cGZRWC63nvAuxc9HIA6LJfRJq6XLG3J/wEEatG/BbO5HQ2i8qalxBrP4a1cD/nKvBaGaV6Do4tKwCB5UxOtA=
+	t=1756218478; cv=none; b=JhKa4MYPSeVL797NtlB3B7bnbNKWdcG4fqEenhcJr5TrF2fDwPd9Due7B/pQlV369t53X6dQY2HMAqDITxIFrY3ZsBQM0va4M7XkTNpQ5wFKWtGjDP8p1OJN+QEC9HXPMKUCGhP8dlsjIPFl889LVlWhBYoJQkoHr/xixc4Qmpg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756213006; c=relaxed/simple;
-	bh=YgTtQaU46RCBiXp4K1OowkQn1UBB/7iqaZeyWe3oJVc=;
+	s=arc-20240116; t=1756218478; c=relaxed/simple;
+	bh=F8/oxRBGfRul9y++zTygpcWwb3F33/AWxx+1cHZ9VuE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Hvrjer7s6/pZpbP7WqQcCfeaLObavRkJoWLYkX/oPHRtvkhjhCnUNQZVYoZAbxVXMlTFZVeqaOq5lrshLsyiqpFGtRrO0xQhqyq8/uCLQMYNTJ296Dvfip69CKRoCG9++kLYEqas5KgNvgxlgkuDVSQndZrmDnqXGDafmOrPX2U=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=XDFoBh8p; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E35BBC4CEF1;
-	Tue, 26 Aug 2025 12:56:45 +0000 (UTC)
+	 MIME-Version; b=XwKOn/wFVEop6riYh8GP7TEWUEVSrkNlpEF6bu07we2cLtEzaQOkVBQ4B7vbKGgDlMI1+/oOy5t63IfFoLSp5UWmCxk13btHgQqnLU693LLpfF6E1Wyr/9EDzAplyPTJgrz5Sjeony4FKDoLW6WgRKUh+eI9mMclMuBu/qmdka0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=L9Pqhu1L; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2662DC4CEF1;
+	Tue, 26 Aug 2025 14:27:57 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1756213006;
-	bh=YgTtQaU46RCBiXp4K1OowkQn1UBB/7iqaZeyWe3oJVc=;
+	s=korg; t=1756218478;
+	bh=F8/oxRBGfRul9y++zTygpcWwb3F33/AWxx+1cHZ9VuE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=XDFoBh8pwtijBzVlj1gY0VtdWOyAkv7E9PNOSlCr2LWsuT3xDbMZitBhIN3P+d/+M
-	 GTpj9ziWI8zeJhRQGOQ6PPwhaidH+NtUEXjm2+yRs9TsOwRw+lRcfUqahAg1fjIZFs
-	 4tj7KUQCPQDhH4N+mt4eOWzXFLl+A1W1mgdzrFu4=
+	b=L9Pqhu1LCev2bknc34rUz3I0KhB/9qtGrL0uezxvrQuYO7PH5OeEdojofN4LXBbnx
+	 tYOWBIKr5of9/4iHOm/O6aQIVWU7haNGZNFTyu/QiTc6TaWaYfyk3HwGgRdO9+wrUl
+	 slmfBdvjj4ciUrXqNcbUVB1DkZqULfvLfREsKTF4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Ramya Gnanasekar <ramya.gnanasekar@oss.qualcomm.com>,
-	Ramasamy Kaliappan <ramasamy.kaliappan@oss.qualcomm.com>,
-	Johannes Berg <johannes.berg@intel.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 184/587] wifi: mac80211: update radar_required in channel context after channel switch
-Date: Tue, 26 Aug 2025 13:05:33 +0200
-Message-ID: <20250826110957.622486876@linuxfoundation.org>
+	Alan Stern <stern@rowland.harvard.edu>,
+	Benjamin Tissoires <bentiss@kernel.org>
+Subject: [PATCH 5.4 008/403] HID: core: ensure the allocated report buffer can contain the reserved report ID
+Date: Tue, 26 Aug 2025 13:05:34 +0200
+Message-ID: <20250826110905.872764678@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250826110952.942403671@linuxfoundation.org>
-References: <20250826110952.942403671@linuxfoundation.org>
+In-Reply-To: <20250826110905.607690791@linuxfoundation.org>
+References: <20250826110905.607690791@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,53 +61,46 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+5.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Ramya Gnanasekar <ramya.gnanasekar@oss.qualcomm.com>
+From: Benjamin Tissoires <bentiss@kernel.org>
 
-[ Upstream commit 140c6a61d83cbd85adba769b5ef8d61acfa5b392 ]
+commit 4f15ee98304b96e164ff2340e1dfd6181c3f42aa upstream.
 
-Currently, when a non-DFS channel is brought up and the bandwidth is
-expanded from 80 MHz to 160 MHz, where the primary 80 MHz is non-DFS
-and the secondary 80 MHz consists of DFS channels, radar detection
-fails if radar occurs in the secondary 80 MHz.
+When the report ID is not used, the low level transport drivers expect
+the first byte to be 0. However, currently the allocated buffer not
+account for that extra byte, meaning that instead of having 8 guaranteed
+bytes for implement to be working, we only have 7.
 
-When the channel is switched from 80 MHz to 160 MHz, with the primary
-80 MHz being non-DFS and the secondary 80 MHz consisting of DFS
-channels, the radar required flag in the channel switch parameters
-is set to true. However, when using a reserved channel context,
-it is not updated in sdata, which disables radar detection in the
-secondary 80 MHz DFS channels.
-
-Update the radar required flag in sdata to fix this issue when using
-a reserved channel context.
-
-Signed-off-by: Ramya Gnanasekar <ramya.gnanasekar@oss.qualcomm.com>
-Signed-off-by: Ramasamy Kaliappan <ramasamy.kaliappan@oss.qualcomm.com>
-Link: https://patch.msgid.link/20250608140324.1687117-1-ramasamy.kaliappan@oss.qualcomm.com
-Signed-off-by: Johannes Berg <johannes.berg@intel.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Reported-by: Alan Stern <stern@rowland.harvard.edu>
+Closes: https://lore.kernel.org/linux-input/c75433e0-9b47-4072-bbe8-b1d14ea97b13@rowland.harvard.edu/
+Cc: stable@vger.kernel.org
+Suggested-by: Alan Stern <stern@rowland.harvard.edu>
+Link: https://patch.msgid.link/20250710-report-size-null-v2-1-ccf922b7c4e5@kernel.org
+Signed-off-by: Benjamin Tissoires <bentiss@kernel.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- net/mac80211/chan.c | 1 +
- 1 file changed, 1 insertion(+)
+ drivers/hid/hid-core.c |    5 ++++-
+ 1 file changed, 4 insertions(+), 1 deletion(-)
 
-diff --git a/net/mac80211/chan.c b/net/mac80211/chan.c
-index 31c4f112345e..4a21e53afa72 100644
---- a/net/mac80211/chan.c
-+++ b/net/mac80211/chan.c
-@@ -1313,6 +1313,7 @@ ieee80211_link_use_reserved_reassign(struct ieee80211_link_data *link)
- 		goto out;
- 	}
+--- a/drivers/hid/hid-core.c
++++ b/drivers/hid/hid-core.c
+@@ -1655,9 +1655,12 @@ u8 *hid_alloc_report_buf(struct hid_repo
+ 	/*
+ 	 * 7 extra bytes are necessary to achieve proper functionality
+ 	 * of implement() working on 8 byte chunks
++	 * 1 extra byte for the report ID if it is null (not used) so
++	 * we can reserve that extra byte in the first position of the buffer
++	 * when sending it to .raw_request()
+ 	 */
  
-+	link->radar_required = link->reserved_radar_required;
- 	list_move(&link->assigned_chanctx_list, &new_ctx->assigned_links);
- 	rcu_assign_pointer(link_conf->chanctx_conf, &new_ctx->conf);
+-	u32 len = hid_report_len(report) + 7;
++	u32 len = hid_report_len(report) + 7 + (report->id == 0);
  
--- 
-2.39.5
-
+ 	return kzalloc(len, flags);
+ }
 
 
 
