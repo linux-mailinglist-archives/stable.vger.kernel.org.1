@@ -1,57 +1,55 @@
-Return-Path: <stable+bounces-175572-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-172970-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id C854FB3694D
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 16:25:25 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1CCD4B35B0A
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 13:17:20 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 2B71E985F31
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 14:12:25 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id CDDC13A8409
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 11:17:18 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1268034AAE3;
-	Tue, 26 Aug 2025 14:09:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 26BB32BD00C;
+	Tue, 26 Aug 2025 11:17:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="oUHM7PPm"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="xCsQo3Ut"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C202134A32E;
-	Tue, 26 Aug 2025 14:09:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D6787283FDF;
+	Tue, 26 Aug 2025 11:17:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756217398; cv=none; b=aCajAjwDfi6O/XavKUYuiAm/J0LlMHiXsf4QnowygJeFRVRv0JYNKHGOV/qsnbT17/2KtbGS8W9RZKEe0+MwF9kRDdxl3wnNhyaM5XDjQhcu6rULD7ZP9GIhTPd6IfrIVuZfs6Nsha8BCzHmyOKlsspdThSGy4xTC8GupcbSaf8=
+	t=1756207037; cv=none; b=Sfy6UhY8fvq0Yd1hz/VrYoYHkRmxzU42HdgeerNwMG4wFTqBl99fCOOibWuQZurdsv0S60GI0+V59vxwzhaU8UhwI/6SXqq37n8NrE3VyAYdDYpHTxer1I8ZAz91cl7EQKsgSI2oZ1Do/vUpMOR9IPi8MoF+K83ki7vI4w8ifwI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756217398; c=relaxed/simple;
-	bh=21oC9KU5Pnh03ScfWlQJj4+NbyLvMcMNAX0uqXv9fEo=;
+	s=arc-20240116; t=1756207037; c=relaxed/simple;
+	bh=5lZoCaNl6N+RmmVkpE6MAK2Qevg4699JeABKrONUNV0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=OATSR/XbEtIB5cQ7ROZPf/W0r/Wfsx9/oKUGTTtjN6bocwiHq1z5EFlJkXQpY0EkVrywFsvLiwxboiHkHclFpY9eUDh9M58wufL4LhG2O7t4NAfWJZyLSgtfjop133ZH2load154M7COtJvSugSAVl6T+wdFgH+FVKX1qCPdAVw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=oUHM7PPm; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 485DDC113D0;
-	Tue, 26 Aug 2025 14:09:58 +0000 (UTC)
+	 MIME-Version; b=DKUHrfZtGsawHFYRo8aIQHJ9mJJF6+ucfez1SpkuYl/m7aqsMno4BCgxY8JOT6wlDNdQ8NSCNIWFyV8vFvhYB2MELjaCp8cpS9h1Pa9lAFYHSJdivyi9B7nwERiJ57MDJT/Bj9xlqVmLaQ0PDqygyx//pSLPm3GUOAcuD4GOgts=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=xCsQo3Ut; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6715EC4CEF1;
+	Tue, 26 Aug 2025 11:17:17 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1756217398;
-	bh=21oC9KU5Pnh03ScfWlQJj4+NbyLvMcMNAX0uqXv9fEo=;
+	s=korg; t=1756207037;
+	bh=5lZoCaNl6N+RmmVkpE6MAK2Qevg4699JeABKrONUNV0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=oUHM7PPmGIZqHKYb4HtAf/W0XNDJawwAZiQ1r3eooly42RnOLISxpaPM4srA5RYLR
-	 u/usDMxE/PPtGX309z9kFrak6Do3XYSxK0lzNcJuBUfM5gxykQo/wI0ZH/9QT3kL62
-	 MdUgWae8pWk4WbyxnK4pCT95Vwr7ynehTVTyTB4Y=
+	b=xCsQo3UtS8geheAMjKaeuzw4+EC6TU9+fCq8xMXUiwUPYvWwOPouq74gKYZrzMx9x
+	 2sOhqZstRYnoI8LEkPeG3Sj8QI34kN7uUBCCx9N5LIWHsdX/20E4wV+eNzI2xYagGZ
+	 FIjNhlobfnmmWAMxG6O72Q83k+X9kzdA9gt9Q208=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Sergey Senozhatsky <senozhatsky@chromium.org>,
-	Baochen Qiang <quic_bqiang@quicinc.com>,
-	Jeff Johnson <jeff.johnson@oss.qualcomm.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 101/523] wifi: ath11k: clear initialized flag for deinit-ed srng lists
+	Eric Biggers <ebiggers@kernel.org>,
+	Herbert Xu <herbert@gondor.apana.org.au>
+Subject: [PATCH 6.16 027/457] crypto: x86/aegis - Fix sleeping when disallowed on PREEMPT_RT
 Date: Tue, 26 Aug 2025 13:05:11 +0200
-Message-ID: <20250826110927.031091662@linuxfoundation.org>
+Message-ID: <20250826110938.006909528@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250826110924.562212281@linuxfoundation.org>
-References: <20250826110924.562212281@linuxfoundation.org>
+In-Reply-To: <20250826110937.289866482@linuxfoundation.org>
+References: <20250826110937.289866482@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,102 +61,67 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+6.16-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Sergey Senozhatsky <senozhatsky@chromium.org>
+From: Eric Biggers <ebiggers@kernel.org>
 
-[ Upstream commit a5b46aa7cf5f05c213316a018e49a8e086efd98e ]
+commit c7f49dadfcdf27e1f747442e874e9baa52ab7674 upstream.
 
-In a number of cases we see kernel panics on resume due
-to ath11k kernel page fault, which happens under the
-following circumstances:
+skcipher_walk_done() can call kfree(), which takes a spinlock, which
+makes it incorrect to call while preemption is disabled on PREEMPT_RT.
+Therefore, end the kernel-mode FPU section before calling
+skcipher_walk_done(), and restart it afterwards.
 
-1) First ath11k_hal_dump_srng_stats() call
+Moreover, pass atomic=false to skcipher_walk_aead_encrypt() instead of
+atomic=true.  The point of atomic=true was to make skcipher_walk_done()
+safe to call while in a kernel-mode FPU section, but that does not
+actually work.  So just use the usual atomic=false.
 
- Last interrupt received for each group:
- ath11k_pci 0000:01:00.0: group_id 0 22511ms before
- ath11k_pci 0000:01:00.0: group_id 1 14440788ms before
- [..]
- ath11k_pci 0000:01:00.0: failed to receive control response completion, polling..
- ath11k_pci 0000:01:00.0: Service connect timeout
- ath11k_pci 0000:01:00.0: failed to connect to HTT: -110
- ath11k_pci 0000:01:00.0: failed to start core: -110
- ath11k_pci 0000:01:00.0: firmware crashed: MHI_CB_EE_RDDM
- ath11k_pci 0000:01:00.0: already resetting count 2
- ath11k_pci 0000:01:00.0: failed to wait wlan mode request (mode 4): -110
- ath11k_pci 0000:01:00.0: qmi failed to send wlan mode off: -110
- ath11k_pci 0000:01:00.0: failed to reconfigure driver on crash recovery
- [..]
-
-2) At this point reconfiguration fails (we have 2 resets) and
-  ath11k_core_reconfigure_on_crash() calls ath11k_hal_srng_deinit()
-  which destroys srng lists.  However, it does not reset per-list
-  ->initialized flag.
-
-3) Second ath11k_hal_dump_srng_stats() call sees stale ->initialized
-  flag and attempts to dump srng stats:
-
- Last interrupt received for each group:
- ath11k_pci 0000:01:00.0: group_id 0 66785ms before
- ath11k_pci 0000:01:00.0: group_id 1 14485062ms before
- ath11k_pci 0000:01:00.0: group_id 2 14485062ms before
- ath11k_pci 0000:01:00.0: group_id 3 14485062ms before
- ath11k_pci 0000:01:00.0: group_id 4 14780845ms before
- ath11k_pci 0000:01:00.0: group_id 5 14780845ms before
- ath11k_pci 0000:01:00.0: group_id 6 14485062ms before
- ath11k_pci 0000:01:00.0: group_id 7 66814ms before
- ath11k_pci 0000:01:00.0: group_id 8 68997ms before
- ath11k_pci 0000:01:00.0: group_id 9 67588ms before
- ath11k_pci 0000:01:00.0: group_id 10 69511ms before
- BUG: unable to handle page fault for address: ffffa007404eb010
- #PF: supervisor read access in kernel mode
- #PF: error_code(0x0000) - not-present page
- PGD 100000067 P4D 100000067 PUD 10022d067 PMD 100b01067 PTE 0
- Oops: 0000 [#1] PREEMPT SMP NOPTI
- RIP: 0010:ath11k_hal_dump_srng_stats+0x2b4/0x3b0 [ath11k]
- Call Trace:
- <TASK>
- ? __die_body+0xae/0xb0
- ? page_fault_oops+0x381/0x3e0
- ? exc_page_fault+0x69/0xa0
- ? asm_exc_page_fault+0x22/0x30
- ? ath11k_hal_dump_srng_stats+0x2b4/0x3b0 [ath11k (HASH:6cea 4)]
- ath11k_qmi_driver_event_work+0xbd/0x1050 [ath11k (HASH:6cea 4)]
- worker_thread+0x389/0x930
- kthread+0x149/0x170
-
-Clear per-list ->initialized flag in ath11k_hal_srng_deinit().
-
-Signed-off-by: Sergey Senozhatsky <senozhatsky@chromium.org>
-Reviewed-by: Baochen Qiang <quic_bqiang@quicinc.com>
-Fixes: 5118935b1bc2 ("ath11k: dump SRNG stats during FW assert")
-Link: https://patch.msgid.link/20250612084551.702803-1-senozhatsky@chromium.org
-Signed-off-by: Jeff Johnson <jeff.johnson@oss.qualcomm.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Fixes: 1d373d4e8e15 ("crypto: x86 - Add optimized AEGIS implementations")
+Cc: stable@vger.kernel.org
+Signed-off-by: Eric Biggers <ebiggers@kernel.org>
+Signed-off-by: Herbert Xu <herbert@gondor.apana.org.au>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/net/wireless/ath/ath11k/hal.c | 4 ++++
- 1 file changed, 4 insertions(+)
+ arch/x86/crypto/aegis128-aesni-glue.c |    8 ++++++--
+ 1 file changed, 6 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/net/wireless/ath/ath11k/hal.c b/drivers/net/wireless/ath/ath11k/hal.c
-index f3b9108ab6bd..33dfc9970bea 100644
---- a/drivers/net/wireless/ath/ath11k/hal.c
-+++ b/drivers/net/wireless/ath/ath11k/hal.c
-@@ -1290,6 +1290,10 @@ EXPORT_SYMBOL(ath11k_hal_srng_init);
- void ath11k_hal_srng_deinit(struct ath11k_base *ab)
- {
- 	struct ath11k_hal *hal = &ab->hal;
-+	int i;
-+
-+	for (i = 0; i < HAL_SRNG_RING_ID_MAX; i++)
-+		ab->hal.srng_list[i].initialized = 0;
+--- a/arch/x86/crypto/aegis128-aesni-glue.c
++++ b/arch/x86/crypto/aegis128-aesni-glue.c
+@@ -119,7 +119,9 @@ crypto_aegis128_aesni_process_crypt(stru
+ 					   walk->dst.virt.addr,
+ 					   round_down(walk->nbytes,
+ 						      AEGIS128_BLOCK_SIZE));
++		kernel_fpu_end();
+ 		skcipher_walk_done(walk, walk->nbytes % AEGIS128_BLOCK_SIZE);
++		kernel_fpu_begin();
+ 	}
  
- 	ath11k_hal_unregister_srng_key(ab);
- 	ath11k_hal_free_cont_rdp(ab);
--- 
-2.39.5
-
+ 	if (walk->nbytes) {
+@@ -131,7 +133,9 @@ crypto_aegis128_aesni_process_crypt(stru
+ 			aegis128_aesni_dec_tail(state, walk->src.virt.addr,
+ 						walk->dst.virt.addr,
+ 						walk->nbytes);
++		kernel_fpu_end();
+ 		skcipher_walk_done(walk, 0);
++		kernel_fpu_begin();
+ 	}
+ }
+ 
+@@ -176,9 +180,9 @@ crypto_aegis128_aesni_crypt(struct aead_
+ 	struct aegis_state state;
+ 
+ 	if (enc)
+-		skcipher_walk_aead_encrypt(&walk, req, true);
++		skcipher_walk_aead_encrypt(&walk, req, false);
+ 	else
+-		skcipher_walk_aead_decrypt(&walk, req, true);
++		skcipher_walk_aead_decrypt(&walk, req, false);
+ 
+ 	kernel_fpu_begin();
+ 
 
 
 
