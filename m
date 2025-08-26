@@ -1,57 +1,58 @@
-Return-Path: <stable+bounces-175312-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-176250-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 67071B36793
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 16:08:26 +0200 (CEST)
+Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [142.0.200.124])
+	by mail.lfdr.de (Postfix) with ESMTPS id D0E8EB36B08
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 16:42:36 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 12C39568347
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 14:00:32 +0000 (UTC)
+	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 1DD9E4E2CD4
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 14:42:29 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8F58335207F;
-	Tue, 26 Aug 2025 13:58:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id DDEC7352FE2;
+	Tue, 26 Aug 2025 14:39:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="PjosET8P"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="jeWzgX3Y"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4973D34F496;
-	Tue, 26 Aug 2025 13:58:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 95DEA352FD9;
+	Tue, 26 Aug 2025 14:39:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756216703; cv=none; b=mn5qc3sBxQ8jcbCsvFkFrehI+pdvpPidQ2B/gW36lBqg8LQk/wAYRjRAgwEImlJeNn/5JKiueMto/kG5NOHGVHxe/DQ9KsiWQGhwpkE9bzquFcWs1vXInIZAkd3/RkLZYP0mu6GGkBQt5EfameaWPVnOY8NguoXGl5vv/awLZDQ=
+	t=1756219167; cv=none; b=a2sUy2eTiS7DA2/veVtGJC0I43ymUeOTQmHoA/gZ+v4FGFFAIDHnc6pU+z3Zase6xFt4lei3Y9Efm7iRh+CFC41/vCS3HRkvwG7CkaB1YMiYRKWXV6xjjjXZZaELvGA887+psXb0qFVC1ly0QyuPGnqYuNHlRIZno55lK+rqW/c=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756216703; c=relaxed/simple;
-	bh=uQaVvn5h/i0aMJIG2meQFHW+dD1BFzMucTo9ITd2SG8=;
+	s=arc-20240116; t=1756219167; c=relaxed/simple;
+	bh=xuqdUlLD7tnOdj/e0qjbCN1vwSWp9UGMpwcJ0YedjY8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=k7D+c1LMipc/+oIuqPD/ZREfsTN9LuL3wu3c4W62JeAPb3VTKXNDwPlwi3F8OVRuZ2hSojWRzno5DTl/l+Y5AHh6Pq6etyGZ+kskzax6myE9gYCcEGERcMrW018tY+X7HZmKi6qLa2dKv9fJM1yxkC2/ptgk169Ur0TtK3dc4HI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=PjosET8P; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D5AC6C4CEF1;
-	Tue, 26 Aug 2025 13:58:22 +0000 (UTC)
+	 MIME-Version; b=F4tbmHASVXJ88z1QHlaodNwUiobNAxmaXiYBWU26srMCfng98sTGj9GmrrTrxcRFlRDSuGChq9+zquktltAINk1Cz2aeLm6aEaqJFoFJ+6gFyDUAISt8EerV6shwC0xtFBLlPuFx5eePlgg47Htnwd21J2OPyMQiDzs+FrWl62s=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=jeWzgX3Y; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 19A07C4CEF1;
+	Tue, 26 Aug 2025 14:39:26 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1756216703;
-	bh=uQaVvn5h/i0aMJIG2meQFHW+dD1BFzMucTo9ITd2SG8=;
+	s=korg; t=1756219167;
+	bh=xuqdUlLD7tnOdj/e0qjbCN1vwSWp9UGMpwcJ0YedjY8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=PjosET8P+wCN4G+rN/7U+9E8PJJ0gVZ6AACsWDjoPSckFZDx1t+GQ1seWxZU3LKQf
-	 7FkeYdVnr/LoYeTAg11wEMKlQmgR8MjyE7wTTyZgaVv+q1NgSp9/lt2mDejssEJQJC
-	 QlFWQ1d2n9DFy5qt+YxyQXJypO9ySgxSBtFsSEzg=
+	b=jeWzgX3YOPRfQ7CRw46iTcqCV9t0SszICg1uG9rFGMnhxL+yVDwSAv1UtSDaCi9Rf
+	 MuYHCusC81IEPGTFoUR2BTJhrOqoko67RAH6N7a5fssoMMEbWhaRfMRvNCpNRWvNFV
+	 OJCMvyoMWvFljbfx9VDOqxWe1oLibYFMp65hIx0Q=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Ada Couprie Diaz <ada.coupriediaz@arm.com>,
-	Cristian Prundeanu <cpru@amazon.com>,
-	Will Deacon <will@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 512/644] arm64/entry: Mask DAIF in cpu_switch_to(), call_on_irq_stack()
-Date: Tue, 26 Aug 2025 13:10:03 +0200
-Message-ID: <20250826110959.192489956@linuxfoundation.org>
+	Randy Dunlap <rdunlap@infradead.org>,
+	Masahiro Yamada <masahiroy@kernel.org>,
+	"James E.J. Bottomley" <James.Bottomley@HansenPartnership.com>,
+	Helge Deller <deller@gmx.de>,
+	linux-parisc@vger.kernel.org
+Subject: [PATCH 5.4 278/403] parisc: Makefile: fix a typo in palo.conf
+Date: Tue, 26 Aug 2025 13:10:04 +0200
+Message-ID: <20250826110914.477838065@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250826110946.507083938@linuxfoundation.org>
-References: <20250826110946.507083938@linuxfoundation.org>
+In-Reply-To: <20250826110905.607690791@linuxfoundation.org>
+References: <20250826110905.607690791@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,117 +64,40 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+5.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Ada Couprie Diaz <ada.coupriediaz@arm.com>
+From: Randy Dunlap <rdunlap@infradead.org>
 
-[ Upstream commit d42e6c20de6192f8e4ab4cf10be8c694ef27e8cb ]
+commit 963f1b20a8d2a098954606b9725cd54336a2a86c upstream.
 
-`cpu_switch_to()` and `call_on_irq_stack()` manipulate SP to change
-to different stacks along with the Shadow Call Stack if it is enabled.
-Those two stack changes cannot be done atomically and both functions
-can be interrupted by SErrors or Debug Exceptions which, though unlikely,
-is very much broken : if interrupted, we can end up with mismatched stacks
-and Shadow Call Stack leading to clobbered stacks.
+Correct "objree" to "objtree". "objree" is not defined.
 
-In `cpu_switch_to()`, it can happen when SP_EL0 points to the new task,
-but x18 stills points to the old task's SCS. When the interrupt handler
-tries to save the task's SCS pointer, it will save the old task
-SCS pointer (x18) into the new task struct (pointed to by SP_EL0),
-clobbering it.
-
-In `call_on_irq_stack()`, it can happen when switching from the task stack
-to the IRQ stack and when switching back. In both cases, we can be
-interrupted when the SCS pointer points to the IRQ SCS, but SP points to
-the task stack. The nested interrupt handler pushes its return addresses
-on the IRQ SCS. It then detects that SP points to the task stack,
-calls `call_on_irq_stack()` and clobbers the task SCS pointer with
-the IRQ SCS pointer, which it will also use !
-
-This leads to tasks returning to addresses on the wrong SCS,
-or even on the IRQ SCS, triggering kernel panics via CONFIG_VMAP_STACK
-or FPAC if enabled.
-
-This is possible on a default config, but unlikely.
-However, when enabling CONFIG_ARM64_PSEUDO_NMI, DAIF is unmasked and
-instead the GIC is responsible for filtering what interrupts the CPU
-should receive based on priority.
-Given the goal of emulating NMIs, pseudo-NMIs can be received by the CPU
-even in `cpu_switch_to()` and `call_on_irq_stack()`, possibly *very*
-frequently depending on the system configuration and workload, leading
-to unpredictable kernel panics.
-
-Completely mask DAIF in `cpu_switch_to()` and restore it when returning.
-Do the same in `call_on_irq_stack()`, but restore and mask around
-the branch.
-Mask DAIF even if CONFIG_SHADOW_CALL_STACK is not enabled for consistency
-of behaviour between all configurations.
-
-Introduce and use an assembly macro for saving and masking DAIF,
-as the existing one saves but only masks IF.
-
-Cc: <stable@vger.kernel.org>
-Signed-off-by: Ada Couprie Diaz <ada.coupriediaz@arm.com>
-Reported-by: Cristian Prundeanu <cpru@amazon.com>
-Fixes: 59b37fe52f49 ("arm64: Stash shadow stack pointer in the task struct on interrupt")
-Tested-by: Cristian Prundeanu <cpru@amazon.com>
-Acked-by: Will Deacon <will@kernel.org>
-Link: https://lore.kernel.org/r/20250718142814.133329-1-ada.coupriediaz@arm.com
-Signed-off-by: Will Deacon <will@kernel.org>
-[ removed duplicate save_and_disable_daif macro ]
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Fixes: 75dd47472b92 ("kbuild: remove src and obj from the top Makefile")
+Signed-off-by: Randy Dunlap <rdunlap@infradead.org>
+Cc: Masahiro Yamada <masahiroy@kernel.org>
+Cc: "James E.J. Bottomley" <James.Bottomley@HansenPartnership.com>
+Cc: Helge Deller <deller@gmx.de>
+Cc: linux-parisc@vger.kernel.org
+Signed-off-by: Helge Deller <deller@gmx.de>
+Cc: stable@vger.kernel.org # v5.3+
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- arch/arm64/kernel/entry.S |    6 ++++++
- 1 file changed, 6 insertions(+)
+ arch/parisc/Makefile |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/arch/arm64/kernel/entry.S
-+++ b/arch/arm64/kernel/entry.S
-@@ -833,6 +833,7 @@ SYM_CODE_END(__bp_harden_el1_vectors)
-  *
-  */
- SYM_FUNC_START(cpu_switch_to)
-+	save_and_disable_daif x11
- 	mov	x10, #THREAD_CPU_CONTEXT
- 	add	x8, x0, x10
- 	mov	x9, sp
-@@ -856,6 +857,7 @@ SYM_FUNC_START(cpu_switch_to)
- 	ptrauth_keys_install_kernel x1, x8, x9, x10
- 	scs_save x0
- 	scs_load_current
-+	restore_irq x11
- 	ret
- SYM_FUNC_END(cpu_switch_to)
- NOKPROBE(cpu_switch_to)
-@@ -882,6 +884,7 @@ NOKPROBE(ret_from_fork)
-  * Calls func(regs) using this CPU's irq stack and shadow irq stack.
-  */
- SYM_FUNC_START(call_on_irq_stack)
-+	save_and_disable_daif x9
- #ifdef CONFIG_SHADOW_CALL_STACK
- 	get_current_task x16
- 	scs_save x16
-@@ -896,8 +899,10 @@ SYM_FUNC_START(call_on_irq_stack)
- 
- 	/* Move to the new stack and call the function there */
- 	add	sp, x16, #IRQ_STACK_SIZE
-+	restore_irq x9
- 	blr	x1
- 
-+	save_and_disable_daif x9
- 	/*
- 	 * Restore the SP from the FP, and restore the FP and LR from the frame
- 	 * record.
-@@ -905,6 +910,7 @@ SYM_FUNC_START(call_on_irq_stack)
- 	mov	sp, x29
- 	ldp	x29, x30, [sp], #16
- 	scs_load_current
-+	restore_irq x9
- 	ret
- SYM_FUNC_END(call_on_irq_stack)
- NOKPROBE(call_on_irq_stack)
+--- a/arch/parisc/Makefile
++++ b/arch/parisc/Makefile
+@@ -134,7 +134,7 @@ palo lifimage: vmlinuz
+ 	fi
+ 	@if test ! -f "$(PALOCONF)"; then \
+ 		cp $(srctree)/arch/parisc/defpalo.conf $(objtree)/palo.conf; \
+-		echo 'A generic palo config file ($(objree)/palo.conf) has been created for you.'; \
++		echo 'A generic palo config file ($(objtree)/palo.conf) has been created for you.'; \
+ 		echo 'You should check it and re-run "make palo".'; \
+ 		echo 'WARNING: the "lifimage" file is now placed in this directory by default!'; \
+ 		false; \
 
 
 
