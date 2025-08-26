@@ -1,55 +1,56 @@
-Return-Path: <stable+bounces-173524-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-173230-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5B3DFB35D24
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 13:41:35 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4A09BB35CA3
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 13:36:30 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id A22C37C04AF
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 11:41:14 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 0D17D1894FDD
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 11:31:29 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7F43623D7FA;
-	Tue, 26 Aug 2025 11:41:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A00DD335BAA;
+	Tue, 26 Aug 2025 11:28:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="v5Ci9eQW"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="GmE3bUP9"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3D4B3199935;
-	Tue, 26 Aug 2025 11:41:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5C0273375A6;
+	Tue, 26 Aug 2025 11:28:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756208472; cv=none; b=Lt+cjPmy4Tjrou7h5EC/zJ9vrVMfC4vBXv39sp3N5skhqYu16acErpWxU5bxWdhX+tPwJKQ4S3Zz+lzAzJVpCwA/UCVCZAolcP/SoY4lT67k4dV31t7YWVIeIdVnwZE+o/KKJ2o/uWct/hwYuRbpaciP157OezCQ6spuygR5VfQ=
+	t=1756207706; cv=none; b=syOk+hqsqUuCduAvSawvC5gRxJmnKDlUmQR1zSRNSGMYcCPau9UDS6HQiWQO4qwdu4Zrtk0QMfNmSGefU3fgQameyVg22nzx1bvrYPDZeEzGSSgMPJiX5p70y5s2Nmu1l+CfQC7+2fqSimGq4H8sugMWdfNf0FCfFNPt8bRTEnU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756208472; c=relaxed/simple;
-	bh=MiZbG2fJNkaDDDuT19hTO4lWQjbhH2WmFXA4HU4+wyk=;
+	s=arc-20240116; t=1756207706; c=relaxed/simple;
+	bh=iZw2yY5sMCMY6XW3T4WtbFXYfgfhe/bu37RbaD8rG18=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=WRXGgKKnJtvdzX1Uk6ddUZH3kNre/hyu1wTSn0jdUez/vUv2bzkK2fp36UOnpVW/DRnltzM4UtDVZkquD3N16WsQtDNNpUghKh6eZ3GKlqoeCNa4O0HK9wGwsl2XfAd9pm20p8DKPSQz8Fwym9lmz43Q7aJ/6WnWbt1jrFq7F00=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=v5Ci9eQW; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C3F90C4CEF1;
-	Tue, 26 Aug 2025 11:41:11 +0000 (UTC)
+	 MIME-Version; b=fetDC18ggONXoIdFOu5M01XCk8YpPO55PyZpQTjChVQVXTJiMMEwoP5NO8ikRJwxIDa+gJyA61VA3Z7EwwQ1u9CmdcVkSmSRV5d7hZUqU7qMpwLPJ1RwY2h39fh562L0/ijM53HUkxsshKzH4UKfBuei2EvZNpRsDLhdiWBTB7Y=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=GmE3bUP9; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E88E3C4CEF1;
+	Tue, 26 Aug 2025 11:28:25 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1756208472;
-	bh=MiZbG2fJNkaDDDuT19hTO4lWQjbhH2WmFXA4HU4+wyk=;
+	s=korg; t=1756207706;
+	bh=iZw2yY5sMCMY6XW3T4WtbFXYfgfhe/bu37RbaD8rG18=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=v5Ci9eQWePXLYcRjWAf4ilPaRuJoQj47TKaRaoy3Sa5GnY6HxEsSP5IixhWC9Hd57
-	 3Du246bj94xe2ffPqZZuiYtjD61poTFwjcRaaQrdOQJkb8hMTlFB9Cu1g1M6up5lOM
-	 +Ss1N3+A6gF1OeqalSTla67xa45SGPA2Uv/kJ54k=
+	b=GmE3bUP9ZWmpD/WYi/Itd7kH+HbpW6HDXnYQssus3ZcbHS88PLqPHmrjh/8tkzsvf
+	 DnBDcH4LgKnn3wQ6hVfUT1pZQYJFHPcmG/Ewlo2CUeDfz4M6bDGWbM7gCyzu5lB4Xb
+	 TRWCHGqTHy647Ch+c2tVkXf0KqR2Oriw/ZS6u0lk=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	"David (Ming Qiang) Wu" <David.Wu3@amd.com>,
-	Alex Deucher <alexander.deucher@amd.com>
-Subject: [PATCH 6.12 124/322] drm/amdgpu: update mmhub 3.0.1 client id mappings
+	Jan Beulich <jbeulich@suse.com>,
+	Josh Poimboeuf <jpoimboe@kernel.org>,
+	Juergen Gross <jgross@suse.com>
+Subject: [PATCH 6.16 255/457] compiler: remove __ADDRESSABLE_ASM{_STR,}() again
 Date: Tue, 26 Aug 2025 13:08:59 +0200
-Message-ID: <20250826110918.861252934@linuxfoundation.org>
+Message-ID: <20250826110943.658471961@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250826110915.169062587@linuxfoundation.org>
-References: <20250826110915.169062587@linuxfoundation.org>
+In-Reply-To: <20250826110937.289866482@linuxfoundation.org>
+References: <20250826110937.289866482@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,101 +62,73 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.16-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Alex Deucher <alexander.deucher@amd.com>
+From: Jan Beulich <jbeulich@suse.com>
 
-commit 0bae62cc989fa99ac9cb564eb573aad916d1eb61 upstream.
+commit 8ea815399c3fcce1889bd951fec25b5b9a3979c1 upstream.
 
-Update the client id mapping so the correct clients
-get printed when there is a mmhub page fault.
+__ADDRESSABLE_ASM_STR() is where the necessary stringification happens.
+As long as "sym" doesn't contain any odd characters, no quoting is
+required for its use with .quad / .long. In fact the quotation gets in
+the way with gas 2.25; it's only from 2.26 onwards that quoted symbols
+are half-way properly supported.
 
-Reviewed-by: David (Ming Qiang) Wu <David.Wu3@amd.com>
-Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
-(cherry picked from commit 2a2681eda73b99a2c1ee8cdb006099ea5d0c2505)
+However, assembly being different from C anyway, drop
+__ADDRESSABLE_ASM_STR() and its helper macro altogether. A simple
+.global directive will suffice to get the symbol "declared", i.e. into
+the symbol table. While there also stop open-coding STATIC_CALL_TRAMP()
+and STATIC_CALL_KEY().
+
+Fixes: 0ef8047b737d ("x86/static-call: provide a way to do very early static-call updates")
+Signed-off-by: Jan Beulich <jbeulich@suse.com>
+Acked-by: Josh Poimboeuf <jpoimboe@kernel.org>
 Cc: stable@vger.kernel.org
+Signed-off-by: Juergen Gross <jgross@suse.com>
+Message-ID: <609d2c74-de13-4fae-ab1a-1ec44afb948d@suse.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/gpu/drm/amd/amdgpu/mmhub_v3_0_1.c |   57 ++++++++++++++++--------------
- 1 file changed, 32 insertions(+), 25 deletions(-)
+ arch/x86/include/asm/xen/hypercall.h |    5 +++--
+ include/linux/compiler.h             |    8 --------
+ 2 files changed, 3 insertions(+), 10 deletions(-)
 
---- a/drivers/gpu/drm/amd/amdgpu/mmhub_v3_0_1.c
-+++ b/drivers/gpu/drm/amd/amdgpu/mmhub_v3_0_1.c
-@@ -36,40 +36,47 @@
+--- a/arch/x86/include/asm/xen/hypercall.h
++++ b/arch/x86/include/asm/xen/hypercall.h
+@@ -94,12 +94,13 @@ DECLARE_STATIC_CALL(xen_hypercall, xen_h
+ #ifdef MODULE
+ #define __ADDRESSABLE_xen_hypercall
+ #else
+-#define __ADDRESSABLE_xen_hypercall __ADDRESSABLE_ASM_STR(__SCK__xen_hypercall)
++#define __ADDRESSABLE_xen_hypercall \
++	__stringify(.global STATIC_CALL_KEY(xen_hypercall);)
+ #endif
  
- static const char *mmhub_client_ids_v3_0_1[][2] = {
- 	[0][0] = "VMC",
-+	[1][0] = "ISPXT",
-+	[2][0] = "ISPIXT",
- 	[4][0] = "DCEDMC",
- 	[5][0] = "DCEVGA",
- 	[6][0] = "MP0",
- 	[7][0] = "MP1",
--	[8][0] = "MPIO",
--	[16][0] = "HDP",
--	[17][0] = "LSDMA",
--	[18][0] = "JPEG",
--	[19][0] = "VCNU0",
--	[21][0] = "VSCH",
--	[22][0] = "VCNU1",
--	[23][0] = "VCN1",
--	[32+20][0] = "VCN0",
--	[2][1] = "DBGUNBIO",
-+	[8][0] = "MPM",
-+	[12][0] = "ISPTNR",
-+	[14][0] = "ISPCRD0",
-+	[15][0] = "ISPCRD1",
-+	[16][0] = "ISPCRD2",
-+	[22][0] = "HDP",
-+	[23][0] = "LSDMA",
-+	[24][0] = "JPEG",
-+	[27][0] = "VSCH",
-+	[28][0] = "VCNU",
-+	[29][0] = "VCN",
-+	[1][1] = "ISPXT",
-+	[2][1] = "ISPIXT",
- 	[3][1] = "DCEDWB",
- 	[4][1] = "DCEDMC",
- 	[5][1] = "DCEVGA",
- 	[6][1] = "MP0",
- 	[7][1] = "MP1",
--	[8][1] = "MPIO",
--	[10][1] = "DBGU0",
--	[11][1] = "DBGU1",
--	[12][1] = "DBGU2",
--	[13][1] = "DBGU3",
--	[14][1] = "XDP",
--	[15][1] = "OSSSYS",
--	[16][1] = "HDP",
--	[17][1] = "LSDMA",
--	[18][1] = "JPEG",
--	[19][1] = "VCNU0",
--	[20][1] = "VCN0",
--	[21][1] = "VSCH",
--	[22][1] = "VCNU1",
--	[23][1] = "VCN1",
-+	[8][1] = "MPM",
-+	[10][1] = "ISPMWR0",
-+	[11][1] = "ISPMWR1",
-+	[12][1] = "ISPTNR",
-+	[13][1] = "ISPSWR",
-+	[14][1] = "ISPCWR0",
-+	[15][1] = "ISPCWR1",
-+	[16][1] = "ISPCWR2",
-+	[17][1] = "ISPCWR3",
-+	[18][1] = "XDP",
-+	[21][1] = "OSSSYS",
-+	[22][1] = "HDP",
-+	[23][1] = "LSDMA",
-+	[24][1] = "JPEG",
-+	[27][1] = "VSCH",
-+	[28][1] = "VCNU",
-+	[29][1] = "VCN",
- };
+ #define __HYPERCALL					\
+ 	__ADDRESSABLE_xen_hypercall			\
+-	"call __SCT__xen_hypercall"
++	__stringify(call STATIC_CALL_TRAMP(xen_hypercall))
  
- static uint32_t mmhub_v3_0_1_get_invalidate_req(unsigned int vmid,
+ #define __HYPERCALL_ENTRY(x)	"a" (x)
+ 
+--- a/include/linux/compiler.h
++++ b/include/linux/compiler.h
+@@ -288,14 +288,6 @@ static inline void *offset_to_ptr(const
+ #define __ADDRESSABLE(sym) \
+ 	___ADDRESSABLE(sym, __section(".discard.addressable"))
+ 
+-#define __ADDRESSABLE_ASM(sym)						\
+-	.pushsection .discard.addressable,"aw";				\
+-	.align ARCH_SEL(8,4);						\
+-	ARCH_SEL(.quad, .long) __stringify(sym);			\
+-	.popsection;
+-
+-#define __ADDRESSABLE_ASM_STR(sym) __stringify(__ADDRESSABLE_ASM(sym))
+-
+ /*
+  * This returns a constant expression while determining if an argument is
+  * a constant expression, most importantly without evaluating the argument.
 
 
 
