@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-173157-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-173480-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id A5EB2B35BF7
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 13:29:55 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1199AB35CF8
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 13:40:23 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id AB00D1884969
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 11:25:42 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 8A02C3A6BA2
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 11:39:59 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id BEB2F2BE7B2;
-	Tue, 26 Aug 2025 11:25:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B313531CA74;
+	Tue, 26 Aug 2025 11:39:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="eLNjxJb6"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="OVfUyDE5"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7CB8F29D26A;
-	Tue, 26 Aug 2025 11:25:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 707262BE62B;
+	Tue, 26 Aug 2025 11:39:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756207520; cv=none; b=QRA8QYyU82oxKo/LBaqKkps7NEeW0YG7khkfpEQNq4ltWIMMjsWNFRL5O3P/egIz+rklD61uiw7O0hpuSoWNTvbzZAsGdhEeM82cO9XrR6fD3cR/c4WBxLZcPdfgX/+TDnAtaiR0VVEXKU/wwRbAMqsUhL8a5XnqN3xNSU0GgMA=
+	t=1756208358; cv=none; b=IqS83IdMvERr563fPOA4M1CxsfRlyJwjcCBEtX8gYgSLnYCapQboXGqohy3uoew4w5QIn9VQbLLQtmkouB4QTD1TP3HSer6SVOox9h7YpIeCVld8c7DIRLyfFrRq4nPd3WalmYIMTPmtUbd3MKR6HqD1EFXn0foEljhO7jsShvo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756207520; c=relaxed/simple;
-	bh=n8RP4xWxLKNzgtJkLhjyAbXmwCBTdvXw/N5kSfJDKzI=;
+	s=arc-20240116; t=1756208358; c=relaxed/simple;
+	bh=pEF6bqp1bTF3HTYrZ2IHhx+OD1v5OLnzhKc/UGkcNdw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=GmpsV9cFEyyqc8ufm6yPkrEX7DTEsBJWl+8RYF+++bih6fdjvUui1L+Rc8TXazodyyT9T8ASzvgTAFZ4BJfRdwhU5sItwwkg3oIin6Xqtz4b1IUrTjKfHWGSsvbhHD+BGTha5M7jeMI4hayMDea9CLcttRPnkYqkVbL6AMoxDjw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=eLNjxJb6; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0D1ADC4CEF1;
-	Tue, 26 Aug 2025 11:25:19 +0000 (UTC)
+	 MIME-Version; b=ADfz4dSm1whZ/NcRa2tYl1mjJXHlYXSBAhx9rF/80XttoVVGQiAbESgavFFvYatR+40Ph8JxyBvEKfCq5f5aM9mCUO83d19kbAposB+Q/2mrijtf/N3/li8ICAiAem1+LSCzBDYScAljvamaPXa+OeMaZ7QIhESMlKj4nj8Isc8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=OVfUyDE5; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 009F7C4CEF1;
+	Tue, 26 Aug 2025 11:39:17 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1756207520;
-	bh=n8RP4xWxLKNzgtJkLhjyAbXmwCBTdvXw/N5kSfJDKzI=;
+	s=korg; t=1756208358;
+	bh=pEF6bqp1bTF3HTYrZ2IHhx+OD1v5OLnzhKc/UGkcNdw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=eLNjxJb69DioDV/gHOlI7CA94CSCNQYIUVN3AEvW4kBdOhD9pDqh45qiLW/eKnTo1
-	 FZl9bzWzgIcVD7d3uG+ED+k4KqjUFViOfN8VulhyyMD5hb2bFifyfkGiekry5gfYQa
-	 9QVdveHHdqHwDSlLr6WPPLgp/GjTtQmG6fOcGP9g=
+	b=OVfUyDE5A4utjxr+Qe/byKoD/lM9ZfPsmLlk5WvUunTtL1LHZKO66dULG0i+HHbQ6
+	 L7M8lzZdRoQpHLhmJ0+ki65AJHz3BEMTiMvwyNsTooCU5TlA4Ll+j+vTpkO0KfcUaG
+	 RSCb9h40NbI+XcGwZmkPIVMSpFzsLiHQsJHue/TA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Filipe Manana <fdmanana@suse.com>,
-	David Sterba <dsterba@suse.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.16 212/457] btrfs: move transaction aborts to the error site in add_block_group_free_space()
+	Stefano Garzarella <sgarzare@redhat.com>,
+	Will Deacon <will@kernel.org>,
+	"Michael S. Tsirkin" <mst@redhat.com>
+Subject: [PATCH 6.12 081/322] vhost/vsock: Avoid allocating arbitrarily-sized SKBs
 Date: Tue, 26 Aug 2025 13:08:16 +0200
-Message-ID: <20250826110942.601789080@linuxfoundation.org>
+Message-ID: <20250826110917.621499902@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250826110937.289866482@linuxfoundation.org>
-References: <20250826110937.289866482@linuxfoundation.org>
+In-Reply-To: <20250826110915.169062587@linuxfoundation.org>
+References: <20250826110915.169062587@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,48 +62,58 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.16-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: David Sterba <dsterba@suse.com>
+From: Will Deacon <will@kernel.org>
 
-[ Upstream commit b63c8c1ede4407835cb8c8bed2014d96619389f3 ]
+commit 10a886aaed293c4db3417951f396827216299e3d upstream.
 
-Transaction aborts should be done next to the place the error happens,
-which was not done in add_block_group_free_space().
+vhost_vsock_alloc_skb() returns NULL for packets advertising a length
+larger than VIRTIO_VSOCK_MAX_PKT_BUF_SIZE in the packet header. However,
+this is only checked once the SKB has been allocated and, if the length
+in the packet header is zero, the SKB may not be freed immediately.
 
-Reviewed-by: Filipe Manana <fdmanana@suse.com>
-Signed-off-by: David Sterba <dsterba@suse.com>
-Stable-dep-of: 1f06c942aa70 ("btrfs: always abort transaction on failure to add block group to free space tree")
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Hoist the size check before the SKB allocation so that an iovec larger
+than VIRTIO_VSOCK_MAX_PKT_BUF_SIZE + the header size is rejected
+outright. The subsequent check on the length field in the header can
+then simply check that the allocated SKB is indeed large enough to hold
+the packet.
+
+Cc: <stable@vger.kernel.org>
+Fixes: 71dc9ec9ac7d ("virtio/vsock: replace virtio_vsock_pkt with sk_buff")
+Reviewed-by: Stefano Garzarella <sgarzare@redhat.com>
+Signed-off-by: Will Deacon <will@kernel.org>
+Message-Id: <20250717090116.11987-2-will@kernel.org>
+Signed-off-by: Michael S. Tsirkin <mst@redhat.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- fs/btrfs/free-space-tree.c |    5 +++--
- 1 file changed, 3 insertions(+), 2 deletions(-)
+ drivers/vhost/vsock.c |    6 ++++--
+ 1 file changed, 4 insertions(+), 2 deletions(-)
 
---- a/fs/btrfs/free-space-tree.c
-+++ b/fs/btrfs/free-space-tree.c
-@@ -1456,16 +1456,17 @@ int add_block_group_free_space(struct bt
- 	path = btrfs_alloc_path();
- 	if (!path) {
- 		ret = -ENOMEM;
-+		btrfs_abort_transaction(trans, ret);
- 		goto out;
+--- a/drivers/vhost/vsock.c
++++ b/drivers/vhost/vsock.c
+@@ -344,6 +344,9 @@ vhost_vsock_alloc_skb(struct vhost_virtq
+ 
+ 	len = iov_length(vq->iov, out);
+ 
++	if (len > VIRTIO_VSOCK_MAX_PKT_BUF_SIZE + VIRTIO_VSOCK_SKB_HEADROOM)
++		return NULL;
++
+ 	/* len contains both payload and hdr */
+ 	skb = virtio_vsock_alloc_skb(len, GFP_KERNEL);
+ 	if (!skb)
+@@ -367,8 +370,7 @@ vhost_vsock_alloc_skb(struct vhost_virtq
+ 		return skb;
+ 
+ 	/* The pkt is too big or the length in the header is invalid */
+-	if (payload_len > VIRTIO_VSOCK_MAX_PKT_BUF_SIZE ||
+-	    payload_len + sizeof(*hdr) > len) {
++	if (payload_len + sizeof(*hdr) > len) {
+ 		kfree_skb(skb);
+ 		return NULL;
  	}
- 
- 	ret = __add_block_group_free_space(trans, block_group, path);
-+	if (ret)
-+		btrfs_abort_transaction(trans, ret);
- 
- out:
- 	btrfs_free_path(path);
- 	mutex_unlock(&block_group->free_space_lock);
--	if (ret)
--		btrfs_abort_transaction(trans, ret);
- 	return ret;
- }
- 
 
 
 
