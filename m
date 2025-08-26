@@ -1,53 +1,52 @@
-Return-Path: <stable+bounces-172962-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-172954-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9D0BDB35B19
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 13:18:28 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0287AB35AFA
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 13:16:49 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 2EC6316D475
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 3FE911883959
 	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 11:17:01 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8733B283FDF;
-	Tue, 26 Aug 2025 11:16:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id EFB31299959;
+	Tue, 26 Aug 2025 11:16:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="yKa35DVy"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Y8Wm6EeS"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4402E20B7EE;
-	Tue, 26 Aug 2025 11:16:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AB5D4277C8C;
+	Tue, 26 Aug 2025 11:16:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756207017; cv=none; b=Jly1KBxJ5ETd0kI0SOB1a4/HtiRH/e3I5LL8TAeDLZsBm2T0/Pn8fbMW92hJbJmznQmxdQEqm6ZU1axvOx0w33UW0yicOn6rK/NNz2wM+jpHl6wMZRnEI10ZygsnTUz/MEoUF3EgoAtCkkIhON9Ryz/GAApO4KoMBv4iUoZrs70=
+	t=1756206996; cv=none; b=hvSHkGQUDQswe1cub1dB+DVmW7S6f3x8Wmfpsg45mXIGOZVXyBp1zDXf1mpfScgiHDy0NAE60STJCmzXqQe/D3vvGIEJgaYqF5jliZisq47olHkZwL2WOHEpiOJviLz0doXcAwmIdMImUdeyE6iBd3j2TJoy5jjSonnVebmlmQM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756207017; c=relaxed/simple;
-	bh=HVZx9S9y1IcVOlM11qrfkc/FWOCZu7wC2jlPZinAK8I=;
+	s=arc-20240116; t=1756206996; c=relaxed/simple;
+	bh=wlJe8A8mu+fV6QcfJvuRwUG3eAAptO8+kNzjQItCmcQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=F8gAtELMqgh1noPcdybtDn9mGiUOu7hJBPoD322kTUsNgJTxbT2P9R0M3XyCVt+txtEmAN76rSrYYaZq6yZ2HqvA9M30RWpxYj3ttFoQmB003IwugeKjlabBlhQ2NxC4Xk4sfmHpTezXH7x3DbxYNXdZxMlkFeiM8h+U/dzeVIg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=yKa35DVy; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7D4DDC4CEF1;
-	Tue, 26 Aug 2025 11:16:56 +0000 (UTC)
+	 MIME-Version; b=QAnAn1kZi7R4GLu46WoDljEb5hS6In8ncwzG4f2aM4f/BbUHDKZuNilPVBTeIE/PKcS5viNHuUWXNT6LOstac9H0gHMspQBVPELq8fet62xaV7YzKsHC/avys+QTshMKh/EVtIByaSP+3qMEYJBZxXQ9hjXod6hGSiBELeahduI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Y8Wm6EeS; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E9172C4CEF1;
+	Tue, 26 Aug 2025 11:16:35 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1756207016;
-	bh=HVZx9S9y1IcVOlM11qrfkc/FWOCZu7wC2jlPZinAK8I=;
+	s=korg; t=1756206996;
+	bh=wlJe8A8mu+fV6QcfJvuRwUG3eAAptO8+kNzjQItCmcQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=yKa35DVyPh4Su2jZgRmk7vURd3FEOKbAQ0R5vQJzAhe/ve+YFldlKhUmi9ft56Dfb
-	 HpVl5O7sjdxrRF3erXZ2mpaKyZZLWM0gJRGz17yFNeQDrWukiJf+oodNNZkb8Sh1iW
-	 W7XxDnsygE0zFVV8QaYM5nA6kAasjuTvI4I7pD8w=
+	b=Y8Wm6EeSQB8qi6S/9p758v5U8EYQAR/scyKNS7deBhb55ZD8MJdcrkpmDt2fOxgmi
+	 FwPN1heRcE8w1grhrqAIwfYElg21JBN24FBHhXszKxzoAGQS1LPlsOQO6ixBDpBlxB
+	 Ws1MQR5iWD+TAIqlIhSal0iAFgOWiBznNUujehyA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Damien Le Moal <dlemoal@kernel.org>,
-	Hannes Reinecke <hare@suse.de>,
-	Niklas Cassel <cassel@kernel.org>
-Subject: [PATCH 6.16 002/457] ata: Fix SATA_MOBILE_LPM_POLICY description in Kconfig
-Date: Tue, 26 Aug 2025 13:04:46 +0200
-Message-ID: <20250826110937.358644446@linuxfoundation.org>
+	Dan Carpenter <dan.carpenter@linaro.org>,
+	Viresh Kumar <viresh.kumar@linaro.org>
+Subject: [PATCH 6.16 003/457] cpufreq: armada-8k: Fix off by one in armada_8k_cpufreq_free_table()
+Date: Tue, 26 Aug 2025 13:04:47 +0200
+Message-ID: <20250826110937.383243566@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
 In-Reply-To: <20250826110937.289866482@linuxfoundation.org>
 References: <20250826110937.289866482@linuxfoundation.org>
@@ -66,74 +65,35 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Damien Le Moal <dlemoal@kernel.org>
+From: Dan Carpenter <dan.carpenter@linaro.org>
 
-commit ed62a62a18bc144f73eadf866ae46842e8f6606e upstream.
+commit 4a26df233266a628157d7f0285451d8655defdfc upstream.
 
-Improve the description of the possible default SATA link power
-management policies and add the missing description for policy 5.
-No functional changes.
+The freq_tables[] array has num_possible_cpus() elements so, to avoid an
+out of bounds access, this loop should be capped at "< nb_cpus" instead
+of "<= nb_cpus".  The freq_tables[] array is allocated in
+armada_8k_cpufreq_init().
 
-Fixes: a5ec5a7bfd1f ("ata: ahci: Support state with min power but Partial low power state")
 Cc: stable@vger.kernel.org
-Signed-off-by: Damien Le Moal <dlemoal@kernel.org>
-Reviewed-by: Hannes Reinecke <hare@suse.de>
-Reviewed-by: Niklas Cassel <cassel@kernel.org>
+Fixes: f525a670533d ("cpufreq: ap806: add cpufreq driver for Armada 8K")
+Signed-off-by: Dan Carpenter <dan.carpenter@linaro.org>
+Signed-off-by: Viresh Kumar <viresh.kumar@linaro.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/ata/Kconfig |   32 ++++++++++++++++++++++++--------
- 1 file changed, 24 insertions(+), 8 deletions(-)
+ drivers/cpufreq/armada-8k-cpufreq.c |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/drivers/ata/Kconfig
-+++ b/drivers/ata/Kconfig
-@@ -117,23 +117,39 @@ config SATA_AHCI
+--- a/drivers/cpufreq/armada-8k-cpufreq.c
++++ b/drivers/cpufreq/armada-8k-cpufreq.c
+@@ -103,7 +103,7 @@ static void armada_8k_cpufreq_free_table
+ {
+ 	int opps_index, nb_cpus = num_possible_cpus();
  
- config SATA_MOBILE_LPM_POLICY
- 	int "Default SATA Link Power Management policy"
--	range 0 4
-+	range 0 5
- 	default 3
- 	depends on SATA_AHCI
- 	help
- 	  Select the Default SATA Link Power Management (LPM) policy to use
- 	  for chipsets / "South Bridges" supporting low-power modes. Such
- 	  chipsets are ubiquitous across laptops, desktops and servers.
-+	  Each policy combines power saving states and features:
-+	   - Partial: The Phy logic is powered but is in a reduced power
-+                      state. The exit latency from this state is no longer than
-+                      10us).
-+	   - Slumber: The Phy logic is powered but is in an even lower power
-+                      state. The exit latency from this state is potentially
-+		      longer, but no longer than 10ms.
-+	   - DevSleep: The Phy logic may be powered down. The exit latency from
-+	               this state is no longer than 20 ms, unless otherwise
-+		       specified by DETO in the device Identify Device Data log.
-+	   - HIPM: Host Initiated Power Management (host automatically
-+		   transitions to partial and slumber).
-+	   - DIPM: Device Initiated Power Management (device automatically
-+		   transitions to partial and slumber).
+-	for (opps_index = 0 ; opps_index <= nb_cpus; opps_index++) {
++	for (opps_index = 0 ; opps_index < nb_cpus; opps_index++) {
+ 		int i;
  
--	  The value set has the following meanings:
-+	  The possible values for the default SATA link power management
-+	  policies are:
- 		0 => Keep firmware settings
--		1 => Maximum performance
--		2 => Medium power
--		3 => Medium power with Device Initiated PM enabled
--		4 => Minimum power
-+		1 => No power savings (maximum performance)
-+		2 => HIPM (Partial)
-+		3 => HIPM (Partial) and DIPM (Partial and Slumber)
-+		4 => HIPM (Partial and DevSleep) and DIPM (Partial and Slumber)
-+		5 => HIPM (Slumber and DevSleep) and DIPM (Partial and Slumber)
- 
--	  Note "Minimum power" is known to cause issues, including disk
--	  corruption, with some disks and should not be used.
-+	  Excluding the value 0, higher values represent policies with higher
-+	  power savings.
- 
- config SATA_AHCI_PLATFORM
- 	tristate "Platform AHCI SATA support"
+ 		/* If cpu_dev is NULL then we reached the end of the array */
 
 
 
