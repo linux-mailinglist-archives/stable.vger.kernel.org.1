@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-173692-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-175923-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9408EB35E63
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 13:57:04 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id CAC0EB36988
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 16:27:59 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 26B4A367941
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 11:48:30 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 7DF0C7B52F5
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 14:26:23 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id DC43A288511;
-	Tue, 26 Aug 2025 11:48:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3349135A28A;
+	Tue, 26 Aug 2025 14:25:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="y0FIp0w3"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="WitZCS6f"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9963B200112;
-	Tue, 26 Aug 2025 11:48:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E612D35A281;
+	Tue, 26 Aug 2025 14:25:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756208908; cv=none; b=sjHwadYPwY/WPOS/33SDPNb8Bgu+4nB4ODATg7zCPB2j7j3RVxUs54aH+d3Cb/Pj9kmcld+4PVNGjDOE60NFQsG6fGNcYiqh/hkQkpqIuwOZ7NPTgpWfkGiTHxr91LjrvC7GkqD1VYCM2nw1RS0iS9GUTPBYqaFUzmKy3ry0MT0=
+	t=1756218323; cv=none; b=VD27vwGFr8k2alBWELsvGf3dej1AhGZmuCNbBhmbt7NW8/CCVA/+Sl1kcypS8+qsMvZbindET6ah1tREgeB+qOcXpHBnJt7BCLapl3adms5oFCoCfTmd1XAUKDiZMx9H5cigXFuIlgfDlod3I2q7+xevuMhNKrUIK4q8cbo0IhM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756208908; c=relaxed/simple;
-	bh=/VnG7mvalEkmzMb4sy8CgTgjVNABZFFWdCL4ojGUQcY=;
+	s=arc-20240116; t=1756218323; c=relaxed/simple;
+	bh=TQbOCuB4338I/a72sbfPNWAxUtH3PhfaOnN36mUfCds=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Md+E22rdvpwKDniKHDQbJrUXBP7mxNFHfGRQuhZnoq6a9FRx+uz8zDPtDpGmTZmhSbv7/HiwaXl2wPuC6gN41xLNW/GiJuJnMs9RMgWPLRncangsHIPKOtRx3jDMZI02pEEsuwoP9jruR81hxgKWNMeJYlf/muxJ/lLQD2Ldv9Y=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=y0FIp0w3; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2625DC4CEF1;
-	Tue, 26 Aug 2025 11:48:27 +0000 (UTC)
+	 MIME-Version; b=TGqI0kTsFW6w7rX9AJqDYewv6UX/B0Vxbf1MXQ0+3tdN6eGv2IWTlrGyvs4Mtuc3QcnXnvphdz51/qIcDmJ0cxkrhSAQ9qBnVtEeSWIijypmZ/ETggRJL193z5ce0cVVSbGfCrt74Q/7KWBx/g2MlbGVlyuFQHPILgbiQcoQmaw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=WitZCS6f; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7908BC113D0;
+	Tue, 26 Aug 2025 14:25:22 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1756208908;
-	bh=/VnG7mvalEkmzMb4sy8CgTgjVNABZFFWdCL4ojGUQcY=;
+	s=korg; t=1756218322;
+	bh=TQbOCuB4338I/a72sbfPNWAxUtH3PhfaOnN36mUfCds=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=y0FIp0w3tltjzT79APaOqSyzy4Z0HPZltMNqWGuRy7W6+Hl7RmLWjYB+TRngozPxV
-	 tzicbHFBiFbqox8ZBl9jyvucjLr8/rRpj75DQn6v1PuAnsR2wae1kNZPXAdZ1azWJn
-	 TJ4CkVXg3XEYfmbndj5+jm9jy/oznM/EQYobpu6E=
+	b=WitZCS6fOaqhjCZGu69QLnzirG34nDXqRhOmDDe9V9lwktnoifGWED45PlMiDGXbB
+	 we/BPA7MbHOuw4WAUr7Y+Kz1oz8AZaXwv5n/D0tvP7P3YUxtL9XcqNifBtoukD+nCp
+	 bZO8p9fuIy7CuE9Ya2/tDjq1hMJO2VD+eIrrnuh4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Justin Lai <justinlai0215@realtek.com>,
-	Jakub Kicinski <kuba@kernel.org>,
+	Marco Elver <elver@google.com>,
+	"Paul E. McKenney" <paulmck@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 274/322] rtase: Fix Rx descriptor CRC error bit definition
+Subject: [PATCH 5.10 479/523] locking/barriers, kcsan: Support generic instrumentation
 Date: Tue, 26 Aug 2025 13:11:29 +0200
-Message-ID: <20250826110922.690764691@linuxfoundation.org>
+Message-ID: <20250826110936.260418982@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250826110915.169062587@linuxfoundation.org>
-References: <20250826110915.169062587@linuxfoundation.org>
+In-Reply-To: <20250826110924.562212281@linuxfoundation.org>
+References: <20250826110924.562212281@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,42 +62,72 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Justin Lai <justinlai0215@realtek.com>
+From: Marco Elver <elver@google.com>
 
-[ Upstream commit 065c31f2c6915b38f45b1c817b31f41f62eaa774 ]
+[ Upstream commit 2505a51ac6f249956735e0a369e2404f96eebef0 ]
 
-The CRC error bit is located at bit 17 in the Rx descriptor, but the
-driver was incorrectly using bit 16. Fix it.
+Thus far only smp_*() barriers had been defined by asm-generic/barrier.h
+based on __smp_*() barriers, because the !SMP case is usually generic.
 
-Fixes: a36e9f5cfe9e ("rtase: Add support for a pci table in this module")
-Signed-off-by: Justin Lai <justinlai0215@realtek.com>
-Link: https://patch.msgid.link/20250813071631.7566-1-justinlai0215@realtek.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+With the introduction of instrumentation, it also makes sense to have
+asm-generic/barrier.h assist in the definition of instrumented versions
+of mb(), rmb(), wmb(), dma_rmb(), and dma_wmb().
+
+Because there is no requirement to distinguish the !SMP case, the
+definition can be simpler: we can avoid also providing fallbacks for the
+__ prefixed cases, and only check if `defined(__<barrier>)`, to finally
+define the KCSAN-instrumented versions.
+
+This also allows for the compiler to complain if an architecture
+accidentally defines both the normal and __ prefixed variant.
+
+Signed-off-by: Marco Elver <elver@google.com>
+Signed-off-by: Paul E. McKenney <paulmck@kernel.org>
+Stable-dep-of: aa6956150f82 ("wifi: ath11k: fix dest ring-buffer corruption when ring is full")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/net/ethernet/realtek/rtase/rtase.h | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ include/asm-generic/barrier.h |   25 +++++++++++++++++++++++++
+ 1 file changed, 25 insertions(+)
 
-diff --git a/drivers/net/ethernet/realtek/rtase/rtase.h b/drivers/net/ethernet/realtek/rtase/rtase.h
-index 4a4434869b10..b3310e342ccf 100644
---- a/drivers/net/ethernet/realtek/rtase/rtase.h
-+++ b/drivers/net/ethernet/realtek/rtase/rtase.h
-@@ -239,7 +239,7 @@ union rtase_rx_desc {
- #define RTASE_RX_RES        BIT(20)
- #define RTASE_RX_RUNT       BIT(19)
- #define RTASE_RX_RWT        BIT(18)
--#define RTASE_RX_CRC        BIT(16)
-+#define RTASE_RX_CRC        BIT(17)
- #define RTASE_RX_V6F        BIT(31)
- #define RTASE_RX_V4F        BIT(30)
- #define RTASE_RX_UDPT       BIT(29)
--- 
-2.50.1
-
+--- a/include/asm-generic/barrier.h
++++ b/include/asm-generic/barrier.h
+@@ -21,6 +21,31 @@
+ #endif
+ 
+ /*
++ * Architectures that want generic instrumentation can define __ prefixed
++ * variants of all barriers.
++ */
++
++#ifdef __mb
++#define mb()	do { kcsan_mb(); __mb(); } while (0)
++#endif
++
++#ifdef __rmb
++#define rmb()	do { kcsan_rmb(); __rmb(); } while (0)
++#endif
++
++#ifdef __wmb
++#define wmb()	do { kcsan_wmb(); __wmb(); } while (0)
++#endif
++
++#ifdef __dma_rmb
++#define dma_rmb()	do { kcsan_rmb(); __dma_rmb(); } while (0)
++#endif
++
++#ifdef __dma_wmb
++#define dma_wmb()	do { kcsan_wmb(); __dma_wmb(); } while (0)
++#endif
++
++/*
+  * Force strict CPU ordering. And yes, this is required on UP too when we're
+  * talking to devices.
+  *
 
 
 
