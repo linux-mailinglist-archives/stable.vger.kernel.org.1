@@ -1,64 +1,56 @@
-Return-Path: <stable+bounces-175972-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-173704-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 569AAB369BE
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 16:30:02 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id ADDEAB35E84
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 13:58:47 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 345AC7B616F
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 14:28:26 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 312A91BA6E9C
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 11:49:29 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4C7C61F790F;
-	Tue, 26 Aug 2025 14:27:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 110A429D26A;
+	Tue, 26 Aug 2025 11:49:00 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="KAkKae/j"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="jUW90vYA"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 00F3F1DF75A;
-	Tue, 26 Aug 2025 14:27:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C1C0229D280;
+	Tue, 26 Aug 2025 11:48:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756218450; cv=none; b=h3QvcGK+1PbqTkReJ6ONFIfq76mt4pTpZmRfiWrJ8rNUhSYg49DweYuU1OM2topJpYGlTGNEUeYGiE7tif3X149FXRToPs12H2T9I66ctC6K3lRP3hMiWfyD6Su+lZzapozG1kVzn0SAasnUnCZzonUc9W0dk/hrZN8IcAixdfU=
+	t=1756208939; cv=none; b=VzX6pfALwlfNESjtwJ1/pXI+13We+2ThhENbo5q5CIU8s7Dzy5NJsJPtXsjPGmRSnxwS60EPxGCcayc+Jd0yGPIq9HdeJ/ncdPlFq7LpJM81jo/OnpuymBPx6Ykw5LuJg5HaOm7cha/pVEKNELNYPzVO6pXjo/yA7jjUxRtdAqE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756218450; c=relaxed/simple;
-	bh=yikwULHTsItjHX4DGOs+lAq0ai1wc4Q6hushCiAQxdI=;
+	s=arc-20240116; t=1756208939; c=relaxed/simple;
+	bh=ZlOcfKCzAfiVcyzndPJ4xomMabzSmxz97f2SVQDh6uk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=RXYhtGJVolX24mVNGMb33UVgxFq3z1LkvlA0QSz84mQg0WzJsrlUE1nh3GXa8iYG+pgQBdnNs4S7hjKFF/zyvOdOyFV3YU5LCLi9A6lbPjbcusq8e/qptTsWWGF/W+0hakn4ikCQb0bLY+fuqUgspjwdPMySDZPzr/2zQEafT5w=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=KAkKae/j; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5F9BCC113CF;
-	Tue, 26 Aug 2025 14:27:29 +0000 (UTC)
+	 MIME-Version; b=KwcXMD8dDCUgwDKz7X4J8/2xLLY/vUf4QW6EF1cDRRZMz1TQXDsKRjMe4vEb20hNLXu1IjRx3xe0hi54663vuORLTA2KPBE5Os4cfnJCGPXJR5nIoxlYf72MJftIArvpZR0hL8jQK8NouxFzEJwAidwkQ7tC6UyRjDXaRiVLiuo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=jUW90vYA; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 53758C4CEF1;
+	Tue, 26 Aug 2025 11:48:59 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1756218449;
-	bh=yikwULHTsItjHX4DGOs+lAq0ai1wc4Q6hushCiAQxdI=;
+	s=korg; t=1756208939;
+	bh=ZlOcfKCzAfiVcyzndPJ4xomMabzSmxz97f2SVQDh6uk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=KAkKae/jPtQZufshB45wQZqrUpODbo1iw7IZBWZY69SCWgaoGBdDnp2BralVIbDel
-	 FCT85ry0ndJomhUt0hh5C47nCJ1fqzDPndBh0xsk9Dm0Z3Y65QhQYmDqurehyKW1DD
-	 WohzCOq3akuUVveN71OBwwIO3WhHOMhSDB3WcCa0=
+	b=jUW90vYAAHlrEss8OUkGm2+arAdaH6hHF7+YEIdi4eNK7Bu04AEvG4E2xGrIDQHsK
+	 u84XJF4dVWY+V2/WbnKLRZFDeEt1PqnS+H8cNlYGJiVtgRnhlQlW+g/6rB+Vz6yPxh
+	 /zqGJcshBU1o2H2W30jptOCgBPJ/Axjhu6ZyPa+8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Feng Tang <feng.tang@intel.com>,
-	Michal Hocko <mhocko@suse.com>,
-	David Rientjes <rientjes@google.com>,
-	Tejun Heo <tj@kernel.org>,
-	Zefan Li <lizefan.x@bytedance.com>,
-	Johannes Weiner <hannes@cmpxchg.org>,
-	Mel Gorman <mgorman@techsingularity.net>,
-	Vlastimil Babka <vbabka@suse.cz>,
-	Andrew Morton <akpm@linux-foundation.org>,
-	Linus Torvalds <torvalds@linux-foundation.org>,
+	Kanglong Wang <wangkanglong@loongson.cn>,
+	Huacai Chen <chenhuacai@loongson.cn>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 507/523] mm/page_alloc: detect allocation forbidden by cpuset and bail out early
+Subject: [PATCH 6.12 302/322] LoongArch: Optimize module load time by optimizing PLT/GOT counting
 Date: Tue, 26 Aug 2025 13:11:57 +0200
-Message-ID: <20250826110936.947953232@linuxfoundation.org>
+Message-ID: <20250826110923.348498482@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250826110924.562212281@linuxfoundation.org>
-References: <20250826110924.562212281@linuxfoundation.org>
+In-Reply-To: <20250826110915.169062587@linuxfoundation.org>
+References: <20250826110915.169062587@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -70,262 +62,164 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Feng Tang <feng.tang@intel.com>
+From: Kanglong Wang <wangkanglong@loongson.cn>
 
-[ Upstream commit 8ca1b5a49885f0c0c486544da46a9e0ac790831d ]
+[ Upstream commit 63dbd8fb2af3a89466538599a9acb2d11ef65c06 ]
 
-There was a report that starting an Ubuntu in docker while using cpuset
-to bind it to movable nodes (a node only has movable zone, like a node
-for hotplug or a Persistent Memory node in normal usage) will fail due
-to memory allocation failure, and then OOM is involved and many other
-innocent processes got killed.
+When enabling CONFIG_KASAN, CONFIG_PREEMPT_VOLUNTARY_BUILD and
+CONFIG_PREEMPT_VOLUNTARY at the same time, there will be soft deadlock,
+the relevant logs are as follows:
 
-It can be reproduced with command:
+rcu: INFO: rcu_sched self-detected stall on CPU
+...
+Call Trace:
+[<900000000024f9e4>] show_stack+0x5c/0x180
+[<90000000002482f4>] dump_stack_lvl+0x94/0xbc
+[<9000000000224544>] rcu_dump_cpu_stacks+0x1fc/0x280
+[<900000000037ac80>] rcu_sched_clock_irq+0x720/0xf88
+[<9000000000396c34>] update_process_times+0xb4/0x150
+[<90000000003b2474>] tick_nohz_handler+0xf4/0x250
+[<9000000000397e28>] __hrtimer_run_queues+0x1d0/0x428
+[<9000000000399b2c>] hrtimer_interrupt+0x214/0x538
+[<9000000000253634>] constant_timer_interrupt+0x64/0x80
+[<9000000000349938>] __handle_irq_event_percpu+0x78/0x1a0
+[<9000000000349a78>] handle_irq_event_percpu+0x18/0x88
+[<9000000000354c00>] handle_percpu_irq+0x90/0xf0
+[<9000000000348c74>] handle_irq_desc+0x94/0xb8
+[<9000000001012b28>] handle_cpu_irq+0x68/0xa0
+[<9000000001def8c0>] handle_loongarch_irq+0x30/0x48
+[<9000000001def958>] do_vint+0x80/0xd0
+[<9000000000268a0c>] kasan_mem_to_shadow.part.0+0x2c/0x2a0
+[<90000000006344f4>] __asan_load8+0x4c/0x120
+[<900000000025c0d0>] module_frob_arch_sections+0x5c8/0x6b8
+[<90000000003895f0>] load_module+0x9e0/0x2958
+[<900000000038b770>] __do_sys_init_module+0x208/0x2d0
+[<9000000001df0c34>] do_syscall+0x94/0x190
+[<900000000024d6fc>] handle_syscall+0xbc/0x158
 
-    $ docker run -it --rm --cpuset-mems 4 ubuntu:latest bash -c "grep Mems_allowed /proc/self/status"
+After analysis, this is because the slow speed of loading the amdgpu
+module leads to the long time occupation of the cpu and then the soft
+deadlock.
 
-(where node 4 is a movable node)
+When loading a module, module_frob_arch_sections() tries to figure out
+the number of PLTs/GOTs that will be needed to handle all the RELAs. It
+will call the count_max_entries() to find in an out-of-order date which
+counting algorithm has O(n^2) complexity.
 
-  runc:[2:INIT] invoked oom-killer: gfp_mask=0x500cc2(GFP_HIGHUSER|__GFP_ACCOUNT), order=0, oom_score_adj=0
-  CPU: 8 PID: 8291 Comm: runc:[2:INIT] Tainted: G        W I E     5.8.2-0.g71b519a-default #1 openSUSE Tumbleweed (unreleased)
-  Hardware name: Dell Inc. PowerEdge R640/0PHYDR, BIOS 2.6.4 04/09/2020
-  Call Trace:
-   dump_stack+0x6b/0x88
-   dump_header+0x4a/0x1e2
-   oom_kill_process.cold+0xb/0x10
-   out_of_memory.part.0+0xaf/0x230
-   out_of_memory+0x3d/0x80
-   __alloc_pages_slowpath.constprop.0+0x954/0xa20
-   __alloc_pages_nodemask+0x2d3/0x300
-   pipe_write+0x322/0x590
-   new_sync_write+0x196/0x1b0
-   vfs_write+0x1c3/0x1f0
-   ksys_write+0xa7/0xe0
-   do_syscall_64+0x52/0xd0
-   entry_SYSCALL_64_after_hwframe+0x44/0xa9
+To make it faster, we sort the relocation list by info and addend. That
+way, to check for a duplicate relocation, it just needs to compare with
+the previous entry. This reduces the complexity of the algorithm to O(n
+ log n), as done in commit d4e0340919fb ("arm64/module: Optimize module
+load time by optimizing PLT counting"). This gives sinificant reduction
+in module load time for modules with large number of relocations.
 
-  Mem-Info:
-  active_anon:392832 inactive_anon:182 isolated_anon:0
-   active_file:68130 inactive_file:151527 isolated_file:0
-   unevictable:2701 dirty:0 writeback:7
-   slab_reclaimable:51418 slab_unreclaimable:116300
-   mapped:45825 shmem:735 pagetables:2540 bounce:0
-   free:159849484 free_pcp:73 free_cma:0
-  Node 4 active_anon:1448kB inactive_anon:0kB active_file:0kB inactive_file:0kB unevictable:0kB isolated(anon):0kB isolated(file):0kB mapped:0kB dirty:0kB writeback:0kB shmem:0kB shmem_thp: 0kB shmem_pmdmapped: 0kB anon_thp: 0kB writeback_tmp:0kB all_unreclaimable? no
-  Node 4 Movable free:130021408kB min:9140kB low:139160kB high:269180kB reserved_highatomic:0KB active_anon:1448kB inactive_anon:0kB active_file:0kB inactive_file:0kB unevictable:0kB writepending:0kB present:130023424kB managed:130023424kB mlocked:0kB kernel_stack:0kB pagetables:0kB bounce:0kB free_pcp:292kB local_pcp:84kB free_cma:0kB
-  lowmem_reserve[]: 0 0 0 0 0
-  Node 4 Movable: 1*4kB (M) 0*8kB 0*16kB 1*32kB (M) 0*64kB 0*128kB 1*256kB (M) 1*512kB (M) 1*1024kB (M) 0*2048kB 31743*4096kB (M) = 130021156kB
+After applying this patch, the soft deadlock problem has been solved,
+and the kernel starts normally without "Call Trace".
 
-  oom-kill:constraint=CONSTRAINT_CPUSET,nodemask=(null),cpuset=docker-9976a269caec812c134fa317f27487ee36e1129beba7278a463dd53e5fb9997b.scope,mems_allowed=4,global_oom,task_memcg=/system.slice/containerd.service,task=containerd,pid=4100,uid=0
-  Out of memory: Killed process 4100 (containerd) total-vm:4077036kB, anon-rss:51184kB, file-rss:26016kB, shmem-rss:0kB, UID:0 pgtables:676kB oom_score_adj:0
-  oom_reaper: reaped process 8248 (docker), now anon-rss:0kB, file-rss:0kB, shmem-rss:0kB
-  oom_reaper: reaped process 2054 (node_exporter), now anon-rss:0kB, file-rss:0kB, shmem-rss:0kB
-  oom_reaper: reaped process 1452 (systemd-journal), now anon-rss:0kB, file-rss:8564kB, shmem-rss:4kB
-  oom_reaper: reaped process 2146 (munin-node), now anon-rss:0kB, file-rss:0kB, shmem-rss:0kB
-  oom_reaper: reaped process 8291 (runc:[2:INIT]), now anon-rss:0kB, file-rss:0kB, shmem-rss:0kB
+Using the default configuration to test some modules, the results are as
+follows:
 
-The reason is that in this case, the target cpuset nodes only have
-movable zone, while the creation of an OS in docker sometimes needs to
-allocate memory in non-movable zones (dma/dma32/normal) like
-GFP_HIGHUSER, and the cpuset limit forbids the allocation, then
-out-of-memory killing is involved even when normal nodes and movable
-nodes both have many free memory.
+Module              Size
+ip_tables           36K
+fat                 143K
+radeon              2.5MB
+amdgpu              16MB
 
-The OOM killer cannot help to resolve the situation as there is no
-usable memory for the request in the cpuset scope.  The only reasonable
-measure to take is to fail the allocation right away and have the caller
-to deal with it.
+Without this patch:
+Module              Module load time (ms)	Count(PLTs/GOTs)
+ip_tables           18				59/6
+fat                 0				162/14
+radeon              54				1221/84
+amdgpu              1411			4525/1098
 
-So add a check for cases like this in the slowpath of allocation, and
-bail out early returning NULL for the allocation.
+With this patch:
+Module              Module load time (ms)	Count(PLTs/GOTs)
+ip_tables           18				59/6
+fat                 0				162/14
+radeon              22				1221/84
+amdgpu              45				4525/1098
 
-As page allocation is one of the hottest path in kernel, this check will
-hurt all users with sane cpuset configuration, add a static branch check
-and detect the abnormal config in cpuset memory binding setup so that
-the extra check cost in page allocation is not paid by everyone.
-
-[thanks to Micho Hocko and David Rientjes for suggesting not handling
- it inside OOM code, adding cpuset check, refining comments]
-
-Link: https://lkml.kernel.org/r/1632481657-68112-1-git-send-email-feng.tang@intel.com
-Signed-off-by: Feng Tang <feng.tang@intel.com>
-Suggested-by: Michal Hocko <mhocko@suse.com>
-Acked-by: Michal Hocko <mhocko@suse.com>
-Cc: David Rientjes <rientjes@google.com>
-Cc: Tejun Heo <tj@kernel.org>
-Cc: Zefan Li <lizefan.x@bytedance.com>
-Cc: Johannes Weiner <hannes@cmpxchg.org>
-Cc: Mel Gorman <mgorman@techsingularity.net>
-Cc: Vlastimil Babka <vbabka@suse.cz>
-Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
-Signed-off-by: Linus Torvalds <torvalds@linux-foundation.org>
-Stable-dep-of: 65f97cc81b0a ("cgroup/cpuset: Use static_branch_enable_cpuslocked() on cpusets_insane_config_key")
+Fixes: fcdfe9d22bed ("LoongArch: Add ELF and module support")
+Signed-off-by: Kanglong Wang <wangkanglong@loongson.cn>
+Signed-off-by: Huacai Chen <chenhuacai@loongson.cn>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- include/linux/cpuset.h | 17 +++++++++++++++++
- include/linux/mmzone.h | 22 ++++++++++++++++++++++
- kernel/cgroup/cpuset.c | 23 +++++++++++++++++++++++
- mm/page_alloc.c        | 13 +++++++++++++
- 4 files changed, 75 insertions(+)
+ arch/loongarch/kernel/module-sections.c | 36 ++++++++++++-------------
+ 1 file changed, 18 insertions(+), 18 deletions(-)
 
-diff --git a/include/linux/cpuset.h b/include/linux/cpuset.h
-index b70224370832..e0139d9747d4 100644
---- a/include/linux/cpuset.h
-+++ b/include/linux/cpuset.h
-@@ -33,6 +33,8 @@
-  */
- extern struct static_key_false cpusets_pre_enable_key;
- extern struct static_key_false cpusets_enabled_key;
-+extern struct static_key_false cpusets_insane_config_key;
-+
- static inline bool cpusets_enabled(void)
+diff --git a/arch/loongarch/kernel/module-sections.c b/arch/loongarch/kernel/module-sections.c
+index e2f30ff9afde..a43ba7f9f987 100644
+--- a/arch/loongarch/kernel/module-sections.c
++++ b/arch/loongarch/kernel/module-sections.c
+@@ -8,6 +8,7 @@
+ #include <linux/module.h>
+ #include <linux/moduleloader.h>
+ #include <linux/ftrace.h>
++#include <linux/sort.h>
+ 
+ Elf_Addr module_emit_got_entry(struct module *mod, Elf_Shdr *sechdrs, Elf_Addr val)
  {
- 	return static_branch_unlikely(&cpusets_enabled_key);
-@@ -50,6 +52,19 @@ static inline void cpuset_dec(void)
- 	static_branch_dec_cpuslocked(&cpusets_pre_enable_key);
+@@ -61,39 +62,38 @@ Elf_Addr module_emit_plt_entry(struct module *mod, Elf_Shdr *sechdrs, Elf_Addr v
+ 	return (Elf_Addr)&plt[nr];
  }
  
-+/*
-+ * This will get enabled whenever a cpuset configuration is considered
-+ * unsupportable in general. E.g. movable only node which cannot satisfy
-+ * any non movable allocations (see update_nodemask). Page allocator
-+ * needs to make additional checks for those configurations and this
-+ * check is meant to guard those checks without any overhead for sane
-+ * configurations.
-+ */
-+static inline bool cpusets_insane_config(void)
-+{
-+	return static_branch_unlikely(&cpusets_insane_config_key);
-+}
+-static int is_rela_equal(const Elf_Rela *x, const Elf_Rela *y)
+-{
+-	return x->r_info == y->r_info && x->r_addend == y->r_addend;
+-}
++#define cmp_3way(a, b)  ((a) < (b) ? -1 : (a) > (b))
+ 
+-static bool duplicate_rela(const Elf_Rela *rela, int idx)
++static int compare_rela(const void *x, const void *y)
+ {
+-	int i;
++	int ret;
++	const Elf_Rela *rela_x = x, *rela_y = y;
+ 
+-	for (i = 0; i < idx; i++) {
+-		if (is_rela_equal(&rela[i], &rela[idx]))
+-			return true;
+-	}
++	ret = cmp_3way(rela_x->r_info, rela_y->r_info);
++	if (ret == 0)
++		ret = cmp_3way(rela_x->r_addend, rela_y->r_addend);
+ 
+-	return false;
++	return ret;
+ }
+ 
+ static void count_max_entries(Elf_Rela *relas, int num,
+ 			      unsigned int *plts, unsigned int *gots)
+ {
+-	unsigned int i, type;
++	unsigned int i;
 +
- extern int cpuset_init(void);
- extern void cpuset_init_smp(void);
- extern void cpuset_force_rebuild(void);
-@@ -168,6 +183,8 @@ static inline void set_mems_allowed(nodemask_t nodemask)
++	sort(relas, num, sizeof(Elf_Rela), compare_rela, NULL);
  
- static inline bool cpusets_enabled(void) { return false; }
- 
-+static inline bool cpusets_insane_config(void) { return false; }
+ 	for (i = 0; i < num; i++) {
+-		type = ELF_R_TYPE(relas[i].r_info);
+-		switch (type) {
++		if (i && !compare_rela(&relas[i-1], &relas[i]))
++			continue;
 +
- static inline int cpuset_init(void) { return 0; }
- static inline void cpuset_init_smp(void) {}
- 
-diff --git a/include/linux/mmzone.h b/include/linux/mmzone.h
-index 71150fb1cb2a..e0106e13f74f 100644
---- a/include/linux/mmzone.h
-+++ b/include/linux/mmzone.h
-@@ -1128,6 +1128,28 @@ static inline struct zoneref *first_zones_zonelist(struct zonelist *zonelist,
- #define for_each_zone_zonelist(zone, z, zlist, highidx) \
- 	for_each_zone_zonelist_nodemask(zone, z, zlist, highidx, NULL)
- 
-+/* Whether the 'nodes' are all movable nodes */
-+static inline bool movable_only_nodes(nodemask_t *nodes)
-+{
-+	struct zonelist *zonelist;
-+	struct zoneref *z;
-+	int nid;
-+
-+	if (nodes_empty(*nodes))
-+		return false;
-+
-+	/*
-+	 * We can chose arbitrary node from the nodemask to get a
-+	 * zonelist as they are interlinked. We just need to find
-+	 * at least one zone that can satisfy kernel allocations.
-+	 */
-+	nid = first_node(*nodes);
-+	zonelist = &NODE_DATA(nid)->node_zonelists[ZONELIST_FALLBACK];
-+	z = first_zones_zonelist(zonelist, ZONE_NORMAL,	nodes);
-+	return (!z->zone) ? true : false;
-+}
-+
-+
- #ifdef CONFIG_SPARSEMEM
- #include <asm/sparsemem.h>
- #endif
-diff --git a/kernel/cgroup/cpuset.c b/kernel/cgroup/cpuset.c
-index 731547a0d057..52274eda8423 100644
---- a/kernel/cgroup/cpuset.c
-+++ b/kernel/cgroup/cpuset.c
-@@ -71,6 +71,13 @@
- DEFINE_STATIC_KEY_FALSE(cpusets_pre_enable_key);
- DEFINE_STATIC_KEY_FALSE(cpusets_enabled_key);
- 
-+/*
-+ * There could be abnormal cpuset configurations for cpu or memory
-+ * node binding, add this key to provide a quick low-cost judgement
-+ * of the situation.
-+ */
-+DEFINE_STATIC_KEY_FALSE(cpusets_insane_config_key);
-+
- /* See "Frequency meter" comments, below. */
- 
- struct fmeter {
-@@ -381,6 +388,17 @@ static DECLARE_WORK(cpuset_hotplug_work, cpuset_hotplug_workfn);
- 
- static DECLARE_WAIT_QUEUE_HEAD(cpuset_attach_wq);
- 
-+static inline void check_insane_mems_config(nodemask_t *nodes)
-+{
-+	if (!cpusets_insane_config() &&
-+		movable_only_nodes(nodes)) {
-+		static_branch_enable(&cpusets_insane_config_key);
-+		pr_info("Unsupported (movable nodes only) cpuset configuration detected (nmask=%*pbl)!\n"
-+			"Cpuset allocations might fail even with a lot of memory available.\n",
-+			nodemask_pr_args(nodes));
-+	}
-+}
-+
- /*
-  * Cgroup v2 behavior is used on the "cpus" and "mems" control files when
-  * on default hierarchy or when the cpuset_v2_mode flag is set by mounting
-@@ -1878,6 +1896,8 @@ static int update_nodemask(struct cpuset *cs, struct cpuset *trialcs,
- 	if (retval < 0)
- 		goto done;
- 
-+	check_insane_mems_config(&trialcs->mems_allowed);
-+
- 	spin_lock_irq(&callback_lock);
- 	cs->mems_allowed = trialcs->mems_allowed;
- 	spin_unlock_irq(&callback_lock);
-@@ -3215,6 +3235,9 @@ static void cpuset_hotplug_update_tasks(struct cpuset *cs, struct tmpmasks *tmp)
- 	cpus_updated = !cpumask_equal(&new_cpus, cs->effective_cpus);
- 	mems_updated = !nodes_equal(new_mems, cs->effective_mems);
- 
-+	if (mems_updated)
-+		check_insane_mems_config(&new_mems);
-+
- 	if (is_in_v2_mode())
- 		hotplug_update_tasks(cs, &new_cpus, &new_mems,
- 				     cpus_updated, mems_updated);
-diff --git a/mm/page_alloc.c b/mm/page_alloc.c
-index 59e1fcc05566..d906c6b96181 100644
---- a/mm/page_alloc.c
-+++ b/mm/page_alloc.c
-@@ -4691,6 +4691,19 @@ __alloc_pages_slowpath(gfp_t gfp_mask, unsigned int order,
- 	if (!ac->preferred_zoneref->zone)
- 		goto nopage;
- 
-+	/*
-+	 * Check for insane configurations where the cpuset doesn't contain
-+	 * any suitable zone to satisfy the request - e.g. non-movable
-+	 * GFP_HIGHUSER allocations from MOVABLE nodes only.
-+	 */
-+	if (cpusets_insane_config() && (gfp_mask & __GFP_HARDWALL)) {
-+		struct zoneref *z = first_zones_zonelist(ac->zonelist,
-+					ac->highest_zoneidx,
-+					&cpuset_current_mems_allowed);
-+		if (!z->zone)
-+			goto nopage;
-+	}
-+
- 	if (alloc_flags & ALLOC_KSWAPD)
- 		wake_all_kswapds(order, gfp_mask, ac);
- 
++		switch (ELF_R_TYPE(relas[i].r_info)) {
+ 		case R_LARCH_SOP_PUSH_PLT_PCREL:
+ 		case R_LARCH_B26:
+-			if (!duplicate_rela(relas, i))
+-				(*plts)++;
++			(*plts)++;
+ 			break;
+ 		case R_LARCH_GOT_PC_HI20:
+-			if (!duplicate_rela(relas, i))
+-				(*gots)++;
++			(*gots)++;
+ 			break;
+ 		default:
+ 			break; /* Do nothing. */
 -- 
 2.50.1
 
