@@ -1,56 +1,58 @@
-Return-Path: <stable+bounces-175452-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-174801-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id C3483B367DB
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 16:10:40 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id E897BB3650C
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 15:44:03 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 2BBC97B91EB
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 14:05:00 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id A3BB35600BE
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 13:36:25 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 54A0921D3F2;
-	Tue, 26 Aug 2025 14:04:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6BD6E334723;
+	Tue, 26 Aug 2025 13:35:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Yv7T4p7a"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="0jL2if5S"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 085611494D9;
-	Tue, 26 Aug 2025 14:04:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2A3B72E6106;
+	Tue, 26 Aug 2025 13:35:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756217081; cv=none; b=U1fpUvPvHla6q1lkcELAFtKREGjpcUf/ya6TrVHcssur98nEx7ixfhG1+vG4Wl14IKroWEb2TcLnRYV9nUOvvAErLC5Gjf4f7y+2UqS3O3ejVSSzN8IW0Qf8/SfEsfgt+TIt/Y5se3TzyXeP21Vaxu7WH6OdZ7xSxq4akhFjhtw=
+	t=1756215354; cv=none; b=U9UNkb2snLxjjwQHgcNogi8fMh0GKFcAZWV3GZXJ7NU52VnJZJvsOokfAmEGWTduH2FpGbnXQlLuEm/dlDH4uwjcYR3agDH+rGPIYjADby1FKOaDF52DNrTH1nLjzeGZZUs018G6lEejTVCWnXe6nnXbGWJyTdz3qvfOtAqnbjQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756217081; c=relaxed/simple;
-	bh=oLKK4bYDVgAF903BYTj0drVRPZz4VgAnhEYxeJY0A1k=;
+	s=arc-20240116; t=1756215354; c=relaxed/simple;
+	bh=nx7KeatHjlE6TRF4FqHBmasg7rjUjaLxmMUwJ4AMDwY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=YgzPpBrMu9gQ2IWO49Zle8lNLNdbvWsHxST223+UIssvs9eParn6Igw3EhMmBCx5+JwiCSl2DPU8+/JxPQ73ywstmKkgAiktYgN44TmMYQ9Kf/4jclAe1v6ZIh91yTFh9mSv4PPTd8V6aut8yXLZH0WVP7HceI/gXy3M860oADQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Yv7T4p7a; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 92890C4CEF1;
-	Tue, 26 Aug 2025 14:04:40 +0000 (UTC)
+	 MIME-Version; b=VR1rgqfd+HZ5Qxu7xBX05z9V3Qf8YebFL8SHStOHSZVJLz3agj1+F37mle2hiwT0m3tQrMbbQKiJA9tiQ1u60hyuD0rzQyaIf7K+++GAEZPK1RhsjfKeoQX5D31jGw8yyONA6/BgqHb1RKBt16xAeUgf5Y3H+KI0+7YloEBDNYM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=0jL2if5S; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B06C7C4CEF1;
+	Tue, 26 Aug 2025 13:35:53 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1756217080;
-	bh=oLKK4bYDVgAF903BYTj0drVRPZz4VgAnhEYxeJY0A1k=;
+	s=korg; t=1756215354;
+	bh=nx7KeatHjlE6TRF4FqHBmasg7rjUjaLxmMUwJ4AMDwY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Yv7T4p7a9KKKuT0JWWKy7f48LswP61YZrH6cwVvT4EZfsoQW0opQ68ur7XQfCLXXQ
-	 CwBXth6P+GUCuWqhDZl1ESjifYrObaYbhRUAKJ7XZs4oQBajk4bna6jebFnZLABUTc
-	 ZJX2n43KmyG6UaR4n8NXiN/85PzbqnEDMfWB6JvQ=
+	b=0jL2if5SvzSW/QZIvX+ZZyS8Q6ojqD9qywy0a6GrOtuR3mKeKl1aInbY2Gh39YPds
+	 euB6c1QQbDARk94BmwT8/YstHJSWwa6rxj3iWPHd4gDO7K654iPqXlmr6QgSWBrAI2
+	 0e3aRqtCb4l18/kibKrjkjkxcpRF8dxAaZI6Axz8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Florian Westphal <fw@strlen.de>,
-	Jakub Kicinski <kuba@kernel.org>,
+	Mete Durlu <meted@linux.ibm.com>,
+	Vasily Gorbik <gor@linux.ibm.com>,
+	Peter Oberparleiter <oberpar@linux.ibm.com>,
+	Alexander Gordeev <agordeev@linux.ibm.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 643/644] netfilter: nf_reject: dont leak dst refcount for loopback packets
+Subject: [PATCH 6.1 481/482] s390/hypfs: Enable limited access during lockdown
 Date: Tue, 26 Aug 2025 13:12:14 +0200
-Message-ID: <20250826111002.497495608@linuxfoundation.org>
+Message-ID: <20250826110942.698105972@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250826110946.507083938@linuxfoundation.org>
-References: <20250826110946.507083938@linuxfoundation.org>
+In-Reply-To: <20250826110930.769259449@linuxfoundation.org>
+References: <20250826110930.769259449@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,90 +64,59 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Florian Westphal <fw@strlen.de>
+From: Peter Oberparleiter <oberpar@linux.ibm.com>
 
-[ Upstream commit 91a79b792204313153e1bdbbe5acbfc28903b3a5 ]
+[ Upstream commit 3868f910440c47cd5d158776be4ba4e2186beda7 ]
 
-recent patches to add a WARN() when replacing skb dst entry found an
-old bug:
+When kernel lockdown is active, debugfs_locked_down() blocks access to
+hypfs files that register ioctl callbacks, even if the ioctl interface
+is not required for a function. This unnecessarily breaks userspace
+tools that only rely on read operations.
 
-WARNING: include/linux/skbuff.h:1165 skb_dst_check_unset include/linux/skbuff.h:1164 [inline]
-WARNING: include/linux/skbuff.h:1165 skb_dst_set include/linux/skbuff.h:1210 [inline]
-WARNING: include/linux/skbuff.h:1165 nf_reject_fill_skb_dst+0x2a4/0x330 net/ipv4/netfilter/nf_reject_ipv4.c:234
-[..]
-Call Trace:
- nf_send_unreach+0x17b/0x6e0 net/ipv4/netfilter/nf_reject_ipv4.c:325
- nft_reject_inet_eval+0x4bc/0x690 net/netfilter/nft_reject_inet.c:27
- expr_call_ops_eval net/netfilter/nf_tables_core.c:237 [inline]
- ..
+Resolve this by registering a minimal set of file operations during
+lockdown, avoiding ioctl registration and preserving access for affected
+tooling.
 
-This is because blamed commit forgot about loopback packets.
-Such packets already have a dst_entry attached, even at PRE_ROUTING stage.
+Note that this change restores hypfs functionality when lockdown is
+active from early boot (e.g. via lockdown=integrity kernel parameter),
+but does not apply to scenarios where lockdown is enabled dynamically
+while Linux is running.
 
-Instead of checking hook just check if the skb already has a route
-attached to it.
-
-Fixes: f53b9b0bdc59 ("netfilter: introduce support for reject at prerouting stage")
-Signed-off-by: Florian Westphal <fw@strlen.de>
-Link: https://patch.msgid.link/20250820123707.10671-1-fw@strlen.de
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Tested-by: Mete Durlu <meted@linux.ibm.com>
+Reviewed-by: Vasily Gorbik <gor@linux.ibm.com>
+Fixes: 5496197f9b08 ("debugfs: Restrict debugfs when the kernel is locked down")
+Signed-off-by: Peter Oberparleiter <oberpar@linux.ibm.com>
+Signed-off-by: Alexander Gordeev <agordeev@linux.ibm.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/ipv4/netfilter/nf_reject_ipv4.c | 6 ++----
- net/ipv6/netfilter/nf_reject_ipv6.c | 5 ++---
- 2 files changed, 4 insertions(+), 7 deletions(-)
+ arch/s390/hypfs/hypfs_dbfs.c | 3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
-diff --git a/net/ipv4/netfilter/nf_reject_ipv4.c b/net/ipv4/netfilter/nf_reject_ipv4.c
-index 350aaca12618..c1f5ca847c8a 100644
---- a/net/ipv4/netfilter/nf_reject_ipv4.c
-+++ b/net/ipv4/netfilter/nf_reject_ipv4.c
-@@ -247,8 +247,7 @@ void nf_send_reset(struct net *net, struct sock *sk, struct sk_buff *oldskb,
- 	if (!oth)
- 		return;
+diff --git a/arch/s390/hypfs/hypfs_dbfs.c b/arch/s390/hypfs/hypfs_dbfs.c
+index c5f53dc3dbbc..5848f2e374a6 100644
+--- a/arch/s390/hypfs/hypfs_dbfs.c
++++ b/arch/s390/hypfs/hypfs_dbfs.c
+@@ -6,6 +6,7 @@
+  * Author(s): Michael Holzheu <holzheu@linux.vnet.ibm.com>
+  */
  
--	if ((hook == NF_INET_PRE_ROUTING || hook == NF_INET_INGRESS) &&
--	    nf_reject_fill_skb_dst(oldskb) < 0)
-+	if (!skb_dst(oldskb) && nf_reject_fill_skb_dst(oldskb) < 0)
- 		return;
++#include <linux/security.h>
+ #include <linux/slab.h>
+ #include "hypfs.h"
  
- 	if (skb_rtable(oldskb)->rt_flags & (RTCF_BROADCAST | RTCF_MULTICAST))
-@@ -317,8 +316,7 @@ void nf_send_unreach(struct sk_buff *skb_in, int code, int hook)
- 	if (iph->frag_off & htons(IP_OFFSET))
- 		return;
+@@ -83,7 +84,7 @@ void hypfs_dbfs_create_file(struct hypfs_dbfs_file *df)
+ {
+ 	const struct file_operations *fops = &dbfs_ops;
  
--	if ((hook == NF_INET_PRE_ROUTING || hook == NF_INET_INGRESS) &&
--	    nf_reject_fill_skb_dst(skb_in) < 0)
-+	if (!skb_dst(skb_in) && nf_reject_fill_skb_dst(skb_in) < 0)
- 		return;
- 
- 	if (skb_csum_unnecessary(skb_in) || !nf_reject_verify_csum(proto)) {
-diff --git a/net/ipv6/netfilter/nf_reject_ipv6.c b/net/ipv6/netfilter/nf_reject_ipv6.c
-index 8208490e05a3..ca39b83c2a5d 100644
---- a/net/ipv6/netfilter/nf_reject_ipv6.c
-+++ b/net/ipv6/netfilter/nf_reject_ipv6.c
-@@ -295,7 +295,7 @@ void nf_send_reset6(struct net *net, struct sock *sk, struct sk_buff *oldskb,
- 	fl6.fl6_sport = otcph->dest;
- 	fl6.fl6_dport = otcph->source;
- 
--	if (hook == NF_INET_PRE_ROUTING || hook == NF_INET_INGRESS) {
-+	if (!skb_dst(oldskb)) {
- 		nf_ip6_route(net, &dst, flowi6_to_flowi(&fl6), false);
- 		if (!dst)
- 			return;
-@@ -394,8 +394,7 @@ void nf_send_unreach6(struct net *net, struct sk_buff *skb_in,
- 	if (hooknum == NF_INET_LOCAL_OUT && skb_in->dev == NULL)
- 		skb_in->dev = net->loopback_dev;
- 
--	if ((hooknum == NF_INET_PRE_ROUTING || hooknum == NF_INET_INGRESS) &&
--	    nf_reject6_fill_skb_dst(skb_in) < 0)
-+	if (!skb_dst(skb_in) && nf_reject6_fill_skb_dst(skb_in) < 0)
- 		return;
- 
- 	icmpv6_send(skb_in, ICMPV6_DEST_UNREACH, code, 0);
+-	if (df->unlocked_ioctl)
++	if (df->unlocked_ioctl && !security_locked_down(LOCKDOWN_DEBUGFS))
+ 		fops = &dbfs_ops_ioctl;
+ 	df->dentry = debugfs_create_file(df->name, 0400, dbfs_dir, df, fops);
+ 	mutex_init(&df->lock);
 -- 
 2.50.1
 
