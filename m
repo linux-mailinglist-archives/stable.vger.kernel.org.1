@@ -1,57 +1,55 @@
-Return-Path: <stable+bounces-174609-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-173530-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8FEE2B3644D
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 15:37:33 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id B04FAB35D27
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 13:41:43 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id B81181781EF
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 13:28:12 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id BD24D7C3E50
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 11:41:28 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 72FA71917ED;
-	Tue, 26 Aug 2025 13:27:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4C5B32820B1;
+	Tue, 26 Aug 2025 11:41:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="yUv9hhz9"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="EEuaHFm6"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 30E671C4609;
-	Tue, 26 Aug 2025 13:27:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0333117332C;
+	Tue, 26 Aug 2025 11:41:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756214846; cv=none; b=U93+vacB+y4/qamAam61OiENx2q92I4J6W8QTOMn0pzmX0dpH7Un/Dq1r5poxjy/RdxGXAr20f7K8X30CTWKH5V4MGxxncO7xnU/5e/FmmIUNX+Jgpy6rsc/uR6mUxYi/RLdZI5TARFxLs8q2rmR9tZ0iyuDnx9pvGkkn6ws7UQ=
+	t=1756208488; cv=none; b=QUI2UFMUT+Z8cNtSqv26Xvb4fuy0wAbUL1k1WoMC9suVyS69tPogDMlVnd2dRZ2trquOmj3H62iQyj3z7OewjrJtgM0EB5/uk3dUnE+zA5ApiD+mEho9i62WA6CbIJ8JTRQ4zXWkNYOETgOjQHLePNkVNRsCHHlwjCUplOg5xrg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756214846; c=relaxed/simple;
-	bh=iY+bZYGKfSchmggfVc0HkMmIae9i6kZU4jsLZVeVvEs=;
+	s=arc-20240116; t=1756208488; c=relaxed/simple;
+	bh=SXIjs1pvtgMRMNiClstZaPsCHZYqiBDtIfYda59lXOo=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=CGRb8fM4ZfC3dGmihDLZ6lmkldo0hYo7SMKfNhuf7iwTvjq6HG538XESJrVp07mNNv/2dYdRNcOXxceZ8SkbZvQEJ+3hUaNQ479mVTqV+wYwXnmpvhvTf/4YyzgtEl83bYCwQYCdvcXWVeckzEPVwXd3+miWpWzkuDhMd7kmU5k=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=yUv9hhz9; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id AE6A2C4CEF1;
-	Tue, 26 Aug 2025 13:27:25 +0000 (UTC)
+	 MIME-Version; b=hs7XZIGantEojnsZwHUrOWwxtFu9ssj97bslTNlOBVqdhBWxB5YCibMjKf0oDFUAT7SbC+O5Inulim+fOo4uSvoqY3Gtcwd1TMKDnE/ku9XN1OxFcPC5DkV1t7XccU4rc5fOk54Kodb/eOz3YvAcVOm7PyOV2INwh51Prokd30g=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=EEuaHFm6; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 875E4C4CEF1;
+	Tue, 26 Aug 2025 11:41:27 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1756214846;
-	bh=iY+bZYGKfSchmggfVc0HkMmIae9i6kZU4jsLZVeVvEs=;
+	s=korg; t=1756208487;
+	bh=SXIjs1pvtgMRMNiClstZaPsCHZYqiBDtIfYda59lXOo=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=yUv9hhz9GxYID4N+YFM2pHsq/RaMvy9yquPAWKzmjDNf8pOUqS9mF3oBuLWxlepef
-	 3k324WkAPjakGCHNOMFxS8z+pmkCunLGxtskls30TYEgg/bSvXPt7jZXUK4+neZh0X
-	 dzVeh0AqLNYUKGfCGXk3lBdgl4A+FmvrGFlCXchY=
+	b=EEuaHFm6nG/Nq7e7+IK2opoysRF4LhnQsjbx/piISo6plI2UxUxpavrLk8S2dGSIh
+	 /LwSdPDke8IPzgT5emm72mZntHcL0RszbRWocfVwnmJSX/W8tvJSCBTBrKPOXVtIk0
+	 vadn66NFtsGSZqfKZclj1z5CQTT3XksRMZLDXHjc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Marek Szyprowski <m.szyprowski@samsung.com>,
-	Jason Gunthorpe <jgg@nvidia.com>,
-	Xu Yilun <yilun.xu@intel.com>,
-	Xu Yilun <yilun.xu@linux.intel.com>
-Subject: [PATCH 6.1 292/482] zynq_fpga: use sgtable-based scatterlist wrappers
+	Bibo Mao <maobibo@loongson.cn>,
+	Huacai Chen <chenhuacai@loongson.cn>
+Subject: [PATCH 6.12 130/322] LoongArch: KVM: Make function kvm_own_lbt() robust
 Date: Tue, 26 Aug 2025 13:09:05 +0200
-Message-ID: <20250826110938.005309828@linuxfoundation.org>
+Message-ID: <20250826110919.010881955@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250826110930.769259449@linuxfoundation.org>
-References: <20250826110930.769259449@linuxfoundation.org>
+In-Reply-To: <20250826110915.169062587@linuxfoundation.org>
+References: <20250826110915.169062587@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,51 +61,42 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Marek Szyprowski <m.szyprowski@samsung.com>
+From: Bibo Mao <maobibo@loongson.cn>
 
-commit 37e00703228ab44d0aacc32a97809a4f6f58df1b upstream.
+commit 4be8cefc132606b4a6e851f37f8e8c40c406c910 upstream.
 
-Use common wrappers operating directly on the struct sg_table objects to
-fix incorrect use of statterlists related calls. dma_unmap_sg() function
-has to be called with the number of elements originally passed to the
-dma_map_sg() function, not the one returned in sgtable's nents.
+Add the flag KVM_LARCH_LBT checking in function kvm_own_lbt(), so that
+it can be called safely rather than duplicated enabling again.
 
-CC: stable@vger.kernel.org
-Fixes: 425902f5c8e3 ("fpga zynq: Use the scatterlist interface")
-Signed-off-by: Marek Szyprowski <m.szyprowski@samsung.com>
-Reviewed-by: Jason Gunthorpe <jgg@nvidia.com>
-Reviewed-by: Xu Yilun <yilun.xu@intel.com>
-Link: https://lore.kernel.org/r/20250616120932.1090614-1-m.szyprowski@samsung.com
-Signed-off-by: Xu Yilun <yilun.xu@linux.intel.com>
+Cc: stable@vger.kernel.org
+Signed-off-by: Bibo Mao <maobibo@loongson.cn>
+Signed-off-by: Huacai Chen <chenhuacai@loongson.cn>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/fpga/zynq-fpga.c |    4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ arch/loongarch/kvm/vcpu.c |    8 +++++---
+ 1 file changed, 5 insertions(+), 3 deletions(-)
 
---- a/drivers/fpga/zynq-fpga.c
-+++ b/drivers/fpga/zynq-fpga.c
-@@ -406,7 +406,7 @@ static int zynq_fpga_ops_write(struct fp
- 	}
+--- a/arch/loongarch/kvm/vcpu.c
++++ b/arch/loongarch/kvm/vcpu.c
+@@ -1249,9 +1249,11 @@ int kvm_own_lbt(struct kvm_vcpu *vcpu)
+ 		return -EINVAL;
  
- 	priv->dma_nelms =
--	    dma_map_sg(mgr->dev.parent, sgt->sgl, sgt->nents, DMA_TO_DEVICE);
-+	    dma_map_sgtable(mgr->dev.parent, sgt, DMA_TO_DEVICE, 0);
- 	if (priv->dma_nelms == 0) {
- 		dev_err(&mgr->dev, "Unable to DMA map (TO_DEVICE)\n");
- 		return -ENOMEM;
-@@ -478,7 +478,7 @@ out_clk:
- 	clk_disable(priv->clk);
+ 	preempt_disable();
+-	set_csr_euen(CSR_EUEN_LBTEN);
+-	_restore_lbt(&vcpu->arch.lbt);
+-	vcpu->arch.aux_inuse |= KVM_LARCH_LBT;
++	if (!(vcpu->arch.aux_inuse & KVM_LARCH_LBT)) {
++		set_csr_euen(CSR_EUEN_LBTEN);
++		_restore_lbt(&vcpu->arch.lbt);
++		vcpu->arch.aux_inuse |= KVM_LARCH_LBT;
++	}
+ 	preempt_enable();
  
- out_free:
--	dma_unmap_sg(mgr->dev.parent, sgt->sgl, sgt->nents, DMA_TO_DEVICE);
-+	dma_unmap_sgtable(mgr->dev.parent, sgt, DMA_TO_DEVICE, 0);
- 	return err;
- }
- 
+ 	return 0;
 
 
 
