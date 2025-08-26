@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-174424-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-176001-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 17FD9B3639D
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 15:31:49 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id C6056B36AB0
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 16:39:46 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id EBA475604AC
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 13:21:25 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 7816616ACB3
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 14:31:19 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 89A87346A15;
-	Tue, 26 Aug 2025 13:19:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 264C535209D;
+	Tue, 26 Aug 2025 14:28:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="JnDSIW4I"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="FbTQiXn6"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 483D534164F;
-	Tue, 26 Aug 2025 13:19:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D64C3350D7B;
+	Tue, 26 Aug 2025 14:28:45 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756214353; cv=none; b=pR8JaeZeoFK1VjIsDOq7VHwdaY3LLcAD4RPNVOWP5FvZoEv/jw1akieklI/OcgsJ1365WuKKcO4qtxdy84bt+7NcPSsrlkg6JWJlN+kIB9q49KrLJkRac4SMw/T0Es5Sq+kKhv+7hDHKdGQXPHepZOH9tkYbD6qjTIu/x+u8nyU=
+	t=1756218525; cv=none; b=iABeYZVzxFqHfek/8wqw8W72QhSIBEIm5V/kdEtLuxV8rTtf0XHJXNE+wTTC23fhXXwawdxnX9ZvmW1rcchHi/og7BjkNjq0o//3IH7HduLRPieCgKAKrKNFI7vWYZaMN1wbd5lGiCUCSJuxu4gnKBkY4thnEuVlpYiOtNL2/s0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756214353; c=relaxed/simple;
-	bh=yLdnNaRdYmfWE/y62TQS2d4UNx7CBjTZreF1qmy3Jlw=;
+	s=arc-20240116; t=1756218525; c=relaxed/simple;
+	bh=bNBb3/FCzoasehtV7FWsVrtde68gjNm6sbYoVGsaLFs=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=WYUTzAGEITk5kguYztUtzlWrh/i6nTe7ns7xsQTSkUC+aRvrkNBGQ3VaHeJR8dOI0BbAXbI2y2EhiQlPTpG86nbaS/2tIzvy2nbfA7vAIXzMV43jzpu8LkIxb4mKA/PvLYtZErJ7v5MLcqKTl+N/RNx91dbhYWkRgAwE5utXnc4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=JnDSIW4I; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 62CD4C4CEF1;
-	Tue, 26 Aug 2025 13:19:12 +0000 (UTC)
+	 MIME-Version; b=Uh0XXRE+OY8Xhdih9WgMAfmcUUFIX3x+bXp7dPMDjHv3r1MFgxRwvA5491eRbHpPp7mlbubds99OGEVc8/4PUEfpYKf77YnM2uj572YAjGjALkRIsfIMz7XaV0rclhy/VtJopBOyTEmHPEmTc/UXKpA4pg3/S0iQF2nVTAGL52U=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=FbTQiXn6; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1D6F3C4CEF1;
+	Tue, 26 Aug 2025 14:28:44 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1756214352;
-	bh=yLdnNaRdYmfWE/y62TQS2d4UNx7CBjTZreF1qmy3Jlw=;
+	s=korg; t=1756218525;
+	bh=bNBb3/FCzoasehtV7FWsVrtde68gjNm6sbYoVGsaLFs=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=JnDSIW4I/Yi3vzzUqZ6sf42mWOEP7uuD3bTw+cYylWtJerah4RwyVOCwk3loffTca
-	 r7xa4Neowg93TufVcDMnd3TGMY+krAuqFjZhmcagSUVDFclb9j/u94E+Dnf38trGc8
-	 5eMmjlp2IKez+egJ1MKOgknq+r0PdhqkI86gf8jY=
+	b=FbTQiXn6bqnUfmSPuPD2e7grDqnUC45BC7h1sXDtk3dgE60n9nLLA37rC12zJlcnC
+	 6VdMylMV/aAq13JceuiCGnyShJ7vlJ+fDrTKcBPt8OnvwPR984WXybtd20U4+7ynaz
+	 BV80YII8LBJ+1CZAqCzzExr9JvZuIFMlnydRDl4Y=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Kees Cook <kees@kernel.org>,
-	=?UTF-8?q?Ilpo=20J=C3=A4rvinen?= <ilpo.jarvinen@linux.intel.com>,
+	syzbot+3f89ec3d1d0842e95d50@syzkaller.appspotmail.com,
+	Oliver Neukum <oneukum@suse.com>,
+	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 106/482] platform/x86: thinkpad_acpi: Handle KCOV __init vs inline mismatches
+Subject: [PATCH 5.4 033/403] usb: net: sierra: check for no status endpoint
 Date: Tue, 26 Aug 2025 13:05:59 +0200
-Message-ID: <20250826110933.446135483@linuxfoundation.org>
+Message-ID: <20250826110906.728944622@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250826110930.769259449@linuxfoundation.org>
-References: <20250826110930.769259449@linuxfoundation.org>
+In-Reply-To: <20250826110905.607690791@linuxfoundation.org>
+References: <20250826110905.607690791@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,52 +61,48 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+5.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Kees Cook <kees@kernel.org>
+From: Oliver Neukum <oneukum@suse.com>
 
-[ Upstream commit 6418a8504187dc7f5b6f9d0649c03e362cb0664b ]
+[ Upstream commit 4c4ca3c46167518f8534ed70f6e3b4bf86c4d158 ]
 
-When KCOV is enabled all functions get instrumented, unless the
-__no_sanitize_coverage attribute is used. To prepare for
-__no_sanitize_coverage being applied to __init functions[1], we have
-to handle differences in how GCC's inline optimizations get resolved.
-For thinkpad_acpi routines, this means forcing two functions to be
-inline with __always_inline.
+The driver checks for having three endpoints and
+having bulk in and out endpoints, but not that
+the third endpoint is interrupt input.
+Rectify the omission.
 
-Link: https://lore.kernel.org/lkml/20250523043935.2009972-11-kees@kernel.org/ [1]
-Signed-off-by: Kees Cook <kees@kernel.org>
-Link: https://lore.kernel.org/r/20250529181831.work.439-kees@kernel.org
-Signed-off-by: Ilpo Järvinen <ilpo.jarvinen@linux.intel.com>
+Reported-by: syzbot+3f89ec3d1d0842e95d50@syzkaller.appspotmail.com
+Closes: https://lore.kernel.org/linux-usb/686d5a9f.050a0220.1ffab7.0017.GAE@google.com/
+Tested-by: syzbot+3f89ec3d1d0842e95d50@syzkaller.appspotmail.com
+Fixes: eb4fd8cd355c8 ("net/usb: add sierra_net.c driver")
+Signed-off-by: Oliver Neukum <oneukum@suse.com>
+Link: https://patch.msgid.link/20250714111326.258378-1-oneukum@suse.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/platform/x86/thinkpad_acpi.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ drivers/net/usb/sierra_net.c | 4 ++++
+ 1 file changed, 4 insertions(+)
 
-diff --git a/drivers/platform/x86/thinkpad_acpi.c b/drivers/platform/x86/thinkpad_acpi.c
-index 17d74434e604..c0977ffec96c 100644
---- a/drivers/platform/x86/thinkpad_acpi.c
-+++ b/drivers/platform/x86/thinkpad_acpi.c
-@@ -544,12 +544,12 @@ static unsigned long __init tpacpi_check_quirks(
- 	return 0;
- }
- 
--static inline bool __pure __init tpacpi_is_lenovo(void)
-+static __always_inline bool __pure __init tpacpi_is_lenovo(void)
- {
- 	return thinkpad_id.vendor == PCI_VENDOR_ID_LENOVO;
- }
- 
--static inline bool __pure __init tpacpi_is_ibm(void)
-+static __always_inline bool __pure __init tpacpi_is_ibm(void)
- {
- 	return thinkpad_id.vendor == PCI_VENDOR_ID_IBM;
- }
+diff --git a/drivers/net/usb/sierra_net.c b/drivers/net/usb/sierra_net.c
+index 6f9ec5ce61dcc..a8f8134fab36c 100644
+--- a/drivers/net/usb/sierra_net.c
++++ b/drivers/net/usb/sierra_net.c
+@@ -694,6 +694,10 @@ static int sierra_net_bind(struct usbnet *dev, struct usb_interface *intf)
+ 			status);
+ 		return -ENODEV;
+ 	}
++	if (!dev->status) {
++		dev_err(&dev->udev->dev, "No status endpoint found");
++		return -ENODEV;
++	}
+ 	/* Initialize sierra private data */
+ 	priv = kzalloc(sizeof *priv, GFP_KERNEL);
+ 	if (!priv)
 -- 
 2.39.5
 
