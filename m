@@ -1,58 +1,55 @@
-Return-Path: <stable+bounces-173305-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-174712-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 12355B35C70
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 13:34:17 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1D0F3B36491
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 15:40:00 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 398687C2FA9
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 11:33:59 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 95F7B1891BF7
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 13:33:30 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 17E9934A310;
-	Tue, 26 Aug 2025 11:31:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2E398228C9D;
+	Tue, 26 Aug 2025 13:31:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="W/kOk5xC"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="NjVVvHZR"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CABEE2BE653;
-	Tue, 26 Aug 2025 11:31:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DEBDF1DB127;
+	Tue, 26 Aug 2025 13:31:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756207902; cv=none; b=NEme5gIzB5tLdeyAKTc0dyw3sJadNXqH6MnX+DkBJIYI3W4PJiRI6WqCK0pFTbjQjBY9Nz4OM6xd5FBc4+2qRgxqfGoKQYzTIr5IDmhAsYssVmk9AE8tbTI01eBEfogg67TByWYGP0RKng5iZxmounj9PqrNS9StExD4CszejPY=
+	t=1756215118; cv=none; b=Uu8a+CSLZaHX/V7R1rp9IbUrnw7530CwiZ/TTbPfBBXCAZkx92ms/hXU1cLyDpqwNmXaywpLtdmJ+Ulx5hrrKx2SBbla7lMtIKuoQr0e54JlUJh1k9AYwyFGzri89wWoRqkCIPHsuxi0dz5hjBLlEXGXPO2GOp8raKBA1BpOZD8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756207902; c=relaxed/simple;
-	bh=TgbefTqUY+LDU/dnCaeBIff01e7fZviDqtl1VQ0WBmg=;
+	s=arc-20240116; t=1756215118; c=relaxed/simple;
+	bh=aXTxOR/TM1+gQMN8zMwLaxs5erKAoLGE3MUrCkAq908=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=b11RupgCG7LmC7Y7eNukYLC49a5UPW/uB3wZciIYLHMlB/sm2lhJBrzJG4DMqtnrEOx4DNtPEY9P8rOZvMRcNmI0TQ4lzu4AvzHVkHPv8pZASjeVsmmQovATiuxp3Ogg5V2Quv6bRCyOF421X4i4kVd6vdpUQ2cHcw1sAebMFsI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=W/kOk5xC; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5B4C7C4CEF1;
-	Tue, 26 Aug 2025 11:31:42 +0000 (UTC)
+	 MIME-Version; b=tvPFC0zwNXywWzXilSxQ1hbaQUXbeyjXx4FhKSm7EZniFC4+Me2Rf9k7wdWdeF+ygw81c8zZyLPiBAX+FlbansWZnG3jDnjtsKamdFpppgxzXhWNcqM8Yy+gD5+VCE48YoyweBF8Wuu0EjSdZZ+n3NcQwHH82VmzTySx14Brsrw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=NjVVvHZR; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6481FC4CEF1;
+	Tue, 26 Aug 2025 13:31:57 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1756207902;
-	bh=TgbefTqUY+LDU/dnCaeBIff01e7fZviDqtl1VQ0WBmg=;
+	s=korg; t=1756215117;
+	bh=aXTxOR/TM1+gQMN8zMwLaxs5erKAoLGE3MUrCkAq908=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=W/kOk5xCXh4GXDd7kLOiY5XEEZQ2Z40Ffdo40Kq9PSmTMvaegVuP5wPOVyZvR67LR
-	 7qfdAjNrcOSAU9pd3YGqo5R+smS2CgbsMT1jSXx5OYiDo1Yvh0bQvRiuWlZ2nVgwJz
-	 tZIrtPeBt+2oPOdAde1fkH1dNiqMJJC6CDDlHd0E=
+	b=NjVVvHZRzaIF9md+ZqizyfsbEqFUV4+cr7yj6CLgH72BEf5oRcxQqSBZ3s7LHddl6
+	 nfELTACK4V6LJGm490WopLzMuXAu9jSi8+ITqyb0c5IfbjvZUbOasYRUKxUzS+Xo9N
+	 yrvjGrVlf8pzXYyEjgxdq62ACHPY3YpSDFvh2wAs=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Kashyap Desai <kashyap.desai@broadcom.com>,
-	Saravanan Vajravel <saravanan.vajravel@broadcom.com>,
-	Kalesh AP <kalesh-anakkur.purayil@broadcom.com>,
-	Leon Romanovsky <leon@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.16 362/457] RDMA/bnxt_re: Fix to remove workload check in SRQ limit path
-Date: Tue, 26 Aug 2025 13:10:46 +0200
-Message-ID: <20250826110946.257630819@linuxfoundation.org>
+	Jiayi Li <lijiayi@kylinos.cn>,
+	Ulf Hansson <ulf.hansson@linaro.org>
+Subject: [PATCH 6.1 394/482] memstick: Fix deadlock by moving removing flag earlier
+Date: Tue, 26 Aug 2025 13:10:47 +0200
+Message-ID: <20250826110940.563438672@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250826110937.289866482@linuxfoundation.org>
-References: <20250826110937.289866482@linuxfoundation.org>
+In-Reply-To: <20250826110930.769259449@linuxfoundation.org>
+References: <20250826110930.769259449@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,136 +61,85 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.16-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Kashyap Desai <kashyap.desai@broadcom.com>
+From: Jiayi Li <lijiayi@kylinos.cn>
 
-[ Upstream commit 666bce0bd7e771127cb0cda125cc9d32d9f9f15d ]
+commit 99d7ab8db9d8230b243f5ed20ba0229e54cc0dfa upstream.
 
-There should not be any checks of current workload to set
-srq_limit value to SRQ hw context.
+The existing memstick core patch: commit 62c59a8786e6 ("memstick: Skip
+allocating card when removing host") sets host->removing in
+memstick_remove_host(),but still exists a critical time window where
+memstick_check can run after host->eject is set but before removing is set.
 
-Remove all such workload checks and make a direct call to
-set srq_limit via doorbell SRQ_ARM.
+In the rtsx_usb_ms driver, the problematic sequence is:
 
-Fixes: 37cb11acf1f7 ("RDMA/bnxt_re: Add SRQ support for Broadcom adapters")
-Signed-off-by: Kashyap Desai <kashyap.desai@broadcom.com>
-Signed-off-by: Saravanan Vajravel <saravanan.vajravel@broadcom.com>
-Signed-off-by: Kalesh AP <kalesh-anakkur.purayil@broadcom.com>
-Link: https://patch.msgid.link/20250805101000.233310-3-kalesh-anakkur.purayil@broadcom.com
-Signed-off-by: Leon Romanovsky <leon@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+rtsx_usb_ms_drv_remove:          memstick_check:
+  host->eject = true
+  cancel_work_sync(handle_req)     if(!host->removing)
+  ...                              memstick_alloc_card()
+                                     memstick_set_rw_addr()
+                                       memstick_new_req()
+                                         rtsx_usb_ms_request()
+                                           if(!host->eject)
+                                           skip schedule_work
+                                       wait_for_completion()
+  memstick_remove_host:                [blocks indefinitely]
+    host->removing = true
+    flush_workqueue()
+    [block]
+
+1. rtsx_usb_ms_drv_remove sets host->eject = true
+2. cancel_work_sync(&host->handle_req) runs
+3. memstick_check work may be executed here <-- danger window
+4. memstick_remove_host sets removing = 1
+
+During this window (step 3), memstick_check calls memstick_alloc_card,
+which may indefinitely waiting for mrq_complete completion that will
+never occur because rtsx_usb_ms_request sees eject=true and skips
+scheduling work, memstick_set_rw_addr waits forever for completion.
+
+This causes a deadlock when memstick_remove_host tries to flush_workqueue,
+waiting for memstick_check to complete, while memstick_check is blocked
+waiting for mrq_complete completion.
+
+Fix this by setting removing=true at the start of rtsx_usb_ms_drv_remove,
+before any work cancellation. This ensures memstick_check will see the
+removing flag immediately and exit early, avoiding the deadlock.
+
+Fixes: 62c59a8786e6 ("memstick: Skip allocating card when removing host")
+Signed-off-by: Jiayi Li <lijiayi@kylinos.cn>
+Cc: stable@vger.kernel.org
+Link: https://lore.kernel.org/r/20250804013604.1311218-1-lijiayi@kylinos.cn
+Signed-off-by: Ulf Hansson <ulf.hansson@linaro.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/infiniband/hw/bnxt_re/ib_verbs.c |  8 ++-----
- drivers/infiniband/hw/bnxt_re/qplib_fp.c | 27 ------------------------
- drivers/infiniband/hw/bnxt_re/qplib_fp.h |  2 --
- 3 files changed, 2 insertions(+), 35 deletions(-)
+ drivers/memstick/core/memstick.c    |    1 -
+ drivers/memstick/host/rtsx_usb_ms.c |    1 +
+ 2 files changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/infiniband/hw/bnxt_re/ib_verbs.c b/drivers/infiniband/hw/bnxt_re/ib_verbs.c
-index 3a627acb82ce..9b33072f9a06 100644
---- a/drivers/infiniband/hw/bnxt_re/ib_verbs.c
-+++ b/drivers/infiniband/hw/bnxt_re/ib_verbs.c
-@@ -1921,7 +1921,6 @@ int bnxt_re_modify_srq(struct ib_srq *ib_srq, struct ib_srq_attr *srq_attr,
- 	struct bnxt_re_srq *srq = container_of(ib_srq, struct bnxt_re_srq,
- 					       ib_srq);
- 	struct bnxt_re_dev *rdev = srq->rdev;
--	int rc;
- 
- 	switch (srq_attr_mask) {
- 	case IB_SRQ_MAX_WR:
-@@ -1933,11 +1932,8 @@ int bnxt_re_modify_srq(struct ib_srq *ib_srq, struct ib_srq_attr *srq_attr,
- 			return -EINVAL;
- 
- 		srq->qplib_srq.threshold = srq_attr->srq_limit;
--		rc = bnxt_qplib_modify_srq(&rdev->qplib_res, &srq->qplib_srq);
--		if (rc) {
--			ibdev_err(&rdev->ibdev, "Modify HW SRQ failed!");
--			return rc;
--		}
-+		bnxt_qplib_srq_arm_db(&srq->qplib_srq.dbinfo, srq->qplib_srq.threshold);
-+
- 		/* On success, update the shadow */
- 		srq->srq_limit = srq_attr->srq_limit;
- 		/* No need to Build and send response back to udata */
-diff --git a/drivers/infiniband/hw/bnxt_re/qplib_fp.c b/drivers/infiniband/hw/bnxt_re/qplib_fp.c
-index eb82440cdded..c2784561156f 100644
---- a/drivers/infiniband/hw/bnxt_re/qplib_fp.c
-+++ b/drivers/infiniband/hw/bnxt_re/qplib_fp.c
-@@ -706,7 +706,6 @@ int bnxt_qplib_create_srq(struct bnxt_qplib_res *res,
- 	srq->dbinfo.max_slot = 1;
- 	srq->dbinfo.priv_db = res->dpi_tbl.priv_db;
- 	bnxt_qplib_armen_db(&srq->dbinfo, DBC_DBC_TYPE_SRQ_ARMENA);
--	srq->arm_req = false;
- 
- 	return 0;
- fail:
-@@ -716,24 +715,6 @@ int bnxt_qplib_create_srq(struct bnxt_qplib_res *res,
- 	return rc;
- }
- 
--int bnxt_qplib_modify_srq(struct bnxt_qplib_res *res,
--			  struct bnxt_qplib_srq *srq)
--{
--	struct bnxt_qplib_hwq *srq_hwq = &srq->hwq;
--	u32 count;
--
--	count = __bnxt_qplib_get_avail(srq_hwq);
--	if (count > srq->threshold) {
--		srq->arm_req = false;
--		bnxt_qplib_srq_arm_db(&srq->dbinfo, srq->threshold);
--	} else {
--		/* Deferred arming */
--		srq->arm_req = true;
--	}
--
--	return 0;
--}
--
- int bnxt_qplib_query_srq(struct bnxt_qplib_res *res,
- 			 struct bnxt_qplib_srq *srq)
+--- a/drivers/memstick/core/memstick.c
++++ b/drivers/memstick/core/memstick.c
+@@ -548,7 +548,6 @@ EXPORT_SYMBOL(memstick_add_host);
+  */
+ void memstick_remove_host(struct memstick_host *host)
  {
-@@ -775,7 +756,6 @@ int bnxt_qplib_post_srq_recv(struct bnxt_qplib_srq *srq,
- 	struct bnxt_qplib_hwq *srq_hwq = &srq->hwq;
- 	struct rq_wqe *srqe;
- 	struct sq_sge *hw_sge;
--	u32 count = 0;
- 	int i, next;
+-	host->removing = 1;
+ 	flush_workqueue(workqueue);
+ 	mutex_lock(&host->lock);
+ 	if (host->card)
+--- a/drivers/memstick/host/rtsx_usb_ms.c
++++ b/drivers/memstick/host/rtsx_usb_ms.c
+@@ -812,6 +812,7 @@ static int rtsx_usb_ms_drv_remove(struct
+ 	int err;
  
- 	spin_lock(&srq_hwq->lock);
-@@ -807,15 +787,8 @@ int bnxt_qplib_post_srq_recv(struct bnxt_qplib_srq *srq,
+ 	host->eject = true;
++	msh->removing = true;
+ 	cancel_work_sync(&host->handle_req);
+ 	cancel_delayed_work_sync(&host->poll_card);
  
- 	bnxt_qplib_hwq_incr_prod(&srq->dbinfo, srq_hwq, srq->dbinfo.max_slot);
- 
--	spin_lock(&srq_hwq->lock);
--	count = __bnxt_qplib_get_avail(srq_hwq);
--	spin_unlock(&srq_hwq->lock);
- 	/* Ring DB */
- 	bnxt_qplib_ring_prod_db(&srq->dbinfo, DBC_DBC_TYPE_SRQ);
--	if (srq->arm_req == true && count > srq->threshold) {
--		srq->arm_req = false;
--		bnxt_qplib_srq_arm_db(&srq->dbinfo, srq->threshold);
--	}
- 
- 	return 0;
- }
-diff --git a/drivers/infiniband/hw/bnxt_re/qplib_fp.h b/drivers/infiniband/hw/bnxt_re/qplib_fp.h
-index 0d9487c889ff..846501f12227 100644
---- a/drivers/infiniband/hw/bnxt_re/qplib_fp.h
-+++ b/drivers/infiniband/hw/bnxt_re/qplib_fp.h
-@@ -543,8 +543,6 @@ int bnxt_qplib_enable_nq(struct pci_dev *pdev, struct bnxt_qplib_nq *nq,
- 			 srqn_handler_t srq_handler);
- int bnxt_qplib_create_srq(struct bnxt_qplib_res *res,
- 			  struct bnxt_qplib_srq *srq);
--int bnxt_qplib_modify_srq(struct bnxt_qplib_res *res,
--			  struct bnxt_qplib_srq *srq);
- int bnxt_qplib_query_srq(struct bnxt_qplib_res *res,
- 			 struct bnxt_qplib_srq *srq);
- void bnxt_qplib_destroy_srq(struct bnxt_qplib_res *res,
--- 
-2.50.1
-
 
 
 
