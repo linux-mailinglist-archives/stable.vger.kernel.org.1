@@ -1,55 +1,57 @@
-Return-Path: <stable+bounces-174359-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-173876-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id E4BB8B362F3
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 15:24:22 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id C0AB0B36042
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 14:58:53 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 38E2646787A
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 13:17:55 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 128BC3BD2D3
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 12:56:01 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 38C75242D6A;
-	Tue, 26 Aug 2025 13:16:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 767D12D320B;
+	Tue, 26 Aug 2025 12:54:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="cwUQ45Jx"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="GfvPyrbm"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E894E26FA57;
-	Tue, 26 Aug 2025 13:16:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 333311A23BE;
+	Tue, 26 Aug 2025 12:54:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756214182; cv=none; b=d24VNoo+U8U4wh25h/f5x14Nba/6hCxiKwZfZ8KUrMZJmeJFBkP51jOCu99o0HckSE00CTW1+KnjS5iUfVuhmqG9jiSgp+bwopGiCJMPJnfdG9zFSx0qAOA587yiAKuo33QJRXwre/dWex4ov3Aq8YvmYJgH0NXv9TMxYbnuRfA=
+	t=1756212899; cv=none; b=eMydHKjbjzhIkXrkrBeP3a7pusBP2cVWl4eY2wNpgQG541Ira5MJZYbmswGfDQ7dv9YAnD0Sph+p5Sle6uBYEimXnWA1zPrzoZ5AMQgFjc1Wi9TQ6UfP9bfPIXG4+JCsmYOOxc9xVgetsu+Mm4a0/3Yt/nTRddYtoq8uneT6qNc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756214182; c=relaxed/simple;
-	bh=iSk+50PWu2S3Lv/FmOqjjFQutls6rmg6azn83Ayq1JE=;
+	s=arc-20240116; t=1756212899; c=relaxed/simple;
+	bh=jFcNu6ycqb9bA17DZRM2v/JsiwjWmQguxReZGpxL1pI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=tjYiGdO53dTmvk5U3w+IcFkZ5NCRAR0F9ueZ3Wp2Z2eDhpYCGCu88rcvZf92P3b3OAhKetjnzDBfhI9o/CVZIDNqbqrARlHVpaIuUyPN0Ov4f6cvyEAk4Tqkq8CUNuopE4qNFDOm+DnqdRc6E1O4lLDnV82pXBNab7Qf7JcUr3g=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=cwUQ45Jx; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 79118C4CEF1;
-	Tue, 26 Aug 2025 13:16:21 +0000 (UTC)
+	 MIME-Version; b=LUiFmi0g5B2pwHPPTgCCyLLkAa3jgjDcH4VO/aIqGDre2xrYVpb0pDSiM2uCaN5R3DORrva7chAzC9BKrnQRsR88R7r1YrD2xpf1Ew/YxRUjOJpdEv6iD3e+bSYlbBICGjCx8FPkoxNtEyL9AfWmgjolOFuzmAgLfg12WKo5KJM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=GfvPyrbm; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id BCA96C4CEF1;
+	Tue, 26 Aug 2025 12:54:58 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1756214181;
-	bh=iSk+50PWu2S3Lv/FmOqjjFQutls6rmg6azn83Ayq1JE=;
+	s=korg; t=1756212899;
+	bh=jFcNu6ycqb9bA17DZRM2v/JsiwjWmQguxReZGpxL1pI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=cwUQ45JxuVTwLT7ZpZmF1PMutrR97HgEuZksqhAr5rjaJAPCdZghMHAiu9LPlSXuC
-	 pElIWFiWxjFIQl1Mtegfbg0q/N0kepjyLduqOu7L1BGtGgWThbzijaMlUOXTdGMrZI
-	 ADzdLjTERWwh4gdGNTwS6qUz4ePjeZxCmdvQmJhk=
+	b=GfvPyrbmpY8HIgTbSv5b4+V1pEix7sSF1CRkrTXkQir6s+hJbVzlpgvwRW0Y8RY5o
+	 lSczGNZPWuAN1qJdt/3tFjkdnWuaTiDx9xuPggycL7ZhtDP1gx/gu2vAuwBtI9t1oi
+	 VZ2dp1X05R44sLdKT2l/kOm6cm4tgY7FcNM2Qn74=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Sean Christopherson <seanjc@google.com>,
+	"John Warthog9 Hawley" <warthog9@kernel.org>,
+	Dhaval Giani <dhaval.giani@gmail.com>,
+	Steven Rostedt <rostedt@goodmis.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 040/482] KVM: x86: Convert vcpu_run()s immediate exit param into a generic bitmap
+Subject: [PATCH 6.6 144/587] ktest.pl: Prevent recursion of default variable options
 Date: Tue, 26 Aug 2025 13:04:53 +0200
-Message-ID: <20250826110931.801609290@linuxfoundation.org>
+Message-ID: <20250826110956.614927074@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250826110930.769259449@linuxfoundation.org>
-References: <20250826110930.769259449@linuxfoundation.org>
+In-Reply-To: <20250826110952.942403671@linuxfoundation.org>
+References: <20250826110952.942403671@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,141 +63,66 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Sean Christopherson <seanjc@google.com>
+From: Steven Rostedt <rostedt@goodmis.org>
 
-[ Upstream commit 2478b1b220c49d25cb1c3f061ec4f9b351d9a131 ]
+[ Upstream commit 61f7e318e99d3b398670518dd3f4f8510d1800fc ]
 
-Convert kvm_x86_ops.vcpu_run()'s "force_immediate_exit" boolean parameter
-into an a generic bitmap so that similar "take action" information can be
-passed to vendor code without creating a pile of boolean parameters.
+If a default variable contains itself, do not recurse on it.
 
-This will allow dropping kvm_x86_ops.set_dr6() in favor of a new flag, and
-will also allow for adding similar functionality for re-loading debugctl
-in the active VMCS.
+For example:
 
-Opportunistically massage the TDX WARN and comment to prepare for adding
-more run_flags, all of which are expected to be mutually exclusive with
-TDX, i.e. should be WARNed on.
+  ADD_CONFIG := ${CONFIG_DIR}/temp_config
+  DEFAULTS
+  ADD_CONFIG = ${CONFIG_DIR}/default_config ${ADD_CONFIG}
 
-No functional change intended.
+The above works because the temp variable ADD_CONFIG (is a temp because it
+is created with ":=") is already defined, it will be substituted in the
+variable option. But if it gets commented out:
 
-Cc: stable@vger.kernel.org
-Link: https://lore.kernel.org/r/20250610232010.162191-3-seanjc@google.com
-Signed-off-by: Sean Christopherson <seanjc@google.com>
-[sean: drop TDX crud, account for lack of kvm_x86_call()]
-Signed-off-by: Sean Christopherson <seanjc@google.com>
+  # ADD_CONFIG := ${CONFIG_DIR}/temp_config
+  DEFAULTS
+  ADD_CONFIG = ${CONFIG_DIR}/default_config ${ADD_CONFIG}
+
+Then the above will go into a recursive loop where ${ADD_CONFIG} will
+get replaced with the current definition of ADD_CONFIG which contains the
+${ADD_CONFIG} and that will also try to get converted. ktest.pl will error
+after 100 attempts of recursion and fail.
+
+When replacing a variable with the default variable, if the default
+variable contains itself, do not replace it.
+
+Cc: "John Warthog9 Hawley" <warthog9@kernel.org>
+Cc: Dhaval Giani <dhaval.giani@gmail.com>
+Cc: Greg KH <gregkh@linuxfoundation.org>
+Link: https://lore.kernel.org/20250718202053.732189428@kernel.org
+Signed-off-by: Steven Rostedt <rostedt@goodmis.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/x86/include/asm/kvm_host.h |  6 +++++-
- arch/x86/kvm/svm/svm.c          |  4 ++--
- arch/x86/kvm/vmx/vmx.c          |  3 ++-
- arch/x86/kvm/x86.c              | 10 ++++++++--
- 4 files changed, 17 insertions(+), 6 deletions(-)
+ tools/testing/ktest/ktest.pl | 5 ++++-
+ 1 file changed, 4 insertions(+), 1 deletion(-)
 
-diff --git a/arch/x86/include/asm/kvm_host.h b/arch/x86/include/asm/kvm_host.h
-index 86f3bd6601e7..1383f5e5238a 100644
---- a/arch/x86/include/asm/kvm_host.h
-+++ b/arch/x86/include/asm/kvm_host.h
-@@ -1456,6 +1456,10 @@ static inline u16 kvm_lapic_irq_dest_mode(bool dest_mode_logical)
- 	return dest_mode_logical ? APIC_DEST_LOGICAL : APIC_DEST_PHYSICAL;
- }
- 
-+enum kvm_x86_run_flags {
-+	KVM_RUN_FORCE_IMMEDIATE_EXIT	= BIT(0),
-+};
-+
- struct kvm_x86_ops {
- 	const char *name;
- 
-@@ -1529,7 +1533,7 @@ struct kvm_x86_ops {
- 
- 	int (*vcpu_pre_run)(struct kvm_vcpu *vcpu);
- 	enum exit_fastpath_completion (*vcpu_run)(struct kvm_vcpu *vcpu,
--						  bool force_immediate_exit);
-+						  u64 run_flags);
- 	int (*handle_exit)(struct kvm_vcpu *vcpu,
- 		enum exit_fastpath_completion exit_fastpath);
- 	int (*skip_emulated_instruction)(struct kvm_vcpu *vcpu);
-diff --git a/arch/x86/kvm/svm/svm.c b/arch/x86/kvm/svm/svm.c
-index 12de50db401f..dc8a1b72d8ec 100644
---- a/arch/x86/kvm/svm/svm.c
-+++ b/arch/x86/kvm/svm/svm.c
-@@ -4008,9 +4008,9 @@ static noinstr void svm_vcpu_enter_exit(struct kvm_vcpu *vcpu, bool spec_ctrl_in
- 	guest_state_exit_irqoff();
- }
- 
--static __no_kcsan fastpath_t svm_vcpu_run(struct kvm_vcpu *vcpu,
--					  bool force_immediate_exit)
-+static __no_kcsan fastpath_t svm_vcpu_run(struct kvm_vcpu *vcpu, u64 run_flags)
- {
-+	bool force_immediate_exit = run_flags & KVM_RUN_FORCE_IMMEDIATE_EXIT;
- 	struct vcpu_svm *svm = to_svm(vcpu);
- 	bool spec_ctrl_intercepted = msr_write_intercepted(vcpu, MSR_IA32_SPEC_CTRL);
- 
-diff --git a/arch/x86/kvm/vmx/vmx.c b/arch/x86/kvm/vmx/vmx.c
-index 179747d04edc..382f42200688 100644
---- a/arch/x86/kvm/vmx/vmx.c
-+++ b/arch/x86/kvm/vmx/vmx.c
-@@ -7204,8 +7204,9 @@ static noinstr void vmx_vcpu_enter_exit(struct kvm_vcpu *vcpu,
- 	guest_state_exit_irqoff();
- }
- 
--static fastpath_t vmx_vcpu_run(struct kvm_vcpu *vcpu, bool force_immediate_exit)
-+static fastpath_t vmx_vcpu_run(struct kvm_vcpu *vcpu, u64 run_flags)
- {
-+	bool force_immediate_exit = run_flags & KVM_RUN_FORCE_IMMEDIATE_EXIT;
- 	struct vcpu_vmx *vmx = to_vmx(vcpu);
- 	unsigned long cr3, cr4;
- 
-diff --git a/arch/x86/kvm/x86.c b/arch/x86/kvm/x86.c
-index 400a6e9fb0be..83e5e823cbae 100644
---- a/arch/x86/kvm/x86.c
-+++ b/arch/x86/kvm/x86.c
-@@ -10591,6 +10591,7 @@ static int vcpu_enter_guest(struct kvm_vcpu *vcpu)
- 		dm_request_for_irq_injection(vcpu) &&
- 		kvm_cpu_accept_dm_intr(vcpu);
- 	fastpath_t exit_fastpath;
-+	u64 run_flags;
- 
- 	bool req_immediate_exit = false;
- 
-@@ -10811,8 +10812,11 @@ static int vcpu_enter_guest(struct kvm_vcpu *vcpu)
- 		goto cancel_injection;
- 	}
- 
--	if (req_immediate_exit)
-+	run_flags = 0;
-+	if (req_immediate_exit) {
-+		run_flags |= KVM_RUN_FORCE_IMMEDIATE_EXIT;
- 		kvm_make_request(KVM_REQ_EVENT, vcpu);
-+	}
- 
- 	fpregs_assert_state_consistent();
- 	if (test_thread_flag(TIF_NEED_FPU_LOAD))
-@@ -10848,7 +10852,7 @@ static int vcpu_enter_guest(struct kvm_vcpu *vcpu)
- 		WARN_ON_ONCE((kvm_vcpu_apicv_activated(vcpu) != kvm_vcpu_apicv_active(vcpu)) &&
- 			     (kvm_get_apic_mode(vcpu) != LAPIC_MODE_DISABLED));
- 
--		exit_fastpath = static_call(kvm_x86_vcpu_run)(vcpu, req_immediate_exit);
-+		exit_fastpath = static_call(kvm_x86_vcpu_run)(vcpu, run_flags);
- 		if (likely(exit_fastpath != EXIT_FASTPATH_REENTER_GUEST))
- 			break;
- 
-@@ -10860,6 +10864,8 @@ static int vcpu_enter_guest(struct kvm_vcpu *vcpu)
- 			break;
- 		}
- 
-+		run_flags = 0;
-+
- 		/* Note, VM-Exits that go down the "slow" path are accounted below. */
- 		++vcpu->stat.exits;
- 	}
+diff --git a/tools/testing/ktest/ktest.pl b/tools/testing/ktest/ktest.pl
+index 331601575743..a8979280b505 100755
+--- a/tools/testing/ktest/ktest.pl
++++ b/tools/testing/ktest/ktest.pl
+@@ -1358,7 +1358,10 @@ sub __eval_option {
+ 	# If a variable contains itself, use the default var
+ 	if (($var eq $name) && defined($opt{$var})) {
+ 	    $o = $opt{$var};
+-	    $retval = "$retval$o";
++	    # Only append if the default doesn't contain itself
++	    if ($o !~ m/\$\{$var\}/) {
++		$retval = "$retval$o";
++	    }
+ 	} elsif (defined($opt{$o})) {
+ 	    $o = $opt{$o};
+ 	    $retval = "$retval$o";
 -- 
-2.50.1
+2.39.5
 
 
 
