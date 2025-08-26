@@ -1,61 +1,58 @@
-Return-Path: <stable+bounces-176369-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-175435-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 53B78B36C8C
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 16:57:12 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id E831CB3688A
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 16:17:12 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id C54755A1501
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 14:47:43 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 388D11BC619B
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 14:06:11 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8DCA635A2AE;
-	Tue, 26 Aug 2025 14:44:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id DF9C93568EC;
+	Tue, 26 Aug 2025 14:03:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="iY5+f8Gu"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="WpZmy1zu"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4ABC83568E9;
-	Tue, 26 Aug 2025 14:44:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 98CCE3568E7;
+	Tue, 26 Aug 2025 14:03:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756219479; cv=none; b=RSLADK2ALGYIbVQc5XnVqRgkse1joyXPfS7USX+Z+yA9iOYaHLwCYiUrx/GB0qlyoWlDbnT7LMcdNYTSuQIW4ovJIkXHLs6vRGgVqh2NWrjY7lbEK5RC5KI5n7TnftiEIDetOT+4ff2xzKxncuGOfmGMO4URig75EEBAcBNfjco=
+	t=1756217034; cv=none; b=u5hIHyx8rib06CYqoKqx2HdWPLo1noXTOqU31FeawX+BP3B71B1kf88/8BHbt/mgO3eOPngozev3wNFyAC/yAg0S1kWt8c/ZxO5HosOiTaK1W4d+P9nZ/fpEip1sMmtKG8FJWiUDx4sziRucjmhfS/cgMnr7D+ML7u29yoEb7+0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756219479; c=relaxed/simple;
-	bh=hIA3kKWdgt80ARli/iPU3+rceDU8XcjLuIenevXwVFM=;
+	s=arc-20240116; t=1756217034; c=relaxed/simple;
+	bh=K82djbxXimfVBHLQQCFDpnENfQF1GDRYvT82JhEq/qk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=eEFNaRclCW5CY9f+mi7kSRjpaiJzrveh4fuPSeZh1a/84vxaxbiKpnPTsI+nl2IVWMPpcswN9s/m7hMmTlZUAV2fqmFlQ34rQ453Q0l+/iPUGbBgFgnzjAm95kHfYx12WqdNuI5yJIy/Sn86O+I6tSk67Lu86si7EhOeCavhXvI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=iY5+f8Gu; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9E85BC4CEF1;
-	Tue, 26 Aug 2025 14:44:38 +0000 (UTC)
+	 MIME-Version; b=T8Jj0vQjEQ9CaF6iNN9V4sPBECN26LgKxmyKNfdw9Y4TbnnQbOOunt85X6J35xN4di3s9uWau294p4tWM6aY01qqtebcbf2h2EQ9jTJiQz6oJDhl4YarfFBL3KS1nTGSjxa1UMiZ4eCfvPT/InRt7eO81QQMLlmJr5R65hiJN7E=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=WpZmy1zu; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 271B5C4CEF1;
+	Tue, 26 Aug 2025 14:03:53 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1756219479;
-	bh=hIA3kKWdgt80ARli/iPU3+rceDU8XcjLuIenevXwVFM=;
+	s=korg; t=1756217034;
+	bh=K82djbxXimfVBHLQQCFDpnENfQF1GDRYvT82JhEq/qk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=iY5+f8GuM908hCd3KKOricwCKjxbTr/P/N5OPH7KnNjV6ZyOJwSrEjYJbtJTsBHsk
-	 r6UzeNkixgy8v5fzDUSy/F8TZ6hZkyPFh3EQubpuevqqJBiQYSACNNLHtShuUOlcY6
-	 +s65zmGBKOt90EH+wJas99/XbZqbmlgyuLoGSLUY=
+	b=WpZmy1zu31U8DLWwh6Fs8HXfxWZ/imi4Jl64C7I1Cg6+9/0ywNnSeptyTlA5c3GhF
+	 xB3uDdSk2ngZ8ttd/lOZTs/PnX7xynrdsUO4KxLGMd3sAG/3+iDM4pPyvPRbfWU5Mr
+	 cgyZHKpBIVa/eqaye6YBVvDoXW2UZPkyjMiB8ykM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jason Xing <kernelxing@tencent.com>,
-	Larysa Zaremba <larysa.zaremba@intel.com>,
-	Paul Menzel <pmenzel@molgen.mpg.de>,
-	Aleksandr Loktionov <aleksandr.loktionov@intel.com>,
-	Priya Singh <priyax.singh@intel.com>,
-	Tony Nguyen <anthony.l.nguyen@intel.com>,
+	Horatiu Vultur <horatiu.vultur@microchip.com>,
+	Vadim Fedorenko <vadim.fedorenko@linux.dev>,
+	Vladimir Oltean <vladimir.oltean@nxp.com>,
 	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.4 398/403] ixgbe: xsk: resolve the negative overflow of budget in ixgbe_xmit_zc
+Subject: [PATCH 5.15 633/644] phy: mscc: Fix timestamping for vsc8584
 Date: Tue, 26 Aug 2025 13:12:04 +0200
-Message-ID: <20250826110918.028610897@linuxfoundation.org>
+Message-ID: <20250826111002.246085711@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250826110905.607690791@linuxfoundation.org>
-References: <20250826110905.607690791@linuxfoundation.org>
+In-Reply-To: <20250826110946.507083938@linuxfoundation.org>
+References: <20250826110946.507083938@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -67,76 +64,218 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.4-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jason Xing <kernelxing@tencent.com>
+From: Horatiu Vultur <horatiu.vultur@microchip.com>
 
-[ Upstream commit 4d4d9ef9dfee877d494e5418f68a1016ef08cad6 ]
+[ Upstream commit bc1a59cff9f797bfbf8f3104507584d89e9ecf2e ]
 
-Resolve the budget negative overflow which leads to returning true in
-ixgbe_xmit_zc even when the budget of descs are thoroughly consumed.
+There was a problem when we received frames and the frames were
+timestamped. The driver is configured to store the nanosecond part of
+the timestmap in the ptp reserved bits and it would take the second part
+by reading the LTC. The problem is that when reading the LTC we are in
+atomic context and to read the second part will go over mdio bus which
+might sleep, so we get an error.
+The fix consists in actually put all the frames in a queue and start the
+aux work and in that work to read the LTC and then calculate the full
+received time.
 
-Before this patch, when the budget is decreased to zero and finishes
-sending the last allowed desc in ixgbe_xmit_zc, it will always turn back
-and enter into the while() statement to see if it should keep processing
-packets, but in the meantime it unexpectedly decreases the value again to
-'unsigned int (0--)', namely, UINT_MAX. Finally, the ixgbe_xmit_zc returns
-true, showing 'we complete cleaning the budget'. That also means
-'clean_complete = true' in ixgbe_poll.
-
-The true theory behind this is if that budget number of descs are consumed,
-it implies that we might have more descs to be done. So we should return
-false in ixgbe_xmit_zc to tell napi poll to find another chance to start
-polling to handle the rest of descs. On the contrary, returning true here
-means job done and we know we finish all the possible descs this time and
-we don't intend to start a new napi poll.
-
-It is apparently against our expectations. Please also see how
-ixgbe_clean_tx_irq() handles the problem: it uses do..while() statement
-to make sure the budget can be decreased to zero at most and the negative
-overflow never happens.
-
-The patch adds 'likely' because we rarely would not hit the loop condition
-since the standard budget is 256.
-
-Fixes: 8221c5eba8c1 ("ixgbe: add AF_XDP zero-copy Tx support")
-Signed-off-by: Jason Xing <kernelxing@tencent.com>
-Reviewed-by: Larysa Zaremba <larysa.zaremba@intel.com>
-Reviewed-by: Paul Menzel <pmenzel@molgen.mpg.de>
-Reviewed-by: Aleksandr Loktionov <aleksandr.loktionov@intel.com>
-Tested-by: Priya Singh <priyax.singh@intel.com>
-Signed-off-by: Tony Nguyen <anthony.l.nguyen@intel.com>
-Link: https://patch.msgid.link/20250819222000.3504873-4-anthony.l.nguyen@intel.com
+Fixes: 7d272e63e0979d ("net: phy: mscc: timestamping and PHC support")
+Signed-off-by: Horatiu Vultur <horatiu.vultur@microchip.com>
+Reviewed-by: Vadim Fedorenko <vadim.fedorenko@linux.dev>
+Reviewed-by: Vladimir Oltean <vladimir.oltean@nxp.com>
+Link: https://patch.msgid.link/20250818081029.1300780-1-horatiu.vultur@microchip.com
 Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/ethernet/intel/ixgbe/ixgbe_xsk.c | 4 +++-
- 1 file changed, 3 insertions(+), 1 deletion(-)
+ drivers/net/phy/mscc/mscc.h      | 12 ++++++++
+ drivers/net/phy/mscc/mscc_main.c | 12 ++++++++
+ drivers/net/phy/mscc/mscc_ptp.c  | 49 ++++++++++++++++++++++++--------
+ 3 files changed, 61 insertions(+), 12 deletions(-)
 
-diff --git a/drivers/net/ethernet/intel/ixgbe/ixgbe_xsk.c b/drivers/net/ethernet/intel/ixgbe/ixgbe_xsk.c
-index 921a2ddb497e..c68eb5dddf5b 100644
---- a/drivers/net/ethernet/intel/ixgbe/ixgbe_xsk.c
-+++ b/drivers/net/ethernet/intel/ixgbe/ixgbe_xsk.c
-@@ -582,7 +582,7 @@ static bool ixgbe_xmit_zc(struct ixgbe_ring *xdp_ring, unsigned int budget)
- 	dma_addr_t dma;
- 	u32 cmd_type;
+diff --git a/drivers/net/phy/mscc/mscc.h b/drivers/net/phy/mscc/mscc.h
+index 055e4ca5b3b5..878298304430 100644
+--- a/drivers/net/phy/mscc/mscc.h
++++ b/drivers/net/phy/mscc/mscc.h
+@@ -360,6 +360,13 @@ struct vsc85xx_hw_stat {
+ 	u16 mask;
+ };
  
--	while (budget-- > 0) {
-+	while (likely(budget)) {
- 		if (unlikely(!ixgbe_desc_unused(xdp_ring))) {
- 			work_done = false;
- 			break;
-@@ -619,6 +619,8 @@ static bool ixgbe_xmit_zc(struct ixgbe_ring *xdp_ring, unsigned int budget)
- 		xdp_ring->next_to_use++;
- 		if (xdp_ring->next_to_use == xdp_ring->count)
- 			xdp_ring->next_to_use = 0;
++struct vsc8531_skb_cb {
++	u32 ns;
++};
 +
-+		budget--;
- 	}
++#define VSC8531_SKB_CB(skb) \
++	((struct vsc8531_skb_cb *)((skb)->cb))
++
+ struct vsc8531_private {
+ 	int rate_magic;
+ 	u16 supp_led_modes;
+@@ -408,6 +415,11 @@ struct vsc8531_private {
+ 	 */
+ 	struct mutex ts_lock;
+ 	struct mutex phc_lock;
++
++	/* list of skbs that were received and need timestamp information but it
++	 * didn't received it yet
++	 */
++	struct sk_buff_head rx_skbs_list;
+ };
  
- 	if (tx_desc) {
+ /* Shared structure between the PHYs of the same package.
+diff --git a/drivers/net/phy/mscc/mscc_main.c b/drivers/net/phy/mscc/mscc_main.c
+index b349c359089e..03aa85ec60df 100644
+--- a/drivers/net/phy/mscc/mscc_main.c
++++ b/drivers/net/phy/mscc/mscc_main.c
+@@ -2324,6 +2324,13 @@ static int vsc85xx_probe(struct phy_device *phydev)
+ 	return vsc85xx_dt_led_modes_get(phydev, default_mode);
+ }
+ 
++static void vsc85xx_remove(struct phy_device *phydev)
++{
++	struct vsc8531_private *priv = phydev->priv;
++
++	skb_queue_purge(&priv->rx_skbs_list);
++}
++
+ /* Microsemi VSC85xx PHYs */
+ static struct phy_driver vsc85xx_driver[] = {
+ {
+@@ -2554,6 +2561,7 @@ static struct phy_driver vsc85xx_driver[] = {
+ 	.config_intr    = &vsc85xx_config_intr,
+ 	.suspend	= &genphy_suspend,
+ 	.resume		= &genphy_resume,
++	.remove		= &vsc85xx_remove,
+ 	.probe		= &vsc8574_probe,
+ 	.set_wol	= &vsc85xx_wol_set,
+ 	.get_wol	= &vsc85xx_wol_get,
+@@ -2579,6 +2587,7 @@ static struct phy_driver vsc85xx_driver[] = {
+ 	.config_intr    = &vsc85xx_config_intr,
+ 	.suspend	= &genphy_suspend,
+ 	.resume		= &genphy_resume,
++	.remove		= &vsc85xx_remove,
+ 	.probe		= &vsc8574_probe,
+ 	.set_wol	= &vsc85xx_wol_set,
+ 	.get_wol	= &vsc85xx_wol_get,
+@@ -2604,6 +2613,7 @@ static struct phy_driver vsc85xx_driver[] = {
+ 	.config_intr    = &vsc85xx_config_intr,
+ 	.suspend	= &genphy_suspend,
+ 	.resume		= &genphy_resume,
++	.remove		= &vsc85xx_remove,
+ 	.probe		= &vsc8584_probe,
+ 	.get_tunable	= &vsc85xx_get_tunable,
+ 	.set_tunable	= &vsc85xx_set_tunable,
+@@ -2627,6 +2637,7 @@ static struct phy_driver vsc85xx_driver[] = {
+ 	.config_intr    = &vsc85xx_config_intr,
+ 	.suspend	= &genphy_suspend,
+ 	.resume		= &genphy_resume,
++	.remove		= &vsc85xx_remove,
+ 	.probe		= &vsc8584_probe,
+ 	.get_tunable	= &vsc85xx_get_tunable,
+ 	.set_tunable	= &vsc85xx_set_tunable,
+@@ -2650,6 +2661,7 @@ static struct phy_driver vsc85xx_driver[] = {
+ 	.config_intr    = &vsc85xx_config_intr,
+ 	.suspend	= &genphy_suspend,
+ 	.resume		= &genphy_resume,
++	.remove		= &vsc85xx_remove,
+ 	.probe		= &vsc8584_probe,
+ 	.get_tunable	= &vsc85xx_get_tunable,
+ 	.set_tunable	= &vsc85xx_set_tunable,
+diff --git a/drivers/net/phy/mscc/mscc_ptp.c b/drivers/net/phy/mscc/mscc_ptp.c
+index cf61990ccd37..f77bfbee5f20 100644
+--- a/drivers/net/phy/mscc/mscc_ptp.c
++++ b/drivers/net/phy/mscc/mscc_ptp.c
+@@ -1190,9 +1190,7 @@ static bool vsc85xx_rxtstamp(struct mii_timestamper *mii_ts,
+ {
+ 	struct vsc8531_private *vsc8531 =
+ 		container_of(mii_ts, struct vsc8531_private, mii_ts);
+-	struct skb_shared_hwtstamps *shhwtstamps = NULL;
+ 	struct vsc85xx_ptphdr *ptphdr;
+-	struct timespec64 ts;
+ 	unsigned long ns;
+ 
+ 	if (!vsc8531->ptp->configured)
+@@ -1202,27 +1200,52 @@ static bool vsc85xx_rxtstamp(struct mii_timestamper *mii_ts,
+ 	    type == PTP_CLASS_NONE)
+ 		return false;
+ 
+-	vsc85xx_gettime(&vsc8531->ptp->caps, &ts);
+-
+ 	ptphdr = get_ptp_header_rx(skb, vsc8531->ptp->rx_filter);
+ 	if (!ptphdr)
+ 		return false;
+ 
+-	shhwtstamps = skb_hwtstamps(skb);
+-	memset(shhwtstamps, 0, sizeof(struct skb_shared_hwtstamps));
+-
+ 	ns = ntohl(ptphdr->rsrvd2);
+ 
+-	/* nsec is in reserved field */
+-	if (ts.tv_nsec < ns)
+-		ts.tv_sec--;
++	VSC8531_SKB_CB(skb)->ns = ns;
++	skb_queue_tail(&vsc8531->rx_skbs_list, skb);
+ 
+-	shhwtstamps->hwtstamp = ktime_set(ts.tv_sec, ns);
+-	netif_rx(skb);
++	ptp_schedule_worker(vsc8531->ptp->ptp_clock, 0);
+ 
+ 	return true;
+ }
+ 
++static long vsc85xx_do_aux_work(struct ptp_clock_info *info)
++{
++	struct vsc85xx_ptp *ptp = container_of(info, struct vsc85xx_ptp, caps);
++	struct skb_shared_hwtstamps *shhwtstamps = NULL;
++	struct phy_device *phydev = ptp->phydev;
++	struct vsc8531_private *priv = phydev->priv;
++	struct sk_buff_head received;
++	struct sk_buff *rx_skb;
++	struct timespec64 ts;
++	unsigned long flags;
++
++	__skb_queue_head_init(&received);
++	spin_lock_irqsave(&priv->rx_skbs_list.lock, flags);
++	skb_queue_splice_tail_init(&priv->rx_skbs_list, &received);
++	spin_unlock_irqrestore(&priv->rx_skbs_list.lock, flags);
++
++	vsc85xx_gettime(info, &ts);
++	while ((rx_skb = __skb_dequeue(&received)) != NULL) {
++		shhwtstamps = skb_hwtstamps(rx_skb);
++		memset(shhwtstamps, 0, sizeof(struct skb_shared_hwtstamps));
++
++		if (ts.tv_nsec < VSC8531_SKB_CB(rx_skb)->ns)
++			ts.tv_sec--;
++
++		shhwtstamps->hwtstamp = ktime_set(ts.tv_sec,
++						  VSC8531_SKB_CB(rx_skb)->ns);
++		netif_rx(rx_skb);
++	}
++
++	return -1;
++}
++
+ static const struct ptp_clock_info vsc85xx_clk_caps = {
+ 	.owner		= THIS_MODULE,
+ 	.name		= "VSC85xx timer",
+@@ -1236,6 +1259,7 @@ static const struct ptp_clock_info vsc85xx_clk_caps = {
+ 	.adjfine	= &vsc85xx_adjfine,
+ 	.gettime64	= &vsc85xx_gettime,
+ 	.settime64	= &vsc85xx_settime,
++	.do_aux_work	= &vsc85xx_do_aux_work,
+ };
+ 
+ static struct vsc8531_private *vsc8584_base_priv(struct phy_device *phydev)
+@@ -1563,6 +1587,7 @@ int vsc8584_ptp_probe(struct phy_device *phydev)
+ 
+ 	mutex_init(&vsc8531->phc_lock);
+ 	mutex_init(&vsc8531->ts_lock);
++	skb_queue_head_init(&vsc8531->rx_skbs_list);
+ 
+ 	/* Retrieve the shared load/save GPIO. Request it as non exclusive as
+ 	 * the same GPIO can be requested by all the PHYs of the same package.
 -- 
 2.50.1
 
