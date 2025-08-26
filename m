@@ -1,56 +1,58 @@
-Return-Path: <stable+bounces-174350-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-173867-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3391CB362FF
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 15:25:04 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id EDFCEB3602E
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 14:58:04 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 552C32A2B53
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 13:17:43 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id A670A1BA7B94
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 12:55:52 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5495E230BCE;
-	Tue, 26 Aug 2025 13:15:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1EB9B1A9FB0;
+	Tue, 26 Aug 2025 12:54:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="DzpEDehJ"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="lrmhEjpI"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 106B5139579;
-	Tue, 26 Aug 2025 13:15:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D1835145B3E;
+	Tue, 26 Aug 2025 12:54:35 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756214158; cv=none; b=LDaNRLAqrNUlvOUxVrrhbaH0sJNX2kxQh0wKn/c0oPAcPxA3DZkpRsdVYcfq0u/WNm/QpXgKqqdTNJdbKb9BFWBUKuc3T+lknqEhJcgv/Kj0eOlAl1yxYf/IQ6iVjiRx3miQv3nGUm0WMOvGJou4XouHq+2YLvQYkWC7SvlUEzs=
+	t=1756212875; cv=none; b=Q56S6hTvl2WPV6bbCe4JJbmsOwGjN12WEJquXBO5HM15J405X3O5aW2t1bVlhMjjaZ3w4rdnkAoCWBWktI0GzvaECnDoy7NZ4atkYFOEGubQqPFgbc0mqOmTK6dJmpeQtZ9WscQWi20g5EXXFy8hJenLsgA2ZylnWakriwZIx6s=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756214158; c=relaxed/simple;
-	bh=vwLkTh+QGaa70He0UUZAUKnaZuuJ7sff/NHBlXj9z/c=;
+	s=arc-20240116; t=1756212875; c=relaxed/simple;
+	bh=3Vgy52usXlO+wjGBWTnRMajgK4EHmxdy6nQKUc9ZIWU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=uHZIMlB9Q38YsZjSE8E0cAL0LhouN3qbk3hEdis+UEfmJ0eb+SJ0GLS4s4KIGEMbo3nsEi5BB0bN2xuvseSrnkWVfG2sjx4mZSJbtiwkqLe1SHILxP5c7NzDAsoxugduzwd89H8BxprtR64vUMZZn74o99dZV9D3tXyxocTUqwA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=DzpEDehJ; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 94CEDC4CEF1;
-	Tue, 26 Aug 2025 13:15:57 +0000 (UTC)
+	 MIME-Version:Content-Type; b=gqw94pyQNIM5wgNvhsmPyt+ij63MQYIqMQdHBPZhJiyRdrfs5B8x9FWyx8vB2Tp7u3bzgqLF9+an8VTfum/RqgDJqrON8EbJsLTv4aGE963euFSTzC/KDrGyuvwNCasUEQx7vzA5nT5c8qB1uPzumF6+MWuHrmp9CLS/zpCtX84=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=lrmhEjpI; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5F747C4CEF1;
+	Tue, 26 Aug 2025 12:54:35 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1756214157;
-	bh=vwLkTh+QGaa70He0UUZAUKnaZuuJ7sff/NHBlXj9z/c=;
+	s=korg; t=1756212875;
+	bh=3Vgy52usXlO+wjGBWTnRMajgK4EHmxdy6nQKUc9ZIWU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=DzpEDehJGjAwIwDL9OieRvbaCnxHqlealnhHiL+6PJ1gyOfxcAwB5EVB7GsD/yuni
-	 Lazk+W6f5/KW84DKNF6EQVwVI5+Ye4GF/MnRW4Pce3nXa9ld4J5NvCNvtygh/41RlK
-	 Hy5CQxH8WVIrA8qJ8lc1jbGtBPoZKcwu9Hfbo4KU=
+	b=lrmhEjpISf+UdIZmVEkGQFP9j9FfrdY0eKr7QRPafGiGKv8yVHCP7iNxbcKX7cl0C
+	 VPmQvznr3WaQcCZvtl6KeYltkb4w2Q0txX4EcZOl1mbB/c8q8ErKWsNWUPWzg8mheg
+	 i37V/MIQ/8PWRtx7shGwr6gRaSpE4f36FEuh4v7U=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Sean Christopherson <seanjc@google.com>,
-	Sasha Levin <sashal@kernel.org>,
-	Ravi Bangoria <ravi.bangoria@amd.com>
-Subject: [PATCH 6.1 032/482] KVM: x86: Snapshot the hosts DEBUGCTL after disabling IRQs
+	Jonathan Santos <Jonathan.Santos@analog.com>,
+	David Lechner <dlechner@baylibre.com>,
+	Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
+	Jonathan Cameron <Jonathan.Cameron@huawei.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.6 136/587] iio: adc: ad7768-1: Ensure SYNC_IN pulse minimum timing requirement
 Date: Tue, 26 Aug 2025 13:04:45 +0200
-Message-ID: <20250826110931.599155324@linuxfoundation.org>
+Message-ID: <20250826110956.412863723@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250826110930.769259449@linuxfoundation.org>
-References: <20250826110930.769259449@linuxfoundation.org>
+In-Reply-To: <20250826110952.942403671@linuxfoundation.org>
+References: <20250826110952.942403671@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,54 +62,74 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Sean Christopherson <seanjc@google.com>
+From: Jonathan Santos <Jonathan.Santos@analog.com>
 
-[ Upstream commit 189ecdb3e112da703ac0699f4ec76aa78122f911 ]
+[ Upstream commit 7e54d932873d91a55d1b89b7389876d78aeeab32 ]
 
-Snapshot the host's DEBUGCTL after disabling IRQs, as perf can toggle
-debugctl bits from IRQ context, e.g. when enabling/disabling events via
-smp_call_function_single().  Taking the snapshot (long) before IRQs are
-disabled could result in KVM effectively clobbering DEBUGCTL due to using
-a stale snapshot.
+The SYNC_IN pulse width must be at least 1.5 x Tmclk, corresponding to
+~2.5 µs at the lowest supported MCLK frequency. Add a 3 µs delay to
+ensure reliable synchronization timing even for the worst-case scenario.
 
-Cc: stable@vger.kernel.org
-Reviewed-and-tested-by: Ravi Bangoria <ravi.bangoria@amd.com>
-Link: https://lore.kernel.org/r/20250227222411.3490595-6-seanjc@google.com
-Signed-off-by: Sean Christopherson <seanjc@google.com>
+Signed-off-by: Jonathan Santos <Jonathan.Santos@analog.com>
+Reviewed-by: David Lechner <dlechner@baylibre.com>
+Reviewed-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+Link: https://patch.msgid.link/d3ee92a533cd1207cf5c5cc4d7bdbb5c6c267f68.1749063024.git.Jonathan.Santos@analog.com
+Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/x86/kvm/x86.c | 3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+ drivers/iio/adc/ad7768-1.c | 23 +++++++++++++++++++----
+ 1 file changed, 19 insertions(+), 4 deletions(-)
 
-diff --git a/arch/x86/kvm/x86.c b/arch/x86/kvm/x86.c
-index ba24bb50af57..b0ae61ba9b99 100644
---- a/arch/x86/kvm/x86.c
-+++ b/arch/x86/kvm/x86.c
-@@ -4742,7 +4742,6 @@ void kvm_arch_vcpu_load(struct kvm_vcpu *vcpu, int cpu)
+diff --git a/drivers/iio/adc/ad7768-1.c b/drivers/iio/adc/ad7768-1.c
+index 967f06cd3f94..e147eaf1a3b1 100644
+--- a/drivers/iio/adc/ad7768-1.c
++++ b/drivers/iio/adc/ad7768-1.c
+@@ -203,6 +203,24 @@ static int ad7768_spi_reg_write(struct ad7768_state *st,
+ 	return spi_write(st->spi, st->data.d8, 2);
+ }
  
- 	/* Save host pkru register if supported */
- 	vcpu->arch.host_pkru = read_pkru();
--	vcpu->arch.host_debugctl = get_debugctlmsr();
- 
- 	/* Apply any externally detected TSC adjustments (due to suspend) */
- 	if (unlikely(vcpu->arch.tsc_offset_adjustment)) {
-@@ -10851,6 +10850,8 @@ static int vcpu_enter_guest(struct kvm_vcpu *vcpu)
- 		set_debugreg(0, 7);
- 	}
- 
-+	vcpu->arch.host_debugctl = get_debugctlmsr();
++static int ad7768_send_sync_pulse(struct ad7768_state *st)
++{
++	/*
++	 * The datasheet specifies a minimum SYNC_IN pulse width of 1.5 × Tmclk,
++	 * where Tmclk is the MCLK period. The supported MCLK frequencies range
++	 * from 0.6 MHz to 17 MHz, which corresponds to a minimum SYNC_IN pulse
++	 * width of approximately 2.5 µs in the worst-case scenario (0.6 MHz).
++	 *
++	 * Add a delay to ensure the pulse width is always sufficient to
++	 * trigger synchronization.
++	 */
++	gpiod_set_value_cansleep(st->gpio_sync_in, 1);
++	fsleep(3);
++	gpiod_set_value_cansleep(st->gpio_sync_in, 0);
 +
- 	guest_timing_enter_irqoff();
++	return 0;
++}
++
+ static int ad7768_set_mode(struct ad7768_state *st,
+ 			   enum ad7768_conv_mode mode)
+ {
+@@ -288,10 +306,7 @@ static int ad7768_set_dig_fil(struct ad7768_state *st,
+ 		return ret;
  
- 	for (;;) {
+ 	/* A sync-in pulse is required every time the filter dec rate changes */
+-	gpiod_set_value(st->gpio_sync_in, 1);
+-	gpiod_set_value(st->gpio_sync_in, 0);
+-
+-	return 0;
++	return ad7768_send_sync_pulse(st);
+ }
+ 
+ static int ad7768_set_freq(struct ad7768_state *st,
 -- 
-2.50.1
+2.39.5
 
 
 
