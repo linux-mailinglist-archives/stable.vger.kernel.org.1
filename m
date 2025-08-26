@@ -1,56 +1,55 @@
-Return-Path: <stable+bounces-175617-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-175053-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id D8991B36982
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 16:27:51 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 68063B36672
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 15:57:18 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 662831C27BF0
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 14:15:04 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 0C8E08E7C4D
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 13:48:19 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id EF1233570B9;
-	Tue, 26 Aug 2025 14:11:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id F1B2034A333;
+	Tue, 26 Aug 2025 13:46:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ruap/oKS"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="fEeHQUIB"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A8A833570B3;
-	Tue, 26 Aug 2025 14:11:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AD9E7350D62;
+	Tue, 26 Aug 2025 13:46:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756217519; cv=none; b=LoFkvvlHKuA+HlvcNRmfkb08fmAO+t/tKKgnW66xzX7DTWCduDvPrOmEtblI2x9MfkdvXeQk+eO7/d2AKvOYV7m3KcmmUxfMT6MsH6IoYDryT0z9BQQ59wLnN9G2snMAc3cV+UPqXPA/R9jsa2yfeXupjqzCMFF8cidKxA71CP8=
+	t=1756216016; cv=none; b=l848oVJf5QI7eeORwySPUtCvIDzsjKHMO6YmbpybwV0dJdOwxyqfp+mnhgKhoLzGyVdX/Fgv71GQCXzC0AwqvF6v9oNEkuooXetrYfxEQejZ3mB9s2gq0tOdHrSYH8DP+657ypgwKmmzMxgV7vIIF7Ob/qpu2S9pQoZMlyswQ04=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756217519; c=relaxed/simple;
-	bh=HcnkHIKAatVQWxm6COxr5A8FuHOFcJynOvRRn8GNZjA=;
+	s=arc-20240116; t=1756216016; c=relaxed/simple;
+	bh=stKvZbT+eo+bS9sCSwM2Bg5yYFhH+2f0099KaIeXZqw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=h/vYu9V1EEU69gjvbnx/+Wmi9iwLPZ2ptN5ZL1Mx8QX+X9SpV2SqcrBMYCq5u0mIsyLEhVrI+AznHXJZ4q9RRDCbOj2VCYgdqOS3Hem84vtlpMyqDE680L0Gcm+SLY6IzP94n1dIywbyza6UtGoAlpXBzfdGmABg3eg/eRL9CI8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ruap/oKS; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id BC4C3C4CEF1;
-	Tue, 26 Aug 2025 14:11:58 +0000 (UTC)
+	 MIME-Version; b=i3EpTuf4NhNtzrY2FcJ889rxPBpO3yPLTLuvdUqdYSD1DQSBZQBI24hi8qcYJzoq2SmphqstTRcwf8juChO378Y1PcsUerEw7a5282R9LimtlA9jrV/U7McIEs36ydhJV+6BqVmxms+eWxHPGLHXdUO+39XUVchYwYa89NrtwlE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=fEeHQUIB; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3D7AAC4CEF1;
+	Tue, 26 Aug 2025 13:46:56 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1756217519;
-	bh=HcnkHIKAatVQWxm6COxr5A8FuHOFcJynOvRRn8GNZjA=;
+	s=korg; t=1756216016;
+	bh=stKvZbT+eo+bS9sCSwM2Bg5yYFhH+2f0099KaIeXZqw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=ruap/oKSL49CWY6h9TYm2UVzae7hLjaF6PJyXPx+hSteupoQk4953tBx9ylBbng7H
-	 f5nYCkpxcH5ec/CtDU4iczaX8+qaK87wsomcWmnz50oY2DHDWz52yZDuvd64P9+8u6
-	 jtd4S6eMXgYxbYyG2BeDQtxOzsEs7W7+rBumgr7U=
+	b=fEeHQUIBfpo7a8rnKZnE8JwM5FDr9fRqp62HjFuEIMhltNpH9u5ky5tNErGfFGEIl
+	 HoVPknz9tYTrdWxcqjEM10jGadVxTduhGJ0XjV7Bcb8LUOMzyZUe0tFj/sasNfoO0v
+	 sc42ZrAADvYBNleXea8bCn+Tzp1POCh+Nju1+bps=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Thomas Fourier <fourier.thomas@gmail.com>,
-	"Martin K. Petersen" <martin.petersen@oracle.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 132/523] scsi: isci: Fix dma_unmap_sg() nents value
-Date: Tue, 26 Aug 2025 13:05:42 +0200
-Message-ID: <20250826110927.758707023@linuxfoundation.org>
+	John Ernberg <john.ernberg@actia.se>,
+	Jakub Kicinski <kuba@kernel.org>
+Subject: [PATCH 5.15 252/644] net: usbnet: Avoid potential RCU stall on LINK_CHANGE event
+Date: Tue, 26 Aug 2025 13:05:43 +0200
+Message-ID: <20250826110952.629853339@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250826110924.562212281@linuxfoundation.org>
-References: <20250826110924.562212281@linuxfoundation.org>
+In-Reply-To: <20250826110946.507083938@linuxfoundation.org>
+References: <20250826110946.507083938@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,42 +61,125 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Thomas Fourier <fourier.thomas@gmail.com>
+From: John Ernberg <john.ernberg@actia.se>
 
-[ Upstream commit 063bec4444d54e5f35d11949c5c90eaa1ff84c11 ]
+commit 0d9cfc9b8cb17dbc29a98792d36ec39a1cf1395f upstream.
 
-The dma_unmap_sg() functions should be called with the same nents as the
-dma_map_sg(), not the value the map function returned.
+The Gemalto Cinterion PLS83-W modem (cdc_ether) is emitting confusing link
+up and down events when the WWAN interface is activated on the modem-side.
 
-Fixes: ddcc7e347a89 ("isci: fix dma_unmap_sg usage")
-Signed-off-by: Thomas Fourier <fourier.thomas@gmail.com>
-Link: https://lore.kernel.org/r/20250627142451.241713-2-fourier.thomas@gmail.com
-Signed-off-by: Martin K. Petersen <martin.petersen@oracle.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Interrupt URBs will in consecutive polls grab:
+* Link Connected
+* Link Disconnected
+* Link Connected
+
+Where the last Connected is then a stable link state.
+
+When the system is under load this may cause the unlink_urbs() work in
+__handle_link_change() to not complete before the next usbnet_link_change()
+call turns the carrier on again, allowing rx_submit() to queue new SKBs.
+
+In that event the URB queue is filled faster than it can drain, ending up
+in a RCU stall:
+
+    rcu: INFO: rcu_sched detected expedited stalls on CPUs/tasks: { 0-.... } 33108 jiffies s: 201 root: 0x1/.
+    rcu: blocking rcu_node structures (internal RCU debug):
+    Sending NMI from CPU 1 to CPUs 0:
+    NMI backtrace for cpu 0
+
+    Call trace:
+     arch_local_irq_enable+0x4/0x8
+     local_bh_enable+0x18/0x20
+     __netdev_alloc_skb+0x18c/0x1cc
+     rx_submit+0x68/0x1f8 [usbnet]
+     rx_alloc_submit+0x4c/0x74 [usbnet]
+     usbnet_bh+0x1d8/0x218 [usbnet]
+     usbnet_bh_tasklet+0x10/0x18 [usbnet]
+     tasklet_action_common+0xa8/0x110
+     tasklet_action+0x2c/0x34
+     handle_softirqs+0x2cc/0x3a0
+     __do_softirq+0x10/0x18
+     ____do_softirq+0xc/0x14
+     call_on_irq_stack+0x24/0x34
+     do_softirq_own_stack+0x18/0x20
+     __irq_exit_rcu+0xa8/0xb8
+     irq_exit_rcu+0xc/0x30
+     el1_interrupt+0x34/0x48
+     el1h_64_irq_handler+0x14/0x1c
+     el1h_64_irq+0x68/0x6c
+     _raw_spin_unlock_irqrestore+0x38/0x48
+     xhci_urb_dequeue+0x1ac/0x45c [xhci_hcd]
+     unlink1+0xd4/0xdc [usbcore]
+     usb_hcd_unlink_urb+0x70/0xb0 [usbcore]
+     usb_unlink_urb+0x24/0x44 [usbcore]
+     unlink_urbs.constprop.0.isra.0+0x64/0xa8 [usbnet]
+     __handle_link_change+0x34/0x70 [usbnet]
+     usbnet_deferred_kevent+0x1c0/0x320 [usbnet]
+     process_scheduled_works+0x2d0/0x48c
+     worker_thread+0x150/0x1dc
+     kthread+0xd8/0xe8
+     ret_from_fork+0x10/0x20
+
+Get around the problem by delaying the carrier on to the scheduled work.
+
+This needs a new flag to keep track of the necessary action.
+
+The carrier ok check cannot be removed as it remains required for the
+LINK_RESET event flow.
+
+Fixes: 4b49f58fff00 ("usbnet: handle link change")
+Cc: stable@vger.kernel.org
+Signed-off-by: John Ernberg <john.ernberg@actia.se>
+Link: https://patch.msgid.link/20250723102526.1305339-1-john.ernberg@actia.se
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/scsi/isci/request.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/net/usb/usbnet.c   |   11 ++++++++---
+ include/linux/usb/usbnet.h |    1 +
+ 2 files changed, 9 insertions(+), 3 deletions(-)
 
-diff --git a/drivers/scsi/isci/request.c b/drivers/scsi/isci/request.c
-index a4129e456efa..b375245ce2cd 100644
---- a/drivers/scsi/isci/request.c
-+++ b/drivers/scsi/isci/request.c
-@@ -2914,7 +2914,7 @@ static void isci_request_io_request_complete(struct isci_host *ihost,
- 					 task->total_xfer_len, task->data_dir);
- 		else  /* unmap the sgl dma addresses */
- 			dma_unmap_sg(&ihost->pdev->dev, task->scatter,
--				     request->num_sg_entries, task->data_dir);
-+				     task->num_scatter, task->data_dir);
- 		break;
- 	case SAS_PROTOCOL_SMP: {
- 		struct scatterlist *sg = &task->smp_task.smp_req;
--- 
-2.39.5
-
+--- a/drivers/net/usb/usbnet.c
++++ b/drivers/net/usb/usbnet.c
+@@ -1127,6 +1127,9 @@ static void __handle_link_change(struct
+ 		 * tx queue is stopped by netcore after link becomes off
+ 		 */
+ 	} else {
++		if (test_and_clear_bit(EVENT_LINK_CARRIER_ON, &dev->flags))
++			netif_carrier_on(dev->net);
++
+ 		/* submitting URBs for reading packets */
+ 		tasklet_schedule(&dev->bh);
+ 	}
+@@ -2013,10 +2016,12 @@ EXPORT_SYMBOL(usbnet_manage_power);
+ void usbnet_link_change(struct usbnet *dev, bool link, bool need_reset)
+ {
+ 	/* update link after link is reseted */
+-	if (link && !need_reset)
+-		netif_carrier_on(dev->net);
+-	else
++	if (link && !need_reset) {
++		set_bit(EVENT_LINK_CARRIER_ON, &dev->flags);
++	} else {
++		clear_bit(EVENT_LINK_CARRIER_ON, &dev->flags);
+ 		netif_carrier_off(dev->net);
++	}
+ 
+ 	if (need_reset && link)
+ 		usbnet_defer_kevent(dev, EVENT_LINK_RESET);
+--- a/include/linux/usb/usbnet.h
++++ b/include/linux/usb/usbnet.h
+@@ -84,6 +84,7 @@ struct usbnet {
+ #		define EVENT_LINK_CHANGE	11
+ #		define EVENT_SET_RX_MODE	12
+ #		define EVENT_NO_IP_ALIGN	13
++#		define EVENT_LINK_CARRIER_ON	14
+ /* This one is special, as it indicates that the device is going away
+  * there are cyclic dependencies between tasklet, timer and bh
+  * that must be broken
 
 
 
