@@ -1,56 +1,55 @@
-Return-Path: <stable+bounces-175051-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-173000-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 08496B36646
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 15:55:32 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 68A3DB35B56
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 13:23:15 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 314BB8E5545
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 13:47:56 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 408C118980A9
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 11:21:08 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9A7BA350854;
-	Tue, 26 Aug 2025 13:46:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 64C5533437B;
+	Tue, 26 Aug 2025 11:18:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="xJooRzhe"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="yh6a1Txs"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 52FA2345758;
-	Tue, 26 Aug 2025 13:46:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1CA5B296BDF;
+	Tue, 26 Aug 2025 11:18:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756216011; cv=none; b=dGO7VzWHR5cxWrpUoCpmrFxDPgRDnbmyNrs00nhWBWkEIg9y0j7Dh1Guc6YDiTI61vJ2qXmFayliIF3NKmihxJvC0wcGRjKDUWLIOBskChwbZdT43QC+pTXuhxrrojZh5vMZEMSl+a1btqN+/a+UU0/nLd3gY/iYjbi0Pv+yCHc=
+	t=1756207116; cv=none; b=NAk8li2w2IAkqGXX80npY3vRpgCl5InZx1zAqELmFFH7Eo6t0eYlW39ju4k7cISYL2dgGuyV4SjGfsAL2uy6HgBWUzdnJQ2mY18yRuNXr4szax2pbSE//NyXdhiCoxZLVFfzLm5C2KNlIHPWKUJh07Pxil5m+uRzTrGTBu+MuYg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756216011; c=relaxed/simple;
-	bh=hDYs+ju9iQLbH1FEAsxCAsS+uBluifoVMPdaFBY+IY8=;
+	s=arc-20240116; t=1756207116; c=relaxed/simple;
+	bh=bYmr3pftbge6j3yKhp0kKviaEoh7NkKwUy7AFn6DHN4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=AL7YiH1Gwuc9f4knXBI2iJbTfbqsnAbx/Os04q3qTStMQVGTy7SzoiUgPIzlvivnk06XjIXsT/rub1+8+6j7EjVlkOB+RIK9PHq/xrFESY5LxDL4LbTHkIx+vQ4um3K5MirujcgTg4+9JrUQte6KbKbTPCXPNtzwk1ZZzfjJssk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=xJooRzhe; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id DE1DAC113CF;
-	Tue, 26 Aug 2025 13:46:50 +0000 (UTC)
+	 MIME-Version; b=hUhzpdJxsd70s/0N5eZWVQYoJucJ7hwWNa5vXysk7TwXSnc4yUkkTGWm2KP8JzTnxuzPaCAK8kZYLMXQAmmoZwlsFMTWrUVxeMNpUsSEP5cOSi1/LULCVbARTqiu+/+ibyLZlu66D4qjGXRzsef+ndXG3+ZiIiuOeX2sS0DWFuU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=yh6a1Txs; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A8BEBC4CEF1;
+	Tue, 26 Aug 2025 11:18:35 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1756216011;
-	bh=hDYs+ju9iQLbH1FEAsxCAsS+uBluifoVMPdaFBY+IY8=;
+	s=korg; t=1756207116;
+	bh=bYmr3pftbge6j3yKhp0kKviaEoh7NkKwUy7AFn6DHN4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=xJooRzhe1pMiZnlHin9pe3Zz5EeQJrLdR1a8fnEQnBqvG3meGPQIndbEnvb5Z2StT
-	 Nbgu2zVVo5cb3emh+OjpB8gmG7FctVT/za3IdesiFlDTFc6y3H2owvh/5Ak9lTCiIO
-	 CPrQN/3sneLuhIXhBSZY2IUeTwzCi33wam50iMFY=
+	b=yh6a1TxsVCmOLSajAr5CycV9NfLdr5XpJDC7TTfln7fLjxovORqSOsJwCGbhr6VmY
+	 toxEOPr+3Ti3xHs9ASnwaJYQiKab4TauaUnM4DMRLVdfScCaWALS4Ngy82ODr/lu15
+	 Yr9UmUySKdBiUGxk0HM3Kl9mdoG8jKu7ATpabsD8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Budimir Markovic <markovicbudimir@gmail.com>,
-	Stefano Garzarella <sgarzare@redhat.com>,
-	Jakub Kicinski <kuba@kernel.org>
-Subject: [PATCH 5.15 250/644] vsock: Do not allow binding to VMADDR_PORT_ANY
+	Judith Mendez <jm@ti.com>,
+	Vignesh Raghavendra <vigneshr@ti.com>
+Subject: [PATCH 6.16 057/457] arm64: dts: ti: k3-am62*: Move eMMC pinmux to top level board file
 Date: Tue, 26 Aug 2025 13:05:41 +0200
-Message-ID: <20250826110952.584407943@linuxfoundation.org>
+Message-ID: <20250826110938.765219539@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250826110946.507083938@linuxfoundation.org>
-References: <20250826110946.507083938@linuxfoundation.org>
+In-Reply-To: <20250826110937.289866482@linuxfoundation.org>
+References: <20250826110937.289866482@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,47 +61,154 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.16-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Budimir Markovic <markovicbudimir@gmail.com>
+From: Judith Mendez <jm@ti.com>
 
-commit aba0c94f61ec05315fa7815d21aefa4c87f6a9f4 upstream.
+commit a0b8da04153eb61cc2eaeeea5cc404e91e557f6b upstream.
 
-It is possible for a vsock to autobind to VMADDR_PORT_ANY. This can
-cause a use-after-free when a connection is made to the bound socket.
-The socket returned by accept() also has port VMADDR_PORT_ANY but is not
-on the list of unbound sockets. Binding it will result in an extra
-refcount decrement similar to the one fixed in fcdd2242c023 (vsock: Keep
-the binding until socket destruction).
+This moves pinmux child nodes for sdhci0 node from k3-am62x-sk-common
+to each top level board file. This is needed since we require internal
+pullups for AM62x SK and not for AM62 LP SK since it has external
+pullups on DATA 1-7.
 
-Modify the check in __vsock_bind_connectible() to also prevent binding
-to VMADDR_PORT_ANY.
+Internal pulls are required for AM62 SK as per JESD84 spec
+recommendation to prevent unconnected lines floating.
 
-Fixes: d021c344051a ("VSOCK: Introduce VM Sockets")
-Reported-by: Budimir Markovic <markovicbudimir@gmail.com>
-Signed-off-by: Budimir Markovic <markovicbudimir@gmail.com>
-Reviewed-by: Stefano Garzarella <sgarzare@redhat.com>
-Link: https://patch.msgid.link/20250807041811.678-1-markovicbudimir@gmail.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Fixes: d19a66ae488a ("arm64: dts: ti: k3-am625-sk: Enable on board peripherals")
+Cc: stable@vger.kernel.org
+Signed-off-by: Judith Mendez <jm@ti.com>
+Link: https://lore.kernel.org/r/20250707190830.3951619-1-jm@ti.com
+Signed-off-by: Vignesh Raghavendra <vigneshr@ti.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- net/vmw_vsock/af_vsock.c |    3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+ arch/arm64/boot/dts/ti/k3-am62-lp-sk.dts       |   24 ++++++++++++++++++++++++
+ arch/arm64/boot/dts/ti/k3-am625-sk.dts         |   24 ++++++++++++++++++++++++
+ arch/arm64/boot/dts/ti/k3-am62x-sk-common.dtsi |   24 ------------------------
+ 3 files changed, 48 insertions(+), 24 deletions(-)
 
---- a/net/vmw_vsock/af_vsock.c
-+++ b/net/vmw_vsock/af_vsock.c
-@@ -683,7 +683,8 @@ static int __vsock_bind_connectible(stru
- 		unsigned int i;
+--- a/arch/arm64/boot/dts/ti/k3-am62-lp-sk.dts
++++ b/arch/arm64/boot/dts/ti/k3-am62-lp-sk.dts
+@@ -74,6 +74,22 @@
+ };
  
- 		for (i = 0; i < MAX_PORT_RETRIES; i++) {
--			if (port <= LAST_RESERVED_PORT)
-+			if (port == VMADDR_PORT_ANY ||
-+			    port <= LAST_RESERVED_PORT)
- 				port = LAST_RESERVED_PORT + 1;
+ &main_pmx0 {
++	main_mmc0_pins_default: main-mmc0-default-pins {
++		bootph-all;
++		pinctrl-single,pins = <
++			AM62X_IOPAD(0x220, PIN_INPUT, 0) /* (V3) MMC0_CMD */
++			AM62X_IOPAD(0x218, PIN_INPUT, 0) /* (Y1) MMC0_CLK */
++			AM62X_IOPAD(0x214, PIN_INPUT, 0) /* (V2) MMC0_DAT0 */
++			AM62X_IOPAD(0x210, PIN_INPUT, 0) /* (V1) MMC0_DAT1 */
++			AM62X_IOPAD(0x20c, PIN_INPUT, 0) /* (W2) MMC0_DAT2 */
++			AM62X_IOPAD(0x208, PIN_INPUT, 0) /* (W1) MMC0_DAT3 */
++			AM62X_IOPAD(0x204, PIN_INPUT, 0) /* (Y2) MMC0_DAT4 */
++			AM62X_IOPAD(0x200, PIN_INPUT, 0) /* (W3) MMC0_DAT5 */
++			AM62X_IOPAD(0x1fc, PIN_INPUT, 0) /* (W4) MMC0_DAT6 */
++			AM62X_IOPAD(0x1f8, PIN_INPUT, 0) /* (V4) MMC0_DAT7 */
++		>;
++	};
++
+ 	vddshv_sdio_pins_default: vddshv-sdio-default-pins {
+ 		pinctrl-single,pins = <
+ 			AM62X_IOPAD(0x07c, PIN_OUTPUT, 7) /* (M19) GPMC0_CLK.GPIO0_31 */
+@@ -144,6 +160,14 @@
+ 	};
+ };
  
- 			new_addr.svm_port = port++;
++&sdhci0 {
++	bootph-all;
++	non-removable;
++	pinctrl-names = "default";
++	pinctrl-0 = <&main_mmc0_pins_default>;
++	status = "okay";
++};
++
+ &sdhci1 {
+ 	vmmc-supply = <&vdd_mmc1>;
+ 	vqmmc-supply = <&vddshv_sdio>;
+--- a/arch/arm64/boot/dts/ti/k3-am625-sk.dts
++++ b/arch/arm64/boot/dts/ti/k3-am625-sk.dts
+@@ -106,6 +106,22 @@
+ };
+ 
+ &main_pmx0 {
++	main_mmc0_pins_default: main-mmc0-default-pins {
++		bootph-all;
++		pinctrl-single,pins = <
++			AM62X_IOPAD(0x220, PIN_INPUT, 0) /* (Y3) MMC0_CMD */
++			AM62X_IOPAD(0x218, PIN_INPUT, 0) /* (AB1) MMC0_CLK */
++			AM62X_IOPAD(0x214, PIN_INPUT, 0) /* (AA2) MMC0_DAT0 */
++			AM62X_IOPAD(0x210, PIN_INPUT_PULLUP, 0) /* (AA1) MMC0_DAT1 */
++			AM62X_IOPAD(0x20c, PIN_INPUT_PULLUP, 0) /* (AA3) MMC0_DAT2 */
++			AM62X_IOPAD(0x208, PIN_INPUT_PULLUP, 0) /* (Y4) MMC0_DAT3 */
++			AM62X_IOPAD(0x204, PIN_INPUT_PULLUP, 0) /* (AB2) MMC0_DAT4 */
++			AM62X_IOPAD(0x200, PIN_INPUT_PULLUP, 0) /* (AC1) MMC0_DAT5 */
++			AM62X_IOPAD(0x1fc, PIN_INPUT_PULLUP, 0) /* (AD2) MMC0_DAT6 */
++			AM62X_IOPAD(0x1f8, PIN_INPUT_PULLUP, 0) /* (AC2) MMC0_DAT7 */
++		>;
++	};
++
+ 	main_rgmii2_pins_default: main-rgmii2-default-pins {
+ 		bootph-all;
+ 		pinctrl-single,pins = <
+@@ -195,6 +211,14 @@
+ 	};
+ };
+ 
++&sdhci0 {
++	bootph-all;
++	non-removable;
++	pinctrl-names = "default";
++	pinctrl-0 = <&main_mmc0_pins_default>;
++	status = "okay";
++};
++
+ &sdhci1 {
+ 	vmmc-supply = <&vdd_mmc1>;
+ 	vqmmc-supply = <&vdd_sd_dv>;
+--- a/arch/arm64/boot/dts/ti/k3-am62x-sk-common.dtsi
++++ b/arch/arm64/boot/dts/ti/k3-am62x-sk-common.dtsi
+@@ -203,22 +203,6 @@
+ 		>;
+ 	};
+ 
+-	main_mmc0_pins_default: main-mmc0-default-pins {
+-		bootph-all;
+-		pinctrl-single,pins = <
+-			AM62X_IOPAD(0x220, PIN_INPUT, 0) /* (Y3/V3) MMC0_CMD */
+-			AM62X_IOPAD(0x218, PIN_INPUT, 0) /* (AB1/Y1) MMC0_CLK */
+-			AM62X_IOPAD(0x214, PIN_INPUT, 0) /* (AA2/V2) MMC0_DAT0 */
+-			AM62X_IOPAD(0x210, PIN_INPUT, 0) /* (AA1/V1) MMC0_DAT1 */
+-			AM62X_IOPAD(0x20c, PIN_INPUT, 0) /* (AA3/W2) MMC0_DAT2 */
+-			AM62X_IOPAD(0x208, PIN_INPUT, 0) /* (Y4/W1) MMC0_DAT3 */
+-			AM62X_IOPAD(0x204, PIN_INPUT, 0) /* (AB2/Y2) MMC0_DAT4 */
+-			AM62X_IOPAD(0x200, PIN_INPUT, 0) /* (AC1/W3) MMC0_DAT5 */
+-			AM62X_IOPAD(0x1fc, PIN_INPUT, 0) /* (AD2/W4) MMC0_DAT6 */
+-			AM62X_IOPAD(0x1f8, PIN_INPUT, 0) /* (AC2/V4) MMC0_DAT7 */
+-		>;
+-	};
+-
+ 	main_mmc1_pins_default: main-mmc1-default-pins {
+ 		bootph-all;
+ 		pinctrl-single,pins = <
+@@ -457,14 +441,6 @@
+ 	clock-frequency = <400000>;
+ };
+ 
+-&sdhci0 {
+-	bootph-all;
+-	status = "okay";
+-	non-removable;
+-	pinctrl-names = "default";
+-	pinctrl-0 = <&main_mmc0_pins_default>;
+-};
+-
+ &sdhci1 {
+ 	/* SD/MMC */
+ 	bootph-all;
 
 
 
