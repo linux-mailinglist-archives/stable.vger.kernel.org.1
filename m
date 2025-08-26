@@ -1,59 +1,56 @@
-Return-Path: <stable+bounces-173384-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-173724-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9192FB35CAB
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 13:36:58 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 13829B35E07
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 13:51:06 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 4C15D7C4EB6
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 11:36:57 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 299B43A4E4B
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 11:49:57 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7D4EB3090E8;
-	Tue, 26 Aug 2025 11:35:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 066C829D26A;
+	Tue, 26 Aug 2025 11:49:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="1jJuhXcE"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="EFFv0d+F"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 39A0D28689B;
-	Tue, 26 Aug 2025 11:35:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A63241A23BB;
+	Tue, 26 Aug 2025 11:49:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756208108; cv=none; b=q4dYYqEl4wrVpEUnTFvfTMD/SFHbe/gxhJksjjvETS+xtMAaavW1Fc5Xv1pIfIgwtqeTATLn17BEfU+X99CrdyfhaADMQnRxIo7jZrYI6NiQmtk+IuqcJpQn+Bykl4sc3je22DmoGPX2v29AUDvQbtA4zEtFd4S6/O62XM5VYEM=
+	t=1756208992; cv=none; b=E++5+DMGBsdLuMxetc1S8XeZWTz5e98YxsOED02PGTJA90FPCede25lUmaaZ2TvrvZ/RHNjMP0OUXitVx5+GMJoaG0p0jHWngyTJ07DedB3VOiIwdeyzLNet2zsf7GlB7pTnFMBGujZAdAifkTubWrjNKRtmJDJnXG3EVSfsqd8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756208108; c=relaxed/simple;
-	bh=6+4a8aorQbgOCpo2hLQRNOyYMSbPkTH2hqmQEKQzAik=;
+	s=arc-20240116; t=1756208992; c=relaxed/simple;
+	bh=lXQyYum5Bf9rqjayvLCNnNKCn9wRjDMCVvkb1VybaWs=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=qUcYioFG7fFTYr/E3Al3gJayixp/Xyl0vAt30fI9JjFJg9k/7YWZ8ToX0UPCOChy8AdEx5vFNXQxBdH82wOrLxdkHEs8RIzdYDP648v1YoNH8lwr0gGoLZ91u4WUZIoFsQ1GiIWkoXd7n/Y8eVXH3pAMNHSfoVZ+SDjZbGRvuVE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=1jJuhXcE; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B5F05C4CEF1;
-	Tue, 26 Aug 2025 11:35:07 +0000 (UTC)
+	 MIME-Version; b=HifRn6erRcmAmpu3CZI2PJ0InrdgHuDLFpy2EIDM2X9vBk9IuGZWdplgKx8iZfCSkFsDf/qm/IYXmo+iH0poR7SlRvEbK3MaOmLBfmO3ZVzLUdvS8wyZbYlMkNZAAIJY27M7VKhgkahjxOwNVGyj+uGGVGTU8SoK2KbzRFrIrl0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=EFFv0d+F; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E42DBC4CEF1;
+	Tue, 26 Aug 2025 11:49:51 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1756208108;
-	bh=6+4a8aorQbgOCpo2hLQRNOyYMSbPkTH2hqmQEKQzAik=;
+	s=korg; t=1756208992;
+	bh=lXQyYum5Bf9rqjayvLCNnNKCn9wRjDMCVvkb1VybaWs=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=1jJuhXcENPKxZ4Tqp0Nn334fAXSlJQ9lejGb//1jZlAaROli/9MAOOGngGjxeHFcj
-	 Y5jFtJB05BpfQxLkKNzRBP8yJ7dppQl/XXZNMOxsNY3AzkMthvADzLIsLjhkYQI4ov
-	 xwNEtUCGgIc1QbmzE/+AE4dgRZ+Cf6Y6rqxka28s=
+	b=EFFv0d+F3WzJerZsFZTA9CM3PTX9GlW+HeqWrJYQ5ItEjHb2StelNfrORqc3Jk6YA
+	 y9uRl38ctROaQFZhh3n+dk52pjG7OJlA3uzUlvoPExkgg6SzZrD9aBKWDxtcj9CyO9
+	 WNhPkLkpIoi+3IpBLORlSrhIOUTJXfx9/0HZspOo=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Ming Lei <ming.lei@redhat.com>,
-	Hannes Reinecke <hare@suse.de>,
-	Christoph Hellwig <hch@lst.de>,
-	Nilay Shroff <nilay@linux.ibm.com>,
-	Jens Axboe <axboe@kernel.dk>,
+	Dewei Meng <mengdewei@cqsoftware.com.cn>,
+	Takashi Iwai <tiwai@suse.de>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.16 440/457] block: move elevator queue allocation logic into blk_mq_init_sched
+Subject: [PATCH 6.12 309/322] ALSA: timer: fix ida_free call while not allocated
 Date: Tue, 26 Aug 2025 13:12:04 +0200
-Message-ID: <20250826110948.160012364@linuxfoundation.org>
+Message-ID: <20250826110923.524270102@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250826110937.289866482@linuxfoundation.org>
-References: <20250826110937.289866482@linuxfoundation.org>
+In-Reply-To: <20250826110915.169062587@linuxfoundation.org>
+References: <20250826110915.169062587@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -65,208 +62,85 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.16-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Nilay Shroff <nilay@linux.ibm.com>
+From: Dewei Meng <mengdewei@cqsoftware.com.cn>
 
-[ Upstream commit 49811586be373e26a3ab52f54e0dfa663c02fddd ]
+[ Upstream commit 5003a65790ed66be882d1987cc2ca86af0de3db1 ]
 
-In preparation for allocating sched_tags before freezing the request
-queue and acquiring ->elevator_lock, move the elevator queue allocation
-logic from the elevator ops ->init_sched callback into blk_mq_init_sched.
-As elevator_alloc is now only invoked from block layer core, we don't
-need to export it, so unexport elevator_alloc function.
+In the snd_utimer_create() function, if the kasprintf() function return
+NULL, snd_utimer_put_id() will be called, finally use ida_free()
+to free the unallocated id 0.
 
-This refactoring provides a centralized location for elevator queue
-initialization, which makes it easier to store pre-allocated sched_tags
-in the struct elevator_queue during later changes.
+the syzkaller reported the following information:
+  ------------[ cut here ]------------
+  ida_free called for id=0 which is not allocated.
+  WARNING: CPU: 1 PID: 1286 at lib/idr.c:592 ida_free+0x1fd/0x2f0 lib/idr.c:592
+  Modules linked in:
+  CPU: 1 UID: 0 PID: 1286 Comm: syz-executor164 Not tainted 6.15.8 #3 PREEMPT(lazy)
+  Hardware name: QEMU Standard PC (i440FX + PIIX, 1996), BIOS 1.16.3-4.fc42 04/01/2014
+  RIP: 0010:ida_free+0x1fd/0x2f0 lib/idr.c:592
+  Code: f8 fc 41 83 fc 3e 76 69 e8 70 b2 f8 (...)
+  RSP: 0018:ffffc900007f79c8 EFLAGS: 00010282
+  RAX: 0000000000000000 RBX: 1ffff920000fef3b RCX: ffffffff872176a5
+  RDX: ffff88800369d200 RSI: 0000000000000000 RDI: ffff88800369d200
+  RBP: 0000000000000000 R08: ffffffff87ba60a5 R09: 0000000000000000
+  R10: 0000000000000001 R11: 0000000000000000 R12: 0000000000000000
+  R13: 0000000000000002 R14: 0000000000000000 R15: 0000000000000000
+  FS:  00007f6f1abc1740(0000) GS:ffff8880d76a0000(0000) knlGS:0000000000000000
+  CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
+  CR2: 00007f6f1ad7a784 CR3: 000000007a6e2000 CR4: 00000000000006f0
+  Call Trace:
+   <TASK>
+   snd_utimer_put_id sound/core/timer.c:2043 [inline] [snd_timer]
+   snd_utimer_create+0x59b/0x6a0 sound/core/timer.c:2184 [snd_timer]
+   snd_utimer_ioctl_create sound/core/timer.c:2202 [inline] [snd_timer]
+   __snd_timer_user_ioctl.isra.0+0x724/0x1340 sound/core/timer.c:2287 [snd_timer]
+   snd_timer_user_ioctl+0x75/0xc0 sound/core/timer.c:2298 [snd_timer]
+   vfs_ioctl fs/ioctl.c:51 [inline]
+   __do_sys_ioctl fs/ioctl.c:907 [inline]
+   __se_sys_ioctl fs/ioctl.c:893 [inline]
+   __x64_sys_ioctl+0x198/0x200 fs/ioctl.c:893
+   do_syscall_x64 arch/x86/entry/syscall_64.c:63 [inline]
+   do_syscall_64+0x7b/0x160 arch/x86/entry/syscall_64.c:94
+   entry_SYSCALL_64_after_hwframe+0x76/0x7e
+  [...]
 
-Reviewed-by: Ming Lei <ming.lei@redhat.com>
-Reviewed-by: Hannes Reinecke <hare@suse.de>
-Reviewed-by: Christoph Hellwig <hch@lst.de>
-Signed-off-by: Nilay Shroff <nilay@linux.ibm.com>
-Link: https://lore.kernel.org/r/20250730074614.2537382-2-nilay@linux.ibm.com
-Signed-off-by: Jens Axboe <axboe@kernel.dk>
-Stable-dep-of: 2d82f3bd8910 ("blk-mq: fix lockdep warning in __blk_mq_update_nr_hw_queues")
+The utimer->id should be set properly before the kasprintf() function,
+ensures the snd_utimer_put_id() function will free the allocated id.
+
+Fixes: 37745918e0e75 ("ALSA: timer: Introduce virtual userspace-driven timers")
+Signed-off-by: Dewei Meng <mengdewei@cqsoftware.com.cn>
+Link: https://patch.msgid.link/20250821014317.40786-1-mengdewei@cqsoftware.com.cn
+Signed-off-by: Takashi Iwai <tiwai@suse.de>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- block/bfq-iosched.c   | 13 +++----------
- block/blk-mq-sched.c  | 11 ++++++++---
- block/elevator.c      |  1 -
- block/elevator.h      |  2 +-
- block/kyber-iosched.c | 11 ++---------
- block/mq-deadline.c   | 14 ++------------
- 6 files changed, 16 insertions(+), 36 deletions(-)
+ sound/core/timer.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/block/bfq-iosched.c b/block/bfq-iosched.c
-index d68da9e92e1e..9483c529c958 100644
---- a/block/bfq-iosched.c
-+++ b/block/bfq-iosched.c
-@@ -7229,22 +7229,16 @@ static void bfq_init_root_group(struct bfq_group *root_group,
- 	root_group->sched_data.bfq_class_idle_last_service = jiffies;
- }
- 
--static int bfq_init_queue(struct request_queue *q, struct elevator_type *e)
-+static int bfq_init_queue(struct request_queue *q, struct elevator_queue *eq)
- {
- 	struct bfq_data *bfqd;
--	struct elevator_queue *eq;
- 	unsigned int i;
- 	struct blk_independent_access_ranges *ia_ranges = q->disk->ia_ranges;
- 
--	eq = elevator_alloc(q, e);
--	if (!eq)
--		return -ENOMEM;
--
- 	bfqd = kzalloc_node(sizeof(*bfqd), GFP_KERNEL, q->node);
--	if (!bfqd) {
--		kobject_put(&eq->kobj);
-+	if (!bfqd)
- 		return -ENOMEM;
--	}
-+
- 	eq->elevator_data = bfqd;
- 
- 	spin_lock_irq(&q->queue_lock);
-@@ -7402,7 +7396,6 @@ static int bfq_init_queue(struct request_queue *q, struct elevator_type *e)
- 
- out_free:
- 	kfree(bfqd);
--	kobject_put(&eq->kobj);
- 	return -ENOMEM;
- }
- 
-diff --git a/block/blk-mq-sched.c b/block/blk-mq-sched.c
-index 55a0fd105147..359e0704e09b 100644
---- a/block/blk-mq-sched.c
-+++ b/block/blk-mq-sched.c
-@@ -475,10 +475,14 @@ int blk_mq_init_sched(struct request_queue *q, struct elevator_type *e)
- 	q->nr_requests = 2 * min_t(unsigned int, q->tag_set->queue_depth,
- 				   BLKDEV_DEFAULT_RQ);
- 
-+	eq = elevator_alloc(q, e);
-+	if (!eq)
-+		return -ENOMEM;
-+
- 	if (blk_mq_is_shared_tags(flags)) {
- 		ret = blk_mq_init_sched_shared_tags(q);
- 		if (ret)
--			return ret;
-+			goto err_put_elevator;
+diff --git a/sound/core/timer.c b/sound/core/timer.c
+index d774b9b71ce2..a0dcb4ebb059 100644
+--- a/sound/core/timer.c
++++ b/sound/core/timer.c
+@@ -2139,14 +2139,14 @@ static int snd_utimer_create(struct snd_timer_uinfo *utimer_info,
+ 		goto err_take_id;
  	}
  
- 	queue_for_each_hw_ctx(q, hctx, i) {
-@@ -487,7 +491,7 @@ int blk_mq_init_sched(struct request_queue *q, struct elevator_type *e)
- 			goto err_free_map_and_rqs;
++	utimer->id = utimer_id;
++
+ 	utimer->name = kasprintf(GFP_KERNEL, "snd-utimer%d", utimer_id);
+ 	if (!utimer->name) {
+ 		err = -ENOMEM;
+ 		goto err_get_name;
  	}
  
--	ret = e->ops.init_sched(q, e);
-+	ret = e->ops.init_sched(q, eq);
- 	if (ret)
- 		goto err_free_map_and_rqs;
- 
-@@ -508,7 +512,8 @@ int blk_mq_init_sched(struct request_queue *q, struct elevator_type *e)
- err_free_map_and_rqs:
- 	blk_mq_sched_free_rqs(q);
- 	blk_mq_sched_tags_teardown(q, flags);
+-	utimer->id = utimer_id;
 -
-+err_put_elevator:
-+	kobject_put(&eq->kobj);
- 	q->elevator = NULL;
- 	return ret;
- }
-diff --git a/block/elevator.c b/block/elevator.c
-index 88f8f36bed98..939b0c590fbe 100644
---- a/block/elevator.c
-+++ b/block/elevator.c
-@@ -148,7 +148,6 @@ struct elevator_queue *elevator_alloc(struct request_queue *q,
- 
- 	return eq;
- }
--EXPORT_SYMBOL(elevator_alloc);
- 
- static void elevator_release(struct kobject *kobj)
- {
-diff --git a/block/elevator.h b/block/elevator.h
-index a07ce773a38f..a4de5f9ad790 100644
---- a/block/elevator.h
-+++ b/block/elevator.h
-@@ -24,7 +24,7 @@ struct blk_mq_alloc_data;
- struct blk_mq_hw_ctx;
- 
- struct elevator_mq_ops {
--	int (*init_sched)(struct request_queue *, struct elevator_type *);
-+	int (*init_sched)(struct request_queue *, struct elevator_queue *);
- 	void (*exit_sched)(struct elevator_queue *);
- 	int (*init_hctx)(struct blk_mq_hw_ctx *, unsigned int);
- 	void (*exit_hctx)(struct blk_mq_hw_ctx *, unsigned int);
-diff --git a/block/kyber-iosched.c b/block/kyber-iosched.c
-index bfd9a40bb33d..70cbc7b2deb4 100644
---- a/block/kyber-iosched.c
-+++ b/block/kyber-iosched.c
-@@ -399,20 +399,13 @@ static struct kyber_queue_data *kyber_queue_data_alloc(struct request_queue *q)
- 	return ERR_PTR(ret);
- }
- 
--static int kyber_init_sched(struct request_queue *q, struct elevator_type *e)
-+static int kyber_init_sched(struct request_queue *q, struct elevator_queue *eq)
- {
- 	struct kyber_queue_data *kqd;
--	struct elevator_queue *eq;
--
--	eq = elevator_alloc(q, e);
--	if (!eq)
--		return -ENOMEM;
- 
- 	kqd = kyber_queue_data_alloc(q);
--	if (IS_ERR(kqd)) {
--		kobject_put(&eq->kobj);
-+	if (IS_ERR(kqd))
- 		return PTR_ERR(kqd);
--	}
- 
- 	blk_stat_enable_accounting(q);
- 
-diff --git a/block/mq-deadline.c b/block/mq-deadline.c
-index 9ab6c6256695..b9b7cdf1d3c9 100644
---- a/block/mq-deadline.c
-+++ b/block/mq-deadline.c
-@@ -554,20 +554,14 @@ static void dd_exit_sched(struct elevator_queue *e)
- /*
-  * initialize elevator private data (deadline_data).
-  */
--static int dd_init_sched(struct request_queue *q, struct elevator_type *e)
-+static int dd_init_sched(struct request_queue *q, struct elevator_queue *eq)
- {
- 	struct deadline_data *dd;
--	struct elevator_queue *eq;
- 	enum dd_prio prio;
--	int ret = -ENOMEM;
--
--	eq = elevator_alloc(q, e);
--	if (!eq)
--		return ret;
- 
- 	dd = kzalloc_node(sizeof(*dd), GFP_KERNEL, q->node);
- 	if (!dd)
--		goto put_eq;
-+		return -ENOMEM;
- 
- 	eq->elevator_data = dd;
- 
-@@ -594,10 +588,6 @@ static int dd_init_sched(struct request_queue *q, struct elevator_type *e)
- 
- 	q->elevator = eq;
- 	return 0;
--
--put_eq:
--	kobject_put(&eq->kobj);
--	return ret;
- }
- 
- /*
+ 	tid.dev_sclass = SNDRV_TIMER_SCLASS_APPLICATION;
+ 	tid.dev_class = SNDRV_TIMER_CLASS_GLOBAL;
+ 	tid.card = -1;
 -- 
 2.50.1
 
