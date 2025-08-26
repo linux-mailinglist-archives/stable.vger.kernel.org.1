@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-174649-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-173244-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id F2175B3643C
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 15:36:57 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id F2817B35C37
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 13:32:37 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id A9AE51BC358B
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 13:30:52 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 6B0B07C1865
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 11:32:07 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 526A3342CA3;
-	Tue, 26 Aug 2025 13:29:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id AFAE032142D;
+	Tue, 26 Aug 2025 11:29:05 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="zQe3H4wo"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="LE3KLG0C"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0F6AF341660;
-	Tue, 26 Aug 2025 13:29:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6D1992EE296;
+	Tue, 26 Aug 2025 11:29:05 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756214949; cv=none; b=qhIrnEslHhoBTRI3dJKclTpiTwQQ2oDwrLcyxoXV5vkdRJ/U/HwzLnOWiMMUYGRPHA9N63Acx0F7VYQudCDBnOld41CrePD8pqHqEPvWaezVa+kPeRTlymYPtITnmirE3wSEkrh2S6+Lavngp+5Z6p8BJX05GRvkaQ39cwsyyoI=
+	t=1756207745; cv=none; b=vAtZO8YMHwsazoMRQb5AFpdNpcfbo6SiGZcwBmqLHd6dXZGbVhhpQmk49G9rXUZRO+nBkR8uDaCMn2spfDOhFcvtfKZq40P5UrnZyMR/mfb+FLHEhwm0aI4u3Ad+FBVvs7hNX5JAFvH5zi+btylAAarRKCCOo3W8b5FoVQOd278=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756214949; c=relaxed/simple;
-	bh=24c/EI3QghhQMyWfn7Ub4xYWhiMNAvv5Ufb8S0LignM=;
+	s=arc-20240116; t=1756207745; c=relaxed/simple;
+	bh=QWdJxuZukKz1CgkdrMemI0MlkUbVsTOqa7r1KvxouL0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=gpXFR5uvi43G3YfM1aRqZrTudlhHHtZ8XJIvLnl7ITvrxdEcffXFYOn5KP342hSaPIhz4A9EahpFll7wFvua9boegfhNFEClXCBnhhNtZ/jCsaylIiz4yopRW+ObyYAooWxmYBbzVcPfMrr97T6z4G23ukuuLmWgSDTPujaMiBw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=zQe3H4wo; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3794AC4CEF1;
-	Tue, 26 Aug 2025 13:29:08 +0000 (UTC)
+	 MIME-Version; b=WO1it11PULPpI/I5u1UeXOzBzFYwWB4dmDqhUGEsiNo29PS8BTgdoxFOUDITvfK9vIVoEO3QMRFEoXZq54crCT8WgISAEKo/A7nJnM8G/VHeOQbZ9zTyl98zL937pEoQ7Tu5RkA3T24gwwHOt71IBrZ8RXU+KB15gqHTeGon7H4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=LE3KLG0C; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id F1086C4CEF1;
+	Tue, 26 Aug 2025 11:29:04 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1756214948;
-	bh=24c/EI3QghhQMyWfn7Ub4xYWhiMNAvv5Ufb8S0LignM=;
+	s=korg; t=1756207745;
+	bh=QWdJxuZukKz1CgkdrMemI0MlkUbVsTOqa7r1KvxouL0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=zQe3H4woJxdbYYMHpP6K+DvGknY135bldenUNyJGj+S9y/0lZ/+rZFcdFVt1PB61c
-	 HtOJ3+W04w79fQgzUH0xUBemNgjqtFeyOOd6gZ4eyhdoQsmfdMJMtSNX07YHqXsexq
-	 3+/ezaHGq94d4mLebXukl+aW8L9wcsYLfpT91eYk=
+	b=LE3KLG0CjLN7cFZxDdEMMEWo4bFBaWvbbVbKdtnr3rFuJBfsvwWZK06Zf6ySXbaIs
+	 7qJpyCYyywOCChuGGyR2saCFPr1KDSPcCvHmIjDgFeP9kOHVwrT+7UtCS4tRdV3mtU
+	 enr3SO07KRzNyEI0MPlu+4ph/3fn+Rl4ap3gBj3E=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Hans Verkuil <hverkuil@xs4all.nl>,
-	Bryan ODonoghue <bryan.odonoghue@linaro.org>,
-	Ricardo Ribalda <ribalda@chromium.org>,
-	Bryan ODonoghue <bod@kernel.org>
-Subject: [PATCH 6.1 331/482] media: venus: vdec: Clamp param smaller than 1fps and bigger than 240.
+	Matti Vaittinen <mazziesaccount@gmail.com>,
+	Andy Shevchenko <andy@kernel.org>,
+	Stable@vger.kernel.org,
+	Jonathan Cameron <Jonathan.Cameron@huawei.com>
+Subject: [PATCH 6.16 300/457] iio: light: as73211: Ensure buffer holes are zeroed
 Date: Tue, 26 Aug 2025 13:09:44 +0200
-Message-ID: <20250826110938.997741774@linuxfoundation.org>
+Message-ID: <20250826110944.788863313@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250826110930.769259449@linuxfoundation.org>
-References: <20250826110930.769259449@linuxfoundation.org>
+In-Reply-To: <20250826110937.289866482@linuxfoundation.org>
+References: <20250826110937.289866482@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,64 +63,39 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.16-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Ricardo Ribalda <ribalda@chromium.org>
+From: Jonathan Cameron <Jonathan.Cameron@huawei.com>
 
-commit 377dc500d253f0b26732b2cb062e89668aef890a upstream.
+commit 433b99e922943efdfd62b9a8e3ad1604838181f2 upstream.
 
-The driver uses "whole" fps in all its calculations (e.g. in
-load_per_instance()). Those calculation expect an fps bigger than 1, and
-not big enough to overflow.
+Given that the buffer is copied to a kfifo that ultimately user space
+can read, ensure we zero it.
 
-Clamp the value if the user provides a param that will result in an invalid
-fps.
-
-Reported-by: Hans Verkuil <hverkuil@xs4all.nl>
-Closes: https://lore.kernel.org/linux-media/f11653a7-bc49-48cd-9cdb-1659147453e4@xs4all.nl/T/#m91cd962ac942834654f94c92206e2f85ff7d97f0
-Fixes: 7472c1c69138 ("[media] media: venus: vdec: add video decoder files")
-Cc: stable@vger.kernel.org
-Tested-by: Bryan O'Donoghue <bryan.odonoghue@linaro.org> # qrb5615-rb5
-Reviewed-by: Bryan O'Donoghue <bryan.odonoghue@linaro.org>
-Signed-off-by: Ricardo Ribalda <ribalda@chromium.org>
-[bod: Change "parm" to "param"]
-Signed-off-by: Bryan O'Donoghue <bod@kernel.org>
-Signed-off-by: Hans Verkuil <hverkuil@xs4all.nl>
+Fixes: 403e5586b52e ("iio: light: as73211: New driver")
+Reviewed-by: Matti Vaittinen <mazziesaccount@gmail.com>
+Reviewed-by: Andy Shevchenko <andy@kernel.org>
+Link: https://patch.msgid.link/20250802164436.515988-2-jic23@kernel.org
+Cc: <Stable@vger.kernel.org>
+Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/media/platform/qcom/venus/core.h |    2 ++
- drivers/media/platform/qcom/venus/vdec.c |    5 ++---
- 2 files changed, 4 insertions(+), 3 deletions(-)
+ drivers/iio/light/as73211.c |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/drivers/media/platform/qcom/venus/core.h
-+++ b/drivers/media/platform/qcom/venus/core.h
-@@ -28,6 +28,8 @@
- #define VIDC_PMDOMAINS_NUM_MAX		3
- #define VIDC_RESETS_NUM_MAX		2
+--- a/drivers/iio/light/as73211.c
++++ b/drivers/iio/light/as73211.c
+@@ -639,7 +639,7 @@ static irqreturn_t as73211_trigger_handl
+ 	struct {
+ 		__le16 chan[4];
+ 		aligned_s64 ts;
+-	} scan;
++	} scan = { };
+ 	int data_result, ret;
  
-+#define VENUS_MAX_FPS			240
-+
- extern int venus_fw_debug;
- 
- struct freq_tbl {
---- a/drivers/media/platform/qcom/venus/vdec.c
-+++ b/drivers/media/platform/qcom/venus/vdec.c
-@@ -458,11 +458,10 @@ static int vdec_s_parm(struct file *file
- 	us_per_frame = timeperframe->numerator * (u64)USEC_PER_SEC;
- 	do_div(us_per_frame, timeperframe->denominator);
- 
--	if (!us_per_frame)
--		return -EINVAL;
--
-+	us_per_frame = clamp(us_per_frame, 1, USEC_PER_SEC);
- 	fps = (u64)USEC_PER_SEC;
- 	do_div(fps, us_per_frame);
-+	fps = min(VENUS_MAX_FPS, fps);
- 
- 	inst->fps = fps;
- 	inst->timeperframe = *timeperframe;
+ 	mutex_lock(&data->mutex);
 
 
 
