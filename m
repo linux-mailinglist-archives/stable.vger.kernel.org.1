@@ -1,55 +1,62 @@
-Return-Path: <stable+bounces-175831-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-174163-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0E532B369DC
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 16:31:40 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id F3065B361C5
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 15:12:24 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 89831567439
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 14:22:32 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 250273BFC0E
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 13:07:42 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B4402352FD9;
-	Tue, 26 Aug 2025 14:21:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E4B9D2192EA;
+	Tue, 26 Aug 2025 13:07:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="eUeoGLHC"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="MXn3X5za"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6FBE0352FD5;
-	Tue, 26 Aug 2025 14:21:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9F7D320F079;
+	Tue, 26 Aug 2025 13:07:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756218085; cv=none; b=LJL3NcC9WlQX9jkVUL/h8RAjWOf/1oMCsOrQMKdsEFj1ZP60vIayY4hlMHnzc1oUYUU07ijtatyLXQ+Cf7C7EBbuO0KAeiYQ0RCLeujZWnF9S/7nth8bCsgsMC0bgWiQDPqtvx3MRGIiIydMGRggtwxZ36FLlrdrAVDrgrfAoSE=
+	t=1756213660; cv=none; b=CkU0KUpm99Q9M4YKn7IvyDU9ti1tHfb1hB9bC/5NW9IEbJgY0Cvuq57s8g6foUpqPzCPWZo1TjhSVYEeL9b1E2odkS5VOV1MpNkUfdPunApZvoivFei63Rc8gm9DcMYcf+DHnmaAA+rl1TK9QRsxEiIWATdNTBAYmNtfcXN8DNw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756218085; c=relaxed/simple;
-	bh=iTFKLE3xM6srJfUugvouxTAlVTWi+930StxY7YDF6Bc=;
+	s=arc-20240116; t=1756213660; c=relaxed/simple;
+	bh=NuQqvZOsP/+htdbC9G+z2to7U6lVypgBCrJo09WI2Ww=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=cKMVZ98ZB/08CkLAEjjDPpBeBpiYkkO8l0gGfYd+jptmC+FrOPHNLNbmAYFLuOGWQpgoYCcvPcXbk7k0NPRMUNhxvbwdODwrrHVDf4VlXPPYBK/H4+X/inO6LZ6N5JwfIlUiQZ81qMU0kOzwcdYknBe7GeaILeE3v4+Ogh0Dm6s=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=eUeoGLHC; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 02280C19423;
-	Tue, 26 Aug 2025 14:21:24 +0000 (UTC)
+	 MIME-Version; b=sWVP8drvL2a+XCmu992QarYqIduyDqU3wdZSbIKy72D4ltfUGpCDKvUPSXurwGuFbs4d4QNnYony96JcINgjaIqbpTPMMWNVCMv1kQtR87UDCr+R4FEny8Cvxr+aW7+uXUp0YIvfoA2OI9WlIfjSnAZmjCwORHpJpmFDRTpQZwI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=MXn3X5za; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9BC07C4CEF4;
+	Tue, 26 Aug 2025 13:07:39 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1756218085;
-	bh=iTFKLE3xM6srJfUugvouxTAlVTWi+930StxY7YDF6Bc=;
+	s=korg; t=1756213660;
+	bh=NuQqvZOsP/+htdbC9G+z2to7U6lVypgBCrJo09WI2Ww=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=eUeoGLHCk7jBDfgGqEW1ac1oPJmr2wVPeY2IFqeaEVa1v+jSoryqPPw2Z/DaPHAp8
-	 2KrsBZx+GAVSeDgV5Fl7hck8llzzRuJ01SPaHRSz5K1r1fI5Vzvv+92rf8p65PBsmJ
-	 RuvUrw+c+h8X8PjsfgGCkoyTFAyfL5Iv6dXpr6F0=
+	b=MXn3X5zaJ81z2KhiY6GqtkAfSL+SaUNrWmiLHt4udAkLuPbMlxp45J+0So2eZgfHG
+	 qkh9t+PASO/p3kFiNSEC0uNZOXumHrT1apSbVzyf8uOLKtyrlJunrg24GLlAqkPkXU
+	 2uGg/gFmaQKQdXN4atov3XBK8LOEsOVeuN/8RcKM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Laurentiu Mihalcea <laurentiu.mihalcea@nxp.com>,
-	=?UTF-8?q?Uwe=20Kleine-K=C3=B6nig?= <ukleinek@kernel.org>
-Subject: [PATCH 5.10 370/523] pwm: imx-tpm: Reset counter if CMOD is 0
+	Lorenzo Stoakes <lorenzo.stoakes@oracle.com>,
+	Jann Horn <jannh@google.com>,
+	Julian Orth <ju.orth@gmail.com>,
+	"Liam R. Howlett" <Liam.Howlett@Oracle.com>,
+	Linus Torvalds <torvalds@linux-foundation.org>,
+	Shuah Khan <shuah@kernel.org>,
+	Vlastimil Babka <vbabka@suse.cz>,
+	Andrew Morton <akpm@linux-foundation.org>,
+	"Isaac J. Manjarres" <isaacmanjarres@google.com>
+Subject: [PATCH 6.6 431/587] selftests/memfd: add test for mapping write-sealed memfd read-only
 Date: Tue, 26 Aug 2025 13:09:40 +0200
-Message-ID: <20250826110933.593605600@linuxfoundation.org>
+Message-ID: <20250826111003.908737773@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250826110924.562212281@linuxfoundation.org>
-References: <20250826110924.562212281@linuxfoundation.org>
+In-Reply-To: <20250826110952.942403671@linuxfoundation.org>
+References: <20250826110952.942403671@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -59,63 +66,104 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Laurentiu Mihalcea <laurentiu.mihalcea@nxp.com>
+From: "Isaac J. Manjarres" <isaacmanjarres@google.com>
 
-commit 65c6f742ab14ab1a2679fba72b82dcc0289d96f1 upstream.
+From: Lorenzo Stoakes <lorenzo.stoakes@oracle.com>
 
-As per the i.MX93 TRM, section 67.3.2.1 "MOD register update", the value
-of the TPM counter does NOT get updated when writing MOD.MOD unless
-SC.CMOD != 0. Therefore, with the current code, assuming the following
-sequence:
+[ Upstream commit ea0916e01d0b0f2cce1369ac1494239a79827270 ]
 
-	1) pwm_disable()
-	2) pwm_apply_might_sleep() /* period is changed here */
-	3) pwm_enable()
+Now we have reinstated the ability to map F_SEAL_WRITE mappings read-only,
+assert that we are able to do this in a test to ensure that we do not
+regress this again.
 
-and assuming only one channel is active, if CNT.COUNT is higher than the
-MOD.MOD value written during the pwm_apply_might_sleep() call then, when
-re-enabling the PWM during pwm_enable(), the counter will end up resetting
-after UINT32_MAX - CNT.COUNT + MOD.MOD cycles instead of MOD.MOD cycles as
-normally expected.
-
-Fix this problem by forcing a reset of the TPM counter before MOD.MOD is
-written.
-
-Fixes: 738a1cfec2ed ("pwm: Add i.MX TPM PWM driver support")
+Link: https://lkml.kernel.org/r/a6377ec470b14c0539b4600cf8fa24bf2e4858ae.1732804776.git.lorenzo.stoakes@oracle.com
+Signed-off-by: Lorenzo Stoakes <lorenzo.stoakes@oracle.com>
+Cc: Jann Horn <jannh@google.com>
+Cc: Julian Orth <ju.orth@gmail.com>
+Cc: Liam R. Howlett <Liam.Howlett@Oracle.com>
+Cc: Linus Torvalds <torvalds@linux-foundation.org>
+Cc: Shuah Khan <shuah@kernel.org>
+Cc: Vlastimil Babka <vbabka@suse.cz>
+Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
 Cc: stable@vger.kernel.org
-Signed-off-by: Laurentiu Mihalcea <laurentiu.mihalcea@nxp.com>
-Link: https://lore.kernel.org/r/20250728194144.22884-1-laurentiumihalcea111@gmail.com
-Signed-off-by: Uwe Kleine-König <ukleinek@kernel.org>
+Signed-off-by: Isaac J. Manjarres <isaacmanjarres@google.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/pwm/pwm-imx-tpm.c |    9 +++++++++
- 1 file changed, 9 insertions(+)
+ tools/testing/selftests/memfd/memfd_test.c |   43 +++++++++++++++++++++++++++++
+ 1 file changed, 43 insertions(+)
 
---- a/drivers/pwm/pwm-imx-tpm.c
-+++ b/drivers/pwm/pwm-imx-tpm.c
-@@ -203,6 +203,15 @@ static int pwm_imx_tpm_apply_hw(struct p
- 		writel(val, tpm->base + PWM_IMX_TPM_SC);
+--- a/tools/testing/selftests/memfd/memfd_test.c
++++ b/tools/testing/selftests/memfd/memfd_test.c
+@@ -285,6 +285,24 @@ static void *mfd_assert_mmap_shared(int
+ 	return p;
+ }
  
- 		/*
-+		 * if the counter is disabled (CMOD == 0), programming the new
-+		 * period length (MOD) will not reset the counter (CNT). If
-+		 * CNT.COUNT happens to be bigger than the new MOD value then
-+		 * the counter will end up being reset way too late. Therefore,
-+		 * manually reset it to 0.
-+		 */
-+		if (!cmod)
-+			writel(0x0, tpm->base + PWM_IMX_TPM_CNT);
-+		/*
- 		 * set period count:
- 		 * if the PWM is disabled (CMOD[1:0] = 2b00), then MOD register
- 		 * is updated when MOD register is written.
++static void *mfd_assert_mmap_read_shared(int fd)
++{
++	void *p;
++
++	p = mmap(NULL,
++		 mfd_def_size,
++		 PROT_READ,
++		 MAP_SHARED,
++		 fd,
++		 0);
++	if (p == MAP_FAILED) {
++		printf("mmap() failed: %m\n");
++		abort();
++	}
++
++	return p;
++}
++
+ static void *mfd_assert_mmap_private(int fd)
+ {
+ 	void *p;
+@@ -986,6 +1004,30 @@ static void test_seal_future_write(void)
+ 	close(fd);
+ }
+ 
++static void test_seal_write_map_read_shared(void)
++{
++	int fd;
++	void *p;
++
++	printf("%s SEAL-WRITE-MAP-READ\n", memfd_str);
++
++	fd = mfd_assert_new("kern_memfd_seal_write_map_read",
++			    mfd_def_size,
++			    MFD_CLOEXEC | MFD_ALLOW_SEALING);
++
++	mfd_assert_add_seals(fd, F_SEAL_WRITE);
++	mfd_assert_has_seals(fd, F_SEAL_WRITE);
++
++	p = mfd_assert_mmap_read_shared(fd);
++
++	mfd_assert_read(fd);
++	mfd_assert_read_shared(fd);
++	mfd_fail_write(fd);
++
++	munmap(p, mfd_def_size);
++	close(fd);
++}
++
+ /*
+  * Test SEAL_SHRINK
+  * Test whether SEAL_SHRINK actually prevents shrinking
+@@ -1603,6 +1645,7 @@ int main(int argc, char **argv)
+ 
+ 	test_seal_write();
+ 	test_seal_future_write();
++	test_seal_write_map_read_shared();
+ 	test_seal_shrink();
+ 	test_seal_grow();
+ 	test_seal_resize();
 
 
 
