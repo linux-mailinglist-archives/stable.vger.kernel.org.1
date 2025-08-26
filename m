@@ -1,55 +1,59 @@
-Return-Path: <stable+bounces-175827-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-174194-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id D3A73B36A42
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 16:35:54 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id CE8A1B36202
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 15:14:50 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 665F78E761E
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 14:22:15 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 79D158A446A
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 13:09:52 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2630E34F490;
-	Tue, 26 Aug 2025 14:21:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D6E9B221704;
+	Tue, 26 Aug 2025 13:09:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="t8SqcBKm"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="TjModYDU"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D8228345726;
-	Tue, 26 Aug 2025 14:21:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 94D8123026B;
+	Tue, 26 Aug 2025 13:09:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756218074; cv=none; b=XLL5AfQ44bRI36wtv7An3hRwYFmv4WMOmo2LhqLep+O8EPbQycz/I21xXcXJEjqNhwMRfNnz4jDkADYZTkPpWpQdQzLQICCmMTNCXEMzYg68r5ELX0yYe86CQJh39/LCc3RlxGuTNwTvhl3wg74m6kNJNIMzi5OPowlYoWr68ls=
+	t=1756213742; cv=none; b=R96umreVuSzkkllkAKrqfZJpGsn9R4gGtUQcaggnL6Ixy4JxTZayCk6bzHGCjDFCP3+7rniUZHFiOfuSXcI6G4DCPMKorYLqlN0VrtYIIS0Raynz+WeHi9gVHujxAtjoTvu6CVq9D1AJSLlar7Lqqo1VHToPfhem8r5fsBBk0RQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756218074; c=relaxed/simple;
-	bh=VD70jjYJvSU5X+kyqA33V5xdTp7k+j+dHV8DksrNIxk=;
+	s=arc-20240116; t=1756213742; c=relaxed/simple;
+	bh=toci+cAUP2o8XTAh1cGNaTRVQdFIf9apN8VvMEPu3Hw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Q6sXUZfrFflDDb+ItWycEHu3q5MoeMF4DUkOgDMXgiXGXpLAlcDnleRNpesYCf1vNqurpmNjZqFoaLwYO4aEfVLHF9R9hGnpwDgexuKvv0B8C7ndmt8aFuc+/lH1fGTiHFqyaj8dUWECzacXB3DOjILpPWI0aw4xu3nsvZMLKEw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=t8SqcBKm; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6D63FC4CEF1;
-	Tue, 26 Aug 2025 14:21:14 +0000 (UTC)
+	 MIME-Version; b=KbSunT/0lagNeUalIuNCjAEgJ7nkVLp+I16R8rp03xzFD9zG6g63eH1Npu3jsuJcH37Q8JgiPU2dhwN9/xn2aEQXzwVhkDThNZ6nKVj+fSSFEQQFU081AsnGK3hHnr7AgsJzr750Gmo23HpSXGA1T772au8zbTxBYLjM9IpTXNQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=TjModYDU; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C98E0C4CEF1;
+	Tue, 26 Aug 2025 13:09:01 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1756218074;
-	bh=VD70jjYJvSU5X+kyqA33V5xdTp7k+j+dHV8DksrNIxk=;
+	s=korg; t=1756213742;
+	bh=toci+cAUP2o8XTAh1cGNaTRVQdFIf9apN8VvMEPu3Hw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=t8SqcBKmUV+jn2OufRgN33fyIBo3b73N0ZrKAKQk1fSsmj51KuNz2rtsTxKJ03MBT
-	 5kuJlO8/ENgAFtVCOXjhBsPjSCVqSehfYlQTeTtF09t5QP0/iZXpKVI1ugHqq/7khV
-	 asPHTmL50e3eXqXxS348ofCvBhKobeumUu8ieZ2U=
+	b=TjModYDUssJ/w710nTldqIx4x2uOC+3ovtN+VVSSh5EoQCx3mTRhu8HGwAOzh3kPk
+	 5zCtg1G2h6Y3lXrr9KgQKOSqnpV6OSoSucH74t7M/DXTleMcXl78F/b7PGnRn7M5k/
+	 +gSiNuge1n7uLAH8MPcgZOv3INywxDkXUQGpsPXc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Alex Deucher <alexander.deucher@amd.com>,
-	Mario Limonciello <mario.limonciello@amd.com>
-Subject: [PATCH 5.10 384/523] drm/amd: Restore cached power limit during resume
+	cen zhang <zzzccc427@gmail.com>,
+	Boris Burkov <boris@bur.io>,
+	Qu Wenruo <wqu@suse.com>,
+	Filipe Manana <fdmanana@suse.com>,
+	David Sterba <dsterba@suse.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.6 445/587] btrfs: qgroup: fix race between quota disable and quota rescan ioctl
 Date: Tue, 26 Aug 2025 13:09:54 +0200
-Message-ID: <20250826110933.933816030@linuxfoundation.org>
+Message-ID: <20250826111004.277209043@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250826110924.562212281@linuxfoundation.org>
-References: <20250826110924.562212281@linuxfoundation.org>
+In-Reply-To: <20250826110952.942403671@linuxfoundation.org>
+References: <20250826110952.942403671@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,45 +65,115 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Mario Limonciello <mario.limonciello@amd.com>
+From: Filipe Manana <fdmanana@suse.com>
 
-commit ed4efe426a49729952b3dc05d20e33b94409bdd1 upstream.
+[ Upstream commit e1249667750399a48cafcf5945761d39fa584edf ]
 
-The power limit will be cached in smu->current_power_limit but
-if the ASIC goes into S3 this value won't be restored.
+There's a race between a task disabling quotas and another running the
+rescan ioctl that can result in a use-after-free of qgroup records from
+the fs_info->qgroup_tree rbtree.
 
-Restore the value during SMU resume.
+This happens as follows:
 
-Acked-by: Alex Deucher <alexander.deucher@amd.com>
-Link: https://lore.kernel.org/r/20250725031222.3015095-2-superm1@kernel.org
-Signed-off-by: Mario Limonciello <mario.limonciello@amd.com>
-Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
-(cherry picked from commit 26a609e053a6fc494403e95403bc6a2470383bec)
-Cc: stable@vger.kernel.org
+1) Task A enters btrfs_ioctl_quota_rescan() -> btrfs_qgroup_rescan();
+
+2) Task B enters btrfs_quota_disable() and calls
+   btrfs_qgroup_wait_for_completion(), which does nothing because at that
+   point fs_info->qgroup_rescan_running is false (it wasn't set yet by
+   task A);
+
+3) Task B calls btrfs_free_qgroup_config() which starts freeing qgroups
+   from fs_info->qgroup_tree without taking the lock fs_info->qgroup_lock;
+
+4) Task A enters qgroup_rescan_zero_tracking() which starts iterating
+   the fs_info->qgroup_tree tree while holding fs_info->qgroup_lock,
+   but task B is freeing qgroup records from that tree without holding
+   the lock, resulting in a use-after-free.
+
+Fix this by taking fs_info->qgroup_lock at btrfs_free_qgroup_config().
+Also at btrfs_qgroup_rescan() don't start the rescan worker if quotas
+were already disabled.
+
+Reported-by: cen zhang <zzzccc427@gmail.com>
+Link: https://lore.kernel.org/linux-btrfs/CAFRLqsV+cMDETFuzqdKSHk_FDm6tneea45krsHqPD6B3FetLpQ@mail.gmail.com/
+CC: stable@vger.kernel.org # 6.1+
+Reviewed-by: Boris Burkov <boris@bur.io>
+Reviewed-by: Qu Wenruo <wqu@suse.com>
+Signed-off-by: Filipe Manana <fdmanana@suse.com>
+Signed-off-by: David Sterba <dsterba@suse.com>
+[ Check for BTRFS_FS_QUOTA_ENABLED, instead of btrfs_qgroup_full_accounting() ]
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/gpu/drm/amd/pm/swsmu/amdgpu_smu.c |    6 ++++++
- 1 file changed, 6 insertions(+)
+ fs/btrfs/qgroup.c |   31 ++++++++++++++++++++++++-------
+ 1 file changed, 24 insertions(+), 7 deletions(-)
 
---- a/drivers/gpu/drm/amd/pm/swsmu/amdgpu_smu.c
-+++ b/drivers/gpu/drm/amd/pm/swsmu/amdgpu_smu.c
-@@ -1332,6 +1332,12 @@ static int smu_resume(void *handle)
+--- a/fs/btrfs/qgroup.c
++++ b/fs/btrfs/qgroup.c
+@@ -579,22 +579,30 @@ bool btrfs_check_quota_leak(struct btrfs
  
- 	adev->pm.dpm_enabled = true;
+ /*
+  * This is called from close_ctree() or open_ctree() or btrfs_quota_disable(),
+- * first two are in single-threaded paths.And for the third one, we have set
+- * quota_root to be null with qgroup_lock held before, so it is safe to clean
+- * up the in-memory structures without qgroup_lock held.
++ * first two are in single-threaded paths.
+  */
+ void btrfs_free_qgroup_config(struct btrfs_fs_info *fs_info)
+ {
+ 	struct rb_node *n;
+ 	struct btrfs_qgroup *qgroup;
  
-+	if (smu->current_power_limit) {
-+		ret = smu_set_power_limit(smu, smu->current_power_limit);
-+		if (ret && ret != -EOPNOTSUPP)
-+			return ret;
-+	}
++	/*
++	 * btrfs_quota_disable() can be called concurrently with
++	 * btrfs_qgroup_rescan() -> qgroup_rescan_zero_tracking(), so take the
++	 * lock.
++	 */
++	spin_lock(&fs_info->qgroup_lock);
+ 	while ((n = rb_first(&fs_info->qgroup_tree))) {
+ 		qgroup = rb_entry(n, struct btrfs_qgroup, node);
+ 		rb_erase(n, &fs_info->qgroup_tree);
+ 		__del_qgroup_rb(fs_info, qgroup);
++		spin_unlock(&fs_info->qgroup_lock);
+ 		btrfs_sysfs_del_one_qgroup(fs_info, qgroup);
+ 		kfree(qgroup);
++		spin_lock(&fs_info->qgroup_lock);
+ 	}
++	spin_unlock(&fs_info->qgroup_lock);
 +
- 	dev_info(adev->dev, "SMU is resumed successfully!\n");
+ 	/*
+ 	 * We call btrfs_free_qgroup_config() when unmounting
+ 	 * filesystem and disabling quota, so we set qgroup_ulist
+@@ -3616,12 +3624,21 @@ btrfs_qgroup_rescan(struct btrfs_fs_info
+ 	qgroup_rescan_zero_tracking(fs_info);
  
- 	return 0;
+ 	mutex_lock(&fs_info->qgroup_rescan_lock);
+-	fs_info->qgroup_rescan_running = true;
+-	btrfs_queue_work(fs_info->qgroup_rescan_workers,
+-			 &fs_info->qgroup_rescan_work);
++	/*
++	 * The rescan worker is only for full accounting qgroups, check if it's
++	 * enabled as it is pointless to queue it otherwise. A concurrent quota
++	 * disable may also have just cleared BTRFS_FS_QUOTA_ENABLED.
++	 */
++	if (test_bit(BTRFS_FS_QUOTA_ENABLED, &fs_info->flags)) {
++		fs_info->qgroup_rescan_running = true;
++		btrfs_queue_work(fs_info->qgroup_rescan_workers,
++				 &fs_info->qgroup_rescan_work);
++	} else {
++		ret = -ENOTCONN;
++	}
+ 	mutex_unlock(&fs_info->qgroup_rescan_lock);
+ 
+-	return 0;
++	return ret;
+ }
+ 
+ int btrfs_qgroup_wait_for_completion(struct btrfs_fs_info *fs_info,
 
 
 
