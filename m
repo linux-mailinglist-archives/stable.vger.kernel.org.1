@@ -1,55 +1,56 @@
-Return-Path: <stable+bounces-172947-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-174878-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id CA6D3B35AD7
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 13:13:19 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id CDA3EB36597
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 15:49:19 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 983311B678EF
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 11:13:39 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 2F5F83AE60B
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 13:39:17 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 62E06318139;
-	Tue, 26 Aug 2025 11:12:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 709FA2264B8;
+	Tue, 26 Aug 2025 13:39:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="H3P22QzP"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="IBqDm0ZI"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1CA5620B7EE;
-	Tue, 26 Aug 2025 11:12:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2CDB32F84F;
+	Tue, 26 Aug 2025 13:39:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756206776; cv=none; b=Zz98t46b5tuiqTandI/WICd+oB0iwtLK2TUX1HpsaZ/5zGq4jAW5cXFv9SZsOvopkmcZvYJP2vndqK9igrvQ1wwIyXCX7O2QLpiABv5OTzeUZrtYjgzeAgm8ba3rfCDnfdIPDE6tOMGXEULHsXGcVkY59lgw3CgGQXZDpsKtcJg=
+	t=1756215555; cv=none; b=PbW4jYGrKVjnkNn06hCoXcdeWxqeZ9y4xbA05YyV3BN7aTmT52spqVuxV7w7Cu532rx1+8n+fH4dhEMDGa0NraJraFxdo6RSiLY2SoE8VOudOB9r2PsYEMiJqgPOZzkCTTTR8Cb0yWoixqDZRue084ShaFuevpmguBwak5NR1r4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756206776; c=relaxed/simple;
-	bh=osAfmBSyVzf1FxJNLaGqIkPBAu+oBVA7n5eZSmu9Z8I=;
+	s=arc-20240116; t=1756215555; c=relaxed/simple;
+	bh=txTYXXeNd/KR5zEIVIPPi9gfCrd8sW7agI6p8Sqvybw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=WgKrL/EBdpzjwzqcH7XHM3bcFpqyD0rGcCoO20FkqRA46QjclWxztCfgS4Y2n9e+DjgTyKV3KFkKa0WUblQLkqf5dbFIh0RktT1kKf7Hmg5kdtcUIZyJS+939mM4m9SoVmTZ6MXT2dhTx9Xy0ZDQd+RW8A5aHtYSXw2skiCBLuU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=H3P22QzP; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 46322C4CEF4;
-	Tue, 26 Aug 2025 11:12:55 +0000 (UTC)
+	 MIME-Version; b=BmARuFOuRl3AQKMC6HBWa39eW2rgrPO2C/Jku5JioTGX8XI8AagyVo+6tYgwKe8KpWb79bxytXRm3szsTInYU0NiZMdRKUrkCIGqUOg+tmPKTGagkl7LPZdCtDmQWRVqgf0Jp9KzHlbc8MxKZZY1ZFpC0GiK1jMHgxb/9f++jI4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=IBqDm0ZI; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 70B39C4CEF1;
+	Tue, 26 Aug 2025 13:39:13 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1756206775;
-	bh=osAfmBSyVzf1FxJNLaGqIkPBAu+oBVA7n5eZSmu9Z8I=;
+	s=korg; t=1756215553;
+	bh=txTYXXeNd/KR5zEIVIPPi9gfCrd8sW7agI6p8Sqvybw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=H3P22QzPwiMqKbY8UryE1wT+R13EPWoN7MWq6qEh8tPEm9mCZvI5HAxgrxQVL//Wz
-	 WH0lrKVueiriFFak/slnzp3surDEHgSteezR+3MVKI/Z4ZcZXZCQDdqN8DEc+Wurb2
-	 uffQT9AwIKeRPKXS/eYQowbIvd1MjO/XXDIexYIk=
+	b=IBqDm0ZIiz7wGNZNd41d5n+6nOCyYEaxp7oyigzQ1ZbDZEJFj8RKKyQvPFc80NYfK
+	 L1A9DveUmwl+tAL5H1G2JR1CuDEQqal+pRBh0CcqpuJwsoLGv517GS4/RhATe18Nab
+	 FwYVOUGqInAeJO55971v92mvPtdxJ1m3LjaOySgk=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Pavel Begunkov <asml.silence@gmail.com>,
-	Jens Axboe <axboe@kernel.dk>
-Subject: [PATCH 6.6 001/587] io_uring: dont use int for ABI
-Date: Tue, 26 Aug 2025 13:02:30 +0200
-Message-ID: <20250826110952.984811109@linuxfoundation.org>
+	Christian Brauner <brauner@kernel.org>,
+	"Orlando, Noah" <Noah.Orlando@deshaw.com>,
+	Al Viro <viro@zeniv.linux.org.uk>
+Subject: [PATCH 5.15 060/644] clone_private_mnt(): make sure that caller has CAP_SYS_ADMIN in the right userns
+Date: Tue, 26 Aug 2025 13:02:31 +0200
+Message-ID: <20250826110947.989007651@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250826110952.942403671@linuxfoundation.org>
-References: <20250826110952.942403671@linuxfoundation.org>
+In-Reply-To: <20250826110946.507083938@linuxfoundation.org>
+References: <20250826110946.507083938@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,40 +62,53 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Pavel Begunkov <asml.silence@gmail.com>
+From: Al Viro <viro@zeniv.linux.org.uk>
 
-commit cf73d9970ea4f8cace5d8f02d2565a2723003112 upstream.
+commit c28f922c9dcee0e4876a2c095939d77fe7e15116 upstream.
 
-__kernel_rwf_t is defined as int, the actual size of which is
-implementation defined. It won't go well if some compiler / archs
-ever defines it as i64, so replace it with __u32, hoping that
-there is no one using i16 for it.
+What we want is to verify there is that clone won't expose something
+hidden by a mount we wouldn't be able to undo.  "Wouldn't be able to undo"
+may be a result of MNT_LOCKED on a child, but it may also come from
+lacking admin rights in the userns of the namespace mount belongs to.
 
-Cc: stable@vger.kernel.org
-Fixes: 2b188cc1bb857 ("Add io_uring IO interface")
-Signed-off-by: Pavel Begunkov <asml.silence@gmail.com>
-Link: https://lore.kernel.org/r/47c666c4ee1df2018863af3a2028af18feef11ed.1751412511.git.asml.silence@gmail.com
-Signed-off-by: Jens Axboe <axboe@kernel.dk>
+clone_private_mnt() checks the former, but not the latter.
+
+There's a number of rather confusing CAP_SYS_ADMIN checks in various
+userns during the mount, especially with the new mount API; they serve
+different purposes and in case of clone_private_mnt() they usually,
+but not always end up covering the missing check mentioned above.
+
+Reviewed-by: Christian Brauner <brauner@kernel.org>
+Reported-by: "Orlando, Noah" <Noah.Orlando@deshaw.com>
+Fixes: 427215d85e8d ("ovl: prevent private clone if bind mount is not allowed")
+Signed-off-by: Al Viro <viro@zeniv.linux.org.uk>
+[ merge conflict resolution: clone_private_mount() was reworked in
+  db04662e2f4f ("fs: allow detached mounts in clone_private_mount()").
+  Tweak the relevant ns_capable check so that it works on older kernels ]
+Signed-off-by: Noah Orlando <Noah.Orlando@deshaw.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- include/uapi/linux/io_uring.h |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ fs/namespace.c |    5 +++++
+ 1 file changed, 5 insertions(+)
 
---- a/include/uapi/linux/io_uring.h
-+++ b/include/uapi/linux/io_uring.h
-@@ -46,7 +46,7 @@ struct io_uring_sqe {
- 	};
- 	__u32	len;		/* buffer size or number of iovecs */
- 	union {
--		__kernel_rwf_t	rw_flags;
-+		__u32		rw_flags;
- 		__u32		fsync_flags;
- 		__u16		poll_events;	/* compatibility */
- 		__u32		poll32_events;	/* word-reversed for BE */
+--- a/fs/namespace.c
++++ b/fs/namespace.c
+@@ -1975,6 +1975,11 @@ struct vfsmount *clone_private_mount(con
+ 	if (!check_mnt(old_mnt))
+ 		goto invalid;
+ 
++	if (!ns_capable(old_mnt->mnt_ns->user_ns, CAP_SYS_ADMIN)) {
++		up_read(&namespace_sem);
++		return ERR_PTR(-EPERM);
++	}
++
+ 	if (has_locked_children(old_mnt, path->dentry))
+ 		goto invalid;
+ 
 
 
 
