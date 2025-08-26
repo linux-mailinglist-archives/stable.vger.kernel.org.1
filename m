@@ -1,58 +1,58 @@
-Return-Path: <stable+bounces-175701-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-176110-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1F197B36957
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 16:25:52 +0200 (CEST)
+Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [IPv6:2605:f480:58:1:0:1994:3:14])
+	by mail.lfdr.de (Postfix) with ESMTPS id A93F2B36A56
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 16:36:37 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 1EDB21C41C6E
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 14:18:30 +0000 (UTC)
+	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 5D0434E18DD
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 14:36:36 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 50468350843;
-	Tue, 26 Aug 2025 14:15:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D859F35AACC;
+	Tue, 26 Aug 2025 14:33:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="0gyO0DBQ"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="KmkW8a+j"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0DF2531985C;
-	Tue, 26 Aug 2025 14:15:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9242520DD51;
+	Tue, 26 Aug 2025 14:33:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756217741; cv=none; b=NkgaACJ9TpqutOiBHeDcLY8RVJNSaTYCqerxE7zO/UwMhujl54lc6xzdYyN0AoyudrAdwNfdZWhCYkjUAYGDKm8Y7OIxd3Kqm1yTuyDM+Vk53RLQPa2E82bl4Xq6EntGN09A6GnxiD5GVI/eIDZdWBThWs4JqhHBXYRDZXZ1wcg=
+	t=1756218809; cv=none; b=njC5pQvQsIm//1pyTCEdz7zJ6nwbucNT+PTVhSichYp7rmQg2rQ25aQsDXroJdzPHfrddof8+/3hqMrCe2J84vtGMz+ZTQ40urGp+dt+26N9BL6wlp+M4oS5hG+9aZFk+Chrgss95Ugu/zO/hWtDBB3oKC4G62KURGhwHZMrv6g=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756217741; c=relaxed/simple;
-	bh=qHq9knWVnaQREi5Frzkf8oKU3YLvhj72B+fU3MAsctk=;
+	s=arc-20240116; t=1756218809; c=relaxed/simple;
+	bh=zKbpOFfVAaEraczKG0tcC9RxmgN8WLOxbA4jPbIlQyA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=KPhmHa95U9alSl20hVYgzjPA4uyOa31uzxfSzgNymbY0gY8cwARbA5k+UBat06kAmeaBDpVXKfjixUL6lFtqZvdfwUApHxMjNZ8+/g9eWAtV7BELB1PGv5tm7sd5dV+MK/AUWMV8aBvQC9Bjs8cvL9YtrRberRTJPOEc5qWQ4Ao=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=0gyO0DBQ; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 93BB8C4CEF1;
-	Tue, 26 Aug 2025 14:15:40 +0000 (UTC)
+	 MIME-Version; b=ssjNo/9oDrs3GccLle5ghnVlBVEQD3o7mgFwfpPl+LgC2sHEbzefj538QRe5wBdhT1sNSS4iPcu8TYSSfA813ZyCvW4C67q5+iEDhFS21MPzzivLihdS1ABP31GCiliB+OTuTtL7kVSIKIfPh27Ug+/t4id1s7LjjxTNr3XNwsc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=KmkW8a+j; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 23EE0C113D0;
+	Tue, 26 Aug 2025 14:33:28 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1756217740;
-	bh=qHq9knWVnaQREi5Frzkf8oKU3YLvhj72B+fU3MAsctk=;
+	s=korg; t=1756218809;
+	bh=zKbpOFfVAaEraczKG0tcC9RxmgN8WLOxbA4jPbIlQyA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=0gyO0DBQl2MoFdo05DAeNEfw/K40fgLboSkfw8WurQpdx+9JD9+3LTJ3HMVNCPWNo
-	 ryjxwIh8fialHMBjM3vP1RQR10MhKKbaI3Q/ktQLWrB8yDZFpqqsmWm8kFMj2YgCWa
-	 oywgbrbI7CU+r25jNgN/D8O9kV/zddbhoFGAv4w8=
+	b=KmkW8a+jCjbUiTivhi8vppQ9RYIgYDRCq4UZ7axnMm9y5dpZ8QpUTG+4L+XWnYwqR
+	 JdfuKbCL7iLgtbGNAig0f0AhPRm57LTEAJOOalQ8sx3VHwaSl+YB5XvngC+xQYPuJp
+	 PT3T2c2zKuMIMJhAWEyQLds02v/6O5MB0bNca2cY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	=?UTF-8?q?Amadeusz=20S=C5=82awi=C5=84ski?= <amadeuszx.slawinski@linux.intel.com>,
-	Cezary Rojewski <cezary.rojewski@intel.com>,
-	Xinxin Wan <xinxin.wan@intel.com>,
-	Mark Brown <broonie@kernel.org>,
+	Paolo Abeni <pabeni@redhat.com>,
+	Jason Wang <jasowang@redhat.com>,
+	Xuan Zhuo <xuanzhuo@linux.alibaba.com>,
+	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 257/523] ASoC: codecs: rt5640: Retry DEVICE_ID verification
+Subject: [PATCH 5.4 141/403] netpoll: prevent hanging NAPI when netcons gets enabled
 Date: Tue, 26 Aug 2025 13:07:47 +0200
-Message-ID: <20250826110930.765314365@linuxfoundation.org>
+Message-ID: <20250826110910.652263331@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250826110924.562212281@linuxfoundation.org>
-References: <20250826110924.562212281@linuxfoundation.org>
+In-Reply-To: <20250826110905.607690791@linuxfoundation.org>
+References: <20250826110905.607690791@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,50 +62,99 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+5.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Xinxin Wan <xinxin.wan@intel.com>
+From: Jakub Kicinski <kuba@kernel.org>
 
-[ Upstream commit 19f971057b2d7b99c80530ec1052b45de236a8da ]
+[ Upstream commit 2da4def0f487f24bbb0cece3bb2bcdcb918a0b72 ]
 
-To be more resilient to codec-detection failures when the hardware
-powers on slowly, add retry mechanism to the device verification check.
-Similar pattern is found throughout a number of Realtek codecs. Our
-tests show that 60ms delay is sufficient to address readiness issues on
-rt5640 chip.
+Paolo spotted hangs in NIPA running driver tests against virtio.
+The tests hang in virtnet_close() -> virtnet_napi_tx_disable().
 
-Reviewed-by: Amadeusz Sławiński <amadeuszx.slawinski@linux.intel.com>
-Reviewed-by: Cezary Rojewski <cezary.rojewski@intel.com>
-Signed-off-by: Xinxin Wan <xinxin.wan@intel.com>
-Signed-off-by: Cezary Rojewski <cezary.rojewski@intel.com>
-Link: https://patch.msgid.link/20250530142120.2944095-3-cezary.rojewski@intel.com
-Signed-off-by: Mark Brown <broonie@kernel.org>
+The problem is only reproducible if running multiple of our tests
+in sequence (I used TEST_PROGS="xdp.py ping.py netcons_basic.sh \
+netpoll_basic.py stats.py"). Initial suspicion was that this is
+a simple case of double-disable of NAPI, but instrumenting the
+code reveals:
+
+ Deadlocked on NAPI ffff888007cd82c0 (virtnet_poll_tx):
+   state: 0x37, disabled: false, owner: 0, listed: false, weight: 64
+
+The NAPI was not in fact disabled, owner is 0 (rather than -1),
+so the NAPI "thinks" it's scheduled for CPU 0 but it's not listed
+(!list_empty(&n->poll_list) => false). It seems odd that normal NAPI
+processing would wedge itself like this.
+
+Better suspicion is that netpoll gets enabled while NAPI is polling,
+and also grabs the NAPI instance. This confuses napi_complete_done():
+
+  [netpoll]                                   [normal NAPI]
+                                        napi_poll()
+                                          have = netpoll_poll_lock()
+                                            rcu_access_pointer(dev->npinfo)
+                                              return NULL # no netpoll
+                                          __napi_poll()
+					    ->poll(->weight)
+  poll_napi()
+    cmpxchg(->poll_owner, -1, cpu)
+      poll_one_napi()
+        set_bit(NAPI_STATE_NPSVC, ->state)
+                                              napi_complete_done()
+                                                if (NAPIF_STATE_NPSVC)
+                                                  return false
+                                           # exit without clearing SCHED
+
+This feels very unlikely, but perhaps virtio has some interactions
+with the hypervisor in the NAPI ->poll that makes the race window
+larger?
+
+Best I could to to prove the theory was to add and trigger this
+warning in napi_poll (just before netpoll_poll_unlock()):
+
+      WARN_ONCE(!have && rcu_access_pointer(n->dev->npinfo) &&
+                napi_is_scheduled(n) && list_empty(&n->poll_list),
+                "NAPI race with netpoll %px", n);
+
+If this warning hits the next virtio_close() will hang.
+
+This patch survived 30 test iterations without a hang (without it
+the longest clean run was around 10). Credit for triggering this
+goes to Breno's recent netconsole tests.
+
+Fixes: 1da177e4c3f4 ("Linux-2.6.12-rc2")
+Reported-by: Paolo Abeni <pabeni@redhat.com>
+Link: https://lore.kernel.org/c5a93ed1-9abe-4880-a3bb-8d1678018b1d@redhat.com
+Acked-by: Jason Wang <jasowang@redhat.com>
+Reviewed-by: Xuan Zhuo <xuanzhuo@linux.alibaba.com>
+Link: https://patch.msgid.link/20250726010846.1105875-1-kuba@kernel.org
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- sound/soc/codecs/rt5640.c | 5 +++++
- 1 file changed, 5 insertions(+)
+ net/core/netpoll.c | 7 +++++++
+ 1 file changed, 7 insertions(+)
 
-diff --git a/sound/soc/codecs/rt5640.c b/sound/soc/codecs/rt5640.c
-index a5674c227b3a..c12966025cfa 100644
---- a/sound/soc/codecs/rt5640.c
-+++ b/sound/soc/codecs/rt5640.c
-@@ -2810,6 +2810,11 @@ static int rt5640_i2c_probe(struct i2c_client *i2c,
- 	}
+diff --git a/net/core/netpoll.c b/net/core/netpoll.c
+index 940d371f5f3b..09ae2fc41fa9 100644
+--- a/net/core/netpoll.c
++++ b/net/core/netpoll.c
+@@ -807,6 +807,13 @@ int netpoll_setup(struct netpoll *np)
+ 		goto put;
  
- 	regmap_read(rt5640->regmap, RT5640_VENDOR_ID2, &val);
-+	if (val != RT5640_DEVICE_ID) {
-+		usleep_range(60000, 100000);
-+		regmap_read(rt5640->regmap, RT5640_VENDOR_ID2, &val);
-+	}
+ 	rtnl_unlock();
 +
- 	if (val != RT5640_DEVICE_ID) {
- 		dev_err(&i2c->dev,
- 			"Device with ID register %#x is not rt5640/39\n", val);
++	/* Make sure all NAPI polls which started before dev->npinfo
++	 * was visible have exited before we start calling NAPI poll.
++	 * NAPI skips locking if dev->npinfo is NULL.
++	 */
++	synchronize_rcu();
++
+ 	return 0;
+ 
+ put:
 -- 
 2.39.5
 
