@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-175499-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-173848-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3E7D5B367C6
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 16:10:07 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id D4A20B36014
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 14:56:38 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id C9A1BB63F9D
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 14:06:56 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 3DCA7463CF8
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 12:54:31 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 002F62FDC44;
-	Tue, 26 Aug 2025 14:06:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1BCF91FF1D1;
+	Tue, 26 Aug 2025 12:53:45 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Ij6F2ABl"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="QXP+VOp0"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AFA8C1662E7;
-	Tue, 26 Aug 2025 14:06:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CAD0D1EDA2C;
+	Tue, 26 Aug 2025 12:53:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756217206; cv=none; b=Fcd+Y8CIjDajIx+plcD2y80OZexGF3xPuZNnn25ImILr2NaJjCgrnEee0FmnUkR1wnJxAN/UuNuuXaq91BXhbxDsDaVaAykQTyu7A+2QsW2ZWZJn3ThQp068SEg8fZw3NxX9shj6PssBoB/pQK0TtYJv+Pp2P0XiF7832tP2Vhc=
+	t=1756212824; cv=none; b=oClpIHCq8owTN1fkuw1J7NQ598GRA6oB4cfQmWjvorszyrf/4TYLW7V+s2W/ICYCRiiirm0AMmQklbpStJv+ka172Xvk2HghUKvICacJkp9QTzRYQgGD0jh9gUNKP10i8ZwwV1gr7eIIYbLk8NQc75o9MmM8YLRio6q41kVA5ZU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756217206; c=relaxed/simple;
-	bh=7CSEAptk8iclMR/0E+CBTkRU+eeME8YZdBlgXlxVZgo=;
+	s=arc-20240116; t=1756212824; c=relaxed/simple;
+	bh=kM+2dw4keRJqEHUsb2QMlO+GC8RvFBQkTCL9KU3E03Y=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=EAbIZB+rwArCeocTOozuWn77i7p2AMEkgVuXqarDiXgH1jGjj8j30N9tb05zn/g++FCOTDcrr9fuwr5AnFu1auKSjx66KZBPio0Bv2AWzFYRpnTLjhKOlveDytyEL6ACowDmJdggufD/NnYlXxxwUhv426szv6i/GbKedUHYhjE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Ij6F2ABl; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 03C09C4CEF1;
-	Tue, 26 Aug 2025 14:06:44 +0000 (UTC)
+	 MIME-Version; b=jURLfAAO4UA307gL8HDsmW43jIBHe06rADCSO+KY+DAHk482LC7aeDBo6OspQZvjlI9XvgOoVjQ+Y1JHPD0ms4HtH0fP/2A3qDhZ8ljdpf29CfLdOWxKPRw42GVXkv8w37/J8kWu15phfZWSqnbQDtYCquvkNvuI7d8L8VCdVHA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=QXP+VOp0; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3E707C4CEF1;
+	Tue, 26 Aug 2025 12:53:44 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1756217205;
-	bh=7CSEAptk8iclMR/0E+CBTkRU+eeME8YZdBlgXlxVZgo=;
+	s=korg; t=1756212824;
+	bh=kM+2dw4keRJqEHUsb2QMlO+GC8RvFBQkTCL9KU3E03Y=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Ij6F2ABlLUOCizi//rCmhVR4ad1tzRf6LUli4WuaCbyNfhoWxjtHShRlH8bmyVue9
-	 e9Xut401S6px9Ofu96GgVYj0ILdO1QFvND5y56KeEL8MhTIpQhLJb7ft5eBVrQkNM/
-	 cLu0Tq5uWIaE5HNi/knXbQ5kyQtIONXXQowCtq1Q=
+	b=QXP+VOp0KPkRmVAaA8hKQ5yO9FJYWbbGAICoiBlnt9ED33t2xvPZchY8RqhTDlqED
+	 KgGfgf8XloDE95XyCDF8ngU/68JTYPMvbneFWCUd9DGyNAY60YkUvZEpxkG4YwnBEd
+	 soERFyU9ky5GWpOezClW3crzKRlnx0AnIXNYCvuY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Alessandro Carminati <acarmina@redhat.com>,
-	Mark Brown <broonie@kernel.org>,
+	Peter Robinson <pbrobinson@gmail.com>,
+	Florian Fainelli <florian.fainelli@broadcom.com>,
+	Philipp Zabel <p.zabel@pengutronix.de>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 055/523] regulator: core: fix NULL dereference on unbind due to stale coupling data
+Subject: [PATCH 6.6 116/587] reset: brcmstb: Enable reset drivers for ARCH_BCM2835
 Date: Tue, 26 Aug 2025 13:04:25 +0200
-Message-ID: <20250826110925.949446829@linuxfoundation.org>
+Message-ID: <20250826110955.921038956@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250826110924.562212281@linuxfoundation.org>
-References: <20250826110924.562212281@linuxfoundation.org>
+In-Reply-To: <20250826110952.942403671@linuxfoundation.org>
+References: <20250826110952.942403671@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,45 +63,61 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Alessandro Carminati <acarmina@redhat.com>
+From: Peter Robinson <pbrobinson@gmail.com>
 
-[ Upstream commit ca46946a482238b0cdea459fb82fc837fb36260e ]
+[ Upstream commit 1d99f92f71b6b4b2eee776562c991428490f71ef ]
 
-Failing to reset coupling_desc.n_coupled after freeing coupled_rdevs can
-lead to NULL pointer dereference when regulators are accessed post-unbind.
+The BRCMSTB and BRCMSTB_RESCAL reset drivers are also
+used in the BCM2712, AKA the RPi5. The RPi platforms
+have typically used the ARCH_BCM2835, and the PCIe
+support for this SoC can use this config which depends
+on these drivers so enable building them when just that
+arch option is enabled to ensure the platform works as
+expected.
 
-This can happen during runtime PM or other regulator operations that rely
-on coupling metadata.
-
-For example, on ridesx4, unbinding the 'reg-dummy' platform device triggers
-a panic in regulator_lock_recursive() due to stale coupling state.
-
-Ensure n_coupled is set to 0 to prevent access to invalid pointers.
-
-Signed-off-by: Alessandro Carminati <acarmina@redhat.com>
-Link: https://patch.msgid.link/20250626083809.314842-1-acarmina@redhat.com
-Signed-off-by: Mark Brown <broonie@kernel.org>
+Signed-off-by: Peter Robinson <pbrobinson@gmail.com>
+Acked-by: Florian Fainelli <florian.fainelli@broadcom.com>
+Link: https://lore.kernel.org/r/20250630175301.846082-1-pbrobinson@gmail.com
+Signed-off-by: Philipp Zabel <p.zabel@pengutronix.de>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/regulator/core.c | 1 +
- 1 file changed, 1 insertion(+)
+ drivers/reset/Kconfig | 10 +++++-----
+ 1 file changed, 5 insertions(+), 5 deletions(-)
 
-diff --git a/drivers/regulator/core.c b/drivers/regulator/core.c
-index a0cc907a76c18..b2d866d606512 100644
---- a/drivers/regulator/core.c
-+++ b/drivers/regulator/core.c
-@@ -5198,6 +5198,7 @@ static void regulator_remove_coupling(struct regulator_dev *rdev)
- 				 ERR_PTR(err));
- 	}
+diff --git a/drivers/reset/Kconfig b/drivers/reset/Kconfig
+index ccd59ddd7610..9f25eb3aec25 100644
+--- a/drivers/reset/Kconfig
++++ b/drivers/reset/Kconfig
+@@ -51,8 +51,8 @@ config RESET_BERLIN
  
-+	rdev->coupling_desc.n_coupled = 0;
- 	kfree(rdev->coupling_desc.coupled_rdevs);
- 	rdev->coupling_desc.coupled_rdevs = NULL;
- }
+ config RESET_BRCMSTB
+ 	tristate "Broadcom STB reset controller"
+-	depends on ARCH_BRCMSTB || COMPILE_TEST
+-	default ARCH_BRCMSTB
++	depends on ARCH_BRCMSTB || ARCH_BCM2835 || COMPILE_TEST
++	default ARCH_BRCMSTB || ARCH_BCM2835
+ 	help
+ 	  This enables the reset controller driver for Broadcom STB SoCs using
+ 	  a SUN_TOP_CTRL_SW_INIT style controller.
+@@ -60,11 +60,11 @@ config RESET_BRCMSTB
+ config RESET_BRCMSTB_RESCAL
+ 	tristate "Broadcom STB RESCAL reset controller"
+ 	depends on HAS_IOMEM
+-	depends on ARCH_BRCMSTB || COMPILE_TEST
+-	default ARCH_BRCMSTB
++	depends on ARCH_BRCMSTB || ARCH_BCM2835 || COMPILE_TEST
++	default ARCH_BRCMSTB || ARCH_BCM2835
+ 	help
+ 	  This enables the RESCAL reset controller for SATA, PCIe0, or PCIe1 on
+-	  BCM7216.
++	  BCM7216 or the BCM2712.
+ 
+ config RESET_HSDK
+ 	bool "Synopsys HSDK Reset Driver"
 -- 
 2.39.5
 
