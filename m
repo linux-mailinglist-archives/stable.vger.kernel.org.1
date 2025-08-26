@@ -1,55 +1,58 @@
-Return-Path: <stable+bounces-173005-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-175611-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 237BDB35B33
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 13:20:56 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9897FB3685B
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 16:15:42 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 403EB7BC4F2
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 11:19:20 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 079697AA908
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 14:12:17 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3450B33473A;
-	Tue, 26 Aug 2025 11:18:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B79143568ED;
+	Tue, 26 Aug 2025 14:11:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="kqLk1cM6"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Y8eftdWL"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E56A833439F;
-	Tue, 26 Aug 2025 11:18:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 74700352067;
+	Tue, 26 Aug 2025 14:11:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756207129; cv=none; b=bQDKsTHY+uuqU+r5+5xrLYY9e3fJ8AO2FJx5QqbWxpE7o1iOxTKLBp6ECrw+1zMQVA2SuZPEuYZ5i3ceA+8GDyN7FcX+f++D+iyvyT2T2giKuuwoHy1JOB7/cWNjvagorw3kPwmiigvCdgLFY9oxmihkpNpu/+rEnWD0e4FM0ko=
+	t=1756217504; cv=none; b=akBmae1xY5qhAOl60x2O13BbrdRr0xNZ80K2pi7Q+aLqsBJpskUJ39Nyo0MAwRVYtA1AiottBAby6wyzcaZ42OF21ByvtZcBwa8vjlNgBfjRO36b/76ld6fDOh9NfPcvhqjSjsl6fbPOdSuuMmW0dnO4AxjPA6BU9WoQpPAkScc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756207129; c=relaxed/simple;
-	bh=1Zamj6Q5ZJcgoYIGCyPiyDtD3z/Q3xecQB6ASq9+mYw=;
+	s=arc-20240116; t=1756217504; c=relaxed/simple;
+	bh=5VtOfRlSdRIQj+6n0MfTNYaOys5cMt5mfj3XmtJVR1M=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=HWCdfwRpEdjZOvhgfq/XN5H70VVawgf7nr1es+gx+cxpWiYDgoCpMiRUFpV9No7/JzqV3NzGVf/BPZKJUttA/QHTNazkN7f6SpVA0cXUwt0aOIbiFx52cqlUvOn75ZX89EIP9ObKx6B74Wiv1J8wRhNTWQ8iUWIQvnRIFQ1tIB0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=kqLk1cM6; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 76D5EC4CEF1;
-	Tue, 26 Aug 2025 11:18:48 +0000 (UTC)
+	 MIME-Version:Content-Type; b=M6e9nsDyzDny9tytAwk7P4bvXCTiWrV4kh/ECeI/bEd/aoQ/27O9FSqtJSzdxyjAVvUCXCMgiUvuz87BlhOlKhkWo9eReIygrQxVuy9aNRFJ49cAUXr57nI4tD26VMOptychhEJetYs3NWgD7iOsTsnzO6DTBTa/hT+ktYYBvvk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Y8eftdWL; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A48C6C4CEF1;
+	Tue, 26 Aug 2025 14:11:42 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1756207128;
-	bh=1Zamj6Q5ZJcgoYIGCyPiyDtD3z/Q3xecQB6ASq9+mYw=;
+	s=korg; t=1756217503;
+	bh=5VtOfRlSdRIQj+6n0MfTNYaOys5cMt5mfj3XmtJVR1M=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=kqLk1cM6OCsA/5YR38znA4cNJNKwWpgFJMzN+jDExR38HsG54JOl+pT/zDQtC5gcx
-	 NDTucujmDtnU/cmYhqbyMR7+Y2QE0k0DANsBWsh5PXScojOCYnHD6P5EhS2XDdqrO+
-	 4g2ZHzLJNK1L+vmVNUjes5V9DrG8ESDokAAbRmEs=
+	b=Y8eftdWLGvp6lx3DZHyKfavUSra7wF1pDmZrAPxfnfTGBd5UpRvo1VPTT+hx82T8d
+	 B2fpVPYUfxInoP7rzP1YYn3WQa53fxbKiFh98olW4nBn/8SUhj4bTYo41HTlbd+kzB
+	 PRJyncVbg2kfI+ZMhXTkiUwAXqc2LUdAO21Io7/s=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>,
-	"Rob Herring (Arm)" <robh@kernel.org>
-Subject: [PATCH 6.16 062/457] dt-bindings: display: sprd,sharkl3-dpu: Fix missing clocks constraints
+	Bard Liao <yung-chuan.liao@linux.intel.com>,
+	=?UTF-8?q?P=C3=A9ter=20Ujfalusi?= <peter.ujfalusi@linux.intel.com>,
+	Ranjani Sridharan <ranjani.sridharan@linux.intel.com>,
+	Vinod Koul <vkoul@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.10 136/523] soundwire: stream: restore params when prepare ports fail
 Date: Tue, 26 Aug 2025 13:05:46 +0200
-Message-ID: <20250826110938.890904470@linuxfoundation.org>
+Message-ID: <20250826110927.855997028@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250826110937.289866482@linuxfoundation.org>
-References: <20250826110937.289866482@linuxfoundation.org>
+In-Reply-To: <20250826110924.562212281@linuxfoundation.org>
+References: <20250826110924.562212281@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -59,41 +62,48 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.16-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
+From: Bard Liao <yung-chuan.liao@linux.intel.com>
 
-commit 934da599e694d476f493d3927a30414e98a81561 upstream.
+[ Upstream commit dba7d9dbfdc4389361ff3a910e767d3cfca22587 ]
 
-'minItems' alone does not impose upper bound, unlike 'maxItems' which
-implies lower bound.  Add missing clock constraint so the list will have
-exact number of items (clocks).
+The bus->params should be restored if the stream is failed to prepare.
+The issue exists since beginning. The Fixes tag just indicates the
+first commit that the commit can be applied to.
 
-Fixes: 8cae15c60cf0 ("dt-bindings: display: add Unisoc's dpu bindings")
-Cc: stable@vger.kernel.org
-Signed-off-by: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
-Link: https://lore.kernel.org/r/20250720123003.37662-3-krzysztof.kozlowski@linaro.org
-Signed-off-by: Rob Herring (Arm) <robh@kernel.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: 17ed5bef49f4 ("soundwire: add missing newlines in dynamic debug logs")
+Signed-off-by: Bard Liao <yung-chuan.liao@linux.intel.com>
+Reviewed-by: Péter Ujfalusi <peter.ujfalusi@linux.intel.com>
+Reviewed-by: Ranjani Sridharan <ranjani.sridharan@linux.intel.com>
+Link: https://lore.kernel.org/r/20250626060952.405996-1-yung-chuan.liao@linux.intel.com
+Signed-off-by: Vinod Koul <vkoul@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- Documentation/devicetree/bindings/display/sprd/sprd,sharkl3-dpu.yaml |    2 +-
+ drivers/soundwire/stream.c | 2 +-
  1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/Documentation/devicetree/bindings/display/sprd/sprd,sharkl3-dpu.yaml
-+++ b/Documentation/devicetree/bindings/display/sprd/sprd,sharkl3-dpu.yaml
-@@ -25,7 +25,7 @@ properties:
-     maxItems: 1
+diff --git a/drivers/soundwire/stream.c b/drivers/soundwire/stream.c
+index a377c3d02c55..e4ceaea331a2 100644
+--- a/drivers/soundwire/stream.c
++++ b/drivers/soundwire/stream.c
+@@ -1555,7 +1555,7 @@ static int _sdw_prepare_stream(struct sdw_stream_runtime *stream,
+ 		if (ret < 0) {
+ 			dev_err(bus->dev, "Prepare port(s) failed ret = %d\n",
+ 				ret);
+-			return ret;
++			goto restore_params;
+ 		}
+ 	}
  
-   clocks:
--    minItems: 2
-+    maxItems: 2
- 
-   clock-names:
-     items:
+-- 
+2.39.5
+
 
 
 
