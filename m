@@ -1,56 +1,58 @@
-Return-Path: <stable+bounces-174740-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-174226-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7EDDDB364BB
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 15:41:41 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id C9486B36222
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 15:16:13 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 890141C223F7
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 13:34:54 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 007F98A4914
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 13:11:06 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7BDE234A321;
-	Tue, 26 Aug 2025 13:33:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 45DC6280334;
+	Tue, 26 Aug 2025 13:10:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="MnNCvK01"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Aol4da7J"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 37B58228C9D;
-	Tue, 26 Aug 2025 13:33:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 023F518F2FC;
+	Tue, 26 Aug 2025 13:10:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756215191; cv=none; b=kGSoT+YqVtNB+eLvV8QAJFJEU88NWx2qnG91oy6hsGKlvJamPRQWV8yGhe0w9TrratlfSxsi9yKZbRLe7thLqesvBp1klrlsvF0eDw8od+mKyN1Vzx8pU2wr8F6W5Nn8hlbWbW5f1tCinOu5V5WH66upbG6liOGmNjMNsHZfKsU=
+	t=1756213828; cv=none; b=r4NVdZYRoKsWpYhq0EMUahdY2gdNBOVLuWuBgu54Wc2lX0n6GA76Ag64C1oYZtTBzyx/rKgX+beY2IXJzUNIB5xkpApXf9oL5Uk2yGh+FNfH5ITvdncizKf9meTkom6eFZ4k6uy9r5FM2SeWBl5oNriVNBxFr/2NK8yWA3j+G5w=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756215191; c=relaxed/simple;
-	bh=UebivGrFeHpwxQBtZXbGmdRdzbOZmfW+1Y15h2AURd4=;
+	s=arc-20240116; t=1756213828; c=relaxed/simple;
+	bh=DZR8x/4cwv41eRLIYVjrHUFNeAFadr1h/AVPBL1HXAM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=L0cMfWnFdRi/7VTFmo29+4ABiVSUEpQ25T2nuqO2CWbP+x79TK14nslQpjIrqel6Uat/4FtNUkgicng5+nb6uuVgvbbeKJzR+UnFlNkRl1i2rftyo/P0Cnf3ZA2tz2Gjr42FH4gHp06cIqvK9pKzkvaI6DvaBjYicajf65be+1k=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=MnNCvK01; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id BD399C4CEF1;
-	Tue, 26 Aug 2025 13:33:10 +0000 (UTC)
+	 MIME-Version; b=D290c6gr3pvNf5MomjfBZ/xQ5cdfIVyoauYK9eVlmTue0ovmy79I4o9Kre1nmV7PaKvfqDyvO7SNtTTH7RE1T8C4rR/CNlu5kgeqfsIh/LDXqIO2ebsAxPgSTpiFggBbTT9kSJSHrnXFvzRkGjXkcAuCKqzHdYnBwfkjw/cAuoM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Aol4da7J; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5CD4EC4CEF1;
+	Tue, 26 Aug 2025 13:10:27 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1756215191;
-	bh=UebivGrFeHpwxQBtZXbGmdRdzbOZmfW+1Y15h2AURd4=;
+	s=korg; t=1756213827;
+	bh=DZR8x/4cwv41eRLIYVjrHUFNeAFadr1h/AVPBL1HXAM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=MnNCvK01UPzlfNhdZtyN1pqMHaWqPMAFBt3TrleuT3Qzn5gU3eDFz1lFjiS1YPIGW
-	 amNe3/puhf5cc2bFN4iDfKzZ9ouUXLAxgMDIP4dbaFEwpgKJHmTpGVapw0z61hDkKF
-	 gauvNayJkXrhAO7/up6YMf64DyGGfcGlBWMUbUb8=
+	b=Aol4da7JepARsXbH88ycqy2hJ7rAsPRKNfJMJ+aIRM0Z6Umbqwxk46LbXpt2BIYtB
+	 izN/p6k7/1D3enRuZi3tPe6BnmT0AiCh3G6JURUpX+KMGUf1oFQZK6ByaSsE0wKyGX
+	 56RA72tGgn9VW31/bejOsGsiILLFR3u/yh6EwJQc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Kai Huang <kai.huang@intel.com>,
-	Sean Christopherson <seanjc@google.com>,
+	Richard Zhu <hongxing.zhu@nxp.com>,
+	Manivannan Sadhasivam <mani@kernel.org>,
+	Bjorn Helgaas <bhelgaas@google.com>,
+	Frank Li <Frank.Li@nxp.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 391/482] x86/reboot: KVM: Handle VMXOFF in KVMs reboot callback
+Subject: [PATCH 6.6 495/587] PCI: imx6: Delay link start until configfs start written
 Date: Tue, 26 Aug 2025 13:10:44 +0200
-Message-ID: <20250826110940.488300898@linuxfoundation.org>
+Message-ID: <20250826111005.573206186@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250826110930.769259449@linuxfoundation.org>
-References: <20250826110930.769259449@linuxfoundation.org>
+In-Reply-To: <20250826110952.942403671@linuxfoundation.org>
+References: <20250826110952.942403671@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,141 +64,50 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Sean Christopherson <seanjc@google.com>
+From: Richard Zhu <hongxing.zhu@nxp.com>
 
-[ Upstream commit 119b5cb4ffd0166f3e98e9ee042f5046f7744f28 ]
+[ Upstream commit 2e6ea70690ddd1ffa422423fd0d4523e4dfe4b62 ]
 
-Use KVM VMX's reboot/crash callback to do VMXOFF in an emergency instead
-of manually and blindly doing VMXOFF.  There's no need to attempt VMXOFF
-if a hypervisor, i.e. KVM, isn't loaded/active, i.e. if the CPU can't
-possibly be post-VMXON.
+According to Documentation/PCI/endpoint/pci-endpoint-cfs.rst, the Endpoint
+controller (EPC) should only start the link when userspace writes '1' to
+the '/sys/kernel/config/pci_ep/controllers/<EPC>/start' attribute, which
+ultimately results in calling imx_pcie_start_link() via
+pci_epc_start_store().
 
-Reviewed-by: Kai Huang <kai.huang@intel.com>
-Link: https://lore.kernel.org/r/20230721201859.2307736-4-seanjc@google.com
-Signed-off-by: Sean Christopherson <seanjc@google.com>
-Stable-dep-of: a0ee1d5faff1 ("KVM: VMX: Flush shadow VMCS on emergency reboot")
+To align with the documented behavior, do not start the link automatically
+when adding the EP controller.
+
+Fixes: 75c2f26da03f ("PCI: imx6: Add i.MX PCIe EP mode support")
+Signed-off-by: Richard Zhu <hongxing.zhu@nxp.com>
+[mani: reworded commit subject and description]
+Signed-off-by: Manivannan Sadhasivam <mani@kernel.org>
+[bhelgaas: commit log]
+Signed-off-by: Bjorn Helgaas <bhelgaas@google.com>
+Reviewed-by: Frank Li <Frank.Li@nxp.com>
+Cc: stable@vger.kernel.org
+Link: https://patch.msgid.link/20250709033722.2924372-3-hongxing.zhu@nxp.com
+[ imx_pcie_ltssm_enable() => imx6_pcie_ltssm_enable() ]
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- arch/x86/include/asm/virtext.h |   10 ----------
- arch/x86/kernel/reboot.c       |   29 +++++++++--------------------
- arch/x86/kvm/vmx/vmx.c         |    8 +++++---
- 3 files changed, 14 insertions(+), 33 deletions(-)
+ drivers/pci/controller/dwc/pci-imx6.c |    2 --
+ 1 file changed, 2 deletions(-)
 
---- a/arch/x86/include/asm/virtext.h
-+++ b/arch/x86/include/asm/virtext.h
-@@ -70,16 +70,6 @@ static inline void __cpu_emergency_vmxof
- 		cpu_vmxoff();
- }
- 
--/** Disable VMX if it is supported and enabled on the current CPU
-- */
--static inline void cpu_emergency_vmxoff(void)
--{
--	if (cpu_has_vmx())
--		__cpu_emergency_vmxoff();
--}
--
--
--
- 
- /*
-  * SVM functions:
---- a/arch/x86/kernel/reboot.c
-+++ b/arch/x86/kernel/reboot.c
-@@ -787,13 +787,7 @@ void machine_crash_shutdown(struct pt_re
- }
- #endif
- 
--/*
-- * This is used to VMCLEAR all VMCSs loaded on the
-- * processor. And when loading kvm_intel module, the
-- * callback function pointer will be assigned.
-- *
-- * protected by rcu.
-- */
-+/* RCU-protected callback to disable virtualization prior to reboot. */
- static cpu_emergency_virt_cb __rcu *cpu_emergency_virt_callback;
- 
- void cpu_emergency_register_virt_callback(cpu_emergency_virt_cb *callback)
-@@ -815,17 +809,6 @@ void cpu_emergency_unregister_virt_callb
- }
- EXPORT_SYMBOL_GPL(cpu_emergency_unregister_virt_callback);
- 
--static inline void cpu_crash_vmclear_loaded_vmcss(void)
--{
--	cpu_emergency_virt_cb *callback;
--
--	rcu_read_lock();
--	callback = rcu_dereference(cpu_emergency_virt_callback);
--	if (callback)
--		callback();
--	rcu_read_unlock();
--}
--
- /* This is the CPU performing the emergency shutdown work. */
- int crashing_cpu = -1;
- 
-@@ -836,9 +819,15 @@ int crashing_cpu = -1;
-  */
- void cpu_emergency_disable_virtualization(void)
- {
--	cpu_crash_vmclear_loaded_vmcss();
-+	cpu_emergency_virt_cb *callback;
-+
-+	rcu_read_lock();
-+	callback = rcu_dereference(cpu_emergency_virt_callback);
-+	if (callback)
-+		callback();
-+	rcu_read_unlock();
- 
--	cpu_emergency_vmxoff();
-+	/* KVM_AMD doesn't yet utilize the common callback. */
- 	cpu_emergency_svm_disable();
- }
- 
---- a/arch/x86/kvm/vmx/vmx.c
-+++ b/arch/x86/kvm/vmx/vmx.c
-@@ -707,7 +707,7 @@ static int vmx_set_guest_uret_msr(struct
- 	return ret;
- }
- 
--static void crash_vmclear_local_loaded_vmcss(void)
-+static void vmx_emergency_disable(void)
- {
- 	int cpu = raw_smp_processor_id();
- 	struct loaded_vmcs *v;
-@@ -715,6 +715,8 @@ static void crash_vmclear_local_loaded_v
- 	list_for_each_entry(v, &per_cpu(loaded_vmcss_on_cpu, cpu),
- 			    loaded_vmcss_on_cpu_link)
- 		vmcs_clear(v->vmcs);
-+
-+	__cpu_emergency_vmxoff();
- }
- 
- static void __loaded_vmcs_clear(void *arg)
-@@ -8602,7 +8604,7 @@ static void __vmx_exit(void)
- {
- 	allow_smaller_maxphyaddr = false;
- 
--	cpu_emergency_unregister_virt_callback(crash_vmclear_local_loaded_vmcss);
-+	cpu_emergency_unregister_virt_callback(vmx_emergency_disable);
- 
- 	vmx_cleanup_l1d_flush();
- }
-@@ -8676,7 +8678,7 @@ static int __init vmx_init(void)
- 		pi_init_cpu(cpu);
+--- a/drivers/pci/controller/dwc/pci-imx6.c
++++ b/drivers/pci/controller/dwc/pci-imx6.c
+@@ -1098,8 +1098,6 @@ static int imx6_add_pcie_ep(struct imx6_
+ 		dev_err(dev, "failed to initialize endpoint\n");
+ 		return ret;
  	}
+-	/* Start LTSSM. */
+-	imx6_pcie_ltssm_enable(dev);
  
--	cpu_emergency_register_virt_callback(crash_vmclear_local_loaded_vmcss);
-+	cpu_emergency_register_virt_callback(vmx_emergency_disable);
- 
- 	vmx_check_vmcs12_offsets();
- 
+ 	return 0;
+ }
 
 
 
