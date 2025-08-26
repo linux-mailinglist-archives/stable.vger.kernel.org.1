@@ -1,59 +1,56 @@
-Return-Path: <stable+bounces-175445-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-173727-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7311FB368FE
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 16:21:33 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id DC7B8B35E71
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 13:57:40 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id CFB07984FD0
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 14:06:21 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id EDAB51BC189D
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 11:50:40 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0FCD03431FE;
-	Tue, 26 Aug 2025 14:04:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 43AA3321438;
+	Tue, 26 Aug 2025 11:50:00 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="w8x6Bnzk"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Q/Pwy528"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C1ADE35083A;
-	Tue, 26 Aug 2025 14:04:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 002CE319849;
+	Tue, 26 Aug 2025 11:49:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756217062; cv=none; b=GBiASKFEUUFEeSXZqCUjZ40G7A8QnwFRlm/Lv78H03pV+/PZqfG0DGjh2uN0HtJ+68Rp+/99JX57troFefPn7kOxHfDhVf/q+1wYge8A3+40JzWkWKA5UDrMk8qGuB1eFT59Te6PTNpl51ATQqM1dIJPHrUd4baJF/3kbgS92Us=
+	t=1756209000; cv=none; b=eHLw8jph/2cbYKelU7Z39+PhkZ6ASnYXxseUvibw570+XPFvonsz34NkW+m8fXr6GXhf3Y4cvg4REOnYgHUCwqjf/W/T4mrWT4JhOBKkJ/45lQ9fTARMVCpBoSNevbMrwd60g0+TUBb1A7LxujKhMk2JoFL3JtSwlIPFT4zoqHo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756217062; c=relaxed/simple;
-	bh=RHi0Ips4sXCo1oViOxhhcDj0T7ZPjHFQRQPLz3/RYwI=;
+	s=arc-20240116; t=1756209000; c=relaxed/simple;
+	bh=3Vgu/4zceyD0b95lI7bNjrNO700ArC5QrycOETaribc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=nVmApDz1M66AAy1ziAliYn+U/V9Duc6bOBd4kp3CXy9hAEe7dtvmOt+uvSI0JI1FqPVKnvgXe67Sl12Fm6ep442vRaLluhSnYK3NGsinPxTX+FqXRDfImC95uDORL+nnYabK4xyjGqXkWADvJD7kYl+2N/1OfpJ8xtoODTJZaKw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=w8x6Bnzk; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5784BC4CEF1;
-	Tue, 26 Aug 2025 14:04:22 +0000 (UTC)
+	 MIME-Version; b=ORdxwJZfS91FrGypcaoHfXM/fjjmhn3prIbgjZdSmdYOWR2AFbjs64EO5cn5ETZSRa8wIupLhOUsen+FX2rn3vVpNsuiabBJD2bNXwASgPhgdtO2yL+8hVczxCkUMsP31waDFUzBjS9EU75up9T0dUd87Dx3r9eRDiLgPnafNRw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Q/Pwy528; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8C9FAC4CEF1;
+	Tue, 26 Aug 2025 11:49:59 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1756217062;
-	bh=RHi0Ips4sXCo1oViOxhhcDj0T7ZPjHFQRQPLz3/RYwI=;
+	s=korg; t=1756208999;
+	bh=3Vgu/4zceyD0b95lI7bNjrNO700ArC5QrycOETaribc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=w8x6BnzkWONyFNjLxFnOc5uI/GSgEnhgfxEWlAxYtSdnOKvHcACXgIkk+zK9RV3+p
-	 rr5ucR79I9LZUvQIJgfdxZkFJcl856zemglL7ON8Mh3yMAHhwEnvor66cjc4ekhLIl
-	 rU8imjb86wdDo1XwGrYbERZwxht0c18t+8ScJftE=
+	b=Q/Pwy5289YSqIAWCn8CCGSxNC9qfKZv4aKtFu5flSD9ofL/f+jVq4l66qbso09avd
+	 SA3KYVAp3w1PDsTMD4/+FjFHUyng++QIHXAAGLbCqoG4Z4K64CaE5SZC0mKxmmeyHG
+	 g3BWU34ApvrCiTml88PW0ZAd6WdZTD33WdZh5VTs=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	ValdikSS <iam@valdikss.org.ru>,
-	Vitaly Lifshits <vitaly.lifshits@intel.com>,
-	Paul Menzel <pmenzel@molgen.mpg.de>,
-	Tony Nguyen <anthony.l.nguyen@intel.com>,
+	Hariprasad Kelam <hkelam@marvell.com>,
 	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 636/644] igc: fix disabling L1.2 PCI-E link substate on I226 on init
+Subject: [PATCH 6.12 312/322] Octeontx2-af: Skip overlap check for SPI field
 Date: Tue, 26 Aug 2025 13:12:07 +0200
-Message-ID: <20250826111002.321526254@linuxfoundation.org>
+Message-ID: <20250826110923.598662779@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250826110946.507083938@linuxfoundation.org>
-References: <20250826110946.507083938@linuxfoundation.org>
+In-Reply-To: <20250826110915.169062587@linuxfoundation.org>
+References: <20250826110915.169062587@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -65,81 +62,70 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: ValdikSS <iam@valdikss.org.ru>
+From: Hariprasad Kelam <hkelam@marvell.com>
 
-[ Upstream commit 1468c1f97cf32418e34dbb40b784ed9333b9e123 ]
+[ Upstream commit 8c5d95988c34f0aeba1f34cd5e4ba69494c90c5f ]
 
-Device ID comparison in igc_is_device_id_i226 is performed before
-the ID is set, resulting in always failing check on init.
+Octeontx2/CN10K silicon supports generating a 256-bit key per packet.
+The specific fields to be extracted from a packet for key generation
+are configurable via a Key Extraction (MKEX) Profile.
 
-Before the patch:
-* L1.2 is not disabled on init
-* L1.2 is properly disabled after suspend-resume cycle
+The AF driver scans the configured extraction profile to ensure that
+fields from upper layers do not overwrite fields from lower layers in
+the key.
 
-With the patch:
-* L1.2 is properly disabled both on init and after suspend-resume
+Example Packet Field Layout:
+LA: DMAC + SMAC
+LB: VLAN
+LC: IPv4/IPv6
+LD: TCP/UDP
 
-How to test:
-Connect to the 1G link with 300+ mbit/s Internet speed, and run
-the download speed test, such as:
+Valid MKEX Profile Configuration:
 
-    curl -o /dev/null http://speedtest.selectel.ru/1GB
+LA   -> DMAC   -> key_offset[0-5]
+LC   -> SIP    -> key_offset[20-23]
+LD   -> SPORT  -> key_offset[30-31]
 
-Without L1.2 disabled, the speed would be no more than ~200 mbit/s.
-With L1.2 disabled, the speed would reach 1 gbit/s.
-Note: it's required that the latency between your host and the remote
-be around 3-5 ms, the test inside LAN (<1 ms latency) won't trigger the
-issue.
+Invalid MKEX profile configuration:
 
-Link: https://lore.kernel.org/intel-wired-lan/15248b4f-3271-42dd-8e35-02bfc92b25e1@intel.com
-Fixes: 0325143b59c6 ("igc: disable L1.2 PCI-E link substate to avoid performance issue")
-Signed-off-by: ValdikSS <iam@valdikss.org.ru>
-Reviewed-by: Vitaly Lifshits <vitaly.lifshits@intel.com>
-Reviewed-by: Paul Menzel <pmenzel@molgen.mpg.de>
-Signed-off-by: Tony Nguyen <anthony.l.nguyen@intel.com>
-Link: https://patch.msgid.link/20250819222000.3504873-6-anthony.l.nguyen@intel.com
+LA   -> DMAC   -> key_offset[0-5]
+LC   -> SIP    -> key_offset[20-23]
+LD   -> SPORT  -> key_offset[2-3]  // Overlaps with DMAC field
+
+In another scenario, if the MKEX profile is configured to extract
+the SPI field from both AH and ESP headers at the same key offset,
+the driver rejecting this configuration. In a regular traffic,
+ipsec packet will be having either AH(LD) or ESP (LE). This patch
+relaxes the check for the same.
+
+Fixes: 12aa0a3b93f3 ("octeontx2-af: Harden rule validation.")
+Signed-off-by: Hariprasad Kelam <hkelam@marvell.com>
+Link: https://patch.msgid.link/20250820063919.1463518-1-hkelam@marvell.com
 Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/ethernet/intel/igc/igc_main.c | 14 +++++++-------
- 1 file changed, 7 insertions(+), 7 deletions(-)
+ drivers/net/ethernet/marvell/octeontx2/af/rvu_npc_fs.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/net/ethernet/intel/igc/igc_main.c b/drivers/net/ethernet/intel/igc/igc_main.c
-index f52c1674d19b..6a9ad4231b0c 100644
---- a/drivers/net/ethernet/intel/igc/igc_main.c
-+++ b/drivers/net/ethernet/intel/igc/igc_main.c
-@@ -6549,6 +6549,13 @@ static int igc_probe(struct pci_dev *pdev,
- 	adapter->port_num = hw->bus.func;
- 	adapter->msg_enable = netif_msg_init(debug, DEFAULT_MSG_ENABLE);
+diff --git a/drivers/net/ethernet/marvell/octeontx2/af/rvu_npc_fs.c b/drivers/net/ethernet/marvell/octeontx2/af/rvu_npc_fs.c
+index 150635de2bd5..0c484120be79 100644
+--- a/drivers/net/ethernet/marvell/octeontx2/af/rvu_npc_fs.c
++++ b/drivers/net/ethernet/marvell/octeontx2/af/rvu_npc_fs.c
+@@ -606,8 +606,8 @@ static void npc_set_features(struct rvu *rvu, int blkaddr, u8 intf)
+ 		if (!npc_check_field(rvu, blkaddr, NPC_LB, intf))
+ 			*features &= ~BIT_ULL(NPC_OUTER_VID);
  
-+	/* PCI config space info */
-+	hw->vendor_id = pdev->vendor;
-+	hw->device_id = pdev->device;
-+	hw->revision_id = pdev->revision;
-+	hw->subsystem_vendor_id = pdev->subsystem_vendor;
-+	hw->subsystem_device_id = pdev->subsystem_device;
-+
- 	/* Disable ASPM L1.2 on I226 devices to avoid packet loss */
- 	if (igc_is_device_id_i226(hw))
- 		pci_disable_link_state(pdev, PCIE_LINK_STATE_L1_2);
-@@ -6573,13 +6580,6 @@ static int igc_probe(struct pci_dev *pdev,
- 	netdev->mem_start = pci_resource_start(pdev, 0);
- 	netdev->mem_end = pci_resource_end(pdev, 0);
+-	/* Set SPI flag only if AH/ESP and IPSEC_SPI are in the key */
+-	if (npc_check_field(rvu, blkaddr, NPC_IPSEC_SPI, intf) &&
++	/* Allow extracting SPI field from AH and ESP headers at same offset */
++	if (npc_is_field_present(rvu, NPC_IPSEC_SPI, intf) &&
+ 	    (*features & (BIT_ULL(NPC_IPPROTO_ESP) | BIT_ULL(NPC_IPPROTO_AH))))
+ 		*features |= BIT_ULL(NPC_IPSEC_SPI);
  
--	/* PCI config space info */
--	hw->vendor_id = pdev->vendor;
--	hw->device_id = pdev->device;
--	hw->revision_id = pdev->revision;
--	hw->subsystem_vendor_id = pdev->subsystem_vendor;
--	hw->subsystem_device_id = pdev->subsystem_device;
--
- 	/* Copy the default MAC and PHY function pointers */
- 	memcpy(&hw->mac.ops, ei->mac_ops, sizeof(hw->mac.ops));
- 	memcpy(&hw->phy.ops, ei->phy_ops, sizeof(hw->phy.ops));
 -- 
 2.50.1
 
