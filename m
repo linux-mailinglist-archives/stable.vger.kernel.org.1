@@ -1,58 +1,56 @@
-Return-Path: <stable+bounces-175171-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-174044-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 43749B36785
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 16:07:54 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id A2EEBB360F4
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 15:05:37 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 7261E981658
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 13:54:19 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 5637E1BA6CB9
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 13:02:46 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5455534F479;
-	Tue, 26 Aug 2025 13:52:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 637BE1494D9;
+	Tue, 26 Aug 2025 13:02:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="IFI6Xf6n"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="2XBKmajW"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0F2E834DCF6;
-	Tue, 26 Aug 2025 13:52:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 213CF18DB0D;
+	Tue, 26 Aug 2025 13:02:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756216329; cv=none; b=q0KKOSNQldZAflHs/dNGMbgP8Eq3t30TXZ5Ak7xlIbMiatvHz4Q3yznncV1UHSXyrdbI7YenI2FqzfJGRaPA2xMBtjT84fsZ0HUnq0FOkVSUOLUylyORE6dM4MRIbTrfvaw1A057OLvNo6Hn4rsD2TowSYUach/8g7tnM7DlETU=
+	t=1756213344; cv=none; b=frtWlpT77D/IITq3J606qDByNMDT9GBCfDKmGwAqXiybPY2FKSDWnajqvNR0HAtIPNXfDCN1km40G+Zv3q0auW7hcy79dl1bxQHwO0vO1zW3jpn7DNkTigwCCv+AQn19TV1wSQDD63P/j1Vp999Pa3oJx0YqvLV96Zhad4a7VLE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756216329; c=relaxed/simple;
-	bh=doF/d9IXudhVof52EcPa8e3GDmDNfwm26FtgnHBGJFU=;
+	s=arc-20240116; t=1756213344; c=relaxed/simple;
+	bh=L39gmGIT1qbjV0CbQJFrRnzPQm5I073gPaPE7PbC4TA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=ZID8qdaVtaNocllmctX7l6gS15aXowayNGyIafiks7kwRJeGX1FODBz9Ae8Vx1QTKyAhytvgaO6u9Iqz53CRXZLFakGjh/71nhUwanS2Td6fZsVQVpR2RkBjfCJiXBjgUnuHrI4O7u/gvXRttUgTsH9OLZ9zC51mC+x4wFGlZ2o=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=IFI6Xf6n; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9596DC4CEF1;
-	Tue, 26 Aug 2025 13:52:08 +0000 (UTC)
+	 MIME-Version; b=BJk9SDbV6xvjUaUIKO0hQv7sFiVqqXKSz5Vz9hcH+nlG2+2dPBSWWWpi4KKmZahlBN0sNA7plp9HDD3bBDHdchhwKCHjcOi4KQ+4LY+G0iS1zWj76QTFBX6vaEkSwNjtV+7EGPAG1lM5LebRkMm0DfUBMtgYMOM1/TUSdCaOrYg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=2XBKmajW; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5E360C4CEF1;
+	Tue, 26 Aug 2025 13:02:23 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1756216328;
-	bh=doF/d9IXudhVof52EcPa8e3GDmDNfwm26FtgnHBGJFU=;
+	s=korg; t=1756213343;
+	bh=L39gmGIT1qbjV0CbQJFrRnzPQm5I073gPaPE7PbC4TA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=IFI6Xf6nGU2OJzs6AMClM8fXjqxDtXG1+x+mORHVFBgDoEOgTzXd05X4EbDcK5+Rm
-	 aAI7TdZ1lZY1dJ/i8rrQTCHNuEHDjgOs5wy7kqW5f7JfR+qmw0s7Clzzbi602Qlibe
-	 ifPa9ocdPK9WhszxJqazv4G1DZoPjjOLLvw9OEP8=
+	b=2XBKmajWPToyD03rV/s9vTyWvuvKb36sRHWFcpu3Lx6Qdi3/Yw3ZRoNcboAkI7eb1
+	 8Cf0cmIbw7K2VL4mlMzhFAARpfTao4WuiMAXQTQz96ryYu1QnyuY+Jj/I/i5PBMblR
+	 Ax+96HksNnMvlnIO2R/7NuSrDooO98UFrBfmPMQM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Alex Lazar <alazar@nvidia.com>,
-	Dragos Tatulea <dtatulea@nvidia.com>,
-	Gal Pressman <gal@nvidia.com>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 370/644] net: vlan: Replace BUG() with WARN_ON_ONCE() in vlan_dev_* stubs
+	Boris Burkov <boris@bur.io>,
+	Filipe Manana <fdmanana@suse.com>,
+	David Sterba <dsterba@suse.com>
+Subject: [PATCH 6.6 312/587] btrfs: clear dirty status from extent buffer on error at insert_new_root()
 Date: Tue, 26 Aug 2025 13:07:41 +0200
-Message-ID: <20250826110955.585196188@linuxfoundation.org>
+Message-ID: <20250826111000.855363009@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250826110946.507083938@linuxfoundation.org>
-References: <20250826110946.507083938@linuxfoundation.org>
+In-Reply-To: <20250826110952.942403671@linuxfoundation.org>
+References: <20250826110952.942403671@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,61 +62,41 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Gal Pressman <gal@nvidia.com>
+From: Filipe Manana <fdmanana@suse.com>
 
-[ Upstream commit 60a8b1a5d0824afda869f18dc0ecfe72f8dfda42 ]
+commit c0d013495a80cbb53e2288af7ae0ec4170aafd7c upstream.
 
-When CONFIG_VLAN_8021Q=n, a set of stub helpers are used, three of these
-helpers use BUG() unconditionally.
+If we failed to insert the tree mod log operation, we are not removing the
+dirty status from the allocated and dirtied extent buffer before we free
+it. Removing the dirty status is needed for several reasons such as to
+adjust the fs_info->dirty_metadata_bytes counter and remove the dirty
+status from the respective folios. So add the missing call to
+btrfs_clear_buffer_dirty().
 
-This code should not be reached, as callers of these functions should
-always check for is_vlan_dev() first, but the usage of BUG() is not
-recommended, replace it with WARN_ON() instead.
-
-Reviewed-by: Alex Lazar <alazar@nvidia.com>
-Reviewed-by: Dragos Tatulea <dtatulea@nvidia.com>
-Signed-off-by: Gal Pressman <gal@nvidia.com>
-Link: https://patch.msgid.link/20250616132626.1749331-3-gal@nvidia.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Fixes: f61aa7ba08ab ("btrfs: do not BUG_ON() on tree mod log failure at insert_new_root()")
+CC: stable@vger.kernel.org # 6.6+
+Reviewed-by: Boris Burkov <boris@bur.io>
+Signed-off-by: Filipe Manana <fdmanana@suse.com>
+Signed-off-by: David Sterba <dsterba@suse.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- include/linux/if_vlan.h | 6 +++---
- 1 file changed, 3 insertions(+), 3 deletions(-)
+ fs/btrfs/ctree.c |    1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/include/linux/if_vlan.h b/include/linux/if_vlan.h
-index 64cfe7cd292c..3728e3978f83 100644
---- a/include/linux/if_vlan.h
-+++ b/include/linux/if_vlan.h
-@@ -248,19 +248,19 @@ vlan_for_each(struct net_device *dev,
+--- a/fs/btrfs/ctree.c
++++ b/fs/btrfs/ctree.c
+@@ -3049,6 +3049,7 @@ static noinline int insert_new_root(stru
+ 	if (ret < 0) {
+ 		int ret2;
  
- static inline struct net_device *vlan_dev_real_dev(const struct net_device *dev)
- {
--	BUG();
-+	WARN_ON_ONCE(1);
- 	return NULL;
- }
- 
- static inline u16 vlan_dev_vlan_id(const struct net_device *dev)
- {
--	BUG();
-+	WARN_ON_ONCE(1);
- 	return 0;
- }
- 
- static inline __be16 vlan_dev_vlan_proto(const struct net_device *dev)
- {
--	BUG();
-+	WARN_ON_ONCE(1);
- 	return 0;
- }
- 
--- 
-2.39.5
-
++		btrfs_clear_buffer_dirty(trans, c);
+ 		ret2 = btrfs_free_tree_block(trans, btrfs_root_id(root), c, 0, 1);
+ 		if (ret2 < 0)
+ 			btrfs_abort_transaction(trans, ret2);
 
 
 
