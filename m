@@ -1,57 +1,61 @@
-Return-Path: <stable+bounces-174411-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-175058-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id D00CEB36336
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 15:27:46 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9252FB366A0
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 15:58:58 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 1F4A78A6595
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 13:20:56 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id C41CA467D22
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 13:48:31 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C4E18341672;
-	Tue, 26 Aug 2025 13:18:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E139234AB0D;
+	Tue, 26 Aug 2025 13:47:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="aiXZ80uY"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="AczwIe03"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 81C5933CEB0;
-	Tue, 26 Aug 2025 13:18:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9E93334AB1A;
+	Tue, 26 Aug 2025 13:47:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756214318; cv=none; b=mu5dA/IHYnaRdI7F25LtR7NN8wzQ7h/orRuBDFI3roq9VeQ+UhKent+Z/NxhM2Eq93fvdUMIBLm4ZubTYkujoDALg1gLz3clkAZ/0m/I6jZpsmAJkReS1Ka8BZBjWZ0GaFgEFjaEm2eW2xbjtOrD8H5AfLSh1lgbZQDeNDCX2E0=
+	t=1756216029; cv=none; b=EvqaUkACBb1RSZB46ct0zj+HFqzxryI7sRGdcnMlkNtv8UNlN4/g8jaPkPSzR+IkQtr9I2/yy84THIqYyXFwEZ3jAAJTzxt2WxT0IUksCArLJZE29q5+NhbWtkJys2OteWppq/douRLkXGlsZWBXt+wM8Lt72nxKPwiV8972BJE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756214318; c=relaxed/simple;
-	bh=/TtCC/e3yk3nAbYCOs42cifhD1qfuWtkFlFmLLcp7Jo=;
+	s=arc-20240116; t=1756216029; c=relaxed/simple;
+	bh=DCGXnjKUhelud1dQc0dDNAp5elm9QF/qKrI03VznD4o=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=fQ88/fJSLG0DdPEaNcLDw0+Im8Buxeg/kaMoyKf5/pq1CtnRO3nRvcj6LhocxDDlCBy7DKYtDLttYrw/GEQiAtylFLyXRIrDv7hPfxoy4jgirmb9yKHxE2j9TEbyGBSScvudu9Yk2QN7K3GPjSre9bHpVX70HX9WReQLwG5ImRA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=aiXZ80uY; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1A675C4CEF1;
-	Tue, 26 Aug 2025 13:18:37 +0000 (UTC)
+	 MIME-Version; b=pDQnA5H6qV9hqBI1MCxfPtdPKJ/vKLNdBEGcwgIx670HFUobt4/SAeZZ5YYLQJ+VRSE832l505Lod2TlKRwmisgmh8y06wAe9sXgCda439JfNJjdOi23ckir4WN3ptuyGruT1h5Ajb8FNujhnA3VDfY24mN2Ot9XFaRTbG9riEE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=AczwIe03; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0A8EDC4CEF1;
+	Tue, 26 Aug 2025 13:47:09 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1756214318;
-	bh=/TtCC/e3yk3nAbYCOs42cifhD1qfuWtkFlFmLLcp7Jo=;
+	s=korg; t=1756216029;
+	bh=DCGXnjKUhelud1dQc0dDNAp5elm9QF/qKrI03VznD4o=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=aiXZ80uYVa7RaSX3Yy3elRp8g3yUX24TRL//iE6xj8q1LaCwR4W21MjNteUUhWSG0
-	 kFAVL/cAUD4ZPtLcmgzmEuJ70AEvhqGlCmwKg158PrGbGqaR1d2jJ8Ql9czPDnNaNE
-	 9BpOpQg+pxsTi9jRnyCCwKAs22Ei9W7tLaEVY5Kc=
+	b=AczwIe03Vs7dnX9YKK/UC9OeUwtkNDYGYPfXhqS2m54m39lc/4wFtrFvwuyPb5Llw
+	 5DBmSUKKQCUqlg7FFvbaCjAtquC+YrmNE+CrBLF0jPxd7qffaNPvVH5e2RAOx2mvg5
+	 bXpbQT8gBKl2LXsJZRgo1zcCBV7txoWXsOHHiL70=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Peter Robinson <pbrobinson@gmail.com>,
-	Florian Fainelli <florian.fainelli@broadcom.com>,
-	Philipp Zabel <p.zabel@pengutronix.de>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 094/482] reset: brcmstb: Enable reset drivers for ARCH_BCM2835
+	Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
+	Leon Romanovsky <leonro@nvidia.com>,
+	Alistair Popple <apopple@nvidia.com>,
+	Bill Wendling <morbo@google.com>,
+	Jerome Glisse <jglisse@redhat.com>,
+	Justin Stitt <justinstitt@google.com>,
+	Nathan Chancellor <nathan@kernel.org>,
+	Andrew Morton <akpm@linux-foundation.org>
+Subject: [PATCH 5.15 256/644] mm/hmm: move pmd_to_hmm_pfn_flags() to the respective #ifdeffery
 Date: Tue, 26 Aug 2025 13:05:47 +0200
-Message-ID: <20250826110933.150675802@linuxfoundation.org>
+Message-ID: <20250826110952.726120849@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250826110930.769259449@linuxfoundation.org>
-References: <20250826110930.769259449@linuxfoundation.org>
+In-Reply-To: <20250826110946.507083938@linuxfoundation.org>
+References: <20250826110946.507083938@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,64 +67,61 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Peter Robinson <pbrobinson@gmail.com>
+From: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
 
-[ Upstream commit 1d99f92f71b6b4b2eee776562c991428490f71ef ]
+commit 188cb385bbf04d486df3e52f28c47b3961f5f0c0 upstream.
 
-The BRCMSTB and BRCMSTB_RESCAL reset drivers are also
-used in the BCM2712, AKA the RPi5. The RPi platforms
-have typically used the ARCH_BCM2835, and the PCIe
-support for this SoC can use this config which depends
-on these drivers so enable building them when just that
-arch option is enabled to ensure the platform works as
-expected.
+When pmd_to_hmm_pfn_flags() is unused, it prevents kernel builds with
+clang, `make W=1` and CONFIG_TRANSPARENT_HUGEPAGE=n:
 
-Signed-off-by: Peter Robinson <pbrobinson@gmail.com>
-Acked-by: Florian Fainelli <florian.fainelli@broadcom.com>
-Link: https://lore.kernel.org/r/20250630175301.846082-1-pbrobinson@gmail.com
-Signed-off-by: Philipp Zabel <p.zabel@pengutronix.de>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+  mm/hmm.c:186:29: warning: unused function 'pmd_to_hmm_pfn_flags' [-Wunused-function]
+
+Fix this by moving the function to the respective existing ifdeffery
+for its the only user.
+
+See also:
+
+  6863f5643dd7 ("kbuild: allow Clang to find unused static inline functions for W=1 build")
+
+Link: https://lkml.kernel.org/r/20250710082403.664093-1-andriy.shevchenko@linux.intel.com
+Fixes: 992de9a8b751 ("mm/hmm: allow to mirror vma of a file on a DAX backed filesystem")
+Signed-off-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+Reviewed-by: Leon Romanovsky <leonro@nvidia.com>
+Reviewed-by: Alistair Popple <apopple@nvidia.com>
+Cc: Andriy Shevchenko <andriy.shevchenko@linux.intel.com>
+Cc: Bill Wendling <morbo@google.com>
+Cc: Jerome Glisse <jglisse@redhat.com>
+Cc: Justin Stitt <justinstitt@google.com>
+Cc: Nathan Chancellor <nathan@kernel.org>
+Cc: <stable@vger.kernel.org>
+Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/reset/Kconfig | 10 +++++-----
- 1 file changed, 5 insertions(+), 5 deletions(-)
+ mm/hmm.c |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/reset/Kconfig b/drivers/reset/Kconfig
-index 2a52c990d4fe..c561a93af655 100644
---- a/drivers/reset/Kconfig
-+++ b/drivers/reset/Kconfig
-@@ -51,8 +51,8 @@ config RESET_BERLIN
+--- a/mm/hmm.c
++++ b/mm/hmm.c
+@@ -173,6 +173,7 @@ static inline unsigned long hmm_pfn_flag
+ 	return order << HMM_PFN_ORDER_SHIFT;
+ }
  
- config RESET_BRCMSTB
- 	tristate "Broadcom STB reset controller"
--	depends on ARCH_BRCMSTB || COMPILE_TEST
--	default ARCH_BRCMSTB
-+	depends on ARCH_BRCMSTB || ARCH_BCM2835 || COMPILE_TEST
-+	default ARCH_BRCMSTB || ARCH_BCM2835
- 	help
- 	  This enables the reset controller driver for Broadcom STB SoCs using
- 	  a SUN_TOP_CTRL_SW_INIT style controller.
-@@ -60,11 +60,11 @@ config RESET_BRCMSTB
- config RESET_BRCMSTB_RESCAL
- 	tristate "Broadcom STB RESCAL reset controller"
- 	depends on HAS_IOMEM
--	depends on ARCH_BRCMSTB || COMPILE_TEST
--	default ARCH_BRCMSTB
-+	depends on ARCH_BRCMSTB || ARCH_BCM2835 || COMPILE_TEST
-+	default ARCH_BRCMSTB || ARCH_BCM2835
- 	help
- 	  This enables the RESCAL reset controller for SATA, PCIe0, or PCIe1 on
--	  BCM7216.
-+	  BCM7216 or the BCM2712.
++#ifdef CONFIG_TRANSPARENT_HUGEPAGE
+ static inline unsigned long pmd_to_hmm_pfn_flags(struct hmm_range *range,
+ 						 pmd_t pmd)
+ {
+@@ -183,7 +184,6 @@ static inline unsigned long pmd_to_hmm_p
+ 	       hmm_pfn_flags_order(PMD_SHIFT - PAGE_SHIFT);
+ }
  
- config RESET_HSDK
- 	bool "Synopsys HSDK Reset Driver"
--- 
-2.39.5
-
+-#ifdef CONFIG_TRANSPARENT_HUGEPAGE
+ static int hmm_vma_handle_pmd(struct mm_walk *walk, unsigned long addr,
+ 			      unsigned long end, unsigned long hmm_pfns[],
+ 			      pmd_t pmd)
 
 
 
