@@ -1,58 +1,55 @@
-Return-Path: <stable+bounces-175168-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-173118-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5F61AB36742
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 16:05:10 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id B8599B35BBE
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 13:27:37 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 001B5564D0E
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 13:54:16 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 804B5189C5D9
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 11:24:11 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 653BD34DCE8;
-	Tue, 26 Aug 2025 13:52:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5524F2E88B7;
+	Tue, 26 Aug 2025 11:23:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="yYEOUwGP"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="046LIpRA"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 22E0222128B;
-	Tue, 26 Aug 2025 13:52:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1159D299959;
+	Tue, 26 Aug 2025 11:23:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756216321; cv=none; b=GbKcsNtT31fKCQ8USNbQoQ28hH1f8+J1xCKjMPy5k9yLa/wdOTCf4fHEFsTgC1sPNuuSc3Y7+nATOI+wgVKUl+z6KAvT9r4upXkfZwPdtVOiI5XYNOAe26kZDrfC7ZBbeY6rheK6cnzLMJ3hdkLE1Y925O+PN01uihYskW7CzS4=
+	t=1756207420; cv=none; b=WHUT4c5hFFJE3+Vyz+P6Hpdpx6DzabkCQHLB9u8yDDR4btO3bV+j5IRTKQTcFkBV2q5McEvW/F7Bd8VsRmdsQA6u984b2JOGXHv7feZaxSw/ks1BWbHjGTDx8RDQzHpGDFx3zU9M78Tm0nrM2uzdSUg9mrRP1imlFkJXFwuhrpI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756216321; c=relaxed/simple;
-	bh=0+pnD09jUQ1favwv4WB7XWq2MCNj/Lj/qIbrLwGN4bs=;
+	s=arc-20240116; t=1756207420; c=relaxed/simple;
+	bh=iyw9OrQggBBfACmmVqfpwkp5ehxGBEC6jqGcnqVTfkk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Qs0RGybyBnUvYpEPDcAG6H9+vkw6NFuOX7BzmZ8xOtRt+bU0/Byelw6ARh+obyoa5X/eQKAmF5LKyw4YGjHnDjf4uGlyRLhiOPU3BgKgapyFG8ItHjlSd1Gjt6Of0I5Cs+YhfP9MJD3lXCo1Yhch9RLV9/TZ62FVf1FqE3RZBZk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=yYEOUwGP; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A88A7C4CEF1;
-	Tue, 26 Aug 2025 13:52:00 +0000 (UTC)
+	 MIME-Version; b=eyw+jZEl05drd+rPJ8+Ha0vjq2PY712r5nYcoMDZR8EU7W9IrBaC2NB7QWAJFYwHK6PoH9dm+eBucTsTNSluij6ZRuUUsKlogmezPas4u0rcKPII4Fnd1GPOkN6qIrQVkL2DvcDHUzYf2gxpyuYfh7+m7MYsmCrdqpY44Ojn/uc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=046LIpRA; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7F2DEC116B1;
+	Tue, 26 Aug 2025 11:23:39 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1756216321;
-	bh=0+pnD09jUQ1favwv4WB7XWq2MCNj/Lj/qIbrLwGN4bs=;
+	s=korg; t=1756207419;
+	bh=iyw9OrQggBBfACmmVqfpwkp5ehxGBEC6jqGcnqVTfkk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=yYEOUwGP4SuE54BcL/M31BJy3yb8WoTqpmrBKJC/A8QB7NgDRURW8KqJttfj49W3m
-	 36eiLcFcTFWnAjDUDRn4dgjuQGJwG1KOTIqXCMCsAdSAZag2XICPbKYNpupPRd9TGf
-	 BCus22Fv2scf6/2vrWTjupjJHSR7un74Y4aTZbgU=
+	b=046LIpRAfuextBE0rmkg8rUEgw2I3fSbGPy1G9UgxYS5VektxvN60Ont9E8uX90RA
+	 n4roaOx9fgRHlhbCZ8DPSiwl55dXrU+cFNrPQRFRpCVkYVwQyeMJIWF+FbKHwi+7+h
+	 PoisSR4ZGID2fAhse+BoCRPCL5pzsJ95ygIM2qu8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Fedor Pchelkin <pchelkin@ispras.ru>,
-	Alexei Safin <a.safin@rosa.ru>,
-	Stanislaw Gruszka <stf_xl@wp.pl>,
-	Johannes Berg <johannes.berg@intel.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 367/644] wifi: iwlegacy: Check rate_idx range after addition
+	Hawking Zhang <Hawking.Zhang@amd.com>,
+	Alex Deucher <alexander.deucher@amd.com>
+Subject: [PATCH 6.16 174/457] drm/amdgpu: add missing vram lost check for LEGACY RESET
 Date: Tue, 26 Aug 2025 13:07:38 +0200
-Message-ID: <20250826110955.509845760@linuxfoundation.org>
+Message-ID: <20250826110941.675045615@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250826110946.507083938@linuxfoundation.org>
-References: <20250826110946.507083938@linuxfoundation.org>
+In-Reply-To: <20250826110937.289866482@linuxfoundation.org>
+References: <20250826110937.289866482@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,48 +61,36 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.16-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Stanislaw Gruszka <stf_xl@wp.pl>
+From: Alex Deucher <alexander.deucher@amd.com>
 
-[ Upstream commit 0de19d5ae0b2c5b18b88c5c7f0442f707a207409 ]
+commit 81699fe81b0be287fb28b6210324db48e8458d9f upstream.
 
-Limit rate_idx to IL_LAST_OFDM_RATE for 5GHz band for thinkable case
-the index is incorrect.
+Legacy resets reset the memory controllers so VRAM contents
+may be unreliable after reset.
 
-Reported-by: Fedor Pchelkin <pchelkin@ispras.ru>
-Reported-by: Alexei Safin <a.safin@rosa.ru>
-Signed-off-by: Stanislaw Gruszka <stf_xl@wp.pl>
-Reviewed-by: Fedor Pchelkin <pchelkin@ispras.ru>
-Link: https://patch.msgid.link/20250525144524.GA172583@wp.pl
-Signed-off-by: Johannes Berg <johannes.berg@intel.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Reviewed-by: Hawking Zhang <Hawking.Zhang@amd.com>
+Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
+(cherry picked from commit aae94897b6661a2a4b1de2d328090fc388b3e0af)
+Cc: stable@vger.kernel.org
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/net/wireless/intel/iwlegacy/4965-mac.c | 5 ++++-
- 1 file changed, 4 insertions(+), 1 deletion(-)
+ drivers/gpu/drm/amd/amdgpu/amdgpu_device.c |    1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/drivers/net/wireless/intel/iwlegacy/4965-mac.c b/drivers/net/wireless/intel/iwlegacy/4965-mac.c
-index ceab7704897d..df9d139a008e 100644
---- a/drivers/net/wireless/intel/iwlegacy/4965-mac.c
-+++ b/drivers/net/wireless/intel/iwlegacy/4965-mac.c
-@@ -1575,8 +1575,11 @@ il4965_tx_cmd_build_rate(struct il_priv *il,
- 	    || rate_idx > RATE_COUNT_LEGACY)
- 		rate_idx = rate_lowest_index(&il->bands[info->band], sta);
- 	/* For 5 GHZ band, remap mac80211 rate indices into driver indices */
--	if (info->band == NL80211_BAND_5GHZ)
-+	if (info->band == NL80211_BAND_5GHZ) {
- 		rate_idx += IL_FIRST_OFDM_RATE;
-+		if (rate_idx > IL_LAST_OFDM_RATE)
-+			rate_idx = IL_LAST_OFDM_RATE;
-+	}
- 	/* Get PLCP rate for tx_cmd->rate_n_flags */
- 	rate_plcp = il_rates[rate_idx].plcp;
- 	/* Zero out flags for this packet */
--- 
-2.39.5
-
+--- a/drivers/gpu/drm/amd/amdgpu/amdgpu_device.c
++++ b/drivers/gpu/drm/amd/amdgpu/amdgpu_device.c
+@@ -3234,6 +3234,7 @@ static bool amdgpu_device_check_vram_los
+ 	 * always assumed to be lost.
+ 	 */
+ 	switch (amdgpu_asic_reset_method(adev)) {
++	case AMD_RESET_METHOD_LEGACY:
+ 	case AMD_RESET_METHOD_LINK:
+ 	case AMD_RESET_METHOD_BACO:
+ 	case AMD_RESET_METHOD_MODE1:
 
 
 
