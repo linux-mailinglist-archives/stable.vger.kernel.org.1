@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-176217-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-175255-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id A9B8DB36D20
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 17:08:25 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id C4746B36678
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 15:57:34 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 8BD1A982726
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 14:40:57 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 91318B60DEC
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 13:55:41 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8E9243568E0;
-	Tue, 26 Aug 2025 14:38:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id DA0E51B424F;
+	Tue, 26 Aug 2025 13:55:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="TLm7FBKf"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="iQRsxZJX"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 489173376BD;
-	Tue, 26 Aug 2025 14:38:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 721A1350D55;
+	Tue, 26 Aug 2025 13:55:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756219084; cv=none; b=gSujKlIWzGmhmMzlXr1DUPie0/1YpoMr5zvnUh01yzpDecKeS2gjJqsOyZkU64wbKf0kpzeN/3BXgOHloYcoFcrwX+eoiNBGk0jD6Y1PNZNTRCSOgIlW3H07KJmNrpcCNpFZ0ee5BL9jndyLIMYKz3L09H6mBbFHyRbzFZnJPPk=
+	t=1756216554; cv=none; b=GYhZ1CLYp9xnNTAqbcfW6uKIzXu7eM/whEODQ0OxzrIHKWGagv4oqnCMzJWhJDIq0MJ3cdxi9LxAF4Q3IyrRZ3wqJfMWOhcFE1UL/tnvGy671q9oeiTYiwE/A9/GWweiPu83hrvkEGM9g6X0nfxw2Nrq+1j1t+12YGpFSQLyMTQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756219084; c=relaxed/simple;
-	bh=gcs6w5CRg7vjBIg2RgGqcmxAH+v2Trj15jLxYikUG1A=;
+	s=arc-20240116; t=1756216554; c=relaxed/simple;
+	bh=H/zEYOtiL4JdCNuWIwDVq1I0VQ7gFQVC3Ojoq3shVyE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=KKh7RDpkwv0oGXq2npUFuhEuZCUCgPzjctMJjs8bA2tQSpNMbWjsUO+tv8ttD9r2faaGtLzPQ4g9H3KLxl/3Lr1G12xyUI+2HHlw+D32PBFmKTs78Ie6mskLUAqf/aLawf86Wa2GAVwdPVgvzrDDtCDjJkbh2mdfzKpQGmgBOlM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=TLm7FBKf; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7F4B9C4CEF1;
-	Tue, 26 Aug 2025 14:38:03 +0000 (UTC)
+	 MIME-Version; b=sV7OSO2xv9fsbKBItkS+EXJtwse5zmu4OljFZc1XbZvGj4XkRQRsjoDpKm2+IABvPN5GvPhuQTQ+n/MmOpG2QS1gdCFHNnsHQt1dNJYesqt6Cr5XvQGuCWWEqxlGXnPc39cyKZXpcHkbVD58kYBZyJkLAc1dXPy98CsOmg+BU7w=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=iQRsxZJX; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A87B0C4CEF1;
+	Tue, 26 Aug 2025 13:55:53 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1756219083;
-	bh=gcs6w5CRg7vjBIg2RgGqcmxAH+v2Trj15jLxYikUG1A=;
+	s=korg; t=1756216554;
+	bh=H/zEYOtiL4JdCNuWIwDVq1I0VQ7gFQVC3Ojoq3shVyE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=TLm7FBKfHEunEtmKCJ6T2uy1Df7ooCp9yMfBcGKb19CFYjGWBfBJFPzWjy3nahM4B
-	 +GDm5tbKKVOa895hwKduINSm+A3UTyq1e2QEo3GGMu9pjDwbS9NSSp3SgOdj1X9aE1
-	 xbnQ1S+r1qnjvZj77vzaP/4qbXBCKi9xRrGJlvoQ=
+	b=iQRsxZJX2j0hufOS6+pHBDpdYLBXV3/So/qighWXvlbzrJyg8HBZDNY7mEvOKhHCa
+	 VC/J9R0dBSI8beZFpAM5jejATPh2H8yBD/4hHkQ0DgL7AMWsZ7yVLvrkO1p4t3VaRA
+	 wclTZjQKX77tXx5j1qGLs3hPAzLpYXTp2mr6Y6PU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jonas Rebmann <jre@pengutronix.de>,
-	Wei Fang <wei.fang@nxp.com>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.4 219/403] net: fec: allow disable coalescing
+	Laurent Pinchart <laurent.pinchart@ideasonboard.com>,
+	Hans de Goede <hansg@kernel.org>,
+	Ricardo Ribalda <ribalda@chromium.org>,
+	Hans Verkuil <hverkuil@xs4all.nl>
+Subject: [PATCH 5.15 454/644] media: uvcvideo: Do not mark valid metadata as invalid
 Date: Tue, 26 Aug 2025 13:09:05 +0200
-Message-ID: <20250826110912.884873322@linuxfoundation.org>
+Message-ID: <20250826110957.726154188@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250826110905.607690791@linuxfoundation.org>
-References: <20250826110905.607690791@linuxfoundation.org>
+In-Reply-To: <20250826110946.507083938@linuxfoundation.org>
+References: <20250826110946.507083938@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,85 +63,63 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.4-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jonas Rebmann <jre@pengutronix.de>
+From: Ricardo Ribalda <ribalda@chromium.org>
 
-[ Upstream commit b7ad21258f9e9a7f58b19595d5ceed2cde3bed68 ]
+commit bda2859bff0b9596a19648f3740c697ce4c71496 upstream.
 
-In the current implementation, IP coalescing is always enabled and
-cannot be disabled.
+Currently, the driver performs a length check of the metadata buffer
+before the actual metadata size is known and before the metadata is
+decided to be copied. This results in valid metadata buffers being
+incorrectly marked as invalid.
 
-As setting maximum frames to 0 or 1, or setting delay to zero implies
-immediate delivery of single packets/IRQs, disable coalescing in
-hardware in these cases.
+Move the length check to occur after the metadata size is determined and
+is decided to be copied.
 
-This also guarantees that coalescing is never enabled with ICFT or ICTT
-set to zero, a configuration that could lead to unpredictable behaviour
-according to i.MX8MP reference manual.
-
-Signed-off-by: Jonas Rebmann <jre@pengutronix.de>
-Reviewed-by: Wei Fang <wei.fang@nxp.com>
-Link: https://patch.msgid.link/20250626-fec_deactivate_coalescing-v2-1-0b217f2e80da@pengutronix.de
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Cc: stable@vger.kernel.org
+Fixes: 088ead255245 ("media: uvcvideo: Add a metadata device node")
+Reviewed-by: Laurent Pinchart <laurent.pinchart@ideasonboard.com>
+Reviewed-by: Hans de Goede <hansg@kernel.org>
+Signed-off-by: Ricardo Ribalda <ribalda@chromium.org>
+Link: https://lore.kernel.org/r/20250707-uvc-meta-v8-1-ed17f8b1218b@chromium.org
+Signed-off-by: Hans de Goede <hansg@kernel.org>
+Signed-off-by: Hans Verkuil <hverkuil@xs4all.nl>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/net/ethernet/freescale/fec_main.c | 34 +++++++++++------------
- 1 file changed, 16 insertions(+), 18 deletions(-)
+ drivers/media/usb/uvc/uvc_video.c |   12 ++++++------
+ 1 file changed, 6 insertions(+), 6 deletions(-)
 
-diff --git a/drivers/net/ethernet/freescale/fec_main.c b/drivers/net/ethernet/freescale/fec_main.c
-index fd7c504b44f2..f8a096633280 100644
---- a/drivers/net/ethernet/freescale/fec_main.c
-+++ b/drivers/net/ethernet/freescale/fec_main.c
-@@ -2590,27 +2590,25 @@ static int fec_enet_us_to_itr_clock(struct net_device *ndev, int us)
- static void fec_enet_itr_coal_set(struct net_device *ndev)
- {
- 	struct fec_enet_private *fep = netdev_priv(ndev);
--	int rx_itr, tx_itr;
-+	u32 rx_itr = 0, tx_itr = 0;
-+	int rx_ictt, tx_ictt;
+--- a/drivers/media/usb/uvc/uvc_video.c
++++ b/drivers/media/usb/uvc/uvc_video.c
+@@ -1335,12 +1335,6 @@ static void uvc_video_decode_meta(struct
+ 	if (!meta_buf || length == 2)
+ 		return;
  
--	/* Must be greater than zero to avoid unpredictable behavior */
--	if (!fep->rx_time_itr || !fep->rx_pkts_itr ||
--	    !fep->tx_time_itr || !fep->tx_pkts_itr)
+-	if (meta_buf->length - meta_buf->bytesused <
+-	    length + sizeof(meta->ns) + sizeof(meta->sof)) {
+-		meta_buf->error = 1;
 -		return;
+-	}
 -
--	/* Select enet system clock as Interrupt Coalescing
--	 * timer Clock Source
--	 */
--	rx_itr = FEC_ITR_CLK_SEL;
--	tx_itr = FEC_ITR_CLK_SEL;
-+	rx_ictt = fec_enet_us_to_itr_clock(ndev, fep->rx_time_itr);
-+	tx_ictt = fec_enet_us_to_itr_clock(ndev, fep->tx_time_itr);
+ 	has_pts = mem[1] & UVC_STREAM_PTS;
+ 	has_scr = mem[1] & UVC_STREAM_SCR;
  
--	/* set ICFT and ICTT */
--	rx_itr |= FEC_ITR_ICFT(fep->rx_pkts_itr);
--	rx_itr |= FEC_ITR_ICTT(fec_enet_us_to_itr_clock(ndev, fep->rx_time_itr));
--	tx_itr |= FEC_ITR_ICFT(fep->tx_pkts_itr);
--	tx_itr |= FEC_ITR_ICTT(fec_enet_us_to_itr_clock(ndev, fep->tx_time_itr));
-+	if (rx_ictt > 0 && fep->rx_pkts_itr > 1) {
-+		/* Enable with enet system clock as Interrupt Coalescing timer Clock Source */
-+		rx_itr = FEC_ITR_EN | FEC_ITR_CLK_SEL;
-+		rx_itr |= FEC_ITR_ICFT(fep->rx_pkts_itr);
-+		rx_itr |= FEC_ITR_ICTT(rx_ictt);
+@@ -1361,6 +1355,12 @@ static void uvc_video_decode_meta(struct
+ 				  !memcmp(scr, stream->clock.last_scr, 6)))
+ 		return;
+ 
++	if (meta_buf->length - meta_buf->bytesused <
++	    length + sizeof(meta->ns) + sizeof(meta->sof)) {
++		meta_buf->error = 1;
++		return;
 +	}
- 
--	rx_itr |= FEC_ITR_EN;
--	tx_itr |= FEC_ITR_EN;
-+	if (tx_ictt > 0 && fep->tx_pkts_itr > 1) {
-+		/* Enable with enet system clock as Interrupt Coalescing timer Clock Source */
-+		tx_itr = FEC_ITR_EN | FEC_ITR_CLK_SEL;
-+		tx_itr |= FEC_ITR_ICFT(fep->tx_pkts_itr);
-+		tx_itr |= FEC_ITR_ICTT(tx_ictt);
-+	}
- 
- 	writel(tx_itr, fep->hwp + FEC_TXIC0);
- 	writel(rx_itr, fep->hwp + FEC_RXIC0);
--- 
-2.39.5
-
++
+ 	meta = (struct uvc_meta_buf *)((u8 *)meta_buf->mem + meta_buf->bytesused);
+ 	local_irq_save(flags);
+ 	time = uvc_video_get_time();
 
 
 
