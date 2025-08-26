@@ -1,59 +1,56 @@
-Return-Path: <stable+bounces-174194-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-174660-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id CE8A1B36202
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 15:14:50 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6CE10B3649F
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 15:40:32 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 79D158A446A
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 13:09:52 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 392D48A3708
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 13:31:04 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D6E9B221704;
-	Tue, 26 Aug 2025 13:09:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 780B52BE62B;
+	Tue, 26 Aug 2025 13:29:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="TjModYDU"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Xp+VxnFl"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 94D8123026B;
-	Tue, 26 Aug 2025 13:09:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 35BD326B747;
+	Tue, 26 Aug 2025 13:29:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756213742; cv=none; b=R96umreVuSzkkllkAKrqfZJpGsn9R4gGtUQcaggnL6Ixy4JxTZayCk6bzHGCjDFCP3+7rniUZHFiOfuSXcI6G4DCPMKorYLqlN0VrtYIIS0Raynz+WeHi9gVHujxAtjoTvu6CVq9D1AJSLlar7Lqqo1VHToPfhem8r5fsBBk0RQ=
+	t=1756214978; cv=none; b=IFYDFVarCIKWsy3fQ/EaTwUnWxMeghIXfpD9+yeWV7205AkEeMXNfjqbaWUGD3BUolFpMpZKryU/G9n3L9gsc5SXe+QBnPUCw2L3MtYrsIOsjZEDqAX/BV2nww/3g/v+FaI6nYf+9MUZlHWUpdsIngwSKwF32YdhqNfEiNw9TQY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756213742; c=relaxed/simple;
-	bh=toci+cAUP2o8XTAh1cGNaTRVQdFIf9apN8VvMEPu3Hw=;
+	s=arc-20240116; t=1756214978; c=relaxed/simple;
+	bh=lqFLry4zO7W1BwQVYfSivvptNDGRbYo5I5xoh4W/INM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=KbSunT/0lagNeUalIuNCjAEgJ7nkVLp+I16R8rp03xzFD9zG6g63eH1Npu3jsuJcH37Q8JgiPU2dhwN9/xn2aEQXzwVhkDThNZ6nKVj+fSSFEQQFU081AsnGK3hHnr7AgsJzr750Gmo23HpSXGA1T772au8zbTxBYLjM9IpTXNQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=TjModYDU; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C98E0C4CEF1;
-	Tue, 26 Aug 2025 13:09:01 +0000 (UTC)
+	 MIME-Version; b=e85fzQVzd1Ocjmuful60yYr8kREL+a6N8JW3IlQGrV/MFD34HvoOBbFRV9V9fPhiWFNYXZa8/ZV6tQHy9AWCaRGG7HaKyE/c3UYpoXgF1TI8snrRHvYfyNYpqSOmvH4gRXs5EoH/NQmQ9AJLWDqiGR4gTljkFIZkWEEhdGEji2U=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Xp+VxnFl; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 702BFC4CEF1;
+	Tue, 26 Aug 2025 13:29:37 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1756213742;
-	bh=toci+cAUP2o8XTAh1cGNaTRVQdFIf9apN8VvMEPu3Hw=;
+	s=korg; t=1756214977;
+	bh=lqFLry4zO7W1BwQVYfSivvptNDGRbYo5I5xoh4W/INM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=TjModYDUssJ/w710nTldqIx4x2uOC+3ovtN+VVSSh5EoQCx3mTRhu8HGwAOzh3kPk
-	 5zCtg1G2h6Y3lXrr9KgQKOSqnpV6OSoSucH74t7M/DXTleMcXl78F/b7PGnRn7M5k/
-	 +gSiNuge1n7uLAH8MPcgZOv3INywxDkXUQGpsPXc=
+	b=Xp+VxnFl9niphpeEMs8UPBQ4kaQc+5HWtFZ0IEVxcGzayGiJ9N5/7rXXsf90IQe28
+	 cx//+gwiUe3y3oZxxY7o4xQBnstz+O+0rrGIaZ6UjYBLHbfWPQQSS15LapNtgoFoYT
+	 JYjLeXCyyWDsvdprnMLTFz659rZ0QAt1dFzHsIBk=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	cen zhang <zzzccc427@gmail.com>,
-	Boris Burkov <boris@bur.io>,
-	Qu Wenruo <wqu@suse.com>,
-	Filipe Manana <fdmanana@suse.com>,
-	David Sterba <dsterba@suse.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 445/587] btrfs: qgroup: fix race between quota disable and quota rescan ioctl
+	Christoph Paasch <cpaasch@openai.com>,
+	"Matthieu Baerts (NGI0)" <matttbe@kernel.org>,
+	Jakub Kicinski <kuba@kernel.org>
+Subject: [PATCH 6.1 341/482] mptcp: drop skb if MPTCP skb extension allocation fails
 Date: Tue, 26 Aug 2025 13:09:54 +0200
-Message-ID: <20250826111004.277209043@linuxfoundation.org>
+Message-ID: <20250826110939.253428202@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250826110952.942403671@linuxfoundation.org>
-References: <20250826110952.942403671@linuxfoundation.org>
+In-Reply-To: <20250826110930.769259449@linuxfoundation.org>
+References: <20250826110930.769259449@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -65,115 +62,67 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Filipe Manana <fdmanana@suse.com>
+From: Christoph Paasch <cpaasch@openai.com>
 
-[ Upstream commit e1249667750399a48cafcf5945761d39fa584edf ]
+commit ccab044697980c6c01ab51f43f48f13b8a3e5c33 upstream.
 
-There's a race between a task disabling quotas and another running the
-rescan ioctl that can result in a use-after-free of qgroup records from
-the fs_info->qgroup_tree rbtree.
+When skb_ext_add(skb, SKB_EXT_MPTCP) fails in mptcp_incoming_options(),
+we used to return true, letting the segment proceed through the TCP
+receive path without a DSS mapping. Such segments can leave inconsistent
+mapping state and trigger a mid-stream fallback to TCP, which in testing
+collapsed (by artificially forcing failures in skb_ext_add) throughput
+to zero.
 
-This happens as follows:
+Return false instead so the TCP input path drops the skb (see
+tcp_data_queue() and step-7 processing). This is the safer choice
+under memory pressure: it preserves MPTCP correctness and provides
+backpressure to the sender.
 
-1) Task A enters btrfs_ioctl_quota_rescan() -> btrfs_qgroup_rescan();
+Control packets remain unaffected: ACK updates and DATA_FIN handling
+happen before attempting the extension allocation, and tcp_reset()
+continues to ignore the return value.
 
-2) Task B enters btrfs_quota_disable() and calls
-   btrfs_qgroup_wait_for_completion(), which does nothing because at that
-   point fs_info->qgroup_rescan_running is false (it wasn't set yet by
-   task A);
+With this change, MPTCP continues to work at high throughput if we
+artificially inject failures into skb_ext_add.
 
-3) Task B calls btrfs_free_qgroup_config() which starts freeing qgroups
-   from fs_info->qgroup_tree without taking the lock fs_info->qgroup_lock;
-
-4) Task A enters qgroup_rescan_zero_tracking() which starts iterating
-   the fs_info->qgroup_tree tree while holding fs_info->qgroup_lock,
-   but task B is freeing qgroup records from that tree without holding
-   the lock, resulting in a use-after-free.
-
-Fix this by taking fs_info->qgroup_lock at btrfs_free_qgroup_config().
-Also at btrfs_qgroup_rescan() don't start the rescan worker if quotas
-were already disabled.
-
-Reported-by: cen zhang <zzzccc427@gmail.com>
-Link: https://lore.kernel.org/linux-btrfs/CAFRLqsV+cMDETFuzqdKSHk_FDm6tneea45krsHqPD6B3FetLpQ@mail.gmail.com/
-CC: stable@vger.kernel.org # 6.1+
-Reviewed-by: Boris Burkov <boris@bur.io>
-Reviewed-by: Qu Wenruo <wqu@suse.com>
-Signed-off-by: Filipe Manana <fdmanana@suse.com>
-Signed-off-by: David Sterba <dsterba@suse.com>
-[ Check for BTRFS_FS_QUOTA_ENABLED, instead of btrfs_qgroup_full_accounting() ]
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Fixes: 6787b7e350d3 ("mptcp: avoid processing packet if a subflow reset")
+Cc: stable@vger.kernel.org
+Signed-off-by: Christoph Paasch <cpaasch@openai.com>
+Reviewed-by: Matthieu Baerts (NGI0) <matttbe@kernel.org>
+Signed-off-by: Matthieu Baerts (NGI0) <matttbe@kernel.org>
+Link: https://patch.msgid.link/20250815-net-mptcp-misc-fixes-6-17-rc2-v1-1-521fe9957892@kernel.org
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- fs/btrfs/qgroup.c |   31 ++++++++++++++++++++++++-------
- 1 file changed, 24 insertions(+), 7 deletions(-)
+ net/mptcp/options.c |    6 ++++--
+ 1 file changed, 4 insertions(+), 2 deletions(-)
 
---- a/fs/btrfs/qgroup.c
-+++ b/fs/btrfs/qgroup.c
-@@ -579,22 +579,30 @@ bool btrfs_check_quota_leak(struct btrfs
- 
- /*
-  * This is called from close_ctree() or open_ctree() or btrfs_quota_disable(),
-- * first two are in single-threaded paths.And for the third one, we have set
-- * quota_root to be null with qgroup_lock held before, so it is safe to clean
-- * up the in-memory structures without qgroup_lock held.
-+ * first two are in single-threaded paths.
-  */
- void btrfs_free_qgroup_config(struct btrfs_fs_info *fs_info)
- {
- 	struct rb_node *n;
- 	struct btrfs_qgroup *qgroup;
- 
-+	/*
-+	 * btrfs_quota_disable() can be called concurrently with
-+	 * btrfs_qgroup_rescan() -> qgroup_rescan_zero_tracking(), so take the
-+	 * lock.
-+	 */
-+	spin_lock(&fs_info->qgroup_lock);
- 	while ((n = rb_first(&fs_info->qgroup_tree))) {
- 		qgroup = rb_entry(n, struct btrfs_qgroup, node);
- 		rb_erase(n, &fs_info->qgroup_tree);
- 		__del_qgroup_rb(fs_info, qgroup);
-+		spin_unlock(&fs_info->qgroup_lock);
- 		btrfs_sysfs_del_one_qgroup(fs_info, qgroup);
- 		kfree(qgroup);
-+		spin_lock(&fs_info->qgroup_lock);
- 	}
-+	spin_unlock(&fs_info->qgroup_lock);
-+
- 	/*
- 	 * We call btrfs_free_qgroup_config() when unmounting
- 	 * filesystem and disabling quota, so we set qgroup_ulist
-@@ -3616,12 +3624,21 @@ btrfs_qgroup_rescan(struct btrfs_fs_info
- 	qgroup_rescan_zero_tracking(fs_info);
- 
- 	mutex_lock(&fs_info->qgroup_rescan_lock);
--	fs_info->qgroup_rescan_running = true;
--	btrfs_queue_work(fs_info->qgroup_rescan_workers,
--			 &fs_info->qgroup_rescan_work);
-+	/*
-+	 * The rescan worker is only for full accounting qgroups, check if it's
-+	 * enabled as it is pointless to queue it otherwise. A concurrent quota
-+	 * disable may also have just cleared BTRFS_FS_QUOTA_ENABLED.
-+	 */
-+	if (test_bit(BTRFS_FS_QUOTA_ENABLED, &fs_info->flags)) {
-+		fs_info->qgroup_rescan_running = true;
-+		btrfs_queue_work(fs_info->qgroup_rescan_workers,
-+				 &fs_info->qgroup_rescan_work);
-+	} else {
-+		ret = -ENOTCONN;
-+	}
- 	mutex_unlock(&fs_info->qgroup_rescan_lock);
- 
--	return 0;
-+	return ret;
+--- a/net/mptcp/options.c
++++ b/net/mptcp/options.c
+@@ -1100,7 +1100,9 @@ static bool add_addr_hmac_valid(struct m
+ 	return hmac == mp_opt->ahmac;
  }
  
- int btrfs_qgroup_wait_for_completion(struct btrfs_fs_info *fs_info,
+-/* Return false if a subflow has been reset, else return true */
++/* Return false in case of error (or subflow has been reset),
++ * else return true.
++ */
+ bool mptcp_incoming_options(struct sock *sk, struct sk_buff *skb)
+ {
+ 	struct mptcp_subflow_context *subflow = mptcp_subflow_ctx(sk);
+@@ -1198,7 +1200,7 @@ bool mptcp_incoming_options(struct sock
+ 
+ 	mpext = skb_ext_add(skb, SKB_EXT_MPTCP);
+ 	if (!mpext)
+-		return true;
++		return false;
+ 
+ 	memset(mpext, 0, sizeof(*mpext));
+ 
 
 
 
