@@ -1,58 +1,57 @@
-Return-Path: <stable+bounces-173800-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-174945-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1724FB35FB3
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 14:52:50 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id EE130B36607
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 15:52:39 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 227377B3F4F
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 12:51:14 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 9DFB12A2F6C
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 13:42:17 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2F66D221DB1;
-	Tue, 26 Aug 2025 12:51:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9440D202C46;
+	Tue, 26 Aug 2025 13:42:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="16xYOPRh"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Zy656NOp"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E0F3042AA4;
-	Tue, 26 Aug 2025 12:51:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4F2C6239E8B;
+	Tue, 26 Aug 2025 13:42:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756212699; cv=none; b=VhJqV+qxvbFzakUqNHdzzH9Gm3bBmtCa/fUfKalGW5zTCxyqdoUZL6ldOOf8UU+RkMKEeVOQzY7PfYTSPWVM2A0/SJhZ5ikA15h31v3qyVH0+030NuOvq7Q4bB/+VJfs2NXD/88tN41IlJcDKUrKETHICTwgXcJ6ygDz9fqsOC4=
+	t=1756215731; cv=none; b=FWersWuo9hTaNn/5YbIiPS4KYfLjfS9oFQ8ffJXuZ780rnIn2dlPtdLX0wv6T4KX1WVPjGxvYPnaz6WRZmuaF330zAMcUgl+jQSbLGmXGoMFexLdSLJViWrF6oZvS5JTHRq597t6i/Wl9B+5PO0NLxNUWaDY4Em2n5HTOz0+VqU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756212699; c=relaxed/simple;
-	bh=FEbGbljXCwzX69Zf4I4LFjfaW8nxzOq2mfDIOmWUWvo=;
+	s=arc-20240116; t=1756215731; c=relaxed/simple;
+	bh=J4a12ptnIE2LlaQ73H6xcKtsmT94d7/6x7muTYrC6D0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=QERNFEXHD4m1vcOmhZWS7lYxlHvospY9NUroaFxHA08hkcSXX47iO4kS0J2IIwLagAwZWm1ruIb21d1RyPKqlsF6GGCgb9lLDGA2+LLbjfnMKyl1Y1GN5Zy9W1DcMl9kbX9AJURVzqrrgrcbbtlNqLF06+CCjR6AT2MxtW2BUGc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=16xYOPRh; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7498BC4CEF4;
-	Tue, 26 Aug 2025 12:51:38 +0000 (UTC)
+	 MIME-Version; b=KirR0IRUqeUS0eEIv/8H4Wh+cYl8E+EiziOjMsTJYituI/6VzEmEt7PZmmp8MRbICz6bZ6gV9Aj2D6QNg2qEwRXFQj2i5MnGUuWAPdIwLUuiwkfCtr9pj1g5Rdk/GJq3Ma/+gk+DE26EyFFlDQLoshSxRfuGOeEOQJ4XAEs4rqg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Zy656NOp; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D2829C116B1;
+	Tue, 26 Aug 2025 13:42:10 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1756212698;
-	bh=FEbGbljXCwzX69Zf4I4LFjfaW8nxzOq2mfDIOmWUWvo=;
+	s=korg; t=1756215731;
+	bh=J4a12ptnIE2LlaQ73H6xcKtsmT94d7/6x7muTYrC6D0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=16xYOPRh9zmt7C9OHJB/j2aezd2HVgGDT4o3sugn4iq40V7dUKHAHS4cCzVf4DZPO
-	 ywTF4NhAGPDY2d4q2yhps/w8IbsF93xA4vWogO/lng4XYOHsEaxtYmEWN0UZ9+hCRZ
-	 2fWZbvuyQNIY4rqY72bsfQ4zK8wmxWvYq2IeKcBE=
+	b=Zy656NOpBe7jGPaAC4h7FdKVwbueSPpjnU4dWPL1605o9QnM0c3yGUPdp+DXdB24m
+	 GxJoAx8CkPa13K+r8vUcN14h6VmiQ6KMsyb8s3ePDoIi5s/7OD3x4PCiebf7/PON/Y
+	 7TjU+XbD8ZJuR+g9xJ2M4JcaJjDYz0DAtmu5b/Qc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Keith Busch <kbusch@kernel.org>,
-	Chaitanya Kulkarni <kch@nvidia.com>,
-	Nitesh Shetty <nj.shetty@samsung.com>,
-	Christoph Hellwig <hch@lst.de>,
+	Adam Ford <aford173@gmail.com>,
+	Fabio Estevam <festevam@gmail.com>,
+	Shawn Guo <shawnguo@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 069/587] nvme-pci: try function level reset on init failure
+Subject: [PATCH 5.15 127/644] arm64: dts: imx8mn-beacon: Fix HS400 USDHC clock speed
 Date: Tue, 26 Aug 2025 13:03:38 +0200
-Message-ID: <20250826110954.689882131@linuxfoundation.org>
+Message-ID: <20250826110949.661013550@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250826110952.942403671@linuxfoundation.org>
-References: <20250826110952.942403671@linuxfoundation.org>
+In-Reply-To: <20250826110946.507083938@linuxfoundation.org>
+References: <20250826110946.507083938@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,69 +63,43 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Keith Busch <kbusch@kernel.org>
+From: Adam Ford <aford173@gmail.com>
 
-[ Upstream commit 5b2c214a95942f7997d1916a4c44017becbc3cac ]
+[ Upstream commit e16ad6c79906bba5e2ac499492b6a5b29ab19d6c ]
 
-NVMe devices from multiple vendors appear to get stuck in a reset state
-that we can't get out of with an NVMe level Controller Reset. The kernel
-would report these with messages that look like:
+The reference manual for the i.MX8MN states the clock rate in
+MMC mode is 1/2 of the input clock, therefore to properly run
+at HS400 rates, the input clock must be 400MHz to operate at
+200MHz.  Currently the clock is set to 200MHz which is half the
+rate it should be, so the throughput is half of what it should be
+for HS400 operation.
 
-  Device not ready; aborting reset, CSTS=0x1
-
-These have historically required a power cycle to make them usable
-again, but in many cases, a PCIe FLR is sufficient to restart operation
-without a power cycle. Try it if the initial controller reset fails
-during any nvme reset attempt.
-
-Signed-off-by: Keith Busch <kbusch@kernel.org>
-Reviewed-by: Chaitanya Kulkarni <kch@nvidia.com>
-Reviewed-by: Nitesh Shetty <nj.shetty@samsung.com>
-Signed-off-by: Christoph Hellwig <hch@lst.de>
+Fixes: 36ca3c8ccb53 ("arm64: dts: imx: Add Beacon i.MX8M Nano development kit")
+Signed-off-by: Adam Ford <aford173@gmail.com>
+Reviewed-by: Fabio Estevam <festevam@gmail.com>
+Signed-off-by: Shawn Guo <shawnguo@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/nvme/host/pci.c | 24 ++++++++++++++++++++++--
- 1 file changed, 22 insertions(+), 2 deletions(-)
+ arch/arm64/boot/dts/freescale/imx8mn-beacon-som.dtsi | 2 ++
+ 1 file changed, 2 insertions(+)
 
-diff --git a/drivers/nvme/host/pci.c b/drivers/nvme/host/pci.c
-index 97ab91a479d1..136dba6221d8 100644
---- a/drivers/nvme/host/pci.c
-+++ b/drivers/nvme/host/pci.c
-@@ -1755,8 +1755,28 @@ static int nvme_pci_configure_admin_queue(struct nvme_dev *dev)
- 	 * might be pointing at!
- 	 */
- 	result = nvme_disable_ctrl(&dev->ctrl, false);
--	if (result < 0)
--		return result;
-+	if (result < 0) {
-+		struct pci_dev *pdev = to_pci_dev(dev->dev);
-+
-+		/*
-+		 * The NVMe Controller Reset method did not get an expected
-+		 * CSTS.RDY transition, so something with the device appears to
-+		 * be stuck. Use the lower level and bigger hammer PCIe
-+		 * Function Level Reset to attempt restoring the device to its
-+		 * initial state, and try again.
-+		 */
-+		result = pcie_reset_flr(pdev, false);
-+		if (result < 0)
-+			return result;
-+
-+		pci_restore_state(pdev);
-+		result = nvme_disable_ctrl(&dev->ctrl, false);
-+		if (result < 0)
-+			return result;
-+
-+		dev_info(dev->ctrl.device,
-+			"controller reset completed after pcie flr\n");
-+	}
- 
- 	result = nvme_alloc_queue(dev, 0, NVME_AQ_DEPTH);
- 	if (result)
+diff --git a/arch/arm64/boot/dts/freescale/imx8mn-beacon-som.dtsi b/arch/arm64/boot/dts/freescale/imx8mn-beacon-som.dtsi
+index 4c339b06c87e..d197319e3b58 100644
+--- a/arch/arm64/boot/dts/freescale/imx8mn-beacon-som.dtsi
++++ b/arch/arm64/boot/dts/freescale/imx8mn-beacon-som.dtsi
+@@ -296,6 +296,8 @@ &usdhc3 {
+ 	pinctrl-0 = <&pinctrl_usdhc3>;
+ 	pinctrl-1 = <&pinctrl_usdhc3_100mhz>;
+ 	pinctrl-2 = <&pinctrl_usdhc3_200mhz>;
++	assigned-clocks = <&clk IMX8MN_CLK_USDHC3>;
++	assigned-clock-rates = <400000000>;
+ 	bus-width = <8>;
+ 	non-removable;
+ 	status = "okay";
 -- 
 2.39.5
 
