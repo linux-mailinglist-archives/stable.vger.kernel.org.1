@@ -1,58 +1,55 @@
-Return-Path: <stable+bounces-174008-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-173441-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9E688B360C9
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 15:03:56 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id BECCEB35DB6
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 13:47:28 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 2CD302A127B
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 13:00:51 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id E826D364302
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 11:38:52 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E35F7148850;
-	Tue, 26 Aug 2025 13:00:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 07DDB33CEAF;
+	Tue, 26 Aug 2025 11:37:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="MkMukoUi"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ISx8xc5U"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A1B3413957E;
-	Tue, 26 Aug 2025 13:00:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B977533A02E;
+	Tue, 26 Aug 2025 11:37:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756213248; cv=none; b=Su3pkiUH3VnOeEJoX57pN6o+Q9legMMlFQJsd/ekFGEiJCLC19ekpiTF7kYaafQnGHrcTPwXWbx/zpx2uGbKRgcmtmMMjd6zBEao5TmkGixx5bytm6xg2waxXip90PFmvDxrDRs1fUGntF+E9r3TJ5wEpZQ4rqOzBqa8kiX6Vss=
+	t=1756208256; cv=none; b=knmrz9pkjjmeYkPnP62BwCaVAis1nrjTLxYlJabwAkPRmZWIlL6wSvSDi4nOXAUJiaGlAv2nsrGM8J0069kwzkTCTDBiaW/u+XtRCbyPMwXdXmiiW/3Bape+B4nUZTewIvl3lUq4QKJ426GsMaSGYDcpNwVrXw3kdlwzQahST/Q=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756213248; c=relaxed/simple;
-	bh=zs7wjhdApDgAOLGlxKLCTSmEM1VKmzAmX8tZMwBWLkc=;
+	s=arc-20240116; t=1756208256; c=relaxed/simple;
+	bh=bELnGM60o/yx+WHC7OxWobbBvriIv7AG7+6u3jOn4OU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=eBLMs5Q/PM12rTGoZdNYaWiOkBOSs/jvkp70KvBNKp9N1YxbnIIAliI3XfGRR58mfHZa4HetT3KHZa9jyz/erPqEb+YBG79VU4YfWymu5IN+T+BYmYzPK/8KQrFb5yp4fFIkECCqZ1frSIiShNl8Ww58me4gr49Ail7BbVZ0aFQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=MkMukoUi; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 35E01C4CEF1;
-	Tue, 26 Aug 2025 13:00:48 +0000 (UTC)
+	 MIME-Version; b=u+s9HLtaRJp3DeAV1J5nM2K832qDNU3rpvVcqa+J9N3MC2Kf+jaGUJFGpfgnHmk4ADI2fMWrko+wg8fhdVtzuHiYZvLQDn8MeUvqPISDwBCOU+ADM3DpLUYqp9TG9fuoCuSRCxIgrwFvoI33HDN0NR9a6VPXfyIzFO/JhQ9Rlts=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ISx8xc5U; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 477E2C4CEF1;
+	Tue, 26 Aug 2025 11:37:36 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1756213248;
-	bh=zs7wjhdApDgAOLGlxKLCTSmEM1VKmzAmX8tZMwBWLkc=;
+	s=korg; t=1756208256;
+	bh=bELnGM60o/yx+WHC7OxWobbBvriIv7AG7+6u3jOn4OU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=MkMukoUiSw6wdnGSW159SbuZCkyixPyHAyOiqHFMOaZYX20BOu/e22aTK7M0Maxg0
-	 ETGq1gABRas+CJlgCZKfqR3bPWIGLCsPiEOeQWCh5vcVxXKRRGXG/LaTRMLNgrN+Iw
-	 bPgBWsC58dD3b4iRlnOtwS3e17NUIp61rA7P+OFQ=
+	b=ISx8xc5UhOfn3+ACZDu+5VgnKtcaEYCu3gXX212Xs3PxW5aRrFJRa5P29i8fHynfz
+	 x5cQDZMHD1gSGkYVVaK2H2XdZKz0F3iUPCbarRmPOK0eeJNcrOSdQUKYlhmBn6U6A/
+	 ZMJpQnNykh6CIVh/LxQiQ9lt49IpUlR2+evS+ArA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Shankari Anand <shankari.ak0208@gmail.com>,
-	Masahiro Yamada <masahiroy@kernel.org>,
-	Randy Dunlap <rdunlap@infradead.org>,
-	Nicolas Schier <n.schier@avm.de>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 276/587] kconfig: nconf: Ensure null termination where strncpy is used
+	Yoshihiro Shimoda <yoshihiro.shimoda.uh@renesas.com>,
+	Johan Hovold <johan@kernel.org>
+Subject: [PATCH 6.12 010/322] usb: gadget: udc: renesas_usb3: fix device leak at unbind
 Date: Tue, 26 Aug 2025 13:07:05 +0200
-Message-ID: <20250826110959.948892993@linuxfoundation.org>
+Message-ID: <20250826110915.481065376@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250826110952.942403671@linuxfoundation.org>
-References: <20250826110952.942403671@linuxfoundation.org>
+In-Reply-To: <20250826110915.169062587@linuxfoundation.org>
+References: <20250826110915.169062587@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,60 +61,37 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Shankari Anand <shankari.ak0208@gmail.com>
+From: Johan Hovold <johan@kernel.org>
 
-[ Upstream commit f468992936894c9ce3b1659cf38c230d33b77a16 ]
+commit 868837b0a94c6b1b1fdbc04d3ba218ca83432393 upstream.
 
-strncpy() does not guarantee null-termination if the source string is
-longer than the destination buffer.
+Make sure to drop the reference to the companion device taken during
+probe when the driver is unbound.
 
-Ensure the buffer is explicitly null-terminated to prevent potential
-string overflows or undefined behavior.
-
-Signed-off-by: Shankari Anand <shankari.ak0208@gmail.com>
-Signed-off-by: Masahiro Yamada <masahiroy@kernel.org>
-Acked-by: Randy Dunlap <rdunlap@infradead.org>
-Tested-by: Randy Dunlap <rdunlap@infradead.org>
-Tested-by: Nicolas Schier <n.schier@avm.de>
-Acked-by: Nicolas Schier <n.schier@avm.de>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Fixes: 39facfa01c9f ("usb: gadget: udc: renesas_usb3: Add register of usb role switch")
+Cc: stable@vger.kernel.org	# 4.19
+Cc: Yoshihiro Shimoda <yoshihiro.shimoda.uh@renesas.com>
+Signed-off-by: Johan Hovold <johan@kernel.org>
+Link: https://lore.kernel.org/r/20250724091910.21092-4-johan@kernel.org
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- scripts/kconfig/nconf.c     | 2 ++
- scripts/kconfig/nconf.gui.c | 1 +
- 2 files changed, 3 insertions(+)
+ drivers/usb/gadget/udc/renesas_usb3.c |    1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/scripts/kconfig/nconf.c b/scripts/kconfig/nconf.c
-index 8cd72fe25974..7a17c94a1594 100644
---- a/scripts/kconfig/nconf.c
-+++ b/scripts/kconfig/nconf.c
-@@ -591,6 +591,8 @@ static void item_add_str(const char *fmt, ...)
- 		tmp_str,
- 		sizeof(k_menu_items[index].str));
+--- a/drivers/usb/gadget/udc/renesas_usb3.c
++++ b/drivers/usb/gadget/udc/renesas_usb3.c
+@@ -2658,6 +2658,7 @@ static void renesas_usb3_remove(struct p
+ 	struct renesas_usb3 *usb3 = platform_get_drvdata(pdev);
  
-+	k_menu_items[index].str[sizeof(k_menu_items[index].str) - 1] = '\0';
-+
- 	free_item(curses_menu_items[index]);
- 	curses_menu_items[index] = new_item(
- 			k_menu_items[index].str,
-diff --git a/scripts/kconfig/nconf.gui.c b/scripts/kconfig/nconf.gui.c
-index 25a7263ef3c8..5f13a0a7fb0b 100644
---- a/scripts/kconfig/nconf.gui.c
-+++ b/scripts/kconfig/nconf.gui.c
-@@ -349,6 +349,7 @@ int dialog_inputbox(WINDOW *main_window,
- 	x = (columns-win_cols)/2;
+ 	debugfs_remove_recursive(usb3->dentry);
++	put_device(usb3->host_dev);
+ 	device_remove_file(&pdev->dev, &dev_attr_role);
  
- 	strncpy(result, init, *result_len);
-+	result[*result_len - 1] = '\0';
- 
- 	/* create the windows */
- 	win = newwin(win_lines, win_cols, y, x);
--- 
-2.39.5
-
+ 	cancel_work_sync(&usb3->role_work);
 
 
 
