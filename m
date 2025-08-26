@@ -1,55 +1,56 @@
-Return-Path: <stable+bounces-175635-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-173985-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0AB7AB36989
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 16:28:01 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id C1252B360C1
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 15:03:47 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 9214A8E66C8
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 14:15:09 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 9F2DE1BA4E2E
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 13:00:19 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A60AA34DCE8;
-	Tue, 26 Aug 2025 14:12:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9A884214813;
+	Tue, 26 Aug 2025 12:59:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="G1wfAjto"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="nnVg6Ggn"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5E96434DCCE;
-	Tue, 26 Aug 2025 14:12:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 57B631FBCB1;
+	Tue, 26 Aug 2025 12:59:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756217567; cv=none; b=HZWaNXGc6dtwu+SMsnzl+LHpgWeNI7ATksGANfd4WYZjdpB7w8jyYSvF9hE/i2DgoruGSjddG8ISJbWOFoJa4x9iJ3A1Si5QdZ6U4Vs1hgtS95hyrvE/DN0zTwVv7cWx7Q8KeB+XngTi+ZALHd9A57s2WaMTo9AKAhH49ieb16s=
+	t=1756213187; cv=none; b=AdnTaNgb78JjD66iPcNaQxvS1qxCPqDZ+uY10doQ3bKiYtA/TtxyvN6P520Gkqk3f8FVuztZ/f7NYYl/J27gcFCfngTqh9T02g1WQvdBmK/H9hYeZ2oGkQf3XBo81vCJmPMSpvccxTwVlmPEpiQt6K0zO2CSUr4Gx4rh3q+Rht0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756217567; c=relaxed/simple;
-	bh=0ZwH3iIzIPnP5LbV+8xHq+q7vpt9XY/sKJwvxrvnZxY=;
+	s=arc-20240116; t=1756213187; c=relaxed/simple;
+	bh=80y8tSrdjeKGv/WhWMZZzWfzBByQ8RSQJHQDxCdl6+8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Jnq3gAPF7lXQehpicFAs/OnlWihN4GhaL4Pk0wFG/5+2RQrDWX4rkpZo6FofQ3Are0F2fzk6EbCzxtnI62F1FjnmZi/KP/cqSZZFqsBdOO8glVWG8AsShASUbWzWJY3O2VrsoskqNmfMa6PjU7xP3WLkbEvuEqynWTtYgyfhncE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=G1wfAjto; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E333FC113D0;
-	Tue, 26 Aug 2025 14:12:46 +0000 (UTC)
+	 MIME-Version; b=S/6e8ckAhnU2fnXYUZNEiPcq45ZZHUaZvHEychkwFdhw2prrNI7yBSx659MzLcU8gICDGDgMBESVJwT7HDqMVao+4ZBH1xTdtxCGzv4Oyg9bKX6Smkb2Oyx7o3daRtoIzGpYRLXBtcCFhcePKb3yg1lbTE/iKyQAlfGB/M9QEr8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=nnVg6Ggn; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id DA311C4CEF1;
+	Tue, 26 Aug 2025 12:59:46 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1756217567;
-	bh=0ZwH3iIzIPnP5LbV+8xHq+q7vpt9XY/sKJwvxrvnZxY=;
+	s=korg; t=1756213187;
+	bh=80y8tSrdjeKGv/WhWMZZzWfzBByQ8RSQJHQDxCdl6+8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=G1wfAjtoaIJe8ckOh0WjLsvAy5kqrfK1BfSb43wRAenEhUbwPapJRQXlDVVmIss3t
-	 O3eGv6s7VY2+K0jKSh1zs4J8WV883+QkXbBPEddouOeb9N2tCYQq7NAPcguNJtoTdl
-	 TuIRxk6nk7R95bTut2cLOinUbIHsw3Hxt3tVjMdM=
+	b=nnVg6Ggnxwf9tQDH5/HFYTm156F5NQNo1fZ41XnnE0S9jwSh0YC6frMQgvpXN/bF2
+	 Gv70WgsnWgAp+20yQVKACr8UY/Er3nSN0lsKT9UalC1FMgdNlDSLQSnxn2f/B+DF/I
+	 64rTz3vxi4f5kvibfEPRyyIT+yKbkOVjPOZ+Avm8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	stable <stable@kernel.org>,
-	Tao Xue <xuetao09@huawei.com>
-Subject: [PATCH 5.10 191/523] usb: gadget : fix use-after-free in composite_dev_cleanup()
+	Dave Stevenson <dave.stevenson@raspberrypi.com>,
+	Hans Verkuil <hverkuil@xs4all.nl>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.6 252/587] media: tc358743: Return an appropriate colorspace from tc358743_set_fmt
 Date: Tue, 26 Aug 2025 13:06:41 +0200
-Message-ID: <20250826110929.161728252@linuxfoundation.org>
+Message-ID: <20250826110959.342121998@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250826110924.562212281@linuxfoundation.org>
-References: <20250826110924.562212281@linuxfoundation.org>
+In-Reply-To: <20250826110952.942403671@linuxfoundation.org>
+References: <20250826110952.942403671@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,56 +62,117 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Tao Xue <xuetao09@huawei.com>
+From: Dave Stevenson <dave.stevenson@raspberrypi.com>
 
-commit 151c0aa896c47a4459e07fee7d4843f44c1bb18e upstream.
+[ Upstream commit 377cc006a364dfdab2f3f221cfad63a9265200b8 ]
 
-1. In func configfs_composite_bind() -> composite_os_desc_req_prepare():
-if kmalloc fails, the pointer cdev->os_desc_req will be freed but not
-set to NULL. Then it will return a failure to the upper-level function.
-2. in func configfs_composite_bind() -> composite_dev_cleanup():
-it will checks whether cdev->os_desc_req is NULL. If it is not NULL, it
-will attempt to use it.This will lead to a use-after-free issue.
+When calling tc358743_set_fmt, the code was calling tc358743_get_fmt
+to choose a valid format. However that sets the colorspace
+based on information read back from the chip, not the colour
+format requested.
 
-BUG: KASAN: use-after-free in composite_dev_cleanup+0xf4/0x2c0
-Read of size 8 at addr 0000004827837a00 by task init/1
+The result was that if you called try or set format for UYVY
+when the current format was RGB3 then you would get told SRGB,
+and try RGB3 when current was UYVY and you would get told
+SMPTE170M.
 
-CPU: 10 PID: 1 Comm: init Tainted: G           O      5.10.97-oh #1
- kasan_report+0x188/0x1cc
- __asan_load8+0xb4/0xbc
- composite_dev_cleanup+0xf4/0x2c0
- configfs_composite_bind+0x210/0x7ac
- udc_bind_to_driver+0xb4/0x1ec
- usb_gadget_probe_driver+0xec/0x21c
- gadget_dev_desc_UDC_store+0x264/0x27c
+The value programmed in the VI_REP register for the colorspace
+is always set by this driver, therefore there is no need to read
+back the value, and never set to REC709.
+Return the colorspace based on the format set/tried instead.
 
-Fixes: 37a3a533429e ("usb: gadget: OS Feature Descriptors support")
-Cc: stable <stable@kernel.org>
-Signed-off-by: Tao Xue <xuetao09@huawei.com>
-Link: https://lore.kernel.org/r/20250721093908.14967-1-xuetao09@huawei.com
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Signed-off-by: Dave Stevenson <dave.stevenson@raspberrypi.com>
+Signed-off-by: Hans Verkuil <hverkuil@xs4all.nl>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/usb/gadget/composite.c |    5 +++++
- 1 file changed, 5 insertions(+)
+ drivers/media/i2c/tc358743.c | 44 ++++++++++++++----------------------
+ 1 file changed, 17 insertions(+), 27 deletions(-)
 
---- a/drivers/usb/gadget/composite.c
-+++ b/drivers/usb/gadget/composite.c
-@@ -2241,6 +2241,11 @@ int composite_os_desc_req_prepare(struct
- 	if (!cdev->os_desc_req->buf) {
- 		ret = -ENOMEM;
- 		usb_ep_free_request(ep0, cdev->os_desc_req);
-+		/*
-+		 * Set os_desc_req to NULL so that composite_dev_cleanup()
-+		 * will not try to free it again.
-+		 */
-+		cdev->os_desc_req = NULL;
- 		goto end;
- 	}
- 	cdev->os_desc_req->context = cdev;
+diff --git a/drivers/media/i2c/tc358743.c b/drivers/media/i2c/tc358743.c
+index f516651e95cf..a70a3287fb8f 100644
+--- a/drivers/media/i2c/tc358743.c
++++ b/drivers/media/i2c/tc358743.c
+@@ -1668,12 +1668,23 @@ static int tc358743_enum_mbus_code(struct v4l2_subdev *sd,
+ 	return 0;
+ }
+ 
++static u32 tc358743_g_colorspace(u32 code)
++{
++	switch (code) {
++	case MEDIA_BUS_FMT_RGB888_1X24:
++		return V4L2_COLORSPACE_SRGB;
++	case MEDIA_BUS_FMT_UYVY8_1X16:
++		return V4L2_COLORSPACE_SMPTE170M;
++	default:
++		return 0;
++	}
++}
++
+ static int tc358743_get_fmt(struct v4l2_subdev *sd,
+ 		struct v4l2_subdev_state *sd_state,
+ 		struct v4l2_subdev_format *format)
+ {
+ 	struct tc358743_state *state = to_state(sd);
+-	u8 vi_rep = i2c_rd8(sd, VI_REP);
+ 
+ 	if (format->pad != 0)
+ 		return -EINVAL;
+@@ -1683,23 +1694,7 @@ static int tc358743_get_fmt(struct v4l2_subdev *sd,
+ 	format->format.height = state->timings.bt.height;
+ 	format->format.field = V4L2_FIELD_NONE;
+ 
+-	switch (vi_rep & MASK_VOUT_COLOR_SEL) {
+-	case MASK_VOUT_COLOR_RGB_FULL:
+-	case MASK_VOUT_COLOR_RGB_LIMITED:
+-		format->format.colorspace = V4L2_COLORSPACE_SRGB;
+-		break;
+-	case MASK_VOUT_COLOR_601_YCBCR_LIMITED:
+-	case MASK_VOUT_COLOR_601_YCBCR_FULL:
+-		format->format.colorspace = V4L2_COLORSPACE_SMPTE170M;
+-		break;
+-	case MASK_VOUT_COLOR_709_YCBCR_FULL:
+-	case MASK_VOUT_COLOR_709_YCBCR_LIMITED:
+-		format->format.colorspace = V4L2_COLORSPACE_REC709;
+-		break;
+-	default:
+-		format->format.colorspace = 0;
+-		break;
+-	}
++	format->format.colorspace = tc358743_g_colorspace(format->format.code);
+ 
+ 	return 0;
+ }
+@@ -1713,19 +1708,14 @@ static int tc358743_set_fmt(struct v4l2_subdev *sd,
+ 	u32 code = format->format.code; /* is overwritten by get_fmt */
+ 	int ret = tc358743_get_fmt(sd, sd_state, format);
+ 
+-	format->format.code = code;
++	if (code == MEDIA_BUS_FMT_RGB888_1X24 ||
++	    code == MEDIA_BUS_FMT_UYVY8_1X16)
++		format->format.code = code;
++	format->format.colorspace = tc358743_g_colorspace(format->format.code);
+ 
+ 	if (ret)
+ 		return ret;
+ 
+-	switch (code) {
+-	case MEDIA_BUS_FMT_RGB888_1X24:
+-	case MEDIA_BUS_FMT_UYVY8_1X16:
+-		break;
+-	default:
+-		return -EINVAL;
+-	}
+-
+ 	if (format->which == V4L2_SUBDEV_FORMAT_TRY)
+ 		return 0;
+ 
+-- 
+2.39.5
+
 
 
 
