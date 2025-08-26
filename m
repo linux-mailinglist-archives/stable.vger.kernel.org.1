@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-175927-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-173710-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 52D98B36B7A
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 16:46:18 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id A530FB35DF7
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 13:50:18 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 48B1C1C4221A
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 14:28:27 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 24F8A7C606D
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 11:49:28 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 02A3C352077;
-	Tue, 26 Aug 2025 14:25:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8650729BDB8;
+	Tue, 26 Aug 2025 11:49:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="hwc/U+lO"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="cSwvnrsI"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B3A8B22DFA7;
-	Tue, 26 Aug 2025 14:25:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 440DA20330;
+	Tue, 26 Aug 2025 11:49:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756218333; cv=none; b=EcA+nOJdY1PdiAB/AXgLrfwzLCKMnyRjfIwhW0CKSmf20xWitrwxbHozgiBWV5wgYbe38UjJftVnQ5D0YnzVQ3BfXqs9WUlTK0yrwlO7qnmaTGS6gUumj736eS3LJ7cwYoTeBPjE1jFGNmocPjT7tNAyp1zEsVqCM6js91MUOiQ=
+	t=1756208956; cv=none; b=OIh2dfXVERSy9FAk4QcAPwTbD0RjnIc3iaBPb+7Hfud5cvD/b2Zzc82J1LiKsPcaAgy5Aehc6Rmjrh/uT7g1hPjXgn9t+Es2QiiKXsDHLPWdlb1l1GlAXNi1V8VVGQkfHk13wSFJPhROD00OgG5LhOc1WRkybnHuXRtdShgtg88=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756218333; c=relaxed/simple;
-	bh=jjkwXAqkMleyuGGgoeM/YYzUAu3uW/g3p3AisnWNNz8=;
+	s=arc-20240116; t=1756208956; c=relaxed/simple;
+	bh=7zejeRPR4+JewCdIXCLkunPlenSAFgaQOWLGOVGM0gY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=euEIOkLxLzoVKvTpy3v5llPBjNyuBDHepG5xXCDvQc+rLTiXUGJP0ewhNePCFp+ToXUbfdNdOrMGhIsJFjAy0PltRPN2EK462J4xAyNHHg1iaSWbyVrclTaCSILZTYCGqDPcL5X9bvNuJvtCiy9qCgoiIooQJY42N04QOkjBXWw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=hwc/U+lO; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E151FC4CEF1;
-	Tue, 26 Aug 2025 14:25:32 +0000 (UTC)
+	 MIME-Version; b=ocUyH+QwyUOFXV+jJVBd9d7U8M75fjpLmrwFlV8E0YJnICyyNRTUkJfcewEqJcZAp9RZMn8IxeJYoe5rDAj2qJEO5nOp+1oO64rwcoqz+3eirX7gJlwYZOM346ku75WqM0rU9/lAg5sgwbGISWt4xg+rvgkGHWDtwWd1lotQN3M=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=cSwvnrsI; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D222CC4CEF1;
+	Tue, 26 Aug 2025 11:49:15 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1756218333;
-	bh=jjkwXAqkMleyuGGgoeM/YYzUAu3uW/g3p3AisnWNNz8=;
+	s=korg; t=1756208956;
+	bh=7zejeRPR4+JewCdIXCLkunPlenSAFgaQOWLGOVGM0gY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=hwc/U+lOoM7TDtP0u/fu0B5vbGk+GFUsFQ8yKgMVqp58HB5ZWAp2l/wHXkYKDMNI7
-	 sI+hF/jZkCZrwMu0k9BntM/cfWxLUYBjUcW4+S3RfMsEzlznD3m4LAytIYAvBvhhD/
-	 M/BJwtB6NIHLcRCZfsepI9Fp1gdyLIR7M5AgHbsI=
+	b=cSwvnrsItLK0ZYudtbru7hV4HUbeCIXDSxVPhjboyhSTCs2yXaXxSaoF/3DVpZ8Sg
+	 M2p4+O/WEkGG7ByQ1aFDy1uWwKFur194dM/0vek+xQqoUj8SDd5chgqMj1uvteflw1
+	 suD4FOSczjUtto55+/PoXFZApBpjhRdd68mY/ygg=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Sakari Ailus <sakari.ailus@linux.intel.com>,
-	Hans Verkuil <hverkuil@xs4all.nl>,
-	Laurent Pinchart <laurent.pinchart@ideasonboard.com>,
+	Jiande Lu <jiande.lu@mediatek.com>,
+	Luiz Augusto von Dentz <luiz.von.dentz@intel.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 483/523] media: v4l2-ctrls: Dont reset handlers error in v4l2_ctrl_handler_free()
+Subject: [PATCH 6.12 278/322] Bluetooth: btmtk: Fix wait_on_bit_timeout interruption during shutdown
 Date: Tue, 26 Aug 2025 13:11:33 +0200
-Message-ID: <20250826110936.361745695@linuxfoundation.org>
+Message-ID: <20250826110922.788618751@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250826110924.562212281@linuxfoundation.org>
-References: <20250826110924.562212281@linuxfoundation.org>
+In-Reply-To: <20250826110915.169062587@linuxfoundation.org>
+References: <20250826110915.169062587@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,51 +62,50 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Sakari Ailus <sakari.ailus@linux.intel.com>
+From: Jiande Lu <jiande.lu@mediatek.com>
 
-[ Upstream commit 5a0400aca5fa7c6b8ba456c311a460e733571c88 ]
+[ Upstream commit 099799fa9b76c5c02b49e07005a85117a25b01ea ]
 
-It's a common pattern in drivers to free the control handler's resources
-and then return the handler's error code on drivers' error handling paths.
-Alas, the v4l2_ctrl_handler_free() function also zeroes the error field,
-effectively indicating successful return to the caller.
+During the shutdown process, an interrupt occurs that
+prematurely terminates the wait for the expected event.
+This change replaces TASK_INTERRUPTIBLE with
+TASK_UNINTERRUPTIBLE in the wait_on_bit_timeout call to ensure
+the shutdown process completes as intended without being
+interrupted by signals.
 
-There's no apparent need to touch the error field while releasing the
-control handler's resources and cleaning up stale pointers. Not touching
-the handler's error field is a more certain way to address this problem
-than changing all the users, in which case the pattern would be likely to
-re-emerge in new drivers.
-
-Do just that, don't touch the control handler's error field in
-v4l2_ctrl_handler_free().
-
-Fixes: 0996517cf8ea ("V4L/DVB: v4l2: Add new control handling framework")
-Cc: stable@vger.kernel.org
-Signed-off-by: Sakari Ailus <sakari.ailus@linux.intel.com>
-Reviewed-by: Hans Verkuil <hverkuil@xs4all.nl>
-Reviewed-by: Laurent Pinchart <laurent.pinchart@ideasonboard.com>
-Signed-off-by: Hans Verkuil <hverkuil@xs4all.nl>
-[ v4l2-ctrls.c => v4l2-ctrls-core.c ]
+Fixes: d019930b0049 ("Bluetooth: btmtk: move btusb_mtk_hci_wmt_sync to btmtk.c")
+Signed-off-by: Jiande Lu <jiande.lu@mediatek.com>
+Signed-off-by: Luiz Augusto von Dentz <luiz.von.dentz@intel.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/media/v4l2-core/v4l2-ctrls.c |    1 -
- 1 file changed, 1 deletion(-)
+ drivers/bluetooth/btmtk.c | 7 +------
+ 1 file changed, 1 insertion(+), 6 deletions(-)
 
---- a/drivers/media/v4l2-core/v4l2-ctrls.c
-+++ b/drivers/media/v4l2-core/v4l2-ctrls.c
-@@ -2388,7 +2388,6 @@ void v4l2_ctrl_handler_free(struct v4l2_
- 	kvfree(hdl->buckets);
- 	hdl->buckets = NULL;
- 	hdl->cached = NULL;
--	hdl->error = 0;
- 	mutex_unlock(hdl->lock);
- 	mutex_destroy(&hdl->_lock);
- }
+diff --git a/drivers/bluetooth/btmtk.c b/drivers/bluetooth/btmtk.c
+index 05de2e6f563d..07979d47eb76 100644
+--- a/drivers/bluetooth/btmtk.c
++++ b/drivers/bluetooth/btmtk.c
+@@ -642,12 +642,7 @@ static int btmtk_usb_hci_wmt_sync(struct hci_dev *hdev,
+ 	 * WMT command.
+ 	 */
+ 	err = wait_on_bit_timeout(&data->flags, BTMTK_TX_WAIT_VND_EVT,
+-				  TASK_INTERRUPTIBLE, HCI_INIT_TIMEOUT);
+-	if (err == -EINTR) {
+-		bt_dev_err(hdev, "Execution of wmt command interrupted");
+-		clear_bit(BTMTK_TX_WAIT_VND_EVT, &data->flags);
+-		goto err_free_wc;
+-	}
++				  TASK_UNINTERRUPTIBLE, HCI_INIT_TIMEOUT);
+ 
+ 	if (err) {
+ 		bt_dev_err(hdev, "Execution of wmt command timed out");
+-- 
+2.50.1
+
 
 
 
