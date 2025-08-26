@@ -1,55 +1,56 @@
-Return-Path: <stable+bounces-174336-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-174974-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7E1ADB362D5
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 15:22:43 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id C5FDBB365F1
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 15:52:01 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 674323BBAE8
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 13:17:15 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id E456A567999
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 13:43:44 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0B6CD34A336;
-	Tue, 26 Aug 2025 13:15:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 33ECC341678;
+	Tue, 26 Aug 2025 13:43:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="YB7spUzJ"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="DOG7VPJ2"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BC35031CA74;
-	Tue, 26 Aug 2025 13:15:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E31A9341660;
+	Tue, 26 Aug 2025 13:43:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756214120; cv=none; b=VIIIZrgo1/3gegzoa9UJ4pflBNemVicm9hZYVPbQOI9vNenMVXA8k3kYGS2PR2NHslm5MBAODY3EOJn1xn23H6xOGQQ0kbd4Dk4BF7/JnUBqxiLt4P1bAELMSFZtwo7IL2tG+RHf5d2OG3mD7S4UrLRNNv8Cc03whttdlW0V4kI=
+	t=1756215808; cv=none; b=XXMcQCAJZnfs+j9GknvVyku8UxXuwtmMUMjLIYomniSILRDWfpTaYGVstpvo+NMGReHtK5M/cmcZHrIiv7bOBAV7hmLptnJYPZpc54R80S5iD8HHRwtYOfZjHsXilfgA7BMbgshNGTEvw5CYHSJ+e8B66JEtH6q0ExNDO6M4NsI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756214120; c=relaxed/simple;
-	bh=5iNOsHiMLDC6iUfv90ahvQLQkS+hEIYR/RdzGgysa6E=;
+	s=arc-20240116; t=1756215808; c=relaxed/simple;
+	bh=62fYf+MRMu+OaeRFVLbJoEB8IVoIrVHsCS/dkAprHZc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=rdzpRRZvHkl6WrTkOTCz9en0r3M+4s4Ohs6uuGjVgbxm/JgCDxhcHazx/jk+2g4XeCl5U9S5lcW+N+TT6jyEKSHsqF07G8HhiN8Tf6UDKpjFGE1SUn5ocXGKHTu/NP2Zxzu7lVU8gAnrQ/f85EX8OHYoTSP2MGUnPbn6GNMmVNg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=YB7spUzJ; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4DB1EC4CEF1;
-	Tue, 26 Aug 2025 13:15:20 +0000 (UTC)
+	 MIME-Version; b=B4peLTO7KEunp6IxB3fuUlOW3J6v6Zw+oqYKQEHVB0EQ6ezDMxfL+7ColhRREuKI4lcBwaud5H46mfqe5cwNKXKEcZ6w7wdpoxLxq1fus7kVcaak6S6z1AHQu3tWjjRVNmWcNJTLEDmeh4QOaLaNJPq/CwE/smuxARctvc11Xkg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=DOG7VPJ2; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 31BF3C4CEF1;
+	Tue, 26 Aug 2025 13:43:27 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1756214120;
-	bh=5iNOsHiMLDC6iUfv90ahvQLQkS+hEIYR/RdzGgysa6E=;
+	s=korg; t=1756215807;
+	bh=62fYf+MRMu+OaeRFVLbJoEB8IVoIrVHsCS/dkAprHZc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=YB7spUzJpYv9IKMhW5w1pHjelqn7KQF4/A6fnHzi81NaR5v7CTP3MleBicdJtxHa6
-	 KoPA19s1Hr0taz9X0xhhgCDbdu0pzUpeZ4EnrLTzLAb3+RDQPYwPJGwQ5fHc+ULIHr
-	 Pzn6nV/Nn83FyIGiDBp7U2timJhx6XyEIdu+QglE=
+	b=DOG7VPJ2xYyov2okQOQD0M839q+YfmGrI5eS1Eu55t/lrnhG5UjW9IK7aIZ4KiIv8
+	 nall+WtabiWc49D4inF8WVlWR+ED/KMA1QusQxj703+zfw/Plzw3e4t+MGQCUuTb43
+	 cExT5JV/6lTUbau7EyWO937u+pfIGgxGq2Oy8+t4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Florian Larysch <fl@n621.de>,
-	Jakub Kicinski <kuba@kernel.org>
-Subject: [PATCH 6.1 011/482] net: phy: micrel: fix KSZ8081/KSZ8091 cable test
-Date: Tue, 26 Aug 2025 13:04:24 +0200
-Message-ID: <20250826110931.062651198@linuxfoundation.org>
+	Yuan Chen <chenyuan@kylinos.cn>,
+	Linus Walleij <linus.walleij@linaro.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.15 174/644] pinctrl: sunxi: Fix memory leak on krealloc failure
+Date: Tue, 26 Aug 2025 13:04:25 +0200
+Message-ID: <20250826110950.784597069@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250826110930.769259449@linuxfoundation.org>
-References: <20250826110930.769259449@linuxfoundation.org>
+In-Reply-To: <20250826110946.507083938@linuxfoundation.org>
+References: <20250826110946.507083938@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,48 +62,60 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Florian Larysch <fl@n621.de>
+From: Yuan Chen <chenyuan@kylinos.cn>
 
-commit 49db61c27c4bbd24364086dc0892bd3e14c1502e upstream.
+[ Upstream commit e3507c56cbb208d4f160942748c527ef6a528ba1 ]
 
-Commit 21b688dabecb ("net: phy: micrel: Cable Diag feature for lan8814
-phy") introduced cable_test support for the LAN8814 that reuses parts of
-the KSZ886x logic and introduced the cable_diag_reg and pair_mask
-parameters to account for differences between those chips.
+In sunxi_pctrl_dt_node_to_map(), when krealloc() fails to resize
+the pinctrl_map array, the function returns -ENOMEM directly
+without freeing the previously allocated *map buffer. This results
+in a memory leak of the original kmalloc_array allocation.
 
-However, it did not update the ksz8081_type struct, so those members are
-now 0, causing no pairs to be tested in ksz886x_cable_test_get_status
-and ksz886x_cable_test_wait_for_completion to poll the wrong register
-for the affected PHYs (Basic Control/Reset, which is 0 in normal
-operation) and exit immediately.
-
-Fix this by setting both struct members accordingly.
-
-Fixes: 21b688dabecb ("net: phy: micrel: Cable Diag feature for lan8814 phy")
-Cc: stable@vger.kernel.org
-Signed-off-by: Florian Larysch <fl@n621.de>
-Link: https://patch.msgid.link/20250723222250.13960-1-fl@n621.de
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: e11dee2e98f8 ("pinctrl: sunxi: Deal with configless pins")
+Signed-off-by: Yuan Chen <chenyuan@kylinos.cn>
+Link: https://lore.kernel.org/20250620012708.16709-1-chenyuan_fl@163.com
+Signed-off-by: Linus Walleij <linus.walleij@linaro.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/phy/micrel.c |    2 ++
- 1 file changed, 2 insertions(+)
+ drivers/pinctrl/sunxi/pinctrl-sunxi.c | 11 ++++++++---
+ 1 file changed, 8 insertions(+), 3 deletions(-)
 
---- a/drivers/net/phy/micrel.c
-+++ b/drivers/net/phy/micrel.c
-@@ -356,6 +356,8 @@ static const struct kszphy_type ksz8051_
+diff --git a/drivers/pinctrl/sunxi/pinctrl-sunxi.c b/drivers/pinctrl/sunxi/pinctrl-sunxi.c
+index 30ca0fe5c31a..afe41ea0ff1e 100644
+--- a/drivers/pinctrl/sunxi/pinctrl-sunxi.c
++++ b/drivers/pinctrl/sunxi/pinctrl-sunxi.c
+@@ -335,6 +335,7 @@ static int sunxi_pctrl_dt_node_to_map(struct pinctrl_dev *pctldev,
+ 	const char *function, *pin_prop;
+ 	const char *group;
+ 	int ret, npins, nmaps, configlen = 0, i = 0;
++	struct pinctrl_map *new_map;
  
- static const struct kszphy_type ksz8081_type = {
- 	.led_mode_reg		= MII_KSZPHY_CTRL_2,
-+	.cable_diag_reg		= KSZ8081_LMD,
-+	.pair_mask		= KSZPHY_WIRE_PAIR_MASK,
- 	.has_broadcast_disable	= true,
- 	.has_nand_tree_disable	= true,
- 	.has_rmii_ref_clk_sel	= true,
+ 	*map = NULL;
+ 	*num_maps = 0;
+@@ -409,9 +410,13 @@ static int sunxi_pctrl_dt_node_to_map(struct pinctrl_dev *pctldev,
+ 	 * We know have the number of maps we need, we can resize our
+ 	 * map array
+ 	 */
+-	*map = krealloc(*map, i * sizeof(struct pinctrl_map), GFP_KERNEL);
+-	if (!*map)
+-		return -ENOMEM;
++	new_map = krealloc(*map, i * sizeof(struct pinctrl_map), GFP_KERNEL);
++	if (!new_map) {
++		ret = -ENOMEM;
++		goto err_free_map;
++	}
++
++	*map = new_map;
+ 
+ 	return 0;
+ 
+-- 
+2.39.5
+
 
 
 
