@@ -1,54 +1,55 @@
-Return-Path: <stable+bounces-172961-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-174360-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6F833B35AFE
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 13:17:03 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 16DD3B362E5
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 15:23:41 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id F41133A490D
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 11:16:58 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id A99328A503A
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 13:17:55 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 29D6B2BD00C;
-	Tue, 26 Aug 2025 11:16:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B9B0F26FA57;
+	Tue, 26 Aug 2025 13:16:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="S6ifuxji"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="pW7I78qG"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D65D52264A3;
-	Tue, 26 Aug 2025 11:16:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7650A1A23A4;
+	Tue, 26 Aug 2025 13:16:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756207014; cv=none; b=n+qjeMKSB8pZibmfpJc8U3OTiV9zcLrISYZRd/5zPu08gXDzGsdYukTZZ8CKSDBuqHyzbtSm3w3ABal8QQ3pc72HxnsUjaJ+517/cIiwnDjt/I+ZLPVH8EXOSxbVD8MG8C3SrVOskAUwc1xijfp62K7ACeQPat4hwIt1/ovH1rg=
+	t=1756214184; cv=none; b=ACf6x39ML9fWWqfsI+4hrp/yq1k3d7ErdiuFpGNdO5cMY/9igZl6F4i9E66TnOJUw1NNU63eyh8N/0NpV8DkeYw5B6IvfxZe2Bt5eJUum732CA9LH1PvmjkuMRPZSDevV3kMNCpWEftG6BDq8Dp+kA2lv5AvFSi3KMXF0hiesCE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756207014; c=relaxed/simple;
-	bh=XTPXpdcGmQJdHuEOhveCInpbOOergG6vzUH59KoC808=;
+	s=arc-20240116; t=1756214184; c=relaxed/simple;
+	bh=4ihjZ61q7+regvTlhexXDBEdmBllIvoT2ZJ4LkTOFyA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Yt5/8f4WYmA0gDbuburhEG5bJjkawOvDgE+i1ic2nijXMEkzE5rvEMqZ9lXyn7k7jEHV8uygVpGlgPniWww/ShpXm5Af9NwNwa8ACx+eckpSFSgVeYYBzAyJIzG9pACGuONrpDhSOa/vqfP1SZ9hx4/OvbVVkZ+OzVVihINUdCA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=S6ifuxji; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 117B3C4CEF1;
-	Tue, 26 Aug 2025 11:16:53 +0000 (UTC)
+	 MIME-Version; b=CPmghGI5VLhGCOYSsn2oV0dPqVcR0nN3O0VBHzOHeRXZCO213CCdRtN5PfPPAMIYPycVogzcoSJs2YBfJSngXz33jJMsi2rLewOgoxhfOUs2oDaa/Kj7muSBmE7EKG+29NcGQahbe3JvonCXHlr2T8X11IiT2vwnE28YtfseCWw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=pW7I78qG; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 08871C113CF;
+	Tue, 26 Aug 2025 13:16:23 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1756207014;
-	bh=XTPXpdcGmQJdHuEOhveCInpbOOergG6vzUH59KoC808=;
+	s=korg; t=1756214184;
+	bh=4ihjZ61q7+regvTlhexXDBEdmBllIvoT2ZJ4LkTOFyA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=S6ifuxjiNPVyp2dVycAALLL7TprKycGH126LXrHJVYcJFkfwCBBCeXQ2tLUFhvDJF
-	 qNPiQxnFrp0LVWxQtVd+NsPEBbUpvUtYl/AXHCteV7FoMf3n7syjnWaDK76kECALdO
-	 dtSFcPWV3ygxeHEoCjZpbEZkT3lWM55YegJQYzqY=
+	b=pW7I78qGaoLpdKg/qpZ6e82gdXdRTjNM8Pmh8hmnHRw4M8Ac0SewMRSEyw93EnJ7n
+	 4xr+i6M+HIiueT9fZ2ZIW1nCnNBLGvzdyXWvvn3ZonkAm6jpicYExR+Oi5cyO0zScF
+	 cOjxLvAZYaSBeu8Jv+ojY7tau2T55qhgtUv7nD1E=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Nathan Chancellor <nathan@kernel.org>
-Subject: [PATCH 6.16 010/457] usb: atm: cxacru: Merge cxacru_upload_firmware() into cxacru_heavy_init()
+	Sean Christopherson <seanjc@google.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.1 041/482] KVM: x86: Drop kvm_x86_ops.set_dr6() in favor of a new KVM_RUN flag
 Date: Tue, 26 Aug 2025 13:04:54 +0200
-Message-ID: <20250826110937.567546861@linuxfoundation.org>
+Message-ID: <20250826110931.826688892@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250826110937.289866482@linuxfoundation.org>
-References: <20250826110937.289866482@linuxfoundation.org>
+In-Reply-To: <20250826110930.769259449@linuxfoundation.org>
+References: <20250826110930.769259449@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,236 +61,149 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.16-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Nathan Chancellor <nathan@kernel.org>
+From: Sean Christopherson <seanjc@google.com>
 
-commit 8d1b02e5d7e3a6d2acffb1f4c094678fda9e3456 upstream.
+[ Upstream commit 80c64c7afea1da6a93ebe88d3d29d8a60377ef80 ]
 
-After a recent change in clang to expose uninitialized warnings from
-const variables [1], there is a warning in cxacru_heavy_init():
+Instruct vendor code to load the guest's DR6 into hardware via a new
+KVM_RUN flag, and remove kvm_x86_ops.set_dr6(), whose sole purpose was to
+load vcpu->arch.dr6 into hardware when DR6 can be read/written directly
+by the guest.
 
-  drivers/usb/atm/cxacru.c:1104:6: error: variable 'bp' is used uninitialized whenever 'if' condition is false [-Werror,-Wsometimes-uninitialized]
-   1104 |         if (instance->modem_type->boot_rom_patch) {
-        |             ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-  drivers/usb/atm/cxacru.c:1113:39: note: uninitialized use occurs here
-   1113 |         cxacru_upload_firmware(instance, fw, bp);
-        |                                              ^~
-  drivers/usb/atm/cxacru.c:1104:2: note: remove the 'if' if its condition is always true
-   1104 |         if (instance->modem_type->boot_rom_patch) {
-        |         ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-  drivers/usb/atm/cxacru.c:1095:32: note: initialize the variable 'bp' to silence this warning
-   1095 |         const struct firmware *fw, *bp;
-        |                                       ^
-        |                                        = NULL
-
-While the warning is technically correct that bp is conditionally passed
-uninitialized to cxacru_upload_firmware(), it is ultimately a false
-positive warning on the uninitialized use of bp because the same
-condition that initializes bp, instance->modem_type->boot_rom_patch, is
-the same one that gates the use of bp within cxacru_upload_firmware().
-As this warning occurs in clang's frontend before inlining occurs, it
-cannot know that these conditions are indentical to avoid the warning.
-
-Manually inline cxacru_upload_firmware() into cxacru_heavy_init(), as
-that is its only callsite, so that clang can see that bp is initialized
-and used under the same condition, clearing up the warning without any
-functional changes to the code (LLVM was already doing this inlining
-later).
+Note, TDX already WARNs on any run_flag being set, i.e. will yell if KVM
+thinks DR6 needs to be reloaded.  TDX vCPUs force KVM_DEBUGREG_AUTO_SWITCH
+and never clear the flag, i.e. should never observe KVM_RUN_LOAD_GUEST_DR6.
 
 Cc: stable@vger.kernel.org
-Fixes: 1b0e61465234 ("[PATCH] USB ATM: driver for the Conexant AccessRunner chipset cxacru")
-Closes: https://github.com/ClangBuiltLinux/linux/issues/2102
-Link: https://github.com/llvm/llvm-project/commit/2464313eef01c5b1edf0eccf57a32cdee01472c7 [1]
-Signed-off-by: Nathan Chancellor <nathan@kernel.org>
-Link: https://lore.kernel.org/r/20250722-usb-cxacru-fix-clang-21-uninit-warning-v2-1-6708a18decd2@kernel.org
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Link: https://lore.kernel.org/r/20250610232010.162191-4-seanjc@google.com
+Signed-off-by: Sean Christopherson <seanjc@google.com>
+[sean: account for lack of vmx/main.c]
+Signed-off-by: Sean Christopherson <seanjc@google.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/usb/atm/cxacru.c |  106 +++++++++++++++++++++--------------------------
- 1 file changed, 49 insertions(+), 57 deletions(-)
+ arch/x86/include/asm/kvm-x86-ops.h |  1 -
+ arch/x86/include/asm/kvm_host.h    |  2 +-
+ arch/x86/kvm/svm/svm.c             | 10 ++++++----
+ arch/x86/kvm/vmx/vmx.c             | 10 +++-------
+ arch/x86/kvm/x86.c                 |  2 +-
+ 5 files changed, 11 insertions(+), 14 deletions(-)
 
---- a/drivers/usb/atm/cxacru.c
-+++ b/drivers/usb/atm/cxacru.c
-@@ -980,25 +980,60 @@ cleanup:
- 	return ret;
+diff --git a/arch/x86/include/asm/kvm-x86-ops.h b/arch/x86/include/asm/kvm-x86-ops.h
+index 0e5ae3b0c867..c068565fe954 100644
+--- a/arch/x86/include/asm/kvm-x86-ops.h
++++ b/arch/x86/include/asm/kvm-x86-ops.h
+@@ -47,7 +47,6 @@ KVM_X86_OP(set_idt)
+ KVM_X86_OP(get_gdt)
+ KVM_X86_OP(set_gdt)
+ KVM_X86_OP(sync_dirty_debug_regs)
+-KVM_X86_OP(set_dr6)
+ KVM_X86_OP(set_dr7)
+ KVM_X86_OP(cache_reg)
+ KVM_X86_OP(get_rflags)
+diff --git a/arch/x86/include/asm/kvm_host.h b/arch/x86/include/asm/kvm_host.h
+index 1383f5e5238a..c8fc4f2acf69 100644
+--- a/arch/x86/include/asm/kvm_host.h
++++ b/arch/x86/include/asm/kvm_host.h
+@@ -1458,6 +1458,7 @@ static inline u16 kvm_lapic_irq_dest_mode(bool dest_mode_logical)
+ 
+ enum kvm_x86_run_flags {
+ 	KVM_RUN_FORCE_IMMEDIATE_EXIT	= BIT(0),
++	KVM_RUN_LOAD_GUEST_DR6		= BIT(1),
+ };
+ 
+ struct kvm_x86_ops {
+@@ -1504,7 +1505,6 @@ struct kvm_x86_ops {
+ 	void (*get_gdt)(struct kvm_vcpu *vcpu, struct desc_ptr *dt);
+ 	void (*set_gdt)(struct kvm_vcpu *vcpu, struct desc_ptr *dt);
+ 	void (*sync_dirty_debug_regs)(struct kvm_vcpu *vcpu);
+-	void (*set_dr6)(struct kvm_vcpu *vcpu, unsigned long value);
+ 	void (*set_dr7)(struct kvm_vcpu *vcpu, unsigned long value);
+ 	void (*cache_reg)(struct kvm_vcpu *vcpu, enum kvm_reg reg);
+ 	unsigned long (*get_rflags)(struct kvm_vcpu *vcpu);
+diff --git a/arch/x86/kvm/svm/svm.c b/arch/x86/kvm/svm/svm.c
+index dc8a1b72d8ec..5a6bd9d5cceb 100644
+--- a/arch/x86/kvm/svm/svm.c
++++ b/arch/x86/kvm/svm/svm.c
+@@ -4052,10 +4052,13 @@ static __no_kcsan fastpath_t svm_vcpu_run(struct kvm_vcpu *vcpu, u64 run_flags)
+ 	svm_hv_update_vp_id(svm->vmcb, vcpu);
+ 
+ 	/*
+-	 * Run with all-zero DR6 unless needed, so that we can get the exact cause
+-	 * of a #DB.
++	 * Run with all-zero DR6 unless the guest can write DR6 freely, so that
++	 * KVM can get the exact cause of a #DB.  Note, loading guest DR6 from
++	 * KVM's snapshot is only necessary when DR accesses won't exit.
+ 	 */
+-	if (likely(!(vcpu->arch.switch_db_regs & KVM_DEBUGREG_WONT_EXIT)))
++	if (unlikely(run_flags & KVM_RUN_LOAD_GUEST_DR6))
++		svm_set_dr6(vcpu, vcpu->arch.dr6);
++	else if (likely(!(vcpu->arch.switch_db_regs & KVM_DEBUGREG_WONT_EXIT)))
+ 		svm_set_dr6(vcpu, DR6_ACTIVE_LOW);
+ 
+ 	clgi();
+@@ -4822,7 +4825,6 @@ static struct kvm_x86_ops svm_x86_ops __initdata = {
+ 	.set_idt = svm_set_idt,
+ 	.get_gdt = svm_get_gdt,
+ 	.set_gdt = svm_set_gdt,
+-	.set_dr6 = svm_set_dr6,
+ 	.set_dr7 = svm_set_dr7,
+ 	.sync_dirty_debug_regs = svm_sync_dirty_debug_regs,
+ 	.cache_reg = svm_cache_reg,
+diff --git a/arch/x86/kvm/vmx/vmx.c b/arch/x86/kvm/vmx/vmx.c
+index 382f42200688..60d1ff3fca45 100644
+--- a/arch/x86/kvm/vmx/vmx.c
++++ b/arch/x86/kvm/vmx/vmx.c
+@@ -5530,12 +5530,6 @@ static void vmx_sync_dirty_debug_regs(struct kvm_vcpu *vcpu)
+ 	set_debugreg(DR6_RESERVED, 6);
  }
  
--static void cxacru_upload_firmware(struct cxacru_data *instance,
--				   const struct firmware *fw,
--				   const struct firmware *bp)
-+
-+static int cxacru_find_firmware(struct cxacru_data *instance,
-+				char *phase, const struct firmware **fw_p)
+-static void vmx_set_dr6(struct kvm_vcpu *vcpu, unsigned long val)
+-{
+-	lockdep_assert_irqs_disabled();
+-	set_debugreg(vcpu->arch.dr6, 6);
+-}
+-
+ static void vmx_set_dr7(struct kvm_vcpu *vcpu, unsigned long val)
  {
--	int ret;
-+	struct usbatm_data *usbatm = instance->usbatm;
-+	struct device *dev = &usbatm->usb_intf->dev;
-+	char buf[16];
+ 	vmcs_writel(GUEST_DR7, val);
+@@ -7251,6 +7245,9 @@ static fastpath_t vmx_vcpu_run(struct kvm_vcpu *vcpu, u64 run_flags)
+ 		vmcs_writel(GUEST_RIP, vcpu->arch.regs[VCPU_REGS_RIP]);
+ 	vcpu->arch.regs_dirty = 0;
+ 
++	if (run_flags & KVM_RUN_LOAD_GUEST_DR6)
++		set_debugreg(vcpu->arch.dr6, 6);
 +
-+	sprintf(buf, "cxacru-%s.bin", phase);
-+	usb_dbg(usbatm, "cxacru_find_firmware: looking for %s\n", buf);
-+
-+	if (request_firmware(fw_p, buf, dev)) {
-+		usb_dbg(usbatm, "no stage %s firmware found\n", phase);
-+		return -ENOENT;
-+	}
-+
-+	usb_info(usbatm, "found firmware %s\n", buf);
-+
-+	return 0;
-+}
-+
-+static int cxacru_heavy_init(struct usbatm_data *usbatm_instance,
-+			     struct usb_interface *usb_intf)
-+{
-+	const struct firmware *fw, *bp;
-+	struct cxacru_data *instance = usbatm_instance->driver_data;
- 	struct usbatm_data *usbatm = instance->usbatm;
- 	struct usb_device *usb_dev = usbatm->usb_dev;
- 	__le16 signature[] = { usb_dev->descriptor.idVendor,
- 			       usb_dev->descriptor.idProduct };
- 	__le32 val;
-+	int ret;
-+
-+	ret = cxacru_find_firmware(instance, "fw", &fw);
-+	if (ret) {
-+		usb_warn(usbatm_instance, "firmware (cxacru-fw.bin) unavailable (system misconfigured?)\n");
-+		return ret;
-+	}
- 
--	usb_dbg(usbatm, "%s\n", __func__);
-+	if (instance->modem_type->boot_rom_patch) {
-+		ret = cxacru_find_firmware(instance, "bp", &bp);
-+		if (ret) {
-+			usb_warn(usbatm_instance, "boot ROM patch (cxacru-bp.bin) unavailable (system misconfigured?)\n");
-+			release_firmware(fw);
-+			return ret;
-+		}
-+	}
- 
- 	/* FirmwarePllFClkValue */
- 	val = cpu_to_le32(instance->modem_type->pll_f_clk);
- 	ret = cxacru_fw(usb_dev, FW_WRITE_MEM, 0x2, 0x0, PLLFCLK_ADDR, (u8 *) &val, 4);
- 	if (ret) {
- 		usb_err(usbatm, "FirmwarePllFClkValue failed: %d\n", ret);
--		return;
-+		goto done;
+ 	/*
+ 	 * Refresh vmcs.HOST_CR3 if necessary.  This must be done immediately
+ 	 * prior to VM-Enter, as the kernel may load a new ASID (PCID) any time
+@@ -8208,7 +8205,6 @@ static struct kvm_x86_ops vmx_x86_ops __initdata = {
+ 	.set_idt = vmx_set_idt,
+ 	.get_gdt = vmx_get_gdt,
+ 	.set_gdt = vmx_set_gdt,
+-	.set_dr6 = vmx_set_dr6,
+ 	.set_dr7 = vmx_set_dr7,
+ 	.sync_dirty_debug_regs = vmx_sync_dirty_debug_regs,
+ 	.cache_reg = vmx_cache_reg,
+diff --git a/arch/x86/kvm/x86.c b/arch/x86/kvm/x86.c
+index 83e5e823cbae..9d66830d594c 100644
+--- a/arch/x86/kvm/x86.c
++++ b/arch/x86/kvm/x86.c
+@@ -10833,7 +10833,7 @@ static int vcpu_enter_guest(struct kvm_vcpu *vcpu)
+ 		set_debugreg(vcpu->arch.eff_db[3], 3);
+ 		/* When KVM_DEBUGREG_WONT_EXIT, dr6 is accessible in guest. */
+ 		if (unlikely(vcpu->arch.switch_db_regs & KVM_DEBUGREG_WONT_EXIT))
+-			static_call(kvm_x86_set_dr6)(vcpu, vcpu->arch.dr6);
++			run_flags |= KVM_RUN_LOAD_GUEST_DR6;
+ 	} else if (unlikely(hw_breakpoint_active())) {
+ 		set_debugreg(0, 7);
  	}
- 
- 	/* FirmwarePllBClkValue */
-@@ -1006,7 +1041,7 @@ static void cxacru_upload_firmware(struc
- 	ret = cxacru_fw(usb_dev, FW_WRITE_MEM, 0x2, 0x0, PLLBCLK_ADDR, (u8 *) &val, 4);
- 	if (ret) {
- 		usb_err(usbatm, "FirmwarePllBClkValue failed: %d\n", ret);
--		return;
-+		goto done;
- 	}
- 
- 	/* Enable SDRAM */
-@@ -1014,7 +1049,7 @@ static void cxacru_upload_firmware(struc
- 	ret = cxacru_fw(usb_dev, FW_WRITE_MEM, 0x2, 0x0, SDRAMEN_ADDR, (u8 *) &val, 4);
- 	if (ret) {
- 		usb_err(usbatm, "Enable SDRAM failed: %d\n", ret);
--		return;
-+		goto done;
- 	}
- 
- 	/* Firmware */
-@@ -1022,7 +1057,7 @@ static void cxacru_upload_firmware(struc
- 	ret = cxacru_fw(usb_dev, FW_WRITE_MEM, 0x2, 0x0, FW_ADDR, fw->data, fw->size);
- 	if (ret) {
- 		usb_err(usbatm, "Firmware upload failed: %d\n", ret);
--		return;
-+		goto done;
- 	}
- 
- 	/* Boot ROM patch */
-@@ -1031,7 +1066,7 @@ static void cxacru_upload_firmware(struc
- 		ret = cxacru_fw(usb_dev, FW_WRITE_MEM, 0x2, 0x0, BR_ADDR, bp->data, bp->size);
- 		if (ret) {
- 			usb_err(usbatm, "Boot ROM patching failed: %d\n", ret);
--			return;
-+			goto done;
- 		}
- 	}
- 
-@@ -1039,7 +1074,7 @@ static void cxacru_upload_firmware(struc
- 	ret = cxacru_fw(usb_dev, FW_WRITE_MEM, 0x2, 0x0, SIG_ADDR, (u8 *) signature, 4);
- 	if (ret) {
- 		usb_err(usbatm, "Signature storing failed: %d\n", ret);
--		return;
-+		goto done;
- 	}
- 
- 	usb_info(usbatm, "starting device\n");
-@@ -1051,7 +1086,7 @@ static void cxacru_upload_firmware(struc
- 	}
- 	if (ret) {
- 		usb_err(usbatm, "Passing control to firmware failed: %d\n", ret);
--		return;
-+		goto done;
- 	}
- 
- 	/* Delay to allow firmware to start up. */
-@@ -1065,53 +1100,10 @@ static void cxacru_upload_firmware(struc
- 	ret = cxacru_cm(instance, CM_REQUEST_CARD_GET_STATUS, NULL, 0, NULL, 0);
- 	if (ret < 0) {
- 		usb_err(usbatm, "modem failed to initialize: %d\n", ret);
--		return;
--	}
--}
--
--static int cxacru_find_firmware(struct cxacru_data *instance,
--				char *phase, const struct firmware **fw_p)
--{
--	struct usbatm_data *usbatm = instance->usbatm;
--	struct device *dev = &usbatm->usb_intf->dev;
--	char buf[16];
--
--	sprintf(buf, "cxacru-%s.bin", phase);
--	usb_dbg(usbatm, "cxacru_find_firmware: looking for %s\n", buf);
--
--	if (request_firmware(fw_p, buf, dev)) {
--		usb_dbg(usbatm, "no stage %s firmware found\n", phase);
--		return -ENOENT;
-+		goto done;
- 	}
- 
--	usb_info(usbatm, "found firmware %s\n", buf);
--
--	return 0;
--}
--
--static int cxacru_heavy_init(struct usbatm_data *usbatm_instance,
--			     struct usb_interface *usb_intf)
--{
--	const struct firmware *fw, *bp;
--	struct cxacru_data *instance = usbatm_instance->driver_data;
--	int ret = cxacru_find_firmware(instance, "fw", &fw);
--
--	if (ret) {
--		usb_warn(usbatm_instance, "firmware (cxacru-fw.bin) unavailable (system misconfigured?)\n");
--		return ret;
--	}
--
--	if (instance->modem_type->boot_rom_patch) {
--		ret = cxacru_find_firmware(instance, "bp", &bp);
--		if (ret) {
--			usb_warn(usbatm_instance, "boot ROM patch (cxacru-bp.bin) unavailable (system misconfigured?)\n");
--			release_firmware(fw);
--			return ret;
--		}
--	}
--
--	cxacru_upload_firmware(instance, fw, bp);
--
-+done:
- 	if (instance->modem_type->boot_rom_patch)
- 		release_firmware(bp);
- 	release_firmware(fw);
+-- 
+2.50.1
+
 
 
 
