@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-175810-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-175284-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 99E9FB369AF
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 16:29:20 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 104EDB367A2
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 16:08:48 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 894041C43B58
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 14:22:11 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id BB6891C27D40
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 13:59:47 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D7F84350D48;
-	Tue, 26 Aug 2025 14:20:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5950C35082F;
+	Tue, 26 Aug 2025 13:57:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="shSIFZw0"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="pEW0wKWI"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 96C4210E0;
-	Tue, 26 Aug 2025 14:20:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 15BA934A315;
+	Tue, 26 Aug 2025 13:57:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756218028; cv=none; b=uadlUudRuyxfUg+sM5ITTP6KjytOe1MLXa3+sUOJ8R1NZdXiFshzRfnxSPS4WiYbtTzakPvqVsjVRtPUd3QKxeEbgTqHS7lXOyuyaJnaZe+4WfsFZ7QzjxlO92CgPSXmvLMcd619WlsnVPPoPHDSRNlDtY3R5EA7WI776NHG6WQ=
+	t=1756216630; cv=none; b=fqYPd2jQ8Y4yOa0UFuxiwYrmJdE2/sVGcz4ailA2QNdWwfBI+s9c5cOyFim82vDnSSSkjPcY/KO46rx2m+kivbpWynoja3vW909Go9e9zwoiJcTWLVuWovhiSXP9ufqCo0JitU9VwRljgQcp+uYXl8SKPh2eb1k5PnYhDNSHkgg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756218028; c=relaxed/simple;
-	bh=wt0tV6Y+R6A3TCvHJq8Fz+HQtE50zpTp5Xz8PBbQxPs=;
+	s=arc-20240116; t=1756216630; c=relaxed/simple;
+	bh=n3NrfI0BL3KZz2vNYIxLDwH0+fTdaKE0czVDD0UIIls=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=LqCMjn3/zrSevTsjDrOtRVfFM1cOyJ2qtJiNI7ztwXczQ0ZnK8HZfc45qP/f5JAu/Ev58vx1H1cUxex+hcLmPSahsX/3zj9S+Dk89XFNrn+oPU/E24qJQQsrskwnsoUGMjo69RmkOLAwZuuv6VsRh3vCJSO/vIUJyZXSyY2wHEw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=shSIFZw0; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 21C59C4CEF1;
-	Tue, 26 Aug 2025 14:20:27 +0000 (UTC)
+	 MIME-Version; b=UZfjQ8Xh04Sc3Ws7f6x0aPh/o9p25lVU56Yr0D0eLAf7BOwjctAzamTRTBdj5P8ue4uIppSHuuVSqfj0BzJzQyjbzagGQ2VQV2uWML/RijSjV2vWlo1aYZXAAgMzW7Ur1o0zhq0DZYBIgrTr3X4Ja3JGMWwYocbVKsLnLCSuAd4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=pEW0wKWI; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9E2A4C4CEF1;
+	Tue, 26 Aug 2025 13:57:09 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1756218028;
-	bh=wt0tV6Y+R6A3TCvHJq8Fz+HQtE50zpTp5Xz8PBbQxPs=;
+	s=korg; t=1756216630;
+	bh=n3NrfI0BL3KZz2vNYIxLDwH0+fTdaKE0czVDD0UIIls=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=shSIFZw0u94iXbc+psftz25P5JV1poHCTS5GrOSYzjGY1j796H7TbUi+4DguyttlE
-	 4lgkOAriEMwOnfd3zWxUQuLpk6W3xe78ljLs73PnS2RAUEcdkPsxysDhs6z4fvvLbO
-	 0hh0zCmElKT6DebX9PV3HTN4BeSi9fTRs3aIZQPs=
+	b=pEW0wKWIbdc2IRZFKP5UehD+6NJ7yXCBkRlfjNU/UQ6Hw810f+9GyjXoM9uv1Jkp/
+	 UbGWuaPprrby1eqw+58RRdJe69s22EEcc05VEPOKtSdXZERWjY9+73JbXdJ+cawuCu
+	 3JkWKe6lj7WMQnXi+0U5QR7UYOuyQGOOP9a2iyYY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
 	stable@kernel.org,
-	Ojaswin Mujoo <ojaswin@linux.ibm.com>,
-	"Darrick J. Wong" <djwong@kernel.org>,
+	Baokun Li <libaokun1@huawei.com>,
 	Theodore Tso <tytso@mit.edu>
-Subject: [PATCH 5.10 365/523] ext4: fix reserved gdt blocks handling in fsmap
+Subject: [PATCH 5.15 484/644] jbd2: prevent softlockup in jbd2_log_do_checkpoint()
 Date: Tue, 26 Aug 2025 13:09:35 +0200
-Message-ID: <20250826110933.473043858@linuxfoundation.org>
+Message-ID: <20250826110958.481051200@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250826110924.562212281@linuxfoundation.org>
-References: <20250826110924.562212281@linuxfoundation.org>
+In-Reply-To: <20250826110946.507083938@linuxfoundation.org>
+References: <20250826110946.507083938@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,58 +62,78 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Ojaswin Mujoo <ojaswin@linux.ibm.com>
+From: Baokun Li <libaokun1@huawei.com>
 
-commit 3ffbdd1f1165f1b2d6a94d1b1aabef57120deaf7 upstream.
+commit 9d98cf4632258720f18265a058e62fde120c0151 upstream.
 
-In some cases like small FSes with no meta_bg and where the resize
-doesn't need extra gdt blocks as it can fit in the current one,
-s_reserved_gdt_blocks is set as 0, which causes fsmap to emit a 0
-length entry, which is incorrect.
+Both jbd2_log_do_checkpoint() and jbd2_journal_shrink_checkpoint_list()
+periodically release j_list_lock after processing a batch of buffers to
+avoid long hold times on the j_list_lock. However, since both functions
+contend for j_list_lock, the combined time spent waiting and processing
+can be significant.
 
-  $ mkfs.ext4 -b 65536 -O bigalloc /dev/sda 5G
-  $ mount /dev/sda /mnt/scratch
-  $ xfs_io -c "fsmap -d" /mnt/scartch
+jbd2_journal_shrink_checkpoint_list() explicitly calls cond_resched() when
+need_resched() is true to avoid softlockups during prolonged operations.
+But jbd2_log_do_checkpoint() only exits its loop when need_resched() is
+true, relying on potentially sleeping functions like __flush_batch() or
+wait_on_buffer() to trigger rescheduling. If those functions do not sleep,
+the kernel may hit a softlockup.
 
-        0: 253:48 [0..127]: static fs metadata 128
-        1: 253:48 [128..255]: special 102:1 128
-        2: 253:48 [256..255]: special 102:2 0     <---- 0 len entry
-        3: 253:48 [256..383]: special 102:3 128
+watchdog: BUG: soft lockup - CPU#3 stuck for 156s! [kworker/u129:2:373]
+CPU: 3 PID: 373 Comm: kworker/u129:2 Kdump: loaded Not tainted 6.6.0+ #10
+Hardware name: Huawei TaiShan 2280 /BC11SPCD, BIOS 1.27 06/13/2017
+Workqueue: writeback wb_workfn (flush-7:2)
+pstate: 20000005 (nzCv daif -PAN -UAO -TCO -DIT -SSBS BTYPE=--)
+pc : native_queued_spin_lock_slowpath+0x358/0x418
+lr : jbd2_log_do_checkpoint+0x31c/0x438 [jbd2]
+Call trace:
+ native_queued_spin_lock_slowpath+0x358/0x418
+ jbd2_log_do_checkpoint+0x31c/0x438 [jbd2]
+ __jbd2_log_wait_for_space+0xfc/0x2f8 [jbd2]
+ add_transaction_credits+0x3bc/0x418 [jbd2]
+ start_this_handle+0xf8/0x560 [jbd2]
+ jbd2__journal_start+0x118/0x228 [jbd2]
+ __ext4_journal_start_sb+0x110/0x188 [ext4]
+ ext4_do_writepages+0x3dc/0x740 [ext4]
+ ext4_writepages+0xa4/0x190 [ext4]
+ do_writepages+0x94/0x228
+ __writeback_single_inode+0x48/0x318
+ writeback_sb_inodes+0x204/0x590
+ __writeback_inodes_wb+0x54/0xf8
+ wb_writeback+0x2cc/0x3d8
+ wb_do_writeback+0x2e0/0x2f8
+ wb_workfn+0x80/0x2a8
+ process_one_work+0x178/0x3e8
+ worker_thread+0x234/0x3b8
+ kthread+0xf0/0x108
+ ret_from_fork+0x10/0x20
 
-Fix this by adding a check for this case.
+So explicitly call cond_resched() in jbd2_log_do_checkpoint() to avoid
+softlockup.
 
 Cc: stable@kernel.org
-Fixes: 0c9ec4beecac ("ext4: support GETFSMAP ioctls")
-Signed-off-by: Ojaswin Mujoo <ojaswin@linux.ibm.com>
-Reviewed-by: Darrick J. Wong <djwong@kernel.org>
-Link: https://patch.msgid.link/08781b796453a5770112aa96ad14c864fbf31935.1754377641.git.ojaswin@linux.ibm.com
+Signed-off-by: Baokun Li <libaokun1@huawei.com>
+Link: https://patch.msgid.link/20250812063752.912130-1-libaokun@huaweicloud.com
 Signed-off-by: Theodore Ts'o <tytso@mit.edu>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- fs/ext4/fsmap.c |    8 ++++++++
- 1 file changed, 8 insertions(+)
+ fs/jbd2/checkpoint.c |    1 +
+ 1 file changed, 1 insertion(+)
 
---- a/fs/ext4/fsmap.c
-+++ b/fs/ext4/fsmap.c
-@@ -393,6 +393,14 @@ static unsigned int ext4_getfsmap_find_s
- 	/* Reserved GDT blocks */
- 	if (!ext4_has_feature_meta_bg(sb) || metagroup < first_meta_bg) {
- 		len = le16_to_cpu(sbi->s_es->s_reserved_gdt_blocks);
-+
-+		/*
-+		 * mkfs.ext4 can set s_reserved_gdt_blocks as 0 in some cases,
-+		 * check for that.
-+		 */
-+		if (!len)
-+			return 0;
-+
- 		error = ext4_getfsmap_fill(meta_list, fsb, len,
- 					   EXT4_FMR_OWN_RESV_GDT);
- 		if (error)
+--- a/fs/jbd2/checkpoint.c
++++ b/fs/jbd2/checkpoint.c
+@@ -297,6 +297,7 @@ restart:
+ 		retry:
+ 			if (batch_count)
+ 				__flush_batch(journal, &batch_count);
++			cond_resched();
+ 			spin_lock(&journal->j_list_lock);
+ 			goto restart;
+ 	}
 
 
 
