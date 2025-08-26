@@ -1,61 +1,55 @@
-Return-Path: <stable+bounces-172899-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-172900-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id A55C9B35068
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 02:42:03 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id AD0A1B3506D
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 02:44:02 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 9977B5E742B
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 00:41:46 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 8363F167701
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 00:44:02 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id F2FF6265630;
-	Tue, 26 Aug 2025 00:41:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7368625A2A1;
+	Tue, 26 Aug 2025 00:43:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="r30lphcZ"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="tezzYRy/"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A597D260582;
-	Tue, 26 Aug 2025 00:41:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 305191F0E50;
+	Tue, 26 Aug 2025 00:43:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756168894; cv=none; b=hO8DrvaY5NmE54vk6H3doxRvz2iifU3PX5+JEPlS9sOLB/Ydwi6R7TiKQkAgRJTkBUndo4xKKa3UbjYI1rxeCaevjTMXsLBhhL3sWwc47E1t+vyBxzBZe73L3VOlYzT4WHTTOUc8Cnfnc+rmUW9KMmVRwIxUVo/6+pvQRooGNv0=
+	t=1756169038; cv=none; b=iJREjNaSkoVB2y6Uf30DVz3TADdI5hThKngmESLxtEEXNyQ903jP4EdkZNoUWRbfZ1USLTIMNgJBXHLYRtCMraPuYCfOYPMfrKPBEiOXnpXhraDLJlFqRuiMgy2ZT/wiYZyH3MlQA0hU6F07KZhs4fTaKBfzgBoJfRKbdC7qtrw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756168894; c=relaxed/simple;
-	bh=PHvg8cMhUd35TeLpMoQp4ZbPSJkQAR394vpGl4+tNGQ=;
+	s=arc-20240116; t=1756169038; c=relaxed/simple;
+	bh=kgEm7y9mI2RqhU0ZW11hilEZhK6+VRmDl9FN6hfk11g=;
 	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=pxlPwPMEEMwbtWYF7Qd3N03c2Aee7TtpzNPV7mdFvW1WqQeI1EVRsY37J+4tlF+y92XqXHHEWxof+p8Hil1Zix4NO0z1KJfT7Nt89a799jgM2azV04QLfMk6L6IDKoZtOsiwD01KTU+ZSEpZDP1a6GMa7gNV4oTCq2qUGdPcTbQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=r30lphcZ; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D8882C4CEED;
-	Tue, 26 Aug 2025 00:41:33 +0000 (UTC)
+	 MIME-Version:Content-Type; b=YVf7IaolidvnEj563hTe2x6dQKBt03T8xdyFUcmo0c62JIcSxYAkibCgagaoVs5w2pYoQlrBvX80qITo+VWGDHVN07mog14uUjMaNV5MkfEt7+lzt0b+7gYP1m/SIHZo958t5B5o5oJpUFx0H0KWhrhMV/AikNmab8GmhgrB55Q=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=tezzYRy/; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 79FE2C4CEED;
+	Tue, 26 Aug 2025 00:43:57 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1756168894;
-	bh=PHvg8cMhUd35TeLpMoQp4ZbPSJkQAR394vpGl4+tNGQ=;
+	s=k20201202; t=1756169037;
+	bh=kgEm7y9mI2RqhU0ZW11hilEZhK6+VRmDl9FN6hfk11g=;
 	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-	b=r30lphcZ5VT6rYM1JYCLJTbZUxm+Y3UhppH5XpASIdngmfRTHq4ia5ely1Wv9ylHl
-	 GLVetL522ckX0hoM1eQC2wEzthtQg9ulGkbIOH6aODi3SDwR4wF2/TEPN8rBxlS4zv
-	 WAoCZrkNN9TnPCvzlk/bLIqIBVRMT+/WMFHmuJLFOI757HJA2YP0nY6Y5+9aohcpd2
-	 P7AyX116qX0rM44AONYJuS+F1gvgPxYsdwSVfGusWvrF4+vlqwBnsJOqf4KH+zRAD+
-	 Pg8rxIROTGOY1JRB5mfg3L4Wnbd8HAjV5efwhE27+b9KqTKzM426qbB/vN3+apDaA7
-	 Cf5tOsIrM2xiw==
-Date: Mon, 25 Aug 2025 17:41:33 -0700
+	b=tezzYRy/+aSLU2KprUvNXWxTWRKiVjSRh26jwAi4Ebt8ehIlaSGA8WxOFjX89Ywc4
+	 B5hOrBpZ6FQLgTL5CS6+5PkUPBWrRQYNTw51uFR20k6FG79JALOYvtS1hqP4HO+3zU
+	 HxgeAXE2oiKDjlZzXHyKnbrTeIC+Qyy3jamywquIJrT3tRAcfhSF68HM4+IY6k9sws
+	 q3eP4zASZt+SCKW5fftt10BkTjkXcvFTIqTQaQ566DIKOl8TuTsoORd3Y/ODfNHw6b
+	 NQMcFL0bOExa39duNOIX3QIT3YxGfY3dwJWBoc20+wr3QynT35Y7AGQSLhvndYeu0j
+	 h4gc2kMOcvaHg==
+Date: Mon, 25 Aug 2025 17:43:56 -0700
 From: Jakub Kicinski <kuba@kernel.org>
-To: Saurabh Sengar <ssengar@linux.microsoft.com>
-Cc: kys@microsoft.com, haiyangz@microsoft.com, wei.liu@kernel.org,
- decui@microsoft.com, andrew+netdev@lunn.ch, davem@davemloft.net,
- edumazet@google.com, pabeni@redhat.com, shradhagupta@linux.microsoft.com,
- ernis@linux.microsoft.com, dipayanroy@linux.microsoft.com,
- shirazsaleem@microsoft.com, linux-hyperv@vger.kernel.org,
- netdev@vger.kernel.org, linux-kernel@vger.kernel.org,
- ssengar@microsoft.com, stable@vger.kernel.org
-Subject: Re: [PATCH net] net: mana: Remove redundant
- netdev_lock_ops_to_full() calls
-Message-ID: <20250825174133.30e58c60@kernel.org>
-In-Reply-To: <1756119794-20110-1-git-send-email-ssengar@linux.microsoft.com>
-References: <1756119794-20110-1-git-send-email-ssengar@linux.microsoft.com>
+To: Yizhou Zhao <zhaoyz24@mails.tsinghua.edu.cn>
+Cc: netdev@vger.kernel.org, stable@vger.kernel.org
+Subject: Re: [PATCH] net/dccp: validate Reset/Close/CloseReq in
+ DCCP_REQUESTING
+Message-ID: <20250825174356.54d8ff11@kernel.org>
+In-Reply-To: <20250824083653.1227318-1-zhaoyz24@mails.tsinghua.edu.cn>
+References: <20250824083653.1227318-1-zhaoyz24@mails.tsinghua.edu.cn>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -65,17 +59,14 @@ MIME-Version: 1.0
 Content-Type: text/plain; charset=US-ASCII
 Content-Transfer-Encoding: 7bit
 
-On Mon, 25 Aug 2025 04:03:14 -0700 Saurabh Sengar wrote:
-> NET_SHAPER is always selected for MANA driver. When NET_SHAPER is enabled,
-> netdev_lock_ops_to_full() reduces effectively to only an assert for lock,
-> which is always held in the path when NET_SHAPER is enabled.
-> 
-> Remove the redundant netdev_lock_ops_to_full() call.
-> 
-> Fixes: d5c8f0e4e0cb ("net: mana: Fix potential deadlocks in mana napi ops")
-> Cc: stable@vger.kernel.org
+On Sun, 24 Aug 2025 16:36:53 +0800 Yizhou Zhao wrote:
+> This fix should apply to Linux 5.x and 6.x, including stable versions.
+> Note that DCCP was removed in Linux 6.16, so this patch is only relevant
+> for older versions. We tested it on Ubuntu 24.04 LTS (Linux 6.8) and
+> it worked as expected.
 
-If the call is a nop why is this a stable-worthy fix?
+You need to make it clearer that this submissions is for stable *only*.
+As you say this code doesn't exist upstream any more.
 -- 
-pw-bot: cr
+pw-bot: nap
 
