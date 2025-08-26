@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-174877-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-173747-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id BD73DB365AA
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 15:49:46 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 48108B35F7A
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 14:49:37 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 328218A37D2
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 13:39:12 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 5E2851BA3BF0
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 12:49:54 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D6D34393DF2;
-	Tue, 26 Aug 2025 13:39:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C53747DA93;
+	Tue, 26 Aug 2025 12:49:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="J8fOxl1y"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="EtK3z4uB"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 94CAE1F4CA9;
-	Tue, 26 Aug 2025 13:39:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7FE2F450FE;
+	Tue, 26 Aug 2025 12:49:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756215551; cv=none; b=KCbBAEDAQVRBRgpvwsOREgoDavs6KK5BzJUVX4Uga0k4OugHpErJUEB4vy8kHpzxfglfT6WH+hXxZT4sFFSnem/wHJMEqhlJjQAAKTMNh5zy0HeuaTS3Kn8dPCrcSHkkNxpHnrLzZzcYHAfl9he+HkKsl83AxMCc2jSR5WgW5Mw=
+	t=1756212567; cv=none; b=gbsh1q0vfu+MRvKZQyhIrkQptEDeDa38cJlnFqejiN4VlYrvESKinYsuQSrSGibB8+t5xkL2+a2F0b3chMlgFQDOWM8vXygqBIAFMYEQ281qL6qAOy5nnIBPsE9dCVoajUn/ZJfZRJMn23rzd8dUNeIH3CGA6rYO/dI29Aulwgs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756215551; c=relaxed/simple;
-	bh=Paxnv7urBg5z0omzGOFdWitgaCWH8KP3AZJhZKZz60U=;
+	s=arc-20240116; t=1756212567; c=relaxed/simple;
+	bh=sMjfXijs5OxdwE7AMIzgTN9KQqO6fWQmFFsw/XwxzC4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=pOUKvD4gEsH89ycXMA1jrBSF3zik8w6X6Fp+wy4CHd/CRa5v8h8Cq783r7VOYsgW1avXrNVNEgsFdRn9yA5eq+VAMr1WDvAqD9/AOino5KZYA7EWADr7EXE8J7ifMjbWEO/BS03vHpNl8DJ+bYRSQAxB8iLM6tLsU/ORbeXL7kk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=J8fOxl1y; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D8BE3C4CEF1;
-	Tue, 26 Aug 2025 13:39:10 +0000 (UTC)
+	 MIME-Version; b=mpSu2jKWJM/lCNvWXufxg/bX9C0nMZii3Hr95wLbwMQkMVwXEGZ4zcUyUlZeYsNnra64c4WYwseaZ/+fsmMspLnxUw6bnm0IVKBQWfzq2buMGKqS850zrLq0zDYk/V5QAYn2kMcK3Y3uVk+0C8omEDpZmsMX21pfBZHFSktanIw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=EtK3z4uB; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 04C02C4CEF1;
+	Tue, 26 Aug 2025 12:49:26 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1756215551;
-	bh=Paxnv7urBg5z0omzGOFdWitgaCWH8KP3AZJhZKZz60U=;
+	s=korg; t=1756212567;
+	bh=sMjfXijs5OxdwE7AMIzgTN9KQqO6fWQmFFsw/XwxzC4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=J8fOxl1y7j4EmUD6IpPoSl6L07MjFWXdLp4mzZxCuSg1J3oQN1VR6q2Jwxy1oWV0Z
-	 cULEv1IyLjPBYED3g7bqeqoH12dyLQ5DvXRJ7c8tGHmA0jYeifQ1pYgc/p5fYn4u1x
-	 0rbjLGs5lfS9Wivo/Y8B/ufduUBpysoXKqGxJyLU=
+	b=EtK3z4uBBMNvFvNZyVaNYGszDZfCiOncVhKFe7kTgKj/GpwiRJPAg0jB8L6yKPhiS
+	 YfTdAKGMPLbqd+4DFiMCc+Z004CgCJ9JR4IsuAaUt7BMVrCMsRgF5IJEvU4gajcl3R
+	 1XfJn6qF74VQh6YuTE7y+/SSsuZq6uwjtSNSwb44=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Alessandro Carminati <acarmina@redhat.com>,
-	Mark Brown <broonie@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 077/644] regulator: core: fix NULL dereference on unbind due to stale coupling data
+	Yangbo Lu <yangbo.lu@nxp.com>,
+	Johan Hovold <johan@kernel.org>,
+	Simon Horman <horms@kernel.org>,
+	Jakub Kicinski <kuba@kernel.org>
+Subject: [PATCH 6.6 019/587] net: dpaa: fix device leak when querying time stamp info
 Date: Tue, 26 Aug 2025 13:02:48 +0200
-Message-ID: <20250826110948.405971033@linuxfoundation.org>
+Message-ID: <20250826110953.444236466@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250826110946.507083938@linuxfoundation.org>
-References: <20250826110946.507083938@linuxfoundation.org>
+In-Reply-To: <20250826110952.942403671@linuxfoundation.org>
+References: <20250826110952.942403671@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,48 +63,46 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Alessandro Carminati <acarmina@redhat.com>
+From: Johan Hovold <johan@kernel.org>
 
-[ Upstream commit ca46946a482238b0cdea459fb82fc837fb36260e ]
+commit 3fa840230f534385b34a4f39c8dd313fbe723f05 upstream.
 
-Failing to reset coupling_desc.n_coupled after freeing coupled_rdevs can
-lead to NULL pointer dereference when regulators are accessed post-unbind.
+Make sure to drop the reference to the ptp device taken by
+of_find_device_by_node() when querying the time stamping capabilities.
 
-This can happen during runtime PM or other regulator operations that rely
-on coupling metadata.
+Note that holding a reference to the ptp device does not prevent its
+driver data from going away.
 
-For example, on ridesx4, unbinding the 'reg-dummy' platform device triggers
-a panic in regulator_lock_recursive() due to stale coupling state.
-
-Ensure n_coupled is set to 0 to prevent access to invalid pointers.
-
-Signed-off-by: Alessandro Carminati <acarmina@redhat.com>
-Link: https://patch.msgid.link/20250626083809.314842-1-acarmina@redhat.com
-Signed-off-by: Mark Brown <broonie@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Fixes: 17ae0b0ee9db ("dpaa_eth: add the get_ts_info interface for ethtool")
+Cc: stable@vger.kernel.org	# 4.19
+Cc: Yangbo Lu <yangbo.lu@nxp.com>
+Signed-off-by: Johan Hovold <johan@kernel.org>
+Reviewed-by: Simon Horman <horms@kernel.org>
+Link: https://patch.msgid.link/20250725171213.880-2-johan@kernel.org
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/regulator/core.c | 1 +
- 1 file changed, 1 insertion(+)
+ drivers/net/ethernet/freescale/dpaa/dpaa_ethtool.c |    4 +++-
+ 1 file changed, 3 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/regulator/core.c b/drivers/regulator/core.c
-index 18f13b9601b5b..ed5d58baa1f75 100644
---- a/drivers/regulator/core.c
-+++ b/drivers/regulator/core.c
-@@ -5359,6 +5359,7 @@ static void regulator_remove_coupling(struct regulator_dev *rdev)
- 				 ERR_PTR(err));
+--- a/drivers/net/ethernet/freescale/dpaa/dpaa_ethtool.c
++++ b/drivers/net/ethernet/freescale/dpaa/dpaa_ethtool.c
+@@ -415,8 +415,10 @@ static int dpaa_get_ts_info(struct net_d
+ 		of_node_put(ptp_node);
  	}
  
-+	rdev->coupling_desc.n_coupled = 0;
- 	kfree(rdev->coupling_desc.coupled_rdevs);
- 	rdev->coupling_desc.coupled_rdevs = NULL;
- }
--- 
-2.39.5
-
+-	if (ptp_dev)
++	if (ptp_dev) {
+ 		ptp = platform_get_drvdata(ptp_dev);
++		put_device(&ptp_dev->dev);
++	}
+ 
+ 	if (ptp)
+ 		info->phc_index = ptp->phc_index;
 
 
 
