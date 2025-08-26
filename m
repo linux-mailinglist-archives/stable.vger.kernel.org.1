@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-175875-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-173300-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7135FB369FA
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 16:33:04 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 32535B35C6E
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 13:34:11 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 858BB1C458F6
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 14:25:46 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 294057C17D0
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 11:33:52 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 226A7352072;
-	Tue, 26 Aug 2025 14:23:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E202C3469FC;
+	Tue, 26 Aug 2025 11:31:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="z1o3rVhA"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="StK2lK00"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CBA132F83BA;
-	Tue, 26 Aug 2025 14:23:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9D03A34A309;
+	Tue, 26 Aug 2025 11:31:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756218198; cv=none; b=mvJ6wzCNOMalxjrSADEtXsE/Rju0x/IqzoymLyqzbZ+9cqC8JFKYnyrw4BVAZ3plWC5+zRKYXeIMSH0Hjh5SYHiqX9Os926J69WEfiKMCLMIQcgxFtRNmHNgOggDRoeg813E8dcgu7+h+P6z2EnAoCsj4fpEcHUVL9HYep9lw9U=
+	t=1756207890; cv=none; b=R7IfBzENNXp5gq+hyYlZtEqsRdGQBKgc26wPMcoeUSEfHxbB9uB8wjWGoKWOD72CDp6Jz2I4FjHulTpKn6rhbxga2lkZ2SsOXGFMw2H9I+K///iAMTwBqIh92meDxVevFqBBuvsJkIMOjQGVCm9X+8meMdNyPsJNemRu8SkVVJA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756218198; c=relaxed/simple;
-	bh=0jdoZmxgPsPaJiVcqkbLb5Qo1q1KqScL5mI8d0CSQCU=;
+	s=arc-20240116; t=1756207890; c=relaxed/simple;
+	bh=cuICioA197GvLGauqKEUD69IdZeFhCva+HKDDyu0gVc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=t7EywpLFgW3ltn72LNbKkrlKaZcKTU24yGldi5aJ7lKqFkYgw2T2wBDOQu10kyhpoTD2W5n8jKW9oG/MKAC3h6QlT8Rdw94Tsub17TeJr/w6Ms3YwVxxBfWRMwo9sFiPhVTQrpD093r8dChSaCs0NtoiHO3J1zeOiTea49ZojbY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=z1o3rVhA; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5B0A8C4CEF1;
-	Tue, 26 Aug 2025 14:23:18 +0000 (UTC)
+	 MIME-Version:Content-Type; b=R9TV+GjzrY4vWIxo/r7u0EAnsDgcXnML5hAKKINgdLG8OEG/JNx5Y+joMEzalQmwF1U6AivNeyFwl9ZU8x7TXaSyWTqrlyrSoRFzkw76mB/gen9HUBwghX8R+X8mhnS+8DFPd6+LbTZeo/Qy6+bCIG/x7giG4WWBEZzuKUFcqlA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=StK2lK00; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D3B7CC4CEF1;
+	Tue, 26 Aug 2025 11:31:29 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1756218198;
-	bh=0jdoZmxgPsPaJiVcqkbLb5Qo1q1KqScL5mI8d0CSQCU=;
+	s=korg; t=1756207890;
+	bh=cuICioA197GvLGauqKEUD69IdZeFhCva+HKDDyu0gVc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=z1o3rVhADLIeBrwQIPOoko9+WVdKiOLMVurRj8yNpNXPE3YM0rMMHb0pl+nyUCQB5
-	 2j3rDG4D6v7dTB9Yq5d4EXa84MXCM8oHXWZytG/qsX5BmQnnri63rAQgdSWjGtYyML
-	 KoJsAprbNG8CxoofBNxkXn4kRUhzTGYk0/G+0BnM=
+	b=StK2lK00qzt3QmpO83xJyf2xJRdkz+OEqEQdPOQM8CS70H9FdH8jEcqAf4UU0TUAB
+	 mwgVAjKzdCkr/P3wef4qsGIzl85eOj1Q4AZfWOVyN03j2WmE24DC9QjLo3akfp5ESQ
+	 kWm7RKEmyaOvwDybTjS1LSbB3EP6s+ChQFFXj0rg=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	John Ernberg <john.ernberg@actia.se>,
-	Jakub Kicinski <kuba@kernel.org>,
+	Suma Hegde <suma.hegde@amd.com>,
+	=?UTF-8?q?Ilpo=20J=C3=A4rvinen?= <ilpo.jarvinen@linux.intel.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 430/523] net: usbnet: Avoid potential RCU stall on LINK_CHANGE event
-Date: Tue, 26 Aug 2025 13:10:40 +0200
-Message-ID: <20250826110935.062155899@linuxfoundation.org>
+Subject: [PATCH 6.16 357/457] platform/x86/amd/hsmp: Ensure sock->metric_tbl_addr is non-NULL
+Date: Tue, 26 Aug 2025 13:10:41 +0200
+Message-ID: <20250826110946.138579409@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250826110924.562212281@linuxfoundation.org>
-References: <20250826110924.562212281@linuxfoundation.org>
+In-Reply-To: <20250826110937.289866482@linuxfoundation.org>
+References: <20250826110937.289866482@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,129 +60,49 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+6.16-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: John Ernberg <john.ernberg@actia.se>
+From: Suma Hegde <suma.hegde@amd.com>
 
-[ Upstream commit 0d9cfc9b8cb17dbc29a98792d36ec39a1cf1395f ]
+[ Upstream commit 2c78fb287e1f430b929f2e49786518350d15605c ]
 
-The Gemalto Cinterion PLS83-W modem (cdc_ether) is emitting confusing link
-up and down events when the WWAN interface is activated on the modem-side.
+If metric table address is not allocated, accessing metrics_bin will
+result in a NULL pointer dereference, so add a check.
 
-Interrupt URBs will in consecutive polls grab:
-* Link Connected
-* Link Disconnected
-* Link Connected
-
-Where the last Connected is then a stable link state.
-
-When the system is under load this may cause the unlink_urbs() work in
-__handle_link_change() to not complete before the next usbnet_link_change()
-call turns the carrier on again, allowing rx_submit() to queue new SKBs.
-
-In that event the URB queue is filled faster than it can drain, ending up
-in a RCU stall:
-
-    rcu: INFO: rcu_sched detected expedited stalls on CPUs/tasks: { 0-.... } 33108 jiffies s: 201 root: 0x1/.
-    rcu: blocking rcu_node structures (internal RCU debug):
-    Sending NMI from CPU 1 to CPUs 0:
-    NMI backtrace for cpu 0
-
-    Call trace:
-     arch_local_irq_enable+0x4/0x8
-     local_bh_enable+0x18/0x20
-     __netdev_alloc_skb+0x18c/0x1cc
-     rx_submit+0x68/0x1f8 [usbnet]
-     rx_alloc_submit+0x4c/0x74 [usbnet]
-     usbnet_bh+0x1d8/0x218 [usbnet]
-     usbnet_bh_tasklet+0x10/0x18 [usbnet]
-     tasklet_action_common+0xa8/0x110
-     tasklet_action+0x2c/0x34
-     handle_softirqs+0x2cc/0x3a0
-     __do_softirq+0x10/0x18
-     ____do_softirq+0xc/0x14
-     call_on_irq_stack+0x24/0x34
-     do_softirq_own_stack+0x18/0x20
-     __irq_exit_rcu+0xa8/0xb8
-     irq_exit_rcu+0xc/0x30
-     el1_interrupt+0x34/0x48
-     el1h_64_irq_handler+0x14/0x1c
-     el1h_64_irq+0x68/0x6c
-     _raw_spin_unlock_irqrestore+0x38/0x48
-     xhci_urb_dequeue+0x1ac/0x45c [xhci_hcd]
-     unlink1+0xd4/0xdc [usbcore]
-     usb_hcd_unlink_urb+0x70/0xb0 [usbcore]
-     usb_unlink_urb+0x24/0x44 [usbcore]
-     unlink_urbs.constprop.0.isra.0+0x64/0xa8 [usbnet]
-     __handle_link_change+0x34/0x70 [usbnet]
-     usbnet_deferred_kevent+0x1c0/0x320 [usbnet]
-     process_scheduled_works+0x2d0/0x48c
-     worker_thread+0x150/0x1dc
-     kthread+0xd8/0xe8
-     ret_from_fork+0x10/0x20
-
-Get around the problem by delaying the carrier on to the scheduled work.
-
-This needs a new flag to keep track of the necessary action.
-
-The carrier ok check cannot be removed as it remains required for the
-LINK_RESET event flow.
-
-Fixes: 4b49f58fff00 ("usbnet: handle link change")
-Cc: stable@vger.kernel.org
-Signed-off-by: John Ernberg <john.ernberg@actia.se>
-Link: https://patch.msgid.link/20250723102526.1305339-1-john.ernberg@actia.se
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-[ adjust context in header ]
+Fixes: 5150542b8ec5 ("platform/x86/amd/hsmp: add support for metrics tbl")
+Signed-off-by: Suma Hegde <suma.hegde@amd.com>
+Link: https://lore.kernel.org/r/20250807100637.952729-1-suma.hegde@amd.com
+Reviewed-by: Ilpo Järvinen <ilpo.jarvinen@linux.intel.com>
+Signed-off-by: Ilpo Järvinen <ilpo.jarvinen@linux.intel.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/net/usb/usbnet.c   |   11 ++++++++---
- include/linux/usb/usbnet.h |    1 +
- 2 files changed, 9 insertions(+), 3 deletions(-)
+ drivers/platform/x86/amd/hsmp/hsmp.c | 5 +++++
+ 1 file changed, 5 insertions(+)
 
---- a/drivers/net/usb/usbnet.c
-+++ b/drivers/net/usb/usbnet.c
-@@ -1080,6 +1080,9 @@ static void __handle_link_change(struct
- 		 * tx queue is stopped by netcore after link becomes off
- 		 */
- 	} else {
-+		if (test_and_clear_bit(EVENT_LINK_CARRIER_ON, &dev->flags))
-+			netif_carrier_on(dev->net);
-+
- 		/* submitting URBs for reading packets */
- 		tasklet_schedule(&dev->bh);
- 	}
-@@ -1960,10 +1963,12 @@ EXPORT_SYMBOL(usbnet_manage_power);
- void usbnet_link_change(struct usbnet *dev, bool link, bool need_reset)
- {
- 	/* update link after link is reseted */
--	if (link && !need_reset)
--		netif_carrier_on(dev->net);
--	else
-+	if (link && !need_reset) {
-+		set_bit(EVENT_LINK_CARRIER_ON, &dev->flags);
-+	} else {
-+		clear_bit(EVENT_LINK_CARRIER_ON, &dev->flags);
- 		netif_carrier_off(dev->net);
-+	}
+diff --git a/drivers/platform/x86/amd/hsmp/hsmp.c b/drivers/platform/x86/amd/hsmp/hsmp.c
+index 885e2f8136fd..19f82c1d3090 100644
+--- a/drivers/platform/x86/amd/hsmp/hsmp.c
++++ b/drivers/platform/x86/amd/hsmp/hsmp.c
+@@ -356,6 +356,11 @@ ssize_t hsmp_metric_tbl_read(struct hsmp_socket *sock, char *buf, size_t size)
+ 	if (!sock || !buf)
+ 		return -EINVAL;
  
- 	if (need_reset && link)
- 		usbnet_defer_kevent(dev, EVENT_LINK_RESET);
---- a/include/linux/usb/usbnet.h
-+++ b/include/linux/usb/usbnet.h
-@@ -83,6 +83,7 @@ struct usbnet {
- #		define EVENT_LINK_CHANGE	11
- #		define EVENT_SET_RX_MODE	12
- #		define EVENT_NO_IP_ALIGN	13
-+#		define EVENT_LINK_CARRIER_ON	14
- 	u32			rx_speed;	/* in bps - NOT Mbps */
- 	u32			tx_speed;	/* in bps - NOT Mbps */
- };
++	if (!sock->metric_tbl_addr) {
++		dev_err(sock->dev, "Metrics table address not available\n");
++		return -ENOMEM;
++	}
++
+ 	/* Do not support lseek(), also don't allow more than the size of metric table */
+ 	if (size != sizeof(struct hsmp_metric_table)) {
+ 		dev_err(sock->dev, "Wrong buffer size\n");
+-- 
+2.50.1
+
 
 
 
