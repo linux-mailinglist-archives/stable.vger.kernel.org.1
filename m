@@ -1,56 +1,55 @@
-Return-Path: <stable+bounces-175107-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-175632-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id A7420B366E3
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 16:01:30 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6306EB369CC
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 16:30:56 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 0035E561025
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 13:50:48 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id DADDD8E27F7
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 14:15:04 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 69A082F0671;
-	Tue, 26 Aug 2025 13:49:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E19DE34DCD2;
+	Tue, 26 Aug 2025 14:12:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="bmg+jDfE"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ZXI6hApR"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 22F9C35082F;
-	Tue, 26 Aug 2025 13:49:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9B0311662E7;
+	Tue, 26 Aug 2025 14:12:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756216158; cv=none; b=Gu6G5dKCKHByLtZG5AueSmke/EVcPQ3om01Ptzlbr2R77OmIeDkMIn0pEQ9SfClw8Un2txMEq0azlLIGu4k0snwiPNhOxpKkqXbRZJLzuEc9/KrP2+HR489Hlb/whNbNQWvn2r5yEu0t8BXzqUonesXi7oTAh+Xxsw89TYT2n5M=
+	t=1756217559; cv=none; b=XMs5W4/KQcgcef/iT6OLUYY7XX0AUAxcpXpHJWO+I8HP9aThopqBcauSgzPKh9R2Qa5dyWwSh6wbHGFNr3li9mtHMFsxlPbuYOhgY9L/mn6szlpXeAMFfveFJtOloeN4MsRBlQGE9OPkycPYr03liGmiw1vY4Wctwqu8awa1wNo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756216158; c=relaxed/simple;
-	bh=THitS0EP9KuTfept+3Ec+fSJFNNohPvWbjHxFNPRWFw=;
+	s=arc-20240116; t=1756217559; c=relaxed/simple;
+	bh=lSviLzpGWb+hZpl+J+DUaN14qrv4TpOib5D+rDGMR8E=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=t1V8XOYbPAwW1xBrayDDhmlryHfoNIrc053NpFt2d/jbaf9orzVKzgNiacIgLWRFqrPvxeXTqxnJjsSTN4S8bhGeHMvkXqwzQMLrpcq/X3leomcl4ogjfPb5kI/RwsI3VIWz/u2KtziLfVv7nSny/PkQ06xiTdjQSBiAwg21kqU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=bmg+jDfE; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A2CDCC113CF;
-	Tue, 26 Aug 2025 13:49:17 +0000 (UTC)
+	 MIME-Version; b=px3v5HsAZgQYGOnUsL7zoilSXYfVp0sEPZ4crEi6qvHD9C1KO0MWHNdYIsKYQd6sWBsNWge7Ph/Xou7hwpmHOQN4bkmyYpDdddV+rgRcQNw6kEnS9MCaI1GIsijWoojEUoA/TIguwpJ1xeAg2BgnmhPWX/nAC9R0sfRHSj8SNeY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ZXI6hApR; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id DBA7DC4CEF1;
+	Tue, 26 Aug 2025 14:12:38 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1756216158;
-	bh=THitS0EP9KuTfept+3Ec+fSJFNNohPvWbjHxFNPRWFw=;
+	s=korg; t=1756217559;
+	bh=lSviLzpGWb+hZpl+J+DUaN14qrv4TpOib5D+rDGMR8E=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=bmg+jDfEsRJ71VR0S89Sbdh5T6oCv8wsO6Sxsaq8IVLzedSiBL9S/G/K8UqEkMFDB
-	 vvaEY4rLxlcms5lhMp/Qek3rErGON5HJjojOOTJXLf0aLEMY14ZLZH3pQzmO7uBc54
-	 cL/9apCtxYgHCxUtyZYO/uYkyt8gGWJFwKI11Xl8=
+	b=ZXI6hApR5j9At/M/rdNR8WSCtgXMlKCCV+Fr/xwmMoBr190jJC3VZc5HPS8egehQv
+	 bPdrSJBk1K7x/9S2VE/t2zGjcJt6Uz867YMzOhDOmOZYVV0Y/UzHXrhRa9D8HTIBJA
+	 H3gIiXMy1IsL4t8vwhQhsFzqiRXWnkL0OOyTUHbY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Kuninori Morimoto <kuninori.morimoto.gx@renesas.com>,
-	Mark Brown <broonie@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 307/644] ASoC: soc-dapm: set bias_level if snd_soc_dapm_set_bias_level() was successed
+	Slark Xiao <slark_xiao@163.com>,
+	Johan Hovold <johan@kernel.org>
+Subject: [PATCH 5.10 188/523] USB: serial: option: add Foxconn T99W709
 Date: Tue, 26 Aug 2025 13:06:38 +0200
-Message-ID: <20250826110953.992843699@linuxfoundation.org>
+Message-ID: <20250826110929.089425442@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250826110946.507083938@linuxfoundation.org>
-References: <20250826110946.507083938@linuxfoundation.org>
+In-Reply-To: <20250826110924.562212281@linuxfoundation.org>
+References: <20250826110924.562212281@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,77 +61,56 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Kuninori Morimoto <kuninori.morimoto.gx@renesas.com>
+From: Slark Xiao <slark_xiao@163.com>
 
-[ Upstream commit f40ecc2743652c0b0f19935f81baf57c601eb7f0 ]
+commit ad1244e1ce18f8c1a5ebad8074bfcf10eacb0311 upstream.
 
-ASoC has 2 functions to set bias level.
-	(A) snd_soc_dapm_force_bias_level()
-	(B) snd_soc_dapm_set_bias_level()
+T99W709 is designed based on MTK T300(5G redcap) chip. There are
+7 serial ports to be enumerated: AP_LOG, GNSS, AP_META, AT,
+MD_META, NPT, DBG. RSVD(5) for ADB port.
 
-snd_soc_dapm_force_bias_level() (A) will set dapm->bias_level (a) if
-successed.
+test evidence as below:
+T:  Bus=01 Lev=02 Prnt=02 Port=00 Cnt=01 Dev#=  7 Spd=480 MxCh= 0
+D:  Ver= 2.10 Cls=ef(misc ) Sub=02 Prot=01 MxPS=64 #Cfgs=  1
+P:  Vendor=0489 ProdID=e15f Rev=00.01
+S:  Manufacturer=MediaTek Inc.
+S:  Product=USB DATA CARD
+S:  SerialNumber=355511220000399
+C:  #Ifs=10 Cfg#= 1 Atr=a0 MxPwr=500mA
+I:  If#=0x0 Alt= 0 #EPs= 1 Cls=02(commc) Sub=0e Prot=00 Driver=cdc_mbim
+I:  If#=0x1 Alt= 1 #EPs= 2 Cls=0a(data ) Sub=00 Prot=02 Driver=cdc_mbim
+I:  If#=0x2 Alt= 0 #EPs= 2 Cls=ff(vend.) Sub=00 Prot=00 Driver=option
+I:  If#=0x3 Alt= 0 #EPs= 2 Cls=ff(vend.) Sub=00 Prot=00 Driver=option
+I:  If#=0x4 Alt= 0 #EPs= 2 Cls=ff(vend.) Sub=00 Prot=00 Driver=option
+I:  If#=0x5 Alt= 0 #EPs= 2 Cls=ff(vend.) Sub=42 Prot=01 Driver=usbfs
+I:  If#=0x6 Alt= 0 #EPs= 2 Cls=ff(vend.) Sub=00 Prot=00 Driver=option
+I:  If#=0x7 Alt= 0 #EPs= 2 Cls=ff(vend.) Sub=00 Prot=00 Driver=option
+I:  If#=0x8 Alt= 0 #EPs= 2 Cls=ff(vend.) Sub=00 Prot=00 Driver=option
+I:  If#=0x9 Alt= 0 #EPs= 2 Cls=ff(vend.) Sub=00 Prot=00 Driver=option
 
-(A)	int snd_soc_dapm_force_bias_level(...)
-	{
-		...
-		if (ret == 0)
-(a)			dapm->bias_level = level;
-		...
-	}
-
-snd_soc_dapm_set_bias_level() (B) is also a function that sets bias_level.
-It will call snd_soc_dapm_force_bias_level() (A) inside, but doesn't
-set dapm->bias_level by itself. One note is that (A) might not be called.
-
-(B)	static int snd_soc_dapm_set_bias_level(...)
-	{
-		...
-		ret = snd_soc_card_set_bias_level(...);
-		...
-		if (dapm != &card->dapm)
-(A)			ret = snd_soc_dapm_force_bias_level(...);
-		...
-		ret = snd_soc_card_set_bias_level_post(...);
-		...
-	}
-
-dapm->bias_level will be set if (A) was called, but might not be set
-if (B) was called, even though it calles set_bias_level() function.
-
-We should set dapm->bias_level if we calls
-snd_soc_dapm_set_bias_level() (B), too.
-
-Signed-off-by: Kuninori Morimoto <kuninori.morimoto.gx@renesas.com>
-Link: https://patch.msgid.link/87qzyn4g4h.wl-kuninori.morimoto.gx@renesas.com
-Signed-off-by: Mark Brown <broonie@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Signed-off-by: Slark Xiao <slark_xiao@163.com>
+Cc: stable@vger.kernel.org
+Signed-off-by: Johan Hovold <johan@kernel.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- sound/soc/soc-dapm.c | 4 ++++
- 1 file changed, 4 insertions(+)
+ drivers/usb/serial/option.c |    2 ++
+ 1 file changed, 2 insertions(+)
 
-diff --git a/sound/soc/soc-dapm.c b/sound/soc/soc-dapm.c
-index 538d84f1c29f..469ffc31068e 100644
---- a/sound/soc/soc-dapm.c
-+++ b/sound/soc/soc-dapm.c
-@@ -742,6 +742,10 @@ static int snd_soc_dapm_set_bias_level(struct snd_soc_dapm_context *dapm,
- out:
- 	trace_snd_soc_bias_level_done(card, level);
- 
-+	/* success */
-+	if (ret == 0)
-+		snd_soc_dapm_init_bias_level(dapm, level);
-+
- 	return ret;
- }
- 
--- 
-2.39.5
-
+--- a/drivers/usb/serial/option.c
++++ b/drivers/usb/serial/option.c
+@@ -2346,6 +2346,8 @@ static const struct usb_device_id option
+ 	  .driver_info = RSVD(3) },
+ 	{ USB_DEVICE_INTERFACE_CLASS(0x0489, 0xe145, 0xff),			/* Foxconn T99W651 RNDIS */
+ 	  .driver_info = RSVD(5) | RSVD(6) },
++	{ USB_DEVICE_INTERFACE_CLASS(0x0489, 0xe15f, 0xff),                     /* Foxconn T99W709 */
++	  .driver_info = RSVD(5) },
+ 	{ USB_DEVICE_INTERFACE_CLASS(0x0489, 0xe167, 0xff),                     /* Foxconn T99W640 MBIM */
+ 	  .driver_info = RSVD(3) },
+ 	{ USB_DEVICE(0x1508, 0x1001),						/* Fibocom NL668 (IOT version) */
 
 
 
