@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-175144-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-175666-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id DC841B36703
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 16:02:48 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 97C19B36976
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 16:27:16 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id D3CB45641FD
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 13:52:41 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 469FF5847E7
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 14:16:25 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7E63C350847;
-	Tue, 26 Aug 2025 13:50:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B0A46352067;
+	Tue, 26 Aug 2025 14:14:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="rq9YsTPI"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="xkXxTyrU"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3B4A1341ABD;
-	Tue, 26 Aug 2025 13:50:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6D89A35337D;
+	Tue, 26 Aug 2025 14:14:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756216258; cv=none; b=hUq9E4oeVqBUOKqQz65bJ+WYITQtw98EKQHEyVYTtLLtFiFfxvGbtF24y0tA5vXLac8t+6hnEVpVR5xBBYSfEW6N/Zw79WrUPoBLgFXbMwgxOIAbsqw9PSTm8G/cnrk/TJflVhFh/c7cwDUoLIXqwh4YfL7yt/UBRe479T5Njjc=
+	t=1756217648; cv=none; b=IAs7pIq+rOG0CaaOQ4+Qyvrj3jcjhRqVVA6MJ+zAYj/Tq/s1PQW4tLqPL3jlRhMDz2Gv23D5Sp8rbcMufwQKVnu3Jirqvwxcak37lN96leFpMrxy3cRnSimj8GmQ6Sr6dLc/MzU602sH6uids31XKKd9af1j4tby076fLGvhAJg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756216258; c=relaxed/simple;
-	bh=RlBE3wim5N0BXBb6csp0fStfE+GXdhevBDECNAFy2eU=;
+	s=arc-20240116; t=1756217648; c=relaxed/simple;
+	bh=sT4puVGDDGHnoXb6j7l9sc86RWkid7cWRTcjY6ep2FY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=ZMweHj82U7FX68txAlL6PiLEoY6o4s+TEynXa/k8sgkVEjvP1JVk+JA6e2N8IRF8dcsEbJ0+uwdh5VBHr4A3/f27jWSXC7ZnTOmxApg6ELU90t4gY6Nf6QDFuvzAGqbFYEA9FEMp0i0fe6s1hRvDjNaFuiYMMQVIcmRXHNAsqrQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=rq9YsTPI; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B7622C4CEF1;
-	Tue, 26 Aug 2025 13:50:57 +0000 (UTC)
+	 MIME-Version; b=FJvtcDS8WRRR1BeUgsfon69JKaNXLwjzKh4+mU696Tx+b1d8Nu50Aden3P4cm3rYlHilO/amQyjpN4Gw/Ck66kUC9tNPytiiawoJm9DFseL2Pyl2blZPMt4QrIdalPHbT205VzmC2ND1bSbbzTirBxPEb2WNwDZUgh8x1BPyfGE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=xkXxTyrU; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 001B9C4CEF1;
+	Tue, 26 Aug 2025 14:14:07 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1756216258;
-	bh=RlBE3wim5N0BXBb6csp0fStfE+GXdhevBDECNAFy2eU=;
+	s=korg; t=1756217648;
+	bh=sT4puVGDDGHnoXb6j7l9sc86RWkid7cWRTcjY6ep2FY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=rq9YsTPIN8h30G+LDy5S4+kvmkFE4v65+XgR9n/5qqPWtpbV3KEy+X/OSGKn/+opu
-	 2vLDINAj1pLvoFAabklajLhwFt/U7JFwJbJ1/zSw8mxMhF26u2j+V2HRvyO9rOHnpP
-	 nvZZ5Z5FvQEMjNl7UofyQ4XRoCyV5puEB4vxpWv8=
+	b=xkXxTyrUAjsIwA+FF7KAYDavyPK43wo+fMSM+D78Llzwr5J6PO24ZTD0K58lW7uNH
+	 QrxWHMBKTVi0bLTEFfgXH5jWBHogxXxX2flwcG7pNOodxXCOAA/x8ooFGgxyvNDc8I
+	 0ut01R/WPnSEyTipLnMXDj2ZgdDrjkKOWXR1pGqA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Alok Tiwari <alok.a.tiwari@oracle.com>,
-	Simon Horman <horms@kernel.org>,
-	Jakub Kicinski <kuba@kernel.org>,
+	"Rafael J. Wysocki" <rafael.j.wysocki@intel.com>,
+	Prashant Malani <pmalani@google.com>,
+	Viresh Kumar <viresh.kumar@linaro.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 341/644] be2net: Use correct byte order and format string for TCP seq and ack_seq
+Subject: [PATCH 5.10 222/523] cpufreq: CPPC: Mark driver with NEED_UPDATE_LIMITS flag
 Date: Tue, 26 Aug 2025 13:07:12 +0200
-Message-ID: <20250826110954.839974270@linuxfoundation.org>
+Message-ID: <20250826110929.935376299@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250826110946.507083938@linuxfoundation.org>
-References: <20250826110946.507083938@linuxfoundation.org>
+In-Reply-To: <20250826110924.562212281@linuxfoundation.org>
+References: <20250826110924.562212281@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,54 +63,53 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Alok Tiwari <alok.a.tiwari@oracle.com>
+From: Prashant Malani <pmalani@google.com>
 
-[ Upstream commit 4701ee5044fb3992f1c910630a9673c2dc600ce5 ]
+[ Upstream commit 0a1416a49e63c320f6e6c1c8d07e1b58c0d4a3f3 ]
 
-The TCP header fields seq and ack_seq are 32-bit values in network
-byte order as (__be32). these fields were earlier printed using
-ntohs(), which converts only 16-bit values and produces incorrect
-results for 32-bit fields. This patch is changeing the conversion
-to ntohl(), ensuring correct interpretation of these sequence numbers.
+AMU counters on certain CPPC-based platforms tend to yield inaccurate
+delivered performance measurements on systems that are idle/mostly idle.
+This results in an inaccurate frequency being stored by cpufreq in its
+policy structure when the CPU is brought online. [1]
 
-Notably, the format specifier is updated from %d to %u to reflect the
-unsigned nature of these fields.
+Consequently, if the userspace governor tries to set the frequency to a
+new value, there is a possibility that it would be the erroneous value
+stored earlier. In such a scenario, cpufreq would assume that the
+requested frequency has already been set and return early, resulting in
+the correct/new frequency request never making it to the hardware.
 
-improves the accuracy of debug log messages for TCP sequence and
-acknowledgment numbers during TX timeouts.
+Since the operating frequency is liable to this sort of inconsistency,
+mark the CPPC driver with CPUFREQ_NEED_UPDATE_LIMITS so that it is always
+invoked when a target frequency update is requested.
 
-Signed-off-by: Alok Tiwari <alok.a.tiwari@oracle.com>
-Reviewed-by: Simon Horman <horms@kernel.org>
-Link: https://patch.msgid.link/20250717193552.3648791-1-alok.a.tiwari@oracle.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Link: https://lore.kernel.org/linux-pm/20250619000925.415528-3-pmalani@google.com/ [1]
+Suggested-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
+Signed-off-by: Prashant Malani <pmalani@google.com>
+Acked-by: Viresh Kumar <viresh.kumar@linaro.org>
+Link: https://patch.msgid.link/20250722055611.130574-2-pmalani@google.com
+Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/ethernet/emulex/benet/be_main.c | 8 ++++----
- 1 file changed, 4 insertions(+), 4 deletions(-)
+ drivers/cpufreq/cppc_cpufreq.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/net/ethernet/emulex/benet/be_main.c b/drivers/net/ethernet/emulex/benet/be_main.c
-index c61dc7d05bcb..69284efbd517 100644
---- a/drivers/net/ethernet/emulex/benet/be_main.c
-+++ b/drivers/net/ethernet/emulex/benet/be_main.c
-@@ -1466,10 +1466,10 @@ static void be_tx_timeout(struct net_device *netdev, unsigned int txqueue)
- 						 ntohs(tcphdr->source));
- 					dev_info(dev, "TCP dest port %d\n",
- 						 ntohs(tcphdr->dest));
--					dev_info(dev, "TCP sequence num %d\n",
--						 ntohs(tcphdr->seq));
--					dev_info(dev, "TCP ack_seq %d\n",
--						 ntohs(tcphdr->ack_seq));
-+					dev_info(dev, "TCP sequence num %u\n",
-+						 ntohl(tcphdr->seq));
-+					dev_info(dev, "TCP ack_seq %u\n",
-+						 ntohl(tcphdr->ack_seq));
- 				} else if (ip_hdr(skb)->protocol ==
- 					   IPPROTO_UDP) {
- 					udphdr = udp_hdr(skb);
+diff --git a/drivers/cpufreq/cppc_cpufreq.c b/drivers/cpufreq/cppc_cpufreq.c
+index f29e8d0553a8..17e712651090 100644
+--- a/drivers/cpufreq/cppc_cpufreq.c
++++ b/drivers/cpufreq/cppc_cpufreq.c
+@@ -396,7 +396,7 @@ static int cppc_cpufreq_set_boost(struct cpufreq_policy *policy, int state)
+ }
+ 
+ static struct cpufreq_driver cppc_cpufreq_driver = {
+-	.flags = CPUFREQ_CONST_LOOPS,
++	.flags = CPUFREQ_CONST_LOOPS | CPUFREQ_NEED_UPDATE_LIMITS,
+ 	.verify = cppc_verify_policy,
+ 	.target = cppc_cpufreq_set_target,
+ 	.get = cppc_cpufreq_get_rate,
 -- 
 2.39.5
 
