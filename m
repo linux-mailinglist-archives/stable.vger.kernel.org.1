@@ -1,55 +1,55 @@
-Return-Path: <stable+bounces-175245-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-175770-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1B97CB3671D
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 16:03:53 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id C5536B36A17
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 16:34:03 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 0820C1C24E63
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 13:57:15 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 2AA698E4300
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 14:20:43 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 48D0729D28A;
-	Tue, 26 Aug 2025 13:55:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 199AD352FC1;
+	Tue, 26 Aug 2025 14:18:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="gaRNRZHx"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="KhttThyr"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 05C832BEC45;
-	Tue, 26 Aug 2025 13:55:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CB4F2352096;
+	Tue, 26 Aug 2025 14:18:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756216528; cv=none; b=V8OIe3GHEbtnZdAXdFRtpMDIkj/4ibmLnxuvJWDho3xgKF7fLvZbAmQZc0cf6C9SgiMb59Mx02pPJez6y7e+kLz7w7b7YqTmfipbXLQ94RtFSANDclqzy8SC3lG7fOn3YBfzwu1IRRFchRiRXO2UssT9wGXs3+Xbx8gErK8MiR0=
+	t=1756217923; cv=none; b=jvgB/rj0sTs9mr5nkyO0VnnGkyJttWHV6E4NBPwSOMjC/EP2ATpxeFFoshBU1CvuD/YYLT9P65ka6vndOxPzmzHDRACzxIcgzetHP9BHkcPlxePiQroywgrfigF/tMewj0Y5hJ/peRc9uYSjQaYojMuKC4U315hlQoLONNPZnWY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756216528; c=relaxed/simple;
-	bh=7N44qMJNPxQ6yqMJuQQz3GUhStlDKjyCjNcO0Ddui84=;
+	s=arc-20240116; t=1756217923; c=relaxed/simple;
+	bh=N8WgroJj001A72DU0bgbTMM0nuXy9FTP97sEWERgD0c=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=H2prNkGoTW/7DU6FM9tBqMwAoDNlp7dbVRq1LOFUKwK6pYSElj9Vpb4bqnb1IMyjlRA9eaxyf0eqkkTVr703QY17xlyv5Hobu8gw1k3lI6rfh+K6lfgMJj1mRS+W5ycvCcmD1DN+Rq1rnfWJvcUj0qxDmK7VRFBXrWuCkCGITrU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=gaRNRZHx; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 88A32C4CEF1;
-	Tue, 26 Aug 2025 13:55:27 +0000 (UTC)
+	 MIME-Version; b=tBi20d7AbqtpGNcvjYaWJw7HXLhbiH+EE7Pq9ydIg020aGu7Hmt7n5Ajp2T3nruMorel0pCWl3sfM89M65XCH1TF6x0fAHGVzA7P5IKfBmZuIB0+M6YfY8ev9sco2OOgsp3MeqG7zGvJIvK/yBYa0SinXaAqPI/pJfNCtdHyqDQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=KhttThyr; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5EAF2C4CEF1;
+	Tue, 26 Aug 2025 14:18:43 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1756216527;
-	bh=7N44qMJNPxQ6yqMJuQQz3GUhStlDKjyCjNcO0Ddui84=;
+	s=korg; t=1756217923;
+	bh=N8WgroJj001A72DU0bgbTMM0nuXy9FTP97sEWERgD0c=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=gaRNRZHxWKyp0z/Nt+WNLX+P/wVv1BiD/MCP1Vij414M4JPW5E3MKA7APCeRGQvWo
-	 dFDDw8xIwF6L1IfRarz1VrcJePnm00erQQkJepd738sjX1zEkZihaIFvuZoXSRAe5p
-	 w5LqRkRtYCmhMY+DDVYgNojBUbfAQQOsgqg+Lm+k=
+	b=KhttThyrTmWy+Ue2Dy5akJQfluK0bfK8Vz93lSg1/F5N3WnW5z63B0uJk5zmJht/k
+	 byUYzltvYUtujjP/03V4qAvGq3/SkmuJxTdjt7Vq8OnhzYU9ttQEXDFyAe45fgayfq
+	 +S9HgrMoWhIaVV0nWp4VjohX+Msa5Q2rygl56lco=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	stable <stable@kernel.org>,
-	Eric Biggers <ebiggers@kernel.org>
-Subject: [PATCH 5.15 445/644] thunderbolt: Fix copy+paste error in match_service_id()
+	Masahiro Yamada <masahiroy@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.10 326/523] kconfig: gconf: avoid hardcoding model2 in on_treeview2_cursor_changed()
 Date: Tue, 26 Aug 2025 13:08:56 +0200
-Message-ID: <20250826110957.495558668@linuxfoundation.org>
+Message-ID: <20250826110932.515368320@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250826110946.507083938@linuxfoundation.org>
-References: <20250826110946.507083938@linuxfoundation.org>
+In-Reply-To: <20250826110924.562212281@linuxfoundation.org>
+References: <20250826110924.562212281@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,37 +61,49 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Eric Biggers <ebiggers@kernel.org>
+From: Masahiro Yamada <masahiroy@kernel.org>
 
-commit 5cc1f66cb23cccc704e3def27ad31ed479e934a5 upstream.
+[ Upstream commit cae9cdbcd9af044810bcceeb43a87accca47c71d ]
 
-The second instance of TBSVC_MATCH_PROTOCOL_VERSION seems to have been
-intended to be TBSVC_MATCH_PROTOCOL_REVISION.
+The on_treeview2_cursor_changed() handler is connected to both the left
+and right tree views, but it hardcodes model2 (the GtkTreeModel of the
+right tree view). This is incorrect. Get the associated model from the
+view.
 
-Fixes: d1ff70241a27 ("thunderbolt: Add support for XDomain discovery protocol")
-Cc: stable <stable@kernel.org>
-Signed-off-by: Eric Biggers <ebiggers@kernel.org>
-Link: https://lore.kernel.org/r/20250721050136.30004-1-ebiggers@kernel.org
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Signed-off-by: Masahiro Yamada <masahiroy@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/thunderbolt/domain.c |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ scripts/kconfig/gconf.c | 5 +++--
+ 1 file changed, 3 insertions(+), 2 deletions(-)
 
---- a/drivers/thunderbolt/domain.c
-+++ b/drivers/thunderbolt/domain.c
-@@ -38,7 +38,7 @@ static bool match_service_id(const struc
- 			return false;
- 	}
+diff --git a/scripts/kconfig/gconf.c b/scripts/kconfig/gconf.c
+index 409799912731..50c1340cf636 100644
+--- a/scripts/kconfig/gconf.c
++++ b/scripts/kconfig/gconf.c
+@@ -981,13 +981,14 @@ on_treeview2_key_press_event(GtkWidget * widget,
+ void
+ on_treeview2_cursor_changed(GtkTreeView * treeview, gpointer user_data)
+ {
++	GtkTreeModel *model = gtk_tree_view_get_model(treeview);
+ 	GtkTreeSelection *selection;
+ 	GtkTreeIter iter;
+ 	struct menu *menu;
  
--	if (id->match_flags & TBSVC_MATCH_PROTOCOL_VERSION) {
-+	if (id->match_flags & TBSVC_MATCH_PROTOCOL_REVISION) {
- 		if (id->protocol_revision != svc->prtcrevs)
- 			return false;
+ 	selection = gtk_tree_view_get_selection(treeview);
+-	if (gtk_tree_selection_get_selected(selection, &model2, &iter)) {
+-		gtk_tree_model_get(model2, &iter, COL_MENU, &menu, -1);
++	if (gtk_tree_selection_get_selected(selection, &model, &iter)) {
++		gtk_tree_model_get(model, &iter, COL_MENU, &menu, -1);
+ 		text_insert_help(menu);
  	}
+ }
+-- 
+2.39.5
+
 
 
 
