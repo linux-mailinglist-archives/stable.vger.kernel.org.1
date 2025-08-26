@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-176382-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-173379-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id B172FB36C6F
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 16:56:24 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id CDCBBB35D82
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 13:45:44 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id A5DC0985A97
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 14:48:00 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 8B9DF367390
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 11:36:50 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9AA35356903;
-	Tue, 26 Aug 2025 14:45:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 78AA2322530;
+	Tue, 26 Aug 2025 11:34:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="zt7DSCmY"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="AvXlvf7C"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 535693568F7;
-	Tue, 26 Aug 2025 14:45:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2575032143C;
+	Tue, 26 Aug 2025 11:34:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756219513; cv=none; b=hopC6WzjPuHBtK/rdVXiewW+uOsNEPpxE7909JD1QtYFWpatejBaufKBXhtjY4bCOH639cCDAO5wkseki8anrlOZvQYb2gfapVrhCetMwG++IxONQGGF8trSp0hdGd1iLrV6KXH3dN7HAsWw7kGN6VvDYCtnuWOjy2yqrHCCTN4=
+	t=1756208095; cv=none; b=Bh/cDHBF5UUA7ZIw5zjPcL1zhkA2BaQXicc7qZRRO2cYitD62PmgKN88Xt/tK2922blLiPJpU91dlyWNKdVLD+ewUyk5lFEOyf5zmNeiDT/k2Jq/+hNRy/OBZCpS3jn/w+RoTpu/DK4albyM3F9mdqKwvgvL+VMn6B3/i41UGrg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756219513; c=relaxed/simple;
-	bh=XxhMSOOO6G2qkY7B27rSovh3NQJz20YeRaVv8/5a7VQ=;
+	s=arc-20240116; t=1756208095; c=relaxed/simple;
+	bh=MKPB5vTy7HbFNBKrsPoEYEcDDbKQknCfzICQogCeDIc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=S/g3SchherJ0vDNhcjPwhveCZ5xRLJAZUYGRN3RRRYzojuWAlYvT1tipNjd6FXt30FYNkVjYx0YAnUFWZreT7ABZKomJQ/aZGit53Ugskf3RUW+Jw64zm2hRFF3VznLIiCQRDSQQWIL7NSiyWi2AyF3cWgRUvYcPMoV/ZvGNBnE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=zt7DSCmY; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 92975C4CEF1;
-	Tue, 26 Aug 2025 14:45:12 +0000 (UTC)
+	 MIME-Version; b=g2bWa8tOZ0EAYOquGzW5g4EisNK+XL+Vc0ordx/HR4qmSIseXDsS5y9mKoQM79TlZaMQmDC3+mz9DFgn6vBLCaHjHR8fwloCJdpMQCta3/dFmKD4q4lLDK/V18IPt4+pJ8TmLvNyaWc2ra0FjVq6rPeSqnUOb6LI/07asLVFJD4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=AvXlvf7C; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A6C3FC4CEF1;
+	Tue, 26 Aug 2025 11:34:54 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1756219512;
-	bh=XxhMSOOO6G2qkY7B27rSovh3NQJz20YeRaVv8/5a7VQ=;
+	s=korg; t=1756208095;
+	bh=MKPB5vTy7HbFNBKrsPoEYEcDDbKQknCfzICQogCeDIc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=zt7DSCmY61g7qnVhwX1QGfsBRBkSWMpti9i9o9JznyaT5S7UBT3Arkbf1eJf3IrLl
-	 hoaa9mjOlLZwUsVUzWmGOQ8El83fkihakcmlfWy9gw3v8pq+I5ej4y7UjpKSLuCuA8
-	 udp8tM2lOLWL1xjDaN55opjv5E4mShZ75FUrAIvY=
+	b=AvXlvf7COkn+3rxo6VuZUiO7BQofeCYa7mfeSlHcZLfrMLeQUp7qm5oFLCCXnvn0a
+	 yYbVo4UsHQNXkg5Tsmd8Ea6HJHYGRMnSVzMYViMETaUNJO7Y7hD0q8cdVb9pstGj01
+	 B7+jFqcfFIP08LrZizKQhz8h3qjYAr/l85HfR5Ng=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Josef Bacik <josef@toxicpanda.com>,
-	Trond Myklebust <trond.myklebust@hammerspace.com>,
-	Chanho Min <chanho.min@lge.com>,
+	William Liu <will@willsroot.io>,
+	Savino Dicanosa <savy@syst3mfailure.io>,
+	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.4 393/403] nfs: fix UAF in direct writes
+Subject: [PATCH 6.16 435/457] net/sched: Remove unnecessary WARNING condition for empty child qdisc in htb_activate
 Date: Tue, 26 Aug 2025 13:11:59 +0200
-Message-ID: <20250826110917.893610822@linuxfoundation.org>
+Message-ID: <20250826110948.039652840@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250826110905.607690791@linuxfoundation.org>
-References: <20250826110905.607690791@linuxfoundation.org>
+In-Reply-To: <20250826110937.289866482@linuxfoundation.org>
+References: <20250826110937.289866482@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,125 +63,43 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.4-stable review patch.  If anyone has any objections, please let me know.
+6.16-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Josef Bacik <josef@toxicpanda.com>
+From: William Liu <will@willsroot.io>
 
-commit 17f46b803d4f23c66cacce81db35fef3adb8f2af upstream.
+[ Upstream commit 2c2192e5f9c7c2892fe2363244d1387f62710d83 ]
 
-In production we have been hitting the following warning consistently
+The WARN_ON trigger based on !cl->leaf.q->q.qlen is unnecessary in
+htb_activate. htb_dequeue_tree already accounts for that scenario.
 
-------------[ cut here ]------------
-refcount_t: underflow; use-after-free.
-WARNING: CPU: 17 PID: 1800359 at lib/refcount.c:28 refcount_warn_saturate+0x9c/0xe0
-Workqueue: nfsiod nfs_direct_write_schedule_work [nfs]
-RIP: 0010:refcount_warn_saturate+0x9c/0xe0
-PKRU: 55555554
-Call Trace:
- <TASK>
- ? __warn+0x9f/0x130
- ? refcount_warn_saturate+0x9c/0xe0
- ? report_bug+0xcc/0x150
- ? handle_bug+0x3d/0x70
- ? exc_invalid_op+0x16/0x40
- ? asm_exc_invalid_op+0x16/0x20
- ? refcount_warn_saturate+0x9c/0xe0
- nfs_direct_write_schedule_work+0x237/0x250 [nfs]
- process_one_work+0x12f/0x4a0
- worker_thread+0x14e/0x3b0
- ? ZSTD_getCParams_internal+0x220/0x220
- kthread+0xdc/0x120
- ? __btf_name_valid+0xa0/0xa0
- ret_from_fork+0x1f/0x30
-
-This is because we're completing the nfs_direct_request twice in a row.
-
-The source of this is when we have our commit requests to submit, we
-process them and send them off, and then in the completion path for the
-commit requests we have
-
-if (nfs_commit_end(cinfo.mds))
-	nfs_direct_write_complete(dreq);
-
-However since we're submitting asynchronous requests we sometimes have
-one that completes before we submit the next one, so we end up calling
-complete on the nfs_direct_request twice.
-
-The only other place we use nfs_generic_commit_list() is in
-__nfs_commit_inode, which wraps this call in a
-
-nfs_commit_begin();
-nfs_commit_end();
-
-Which is a common pattern for this style of completion handling, one
-that is also repeated in the direct code with get_dreq()/put_dreq()
-calls around where we process events as well as in the completion paths.
-
-Fix this by using the same pattern for the commit requests.
-
-Before with my 200 node rocksdb stress running this warning would pop
-every 10ish minutes.  With my patch the stress test has been running for
-several hours without popping.
-
-Signed-off-by: Josef Bacik <josef@toxicpanda.com>
-Cc: stable@vger.kernel.org
-Signed-off-by: Trond Myklebust <trond.myklebust@hammerspace.com>
-[ chanho : Backports v5.4.y, commit 133a48abf6ec (NFS: Fix up commit deadlocks)
-  is needed to use nfs_commit_end ]
-Signed-off-by: Chanho Min <chanho.min@lge.com>
+Fixes: 1da177e4c3f4 ("Linux-2.6.12-rc2")
+Signed-off-by: William Liu <will@willsroot.io>
+Reviewed-by: Savino Dicanosa <savy@syst3mfailure.io>
+Link: https://patch.msgid.link/20250819033632.579854-1-will@willsroot.io
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- fs/nfs/direct.c        |   11 +++++++++--
- fs/nfs/write.c         |    2 +-
- include/linux/nfs_fs.h |    1 +
- 3 files changed, 11 insertions(+), 3 deletions(-)
+ net/sched/sch_htb.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/fs/nfs/direct.c
-+++ b/fs/nfs/direct.c
-@@ -727,10 +727,17 @@ static void nfs_direct_commit_schedule(s
- 	LIST_HEAD(mds_list);
- 
- 	nfs_init_cinfo_from_dreq(&cinfo, dreq);
-+	nfs_commit_begin(cinfo.mds);
- 	nfs_scan_commit(dreq->inode, &mds_list, &cinfo);
- 	res = nfs_generic_commit_list(dreq->inode, &mds_list, 0, &cinfo);
--	if (res < 0) /* res == -ENOMEM */
--		nfs_direct_write_reschedule(dreq);
-+	if (res < 0) { /* res == -ENOMEM */
-+		spin_lock(&dreq->lock);
-+		if (dreq->flags == 0)
-+			dreq->flags = NFS_ODIRECT_RESCHED_WRITES;
-+		spin_unlock(&dreq->lock);
-+	}
-+	if (nfs_commit_end(cinfo.mds))
-+		nfs_direct_write_complete(dreq);
- }
- 
- static void nfs_direct_write_schedule_work(struct work_struct *work)
---- a/fs/nfs/write.c
-+++ b/fs/nfs/write.c
-@@ -1653,7 +1653,7 @@ static int wait_on_commit(struct nfs_mds
- 				       !atomic_read(&cinfo->rpcs_out));
- }
- 
--static void nfs_commit_begin(struct nfs_mds_commit_info *cinfo)
-+void nfs_commit_begin(struct nfs_mds_commit_info *cinfo)
+diff --git a/net/sched/sch_htb.c b/net/sched/sch_htb.c
+index c968ea763774..b5e40c51655a 100644
+--- a/net/sched/sch_htb.c
++++ b/net/sched/sch_htb.c
+@@ -592,7 +592,7 @@ htb_change_class_mode(struct htb_sched *q, struct htb_class *cl, s64 *diff)
+  */
+ static inline void htb_activate(struct htb_sched *q, struct htb_class *cl)
  {
- 	atomic_inc(&cinfo->rpcs_out);
- }
---- a/include/linux/nfs_fs.h
-+++ b/include/linux/nfs_fs.h
-@@ -549,6 +549,7 @@ extern int nfs_wb_page_cancel(struct ino
- extern int  nfs_commit_inode(struct inode *, int);
- extern struct nfs_commit_data *nfs_commitdata_alloc(bool never_fail);
- extern void nfs_commit_free(struct nfs_commit_data *data);
-+void nfs_commit_begin(struct nfs_mds_commit_info *cinfo);
- bool nfs_commit_end(struct nfs_mds_commit_info *cinfo);
+-	WARN_ON(cl->level || !cl->leaf.q || !cl->leaf.q->q.qlen);
++	WARN_ON(cl->level || !cl->leaf.q);
  
- static inline int
+ 	if (!cl->prio_activity) {
+ 		cl->prio_activity = 1 << cl->prio;
+-- 
+2.50.1
+
 
 
 
