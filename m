@@ -1,58 +1,57 @@
-Return-Path: <stable+bounces-174806-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-176383-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7B006B36511
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 15:44:27 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0CF2DB36D11
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 17:06:57 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id E26771C22F8E
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 13:37:06 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id CB0DA586061
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 14:48:02 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7769D307491;
-	Tue, 26 Aug 2025 13:36:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D5A2128314A;
+	Tue, 26 Aug 2025 14:45:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="oeT0D48i"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="YkAk/g0K"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 33B44279788;
-	Tue, 26 Aug 2025 13:36:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 91B393431FE;
+	Tue, 26 Aug 2025 14:45:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756215367; cv=none; b=Xh2Q8wecusieTvX8fjXLBkECb+KKlvsKKnq5TWEuKSSXXmBgILAyxCiEAzKT1zMeCPU/rmYQQi33xf8NCHeaK4LZkMFvyGehZ10LQS3GAjgwX8yWQlufaOLz4mUy9isvzWroZgEJ7h/rs45wQPcdfCA7FooVu4AnzeKWUGHjJQo=
+	t=1756219515; cv=none; b=IueDZIrmxbbuev6Pa05CyJQAXadonGsztglPaLnkd27eEoUUPsccHXNvjRq8pPP+K1z0IttHAe2/SLgeSX10Bv3rnu4fKFqK7tC4zM3XFZnWajCpOCYIB3FYB+6XtiCNDQKFJU/Dj/YmIVg7MRw3MUWl0QxM3/0E57IAIgeFksc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756215367; c=relaxed/simple;
-	bh=MOrc5ViBZGKUbYdhQ45/sDvnL2b3dtoU31ry4O8ck+I=;
+	s=arc-20240116; t=1756219515; c=relaxed/simple;
+	bh=b1N+EIuYUOm4XHwRaZD8yVb+pVtojaan0BbcgMv1pLk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=ibB8U78EV616iB0Nx3qYMcDMZ8JlckkpoxopJLwJPfB7TqPPrd86mma21XJMUicL/88oP5X+FL0GlZ5J8HeQ+E31xXGBIxyFiVOAbN4tDnWY6ReldhOkYAZc8Wq0pTngCP5oVV+8FgV3kqnF7HATVLDeA7iVglYTMI/pqWC12wI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=oeT0D48i; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id BBE99C4CEF1;
-	Tue, 26 Aug 2025 13:36:06 +0000 (UTC)
+	 MIME-Version; b=bQ/wEjsg0krVF/RZaYwktysyd/xwZTYQARzv10f68xX6Cio9h/2f6SwRbv51zYyztAtw3K2KkL1SIJsMYcph+dJdMsdMC1tq6flAShElHn+Aoj39TThdYtFsJ36CzSWZRjLfD0wI5Tr2SFK8vUBkq55gCoh6XQsxdj2oTdqqp5M=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=YkAk/g0K; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 258B1C4CEF1;
+	Tue, 26 Aug 2025 14:45:14 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1756215367;
-	bh=MOrc5ViBZGKUbYdhQ45/sDvnL2b3dtoU31ry4O8ck+I=;
+	s=korg; t=1756219515;
+	bh=b1N+EIuYUOm4XHwRaZD8yVb+pVtojaan0BbcgMv1pLk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=oeT0D48ineC7/Z3+R54rrVNy8C9qV1/a1WanXq6utYUYCAUaFvKcqNDqhIaIGyQOX
-	 ccNdRLebVPdu+3GCR6cG/pIKsJ4dhhk6JbZqLqTZtjsSkBIfKC6pmLkeeE9fjriEuJ
-	 rzYzI11jozlO+1tjYRgbevv46qQjfI0eL/Rxa3ts=
+	b=YkAk/g0KFDqdLBbodLOMZdlE97Wkj2v4GzxBLrvDhdfGjVFedllN+pqJbHNJpP7yR
+	 HwWLks4VtV0eS5GuE2rTfJteQSUfTVRRnJaH6ER3mbB9F81DZfcqHlQ3YsnQknQXi9
+	 L3gIQQ0eeo/KpZoAC1AtIvNADtQUNdhj/tMtcF8E=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Nikolay Aleksandrov <razor@blackwall.org>,
-	Wang Liang <wangliang74@huawei.com>,
-	Ido Schimmel <idosch@nvidia.com>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 457/482] net: bridge: fix soft lockup in br_multicast_query_expired()
+	Vlad Buslov <vladbu@mellanox.com>,
+	Jiri Pirko <jiri@mellanox.com>,
+	"David S. Miller" <davem@davemloft.net>,
+	Shubham Kulkarni <skulkarni@mvista.com>
+Subject: [PATCH 5.4 384/403] net: sched: extract qstats update code into functions
 Date: Tue, 26 Aug 2025 13:11:50 +0200
-Message-ID: <20250826110942.116278574@linuxfoundation.org>
+Message-ID: <20250826110917.627437234@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250826110930.769259449@linuxfoundation.org>
-References: <20250826110930.769259449@linuxfoundation.org>
+In-Reply-To: <20250826110905.607690791@linuxfoundation.org>
+References: <20250826110905.607690791@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,114 +63,116 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+5.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Wang Liang <wangliang74@huawei.com>
+From: Vlad Buslov <vladbu@mellanox.com>
 
-[ Upstream commit d1547bf460baec718b3398365f8de33d25c5f36f ]
+[ Upstream commit 26b537a88ca5b7399c7ab0656e06dbd9da9513c1 ]
 
-When set multicast_query_interval to a large value, the local variable
-'time' in br_multicast_send_query() may overflow. If the time is smaller
-than jiffies, the timer will expire immediately, and then call mod_timer()
-again, which creates a loop and may trigger the following soft lockup
-issue.
+Extract common code that increments cpu_qstats counters into standalone act
+API functions. Change hardware offloaded actions that use percpu counter
+allocation to use the new functions instead of accessing cpu_qstats
+directly.
 
-  watchdog: BUG: soft lockup - CPU#1 stuck for 221s! [rb_consumer:66]
-  CPU: 1 UID: 0 PID: 66 Comm: rb_consumer Not tainted 6.16.0+ #259 PREEMPT(none)
-  Call Trace:
-   <IRQ>
-   __netdev_alloc_skb+0x2e/0x3a0
-   br_ip6_multicast_alloc_query+0x212/0x1b70
-   __br_multicast_send_query+0x376/0xac0
-   br_multicast_send_query+0x299/0x510
-   br_multicast_query_expired.constprop.0+0x16d/0x1b0
-   call_timer_fn+0x3b/0x2a0
-   __run_timers+0x619/0x950
-   run_timer_softirq+0x11c/0x220
-   handle_softirqs+0x18e/0x560
-   __irq_exit_rcu+0x158/0x1a0
-   sysvec_apic_timer_interrupt+0x76/0x90
-   </IRQ>
+This commit doesn't change functionality.
 
-This issue can be reproduced with:
-  ip link add br0 type bridge
-  echo 1 > /sys/class/net/br0/bridge/multicast_querier
-  echo 0xffffffffffffffff >
-  	/sys/class/net/br0/bridge/multicast_query_interval
-  ip link set dev br0 up
-
-The multicast_startup_query_interval can also cause this issue. Similar to
-the commit 99b40610956a ("net: bridge: mcast: add and enforce query
-interval minimum"), add check for the query interval maximum to fix this
-issue.
-
-Link: https://lore.kernel.org/netdev/20250806094941.1285944-1-wangliang74@huawei.com/
-Link: https://lore.kernel.org/netdev/20250812091818.542238-1-wangliang74@huawei.com/
-Fixes: d902eee43f19 ("bridge: Add multicast count/interval sysfs entries")
-Suggested-by: Nikolay Aleksandrov <razor@blackwall.org>
-Signed-off-by: Wang Liang <wangliang74@huawei.com>
-Reviewed-by: Ido Schimmel <idosch@nvidia.com>
-Acked-by: Nikolay Aleksandrov <razor@blackwall.org>
-Link: https://patch.msgid.link/20250813021054.1643649-1-wangliang74@huawei.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Signed-off-by: Vlad Buslov <vladbu@mellanox.com>
+Acked-by: Jiri Pirko <jiri@mellanox.com>
+Signed-off-by: David S. Miller <davem@davemloft.net>
+Stable-dep-of: ca22da2fbd69 ("act_mirred: use the backlog for nested calls to mirred ingress")
+Signed-off-by: Shubham Kulkarni <skulkarni@mvista.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- net/bridge/br_multicast.c | 16 ++++++++++++++++
- net/bridge/br_private.h   |  2 ++
- 2 files changed, 18 insertions(+)
+ include/net/act_api.h  |   16 ++++++++++++++++
+ net/sched/act_csum.c   |    2 +-
+ net/sched/act_ct.c     |    2 +-
+ net/sched/act_gact.c   |    2 +-
+ net/sched/act_mirred.c |    2 +-
+ net/sched/act_vlan.c   |    2 +-
+ 6 files changed, 21 insertions(+), 5 deletions(-)
 
-diff --git a/net/bridge/br_multicast.c b/net/bridge/br_multicast.c
-index e28c9db0c4db..140dbcfc8b94 100644
---- a/net/bridge/br_multicast.c
-+++ b/net/bridge/br_multicast.c
-@@ -4634,6 +4634,14 @@ void br_multicast_set_query_intvl(struct net_bridge_mcast *brmctx,
- 		intvl_jiffies = BR_MULTICAST_QUERY_INTVL_MIN;
- 	}
- 
-+	if (intvl_jiffies > BR_MULTICAST_QUERY_INTVL_MAX) {
-+		br_info(brmctx->br,
-+			"trying to set multicast query interval above maximum, setting to %lu (%ums)\n",
-+			jiffies_to_clock_t(BR_MULTICAST_QUERY_INTVL_MAX),
-+			jiffies_to_msecs(BR_MULTICAST_QUERY_INTVL_MAX));
-+		intvl_jiffies = BR_MULTICAST_QUERY_INTVL_MAX;
-+	}
-+
- 	brmctx->multicast_query_interval = intvl_jiffies;
+--- a/include/net/act_api.h
++++ b/include/net/act_api.h
+@@ -193,6 +193,22 @@ static inline void tcf_action_update_bst
+ 	bstats_cpu_update(this_cpu_ptr(a->cpu_bstats), skb);
  }
  
-@@ -4650,6 +4658,14 @@ void br_multicast_set_startup_query_intvl(struct net_bridge_mcast *brmctx,
- 		intvl_jiffies = BR_MULTICAST_STARTUP_QUERY_INTVL_MIN;
- 	}
- 
-+	if (intvl_jiffies > BR_MULTICAST_STARTUP_QUERY_INTVL_MAX) {
-+		br_info(brmctx->br,
-+			"trying to set multicast startup query interval above maximum, setting to %lu (%ums)\n",
-+			jiffies_to_clock_t(BR_MULTICAST_STARTUP_QUERY_INTVL_MAX),
-+			jiffies_to_msecs(BR_MULTICAST_STARTUP_QUERY_INTVL_MAX));
-+		intvl_jiffies = BR_MULTICAST_STARTUP_QUERY_INTVL_MAX;
-+	}
++static inline struct gnet_stats_queue *
++tcf_action_get_qstats(struct tc_action *a)
++{
++	return this_cpu_ptr(a->cpu_qstats);
++}
 +
- 	brmctx->multicast_startup_query_interval = intvl_jiffies;
++static inline void tcf_action_inc_drop_qstats(struct tc_action *a)
++{
++	qstats_drop_inc(this_cpu_ptr(a->cpu_qstats));
++}
++
++static inline void tcf_action_inc_overlimit_qstats(struct tc_action *a)
++{
++	qstats_overlimit_inc(this_cpu_ptr(a->cpu_qstats));
++}
++
+ void tcf_action_update_stats(struct tc_action *a, u64 bytes, u32 packets,
+ 			     bool drop, bool hw);
+ int tcf_action_copy_stats(struct sk_buff *, struct tc_action *, int);
+--- a/net/sched/act_csum.c
++++ b/net/sched/act_csum.c
+@@ -621,7 +621,7 @@ out:
+ 	return action;
+ 
+ drop:
+-	qstats_drop_inc(this_cpu_ptr(p->common.cpu_qstats));
++	tcf_action_inc_drop_qstats(&p->common);
+ 	action = TC_ACT_SHOT;
+ 	goto out;
+ }
+--- a/net/sched/act_ct.c
++++ b/net/sched/act_ct.c
+@@ -486,7 +486,7 @@ out:
+ 	return retval;
+ 
+ drop:
+-	qstats_drop_inc(this_cpu_ptr(a->cpu_qstats));
++	tcf_action_inc_drop_qstats(&c->common);
+ 	return TC_ACT_SHOT;
  }
  
-diff --git a/net/bridge/br_private.h b/net/bridge/br_private.h
-index 767f0e81dd26..20c96cb406d5 100644
---- a/net/bridge/br_private.h
-+++ b/net/bridge/br_private.h
-@@ -30,6 +30,8 @@
- #define BR_MULTICAST_DEFAULT_HASH_MAX 4096
- #define BR_MULTICAST_QUERY_INTVL_MIN msecs_to_jiffies(1000)
- #define BR_MULTICAST_STARTUP_QUERY_INTVL_MIN BR_MULTICAST_QUERY_INTVL_MIN
-+#define BR_MULTICAST_QUERY_INTVL_MAX msecs_to_jiffies(86400000) /* 24 hours */
-+#define BR_MULTICAST_STARTUP_QUERY_INTVL_MAX BR_MULTICAST_QUERY_INTVL_MAX
+--- a/net/sched/act_gact.c
++++ b/net/sched/act_gact.c
+@@ -161,7 +161,7 @@ static int tcf_gact_act(struct sk_buff *
+ #endif
+ 	tcf_action_update_bstats(&gact->common, skb);
+ 	if (action == TC_ACT_SHOT)
+-		qstats_drop_inc(this_cpu_ptr(gact->common.cpu_qstats));
++		tcf_action_inc_drop_qstats(&gact->common);
  
- #define BR_HWDOM_MAX BITS_PER_LONG
+ 	tcf_lastuse_update(&gact->tcf_tm);
  
--- 
-2.50.1
-
+--- a/net/sched/act_mirred.c
++++ b/net/sched/act_mirred.c
+@@ -309,7 +309,7 @@ static int tcf_mirred_act(struct sk_buff
+ 
+ 	if (err) {
+ out:
+-		qstats_overlimit_inc(this_cpu_ptr(m->common.cpu_qstats));
++		tcf_action_inc_overlimit_qstats(&m->common);
+ 		if (tcf_mirred_is_act_redirect(m_eaction))
+ 			retval = TC_ACT_SHOT;
+ 	}
+--- a/net/sched/act_vlan.c
++++ b/net/sched/act_vlan.c
+@@ -88,7 +88,7 @@ out:
+ 	return action;
+ 
+ drop:
+-	qstats_drop_inc(this_cpu_ptr(v->common.cpu_qstats));
++	tcf_action_inc_drop_qstats(&v->common);
+ 	return TC_ACT_SHOT;
+ }
+ 
 
 
 
