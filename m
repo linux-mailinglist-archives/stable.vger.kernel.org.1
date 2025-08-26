@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-175787-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-175266-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id B2954B36987
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 16:27:57 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 83B4FB3676E
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 16:06:18 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 70E711C40241
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 14:21:36 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 95D498E5AD0
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 13:57:45 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6408C352096;
-	Tue, 26 Aug 2025 14:19:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2FB53350D7F;
+	Tue, 26 Aug 2025 13:56:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="JY0ncfLt"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="NSG1HYpW"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1E3001CD1F;
-	Tue, 26 Aug 2025 14:19:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DE8EE350D6E;
+	Tue, 26 Aug 2025 13:56:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756217968; cv=none; b=mzek0VOVDDo7t2w1xlifMg7t9t6YpN7h4ftWr3Mhwx+KcFGfYryFT+Dep8kx6PVJO7iZcN8Y3nfsNnljfsO6COexVvCU8YKbCiThvanjrFHZVIEU2cYelmuAMbOI0YnSD4BrRegyh0WCDUofjRZ5jWnyo0WA+KgqbO7KSZXCM+8=
+	t=1756216583; cv=none; b=IzW8q04bsHaMR5erOqkqKQNm3TYn9cw9gNfIoiWjcovdCo/rdLzZhy91yuWYxSKj7BoyiUkcmtwx+K6/2IqoCM/twcxK/KaTN690zopgdug0ijB0H16dyvqCxluzt89qacG5Di5QuwhxitqgTXyxpZGLW1dm3Nybm5ZWuBgNDL0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756217968; c=relaxed/simple;
-	bh=GO60ysB27pCYJOmeLe/gIf8MZ3EjDDI531hh+MkQ1UY=;
+	s=arc-20240116; t=1756216583; c=relaxed/simple;
+	bh=CIVfq2iAibC1c/21wHXOp1dd7omowVUqrWZ+1gelWqw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=jTiap14lOkf3TEhF81SDGpFE1/RPzOltvERWjiO/hf31SmFLJpVG4WTLbvA1hX9ARosOZhSAZKc0TmNsDvbqa0IiO38XnJN7ZjMWNAM06eTrMV1yV8UFBzNiEXjgpB8JFxxHa7Q+Ae9OvHEC2k5N/nAiDRyBDvg8cV4pIFtSiE0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=JY0ncfLt; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A786CC4CEF1;
-	Tue, 26 Aug 2025 14:19:27 +0000 (UTC)
+	 MIME-Version; b=l0TQbutBB53hcyhSazY7y9ufLpxKAKx3BKL8c8aGm0YfIkMn23sVZEcdXZNc3Wy56W/0ZzoIq/fJRuz+otXqLasqc3dZ4KRyytwNvVdUEUfuYgrclfbVwI99vO+Wuvbd2qOha4yOe/nUygnR1Uq43vZtRaAYmYm0Mgrwntiq418=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=NSG1HYpW; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6E477C4CEF1;
+	Tue, 26 Aug 2025 13:56:22 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1756217968;
-	bh=GO60ysB27pCYJOmeLe/gIf8MZ3EjDDI531hh+MkQ1UY=;
+	s=korg; t=1756216582;
+	bh=CIVfq2iAibC1c/21wHXOp1dd7omowVUqrWZ+1gelWqw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=JY0ncfLt0FUeXluq0dKT9r5K4QA2H3A7BuvM176th3VlrJSGyVQhrHL2WEEvQJSjO
-	 +EFNBtCDw7fsV9Vzweg3EB40LoL8bOqGShhjEUZ4eHc8QYjFWQ+CLy29WEQ+KLwuPy
-	 61gZTX6I3inqPQf/L6Z7vqcXT8w88zC92EKEamWM=
+	b=NSG1HYpWDKpVD6F98XHCP8tUEl7f3lHdRweoq3ZMW89s/NDB2n8u1NZXSz8aFD5+b
+	 YkBJJeeHvAY93FMBsa34P2Lq+ieSGbyLvzB2KvX/gp3zG82dATRRKxLtm6bCDjGCSV
+	 D/RccigZzWc6rowDEQ5prHmxocFoPMFYAFL6uc5k=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
+	Myrrh Periwinkle <myrrhperiwinkle@qtmlabs.xyz>,
 	stable <stable@kernel.org>,
-	syzbot+01523a0ae5600aef5895@syzkaller.appspotmail.com,
-	Jens Axboe <axboe@kernel.dk>,
-	Ian Abbott <abbotti@mev.co.uk>
-Subject: [PATCH 5.10 344/523] comedi: fix race between polling and detaching
-Date: Tue, 26 Aug 2025 13:09:14 +0200
-Message-ID: <20250826110932.955355045@linuxfoundation.org>
+	Jiri Slaby <jirislaby@kernel.org>
+Subject: [PATCH 5.15 464/644] vt: defkeymap: Map keycodes above 127 to K_HOLE
+Date: Tue, 26 Aug 2025 13:09:15 +0200
+Message-ID: <20250826110957.976980503@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250826110924.562212281@linuxfoundation.org>
-References: <20250826110924.562212281@linuxfoundation.org>
+In-Reply-To: <20250826110946.507083938@linuxfoundation.org>
+References: <20250826110946.507083938@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,162 +62,199 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Ian Abbott <abbotti@mev.co.uk>
+From: Myrrh Periwinkle <myrrhperiwinkle@qtmlabs.xyz>
 
-commit 35b6fc51c666fc96355be5cd633ed0fe4ccf68b2 upstream.
+commit b43cb4ff85da5cf29c4cd351ef1d7dd8210780f7 upstream.
 
-syzbot reports a use-after-free in comedi in the below link, which is
-due to comedi gladly removing the allocated async area even though poll
-requests are still active on the wait_queue_head inside of it. This can
-cause a use-after-free when the poll entries are later triggered or
-removed, as the memory for the wait_queue_head has been freed.  We need
-to check there are no tasks queued on any of the subdevices' wait queues
-before allowing the device to be detached by the `COMEDI_DEVCONFIG`
-ioctl.
+The maximum number of keycodes got bumped to 256 a very long time ago,
+but the default keymaps were never adjusted to match. This is causing
+the kernel to interpret keycodes above 127 as U+0000 if the shipped
+generated keymap is used.
 
-Tasks will read-lock `dev->attach_lock` before adding themselves to the
-subdevice wait queue, so fix the problem in the `COMEDI_DEVCONFIG` ioctl
-handler by write-locking `dev->attach_lock` before checking that all of
-the subdevices are safe to be deleted.  This includes testing for any
-sleepers on the subdevices' wait queues.  It remains locked until the
-device has been detached.  This requires the `comedi_device_detach()`
-function to be refactored slightly, moving the bulk of it into new
-function `comedi_device_detach_locked()`.
+Fix this by mapping all keycodes above 127 to K_HOLE so the kernel
+ignores them.
 
-Note that the refactor of `comedi_device_detach()` results in
-`comedi_device_cancel_all()` now being called while `dev->attach_lock`
-is write-locked, which wasn't the case previously, but that does not
-matter.
+The contents of this patche were generated by rerunning `loadkeys
+--mktable --unicode` and only including the changes to map keycodes
+above 127 to K_HOLE.
 
-Thanks to Jens Axboe for diagnosing the problem and co-developing this
-patch.
-
+Fixes: 1da177e4c3f4 ("Linux-2.6.12-rc2")
+Signed-off-by: Myrrh Periwinkle <myrrhperiwinkle@qtmlabs.xyz>
 Cc: stable <stable@kernel.org>
-Fixes: 2f3fdcd7ce93 ("staging: comedi: add rw_semaphore to protect against device detachment")
-Link: https://lore.kernel.org/all/687bd5fe.a70a0220.693ce.0091.GAE@google.com/
-Reported-by: syzbot+01523a0ae5600aef5895@syzkaller.appspotmail.com
-Closes: https://syzkaller.appspot.com/bug?extid=01523a0ae5600aef5895
-Co-developed-by: Jens Axboe <axboe@kernel.dk>
-Signed-off-by: Jens Axboe <axboe@kernel.dk>
-Signed-off-by: Ian Abbott <abbotti@mev.co.uk>
-Tested-by: Jens Axboe <axboe@kernel.dk>
-Link: https://lore.kernel.org/r/20250722155316.27432-1-abbotti@mev.co.uk
+Reviewed-by: Jiri Slaby <jirislaby@kernel.org>
+Link: https://lore.kernel.org/r/20250702-vt-misc-unicode-fixes-v1-2-c27e143cc2eb@qtmlabs.xyz
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/staging/comedi/comedi_fops.c     |   33 +++++++++++++++++++++++--------
- drivers/staging/comedi/comedi_internal.h |    1 
- drivers/staging/comedi/drivers.c         |   13 +++++++++---
- 3 files changed, 36 insertions(+), 11 deletions(-)
+ drivers/tty/vt/defkeymap.c_shipped |  112 +++++++++++++++++++++++++++++++++++++
+ 1 file changed, 112 insertions(+)
 
---- a/drivers/staging/comedi/comedi_fops.c
-+++ b/drivers/staging/comedi/comedi_fops.c
-@@ -783,6 +783,7 @@ static int is_device_busy(struct comedi_
- 	struct comedi_subdevice *s;
- 	int i;
+--- a/drivers/tty/vt/defkeymap.c_shipped
++++ b/drivers/tty/vt/defkeymap.c_shipped
+@@ -23,6 +23,22 @@ unsigned short plain_map[NR_KEYS] = {
+ 	0xf118,	0xf601,	0xf602,	0xf117,	0xf600,	0xf119,	0xf115,	0xf116,
+ 	0xf11a,	0xf10c,	0xf10d,	0xf11b,	0xf11c,	0xf110,	0xf311,	0xf11d,
+ 	0xf200,	0xf200,	0xf200,	0xf200,	0xf200,	0xf200,	0xf200,	0xf200,
++	0xf200,	0xf200,	0xf200,	0xf200,	0xf200,	0xf200,	0xf200,	0xf200,
++	0xf200,	0xf200,	0xf200,	0xf200,	0xf200,	0xf200,	0xf200,	0xf200,
++	0xf200,	0xf200,	0xf200,	0xf200,	0xf200,	0xf200,	0xf200,	0xf200,
++	0xf200,	0xf200,	0xf200,	0xf200,	0xf200,	0xf200,	0xf200,	0xf200,
++	0xf200,	0xf200,	0xf200,	0xf200,	0xf200,	0xf200,	0xf200,	0xf200,
++	0xf200,	0xf200,	0xf200,	0xf200,	0xf200,	0xf200,	0xf200,	0xf200,
++	0xf200,	0xf200,	0xf200,	0xf200,	0xf200,	0xf200,	0xf200,	0xf200,
++	0xf200,	0xf200,	0xf200,	0xf200,	0xf200,	0xf200,	0xf200,	0xf200,
++	0xf200,	0xf200,	0xf200,	0xf200,	0xf200,	0xf200,	0xf200,	0xf200,
++	0xf200,	0xf200,	0xf200,	0xf200,	0xf200,	0xf200,	0xf200,	0xf200,
++	0xf200,	0xf200,	0xf200,	0xf200,	0xf200,	0xf200,	0xf200,	0xf200,
++	0xf200,	0xf200,	0xf200,	0xf200,	0xf200,	0xf200,	0xf200,	0xf200,
++	0xf200,	0xf200,	0xf200,	0xf200,	0xf200,	0xf200,	0xf200,	0xf200,
++	0xf200,	0xf200,	0xf200,	0xf200,	0xf200,	0xf200,	0xf200,	0xf200,
++	0xf200,	0xf200,	0xf200,	0xf200,	0xf200,	0xf200,	0xf200,	0xf200,
++	0xf200,	0xf200,	0xf200,	0xf200,	0xf200,	0xf200,	0xf200,	0xf200,
+ };
  
-+	lockdep_assert_held_write(&dev->attach_lock);
- 	lockdep_assert_held(&dev->mutex);
- 	if (!dev->attached)
- 		return 0;
-@@ -791,7 +792,16 @@ static int is_device_busy(struct comedi_
- 		s = &dev->subdevices[i];
- 		if (s->busy)
- 			return 1;
--		if (s->async && comedi_buf_is_mmapped(s))
-+		if (!s->async)
-+			continue;
-+		if (comedi_buf_is_mmapped(s))
-+			return 1;
-+		/*
-+		 * There may be tasks still waiting on the subdevice's wait
-+		 * queue, although they should already be about to be removed
-+		 * from it since the subdevice has no active async command.
-+		 */
-+		if (wq_has_sleeper(&s->async->wait_head))
- 			return 1;
- 	}
+ static unsigned short shift_map[NR_KEYS] = {
+@@ -42,6 +58,22 @@ static unsigned short shift_map[NR_KEYS]
+ 	0xf20b,	0xf601,	0xf602,	0xf117,	0xf600,	0xf20a,	0xf115,	0xf116,
+ 	0xf11a,	0xf10c,	0xf10d,	0xf11b,	0xf11c,	0xf110,	0xf311,	0xf11d,
+ 	0xf200,	0xf200,	0xf200,	0xf200,	0xf200,	0xf200,	0xf200,	0xf200,
++	0xf200,	0xf200,	0xf200,	0xf200,	0xf200,	0xf200,	0xf200,	0xf200,
++	0xf200,	0xf200,	0xf200,	0xf200,	0xf200,	0xf200,	0xf200,	0xf200,
++	0xf200,	0xf200,	0xf200,	0xf200,	0xf200,	0xf200,	0xf200,	0xf200,
++	0xf200,	0xf200,	0xf200,	0xf200,	0xf200,	0xf200,	0xf200,	0xf200,
++	0xf200,	0xf200,	0xf200,	0xf200,	0xf200,	0xf200,	0xf200,	0xf200,
++	0xf200,	0xf200,	0xf200,	0xf200,	0xf200,	0xf200,	0xf200,	0xf200,
++	0xf200,	0xf200,	0xf200,	0xf200,	0xf200,	0xf200,	0xf200,	0xf200,
++	0xf200,	0xf200,	0xf200,	0xf200,	0xf200,	0xf200,	0xf200,	0xf200,
++	0xf200,	0xf200,	0xf200,	0xf200,	0xf200,	0xf200,	0xf200,	0xf200,
++	0xf200,	0xf200,	0xf200,	0xf200,	0xf200,	0xf200,	0xf200,	0xf200,
++	0xf200,	0xf200,	0xf200,	0xf200,	0xf200,	0xf200,	0xf200,	0xf200,
++	0xf200,	0xf200,	0xf200,	0xf200,	0xf200,	0xf200,	0xf200,	0xf200,
++	0xf200,	0xf200,	0xf200,	0xf200,	0xf200,	0xf200,	0xf200,	0xf200,
++	0xf200,	0xf200,	0xf200,	0xf200,	0xf200,	0xf200,	0xf200,	0xf200,
++	0xf200,	0xf200,	0xf200,	0xf200,	0xf200,	0xf200,	0xf200,	0xf200,
++	0xf200,	0xf200,	0xf200,	0xf200,	0xf200,	0xf200,	0xf200,	0xf200,
+ };
  
-@@ -821,15 +831,22 @@ static int do_devconfig_ioctl(struct com
- 		return -EPERM;
+ static unsigned short altgr_map[NR_KEYS] = {
+@@ -61,6 +93,22 @@ static unsigned short altgr_map[NR_KEYS]
+ 	0xf118,	0xf601,	0xf602,	0xf117,	0xf600,	0xf119,	0xf115,	0xf116,
+ 	0xf11a,	0xf10c,	0xf10d,	0xf11b,	0xf11c,	0xf110,	0xf311,	0xf11d,
+ 	0xf200,	0xf200,	0xf200,	0xf200,	0xf200,	0xf200,	0xf200,	0xf200,
++	0xf200,	0xf200,	0xf200,	0xf200,	0xf200,	0xf200,	0xf200,	0xf200,
++	0xf200,	0xf200,	0xf200,	0xf200,	0xf200,	0xf200,	0xf200,	0xf200,
++	0xf200,	0xf200,	0xf200,	0xf200,	0xf200,	0xf200,	0xf200,	0xf200,
++	0xf200,	0xf200,	0xf200,	0xf200,	0xf200,	0xf200,	0xf200,	0xf200,
++	0xf200,	0xf200,	0xf200,	0xf200,	0xf200,	0xf200,	0xf200,	0xf200,
++	0xf200,	0xf200,	0xf200,	0xf200,	0xf200,	0xf200,	0xf200,	0xf200,
++	0xf200,	0xf200,	0xf200,	0xf200,	0xf200,	0xf200,	0xf200,	0xf200,
++	0xf200,	0xf200,	0xf200,	0xf200,	0xf200,	0xf200,	0xf200,	0xf200,
++	0xf200,	0xf200,	0xf200,	0xf200,	0xf200,	0xf200,	0xf200,	0xf200,
++	0xf200,	0xf200,	0xf200,	0xf200,	0xf200,	0xf200,	0xf200,	0xf200,
++	0xf200,	0xf200,	0xf200,	0xf200,	0xf200,	0xf200,	0xf200,	0xf200,
++	0xf200,	0xf200,	0xf200,	0xf200,	0xf200,	0xf200,	0xf200,	0xf200,
++	0xf200,	0xf200,	0xf200,	0xf200,	0xf200,	0xf200,	0xf200,	0xf200,
++	0xf200,	0xf200,	0xf200,	0xf200,	0xf200,	0xf200,	0xf200,	0xf200,
++	0xf200,	0xf200,	0xf200,	0xf200,	0xf200,	0xf200,	0xf200,	0xf200,
++	0xf200,	0xf200,	0xf200,	0xf200,	0xf200,	0xf200,	0xf200,	0xf200,
+ };
  
- 	if (!arg) {
--		if (is_device_busy(dev))
--			return -EBUSY;
--		if (dev->attached) {
--			struct module *driver_module = dev->driver->module;
-+		int rc = 0;
+ static unsigned short ctrl_map[NR_KEYS] = {
+@@ -80,6 +128,22 @@ static unsigned short ctrl_map[NR_KEYS]
+ 	0xf118,	0xf601,	0xf602,	0xf117,	0xf600,	0xf119,	0xf115,	0xf116,
+ 	0xf11a,	0xf10c,	0xf10d,	0xf11b,	0xf11c,	0xf110,	0xf311,	0xf11d,
+ 	0xf200,	0xf200,	0xf200,	0xf200,	0xf200,	0xf200,	0xf200,	0xf200,
++	0xf200,	0xf200,	0xf200,	0xf200,	0xf200,	0xf200,	0xf200,	0xf200,
++	0xf200,	0xf200,	0xf200,	0xf200,	0xf200,	0xf200,	0xf200,	0xf200,
++	0xf200,	0xf200,	0xf200,	0xf200,	0xf200,	0xf200,	0xf200,	0xf200,
++	0xf200,	0xf200,	0xf200,	0xf200,	0xf200,	0xf200,	0xf200,	0xf200,
++	0xf200,	0xf200,	0xf200,	0xf200,	0xf200,	0xf200,	0xf200,	0xf200,
++	0xf200,	0xf200,	0xf200,	0xf200,	0xf200,	0xf200,	0xf200,	0xf200,
++	0xf200,	0xf200,	0xf200,	0xf200,	0xf200,	0xf200,	0xf200,	0xf200,
++	0xf200,	0xf200,	0xf200,	0xf200,	0xf200,	0xf200,	0xf200,	0xf200,
++	0xf200,	0xf200,	0xf200,	0xf200,	0xf200,	0xf200,	0xf200,	0xf200,
++	0xf200,	0xf200,	0xf200,	0xf200,	0xf200,	0xf200,	0xf200,	0xf200,
++	0xf200,	0xf200,	0xf200,	0xf200,	0xf200,	0xf200,	0xf200,	0xf200,
++	0xf200,	0xf200,	0xf200,	0xf200,	0xf200,	0xf200,	0xf200,	0xf200,
++	0xf200,	0xf200,	0xf200,	0xf200,	0xf200,	0xf200,	0xf200,	0xf200,
++	0xf200,	0xf200,	0xf200,	0xf200,	0xf200,	0xf200,	0xf200,	0xf200,
++	0xf200,	0xf200,	0xf200,	0xf200,	0xf200,	0xf200,	0xf200,	0xf200,
++	0xf200,	0xf200,	0xf200,	0xf200,	0xf200,	0xf200,	0xf200,	0xf200,
+ };
  
--			comedi_device_detach(dev);
--			module_put(driver_module);
-+		if (dev->attached) {
-+			down_write(&dev->attach_lock);
-+			if (is_device_busy(dev)) {
-+				rc = -EBUSY;
-+			} else {
-+				struct module *driver_module =
-+					dev->driver->module;
-+
-+				comedi_device_detach_locked(dev);
-+				module_put(driver_module);
-+			}
-+			up_write(&dev->attach_lock);
- 		}
--		return 0;
-+		return rc;
- 	}
+ static unsigned short shift_ctrl_map[NR_KEYS] = {
+@@ -99,6 +163,22 @@ static unsigned short shift_ctrl_map[NR_
+ 	0xf118,	0xf601,	0xf602,	0xf117,	0xf600,	0xf119,	0xf115,	0xf116,
+ 	0xf11a,	0xf10c,	0xf10d,	0xf11b,	0xf11c,	0xf110,	0xf311,	0xf11d,
+ 	0xf200,	0xf200,	0xf200,	0xf200,	0xf200,	0xf200,	0xf200,	0xf200,
++	0xf200,	0xf200,	0xf200,	0xf200,	0xf200,	0xf200,	0xf200,	0xf200,
++	0xf200,	0xf200,	0xf200,	0xf200,	0xf200,	0xf200,	0xf200,	0xf200,
++	0xf200,	0xf200,	0xf200,	0xf200,	0xf200,	0xf200,	0xf200,	0xf200,
++	0xf200,	0xf200,	0xf200,	0xf200,	0xf200,	0xf200,	0xf200,	0xf200,
++	0xf200,	0xf200,	0xf200,	0xf200,	0xf200,	0xf200,	0xf200,	0xf200,
++	0xf200,	0xf200,	0xf200,	0xf200,	0xf200,	0xf200,	0xf200,	0xf200,
++	0xf200,	0xf200,	0xf200,	0xf200,	0xf200,	0xf200,	0xf200,	0xf200,
++	0xf200,	0xf200,	0xf200,	0xf200,	0xf200,	0xf200,	0xf200,	0xf200,
++	0xf200,	0xf200,	0xf200,	0xf200,	0xf200,	0xf200,	0xf200,	0xf200,
++	0xf200,	0xf200,	0xf200,	0xf200,	0xf200,	0xf200,	0xf200,	0xf200,
++	0xf200,	0xf200,	0xf200,	0xf200,	0xf200,	0xf200,	0xf200,	0xf200,
++	0xf200,	0xf200,	0xf200,	0xf200,	0xf200,	0xf200,	0xf200,	0xf200,
++	0xf200,	0xf200,	0xf200,	0xf200,	0xf200,	0xf200,	0xf200,	0xf200,
++	0xf200,	0xf200,	0xf200,	0xf200,	0xf200,	0xf200,	0xf200,	0xf200,
++	0xf200,	0xf200,	0xf200,	0xf200,	0xf200,	0xf200,	0xf200,	0xf200,
++	0xf200,	0xf200,	0xf200,	0xf200,	0xf200,	0xf200,	0xf200,	0xf200,
+ };
  
- 	if (copy_from_user(&it, arg, sizeof(it)))
---- a/drivers/staging/comedi/comedi_internal.h
-+++ b/drivers/staging/comedi/comedi_internal.h
-@@ -50,6 +50,7 @@ extern struct mutex comedi_drivers_list_
- int insn_inval(struct comedi_device *dev, struct comedi_subdevice *s,
- 	       struct comedi_insn *insn, unsigned int *data);
+ static unsigned short alt_map[NR_KEYS] = {
+@@ -118,6 +198,22 @@ static unsigned short alt_map[NR_KEYS] =
+ 	0xf118,	0xf210,	0xf211,	0xf117,	0xf600,	0xf119,	0xf115,	0xf116,
+ 	0xf11a,	0xf10c,	0xf10d,	0xf11b,	0xf11c,	0xf110,	0xf311,	0xf11d,
+ 	0xf200,	0xf200,	0xf200,	0xf200,	0xf200,	0xf200,	0xf200,	0xf200,
++	0xf200,	0xf200,	0xf200,	0xf200,	0xf200,	0xf200,	0xf200,	0xf200,
++	0xf200,	0xf200,	0xf200,	0xf200,	0xf200,	0xf200,	0xf200,	0xf200,
++	0xf200,	0xf200,	0xf200,	0xf200,	0xf200,	0xf200,	0xf200,	0xf200,
++	0xf200,	0xf200,	0xf200,	0xf200,	0xf200,	0xf200,	0xf200,	0xf200,
++	0xf200,	0xf200,	0xf200,	0xf200,	0xf200,	0xf200,	0xf200,	0xf200,
++	0xf200,	0xf200,	0xf200,	0xf200,	0xf200,	0xf200,	0xf200,	0xf200,
++	0xf200,	0xf200,	0xf200,	0xf200,	0xf200,	0xf200,	0xf200,	0xf200,
++	0xf200,	0xf200,	0xf200,	0xf200,	0xf200,	0xf200,	0xf200,	0xf200,
++	0xf200,	0xf200,	0xf200,	0xf200,	0xf200,	0xf200,	0xf200,	0xf200,
++	0xf200,	0xf200,	0xf200,	0xf200,	0xf200,	0xf200,	0xf200,	0xf200,
++	0xf200,	0xf200,	0xf200,	0xf200,	0xf200,	0xf200,	0xf200,	0xf200,
++	0xf200,	0xf200,	0xf200,	0xf200,	0xf200,	0xf200,	0xf200,	0xf200,
++	0xf200,	0xf200,	0xf200,	0xf200,	0xf200,	0xf200,	0xf200,	0xf200,
++	0xf200,	0xf200,	0xf200,	0xf200,	0xf200,	0xf200,	0xf200,	0xf200,
++	0xf200,	0xf200,	0xf200,	0xf200,	0xf200,	0xf200,	0xf200,	0xf200,
++	0xf200,	0xf200,	0xf200,	0xf200,	0xf200,	0xf200,	0xf200,	0xf200,
+ };
  
-+void comedi_device_detach_locked(struct comedi_device *dev);
- void comedi_device_detach(struct comedi_device *dev);
- int comedi_device_attach(struct comedi_device *dev,
- 			 struct comedi_devconfig *it);
---- a/drivers/staging/comedi/drivers.c
-+++ b/drivers/staging/comedi/drivers.c
-@@ -159,7 +159,7 @@ static void comedi_device_detach_cleanup
- 	int i;
- 	struct comedi_subdevice *s;
+ static unsigned short ctrl_alt_map[NR_KEYS] = {
+@@ -137,6 +233,22 @@ static unsigned short ctrl_alt_map[NR_KE
+ 	0xf118,	0xf601,	0xf602,	0xf117,	0xf600,	0xf119,	0xf115,	0xf20c,
+ 	0xf11a,	0xf10c,	0xf10d,	0xf11b,	0xf11c,	0xf110,	0xf311,	0xf11d,
+ 	0xf200,	0xf200,	0xf200,	0xf200,	0xf200,	0xf200,	0xf200,	0xf200,
++	0xf200,	0xf200,	0xf200,	0xf200,	0xf200,	0xf200,	0xf200,	0xf200,
++	0xf200,	0xf200,	0xf200,	0xf200,	0xf200,	0xf200,	0xf200,	0xf200,
++	0xf200,	0xf200,	0xf200,	0xf200,	0xf200,	0xf200,	0xf200,	0xf200,
++	0xf200,	0xf200,	0xf200,	0xf200,	0xf200,	0xf200,	0xf200,	0xf200,
++	0xf200,	0xf200,	0xf200,	0xf200,	0xf200,	0xf200,	0xf200,	0xf200,
++	0xf200,	0xf200,	0xf200,	0xf200,	0xf200,	0xf200,	0xf200,	0xf200,
++	0xf200,	0xf200,	0xf200,	0xf200,	0xf200,	0xf200,	0xf200,	0xf200,
++	0xf200,	0xf200,	0xf200,	0xf200,	0xf200,	0xf200,	0xf200,	0xf200,
++	0xf200,	0xf200,	0xf200,	0xf200,	0xf200,	0xf200,	0xf200,	0xf200,
++	0xf200,	0xf200,	0xf200,	0xf200,	0xf200,	0xf200,	0xf200,	0xf200,
++	0xf200,	0xf200,	0xf200,	0xf200,	0xf200,	0xf200,	0xf200,	0xf200,
++	0xf200,	0xf200,	0xf200,	0xf200,	0xf200,	0xf200,	0xf200,	0xf200,
++	0xf200,	0xf200,	0xf200,	0xf200,	0xf200,	0xf200,	0xf200,	0xf200,
++	0xf200,	0xf200,	0xf200,	0xf200,	0xf200,	0xf200,	0xf200,	0xf200,
++	0xf200,	0xf200,	0xf200,	0xf200,	0xf200,	0xf200,	0xf200,	0xf200,
++	0xf200,	0xf200,	0xf200,	0xf200,	0xf200,	0xf200,	0xf200,	0xf200,
+ };
  
--	lockdep_assert_held(&dev->attach_lock);
-+	lockdep_assert_held_write(&dev->attach_lock);
- 	lockdep_assert_held(&dev->mutex);
- 	if (dev->subdevices) {
- 		for (i = 0; i < dev->n_subdevices; i++) {
-@@ -196,16 +196,23 @@ static void comedi_device_detach_cleanup
- 	comedi_clear_hw_dev(dev);
- }
- 
--void comedi_device_detach(struct comedi_device *dev)
-+void comedi_device_detach_locked(struct comedi_device *dev)
- {
-+	lockdep_assert_held_write(&dev->attach_lock);
- 	lockdep_assert_held(&dev->mutex);
- 	comedi_device_cancel_all(dev);
--	down_write(&dev->attach_lock);
- 	dev->attached = false;
- 	dev->detach_count++;
- 	if (dev->driver)
- 		dev->driver->detach(dev);
- 	comedi_device_detach_cleanup(dev);
-+}
-+
-+void comedi_device_detach(struct comedi_device *dev)
-+{
-+	lockdep_assert_held(&dev->mutex);
-+	down_write(&dev->attach_lock);
-+	comedi_device_detach_locked(dev);
- 	up_write(&dev->attach_lock);
- }
- 
+ ushort *key_maps[MAX_NR_KEYMAPS] = {
 
 
 
