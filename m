@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-173897-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-174379-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 16378B3604C
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 14:59:18 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id A9F0DB362E3
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 15:23:36 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 1AC4A1BC01B6
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 12:56:54 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id AA9E81896B09
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 13:19:50 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4B11D20DD42;
-	Tue, 26 Aug 2025 12:55:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id CFF47345752;
+	Tue, 26 Aug 2025 13:17:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="seid9e9a"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="VsbzQ0Wm"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F091C1F1538;
-	Tue, 26 Aug 2025 12:55:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8A8FD34DCD4;
+	Tue, 26 Aug 2025 13:17:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756212954; cv=none; b=JV72frEmEUFMjZRQX3fpyCetp1tKPyong9Bn0Xe8Nrgq7mWKYjQ2qtBDTsKRERXG8MH2k9jJlyM/rsfdCbWmlDQPPXHMnqD5YDMp4lHwTzOi2aTXpFnBCUKJenSRGBKBUolqEBaNBGGPE3i5or5Z8x7QFwofd9OUhgekNaBoZAo=
+	t=1756214234; cv=none; b=TlYpNpdt9mB7CuZbdJOmba4S+LGNrTD4VWxtWYDBV7pA5Z+PvhJ3k54fI2WjeEcPuFzHprvENdnmHrzvw8vCtDCQC5OmEDhUV6sH6TY6bZ0VXWVWmtptJ0dazP5yUryG/cpIfY1MjYBdVe0I6MzCX66p81aEwhuCgVjdpG2ofQI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756212954; c=relaxed/simple;
-	bh=XVh05h5ECCrzW8YhMPt9MRY/GCynD+MEtckNA4DDCoI=;
+	s=arc-20240116; t=1756214234; c=relaxed/simple;
+	bh=dKqDjZ48mcFrA7A5AAFYdLUqq0pWeRHxkVc3VIu/uD4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Tz0mqWYHNTZvf0QmtGsfV5n8tbF0W3OAshWQTiYC5bnOahqqF8zo9qf0CNF2wU6Tyl0k/vege3jwz4OkYtYwN/32XImf8XFK0pfLSsW/IRC9cOJuqxDdAxyDz71Vo6pkax6Ap8tmDhQnQLoSsfmJ/jAg9An2S3e+fEwOCnTokQs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=seid9e9a; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7DAB8C4CEF1;
-	Tue, 26 Aug 2025 12:55:53 +0000 (UTC)
+	 MIME-Version; b=kOL1d9GIEEDjWOi4d0EWStoZGuOwSMCtAnPKyCW4Vgj7GdMNB3uGrquW0xd/7HzwpMTloBL1mvAAf80d+lga8aHfgKTQw0Tj32SqdLX+X+XA5UWyFN6Z8vcPELFKiOrneVWU2+YgqMLvJZ60VRQ9YQEiuiIgncIr77ihu4mj5EQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=VsbzQ0Wm; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1DB28C4CEF1;
+	Tue, 26 Aug 2025 13:17:13 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1756212953;
-	bh=XVh05h5ECCrzW8YhMPt9MRY/GCynD+MEtckNA4DDCoI=;
+	s=korg; t=1756214234;
+	bh=dKqDjZ48mcFrA7A5AAFYdLUqq0pWeRHxkVc3VIu/uD4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=seid9e9aAnUfTB4BJHQIry+dExNRxTdUP7QCxrx7DWDJxVas3thJk07u0Bj1HyCz7
-	 kbd4aFlqmb7+jtnkECvjwIEn7O8RMcO+b6eWFmyokknqOlt44byH46NfDosKmAkDUV
-	 RKmvKt4+r4wNUUF6qj7yxYxu/EmkxzWVNTxNDrEs=
+	b=VsbzQ0WmJxZgFHmiR0dNKZm/BtA7KKUckTc1SK8n2OJ9lQWb3qYFL4djISlOLGxnm
+	 eS0w8WNvW7DuJ1jw310K6tCawJWavWFdV1UUZB8zQFDM1iE6T5yhoBcLyWjbWJubL2
+	 9ZmGPif3ZdkJuwl1Bg7FtYDWMeQwuLXY7YOEIFFA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Thomas Fourier <fourier.thomas@gmail.com>,
-	Christophe Leroy <christophe.leroy@csgroup.eu>,
-	Madhavan Srinivasan <maddy@linux.ibm.com>,
+	Wei Gao <wegao@suse.com>,
+	Jan Kara <jack@suse.cz>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 166/587] (powerpc/512) Fix possible `dma_unmap_single()` on uninitialized pointer
+Subject: [PATCH 6.1 062/482] ext2: Handle fiemap on empty files to prevent EINVAL
 Date: Tue, 26 Aug 2025 13:05:15 +0200
-Message-ID: <20250826110957.168319013@linuxfoundation.org>
+Message-ID: <20250826110932.356380152@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250826110952.942403671@linuxfoundation.org>
-References: <20250826110952.942403671@linuxfoundation.org>
+In-Reply-To: <20250826110930.769259449@linuxfoundation.org>
+References: <20250826110930.769259449@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,43 +62,52 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Thomas Fourier <fourier.thomas@gmail.com>
+From: Wei Gao <wegao@suse.com>
 
-[ Upstream commit 760b9b4f6de9a33ca56a05f950cabe82138d25bd ]
+[ Upstream commit a099b09a3342a0b28ea330e405501b5b4d0424b4 ]
 
-If the device configuration fails (if `dma_dev->device_config()`),
-`sg_dma_address(&sg)` is not initialized and the jump to `err_dma_prep`
-leads to calling `dma_unmap_single()` on `sg_dma_address(&sg)`.
+Previously, ext2_fiemap would unconditionally apply "len = min_t(u64, len,
+i_size_read(inode));", When inode->i_size was 0 (for an empty file), this
+would reduce the requested len to 0. Passing len = 0 to iomap_fiemap could
+then result in an -EINVAL error, even for valid queries on empty files.
 
-Signed-off-by: Thomas Fourier <fourier.thomas@gmail.com>
-Reviewed-by: Christophe Leroy <christophe.leroy@csgroup.eu>
-Signed-off-by: Madhavan Srinivasan <maddy@linux.ibm.com>
-Link: https://patch.msgid.link/20250610142918.169540-2-fourier.thomas@gmail.com
+Link: https://github.com/linux-test-project/ltp/issues/1246
+Signed-off-by: Wei Gao <wegao@suse.com>
+Signed-off-by: Jan Kara <jack@suse.cz>
+Link: https://patch.msgid.link/20250613152402.3432135-1-wegao@suse.com
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/powerpc/platforms/512x/mpc512x_lpbfifo.c | 6 ++----
- 1 file changed, 2 insertions(+), 4 deletions(-)
+ fs/ext2/inode.c | 12 +++++++++++-
+ 1 file changed, 11 insertions(+), 1 deletion(-)
 
-diff --git a/arch/powerpc/platforms/512x/mpc512x_lpbfifo.c b/arch/powerpc/platforms/512x/mpc512x_lpbfifo.c
-index 4a25b6b48615..f1e353fc6594 100644
---- a/arch/powerpc/platforms/512x/mpc512x_lpbfifo.c
-+++ b/arch/powerpc/platforms/512x/mpc512x_lpbfifo.c
-@@ -240,10 +240,8 @@ static int mpc512x_lpbfifo_kick(void)
- 	dma_conf.src_addr_width = DMA_SLAVE_BUSWIDTH_4_BYTES;
+diff --git a/fs/ext2/inode.c b/fs/ext2/inode.c
+index 5a32fcd55183..430ccd983491 100644
+--- a/fs/ext2/inode.c
++++ b/fs/ext2/inode.c
+@@ -860,9 +860,19 @@ int ext2_fiemap(struct inode *inode, struct fiemap_extent_info *fieinfo,
+ 		u64 start, u64 len)
+ {
+ 	int ret;
++	loff_t i_size;
  
- 	/* Make DMA channel work with LPB FIFO data register */
--	if (dma_dev->device_config(lpbfifo.chan, &dma_conf)) {
--		ret = -EINVAL;
--		goto err_dma_prep;
--	}
-+	if (dma_dev->device_config(lpbfifo.chan, &dma_conf))
-+		return -EINVAL;
- 
- 	sg_init_table(&sg, 1);
+ 	inode_lock(inode);
+-	len = min_t(u64, len, i_size_read(inode));
++	i_size = i_size_read(inode);
++	/*
++	 * iomap_fiemap() returns EINVAL for 0 length. Make sure we don't trim
++	 * length to 0 but still trim the range as much as possible since
++	 * ext2_get_blocks() iterates unmapped space block by block which is
++	 * slow.
++	 */
++	if (i_size == 0)
++		i_size = 1;
++	len = min_t(u64, len, i_size);
+ 	ret = iomap_fiemap(inode, fieinfo, start, len, &ext2_iomap_ops);
+ 	inode_unlock(inode);
  
 -- 
 2.39.5
