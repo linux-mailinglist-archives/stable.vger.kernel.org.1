@@ -1,58 +1,57 @@
-Return-Path: <stable+bounces-176194-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-175743-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [142.0.200.124])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4FE95B36AB7
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 16:40:11 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id F0E02B3699E
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 16:28:41 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 402314E1E64
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 14:40:10 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 03FEB1C4293E
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 14:20:01 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8474F35FC06;
-	Tue, 26 Aug 2025 14:37:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1610434F46B;
+	Tue, 26 Aug 2025 14:17:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="hcviJe4y"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Ghxs+Wib"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3FE5335E4FF;
-	Tue, 26 Aug 2025 14:37:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C8353481CD;
+	Tue, 26 Aug 2025 14:17:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756219024; cv=none; b=o6O0MN8uiruaMKIkI1SWXB72p+uYUIRmC28nvFL3U67CEW/J9msUsHNhoHdXKpQMllocX8fpMhSgIR52H+4iFlT67EoAiCCLJn9NQOzAnWPTdNMPx8Ax5pYZjAaVBDCEyVemK3czOiEVAmvcPOL38utSL/SKWskDcZ+Vmcgje0M=
+	t=1756217852; cv=none; b=sUF+52jJZ+XsyHKC91jeR9HhE3H6VsEpPiCGwYpl8SCh3X4Wru4UIF7aZKy1XY4HTg26ttyfkDACYW5zNWcw224FijQ++iHcJbfPjkR+O3mmncnYOB+3GbVMq1o0ZN58YP+oJIFxQSpxesh5Tem/R5zDimk5KqYmyIXwWure2F0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756219024; c=relaxed/simple;
-	bh=NkT0GFEIVhaPGqxi6ft7Cqv/DMibMmnJ/xEI9doLq3I=;
+	s=arc-20240116; t=1756217852; c=relaxed/simple;
+	bh=7pGwjk6C7AJo/suB88KE4xommi2UEEFgrr8args7egg=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=uuDOLALzetM62Jy7zoDUGGlz7p5uJzlZ3rk5IrWVfw33TZYfoQBtq0LvuuUhGG+NcNODo/8PD1+ahp8UQfzoSFgugPjumeOUFTgIB27Z+c8YYLRykOjjVVx31vC27AjQd6OfXwAshs7JFaLOMI1NWojuW5m9Zss3ZIET9maCnTk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=hcviJe4y; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C64B2C4CEF1;
-	Tue, 26 Aug 2025 14:37:03 +0000 (UTC)
+	 MIME-Version; b=gzifydF7xBaExpWnfO3u0q+tlykPndehEsMyXei1EHgE+oDUpFluu1N22jGMkeH185vpn2Ur4cKEvzuksJ/Ml152RGXtDiQ4Q43gWfzmqQK+u93vCQrxnUDRwF+TlS+ceU9P7cu8FM62xhJZm6SmOo/7/N2SgTd6n3pIIWmtB10=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Ghxs+Wib; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 588BEC4CEF1;
+	Tue, 26 Aug 2025 14:17:32 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1756219024;
-	bh=NkT0GFEIVhaPGqxi6ft7Cqv/DMibMmnJ/xEI9doLq3I=;
+	s=korg; t=1756217852;
+	bh=7pGwjk6C7AJo/suB88KE4xommi2UEEFgrr8args7egg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=hcviJe4ych0o6Kb5KOXusuK2AON4ujOAtwfXj0zE5ZC+0EwVUvj6XF+TtEvJocbgZ
-	 yYKJ0nlBbJ+dnfoCngK0bBCNVaXVvfRncXxtrBVd9qPXHsxZMncrH+aNzwf7ZzYuOO
-	 EtgEUiU798xcRRsDq4o+P6owcat1bU/TxuIU2x00=
+	b=Ghxs+WibIJGJM1td5gW9WEFrC0tCsW+0TVGKsUxh6Tz5zhg1R6HcRAI77N+kHv1pC
+	 XaOoL691gJgup3uRZGmB6V0epVJ7GiqBKqQUZ6HF99RmqiSQ5f21jvqz3Le9xVl8Ug
+	 TOqAPg1pOHZ0bfgLmcSDbo2UCKIkjGwoC4JX9dQ0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Cynthia Huang <cynthia@andestech.com>,
-	Ben Zong-You Xie <ben717@andestech.com>,
-	Thomas Gleixner <tglx@linutronix.de>,
-	Muhammad Usama Anjum <usama.anjum@collabora.com>,
+	syzbot+6e516bb515d93230bc7b@syzkaller.appspotmail.com,
+	Lizhi Xu <lizhi.xu@windriver.com>,
+	Dave Kleikamp <dave.kleikamp@oracle.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.4 182/403] selftests/futex: Define SYS_futex on 32-bit architectures with 64-bit time_t
+Subject: [PATCH 5.10 298/523] jfs: truncate good inode pages when hard link is 0
 Date: Tue, 26 Aug 2025 13:08:28 +0200
-Message-ID: <20250826110911.909664721@linuxfoundation.org>
+Message-ID: <20250826110931.801504202@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250826110905.607690791@linuxfoundation.org>
-References: <20250826110905.607690791@linuxfoundation.org>
+In-Reply-To: <20250826110924.562212281@linuxfoundation.org>
+References: <20250826110924.562212281@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,53 +63,43 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.4-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Cynthia Huang <cynthia@andestech.com>
+From: Lizhi Xu <lizhi.xu@windriver.com>
 
-[ Upstream commit 04850819c65c8242072818655d4341e70ae998b5 ]
+[ Upstream commit 2d91b3765cd05016335cd5df5e5c6a29708ec058 ]
 
-The kernel does not provide sys_futex() on 32-bit architectures that do not
-support 32-bit time representations, such as riscv32.
+The fileset value of the inode copy from the disk by the reproducer is
+AGGR_RESERVED_I. When executing evict, its hard link number is 0, so its
+inode pages are not truncated. This causes the bugon to be triggered when
+executing clear_inode() because nrpages is greater than 0.
 
-As a result, glibc cannot define SYS_futex, causing compilation failures in
-tests that rely on this syscall. Define SYS_futex as SYS_futex_time64 in
-such cases to ensure successful compilation and compatibility.
-
-Signed-off-by: Cynthia Huang <cynthia@andestech.com>
-Signed-off-by: Ben Zong-You Xie <ben717@andestech.com>
-Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
-Reviewed-by: Muhammad Usama Anjum <usama.anjum@collabora.com>
-Link: https://lore.kernel.org/all/20250710103630.3156130-1-ben717@andestech.com
+Reported-by: syzbot+6e516bb515d93230bc7b@syzkaller.appspotmail.com
+Closes: https://syzkaller.appspot.com/bug?extid=6e516bb515d93230bc7b
+Signed-off-by: Lizhi Xu <lizhi.xu@windriver.com>
+Signed-off-by: Dave Kleikamp <dave.kleikamp@oracle.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- tools/testing/selftests/futex/include/futextest.h | 11 +++++++++++
- 1 file changed, 11 insertions(+)
+ fs/jfs/inode.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/tools/testing/selftests/futex/include/futextest.h b/tools/testing/selftests/futex/include/futextest.h
-index ddbcfc9b7bac..7a5fd1d5355e 100644
---- a/tools/testing/selftests/futex/include/futextest.h
-+++ b/tools/testing/selftests/futex/include/futextest.h
-@@ -47,6 +47,17 @@ typedef volatile u_int32_t futex_t;
- 					 FUTEX_PRIVATE_FLAG)
- #endif
+diff --git a/fs/jfs/inode.c b/fs/jfs/inode.c
+index 980aa3300f10..2472b33e3a2d 100644
+--- a/fs/jfs/inode.c
++++ b/fs/jfs/inode.c
+@@ -145,9 +145,9 @@ void jfs_evict_inode(struct inode *inode)
+ 	if (!inode->i_nlink && !is_bad_inode(inode)) {
+ 		dquot_initialize(inode);
  
-+/*
-+ * SYS_futex is expected from system C library, in glibc some 32-bit
-+ * architectures (e.g. RV32) are using 64-bit time_t, therefore it doesn't have
-+ * SYS_futex defined but just SYS_futex_time64. Define SYS_futex as
-+ * SYS_futex_time64 in this situation to ensure the compilation and the
-+ * compatibility.
-+ */
-+#if !defined(SYS_futex) && defined(SYS_futex_time64)
-+#define SYS_futex SYS_futex_time64
-+#endif
-+
- /**
-  * futex() - SYS_futex syscall wrapper
-  * @uaddr:	address of first futex
++		truncate_inode_pages_final(&inode->i_data);
+ 		if (JFS_IP(inode)->fileset == FILESYSTEM_I) {
+ 			struct inode *ipimap = JFS_SBI(inode->i_sb)->ipimap;
+-			truncate_inode_pages_final(&inode->i_data);
+ 
+ 			if (test_cflag(COMMIT_Freewmap, inode))
+ 				jfs_free_zero_link(inode);
 -- 
 2.39.5
 
