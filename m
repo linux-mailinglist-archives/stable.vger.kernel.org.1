@@ -1,55 +1,56 @@
-Return-Path: <stable+bounces-176151-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-175741-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6B433B36C7F
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 16:56:43 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 124A2B369E1
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 16:31:53 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 7EFF6582337
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 14:38:11 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 875E21C42856
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 14:19:55 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3A9523568F6;
-	Tue, 26 Aug 2025 14:35:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id BE67D34DCDA;
+	Tue, 26 Aug 2025 14:17:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="10M5ozh6"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="qrxW8oPE"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id ED1FC340D95;
-	Tue, 26 Aug 2025 14:35:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7AA962F49EA;
+	Tue, 26 Aug 2025 14:17:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756218913; cv=none; b=LHn+mbFfeuqc0XfvmTFVMlHDpvFFxZFuQYrb5E2u/mtgOXUlghtnrG8jGNGK26OQWpXfhNN5n+8bA0u6lgK+Hr837rOtDb+fDqCee6B0bPZyJVsCLFXhBKd1OLBPzLvFq8ybdFZIVkV3w7F5lE7/eBGQBH/DjyEPEMKUxECMQsE=
+	t=1756217847; cv=none; b=iwIycntL99LQXpUsm829FEUZ8s37gOmbu5747EZUoEzjXgHTyajA0iV+PtDxmGB0m3tGhcvniANegg8tJBlLLd8QPSeBhWXZN1yW1JLXaSt73lgxbAdGK7UeJYcPybe1cvuNFjmQU3MoD+0oGZGAJ4uu6jHlImkN7ZUBagEEWZU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756218913; c=relaxed/simple;
-	bh=ygSHcBORPv1vGrw8+IY53VMR7nAGWoavgQkn20/bFq0=;
+	s=arc-20240116; t=1756217847; c=relaxed/simple;
+	bh=afsK6eidVQpEyg4co3W1Al3/2yq3VZ5Bysz3JnCvNTM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Q8G7Uk/ocZgoJexTyCwtX3Qv5//6I5NEyxhYqw24geOnCnlFdXk6dfL1uop1+XZAKLuJMOQeBfLzsoC3g9AzNhgd/WifJ9wOwE19fGD0r2lhSh6bHdd/9sso16Edjkat8Aw9vw9VsESZK5i1X38fVt8xzRqtm5q+BUawpSoRdz8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=10M5ozh6; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 82ACDC4CEF1;
-	Tue, 26 Aug 2025 14:35:12 +0000 (UTC)
+	 MIME-Version; b=LJFoatZfBZNgXndOnJdgAcpjzns6eygKqE3Zk1CUYNiticSAmLCTI5dUyepVP57neg/UhpbfjxNXaI2vBQqqhhhm7x5ec/QBKolaDfqUep891TGbKQ92ehlqQWUmNneinNfWh7jSvOmLmjSRMwun5206tehQp6Te9BBWuBMbqyY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=qrxW8oPE; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 11058C4CEF1;
+	Tue, 26 Aug 2025 14:17:26 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1756218912;
-	bh=ygSHcBORPv1vGrw8+IY53VMR7nAGWoavgQkn20/bFq0=;
+	s=korg; t=1756217847;
+	bh=afsK6eidVQpEyg4co3W1Al3/2yq3VZ5Bysz3JnCvNTM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=10M5ozh68QzrT5buSUlbl/5uirw6/UxBlubAiMbnnMeyfdNdEp/EITuTxMYUlm+YY
-	 N7xYg+smfYaTMs7UjmfOOPg3tBmP0/cawnAEk4uD0YX+qBe5f6uPr25AXDYQSinUSe
-	 MM2tAIjcQTZLlInE0BUT8sT3jKeXXuyofetEjK/0=
+	b=qrxW8oPEnFMJxXNVvfL3jCMpyvzSvhsnd+opZgc+E6FYnZ7NIk9Ipci4uXlWt4GiQ
+	 ci/6xUe08DUYPeRcxV1rPPkpVrlSk3ab0/h6aXBAjcVw/zm+h/6wl7/mc+0S6LjRyu
+	 mjayJEI+Z1lStP5xFwviupMFt30noZmSOQTjogtY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Su Hui <suhui@nfschina.com>,
+	Shiji Yang <yangshiji66@outlook.com>,
+	Thomas Bogendoerfer <tsbogend@alpha.franken.de>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.4 180/403] usb: xhci: print xhci->xhc_state when queue_command failed
+Subject: [PATCH 5.10 296/523] MIPS: vpe-mt: add missing prototypes for vpe_{alloc,start,stop,free}
 Date: Tue, 26 Aug 2025 13:08:26 +0200
-Message-ID: <20250826110911.854693637@linuxfoundation.org>
+Message-ID: <20250826110931.750152283@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250826110905.607690791@linuxfoundation.org>
-References: <20250826110905.607690791@linuxfoundation.org>
+In-Reply-To: <20250826110924.562212281@linuxfoundation.org>
+References: <20250826110924.562212281@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,44 +62,55 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.4-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Su Hui <suhui@nfschina.com>
+From: Shiji Yang <yangshiji66@outlook.com>
 
-[ Upstream commit 7919407eca2ef562fa6c98c41cfdf6f6cdd69d92 ]
+[ Upstream commit 844615dd0f2d95c018ec66b943e08af22b62aff3 ]
 
-When encounters some errors like these:
-xhci_hcd 0000:4a:00.2: xHCI dying or halted, can't queue_command
-xhci_hcd 0000:4a:00.2: FIXME: allocate a command ring segment
-usb usb5-port6: couldn't allocate usb_device
+These functions are exported but their prototypes are not defined.
+This patch adds the missing function prototypes to fix the following
+compilation warnings:
 
-It's hard to know whether xhc_state is dying or halted. So it's better
-to print xhc_state's value which can help locate the resaon of the bug.
+arch/mips/kernel/vpe-mt.c:180:7: error: no previous prototype for 'vpe_alloc' [-Werror=missing-prototypes]
+  180 | void *vpe_alloc(void)
+      |       ^~~~~~~~~
+arch/mips/kernel/vpe-mt.c:198:5: error: no previous prototype for 'vpe_start' [-Werror=missing-prototypes]
+  198 | int vpe_start(void *vpe, unsigned long start)
+      |     ^~~~~~~~~
+arch/mips/kernel/vpe-mt.c:208:5: error: no previous prototype for 'vpe_stop' [-Werror=missing-prototypes]
+  208 | int vpe_stop(void *vpe)
+      |     ^~~~~~~~
+arch/mips/kernel/vpe-mt.c:229:5: error: no previous prototype for 'vpe_free' [-Werror=missing-prototypes]
+  229 | int vpe_free(void *vpe)
+      |     ^~~~~~~~
 
-Signed-off-by: Su Hui <suhui@nfschina.com>
-Link: https://lore.kernel.org/r/20250725060117.1773770-1-suhui@nfschina.com
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Signed-off-by: Shiji Yang <yangshiji66@outlook.com>
+Signed-off-by: Thomas Bogendoerfer <tsbogend@alpha.franken.de>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/usb/host/xhci-ring.c | 3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+ arch/mips/include/asm/vpe.h | 8 ++++++++
+ 1 file changed, 8 insertions(+)
 
-diff --git a/drivers/usb/host/xhci-ring.c b/drivers/usb/host/xhci-ring.c
-index 08b016864fc0..71b17a00d3ed 100644
---- a/drivers/usb/host/xhci-ring.c
-+++ b/drivers/usb/host/xhci-ring.c
-@@ -4076,7 +4076,8 @@ static int queue_command(struct xhci_hcd *xhci, struct xhci_command *cmd,
+diff --git a/arch/mips/include/asm/vpe.h b/arch/mips/include/asm/vpe.h
+index 012731546cf6..3de6b0ff1627 100644
+--- a/arch/mips/include/asm/vpe.h
++++ b/arch/mips/include/asm/vpe.h
+@@ -126,4 +126,12 @@ void cleanup_tc(struct tc *tc);
  
- 	if ((xhci->xhc_state & XHCI_STATE_DYING) ||
- 		(xhci->xhc_state & XHCI_STATE_HALTED)) {
--		xhci_dbg(xhci, "xHCI dying or halted, can't queue_command\n");
-+		xhci_dbg(xhci, "xHCI dying or halted, can't queue_command. state: 0x%x\n",
-+			 xhci->xhc_state);
- 		return -ESHUTDOWN;
- 	}
- 
+ int __init vpe_module_init(void);
+ void __exit vpe_module_exit(void);
++
++#ifdef CONFIG_MIPS_VPE_LOADER_MT
++void *vpe_alloc(void);
++int vpe_start(void *vpe, unsigned long start);
++int vpe_stop(void *vpe);
++int vpe_free(void *vpe);
++#endif /* CONFIG_MIPS_VPE_LOADER_MT */
++
+ #endif /* _ASM_VPE_H */
 -- 
 2.39.5
 
