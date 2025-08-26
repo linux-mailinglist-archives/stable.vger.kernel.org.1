@@ -1,55 +1,57 @@
-Return-Path: <stable+bounces-175281-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-176218-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9436FB3677F
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 16:07:45 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 635CFB36C32
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 16:53:36 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 034562A82C2
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 13:59:09 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id BDA361C46502
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 14:41:29 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 91E69350D48;
-	Tue, 26 Aug 2025 13:57:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id ECCC635CED0;
+	Tue, 26 Aug 2025 14:38:06 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="0edMyPhr"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="lrgxAMue"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 40E15345758;
-	Tue, 26 Aug 2025 13:57:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AB4F635A2B2;
+	Tue, 26 Aug 2025 14:38:06 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756216622; cv=none; b=M/IR1jVx6M472jj+1KRV9T/OUgOurrZz1mKBXbp1ve0g/388TrKXA2LFOFmBbdfkhTz2/DC+BxvZNHa4hgOxWtfWphDwg47zbM9LN6WdnmpZEpesUYaXQra7teLPAkal6Qdd8lFJHEvzq604ubH3a9IpHPqkJFYUvYBwZ7W1oEM=
+	t=1756219086; cv=none; b=MT0Ot5sZnoN5ifjLVQxu4dqyewOUaMRPqI4Dptm43EOdjBBVOM1YtlCM+sf5NtqfsxbZZTiLhSc06zkkWYpiYr02RkmK44rOB4fq9j7SLq0FDnnA3Eied6yUPOQffFOkTmyqjJHyBEdfI98y4KJHVtHX36ZSrkQYIM1UqJwRLDQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756216622; c=relaxed/simple;
-	bh=30DaLl62I0gFkyGgmZ0a0phDh74LVRZNkdprM8nR9QY=;
+	s=arc-20240116; t=1756219086; c=relaxed/simple;
+	bh=Ub+W8vgQctU/F9Tfi1eeIEJR2BwF/MtEFOZvVIO1qwc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=eWl7LT9xbe7OrJQkT84eZOgSknRt77LjGbtGrAUhagb63nGYZL/Qt78L5zfw9KoBnM28nLb3fVBxaUC7m4u6XN/oAbyI20bww76a1hLxFhJ8sN2BVJ00oTObYmkD4jaFriTW1i/kZDX2p38nMZA9SkMFKW7nJgS/h6Q3uEt2ni8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=0edMyPhr; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C85F4C113D0;
-	Tue, 26 Aug 2025 13:57:01 +0000 (UTC)
+	 MIME-Version; b=s7u7XK7F5JkTQB/J5Mtgv0Q4jr4zq6A1TYATy26oomcyuvNyHPpiEyEa/nzwN/QndxsemcMJxbll7m2Q1t9sue6M2uU4fgdT1VPoRNlbtcMBqTNV2Quwhe0ixiiUUWa5tvoAJQmgGQdXCAZ/28i1vXqNd064wbqdGOHmw2jnjdU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=lrgxAMue; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3D1E4C113CF;
+	Tue, 26 Aug 2025 14:38:06 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1756216622;
-	bh=30DaLl62I0gFkyGgmZ0a0phDh74LVRZNkdprM8nR9QY=;
+	s=korg; t=1756219086;
+	bh=Ub+W8vgQctU/F9Tfi1eeIEJR2BwF/MtEFOZvVIO1qwc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=0edMyPhrGDae+31YdyLz786xZdHe3cJqk4e9dA7dC0MHAqobbjsLJe6KieSvVKZ0U
-	 tvM46bJQMuVUsuS4qMdYeZyzQME+fE3Or3QaoNncRmuHhzMD3aCyC5yUCthzIKmwhq
-	 IZH6wiESho6BI2w0aDMowGs0NpihXc2QyymDfnz4=
+	b=lrgxAMue30J/tVMR2WbjhxWpNrF0/jjsWr9QSvI0iuejbMvYXTihkefmgyZV10Abc
+	 xsOTJzIVzvWXblIgUXU6nk1p1OcQrI1n2lHbqrwsm0FeOOvIoG9ykzl/WphOQWio0/
+	 YZr/0KLAz2E1Klajt95bASYUjR1KSTOcu8vHu9sc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Thomas Fourier <fourier.thomas@gmail.com>,
-	Miquel Raynal <miquel.raynal@bootlin.com>
-Subject: [PATCH 5.15 481/644] mtd: rawnand: fsmc: Add missing check after DMA map
+	Cheick Traore <cheick.traore@foss.st.com>,
+	Antonio Borneo <antonio.borneo@foss.st.com>,
+	Linus Walleij <linus.walleij@linaro.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.4 246/403] pinctrl: stm32: Manage irq affinity settings
 Date: Tue, 26 Aug 2025 13:09:32 +0200
-Message-ID: <20250826110958.405395034@linuxfoundation.org>
+Message-ID: <20250826110913.621034668@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250826110946.507083938@linuxfoundation.org>
-References: <20250826110946.507083938@linuxfoundation.org>
+In-Reply-To: <20250826110905.607690791@linuxfoundation.org>
+References: <20250826110905.607690791@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,38 +63,44 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+5.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Thomas Fourier <fourier.thomas@gmail.com>
+From: Cheick Traore <cheick.traore@foss.st.com>
 
-commit 6c4dab38431fee3d39a841d66ba6f2890b31b005 upstream.
+[ Upstream commit 4c5cc2f65386e22166ce006efe515c667aa075e4 ]
 
-The DMA map functions can fail and should be tested for errors.
+Trying to set the affinity of the interrupts associated to stm32
+pinctrl results in a write error.
 
-Fixes: 4774fb0a48aa ("mtd: nand/fsmc: Add DMA support")
-Cc: stable@vger.kernel.org
-Signed-off-by: Thomas Fourier <fourier.thomas@gmail.com>
-Rule: add
-Link: https://lore.kernel.org/stable/20250702065806.20983-2-fourier.thomas%40gmail.com
-Signed-off-by: Miquel Raynal <miquel.raynal@bootlin.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fill struct irq_chip::irq_set_affinity to use the default helper
+function.
+
+Signed-off-by: Cheick Traore <cheick.traore@foss.st.com>
+Signed-off-by: Antonio Borneo <antonio.borneo@foss.st.com>
+Link: https://lore.kernel.org/20250610143042.295376-3-antonio.borneo@foss.st.com
+Signed-off-by: Linus Walleij <linus.walleij@linaro.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/mtd/nand/raw/fsmc_nand.c |    2 ++
- 1 file changed, 2 insertions(+)
+ drivers/pinctrl/stm32/pinctrl-stm32.c | 1 +
+ 1 file changed, 1 insertion(+)
 
---- a/drivers/mtd/nand/raw/fsmc_nand.c
-+++ b/drivers/mtd/nand/raw/fsmc_nand.c
-@@ -503,6 +503,8 @@ static int dma_xfer(struct fsmc_nand_dat
+diff --git a/drivers/pinctrl/stm32/pinctrl-stm32.c b/drivers/pinctrl/stm32/pinctrl-stm32.c
+index 10595b43360b..2a9c2d94eb55 100644
+--- a/drivers/pinctrl/stm32/pinctrl-stm32.c
++++ b/drivers/pinctrl/stm32/pinctrl-stm32.c
+@@ -340,6 +340,7 @@ static struct irq_chip stm32_gpio_irq_chip = {
+ 	.irq_set_wake	= irq_chip_set_wake_parent,
+ 	.irq_request_resources = stm32_gpio_irq_request_resources,
+ 	.irq_release_resources = stm32_gpio_irq_release_resources,
++	.irq_set_affinity = IS_ENABLED(CONFIG_SMP) ? irq_chip_set_affinity_parent : NULL,
+ };
  
- 	dma_dev = chan->device;
- 	dma_addr = dma_map_single(dma_dev->dev, buffer, len, direction);
-+	if (dma_mapping_error(dma_dev->dev, dma_addr))
-+		return -EINVAL;
- 
- 	if (direction == DMA_TO_DEVICE) {
- 		dma_src = dma_addr;
+ static int stm32_gpio_domain_translate(struct irq_domain *d,
+-- 
+2.39.5
+
 
 
 
