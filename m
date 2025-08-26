@@ -1,53 +1,52 @@
-Return-Path: <stable+bounces-172943-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-174832-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 46D5CB35ADB
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 13:13:38 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0D5AAB3652E
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 15:45:38 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id E812F2A6DAB
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 11:12:54 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 88560563378
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 13:37:46 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1783B2F9992;
-	Tue, 26 Aug 2025 11:12:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7F9C43376BA;
+	Tue, 26 Aug 2025 13:37:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="lyr6LiIW"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="XdwWlnz4"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C52922BF006;
-	Tue, 26 Aug 2025 11:12:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3D44E246BC5;
+	Tue, 26 Aug 2025 13:37:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756206765; cv=none; b=TdzW2w6E64TaQ6HH9wS+BGgeCE7Hui06+imOfa6JkPMeGRlHrAHfQQr3T0VnyiZNd+OepDrShrhp6UJYbRNwLWetqwqfNq6/iBvHrIL3FDkSSBOb5SIo+LbX70K5J0uXC6cCuv2dU+vP335lyvbwFahpUxgX2Q1XUeTwDum+vZg=
+	t=1756215433; cv=none; b=Xdj6gtauFhScfR3qfDZnXbH2OQf6FHbL9P+P3FChm/8420X7zZV9Zp+983w7GkM82jyoOTqAuEv/SEnpREZEdYVVYnNsgibWIPrdrbox/gQzgTvv3SQQW7lPemIeYfzhyJJg0JQYoQLAdiJidFxdU8SKA0CNLrivTZo530uqAiI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756206765; c=relaxed/simple;
-	bh=hPUHzstySJLn6nIji92TGjEpduNrqiXtAliNTmvteIk=;
+	s=arc-20240116; t=1756215433; c=relaxed/simple;
+	bh=kXVRAsdH1mvKfA/2Mvxo7ZuW2XN9G+TPdop+Ldk2uIs=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=LSQZVxny6rkM5cqqocWiuC1HzM1haxKzCixMY4txfLBdiWs0zP1YhKXXoR0uhC0jVEZXz/MuucCxoIR9JpH6b8pFD703A80G5Z+F8WsIXqsLnqa4AhpZgbPexmaOBx9f6kl5xR1na8jfRzDTeKyeZ9chDfDmviwZp2e4mdUB1M0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=lyr6LiIW; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 02F92C4CEF1;
-	Tue, 26 Aug 2025 11:12:43 +0000 (UTC)
+	 MIME-Version; b=pULYpqKvEibTKmXp2rRjJP5Bfjd+I0vAN5tw0jmB9a4OT0Ee286VP9DT1xD9tUJQgHBFjv0LggoF0psCL7R43FedDka1ku0kzlL51hGmCcb775c6uF431mo1lwm3adjIDC8TGxrfWUfbWn221FUU54Ot6jsxFBNAXwf5b3A4qJU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=XdwWlnz4; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 96DE9C4CEF1;
+	Tue, 26 Aug 2025 13:37:12 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1756206764;
-	bh=hPUHzstySJLn6nIji92TGjEpduNrqiXtAliNTmvteIk=;
+	s=korg; t=1756215433;
+	bh=kXVRAsdH1mvKfA/2Mvxo7ZuW2XN9G+TPdop+Ldk2uIs=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=lyr6LiIWsgqL1mFwEsWi8HuzYVTCkPLPvuSwu/6JXsERJzusFsJF/pdpZpoDjjBoQ
-	 ZyYvObHXipiseirSqM7HANU1igF/rdhvzAjysVy8eYs+w5gAK3cSEyWXz8CgJHSNMy
-	 +AO9iobQMDn+SdsLW0UOxeEOao9BxLTGqR3ZxVvo=
+	b=XdwWlnz45dtdN+TUV9ayWw6mahjEOpG4MvPmj4Cqd0E2pZBG74sK32RYoxV4YV2nQ
+	 UlaQJ9m1V154+cF+nvFGk20sMzUB88VYacDmwWPy2C6Rn4XKXe+Q18xzOR09pDO9+6
+	 Rn/DxmbExDGCvcOO71MhVECr/6lu0MbadR6ktfCE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Wayne Chang <waynec@nvidia.com>,
-	Jon Hunter <jonathanh@nvidia.com>,
-	Vinod Koul <vkoul@kernel.org>
-Subject: [PATCH 5.15 001/644] phy: tegra: xusb: Fix unbalanced regulator disable in UTMI PHY mode
-Date: Tue, 26 Aug 2025 13:01:32 +0200
-Message-ID: <20250826110946.549880015@linuxfoundation.org>
+	Fabio Porcedda <fabio.porcedda@gmail.com>,
+	Johan Hovold <johan@kernel.org>
+Subject: [PATCH 5.15 002/644] USB: serial: option: add Telit Cinterion FE910C04 (ECM) composition
+Date: Tue, 26 Aug 2025 13:01:33 +0200
+Message-ID: <20250826110946.572554255@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
 In-Reply-To: <20250826110946.507083938@linuxfoundation.org>
 References: <20250826110946.507083938@linuxfoundation.org>
@@ -66,138 +65,58 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Wayne Chang <waynec@nvidia.com>
+From: Fabio Porcedda <fabio.porcedda@gmail.com>
 
-commit cefc1caee9dd06c69e2d807edc5949b329f52b22 upstream.
+commit 252f4ac08cd2f16ecd20e4c5e41ac2a17dd86942 upstream.
 
-When transitioning from USB_ROLE_DEVICE to USB_ROLE_NONE, the code
-assumed that the regulator should be disabled. However, if the regulator
-is marked as always-on, regulator_is_enabled() continues to return true,
-leading to an incorrect attempt to disable a regulator which is not
-enabled.
+Add Telit Cinterion FE910C04 (ECM) composition:
+0x10c7: ECM + tty (AT) + tty (AT) + tty (diag)
 
-This can result in warnings such as:
+usb-devices output:
+T:  Bus=01 Lev=01 Prnt=01 Port=00 Cnt=01 Dev#=  7 Spd=480 MxCh= 0
+D:  Ver= 2.00 Cls=00(>ifc ) Sub=00 Prot=00 MxPS=64 #Cfgs=  1
+P:  Vendor=1bc7 ProdID=10c7 Rev=05.15
+S:  Manufacturer=Telit Cinterion
+S:  Product=FE910
+S:  SerialNumber=f71b8b32
+C:  #Ifs= 5 Cfg#= 1 Atr=e0 MxPwr=500mA
+I:  If#= 0 Alt= 0 #EPs= 1 Cls=02(commc) Sub=06 Prot=00 Driver=cdc_ether
+E:  Ad=82(I) Atr=03(Int.) MxPS=  16 Ivl=32ms
+I:  If#= 1 Alt= 1 #EPs= 2 Cls=0a(data ) Sub=00 Prot=00 Driver=cdc_ether
+E:  Ad=01(O) Atr=02(Bulk) MxPS= 512 Ivl=0ms
+E:  Ad=81(I) Atr=02(Bulk) MxPS= 512 Ivl=0ms
+I:  If#= 2 Alt= 0 #EPs= 3 Cls=ff(vend.) Sub=ff Prot=40 Driver=option
+E:  Ad=02(O) Atr=02(Bulk) MxPS= 512 Ivl=0ms
+E:  Ad=83(I) Atr=02(Bulk) MxPS= 512 Ivl=0ms
+E:  Ad=84(I) Atr=03(Int.) MxPS=  10 Ivl=32ms
+I:  If#= 3 Alt= 0 #EPs= 3 Cls=ff(vend.) Sub=ff Prot=40 Driver=option
+E:  Ad=03(O) Atr=02(Bulk) MxPS= 512 Ivl=0ms
+E:  Ad=85(I) Atr=02(Bulk) MxPS= 512 Ivl=0ms
+E:  Ad=86(I) Atr=03(Int.) MxPS=  10 Ivl=32ms
+I:  If#= 4 Alt= 0 #EPs= 2 Cls=ff(vend.) Sub=ff Prot=30 Driver=option
+E:  Ad=04(O) Atr=02(Bulk) MxPS= 512 Ivl=0ms
+E:  Ad=87(I) Atr=02(Bulk) MxPS= 512 Ivl=0ms
 
-[  250.155624] WARNING: CPU: 1 PID: 7326 at drivers/regulator/core.c:3004
-_regulator_disable+0xe4/0x1a0
-[  250.155652] unbalanced disables for VIN_SYS_5V0
-
-To fix this, we move the regulator control logic into
-tegra186_xusb_padctl_id_override() function since it's directly related
-to the ID override state. The regulator is now only disabled when the role
-transitions from USB_ROLE_HOST to USB_ROLE_NONE, by checking the VBUS_ID
-register. This ensures that regulator enable/disable operations are
-properly balanced and only occur when actually transitioning to/from host
-mode.
-
-Fixes: 49d46e3c7e59 ("phy: tegra: xusb: Add set_mode support for UTMI phy on Tegra186")
 Cc: stable@vger.kernel.org
-Signed-off-by: Wayne Chang <waynec@nvidia.com>
-Reviewed-by: Jon Hunter <jonathanh@nvidia.com>
-Tested-by: Jon Hunter <jonathanh@nvidia.com>
-Link: https://lore.kernel.org/r/20250502092606.2275682-1-waynec@nvidia.com
-Signed-off-by: Vinod Koul <vkoul@kernel.org>
+Signed-off-by: Fabio Porcedda <fabio.porcedda@gmail.com>
+Signed-off-by: Johan Hovold <johan@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/phy/tegra/xusb-tegra186.c |   59 +++++++++++++++++++++++---------------
- 1 file changed, 37 insertions(+), 22 deletions(-)
+ drivers/usb/serial/option.c |    3 +++
+ 1 file changed, 3 insertions(+)
 
---- a/drivers/phy/tegra/xusb-tegra186.c
-+++ b/drivers/phy/tegra/xusb-tegra186.c
-@@ -715,13 +715,15 @@ static int tegra186_xusb_padctl_vbus_ove
- }
- 
- static int tegra186_xusb_padctl_id_override(struct tegra_xusb_padctl *padctl,
--					    bool status)
-+					    struct tegra_xusb_usb2_port *port, bool status)
- {
--	u32 value;
-+	u32 value, id_override;
-+	int err = 0;
- 
- 	dev_dbg(padctl->dev, "%s id override\n", status ? "set" : "clear");
- 
- 	value = padctl_readl(padctl, USB2_VBUS_ID);
-+	id_override = value & ID_OVERRIDE(~0);
- 
- 	if (status) {
- 		if (value & VBUS_OVERRIDE) {
-@@ -732,14 +734,34 @@ static int tegra186_xusb_padctl_id_overr
- 			value = padctl_readl(padctl, USB2_VBUS_ID);
- 		}
- 
--		value &= ~ID_OVERRIDE(~0);
--		value |= ID_OVERRIDE_GROUNDED;
-+		if (id_override != ID_OVERRIDE_GROUNDED) {
-+			value &= ~ID_OVERRIDE(~0);
-+			value |= ID_OVERRIDE_GROUNDED;
-+			padctl_writel(padctl, value, USB2_VBUS_ID);
-+
-+			err = regulator_enable(port->supply);
-+			if (err) {
-+				dev_err(padctl->dev, "Failed to enable regulator: %d\n", err);
-+				return err;
-+			}
-+		}
- 	} else {
--		value &= ~ID_OVERRIDE(~0);
--		value |= ID_OVERRIDE_FLOATING;
--	}
-+		if (id_override == ID_OVERRIDE_GROUNDED) {
-+			/*
-+			 * The regulator is disabled only when the role transitions
-+			 * from USB_ROLE_HOST to USB_ROLE_NONE.
-+			 */
-+			err = regulator_disable(port->supply);
-+			if (err) {
-+				dev_err(padctl->dev, "Failed to disable regulator: %d\n", err);
-+				return err;
-+			}
- 
--	padctl_writel(padctl, value, USB2_VBUS_ID);
-+			value &= ~ID_OVERRIDE(~0);
-+			value |= ID_OVERRIDE_FLOATING;
-+			padctl_writel(padctl, value, USB2_VBUS_ID);
-+		}
-+	}
- 
- 	return 0;
- }
-@@ -759,27 +781,20 @@ static int tegra186_utmi_phy_set_mode(st
- 
- 	if (mode == PHY_MODE_USB_OTG) {
- 		if (submode == USB_ROLE_HOST) {
--			tegra186_xusb_padctl_id_override(padctl, true);
--
--			err = regulator_enable(port->supply);
-+			err = tegra186_xusb_padctl_id_override(padctl, port, true);
-+			if (err)
-+				goto out;
- 		} else if (submode == USB_ROLE_DEVICE) {
- 			tegra186_xusb_padctl_vbus_override(padctl, true);
- 		} else if (submode == USB_ROLE_NONE) {
--			/*
--			 * When port is peripheral only or role transitions to
--			 * USB_ROLE_NONE from USB_ROLE_DEVICE, regulator is not
--			 * enabled.
--			 */
--			if (regulator_is_enabled(port->supply))
--				regulator_disable(port->supply);
--
--			tegra186_xusb_padctl_id_override(padctl, false);
-+			err = tegra186_xusb_padctl_id_override(padctl, port, false);
-+			if (err)
-+				goto out;
- 			tegra186_xusb_padctl_vbus_override(padctl, false);
- 		}
- 	}
--
-+out:
- 	mutex_unlock(&padctl->lock);
--
- 	return err;
- }
- 
+--- a/drivers/usb/serial/option.c
++++ b/drivers/usb/serial/option.c
+@@ -1415,6 +1415,9 @@ static const struct usb_device_id option
+ 	  .driver_info = NCTRL(5) },
+ 	{ USB_DEVICE_AND_INTERFACE_INFO(TELIT_VENDOR_ID, 0x10d0, 0xff, 0xff, 0x40) },
+ 	{ USB_DEVICE_AND_INTERFACE_INFO(TELIT_VENDOR_ID, 0x10d0, 0xff, 0xff, 0x60) },
++	{ USB_DEVICE_AND_INTERFACE_INFO(TELIT_VENDOR_ID, 0x10c7, 0xff, 0xff, 0x30),	/* Telit FE910C04 (ECM) */
++	  .driver_info = NCTRL(4) },
++	{ USB_DEVICE_AND_INTERFACE_INFO(TELIT_VENDOR_ID, 0x10c7, 0xff, 0xff, 0x40) },
+ 	{ USB_DEVICE_AND_INTERFACE_INFO(TELIT_VENDOR_ID, 0x10d1, 0xff, 0xff, 0x30),	/* Telit FN990B (MBIM) */
+ 	  .driver_info = NCTRL(6) },
+ 	{ USB_DEVICE_AND_INTERFACE_INFO(TELIT_VENDOR_ID, 0x10d1, 0xff, 0xff, 0x40) },
 
 
 
