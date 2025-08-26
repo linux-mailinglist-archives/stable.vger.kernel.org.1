@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-173242-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-174649-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id E1F2DB35CE7
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 13:39:49 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id F2175B3643C
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 15:36:57 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id C842F163FB1
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 11:32:05 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id A9AE51BC358B
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 13:30:52 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3D4093375B5;
-	Tue, 26 Aug 2025 11:29:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 526A3342CA3;
+	Tue, 26 Aug 2025 13:29:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="fU0W0uAM"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="zQe3H4wo"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EBE8E2EE296;
-	Tue, 26 Aug 2025 11:28:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0F6AF341660;
+	Tue, 26 Aug 2025 13:29:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756207740; cv=none; b=ViuMKlYBcvc2GqpTQ8zhaAYqkZPizZc7/6SHZYSxyJ43xWEVQcc8wpeAppNpxcFxJMhel0fm8K1I7ZC+Trio1A2b6pUbBIS462CJblMdcQPMuNS/haPfkOKUwWVdXsbbABFTBqCO1dAOD1zkYIs1LE7cbZ9r5cTK4xtS84GMG08=
+	t=1756214949; cv=none; b=qhIrnEslHhoBTRI3dJKclTpiTwQQ2oDwrLcyxoXV5vkdRJ/U/HwzLnOWiMMUYGRPHA9N63Acx0F7VYQudCDBnOld41CrePD8pqHqEPvWaezVa+kPeRTlymYPtITnmirE3wSEkrh2S6+Lavngp+5Z6p8BJX05GRvkaQ39cwsyyoI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756207740; c=relaxed/simple;
-	bh=1jtlinWirPBSgN8J/vIJ5CymY92TtZrww26pBz84qWo=;
+	s=arc-20240116; t=1756214949; c=relaxed/simple;
+	bh=24c/EI3QghhQMyWfn7Ub4xYWhiMNAvv5Ufb8S0LignM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=cdgJ2HIFax+Cca61+5ZKH8a0CkSbZHMFQe2gtycPqBstdBOqxy5uaFuhjqqBPurEZgwpvBeD8GSMfmbife39jEW1hJdBY7Xvvz9wMQnAgSL2P/e4zuUmnY5TYsRGowOdYnd6/Cmk6Fi0yBivjKMF/yypgiUpSX4QFJG11he6G4I=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=fU0W0uAM; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7B522C4CEF1;
-	Tue, 26 Aug 2025 11:28:59 +0000 (UTC)
+	 MIME-Version; b=gpXFR5uvi43G3YfM1aRqZrTudlhHHtZ8XJIvLnl7ITvrxdEcffXFYOn5KP342hSaPIhz4A9EahpFll7wFvua9boegfhNFEClXCBnhhNtZ/jCsaylIiz4yopRW+ObyYAooWxmYBbzVcPfMrr97T6z4G23ukuuLmWgSDTPujaMiBw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=zQe3H4wo; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3794AC4CEF1;
+	Tue, 26 Aug 2025 13:29:08 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1756207739;
-	bh=1jtlinWirPBSgN8J/vIJ5CymY92TtZrww26pBz84qWo=;
+	s=korg; t=1756214948;
+	bh=24c/EI3QghhQMyWfn7Ub4xYWhiMNAvv5Ufb8S0LignM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=fU0W0uAM/YEZqVkfL/D+m9HGCJPnG2vSv/Fb/L4euVQYvTsLsC1KlMbwUIs9QQhvT
-	 4gYtp8EXRuxa4nZ3DHnW7npp4z3nxX3uS5DZdP7zEIXIVRU7s+WOcBsezUvh22xt0r
-	 byyWOpsOy1ACE4A6Bp+extqD8cJRr77Y6Db9+om8=
+	b=zQe3H4woJxdbYYMHpP6K+DvGknY135bldenUNyJGj+S9y/0lZ/+rZFcdFVt1PB61c
+	 HtOJ3+W04w79fQgzUH0xUBemNgjqtFeyOOd6gZ4eyhdoQsmfdMJMtSNX07YHqXsexq
+	 3+/ezaHGq94d4mLebXukl+aW8L9wcsYLfpT91eYk=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	David Lechner <dlechner@baylibre.com>,
-	=?UTF-8?q?Nuno=20S=C3=A1?= <nuno.sa@analog.com>,
-	Stable@vger.kernel.org,
-	Jonathan Cameron <Jonathan.Cameron@huawei.com>
-Subject: [PATCH 6.16 299/457] iio: adc: ad7124: fix channel lookup in syscalib functions
-Date: Tue, 26 Aug 2025 13:09:43 +0200
-Message-ID: <20250826110944.766161401@linuxfoundation.org>
+	Hans Verkuil <hverkuil@xs4all.nl>,
+	Bryan ODonoghue <bryan.odonoghue@linaro.org>,
+	Ricardo Ribalda <ribalda@chromium.org>,
+	Bryan ODonoghue <bod@kernel.org>
+Subject: [PATCH 6.1 331/482] media: venus: vdec: Clamp param smaller than 1fps and bigger than 240.
+Date: Tue, 26 Aug 2025 13:09:44 +0200
+Message-ID: <20250826110938.997741774@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250826110937.289866482@linuxfoundation.org>
-References: <20250826110937.289866482@linuxfoundation.org>
+In-Reply-To: <20250826110930.769259449@linuxfoundation.org>
+References: <20250826110930.769259449@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,88 +61,66 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.16-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: David Lechner <dlechner@baylibre.com>
+From: Ricardo Ribalda <ribalda@chromium.org>
 
-commit 197e299aae42ffa19028eaea92b2f30dd9fb8445 upstream.
+commit 377dc500d253f0b26732b2cb062e89668aef890a upstream.
 
-Fix possible incorrect channel lookup in the syscalib functions by using
-the correct channel address instead of the channel number.
+The driver uses "whole" fps in all its calculations (e.g. in
+load_per_instance()). Those calculation expect an fps bigger than 1, and
+not big enough to overflow.
 
-In the ad7124 driver, the channel field of struct iio_chan_spec is the
-input pin number of the positive input of the channel. This can be, but
-is not always the same as the index in the channels array. The correct
-index in the channels array is stored in the address field (and also
-scan_index). We use the address field to perform the correct lookup.
+Clamp the value if the user provides a param that will result in an invalid
+fps.
 
-Fixes: 47036a03a303 ("iio: adc: ad7124: Implement internal calibration at probe time")
-Signed-off-by: David Lechner <dlechner@baylibre.com>
-Reviewed-by: Nuno Sá <nuno.sa@analog.com>
-Link: https://patch.msgid.link/20250726-iio-adc-ad7124-fix-channel-lookup-in-syscalib-v1-1-b9d14bb684af@baylibre.com
-Cc: <Stable@vger.kernel.org>
-Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
+Reported-by: Hans Verkuil <hverkuil@xs4all.nl>
+Closes: https://lore.kernel.org/linux-media/f11653a7-bc49-48cd-9cdb-1659147453e4@xs4all.nl/T/#m91cd962ac942834654f94c92206e2f85ff7d97f0
+Fixes: 7472c1c69138 ("[media] media: venus: vdec: add video decoder files")
+Cc: stable@vger.kernel.org
+Tested-by: Bryan O'Donoghue <bryan.odonoghue@linaro.org> # qrb5615-rb5
+Reviewed-by: Bryan O'Donoghue <bryan.odonoghue@linaro.org>
+Signed-off-by: Ricardo Ribalda <ribalda@chromium.org>
+[bod: Change "parm" to "param"]
+Signed-off-by: Bryan O'Donoghue <bod@kernel.org>
+Signed-off-by: Hans Verkuil <hverkuil@xs4all.nl>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/iio/adc/ad7124.c |   14 +++++++-------
- 1 file changed, 7 insertions(+), 7 deletions(-)
+ drivers/media/platform/qcom/venus/core.h |    2 ++
+ drivers/media/platform/qcom/venus/vdec.c |    5 ++---
+ 2 files changed, 4 insertions(+), 3 deletions(-)
 
---- a/drivers/iio/adc/ad7124.c
-+++ b/drivers/iio/adc/ad7124.c
-@@ -855,7 +855,7 @@ enum {
- static int ad7124_syscalib_locked(struct ad7124_state *st, const struct iio_chan_spec *chan)
- {
- 	struct device *dev = &st->sd.spi->dev;
--	struct ad7124_channel *ch = &st->channels[chan->channel];
-+	struct ad7124_channel *ch = &st->channels[chan->address];
- 	int ret;
+--- a/drivers/media/platform/qcom/venus/core.h
++++ b/drivers/media/platform/qcom/venus/core.h
+@@ -28,6 +28,8 @@
+ #define VIDC_PMDOMAINS_NUM_MAX		3
+ #define VIDC_RESETS_NUM_MAX		2
  
- 	if (ch->syscalib_mode == AD7124_SYSCALIB_ZERO_SCALE) {
-@@ -871,8 +871,8 @@ static int ad7124_syscalib_locked(struct
- 		if (ret < 0)
- 			return ret;
++#define VENUS_MAX_FPS			240
++
+ extern int venus_fw_debug;
  
--		dev_dbg(dev, "offset for channel %d after zero-scale calibration: 0x%x\n",
--			chan->channel, ch->cfg.calibration_offset);
-+		dev_dbg(dev, "offset for channel %lu after zero-scale calibration: 0x%x\n",
-+			chan->address, ch->cfg.calibration_offset);
- 	} else {
- 		ch->cfg.calibration_gain = st->gain_default;
+ struct freq_tbl {
+--- a/drivers/media/platform/qcom/venus/vdec.c
++++ b/drivers/media/platform/qcom/venus/vdec.c
+@@ -458,11 +458,10 @@ static int vdec_s_parm(struct file *file
+ 	us_per_frame = timeperframe->numerator * (u64)USEC_PER_SEC;
+ 	do_div(us_per_frame, timeperframe->denominator);
  
-@@ -886,8 +886,8 @@ static int ad7124_syscalib_locked(struct
- 		if (ret < 0)
- 			return ret;
+-	if (!us_per_frame)
+-		return -EINVAL;
+-
++	us_per_frame = clamp(us_per_frame, 1, USEC_PER_SEC);
+ 	fps = (u64)USEC_PER_SEC;
+ 	do_div(fps, us_per_frame);
++	fps = min(VENUS_MAX_FPS, fps);
  
--		dev_dbg(dev, "gain for channel %d after full-scale calibration: 0x%x\n",
--			chan->channel, ch->cfg.calibration_gain);
-+		dev_dbg(dev, "gain for channel %lu after full-scale calibration: 0x%x\n",
-+			chan->address, ch->cfg.calibration_gain);
- 	}
- 
- 	return 0;
-@@ -930,7 +930,7 @@ static int ad7124_set_syscalib_mode(stru
- {
- 	struct ad7124_state *st = iio_priv(indio_dev);
- 
--	st->channels[chan->channel].syscalib_mode = mode;
-+	st->channels[chan->address].syscalib_mode = mode;
- 
- 	return 0;
- }
-@@ -940,7 +940,7 @@ static int ad7124_get_syscalib_mode(stru
- {
- 	struct ad7124_state *st = iio_priv(indio_dev);
- 
--	return st->channels[chan->channel].syscalib_mode;
-+	return st->channels[chan->address].syscalib_mode;
- }
- 
- static const struct iio_enum ad7124_syscalib_mode_enum = {
+ 	inst->fps = fps;
+ 	inst->timeperframe = *timeperframe;
 
 
 
