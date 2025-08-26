@@ -1,58 +1,56 @@
-Return-Path: <stable+bounces-175527-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-173890-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9D039B3689D
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 16:17:43 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 0F636B36049
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 14:59:08 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id D396E1C80870
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 14:09:44 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 220ED1BA5F7E
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 12:56:45 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0228F352FC3;
-	Tue, 26 Aug 2025 14:08:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8850E1B424F;
+	Tue, 26 Aug 2025 12:55:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="DCHY68j6"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="2lXxP5cQ"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B27D02BE058;
-	Tue, 26 Aug 2025 14:07:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4443A12CD88;
+	Tue, 26 Aug 2025 12:55:35 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756217279; cv=none; b=GzULSxugOrF9EgnYnkcALPW+hpWi9MZM/k2b6wrRP2DiUQfjEid8B9MjHCSuAPxcUDaho/8tulfMPprSWpvWqUp3PGoDQpFcY1AEwsHVDUL6fAFFjMTJqI1h0b5E5MVtWJ0fe6xLZVHyXZj/ddkjFpeVpr25ZobkLuQzng7Fwh0=
+	t=1756212938; cv=none; b=W18Rz17TY1S/UBvlMyi7V7fLFRVvZVsu1VaTux9hKLBc9/SjSrN6RNy3PK5mbjB8Qmvi1aHjC7ww7w09I+C468N1eyTRLElQlrt5Dx1VedO2sgePNuMG+okfsnyEvbejQ0T3Jm6OVfE3xRfxMtTuki4cuJ/XVgyt9LAMUo+R91k=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756217279; c=relaxed/simple;
-	bh=xE3qvhymuQnaeQ7rPqnGqCt73bX1lBY5G1zfSjylw50=;
+	s=arc-20240116; t=1756212938; c=relaxed/simple;
+	bh=fpcQhKIXkAasfY7DPyPX70F22q7dlgQeQcvOiYmxe2A=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Q9sxLIbHHPV6qVlkpDOWHQwXptSb1fXp43h18kwTptv6TUxiLk9jtJo7/8guYvH10DX2AgyVOtRtJdrtT8x/LIhJeEHI0UjRZzy/Z3C/4uxzdn9QIYwa+SNJo4/fPqDjMKSDfSLiG6nu0CB6t8pUuIF6SliWqin8hn6IKaBNTQ4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=DCHY68j6; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id DB492C4CEF1;
-	Tue, 26 Aug 2025 14:07:58 +0000 (UTC)
+	 MIME-Version; b=t/tC/mZ0HdsKozqq7SM2HmA5LUavj/kO5Zd54cf4Ud3AgJkUOjk1AbkykPnsu7csclWPHJ0zRsE6wuhwDHFIn0vPPysWFgv/7KVpMvh+sdwgaCE5SEeKtH+RWNk5WiBHF8o2qEEMVK3lAqXlGyPDxfrMrvbnA1B91Yiora/6+xU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=2lXxP5cQ; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6C6AFC4CEF1;
+	Tue, 26 Aug 2025 12:55:35 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1756217279;
-	bh=xE3qvhymuQnaeQ7rPqnGqCt73bX1lBY5G1zfSjylw50=;
+	s=korg; t=1756212935;
+	bh=fpcQhKIXkAasfY7DPyPX70F22q7dlgQeQcvOiYmxe2A=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=DCHY68j6oz8bbd+HznrtYL/HLx0gnz5Eh27yrfYTUAwtDftpc7rYLYX5AnDREK1et
-	 GRYatUJ2hSxrVafCLXbPG7nxiZtYxCcxNh5gEgt9wcfk5mmpLqVhhdYnY7g4Rbo8m6
-	 Wk6GiS5oK4L0uHWaKWchT/VnAKQK0KwLKV3nwuO8=
+	b=2lXxP5cQ9KkFGBObTUpJ/g5qYCxkf4DzGuIkjjsQNW4de3OnmSoBrlwLFg4GJ9Jq8
+	 Y4ADagNlJtuVFxYH/jP2uvtZZb+PfSkn4WCgn9VVesHa0HikclXct8cYG+QJRU0Qwf
+	 9hcGaWvkjzyyxF3mHVxBBSt7VxhM3w/x9wKCvBYc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jacek Kowalski <jacek@jacekk.info>,
-	Simon Horman <horms@kernel.org>,
-	Vitaly Lifshits <vitaly.lifshits@intel.com>,
-	Mor Bar-Gabay <morx.bar.gabay@intel.com>,
-	Tony Nguyen <anthony.l.nguyen@intel.com>
-Subject: [PATCH 5.10 066/523] e1000e: disregard NVM checksum on tgp when valid checksum bit is not set
-Date: Tue, 26 Aug 2025 13:04:36 +0200
-Message-ID: <20250826110926.205998142@linuxfoundation.org>
+	"Gautham R. Shenoy" <gautham.shenoy@amd.com>,
+	Shuah Khan <skhan@linuxfoundation.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.6 128/587] pm: cpupower: Fix the snapshot-order of tsc,mperf, clock in mperf_stop()
+Date: Tue, 26 Aug 2025 13:04:37 +0200
+Message-ID: <20250826110956.211923606@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250826110924.562212281@linuxfoundation.org>
-References: <20250826110924.562212281@linuxfoundation.org>
+In-Reply-To: <20250826110952.942403671@linuxfoundation.org>
+References: <20250826110952.942403671@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,47 +62,50 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jacek Kowalski <jacek@jacekk.info>
+From: Gautham R. Shenoy <gautham.shenoy@amd.com>
 
-commit 536fd741c7ac907d63166cdae1081b1febfab613 upstream.
+[ Upstream commit cda7ac8ce7de84cf32a3871ba5f318aa3b79381e ]
 
-As described by Vitaly Lifshits:
+In the function mperf_start(), mperf_monitor snapshots the time, tsc
+and finally the aperf,mperf MSRs. However, this order of snapshotting
+in is reversed in mperf_stop(). As a result, the C0 residency (which
+is computed as delta_mperf * 100 / delta_tsc) is under-reported on
+CPUs that is 100% busy.
 
-> Starting from Tiger Lake, LAN NVM is locked for writes by SW, so the
-> driver cannot perform checksum validation and correction. This means
-> that all NVM images must leave the factory with correct checksum and
-> checksum valid bit set. Since Tiger Lake devices were the first to have
-> this lock, some systems in the field did not meet this requirement.
-> Therefore, for these transitional devices we skip checksum update and
-> verification, if the valid bit is not set.
+Fix this by snapshotting time, tsc and then aperf,mperf in
+mperf_stop() in the same order as in mperf_start().
 
-Signed-off-by: Jacek Kowalski <jacek@jacekk.info>
-Reviewed-by: Simon Horman <horms@kernel.org>
-Reviewed-by: Vitaly Lifshits <vitaly.lifshits@intel.com>
-Fixes: 4051f68318ca9 ("e1000e: Do not take care about recovery NVM checksum")
-Cc: stable@vger.kernel.org
-Tested-by: Mor Bar-Gabay <morx.bar.gabay@intel.com>
-Signed-off-by: Tony Nguyen <anthony.l.nguyen@intel.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Link: https://lore.kernel.org/r/20250612122355.19629-2-gautham.shenoy@amd.com
+Signed-off-by: Gautham R. Shenoy <gautham.shenoy@amd.com>
+Signed-off-by: Shuah Khan <skhan@linuxfoundation.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/ethernet/intel/e1000e/ich8lan.c |    2 ++
- 1 file changed, 2 insertions(+)
+ tools/power/cpupower/utils/idle_monitor/mperf_monitor.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
---- a/drivers/net/ethernet/intel/e1000e/ich8lan.c
-+++ b/drivers/net/ethernet/intel/e1000e/ich8lan.c
-@@ -4144,6 +4144,8 @@ static s32 e1000_validate_nvm_checksum_i
- 			ret_val = e1000e_update_nvm_checksum(hw);
- 			if (ret_val)
- 				return ret_val;
-+		} else if (hw->mac.type == e1000_pch_tgp) {
-+			return 0;
- 		}
+diff --git a/tools/power/cpupower/utils/idle_monitor/mperf_monitor.c b/tools/power/cpupower/utils/idle_monitor/mperf_monitor.c
+index 08a399b0be28..6ab9139f16af 100644
+--- a/tools/power/cpupower/utils/idle_monitor/mperf_monitor.c
++++ b/tools/power/cpupower/utils/idle_monitor/mperf_monitor.c
+@@ -240,9 +240,9 @@ static int mperf_stop(void)
+ 	int cpu;
+ 
+ 	for (cpu = 0; cpu < cpu_count; cpu++) {
+-		mperf_measure_stats(cpu);
+-		mperf_get_tsc(&tsc_at_measure_end[cpu]);
+ 		clock_gettime(CLOCK_REALTIME, &time_end[cpu]);
++		mperf_get_tsc(&tsc_at_measure_end[cpu]);
++		mperf_measure_stats(cpu);
  	}
  
+ 	return 0;
+-- 
+2.39.5
+
 
 
 
