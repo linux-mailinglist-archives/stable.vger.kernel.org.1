@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-173080-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-176062-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 20207B35B5B
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 13:23:31 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id BD603B36B76
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 16:46:08 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 6F4C53AF28D
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 11:22:51 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id A01DC5840D9
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 14:34:15 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7AB27245012;
-	Tue, 26 Aug 2025 11:22:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D38D3350825;
+	Tue, 26 Aug 2025 14:31:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="n1/L/lvq"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="eIxqs5hg"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3789C301486;
-	Tue, 26 Aug 2025 11:22:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 91706350D7B;
+	Tue, 26 Aug 2025 14:31:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756207321; cv=none; b=otSE1s/jirVhgRXnYYf0cNZQJhWy4EKVn7vLp/d2Ye3h6zPFZEP0w4DfrLjStgogCGaMJi84Jg5LPGTO3d01BCChNyKwi/jplt4kcUycpCPGLZeeVzccLsGZDEt+YnGXL/idxsKs/q5tnwWdd8/yZcdrDr/IsCpvVCML8QmJ/Yw=
+	t=1756218684; cv=none; b=esS+Grz8V3EgJNyvB9R942ufseQMHginDfqCFPgQ+jO5CGldTbT5wlgkwOTXd2BjOoIGBPn8f5Uru/okPa1m6e4dhwWp4pRfMteix9Q2b5++jWPzO2wcmP+fjy2QX1M2UCdKGOyJebhH3DoZWtOg5smuR7eavVOSJSGFHX6Lx5k=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756207321; c=relaxed/simple;
-	bh=GTM1SQYOJ0bnCAwkd43R3g9BTAKsOcDeO9qGC+PwjxE=;
+	s=arc-20240116; t=1756218684; c=relaxed/simple;
+	bh=Z06c/Aff+Vh4tPT1xS2ZBVJIw5DvzQ5ggTDd9BFks1M=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=dLctn/OapUyEy0tMtIj8j4ifyvO9YfEn8bcjA1P62lL8uISJk8XdW8PhgJJaQD6F86vKsOE++VHzF5G0BrSdbAb1G6tjL3jEbC25uZ3KvDtt3tWoxwOCtQNc2EDH4tKgu45KYS3dQ8Sf1dcPfx7nJfLGcWcEJbu+SDeCKkKwqH8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=n1/L/lvq; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id AEA30C4CEF1;
-	Tue, 26 Aug 2025 11:22:00 +0000 (UTC)
+	 MIME-Version; b=H3L3sF64i6nkrQ1pwEeBYiDkNMGAh+WQGnQcfP3Y4TpBU0vcAPDiBw4MbSQtFF49CRAVaWwkCu44nDENIIzTm37Agcd+e/hmWQXwEA/IM3XkemU2hsC9inRtmpcl58GEQ9azSQSowS2hrYEeHdTCF6yEMbxMcQaIPeQBzAyeyCc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=eIxqs5hg; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1C1C0C4CEF1;
+	Tue, 26 Aug 2025 14:31:23 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1756207321;
-	bh=GTM1SQYOJ0bnCAwkd43R3g9BTAKsOcDeO9qGC+PwjxE=;
+	s=korg; t=1756218684;
+	bh=Z06c/Aff+Vh4tPT1xS2ZBVJIw5DvzQ5ggTDd9BFks1M=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=n1/L/lvqAgaXenF1cCZURpCQvDztxHhcMSZ8lkBP+zn+Z2oVBOv+Z2JekCghCThOZ
-	 UDsjxCLJB/E8n/WP4oy/axugicM4JveCFm/1VG9nUHB51bmEbjeVYqh2TTuYFklOtV
-	 VbN05D/RwiqnEIEQk0/IoTCsR6N3C4MulAzqZ+rY=
+	b=eIxqs5hg7rfyWUkiUBPu1ifptTXBXH2RnYUCVlvoFphCou97kwkBXZQ7O71jHnF9M
+	 7njaMHXjlbGHbSz24ccWid7NvmeyAMx/5cfeIsuSTqA+RUe8tn/iZ3w7pKSMTgnoVn
+	 cVxrsscJYk+YnrmUtm6vMx1DPybhpotckIcLpQzY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Sakari Ailus <sakari.ailus@linux.intel.com>,
-	Hans Verkuil <hverkuil@xs4all.nl>,
-	Laurent Pinchart <laurent.pinchart@ideasonboard.com>
-Subject: [PATCH 6.16 136/457] media: v4l2-ctrls: Dont reset handlers error in v4l2_ctrl_handler_free()
+	Johan Korsnes <johan.korsnes@gmail.com>,
+	Christophe Leroy <christophe.leroy@csgroup.eu>,
+	Madhavan Srinivasan <maddy@linux.ibm.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.4 094/403] arch: powerpc: defconfig: Drop obsolete CONFIG_NET_CLS_TCINDEX
 Date: Tue, 26 Aug 2025 13:07:00 +0200
-Message-ID: <20250826110940.734784361@linuxfoundation.org>
+Message-ID: <20250826110909.269037763@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250826110937.289866482@linuxfoundation.org>
-References: <20250826110937.289866482@linuxfoundation.org>
+In-Reply-To: <20250826110905.607690791@linuxfoundation.org>
+References: <20250826110905.607690791@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,49 +63,43 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.16-stable review patch.  If anyone has any objections, please let me know.
+5.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Sakari Ailus <sakari.ailus@linux.intel.com>
+From: Johan Korsnes <johan.korsnes@gmail.com>
 
-commit 5a0400aca5fa7c6b8ba456c311a460e733571c88 upstream.
+[ Upstream commit 75cd37c5f28b85979fd5a65174013010f6b78f27 ]
 
-It's a common pattern in drivers to free the control handler's resources
-and then return the handler's error code on drivers' error handling paths.
-Alas, the v4l2_ctrl_handler_free() function also zeroes the error field,
-effectively indicating successful return to the caller.
+This option was removed from the Kconfig in commit
+8c710f75256b ("net/sched: Retire tcindex classifier") but it was not
+removed from the defconfigs.
 
-There's no apparent need to touch the error field while releasing the
-control handler's resources and cleaning up stale pointers. Not touching
-the handler's error field is a more certain way to address this problem
-than changing all the users, in which case the pattern would be likely to
-re-emerge in new drivers.
-
-Do just that, don't touch the control handler's error field in
-v4l2_ctrl_handler_free().
-
-Fixes: 0996517cf8ea ("V4L/DVB: v4l2: Add new control handling framework")
-Cc: stable@vger.kernel.org
-Signed-off-by: Sakari Ailus <sakari.ailus@linux.intel.com>
-Reviewed-by: Hans Verkuil <hverkuil@xs4all.nl>
-Reviewed-by: Laurent Pinchart <laurent.pinchart@ideasonboard.com>
-Signed-off-by: Hans Verkuil <hverkuil@xs4all.nl>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: 8c710f75256b ("net/sched: Retire tcindex classifier")
+Signed-off-by: Johan Korsnes <johan.korsnes@gmail.com>
+Reviewed-by: Christophe Leroy <christophe.leroy@csgroup.eu>
+Signed-off-by: Madhavan Srinivasan <maddy@linux.ibm.com>
+Link: https://patch.msgid.link/20250323191116.113482-1-johan.korsnes@gmail.com
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/media/v4l2-core/v4l2-ctrls-core.c |    1 -
+ arch/powerpc/configs/ppc6xx_defconfig | 1 -
  1 file changed, 1 deletion(-)
 
---- a/drivers/media/v4l2-core/v4l2-ctrls-core.c
-+++ b/drivers/media/v4l2-core/v4l2-ctrls-core.c
-@@ -1661,7 +1661,6 @@ void v4l2_ctrl_handler_free(struct v4l2_
- 	kvfree(hdl->buckets);
- 	hdl->buckets = NULL;
- 	hdl->cached = NULL;
--	hdl->error = 0;
- 	mutex_unlock(hdl->lock);
- 	mutex_destroy(&hdl->_lock);
- }
+diff --git a/arch/powerpc/configs/ppc6xx_defconfig b/arch/powerpc/configs/ppc6xx_defconfig
+index b75b62b094b5..319fe81a4a39 100644
+--- a/arch/powerpc/configs/ppc6xx_defconfig
++++ b/arch/powerpc/configs/ppc6xx_defconfig
+@@ -274,7 +274,6 @@ CONFIG_NET_SCH_DSMARK=m
+ CONFIG_NET_SCH_NETEM=m
+ CONFIG_NET_SCH_INGRESS=m
+ CONFIG_NET_CLS_BASIC=m
+-CONFIG_NET_CLS_TCINDEX=m
+ CONFIG_NET_CLS_ROUTE4=m
+ CONFIG_NET_CLS_FW=m
+ CONFIG_NET_CLS_U32=m
+-- 
+2.39.5
+
 
 
 
