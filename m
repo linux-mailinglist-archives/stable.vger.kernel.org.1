@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-173481-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-173197-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1553CB35E0D
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 13:51:26 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id BD4E7B35C4B
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 13:32:59 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id E618516F2AE
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 11:40:01 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id AF05D17674A
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 11:27:03 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C2DA92F9982;
-	Tue, 26 Aug 2025 11:39:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 72893284B5B;
+	Tue, 26 Aug 2025 11:27:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="uxhawe/t"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="FKFSi4OK"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7D7E28635C;
-	Tue, 26 Aug 2025 11:39:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2D28E239573;
+	Tue, 26 Aug 2025 11:27:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756208361; cv=none; b=AVfFOi+vIpnDV/FM/jedbOu4dyS1x+ylLnlVjLTIZgNaJcib3iv96/GCrsrLh8aXL2+yBHF94u1jInMusvLm/pW0nsv4NWa6gRu7R9T32PA6hHDAgHbbebuHA459sQcdwFlmDlToQq1LvJJi+YfFl/RNfdsNZ7zR1FuurXJUpRY=
+	t=1756207622; cv=none; b=V7iGPO+hPWZEYkik+8iJ7YaVODzxmUHoAIyms35FXNjKKjnb/wH0DPSs/XAZ/weF0iRLDwBu1MjHHtQ0Tq0K/Maq5wA+d4Zzo/uOxsMy7mkiMYc5OjeREkM+xLJLX7sEet5/aALjjFZ33zVwKF51Meyc8/XoTtn+8qKmBVgjDYo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756208361; c=relaxed/simple;
-	bh=jonD0Xxs6DimcgJBtQK6RfEcBWUehrsqzVl9Y0z6Ss4=;
+	s=arc-20240116; t=1756207622; c=relaxed/simple;
+	bh=EtNRuL9KuMyTV+z6+yR/sYxzjA3fSceERA2JvpbhqBk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=ay9ydUjtykEZWALP8kMRD92B7jlmraeP5Ce+Ea0GV1Ou9oXTyXSTWb1Ku/ysAujlVj9+nJWyZgPO4+qs6rQmhg11EpjrtcN1iEe+iRX/AcO4iUjFrMAq003mek91RA6a5v+IAzrpy2iP4pRcwK08cgKYHtnmcGq/MIRSrjY+q8E=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=uxhawe/t; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A665AC4CEF1;
-	Tue, 26 Aug 2025 11:39:20 +0000 (UTC)
+	 MIME-Version; b=mWBFAc27ai0z37hnzpnfTBl667VLeqUO0iiMohPxKtcFRpT0/cQuW5a+qzNV9f4HHdw06DVkxekEL/MLPjHFNA2Zm+U6nqcp5XxfuHtjvIyczytdX8zMM8zawc9evSEvM1diYKrZlMQjeaZ7D1Kp38oPiNemd/Wh1ASJS59/HPQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=FKFSi4OK; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B880EC4CEF1;
+	Tue, 26 Aug 2025 11:27:01 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1756208361;
-	bh=jonD0Xxs6DimcgJBtQK6RfEcBWUehrsqzVl9Y0z6Ss4=;
+	s=korg; t=1756207622;
+	bh=EtNRuL9KuMyTV+z6+yR/sYxzjA3fSceERA2JvpbhqBk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=uxhawe/tIGHQY81H9nPyV5NVE7ovfg1bPb2BAgGcaom1KPkpndib4SFiJP8sT3OTA
-	 fHxlM/7nf8xZ6Cj4IczAKIUDCx2Ywa8RqDfTOvR/dqfEALH2zEFD3f+NPoSrKHaATJ
-	 f88M/EDXkjj7x7xcogtsE3rPBiabM8She7H2+ufs=
+	b=FKFSi4OK1SqYSEs/n/V/gT8GZG0tvOeIihlOPqfKvcNwoUXXqzKFOrIf/6tIQyNa6
+	 vaJtI6hvqeoI5RFmSvecy74h7KibcFdFJaXgj7GjI4H7D14kP23n2+l8CGsg8Iy3dY
+	 s2a1n5mILMoBdlaYBeblY30yPI6Lu6+gJj/IgguU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	stable@kernel.org,
-	Kathiravan Thirumoorthy <kathiravan.thirumoorthy@oss.qualcomm.com>,
-	Konrad Dybcio <konrad.dybcio@oss.qualcomm.com>,
-	Vinod Koul <vkoul@kernel.org>
-Subject: [PATCH 6.12 082/322] phy: qcom: phy-qcom-m31: Update IPQ5332 M31 USB phy initialization sequence
+	Boris Burkov <boris@bur.io>,
+	Filipe Manana <fdmanana@suse.com>,
+	David Sterba <dsterba@suse.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.16 213/457] btrfs: always abort transaction on failure to add block group to free space tree
 Date: Tue, 26 Aug 2025 13:08:17 +0200
-Message-ID: <20250826110917.647830193@linuxfoundation.org>
+Message-ID: <20250826110942.626180290@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250826110915.169062587@linuxfoundation.org>
-References: <20250826110915.169062587@linuxfoundation.org>
+In-Reply-To: <20250826110937.289866482@linuxfoundation.org>
+References: <20250826110937.289866482@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,76 +63,80 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.16-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Kathiravan Thirumoorthy <kathiravan.thirumoorthy@oss.qualcomm.com>
+From: Filipe Manana <fdmanana@suse.com>
 
-commit 4a3556b81b99f0c8c0358f7cc6801a62b4538fe2 upstream.
+[ Upstream commit 1f06c942aa709d397cf6bed577a0d10a61509667 ]
 
-The current configuration used for the IPQ5332 M31 USB PHY fails the
-Near End High Speed Signal Quality compliance test. To resolve this,
-update the initialization sequence as specified in the Hardware Design
-Document.
+Only one of the callers of __add_block_group_free_space() aborts the
+transaction if the call fails, while the others don't do it and it's
+either never done up the call chain or much higher in the call chain.
 
-Fixes: 08e49af50701 ("phy: qcom: Introduce M31 USB PHY driver")
-Cc: stable@kernel.org
-Signed-off-by: Kathiravan Thirumoorthy <kathiravan.thirumoorthy@oss.qualcomm.com>
-Reviewed-by: Konrad Dybcio <konrad.dybcio@oss.qualcomm.com>
-Link: https://lore.kernel.org/r/20250630-ipq5332_hsphy_complaince-v2-1-63621439ebdb@oss.qualcomm.com
-Signed-off-by: Vinod Koul <vkoul@kernel.org>
+So make sure we abort the transaction at __add_block_group_free_space()
+if it fails, which brings a couple benefits:
+
+1) If some call chain never aborts the transaction, we avoid having some
+   metadata inconsistency because BLOCK_GROUP_FLAG_NEEDS_FREE_SPACE is
+   cleared when we enter __add_block_group_free_space() and therefore
+   __add_block_group_free_space() is never called again to add the block
+   group items to the free space tree, since the function is only called
+   when that flag is set in a block group;
+
+2) If the call chain already aborts the transaction, then we get a better
+   trace that points to the exact step from __add_block_group_free_space()
+   which failed, which is better for analysis.
+
+So abort the transaction at __add_block_group_free_space() if any of its
+steps fails.
+
+CC: stable@vger.kernel.org # 6.6+
+Reviewed-by: Boris Burkov <boris@bur.io>
+Signed-off-by: Filipe Manana <fdmanana@suse.com>
+Reviewed-by: David Sterba <dsterba@suse.com>
+Signed-off-by: David Sterba <dsterba@suse.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/phy/qualcomm/phy-qcom-m31.c |   14 ++++++++++----
- 1 file changed, 10 insertions(+), 4 deletions(-)
+ fs/btrfs/free-space-tree.c |   16 +++++++++-------
+ 1 file changed, 9 insertions(+), 7 deletions(-)
 
---- a/drivers/phy/qualcomm/phy-qcom-m31.c
-+++ b/drivers/phy/qualcomm/phy-qcom-m31.c
-@@ -58,14 +58,16 @@
-  #define USB2_0_TX_ENABLE		BIT(2)
+--- a/fs/btrfs/free-space-tree.c
++++ b/fs/btrfs/free-space-tree.c
+@@ -1431,12 +1431,17 @@ static int __add_block_group_free_space(
+ 	set_bit(BLOCK_GROUP_FLAG_FREE_SPACE_ADDED, &block_group->runtime_flags);
  
- #define USB2PHY_USB_PHY_M31_XCFGI_4	0xc8
-- #define HSTX_SLEW_RATE_565PS		GENMASK(1, 0)
-+ #define HSTX_SLEW_RATE_400PS		GENMASK(2, 0)
-  #define PLL_CHARGING_PUMP_CURRENT_35UA	GENMASK(4, 3)
-  #define ODT_VALUE_38_02_OHM		GENMASK(7, 6)
+ 	ret = add_new_free_space_info(trans, block_group, path);
+-	if (ret)
++	if (ret) {
++		btrfs_abort_transaction(trans, ret);
+ 		return ret;
++	}
  
- #define USB2PHY_USB_PHY_M31_XCFGI_5	0xcc
-- #define ODT_VALUE_45_02_OHM		BIT(2)
-  #define HSTX_PRE_EMPHASIS_LEVEL_0_55MA	BIT(0)
- 
-+#define USB2PHY_USB_PHY_M31_XCFGI_9	0xdc
-+ #define HSTX_CURRENT_17_1MA_385MV	BIT(1)
+-	return __add_to_free_space_tree(trans, block_group, path,
+-					block_group->start,
+-					block_group->length);
++	ret = __add_to_free_space_tree(trans, block_group, path,
++				       block_group->start, block_group->length);
++	if (ret)
++		btrfs_abort_transaction(trans, ret);
 +
- #define USB2PHY_USB_PHY_M31_XCFGI_11	0xe4
-  #define XCFG_COARSE_TUNE_NUM		BIT(1)
-  #define XCFG_FINE_TUNE_NUM		BIT(3)
-@@ -164,7 +166,7 @@ static struct m31_phy_regs m31_ipq5332_r
- 	},
- 	{
- 		USB2PHY_USB_PHY_M31_XCFGI_4,
--		HSTX_SLEW_RATE_565PS | PLL_CHARGING_PUMP_CURRENT_35UA | ODT_VALUE_38_02_OHM,
-+		HSTX_SLEW_RATE_400PS | PLL_CHARGING_PUMP_CURRENT_35UA | ODT_VALUE_38_02_OHM,
- 		0
- 	},
- 	{
-@@ -174,10 +176,14 @@ static struct m31_phy_regs m31_ipq5332_r
- 	},
- 	{
- 		USB2PHY_USB_PHY_M31_XCFGI_5,
--		ODT_VALUE_45_02_OHM | HSTX_PRE_EMPHASIS_LEVEL_0_55MA,
-+		HSTX_PRE_EMPHASIS_LEVEL_0_55MA,
- 		4
- 	},
- 	{
-+		USB2PHY_USB_PHY_M31_XCFGI_9,
-+		HSTX_CURRENT_17_1MA_385MV,
-+	},
-+	{
- 		USB_PHY_UTMI_CTRL5,
- 		0x0,
- 		0
++	return 0;
+ }
+ 
+ int add_block_group_free_space(struct btrfs_trans_handle *trans,
+@@ -1461,9 +1466,6 @@ int add_block_group_free_space(struct bt
+ 	}
+ 
+ 	ret = __add_block_group_free_space(trans, block_group, path);
+-	if (ret)
+-		btrfs_abort_transaction(trans, ret);
+-
+ out:
+ 	btrfs_free_path(path);
+ 	mutex_unlock(&block_group->free_space_lock);
 
 
 
