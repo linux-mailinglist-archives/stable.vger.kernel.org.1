@@ -1,59 +1,56 @@
-Return-Path: <stable+bounces-174505-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-175109-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3E74FB363C1
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 15:33:02 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 48D17B366FF
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 16:02:43 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id D2DE68E0977
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 13:24:43 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 01AA87C2497
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 13:51:06 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 39D1E2E6106;
-	Tue, 26 Aug 2025 13:22:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C576535208D;
+	Tue, 26 Aug 2025 13:49:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="jF8igRkS"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="xeOqXHjw"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E82C6139579;
-	Tue, 26 Aug 2025 13:22:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 826F5352082;
+	Tue, 26 Aug 2025 13:49:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756214570; cv=none; b=lnlNpc6Tfgxh9uwE4NONeI4tUDS81wct0T4kPSboSNI7TLjPPqNgEDJhuMfMdoURitHonT8MRlMmboHdljE7yyO6UmTIhFLQ146R0E2kPQ7pr+upSA1f5kYCiyzEq4RB0+R42dBmJInoxT8JBwMEr3FNs/070dshQqwY07LOruI=
+	t=1756216163; cv=none; b=FxvEO+aSiQUXbApC0z1Iiy3iGrqvSgmKSkBDjeDcm0j28R+OQAbMAzsLOYvi4WO4CsZqtzOsFcqkLVr/HZ6wZHzyzIn/ZBLL5Yvnp26j/kBUGPMyTCAHlAxLZY++dDEQbnPgbe1yHxaEd1HPgXATFtclWPaEaI0Nz1VhE02OnyY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756214570; c=relaxed/simple;
-	bh=fqqbbv1tQ2Bs3vAz3bn6YnHtQnHIpAJDKS8U+T5blFk=;
+	s=arc-20240116; t=1756216163; c=relaxed/simple;
+	bh=V5VfKzjLxQXnXxx8x0ViMNBUM4kB4MeMAmF3MMvoiHE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=rsVMWDyqm02q8SGYJPTJtaMbsPhHNxt7upxk+No0xcsvR/Y583q72xwiKM3rDNhp3DwH8NDbJHQrnhff52o6sDVo3Bhfx4xuuZskVQM74rm2OXmRbptEiubWG5F4XJceFbmVLsBydT1TCwKfGFyNhm3doUYxsmLauumIHOpKolY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=jF8igRkS; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7EEAAC4CEF1;
-	Tue, 26 Aug 2025 13:22:49 +0000 (UTC)
+	 MIME-Version:Content-Type; b=UtjKWFsHxWPpSp3fg/AzJ/6G5a2+US12i6aeXHQOcW3/S5mvEe1XoWkwVCTk7f0RuVuBthy4SCFhdCTvRlPkb/qxVxIMJ+zE4nMCHji56KnNlH492srke0e6hAiBGR/7Yb8SFClGckwscwrW7uLHiDmKZp9Wor+0wOvfH/xkuAM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=xeOqXHjw; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id CD9A2C113D0;
+	Tue, 26 Aug 2025 13:49:22 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1756214569;
-	bh=fqqbbv1tQ2Bs3vAz3bn6YnHtQnHIpAJDKS8U+T5blFk=;
+	s=korg; t=1756216163;
+	bh=V5VfKzjLxQXnXxx8x0ViMNBUM4kB4MeMAmF3MMvoiHE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=jF8igRkSbobgJC6xmHqPtikLYx0lh/Q/Ijh5h29zafKB+HXqfZex8j1oorxqs71vt
-	 l0cZu1Y5CSbVUB3OP6h33eqvs6FwWeJuZCgI8Yr3tRQZfbcDa+2yZAdsKXfhMkgqEL
-	 Vl80IWDVPUVo1kTSiZNI6zMxvsoZyhOdh+NJRU6s=
+	b=xeOqXHjwG42QlTgLA0IjGKek4DLrqXmbRCYy/vKNDYSH8kA2kwRT9KCv3hTjTqtGG
+	 vxhmOVtFP0NlnKzjs4neRUcC8ZpHHFGdAG/5BWBosU/BIoYuc6AhKzyRlx+FiBwusd
+	 OKRYJ5I01EP5u0DFApig3slmepp3Fw9Q/wE9Gsxg=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Nicholas Kazlauskas <nicholas.kazlauskas@amd.com>,
-	Wen Chen <Wen.Chen3@amd.com>,
-	Fangzhi Zuo <jerry.zuo@amd.com>,
-	Daniel Wheeler <daniel.wheeler@amd.com>,
-	Alex Deucher <alexander.deucher@amd.com>,
+	=?UTF-8?q?Thomas=20Wei=C3=9Fschuh?= <linux@weissschuh.net>,
+	Willy Tarreau <w@1wt.eu>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 147/482] drm/amd/display: Fix failed to blank crtc!
+Subject: [PATCH 5.15 309/644] tools/nolibc: define time_t in terms of __kernel_old_time_t
 Date: Tue, 26 Aug 2025 13:06:40 +0200
-Message-ID: <20250826110934.450685477@linuxfoundation.org>
+Message-ID: <20250826110954.042071013@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250826110930.769259449@linuxfoundation.org>
-References: <20250826110930.769259449@linuxfoundation.org>
+In-Reply-To: <20250826110946.507083938@linuxfoundation.org>
+References: <20250826110946.507083938@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -66,47 +63,53 @@ MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Wen Chen <Wen.Chen3@amd.com>
+From: Thomas Weißschuh <linux@weissschuh.net>
 
-[ Upstream commit 01f60348d8fb6b3fbcdfc7bdde5d669f95b009a4 ]
+[ Upstream commit d5094bcb5bfdfea2cf0de8aaf77cc65db56cbdb5 ]
 
-[why]
-DCN35 is having “DC: failed to blank crtc!” when running HPO
-test cases. It's caused by not having sufficient udelay time.
+Nolibc assumes that the kernel ABI is using a time values that are as
+large as a long integer. For most ABIs this holds true.
+But for x32 this is not correct, as it uses 32bit longs but 64bit times.
 
-[how]
-Replace the old wait_for_blank_complete function with fsleep function to
-sleep just until the next frame should come up. This way it doesn't poll
-in case the pixel clock or other clock was bugged or until vactive and
-the vblank are hit again.
+Also the 'struct stat' implementation of nolibc relies on timespec::tv_sec
+and time_t being the same type. While timespec::tv_sec comes from the
+kernel and is of type __kernel_old_time_t, time_t is defined within nolibc.
 
-Reviewed-by: Nicholas Kazlauskas <nicholas.kazlauskas@amd.com>
-Signed-off-by: Wen Chen <Wen.Chen3@amd.com>
-Signed-off-by: Fangzhi Zuo <jerry.zuo@amd.com>
-Tested-by: Daniel Wheeler <daniel.wheeler@amd.com>
-Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
+Switch to the __kernel_old_time_t to always get the correct type.
+
+Signed-off-by: Thomas Weißschuh <linux@weissschuh.net>
+Link: https://lore.kernel.org/r/20250712-nolibc-x32-v1-1-6d81cb798710@weissschuh.net
+Acked-by: Willy Tarreau <w@1wt.eu>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/amd/display/dc/dcn20/dcn20_hwseq.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ tools/include/nolibc/std.h | 4 +++-
+ 1 file changed, 3 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/gpu/drm/amd/display/dc/dcn20/dcn20_hwseq.c b/drivers/gpu/drm/amd/display/dc/dcn20/dcn20_hwseq.c
-index d8cf5f20ef3b..d252d10c8134 100644
---- a/drivers/gpu/drm/amd/display/dc/dcn20/dcn20_hwseq.c
-+++ b/drivers/gpu/drm/amd/display/dc/dcn20/dcn20_hwseq.c
-@@ -757,7 +757,7 @@ enum dc_status dcn20_enable_stream_timing(
- 		return DC_ERROR_UNEXPECTED;
- 	}
+diff --git a/tools/include/nolibc/std.h b/tools/include/nolibc/std.h
+index 1747ae125392..a0ea830e1ba1 100644
+--- a/tools/include/nolibc/std.h
++++ b/tools/include/nolibc/std.h
+@@ -33,6 +33,8 @@ typedef unsigned long     uintptr_t;
+ typedef   signed long      intptr_t;
+ typedef   signed long     ptrdiff_t;
  
--	hws->funcs.wait_for_blank_complete(pipe_ctx->stream_res.opp);
-+	fsleep(stream->timing.v_total * (stream->timing.h_total * 10000u / stream->timing.pix_clk_100hz));
++#include <linux/types.h>
++
+ /* those are commonly provided by sys/types.h */
+ typedef unsigned int          dev_t;
+ typedef unsigned long         ino_t;
+@@ -44,6 +46,6 @@ typedef unsigned long       nlink_t;
+ typedef   signed long         off_t;
+ typedef   signed long     blksize_t;
+ typedef   signed long      blkcnt_t;
+-typedef   signed long        time_t;
++typedef __kernel_old_time_t  time_t;
  
- 	params.vertical_total_min = stream->adjust.v_total_min;
- 	params.vertical_total_max = stream->adjust.v_total_max;
+ #endif /* _NOLIBC_STD_H */
 -- 
 2.39.5
 
