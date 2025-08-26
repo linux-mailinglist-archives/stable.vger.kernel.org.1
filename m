@@ -1,55 +1,55 @@
-Return-Path: <stable+bounces-174369-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-173872-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id CAC84B3625E
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 15:18:25 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id D31EEB3602D
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 14:58:03 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 027E37AD4C2
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 13:16:50 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 5F22A3B678D
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 12:55:37 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 842E41DAC95;
-	Tue, 26 Aug 2025 13:16:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 11F981F3FF8;
+	Tue, 26 Aug 2025 12:54:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="wyQ4zK3+"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="GScnjvFU"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3EAA11A83ED;
-	Tue, 26 Aug 2025 13:16:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B6A611DEFF5;
+	Tue, 26 Aug 2025 12:54:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756214208; cv=none; b=g+V8RPkRuCbNhrbL0GsSg+LG6GWGFoMWliTtMhSyVLJC8lYX3PWZfMAof4iRFPl/hQX6kWo/6kIT85qtfwyNnUbQ9gcndLS5x2r6tOtJi+wwBwYx2i/wFmptCALHd9VaniV96NTIMKJVGSlQvpr/xdzvIzJGR3INd2EYZlK5O20=
+	t=1756212888; cv=none; b=MRMlDyxigt4qEw5UfQ/Yg10an1l++WO8earWMRqorIatkLI9fgKKdz3aUuYGRD4hzV0wzJOik69wJbMSC09pAFYKvy31uYwpwhLbPmJc4D8va8gE6IQ/F6SrX91g5K8+yPVZ2aTMm3Sl1MSHf53RmepIz1OSeOOXjBLo7ABLscw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756214208; c=relaxed/simple;
-	bh=8mPZ1Xpu/oRj1GQElPC9vQWdZKRTUd/jDLXseqtCn8o=;
+	s=arc-20240116; t=1756212888; c=relaxed/simple;
+	bh=MLPyWGYQ9rK6L9APhorlIR5ktaVnVTZM2joOH4VuMyc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=t3+f5vySQy2wEfDXBgd1aryC5WnDFWJ6jNeG7wCkBKIsorfs9sGPlrDd1rwrT3HeDXARPI5kz+KSR3SGLtLe0cvWHrujcvGLDcMf2tjxB/T08obMZJhRiFCtoeDbSOmUX2RO5SlD5tV45p+7CGiF9DdwnzvQxI3aM1YvCFxYHOw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=wyQ4zK3+; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C42FFC4CEF1;
-	Tue, 26 Aug 2025 13:16:47 +0000 (UTC)
+	 MIME-Version; b=J59SEdCGBryAU4QCti5JVbeG0HOAN6v3SwQImrwkcckOpyLp3cSoPaoDGSPZNaOn0u2XJBgClCmXeztZNXiCtqDk/go577f69T266QESozSKwOjxBS4Ntw/IFaCxws0kVT2J1Me+UIrheANyBCtK9Zs5bzUzUbfror4nuir8hDg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=GScnjvFU; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3FE57C4CEF1;
+	Tue, 26 Aug 2025 12:54:48 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1756214208;
-	bh=8mPZ1Xpu/oRj1GQElPC9vQWdZKRTUd/jDLXseqtCn8o=;
+	s=korg; t=1756212888;
+	bh=MLPyWGYQ9rK6L9APhorlIR5ktaVnVTZM2joOH4VuMyc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=wyQ4zK3+bRPlE7+SN6R+ztuHu30rUK0oFe8Xd9EVA25t/wMRTSa14uVGvSlorB6Bu
-	 sQsNhKjDK9OhYEzgLFgNXDkQHNB+7cYTdVHrCLFTbkSXpZz/a3dG/bHZc7yIytqFgL
-	 bR/bUrBAeitrXJA9hzWWNveJCIn4eysPSlT3S6Bg=
+	b=GScnjvFUYfTYCuvT5Oy+qLaNMmYXQ695sLTrDykysTtKGsipOweH+Mx/jU5VFj3au
+	 11fYpnjRR+Z90N+CtlM1GxTy+sufQYju+H/oNhAWC4s4fAG8Q9xh+0OyuV9jXy9Zoy
+	 HrEkApAF88B8KZG0mtxaU3w1MKsYHqGx1snmhnUc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Huacai Chen <chenhuacai@loongson.cn>,
-	Bjorn Helgaas <bhelgaas@google.com>
-Subject: [PATCH 6.1 019/482] PCI: Extend isolated function probing to LoongArch
+	Mark Brown <broonie@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.6 123/587] ASoC: hdac_hdmi: Rate limit logging on connection and disconnection
 Date: Tue, 26 Aug 2025 13:04:32 +0200
-Message-ID: <20250826110931.263868638@linuxfoundation.org>
+Message-ID: <20250826110956.086092584@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250826110930.769259449@linuxfoundation.org>
-References: <20250826110930.769259449@linuxfoundation.org>
+In-Reply-To: <20250826110952.942403671@linuxfoundation.org>
+References: <20250826110952.942403671@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,46 +61,73 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Huacai Chen <chenhuacai@loongson.cn>
+From: Mark Brown <broonie@kernel.org>
 
-commit a02fd05661d73a8507dd70dd820e9b984490c545 upstream.
+[ Upstream commit c4ca928a6db1593802cd945f075a7e21dd0430c1 ]
 
-Like s390 and the jailhouse hypervisor, LoongArch's PCI architecture allows
-passing isolated PCI functions to a guest OS instance. So it is possible
-that there is a multi-function device without function 0 for the host or
-guest.
+We currently log parse failures for ELD data and some disconnection events
+as errors without rate limiting. These log messages can be triggered very
+frequently in some situations, especially ELD parsing when there is nothing
+connected to a HDMI port which will generate:
 
-Allow probing such functions by adding a IS_ENABLED(CONFIG_LOONGARCH) case
-in the hypervisor_isolated_pci_functions() helper.
+hdmi-audio-codec hdmi-audio-codec.1.auto: HDMI: Unknown ELD version 0
 
-This is similar to commit 189c6c33ff42 ("PCI: Extend isolated function
-probing to s390").
+While there's doubtless work that could be done on reducing the number of
+connection notification callbacks it's possible these may be legitimately
+generated by poor quality physical connections so let's use rate limiting
+to mitigate the log spam for the parse errors and lower the severity for
+disconnect logging to debug level.
 
-Signed-off-by: Huacai Chen <chenhuacai@loongson.cn>
-Signed-off-by: Bjorn Helgaas <bhelgaas@google.com>
-Cc: stable@vger.kernel.org
-Link: https://patch.msgid.link/20250624062927.4037734-1-chenhuacai@loongson.cn
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Signed-off-by: Mark Brown <broonie@kernel.org>
+Link: https://patch.msgid.link/20250613-asoc-hdmi-eld-logging-v1-1-76d64154d969@kernel.org
+Signed-off-by: Mark Brown <broonie@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- include/linux/hypervisor.h |    3 +++
- 1 file changed, 3 insertions(+)
+ sound/soc/codecs/hdac_hdmi.c | 10 ++++++----
+ 1 file changed, 6 insertions(+), 4 deletions(-)
 
---- a/include/linux/hypervisor.h
-+++ b/include/linux/hypervisor.h
-@@ -37,6 +37,9 @@ static inline bool hypervisor_isolated_p
- 	if (IS_ENABLED(CONFIG_S390))
- 		return true;
+diff --git a/sound/soc/codecs/hdac_hdmi.c b/sound/soc/codecs/hdac_hdmi.c
+index 8b6b76029694..0ddfb0cb376f 100644
+--- a/sound/soc/codecs/hdac_hdmi.c
++++ b/sound/soc/codecs/hdac_hdmi.c
+@@ -1230,7 +1230,8 @@ static int hdac_hdmi_parse_eld(struct hdac_device *hdev,
+ 						>> DRM_ELD_VER_SHIFT;
  
-+	if (IS_ENABLED(CONFIG_LOONGARCH))
-+		return true;
-+
- 	return jailhouse_paravirt();
- }
+ 	if (ver != ELD_VER_CEA_861D && ver != ELD_VER_PARTIAL) {
+-		dev_err(&hdev->dev, "HDMI: Unknown ELD version %d\n", ver);
++		dev_err_ratelimited(&hdev->dev,
++				    "HDMI: Unknown ELD version %d\n", ver);
+ 		return -EINVAL;
+ 	}
  
+@@ -1238,7 +1239,8 @@ static int hdac_hdmi_parse_eld(struct hdac_device *hdev,
+ 		DRM_ELD_MNL_MASK) >> DRM_ELD_MNL_SHIFT;
+ 
+ 	if (mnl > ELD_MAX_MNL) {
+-		dev_err(&hdev->dev, "HDMI: MNL Invalid %d\n", mnl);
++		dev_err_ratelimited(&hdev->dev,
++				    "HDMI: MNL Invalid %d\n", mnl);
+ 		return -EINVAL;
+ 	}
+ 
+@@ -1297,8 +1299,8 @@ static void hdac_hdmi_present_sense(struct hdac_hdmi_pin *pin,
+ 
+ 	if (!port->eld.monitor_present || !port->eld.eld_valid) {
+ 
+-		dev_err(&hdev->dev, "%s: disconnect for pin:port %d:%d\n",
+-						__func__, pin->nid, port->id);
++		dev_dbg(&hdev->dev, "%s: disconnect for pin:port %d:%d\n",
++			__func__, pin->nid, port->id);
+ 
+ 		/*
+ 		 * PCMs are not registered during device probe, so don't
+-- 
+2.39.5
+
 
 
 
