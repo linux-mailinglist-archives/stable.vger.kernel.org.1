@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-175406-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-174279-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 12478B3680D
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 16:12:27 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id EE10BB36298
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 15:20:35 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 956895676E0
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 14:04:25 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id D992E2A5C59
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 13:14:30 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 63588352093;
-	Tue, 26 Aug 2025 14:02:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3B8213469E3;
+	Tue, 26 Aug 2025 13:12:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="mLdXC2Q3"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Ajfi2Di6"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2124B1E7C08;
-	Tue, 26 Aug 2025 14:02:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DFA703451CD;
+	Tue, 26 Aug 2025 13:12:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756216960; cv=none; b=tLhFwHozCl3Wl8Xmbhl26H6Gm1WqNpPwkXGcqwqZbqnSxtXx6dvy4BKD4jM/gj5KNzIW31YDTOPnhtucjgshKMMGvDYQ5AdZitmiukpObwSt/qwIsH+51kezttBO27gEYl/ERMzDquiiDHEIr3tY7CcDtd/YgrMJPbq8aW66URc=
+	t=1756213968; cv=none; b=dpl3f6tH0HKE7L1raScLUVeHxZL5C745q9BawtKDOmaXaQGAjBwSNHoRlH7X/MNVUdBMt/n6tZ8Lss3LZ1EnF7jJ50LZKSC2+i2BgT2Jt0jcFT8uGQDES9/M/Q6TkfOs6LsDp5tNurbln85rVLkRYjhroElYgwb3rTC0skohGE0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756216960; c=relaxed/simple;
-	bh=dT2X89W7fl73T/uDR0j1pes9CiIXQP+3fkahcAhQgZk=;
+	s=arc-20240116; t=1756213968; c=relaxed/simple;
+	bh=hvPut2VV/qUfVm/WvqDKHk0bGxGvQjDvgCNlT6/vJ2E=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Zx0m1B5XUH3BYmiugl0an6inDxBr088RMHpJpFzbitRXVo439Lj1QzPTDlxGnuJFsIpBI5/ZwqsGHHFPDyTzQV0jhMmxsLZ+Y8W9+bGa9BpuS5N0EiUExxPuZbZ7U8/gyCwDiKKVurEzzw6YOmcDtjtSq/M7YPIrgktoEC+mbVM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=mLdXC2Q3; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5046CC113CF;
-	Tue, 26 Aug 2025 14:02:38 +0000 (UTC)
+	 MIME-Version; b=k9n345ZsSmnB6fkTvbILYCSyF7URbk6CapTwhuIL+G8mJg9C1NmSwpnKwWN8HJBWm/CfZyhReYDtBSPMA74Z2NZse6cpw+9ZLjDr2r9wf2s1/51rJEMPyjMNzvDOiAOoqU1VsHF0OJm5y625CFjTrK/hChy25tEl2pYpwmN+Uw4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Ajfi2Di6; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 10C0CC4CEF1;
+	Tue, 26 Aug 2025 13:12:46 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1756216958;
-	bh=dT2X89W7fl73T/uDR0j1pes9CiIXQP+3fkahcAhQgZk=;
+	s=korg; t=1756213967;
+	bh=hvPut2VV/qUfVm/WvqDKHk0bGxGvQjDvgCNlT6/vJ2E=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=mLdXC2Q3eAr2kvPOsJFSFlkMmRWysTJJ02m57ZKqxxCozdQkOeOfY/W2Zk3xwAS3g
-	 P3fQUKtu/r8UhJPizkkqvZ8jJwIHgUzgtb8KrjoW/ZLIgdjUdOddyFrADd+uvG7/X7
-	 IB92xa1PFqjWDMnrl5bExxk7icUpFE0MD+Jfl2Sc=
+	b=Ajfi2Di6QZ+IDI8pwRcKuMj8GuhvQUZw0obXI+CM8cG03+OLk5u5HFkGQVxzLnyn/
+	 TftNOGN2guJWgUaQVDdxxSvz+Z54+2fMN812UI/jK12Ufn6BplxzNFqq+aiaWEwD14
+	 BX/jOJooukmnCVHSx4lwEDwJyS0t+kFfVWay0cAc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Ye Bin <yebin10@huawei.com>,
-	"Matthew Wilcox (Oracle)" <willy@infradead.org>,
-	Christian Brauner <brauner@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 574/644] fs/buffer: fix use-after-free when call bh_read() helper
+	David Lechner <dlechner@baylibre.com>,
+	Stable@vger.kernel.org,
+	Jonathan Cameron <Jonathan.Cameron@huawei.com>
+Subject: [PATCH 6.6 516/587] iio: proximity: isl29501: fix buffered read on big-endian systems
 Date: Tue, 26 Aug 2025 13:11:05 +0200
-Message-ID: <20250826111000.755944470@linuxfoundation.org>
+Message-ID: <20250826111006.123956738@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250826110946.507083938@linuxfoundation.org>
-References: <20250826110946.507083938@linuxfoundation.org>
+In-Reply-To: <20250826110952.942403671@linuxfoundation.org>
+References: <20250826110952.942403671@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,101 +62,57 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Ye Bin <yebin10@huawei.com>
+From: David Lechner <dlechner@baylibre.com>
 
-[ Upstream commit 7375f22495e7cd1c5b3b5af9dcc4f6dffe34ce49 ]
+commit de18e978d0cda23e4c102e18092b63a5b0b3a800 upstream.
 
-There's issue as follows:
-BUG: KASAN: stack-out-of-bounds in end_buffer_read_sync+0xe3/0x110
-Read of size 8 at addr ffffc9000168f7f8 by task swapper/3/0
-CPU: 3 UID: 0 PID: 0 Comm: swapper/3 Not tainted 6.16.0-862.14.0.6.x86_64
-Hardware name: QEMU Standard PC (i440FX + PIIX, 1996)
-Call Trace:
- <IRQ>
- dump_stack_lvl+0x55/0x70
- print_address_description.constprop.0+0x2c/0x390
- print_report+0xb4/0x270
- kasan_report+0xb8/0xf0
- end_buffer_read_sync+0xe3/0x110
- end_bio_bh_io_sync+0x56/0x80
- blk_update_request+0x30a/0x720
- scsi_end_request+0x51/0x2b0
- scsi_io_completion+0xe3/0x480
- ? scsi_device_unbusy+0x11e/0x160
- blk_complete_reqs+0x7b/0x90
- handle_softirqs+0xef/0x370
- irq_exit_rcu+0xa5/0xd0
- sysvec_apic_timer_interrupt+0x6e/0x90
- </IRQ>
+Fix passing a u32 value as a u16 buffer scan item. This works on little-
+endian systems, but not on big-endian systems.
 
- Above issue happens when do ntfs3 filesystem mount, issue may happens
- as follows:
-           mount                            IRQ
-ntfs_fill_super
-  read_cache_page
-    do_read_cache_folio
-      filemap_read_folio
-        mpage_read_folio
-	 do_mpage_readpage
-	  ntfs_get_block_vbo
-	   bh_read
-	     submit_bh
-	     wait_on_buffer(bh);
-	                            blk_complete_reqs
-				     scsi_io_completion
-				      scsi_end_request
-				       blk_update_request
-				        end_bio_bh_io_sync
-					 end_buffer_read_sync
-					  __end_buffer_read_notouch
-					   unlock_buffer
+A new local variable is introduced for getting the register value and
+the array is changed to a struct to make the data layout more explicit
+rather than just changing the type and having to recalculate the proper
+length needed for the timestamp.
 
-            wait_on_buffer(bh);--> return will return to caller
-
-					  put_bh
-					    --> trigger stack-out-of-bounds
-In the mpage_read_folio() function, the stack variable 'map_bh' is
-passed to ntfs_get_block_vbo(). Once unlock_buffer() unlocks and
-wait_on_buffer() returns to continue processing, the stack variable
-is likely to be reclaimed. Consequently, during the end_buffer_read_sync()
-process, calling put_bh() may result in stack overrun.
-
-If the bh is not allocated on the stack, it belongs to a folio.  Freeing
-a buffer head which belongs to a folio is done by drop_buffers() which
-will fail to free buffers which are still locked.  So it is safe to call
-put_bh() before __end_buffer_read_notouch().
-
-Fixes: 1da177e4c3f4 ("Linux-2.6.12-rc2")
-Signed-off-by: Ye Bin <yebin10@huawei.com>
-Link: https://lore.kernel.org/20250811141830.343774-1-yebin@huaweicloud.com
-Reviewed-by: Matthew Wilcox (Oracle) <willy@infradead.org>
-Signed-off-by: Christian Brauner <brauner@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Fixes: 1c28799257bc ("iio: light: isl29501: Add support for the ISL29501 ToF sensor.")
+Signed-off-by: David Lechner <dlechner@baylibre.com>
+Link: https://patch.msgid.link/20250722-iio-use-more-iio_declare_buffer_with_ts-7-v2-1-d3ebeb001ed3@baylibre.com
+Cc: <Stable@vger.kernel.org>
+Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- fs/buffer.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/iio/proximity/isl29501.c |   14 ++++++++++----
+ 1 file changed, 10 insertions(+), 4 deletions(-)
 
-diff --git a/fs/buffer.c b/fs/buffer.c
-index 1960e2d43ae2..87fcbb725241 100644
---- a/fs/buffer.c
-+++ b/fs/buffer.c
-@@ -156,8 +156,8 @@ static void __end_buffer_read_notouch(struct buffer_head *bh, int uptodate)
-  */
- void end_buffer_read_sync(struct buffer_head *bh, int uptodate)
- {
--	__end_buffer_read_notouch(bh, uptodate);
- 	put_bh(bh);
-+	__end_buffer_read_notouch(bh, uptodate);
- }
- EXPORT_SYMBOL(end_buffer_read_sync);
+--- a/drivers/iio/proximity/isl29501.c
++++ b/drivers/iio/proximity/isl29501.c
+@@ -938,12 +938,18 @@ static irqreturn_t isl29501_trigger_hand
+ 	struct iio_dev *indio_dev = pf->indio_dev;
+ 	struct isl29501_private *isl29501 = iio_priv(indio_dev);
+ 	const unsigned long *active_mask = indio_dev->active_scan_mask;
+-	u32 buffer[4] __aligned(8) = {}; /* 1x16-bit + naturally aligned ts */
++	u32 value;
++	struct {
++		u16 data;
++		aligned_s64 ts;
++	} scan = { };
  
--- 
-2.50.1
-
+-	if (test_bit(ISL29501_DISTANCE_SCAN_INDEX, active_mask))
+-		isl29501_register_read(isl29501, REG_DISTANCE, buffer);
++	if (test_bit(ISL29501_DISTANCE_SCAN_INDEX, active_mask)) {
++		isl29501_register_read(isl29501, REG_DISTANCE, &value);
++		scan.data = value;
++	}
+ 
+-	iio_push_to_buffers_with_timestamp(indio_dev, buffer, pf->timestamp);
++	iio_push_to_buffers_with_timestamp(indio_dev, &scan, pf->timestamp);
+ 	iio_trigger_notify_done(indio_dev->trig);
+ 
+ 	return IRQ_HANDLED;
 
 
 
