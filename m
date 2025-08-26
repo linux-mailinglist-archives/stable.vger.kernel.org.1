@@ -1,58 +1,58 @@
-Return-Path: <stable+bounces-173948-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-174431-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 71041B36084
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 15:01:37 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id A53DAB36354
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 15:28:50 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id D573A1BC173D
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 12:58:29 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 690122A7E3A
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 13:21:35 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0A3051DE4F6;
-	Tue, 26 Aug 2025 12:58:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 720E328314A;
+	Tue, 26 Aug 2025 13:19:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="S3/OvbjM"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Rm8SsejF"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BB7381A00F0;
-	Tue, 26 Aug 2025 12:58:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2C5C01EF39E;
+	Tue, 26 Aug 2025 13:19:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756213087; cv=none; b=PebSidf8MasPzV79bs54JRf/48ZeSJvzVNUhUarY81T2RXzBKC4jbXaeNCQz+9n4/Mu8tw77wkufnUKjynFovSt9SLrPe9UB7qc0oQ0mQO+7aHU8HSc/PddVDqYwYoeJWHktzegh2+PF7r1+Wdc1MwxpMDsrJsEar76274zIiVs=
+	t=1756214373; cv=none; b=UZyJB2Gd84fR0hDMvepoxrWhQwu6tD/0n5qx88QdMXYd4LN6AIo8BU77ai8drLdZ9e6S1+fsOMZfSxv8u7A3gRLCIP+OgKQ0rwcfTEvyKdKM4+CwK+jkVmA2nZ64qUDKgaENdpJsMfzY31e1v9Etpd/DMy/y6CwfrMIKyuutd98=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756213087; c=relaxed/simple;
-	bh=itnukO7GY/CRW/XMIX5jr1YE5qSHjweA7x3Ued7hmd0=;
+	s=arc-20240116; t=1756214373; c=relaxed/simple;
+	bh=ZToNr4ufEQO4YuI2zW0G0Icwtj2qCxodKuII3K3wReY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=aiHEyv1vysMjSGpV4Gw/k+K1l74ZjDSFjcw7k7Oj5hWFIdXzot7uf/qjn4DP54GFzrx+M3qmBe8Pp2fyDkRMWsw3raMJGTd2CElQHdrduu+u0to+XqhuwmZpkWeBe0a0agxSfTz71dbVTedITHeXlsIK7HRW3VrdJ5nVbAkdgmg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=S3/OvbjM; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0BFF9C4CEF1;
-	Tue, 26 Aug 2025 12:58:06 +0000 (UTC)
+	 MIME-Version:Content-Type; b=Qiq3nZKQY4TXoPBQVzbon3OmJtMzMosoigNQwuILqRwIqNgBeU+2TI/1vbTJxIChjyvfPHtd86oE6EnLG8aTMCJAk2CzGfLc9ql+B7/xJ3Rs6+edMUXPgxi23HySZMcRAgrnGXR675IMMzYAUbCe5yHR5YUFGcp5NA0UR6+nrho=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Rm8SsejF; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 892FBC4CEF1;
+	Tue, 26 Aug 2025 13:19:32 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1756213087;
-	bh=itnukO7GY/CRW/XMIX5jr1YE5qSHjweA7x3Ued7hmd0=;
+	s=korg; t=1756214373;
+	bh=ZToNr4ufEQO4YuI2zW0G0Icwtj2qCxodKuII3K3wReY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=S3/OvbjM9aYGCeZOXThxuB2QHikMh6Rsb4ZU4eFy+DDriN51q6bzdd34va8nKzGA3
-	 hYqtuO9ONGphXZtauH4WWCNy3uuYp5RZbZLh6C7FRqEuHZj11ytlIyRJpuxgLbQH6N
-	 vrgvsKASW7KWBY0ufb28ZP9xwZPHXc28M9u0wWRI=
+	b=Rm8SsejFvl6+JDjB+k3bDiLD5aI/QMUfe0Ll/YoPx9FhesMES5NOf+uO/EfvVhuT/
+	 Et3Pqx8vxt8tn4QTRd0DkHGKaiW3iCHpU6XGuEf6d2MQ2iR50Xu07fMD0y19xzgzt6
+	 996GF4tvYyKBqUFoJrQT8XBydcUk+Csbxix2Fc9o=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	=?UTF-8?q?Eugenio=20P=C3=A9rez?= <eperezma@redhat.com>,
-	Jason Wang <jasowang@redhat.com>,
-	"Michael S. Tsirkin" <mst@redhat.com>,
-	Lei Yang <leiyang@redhat.com>,
+	=?UTF-8?q?Amadeusz=20S=C5=82awi=C5=84ski?= <amadeuszx.slawinski@linux.intel.com>,
+	Cezary Rojewski <cezary.rojewski@intel.com>,
+	Xinxin Wan <xinxin.wan@intel.com>,
+	Mark Brown <broonie@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 216/587] vhost: fail early when __vhost_add_used() fails
+Subject: [PATCH 6.1 112/482] ASoC: codecs: rt5640: Retry DEVICE_ID verification
 Date: Tue, 26 Aug 2025 13:06:05 +0200
-Message-ID: <20250826110958.431252037@linuxfoundation.org>
+Message-ID: <20250826110933.595989456@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250826110952.942403671@linuxfoundation.org>
-References: <20250826110952.942403671@linuxfoundation.org>
+In-Reply-To: <20250826110930.769259449@linuxfoundation.org>
+References: <20250826110930.769259449@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -65,42 +65,47 @@ MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jason Wang <jasowang@redhat.com>
+From: Xinxin Wan <xinxin.wan@intel.com>
 
-[ Upstream commit b4ba1207d45adaafa2982c035898b36af2d3e518 ]
+[ Upstream commit 19f971057b2d7b99c80530ec1052b45de236a8da ]
 
-This patch fails vhost_add_used_n() early when __vhost_add_used()
-fails to make sure used idx is not updated with stale used ring
-information.
+To be more resilient to codec-detection failures when the hardware
+powers on slowly, add retry mechanism to the device verification check.
+Similar pattern is found throughout a number of Realtek codecs. Our
+tests show that 60ms delay is sufficient to address readiness issues on
+rt5640 chip.
 
-Reported-by: Eugenio Pérez <eperezma@redhat.com>
-Signed-off-by: Jason Wang <jasowang@redhat.com>
-Message-Id: <20250714084755.11921-2-jasowang@redhat.com>
-Signed-off-by: Michael S. Tsirkin <mst@redhat.com>
-Tested-by: Lei Yang <leiyang@redhat.com>
+Reviewed-by: Amadeusz Sławiński <amadeuszx.slawinski@linux.intel.com>
+Reviewed-by: Cezary Rojewski <cezary.rojewski@intel.com>
+Signed-off-by: Xinxin Wan <xinxin.wan@intel.com>
+Signed-off-by: Cezary Rojewski <cezary.rojewski@intel.com>
+Link: https://patch.msgid.link/20250530142120.2944095-3-cezary.rojewski@intel.com
+Signed-off-by: Mark Brown <broonie@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/vhost/vhost.c | 3 +++
- 1 file changed, 3 insertions(+)
+ sound/soc/codecs/rt5640.c | 5 +++++
+ 1 file changed, 5 insertions(+)
 
-diff --git a/drivers/vhost/vhost.c b/drivers/vhost/vhost.c
-index d0238bd741b0..147cfb64bba2 100644
---- a/drivers/vhost/vhost.c
-+++ b/drivers/vhost/vhost.c
-@@ -2770,6 +2770,9 @@ int vhost_add_used_n(struct vhost_virtqueue *vq, struct vring_used_elem *heads,
+diff --git a/sound/soc/codecs/rt5640.c b/sound/soc/codecs/rt5640.c
+index 37ea4d854cb5..3185bf13dc42 100644
+--- a/sound/soc/codecs/rt5640.c
++++ b/sound/soc/codecs/rt5640.c
+@@ -3026,6 +3026,11 @@ static int rt5640_i2c_probe(struct i2c_client *i2c)
  	}
- 	r = __vhost_add_used_n(vq, heads, count);
  
-+	if (r < 0)
-+		return r;
+ 	regmap_read(rt5640->regmap, RT5640_VENDOR_ID2, &val);
++	if (val != RT5640_DEVICE_ID) {
++		usleep_range(60000, 100000);
++		regmap_read(rt5640->regmap, RT5640_VENDOR_ID2, &val);
++	}
 +
- 	/* Make sure buffer is written before we update index. */
- 	smp_wmb();
- 	if (vhost_put_used_idx(vq)) {
+ 	if (val != RT5640_DEVICE_ID) {
+ 		dev_err(&i2c->dev,
+ 			"Device with ID register %#x is not rt5640/39\n", val);
 -- 
 2.39.5
 
