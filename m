@@ -1,56 +1,55 @@
-Return-Path: <stable+bounces-174956-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-175479-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 31FB1B36593
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 15:49:14 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4B144B368AF
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 16:18:32 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 4FA3B8A7299
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 13:42:41 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 81F921C41997
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 14:07:55 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9258528EA72;
-	Tue, 26 Aug 2025 13:42:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 676CC352098;
+	Tue, 26 Aug 2025 14:05:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="hwoSqQ0w"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="VUFgYrPe"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4B67528314A;
-	Tue, 26 Aug 2025 13:42:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2563A22DFA7;
+	Tue, 26 Aug 2025 14:05:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756215760; cv=none; b=kbn6pgfXQVLMK8rBHFwIzphQnPtF0O1guJcvDDxbcJoC5l4hDqNu6mnl0OZJkW9Gd5Bll9LHZ4OQ/6uPxkYnDG8TjizQX96dFQnxjXKDdyKtq9WUSAn5ZdrUb6xVVH0ieQKlUZUJU9DUdShI/4bvu0FJp9+Dv2gxGe4AccbtQlU=
+	t=1756217153; cv=none; b=SEXbUZDTHe0NPa2zo9c++RyniTPj2t/hz27AtkMInq7Fa42cJMv62witEbIu756yaxiVYVnyhhiwDU41FYYsIdkRvT7RERk2Xj0dIHD09Zc0V6UpIoGNAYG0gG9XEpEE4NbPTmWEp6vWVl+eky0oy3GXQhBnjw8mDxkO0Tmnut0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756215760; c=relaxed/simple;
-	bh=0qlrvmYK6poZla6xRQKwJY0RSCLnMZWV1OTIzlHZA4A=;
+	s=arc-20240116; t=1756217153; c=relaxed/simple;
+	bh=tnoxT/UjLfWKQ1og+KhiQZTeQeRU6IxUGlMRtt+mt4s=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=RPpaFqiCdvCGiBRCPZo4FfFslQ6Duze9hP2sn134Xf2cc/x4u7URxKhRZOMelrv+vB7kTbrQAXu+BhJcjAxMC7yXj+YKdkwbngZVZdHAd48SrUorD4sbdRxOJdAyWIZYmJ5HV9N6/dTDvcbujTPb/Mi7/ewzpneoztazPc4bvzc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=hwoSqQ0w; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C6B21C4CEF1;
-	Tue, 26 Aug 2025 13:42:39 +0000 (UTC)
+	 MIME-Version; b=TrPl8kdWpEGzUJS0MjVzUXyZ2+KFWS+N570fzdhs9q8ave589dtBe/zQ35Kgo6yMhIDYNRQf/4DVvE4LSBKqrRT5yiLFml6m4E+z7TQcFpSxZJz7d+igX0kVPnWEimRaj3eWE1eqQvR6js9x/nqiANUpPi+2WLxlU82tiex4in4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=VUFgYrPe; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A8692C4CEF1;
+	Tue, 26 Aug 2025 14:05:52 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1756215760;
-	bh=0qlrvmYK6poZla6xRQKwJY0RSCLnMZWV1OTIzlHZA4A=;
+	s=korg; t=1756217153;
+	bh=tnoxT/UjLfWKQ1og+KhiQZTeQeRU6IxUGlMRtt+mt4s=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=hwoSqQ0wjkcg9BDIm+oDV4s//Ilfs25cD+80MLUz9WZNOTPQhEVpfglZDWRIyu0Gr
-	 JSrVL1lVFq3klCHgabS94hvv1s5EAQOMfm2yHw19XCgLvbJafBRjanxPm1JptU5ZN6
-	 6fBgM5vreza5G+s4gHL7NcSQOyX9DUJ947/LtUEc=
+	b=VUFgYrPePHg+lfdswCCJQG99tGa2859btASPyFSV19Ri/6hSHrvoLdnpDFADqNQdl
+	 RdyJLyUY9Sq4KT+AcgKykzNLFqqgu+RPdnjKLplaT61//yzimFUrIC+W+qaCADj09V
+	 EH3YnmPXofzkMfZ/XMhGFSOtW9x0mce+GTP805Qs=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Lifeng Zheng <zhenglifeng1@huawei.com>,
-	Chanwoo Choi <cw00.choi@samsung.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 128/644] PM / devfreq: Check governor before using governor->name
-Date: Tue, 26 Aug 2025 13:03:39 +0200
-Message-ID: <20250826110949.684634863@linuxfoundation.org>
+	Alan Stern <stern@rowland.harvard.edu>,
+	Benjamin Tissoires <bentiss@kernel.org>
+Subject: [PATCH 5.10 010/523] HID: core: ensure the allocated report buffer can contain the reserved report ID
+Date: Tue, 26 Aug 2025 13:03:40 +0200
+Message-ID: <20250826110924.834196417@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250826110946.507083938@linuxfoundation.org>
-References: <20250826110946.507083938@linuxfoundation.org>
+In-Reply-To: <20250826110924.562212281@linuxfoundation.org>
+References: <20250826110924.562212281@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,55 +61,46 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Lifeng Zheng <zhenglifeng1@huawei.com>
+From: Benjamin Tissoires <bentiss@kernel.org>
 
-[ Upstream commit bab7834c03820eb11269bc48f07c3800192460d2 ]
+commit 4f15ee98304b96e164ff2340e1dfd6181c3f42aa upstream.
 
-Commit 96ffcdf239de ("PM / devfreq: Remove redundant governor_name from
-struct devfreq") removes governor_name and uses governor->name to replace
-it. But devfreq->governor may be NULL and directly using
-devfreq->governor->name may cause null pointer exception. Move the check of
-governor to before using governor->name.
+When the report ID is not used, the low level transport drivers expect
+the first byte to be 0. However, currently the allocated buffer not
+account for that extra byte, meaning that instead of having 8 guaranteed
+bytes for implement to be working, we only have 7.
 
-Fixes: 96ffcdf239de ("PM / devfreq: Remove redundant governor_name from struct devfreq")
-Signed-off-by: Lifeng Zheng <zhenglifeng1@huawei.com>
-Link: https://lore.kernel.org/lkml/20250421030020.3108405-5-zhenglifeng1@huawei.com/
-Signed-off-by: Chanwoo Choi <cw00.choi@samsung.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Reported-by: Alan Stern <stern@rowland.harvard.edu>
+Closes: https://lore.kernel.org/linux-input/c75433e0-9b47-4072-bbe8-b1d14ea97b13@rowland.harvard.edu/
+Cc: stable@vger.kernel.org
+Suggested-by: Alan Stern <stern@rowland.harvard.edu>
+Link: https://patch.msgid.link/20250710-report-size-null-v2-1-ccf922b7c4e5@kernel.org
+Signed-off-by: Benjamin Tissoires <bentiss@kernel.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/devfreq/devfreq.c | 10 +++-------
- 1 file changed, 3 insertions(+), 7 deletions(-)
+ drivers/hid/hid-core.c |    5 ++++-
+ 1 file changed, 4 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/devfreq/devfreq.c b/drivers/devfreq/devfreq.c
-index 237362316edb..02f86879a5be 100644
---- a/drivers/devfreq/devfreq.c
-+++ b/drivers/devfreq/devfreq.c
-@@ -1347,15 +1347,11 @@ int devfreq_remove_governor(struct devfreq_governor *governor)
- 		int ret;
- 		struct device *dev = devfreq->dev.parent;
+--- a/drivers/hid/hid-core.c
++++ b/drivers/hid/hid-core.c
+@@ -1662,9 +1662,12 @@ u8 *hid_alloc_report_buf(struct hid_repo
+ 	/*
+ 	 * 7 extra bytes are necessary to achieve proper functionality
+ 	 * of implement() working on 8 byte chunks
++	 * 1 extra byte for the report ID if it is null (not used) so
++	 * we can reserve that extra byte in the first position of the buffer
++	 * when sending it to .raw_request()
+ 	 */
  
-+		if (!devfreq->governor)
-+			continue;
-+
- 		if (!strncmp(devfreq->governor->name, governor->name,
- 			     DEVFREQ_NAME_LEN)) {
--			/* we should have a devfreq governor! */
--			if (!devfreq->governor) {
--				dev_warn(dev, "%s: Governor %s NOT present\n",
--					 __func__, governor->name);
--				continue;
--				/* Fall through */
--			}
- 			ret = devfreq->governor->event_handler(devfreq,
- 						DEVFREQ_GOV_STOP, NULL);
- 			if (ret) {
--- 
-2.39.5
-
+-	u32 len = hid_report_len(report) + 7;
++	u32 len = hid_report_len(report) + 7 + (report->id == 0);
+ 
+ 	return kzalloc(len, flags);
+ }
 
 
 
