@@ -1,57 +1,55 @@
-Return-Path: <stable+bounces-175781-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-173502-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 606E4B36A33
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 16:35:19 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id DE4F2B35D17
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 13:41:04 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 963C51BC7AD5
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 14:21:27 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 0285D5E341D
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 11:40:43 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C268A34F490;
-	Tue, 26 Aug 2025 14:19:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5F38523B628;
+	Tue, 26 Aug 2025 11:40:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="rzLrMVld"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="R3P/Y7MG"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7C4D32AE68;
-	Tue, 26 Aug 2025 14:19:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1D81C393DD1;
+	Tue, 26 Aug 2025 11:40:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756217952; cv=none; b=pkDrZ7YeexVuugXbiztkL9iC+gmkq6GdQLOseSGTFZPcRbrdKyKpnFj5BZbnCAK5x++JDDG8jnPAOHLId/QyfEOLkBp4783hEmp7M8LcUV2X7DKhn3oxVXnANi/vD/tNYYDwJ6k/hy9KGTBtyMplYk63nhZqpIX6YNU1V7w9Pe0=
+	t=1756208415; cv=none; b=lWT0Nsk0E5wGfHk5CtGjBkvWKJRNSGkce6742XrHuIQZHWlYpRifB4ovnpCnnfENzPRl1t/TC9hk/c2iOG9mZRdyztkwH+QB/zfDmJYf5AFHyuYRfMAad8SZTrmi7yOwKZAPOxQlzf91MbxjCN56wRGn3rOT1CkFXtsRxnratDA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756217952; c=relaxed/simple;
-	bh=S/lDaAm+/T7tuLvukKTKO7/QyI7XhxGl+ZPU4PHtei8=;
+	s=arc-20240116; t=1756208415; c=relaxed/simple;
+	bh=bWAnAXfEDWa7l1d56u5HtxITqnu4soxigcoYy5DngKU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=hlpeXWGC18wUDVPMIB1oAFOcM+1ygn6g0wSW9z9icdoFhpgx4jZ+VqNBbP9EWW8SrGguE/Z4c3hT1hHqkiJAeinYMwbG97wRatSEl6lcrxW3vE/RV/p82d25OcBqPp79FcB0mWRcmUQgBqrjkhalC2uFFvS6XeQlK6FJNaEO2Is=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=rzLrMVld; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 075EFC4CEF1;
-	Tue, 26 Aug 2025 14:19:11 +0000 (UTC)
+	 MIME-Version; b=mqASQO6eZzZZwXsVUgANQfou7Gpd9IZY53PKmz2txN5OP6coeuyexsSiwX6Pbpyssj24PDy7a1K6rLBOochbW/xrzo8mbko5a2OcfM47j/xPdXumJVb1Qe1EupPLgnu8tRER+l5dGyOioxdOny0resJaRbAUeiINAwkTWADbJ+0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=R3P/Y7MG; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A8727C4CEF1;
+	Tue, 26 Aug 2025 11:40:14 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1756217952;
-	bh=S/lDaAm+/T7tuLvukKTKO7/QyI7XhxGl+ZPU4PHtei8=;
+	s=korg; t=1756208415;
+	bh=bWAnAXfEDWa7l1d56u5HtxITqnu4soxigcoYy5DngKU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=rzLrMVldoEf3hUSwQZtsvh/JeBbMuJIrfuWTsijb1wYWTtFHUhd6dxS5J8N781Hcm
-	 PRLNiKzC4UPaVzH3jAvlhvmPrM2kQzFBu3doAIUAeMdI+jSXhio1VtXybatIjhqQbN
-	 IDSH0yDNM+ZdTJS27zuorU9Icrd1qCmpMSeHlOrM=
+	b=R3P/Y7MG+UtV3Q2ZdSirS86IfVhg/0dLYBpBvexO5FNxicdy2rWcjJt8NYPx5WRfg
+	 YJTbYzLmiyPJ2kEw/zvaCZz7owh0rH+YCJcNvhiEDgsvNrt6zXlQoybcvmyPeY8M3r
+	 VfSfEaHuKql4eKWoEQPsF1+mq2SS18TxqHT27Z9A=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Damien Le Moal <dlemoal@kernel.org>,
-	Yafang Shao <laoar.shao@gmail.com>,
-	"Martin K. Petersen" <martin.petersen@oracle.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 306/523] scsi: mpt3sas: Correctly handle ATA device errors
+	Sakari Ailus <sakari.ailus@linux.intel.com>,
+	Hans Verkuil <hverkuil@xs4all.nl>
+Subject: [PATCH 6.12 101/322] media: ipu6: isys: Use correct pads for xlate_streams()
 Date: Tue, 26 Aug 2025 13:08:36 +0200
-Message-ID: <20250826110932.004094524@linuxfoundation.org>
+Message-ID: <20250826110918.204054789@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250826110924.562212281@linuxfoundation.org>
-References: <20250826110924.562212281@linuxfoundation.org>
+In-Reply-To: <20250826110915.169062587@linuxfoundation.org>
+References: <20250826110915.169062587@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,90 +61,55 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Damien Le Moal <dlemoal@kernel.org>
+From: Sakari Ailus <sakari.ailus@linux.intel.com>
 
-[ Upstream commit 15592a11d5a5c8411ac8494ec49736b658f6fbff ]
+commit ff49672a28f3a856717f09d61380e524e243121f upstream.
 
-With the ATA error model, an NCQ command failure always triggers an abort
-(termination) of all NCQ commands queued on the device. In such case, the
-SAT or the host must handle the failed command according to the command
-sense data and immediately retry all other NCQ commands that were aborted
-due to the failed NCQ command.
+The pad argument to v4l2_subdev_state_xlate_streams() is incorrect, static
+pad number is used for the source pad even though the pad number is
+dependent on the stream. Fix it.
 
-For SAS HBAs controlled by the mpt3sas driver, NCQ command aborts are not
-handled by the HBA SAT and sent back to the host, with an ioc log
-information equal to 0x31080000 (IOC_LOGINFO_PREFIX_PL with the PL code
-PL_LOGINFO_CODE_SATA_NCQ_FAIL_ALL_CMDS_AFTR_ERR). The function
-_scsih_io_done() always forces a retry of commands terminated with the
-status MPI2_IOCSTATUS_SCSI_IOC_TERMINATED using the SCSI result
-DID_SOFT_ERROR, regardless of the log_info for the command.  This
-correctly forces the retry of collateral NCQ abort commands, but with the
-retry counter for the command being incremented. If a command to an ATA
-device is subject to too many retries due to other NCQ commands failing
-(e.g. read commands trying to access unreadable sectors), the collateral
-NCQ abort commands may be terminated with an error as they run out of
-retries. This violates the SAT specification and causes hard-to-debug
-command errors.
-
-Solve this issue by modifying the handling of the
-MPI2_IOCSTATUS_SCSI_IOC_TERMINATED status to check if a command is for an
-ATA device and if the command loginfo indicates an NCQ collateral
-abort. If that is the case, force the command retry using the SCSI result
-DID_IMM_RETRY to avoid incrementing the command retry count.
-
-Signed-off-by: Damien Le Moal <dlemoal@kernel.org>
-Link: https://lore.kernel.org/r/20250606052747.742998-3-dlemoal@kernel.org
-Tested-by: Yafang Shao <laoar.shao@gmail.com>
-Signed-off-by: Martin K. Petersen <martin.petersen@oracle.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Fixes: 3a5c59ad926b ("media: ipu6: Rework CSI-2 sub-device streaming control")
+Cc: stable@vger.kernel.org
+Signed-off-by: Sakari Ailus <sakari.ailus@linux.intel.com>
+Signed-off-by: Hans Verkuil <hverkuil@xs4all.nl>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/scsi/mpt3sas/mpt3sas_scsih.c | 19 +++++++++++++++++++
- 1 file changed, 19 insertions(+)
+ drivers/media/pci/intel/ipu6/ipu6-isys-csi2.c |   12 ++++++------
+ 1 file changed, 6 insertions(+), 6 deletions(-)
 
-diff --git a/drivers/scsi/mpt3sas/mpt3sas_scsih.c b/drivers/scsi/mpt3sas/mpt3sas_scsih.c
-index e797f6e3982c..4f4c2a20f47a 100644
---- a/drivers/scsi/mpt3sas/mpt3sas_scsih.c
-+++ b/drivers/scsi/mpt3sas/mpt3sas_scsih.c
-@@ -181,6 +181,14 @@ struct sense_info {
- #define MPT3SAS_PORT_ENABLE_COMPLETE (0xFFFD)
- #define MPT3SAS_ABRT_TASK_SET (0xFFFE)
- #define MPT3SAS_REMOVE_UNRESPONDING_DEVICES (0xFFFF)
-+
-+/*
-+ * SAS Log info code for a NCQ collateral abort after an NCQ error:
-+ * IOC_LOGINFO_PREFIX_PL | PL_LOGINFO_CODE_SATA_NCQ_FAIL_ALL_CMDS_AFTR_ERR
-+ * See: drivers/message/fusion/lsi/mpi_log_sas.h
-+ */
-+#define IOC_LOGINFO_SATA_NCQ_FAIL_AFTER_ERR	0x31080000
-+
- /**
-  * struct fw_event_work - firmware event struct
-  * @list: link list framework
-@@ -5628,6 +5636,17 @@ _scsih_io_done(struct MPT3SAS_ADAPTER *ioc, u16 smid, u8 msix_index, u32 reply)
- 			scmd->result = DID_TRANSPORT_DISRUPTED << 16;
- 			goto out;
- 		}
-+		if (log_info == IOC_LOGINFO_SATA_NCQ_FAIL_AFTER_ERR) {
-+			/*
-+			 * This is a ATA NCQ command aborted due to another NCQ
-+			 * command failure. We must retry this command
-+			 * immediately but without incrementing its retry
-+			 * counter.
-+			 */
-+			WARN_ON_ONCE(xfer_cnt != 0);
-+			scmd->result = DID_IMM_RETRY << 16;
-+			break;
-+		}
- 		if (log_info == 0x31110630) {
- 			if (scmd->retries > 2) {
- 				scmd->result = DID_NO_CONNECT << 16;
--- 
-2.39.5
-
+--- a/drivers/media/pci/intel/ipu6/ipu6-isys-csi2.c
++++ b/drivers/media/pci/intel/ipu6/ipu6-isys-csi2.c
+@@ -360,9 +360,9 @@ static int ipu6_isys_csi2_enable_streams
+ 	remote_pad = media_pad_remote_pad_first(&sd->entity.pads[CSI2_PAD_SINK]);
+ 	remote_sd = media_entity_to_v4l2_subdev(remote_pad->entity);
+ 
+-	sink_streams = v4l2_subdev_state_xlate_streams(state, CSI2_PAD_SRC,
+-						       CSI2_PAD_SINK,
+-						       &streams_mask);
++	sink_streams =
++		v4l2_subdev_state_xlate_streams(state, pad, CSI2_PAD_SINK,
++						&streams_mask);
+ 
+ 	ret = ipu6_isys_csi2_calc_timing(csi2, &timing, CSI2_ACCINV);
+ 	if (ret)
+@@ -390,9 +390,9 @@ static int ipu6_isys_csi2_disable_stream
+ 	struct media_pad *remote_pad;
+ 	u64 sink_streams;
+ 
+-	sink_streams = v4l2_subdev_state_xlate_streams(state, CSI2_PAD_SRC,
+-						       CSI2_PAD_SINK,
+-						       &streams_mask);
++	sink_streams =
++		v4l2_subdev_state_xlate_streams(state, pad, CSI2_PAD_SINK,
++						&streams_mask);
+ 
+ 	remote_pad = media_pad_remote_pad_first(&sd->entity.pads[CSI2_PAD_SINK]);
+ 	remote_sd = media_entity_to_v4l2_subdev(remote_pad->entity);
 
 
 
