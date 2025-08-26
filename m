@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-173076-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-176058-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 54CF5B35B96
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 13:26:13 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id DC898B36BB9
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 16:48:18 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 5880D1891B73
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 11:23:07 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id E0A0898188C
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 14:34:01 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 08A3B322763;
-	Tue, 26 Aug 2025 11:21:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5FCE635CECB;
+	Tue, 26 Aug 2025 14:31:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="AZyQa5eo"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="tL9viy3X"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B87E1301486;
-	Tue, 26 Aug 2025 11:21:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1E53635CEC2;
+	Tue, 26 Aug 2025 14:31:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756207310; cv=none; b=CMMp8Pcinxt4YgkPwJHRP1ocj73GZLvJtEXpRN8iwLLbb+6Y0IX/kWOqwlWZCn0bpjygE2kL0jtUKC1iDPE5v9shsEI+JtZKsZtLSO+2+Thtj8crHZKFPkramRVHaAnrpbqR/hIdRlOdT4YHLHnW3MJFXT4cA7CKgw2VzU6vOSU=
+	t=1756218674; cv=none; b=bS5waE8YhKrG78qY/MjkIoJ6Pa1iKDwNH3WYxMb1CH1SGXrAtYI9S4xxofTVtRwj67F/5/29XhVQyCTCUlupmOZMQXaceDpN+hy/002/kGizCyn8eEth9MLclREgvipYSxHVhJoZ/gs6cYQ0A5UO2flwhRKEBTW/Pfcb4qiHVw4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756207310; c=relaxed/simple;
-	bh=zJNIWz6Ub7c9i+wI1Z2ZDXnnoBqe/RSM6+6x1iLhYiI=;
+	s=arc-20240116; t=1756218674; c=relaxed/simple;
+	bh=AtTRzIkkBF/Ilx4dVM4SHKBHVdx0P7qO6tXWPvIyeeI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=ZyvId2k6FL2GdLnxaZqVfdo6NpM6yL/Z4Bn4iCJhSEGkooiX2B6giHLQlnDQzF8W+LR4W2HbOF4IpP1FAGaMCscSNR9NMyICGHD1hUxS7XTEi9t4DrK6vHiA4EeCAms7q98bB6SmrJnSaBl3nnvjsDBUDDDRspKbjClgLie0hl4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=AZyQa5eo; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 43325C4CEF1;
-	Tue, 26 Aug 2025 11:21:50 +0000 (UTC)
+	 MIME-Version; b=oXGSNDwMDt/7eLnd8/s2aOUUEFUf866JswM1SNhMphY0woeIBVptm00DacZdFXI05nljicNnz0VgaGioqvK+Xb9brJdNFE5WdWX7vr7mFIjqo8mgaRbbSnNWD49iO0tv7tas0z94xzKo7K47ORdXNk6KqsisCM/ZvHgMRfcqi9E=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=tL9viy3X; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A8431C4CEF1;
+	Tue, 26 Aug 2025 14:31:13 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1756207310;
-	bh=zJNIWz6Ub7c9i+wI1Z2ZDXnnoBqe/RSM6+6x1iLhYiI=;
+	s=korg; t=1756218674;
+	bh=AtTRzIkkBF/Ilx4dVM4SHKBHVdx0P7qO6tXWPvIyeeI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=AZyQa5eoIzezN0oR0KhYmqDrx/TVINZcufCzuEokpZhwUCuOvgQijBlIhQ8pjhsa5
-	 xfK/fU0xMSxjZqvdsYZgovyMoW1SjzjwAsXxr3f+9S+wKK3qaZuQB137keEOcYTDOM
-	 wntOlPmWrbGRSNDdhWRBMrX+aCnqY9pg6fnZsTXA=
+	b=tL9viy3XydN+8p5bi3DGoqZN2qSbmtxXaVZUYwV7gE/TbRv2gRPPEuPQOXvuAk58g
+	 Baq80SErSnytLtd0sdwqccFuZSyB7UqJRGSsLl9OX04oJVslEHHMxIbBT59ANaBUGU
+	 yQn+goAOMS3TcohgKDy64i49KJeNG5kBvaBX7GfA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Haoxiang Li <haoxiang_li2024@163.com>,
-	Dan Carpenter <dan.carpenter@linaro.org>,
-	Nicolas Dufresne <nicolas.dufresne@collabora.com>,
-	Hans Verkuil <hverkuil@xs4all.nl>
-Subject: [PATCH 6.16 132/457] media: imx: fix a potential memory leak in imx_media_csc_scaler_device_init()
+	"xin.guo" <guoxin0309@gmail.com>,
+	Eric Dumazet <edumazet@google.com>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.4 090/403] tcp: fix tcp_ofo_queue() to avoid including too much DUP SACK range
 Date: Tue, 26 Aug 2025 13:06:56 +0200
-Message-ID: <20250826110940.633506637@linuxfoundation.org>
+Message-ID: <20250826110909.152950677@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250826110937.289866482@linuxfoundation.org>
-References: <20250826110937.289866482@linuxfoundation.org>
+In-Reply-To: <20250826110905.607690791@linuxfoundation.org>
+References: <20250826110905.607690791@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,40 +63,61 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.16-stable review patch.  If anyone has any objections, please let me know.
+5.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Haoxiang Li <haoxiang_li2024@163.com>
+From: xin.guo <guoxin0309@gmail.com>
 
-commit fc5f8aec77704373ee804b5dba0e0e5029c0f180 upstream.
+[ Upstream commit a041f70e573e185d5d5fdbba53f0db2fbe7257ad ]
 
-Add video_device_release() in label 'err_m2m' to release the memory
-allocated by video_device_alloc() and prevent potential memory leaks.
-Remove the reduntant code in label 'err_m2m'.
+If the new coming segment covers more than one skbs in the ofo queue,
+and which seq is equal to rcv_nxt, then the sequence range
+that is duplicated will be sent as DUP SACK, the detail as below,
+in step6, the {501,2001} range is clearly including too much
+DUP SACK range, in violation of RFC 2883 rules.
 
-Fixes: a8ef0488cc59 ("media: imx: add csc/scaler mem2mem device")
-Cc: stable@vger.kernel.org
-Signed-off-by: Haoxiang Li <haoxiang_li2024@163.com>
-Reviewed-by: Dan Carpenter <dan.carpenter@linaro.org>
-Signed-off-by: Nicolas Dufresne <nicolas.dufresne@collabora.com>
-Signed-off-by: Hans Verkuil <hverkuil@xs4all.nl>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+1. client > server: Flags [.], seq 501:1001, ack 1325288529, win 20000, length 500
+2. server > client: Flags [.], ack 1, [nop,nop,sack 1 {501:1001}], length 0
+3. client > server: Flags [.], seq 1501:2001, ack 1325288529, win 20000, length 500
+4. server > client: Flags [.], ack 1, [nop,nop,sack 2 {1501:2001} {501:1001}], length 0
+5. client > server: Flags [.], seq 1:2001, ack 1325288529, win 20000, length 2000
+6. server > client: Flags [.], ack 2001, [nop,nop,sack 1 {501:2001}], length 0
+
+After this fix, the final ACK is as below:
+
+6. server > client: Flags [.], ack 2001, options [nop,nop,sack 1 {501:1001}], length 0
+
+[edumazet] added a new packetdrill test in the following patch.
+
+Fixes: 1da177e4c3f4 ("Linux-2.6.12-rc2")
+Signed-off-by: xin.guo <guoxin0309@gmail.com>
+Signed-off-by: Eric Dumazet <edumazet@google.com>
+Link: https://patch.msgid.link/20250626123420.1933835-2-edumazet@google.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/staging/media/imx/imx-media-csc-scaler.c |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ net/ipv4/tcp_input.c | 3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
---- a/drivers/staging/media/imx/imx-media-csc-scaler.c
-+++ b/drivers/staging/media/imx/imx-media-csc-scaler.c
-@@ -912,7 +912,7 @@ imx_media_csc_scaler_device_init(struct
- 	return &priv->vdev;
+diff --git a/net/ipv4/tcp_input.c b/net/ipv4/tcp_input.c
+index 6b3bb8a59035..9d65e684e626 100644
+--- a/net/ipv4/tcp_input.c
++++ b/net/ipv4/tcp_input.c
+@@ -4588,8 +4588,9 @@ static void tcp_ofo_queue(struct sock *sk)
  
- err_m2m:
--	video_set_drvdata(vfd, NULL);
-+	video_device_release(vfd);
- err_vfd:
- 	kfree(priv);
- 	return ERR_PTR(ret);
+ 		if (before(TCP_SKB_CB(skb)->seq, dsack_high)) {
+ 			__u32 dsack = dsack_high;
++
+ 			if (before(TCP_SKB_CB(skb)->end_seq, dsack_high))
+-				dsack_high = TCP_SKB_CB(skb)->end_seq;
++				dsack = TCP_SKB_CB(skb)->end_seq;
+ 			tcp_dsack_extend(sk, TCP_SKB_CB(skb)->seq, dsack);
+ 		}
+ 		p = rb_next(p);
+-- 
+2.39.5
+
 
 
 
