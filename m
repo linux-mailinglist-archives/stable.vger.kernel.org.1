@@ -1,58 +1,55 @@
-Return-Path: <stable+bounces-174499-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-175638-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 487AFB3640D
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 15:35:31 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1D1A6B36947
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 16:25:03 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id D03F7467628
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 13:24:11 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id B7B42464BDD
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 14:15:29 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 84158321433;
-	Tue, 26 Aug 2025 13:22:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id AE761350842;
+	Tue, 26 Aug 2025 14:12:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ZXQSd7HH"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="xGc6JNnQ"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 411B1340D93;
-	Tue, 26 Aug 2025 13:22:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 69F7C350825;
+	Tue, 26 Aug 2025 14:12:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756214554; cv=none; b=rdX7qAmre8j5WqTxR6pglOHF+B9QbeYW1CO1LXwUdPD805RjjMCzIRbuxBMTydqW8z41uLa2QkzI5LqL+aHt/CjKkij8Ra0zfBF+1ZrQy8dUyfE+SZSgZeiiC8HZDCCoCYKSFkfdWlN9JGXxuw6u2bU5PFbuSCnW2UwbxRl6/sU=
+	t=1756217575; cv=none; b=piDpJ5yRU3xcTUVT84GTpqBVERXigPd/LhDXcCrbrFP0nTtAFniYRMU6hNHg9FM1Fyv0bFQ5tbOmaiZ7VsO31+4i4C+pqMZNHCYsomxk2FcHA3OWDxk8FCwTyDeZx1vHIJvdgnQIwvoRaKn8ohv0MKMkh3hWRUQ7FWToI5okMwM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756214554; c=relaxed/simple;
-	bh=sKZKdqFzCUqofXEI15BlhwnwcDDVK3HYPEsxbQMCZdc=;
+	s=arc-20240116; t=1756217575; c=relaxed/simple;
+	bh=pOIESQYu+QdvEZc+nuF+vi+/rp2WFqmJMjnZqpQeD0E=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=qSjDFdDD9SE8s/Lh9foDyUvQMxb2PsN4/9DsGM+GCxOEeEc0J5ipkSi+Hf5JExnLfhti3vYxVQc6BX7/EclUOY/jX+4bOhIMjVJhjfdoWXuVwEgZIGFiu3pPaWVRI6BjE4oAR0RxZvf24wnXytj8bwlhUxNw0C9iC5zfMOV8kHw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ZXQSd7HH; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C6F21C4CEF1;
-	Tue, 26 Aug 2025 13:22:33 +0000 (UTC)
+	 MIME-Version; b=NqCkZjoQ3dGdy/x7e9oOObnPRnHICPTaGqGneJDJ+cEt96yLIbdVKD6lQisksw0i6uGVqwp7+oTQXY2f2kTbfDP59sN+mcwa4TsrY96KAneC2W7owhQuvStmURmilgSTRZJQNQG0uWTUF0clOPIK6ovbruMCzoUunuVpcmfyWXY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=xGc6JNnQ; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 999BCC116B1;
+	Tue, 26 Aug 2025 14:12:54 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1756214554;
-	bh=sKZKdqFzCUqofXEI15BlhwnwcDDVK3HYPEsxbQMCZdc=;
+	s=korg; t=1756217574;
+	bh=pOIESQYu+QdvEZc+nuF+vi+/rp2WFqmJMjnZqpQeD0E=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=ZXQSd7HH8imHxafdhD+2REZC/Bnf8MLkOS+Hd5lwPUsFFdTNR+MBnzkwQno4RAsdJ
-	 ouGsmk/URNzcod+nQLx+tsHkrA05CZK4m3uzRjFdoeLbUIsZXxGbCHNxykKuTXPcWd
-	 ujRWZjJ79XkJ1m1ZQ4BwCs2afOzautOG+MVkrqSE=
+	b=xGc6JNnQ8G6yjITxGSBzVk7eM7Xu5c4Rn7zXH7mquZ7G1+jIQ0PTq0pTHfgN5lNHD
+	 Qo63RoNeNGyOI1nU3p+XDOPbb0wFfmJYie8xrdPoZF8PhU6pgjXxOGLt4k0n2rNX8R
+	 O35xjdrl0zVn+RRwYLAHpA9o29UkSp+r1a5VYPSA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	ap420073@gmail.com,
-	Mina Almasry <almasrymina@google.com>,
-	Stanislav Fomichev <sdf@fomichev.me>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 151/482] netmem: fix skb_frag_address_safe with unreadable skbs
+	Takashi Iwai <tiwai@suse.de>,
+	Youngjun Lee <yjjuny.lee@samsung.com>
+Subject: [PATCH 5.10 194/523] ALSA: usb-audio: Validate UAC3 cluster segment descriptors
 Date: Tue, 26 Aug 2025 13:06:44 +0200
-Message-ID: <20250826110934.546918722@linuxfoundation.org>
+Message-ID: <20250826110929.233696562@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250826110930.769259449@linuxfoundation.org>
-References: <20250826110930.769259449@linuxfoundation.org>
+In-Reply-To: <20250826110924.562212281@linuxfoundation.org>
+References: <20250826110924.562212281@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,50 +61,96 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Mina Almasry <almasrymina@google.com>
+From: Takashi Iwai <tiwai@suse.de>
 
-[ Upstream commit 4672aec56d2e8edabcb74c3e2320301d106a377e ]
+commit ecfd41166b72b67d3bdeb88d224ff445f6163869 upstream.
 
-skb_frag_address_safe() needs a check that the
-skb_frag_page exists check similar to skb_frag_address().
+UAC3 class segment descriptors need to be verified whether their sizes
+match with the declared lengths and whether they fit with the
+allocated buffer sizes, too.  Otherwise malicious firmware may lead to
+the unexpected OOB accesses.
 
-Cc: ap420073@gmail.com
-
-Signed-off-by: Mina Almasry <almasrymina@google.com>
-Acked-by: Stanislav Fomichev <sdf@fomichev.me>
-Link: https://patch.msgid.link/20250619175239.3039329-1-almasrymina@google.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Fixes: 11785ef53228 ("ALSA: usb-audio: Initial Power Domain support")
+Reported-and-tested-by: Youngjun Lee <yjjuny.lee@samsung.com>
+Cc: <stable@vger.kernel.org>
+Link: https://patch.msgid.link/20250814081245.8902-2-tiwai@suse.de
+Signed-off-by: Takashi Iwai <tiwai@suse.de>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- include/linux/skbuff.h | 8 +++++++-
- 1 file changed, 7 insertions(+), 1 deletion(-)
+ sound/usb/stream.c |   25 ++++++++++++++++++++++---
+ 1 file changed, 22 insertions(+), 3 deletions(-)
 
-diff --git a/include/linux/skbuff.h b/include/linux/skbuff.h
-index 8014a335414e..9a04a188b9f8 100644
---- a/include/linux/skbuff.h
-+++ b/include/linux/skbuff.h
-@@ -3495,7 +3495,13 @@ static inline void *skb_frag_address(const skb_frag_t *frag)
-  */
- static inline void *skb_frag_address_safe(const skb_frag_t *frag)
- {
--	void *ptr = page_address(skb_frag_page(frag));
-+	struct page *page = skb_frag_page(frag);
-+	void *ptr;
-+
-+	if (!page)
-+		return NULL;
-+
-+	ptr = page_address(page);
- 	if (unlikely(!ptr))
- 		return NULL;
+--- a/sound/usb/stream.c
++++ b/sound/usb/stream.c
+@@ -342,20 +342,28 @@ snd_pcm_chmap_elem *convert_chmap_v3(str
  
--- 
-2.39.5
-
+ 	len = le16_to_cpu(cluster->wLength);
+ 	c = 0;
+-	p += sizeof(struct uac3_cluster_header_descriptor);
++	p += sizeof(*cluster);
++	len -= sizeof(*cluster);
+ 
+-	while (((p - (void *)cluster) < len) && (c < channels)) {
++	while (len > 0 && (c < channels)) {
+ 		struct uac3_cluster_segment_descriptor *cs_desc = p;
+ 		u16 cs_len;
+ 		u8 cs_type;
+ 
++		if (len < sizeof(*p))
++			break;
+ 		cs_len = le16_to_cpu(cs_desc->wLength);
++		if (len < cs_len)
++			break;
+ 		cs_type = cs_desc->bSegmentType;
+ 
+ 		if (cs_type == UAC3_CHANNEL_INFORMATION) {
+ 			struct uac3_cluster_information_segment_descriptor *is = p;
+ 			unsigned char map;
+ 
++			if (cs_len < sizeof(*is))
++				break;
++
+ 			/*
+ 			 * TODO: this conversion is not complete, update it
+ 			 * after adding UAC3 values to asound.h
+@@ -457,6 +465,7 @@ snd_pcm_chmap_elem *convert_chmap_v3(str
+ 			chmap->map[c++] = map;
+ 		}
+ 		p += cs_len;
++		len -= cs_len;
+ 	}
+ 
+ 	if (channels < c)
+@@ -877,7 +886,7 @@ snd_usb_get_audioformat_uac3(struct snd_
+ 	u64 badd_formats = 0;
+ 	unsigned int num_channels;
+ 	struct audioformat *fp;
+-	u16 cluster_id, wLength;
++	u16 cluster_id, wLength, cluster_wLength;
+ 	int clock = 0;
+ 	int err;
+ 
+@@ -1004,6 +1013,16 @@ snd_usb_get_audioformat_uac3(struct snd_
+ 			iface_no, altno);
+ 		kfree(cluster);
+ 		return ERR_PTR(-EIO);
++	}
++
++	cluster_wLength = le16_to_cpu(cluster->wLength);
++	if (cluster_wLength < sizeof(*cluster) ||
++	    cluster_wLength > wLength) {
++		dev_err(&dev->dev,
++			"%u:%d : invalid Cluster Descriptor size\n",
++			iface_no, altno);
++		kfree(cluster);
++		return ERR_PTR(-EIO);
+ 	}
+ 
+ 	num_channels = cluster->bNrChannels;
 
 
 
