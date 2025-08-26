@@ -1,61 +1,57 @@
-Return-Path: <stable+bounces-175434-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-176368-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id C3B1CB36854
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 16:15:25 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 36756B36CFF
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 17:04:45 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 1F1AA9809BF
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 14:05:48 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 73F005A1E23
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 14:47:42 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4B5F53568EA;
-	Tue, 26 Aug 2025 14:03:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E42D735E4F3;
+	Tue, 26 Aug 2025 14:44:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="voyw55rJ"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="0HU1/Kz8"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 077383568E7;
-	Tue, 26 Aug 2025 14:03:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A10DB21D3F2;
+	Tue, 26 Aug 2025 14:44:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756217032; cv=none; b=llk+rh3bJwo+azPgPvXb5Ha4XbWbwb+xjVxkf+1+Q9dmN3+qgNEibne4kP0HVKHyrOJNy/3PXh/DcrlzznCEw02M7uGiTue71LyzDZ314056LxiSbfflqHfg0rf0SN8kVOf6OdyKN/wPmSHnZCet3e2D3WUZb9aeybjxvsNY+WE=
+	t=1756219476; cv=none; b=WF+2OKKtbRftHBee6G3vTjZ4lD9fKa7FfwAKKCfRK73cSnOHfvL6UnzfQS+77PlfKW4SkdlXTfr4ZLFvL2q5ABfHgTVmMxTAY3lBch286VafnEct4q7+qfrG74Y8eydu2O5RkcNjMoN6QnmU8bmhDBQaBWbhIIuMevk1b2EPVdM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756217032; c=relaxed/simple;
-	bh=pcpq0dUwiy/mmFeDzJHn+GcKl3/8qSqpxQMGMPMfytc=;
+	s=arc-20240116; t=1756219476; c=relaxed/simple;
+	bh=eyqovNf07p7/QFH0p8JwN+VRi1uqbgad82i6az6Bz28=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=a1np3aDFjCTSVhN8QeqgdTkaCqbAOeTJ+0jwpLTtGdnLTLqKm7DUEFCxZgvIACpVM+uCi01xpIvp4/Wr+R4q+WWWTxVuETpWuztfzuasukxIV+uSLRSALJ9lANzB78t7USCF6zro5qF47WPEp+dv6kMUuICbHQU6fEEWIYnHwEc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=voyw55rJ; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 67FF0C4CEF1;
-	Tue, 26 Aug 2025 14:03:51 +0000 (UTC)
+	 MIME-Version; b=Yv0Kf6Aw3KsrHJxmNE++E/c2eRwVAVogamTRE7oSCe3QuGKrUuxwZvPgd/YIPK5WycxsQJn7xOLYmrPsi6Ygxkxf8KHY4L4fXwcElFZvX6KV5h/4O+YMzg8UYWgEaXtjiq0RfR+ZqAjKEaqBLlHmJ+s8bURDOd9GGa2o8sjTh0M=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=0HU1/Kz8; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2FE06C4CEF1;
+	Tue, 26 Aug 2025 14:44:36 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1756217031;
-	bh=pcpq0dUwiy/mmFeDzJHn+GcKl3/8qSqpxQMGMPMfytc=;
+	s=korg; t=1756219476;
+	bh=eyqovNf07p7/QFH0p8JwN+VRi1uqbgad82i6az6Bz28=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=voyw55rJiyQQPk5v95MbvcCp+QWAWXesKWaiqwjHxuQoPIRw8EGzuFItrH65q9FxZ
-	 /syY6HpTJHKRTK2ppWTjyS3E8LNGnL/h72TaBNOLhjBDLeBQj+j2ZGaiKfQV+iPJa0
-	 dkQhOwplKKemmxOYJklBikqBaeLCnEQfq9VYdUqQ=
+	b=0HU1/Kz8YLUaT317HxlYbXnSLZyXsUAXwAIKe7NLzkyvE9v4Ul4Yg8nLwLew7HDzy
+	 huEUO/aQ/y0dxMpTP0Hor46hfRSuKdnTgqFabM01PRwhSofpGuCAP0Q8jiCnNKfkt1
+	 lvhwAbUFw3N8HRAYw0x05Eqo5wW9oRTkzWha2pHU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Andrew Lunn <andrew@lunn.ch>,
-	Heiner Kallweit <hkallweit1@gmail.com>,
-	Radu Pirea <radu-nicolae.pirea@oss.nxp.com>,
-	Richard Cochran <richardcochran@gmail.com>,
-	Russell King <linux@armlinux.org.uk>,
-	Sebastian Andrzej Siewior <bigeasy@linutronix.de>,
-	"David S. Miller" <davem@davemloft.net>,
+	Minhong He <heminhong@kylinos.cn>,
+	Kuniyuki Iwashima <kuniyu@google.com>,
+	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 632/644] net: phy: Use netif_rx().
+Subject: [PATCH 5.4 397/403] ipv6: sr: validate HMAC algorithm ID in seg6_hmac_info_add
 Date: Tue, 26 Aug 2025 13:12:03 +0200
-Message-ID: <20250826111002.220162843@linuxfoundation.org>
+Message-ID: <20250826110918.001856718@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250826110946.507083938@linuxfoundation.org>
-References: <20250826110946.507083938@linuxfoundation.org>
+In-Reply-To: <20250826110905.607690791@linuxfoundation.org>
+References: <20250826110905.607690791@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -67,94 +63,44 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+5.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Sebastian Andrzej Siewior <bigeasy@linutronix.de>
+From: Minhong He <heminhong@kylinos.cn>
 
-[ Upstream commit a3d73e15909bdcf25f341e6623cc165ba7eb5968 ]
+[ Upstream commit 84967deee9d9870b15bc4c3acb50f1d401807902 ]
 
-Since commit
-   baebdf48c3600 ("net: dev: Makes sure netif_rx() can be invoked in any context.")
+The seg6_genl_sethmac() directly uses the algorithm ID provided by the
+userspace without verifying whether it is an HMAC algorithm supported
+by the system.
+If an unsupported HMAC algorithm ID is configured, packets using SRv6 HMAC
+will be dropped during encapsulation or decapsulation.
 
-the function netif_rx() can be used in preemptible/thread context as
-well as in interrupt context.
-
-Use netif_rx().
-
-Cc: Andrew Lunn <andrew@lunn.ch>
-Cc: Heiner Kallweit <hkallweit1@gmail.com>
-Cc: Radu Pirea <radu-nicolae.pirea@oss.nxp.com>
-Cc: Richard Cochran <richardcochran@gmail.com>
-Cc: Russell King <linux@armlinux.org.uk>
-Signed-off-by: Sebastian Andrzej Siewior <bigeasy@linutronix.de>
-Signed-off-by: David S. Miller <davem@davemloft.net>
-Stable-dep-of: bc1a59cff9f7 ("phy: mscc: Fix timestamping for vsc8584")
+Fixes: 4f4853dc1c9c ("ipv6: sr: implement API to control SR HMAC structure")
+Signed-off-by: Minhong He <heminhong@kylinos.cn>
+Reviewed-by: Kuniyuki Iwashima <kuniyu@google.com>
+Link: https://patch.msgid.link/20250815063845.85426-1-heminhong@kylinos.cn
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/phy/dp83640.c         | 6 +++---
- drivers/net/phy/mscc/mscc_ptp.c   | 2 +-
- drivers/net/phy/nxp-c45-tja11xx.c | 2 +-
- 3 files changed, 5 insertions(+), 5 deletions(-)
+ net/ipv6/seg6_hmac.c | 3 +++
+ 1 file changed, 3 insertions(+)
 
-diff --git a/drivers/net/phy/dp83640.c b/drivers/net/phy/dp83640.c
-index 705c16675b80..88d23890f3be 100644
---- a/drivers/net/phy/dp83640.c
-+++ b/drivers/net/phy/dp83640.c
-@@ -886,7 +886,7 @@ static void decode_rxts(struct dp83640_private *dp83640,
- 	spin_unlock_irqrestore(&dp83640->rx_lock, flags);
+diff --git a/net/ipv6/seg6_hmac.c b/net/ipv6/seg6_hmac.c
+index b3b2aa92e60d..292a36576115 100644
+--- a/net/ipv6/seg6_hmac.c
++++ b/net/ipv6/seg6_hmac.c
+@@ -295,6 +295,9 @@ int seg6_hmac_info_add(struct net *net, u32 key, struct seg6_hmac_info *hinfo)
+ 	struct seg6_pernet_data *sdata = seg6_pernet(net);
+ 	int err;
  
- 	if (shhwtstamps)
--		netif_rx_ni(skb);
-+		netif_rx(skb);
- }
++	if (!__hmac_get_algo(hinfo->alg_id))
++		return -EINVAL;
++
+ 	err = rhashtable_lookup_insert_fast(&sdata->hmac_infos, &hinfo->node,
+ 					    rht_params);
  
- static void decode_txts(struct dp83640_private *dp83640,
-@@ -1332,7 +1332,7 @@ static void rx_timestamp_work(struct work_struct *work)
- 			break;
- 		}
- 
--		netif_rx_ni(skb);
-+		netif_rx(skb);
- 	}
- 
- 	if (!skb_queue_empty(&dp83640->rx_queue))
-@@ -1383,7 +1383,7 @@ static bool dp83640_rxtstamp(struct mii_timestamper *mii_ts,
- 		skb_queue_tail(&dp83640->rx_queue, skb);
- 		schedule_delayed_work(&dp83640->ts_work, SKB_TIMESTAMP_TIMEOUT);
- 	} else {
--		netif_rx_ni(skb);
-+		netif_rx(skb);
- 	}
- 
- 	return true;
-diff --git a/drivers/net/phy/mscc/mscc_ptp.c b/drivers/net/phy/mscc/mscc_ptp.c
-index 92f59c964409..cf61990ccd37 100644
---- a/drivers/net/phy/mscc/mscc_ptp.c
-+++ b/drivers/net/phy/mscc/mscc_ptp.c
-@@ -1218,7 +1218,7 @@ static bool vsc85xx_rxtstamp(struct mii_timestamper *mii_ts,
- 		ts.tv_sec--;
- 
- 	shhwtstamps->hwtstamp = ktime_set(ts.tv_sec, ns);
--	netif_rx_ni(skb);
-+	netif_rx(skb);
- 
- 	return true;
- }
-diff --git a/drivers/net/phy/nxp-c45-tja11xx.c b/drivers/net/phy/nxp-c45-tja11xx.c
-index 13269c4e87dd..e6ac851b217a 100644
---- a/drivers/net/phy/nxp-c45-tja11xx.c
-+++ b/drivers/net/phy/nxp-c45-tja11xx.c
-@@ -436,7 +436,7 @@ static long nxp_c45_do_aux_work(struct ptp_clock_info *ptp)
- 		shhwtstamps_rx = skb_hwtstamps(skb);
- 		shhwtstamps_rx->hwtstamp = ns_to_ktime(timespec64_to_ns(&ts));
- 		NXP_C45_SKB_CB(skb)->header->reserved2 = 0;
--		netif_rx_ni(skb);
-+		netif_rx(skb);
- 	}
- 
- 	return reschedule ? 1 : -1;
 -- 
 2.50.1
 
