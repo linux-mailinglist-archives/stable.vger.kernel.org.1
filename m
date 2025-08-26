@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-176221-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-173561-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id BB48DB36C3C
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 16:53:53 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id AAD96B35DE7
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 13:49:27 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 8D164189D88E
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 14:41:34 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id B7CA41BA6FC9
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 11:43:12 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2A3903568F7;
-	Tue, 26 Aug 2025 14:38:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D82FD271475;
+	Tue, 26 Aug 2025 11:42:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="e80tEm+X"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="pcnMT47t"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D9042345726;
-	Tue, 26 Aug 2025 14:38:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9615F284B5B;
+	Tue, 26 Aug 2025 11:42:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756219094; cv=none; b=n7P1sidlqsJY6yQJtdSSO1TRetoO7OyOT/Nf1dWAxxL+PxCu4rK6MCx7DAVl2pyUdEfgir/aF85WGb3XpRf+wqcGL+oVMP8/1KV+YraDjcJFWyk0VAdtGtXf1igg8CBA0J7wcRNIpuhC1ziAs+wNkbHIP5eYsWZ/X6uMVhX0EIs=
+	t=1756208569; cv=none; b=CdZsfu7aOZTs/OaVgJNZm+fNJ7xXA9D/4s+zzf6n6VRAMFYUNpkI6FkEOznQfzauE7/1iWjx2eZPqpb2ZCSiBE/qHwT3C9sY+mssE0cTgLOtHZCvlwlaTFMtPpileRQIL4GbVACWqJRW3o9KOHIrOzcW8gxYvDC9WcxvFgo86p4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756219094; c=relaxed/simple;
-	bh=LlFVa3AO0lW5CWIjBDZCm+jAO56EBFk9drnyJuyMUaE=;
+	s=arc-20240116; t=1756208569; c=relaxed/simple;
+	bh=TbTZtA8AjrTp7ucGMuN/oi9v/115u1Df6QYuTCkmmaA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=HJL0GweJNLxLAt1FkwbH/zghZr0NwaDL6EuVtPNzPEio/Tr1a/JSQ1WSpzezV9zp19sMlcmFMu/ynfW5h34ntA9o06N/Ga0KHuzybBJsVwwTBn2mnW0fZakh6exBDqfAHoSFTDxbTHHsIf71K28ki8AGqTmSzK5BMiU8pMap7Vw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=e80tEm+X; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1CA5CC4CEF1;
-	Tue, 26 Aug 2025 14:38:13 +0000 (UTC)
+	 MIME-Version; b=ic1VsVUc8aLr7dOnrbYdLlymyiNFkI+iOwSVRPJInEHa2deti94SFNn2BtOkSlRO+psrXnv29OK4OnzQbsZCMDLsYEaFE51l9y3tTlbE+xHk6nMPQklsgsnjLJAhXhRgefWimgRWzkfVYHGhW9xdgrzVbjiU8El/HMQFxYGjbVU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=pcnMT47t; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 21690C4CEF1;
+	Tue, 26 Aug 2025 11:42:48 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1756219094;
-	bh=LlFVa3AO0lW5CWIjBDZCm+jAO56EBFk9drnyJuyMUaE=;
+	s=korg; t=1756208569;
+	bh=TbTZtA8AjrTp7ucGMuN/oi9v/115u1Df6QYuTCkmmaA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=e80tEm+X3Af9OIryDOBMWhJL+Yd88YWjRAhPkzjxAoc800vjaXbXaJmkVavHCTYRI
-	 Jqdtl++uiLe3i+HXV3tT33iGqBvdkQPTyngsueewMXFT81OyezqJQEryqQl2BOPV+T
-	 rdwERNB9L3x2GeuM49sepSoLXqf7G+dwQqR2eMWM=
+	b=pcnMT47tTDJRKiv3e+J4wJAFmdTcLpLc2FvYKOrkbLcgLwnuvDKcC+dygJlMSV5b0
+	 i0gStO/8mx6N5j0YPoiXUizLzkjOytynVXkH6rmzXAvlZso8lcAM2G/jzOURf8HgNK
+	 4JVPhRERm2hH/XjzkNuy4JywZLq230Mm+dZDuRcY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Dave Stevenson <dave.stevenson@raspberrypi.com>,
-	Hans Verkuil <hverkuil@xs4all.nl>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.4 249/403] media: tc358743: Increase FIFO trigger level to 374
-Date: Tue, 26 Aug 2025 13:09:35 +0200
-Message-ID: <20250826110913.699791436@linuxfoundation.org>
+	Andrea Righi <arighi@nvidia.com>,
+	Joel Fernandes <joelagnelf@nvidia.com>,
+	Tejun Heo <tj@kernel.org>
+Subject: [PATCH 6.12 161/322] sched_ext: initialize built-in idle state before ops.init()
+Date: Tue, 26 Aug 2025 13:09:36 +0200
+Message-ID: <20250826110919.799414880@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250826110905.607690791@linuxfoundation.org>
-References: <20250826110905.607690791@linuxfoundation.org>
+In-Reply-To: <20250826110915.169062587@linuxfoundation.org>
+References: <20250826110915.169062587@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,63 +62,87 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.4-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Dave Stevenson <dave.stevenson@raspberrypi.com>
+From: Andrea Righi <arighi@nvidia.com>
 
-[ Upstream commit 86addd25314a1e77dbdcfddfeed0bab2f27da0e2 ]
+commit f0c6eab5e45c529f449fbc595873719e00de6d79 upstream.
 
-The existing fixed value of 16 worked for UYVY 720P60 over
-2 lanes at 594MHz, or UYVY 1080P60 over 4 lanes. (RGB888
-1080P60 needs 6 lanes at 594MHz).
-It doesn't allow for lower resolutions to work as the FIFO
-underflows.
+A BPF scheduler may want to use the built-in idle cpumasks in ops.init()
+before the scheduler is fully initialized, either directly or through a
+BPF timer for example.
 
-374 is required for 1080P24 or 1080P30 UYVY over 2 lanes @
-972Mbit/s, but >374 means that the FIFO underflows on 1080P50
-UYVY over 2 lanes @ 972Mbit/s.
+However, this would result in an error, since the idle state has not
+been properly initialized yet.
 
-Whilst it would be nice to compute it, the required information
-isn't published by Toshiba.
+This can be easily verified by modifying scx_simple to call
+scx_bpf_get_idle_cpumask() in ops.init():
 
-Signed-off-by: Dave Stevenson <dave.stevenson@raspberrypi.com>
-Signed-off-by: Hans Verkuil <hverkuil@xs4all.nl>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+$ sudo scx_simple
+
+DEBUG DUMP
+===========================================================================
+
+scx_simple[121] triggered exit kind 1024:
+  runtime error (built-in idle tracking is disabled)
+...
+
+Fix this by properly initializing the idle state before ops.init() is
+called. With this change applied:
+
+$ sudo scx_simple
+local=2 global=0
+local=19 global=11
+local=23 global=11
+...
+
+Fixes: d73249f88743d ("sched_ext: idle: Make idle static keys private")
+Signed-off-by: Andrea Righi <arighi@nvidia.com>
+Reviewed-by: Joel Fernandes <joelagnelf@nvidia.com>
+Signed-off-by: Tejun Heo <tj@kernel.org>
+[ Backport to 6.12:
+  - Original commit doesn't apply cleanly to 6.12 since d73249f88743d is
+    not present.
+  - This backport applies the same logical fix to prevent BPF scheduler
+    failures while accessing idle cpumasks from ops.init(). ]
+Signed-off-by: Andrea Righi <arighi@nvidia.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/media/i2c/tc358743.c | 15 +++++++++++++--
- 1 file changed, 13 insertions(+), 2 deletions(-)
+ kernel/sched/ext.c |   14 +++++++-------
+ 1 file changed, 7 insertions(+), 7 deletions(-)
 
-diff --git a/drivers/media/i2c/tc358743.c b/drivers/media/i2c/tc358743.c
-index 26e9e95dd6ae..2dad35568586 100644
---- a/drivers/media/i2c/tc358743.c
-+++ b/drivers/media/i2c/tc358743.c
-@@ -1959,8 +1959,19 @@ static int tc358743_probe_of(struct tc358743_state *state)
- 	state->pdata.refclk_hz = clk_get_rate(refclk);
- 	state->pdata.ddc5v_delay = DDC5V_DELAY_100_MS;
- 	state->pdata.enable_hdcp = false;
--	/* A FIFO level of 16 should be enough for 2-lane 720p60 at 594 MHz. */
--	state->pdata.fifo_level = 16;
-+	/*
-+	 * Ideally the FIFO trigger level should be set based on the input and
-+	 * output data rates, but the calculations required are buried in
-+	 * Toshiba's register settings spreadsheet.
-+	 * A value of 16 works with a 594Mbps data rate for 720p60 (using 2
-+	 * lanes) and 1080p60 (using 4 lanes), but fails when the data rate
-+	 * is increased, or a lower pixel clock is used that result in CSI
-+	 * reading out faster than the data is arriving.
-+	 *
-+	 * A value of 374 works with both those modes at 594Mbps, and with most
-+	 * modes on 972Mbps.
-+	 */
-+	state->pdata.fifo_level = 374;
+--- a/kernel/sched/ext.c
++++ b/kernel/sched/ext.c
+@@ -5220,6 +5220,13 @@ static int scx_ops_enable(struct sched_e
+ 	for_each_possible_cpu(cpu)
+ 		cpu_rq(cpu)->scx.cpuperf_target = SCX_CPUPERF_ONE;
+ 
++	if (!ops->update_idle || (ops->flags & SCX_OPS_KEEP_BUILTIN_IDLE)) {
++		reset_idle_masks();
++		static_branch_enable(&scx_builtin_idle_enabled);
++	} else {
++		static_branch_disable(&scx_builtin_idle_enabled);
++	}
++
  	/*
- 	 * The PLL input clock is obtained by dividing refclk by pll_prd.
- 	 * It must be between 6 MHz and 40 MHz, lower frequency is better.
--- 
-2.39.5
-
+ 	 * Keep CPUs stable during enable so that the BPF scheduler can track
+ 	 * online CPUs by watching ->on/offline_cpu() after ->init().
+@@ -5287,13 +5294,6 @@ static int scx_ops_enable(struct sched_e
+ 	if (scx_ops.cpu_acquire || scx_ops.cpu_release)
+ 		static_branch_enable(&scx_ops_cpu_preempt);
+ 
+-	if (!ops->update_idle || (ops->flags & SCX_OPS_KEEP_BUILTIN_IDLE)) {
+-		reset_idle_masks();
+-		static_branch_enable(&scx_builtin_idle_enabled);
+-	} else {
+-		static_branch_disable(&scx_builtin_idle_enabled);
+-	}
+-
+ 	/*
+ 	 * Lock out forks, cgroup on/offlining and moves before opening the
+ 	 * floodgate so that they don't wander into the operations prematurely.
 
 
 
