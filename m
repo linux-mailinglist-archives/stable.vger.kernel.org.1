@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-172981-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-173903-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 17CA0B35B26
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 13:19:28 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id F384AB36055
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 14:59:30 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id AD4A21BA0ED9
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 11:18:59 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 6678D463C87
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 12:56:59 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D0C9B335BC3;
-	Tue, 26 Aug 2025 11:17:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0BD8B22DFB8;
+	Tue, 26 Aug 2025 12:56:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="uZTF+J4I"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="VLWWOLkQ"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8A5DF3375DC;
-	Tue, 26 Aug 2025 11:17:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id ACDF9186E40;
+	Tue, 26 Aug 2025 12:56:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756207065; cv=none; b=Xc810kNXX+757S1WtHd63lOh3cNGhClSwk2x+XUcx4jOVq8oeFkpnA5rqmJ9vxuw9XY/WVWs0BbzQtUiAgqBHtMoYhdlGxf/8HniTM1atdL4DaoraKC0u6PCAfnlaWo0ephVzu21teu+wkoI0DyxRI6kyM0TQbk+c1HnDr4Kqe8=
+	t=1756212969; cv=none; b=JuBg8cy2y83YZFLu+eBK2Rq0DxAUhIpwzijzY7lHKAMD7SLIg7JzoPmuFgjcr4/1lxODw856BFL1JBPwE+CopFqHvP7ZJevhf7GlCJlJVLPAeKOHa0kq9RI9d0XrhsU899MDFa1j83b0TC2h5OEFdbUWAyywOOlNDCBucQ9ESjg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756207065; c=relaxed/simple;
-	bh=ULJH31bzaTJaExtg7+vRNM+gkj/LJ9duOzOc+MiwPgA=;
+	s=arc-20240116; t=1756212969; c=relaxed/simple;
+	bh=BSDTeq59FHEJpPcGGku+xu5M8whnQfTsiergUkqjGlQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=jAVcO5MYgnScCQ7Pxn/5jPpnN+KNfzd1BN3eccMTlo1Cpob9KtTBjCX7UmCZO2QXp330XZMay85/pyrRuypohyH/A0ZF4k8JRBLjPuR1MJ0vFe/KfudlnGwiTzFbA000qEmRO4wXWaF7bCY/l3kKlD1bAVJyUZf03iXNIwReIeU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=uZTF+J4I; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A8A53C4CEF1;
-	Tue, 26 Aug 2025 11:17:44 +0000 (UTC)
+	 MIME-Version; b=JWrY2lZtfhHWVllVm66uEL1KKn1kZr5gHojQovrxadA+E35CCX2NoqZl2IG/oTSP++zydt3f1x/kX8T61BIEl/3XzgUPoX7i5EWJYXbqoc6rLqlnQaM/Sz+vfrJ2INVz/Y6k/R+BChhW/xjGOCXZr79QYIjW7YosUsyn1hlV89U=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=VLWWOLkQ; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 43740C4CEF4;
+	Tue, 26 Aug 2025 12:56:09 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1756207065;
-	bh=ULJH31bzaTJaExtg7+vRNM+gkj/LJ9duOzOc+MiwPgA=;
+	s=korg; t=1756212969;
+	bh=BSDTeq59FHEJpPcGGku+xu5M8whnQfTsiergUkqjGlQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=uZTF+J4IIRQgtGN2YUHObEYpMbdwsA18Yr8S5n1GX6mH6RGpKmFimAiirqDQTfOQl
-	 w9aTR+7vf5Er5e1c0iXBzfFZlNOwolcKqndJDjY+oxBKm5d0lwFgPEpExi8H6kYQr3
-	 ZqiDXSP1Wk5TIufIyMdJ6DUHH8MBQYar/9t38BY8=
+	b=VLWWOLkQp8wD42RBPIs7rktsqmOyl3nsMGOUcNPYjucJcNmtU1FFdiqTp1TXn0BM6
+	 QZ78vyb+nmenDppSrzsWGcJAdcgg123mlVIfKR52kaHCYXIoBqB6KO0pSbjZr3nQAY
+	 B1fGh/0Z2+iUjym9pquT0+/ivp//KXIFKWFeoPwM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	stable@kernel.org,
-	Baokun Li <libaokun1@huawei.com>,
-	Jan Kara <jack@suse.cz>,
-	Theodore Tso <tytso@mit.edu>
-Subject: [PATCH 6.16 037/457] ext4: preserve SB_I_VERSION on remount
+	David Bauer <mail@david-bauer.net>,
+	Felix Fietkau <nbd@nbd.name>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.6 172/587] wifi: mt76: mt7915: mcu: re-init MCU before loading FW patch
 Date: Tue, 26 Aug 2025 13:05:21 +0200
-Message-ID: <20250826110938.261885427@linuxfoundation.org>
+Message-ID: <20250826110957.320092380@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250826110937.289866482@linuxfoundation.org>
-References: <20250826110937.289866482@linuxfoundation.org>
+In-Reply-To: <20250826110952.942403671@linuxfoundation.org>
+References: <20250826110952.942403671@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,60 +62,71 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.16-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Baokun Li <libaokun1@huawei.com>
+From: David Bauer <mail@david-bauer.net>
 
-commit f2326fd14a224e4cccbab89e14c52279ff79b7ec upstream.
+[ Upstream commit ac9c50c79eaef5fca0f165e45d0c5880606db53e ]
 
-IMA testing revealed that after an ext4 remount, file accesses triggered
-full measurements even without modifications, instead of skipping as
-expected when i_version is unchanged.
+Restart the MCU and release the patch semaphore before loading the MCU
+patch firmware from the host.
 
-Debugging showed `SB_I_VERSION` was cleared in reconfigure_super() during
-remount due to commit 1ff20307393e ("ext4: unconditionally enable the
-i_version counter") removing the fix from commit 960e0ab63b2e ("ext4: fix
-i_version handling on remount").
+This fixes failures upon error recovery in case the semaphore was
+previously taken and never released by the host.
 
-To rectify this, `SB_I_VERSION` is always set for `fc->sb_flags` in
-ext4_init_fs_context(), instead of `sb->s_flags` in __ext4_fill_super(),
-ensuring it persists across all mounts.
+This happens from time to time upon triggering a full-chip error
+recovery. Under this circumstance, the hardware restart fails and the
+radio is rendered inoperational.
 
-Cc: stable@kernel.org
-Fixes: 1ff20307393e ("ext4: unconditionally enable the i_version counter")
-Signed-off-by: Baokun Li <libaokun1@huawei.com>
-Reviewed-by: Jan Kara <jack@suse.cz>
-Link: https://patch.msgid.link/20250703073903.6952-2-libaokun@huaweicloud.com
-Signed-off-by: Theodore Ts'o <tytso@mit.edu>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Signed-off-by: David Bauer <mail@david-bauer.net>
+Link: https://patch.msgid.link/20250402004528.1036715-3-mail@david-bauer.net
+Signed-off-by: Felix Fietkau <nbd@nbd.name>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/ext4/super.c |    6 +++---
- 1 file changed, 3 insertions(+), 3 deletions(-)
+ .../net/wireless/mediatek/mt76/mt7915/mcu.c   | 25 +++++++++++--------
+ 1 file changed, 15 insertions(+), 10 deletions(-)
 
---- a/fs/ext4/super.c
-+++ b/fs/ext4/super.c
-@@ -1998,6 +1998,9 @@ int ext4_init_fs_context(struct fs_conte
- 	fc->fs_private = ctx;
- 	fc->ops = &ext4_context_ops;
+diff --git a/drivers/net/wireless/mediatek/mt76/mt7915/mcu.c b/drivers/net/wireless/mediatek/mt76/mt7915/mcu.c
+index f0226db2e57c..fae9ec98da3b 100644
+--- a/drivers/net/wireless/mediatek/mt76/mt7915/mcu.c
++++ b/drivers/net/wireless/mediatek/mt76/mt7915/mcu.c
+@@ -2060,16 +2060,21 @@ static int mt7915_load_firmware(struct mt7915_dev *dev)
+ {
+ 	int ret;
  
-+	/* i_version is always enabled now */
-+	fc->sb_flags |= SB_I_VERSION;
+-	/* make sure fw is download state */
+-	if (mt7915_firmware_state(dev, false)) {
+-		/* restart firmware once */
+-		mt76_connac_mcu_restart(&dev->mt76);
+-		ret = mt7915_firmware_state(dev, false);
+-		if (ret) {
+-			dev_err(dev->mt76.dev,
+-				"Firmware is not ready for download\n");
+-			return ret;
+-		}
++	/* Release Semaphore if taken by previous failed attempt */
++	ret = mt76_connac_mcu_patch_sem_ctrl(&dev->mt76, false);
++	if (ret != PATCH_REL_SEM_SUCCESS) {
++		dev_err(dev->mt76.dev, "Could not release semaphore\n");
++		/* Continue anyways */
++	}
 +
- 	return 0;
- }
++	/* Always restart MCU firmware */
++	mt76_connac_mcu_restart(&dev->mt76);
++
++	/* Check if MCU is ready */
++	ret = mt7915_firmware_state(dev, false);
++	if (ret) {
++		dev_err(dev->mt76.dev, "Firmware did not enter download state\n");
++		return ret;
+ 	}
  
-@@ -5314,9 +5317,6 @@ static int __ext4_fill_super(struct fs_c
- 	sb->s_flags = (sb->s_flags & ~SB_POSIXACL) |
- 		(test_opt(sb, POSIX_ACL) ? SB_POSIXACL : 0);
- 
--	/* i_version is always enabled now */
--	sb->s_flags |= SB_I_VERSION;
--
- 	/* HSM events are allowed by default. */
- 	sb->s_iflags |= SB_I_ALLOW_HSM;
- 
+ 	ret = mt76_connac2_load_patch(&dev->mt76, fw_name_var(dev, ROM_PATCH));
+-- 
+2.39.5
+
 
 
 
