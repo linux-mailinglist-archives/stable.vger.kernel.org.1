@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-174772-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-174257-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 99BDDB36414
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 15:35:39 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8E433B36279
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 15:19:24 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 756AB7BE12B
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 13:33:50 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 2FB0C464308
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 13:12:59 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6E80D334717;
-	Tue, 26 Aug 2025 13:34:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7FF22341672;
+	Tue, 26 Aug 2025 13:11:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="D4ZeYPRG"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="McW1Fkln"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2CD04200112;
-	Tue, 26 Aug 2025 13:34:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3DA5634166B;
+	Tue, 26 Aug 2025 13:11:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756215276; cv=none; b=fk9iNwUFBJrf6rlNK/zro/twci/4nPchsdNBWgrYk/V5veQvN0+CP9VkOYGz/RkjpDo4LSHHbGI6Wo6310uRu3pizR24zjE17Fxg3jc/BD3k0s9dzoQ70J0hRMBdqi7RrSGIi2MRbXqelLIDOFUD2eKfMJX6YISDcgb60psq9uM=
+	t=1756213909; cv=none; b=thR018THg93DvGeSmO5t9j/DAcZecqmBHc62HztWqOuLZXbEPbsX3lY77208LVK13ZyoMgcYfddwLDhIjWovOFdoefXfFpfQAywZhtf/bd8DfwjV7pPvnv3DbKEo0I5+RPZPqh41GZfRRzOePn9LhjDDI445HovWcaudT7pw2fE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756215276; c=relaxed/simple;
-	bh=wWwbj8aqHPvAiNTZcspDmBdGCrBAKoWDz2orRmcq0AQ=;
+	s=arc-20240116; t=1756213909; c=relaxed/simple;
+	bh=qBPG9AzAdegdbbdm28Pr5+vICqigl801Yf4q59bKgdU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=gY4N9NWl+iCQ3MEeoC1DFLbnkr6L/I3oenOVxESxVAFJg99npvosNnB8742oTU4+wgY8RwZWwW0Xc+JCsdmUg1s1YvFrio4uczVkC9XaXL4Zmb6WJPh4clnDgagnQHkfPepE3NzYC06/vvZdovj7Fe6ssaSaPqpABvg81zJnJoI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=D4ZeYPRG; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B2035C4CEF1;
-	Tue, 26 Aug 2025 13:34:35 +0000 (UTC)
+	 MIME-Version; b=lo7sg/mydftwQJBS/Ffbl68qlKY6ZpePjeeTzdaGdl5trnN1mikp24LRY5p/t4GGg+fI6WTtxo7Pi1obY7Waeh/rySdiuoxJV/LSZApk+Rv9rll14bwJh2aKs6+OtGqQPzewlCyN1DcGcbgJGb+4GgXP1pcPaDaSuow7B0x8ggU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=McW1Fkln; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id BF6FBC4CEF1;
+	Tue, 26 Aug 2025 13:11:48 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1756215276;
-	bh=wWwbj8aqHPvAiNTZcspDmBdGCrBAKoWDz2orRmcq0AQ=;
+	s=korg; t=1756213909;
+	bh=qBPG9AzAdegdbbdm28Pr5+vICqigl801Yf4q59bKgdU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=D4ZeYPRGXyqh36HoKrX/kviqeUoeQcy0PXGaIPttlZlYn0aKHODTqTjuN2R6uSumr
-	 C7Gvpd7S69BruKUwY+TDo/KVrCTfEAf68bSBtq6BKJsrrfVT+k905vOogu+AE373GT
-	 OT0BsT8rbOMVf01tFVUAU39i3mMzN7ETZi8U0/pg=
+	b=McW1FklnAC8D1byBHQQyGSejzvCno7ek3Ul2xumzx+ufi9wMKSGi/Z4Ci/+iwaFNL
+	 bDBVsBgJKQDdvQkiHHNhotQAVdaIKWlxgUGo/0xGZXx/iKjwuePFUoYWuwA+KNIonT
+	 4Ov4VsZi3F84oXUvqe2490jey1x5Ut3JX5mxXBXk=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
 	stable <stable@kernel.org>,
-	Kuen-Han Tsai <khtsai@google.com>,
-	Thinh Nguyen <Thinh.Nguyen@synopsys.com>
-Subject: [PATCH 6.1 422/482] usb: dwc3: Ignore late xferNotReady event to prevent halt timeout
+	Alan Stern <stern@rowland.harvard.edu>,
+	Thorsten Blum <thorsten.blum@linux.dev>
+Subject: [PATCH 6.6 526/587] usb: storage: realtek_cr: Use correct byte order for bcs->Residue
 Date: Tue, 26 Aug 2025 13:11:15 +0200
-Message-ID: <20250826110941.253326327@linuxfoundation.org>
+Message-ID: <20250826111006.381996715@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250826110930.769259449@linuxfoundation.org>
-References: <20250826110930.769259449@linuxfoundation.org>
+In-Reply-To: <20250826110952.942403671@linuxfoundation.org>
+References: <20250826110952.942403671@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,51 +62,40 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Kuen-Han Tsai <khtsai@google.com>
+From: Thorsten Blum <thorsten.blum@linux.dev>
 
-commit 58577118cc7cec9eb7c1836bf88f865ff2c5e3a3 upstream.
+commit 98da66a70ad2396e5a508c4245367797ebc052ce upstream.
 
-During a device-initiated disconnect, the End Transfer command resets
-the event filter, allowing a new xferNotReady event to be generated
-before the controller is fully halted. Processing this late event
-incorrectly triggers a Start Transfer, which prevents the controller
-from halting and results in a DSTS.DEVCTLHLT bit polling timeout.
+Since 'bcs->Residue' has the data type '__le32', convert it to the
+correct byte order of the CPU using this driver when assigning it to
+the local variable 'residue'.
 
-Ignore the late xferNotReady event if the controller is already in a
-disconnected state.
-
-Fixes: 72246da40f37 ("usb: Introduce DesignWare USB3 DRD Driver")
 Cc: stable <stable@kernel.org>
-Signed-off-by: Kuen-Han Tsai <khtsai@google.com>
-Acked-by: Thinh Nguyen <Thinh.Nguyen@synopsys.com>
-Link: https://lore.kernel.org/r/20250807090700.2397190-1-khtsai@google.com
+Fixes: 50a6cb932d5c ("USB: usb_storage: add ums-realtek driver")
+Suggested-by: Alan Stern <stern@rowland.harvard.edu>
+Acked-by: Alan Stern <stern@rowland.harvard.edu>
+Signed-off-by: Thorsten Blum <thorsten.blum@linux.dev>
+Link: https://lore.kernel.org/r/20250813145247.184717-3-thorsten.blum@linux.dev
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/usb/dwc3/gadget.c |    9 +++++++++
- 1 file changed, 9 insertions(+)
+ drivers/usb/storage/realtek_cr.c |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/drivers/usb/dwc3/gadget.c
-+++ b/drivers/usb/dwc3/gadget.c
-@@ -3590,6 +3590,15 @@ static void dwc3_gadget_endpoint_transfe
- static void dwc3_gadget_endpoint_transfer_not_ready(struct dwc3_ep *dep,
- 		const struct dwc3_event_depevt *event)
- {
-+	/*
-+	 * During a device-initiated disconnect, a late xferNotReady event can
-+	 * be generated after the End Transfer command resets the event filter,
-+	 * but before the controller is halted. Ignore it to prevent a new
-+	 * transfer from starting.
-+	 */
-+	if (!dep->dwc->connected)
-+		return;
-+
- 	dwc3_gadget_endpoint_frame_from_event(dep, event);
+--- a/drivers/usb/storage/realtek_cr.c
++++ b/drivers/usb/storage/realtek_cr.c
+@@ -252,7 +252,7 @@ static int rts51x_bulk_transport(struct
+ 		return USB_STOR_TRANSPORT_ERROR;
+ 	}
  
- 	/*
+-	residue = bcs->Residue;
++	residue = le32_to_cpu(bcs->Residue);
+ 	if (bcs->Tag != us->tag)
+ 		return USB_STOR_TRANSPORT_ERROR;
+ 
 
 
 
