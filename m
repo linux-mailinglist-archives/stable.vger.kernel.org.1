@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-174979-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-173853-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4B71EB36512
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 15:44:30 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1CA09B3600A
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 14:56:27 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 0E5787BB3F2
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 13:42:52 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 345037C6F14
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 12:54:36 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 29C2333EAE4;
-	Tue, 26 Aug 2025 13:43:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 708381C84BD;
+	Tue, 26 Aug 2025 12:53:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="JK53eMuA"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="uP7i3Gqw"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D997F319867;
-	Tue, 26 Aug 2025 13:43:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2D60E8462;
+	Tue, 26 Aug 2025 12:53:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756215820; cv=none; b=OKDMcV+0vYL/9bom06H+w9iQS1Tt5RLydLeiqAgYTUhn3oNRrYhysNXono0tCy0vD/CI7r8qrCLo9jIAimNnkKMzg0PM/PJRGe+3v/QgbrW/ma3ney38IHzbA0twMdMnk6fu8eOnWlE+3J5ax61mre2KgIORiL2ndSSrzFIh5KA=
+	t=1756212839; cv=none; b=jyh+5ffiU8BnmOJ70bsD6xBEZWwmGjinxK1RIpBs54KKBR3NhTYBf8Cf2DADWcixC76UMh6E0GC1vNowFOrvM1DbHr/wg6D07hzPfO/fyxy/zHfzj/uUiqc9X3YdraBFY77FmbnyyZrc6W4fv81CEvYA2X39U58KYY3t8XIjQqo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756215820; c=relaxed/simple;
-	bh=uNE4aqoccDf3GB8akUdWbysIZEaE62s6Zm+I0I5Gf1w=;
+	s=arc-20240116; t=1756212839; c=relaxed/simple;
+	bh=5/UbnmvEo8+EsKwY6YaSVMeAHehSBFU/3aTWySaz4ts=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=DJavJNtDjwsDpcRexwF1yXj8gmEewQIYVcZOGAvS4Zz9wwTylJKO+NKejpsbCe671YN0lit9Ltvp7bx5ji1IVovrMP0uOn2RLbg2XTk6xCPSkSwR4HYg6cW4quHcqiQOxhhDeFFi89XrqweNXlN/6H8FCWLxTAFfr/5RKkhO00E=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=JK53eMuA; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6B2CFC116D0;
-	Tue, 26 Aug 2025 13:43:40 +0000 (UTC)
+	 MIME-Version; b=J4n8GR4gGG8EsGYdhcFyrSTB87Q7jS+qtPQp56GdTyYKxW62nknI7winolZlYjVuMjUX4JfcFFzSXi0Li0dPRMDddHCq5I7e2t0X4Zq/HVxmjdEQ6GLbhgMBZazpJ7QSEC8PnTKk4N64xVnmfLMIe3hL7869u7EAfOqrVgFoKyE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=uP7i3Gqw; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2C308C4CEF1;
+	Tue, 26 Aug 2025 12:53:57 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1756215820;
-	bh=uNE4aqoccDf3GB8akUdWbysIZEaE62s6Zm+I0I5Gf1w=;
+	s=korg; t=1756212838;
+	bh=5/UbnmvEo8+EsKwY6YaSVMeAHehSBFU/3aTWySaz4ts=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=JK53eMuAQFQDRLYuMIoaTxS/bHViRaK82z4G8A7oj038k/tl7B7ODihHT6rVhd/PH
-	 MpGD0UfwR/wb49l3v6WfYf+oJveldMfEnsDQ2ZE6yKvznuC7KEl/KSN+FFjfU6/BT7
-	 biNwR9i6gsmJcDtTsGvsLw5M0h5yCQCU8Yq0lNCg=
+	b=uP7i3GqwR7//gdzPXOHfLM4ePE7vk+mE4B2IqTPMGeiGe4J0Ng/Hp4WiDKmQH0MDx
+	 2pyoPHGs77R0Asxl010PlCuIXOzcuvc7lotG3DgsHfGxDWfD5OCQ3PmjW9VfejEykJ
+	 Equ3PsAOb23s5x5okudVL/cvaRE/xlbpgVk8FV98=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Mengbiao Xiong <xisme1998@gmail.com>,
-	Tom Lendacky <thomas.lendacky@amd.com>,
-	Herbert Xu <herbert@gondor.apana.org.au>,
+	Joakim Zhang <joakim.zhang@cixtech.com>,
+	Takashi Iwai <tiwai@suse.de>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 178/644] crypto: ccp - Fix crash when rebind ccp device for ccp.ko
+Subject: [PATCH 6.6 120/587] ALSA: hda: Handle the jack polling always via a work
 Date: Tue, 26 Aug 2025 13:04:29 +0200
-Message-ID: <20250826110950.879891015@linuxfoundation.org>
+Message-ID: <20250826110956.015017752@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250826110946.507083938@linuxfoundation.org>
-References: <20250826110946.507083938@linuxfoundation.org>
+In-Reply-To: <20250826110952.942403671@linuxfoundation.org>
+References: <20250826110952.942403671@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,82 +62,130 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Mengbiao Xiong <xisme1998@gmail.com>
+From: Takashi Iwai <tiwai@suse.de>
 
-[ Upstream commit 181698af38d3f93381229ad89c09b5bd0496661a ]
+[ Upstream commit 5f7e54b23e4d253eff3b10b12d6fa92d28d7dddc ]
 
-When CONFIG_CRYPTO_DEV_CCP_DEBUGFS is enabled, rebinding
-the ccp device causes the following crash:
+We used to call directly hda_jackpoll_work() from a couple of places
+for updating the jack and notify to user-space, but this makes rather
+the code flow fragile.  Namely, because of those direct calls,
+hda_jackpoll_work() uses snd_hda_power_up_pm() and *_down_pm() calls
+instead of the standard snd_hda_power_up() and *_down() calls.  The
+latter pair assures the runtime PM resume sync, so it can avoid the
+race against the PM callbacks gracefully, while the former pair may
+continue if called concurrently, hence it may race (by design).
 
-$ echo '0000:0a:00.2' > /sys/bus/pci/drivers/ccp/unbind
-$ echo '0000:0a:00.2' > /sys/bus/pci/drivers/ccp/bind
+In this patch, we change the call pattern of hda_jackpoll_work(); now
+all callers are replaced with the standard snd_hda_jack_report_sync()
+and the additional schedule_delayed_work().
 
-[  204.976930] BUG: kernel NULL pointer dereference, address: 0000000000000098
-[  204.978026] #PF: supervisor write access in kernel mode
-[  204.979126] #PF: error_code(0x0002) - not-present page
-[  204.980226] PGD 0 P4D 0
-[  204.981317] Oops: Oops: 0002 [#1] SMP NOPTI
-...
-[  204.997852] Call Trace:
-[  204.999074]  <TASK>
-[  205.000297]  start_creating+0x9f/0x1c0
-[  205.001533]  debugfs_create_dir+0x1f/0x170
-[  205.002769]  ? srso_return_thunk+0x5/0x5f
-[  205.004000]  ccp5_debugfs_setup+0x87/0x170 [ccp]
-[  205.005241]  ccp5_init+0x8b2/0x960 [ccp]
-[  205.006469]  ccp_dev_init+0xd4/0x150 [ccp]
-[  205.007709]  sp_init+0x5f/0x80 [ccp]
-[  205.008942]  sp_pci_probe+0x283/0x2e0 [ccp]
-[  205.010165]  ? srso_return_thunk+0x5/0x5f
-[  205.011376]  local_pci_probe+0x4f/0xb0
-[  205.012584]  pci_device_probe+0xdb/0x230
-[  205.013810]  really_probe+0xed/0x380
-[  205.015024]  __driver_probe_device+0x7e/0x160
-[  205.016240]  device_driver_attach+0x2f/0x60
-[  205.017457]  bind_store+0x7c/0xb0
-[  205.018663]  drv_attr_store+0x28/0x40
-[  205.019868]  sysfs_kf_write+0x5f/0x70
-[  205.021065]  kernfs_fop_write_iter+0x145/0x1d0
-[  205.022267]  vfs_write+0x308/0x440
-[  205.023453]  ksys_write+0x6d/0xe0
-[  205.024616]  __x64_sys_write+0x1e/0x30
-[  205.025778]  x64_sys_call+0x16ba/0x2150
-[  205.026942]  do_syscall_64+0x56/0x1e0
-[  205.028108]  entry_SYSCALL_64_after_hwframe+0x76/0x7e
-[  205.029276] RIP: 0033:0x7fbc36f10104
-[  205.030420] Code: 89 02 48 c7 c0 ff ff ff ff c3 66 2e 0f 1f 84 00 00 00 00 00 66 90 48 8d 05 e1 08 2e 00 8b 00 85 c0 75 13 b8 01 00 00 00 0f 05 <48> 3d 00 f0 ff ff 77 54 f3 c3 66 90 41 54 55 49 89 d4 53 48 89 f5
+Since hda_jackpoll_work() is called only from the associated work,
+it's always outside the PM code path, and we can safely use
+snd_hda_power_up() and *_down() there instead.  This allows us to
+remove the racy check of power-state in hda_jackpoll_work(), as well
+as the tricky cancel_delayed_work() and rescheduling at
+hda_codec_runtime_suspend().
 
-This patch sets ccp_debugfs_dir to NULL after destroying it in
-ccp5_debugfs_destroy, allowing the directory dentry to be
-recreated when rebinding the ccp device.
-
-Tested on AMD Ryzen 7 1700X.
-
-Fixes: 3cdbe346ed3f ("crypto: ccp - Add debugfs entries for CCP information")
-Signed-off-by: Mengbiao Xiong <xisme1998@gmail.com>
-Reviewed-by: Tom Lendacky <thomas.lendacky@amd.com>
-Signed-off-by: Herbert Xu <herbert@gondor.apana.org.au>
+Reported-by: Joakim Zhang <joakim.zhang@cixtech.com>
+Closes: https://lore.kernel.org/20250619020844.2974160-1-joakim.zhang@cixtech.com
+Tested-by: Joakim Zhang <joakim.zhang@cixtech.com>
+Signed-off-by: Takashi Iwai <tiwai@suse.de>
+Link: https://patch.msgid.link/20250623131437.10670-4-tiwai@suse.de
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/crypto/ccp/ccp-debugfs.c | 3 +++
- 1 file changed, 3 insertions(+)
+ sound/pci/hda/hda_codec.c | 41 +++++++++++++--------------------------
+ 1 file changed, 14 insertions(+), 27 deletions(-)
 
-diff --git a/drivers/crypto/ccp/ccp-debugfs.c b/drivers/crypto/ccp/ccp-debugfs.c
-index a1055554b47a..dc26bc22c91d 100644
---- a/drivers/crypto/ccp/ccp-debugfs.c
-+++ b/drivers/crypto/ccp/ccp-debugfs.c
-@@ -319,5 +319,8 @@ void ccp5_debugfs_setup(struct ccp_device *ccp)
+diff --git a/sound/pci/hda/hda_codec.c b/sound/pci/hda/hda_codec.c
+index aa6dc00985b5..2d4b7527b840 100644
+--- a/sound/pci/hda/hda_codec.c
++++ b/sound/pci/hda/hda_codec.c
+@@ -641,24 +641,16 @@ static void hda_jackpoll_work(struct work_struct *work)
+ 	struct hda_codec *codec =
+ 		container_of(work, struct hda_codec, jackpoll_work.work);
  
- void ccp5_debugfs_destroy(void)
- {
-+	mutex_lock(&ccp_debugfs_lock);
- 	debugfs_remove_recursive(ccp_debugfs_dir);
-+	ccp_debugfs_dir = NULL;
-+	mutex_unlock(&ccp_debugfs_lock);
+-	/* for non-polling trigger: we need nothing if already powered on */
+-	if (!codec->jackpoll_interval && snd_hdac_is_power_on(&codec->core))
++	if (!codec->jackpoll_interval)
+ 		return;
+ 
+ 	/* the power-up/down sequence triggers the runtime resume */
+-	snd_hda_power_up_pm(codec);
++	snd_hda_power_up(codec);
+ 	/* update jacks manually if polling is required, too */
+-	if (codec->jackpoll_interval) {
+-		snd_hda_jack_set_dirty_all(codec);
+-		snd_hda_jack_poll_all(codec);
+-	}
+-	snd_hda_power_down_pm(codec);
+-
+-	if (!codec->jackpoll_interval)
+-		return;
+-
+-	schedule_delayed_work(&codec->jackpoll_work,
+-			      codec->jackpoll_interval);
++	snd_hda_jack_set_dirty_all(codec);
++	snd_hda_jack_poll_all(codec);
++	schedule_delayed_work(&codec->jackpoll_work, codec->jackpoll_interval);
++	snd_hda_power_down(codec);
+ }
+ 
+ /* release all pincfg lists */
+@@ -2920,12 +2912,12 @@ static void hda_call_codec_resume(struct hda_codec *codec)
+ 		snd_hda_regmap_sync(codec);
+ 	}
+ 
+-	if (codec->jackpoll_interval)
+-		hda_jackpoll_work(&codec->jackpoll_work.work);
+-	else
+-		snd_hda_jack_report_sync(codec);
++	snd_hda_jack_report_sync(codec);
+ 	codec->core.dev.power.power_state = PMSG_ON;
+ 	snd_hdac_leave_pm(&codec->core);
++	if (codec->jackpoll_interval)
++		schedule_delayed_work(&codec->jackpoll_work,
++				      codec->jackpoll_interval);
+ }
+ 
+ static int hda_codec_runtime_suspend(struct device *dev)
+@@ -2937,8 +2929,6 @@ static int hda_codec_runtime_suspend(struct device *dev)
+ 	if (!codec->card)
+ 		return 0;
+ 
+-	cancel_delayed_work_sync(&codec->jackpoll_work);
+-
+ 	state = hda_call_codec_suspend(codec);
+ 	if (codec->link_down_at_suspend ||
+ 	    (codec_has_clkstop(codec) && codec_has_epss(codec) &&
+@@ -2946,10 +2936,6 @@ static int hda_codec_runtime_suspend(struct device *dev)
+ 		snd_hdac_codec_link_down(&codec->core);
+ 	snd_hda_codec_display_power(codec, false);
+ 
+-	if (codec->bus->jackpoll_in_suspend &&
+-		(dev->power.power_state.event != PM_EVENT_SUSPEND))
+-		schedule_delayed_work(&codec->jackpoll_work,
+-					codec->jackpoll_interval);
+ 	return 0;
+ }
+ 
+@@ -3118,10 +3104,11 @@ int snd_hda_codec_build_controls(struct hda_codec *codec)
+ 	if (err < 0)
+ 		return err;
+ 
++	snd_hda_jack_report_sync(codec); /* call at the last init point */
+ 	if (codec->jackpoll_interval)
+-		hda_jackpoll_work(&codec->jackpoll_work.work);
+-	else
+-		snd_hda_jack_report_sync(codec); /* call at the last init point */
++		schedule_delayed_work(&codec->jackpoll_work,
++				      codec->jackpoll_interval);
++
+ 	sync_power_up_states(codec);
+ 	return 0;
  }
 -- 
 2.39.5
