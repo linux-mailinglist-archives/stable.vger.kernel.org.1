@@ -1,55 +1,59 @@
-Return-Path: <stable+bounces-175963-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-175446-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0C4E0B36B04
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 16:42:30 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1D377B36917
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 16:22:48 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id E344358221B
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 14:29:46 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 45EC48A5241
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 14:06:23 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C23FD35207C;
-	Tue, 26 Aug 2025 14:27:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C9730350D70;
+	Tue, 26 Aug 2025 14:04:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="sHd9L41D"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="OeOcidWI"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 80193356908;
-	Tue, 26 Aug 2025 14:27:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7AA5F350D6A;
+	Tue, 26 Aug 2025 14:04:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756218426; cv=none; b=n2pW8mcoU8LdeeMxOvyNBNrq1wpCmn5A399m9M/bhYipGx4BggwL+u6diNijA3XRdLpv2O8BRx+MfpvdA4I1BBcmTbJ3O6NdxS1MfPVcNz9fppUbqeFxyfGnoeFtUuOffSkzGfZJ1tCxqshAhJgxwpAIhi1yERBPosEWwCQbRYY=
+	t=1756217065; cv=none; b=FY/X2rV76t91eQwBEEGdXT5b+bB/lXQuGK+tTmCvdf9A+5mTCfxgTzE1JMqq+H8UYDwUtiXQ9UoIEiXWR8kt/w9m9nFH9OsX/ARs7gQT77uvj5SdD7gZIJEcDm25IBYfQlJz90lNVudHkrhr5fNHuKBoa3SyP5pPXJ4BE+0lyZM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756218426; c=relaxed/simple;
-	bh=D9bUUR8j/mKByc0bbHIjh8c+2lx9mlcgZ4dUZvwtGeI=;
+	s=arc-20240116; t=1756217065; c=relaxed/simple;
+	bh=o84Pbn1Lid/FHwMkjyrpBq/QD5uf1Z5/szvX6BdNhS8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=cI3fvfm6MkUB3lVKODOYB20yADah4XACL5wrB0I27MMhnszUIwhPW0HA2y7qIAe1Nlf4WbIOOgQuWX0FA8abinhXVXoLMAVdOBqWSg0I1hRKTiT2IrrZVg4N0xWVAOXteWq7ZsO2XzocOAMhYYf5X/F54IlPjEWU8qYVNDAqd6Q=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=sHd9L41D; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 10E6EC4CEF1;
-	Tue, 26 Aug 2025 14:27:05 +0000 (UTC)
+	 MIME-Version:Content-Type; b=qzHWDHVWs6rlqxcPDt8vwjKCczpfqd0EVttXyrRKpBSi3eGQHHkIe2BPL4Et0TRdufB0cvgtflhx4j4sOiV7YfSkevoKKB3z7pgp/vHvKddSKx0LJFjeX3Uhh8LXYBZxqfF5hbCM9tjQ1rV07jezxilRrKTEKOMCvhVfFEoAW/g=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=OeOcidWI; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0A6BDC4CEF1;
+	Tue, 26 Aug 2025 14:04:24 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1756218426;
-	bh=D9bUUR8j/mKByc0bbHIjh8c+2lx9mlcgZ4dUZvwtGeI=;
+	s=korg; t=1756217065;
+	bh=o84Pbn1Lid/FHwMkjyrpBq/QD5uf1Z5/szvX6BdNhS8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=sHd9L41DmElYLdGZ+UqVENkNLE53VduszjzpcizdOdpIm+q/m1IAvwSNxwMk3EDCY
-	 4SxIfj5XypA8dveSxGnLjh+E8IYctpNxKzcV94+Guh0RSLbOruThrDaHgtvVSITf3q
-	 oKtqbOx7kvOdrXBmu5X/hW7zLt5VZvvHyphUpUuc=
+	b=OeOcidWIu+kro3FbBy292oVP4FotdgR+YfN2KtfPWVd4HHtuzCwLympSzpEWm1D+A
+	 Yt6wJV/7yyUZyybkACngwiDn6nh2W+Ee9Vjobz+6B98gh7BlwJuzNbpC9KUbewIlYc
+	 7mR1xi+2m4+xgsXKxcRXmMtzzAB6yWXNdYRAQSxo=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Takashi Iwai <tiwai@suse.de>,
+	William Liu <will@willsroot.io>,
+	Savino Dicanosa <savy@syst3mfailure.io>,
+	=?UTF-8?q?Toke=20H=C3=B8iland-J=C3=B8rgensen?= <toke@toke.dk>,
+	Jamal Hadi Salim <jhs@mojatatu.com>,
+	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 518/523] ALSA: usb-audio: Use correct sub-type for UAC3 feature unit validation
+Subject: [PATCH 5.15 637/644] net/sched: Make cake_enqueue return NET_XMIT_CN when past buffer_limit
 Date: Tue, 26 Aug 2025 13:12:08 +0200
-Message-ID: <20250826110937.214970856@linuxfoundation.org>
+Message-ID: <20250826111002.346024922@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250826110924.562212281@linuxfoundation.org>
-References: <20250826110924.562212281@linuxfoundation.org>
+In-Reply-To: <20250826110946.507083938@linuxfoundation.org>
+References: <20250826110946.507083938@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -59,41 +63,95 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Takashi Iwai <tiwai@suse.de>
+From: William Liu <will@willsroot.io>
 
-[ Upstream commit 8410fe81093ff231e964891e215b624dabb734b0 ]
+[ Upstream commit 15de71d06a400f7fdc15bf377a2552b0ec437cf5 ]
 
-The entry of the validators table for UAC3 feature unit is defined
-with a wrong sub-type UAC_FEATURE (= 0x06) while it should have been
-UAC3_FEATURE (= 0x07).  This patch corrects the entry value.
+The following setup can trigger a WARNING in htb_activate due to
+the condition: !cl->leaf.q->q.qlen
 
-Fixes: 57f8770620e9 ("ALSA: usb-audio: More validations of descriptor units")
-Link: https://patch.msgid.link/20250821150835.8894-1-tiwai@suse.de
-Signed-off-by: Takashi Iwai <tiwai@suse.de>
+tc qdisc del dev lo root
+tc qdisc add dev lo root handle 1: htb default 1
+tc class add dev lo parent 1: classid 1:1 \
+       htb rate 64bit
+tc qdisc add dev lo parent 1:1 handle f: \
+       cake memlimit 1b
+ping -I lo -f -c1 -s64 -W0.001 127.0.0.1
+
+This is because the low memlimit leads to a low buffer_limit, which
+causes packet dropping. However, cake_enqueue still returns
+NET_XMIT_SUCCESS, causing htb_enqueue to call htb_activate with an
+empty child qdisc. We should return NET_XMIT_CN when packets are
+dropped from the same tin and flow.
+
+I do not believe return value of NET_XMIT_CN is necessary for packet
+drops in the case of ack filtering, as that is meant to optimize
+performance, not to signal congestion.
+
+Fixes: 046f6fd5daef ("sched: Add Common Applications Kept Enhanced (cake) qdisc")
+Signed-off-by: William Liu <will@willsroot.io>
+Reviewed-by: Savino Dicanosa <savy@syst3mfailure.io>
+Acked-by: Toke Høiland-Jørgensen <toke@toke.dk>
+Reviewed-by: Jamal Hadi Salim <jhs@mojatatu.com>
+Link: https://patch.msgid.link/20250819033601.579821-1-will@willsroot.io
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- sound/usb/validate.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ net/sched/sch_cake.c | 14 ++++++++++++--
+ 1 file changed, 12 insertions(+), 2 deletions(-)
 
-diff --git a/sound/usb/validate.c b/sound/usb/validate.c
-index 4f4e8e87a14c..a0d55b77c994 100644
---- a/sound/usb/validate.c
-+++ b/sound/usb/validate.c
-@@ -285,7 +285,7 @@ static const struct usb_desc_validator audio_validators[] = {
- 	/* UAC_VERSION_3, UAC3_EXTENDED_TERMINAL: not implemented yet */
- 	FUNC(UAC_VERSION_3, UAC3_MIXER_UNIT, validate_mixer_unit),
- 	FUNC(UAC_VERSION_3, UAC3_SELECTOR_UNIT, validate_selector_unit),
--	FUNC(UAC_VERSION_3, UAC_FEATURE_UNIT, validate_uac3_feature_unit),
-+	FUNC(UAC_VERSION_3, UAC3_FEATURE_UNIT, validate_uac3_feature_unit),
- 	/*  UAC_VERSION_3, UAC3_EFFECT_UNIT: not implemented yet */
- 	FUNC(UAC_VERSION_3, UAC3_PROCESSING_UNIT, validate_processing_unit),
- 	FUNC(UAC_VERSION_3, UAC3_EXTENSION_UNIT, validate_processing_unit),
+diff --git a/net/sched/sch_cake.c b/net/sched/sch_cake.c
+index 8429d7f8aba4..73b840762afb 100644
+--- a/net/sched/sch_cake.c
++++ b/net/sched/sch_cake.c
+@@ -1761,7 +1761,7 @@ static s32 cake_enqueue(struct sk_buff *skb, struct Qdisc *sch,
+ 	ktime_t now = ktime_get();
+ 	struct cake_tin_data *b;
+ 	struct cake_flow *flow;
+-	u32 idx;
++	u32 idx, tin;
+ 
+ 	/* choose flow to insert into */
+ 	idx = cake_classify(sch, &b, skb, q->flow_mode, &ret);
+@@ -1771,6 +1771,7 @@ static s32 cake_enqueue(struct sk_buff *skb, struct Qdisc *sch,
+ 		__qdisc_drop(skb, to_free);
+ 		return ret;
+ 	}
++	tin = (u32)(b - q->tins);
+ 	idx--;
+ 	flow = &b->flows[idx];
+ 
+@@ -1938,13 +1939,22 @@ static s32 cake_enqueue(struct sk_buff *skb, struct Qdisc *sch,
+ 		q->buffer_max_used = q->buffer_used;
+ 
+ 	if (q->buffer_used > q->buffer_limit) {
++		bool same_flow = false;
+ 		u32 dropped = 0;
++		u32 drop_id;
+ 
+ 		while (q->buffer_used > q->buffer_limit) {
+ 			dropped++;
+-			cake_drop(sch, to_free);
++			drop_id = cake_drop(sch, to_free);
++
++			if ((drop_id >> 16) == tin &&
++			    (drop_id & 0xFFFF) == idx)
++				same_flow = true;
+ 		}
+ 		b->drop_overlimit += dropped;
++
++		if (same_flow)
++			return NET_XMIT_CN;
+ 	}
+ 	return NET_XMIT_SUCCESS;
+ }
 -- 
 2.50.1
 
