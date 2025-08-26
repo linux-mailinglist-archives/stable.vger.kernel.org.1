@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-174562-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-174054-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id EF4F8B363D4
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 15:33:35 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8DF7FB36112
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 15:06:12 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id EF1178E107E
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 13:26:24 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 18BF42A2C9D
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 13:02:54 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B01052F7473;
-	Tue, 26 Aug 2025 13:25:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C0DF91A8F84;
+	Tue, 26 Aug 2025 13:02:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="IjBzQShN"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="FcdY1WVL"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6AFA42BE058;
-	Tue, 26 Aug 2025 13:25:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7ED148635D;
+	Tue, 26 Aug 2025 13:02:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756214722; cv=none; b=i2qnUv8JKtRySWNePvgYpzrn0WYI70y+frplxp5JGwX8bEw4s+k1/E3n2OgAgRZ8zB74FvJ7koXJC7kKRbJtHUQFXV+1x0nLPlpaFXmgm2AhP4ZIB4sOIMuWH4kcCPrbyN+pCVV2iXLkprXeTm1YaVjRmpvd6bN03TsWB6IxRH0=
+	t=1756213370; cv=none; b=ISnYaTCy4w2z1PgyHWNuEbmkp3+p5C9bdxqzGy98Sg/uftwuJ4PsBYB1aE01c2tknjBJsb4DRTD46uvuFUyP0/kcIb+S9jvqp6JghkVnNvOV+MRhwvv8RRsPQduqNAkbIwf/J2QX1owLHSNYpZWgvNenjXUo3eXDOhwd5zmgXl4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756214722; c=relaxed/simple;
-	bh=v6PRzoqXYUgWsJkr8aNIIB/CIm617VCTsVftjch/LVA=;
+	s=arc-20240116; t=1756213370; c=relaxed/simple;
+	bh=hUrjycjcH2o3j029JTj2Cij98UoPWGvjabwqUDyB7vM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=hY5xh07ULUqDVOV6jvmICJuJpii/rf/NzPbsSmjbh10dZjrCoN4tr3oo5ZGfoII7ehrjmsX40fJYJqZ2xcpexJ4Ba+89LaQUCyYH+Ee0PKmJE6YwhApeTDmlUmKy3LPM6ElO//CTimaIkfbcsVtKUwg2G1zU/DTgH3I57AgW/94=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=IjBzQShN; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id EBE33C4CEF1;
-	Tue, 26 Aug 2025 13:25:21 +0000 (UTC)
+	 MIME-Version; b=gSjEtwnc7dUzhqmlB0HadY69ocL1oW/VNcbwUFxbp0PY0n2rYM5geyOA1o5OZIGMt3Y9ykkoaKLG/o0r3SUbUEi/puhEJvr9IjzXHX2W5d7K6H0w3MJeAbkiRLlIavcNEHdC+Qc1FKiGYR1uCEV20eN+FvgFyc4UupqqCrY20YY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=FcdY1WVL; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B5691C4CEF1;
+	Tue, 26 Aug 2025 13:02:49 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1756214722;
-	bh=v6PRzoqXYUgWsJkr8aNIIB/CIm617VCTsVftjch/LVA=;
+	s=korg; t=1756213370;
+	bh=hUrjycjcH2o3j029JTj2Cij98UoPWGvjabwqUDyB7vM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=IjBzQShN/ptb9qdY2qRW958M7nlKYy0fP54+Z+LF36bzngf0ysBGYI1cMNuH6RhqU
-	 edru5/c5QvWISz5fBE38IYzA2S3CP6RcCIC3dQr8UMvsHmAwQ4z46J14zqDswVA6Kt
-	 X5icdKwZKtbAA0ggHEh0G3pneF6tCfJynUqi4mpU=
+	b=FcdY1WVLCCzE6lWrG5FdKfwWGQriUeJ2WLU21GjFSbQOx9qriCMhz7ZqFsLCZ+unz
+	 o4RJibouWq5nrrCffAlFY/IPY3dbzcOgvJWNOadQxzkVohRlaG56VFYX99Yp2bNH13
+	 SQy4Yc54cjfx7DBVDZzro27QGdwHrWIaxoyyzIYM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	"fangzhong.zhou" <myth5@myth5.com>,
-	Wolfram Sang <wsa+renesas@sang-engineering.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 217/482] i2c: Force DLL0945 touchpad i2c freq to 100khz
+	Youngjun Lee <yjjuny.lee@samsung.com>,
+	Laurent Pinchart <laurent.pinchart@ideasonboard.com>,
+	Ricardo Ribalda <ribalda@chromium.org>,
+	Hans Verkuil <hverkuil@xs4all.nl>
+Subject: [PATCH 6.6 321/587] media: uvcvideo: Fix 1-byte out-of-bounds read in uvc_parse_format()
 Date: Tue, 26 Aug 2025 13:07:50 +0200
-Message-ID: <20250826110936.136113540@linuxfoundation.org>
+Message-ID: <20250826111001.083549585@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250826110930.769259449@linuxfoundation.org>
-References: <20250826110930.769259449@linuxfoundation.org>
+In-Reply-To: <20250826110952.942403671@linuxfoundation.org>
+References: <20250826110952.942403671@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,44 +63,48 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: fangzhong.zhou <myth5@myth5.com>
+From: Youngjun Lee <yjjuny.lee@samsung.com>
 
-[ Upstream commit 0b7c9528facdb5a73ad78fea86d2e95a6c48dbc4 ]
+commit 782b6a718651eda3478b1824b37a8b3185d2740c upstream.
 
-This patch fixes an issue where the touchpad cursor movement becomes
-slow on the Dell Precision 5560. Force the touchpad freq to 100khz
-as a workaround.
+The buffer length check before calling uvc_parse_format() only ensured
+that the buffer has at least 3 bytes (buflen > 2), buf the function
+accesses buffer[3], requiring at least 4 bytes.
 
-Tested on Dell Precision 5560 with 6.14 to 6.14.6. Cursor movement
-is now smooth and responsive.
+This can lead to an out-of-bounds read if the buffer has exactly 3 bytes.
 
-Signed-off-by: fangzhong.zhou <myth5@myth5.com>
-[wsa: kept sorting and removed unnecessary parts from commit msg]
-Signed-off-by: Wolfram Sang <wsa+renesas@sang-engineering.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Fix it by checking that the buffer has at least 4 bytes in
+uvc_parse_format().
+
+Signed-off-by: Youngjun Lee <yjjuny.lee@samsung.com>
+Reviewed-by: Laurent Pinchart <laurent.pinchart@ideasonboard.com>
+Fixes: c0efd232929c ("V4L/DVB (8145a): USB Video Class driver")
+Cc: stable@vger.kernel.org
+Reviewed-by: Ricardo Ribalda <ribalda@chromium.org>
+Link: https://lore.kernel.org/r/20250610124107.37360-1-yjjuny.lee@samsung.com
+Signed-off-by: Laurent Pinchart <laurent.pinchart@ideasonboard.com>
+Signed-off-by: Hans Verkuil <hverkuil@xs4all.nl>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/i2c/i2c-core-acpi.c | 1 +
- 1 file changed, 1 insertion(+)
+ drivers/media/usb/uvc/uvc_driver.c |    3 +++
+ 1 file changed, 3 insertions(+)
 
-diff --git a/drivers/i2c/i2c-core-acpi.c b/drivers/i2c/i2c-core-acpi.c
-index d2499f302b50..f43067f6797e 100644
---- a/drivers/i2c/i2c-core-acpi.c
-+++ b/drivers/i2c/i2c-core-acpi.c
-@@ -370,6 +370,7 @@ static const struct acpi_device_id i2c_acpi_force_100khz_device_ids[] = {
- 	 * the device works without issues on Windows at what is expected to be
- 	 * a 400KHz frequency. The root cause of the issue is not known.
- 	 */
-+	{ "DLL0945", 0 },
- 	{ "ELAN06FA", 0 },
- 	{}
- };
--- 
-2.39.5
-
+--- a/drivers/media/usb/uvc/uvc_driver.c
++++ b/drivers/media/usb/uvc/uvc_driver.c
+@@ -235,6 +235,9 @@ static int uvc_parse_format(struct uvc_d
+ 	unsigned int i, n;
+ 	u8 ftype;
+ 
++	if (buflen < 4)
++		return -EINVAL;
++
+ 	format->type = buffer[2];
+ 	format->index = buffer[3];
+ 	format->frames = frames;
 
 
 
