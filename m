@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-175650-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-174451-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5F6BCB36956
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 16:25:46 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id AD27FB3635E
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 15:29:03 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 854BE1C83500
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 14:16:13 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 8E01946686F
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 13:22:36 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C3C0A352FE1;
-	Tue, 26 Aug 2025 14:13:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 863FB34F460;
+	Tue, 26 Aug 2025 13:20:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="INLbW3fV"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="wsW+EdUa"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7E476352FE2;
-	Tue, 26 Aug 2025 14:13:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3E9AF34DCF5;
+	Tue, 26 Aug 2025 13:20:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756217606; cv=none; b=Wbk0NGlnfu19Bk4lBbOPtLFdquVr5G3tFFsuq7VZzr8MY/wtbuVSpG7f1n/AY/+bsCBOXEGmQMOMLvJMoIhU3k3Bo/SeZMFQfOoS+JjnCv+2LEUWknWBc3T1QtlxcmFL3vurckuDQYIgmQB1kpe0v+cEG928g191fiiLfZ503fk=
+	t=1756214427; cv=none; b=aVXnpUr6lSLuj/8IFOUe5MngEp9Lko3Dkraub5E4RqabZ9nyEZWTUEwtKIHMp3FFeNDcuqnwsoa/DHHOXX8VnI9k/pNwJQIWKimdL57NNS1Yt/VglOVB3xshz77aTIV13SIYkDzHpkVjuakjNyCw6GzLT9f6j/jvKwPbn3aM+Cw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756217606; c=relaxed/simple;
-	bh=l1eYWnbcJ8jbDrYaSFGR8i6wmmXOKTJpXy3ebhPTJbg=;
+	s=arc-20240116; t=1756214427; c=relaxed/simple;
+	bh=HZQ6/FBumUeJXr8ZsPsVy609JYWDy6SFu5njmand6Bo=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=D8CqZU+Rj+2pJu54DxMWOzXVbrk/Mxi0XyzmWrz8D0Ap2daxkSnBcYukRGKWLfMzAAVGvsouS2c574HFI9PV9T4liczL9V5FRjbDpyg3CtBx3s9qIBA+GC5FeHNXCJ2yrNEKNBe+d5xl4dPu49a8UkghxXBzhERZQjJMprGLPsY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=INLbW3fV; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0CD86C4CEF1;
-	Tue, 26 Aug 2025 14:13:25 +0000 (UTC)
+	 MIME-Version; b=WQWI+D+hN2hQpQZl1pR55ZEaj8qaEHHzVmSs0LqNI04+84jE48IpGHnOOr/DAe6gCmmUATomwDyOtZoCUiwkcZvjp7f8PG45HVFnj7XeI+KD84F1vVAmYDcPY5IKHt/b+jYAHVdVkx0vfMPfMQ53ETbr6axzjn9Pgipo0ElBc+U=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=wsW+EdUa; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 82357C4CEF1;
+	Tue, 26 Aug 2025 13:20:26 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1756217606;
-	bh=l1eYWnbcJ8jbDrYaSFGR8i6wmmXOKTJpXy3ebhPTJbg=;
+	s=korg; t=1756214426;
+	bh=HZQ6/FBumUeJXr8ZsPsVy609JYWDy6SFu5njmand6Bo=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=INLbW3fV7Gq6+yp266df6oXQqB4MOPX4vz8BP7lVkZnS91uAIu9EK5pwvcZ9P0gtD
-	 7PohMxi0vz+IUYi9yd1jZeJmH35998djG0KiIIa5NuyanzWhU6ASXvc5Zl/3LsAwNj
-	 6sqkM+cytVyUaX5MotWGewRBEKI5hEGP/cRbZB4k=
+	b=wsW+EdUaZDGvvGa2LmaU/sH3+Flfn3mSRFUQLFwgVUE5iRkVLDSKQMdVqWl1AXu6d
+	 xJKXYECqot7piZCpWWiHVH3piD2zjxURBkyDyor/iRgbGZO3cbKzqUExRoDmwJe497
+	 kTSIh7jNQqVZ/j+FsKyXoq/pf+XkHMzdT1l9kp8g=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Horatiu Vultur <horatiu.vultur@microchip.com>,
-	Andrew Lunn <andrew@lunn.ch>,
-	Jakub Kicinski <kuba@kernel.org>,
+	Jan Hendrik Farr <kernel@jfarr.cc>,
+	Johannes Berg <johannes.berg@intel.com>,
+	Miri Korenblit <miriam.rachel.korenblit@intel.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 175/523] phy: mscc: Fix parsing of unicast frames
-Date: Tue, 26 Aug 2025 13:06:25 +0200
-Message-ID: <20250826110928.776113396@linuxfoundation.org>
+Subject: [PATCH 6.1 133/482] wifi: mac80211: dont complete management TX on SAE commit
+Date: Tue, 26 Aug 2025 13:06:26 +0200
+Message-ID: <20250826110934.104468781@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250826110924.562212281@linuxfoundation.org>
-References: <20250826110924.562212281@linuxfoundation.org>
+In-Reply-To: <20250826110930.769259449@linuxfoundation.org>
+References: <20250826110930.769259449@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,55 +63,101 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Horatiu Vultur <horatiu.vultur@microchip.com>
+From: Johannes Berg <johannes.berg@intel.com>
 
-[ Upstream commit 6fb5ff63b35b7e849cc8510957f25753f87f63d2 ]
+[ Upstream commit 6b04716cdcac37bdbacde34def08bc6fdb5fc4e2 ]
 
-According to the 1588 standard, it is possible to use both unicast and
-multicast frames to send the PTP information. It was noticed that if the
-frames were unicast they were not processed by the analyzer meaning that
-they were not timestamped. Therefore fix this to match also these
-unicast frames.
+When SAE commit is sent and received in response, there's no
+ordering for the SAE confirm messages. As such, don't call
+drivers to stop listening on the channel when the confirm
+message is still expected.
 
-Fixes: ab2bf9339357 ("net: phy: mscc: 1588 block initialization")
-Signed-off-by: Horatiu Vultur <horatiu.vultur@microchip.com>
-Reviewed-by: Andrew Lunn <andrew@lunn.ch>
-Link: https://patch.msgid.link/20250726140307.3039694-1-horatiu.vultur@microchip.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+This fixes an issue if the local confirm is transmitted later
+than the AP's confirm, for iwlwifi (and possibly mt76) the
+AP's confirm would then get lost since the device isn't on
+the channel at the time the AP transmit the confirm.
+
+For iwlwifi at least, this also improves the overall timing
+of the authentication handshake (by about 15ms according to
+the report), likely since the session protection won't be
+aborted and rescheduled.
+
+Note that even before this, mgd_complete_tx() wasn't always
+called for each call to mgd_prepare_tx() (e.g. in the case
+of WEP key shared authentication), and the current drivers
+that have the complete callback don't seem to mind. Document
+this as well though.
+
+Reported-by: Jan Hendrik Farr <kernel@jfarr.cc>
+Closes: https://lore.kernel.org/all/aB30Ea2kRG24LINR@archlinux/
+Signed-off-by: Johannes Berg <johannes.berg@intel.com>
+Signed-off-by: Miri Korenblit <miriam.rachel.korenblit@intel.com>
+Link: https://patch.msgid.link/20250609213232.12691580e140.I3f1d3127acabcd58348a110ab11044213cf147d3@changeid
+Signed-off-by: Johannes Berg <johannes.berg@intel.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/phy/mscc/mscc_ptp.c | 1 +
- drivers/net/phy/mscc/mscc_ptp.h | 1 +
- 2 files changed, 2 insertions(+)
+ include/net/mac80211.h | 2 ++
+ net/mac80211/mlme.c    | 9 ++++++++-
+ 2 files changed, 10 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/net/phy/mscc/mscc_ptp.c b/drivers/net/phy/mscc/mscc_ptp.c
-index 85102e895665..4a00b82d3ca5 100644
---- a/drivers/net/phy/mscc/mscc_ptp.c
-+++ b/drivers/net/phy/mscc/mscc_ptp.c
-@@ -897,6 +897,7 @@ static int vsc85xx_eth1_conf(struct phy_device *phydev, enum ts_blk blk,
- 				     get_unaligned_be32(ptp_multicast));
- 	} else {
- 		val |= ANA_ETH1_FLOW_ADDR_MATCH2_ANY_MULTICAST;
-+		val |= ANA_ETH1_FLOW_ADDR_MATCH2_ANY_UNICAST;
- 		vsc85xx_ts_write_csr(phydev, blk,
- 				     MSCC_ANA_ETH1_FLOW_ADDR_MATCH2(0), val);
- 		vsc85xx_ts_write_csr(phydev, blk,
-diff --git a/drivers/net/phy/mscc/mscc_ptp.h b/drivers/net/phy/mscc/mscc_ptp.h
-index 3ea163af0f4f..7e3809e4aa5f 100644
---- a/drivers/net/phy/mscc/mscc_ptp.h
-+++ b/drivers/net/phy/mscc/mscc_ptp.h
-@@ -98,6 +98,7 @@
- #define MSCC_ANA_ETH1_FLOW_ADDR_MATCH2(x) (MSCC_ANA_ETH1_FLOW_ENA(x) + 3)
- #define ANA_ETH1_FLOW_ADDR_MATCH2_MASK_MASK	GENMASK(22, 20)
- #define ANA_ETH1_FLOW_ADDR_MATCH2_ANY_MULTICAST	0x400000
-+#define ANA_ETH1_FLOW_ADDR_MATCH2_ANY_UNICAST	0x200000
- #define ANA_ETH1_FLOW_ADDR_MATCH2_FULL_ADDR	0x100000
- #define ANA_ETH1_FLOW_ADDR_MATCH2_SRC_DEST_MASK	GENMASK(17, 16)
- #define ANA_ETH1_FLOW_ADDR_MATCH2_SRC_DEST	0x020000
+diff --git a/include/net/mac80211.h b/include/net/mac80211.h
+index 6ef8348b5e93..28a9b9c00e6b 100644
+--- a/include/net/mac80211.h
++++ b/include/net/mac80211.h
+@@ -4011,6 +4011,8 @@ struct ieee80211_prep_tx_info {
+  * @mgd_complete_tx: Notify the driver that the response frame for a previously
+  *	transmitted frame announced with @mgd_prepare_tx was received, the data
+  *	is filled similarly to @mgd_prepare_tx though the duration is not used.
++ *	Note that this isn't always called for each mgd_prepare_tx() call, for
++ *	example for SAE the 'confirm' messages can be on the air in any order.
+  *
+  * @mgd_protect_tdls_discover: Protect a TDLS discovery session. After sending
+  *	a TDLS discovery-request, we expect a reply to arrive on the AP's
+diff --git a/net/mac80211/mlme.c b/net/mac80211/mlme.c
+index b300972c3150..cc47d6b88f04 100644
+--- a/net/mac80211/mlme.c
++++ b/net/mac80211/mlme.c
+@@ -3595,6 +3595,7 @@ static void ieee80211_rx_mgmt_auth(struct ieee80211_sub_if_data *sdata,
+ 	struct ieee80211_prep_tx_info info = {
+ 		.subtype = IEEE80211_STYPE_AUTH,
+ 	};
++	bool sae_need_confirm = false;
+ 
+ 	sdata_assert_lock(sdata);
+ 
+@@ -3638,6 +3639,8 @@ static void ieee80211_rx_mgmt_auth(struct ieee80211_sub_if_data *sdata,
+ 				jiffies + IEEE80211_AUTH_WAIT_SAE_RETRY;
+ 			ifmgd->auth_data->timeout_started = true;
+ 			run_again(sdata, ifmgd->auth_data->timeout);
++			if (auth_transaction == 1)
++				sae_need_confirm = true;
+ 			goto notify_driver;
+ 		}
+ 
+@@ -3680,6 +3683,9 @@ static void ieee80211_rx_mgmt_auth(struct ieee80211_sub_if_data *sdata,
+ 	     ifmgd->auth_data->expected_transaction == 2)) {
+ 		if (!ieee80211_mark_sta_auth(sdata))
+ 			return; /* ignore frame -- wait for timeout */
++	} else if (ifmgd->auth_data->algorithm == WLAN_AUTH_SAE &&
++		   auth_transaction == 1) {
++		sae_need_confirm = true;
+ 	} else if (ifmgd->auth_data->algorithm == WLAN_AUTH_SAE &&
+ 		   auth_transaction == 2) {
+ 		sdata_info(sdata, "SAE peer confirmed\n");
+@@ -3688,7 +3694,8 @@ static void ieee80211_rx_mgmt_auth(struct ieee80211_sub_if_data *sdata,
+ 
+ 	cfg80211_rx_mlme_mgmt(sdata->dev, (u8 *)mgmt, len);
+ notify_driver:
+-	drv_mgd_complete_tx(sdata->local, sdata, &info);
++	if (!sae_need_confirm)
++		drv_mgd_complete_tx(sdata->local, sdata, &info);
+ }
+ 
+ #define case_WLAN(type) \
 -- 
 2.39.5
 
