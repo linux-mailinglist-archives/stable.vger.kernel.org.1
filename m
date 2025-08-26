@@ -1,56 +1,64 @@
-Return-Path: <stable+bounces-173368-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-175418-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4BC87B35C9F
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 13:36:19 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id B64FCB36805
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 16:12:10 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id D01AF7C0BE1
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 11:36:14 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id A51149848EF
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 14:04:42 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1AB7A2BE643;
-	Tue, 26 Aug 2025 11:34:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6E5FF34AAE3;
+	Tue, 26 Aug 2025 14:03:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="d0Lfk+63"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="S/k3H1Qi"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CA7EC2135B8;
-	Tue, 26 Aug 2025 11:34:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2C9611DE8BE;
+	Tue, 26 Aug 2025 14:03:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756208066; cv=none; b=k7jP+CC/nRaz7qIpP1pW5Y4CQTObB4go2Nvc1cAxLRtr4bO0ImeWovSaoV7sTHF3lVZ1jH5RrC6Tb059nFYfZXqpMHUkLKdeUr6SfpBVmC3gVUiABg+U2723iCxXfIYmO2WBHtSUjxA4uTa2DpO9BG06vqH5C7EVN9mtVZgJ2/U=
+	t=1756216990; cv=none; b=EsOb2k0kio/qGSLQpyj8LnctwGvSj5rpFzt5aayrCSVQucLlaDBb1FL+rh9OFHHXmx9LulQnWw7+jRz4BKwK3nFX4Wr1ejAm4KedfmLpiCfIsKfJzwMGM+Y4lUNTL8Lh/9tGErGS/Bxkqt9swjEMyZhsjdqei6cFNURpui4BuXw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756208066; c=relaxed/simple;
-	bh=ew8qiPND3OGJSZm747P3UoiN7ujlrAYIUug0HExOmS4=;
+	s=arc-20240116; t=1756216990; c=relaxed/simple;
+	bh=BxQBnPvBDPQH5IKGCJ8iomiCeb4XWfCoU+GHhuSPGIo=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=ky3y+BvyBsdoKPzBIBBPaLSgYCB7v68K9ItPFG2vpOs8J2+Ijx1FYP5Os5m2aLR8M2BSYFTT7Iiv4Tz6p9gvZJzr5quFcDZRexBupBqDp1aMmBUKQIampTOlq1knO14nThhnnl/XD5MDtbfvZV6Qv2686KNWcg46rN/XybRqpjI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=d0Lfk+63; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id ED7B1C4CEF1;
-	Tue, 26 Aug 2025 11:34:25 +0000 (UTC)
+	 MIME-Version; b=rMRF7JGP4z30t4NDHRh/CA/mDC7TGEDPDaOP/W0bE05ktKA8gwYVcaASEOlhw7f0U+UTMuv/Oit+WbX67IDGNazEhDI4iGCKGzyHKq4NdbaN7JnCgnKOWxUrFz3LZthIzHfofKd8z0KHO2fqm0RFGf6McDQFRUwlNqm2YpPjjOI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=S/k3H1Qi; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8BF22C4CEF1;
+	Tue, 26 Aug 2025 14:03:09 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1756208066;
-	bh=ew8qiPND3OGJSZm747P3UoiN7ujlrAYIUug0HExOmS4=;
+	s=korg; t=1756216990;
+	bh=BxQBnPvBDPQH5IKGCJ8iomiCeb4XWfCoU+GHhuSPGIo=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=d0Lfk+632RGJuiB0NtvXxOPFwKENo0qNc6mEKh5xxtBdtGnTvxAQsK0TYWgznfQpz
-	 ai6COmAUnWeWFSgOsbL6+KoQBV1kk7BGt6n6T2nibgGeOoZfXogVBNQX3T3Pl/L2+N
-	 JYWr54c38/WYkpye/FCY7JAufe6o2L2ZydHZLHGE=
+	b=S/k3H1QibKxViDFPE33nOpad/2Ma9bwLQpDrBaZN5FxJM1iBJINPM+8sSWfjMPVNt
+	 5YjegpmUNSAXxB2os7go5u4Cm/N+Vfyx/z+BCmOEinqxNHZSN/O9i9h5Io7/igRKT3
+	 49b3JISIxbIu1GDS10i4MJEKN0G4R3TV4nYmWdgQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Stefan Binding <sbinding@opensource.cirrus.com>,
-	Mark Brown <broonie@kernel.org>,
+	Jinjiang Tu <tujinjiang@huawei.com>,
+	David Hildenbrand <david@redhat.com>,
+	Miaohe Lin <linmiaohe@huawei.com>,
+	Jane Chu <jane.chu@oracle.com>,
+	Kefeng Wang <wangkefeng.wang@huawei.com>,
+	Naoya Horiguchi <nao.horiguchi@gmail.com>,
+	Oscar Salvador <osalvador@suse.de>,
+	Shuai Xue <xueshuai@linux.alibaba.com>,
+	Zi Yan <ziy@nvidia.com>,
+	Andrew Morton <akpm@linux-foundation.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.16 425/457] ASoC: cs35l56: Update Firmware Addresses for CS35L63 for production silicon
+Subject: [PATCH 5.15 618/644] mm/memory-failure: fix infinite UCE for VM_PFNMAP pfn
 Date: Tue, 26 Aug 2025 13:11:49 +0200
-Message-ID: <20250826110947.793272841@linuxfoundation.org>
+Message-ID: <20250826111001.869802737@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250826110937.289866482@linuxfoundation.org>
-References: <20250826110937.289866482@linuxfoundation.org>
+In-Reply-To: <20250826110946.507083938@linuxfoundation.org>
+References: <20250826110946.507083938@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,48 +70,69 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.16-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Stefan Binding <sbinding@opensource.cirrus.com>
+From: Jinjiang Tu <tujinjiang@huawei.com>
 
-[ Upstream commit f135fb24ef29335b94921077588cae445bc7f099 ]
+[ Upstream commit 2e6053fea379806269c4f7f5e36b523c9c0fb35c ]
 
-Production silicon for CS36L63 has some small differences compared to
-pre-production silicon. Update firmware addresses, which are different.
+When memory_failure() is called for a already hwpoisoned pfn,
+kill_accessing_process() will be called to kill current task.  However, if
+the vma of the accessing vaddr is VM_PFNMAP, walk_page_range() will skip
+the vma in walk_page_test() and return 0.
 
-No product was ever released with pre-production silicon so there is no
-need for the driver to include support for it.
+Before commit aaf99ac2ceb7 ("mm/hwpoison: do not send SIGBUS to processes
+with recovered clean pages"), kill_accessing_process() will return EFAULT.
+For x86, the current task will be killed in kill_me_maybe().
 
-Fixes: 978858791ced ("ASoC: cs35l56: Add initial support for CS35L63 for I2C and SoundWire")
+However, after this commit, kill_accessing_process() simplies return 0,
+that means UCE is handled properly, but it doesn't actually.  In such
+case, the user task will trigger UCE infinitely.
 
-Signed-off-by: Stefan Binding <sbinding@opensource.cirrus.com>
-Link: https://patch.msgid.link/20250820142209.127575-2-sbinding@opensource.cirrus.com
-Signed-off-by: Mark Brown <broonie@kernel.org>
+To fix it, add .test_walk callback for hwpoison_walk_ops to scan all vmas.
+
+Link: https://lkml.kernel.org/r/20250815073209.1984582-1-tujinjiang@huawei.com
+Fixes: aaf99ac2ceb7 ("mm/hwpoison: do not send SIGBUS to processes with recovered clean pages")
+Signed-off-by: Jinjiang Tu <tujinjiang@huawei.com>
+Acked-by: David Hildenbrand <david@redhat.com>
+Acked-by: Miaohe Lin <linmiaohe@huawei.com>
+Reviewed-by: Jane Chu <jane.chu@oracle.com>
+Cc: Kefeng Wang <wangkefeng.wang@huawei.com>
+Cc: Naoya Horiguchi <nao.horiguchi@gmail.com>
+Cc: Oscar Salvador <osalvador@suse.de>
+Cc: Shuai Xue <xueshuai@linux.alibaba.com>
+Cc: Zi Yan <ziy@nvidia.com>
+Cc: <stable@vger.kernel.org>
+Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
+[ Adjust context ]
 Signed-off-by: Sasha Levin <sashal@kernel.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- include/sound/cs35l56.h | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ mm/memory-failure.c |    8 ++++++++
+ 1 file changed, 8 insertions(+)
 
-diff --git a/include/sound/cs35l56.h b/include/sound/cs35l56.h
-index e17c4cadd04d..f44aabde805e 100644
---- a/include/sound/cs35l56.h
-+++ b/include/sound/cs35l56.h
-@@ -107,8 +107,8 @@
- #define CS35L56_DSP1_PMEM_5114				0x3804FE8
+--- a/mm/memory-failure.c
++++ b/mm/memory-failure.c
+@@ -674,9 +674,17 @@ static int hwpoison_hugetlb_range(pte_t
+ #define hwpoison_hugetlb_range	NULL
+ #endif
  
- #define CS35L63_DSP1_FW_VER				CS35L56_DSP1_FW_VER
--#define CS35L63_DSP1_HALO_STATE				0x280396C
--#define CS35L63_DSP1_PM_CUR_STATE			0x28042C8
-+#define CS35L63_DSP1_HALO_STATE				0x2803C04
-+#define CS35L63_DSP1_PM_CUR_STATE			0x2804518
- #define CS35L63_PROTECTION_STATUS			0x340009C
- #define CS35L63_TRANSDUCER_ACTUAL_PS			0x34000F4
- #define CS35L63_MAIN_RENDER_USER_MUTE			0x3400020
--- 
-2.50.1
-
++static int hwpoison_test_walk(unsigned long start, unsigned long end,
++			     struct mm_walk *walk)
++{
++	/* We also want to consider pages mapped into VM_PFNMAP. */
++	return 0;
++}
++
+ static struct mm_walk_ops hwp_walk_ops = {
+ 	.pmd_entry = hwpoison_pte_range,
+ 	.hugetlb_entry = hwpoison_hugetlb_range,
++	.test_walk = hwpoison_test_walk,
+ };
+ 
+ /*
 
 
 
