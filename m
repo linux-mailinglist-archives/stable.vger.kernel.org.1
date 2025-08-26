@@ -1,56 +1,55 @@
-Return-Path: <stable+bounces-173871-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-174354-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 88B2FB36031
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 14:58:10 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id C6114B3630D
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 15:25:40 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 9E20F1BA6BA6
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 12:55:57 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id C620A2A2B7A
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 13:17:48 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4E1811F09A8;
-	Tue, 26 Aug 2025 12:54:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2DAE1259CB2;
+	Tue, 26 Aug 2025 13:16:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="CGYfMatp"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="WUp9AtFY"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 04F801EB5D6;
-	Tue, 26 Aug 2025 12:54:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DDB86221704;
+	Tue, 26 Aug 2025 13:16:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756212886; cv=none; b=PjHpTtO/e8m/LPQBEQeOnssFUrHvPy0r0MS7ytfEH029tTXtBMCEnzz4OTWsAiOpZ/yhT84c/Q38+ErM3/d6mWBDgG2oqpEi00qW+vLF1ZZA+XeD0qIUy8Cs5is+kYaj/Y2nIyd4xQFWWxEHv5o2hMwwHpx6+O/ict8/bXEVTHY=
+	t=1756214169; cv=none; b=QULP2M8ZLjAYlXu+ui3gUeFHz1vsTdZ9Mn/6d9wt+6aOuWh6+h/hhvQAMFP8PV+YFzT61F8Lt4I3gYsXk3V7bYNi6zMzPv/vVkfEbR3Wb885ivB+6hAk5p+Hcq96iua+nHYBsfAErw8WFvMsG22AwM81FAxjZp6YTQEI9OnpZU4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756212886; c=relaxed/simple;
-	bh=x0pm+AlQQoFfLzmdcmUOKFoauDlgyELzSODPp6EVCQw=;
+	s=arc-20240116; t=1756214169; c=relaxed/simple;
+	bh=dsFub4ro80sA/nUBVOT4/EdOY/jU2Qe/dULBz2DhCgw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=ZpkNv3XmbulXkDGYtTYtaHRMInTKU2wQ4cYikzxT42MnqkQzHiljiLziXRp3bYeL2r5MhR7nCWFcDhiBa3a01AamgaAZWVexpmtTiIrqtyPb0MQwh4BuU4h3yNa1D8KfrzgnTEnThSOfq2iPA5y8odZwMaf5f43yjTPrNiQFlXE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=CGYfMatp; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8D832C4CEF1;
-	Tue, 26 Aug 2025 12:54:45 +0000 (UTC)
+	 MIME-Version; b=kXRiHbbYz6VxzdSWgTS7cb+OtBplWclcKU5dA60wxekUKSVJXzfPr6Hfeql7lauWMOLHjczzj/UGcIMLIxXa67pvmEjqkQfMOF+AXAx4/COfnTYJFHXr/y5p/ScI080NzWn+7JOxqMz4cUss2ImlF4PklGhIBawpG6BMGr2vOGo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=WUp9AtFY; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 51363C4CEF1;
+	Tue, 26 Aug 2025 13:16:08 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1756212885;
-	bh=x0pm+AlQQoFfLzmdcmUOKFoauDlgyELzSODPp6EVCQw=;
+	s=korg; t=1756214168;
+	bh=dsFub4ro80sA/nUBVOT4/EdOY/jU2Qe/dULBz2DhCgw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=CGYfMatpoH2XQorqZikfE0PP3fqOAVtTel6cLdUibgzzu2nncHKPG1DWxHkITotwv
-	 yYDh7mw4FuXFtwIJHnOa8CMMIjmktbsgQsUHLAnv5mWwoR9FXbt0xOw3pvfZn8PdLY
-	 YWPvoRMMsSr/Nz/Ysfz9+oLZ7bGfg0YefkR+PyTk=
+	b=WUp9AtFYy/6FdIwc62h6TcWmCV8N0l2clYIO9uAarQg5uF90UVFhAMFdHu+kqtgJw
+	 s9lxzfB2gCXtQ8JOd4hbNqlxt5uR87G+GhEnNMy1ugRt5rr5yx0WmxrSkRBue37MJQ
+	 6yXBNrFhSRnnLLVYUxj95A08QrH2hm1bEj0N5LYI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Zijun Hu <zijun.hu@oss.qualcomm.com>,
-	Luiz Augusto von Dentz <luiz.von.dentz@intel.com>,
+	Sean Christopherson <seanjc@google.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 140/587] Bluetooth: hci_sock: Reset cookie to zero in hci_sock_free_cookie()
+Subject: [PATCH 6.1 036/482] KVM: VMX: Handle forced exit due to preemption timer in fastpath
 Date: Tue, 26 Aug 2025 13:04:49 +0200
-Message-ID: <20250826110956.513824881@linuxfoundation.org>
+Message-ID: <20250826110931.700166275@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250826110952.942403671@linuxfoundation.org>
-References: <20250826110952.942403671@linuxfoundation.org>
+In-Reply-To: <20250826110930.769259449@linuxfoundation.org>
+References: <20250826110930.769259449@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,46 +61,60 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Zijun Hu <zijun.hu@oss.qualcomm.com>
+From: Sean Christopherson <seanjc@google.com>
 
-[ Upstream commit 4d7936e8a5b1fa803f4a631d2da4a80fa4f0f37f ]
+[ Upstream commit 11776aa0cfa7d007ad1799b1553bdcbd830e5010 ]
 
-Reset cookie value to 0 instead of 0xffffffff in hci_sock_free_cookie()
-since:
-0         :  means cookie has not been assigned yet
-0xffffffff:  means cookie assignment failure
+Handle VMX preemption timer VM-Exits due to KVM forcing an exit in the
+exit fastpath, i.e. avoid calling back into handle_preemption_timer() for
+the same exit.  There is no work to be done for forced exits, as the name
+suggests the goal is purely to get control back in KVM.
 
-Also fix generating cookie failure with usage shown below:
-hci_sock_gen_cookie(sk)   // generate cookie
-hci_sock_free_cookie(sk)  // free cookie
-hci_sock_gen_cookie(sk)   // Can't generate cookie any more
+In addition to shaving a few cycles, this will allow cleanly separating
+handle_fastpath_preemption_timer() from handle_preemption_timer(), e.g.
+it's not immediately obvious why _apparently_ calling
+handle_fastpath_preemption_timer() twice on a "slow" exit is necessary:
+the "slow" call is necessary to handle exits from L2, which are excluded
+from the fastpath by vmx_vcpu_run().
 
-Signed-off-by: Zijun Hu <zijun.hu@oss.qualcomm.com>
-Signed-off-by: Luiz Augusto von Dentz <luiz.von.dentz@intel.com>
+Link: https://lore.kernel.org/r/20240110012705.506918-4-seanjc@google.com
+Signed-off-by: Sean Christopherson <seanjc@google.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/bluetooth/hci_sock.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ arch/x86/kvm/vmx/vmx.c | 13 ++++++++-----
+ 1 file changed, 8 insertions(+), 5 deletions(-)
 
-diff --git a/net/bluetooth/hci_sock.c b/net/bluetooth/hci_sock.c
-index 69c2ba1e843e..d2613bd3e6db 100644
---- a/net/bluetooth/hci_sock.c
-+++ b/net/bluetooth/hci_sock.c
-@@ -118,7 +118,7 @@ static void hci_sock_free_cookie(struct sock *sk)
- 	int id = hci_pi(sk)->cookie;
+diff --git a/arch/x86/kvm/vmx/vmx.c b/arch/x86/kvm/vmx/vmx.c
+index 96bbccd9477c..c804ad001a79 100644
+--- a/arch/x86/kvm/vmx/vmx.c
++++ b/arch/x86/kvm/vmx/vmx.c
+@@ -5941,12 +5941,15 @@ static fastpath_t handle_fastpath_preemption_timer(struct kvm_vcpu *vcpu)
+ 	if (unlikely(vmx->loaded_vmcs->hv_timer_soft_disabled))
+ 		return EXIT_FASTPATH_REENTER_GUEST;
  
- 	if (id) {
--		hci_pi(sk)->cookie = 0xffffffff;
-+		hci_pi(sk)->cookie = 0;
- 		ida_free(&sock_cookie_ida, id);
- 	}
+-	if (!vmx->req_immediate_exit) {
+-		kvm_lapic_expired_hv_timer(vcpu);
+-		return EXIT_FASTPATH_REENTER_GUEST;
+-	}
++	/*
++	 * If the timer expired because KVM used it to force an immediate exit,
++	 * then mission accomplished.
++	 */
++	if (vmx->req_immediate_exit)
++		return EXIT_FASTPATH_EXIT_HANDLED;
+ 
+-	return EXIT_FASTPATH_NONE;
++	kvm_lapic_expired_hv_timer(vcpu);
++	return EXIT_FASTPATH_REENTER_GUEST;
  }
+ 
+ static int handle_preemption_timer(struct kvm_vcpu *vcpu)
 -- 
-2.39.5
+2.50.1
 
 
 
