@@ -1,58 +1,57 @@
-Return-Path: <stable+bounces-175909-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-173334-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 108CBB36B2C
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 16:43:45 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6F1C7B35D08
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 13:40:36 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 18CE21C41F07
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 14:27:37 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 27BA8188545A
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 11:35:22 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 164FB34DCDA;
-	Tue, 26 Aug 2025 14:24:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id BACD929D280;
+	Tue, 26 Aug 2025 11:32:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="gES7wj5D"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Pr3xpSzO"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C2F22341AA1;
-	Tue, 26 Aug 2025 14:24:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7961923D7FA;
+	Tue, 26 Aug 2025 11:32:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756218286; cv=none; b=f5XGqab+QFBraRJZJIuTEM3AwZEe4MWb408m8izGre9MUUdkpR0eH3CwTChn/UdVHt7lgJXZuVKI24G4N1cBFiBSLnETdvhcdYwe1rKHAuY0WXTnAD+MIT+kZmsH3vboNta5v9bPQod//5YtYuWVH9/0pVxG/233cu4+txbd6d0=
+	t=1756207977; cv=none; b=ewlqMj6N2Fq8fDb6HkHTsObDixc0nknGdCF0wb+dsJ1QASvrrAE3DSWtO4yRzUdUQtBcNm++/a6tWue2s5iTL3m3HjyemiaFRieEJB2dZSQn78CohJlOldPWXAoT97N7RYV++kVVxGFZY27mjSJnYe0uundFlGAg90+L3hJlAfw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756218286; c=relaxed/simple;
-	bh=ygYvH+ixK7d5pHIMs1JwqpPlt/5uqHdfzZ3a3P9kxWE=;
+	s=arc-20240116; t=1756207977; c=relaxed/simple;
+	bh=lpKXFFWp+C0Tu33nCx4E1UK2wxZ1JHyv5Cpxl2/RDb0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=sPbaoqss/lSehUtf5kGVdunK+gilcPB/hNf4hsbIG1plrOLM2TDBQTTssQ640eOFpML1At8wUY0CeCDO+FlX+7yAetwrLkOvV8yE/yEUW7z96Fk8iJJJ1bMBUrr85hRdkPhhEcLyFuQQfRiARhHskiBU3YD4x5Fsrmtx+OS57cs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=gES7wj5D; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 34507C4CEF1;
-	Tue, 26 Aug 2025 14:24:46 +0000 (UTC)
+	 MIME-Version; b=KVGdAuxcYGOm2+ERa4gKxZLXdjKH5aU8tnHapmJeQCdXjJnBP4VockFJ2xswyu3nprBIfQ5jt/C+fdBu3GBdvDO3ZZ4YvHR9bkWGdcgCWQ9LRqKL9SriiyyA22WIL+Vkf5FuQheMbC7NP1Vvfq0LnsWiTxqFJVouWYZh8PIbzfU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Pr3xpSzO; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B0770C4CEF1;
+	Tue, 26 Aug 2025 11:32:56 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1756218286;
-	bh=ygYvH+ixK7d5pHIMs1JwqpPlt/5uqHdfzZ3a3P9kxWE=;
+	s=korg; t=1756207977;
+	bh=lpKXFFWp+C0Tu33nCx4E1UK2wxZ1JHyv5Cpxl2/RDb0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=gES7wj5DuTfn+TFxkIs598BiNmyuNZGWmRCcWVHRqrFeZ89B6PPlAJWG4TFw6PZ98
-	 aKKHWkLZsGJ2/s8j8kdYwEckBTCG2byGOodIlXVXKv3bdsnRXmhRvEU4qDxmyz8sSd
-	 286WHnd4e6e66VhecOHyAuXRkj7a7zCcIrfiNhvg=
+	b=Pr3xpSzOaOELBH4Y1/VWABUlvrjx/eEGAgkBdpB23DiIrIgVKaBye0iVga3W5d5zY
+	 ehgeGLqvke9rT74RXk4e7Fd5vB/o4OXkTj3PzUPK0fRS1T8bNKoOcUM1H03NBDYCcZ
+	 aMw6jC7NXVbUY6e2+pvve5wQSO1FZHTqxmrry0Us=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	=?UTF-8?q?Andr=C3=A9=20Draszik?= <andre.draszik@linaro.org>,
-	Bart Van Assche <bvanassche@acm.org>,
-	Peter Griffin <peter.griffin@linaro.org>,
-	"Martin K. Petersen" <martin.petersen@oracle.com>,
+	Baihan Li <libaihan@huawei.com>,
+	Yongbang Shi <shiyongbang@huawei.com>,
+	Dmitry Baryshkov <dmitry.baryshkov@oss.qualcomm.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 464/523] scsi: ufs: exynos: Fix programming of HCI_UTRL_NEXUS_TYPE
-Date: Tue, 26 Aug 2025 13:11:14 +0200
-Message-ID: <20250826110935.890760758@linuxfoundation.org>
+Subject: [PATCH 6.16 391/457] drm/hisilicon/hibmc: fix rare monitors cannot display problem
+Date: Tue, 26 Aug 2025 13:11:15 +0200
+Message-ID: <20250826110946.958384548@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250826110924.562212281@linuxfoundation.org>
-References: <20250826110924.562212281@linuxfoundation.org>
+In-Reply-To: <20250826110937.289866482@linuxfoundation.org>
+References: <20250826110937.289866482@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,63 +61,66 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+6.16-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: André Draszik <andre.draszik@linaro.org>
+From: Baihan Li <libaihan@huawei.com>
 
-[ Upstream commit 01aad16c2257ab8ff33b152b972c9f2e1af47912 ]
+[ Upstream commit 9f98b429ba67d430b873e06bcfb90afa22888978 ]
 
-On Google gs101, the number of UTP transfer request slots (nutrs) is 32,
-and in this case the driver ends up programming the UTRL_NEXUS_TYPE
-incorrectly as 0.
+In some case, the dp link training success at 8.1Gbps, but the sink's
+maximum supported rate is less than 8.1G. So change the default 8.1Gbps
+link rate to the rate that reads from devices' capabilities.
 
-This is because the left hand side of the shift is 1, which is of type
-int, i.e. 31 bits wide. Shifting by more than that width results in
-undefined behaviour.
-
-Fix this by switching to the BIT() macro, which applies correct type
-casting as required. This ensures the correct value is written to
-UTRL_NEXUS_TYPE (0xffffffff on gs101), and it also fixes a UBSAN shift
-warning:
-
-    UBSAN: shift-out-of-bounds in drivers/ufs/host/ufs-exynos.c:1113:21
-    shift exponent 32 is too large for 32-bit type 'int'
-
-For consistency, apply the same change to the nutmrs / UTMRL_NEXUS_TYPE
-write.
-
-Fixes: 55f4b1f73631 ("scsi: ufs: ufs-exynos: Add UFS host support for Exynos SoCs")
-Cc: stable@vger.kernel.org
-Signed-off-by: André Draszik <andre.draszik@linaro.org>
-Link: https://lore.kernel.org/r/20250707-ufs-exynos-shift-v1-1-1418e161ae40@linaro.org
-Reviewed-by: Bart Van Assche <bvanassche@acm.org>
-Reviewed-by: Peter Griffin <peter.griffin@linaro.org>
-Signed-off-by: Martin K. Petersen <martin.petersen@oracle.com>
-[ Adjusted path from drivers/ufs/host to drivers/scsi/ufs ]
+Fixes: 54063d86e036 ("drm/hisilicon/hibmc: add dp link moduel in hibmc drivers")
+Signed-off-by: Baihan Li <libaihan@huawei.com>
+Signed-off-by: Yongbang Shi <shiyongbang@huawei.com>
+Reviewed-by: Dmitry Baryshkov <dmitry.baryshkov@oss.qualcomm.com>
+Link: https://lore.kernel.org/r/20250813094238.3722345-6-shiyongbang@huawei.com
+Signed-off-by: Dmitry Baryshkov <dmitry.baryshkov@oss.qualcomm.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/scsi/ufs/ufs-exynos.c |    4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ drivers/gpu/drm/hisilicon/hibmc/dp/dp_link.c | 14 ++++++++++++--
+ 1 file changed, 12 insertions(+), 2 deletions(-)
 
---- a/drivers/scsi/ufs/ufs-exynos.c
-+++ b/drivers/scsi/ufs/ufs-exynos.c
-@@ -850,8 +850,8 @@ static int exynos_ufs_post_link(struct u
- 	hci_writel(ufs, 0xa, HCI_DATA_REORDER);
- 	hci_writel(ufs, PRDT_SET_SIZE(12), HCI_TXPRDT_ENTRY_SIZE);
- 	hci_writel(ufs, PRDT_SET_SIZE(12), HCI_RXPRDT_ENTRY_SIZE);
--	hci_writel(ufs, (1 << hba->nutrs) - 1, HCI_UTRL_NEXUS_TYPE);
--	hci_writel(ufs, (1 << hba->nutmrs) - 1, HCI_UTMRL_NEXUS_TYPE);
-+	hci_writel(ufs, BIT(hba->nutrs) - 1, HCI_UTRL_NEXUS_TYPE);
-+	hci_writel(ufs, BIT(hba->nutmrs) - 1, HCI_UTMRL_NEXUS_TYPE);
- 	hci_writel(ufs, 0xf, HCI_AXIDMA_RWDATA_BURST_LEN);
+diff --git a/drivers/gpu/drm/hisilicon/hibmc/dp/dp_link.c b/drivers/gpu/drm/hisilicon/hibmc/dp/dp_link.c
+index 74f7832ea53e..0726cb5b736e 100644
+--- a/drivers/gpu/drm/hisilicon/hibmc/dp/dp_link.c
++++ b/drivers/gpu/drm/hisilicon/hibmc/dp/dp_link.c
+@@ -325,6 +325,17 @@ static int hibmc_dp_link_downgrade_training_eq(struct hibmc_dp_dev *dp)
+ 	return hibmc_dp_link_reduce_rate(dp);
+ }
  
- 	if (ufs->opts & EXYNOS_UFS_OPT_SKIP_CONNECTION_ESTAB)
++static void hibmc_dp_update_caps(struct hibmc_dp_dev *dp)
++{
++	dp->link.cap.link_rate = dp->dpcd[DP_MAX_LINK_RATE];
++	if (dp->link.cap.link_rate > DP_LINK_BW_8_1 || !dp->link.cap.link_rate)
++		dp->link.cap.link_rate = DP_LINK_BW_8_1;
++
++	dp->link.cap.lanes = dp->dpcd[DP_MAX_LANE_COUNT] & DP_MAX_LANE_COUNT_MASK;
++	if (dp->link.cap.lanes > HIBMC_DP_LANE_NUM_MAX)
++		dp->link.cap.lanes = HIBMC_DP_LANE_NUM_MAX;
++}
++
+ int hibmc_dp_link_training(struct hibmc_dp_dev *dp)
+ {
+ 	struct hibmc_dp_link *link = &dp->link;
+@@ -334,8 +345,7 @@ int hibmc_dp_link_training(struct hibmc_dp_dev *dp)
+ 	if (ret)
+ 		drm_err(dp->dev, "dp aux read dpcd failed, ret: %d\n", ret);
+ 
+-	dp->link.cap.link_rate = dp->dpcd[DP_MAX_LINK_RATE];
+-	dp->link.cap.lanes = 0x2;
++	hibmc_dp_update_caps(dp);
+ 
+ 	ret = hibmc_dp_get_serdes_rate_cfg(dp);
+ 	if (ret < 0)
+-- 
+2.50.1
+
 
 
 
