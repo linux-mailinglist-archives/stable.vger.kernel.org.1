@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-174445-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-173963-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 92423B36329
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 15:27:15 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 70104B3609F
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 15:02:23 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id CA7DF189A6A4
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 13:22:32 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id E54861BA6F1B
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 12:59:12 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B6C451ADFFE;
-	Tue, 26 Aug 2025 13:20:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id EA8C71F9F73;
+	Tue, 26 Aug 2025 12:58:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="P/sc3A9j"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ORgIxemH"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 742F21A5B8D;
-	Tue, 26 Aug 2025 13:20:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A5AFA1ACEDE;
+	Tue, 26 Aug 2025 12:58:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756214411; cv=none; b=d4aP9QfxaaezA1c8umNMBk//tbVAWQ56u80jclB7V9/fpHJMd3FbU2OICd9AKoUp0DpMLckh4UEZh7+iN0lAIlCXvg7U0CFTR2tEeGHPaTF2EZgGHZOBWVubHInUKB/clcmPFRcQAhIG5MeIRkHfdCdpIUXz1SDXV65/8YplFtc=
+	t=1756213127; cv=none; b=emLfWjQPuaUrh+/z+HWAsvWYdron4xVg+J3Yo8jgh4m8P1cOaZMjpr8A9wHOHPK+x1N0E6aE+Y/tu2WY1xJ4PCbQhPiu8vGnRoIa43xRSvNcWXPo2hcXO9HRIMQHCpAZbhECiAfRHVYJLVtravqBazjq3RSwjC+Mo8pbCKbaHcA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756214411; c=relaxed/simple;
-	bh=5/+EGFRkxau38QTlJCpJxYSrJMAoNl8GJZFtb+JfVPE=;
+	s=arc-20240116; t=1756213127; c=relaxed/simple;
+	bh=yzkKohcoCPRZshpGIjWpQMYtN1NdHvUUJ6+oQ+GVDqA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=VVbN/X7fvMxdS071jQ3znPdcewcpDqfMNVbtRj7E86GEziNX05E673p/MSyBrIcJVnHhVQdMZUphJ99ToKSKl1Zx8gStXooub6oP3oNi9GufQgUnUQxS/3XWLXvojPnorztOXqnYOO75mf0HbusDf4diQxULLu6OhyJAESZ+oUw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=P/sc3A9j; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id CC75EC4CEF1;
-	Tue, 26 Aug 2025 13:20:10 +0000 (UTC)
+	 MIME-Version; b=pQoFnq+WhWb2xaiIddRLByK7NG39w/njcOF6W7Ghhzr8qtgxfbGeMdvP3QKyTfcAJ+8m6lh7C/G71xdowOCmW5A/ZZ+Iw3aLAGiGz6PBaugbTL6vZVmUBghi839J6oAuomvo2D1Aj6BlvHbEvvYKfsnWE0iwCvsg09/X0aV5iUs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ORgIxemH; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C519AC4CEF1;
+	Tue, 26 Aug 2025 12:58:46 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1756214411;
-	bh=5/+EGFRkxau38QTlJCpJxYSrJMAoNl8GJZFtb+JfVPE=;
+	s=korg; t=1756213127;
+	bh=yzkKohcoCPRZshpGIjWpQMYtN1NdHvUUJ6+oQ+GVDqA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=P/sc3A9j4viTM1bZ/2R+ozCOJRfIH1+E+pqsNrLEd/Ws8prg8edtisPl5HM4OWxjO
-	 av62z5bOH09OW4kOgpE8A3ZCXshXILkOc084NquUjvFqOLuQOb2dDemKlXhQQT4JNU
-	 LVUevHNikUGYdwU38L8aAMaE4TJH0uKb7+qvszKM=
+	b=ORgIxemHA1VTA0sh/K/rts3bnjSrofnYxfFaIOE/zM/f8I/LBry+WxW7QlgSz2oYj
+	 bHWOMN2LcG3v4MAM5eVlkgcID/Bm9nHx0nbSzulfutezZM1af45aGwCXN+EqnPwdui
+	 9Z936eLW29zTTSBbkUMOU85HzIIs+SDLER/BWE+E=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Alok Tiwari <alok.a.tiwari@oracle.com>,
-	Simon Horman <horms@kernel.org>,
-	Jakub Kicinski <kuba@kernel.org>,
+	Shiji Yang <yangshiji66@outlook.com>,
+	Thomas Bogendoerfer <tsbogend@alpha.franken.de>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 128/482] net: thunderx: Fix format-truncation warning in bgx_acpi_match_id()
+Subject: [PATCH 6.6 232/587] MIPS: vpe-mt: add missing prototypes for vpe_{alloc,start,stop,free}
 Date: Tue, 26 Aug 2025 13:06:21 +0200
-Message-ID: <20250826110933.984203124@linuxfoundation.org>
+Message-ID: <20250826110958.836591761@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250826110930.769259449@linuxfoundation.org>
-References: <20250826110930.769259449@linuxfoundation.org>
+In-Reply-To: <20250826110952.942403671@linuxfoundation.org>
+References: <20250826110952.942403671@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,68 +60,57 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Alok Tiwari <alok.a.tiwari@oracle.com>
+From: Shiji Yang <yangshiji66@outlook.com>
 
-[ Upstream commit 53d20606c40678d425cc03f0978c614dca51f25e ]
+[ Upstream commit 844615dd0f2d95c018ec66b943e08af22b62aff3 ]
 
-The buffer bgx_sel used in snprintf() was too small to safely hold
-the formatted string "BGX%d" for all valid bgx_id values. This caused
-a -Wformat-truncation warning with `Werror` enabled during build.
+These functions are exported but their prototypes are not defined.
+This patch adds the missing function prototypes to fix the following
+compilation warnings:
 
-Increase the buffer size from 5 to 7 and use `sizeof(bgx_sel)` in
-snprintf() to ensure safety and suppress the warning.
+arch/mips/kernel/vpe-mt.c:180:7: error: no previous prototype for 'vpe_alloc' [-Werror=missing-prototypes]
+  180 | void *vpe_alloc(void)
+      |       ^~~~~~~~~
+arch/mips/kernel/vpe-mt.c:198:5: error: no previous prototype for 'vpe_start' [-Werror=missing-prototypes]
+  198 | int vpe_start(void *vpe, unsigned long start)
+      |     ^~~~~~~~~
+arch/mips/kernel/vpe-mt.c:208:5: error: no previous prototype for 'vpe_stop' [-Werror=missing-prototypes]
+  208 | int vpe_stop(void *vpe)
+      |     ^~~~~~~~
+arch/mips/kernel/vpe-mt.c:229:5: error: no previous prototype for 'vpe_free' [-Werror=missing-prototypes]
+  229 | int vpe_free(void *vpe)
+      |     ^~~~~~~~
 
-Build warning:
-  CC      drivers/net/ethernet/cavium/thunder/thunder_bgx.o
-  drivers/net/ethernet/cavium/thunder/thunder_bgx.c: In function
-‘bgx_acpi_match_id’:
-  drivers/net/ethernet/cavium/thunder/thunder_bgx.c:1434:27: error: ‘%d’
-directive output may be truncated writing between 1 and 3 bytes into a
-region of size 2 [-Werror=format-truncation=]
-    snprintf(bgx_sel, 5, "BGX%d", bgx->bgx_id);
-                             ^~
-  drivers/net/ethernet/cavium/thunder/thunder_bgx.c:1434:23: note:
-directive argument in the range [0, 255]
-    snprintf(bgx_sel, 5, "BGX%d", bgx->bgx_id);
-                         ^~~~~~~
-  drivers/net/ethernet/cavium/thunder/thunder_bgx.c:1434:2: note:
-‘snprintf’ output between 5 and 7 bytes into a destination of size 5
-    snprintf(bgx_sel, 5, "BGX%d", bgx->bgx_id);
-
-compiler warning due to insufficient snprintf buffer size.
-
-Signed-off-by: Alok Tiwari <alok.a.tiwari@oracle.com>
-Reviewed-by: Simon Horman <horms@kernel.org>
-Link: https://patch.msgid.link/20250711140532.2463602-1-alok.a.tiwari@oracle.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Signed-off-by: Shiji Yang <yangshiji66@outlook.com>
+Signed-off-by: Thomas Bogendoerfer <tsbogend@alpha.franken.de>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/ethernet/cavium/thunder/thunder_bgx.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ arch/mips/include/asm/vpe.h | 8 ++++++++
+ 1 file changed, 8 insertions(+)
 
-diff --git a/drivers/net/ethernet/cavium/thunder/thunder_bgx.c b/drivers/net/ethernet/cavium/thunder/thunder_bgx.c
-index 7eb2ddbe9bad..8c955eefc7e4 100644
---- a/drivers/net/ethernet/cavium/thunder/thunder_bgx.c
-+++ b/drivers/net/ethernet/cavium/thunder/thunder_bgx.c
-@@ -1428,9 +1428,9 @@ static acpi_status bgx_acpi_match_id(acpi_handle handle, u32 lvl,
- {
- 	struct acpi_buffer string = { ACPI_ALLOCATE_BUFFER, NULL };
- 	struct bgx *bgx = context;
--	char bgx_sel[5];
-+	char bgx_sel[7];
+diff --git a/arch/mips/include/asm/vpe.h b/arch/mips/include/asm/vpe.h
+index 61fd4d0aeda4..c0769dc4b853 100644
+--- a/arch/mips/include/asm/vpe.h
++++ b/arch/mips/include/asm/vpe.h
+@@ -119,4 +119,12 @@ void cleanup_tc(struct tc *tc);
  
--	snprintf(bgx_sel, 5, "BGX%d", bgx->bgx_id);
-+	snprintf(bgx_sel, sizeof(bgx_sel), "BGX%d", bgx->bgx_id);
- 	if (ACPI_FAILURE(acpi_get_name(handle, ACPI_SINGLE_NAME, &string))) {
- 		pr_warn("Invalid link device\n");
- 		return AE_OK;
+ int __init vpe_module_init(void);
+ void __exit vpe_module_exit(void);
++
++#ifdef CONFIG_MIPS_VPE_LOADER_MT
++void *vpe_alloc(void);
++int vpe_start(void *vpe, unsigned long start);
++int vpe_stop(void *vpe);
++int vpe_free(void *vpe);
++#endif /* CONFIG_MIPS_VPE_LOADER_MT */
++
+ #endif /* _ASM_VPE_H */
 -- 
 2.39.5
 
