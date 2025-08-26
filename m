@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-175264-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-173556-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id C119CB36698
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 15:58:33 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 34304B35E0B
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 13:51:16 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id A7168B60B9A
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 13:56:06 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id BDA20463ADB
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 11:42:38 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6CE6434A33C;
-	Tue, 26 Aug 2025 13:56:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1FF8D1FECAB;
+	Tue, 26 Aug 2025 11:42:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="tfhFMsTL"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="rPhH4FpS"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 29B2D343218;
-	Tue, 26 Aug 2025 13:56:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D3E9118DF9D;
+	Tue, 26 Aug 2025 11:42:35 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756216579; cv=none; b=KdQqcRrDZ6fuISyUDpzW71qhQZ8TzlVGoCtzqNGh0HYEbLVLZTQY6ktlQcuPQTCPwmKKlyA2BQ0Ep8/09ZI+dsV+mky5u+FvDhwq3Yu4QUUf/X/Lf4kFzKFpyzzIwJ76lfZdpa1uXV9nufN1P+grE3Kfu19qbwL2BLqZXxlXlfY=
+	t=1756208555; cv=none; b=cIRR3p01fHlfi47xb08SypAFl7L/l04ANsCiIWCJy5FUJv8tXbscu9JNsV/7xYG4F4U4mCdO6kyBPCb/EQ+Y/ug1j0G7a127OdrcaCH6iTXSZjJ3c6NRO6aeewYJ2fkphf/H3tRJWj97/QL3pGOSiarBERqEr2ElLyKeOZpd2MU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756216579; c=relaxed/simple;
-	bh=90kzF5uza1bYafg4IYyzGzUcuWeqDKrNLpI+h7eWgXM=;
+	s=arc-20240116; t=1756208555; c=relaxed/simple;
+	bh=ld61A2SoNqmX+xGjsbmn3iJ8hz6AHEGCNe/cqaiGaG0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=pR6hKj5vUsK6pBxFT9ocAh6mgjfXTQlY2XsiRRyRMa90LqGjeG9sakm157aqCaYUOvkNg08s4Sf234mQCVjwTWJzUG6TsaUb/g8XHvymiOIGS1+U+qXi3h6ut7gcvoGzEsiZuCiSpdk6Mqw3OUIP7QZGTdTX6qUmGp6rXAss6W4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=tfhFMsTL; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6781DC4CEF1;
-	Tue, 26 Aug 2025 13:56:17 +0000 (UTC)
+	 MIME-Version; b=MF0TnCUji2Xn9yLY8MwDyKCJ+SmIe0xAYWmK2lTzWebUm5RjqSARJ9T08ixujCrW8vXc//g92DPpoEV+4Jhiy9XTSjyX6JSEsxZOL/v1Vp1ZTeG3Fm+XusWAqDAcIhvXetdIZb5ysju3OZN7g33q6I7dENxSdS++SQ9QkyguOyk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=rPhH4FpS; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 637D7C4CEF1;
+	Tue, 26 Aug 2025 11:42:35 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1756216577;
-	bh=90kzF5uza1bYafg4IYyzGzUcuWeqDKrNLpI+h7eWgXM=;
+	s=korg; t=1756208555;
+	bh=ld61A2SoNqmX+xGjsbmn3iJ8hz6AHEGCNe/cqaiGaG0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=tfhFMsTLu5S42n9OQxo+TFuN16p/lMI+IAQcycIRAYpZM9bRYzjAQwIt5uP/aUAje
-	 +vIvHpSsO60yV9y5YloFV7/ESZmikkNRMlkz473peTdH5PFN4NrwJwq9+1FsSdGxJO
-	 LbafcNScCCuDrOvIBorMUweEHgxocL+g/zc50mNw=
+	b=rPhH4FpSsYc6AgYNlmBVDU+nqMU2El0xoJTeJKNdb22m+LTWn7PM7XdT/sPnRKkW4
+	 rgIOfgVAUQGLUXjvRmcvFr0WUXsfoJV95KbKI1QsC16ShA38z1aVADWlvMsPelsjWv
+	 wvZuABF3yG63Af1moGfrjfrNjsF2406MT9nUT1dA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Alexander Wilhelm <alexander.wilhelm@westermo.com>,
-	Manivannan Sadhasivam <mani@kernel.org>,
-	Jeff Hugo <jeff.hugo@oss.qualcomm.com>,
-	Krishna Chaitanya Chundru <krishna.chundru@oss.qualcomm.com>
-Subject: [PATCH 5.15 462/644] bus: mhi: host: Fix endianness of BHI vector table
-Date: Tue, 26 Aug 2025 13:09:13 +0200
-Message-ID: <20250826110957.927329921@linuxfoundation.org>
+	Tom Lendacky <thomas.lendacky@amd.com>,
+	"Borislav Petkov (AMD)" <bp@alien8.de>,
+	Joerg Roedel <joerg.roedel@amd.com>,
+	stable@kernel.org
+Subject: [PATCH 6.12 139/322] x86/sev: Ensure SVSM reserved fields in a page validation entry are initialized to zero
+Date: Tue, 26 Aug 2025 13:09:14 +0200
+Message-ID: <20250826110919.236991859@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250826110946.507083938@linuxfoundation.org>
-References: <20250826110946.507083938@linuxfoundation.org>
+In-Reply-To: <20250826110915.169062587@linuxfoundation.org>
+References: <20250826110915.169062587@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,84 +63,56 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Alexander Wilhelm <alexander.wilhelm@westermo.com>
+From: Tom Lendacky <thomas.lendacky@amd.com>
 
-commit f471578e8b1a90623674433a01a8845110bc76ce upstream.
+commit 3ee9cebd0a5e7ea47eb35cec95eaa1a866af982d upstream.
 
-On big endian platform like PowerPC, the MHI bus (which is little endian)
-does not start properly. The following example shows the error messages by
-using QCN9274 WLAN device with ath12k driver:
+In order to support future versions of the SVSM_CORE_PVALIDATE call, all
+reserved fields within a PVALIDATE entry must be set to zero as an SVSM should
+be ensuring all reserved fields are zero in order to support future usage of
+reserved areas based on the protocol version.
 
-    ath12k_pci 0001:01:00.0: BAR 0: assigned [mem 0xc00000000-0xc001fffff 64bit]
-    ath12k_pci 0001:01:00.0: MSI vectors: 1
-    ath12k_pci 0001:01:00.0: Hardware name: qcn9274 hw2.0
-    ath12k_pci 0001:01:00.0: failed to set mhi state: POWER_ON(2)
-    ath12k_pci 0001:01:00.0: failed to start mhi: -110
-    ath12k_pci 0001:01:00.0: failed to power up :-110
-    ath12k_pci 0001:01:00.0: failed to create soc core: -110
-    ath12k_pci 0001:01:00.0: failed to init core: -110
-    ath12k_pci: probe of 0001:01:00.0 failed with error -110
-
-The issue seems to be with the incorrect DMA address/size used for
-transferring the firmware image over BHI. So fix it by converting the DMA
-address and size of the BHI vector table to little endian format before
-sending them to the device.
-
-Fixes: 6cd330ae76ff ("bus: mhi: core: Add support for ringing channel/event ring doorbells")
-Signed-off-by: Alexander Wilhelm <alexander.wilhelm@westermo.com>
-[mani: added stable tag and reworded commit message]
-Signed-off-by: Manivannan Sadhasivam <mani@kernel.org>
-Reviewed-by: Jeff Hugo <jeff.hugo@oss.qualcomm.com>
-Reviewed-by: Krishna Chaitanya Chundru <krishna.chundru@oss.qualcomm.com>
-Cc: stable@vger.kernel.org
-Link: https://patch.msgid.link/20250519145837.958153-1-alexander.wilhelm@westermo.com
+Fixes: fcd042e86422 ("x86/sev: Perform PVALIDATE using the SVSM when not at VMPL0")
+Signed-off-by: Tom Lendacky <thomas.lendacky@amd.com>
+Signed-off-by: Borislav Petkov (AMD) <bp@alien8.de>
+Reviewed-by: Joerg Roedel <joerg.roedel@amd.com>
+Cc: <stable@kernel.org>
+Link: https://lore.kernel.org/7cde412f8b057ea13a646fb166b1ca023f6a5031.1755098819.git.thomas.lendacky@amd.com
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/bus/mhi/host/boot.c     |    8 ++++----
- drivers/bus/mhi/host/internal.h |    4 ++--
- 2 files changed, 6 insertions(+), 6 deletions(-)
+ arch/x86/coco/sev/shared.c |    3 +++
+ 1 file changed, 3 insertions(+)
 
---- a/drivers/bus/mhi/host/boot.c
-+++ b/drivers/bus/mhi/host/boot.c
-@@ -30,8 +30,8 @@ void mhi_rddm_prepare(struct mhi_control
- 	unsigned int i;
+--- a/arch/x86/coco/sev/shared.c
++++ b/arch/x86/coco/sev/shared.c
+@@ -1285,6 +1285,7 @@ static void svsm_pval_4k_page(unsigned l
+ 	pc->entry[0].page_size = RMP_PG_SIZE_4K;
+ 	pc->entry[0].action    = validate;
+ 	pc->entry[0].ignore_cf = 0;
++	pc->entry[0].rsvd      = 0;
+ 	pc->entry[0].pfn       = paddr >> PAGE_SHIFT;
  
- 	for (i = 0; i < img_info->entries - 1; i++, mhi_buf++, bhi_vec++) {
--		bhi_vec->dma_addr = mhi_buf->dma_addr;
--		bhi_vec->size = mhi_buf->len;
-+		bhi_vec->dma_addr = cpu_to_le64(mhi_buf->dma_addr);
-+		bhi_vec->size = cpu_to_le64(mhi_buf->len);
- 	}
+ 	/* Protocol 0, Call ID 1 */
+@@ -1373,6 +1374,7 @@ static u64 svsm_build_ca_from_pfn_range(
+ 		pe->page_size = RMP_PG_SIZE_4K;
+ 		pe->action    = action;
+ 		pe->ignore_cf = 0;
++		pe->rsvd      = 0;
+ 		pe->pfn       = pfn;
  
- 	dev_dbg(dev, "BHIe programming for RDDM\n");
-@@ -376,8 +376,8 @@ static void mhi_firmware_copy(struct mhi
- 	while (remainder) {
- 		to_cpy = min(remainder, mhi_buf->len);
- 		memcpy(mhi_buf->buf, buf, to_cpy);
--		bhi_vec->dma_addr = mhi_buf->dma_addr;
--		bhi_vec->size = to_cpy;
-+		bhi_vec->dma_addr = cpu_to_le64(mhi_buf->dma_addr);
-+		bhi_vec->size = cpu_to_le64(to_cpy);
+ 		pe++;
+@@ -1403,6 +1405,7 @@ static int svsm_build_ca_from_psc_desc(s
+ 		pe->page_size = e->pagesize ? RMP_PG_SIZE_2M : RMP_PG_SIZE_4K;
+ 		pe->action    = e->operation == SNP_PAGE_STATE_PRIVATE;
+ 		pe->ignore_cf = 0;
++		pe->rsvd      = 0;
+ 		pe->pfn       = e->gfn;
  
- 		buf += to_cpy;
- 		remainder -= to_cpy;
---- a/drivers/bus/mhi/host/internal.h
-+++ b/drivers/bus/mhi/host/internal.h
-@@ -263,8 +263,8 @@ struct mhi_ring_element {
- };
- 
- struct bhi_vec_entry {
--	u64 dma_addr;
--	u64 size;
-+	__le64 dma_addr;
-+	__le64 size;
- };
- 
- enum mhi_cmd_type {
+ 		pe++;
 
 
 
