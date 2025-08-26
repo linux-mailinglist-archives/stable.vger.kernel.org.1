@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-175090-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-176055-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id F0918B366FA
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 16:02:32 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id D2F07B36B4E
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 16:44:51 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 916818E0D45
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 13:50:05 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 848791C81416
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 14:34:14 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D5C9234DCC9;
-	Tue, 26 Aug 2025 13:48:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 790D7352FEC;
+	Tue, 26 Aug 2025 14:31:05 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="uUR7FMHl"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="u2g9h1ZU"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 93DDA34DCC2;
-	Tue, 26 Aug 2025 13:48:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 366EB352087;
+	Tue, 26 Aug 2025 14:31:05 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756216113; cv=none; b=rs/nJLwCOiQVVoubTsT8+DSAIiUk3EotHCT55Vn34ff4yfe3gwUduqxMjmnua43ooO/hO69zywmrJ+2JW1qH9ry9lZA8RZTPnA9+q84Z/7lsLdBWcKql0ONWwzFKn4ro90E4kBrnKFIc0H6hwtLg+iPu4MKe6QPjy9Ja+2qUh+A=
+	t=1756218665; cv=none; b=gkXWE3laDs6IuMxAAhRsVFPUdH6M3Ma2Zj8NzTyoeuepwd+Eql8WxGpU+8h0BMm3l0fvRUiTxecZxkC12weONJicPPEuZPEUGVMciMkhQGay0hKLVPFswiLQ1IffaQqIvIC8Q4acnEe0TVdMqT6CkxiVKYDEYVjTX3VcKjglbvY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756216113; c=relaxed/simple;
-	bh=qBuqCuFso7rqxzOh1/fo59z+Aw3FRdpGoIctnSnDtrE=;
+	s=arc-20240116; t=1756218665; c=relaxed/simple;
+	bh=PmUPmxSnDt8zgYT3O1q93Ut9546oJJKLcjT1iKSMrk0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=HjFOQwam3sevF/LarI42GCBBvW2COSZ0lfsA++Ruin9iuRfkqR82ipNUtYqVDIhHp76KIUyyF9w9OmsNEjXPPTNwp8lTxJnZ+DXG30R0FqxeGVF+eTFUVFXNKy4Wlvw0rURiPdb4Bkg5Q7dyeCRiM9TmVDWxz0MEYrCCp5uMOKI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=uUR7FMHl; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 26777C113D0;
-	Tue, 26 Aug 2025 13:48:32 +0000 (UTC)
+	 MIME-Version; b=mfW358xof01yZD4+px2ZFPnjJUPPqRd69NaeOvAJO6Q1y2qRWS5pEXYUHTW6pMb9lvMTluguUUkRXya8vKds68nZm7vX0y7qUtuW3RsJuG2plr5UHm2w/4Qqv2i3EmultwkD/V7IHYFVDlm3FzVmbZoeyBeq2zSjoWaEe3jMBaY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=u2g9h1ZU; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 90677C4CEF1;
+	Tue, 26 Aug 2025 14:31:04 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1756216113;
-	bh=qBuqCuFso7rqxzOh1/fo59z+Aw3FRdpGoIctnSnDtrE=;
+	s=korg; t=1756218665;
+	bh=PmUPmxSnDt8zgYT3O1q93Ut9546oJJKLcjT1iKSMrk0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=uUR7FMHl9KTn+Rt2f8EZZI8MihotcEDhAlUyItXoDjwtrD4KWrCLD/JceWmARd2up
-	 TM/aQDzg7/NpFNPDkHpZTfKFLia8KOavnTpi/cW50ad186hRr57R9zjolvhpqdpav/
-	 Xu5bjFyKRbHKjRJiM3c+Q+Rs0jvgJsIrF59nFoXA=
+	b=u2g9h1ZUMBwJ346kvfiBUuRmBoESaTfK2/ZLv03iJxPG9+ThnOx/nY63TOi1mhZyf
+	 ujIqQKFmteLx4hpobrKO1HIna+XIOfVCHCJCumE48jNRL82cZAn5TvU3uv9aCh6ctk
+	 PnJ0vbU74cGRFm2jdfvuUL1Oie5dRIMaeIO7git8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	syzbot+169de184e9defe7fe709@syzkaller.appspotmail.com,
-	Al Viro <viro@zeniv.linux.org.uk>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 289/644] better lockdep annotations for simple_recursive_removal()
-Date: Tue, 26 Aug 2025 13:06:20 +0200
-Message-ID: <20250826110953.543681547@linuxfoundation.org>
+	stable <stable@kernel.org>,
+	Konrad Dybcio <konrad.dybcio@oss.qualcomm.com>,
+	Alan Stern <stern@rowland.harvard.edu>,
+	Mathias Nyman <mathias.nyman@linux.intel.com>
+Subject: [PATCH 5.4 055/403] usb: hub: Fix flushing and scheduling of delayed work that tunes runtime pm
+Date: Tue, 26 Aug 2025 13:06:21 +0200
+Message-ID: <20250826110907.387888110@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250826110946.507083938@linuxfoundation.org>
-References: <20250826110946.507083938@linuxfoundation.org>
+In-Reply-To: <20250826110905.607690791@linuxfoundation.org>
+References: <20250826110905.607690791@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,62 +63,69 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+5.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Al Viro <viro@zeniv.linux.org.uk>
+From: Mathias Nyman <mathias.nyman@linux.intel.com>
 
-[ Upstream commit 2a8061ee5e41034eb14170ec4517b5583dbeff9f ]
+commit a49e1e2e785fb3621f2d748581881b23a364998a upstream.
 
-We want a class that nests outside of I_MUTEX_NORMAL (for the sake of
-callbacks that might want to lock the victim) and inside I_MUTEX_PARENT
-(so that a variant of that could be used with parent of the victim
-held locked by the caller).
+Delayed work to prevent USB3 hubs from runtime-suspending immediately
+after resume was added in commit 8f5b7e2bec1c ("usb: hub: fix detection
+of high tier USB3 devices behind suspended hubs").
 
-In reality, simple_recursive_removal()
-	* never holds two locks at once
-	* holds the lock on parent of dentry passed to callback
-	* is used only on the trees with fixed topology, so the depths
-are not changing.
+This delayed work needs be flushed if system suspends, or hub needs to
+be quiesced for other reasons right after resume. Not flushing it
+triggered issues on QC SC8280XP CRD board during suspend/resume testing.
 
-So the locking order is actually fine.
+Fix it by flushing the delayed resume work in hub_quiesce()
 
-AFAICS, the best solution is to assign I_MUTEX_CHILD to the locks
-grabbed by that thing.
+The delayed work item that allow hub runtime suspend is also scheduled
+just before calling autopm get. Alan pointed out there is a small risk
+that work is run before autopm get, which would call autopm put before
+get, and mess up the runtime pm usage order.
+Swap the order of work sheduling and calling autopm get to solve this.
 
-Reported-by: syzbot+169de184e9defe7fe709@syzkaller.appspotmail.com
-Signed-off-by: Al Viro <viro@zeniv.linux.org.uk>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Cc: stable <stable@kernel.org>
+Fixes: 8f5b7e2bec1c ("usb: hub: fix detection of high tier USB3 devices behind suspended hubs")
+Reported-by: Konrad Dybcio <konrad.dybcio@oss.qualcomm.com>
+Closes: https://lore.kernel.org/linux-usb/acaaa928-832c-48ca-b0ea-d202d5cd3d6c@oss.qualcomm.com
+Reported-by: Alan Stern <stern@rowland.harvard.edu>
+Closes: https://lore.kernel.org/linux-usb/c73fbead-66d7-497a-8fa1-75ea4761090a@rowland.harvard.edu
+Signed-off-by: Mathias Nyman <mathias.nyman@linux.intel.com>
+Link: https://lore.kernel.org/r/20250626130102.3639861-2-mathias.nyman@linux.intel.com
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- fs/libfs.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ drivers/usb/core/hub.c |    6 ++++--
+ 1 file changed, 4 insertions(+), 2 deletions(-)
 
-diff --git a/fs/libfs.c b/fs/libfs.c
-index 7bb5d90319cc..eaf96297449e 100644
---- a/fs/libfs.c
-+++ b/fs/libfs.c
-@@ -273,7 +273,7 @@ void simple_recursive_removal(struct dentry *dentry,
- 		struct dentry *victim = NULL, *child;
- 		struct inode *inode = this->d_inode;
+--- a/drivers/usb/core/hub.c
++++ b/drivers/usb/core/hub.c
+@@ -1315,11 +1315,12 @@ static void hub_activate(struct usb_hub
  
--		inode_lock(inode);
-+		inode_lock_nested(inode, I_MUTEX_CHILD);
- 		if (d_is_dir(this))
- 			inode->i_flags |= S_DEAD;
- 		while ((child = find_next_child(this, victim)) == NULL) {
-@@ -285,7 +285,7 @@ void simple_recursive_removal(struct dentry *dentry,
- 			victim = this;
- 			this = this->d_parent;
- 			inode = this->d_inode;
--			inode_lock(inode);
-+			inode_lock_nested(inode, I_MUTEX_CHILD);
- 			if (simple_positive(victim)) {
- 				d_invalidate(victim);	// avoid lost mounts
- 				if (d_is_dir(victim))
--- 
-2.39.5
-
+ 	if (type == HUB_RESUME && hub_is_superspeed(hub->hdev)) {
+ 		/* give usb3 downstream links training time after hub resume */
++		usb_autopm_get_interface_no_resume(
++			to_usb_interface(hub->intfdev));
++
+ 		INIT_DELAYED_WORK(&hub->init_work, hub_post_resume);
+ 		queue_delayed_work(system_power_efficient_wq, &hub->init_work,
+ 				   msecs_to_jiffies(USB_SS_PORT_U0_WAKE_TIME));
+-		usb_autopm_get_interface_no_resume(
+-			to_usb_interface(hub->intfdev));
+ 		return;
+ 	}
+ 
+@@ -1373,6 +1374,7 @@ static void hub_quiesce(struct usb_hub *
+ 
+ 	/* Stop hub_wq and related activity */
+ 	del_timer_sync(&hub->irq_urb_retry);
++	flush_delayed_work(&hub->init_work);
+ 	usb_kill_urb(hub->urb);
+ 	if (hub->has_indicators)
+ 		cancel_delayed_work_sync(&hub->leds);
 
 
 
