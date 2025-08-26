@@ -1,55 +1,55 @@
-Return-Path: <stable+bounces-175258-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-174131-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 499D5B36695
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 15:58:27 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 70CAFB3619E
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 15:11:06 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id E2896B612F5
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 13:55:45 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 145D88A2C34
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 13:06:32 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6CBFC34DCD2;
-	Tue, 26 Aug 2025 13:56:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E440223D7DD;
+	Tue, 26 Aug 2025 13:06:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="cT+gNtYQ"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Nv38SIiT"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 103B9226861;
-	Tue, 26 Aug 2025 13:56:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A15B8223DE5;
+	Tue, 26 Aug 2025 13:06:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756216562; cv=none; b=ZEmxCoNH4ASeDTsPXUf8n9oLeECw+raNlqc5+o90+P+XeD92jKXK0dEkc96vHIUFq0sVBt7yX0dxZDZ0J55558yz544MPYQX5L5k5qYVguiNPRHnrgho5q+a/nyLrzu+HmzNLczeJZL8mcA9dLyO/Aw/sP2rWtCeWFeS54tvqTo=
+	t=1756213575; cv=none; b=Eu29A1S5fmn1lZKKWYDElUTXQBoBZgbU9/bJYC6Pm7LAq8knpTBikIkK7M7tu89NCDrjwjfIQ7I2pr3zuB5CAfHLUyywbL5WFtCE7gRIuUrqGpGpgKCfLS3eEP6tzylWFM2BTqWDzTDE8Tq2uoa1WcXvMQcvlWHN4AqQ9NdyjbQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756216562; c=relaxed/simple;
-	bh=WjJwW2TaoAMGkd+Eh6mZA8WLl/ERSnTPztqHFPusT/0=;
+	s=arc-20240116; t=1756213575; c=relaxed/simple;
+	bh=qKThOXvO/DrLiTUJ9+aCSPA1+6dfSSN4zh8RP+/jU6c=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Onk/wLWcBRb4Lec+9a8CpwMtvPWAsUaSVEzH+pwDOAoTS6BnF7nldVY9RfqUHRZVGNbqw/trrMKlh6IvVcTG/+cPLGXy3HKdTTb0M8BnJ4ahN9Um519innO+pG/yWlFirRsZK7VSSkgjhCrsjMgys5DotO6PGIPAXE13HNX38v0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=cT+gNtYQ; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 93FD1C4CEF1;
-	Tue, 26 Aug 2025 13:56:01 +0000 (UTC)
+	 MIME-Version; b=tbbw31t6ygoPJZUKUj0Cok8iF77PZtI7GUxgowlqxXw/qr+o+CoBWxS2KCKfF/3TJyuzbW4FBCJ0mTS/L8U7eUNPM+6Ar3d+hbq5vfw3jiVXt5F/Sdz34fH6MM0lr9Md7HyuB2Te23RYM3Mf0MyqQWRjWIUByssiu3Q2CniN2ow=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Nv38SIiT; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 332DAC4CEF1;
+	Tue, 26 Aug 2025 13:06:15 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1756216561;
-	bh=WjJwW2TaoAMGkd+Eh6mZA8WLl/ERSnTPztqHFPusT/0=;
+	s=korg; t=1756213575;
+	bh=qKThOXvO/DrLiTUJ9+aCSPA1+6dfSSN4zh8RP+/jU6c=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=cT+gNtYQkPRtUlsE14NnmwmRL38t1TEyDqRoj14ZieFiLzRzLwhhRfKivZEJGVrHD
-	 eE/EiSVXVn/enHncJ8dau8bxTSK7yKOhIrSeS8krhzvnff9pWohoBw19ay/Lq9U7lQ
-	 DzQSgTKJHLHHqW16luTHs/9Dax4WpbEKAEuGOJsQ=
+	b=Nv38SIiTPmK6KHWCji9niaDKpqPewtbEdPiRN7JrpdgD7vKIupI5obNBofry28j47
+	 g31Pe6K4TU7PiAZ3GONeKvVoPTAtWtuRW/eQKBs/3irUX83jVbTaEHiXlrq6DVTgFr
+	 K7VCijWgOg6LpxQSSqo9KVP9opOFScy+nchjo3QM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Dan Carpenter <dan.carpenter@linaro.org>,
-	Viresh Kumar <viresh.kumar@linaro.org>
-Subject: [PATCH 5.15 457/644] cpufreq: armada-8k: Fix off by one in armada_8k_cpufreq_free_table()
+	John David Anglin <dave.anglin@bell.net>,
+	Helge Deller <deller@gmx.de>
+Subject: [PATCH 6.6 399/587] parisc: Try to fixup kernel exception in bad_area_nosemaphore path of do_page_fault()
 Date: Tue, 26 Aug 2025 13:09:08 +0200
-Message-ID: <20250826110957.800603271@linuxfoundation.org>
+Message-ID: <20250826111003.073777533@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250826110946.507083938@linuxfoundation.org>
-References: <20250826110946.507083938@linuxfoundation.org>
+In-Reply-To: <20250826110952.942403671@linuxfoundation.org>
+References: <20250826110952.942403671@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,39 +61,35 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Dan Carpenter <dan.carpenter@linaro.org>
+From: John David Anglin <dave.anglin@bell.net>
 
-commit 4a26df233266a628157d7f0285451d8655defdfc upstream.
+commit f92a5e36b0c45cd12ac0d1bc44680c0dfae34543 upstream.
 
-The freq_tables[] array has num_possible_cpus() elements so, to avoid an
-out of bounds access, this loop should be capped at "< nb_cpus" instead
-of "<= nb_cpus".  The freq_tables[] array is allocated in
-armada_8k_cpufreq_init().
-
-Cc: stable@vger.kernel.org
-Fixes: f525a670533d ("cpufreq: ap806: add cpufreq driver for Armada 8K")
-Signed-off-by: Dan Carpenter <dan.carpenter@linaro.org>
-Signed-off-by: Viresh Kumar <viresh.kumar@linaro.org>
+Signed-off-by: John David Anglin <dave.anglin@bell.net>
+Signed-off-by: Helge Deller <deller@gmx.de>
+Cc: stable@vger.kernel.org # v5.12+
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/cpufreq/armada-8k-cpufreq.c |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ arch/parisc/mm/fault.c |    4 ++++
+ 1 file changed, 4 insertions(+)
 
---- a/drivers/cpufreq/armada-8k-cpufreq.c
-+++ b/drivers/cpufreq/armada-8k-cpufreq.c
-@@ -96,7 +96,7 @@ static void armada_8k_cpufreq_free_table
- {
- 	int opps_index, nb_cpus = num_possible_cpus();
+--- a/arch/parisc/mm/fault.c
++++ b/arch/parisc/mm/fault.c
+@@ -363,6 +363,10 @@ bad_area:
+ 	mmap_read_unlock(mm);
  
--	for (opps_index = 0 ; opps_index <= nb_cpus; opps_index++) {
-+	for (opps_index = 0 ; opps_index < nb_cpus; opps_index++) {
- 		int i;
+ bad_area_nosemaphore:
++	if (!user_mode(regs) && fixup_exception(regs)) {
++		return;
++	}
++
+ 	if (user_mode(regs)) {
+ 		int signo, si_code;
  
- 		/* If cpu_dev is NULL then we reached the end of the array */
 
 
 
