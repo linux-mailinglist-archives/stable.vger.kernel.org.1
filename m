@@ -1,56 +1,55 @@
-Return-Path: <stable+bounces-174115-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-176177-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [IPv6:2605:f480:58:1:0:1994:3:14])
-	by mail.lfdr.de (Postfix) with ESMTPS id C4892B36106
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 15:05:58 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7DDD1B36CD0
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 17:01:25 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 962CD4E441F
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 13:05:57 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id C1912983998
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 14:39:04 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B6AF712CDA5;
-	Tue, 26 Aug 2025 13:05:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1CFB7350851;
+	Tue, 26 Aug 2025 14:36:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="FOHatbQF"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="dpnkHafd"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6B83C23B616;
-	Tue, 26 Aug 2025 13:05:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C6F0F350D4D;
+	Tue, 26 Aug 2025 14:36:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756213533; cv=none; b=SDkDeffjY+3y/oFVaruXMIW2wjskv+yZyllcsmiEGSty011h4TlT1DFmFj3MPyTSfrIe1x/lwZuglkgWxcBZPTEXxNAYz6VEpGCNpITa7M6t1w3tSsSaRr/tEGRMz5ktFcVEDD463nRpdayHO2L5K8x3xks8hPa3eLIroYv+BB4=
+	t=1756218982; cv=none; b=bYL1r6sKHHaHPxdeWHW51ZImJJ6hdfAkisKiKsrJ0jXffIH89VGUrQILyIdnNZi30Mi+gFtGur2Fkalc3iJakjAFQe9nQ/pd2wsnfUZtScY7NATnUx5Iq5jU5048dAkKJuUJkOJlUOcfVx2pkPyr93V/GzI6Rnih0j5i8FEDxbI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756213533; c=relaxed/simple;
-	bh=9F/pimJBQ3quK4bQVRjORMiXXSLd8WF9ZOZUPdKh1CQ=;
+	s=arc-20240116; t=1756218982; c=relaxed/simple;
+	bh=fiT3rkmoAGnDFKheszxzAZjxbrQ7LYMj09f/FvoGnpA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=ERvn9yKy0//iezrrEyZi7KwYkgoSU1+i1T+GgNlDUjRFUcD8GhO2L71/Yr23+S6NvzMH9wwDPyr/x7B9ufnO1i5bKJktUmo8OIstCYYBxN7q2v83OuRI4JGqigKy6Jxzx49NpIZ1+YOvu/QEVFqcSDIYKzFAG+9v/PzDyj5QYwI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=FOHatbQF; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id EFE0EC4CEF1;
-	Tue, 26 Aug 2025 13:05:32 +0000 (UTC)
+	 MIME-Version; b=kZ1pftEJYOdWQcvoNK3/X2wECqGVCGy4BlAbqAN/Z3DefPPli+HYTJHHs9KPI54FtEezsSWEKjD8J8hpDimHuNMZ35CQl4t3Ih42aT8XEe3irxHcRqw+YJ6nOBcqQ2C+a/ZAvibJ4+pEVrwt+dwGjZHNPPVXm0dowZ5aodAtFsc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=dpnkHafd; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 59746C4CEF1;
+	Tue, 26 Aug 2025 14:36:22 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1756213533;
-	bh=9F/pimJBQ3quK4bQVRjORMiXXSLd8WF9ZOZUPdKh1CQ=;
+	s=korg; t=1756218982;
+	bh=fiT3rkmoAGnDFKheszxzAZjxbrQ7LYMj09f/FvoGnpA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=FOHatbQFBNEwPXtN8zJyMd1evoiSIXK5X++vPIAO6XqN8sJxPz7s3fO/LLvPXeuaE
-	 0yZ4xFj1fVXDJx6+ttvKJIJ+exwbxR49mZhWNIMpWo/or/al0hIeOchumjebuNgzkQ
-	 OV6DWkI+GHa25o+DfurN7oFzfIka4nqm1jqOncEc=
+	b=dpnkHafdFH3IiAKq5TtM10Q5GceHf3WUNK9GXyxew5R7xFGz4amJ+piUhnl+roCsK
+	 uPiE0VTujBGDaAekuv7wXhIuiqh1wGlst8Undg/3qpp1ebVl+k8WB4Ib78x74yLMQX
+	 ciqJ5F/tk9KnXI6sza8toMW1P0akDwN/X5GuZgTI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Damien Le Moal <dlemoal@kernel.org>,
-	Manivannan Sadhasivam <mani@kernel.org>,
-	Niklas Cassel <cassel@kernel.org>
-Subject: [PATCH 6.6 384/587] PCI: endpoint: Fix configfs group list head handling
+	Johannes Berg <johannes.berg@intel.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.4 207/403] wifi: cfg80211: reject HTC bit for management frames
 Date: Tue, 26 Aug 2025 13:08:53 +0200
-Message-ID: <20250826111002.679122200@linuxfoundation.org>
+Message-ID: <20250826110912.564709702@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250826110952.942403671@linuxfoundation.org>
-References: <20250826110952.942403671@linuxfoundation.org>
+In-Reply-To: <20250826110905.607690791@linuxfoundation.org>
+References: <20250826110905.607690791@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,67 +61,43 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+5.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Damien Le Moal <dlemoal@kernel.org>
+From: Johannes Berg <johannes.berg@intel.com>
 
-commit d79123d79a8154b4318529b7b2ff7e15806f480b upstream.
+[ Upstream commit be06a8c7313943109fa870715356503c4c709cbc ]
 
-Doing a list_del() on the epf_group field of struct pci_epf_driver in
-pci_epf_remove_cfs() is not correct as this field is a list head, not
-a list entry. This list_del() call triggers a KASAN warning when an
-endpoint function driver which has a configfs attribute group is torn
-down:
+Management frames sent by userspace should never have the
+order/HTC bit set, reject that. It could also cause some
+confusion with the length of the buffer and the header so
+the validation might end up wrong.
 
-==================================================================
-BUG: KASAN: slab-use-after-free in pci_epf_remove_cfs+0x17c/0x198
-Write of size 8 at addr ffff00010f4a0d80 by task rmmod/319
-
-CPU: 3 UID: 0 PID: 319 Comm: rmmod Not tainted 6.16.0-rc2 #1 NONE
-Hardware name: Radxa ROCK 5B (DT)
-Call trace:
-show_stack+0x2c/0x84 (C)
-dump_stack_lvl+0x70/0x98
-print_report+0x17c/0x538
-kasan_report+0xb8/0x190
-__asan_report_store8_noabort+0x20/0x2c
-pci_epf_remove_cfs+0x17c/0x198
-pci_epf_unregister_driver+0x18/0x30
-nvmet_pci_epf_cleanup_module+0x24/0x30 [nvmet_pci_epf]
-__arm64_sys_delete_module+0x264/0x424
-invoke_syscall+0x70/0x260
-el0_svc_common.constprop.0+0xac/0x230
-do_el0_svc+0x40/0x58
-el0_svc+0x48/0xdc
-el0t_64_sync_handler+0x10c/0x138
-el0t_64_sync+0x198/0x19c
-...
-
-Remove this incorrect list_del() call from pci_epf_remove_cfs().
-
-Fixes: ef1433f717a2 ("PCI: endpoint: Create configfs entry for each pci_epf_device_id table entry")
-Signed-off-by: Damien Le Moal <dlemoal@kernel.org>
-Signed-off-by: Manivannan Sadhasivam <mani@kernel.org>
-Reviewed-by: Niklas Cassel <cassel@kernel.org>
-Cc: stable@vger.kernel.org
-Link: https://patch.msgid.link/20250624114544.342159-2-dlemoal@kernel.org
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Link: https://patch.msgid.link/20250718202307.97a0455f0f35.I1805355c7e331352df16611839bc8198c855a33f@changeid
+Signed-off-by: Johannes Berg <johannes.berg@intel.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/pci/endpoint/pci-epf-core.c |    1 -
- 1 file changed, 1 deletion(-)
+ net/wireless/mlme.c | 3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
---- a/drivers/pci/endpoint/pci-epf-core.c
-+++ b/drivers/pci/endpoint/pci-epf-core.c
-@@ -311,7 +311,6 @@ static void pci_epf_remove_cfs(struct pc
- 	mutex_lock(&pci_epf_mutex);
- 	list_for_each_entry_safe(group, tmp, &driver->epf_group, group_entry)
- 		pci_ep_cfs_remove_epf_group(group);
--	list_del(&driver->epf_group);
- 	mutex_unlock(&pci_epf_mutex);
- }
+diff --git a/net/wireless/mlme.c b/net/wireless/mlme.c
+index f9462010575f..ea75459ac272 100644
+--- a/net/wireless/mlme.c
++++ b/net/wireless/mlme.c
+@@ -598,7 +598,8 @@ int cfg80211_mlme_mgmt_tx(struct cfg80211_registered_device *rdev,
  
+ 	mgmt = (const struct ieee80211_mgmt *)params->buf;
+ 
+-	if (!ieee80211_is_mgmt(mgmt->frame_control))
++	if (!ieee80211_is_mgmt(mgmt->frame_control) ||
++	    ieee80211_has_order(mgmt->frame_control))
+ 		return -EINVAL;
+ 
+ 	stype = le16_to_cpu(mgmt->frame_control) & IEEE80211_FCTL_STYPE;
+-- 
+2.39.5
+
 
 
 
