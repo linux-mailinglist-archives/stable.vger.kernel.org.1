@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-174990-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-175544-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 55B8EB365C1
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 15:50:30 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id A526DB368CB
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 16:19:27 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 3F8EA1BC6158
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 13:45:00 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 774F61BC7B32
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 14:10:10 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 38968341672;
-	Tue, 26 Aug 2025 13:44:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id CDAE434A325;
+	Tue, 26 Aug 2025 14:08:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="hAeQvs4t"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="N0MyUPkF"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DDEDF341655;
-	Tue, 26 Aug 2025 13:44:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8B62C2C0F9C;
+	Tue, 26 Aug 2025 14:08:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756215850; cv=none; b=md6exkhPhPeiy0wpLWJUMuvRNzN1LB7Yr4U/Vv1LZ9M7jK/6ixpTANvnkb7KoNFrhegPmsQh3kvr0dVQCMtaZV6rNAqA4pbQXvdNWTe3xFCszyV6fbLA47DVQ/Iydq9rLfFA1GBMbt+rOK3AVppKuB7HyX+DlAqBSv97CftjECc=
+	t=1756217324; cv=none; b=AZhrZTlK+5zwSlAEiQtVRij1ash0NefjrtzvAGpxUfStEPYo2i65/xOg3RRT1xWDD83OE4EYzBjHjNK2v9FMW7olZ4GgwqL2PFkqSQLrhRRVj1U63WpFTEzS3CGPiAMHvLqpDtmJ2v1Kfx0phnGne4lsetjixEbPUbmnDVl0l1w=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756215850; c=relaxed/simple;
-	bh=Bk9oadg4CSvxRRMx4dY/aofXaycP3x1k+5YZQaP5WSE=;
+	s=arc-20240116; t=1756217324; c=relaxed/simple;
+	bh=PvxsK4xYXP5soo8yR70TRvHL2cc2h4zCZjKz4GgCqBw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=eBYD1JnsiHGArs25B1kMO8eG+nlHHqg8lHf8aP9gW+QNv2iUQmPQIV3oBNRhHyW8Sa7l5Bbv6xmD4jjpEbANjniR8Hs6mZBcVrP4fLcEUTBR1nkgOM6VwWOW0yem9exT996QDLwrfAUcSSH4y+kCkAHrkp/WoBTiLfXHykOjPrM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=hAeQvs4t; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 62BDFC4CEF1;
-	Tue, 26 Aug 2025 13:44:09 +0000 (UTC)
+	 MIME-Version; b=fToPXj3fdBhlEPL07M/6poh15Y86GyaGrcHEotnrb96A6FP+jh/Tqrf6zgFOiZBit2MCxK4ooEJQvXMuWbR4RJOoarztVYsleb1YFdTDke50+B4qUn158sHf5ym4aD8UuYhJcu6/I8iL5UGsJK6FseQqjN/mL2JaHuCgCXEhuGc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=N0MyUPkF; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 16EFEC4CEF1;
+	Tue, 26 Aug 2025 14:08:43 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1756215849;
-	bh=Bk9oadg4CSvxRRMx4dY/aofXaycP3x1k+5YZQaP5WSE=;
+	s=korg; t=1756217324;
+	bh=PvxsK4xYXP5soo8yR70TRvHL2cc2h4zCZjKz4GgCqBw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=hAeQvs4tJAF8qEWlF41z+AuLT5G1k9Bi5bCCxDMuFAl639Ke62F1BWtBgJP5eS5Rv
-	 C8Rr5JkapNYodv+8g1iBCSs3Uue0CwIOorJcLv5Xxm2RuH8CM+gmB56c1a9eYPQCsJ
-	 dBB3zbKresII/PvnqkVBrZtyVuvVDfSw+MZC9RCA=
+	b=N0MyUPkFX8lI3rNFMhSdE4YMlJlvKb1x69DGM6HcLvHroyx5O9O4nxsVH0YWijzGZ
+	 C55d4qhfpd1aelxwe1ai9sEp1/0HXsIVXX+gHfcmsjbY16eOg/0gNj4qUfxkMlGQDz
+	 NiEQzE5DLb55AiagzJO1DW8IocWVC1k43wqm++Fw=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Thomas Fourier <fourier.thomas@gmail.com>,
-	Herbert Xu <herbert@gondor.apana.org.au>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 188/644] crypto: keembay - Fix dma_unmap_sg() nents value
+	Ryusuke Konishi <konishi.ryusuke@gmail.com>,
+	syzbot+895c23f6917da440ed0d@syzkaller.appspotmail.com,
+	Andrew Morton <akpm@linux-foundation.org>
+Subject: [PATCH 5.10 069/523] nilfs2: reject invalid file types when reading inodes
 Date: Tue, 26 Aug 2025 13:04:39 +0200
-Message-ID: <20250826110951.119199446@linuxfoundation.org>
+Message-ID: <20250826110926.275664298@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250826110946.507083938@linuxfoundation.org>
-References: <20250826110946.507083938@linuxfoundation.org>
+In-Reply-To: <20250826110924.562212281@linuxfoundation.org>
+References: <20250826110924.562212281@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,68 +62,53 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Thomas Fourier <fourier.thomas@gmail.com>
+From: Ryusuke Konishi <konishi.ryusuke@gmail.com>
 
-[ Upstream commit 01951a7dc5ac1a37e5fb7d86ea7eb2dfbf96e8b6 ]
+commit 4aead50caf67e01020c8be1945c3201e8a972a27 upstream.
 
-The dma_unmap_sg() functions should be called with the same nents as the
-dma_map_sg(), not the value the map function returned.
+To prevent inodes with invalid file types from tripping through the vfs
+and causing malfunctions or assertion failures, add a missing sanity check
+when reading an inode from a block device.  If the file type is not valid,
+treat it as a filesystem error.
 
-Fixes: 472b04444cd3 ("crypto: keembay - Add Keem Bay OCS HCU driver")
-Signed-off-by: Thomas Fourier <fourier.thomas@gmail.com>
-Signed-off-by: Herbert Xu <herbert@gondor.apana.org.au>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Link: https://lkml.kernel.org/r/20250710134952.29862-1-konishi.ryusuke@gmail.com
+Fixes: 05fe58fdc10d ("nilfs2: inode operations")
+Signed-off-by: Ryusuke Konishi <konishi.ryusuke@gmail.com>
+Reported-by: syzbot+895c23f6917da440ed0d@syzkaller.appspotmail.com
+Link: https://syzkaller.appspot.com/bug?extid=895c23f6917da440ed0d
+Cc: <stable@vger.kernel.org>
+Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/crypto/keembay/keembay-ocs-hcu-core.c | 8 +++++++-
- 1 file changed, 7 insertions(+), 1 deletion(-)
+ fs/nilfs2/inode.c |    9 ++++++++-
+ 1 file changed, 8 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/crypto/keembay/keembay-ocs-hcu-core.c b/drivers/crypto/keembay/keembay-ocs-hcu-core.c
-index 0379dbf32a4c..6b46c37f00ae 100644
---- a/drivers/crypto/keembay/keembay-ocs-hcu-core.c
-+++ b/drivers/crypto/keembay/keembay-ocs-hcu-core.c
-@@ -68,6 +68,7 @@ struct ocs_hcu_ctx {
-  * @sg_data_total:  Total data in the SG list at any time.
-  * @sg_data_offset: Offset into the data of the current individual SG node.
-  * @sg_dma_nents:   Number of sg entries mapped in dma_list.
-+ * @nents:          Number of entries in the scatterlist.
-  */
- struct ocs_hcu_rctx {
- 	struct ocs_hcu_dev	*hcu_dev;
-@@ -91,6 +92,7 @@ struct ocs_hcu_rctx {
- 	unsigned int		sg_data_total;
- 	unsigned int		sg_data_offset;
- 	unsigned int		sg_dma_nents;
-+	unsigned int		nents;
- };
- 
- /**
-@@ -199,7 +201,7 @@ static void kmb_ocs_hcu_dma_cleanup(struct ahash_request *req,
- 
- 	/* Unmap req->src (if mapped). */
- 	if (rctx->sg_dma_nents) {
--		dma_unmap_sg(dev, req->src, rctx->sg_dma_nents, DMA_TO_DEVICE);
-+		dma_unmap_sg(dev, req->src, rctx->nents, DMA_TO_DEVICE);
- 		rctx->sg_dma_nents = 0;
+--- a/fs/nilfs2/inode.c
++++ b/fs/nilfs2/inode.c
+@@ -517,11 +517,18 @@ static int __nilfs_read_inode(struct sup
+ 		inode->i_op = &nilfs_symlink_inode_operations;
+ 		inode_nohighmem(inode);
+ 		inode->i_mapping->a_ops = &nilfs_aops;
+-	} else {
++	} else if (S_ISCHR(inode->i_mode) || S_ISBLK(inode->i_mode) ||
++		   S_ISFIFO(inode->i_mode) || S_ISSOCK(inode->i_mode)) {
+ 		inode->i_op = &nilfs_special_inode_operations;
+ 		init_special_inode(
+ 			inode, inode->i_mode,
+ 			huge_decode_dev(le64_to_cpu(raw_inode->i_device_code)));
++	} else {
++		nilfs_error(sb,
++			    "invalid file type bits in mode 0%o for inode %lu",
++			    inode->i_mode, ino);
++		err = -EIO;
++		goto failed_unmap;
  	}
- 
-@@ -260,6 +262,10 @@ static int kmb_ocs_dma_prepare(struct ahash_request *req)
- 			rc = -ENOMEM;
- 			goto cleanup;
- 		}
-+
-+		/* Save the value of nents to pass to dma_unmap_sg. */
-+		rctx->nents = nents;
-+
- 		/*
- 		 * The value returned by dma_map_sg() can be < nents; so update
- 		 * nents accordingly.
--- 
-2.39.5
-
+ 	nilfs_ifile_unmap_inode(root->ifile, ino, bh);
+ 	brelse(bh);
 
 
 
