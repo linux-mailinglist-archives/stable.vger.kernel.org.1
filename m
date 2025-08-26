@@ -1,58 +1,55 @@
-Return-Path: <stable+bounces-176339-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-175929-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 32A1DB36C90
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 16:57:20 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5D43FB3698F
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 16:28:17 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 1ABD41C458EE
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 14:46:49 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 363037B3091
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 14:26:41 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 24F91353363;
-	Tue, 26 Aug 2025 14:43:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B7A0335A293;
+	Tue, 26 Aug 2025 14:25:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="O4Zk+e32"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="wmGKqTmJ"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BFACE1E500C;
-	Tue, 26 Aug 2025 14:43:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7276C25DB0A;
+	Tue, 26 Aug 2025 14:25:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756219401; cv=none; b=YBuzECwMmREBl+ZePK9Do6SGbWfUyt2+DRP+7E8OooSFVZHSWCiv+pWCvBLF8XuaHii8LDPIXHFE6g7KQtSA43nTKIVxOR9YeBWNwziiyexrS4JSeZ8POiF87+5wsD2dcuVuj8lqfeK8lEEW9DwmtJnfEO2kZuxrlStNIWtRO6g=
+	t=1756218339; cv=none; b=r1j7wY9LGIW4lrbFujdHu3wUc6cOnYZHhw64BkskYK3Karcgh5FwCx+lyo7Ri/fmcADuQtsMlYJZr8y/76WqLKbYkLJlY7sLcafvxjJgZFefjqCmrPo8ywIioNRyyRll7bMK66Cxd3xJ0bFsPbhPd3MNL5bDFKPzf+koVid2ITE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756219401; c=relaxed/simple;
-	bh=bM7xvsWM+kpriBdUkr2q4K6QLpy+5z/aTy8yaG5bYV8=;
+	s=arc-20240116; t=1756218339; c=relaxed/simple;
+	bh=BhLD4rryrNe2cajUSGamNNZLKSxmkL/j5CMZzC9Cf1U=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=X/UBecKmQdWFpI5khzvbprEFZ34nbnCfO0DBSyvs8qcUz3fSMgoERxOD5J0myYaHS65OKT8z81rZ21gKhETUqECk3lzj5UMkhvRyOTYl3a6CdVe4N32OrxhWY2HYfDAnZkqY9TBZRQff4NataeyQGOEYbls93KOj2Xu5D5R+Tm8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=O4Zk+e32; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id F094FC4CEF1;
-	Tue, 26 Aug 2025 14:43:20 +0000 (UTC)
+	 MIME-Version; b=LXIBDpyg8McheBnUM8cTvZ4XD+QJjTGCuY6UWG52+op7xA8k48LRrImwSuP6iv8U4aJ3ynZzhGBCpm+aX5CNLkIcgZRJhI7XTjhbwYas8Q0q0FMNZjlwIAHn7MpOof35JPUww7HnfjDtQ3Va+yrmSxcNj6j0PJ9HCPeJgAI7yDw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=wmGKqTmJ; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 938E7C4CEF1;
+	Tue, 26 Aug 2025 14:25:35 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1756219401;
-	bh=bM7xvsWM+kpriBdUkr2q4K6QLpy+5z/aTy8yaG5bYV8=;
+	s=korg; t=1756218335;
+	bh=BhLD4rryrNe2cajUSGamNNZLKSxmkL/j5CMZzC9Cf1U=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=O4Zk+e3225W5FH4MI7pL8bNzBCSNRTyGpPF2w46wy+x/oKbREx+o58SluBDAxzQwJ
-	 JWUBexSd6e+2TnJgXvDcVxw5mxEsob20jD5SwgqEdhywhdHu9W0CGKluLBQbswj0GI
-	 2YSTqM6ROzPQcb6kwuYM5HgQlpluXDNTh/DYslYg=
+	b=wmGKqTmJ6YiTagmI5bf9MDsOZ1ck9cFaF8kfAWomkpi9fKwBP6RnCNUmtOIfHfIwi
+	 y5DT5b1jwxp9DkEtHPb58rQdiv51sPxX++k8x8iyokHq3L8606oWkyEkDohAQgk3iP
+	 G8hoiZhVudpnz3Y0Q1mp5y/i5fX/0JvnNFqm7vm4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	=?UTF-8?q?Ville=20Syrj=C3=A4l=C3=A4?= <ville.syrjala@linux.intel.com>,
-	Jani Nikula <jani.nikula@linux.intel.com>,
-	Jani Nikula <jani.nikula@intel.com>,
-	Imre Deak <imre.deak@intel.com>,
+	Mauro Carvalho Chehab <mchehab+huawei@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.4 368/403] drm/dp: Change AUX DPCD probe address from DPCD_REV to LANE0_1_STATUS
+Subject: [PATCH 5.10 484/523] media: venus: dont de-reference NULL pointers at IRQ time
 Date: Tue, 26 Aug 2025 13:11:34 +0200
-Message-ID: <20250826110917.171626200@linuxfoundation.org>
+Message-ID: <20250826110936.386593321@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250826110905.607690791@linuxfoundation.org>
-References: <20250826110905.607690791@linuxfoundation.org>
+In-Reply-To: <20250826110924.562212281@linuxfoundation.org>
+References: <20250826110924.562212281@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,55 +59,82 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-5.4-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Imre Deak <imre.deak@intel.com>
+From: Mauro Carvalho Chehab <mchehab+huawei@kernel.org>
 
-[ Upstream commit a40c5d727b8111b5db424a1e43e14a1dcce1e77f ]
+[ Upstream commit 686ee9b6253f9b6d7f1151e73114698940cc0894 ]
 
-Reading DPCD registers has side-effects in general. In particular
-accessing registers outside of the link training register range
-(0x102-0x106, 0x202-0x207, 0x200c-0x200f, 0x2216) is explicitly
-forbidden by the DP v2.1 Standard, see
+Smatch is warning that:
+	drivers/media/platform/qcom/venus/hfi_venus.c:1100 venus_isr() warn: variable dereferenced before check 'hdev' (see line 1097)
 
-3.6.5.1 DPTX AUX Transaction Handling Mandates
-3.6.7.4 128b/132b DP Link Layer LTTPR Link Training Mandates
+The logic basically does:
+	hdev = to_hfi_priv(core);
 
-Based on my tests, accessing the DPCD_REV register during the link
-training of an UHBR TBT DP tunnel sink leads to link training failures.
+with is translated to:
+	hdev = core->priv;
 
-Solve the above by using the DP_LANE0_1_STATUS (0x202) register for the
-DPCD register access quirk.
+If the IRQ code can receive a NULL pointer for hdev, there's
+a bug there, as it will first try to de-reference the pointer,
+and then check if it is null.
 
-Cc: <stable@vger.kernel.org>
-Cc: Ville Syrjälä <ville.syrjala@linux.intel.com>
-Cc: Jani Nikula <jani.nikula@linux.intel.com>
-Acked-by: Jani Nikula <jani.nikula@intel.com>
-Signed-off-by: Imre Deak <imre.deak@intel.com>
-Link: https://lore.kernel.org/r/20250605082850.65136-2-imre.deak@intel.com
-[ Call to drm_dp_dpcd_access() instead of drm_dp_dpcd_probe() ]
+After looking at the code, it seems that this indeed can happen:
+Basically, the venus IRQ thread is started with:
+	devm_request_threaded_irq()
+So, it will only be freed after the driver unbinds.
+
+In order to prevent the IRQ code to work with freed data,
+the logic at venus_hfi_destroy() sets core->priv to NULL,
+which would make the IRQ code to ignore any pending IRQs.
+
+There is, however a race condition, as core->priv is set
+to NULL only after being freed. So, we need also to move the
+core->priv = NULL to happen earlier.
+
+Signed-off-by: Mauro Carvalho Chehab <mchehab+huawei@kernel.org>
+Stable-dep-of: 640803003cd9 ("media: venus: hfi: explicitly release IRQ during teardown")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/gpu/drm/drm_dp_helper.c |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/media/platform/qcom/venus/hfi_venus.c |    9 ++++++---
+ 1 file changed, 6 insertions(+), 3 deletions(-)
 
---- a/drivers/gpu/drm/drm_dp_helper.c
-+++ b/drivers/gpu/drm/drm_dp_helper.c
-@@ -280,7 +280,7 @@ ssize_t drm_dp_dpcd_read(struct drm_dp_a
- 	 * We just have to do it before any DPCD access and hope that the
- 	 * monitor doesn't power down exactly after the throw away read.
- 	 */
--	ret = drm_dp_dpcd_access(aux, DP_AUX_NATIVE_READ, DP_DPCD_REV, buffer,
-+	ret = drm_dp_dpcd_access(aux, DP_AUX_NATIVE_READ, DP_LANE0_1_STATUS, buffer,
- 				 1);
- 	if (ret != 1)
- 		goto out;
+--- a/drivers/media/platform/qcom/venus/hfi_venus.c
++++ b/drivers/media/platform/qcom/venus/hfi_venus.c
+@@ -1071,12 +1071,15 @@ static irqreturn_t venus_isr(struct venu
+ {
+ 	struct venus_hfi_device *hdev = to_hfi_priv(core);
+ 	u32 status;
+-	void __iomem *cpu_cs_base = hdev->core->cpu_cs_base;
+-	void __iomem *wrapper_base = hdev->core->wrapper_base;
++	void __iomem *cpu_cs_base;
++	void __iomem *wrapper_base;
+ 
+ 	if (!hdev)
+ 		return IRQ_NONE;
+ 
++	cpu_cs_base = hdev->core->cpu_cs_base;
++	wrapper_base = hdev->core->wrapper_base;
++
+ 	status = readl(wrapper_base + WRAPPER_INTR_STATUS);
+ 
+ 	if (status & WRAPPER_INTR_STATUS_A2H_MASK ||
+@@ -1613,10 +1616,10 @@ void venus_hfi_destroy(struct venus_core
+ {
+ 	struct venus_hfi_device *hdev = to_hfi_priv(core);
+ 
++	core->priv = NULL;
+ 	venus_interface_queues_release(hdev);
+ 	mutex_destroy(&hdev->lock);
+ 	kfree(hdev);
+-	core->priv = NULL;
+ 	core->ops = NULL;
+ }
+ 
 
 
 
