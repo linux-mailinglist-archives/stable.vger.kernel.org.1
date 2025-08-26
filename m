@@ -1,56 +1,55 @@
-Return-Path: <stable+bounces-173963-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-173040-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 70104B3609F
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 15:02:23 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 76F5BB35B7B
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 13:24:55 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id E54861BA6F1B
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 12:59:12 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 8A2CF1BA2B66
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 11:22:13 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id EA8C71F9F73;
-	Tue, 26 Aug 2025 12:58:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3D93C21D00E;
+	Tue, 26 Aug 2025 11:20:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ORgIxemH"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Vr4prnu0"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A5AFA1ACEDE;
-	Tue, 26 Aug 2025 12:58:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E65BA321F53;
+	Tue, 26 Aug 2025 11:20:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756213127; cv=none; b=emLfWjQPuaUrh+/z+HWAsvWYdron4xVg+J3Yo8jgh4m8P1cOaZMjpr8A9wHOHPK+x1N0E6aE+Y/tu2WY1xJ4PCbQhPiu8vGnRoIa43xRSvNcWXPo2hcXO9HRIMQHCpAZbhECiAfRHVYJLVtravqBazjq3RSwjC+Mo8pbCKbaHcA=
+	t=1756207219; cv=none; b=h4/IEx0HY1KKNKa402VStj97P72LZXNoxIs0WLHyq3jsrSHcdFHtdpbYZPFnzlBT2gqqCdlwpd02NNpF9QGj0ucMYOJ5Gm2nSygIW9aK1zAbRob0wYfYBtim77sHwa6WROvpjRndhuJQbcHxoh4LG1/egX3yH81YIq2tGDhQwHA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756213127; c=relaxed/simple;
-	bh=yzkKohcoCPRZshpGIjWpQMYtN1NdHvUUJ6+oQ+GVDqA=;
+	s=arc-20240116; t=1756207219; c=relaxed/simple;
+	bh=Ii8292jv9XiyK5YH1oMO3L5Ps/6ZqnZoV/k7b+LOxW4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=pQoFnq+WhWb2xaiIddRLByK7NG39w/njcOF6W7Ghhzr8qtgxfbGeMdvP3QKyTfcAJ+8m6lh7C/G71xdowOCmW5A/ZZ+Iw3aLAGiGz6PBaugbTL6vZVmUBghi839J6oAuomvo2D1Aj6BlvHbEvvYKfsnWE0iwCvsg09/X0aV5iUs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ORgIxemH; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C519AC4CEF1;
-	Tue, 26 Aug 2025 12:58:46 +0000 (UTC)
+	 MIME-Version; b=OU1IZzdXRUdX5mR+jpoghiTHBCwaI+5F3OBtviD83efAdDXS9FqqBkSJAkT9Brk8o5H+YeRATG2hOqAbanri/oWKdrQpq7zQxZDF1AyLvCWVrbuzf3ptzsI86HutibDjfi1qSBJEc048zfmJYOaPAg1TyKO6xPGJVvZ5v9hlItw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Vr4prnu0; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7B231C4CEF1;
+	Tue, 26 Aug 2025 11:20:18 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1756213127;
-	bh=yzkKohcoCPRZshpGIjWpQMYtN1NdHvUUJ6+oQ+GVDqA=;
+	s=korg; t=1756207218;
+	bh=Ii8292jv9XiyK5YH1oMO3L5Ps/6ZqnZoV/k7b+LOxW4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=ORgIxemHA1VTA0sh/K/rts3bnjSrofnYxfFaIOE/zM/f8I/LBry+WxW7QlgSz2oYj
-	 bHWOMN2LcG3v4MAM5eVlkgcID/Bm9nHx0nbSzulfutezZM1af45aGwCXN+EqnPwdui
-	 9Z936eLW29zTTSBbkUMOU85HzIIs+SDLER/BWE+E=
+	b=Vr4prnu0uy2eBlyjAXBWMrW4FUrSHdoeiRIln0OLoOKY7A8Nll3ThH/7HSgUB1ip8
+	 WHDADO8cToZTmLO5cqMpRyiZwpITP+Q/+UTX67S4bD93Y9k874wUOHALwWELz+nV4m
+	 QWto08ZCyoe05Awno2etZh+2dE1woXtP400M2R5s=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Shiji Yang <yangshiji66@outlook.com>,
-	Thomas Bogendoerfer <tsbogend@alpha.franken.de>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 232/587] MIPS: vpe-mt: add missing prototypes for vpe_{alloc,start,stop,free}
+	Lukas Wunner <lukas@wunner.de>,
+	Bjorn Helgaas <bhelgaas@google.com>
+Subject: [PATCH 6.16 097/457] PCI/portdrv: Use is_pciehp instead of is_hotplug_bridge
 Date: Tue, 26 Aug 2025 13:06:21 +0200
-Message-ID: <20250826110958.836591761@linuxfoundation.org>
+Message-ID: <20250826110939.773865325@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250826110952.942403671@linuxfoundation.org>
-References: <20250826110952.942403671@linuxfoundation.org>
+In-Reply-To: <20250826110937.289866482@linuxfoundation.org>
+References: <20250826110937.289866482@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,58 +61,46 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.16-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Shiji Yang <yangshiji66@outlook.com>
+From: Lukas Wunner <lukas@wunner.de>
 
-[ Upstream commit 844615dd0f2d95c018ec66b943e08af22b62aff3 ]
+commit 1d60796a62f327cd9e0a6a0865ded7656d2c67f9 upstream.
 
-These functions are exported but their prototypes are not defined.
-This patch adds the missing function prototypes to fix the following
-compilation warnings:
+The PCIe port driver erroneously creates a subdevice for hotplug on ACPI
+slots which are handled by the ACPI hotplug driver.
 
-arch/mips/kernel/vpe-mt.c:180:7: error: no previous prototype for 'vpe_alloc' [-Werror=missing-prototypes]
-  180 | void *vpe_alloc(void)
-      |       ^~~~~~~~~
-arch/mips/kernel/vpe-mt.c:198:5: error: no previous prototype for 'vpe_start' [-Werror=missing-prototypes]
-  198 | int vpe_start(void *vpe, unsigned long start)
-      |     ^~~~~~~~~
-arch/mips/kernel/vpe-mt.c:208:5: error: no previous prototype for 'vpe_stop' [-Werror=missing-prototypes]
-  208 | int vpe_stop(void *vpe)
-      |     ^~~~~~~~
-arch/mips/kernel/vpe-mt.c:229:5: error: no previous prototype for 'vpe_free' [-Werror=missing-prototypes]
-  229 | int vpe_free(void *vpe)
-      |     ^~~~~~~~
+Avoid by checking the is_pciehp flag instead of is_hotplug_bridge when
+deciding whether to create a subdevice.  The latter encompasses ACPI slots
+whereas the former doesn't.
 
-Signed-off-by: Shiji Yang <yangshiji66@outlook.com>
-Signed-off-by: Thomas Bogendoerfer <tsbogend@alpha.franken.de>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+The superfluous subdevice has no real negative impact, it occupies memory
+and interrupt resources but otherwise just sits there waiting for
+interrupts from the slot that are never signaled.
+
+Fixes: f8415222837b ("PCI: Use cached copy of PCI_EXP_SLTCAP_HPC bit")
+Signed-off-by: Lukas Wunner <lukas@wunner.de>
+Signed-off-by: Bjorn Helgaas <bhelgaas@google.com>
+Cc: stable@vger.kernel.org # v4.7+
+Link: https://patch.msgid.link/40d5a5fe8d40595d505949c620a067fa110ee85e.1752390102.git.lukas@wunner.de
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- arch/mips/include/asm/vpe.h | 8 ++++++++
- 1 file changed, 8 insertions(+)
+ drivers/pci/pcie/portdrv.c |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/arch/mips/include/asm/vpe.h b/arch/mips/include/asm/vpe.h
-index 61fd4d0aeda4..c0769dc4b853 100644
---- a/arch/mips/include/asm/vpe.h
-+++ b/arch/mips/include/asm/vpe.h
-@@ -119,4 +119,12 @@ void cleanup_tc(struct tc *tc);
+--- a/drivers/pci/pcie/portdrv.c
++++ b/drivers/pci/pcie/portdrv.c
+@@ -220,7 +220,7 @@ static int get_port_device_capability(st
+ 	struct pci_host_bridge *host = pci_find_host_bridge(dev->bus);
+ 	int services = 0;
  
- int __init vpe_module_init(void);
- void __exit vpe_module_exit(void);
-+
-+#ifdef CONFIG_MIPS_VPE_LOADER_MT
-+void *vpe_alloc(void);
-+int vpe_start(void *vpe, unsigned long start);
-+int vpe_stop(void *vpe);
-+int vpe_free(void *vpe);
-+#endif /* CONFIG_MIPS_VPE_LOADER_MT */
-+
- #endif /* _ASM_VPE_H */
--- 
-2.39.5
-
+-	if (dev->is_hotplug_bridge &&
++	if (dev->is_pciehp &&
+ 	    (pci_pcie_type(dev) == PCI_EXP_TYPE_ROOT_PORT ||
+ 	     pci_pcie_type(dev) == PCI_EXP_TYPE_DOWNSTREAM) &&
+ 	    (pcie_ports_native || host->native_pcie_hotplug)) {
 
 
 
