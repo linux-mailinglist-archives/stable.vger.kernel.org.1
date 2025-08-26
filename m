@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-175608-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-173032-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 35F43B36970
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 16:27:00 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 17704B35B72
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 13:24:40 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 421B8986467
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 14:13:45 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 5E2821BA2971
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 11:22:04 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9A94E3568E8;
-	Tue, 26 Aug 2025 14:11:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 12941340D9C;
+	Tue, 26 Aug 2025 11:19:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="V6Xg9gJN"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="slmgMr9Q"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 57A5A2BE058;
-	Tue, 26 Aug 2025 14:11:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C2E08749C;
+	Tue, 26 Aug 2025 11:19:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756217495; cv=none; b=G28Sk9w1kp61c+7ZERQmCyF7xwWbVjad1cCA2k77TaBOG4yHH3PeMo+Q0BWye+QW/xzxXn5Tuekypf4bMovZ4CXXft+EiGRmCubZv4AVD3bOpbw6/O71IAn3HOFl9Dkb5glDmmeMfvA79+8mhqjCG15eB9E8YQi9twv7IwVlCBA=
+	t=1756207198; cv=none; b=s246UTA/DTpxv0YSpLTYgJOgbprGammcKh7yZn36ZkgsjP78ZKxlszk4evoBZPWCUIOnEC/JU13rQ5M0zZDJGY09Wwr/pnMPbgSQzI+LtLzYuvGR0J4y/FziaCKVsR+vYUFpTlz3LV/+u1mUT+z5id+upkMul14+nbn4QAx6exE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756217495; c=relaxed/simple;
-	bh=FmQWdyAS3ag1kQVLHPi9qtG0Bva/K+Vk2vjITuQeSkQ=;
+	s=arc-20240116; t=1756207198; c=relaxed/simple;
+	bh=lj+P3waBvC6uXrC7AE/HDoScGsaLhKh1lAqAuQL274Y=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=md6+yOsU7YP/UN9/HMD/qrELp1YlzDq7mtONHO1+QdQI9zdqmLFIt2/zXL7nTb/GBR+61U1n2hms3OKCpbmLPL2ro5wqqg8hFXoJCrONIPl2KE1LDmiCDjdUNrsBdtaLTjiXgUgKNP7Eh0Kt/RPvqST2GzLGbbInXm0PMPozE+M=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=V6Xg9gJN; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D4312C4CEF1;
-	Tue, 26 Aug 2025 14:11:34 +0000 (UTC)
+	 MIME-Version:Content-Type; b=a/xf6iVjUZgzhb5dKKBPXdfKTlCPOheUcw/Tnyg4NZBggU36p9F/rCMU61adagxtv4sODGhzkGCUJOVg2ZKdumC+qOS30uQwyfk6aOjWM9ySPZOhWj+bkip32uelp1gKmiL1z5TK/P/nzSRuajizx431GKdRXUyoVxBfHCscLQI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=slmgMr9Q; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id EB9B0C19422;
+	Tue, 26 Aug 2025 11:19:57 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1756217495;
-	bh=FmQWdyAS3ag1kQVLHPi9qtG0Bva/K+Vk2vjITuQeSkQ=;
+	s=korg; t=1756207198;
+	bh=lj+P3waBvC6uXrC7AE/HDoScGsaLhKh1lAqAuQL274Y=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=V6Xg9gJNf+vMWB7s4rGFbUEZp1Zh8jXomM1lvdw2OVsbf2/NhQyglHsvkwpxRjOUc
-	 HeYSUAAkvAEOom5psNcDxcDR61q3w/b5ZA0vaBLDov6KQAttwIbFs2HE/qeD0DvCcm
-	 jrYk1g2rMXOd2TkF0qaljmvvkCPKzmmrblpnxgbA=
+	b=slmgMr9QH4i5/X8xIQ7h2Ut8KjU3/yU24fc+8LJZWty48WQ/cHt7+o/SvCh2pHcM9
+	 mPbEPY7y3l1nQqeXuIbKod/r3FDy330HH6D3/zT6l6VSYnuj3zj+sM8igVEwQNSaM4
+	 LZ2RjM0wh6lWkWHq5PWDancvAgA/sKphEY9VmdHs=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Timothy Pearson <tpearson@raptorengineering.com>,
-	Bjorn Helgaas <bhelgaas@google.com>,
-	Madhavan Srinivasan <maddy@linux.ibm.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 163/523] powerpc/eeh: Export eeh_unfreeze_pe()
+	=?UTF-8?q?Uwe=20Kleine-K=C3=B6nig?= <u.kleine-koenig@baylibre.com>,
+	AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>,
+	=?UTF-8?q?Uwe=20Kleine-K=C3=B6nig?= <ukleinek@kernel.org>
+Subject: [PATCH 6.16 089/457] pwm: mediatek: Fix duty and period setting
 Date: Tue, 26 Aug 2025 13:06:13 +0200
-Message-ID: <20250826110928.493282286@linuxfoundation.org>
+Message-ID: <20250826110939.579183665@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250826110924.562212281@linuxfoundation.org>
-References: <20250826110924.562212281@linuxfoundation.org>
+In-Reply-To: <20250826110937.289866482@linuxfoundation.org>
+References: <20250826110937.289866482@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,46 +60,86 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+6.16-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Timothy Pearson <tpearson@raptorengineering.com>
+From: Uwe Kleine-König <u.kleine-koenig@baylibre.com>
 
-[ Upstream commit e82b34eed04b0ddcff4548b62633467235672fd3 ]
+commit f21d136caf8171f94159d975ea4620c164431bd9 upstream.
 
-The PowerNV hotplug driver needs to be able to clear any frozen PE(s)
-on the PHB after suprise removal of a downstream device.
+The period generated by the hardware is
 
-Export the eeh_unfreeze_pe() symbol to allow implementation of this
-functionality in the php_nv module.
+	(PWMDWIDTH + 1) << CLKDIV) / freq
 
-Signed-off-by: Timothy Pearson <tpearson@raptorengineering.com>
-Signed-off-by: Bjorn Helgaas <bhelgaas@google.com>
-Signed-off-by: Madhavan Srinivasan <maddy@linux.ibm.com>
-Link: https://patch.msgid.link/1778535414.1359858.1752615454618.JavaMail.zimbra@raptorengineeringinc.com
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+according to my tests with a signal analyser and also the documentation.
+
+The current algorithm doesn't consider the `+ 1` part and so configures
+slightly too high periods. The same issue exists for the duty cycle
+setting. So subtract 1 from both the register values for period and
+duty cycle. If period is 0, bail out, if duty_cycle is 0, just disable
+the PWM which results in a constant low output.
+
+Fixes: caf065f8fd58 ("pwm: Add MediaTek PWM support")
+Signed-off-by: Uwe Kleine-König <u.kleine-koenig@baylibre.com>
+Reviewed-by: AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>
+Link: https://lore.kernel.org/r/6d1fa87a76f8020bfe3171529b8e19baffceab10.1753717973.git.u.kleine-koenig@baylibre.com
+Cc: stable@vger.kernel.org
+Signed-off-by: Uwe Kleine-König <ukleinek@kernel.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- arch/powerpc/kernel/eeh.c | 1 +
- 1 file changed, 1 insertion(+)
+ drivers/pwm/pwm-mediatek.c |   21 ++++++++++++++-------
+ 1 file changed, 14 insertions(+), 7 deletions(-)
 
-diff --git a/arch/powerpc/kernel/eeh.c b/arch/powerpc/kernel/eeh.c
-index fbc6eaaf10e1..cd5364e8fe3d 100644
---- a/arch/powerpc/kernel/eeh.c
-+++ b/arch/powerpc/kernel/eeh.c
-@@ -1140,6 +1140,7 @@ int eeh_unfreeze_pe(struct eeh_pe *pe)
+--- a/drivers/pwm/pwm-mediatek.c
++++ b/drivers/pwm/pwm-mediatek.c
+@@ -164,7 +164,10 @@ static int pwm_mediatek_config(struct pw
+ 	do_div(resolution, clk_rate);
  
- 	return ret;
+ 	cnt_period = DIV_ROUND_CLOSEST_ULL((u64)period_ns * 1000, resolution);
+-	while (cnt_period > 8191) {
++	if (!cnt_period)
++		return -EINVAL;
++
++	while (cnt_period > 8192) {
+ 		resolution *= 2;
+ 		clkdiv++;
+ 		cnt_period = DIV_ROUND_CLOSEST_ULL((u64)period_ns * 1000,
+@@ -187,9 +190,16 @@ static int pwm_mediatek_config(struct pw
+ 	}
+ 
+ 	cnt_duty = DIV_ROUND_CLOSEST_ULL((u64)duty_ns * 1000, resolution);
++
+ 	pwm_mediatek_writel(pc, pwm->hwpwm, PWMCON, BIT(15) | clkdiv);
+-	pwm_mediatek_writel(pc, pwm->hwpwm, reg_width, cnt_period);
+-	pwm_mediatek_writel(pc, pwm->hwpwm, reg_thres, cnt_duty);
++	pwm_mediatek_writel(pc, pwm->hwpwm, reg_width, cnt_period - 1);
++
++	if (cnt_duty) {
++		pwm_mediatek_writel(pc, pwm->hwpwm, reg_thres, cnt_duty - 1);
++		pwm_mediatek_enable(chip, pwm);
++	} else {
++		pwm_mediatek_disable(chip, pwm);
++	}
+ 
+ out:
+ 	pwm_mediatek_clk_disable(chip, pwm);
+@@ -218,11 +228,8 @@ static int pwm_mediatek_apply(struct pwm
+ 	if (err)
+ 		return err;
+ 
+-	if (!pwm->state.enabled) {
++	if (!pwm->state.enabled)
+ 		err = pwm_mediatek_clk_enable(chip, pwm);
+-		if (!err)
+-			pwm_mediatek_enable(chip, pwm);
+-	}
+ 
+ 	return err;
  }
-+EXPORT_SYMBOL_GPL(eeh_unfreeze_pe);
- 
- 
- static struct pci_device_id eeh_reset_ids[] = {
--- 
-2.39.5
-
 
 
 
