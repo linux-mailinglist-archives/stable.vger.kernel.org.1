@@ -1,57 +1,55 @@
-Return-Path: <stable+bounces-173211-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-175817-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 34A51B35BD1
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 13:28:26 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 72F8CB36A1E
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 16:34:19 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 270077B3876
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 11:26:42 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id A86DC585FEA
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 14:22:02 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8FA583002B9;
-	Tue, 26 Aug 2025 11:27:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9E2E2352077;
+	Tue, 26 Aug 2025 14:20:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="eWSf0Fds"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="DZ4bRf5I"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4E23B321F30;
-	Tue, 26 Aug 2025 11:27:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4B75435206F;
+	Tue, 26 Aug 2025 14:20:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756207657; cv=none; b=MgtkPs9KsbofBYB2WB0rxUI+CfdkMD2RBmqtTibm26/ahTpJKjPTKITXgG6wv0XfY8qNUCLah5VN7S6NW89ke8PkHYMId2lwD2Xro75W3/ZIktgYv92Gtzp8z99V4OZSxQhLCVecv2/MM5gfClj9KYqmYjhTMT6PyaXUF5ryS4E=
+	t=1756218047; cv=none; b=B7XcMi2Yj3ZxreHnxxaD+R8B1FsLPjF4jmlSSu/6nvbMas0SDwPhoN0MPtqfHepsV5oCI3Wtqq7UJRcIhQ3P7+BA9VYjQCOdp3dAuunTdT+uUZNRwlILO6Rm0cY7BDHCtnhBpfdX3oeIJZdppjnBBaQYXFU8eilvoKZVkMpp2hA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756207657; c=relaxed/simple;
-	bh=LLc+dDqOH/7CPJJMHDjoS3QoP3DSAlCqBAeWSWqE0RY=;
+	s=arc-20240116; t=1756218047; c=relaxed/simple;
+	bh=QF6mKFb0V6KkkYcnig9tO7yoCh7G4Ea7ZE0dfZI+T8c=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=lznPp45I1mZCdMv/bj+PCK6CEjAagpfR638p1MozyffpoAQNFgKZVJN0gtzouR3zzzKuVJXROCYKSs/WBEwfPzZoyTZ2lyPkOc81mSUa8qP3kU5s98ynff057DwxIrH4gmcncdt4rgd/NuUoW7bM6iKV+wAAe6bZCXfvl8AMpMo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=eWSf0Fds; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id DB6D6C4CEF4;
-	Tue, 26 Aug 2025 11:27:36 +0000 (UTC)
+	 MIME-Version; b=iMjU8Cn2dwBppWpVGQMITb+C7ojOun0ZzGN5IGZL/Lcw0cHSNbmRdA48mVsKsF2dSyU574X8SHfn2ECGabzR10UXJq8kRn075BPxIXnN4Xbwxg+dQOPWOTRgVCfb/m2RwSRld+jnl0IHYzk2d2T467IJni3I+0V2ZHJ4iLyPQfU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=DZ4bRf5I; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8ACB9C113D0;
+	Tue, 26 Aug 2025 14:20:46 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1756207657;
-	bh=LLc+dDqOH/7CPJJMHDjoS3QoP3DSAlCqBAeWSWqE0RY=;
+	s=korg; t=1756218046;
+	bh=QF6mKFb0V6KkkYcnig9tO7yoCh7G4Ea7ZE0dfZI+T8c=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=eWSf0FdsKy0bFcc9E06Vmi4lW7baAvO+xvTaqJYoNWonD8tIZjX4UnQesBBKRs1iR
-	 0GqaCHrmm+leT0+yERt7Vd6xcwSmlWvHO7szjEOcfzGg0jNLyUyRvCdB0dTSFbBAuP
-	 twc9qkkBMB1cPmGgvwpGxfPJJfEkpy3Vhazfk88g=
+	b=DZ4bRf5IzbJE0mwfeebrxw14lQ5ErVnEjJ9GWt26djpvpd3mOQj9sNO2ZXkUrVRp6
+	 9JfKRhcaoitQ+pSsDF3qNDKM+mQbiMeWMfL8tjJrXlVlxJ4aZusUYiqo/lUin2e7hx
+	 pItTYMyB+LiOcQNQ53bloDWiIE11csKMa0cDvsa4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	=?UTF-8?q?Timur=20Krist=C3=B3f?= <timur.kristof@gmail.com>,
-	Alex Deucher <alexander.deucher@amd.com>,
-	Rodrigo Siqueira <siqueira@igalia.com>,
-	Alex Hung <alex.hung@amd.com>
-Subject: [PATCH 6.16 267/457] drm/amd/display: Dont overclock DCE 6 by 15%
-Date: Tue, 26 Aug 2025 13:09:11 +0200
-Message-ID: <20250826110943.975744876@linuxfoundation.org>
+	Ricky Wu <ricky_wu@realtek.com>,
+	Ulf Hansson <ulf.hansson@linaro.org>
+Subject: [PATCH 5.10 342/523] misc: rtsx: usb: Ensure mmc child device is active when card is present
+Date: Tue, 26 Aug 2025 13:09:12 +0200
+Message-ID: <20250826110932.905553383@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250826110937.289866482@linuxfoundation.org>
-References: <20250826110937.289866482@linuxfoundation.org>
+In-Reply-To: <20250826110924.562212281@linuxfoundation.org>
+References: <20250826110924.562212281@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,58 +59,76 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.16-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Timur Kristóf <timur.kristof@gmail.com>
+From: Ricky Wu <ricky_wu@realtek.com>
 
-commit cb7b7ae53b557d168b4af5cd8549f3eff920bfb5 upstream.
+commit 966c5cd72be8989c8a559ddef8e8ff07a37c5eb0 upstream.
 
-The extra 15% clock was added as a workaround for a Polaris issue
-which uses DCE 11, and should not have been used on DCE 6 which
-is already hardcoded to the highest possible display clock.
-Unfortunately, the extra 15% was mistakenly copied and kept
-even on code paths which don't affect Polaris.
+When a card is present in the reader, the driver currently defers
+autosuspend by returning -EAGAIN during the suspend callback to
+trigger USB remote wakeup signaling. However, this does not guarantee
+that the mmc child device has been resumed, which may cause issues if
+it remains suspended while the card is accessible.
+This patch ensures that all child devices, including the mmc host
+controller, are explicitly resumed before returning -EAGAIN. This
+fixes a corner case introduced by earlier remote wakeup handling,
+improving reliability of runtime PM when a card is inserted.
 
-This commit fixes that and also adds a check to make sure
-not to exceed the maximum DCE 6 display clock.
-
-Fixes: 8cd61c313d8b ("drm/amd/display: Raise dispclk value for Polaris")
-Fixes: dc88b4a684d2 ("drm/amd/display: make clk mgr soc specific")
-Fixes: 3ecb3b794e2c ("drm/amd/display: dc/clk_mgr: add support for SI parts (v2)")
-Signed-off-by: Timur Kristóf <timur.kristof@gmail.com>
-Acked-by: Alex Deucher <alexander.deucher@amd.com>
-Reviewed-by: Rodrigo Siqueira <siqueira@igalia.com>
-Reviewed-by: Alex Hung <alex.hung@amd.com>
-Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
-(cherry picked from commit 427980c1cbd22bb256b9385f5ce73c0937562408)
+Fixes: 883a87ddf2f1 ("misc: rtsx_usb: Use USB remote wakeup signaling for card insertion detection")
 Cc: stable@vger.kernel.org
+Signed-off-by: Ricky Wu <ricky_wu@realtek.com>
+Reviewed-by: Ulf Hansson <ulf.hansson@linaro.org>
+Link: https://lore.kernel.org/r/20250711140143.2105224-1-ricky_wu@realtek.com
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/gpu/drm/amd/display/dc/clk_mgr/dce60/dce60_clk_mgr.c |    8 +++-----
- 1 file changed, 3 insertions(+), 5 deletions(-)
+ drivers/misc/cardreader/rtsx_usb.c |   16 +++++++++-------
+ 1 file changed, 9 insertions(+), 7 deletions(-)
 
---- a/drivers/gpu/drm/amd/display/dc/clk_mgr/dce60/dce60_clk_mgr.c
-+++ b/drivers/gpu/drm/amd/display/dc/clk_mgr/dce60/dce60_clk_mgr.c
-@@ -123,11 +123,9 @@ static void dce60_update_clocks(struct c
- {
- 	struct clk_mgr_internal *clk_mgr_dce = TO_CLK_MGR_INTERNAL(clk_mgr_base);
- 	struct dm_pp_power_level_change_request level_change_req;
--	int patched_disp_clk = context->bw_ctx.bw.dce.dispclk_khz;
--
--	/*TODO: W/A for dal3 linux, investigate why this works */
--	if (!clk_mgr_dce->dfs_bypass_active)
--		patched_disp_clk = patched_disp_clk * 115 / 100;
-+	const int max_disp_clk =
-+		clk_mgr_dce->max_clks_by_state[DM_PP_CLOCKS_STATE_PERFORMANCE].display_clk_khz;
-+	int patched_disp_clk = MIN(max_disp_clk, context->bw_ctx.bw.dce.dispclk_khz);
+--- a/drivers/misc/cardreader/rtsx_usb.c
++++ b/drivers/misc/cardreader/rtsx_usb.c
+@@ -698,6 +698,12 @@ static void rtsx_usb_disconnect(struct u
+ }
  
- 	level_change_req.power_level = dce_get_required_clocks_state(clk_mgr_base, context);
- 	/* get max clock state from PPLIB */
+ #ifdef CONFIG_PM
++static int rtsx_usb_resume_child(struct device *dev, void *data)
++{
++	pm_request_resume(dev);
++	return 0;
++}
++
+ static int rtsx_usb_suspend(struct usb_interface *intf, pm_message_t message)
+ {
+ 	struct rtsx_ucr *ucr =
+@@ -713,8 +719,10 @@ static int rtsx_usb_suspend(struct usb_i
+ 			mutex_unlock(&ucr->dev_mutex);
+ 
+ 			/* Defer the autosuspend if card exists */
+-			if (val & (SD_CD | MS_CD))
++			if (val & (SD_CD | MS_CD)) {
++				device_for_each_child(&intf->dev, NULL, rtsx_usb_resume_child);
+ 				return -EAGAIN;
++			}
+ 		} else {
+ 			/* There is an ongoing operation*/
+ 			return -EAGAIN;
+@@ -724,12 +732,6 @@ static int rtsx_usb_suspend(struct usb_i
+ 	return 0;
+ }
+ 
+-static int rtsx_usb_resume_child(struct device *dev, void *data)
+-{
+-	pm_request_resume(dev);
+-	return 0;
+-}
+-
+ static int rtsx_usb_resume(struct usb_interface *intf)
+ {
+ 	device_for_each_child(&intf->dev, NULL, rtsx_usb_resume_child);
 
 
 
