@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-173394-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-174777-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4923CB35CAE
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 13:37:14 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id D9A8DB3650B
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 15:44:02 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 047387C4FB1
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 11:37:13 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id C55798A61CB
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 13:35:29 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 68794322C98;
-	Tue, 26 Aug 2025 11:35:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6BF291FBCB1;
+	Tue, 26 Aug 2025 13:34:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Ks89mHWX"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ae8LW6CP"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1F7102E267D;
-	Tue, 26 Aug 2025 11:35:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2807522DFA7;
+	Tue, 26 Aug 2025 13:34:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756208134; cv=none; b=NntZVZXkwHcQ7go8OpQvFpjj7vG0Za45Uny6phvpF2KcEIsWtFg38mCkX59PxZj5dKfBu6uOY0ZXO3dgon+qixA1nnDPwkxhZXue5QJkP4HAz2HonS3SqtDM0NvEv8RVc/ENPj+V1cJuRmU2haxPrLPl7zFYDYxRgem02dcSreQ=
+	t=1756215290; cv=none; b=C8pq8Aagl1FnUrrtpIYldgS3kxEJgf6vkxr1NFuWe1zNjtwbxRqYSqsV7+yQCmRleg4YvFJDSR/CZiEZ3s4stcgy6QcpvP/izyzjSVwL1iw+3nF4iR7y4q41AFEAdWf/nPZ275vrayzwaRba3Vfa397u0ZuvAztGOXcA+7O2SHs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756208134; c=relaxed/simple;
-	bh=JkI1q5e/asneZyX2Gt1mn/KFhjPtBqxtLa8SrgZ2n2I=;
+	s=arc-20240116; t=1756215290; c=relaxed/simple;
+	bh=tZWsXvPkxErUXdzP7lupJwGUgEsECwt4il8uYMZS7oM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=ZL7wV/D90OH2gZ/OQJ8kuvJzUCAKpi0p4Jc0LBg9MlH6uWbFbf4trFztrLta1uOF+KY9l2BEsgLqXSzz5sonF2Hehwa4fxTugnFy1u4CnrdxIT+W+7CJJKKIRZt5TFeiuzntf2goURT+qX6q6q2ofVPLQy5yRnDWGEbZQVGs/30=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Ks89mHWX; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A6667C4CEF1;
-	Tue, 26 Aug 2025 11:35:33 +0000 (UTC)
+	 MIME-Version; b=nUIwN12NIFlHWb2c1OJQVdupED/WgPceakgHmlbqg3BOM8bKMnZWZsM29OLJrloCeceuYLlfwX/mt76Qlcnr53GXkLUy5piuISAs7qCDMJuzxneQt4Gou5ryXp91NYL4TrtCUYphjLll4PiBofc/Rxl4ES/JL3mpRaPNpoXN8/A=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ae8LW6CP; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3B071C4CEF1;
+	Tue, 26 Aug 2025 13:34:48 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1756208134;
-	bh=JkI1q5e/asneZyX2Gt1mn/KFhjPtBqxtLa8SrgZ2n2I=;
+	s=korg; t=1756215289;
+	bh=tZWsXvPkxErUXdzP7lupJwGUgEsECwt4il8uYMZS7oM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Ks89mHWXN6BAvWhFHPSsJnz58zac1nN47M/1HVfTKrZqWOKyunC/BHlGUvVggEST7
-	 KB8hQUKA8XchgdLksijYBNZPT0LFLGQr6nnDFgsUq3OPPFAKSGGGt8tfo3svVtg4a4
-	 a4sY8EGelYy9pX0SjPNgzmr8vmNkEaE4tSG74iTw=
+	b=ae8LW6CPDZ6LWwiNX9jPNDPYFlOroifS4JyRIRfpcCUNNOqQSTTp1MLDUt82r+RZf
+	 C13eSB9rahf2ps8zCELGJZPD+Bc4EqeK8RA9C5h5qCU+jyKeIiX0sspV5KVK/JBAF2
+	 QT2iQ0DT5TPsmCy3gFRrwAm33PT4xGCYasF7a3P4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Parthiban Veerasooran <parthiban.veerasooran@microchip.com>,
-	Jakub Kicinski <kuba@kernel.org>,
+	Jan Beulich <jbeulich@suse.com>,
+	Josh Poimboeuf <jpoimboe@kernel.org>,
+	Juergen Gross <jgross@suse.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.16 420/457] microchip: lan865x: fix missing netif_start_queue() call on device open
+Subject: [PATCH 6.1 451/482] compiler: remove __ADDRESSABLE_ASM{_STR,}() again
 Date: Tue, 26 Aug 2025 13:11:44 +0200
-Message-ID: <20250826110947.673816298@linuxfoundation.org>
+Message-ID: <20250826110941.972204833@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250826110937.289866482@linuxfoundation.org>
-References: <20250826110937.289866482@linuxfoundation.org>
+In-Reply-To: <20250826110930.769259449@linuxfoundation.org>
+References: <20250826110930.769259449@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,48 +63,75 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.16-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Parthiban Veerasooran <parthiban.veerasooran@microchip.com>
+From: Jan Beulich <jbeulich@suse.com>
 
-[ Upstream commit 1683fd1b2fa79864d3c7a951d9cea0a9ba1a1923 ]
+[ Upstream commit 8ea815399c3fcce1889bd951fec25b5b9a3979c1 ]
 
-This fixes an issue where the transmit queue is started implicitly only
-the very first time the device is registered. When the device is taken
-down and brought back up again (using `ip` or `ifconfig`), the transmit
-queue is not restarted, causing packet transmission to hang.
+__ADDRESSABLE_ASM_STR() is where the necessary stringification happens.
+As long as "sym" doesn't contain any odd characters, no quoting is
+required for its use with .quad / .long. In fact the quotation gets in
+the way with gas 2.25; it's only from 2.26 onwards that quoted symbols
+are half-way properly supported.
 
-Adding an explicit call to netif_start_queue() in lan865x_net_open()
-ensures the transmit queue is properly started every time the device
-is reopened.
+However, assembly being different from C anyway, drop
+__ADDRESSABLE_ASM_STR() and its helper macro altogether. A simple
+.global directive will suffice to get the symbol "declared", i.e. into
+the symbol table. While there also stop open-coding STATIC_CALL_TRAMP()
+and STATIC_CALL_KEY().
 
-Fixes: 5cd2340cb6a3 ("microchip: lan865x: add driver support for Microchip's LAN865X MAC-PHY")
-Signed-off-by: Parthiban Veerasooran <parthiban.veerasooran@microchip.com>
-Link: https://patch.msgid.link/20250818060514.52795-2-parthiban.veerasooran@microchip.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Fixes: 0ef8047b737d ("x86/static-call: provide a way to do very early static-call updates")
+Signed-off-by: Jan Beulich <jbeulich@suse.com>
+Acked-by: Josh Poimboeuf <jpoimboe@kernel.org>
+Cc: stable@vger.kernel.org
+Signed-off-by: Juergen Gross <jgross@suse.com>
+Message-ID: <609d2c74-de13-4fae-ab1a-1ec44afb948d@suse.com>
+[ Adjust context ]
 Signed-off-by: Sasha Levin <sashal@kernel.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/net/ethernet/microchip/lan865x/lan865x.c | 2 ++
- 1 file changed, 2 insertions(+)
+ arch/x86/include/asm/xen/hypercall.h |    5 +++--
+ include/linux/compiler.h             |    8 --------
+ 2 files changed, 3 insertions(+), 10 deletions(-)
 
-diff --git a/drivers/net/ethernet/microchip/lan865x/lan865x.c b/drivers/net/ethernet/microchip/lan865x/lan865x.c
-index dd436bdff0f8..d03f5a8de58d 100644
---- a/drivers/net/ethernet/microchip/lan865x/lan865x.c
-+++ b/drivers/net/ethernet/microchip/lan865x/lan865x.c
-@@ -311,6 +311,8 @@ static int lan865x_net_open(struct net_device *netdev)
+--- a/arch/x86/include/asm/xen/hypercall.h
++++ b/arch/x86/include/asm/xen/hypercall.h
+@@ -94,12 +94,13 @@ DECLARE_STATIC_CALL(xen_hypercall, xen_h
+ #ifdef MODULE
+ #define __ADDRESSABLE_xen_hypercall
+ #else
+-#define __ADDRESSABLE_xen_hypercall __ADDRESSABLE_ASM_STR(__SCK__xen_hypercall)
++#define __ADDRESSABLE_xen_hypercall \
++	__stringify(.global STATIC_CALL_KEY(xen_hypercall);)
+ #endif
  
- 	phy_start(netdev->phydev);
+ #define __HYPERCALL					\
+ 	__ADDRESSABLE_xen_hypercall			\
+-	"call __SCT__xen_hypercall"
++	__stringify(call STATIC_CALL_TRAMP(xen_hypercall))
  
-+	netif_start_queue(netdev);
-+
- 	return 0;
- }
+ #define __HYPERCALL_ENTRY(x)	"a" (x)
  
--- 
-2.50.1
-
+--- a/include/linux/compiler.h
++++ b/include/linux/compiler.h
+@@ -235,14 +235,6 @@ static inline void *offset_to_ptr(const
+ #define __ADDRESSABLE(sym) \
+ 	___ADDRESSABLE(sym, __section(".discard.addressable"))
+ 
+-#define __ADDRESSABLE_ASM(sym)						\
+-	.pushsection .discard.addressable,"aw";				\
+-	.align ARCH_SEL(8,4);						\
+-	ARCH_SEL(.quad, .long) __stringify(sym);			\
+-	.popsection;
+-
+-#define __ADDRESSABLE_ASM_STR(sym) __stringify(__ADDRESSABLE_ASM(sym))
+-
+ /* &a[0] degrades to a pointer: a different type from an array */
+ #define __must_be_array(a)	BUILD_BUG_ON_ZERO(__same_type((a), &(a)[0]))
+ 
 
 
 
