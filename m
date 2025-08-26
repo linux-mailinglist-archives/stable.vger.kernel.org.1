@@ -1,55 +1,57 @@
-Return-Path: <stable+bounces-173999-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-176059-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id BB34CB360CC
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 15:04:04 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 71320B36B6E
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 16:45:52 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 8BB7E1BC00FC
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 13:00:47 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 4F2981C8168D
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 14:34:30 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4DDC222DFB8;
-	Tue, 26 Aug 2025 13:00:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id EBD2135CED0;
+	Tue, 26 Aug 2025 14:31:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="a5NQckYw"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="zgXWRhAj"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0A58418DB01;
-	Tue, 26 Aug 2025 13:00:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A6CBC353368;
+	Tue, 26 Aug 2025 14:31:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756213225; cv=none; b=fHNxLM2ct3s1TKxqrJvGQjj7i8qDilQ3C6LMf/yrtCePbFgIBbagVb1j1WjiLfvh5P31yFgpKD/OnhNpbypeNs8A72/XKX362DdblrZPQ6pkh5PEIcZ61XinArnvLRnPFUYcaZu0cHbxSwx4fLo0Xo/uoQBrWD/2B7/LQfh5lV8=
+	t=1756218676; cv=none; b=IhNMyAKNQgvBZ8RJthkuEPjf28pwX3Acg4ZJSJJ/1KwxB5pDrOtnu00QxHAaxLuojvhj6kZRRD79uXdvU+/TukPHpSgw7aeYLTINk48Zmoq2fqjTXQu7bHiMiZFv1mqwQYCfRgoEnhQU94syNIdWDXMmU7W2DED28O5eqU5KTxc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756213225; c=relaxed/simple;
-	bh=EJCLGANMnrkkmbB0124qqtjZdpOWiZXEaOH5R8JKdGs=;
+	s=arc-20240116; t=1756218676; c=relaxed/simple;
+	bh=VUgys3ckiuyf6wKH7ZW/GQp9afnOLSTBKvJVgVKY2bs=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=RwZ5m6KFaO3q+3f+vcY4EvUtOVmhgNH46sJ0REP4ygYsE+kIUjrbL9V5f/7x651jLFar/7cud2R2K4oj3B+0WE9kGOzMTcVW78IuAHk9KJH6qZiyj+FrwOV4BagDs2Geo1bYIymCGKvKksFVUg+k6QadCkox4jEbAYKfwqReTxM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=a5NQckYw; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 93993C4CEF1;
-	Tue, 26 Aug 2025 13:00:24 +0000 (UTC)
+	 MIME-Version; b=MBEGsdqjtHt7JGyZiu+XkYc26KjzWWcyUBtx9s4NFShroY2QwOEgs9GvLOHdxvz7lxmY8zBJ9pBmmm0uGqdLDgWlU1leCWQj0ELkQn/OU630lVboFbcR0ZbqU6TvxIRIqy89m5Luocuexx7XhmZANmFyki526EiFlAYTEvJblMc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=zgXWRhAj; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3BE8AC4CEF1;
+	Tue, 26 Aug 2025 14:31:16 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1756213224;
-	bh=EJCLGANMnrkkmbB0124qqtjZdpOWiZXEaOH5R8JKdGs=;
+	s=korg; t=1756218676;
+	bh=VUgys3ckiuyf6wKH7ZW/GQp9afnOLSTBKvJVgVKY2bs=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=a5NQckYwj5XUIU96myk3oqwHGgmDjLecaLYlv7mBHFywq7BusfGiBS7RyCoyeGCN0
-	 hhWM3wgSRgUYbEdXj/6YkKwZQbb8y+p3V/zWk5RnJ5IWKJLfbxWEwbM59hrPzyZYg4
-	 GKhhLgO6ZnsUUgoM2ucb/BCOgVEcISCFmZ9a3gJM=
+	b=zgXWRhAjj1gusk/kKgzqnxCYs44EZlk/wLlWUM2KSBMdIPrDZiFnIxSKpbB9T0K1b
+	 W1xFh5VNPXLwLHjoHcJ8bGBQ3kfkHai10V176np/h9aDUAyLPiQMivSq+ZWurBjStN
+	 guIhlTiTBknpBTvUavhzAPkBPkdtb5kdKskxm/8g=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Mikulas Patocka <mpatocka@redhat.com>,
+	Daniel Palmer <daniel@0x0f.com>,
+	Finn Thain <fthain@linux-m68k.org>,
+	Geert Uytterhoeven <geert@linux-m68k.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 268/587] dm-mpath: dont print the "loaded" message if registering fails
+Subject: [PATCH 5.4 091/403] m68k: Dont unregister boot console needlessly
 Date: Tue, 26 Aug 2025 13:06:57 +0200
-Message-ID: <20250826110959.746278248@linuxfoundation.org>
+Message-ID: <20250826110909.181612722@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250826110952.942403671@linuxfoundation.org>
-References: <20250826110952.942403671@linuxfoundation.org>
+In-Reply-To: <20250826110905.607690791@linuxfoundation.org>
+References: <20250826110905.607690791@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,89 +63,152 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+5.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Mikulas Patocka <mpatocka@redhat.com>
+From: Finn Thain <fthain@linux-m68k.org>
 
-[ Upstream commit 6e11952a6abc4641dc8ae63f01b318b31b44e8db ]
+[ Upstream commit 83f672a7f69ec38b1bbb27221e342937f68c11c7 ]
 
-If dm_register_path_selector, don't print the "version X loaded" message.
+When MACH_IS_MVME147, the boot console calls mvme147_scc_write() to
+generate console output. That will continue to work even after
+debug_cons_nputs() becomes unavailable so there's no need to
+unregister the boot console.
 
-Signed-off-by: Mikulas Patocka <mpatocka@redhat.com>
+Take the opportunity to remove a repeated MACH_IS_* test. Use the
+actual .write method (instead of a wrapper) and test that pointer
+instead. This means adding an unused parameter to debug_cons_nputs() for
+consistency with the struct console API.
+
+early_printk.c is only built when CONFIG_EARLY_PRINTK=y. As of late,
+head.S is only built when CONFIG_MMU_MOTOROLA=y. So let the former symbol
+depend on the latter, to obviate some ifdef conditionals.
+
+Cc: Daniel Palmer <daniel@0x0f.com>
+Fixes: 077b33b9e283 ("m68k: mvme147: Reinstate early console")
+Signed-off-by: Finn Thain <fthain@linux-m68k.org>
+Reviewed-by: Geert Uytterhoeven <geert@linux-m68k.org>
+Link: https://lore.kernel.org/d1d4328e5aa9a87bd8352529ce62b767731c0530.1743467205.git.fthain@linux-m68k.org
+Signed-off-by: Geert Uytterhoeven <geert@linux-m68k.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/md/dm-ps-historical-service-time.c | 4 +++-
- drivers/md/dm-ps-queue-length.c            | 4 +++-
- drivers/md/dm-ps-round-robin.c             | 4 +++-
- drivers/md/dm-ps-service-time.c            | 4 +++-
- 4 files changed, 12 insertions(+), 4 deletions(-)
+ arch/m68k/Kconfig.debug         |  2 +-
+ arch/m68k/kernel/early_printk.c | 42 +++++++++++----------------------
+ arch/m68k/kernel/head.S         |  8 +++----
+ 3 files changed, 19 insertions(+), 33 deletions(-)
 
-diff --git a/drivers/md/dm-ps-historical-service-time.c b/drivers/md/dm-ps-historical-service-time.c
-index b49e10d76d03..2c8626a83de4 100644
---- a/drivers/md/dm-ps-historical-service-time.c
-+++ b/drivers/md/dm-ps-historical-service-time.c
-@@ -541,8 +541,10 @@ static int __init dm_hst_init(void)
+diff --git a/arch/m68k/Kconfig.debug b/arch/m68k/Kconfig.debug
+index f43643111eaf..f9fa89ba259d 100644
+--- a/arch/m68k/Kconfig.debug
++++ b/arch/m68k/Kconfig.debug
+@@ -10,7 +10,7 @@ config BOOTPARAM_STRING
+ 
+ config EARLY_PRINTK
+ 	bool "Early printk"
+-	depends on !(SUN3 || M68000 || COLDFIRE)
++	depends on MMU_MOTOROLA
+ 	help
+           Write kernel log output directly to a serial port.
+           Where implemented, output goes to the framebuffer as well.
+diff --git a/arch/m68k/kernel/early_printk.c b/arch/m68k/kernel/early_printk.c
+index f11ef9f1f56f..521cbb8a150c 100644
+--- a/arch/m68k/kernel/early_printk.c
++++ b/arch/m68k/kernel/early_printk.c
+@@ -16,25 +16,10 @@
+ #include "../mvme147/mvme147.h"
+ #include "../mvme16x/mvme16x.h"
+ 
+-asmlinkage void __init debug_cons_nputs(const char *s, unsigned n);
+-
+-static void __ref debug_cons_write(struct console *c,
+-				   const char *s, unsigned n)
+-{
+-#if !(defined(CONFIG_SUN3) || defined(CONFIG_M68000) || \
+-      defined(CONFIG_COLDFIRE))
+-	if (MACH_IS_MVME147)
+-		mvme147_scc_write(c, s, n);
+-	else if (MACH_IS_MVME16x)
+-		mvme16x_cons_write(c, s, n);
+-	else
+-		debug_cons_nputs(s, n);
+-#endif
+-}
++asmlinkage void __init debug_cons_nputs(struct console *c, const char *s, unsigned int n);
+ 
+ static struct console early_console_instance = {
+ 	.name  = "debug",
+-	.write = debug_cons_write,
+ 	.flags = CON_PRINTBUFFER | CON_BOOT,
+ 	.index = -1
+ };
+@@ -44,6 +29,12 @@ static int __init setup_early_printk(char *buf)
+ 	if (early_console || buf)
+ 		return 0;
+ 
++	if (MACH_IS_MVME147)
++		early_console_instance.write = mvme147_scc_write;
++	else if (MACH_IS_MVME16x)
++		early_console_instance.write = mvme16x_cons_write;
++	else
++		early_console_instance.write = debug_cons_nputs;
+ 	early_console = &early_console_instance;
+ 	register_console(early_console);
+ 
+@@ -51,20 +42,15 @@ static int __init setup_early_printk(char *buf)
+ }
+ early_param("earlyprintk", setup_early_printk);
+ 
+-/*
+- * debug_cons_nputs() defined in arch/m68k/kernel/head.S cannot be called
+- * after init sections are discarded (for platforms that use it).
+- */
+-#if !(defined(CONFIG_SUN3) || defined(CONFIG_M68000) || \
+-      defined(CONFIG_COLDFIRE))
+-
+ static int __init unregister_early_console(void)
  {
- 	int r = dm_register_path_selector(&hst_ps);
+-	if (!early_console || MACH_IS_MVME16x)
+-		return 0;
++	/*
++	 * debug_cons_nputs() defined in arch/m68k/kernel/head.S cannot be
++	 * called after init sections are discarded (for platforms that use it).
++	 */
++	if (early_console && early_console->write == debug_cons_nputs)
++		return unregister_console(early_console);
  
--	if (r < 0)
-+	if (r < 0) {
- 		DMERR("register failed %d", r);
-+		return r;
-+	}
- 
- 	DMINFO("version " HST_VERSION " loaded");
- 
-diff --git a/drivers/md/dm-ps-queue-length.c b/drivers/md/dm-ps-queue-length.c
-index e305f05ad1e5..eb543e6431e0 100644
---- a/drivers/md/dm-ps-queue-length.c
-+++ b/drivers/md/dm-ps-queue-length.c
-@@ -260,8 +260,10 @@ static int __init dm_ql_init(void)
- {
- 	int r = dm_register_path_selector(&ql_ps);
- 
--	if (r < 0)
-+	if (r < 0) {
- 		DMERR("register failed %d", r);
-+		return r;
-+	}
- 
- 	DMINFO("version " QL_VERSION " loaded");
- 
-diff --git a/drivers/md/dm-ps-round-robin.c b/drivers/md/dm-ps-round-robin.c
-index 0f04b673597a..62ac820125cb 100644
---- a/drivers/md/dm-ps-round-robin.c
-+++ b/drivers/md/dm-ps-round-robin.c
-@@ -220,8 +220,10 @@ static int __init dm_rr_init(void)
- {
- 	int r = dm_register_path_selector(&rr_ps);
- 
--	if (r < 0)
-+	if (r < 0) {
- 		DMERR("register failed %d", r);
-+		return r;
-+	}
- 
- 	DMINFO("version " RR_VERSION " loaded");
- 
-diff --git a/drivers/md/dm-ps-service-time.c b/drivers/md/dm-ps-service-time.c
-index 969d31c40272..f8c43aecdb27 100644
---- a/drivers/md/dm-ps-service-time.c
-+++ b/drivers/md/dm-ps-service-time.c
-@@ -341,8 +341,10 @@ static int __init dm_st_init(void)
- {
- 	int r = dm_register_path_selector(&st_ps);
- 
--	if (r < 0)
-+	if (r < 0) {
- 		DMERR("register failed %d", r);
-+		return r;
-+	}
- 
- 	DMINFO("version " ST_VERSION " loaded");
- 
+-	return unregister_console(early_console);
++	return 0;
+ }
+ late_initcall(unregister_early_console);
+-
+-#endif
+diff --git a/arch/m68k/kernel/head.S b/arch/m68k/kernel/head.S
+index a54788458ca3..692cdcfb3520 100644
+--- a/arch/m68k/kernel/head.S
++++ b/arch/m68k/kernel/head.S
+@@ -3242,8 +3242,8 @@ func_return	putn
+  *	turns around and calls the internal routines.  This routine
+  *	is used by the boot console.
+  *
+- *	The calling parameters are:
+- *		void debug_cons_nputs(const char *str, unsigned length)
++ *	The function signature is -
++ *		void debug_cons_nputs(struct console *c, const char *s, unsigned int n)
+  *
+  *	This routine does NOT understand variable arguments only
+  *	simple strings!
+@@ -3252,8 +3252,8 @@ ENTRY(debug_cons_nputs)
+ 	moveml	%d0/%d1/%a0,%sp@-
+ 	movew	%sr,%sp@-
+ 	ori	#0x0700,%sr
+-	movel	%sp@(18),%a0		/* fetch parameter */
+-	movel	%sp@(22),%d1		/* fetch parameter */
++	movel	%sp@(22),%a0		/* char *s */
++	movel	%sp@(26),%d1		/* unsigned int n */
+ 	jra	2f
+ 1:
+ #ifdef CONSOLE_DEBUG
 -- 
 2.39.5
 
