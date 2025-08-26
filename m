@@ -1,55 +1,58 @@
-Return-Path: <stable+bounces-175483-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-173833-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id DFF8DB3684E
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 16:15:04 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1062DB36004
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 14:56:20 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id DC326561FBB
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 14:07:40 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 783D91BA4B4E
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 12:54:34 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E7A34352FF1;
-	Tue, 26 Aug 2025 14:06:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id CDCEE2264D3;
+	Tue, 26 Aug 2025 12:53:05 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ho6cBKil"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="KM52WF5G"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9D288352FDA;
-	Tue, 26 Aug 2025 14:06:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8C8DB224B09;
+	Tue, 26 Aug 2025 12:53:05 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756217163; cv=none; b=HyTGO9sH6rDHi0oCdVyU0o7L7E6Fr4hkqiWsRrALH8PWb46QBxcbUAP1ujTcgEqm1XTVYYoFREq7pX3NNonCxL0Lz5u40elpmRvmg5f69U7lodgZk0MssObiDiYvmC2DtUV+W89BGLPAcXl6EXMRGJnAzynxLQHecx/uO+iQEVc=
+	t=1756212785; cv=none; b=Pc7W98y8ZCacFvGSIeyUn+fjfsTQlLj2Vwm4TF4xJ8AsPgltCxO/GZTjitdxg8GNt35n5+/Tuw2LVUw13waBf+2WoydqRLITKqFkq5Q/be8CAEH5KpGEFHek9dkrzWTTSnzgBnbi8R48ubJJgJw3KVQMv/wMzLSzcl+Y/BpePCg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756217163; c=relaxed/simple;
-	bh=+jaNbMfzAgaCwdneBOtH+X5+oWYbjL4iPXBeNmPYddY=;
+	s=arc-20240116; t=1756212785; c=relaxed/simple;
+	bh=ZZ7rH2YS8Q/hcwtA+W7Omd25n/+Oh6K4I0n5b0FgBEk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=HzD2UUBLh7DVSWexns9TPTrBeOiFtsjMtuUmCoKJ9Yzr8j2C1yRYgKRD81+nOXDd6Tf6RpTaCDU8urRbYe7UVuG8h57ry6hBcAr0+waHbesy8VYJsxC+ZTsVN9QnysIAtDa+Cb1hwYrAwCL9ep06iZBEeOw/Gko8r/eulJXtj0k=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ho6cBKil; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2D771C113CF;
-	Tue, 26 Aug 2025 14:06:03 +0000 (UTC)
+	 MIME-Version:Content-Type; b=QI/qebCo/+8rTUOWWetSpQxfb3anCSLH+tLGBJM0hZL0OLt0hbft6fBqoyGu4elrHIjb9yLZP+IoZwNhKc/OwgoVM5IYjaaly7S77bfgQp+6Oyafcqbsea185TETaMYbY+nV1BY7Hfq87IutZN9ph+fALdSjvE6HJBZUJb2Js0U=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=KM52WF5G; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1D536C4CEF1;
+	Tue, 26 Aug 2025 12:53:04 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1756217163;
-	bh=+jaNbMfzAgaCwdneBOtH+X5+oWYbjL4iPXBeNmPYddY=;
+	s=korg; t=1756212785;
+	bh=ZZ7rH2YS8Q/hcwtA+W7Omd25n/+Oh6K4I0n5b0FgBEk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=ho6cBKil68Vci6VZXbiDdQWBV6eOYWrjrjT6bLgLIL5jf+KW7d9d0D6H/3uHqE8VL
-	 rSRj8ytD43LhoeH4/jWgEcNjkPaOvNkW/RCrvv7hSXwRA+SAhQJjGu0zjFqAxlsIX1
-	 RH23tZ1XsUC+zTySUyfibUxNJe33LpWO+2zeHrOI=
+	b=KM52WF5GMsDlj0b9FAvLmEGRv5onJ3+k/AtQDCh5VdDjNi7uuyT1Aj5QXmwwB9Ki8
+	 ffBlZtVE0ZGc2JhXHYDmU/D0gMvwiNwjypKzhpqvgqdUwr8JQ3XMo6ypqvi6Zytdyx
+	 mEWmzW9sHL1hUgCk+OybcQlYfnu01ip0QkNwOHZY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Luiz Augusto von Dentz <luiz.von.dentz@intel.com>,
+	David Lechner <dlechner@baylibre.com>,
+	Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
+	=?UTF-8?q?Nuno=20S=C3=A1?= <nuno.sa@analog.com>,
+	Jonathan Cameron <Jonathan.Cameron@huawei.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 040/523] Bluetooth: SMP: If an unallowed command is received consider it a failure
-Date: Tue, 26 Aug 2025 13:04:10 +0200
-Message-ID: <20250826110925.587502919@linuxfoundation.org>
+Subject: [PATCH 6.6 102/587] iio: adc: ad_sigma_delta: dont overallocate scan buffer
+Date: Tue, 26 Aug 2025 13:04:11 +0200
+Message-ID: <20250826110955.536119176@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250826110924.562212281@linuxfoundation.org>
-References: <20250826110924.562212281@linuxfoundation.org>
+In-Reply-To: <20250826110952.942403671@linuxfoundation.org>
+References: <20250826110952.942403671@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -59,133 +62,44 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Luiz Augusto von Dentz <luiz.von.dentz@intel.com>
+From: David Lechner <dlechner@baylibre.com>
 
-[ Upstream commit fe4840df0bdf341f376885271b7680764fe6b34e ]
+[ Upstream commit 5a2f15c5a8e017d0951e6dc62aa7b5b634f56881 ]
 
-If a command is received while a bonding is ongoing consider it a
-pairing failure so the session is cleanup properly and the device is
-disconnected immediately instead of continuing with other commands that
-may result in the session to get stuck without ever completing such as
-the case bellow:
+Fix overallocating the size of the scan buffer by converting bits to
+bytes. The size is meant to be in bytes, so scanbits needs to be
+divided by 8.
 
-> ACL Data RX: Handle 2048 flags 0x02 dlen 21
-      SMP: Identity Information (0x08) len 16
-        Identity resolving key[16]: d7e08edef97d3e62cd2331f82d8073b0
-> ACL Data RX: Handle 2048 flags 0x02 dlen 21
-      SMP: Signing Information (0x0a) len 16
-        Signature key[16]: 1716c536f94e843a9aea8b13ffde477d
-Bluetooth: hci0: unexpected SMP command 0x0a from XX:XX:XX:XX:XX:XX
-> ACL Data RX: Handle 2048 flags 0x02 dlen 12
-      SMP: Identity Address Information (0x09) len 7
-        Address: XX:XX:XX:XX:XX:XX (Intel Corporate)
-
-While accourding to core spec 6.1 the expected order is always BD_ADDR
-first first then CSRK:
-
-When using LE legacy pairing, the keys shall be distributed in the
-following order:
-
-    LTK by the Peripheral
-
-    EDIV and Rand by the Peripheral
-
-    IRK by the Peripheral
-
-    BD_ADDR by the Peripheral
-
-    CSRK by the Peripheral
-
-    LTK by the Central
-
-    EDIV and Rand by the Central
-
-    IRK by the Central
-
-    BD_ADDR by the Central
-
-    CSRK by the Central
-
-When using LE Secure Connections, the keys shall be distributed in the
-following order:
-
-    IRK by the Peripheral
-
-    BD_ADDR by the Peripheral
-
-    CSRK by the Peripheral
-
-    IRK by the Central
-
-    BD_ADDR by the Central
-
-    CSRK by the Central
-
-According to the Core 6.1 for commands used for key distribution "Key
-Rejected" can be used:
-
-  '3.6.1. Key distribution and generation
-
-  A device may reject a distributed key by sending the Pairing Failed command
-  with the reason set to "Key Rejected".
-
-Fixes: b28b4943660f ("Bluetooth: Add strict checks for allowed SMP PDUs")
-Signed-off-by: Luiz Augusto von Dentz <luiz.von.dentz@intel.com>
+Signed-off-by: David Lechner <dlechner@baylibre.com>
+Reviewed-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+Reviewed-by: Nuno Sá <nuno.sa@analog.com>
+Link: https://patch.msgid.link/20250701-iio-adc-ad7173-add-spi-offload-support-v3-1-42abb83e3dac@baylibre.com
+Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/bluetooth/smp.c | 19 ++++++++++++++++++-
- net/bluetooth/smp.h |  1 +
- 2 files changed, 19 insertions(+), 1 deletion(-)
+ drivers/iio/adc/ad_sigma_delta.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/net/bluetooth/smp.c b/net/bluetooth/smp.c
-index 8f9566f37498e..5a56e862ba13c 100644
---- a/net/bluetooth/smp.c
-+++ b/net/bluetooth/smp.c
-@@ -2972,8 +2972,25 @@ static int smp_sig_channel(struct l2cap_chan *chan, struct sk_buff *skb)
- 	if (code > SMP_CMD_MAX)
- 		goto drop;
+diff --git a/drivers/iio/adc/ad_sigma_delta.c b/drivers/iio/adc/ad_sigma_delta.c
+index 533667eefe41..71e775a10a91 100644
+--- a/drivers/iio/adc/ad_sigma_delta.c
++++ b/drivers/iio/adc/ad_sigma_delta.c
+@@ -378,7 +378,7 @@ static int ad_sd_buffer_postenable(struct iio_dev *indio_dev)
+ 			return ret;
+ 	}
  
--	if (smp && !test_and_clear_bit(code, &smp->allow_cmd))
-+	if (smp && !test_and_clear_bit(code, &smp->allow_cmd)) {
-+		/* If there is a context and the command is not allowed consider
-+		 * it a failure so the session is cleanup properly.
-+		 */
-+		switch (code) {
-+		case SMP_CMD_IDENT_INFO:
-+		case SMP_CMD_IDENT_ADDR_INFO:
-+		case SMP_CMD_SIGN_INFO:
-+			/* 3.6.1. Key distribution and generation
-+			 *
-+			 * A device may reject a distributed key by sending the
-+			 * Pairing Failed command with the reason set to
-+			 * "Key Rejected".
-+			 */
-+			smp_failure(conn, SMP_KEY_REJECTED);
-+			break;
-+		}
- 		goto drop;
-+	}
- 
- 	/* If we don't have a context the only allowed commands are
- 	 * pairing request and security request.
-diff --git a/net/bluetooth/smp.h b/net/bluetooth/smp.h
-index 5fe68e255cb29..bad594642a53d 100644
---- a/net/bluetooth/smp.h
-+++ b/net/bluetooth/smp.h
-@@ -138,6 +138,7 @@ struct smp_cmd_keypress_notify {
- #define SMP_NUMERIC_COMP_FAILED		0x0c
- #define SMP_BREDR_PAIRING_IN_PROGRESS	0x0d
- #define SMP_CROSS_TRANSP_NOT_ALLOWED	0x0e
-+#define SMP_KEY_REJECTED		0x0f
- 
- #define SMP_MIN_ENC_KEY_SIZE		7
- #define SMP_MAX_ENC_KEY_SIZE		16
+-	samples_buf_size = ALIGN(slot * indio_dev->channels[0].scan_type.storagebits, 8);
++	samples_buf_size = ALIGN(slot * indio_dev->channels[0].scan_type.storagebits / 8, 8);
+ 	samples_buf_size += sizeof(int64_t);
+ 	samples_buf = devm_krealloc(&sigma_delta->spi->dev, sigma_delta->samples_buf,
+ 				    samples_buf_size, GFP_KERNEL);
 -- 
 2.39.5
 
