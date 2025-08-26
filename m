@@ -1,57 +1,58 @@
-Return-Path: <stable+bounces-173875-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-175033-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id D1CA4B3603B
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 14:58:40 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4C639B36549
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 15:46:37 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 9841E1BA5DB2
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 12:56:19 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 828A67B3215
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 13:44:50 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E22F8221726;
-	Tue, 26 Aug 2025 12:54:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 40C0B345752;
+	Tue, 26 Aug 2025 13:46:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="pl3UKg8q"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="c0tJyGax"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9F944221DB1;
-	Tue, 26 Aug 2025 12:54:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EF19233A00A;
+	Tue, 26 Aug 2025 13:46:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756212896; cv=none; b=hz0ZgVstkCrvunSwb0hK5ZB6BtotrGHQl5uVwLeNSjT9B9Ph6lAB9b0DRzU0jpJJIliUSVppH/u8la95Y4ZFJ5IGKMKbQ7PrZU1WCtrz1yzPS4VU/N5QwsVikn37NTwrlGPGyBykh9CVNFzupR0pbfEfX1FL2gkSC+KcF+QD/7U=
+	t=1756215964; cv=none; b=BSoiUHlv2tc+2DZYxIzq8/6CZt0kfH/ByroaeayuxUh50T1xhsCPGmrqG8hpsj8iYuBeHRG73YkRJPdYEBF1njwC6W4AgKBAJrZLFXHFovcEJeEyTl0jwGdxhYLy6RbC19XEb1WXdpudFtwfNM5v8Q9dZ/H+Jlu+vDqZ73XDslU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756212896; c=relaxed/simple;
-	bh=+QhjMsec2tj7myKujhip3yw2A/KhaKxmm32K6PVc9Mk=;
+	s=arc-20240116; t=1756215964; c=relaxed/simple;
+	bh=G2EEl9eV528VylSR5tTXqYkp5FE0zYTFNUHISaxWW/w=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=ew/a5Oh8b6+x85e33UVDdZXGXFpdCiL06vJwLAZwx2q1vqQIMJaAI8eNKo7eBwJUXJlHt1UDaSPxGa85Iv1joxN/nwKsHp2cl1Xz8aVY9m3Eiy0Zno7aR5wRHILtG2QioZ5sOAjPwvJExfPObR159wQgZDa9QTr4Je6J3+F+iOU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=pl3UKg8q; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2F1E4C4CEF1;
-	Tue, 26 Aug 2025 12:54:56 +0000 (UTC)
+	 MIME-Version; b=Ge/VpmqdTE6kNJvvQ02Z4s8HXxNgDupmn6cLPuqTrIuZkHrRP+dj1LC4+wp+WeBLFHODyvKv/jymsU9asKNeHp18IYBigdqD77qvciDNg/D4U7JZzNMeTuBd3QyZb5iDtvA2u3fykBoui/i9WFg3cj9EGy5AZ/g6f7YSH9GQ6fM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=c0tJyGax; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 82F7EC4CEF1;
+	Tue, 26 Aug 2025 13:46:03 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1756212896;
-	bh=+QhjMsec2tj7myKujhip3yw2A/KhaKxmm32K6PVc9Mk=;
+	s=korg; t=1756215963;
+	bh=G2EEl9eV528VylSR5tTXqYkp5FE0zYTFNUHISaxWW/w=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=pl3UKg8q4QKbrhWW5ReUR2Wrrmbc3aDk20TxgeXTef2kdt0ac1TF4kv/xzLETRq3e
-	 U03Uyqsq83N6GbZgNW4UZH6UF78B32MVHSxnnBffkFnylH9J2jLOPuu6TUxyY2J14N
-	 eohO5xESj7mQsxXrEswYPsOA/BkbnBxzNG7xt+LE=
+	b=c0tJyGaxACHp25z52Yr0oblVRkB16sZWAGaQ3KGgr0rQ7ILRSFS14iI0G3wB6XBA7
+	 /IsGlMC6PecfrEJBAJh/ohbB/B7h/haim04mzTJLP9QktfIfGEr0zeIxROQJhcwyy3
+	 d5QiCDPt7CSZYbVYYw+50pjJlWCpUI7Oq/W5hOeQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Sarika Sharma <quic_sarishar@quicinc.com>,
-	Vasanthakumar Thiagarajan <vasanthakumar.thiagarajan@oss.qualcomm.com>,
-	Jeff Johnson <jeff.johnson@oss.qualcomm.com>,
+	Zixun LI <admin@hifiphile.com>,
+	Ada Couprie Diaz <ada.coupriediaz@arm.com>,
+	Balamanikandan Gunasundar <balamanikandan.gunasundar@microchip.com>,
+	Miquel Raynal <miquel.raynal@bootlin.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 143/587] wifi: ath12k: Correct tid cleanup when tid setup fails
+Subject: [PATCH 5.15 201/644] mtd: rawnand: atmel: set pmecc data setup time
 Date: Tue, 26 Aug 2025 13:04:52 +0200
-Message-ID: <20250826110956.590311298@linuxfoundation.org>
+Message-ID: <20250826110951.421059565@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250826110952.942403671@linuxfoundation.org>
-References: <20250826110952.942403671@linuxfoundation.org>
+In-Reply-To: <20250826110946.507083938@linuxfoundation.org>
+References: <20250826110946.507083938@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,51 +64,59 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Sarika Sharma <quic_sarishar@quicinc.com>
+From: Balamanikandan Gunasundar <balamanikandan.gunasundar@microchip.com>
 
-[ Upstream commit 4a2bf707270f897ab8077baee8ed5842a5321686 ]
+[ Upstream commit f552a7c7e0a14215cb8a6fd89e60fa3932a74786 ]
 
-Currently, if any error occurs during ath12k_dp_rx_peer_tid_setup(),
-the tid value is already incremented, even though the corresponding
-TID is not actually allocated. Proceed to
-ath12k_dp_rx_peer_tid_delete() starting from unallocated tid,
-which might leads to freeing unallocated TID and cause potential
-crash or out-of-bounds access.
+Setup the pmecc data setup time as 3 clock cycles for 133MHz as recommended
+by the datasheet.
 
-Hence, fix by correctly decrementing tid before cleanup to match only
-the successfully allocated TIDs.
-
-Also, remove tid-- from failure case of ath12k_dp_rx_peer_frag_setup(),
-as decrementing the tid before cleanup in loop will take care of this.
-
-Compile tested only.
-
-Signed-off-by: Sarika Sharma <quic_sarishar@quicinc.com>
-Reviewed-by: Vasanthakumar Thiagarajan <vasanthakumar.thiagarajan@oss.qualcomm.com>
-Link: https://patch.msgid.link/20250721061749.886732-1-quic_sarishar@quicinc.com
-Signed-off-by: Jeff Johnson <jeff.johnson@oss.qualcomm.com>
+Fixes: f88fc122cc34 ("mtd: nand: Cleanup/rework the atmel_nand driver")
+Reported-by: Zixun LI <admin@hifiphile.com>
+Closes: https://lore.kernel.org/all/c015bb20-6a57-4f63-8102-34b3d83e0f5b@microchip.com
+Suggested-by: Ada Couprie Diaz <ada.coupriediaz@arm.com>
+Signed-off-by: Balamanikandan Gunasundar <balamanikandan.gunasundar@microchip.com>
+Signed-off-by: Miquel Raynal <miquel.raynal@bootlin.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/wireless/ath/ath12k/dp.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/mtd/nand/raw/atmel/pmecc.c | 6 ++++++
+ 1 file changed, 6 insertions(+)
 
-diff --git a/drivers/net/wireless/ath/ath12k/dp.c b/drivers/net/wireless/ath/ath12k/dp.c
-index c663ff990b47..c8777ee2079f 100644
---- a/drivers/net/wireless/ath/ath12k/dp.c
-+++ b/drivers/net/wireless/ath/ath12k/dp.c
-@@ -91,7 +91,7 @@ int ath12k_dp_peer_setup(struct ath12k *ar, int vdev_id, const u8 *addr)
- 		return -ENOENT;
- 	}
+diff --git a/drivers/mtd/nand/raw/atmel/pmecc.c b/drivers/mtd/nand/raw/atmel/pmecc.c
+index d1ed5878b3b1..28ed65dd3d43 100644
+--- a/drivers/mtd/nand/raw/atmel/pmecc.c
++++ b/drivers/mtd/nand/raw/atmel/pmecc.c
+@@ -143,6 +143,7 @@ struct atmel_pmecc_caps {
+ 	int nstrengths;
+ 	int el_offset;
+ 	bool correct_erased_chunks;
++	bool clk_ctrl;
+ };
  
--	for (; tid >= 0; tid--)
-+	for (tid--; tid >= 0; tid--)
- 		ath12k_dp_rx_peer_tid_delete(ar, peer, tid);
+ struct atmel_pmecc {
+@@ -846,6 +847,10 @@ static struct atmel_pmecc *atmel_pmecc_create(struct platform_device *pdev,
+ 	if (IS_ERR(pmecc->regs.errloc))
+ 		return ERR_CAST(pmecc->regs.errloc);
  
- 	spin_unlock_bh(&ab->base_lock);
++	/* pmecc data setup time */
++	if (caps->clk_ctrl)
++		writel(PMECC_CLK_133MHZ, pmecc->regs.base + ATMEL_PMECC_CLK);
++
+ 	/* Disable all interrupts before registering the PMECC handler. */
+ 	writel(0xffffffff, pmecc->regs.base + ATMEL_PMECC_IDR);
+ 	atmel_pmecc_reset(pmecc);
+@@ -899,6 +904,7 @@ static struct atmel_pmecc_caps at91sam9g45_caps = {
+ 	.strengths = atmel_pmecc_strengths,
+ 	.nstrengths = 5,
+ 	.el_offset = 0x8c,
++	.clk_ctrl = true,
+ };
+ 
+ static struct atmel_pmecc_caps sama5d4_caps = {
 -- 
 2.39.5
 
