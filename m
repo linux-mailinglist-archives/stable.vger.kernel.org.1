@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-175325-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-174198-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 94A3DB368C9
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 16:19:26 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id BD348B361D9
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 15:13:14 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 7A7C2983768
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 14:01:04 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 8206C1884E42
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 13:10:25 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D28B5352FFF;
-	Tue, 26 Aug 2025 13:58:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 045353090CD;
+	Tue, 26 Aug 2025 13:09:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="E0rmD/oP"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="HhfFxrvj"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 86908352084;
-	Tue, 26 Aug 2025 13:58:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B444F246790;
+	Tue, 26 Aug 2025 13:09:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756216737; cv=none; b=EGy7n8f92ySNYxcnf5EpwQHPCPmHIDU6BydpoROdN9H5ga/AL2M/eAjvRb4NpAGkGgzXGiACIyEuSA0AGJyXUWA3ekGFnHcac/moMUfXL+eyXQyuJOkDV7Bny42VKQIIwJSvYPos6NAgJq+Z0dgnnSTdmQrD2qKMxo9IysBef4I=
+	t=1756213752; cv=none; b=H4II2yCCNI4DY5LalNMC2QwLyyEr/QONgol9TLR6e+8q30ZF/p/nKg6rI7Qsh6TzW8I4xUIy/+cB7HcRKF/+hdwiqVDPiMmGeAJAOHZ+GpZyAqJMxF6LzSDYoc7i7uee+Ous+XEp0N8qBSqOwOuIpFdgWAJfofIq7PCbnFvKcwI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756216737; c=relaxed/simple;
-	bh=/Y8JqyCGbCM7f+EWcDEJbU6iYiGugKhDWtWGV0cPdlA=;
+	s=arc-20240116; t=1756213752; c=relaxed/simple;
+	bh=xG+Wbch/CspaI/XerCY28alBNS3/afbJyFe64SPaBvs=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Gcxjmash6BC3sguEvrJLFcgcbUJ1v0gm6zFOmiyUooABfE+fr3h29IiGu4w4AL/JhhaalAjIc+lfXJB41u9+zsGD6XWSpN6lVzlCGisiZXJwwvH0QHdcfw5khhEYNqjcItkx1iglOW9YA8zqfsgxElhCkaQZ6s7UMfdMwOwiw7k=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=E0rmD/oP; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id CEBFFC113D0;
-	Tue, 26 Aug 2025 13:58:56 +0000 (UTC)
+	 MIME-Version; b=PEfNqnjot66RyO7obBSAJyJu72MV8MbI5j2HRmEaKgzspBzSe1rnEIQlPSe0sJ/sgXmm9I6VLUS88pRqfbvwgM3IkgwjlN/PMv2qKjH5PiWYpo5invMt3y0Q+PlZzAaJJjwQ0q4iOBt0CEsyNTrMXdOsUnVwRw8vCIPHBXKTgSY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=HhfFxrvj; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 460B0C4CEF4;
+	Tue, 26 Aug 2025 13:09:12 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1756216737;
-	bh=/Y8JqyCGbCM7f+EWcDEJbU6iYiGugKhDWtWGV0cPdlA=;
+	s=korg; t=1756213752;
+	bh=xG+Wbch/CspaI/XerCY28alBNS3/afbJyFe64SPaBvs=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=E0rmD/oP0GyWjXBL0ZxIq9QunGmqRQtJA092TKH2TsgbzPi3wGwSMEsRe6FyIRF87
-	 +AESEb5Cy8T4rEVnBEWRlvsRbEsB6qQb25rZRQxWz5Kob8nZUN8ahjJxqzyYKDbFRL
-	 C/tqAg8MQOc2Fu30nPU7AQeBqYTwgMkzR+DhO+iE=
+	b=HhfFxrvjYaFeAtNICr3TkhMwQYCwuOQZPbXdNPEJYpfQZ+4v3c0x5qGWqklAkn4iG
+	 xjYE6wb7V3MhNnagvGJ6ZimKF3TGUT4h9SsaAr+qDQ46L0lvZQKVNsHHcvfunz8o4h
+	 FG0RW94maLTkjc3Q1UQyRxYjIQ8+W0rC/he3trdw=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Haiyang Zhang <haiyangz@microsoft.com>,
-	Jakub Kicinski <kuba@kernel.org>,
+	Damien Le Moal <dlemoal@kernel.org>,
+	Hannes Reinecke <hare@suse.de>,
+	Niklas Cassel <cassel@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 524/644] hv_netvsc: Fix panic during namespace deletion with VF
+Subject: [PATCH 6.6 466/587] ata: Fix SATA_MOBILE_LPM_POLICY description in Kconfig
 Date: Tue, 26 Aug 2025 13:10:15 +0200
-Message-ID: <20250826110959.495808028@linuxfoundation.org>
+Message-ID: <20250826111004.835767273@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250826110946.507083938@linuxfoundation.org>
-References: <20250826110946.507083938@linuxfoundation.org>
+In-Reply-To: <20250826110952.942403671@linuxfoundation.org>
+References: <20250826110952.942403671@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,151 +63,81 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Haiyang Zhang <haiyangz@microsoft.com>
+From: Damien Le Moal <dlemoal@kernel.org>
 
-[ Upstream commit 33caa208dba6fa639e8a92fd0c8320b652e5550c ]
+[ Upstream commit ed62a62a18bc144f73eadf866ae46842e8f6606e ]
 
-The existing code move the VF NIC to new namespace when NETDEV_REGISTER is
-received on netvsc NIC. During deletion of the namespace,
-default_device_exit_batch() >> default_device_exit_net() is called. When
-netvsc NIC is moved back and registered to the default namespace, it
-automatically brings VF NIC back to the default namespace. This will cause
-the default_device_exit_net() >> for_each_netdev_safe loop unable to detect
-the list end, and hit NULL ptr:
+Improve the description of the possible default SATA link power
+management policies and add the missing description for policy 5.
+No functional changes.
 
-[  231.449420] mana 7870:00:00.0 enP30832s1: Moved VF to namespace with: eth0
-[  231.449656] BUG: kernel NULL pointer dereference, address: 0000000000000010
-[  231.450246] #PF: supervisor read access in kernel mode
-[  231.450579] #PF: error_code(0x0000) - not-present page
-[  231.450916] PGD 17b8a8067 P4D 0
-[  231.451163] Oops: Oops: 0000 [#1] SMP NOPTI
-[  231.451450] CPU: 82 UID: 0 PID: 1394 Comm: kworker/u768:1 Not tainted 6.16.0-rc4+ #3 VOLUNTARY
-[  231.452042] Hardware name: Microsoft Corporation Virtual Machine/Virtual Machine, BIOS Hyper-V UEFI Release v4.1 11/21/2024
-[  231.452692] Workqueue: netns cleanup_net
-[  231.452947] RIP: 0010:default_device_exit_batch+0x16c/0x3f0
-[  231.453326] Code: c0 0c f5 b3 e8 d5 db fe ff 48 85 c0 74 15 48 c7 c2 f8 fd ca b2 be 10 00 00 00 48 8d 7d c0 e8 7b 77 25 00 49 8b 86 28 01 00 00 <48> 8b 50 10 4c 8b 2a 4c 8d 62 f0 49 83 ed 10 4c 39 e0 0f 84 d6 00
-[  231.454294] RSP: 0018:ff75fc7c9bf9fd00 EFLAGS: 00010246
-[  231.454610] RAX: 0000000000000000 RBX: 0000000000000002 RCX: 61c8864680b583eb
-[  231.455094] RDX: ff1fa9f71462d800 RSI: ff75fc7c9bf9fd38 RDI: 0000000030766564
-[  231.455686] RBP: ff75fc7c9bf9fd78 R08: 0000000000000000 R09: 0000000000000000
-[  231.456126] R10: 0000000000000001 R11: 0000000000000004 R12: ff1fa9f70088e340
-[  231.456621] R13: ff1fa9f70088e340 R14: ffffffffb3f50c20 R15: ff1fa9f7103e6340
-[  231.457161] FS:  0000000000000000(0000) GS:ff1faa6783a08000(0000) knlGS:0000000000000000
-[  231.457707] CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
-[  231.458031] CR2: 0000000000000010 CR3: 0000000179ab2006 CR4: 0000000000b73ef0
-[  231.458434] Call Trace:
-[  231.458600]  <TASK>
-[  231.458777]  ops_undo_list+0x100/0x220
-[  231.459015]  cleanup_net+0x1b8/0x300
-[  231.459285]  process_one_work+0x184/0x340
-
-To fix it, move the ns change to a workqueue, and take rtnl_lock to avoid
-changing the netdev list when default_device_exit_net() is using it.
-
+Fixes: a5ec5a7bfd1f ("ata: ahci: Support state with min power but Partial low power state")
 Cc: stable@vger.kernel.org
-Fixes: 4c262801ea60 ("hv_netvsc: Fix VF namespace also in synthetic NIC NETDEV_REGISTER event")
-Signed-off-by: Haiyang Zhang <haiyangz@microsoft.com>
-Link: https://patch.msgid.link/1754511711-11188-1-git-send-email-haiyangz@linux.microsoft.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Signed-off-by: Damien Le Moal <dlemoal@kernel.org>
+Reviewed-by: Hannes Reinecke <hare@suse.de>
+Reviewed-by: Niklas Cassel <cassel@kernel.org>
+[ Adjust context ]
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/net/hyperv/hyperv_net.h |    3 +++
- drivers/net/hyperv/netvsc_drv.c |   29 ++++++++++++++++++++++++++++-
- 2 files changed, 31 insertions(+), 1 deletion(-)
+ drivers/ata/Kconfig |   33 +++++++++++++++++++++++++--------
+ 1 file changed, 25 insertions(+), 8 deletions(-)
 
---- a/drivers/net/hyperv/hyperv_net.h
-+++ b/drivers/net/hyperv/hyperv_net.h
-@@ -1032,6 +1032,7 @@ struct net_device_context {
- 	struct net_device __rcu *vf_netdev;
- 	struct netvsc_vf_pcpu_stats __percpu *vf_stats;
- 	struct delayed_work vf_takeover;
-+	struct delayed_work vfns_work;
+--- a/drivers/ata/Kconfig
++++ b/drivers/ata/Kconfig
+@@ -117,7 +117,7 @@ config SATA_AHCI
  
- 	/* 1: allocated, serial number is valid. 0: not allocated */
- 	u32 vf_alloc;
-@@ -1046,6 +1047,8 @@ struct net_device_context {
- 	struct netvsc_device_info *saved_netvsc_dev_info;
- };
+ config SATA_MOBILE_LPM_POLICY
+ 	int "Default SATA Link Power Management policy for low power chipsets"
+-	range 0 4
++	range 0 5
+ 	default 0
+ 	depends on SATA_AHCI
+ 	help
+@@ -126,15 +126,32 @@ config SATA_MOBILE_LPM_POLICY
+ 	  chipsets are typically found on most laptops but desktops and
+ 	  servers now also widely use chipsets supporting low power modes.
  
-+void netvsc_vfns_work(struct work_struct *w);
+-	  The value set has the following meanings:
++	  Each policy combines power saving states and features:
++	   - Partial: The Phy logic is powered but is in a reduced power
++                      state. The exit latency from this state is no longer than
++                      10us).
++	   - Slumber: The Phy logic is powered but is in an even lower power
++                      state. The exit latency from this state is potentially
++		      longer, but no longer than 10ms.
++	   - DevSleep: The Phy logic may be powered down. The exit latency from
++	               this state is no longer than 20 ms, unless otherwise
++		       specified by DETO in the device Identify Device Data log.
++	   - HIPM: Host Initiated Power Management (host automatically
++		   transitions to partial and slumber).
++	   - DIPM: Device Initiated Power Management (device automatically
++		   transitions to partial and slumber).
 +
- /* Per channel data */
- struct netvsc_channel {
- 	struct vmbus_channel *channel;
---- a/drivers/net/hyperv/netvsc_drv.c
-+++ b/drivers/net/hyperv/netvsc_drv.c
-@@ -2565,6 +2565,7 @@ static int netvsc_probe(struct hv_device
- 	spin_lock_init(&net_device_ctx->lock);
- 	INIT_LIST_HEAD(&net_device_ctx->reconfig_events);
- 	INIT_DELAYED_WORK(&net_device_ctx->vf_takeover, netvsc_vf_setup);
-+	INIT_DELAYED_WORK(&net_device_ctx->vfns_work, netvsc_vfns_work);
++	  The possible values for the default SATA link power management
++	  policies are:
+ 		0 => Keep firmware settings
+-		1 => Maximum performance
+-		2 => Medium power
+-		3 => Medium power with Device Initiated PM enabled
+-		4 => Minimum power
++		1 => No power savings (maximum performance)
++		2 => HIPM (Partial)
++		3 => HIPM (Partial) and DIPM (Partial and Slumber)
++		4 => HIPM (Partial and DevSleep) and DIPM (Partial and Slumber)
++		5 => HIPM (Slumber and DevSleep) and DIPM (Partial and Slumber)
  
- 	net_device_ctx->vf_stats
- 		= netdev_alloc_pcpu_stats(struct netvsc_vf_pcpu_stats);
-@@ -2703,6 +2704,8 @@ static int netvsc_remove(struct hv_devic
- 	cancel_delayed_work_sync(&ndev_ctx->dwork);
+-	  Note "Minimum power" is known to cause issues, including disk
+-	  corruption, with some disks and should not be used.
++	  Excluding the value 0, higher values represent policies with higher
++	  power savings.
  
- 	rtnl_lock();
-+	cancel_delayed_work_sync(&ndev_ctx->vfns_work);
-+
- 	nvdev = rtnl_dereference(ndev_ctx->nvdev);
- 	if (nvdev) {
- 		cancel_work_sync(&nvdev->subchan_work);
-@@ -2745,6 +2748,7 @@ static int netvsc_suspend(struct hv_devi
- 	cancel_delayed_work_sync(&ndev_ctx->dwork);
- 
- 	rtnl_lock();
-+	cancel_delayed_work_sync(&ndev_ctx->vfns_work);
- 
- 	nvdev = rtnl_dereference(ndev_ctx->nvdev);
- 	if (nvdev == NULL) {
-@@ -2838,6 +2842,27 @@ static void netvsc_event_set_vf_ns(struc
- 	}
- }
- 
-+void netvsc_vfns_work(struct work_struct *w)
-+{
-+	struct net_device_context *ndev_ctx =
-+		container_of(w, struct net_device_context, vfns_work.work);
-+	struct net_device *ndev;
-+
-+	if (!rtnl_trylock()) {
-+		schedule_delayed_work(&ndev_ctx->vfns_work, 1);
-+		return;
-+	}
-+
-+	ndev = hv_get_drvdata(ndev_ctx->device_ctx);
-+	if (!ndev)
-+		goto out;
-+
-+	netvsc_event_set_vf_ns(ndev);
-+
-+out:
-+	rtnl_unlock();
-+}
-+
- /*
-  * On Hyper-V, every VF interface is matched with a corresponding
-  * synthetic interface. The synthetic interface is presented first
-@@ -2848,10 +2873,12 @@ static int netvsc_netdev_event(struct no
- 			       unsigned long event, void *ptr)
- {
- 	struct net_device *event_dev = netdev_notifier_info_to_dev(ptr);
-+	struct net_device_context *ndev_ctx;
- 	int ret = 0;
- 
- 	if (event_dev->netdev_ops == &device_ops && event == NETDEV_REGISTER) {
--		netvsc_event_set_vf_ns(event_dev);
-+		ndev_ctx = netdev_priv(event_dev);
-+		schedule_delayed_work(&ndev_ctx->vfns_work, 0);
- 		return NOTIFY_DONE;
- 	}
- 
+ config SATA_AHCI_PLATFORM
+ 	tristate "Platform AHCI SATA support"
 
 
 
