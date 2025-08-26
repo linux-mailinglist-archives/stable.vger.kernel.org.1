@@ -1,56 +1,55 @@
-Return-Path: <stable+bounces-174187-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-175839-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8087CB361F9
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 15:14:28 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2B126B36AD5
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 16:41:09 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 16EA02A7DC1
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 13:09:27 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 38A99988506
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 14:22:45 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 22AED252904;
-	Tue, 26 Aug 2025 13:08:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id DC54F34DCE8;
+	Tue, 26 Aug 2025 14:21:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="IJWeYf/6"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="xG1kBsCJ"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D418854654;
-	Tue, 26 Aug 2025 13:08:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 97CC434A32E;
+	Tue, 26 Aug 2025 14:21:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756213723; cv=none; b=hURNsldpLrsH25u3JiEEQcmQFXzoCYXcNylLR7iTaPskykIpB6KAm85y5EhvO7A5Vws0ymTwjUDc3p7/yDqMwcmxfL8XT+Kr1FxxZ4iG/Isu3V13E/qWgCg2fKiiSkoHAraYr3hwDPnBIEAunsnpmOa3wKOLwNuu/Pxtczm+UCM=
+	t=1756218106; cv=none; b=ISuYt4DCmcUON07cxutF1tiflmhf3Uzv2u5LqCLsZq48BU6p5YWlBPC/BAb8p6wUAHQXItBfnBjwXkUFWYmUPBiUu6bzchpC+hOSFWU7+NuqfKbowN+IWM3hKnGJ9JAsdyhg2Gx/KoNHlxyvGNWFN78GOpHbf1amL9p6pZjhyxU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756213723; c=relaxed/simple;
-	bh=C1LoKWqCIwJwwb1734QQSspGraFP3V9lKyJh62Wmw0A=;
+	s=arc-20240116; t=1756218106; c=relaxed/simple;
+	bh=okfOkMa6H3og0hHJTG73mp8xH37+pfOP21lbtF4A6xM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=KSRNEx49t9R3C6KVBCH1IP0D2JHlF9X3+twB3Pfg3G+YHJdwcho7wtx/tfLa8tOP5cQJ27xJcQphRwYf6Hch4riyKX3we2gi04J0yolIyLXk/2cFwXUQxCGCLYsJ4U/clokezbtVYf15IYgS5uMn+xGTY7duGxAjOVx8Ol5LtSI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=IJWeYf/6; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5C643C4CEF1;
-	Tue, 26 Aug 2025 13:08:43 +0000 (UTC)
+	 MIME-Version; b=EgE2uVm5T3sTNqqKPGIItM9Rf0UYkPMA3ekQk2Ke4Pwv+EvFoTDzwbm3oFUtiZS0CcA6QtyJfRWQPoBH4xyd1uHAX+iNqN4cxVHOgxf92LaUIBjtC8BvugDeHPg2vHstAZI9sDP/qqnQy8aVQv9kMZ8b7Ty2mvOAY4KKtokOZJU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=xG1kBsCJ; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2A018C4CEF1;
+	Tue, 26 Aug 2025 14:21:46 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1756213723;
-	bh=C1LoKWqCIwJwwb1734QQSspGraFP3V9lKyJh62Wmw0A=;
+	s=korg; t=1756218106;
+	bh=okfOkMa6H3og0hHJTG73mp8xH37+pfOP21lbtF4A6xM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=IJWeYf/6qZFSe5s9WvOjX9DY8wPhjDBG9KI4LAa1OAUNsivxFQlKCKAE3ud/m4Wpj
-	 qYHx/dvppDnyc/6R7xx/ZwS8E5Eux/J7JWtlsT5iA+i+8hyqldaGQIq2HvoduxfsBz
-	 ItFkExrQT0dh3JBqs4P0dWdU/KMM74QTknFHGqXQ=
+	b=xG1kBsCJ0HLuC/eIe9MTP0Y4RMekhVOf3CjkG5SxRD1nVkmAyZrYhVlRyufHXv7Ma
+	 uW48W7XZ3+z6kkjNkEAe6PIOmyBZ+fE1ff3VkDJBKLpRcf+Oih8bR/udxtk+NiO137
+	 88BJKQ3Swc4plXJstZO6eeK+WYm7GFgQqYmg91UI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Filipe Manana <fdmanana@suse.com>,
-	David Sterba <dsterba@suse.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 456/587] btrfs: send: add and use helper to rename current inode when processing refs
+	Evgeniy Harchenko <evgeniyharchenko.dev@gmail.com>,
+	Takashi Iwai <tiwai@suse.de>
+Subject: [PATCH 5.10 395/523] ALSA: hda/realtek: Add support for HP EliteBook x360 830 G6 and EliteBook 830 G6
 Date: Tue, 26 Aug 2025 13:10:05 +0200
-Message-ID: <20250826111004.567606393@linuxfoundation.org>
+Message-ID: <20250826110934.205657501@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250826110952.942403671@linuxfoundation.org>
-References: <20250826110952.942403671@linuxfoundation.org>
+In-Reply-To: <20250826110924.562212281@linuxfoundation.org>
+References: <20250826110924.562212281@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,78 +61,38 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Filipe Manana <fdmanana@suse.com>
+From: Evgeniy Harchenko <evgeniyharchenko.dev@gmail.com>
 
-[ Upstream commit ec666c84deba56f714505b53556a97565f72db86 ]
+commit eafae0fdd115a71b3a200ef1a31f86da04bac77f upstream.
 
-Extract the logic to rename the current inode at process_recorded_refs()
-into a helper function and use it, therefore removing duplicated logic
-and making it easier for an upcoming patch by avoiding yet more duplicated
-logic.
+The HP EliteBook x360 830 G6 and HP EliteBook 830 G6 have
+Realtek HDA codec ALC215. It needs the ALC285_FIXUP_HP_GPIO_LED
+quirk to enable the mute LED.
 
-Signed-off-by: Filipe Manana <fdmanana@suse.com>
-Reviewed-by: David Sterba <dsterba@suse.com>
-Signed-off-by: David Sterba <dsterba@suse.com>
-Stable-dep-of: 005b0a0c24e1 ("btrfs: send: use fallocate for hole punching with send stream v2")
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Cc: <stable@vger.kernel.org>
+Signed-off-by: Evgeniy Harchenko <evgeniyharchenko.dev@gmail.com>
+Link: https://patch.msgid.link/20250815095814.75845-1-evgeniyharchenko.dev@gmail.com
+Signed-off-by: Takashi Iwai <tiwai@suse.de>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- fs/btrfs/send.c |   23 +++++++++++++++--------
- 1 file changed, 15 insertions(+), 8 deletions(-)
+ sound/pci/hda/patch_realtek.c |    2 ++
+ 1 file changed, 2 insertions(+)
 
---- a/fs/btrfs/send.c
-+++ b/fs/btrfs/send.c
-@@ -4166,6 +4166,19 @@ out:
- 	return ret;
- }
- 
-+static int rename_current_inode(struct send_ctx *sctx,
-+				struct fs_path *current_path,
-+				struct fs_path *new_path)
-+{
-+	int ret;
-+
-+	ret = send_rename(sctx, current_path, new_path);
-+	if (ret < 0)
-+		return ret;
-+
-+	return fs_path_copy(current_path, new_path);
-+}
-+
- /*
-  * This does all the move/link/unlink/rmdir magic.
-  */
-@@ -4451,13 +4464,10 @@ static int process_recorded_refs(struct
- 		 * it depending on the inode mode.
- 		 */
- 		if (is_orphan && can_rename) {
--			ret = send_rename(sctx, valid_path, cur->full_path);
-+			ret = rename_current_inode(sctx, valid_path, cur->full_path);
- 			if (ret < 0)
- 				goto out;
- 			is_orphan = false;
--			ret = fs_path_copy(valid_path, cur->full_path);
--			if (ret < 0)
--				goto out;
- 		} else if (can_rename) {
- 			if (S_ISDIR(sctx->cur_inode_mode)) {
- 				/*
-@@ -4465,10 +4475,7 @@ static int process_recorded_refs(struct
- 				 * dirs, we always have one new and one deleted
- 				 * ref. The deleted ref is ignored later.
- 				 */
--				ret = send_rename(sctx, valid_path,
--						  cur->full_path);
--				if (!ret)
--					ret = fs_path_copy(valid_path,
-+				ret = rename_current_inode(sctx, valid_path,
- 							   cur->full_path);
- 				if (ret < 0)
- 					goto out;
+--- a/sound/pci/hda/patch_realtek.c
++++ b/sound/pci/hda/patch_realtek.c
+@@ -9256,6 +9256,8 @@ static const struct snd_pci_quirk alc269
+ 	SND_PCI_QUIRK(0x103c, 0x84e7, "HP Pavilion 15", ALC269_FIXUP_HP_MUTE_LED_MIC3),
+ 	SND_PCI_QUIRK(0x103c, 0x8519, "HP Spectre x360 15-df0xxx", ALC285_FIXUP_HP_SPECTRE_X360),
+ 	SND_PCI_QUIRK(0x103c, 0x8537, "HP ProBook 440 G6", ALC236_FIXUP_HP_MUTE_LED_MICMUTE_VREF),
++	SND_PCI_QUIRK(0x103c, 0x8548, "HP EliteBook x360 830 G6", ALC285_FIXUP_HP_GPIO_LED),
++	SND_PCI_QUIRK(0x103c, 0x854a, "HP EliteBook 830 G6", ALC285_FIXUP_HP_GPIO_LED),
+ 	SND_PCI_QUIRK(0x103c, 0x85c6, "HP Pavilion x360 Convertible 14-dy1xxx", ALC295_FIXUP_HP_MUTE_LED_COEFBIT11),
+ 	SND_PCI_QUIRK(0x103c, 0x85de, "HP Envy x360 13-ar0xxx", ALC285_FIXUP_HP_ENVY_X360),
+ 	SND_PCI_QUIRK(0x103c, 0x860f, "HP ZBook 15 G6", ALC285_FIXUP_HP_GPIO_AMP_INIT),
 
 
 
