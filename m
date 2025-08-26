@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-173612-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-173246-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 02A48B35E3F
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 13:55:05 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8320BB35C2E
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 13:32:17 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id CDAAD1BC0609
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 11:46:40 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 9EEFC7B7205
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 11:30:37 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9DE1A3090CD;
-	Tue, 26 Aug 2025 11:44:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 06C862EE296;
+	Tue, 26 Aug 2025 11:29:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="qvJd1v9f"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="c2VAJZBC"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5A8D7393DD1;
-	Tue, 26 Aug 2025 11:44:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B7AC63376BD;
+	Tue, 26 Aug 2025 11:29:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756208699; cv=none; b=YnGq93TvmbMV+4+0G1Sxiis/YYYTnx2CbcA78dWNRLYiT68kMZ/YGmDASPOW3z8H+p5Lg3FAAh6kIeCA7jJqkfZNEeUwqqFF9jPCOha/xnAr8TdEIlyylKlOfdXt3+aDG+nAAfuD/sfUC+inNOMZV6n0T95FKrRlj5s56wXORiY=
+	t=1756207750; cv=none; b=rPS6NIE738MJAa9lYMsE6ND/N69CnJmGI6NZ4Gya8wOJ2sCr8J1bHTSwxWhy/tG4UMZowXtGRqqOTG8XInhCaaTE5nqyPxjG5uw8foCoU1M/MVliBQ44ziysXcw+PI5xyEYhufLdt5LI7BAqN1KUB5wekaOIogT++3jjzH2XP4o=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756208699; c=relaxed/simple;
-	bh=gP3GJgvwMM1tyQNcKNqmElsYgz+kLiaSyt4JXc2RA74=;
+	s=arc-20240116; t=1756207750; c=relaxed/simple;
+	bh=4Cf7UGTJdl9qvLzcBRBy8I6ta7jLtfIiB3DDRFbLF/c=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=vAHZvj5OThQzBHD30EcVNkzIRjRH0bbWLA2Fv/eiO9JTjVc6vwaK6ER0dqIRnzIINRPISGW1UsumkhSz2NM/v4jBU/Run2gUG8OvWXlZt0mNVY1U2eCCjbQlMCRfiolnYgDInZUS4J0KoWYh6SkLX3ctRlVoLjr/QZph5lwX3xY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=qvJd1v9f; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E706AC4CEF1;
-	Tue, 26 Aug 2025 11:44:58 +0000 (UTC)
+	 MIME-Version; b=fY9F3f5P49g/MeVwPWjrgO5jkK3/ZEdiAyiVvzrVTl+GYaj9SJHTr2rbYhKlHz7yuyGpVZwAHsWlo/nGo0EcfZ2CaWkI6e6RhcNs8+4bOqHQBTGcr7YBvrnJfUwUTmeDeQtBteOQVNYjBl4STCc9RyuZ4pzxrH0xmho9OIlrlg4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=c2VAJZBC; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 46BA6C4CEF1;
+	Tue, 26 Aug 2025 11:29:10 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1756208699;
-	bh=gP3GJgvwMM1tyQNcKNqmElsYgz+kLiaSyt4JXc2RA74=;
+	s=korg; t=1756207750;
+	bh=4Cf7UGTJdl9qvLzcBRBy8I6ta7jLtfIiB3DDRFbLF/c=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=qvJd1v9fi1WCYV48O2Osz8Shy7zzpjJH65mDN0WC+hVLo//3N9xsTCVMrUZH5KFbR
-	 jDw1R5RPwF8tOfoPVtrbnX5eBiu+7o1L7hMdP0T6mgXstf9PVo+9bNwrQxsyU3NJ+x
-	 EK8Pug4Gl6mjj1TzoB5JA1DhciD0G0qSDEdKUUnI=
+	b=c2VAJZBCZcUtxIxA4xbv+eazr5l32vlY98OOjxUEQbK2FmAbfB4V+CAc6QHg3TURo
+	 zb6CkYC75GGsWpRpZc+P8mj+rBJiOaXQ82ZWZO+h3XD0Ql/RpcngJSwmwWX/HNAQNj
+	 5Ww77HRMGmO9XayynoZBzTAOFGQJMMxP7PbkNIq0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Phillip Lougher <phillip@squashfs.org.uk>,
-	Scott GUO <scottzhguo@tencent.com>,
-	Andrew Morton <akpm@linux-foundation.org>
-Subject: [PATCH 6.12 171/322] squashfs: fix memory leak in squashfs_fill_super
+	Claudiu Beznea <claudiu.beznea.uj@bp.renesas.com>,
+	Stable@vger.kernel.org,
+	Jonathan Cameron <Jonathan.Cameron@huawei.com>
+Subject: [PATCH 6.16 302/457] iio: adc: rzg2l_adc: Set driver data before enabling runtime PM
 Date: Tue, 26 Aug 2025 13:09:46 +0200
-Message-ID: <20250826110920.075331258@linuxfoundation.org>
+Message-ID: <20250826110944.837287059@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250826110915.169062587@linuxfoundation.org>
-References: <20250826110915.169062587@linuxfoundation.org>
+In-Reply-To: <20250826110937.289866482@linuxfoundation.org>
+References: <20250826110937.289866482@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,65 +62,52 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.16-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Phillip Lougher <phillip@squashfs.org.uk>
+From: Claudiu Beznea <claudiu.beznea.uj@bp.renesas.com>
 
-commit b64700d41bdc4e9f82f1346c15a3678ebb91a89c upstream.
+commit c69e13965f26b8058f538ea8bdbd2d7718cf1fbe upstream.
 
-If sb_min_blocksize returns 0, squashfs_fill_super exits without freeing
-allocated memory (sb->s_fs_info).
+When stress-testing the system by repeatedly unbinding and binding the ADC
+device in a loop, and the ADC is a supplier for another device (e.g., a
+thermal hardware block that reads temperature through the ADC), it may
+happen that the ADC device is runtime-resumed immediately after runtime PM
+is enabled, triggered by its consumer. At this point, since drvdata is not
+yet set and the driver's runtime PM callbacks rely on it, a crash can
+occur. To avoid this, set drvdata just after it was allocated.
 
-Fix this by moving the call to sb_min_blocksize to before memory is
-allocated.
-
-Link: https://lkml.kernel.org/r/20250811223740.110392-1-phillip@squashfs.org.uk
-Fixes: 734aa85390ea ("Squashfs: check return result of sb_min_blocksize")
-Signed-off-by: Phillip Lougher <phillip@squashfs.org.uk>
-Reported-by: Scott GUO <scottzhguo@tencent.com>
-Closes: https://lore.kernel.org/all/20250811061921.3807353-1-scott_gzh@163.com
-Cc: <stable@vger.kernel.org>
-Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
+Fixes: 89ee8174e8c8 ("iio: adc: rzg2l_adc: Simplify the runtime PM code")
+Signed-off-by: Claudiu Beznea <claudiu.beznea.uj@bp.renesas.com>
+Link: https://patch.msgid.link/20250810123328.800104-3-claudiu.beznea.uj@bp.renesas.com
+Cc: <Stable@vger.kernel.org>
+Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- fs/squashfs/super.c |   14 +++++++-------
- 1 file changed, 7 insertions(+), 7 deletions(-)
+ drivers/iio/adc/rzg2l_adc.c |    4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
---- a/fs/squashfs/super.c
-+++ b/fs/squashfs/super.c
-@@ -187,10 +187,15 @@ static int squashfs_fill_super(struct su
- 	unsigned short flags;
- 	unsigned int fragments;
- 	u64 lookup_table_start, xattr_id_table_start, next_table;
--	int err;
-+	int err, devblksize = sb_min_blocksize(sb, SQUASHFS_DEVBLK_SIZE);
+--- a/drivers/iio/adc/rzg2l_adc.c
++++ b/drivers/iio/adc/rzg2l_adc.c
+@@ -428,6 +428,8 @@ static int rzg2l_adc_probe(struct platfo
+ 	if (!indio_dev)
+ 		return -ENOMEM;
  
- 	TRACE("Entered squashfs_fill_superblock\n");
- 
-+	if (!devblksize) {
-+		errorf(fc, "squashfs: unable to set blocksize\n");
-+		return -EINVAL;
-+	}
++	platform_set_drvdata(pdev, indio_dev);
 +
- 	sb->s_fs_info = kzalloc(sizeof(*msblk), GFP_KERNEL);
- 	if (sb->s_fs_info == NULL) {
- 		ERROR("Failed to allocate squashfs_sb_info\n");
-@@ -201,12 +206,7 @@ static int squashfs_fill_super(struct su
+ 	adc = iio_priv(indio_dev);
  
- 	msblk->panic_on_errors = (opts->errors == Opt_errors_panic);
+ 	adc->hw_params = device_get_match_data(dev);
+@@ -460,8 +462,6 @@ static int rzg2l_adc_probe(struct platfo
+ 	if (ret)
+ 		return ret;
  
--	msblk->devblksize = sb_min_blocksize(sb, SQUASHFS_DEVBLK_SIZE);
--	if (!msblk->devblksize) {
--		errorf(fc, "squashfs: unable to set blocksize\n");
--		return -EINVAL;
--	}
+-	platform_set_drvdata(pdev, indio_dev);
 -
-+	msblk->devblksize = devblksize;
- 	msblk->devblksize_log2 = ffz(~msblk->devblksize);
- 
- 	mutex_init(&msblk->meta_index_mutex);
+ 	ret = rzg2l_adc_hw_init(dev, adc);
+ 	if (ret)
+ 		return dev_err_probe(&pdev->dev, ret,
 
 
 
