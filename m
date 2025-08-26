@@ -1,59 +1,55 @@
-Return-Path: <stable+bounces-173528-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-174126-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 02967B35DFC
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 13:50:28 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id C1370B3616F
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 15:09:30 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 2527F3638B3
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 11:41:24 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id D5DBC189A247
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 13:06:47 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E73CB2820B1;
-	Tue, 26 Aug 2025 11:41:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D17A422DFA7;
+	Tue, 26 Aug 2025 13:06:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="GIMawy56"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="CqRMabvh"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A2C59393DD1;
-	Tue, 26 Aug 2025 11:41:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8E5941ADFFE;
+	Tue, 26 Aug 2025 13:06:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756208482; cv=none; b=dyZDWLc0ybVOSrkwRkYi92TxzbWYpE0MRAcmMrPjvsatuAzRpIme2d8aU2Zb+hOX3uogF3z2MULIFqtwQY2lbIx+A66z6jDdHaZ3wdH/W48/XCHlKZ9KUnJPaUUjkIx2louj4xbmTSRdxFzPJr/S5OqErRlkuxyS3AESuuZcBxc=
+	t=1756213562; cv=none; b=Oz2LbrRMxnEp+FI+FQqaeqzvfiFQbyo2E/0OfxJ1HHXz9HxzMk5NwmoSBUr7SYo7pfHuw1xhD2ojtcwOK10K8QujczR8lFVtwa0CD4RUlrXF35mmu1Vi8GiWa6a+6k/Nd/GwQ1onK/28q5VbFyd0gPsFag+eaozGqCjnvLui9hA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756208482; c=relaxed/simple;
-	bh=yAxXU9t8Rw0O1oPRPDTxYktdeSKjr94luINAahIfgMw=;
+	s=arc-20240116; t=1756213562; c=relaxed/simple;
+	bh=n54EaMana1nSSufti4BdL51Sscv1IKK7kFf1VwBsLLM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=npLGBZJxelgzPURD8p419GlH8ZUdVNlhDghJ4WUJ/aroF9b8GnzLjNVZ1oNBJGJvU39z2gfDgq76nBVEk+apHzT0XuAMHeCIqMcq20rXk6ZV0XBOrwQkexGx7Poq9LSgE9N9OPrVYZJlMuyy1oT8ZPdYh1wMHr1UpF+8bnTxnug=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=GIMawy56; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 32CC3C4CEF1;
-	Tue, 26 Aug 2025 11:41:22 +0000 (UTC)
+	 MIME-Version; b=Gd3gl9vdfpRz0J3Ikrll02M47H+ax109+DyfmPntb14LGEBCyHTC13PGfl7qg0pG2IxjPAJg97/5V2RU3am1JoSO5s45rJN5Uov6fVy3DkQIEpQ0b9vNZlzGfbBvOjaD+sPqlcBzgDL9hWJLKguG94CcyQWSin9ZOBOWmvLITkM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=CqRMabvh; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 21031C4CEF1;
+	Tue, 26 Aug 2025 13:06:01 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1756208482;
-	bh=yAxXU9t8Rw0O1oPRPDTxYktdeSKjr94luINAahIfgMw=;
+	s=korg; t=1756213562;
+	bh=n54EaMana1nSSufti4BdL51Sscv1IKK7kFf1VwBsLLM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=GIMawy56X2+ljBYrYdveNI3xGdJ7+yzpxzZ0Fsx2tLC9klpdhGc0OUIoOLmKuPlTv
-	 tPwbcUa3pu0M1igeJ3dUIXa7yPm7qTRrPw5N40pPvw4PPwR2jCw9VHdwmESgnr8Exw
-	 YTGa3MSC66HYddqITAhne3G4ZZunj4bbQMOleG4U=
+	b=CqRMabvhgQ2LHypG25uIl4ZDmzxu6SqpZIIKTAM5pWZ8zhiu0FPdDxJXqNZZDRIKF
+	 thCgViRWpBAxJs8QEhrY2r08WwWQsWbtD5zHE4YsASYHIJRbtV8YOuqOgXugUlGobW
+	 X+mczC54twSLDj+l17hg9TnVsC5CnSynkJNYfvJo=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Mario Limonciello <mario.limonciello@amd.com>,
-	Siyang Liu <Security@tencent.com>,
-	Roman Li <roman.li@amd.com>,
-	Alex Hung <alex.hung@amd.com>,
-	Daniel Wheeler <daniel.wheeler@amd.com>,
-	Alex Deucher <alexander.deucher@amd.com>
-Subject: [PATCH 6.12 128/322] drm/amd/display: fix a Null pointer dereference vulnerability
+	John David Anglin <dave.anglin@bell.net>,
+	Helge Deller <deller@gmx.de>
+Subject: [PATCH 6.6 394/587] parisc: Drop WARN_ON_ONCE() from flush_cache_vmap
 Date: Tue, 26 Aug 2025 13:09:03 +0200
-Message-ID: <20250826110918.960699926@linuxfoundation.org>
+Message-ID: <20250826111002.944113478@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250826110915.169062587@linuxfoundation.org>
-References: <20250826110915.169062587@linuxfoundation.org>
+In-Reply-To: <20250826110952.942403671@linuxfoundation.org>
+References: <20250826110952.942403671@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -65,72 +61,35 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Siyang Liu <Security@tencent.com>
+From: John David Anglin <dave.anglin@bell.net>
 
-commit 1bcf63a44381691d6192872801f830ce3250e367 upstream.
+commit 4eab1c27ce1f0e89ab67b01bf1e4e4c75215708a upstream.
 
-[Why]
-A null pointer dereference vulnerability exists in the AMD display driver's
-(DC module) cleanup function dc_destruct().
-When display control context (dc->ctx) construction fails
-(due to memory allocation failure), this pointer remains NULL.
-During subsequent error handling when dc_destruct() is called,
-there's no NULL check before dereferencing the perf_trace member
-(dc->ctx->perf_trace), causing a kernel null pointer dereference crash.
+I have observed warning to occassionally trigger.
 
-[How]
-Check if dc->ctx is non-NULL before dereferencing.
-
-Link: https://lore.kernel.org/r/tencent_54FF4252EDFB6533090A491A25EEF3EDBF06@qq.com
-Co-developed-by: Mario Limonciello <mario.limonciello@amd.com>
-Signed-off-by: Mario Limonciello <mario.limonciello@amd.com>
-(Updated commit text and removed unnecessary error message)
-Signed-off-by: Siyang Liu <Security@tencent.com>
-Signed-off-by: Roman Li <roman.li@amd.com>
-Reviewed-by: Alex Hung <alex.hung@amd.com>
-Tested-by: Daniel Wheeler <daniel.wheeler@amd.com>
-Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
-(cherry picked from commit 9dd8e2ba268c636c240a918e0a31e6feaee19404)
-Cc: stable@vger.kernel.org
+Signed-off-by: John David Anglin <dave.anglin@bell.net>
+Signed-off-by: Helge Deller <deller@gmx.de>
+Cc: stable@vger.kernel.org # v5.12+
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/gpu/drm/amd/display/dc/core/dc.c |   19 ++++++++++---------
- 1 file changed, 10 insertions(+), 9 deletions(-)
+ arch/parisc/kernel/cache.c |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/drivers/gpu/drm/amd/display/dc/core/dc.c
-+++ b/drivers/gpu/drm/amd/display/dc/core/dc.c
-@@ -890,17 +890,18 @@ static void dc_destruct(struct dc *dc)
- 	if (dc->link_srv)
- 		link_destroy_link_service(&dc->link_srv);
+--- a/arch/parisc/kernel/cache.c
++++ b/arch/parisc/kernel/cache.c
+@@ -841,7 +841,7 @@ void flush_cache_vmap(unsigned long star
+ 	}
  
--	if (dc->ctx->gpio_service)
--		dal_gpio_service_destroy(&dc->ctx->gpio_service);
-+	if (dc->ctx) {
-+		if (dc->ctx->gpio_service)
-+			dal_gpio_service_destroy(&dc->ctx->gpio_service);
- 
--	if (dc->ctx->created_bios)
--		dal_bios_parser_destroy(&dc->ctx->dc_bios);
-+		if (dc->ctx->created_bios)
-+			dal_bios_parser_destroy(&dc->ctx->dc_bios);
-+		kfree(dc->ctx->logger);
-+		dc_perf_trace_destroy(&dc->ctx->perf_trace);
- 
--	kfree(dc->ctx->logger);
--	dc_perf_trace_destroy(&dc->ctx->perf_trace);
--
--	kfree(dc->ctx);
--	dc->ctx = NULL;
-+		kfree(dc->ctx);
-+		dc->ctx = NULL;
-+	}
- 
- 	kfree(dc->bw_vbios);
- 	dc->bw_vbios = NULL;
+ 	vm = find_vm_area((void *)start);
+-	if (WARN_ON_ONCE(!vm)) {
++	if (!vm) {
+ 		flush_cache_all();
+ 		return;
+ 	}
 
 
 
