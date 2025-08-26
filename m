@@ -1,55 +1,56 @@
-Return-Path: <stable+bounces-173779-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-174907-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2AFA5B35FB1
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 14:52:45 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id F21E5B36551
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 15:46:53 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 3ED9C7C68CC
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 12:51:31 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 086D11BC7D0B
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 13:40:57 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7330C1F1315;
-	Tue, 26 Aug 2025 12:50:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2EFB3221290;
+	Tue, 26 Aug 2025 13:40:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="c5GldMTg"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Ryr1STSI"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 314261E521E;
-	Tue, 26 Aug 2025 12:50:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D19451F4CA9;
+	Tue, 26 Aug 2025 13:40:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756212649; cv=none; b=Le7uez11/CVhr7dA/4ZyzvLQRTLMYsNzu5X6eYUFjQIdJ/XYu8tAp9SU60xq6qFFgT3lik5dMWNiXQGDRsX6B7Jn0cu3WMO0kHJYAFskliclHdE9NQATF1Gko7RW8ZnWrersZEntowJQjLEoN6AjOIUux+bB46M9YaNOQ6hBGgA=
+	t=1756215631; cv=none; b=W0cUQy+IcnKq1FFw8ip5AYHQiG2ADWZhjtYXK8barkTGkQYixzdtl9Z2MteEeUrj4Uq2CaQTNt4k4iTW6xdHXi1R8+s6yeJhdmxJywjMsf1lVVcfusFvz0qBcR9S8Y7wSvBNbLeGJpkswVBEkU7q1eNHFKnjNsLUzfdMgwj+NSY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756212649; c=relaxed/simple;
-	bh=OVqon6dZxVNfXtWk85/jBWDu0e8CncgO4NXD7Cfw/g4=;
+	s=arc-20240116; t=1756215631; c=relaxed/simple;
+	bh=uycIWlXLdMRIsNNN//SGLqljIl9u1XFMlB+D+ZIInBA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=rkEc/sQ3mOMwtvzX4mbNwLrcN37Wiq5Z1thIOusKUxCSpJv0i/2xNPyJnWYC4rEXb0yER9akaRbFqXYE4XOWUEe4p7NpM6jgGq8M9RtZvm6q4uc1x8xyx4SHpMGemA6plk10HOSm5/UC8Euu135l7EnlNxEW5Sz3WvlnW0IHlqs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=c5GldMTg; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B6140C116B1;
-	Tue, 26 Aug 2025 12:50:48 +0000 (UTC)
+	 MIME-Version; b=tUuKNG8HnoMDC5idXhsT72A0IuBBYbyPgIG8SWHOM4iPQOfWbuxFeGN9bs/cRNAYvEW68Irfd272pqgN1SKBlR1A4j4AwSGdU9oIXtJ64uEXUj8d5lebZo/ByQ0XOLLub2koY8lCEXgztFuiC2CLnnIjUD86T9Wx16Kyw5CXyVE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Ryr1STSI; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 60E3BC4CEF1;
+	Tue, 26 Aug 2025 13:40:31 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1756212649;
-	bh=OVqon6dZxVNfXtWk85/jBWDu0e8CncgO4NXD7Cfw/g4=;
+	s=korg; t=1756215631;
+	bh=uycIWlXLdMRIsNNN//SGLqljIl9u1XFMlB+D+ZIInBA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=c5GldMTgdnpif773BrEpc7UMnVyijFDtrKVO7gYMkqcD4YLrsCn/igH16qXwG+8Un
-	 uWGblARtcAqvmIOr2VjUdMlnFnzBZMNY5Wgs8IdAdbSTospMF0KLttoheM0iw1hFG0
-	 FfoiWqeeUTCfu0JmyOgY1gjdswAOqepLKfFCWFWo=
+	b=Ryr1STSIeTh3n2uHxUAxorcI3vI3fSFsre7+RrHd4FrPF8I7akTAQ8EZOyorJoDqc
+	 PCKhwNy1/pzIzyWTaEmC1T/K7LU/fMiG5dL1/6XWbqAWbVBjqFtWj5X6LJdaEp3SD+
+	 X3Bi0EbsJyxrqayxO314fWWD3k87tsnhx8Fdje94=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Sasha Levin <sashal@kernel.org>,
-	Sean Christopherson <seanjc@google.com>
-Subject: [PATCH 6.6 049/587] KVM: VMX: Allow guest to set DEBUGCTL.RTM_DEBUG if RTM is supported
+	Xu Yang <xu.yang_2@nxp.com>,
+	Peter Chen <peter.chen@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.15 107/644] usb: chipidea: add USB PHY event
 Date: Tue, 26 Aug 2025 13:03:18 +0200
-Message-ID: <20250826110954.192107647@linuxfoundation.org>
+Message-ID: <20250826110949.167176745@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250826110952.942403671@linuxfoundation.org>
-References: <20250826110952.942403671@linuxfoundation.org>
+In-Reply-To: <20250826110946.507083938@linuxfoundation.org>
+References: <20250826110946.507083938@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,67 +62,99 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Sean Christopherson <seanjc@google.com>
+From: Xu Yang <xu.yang_2@nxp.com>
 
-[ Upstream commit 17ec2f965344ee3fd6620bef7ef68792f4ac3af0 ]
+[ Upstream commit b7a62611fab72e585c729a7fcf666aa9c4144214 ]
 
-Let the guest set DEBUGCTL.RTM_DEBUG if RTM is supported according to the
-guest CPUID model, as debug support is supposed to be available if RTM is
-supported, and there are no known downsides to letting the guest debug RTM
-aborts.
+Add USB PHY event for below situation:
+- usb role changed
+- vbus connect
+- vbus disconnect
+- gadget driver is enumerated
 
-Note, there are no known bug reports related to RTM_DEBUG, the primary
-motivation is to reduce the probability of breaking existing guests when a
-future change adds a missing consistency check on vmcs12.GUEST_DEBUGCTL
-(KVM currently lets L2 run with whatever hardware supports; whoops).
+USB PHY driver can get the last event after above situation occurs
+and deal with different situations.
 
-Note #2, KVM already emulates DR6.RTM, and doesn't restrict access to
-DR7.RTM.
-
-Fixes: 83c529151ab0 ("KVM: x86: expose Intel cpu new features (HLE, RTM) to guest")
-Cc: stable@vger.kernel.org
-Link: https://lore.kernel.org/r/20250610232010.162191-5-seanjc@google.com
-Signed-off-by: Sasha Levin <sashal@kernel.org>
-Signed-off-by: Sean Christopherson <seanjc@google.com>
+Signed-off-by: Xu Yang <xu.yang_2@nxp.com>
+Acked-by: Peter Chen <peter.chen@kernel.org>
+Link: https://lore.kernel.org/r/20230627110353.1879477-1-xu.yang_2@nxp.com
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/x86/include/asm/msr-index.h | 1 +
- arch/x86/kvm/vmx/vmx.c           | 4 ++++
- 2 files changed, 5 insertions(+)
+ drivers/usb/chipidea/ci.h  | 18 ++++++++++++++++--
+ drivers/usb/chipidea/udc.c | 10 ++++++++++
+ 2 files changed, 26 insertions(+), 2 deletions(-)
 
-diff --git a/arch/x86/include/asm/msr-index.h b/arch/x86/include/asm/msr-index.h
-index 033855457581..723e48b57bd0 100644
---- a/arch/x86/include/asm/msr-index.h
-+++ b/arch/x86/include/asm/msr-index.h
-@@ -380,6 +380,7 @@
- #define DEBUGCTLMSR_FREEZE_PERFMON_ON_PMI	(1UL << 12)
- #define DEBUGCTLMSR_FREEZE_IN_SMM_BIT	14
- #define DEBUGCTLMSR_FREEZE_IN_SMM	(1UL << DEBUGCTLMSR_FREEZE_IN_SMM_BIT)
-+#define DEBUGCTLMSR_RTM_DEBUG		BIT(15)
+diff --git a/drivers/usb/chipidea/ci.h b/drivers/usb/chipidea/ci.h
+index 50e37846f037..2615afd76561 100644
+--- a/drivers/usb/chipidea/ci.h
++++ b/drivers/usb/chipidea/ci.h
+@@ -276,8 +276,19 @@ static inline int ci_role_start(struct ci_hdrc *ci, enum ci_role role)
+ 		return -ENXIO;
  
- #define MSR_PEBS_FRONTEND		0x000003f7
- 
-diff --git a/arch/x86/kvm/vmx/vmx.c b/arch/x86/kvm/vmx/vmx.c
-index 08ca218ee858..359c3b7f52a1 100644
---- a/arch/x86/kvm/vmx/vmx.c
-+++ b/arch/x86/kvm/vmx/vmx.c
-@@ -2161,6 +2161,10 @@ static u64 vmx_get_supported_debugctl(struct kvm_vcpu *vcpu, bool host_initiated
- 	    (host_initiated || intel_pmu_lbr_is_enabled(vcpu)))
- 		debugctl |= DEBUGCTLMSR_LBR | DEBUGCTLMSR_FREEZE_LBRS_ON_PMI;
- 
-+	if (boot_cpu_has(X86_FEATURE_RTM) &&
-+	    (host_initiated || guest_cpuid_has(vcpu, X86_FEATURE_RTM)))
-+		debugctl |= DEBUGCTLMSR_RTM_DEBUG;
+ 	ret = ci->roles[role]->start(ci);
+-	if (!ret)
+-		ci->role = role;
++	if (ret)
++		return ret;
 +
- 	return debugctl;
++	ci->role = role;
++
++	if (ci->usb_phy) {
++		if (role == CI_ROLE_HOST)
++			usb_phy_set_event(ci->usb_phy, USB_EVENT_ID);
++		else
++			/* in device mode but vbus is invalid*/
++			usb_phy_set_event(ci->usb_phy, USB_EVENT_NONE);
++	}
++
+ 	return ret;
  }
  
+@@ -291,6 +302,9 @@ static inline void ci_role_stop(struct ci_hdrc *ci)
+ 	ci->role = CI_ROLE_END;
+ 
+ 	ci->roles[role]->stop(ci);
++
++	if (ci->usb_phy)
++		usb_phy_set_event(ci->usb_phy, USB_EVENT_NONE);
+ }
+ 
+ static inline enum usb_role ci_role_to_usb_role(struct ci_hdrc *ci)
+diff --git a/drivers/usb/chipidea/udc.c b/drivers/usb/chipidea/udc.c
+index 187c13af4b35..386019484ede 100644
+--- a/drivers/usb/chipidea/udc.c
++++ b/drivers/usb/chipidea/udc.c
+@@ -1703,6 +1703,13 @@ static int ci_udc_vbus_session(struct usb_gadget *_gadget, int is_active)
+ 		ret = ci->platdata->notify_event(ci,
+ 				CI_HDRC_CONTROLLER_VBUS_EVENT);
+ 
++	if (ci->usb_phy) {
++		if (is_active)
++			usb_phy_set_event(ci->usb_phy, USB_EVENT_VBUS);
++		else
++			usb_phy_set_event(ci->usb_phy, USB_EVENT_NONE);
++	}
++
+ 	if (ci->driver)
+ 		ci_hdrc_gadget_connect(_gadget, is_active);
+ 
+@@ -2018,6 +2025,9 @@ static irqreturn_t udc_irq(struct ci_hdrc *ci)
+ 		if (USBi_PCI & intr) {
+ 			ci->gadget.speed = hw_port_is_high_speed(ci) ?
+ 				USB_SPEED_HIGH : USB_SPEED_FULL;
++			if (ci->usb_phy)
++				usb_phy_set_event(ci->usb_phy,
++					USB_EVENT_ENUMERATED);
+ 			if (ci->suspended) {
+ 				if (ci->driver->resume) {
+ 					spin_unlock(&ci->lock);
 -- 
-2.50.1
+2.39.5
 
 
 
