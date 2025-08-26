@@ -1,58 +1,57 @@
-Return-Path: <stable+bounces-174680-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-173274-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id D82FCB364BD
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 15:41:46 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id AFA2CB35C53
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 13:33:17 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 9F9514661F9
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 13:31:50 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id D75B87C41C8
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 11:32:49 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C65C534166B;
-	Tue, 26 Aug 2025 13:30:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 449F3341678;
+	Tue, 26 Aug 2025 11:30:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="dZwcT2V1"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="TigA1Qa/"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8124E1E51E1;
-	Tue, 26 Aug 2025 13:30:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F4127340DBF;
+	Tue, 26 Aug 2025 11:30:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756215032; cv=none; b=aiVoGlikIABRyNTptZTK7maR4E+ituq12qb5CAM3Uc3anuvTLKnHYOT80WXxRYD8lIuzXdRl6ONo/1lqDeSn8BW7U7abXkBNcWUQVMKx9220uSwnBDsG2b1iFYICzVptSBuTsxMXZ+go2HNrvxr7diw8riHlULJ1A+rcHXOa59s=
+	t=1756207823; cv=none; b=iiYxv+ZxUiJ+6v/VFlUfflg/HqVMBNLMrmofGKvKhZ2146E6k1+ffH2TRwbfs5+JuLFsBrVYmS4DImdtHRLvXp/LPRy9M+75PtJtuUjHNN7ppZ5Al6KYCvf8y1KJVAw65GXNaQuOVUrp8Z5qwS0GBr8r09d+9i6AxEDjjyUDx+I=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756215032; c=relaxed/simple;
-	bh=Fl+OntS0bDqO5UZzIANttvtu65Y9kYJXBhJOXM1Qu1Q=;
+	s=arc-20240116; t=1756207823; c=relaxed/simple;
+	bh=sY7ECgz31TzjngHw9ak5xMC+LeKZYK5Va/pRd/uvfKw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=DeGDnqEDaFEgsofaULfuIAM1pTRKVe4JKsOJ6HFyXrGAl3iN0PxI2RWvQSTImHAk9T70DRKO3ZI9O2uCC4rl9dGZW9GRi+ve4MuJ3hfrWkTRXJoa3IQEucwBg/AaEf4u2JFatUbZFp8iFrsBxXpRDCUp/kVxccmFCygIqT7SjVY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=dZwcT2V1; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 13BDBC116D0;
-	Tue, 26 Aug 2025 13:30:31 +0000 (UTC)
+	 MIME-Version; b=iGuaWzB6FLLdsxVVcYIAoQHt+ZdSyji2ODS++YwR1heXjXEGU5o8QhcAjBW60rtM3Xb8S6kkKwH2n8+d70fZGny6hMYrVYoqkxOtuA8Yy1HCF3wFkjkj5OhTanPdYaccCe+MTkr8g6flCnsQMJyl3ltwKqpY1OzR8w1NeaqSeZc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=TigA1Qa/; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8CAC7C4CEF1;
+	Tue, 26 Aug 2025 11:30:22 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1756215032;
-	bh=Fl+OntS0bDqO5UZzIANttvtu65Y9kYJXBhJOXM1Qu1Q=;
+	s=korg; t=1756207822;
+	bh=sY7ECgz31TzjngHw9ak5xMC+LeKZYK5Va/pRd/uvfKw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=dZwcT2V1DRQCXKvxHEeogpTf+1eopLAJme8Nr8rz49zYnr/JiPhRdr8TXRXQpnJf2
-	 9RLIfP17Sj8dHSPgOIs32OTuMe+ClfPixXwITq78uAnGAe8AFBgAhdPhL6UEAWPv8q
-	 Z41xdR5A6UtGeINoWnlyEeKBrcNlCdV9yxz4ZmmI=
+	b=TigA1Qa/yk7xGnl3lELoAfuYcrZtUF9D0K4TZ/R9Vp/+xfQupUDX+yzwm97vwXwYx
+	 +jQfXRNtmscRfqgmUuU/oZt5s198+UNXfwfJdhexSloDnpvzao5R3djPSaXCaOpQb+
+	 NNKo+yXnTSENpgoPshe7B9ThzB4VcNQWusH45nqk=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	cen zhang <zzzccc427@gmail.com>,
-	Christoph Hellwig <hch@lst.de>,
-	"Darrick J. Wong" <djwong@kernel.org>,
-	Carlos Maiolino <cem@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 362/482] xfs: fully decouple XFS_IBULK* flags from XFS_IWALK* flags
+	Libing He <libhe@redhat.com>,
+	Yazen Ghannam <yazen.ghannam@amd.com>,
+	"Borislav Petkov (AMD)" <bp@alien8.de>,
+	Mario Limonciello <mario.limonciello@amd.com>
+Subject: [PATCH 6.16 331/457] x86/CPU/AMD: Ignore invalid reset reason value
 Date: Tue, 26 Aug 2025 13:10:15 +0200
-Message-ID: <20250826110939.778335056@linuxfoundation.org>
+Message-ID: <20250826110945.521205256@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250826110930.769259449@linuxfoundation.org>
-References: <20250826110930.769259449@linuxfoundation.org>
+In-Reply-To: <20250826110937.289866482@linuxfoundation.org>
+References: <20250826110937.289866482@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,62 +63,67 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.16-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Christoph Hellwig <hch@lst.de>
+From: Yazen Ghannam <yazen.ghannam@amd.com>
 
-[ Upstream commit d2845519b0723c5d5a0266cbf410495f9b8fd65c ]
+commit e9576e078220c50ace9e9087355423de23e25fa5 upstream.
 
-Fix up xfs_inumbers to now pass in the XFS_IBULK* flags into the flags
-argument to xfs_inobt_walk, which expects the XFS_IWALK* flags.
+The reset reason value may be "all bits set", e.g. 0xFFFFFFFF. This is a
+commonly used error response from hardware. This may occur due to a real
+hardware issue or when running in a VM.
 
-Currently passing the wrong flags works for non-debug builds because
-the only XFS_IWALK* flag has the same encoding as the corresponding
-XFS_IBULK* flag, but in debug builds it can trigger an assert that no
-incorrect flag is passed.  Instead just extra the relevant flag.
+The user will see all reset reasons reported in this case.
 
-Fixes: 5b35d922c52798 ("xfs: Decouple XFS_IBULK flags from XFS_IWALK flags")
-Cc: <stable@vger.kernel.org> # v5.19
-Reported-by: cen zhang <zzzccc427@gmail.com>
-Signed-off-by: Christoph Hellwig <hch@lst.de>
-Reviewed-by: Darrick J. Wong <djwong@kernel.org>
-Signed-off-by: Carlos Maiolino <cem@kernel.org>
-[ Adjust context ]
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Check for an error response value and return early to avoid decoding
+invalid data.
+
+Also, adjust the data variable type to match the hardware register size.
+
+Fixes: ab8131028710 ("x86/CPU/AMD: Print the reason for the last reset")
+Reported-by: Libing He <libhe@redhat.com>
+Signed-off-by: Yazen Ghannam <yazen.ghannam@amd.com>
+Signed-off-by: Borislav Petkov (AMD) <bp@alien8.de>
+Reviewed-by: Mario Limonciello <mario.limonciello@amd.com>
+Cc: stable@vger.kernel.org
+Link: https://lore.kernel.org/20250721181155.3536023-1-yazen.ghannam@amd.com
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- fs/xfs/xfs_itable.c |    6 +++++-
- 1 file changed, 5 insertions(+), 1 deletion(-)
+ arch/x86/kernel/cpu/amd.c |    8 ++++++--
+ 1 file changed, 6 insertions(+), 2 deletions(-)
 
---- a/fs/xfs/xfs_itable.c
-+++ b/fs/xfs/xfs_itable.c
-@@ -422,11 +422,15 @@ xfs_inumbers(
- 		.breq		= breq,
- 	};
- 	struct xfs_trans	*tp;
-+	unsigned int		iwalk_flags = 0;
- 	int			error = 0;
+--- a/arch/x86/kernel/cpu/amd.c
++++ b/arch/x86/kernel/cpu/amd.c
+@@ -1324,8 +1324,8 @@ static const char * const s5_reset_reaso
  
- 	if (xfs_bulkstat_already_done(breq->mp, breq->startino))
- 		return 0;
+ static __init int print_s5_reset_status_mmio(void)
+ {
+-	unsigned long value;
+ 	void __iomem *addr;
++	u32 value;
+ 	int i;
  
-+	if (breq->flags & XFS_IBULK_SAME_AG)
-+		iwalk_flags |= XFS_IWALK_SAME_AG;
+ 	if (!cpu_feature_enabled(X86_FEATURE_ZEN))
+@@ -1338,12 +1338,16 @@ static __init int print_s5_reset_status_
+ 	value = ioread32(addr);
+ 	iounmap(addr);
+ 
++	/* Value with "all bits set" is an error response and should be ignored. */
++	if (value == U32_MAX)
++		return 0;
 +
- 	/*
- 	 * Grab an empty transaction so that we can use its recursive buffer
- 	 * locking abilities to detect cycles in the inobt without deadlocking.
-@@ -435,7 +439,7 @@ xfs_inumbers(
- 	if (error)
- 		goto out;
+ 	for (i = 0; i < ARRAY_SIZE(s5_reset_reason_txt); i++) {
+ 		if (!(value & BIT(i)))
+ 			continue;
  
--	error = xfs_inobt_walk(breq->mp, tp, breq->startino, breq->flags,
-+	error = xfs_inobt_walk(breq->mp, tp, breq->startino, iwalk_flags,
- 			xfs_inumbers_walk, breq->icount, &ic);
- 	xfs_trans_cancel(tp);
- out:
+ 		if (s5_reset_reason_txt[i]) {
+-			pr_info("x86/amd: Previous system reset reason [0x%08lx]: %s\n",
++			pr_info("x86/amd: Previous system reset reason [0x%08x]: %s\n",
+ 				value, s5_reset_reason_txt[i]);
+ 		}
+ 	}
 
 
 
