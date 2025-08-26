@@ -1,55 +1,56 @@
-Return-Path: <stable+bounces-174485-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-174003-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id B2543B3639A
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 15:31:43 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4B832B360E1
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 15:04:49 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 2B9E78A4F1F
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 13:23:39 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 359253BC5E0
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 13:00:36 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B9128341ABD;
-	Tue, 26 Aug 2025 13:21:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id BAE1D19DF8D;
+	Tue, 26 Aug 2025 13:00:35 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="QI1NLd4E"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="myE21JxT"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 75BCF30146A;
-	Tue, 26 Aug 2025 13:21:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7779E13957E;
+	Tue, 26 Aug 2025 13:00:35 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756214518; cv=none; b=GwJe92h78frTaZFZGY9nEru/Uj9cU9NBrfmmGsHyFkltEJH93Kvi7mLTAtdnwzpchasbOw3cO062iyB0EmLwHdRaAvxxsk2w5oLNv3d8uIx4q9rHLoiRae8FaS+BU4XOc9Hqw6b7nhX+0E5A8aSgjRpemO81zh/EBDEz9L7kYSA=
+	t=1756213235; cv=none; b=fWr8FQWQ56jOk1aN86vOZW0Cj6Mq3Mru/ReNzpDDEddQU2XrNLyQqCmmP96ZHmTPDEtV1+T27o6qQ6l5Fqx1gdruEId7YvPc68W8A77MPHHGqudZ9BERR8nvly8OzB1rlNnEtcFPmSMRxCFu+HVQRTFPd1Jes2vlKnPTTIs3a8g=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756214518; c=relaxed/simple;
-	bh=4Mg8NTypv0cnLDszsJFSpiuI+5ihfx6eJ6V13whcM5o=;
+	s=arc-20240116; t=1756213235; c=relaxed/simple;
+	bh=seRF3WoU1w5IdVuSd1YCJzUs+qNngXD0JjEaPbtSdxw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=A8FFdkBzPCVi7gvKKPtKJPK+3srKC+0Kxn423JHNSpNkNvxzY2NLk2mArWu1LBNQCJNHe9NEMZ/lAOhbcwkNjMGbB8aUHiyFGFLY3xSfXhE8z5Yh1ew1OG5I0s3Jh2DUbCaxuygw6yt2MlVIaAY4x+Svv+bQaPa5z6d3AGdsV5k=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=QI1NLd4E; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A80A3C4CEF1;
-	Tue, 26 Aug 2025 13:21:56 +0000 (UTC)
+	 MIME-Version; b=cZhTRJ/4lHqvH9W2TqIqOSPzOsPm5FAGdXkzWI8zkdL40NC3c6qQGmkeZOeD4+JwFbC+AFbelyo5U0mgDHFyaa03bMYv52r8Z2m/zdSngToOje5s1Qd/rnsNxeR6YzMGbs5vKboiCURrFZ5ZQEU6EFuhTJa0BeiZcZNtaC2TgAw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=myE21JxT; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 09576C4CEF1;
+	Tue, 26 Aug 2025 13:00:34 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1756214517;
-	bh=4Mg8NTypv0cnLDszsJFSpiuI+5ihfx6eJ6V13whcM5o=;
+	s=korg; t=1756213235;
+	bh=seRF3WoU1w5IdVuSd1YCJzUs+qNngXD0JjEaPbtSdxw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=QI1NLd4E0hbqWbEnZRL+T97T8i+d5zME8Tc9PEu0fXlI3iZqsXqWzzDFWEuTOLBJ9
-	 fiOXY4J0PCT7+WrWC26D2+MHQNf3epyhPXu4gSoQBsllvN4cYvKEniMPPb0GgaLENt
-	 idMe7n6oiUllSQ5OS5afoEP1hZAIUUFjpbUlsgsE=
+	b=myE21JxTkI84f1qItOx2JsJbIXxouIcOmJJmvEGjrJT/YvFkgeQJ3DGuh0jYp55mL
+	 423wjq37pqCEqI26P6KwHkPBX7qGaDKx+Na4s9AdxRY23Ew/1l79hq8d1YQYh79N5P
+	 0EdKzBaq2kQ1s2w6LetU4cnfQk997mA+F2Kaau3M=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jakub Kicinski <kuba@kernel.org>,
+	Yuezhang Mo <Yuezhang.Mo@sony.com>,
+	Namjae Jeon <linkinjeon@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 167/482] uapi: in6: restore visibility of most IPv6 socket options
-Date: Tue, 26 Aug 2025 13:07:00 +0200
-Message-ID: <20250826110934.937471506@linuxfoundation.org>
+Subject: [PATCH 6.6 272/587] exfat: add cluster chain loop check for dir
+Date: Tue, 26 Aug 2025 13:07:01 +0200
+Message-ID: <20250826110959.847863854@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250826110930.769259449@linuxfoundation.org>
-References: <20250826110930.769259449@linuxfoundation.org>
+In-Reply-To: <20250826110952.942403671@linuxfoundation.org>
+References: <20250826110952.942403671@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -59,104 +60,231 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jakub Kicinski <kuba@kernel.org>
+From: Yuezhang Mo <Yuezhang.Mo@sony.com>
 
-[ Upstream commit 31557b3487b349464daf42bc4366153743c1e727 ]
+[ Upstream commit 99f9a97dce39ad413c39b92c90393bbd6778f3fd ]
 
-A decade ago commit 6d08acd2d32e ("in6: fix conflict with glibc")
-hid the definitions of IPV6 options, because GCC was complaining
-about duplicates. The commit did not list the warnings seen, but
-trying to recreate them now I think they are (building iproute2):
+An infinite loop may occur if the following conditions occur due to
+file system corruption.
 
-In file included from ./include/uapi/rdma/rdma_user_cm.h:39,
-                 from rdma.h:16,
-                 from res.h:9,
-                 from res-ctx.c:7:
-../include/uapi/linux/in6.h:171:9: warning: ‘IPV6_ADD_MEMBERSHIP’ redefined
-  171 | #define IPV6_ADD_MEMBERSHIP     20
-      |         ^~~~~~~~~~~~~~~~~~~
-In file included from /usr/include/netinet/in.h:37,
-                 from rdma.h:13:
-/usr/include/bits/in.h:233:10: note: this is the location of the previous definition
-  233 | # define IPV6_ADD_MEMBERSHIP    IPV6_JOIN_GROUP
-      |          ^~~~~~~~~~~~~~~~~~~
-../include/uapi/linux/in6.h:172:9: warning: ‘IPV6_DROP_MEMBERSHIP’ redefined
-  172 | #define IPV6_DROP_MEMBERSHIP    21
-      |         ^~~~~~~~~~~~~~~~~~~~
-/usr/include/bits/in.h:234:10: note: this is the location of the previous definition
-  234 | # define IPV6_DROP_MEMBERSHIP   IPV6_LEAVE_GROUP
-      |          ^~~~~~~~~~~~~~~~~~~~
+(1) Condition for exfat_count_dir_entries() to loop infinitely.
+    - The cluster chain includes a loop.
+    - There is no UNUSED entry in the cluster chain.
 
-Compilers don't complain about redefinition if the defines
-are identical, but here we have the kernel using the literal
-value, and glibc using an indirection (defining to a name
-of another define, with the same numerical value).
+(2) Condition for exfat_create_upcase_table() to loop infinitely.
+    - The cluster chain of the root directory includes a loop.
+    - There are no UNUSED entry and up-case table entry in the cluster
+      chain of the root directory.
 
-Problem is, the commit in question hid all the IPV6 socket
-options, and glibc has a pretty sparse list. For instance
-it lacks Flow Label related options. Willem called this out
-in commit 3fb321fde22d ("selftests/net: ipv6 flowlabel"):
+(3) Condition for exfat_load_bitmap() to loop infinitely.
+    - The cluster chain of the root directory includes a loop.
+    - There are no UNUSED entry and bitmap entry in the cluster chain
+      of the root directory.
 
-  /* uapi/glibc weirdness may leave this undefined */
-  #ifndef IPV6_FLOWINFO
-  #define IPV6_FLOWINFO 11
-  #endif
+(4) Condition for exfat_find_dir_entry() to loop infinitely.
+    - The cluster chain includes a loop.
+    - The unused directory entries were exhausted by some operation.
 
-More interestingly some applications (socat) use
-a #ifdef IPV6_FLOWINFO to gate compilation of thier
-rudimentary flow label support. (For added confusion
-socat misspells it as IPV4_FLOWINFO in some places.)
+(5) Condition for exfat_check_dir_empty() to loop infinitely.
+    - The cluster chain includes a loop.
+    - The unused directory entries were exhausted by some operation.
+    - All files and sub-directories under the directory are deleted.
 
-Hide only the two defines we know glibc has a problem
-with. If we discover more warnings we can hide more
-but we should avoid covering the entire block of
-defines for "IPV6 socket options".
+This commit adds checks to break the above infinite loop.
 
-Link: https://patch.msgid.link/20250609143933.1654417-1-kuba@kernel.org
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Signed-off-by: Yuezhang Mo <Yuezhang.Mo@sony.com>
+Signed-off-by: Namjae Jeon <linkinjeon@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- include/uapi/linux/in6.h | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ fs/exfat/dir.c    | 12 ++++++++++++
+ fs/exfat/fatent.c | 10 ++++++++++
+ fs/exfat/namei.c  |  5 +++++
+ fs/exfat/super.c  | 32 +++++++++++++++++++++-----------
+ 4 files changed, 48 insertions(+), 11 deletions(-)
 
-diff --git a/include/uapi/linux/in6.h b/include/uapi/linux/in6.h
-index ff8d21f9e95b..5a47339ef7d7 100644
---- a/include/uapi/linux/in6.h
-+++ b/include/uapi/linux/in6.h
-@@ -152,7 +152,6 @@ struct in6_flowlabel_req {
- /*
-  *	IPV6 socket options
-  */
--#if __UAPI_DEF_IPV6_OPTIONS
- #define IPV6_ADDRFORM		1
- #define IPV6_2292PKTINFO	2
- #define IPV6_2292HOPOPTS	3
-@@ -169,8 +168,10 @@ struct in6_flowlabel_req {
- #define IPV6_MULTICAST_IF	17
- #define IPV6_MULTICAST_HOPS	18
- #define IPV6_MULTICAST_LOOP	19
-+#if __UAPI_DEF_IPV6_OPTIONS
- #define IPV6_ADD_MEMBERSHIP	20
- #define IPV6_DROP_MEMBERSHIP	21
-+#endif
- #define IPV6_ROUTER_ALERT	22
- #define IPV6_MTU_DISCOVER	23
- #define IPV6_MTU		24
-@@ -203,7 +204,6 @@ struct in6_flowlabel_req {
- #define IPV6_IPSEC_POLICY	34
- #define IPV6_XFRM_POLICY	35
- #define IPV6_HDRINCL		36
--#endif
+diff --git a/fs/exfat/dir.c b/fs/exfat/dir.c
+index f4f81e349cef..6139a57fde70 100644
+--- a/fs/exfat/dir.c
++++ b/fs/exfat/dir.c
+@@ -994,6 +994,7 @@ int exfat_find_dir_entry(struct super_block *sb, struct exfat_inode_info *ei,
+ 	struct exfat_hint_femp candi_empty;
+ 	struct exfat_sb_info *sbi = EXFAT_SB(sb);
+ 	int num_entries = exfat_calc_num_entries(p_uniname);
++	unsigned int clu_count = 0;
  
- /*
-  * Multicast:
+ 	if (num_entries < 0)
+ 		return num_entries;
+@@ -1131,6 +1132,10 @@ int exfat_find_dir_entry(struct super_block *sb, struct exfat_inode_info *ei,
+ 		} else {
+ 			if (exfat_get_next_cluster(sb, &clu.dir))
+ 				return -EIO;
++
++			/* break if the cluster chain includes a loop */
++			if (unlikely(++clu_count > EXFAT_DATA_CLUSTER_COUNT(sbi)))
++				goto not_found;
+ 		}
+ 	}
+ 
+@@ -1214,6 +1219,7 @@ int exfat_count_dir_entries(struct super_block *sb, struct exfat_chain *p_dir)
+ 	int i, count = 0;
+ 	int dentries_per_clu;
+ 	unsigned int entry_type;
++	unsigned int clu_count = 0;
+ 	struct exfat_chain clu;
+ 	struct exfat_dentry *ep;
+ 	struct exfat_sb_info *sbi = EXFAT_SB(sb);
+@@ -1246,6 +1252,12 @@ int exfat_count_dir_entries(struct super_block *sb, struct exfat_chain *p_dir)
+ 		} else {
+ 			if (exfat_get_next_cluster(sb, &(clu.dir)))
+ 				return -EIO;
++
++			if (unlikely(++clu_count > sbi->used_clusters)) {
++				exfat_fs_error(sb, "FAT or bitmap is corrupted");
++				return -EIO;
++			}
++
+ 		}
+ 	}
+ 
+diff --git a/fs/exfat/fatent.c b/fs/exfat/fatent.c
+index 24e1e05f9f34..407880901ee3 100644
+--- a/fs/exfat/fatent.c
++++ b/fs/exfat/fatent.c
+@@ -461,5 +461,15 @@ int exfat_count_num_clusters(struct super_block *sb,
+ 	}
+ 
+ 	*ret_count = count;
++
++	/*
++	 * since exfat_count_used_clusters() is not called, sbi->used_clusters
++	 * cannot be used here.
++	 */
++	if (unlikely(i == sbi->num_clusters && clu != EXFAT_EOF_CLUSTER)) {
++		exfat_fs_error(sb, "The cluster chain has a loop");
++		return -EIO;
++	}
++
+ 	return 0;
+ }
+diff --git a/fs/exfat/namei.c b/fs/exfat/namei.c
+index f340e96b499f..4657f893dea7 100644
+--- a/fs/exfat/namei.c
++++ b/fs/exfat/namei.c
+@@ -893,6 +893,7 @@ static int exfat_check_dir_empty(struct super_block *sb,
+ {
+ 	int i, dentries_per_clu;
+ 	unsigned int type;
++	unsigned int clu_count = 0;
+ 	struct exfat_chain clu;
+ 	struct exfat_dentry *ep;
+ 	struct exfat_sb_info *sbi = EXFAT_SB(sb);
+@@ -929,6 +930,10 @@ static int exfat_check_dir_empty(struct super_block *sb,
+ 		} else {
+ 			if (exfat_get_next_cluster(sb, &(clu.dir)))
+ 				return -EIO;
++
++			/* break if the cluster chain includes a loop */
++			if (unlikely(++clu_count > EXFAT_DATA_CLUSTER_COUNT(sbi)))
++				break;
+ 		}
+ 	}
+ 
+diff --git a/fs/exfat/super.c b/fs/exfat/super.c
+index 2778bd9b631e..5affc11d1461 100644
+--- a/fs/exfat/super.c
++++ b/fs/exfat/super.c
+@@ -327,13 +327,12 @@ static void exfat_hash_init(struct super_block *sb)
+ 		INIT_HLIST_HEAD(&sbi->inode_hashtable[i]);
+ }
+ 
+-static int exfat_read_root(struct inode *inode)
++static int exfat_read_root(struct inode *inode, struct exfat_chain *root_clu)
+ {
+ 	struct super_block *sb = inode->i_sb;
+ 	struct exfat_sb_info *sbi = EXFAT_SB(sb);
+ 	struct exfat_inode_info *ei = EXFAT_I(inode);
+-	struct exfat_chain cdir;
+-	int num_subdirs, num_clu = 0;
++	int num_subdirs;
+ 
+ 	exfat_chain_set(&ei->dir, sbi->root_dir, 0, ALLOC_FAT_CHAIN);
+ 	ei->entry = -1;
+@@ -346,12 +345,9 @@ static int exfat_read_root(struct inode *inode)
+ 	ei->hint_stat.clu = sbi->root_dir;
+ 	ei->hint_femp.eidx = EXFAT_HINT_NONE;
+ 
+-	exfat_chain_set(&cdir, sbi->root_dir, 0, ALLOC_FAT_CHAIN);
+-	if (exfat_count_num_clusters(sb, &cdir, &num_clu))
+-		return -EIO;
+-	i_size_write(inode, num_clu << sbi->cluster_size_bits);
++	i_size_write(inode, EXFAT_CLU_TO_B(root_clu->size, sbi));
+ 
+-	num_subdirs = exfat_count_dir_entries(sb, &cdir);
++	num_subdirs = exfat_count_dir_entries(sb, root_clu);
+ 	if (num_subdirs < 0)
+ 		return -EIO;
+ 	set_nlink(inode, num_subdirs + EXFAT_MIN_SUBDIR);
+@@ -567,7 +563,8 @@ static int exfat_verify_boot_region(struct super_block *sb)
+ }
+ 
+ /* mount the file system volume */
+-static int __exfat_fill_super(struct super_block *sb)
++static int __exfat_fill_super(struct super_block *sb,
++		struct exfat_chain *root_clu)
+ {
+ 	int ret;
+ 	struct exfat_sb_info *sbi = EXFAT_SB(sb);
+@@ -584,6 +581,18 @@ static int __exfat_fill_super(struct super_block *sb)
+ 		goto free_bh;
+ 	}
+ 
++	/*
++	 * Call exfat_count_num_cluster() before searching for up-case and
++	 * bitmap directory entries to avoid infinite loop if they are missing
++	 * and the cluster chain includes a loop.
++	 */
++	exfat_chain_set(root_clu, sbi->root_dir, 0, ALLOC_FAT_CHAIN);
++	ret = exfat_count_num_clusters(sb, root_clu, &root_clu->size);
++	if (ret) {
++		exfat_err(sb, "failed to count the number of clusters in root");
++		goto free_bh;
++	}
++
+ 	ret = exfat_create_upcase_table(sb);
+ 	if (ret) {
+ 		exfat_err(sb, "failed to load upcase table");
+@@ -618,6 +627,7 @@ static int exfat_fill_super(struct super_block *sb, struct fs_context *fc)
+ 	struct exfat_sb_info *sbi = sb->s_fs_info;
+ 	struct exfat_mount_options *opts = &sbi->options;
+ 	struct inode *root_inode;
++	struct exfat_chain root_clu;
+ 	int err;
+ 
+ 	if (opts->allow_utime == (unsigned short)-1)
+@@ -636,7 +646,7 @@ static int exfat_fill_super(struct super_block *sb, struct fs_context *fc)
+ 	sb->s_time_min = EXFAT_MIN_TIMESTAMP_SECS;
+ 	sb->s_time_max = EXFAT_MAX_TIMESTAMP_SECS;
+ 
+-	err = __exfat_fill_super(sb);
++	err = __exfat_fill_super(sb, &root_clu);
+ 	if (err) {
+ 		exfat_err(sb, "failed to recognize exfat type");
+ 		goto check_nls_io;
+@@ -671,7 +681,7 @@ static int exfat_fill_super(struct super_block *sb, struct fs_context *fc)
+ 
+ 	root_inode->i_ino = EXFAT_ROOT_INO;
+ 	inode_set_iversion(root_inode, 1);
+-	err = exfat_read_root(root_inode);
++	err = exfat_read_root(root_inode, &root_clu);
+ 	if (err) {
+ 		exfat_err(sb, "failed to initialize root inode");
+ 		goto put_inode;
 -- 
 2.39.5
 
