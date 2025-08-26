@@ -1,58 +1,57 @@
-Return-Path: <stable+bounces-175722-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-173149-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1551FB36A38
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 16:35:35 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 08BF9B35BF1
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 13:29:33 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 6812C1C42292
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 14:19:17 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id F14021883234
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 11:25:21 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id AEFE2353366;
-	Tue, 26 Aug 2025 14:16:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 07B222BE03C;
+	Tue, 26 Aug 2025 11:25:00 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="l4nDOMvj"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="kGq6mLIF"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 62F08352FDF;
-	Tue, 26 Aug 2025 14:16:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BA4C1239573;
+	Tue, 26 Aug 2025 11:24:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756217798; cv=none; b=Biz/5sx8qXc4qQSkEc34MVM7zxxmR4QHjh34Ne6i2QvEG0vecOBnRcubAx499Q7mbX7Y/ODViVRjXqjE68UL/93GMaAB+c8HUU/Dh/eq4RCZnTAHeLXwC8zJbCuUgsjaLKS7OGoJqCGvSi8RATxV3nBOXd0WbNGp/P3OLJ27Frg=
+	t=1756207499; cv=none; b=Vxp53XQnjyVEWOSNM5HpSGxt4cAMKNBthjMovDJQfZ5xNjlXRFlex2UvchgCBO1xUuqnheATr70xedh4NnWnw7lCUZQ/NoiVudcCU9KVw07ZSsl8yDQS3uv0+s3UsvI85khOKqg6ZOGfqRi9Xp1c7/vfe4yVkqDoBXQyh5OPOD8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756217798; c=relaxed/simple;
-	bh=XUTO6oR0n1SZGYZRxuwK/GUuyoTIgZyZbChJaojaH5g=;
+	s=arc-20240116; t=1756207499; c=relaxed/simple;
+	bh=xj61u2AEqs6UKFrPXvq1/FNiTB3k5nxJ2cTsvjSzvd8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=qelu35AxfVVeo6zDzvXh0tp3sWvdSY75LrbrtGsK0WFzEXXmGoVVi9WiIE9o4oX/Eq1dwkfuds/aN2Url52OHSRD4OxE/w132vtIRYdzfr6BCUG8m0PEISwyfg3CcDwIQYDAydu8/BSd6YI7L8TPPEya4KJ6Z4JSTJ4V2d494p8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=l4nDOMvj; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id EAE22C4CEF1;
-	Tue, 26 Aug 2025 14:16:37 +0000 (UTC)
+	 MIME-Version; b=dMRyco9O6D561fX433lvzfmtpDJs3u7zC8gAiZXEdkVBo16YoTmNxAk7Gey65D8wRARUNUVPFYTZuyDbeAqDNHCnBf2yU78eRhlhiuEv4gx2mj1TKDKU2F1+b1U93omOwPgj+nePZl1pTTToSr0gSHyEIw1Nv/hgrYAzHJnVFdg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=kGq6mLIF; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 46E03C4CEF1;
+	Tue, 26 Aug 2025 11:24:59 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1756217798;
-	bh=XUTO6oR0n1SZGYZRxuwK/GUuyoTIgZyZbChJaojaH5g=;
+	s=korg; t=1756207499;
+	bh=xj61u2AEqs6UKFrPXvq1/FNiTB3k5nxJ2cTsvjSzvd8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=l4nDOMvjFDKwbbCFARmoxrM5z0dUQciQqJyaPUGw+3cTHKwWQls5zP03zhBBbeHSi
-	 Aq814BMzyC+goxVgPvUBy65l3KAg3NHwvrtLcIj0BXwh3f5gwxesjQYWgrR79lv5fK
-	 2PvNTUlv9IqlPEhpJ0seOhWdRtT+REHzG82nQjOs=
+	b=kGq6mLIFYswExEvJUvghFK/O7smS41aueOyGCAH7ON9y67dFDAK4PTrAEFyR7bYvn
+	 jRk+Jv0XAp2N6z+U4uA2QH6hGFGzF/tJH5yPES2VbTvK42tKodJ/mJUvjlfj/4F25t
+	 p38mjGfwd2NmHd1DzkbnoCBtQ35fr7ZnqxV3TAh8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Fedor Pchelkin <pchelkin@ispras.ru>,
-	Alexei Safin <a.safin@rosa.ru>,
-	Stanislaw Gruszka <stf_xl@wp.pl>,
-	Johannes Berg <johannes.berg@intel.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 279/523] wifi: iwlegacy: Check rate_idx range after addition
+	Thomas Dreibholz <dreibh@simula.no>,
+	Mat Martineau <martineau@kernel.org>,
+	"Matthieu Baerts (NGI0)" <matttbe@kernel.org>,
+	Jakub Kicinski <kuba@kernel.org>
+Subject: [PATCH 6.16 205/457] mptcp: pm: kernel: flush: do not reset ADD_ADDR limit
 Date: Tue, 26 Aug 2025 13:08:09 +0200
-Message-ID: <20250826110931.315278976@linuxfoundation.org>
+Message-ID: <20250826110942.431681397@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250826110924.562212281@linuxfoundation.org>
-References: <20250826110924.562212281@linuxfoundation.org>
+In-Reply-To: <20250826110937.289866482@linuxfoundation.org>
+References: <20250826110937.289866482@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,48 +63,45 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+6.16-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Stanislaw Gruszka <stf_xl@wp.pl>
+From: Matthieu Baerts (NGI0) <matttbe@kernel.org>
 
-[ Upstream commit 0de19d5ae0b2c5b18b88c5c7f0442f707a207409 ]
+commit 68fc0f4b0d25692940cdc85c68e366cae63e1757 upstream.
 
-Limit rate_idx to IL_LAST_OFDM_RATE for 5GHz band for thinkable case
-the index is incorrect.
+A flush of the MPTCP endpoints should not affect the MPTCP limits. In
+other words, 'ip mptcp endpoint flush' should not change 'ip mptcp
+limits'.
 
-Reported-by: Fedor Pchelkin <pchelkin@ispras.ru>
-Reported-by: Alexei Safin <a.safin@rosa.ru>
-Signed-off-by: Stanislaw Gruszka <stf_xl@wp.pl>
-Reviewed-by: Fedor Pchelkin <pchelkin@ispras.ru>
-Link: https://patch.msgid.link/20250525144524.GA172583@wp.pl
-Signed-off-by: Johannes Berg <johannes.berg@intel.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+But it was the case: the MPTCP_PM_ATTR_RCV_ADD_ADDRS (add_addr_accepted)
+limit was reset by accident. Removing the reset of this counter during a
+flush fixes this issue.
+
+Fixes: 01cacb00b35c ("mptcp: add netlink-based PM")
+Cc: stable@vger.kernel.org
+Reported-by: Thomas Dreibholz <dreibh@simula.no>
+Closes: https://github.com/multipath-tcp/mptcp_net-next/issues/579
+Reviewed-by: Mat Martineau <martineau@kernel.org>
+Signed-off-by: Matthieu Baerts (NGI0) <matttbe@kernel.org>
+Link: https://patch.msgid.link/20250815-net-mptcp-misc-fixes-6-17-rc2-v1-2-521fe9957892@kernel.org
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/net/wireless/intel/iwlegacy/4965-mac.c | 5 ++++-
- 1 file changed, 4 insertions(+), 1 deletion(-)
+ net/mptcp/pm_kernel.c |    1 -
+ 1 file changed, 1 deletion(-)
 
-diff --git a/drivers/net/wireless/intel/iwlegacy/4965-mac.c b/drivers/net/wireless/intel/iwlegacy/4965-mac.c
-index 2549902552e1..6e5decf79a06 100644
---- a/drivers/net/wireless/intel/iwlegacy/4965-mac.c
-+++ b/drivers/net/wireless/intel/iwlegacy/4965-mac.c
-@@ -1574,8 +1574,11 @@ il4965_tx_cmd_build_rate(struct il_priv *il,
- 	    || rate_idx > RATE_COUNT_LEGACY)
- 		rate_idx = rate_lowest_index(&il->bands[info->band], sta);
- 	/* For 5 GHZ band, remap mac80211 rate indices into driver indices */
--	if (info->band == NL80211_BAND_5GHZ)
-+	if (info->band == NL80211_BAND_5GHZ) {
- 		rate_idx += IL_FIRST_OFDM_RATE;
-+		if (rate_idx > IL_LAST_OFDM_RATE)
-+			rate_idx = IL_LAST_OFDM_RATE;
-+	}
- 	/* Get PLCP rate for tx_cmd->rate_n_flags */
- 	rate_plcp = il_rates[rate_idx].plcp;
- 	/* Zero out flags for this packet */
--- 
-2.39.5
-
+--- a/net/mptcp/pm_kernel.c
++++ b/net/mptcp/pm_kernel.c
+@@ -1085,7 +1085,6 @@ static void __flush_addrs(struct list_he
+ static void __reset_counters(struct pm_nl_pernet *pernet)
+ {
+ 	WRITE_ONCE(pernet->add_addr_signal_max, 0);
+-	WRITE_ONCE(pernet->add_addr_accept_max, 0);
+ 	WRITE_ONCE(pernet->local_addr_max, 0);
+ 	pernet->addrs = 0;
+ }
 
 
 
