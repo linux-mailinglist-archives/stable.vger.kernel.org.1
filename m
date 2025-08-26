@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-176040-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-173981-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 82CB5B36AE5
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 16:41:42 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1905FB360A6
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 15:02:42 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 4A3F3983B39
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 14:32:37 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id BEBB34662EB
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 12:59:40 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 80D413469F4;
-	Tue, 26 Aug 2025 14:30:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3F17621CC79;
+	Tue, 26 Aug 2025 12:59:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="2q56JRBh"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="UlJt9k87"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3D7D8341AD4;
-	Tue, 26 Aug 2025 14:30:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EC05717A2EA;
+	Tue, 26 Aug 2025 12:59:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756218628; cv=none; b=FsFCHoLQU2xHMS3hTQ1WFMZhDcsK5wzfpx3VfDoBh8RNGxIA1q8I30OknmCc1vzt2OhF3cJsD366SvJIpiCcFU+COVzDVk3oLduwcyAmj3hZPgCA6eP9rT0+Vr/UWVBaHhMHU51YWVY6QRnypliGhrodysTOdDWL0QCCOIKy/Yc=
+	t=1756213177; cv=none; b=olmn9GmoBJyFf0u9cRm9z/ZpiKqmb0YUrMO8YFd/OI8MP0rYYIyvLm2TNuIgT5B5mmad689AdYIfAA6VarACg8BFuEiocQNMABJJOsOI9cpH7XPPSLnwikrI4qPGvgWnlu1V6HrY+IaKVAjACcc+focYnEgtIBaq+sLngoLWvl8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756218628; c=relaxed/simple;
-	bh=mKD/5B22os2jPjurvNoK3n1hytFX3RsY9zDUu2u1gW8=;
+	s=arc-20240116; t=1756213177; c=relaxed/simple;
+	bh=N5TnFlZLHcWYbPDfCm7ERl1crPjay/aTHBlStClOLrU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=U0vWaSeYELvydo4WJA9UuE7Z7JpjzII14TaMbgNiZtG/h8B0NF79Ij+FS6UDEFsiQeYtpNRtjysz2G6+bd0l8ouJP0teTnnnmgz5c+S7VlRRJsldqp4SszqXFRRxpm5EvBDbev8gMF7Avup6FYvK/HlO+uWp/O2EzAm1RKSFELw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=2q56JRBh; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C7129C4CEF1;
-	Tue, 26 Aug 2025 14:30:27 +0000 (UTC)
+	 MIME-Version; b=D7RNv9T7Hbs+ZAtrkc13tvpeG4DmYj+hSSK1NHzlWXARXwD+HGB10mHp88fln4GN39VP/YRv4+EjDzFsZVrhvlcP5oSjsTfScQD6PIx3wCI5Wj+FZq9R5NfLA5tOuGfJGr2PN9bGXHfwEJcFUXHzEbN1M8rTVJtwJVlVEb9/DDs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=UlJt9k87; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 74DF4C4CEF1;
+	Tue, 26 Aug 2025 12:59:36 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1756218628;
-	bh=mKD/5B22os2jPjurvNoK3n1hytFX3RsY9zDUu2u1gW8=;
+	s=korg; t=1756213176;
+	bh=N5TnFlZLHcWYbPDfCm7ERl1crPjay/aTHBlStClOLrU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=2q56JRBhS3DfQC+yHX4fR+c5Pqg+8MP7wBIVnL2SLZcEAVW4zByWSXCKArUpKLHfQ
-	 i9bgcNcpc/5jl3f9qBinSk7jPHLvqyQ2s5aAptib7wjom14Cb/X7FtH+y1SrVUFn3Q
-	 7xMluziCC/m2u52Ifh8FU67ngWfZ+ACgQDN6e4cA=
+	b=UlJt9k876RNZeKcmzf7iKtomGWYcg+hfUHSpKBg4QCcgcMoipsJdO7/2jzjTdOJpG
+	 Uc4Z9aVz3e8v6D71eE30Mc2oEXFnXMQTxhMysSf2RjZAVLtMSgF9XJPtHTqVHc2AAL
+	 H640ReK7ojjtnUjSDGn6l5CXt6HWMB5opV0hAELc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	syzbot+8c0bc9f818702ff75b76@syzkaller.appspotmail.com,
-	Yangtao Li <frank.li@vivo.com>,
-	Viacheslav Dubeyko <slava@dubeyko.com>,
+	Damien Le Moal <dlemoal@kernel.org>,
+	Yafang Shao <laoar.shao@gmail.com>,
+	"Martin K. Petersen" <martin.petersen@oracle.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.4 072/403] hfsplus: remove mutex_lock check in hfsplus_free_extents
+Subject: [PATCH 6.6 249/587] scsi: mpi3mr: Correctly handle ATA device errors
 Date: Tue, 26 Aug 2025 13:06:38 +0200
-Message-ID: <20250826110908.314924879@linuxfoundation.org>
+Message-ID: <20250826110959.265760483@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250826110905.607690791@linuxfoundation.org>
-References: <20250826110905.607690791@linuxfoundation.org>
+In-Reply-To: <20250826110952.942403671@linuxfoundation.org>
+References: <20250826110952.942403671@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,96 +63,88 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.4-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Yangtao Li <frank.li@vivo.com>
+From: Damien Le Moal <dlemoal@kernel.org>
 
-[ Upstream commit fcb96956c921f1aae7e7b477f2435c56f77a31b4 ]
+[ Upstream commit 04caad5a7ba86e830d04750417a15bad8ac2613c ]
 
-Syzbot reported an issue in hfsplus filesystem:
+With the ATA error model, an NCQ command failure always triggers an abort
+(termination) of all NCQ commands queued on the device. In such case, the
+SAT or the host must handle the failed command according to the command
+sense data and immediately retry all other NCQ commands that were aborted
+due to the failed NCQ command.
 
-------------[ cut here ]------------
-WARNING: CPU: 0 PID: 4400 at fs/hfsplus/extents.c:346
-	hfsplus_free_extents+0x700/0xad0
-Call Trace:
-<TASK>
-hfsplus_file_truncate+0x768/0xbb0 fs/hfsplus/extents.c:606
-hfsplus_write_begin+0xc2/0xd0 fs/hfsplus/inode.c:56
-cont_expand_zero fs/buffer.c:2383 [inline]
-cont_write_begin+0x2cf/0x860 fs/buffer.c:2446
-hfsplus_write_begin+0x86/0xd0 fs/hfsplus/inode.c:52
-generic_cont_expand_simple+0x151/0x250 fs/buffer.c:2347
-hfsplus_setattr+0x168/0x280 fs/hfsplus/inode.c:263
-notify_change+0xe38/0x10f0 fs/attr.c:420
-do_truncate+0x1fb/0x2e0 fs/open.c:65
-do_sys_ftruncate+0x2eb/0x380 fs/open.c:193
-do_syscall_x64 arch/x86/entry/common.c:50 [inline]
-do_syscall_64+0x3d/0xb0 arch/x86/entry/common.c:80
-entry_SYSCALL_64_after_hwframe+0x63/0xcd
+For SAS HBAs controlled by the mpi3mr driver, NCQ command aborts are not
+handled by the HBA SAT and sent back to the host, with an ioc log
+information equal to 0x31080000 (IOC_LOGINFO_PREFIX_PL with the PL code
+PL_LOGINFO_CODE_SATA_NCQ_FAIL_ALL_CMDS_AFTR_ERR). The function
+mpi3mr_process_op_reply_desc() always forces a retry of commands
+terminated with the status MPI3_IOCSTATUS_SCSI_IOC_TERMINATED using the
+SCSI result DID_SOFT_ERROR, regardless of the ioc_loginfo for the
+command. This correctly forces the retry of collateral NCQ abort
+commands, but with the retry counter for the command being incremented.
+If a command to an ATA device is subject to too many retries due to other
+NCQ commands failing (e.g. read commands trying to access unreadable
+sectors), the collateral NCQ abort commands may be terminated with an
+error as they run out of retries. This violates the SAT specification and
+causes hard-to-debug command errors.
 
-To avoid deadlock, Commit 31651c607151 ("hfsplus: avoid deadlock
-on file truncation") unlock extree before hfsplus_free_extents(),
-and add check wheather extree is locked in hfsplus_free_extents().
+Solve this issue by modifying the handling of the
+MPI3_IOCSTATUS_SCSI_IOC_TERMINATED status to check if a command is for an
+ATA device and if the command ioc_loginfo indicates an NCQ collateral
+abort. If that is the case, force the command retry using the SCSI result
+DID_IMM_RETRY to avoid incrementing the command retry count.
 
-However, when operations such as hfsplus_file_release,
-hfsplus_setattr, hfsplus_unlink, and hfsplus_get_block are executed
-concurrently in different files, it is very likely to trigger the
-WARN_ON, which will lead syzbot and xfstest to consider it as an
-abnormality.
-
-The comment above this warning also describes one of the easy
-triggering situations, which can easily trigger and cause
-xfstest&syzbot to report errors.
-
-[task A]			[task B]
-->hfsplus_file_release
-  ->hfsplus_file_truncate
-    ->hfs_find_init
-      ->mutex_lock
-    ->mutex_unlock
-				->hfsplus_write_begin
-				  ->hfsplus_get_block
-				    ->hfsplus_file_extend
-				      ->hfsplus_ext_read_extent
-				        ->hfs_find_init
-					  ->mutex_lock
-    ->hfsplus_free_extents
-      WARN_ON(mutex_is_locked) !!!
-
-Several threads could try to lock the shared extents tree.
-And warning can be triggered in one thread when another thread
-has locked the tree. This is the wrong behavior of the code and
-we need to remove the warning.
-
-Fixes: 31651c607151f ("hfsplus: avoid deadlock on file truncation")
-Reported-by: syzbot+8c0bc9f818702ff75b76@syzkaller.appspotmail.com
-Closes: https://lore.kernel.org/all/00000000000057fa4605ef101c4c@google.com/
-Signed-off-by: Yangtao Li <frank.li@vivo.com>
-Reviewed-by: Viacheslav Dubeyko <slava@dubeyko.com>
-Signed-off-by: Viacheslav Dubeyko <slava@dubeyko.com>
-Link: https://lore.kernel.org/r/20250529061807.2213498-1-frank.li@vivo.com
-Signed-off-by: Viacheslav Dubeyko <slava@dubeyko.com>
+Signed-off-by: Damien Le Moal <dlemoal@kernel.org>
+Link: https://lore.kernel.org/r/20250606052747.742998-2-dlemoal@kernel.org
+Tested-by: Yafang Shao <laoar.shao@gmail.com>
+Signed-off-by: Martin K. Petersen <martin.petersen@oracle.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/hfsplus/extents.c | 3 ---
- 1 file changed, 3 deletions(-)
+ drivers/scsi/mpi3mr/mpi3mr_os.c | 20 +++++++++++++++++++-
+ 1 file changed, 19 insertions(+), 1 deletion(-)
 
-diff --git a/fs/hfsplus/extents.c b/fs/hfsplus/extents.c
-index c95a2f0ed4a7..fad1c250f150 100644
---- a/fs/hfsplus/extents.c
-+++ b/fs/hfsplus/extents.c
-@@ -342,9 +342,6 @@ static int hfsplus_free_extents(struct super_block *sb,
- 	int i;
- 	int err = 0;
+diff --git a/drivers/scsi/mpi3mr/mpi3mr_os.c b/drivers/scsi/mpi3mr/mpi3mr_os.c
+index 7880675a68db..7417c8b74d9a 100644
+--- a/drivers/scsi/mpi3mr/mpi3mr_os.c
++++ b/drivers/scsi/mpi3mr/mpi3mr_os.c
+@@ -49,6 +49,13 @@ static void mpi3mr_send_event_ack(struct mpi3mr_ioc *mrioc, u8 event,
  
--	/* Mapping the allocation file may lock the extent tree */
--	WARN_ON(mutex_is_locked(&HFSPLUS_SB(sb)->ext_tree->tree_lock));
--
- 	hfsplus_dump_extent(extent);
- 	for (i = 0; i < 8; extent++, i++) {
- 		count = be32_to_cpu(extent->block_count);
+ #define MPI3_EVENT_WAIT_FOR_DEVICES_TO_REFRESH	(0xFFFE)
+ 
++/*
++ * SAS Log info code for a NCQ collateral abort after an NCQ error:
++ * IOC_LOGINFO_PREFIX_PL | PL_LOGINFO_CODE_SATA_NCQ_FAIL_ALL_CMDS_AFTR_ERR
++ * See: drivers/message/fusion/lsi/mpi_log_sas.h
++ */
++#define IOC_LOGINFO_SATA_NCQ_FAIL_AFTER_ERR	0x31080000
++
+ /**
+  * mpi3mr_host_tag_for_scmd - Get host tag for a scmd
+  * @mrioc: Adapter instance reference
+@@ -3270,7 +3277,18 @@ void mpi3mr_process_op_reply_desc(struct mpi3mr_ioc *mrioc,
+ 		scmd->result = DID_NO_CONNECT << 16;
+ 		break;
+ 	case MPI3_IOCSTATUS_SCSI_IOC_TERMINATED:
+-		scmd->result = DID_SOFT_ERROR << 16;
++		if (ioc_loginfo == IOC_LOGINFO_SATA_NCQ_FAIL_AFTER_ERR) {
++			/*
++			 * This is a ATA NCQ command aborted due to another NCQ
++			 * command failure. We must retry this command
++			 * immediately but without incrementing its retry
++			 * counter.
++			 */
++			WARN_ON_ONCE(xfer_count != 0);
++			scmd->result = DID_IMM_RETRY << 16;
++		} else {
++			scmd->result = DID_SOFT_ERROR << 16;
++		}
+ 		break;
+ 	case MPI3_IOCSTATUS_SCSI_TASK_TERMINATED:
+ 	case MPI3_IOCSTATUS_SCSI_EXT_TERMINATED:
 -- 
 2.39.5
 
