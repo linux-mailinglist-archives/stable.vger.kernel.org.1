@@ -1,60 +1,55 @@
-Return-Path: <stable+bounces-175869-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-176280-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 25092B36A90
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 16:38:37 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 98517B36B50
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 16:44:52 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 7506D567FAB
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 14:25:16 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id CB57F7B9436
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 14:41:59 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9AF8A35A2B1;
-	Tue, 26 Aug 2025 14:23:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1610C353360;
+	Tue, 26 Aug 2025 14:40:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="m5L1tghx"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="FAaaOoc6"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 555F435A2AC;
-	Tue, 26 Aug 2025 14:23:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C70D6352FFF;
+	Tue, 26 Aug 2025 14:40:45 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756218183; cv=none; b=CcLGcdripaUmstU2It77+ksXZT9i8Bo27JICEbeFXcxoaHyxpU7XcoGeUOao4FEWGCjb6a5SujQXExZYDUG7DJ2i00iKxMZYbOODBg/0w4Dz6RNBvxWg8IwDB4e6Z5Mt9qHVPriw+RDRfpTzJ3j/H4jXNa6ZFIKKjTeSKY2WeTk=
+	t=1756219245; cv=none; b=eS+YnGLK17kMvypaPHhVhYJsqeE0UBHFlVAIczh+4VDVrBDIVUyL5U7RUtaY6Wsc+s+6IjhHcGB0fJjyFGIQ9SNPrMUHlF2gXTZWy0glMbARJrIjU/da56iEzNuEZljjR1Z00WyQ8kttheM08gozq//GzphfIJU6UVoW9fzz3OM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756218183; c=relaxed/simple;
-	bh=8CsDDwBJ35NG8bEssuUpcrTUAFBefsCzS1LqBf+KCrg=;
+	s=arc-20240116; t=1756219245; c=relaxed/simple;
+	bh=MaFayi0eLwJNH6Sf6GDDo6L1kF3u9UbgRv9MN2JLuU4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=V+ZgSF75KVr4Kx2G8nBWqOg7ybjj667Rvd7mcVEnsVvqVegmdoOrl46S0GUOHm3q0DcFbOarR/XDANU9jtJu7sSPtrmRIM/1hlvgRltho4q493I7WBQ9l69KJmOYzIetPmeOjyJD8U63siUqua/D3GtkfEN08+AqY4agyae1kog=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=m5L1tghx; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 89158C4CEF1;
-	Tue, 26 Aug 2025 14:23:02 +0000 (UTC)
+	 MIME-Version; b=R2FCWAgWB+UJaJIk1cz8NBmTnCX3MZY1qbOxtqE1gJb9VSVNRb/GPwSfmHEh/YUygx6sDCgLMbB0JbvcOzw/3Ua3QV4CC6pbq103hzdQwQ7woVgruBzUF27QSK7xJ1+OL48kdv+QjC6YpQPT1xlw0YJX9dhY4tc0TmHSD+kZxFE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=FAaaOoc6; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0892BC4CEF1;
+	Tue, 26 Aug 2025 14:40:44 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1756218182;
-	bh=8CsDDwBJ35NG8bEssuUpcrTUAFBefsCzS1LqBf+KCrg=;
+	s=korg; t=1756219245;
+	bh=MaFayi0eLwJNH6Sf6GDDo6L1kF3u9UbgRv9MN2JLuU4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=m5L1tghxlPrA4XtKy4Gwk1QySlQeh9uL056iODzp3rItEHgrXeovg2Ya4wbgWdB3m
-	 G4HXeNa02m9EZBcyvvyxzQwj/vwe3Zn3WT7V3Yee2UVsJ3uisA9o8xe6Mr2SvkIep7
-	 //OhaBZMyLcGwWRV6kGx8OXI/TDmEistNQ4E41Lc=
+	b=FAaaOoc6c/CbC4KkEHRmWRdoyCMS7Sd/ZzcNMY5SIDASEM1epXkQoyiPnRjtWaIdE
+	 CEPAso+LA6OEjoEhS7iSz8EFlfuWDmO6St0gTxA13v4RPk2FVYYsDDEurK0QsNs3Ln
+	 QaWyk6kRyDZ08ugz1d2UnXvtG4YYQtxCq+GRaXV0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Haoxiang Li <haoxiang_li2024@163.com>,
-	Michal Swiatkowski <michal.swiatkowski@linux.intel.com>,
-	Aleksandr Loktionov <aleksandr.loktionov@intel.com>,
-	Simon Horman <horms@kernel.org>,
-	Tony Nguyen <anthony.l.nguyen@intel.com>,
-	Sasha Levin <sashal@kernel.org>,
-	Rinitha S <sx.rinitha@intel.com>
-Subject: [PATCH 5.10 424/523] ice: Fix a null pointer dereference in ice_copy_and_init_pkg()
+	Jiayi Li <lijiayi@kylinos.cn>,
+	Ulf Hansson <ulf.hansson@linaro.org>
+Subject: [PATCH 5.4 308/403] memstick: Fix deadlock by moving removing flag earlier
 Date: Tue, 26 Aug 2025 13:10:34 +0200
-Message-ID: <20250826110934.915783966@linuxfoundation.org>
+Message-ID: <20250826110915.322264013@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250826110924.562212281@linuxfoundation.org>
-References: <20250826110924.562212281@linuxfoundation.org>
+In-Reply-To: <20250826110905.607690791@linuxfoundation.org>
+References: <20250826110905.607690791@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -66,43 +61,85 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+5.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Haoxiang Li <haoxiang_li2024@163.com>
+From: Jiayi Li <lijiayi@kylinos.cn>
 
-[ Upstream commit 4ff12d82dac119b4b99b5a78b5af3bf2474c0a36 ]
+commit 99d7ab8db9d8230b243f5ed20ba0229e54cc0dfa upstream.
 
-Add check for the return value of devm_kmemdup()
-to prevent potential null pointer dereference.
+The existing memstick core patch: commit 62c59a8786e6 ("memstick: Skip
+allocating card when removing host") sets host->removing in
+memstick_remove_host(),but still exists a critical time window where
+memstick_check can run after host->eject is set but before removing is set.
 
-Fixes: c76488109616 ("ice: Implement Dynamic Device Personalization (DDP) download")
+In the rtsx_usb_ms driver, the problematic sequence is:
+
+rtsx_usb_ms_drv_remove:          memstick_check:
+  host->eject = true
+  cancel_work_sync(handle_req)     if(!host->removing)
+  ...                              memstick_alloc_card()
+                                     memstick_set_rw_addr()
+                                       memstick_new_req()
+                                         rtsx_usb_ms_request()
+                                           if(!host->eject)
+                                           skip schedule_work
+                                       wait_for_completion()
+  memstick_remove_host:                [blocks indefinitely]
+    host->removing = true
+    flush_workqueue()
+    [block]
+
+1. rtsx_usb_ms_drv_remove sets host->eject = true
+2. cancel_work_sync(&host->handle_req) runs
+3. memstick_check work may be executed here <-- danger window
+4. memstick_remove_host sets removing = 1
+
+During this window (step 3), memstick_check calls memstick_alloc_card,
+which may indefinitely waiting for mrq_complete completion that will
+never occur because rtsx_usb_ms_request sees eject=true and skips
+scheduling work, memstick_set_rw_addr waits forever for completion.
+
+This causes a deadlock when memstick_remove_host tries to flush_workqueue,
+waiting for memstick_check to complete, while memstick_check is blocked
+waiting for mrq_complete completion.
+
+Fix this by setting removing=true at the start of rtsx_usb_ms_drv_remove,
+before any work cancellation. This ensures memstick_check will see the
+removing flag immediately and exit early, avoiding the deadlock.
+
+Fixes: 62c59a8786e6 ("memstick: Skip allocating card when removing host")
+Signed-off-by: Jiayi Li <lijiayi@kylinos.cn>
 Cc: stable@vger.kernel.org
-Signed-off-by: Haoxiang Li <haoxiang_li2024@163.com>
-Reviewed-by: Michal Swiatkowski <michal.swiatkowski@linux.intel.com>
-Reviewed-by: Aleksandr Loktionov <aleksandr.loktionov@intel.com>
-Reviewed-by: Simon Horman <horms@kernel.org>
-Tested-by: Rinitha S <sx.rinitha@intel.com> (A Contingent worker at Intel)
-Signed-off-by: Tony Nguyen <anthony.l.nguyen@intel.com>
-[ applied the patch to ice_flex_pipe.c instead of ice_ddp.c ]
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Link: https://lore.kernel.org/r/20250804013604.1311218-1-lijiayi@kylinos.cn
+Signed-off-by: Ulf Hansson <ulf.hansson@linaro.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/net/ethernet/intel/ice/ice_flex_pipe.c |    2 ++
- 1 file changed, 2 insertions(+)
+ drivers/memstick/core/memstick.c    |    1 -
+ drivers/memstick/host/rtsx_usb_ms.c |    1 +
+ 2 files changed, 1 insertion(+), 1 deletion(-)
 
---- a/drivers/net/ethernet/intel/ice/ice_flex_pipe.c
-+++ b/drivers/net/ethernet/intel/ice/ice_flex_pipe.c
-@@ -1449,6 +1449,8 @@ enum ice_status ice_copy_and_init_pkg(st
- 		return ICE_ERR_PARAM;
+--- a/drivers/memstick/core/memstick.c
++++ b/drivers/memstick/core/memstick.c
+@@ -550,7 +550,6 @@ EXPORT_SYMBOL(memstick_add_host);
+  */
+ void memstick_remove_host(struct memstick_host *host)
+ {
+-	host->removing = 1;
+ 	flush_workqueue(workqueue);
+ 	mutex_lock(&host->lock);
+ 	if (host->card)
+--- a/drivers/memstick/host/rtsx_usb_ms.c
++++ b/drivers/memstick/host/rtsx_usb_ms.c
+@@ -812,6 +812,7 @@ static int rtsx_usb_ms_drv_remove(struct
+ 	int err;
  
- 	buf_copy = devm_kmemdup(ice_hw_to_dev(hw), buf, len, GFP_KERNEL);
-+	if (!buf_copy)
-+		return ICE_ERR_NO_MEMORY;
+ 	host->eject = true;
++	msh->removing = true;
+ 	cancel_work_sync(&host->handle_req);
+ 	cancel_delayed_work_sync(&host->poll_card);
  
- 	status = ice_init_pkg(hw, buf_copy, len);
- 	if (status) {
 
 
 
