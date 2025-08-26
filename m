@@ -1,58 +1,55 @@
-Return-Path: <stable+bounces-175752-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-174575-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9321BB36A49
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 16:36:17 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id B8461B36483
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 15:39:29 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 22F461C42C0D
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 14:20:20 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 36D372A3880
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 13:26:57 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 998263570A6;
-	Tue, 26 Aug 2025 14:17:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id BEE641B87E8;
+	Tue, 26 Aug 2025 13:25:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="wW4WRU3x"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="c4iyAOmd"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 53AA1356919;
-	Tue, 26 Aug 2025 14:17:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6D8D872605;
+	Tue, 26 Aug 2025 13:25:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756217876; cv=none; b=sRDWfgEJrWeAcs6okn7xwFsebwT7El2i/9eDUqaxZ8la8FE8JHTZtA3dikg1g4+XTynjzRAJqsjCgZnES1cpTyLDUu6zc6sgLRe0iTXDRZ3HDKdJIvPW2LDKu1Y/FaoLGKXfzm8/bVaX7d+vPl7nqrqJN2nRu3mAjfwmMBI9anw=
+	t=1756214756; cv=none; b=U+MyD5fim+BpsFB97eITOExMBjtXUJkoVLL7/wMioCE7yUi51GdecqQjk3lQGzfK80jOz4L4GU3rLbXcrjBcwgobgqTpDGf1A4xV6BbOk5U81vbsgEUPIgrDKehzXUzdBRgzWVTqJhC0WBgf4HDeyjTvqbtLpB062BbAJxzBvAo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756217876; c=relaxed/simple;
-	bh=28idnEN8yCmMmBR1abhWNw2SAJshtJaPWvdjI5Miax8=;
+	s=arc-20240116; t=1756214756; c=relaxed/simple;
+	bh=mI+Rk7x6DOXQcazb1R9L48j03yqxKR/unri6rkDnvXk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=ZlJQks58yAIBnkbtywXc6OzzaKDNFzqQHVefBPOtxcl+2ku0cTRhUL0TRJmwPguYFY8S2uWACV1xAjWDXb790vUwPoEjyDNWFbXqolYKIlUW9ynH9MSR3G1/25uSVDhEdpr51jZC7vnuwhZKa0MiBrlvkanGE/kXC+tFfbwtyWY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=wW4WRU3x; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id DA150C4CEF1;
-	Tue, 26 Aug 2025 14:17:55 +0000 (UTC)
+	 MIME-Version; b=bki7xxA2YiKPTa/hB7eV8mmZ4+fb1BOtgSkjy7W5RxMfMGR20btpRz4zRbEfFqe779n/J+2FfsIQqYw4k2Zgg2BYe2zEE0QhdTPRUbLZk+0yyXuGnZhIuFEUF63G70/iMJbXy9yaBiSf6nIMKyIo9mZdTlxQ8UQ52duu7OtNTfI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=c4iyAOmd; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0175FC4CEF1;
+	Tue, 26 Aug 2025 13:25:55 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1756217876;
-	bh=28idnEN8yCmMmBR1abhWNw2SAJshtJaPWvdjI5Miax8=;
+	s=korg; t=1756214756;
+	bh=mI+Rk7x6DOXQcazb1R9L48j03yqxKR/unri6rkDnvXk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=wW4WRU3xeSh0mUz7qwq0WPwaAFGJWLqcUuYbp5S0gv9hyC4Oplq//Pkq6P6nyA/bm
-	 SPWpj8Nb8LIhWtV5fEBN6dprFEHCvLnIH8LrUuWNEQBYL+er52OseiefxB6LkHao5c
-	 IKt69wHm++UMbDhzzDaIT9+HIJOSEk9gpBDz4mpc=
+	b=c4iyAOmddjl+2pGlfrp5UEUYXEbVHWSQDSZ74g7qqRO5pXThG1KQINfywgwbAAY4C
+	 67S+NI8qTUFMZv8f2HnaFLF2ZtSuwfMcR4doYgwaVosZIFQapRTcVV/p9H1QwmtJVR
+	 hlOVnEVgp9SusOvihA/8x/7KQQaNa1AN3GPOXAYc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	=?UTF-8?q?Thomas=20Wei=C3=9Fschuh?= <thomas.weissschuh@linutronix.de>,
-	David Gow <davidgow@google.com>,
-	Huacai Chen <chenhuacai@loongson.cn>,
-	Thomas Bogendoerfer <tsbogend@alpha.franken.de>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 301/523] MIPS: Dont crash in stack_top() for tasks without ABI or vDSO
+	Haiyang Zhang <haiyangz@microsoft.com>,
+	Jakub Kicinski <kuba@kernel.org>
+Subject: [PATCH 6.1 258/482] hv_netvsc: Fix panic during namespace deletion with VF
 Date: Tue, 26 Aug 2025 13:08:31 +0200
-Message-ID: <20250826110931.877314323@linuxfoundation.org>
+Message-ID: <20250826110937.141869045@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250826110924.562212281@linuxfoundation.org>
-References: <20250826110924.562212281@linuxfoundation.org>
+In-Reply-To: <20250826110930.769259449@linuxfoundation.org>
+References: <20250826110930.769259449@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,84 +59,152 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Thomas Weißschuh <thomas.weissschuh@linutronix.de>
+From: Haiyang Zhang <haiyangz@microsoft.com>
 
-[ Upstream commit e9f4a6b3421e936c3ee9d74710243897d74dbaa2 ]
+commit 33caa208dba6fa639e8a92fd0c8320b652e5550c upstream.
 
-Not all tasks have an ABI associated or vDSO mapped,
-for example kthreads never do.
-If such a task ever ends up calling stack_top(), it will derefence the
-NULL ABI pointer and crash.
+The existing code move the VF NIC to new namespace when NETDEV_REGISTER is
+received on netvsc NIC. During deletion of the namespace,
+default_device_exit_batch() >> default_device_exit_net() is called. When
+netvsc NIC is moved back and registered to the default namespace, it
+automatically brings VF NIC back to the default namespace. This will cause
+the default_device_exit_net() >> for_each_netdev_safe loop unable to detect
+the list end, and hit NULL ptr:
 
-This can for example happen when using kunit:
+[  231.449420] mana 7870:00:00.0 enP30832s1: Moved VF to namespace with: eth0
+[  231.449656] BUG: kernel NULL pointer dereference, address: 0000000000000010
+[  231.450246] #PF: supervisor read access in kernel mode
+[  231.450579] #PF: error_code(0x0000) - not-present page
+[  231.450916] PGD 17b8a8067 P4D 0
+[  231.451163] Oops: Oops: 0000 [#1] SMP NOPTI
+[  231.451450] CPU: 82 UID: 0 PID: 1394 Comm: kworker/u768:1 Not tainted 6.16.0-rc4+ #3 VOLUNTARY
+[  231.452042] Hardware name: Microsoft Corporation Virtual Machine/Virtual Machine, BIOS Hyper-V UEFI Release v4.1 11/21/2024
+[  231.452692] Workqueue: netns cleanup_net
+[  231.452947] RIP: 0010:default_device_exit_batch+0x16c/0x3f0
+[  231.453326] Code: c0 0c f5 b3 e8 d5 db fe ff 48 85 c0 74 15 48 c7 c2 f8 fd ca b2 be 10 00 00 00 48 8d 7d c0 e8 7b 77 25 00 49 8b 86 28 01 00 00 <48> 8b 50 10 4c 8b 2a 4c 8d 62 f0 49 83 ed 10 4c 39 e0 0f 84 d6 00
+[  231.454294] RSP: 0018:ff75fc7c9bf9fd00 EFLAGS: 00010246
+[  231.454610] RAX: 0000000000000000 RBX: 0000000000000002 RCX: 61c8864680b583eb
+[  231.455094] RDX: ff1fa9f71462d800 RSI: ff75fc7c9bf9fd38 RDI: 0000000030766564
+[  231.455686] RBP: ff75fc7c9bf9fd78 R08: 0000000000000000 R09: 0000000000000000
+[  231.456126] R10: 0000000000000001 R11: 0000000000000004 R12: ff1fa9f70088e340
+[  231.456621] R13: ff1fa9f70088e340 R14: ffffffffb3f50c20 R15: ff1fa9f7103e6340
+[  231.457161] FS:  0000000000000000(0000) GS:ff1faa6783a08000(0000) knlGS:0000000000000000
+[  231.457707] CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
+[  231.458031] CR2: 0000000000000010 CR3: 0000000179ab2006 CR4: 0000000000b73ef0
+[  231.458434] Call Trace:
+[  231.458600]  <TASK>
+[  231.458777]  ops_undo_list+0x100/0x220
+[  231.459015]  cleanup_net+0x1b8/0x300
+[  231.459285]  process_one_work+0x184/0x340
 
-    mips_stack_top+0x28/0xc0
-    arch_pick_mmap_layout+0x190/0x220
-    kunit_vm_mmap_init+0xf8/0x138
-    __kunit_add_resource+0x40/0xa8
-    kunit_vm_mmap+0x88/0xd8
-    usercopy_test_init+0xb8/0x240
-    kunit_try_run_case+0x5c/0x1a8
-    kunit_generic_run_threadfn_adapter+0x28/0x50
-    kthread+0x118/0x240
-    ret_from_kernel_thread+0x14/0x1c
+To fix it, move the ns change to a workqueue, and take rtnl_lock to avoid
+changing the netdev list when default_device_exit_net() is using it.
 
-Only dereference the ABI point if it is set.
-
-The GIC page is also included as it is specific to the vDSO.
-Also move the randomization adjustment into the same conditional.
-
-Signed-off-by: Thomas Weißschuh <thomas.weissschuh@linutronix.de>
-Reviewed-by: David Gow <davidgow@google.com>
-Reviewed-by: Huacai Chen <chenhuacai@loongson.cn>
-Signed-off-by: Thomas Bogendoerfer <tsbogend@alpha.franken.de>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Cc: stable@vger.kernel.org
+Fixes: 4c262801ea60 ("hv_netvsc: Fix VF namespace also in synthetic NIC NETDEV_REGISTER event")
+Signed-off-by: Haiyang Zhang <haiyangz@microsoft.com>
+Link: https://patch.msgid.link/1754511711-11188-1-git-send-email-haiyangz@linux.microsoft.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- arch/mips/kernel/process.c | 16 +++++++++-------
- 1 file changed, 9 insertions(+), 7 deletions(-)
+ drivers/net/hyperv/hyperv_net.h |    3 +++
+ drivers/net/hyperv/netvsc_drv.c |   29 ++++++++++++++++++++++++++++-
+ 2 files changed, 31 insertions(+), 1 deletion(-)
 
-diff --git a/arch/mips/kernel/process.c b/arch/mips/kernel/process.c
-index 98ecaf6f3edb..0a5710a4d696 100644
---- a/arch/mips/kernel/process.c
-+++ b/arch/mips/kernel/process.c
-@@ -675,18 +675,20 @@ unsigned long mips_stack_top(void)
- 	}
+--- a/drivers/net/hyperv/hyperv_net.h
++++ b/drivers/net/hyperv/hyperv_net.h
+@@ -1057,6 +1057,7 @@ struct net_device_context {
+ 	struct net_device __rcu *vf_netdev;
+ 	struct netvsc_vf_pcpu_stats __percpu *vf_stats;
+ 	struct delayed_work vf_takeover;
++	struct delayed_work vfns_work;
  
- 	/* Space for the VDSO, data page & GIC user page */
--	top -= PAGE_ALIGN(current->thread.abi->vdso->size);
--	top -= PAGE_SIZE;
--	top -= mips_gic_present() ? PAGE_SIZE : 0;
-+	if (current->thread.abi) {
-+		top -= PAGE_ALIGN(current->thread.abi->vdso->size);
-+		top -= PAGE_SIZE;
-+		top -= mips_gic_present() ? PAGE_SIZE : 0;
+ 	/* 1: allocated, serial number is valid. 0: not allocated */
+ 	u32 vf_alloc;
+@@ -1071,6 +1072,8 @@ struct net_device_context {
+ 	struct netvsc_device_info *saved_netvsc_dev_info;
+ };
+ 
++void netvsc_vfns_work(struct work_struct *w);
 +
-+		/* Space to randomize the VDSO base */
-+		if (current->flags & PF_RANDOMIZE)
-+			top -= VDSO_RANDOMIZE_SIZE;
-+	}
+ /* Azure hosts don't support non-TCP port numbers in hashing for fragmented
+  * packets. We can use ethtool to change UDP hash level when necessary.
+  */
+--- a/drivers/net/hyperv/netvsc_drv.c
++++ b/drivers/net/hyperv/netvsc_drv.c
+@@ -2508,6 +2508,7 @@ static int netvsc_probe(struct hv_device
+ 	spin_lock_init(&net_device_ctx->lock);
+ 	INIT_LIST_HEAD(&net_device_ctx->reconfig_events);
+ 	INIT_DELAYED_WORK(&net_device_ctx->vf_takeover, netvsc_vf_setup);
++	INIT_DELAYED_WORK(&net_device_ctx->vfns_work, netvsc_vfns_work);
  
- 	/* Space for cache colour alignment */
- 	if (cpu_has_dc_aliases)
- 		top -= shm_align_mask + 1;
+ 	net_device_ctx->vf_stats
+ 		= netdev_alloc_pcpu_stats(struct netvsc_vf_pcpu_stats);
+@@ -2647,6 +2648,8 @@ static int netvsc_remove(struct hv_devic
+ 	cancel_delayed_work_sync(&ndev_ctx->dwork);
  
--	/* Space to randomize the VDSO base */
--	if (current->flags & PF_RANDOMIZE)
--		top -= VDSO_RANDOMIZE_SIZE;
--
- 	return top;
+ 	rtnl_lock();
++	cancel_delayed_work_sync(&ndev_ctx->vfns_work);
++
+ 	nvdev = rtnl_dereference(ndev_ctx->nvdev);
+ 	if (nvdev) {
+ 		cancel_work_sync(&nvdev->subchan_work);
+@@ -2689,6 +2692,7 @@ static int netvsc_suspend(struct hv_devi
+ 	cancel_delayed_work_sync(&ndev_ctx->dwork);
+ 
+ 	rtnl_lock();
++	cancel_delayed_work_sync(&ndev_ctx->vfns_work);
+ 
+ 	nvdev = rtnl_dereference(ndev_ctx->nvdev);
+ 	if (nvdev == NULL) {
+@@ -2782,6 +2786,27 @@ static void netvsc_event_set_vf_ns(struc
+ 	}
  }
  
--- 
-2.39.5
-
++void netvsc_vfns_work(struct work_struct *w)
++{
++	struct net_device_context *ndev_ctx =
++		container_of(w, struct net_device_context, vfns_work.work);
++	struct net_device *ndev;
++
++	if (!rtnl_trylock()) {
++		schedule_delayed_work(&ndev_ctx->vfns_work, 1);
++		return;
++	}
++
++	ndev = hv_get_drvdata(ndev_ctx->device_ctx);
++	if (!ndev)
++		goto out;
++
++	netvsc_event_set_vf_ns(ndev);
++
++out:
++	rtnl_unlock();
++}
++
+ /*
+  * On Hyper-V, every VF interface is matched with a corresponding
+  * synthetic interface. The synthetic interface is presented first
+@@ -2792,10 +2817,12 @@ static int netvsc_netdev_event(struct no
+ 			       unsigned long event, void *ptr)
+ {
+ 	struct net_device *event_dev = netdev_notifier_info_to_dev(ptr);
++	struct net_device_context *ndev_ctx;
+ 	int ret = 0;
+ 
+ 	if (event_dev->netdev_ops == &device_ops && event == NETDEV_REGISTER) {
+-		netvsc_event_set_vf_ns(event_dev);
++		ndev_ctx = netdev_priv(event_dev);
++		schedule_delayed_work(&ndev_ctx->vfns_work, 0);
+ 		return NOTIFY_DONE;
+ 	}
+ 
 
 
 
