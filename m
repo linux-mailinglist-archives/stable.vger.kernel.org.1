@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-172949-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-173076-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 23AD7B35AD9
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 13:13:31 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 54CF5B35B96
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 13:26:13 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id B730D7C14D1
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 11:13:29 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 5880D1891B73
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 11:23:07 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7439D303CA4;
-	Tue, 26 Aug 2025 11:13:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 08A3B322763;
+	Tue, 26 Aug 2025 11:21:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="LJwVe3QN"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="AZyQa5eo"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2ED8572627;
-	Tue, 26 Aug 2025 11:13:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B87E1301486;
+	Tue, 26 Aug 2025 11:21:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756206781; cv=none; b=DubF3BVuC1AkE8z9jhtd4jQMynljGue0ibH7cHENuTe9gTI3nOEfSt7VTMkES/MEnnLXMdceA+kVJrVAvkKyQUOMi4zKrXP4yASiGUbdJ4d6gRCuNBEImluP/PXMR6Dcj0E4O1y71efShP9i1zEJhr/D6bFh+oAHQAmigzulXCQ=
+	t=1756207310; cv=none; b=CMMp8Pcinxt4YgkPwJHRP1ocj73GZLvJtEXpRN8iwLLbb+6Y0IX/kWOqwlWZCn0bpjygE2kL0jtUKC1iDPE5v9shsEI+JtZKsZtLSO+2+Thtj8crHZKFPkramRVHaAnrpbqR/hIdRlOdT4YHLHnW3MJFXT4cA7CKgw2VzU6vOSU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756206781; c=relaxed/simple;
-	bh=gyxlKtz/QtYR6R0q9Z7REqN9FRwP0qP0MhRrxZDtGIY=;
+	s=arc-20240116; t=1756207310; c=relaxed/simple;
+	bh=zJNIWz6Ub7c9i+wI1Z2ZDXnnoBqe/RSM6+6x1iLhYiI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=ZmYINbYQAJpm5bTXywPpRI3JJnspfJid0X8eH3FLFKJz+YbSDW+IvtpwZeNQbmSoWAWD60UNfg14LPcP5AlFOaQd8+jBF4BqAvzOgg7ZCh/W9eUua8vrDrVHU9xJWBIAzgdk1A1dLMPx+NrVUqwyIltFA3bi8WyuTgYvvROyhG0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=LJwVe3QN; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id AE824C4CEF1;
-	Tue, 26 Aug 2025 11:13:00 +0000 (UTC)
+	 MIME-Version; b=ZyvId2k6FL2GdLnxaZqVfdo6NpM6yL/Z4Bn4iCJhSEGkooiX2B6giHLQlnDQzF8W+LR4W2HbOF4IpP1FAGaMCscSNR9NMyICGHD1hUxS7XTEi9t4DrK6vHiA4EeCAms7q98bB6SmrJnSaBl3nnvjsDBUDDDRspKbjClgLie0hl4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=AZyQa5eo; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 43325C4CEF1;
+	Tue, 26 Aug 2025 11:21:50 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1756206781;
-	bh=gyxlKtz/QtYR6R0q9Z7REqN9FRwP0qP0MhRrxZDtGIY=;
+	s=korg; t=1756207310;
+	bh=zJNIWz6Ub7c9i+wI1Z2ZDXnnoBqe/RSM6+6x1iLhYiI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=LJwVe3QNRzQKE5u+eZKM19UYMMvX0fWYe36CGpOnT3u8qBlJ0EEy1fsgwlhpd47Kq
-	 AKRunRJV3N+clhaRFFqFZVaIvyAa2mNVsVVE7DVHgK2sC5yJJFxZc2h0F15FIfdo6h
-	 sMblXVzpE1bB2l/lSQXBJRetFHabE1VQ4Zua2W/o=
+	b=AZyQa5eoIzezN0oR0KhYmqDrx/TVINZcufCzuEokpZhwUCuOvgQijBlIhQ8pjhsa5
+	 xfK/fU0xMSxjZqvdsYZgovyMoW1SjzjwAsXxr3f+9S+wKK3qaZuQB137keEOcYTDOM
+	 wntOlPmWrbGRSNDdhWRBMrX+aCnqY9pg6fnZsTXA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Yunhui Cui <cuiyunhui@bytedance.com>,
-	John Ogness <john.ogness@linutronix.de>,
-	stable <stable@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 001/322] serial: 8250: fix panic due to PSLVERR
+	Haoxiang Li <haoxiang_li2024@163.com>,
+	Dan Carpenter <dan.carpenter@linaro.org>,
+	Nicolas Dufresne <nicolas.dufresne@collabora.com>,
+	Hans Verkuil <hverkuil@xs4all.nl>
+Subject: [PATCH 6.16 132/457] media: imx: fix a potential memory leak in imx_media_csc_scaler_device_init()
 Date: Tue, 26 Aug 2025 13:06:56 +0200
-Message-ID: <20250826110915.218809285@linuxfoundation.org>
+Message-ID: <20250826110940.633506637@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250826110915.169062587@linuxfoundation.org>
-References: <20250826110915.169062587@linuxfoundation.org>
+In-Reply-To: <20250826110937.289866482@linuxfoundation.org>
+References: <20250826110937.289866482@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,66 +63,40 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.16-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Yunhui Cui <cuiyunhui@bytedance.com>
+From: Haoxiang Li <haoxiang_li2024@163.com>
 
-commit 7f8fdd4dbffc05982b96caf586f77a014b2a9353 upstream.
+commit fc5f8aec77704373ee804b5dba0e0e5029c0f180 upstream.
 
-When the PSLVERR_RESP_EN parameter is set to 1, the device generates
-an error response if an attempt is made to read an empty RBR (Receive
-Buffer Register) while the FIFO is enabled.
+Add video_device_release() in label 'err_m2m' to release the memory
+allocated by video_device_alloc() and prevent potential memory leaks.
+Remove the reduntant code in label 'err_m2m'.
 
-In serial8250_do_startup(), calling serial_port_out(port, UART_LCR,
-UART_LCR_WLEN8) triggers dw8250_check_lcr(), which invokes
-dw8250_force_idle() and serial8250_clear_and_reinit_fifos(). The latter
-function enables the FIFO via serial_out(p, UART_FCR, p->fcr).
-Execution proceeds to the serial_port_in(port, UART_RX).
-This satisfies the PSLVERR trigger condition.
-
-When another CPU (e.g., using printk()) is accessing the UART (UART
-is busy), the current CPU fails the check (value & ~UART_LCR_SPAR) ==
-(lcr & ~UART_LCR_SPAR) in dw8250_check_lcr(), causing it to enter
-dw8250_force_idle().
-
-Put serial_port_out(port, UART_LCR, UART_LCR_WLEN8) under the port->lock
-to fix this issue.
-
-Panic backtrace:
-[    0.442336] Oops - unknown exception [#1]
-[    0.442343] epc : dw8250_serial_in32+0x1e/0x4a
-[    0.442351]  ra : serial8250_do_startup+0x2c8/0x88e
-...
-[    0.442416] console_on_rootfs+0x26/0x70
-
-Fixes: c49436b657d0 ("serial: 8250_dw: Improve unwritable LCR workaround")
-Link: https://lore.kernel.org/all/84cydt5peu.fsf@jogness.linutronix.de/T/
-Signed-off-by: Yunhui Cui <cuiyunhui@bytedance.com>
-Reviewed-by: John Ogness <john.ogness@linutronix.de>
-Cc: stable <stable@kernel.org>
-Link: https://lore.kernel.org/r/20250723023322.464-2-cuiyunhui@bytedance.com
-[ adapted to inline code structure without separate serial8250_initialize helper function ]
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Fixes: a8ef0488cc59 ("media: imx: add csc/scaler mem2mem device")
+Cc: stable@vger.kernel.org
+Signed-off-by: Haoxiang Li <haoxiang_li2024@163.com>
+Reviewed-by: Dan Carpenter <dan.carpenter@linaro.org>
+Signed-off-by: Nicolas Dufresne <nicolas.dufresne@collabora.com>
+Signed-off-by: Hans Verkuil <hverkuil@xs4all.nl>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/tty/serial/8250/8250_port.c |    3 +--
- 1 file changed, 1 insertion(+), 2 deletions(-)
+ drivers/staging/media/imx/imx-media-csc-scaler.c |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/drivers/tty/serial/8250/8250_port.c
-+++ b/drivers/tty/serial/8250/8250_port.c
-@@ -2351,9 +2351,8 @@ int serial8250_do_startup(struct uart_po
- 	/*
- 	 * Now, initialize the UART
- 	 */
--	serial_port_out(port, UART_LCR, UART_LCR_WLEN8);
--
- 	uart_port_lock_irqsave(port, &flags);
-+	serial_port_out(port, UART_LCR, UART_LCR_WLEN8);
- 	if (up->port.flags & UPF_FOURPORT) {
- 		if (!up->port.irq)
- 			up->port.mctrl |= TIOCM_OUT1;
+--- a/drivers/staging/media/imx/imx-media-csc-scaler.c
++++ b/drivers/staging/media/imx/imx-media-csc-scaler.c
+@@ -912,7 +912,7 @@ imx_media_csc_scaler_device_init(struct
+ 	return &priv->vdev;
+ 
+ err_m2m:
+-	video_set_drvdata(vfd, NULL);
++	video_device_release(vfd);
+ err_vfd:
+ 	kfree(priv);
+ 	return ERR_PTR(ret);
 
 
 
