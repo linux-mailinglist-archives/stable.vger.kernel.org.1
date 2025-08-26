@@ -1,55 +1,57 @@
-Return-Path: <stable+bounces-175217-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-173492-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id C709EB36720
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 16:04:00 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 79D04B35DA3
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 13:46:58 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id AC339189DC94
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 13:56:14 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 1337518846D5
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 11:40:38 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8D5A334A338;
-	Tue, 26 Aug 2025 13:54:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5D268199935;
+	Tue, 26 Aug 2025 11:39:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Dw8YBkUT"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="vHZOfd1U"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4C08F225390;
-	Tue, 26 Aug 2025 13:54:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 178612BE65E;
+	Tue, 26 Aug 2025 11:39:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756216450; cv=none; b=EqQ7bgiQDvktG2fAmYUTAzZMkgdATTjcncWkVGZNVUgyG/yv4HY0ORSpUbinUS0Z1nZ0b/sFSfPzyRT8x9Er4MgYYIHlt2KzlxuorkVmJdc/2pHAZtKBrRI2+wJEFJ4cQEaojOothkJmpiwMMbY45ZEcjNXGXWr/oG21HdZk7k0=
+	t=1756208390; cv=none; b=L3cZt/eWJS7Qk/ankPM2Y5U3n5XemuqlooRFPpwCiJjJnQ2ybD4JTu0oEvvZAC4XIbaaYkDhnlVO1ikW+YczjR1WZ/QUaaVcZTazYLfB37JZb4xeBwrChADG0rVRsrBXA8HoRTh1M4alVweaF0ViTxJ1NeN8gW+1IWg4inL6JVE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756216450; c=relaxed/simple;
-	bh=+BSqDZNBSc4GwPUgyvg4dGVMONjvHsXsW6TY000+bH0=;
+	s=arc-20240116; t=1756208390; c=relaxed/simple;
+	bh=5sOn6I5wOvJPKAG67BKLkVQpdb0dvudgDx+3ZoFijto=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Y0BWxwwnSkdwZItUl6ERyyy7odxjaZrICmY5u43upxoYNxrE5W8GQscXlKzWSgJrdZh3sz/AvygGTi+A28wTNA088yp5Ce7lf7dauEHW/8YFsWCN1OUGwSW6ytjb5TUdJPDc4rh0it4NrLv/Q3NHS2hJrg3GcAU6QCHwAGvB5K8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Dw8YBkUT; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D201DC4CEF1;
-	Tue, 26 Aug 2025 13:54:09 +0000 (UTC)
+	 MIME-Version; b=Ak/jOoDigoQQChUBQukBLsrhMLwJCPXuKQhx08uYVKG+W9Emju/uXZK7Gf07xJtuovmhv/zCIPVKtt7jrYJndYV8tUXXDmA0gkPI7YBmvSEbrgKWpwUFwRDHEGqTjJygLiYB770owPxCMnMWoR5r4Q8UHR6kGHouns5ZND/Sv9k=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=vHZOfd1U; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8CA69C4CEF1;
+	Tue, 26 Aug 2025 11:39:49 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1756216450;
-	bh=+BSqDZNBSc4GwPUgyvg4dGVMONjvHsXsW6TY000+bH0=;
+	s=korg; t=1756208389;
+	bh=5sOn6I5wOvJPKAG67BKLkVQpdb0dvudgDx+3ZoFijto=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Dw8YBkUTZtowrhD3H79BFPTGT76m+EixkOTa5jncDxjpTvotHMURClbQ4khVtU12M
-	 /uI5J1Z8CxlI+oOH+kXWmNvRrumNYDLc8+Fa29LXs5+YhX0lM5uo1PZkO6J551w9Yz
-	 zlGBB8+8MPV5SWMrdG7d4X/6TEbq6c4hVud0ENfQ=
+	b=vHZOfd1UfNdPcTJrTsjqhmkaybrVRyMoKK83X+ve1zu63RVpiUnO6EtI0IRkdkyNy
+	 7LGEeGh+1Y0P7hw7MOBaRV4u2+ThQy0tCwU7dulgwaVdxBVid5fsPow5ESR8tLIMhe
+	 X0P108DwLHCWShYjFftcYxkL9fi5FRr2wim2Ma/4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Mikulas Patocka <mpatocka@redhat.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 416/644] dm-mpath: dont print the "loaded" message if registering fails
+	Randy Dunlap <rdunlap@infradead.org>,
+	"James E.J. Bottomley" <James.Bottomley@HansenPartnership.com>,
+	Helge Deller <deller@gmx.de>,
+	linux-parisc@vger.kernel.org
+Subject: [PATCH 6.12 092/322] parisc: Makefile: explain that 64BIT requires both 32-bit and 64-bit compilers
 Date: Tue, 26 Aug 2025 13:08:27 +0200
-Message-ID: <20250826110956.766539587@linuxfoundation.org>
+Message-ID: <20250826110917.944220605@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250826110946.507083938@linuxfoundation.org>
-References: <20250826110946.507083938@linuxfoundation.org>
+In-Reply-To: <20250826110915.169062587@linuxfoundation.org>
+References: <20250826110915.169062587@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,92 +63,42 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Mikulas Patocka <mpatocka@redhat.com>
+From: Randy Dunlap <rdunlap@infradead.org>
 
-[ Upstream commit 6e11952a6abc4641dc8ae63f01b318b31b44e8db ]
+commit 305ab0a748c52eeaeb01d8cff6408842d19e5cb5 upstream.
 
-If dm_register_path_selector, don't print the "version X loaded" message.
+For building a 64-bit kernel, both 32-bit and 64-bit VDSO binaries
+are built, so both 32-bit and 64-bit compilers (and tools) should be
+in the PATH environment variable.
 
-Signed-off-by: Mikulas Patocka <mpatocka@redhat.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Signed-off-by: Randy Dunlap <rdunlap@infradead.org>
+Cc: "James E.J. Bottomley" <James.Bottomley@HansenPartnership.com>
+Cc: Helge Deller <deller@gmx.de>
+Cc: linux-parisc@vger.kernel.org
+Signed-off-by: Helge Deller <deller@gmx.de>
+Cc: stable@vger.kernel.org # v5.3+
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/md/dm-ps-historical-service-time.c | 4 +++-
- drivers/md/dm-ps-queue-length.c            | 4 +++-
- drivers/md/dm-ps-round-robin.c             | 4 +++-
- drivers/md/dm-ps-service-time.c            | 4 +++-
- 4 files changed, 12 insertions(+), 4 deletions(-)
+ arch/parisc/Makefile |    4 +++-
+ 1 file changed, 3 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/md/dm-ps-historical-service-time.c b/drivers/md/dm-ps-historical-service-time.c
-index 82f2a06153dc..683ac2e03079 100644
---- a/drivers/md/dm-ps-historical-service-time.c
-+++ b/drivers/md/dm-ps-historical-service-time.c
-@@ -540,8 +540,10 @@ static int __init dm_hst_init(void)
- {
- 	int r = dm_register_path_selector(&hst_ps);
+--- a/arch/parisc/Makefile
++++ b/arch/parisc/Makefile
+@@ -39,7 +39,9 @@ endif
  
--	if (r < 0)
-+	if (r < 0) {
- 		DMERR("register failed %d", r);
-+		return r;
-+	}
+ export LD_BFD
  
- 	DMINFO("version " HST_VERSION " loaded");
- 
-diff --git a/drivers/md/dm-ps-queue-length.c b/drivers/md/dm-ps-queue-length.c
-index cef70657bbbc..cc5eff8853ab 100644
---- a/drivers/md/dm-ps-queue-length.c
-+++ b/drivers/md/dm-ps-queue-length.c
-@@ -259,8 +259,10 @@ static int __init dm_ql_init(void)
- {
- 	int r = dm_register_path_selector(&ql_ps);
- 
--	if (r < 0)
-+	if (r < 0) {
- 		DMERR("register failed %d", r);
-+		return r;
-+	}
- 
- 	DMINFO("version " QL_VERSION " loaded");
- 
-diff --git a/drivers/md/dm-ps-round-robin.c b/drivers/md/dm-ps-round-robin.c
-index 27f44c5fa04e..6f10c4f879ec 100644
---- a/drivers/md/dm-ps-round-robin.c
-+++ b/drivers/md/dm-ps-round-robin.c
-@@ -216,8 +216,10 @@ static int __init dm_rr_init(void)
- {
- 	int r = dm_register_path_selector(&rr_ps);
- 
--	if (r < 0)
-+	if (r < 0) {
- 		DMERR("register failed %d", r);
-+		return r;
-+	}
- 
- 	DMINFO("version " RR_VERSION " loaded");
- 
-diff --git a/drivers/md/dm-ps-service-time.c b/drivers/md/dm-ps-service-time.c
-index 3ec9c33265c5..eea15af86e69 100644
---- a/drivers/md/dm-ps-service-time.c
-+++ b/drivers/md/dm-ps-service-time.c
-@@ -341,8 +341,10 @@ static int __init dm_st_init(void)
- {
- 	int r = dm_register_path_selector(&st_ps);
- 
--	if (r < 0)
-+	if (r < 0) {
- 		DMERR("register failed %d", r);
-+		return r;
-+	}
- 
- 	DMINFO("version " ST_VERSION " loaded");
- 
--- 
-2.39.5
-
+-# Set default 32 bits cross compilers for vdso
++# Set default 32 bits cross compilers for vdso.
++# This means that for 64BIT, both the 64-bit tools and the 32-bit tools
++# need to be in the path.
+ CC_ARCHES_32 = hppa hppa2.0 hppa1.1
+ CC_SUFFIXES  = linux linux-gnu unknown-linux-gnu suse-linux
+ CROSS32_COMPILE := $(call cc-cross-prefix, \
 
 
 
