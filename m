@@ -1,57 +1,55 @@
-Return-Path: <stable+bounces-174265-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-176358-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3BF50B3621F
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 15:16:11 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id ED853B36CFB
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 17:04:29 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 4BFEB1884EA4
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 13:13:35 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id E5276A0383E
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 14:47:27 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id CFADB3093BA;
-	Tue, 26 Aug 2025 13:12:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 47E1735E4DF;
+	Tue, 26 Aug 2025 14:44:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="IX6s7lvq"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="cfcyBrfl"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7E32D307AF5;
-	Tue, 26 Aug 2025 13:12:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 00A88352081;
+	Tue, 26 Aug 2025 14:44:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756213930; cv=none; b=aUsZKGCkfKXIOIg/rP1FAv0GVHBw+Nan7kCGXgx9C6UiWu05BfIXRrCjXRX9iTDwVXQqpNsfl0XBX8jcjORTzmgdIFFg7XVq0XGDL6cf4vgxabMi3X0udx8QekrjW+hu9y/9WV4jXcEO7t1MN17E371GbVse+ZaIA4c61TL4Pts=
+	t=1756219451; cv=none; b=uGf08hsF5tRDNwQWfeU8xWz48QnF+Zwnb8Rlu0FqSnEDmPY6KaG1ksma31pfH2//XIITPywKX9ZJWCFbB23EjqGl0hzKEHXvIcGbU1lZGTkrKYAtsHLWFM1rKXrJHk3xg/7scu4EPmRo6WOfpyZKKf8oVq/i/FoZyjKlljtg9no=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756213930; c=relaxed/simple;
-	bh=tqld2eirdtVKDG87SXyRXQMswsL9eb1NeHryI1R5CTI=;
+	s=arc-20240116; t=1756219451; c=relaxed/simple;
+	bh=153HfmSyorCxoOpzJAF7V3n+c/JUtVXxGtsupAxsTsk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=MjidsbVNbiRXros5ahUj82vl4aJBx1+Lp02cBY6Hpj+O5yQFBk+2rreicdb22DBBMvLHclOzyuFnm1ctS4dhxtzgBQ0+XrR0GEKbQk3xBwTRME5lLfC4CwAw6kqgouK/kQ8ql7ZWJ8jSKIQrhOcvNuJHFCerSDX+hgfG0plCRIc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=IX6s7lvq; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 07B57C4CEF1;
-	Tue, 26 Aug 2025 13:12:09 +0000 (UTC)
+	 MIME-Version; b=je0e7s2oz0e4jQorhljnD0/WdIXR6wiReMNkTmigbFdS6S/rftNtTGt+RnKlPndSvfsDL0WJGLaUtQzIkOGoBLpJDk8+NO3KZJIqrzec9Y1IhBNqVSJJTy/xRmJS3PFcfbrpPeBaABA6I8Pft7py0SKISMyOfsFDrRd2wMKFi3k=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=cfcyBrfl; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7E035C4CEF1;
+	Tue, 26 Aug 2025 14:44:10 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1756213930;
-	bh=tqld2eirdtVKDG87SXyRXQMswsL9eb1NeHryI1R5CTI=;
+	s=korg; t=1756219450;
+	bh=153HfmSyorCxoOpzJAF7V3n+c/JUtVXxGtsupAxsTsk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=IX6s7lvqRpbGjcDqHH9OSazYzPtutYP0BAjXdBhCZmFkD5VzdThEChuDKwOrjtnvA
-	 fam5vDkg1ycgRQsiux4l5fQASTmYAA2WYuHzpokL1n+9xY4aaO8kW1CxlHp+4CEK1a
-	 +K/boBcWu/l7LAGk/j8degbWZgtnIeW3vJb2W70E=
+	b=cfcyBrflvucSFqE7rBSsp3Q1vAagBx1pShkpft5u6wknl6CQmUjbkA/9APJXqYfx7
+	 /ubqJfomgU2fsR32ZUHX+sHyfRLzWsmut3eho4y0uh8WE1AMI8YLAPgcYS1eLsAx9a
+	 t2lBjPo0a7VKodmAUlY/Zb0iPyJ2xrPKIRW/GmyA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Victor Shih <victor.shih@genesyslogic.com.tw>,
-	Adrian Hunter <adrian.hunter@intel.com>,
-	Ulf Hansson <ulf.hansson@linaro.org>,
+	Trond Myklebust <trond.myklebust@hammerspace.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 533/587] mmc: sdhci-pci-gli: GL9763e: Mask the replay timer timeout of AER
+Subject: [PATCH 5.4 356/403] NFS: Fix up handling of outstanding layoutcommit in nfs_update_inode()
 Date: Tue, 26 Aug 2025 13:11:22 +0200
-Message-ID: <20250826111006.566197619@linuxfoundation.org>
+Message-ID: <20250826110916.712230955@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250826110952.942403671@linuxfoundation.org>
-References: <20250826110952.942403671@linuxfoundation.org>
+In-Reply-To: <20250826110905.607690791@linuxfoundation.org>
+References: <20250826110905.607690791@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,43 +61,41 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+5.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Victor Shih <victor.shih@genesyslogic.com.tw>
+From: Trond Myklebust <trond.myklebust@hammerspace.com>
 
-[ Upstream commit 340be332e420ed37d15d4169a1b4174e912ad6cb ]
+[ Upstream commit 709fa5769914b377af87962bbe4ff81ffb019b2d ]
 
-Due to a flaw in the hardware design, the GL9763e replay timer frequently
-times out when ASPM is enabled. As a result, the warning messages will
-often appear in the system log when the system accesses the GL9763e
-PCI config. Therefore, the replay timer timeout must be masked.
+If there is an outstanding layoutcommit, then the list of attributes
+whose values are expected to change is not the full set. So let's
+be explicit about the full list.
 
-Signed-off-by: Victor Shih <victor.shih@genesyslogic.com.tw>
-Fixes: 1ae1d2d6e555 ("mmc: sdhci-pci-gli: Add Genesys Logic GL9763E support")
-Cc: stable@vger.kernel.org
-Acked-by: Adrian Hunter <adrian.hunter@intel.com>
-Link: https://lore.kernel.org/r/20250731065752.450231-4-victorshihgli@gmail.com
-Signed-off-by: Ulf Hansson <ulf.hansson@linaro.org>
+Signed-off-by: Trond Myklebust <trond.myklebust@hammerspace.com>
+Stable-dep-of: b01f21cacde9 ("NFS: Fix the setting of capabilities when automounting a new filesystem")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/mmc/host/sdhci-pci-gli.c |    3 +++
- 1 file changed, 3 insertions(+)
+ fs/nfs/inode.c |    6 +++++-
+ 1 file changed, 5 insertions(+), 1 deletion(-)
 
---- a/drivers/mmc/host/sdhci-pci-gli.c
-+++ b/drivers/mmc/host/sdhci-pci-gli.c
-@@ -1376,6 +1376,9 @@ static void gl9763e_hw_setting(struct sd
- 	value |= FIELD_PREP(GLI_9763E_HS400_RXDLY, GLI_9763E_HS400_RXDLY_5);
- 	pci_write_config_dword(pdev, PCIE_GLI_9763E_CLKRXDLY, value);
+--- a/fs/nfs/inode.c
++++ b/fs/nfs/inode.c
+@@ -1869,7 +1869,11 @@ static int nfs_update_inode(struct inode
+ 	nfs_wcc_update_inode(inode, fattr);
  
-+	/* mask the replay timer timeout of AER */
-+	sdhci_gli_mask_replay_timer_timeout(pdev);
-+
- 	pci_read_config_dword(pdev, PCIE_GLI_9763E_VHS, &value);
- 	value &= ~GLI_9763E_VHS_REV;
- 	value |= FIELD_PREP(GLI_9763E_VHS_REV, GLI_9763E_VHS_REV_R);
+ 	if (pnfs_layoutcommit_outstanding(inode)) {
+-		nfsi->cache_validity |= save_cache_validity & NFS_INO_INVALID_ATTR;
++		nfsi->cache_validity |=
++			save_cache_validity &
++			(NFS_INO_INVALID_CHANGE | NFS_INO_INVALID_CTIME |
++			 NFS_INO_INVALID_MTIME | NFS_INO_INVALID_SIZE |
++			 NFS_INO_REVAL_FORCED);
+ 		cache_revalidated = false;
+ 	}
+ 
 
 
 
