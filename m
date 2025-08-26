@@ -1,56 +1,58 @@
-Return-Path: <stable+bounces-175712-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-173107-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id CC890B3697E
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 16:27:44 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3211AB35B68
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 13:24:06 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 553435829A0
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 14:18:25 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 914FF7C3DCA
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 11:23:28 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 21299352096;
-	Tue, 26 Aug 2025 14:16:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7CB682BE7B2;
+	Tue, 26 Aug 2025 11:23:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="opNaptlu"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="c9JNWCrY"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D277034DCF6;
-	Tue, 26 Aug 2025 14:16:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 395C5227599;
+	Tue, 26 Aug 2025 11:23:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756217771; cv=none; b=V08yIHrh4I/ruXh7Fw4UYB7JnJsvCK+ipc+Iq443zsQUkbWjnMG5ws3AYXKB0xr+bYJc+WtDbwKw4C6OgPin74uSbh1IuavwzM+tiluK3gWqQyCcULcXH5nN/U3g5KyhiODopNJYaAJLKmLyTeVlTpLjZa8Om2BwL2DNHf3mZrA=
+	t=1756207390; cv=none; b=kbiy7g5mFOT338g4Nxrp/lBOKeOO6hAMjL4iIt5Eik8NxhlXxf9RVk+ilE4tIAhM7X0/vKb1njHNkfWOInKhkfgOaPsr96ZJsAOFdZTQUwoNkMaxYpOt2dswj1dnodvCeOWHqpoPIlLhvRdHPrt7R0ODgBapU9WYMG5+LYsalcU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756217771; c=relaxed/simple;
-	bh=N3rYMGbZJgaQRJiy9Ur1ogL9RrzEdCmypuX7QGsXaHk=;
+	s=arc-20240116; t=1756207390; c=relaxed/simple;
+	bh=DBi5jl8VQqrPqemps7QJA8IXAC6MAoagbCsQef70DUc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=LPZz+SMdEQfaJDspc1lAI23zKOoPa2ks0TubcYJhXkElPwk13nnSDwhmwmvJvt5PoYXjn3NqGPMJkUF5sc9pgGXKCE8wtiPhFCVCexgOTnGxNqpI2XTT7pYd+jWhAzBpIY8ZBx3i3aklNEXswrPrlKeNkSzRgjDS9TsGehBr7t4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=opNaptlu; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 66036C4CEF1;
-	Tue, 26 Aug 2025 14:16:11 +0000 (UTC)
+	 MIME-Version; b=YmRsKgov1QlL2NhjtinhpoEeqqf0vl0H/egwuwIepMvfVGguwmTOwkC1UlePVyqdiE43bXGszf14RwncImmMLXphR39owjaqULrVaCAF4r75zxLl75lu9dAekwI86qVbnzOgKr83twW2+RaNuxk/XcYzMkOu7sgOxuHolCWQKB4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=c9JNWCrY; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 80034C4CEF1;
+	Tue, 26 Aug 2025 11:23:09 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1756217771;
-	bh=N3rYMGbZJgaQRJiy9Ur1ogL9RrzEdCmypuX7QGsXaHk=;
+	s=korg; t=1756207389;
+	bh=DBi5jl8VQqrPqemps7QJA8IXAC6MAoagbCsQef70DUc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=opNaptluJ2nVZsLhF1LsQrGD2T6k3uRHSHZJFkrRRnOWkBLL92aCdDt/iUCvTJ0Js
-	 diNQRGsV+RXeiQXET+ot0zvpqDuBKRZDnooBRDWi4wx3py1biBTK9tmOxslhvObXj1
-	 pshX19oKP7g9fSUd81hIE/svlO0EIHE5J6khuB/E=
+	b=c9JNWCrYUEYAVkCfIln2coSwME0UYQtTPIb+2mvfdhzmUixayj4SWg3Tk5DZlJBst
+	 MEnnQovz9VzyzFAF8HpTobqiEabKYr3KFRtdsud+50gdnfpacIjh2QtQmJi7i3db2z
+	 uklwTp7E2/w5CMU94N6tOukB8JsoRm7fwd0u5Fss=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	tuhaowen <tuhaowen@uniontech.com>,
-	"Rafael J. Wysocki" <rafael.j.wysocki@intel.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 238/523] PM: sleep: console: Fix the black screen issue
+	Vikash Garodia <quic_vgarodia@quicinc.com>,
+	Dikshita Agarwal <quic_dikshita@quicinc.com>,
+	Bryan ODonoghue <bod@kernel.org>,
+	Hans Verkuil <hverkuil@xs4all.nl>,
+	Neil Armstrong <neil.armstrong@linaro.org>
+Subject: [PATCH 6.16 164/457] media: iris: Track flush responses to prevent premature completion
 Date: Tue, 26 Aug 2025 13:07:28 +0200
-Message-ID: <20250826110930.315448011@linuxfoundation.org>
+Message-ID: <20250826110941.427887088@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250826110924.562212281@linuxfoundation.org>
-References: <20250826110924.562212281@linuxfoundation.org>
+In-Reply-To: <20250826110937.289866482@linuxfoundation.org>
+References: <20250826110937.289866482@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,82 +64,125 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+6.16-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: tuhaowen <tuhaowen@uniontech.com>
+From: Dikshita Agarwal <quic_dikshita@quicinc.com>
 
-[ Upstream commit 4266e8fa56d3d982bf451d382a410b9db432015c ]
+commit 9bf58db157139abcd60e425e5718c8e6a917f9dc upstream.
 
-When the computer enters sleep status without a monitor
-connected, the system switches the console to the virtual
-terminal tty63(SUSPEND_CONSOLE).
+Currently, two types of flush commands are queued to the firmware,
+the first flush queued as part of sequence change, does not wait for a
+response, while the second flush queued as part of stop, expects a
+completion response before proceeding further.
 
-If a monitor is subsequently connected before waking up,
-the system skips the required VT restoration process
-during wake-up, leaving the console on tty63 instead of
-switching back to tty1.
+Due to timing issue, the flush response corresponding to the first
+command could arrive after the second flush is issued. This casuses the
+driver to incorrectly assume that the second flush has completed,
+leading to the premature signaling of flush_completion.
 
-To fix this issue, a global flag vt_switch_done is introduced
-to record whether the system has successfully switched to
-the suspend console via vt_move_to_console() during suspend.
+To address this, introduce a counter to track the number of pending
+flush responses and signal flush completion only when all expected
+responses are received.
 
-If the switch was completed, vt_switch_done is set to 1.
-Later during resume, this flag is checked to ensure that
-the original console is restored properly by calling
-vt_move_to_console(orig_fgconsole, 0).
-
-This prevents scenarios where the resume logic skips console
-restoration due to incorrect detection of the console state,
-especially when a monitor is reconnected before waking up.
-
-Signed-off-by: tuhaowen <tuhaowen@uniontech.com>
-Link: https://patch.msgid.link/20250611032345.29962-1-tuhaowen@uniontech.com
-Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Cc: stable@vger.kernel.org
+Fixes: 11712ce70f8e ("media: iris: implement vb2 streaming ops")
+Reviewed-by: Vikash Garodia <quic_vgarodia@quicinc.com>
+Tested-by: Neil Armstrong <neil.armstrong@linaro.org> # on SM8550-QRD
+Tested-by: Neil Armstrong <neil.armstrong@linaro.org> # on SM8550-HDK
+Tested-by: Neil Armstrong <neil.armstrong@linaro.org> # on SM8650-QRD
+Tested-by: Neil Armstrong <neil.armstrong@linaro.org> # on SM8650-HDK
+Signed-off-by: Dikshita Agarwal <quic_dikshita@quicinc.com>
+Tested-by: Vikash Garodia <quic_vgarodia@quicinc.com> # on sa8775p-ride
+Signed-off-by: Bryan O'Donoghue <bod@kernel.org>
+Signed-off-by: Hans Verkuil <hverkuil@xs4all.nl>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- kernel/power/console.c | 7 ++++++-
- 1 file changed, 6 insertions(+), 1 deletion(-)
+ drivers/media/platform/qcom/iris/iris_hfi_gen1_command.c  |    4 ++-
+ drivers/media/platform/qcom/iris/iris_hfi_gen1_response.c |   17 +++++++++-----
+ drivers/media/platform/qcom/iris/iris_instance.h          |    2 +
+ 3 files changed, 16 insertions(+), 7 deletions(-)
 
-diff --git a/kernel/power/console.c b/kernel/power/console.c
-index fcdf0e14a47d..19c48aa5355d 100644
---- a/kernel/power/console.c
-+++ b/kernel/power/console.c
-@@ -16,6 +16,7 @@
- #define SUSPEND_CONSOLE	(MAX_NR_CONSOLES-1)
+--- a/drivers/media/platform/qcom/iris/iris_hfi_gen1_command.c
++++ b/drivers/media/platform/qcom/iris/iris_hfi_gen1_command.c
+@@ -208,8 +208,10 @@ static int iris_hfi_gen1_session_stop(st
+ 		flush_pkt.flush_type = flush_type;
  
- static int orig_fgconsole, orig_kmsg;
-+static bool vt_switch_done;
- 
- static DEFINE_MUTEX(vt_switch_mutex);
- 
-@@ -136,17 +137,21 @@ void pm_prepare_console(void)
- 	if (orig_fgconsole < 0)
- 		return;
- 
-+	vt_switch_done = true;
-+
- 	orig_kmsg = vt_kmsg_redirect(SUSPEND_CONSOLE);
- 	return;
- }
- 
- void pm_restore_console(void)
- {
--	if (!pm_vt_switch())
-+	if (!pm_vt_switch() && !vt_switch_done)
- 		return;
- 
- 	if (orig_fgconsole >= 0) {
- 		vt_move_to_console(orig_fgconsole, 0);
- 		vt_kmsg_redirect(orig_kmsg);
+ 		ret = iris_hfi_queue_cmd_write(core, &flush_pkt, flush_pkt.shdr.hdr.size);
+-		if (!ret)
++		if (!ret) {
++			inst->flush_responses_pending++;
+ 			ret = iris_wait_for_session_response(inst, true);
++		}
  	}
+ 
+ 	return ret;
+--- a/drivers/media/platform/qcom/iris/iris_hfi_gen1_response.c
++++ b/drivers/media/platform/qcom/iris/iris_hfi_gen1_response.c
+@@ -207,7 +207,8 @@ static void iris_hfi_gen1_event_seq_chan
+ 		flush_pkt.shdr.hdr.pkt_type = HFI_CMD_SESSION_FLUSH;
+ 		flush_pkt.shdr.session_id = inst->session_id;
+ 		flush_pkt.flush_type = HFI_FLUSH_OUTPUT;
+-		iris_hfi_queue_cmd_write(inst->core, &flush_pkt, flush_pkt.shdr.hdr.size);
++		if (!iris_hfi_queue_cmd_write(inst->core, &flush_pkt, flush_pkt.shdr.hdr.size))
++			inst->flush_responses_pending++;
+ 	}
+ 
+ 	iris_vdec_src_change(inst);
+@@ -408,7 +409,9 @@ static void iris_hfi_gen1_session_ftb_do
+ 		flush_pkt.shdr.hdr.pkt_type = HFI_CMD_SESSION_FLUSH;
+ 		flush_pkt.shdr.session_id = inst->session_id;
+ 		flush_pkt.flush_type = HFI_FLUSH_OUTPUT;
+-		iris_hfi_queue_cmd_write(core, &flush_pkt, flush_pkt.shdr.hdr.size);
++		if (!iris_hfi_queue_cmd_write(core, &flush_pkt, flush_pkt.shdr.hdr.size))
++			inst->flush_responses_pending++;
 +
-+	vt_switch_done = false;
- }
--- 
-2.39.5
-
+ 		iris_inst_sub_state_change_drain_last(inst);
+ 
+ 		return;
+@@ -564,7 +567,6 @@ static void iris_hfi_gen1_handle_respons
+ 	const struct iris_hfi_gen1_response_pkt_info *pkt_info;
+ 	struct device *dev = core->dev;
+ 	struct hfi_session_pkt *pkt;
+-	struct completion *done;
+ 	struct iris_inst *inst;
+ 	bool found = false;
+ 	u32 i;
+@@ -625,9 +627,12 @@ static void iris_hfi_gen1_handle_respons
+ 			if (shdr->error_type != HFI_ERR_NONE)
+ 				iris_inst_change_state(inst, IRIS_INST_ERROR);
+ 
+-			done = pkt_info->pkt == HFI_MSG_SESSION_FLUSH ?
+-				&inst->flush_completion : &inst->completion;
+-			complete(done);
++			if (pkt_info->pkt == HFI_MSG_SESSION_FLUSH) {
++				if (!(--inst->flush_responses_pending))
++					complete(&inst->flush_completion);
++			} else {
++				complete(&inst->completion);
++			}
+ 		}
+ 		mutex_unlock(&inst->lock);
+ 
+--- a/drivers/media/platform/qcom/iris/iris_instance.h
++++ b/drivers/media/platform/qcom/iris/iris_instance.h
+@@ -27,6 +27,7 @@
+  * @crop: structure of crop info
+  * @completion: structure of signal completions
+  * @flush_completion: structure of signal completions for flush cmd
++ * @flush_responses_pending: counter to track number of pending flush responses
+  * @fw_caps: array of supported instance firmware capabilities
+  * @buffers: array of different iris buffers
+  * @fw_min_count: minimnum count of buffers needed by fw
+@@ -57,6 +58,7 @@ struct iris_inst {
+ 	struct iris_hfi_rect_desc	crop;
+ 	struct completion		completion;
+ 	struct completion		flush_completion;
++	u32				flush_responses_pending;
+ 	struct platform_inst_fw_cap	fw_caps[INST_FW_CAP_MAX];
+ 	struct iris_buffers		buffers[BUF_TYPE_MAX];
+ 	u32				fw_min_count;
 
 
 
