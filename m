@@ -1,57 +1,58 @@
-Return-Path: <stable+bounces-176346-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-175935-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 171A2B36D0B
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 17:06:17 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id C1BDFB36C47
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 16:54:21 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 91EE45632CB
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 14:46:37 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 8DB26983521
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 14:28:27 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id CA8BE350D46;
-	Tue, 26 Aug 2025 14:43:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C814C35209C;
+	Tue, 26 Aug 2025 14:25:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="F9JWtJ1Y"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="fJJYlrmP"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8735D34F46F;
-	Tue, 26 Aug 2025 14:43:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8557C350825;
+	Tue, 26 Aug 2025 14:25:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756219419; cv=none; b=CEdmryMkKQ2oT0e3m4JnNkpDxWdiSk8v5FIEvPa/3X3n/Wb2TZt4iy5n3GHOIL18j1Ru9eW+pkXMhmRt2oz01uNZOA1x0CiZFfTfKn2i/gbUEUwZcStaKgSeGVXFT0K1F33UEL3wBy56UDP+HWitjZE2YL9iwftoOAYcUpoRCGo=
+	t=1756218354; cv=none; b=U7swWufouHzwk0FcdzEqNBhshaevF8VkYNVquSGVSGFHJyxrAdhfMUbxGGvdfo7+QBiK8uQe4Gx8bzoTwuK9e457Lb3xSzINhH7U49QgXdpq66IDZdaC51kkFshqNlL9ftDbkb+1sQOJn9Bn1J1Hlf2aezTL4QXAZfbH37Yp9KY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756219419; c=relaxed/simple;
-	bh=QoLsqdeDtuz/rmlvEDKX7R/XWANnDzpLkZ4ghvmQdwQ=;
+	s=arc-20240116; t=1756218354; c=relaxed/simple;
+	bh=psrU+LM/XVpxfb5j6hnSOkwi1zMwLDxyz0oa/ITE3qY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=EH8qMwWtw6qeW38KfSm0QRFSx4AdIEhZ4O3BvWZa3rtsAvrnbZ663UR2G2YLkmWPdFVVl9h879p6QapilP1vKQwZ/D27CKVTkWOtZKdmedyQmyMyMZLPu9JK0+FKwkH2B0LO366i8sYZDAkkN84DfYTEkpfvvwXN9lfjrjkyw84=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=F9JWtJ1Y; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1ABB9C113D0;
-	Tue, 26 Aug 2025 14:43:38 +0000 (UTC)
+	 MIME-Version; b=EKt+5Odceyve/Lna5z6J76yHwfGds6pwNWwAemXe6tiTK7A+nF0yrhgkDXsjExyrnmSTKZD2idfEnZLZKyfybdUVhm7pjPzJkyjvOCqIyHA2IK9uEmBX6DGNCD1ZdP9psSKU1S402JYPFIZCR2NTk3rWSpskon2ZJl/mJh+1kNg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=fJJYlrmP; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id BAF44C4CEF1;
+	Tue, 26 Aug 2025 14:25:53 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1756219419;
-	bh=QoLsqdeDtuz/rmlvEDKX7R/XWANnDzpLkZ4ghvmQdwQ=;
+	s=korg; t=1756218354;
+	bh=psrU+LM/XVpxfb5j6hnSOkwi1zMwLDxyz0oa/ITE3qY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=F9JWtJ1YWxxHM75XJ+llnA6tvV3scfJndo0H/8qQwwVMJCrD7CIYMbaWtWSrlLgq0
-	 MPS9Ho2k5pEzhX/mu9MZHVqpHf6lrMRg4YsX+mKU90rL4aW2VoBl716fXyK3pYvJs3
-	 3IE/S2qjiQWGallm2wpG3WlgvjNEIJaNKs8fsGb4=
+	b=fJJYlrmPBhvD/xISEW6Pc+ylUNEHNnMXYAcVq7QudFiQ1e+vJb2Zk7ySptu/F3JV6
+	 PO/itNoES29eztg64ZrhmL8bDftnn1hqIbFSyqq2nawO59TlYzwxHR+RJu5XeU77hN
+	 qCLYWZxxu9sXFsZeLzugrHR5e7DiuzW5kdhPn/Go=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Filipe Manana <fdmanana@suse.com>,
-	Qu Wenruo <wqu@suse.com>,
-	David Sterba <dsterba@suse.com>,
+	Vladimir Zapolskiy <vladimir.zapolskiy@linaro.org>,
+	Bryan ODonoghue <bryan.odonoghue@linaro.org>,
+	Bryan ODonoghue <bod@kernel.org>,
+	Hans Verkuil <hverkuil@xs4all.nl>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.4 374/403] btrfs: populate otime when logging an inode item
+Subject: [PATCH 5.10 490/523] media: qcom: camss: cleanup media device allocated resource on error path
 Date: Tue, 26 Aug 2025 13:11:40 +0200
-Message-ID: <20250826110917.349701160@linuxfoundation.org>
+Message-ID: <20250826110936.531252905@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250826110905.607690791@linuxfoundation.org>
-References: <20250826110905.607690791@linuxfoundation.org>
+In-Reply-To: <20250826110924.562212281@linuxfoundation.org>
+References: <20250826110924.562212281@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,118 +64,53 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.4-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Qu Wenruo <wqu@suse.com>
+From: Vladimir Zapolskiy <vladimir.zapolskiy@linaro.org>
 
-[ Upstream commit 1ef94169db0958d6de39f9ea6e063ce887342e2d ]
+[ Upstream commit 69080ec3d0daba8a894025476c98ab16b5a505a4 ]
 
-[TEST FAILURE WITH EXPERIMENTAL FEATURES]
-When running test case generic/508, the test case will fail with the new
-btrfs shutdown support:
+A call to media_device_init() requires media_device_cleanup() counterpart
+to complete cleanup and release any allocated resources.
 
-generic/508       - output mismatch (see /home/adam/xfstests/results//generic/508.out.bad)
-#    --- tests/generic/508.out	2022-05-11 11:25:30.806666664 +0930
-#    +++ /home/adam/xfstests/results//generic/508.out.bad	2025-07-02 14:53:22.401824212 +0930
-#    @@ -1,2 +1,6 @@
-#     QA output created by 508
-#     Silence is golden
-#    +Before:
-#    +After : stat.btime = Thu Jan  1 09:30:00 1970
-#    +Before:
-#    +After : stat.btime = Wed Jul  2 14:53:22 2025
-#    ...
-#    (Run 'diff -u /home/adam/xfstests/tests/generic/508.out /home/adam/xfstests/results//generic/508.out.bad'  to see the entire diff)
-Ran: generic/508
-Failures: generic/508
-Failed 1 of 1 tests
+This has been done in the driver .remove() right from the beginning, but
+error paths on .probe() shall also be fixed.
 
-Please note that the test case requires shutdown support, thus the test
-case will be skipped using the current upstream kernel, as it doesn't
-have shutdown ioctl support.
-
-[CAUSE]
-The direct cause the 0 time stamp in the log tree:
-
-leaf 30507008 items 2 free space 16057 generation 9 owner TREE_LOG
-leaf 30507008 flags 0x1(WRITTEN) backref revision 1
-checksum stored e522548d
-checksum calced e522548d
-fs uuid 57d45451-481e-43e4-aa93-289ad707a3a0
-chunk uuid d52bd3fd-5163-4337-98a7-7986993ad398
-	item 0 key (257 INODE_ITEM 0) itemoff 16123 itemsize 160
-		generation 9 transid 9 size 0 nbytes 0
-		block group 0 mode 100644 links 1 uid 0 gid 0 rdev 0
-		sequence 1 flags 0x0(none)
-		atime 1751432947.492000000 (2025-07-02 14:39:07)
-		ctime 1751432947.492000000 (2025-07-02 14:39:07)
-		mtime 1751432947.492000000 (2025-07-02 14:39:07)
-		otime 0.0 (1970-01-01 09:30:00) <<<
-
-But the old fs tree has all the correct time stamp:
-
-btrfs-progs v6.12
-fs tree key (FS_TREE ROOT_ITEM 0)
-leaf 30425088 items 2 free space 16061 generation 5 owner FS_TREE
-leaf 30425088 flags 0x1(WRITTEN) backref revision 1
-checksum stored 48f6c57e
-checksum calced 48f6c57e
-fs uuid 57d45451-481e-43e4-aa93-289ad707a3a0
-chunk uuid d52bd3fd-5163-4337-98a7-7986993ad398
-	item 0 key (256 INODE_ITEM 0) itemoff 16123 itemsize 160
-		generation 3 transid 0 size 0 nbytes 16384
-		block group 0 mode 40755 links 1 uid 0 gid 0 rdev 0
-		sequence 0 flags 0x0(none)
-		atime 1751432947.0 (2025-07-02 14:39:07)
-		ctime 1751432947.0 (2025-07-02 14:39:07)
-		mtime 1751432947.0 (2025-07-02 14:39:07)
-		otime 1751432947.0 (2025-07-02 14:39:07) <<<
-
-The root cause is that fill_inode_item() in tree-log.c is only
-populating a/c/m time, not the otime (or btime in statx output).
-
-Part of the reason is that, the vfs inode only has a/c/m time, no native
-btime support yet.
-
-[FIX]
-Thankfully btrfs has its otime stored in btrfs_inode::i_otime_sec and
-btrfs_inode::i_otime_nsec.
-
-So what we really need is just fill the otime time stamp in
-fill_inode_item() of tree-log.c
-
-There is another fill_inode_item() in inode.c, which is doing the proper
-otime population.
-
-Fixes: 94edf4ae43a5 ("Btrfs: don't bother committing delayed inode updates when fsyncing")
-CC: stable@vger.kernel.org
-Reviewed-by: Filipe Manana <fdmanana@suse.com>
-Signed-off-by: Qu Wenruo <wqu@suse.com>
-Reviewed-by: David Sterba <dsterba@suse.com>
-Signed-off-by: David Sterba <dsterba@suse.com>
-[ adapted token-based API and timespec64 field structure ]
+Fixes: a1d7c116fcf7 ("media: camms: Add core files")
+Cc: stable@vger.kernel.org
+Signed-off-by: Vladimir Zapolskiy <vladimir.zapolskiy@linaro.org>
+Reviewed-by: Bryan O'Donoghue <bryan.odonoghue@linaro.org>
+Signed-off-by: Bryan O'Donoghue <bod@kernel.org>
+Signed-off-by: Hans Verkuil <hverkuil@xs4all.nl>
+[ err_genpd_cleanup => err_cleanup ]
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- fs/btrfs/tree-log.c |    5 +++++
- 1 file changed, 5 insertions(+)
+ drivers/media/platform/qcom/camss/camss.c |    4 +++-
+ 1 file changed, 3 insertions(+), 1 deletion(-)
 
---- a/fs/btrfs/tree-log.c
-+++ b/fs/btrfs/tree-log.c
-@@ -3953,6 +3953,11 @@ static void fill_inode_item(struct btrfs
- 	btrfs_set_token_timespec_nsec(leaf, &item->ctime,
- 				      inode->i_ctime.tv_nsec, &token);
+--- a/drivers/media/platform/qcom/camss/camss.c
++++ b/drivers/media/platform/qcom/camss/camss.c
+@@ -888,7 +888,7 @@ static int camss_probe(struct platform_d
+ 	ret = v4l2_device_register(camss->dev, &camss->v4l2_dev);
+ 	if (ret < 0) {
+ 		dev_err(dev, "Failed to register V4L2 device: %d\n", ret);
+-		goto err_cleanup;
++		goto err_media_device_cleanup;
+ 	}
  
-+	btrfs_set_token_timespec_sec(leaf, &item->otime,
-+				     BTRFS_I(inode)->i_otime.tv_sec, &token);
-+	btrfs_set_token_timespec_nsec(leaf, &item->otime,
-+				      BTRFS_I(inode)->i_otime.tv_nsec, &token);
-+
- 	btrfs_set_token_inode_nbytes(leaf, item, inode_get_bytes(inode),
- 				     &token);
- 
+ 	ret = camss_register_entities(camss);
+@@ -945,6 +945,8 @@ err_register_subdevs:
+ 	camss_unregister_entities(camss);
+ err_register_entities:
+ 	v4l2_device_unregister(&camss->v4l2_dev);
++err_media_device_cleanup:
++	media_device_cleanup(&camss->media_dev);
+ err_cleanup:
+ 	v4l2_async_notifier_cleanup(&camss->notifier);
+ err_free:
 
 
 
