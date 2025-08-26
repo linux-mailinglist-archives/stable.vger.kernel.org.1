@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-175394-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-173671-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id BB545B36912
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 16:22:33 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 29CC9B35E43
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 13:55:18 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 5E6EA9846C0
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 14:04:04 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 58296188DE9A
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 11:48:08 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A559935691B;
-	Tue, 26 Aug 2025 14:02:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B1C472FAC02;
+	Tue, 26 Aug 2025 11:47:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="nGq8Igb+"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="SyM5+Jg6"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5A8B4356913;
-	Tue, 26 Aug 2025 14:02:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6F5F1267386;
+	Tue, 26 Aug 2025 11:47:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756216922; cv=none; b=WbPmw21JHHPSagmHFJTzyIQwsTqnXU3S5vC1tu29Rd36xARqt6bgy7oVp2vHjmINevdONZV2u9Gd5nl4E8cSKfYaVPxXLVE/DuJ6ftGzaLLDB2TUPo7NxWJN4l1Yvl9xZg9VxgxpZ6Jxp5pzwlaOPxwYcr7FlHHOAmsNmQ5o7wk=
+	t=1756208853; cv=none; b=ITNhdWeljcYUmjZcsDPy+M9lKmqKamHOVq1Z2/qkYcS/OeSKiGhJUStxvr9WYYA8flpMVe7BjRDiFR5CN+u7wN1kjHdZnds+RZfDMkMhT8W25pgDcaq2a+PB6D9xKOYBBqx/dASPL13J3EJvhxLJGJKLdKQaWZDOjZ9A9bJEXig=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756216922; c=relaxed/simple;
-	bh=xoSHTfNzMBP8Plchqk8PWmXzRjCy64SbxpU9T3KzJv0=;
+	s=arc-20240116; t=1756208853; c=relaxed/simple;
+	bh=x565+mLhXAk/RpQ+XFomNOcT+Z1ADobaJxGxeojc350=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=IXF2UxLh2Gm4hFXz0ZRTw+1cPBGa7YxzEmusv81MFxzjw7E2ZbA4iQgI1y2vOzlADqGVIhligY9Xj10vsnxdtMYdUA+dyytcf4jaYUCDZxg/BIWC+JZXmsiwlRpPD9V/Ec6vacEni+1wmm/wuc1HXBbwGD6CgTzb69rr2hOGyzs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=nGq8Igb+; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id DADA1C4CEF1;
-	Tue, 26 Aug 2025 14:02:01 +0000 (UTC)
+	 MIME-Version; b=bbHdEVdzXfxHKZCZcKD09K96SeUwWZ6y+t9WF6fjfaiNdF8HUIlPqHH4RKoN9tbzIcNJhFZB+ut5n+KHpRoCbMWdkeSb3WbxFCkKQyRBmMlW2qXNCPw5mfnF+oPvIz6K9vZOQx124IGp4eJyf0JmCETQlMDL49eDCdHTFun9wjY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=SyM5+Jg6; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id F3AECC4CEF4;
+	Tue, 26 Aug 2025 11:47:32 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1756216922;
-	bh=xoSHTfNzMBP8Plchqk8PWmXzRjCy64SbxpU9T3KzJv0=;
+	s=korg; t=1756208853;
+	bh=x565+mLhXAk/RpQ+XFomNOcT+Z1ADobaJxGxeojc350=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=nGq8Igb+/uPRYTE2ci9Lzok4DqH5aP/v9axHCBz/WOrK+hqFVXycPfZxCefMgB8/L
-	 aOMZ9A6sBHH7CzPPKpkxIT/bdkBNFyymR/LlXgtcwiqnUDcQUBRfcxTcKRXVYjwFMl
-	 VVY1xVKMU+Py/72jOMQRc2d2AmND2v3BkMYD1tS4=
+	b=SyM5+Jg6gVbhnC7cXx/mZy6p+rGP6KOVGLofW7cDjxjHH4JA086lQRzhob5OVtVZ+
+	 SZl/gthbQ+C1uEHr/dEsqmjPV9J3o/4KlXjOckqWtzq7DAeMKJ1DjUogZfpkr665VG
+	 8xG76pPHGMEAZfHxtGb8MeOixl00UtzXcOHnj9hQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Matthieu Baerts <matttbe@kernel.org>,
-	Geliang Tang <tanggeliang@kylinos.cn>,
-	Jakub Kicinski <kuba@kernel.org>,
+	Kalesh AP <kalesh-anakkur.purayil@broadcom.com>,
+	Sriharsha Basavapatna <sriharsha.basavapatna@broadcom.com>,
+	Leon Romanovsky <leon@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 593/644] mptcp: disable add_addr retransmission when timeout is 0
+Subject: [PATCH 6.12 269/322] RDMA/bnxt_re: Fix a possible memory leak in the driver
 Date: Tue, 26 Aug 2025 13:11:24 +0200
-Message-ID: <20250826111001.234336662@linuxfoundation.org>
+Message-ID: <20250826110922.571926668@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250826110946.507083938@linuxfoundation.org>
-References: <20250826110946.507083938@linuxfoundation.org>
+In-Reply-To: <20250826110915.169062587@linuxfoundation.org>
+References: <20250826110915.169062587@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,98 +63,98 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Geliang Tang <tanggeliang@kylinos.cn>
+From: Kalesh AP <kalesh-anakkur.purayil@broadcom.com>
 
-[ Upstream commit f5ce0714623cffd00bf2a83e890d09c609b7f50a ]
+[ Upstream commit ba60a1e8cbbd396c69ff9c8bc3242f5ab133e38a ]
 
-When add_addr_timeout was set to 0, this caused the ADD_ADDR to be
-retransmitted immediately, which looks like a buggy behaviour. Instead,
-interpret 0 as "no retransmissions needed".
+The GID context reuse logic requires the context memory to be
+not freed if and when DEL_GID firmware command fails. But, if
+there's no subsequent ADD_GID to reuse it, the context memory
+must be freed when the driver is unloaded. Otherwise it leads
+to a memory leak.
 
-The documentation is updated to explicitly state that setting the timeout
-to 0 disables retransmission.
+Below is the kmemleak trace reported:
 
-Fixes: 93f323b9cccc ("mptcp: add a new sysctl add_addr_timeout")
-Cc: stable@vger.kernel.org
-Suggested-by: Matthieu Baerts <matttbe@kernel.org>
-Signed-off-by: Geliang Tang <tanggeliang@kylinos.cn>
-Reviewed-by: Matthieu Baerts (NGI0) <matttbe@kernel.org>
-Signed-off-by: Matthieu Baerts (NGI0) <matttbe@kernel.org>
-Link: https://patch.msgid.link/20250815-net-mptcp-misc-fixes-6-17-rc2-v1-5-521fe9957892@kernel.org
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-[ pm.c => pm_netlink.c , drop mptcp_pm_alloc_anno_list hunk ]
+unreferenced object 0xffff88817a4f34d0 (size 8):
+  comm "insmod", pid 1072504, jiffies 4402561550
+  hex dump (first 8 bytes):
+  01 00 00 00 00 00 00 00                          ........
+  backtrace (crc ccaa009e):
+  __kmalloc_cache_noprof+0x33e/0x400
+  0xffffffffc2db9d48
+  add_modify_gid+0x5e0/0xb60 [ib_core]
+  __ib_cache_gid_add+0x213/0x350 [ib_core]
+  update_gid+0xf2/0x180 [ib_core]
+  enum_netdev_ipv4_ips+0x3f3/0x690 [ib_core]
+  enum_all_gids_of_dev_cb+0x125/0x1b0 [ib_core]
+  ib_enum_roce_netdev+0x14b/0x250 [ib_core]
+  ib_cache_setup_one+0x2e5/0x540 [ib_core]
+  ib_register_device+0x82c/0xf10 [ib_core]
+  0xffffffffc2df5ad9
+  0xffffffffc2da8b07
+  0xffffffffc2db174d
+  auxiliary_bus_probe+0xa5/0x120
+  really_probe+0x1e4/0x850
+  __driver_probe_device+0x18f/0x3d0
+
+Fixes: 4a62c5e9e2e1 ("RDMA/bnxt_re: Do not free the ctx_tbl entry if delete GID fails")
+Signed-off-by: Kalesh AP <kalesh-anakkur.purayil@broadcom.com>
+Link: https://patch.msgid.link/20250805101000.233310-4-kalesh-anakkur.purayil@broadcom.com
+Reviewed-by: Sriharsha Basavapatna <sriharsha.basavapatna@broadcom.com>
+Signed-off-by: Leon Romanovsky <leon@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- Documentation/networking/mptcp-sysctl.rst |    2 ++
- net/mptcp/pm_netlink.c                    |   13 ++++++++++---
- 2 files changed, 12 insertions(+), 3 deletions(-)
+ drivers/infiniband/hw/bnxt_re/main.c | 23 +++++++++++++++++++++++
+ 1 file changed, 23 insertions(+)
 
---- a/Documentation/networking/mptcp-sysctl.rst
-+++ b/Documentation/networking/mptcp-sysctl.rst
-@@ -20,6 +20,8 @@ add_addr_timeout - INTEGER (seconds)
- 	resent to an MPTCP peer that has not acknowledged a previous
- 	ADD_ADDR message.
- 
-+	Do not retransmit if set to 0.
-+
- 	The default value matches TCP_RTO_MAX. This is a per-namespace
- 	sysctl.
- 
---- a/net/mptcp/pm_netlink.c
-+++ b/net/mptcp/pm_netlink.c
-@@ -316,6 +316,7 @@ static void mptcp_pm_add_timer(struct ti
- 	struct mptcp_pm_add_entry *entry = from_timer(entry, timer, add_timer);
- 	struct mptcp_sock *msk = entry->sock;
- 	struct sock *sk = (struct sock *)msk;
-+	unsigned int timeout;
- 
- 	pr_debug("msk=%p\n", msk);
- 
-@@ -333,6 +334,10 @@ static void mptcp_pm_add_timer(struct ti
- 		goto out;
- 	}
- 
-+	timeout = mptcp_get_add_addr_timeout(sock_net(sk));
-+	if (!timeout)
-+		goto out;
-+
- 	spin_lock_bh(&msk->pm.lock);
- 
- 	if (!mptcp_pm_should_add_signal_addr(msk)) {
-@@ -344,7 +349,7 @@ static void mptcp_pm_add_timer(struct ti
- 
- 	if (entry->retrans_times < ADD_ADDR_RETRANS_MAX)
- 		sk_reset_timer(sk, timer,
--			       jiffies + mptcp_get_add_addr_timeout(sock_net(sk)));
-+			       jiffies + timeout);
- 
- 	spin_unlock_bh(&msk->pm.lock);
- 
-@@ -386,6 +391,7 @@ static bool mptcp_pm_alloc_anno_list(str
- 	struct mptcp_pm_add_entry *add_entry = NULL;
- 	struct sock *sk = (struct sock *)msk;
- 	struct net *net = sock_net(sk);
-+	unsigned int timeout;
- 
- 	lockdep_assert_held(&msk->pm.lock);
- 
-@@ -403,8 +409,9 @@ static bool mptcp_pm_alloc_anno_list(str
- 	add_entry->retrans_times = 0;
- 
- 	timer_setup(&add_entry->add_timer, mptcp_pm_add_timer, 0);
--	sk_reset_timer(sk, &add_entry->add_timer,
--		       jiffies + mptcp_get_add_addr_timeout(net));
-+	timeout = mptcp_get_add_addr_timeout(net);
-+	if (timeout)
-+		sk_reset_timer(sk, &add_entry->add_timer, jiffies + timeout);
- 
- 	return true;
+diff --git a/drivers/infiniband/hw/bnxt_re/main.c b/drivers/infiniband/hw/bnxt_re/main.c
+index 9bd837a5b8a1..b213ecca2854 100644
+--- a/drivers/infiniband/hw/bnxt_re/main.c
++++ b/drivers/infiniband/hw/bnxt_re/main.c
+@@ -1615,6 +1615,28 @@ static void bnxt_re_free_nqr_mem(struct bnxt_re_dev *rdev)
+ 	rdev->nqr = NULL;
  }
+ 
++/* When DEL_GID fails, driver is not freeing GID ctx memory.
++ * To avoid the memory leak, free the memory during unload
++ */
++static void bnxt_re_free_gid_ctx(struct bnxt_re_dev *rdev)
++{
++	struct bnxt_qplib_sgid_tbl *sgid_tbl = &rdev->qplib_res.sgid_tbl;
++	struct bnxt_re_gid_ctx *ctx, **ctx_tbl;
++	int i;
++
++	if (!sgid_tbl->active)
++		return;
++
++	ctx_tbl = sgid_tbl->ctx;
++	for (i = 0; i < sgid_tbl->max; i++) {
++		if (sgid_tbl->hw_id[i] == 0xFFFF)
++			continue;
++
++		ctx = ctx_tbl[i];
++		kfree(ctx);
++	}
++}
++
+ static void bnxt_re_dev_uninit(struct bnxt_re_dev *rdev, u8 op_type)
+ {
+ 	u8 type;
+@@ -1623,6 +1645,7 @@ static void bnxt_re_dev_uninit(struct bnxt_re_dev *rdev, u8 op_type)
+ 	if (test_and_clear_bit(BNXT_RE_FLAG_QOS_WORK_REG, &rdev->flags))
+ 		cancel_delayed_work_sync(&rdev->worker);
+ 
++	bnxt_re_free_gid_ctx(rdev);
+ 	if (test_and_clear_bit(BNXT_RE_FLAG_RESOURCES_INITIALIZED,
+ 			       &rdev->flags))
+ 		bnxt_re_cleanup_res(rdev);
+-- 
+2.50.1
+
 
 
 
