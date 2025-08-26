@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-176188-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-175763-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7A0DFB36B80
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 16:46:38 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 039EDB36A0C
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 16:33:38 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 4614DA032D8
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 14:39:41 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 10514585C19
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 14:20:32 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2AE8935AAC9;
-	Tue, 26 Aug 2025 14:36:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 59C07350D44;
+	Tue, 26 Aug 2025 14:18:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="mL/cOdnU"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="qm2cMDdF"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DC18F2E88B7;
-	Tue, 26 Aug 2025 14:36:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1840A1F790F;
+	Tue, 26 Aug 2025 14:18:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756219009; cv=none; b=Ix9Qp73dOWImdErhecgVIwsTIsMj5jy1+iBNt+W9EipQ11L/TH3Ws9EhHRqHKa7LZwsoAoqT8CzVCGI0bgQPiQcHbasBtRw3iC3raW7dGlUxLL/TLV10hbpLwj3h+P2VtmUVhroSgU0/0Q7whlZGZDZMBNOM+E1Tmv8EfWTkgL0=
+	t=1756217905; cv=none; b=A+WTLh381DacWhmDmMO6m8VsC/Xn6DrNVH1g5KTx8n6myNS2SFis4Wz23ZqX4E4N0X4C+UrCc4k9jzabb8MssmODu+3Y3cskHTXl+Dxy8sNTXeWqMPKqrCrRGto14A62i1iQX357mcFqpXB6518/ERK9Etlqj4GJQQpI7dLAIWc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756219009; c=relaxed/simple;
-	bh=JOheNb2vZ9hwEsxvk5j+nQ7jlnE/eoNr7TxyXpcSI0w=;
+	s=arc-20240116; t=1756217905; c=relaxed/simple;
+	bh=gI+Bt2a+jFoqnFCzdgbyy/w/uT694nu9Kh2kSVoEIRs=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=b9vxOWcY4bWNQ0lyuyLyGtVPDFXVDPGOKyo9qzPd8sVdu1JNK3DFC+qdmklDzBF3EGE1z88J0QF4fA2PqC3fSA0zCLZghWRxYtTTBf0PLmA4dmL+G42NTQjDejQGFBA8A4G9KOOXdilqAVdUS4SE+Feoe12jm6USj1dNc3HrlYA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=mL/cOdnU; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3477FC4CEF1;
-	Tue, 26 Aug 2025 14:36:48 +0000 (UTC)
+	 MIME-Version; b=VDj3T5J766syDyEdrvIQBquCJR3wjzvb7PsxPBV6iOMVl0ZkJtgI7hYR6lkEU2MlFTXn42gW0faw/WlGIxO5sQ8/SBRYddOsNh6bm+aH8aKJmhgdtPQrhDuCd02stkCrL26f4YVxAg9vGHNCDFJ1cg4mL1APTnn4UA7Pi2vF3AY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=qm2cMDdF; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9FF7BC4CEF1;
+	Tue, 26 Aug 2025 14:18:24 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1756219008;
-	bh=JOheNb2vZ9hwEsxvk5j+nQ7jlnE/eoNr7TxyXpcSI0w=;
+	s=korg; t=1756217905;
+	bh=gI+Bt2a+jFoqnFCzdgbyy/w/uT694nu9Kh2kSVoEIRs=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=mL/cOdnU2Y4mOc5hB3rL+VlPQLHQ+1i6kaHgjG/f915cfrWxVusNYcMQq6ub+JLLI
-	 2shgPYHAmr0sFa91HxoKfW13WSdRZDH8lqWzIIi1TX80M7poudVapa0QKDDFBda2eT
-	 9lsxyBM1DCF5bmfBrFKPiw3rRLv+7x1V3f+MBj+w=
+	b=qm2cMDdFw6K8Zg6Y7oVEU8/52oDSccwcpEuOajHayb0RXhFwQ7mi23B5eVPhkpsNc
+	 PRzOx8vk/3m99yxHn0stYU9x64Wfuuvs5KCIaUmJi7xt9eLTjQRIE93YBK1gbrw1s2
+	 oQSQLHXuBUXc9JiC1pYvaHDn3vWSbHzt7SGb0ALU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Lifeng Zheng <zhenglifeng1@huawei.com>,
-	"Rafael J. Wysocki" <rafael.j.wysocki@intel.com>,
+	Johan Adolfsson <johan.adolfsson@axis.com>,
+	Jacek Anaszewski <jacek.anaszewski@gmail.com>,
+	Lee Jones <lee@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.4 186/403] cpufreq: Exit governor when failed to start old governor
+Subject: [PATCH 5.10 302/523] leds: leds-lp50xx: Handle reg to get correct multi_index
 Date: Tue, 26 Aug 2025 13:08:32 +0200
-Message-ID: <20250826110912.019310563@linuxfoundation.org>
+Message-ID: <20250826110931.903080747@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250826110905.607690791@linuxfoundation.org>
-References: <20250826110905.607690791@linuxfoundation.org>
+In-Reply-To: <20250826110924.562212281@linuxfoundation.org>
+References: <20250826110924.562212281@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,45 +63,70 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.4-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Lifeng Zheng <zhenglifeng1@huawei.com>
+From: Johan Adolfsson <johan.adolfsson@axis.com>
 
-[ Upstream commit 0ae204405095abfbc2d694ee0fbb49bcbbe55c57 ]
+[ Upstream commit 2e84a5e5374232e6f356ce5c079a5658d7e4af2c ]
 
-Detect the result of starting old governor in cpufreq_set_policy(). If it
-fails, exit the governor and clear policy->governor.
+mc_subled used for multi_index needs well defined array indexes,
+to guarantee the desired result, use reg for that.
 
-Signed-off-by: Lifeng Zheng <zhenglifeng1@huawei.com>
-Link: https://patch.msgid.link/20250709104145.2348017-5-zhenglifeng1@huawei.com
-Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
+If devicetree child nodes is processed in random or reverse order
+you may end up with multi_index "blue green red" instead of the expected
+"red green blue".
+If user space apps uses multi_index to deduce how to control the leds
+they would most likely be broken without this patch if devicetree
+processing is reversed (which it appears to be).
+
+arch/arm/boot/dts/aspeed/aspeed-bmc-facebook-fuji.dts has reg set
+but I don't see how it can have worked without this change.
+
+If reg is not set, an error is returned,
+If reg is out of range, an error is returned.
+reg within led child nodes starts with 0, to map to the iout in each bank.
+
+Signed-off-by: Johan Adolfsson <johan.adolfsson@axis.com>
+Reviewed-by: Jacek Anaszewski <jacek.anaszewski@gmail.com>
+Link: https://lore.kernel.org/r/20250617-led-fix-v7-1-cdbe8efc88fa@axis.com
+Signed-off-by: Lee Jones <lee@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/cpufreq/cpufreq.c | 8 +++++---
- 1 file changed, 5 insertions(+), 3 deletions(-)
+ drivers/leds/leds-lp50xx.c | 11 ++++++++++-
+ 1 file changed, 10 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/cpufreq/cpufreq.c b/drivers/cpufreq/cpufreq.c
-index 00f12d23077c..0f8777343e21 100644
---- a/drivers/cpufreq/cpufreq.c
-+++ b/drivers/cpufreq/cpufreq.c
-@@ -2483,10 +2483,12 @@ static int cpufreq_set_policy(struct cpufreq_policy *policy,
- 	pr_debug("starting governor %s failed\n", policy->governor->name);
- 	if (old_gov) {
- 		policy->governor = old_gov;
--		if (cpufreq_init_governor(policy))
-+		if (cpufreq_init_governor(policy)) {
- 			policy->governor = NULL;
--		else
--			cpufreq_start_governor(policy);
-+		} else if (cpufreq_start_governor(policy)) {
-+			cpufreq_exit_governor(policy);
-+			policy->governor = NULL;
-+		}
- 	}
+diff --git a/drivers/leds/leds-lp50xx.c b/drivers/leds/leds-lp50xx.c
+index d4529082935b..279f3958e0ab 100644
+--- a/drivers/leds/leds-lp50xx.c
++++ b/drivers/leds/leds-lp50xx.c
+@@ -493,6 +493,7 @@ static int lp50xx_probe_dt(struct lp50xx *priv)
+ 		}
  
- 	return ret;
+ 		fwnode_for_each_child_node(child, led_node) {
++			int multi_index;
+ 			ret = fwnode_property_read_u32(led_node, "color",
+ 						       &color_id);
+ 			if (ret) {
+@@ -500,8 +501,16 @@ static int lp50xx_probe_dt(struct lp50xx *priv)
+ 				dev_err(priv->dev, "Cannot read color\n");
+ 				goto child_out;
+ 			}
++			ret = fwnode_property_read_u32(led_node, "reg", &multi_index);
++			if (ret != 0) {
++				dev_err(priv->dev, "reg must be set\n");
++				return -EINVAL;
++			} else if (multi_index >= LP50XX_LEDS_PER_MODULE) {
++				dev_err(priv->dev, "reg %i out of range\n", multi_index);
++				return -EINVAL;
++			}
+ 
+-			mc_led_info[num_colors].color_index = color_id;
++			mc_led_info[multi_index].color_index = color_id;
+ 			num_colors++;
+ 		}
+ 
 -- 
 2.39.5
 
