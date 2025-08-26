@@ -1,55 +1,58 @@
-Return-Path: <stable+bounces-175256-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-173531-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id D10FFB3668F
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 15:58:11 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id B84B6B35E2C
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 13:53:47 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id F0DBDB60EA4
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 13:55:42 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 262C517D4D8
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 11:41:32 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5F8992FDC44;
-	Tue, 26 Aug 2025 13:55:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E619221D3C0;
+	Tue, 26 Aug 2025 11:41:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="YWk8ZWuE"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="mhaEzE4P"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 18ECA33CEB0;
-	Tue, 26 Aug 2025 13:55:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A2BBC393DD1;
+	Tue, 26 Aug 2025 11:41:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756216557; cv=none; b=EjC8V3XVyBR8FUHcr/Hf+/6jJ8SjvQ2S5A00WS6hCdB3QSwJI7l6yEvo0SdAKXDnbkD6XbEkHbe2FcvDxWVw0B0y4kvWkDIUbh2UIysuR2alcPCCjFH6Vnmwf4gzFSxU4Ox/xleG4angTAMUW+kLl5sJNKb5fe+n19CwvaUojUY=
+	t=1756208490; cv=none; b=lIXqXsvdbk82mw3/2UD1/VfLAjzK55j1Z6GnuPtYQZLwtaVU/q/INIgooVBDGRMEoIbJyUsU6AgHS9hu3DPIlP/APG+WJYTyrhNpuX60QtcVdKpILZObKMc78BwizzxiX2cs2YAaOD9DKPZvtMNnVWiK/PBuQqydkWlGlkn2e1M=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756216557; c=relaxed/simple;
-	bh=B3OZEYpX773bZTkwd5jj40c5DOHtA9sWqcne/JqMlRE=;
+	s=arc-20240116; t=1756208490; c=relaxed/simple;
+	bh=ZaUDOMLcJeh3qfTu2/M/YEX/Zrx2vbVOhVidHlN9ndw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=q3I0Nqsp++WoOlMcEVL+8jcxCtHLyG7Gz1Jp3/Iu9GMotoAmvUP8+liYHIIG3Wfrqj8pRxrFiL5dSv1WGZmPU4uAB8Nk0gBTsJrrZcT0kbJpj/QN+oasqSjt3GH8mcJMJQV719eZUFlkACT9f3mwWeg9+JSYeKkdwTqmWfHYSII=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=YWk8ZWuE; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5A27FC4CEF1;
-	Tue, 26 Aug 2025 13:55:56 +0000 (UTC)
+	 MIME-Version:Content-Type; b=IafBf2WeIB803VqKIwBBfvXK64LNQarPUdq4A4S3vb7q3M0SkrWyL3DfpLQzpdlRieFAjiShL3NDjEYHYbBNq3PLP3lkLwAgWDoGu66S9NgwsmFTWILnu+ub1/oyWxEKBDrjOzz17I/S65EjldReV5L+q40+0Ayi8yeZrjQ6tLM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=mhaEzE4P; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 31D0BC4CEF1;
+	Tue, 26 Aug 2025 11:41:30 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1756216556;
-	bh=B3OZEYpX773bZTkwd5jj40c5DOHtA9sWqcne/JqMlRE=;
+	s=korg; t=1756208490;
+	bh=ZaUDOMLcJeh3qfTu2/M/YEX/Zrx2vbVOhVidHlN9ndw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=YWk8ZWuEgZB2flrtP3Rm9wwNy9NJrPJVO3+EFPg+yDC8jyU2huZs0RRWiKiIoQyEy
-	 bcMFB/TYmanSzeVDVUjgYqmBRLXFAaWubp4MndHE3f536RPxoPCbfJfPxLVi+JC0di
-	 /+3wyGf6MXMWjSSDzPO02okqGfCKZrywPdGzOJtY=
+	b=mhaEzE4P5P2oBRJFCLTexaQagix3sT+VHg3ylZIRNWcHXPPjT/M8Miv09CFzdm3xf
+	 TDGPLfz4bwwTTJXQucXTgR+Gf7KtSjYGEg07yKaGeqGKgOCPfovbtUe9lYy9tkYHu6
+	 Mq1V5H0dh1uprzJmJ/6Np+J5HSP6Mk2FcRIhCeC8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Aditya Garg <gargaditya08@live.com>,
-	Jiri Kosina <jkosina@suse.com>
-Subject: [PATCH 5.15 455/644] HID: magicmouse: avoid setting up battery timer when not needed
+	stable@kernel.org,
+	syzbot+a81f2759d022496b40ab@syzkaller.appspotmail.com,
+	Jakub Acs <acsjakub@amazon.de>,
+	Eric Dumazet <edumazet@google.com>,
+	Jakub Kicinski <kuba@kernel.org>
+Subject: [PATCH 6.12 131/322] net, hsr: reject HSR frame if skb cant hold tag
 Date: Tue, 26 Aug 2025 13:09:06 +0200
-Message-ID: <20250826110957.751970544@linuxfoundation.org>
+Message-ID: <20250826110919.035423200@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250826110946.507083938@linuxfoundation.org>
-References: <20250826110946.507083938@linuxfoundation.org>
+In-Reply-To: <20250826110915.169062587@linuxfoundation.org>
+References: <20250826110915.169062587@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -59,128 +62,194 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Aditya Garg <gargaditya08@live.com>
+From: Jakub Acs <acsjakub@amazon.de>
 
-commit 9bdc30e35cbc1aa78ccf01040354209f1e11ca22 upstream.
+commit 7af76e9d18a9fd6f8611b3313c86c190f9b6a5a7 upstream.
 
-Currently, the battery timer is set up for all devices using
-hid-magicmouse, irrespective of whether they actually need it or not.
+Receiving HSR frame with insufficient space to hold HSR tag in the skb
+can result in a crash (kernel BUG):
 
-The current implementation requires the battery timer for Magic Mouse 2
-and Magic Trackpad 2 when connected via USB only. Add checks to ensure
-that the battery timer is only set up when they are connected via USB.
+[   45.390915] skbuff: skb_under_panic: text:ffffffff86f32cac len:26 put:14 head:ffff888042418000 data:ffff888042417ff4 tail:0xe end:0x180 dev:bridge_slave_1
+[   45.392559] ------------[ cut here ]------------
+[   45.392912] kernel BUG at net/core/skbuff.c:211!
+[   45.393276] Oops: invalid opcode: 0000 [#1] SMP DEBUG_PAGEALLOC KASAN NOPTI
+[   45.393809] CPU: 1 UID: 0 PID: 2496 Comm: reproducer Not tainted 6.15.0 #12 PREEMPT(undef)
+[   45.394433] Hardware name: QEMU Standard PC (i440FX + PIIX, 1996), BIOS rel-1.16.3-0-ga6ed6b701f0a-prebuilt.qemu.org 04/01/2014
+[   45.395273] RIP: 0010:skb_panic+0x15b/0x1d0
 
-Fixes: 0b91b4e4dae6 ("HID: magicmouse: Report battery level over USB")
-Cc: stable@vger.kernel.org
-Signed-off-by: Aditya Garg <gargaditya08@live.com>
-Signed-off-by: Jiri Kosina <jkosina@suse.com>
+<snip registers, remove unreliable trace>
+
+[   45.402911] Call Trace:
+[   45.403105]  <IRQ>
+[   45.404470]  skb_push+0xcd/0xf0
+[   45.404726]  br_dev_queue_push_xmit+0x7c/0x6c0
+[   45.406513]  br_forward_finish+0x128/0x260
+[   45.408483]  __br_forward+0x42d/0x590
+[   45.409464]  maybe_deliver+0x2eb/0x420
+[   45.409763]  br_flood+0x174/0x4a0
+[   45.410030]  br_handle_frame_finish+0xc7c/0x1bc0
+[   45.411618]  br_handle_frame+0xac3/0x1230
+[   45.413674]  __netif_receive_skb_core.constprop.0+0x808/0x3df0
+[   45.422966]  __netif_receive_skb_one_core+0xb4/0x1f0
+[   45.424478]  __netif_receive_skb+0x22/0x170
+[   45.424806]  process_backlog+0x242/0x6d0
+[   45.425116]  __napi_poll+0xbb/0x630
+[   45.425394]  net_rx_action+0x4d1/0xcc0
+[   45.427613]  handle_softirqs+0x1a4/0x580
+[   45.427926]  do_softirq+0x74/0x90
+[   45.428196]  </IRQ>
+
+This issue was found by syzkaller.
+
+The panic happens in br_dev_queue_push_xmit() once it receives a
+corrupted skb with ETH header already pushed in linear data. When it
+attempts the skb_push() call, there's not enough headroom and
+skb_push() panics.
+
+The corrupted skb is put on the queue by HSR layer, which makes a
+sequence of unintended transformations when it receives a specific
+corrupted HSR frame (with incomplete TAG).
+
+Fix it by dropping and consuming frames that are not long enough to
+contain both ethernet and hsr headers.
+
+Alternative fix would be to check for enough headroom before skb_push()
+in br_dev_queue_push_xmit().
+
+In the reproducer, this is injected via AF_PACKET, but I don't easily
+see why it couldn't be sent over the wire from adjacent network.
+
+Further Details:
+
+In the reproducer, the following network interface chain is set up:
+
+┌────────────────┐   ┌────────────────┐
+│ veth0_to_hsr   ├───┤  hsr_slave0    ┼───┐
+└────────────────┘   └────────────────┘   │
+                                          │ ┌──────┐
+                                          ├─┤ hsr0 ├───┐
+                                          │ └──────┘   │
+┌────────────────┐   ┌────────────────┐   │            │┌────────┐
+│ veth1_to_hsr   ┼───┤  hsr_slave1    ├───┘            └┤        │
+└────────────────┘   └────────────────┘                ┌┼ bridge │
+                                                       ││        │
+                                                       │└────────┘
+                                                       │
+                                        ┌───────┐      │
+                                        │  ...  ├──────┘
+                                        └───────┘
+
+To trigger the events leading up to crash, reproducer sends a corrupted
+HSR frame with incomplete TAG, via AF_PACKET socket on 'veth0_to_hsr'.
+
+The first HSR-layer function to process this frame is
+hsr_handle_frame(). It and then checks if the
+protocol is ETH_P_PRP or ETH_P_HSR. If it is, it calls
+skb_set_network_header(skb, ETH_HLEN + HSR_HLEN), without checking that
+the skb is long enough. For the crashing frame it is not, and hence the
+skb->network_header and skb->mac_len fields are set incorrectly,
+pointing after the end of the linear buffer.
+
+I will call this a BUG#1 and it is what is addressed by this patch. In
+the crashing scenario before the fix, the skb continues to go down the
+hsr path as follows.
+
+hsr_handle_frame() then calls this sequence
+hsr_forward_skb()
+  fill_frame_info()
+    hsr->proto_ops->fill_frame_info()
+      hsr_fill_frame_info()
+
+hsr_fill_frame_info() contains a check that intends to check whether the
+skb actually contains the HSR header. But the check relies on the
+skb->mac_len field which was erroneously setup due to BUG#1, so the
+check passes and the execution continues  back in the hsr_forward_skb():
+
+hsr_forward_skb()
+  hsr_forward_do()
+    hsr->proto_ops->get_untagged_frame()
+      hsr_get_untagged_frame()
+        create_stripped_skb_hsr()
+
+In create_stripped_skb_hsr(), a copy of the skb is created and is
+further corrupted by operation that attempts to strip the HSR tag in a
+call to __pskb_copy().
+
+The skb enters create_stripped_skb_hsr() with ethernet header pushed in
+linear buffer. The skb_pull(skb_in, HSR_HLEN) thus pulls 6 bytes of
+ethernet header into the headroom, creating skb_in with a headroom of
+size 8. The subsequent __pskb_copy() then creates an skb with headroom
+of just 2 and skb->len of just 12, this is how it looks after the copy:
+
+gdb) p skb->len
+$10 = 12
+(gdb) p skb->data
+$11 = (unsigned char *) 0xffff888041e45382 "\252\252\252\252\252!\210\373",
+(gdb) p skb->head
+$12 = (unsigned char *) 0xffff888041e45380 ""
+
+It seems create_stripped_skb_hsr() assumes that ETH header is pulled
+in the headroom when it's entered, because it just pulls HSR header on
+top. But that is not the case in our code-path and we end up with the
+corrupted skb instead. I will call this BUG#2
+
+*I got confused here because it seems that under no conditions can
+create_stripped_skb_hsr() work well, the assumption it makes is not true
+during the processing of hsr frames - since the skb_push() in
+hsr_handle_frame to skb_pull in hsr_deliver_master(). I wonder whether I
+missed something here.*
+
+Next, the execution arrives in hsr_deliver_master(). It calls
+skb_pull(ETH_HLEN), which just returns NULL - the SKB does not have
+enough space for the pull (as it only has 12 bytes in total at this
+point).
+
+*The skb_pull() here further suggests that ethernet header is meant
+to be pushed through the whole hsr processing and
+create_stripped_skb_hsr() should pull it before doing the HSR header
+pull.*
+
+hsr_deliver_master() then puts the corrupted skb on the queue, it is
+then picked up from there by bridge frame handling layer and finally
+lands in br_dev_queue_push_xmit where it panics.
+
+Cc: stable@kernel.org
+Fixes: 48b491a5cc74 ("net: hsr: fix mac_len checks")
+Reported-by: syzbot+a81f2759d022496b40ab@syzkaller.appspotmail.com
+Signed-off-by: Jakub Acs <acsjakub@amazon.de>
+Reviewed-by: Eric Dumazet <edumazet@google.com>
+Link: https://patch.msgid.link/20250819082842.94378-1-acsjakub@amazon.de
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/hid/hid-magicmouse.c |   53 ++++++++++++++++++++++++++++++-------------
- 1 file changed, 37 insertions(+), 16 deletions(-)
+ net/hsr/hsr_slave.c |    8 +++++++-
+ 1 file changed, 7 insertions(+), 1 deletion(-)
 
---- a/drivers/hid/hid-magicmouse.c
-+++ b/drivers/hid/hid-magicmouse.c
-@@ -741,15 +741,29 @@ static void magicmouse_enable_mt_work(st
- 		hid_err(msc->hdev, "unable to request touch data (%d)\n", ret);
- }
- 
-+static bool is_usb_magicmouse2(__u32 vendor, __u32 product)
-+{
-+	if (vendor != USB_VENDOR_ID_APPLE)
-+		return false;
-+	return product == USB_DEVICE_ID_APPLE_MAGICMOUSE2;
-+}
+--- a/net/hsr/hsr_slave.c
++++ b/net/hsr/hsr_slave.c
+@@ -63,8 +63,14 @@ static rx_handler_result_t hsr_handle_fr
+ 	skb_push(skb, ETH_HLEN);
+ 	skb_reset_mac_header(skb);
+ 	if ((!hsr->prot_version && protocol == htons(ETH_P_PRP)) ||
+-	    protocol == htons(ETH_P_HSR))
++	    protocol == htons(ETH_P_HSR)) {
++		if (!pskb_may_pull(skb, ETH_HLEN + HSR_HLEN)) {
++			kfree_skb(skb);
++			goto finish_consume;
++		}
 +
-+static bool is_usb_magictrackpad2(__u32 vendor, __u32 product)
-+{
-+	if (vendor != USB_VENDOR_ID_APPLE)
-+		return false;
-+	return product == USB_DEVICE_ID_APPLE_MAGICTRACKPAD2;
-+}
-+
- static int magicmouse_fetch_battery(struct hid_device *hdev)
- {
- #ifdef CONFIG_HID_BATTERY_STRENGTH
- 	struct hid_report_enum *report_enum;
- 	struct hid_report *report;
- 
--	if (!hdev->battery || hdev->vendor != USB_VENDOR_ID_APPLE ||
--	    (hdev->product != USB_DEVICE_ID_APPLE_MAGICMOUSE2 &&
--	     hdev->product != USB_DEVICE_ID_APPLE_MAGICTRACKPAD2))
-+	if (!hdev->battery ||
-+	    (!is_usb_magicmouse2(hdev->vendor, hdev->product) &&
-+	     !is_usb_magictrackpad2(hdev->vendor, hdev->product)))
- 		return -1;
- 
- 	report_enum = &hdev->report_enum[hdev->battery_report_type];
-@@ -811,14 +825,17 @@ static int magicmouse_probe(struct hid_d
- 		return ret;
- 	}
- 
--	timer_setup(&msc->battery_timer, magicmouse_battery_timer_tick, 0);
--	mod_timer(&msc->battery_timer,
--		  jiffies + msecs_to_jiffies(USB_BATTERY_TIMEOUT_MS));
--	magicmouse_fetch_battery(hdev);
--
--	if (id->vendor == USB_VENDOR_ID_APPLE &&
--	    (id->product == USB_DEVICE_ID_APPLE_MAGICMOUSE2 ||
--	     (id->product == USB_DEVICE_ID_APPLE_MAGICTRACKPAD2 && hdev->type != HID_TYPE_USBMOUSE)))
-+	if (is_usb_magicmouse2(id->vendor, id->product) ||
-+	    is_usb_magictrackpad2(id->vendor, id->product)) {
-+		timer_setup(&msc->battery_timer, magicmouse_battery_timer_tick, 0);
-+		mod_timer(&msc->battery_timer,
-+			  jiffies + msecs_to_jiffies(USB_BATTERY_TIMEOUT_MS));
-+		magicmouse_fetch_battery(hdev);
+ 		skb_set_network_header(skb, ETH_HLEN + HSR_HLEN);
 +	}
-+
-+	if (is_usb_magicmouse2(id->vendor, id->product) ||
-+	    (is_usb_magictrackpad2(id->vendor, id->product) &&
-+	     hdev->type != HID_TYPE_USBMOUSE))
- 		return 0;
+ 	skb_reset_mac_len(skb);
  
- 	if (!msc->input) {
-@@ -873,7 +890,10 @@ static int magicmouse_probe(struct hid_d
- 
- 	return 0;
- err_stop_hw:
--	del_timer_sync(&msc->battery_timer);
-+	if (is_usb_magicmouse2(id->vendor, id->product) ||
-+	    is_usb_magictrackpad2(id->vendor, id->product))
-+		del_timer_sync(&msc->battery_timer);
-+
- 	hid_hw_stop(hdev);
- 	return ret;
- }
-@@ -884,7 +904,9 @@ static void magicmouse_remove(struct hid
- 
- 	if (msc) {
- 		cancel_delayed_work_sync(&msc->work);
--		del_timer_sync(&msc->battery_timer);
-+		if (is_usb_magicmouse2(hdev->vendor, hdev->product) ||
-+		    is_usb_magictrackpad2(hdev->vendor, hdev->product))
-+			del_timer_sync(&msc->battery_timer);
- 	}
- 
- 	hid_hw_stop(hdev);
-@@ -901,9 +923,8 @@ static __u8 *magicmouse_report_fixup(str
- 	 *   0x05, 0x01,       // Usage Page (Generic Desktop)        0
- 	 *   0x09, 0x02,       // Usage (Mouse)                       2
- 	 */
--	if (hdev->vendor == USB_VENDOR_ID_APPLE &&
--	    (hdev->product == USB_DEVICE_ID_APPLE_MAGICMOUSE2 ||
--	     hdev->product == USB_DEVICE_ID_APPLE_MAGICTRACKPAD2) &&
-+	if ((is_usb_magicmouse2(hdev->vendor, hdev->product) ||
-+	     is_usb_magictrackpad2(hdev->vendor, hdev->product)) &&
- 	    *rsize == 83 && rdesc[46] == 0x84 && rdesc[58] == 0x85) {
- 		hid_info(hdev,
- 			 "fixing up magicmouse battery report descriptor\n");
+ 	/* Only the frames received over the interlink port will assign a
 
 
 
