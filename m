@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-174688-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-176251-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9E473B364BE
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 15:41:49 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4979BB36C55
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 16:55:10 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 1BD408E0976
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 13:32:13 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 03DB058780B
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 14:42:31 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A11F21FBCB5;
-	Tue, 26 Aug 2025 13:30:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 639CB352FEE;
+	Tue, 26 Aug 2025 14:39:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="MErkinx/"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="RizYOz/D"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5D24C13FD86;
-	Tue, 26 Aug 2025 13:30:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1E4A1352077;
+	Tue, 26 Aug 2025 14:39:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756215053; cv=none; b=SQ763PHUEvcwh9z4dypVINu1HoKtZ3HIjod+vzGc1jmFjXOUTi+qQmwdSSw9znsBLpQORhbEHaGGCcXr7fy/JLdTLxq5ezhIVo3M1Brez5y45DbRAQwzvmkSz7WSHV1GIKbyRYzT6TqcWBcKeApEQn00gfeWVGiLTIuaWPnSWn0=
+	t=1756219170; cv=none; b=hbCAoBXtKjN+3UH6mBwWy68pSoMKvOw8ASXdmLoRhoZ821AQqaG34WK/eYb5Dj/R4Lss4DU9X3yKD5N6F0dtI1vjP8nMIQNJlu041dnsvrWDzQeh7IuZhSwiXMIEGAToRE9xZXDX6gagixN25mbEYLjQbiTpcWE+SwWs1VmWUIs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756215053; c=relaxed/simple;
-	bh=vxdhskyKPdWJ2kg+tLL9P+KLri335E43zE8fD48vhrU=;
+	s=arc-20240116; t=1756219170; c=relaxed/simple;
+	bh=Xf/4AUYMsArd68Gg3tiKwuhS1wmhzPZyBPpbloaT3a4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=InVE5wggQNfx6rccxN7JqTStd0eEsUlzQmjrGRGaAB2QO62tV8wzGRc2+2jFiwPqMEqL741Avth7EFnbGxDg/k73Ke9Ldo+ZGXGnkDnPIa7rjqJhsZV3+yLJ9UObP4oCtKyXJCDzaHZB5LR90qSladsqzUBxRSnvOnS6nRLLHxE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=MErkinx/; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E1D89C4CEF1;
-	Tue, 26 Aug 2025 13:30:52 +0000 (UTC)
+	 MIME-Version; b=OQB+rGwEdiNBS2n9uKwQFMf62gDT6HGb6mKHkg13CrdVcIa4HBePQzfAMEHJ1vbQkiAYW+aG2N2JtAxD78EK4nTCPg7SMmORj8dlIyhl5qNncxJigZi0dtupKe4QobYljUYus30uH77xnyT0Dzl0g+L0E+TzQRWSP/kE62w+mOo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=RizYOz/D; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9E677C4CEF1;
+	Tue, 26 Aug 2025 14:39:29 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1756215053;
-	bh=vxdhskyKPdWJ2kg+tLL9P+KLri335E43zE8fD48vhrU=;
+	s=korg; t=1756219170;
+	bh=Xf/4AUYMsArd68Gg3tiKwuhS1wmhzPZyBPpbloaT3a4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=MErkinx/SR8ORtJCQMBrBluaOWGQnuNB8RAIVUAhgQQp4Bs4a/G8nNZPRVtSoGp5o
-	 aKg5GyJD2sYvk4rBI4qX25iRxpnxhOwu+8f+qxzvjrYzEU+k5uKBAsC6fxYJkCJo9C
-	 bAzQEMB8KAcmnL0mFtVZcFBPeZddM+pZLQehQJrc=
+	b=RizYOz/Du0dkIIfT/oTihCKLXCj1lBDfKqI5llRsGvKmxvG/CYIV0wK16lX6U+W83
+	 QHDIcysIgsDa3xruyxishNztnJtFwK+lT51CQ6GfEh1ibt1He8tlWBNUjtd8I6pCDl
+	 vIRXl66H5mEI5V4wJXjIt4GAqLdn9VU2AL+Ae/sA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	"Lin.Cao" <lincao12@amd.com>,
-	=?UTF-8?q?Christian=20K=C3=B6nig?= <christian.koenig@amd.com>,
-	Philipp Stanner <phasta@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 352/482] drm/sched: Remove optimization that causes hang when killing dependent jobs
+	Waiman Long <longman@redhat.com>,
+	Catalin Marinas <catalin.marinas@arm.com>,
+	Andrew Morton <akpm@linux-foundation.org>
+Subject: [PATCH 5.4 279/403] mm/kmemleak: avoid soft lockup in __kmemleak_do_cleanup()
 Date: Tue, 26 Aug 2025 13:10:05 +0200
-Message-ID: <20250826110939.532159265@linuxfoundation.org>
+Message-ID: <20250826110914.509556162@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250826110930.769259449@linuxfoundation.org>
-References: <20250826110930.769259449@linuxfoundation.org>
+In-Reply-To: <20250826110905.607690791@linuxfoundation.org>
+References: <20250826110905.607690791@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,87 +60,73 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+5.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: "Lin.Cao" <lincao12@amd.com>
+From: Waiman Long <longman@redhat.com>
 
-[ Upstream commit 15f77764e90a713ee3916ca424757688e4f565b9 ]
+commit d1534ae23c2b6be350c8ab060803fbf6e9682adc upstream.
 
-When application A submits jobs and application B submits a job with a
-dependency on A's fence, the normal flow wakes up the scheduler after
-processing each job. However, the optimization in
-drm_sched_entity_add_dependency_cb() uses a callback that only clears
-dependencies without waking up the scheduler.
+A soft lockup warning was observed on a relative small system x86-64
+system with 16 GB of memory when running a debug kernel with kmemleak
+enabled.
 
-When application A is killed before its jobs can run, the callback gets
-triggered but only clears the dependency without waking up the scheduler,
-causing the scheduler to enter sleep state and application B to hang.
+  watchdog: BUG: soft lockup - CPU#8 stuck for 33s! [kworker/8:1:134]
 
-Remove the optimization by deleting drm_sched_entity_clear_dep() and its
-usage, ensuring the scheduler is always woken up when dependencies are
-cleared.
+The test system was running a workload with hot unplug happening in
+parallel.  Then kemleak decided to disable itself due to its inability to
+allocate more kmemleak objects.  The debug kernel has its
+CONFIG_DEBUG_KMEMLEAK_MEM_POOL_SIZE set to 40,000.
 
-Fixes: 777dbd458c89 ("drm/amdgpu: drop a dummy wakeup scheduler")
-Cc: stable@vger.kernel.org # v4.6+
-Signed-off-by: Lin.Cao <lincao12@amd.com>
-Reviewed-by: Christian König <christian.koenig@amd.com>
-Signed-off-by: Philipp Stanner <phasta@kernel.org>
-Link: https://lore.kernel.org/r/20250717084453.921097-1-lincao12@amd.com
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+The soft lockup happened in kmemleak_do_cleanup() when the existing
+kmemleak objects were being removed and deleted one-by-one in a loop via a
+workqueue.  In this particular case, there are at least 40,000 objects
+that need to be processed and given the slowness of a debug kernel and the
+fact that a raw_spinlock has to be acquired and released in
+__delete_object(), it could take a while to properly handle all these
+objects.
+
+As kmemleak has been disabled in this case, the object removal and
+deletion process can be further optimized as locking isn't really needed.
+However, it is probably not worth the effort to optimize for such an edge
+case that should rarely happen.  So the simple solution is to call
+cond_resched() at periodic interval in the iteration loop to avoid soft
+lockup.
+
+Link: https://lkml.kernel.org/r/20250728190248.605750-1-longman@redhat.com
+Signed-off-by: Waiman Long <longman@redhat.com>
+Acked-by: Catalin Marinas <catalin.marinas@arm.com>
+Cc: <stable@vger.kernel.org>
+Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/gpu/drm/scheduler/sched_entity.c |   21 ++-------------------
- 1 file changed, 2 insertions(+), 19 deletions(-)
+ mm/kmemleak.c |    5 +++++
+ 1 file changed, 5 insertions(+)
 
---- a/drivers/gpu/drm/scheduler/sched_entity.c
-+++ b/drivers/gpu/drm/scheduler/sched_entity.c
-@@ -327,17 +327,6 @@ void drm_sched_entity_destroy(struct drm
- }
- EXPORT_SYMBOL(drm_sched_entity_destroy);
+--- a/mm/kmemleak.c
++++ b/mm/kmemleak.c
+@@ -1849,6 +1849,7 @@ static const struct file_operations kmem
+ static void __kmemleak_do_cleanup(void)
+ {
+ 	struct kmemleak_object *object, *tmp;
++	unsigned int cnt = 0;
  
--/* drm_sched_entity_clear_dep - callback to clear the entities dependency */
--static void drm_sched_entity_clear_dep(struct dma_fence *f,
--				       struct dma_fence_cb *cb)
--{
--	struct drm_sched_entity *entity =
--		container_of(cb, struct drm_sched_entity, cb);
--
--	entity->dependency = NULL;
--	dma_fence_put(f);
--}
--
- /*
-  * drm_sched_entity_clear_dep - callback to clear the entities dependency and
-  * wake up scheduler
-@@ -348,7 +337,8 @@ static void drm_sched_entity_wakeup(stru
- 	struct drm_sched_entity *entity =
- 		container_of(cb, struct drm_sched_entity, cb);
- 
--	drm_sched_entity_clear_dep(f, cb);
-+	entity->dependency = NULL;
-+	dma_fence_put(f);
- 	drm_sched_wakeup(entity->rq->sched);
- }
- 
-@@ -401,13 +391,6 @@ static bool drm_sched_entity_add_depende
- 		fence = dma_fence_get(&s_fence->scheduled);
- 		dma_fence_put(entity->dependency);
- 		entity->dependency = fence;
--		if (!dma_fence_add_callback(fence, &entity->cb,
--					    drm_sched_entity_clear_dep))
--			return true;
--
--		/* Ignore it when it is already scheduled */
--		dma_fence_put(fence);
--		return false;
+ 	/*
+ 	 * Kmemleak has already been disabled, no need for RCU list traversal
+@@ -1857,6 +1858,10 @@ static void __kmemleak_do_cleanup(void)
+ 	list_for_each_entry_safe(object, tmp, &object_list, object_list) {
+ 		__remove_object(object);
+ 		__delete_object(object);
++
++		/* Call cond_resched() once per 64 iterations to avoid soft lockup */
++		if (!(++cnt & 0x3f))
++			cond_resched();
  	}
+ }
  
- 	if (!dma_fence_add_callback(entity->dependency, &entity->cb,
 
 
 
