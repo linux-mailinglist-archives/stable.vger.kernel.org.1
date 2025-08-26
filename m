@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-175777-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-176229-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 88824B36A6B
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 16:37:18 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 92410B36BE2
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 16:50:02 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id A54621C433EE
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 14:21:21 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id A11B61C24BBC
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 14:41:54 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8BD58352FEB;
-	Tue, 26 Aug 2025 14:19:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2EB14350857;
+	Tue, 26 Aug 2025 14:38:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="hrCBSyJy"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="YqtsA41T"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 496582E88B7;
-	Tue, 26 Aug 2025 14:19:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DC50D35CED2;
+	Tue, 26 Aug 2025 14:38:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756217942; cv=none; b=LiICWrUMaFAnJ28Afxkw3dXsRZsVheB3l7mWMmi9RQiboH1cWTWD2tsphqMLfSX67FpOmIN+kqmeD0xF93TQW5awWghzxM1BZJV3XAZXYz14D1RPwyYxLLkTxXuNrZ3c9Z/Gy2Tek1Z9s9OZRogbPGrwcP3w30/CySuhG3S19X8=
+	t=1756219113; cv=none; b=al8R9hBCaPXobqn0PZvQn/84lgg0ej9i+ciqrTZwId6W2Jh/KZ7YOiE+n7luN0O9YTI2XTDXf11uiKqD5Ah9Z1H4DixMQcym8aQIXL43ZTqLzxa6+5mWaSMUOf9HU7VyJYCMO+BAO+1XgK+Zvm2076kdP51EwmGMMpQKIKa6Sdc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756217942; c=relaxed/simple;
-	bh=r5zPU9gPuG78r8glDN7nCmsrE2tJIfJoNKFgEEqrjp4=;
+	s=arc-20240116; t=1756219113; c=relaxed/simple;
+	bh=PyPGkXxU1NeG0ZHGCcU8hEXy2AVXWwgAacAPOhKitYY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=bDiD1Sai7ZDfogysFB8hwMvZdpI/84sT7tghxQcE2efs6qJSzQlQKBtecv25cdtOhpVAX7/Be7KMvkUBhiCPfIJZkqGq8Ey1HixRnnXDOZRL3Wp/z5NBSzBBQb7u1zYIpB0mYY3JAIfzwkif+AsxTNZTek75znDGvJo4Vf/P2OI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=hrCBSyJy; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D2E44C4CEF1;
-	Tue, 26 Aug 2025 14:19:01 +0000 (UTC)
+	 MIME-Version; b=YNmZE5MR39ZZRCO6C6hZHbKruDo4qC782QP+b8TQKGimOm4LNraGnXvGT97TUjkyFMerpxHn+Ac/Un6u6gcXHVEek+KmV5cRCNR1iewJsk4V/wGw7znb6dI2OHSCJdu6oPBL5HfmGJJh6C2X+kyQKnbwvcQv4gHjBVUNpIyQoy8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=YqtsA41T; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5E163C4CEF1;
+	Tue, 26 Aug 2025 14:38:32 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1756217942;
-	bh=r5zPU9gPuG78r8glDN7nCmsrE2tJIfJoNKFgEEqrjp4=;
+	s=korg; t=1756219112;
+	bh=PyPGkXxU1NeG0ZHGCcU8hEXy2AVXWwgAacAPOhKitYY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=hrCBSyJyQnV45kyDWfwY5DMzJ2+x2+fKLDFNCuRoMStlcqxGKSv1SJHMIqh/pEB9n
-	 ewxMe7fI8HMV7V8K+nDlwvUDo0VHmdAYE/CbvVFY+LGkEDkXDUWUJgvEzCPbREC9hW
-	 Uj2PuVDfKHtMUVp7VW/NvLVfp64YAuFY1JZGJoW4=
+	b=YqtsA41TjkELw+p8ss8MwhZJH5oM0jXcumstJd5q2Owt+2YVPt9aoqdg2iPqEWBIG
+	 X4pFefiEZLSAef27dbvi+kNsUiRMkvA4jozLKBl+upSCSm872A4fXSWlxOctKn8Z0x
+	 BrucsHDGD3D9kIMe2xUfMdmI8hJM+dxrCcUKzCfA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Sergey Bashirov <sergeybashirov@gmail.com>,
-	Christoph Hellwig <hch@lst.de>,
-	Trond Myklebust <trond.myklebust@hammerspace.com>,
+	Avraham Stern <avraham.stern@intel.com>,
+	Ilan Peer <ilan.peer@intel.com>,
+	Miri Korenblit <miriam.rachel.korenblit@intel.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 332/523] pNFS: Fix stripe mapping in block/scsi layout
+Subject: [PATCH 5.4 216/403] wifi: iwlwifi: mvm: fix scan request validation
 Date: Tue, 26 Aug 2025 13:09:02 +0200
-Message-ID: <20250826110932.665280631@linuxfoundation.org>
+Message-ID: <20250826110912.806010496@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250826110924.562212281@linuxfoundation.org>
-References: <20250826110924.562212281@linuxfoundation.org>
+In-Reply-To: <20250826110905.607690791@linuxfoundation.org>
+References: <20250826110905.607690791@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,59 +63,39 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+5.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Sergey Bashirov <sergeybashirov@gmail.com>
+From: Avraham Stern <avraham.stern@intel.com>
 
-[ Upstream commit 81438498a285759f31e843ac4800f82a5ce6521f ]
+[ Upstream commit 7c2f3ec7707188d8d5269ae2dce97d7be3e9f261 ]
 
-Because of integer division, we need to carefully calculate the
-disk offset. Consider the example below for a stripe of 6 volumes,
-a chunk size of 4096, and an offset of 70000.
+The scan request validation function uses bitwise and instead
+of logical and. Fix it.
 
-chunk = div_u64(offset, dev->chunk_size) = 70000 / 4096 = 17
-offset = chunk * dev->chunk_size = 17 * 4096 = 69632
-disk_offset_wrong = div_u64(offset, dev->nr_children) = 69632 / 6 = 11605
-disk_chunk = div_u64(chunk, dev->nr_children) = 17 / 6 = 2
-disk_offset = disk_chunk * dev->chunk_size = 2 * 4096 = 8192
-
-Signed-off-by: Sergey Bashirov <sergeybashirov@gmail.com>
-Reviewed-by: Christoph Hellwig <hch@lst.de>
-Link: https://lore.kernel.org/r/20250701122341.199112-1-sergeybashirov@gmail.com
-Signed-off-by: Trond Myklebust <trond.myklebust@hammerspace.com>
+Signed-off-by: Avraham Stern <avraham.stern@intel.com>
+Reviewed-by: Ilan Peer <ilan.peer@intel.com>
+Signed-off-by: Miri Korenblit <miriam.rachel.korenblit@intel.com>
+Link: https://patch.msgid.link/20250709230308.3fbc1f27871b.I7a8ee91f463c1a2d9d8561c8232e196885d02c43@changeid
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/nfs/blocklayout/dev.c | 5 +++--
- 1 file changed, 3 insertions(+), 2 deletions(-)
+ drivers/net/wireless/intel/iwlwifi/mvm/scan.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/fs/nfs/blocklayout/dev.c b/fs/nfs/blocklayout/dev.c
-index 16412d6636e8..4e176d7d704d 100644
---- a/fs/nfs/blocklayout/dev.c
-+++ b/fs/nfs/blocklayout/dev.c
-@@ -199,10 +199,11 @@ static bool bl_map_stripe(struct pnfs_block_dev *dev, u64 offset,
- 	struct pnfs_block_dev *child;
- 	u64 chunk;
- 	u32 chunk_idx;
-+	u64 disk_chunk;
- 	u64 disk_offset;
- 
- 	chunk = div_u64(offset, dev->chunk_size);
--	div_u64_rem(chunk, dev->nr_children, &chunk_idx);
-+	disk_chunk = div_u64_rem(chunk, dev->nr_children, &chunk_idx);
- 
- 	if (chunk_idx >= dev->nr_children) {
- 		dprintk("%s: invalid chunk idx %d (%lld/%lld)\n",
-@@ -215,7 +216,7 @@ static bool bl_map_stripe(struct pnfs_block_dev *dev, u64 offset,
- 	offset = chunk * dev->chunk_size;
- 
- 	/* disk offset of the stripe */
--	disk_offset = div_u64(offset, dev->nr_children);
-+	disk_offset = disk_chunk * dev->chunk_size;
- 
- 	child = &dev->children[chunk_idx];
- 	child->map(child, disk_offset, map);
+diff --git a/drivers/net/wireless/intel/iwlwifi/mvm/scan.c b/drivers/net/wireless/intel/iwlwifi/mvm/scan.c
+index 55292e9b15c1..b860aad4c155 100644
+--- a/drivers/net/wireless/intel/iwlwifi/mvm/scan.c
++++ b/drivers/net/wireless/intel/iwlwifi/mvm/scan.c
+@@ -874,7 +874,7 @@ static inline bool iwl_mvm_scan_fits(struct iwl_mvm *mvm, int n_ssids,
+ 				     int n_channels)
+ {
+ 	return ((n_ssids <= PROBE_OPTION_MAX) &&
+-		(n_channels <= mvm->fw->ucode_capa.n_scan_channels) &
++		(n_channels <= mvm->fw->ucode_capa.n_scan_channels) &&
+ 		(ies->common_ie_len +
+ 		 ies->len[NL80211_BAND_2GHZ] +
+ 		 ies->len[NL80211_BAND_5GHZ] <=
 -- 
 2.39.5
 
