@@ -1,57 +1,55 @@
-Return-Path: <stable+bounces-174741-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-175921-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2870DB36520
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 15:45:15 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7DCA8B36A1C
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 16:34:14 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 78F088E0F89
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 13:34:34 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id C53BF1C4677D
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 14:27:52 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8215E24A066;
-	Tue, 26 Aug 2025 13:33:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E9BFD350847;
+	Tue, 26 Aug 2025 14:25:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="JwcY8FaH"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Bh5+X/Fj"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 39B98228C9D;
-	Tue, 26 Aug 2025 13:33:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A6ECF2C0F60;
+	Tue, 26 Aug 2025 14:25:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756215195; cv=none; b=p06W53sgs/txulJzY9GBsJ5nfUmui8rfsinhqndlndN+NaSeqV4YHgw5u87cOl5bKBoCJmAWh2BWi1l5aHUrVwgTcfu/R/1GQ+nahUD9iGmlpA+8zA0AxytxTaGB1hSTBfpxLGAMt+s1SKg7JudJ9eFeKoX1t89LQvzoB8n7jH0=
+	t=1756218317; cv=none; b=dNVDRZGySlG12OXWxuqa+DCARt1avLlu2jaw1FduADtb01wjrhfNeoWgYgQq2MgCDF/CpIFlbouAGMdvzb0ezmkWiphpk0Hs9VD25NzgmT4WC8PN97J3dE9Bv1vCCI8zzlqB7vEdkAuFC1tW/NaQrFDeFkpz/4YkGu9+H6PdzAk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756215195; c=relaxed/simple;
-	bh=6ft4k1pvcYpuLDdWyRjEA/B1husa2cyxcoITOLbObFA=;
+	s=arc-20240116; t=1756218317; c=relaxed/simple;
+	bh=xpj8jN0E3M9Jr206p0zasaGyfgGAjFEpdkRXf5Vwuf4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=tSeZoY5upGRqpeZ9anCK7npb2RCjF9VNw5blqL99zSzxRiUkp+fcfiAAoCjQK6a/iQW4DB7lew225b1jgrq7fu/M3UvfCONffMN+Ywu6zw/zdKYEijxPNa0sLwZequ/L0W5pzuj6HmS5aPRFp+NreMAFkXDZ7bz/y80crnr5dQ4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=JwcY8FaH; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 650D8C4CEF1;
-	Tue, 26 Aug 2025 13:33:13 +0000 (UTC)
+	 MIME-Version; b=RqiJtEISXzFzehYEW4diQV5Rz97eO6R6nj+oUW/z5qDvoCIw3QokMc1OQMtgVcbNgbp+9IwRg24dEHEVrf3xez6N/9Mb5jX/qewa5sNMxUxGwl0SFZHeL2ol6bY5HAqwu2sDiEbuT6Aa2OqHoLK4tjDJ7u9ZbpjfyIahY6UnklM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Bh5+X/Fj; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 39A7DC4CEF1;
+	Tue, 26 Aug 2025 14:25:17 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1756215193;
-	bh=6ft4k1pvcYpuLDdWyRjEA/B1husa2cyxcoITOLbObFA=;
+	s=korg; t=1756218317;
+	bh=xpj8jN0E3M9Jr206p0zasaGyfgGAjFEpdkRXf5Vwuf4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=JwcY8FaHdaNsJbAWd+WMLWrWzb01x9NowHp8+6MGka60uKyN0Gj8PB4F6Pm7EFyMI
-	 NBwIf2H1Vtzc+J0HpXZi6wu3bq6CubVTS/NgT0ZX5H6Yoo6o+FtQYtk2RORMqtMfwL
-	 lXhdXLnoq6uVgk/l3P9tzucXosrXN4eb0Ct6MMq8=
+	b=Bh5+X/FjqgvxE7l+TCQ47/wGBBeKMxhhy5Wnw33iHq19qmKUeSeTff6i8Ftg239wd
+	 ohdX4I6yQ9U6ZkTCFhJzJSBSqyGNDZPMhGPBc0ky/zB6rYW+KKQcHk1NUQI+qJKTo8
+	 URCpAjP7t9r6tH3fZQx3ZbFrmsNF7/jziFRd7V1c=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Chao Gao <chao.gao@intel.com>,
-	Kai Huang <kai.huang@intel.com>,
-	Sean Christopherson <seanjc@google.com>,
+	Johan Hovold <johan@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 392/482] KVM: VMX: Flush shadow VMCS on emergency reboot
+Subject: [PATCH 5.10 435/523] USB: cdc-acm: do not log successful probe on later errors
 Date: Tue, 26 Aug 2025 13:10:45 +0200
-Message-ID: <20250826110940.512419004@linuxfoundation.org>
+Message-ID: <20250826110935.185526070@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250826110930.769259449@linuxfoundation.org>
-References: <20250826110930.769259449@linuxfoundation.org>
+In-Reply-To: <20250826110924.562212281@linuxfoundation.org>
+References: <20250826110924.562212281@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,54 +61,47 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Chao Gao <chao.gao@intel.com>
+From: Johan Hovold <johan@kernel.org>
 
-[ Upstream commit a0ee1d5faff135e28810f29e0f06328c66f89852 ]
+[ Upstream commit 79579411826647fd573dbe301c4d933bc90e4be7 ]
 
-Ensure the shadow VMCS cache is evicted during an emergency reboot to
-prevent potential memory corruption if the cache is evicted after reboot.
+Do not log the successful-probe message until the tty device has been
+registered.
 
-This issue was identified through code inspection, as __loaded_vmcs_clear()
-flushes both the normal VMCS and the shadow VMCS.
-
-Avoid checking the "launched" state during an emergency reboot, unlike the
-behavior in __loaded_vmcs_clear(). This is important because reboot NMIs
-can interfere with operations like copy_shadow_to_vmcs12(), where shadow
-VMCSes are loaded directly using VMPTRLD. In such cases, if NMIs occur
-right after the VMCS load, the shadow VMCSes will be active but the
-"launched" state may not be set.
-
-Fixes: 16f5b9034b69 ("KVM: nVMX: Copy processor-specific shadow-vmcs to VMCS12")
-Cc: stable@vger.kernel.org
-Signed-off-by: Chao Gao <chao.gao@intel.com>
-Reviewed-by: Kai Huang <kai.huang@intel.com>
-Link: https://lore.kernel.org/r/20250324140849.2099723-1-chao.gao@intel.com
-Signed-off-by: Sean Christopherson <seanjc@google.com>
+Signed-off-by: Johan Hovold <johan@kernel.org>
+Link: https://lore.kernel.org/r/20210322155318.9837-9-johan@kernel.org
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Stable-dep-of: 64690a90cd7c ("cdc-acm: fix race between initial clearing halt and open")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- arch/x86/kvm/vmx/vmx.c |    5 ++++-
- 1 file changed, 4 insertions(+), 1 deletion(-)
+ drivers/usb/class/cdc-acm.c |    4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
---- a/arch/x86/kvm/vmx/vmx.c
-+++ b/arch/x86/kvm/vmx/vmx.c
-@@ -713,8 +713,11 @@ static void vmx_emergency_disable(void)
- 	struct loaded_vmcs *v;
+--- a/drivers/usb/class/cdc-acm.c
++++ b/drivers/usb/class/cdc-acm.c
+@@ -1510,8 +1510,6 @@ skip_countries:
+ 	acm->nb_index = 0;
+ 	acm->nb_size = 0;
  
- 	list_for_each_entry(v, &per_cpu(loaded_vmcss_on_cpu, cpu),
--			    loaded_vmcss_on_cpu_link)
-+			    loaded_vmcss_on_cpu_link) {
- 		vmcs_clear(v->vmcs);
-+		if (v->shadow_vmcs)
-+			vmcs_clear(v->shadow_vmcs);
-+	}
+-	dev_info(&intf->dev, "ttyACM%d: USB ACM device\n", minor);
+-
+ 	acm->line.dwDTERate = cpu_to_le32(9600);
+ 	acm->line.bDataBits = 8;
+ 	acm_set_line(acm, &acm->line);
+@@ -1531,6 +1529,8 @@ skip_countries:
+ 		usb_clear_halt(usb_dev, acm->out);
+ 	}
  
- 	__cpu_emergency_vmxoff();
- }
++	dev_info(&intf->dev, "ttyACM%d: USB ACM device\n", minor);
++
+ 	return 0;
+ alloc_fail6:
+ 	if (!acm->combined_interfaces) {
 
 
 
