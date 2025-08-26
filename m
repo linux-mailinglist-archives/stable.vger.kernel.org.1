@@ -1,56 +1,55 @@
-Return-Path: <stable+bounces-174984-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-174338-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5375BB3660F
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 15:52:54 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id B7890B36299
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 15:20:37 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id CE61D563BA1
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 13:44:31 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id D56B31BA5BD6
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 13:17:39 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C834C2D060B;
-	Tue, 26 Aug 2025 13:43:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6B17A34A30F;
+	Tue, 26 Aug 2025 13:15:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ioKkqSxZ"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Xln4iV+W"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6F27C29D291;
-	Tue, 26 Aug 2025 13:43:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 26FC9246790;
+	Tue, 26 Aug 2025 13:15:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756215835; cv=none; b=TQvjnsjba0nay9FMNnqhnK88iRmcWlzf3l/PF5mzsbQkLUY+l7rU/vRJo7qpFj3AtNlxTI9pMOxx0mpjm/6YPjwPOOKpR7XcDNFKp+SqXKRwyOF4T0N4+PO1gv2UxVgjbbeiymnfcQHaYToKXwYkzwgMz0IlrBU3X7MavYMUTok=
+	t=1756214126; cv=none; b=ZfLzD9w/Pl4VFJ8b7N6uKM8RFrYOlu9Hkn4qWhLe/hIFA4tOwswscq5luEu2JLdgXTDGeEtBLOYuQjCDGBidSNIqFMNBmAtHqoV6UQa3VMePjBHBwtmN9GtaNWQLh5X7lNHPbkVmZcOq+mD4iJEwXATqoVAvt/MviVzQhNnAdX0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756215835; c=relaxed/simple;
-	bh=YMNP+I3SUFl8QKi1NnjPbwIcWnXnrja2h+eBUaQ+wJA=;
+	s=arc-20240116; t=1756214126; c=relaxed/simple;
+	bh=LQzHDC7RM9afT6NCjKW4akwK3EVY4lXk79GGMvATgEQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Y06JXchUXrtgN099ttMIZkbpvJ/z1E33TVnUjSuwDLWCSRyI19zId6C6BjkhtoyXnIWBOuEtqs7ZEemn0DBhGdufcD5bmggwWuRyE6USUx4d9rUgoaw87SYAFomkSzy3rFF7sSwSEbVAr5qDudpmbVXJXem3SAeTWvX6V140qv4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ioKkqSxZ; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9279AC4CEF1;
-	Tue, 26 Aug 2025 13:43:53 +0000 (UTC)
+	 MIME-Version:Content-Type; b=clOlFq59FPz0k2Rti7jJRCW+IXSbnfS3QGJ6o2llmpTOFCrkrIKgcMrvKhREr+RCZqUbOg9K6akbWX2jeXyFuuwrtdT9498MqMvKVpshhL/k1w8x+zVHFedn0XC/ez3YEWGd6J3jFGTpieOuFYXat+LZTCYttIITnGKi+WCUsWI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Xln4iV+W; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id AE2CAC4CEF1;
+	Tue, 26 Aug 2025 13:15:25 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1756215833;
-	bh=YMNP+I3SUFl8QKi1NnjPbwIcWnXnrja2h+eBUaQ+wJA=;
+	s=korg; t=1756214126;
+	bh=LQzHDC7RM9afT6NCjKW4akwK3EVY4lXk79GGMvATgEQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=ioKkqSxZSpxWNDgRfPXjoQ169tmQtqgrqWmD0mPe9rVEfFs0By0OHJPaIMFMV3TM9
-	 AP7RKGGR+ibUspd+cJ6MG/Vl+zAAKKpphDSfz4JuTS14Z/lRcC8cF2uOU2NJdpGbVB
-	 06nDQYiYgw/YPVII7sDDcd7nVqMI9Rqt6RRJcOMU=
+	b=Xln4iV+W6QePsmfd/qpcIbD3xRBPffSTH3UeFE3rAEi5gL8XVO1U0F74tpeZbVM5K
+	 MgsONq4OkJyrlY3oXsD+1Ylm5Ie954MsoMaX0TxFCqlDFDmCgBYw7rVPfzl7NsAOTa
+	 1pAp/iJZ/Nmf1ZPYzI+cCgTvbJPyZDUvUC8Fqu8Y=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Thomas Fourier <fourier.thomas@gmail.com>,
-	"Martin K. Petersen" <martin.petersen@oracle.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 183/644] scsi: ibmvscsi_tgt: Fix dma_unmap_sg() nents value
+	Ma Ke <make24@iscas.ac.cn>,
+	Jens Axboe <axboe@kernel.dk>
+Subject: [PATCH 6.1 021/482] sunvdc: Balance device refcount in vdc_port_mpgroup_check
 Date: Tue, 26 Aug 2025 13:04:34 +0200
-Message-ID: <20250826110950.998635663@linuxfoundation.org>
+Message-ID: <20250826110931.314085390@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250826110946.507083938@linuxfoundation.org>
-References: <20250826110946.507083938@linuxfoundation.org>
+In-Reply-To: <20250826110930.769259449@linuxfoundation.org>
+References: <20250826110930.769259449@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,55 +59,53 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Thomas Fourier <fourier.thomas@gmail.com>
+From: Ma Ke <make24@iscas.ac.cn>
 
-[ Upstream commit 023a293b9cd0bb86a9b50cd7688a3d9d266826db ]
+commit 63ce53724637e2e7ba51fe3a4f78351715049905 upstream.
 
-The dma_unmap_sg() functions should be called with the same nents as the
-dma_map_sg(), not the value the map function returned.
+Using device_find_child() to locate a probed virtual-device-port node
+causes a device refcount imbalance, as device_find_child() internally
+calls get_device() to increment the device’s reference count before
+returning its pointer. vdc_port_mpgroup_check() directly returns true
+upon finding a matching device without releasing the reference via
+put_device(). We should call put_device() to decrement refcount.
 
-Fixes: 88a678bbc34c ("ibmvscsis: Initial commit of IBM VSCSI Tgt Driver")
-Signed-off-by: Thomas Fourier <fourier.thomas@gmail.com>
-Link: https://lore.kernel.org/r/20250630111803.94389-2-fourier.thomas@gmail.com
-Signed-off-by: Martin K. Petersen <martin.petersen@oracle.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+As comment of device_find_child() says, 'NOTE: you will need to drop
+the reference with put_device() after use'.
+
+Found by code review.
+
+Cc: stable@vger.kernel.org
+Fixes: 3ee70591d6c4 ("sunvdc: prevent sunvdc panic when mpgroup disk added to guest domain")
+Signed-off-by: Ma Ke <make24@iscas.ac.cn>
+Link: https://lore.kernel.org/r/20250719075856.3447953-1-make24@iscas.ac.cn
+Signed-off-by: Jens Axboe <axboe@kernel.dk>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/scsi/ibmvscsi_tgt/libsrp.c | 6 ++++--
- 1 file changed, 4 insertions(+), 2 deletions(-)
+ drivers/block/sunvdc.c |    4 +++-
+ 1 file changed, 3 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/scsi/ibmvscsi_tgt/libsrp.c b/drivers/scsi/ibmvscsi_tgt/libsrp.c
-index 8a0e28aec928..0ecad398ed3d 100644
---- a/drivers/scsi/ibmvscsi_tgt/libsrp.c
-+++ b/drivers/scsi/ibmvscsi_tgt/libsrp.c
-@@ -184,7 +184,8 @@ static int srp_direct_data(struct ibmvscsis_cmd *cmd, struct srp_direct_buf *md,
- 	err = rdma_io(cmd, sg, nsg, md, 1, dir, len);
+--- a/drivers/block/sunvdc.c
++++ b/drivers/block/sunvdc.c
+@@ -956,8 +956,10 @@ static bool vdc_port_mpgroup_check(struc
+ 	dev = device_find_child(vdev->dev.parent, &port_data,
+ 				vdc_device_probed);
  
- 	if (dma_map)
--		dma_unmap_sg(iue->target->dev, sg, nsg, DMA_BIDIRECTIONAL);
-+		dma_unmap_sg(iue->target->dev, sg, cmd->se_cmd.t_data_nents,
-+			     DMA_BIDIRECTIONAL);
+-	if (dev)
++	if (dev) {
++		put_device(dev);
+ 		return true;
++	}
  
- 	return err;
+ 	return false;
  }
-@@ -256,7 +257,8 @@ static int srp_indirect_data(struct ibmvscsis_cmd *cmd, struct srp_cmd *srp_cmd,
- 	err = rdma_io(cmd, sg, nsg, md, nmd, dir, len);
- 
- 	if (dma_map)
--		dma_unmap_sg(iue->target->dev, sg, nsg, DMA_BIDIRECTIONAL);
-+		dma_unmap_sg(iue->target->dev, sg, cmd->se_cmd.t_data_nents,
-+			     DMA_BIDIRECTIONAL);
- 
- free_mem:
- 	if (token && dma_map) {
--- 
-2.39.5
-
 
 
 
