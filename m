@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-173043-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-175094-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 16955B35BB7
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 13:27:09 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 75E24B36684
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 15:58:01 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id A854F17CB1D
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 11:21:56 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 0F1A4562A1E
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 13:50:12 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D2D7E321F53;
-	Tue, 26 Aug 2025 11:20:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8CB4834DCCB;
+	Tue, 26 Aug 2025 13:48:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="YK55DA4I"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="TY/5//ZG"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 90D10322754;
-	Tue, 26 Aug 2025 11:20:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4A59D1E5710;
+	Tue, 26 Aug 2025 13:48:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756207226; cv=none; b=Gjzi2P6q31ts9i0FegX64Kw+d7lqGvcqLnUnKojP+E4mfR0Nh97uk3GOzveaT2oiV7kyWGU1Y92ghgo/Uhhik7nNECT06z0bu2KMZfGCGGjMBv1efe1Xsw/pfjnndOLN+lKA6w47ED929nuGR8DsbJHXPY1POx6Qx1HkWUmk6Dc=
+	t=1756216124; cv=none; b=Q0WRLztEbZy6P8oHqH0PBpJG69ipQum9L76Zj6PLW7OXDcZPBdaXP7F5QU/5Ka9NY84BYHX1/ZYrFOlDQ2MVcjlPeOFYVdkIRbtxL2MZe2Y/SPozXiDt/3kBRvjsBJBkDMm4pdSpiSoMwe48sPbWGdJ0bvNBRXuILTFVpxZe1TE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756207226; c=relaxed/simple;
-	bh=B/2cWe/3yZ/SSLpFyY/6vX5YJgW73LQO4F4jBa1FHEw=;
+	s=arc-20240116; t=1756216124; c=relaxed/simple;
+	bh=fTQCzxrACQ9nXe+XMeoXlg6bX3/vWEIL/y6Rvw4mLE4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=W8CGQ4DyifaC0huGZHUiNUvtKYwdbB5XoWigqqU1+8ohH/kuSTSAlIcnzigT11PEMKuOU87Lw3J5t+BY7nTTE6gPltf8pCAZEMEGvD6L9CPMreR4bCJ0APjZwWVXcdW+qUwUunzI9s7qRDS33uDtEli0t83kTYlOBr5bnkZGFRU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=YK55DA4I; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2338EC4CEF1;
-	Tue, 26 Aug 2025 11:20:25 +0000 (UTC)
+	 MIME-Version; b=ILsABFchWA/xA0Y8Nys/ZRaRmbKFTmjyM0C2P37mDXRdhXuBgbBov/l/mqckRy6uft92jcRIQTselBr2lLBGZ5kzjNjRXl5PIm6vwIQXDezj/0jZJOZwndMFvDfyWbgDriQMmy6a8f3TJdtOodbx219vnuW6Y0aOd132YLyWXOg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=TY/5//ZG; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C81ACC4CEF1;
+	Tue, 26 Aug 2025 13:48:43 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1756207226;
-	bh=B/2cWe/3yZ/SSLpFyY/6vX5YJgW73LQO4F4jBa1FHEw=;
+	s=korg; t=1756216124;
+	bh=fTQCzxrACQ9nXe+XMeoXlg6bX3/vWEIL/y6Rvw4mLE4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=YK55DA4INWLYP7KZ1lJaQda6/nU4uzpBz98hQgxujCyLq/BuYiI20T1hznCbf/pN+
-	 9dCLuDrKRHagG4vuIiof0PC2fUxf3HK+oHLvtY9t1Xy2M+7OSqyxc95BetF4d857Ym
-	 NMGBYfQ68gajilOBcXalB82Sahc14/Ln2Y3lVNDs=
+	b=TY/5//ZGezK7Rxp11gOK069ajfJKvWVmrhi/PMPXhD/xIEd2HuoKso1qYZvHkmLCH
+	 Nux0b2RGwCVsqDYAyc6MZR564DprlVGw7tHQD7O2pAL+YL+Ptu8QZzB4UyjBA+pj02
+	 Anc6++pvsLIhxxd1YfWwrx0X1rvwCIXGau/ACaBU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Damien Le Moal <dlemoal@kernel.org>,
-	Manivannan Sadhasivam <mani@kernel.org>,
-	Niklas Cassel <cassel@kernel.org>
-Subject: [PATCH 6.16 099/457] PCI: endpoint: Fix configfs group list head handling
+	Rong Zhang <ulin0208@gmail.com>,
+	Konstantin Komarov <almaz.alexandrovich@paragon-software.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.15 292/644] fs/ntfs3: correctly create symlink for relative path
 Date: Tue, 26 Aug 2025 13:06:23 +0200
-Message-ID: <20250826110939.822518771@linuxfoundation.org>
+Message-ID: <20250826110953.617420580@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250826110937.289866482@linuxfoundation.org>
-References: <20250826110937.289866482@linuxfoundation.org>
+In-Reply-To: <20250826110946.507083938@linuxfoundation.org>
+References: <20250826110946.507083938@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,67 +62,105 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.16-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Damien Le Moal <dlemoal@kernel.org>
+From: Rong Zhang <ulin0208@gmail.com>
 
-commit d79123d79a8154b4318529b7b2ff7e15806f480b upstream.
+[ Upstream commit b1e9d89408f402858c00103f9831b25ffa0994d3 ]
 
-Doing a list_del() on the epf_group field of struct pci_epf_driver in
-pci_epf_remove_cfs() is not correct as this field is a list head, not
-a list entry. This list_del() call triggers a KASAN warning when an
-endpoint function driver which has a configfs attribute group is torn
-down:
+After applying this patch, could correctly create symlink:
 
-==================================================================
-BUG: KASAN: slab-use-after-free in pci_epf_remove_cfs+0x17c/0x198
-Write of size 8 at addr ffff00010f4a0d80 by task rmmod/319
+ln -s "relative/path/to/file" symlink
 
-CPU: 3 UID: 0 PID: 319 Comm: rmmod Not tainted 6.16.0-rc2 #1 NONE
-Hardware name: Radxa ROCK 5B (DT)
-Call trace:
-show_stack+0x2c/0x84 (C)
-dump_stack_lvl+0x70/0x98
-print_report+0x17c/0x538
-kasan_report+0xb8/0x190
-__asan_report_store8_noabort+0x20/0x2c
-pci_epf_remove_cfs+0x17c/0x198
-pci_epf_unregister_driver+0x18/0x30
-nvmet_pci_epf_cleanup_module+0x24/0x30 [nvmet_pci_epf]
-__arm64_sys_delete_module+0x264/0x424
-invoke_syscall+0x70/0x260
-el0_svc_common.constprop.0+0xac/0x230
-do_el0_svc+0x40/0x58
-el0_svc+0x48/0xdc
-el0t_64_sync_handler+0x10c/0x138
-el0t_64_sync+0x198/0x19c
-...
-
-Remove this incorrect list_del() call from pci_epf_remove_cfs().
-
-Fixes: ef1433f717a2 ("PCI: endpoint: Create configfs entry for each pci_epf_device_id table entry")
-Signed-off-by: Damien Le Moal <dlemoal@kernel.org>
-Signed-off-by: Manivannan Sadhasivam <mani@kernel.org>
-Reviewed-by: Niklas Cassel <cassel@kernel.org>
-Cc: stable@vger.kernel.org
-Link: https://patch.msgid.link/20250624114544.342159-2-dlemoal@kernel.org
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Signed-off-by: Rong Zhang <ulin0208@gmail.com>
+[almaz.alexandrovich@paragon-software.com: added cpu_to_le32 macro to
+rs->Flags assignment]
+Signed-off-by: Konstantin Komarov <almaz.alexandrovich@paragon-software.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/pci/endpoint/pci-epf-core.c |    1 -
- 1 file changed, 1 deletion(-)
+ fs/ntfs3/inode.c | 31 ++++++++++++++++++-------------
+ 1 file changed, 18 insertions(+), 13 deletions(-)
 
---- a/drivers/pci/endpoint/pci-epf-core.c
-+++ b/drivers/pci/endpoint/pci-epf-core.c
-@@ -338,7 +338,6 @@ static void pci_epf_remove_cfs(struct pc
- 	mutex_lock(&pci_epf_mutex);
- 	list_for_each_entry_safe(group, tmp, &driver->epf_group, group_entry)
- 		pci_ep_cfs_remove_epf_group(group);
--	list_del(&driver->epf_group);
- 	mutex_unlock(&pci_epf_mutex);
+diff --git a/fs/ntfs3/inode.c b/fs/ntfs3/inode.c
+index 7adfa19a2f06..edd7c89ba1a1 100644
+--- a/fs/ntfs3/inode.c
++++ b/fs/ntfs3/inode.c
+@@ -1118,10 +1118,10 @@ int inode_write_data(struct inode *inode, const void *data, size_t bytes)
+  * Number of bytes for REPARSE_DATA_BUFFER(IO_REPARSE_TAG_SYMLINK)
+  * for unicode string of @uni_len length.
+  */
+-static inline u32 ntfs_reparse_bytes(u32 uni_len)
++static inline u32 ntfs_reparse_bytes(u32 uni_len, bool is_absolute)
+ {
+ 	/* Header + unicode string + decorated unicode string. */
+-	return sizeof(short) * (2 * uni_len + 4) +
++	return sizeof(short) * (2 * uni_len + (is_absolute ? 4 : 0)) +
+ 	       offsetof(struct REPARSE_DATA_BUFFER,
+ 			SymbolicLinkReparseBuffer.PathBuffer);
  }
+@@ -1134,8 +1134,11 @@ ntfs_create_reparse_buffer(struct ntfs_sb_info *sbi, const char *symname,
+ 	struct REPARSE_DATA_BUFFER *rp;
+ 	__le16 *rp_name;
+ 	typeof(rp->SymbolicLinkReparseBuffer) *rs;
++	bool is_absolute;
  
+-	rp = kzalloc(ntfs_reparse_bytes(2 * size + 2), GFP_NOFS);
++	is_absolute = (strlen(symname) > 1 && symname[1] == ':');
++
++	rp = kzalloc(ntfs_reparse_bytes(2 * size + 2, is_absolute), GFP_NOFS);
+ 	if (!rp)
+ 		return ERR_PTR(-ENOMEM);
+ 
+@@ -1150,7 +1153,7 @@ ntfs_create_reparse_buffer(struct ntfs_sb_info *sbi, const char *symname,
+ 		goto out;
+ 
+ 	/* err = the length of unicode name of symlink. */
+-	*nsize = ntfs_reparse_bytes(err);
++	*nsize = ntfs_reparse_bytes(err, is_absolute);
+ 
+ 	if (*nsize > sbi->reparse.max_size) {
+ 		err = -EFBIG;
+@@ -1170,7 +1173,7 @@ ntfs_create_reparse_buffer(struct ntfs_sb_info *sbi, const char *symname,
+ 
+ 	/* PrintName + SubstituteName. */
+ 	rs->SubstituteNameOffset = cpu_to_le16(sizeof(short) * err);
+-	rs->SubstituteNameLength = cpu_to_le16(sizeof(short) * err + 8);
++	rs->SubstituteNameLength = cpu_to_le16(sizeof(short) * err + (is_absolute ? 8 : 0));
+ 	rs->PrintNameLength = rs->SubstituteNameOffset;
+ 
+ 	/*
+@@ -1178,16 +1181,18 @@ ntfs_create_reparse_buffer(struct ntfs_sb_info *sbi, const char *symname,
+ 	 * parse this path.
+ 	 * 0-absolute path 1- relative path (SYMLINK_FLAG_RELATIVE).
+ 	 */
+-	rs->Flags = 0;
++	rs->Flags = cpu_to_le32(is_absolute ? 0 : SYMLINK_FLAG_RELATIVE);
+ 
+-	memmove(rp_name + err + 4, rp_name, sizeof(short) * err);
++	memmove(rp_name + err + (is_absolute ? 4 : 0), rp_name, sizeof(short) * err);
+ 
+-	/* Decorate SubstituteName. */
+-	rp_name += err;
+-	rp_name[0] = cpu_to_le16('\\');
+-	rp_name[1] = cpu_to_le16('?');
+-	rp_name[2] = cpu_to_le16('?');
+-	rp_name[3] = cpu_to_le16('\\');
++	if (is_absolute) {
++		/* Decorate SubstituteName. */
++		rp_name += err;
++		rp_name[0] = cpu_to_le16('\\');
++		rp_name[1] = cpu_to_le16('?');
++		rp_name[2] = cpu_to_le16('?');
++		rp_name[3] = cpu_to_le16('\\');
++	}
+ 
+ 	return rp;
+ out:
+-- 
+2.39.5
+
 
 
 
