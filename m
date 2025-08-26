@@ -1,58 +1,58 @@
-Return-Path: <stable+bounces-174685-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-176265-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 23D45B3646C
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 15:38:28 +0200 (CEST)
+Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [IPv6:2605:f480:58:1:0:1994:3:14])
+	by mail.lfdr.de (Postfix) with ESMTPS id 745C8B36B1A
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 16:43:01 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 4486A1C2160F
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 13:32:24 +0000 (UTC)
+	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 6837C4E1649
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 14:43:00 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id AC24E3019A3;
-	Tue, 26 Aug 2025 13:30:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 841F2352FD0;
+	Tue, 26 Aug 2025 14:40:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="f0Ilw6z1"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Veh+CoYx"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 629CE1FBCB5;
-	Tue, 26 Aug 2025 13:30:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3F39B30AAD8;
+	Tue, 26 Aug 2025 14:40:06 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756215045; cv=none; b=SpZxQbyntavzesQjx/G7Fh4kdkO4XrY+M6VFVn9F5QsLCUWyrX5HVK8mvVHg2c/5xft9Ja5D1GvhD3662A12WieuofcJAZBPnYWH2T93prf1Q7JkP8LU3tP5Kw3fPJJjMLGoPH6X/QU6MB0MWefttsGTfZ5+w0koHFmAwfiMg/g=
+	t=1756219207; cv=none; b=FVbzhbA5VLiZaTc3FncSilm7Lc+WE20TFf0fhZ+udRIkn/yjZAz8Pg/tP6yHTloWvX6t745A5FkOKAd9HGcipgKYfgx1uCB3trssMOSyM5gFVD754ueyZANSE+GIKbxcdDUmhMEjYQL3ld/GobAJRvAqwfnGw1HOXBqwVeDvAt8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756215045; c=relaxed/simple;
-	bh=y9F26Ww+p9yh/T2/HgmkT9+UzNBM2zokm7r1f3M7u5M=;
+	s=arc-20240116; t=1756219207; c=relaxed/simple;
+	bh=8HaKrTlsCytsWXeMO2hW1C3ARWtxhvi3kRlQrXWlceU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=d/gb5BZyvTiBP1byJKTpo6LavDhLj6vLuIOa9B6b2J4zaZnPrv9sYlO6kUod1yY/51xxBvlUqeU/W3fIsYxeMS1k2F7gbBQYWNqpO+0Xs4JBy6td0MuvXl3D3qNyBuaqVurv1t3QCfcQeI4WFyS/BoB6PsXfcD/3CgdY47N69BQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=f0Ilw6z1; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E0100C4CEF1;
-	Tue, 26 Aug 2025 13:30:44 +0000 (UTC)
+	 MIME-Version; b=CXn+iw4D7Vk/Mpn4cNf9Z+idVerReBrDcdREcD8v9SISJMZbTXoRfdFI6VnL0ycdqtUGje4yeP1EzecCVVW8u1LIlrYs8yK1v4vPVxa+xs2QLeaqoTTOKKco7nQturWKD2NHba5dyNtwKrACXd7yswglpCK1j4kJX0DOJRNIgaw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Veh+CoYx; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5A7E2C4CEF1;
+	Tue, 26 Aug 2025 14:40:06 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1756215045;
-	bh=y9F26Ww+p9yh/T2/HgmkT9+UzNBM2zokm7r1f3M7u5M=;
+	s=korg; t=1756219206;
+	bh=8HaKrTlsCytsWXeMO2hW1C3ARWtxhvi3kRlQrXWlceU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=f0Ilw6z1+FyFCM7PX2nmVsuT82UoM68FxzdpGfWCLs+32P0819wQACKtGvVzhYHYU
-	 Ybkwz3wZlLW8NBL/15tbrxlqRGHEIs/WPZMEAAALJ9NTfwjJZbsix93pC1VIOz25kA
-	 dvgkqKbblHHpH67uiVMVDhpN/ebTzq+89R9FvCos=
+	b=Veh+CoYxJ+t642pwmuJOQFmQa1aVZEwxoZaDMEsSWONmX7hbDOXL63rxs/e3GYpg5
+	 NZvfrZzfLjbGmiBZn7+q9IIQN+oRFAl+V64jL5Iu7V5ziFD4K8F4xTmorx4bA7kaCB
+	 6/mnPKGlBVWXIOjrtd6KgtU74++2PyrDB8ivm36A=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Bryan ODonoghue <bryan.odonoghue@linaro.org>,
-	Konrad Dybcio <konrad.dybcio@linaro.org>,
-	Stanimir Varbanov <stanimir.k.varbanov@gmail.com>,
-	Hans Verkuil <hverkuil-cisco@xs4all.nl>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 367/482] media: venus: Introduce accessors for remapped hfi_buffer_reqs members
+	Lorenz Brun <lorenz@brun.one>,
+	Brandon Schwartz <Brandon.Schwartz@wdc.com>,
+	Damien Le Moal <dlemoal@kernel.org>,
+	Hannes Reinecke <hare@suse.de>,
+	"Martin K. Petersen" <martin.petersen@oracle.com>
+Subject: [PATCH 5.4 294/403] ata: libata-scsi: Fix ata_to_sense_error() status handling
 Date: Tue, 26 Aug 2025 13:10:20 +0200
-Message-ID: <20250826110939.902081070@linuxfoundation.org>
+Message-ID: <20250826110914.932137727@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250826110930.769259449@linuxfoundation.org>
-References: <20250826110930.769259449@linuxfoundation.org>
+In-Reply-To: <20250826110905.607690791@linuxfoundation.org>
+References: <20250826110905.607690791@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,211 +64,95 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+5.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Konrad Dybcio <konrad.dybcio@linaro.org>
+From: Damien Le Moal <dlemoal@kernel.org>
 
-[ Upstream commit bbfc89e6f67ccb1ddefc3e8a284248bcfea58544 ]
+commit cf3fc037623c54de48d2ec1a1ee686e2d1de2d45 upstream.
 
-Currently we have macros to access these, but they don't provide a
-way to override the remapped fields. Replace the macros with actual
-get/set pairs to fix that.
+Commit 8ae720449fca ("libata: whitespace fixes in ata_to_sense_error()")
+inadvertantly added the entry 0x40 (ATA_DRDY) to the stat_table array in
+the function ata_to_sense_error(). This entry ties a failed qc which has
+a status filed equal to ATA_DRDY to the sense key ILLEGAL REQUEST with
+the additional sense code UNALIGNED WRITE COMMAND. This entry will be
+used to generate a failed qc sense key and sense code when the qc is
+missing sense data and there is no match for the qc error field in the
+sense_table array of ata_to_sense_error().
 
-Reviewed-by: Bryan O'Donoghue <bryan.odonoghue@linaro.org>
-Signed-off-by: Konrad Dybcio <konrad.dybcio@linaro.org>
-Signed-off-by: Stanimir Varbanov <stanimir.k.varbanov@gmail.com>
-Signed-off-by: Hans Verkuil <hverkuil-cisco@xs4all.nl>
-Stable-dep-of: 06d6770ff0d8 ("media: venus: Fix OOB read due to missing payload bound check")
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+As a result, for a failed qc for which we failed to get sense data (e.g.
+read log 10h failed if qc is an NCQ command, or REQUEST SENSE EXT
+command failed for the non-ncq case, the user very often end up seeing
+the completely misleading "unaligned write command" error, even if qc
+was not a write command. E.g.:
+
+sd 0:0:0:0: [sda] tag#12 FAILED Result: hostbyte=DID_OK driverbyte=DRIVER_OK cmd_age=0s
+sd 0:0:0:0: [sda] tag#12 Sense Key : Illegal Request [current]
+sd 0:0:0:0: [sda] tag#12 Add. Sense: Unaligned write command
+sd 0:0:0:0: [sda] tag#12 CDB: Read(10) 28 00 00 00 10 00 00 00 08 00
+I/O error, dev sda, sector 4096 op 0x0:(READ) flags 0x80700 phys_seg 1 prio class 0
+
+Fix this by removing the ATA_DRDY entry from the stat_table array so
+that we default to always returning ABORTED COMMAND without any
+additional sense code, since we do not know any better. The entry 0x08
+(ATA_DRQ) is also removed since signaling ABORTED COMMAND with a parity
+error is also misleading (as a parity error would likely be signaled
+through a bus error). So for this case, also default to returning
+ABORTED COMMAND without any additional sense code. With this, the
+previous example error case becomes:
+
+sd 0:0:0:0: [sda] tag#17 FAILED Result: hostbyte=DID_OK driverbyte=DRIVER_OK cmd_age=0s
+sd 0:0:0:0: [sda] tag#17 Sense Key : Aborted Command [current]
+sd 0:0:0:0: [sda] tag#17 Add. Sense: No additional sense information
+sd 0:0:0:0: [sda] tag#17 CDB: Read(10) 28 00 00 00 10 00 00 00 08 00
+I/O error, dev sda, sector 4096 op 0x0:(READ) flags 0x80700 phys_seg 1 prio class 0
+
+Together with these fixes, refactor stat_table to make it more readable
+by putting the entries comments in front of the entries and using the
+defined status bits macros instead of hardcoded values.
+
+Reported-by: Lorenz Brun <lorenz@brun.one>
+Reported-by: Brandon Schwartz <Brandon.Schwartz@wdc.com>
+Fixes: 8ae720449fca ("libata: whitespace fixes in ata_to_sense_error()")
+Cc: stable@vger.kernel.org
+Signed-off-by: Damien Le Moal <dlemoal@kernel.org>
+Reviewed-by: Hannes Reinecke <hare@suse.de>
+Reviewed-by: Martin K. Petersen <martin.petersen@oracle.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/media/platform/qcom/venus/helpers.c    |    2 
- drivers/media/platform/qcom/venus/hfi_helper.h |   61 +++++++++++++++++++++----
- drivers/media/platform/qcom/venus/hfi_msgs.c   |    2 
- drivers/media/platform/qcom/venus/vdec.c       |    8 +--
- drivers/media/platform/qcom/venus/vdec_ctrls.c |    2 
- drivers/media/platform/qcom/venus/venc.c       |    4 -
- drivers/media/platform/qcom/venus/venc_ctrls.c |    2 
- 7 files changed, 63 insertions(+), 18 deletions(-)
+ drivers/ata/libata-scsi.c |   20 ++++++++------------
+ 1 file changed, 8 insertions(+), 12 deletions(-)
 
---- a/drivers/media/platform/qcom/venus/helpers.c
-+++ b/drivers/media/platform/qcom/venus/helpers.c
-@@ -189,7 +189,7 @@ int venus_helper_alloc_dpb_bufs(struct v
- 	if (ret)
- 		return ret;
- 
--	count = HFI_BUFREQ_COUNT_MIN(&bufreq, ver);
-+	count = hfi_bufreq_get_count_min(&bufreq, ver);
- 
- 	for (i = 0; i < count; i++) {
- 		buf = kzalloc(sizeof(*buf), GFP_KERNEL);
---- a/drivers/media/platform/qcom/venus/hfi_helper.h
-+++ b/drivers/media/platform/qcom/venus/hfi_helper.h
-@@ -1150,14 +1150,6 @@ struct hfi_buffer_display_hold_count_act
- 	u32 hold_count;
- };
- 
--/* HFI 4XX reorder the fields, use these macros */
--#define HFI_BUFREQ_HOLD_COUNT(bufreq, ver)	\
--	((ver) == HFI_VERSION_4XX ? 0 : (bufreq)->hold_count)
--#define HFI_BUFREQ_COUNT_MIN(bufreq, ver)	\
--	((ver) == HFI_VERSION_4XX ? (bufreq)->hold_count : (bufreq)->count_min)
--#define HFI_BUFREQ_COUNT_MIN_HOST(bufreq, ver)	\
--	((ver) == HFI_VERSION_4XX ? (bufreq)->count_min : 0)
--
- struct hfi_buffer_requirements {
- 	u32 type;
- 	u32 size;
-@@ -1169,6 +1161,59 @@ struct hfi_buffer_requirements {
- 	u32 alignment;
- };
- 
-+/* On HFI 4XX, some of the struct members have been swapped. */
-+static inline u32 hfi_bufreq_get_hold_count(struct hfi_buffer_requirements *req,
-+					    u32 ver)
-+{
-+	if (ver == HFI_VERSION_4XX)
-+		return 0;
+--- a/drivers/ata/libata-scsi.c
++++ b/drivers/ata/libata-scsi.c
+@@ -984,18 +984,14 @@ static void ata_to_sense_error(unsigned
+ 		{0xFF, 0xFF, 0xFF, 0xFF}, // END mark
+ 	};
+ 	static const unsigned char stat_table[][4] = {
+-		/* Must be first because BUSY means no other bits valid */
+-		{0x80,		ABORTED_COMMAND, 0x47, 0x00},
+-		// Busy, fake parity for now
+-		{0x40,		ILLEGAL_REQUEST, 0x21, 0x04},
+-		// Device ready, unaligned write command
+-		{0x20,		HARDWARE_ERROR,  0x44, 0x00},
+-		// Device fault, internal target failure
+-		{0x08,		ABORTED_COMMAND, 0x47, 0x00},
+-		// Timed out in xfer, fake parity for now
+-		{0x04,		RECOVERED_ERROR, 0x11, 0x00},
+-		// Recovered ECC error	  Medium error, recovered
+-		{0xFF, 0xFF, 0xFF, 0xFF}, // END mark
++		/* Busy: must be first because BUSY means no other bits valid */
++		{ ATA_BUSY,	ABORTED_COMMAND, 0x00, 0x00 },
++		/* Device fault: INTERNAL TARGET FAILURE */
++		{ ATA_DF,	HARDWARE_ERROR,  0x44, 0x00 },
++		/* Corrected data error */
++		{ ATA_CORR,	RECOVERED_ERROR, 0x00, 0x00 },
 +
-+	return req->hold_count;
-+};
-+
-+static inline u32 hfi_bufreq_get_count_min(struct hfi_buffer_requirements *req,
-+					   u32 ver)
-+{
-+	if (ver == HFI_VERSION_4XX)
-+		return req->hold_count;
-+
-+	return req->count_min;
-+};
-+
-+static inline u32 hfi_bufreq_get_count_min_host(struct hfi_buffer_requirements *req,
-+						u32 ver)
-+{
-+	if (ver == HFI_VERSION_4XX)
-+		return req->count_min;
-+
-+	return 0;
-+};
-+
-+static inline void hfi_bufreq_set_hold_count(struct hfi_buffer_requirements *req,
-+					     u32 ver, u32 val)
-+{
-+	if (ver == HFI_VERSION_4XX)
-+		return;
-+
-+	req->hold_count = val;
-+};
-+
-+static inline void hfi_bufreq_set_count_min(struct hfi_buffer_requirements *req,
-+					    u32 ver, u32 val)
-+{
-+	if (ver == HFI_VERSION_4XX)
-+		req->hold_count = val;
-+
-+	req->count_min = val;
-+};
-+
-+static inline void hfi_bufreq_set_count_min_host(struct hfi_buffer_requirements *req,
-+						 u32 ver, u32 val)
-+{
-+	if (ver == HFI_VERSION_4XX)
-+		req->count_min = val;
-+};
-+
- struct hfi_data_payload {
- 	u32 size;
- 	u8 data[1];
---- a/drivers/media/platform/qcom/venus/hfi_msgs.c
-+++ b/drivers/media/platform/qcom/venus/hfi_msgs.c
-@@ -99,7 +99,7 @@ static void event_seq_changed(struct ven
- 		case HFI_PROPERTY_CONFIG_BUFFER_REQUIREMENTS:
- 			data_ptr += sizeof(u32);
- 			bufreq = (struct hfi_buffer_requirements *)data_ptr;
--			event.buf_count = HFI_BUFREQ_COUNT_MIN(bufreq, ver);
-+			event.buf_count = hfi_bufreq_get_count_min(bufreq, ver);
- 			data_ptr += sizeof(*bufreq);
- 			break;
- 		case HFI_INDEX_EXTRADATA_INPUT_CROP:
---- a/drivers/media/platform/qcom/venus/vdec.c
-+++ b/drivers/media/platform/qcom/venus/vdec.c
-@@ -864,13 +864,13 @@ static int vdec_num_buffers(struct venus
- 	if (ret)
- 		return ret;
++		{ 0xFF, 0xFF, 0xFF, 0xFF }, /* END mark */
+ 	};
  
--	*in_num = HFI_BUFREQ_COUNT_MIN(&bufreq, ver);
-+	*in_num = hfi_bufreq_get_count_min(&bufreq, ver);
- 
- 	ret = venus_helper_get_bufreq(inst, HFI_BUFFER_OUTPUT, &bufreq);
- 	if (ret)
- 		return ret;
- 
--	*out_num = HFI_BUFREQ_COUNT_MIN(&bufreq, ver);
-+	*out_num = hfi_bufreq_get_count_min(&bufreq, ver);
- 
- 	return 0;
- }
-@@ -984,14 +984,14 @@ static int vdec_verify_conf(struct venus
- 		return ret;
- 
- 	if (inst->num_output_bufs < bufreq.count_actual ||
--	    inst->num_output_bufs < HFI_BUFREQ_COUNT_MIN(&bufreq, ver))
-+	    inst->num_output_bufs < hfi_bufreq_get_count_min(&bufreq, ver))
- 		return -EINVAL;
- 
- 	ret = venus_helper_get_bufreq(inst, HFI_BUFFER_INPUT, &bufreq);
- 	if (ret)
- 		return ret;
- 
--	if (inst->num_input_bufs < HFI_BUFREQ_COUNT_MIN(&bufreq, ver))
-+	if (inst->num_input_bufs < hfi_bufreq_get_count_min(&bufreq, ver))
- 		return -EINVAL;
- 
- 	return 0;
---- a/drivers/media/platform/qcom/venus/vdec_ctrls.c
-+++ b/drivers/media/platform/qcom/venus/vdec_ctrls.c
-@@ -79,7 +79,7 @@ static int vdec_op_g_volatile_ctrl(struc
- 	case V4L2_CID_MIN_BUFFERS_FOR_CAPTURE:
- 		ret = venus_helper_get_bufreq(inst, HFI_BUFFER_OUTPUT, &bufreq);
- 		if (!ret)
--			ctrl->val = HFI_BUFREQ_COUNT_MIN(&bufreq, ver);
-+			ctrl->val = hfi_bufreq_get_count_min(&bufreq, ver);
- 		break;
- 	default:
- 		return -EINVAL;
---- a/drivers/media/platform/qcom/venus/venc.c
-+++ b/drivers/media/platform/qcom/venus/venc.c
-@@ -1176,7 +1176,7 @@ static int venc_verify_conf(struct venus
- 		return ret;
- 
- 	if (inst->num_output_bufs < bufreq.count_actual ||
--	    inst->num_output_bufs < HFI_BUFREQ_COUNT_MIN(&bufreq, ver))
-+	    inst->num_output_bufs < hfi_bufreq_get_count_min(&bufreq, ver))
- 		return -EINVAL;
- 
- 	ret = venus_helper_get_bufreq(inst, HFI_BUFFER_INPUT, &bufreq);
-@@ -1184,7 +1184,7 @@ static int venc_verify_conf(struct venus
- 		return ret;
- 
- 	if (inst->num_input_bufs < bufreq.count_actual ||
--	    inst->num_input_bufs < HFI_BUFREQ_COUNT_MIN(&bufreq, ver))
-+	    inst->num_input_bufs < hfi_bufreq_get_count_min(&bufreq, ver))
- 		return -EINVAL;
- 
- 	return 0;
---- a/drivers/media/platform/qcom/venus/venc_ctrls.c
-+++ b/drivers/media/platform/qcom/venus/venc_ctrls.c
-@@ -358,7 +358,7 @@ static int venc_op_g_volatile_ctrl(struc
- 	case V4L2_CID_MIN_BUFFERS_FOR_OUTPUT:
- 		ret = venus_helper_get_bufreq(inst, HFI_BUFFER_INPUT, &bufreq);
- 		if (!ret)
--			ctrl->val = HFI_BUFREQ_COUNT_MIN(&bufreq, ver);
-+			ctrl->val = hfi_bufreq_get_count_min(&bufreq, ver);
- 		break;
- 	default:
- 		return -EINVAL;
+ 	/*
 
 
 
