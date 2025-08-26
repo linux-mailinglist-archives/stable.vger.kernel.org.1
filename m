@@ -1,58 +1,56 @@
-Return-Path: <stable+bounces-175170-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-175694-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id D99C3B366E9
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 16:01:49 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 07AD9B369C7
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 16:30:41 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 6DD2B1883B9B
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 13:54:39 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 447ED568441
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 14:17:45 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id BA80734DCED;
-	Tue, 26 Aug 2025 13:52:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 20B2335AAA1;
+	Tue, 26 Aug 2025 14:15:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="X7yuaYT9"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="PLUDH3c3"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6682422128B;
-	Tue, 26 Aug 2025 13:52:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D2C1535A2A2;
+	Tue, 26 Aug 2025 14:15:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756216326; cv=none; b=I00fM460ShOnTAROhqXufvwGPevN9/NKEB/yHvkiS9zhwZ0ZNVixjK0CZsOEL2KHWVOiYvJeWByEpUrBXVnt43hKtwFLQg9CPcth3RabALkoOvhhQDgyRfDp7lTzqztXQBAoBzRCfoFJ5QeZ/rGN3Mqve55X3/YvKeJPZPsYYc0=
+	t=1756217722; cv=none; b=tm4US0b27FT3Kmh1PTuGd+Fw3Wz4RibiOQ/0tbvh5Zrd3E46EOGt2F8yFODmxcMQ6vpHjrKdO40ZTe6XGI/tBYZ6lBgnIujnFRfmxzRhITPc1nB4XLLT6O51dHn0CCVcnqXDO8YFUFU+AqXW58hCfoyprivDoHD3KLPQXPBSZI4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756216326; c=relaxed/simple;
-	bh=/2g4K6vprvLRNQuX6PWerLnPxYzmZCydbsMSKkFl+3I=;
+	s=arc-20240116; t=1756217722; c=relaxed/simple;
+	bh=GcVCjv0fTRTlEV7XFQbhekDMcavpaD65y75cHRA+m3A=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=lZRABpRAvPSW1EIePAPssriFKpR2QksOPvlzyRA1THO30JgSW5pv9ukTvDH0rCrSabIQoMityfqqA4s/FkYVP7EeNi/6i2Jdcw6SpwOkmVF/HxWn8nvlL6i+FiFzkm5xWxGSfm7HKGbUGQo2YSu3jL461/xNhuIKMnFKGGU4zLk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=X7yuaYT9; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id ED831C4CEF1;
-	Tue, 26 Aug 2025 13:52:05 +0000 (UTC)
+	 MIME-Version:Content-Type; b=rceTItnoGP+har8KnDwjuRr7mJ+GlSWIGygNQG4ppbZ8aFfqtCB2HZneCsUmWPnqno26AyjepX/21YQoztyysjYxNxxkk9+r7iX2G3ptnGXdj6+Byns4y4zstR86xeuHOBoIYaoQGcLqKbOKD+5sdRpealZ8nUQjK0eCuG1ULWQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=PLUDH3c3; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1E314C4CEF1;
+	Tue, 26 Aug 2025 14:15:21 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1756216326;
-	bh=/2g4K6vprvLRNQuX6PWerLnPxYzmZCydbsMSKkFl+3I=;
+	s=korg; t=1756217722;
+	bh=GcVCjv0fTRTlEV7XFQbhekDMcavpaD65y75cHRA+m3A=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=X7yuaYT9hMP7MItLr5NOnOlX661Cs2+xAMdOtihVasAm72SjU2sHzIx8FfAnnH5E6
-	 a95vo1MYes6Xd6YHjv9F9p/xJWbCvck/l54vdltPLTlAGE5NNvRv8+ftZ6rQEcJ2yB
-	 7TyjnDUM/7GCgbPb+SKjjLEYbU4L7FH7rUTIWyxc=
+	b=PLUDH3c3vHA90xH/ECVC0rmpanAuYmiTfmAir9LZ0ZShPlP25NNYCUOH6XI9Agi1T
+	 NhXUbzX34hbhxTND+/L/6vbCp3FVZ1xOj1YTzBzA2w0UfavKL0NaZt9DvDPfcDQC6H
+	 YIm9Vt9+OeK+McyIPhI+Rt2IupOAQ8NNYXTqlqqA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	"Pierre-Loup A. Griffais" <pgriffais@valvesoftware.com>,
-	Vicki Pfau <vi@endrift.com>,
-	Alex Deucher <alexander.deucher@amd.com>,
-	Mario Limonciello <mario.limonciello@amd.com>,
+	Kees Cook <kees@kernel.org>,
+	=?UTF-8?q?Ilpo=20J=C3=A4rvinen?= <ilpo.jarvinen@linux.intel.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 369/644] drm/amd: Allow printing VanGogh OD SCLK levels without setting dpm to manual
-Date: Tue, 26 Aug 2025 13:07:40 +0200
-Message-ID: <20250826110955.559932101@linuxfoundation.org>
+Subject: [PATCH 5.10 251/523] platform/x86: thinkpad_acpi: Handle KCOV __init vs inline mismatches
+Date: Tue, 26 Aug 2025 13:07:41 +0200
+Message-ID: <20250826110930.623783961@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250826110946.507083938@linuxfoundation.org>
-References: <20250826110946.507083938@linuxfoundation.org>
+In-Reply-To: <20250826110924.562212281@linuxfoundation.org>
+References: <20250826110924.562212281@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,91 +60,52 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Mario Limonciello <mario.limonciello@amd.com>
+From: Kees Cook <kees@kernel.org>
 
-[ Upstream commit 2d1ec1e955414e8e8358178011c35afca1a1c0b1 ]
+[ Upstream commit 6418a8504187dc7f5b6f9d0649c03e362cb0664b ]
 
-Several other ASICs allow printing OD SCLK levels without setting DPM
-control to manual.  When OD is disabled it will show the range the
-hardware supports. When OD is enabled it will show what values have
-been programmed. Adjust VanGogh to work the same.
+When KCOV is enabled all functions get instrumented, unless the
+__no_sanitize_coverage attribute is used. To prepare for
+__no_sanitize_coverage being applied to __init functions[1], we have
+to handle differences in how GCC's inline optimizations get resolved.
+For thinkpad_acpi routines, this means forcing two functions to be
+inline with __always_inline.
 
-Cc: Pierre-Loup A. Griffais <pgriffais@valvesoftware.com>
-Reported-by: Vicki Pfau <vi@endrift.com>
-Reviewed-by: Alex Deucher <alexander.deucher@amd.com>
-Link: https://lore.kernel.org/r/20250609031227.479079-1-superm1@kernel.org
-Signed-off-by: Mario Limonciello <mario.limonciello@amd.com>
-Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
+Link: https://lore.kernel.org/lkml/20250523043935.2009972-11-kees@kernel.org/ [1]
+Signed-off-by: Kees Cook <kees@kernel.org>
+Link: https://lore.kernel.org/r/20250529181831.work.439-kees@kernel.org
+Signed-off-by: Ilpo Järvinen <ilpo.jarvinen@linux.intel.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- .../gpu/drm/amd/pm/swsmu/smu11/vangogh_ppt.c  | 37 ++++++++-----------
- 1 file changed, 15 insertions(+), 22 deletions(-)
+ drivers/platform/x86/thinkpad_acpi.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/gpu/drm/amd/pm/swsmu/smu11/vangogh_ppt.c b/drivers/gpu/drm/amd/pm/swsmu/smu11/vangogh_ppt.c
-index 5a9b47133db1..d64a0a0d5b19 100644
---- a/drivers/gpu/drm/amd/pm/swsmu/smu11/vangogh_ppt.c
-+++ b/drivers/gpu/drm/amd/pm/swsmu/smu11/vangogh_ppt.c
-@@ -680,7 +680,6 @@ static int vangogh_print_clk_levels(struct smu_context *smu,
- {
- 	DpmClocks_t *clk_table = smu->smu_table.clocks_table;
- 	SmuMetrics_t metrics;
--	struct smu_dpm_context *smu_dpm_ctx = &(smu->smu_dpm);
- 	int i, idx, size = 0, ret = 0;
- 	uint32_t cur_value = 0, value = 0, count = 0;
- 	bool cur_value_match_level = false;
-@@ -695,31 +694,25 @@ static int vangogh_print_clk_levels(struct smu_context *smu,
+diff --git a/drivers/platform/x86/thinkpad_acpi.c b/drivers/platform/x86/thinkpad_acpi.c
+index 5a8434da60e7..d18b6ddba982 100644
+--- a/drivers/platform/x86/thinkpad_acpi.c
++++ b/drivers/platform/x86/thinkpad_acpi.c
+@@ -515,12 +515,12 @@ static unsigned long __init tpacpi_check_quirks(
+ 	return 0;
+ }
  
- 	switch (clk_type) {
- 	case SMU_OD_SCLK:
--		if (smu_dpm_ctx->dpm_level == AMD_DPM_FORCED_LEVEL_MANUAL) {
--			size += sysfs_emit_at(buf, size, "%s:\n", "OD_SCLK");
--			size += sysfs_emit_at(buf, size, "0: %10uMhz\n",
--			(smu->gfx_actual_hard_min_freq > 0) ? smu->gfx_actual_hard_min_freq : smu->gfx_default_hard_min_freq);
--			size += sysfs_emit_at(buf, size, "1: %10uMhz\n",
--			(smu->gfx_actual_soft_max_freq > 0) ? smu->gfx_actual_soft_max_freq : smu->gfx_default_soft_max_freq);
--		}
-+		size += sysfs_emit_at(buf, size, "%s:\n", "OD_SCLK");
-+		size += sysfs_emit_at(buf, size, "0: %10uMhz\n",
-+		(smu->gfx_actual_hard_min_freq > 0) ? smu->gfx_actual_hard_min_freq : smu->gfx_default_hard_min_freq);
-+		size += sysfs_emit_at(buf, size, "1: %10uMhz\n",
-+		(smu->gfx_actual_soft_max_freq > 0) ? smu->gfx_actual_soft_max_freq : smu->gfx_default_soft_max_freq);
- 		break;
- 	case SMU_OD_CCLK:
--		if (smu_dpm_ctx->dpm_level == AMD_DPM_FORCED_LEVEL_MANUAL) {
--			size += sysfs_emit_at(buf, size, "CCLK_RANGE in Core%d:\n",  smu->cpu_core_id_select);
--			size += sysfs_emit_at(buf, size, "0: %10uMhz\n",
--			(smu->cpu_actual_soft_min_freq > 0) ? smu->cpu_actual_soft_min_freq : smu->cpu_default_soft_min_freq);
--			size += sysfs_emit_at(buf, size, "1: %10uMhz\n",
--			(smu->cpu_actual_soft_max_freq > 0) ? smu->cpu_actual_soft_max_freq : smu->cpu_default_soft_max_freq);
--		}
-+		size += sysfs_emit_at(buf, size, "CCLK_RANGE in Core%d:\n",  smu->cpu_core_id_select);
-+		size += sysfs_emit_at(buf, size, "0: %10uMhz\n",
-+		(smu->cpu_actual_soft_min_freq > 0) ? smu->cpu_actual_soft_min_freq : smu->cpu_default_soft_min_freq);
-+		size += sysfs_emit_at(buf, size, "1: %10uMhz\n",
-+		(smu->cpu_actual_soft_max_freq > 0) ? smu->cpu_actual_soft_max_freq : smu->cpu_default_soft_max_freq);
- 		break;
- 	case SMU_OD_RANGE:
--		if (smu_dpm_ctx->dpm_level == AMD_DPM_FORCED_LEVEL_MANUAL) {
--			size += sysfs_emit_at(buf, size, "%s:\n", "OD_RANGE");
--			size += sysfs_emit_at(buf, size, "SCLK: %7uMhz %10uMhz\n",
--				smu->gfx_default_hard_min_freq, smu->gfx_default_soft_max_freq);
--			size += sysfs_emit_at(buf, size, "CCLK: %7uMhz %10uMhz\n",
--				smu->cpu_default_soft_min_freq, smu->cpu_default_soft_max_freq);
--		}
-+		size += sysfs_emit_at(buf, size, "%s:\n", "OD_RANGE");
-+		size += sysfs_emit_at(buf, size, "SCLK: %7uMhz %10uMhz\n",
-+			smu->gfx_default_hard_min_freq, smu->gfx_default_soft_max_freq);
-+		size += sysfs_emit_at(buf, size, "CCLK: %7uMhz %10uMhz\n",
-+			smu->cpu_default_soft_min_freq, smu->cpu_default_soft_max_freq);
- 		break;
- 	case SMU_SOCCLK:
- 		/* the level 3 ~ 6 of socclk use the same frequency for vangogh */
+-static inline bool __pure __init tpacpi_is_lenovo(void)
++static __always_inline bool __pure __init tpacpi_is_lenovo(void)
+ {
+ 	return thinkpad_id.vendor == PCI_VENDOR_ID_LENOVO;
+ }
+ 
+-static inline bool __pure __init tpacpi_is_ibm(void)
++static __always_inline bool __pure __init tpacpi_is_ibm(void)
+ {
+ 	return thinkpad_id.vendor == PCI_VENDOR_ID_IBM;
+ }
 -- 
 2.39.5
 
