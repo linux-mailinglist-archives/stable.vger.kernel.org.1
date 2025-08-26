@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-173383-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-175958-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id ED28AB35CAC
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 13:36:58 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4D649B36BA4
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 16:47:53 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 37FD37A95EE
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 11:35:23 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id B484B1C474C8
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 14:29:35 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D2859301486;
-	Tue, 26 Aug 2025 11:35:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2D5F0352FC2;
+	Tue, 26 Aug 2025 14:26:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="lqAofdUD"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Aj3TSdXM"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8EBD029D26A;
-	Tue, 26 Aug 2025 11:35:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DE8A4405F7;
+	Tue, 26 Aug 2025 14:26:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756208105; cv=none; b=A4joQLZxpb7vvUYIPBYlwMb0joGQgf3jm6B0GLSartuZp0VqFp09uUJgbJ+BNlcLZEKFq6ayYJ3ca77+NP6102VebXq4xcqqd6RJID3LKjj7cGCdqDG41jZ1HVLgo4BpZcgC2YqelIMPbWsr99wYifdBmQ82Z2/KAgJW4Fgu2Xc=
+	t=1756218416; cv=none; b=aolgXimzoX+Q5k8ULld8U+tePg2oFMY/Icq5N7ph7ZiH9QDgsLKbuiWkJl72LnfFUh+KXHS/SWHooaT36YKa4ZlqMnbcMZM18zIsjrJAj3TJmIQ7fbS3/WV+fUmVcm6GA2Jour72+OGV/umW2sgfgxBGqWhZGxfooEoYO2odiSs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756208105; c=relaxed/simple;
-	bh=K+hx8Mf/Yxamu6xGbt+x2Y6uWqZVBf4gugvzJXi8WnI=;
+	s=arc-20240116; t=1756218416; c=relaxed/simple;
+	bh=IPtNJoxykuFBJU6beojYocO9xDABIMIynFuyjDKJ3Y8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=WgqfkScAlKTEsTWNx2agQ4m/3R5iYkUaTeCfUG+IdIhBIflAj59BowFA+7qh4hJNYMK2Nd4yotHKmCt7Cm2pU593VwPT6aXzcFx60fZiKGNnK5gi3yax8gngVYrKkub+rA28wnHsjKIWULOO/tK/6RBdiI6ln9OchdumRNbg66o=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=lqAofdUD; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0EED5C4CEF1;
-	Tue, 26 Aug 2025 11:35:04 +0000 (UTC)
+	 MIME-Version; b=nLCstiDMCcibRpul+uVW7bqEPJuqDn7G8q319dQkKDUyCvnvYO0aMsI/2OOCLWTCnB1UDyd8tZDGHy3i4nTCaBe+xmrOZsiJCgkPuVcSKvRsABIjpxI5hwUXeLMO4e6+1qJXRHiDVE2kNxFNbkiWfcaH9wFkq1HrdlBiMCAiZyc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Aj3TSdXM; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6F437C4CEF1;
+	Tue, 26 Aug 2025 14:26:55 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1756208105;
-	bh=K+hx8Mf/Yxamu6xGbt+x2Y6uWqZVBf4gugvzJXi8WnI=;
+	s=korg; t=1756218415;
+	bh=IPtNJoxykuFBJU6beojYocO9xDABIMIynFuyjDKJ3Y8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=lqAofdUDy9CKSQ2rATNxgVXguVzYwUuPql7jWzPCDBRFbXvGpKHLeYLhqtaGiohlG
-	 uxwxjm1GLdzkrQ6SYICWN3x3FfKglZwIxk2ounNEGbgCtE7Nx9sIthy7RIzcz2m3F2
-	 TBTejLB1FN9i5qU7ZakOuIPutaXu0t/SYDQ7xNak=
+	b=Aj3TSdXMETyFy5Gpo1leTJUiVHCA1FngyGHgIgiwDojctr3i2eOBLlvhH6LNhOOqo
+	 TGt3Ud520VC1eIkB87GFkEz62Oc+PHkArNSuw61YDp3s9QQNGP/MYOAB3rDXoQzSaf
+	 COog/DlEhpFY967a6+cUEkoz0LamtAMDeIJBS3N4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Lorenzo Bianconi <lorenzo@kernel.org>,
-	Paolo Abeni <pabeni@redhat.com>,
+	Minhong He <heminhong@kylinos.cn>,
+	Kuniyuki Iwashima <kuniyu@google.com>,
+	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.16 439/457] net: airoha: ppe: Do not invalid PPE entries in case of SW hash collision
-Date: Tue, 26 Aug 2025 13:12:03 +0200
-Message-ID: <20250826110948.135823333@linuxfoundation.org>
+Subject: [PATCH 5.10 514/523] ipv6: sr: validate HMAC algorithm ID in seg6_hmac_info_add
+Date: Tue, 26 Aug 2025 13:12:04 +0200
+Message-ID: <20250826110937.118715266@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250826110937.289866482@linuxfoundation.org>
-References: <20250826110937.289866482@linuxfoundation.org>
+In-Reply-To: <20250826110924.562212281@linuxfoundation.org>
+References: <20250826110924.562212281@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,53 +63,44 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.16-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Lorenzo Bianconi <lorenzo@kernel.org>
+From: Minhong He <heminhong@kylinos.cn>
 
-[ Upstream commit 9f6b606b6b37e61427412708411e8e04b1a858e8 ]
+[ Upstream commit 84967deee9d9870b15bc4c3acb50f1d401807902 ]
 
-SW hash computed by airoha_ppe_foe_get_entry_hash routine (used for
-foe_flow hlist) can theoretically produce collisions between two
-different HW PPE entries.
-In airoha_ppe_foe_insert_entry() if the collision occurs we will mark
-the second PPE entry in the list as stale (setting the hw hash to 0xffff).
-Stale entries are no more updated in airoha_ppe_foe_flow_entry_update
-routine and so they are removed by Netfilter.
-Fix the problem not marking the second entry as stale in
-airoha_ppe_foe_insert_entry routine if we have already inserted the
-brand new entry in the PPE table and let Netfilter remove real stale
-entries according to their timestamp.
-Please note this is just a theoretical issue spotted reviewing the code
-and not faced running the system.
+The seg6_genl_sethmac() directly uses the algorithm ID provided by the
+userspace without verifying whether it is an HMAC algorithm supported
+by the system.
+If an unsupported HMAC algorithm ID is configured, packets using SRv6 HMAC
+will be dropped during encapsulation or decapsulation.
 
-Fixes: cd53f622611f9 ("net: airoha: Add L2 hw acceleration support")
-Signed-off-by: Lorenzo Bianconi <lorenzo@kernel.org>
-Link: https://patch.msgid.link/20250818-airoha-en7581-hash-collision-fix-v1-1-d190c4b53d1c@kernel.org
-Signed-off-by: Paolo Abeni <pabeni@redhat.com>
+Fixes: 4f4853dc1c9c ("ipv6: sr: implement API to control SR HMAC structure")
+Signed-off-by: Minhong He <heminhong@kylinos.cn>
+Reviewed-by: Kuniyuki Iwashima <kuniyu@google.com>
+Link: https://patch.msgid.link/20250815063845.85426-1-heminhong@kylinos.cn
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/ethernet/airoha/airoha_ppe.c | 4 +---
- 1 file changed, 1 insertion(+), 3 deletions(-)
+ net/ipv6/seg6_hmac.c | 3 +++
+ 1 file changed, 3 insertions(+)
 
-diff --git a/drivers/net/ethernet/airoha/airoha_ppe.c b/drivers/net/ethernet/airoha/airoha_ppe.c
-index 7832fe8fc202..af6e4d4c0ece 100644
---- a/drivers/net/ethernet/airoha/airoha_ppe.c
-+++ b/drivers/net/ethernet/airoha/airoha_ppe.c
-@@ -726,10 +726,8 @@ static void airoha_ppe_foe_insert_entry(struct airoha_ppe *ppe,
- 			continue;
- 		}
+diff --git a/net/ipv6/seg6_hmac.c b/net/ipv6/seg6_hmac.c
+index 2e2b94ae6355..4a3f7bb027ed 100644
+--- a/net/ipv6/seg6_hmac.c
++++ b/net/ipv6/seg6_hmac.c
+@@ -294,6 +294,9 @@ int seg6_hmac_info_add(struct net *net, u32 key, struct seg6_hmac_info *hinfo)
+ 	struct seg6_pernet_data *sdata = seg6_pernet(net);
+ 	int err;
  
--		if (commit_done || !airoha_ppe_foe_compare_entry(e, hwe)) {
--			e->hash = 0xffff;
-+		if (!airoha_ppe_foe_compare_entry(e, hwe))
- 			continue;
--		}
++	if (!__hmac_get_algo(hinfo->alg_id))
++		return -EINVAL;
++
+ 	err = rhashtable_lookup_insert_fast(&sdata->hmac_infos, &hinfo->node,
+ 					    rht_params);
  
- 		airoha_ppe_foe_commit_entry(ppe, &e->data, hash);
- 		commit_done = true;
 -- 
 2.50.1
 
