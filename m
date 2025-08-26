@@ -1,54 +1,56 @@
-Return-Path: <stable+bounces-174343-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-174990-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id CE888B362E4
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 15:23:37 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 55B8EB365C1
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 15:50:30 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 7609E467634
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 13:17:33 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 3F8EA1BC6158
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 13:45:00 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9C04C334379;
-	Tue, 26 Aug 2025 13:15:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 38968341672;
+	Tue, 26 Aug 2025 13:44:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="0W7nPkwY"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="hAeQvs4t"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 53D88284678;
-	Tue, 26 Aug 2025 13:15:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DDEDF341655;
+	Tue, 26 Aug 2025 13:44:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756214139; cv=none; b=rHh9jCNwDg7NLlqp6XyqRwyTKBqkiJXjqrx2k/JyXF0gH+QPxzi+LO8rrBswd66PvfkOtJTFRnbRsCIz36Me9k7U9rchlHSHClBKle0ORDM9dGABeNgsTdIyQ/eL1G/CIdVOM55Flago7TAXvlT4uZOQD4TDHuV/qlGstjio7YQ=
+	t=1756215850; cv=none; b=md6exkhPhPeiy0wpLWJUMuvRNzN1LB7Yr4U/Vv1LZ9M7jK/6ixpTANvnkb7KoNFrhegPmsQh3kvr0dVQCMtaZV6rNAqA4pbQXvdNWTe3xFCszyV6fbLA47DVQ/Iydq9rLfFA1GBMbt+rOK3AVppKuB7HyX+DlAqBSv97CftjECc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756214139; c=relaxed/simple;
-	bh=GVlf6s5esLRcE4P+ATAmht9anVgF7DgSO9KkUYCSaK0=;
+	s=arc-20240116; t=1756215850; c=relaxed/simple;
+	bh=Bk9oadg4CSvxRRMx4dY/aofXaycP3x1k+5YZQaP5WSE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Pl2StObofAjBmPJRsy/8e3pfNvFwaYd64Guv6hoIVJf9IllOk/gJsyzSrESY/oL+9grRvM0Z4z2wZGz/cvezuZhEmlbvROBY7nG/0Km71ICGz+Pet5rKbp65IT1bIZVSL/0pyBLKPLGrIZnGWpBQ3fwNznRFFOWbvvrLGiEap0Q=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=0W7nPkwY; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D9B8EC4CEF1;
-	Tue, 26 Aug 2025 13:15:38 +0000 (UTC)
+	 MIME-Version; b=eBYD1JnsiHGArs25B1kMO8eG+nlHHqg8lHf8aP9gW+QNv2iUQmPQIV3oBNRhHyW8Sa7l5Bbv6xmD4jjpEbANjniR8Hs6mZBcVrP4fLcEUTBR1nkgOM6VwWOW0yem9exT996QDLwrfAUcSSH4y+kCkAHrkp/WoBTiLfXHykOjPrM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=hAeQvs4t; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 62BDFC4CEF1;
+	Tue, 26 Aug 2025 13:44:09 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1756214139;
-	bh=GVlf6s5esLRcE4P+ATAmht9anVgF7DgSO9KkUYCSaK0=;
+	s=korg; t=1756215849;
+	bh=Bk9oadg4CSvxRRMx4dY/aofXaycP3x1k+5YZQaP5WSE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=0W7nPkwY9EXpOdroRfoNsME3MMEFlAJaE8/P7+UfRStFQIS3xxcg3Y1At3tJ91yXI
-	 zC/FGCmlglpU3raBEQ4NryO1o8WAn5+lROnBzKVKC9L+o/xav//VdatpGnImWIxcgw
-	 GSUUDgZV2kpodgC2FRF78jzc4HJW24j7axsfgN8A=
+	b=hAeQvs4tJAF8qEWlF41z+AuLT5G1k9Bi5bCCxDMuFAl639Ke62F1BWtBgJP5eS5Rv
+	 C8Rr5JkapNYodv+8g1iBCSs3Uue0CwIOorJcLv5Xxm2RuH8CM+gmB56c1a9eYPQCsJ
+	 dBB3zbKresII/PvnqkVBrZtyVuvVDfSw+MZC9RCA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	"Rafael J. Wysocki" <rafael.j.wysocki@intel.com>
-Subject: [PATCH 6.1 026/482] ACPI: processor: perflib: Move problematic pr->performance check
+	Thomas Fourier <fourier.thomas@gmail.com>,
+	Herbert Xu <herbert@gondor.apana.org.au>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.15 188/644] crypto: keembay - Fix dma_unmap_sg() nents value
 Date: Tue, 26 Aug 2025 13:04:39 +0200
-Message-ID: <20250826110931.444593025@linuxfoundation.org>
+Message-ID: <20250826110951.119199446@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250826110930.769259449@linuxfoundation.org>
-References: <20250826110930.769259449@linuxfoundation.org>
+In-Reply-To: <20250826110946.507083938@linuxfoundation.org>
+References: <20250826110946.507083938@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,60 +62,68 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
+From: Thomas Fourier <fourier.thomas@gmail.com>
 
-commit d405ec23df13e6df599f5bd965a55d13420366b8 upstream.
+[ Upstream commit 01951a7dc5ac1a37e5fb7d86ea7eb2dfbf96e8b6 ]
 
-Commit d33bd88ac0eb ("ACPI: processor: perflib: Fix initial _PPC limit
-application") added a pr->performance check that prevents the frequency
-QoS request from being added when the given processor has no performance
-object.  Unfortunately, this causes a WARN() in freq_qos_remove_request()
-to trigger on an attempt to take the given CPU offline later because the
-frequency QoS object has not been added for it due to the missing
-performance object.
+The dma_unmap_sg() functions should be called with the same nents as the
+dma_map_sg(), not the value the map function returned.
 
-Address this by moving the pr->performance check before calling
-acpi_processor_get_platform_limit() so it only prevents a limit from
-being set for the CPU if the performance object is not present.  This
-way, the frequency QoS request is added as it was before the above
-commit and it is present all the time along with the CPU's cpufreq
-policy regardless of whether or not the CPU is online.
-
-Fixes: d33bd88ac0eb ("ACPI: processor: perflib: Fix initial _PPC limit application")
-Tested-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
-Cc: 5.4+ <stable@vger.kernel.org> # 5.4+
-Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
-Link: https://patch.msgid.link/2801421.mvXUDI8C0e@rafael.j.wysocki
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: 472b04444cd3 ("crypto: keembay - Add Keem Bay OCS HCU driver")
+Signed-off-by: Thomas Fourier <fourier.thomas@gmail.com>
+Signed-off-by: Herbert Xu <herbert@gondor.apana.org.au>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/acpi/processor_perflib.c |    5 ++++-
- 1 file changed, 4 insertions(+), 1 deletion(-)
+ drivers/crypto/keembay/keembay-ocs-hcu-core.c | 8 +++++++-
+ 1 file changed, 7 insertions(+), 1 deletion(-)
 
---- a/drivers/acpi/processor_perflib.c
-+++ b/drivers/acpi/processor_perflib.c
-@@ -180,7 +180,7 @@ void acpi_processor_ppc_init(struct cpuf
- 		struct acpi_processor *pr = per_cpu(processors, cpu);
- 		int ret;
+diff --git a/drivers/crypto/keembay/keembay-ocs-hcu-core.c b/drivers/crypto/keembay/keembay-ocs-hcu-core.c
+index 0379dbf32a4c..6b46c37f00ae 100644
+--- a/drivers/crypto/keembay/keembay-ocs-hcu-core.c
++++ b/drivers/crypto/keembay/keembay-ocs-hcu-core.c
+@@ -68,6 +68,7 @@ struct ocs_hcu_ctx {
+  * @sg_data_total:  Total data in the SG list at any time.
+  * @sg_data_offset: Offset into the data of the current individual SG node.
+  * @sg_dma_nents:   Number of sg entries mapped in dma_list.
++ * @nents:          Number of entries in the scatterlist.
+  */
+ struct ocs_hcu_rctx {
+ 	struct ocs_hcu_dev	*hcu_dev;
+@@ -91,6 +92,7 @@ struct ocs_hcu_rctx {
+ 	unsigned int		sg_data_total;
+ 	unsigned int		sg_data_offset;
+ 	unsigned int		sg_dma_nents;
++	unsigned int		nents;
+ };
  
--		if (!pr || !pr->performance)
-+		if (!pr)
- 			continue;
+ /**
+@@ -199,7 +201,7 @@ static void kmb_ocs_hcu_dma_cleanup(struct ahash_request *req,
  
- 		/*
-@@ -197,6 +197,9 @@ void acpi_processor_ppc_init(struct cpuf
- 			pr_err("Failed to add freq constraint for CPU%d (%d)\n",
- 			       cpu, ret);
+ 	/* Unmap req->src (if mapped). */
+ 	if (rctx->sg_dma_nents) {
+-		dma_unmap_sg(dev, req->src, rctx->sg_dma_nents, DMA_TO_DEVICE);
++		dma_unmap_sg(dev, req->src, rctx->nents, DMA_TO_DEVICE);
+ 		rctx->sg_dma_nents = 0;
+ 	}
  
-+		if (!pr->performance)
-+			continue;
+@@ -260,6 +262,10 @@ static int kmb_ocs_dma_prepare(struct ahash_request *req)
+ 			rc = -ENOMEM;
+ 			goto cleanup;
+ 		}
 +
- 		ret = acpi_processor_get_platform_limit(pr);
- 		if (ret)
- 			pr_err("Failed to update freq constraint for CPU%d (%d)\n",
++		/* Save the value of nents to pass to dma_unmap_sg. */
++		rctx->nents = nents;
++
+ 		/*
+ 		 * The value returned by dma_map_sg() can be < nents; so update
+ 		 * nents accordingly.
+-- 
+2.39.5
+
 
 
 
