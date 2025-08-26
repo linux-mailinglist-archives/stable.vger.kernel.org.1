@@ -1,56 +1,55 @@
-Return-Path: <stable+bounces-176232-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-175853-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 93E8AB36C18
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 16:52:45 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 61725B36A57
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 16:36:39 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 5CC8AA016FC
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 14:41:36 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id E415F2A7E73
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 14:23:57 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 047332AD32;
-	Tue, 26 Aug 2025 14:38:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6B4F23568F9;
+	Tue, 26 Aug 2025 14:22:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="JO3/QQs+"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="EqYVKMUH"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B6273223335;
-	Tue, 26 Aug 2025 14:38:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 279713568E3;
+	Tue, 26 Aug 2025 14:22:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756219120; cv=none; b=ulKRyOIYRgxiGeKSLdGpH8ddJDDDeNdVM8aWyQHUdZJaf+tdKEtgWddIVIcKuQ9wyMBF+zuBR7OqMRhswl8GceOpEGjX8U7B1tM9k/bcPybF/s7Z2Z7eCot1/6O2NDRnwhxNhCTC2wBWDFRqTDTC4N5w6JEhgL3smq92gGjNS04=
+	t=1756218141; cv=none; b=OWB+81DkVw/RLTk8U98Uq16mllA0KaLHVHCrzOhFDGP7xD+zU1PXIvzvGQZ0M3q5X31tp8w+7vGJ1cDR+Nc5o7xkb7LCRQaK3/1uP16/6VvAv86Oobjsu5dhTtw5HaiU++3OEs2zbqbD1DYhNqLI5kRBjxND+nvNcRZbqGxvqII=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756219120; c=relaxed/simple;
-	bh=kDi1Fbege8PDwlklifNJHfkyDjF9SB0BCpnqN9tg2ZM=;
+	s=arc-20240116; t=1756218141; c=relaxed/simple;
+	bh=f2eKGk2T0cl0c/ghZ1sZMF//lLDgbaFn05ocZ2c2mfA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=VqDr7GNDJxEbj5cidwo8lnaBjHsmzL1TXggNpO/Zza26OFNXIejkfUvN0yGyPQ1y4Qj5s1KOnp1i5nT69JBzdeaCNCwtwYoO4nZ+UpJ+zikHYEpeB1x7puKvq601IrFlOUrNqVe+5yFnlEutYjKiduwOVL+p1d/cKHeMqb4Fq88=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=JO3/QQs+; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 49329C4CEF1;
-	Tue, 26 Aug 2025 14:38:40 +0000 (UTC)
+	 MIME-Version; b=P9UXQsMNE9yazW5coJTnJHGMuJK0YnQfaUvaJuC9FEkJrr66fwQg2eat4ka0kzf3nwahGZOGKxaOdMZu2Pcg+wgBYr9QPsf2yAVGVY23T8R36fqLEhdTSgEfeo5a1Y/X6UnXi20ujMylPtRlJCIBccQggUdFPs8LsykpedDBw18=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=EqYVKMUH; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id AD175C113D0;
+	Tue, 26 Aug 2025 14:22:20 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1756219120;
-	bh=kDi1Fbege8PDwlklifNJHfkyDjF9SB0BCpnqN9tg2ZM=;
+	s=korg; t=1756218141;
+	bh=f2eKGk2T0cl0c/ghZ1sZMF//lLDgbaFn05ocZ2c2mfA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=JO3/QQs+9vryvCugiFjst5LlXwJRSDtQIOzL+7yiNW6bvOUnGCRGKzuP4uF8zmuW8
-	 pkmO8WMtlBLaNRtDS0Ji3PTU8WdSWdjDKp8YE0+9bJyXPdTJ8IjDBBFdaikF6mP21T
-	 CDFklkrojeVSif7e+8DNbn5I4blaDfIO/u4EdIYQ=
+	b=EqYVKMUHVk8RA4Tm8INA5SfjToiY0LDHXy+nCLQCo+G8iD6Mo9W8xfut1BfWh1eYs
+	 yOE2rCspEqG3sE7tKAUGbzx+zxatUOlHZYHY6dM3JPVqwuAF6Fd34mKTJS9fPKe7KO
+	 uS3ZmEPxSG7C1uuW5r3s5Kq4KGQTh5HpSUxlkJOU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Breno Leitao <leitao@debian.org>,
-	Corey Minyard <corey@minyard.net>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.4 261/403] ipmi: Use dev_warn_ratelimited() for incorrect message warnings
+	Dan Carpenter <dan.carpenter@linaro.org>,
+	Hans Verkuil <hverkuil@xs4all.nl>
+Subject: [PATCH 5.10 377/523] media: gspca: Add bounds checking to firmware parser
 Date: Tue, 26 Aug 2025 13:09:47 +0200
-Message-ID: <20250826110914.027362037@linuxfoundation.org>
+Message-ID: <20250826110933.764192416@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250826110905.607690791@linuxfoundation.org>
-References: <20250826110905.607690791@linuxfoundation.org>
+In-Reply-To: <20250826110924.562212281@linuxfoundation.org>
+References: <20250826110924.562212281@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,52 +61,61 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.4-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Breno Leitao <leitao@debian.org>
+From: Dan Carpenter <dan.carpenter@linaro.org>
 
-[ Upstream commit ec50ec378e3fd83bde9b3d622ceac3509a60b6b5 ]
+commit aef89c0b2417da79cb2062a95476288f9f203ab0 upstream.
 
-During BMC firmware upgrades on live systems, the ipmi_msghandler
-generates excessive "BMC returned incorrect response" warnings
-while the BMC is temporarily offline. This can flood system logs
-in large deployments.
+This sd_init() function reads the firmware.  The firmware data holds a
+series of records and the function reads each record and sends the data
+to the device.  The request_ihex_firmware() function
+calls ihex_validate_fw() which ensures that the total length of all the
+records won't read out of bounds of the fw->data[].
 
-Replace dev_warn() with dev_warn_ratelimited() to throttle these
-warnings and prevent log spam during BMC maintenance operations.
+However, a potential issue is if there is a single very large
+record (larger than PAGE_SIZE) and that would result in memory
+corruption.  Generally we trust the firmware, but it's always better to
+double check.
 
-Signed-off-by: Breno Leitao <leitao@debian.org>
-Message-ID: <20250710-ipmi_ratelimit-v1-1-6d417015ebe9@debian.org>
-Signed-off-by: Corey Minyard <corey@minyard.net>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Fixes: 49b61ec9b5af ("[media] gspca: Add new vicam subdriver")
+Cc: stable@vger.kernel.org
+Signed-off-by: Dan Carpenter <dan.carpenter@linaro.org>
+Signed-off-by: Hans Verkuil <hverkuil@xs4all.nl>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/char/ipmi/ipmi_msghandler.c | 8 ++++----
- 1 file changed, 4 insertions(+), 4 deletions(-)
+ drivers/media/usb/gspca/vicam.c |   10 ++++++++--
+ 1 file changed, 8 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/char/ipmi/ipmi_msghandler.c b/drivers/char/ipmi/ipmi_msghandler.c
-index 0833a2ac2f69..b8a13edee817 100644
---- a/drivers/char/ipmi/ipmi_msghandler.c
-+++ b/drivers/char/ipmi/ipmi_msghandler.c
-@@ -4302,10 +4302,10 @@ static int handle_one_recv_msg(struct ipmi_smi *intf,
- 		 * The NetFN and Command in the response is not even
- 		 * marginally correct.
- 		 */
--		dev_warn(intf->si_dev,
--			 "BMC returned incorrect response, expected netfn %x cmd %x, got netfn %x cmd %x\n",
--			 (msg->data[0] >> 2) | 1, msg->data[1],
--			 msg->rsp[0] >> 2, msg->rsp[1]);
-+		dev_warn_ratelimited(intf->si_dev,
-+				     "BMC returned incorrect response, expected netfn %x cmd %x, got netfn %x cmd %x\n",
-+				     (msg->data[0] >> 2) | 1, msg->data[1],
-+				     msg->rsp[0] >> 2, msg->rsp[1]);
+--- a/drivers/media/usb/gspca/vicam.c
++++ b/drivers/media/usb/gspca/vicam.c
+@@ -227,6 +227,7 @@ static int sd_init(struct gspca_dev *gsp
+ 	const struct ihex_binrec *rec;
+ 	const struct firmware *fw;
+ 	u8 *firmware_buf;
++	int len;
  
- 		/* Generate an error response for the message. */
- 		msg->rsp[0] = msg->data[0] | (1 << 2);
--- 
-2.39.5
-
+ 	ret = request_ihex_firmware(&fw, VICAM_FIRMWARE,
+ 				    &gspca_dev->dev->dev);
+@@ -241,9 +242,14 @@ static int sd_init(struct gspca_dev *gsp
+ 		goto exit;
+ 	}
+ 	for (rec = (void *)fw->data; rec; rec = ihex_next_binrec(rec)) {
+-		memcpy(firmware_buf, rec->data, be16_to_cpu(rec->len));
++		len = be16_to_cpu(rec->len);
++		if (len > PAGE_SIZE) {
++			ret = -EINVAL;
++			break;
++		}
++		memcpy(firmware_buf, rec->data, len);
+ 		ret = vicam_control_msg(gspca_dev, 0xff, 0, 0, firmware_buf,
+-					be16_to_cpu(rec->len));
++					len);
+ 		if (ret < 0)
+ 			break;
+ 	}
 
 
 
