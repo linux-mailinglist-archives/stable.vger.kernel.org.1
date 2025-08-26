@@ -1,56 +1,59 @@
-Return-Path: <stable+bounces-173029-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-173911-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0D5E3B35B6E
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 13:24:27 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 02631B36062
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 15:00:11 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 516081883839
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 11:21:55 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id CD6DF1BC0CB6
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 12:57:30 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 85CD4321456;
-	Tue, 26 Aug 2025 11:19:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 065351C54A9;
+	Tue, 26 Aug 2025 12:56:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="OGUcXaxQ"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="2BLBWTDa"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 433548635C;
-	Tue, 26 Aug 2025 11:19:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B689212CD88;
+	Tue, 26 Aug 2025 12:56:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756207191; cv=none; b=CpUW8T8lNh3WR947DnQLE/Sm8CR6U/yEoILIgM1bVgzTDutjufyrkbP57vZYWghpskpWZmMb0SLg95R/T1loHLusHW8fbMTp7UJXmQw9x2dFVjo567hzB0JDxDd8J0em3UPSzJEPqH8EhN5lQ/K15C9CD+1Bfz0tv1ca2v/PYbs=
+	t=1756212990; cv=none; b=BEo1dlwzbWZEjLaKZ1XjYLp36SQf2SgPFTbAoCgSea9TAKcnfFKiBtJRtjMNkhcz+JwJH5pIgAcprhAZ7BP4RgpCeJ4wTpZD2HVDZQFOWo5jSAZeOIGzrnXWibkntMQZtyiEBHAHyb4UHlTStS4nOTYojlQpAczpn/XwNb1Uzms=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756207191; c=relaxed/simple;
-	bh=24R/xeVdUpy5WS5kWs0qk4QLaKnpId53y79CqM0Cb9k=;
+	s=arc-20240116; t=1756212990; c=relaxed/simple;
+	bh=Z42X4WOu3uY5iIBakE4Q4BJ1TlyWiEfpSs9bon0Dcos=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Pm94jlBzOAM3kAhpHGfYL1SIKZTN4IXNyDTxLElrCSf9WVPcoYh0dvbARKgTvsIzHg5oXgAUGa6LrtS4IhE63wZsiIgSZzt9hzTdVHu/s20i8Uqm2nYdHIuSywaPe0Hx8jkPi+tuN/xpqJqzlYm3gZYGSi3ERbCxVkuNiZqM0es=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=OGUcXaxQ; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 82BEBC4CEF1;
-	Tue, 26 Aug 2025 11:19:50 +0000 (UTC)
+	 MIME-Version; b=bXi73g2b7yUoNrjcM6CntKrnNGsF9SSl44DPdD5x561sAq50jjtJk0XK378siZmC/CkNCX7BB2qs8MxG+57RqV6huoCH34sw0kCfyqa3u/K5Mu0IRX8Or0Ly036Fil/TDWpEVFV4y8gaStLKA2EXQo7TQiwo8k/va9wSiKD3V5Q=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=2BLBWTDa; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 45E43C4CEF1;
+	Tue, 26 Aug 2025 12:56:30 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1756207190;
-	bh=24R/xeVdUpy5WS5kWs0qk4QLaKnpId53y79CqM0Cb9k=;
+	s=korg; t=1756212990;
+	bh=Z42X4WOu3uY5iIBakE4Q4BJ1TlyWiEfpSs9bon0Dcos=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=OGUcXaxQy/eqV1vPet/RXEbQO+qFG7ysP58bvqkScuKMJ7Mt8fI1N+vM1sZich7Vq
-	 vDdfglgeLe5TjOSoCC5Xyn5qfaoW9oWX+IlcqQhHTzPL0NJ4WLJpDb+s9u8rX9vJap
-	 g2QGyLIEf5WssVEoCmoWZEb+6h/1jklqUzZieM5Q=
+	b=2BLBWTDaAb9Pv3NWTkMFaYPSOimqoTvr5as58uxT12tObAbtWRrnT+SOz6cH5ROh/
+	 6vgjwJTX+BmYIQXmkWprBiX24WiECLK0MYP99dLOc0Dhid5oJY/q+E1scUZ3Y9Pc0C
+	 JIbMZBsLxWs14DkwAXITUS/zrW0/s7k+UHsvoJ6M=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Johannes Thumshirn <johannes.thumshirn@wdc.com>,
-	Naohiro Aota <naohiro.aota@wdc.com>,
-	David Sterba <dsterba@suse.com>
-Subject: [PATCH 6.16 044/457] btrfs: zoned: fix write time activation failure for metadata block group
+	Nevenko Stupar <nevenko.stupar@amd.com>,
+	Ilya Bakoulin <Ilya.Bakoulin@amd.com>,
+	Ray Wu <ray.wu@amd.com>,
+	Daniel Wheeler <daniel.wheeler@amd.com>,
+	Alex Deucher <alexander.deucher@amd.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.6 179/587] drm/amd/display: Separate set_gsl from set_gsl_source_select
 Date: Tue, 26 Aug 2025 13:05:28 +0200
-Message-ID: <20250826110938.432862357@linuxfoundation.org>
+Message-ID: <20250826110957.495328645@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250826110937.289866482@linuxfoundation.org>
-References: <20250826110937.289866482@linuxfoundation.org>
+In-Reply-To: <20250826110952.942403671@linuxfoundation.org>
+References: <20250826110952.942403671@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,60 +65,54 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.16-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Naohiro Aota <naohiro.aota@wdc.com>
+From: Ilya Bakoulin <Ilya.Bakoulin@amd.com>
 
-commit 5c4b93f4c8e5c53574c1a48d66a27a2c68b414af upstream.
+[ Upstream commit 660a467a5e7366cd6642de61f1aaeaf0d253ee68 ]
 
-Since commit 13bb483d32ab ("btrfs: zoned: activate metadata block group on
-write time"), we activate a metadata block group at the write time. If the
-zone capacity is small enough, we can allocate the entire region before the
-first write. Then, we hit the btrfs_zoned_bg_is_full() in
-btrfs_zone_activate() and the activation fails.
+[Why/How]
+Separate the checks for set_gsl and set_gsl_source_select, since
+source_select may not be implemented/necessary.
 
-For a data block group, we activate it at the allocation time and we should
-check the fullness condition in the caller side. Add, a WARN to check the
-fullness condition.
-
-For a metadata block group, we don't need the fullness check because we
-activate it at the write time. Instead, activating it once it is written
-should be invalid. Catch that with a WARN too.
-
-Fixes: 13bb483d32ab ("btrfs: zoned: activate metadata block group on write time")
-CC: stable@vger.kernel.org # 6.6+
-Reviewed-by: Johannes Thumshirn <johannes.thumshirn@wdc.com>
-Signed-off-by: Naohiro Aota <naohiro.aota@wdc.com>
-Signed-off-by: David Sterba <dsterba@suse.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Reviewed-by: Nevenko Stupar <nevenko.stupar@amd.com>
+Signed-off-by: Ilya Bakoulin <Ilya.Bakoulin@amd.com>
+Signed-off-by: Ray Wu <ray.wu@amd.com>
+Tested-by: Daniel Wheeler <daniel.wheeler@amd.com>
+Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/btrfs/zoned.c |   13 +++++++++----
- 1 file changed, 9 insertions(+), 4 deletions(-)
+ drivers/gpu/drm/amd/display/dc/dcn20/dcn20_hwseq.c | 9 ++++-----
+ 1 file changed, 4 insertions(+), 5 deletions(-)
 
---- a/fs/btrfs/zoned.c
-+++ b/fs/btrfs/zoned.c
-@@ -2169,10 +2169,15 @@ bool btrfs_zone_activate(struct btrfs_bl
- 		goto out_unlock;
+diff --git a/drivers/gpu/drm/amd/display/dc/dcn20/dcn20_hwseq.c b/drivers/gpu/drm/amd/display/dc/dcn20/dcn20_hwseq.c
+index a825fd6c7fa6..f3c682c7fbe6 100644
+--- a/drivers/gpu/drm/amd/display/dc/dcn20/dcn20_hwseq.c
++++ b/drivers/gpu/drm/amd/display/dc/dcn20/dcn20_hwseq.c
+@@ -163,14 +163,13 @@ static void dcn20_setup_gsl_group_as_lock(
  	}
  
--	/* No space left */
--	if (btrfs_zoned_bg_is_full(block_group)) {
--		ret = false;
--		goto out_unlock;
-+	if (block_group->flags & BTRFS_BLOCK_GROUP_DATA) {
-+		/* The caller should check if the block group is full. */
-+		if (WARN_ON_ONCE(btrfs_zoned_bg_is_full(block_group))) {
-+			ret = false;
-+			goto out_unlock;
-+		}
-+	} else {
-+		/* Since it is already written, it should have been active. */
-+		WARN_ON_ONCE(block_group->meta_write_pointer != block_group->start);
- 	}
- 
- 	for (i = 0; i < map->num_stripes; i++) {
+ 	/* at this point we want to program whether it's to enable or disable */
+-	if (pipe_ctx->stream_res.tg->funcs->set_gsl != NULL &&
+-		pipe_ctx->stream_res.tg->funcs->set_gsl_source_select != NULL) {
++	if (pipe_ctx->stream_res.tg->funcs->set_gsl != NULL) {
+ 		pipe_ctx->stream_res.tg->funcs->set_gsl(
+ 			pipe_ctx->stream_res.tg,
+ 			&gsl);
+-
+-		pipe_ctx->stream_res.tg->funcs->set_gsl_source_select(
+-			pipe_ctx->stream_res.tg, group_idx,	enable ? 4 : 0);
++		if (pipe_ctx->stream_res.tg->funcs->set_gsl_source_select != NULL)
++			pipe_ctx->stream_res.tg->funcs->set_gsl_source_select(
++				pipe_ctx->stream_res.tg, group_idx, enable ? 4 : 0);
+ 	} else
+ 		BREAK_TO_DEBUGGER();
+ }
+-- 
+2.39.5
+
 
 
 
