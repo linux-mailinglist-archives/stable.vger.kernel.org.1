@@ -1,55 +1,56 @@
-Return-Path: <stable+bounces-174412-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-175613-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id E4F90B36337
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 15:27:47 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9D028B36902
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 16:21:48 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 5C5598A7FD1
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 13:20:57 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 71E662A766E
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 14:13:53 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9B62B223DE5;
-	Tue, 26 Aug 2025 13:18:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1AF973469F4;
+	Tue, 26 Aug 2025 14:11:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="YBSOiZMo"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="OqDc/XUn"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 59EEA1DAC95;
-	Tue, 26 Aug 2025 13:18:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9B9011DE8BE;
+	Tue, 26 Aug 2025 14:11:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756214321; cv=none; b=RUeQIgiAhZBFLH9yESrD4nkKWh773NIuo6PSBLGZZqfRA+AETWujPZ8XkQTxjEyNuUHECnsnYLnOp5kVU99S0utE3ZNXGu93RsKdMl/LcqyXtpHmNvnAdkUfUo2ZiBi1+dPj2HwyTAoD8hd7Krxk7/gkmC4N1seiAd7M/YJ7yEI=
+	t=1756217508; cv=none; b=fRDAVeWkQrQI76A4qwOW0rgnfjuu+hIpUTwRj9syK+6g+LNbCxcsPI4kynpVXMlJetvRpwq/jnq8z1lNxd73jeEg+yuIX8Vq92HGUDBXy3ZFszd1IciNW0cxg+FTxUxdxgzld2mOOQoSawe8zL0RX0A0VmH2Be07dY0tuDIbhAM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756214321; c=relaxed/simple;
-	bh=SWcs0lHyY51YybWPTf1hAdQWLlv2OCTHoQep6nPo1BQ=;
+	s=arc-20240116; t=1756217508; c=relaxed/simple;
+	bh=B9yC/2yEBlZCctgrHX+P8l+FBliUvTEn1B1u62Z/omg=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=RQ3PC5Jq2lEIOJaHYkY4UNgL92pG2QzsTzuAdA2ER8VSvtnaoRNh5W3e0BPoCf1Oi4+QD8MH++Xb8rBWBq0BtrJ6whf42Mp5R1EZU0iiWTcXRhcy4dYJtu/gKiQnJJi2FZdC92U+uF88ojl6N4stIKMFhXCi/N7o+LAlsI2ARUo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=YBSOiZMo; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A26B6C113CF;
-	Tue, 26 Aug 2025 13:18:40 +0000 (UTC)
+	 MIME-Version; b=Lq2Ch5NID9aqB0Ulia/u/ceWBXoSqILlBIcnogXJqenE/F5tgJK1cg8vFUuVoOTzbVy348tXnXr0rDY/7vcCserSWq+DY9Nf2YAdEe/4uBYVz3xHI9raRZzeIB4Arkp8xkJFFIUOYxGvhSm12cwtQdfLeUogfGMsLRblLZ5iWug=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=OqDc/XUn; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id DD98DC113CF;
+	Tue, 26 Aug 2025 14:11:47 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1756214321;
-	bh=SWcs0lHyY51YybWPTf1hAdQWLlv2OCTHoQep6nPo1BQ=;
+	s=korg; t=1756217508;
+	bh=B9yC/2yEBlZCctgrHX+P8l+FBliUvTEn1B1u62Z/omg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=YBSOiZMo06thYBb7/c/LCic+/qAJijzPxGM3UtaoVhCAQgSr3lRFI+aYzHQmGvbNT
-	 cAR7RISHFIfFfLNxdKVKRLSZZD/xFiOj5Z4IG3qjFPNhjNTBFXQYQ+/od4zCA4xpSQ
-	 EEulVEXM2LuG6GWRJY2J8UnoOdigPB2MN9yo0rQg=
+	b=OqDc/XUnRezGdd1IlnUOe/P7v5UQxehq13mKMZiyOB/1f3mTSBaVDUq3vhY+zuLGB
+	 f4GUE7K5ksbx7J6xSdMk+1a/F0aspDgOmFDAx+1X801Fe9NeE/qqsYJCyRHT/NPmCE
+	 0/icy68+GiPLXQgHMF0VIzUE3CjPkk2jH4q9Lw9Q=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Hans de Goede <hansg@kernel.org>,
+	Thomas Fourier <fourier.thomas@gmail.com>,
+	Vinod Koul <vkoul@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 095/482] mei: bus: Check for still connected devices in mei_cl_bus_dev_release()
+Subject: [PATCH 5.10 138/523] dmaengine: mv_xor: Fix missing check after DMA map and missing unmap
 Date: Tue, 26 Aug 2025 13:05:48 +0200
-Message-ID: <20250826110933.175579424@linuxfoundation.org>
+Message-ID: <20250826110927.906094974@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250826110930.769259449@linuxfoundation.org>
-References: <20250826110930.769259449@linuxfoundation.org>
+In-Reply-To: <20250826110924.562212281@linuxfoundation.org>
+References: <20250826110924.562212281@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,57 +62,75 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Hans de Goede <hansg@kernel.org>
+From: Thomas Fourier <fourier.thomas@gmail.com>
 
-[ Upstream commit 35e8a426b16adbecae7a4e0e3c00fc8d0273db53 ]
+[ Upstream commit 60095aca6b471b7b7a79c80b7395f7e4e414b479 ]
 
-mei_cl_bus_dev_release() also frees the mei-client (struct mei_cl)
-belonging to the device being released.
+The DMA map functions can fail and should be tested for errors.
 
-If there are bugs like the just fixed bug in the ACE/CSI2 mei drivers,
-the mei-client being freed might still be part of the mei_device's
-file_list and iterating over this list after the freeing will then trigger
-a use-afer-free bug.
+In case of error, unmap the already mapped regions.
 
-Add a check to mei_cl_bus_dev_release() to make sure that the to-be-freed
-mei-client is not on the mei_device's file_list.
-
-Signed-off-by: Hans de Goede <hansg@kernel.org>
-Link: https://lore.kernel.org/r/20250623085052.12347-11-hansg@kernel.org
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: 22843545b200 ("dma: mv_xor: Add support for DMA_INTERRUPT")
+Signed-off-by: Thomas Fourier <fourier.thomas@gmail.com>
+Link: https://lore.kernel.org/r/20250701123753.46935-2-fourier.thomas@gmail.com
+Signed-off-by: Vinod Koul <vkoul@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/misc/mei/bus.c | 6 ++++++
- 1 file changed, 6 insertions(+)
+ drivers/dma/mv_xor.c | 21 +++++++++++++++++++--
+ 1 file changed, 19 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/misc/mei/bus.c b/drivers/misc/mei/bus.c
-index 7b7f4190cd02..19bc1e9eeb7f 100644
---- a/drivers/misc/mei/bus.c
-+++ b/drivers/misc/mei/bus.c
-@@ -1113,6 +1113,8 @@ static void mei_dev_bus_put(struct mei_device *bus)
- static void mei_cl_bus_dev_release(struct device *dev)
- {
- 	struct mei_cl_device *cldev = to_mei_cl_device(dev);
-+	struct mei_device *mdev = cldev->cl->dev;
-+	struct mei_cl *cl;
+diff --git a/drivers/dma/mv_xor.c b/drivers/dma/mv_xor.c
+index 65a7db8bb71b..94a12f3267c1 100644
+--- a/drivers/dma/mv_xor.c
++++ b/drivers/dma/mv_xor.c
+@@ -1061,8 +1061,16 @@ mv_xor_channel_add(struct mv_xor_device *xordev,
+ 	 */
+ 	mv_chan->dummy_src_addr = dma_map_single(dma_dev->dev,
+ 		mv_chan->dummy_src, MV_XOR_MIN_BYTE_COUNT, DMA_FROM_DEVICE);
++	if (dma_mapping_error(dma_dev->dev, mv_chan->dummy_src_addr))
++		return ERR_PTR(-ENOMEM);
++
+ 	mv_chan->dummy_dst_addr = dma_map_single(dma_dev->dev,
+ 		mv_chan->dummy_dst, MV_XOR_MIN_BYTE_COUNT, DMA_TO_DEVICE);
++	if (dma_mapping_error(dma_dev->dev, mv_chan->dummy_dst_addr)) {
++		ret = -ENOMEM;
++		goto err_unmap_src;
++	}
++
  
- 	if (!cldev)
- 		return;
-@@ -1120,6 +1122,10 @@ static void mei_cl_bus_dev_release(struct device *dev)
- 	mei_cl_flush_queues(cldev->cl, NULL);
- 	mei_me_cl_put(cldev->me_cl);
- 	mei_dev_bus_put(cldev->bus);
+ 	/* allocate coherent memory for hardware descriptors
+ 	 * note: writecombine gives slightly better performance, but
+@@ -1071,8 +1079,10 @@ mv_xor_channel_add(struct mv_xor_device *xordev,
+ 	mv_chan->dma_desc_pool_virt =
+ 	  dma_alloc_wc(&pdev->dev, MV_XOR_POOL_SIZE, &mv_chan->dma_desc_pool,
+ 		       GFP_KERNEL);
+-	if (!mv_chan->dma_desc_pool_virt)
+-		return ERR_PTR(-ENOMEM);
++	if (!mv_chan->dma_desc_pool_virt) {
++		ret = -ENOMEM;
++		goto err_unmap_dst;
++	}
+ 
+ 	/* discover transaction capabilites from the platform data */
+ 	dma_dev->cap_mask = cap_mask;
+@@ -1155,6 +1165,13 @@ mv_xor_channel_add(struct mv_xor_device *xordev,
+ err_free_dma:
+ 	dma_free_coherent(&pdev->dev, MV_XOR_POOL_SIZE,
+ 			  mv_chan->dma_desc_pool_virt, mv_chan->dma_desc_pool);
++err_unmap_dst:
++	dma_unmap_single(dma_dev->dev, mv_chan->dummy_dst_addr,
++			 MV_XOR_MIN_BYTE_COUNT, DMA_TO_DEVICE);
++err_unmap_src:
++	dma_unmap_single(dma_dev->dev, mv_chan->dummy_src_addr,
++			 MV_XOR_MIN_BYTE_COUNT, DMA_FROM_DEVICE);
 +
-+	list_for_each_entry(cl, &mdev->file_list, link)
-+		WARN_ON(cl == cldev->cl);
-+
- 	kfree(cldev->cl);
- 	kfree(cldev);
+ 	return ERR_PTR(ret);
  }
+ 
 -- 
 2.39.5
 
