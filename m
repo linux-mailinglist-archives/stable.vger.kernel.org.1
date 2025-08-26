@@ -1,55 +1,56 @@
-Return-Path: <stable+bounces-173498-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-175774-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2AAEFB35D13
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 13:40:59 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id CAB27B369B8
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 16:29:53 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 2CFE23BEA3F
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 11:40:37 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 3A6FB5829E9
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 14:20:51 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id BECA62BEFF0;
-	Tue, 26 Aug 2025 11:40:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A6600352FDC;
+	Tue, 26 Aug 2025 14:18:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="pxPKTvgt"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="mosU1mfc"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7B2B32BE643;
-	Tue, 26 Aug 2025 11:40:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 59445352FD2;
+	Tue, 26 Aug 2025 14:18:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756208405; cv=none; b=am2AchrhUTrDjSqWVpHkDiBwaustYcKFBBSHxsvX+r29oPYKZHG2LeFzuViBFZBrcEeE7N/JXVd/nryVE7MYwAc4fnw5OLKyquIcNjWO9fLYCkB73+lTDm2AfVXRiUKlQ2pCRSBNFX7Kj84VMUdL9G1ONoNvD49doI0471dlfwE=
+	t=1756217934; cv=none; b=pntFPDYQT8tCQnlbGqZcD0H8bGHumU+gaIOTSoLYIOdRcSvI66WW8ZQGlSl6h1kOYHNMywyevK3XZ6ZQ8HlufXI3E77EqFOUQNrttsSwJN5JiRcafl7OlyF978uzffYZUn8pZHlIF+nFMv0Dk34L35PO8hdzMLJ4jJYYat6Og6s=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756208405; c=relaxed/simple;
-	bh=Bw3ea0f6aHo+ndLkN2uGJiReFPXFsh9g1vQMTnWZtSo=;
+	s=arc-20240116; t=1756217934; c=relaxed/simple;
+	bh=UcfnNe01W2sFMepN7w5KSNxirRIXYSfuRs1PrhgdFME=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=R2rwAEmv+fZly6iOiWGDANsT+O6lAI3AoVYfecqmmKgVOVl87XfCIuJ4IHrd1DawyTV3zoFCa4zsdIgQrzD+zysqXFS8e1vyFg3RJskSR9sbc0emJJ9DGDRK8hHxzQ64OU6qKuxdE3NjfA6YA0NEUQ9gZxdE1JaGSnGjocLYOGU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=pxPKTvgt; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0B388C4CEF1;
-	Tue, 26 Aug 2025 11:40:04 +0000 (UTC)
+	 MIME-Version; b=fq/m8Sxi5rhQwXaXAuOFkO2KiCpJ/N/knm8g378BdEabmYAIHUWeG/g2jSXQeI63hP7+HunZPqq1cG8S/QSIkDHFeKrBXEKOg6quClFxsCQYTDGYE/Rt/wbc8MgwsVRUKLxFO9TKxDYuie7/ByBl9HpsO/gnSoSeG4yuVRtD8xo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=mosU1mfc; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id DA215C4CEF1;
+	Tue, 26 Aug 2025 14:18:53 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1756208405;
-	bh=Bw3ea0f6aHo+ndLkN2uGJiReFPXFsh9g1vQMTnWZtSo=;
+	s=korg; t=1756217934;
+	bh=UcfnNe01W2sFMepN7w5KSNxirRIXYSfuRs1PrhgdFME=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=pxPKTvgtbkoEN/0nJ+Klw7aQfTP+UT7zwlmH6OGn+KLLVnMXBAVPW53yqERQHNvae
-	 5LQuhP48EIKQEBsGrA1sUQ5GLD++YE86/n5HHy9etx8iCXlIS84l+w/Ag5cj9YTgni
-	 m+QliWdi7DV4x0yKChr4SXSLaet1ObSrJfilXlDA=
+	b=mosU1mfcZTv/XbievszvgY9zpyQFvHgz55xbmEiHOey0YXeBvn7Vr1A+63HN4SkTQ
+	 BuVX0Rxd54k9+q1Xtvfg7nvlAvPc5BIaUOTAIbgjVZMmsFhcUfuoD0Hb3ZCnYU7pKa
+	 xKDf/gBzh9MqtsnODrdLKTeut7xUHy1ujCL5MfbY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Dan Carpenter <dan.carpenter@linaro.org>,
-	Hans Verkuil <hverkuil@xs4all.nl>
-Subject: [PATCH 6.12 098/322] media: gspca: Add bounds checking to firmware parser
+	"Yury Norov [NVIDIA]" <yury.norov@gmail.com>,
+	Leon Romanovsky <leon@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.10 303/523] RDMA: hfi1: fix possible divide-by-zero in find_hw_thread_mask()
 Date: Tue, 26 Aug 2025 13:08:33 +0200
-Message-ID: <20250826110918.114619424@linuxfoundation.org>
+Message-ID: <20250826110931.928449103@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250826110915.169062587@linuxfoundation.org>
-References: <20250826110915.169062587@linuxfoundation.org>
+In-Reply-To: <20250826110924.562212281@linuxfoundation.org>
+References: <20250826110924.562212281@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,61 +62,90 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Dan Carpenter <dan.carpenter@linaro.org>
+From: Yury Norov [NVIDIA] <yury.norov@gmail.com>
 
-commit aef89c0b2417da79cb2062a95476288f9f203ab0 upstream.
+[ Upstream commit 59f7d2138591ef8f0e4e4ab5f1ab674e8181ad3a ]
 
-This sd_init() function reads the firmware.  The firmware data holds a
-series of records and the function reads each record and sends the data
-to the device.  The request_ihex_firmware() function
-calls ihex_validate_fw() which ensures that the total length of all the
-records won't read out of bounds of the fw->data[].
+The function divides number of online CPUs by num_core_siblings, and
+later checks the divider by zero. This implies a possibility to get
+and divide-by-zero runtime error. Fix it by moving the check prior to
+division. This also helps to save one indentation level.
 
-However, a potential issue is if there is a single very large
-record (larger than PAGE_SIZE) and that would result in memory
-corruption.  Generally we trust the firmware, but it's always better to
-double check.
-
-Fixes: 49b61ec9b5af ("[media] gspca: Add new vicam subdriver")
-Cc: stable@vger.kernel.org
-Signed-off-by: Dan Carpenter <dan.carpenter@linaro.org>
-Signed-off-by: Hans Verkuil <hverkuil@xs4all.nl>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Signed-off-by: Yury Norov [NVIDIA] <yury.norov@gmail.com>
+Link: https://patch.msgid.link/20250604193947.11834-3-yury.norov@gmail.com
+Signed-off-by: Leon Romanovsky <leon@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/media/usb/gspca/vicam.c |   10 ++++++++--
- 1 file changed, 8 insertions(+), 2 deletions(-)
+ drivers/infiniband/hw/hfi1/affinity.c | 44 +++++++++++++++------------
+ 1 file changed, 24 insertions(+), 20 deletions(-)
 
---- a/drivers/media/usb/gspca/vicam.c
-+++ b/drivers/media/usb/gspca/vicam.c
-@@ -227,6 +227,7 @@ static int sd_init(struct gspca_dev *gsp
- 	const struct ihex_binrec *rec;
- 	const struct firmware *fw;
- 	u8 *firmware_buf;
-+	int len;
+diff --git a/drivers/infiniband/hw/hfi1/affinity.c b/drivers/infiniband/hw/hfi1/affinity.c
+index d5a8d0173709..5eaf61784788 100644
+--- a/drivers/infiniband/hw/hfi1/affinity.c
++++ b/drivers/infiniband/hw/hfi1/affinity.c
+@@ -1008,31 +1008,35 @@ static void find_hw_thread_mask(uint hw_thread_no, cpumask_var_t hw_thread_mask,
+ 				struct hfi1_affinity_node_list *affinity)
+ {
+ 	int possible, curr_cpu, i;
+-	uint num_cores_per_socket = node_affinity.num_online_cpus /
++	uint num_cores_per_socket;
++
++	cpumask_copy(hw_thread_mask, &affinity->proc.mask);
++
++	if (affinity->num_core_siblings == 0)
++		return;
++
++	num_cores_per_socket = node_affinity.num_online_cpus /
+ 					affinity->num_core_siblings /
+ 						node_affinity.num_online_nodes;
  
- 	ret = request_ihex_firmware(&fw, VICAM_FIRMWARE,
- 				    &gspca_dev->dev->dev);
-@@ -241,9 +242,14 @@ static int sd_init(struct gspca_dev *gsp
- 		goto exit;
+-	cpumask_copy(hw_thread_mask, &affinity->proc.mask);
+-	if (affinity->num_core_siblings > 0) {
+-		/* Removing other siblings not needed for now */
+-		possible = cpumask_weight(hw_thread_mask);
+-		curr_cpu = cpumask_first(hw_thread_mask);
+-		for (i = 0;
+-		     i < num_cores_per_socket * node_affinity.num_online_nodes;
+-		     i++)
+-			curr_cpu = cpumask_next(curr_cpu, hw_thread_mask);
+-
+-		for (; i < possible; i++) {
+-			cpumask_clear_cpu(curr_cpu, hw_thread_mask);
+-			curr_cpu = cpumask_next(curr_cpu, hw_thread_mask);
+-		}
++	/* Removing other siblings not needed for now */
++	possible = cpumask_weight(hw_thread_mask);
++	curr_cpu = cpumask_first(hw_thread_mask);
++	for (i = 0;
++	     i < num_cores_per_socket * node_affinity.num_online_nodes;
++	     i++)
++		curr_cpu = cpumask_next(curr_cpu, hw_thread_mask);
+ 
+-		/* Identifying correct HW threads within physical cores */
+-		cpumask_shift_left(hw_thread_mask, hw_thread_mask,
+-				   num_cores_per_socket *
+-				   node_affinity.num_online_nodes *
+-				   hw_thread_no);
++	for (; i < possible; i++) {
++		cpumask_clear_cpu(curr_cpu, hw_thread_mask);
++		curr_cpu = cpumask_next(curr_cpu, hw_thread_mask);
  	}
- 	for (rec = (void *)fw->data; rec; rec = ihex_next_binrec(rec)) {
--		memcpy(firmware_buf, rec->data, be16_to_cpu(rec->len));
-+		len = be16_to_cpu(rec->len);
-+		if (len > PAGE_SIZE) {
-+			ret = -EINVAL;
-+			break;
-+		}
-+		memcpy(firmware_buf, rec->data, len);
- 		ret = vicam_control_msg(gspca_dev, 0xff, 0, 0, firmware_buf,
--					be16_to_cpu(rec->len));
-+					len);
- 		if (ret < 0)
- 			break;
- 	}
++
++	/* Identifying correct HW threads within physical cores */
++	cpumask_shift_left(hw_thread_mask, hw_thread_mask,
++			   num_cores_per_socket *
++			   node_affinity.num_online_nodes *
++			   hw_thread_no);
+ }
+ 
+ int hfi1_get_proc_affinity(int node)
+-- 
+2.39.5
+
 
 
 
