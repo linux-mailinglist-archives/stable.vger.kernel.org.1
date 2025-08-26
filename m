@@ -1,58 +1,57 @@
-Return-Path: <stable+bounces-173970-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-173048-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 76D41B36091
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 15:01:55 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9ACD0B35B48
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 13:22:38 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 6AB50363220
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 12:59:11 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id DAB353AF840
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 11:22:01 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2F4651DD0D4;
-	Tue, 26 Aug 2025 12:59:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B8DAF326D48;
+	Tue, 26 Aug 2025 11:20:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="OsFTaEiY"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="kKh9cm10"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E34471A5BBC;
-	Tue, 26 Aug 2025 12:59:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 770EF2F83C1;
+	Tue, 26 Aug 2025 11:20:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756213147; cv=none; b=Txvnpj95Zg6NAgx3ELBdlwFpOBIBDuNbHVRbkGt5xo8JXjulc/Mt2J9/G3wxucwjrXlrCPLhNBxpi5kHUEYuKzfOz2H3vo5eyV4QyzKIeHMGRg5B02abrU6y0gWhqN7IF/7u1BRMKy50dOfjPCqqlc3KJu5GRv4poeRKIePwqVQ=
+	t=1756207239; cv=none; b=tfg3tUU0xBjz0Z1DiraUDxcDxGlC0Oo0aqT2bpTKTn3XPHzwckXwrZ/ccXWExF91NULeZpXnlaNnBob8mYf11iB+xoFnIKMMMDXQMJf8RGt5XhgTRaVW4dUm0bCuMhMojYtmtUsPszXUNjqxDpl50eA9qG4aNCKLZTU5ntHyqQA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756213147; c=relaxed/simple;
-	bh=FtVCzTe3Nm41wzXkeg0+NbH4f9UCOuxtCaA3Uv79xqo=;
+	s=arc-20240116; t=1756207239; c=relaxed/simple;
+	bh=Qu37dA89Z1rTLHkH11U4P5sJro6VkYjjUWnBV6Q2qz4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=p88EcCNQ+ssY0y/Kvzj6JgI6qHB/UOPKBV4hF5hP2wFY+bTcwBFXXP7taA4dQpgU25rWg2X/hJISQELQxf7BWUMwN9Ns9+BjG1lG149jpBYtp1aCRPQvBcojiwK/rcn+tLNVZDwkbEuC9uyY2KNNwPRlv5Lshwbe7j3jcMRI82A=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=OsFTaEiY; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 56998C4CEF1;
-	Tue, 26 Aug 2025 12:59:06 +0000 (UTC)
+	 MIME-Version; b=SvCpyg4XdqJS5FvWLAckanK+hjtfHm35t5ciGHE4T2HPgDJ9JSCGHwe4dDIMxsBbdcu78B2opGmqhiTzPvaQVkFMcVNi9LzLATyXKEjP129jT7IrCDuzw6osTnP7DEil/8V10fBXz0hiJ8pVnHmV7kmyMbsskxL9i+5KgH4zb7E=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=kKh9cm10; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 08831C4CEF1;
+	Tue, 26 Aug 2025 11:20:38 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1756213146;
-	bh=FtVCzTe3Nm41wzXkeg0+NbH4f9UCOuxtCaA3Uv79xqo=;
+	s=korg; t=1756207239;
+	bh=Qu37dA89Z1rTLHkH11U4P5sJro6VkYjjUWnBV6Q2qz4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=OsFTaEiYF/11nTs0+bvBBcuIcAov4hyJ2a4CCt/ZkFIsPsWpoQAAGQCdIpWfudNtk
-	 0P5bQimkyb5zoqmybVg5ywsWuqXhga038V4QqJrUvm6AqpBk77AzedaScrrBSLVx4i
-	 Xn9RZ0tuRTgdfFrCSpuuWnHF07+A8h5NQlZKTLhk=
+	b=kKh9cm10lhglU2xFwHzHD277uyC6Wqb9/MWMVDdm66AiIu0FgtH4ta3564p1Jh+Tc
+	 tl/GQxdLzXK2A13WGflgK+5evQHRGVyb1oY09h41cLHlCNXjO27Ln3pEl53b5kyfXF
+	 LnXlnOTmpkWc074SU7pklrEaJ3I5rCnrg4R+Xt3g=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	=?UTF-8?q?Thomas=20Wei=C3=9Fschuh?= <thomas.weissschuh@linutronix.de>,
-	David Gow <davidgow@google.com>,
-	Huacai Chen <chenhuacai@loongson.cn>,
-	Thomas Bogendoerfer <tsbogend@alpha.franken.de>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 239/587] MIPS: Dont crash in stack_top() for tasks without ABI or vDSO
+	Richard Zhu <hongxing.zhu@nxp.com>,
+	Manivannan Sadhasivam <mani@kernel.org>,
+	Bjorn Helgaas <bhelgaas@google.com>,
+	Frank Li <Frank.Li@nxp.com>
+Subject: [PATCH 6.16 104/457] PCI: imx6: Delay link start until configfs start written
 Date: Tue, 26 Aug 2025 13:06:28 +0200
-Message-ID: <20250826110959.013459107@linuxfoundation.org>
+Message-ID: <20250826110939.946909758@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250826110952.942403671@linuxfoundation.org>
-References: <20250826110952.942403671@linuxfoundation.org>
+In-Reply-To: <20250826110937.289866482@linuxfoundation.org>
+References: <20250826110937.289866482@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,84 +61,51 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.16-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Thomas Weißschuh <thomas.weissschuh@linutronix.de>
+From: Richard Zhu <hongxing.zhu@nxp.com>
 
-[ Upstream commit e9f4a6b3421e936c3ee9d74710243897d74dbaa2 ]
+commit 2e6ea70690ddd1ffa422423fd0d4523e4dfe4b62 upstream.
 
-Not all tasks have an ABI associated or vDSO mapped,
-for example kthreads never do.
-If such a task ever ends up calling stack_top(), it will derefence the
-NULL ABI pointer and crash.
+According to Documentation/PCI/endpoint/pci-endpoint-cfs.rst, the Endpoint
+controller (EPC) should only start the link when userspace writes '1' to
+the '/sys/kernel/config/pci_ep/controllers/<EPC>/start' attribute, which
+ultimately results in calling imx_pcie_start_link() via
+pci_epc_start_store().
 
-This can for example happen when using kunit:
+To align with the documented behavior, do not start the link automatically
+when adding the EP controller.
 
-    mips_stack_top+0x28/0xc0
-    arch_pick_mmap_layout+0x190/0x220
-    kunit_vm_mmap_init+0xf8/0x138
-    __kunit_add_resource+0x40/0xa8
-    kunit_vm_mmap+0x88/0xd8
-    usercopy_test_init+0xb8/0x240
-    kunit_try_run_case+0x5c/0x1a8
-    kunit_generic_run_threadfn_adapter+0x28/0x50
-    kthread+0x118/0x240
-    ret_from_kernel_thread+0x14/0x1c
-
-Only dereference the ABI point if it is set.
-
-The GIC page is also included as it is specific to the vDSO.
-Also move the randomization adjustment into the same conditional.
-
-Signed-off-by: Thomas Weißschuh <thomas.weissschuh@linutronix.de>
-Reviewed-by: David Gow <davidgow@google.com>
-Reviewed-by: Huacai Chen <chenhuacai@loongson.cn>
-Signed-off-by: Thomas Bogendoerfer <tsbogend@alpha.franken.de>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Fixes: 75c2f26da03f ("PCI: imx6: Add i.MX PCIe EP mode support")
+Signed-off-by: Richard Zhu <hongxing.zhu@nxp.com>
+[mani: reworded commit subject and description]
+Signed-off-by: Manivannan Sadhasivam <mani@kernel.org>
+[bhelgaas: commit log]
+Signed-off-by: Bjorn Helgaas <bhelgaas@google.com>
+Reviewed-by: Frank Li <Frank.Li@nxp.com>
+Cc: stable@vger.kernel.org
+Link: https://patch.msgid.link/20250709033722.2924372-3-hongxing.zhu@nxp.com
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- arch/mips/kernel/process.c | 16 +++++++++-------
- 1 file changed, 9 insertions(+), 7 deletions(-)
+ drivers/pci/controller/dwc/pci-imx6.c |    3 ---
+ 1 file changed, 3 deletions(-)
 
-diff --git a/arch/mips/kernel/process.c b/arch/mips/kernel/process.c
-index b630604c577f..02aa6a04a21d 100644
---- a/arch/mips/kernel/process.c
-+++ b/arch/mips/kernel/process.c
-@@ -690,18 +690,20 @@ unsigned long mips_stack_top(void)
- 	}
+--- a/drivers/pci/controller/dwc/pci-imx6.c
++++ b/drivers/pci/controller/dwc/pci-imx6.c
+@@ -1468,9 +1468,6 @@ static int imx_add_pcie_ep(struct imx_pc
  
- 	/* Space for the VDSO, data page & GIC user page */
--	top -= PAGE_ALIGN(current->thread.abi->vdso->size);
--	top -= PAGE_SIZE;
--	top -= mips_gic_present() ? PAGE_SIZE : 0;
-+	if (current->thread.abi) {
-+		top -= PAGE_ALIGN(current->thread.abi->vdso->size);
-+		top -= PAGE_SIZE;
-+		top -= mips_gic_present() ? PAGE_SIZE : 0;
-+
-+		/* Space to randomize the VDSO base */
-+		if (current->flags & PF_RANDOMIZE)
-+			top -= VDSO_RANDOMIZE_SIZE;
-+	}
+ 	pci_epc_init_notify(ep->epc);
  
- 	/* Space for cache colour alignment */
- 	if (cpu_has_dc_aliases)
- 		top -= shm_align_mask + 1;
- 
--	/* Space to randomize the VDSO base */
--	if (current->flags & PF_RANDOMIZE)
--		top -= VDSO_RANDOMIZE_SIZE;
+-	/* Start LTSSM. */
+-	imx_pcie_ltssm_enable(dev);
 -
- 	return top;
+ 	return 0;
  }
  
--- 
-2.39.5
-
 
 
 
