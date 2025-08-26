@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-174999-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-173841-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 15602B3665F
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 15:56:27 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8A77FB36011
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 14:56:33 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id D5E80174C8E
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 13:45:04 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id AF6291BA7392
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 12:54:43 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D6DCF33EAF2;
-	Tue, 26 Aug 2025 13:44:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id DF9551A83ED;
+	Tue, 26 Aug 2025 12:53:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="eCsqknj7"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="gxzVBA8u"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 882E2319867;
-	Tue, 26 Aug 2025 13:44:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9D9281C6BE;
+	Tue, 26 Aug 2025 12:53:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756215873; cv=none; b=gJQnYyWeQg9PMhE/kZKHdurCU15sDqRg0JkmpbiEcL4wpewyqfGZiW2gZrycfAeNAJOs+GRGwDsG0sGy9yi32Wc4ktlNNBONuqanK0WP2UL1U8M3OirVXkb1JwcdzfW39muzE/YB3SATDDs3ghUeEB4h/L65NLGOQBcUW6Fseyo=
+	t=1756212806; cv=none; b=Qo7MqQHIDCDY/NUomrChG1/sfZiCF2WsuvU+Kd+7h3fi3j2PFnmnWBoROkS1b2SriGNw04CNkhlVi0GXvCjnYkPE8Pn1DSMH3Pt9AE18M/Pes824jua4TRK7Xs0PjYJRNbHBjHkLforYhvj/BpcYO++HsbIvHtsNKu9TXTxDOno=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756215873; c=relaxed/simple;
-	bh=TqMSUsIfUZZsLrtk9sgxVnh9hGnHPwB2QCbpYLWAbwQ=;
+	s=arc-20240116; t=1756212806; c=relaxed/simple;
+	bh=Xw9qEJyJ8eESyhJgLQQxxpRX/kNu2ytkDHW6iLClr1A=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Ge0NBNfUIZhWQZ6VDyNu4B0jlh53RF0ImX8faKH9UnBDINY0KFHrZXg6GLD255czxHymJSZBYwjYP/ArZLNYdUHOm6CKtbix8w/lSve8Yz0a2LlAQDm5l8IDibVU14HjgyUka1bRBnF52hZN0Jivese5Uu5uo7icv66STIQoXjM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=eCsqknj7; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1879CC4CEF1;
-	Tue, 26 Aug 2025 13:44:32 +0000 (UTC)
+	 MIME-Version; b=XN7MbzEJpPYBktfsQg2USyc7DxJRpnLe1NqlHQsjFy2khza1elYT5JJAj5g+eJ/KO4iQK2u94eWeaNzRTDnTa6T5W3pLe3OqAFZSc31akzNbIiRAl7EmDgibDEdxsVCNTQ/4g9b9dV+mrba+3s5F2wawZY8T6CEcHuRZr9sKkMA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=gxzVBA8u; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2E134C4CEF1;
+	Tue, 26 Aug 2025 12:53:26 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1756215873;
-	bh=TqMSUsIfUZZsLrtk9sgxVnh9hGnHPwB2QCbpYLWAbwQ=;
+	s=korg; t=1756212806;
+	bh=Xw9qEJyJ8eESyhJgLQQxxpRX/kNu2ytkDHW6iLClr1A=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=eCsqknj7/UpoBuPDJxPFJb0UY9rBo5l7JlUq7ZnsE3PsqXNHAKXkVZmeytZVktjDm
-	 xRAr7cJSqK8OIAsC+R7PtzjKMnsv8qvRL3kdQKJd5tcPCjf7N4SU3GwyAVXG4myuDO
-	 OP1m6XVVGO6RWomkCifCbjs5qix0kzMlIxk7aZh0=
+	b=gxzVBA8un+F3PuNC8UFZs8GZeBmtBb2O8J6nUSUskI5qIXDvSTBMCtjY+yg1UDb7q
+	 +1e6RQ0rOcUOEnWq89oW4vUUTvbQ4PqFMkX2fOJ9kwZh4FjOw9yCsbEmB2TTM9Zd/t
+	 +aiOzGj4YYnkf3OHNlMpBzO57tXKHw1mP1wzN7yk=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Ivan Stepchenko <sid@itb.spb.ru>,
-	Miquel Raynal <miquel.raynal@bootlin.com>,
+	Ulf Hansson <ulf.hansson@linaro.org>,
+	"Rafael J. Wysocki" <rafael.j.wysocki@intel.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 167/644] mtd: fix possible integer overflow in erase_xfer()
+Subject: [PATCH 6.6 109/587] PM: runtime: Clear power.needs_force_resume in pm_runtime_reinit()
 Date: Tue, 26 Aug 2025 13:04:18 +0200
-Message-ID: <20250826110950.619081012@linuxfoundation.org>
+Message-ID: <20250826110955.711993247@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250826110946.507083938@linuxfoundation.org>
-References: <20250826110946.507083938@linuxfoundation.org>
+In-Reply-To: <20250826110952.942403671@linuxfoundation.org>
+References: <20250826110952.942403671@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,43 +62,43 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Ivan Stepchenko <sid@itb.spb.ru>
+From: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
 
-[ Upstream commit 9358bdb9f9f54d94ceafc650deffefd737d19fdd ]
+[ Upstream commit 89d9cec3b1e9c49bae9375a2db6dc49bc7468af0 ]
 
-The expression '1 << EraseUnitSize' is evaluated in int, which causes
-a negative result when shifting by 31 - the upper bound of the valid
-range [10, 31], enforced by scan_header(). This leads to incorrect
-extension when storing the result in 'erase->len' (uint64_t), producing
-a large unexpected value.
+Clear power.needs_force_resume in pm_runtime_reinit() in case it has
+been set by pm_runtime_force_suspend() invoked from a driver remove
+callback.
 
-Found by Linux Verification Center (linuxtesting.org) with Svace.
-
-Fixes: 1da177e4c3f4 ("Linux-2.6.12-rc2")
-Signed-off-by: Ivan Stepchenko <sid@itb.spb.ru>
-Signed-off-by: Miquel Raynal <miquel.raynal@bootlin.com>
+Suggested-by: Ulf Hansson <ulf.hansson@linaro.org>
+Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
+Reviewed-by: Ulf Hansson <ulf.hansson@linaro.org>
+Link: https://patch.msgid.link/9495163.CDJkKcVGEf@rjwysocki.net
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/mtd/ftl.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/base/power/runtime.c | 5 +++++
+ 1 file changed, 5 insertions(+)
 
-diff --git a/drivers/mtd/ftl.c b/drivers/mtd/ftl.c
-index f655d2905270..243d7faa128a 100644
---- a/drivers/mtd/ftl.c
-+++ b/drivers/mtd/ftl.c
-@@ -344,7 +344,7 @@ static int erase_xfer(partition_t *part,
-             return -ENOMEM;
+diff --git a/drivers/base/power/runtime.c b/drivers/base/power/runtime.c
+index 0d43bf5b6cec..d89439e3605a 100644
+--- a/drivers/base/power/runtime.c
++++ b/drivers/base/power/runtime.c
+@@ -1754,6 +1754,11 @@ void pm_runtime_reinit(struct device *dev)
+ 				pm_runtime_put(dev->parent);
+ 		}
+ 	}
++	/*
++	 * Clear power.needs_force_resume in case it has been set by
++	 * pm_runtime_force_suspend() invoked from a driver remove callback.
++	 */
++	dev->power.needs_force_resume = false;
+ }
  
-     erase->addr = xfer->Offset;
--    erase->len = 1 << part->header.EraseUnitSize;
-+    erase->len = 1ULL << part->header.EraseUnitSize;
- 
-     ret = mtd_erase(part->mbd.mtd, erase);
-     if (!ret) {
+ /**
 -- 
 2.39.5
 
