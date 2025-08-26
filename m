@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-175497-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-174370-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id B261FB368DD
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 16:20:15 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 29DBEB362C4
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 15:21:50 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id ADE0C1BC795E
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 14:08:47 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 81D741BC0A1A
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 13:18:45 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 883EB338F51;
-	Tue, 26 Aug 2025 14:06:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3873A1B87E8;
+	Tue, 26 Aug 2025 13:16:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="cOS0JPHo"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="yUqG6yLH"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 426FF2192F2;
-	Tue, 26 Aug 2025 14:06:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E942B8635D;
+	Tue, 26 Aug 2025 13:16:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756217200; cv=none; b=oNqWSCPkUlYSXp6+Ctqo7XwlN8zdf0sKfWZ3U+0FnIMh9wdcbPmHedE/3v31Dn2IYEVQdu1yb6rrs+S/M0X8tNAfrGbNtcPFm3AhrMK7xEfH70o2zy2SktyhRkxzqck0d4KbI4bYDs5dB6DCWLJVEC8MUqkNCqzLIoNBBHjKz54=
+	t=1756214211; cv=none; b=UC1iHEU7bgKHgfi5/xa2d6K/uAogEIzqG8D/LvJ1J4N3qzN/tISGHQ/wUcvqNCv8rTroM/4KpljaqJbKaZiUgJud70B4t6LSGl8MMfW4/3vZe/1XTWEREK+4U0GV3TqVWHhXpQ4miDGXPiY/VyOoITdQsJmahkNhRsn7OQ2gkvc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756217200; c=relaxed/simple;
-	bh=luFQrnHwPf9684fAPp2uAqyGsRF8GZ9i8pKqJia7OFw=;
+	s=arc-20240116; t=1756214211; c=relaxed/simple;
+	bh=ZmB6kremGYbqbDLv77hAqtMw0sfeuNIZF29mYuRVvew=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=XssJB611DzzW48CP8j3u0o0PtuC0eNC1M7gHDiKfkJq1mrjZnSOYsTNCpQoMd/pOTF8ppP1CTGdaqTfvOGUg27jaEbiJFgHQ9lp0/HF8DwS70L4c9CXrAFl//1Ck9Lvc3yNAOqZNxTuGX6juq1TOCsDUSpLqKYwjZX3Cbmj2OGg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=cOS0JPHo; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id CA71FC113CF;
-	Tue, 26 Aug 2025 14:06:39 +0000 (UTC)
+	 MIME-Version; b=Snaj79Wr6ecaakwPrnIOkNWOHrceWS/WCipNWPckGdkFpud+C4SWOHT1GvccwHqR/uBq6/PKNX8M7QuvZnHRty7kYc1dCF9QLic3egSYxK7xTjzHL9U+s+5UJNXjEa1G66uKGOFaem38kkTp+h24ckOkt8h8K9QdodA06Okm5UQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=yUqG6yLH; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 77DD7C113D0;
+	Tue, 26 Aug 2025 13:16:50 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1756217200;
-	bh=luFQrnHwPf9684fAPp2uAqyGsRF8GZ9i8pKqJia7OFw=;
+	s=korg; t=1756214210;
+	bh=ZmB6kremGYbqbDLv77hAqtMw0sfeuNIZF29mYuRVvew=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=cOS0JPHoJi+UypARgZZyY3K1zJVZsy2y8KjzHzPjnJOStpLFyxFr9syJ20wXZBqqU
-	 N59086UAn/7l1SOj75Sw/yCh1ouYgfhjZnXW8bgZAMi3y/u9TUTMSsxNxt9ybBJKu+
-	 YQaCDdXaViot8EVcDl/K7zRsRsmscUgsXKXs14sU=
+	b=yUqG6yLHtPWHIafg+7F/bS9QaPCEPjZOkikNZ7cuAk552y9NY7qjDMq/t+TyACmMH
+	 /tJ3AMDfqwBoacy6kz4TRclsGeZX98GC2a0st5dT/m+yYjTruiYUvUCoz4K0Amchsx
+	 DzR4sAl+PqYR/hY77pIcXX0Tbr41o33JEh9w6tdk=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Bui Quang Minh <minhquangbui99@gmail.com>,
-	Jason Wang <jasowang@redhat.com>,
-	Paolo Abeni <pabeni@redhat.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 053/523] virtio-net: ensure the received length does not exceed allocated size
+	Fedor Pchelkin <pchelkin@ispras.ru>,
+	Kuniyuki Iwashima <kuniyu@google.com>,
+	Jakub Kicinski <kuba@kernel.org>
+Subject: [PATCH 6.1 010/482] netlink: avoid infinite retry looping in netlink_unicast()
 Date: Tue, 26 Aug 2025 13:04:23 +0200
-Message-ID: <20250826110925.903845524@linuxfoundation.org>
+Message-ID: <20250826110931.037515461@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250826110924.562212281@linuxfoundation.org>
-References: <20250826110924.562212281@linuxfoundation.org>
+In-Reply-To: <20250826110930.769259449@linuxfoundation.org>
+References: <20250826110930.769259449@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,117 +62,85 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Bui Quang Minh <minhquangbui99@gmail.com>
+From: Fedor Pchelkin <pchelkin@ispras.ru>
 
-commit 315dbdd7cdf6aa533829774caaf4d25f1fd20e73 upstream.
+commit 759dfc7d04bab1b0b86113f1164dc1fec192b859 upstream.
 
-In xdp_linearize_page, when reading the following buffers from the ring,
-we forget to check the received length with the true allocate size. This
-can lead to an out-of-bound read. This commit adds that missing check.
+netlink_attachskb() checks for the socket's read memory allocation
+constraints. Firstly, it has:
 
-Cc: <stable@vger.kernel.org>
-Fixes: 4941d472bf95 ("virtio-net: do not reset during XDP set")
-Signed-off-by: Bui Quang Minh <minhquangbui99@gmail.com>
-Acked-by: Jason Wang <jasowang@redhat.com>
-Link: https://patch.msgid.link/20250630144212.48471-2-minhquangbui99@gmail.com
-Signed-off-by: Paolo Abeni <pabeni@redhat.com>
-[ adapted virtqueue_get_buf() to virtqueue_get_buf_ctx() ]
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+  rmem < READ_ONCE(sk->sk_rcvbuf)
+
+to check if the just increased rmem value fits into the socket's receive
+buffer. If not, it proceeds and tries to wait for the memory under:
+
+  rmem + skb->truesize > READ_ONCE(sk->sk_rcvbuf)
+
+The checks don't cover the case when skb->truesize + sk->sk_rmem_alloc is
+equal to sk->sk_rcvbuf. Thus the function neither successfully accepts
+these conditions, nor manages to reschedule the task - and is called in
+retry loop for indefinite time which is caught as:
+
+  rcu: INFO: rcu_sched self-detected stall on CPU
+  rcu:     0-....: (25999 ticks this GP) idle=ef2/1/0x4000000000000000 softirq=262269/262269 fqs=6212
+  (t=26000 jiffies g=230833 q=259957)
+  NMI backtrace for cpu 0
+  CPU: 0 PID: 22 Comm: kauditd Not tainted 5.10.240 #68
+  Hardware name: QEMU Standard PC (i440FX + PIIX, 1996), BIOS 1.17.0-4.fc42 04/01/2014
+  Call Trace:
+  <IRQ>
+  dump_stack lib/dump_stack.c:120
+  nmi_cpu_backtrace.cold lib/nmi_backtrace.c:105
+  nmi_trigger_cpumask_backtrace lib/nmi_backtrace.c:62
+  rcu_dump_cpu_stacks kernel/rcu/tree_stall.h:335
+  rcu_sched_clock_irq.cold kernel/rcu/tree.c:2590
+  update_process_times kernel/time/timer.c:1953
+  tick_sched_handle kernel/time/tick-sched.c:227
+  tick_sched_timer kernel/time/tick-sched.c:1399
+  __hrtimer_run_queues kernel/time/hrtimer.c:1652
+  hrtimer_interrupt kernel/time/hrtimer.c:1717
+  __sysvec_apic_timer_interrupt arch/x86/kernel/apic/apic.c:1113
+  asm_call_irq_on_stack arch/x86/entry/entry_64.S:808
+  </IRQ>
+
+  netlink_attachskb net/netlink/af_netlink.c:1234
+  netlink_unicast net/netlink/af_netlink.c:1349
+  kauditd_send_queue kernel/audit.c:776
+  kauditd_thread kernel/audit.c:897
+  kthread kernel/kthread.c:328
+  ret_from_fork arch/x86/entry/entry_64.S:304
+
+Restore the original behavior of the check which commit in Fixes
+accidentally missed when restructuring the code.
+
+Found by Linux Verification Center (linuxtesting.org).
+
+Fixes: ae8f160e7eb2 ("netlink: Fix wraparounds of sk->sk_rmem_alloc.")
+Cc: stable@vger.kernel.org
+Signed-off-by: Fedor Pchelkin <pchelkin@ispras.ru>
+Reviewed-by: Kuniyuki Iwashima <kuniyu@google.com>
+Link: https://patch.msgid.link/20250728080727.255138-1-pchelkin@ispras.ru
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/net/virtio_net.c |   38 ++++++++++++++++++++++++++++++++++----
- 1 file changed, 34 insertions(+), 4 deletions(-)
+ net/netlink/af_netlink.c |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/drivers/net/virtio_net.c
-+++ b/drivers/net/virtio_net.c
-@@ -394,6 +394,26 @@ static unsigned int mergeable_ctx_to_tru
- 	return (unsigned long)mrg_ctx & ((1 << MRG_CTX_HEADER_SHIFT) - 1);
- }
+--- a/net/netlink/af_netlink.c
++++ b/net/netlink/af_netlink.c
+@@ -1217,7 +1217,7 @@ int netlink_attachskb(struct sock *sk, s
+ 	nlk = nlk_sk(sk);
+ 	rmem = atomic_add_return(skb->truesize, &sk->sk_rmem_alloc);
  
-+static int check_mergeable_len(struct net_device *dev, void *mrg_ctx,
-+			       unsigned int len)
-+{
-+	unsigned int headroom, tailroom, room, truesize;
-+
-+	truesize = mergeable_ctx_to_truesize(mrg_ctx);
-+	headroom = mergeable_ctx_to_headroom(mrg_ctx);
-+	tailroom = headroom ? sizeof(struct skb_shared_info) : 0;
-+	room = SKB_DATA_ALIGN(headroom + tailroom);
-+
-+	if (len > truesize - room) {
-+		pr_debug("%s: rx error: len %u exceeds truesize %lu\n",
-+			 dev->name, len, (unsigned long)(truesize - room));
-+		dev->stats.rx_length_errors++;
-+		return -1;
-+	}
-+
-+	return 0;
-+}
-+
- /* Called from bottom half context */
- static struct sk_buff *page_to_skb(struct virtnet_info *vi,
- 				   struct receive_queue *rq,
-@@ -639,7 +659,8 @@ static unsigned int virtnet_get_headroom
-  * across multiple buffers (num_buf > 1), and we make sure buffers
-  * have enough headroom.
-  */
--static struct page *xdp_linearize_page(struct receive_queue *rq,
-+static struct page *xdp_linearize_page(struct net_device *dev,
-+				       struct receive_queue *rq,
- 				       u16 *num_buf,
- 				       struct page *p,
- 				       int offset,
-@@ -659,18 +680,27 @@ static struct page *xdp_linearize_page(s
- 	memcpy(page_address(page) + page_off, page_address(p) + offset, *len);
- 	page_off += *len;
- 
-+	/* Only mergeable mode can go inside this while loop. In small mode,
-+	 * *num_buf == 1, so it cannot go inside.
-+	 */
- 	while (--*num_buf) {
- 		unsigned int buflen;
- 		void *buf;
-+		void *ctx;
- 		int off;
- 
--		buf = virtqueue_get_buf(rq->vq, &buflen);
-+		buf = virtqueue_get_buf_ctx(rq->vq, &buflen, &ctx);
- 		if (unlikely(!buf))
- 			goto err_buf;
- 
- 		p = virt_to_head_page(buf);
- 		off = buf - page_address(p);
- 
-+		if (check_mergeable_len(dev, ctx, buflen)) {
-+			put_page(p);
-+			goto err_buf;
-+		}
-+
- 		/* guard against a misconfigured or uncooperative backend that
- 		 * is sending packet larger than the MTU.
- 		 */
-@@ -745,7 +775,7 @@ static struct sk_buff *receive_small(str
- 			headroom = vi->hdr_len + header_offset;
- 			buflen = SKB_DATA_ALIGN(GOOD_PACKET_LEN + headroom) +
- 				 SKB_DATA_ALIGN(sizeof(struct skb_shared_info));
--			xdp_page = xdp_linearize_page(rq, &num_buf, page,
-+			xdp_page = xdp_linearize_page(dev, rq, &num_buf, page,
- 						      offset, header_offset,
- 						      &tlen);
- 			if (!xdp_page)
-@@ -916,7 +946,7 @@ static struct sk_buff *receive_mergeable
- 		if (unlikely(num_buf > 1 ||
- 			     headroom < virtnet_get_headroom(vi))) {
- 			/* linearize data for XDP */
--			xdp_page = xdp_linearize_page(rq, &num_buf,
-+			xdp_page = xdp_linearize_page(dev, rq, &num_buf,
- 						      page, offset,
- 						      VIRTIO_XDP_HEADROOM,
- 						      &len);
+-	if ((rmem == skb->truesize || rmem < READ_ONCE(sk->sk_rcvbuf)) &&
++	if ((rmem == skb->truesize || rmem <= READ_ONCE(sk->sk_rcvbuf)) &&
+ 	    !test_bit(NETLINK_S_CONGESTED, &nlk->state)) {
+ 		netlink_skb_set_owner_r(skb, sk);
+ 		return 0;
 
 
 
