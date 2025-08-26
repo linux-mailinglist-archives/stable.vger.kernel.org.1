@@ -1,56 +1,55 @@
-Return-Path: <stable+bounces-175576-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-173001-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id D9A50B3691A
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 16:22:52 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8848AB35B78
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 13:24:49 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id E08F2985F6F
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 14:12:30 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id A69D53633A5
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 11:20:48 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id BA10A223335;
-	Tue, 26 Aug 2025 14:10:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id F25EA2F619C;
+	Tue, 26 Aug 2025 11:18:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="M5wFSKLT"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="12hnPREe"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 776CE1F4C90;
-	Tue, 26 Aug 2025 14:10:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AC1E6296BDF;
+	Tue, 26 Aug 2025 11:18:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756217409; cv=none; b=hCA+YHfQWnaoyWDAA/9rm2U7YHJtzcpN5EgvtQrnLs4D1cxkufoSTAlbr1EDxiIvK4U6iotkPmJ1DBSspobRYFZdhMdnGIJEvM/lq1kPfco/4xwlO+OcHX7tup5EnLgsjE7b6cwxOulJ4f+tt3v6HMgr7Sy57+amNSX3w5rMBJU=
+	t=1756207118; cv=none; b=Q9EZrcHtQ3SkAr16N/C9euirY9eA+jwqrQ2ijDlvdJN5MLzQGaHReCw3krSTLFkrshCRXRKZWgiu5MLysqqmiplPSXdc+gTRLhfJBDKPDMX4EPuq9t0zOvsnhe/A9X71sU9k7h+wHmSEpG4m68rGNIj4HRqb6PMmaiOTSa+P4Uw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756217409; c=relaxed/simple;
-	bh=u29hMmuRpwnn7pAyUmd7NmNIYuIxEBRgQ6dN6NDgQ1k=;
+	s=arc-20240116; t=1756207118; c=relaxed/simple;
+	bh=1n0tiqhxo+Tj3EWnA1lP144UfK+PvaeaqaOPK5G3IvI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=AVihXNR9qMLAeSegArmCYgi1qIqrzoPegzUgXT0cQud9Slhs++BDClSVgVMy1Sn60MqOr74snUPenEL1YMcpz1LFhG6F4UlJDAn2mku4U+Wqmsb1yswp+toBMjbJZqlfcBkxCMlIZKbCDgmZ0TnD4o+mxd/i/o9XQJbC39rf//E=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=M5wFSKLT; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0894CC4CEF1;
-	Tue, 26 Aug 2025 14:10:08 +0000 (UTC)
+	 MIME-Version; b=rJQzEGfPem4NsOOwTI1GNYtiRcMzn3jGpl5s7/TrRaXxG7MbftEayod+/pi0NybUjKvz1/oFfv5kcj5eFyFUrKdVNO7dZME9DepR56j+HVkqkYesFaHIj3DBr4VkSy2hjFx8INkji24H6g4PPg68RtdaBzNlpVK5C9o7OJFeNzM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=12hnPREe; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3CF25C4CEF1;
+	Tue, 26 Aug 2025 11:18:38 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1756217409;
-	bh=u29hMmuRpwnn7pAyUmd7NmNIYuIxEBRgQ6dN6NDgQ1k=;
+	s=korg; t=1756207118;
+	bh=1n0tiqhxo+Tj3EWnA1lP144UfK+PvaeaqaOPK5G3IvI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=M5wFSKLTmh/IJ07dUb7oGx2LiWOxDZvauBK+ilWzy8jUn9NBQFntiSrVCK6xUi9iQ
-	 ZFyOvqtcK3EuuHf6YTPw6naDsHUvWWW9i+DFaoxAT28rqRuCtWh5QNSbBkYepQ49jH
-	 ay6XAJMRkLTTLWi49e9mB7EMgqhz7goCwMTf1brs=
+	b=12hnPREeszGb3l42iVvqKISr3J0MkE6QC7WSiWd3hvaXxAa55ZGHfEZamoduAfutg
+	 cOpIePMJGIZhT9EjPz0j3HWV0gazPwndmHaSSzvEjnPs1rXkPk1VUSudOA1la9m1PV
+	 25nu3cF0AxDyhzd+1FRvDTcynrTeSFiUUsoq1axU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Thomas Fourier <fourier.thomas@gmail.com>,
-	"Martin K. Petersen" <martin.petersen@oracle.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 131/523] scsi: mvsas: Fix dma_unmap_sg() nents value
-Date: Tue, 26 Aug 2025 13:05:41 +0200
-Message-ID: <20250826110927.734714277@linuxfoundation.org>
+	Kaustabh Chakraborty <kauschluss@disroot.org>,
+	Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
+Subject: [PATCH 6.16 058/457] arm64: dts: exynos7870-on7xelte: reduce memory ranges to base amount
+Date: Tue, 26 Aug 2025 13:05:42 +0200
+Message-ID: <20250826110938.791085383@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250826110924.562212281@linuxfoundation.org>
-References: <20250826110924.562212281@linuxfoundation.org>
+In-Reply-To: <20250826110937.289866482@linuxfoundation.org>
+References: <20250826110937.289866482@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,50 +61,48 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+6.16-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Thomas Fourier <fourier.thomas@gmail.com>
+From: Kaustabh Chakraborty <kauschluss@disroot.org>
 
-[ Upstream commit 0141618727bc929fe868153d21797f10ce5bef3f ]
+commit 2bdfa35a7bb6e3a319e7a290baa44720bc96e5e4 upstream.
 
-The dma_unmap_sg() functions should be called with the same nents as the
-dma_map_sg(), not the value the map function returned.
+The device is available in multiple variants with differing RAM
+capacities. The memory range defined in the 0x80000000 bank exceeds the
+address range of the memory controller, which eventually leads to ARM
+SError crashes. Reduce the bank size to a value which is available to
+all devices.
 
-Fixes: b5762948263d ("[SCSI] mvsas: Add Marvell 6440 SAS/SATA driver")
-Signed-off-by: Thomas Fourier <fourier.thomas@gmail.com>
-Link: https://lore.kernel.org/r/20250627134822.234813-2-fourier.thomas@gmail.com
-Signed-off-by: Martin K. Petersen <martin.petersen@oracle.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+The bootloader must be responsible for identifying the RAM capacity and
+editing the memory node accordingly.
+
+Fixes: d6f3a7f91fdb ("arm64: dts: exynos: add initial devicetree support for exynos7870")
+Cc: stable@vger.kernel.org # v6.16
+Signed-off-by: Kaustabh Chakraborty <kauschluss@disroot.org>
+Link: https://lore.kernel.org/r/20250626-exynos7870-dts-fixes-v1-2-349987874d9a@disroot.org
+Signed-off-by: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/scsi/mvsas/mv_sas.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ arch/arm64/boot/dts/exynos/exynos7870-on7xelte.dts | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/scsi/mvsas/mv_sas.c b/drivers/scsi/mvsas/mv_sas.c
-index a2a13969c686..239b81ab924f 100644
---- a/drivers/scsi/mvsas/mv_sas.c
-+++ b/drivers/scsi/mvsas/mv_sas.c
-@@ -829,7 +829,7 @@ static int mvs_task_prep(struct sas_task *task, struct mvs_info *mvi, int is_tmf
- 	dev_printk(KERN_ERR, mvi->dev, "mvsas prep failed[%d]!\n", rc);
- 	if (!sas_protocol_ata(task->task_proto))
- 		if (n_elem)
--			dma_unmap_sg(mvi->dev, task->scatter, n_elem,
-+			dma_unmap_sg(mvi->dev, task->scatter, task->num_scatter,
- 				     task->data_dir);
- prep_out:
- 	return rc;
-@@ -880,7 +880,7 @@ static void mvs_slot_task_free(struct mvs_info *mvi, struct sas_task *task,
- 	if (!sas_protocol_ata(task->task_proto))
- 		if (slot->n_elem)
- 			dma_unmap_sg(mvi->dev, task->scatter,
--				     slot->n_elem, task->data_dir);
-+				     task->num_scatter, task->data_dir);
+diff --git a/arch/arm64/boot/dts/exynos/exynos7870-on7xelte.dts b/arch/arm64/boot/dts/exynos/exynos7870-on7xelte.dts
+index eb97dcc41542..b1d9eff5a827 100644
+--- a/arch/arm64/boot/dts/exynos/exynos7870-on7xelte.dts
++++ b/arch/arm64/boot/dts/exynos/exynos7870-on7xelte.dts
+@@ -78,7 +78,7 @@
+ 	memory@40000000 {
+ 		device_type = "memory";
+ 		reg = <0x0 0x40000000 0x3e400000>,
+-		      <0x0 0x80000000 0xbe400000>;
++		      <0x0 0x80000000 0x80000000>;
+ 	};
  
- 	switch (task->task_proto) {
- 	case SAS_PROTOCOL_SMP:
+ 	pwrseq_mmc1: pwrseq-mmc1 {
 -- 
-2.39.5
+2.50.1
 
 
 
