@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-173929-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-175612-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 14638B3606B
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 15:00:23 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 99F71B36916
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 16:22:46 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id DB42416F939
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 12:57:41 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id DD0965838C5
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 14:13:51 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3653E212B0A;
-	Tue, 26 Aug 2025 12:57:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 579F3352067;
+	Tue, 26 Aug 2025 14:11:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="YumL5lUA"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="2WVivRY3"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E35F41F4717;
-	Tue, 26 Aug 2025 12:57:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1327634F490;
+	Tue, 26 Aug 2025 14:11:45 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756213038; cv=none; b=rrTq144wZ+PnEuK3XztLPLk30rifSloRK5C52skZSVg7YD9U+PQ3Wg1wwDDS+6O1jI+YYYuQPsdLwFYWowVuY4hv+dFFrNEEhWkkAs1VjnMh0ecRELgSZWt2vPOHLFp+KgnqHAxDM1Swddp4EXAw0ed/qsgoKAqcee1DDEOPl7k=
+	t=1756217506; cv=none; b=lX3R7iAll/qktBFPyyrj2t+9rDlW9zME1TNkvgXydX8/R0tgBY/y8M5fRduLW2bazZvAGRfwikDWwFy8kyVRej3xil+OeBhJ0XugHvXgZdEid+cHBXxZMU0/Qr9/IQWydF2ZIDFvXeCc+jTrEwnIKvXoHjkTzj/BONmpJLgVzs0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756213038; c=relaxed/simple;
-	bh=riXCnAfuJF3aix+RICyfv4vkh2UCIOllvJ8857wLBOw=;
+	s=arc-20240116; t=1756217506; c=relaxed/simple;
+	bh=WcML9spGxmus0cNJcKRLvvze7ohnEowF9A+/AOgYrs4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=RafKwuczHSVRrwDcOi8MxhaUvj6gL0pmYNjX6nLb4Hbu8YYql7gatLThNHnGQC48b3AbiNZsTjjiYk8w0cnopc0s6f1IzOizHEUbyBjKltpws6cT4m3kVDIrqjWEerhRwI4pjlj4EGoTSWe9glVU3IJutsEScxsTIZeiTKaZSqc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=YumL5lUA; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 736A5C116B1;
-	Tue, 26 Aug 2025 12:57:17 +0000 (UTC)
+	 MIME-Version; b=STM01NPJifFyhbtPA9VXA1EUFhILacXAw3Ou5JP/PzcUZwYg7KXFhLoc2o95fPuWbnDJ0+U5JWKhRBGG/ZmuiCRc6lXiNAnlasGly/VgN+Ce4gqw9VCSHDi0L7cMSy+CsEZYeT1R+zAMtdDCbSFbTx7oxs9iMCk/TAsHOEiLfDY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=2WVivRY3; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 44B80C4CEF1;
+	Tue, 26 Aug 2025 14:11:45 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1756213037;
-	bh=riXCnAfuJF3aix+RICyfv4vkh2UCIOllvJ8857wLBOw=;
+	s=korg; t=1756217505;
+	bh=WcML9spGxmus0cNJcKRLvvze7ohnEowF9A+/AOgYrs4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=YumL5lUAYfUAgas/2OXjWRAsIpmOxb7VnoE9ZhcCxHGXFg3v75RGBdqWZhJM9UOaP
-	 6LnltASVm8UujInap+GX3o38ee+iOSxs5aGHLI60uMzCc82yNkszr3CmDCZWYJevUf
-	 IFmzLMrMD1VjDBErp4a27TMJ9dgC4cSPX94dY+g0=
+	b=2WVivRY3z/ai759REEnvTO13RJ8PJP687OH772BJ8hF8+SIunvIkE7ANnBJwpwBum
+	 Ui+I19a4ZxmZAGzRyDNJ3PX/Vp3HJwWro96Zkmr3gxGv4ERiRp98xPBvkvPG+4F83R
+	 EJy1e3HwE8djokkW+1MOB1PXIUj+r5cu0jXGmSTI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Florian Fainelli <florian.fainelli@broadcom.com>,
-	=?UTF-8?q?=C3=81lvaro=20Fern=C3=A1ndez=20Rojas?= <noltari@gmail.com>,
-	Jakub Kicinski <kuba@kernel.org>,
+	Dan Carpenter <dan.carpenter@linaro.org>,
+	Mike Marshall <hubcap@omnibond.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 198/587] net: dsa: b53: prevent GMII_PORT_OVERRIDE_CTRL access on BCM5325
+Subject: [PATCH 5.10 137/523] fs/orangefs: Allow 2 more characters in do_c_string()
 Date: Tue, 26 Aug 2025 13:05:47 +0200
-Message-ID: <20250826110957.977531911@linuxfoundation.org>
+Message-ID: <20250826110927.880190421@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250826110952.942403671@linuxfoundation.org>
-References: <20250826110952.942403671@linuxfoundation.org>
+In-Reply-To: <20250826110924.562212281@linuxfoundation.org>
+References: <20250826110924.562212281@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,90 +60,69 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Álvaro Fernández Rojas <noltari@gmail.com>
+From: Dan Carpenter <dan.carpenter@linaro.org>
 
-[ Upstream commit 37883bbc45a8555d6eca88d3a9730504d2dac86c ]
+[ Upstream commit 2138e89cb066b40386b1d9ddd61253347d356474 ]
 
-BCM5325 doesn't implement GMII_PORT_OVERRIDE_CTRL register so we should
-avoid reading or writing it.
-PORT_OVERRIDE_RX_FLOW and PORT_OVERRIDE_TX_FLOW aren't defined on BCM5325
-and we should use PORT_OVERRIDE_LP_FLOW_25 instead.
+The do_k_string() and do_c_string() functions do essentially the same
+thing which is they add a string and a comma onto the end of an existing
+string.  At the end, the caller will overwrite the last comma with a
+newline.  Later, in orangefs_kernel_debug_init(), we add a newline to
+the string.
 
-Reviewed-by: Florian Fainelli <florian.fainelli@broadcom.com>
-Signed-off-by: Álvaro Fernández Rojas <noltari@gmail.com>
-Link: https://patch.msgid.link/20250614080000.1884236-12-noltari@gmail.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+The change to do_k_string() is just cosmetic.  I moved the "- 1" to
+the other side of the comparison and made it "+ 1".  This has no
+effect on runtime, I just wanted the functions to match each other
+and the rest of the file.
+
+However in do_c_string(), I removed the "- 2" which allows us to print
+two extra characters.  I noticed this issue while reviewing the code
+and I doubt affects anything in real life.  My guess is that this was
+double counting the comma and the newline.  The "+ 1" accounts for
+the newline, and the caller will delete the final comma which ensures
+there is enough space for the newline.
+
+Removing the "- 2" lets us print 2 more characters, but mainly it makes
+the code more consistent and understandable for reviewers.
+
+Fixes: 44f4641073f1 ("orangefs: clean up debugfs globals")
+Signed-off-by: Dan Carpenter <dan.carpenter@linaro.org>
+Signed-off-by: Mike Marshall <hubcap@omnibond.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/dsa/b53/b53_common.c | 21 +++++++++++++++++----
- drivers/net/dsa/b53/b53_regs.h   |  1 +
- 2 files changed, 18 insertions(+), 4 deletions(-)
+ fs/orangefs/orangefs-debugfs.c | 6 +++---
+ 1 file changed, 3 insertions(+), 3 deletions(-)
 
-diff --git a/drivers/net/dsa/b53/b53_common.c b/drivers/net/dsa/b53/b53_common.c
-index e82554cedbfc..9e4d66b8ad39 100644
---- a/drivers/net/dsa/b53/b53_common.c
-+++ b/drivers/net/dsa/b53/b53_common.c
-@@ -1167,6 +1167,8 @@ static void b53_force_link(struct b53_device *dev, int port, int link)
- 	if (port == dev->imp_port) {
- 		off = B53_PORT_OVERRIDE_CTRL;
- 		val = PORT_OVERRIDE_EN;
-+	} else if (is5325(dev)) {
-+		return;
- 	} else {
- 		off = B53_GMII_PORT_OVERRIDE_CTRL(port);
- 		val = GMII_PO_EN;
-@@ -1191,6 +1193,8 @@ static void b53_force_port_config(struct b53_device *dev, int port,
- 	if (port == dev->imp_port) {
- 		off = B53_PORT_OVERRIDE_CTRL;
- 		val = PORT_OVERRIDE_EN;
-+	} else if (is5325(dev)) {
-+		return;
- 	} else {
- 		off = B53_GMII_PORT_OVERRIDE_CTRL(port);
- 		val = GMII_PO_EN;
-@@ -1221,10 +1225,19 @@ static void b53_force_port_config(struct b53_device *dev, int port,
- 		return;
- 	}
+diff --git a/fs/orangefs/orangefs-debugfs.c b/fs/orangefs/orangefs-debugfs.c
+index fa41db088488..b57140ebfad0 100644
+--- a/fs/orangefs/orangefs-debugfs.c
++++ b/fs/orangefs/orangefs-debugfs.c
+@@ -728,8 +728,8 @@ static void do_k_string(void *k_mask, int index)
  
--	if (rx_pause)
--		reg |= PORT_OVERRIDE_RX_FLOW;
--	if (tx_pause)
--		reg |= PORT_OVERRIDE_TX_FLOW;
-+	if (rx_pause) {
-+		if (is5325(dev))
-+			reg |= PORT_OVERRIDE_LP_FLOW_25;
-+		else
-+			reg |= PORT_OVERRIDE_RX_FLOW;
-+	}
-+
-+	if (tx_pause) {
-+		if (is5325(dev))
-+			reg |= PORT_OVERRIDE_LP_FLOW_25;
-+		else
-+			reg |= PORT_OVERRIDE_TX_FLOW;
-+	}
- 
- 	b53_write8(dev, B53_CTRL_PAGE, off, reg);
- }
-diff --git a/drivers/net/dsa/b53/b53_regs.h b/drivers/net/dsa/b53/b53_regs.h
-index bfbcb66bef66..390290ddb1ea 100644
---- a/drivers/net/dsa/b53/b53_regs.h
-+++ b/drivers/net/dsa/b53/b53_regs.h
-@@ -92,6 +92,7 @@
- #define   PORT_OVERRIDE_SPEED_10M	(0 << PORT_OVERRIDE_SPEED_S)
- #define   PORT_OVERRIDE_SPEED_100M	(1 << PORT_OVERRIDE_SPEED_S)
- #define   PORT_OVERRIDE_SPEED_1000M	(2 << PORT_OVERRIDE_SPEED_S)
-+#define   PORT_OVERRIDE_LP_FLOW_25	BIT(3) /* BCM5325 only */
- #define   PORT_OVERRIDE_RV_MII_25	BIT(4) /* BCM5325 only */
- #define   PORT_OVERRIDE_RX_FLOW		BIT(4)
- #define   PORT_OVERRIDE_TX_FLOW		BIT(5)
+ 	if (*mask & s_kmod_keyword_mask_map[index].mask_val) {
+ 		if ((strlen(kernel_debug_string) +
+-		     strlen(s_kmod_keyword_mask_map[index].keyword))
+-			< ORANGEFS_MAX_DEBUG_STRING_LEN - 1) {
++		     strlen(s_kmod_keyword_mask_map[index].keyword) + 1)
++			< ORANGEFS_MAX_DEBUG_STRING_LEN) {
+ 				strcat(kernel_debug_string,
+ 				       s_kmod_keyword_mask_map[index].keyword);
+ 				strcat(kernel_debug_string, ",");
+@@ -756,7 +756,7 @@ static void do_c_string(void *c_mask, int index)
+ 	    (mask->mask2 & cdm_array[index].mask2)) {
+ 		if ((strlen(client_debug_string) +
+ 		     strlen(cdm_array[index].keyword) + 1)
+-			< ORANGEFS_MAX_DEBUG_STRING_LEN - 2) {
++			< ORANGEFS_MAX_DEBUG_STRING_LEN) {
+ 				strcat(client_debug_string,
+ 				       cdm_array[index].keyword);
+ 				strcat(client_debug_string, ",");
 -- 
 2.39.5
 
