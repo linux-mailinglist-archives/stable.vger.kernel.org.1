@@ -1,58 +1,54 @@
-Return-Path: <stable+bounces-174430-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-175073-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 07A68B3637C
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 15:30:22 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id EF001B366F8
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 16:02:27 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 17B722A7DCE
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 13:21:34 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 6B6A3565251
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 13:48:54 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id BD74734A30A;
-	Tue, 26 Aug 2025 13:19:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D07CE2FDC44;
+	Tue, 26 Aug 2025 13:47:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="yNct8trg"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="lz6vqAHa"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 796CA221290;
-	Tue, 26 Aug 2025 13:19:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8E38D34F479;
+	Tue, 26 Aug 2025 13:47:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756214369; cv=none; b=ADYU1N+qlZ7mp0uKPM1bQ5Po38GY9ZzDxbhBXl3bcwB2cX1sTCH0lRhO8j7tx7kvhXRN3TbIc37VcO3GQgzm5iNsv+soSm4eenrN7orMFfhUSaY4+SHovo+uOq4Hq3aWYuTbNj7EDQXZ/cV6cdnTDnx+Q8QiT3fOjA4Jt+hy4g0=
+	t=1756216069; cv=none; b=c1V451yMy8Ra78fDccLEzJQoHTeSqy6j7FL0BLxl7KWNoWZ4T4O270ADQ1PO5hjC2fNmvc5UQt9cyfZf5gQoKN2dvwK9a61EvPAz3uf58l/YriK5wJnkIlGFqtgUY5dOrKAfZX2dO28/5eNy/+AH48qloAqzR0FLUMrwBVch5C4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756214369; c=relaxed/simple;
-	bh=cCPtV/XZXU+nluybloc8Hnzsn5DSyt8ToGrokD47Mgg=;
+	s=arc-20240116; t=1756216069; c=relaxed/simple;
+	bh=Y4i8IcsQJpRVjEY/lkYN0Lul4kXS7rCYCcJPfqr22u0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=Pu7k3XqAVK10ELQw6JlPszI2Q0XwiX7sr/1FJDlN/YXu/xzYiN0pS+qmHLwlnIP10nlNbR3o0rqgd2ET9xCEBQOSDb0GZ0oTiSLCNy0HEHdi0XRloeBgwsPysPuzPyPZ34GmIEJu9D7PLzAwROPd0H3kzfnP8pKhqjxliJuDkV4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=yNct8trg; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A8900C4CEF1;
-	Tue, 26 Aug 2025 13:19:28 +0000 (UTC)
+	 MIME-Version; b=L6Gt9HPlWW8gmxm2hbgZ5wjGhAnI1qEWy8Cz2bTGRYuIsKYFYAU3FFyNJtqPo57MHDYnChRi0CjYFM2tWppunJtQ+B02HmLJUPiu814y9tM5aQh27adqK8fQqGhtEE+1I/eloNvs8fAV6icATNPlnweNBQwSutNjMbIBBkSm8CA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=lz6vqAHa; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id CD453C113CF;
+	Tue, 26 Aug 2025 13:47:48 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1756214369;
-	bh=cCPtV/XZXU+nluybloc8Hnzsn5DSyt8ToGrokD47Mgg=;
+	s=korg; t=1756216069;
+	bh=Y4i8IcsQJpRVjEY/lkYN0Lul4kXS7rCYCcJPfqr22u0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=yNct8trgJ9v2TyAM+4HaSzn+3rD0ouPJzD1rcogQNkEGqEJv5o25R978aiAVlPlHP
-	 xAcmxZjQunXN3uGXpUB+AWevaOyqej+sxesg30csr2a3LO00lMDtgU24eMr9bydxTH
-	 y75YcRuvFr4Hmk4xxU6GImdf9Tuc5yk2ui0oWDf4=
+	b=lz6vqAHahNeS1M6uc7VSF7PmhLoag/rebFxiNacx5JnUrNbmzEzISY3bj2ouSJiZM
+	 QKf4jhgxdEgbt+gz5GNZZ6YfrmBVrGrMiLUZv7V4+9m+1zrL1Qjv0f+0963GXI3uer
+	 s4umWdxaf04zmgb26FObKtoX98WJLS2zBKtzw3fA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jonathan Santos <Jonathan.Santos@analog.com>,
-	David Lechner <dlechner@baylibre.com>,
-	Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
-	Jonathan Cameron <Jonathan.Cameron@huawei.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 111/482] iio: adc: ad7768-1: Ensure SYNC_IN pulse minimum timing requirement
+	"Rafael J. Wysocki" <rafael.j.wysocki@intel.com>
+Subject: [PATCH 5.15 273/644] ACPI: processor: perflib: Move problematic pr->performance check
 Date: Tue, 26 Aug 2025 13:06:04 +0200
-Message-ID: <20250826110933.570673789@linuxfoundation.org>
+Message-ID: <20250826110953.136556927@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250826110930.769259449@linuxfoundation.org>
-References: <20250826110930.769259449@linuxfoundation.org>
+In-Reply-To: <20250826110946.507083938@linuxfoundation.org>
+References: <20250826110946.507083938@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,75 +58,62 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jonathan Santos <Jonathan.Santos@analog.com>
+From: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
 
-[ Upstream commit 7e54d932873d91a55d1b89b7389876d78aeeab32 ]
+commit d405ec23df13e6df599f5bd965a55d13420366b8 upstream.
 
-The SYNC_IN pulse width must be at least 1.5 x Tmclk, corresponding to
-~2.5 µs at the lowest supported MCLK frequency. Add a 3 µs delay to
-ensure reliable synchronization timing even for the worst-case scenario.
+Commit d33bd88ac0eb ("ACPI: processor: perflib: Fix initial _PPC limit
+application") added a pr->performance check that prevents the frequency
+QoS request from being added when the given processor has no performance
+object.  Unfortunately, this causes a WARN() in freq_qos_remove_request()
+to trigger on an attempt to take the given CPU offline later because the
+frequency QoS object has not been added for it due to the missing
+performance object.
 
-Signed-off-by: Jonathan Santos <Jonathan.Santos@analog.com>
-Reviewed-by: David Lechner <dlechner@baylibre.com>
-Reviewed-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
-Link: https://patch.msgid.link/d3ee92a533cd1207cf5c5cc4d7bdbb5c6c267f68.1749063024.git.Jonathan.Santos@analog.com
-Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Address this by moving the pr->performance check before calling
+acpi_processor_get_platform_limit() so it only prevents a limit from
+being set for the CPU if the performance object is not present.  This
+way, the frequency QoS request is added as it was before the above
+commit and it is present all the time along with the CPU's cpufreq
+policy regardless of whether or not the CPU is online.
+
+Fixes: d33bd88ac0eb ("ACPI: processor: perflib: Fix initial _PPC limit application")
+Tested-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
+Cc: 5.4+ <stable@vger.kernel.org> # 5.4+
+Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
+Link: https://patch.msgid.link/2801421.mvXUDI8C0e@rafael.j.wysocki
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/iio/adc/ad7768-1.c | 23 +++++++++++++++++++----
- 1 file changed, 19 insertions(+), 4 deletions(-)
+ drivers/acpi/processor_perflib.c |    5 ++++-
+ 1 file changed, 4 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/iio/adc/ad7768-1.c b/drivers/iio/adc/ad7768-1.c
-index 967f06cd3f94..e147eaf1a3b1 100644
---- a/drivers/iio/adc/ad7768-1.c
-+++ b/drivers/iio/adc/ad7768-1.c
-@@ -203,6 +203,24 @@ static int ad7768_spi_reg_write(struct ad7768_state *st,
- 	return spi_write(st->spi, st->data.d8, 2);
- }
+--- a/drivers/acpi/processor_perflib.c
++++ b/drivers/acpi/processor_perflib.c
+@@ -180,7 +180,7 @@ void acpi_processor_ppc_init(struct cpuf
+ 		struct acpi_processor *pr = per_cpu(processors, cpu);
+ 		int ret;
  
-+static int ad7768_send_sync_pulse(struct ad7768_state *st)
-+{
-+	/*
-+	 * The datasheet specifies a minimum SYNC_IN pulse width of 1.5 × Tmclk,
-+	 * where Tmclk is the MCLK period. The supported MCLK frequencies range
-+	 * from 0.6 MHz to 17 MHz, which corresponds to a minimum SYNC_IN pulse
-+	 * width of approximately 2.5 µs in the worst-case scenario (0.6 MHz).
-+	 *
-+	 * Add a delay to ensure the pulse width is always sufficient to
-+	 * trigger synchronization.
-+	 */
-+	gpiod_set_value_cansleep(st->gpio_sync_in, 1);
-+	fsleep(3);
-+	gpiod_set_value_cansleep(st->gpio_sync_in, 0);
+-		if (!pr || !pr->performance)
++		if (!pr)
+ 			continue;
+ 
+ 		/*
+@@ -197,6 +197,9 @@ void acpi_processor_ppc_init(struct cpuf
+ 			pr_err("Failed to add freq constraint for CPU%d (%d)\n",
+ 			       cpu, ret);
+ 
++		if (!pr->performance)
++			continue;
 +
-+	return 0;
-+}
-+
- static int ad7768_set_mode(struct ad7768_state *st,
- 			   enum ad7768_conv_mode mode)
- {
-@@ -288,10 +306,7 @@ static int ad7768_set_dig_fil(struct ad7768_state *st,
- 		return ret;
- 
- 	/* A sync-in pulse is required every time the filter dec rate changes */
--	gpiod_set_value(st->gpio_sync_in, 1);
--	gpiod_set_value(st->gpio_sync_in, 0);
--
--	return 0;
-+	return ad7768_send_sync_pulse(st);
- }
- 
- static int ad7768_set_freq(struct ad7768_state *st,
--- 
-2.39.5
-
+ 		ret = acpi_processor_get_platform_limit(pr);
+ 		if (ret)
+ 			pr_err("Failed to update freq constraint for CPU%d (%d)\n",
 
 
 
