@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-175162-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-174518-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1158DB366CB
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 16:00:26 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 69124B363C6
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 15:33:09 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 6F50E1C25F08
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 13:54:07 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 35DFD2A14FD
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 13:25:06 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A157A352FF6;
-	Tue, 26 Aug 2025 13:51:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 67B412F7473;
+	Tue, 26 Aug 2025 13:23:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="uuea4F6F"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Py3QJy5R"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 50F9D352FF2;
-	Tue, 26 Aug 2025 13:51:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 25A66246BC5;
+	Tue, 26 Aug 2025 13:23:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756216305; cv=none; b=QoloROF65aK1eHPmP0g+8i+OCwmQNJFU7cpN4ywEzyAPqjJ07kvJz9N7ySg3/XMXln9uZtd/TiV2Zh+0EBRpAMtMHk9H21Z65Zp9CUGvgREOEwIyiWPvsrDXGtGQJ94M0DEh/b3U+bo6oejVUWE8pp+BKUNYY9B/QacNeXwkkN8=
+	t=1756214604; cv=none; b=nmyudzTWnnUJUH8smLawT1dWa3tTB0uhxKwHLVMlkLVkla7TBhX0cNeimXI66FZ1SVhnMb0PHPqZydj08kAfdZLXuPccYXmII7xgR9rrhAAZGFDXdIWclkKKykVVRBOgHhVm6JLCfLODObmujHewIgW3AnOqV+G+A/7xxcD0HEU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756216305; c=relaxed/simple;
-	bh=MZCD2Pgczw6+OxF9ym4/BkHkT6cM0TuU1mNQed3UwPk=;
+	s=arc-20240116; t=1756214604; c=relaxed/simple;
+	bh=gou9JrbDjhz4muSdHeHoUzlzY1bSDbCugk8JEXlJPqM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=n5slD83NNzlTGLOXNjpUwhy+ow83tNVrcVtlShKs22Etar3aj86rfwpyLitW6tnENneXIedNEkyvU/EIWFgegZBmTr3HRHIRhlFLuPfHwTpIIva7NWqHwM6yi0Nw3jjqly3CKSycFQLeg+s6+ap94KtFaZ/dkWie7B4swh2EUxc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=uuea4F6F; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D728EC4CEF1;
-	Tue, 26 Aug 2025 13:51:44 +0000 (UTC)
+	 MIME-Version; b=JtzdaiYa2Y17W75qVCCsFKPvhYKcxIXh8h4FURGSGwiuQMzZVoXye1/Lqa3hWXhXvFixIvf689M337kCQC/uaeZZC4NFscksQ1C60hQP5XG+Q+F8MCo66OLO4nY6D2s1rt60C8L81M1JnFFj/WLKp212+2F8WqubpBLDFkAc+Zs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Py3QJy5R; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id AFEBBC4CEF1;
+	Tue, 26 Aug 2025 13:23:23 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1756216305;
-	bh=MZCD2Pgczw6+OxF9ym4/BkHkT6cM0TuU1mNQed3UwPk=;
+	s=korg; t=1756214604;
+	bh=gou9JrbDjhz4muSdHeHoUzlzY1bSDbCugk8JEXlJPqM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=uuea4F6FZ5okcqWeEz9moc5vUfX3WTqb+QvGniC9VOHRYkF28FtbzAMe2qtuQWwYE
-	 1ldXOq41VYZlmSthaChLRL2YVREua3EidaXASmo0tJ5VlXaJb2Juaxp97QYWu1Juqf
-	 E9eUQ7L0TQxX3qPZpBs2s62ObUwTC2Q/PEapXL18=
+	b=Py3QJy5R5fiZr9pGrTznSndLMMDnJI1b8Xi+fqCFq44HBvXoqBddOBCwpUhXg/Q0d
+	 6/eQ02vGxrNslRR/Ob04/Ml4HGzS8Hcdp8CyArARSDxOgPFXZVCZgPgrfZhRxnfQhK
+	 Zo05ZE/PjQb3CVvrUhCXlXVP50rikN/ddmxCo+DY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Rand Deeb <rand.sec96@gmail.com>,
-	Miri Korenblit <miriam.rachel.korenblit@intel.com>,
+	Dave Stevenson <dave.stevenson@raspberrypi.com>,
+	Hans Verkuil <hverkuil@xs4all.nl>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 362/644] wifi: iwlwifi: dvm: fix potential overflow in rs_fill_link_cmd()
+Subject: [PATCH 6.1 200/482] media: tc358743: Check I2C succeeded during probe
 Date: Tue, 26 Aug 2025 13:07:33 +0200
-Message-ID: <20250826110955.384227840@linuxfoundation.org>
+Message-ID: <20250826110935.732923931@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250826110946.507083938@linuxfoundation.org>
-References: <20250826110946.507083938@linuxfoundation.org>
+In-Reply-To: <20250826110930.769259449@linuxfoundation.org>
+References: <20250826110930.769259449@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,46 +62,111 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Rand Deeb <rand.sec96@gmail.com>
+From: Dave Stevenson <dave.stevenson@raspberrypi.com>
 
-[ Upstream commit e3ad987e9dc7d1e12e3f2f1e623f0e174cd0ca78 ]
+[ Upstream commit 303d81635e1d9c949b370215cc94526ed81f2e3d ]
 
-The 'index' variable in the rs_fill_link_cmd() function can reach
-LINK_QUAL_MAX_RETRY_NUM during the execution of the inner loop. This
-variable is used as an index for the lq_cmd->rs_table array, which has a
-size of LINK_QUAL_MAX_RETRY_NUM, without proper validation.
+The probe for the TC358743 reads the CHIPID register from
+the device and compares it to the expected value of 0.
+If the I2C request fails then that also returns 0, so
+the driver loads thinking that the device is there.
 
-Modify the condition of the inner loop to ensure that the 'index' variable
-does not exceed LINK_QUAL_MAX_RETRY_NUM - 1, thereby preventing any
-potential overflow issues.
+Generally I2C communications are reliable so there is
+limited need to check the return value on every transfer,
+therefore only amend the one read during probe to check
+for I2C errors.
 
-Found by Linux Verification Center (linuxtesting.org) with SVACE.
-
-Signed-off-by: Rand Deeb <rand.sec96@gmail.com>
-Link: https://patch.msgid.link/20240313101755.269209-1-rand.sec96@gmail.com
-Signed-off-by: Miri Korenblit <miriam.rachel.korenblit@intel.com>
+Signed-off-by: Dave Stevenson <dave.stevenson@raspberrypi.com>
+Signed-off-by: Hans Verkuil <hverkuil@xs4all.nl>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/wireless/intel/iwlwifi/dvm/rs.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/media/i2c/tc358743.c | 27 +++++++++++++++++++++++----
+ 1 file changed, 23 insertions(+), 4 deletions(-)
 
-diff --git a/drivers/net/wireless/intel/iwlwifi/dvm/rs.c b/drivers/net/wireless/intel/iwlwifi/dvm/rs.c
-index 958bfc38d390..f44448a13172 100644
---- a/drivers/net/wireless/intel/iwlwifi/dvm/rs.c
-+++ b/drivers/net/wireless/intel/iwlwifi/dvm/rs.c
-@@ -2926,7 +2926,7 @@ static void rs_fill_link_cmd(struct iwl_priv *priv,
- 		/* Repeat initial/next rate.
- 		 * For legacy IWL_NUMBER_TRY == 1, this loop will not execute.
- 		 * For HT IWL_HT_NUMBER_TRY == 3, this executes twice. */
--		while (repeat_rate > 0 && (index < LINK_QUAL_MAX_RETRY_NUM)) {
-+		while (repeat_rate > 0 && index < (LINK_QUAL_MAX_RETRY_NUM - 1)) {
- 			if (is_legacy(tbl_type.lq_type)) {
- 				if (ant_toggle_cnt < NUM_TRY_BEFORE_ANT_TOGGLE)
- 					ant_toggle_cnt++;
+diff --git a/drivers/media/i2c/tc358743.c b/drivers/media/i2c/tc358743.c
+index 2c8189e04a13..7251d25106d6 100644
+--- a/drivers/media/i2c/tc358743.c
++++ b/drivers/media/i2c/tc358743.c
+@@ -110,7 +110,7 @@ static inline struct tc358743_state *to_state(struct v4l2_subdev *sd)
+ 
+ /* --------------- I2C --------------- */
+ 
+-static void i2c_rd(struct v4l2_subdev *sd, u16 reg, u8 *values, u32 n)
++static int i2c_rd(struct v4l2_subdev *sd, u16 reg, u8 *values, u32 n)
+ {
+ 	struct tc358743_state *state = to_state(sd);
+ 	struct i2c_client *client = state->i2c_client;
+@@ -136,6 +136,7 @@ static void i2c_rd(struct v4l2_subdev *sd, u16 reg, u8 *values, u32 n)
+ 		v4l2_err(sd, "%s: reading register 0x%x from 0x%x failed\n",
+ 				__func__, reg, client->addr);
+ 	}
++	return err != ARRAY_SIZE(msgs);
+ }
+ 
+ static void i2c_wr(struct v4l2_subdev *sd, u16 reg, u8 *values, u32 n)
+@@ -192,15 +193,24 @@ static void i2c_wr(struct v4l2_subdev *sd, u16 reg, u8 *values, u32 n)
+ 	}
+ }
+ 
+-static noinline u32 i2c_rdreg(struct v4l2_subdev *sd, u16 reg, u32 n)
++static noinline u32 i2c_rdreg_err(struct v4l2_subdev *sd, u16 reg, u32 n,
++				  int *err)
+ {
++	int error;
+ 	__le32 val = 0;
+ 
+-	i2c_rd(sd, reg, (u8 __force *)&val, n);
++	error = i2c_rd(sd, reg, (u8 __force *)&val, n);
++	if (err)
++		*err = error;
+ 
+ 	return le32_to_cpu(val);
+ }
+ 
++static inline u32 i2c_rdreg(struct v4l2_subdev *sd, u16 reg, u32 n)
++{
++	return i2c_rdreg_err(sd, reg, n, NULL);
++}
++
+ static noinline void i2c_wrreg(struct v4l2_subdev *sd, u16 reg, u32 val, u32 n)
+ {
+ 	__le32 raw = cpu_to_le32(val);
+@@ -229,6 +239,13 @@ static u16 i2c_rd16(struct v4l2_subdev *sd, u16 reg)
+ 	return i2c_rdreg(sd, reg, 2);
+ }
+ 
++static int i2c_rd16_err(struct v4l2_subdev *sd, u16 reg, u16 *value)
++{
++	int err;
++	*value = i2c_rdreg_err(sd, reg, 2, &err);
++	return err;
++}
++
+ static void i2c_wr16(struct v4l2_subdev *sd, u16 reg, u16 val)
+ {
+ 	i2c_wrreg(sd, reg, val, 2);
+@@ -2021,6 +2038,7 @@ static int tc358743_probe(struct i2c_client *client)
+ 	struct tc358743_platform_data *pdata = client->dev.platform_data;
+ 	struct v4l2_subdev *sd;
+ 	u16 irq_mask = MASK_HDMI_MSK | MASK_CSI_MSK;
++	u16 chipid;
+ 	int err;
+ 
+ 	if (!i2c_check_functionality(client->adapter, I2C_FUNC_SMBUS_BYTE_DATA))
+@@ -2052,7 +2070,8 @@ static int tc358743_probe(struct i2c_client *client)
+ 	sd->flags |= V4L2_SUBDEV_FL_HAS_DEVNODE | V4L2_SUBDEV_FL_HAS_EVENTS;
+ 
+ 	/* i2c access */
+-	if ((i2c_rd16(sd, CHIPID) & MASK_CHIPID) != 0) {
++	if (i2c_rd16_err(sd, CHIPID, &chipid) ||
++	    (chipid & MASK_CHIPID) != 0) {
+ 		v4l2_info(sd, "not a TC358743 on address 0x%x\n",
+ 			  client->addr << 1);
+ 		return -ENODEV;
 -- 
 2.39.5
 
