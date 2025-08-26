@@ -1,56 +1,58 @@
-Return-Path: <stable+bounces-176171-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-174093-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [142.0.200.124])
-	by mail.lfdr.de (Postfix) with ESMTPS id A2140B36A9B
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 16:38:57 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 32413B360EF
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 15:05:26 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 92FCA4E1084
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 14:38:56 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id BA8BD7AB1AC
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 13:03:49 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D855935E4C7;
-	Tue, 26 Aug 2025 14:36:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 76503260580;
+	Tue, 26 Aug 2025 13:04:35 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="JE2BJ1Pb"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="uvgBgpMy"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 95C3735E4C8;
-	Tue, 26 Aug 2025 14:36:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 304D5220F5D;
+	Tue, 26 Aug 2025 13:04:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756218964; cv=none; b=WPlDwIni7+CtHt+NdrCScjCqMGJzkOqCJR2g+re0ddektIMeWknGWmCK+UAdsNq+5YeCzxhAy+GcsEP7VXUzuHInXrYLmBdNey4+YJIPYxPeHAkCENDsVP3tsvY16EMDDGOSZ6MgRPwhdTc2NCIoy90z5W/s20zCqk8AZUPezCg=
+	t=1756213475; cv=none; b=omBrLyiEktS2jmcnmJoFLKBBwYNYL7kuHjagQRtU7RlL1idhu7k+X4maLZ8n/axXDhuL6WlIz0LBks+vTnGlPJpX1l6+pvAYOaaWjts+y8GlG0vrO9CnZmbIsU/V5BME/W7YIvX1Upzjo/Q62K5jVGN/zWpNLeBa3IxxMhCLdm4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756218964; c=relaxed/simple;
-	bh=r+kW4W0fkduqmeqMvyTVU5aGT9gVP7dnB3hC3/AKScI=;
+	s=arc-20240116; t=1756213475; c=relaxed/simple;
+	bh=EwW2vdRx9/oZUoKbBlX3Xjoqs3RxH2B1uOQROl+J/2s=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=gpRmgTGxs3aO3u3SBpi2/V+kxBfYX0iXB95OWja+0V/NEsLdQyVjxXsrmSrq8NqxbELjmOYRsKNQXm7nDq0N7p4o4f/w3CyD0yB5rFHZfC2o7eG2jkOfMLjoPzCNiZzEv9+bXscds4MVGK4BDZgPBDaDi2OCyAII2QYVhvwQp8I=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=JE2BJ1Pb; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2732AC4CEF1;
-	Tue, 26 Aug 2025 14:36:03 +0000 (UTC)
+	 MIME-Version; b=s337ylnWtbTrPEl3X3DbQ9y1g0JmaRrz/fDbnX44RgRTdhrPvmYE513ut2XjhAY2siZFCxcILfFV7f56i2Qa1ZFTeID4yuYaf5iek+cQydBGWj4KxgvP/IK48wBnHLaTQ2wp9bWKIhkwNWaxAIhvlhHuS0Ba347ks+8GafhnHzc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=uvgBgpMy; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6964CC4CEF1;
+	Tue, 26 Aug 2025 13:04:34 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1756218964;
-	bh=r+kW4W0fkduqmeqMvyTVU5aGT9gVP7dnB3hC3/AKScI=;
+	s=korg; t=1756213474;
+	bh=EwW2vdRx9/oZUoKbBlX3Xjoqs3RxH2B1uOQROl+J/2s=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=JE2BJ1Pbuh6Ro0Iy59vU7u4t2hd7IQ1T6ktGrxw4EoRLkbZOCf6DWn9VeUxvThvnh
-	 KElsNmoCjdQKZ8OYhqv93hmuYnCPDur5Lo+wnYHIuJgdSZcnUfwCdVY6lH3zI8UgFv
-	 eYR4gTprrH16y8ogSdZW5Q1ipJPE56hBM2ZNIGUw=
+	b=uvgBgpMyxJNWSIeXRfBz58MV0l7FiLFGbvB8dgPd/LJChV+3aA+l1MNErxaJgFFlU
+	 b1RLdylhQ+wnhztIFHC110LfTvmBxGLSS5ACafqG8dOHDt7EvkfjAwMs40IaAs3WhS
+	 G3KNfQQGrVZzunvR8AJmK802E0oA3f4KPvFiTmqc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jay Chen <shawn2000100@gmail.com>,
-	Mathias Nyman <mathias.nyman@linux.intel.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.4 184/403] usb: xhci: Set avg_trb_len = 8 for EP0 during Address Device Command
+	Lorenz Brun <lorenz@brun.one>,
+	Brandon Schwartz <Brandon.Schwartz@wdc.com>,
+	Damien Le Moal <dlemoal@kernel.org>,
+	Hannes Reinecke <hare@suse.de>,
+	"Martin K. Petersen" <martin.petersen@oracle.com>
+Subject: [PATCH 6.6 361/587] ata: libata-scsi: Fix ata_to_sense_error() status handling
 Date: Tue, 26 Aug 2025 13:08:30 +0200
-Message-ID: <20250826110911.963577305@linuxfoundation.org>
+Message-ID: <20250826111002.094549652@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250826110905.607690791@linuxfoundation.org>
-References: <20250826110905.607690791@linuxfoundation.org>
+In-Reply-To: <20250826110952.942403671@linuxfoundation.org>
+References: <20250826110952.942403671@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,66 +64,95 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.4-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jay Chen <shawn2000100@gmail.com>
+From: Damien Le Moal <dlemoal@kernel.org>
 
-[ Upstream commit f72b9aa821a2bfe4b6dfec4be19f264d0673b008 ]
+commit cf3fc037623c54de48d2ec1a1ee686e2d1de2d45 upstream.
 
-There is a subtle contradiction between sections of the xHCI 1.2 spec
-regarding the initialization of Input Endpoint Context fields. Section
-4.8.2 ("Endpoint Context Initialization") states that all fields should
-be initialized to 0. However, Section 6.2.3 ("Endpoint Context", p.453)
-specifies that the Average TRB Length (avg_trb_len) field shall be
-greater than 0, and explicitly notes (p.454): "Software shall set
-Average TRB Length to '8' for control endpoints."
+Commit 8ae720449fca ("libata: whitespace fixes in ata_to_sense_error()")
+inadvertantly added the entry 0x40 (ATA_DRDY) to the stat_table array in
+the function ata_to_sense_error(). This entry ties a failed qc which has
+a status filed equal to ATA_DRDY to the sense key ILLEGAL REQUEST with
+the additional sense code UNALIGNED WRITE COMMAND. This entry will be
+used to generate a failed qc sense key and sense code when the qc is
+missing sense data and there is no match for the qc error field in the
+sense_table array of ata_to_sense_error().
 
-Strictly setting all fields to 0 during initialization conflicts with
-the specific recommendation for control endpoints. In practice, setting
-avg_trb_len = 0 is not meaningful for the hardware/firmware, as the
-value is used for bandwidth calculation.
+As a result, for a failed qc for which we failed to get sense data (e.g.
+read log 10h failed if qc is an NCQ command, or REQUEST SENSE EXT
+command failed for the non-ncq case, the user very often end up seeing
+the completely misleading "unaligned write command" error, even if qc
+was not a write command. E.g.:
 
-Motivation: Our company is developing a custom Virtual xHC hardware
-platform that strictly follows the xHCI spec and its recommendations.
-During validation, we observed that enumeration fails and a parameter
-error (TRB Completion Code = 5) is reported if avg_trb_len for EP0 is
-not set to 8 as recommended by Section 6.2.3. This demonstrates the
-importance of assigning a meaningful, non-zero value to avg_trb_len,
-even in virtualized or emulated environments.
+sd 0:0:0:0: [sda] tag#12 FAILED Result: hostbyte=DID_OK driverbyte=DRIVER_OK cmd_age=0s
+sd 0:0:0:0: [sda] tag#12 Sense Key : Illegal Request [current]
+sd 0:0:0:0: [sda] tag#12 Add. Sense: Unaligned write command
+sd 0:0:0:0: [sda] tag#12 CDB: Read(10) 28 00 00 00 10 00 00 00 08 00
+I/O error, dev sda, sector 4096 op 0x0:(READ) flags 0x80700 phys_seg 1 prio class 0
 
-This patch explicitly sets avg_trb_len to 8 for EP0 in
-xhci_setup_addressable_virt_dev(), as recommended in Section 6.2.3, to
-prevent potential issues with xHCI host controllers that enforce the
-spec strictly.
+Fix this by removing the ATA_DRDY entry from the stat_table array so
+that we default to always returning ABORTED COMMAND without any
+additional sense code, since we do not know any better. The entry 0x08
+(ATA_DRQ) is also removed since signaling ABORTED COMMAND with a parity
+error is also misleading (as a parity error would likely be signaled
+through a bus error). So for this case, also default to returning
+ABORTED COMMAND without any additional sense code. With this, the
+previous example error case becomes:
 
-Link: https://bugzilla.kernel.org/show_bug.cgi?id=220033
-Signed-off-by: Jay Chen <shawn2000100@gmail.com>
-Signed-off-by: Mathias Nyman <mathias.nyman@linux.intel.com>
-Link: https://lore.kernel.org/r/20250717073107.488599-4-mathias.nyman@linux.intel.com
+sd 0:0:0:0: [sda] tag#17 FAILED Result: hostbyte=DID_OK driverbyte=DRIVER_OK cmd_age=0s
+sd 0:0:0:0: [sda] tag#17 Sense Key : Aborted Command [current]
+sd 0:0:0:0: [sda] tag#17 Add. Sense: No additional sense information
+sd 0:0:0:0: [sda] tag#17 CDB: Read(10) 28 00 00 00 10 00 00 00 08 00
+I/O error, dev sda, sector 4096 op 0x0:(READ) flags 0x80700 phys_seg 1 prio class 0
+
+Together with these fixes, refactor stat_table to make it more readable
+by putting the entries comments in front of the entries and using the
+defined status bits macros instead of hardcoded values.
+
+Reported-by: Lorenz Brun <lorenz@brun.one>
+Reported-by: Brandon Schwartz <Brandon.Schwartz@wdc.com>
+Fixes: 8ae720449fca ("libata: whitespace fixes in ata_to_sense_error()")
+Cc: stable@vger.kernel.org
+Signed-off-by: Damien Le Moal <dlemoal@kernel.org>
+Reviewed-by: Hannes Reinecke <hare@suse.de>
+Reviewed-by: Martin K. Petersen <martin.petersen@oracle.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/usb/host/xhci-mem.c | 2 ++
- 1 file changed, 2 insertions(+)
+ drivers/ata/libata-scsi.c |   20 ++++++++------------
+ 1 file changed, 8 insertions(+), 12 deletions(-)
 
-diff --git a/drivers/usb/host/xhci-mem.c b/drivers/usb/host/xhci-mem.c
-index 610190bf62da..6dddd5414fe9 100644
---- a/drivers/usb/host/xhci-mem.c
-+++ b/drivers/usb/host/xhci-mem.c
-@@ -1214,6 +1214,8 @@ int xhci_setup_addressable_virt_dev(struct xhci_hcd *xhci, struct usb_device *ud
- 	ep0_ctx->deq = cpu_to_le64(dev->eps[0].ring->first_seg->dma |
- 				   dev->eps[0].ring->cycle_state);
- 
-+	ep0_ctx->tx_info = cpu_to_le32(EP_AVG_TRB_LENGTH(8));
+--- a/drivers/ata/libata-scsi.c
++++ b/drivers/ata/libata-scsi.c
+@@ -856,18 +856,14 @@ static void ata_to_sense_error(unsigned
+ 		{0xFF, 0xFF, 0xFF, 0xFF}, // END mark
+ 	};
+ 	static const unsigned char stat_table[][4] = {
+-		/* Must be first because BUSY means no other bits valid */
+-		{0x80,		ABORTED_COMMAND, 0x47, 0x00},
+-		// Busy, fake parity for now
+-		{0x40,		ILLEGAL_REQUEST, 0x21, 0x04},
+-		// Device ready, unaligned write command
+-		{0x20,		HARDWARE_ERROR,  0x44, 0x00},
+-		// Device fault, internal target failure
+-		{0x08,		ABORTED_COMMAND, 0x47, 0x00},
+-		// Timed out in xfer, fake parity for now
+-		{0x04,		RECOVERED_ERROR, 0x11, 0x00},
+-		// Recovered ECC error	  Medium error, recovered
+-		{0xFF, 0xFF, 0xFF, 0xFF}, // END mark
++		/* Busy: must be first because BUSY means no other bits valid */
++		{ ATA_BUSY,	ABORTED_COMMAND, 0x00, 0x00 },
++		/* Device fault: INTERNAL TARGET FAILURE */
++		{ ATA_DF,	HARDWARE_ERROR,  0x44, 0x00 },
++		/* Corrected data error */
++		{ ATA_CORR,	RECOVERED_ERROR, 0x00, 0x00 },
 +
- 	trace_xhci_setup_addressable_virt_device(dev);
++		{ 0xFF, 0xFF, 0xFF, 0xFF }, /* END mark */
+ 	};
  
- 	/* Steps 7 and 8 were done in xhci_alloc_virt_device() */
--- 
-2.39.5
-
+ 	/*
 
 
 
