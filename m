@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-175606-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-173959-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 886EDB3691B
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 16:22:54 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 30233B3603E
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 14:58:50 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 7F22E567818
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 14:13:43 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 2BA0F7B4CD6
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 12:57:14 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 591B7352FCC;
-	Tue, 26 Aug 2025 14:11:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id EB2B31C860B;
+	Tue, 26 Aug 2025 12:58:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="g0PXbyon"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="VI4KeV18"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1566E2BE058;
-	Tue, 26 Aug 2025 14:11:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A94171A00F0;
+	Tue, 26 Aug 2025 12:58:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756217490; cv=none; b=cjEKoUhHm/bMycY2FU6VRe7ovFDlCQVjSHWitEh8MUu5T86xIyRwIG+92e56xUtRh7CErRTLiyVtEujoL1M1EXYOll4YoDkIR3h59JlYTW3PvnCZ2as7m6TCucAqBm/rcczKmThNxYXrLJyUViS5YedK9kVFVwfCWHbFRkh7Nnc=
+	t=1756213116; cv=none; b=kH+1qkjikLBf4AxZv48sJ82quvgfE51Jwn4vy2AYA2JLqt8afn0puQ8WtDyi2cAAsYKGV/b9+kW5+QW7/rPkq+iFK+y/Nc+EYxOuRVHtcgYqL6bj/Jnsb//xAvAy29zbVa4JRSTL2pCNHNF/D4rSPaYH3y9/RR0tDbjYeyj6eWQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756217490; c=relaxed/simple;
-	bh=hrhg+dvWvotqwO4/N49iWxPDQpBK2jBxnDSCZxjBTBo=;
+	s=arc-20240116; t=1756213116; c=relaxed/simple;
+	bh=q1+jItuhTmpGkx/h34ZovI9d6/Fbsxg8Q2PYA0RWtdQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=QyHsz4Lj2Vo5qh2tNFGVdcsHKn62ZsuNCJ06fyySpt0QRJJcEFF/13QxlAOM/lsZQoyEq4czw9q5B5FHot1VjEoYRAxGBjdpgUTYjvvYh853fxXYeVF8cYbs7mAI6gPAdYAtigEEBGAGsAniL4YCNLgLRVzb03zE1/TFATw/f5w=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=g0PXbyon; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 99D2DC4CEF1;
-	Tue, 26 Aug 2025 14:11:29 +0000 (UTC)
+	 MIME-Version; b=ks4VKvkVUbImpqkXOHah4JwNWSn9eYoM0ewy8Ix+eGoNYmZZRSEz+6khIcacETJHUSCKuRsAwu/7D/StiVkvUFym5G7a2vX/7CHsrONQBrdjkBHbRngZsLrHfrowJ++bj9XAh/JKPUK/IpENoufEjC9zP4z8FolMxLdECQVsn2I=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=VI4KeV18; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 39BD8C4CEF1;
+	Tue, 26 Aug 2025 12:58:36 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1756217490;
-	bh=hrhg+dvWvotqwO4/N49iWxPDQpBK2jBxnDSCZxjBTBo=;
+	s=korg; t=1756213116;
+	bh=q1+jItuhTmpGkx/h34ZovI9d6/Fbsxg8Q2PYA0RWtdQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=g0PXbyon7F2FOlr4jaLZQzBApzskIUd9nsd6wZb/XmICGZbgvIFZ+N1mNXYgjoyIo
-	 YprlFqLsDAuDeI/LbRCB2Ti7/ptpr6EhE++twFUQ4g3qC6kjSyhFogAGZdkwNUvSJb
-	 SqqFz3ngaxRPxrYpC/XkB3I5UEXJyaJTep5lAhco=
+	b=VI4KeV18aT6SgMZdC2Zi+X61DP8Nfd0ZGdNZAKbtlsaSLDquTOINF+l1pCns55lS1
+	 0BZPRTmldEB+brWjaZUfKdBXbdLxDRKW3ug+3AaerWduP6pYfwxqz0eGYgARZD405w
+	 5rMVJoGw85svA3mZhnepx3xMWpn2ivrDQkiuvWWM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Thomas Fourier <fourier.thomas@gmail.com>,
-	Herbert Xu <herbert@gondor.apana.org.au>,
+	Alok Tiwari <alok.a.tiwari@oracle.com>,
+	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 135/523] crypto: img-hash - Fix dma_unmap_sg() nents value
+Subject: [PATCH 6.6 196/587] gve: Return error for unknown admin queue command
 Date: Tue, 26 Aug 2025 13:05:45 +0200
-Message-ID: <20250826110927.833881043@linuxfoundation.org>
+Message-ID: <20250826110957.926337042@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250826110924.562212281@linuxfoundation.org>
-References: <20250826110924.562212281@linuxfoundation.org>
+In-Reply-To: <20250826110952.942403671@linuxfoundation.org>
+References: <20250826110952.942403671@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,38 +62,43 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Thomas Fourier <fourier.thomas@gmail.com>
+From: Alok Tiwari <alok.a.tiwari@oracle.com>
 
-[ Upstream commit 34b283636181ce02c52633551f594fec9876bec7 ]
+[ Upstream commit b11344f63fdd9e8c5121148a6965b41079071dd2 ]
 
-The dma_unmap_sg() functions should be called with the same nents as the
-dma_map_sg(), not the value the map function returned.
+In gve_adminq_issue_cmd(), return -EINVAL instead of 0 when an unknown
+admin queue command opcode is encountered.
 
-Fixes: d358f1abbf71 ("crypto: img-hash - Add Imagination Technologies hw hash accelerator")
-Signed-off-by: Thomas Fourier <fourier.thomas@gmail.com>
-Signed-off-by: Herbert Xu <herbert@gondor.apana.org.au>
+This prevents the function from silently succeeding on invalid input
+and prevents undefined behavior by ensuring the function fails gracefully
+when an unrecognized opcode is provided.
+
+These changes improve error handling.
+
+Signed-off-by: Alok Tiwari <alok.a.tiwari@oracle.com>
+Link: https://patch.msgid.link/20250616054504.1644770-2-alok.a.tiwari@oracle.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/crypto/img-hash.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/net/ethernet/google/gve/gve_adminq.c | 1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/drivers/crypto/img-hash.c b/drivers/crypto/img-hash.c
-index cecae50d0f58..87eed86ef3fe 100644
---- a/drivers/crypto/img-hash.c
-+++ b/drivers/crypto/img-hash.c
-@@ -435,7 +435,7 @@ static int img_hash_write_via_dma_stop(struct img_hash_dev *hdev)
- 	struct img_hash_request_ctx *ctx = ahash_request_ctx(hdev->req);
- 
- 	if (ctx->flags & DRIVER_FLAGS_SG)
--		dma_unmap_sg(hdev->dev, ctx->sg, ctx->dma_ct, DMA_TO_DEVICE);
-+		dma_unmap_sg(hdev->dev, ctx->sg, 1, DMA_TO_DEVICE);
+diff --git a/drivers/net/ethernet/google/gve/gve_adminq.c b/drivers/net/ethernet/google/gve/gve_adminq.c
+index 79db7a6d42bc..9c50febb4271 100644
+--- a/drivers/net/ethernet/google/gve/gve_adminq.c
++++ b/drivers/net/ethernet/google/gve/gve_adminq.c
+@@ -431,6 +431,7 @@ static int gve_adminq_issue_cmd(struct gve_priv *priv,
+ 		break;
+ 	default:
+ 		dev_err(&priv->pdev->dev, "unknown AQ command opcode %d\n", opcode);
++		return -EINVAL;
+ 	}
  
  	return 0;
- }
 -- 
 2.39.5
 
