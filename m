@@ -1,55 +1,56 @@
-Return-Path: <stable+bounces-173145-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-176128-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4AC0CB35B84
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 13:25:17 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 13DF1B36B62
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 16:45:38 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 301957C1DA2
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 11:24:50 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 23C57583F05
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 14:37:24 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B7EC72BE7A7;
-	Tue, 26 Aug 2025 11:24:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 322FF352FED;
+	Tue, 26 Aug 2025 14:34:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="iSU+zfQR"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="03kRe7ax"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 746C2284B5B;
-	Tue, 26 Aug 2025 11:24:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E1B4F353363;
+	Tue, 26 Aug 2025 14:34:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756207489; cv=none; b=sazyro1NSYteNxBJUDunGNGqr9+tNB/XPWUD6PuI2xvONb+lethflXUTXSw1937d8SGyKDWRJ6TBLfVwtZcB7pU9XIcZPRgAu+DBCe5OSbVbxabCH39hYtXtKZWJ/NhEfJcw3jOrGiNM3C75TTZdH2u4MoejIXjLX//kXdSjddk=
+	t=1756218854; cv=none; b=RiM1+/ntifDY6OkpwhhnNorruOmiOanExgfpZ9GlWetnC6RMFTsuSDHtQzl3OAuQRgQgVA2Ahta+BiEwauSNlzhKgzL6yHxVNuNXWvA27nkOAL49uG5T89WkcQaf1llCtw3m+MRG7Zsosf85y4MOijoJDttKVw/FdsDs2L1s9uw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756207489; c=relaxed/simple;
-	bh=QHyU50RgQ/lcIj67UXScSFIhVBGAnJ6HYIOJQN5ZtLo=;
+	s=arc-20240116; t=1756218854; c=relaxed/simple;
+	bh=PW6pvS+TFE8znZcGq8VFjdhv6u/pJ/mBx4XPTznzYEc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=f0PPiOL7ip5ANPenSPYP/UQbBs4l9wEnnkQyRDm2wSislmrDqFMDymlXRxpROFRqSlrV38paWoogZUpLptLWiSB4w+7cPvPI5uQViIMcleYL48fYZsp5B5RKimdYpeDFLYVBR75nc0+/8gz5int2cjUPLtb4h1ZFTJlJucO9uOU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=iSU+zfQR; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 041C7C4CEF4;
-	Tue, 26 Aug 2025 11:24:48 +0000 (UTC)
+	 MIME-Version; b=Zbb1F3HnBVqdqj/lgFFF03D9hnUbm1/pYkAAkK5HILvLAREOupMHeeWIHa80ef8s8BPqCfs+vJW/VLwqWdx5dXYrgCI9eF6bVggWwZo+NN79Dq2SAqxlmcccLm9CGay0W4Moc1SAbGJN9DcSgehDfjptMWt4DJLIbQtRsN5dwy4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=03kRe7ax; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2232FC4CEF1;
+	Tue, 26 Aug 2025 14:34:12 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1756207489;
-	bh=QHyU50RgQ/lcIj67UXScSFIhVBGAnJ6HYIOJQN5ZtLo=;
+	s=korg; t=1756218853;
+	bh=PW6pvS+TFE8znZcGq8VFjdhv6u/pJ/mBx4XPTznzYEc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=iSU+zfQRH/6rsFiqIbvflbptApTSwo8XBpiKKGFjtzwwv3KQiQhsi87F6o5JbvTl9
-	 0JtvkSMZ6XtOWHM+URwDEwhZ5dRzbm7nw887SeMfgwkQs5KMsavt0be4s3485AoI6Y
-	 l7Ac2VzxvD5YGhiVoF5hZwaxKvb9PfKtBJr/z7+U=
+	b=03kRe7ax8/2jx6eLGzFtXc3hweOLNQiQbGojDPyuGwH55534n0ABerZJVXF7sS4RN
+	 nfqznibZlcRtMtY2mkwZyx1vhytl0U35CpMruscNTeZGdUVsBXl7T+BdwXwSzKCcMH
+	 5/VN+CyCcwsEw7lII2KGzno9UGajzakWcIwDjsx4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	"Rafael J. Wysocki" <rafael.j.wysocki@intel.com>,
-	Christian Loehle <christian.loehle@arm.com>
-Subject: [PATCH 6.16 201/457] cpuidle: governors: menu: Avoid selecting states with too much latency
+	Fedor Pchelkin <pchelkin@ispras.ru>,
+	Kuniyuki Iwashima <kuniyu@google.com>,
+	Jakub Kicinski <kuba@kernel.org>
+Subject: [PATCH 5.4 159/403] netlink: avoid infinite retry looping in netlink_unicast()
 Date: Tue, 26 Aug 2025 13:08:05 +0200
-Message-ID: <20250826110942.335040466@linuxfoundation.org>
+Message-ID: <20250826110911.272282801@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250826110937.289866482@linuxfoundation.org>
-References: <20250826110937.289866482@linuxfoundation.org>
+In-Reply-To: <20250826110905.607690791@linuxfoundation.org>
+References: <20250826110905.607690791@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,127 +62,85 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.16-stable review patch.  If anyone has any objections, please let me know.
+5.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
+From: Fedor Pchelkin <pchelkin@ispras.ru>
 
-commit 779b1a1cb13ae17028aeddb2fbbdba97357a1e15 upstream.
+commit 759dfc7d04bab1b0b86113f1164dc1fec192b859 upstream.
 
-Occasionally, the exit latency of the idle state selected by the menu
-governor may exceed the PM QoS CPU wakeup latency limit.  Namely, if the
-scheduler tick has been stopped already and predicted_ns is greater than
-the tick period length, the governor may return an idle state whose exit
-latency exceeds latency_req because that decision is made before
-checking the current idle state's exit latency.
+netlink_attachskb() checks for the socket's read memory allocation
+constraints. Firstly, it has:
 
-For instance, say that there are 3 idle states, 0, 1, and 2.  For idle
-states 0 and 1, the exit latency is equal to the target residency and
-the values are 0 and 5 us, respectively.  State 2 is deeper and has the
-exit latency and target residency of 200 us and 2 ms (which is greater
-than the tick period length), respectively.
+  rmem < READ_ONCE(sk->sk_rcvbuf)
 
-Say that predicted_ns is equal to TICK_NSEC and the PM QoS latency
-limit is 20 us.  After the first two iterations of the main loop in
-menu_select(), idx becomes 1 and in the third iteration of it the target
-residency of the current state (state 2) is greater than predicted_ns.
-State 2 is not a polling one and predicted_ns is not less than TICK_NSEC,
-so the check on whether or not the tick has been stopped is done.  Say
-that the tick has been stopped already and there are no imminent timers
-(that is, delta_tick is greater than the target residency of state 2).
-In that case, idx becomes 2 and it is returned immediately, but the exit
-latency of state 2 exceeds the latency limit.
+to check if the just increased rmem value fits into the socket's receive
+buffer. If not, it proceeds and tries to wait for the memory under:
 
-Address this issue by modifying the code to compare the exit latency of
-the current idle state (idle state i) with the latency limit before
-comparing its target residency with predicted_ns, which allows one
-more exit_latency_ns check that becomes redundant to be dropped.
+  rmem + skb->truesize > READ_ONCE(sk->sk_rcvbuf)
 
-However, after the above change, latency_req cannot take the predicted_ns
-value any more, which takes place after commit 38f83090f515 ("cpuidle:
-menu: Remove iowait influence"), because it may cause a polling state
-to be returned prematurely.
+The checks don't cover the case when skb->truesize + sk->sk_rmem_alloc is
+equal to sk->sk_rcvbuf. Thus the function neither successfully accepts
+these conditions, nor manages to reschedule the task - and is called in
+retry loop for indefinite time which is caught as:
 
-In the context of the previous example say that predicted_ns is 3000 and
-the PM QoS latency limit is still 20 us.  Additionally, say that idle
-state 0 is a polling one.  Moving the exit_latency_ns check before the
-target_residency_ns one causes the loop to terminate in the second
-iteration, before the target_residency_ns check, so idle state 0 will be
-returned even though previously state 1 would be returned if there were
-no imminent timers.
+  rcu: INFO: rcu_sched self-detected stall on CPU
+  rcu:     0-....: (25999 ticks this GP) idle=ef2/1/0x4000000000000000 softirq=262269/262269 fqs=6212
+  (t=26000 jiffies g=230833 q=259957)
+  NMI backtrace for cpu 0
+  CPU: 0 PID: 22 Comm: kauditd Not tainted 5.10.240 #68
+  Hardware name: QEMU Standard PC (i440FX + PIIX, 1996), BIOS 1.17.0-4.fc42 04/01/2014
+  Call Trace:
+  <IRQ>
+  dump_stack lib/dump_stack.c:120
+  nmi_cpu_backtrace.cold lib/nmi_backtrace.c:105
+  nmi_trigger_cpumask_backtrace lib/nmi_backtrace.c:62
+  rcu_dump_cpu_stacks kernel/rcu/tree_stall.h:335
+  rcu_sched_clock_irq.cold kernel/rcu/tree.c:2590
+  update_process_times kernel/time/timer.c:1953
+  tick_sched_handle kernel/time/tick-sched.c:227
+  tick_sched_timer kernel/time/tick-sched.c:1399
+  __hrtimer_run_queues kernel/time/hrtimer.c:1652
+  hrtimer_interrupt kernel/time/hrtimer.c:1717
+  __sysvec_apic_timer_interrupt arch/x86/kernel/apic/apic.c:1113
+  asm_call_irq_on_stack arch/x86/entry/entry_64.S:808
+  </IRQ>
 
-For this reason, remove the assignment of the predicted_ns value to
-latency_req from the code.
+  netlink_attachskb net/netlink/af_netlink.c:1234
+  netlink_unicast net/netlink/af_netlink.c:1349
+  kauditd_send_queue kernel/audit.c:776
+  kauditd_thread kernel/audit.c:897
+  kthread kernel/kthread.c:328
+  ret_from_fork arch/x86/entry/entry_64.S:304
 
-Fixes: 5ef499cd571c ("cpuidle: menu: Handle stopped tick more aggressively")
-Cc: 4.17+ <stable@vger.kernel.org> # 4.17+
-Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
-Reviewed-by: Christian Loehle <christian.loehle@arm.com>
-Link: https://patch.msgid.link/5043159.31r3eYUQgx@rafael.j.wysocki
+Restore the original behavior of the check which commit in Fixes
+accidentally missed when restructuring the code.
+
+Found by Linux Verification Center (linuxtesting.org).
+
+Fixes: ae8f160e7eb2 ("netlink: Fix wraparounds of sk->sk_rmem_alloc.")
+Cc: stable@vger.kernel.org
+Signed-off-by: Fedor Pchelkin <pchelkin@ispras.ru>
+Reviewed-by: Kuniyuki Iwashima <kuniyu@google.com>
+Link: https://patch.msgid.link/20250728080727.255138-1-pchelkin@ispras.ru
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/cpuidle/governors/menu.c |   29 ++++++++++++-----------------
- 1 file changed, 12 insertions(+), 17 deletions(-)
+ net/netlink/af_netlink.c |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/drivers/cpuidle/governors/menu.c
-+++ b/drivers/cpuidle/governors/menu.c
-@@ -287,20 +287,15 @@ static int menu_select(struct cpuidle_dr
+--- a/net/netlink/af_netlink.c
++++ b/net/netlink/af_netlink.c
+@@ -1212,7 +1212,7 @@ int netlink_attachskb(struct sock *sk, s
+ 	nlk = nlk_sk(sk);
+ 	rmem = atomic_add_return(skb->truesize, &sk->sk_rmem_alloc);
+ 
+-	if ((rmem == skb->truesize || rmem < READ_ONCE(sk->sk_rcvbuf)) &&
++	if ((rmem == skb->truesize || rmem <= READ_ONCE(sk->sk_rcvbuf)) &&
+ 	    !test_bit(NETLINK_S_CONGESTED, &nlk->state)) {
+ 		netlink_skb_set_owner_r(skb, sk);
  		return 0;
- 	}
- 
--	if (tick_nohz_tick_stopped()) {
--		/*
--		 * If the tick is already stopped, the cost of possible short
--		 * idle duration misprediction is much higher, because the CPU
--		 * may be stuck in a shallow idle state for a long time as a
--		 * result of it.  In that case say we might mispredict and use
--		 * the known time till the closest timer event for the idle
--		 * state selection.
--		 */
--		if (predicted_ns < TICK_NSEC)
--			predicted_ns = data->next_timer_ns;
--	} else if (latency_req > predicted_ns) {
--		latency_req = predicted_ns;
--	}
-+	/*
-+	 * If the tick is already stopped, the cost of possible short idle
-+	 * duration misprediction is much higher, because the CPU may be stuck
-+	 * in a shallow idle state for a long time as a result of it.  In that
-+	 * case, say we might mispredict and use the known time till the closest
-+	 * timer event for the idle state selection.
-+	 */
-+	if (tick_nohz_tick_stopped() && predicted_ns < TICK_NSEC)
-+		predicted_ns = data->next_timer_ns;
- 
- 	/*
- 	 * Find the idle state with the lowest power while satisfying
-@@ -316,13 +311,15 @@ static int menu_select(struct cpuidle_dr
- 		if (idx == -1)
- 			idx = i; /* first enabled state */
- 
-+		if (s->exit_latency_ns > latency_req)
-+			break;
-+
- 		if (s->target_residency_ns > predicted_ns) {
- 			/*
- 			 * Use a physical idle state, not busy polling, unless
- 			 * a timer is going to trigger soon enough.
- 			 */
- 			if ((drv->states[idx].flags & CPUIDLE_FLAG_POLLING) &&
--			    s->exit_latency_ns <= latency_req &&
- 			    s->target_residency_ns <= data->next_timer_ns) {
- 				predicted_ns = s->target_residency_ns;
- 				idx = i;
-@@ -354,8 +351,6 @@ static int menu_select(struct cpuidle_dr
- 
- 			return idx;
- 		}
--		if (s->exit_latency_ns > latency_req)
--			break;
- 
- 		idx = i;
- 	}
 
 
 
