@@ -1,58 +1,55 @@
-Return-Path: <stable+bounces-175734-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-174566-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3C4CEB36A3B
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 16:35:40 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id A1CFBB363B4
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 15:32:40 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id C79DD98738B
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 14:19:24 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id CCE9D1BC737D
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 13:27:04 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6F71634A325;
-	Tue, 26 Aug 2025 14:17:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1EDB4393DCA;
+	Tue, 26 Aug 2025 13:25:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="pM4fXQys"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="125ahH/D"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2D6F13451A0;
-	Tue, 26 Aug 2025 14:17:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CF00933471E;
+	Tue, 26 Aug 2025 13:25:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756217829; cv=none; b=u/xChX2faRSOMVZXYQc6htccj1Bt93eikJsTRgvM/GTK9ZuO9zZSXu7xUHDKxMdpekyOixEZKcWmR3HV9UMAYcwtjbJgNQ1nb4ELDrN++KpJzFDb8rfX2FsFYE+MbwGjlp/esMq2JPhlQxH0iuW0C6l0cn7Fxo1qsG/J3Jp38bc=
+	t=1756214732; cv=none; b=OBpjVSycJdda5he88MktZoiXHx88zipI+tkyUzxd6l+LI/j+iakwEQrvheWszanR1jUDeNsDqVb9xMWnijApj1tTcMhB8aELnehcmABuBAXvmlfMlo71ePgbuZuneielpAuXrhNtjptsueva1zHWapwiJXt7Vmf9wiezLbSciWo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756217829; c=relaxed/simple;
-	bh=K2caPgsdkjx22tZEcp5vxKIl6xUE2gAOR28lb15p+qA=;
+	s=arc-20240116; t=1756214732; c=relaxed/simple;
+	bh=h2GZmPlh/irqPaMXc7e8u4ZQ50GoxZwzQkWvuOMTKg4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=m/Jc79sdDtAaYDdSXZ1N02b9i+eqrSdf+2Dh7mTKX3Q8x1wy3RN463dMD/qa5mWXdj0CI7zSSG7T/GUtJ+76wf9qiHe9vACIJd3cViOD21IVgPUI86v4akpLbet0BBwJ6ezx8poEEJIcsre0K7bGUQrv1Vc6NnEakKh0ggflVu0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=pM4fXQys; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B2129C113CF;
-	Tue, 26 Aug 2025 14:17:08 +0000 (UTC)
+	 MIME-Version; b=iYlTn/F6uunrM7YKAi4/yCvLr7ymQGHaTWL2JrO9rXeOze+du9/xn7wYCjDlTpngmFV6u3mvhQ0OMTCHDcACQEWInUH2xuhWOTdP2w8Pf/aa3O0hYXnYqAq8xUQtA4SsNS5+1mRnMWHyl0R9EJv18Tya4uSaUad3lO1zVaYpIIg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=125ahH/D; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6232BC4CEF1;
+	Tue, 26 Aug 2025 13:25:32 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1756217829;
-	bh=K2caPgsdkjx22tZEcp5vxKIl6xUE2gAOR28lb15p+qA=;
+	s=korg; t=1756214732;
+	bh=h2GZmPlh/irqPaMXc7e8u4ZQ50GoxZwzQkWvuOMTKg4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=pM4fXQysJzSyUomAuYu11f4OSl0dMuTUeFPxL3HydWf0xQ+Zda8mW1NBUthHpVSJu
-	 qZh6mdiokEKi+ubJiPJYbc1pG8JJj0W/1pJKbXSqR7zIJ/eZQPpsxoYP+Iw9ft55Hw
-	 ozvm+v7KCe5+Ok8sYxuBQIN9jiMtOSpLg3vud0E8=
+	b=125ahH/DqglKGVmEabuqBOGXDBrWQ2EmMAL2x+b/RiMXkpEkxIcjq4EOjS5qXGOtE
+	 dTqMgKCSJDl46waS6tMU2wZgUx6dAJ/9g/VRZ0xv9zHVd+yeLlPhF/VXliWQ9yqJbQ
+	 DQPBWsxlyKb78Go3+mXxPSSqrk1xj2JSmdjvDOyY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	=?UTF-8?q?Eugenio=20P=C3=A9rez?= <eperezma@redhat.com>,
-	Jason Wang <jasowang@redhat.com>,
-	"Michael S. Tsirkin" <mst@redhat.com>,
-	Lei Yang <leiyang@redhat.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 290/523] vhost: fail early when __vhost_add_used() fails
+	Ricky Wu <ricky_wu@realtek.com>,
+	Ulf Hansson <ulf.hansson@linaro.org>
+Subject: [PATCH 6.1 247/482] misc: rtsx: usb: Ensure mmc child device is active when card is present
 Date: Tue, 26 Aug 2025 13:08:20 +0200
-Message-ID: <20250826110931.600109910@linuxfoundation.org>
+Message-ID: <20250826110936.871404096@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250826110924.562212281@linuxfoundation.org>
-References: <20250826110924.562212281@linuxfoundation.org>
+In-Reply-To: <20250826110930.769259449@linuxfoundation.org>
+References: <20250826110930.769259449@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,48 +59,76 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jason Wang <jasowang@redhat.com>
+From: Ricky Wu <ricky_wu@realtek.com>
 
-[ Upstream commit b4ba1207d45adaafa2982c035898b36af2d3e518 ]
+commit 966c5cd72be8989c8a559ddef8e8ff07a37c5eb0 upstream.
 
-This patch fails vhost_add_used_n() early when __vhost_add_used()
-fails to make sure used idx is not updated with stale used ring
-information.
+When a card is present in the reader, the driver currently defers
+autosuspend by returning -EAGAIN during the suspend callback to
+trigger USB remote wakeup signaling. However, this does not guarantee
+that the mmc child device has been resumed, which may cause issues if
+it remains suspended while the card is accessible.
+This patch ensures that all child devices, including the mmc host
+controller, are explicitly resumed before returning -EAGAIN. This
+fixes a corner case introduced by earlier remote wakeup handling,
+improving reliability of runtime PM when a card is inserted.
 
-Reported-by: Eugenio Pérez <eperezma@redhat.com>
-Signed-off-by: Jason Wang <jasowang@redhat.com>
-Message-Id: <20250714084755.11921-2-jasowang@redhat.com>
-Signed-off-by: Michael S. Tsirkin <mst@redhat.com>
-Tested-by: Lei Yang <leiyang@redhat.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Fixes: 883a87ddf2f1 ("misc: rtsx_usb: Use USB remote wakeup signaling for card insertion detection")
+Cc: stable@vger.kernel.org
+Signed-off-by: Ricky Wu <ricky_wu@realtek.com>
+Reviewed-by: Ulf Hansson <ulf.hansson@linaro.org>
+Link: https://lore.kernel.org/r/20250711140143.2105224-1-ricky_wu@realtek.com
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/vhost/vhost.c | 3 +++
- 1 file changed, 3 insertions(+)
+ drivers/misc/cardreader/rtsx_usb.c |   16 +++++++++-------
+ 1 file changed, 9 insertions(+), 7 deletions(-)
 
-diff --git a/drivers/vhost/vhost.c b/drivers/vhost/vhost.c
-index 8ed9c9b63eb1..97e00c481870 100644
---- a/drivers/vhost/vhost.c
-+++ b/drivers/vhost/vhost.c
-@@ -2416,6 +2416,9 @@ int vhost_add_used_n(struct vhost_virtqueue *vq, struct vring_used_elem *heads,
- 	}
- 	r = __vhost_add_used_n(vq, heads, count);
+--- a/drivers/misc/cardreader/rtsx_usb.c
++++ b/drivers/misc/cardreader/rtsx_usb.c
+@@ -698,6 +698,12 @@ static void rtsx_usb_disconnect(struct u
+ }
  
-+	if (r < 0)
-+		return r;
+ #ifdef CONFIG_PM
++static int rtsx_usb_resume_child(struct device *dev, void *data)
++{
++	pm_request_resume(dev);
++	return 0;
++}
 +
- 	/* Make sure buffer is written before we update index. */
- 	smp_wmb();
- 	if (vhost_put_used_idx(vq)) {
--- 
-2.39.5
-
+ static int rtsx_usb_suspend(struct usb_interface *intf, pm_message_t message)
+ {
+ 	struct rtsx_ucr *ucr =
+@@ -713,8 +719,10 @@ static int rtsx_usb_suspend(struct usb_i
+ 			mutex_unlock(&ucr->dev_mutex);
+ 
+ 			/* Defer the autosuspend if card exists */
+-			if (val & (SD_CD | MS_CD))
++			if (val & (SD_CD | MS_CD)) {
++				device_for_each_child(&intf->dev, NULL, rtsx_usb_resume_child);
+ 				return -EAGAIN;
++			}
+ 		} else {
+ 			/* There is an ongoing operation*/
+ 			return -EAGAIN;
+@@ -724,12 +732,6 @@ static int rtsx_usb_suspend(struct usb_i
+ 	return 0;
+ }
+ 
+-static int rtsx_usb_resume_child(struct device *dev, void *data)
+-{
+-	pm_request_resume(dev);
+-	return 0;
+-}
+-
+ static int rtsx_usb_resume(struct usb_interface *intf)
+ {
+ 	device_for_each_child(&intf->dev, NULL, rtsx_usb_resume_child);
 
 
 
