@@ -1,55 +1,55 @@
-Return-Path: <stable+bounces-173840-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-174998-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id BE1B3B36008
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 14:56:24 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id D6457B3668D
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 15:58:08 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 107F0464957
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 12:54:22 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 8BD375682AD
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 13:45:03 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3E2BC189BB0;
-	Tue, 26 Aug 2025 12:53:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2930A33EAE4;
+	Tue, 26 Aug 2025 13:44:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="wcRyV0BN"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="vkRJNFZs"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F011F1C6BE;
-	Tue, 26 Aug 2025 12:53:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DAF893376BA;
+	Tue, 26 Aug 2025 13:44:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756212804; cv=none; b=Up/YPR6Zx2s6076tsGgAmk+XXMYD0OVbvXBp4SqEwO0jxSqRxXiLh0Ot9+4rotBHAT5Llqq16qwODBSc4McUReFsQ6KXxsCz0hS9TBccuHyO+kBwTlTSpa9YuVhk7418ASXZIJZgS6juac18z8i102XA3OF6A7EH350v7VJZbAc=
+	t=1756215870; cv=none; b=ZUsTlQd3Ou+oF8OsLAfMxRVTBTMjOO+HDJERbgpyiXc7WjHbUK1v5uQuITG+EQf2P/8bNcbZr3lwl6ZVBySuSd+aYI97BfLiJtQlxYaTEdgnZymFnet/lQzVSGZk11fAbfXnTms5nzTvbqWdV0H9GpEezRDCe0qLicpzp+kYYW8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756212804; c=relaxed/simple;
-	bh=UrgcIKlhZY5rWxbEp8hwmlAPbP2oUmCTFacnnhGNJyk=;
+	s=arc-20240116; t=1756215870; c=relaxed/simple;
+	bh=L+nOrtWaE2PD0ka4F+YT2gqtlaDZVCMLUe07OR+i3hw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=GSPuGU05BX3gF6eAhx+TnGrI3jDJXIubF2JyrEF566dJ96Th0YYmXY6chUAI15i1Jfqs6nFExxArGMgBAzQWp7yA6XfSldyz4vIpjzqdtnfkC+0yjGyulcfp6vQYU6fqH6JXyggCajdsw5MsFAmpYrTicGJj8AEBzvR/82+bvZo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=wcRyV0BN; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 82E21C4CEF1;
-	Tue, 26 Aug 2025 12:53:23 +0000 (UTC)
+	 MIME-Version; b=AXPfYiTGVdZIjZsYvc+6FpmBWm5lvGzeUYTC/wvq5CBTRTmSKnQ1hlxwrAcrK20OP3xXt/95UUwYnseHHHSFvs2cGC53LtutDfCQqu9Avdcm+1zlXtJCe6VNLgcmBRmJmymQnj7cPRwKZmtfG/ZMZzx1aETZr35xYo6Rdse3hU8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=vkRJNFZs; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6F11BC4CEF1;
+	Tue, 26 Aug 2025 13:44:30 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1756212803;
-	bh=UrgcIKlhZY5rWxbEp8hwmlAPbP2oUmCTFacnnhGNJyk=;
+	s=korg; t=1756215870;
+	bh=L+nOrtWaE2PD0ka4F+YT2gqtlaDZVCMLUe07OR+i3hw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=wcRyV0BNb4/tc/Njbhllk2eooGOf53JfDYtNlPxa/b/n7bW9WIQYIGp/lGSnfcGtQ
-	 x8oaGUwpO2lJChOemOnXcXu3jA7YVmZkYk9VH114tXWPg0XoreoqNAShp/nrO2AaNo
-	 grrV+a5LsJI8WrhXLrEqVBVbG93nvvoUbS4JF6JM=
+	b=vkRJNFZsaZQw0dVp/eF7d5EV3dspFzRWBJKY7HwObZgEW/yzFhmli5sRh2UC12ph1
+	 a5xKpSa2zVvL+jQ3kHw+Qv42cfbBmd0eXDcizveuVIAlNqVFNy/v1j5UN+8+p35Cwv
+	 M1EXlBa/h+HCo07BZWr1FaRg8mUr503E+xvT9nGU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Thierry Reding <treding@nvidia.com>,
+	Herbert Xu <herbert@gondor.apana.org.au>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 108/587] firmware: tegra: Fix IVC dependency problems
+Subject: [PATCH 5.15 166/644] crypto: marvell/cesa - Fix engine load inaccuracy
 Date: Tue, 26 Aug 2025 13:04:17 +0200
-Message-ID: <20250826110955.687450358@linuxfoundation.org>
+Message-ID: <20250826110950.594652810@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250826110952.942403671@linuxfoundation.org>
-References: <20250826110952.942403671@linuxfoundation.org>
+In-Reply-To: <20250826110946.507083938@linuxfoundation.org>
+References: <20250826110946.507083938@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,52 +61,77 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Thierry Reding <treding@nvidia.com>
+From: Herbert Xu <herbert@gondor.apana.org.au>
 
-[ Upstream commit 78eb18020a88a4eed15f5af7700ed570642ff8f1 ]
+[ Upstream commit 442134ab30e75b7229c4bfc1ac5641d245cffe27 ]
 
-The IVC code is library code that other drivers need to select if they
-need that library. However, if the symbol is user-selectable this can
-lead to conflicts.
+If an error occurs during queueing the engine load will never be
+decremented.  Fix this by moving the engine load adjustment into
+the cleanup function.
 
-Fix this by making the symbol only selectable for COMPILE_TEST and add
-a select TEGRA_IVC to TEGRA_BPMP, which is currently the only user.
-
-Link: https://lore.kernel.org/r/20250506133118.1011777-10-thierry.reding@gmail.com
-Signed-off-by: Thierry Reding <treding@nvidia.com>
+Fixes: bf8f91e71192 ("crypto: marvell - Add load balancing between engines")
+Signed-off-by: Herbert Xu <herbert@gondor.apana.org.au>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/firmware/tegra/Kconfig | 5 +++--
- 1 file changed, 3 insertions(+), 2 deletions(-)
+ drivers/crypto/marvell/cesa/cipher.c | 4 +++-
+ drivers/crypto/marvell/cesa/hash.c   | 5 +++--
+ 2 files changed, 6 insertions(+), 3 deletions(-)
 
-diff --git a/drivers/firmware/tegra/Kconfig b/drivers/firmware/tegra/Kconfig
-index cde1ab8bd9d1..91f2320c0d0f 100644
---- a/drivers/firmware/tegra/Kconfig
-+++ b/drivers/firmware/tegra/Kconfig
-@@ -2,7 +2,7 @@
- menu "Tegra firmware driver"
+diff --git a/drivers/crypto/marvell/cesa/cipher.c b/drivers/crypto/marvell/cesa/cipher.c
+index 3876e3ce822f..eabed9d977df 100644
+--- a/drivers/crypto/marvell/cesa/cipher.c
++++ b/drivers/crypto/marvell/cesa/cipher.c
+@@ -75,9 +75,12 @@ mv_cesa_skcipher_dma_cleanup(struct skcipher_request *req)
+ static inline void mv_cesa_skcipher_cleanup(struct skcipher_request *req)
+ {
+ 	struct mv_cesa_skcipher_req *creq = skcipher_request_ctx(req);
++	struct mv_cesa_engine *engine = creq->base.engine;
  
- config TEGRA_IVC
--	bool "Tegra IVC protocol"
-+	bool "Tegra IVC protocol" if COMPILE_TEST
- 	depends on ARCH_TEGRA
- 	help
- 	  IVC (Inter-VM Communication) protocol is part of the IPC
-@@ -13,8 +13,9 @@ config TEGRA_IVC
+ 	if (mv_cesa_req_get_type(&creq->base) == CESA_DMA_REQ)
+ 		mv_cesa_skcipher_dma_cleanup(req);
++
++	atomic_sub(req->cryptlen, &engine->load);
+ }
  
- config TEGRA_BPMP
- 	bool "Tegra BPMP driver"
--	depends on ARCH_TEGRA && TEGRA_HSP_MBOX && TEGRA_IVC
-+	depends on ARCH_TEGRA && TEGRA_HSP_MBOX
- 	depends on !CPU_BIG_ENDIAN
-+	select TEGRA_IVC
- 	help
- 	  BPMP (Boot and Power Management Processor) is designed to off-loading
- 	  the PM functions which include clock/DVFS/thermal/power from the CPU.
+ static void mv_cesa_skcipher_std_step(struct skcipher_request *req)
+@@ -212,7 +215,6 @@ mv_cesa_skcipher_complete(struct crypto_async_request *req)
+ 	struct mv_cesa_engine *engine = creq->base.engine;
+ 	unsigned int ivsize;
+ 
+-	atomic_sub(skreq->cryptlen, &engine->load);
+ 	ivsize = crypto_skcipher_ivsize(crypto_skcipher_reqtfm(skreq));
+ 
+ 	if (mv_cesa_req_get_type(&creq->base) == CESA_DMA_REQ) {
+diff --git a/drivers/crypto/marvell/cesa/hash.c b/drivers/crypto/marvell/cesa/hash.c
+index 72b0f863dee0..66ebe26e59cb 100644
+--- a/drivers/crypto/marvell/cesa/hash.c
++++ b/drivers/crypto/marvell/cesa/hash.c
+@@ -110,9 +110,12 @@ static inline void mv_cesa_ahash_dma_cleanup(struct ahash_request *req)
+ static inline void mv_cesa_ahash_cleanup(struct ahash_request *req)
+ {
+ 	struct mv_cesa_ahash_req *creq = ahash_request_ctx(req);
++	struct mv_cesa_engine *engine = creq->base.engine;
+ 
+ 	if (mv_cesa_req_get_type(&creq->base) == CESA_DMA_REQ)
+ 		mv_cesa_ahash_dma_cleanup(req);
++
++	atomic_sub(req->nbytes, &engine->load);
+ }
+ 
+ static void mv_cesa_ahash_last_cleanup(struct ahash_request *req)
+@@ -395,8 +398,6 @@ static void mv_cesa_ahash_complete(struct crypto_async_request *req)
+ 			}
+ 		}
+ 	}
+-
+-	atomic_sub(ahashreq->nbytes, &engine->load);
+ }
+ 
+ static void mv_cesa_ahash_prepare(struct crypto_async_request *req,
 -- 
 2.39.5
 
