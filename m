@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-175913-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-174774-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 08DCBB36BB5
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 16:48:09 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id E2EB4B364EB
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 15:42:52 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id C0BC9A01B6E
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 14:27:20 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id BD91A683835
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 13:35:25 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 34B92345752;
-	Tue, 26 Aug 2025 14:24:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id BE0441F4CA9;
+	Tue, 26 Aug 2025 13:34:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="rikKzIf9"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="O+6rPCbf"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E73831DF75A;
-	Tue, 26 Aug 2025 14:24:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7C071227EA8;
+	Tue, 26 Aug 2025 13:34:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756218297; cv=none; b=d0UXEJqGUTvbayHFC7in4QPM7PKcAomi1J5zz61Beqr+F1hfV0grZt2HJwgeKp8QOjaAHOX6doSi07YRGYzkqdse6wDuYGq4TSXB+oCJXayT8gQCW5pCxTpneOJ0uzzCrHZdHtgG/OQkvEsmubgtuyK0nNSfmwZO+qbCD3l8dlA=
+	t=1756215281; cv=none; b=AJ1Py7Wn97y+h0iegbExUGAYb6DmZDobyLk58DtskrWZOxTVk6pUveqVl3adykwQOHtDMm98Rt7RS7XWaL/+AZZkQGJYWzb5d7TInSvk4nw56MhR66CKn/dQHJPnAVbn5dQKE7AVtYwdKGoRpZTuUj22DvFBtQ4cf4wi5GAikhg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756218297; c=relaxed/simple;
-	bh=mwkbWIzGJfeNK4g14Sn/0eAT1AT1wkOMaubhU4iSfr4=;
+	s=arc-20240116; t=1756215281; c=relaxed/simple;
+	bh=LA65R7NlP2DZ0BwCpM/qSMRPTBiZoD8Xks9aq2x1E20=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=t97vQGbZK76yoafbDhcC2Qp6PswAhum3TmGQpva/ehG3PQA13FMyqZk/uZGxIdpYFo6VSsw+bJMkO5Hx5wk+5YGtMNHPSrW5Cz1HuRJP31FusGgPSWoEqPwdqkuaHygNqRU0e5QlEgGdJB6n6njNUkbp+MRgzEiYlFaIIoZASmw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=rikKzIf9; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 717CFC4CEF1;
-	Tue, 26 Aug 2025 14:24:56 +0000 (UTC)
+	 MIME-Version; b=bft4PUSsJdj+e7AJM+KFnH/bx/ax5lKInyCmfIf1pumAlPIkieT/1nGUu7aEoPomPNM4h348u+djc+IN6kXPhJ7012MqHH/JtzJ3LJR8kc2NkR0kHxhd6V9nSZvj7CVrqM9iIEXjTW/zy1kKJCoVvLUsnOSjGh4vajSTlSNCTOg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=O+6rPCbf; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0E903C4CEF1;
+	Tue, 26 Aug 2025 13:34:40 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1756218296;
-	bh=mwkbWIzGJfeNK4g14Sn/0eAT1AT1wkOMaubhU4iSfr4=;
+	s=korg; t=1756215281;
+	bh=LA65R7NlP2DZ0BwCpM/qSMRPTBiZoD8Xks9aq2x1E20=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=rikKzIf9cvL2h0ibUfbU4wcCnWikzNdgIiTi2YtZfMbgZTIqvOudGhcodKr7siiCb
-	 rq5G7avvnWMtq8rVLx7dbQ9o9baUCpSyvFxdOya/4Sje3KrN21JXjB1CsvsAP7ThzF
-	 2xwy9iONeWq/AxGW+xkBOVsHPzjcdbpEr80eIQ88=
+	b=O+6rPCbfU8M68dBdhe2u3G60YC9Xo/974KBc+7SIENrCw2JJFfT8dMuurP7FWm9RE
+	 JANLpPQilvvF1aOqQx8f3/1MnRclrtoofmKx/JxQFo1y70RvD4b8rwdASwpw+x+L4l
+	 TA9YMoCMUQm7kaQZ8iiWlzfZ8cIlTEzfk/ukeucE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Roger Quadros <rogerq@kernel.org>,
-	Johan Hovold <johan@kernel.org>,
+	Judith Mendez <jm@ti.com>,
+	Vignesh Raghavendra <vigneshr@ti.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 467/523] usb: musb: omap2430: fix device leak at unbind
+Subject: [PATCH 6.1 424/482] arm64: dts: ti: k3-am62-main: Remove eMMC High Speed DDR support
 Date: Tue, 26 Aug 2025 13:11:17 +0200
-Message-ID: <20250826110935.963394045@linuxfoundation.org>
+Message-ID: <20250826110941.303359010@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250826110924.562212281@linuxfoundation.org>
-References: <20250826110924.562212281@linuxfoundation.org>
+In-Reply-To: <20250826110930.769259449@linuxfoundation.org>
+References: <20250826110930.769259449@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,68 +62,41 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Johan Hovold <johan@kernel.org>
+From: Judith Mendez <jm@ti.com>
 
-[ Upstream commit 1473e9e7679bd4f5a62d1abccae894fb86de280f ]
+[ Upstream commit 265f70af805f33a0dfc90f50cc0f116f702c3811 ]
 
-Make sure to drop the reference to the control device taken by
-of_find_device_by_node() during probe when the driver is unbound.
+For eMMC, High Speed DDR mode is not supported [0], so remove
+mmc-ddr-1_8v flag which adds the capability.
 
-Fixes: 8934d3e4d0e7 ("usb: musb: omap2430: Don't use omap_get_control_dev()")
-Cc: stable@vger.kernel.org	# 3.13
-Cc: Roger Quadros <rogerq@kernel.org>
-Signed-off-by: Johan Hovold <johan@kernel.org>
-Link: https://lore.kernel.org/r/20250724091910.21092-5-johan@kernel.org
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-[ Removed populate_irqs-related goto changes ]
+[0] https://www.ti.com/lit/gpn/am625
+
+Fixes: c37c58fdeb8a ("arm64: dts: ti: k3-am62: Add more peripheral nodes")
+Cc: stable@vger.kernel.org
+Signed-off-by: Judith Mendez <jm@ti.com>
+Link: https://lore.kernel.org/r/20250707191250.3953990-1-jm@ti.com
+Signed-off-by: Vignesh Raghavendra <vigneshr@ti.com>
+[ adapted context ]
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/usb/musb/omap2430.c |   10 +++++++---
- 1 file changed, 7 insertions(+), 3 deletions(-)
+ arch/arm64/boot/dts/ti/k3-am62-main.dtsi |    1 -
+ 1 file changed, 1 deletion(-)
 
---- a/drivers/usb/musb/omap2430.c
-+++ b/drivers/usb/musb/omap2430.c
-@@ -403,13 +403,13 @@ static int omap2430_probe(struct platfor
- 			ARRAY_SIZE(musb_resources));
- 	if (ret) {
- 		dev_err(&pdev->dev, "failed to add resources\n");
--		goto err2;
-+		goto err_put_control_otghs;
- 	}
- 
- 	ret = platform_device_add_data(musb, pdata, sizeof(*pdata));
- 	if (ret) {
- 		dev_err(&pdev->dev, "failed to add platform_data\n");
--		goto err2;
-+		goto err_put_control_otghs;
- 	}
- 
- 	pm_runtime_enable(glue->dev);
-@@ -424,7 +424,9 @@ static int omap2430_probe(struct platfor
- 
- err3:
- 	pm_runtime_disable(glue->dev);
--
-+err_put_control_otghs:
-+	if (!IS_ERR(glue->control_otghs))
-+		put_device(glue->control_otghs);
- err2:
- 	platform_device_put(musb);
- 
-@@ -438,6 +440,8 @@ static int omap2430_remove(struct platfo
- 
- 	platform_device_unregister(glue->musb);
- 	pm_runtime_disable(glue->dev);
-+	if (!IS_ERR(glue->control_otghs))
-+		put_device(glue->control_otghs);
- 
- 	return 0;
- }
+--- a/arch/arm64/boot/dts/ti/k3-am62-main.dtsi
++++ b/arch/arm64/boot/dts/ti/k3-am62-main.dtsi
+@@ -386,7 +386,6 @@
+ 		clock-names = "clk_ahb", "clk_xin";
+ 		assigned-clocks = <&k3_clks 57 6>;
+ 		assigned-clock-parents = <&k3_clks 57 8>;
+-		mmc-ddr-1_8v;
+ 		mmc-hs200-1_8v;
+ 		ti,trm-icp = <0x2>;
+ 		bus-width = <8>;
 
 
 
