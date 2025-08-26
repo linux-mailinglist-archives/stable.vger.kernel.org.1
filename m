@@ -1,55 +1,58 @@
-Return-Path: <stable+bounces-174624-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-175275-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 59E39B36454
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 15:37:45 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7B046B36776
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 16:07:05 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 635418A6A8F
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 13:29:09 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id A91411BC6633
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 13:58:44 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A3ACC2FAC0A;
-	Tue, 26 Aug 2025 13:28:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 91AA3352090;
+	Tue, 26 Aug 2025 13:56:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="X9i+Xrs8"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="yaNoPkce"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5584230AAD2;
-	Tue, 26 Aug 2025 13:28:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 503B235208D;
+	Tue, 26 Aug 2025 13:56:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756214883; cv=none; b=iSs+FQiwJyhivxOcFD/Wxpgek8wU0iyF4uVeXLhTCMGg6iRL95BoM4IvySURyRxUlQetFGAfnvBnq5MjXeg8w+cSTUUnVmkAZKANifz/WVgEyXINggZ2TXP2zoHW2GCohzaJ6VlYdyRapm2LFM+UFsqz+S9tLZdr29jsiLQwYXU=
+	t=1756216606; cv=none; b=QsbpGZmsG/1DfedSTFSD2ow7vIcmav/3+yYrupbKFe5nZ2NNS28Z0S3oefxVK5mcB8of2TsmBzo3LZwzhZyeJDqm2QV4QCLS1jKmZXuixkflz0VsPvFArMlYtzodXhqTh0tiaP7hA+ZcJFMcUlsQZWuNTesIosi125yOKLTAGiM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756214883; c=relaxed/simple;
-	bh=gSWwHx5SEE8Ibt8xihQVgq1NLRDunj+W+yF82teH1Xc=;
+	s=arc-20240116; t=1756216606; c=relaxed/simple;
+	bh=9Q5iH8VzX2q+ISFCXxQN/lCHq0otVs/PbLayw1NdYJA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=UJFZOOk10LnuuE1JX/bf0pr8SIQlL7wfbDcctNkTwT10AFf5x7BHpmMCakBBCXpDiLC7gRnn3idkOZzbcyMXu4wYTh7zCdYjyFnxzG2ouIFwgsQc6IT+kWm1rEeHQtgEHl6XCtXLHBHsMP/sSqkhckywoyxfjjqUvamuMGtT1kg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=X9i+Xrs8; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 91E10C4CEF1;
-	Tue, 26 Aug 2025 13:28:02 +0000 (UTC)
+	 MIME-Version; b=eWdwnqQ8+O3YMDCC+ocexn7fulpS8TJEkO/5RBjZcEW13/Ad3L+Z3oVusxCkazAC/0NmOQxClUeaFKDLWygp+xP4rgqjm+iOrNPElfKhh3j/BxoFvUE3RSpb4JX41eaT463xU663YbfHgbgMqF4Z+Nm2Uup9jbvHpjk99QtYnwU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=yaNoPkce; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D6D74C113D0;
+	Tue, 26 Aug 2025 13:56:45 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1756214882;
-	bh=gSWwHx5SEE8Ibt8xihQVgq1NLRDunj+W+yF82teH1Xc=;
+	s=korg; t=1756216606;
+	bh=9Q5iH8VzX2q+ISFCXxQN/lCHq0otVs/PbLayw1NdYJA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=X9i+Xrs8DW1za+0AXMYLw2QXYUF5j3Qgo0Pozb79TQlVT4MTqzRE9dP4VWA6fK4Pu
-	 QSlvSEj0yFMXwixj3WxLFDcV5nwze+5GfCKOsEPejNnIFSjWbAvcvEom/eijEJbU39
-	 f2cAVI+aeNDTlGZkH3rfM87YIqKvbiIkNjIkgowo=
+	b=yaNoPkceudNSedJFpl5dSdApRdsB2ej3fxeFFDMHkVf+ZKiq2o7hDaW9UriHwhqIB
+	 L1uf/EnQCJy/sgbtc8ooMjlVB2X3eQu0R2YozWmD0r0rhO4n9y3/GGlko6AEYQjCuu
+	 jw9bO2J+qbkmyuIMbQLUBWCFW+PrjTJmpnYjl2N0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Thomas Fourier <fourier.thomas@gmail.com>,
-	Miquel Raynal <miquel.raynal@bootlin.com>
-Subject: [PATCH 6.1 305/482] mtd: rawnand: fsmc: Add missing check after DMA map
+	Andreas Dilger <adilger@whamcloud.com>,
+	Li Dongyang <dongyangli@ddn.com>,
+	Alex Zhuravlev <bzzz@whamcloud.com>,
+	Oleg Drokin <green@whamcloud.com>,
+	Theodore Tso <tytso@mit.edu>
+Subject: [PATCH 5.15 467/644] ext4: check fast symlink for ea_inode correctly
 Date: Tue, 26 Aug 2025 13:09:18 +0200
-Message-ID: <20250826110938.334824391@linuxfoundation.org>
+Message-ID: <20250826110958.053810398@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250826110930.769259449@linuxfoundation.org>
-References: <20250826110930.769259449@linuxfoundation.org>
+In-Reply-To: <20250826110946.507083938@linuxfoundation.org>
+References: <20250826110946.507083938@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,38 +64,68 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Thomas Fourier <fourier.thomas@gmail.com>
+From: Andreas Dilger <adilger@dilger.ca>
 
-commit 6c4dab38431fee3d39a841d66ba6f2890b31b005 upstream.
+commit b4cc4a4077268522e3d0d34de4b2dc144e2330fa upstream.
 
-The DMA map functions can fail and should be tested for errors.
+The check for a fast symlink in the presence of only an
+external xattr inode is incorrect.  If a fast symlink does
+not have an xattr block (i_file_acl == 0), but does have
+an external xattr inode that increases inode i_blocks, then
+the check for a fast symlink will incorrectly fail and
+__ext4_iget()->ext4_ind_check_inode() will report the inode
+is corrupt when it "validates" i_data[] on the next read:
 
-Fixes: 4774fb0a48aa ("mtd: nand/fsmc: Add DMA support")
+    # ln -s foo /mnt/tmp/bar
+    # setfattr -h -n trusted.test \
+               -v "$(yes | head -n 4000)" /mnt/tmp/bar
+    # umount /mnt/tmp
+    # mount /mnt/tmp
+    # ls -l /mnt/tmp
+    ls: cannot access '/mnt/tmp/bar': Structure needs cleaning
+    total 4
+     ? l?????????? ? ?    ?        ?            ? bar
+    # dmesg | tail -1
+    EXT4-fs error (device dm-8): __ext4_iget:5098:
+        inode #24578: block 7303014: comm ls: invalid block
+
+(note that "block 7303014" = 0x6f6f66 = "foo" in LE order).
+
+ext4_inode_is_fast_symlink() should check the superblock
+EXT4_FEATURE_INCOMPAT_EA_INODE feature flag, not the inode
+EXT4_EA_INODE_FL, since the latter is only set on the xattr
+inode itself, and not on the inode that uses this xattr.
+
 Cc: stable@vger.kernel.org
-Signed-off-by: Thomas Fourier <fourier.thomas@gmail.com>
-Rule: add
-Link: https://lore.kernel.org/stable/20250702065806.20983-2-fourier.thomas%40gmail.com
-Signed-off-by: Miquel Raynal <miquel.raynal@bootlin.com>
+Fixes: fc82228a5e38 ("ext4: support fast symlinks from ext3 file systems")
+Signed-off-by: Andreas Dilger <adilger@whamcloud.com>
+Reviewed-by: Li Dongyang <dongyangli@ddn.com>
+Reviewed-by: Alex Zhuravlev <bzzz@whamcloud.com>
+Reviewed-by: Oleg Drokin <green@whamcloud.com>
+Reviewed-on: https://review.whamcloud.com/59879
+Lustre-bug-id: https://jira.whamcloud.com/browse/LU-19121
+Link: https://patch.msgid.link/20250717063709.757077-1-adilger@dilger.ca
+Signed-off-by: Theodore Ts'o <tytso@mit.edu>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/mtd/nand/raw/fsmc_nand.c |    2 ++
- 1 file changed, 2 insertions(+)
+ fs/ext4/inode.c |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/drivers/mtd/nand/raw/fsmc_nand.c
-+++ b/drivers/mtd/nand/raw/fsmc_nand.c
-@@ -503,6 +503,8 @@ static int dma_xfer(struct fsmc_nand_dat
+--- a/fs/ext4/inode.c
++++ b/fs/ext4/inode.c
+@@ -148,7 +148,7 @@ static int ext4_meta_trans_blocks(struct
+  */
+ int ext4_inode_is_fast_symlink(struct inode *inode)
+ {
+-	if (!(EXT4_I(inode)->i_flags & EXT4_EA_INODE_FL)) {
++	if (!ext4_has_feature_ea_inode(inode->i_sb)) {
+ 		int ea_blocks = EXT4_I(inode)->i_file_acl ?
+ 				EXT4_CLUSTER_SIZE(inode->i_sb) >> 9 : 0;
  
- 	dma_dev = chan->device;
- 	dma_addr = dma_map_single(dma_dev->dev, buffer, len, direction);
-+	if (dma_mapping_error(dma_dev->dev, dma_addr))
-+		return -EINVAL;
- 
- 	if (direction == DMA_TO_DEVICE) {
- 		dma_src = dma_addr;
 
 
 
