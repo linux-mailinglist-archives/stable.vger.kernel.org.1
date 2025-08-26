@@ -1,59 +1,56 @@
-Return-Path: <stable+bounces-173098-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-175673-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9A363B35B64
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 13:23:53 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 01A3AB3694B
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 16:25:23 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 280897C305E
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 11:23:16 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 39F02584B38
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 14:16:48 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9188632144F;
-	Tue, 26 Aug 2025 11:22:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id DF5123314DF;
+	Tue, 26 Aug 2025 14:14:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="2Qdo6N48"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="zhEswRoZ"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1C2822BEC2B;
-	Tue, 26 Aug 2025 11:22:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9C4AA2AE68;
+	Tue, 26 Aug 2025 14:14:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756207367; cv=none; b=rYy6kmLxOr0dJYTqKenBHiRqpS2YtPfbN5VCid5H9IRz04XB5zGmeOGNJz7KQlu7e/NsrDqaSyYpiKZvjbys1TG2crkmwhIGbPIp5sgijHdng+q/WQE1VDfQ1j6GeEr6fAgXUbKQRfFX38Nyzu5BeGh98WiskgAUk+DTjiTv0vg=
+	t=1756217666; cv=none; b=uhrg4ttn0Z65WwaxLHAKkdIzzEb/pd88i+xPzCqZaZciB5WekttyMZS64o3/XphZaUGkcMkYFV/aDO2RWfejh8rN76a6+RgwQA2WqOBVnRlTzO10MzTgzw8Y7fxdptNlLiEG8d33/gFxG7ffb114Wpv8giqDhKKaff67hwsBTo8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756207367; c=relaxed/simple;
-	bh=WHaby1d/rY9eJ5uyYIMXo1G5djTYxUDf1gvdev4VtwQ=;
+	s=arc-20240116; t=1756217666; c=relaxed/simple;
+	bh=pu7/bk5ktm2PQxfuYE9H8koFKRfdP4nEOHmiS6ObiMo=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=bZHjfIohDrQCYvJ/AGE1sYRTuoU1ECzpfA96Mkk5WOJ6fcpmk4dzzceYw2sQPX7y11BEQsx9fWS6lhQTKkmTrDbo2cHz4MBYIAxNsEkbjOXl9VQKYl5jfyhYfq8/ruKxEs3GyH3KAW6MgEPZRIKDhuJpzvZzbHCBsIGUXtmcnoI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=2Qdo6N48; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 89F99C4CEF1;
-	Tue, 26 Aug 2025 11:22:46 +0000 (UTC)
+	 MIME-Version; b=KaxzCNG7r/HJk1GXN0RjjnGfohScLCgeskdzydyKugSu44RTjmykPKbndxxfDg2srq2BuWkzioWhh3Lm+V6unhFD64os6J3KOMCZ3u9V71T2Q7g6YvjA5lPIZVfv4KF2hhi83avtja+Ec/YEQCXdqGIEQUoMA0yUED+RswEtAoI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=zhEswRoZ; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 31E55C4CEF1;
+	Tue, 26 Aug 2025 14:14:26 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1756207366;
-	bh=WHaby1d/rY9eJ5uyYIMXo1G5djTYxUDf1gvdev4VtwQ=;
+	s=korg; t=1756217666;
+	bh=pu7/bk5ktm2PQxfuYE9H8koFKRfdP4nEOHmiS6ObiMo=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=2Qdo6N48k9K86vtFZur2YieEWgjPePO+xCRS4ubxogq8vZyH3eHmzHo3mHzafRXRs
-	 GE088YbGQxJJi507cYoCDBSF6Ps2JbBfviH1W8ck0p5IWmLeHfTILPIYomPM5i289k
-	 Nw7oMyIXM8AaAjwjC+xlCZuZLgESRgP+kGF6FKtA=
+	b=zhEswRoZvk+FCd4dpQxi6AAy2N9figomAUc9qeqg9q99GXUQ+ccTAGluzqMQMFFu6
+	 O224yEZ8htQEn9gaVv3fvbH3jYCjFjruy5ETG+6WTWddjBlTwxPjCFTsrWFb/O7uYT
+	 2CzBgTthcBslgzs13L5oUQCq2auZG4iVCVnMghRY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Vikash Garodia <quic_vgarodia@quicinc.com>,
-	Bryan ODonoghue <bryan.odonoghue@linaro.org>,
-	Dikshita Agarwal <quic_dikshita@quicinc.com>,
-	Bryan ODonoghue <bod@kernel.org>,
-	Hans Verkuil <hverkuil@xs4all.nl>,
-	Neil Armstrong <neil.armstrong@linaro.org>
-Subject: [PATCH 6.16 155/457] media: iris: Fix missing function pointer initialization
+	Lifeng Zheng <zhenglifeng1@huawei.com>,
+	"Rafael J. Wysocki" <rafael.j.wysocki@intel.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.10 229/523] cpufreq: Exit governor when failed to start old governor
 Date: Tue, 26 Aug 2025 13:07:19 +0200
-Message-ID: <20250826110941.205038239@linuxfoundation.org>
+Message-ID: <20250826110930.103802562@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250826110937.289866482@linuxfoundation.org>
-References: <20250826110937.289866482@linuxfoundation.org>
+In-Reply-To: <20250826110924.562212281@linuxfoundation.org>
+References: <20250826110924.562212281@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -65,50 +62,48 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.16-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Dikshita Agarwal <quic_dikshita@quicinc.com>
+From: Lifeng Zheng <zhenglifeng1@huawei.com>
 
-commit c314a28cdabe45f050fe7bd403ddeaf4b9c960d1 upstream.
+[ Upstream commit 0ae204405095abfbc2d694ee0fbb49bcbbe55c57 ]
 
-The function pointers responsible for setting firmware properties were
-never initialized in the instance capability structure, causing it to
-remain NULL. As a result, the firmware properties were not being set
-correctly.
+Detect the result of starting old governor in cpufreq_set_policy(). If it
+fails, exit the governor and clear policy->governor.
 
-Fix this by properly assigning the function pointers from the core
-capability to the instance capability, ensuring that the properties are
-correctly applied to the firmware.
-
-Cc: stable@vger.kernel.org
-Fixes: 3a19d7b9e08b ("media: iris: implement set properties to firmware during streamon")
-Acked-by: Vikash Garodia <quic_vgarodia@quicinc.com>
-Reviewed-by: Bryan O'Donoghue <bryan.odonoghue@linaro.org>
-Tested-by: Neil Armstrong <neil.armstrong@linaro.org> # on SM8550-QRD
-Tested-by: Neil Armstrong <neil.armstrong@linaro.org> # on SM8550-HDK
-Tested-by: Neil Armstrong <neil.armstrong@linaro.org> # on SM8650-QRD
-Tested-by: Neil Armstrong <neil.armstrong@linaro.org> # on SM8650-HDK
-Signed-off-by: Dikshita Agarwal <quic_dikshita@quicinc.com>
-Tested-by: Vikash Garodia <quic_vgarodia@quicinc.com> # on sa8775p-ride
-Signed-off-by: Bryan O'Donoghue <bod@kernel.org>
-Signed-off-by: Hans Verkuil <hverkuil@xs4all.nl>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Signed-off-by: Lifeng Zheng <zhenglifeng1@huawei.com>
+Link: https://patch.msgid.link/20250709104145.2348017-5-zhenglifeng1@huawei.com
+Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/media/platform/qcom/iris/iris_ctrls.c |    1 +
- 1 file changed, 1 insertion(+)
+ drivers/cpufreq/cpufreq.c | 8 +++++---
+ 1 file changed, 5 insertions(+), 3 deletions(-)
 
---- a/drivers/media/platform/qcom/iris/iris_ctrls.c
-+++ b/drivers/media/platform/qcom/iris/iris_ctrls.c
-@@ -163,6 +163,7 @@ void iris_session_init_caps(struct iris_
- 		core->inst_fw_caps[cap_id].value = caps[i].value;
- 		core->inst_fw_caps[cap_id].flags = caps[i].flags;
- 		core->inst_fw_caps[cap_id].hfi_id = caps[i].hfi_id;
-+		core->inst_fw_caps[cap_id].set = caps[i].set;
+diff --git a/drivers/cpufreq/cpufreq.c b/drivers/cpufreq/cpufreq.c
+index d1277f98d1fd..149ba2e39a96 100644
+--- a/drivers/cpufreq/cpufreq.c
++++ b/drivers/cpufreq/cpufreq.c
+@@ -2545,10 +2545,12 @@ static int cpufreq_set_policy(struct cpufreq_policy *policy,
+ 	pr_debug("starting governor %s failed\n", policy->governor->name);
+ 	if (old_gov) {
+ 		policy->governor = old_gov;
+-		if (cpufreq_init_governor(policy))
++		if (cpufreq_init_governor(policy)) {
+ 			policy->governor = NULL;
+-		else
+-			cpufreq_start_governor(policy);
++		} else if (cpufreq_start_governor(policy)) {
++			cpufreq_exit_governor(policy);
++			policy->governor = NULL;
++		}
  	}
- }
  
+ 	return ret;
+-- 
+2.39.5
+
 
 
 
