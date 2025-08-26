@@ -1,58 +1,56 @@
-Return-Path: <stable+bounces-175937-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-173687-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id E290DB36A6C
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 16:37:20 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id B5725B35E91
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 13:59:27 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 68183A024CA
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 14:28:30 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id EE8B8364AEB
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 11:48:16 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 18D33352FE1;
-	Tue, 26 Aug 2025 14:26:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B58BE288511;
+	Tue, 26 Aug 2025 11:48:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="0o42/Ftw"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="yp6KyEOe"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CAD51350D7B;
-	Tue, 26 Aug 2025 14:26:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7269121D3C0;
+	Tue, 26 Aug 2025 11:48:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756218360; cv=none; b=Rqthgv9v1Fx9A3wxZap91qCQP/fK/Hf+wYkU4vENPsBV7oQZjw79nIelc+G0autwv92mSqEPqxehIqBmohCXfmTXg4XSPn3S8l+WE6dIRcEw/W+w7TzrbeieIiVKtKr4nHbtr/80a7XaTJmkEfxdWzZuThD8qF5oArD/SGKsX5E=
+	t=1756208895; cv=none; b=ZUzdlhBBZ4VlBHjJ1F/UCg4LfHBJIk1PG0YT5kQi9adZBXpLyRHMqoftSxxy3fMf0gRLbyxF7OlKz4My89lVPx+PDKKj2rl5pt3RsdH5p+7XpKS3DuhK13cJUVtQY4TYwqQb0T4C+eY6gc3JuWA9pSRZuszIv1ct/nV0dOKdQ58=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756218360; c=relaxed/simple;
-	bh=h1zn6Pkz7HGr2U6EKWtzzXwjWV35L8VCHy4o64ohdBw=;
+	s=arc-20240116; t=1756208895; c=relaxed/simple;
+	bh=zkwYJgsP9eVvkmog9HQLiL3Oc/wZMouKho8CSMFW8Z8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=AuGvL7VPx8Nn/g9j8SeAtgNfAjlzfirVebAQvvQhp/1F5DqHOXwjDL1XeXBCUAlO68tOCBWs2ySwvw0nNOLAsju/n8YfyS7Jr4h1C96Dqxy45jvPxJgagGLAB0PPMA5XXYy+JwGUDM1BW8C697DhK+9tA6kdL/3M1137LRLGxYs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=0o42/Ftw; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id DAF5EC4CEF1;
-	Tue, 26 Aug 2025 14:25:59 +0000 (UTC)
+	 MIME-Version; b=qODlFbFEtfFfQFFC3ZfGJ8WZ7qoQBkxwDY273SlVwqQGD4uVNcLx8ZaYfs6Rd1+MuRsluFN3IzyZZ5ndnuMB5YCxX+OZ+mZUdvHgre3eiKPdg3yoLlwALY7O590WQhGQzjwT6PV6EAVx5qvUeE6FDWZNRRts3bS04pcRBw9N4eQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=yp6KyEOe; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0448DC4CEF1;
+	Tue, 26 Aug 2025 11:48:14 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1756218360;
-	bh=h1zn6Pkz7HGr2U6EKWtzzXwjWV35L8VCHy4o64ohdBw=;
+	s=korg; t=1756208895;
+	bh=zkwYJgsP9eVvkmog9HQLiL3Oc/wZMouKho8CSMFW8Z8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=0o42/Ftw/P1wzVFT8va3LocNklYVuzCnIapSml2ENZ/mFYx+fu5LXxA8hJczfWQCz
-	 k1u4AS5xGrTV7d2Aob9He4bZKh2hntYXn0zWqQ1pXd65fKvwLhInBeimSSh8c3CG2c
-	 IBI34t5mM8dHqDUhFZ7FfUqdWoNDP4NS3/HTNLLA=
+	b=yp6KyEOeYyMcqkO+e54GhyIz3Z5fg8fazhGHn3R3/nRjAeAY7ZVAfOimqsGaQ9jH3
+	 84vlxj0LjfUPbRHiSxndCuBHu8RVKPD1hZR6ySbb290mIS6ULOBIdWRQe+2zCzw5aC
+	 xJlMjyF3JF48eSbo1W8piOpAxlA6Yo1UfCLBCbgA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Hans Verkuil <hverkuil@xs4all.nl>,
-	Bryan ODonoghue <bryan.odonoghue@linaro.org>,
-	Ricardo Ribalda <ribalda@chromium.org>,
-	Bryan ODonoghue <bod@kernel.org>,
+	Dan Carpenter <dan.carpenter@linaro.org>,
+	Takashi Iwai <tiwai@suse.de>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 492/523] media: venus: vdec: Clamp param smaller than 1fps and bigger than 240.
+Subject: [PATCH 6.12 287/322] ALSA: usb-audio: Fix size validation in convert_chmap_v3()
 Date: Tue, 26 Aug 2025 13:11:42 +0200
-Message-ID: <20250826110936.581119772@linuxfoundation.org>
+Message-ID: <20250826110922.998713520@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250826110924.562212281@linuxfoundation.org>
-References: <20250826110924.562212281@linuxfoundation.org>
+In-Reply-To: <20250826110915.169062587@linuxfoundation.org>
+References: <20250826110915.169062587@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,65 +62,42 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Ricardo Ribalda <ribalda@chromium.org>
+From: Dan Carpenter <dan.carpenter@linaro.org>
 
-[ Upstream commit 377dc500d253f0b26732b2cb062e89668aef890a ]
+[ Upstream commit 89f0addeee3cb2dc49837599330ed9c4612f05b0 ]
 
-The driver uses "whole" fps in all its calculations (e.g. in
-load_per_instance()). Those calculation expect an fps bigger than 1, and
-not big enough to overflow.
+The "p" pointer is void so sizeof(*p) is 1.  The intent was to check
+sizeof(*cs_desc), which is 3, instead.
 
-Clamp the value if the user provides a param that will result in an invalid
-fps.
-
-Reported-by: Hans Verkuil <hverkuil@xs4all.nl>
-Closes: https://lore.kernel.org/linux-media/f11653a7-bc49-48cd-9cdb-1659147453e4@xs4all.nl/T/#m91cd962ac942834654f94c92206e2f85ff7d97f0
-Fixes: 7472c1c69138 ("[media] media: venus: vdec: add video decoder files")
-Cc: stable@vger.kernel.org
-Tested-by: Bryan O'Donoghue <bryan.odonoghue@linaro.org> # qrb5615-rb5
-Reviewed-by: Bryan O'Donoghue <bryan.odonoghue@linaro.org>
-Signed-off-by: Ricardo Ribalda <ribalda@chromium.org>
-[bod: Change "parm" to "param"]
-Signed-off-by: Bryan O'Donoghue <bod@kernel.org>
-Signed-off-by: Hans Verkuil <hverkuil@xs4all.nl>
+Fixes: ecfd41166b72 ("ALSA: usb-audio: Validate UAC3 cluster segment descriptors")
+Signed-off-by: Dan Carpenter <dan.carpenter@linaro.org>
+Link: https://patch.msgid.link/aKL5kftC1qGt6lpv@stanley.mountain
+Signed-off-by: Takashi Iwai <tiwai@suse.de>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/media/platform/qcom/venus/core.h |    2 ++
- drivers/media/platform/qcom/venus/vdec.c |    5 ++---
- 2 files changed, 4 insertions(+), 3 deletions(-)
+ sound/usb/stream.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/drivers/media/platform/qcom/venus/core.h
-+++ b/drivers/media/platform/qcom/venus/core.h
-@@ -25,6 +25,8 @@
- #define VIDC_VCODEC_CLKS_NUM_MAX	2
- #define VIDC_PMDOMAINS_NUM_MAX		3
+diff --git a/sound/usb/stream.c b/sound/usb/stream.c
+index 1cb52373e70f..db2c9bac00ad 100644
+--- a/sound/usb/stream.c
++++ b/sound/usb/stream.c
+@@ -349,7 +349,7 @@ snd_pcm_chmap_elem *convert_chmap_v3(struct uac3_cluster_header_descriptor
+ 		u16 cs_len;
+ 		u8 cs_type;
  
-+#define VENUS_MAX_FPS			240
-+
- extern int venus_fw_debug;
- 
- struct freq_tbl {
---- a/drivers/media/platform/qcom/venus/vdec.c
-+++ b/drivers/media/platform/qcom/venus/vdec.c
-@@ -427,11 +427,10 @@ static int vdec_s_parm(struct file *file
- 	us_per_frame = timeperframe->numerator * (u64)USEC_PER_SEC;
- 	do_div(us_per_frame, timeperframe->denominator);
- 
--	if (!us_per_frame)
--		return -EINVAL;
--
-+	us_per_frame = clamp(us_per_frame, 1, USEC_PER_SEC);
- 	fps = (u64)USEC_PER_SEC;
- 	do_div(fps, us_per_frame);
-+	fps = min(VENUS_MAX_FPS, fps);
- 
- 	inst->fps = fps;
- 	inst->timeperframe = *timeperframe;
+-		if (len < sizeof(*p))
++		if (len < sizeof(*cs_desc))
+ 			break;
+ 		cs_len = le16_to_cpu(cs_desc->wLength);
+ 		if (len < cs_len)
+-- 
+2.50.1
+
 
 
 
