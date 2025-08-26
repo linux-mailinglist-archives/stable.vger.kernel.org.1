@@ -1,54 +1,56 @@
-Return-Path: <stable+bounces-172980-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-175553-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 03B8AB35B1C
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 13:18:38 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3B87CB368B5
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 16:18:48 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 2171C5E2681
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 11:18:24 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 78E14582171
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 14:10:03 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C9F6F334717;
-	Tue, 26 Aug 2025 11:17:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C06F834F47C;
+	Tue, 26 Aug 2025 14:09:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ZLHs2YQ2"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="L8GqkA/F"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 859A22F9982;
-	Tue, 26 Aug 2025 11:17:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7AEA934AB0D;
+	Tue, 26 Aug 2025 14:09:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756207062; cv=none; b=K6HcgoPzGxRJRO9yGggdfJfZOY5za1irx6aAm7CvwRaOKKE5kyN+MuYDonJaN4eCZKMYk2SbgOqNkMnuG72vopyw1iQYr4UVrYldnH6IM+iZ5v6vF+yyajF1uTFW4f+yQtXnG68fUnGtHoRYx/AsWuObLNhOxxGN9csIYUl2AA4=
+	t=1756217348; cv=none; b=Q3xwhBqpMiyyIShVQ5yJGrmwdR4UXAqvsmQAGic2DUg33pNbqz1AAgbGcD0sJA0in/Z4bYTX4ARv5t5mRfic05Qyhn9pXbi6oeMiUujDvkC0tzhEba4HV2inRgn3W6Vy9feHa7BbS7mbztBWoRbSmlBsIcSRDyxv2rVP1Z6i4PA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756207062; c=relaxed/simple;
-	bh=6q/TKRakhhD3RQKdPDwX4BCMX+RSW7f0di/MuVzpY+E=;
+	s=arc-20240116; t=1756217348; c=relaxed/simple;
+	bh=rjP+RyjvnwXvzARTuKy0y42NKA5hXM1isyWTOCcjsr0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=X0sDZYQLzypgiDY0+cjC0FTsKdhfUTKT1YmubmuIw/Iprl8abxR0BkTRuiX+Lmdi+6ytJt4rM//Wy6xaGy198j4eLa7NU5pXIUgfC9rDNsWKAe8G0cmXx9tzvmcwui/ZmYKLsbnj/2TYuGqzBMuAWFixPJkqO6bU2VoGobayI98=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ZLHs2YQ2; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1E80CC4CEF4;
-	Tue, 26 Aug 2025 11:17:41 +0000 (UTC)
+	 MIME-Version; b=kRd78EYj61rCWN7F/WZmvCyrtyZlwDF9CsMatStiSKiLwuyq8uwuEWg4zRjOnzYdfyIHsmnldnjhdymNRs5pN9xAKiAzV10Icu2YzUHyBQUkBSY504PYDOKcUtmtJPfJXTTyTVNpoXK8Zzw0WbVii7MSmeIiYt5dK1C9os4GqLw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=L8GqkA/F; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0E932C113D0;
+	Tue, 26 Aug 2025 14:09:07 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1756207062;
-	bh=6q/TKRakhhD3RQKdPDwX4BCMX+RSW7f0di/MuVzpY+E=;
+	s=korg; t=1756217348;
+	bh=rjP+RyjvnwXvzARTuKy0y42NKA5hXM1isyWTOCcjsr0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=ZLHs2YQ2ppCO7RHa8r/T2lmB2s1POayhEAs5plg+1TDV1gv6pmghrspc8m7UG+GY+
-	 hamDl6cfAkHVUaThIYwu4RuvNqDI9zdIiMguRSBz+nIyrJHemw4OiOuiOq0U3Ki1jB
-	 W8zD4Fk6EzCQ8bbPxImQMkqklLjukfNzvohX9Zi0=
+	b=L8GqkA/FiHwARemUgOOnyYgibJzPPn8KPsjRgZjgxBsiqZqrnbIjaIYf1567csNZq
+	 c8w6AXolXkBdFrFxfriOCDVhKqLbD6J5ZqsUsN1c+QBURZ9oggnWibsQ0RDMiSco+D
+	 nczlwkg7KHuRJh23C6afpmo2egmH2hJlzGvF/nVY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	"Masami Hiramatsu (Google)" <mhiramat@kernel.org>
-Subject: [PATCH 6.16 036/457] tracing: fprobe-event: Sanitize wildcard for fprobe event name
+	Martin Kaistra <martin.kaistra@linutronix.de>,
+	Ping-Ke Shih <pkshih@realtek.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.10 110/523] wifi: rtl8xxxu: Fix RX skb size for aggregation disabled
 Date: Tue, 26 Aug 2025 13:05:20 +0200
-Message-ID: <20250826110938.237136264@linuxfoundation.org>
+Message-ID: <20250826110927.242783600@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250826110937.289866482@linuxfoundation.org>
-References: <20250826110937.289866482@linuxfoundation.org>
+In-Reply-To: <20250826110924.562212281@linuxfoundation.org>
+References: <20250826110924.562212281@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,46 +62,50 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.16-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Masami Hiramatsu (Google) <mhiramat@kernel.org>
+From: Martin Kaistra <martin.kaistra@linutronix.de>
 
-commit ec879e1a0be8007aa232ffedcf6a6445dfc1a3d7 upstream.
+[ Upstream commit d76a1abcf57734d2bcd4a7ec051617edd4513d7f ]
 
-Fprobe event accepts wildcards for the target functions, but unless user
-specifies its event name, it makes an event with the wildcards.
+Commit 1e5b3b3fe9e0 ("rtl8xxxu: Adjust RX skb size to include space for
+phystats") increased the skb size when aggregation is enabled but decreased
+it for the aggregation disabled case.
 
-  /sys/kernel/tracing # echo 'f mutex*' >> dynamic_events
-  /sys/kernel/tracing # cat dynamic_events
-  f:fprobes/mutex*__entry mutex*
-  /sys/kernel/tracing # ls events/fprobes/
-  enable         filter         mutex*__entry
+As a result, if a frame near the maximum size is received,
+rtl8xxxu_rx_complete() is called with status -EOVERFLOW and then the
+driver starts to malfunction and no further communication is possible.
 
-To fix this, replace the wildcard ('*') with an underscore.
+Restore the skb size in the aggregation disabled case.
 
-Link: https://lore.kernel.org/all/175535345114.282990.12294108192847938710.stgit@devnote2/
-
-Fixes: 334e5519c375 ("tracing/probes: Add fprobe events for tracing function entry and exit.")
-Signed-off-by: Masami Hiramatsu (Google) <mhiramat@kernel.org>
-Cc: stable@vger.kernel.org
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: 1e5b3b3fe9e0 ("rtl8xxxu: Adjust RX skb size to include space for phystats")
+Signed-off-by: Martin Kaistra <martin.kaistra@linutronix.de>
+Reviewed-by: Ping-Ke Shih <pkshih@realtek.com>
+Signed-off-by: Ping-Ke Shih <pkshih@realtek.com>
+Link: https://patch.msgid.link/20250709121522.1992366-1-martin.kaistra@linutronix.de
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- kernel/trace/trace.h |    2 +-
+ drivers/net/wireless/realtek/rtl8xxxu/rtl8xxxu_core.c | 2 +-
  1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/kernel/trace/trace.h
-+++ b/kernel/trace/trace.h
-@@ -2204,7 +2204,7 @@ static inline bool is_good_system_name(c
- static inline void sanitize_event_name(char *name)
- {
- 	while (*name++ != '\0')
--		if (*name == ':' || *name == '.')
-+		if (*name == ':' || *name == '.' || *name == '*')
- 			*name = '_';
- }
+diff --git a/drivers/net/wireless/realtek/rtl8xxxu/rtl8xxxu_core.c b/drivers/net/wireless/realtek/rtl8xxxu/rtl8xxxu_core.c
+index 5b27c22e7e58..7cf2693619c9 100644
+--- a/drivers/net/wireless/realtek/rtl8xxxu/rtl8xxxu_core.c
++++ b/drivers/net/wireless/realtek/rtl8xxxu/rtl8xxxu_core.c
+@@ -5794,7 +5794,7 @@ static int rtl8xxxu_submit_rx_urb(struct rtl8xxxu_priv *priv,
+ 		skb_size = fops->rx_agg_buf_size;
+ 		skb_size += (rx_desc_sz + sizeof(struct rtl8723au_phy_stats));
+ 	} else {
+-		skb_size = IEEE80211_MAX_FRAME_LEN;
++		skb_size = IEEE80211_MAX_FRAME_LEN + rx_desc_sz;
+ 	}
  
+ 	skb = __netdev_alloc_skb(NULL, skb_size, GFP_KERNEL);
+-- 
+2.39.5
+
 
 
 
