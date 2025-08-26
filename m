@@ -1,58 +1,58 @@
-Return-Path: <stable+bounces-175708-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-175184-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9E652B369B5
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 16:29:31 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id A59BCB366FB
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 16:02:33 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 801425826EF
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 14:18:19 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 30DDC1BC82EC
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 13:55:26 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 803C035083A;
-	Tue, 26 Aug 2025 14:16:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3A6BF2BE636;
+	Tue, 26 Aug 2025 13:52:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="U09Y5LOh"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="p6OllnN/"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3E3BF1F790F;
-	Tue, 26 Aug 2025 14:16:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EC902350831;
+	Tue, 26 Aug 2025 13:52:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756217761; cv=none; b=WpPtbS4NFpEaylZpsw/L1xREM4DbbnWUVokZHBnEiYSs08xFCCm9JFM+BmERrsbe3zor1b639dUpciNsjrY51F9BKkTqdEeJtN8Of8XSBW7Y9B83ojXOAsuZKnlJm9suQtJd3ct7TeSb1WVS203fvh2OV1KudzS+n0GBGdkXo78=
+	t=1756216363; cv=none; b=JcFK6uM6jXkaV2mdp7kYd/+JXohbZWFsxTuJa8IksybaDaYYS8w6l5RQ8iOrpspDf/Z438P+YrlbyYkgLXEU7d/TeiFAMjuoyDmHxf2704kws5uTlTjV8Zlx3eXFBCXOwdb3tcZU08o0tGfwGirDsaJZRRJTADWCRBwsbwC3G34=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756217761; c=relaxed/simple;
-	bh=sku0xpQ2kLYHVQEzTnYNXfqFJxA/d9EIakUs/sInojc=;
+	s=arc-20240116; t=1756216363; c=relaxed/simple;
+	bh=TgpbG8ehZGrnzRZ2AZ29hGyWPCxFq6nbtOKv/iwQuD0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=YFchzf43H9+pm6xIiXVDJsUschRj1oNgTV+oEaNQy76hFgoaQEO9g5Qy8j1jV36RYnKTUGQkxYr8X7cklB5G/TLg8oepUSNVmbs960RSTOMy0axeUhggLpb1oCkDg97zxT/7+t06HpmY1B7Vu9A1CbBa8f+sJ64L258aQotHGoI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=U09Y5LOh; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9E098C4CEF1;
-	Tue, 26 Aug 2025 14:16:00 +0000 (UTC)
+	 MIME-Version:Content-Type; b=ptsYLNFqlQGWrI3Cc45DaC5QSRB0tzfcT3m3bI683hlJnRj+dtF69AJbVZYqRNFCbCmTin2WazfBwELr6r3ipH/8TZkZGGg/k/A/Yd1nWmmrBNlvUNCosCX1lD3gHocz41LxATkcn8ogUWw0KHXAP9RTEdxdko+JJu+B+vSwDtE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=p6OllnN/; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7C4B3C4CEF1;
+	Tue, 26 Aug 2025 13:52:42 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1756217761;
-	bh=sku0xpQ2kLYHVQEzTnYNXfqFJxA/d9EIakUs/sInojc=;
+	s=korg; t=1756216362;
+	bh=TgpbG8ehZGrnzRZ2AZ29hGyWPCxFq6nbtOKv/iwQuD0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=U09Y5LOhk7v9pR6dblfG+MW7vurcViCqzkpueumMgIPv4gF3pE+MMxP5XyoJ9CxpZ
-	 RHCqPiU3saczS7CvQTBd92XegPAlCxfPCUv3K26Rp+Ahq1LMocmonutmlLSgtpJO4q
-	 xpJOXH4IpnbwkSV6JfrGb+eoQuXkUBJBYzJtcEBg=
+	b=p6OllnN/eyuiEoZmuuDu+1n8glLtqoURhu/dkhq9BaR4k9gkaBLDjCfOZUe3OG5Cj
+	 SyXp2iqhBSHBz2at9w0/IqkIZcawmIpGOk9Zw7b9vChd6cv7zc0SP9SW1rD0oPpaAn
+	 E/HwzcmWKtubPtATlPPGG1w2xn+VmEyV5n4++jiw=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Thomas Fourier <fourier.thomas@gmail.com>,
-	Mark Einon <mark.einon@gmail.com>,
-	Simon Horman <horms@kernel.org>,
-	Jakub Kicinski <kuba@kernel.org>,
+	=?UTF-8?q?Eugenio=20P=C3=A9rez?= <eperezma@redhat.com>,
+	Jason Wang <jasowang@redhat.com>,
+	"Michael S. Tsirkin" <mst@redhat.com>,
+	Lei Yang <leiyang@redhat.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 263/523] et131x: Add missing check after DMA map
+Subject: [PATCH 5.15 382/644] vhost: fail early when __vhost_add_used() fails
 Date: Tue, 26 Aug 2025 13:07:53 +0200
-Message-ID: <20250826110930.913414703@linuxfoundation.org>
+Message-ID: <20250826110955.906088389@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250826110924.562212281@linuxfoundation.org>
-References: <20250826110924.562212281@linuxfoundation.org>
+In-Reply-To: <20250826110946.507083938@linuxfoundation.org>
+References: <20250826110946.507083938@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,104 +62,45 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Thomas Fourier <fourier.thomas@gmail.com>
+From: Jason Wang <jasowang@redhat.com>
 
-[ Upstream commit d61f6cb6f6ef3c70d2ccc0d9c85c508cb8017da9 ]
+[ Upstream commit b4ba1207d45adaafa2982c035898b36af2d3e518 ]
 
-The DMA map functions can fail and should be tested for errors.
-If the mapping fails, unmap and return an error.
+This patch fails vhost_add_used_n() early when __vhost_add_used()
+fails to make sure used idx is not updated with stale used ring
+information.
 
-Signed-off-by: Thomas Fourier <fourier.thomas@gmail.com>
-Acked-by: Mark Einon <mark.einon@gmail.com>
-Reviewed-by: Simon Horman <horms@kernel.org>
-Link: https://patch.msgid.link/20250716094733.28734-2-fourier.thomas@gmail.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Reported-by: Eugenio Pérez <eperezma@redhat.com>
+Signed-off-by: Jason Wang <jasowang@redhat.com>
+Message-Id: <20250714084755.11921-2-jasowang@redhat.com>
+Signed-off-by: Michael S. Tsirkin <mst@redhat.com>
+Tested-by: Lei Yang <leiyang@redhat.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/ethernet/agere/et131x.c | 36 +++++++++++++++++++++++++++++
- 1 file changed, 36 insertions(+)
+ drivers/vhost/vhost.c | 3 +++
+ 1 file changed, 3 insertions(+)
 
-diff --git a/drivers/net/ethernet/agere/et131x.c b/drivers/net/ethernet/agere/et131x.c
-index 41f8821f792d..fa04e37de089 100644
---- a/drivers/net/ethernet/agere/et131x.c
-+++ b/drivers/net/ethernet/agere/et131x.c
-@@ -2460,6 +2460,10 @@ static int nic_send_packet(struct et131x_adapter *adapter, struct tcb *tcb)
- 							  skb->data,
- 							  skb_headlen(skb),
- 							  DMA_TO_DEVICE);
-+				if (dma_mapping_error(&adapter->pdev->dev,
-+						      dma_addr))
-+					return -ENOMEM;
-+
- 				desc[frag].addr_lo = lower_32_bits(dma_addr);
- 				desc[frag].addr_hi = upper_32_bits(dma_addr);
- 				frag++;
-@@ -2469,6 +2473,10 @@ static int nic_send_packet(struct et131x_adapter *adapter, struct tcb *tcb)
- 							  skb->data,
- 							  skb_headlen(skb) / 2,
- 							  DMA_TO_DEVICE);
-+				if (dma_mapping_error(&adapter->pdev->dev,
-+						      dma_addr))
-+					return -ENOMEM;
-+
- 				desc[frag].addr_lo = lower_32_bits(dma_addr);
- 				desc[frag].addr_hi = upper_32_bits(dma_addr);
- 				frag++;
-@@ -2479,6 +2487,10 @@ static int nic_send_packet(struct et131x_adapter *adapter, struct tcb *tcb)
- 							  skb_headlen(skb) / 2,
- 							  skb_headlen(skb) / 2,
- 							  DMA_TO_DEVICE);
-+				if (dma_mapping_error(&adapter->pdev->dev,
-+						      dma_addr))
-+					goto unmap_first_out;
-+
- 				desc[frag].addr_lo = lower_32_bits(dma_addr);
- 				desc[frag].addr_hi = upper_32_bits(dma_addr);
- 				frag++;
-@@ -2490,6 +2502,9 @@ static int nic_send_packet(struct et131x_adapter *adapter, struct tcb *tcb)
- 						    0,
- 						    desc[frag].len_vlan,
- 						    DMA_TO_DEVICE);
-+			if (dma_mapping_error(&adapter->pdev->dev, dma_addr))
-+				goto unmap_out;
-+
- 			desc[frag].addr_lo = lower_32_bits(dma_addr);
- 			desc[frag].addr_hi = upper_32_bits(dma_addr);
- 			frag++;
-@@ -2579,6 +2594,27 @@ static int nic_send_packet(struct et131x_adapter *adapter, struct tcb *tcb)
- 		       &adapter->regs->global.watchdog_timer);
+diff --git a/drivers/vhost/vhost.c b/drivers/vhost/vhost.c
+index 061af5dc92e6..973e079025a9 100644
+--- a/drivers/vhost/vhost.c
++++ b/drivers/vhost/vhost.c
+@@ -2421,6 +2421,9 @@ int vhost_add_used_n(struct vhost_virtqueue *vq, struct vring_used_elem *heads,
  	}
- 	return 0;
-+
-+unmap_out:
-+	// Unmap the body of the packet with map_page
-+	while (--i) {
-+		frag--;
-+		dma_addr = desc[frag].addr_lo;
-+		dma_addr |= (u64)desc[frag].addr_hi << 32;
-+		dma_unmap_page(&adapter->pdev->dev, dma_addr,
-+			       desc[frag].len_vlan, DMA_TO_DEVICE);
-+	}
-+
-+unmap_first_out:
-+	// Unmap the header with map_single
-+	while (frag--) {
-+		dma_addr = desc[frag].addr_lo;
-+		dma_addr |= (u64)desc[frag].addr_hi << 32;
-+		dma_unmap_single(&adapter->pdev->dev, dma_addr,
-+				 desc[frag].len_vlan, DMA_TO_DEVICE);
-+	}
-+
-+	return -ENOMEM;
- }
+ 	r = __vhost_add_used_n(vq, heads, count);
  
- static int send_packet(struct sk_buff *skb, struct et131x_adapter *adapter)
++	if (r < 0)
++		return r;
++
+ 	/* Make sure buffer is written before we update index. */
+ 	smp_wmb();
+ 	if (vhost_put_used_idx(vq)) {
 -- 
 2.39.5
 
