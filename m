@@ -1,55 +1,56 @@
-Return-Path: <stable+bounces-174330-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-174999-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1F18DB362E7
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 15:23:50 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 15602B3665F
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 15:56:27 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id C8ED117E58E
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 13:16:48 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id D5E80174C8E
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 13:45:04 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9CB2B28C84C;
-	Tue, 26 Aug 2025 13:15:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D6DCF33EAF2;
+	Tue, 26 Aug 2025 13:44:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="a6g0M+p8"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="eCsqknj7"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 50D26343215;
-	Tue, 26 Aug 2025 13:15:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 882E2319867;
+	Tue, 26 Aug 2025 13:44:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756214105; cv=none; b=hIZCwxCsklIR6I4ndQ7AtiiazH1Wr3pKOY2aoUAYrlgntuKtrh8LaKamozNarpl9rRaLB7emtnkA/znUFM6NTnwQbprqsDrtJvSQ9I75YMc7HDLx5s1nBpFSp5pkV2Y8CAypTsSmwt1GwoZVN2flcTfz0lutjCMr7YGnt1510pw=
+	t=1756215873; cv=none; b=gJQnYyWeQg9PMhE/kZKHdurCU15sDqRg0JkmpbiEcL4wpewyqfGZiW2gZrycfAeNAJOs+GRGwDsG0sGy9yi32Wc4ktlNNBONuqanK0WP2UL1U8M3OirVXkb1JwcdzfW39muzE/YB3SATDDs3ghUeEB4h/L65NLGOQBcUW6Fseyo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756214105; c=relaxed/simple;
-	bh=iEkB1u6XQtp9EHngp5Qtm2282KL9jn2FeF7+9YCoOUc=;
+	s=arc-20240116; t=1756215873; c=relaxed/simple;
+	bh=TqMSUsIfUZZsLrtk9sgxVnh9hGnHPwB2QCbpYLWAbwQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=ork0DDT6YeZmOnswcV2dmWrbDUqa/YjAH6HB8uKpLrYW37ovaA/x3IPvY5+VYDu1W+RETzraQawHPiL0IbEPvpmj63NJoG+cg12GxFqkKtmyva4IHXlcKFkm4vhB1jjwqc/BY4T2bBAEt5TQ0lgooxR9ZNk1CnNHduG8cELLAL8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=a6g0M+p8; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D7B4BC4CEF1;
-	Tue, 26 Aug 2025 13:15:04 +0000 (UTC)
+	 MIME-Version; b=Ge0NBNfUIZhWQZ6VDyNu4B0jlh53RF0ImX8faKH9UnBDINY0KFHrZXg6GLD255czxHymJSZBYwjYP/ArZLNYdUHOm6CKtbix8w/lSve8Yz0a2LlAQDm5l8IDibVU14HjgyUka1bRBnF52hZN0Jivese5Uu5uo7icv66STIQoXjM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=eCsqknj7; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1879CC4CEF1;
+	Tue, 26 Aug 2025 13:44:32 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1756214105;
-	bh=iEkB1u6XQtp9EHngp5Qtm2282KL9jn2FeF7+9YCoOUc=;
+	s=korg; t=1756215873;
+	bh=TqMSUsIfUZZsLrtk9sgxVnh9hGnHPwB2QCbpYLWAbwQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=a6g0M+p8Kan5DethnvugpxgVQP72tmu0trEH1zdPjMLHbjut0Zgj4rXvaoHIYe5Uo
-	 I+785SCC6nFB8MbRKFytKqQ1+4QLcaYkvIQRru26fHD0XYVqN3HLbMhVg8eAOvAWwr
-	 if5+EWk6LcxfEPkLll1myJ3ZzTtZ7Zl0BKkSxpYc=
+	b=eCsqknj7/UpoBuPDJxPFJb0UY9rBo5l7JlUq7ZnsE3PsqXNHAKXkVZmeytZVktjDm
+	 xRAr7cJSqK8OIAsC+R7PtzjKMnsv8qvRL3kdQKJd5tcPCjf7N4SU3GwyAVXG4myuDO
+	 OP1m6XVVGO6RWomkCifCbjs5qix0kzMlIxk7aZh0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Christopher Eby <kreed@kreed.org>,
-	Takashi Iwai <tiwai@suse.de>
-Subject: [PATCH 6.1 005/482] ALSA: hda/realtek: Add Framework Laptop 13 (AMD Ryzen AI 300) to quirks
+	Ivan Stepchenko <sid@itb.spb.ru>,
+	Miquel Raynal <miquel.raynal@bootlin.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.15 167/644] mtd: fix possible integer overflow in erase_xfer()
 Date: Tue, 26 Aug 2025 13:04:18 +0200
-Message-ID: <20250826110930.912244000@linuxfoundation.org>
+Message-ID: <20250826110950.619081012@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250826110930.769259449@linuxfoundation.org>
-References: <20250826110930.769259449@linuxfoundation.org>
+In-Reply-To: <20250826110946.507083938@linuxfoundation.org>
+References: <20250826110946.507083938@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,36 +62,46 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Christopher Eby <kreed@kreed.org>
+From: Ivan Stepchenko <sid@itb.spb.ru>
 
-commit 0db77eccd964b11ab2b757031d1354fcc5a025ea upstream.
+[ Upstream commit 9358bdb9f9f54d94ceafc650deffefd737d19fdd ]
 
-Framework Laptop 13 (AMD Ryzen AI 300) requires the same quirk for
-headset detection as other Framework 13 models.
+The expression '1 << EraseUnitSize' is evaluated in int, which causes
+a negative result when shifting by 31 - the upper bound of the valid
+range [10, 31], enforced by scan_header(). This leads to incorrect
+extension when storing the result in 'erase->len' (uint64_t), producing
+a large unexpected value.
 
-Signed-off-by: Christopher Eby <kreed@kreed.org>
-Cc: <stable@vger.kernel.org>
-Link: https://patch.msgid.link/20250810030006.9060-1-kreed@kreed.org
-Signed-off-by: Takashi Iwai <tiwai@suse.de>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Found by Linux Verification Center (linuxtesting.org) with Svace.
+
+Fixes: 1da177e4c3f4 ("Linux-2.6.12-rc2")
+Signed-off-by: Ivan Stepchenko <sid@itb.spb.ru>
+Signed-off-by: Miquel Raynal <miquel.raynal@bootlin.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- sound/pci/hda/patch_realtek.c |    1 +
- 1 file changed, 1 insertion(+)
+ drivers/mtd/ftl.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/sound/pci/hda/patch_realtek.c
-+++ b/sound/pci/hda/patch_realtek.c
-@@ -10456,6 +10456,7 @@ static const struct snd_pci_quirk alc269
- 	SND_PCI_QUIRK(0xf111, 0x0001, "Framework Laptop", ALC295_FIXUP_FRAMEWORK_LAPTOP_MIC_NO_PRESENCE),
- 	SND_PCI_QUIRK(0xf111, 0x0006, "Framework Laptop", ALC295_FIXUP_FRAMEWORK_LAPTOP_MIC_NO_PRESENCE),
- 	SND_PCI_QUIRK(0xf111, 0x0009, "Framework Laptop", ALC295_FIXUP_FRAMEWORK_LAPTOP_MIC_NO_PRESENCE),
-+	SND_PCI_QUIRK(0xf111, 0x000b, "Framework Laptop", ALC295_FIXUP_FRAMEWORK_LAPTOP_MIC_NO_PRESENCE),
- 	SND_PCI_QUIRK(0xf111, 0x000c, "Framework Laptop", ALC295_FIXUP_FRAMEWORK_LAPTOP_MIC_NO_PRESENCE),
+diff --git a/drivers/mtd/ftl.c b/drivers/mtd/ftl.c
+index f655d2905270..243d7faa128a 100644
+--- a/drivers/mtd/ftl.c
++++ b/drivers/mtd/ftl.c
+@@ -344,7 +344,7 @@ static int erase_xfer(partition_t *part,
+             return -ENOMEM;
  
- #if 0
+     erase->addr = xfer->Offset;
+-    erase->len = 1 << part->header.EraseUnitSize;
++    erase->len = 1ULL << part->header.EraseUnitSize;
+ 
+     ret = mtd_erase(part->mbd.mtd, erase);
+     if (!ret) {
+-- 
+2.39.5
+
 
 
 
