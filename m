@@ -1,55 +1,57 @@
-Return-Path: <stable+bounces-174674-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-173562-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 66732B36469
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 15:38:18 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 02F03B35DE9
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 13:49:29 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 408121BC674D
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 13:32:02 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 492CD1BA71A0
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 11:43:14 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 425D0341ABD;
-	Tue, 26 Aug 2025 13:30:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 62C3322D792;
+	Tue, 26 Aug 2025 11:42:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Q7CetV54"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="r61+70FR"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 00387264A76;
-	Tue, 26 Aug 2025 13:30:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 213931FECAB;
+	Tue, 26 Aug 2025 11:42:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756215017; cv=none; b=kO2Y0QOrABYDje+Y4+XZWDyDJHGfDKoVgPFshQVOIXtbeXXQyxIQ8+qNxBL2PIP9IlL9eHRx1fXhoXWHM+oGHmeesVRtM4YWV0IVd5LbK8iil6A6EFR5mQbouvpELOeFDrbmnWYuMZ7ifIWewZSdsuK4jAfS5PlLnWrHwaewEyY=
+	t=1756208572; cv=none; b=QnEmOl3/BDuk1vnKS1SgiESdwO+eFp6ztZ23pH+1H2Uf+hSTedytm1VsKVSOSGh04jhvsp/JzVClunrxoN33tCPsTG3pHrBw3hWhpaY62qzqIb6KDfIVN56pCB76VxnJuZgtBOpRMlxqcbocdO7LQcy0ctMDxIihCGfUrveJREw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756215017; c=relaxed/simple;
-	bh=+juATEhE2R0Sc8Poq0IQvGxrujwYSJbgUHyHXPSo6/M=;
+	s=arc-20240116; t=1756208572; c=relaxed/simple;
+	bh=vDfJWoZUrGDRYz/mCLoXR2khibwuGmA9Ex6iNCHEjdk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=XeIsPxI/4Hf8jlFHUU1twqfojTxzK0XzmLmeF5Qe0eVNLC7k484QrNFwdxXikS7SLCk8Ykp/fg47qF5pxaLggRtGSdcLb2dW/l0+uXDduma3j6zprIiUhgQgfcpKsosH9MvM5giIdM47BpmeTOwY6IiauDzPXs4ZTSL7yB6aHb4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Q7CetV54; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 891A9C4CEF1;
-	Tue, 26 Aug 2025 13:30:16 +0000 (UTC)
+	 MIME-Version; b=lSIy3X6wkLB2B9EWDU4KWoxJ4kUaiSNkER7aupZ9MIQt9ttZXh+OH7T3ZH6VkvPkcbj9FBTYN0qS9WYZK/UrVfRGmcBtteah+aUy7yD2XiNnWBmaS/ZRsqfk0TUi6GlWysDAg+r50YzAFRv6ReB+rVB/KE4T6rHQFFQzJmaIdyk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=r61+70FR; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A6C4FC4CEF1;
+	Tue, 26 Aug 2025 11:42:51 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1756215016;
-	bh=+juATEhE2R0Sc8Poq0IQvGxrujwYSJbgUHyHXPSo6/M=;
+	s=korg; t=1756208572;
+	bh=vDfJWoZUrGDRYz/mCLoXR2khibwuGmA9Ex6iNCHEjdk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Q7CetV54EqE216yqMcRzzzYD1T3y/CbZolrptYHFqvaelUZR9L4L2B3WM2QCUlsbm
-	 jna7DPOzAvqDUpfcn5nzc4H7ybqEwWbaK1wedB8COi/G9Z/Oh1vJ87QUsL1HDmWrrC
-	 5IvOdlQwL6gmpT0mqMkwkDF727KZhImU8wdFHqxU=
+	b=r61+70FRmK9oS0N0Gt1lwSVPAIQ18EjTNMM7mn0dp63+XtUS7/qpXYbcssbk8LOc2
+	 Sau4OiUydHlxzI09K9C0Wiiqjpq3tinNtZfiPQ2vIY1NSh5UgN57AetEpSQ5XkE4Xu
+	 Hf7gPOQC52/zg3ZJ+Cal+ZS4z9CapGmf5rtJ/VHg=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Ludwig Disterhof <ludwig@disterhof.eu>,
-	Hans Verkuil <hverkuil@xs4all.nl>
-Subject: [PATCH 6.1 324/482] media: usbtv: Lock resolution while streaming
+	Guenter Roeck <linux@roeck-us.net>,
+	Vincent Mailhol <mailhol.vincent@wanadoo.fr>,
+	Marc Kleine-Budde <mkl@pengutronix.de>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.12 162/322] Revert "can: ti_hecc: fix -Woverflow compiler warning"
 Date: Tue, 26 Aug 2025 13:09:37 +0200
-Message-ID: <20250826110938.815027577@linuxfoundation.org>
+Message-ID: <20250826110919.824243796@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250826110930.769259449@linuxfoundation.org>
-References: <20250826110930.769259449@linuxfoundation.org>
+In-Reply-To: <20250826110915.169062587@linuxfoundation.org>
+References: <20250826110915.169062587@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,44 +63,36 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Ludwig Disterhof <ludwig@disterhof.eu>
+From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 
-commit 7e40e0bb778907b2441bff68d73c3eb6b6cd319f upstream.
+This reverts commit 1da38b70d90f8529c060dd380d0c18e6d9595463 which is
+commit 7cae4d04717b002cffe41169da3f239c845a0723 upstream.
 
-When an program is streaming (ffplay) and another program (qv4l2)
-changes the TV standard from NTSC to PAL, the kernel crashes due to trying
-to copy to unmapped memory.
-
-Changing from NTSC to PAL increases the resolution in the usbtv struct,
-but the video plane buffer isn't adjusted, so it overflows.
-
-Fixes: 0e0fe3958fdd13d ("[media] usbtv: Add support for PAL video source")
-Cc: stable@vger.kernel.org
-Signed-off-by: Ludwig Disterhof <ludwig@disterhof.eu>
-Signed-off-by: Hans Verkuil <hverkuil@xs4all.nl>
-[hverkuil: call vb2_is_busy instead of vb2_is_streaming]
+Reported-by: Guenter Roeck <linux@roeck-us.net>
+Link: https://lore.kernel.org/r/63e25fdb-095a-40eb-b341-75781e71ea95@roeck-us.net
+Cc: Vincent Mailhol <mailhol.vincent@wanadoo.fr>
+Cc: Marc Kleine-Budde <mkl@pengutronix.de>
+Cc: Sasha Levin <sashal@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/media/usb/usbtv/usbtv-video.c |    4 ++++
- 1 file changed, 4 insertions(+)
+ drivers/net/can/ti_hecc.c |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/drivers/media/usb/usbtv/usbtv-video.c
-+++ b/drivers/media/usb/usbtv/usbtv-video.c
-@@ -73,6 +73,10 @@ static int usbtv_configure_for_norm(stru
- 	}
+--- a/drivers/net/can/ti_hecc.c
++++ b/drivers/net/can/ti_hecc.c
+@@ -383,7 +383,7 @@ static void ti_hecc_start(struct net_dev
+ 	 * overflows instead of the hardware silently dropping the
+ 	 * messages.
+ 	 */
+-	mbx_mask = ~BIT_U32(HECC_RX_LAST_MBOX);
++	mbx_mask = ~BIT(HECC_RX_LAST_MBOX);
+ 	hecc_write(priv, HECC_CANOPC, mbx_mask);
  
- 	if (params) {
-+		if (vb2_is_busy(&usbtv->vb2q) &&
-+		    (usbtv->width != params->cap_width ||
-+		     usbtv->height != params->cap_height))
-+			return -EBUSY;
- 		usbtv->width = params->cap_width;
- 		usbtv->height = params->cap_height;
- 		usbtv->n_chunks = usbtv->width * usbtv->height
+ 	/* Enable interrupts */
 
 
 
