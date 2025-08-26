@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-176324-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-174230-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4FCB2B36D2B
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 17:09:34 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0B841B361F1
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 15:14:16 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 9196CA01D57
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 14:46:07 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 6B1D3188BC7E
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 13:11:32 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 640223570A0;
-	Tue, 26 Aug 2025 14:42:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D955018F2FC;
+	Tue, 26 Aug 2025 13:10:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="DS0Q/0bY"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="1sYW8N1C"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1E27D352FE2;
-	Tue, 26 Aug 2025 14:42:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 83AD82BE058;
+	Tue, 26 Aug 2025 13:10:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756219362; cv=none; b=rm71drM2HXb2V4E68ULvUGKgAZW9iY1NXkKD/KZXwnqJ3fe+V7G+ovaNcbTNIJSFNfgS3u3L5I5+udsfr+R2RB95r4I4IsmfSS1QlXuCNTT2BPxEeKp9wO/raR27zJSpO4WKLyiDSYzeZhYYY83DAW9Hp8iWTnR+sjUtlAYsLyQ=
+	t=1756213838; cv=none; b=XVRE9tORXmUL0KjmO6ZMIjPaqZqFewx0z0m5pyGLxvnNHcr9FQHu25Ff/mktSl1v73X+ZDpdHiGE6bk21ua5Xb4vZ5bjAfuy7hNw/2F+uYQcQywogbybXaNulnrOEdKmKJJXoLxd89aDqfaNa6TvJ2e0foLGm3D5UlReIrU/Z6c=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756219362; c=relaxed/simple;
-	bh=jSD+hVdZ2Gwa6KZHOTZR55gg69Up+ntj0uJnWO1TKhw=;
+	s=arc-20240116; t=1756213838; c=relaxed/simple;
+	bh=K3MDCjlXgfZPidhoHyXBCg4NTaMb68tXIIMYIHo4EWI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=QQp8snE1Cs1waEWq18gpCjskFyPrISy8JJRF1ndoxi5sS/nQ6Nzru4JwOUfLd+xuKxELNXfGTx11jNyzZeCDQI5M55KWcQ4RwoK14oI5eBF/i0XRFV9K6e1D9bos85MUEeDd90WgY3vgk+yyHyOsTHY/RraGeZ2v4oEwRzcU9UA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=DS0Q/0bY; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A1511C4CEF1;
-	Tue, 26 Aug 2025 14:42:41 +0000 (UTC)
+	 MIME-Version; b=EV4ewUlWB/uX7hf8cXYxPI/37Mc0i0XYhL40UhX/j8bo8230K7rcn4+mVkI3rXPyoeX8RSVaXMf3ns/qQQQc2m3IRR2GVuynvyOhtOpgi5wUzYB/NMMmx6xXUkpEQoya2Zox12/eVtnFJsMH1E+UrlR0YwA4Tp24HT5JOEt/TVA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=1sYW8N1C; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0EA7FC4CEF1;
+	Tue, 26 Aug 2025 13:10:37 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1756219362;
-	bh=jSD+hVdZ2Gwa6KZHOTZR55gg69Up+ntj0uJnWO1TKhw=;
+	s=korg; t=1756213838;
+	bh=K3MDCjlXgfZPidhoHyXBCg4NTaMb68tXIIMYIHo4EWI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=DS0Q/0bY0MkLbwoEaPtcGLhVdE+UMwkb33x6zPVaOvfQ61rs4scoRhDid4JipwHzn
-	 IDaBWVx17EEMw7X6on4A3fJDN7cAUtU0eWUOHAtZUx6hzSFGVQxhTIIDrQecqEqvY4
-	 4NcPPYhdYLtA63muHamFif/2mhLwbzCaVjj4tKmA=
+	b=1sYW8N1CV9yFV2aX3vzXsKGz1RXpFvJCWVl7WyA5eq8Q50gDnxedPeKVxhetFgRjU
+	 P9GvN1QFx3fUl59QSJ89zawyUEX+FJnO7V2ao4r6LsP4iVGkX1g26RaB4z8pGfvHDO
+	 yMV8JQuKd08LyCofeNKFQnybdhk0gLFuN8i0w0ZY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	stable <stable@kernel.org>,
-	Zenm Chen <zenmchen@gmail.com>,
-	Alan Stern <stern@rowland.harvard.edu>
-Subject: [PATCH 5.4 321/403] USB: storage: Ignore driver CD mode for Realtek multi-mode Wi-Fi dongles
+	Ranjan Kumar <ranjan.kumar@broadcom.com>,
+	"Martin K. Petersen" <martin.petersen@oracle.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.6 498/587] scsi: mpi3mr: Drop unnecessary volatile from __iomem pointers
 Date: Tue, 26 Aug 2025 13:10:47 +0200
-Message-ID: <20250826110915.676680042@linuxfoundation.org>
+Message-ID: <20250826111005.652743241@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250826110905.607690791@linuxfoundation.org>
-References: <20250826110905.607690791@linuxfoundation.org>
+In-Reply-To: <20250826110952.942403671@linuxfoundation.org>
+References: <20250826110952.942403671@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,84 +62,58 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.4-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Zenm Chen <zenmchen@gmail.com>
+From: Ranjan Kumar <ranjan.kumar@broadcom.com>
 
-commit a3dc32c635bae0ae569f489e00de0e8f015bfc25 upstream.
+[ Upstream commit 6853885b21cb1d7157cc14c9d30cc17141565bae ]
 
-Many Realtek USB Wi-Fi dongles released in recent years have two modes:
-one is driver CD mode which has Windows driver onboard, another one is
-Wi-Fi mode. Add the US_FL_IGNORE_DEVICE quirk for these multi-mode devices.
-Otherwise, usb_modeswitch may fail to switch them to Wi-Fi mode.
+The volatile qualifier is redundant for __iomem pointers.
 
-Currently there are only two USB IDs known to be used by these multi-mode
-Wi-Fi dongles: 0bda:1a2b and 0bda:a192.
+Cleaned up usage in mpi3mr_writeq() and sysif_regs pointer as per
+Upstream compliance.
 
-Information about Mercury MW310UH in /sys/kernel/debug/usb/devices.
-T:  Bus=02 Lev=01 Prnt=01 Port=01 Cnt=01 Dev#= 12 Spd=480  MxCh= 0
-D:  Ver= 2.00 Cls=00(>ifc ) Sub=00 Prot=00 MxPS=64 #Cfgs=  1
-P:  Vendor=0bda ProdID=a192 Rev= 2.00
-S:  Manufacturer=Realtek
-S:  Product=DISK
-C:* #Ifs= 1 Cfg#= 1 Atr=80 MxPwr=500mA
-I:* If#= 0 Alt= 0 #EPs= 2 Cls=08(stor.) Sub=06 Prot=50 Driver=(none)
-E:  Ad=8a(I) Atr=02(Bulk) MxPS= 512 Ivl=0ms
-E:  Ad=0b(O) Atr=02(Bulk) MxPS= 512 Ivl=0ms
-
-Information about D-Link AX9U rev. A1 in /sys/kernel/debug/usb/devices.
-T:  Bus=03 Lev=01 Prnt=01 Port=02 Cnt=01 Dev#= 55 Spd=480  MxCh= 0
-D:  Ver= 2.00 Cls=00(>ifc ) Sub=00 Prot=00 MxPS=64 #Cfgs=  1
-P:  Vendor=0bda ProdID=1a2b Rev= 0.00
-S:  Manufacturer=Realtek
-S:  Product=DISK
-C:* #Ifs= 1 Cfg#= 1 Atr=e0 MxPwr=500mA
-I:* If#= 0 Alt= 0 #EPs= 2 Cls=08(stor.) Sub=06 Prot=50 Driver=(none)
-E:  Ad=84(I) Atr=02(Bulk) MxPS= 512 Ivl=0ms
-E:  Ad=05(O) Atr=02(Bulk) MxPS= 512 Ivl=0ms
-
-Cc: stable <stable@kernel.org>
-Signed-off-by: Zenm Chen <zenmchen@gmail.com>
-Acked-by: Alan Stern <stern@rowland.harvard.edu>
-Link: https://lore.kernel.org/r/20250813162415.2630-1-zenmchen@gmail.com
+Signed-off-by: Ranjan Kumar <ranjan.kumar@broadcom.com>
+Link: https://lore.kernel.org/r/20250627194539.48851-3-ranjan.kumar@broadcom.com
+Signed-off-by: Martin K. Petersen <martin.petersen@oracle.com>
+Stable-dep-of: c91e140c82eb ("scsi: mpi3mr: Serialize admin queue BAR writes on 32-bit systems")
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/usb/storage/unusual_devs.h |   22 ++++++++++++++++++++++
- 1 file changed, 22 insertions(+)
+ drivers/scsi/mpi3mr/mpi3mr.h    |    2 +-
+ drivers/scsi/mpi3mr/mpi3mr_fw.c |    4 ++--
+ 2 files changed, 3 insertions(+), 3 deletions(-)
 
---- a/drivers/usb/storage/unusual_devs.h
-+++ b/drivers/usb/storage/unusual_devs.h
-@@ -1490,6 +1490,28 @@ UNUSUAL_DEV( 0x0bc2, 0x3332, 0x0000, 0x9
- 		USB_SC_DEVICE, USB_PR_DEVICE, NULL,
- 		US_FL_NO_WP_DETECT ),
+--- a/drivers/scsi/mpi3mr/mpi3mr.h
++++ b/drivers/scsi/mpi3mr/mpi3mr.h
+@@ -1055,7 +1055,7 @@ struct mpi3mr_ioc {
+ 	char name[MPI3MR_NAME_LENGTH];
+ 	char driver_name[MPI3MR_NAME_LENGTH];
  
-+/*
-+ * Reported by Zenm Chen <zenmchen@gmail.com>
-+ * Ignore driver CD mode, otherwise usb_modeswitch may fail to switch
-+ * the device into Wi-Fi mode.
-+ */
-+UNUSUAL_DEV( 0x0bda, 0x1a2b, 0x0000, 0xffff,
-+		"Realtek",
-+		"DISK",
-+		USB_SC_DEVICE, USB_PR_DEVICE, NULL,
-+		US_FL_IGNORE_DEVICE ),
-+
-+/*
-+ * Reported by Zenm Chen <zenmchen@gmail.com>
-+ * Ignore driver CD mode, otherwise usb_modeswitch may fail to switch
-+ * the device into Wi-Fi mode.
-+ */
-+UNUSUAL_DEV( 0x0bda, 0xa192, 0x0000, 0xffff,
-+		"Realtek",
-+		"DISK",
-+		USB_SC_DEVICE, USB_PR_DEVICE, NULL,
-+		US_FL_IGNORE_DEVICE ),
-+
- UNUSUAL_DEV(  0x0d49, 0x7310, 0x0000, 0x9999,
- 		"Maxtor",
- 		"USB to SATA",
+-	volatile struct mpi3_sysif_registers __iomem *sysif_regs;
++	struct mpi3_sysif_registers __iomem *sysif_regs;
+ 	resource_size_t sysif_regs_phys;
+ 	int bars;
+ 	u64 dma_mask;
+--- a/drivers/scsi/mpi3mr/mpi3mr_fw.c
++++ b/drivers/scsi/mpi3mr/mpi3mr_fw.c
+@@ -23,12 +23,12 @@ module_param(poll_queues, int, 0444);
+ MODULE_PARM_DESC(poll_queues, "Number of queues for io_uring poll mode. (Range 1 - 126)");
+ 
+ #if defined(writeq) && defined(CONFIG_64BIT)
+-static inline void mpi3mr_writeq(__u64 b, volatile void __iomem *addr)
++static inline void mpi3mr_writeq(__u64 b, void __iomem *addr)
+ {
+ 	writeq(b, addr);
+ }
+ #else
+-static inline void mpi3mr_writeq(__u64 b, volatile void __iomem *addr)
++static inline void mpi3mr_writeq(__u64 b, void __iomem *addr)
+ {
+ 	__u64 data_out = b;
+ 
 
 
 
