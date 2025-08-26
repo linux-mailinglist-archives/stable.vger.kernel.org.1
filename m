@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-175689-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-173472-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 03A6DB369C8
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 16:30:49 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id E7723B35CE8
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 13:39:49 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 2D18E1C41324
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 14:17:46 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id A29237C577E
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 11:39:48 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B507234DCDA;
-	Tue, 26 Aug 2025 14:15:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id F253E30F55C;
+	Tue, 26 Aug 2025 11:38:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="TebL0818"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="jEZOpjrt"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 70F7D2A1BF;
-	Tue, 26 Aug 2025 14:15:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AC884239573;
+	Tue, 26 Aug 2025 11:38:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756217709; cv=none; b=ENzT81GVo/J4r4CQgDci9FXwwIQnuqlsqr92LwJjHbvAYfIkh53GfuTwCO5mkhB8GR8U0bkkWCDsYNgvs6RFT3qxKtWKSKdnNhDolILHYSl1CKxv/ohOmYxhTaspxeP0YQEUUN/6uTlIZw6YgW+pj+ufTLTRj3EJ5FIKs4sxlq0=
+	t=1756208336; cv=none; b=F1m9GReQ10Gr15fAyE4X5KmwPQu+o3QfCWRL4g0sZ/0v/c1nX2xkip+dHEXD6pB6NRkrQb2iRcs51fDFWx9It6u/FNxcvWi7xc3P+s1APYGKXf7ixkFG9Ec4Lrpn6A24zGrbqu4CTWVINIgZqULuvgrmUC8MznGxW0w1Ojldxzw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756217709; c=relaxed/simple;
-	bh=ambn1atNnR4yWBbgz0lyPUfP/9sNTEdAoiAfOb4LTbg=;
+	s=arc-20240116; t=1756208336; c=relaxed/simple;
+	bh=+XD3JnSFAqnylH62ix0K6PfgL1CGKhNXtZxWhhQh6Z0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=uXvmh9rzQ/DAv6/EguaxHOFzytVEJkJtFAQG/fG25V3KF2KzcOFpyb5GwxvHHTExOcttiFzsemznaOVVgbjSmCAqFOma81OzDJqI5kGMjG4GXHAS+VDH4il6WqBWUNwtuQPRplaMoATknEhZLAKa2xGwdfQioAnbzzi09QZE5PI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=TebL0818; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E6AF4C113CF;
-	Tue, 26 Aug 2025 14:15:08 +0000 (UTC)
+	 MIME-Version:Content-Type; b=BglrsZVmXU69GnW63dTaNkM4XcszA1Lj5HJJJai4jSS7UmA1t+rF7opVwNxtDW1JWS/Rd7WKZLdOOFGkk72EC8i873Vm8bhg2VhtGVr27ahhivMvWZ/TIwHYMsUybMeenhWOP+C0lmihcxhMuxOUO/L4gqkV4HRpfibTG+3IuRs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=jEZOpjrt; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 15C65C4CEF1;
+	Tue, 26 Aug 2025 11:38:55 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1756217709;
-	bh=ambn1atNnR4yWBbgz0lyPUfP/9sNTEdAoiAfOb4LTbg=;
+	s=korg; t=1756208336;
+	bh=+XD3JnSFAqnylH62ix0K6PfgL1CGKhNXtZxWhhQh6Z0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=TebL0818poSHhu0Ewq1b7GsITRcw59al2ncgzBMUOqGm0LkcO9Kw4xSQ2lDhGlGlP
-	 moa66WOq+u/xNQoHRQQBpQvVMRy59CqPwzhQ01GTQKnQnNPf3+9V9NshGFGv2mplW5
-	 /oEqNyQd3Pr32Andlz2o5iPUPriCLuBCBd8fZfN0=
+	b=jEZOpjrtjUDOiJ6bu5hXcq8GZdyzrpiE2hMyAlKGlQXEBnwiW6Y/z58/Jp9b7MrHe
+	 3WFE8Os0gJv7/3gZYemo9Pzw7XUTQqu+8uGJIcYmQVI8W+pQyEOVmcWEy0LT+avVdI
+	 EidUkheK0/68JRH+FivYq1cbDZTtIYOdx1aINsdA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Alok Tiwari <alok.a.tiwari@oracle.com>,
-	Takashi Iwai <tiwai@suse.de>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 246/523] ALSA: intel8x0: Fix incorrect codec index usage in mixer for ICH4
+	Will McVicker <willmcvicker@google.com>,
+	Peter Griffin <peter.griffin@linaro.org>,
+	=?UTF-8?q?Andr=C3=A9=20Draszik?= <andre.draszik@linaro.org>,
+	Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
+Subject: [PATCH 6.12 041/322] arm64: dts: exynos: gs101: ufs: add dma-coherent property
 Date: Tue, 26 Aug 2025 13:07:36 +0200
-Message-ID: <20250826110930.503253411@linuxfoundation.org>
+Message-ID: <20250826110916.387509362@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250826110924.562212281@linuxfoundation.org>
-References: <20250826110924.562212281@linuxfoundation.org>
+In-Reply-To: <20250826110915.169062587@linuxfoundation.org>
+References: <20250826110915.169062587@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,44 +61,48 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Alok Tiwari <alok.a.tiwari@oracle.com>
+From: Peter Griffin <peter.griffin@linaro.org>
 
-[ Upstream commit 87aafc8580acf87fcaf1a7e30ed858d8c8d37d81 ]
+commit 4292564c71cffd8094abcc52dd4840870d05cd30 upstream.
 
-code mistakenly used a hardcoded index (codec[1]) instead of
-iterating, over the codec array using the loop variable i.
-Use codec[i] instead of codec[1] to match the loop iteration.
+ufs-exynos driver configures the sysreg shareability as
+cacheable for gs101 so we need to set the dma-coherent
+property so the descriptors are also allocated cacheable.
 
-Signed-off-by: Alok Tiwari <alok.a.tiwari@oracle.com>
-Link: https://patch.msgid.link/20250621185233.4081094-1-alok.a.tiwari@oracle.com
-Signed-off-by: Takashi Iwai <tiwai@suse.de>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+This fixes the UFS stability issues we have seen with
+the upstream UFS driver on gs101.
+
+Fixes: 4c65d7054b4c ("arm64: dts: exynos: gs101: Add ufs and ufs-phy dt nodes")
+Cc: stable@vger.kernel.org
+Suggested-by: Will McVicker <willmcvicker@google.com>
+Signed-off-by: Peter Griffin <peter.griffin@linaro.org>
+Tested-by: Will McVicker <willmcvicker@google.com>
+Tested-by: André Draszik <andre.draszik@linaro.org>
+Reviewed-by: André Draszik <andre.draszik@linaro.org>
+Link: https://lore.kernel.org/r/20250314-ufs-dma-coherent-v1-1-bdf9f9be2919@linaro.org
+Signed-off-by: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- sound/pci/intel8x0.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ arch/arm64/boot/dts/exynos/google/gs101.dtsi |    1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/sound/pci/intel8x0.c b/sound/pci/intel8x0.c
-index 3707dc27324d..324d9df7f111 100644
---- a/sound/pci/intel8x0.c
-+++ b/sound/pci/intel8x0.c
-@@ -2270,7 +2270,7 @@ static int snd_intel8x0_mixer(struct intel8x0 *chip, int ac97_clock,
- 			tmp |= chip->ac97_sdin[0] << ICH_DI1L_SHIFT;
- 			for (i = 1; i < 4; i++) {
- 				if (pcm->r[0].codec[i]) {
--					tmp |= chip->ac97_sdin[pcm->r[0].codec[1]->num] << ICH_DI2L_SHIFT;
-+					tmp |= chip->ac97_sdin[pcm->r[0].codec[i]->num] << ICH_DI2L_SHIFT;
- 					break;
- 				}
- 			}
--- 
-2.39.5
-
+--- a/arch/arm64/boot/dts/exynos/google/gs101.dtsi
++++ b/arch/arm64/boot/dts/exynos/google/gs101.dtsi
+@@ -1360,6 +1360,7 @@
+ 				 <&cmu_hsi2 CLK_GOUT_HSI2_SYSREG_HSI2_PCLK>;
+ 			clock-names = "core_clk", "sclk_unipro_main", "fmp",
+ 				      "aclk", "pclk", "sysreg";
++			dma-coherent;
+ 			freq-table-hz = <0 0>, <0 0>, <0 0>, <0 0>, <0 0>, <0 0>;
+ 			pinctrl-0 = <&ufs_rst_n &ufs_refclk_out>;
+ 			pinctrl-names = "default";
 
 
 
