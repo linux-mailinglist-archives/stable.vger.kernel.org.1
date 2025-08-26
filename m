@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-174627-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-176205-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id D2AC5B36420
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 15:35:58 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id CB498B36C96
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 16:57:35 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 0539A1BC2330
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 13:29:35 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 7DE08A06106
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 14:40:27 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 250AD22AE5D;
-	Tue, 26 Aug 2025 13:28:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3510B35209D;
+	Tue, 26 Aug 2025 14:37:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="RoUPDlbn"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="P82hU8Ht"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D89FA243946;
-	Tue, 26 Aug 2025 13:28:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E8116352FF2;
+	Tue, 26 Aug 2025 14:37:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756214890; cv=none; b=ndULR3KAPvrWOoNdBPLHEVb2jA3ovmFAf1y289mul9UdZbn2cueYNCqQGiJM0VbPXPOe8GixwH5uwbwr0o4SSsfh+Hh/Cd46EiBBf9mQvV88pEW6HdcYxq+aks1/rjy0PipTWsvOSxt/hpEpttazmPcq3IHeR9bT9YFDkoHwXyg=
+	t=1756219053; cv=none; b=WRGv8sKCqPVhe/F2MtNUyxzMgUWomoQwCuc+uvdQH7KuQ66ZcRGaBo0vJ7ByGdtuMMnI6dWl0Mls42TiDITQY8rXVROvqFjgRgCuiWkr+B5xxRbFrI85QLSVeDVkWWgYBQEdBdz0/GjeHUKsD3zy7i9u5XL8AZuyrkWNV8/petk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756214890; c=relaxed/simple;
-	bh=dAw+E+Z2Ts86cdJaWQ22D4L/Lqpt351LW2mNqaM64/E=;
+	s=arc-20240116; t=1756219053; c=relaxed/simple;
+	bh=QJKpUPyt97u/gLOv76JAdgP9BELmb22NBJRsMaPGNcw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=V/F9IF0S1WHwJovDMY7DCI1Fn2rme9rRIx+mvUl1jRouBAjtrW4i9IcQwnVh9+T/VzVdSl9kZ2J35TCN0nwc1xiAflxPmI7ZFs/ihpcXT5dsc3ah4yjTqGechqM9a8iDVedjFGMxryQBCQ4a+WhH6cYEoTlzmPrgWSof8EA/1Pk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=RoUPDlbn; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6B3D0C4CEF1;
-	Tue, 26 Aug 2025 13:28:10 +0000 (UTC)
+	 MIME-Version; b=qChB+EuIhVoRpu6gQziqOxNjl+yARlaiVCExUYhmtc8oCEMOF68PDWv6TF+pcVqkXpvBt+wnjM7cvWY8j5+U1d+FGDiNP0Umng4gRGlM+KE8GDjlDocEXeJSP3lbiXeAGApUg5L9Im+Bo3VlkDg2icR/RWLZ23lWLiGY7RNUpjI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=P82hU8Ht; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 769EAC4CEF1;
+	Tue, 26 Aug 2025 14:37:32 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1756214890;
-	bh=dAw+E+Z2Ts86cdJaWQ22D4L/Lqpt351LW2mNqaM64/E=;
+	s=korg; t=1756219052;
+	bh=QJKpUPyt97u/gLOv76JAdgP9BELmb22NBJRsMaPGNcw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=RoUPDlbnu0VTBJLKJvDpl5dY6swbxncfh3BosUXtZkpslH5ze6Jbl0ZjGGAeYo98H
-	 jojlrosNAp4nQw/xxDyMKVIo05MSA00WZ01O5yuRZeYMST6zw7Zpn2xgV88H/rCNxF
-	 uQwmCHZafPIsqpHGjhI13pSvb2OcRSERMx9XoLEw=
+	b=P82hU8Ht0QfFZf19/YRxrBAgLn4EfHLMXwgjdUGaB7dagjuaaGym4+KBEKcfGVnWr
+	 4wdgfA7EkGbYv5yHKJORguFm64WpVHFO0U8aCfE1E3wLBh/ld73VFbNUptYDdnXxPd
+	 ZLUmbhLWag5YZhrCl6xDMmRfGiTWYCWTb3igX8jA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Damien Le Moal <dlemoal@kernel.org>,
-	Manivannan Sadhasivam <mani@kernel.org>,
-	Niklas Cassel <cassel@kernel.org>
-Subject: [PATCH 6.1 308/482] PCI: endpoint: Fix configfs group removal on driver teardown
+	Amir Mohammad Jahangirzad <a.jahangirzad@gmail.com>,
+	Mike Marshall <hubcap@omnibond.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.4 235/403] fs/orangefs: use snprintf() instead of sprintf()
 Date: Tue, 26 Aug 2025 13:09:21 +0200
-Message-ID: <20250826110938.409904375@linuxfoundation.org>
+Message-ID: <20250826110913.324394362@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250826110930.769259449@linuxfoundation.org>
-References: <20250826110930.769259449@linuxfoundation.org>
+In-Reply-To: <20250826110905.607690791@linuxfoundation.org>
+References: <20250826110905.607690791@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,58 +62,52 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+5.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Damien Le Moal <dlemoal@kernel.org>
+From: Amir Mohammad Jahangirzad <a.jahangirzad@gmail.com>
 
-commit 910bdb8197f9322790c738bb32feaa11dba26909 upstream.
+[ Upstream commit cdfa1304657d6f23be8fd2bb0516380a3c89034e ]
 
-An endpoint driver configfs attributes group is added to the
-epf_group list of struct pci_epf_driver by pci_epf_add_cfs() but an
-added group is not removed from this list when the attribute group is
-unregistered with pci_ep_cfs_remove_epf_group().
+sprintf() is discouraged for use with bounded destination buffers
+as it does not prevent buffer overflows when the formatted output
+exceeds the destination buffer size. snprintf() is a safer
+alternative as it limits the number of bytes written and ensures
+NUL-termination.
 
-Add the missing list_del() call in pci_ep_cfs_remove_epf_group()
-to correctly remove the attribute group from the driver list.
+Replace sprintf() with snprintf() for copying the debug string
+into a temporary buffer, using ORANGEFS_MAX_DEBUG_STRING_LEN as
+the maximum size to ensure safe formatting and prevent memory
+corruption in edge cases.
 
-With this change, once the loop over all attribute groups in
-pci_epf_remove_cfs() completes, the driver epf_group list should be
-empty. Add a WARN_ON() to make sure of that.
+EDIT: After this patch sat on linux-next for a few days, Dan
+Carpenter saw it and suggested that I use scnprintf instead of
+snprintf. I made the change and retested.
 
-Fixes: ef1433f717a2 ("PCI: endpoint: Create configfs entry for each pci_epf_device_id table entry")
-Signed-off-by: Damien Le Moal <dlemoal@kernel.org>
-Signed-off-by: Manivannan Sadhasivam <mani@kernel.org>
-Reviewed-by: Niklas Cassel <cassel@kernel.org>
-Cc: stable@vger.kernel.org
-Link: https://patch.msgid.link/20250624114544.342159-3-dlemoal@kernel.org
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Signed-off-by: Amir Mohammad Jahangirzad <a.jahangirzad@gmail.com>
+Signed-off-by: Mike Marshall <hubcap@omnibond.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/pci/endpoint/pci-ep-cfs.c   |    1 +
- drivers/pci/endpoint/pci-epf-core.c |    1 +
- 2 files changed, 2 insertions(+)
+ fs/orangefs/orangefs-debugfs.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/drivers/pci/endpoint/pci-ep-cfs.c
-+++ b/drivers/pci/endpoint/pci-ep-cfs.c
-@@ -646,6 +646,7 @@ void pci_ep_cfs_remove_epf_group(struct
- 	if (IS_ERR_OR_NULL(group))
- 		return;
+diff --git a/fs/orangefs/orangefs-debugfs.c b/fs/orangefs/orangefs-debugfs.c
+index b57140ebfad0..cd4bfd92ebd6 100644
+--- a/fs/orangefs/orangefs-debugfs.c
++++ b/fs/orangefs/orangefs-debugfs.c
+@@ -354,7 +354,7 @@ static ssize_t orangefs_debug_read(struct file *file,
+ 		goto out;
  
-+	list_del(&group->group_entry);
- 	configfs_unregister_default_group(group);
- }
- EXPORT_SYMBOL(pci_ep_cfs_remove_epf_group);
---- a/drivers/pci/endpoint/pci-epf-core.c
-+++ b/drivers/pci/endpoint/pci-epf-core.c
-@@ -343,6 +343,7 @@ static void pci_epf_remove_cfs(struct pc
- 	mutex_lock(&pci_epf_mutex);
- 	list_for_each_entry_safe(group, tmp, &driver->epf_group, group_entry)
- 		pci_ep_cfs_remove_epf_group(group);
-+	WARN_ON(!list_empty(&driver->epf_group));
- 	mutex_unlock(&pci_epf_mutex);
- }
+ 	mutex_lock(&orangefs_debug_lock);
+-	sprintf_ret = sprintf(buf, "%s", (char *)file->private_data);
++	sprintf_ret = scnprintf(buf, ORANGEFS_MAX_DEBUG_STRING_LEN, "%s", (char *)file->private_data);
+ 	mutex_unlock(&orangefs_debug_lock);
  
+ 	read_ret = simple_read_from_buffer(ubuf, count, ppos, buf, sprintf_ret);
+-- 
+2.39.5
+
 
 
 
