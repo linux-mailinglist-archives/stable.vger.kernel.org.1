@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-174467-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-176014-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 55470B36369
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 15:29:43 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 0AE52B36B97
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 16:47:31 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id CD0B217827B
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 13:23:01 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 2D1512A5F69
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 14:31:54 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C7B14338F3F;
-	Tue, 26 Aug 2025 13:21:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3E80A2BEC45;
+	Tue, 26 Aug 2025 14:29:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="2dBeGUze"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="CtpTvjM8"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8205C3376BE;
-	Tue, 26 Aug 2025 13:21:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F03B7405F7;
+	Tue, 26 Aug 2025 14:29:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756214469; cv=none; b=OQhxWjyFxf9yVkp3bxoyRwQcL+T9aQMOKakRQ1LhmkrWTlvd/2flAJDyryJ+EIxr/9r69qVQaRaKHF90mo+jdPOdf2IhwMhsI7PfHYV6MpWlwygXW3HbDo80cjRlankr2N4hy7aR+0mHskXrMVl25noNLPzorxfwamHvGaUYo60=
+	t=1756218562; cv=none; b=bVWpZn0xcLP40LTRLYTPT0Xuok22UCj49+46GS8RKw5rkjHGXtUoobdOciRF5SEbGlCtsOF8/pewaGGLN6x2P/igeqX2E9DTqoGd0T9BZgzZFvYtrunghsZLMTJgMHSPYSQV/mA/873bSqfM1f59Vt/qXkUgs7G6NBQf0LN69h4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756214469; c=relaxed/simple;
-	bh=Oo7LW0JB3UdPdGTY3ZUzB/uZZGFNbri3dmCCh6X3Zg0=;
+	s=arc-20240116; t=1756218562; c=relaxed/simple;
+	bh=a/iilQZQHUxo24Vj78b/8p5VNM9l9VQrEugQGUZHoLA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Ci/giLXv00X3eyUDnY7dsPtAiANBpHk1dO2ZocTeLaSR9Mx0kQM8nahZoPJqNdr6vmcnBhrLDDLmypx8BBP8y0lIRrt6EtVb6zrkUovMJLQgzeb847F8Ukea3NWYYdAhrCsJL1ja+msIapgL47SUokaSMHVGcsT01A//XdVnA38=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=2dBeGUze; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 12937C4CEF1;
-	Tue, 26 Aug 2025 13:21:08 +0000 (UTC)
+	 MIME-Version; b=F6PNwftPYnpK7Wx3F7u56jio/0AOeeUn99HbBjx1IyhYatRCP89fOBIHg8QjkkAJqukkUPnNw238boOLdz6u+xHhgLYe/yLCWsYPil2/NbXOFjkB2DsqojmoAuI1Al3sCwHMCBxvTLxLZ29ibFB0DuBkOlMfy74O5zvMTpNHQto=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=CtpTvjM8; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3966AC4CEF1;
+	Tue, 26 Aug 2025 14:29:19 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1756214469;
-	bh=Oo7LW0JB3UdPdGTY3ZUzB/uZZGFNbri3dmCCh6X3Zg0=;
+	s=korg; t=1756218559;
+	bh=a/iilQZQHUxo24Vj78b/8p5VNM9l9VQrEugQGUZHoLA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=2dBeGUzegw9IPCWKWAdXTb349JjmFctDZvxanXJ0r0q9YXK0Iaxe+j9uN3PO3cxOi
-	 h7Z5wOAGG+Ion9UpJS01nJMaj+Sex+URhEPMi/8BbHv82lWCbejIEBqCXIFNZLacd1
-	 GFbrqxxwvYCp7wkB2ZNJ7CCiVETlKIuX3gxVOnP0=
+	b=CtpTvjM8ARRkaCyOv7nsfLV7INgeCLy5k8SddVI/PFJRdE/fqA0LhvQlcONMawf4A
+	 1kUwcuNJaMLvhmbpZ90zdXoHS5fjhk8D/hQEHPFlHpc5LSVgeaXYc9VPUDla0ipf+q
+	 PioLL5jzYQAnlMk2SIeVtm9zv0xEzxiZ+fqI8MJM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Alok Tiwari <alok.a.tiwari@oracle.com>,
-	Simon Horman <horms@kernel.org>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 118/482] be2net: Use correct byte order and format string for TCP seq and ack_seq
+	Dinghao Liu <dinghao.liu@zju.edu.cn>,
+	"Rafael J. Wysocki" <rafael.j.wysocki@intel.com>,
+	Sebastian Reichel <sebastian.reichel@collabora.com>,
+	Shubham Kulkarni <skulkarni@mvista.com>
+Subject: [PATCH 5.4 045/403] power: supply: bq24190_charger: Fix runtime PM imbalance on error
 Date: Tue, 26 Aug 2025 13:06:11 +0200
-Message-ID: <20250826110933.741211783@linuxfoundation.org>
+Message-ID: <20250826110907.075731305@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250826110930.769259449@linuxfoundation.org>
-References: <20250826110930.769259449@linuxfoundation.org>
+In-Reply-To: <20250826110905.607690791@linuxfoundation.org>
+References: <20250826110905.607690791@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,57 +63,42 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+5.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Alok Tiwari <alok.a.tiwari@oracle.com>
+From: Dinghao Liu <dinghao.liu@zju.edu.cn>
 
-[ Upstream commit 4701ee5044fb3992f1c910630a9673c2dc600ce5 ]
+[ Upstream commit 1a37a039711610dd53ec03d8cab9e81875338225 ]
 
-The TCP header fields seq and ack_seq are 32-bit values in network
-byte order as (__be32). these fields were earlier printed using
-ntohs(), which converts only 16-bit values and produces incorrect
-results for 32-bit fields. This patch is changeing the conversion
-to ntohl(), ensuring correct interpretation of these sequence numbers.
+pm_runtime_get_sync() increments the runtime PM usage counter even
+it returns an error code. Thus a pairing decrement is needed on
+the error handling path to keep the counter balanced.
 
-Notably, the format specifier is updated from %d to %u to reflect the
-unsigned nature of these fields.
-
-improves the accuracy of debug log messages for TCP sequence and
-acknowledgment numbers during TX timeouts.
-
-Signed-off-by: Alok Tiwari <alok.a.tiwari@oracle.com>
-Reviewed-by: Simon Horman <horms@kernel.org>
-Link: https://patch.msgid.link/20250717193552.3648791-1-alok.a.tiwari@oracle.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Signed-off-by: Dinghao Liu <dinghao.liu@zju.edu.cn>
+Reviewed-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
+Signed-off-by: Sebastian Reichel <sebastian.reichel@collabora.com>
+Stable-dep-of: 47c29d692129 ("power: supply: bq24190: Fix use after free bug in bq24190_remove due to race condition")
+Signed-off-by: Shubham Kulkarni <skulkarni@mvista.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/net/ethernet/emulex/benet/be_main.c | 8 ++++----
- 1 file changed, 4 insertions(+), 4 deletions(-)
+ drivers/power/supply/bq24190_charger.c |    4 +++-
+ 1 file changed, 3 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/net/ethernet/emulex/benet/be_main.c b/drivers/net/ethernet/emulex/benet/be_main.c
-index 173625a10886..7a3f7b4b859e 100644
---- a/drivers/net/ethernet/emulex/benet/be_main.c
-+++ b/drivers/net/ethernet/emulex/benet/be_main.c
-@@ -1466,10 +1466,10 @@ static void be_tx_timeout(struct net_device *netdev, unsigned int txqueue)
- 						 ntohs(tcphdr->source));
- 					dev_info(dev, "TCP dest port %d\n",
- 						 ntohs(tcphdr->dest));
--					dev_info(dev, "TCP sequence num %d\n",
--						 ntohs(tcphdr->seq));
--					dev_info(dev, "TCP ack_seq %d\n",
--						 ntohs(tcphdr->ack_seq));
-+					dev_info(dev, "TCP sequence num %u\n",
-+						 ntohl(tcphdr->seq));
-+					dev_info(dev, "TCP ack_seq %u\n",
-+						 ntohl(tcphdr->ack_seq));
- 				} else if (ip_hdr(skb)->protocol ==
- 					   IPPROTO_UDP) {
- 					udphdr = udp_hdr(skb);
--- 
-2.39.5
-
+--- a/drivers/power/supply/bq24190_charger.c
++++ b/drivers/power/supply/bq24190_charger.c
+@@ -484,8 +484,10 @@ static ssize_t bq24190_sysfs_store(struc
+ 		return ret;
+ 
+ 	ret = pm_runtime_get_sync(bdi->dev);
+-	if (ret < 0)
++	if (ret < 0) {
++		pm_runtime_put_noidle(bdi->dev);
+ 		return ret;
++	}
+ 
+ 	ret = bq24190_write_mask(bdi, info->reg, info->mask, info->shift, v);
+ 	if (ret)
 
 
 
