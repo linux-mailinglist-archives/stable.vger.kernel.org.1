@@ -1,55 +1,56 @@
-Return-Path: <stable+bounces-176268-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-175857-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [142.0.200.124])
-	by mail.lfdr.de (Postfix) with ESMTPS id 19D6CB36B1C
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 16:43:07 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id CBFCCB369F6
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 16:32:49 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 0D0DE4E2B93
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 14:43:06 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 28F775863F0
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 14:24:19 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E43702135B8;
-	Tue, 26 Aug 2025 14:40:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 39F3435691F;
+	Tue, 26 Aug 2025 14:22:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="eKHrLKSg"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="OPnJCDFJ"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A2F17352093;
-	Tue, 26 Aug 2025 14:40:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EAD1A352FC7;
+	Tue, 26 Aug 2025 14:22:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756219214; cv=none; b=lnZcuM2Ai8h/nv3MnVXGtY7HPWIxSAXHlVPm1oGzqlL2reNpd0PHTVMimwjk8xu/3RBT3c6oycbaZ/CVzK4rSHbOjGGm2H/P7BCgfvh/k28paz258tWqu62C0TcNOnWo8uLl/aBy1diclVu+fvV80W0ZjlgXhZ3K35u6o/jz3Xs=
+	t=1756218153; cv=none; b=mb91sE/4hI9WBTSFtsw6rzO2YZYBoVqfFE44iEPY2Oy7o8mzD9cV5QjYu5i/mcrMe24n/E3rOUk1SxzYl62aCRRMsuTCk4upXgC8R3C+cHjND7ELzX5uRLeRj8Z5DRBh4MQuGVe6QyBkJQ2zR7lU13uSmMTPPMidGC1+tNB7xV4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756219214; c=relaxed/simple;
-	bh=XbacfEwJFZzMYJfFSTZMBkCkNnFrhd+Wm+3clg4HTmU=;
+	s=arc-20240116; t=1756218153; c=relaxed/simple;
+	bh=y+U4zROu2w5oGI0bmFc8VXXETDqt2RRR2IprGW+QLZs=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=BICc7i+MVxaDJ8NOGosxkxekrjJy9YJa4F3TLwteH8YhunbqTjZedOS1WSWlI2ce0cZ4oaNvikIDZU2E1Loa2IruiN6n4/TsALDDHtxanNwgax6HKjnkU+x+PaNTlVdLuC1Oyq3X5+daelGCr+Yt85bsXWvhR3xdVb8SRsXxMyc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=eKHrLKSg; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3B0C8C4CEF1;
-	Tue, 26 Aug 2025 14:40:14 +0000 (UTC)
+	 MIME-Version; b=dAUpZ09e3GNoibwsCvrWjtTaLUfkc9Aj68Zbu+Os3Tng8NAgZzCgRHkZV+/VECNElD3MiEWXdS6ysQebvt5WgPYgYqsKEFUwwgoce4X9AyFOMs2UfO+dnvbRw4EgirQRkbaOuObnN5I9/O/VmsfxqpVZttY+kfV1pDosJc8Bo4k=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=OPnJCDFJ; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2E2B2C113D0;
+	Tue, 26 Aug 2025 14:22:31 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1756219214;
-	bh=XbacfEwJFZzMYJfFSTZMBkCkNnFrhd+Wm+3clg4HTmU=;
+	s=korg; t=1756218151;
+	bh=y+U4zROu2w5oGI0bmFc8VXXETDqt2RRR2IprGW+QLZs=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=eKHrLKSgwt2MoxH3yNaw/dPtx6h+fpat/jvqCf8mFjtGpkUTia6HeiwMkQOQfd6Gl
-	 jdfL9tDn1+LLpgB8GbGK4NdhROjbstCPfyzo/5T+RCxpp+tKAGYQlnVFS+EGT+yYVS
-	 MA1CSoBVvPGyknhlnsH6wVX8fFkqJslmhoR9JhRE=
+	b=OPnJCDFJqI9uw6MzrBf5ES6VLTOR+AjQNw4U8RtqXw5LMq5eLTQl937vTRl0bo+AH
+	 w3LVX7DXmdIVDHcNcgBEz6+JfNJolYifcEY16EAmjOoeQOHkopTdzklWArQSDwaoT+
+	 aREGpx8hATXHq7ru9hf0dxfy/wG8zALYC0FSPVSQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Laurentiu Mihalcea <laurentiu.mihalcea@nxp.com>,
-	=?UTF-8?q?Uwe=20Kleine-K=C3=B6nig?= <ukleinek@kernel.org>
-Subject: [PATCH 5.4 297/403] pwm: imx-tpm: Reset counter if CMOD is 0
+	stable <stable@kernel.org>,
+	Zenm Chen <zenmchen@gmail.com>,
+	Alan Stern <stern@rowland.harvard.edu>
+Subject: [PATCH 5.10 413/523] USB: storage: Ignore driver CD mode for Realtek multi-mode Wi-Fi dongles
 Date: Tue, 26 Aug 2025 13:10:23 +0200
-Message-ID: <20250826110915.018594724@linuxfoundation.org>
+Message-ID: <20250826110934.643769609@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250826110905.607690791@linuxfoundation.org>
-References: <20250826110905.607690791@linuxfoundation.org>
+In-Reply-To: <20250826110924.562212281@linuxfoundation.org>
+References: <20250826110924.562212281@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -59,63 +60,86 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-5.4-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Laurentiu Mihalcea <laurentiu.mihalcea@nxp.com>
+From: Zenm Chen <zenmchen@gmail.com>
 
-commit 65c6f742ab14ab1a2679fba72b82dcc0289d96f1 upstream.
+commit a3dc32c635bae0ae569f489e00de0e8f015bfc25 upstream.
 
-As per the i.MX93 TRM, section 67.3.2.1 "MOD register update", the value
-of the TPM counter does NOT get updated when writing MOD.MOD unless
-SC.CMOD != 0. Therefore, with the current code, assuming the following
-sequence:
+Many Realtek USB Wi-Fi dongles released in recent years have two modes:
+one is driver CD mode which has Windows driver onboard, another one is
+Wi-Fi mode. Add the US_FL_IGNORE_DEVICE quirk for these multi-mode devices.
+Otherwise, usb_modeswitch may fail to switch them to Wi-Fi mode.
 
-	1) pwm_disable()
-	2) pwm_apply_might_sleep() /* period is changed here */
-	3) pwm_enable()
+Currently there are only two USB IDs known to be used by these multi-mode
+Wi-Fi dongles: 0bda:1a2b and 0bda:a192.
 
-and assuming only one channel is active, if CNT.COUNT is higher than the
-MOD.MOD value written during the pwm_apply_might_sleep() call then, when
-re-enabling the PWM during pwm_enable(), the counter will end up resetting
-after UINT32_MAX - CNT.COUNT + MOD.MOD cycles instead of MOD.MOD cycles as
-normally expected.
+Information about Mercury MW310UH in /sys/kernel/debug/usb/devices.
+T:  Bus=02 Lev=01 Prnt=01 Port=01 Cnt=01 Dev#= 12 Spd=480  MxCh= 0
+D:  Ver= 2.00 Cls=00(>ifc ) Sub=00 Prot=00 MxPS=64 #Cfgs=  1
+P:  Vendor=0bda ProdID=a192 Rev= 2.00
+S:  Manufacturer=Realtek
+S:  Product=DISK
+C:* #Ifs= 1 Cfg#= 1 Atr=80 MxPwr=500mA
+I:* If#= 0 Alt= 0 #EPs= 2 Cls=08(stor.) Sub=06 Prot=50 Driver=(none)
+E:  Ad=8a(I) Atr=02(Bulk) MxPS= 512 Ivl=0ms
+E:  Ad=0b(O) Atr=02(Bulk) MxPS= 512 Ivl=0ms
 
-Fix this problem by forcing a reset of the TPM counter before MOD.MOD is
-written.
+Information about D-Link AX9U rev. A1 in /sys/kernel/debug/usb/devices.
+T:  Bus=03 Lev=01 Prnt=01 Port=02 Cnt=01 Dev#= 55 Spd=480  MxCh= 0
+D:  Ver= 2.00 Cls=00(>ifc ) Sub=00 Prot=00 MxPS=64 #Cfgs=  1
+P:  Vendor=0bda ProdID=1a2b Rev= 0.00
+S:  Manufacturer=Realtek
+S:  Product=DISK
+C:* #Ifs= 1 Cfg#= 1 Atr=e0 MxPwr=500mA
+I:* If#= 0 Alt= 0 #EPs= 2 Cls=08(stor.) Sub=06 Prot=50 Driver=(none)
+E:  Ad=84(I) Atr=02(Bulk) MxPS= 512 Ivl=0ms
+E:  Ad=05(O) Atr=02(Bulk) MxPS= 512 Ivl=0ms
 
-Fixes: 738a1cfec2ed ("pwm: Add i.MX TPM PWM driver support")
-Cc: stable@vger.kernel.org
-Signed-off-by: Laurentiu Mihalcea <laurentiu.mihalcea@nxp.com>
-Link: https://lore.kernel.org/r/20250728194144.22884-1-laurentiumihalcea111@gmail.com
-Signed-off-by: Uwe Kleine-König <ukleinek@kernel.org>
+Cc: stable <stable@kernel.org>
+Signed-off-by: Zenm Chen <zenmchen@gmail.com>
+Acked-by: Alan Stern <stern@rowland.harvard.edu>
+Link: https://lore.kernel.org/r/20250813162415.2630-1-zenmchen@gmail.com
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/pwm/pwm-imx-tpm.c |    9 +++++++++
- 1 file changed, 9 insertions(+)
+ drivers/usb/storage/unusual_devs.h |   22 ++++++++++++++++++++++
+ 1 file changed, 22 insertions(+)
 
---- a/drivers/pwm/pwm-imx-tpm.c
-+++ b/drivers/pwm/pwm-imx-tpm.c
-@@ -205,6 +205,15 @@ static int pwm_imx_tpm_apply_hw(struct p
- 		writel(val, tpm->base + PWM_IMX_TPM_SC);
+--- a/drivers/usb/storage/unusual_devs.h
++++ b/drivers/usb/storage/unusual_devs.h
+@@ -1490,6 +1490,28 @@ UNUSUAL_DEV( 0x0bc2, 0x3332, 0x0000, 0x9
+ 		USB_SC_DEVICE, USB_PR_DEVICE, NULL,
+ 		US_FL_NO_WP_DETECT ),
  
- 		/*
-+		 * if the counter is disabled (CMOD == 0), programming the new
-+		 * period length (MOD) will not reset the counter (CNT). If
-+		 * CNT.COUNT happens to be bigger than the new MOD value then
-+		 * the counter will end up being reset way too late. Therefore,
-+		 * manually reset it to 0.
-+		 */
-+		if (!cmod)
-+			writel(0x0, tpm->base + PWM_IMX_TPM_CNT);
-+		/*
- 		 * set period count:
- 		 * if the PWM is disabled (CMOD[1:0] = 2b00), then MOD register
- 		 * is updated when MOD register is written.
++/*
++ * Reported by Zenm Chen <zenmchen@gmail.com>
++ * Ignore driver CD mode, otherwise usb_modeswitch may fail to switch
++ * the device into Wi-Fi mode.
++ */
++UNUSUAL_DEV( 0x0bda, 0x1a2b, 0x0000, 0xffff,
++		"Realtek",
++		"DISK",
++		USB_SC_DEVICE, USB_PR_DEVICE, NULL,
++		US_FL_IGNORE_DEVICE ),
++
++/*
++ * Reported by Zenm Chen <zenmchen@gmail.com>
++ * Ignore driver CD mode, otherwise usb_modeswitch may fail to switch
++ * the device into Wi-Fi mode.
++ */
++UNUSUAL_DEV( 0x0bda, 0xa192, 0x0000, 0xffff,
++		"Realtek",
++		"DISK",
++		USB_SC_DEVICE, USB_PR_DEVICE, NULL,
++		US_FL_IGNORE_DEVICE ),
++
+ UNUSUAL_DEV(  0x0d49, 0x7310, 0x0000, 0x9999,
+ 		"Maxtor",
+ 		"USB to SATA",
 
 
 
