@@ -1,55 +1,56 @@
-Return-Path: <stable+bounces-174282-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-176314-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6A701B36290
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 15:20:21 +0200 (CEST)
+Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [142.0.200.124])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2F00EB36B70
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 16:45:54 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 9C23568358F
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 13:14:46 +0000 (UTC)
+	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 166CF4E33F9
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 14:45:53 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id F14B43469E6;
-	Tue, 26 Aug 2025 13:12:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id AD10F35CEDD;
+	Tue, 26 Aug 2025 14:42:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="dVYweZAq"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="14Ii0cFZ"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AFB8B34A301;
-	Tue, 26 Aug 2025 13:12:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 68EA635FC37;
+	Tue, 26 Aug 2025 14:42:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756213975; cv=none; b=ZsOS+eFh62GXe13lsahH1Q/F6Ssi2e979WHlmxp/zMAB93Bozr6x25iGuf0U8tHBTFNYHDShUSCryw/KksuScyL84jsjaTxxntXDAJLEx9q1gvD1kkgrZ0Hdi8eILMEZ76JIiYYrzrhG5b0xRfpE6Kp3uKJxIopEtRrePvWkDSQ=
+	t=1756219336; cv=none; b=ExhTiUz/gcg+9QGTtEs0unTFYqsi5zFWBs08EFL0Cm5Kbjh0JnFhYyCRrpcoPma8m5YpEBaVldFlRtOve6fyGg4E6daZBHjKkXrqeotwbgGfzfOCaIoceLWgqcoEcy7TODW3RxwswioLLP9WpP0ulxUSPHVxnvTbcHlnqzdU1Qk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756213975; c=relaxed/simple;
-	bh=bnT4b4TyKLoKLCueXhdGmeQB6s9DzOTllPVyUM7TFpo=;
+	s=arc-20240116; t=1756219336; c=relaxed/simple;
+	bh=zKfcTO7AjAUYuXrUOLa1/5laxfGAH/5Nzc4emi9iUXw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=qiDMY4iFdq/NKPXNg3o1TFyBNwDEiClRHHkyt/C7lys71GhEq1TvukDHeSd0zR1glRmjdKwdHEcD8AhJL4uYAR6Nk3ASvtjZWuxEVEZO2t9PvG1lRJbOt2sFTuYzOYDZAA3ZpGcsIFs04bYImABuJIdyJ3VfBoDPXhxqhoK8kWI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=dVYweZAq; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id EDD94C4CEF1;
-	Tue, 26 Aug 2025 13:12:54 +0000 (UTC)
+	 MIME-Version; b=CrwTcSxc3YE98NY+X0nW5vR1LN1cGjx3VquZZRDmb5g0XbJudjvgv4lZSzT/8nSmkVWjmCGblxg+JwYbYxR53zctIsyFJauTZvnD9Ow17eFj1e207PxQUEkzdqhyDUYI3SVBMjNDElG1R/90KpZL8J/LY2oS/qmbL175Oz2RXG4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=14Ii0cFZ; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id F1EB4C4CEF1;
+	Tue, 26 Aug 2025 14:42:15 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1756213975;
-	bh=bnT4b4TyKLoKLCueXhdGmeQB6s9DzOTllPVyUM7TFpo=;
+	s=korg; t=1756219336;
+	bh=zKfcTO7AjAUYuXrUOLa1/5laxfGAH/5Nzc4emi9iUXw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=dVYweZAqeLroo3iZoG2+TUViQci5H/uLdHhqE81IpM6vnop+o46tCUzzFJPmDHbML
-	 EPsrTE97pVmC3RnJDMxnWsi3B8Jp9URG2aClEOkbsL0+4QNpTHUpfWmwE/X7Yz3phW
-	 H1u9ut5B2axIQ8hg33yDLzmhBaABznna1G3na6J8=
+	b=14Ii0cFZEtvl5gIkrQr7aKS76vnV6W3aL92WmYXymU3gzljdWkifS2m5MiDKiQV75
+	 r0CWSgWuIzQU8L9bnLinBlTn86oXC+bPJTmHSn2on7khNMUo8zlGeqzztc1Tu/fOoK
+	 MQ/SZEyVrMsSJoVVwdpEB9LdMLk9h09hkCophljw=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Miao Li <limiao@kylinos.cn>,
-	stable <stable@kernel.org>
-Subject: [PATCH 6.6 519/587] usb: quirks: Add DELAY_INIT quick for another SanDisk 3.2Gen1 Flash Drive
+	Mark Pearson <markpearson@lenovo.com>,
+	Mathias Nyman <mathias.nyman@linux.intel.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.4 342/403] usb: hub: avoid warm port reset during USB3 disconnect
 Date: Tue, 26 Aug 2025 13:11:08 +0200
-Message-ID: <20250826111006.199145450@linuxfoundation.org>
+Message-ID: <20250826110916.310932263@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250826110952.942403671@linuxfoundation.org>
-References: <20250826110952.942403671@linuxfoundation.org>
+In-Reply-To: <20250826110905.607690791@linuxfoundation.org>
+References: <20250826110905.607690791@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,36 +62,104 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+5.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Miao Li <limiao@kylinos.cn>
+From: Mathias Nyman <mathias.nyman@linux.intel.com>
 
-commit e664036cf36480414936cd91f4cfa2179a3d8367 upstream.
+[ Upstream commit f59f93cd1d720809466c7fd5aa16a236156c672b ]
 
-Another SanDisk 3.2Gen1 Flash Drive also need DELAY_INIT quick,
-or it will randomly work incorrectly on Huawei hisi platforms
-when doing reboot test.
+During disconnect USB-3 ports often go via SS.Inactive link error state
+before the missing terminations are noticed, and link finally goes to
+RxDetect state
 
-Signed-off-by: Miao Li <limiao@kylinos.cn>
-Cc: stable <stable@kernel.org>
-Link: https://lore.kernel.org/r/20250801082728.469406-1-limiao870622@163.com
+Avoid immediately warm-resetting ports in SS.Inactive state.
+Let ports settle for a while and re-read the link status a few times 20ms
+apart to see if the ports transitions out of SS.Inactive.
+
+According to USB 3.x spec 7.5.2, a port in SS.Inactive should
+automatically check for missing far-end receiver termination every
+12 ms (SSInactiveQuietTimeout)
+
+The futile multiple warm reset retries of a disconnected device takes
+a lot of time, also the resetting of a removed devices has caused cases
+where the reset bit got stuck for a long time on xHCI roothub.
+This lead to issues in detecting new devices connected to the same port
+shortly after.
+
+Tested-by: Mark Pearson <markpearson@lenovo.com>
+Signed-off-by: Mathias Nyman <mathias.nyman@linux.intel.com>
+Link: https://lore.kernel.org/r/20211210111653.1378381-1-mathias.nyman@linux.intel.com
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Stable-dep-of: 2521106fc732 ("usb: hub: Don't try to recover devices lost during warm reset.")
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/usb/core/quirks.c |    1 +
- 1 file changed, 1 insertion(+)
+ drivers/usb/core/hub.c |   26 ++++++++++++++++++++------
+ 1 file changed, 20 insertions(+), 6 deletions(-)
 
---- a/drivers/usb/core/quirks.c
-+++ b/drivers/usb/core/quirks.c
-@@ -371,6 +371,7 @@ static const struct usb_device_id usb_qu
- 	{ USB_DEVICE(0x0781, 0x5591), .driver_info = USB_QUIRK_NO_LPM },
+--- a/drivers/usb/core/hub.c
++++ b/drivers/usb/core/hub.c
+@@ -2788,6 +2788,8 @@ static unsigned hub_is_wusb(struct usb_h
+ #define SET_CONFIG_TRIES	(2 * (use_both_schemes + 1))
+ #define USE_NEW_SCHEME(i, scheme)	((i) / 2 == (int)(scheme))
  
- 	/* SanDisk Corp. SanDisk 3.2Gen1 */
-+	{ USB_DEVICE(0x0781, 0x5596), .driver_info = USB_QUIRK_DELAY_INIT },
- 	{ USB_DEVICE(0x0781, 0x55a3), .driver_info = USB_QUIRK_DELAY_INIT },
++#define DETECT_DISCONNECT_TRIES 5
++
+ #define HUB_ROOT_RESET_TIME	60	/* times are in msec */
+ #define HUB_SHORT_RESET_TIME	10
+ #define HUB_BH_RESET_TIME	50
+@@ -5422,6 +5424,7 @@ static void port_event(struct usb_hub *h
+ 	struct usb_device *udev = port_dev->child;
+ 	struct usb_device *hdev = hub->hdev;
+ 	u16 portstatus, portchange;
++	int i = 0;
  
- 	/* SanDisk Extreme 55AE */
+ 	connect_change = test_bit(port1, hub->change_bits);
+ 	clear_bit(port1, hub->event_bits);
+@@ -5498,17 +5501,27 @@ static void port_event(struct usb_hub *h
+ 		connect_change = 1;
+ 
+ 	/*
+-	 * Warm reset a USB3 protocol port if it's in
+-	 * SS.Inactive state.
+-	 */
+-	if (hub_port_warm_reset_required(hub, port1, portstatus)) {
+-		dev_dbg(&port_dev->dev, "do warm reset\n");
+-		if (!udev || !(portstatus & USB_PORT_STAT_CONNECTION)
++	 * Avoid trying to recover a USB3 SS.Inactive port with a warm reset if
++	 * the device was disconnected. A 12ms disconnect detect timer in
++	 * SS.Inactive state transitions the port to RxDetect automatically.
++	 * SS.Inactive link error state is common during device disconnect.
++	 */
++	while (hub_port_warm_reset_required(hub, port1, portstatus)) {
++		if ((i++ < DETECT_DISCONNECT_TRIES) && udev) {
++			u16 unused;
++
++			msleep(20);
++			hub_port_status(hub, port1, &portstatus, &unused);
++			dev_dbg(&port_dev->dev, "Wait for inactive link disconnect detect\n");
++			continue;
++		} else if (!udev || !(portstatus & USB_PORT_STAT_CONNECTION)
+ 				|| udev->state == USB_STATE_NOTATTACHED) {
++			dev_dbg(&port_dev->dev, "do warm reset, port only\n");
+ 			if (hub_port_reset(hub, port1, NULL,
+ 					HUB_BH_RESET_TIME, true) < 0)
+ 				hub_port_disable(hub, port1, 1);
+ 		} else {
++			dev_dbg(&port_dev->dev, "do warm reset, full device\n");
+ 			usb_unlock_port(port_dev);
+ 			usb_lock_device(udev);
+ 			usb_reset_device(udev);
+@@ -5516,6 +5529,7 @@ static void port_event(struct usb_hub *h
+ 			usb_lock_port(port_dev);
+ 			connect_change = 0;
+ 		}
++		break;
+ 	}
+ 
+ 	if (connect_change)
 
 
 
