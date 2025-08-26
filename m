@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-173866-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-175517-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 60855B36023
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 14:57:42 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2B0DAB368B6
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 16:18:49 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id DB9984650F1
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 12:55:30 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 0408A1C280BB
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 14:09:30 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C48C51D514B;
-	Tue, 26 Aug 2025 12:54:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 80D18352080;
+	Tue, 26 Aug 2025 14:07:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Kz3TKdQi"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="qa1cdNV1"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7FB8A1ACEDE;
-	Tue, 26 Aug 2025 12:54:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3AFD82FDC5C;
+	Tue, 26 Aug 2025 14:07:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756212873; cv=none; b=AWltGJSE903YK8hDRYs1KA5J3k629lfW4br+ggPITWwr2U6wUAD9CMCv9A9T4yHTDgoCDbvVIkPsNMQvKMSCYbXGriqaZEJ2+Mst5wYoLAUHC4ihdt46hLWrzCOFVjSDpE5yBb/vmwjxJqVk0hmppg40hFNH0STKb5IgPz+ODrg=
+	t=1756217253; cv=none; b=du1cuuH9DYP5rsTEUxPaLVvbQhjWaymyVY3n3bBR8RS7XDOh4av2C2LSQ8gejzGi0NVYNsEZuf4DLGMJfJxjSL0KfgJy3GBz6He9cXt2aaW8eIyRqlUHfwas+aptHmuuLj+AgnssGAqSWg/7d1GjRId/mf469GMwP6MFZ0MRpV8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756212873; c=relaxed/simple;
-	bh=VKHd2w5eBKu3QnApPA/xT30ZahnVObXeSgflO9xPClM=;
+	s=arc-20240116; t=1756217253; c=relaxed/simple;
+	bh=EuZ5LTwGmQ/gtS4/7WSrMofJYlrNXMCK5rk5ObdbTkI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=bE9FAnuexlr8MFRqfay0SDRriqAt1yvPuBh74woCX74pz2Q5/G8aGzQReQE+jYiMsR3/cSQ9k6q3eYnG764TaD+bSPyG9Ht7LOGILnvR7yIO5K9CDQN5w8+GdinsAU/nDYquVHlhFcFsPIMAM536bEiBcuGZKS1A8xZNXlYOMC8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Kz3TKdQi; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A9D3EC4CEF1;
-	Tue, 26 Aug 2025 12:54:32 +0000 (UTC)
+	 MIME-Version; b=myLdOmRzY1oWA4M8dEo0zac/TTaf8LuEcImhypy4ia4GQODQlmjv2yKDpRyqJMd8Bl+kQUgAOb9GzgHdzTnIsb+M3eScwpEdcFMSjKk6apraC++FiKJzHMc76hq6dQ7U/5xxYJ2tLmW9hbgEnV996DuDqdpMK87k+/tC3NtvdxM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=qa1cdNV1; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7A151C4CEF1;
+	Tue, 26 Aug 2025 14:07:32 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1756212873;
-	bh=VKHd2w5eBKu3QnApPA/xT30ZahnVObXeSgflO9xPClM=;
+	s=korg; t=1756217252;
+	bh=EuZ5LTwGmQ/gtS4/7WSrMofJYlrNXMCK5rk5ObdbTkI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Kz3TKdQixPO9zWhP3DRG3I7tBGB4/wr87/IPdr8cpl0AmKH9u1IzazPRYXc3jqYq4
-	 zCKpBvUnjvf8Uw8OrhwnnuBN6ESLLjzvJ1WbpXHcuhrxYhR4k1BVDhPNcRJimq02Pt
-	 ZBvFcJY3oHYadMF0mjtjcDo1WuRLJ0sH4liC893A=
+	b=qa1cdNV12Xn0axaStZDcYNvtvOlpH0tUvafxKB4iywP8kOXr4CMg18xLgxKJxRepp
+	 jKc/fyZjlbvnq5h7kNjqmcx78xOwxM4GufCEV6ktYZ9TqPYaPnK/v3cq2mCG87GpQR
+	 ad4BkADiy0O5C2GE/cU/vWveQLp8xRvEAa773yDo=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Cristian Ciocaltea <cristian.ciocaltea@collabora.com>,
-	Takashi Iwai <tiwai@suse.de>,
+	Xu Yang <xu.yang_2@nxp.com>,
+	Peter Chen <peter.chen@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 135/587] ALSA: usb-audio: Avoid precedence issues in mixer_quirks macros
+Subject: [PATCH 5.10 074/523] usb: phy: mxs: disconnect line when USB charger is attached
 Date: Tue, 26 Aug 2025 13:04:44 +0200
-Message-ID: <20250826110956.388260129@linuxfoundation.org>
+Message-ID: <20250826110926.394869368@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250826110952.942403671@linuxfoundation.org>
-References: <20250826110952.942403671@linuxfoundation.org>
+In-Reply-To: <20250826110924.562212281@linuxfoundation.org>
+References: <20250826110924.562212281@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,63 +62,50 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Cristian Ciocaltea <cristian.ciocaltea@collabora.com>
+From: Xu Yang <xu.yang_2@nxp.com>
 
-[ Upstream commit fd3ab72e42e9871a9902b945a2bf8bb87b49c718 ]
+[ Upstream commit 87ed257acb0934e08644568df6495988631afd4c ]
 
-Fix all macro related issues identified by checkpatch.pl:
+For mxs PHY, if there is a vbus but the bus is not enumerated, we need
+to force the dp/dm as SE0 from the controller side. If not, there is
+possible USB wakeup due to unstable dp/dm, since there is possible no
+pull on dp/dm, such as there is a USB charger on the port.
 
-  CHECK: Macro argument 'x' may be better as '(x)' to avoid precedence issues
-
-Signed-off-by: Cristian Ciocaltea <cristian.ciocaltea@collabora.com>
-Signed-off-by: Takashi Iwai <tiwai@suse.de>
-Link: https://patch.msgid.link/20250526-dualsense-alsa-jack-v1-3-1a821463b632@collabora.com
+Signed-off-by: Xu Yang <xu.yang_2@nxp.com>
+Acked-by: Peter Chen <peter.chen@kernel.org>
+Link: https://lore.kernel.org/r/20230627110353.1879477-3-xu.yang_2@nxp.com
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- sound/usb/mixer_quirks.c | 14 +++++++-------
- 1 file changed, 7 insertions(+), 7 deletions(-)
+ drivers/usb/phy/phy-mxs-usb.c | 4 +++-
+ 1 file changed, 3 insertions(+), 1 deletion(-)
 
-diff --git a/sound/usb/mixer_quirks.c b/sound/usb/mixer_quirks.c
-index be0b3c8ac705..f2cce15be4e2 100644
---- a/sound/usb/mixer_quirks.c
-+++ b/sound/usb/mixer_quirks.c
-@@ -2150,15 +2150,15 @@ static int dell_dock_mixer_init(struct usb_mixer_interface *mixer)
- #define SND_RME_CLK_FREQMUL_SHIFT		18
- #define SND_RME_CLK_FREQMUL_MASK		0x7
- #define SND_RME_CLK_SYSTEM(x) \
--	((x >> SND_RME_CLK_SYSTEM_SHIFT) & SND_RME_CLK_SYSTEM_MASK)
-+	(((x) >> SND_RME_CLK_SYSTEM_SHIFT) & SND_RME_CLK_SYSTEM_MASK)
- #define SND_RME_CLK_AES(x) \
--	((x >> SND_RME_CLK_AES_SHIFT) & SND_RME_CLK_AES_SPDIF_MASK)
-+	(((x) >> SND_RME_CLK_AES_SHIFT) & SND_RME_CLK_AES_SPDIF_MASK)
- #define SND_RME_CLK_SPDIF(x) \
--	((x >> SND_RME_CLK_SPDIF_SHIFT) & SND_RME_CLK_AES_SPDIF_MASK)
-+	(((x) >> SND_RME_CLK_SPDIF_SHIFT) & SND_RME_CLK_AES_SPDIF_MASK)
- #define SND_RME_CLK_SYNC(x) \
--	((x >> SND_RME_CLK_SYNC_SHIFT) & SND_RME_CLK_SYNC_MASK)
-+	(((x) >> SND_RME_CLK_SYNC_SHIFT) & SND_RME_CLK_SYNC_MASK)
- #define SND_RME_CLK_FREQMUL(x) \
--	((x >> SND_RME_CLK_FREQMUL_SHIFT) & SND_RME_CLK_FREQMUL_MASK)
-+	(((x) >> SND_RME_CLK_FREQMUL_SHIFT) & SND_RME_CLK_FREQMUL_MASK)
- #define SND_RME_CLK_AES_LOCK			0x1
- #define SND_RME_CLK_AES_SYNC			0x4
- #define SND_RME_CLK_SPDIF_LOCK			0x2
-@@ -2167,9 +2167,9 @@ static int dell_dock_mixer_init(struct usb_mixer_interface *mixer)
- #define SND_RME_SPDIF_FORMAT_SHIFT		5
- #define SND_RME_BINARY_MASK			0x1
- #define SND_RME_SPDIF_IF(x) \
--	((x >> SND_RME_SPDIF_IF_SHIFT) & SND_RME_BINARY_MASK)
-+	(((x) >> SND_RME_SPDIF_IF_SHIFT) & SND_RME_BINARY_MASK)
- #define SND_RME_SPDIF_FORMAT(x) \
--	((x >> SND_RME_SPDIF_FORMAT_SHIFT) & SND_RME_BINARY_MASK)
-+	(((x) >> SND_RME_SPDIF_FORMAT_SHIFT) & SND_RME_BINARY_MASK)
+diff --git a/drivers/usb/phy/phy-mxs-usb.c b/drivers/usb/phy/phy-mxs-usb.c
+index e3cddcac3252..214db28f3c15 100644
+--- a/drivers/usb/phy/phy-mxs-usb.c
++++ b/drivers/usb/phy/phy-mxs-usb.c
+@@ -394,6 +394,7 @@ static bool mxs_phy_is_otg_host(struct mxs_phy *mxs_phy)
+ static void mxs_phy_disconnect_line(struct mxs_phy *mxs_phy, bool on)
+ {
+ 	bool vbus_is_on = false;
++	enum usb_phy_events last_event = mxs_phy->phy.last_event;
  
- static const u32 snd_rme_rate_table[] = {
- 	32000, 44100, 48000, 50000,
+ 	/* If the SoCs don't need to disconnect line without vbus, quit */
+ 	if (!(mxs_phy->data->flags & MXS_PHY_DISCONNECT_LINE_WITHOUT_VBUS))
+@@ -405,7 +406,8 @@ static void mxs_phy_disconnect_line(struct mxs_phy *mxs_phy, bool on)
+ 
+ 	vbus_is_on = mxs_phy_get_vbus_status(mxs_phy);
+ 
+-	if (on && !vbus_is_on && !mxs_phy_is_otg_host(mxs_phy))
++	if (on && ((!vbus_is_on && !mxs_phy_is_otg_host(mxs_phy))
++		|| (last_event == USB_EVENT_VBUS)))
+ 		__mxs_phy_disconnect_line(mxs_phy, true);
+ 	else
+ 		__mxs_phy_disconnect_line(mxs_phy, false);
 -- 
 2.39.5
 
