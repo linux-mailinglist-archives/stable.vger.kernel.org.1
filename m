@@ -1,52 +1,52 @@
-Return-Path: <stable+bounces-174822-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-174825-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 18D3CB3656B
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 15:47:56 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 62606B3653B
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 15:45:55 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 061925603B0
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 13:37:12 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 4A6AD2A315B
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 13:37:23 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id F02EF307AF5;
-	Tue, 26 Aug 2025 13:36:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E0DAC22AE5D;
+	Tue, 26 Aug 2025 13:36:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ApM9dQOg"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="nWX/6sKt"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AD4EB2FC01F;
-	Tue, 26 Aug 2025 13:36:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9D2B120CCCA;
+	Tue, 26 Aug 2025 13:36:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756215406; cv=none; b=KAwGkaaOvfG1SHqYObB9dslIJPssJ+xQcD6lMMF8JY1pQlJ4cwg1nDP+50hqvE24kyi+X6f0v4rKNOual6HKMaSGy72nBRQnv4QTtGkX6X7lW5ezB93gbMAwmO2yjek1V9+FPhvyIm2UghqQ6WuWwSnwhmcmv7f21Rjwxe06BtQ=
+	t=1756215414; cv=none; b=Qs48jvA6R3OLxInajDcdPrTmfiGPpXDWG7Hh937XvIdIgmvUNEWypThufgupditLA0ILHinQ81T9GBUlU9dtQvE+XSQLo0uz3iZbrSlec4V+74pQUeBr6yIADBhWAgAaGjDBAk3GDYn9+j5Gg5tgvUJVXadS7utRL+aucwVdV7I=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756215406; c=relaxed/simple;
-	bh=xqmIxJYPHieCdJjyT+J/Kl02NxzbC6g+yIS3NhunDLY=;
+	s=arc-20240116; t=1756215414; c=relaxed/simple;
+	bh=A9tHZX9GmzemE4LjRDdlz7m2uU0mBeviSgY8EQXSq74=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=cdxJrIOIObkmN0lEiFX+GjLzlfu4vfy4ud1xxCzvZ2FghMUbrSLSI6ahTrTlnCrA9tz+qFg0DLWtAVPPS2v+svMbB2KfTtwsIg0G43SFJen6tlhr2/DE02YgxJ3PRe9rT5Gle0U1fw9fEkMsGrhC8eIVMwvMLRHhWVrAqQdIRVU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ApM9dQOg; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3A510C4CEF1;
-	Tue, 26 Aug 2025 13:36:46 +0000 (UTC)
+	 MIME-Version; b=e9SfLAWco/uWfLaJ0turGy0WEvwsiy3h1lthAB/Skxo8jktJOMvw0Pced2lqloafso/jJCm/Tz40QLw4C2UDbvvN1J7/wjxxUVe+twQgb43c3sNXrKw9ldzJI+i4ZBuwTvqKNGajpNOIj21WeVsZqYfVb4smeKgiloaq34EM7h4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=nWX/6sKt; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2ED3AC4CEF1;
+	Tue, 26 Aug 2025 13:36:54 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1756215406;
-	bh=xqmIxJYPHieCdJjyT+J/Kl02NxzbC6g+yIS3NhunDLY=;
+	s=korg; t=1756215414;
+	bh=A9tHZX9GmzemE4LjRDdlz7m2uU0mBeviSgY8EQXSq74=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=ApM9dQOgExlrZHvV5XsvbgRpD4DvR9O4exraJ487TaqRwSc8ophNDnmvroEIJhg/M
-	 vlAqx+AXcjnpkRUusY893Sf6cmebkd2VE/hX+AXMZFwNXQO7ua3/QwstSrmMgQARDA
-	 8+cJmI16GIa4aSZWLj7fkFG9ej1xLxUj0KnbgniU=
+	b=nWX/6sKtUF7YQwgMMWyIg1vQ3T1biQOisqwCSPY+eIoqmsBDQ8gJOhio2soEgpzFu
+	 xjHt0+nbHzYTQvqx1FLyoVwIgpxiQALzKn8cwesWm9yO5BjTnNWhTYy7DH6PAbzPXZ
+	 xJczOgO3zfUs6opaPZdomXpxDRj2mLuCjk+71uPk=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Ryan Mann <rmann@ndigital.com>,
-	Johan Hovold <johan@kernel.org>
-Subject: [PATCH 5.15 004/644] USB: serial: ftdi_sio: add support for NDI EMGUIDE GEMINI
-Date: Tue, 26 Aug 2025 13:01:35 +0200
-Message-ID: <20250826110946.620947414@linuxfoundation.org>
+	Xinyu Liu <katieeliu@tencent.com>,
+	stable <stable@kernel.org>
+Subject: [PATCH 5.15 005/644] usb: gadget: configfs: Fix OOB read on empty string write
+Date: Tue, 26 Aug 2025 13:01:36 +0200
+Message-ID: <20250826110946.643427539@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
 In-Reply-To: <20250826110946.507083938@linuxfoundation.org>
 References: <20250826110946.507083938@linuxfoundation.org>
@@ -65,47 +65,37 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Ryan Mann (NDI) <rmann@ndigital.com>
+From: Xinyu Liu <1171169449@qq.com>
 
-commit c980666b6958d9a841597331b38115a29a32250e upstream.
+commit 3014168731b7930300aab656085af784edc861f6 upstream.
 
-NDI (Northern Digital Inc.) is introducing a new product called the
-EMGUIDE GEMINI that will use an FTDI chip for USB serial communications.
-Add the NDI EMGUIDE GEMINI product ID that uses the NDI Vendor ID
-rather than the FTDI Vendor ID, unlike older products.
+When writing an empty string to either 'qw_sign' or 'landingPage'
+sysfs attributes, the store functions attempt to access page[l - 1]
+before validating that the length 'l' is greater than zero.
 
-Signed-off-by: Ryan Mann <rmann@ndigital.com>
-Cc: stable@vger.kernel.org
-Signed-off-by: Johan Hovold <johan@kernel.org>
+This patch fixes the vulnerability by adding a check at the beginning
+of os_desc_qw_sign_store() and webusb_landingPage_store() to handle
+the zero-length input case gracefully by returning immediately.
+
+Signed-off-by: Xinyu Liu <katieeliu@tencent.com>
+Cc: stable <stable@kernel.org>
+Link: https://lore.kernel.org/r/tencent_B1C9481688D0E95E7362AB2E999DE8048207@qq.com
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/usb/serial/ftdi_sio.c     |    2 ++
- drivers/usb/serial/ftdi_sio_ids.h |    3 +++
- 2 files changed, 5 insertions(+)
+ drivers/usb/gadget/configfs.c |    2 ++
+ 1 file changed, 2 insertions(+)
 
---- a/drivers/usb/serial/ftdi_sio.c
-+++ b/drivers/usb/serial/ftdi_sio.c
-@@ -781,6 +781,8 @@ static const struct usb_device_id id_tab
- 		.driver_info = (kernel_ulong_t)&ftdi_NDI_device_quirk },
- 	{ USB_DEVICE(FTDI_VID, FTDI_NDI_AURORA_SCU_PID),
- 		.driver_info = (kernel_ulong_t)&ftdi_NDI_device_quirk },
-+	{ USB_DEVICE(FTDI_NDI_VID, FTDI_NDI_EMGUIDE_GEMINI_PID),
-+		.driver_info = (kernel_ulong_t)&ftdi_NDI_device_quirk },
- 	{ USB_DEVICE(TELLDUS_VID, TELLDUS_TELLSTICK_PID) },
- 	{ USB_DEVICE(NOVITUS_VID, NOVITUS_BONO_E_PID) },
- 	{ USB_DEVICE(FTDI_VID, RTSYSTEMS_USB_VX8_PID) },
---- a/drivers/usb/serial/ftdi_sio_ids.h
-+++ b/drivers/usb/serial/ftdi_sio_ids.h
-@@ -197,6 +197,9 @@
- #define FTDI_NDI_FUTURE_3_PID		0xDA73	/* NDI future device #3 */
- #define FTDI_NDI_AURORA_SCU_PID		0xDA74	/* NDI Aurora SCU */
+--- a/drivers/usb/gadget/configfs.c
++++ b/drivers/usb/gadget/configfs.c
+@@ -861,6 +861,8 @@ static ssize_t os_desc_qw_sign_store(str
+ 	struct gadget_info *gi = os_desc_item_to_gadget_info(item);
+ 	int res, l;
  
-+#define FTDI_NDI_VID			0x23F2
-+#define FTDI_NDI_EMGUIDE_GEMINI_PID	0x0003	/* NDI Emguide Gemini */
-+
- /*
-  * ChamSys Limited (www.chamsys.co.uk) USB wing/interface product IDs
-  */
++	if (!len)
++		return len;
+ 	l = min((int)len, OS_STRING_QW_SIGN_LEN >> 1);
+ 	if (page[l - 1] == '\n')
+ 		--l;
 
 
 
