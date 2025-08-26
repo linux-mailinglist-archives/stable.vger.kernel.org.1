@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-174243-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-174725-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id AEAD0B3622F
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 15:16:39 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 411EEB36490
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 15:39:59 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 99E588A4A2D
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 13:11:28 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 260FE8A1710
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 13:33:40 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1DF9E25DB0A;
-	Tue, 26 Aug 2025 13:11:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 43661303CA1;
+	Tue, 26 Aug 2025 13:32:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="tZY7/c53"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="MJzbS1C1"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BE1111AB52D;
-	Tue, 26 Aug 2025 13:11:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F354623D28F;
+	Tue, 26 Aug 2025 13:32:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756213872; cv=none; b=QudIo5HQrcepNiF/WShZURx7riQvt6JwhQwlRC2vNlALdW02/jY8oMjTLVg+n6jJDifzl/L1c7qxOS0C7/Vs91inZF5X3+v3DpJeXZFkRrk0KbVxorabdOOAkV0qrWUeBoscN8AtvKLrR0SmPnSPHXa1XJI0+4tKGwk6kZdqvn4=
+	t=1756215152; cv=none; b=uOI8JQhk2nl8H8VPxowNXlsWu6bt8ugRgovP//4AX5ZfmLGclelJsqK2aqfeXNftcntElaZoz61CmyqBjy054MDVjT3+F4Ok2Dl9MXF0NwYW0lbkas8uStQOyVeBJzPjyjYA2wB9QCPZND6bFnxFQ28D2N4afrF/F5cVevg1bmk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756213872; c=relaxed/simple;
-	bh=tQp+T0SY0TFimh2iGI2GSuf/oqBUoHYbZsAZVlR9FEA=;
+	s=arc-20240116; t=1756215152; c=relaxed/simple;
+	bh=nForrkN8dpaci9MifY2R+sZEdp86x+Lr98Pec2eedQA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=J+mno6vLTpRN7uwCsVaMSJaMk+P5yJO82o+39zKywnQQ2baI4qtkMADV6a2XebgProbsp4wB14Wdx+azrr7uguKMlMP8+bnruN8QmGOgs+WhGVxKFrRLCCkUXtl3i8UWx9bm0pta0ETeSznLd1K0lS+/MzMxnnR6RP/VPEw4q5Q=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=tZY7/c53; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 04BD4C4CEF1;
-	Tue, 26 Aug 2025 13:11:11 +0000 (UTC)
+	 MIME-Version; b=B95l+zEu1HHjpnxlqDkVnUSvLxdCP+JxQQvrZ62SVcbxNIwXbJo5lu7qfbRZsYwkph/2obA40ytftcylyziIjdzKjXuYaTCqm9r6p+EHxNFAvHmqcBlav73FeBWDhMo5+XuxOSzdD+Io1xxy1Ji22WqhGhuUt1e2SSaASqFWe6I=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=MJzbS1C1; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8B14CC4CEF1;
+	Tue, 26 Aug 2025 13:32:31 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1756213872;
-	bh=tQp+T0SY0TFimh2iGI2GSuf/oqBUoHYbZsAZVlR9FEA=;
+	s=korg; t=1756215151;
+	bh=nForrkN8dpaci9MifY2R+sZEdp86x+Lr98Pec2eedQA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=tZY7/c531HKlJdjoDkUvh3Wl/v+nEsFl2TFaHjZR/i3zkTT15Yda06l68zqG9jBU5
-	 8N2eLYfDm+nvtfbrN0xc/ERvtkPV1UzYsRzngnSKE5u7UpMw2GLodY1Biyjc859VTt
-	 pO1L4KOjGevycw3a42HV6KdBA7Sa7AyI6HFY3fDc=
+	b=MJzbS1C1s0VJpyMD6GWL6ryVGiymkpYY9bU+zoy+EQWfHdIvsWiC4EhBJZ9s8ytgk
+	 2Ce33MBkaCQQQ2meu1wKE5R+EWeROsz8+/s8qPNteEuVrjXyv96KCa4TGFE6MBUeqF
+	 it60srijOdcM1qLHzoP+CJn2waRgg0llfneVQSvs=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Christian Loehle <christian.loehle@arm.com>,
-	"Rafael J. Wysocki" <rafael.j.wysocki@intel.com>,
+	Ye Bin <yebin10@huawei.com>,
+	"Matthew Wilcox (Oracle)" <willy@infradead.org>,
+	Christian Brauner <brauner@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 510/587] cpuidle: menu: Remove iowait influence
+Subject: [PATCH 6.1 406/482] fs/buffer: fix use-after-free when call bh_read() helper
 Date: Tue, 26 Aug 2025 13:10:59 +0200
-Message-ID: <20250826111005.965704191@linuxfoundation.org>
+Message-ID: <20250826110940.859100559@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250826110952.942403671@linuxfoundation.org>
-References: <20250826110952.942403671@linuxfoundation.org>
+In-Reply-To: <20250826110930.769259449@linuxfoundation.org>
+References: <20250826110930.769259449@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,170 +63,101 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Christian Loehle <christian.loehle@arm.com>
+From: Ye Bin <yebin10@huawei.com>
 
-[ Upstream commit 38f83090f515b4b5d59382dfada1e7457f19aa47 ]
+[ Upstream commit 7375f22495e7cd1c5b3b5af9dcc4f6dffe34ce49 ]
 
-Remove CPU iowaiters influence on idle state selection.
+There's issue as follows:
+BUG: KASAN: stack-out-of-bounds in end_buffer_read_sync+0xe3/0x110
+Read of size 8 at addr ffffc9000168f7f8 by task swapper/3/0
+CPU: 3 UID: 0 PID: 0 Comm: swapper/3 Not tainted 6.16.0-862.14.0.6.x86_64
+Hardware name: QEMU Standard PC (i440FX + PIIX, 1996)
+Call Trace:
+ <IRQ>
+ dump_stack_lvl+0x55/0x70
+ print_address_description.constprop.0+0x2c/0x390
+ print_report+0xb4/0x270
+ kasan_report+0xb8/0xf0
+ end_buffer_read_sync+0xe3/0x110
+ end_bio_bh_io_sync+0x56/0x80
+ blk_update_request+0x30a/0x720
+ scsi_end_request+0x51/0x2b0
+ scsi_io_completion+0xe3/0x480
+ ? scsi_device_unbusy+0x11e/0x160
+ blk_complete_reqs+0x7b/0x90
+ handle_softirqs+0xef/0x370
+ irq_exit_rcu+0xa5/0xd0
+ sysvec_apic_timer_interrupt+0x6e/0x90
+ </IRQ>
 
-Remove the menu notion of performance multiplier which increased with
-the number of tasks that went to iowait sleep on this CPU and haven't
-woken up yet.
+ Above issue happens when do ntfs3 filesystem mount, issue may happens
+ as follows:
+           mount                            IRQ
+ntfs_fill_super
+  read_cache_page
+    do_read_cache_folio
+      filemap_read_folio
+        mpage_read_folio
+	 do_mpage_readpage
+	  ntfs_get_block_vbo
+	   bh_read
+	     submit_bh
+	     wait_on_buffer(bh);
+	                            blk_complete_reqs
+				     scsi_io_completion
+				      scsi_end_request
+				       blk_update_request
+				        end_bio_bh_io_sync
+					 end_buffer_read_sync
+					  __end_buffer_read_notouch
+					   unlock_buffer
 
-Relying on iowait for cpuidle is problematic for a few reasons:
+            wait_on_buffer(bh);--> return will return to caller
 
- 1. There is no guarantee that an iowaiting task will wake up on the
-    same CPU.
+					  put_bh
+					    --> trigger stack-out-of-bounds
+In the mpage_read_folio() function, the stack variable 'map_bh' is
+passed to ntfs_get_block_vbo(). Once unlock_buffer() unlocks and
+wait_on_buffer() returns to continue processing, the stack variable
+is likely to be reclaimed. Consequently, during the end_buffer_read_sync()
+process, calling put_bh() may result in stack overrun.
 
- 2. The task being in iowait says nothing about the idle duration, we
-    could be selecting shallower states for a long time.
+If the bh is not allocated on the stack, it belongs to a folio.  Freeing
+a buffer head which belongs to a folio is done by drop_buffers() which
+will fail to free buffers which are still locked.  So it is safe to call
+put_bh() before __end_buffer_read_notouch().
 
- 3. The task being in iowait doesn't always imply a performance hit
-    with increased latency.
-
- 4. If there is such a performance hit, the number of iowaiting tasks
-    doesn't directly correlate.
-
- 5. The definition of iowait altogether is vague at best, it is
-    sprinkled across kernel code.
-
-Signed-off-by: Christian Loehle <christian.loehle@arm.com>
-Link: https://patch.msgid.link/20240905092645.2885200-2-christian.loehle@arm.com
-[ rjw: Minor edits in the changelog ]
-Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
-Stable-dep-of: 779b1a1cb13a ("cpuidle: governors: menu: Avoid selecting states with too much latency")
+Fixes: 1da177e4c3f4 ("Linux-2.6.12-rc2")
+Signed-off-by: Ye Bin <yebin10@huawei.com>
+Link: https://lore.kernel.org/20250811141830.343774-1-yebin@huaweicloud.com
+Reviewed-by: Matthew Wilcox (Oracle) <willy@infradead.org>
+Signed-off-by: Christian Brauner <brauner@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/cpuidle/governors/menu.c |   52 ++++++---------------------------------
- 1 file changed, 9 insertions(+), 43 deletions(-)
+ fs/buffer.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/drivers/cpuidle/governors/menu.c
-+++ b/drivers/cpuidle/governors/menu.c
-@@ -21,7 +21,7 @@
- 
- #include "gov.h"
- 
--#define BUCKETS 12
-+#define BUCKETS 6
- #define INTERVAL_SHIFT 3
- #define INTERVALS (1UL << INTERVAL_SHIFT)
- #define RESOLUTION 1024
-@@ -31,12 +31,11 @@
- /*
-  * Concepts and ideas behind the menu governor
-  *
-- * For the menu governor, there are 3 decision factors for picking a C
-+ * For the menu governor, there are 2 decision factors for picking a C
-  * state:
-  * 1) Energy break even point
-- * 2) Performance impact
-- * 3) Latency tolerance (from pmqos infrastructure)
-- * These three factors are treated independently.
-+ * 2) Latency tolerance (from pmqos infrastructure)
-+ * These two factors are treated independently.
-  *
-  * Energy break even point
-  * -----------------------
-@@ -119,19 +118,10 @@ struct menu_device {
- 	int		interval_ptr;
- };
- 
--static inline int which_bucket(u64 duration_ns, unsigned int nr_iowaiters)
-+static inline int which_bucket(u64 duration_ns)
+diff --git a/fs/buffer.c b/fs/buffer.c
+index d9c6d1fbb6dd..3033a937e3a5 100644
+--- a/fs/buffer.c
++++ b/fs/buffer.c
+@@ -156,8 +156,8 @@ static void __end_buffer_read_notouch(struct buffer_head *bh, int uptodate)
+  */
+ void end_buffer_read_sync(struct buffer_head *bh, int uptodate)
  {
- 	int bucket = 0;
- 
--	/*
--	 * We keep two groups of stats; one with no
--	 * IO pending, one without.
--	 * This allows us to calculate
--	 * E(duration)|iowait
--	 */
--	if (nr_iowaiters)
--		bucket = BUCKETS/2;
--
- 	if (duration_ns < 10ULL * NSEC_PER_USEC)
- 		return bucket;
- 	if (duration_ns < 100ULL * NSEC_PER_USEC)
-@@ -145,19 +135,6 @@ static inline int which_bucket(u64 durat
- 	return bucket + 5;
+-	__end_buffer_read_notouch(bh, uptodate);
+ 	put_bh(bh);
++	__end_buffer_read_notouch(bh, uptodate);
  }
+ EXPORT_SYMBOL(end_buffer_read_sync);
  
--/*
-- * Return a multiplier for the exit latency that is intended
-- * to take performance requirements into account.
-- * The more performance critical we estimate the system
-- * to be, the higher this multiplier, and thus the higher
-- * the barrier to go to an expensive C state.
-- */
--static inline int performance_multiplier(unsigned int nr_iowaiters)
--{
--	/* for IO wait tasks (per cpu!) we add 10x each */
--	return 1 + 10 * nr_iowaiters;
--}
--
- static DEFINE_PER_CPU(struct menu_device, menu_devices);
- 
- static void menu_update_intervals(struct menu_device *data, unsigned int interval_us)
-@@ -284,8 +261,6 @@ static int menu_select(struct cpuidle_dr
- 	struct menu_device *data = this_cpu_ptr(&menu_devices);
- 	s64 latency_req = cpuidle_governor_latency_req(dev->cpu);
- 	u64 predicted_ns;
--	u64 interactivity_req;
--	unsigned int nr_iowaiters;
- 	ktime_t delta, delta_tick;
- 	int i, idx;
- 
-@@ -302,8 +277,6 @@ static int menu_select(struct cpuidle_dr
- 		menu_update_intervals(data, UINT_MAX);
- 	}
- 
--	nr_iowaiters = nr_iowait_cpu(dev->cpu);
--
- 	/* Find the shortest expected idle interval. */
- 	predicted_ns = get_typical_interval(data) * NSEC_PER_USEC;
- 	if (predicted_ns > RESIDENCY_THRESHOLD_NS) {
-@@ -317,7 +290,7 @@ static int menu_select(struct cpuidle_dr
- 		}
- 
- 		data->next_timer_ns = delta;
--		data->bucket = which_bucket(data->next_timer_ns, nr_iowaiters);
-+		data->bucket = which_bucket(data->next_timer_ns);
- 
- 		/* Round up the result for half microseconds. */
- 		timer_us = div_u64((RESOLUTION * DECAY * NSEC_PER_USEC) / 2 +
-@@ -335,7 +308,7 @@ static int menu_select(struct cpuidle_dr
- 		 */
- 		data->next_timer_ns = KTIME_MAX;
- 		delta_tick = TICK_NSEC / 2;
--		data->bucket = which_bucket(KTIME_MAX, nr_iowaiters);
-+		data->bucket = which_bucket(KTIME_MAX);
- 	}
- 
- 	if (unlikely(drv->state_count <= 1 || latency_req == 0) ||
-@@ -362,15 +335,8 @@ static int menu_select(struct cpuidle_dr
- 		 */
- 		if (predicted_ns < TICK_NSEC)
- 			predicted_ns = data->next_timer_ns;
--	} else {
--		/*
--		 * Use the performance multiplier and the user-configurable
--		 * latency_req to determine the maximum exit latency.
--		 */
--		interactivity_req = div64_u64(predicted_ns,
--					      performance_multiplier(nr_iowaiters));
--		if (latency_req > interactivity_req)
--			latency_req = interactivity_req;
-+	} else if (latency_req > predicted_ns) {
-+		latency_req = predicted_ns;
- 	}
- 
- 	/*
+-- 
+2.50.1
+
 
 
 
