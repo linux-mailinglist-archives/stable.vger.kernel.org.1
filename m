@@ -1,55 +1,57 @@
-Return-Path: <stable+bounces-175072-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-173946-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 20382B36589
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 15:48:53 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id B173AB36082
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 15:01:34 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 1280A7BF1C3
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 13:47:17 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 7D9A71BC1683
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 12:58:26 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0E1C734DCFD;
-	Tue, 26 Aug 2025 13:47:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id DA2781DD9D3;
+	Tue, 26 Aug 2025 12:58:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="t20tW9z2"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="heI1baF2"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BE050343218;
-	Tue, 26 Aug 2025 13:47:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9826C14A4DB;
+	Tue, 26 Aug 2025 12:58:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756216066; cv=none; b=uDC16ezXzbMSfXono6fnZF7de0cSM7M8H+tKZ92l2PdJsrfI/yDtsSbci7C1tc4sv9205xJ+anlKKAbLTqRdGyXaPvFu7EH7CZ/dQfqmxm6naAATa9lvbgW72za5X1FR9sKGtDEVaf7QkPxEsI+l5tkoq+V3mT84o/4tNy+bpck=
+	t=1756213082; cv=none; b=Fqqd5ev+rln5TOqJ/Vp4rSl0RZsN+bq3Nhb4ydel3JuOOqc+LFEJMvGXWHj5WZsf6wzXyZvtuN9Sn282X7WBQYXi8JSh4l2zz0B4hnRRtt4UlJG7XipzOItDev8lP3mXbZddbeBfSLcAL3nUyiyn8bT8PrzorW7eLRCRuFvuEQo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756216066; c=relaxed/simple;
-	bh=cMeG3YjRogxCwUwuC8Rs6jvq1cbva3v8szEOSiJuhGw=;
+	s=arc-20240116; t=1756213082; c=relaxed/simple;
+	bh=6r8QW3x51xuBI/JI5DLrFoi0AvRC6UKosWKvl5jQSfw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=PZU+sxYpQZK8iKatqKOmXJcJe21Sidx0Eq5xga+tCRFqgjtTzPHH0F2TdoCnhlGc7ohcd6XiJY4klmK+UuMLzSa2Mqd0QekwWMLyRCdzZaF1p4ilIDdSnRmEqxatzb4L272Rn0cZpIcjyhqp+n6IFyopV2RvkvTLNZAiGmr74MA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=t20tW9z2; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 43124C4CEF1;
-	Tue, 26 Aug 2025 13:47:46 +0000 (UTC)
+	 MIME-Version:Content-Type; b=pcscHhF1hOktgPZGumR23nDWuhT56G/3lTMHa6qaygCEUzF21OfCgXo86x09bn0P+mnfVnYYRGZBYnQ+MHLEwg6jkNWaqZY+HWdQUOQ1Fprh0BIjTGMcE2yffnK7Qr5uD/hPMP9BH2OQlJSMEUYK7p/v6+PzNzDGWLgTBBaUrGw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=heI1baF2; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D3547C4CEF1;
+	Tue, 26 Aug 2025 12:58:01 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1756216066;
-	bh=cMeG3YjRogxCwUwuC8Rs6jvq1cbva3v8szEOSiJuhGw=;
+	s=korg; t=1756213082;
+	bh=6r8QW3x51xuBI/JI5DLrFoi0AvRC6UKosWKvl5jQSfw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=t20tW9z2wkF0bw6vLgmzrSxqc4iF7aw4jrcFHUEcW13+SMOIWSTVfbJ/Niy5U7Caf
-	 7aHUEeuzUbLd3eXsS2djsgnWY5Pzx4+UCKY5Qf1Sw2cpQNyu98wGRkBfSqF4xSbDq7
-	 pUNsO/GUZ/5Sm6xnB5FH+98ENcsUBVm0h+Zet+ao=
+	b=heI1baF2Ekk+OaTU2K6RBsT4KsWE8ntIV30/RGCk4jaz6ajmk8wETJjhShx1GdeUT
+	 2n/VEwoG2Pernq0hXJHE1efepthQF5vEa49mO4UHXVaWurozIRjdUq9KogpCk1Xx3H
+	 vIUgx4Q7vWMFOj15OB330Kl0bzO4D1CRHgUQqzB4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jiayi Li <lijiayi@kylinos.cn>,
-	"Rafael J. Wysocki" <rafael.j.wysocki@intel.com>
-Subject: [PATCH 5.15 272/644] ACPI: processor: perflib: Fix initial _PPC limit application
+	Florian Fainelli <florian.fainelli@broadcom.com>,
+	=?UTF-8?q?=C3=81lvaro=20Fern=C3=A1ndez=20Rojas?= <noltari@gmail.com>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.6 214/587] net: dsa: b53: fix IP_MULTICAST_CTRL on BCM5325
 Date: Tue, 26 Aug 2025 13:06:03 +0200
-Message-ID: <20250826110953.110781008@linuxfoundation.org>
+Message-ID: <20250826110958.381052180@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250826110946.507083938@linuxfoundation.org>
-References: <20250826110946.507083938@linuxfoundation.org>
+In-Reply-To: <20250826110952.942403671@linuxfoundation.org>
+References: <20250826110952.942403671@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -59,87 +61,74 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jiayi Li <lijiayi@kylinos.cn>
+From: Álvaro Fernández Rojas <noltari@gmail.com>
 
-commit d33bd88ac0ebb49e7f7c8f29a8c7ee9eae85d765 upstream.
+[ Upstream commit 044d5ce2788b165798bfd173548e61bf7b6baf4d ]
 
-If the BIOS sets a _PPC frequency limit upfront, it will fail to take
-effect due to a call ordering issue.  Namely, freq_qos_update_request()
-is called before freq_qos_add_request() for the given request causing
-the constraint update to be ignored.  The call sequence in question is
-as follows:
+BCM5325 doesn't implement B53_UC_FWD_EN, B53_MC_FWD_EN or B53_IPMC_FWD_EN.
 
-cpufreq_policy_online()
-  acpi_cpufreq_cpu_init()
-    acpi_processor_register_performance()
-      acpi_processor_get_performance_info()
-        acpi_processor_get_platform_limit()
-         freq_qos_update_request(&perflib_req) <- inactive QoS request
-  blocking_notifier_call_chain(&cpufreq_policy_notifier_list,
-                               CPUFREQ_CREATE_POLICY)
-    acpi_processor_notifier()
-      acpi_processor_ppc_init()
-        freq_qos_add_request(&perflib_req) <- QoS request activation
-
-Address this by adding an acpi_processor_get_platform_limit() call
-to acpi_processor_ppc_init(), after the perflib_req activation via
-freq_qos_add_request(), which causes the initial _PPC limit to be
-picked up as appropriate.  However, also ensure that the _PPC limit
-will not be picked up in the cases when the cpufreq driver does not
-call acpi_processor_register_performance() by adding a pr->performance
-check to the related_cpus loop in acpi_processor_ppc_init().
-
-Fixes: d15ce412737a ("ACPI: cpufreq: Switch to QoS requests instead of cpufreq notifier")
-Signed-off-by: Jiayi Li <lijiayi@kylinos.cn>
-Link: https://patch.msgid.link/20250721032606.3459369-1-lijiayi@kylinos.cn
-[ rjw: Consolidate pr-related checks in acpi_processor_ppc_init() ]
-[ rjw: Subject and changelog adjustments ]
-Cc: 5.4+ <stable@vger.kernel.org> # 5.4+: 2d8b39a62a5d ACPI: processor: Avoid NULL pointer dereferences at init time
-Cc: 5.4+ <stable@vger.kernel.org> # 5.4+: 3000ce3c52f8 cpufreq: Use per-policy frequency QoS
-Cc: 5.4+ <stable@vger.kernel.org> # 5.4+: a1bb46c36ce3 ACPI: processor: Add QoS requests for all CPUs
-Cc: 5.4+ <stable@vger.kernel.org> # 5.4+
-Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Reviewed-by: Florian Fainelli <florian.fainelli@broadcom.com>
+Signed-off-by: Álvaro Fernández Rojas <noltari@gmail.com>
+Link: https://patch.msgid.link/20250614080000.1884236-9-noltari@gmail.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/acpi/processor_perflib.c |   10 +++++++++-
- 1 file changed, 9 insertions(+), 1 deletion(-)
+ drivers/net/dsa/b53/b53_common.c | 18 +++++++++++-------
+ drivers/net/dsa/b53/b53_regs.h   |  1 +
+ 2 files changed, 12 insertions(+), 7 deletions(-)
 
---- a/drivers/acpi/processor_perflib.c
-+++ b/drivers/acpi/processor_perflib.c
-@@ -173,11 +173,14 @@ void acpi_processor_ppc_init(struct cpuf
- {
- 	unsigned int cpu;
+diff --git a/drivers/net/dsa/b53/b53_common.c b/drivers/net/dsa/b53/b53_common.c
+index 6378e3f0f1fe..b00bac468677 100644
+--- a/drivers/net/dsa/b53/b53_common.c
++++ b/drivers/net/dsa/b53/b53_common.c
+@@ -344,14 +344,18 @@ static void b53_set_forwarding(struct b53_device *dev, int enable)
+ 		b53_read8(dev, B53_CTRL_PAGE, B53_SWITCH_CTRL, &mgmt);
+ 		mgmt |= B53_MII_DUMB_FWDG_EN;
+ 		b53_write8(dev, B53_CTRL_PAGE, B53_SWITCH_CTRL, mgmt);
+-	}
  
-+	if (ignore_ppc == 1)
-+		return;
-+
- 	for_each_cpu(cpu, policy->related_cpus) {
- 		struct acpi_processor *pr = per_cpu(processors, cpu);
- 		int ret;
- 
--		if (!pr)
-+		if (!pr || !pr->performance)
- 			continue;
- 
- 		/*
-@@ -193,6 +196,11 @@ void acpi_processor_ppc_init(struct cpuf
- 		if (ret < 0)
- 			pr_err("Failed to add freq constraint for CPU%d (%d)\n",
- 			       cpu, ret);
-+
-+		ret = acpi_processor_get_platform_limit(pr);
-+		if (ret)
-+			pr_err("Failed to update freq constraint for CPU%d (%d)\n",
-+			       cpu, ret);
- 	}
+-	/* Look at B53_UC_FWD_EN and B53_MC_FWD_EN to decide whether
+-	 * frames should be flooded or not.
+-	 */
+-	b53_read8(dev, B53_CTRL_PAGE, B53_IP_MULTICAST_CTRL, &mgmt);
+-	mgmt |= B53_UC_FWD_EN | B53_MC_FWD_EN | B53_IPMC_FWD_EN;
+-	b53_write8(dev, B53_CTRL_PAGE, B53_IP_MULTICAST_CTRL, mgmt);
++		/* Look at B53_UC_FWD_EN and B53_MC_FWD_EN to decide whether
++		 * frames should be flooded or not.
++		 */
++		b53_read8(dev, B53_CTRL_PAGE, B53_IP_MULTICAST_CTRL, &mgmt);
++		mgmt |= B53_UC_FWD_EN | B53_MC_FWD_EN | B53_IPMC_FWD_EN;
++		b53_write8(dev, B53_CTRL_PAGE, B53_IP_MULTICAST_CTRL, mgmt);
++	} else {
++		b53_read8(dev, B53_CTRL_PAGE, B53_IP_MULTICAST_CTRL, &mgmt);
++		mgmt |= B53_IP_MCAST_25;
++		b53_write8(dev, B53_CTRL_PAGE, B53_IP_MULTICAST_CTRL, mgmt);
++	}
  }
  
+ static void b53_enable_vlan(struct b53_device *dev, int port, bool enable,
+diff --git a/drivers/net/dsa/b53/b53_regs.h b/drivers/net/dsa/b53/b53_regs.h
+index 390290ddb1ea..3179fe58de6b 100644
+--- a/drivers/net/dsa/b53/b53_regs.h
++++ b/drivers/net/dsa/b53/b53_regs.h
+@@ -104,6 +104,7 @@
+ 
+ /* IP Multicast control (8 bit) */
+ #define B53_IP_MULTICAST_CTRL		0x21
++#define  B53_IP_MCAST_25		BIT(0)
+ #define  B53_IPMC_FWD_EN		BIT(1)
+ #define  B53_UC_FWD_EN			BIT(6)
+ #define  B53_MC_FWD_EN			BIT(7)
+-- 
+2.39.5
+
 
 
 
