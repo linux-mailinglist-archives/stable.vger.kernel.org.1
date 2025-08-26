@@ -1,57 +1,60 @@
-Return-Path: <stable+bounces-174291-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-173696-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 74222B36265
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 15:18:31 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7CA7FB35EA4
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 14:01:01 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id D4566188F356
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 13:15:37 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 10220560F2F
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 11:48:43 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D6BA7307AE8;
-	Tue, 26 Aug 2025 13:13:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 782632BD5AE;
+	Tue, 26 Aug 2025 11:48:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="mHeuztCB"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="mKXP9Nzg"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 94BE22FC008;
-	Tue, 26 Aug 2025 13:13:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0B53A284B5B;
+	Tue, 26 Aug 2025 11:48:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756214000; cv=none; b=NM3sfLdX6b5B8pRdwnVh9b48en3bsbFWYYW+NgdY2Gkjfz7wMCFaAjwEgLg4HC1q6r1FlrQn1ARbcy3qH/yWOb473i+zqKI5j7JKIvYmm/EB9Cdfab8r5ZrXWmZeUqyl3d2SHoKZc8BBFLJjoVSjcFeakQaPxPnlJgZZ4ASZAbU=
+	t=1756208919; cv=none; b=ouLs+/g8/GR1q25xelaCrYjx6HaX35VezDqkRRXvO0Ln4IGTrg6UM5ialjY72vnOicwsYcwiQmgRFr7ISw79xQ9JEdU+3EM+koMYey2yBQZm/kRGu9qsCcYsXht67hjzztZjIH4/dvUeDjmtXBaDIW+GIZnU8Gp4BVSpYkjJU7o=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756214000; c=relaxed/simple;
-	bh=ZF68WFhbV/N9jTABDhp/eUqfL8brNiyuGay/6dhPv0U=;
+	s=arc-20240116; t=1756208919; c=relaxed/simple;
+	bh=mgqUr5FCm8v0m8VuC5jqd29L3rQZyqOXb9+OdcGn2K0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=oVuNBvPr4vKWI69v03eGiXfdH76nL2YJdHXzRtx8xrro5Q6vbq9l5cs0619XgGUQKW0bxP5WkzhK0qCFFUJPQdZ2lHusVNOTlwaAmc8rSxMT7w3rjg3XDRrJkRbFVY79bnMMbsRTkSlydWSLq4GBP6+qYSoTWuFEF0pmpimgloU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=mHeuztCB; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D108AC4CEF1;
-	Tue, 26 Aug 2025 13:13:18 +0000 (UTC)
+	 MIME-Version; b=QFc8tKH/KfxsFHXqR3f8RXAqhz5Og8DZJUBkSsQg5NcuRlUcsYh67I9UbpUMYN+DzmJ8RXl191HxG8Yz2XpOQbPbQyJfoXWgLg+f/psFMP506Rjo2z/8gMwbR9Y4lloMmDt9I3ISeqwzQIMRPu3DFVLCBzJGpa079QqWcP7LyYs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=mKXP9Nzg; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8D2BDC4CEF1;
+	Tue, 26 Aug 2025 11:48:38 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1756213999;
-	bh=ZF68WFhbV/N9jTABDhp/eUqfL8brNiyuGay/6dhPv0U=;
+	s=korg; t=1756208918;
+	bh=mgqUr5FCm8v0m8VuC5jqd29L3rQZyqOXb9+OdcGn2K0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=mHeuztCBKGwVCd5oSF978TMvwrKqBEVQ6QZ4huc+F3lkCa355AUu7S55SQr9MkApk
-	 i4LorDg1Q6wjhyPcMdktnRlCvW/IpPj3KHsSqaHwiL2ahbzHId/ISWe/tRO8kQpbmK
-	 XViWnTzAiGwkN8ueOtNiQvlO0QR56rwRi1Dacnew=
+	b=mKXP9NzgaGuS1r/EodzUTtOI9qyZec79gJfUwk273T82I+V7I23VoCaQccB0nRkES
+	 SjPE6qo/1mblaWXDko7EaaxY8dMi7Z1yzZvzWoZEYl/dR2ZNQ0sDsOVF7SiUH9NA5n
+	 d2HyPOR4dw91ud23ADfzaRBoEoCfnrIPz5uQNL6M=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Sergey Shtylyov <s.shtylyov@omp.ru>,
-	Paul Menzel <pmenzel@molgen.mpg.de>,
-	Luiz Augusto von Dentz <luiz.von.dentz@intel.com>,
+	David Howells <dhowells@redhat.com>,
+	Steve French <sfrench@samba.org>,
+	Paulo Alcantara <pc@manguebit.org>,
+	linux-cifs@vger.kernel.org,
+	linux-fsdevel@vger.kernel.org,
+	Steve French <stfrench@microsoft.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 560/587] Bluetooth: hci_conn: do return error from hci_enhanced_setup_sync()
-Date: Tue, 26 Aug 2025 13:11:49 +0200
-Message-ID: <20250826111007.271239821@linuxfoundation.org>
+Subject: [PATCH 6.12 295/322] cifs: Fix oops due to uninitialised variable
+Date: Tue, 26 Aug 2025 13:11:50 +0200
+Message-ID: <20250826110923.186345837@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250826110952.942403671@linuxfoundation.org>
-References: <20250826110952.942403671@linuxfoundation.org>
+In-Reply-To: <20250826110915.169062587@linuxfoundation.org>
+References: <20250826110915.169062587@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,45 +66,44 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Sergey Shtylyov <s.shtylyov@omp.ru>
+From: David Howells <dhowells@redhat.com>
 
-[ Upstream commit 0eaf7c7e85da7495c0e03a99375707fc954f5e7b ]
+[ Upstream commit 453a6d2a68e54a483d67233c6e1e24c4095ee4be ]
 
-The commit e07a06b4eb41 ("Bluetooth: Convert SCO configure_datapath to
-hci_sync") missed to update the *return* statement under the *case* of
-BT_CODEC_TRANSPARENT in hci_enhanced_setup_sync(), which led to returning
-success (0) instead of the negative error code (-EINVAL).  However, the
-result of hci_enhanced_setup_sync() seems to be ignored anyway, since NULL
-gets passed to hci_cmd_sync_queue() as the last argument in that case and
-the only function interested in that result is specified by that argument.
+Fix smb3_init_transform_rq() to initialise buffer to NULL before calling
+netfs_alloc_folioq_buffer() as netfs assumes it can append to the buffer it
+is given.  Setting it to NULL means it should start a fresh buffer, but the
+value is currently undefined.
 
-Fixes: e07a06b4eb41 ("Bluetooth: Convert SCO configure_datapath to hci_sync")
-Signed-off-by: Sergey Shtylyov <s.shtylyov@omp.ru>
-Reviewed-by: Paul Menzel <pmenzel@molgen.mpg.de>
-Signed-off-by: Luiz Augusto von Dentz <luiz.von.dentz@intel.com>
+Fixes: a2906d3316fc ("cifs: Switch crypto buffer to use a folio_queue rather than an xarray")
+Signed-off-by: David Howells <dhowells@redhat.com>
+cc: Steve French <sfrench@samba.org>
+cc: Paulo Alcantara <pc@manguebit.org>
+cc: linux-cifs@vger.kernel.org
+cc: linux-fsdevel@vger.kernel.org
+Signed-off-by: Steve French <stfrench@microsoft.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/bluetooth/hci_conn.c | 3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+ fs/smb/client/smb2ops.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/net/bluetooth/hci_conn.c b/net/bluetooth/hci_conn.c
-index 549ee9e87d63..ff9d2520ba74 100644
---- a/net/bluetooth/hci_conn.c
-+++ b/net/bluetooth/hci_conn.c
-@@ -339,7 +339,8 @@ static int hci_enhanced_setup_sync(struct hci_dev *hdev, void *data)
- 	case BT_CODEC_TRANSPARENT:
- 		if (!find_next_esco_param(conn, esco_param_msbc,
- 					  ARRAY_SIZE(esco_param_msbc)))
--			return false;
-+			return -EINVAL;
-+
- 		param = &esco_param_msbc[conn->attempt - 1];
- 		cp.tx_coding_format.id = 0x03;
- 		cp.rx_coding_format.id = 0x03;
+diff --git a/fs/smb/client/smb2ops.c b/fs/smb/client/smb2ops.c
+index 4bababee965a..ab911a967246 100644
+--- a/fs/smb/client/smb2ops.c
++++ b/fs/smb/client/smb2ops.c
+@@ -4522,7 +4522,7 @@ smb3_init_transform_rq(struct TCP_Server_Info *server, int num_rqst,
+ 	for (int i = 1; i < num_rqst; i++) {
+ 		struct smb_rqst *old = &old_rq[i - 1];
+ 		struct smb_rqst *new = &new_rq[i];
+-		struct folio_queue *buffer;
++		struct folio_queue *buffer = NULL;
+ 		size_t size = iov_iter_count(&old->rq_iter);
+ 
+ 		orig_len += smb_rqst_len(server, old);
 -- 
 2.50.1
 
