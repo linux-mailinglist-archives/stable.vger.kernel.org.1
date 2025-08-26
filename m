@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-173652-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-176313-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id B6794B35DCD
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 13:48:12 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 76A52B36BC1
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 16:48:37 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id AC05F7C6FD6
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 11:47:20 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 9902C7BC360
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 14:44:16 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 081173277A4;
-	Tue, 26 Aug 2025 11:46:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 34DC6362093;
+	Tue, 26 Aug 2025 14:42:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ouIkcyMR"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="DzEyd103"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B1A833093AB;
-	Tue, 26 Aug 2025 11:46:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DBF2335E4CE;
+	Tue, 26 Aug 2025 14:42:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756208803; cv=none; b=GfEtTsjOw0R7s/gVJYcPTJl6fLhbAOCEgpd79F3lQtNP4gCNNPFcJ62LGwS5YR8PVZcqAzCwHIiSQrra4MxQCZ1QPjyXLrg/xROVj44I4+RoZwpnNnHOcBBQQJjmhszqRfx6mc8/UQwTqEq1YTTg6lDNbMQECX3VmJuVvElbE+A=
+	t=1756219334; cv=none; b=d+H3U0UrlAEOn54eVAJcPt3px6xuS5ng9CmoozEuZ47A86v+UCjyLc1xFipJA4NOZcH4v5M7JbFJ7Xsxmd0kIxMC4neko8rU9Dn591BTybD//QIOjQ445f2CedutcVMzA4URuHQ6eKuVWZDlrLxtBp4yeBElp65sKOKjgnGJXyI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756208803; c=relaxed/simple;
-	bh=hkK0Ygknl+5DZHp72qhEC1iavKW2WHHaKGnAxRcc3HA=;
+	s=arc-20240116; t=1756219334; c=relaxed/simple;
+	bh=t/H+P/jlFO6/1yK+LmmXQYDB4K9ipTVvyV9XEt/0I0I=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=OarcnzbqndxDo5UUXAS9CSGtoqy5e4kmCBOYYOuYiRvbNTpfjf8gOCTKB4LNnJZ+lpnPnF+3cMpaCc5zHLrBR/oS0P64hcDG/5MWK56sDLzJmRfcyVfgboQItGH9aKKLHmE9tCNDzAbpj4e1f7IIcIU8htO733sIfHdU4KtEtYQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ouIkcyMR; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3B824C4CEF1;
-	Tue, 26 Aug 2025 11:46:43 +0000 (UTC)
+	 MIME-Version; b=Bi9+Nb6XD754UXEmcq0Kz0MBUcwplFcFbRHvtn6Lq1jIApCWRZi3Qx4uMbTeN448xjcJMb8PiYPXSOQrLHN0KWkgYtG4ecH4EIBtxvxYof6KM3Pox/f48rp7hrtzIUT8ALBtoNA9/lLjdNHMaWL6uIzChLrnrty98uae2GG29JE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=DzEyd103; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6F9D8C4CEF1;
+	Tue, 26 Aug 2025 14:42:13 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1756208803;
-	bh=hkK0Ygknl+5DZHp72qhEC1iavKW2WHHaKGnAxRcc3HA=;
+	s=korg; t=1756219333;
+	bh=t/H+P/jlFO6/1yK+LmmXQYDB4K9ipTVvyV9XEt/0I0I=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=ouIkcyMRBYoDRBOgBFM/9pb5c50OqNExNnbIZsnsv5Ms4b/TgZ1rb3DWz0gm/9GCk
-	 fYIL5h0UzdaRwbhVkXh8iUlDj9N+PepE93BnMvDcVO+VwalQVz9Pf8r7HqX8xu2Clf
-	 8Dx65EZ2o2r9QCc1c+1eRPir/xTcldhkswZAtiP4=
+	b=DzEyd1030d59Do1pLlQ3ocwayLID66jLb9N+NeyeAZ7JsuoSfsLAS5z+TQUPo2Z3O
+	 11H9sShhOEjhnmgjn1JT6wcmCcL2B8rnyLuOLNXN6G+gOidUZebSeCmnBnIuESsbDr
+	 Fmvp4kUtWW90u4GMMvvPUcWhPZw+n4v4DgrPtMf4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Stefan Wahren <wahrenst@gmx.net>,
-	Mark Brown <broonie@kernel.org>,
+	Yazen Ghannam <yazen.ghannam@amd.com>,
+	"Borislav Petkov (AMD)" <bp@alien8.de>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 252/322] spi: spi-fsl-lpspi: Clamp too high speed_hz
+Subject: [PATCH 5.4 341/403] x86/mce/amd: Add default names for MCA banks and blocks
 Date: Tue, 26 Aug 2025 13:11:07 +0200
-Message-ID: <20250826110922.154198801@linuxfoundation.org>
+Message-ID: <20250826110916.278570524@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250826110915.169062587@linuxfoundation.org>
-References: <20250826110915.169062587@linuxfoundation.org>
+In-Reply-To: <20250826110905.607690791@linuxfoundation.org>
+References: <20250826110905.607690791@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,55 +62,64 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+5.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Stefan Wahren <wahrenst@gmx.net>
+From: Yazen Ghannam <yazen.ghannam@amd.com>
 
-[ Upstream commit af357a6a3b7d685e7aa621c6fb1d4ed6c349ec9e ]
+[ Upstream commit d66e1e90b16055d2f0ee76e5384e3f119c3c2773 ]
 
-Currently the driver is not able to handle the case that a SPI device
-specifies a higher spi-max-frequency than half of per-clk:
+Ensure that sysfs init doesn't fail for new/unrecognized bank types or if
+a bank has additional blocks available.
 
-    per-clk should be at least two times of transfer speed
+Most MCA banks have a single thresholding block, so the block takes the same
+name as the bank.
 
-Fix this by clamping to the max possible value and use the minimum SCK
-period of 2 cycles.
+Unified Memory Controllers (UMCs) are a special case where there are two
+blocks and each has a unique name.
 
-Fixes: 77736a98b859 ("spi: lpspi: add the error info of transfer speed setting")
-Signed-off-by: Stefan Wahren <wahrenst@gmx.net>
-Link: https://patch.msgid.link/20250807100742.9917-1-wahrenst@gmx.net
-Signed-off-by: Mark Brown <broonie@kernel.org>
+However, the microarchitecture allows for five blocks. Any new MCA bank types
+with more than one block will be missing names for the extra blocks. The MCE
+sysfs will fail to initialize in this case.
+
+Fixes: 87a6d4091bd7 ("x86/mce/AMD: Update sysfs bank names for SMCA systems")
+Signed-off-by: Yazen Ghannam <yazen.ghannam@amd.com>
+Signed-off-by: Borislav Petkov (AMD) <bp@alien8.de>
+Cc: stable@vger.kernel.org
+Link: https://lore.kernel.org/20250624-wip-mca-updates-v4-3-236dd74f645f@amd.com
 Signed-off-by: Sasha Levin <sashal@kernel.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/spi/spi-fsl-lpspi.c | 8 +++-----
- 1 file changed, 3 insertions(+), 5 deletions(-)
+ arch/x86/kernel/cpu/mce/amd.c |   13 ++++++++++---
+ 1 file changed, 10 insertions(+), 3 deletions(-)
 
-diff --git a/drivers/spi/spi-fsl-lpspi.c b/drivers/spi/spi-fsl-lpspi.c
-index 29b9676fe43d..f8cacb9c7408 100644
---- a/drivers/spi/spi-fsl-lpspi.c
-+++ b/drivers/spi/spi-fsl-lpspi.c
-@@ -330,13 +330,11 @@ static int fsl_lpspi_set_bitrate(struct fsl_lpspi_data *fsl_lpspi)
+--- a/arch/x86/kernel/cpu/mce/amd.c
++++ b/arch/x86/kernel/cpu/mce/amd.c
+@@ -1180,13 +1180,20 @@ static const char *get_name(unsigned int
  	}
  
- 	if (config.speed_hz > perclk_rate / 2) {
--		dev_err(fsl_lpspi->dev,
--		      "per-clk should be at least two times of transfer speed");
--		return -EINVAL;
-+		div = 2;
-+	} else {
-+		div = DIV_ROUND_UP(perclk_rate, config.speed_hz);
+ 	bank_type = smca_get_bank_type(bank);
+-	if (bank_type >= N_SMCA_BANK_TYPES)
+-		return NULL;
+ 
+ 	if (b && bank_type == SMCA_UMC) {
+ 		if (b->block < ARRAY_SIZE(smca_umc_block_names))
+ 			return smca_umc_block_names[b->block];
+-		return NULL;
++	}
++
++	if (b && b->block) {
++		snprintf(buf_mcatype, MAX_MCATYPE_NAME_LEN, "th_block_%u", b->block);
++		return buf_mcatype;
++	}
++
++	if (bank_type >= N_SMCA_BANK_TYPES) {
++		snprintf(buf_mcatype, MAX_MCATYPE_NAME_LEN, "th_bank_%u", bank);
++		return buf_mcatype;
  	}
  
--	div = DIV_ROUND_UP(perclk_rate, config.speed_hz);
--
- 	for (prescale = 0; prescale <= prescale_max; prescale++) {
- 		scldiv = div / (1 << prescale) - 2;
- 		if (scldiv >= 0 && scldiv < 256) {
--- 
-2.50.1
-
+ 	if (smca_banks[bank].hwid->count == 1)
 
 
 
