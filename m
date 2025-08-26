@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-174994-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-173835-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 470A2B36680
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 15:57:53 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id AE864B36007
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 14:56:23 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 00E9F5680A4
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 13:44:45 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id BA42B1BA5FE1
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 12:54:36 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A69BA343218;
-	Tue, 26 Aug 2025 13:44:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 23648225795;
+	Tue, 26 Aug 2025 12:53:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="AA4Wc+BO"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="L9sn7nqh"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6413526B747;
-	Tue, 26 Aug 2025 13:44:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D2EEF189BB0;
+	Tue, 26 Aug 2025 12:53:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756215860; cv=none; b=jKPEYnT36dWrYjKh2njSNNdmrcRwMcSjqU2dB1WhVszhqoeFkMMLGKNZbhhAOx5EfwYNOxI/HafyTtUz4stV867iRzOE5rayYafQihrcKqKrbu8HD2zMedwgn1rucL26O1YklwLvxxc21F7fi5obz2dFr5nzGPLNaF4ZfVeSuU8=
+	t=1756212790; cv=none; b=qWjvGdwuoovU/YenM/fk1rwGEvquR/63qJfXzluop7ckGM9eYBP8wLLsZwelUT5FqZWuj7Ss1YIPU8CJoFnAD5ntrUWgXyBNMMtXi1ETCV7UCYKl+Re+0/GQVRRkJ1v5uU7gUbjFNsj6s1WSg7wpyhD4lO7UpqEOzfjtwT/5LiA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756215860; c=relaxed/simple;
-	bh=mkrg6r/j2XawwhfTvqAFeU5g0V0/BMVIlUDK9it6pJ0=;
+	s=arc-20240116; t=1756212790; c=relaxed/simple;
+	bh=qr6uKAxZ/cEz8khLBBuxOzCE3owDnYXDOAj1BDYI9Dw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=OzkOPPLvQTcGNVjjUFqZZb5j/yImvavY0Gi0I8eME+Vkbc7PzgvDrgDBJqu6NuP3E9rSBU4ryut/oekCmkGlCaVx5uALObOluRRrsHmcIEmZWtompaf/pnNuNJb7xu4W5RPCgFc5XBM7s7oJ5ayCF4Bu1gP7n1AXQvm73r6Qv8s=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=AA4Wc+BO; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id EAF7DC4CEF1;
-	Tue, 26 Aug 2025 13:44:19 +0000 (UTC)
+	 MIME-Version; b=avRlERr2Z1wZ6yvP/kubzdOIjzmjbsWaiSY8kqJk5z1ilJGHakNIPElaz6KkRRZLMUykOBcxfnj1IdNoCg8zZPr4TR2PxOsv5eKFpTo9I7iPtKklF2vLgaTwIvIg7aVAgZUrcazCCVCUDJ7H19OuPFnV07mgmR/mie3C3/7dHts=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=L9sn7nqh; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 61BFFC4CEF1;
+	Tue, 26 Aug 2025 12:53:10 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1756215860;
-	bh=mkrg6r/j2XawwhfTvqAFeU5g0V0/BMVIlUDK9it6pJ0=;
+	s=korg; t=1756212790;
+	bh=qr6uKAxZ/cEz8khLBBuxOzCE3owDnYXDOAj1BDYI9Dw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=AA4Wc+BOaD4vc2ucA3Z9dC2/LI25h+druVIzttaGlWGt0MXdn+MDON/QS8vkkTNas
-	 U7/RtUiCMvfKwnABZuep32x+WyqGSMJqNvMS6yFbIJQv/D3W/H3OGS8J+vWsZgFHqU
-	 llRPSspjXgRyw81TqFJiG7wxvAKans2qX7Vug8kg=
+	b=L9sn7nqhRRHP1bZGciSsRUF8RFC9aUm08rNL31zndD1bHgHWR4sw/hUlv3OE7IoTd
+	 2HKJWUapxxROMuj+IvtWGAeC3afRe6RxdZ83/Z/nFXfCxpMLd9g2hOlkMwcSGK2abh
+	 UoLYNCVT2/HmM5F1xJiP7YQKibtDBMgcOE55AO44=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	syzbot+4ff165b9251e4d295690@syzkaller.appspotmail.com,
-	Florian Westphal <fw@strlen.de>,
-	Pablo Neira Ayuso <pablo@netfilter.org>,
+	Aaron Kling <webgeek1234@gmail.com>,
+	Thierry Reding <treding@nvidia.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 162/644] netfilter: xt_nfacct: dont assume acct name is null-terminated
+Subject: [PATCH 6.6 104/587] ARM: tegra: Use I/O memcpy to write to IRAM
 Date: Tue, 26 Aug 2025 13:04:13 +0200
-Message-ID: <20250826110950.492207757@linuxfoundation.org>
+Message-ID: <20250826110955.586180310@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250826110946.507083938@linuxfoundation.org>
-References: <20250826110946.507083938@linuxfoundation.org>
+In-Reply-To: <20250826110952.942403671@linuxfoundation.org>
+References: <20250826110952.942403671@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,52 +62,38 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Florian Westphal <fw@strlen.de>
+From: Aaron Kling <webgeek1234@gmail.com>
 
-[ Upstream commit bf58e667af7d96c8eb9411f926a0a0955f41ce21 ]
+[ Upstream commit 398e67e0f5ae04b29bcc9cbf342e339fe9d3f6f1 ]
 
-BUG: KASAN: slab-out-of-bounds in .. lib/vsprintf.c:721
-Read of size 1 at addr ffff88801eac95c8 by task syz-executor183/5851
-[..]
- string+0x231/0x2b0 lib/vsprintf.c:721
- vsnprintf+0x739/0xf00 lib/vsprintf.c:2874
- [..]
- nfacct_mt_checkentry+0xd2/0xe0 net/netfilter/xt_nfacct.c:41
- xt_check_match+0x3d1/0xab0 net/netfilter/x_tables.c:523
+Kasan crashes the kernel trying to check boundaries when using the
+normal memcpy.
 
-nfnl_acct_find_get() handles non-null input, but the error
-printk relied on its presence.
-
-Reported-by: syzbot+4ff165b9251e4d295690@syzkaller.appspotmail.com
-Closes: https://syzkaller.appspot.com/bug?extid=4ff165b9251e4d295690
-Tested-by: syzbot+4ff165b9251e4d295690@syzkaller.appspotmail.com
-Fixes: ceb98d03eac5 ("netfilter: xtables: add nfacct match to support extended accounting")
-Signed-off-by: Florian Westphal <fw@strlen.de>
-Signed-off-by: Pablo Neira Ayuso <pablo@netfilter.org>
+Signed-off-by: Aaron Kling <webgeek1234@gmail.com>
+Link: https://lore.kernel.org/r/20250522-mach-tegra-kasan-v1-1-419041b8addb@gmail.com
+Signed-off-by: Thierry Reding <treding@nvidia.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/netfilter/xt_nfacct.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ arch/arm/mach-tegra/reset.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/net/netfilter/xt_nfacct.c b/net/netfilter/xt_nfacct.c
-index 7c6bf1c16813..0ca1cdfc4095 100644
---- a/net/netfilter/xt_nfacct.c
-+++ b/net/netfilter/xt_nfacct.c
-@@ -38,8 +38,8 @@ nfacct_mt_checkentry(const struct xt_mtchk_param *par)
+diff --git a/arch/arm/mach-tegra/reset.c b/arch/arm/mach-tegra/reset.c
+index d5c805adf7a8..ea706fac6358 100644
+--- a/arch/arm/mach-tegra/reset.c
++++ b/arch/arm/mach-tegra/reset.c
+@@ -63,7 +63,7 @@ static void __init tegra_cpu_reset_handler_enable(void)
+ 	BUG_ON(is_enabled);
+ 	BUG_ON(tegra_cpu_reset_handler_size > TEGRA_IRAM_RESET_HANDLER_SIZE);
  
- 	nfacct = nfnl_acct_find_get(par->net, info->name);
- 	if (nfacct == NULL) {
--		pr_info_ratelimited("accounting object `%s' does not exists\n",
--				    info->name);
-+		pr_info_ratelimited("accounting object `%.*s' does not exist\n",
-+				    NFACCT_NAME_MAX, info->name);
- 		return -ENOENT;
- 	}
- 	info->nfacct = nfacct;
+-	memcpy(iram_base, (void *)__tegra_cpu_reset_handler_start,
++	memcpy_toio(iram_base, (void *)__tegra_cpu_reset_handler_start,
+ 			tegra_cpu_reset_handler_size);
+ 
+ 	err = call_firmware_op(set_cpu_boot_addr, 0, reset_address);
 -- 
 2.39.5
 
