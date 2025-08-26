@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-175522-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-173873-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 21C15B3695E
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 16:26:07 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 7B607B3603A
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 14:58:38 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id D5329981F8F
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 14:09:15 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 17D163B9C22
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 12:55:47 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C61C61DE8BE;
-	Tue, 26 Aug 2025 14:07:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A9BF821D3EA;
+	Tue, 26 Aug 2025 12:54:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="hQ2a6A2R"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="WpilGxLL"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 840A9343D63;
-	Tue, 26 Aug 2025 14:07:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 67226214813;
+	Tue, 26 Aug 2025 12:54:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756217266; cv=none; b=KlaiBlanw+fva5Q6JRQgQaFEJvMQCz+IXrHCYANoeBD0GbTLCBhf57GcZhwhm63hwcxuc2KP/lsfQpt+skIQvyb3oZbA3hL/k6wm4/AayijcK6N4dshhOVMXXLfPhLFotNXZ24KU+oMiybCd+CxGvLO5QYj0V2jiIAlDHe6BWfQ=
+	t=1756212891; cv=none; b=Im0S2BjSDT1X2O07mZeQCh1oAT1V3jnrAxS5qMIqgSvlU1o1zWm4kJL8vTytnESlTSBwnxhEYymyfv3oa9HDj98RbarZp5gLsEyhvq1wX22rgvcNilAZphKGpkKunV50XKdNWAhyoCVDaotuDbhNt32DmfDv2NFu+2+7qkZG7b8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756217266; c=relaxed/simple;
-	bh=GAzUYi3HOpu1X6Hyeh70oMk1L5/t0tJqcieAouwoP2s=;
+	s=arc-20240116; t=1756212891; c=relaxed/simple;
+	bh=F1dgpP8beS5l7TGwGeOF9OrzDVOiC8jNz7SolQ7dm4M=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=LnkyEVvU8W0ih2h/XZnetyoAtelgZm4lVsF7Wfg70Se7qw9UnoiHXQD8Q45zUj/Tm8dUBmC9c2y6N3FjqVGvcLY+9RmLrQO097P4vEjkSUI7V2kNCBkZpj3NoyOo+WAE5rZiJ2sFDcWqG5itBAuWXqBy5xewY1xG0O8CvD/BNfM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=hQ2a6A2R; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B4CECC113D0;
-	Tue, 26 Aug 2025 14:07:45 +0000 (UTC)
+	 MIME-Version; b=l0r3ig28mG2jLDMQuFNP3Sae/NEOZxmwFBXVAHKH3pRX3wAVtBanpZkx1X7wycALGSaCkN4jrMBPyi/TC69vVJq+TNjDf9Pv+a9LpD15oqAloLyBDGvQgR/R047wtGymP+Xna4kG/kjlqhgwdVlG+loeY/6Q6qLVGAbNhIFAd+M=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=WpilGxLL; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E8C2BC4CEF4;
+	Tue, 26 Aug 2025 12:54:50 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1756217266;
-	bh=GAzUYi3HOpu1X6Hyeh70oMk1L5/t0tJqcieAouwoP2s=;
+	s=korg; t=1756212891;
+	bh=F1dgpP8beS5l7TGwGeOF9OrzDVOiC8jNz7SolQ7dm4M=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=hQ2a6A2R+9HiS63gJWBxnBCAhab1+9kmESNOOjbv+/5MUg+dlIVdTtG6Me5n31TQr
-	 igmY3p1vegE7HEejejU4My9X8hpNmHOQXD3KZ1qEzIRiIFxES/qd+rUI4A7kD/KUCw
-	 XuWNr6vxDxPsppDdOCMmaehoKIH7UMyEBBq7kxXA=
+	b=WpilGxLLQaPe1vIl29mQU6/DEcY2z7X+CtGVCM621ykFoOWUUlDG+H1pnAXsq1zZU
+	 I7E1pfo4cISW+sOMlhoUblMmBR75xpcSvKh51Zsl2xRpE4HcthNnb3BoNzyJvdp+1s
+	 ShAlpbqKLkNXiqxPxweKY3JwxNZGFnTR+E7lPiFU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	=?UTF-8?q?Giedrius=20Trainavi=C4=8Dius?= <giedrius@blokas.io>,
-	Kuninori Morimoto <kuninori.morimoto.gx@renesas.com>,
-	Mark Brown <broonie@kernel.org>,
+	Anthoine Bourgeois <anthoine.bourgeois@vates.tech>,
+	Juergen Gross <jgross@suse.com>,
+	Elliott Mitchell <ehem+xen@m5p.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 079/523] ASoC: soc-dai: tidyup return value of snd_soc_xlate_tdm_slot_mask()
-Date: Tue, 26 Aug 2025 13:04:49 +0200
-Message-ID: <20250826110926.515355919@linuxfoundation.org>
+Subject: [PATCH 6.6 141/587] xen/netfront: Fix TX response spurious interrupts
+Date: Tue, 26 Aug 2025 13:04:50 +0200
+Message-ID: <20250826110956.539980125@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250826110924.562212281@linuxfoundation.org>
-References: <20250826110924.562212281@linuxfoundation.org>
+In-Reply-To: <20250826110952.942403671@linuxfoundation.org>
+References: <20250826110952.942403671@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,90 +61,112 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Kuninori Morimoto <kuninori.morimoto.gx@renesas.com>
+From: Anthoine Bourgeois <anthoine.bourgeois@vates.tech>
 
-[ Upstream commit f4c77d5af0a9cd0ee22617baa8b49d0e151fbda7 ]
+[ Upstream commit 114a2de6fa86d99ed9546cc9113a3cad58beef79 ]
 
-commit 7f1186a8d738661 ("ASoC: soc-dai: check return value at
-snd_soc_dai_set_tdm_slot()") checks return value of
-xlate_tdm_slot_mask() (A1)(A2).
+We found at Vates that there are lot of spurious interrupts when
+benchmarking the xen-net PV driver frontend. This issue appeared with a
+patch that addresses security issue XSA-391 (b27d47950e48 "xen/netfront:
+harden netfront against event channel storms"). On an iperf benchmark,
+spurious interrupts can represent up to 50% of the interrupts.
 
-	/*
-	 * ...
-(Y)	 * TDM mode can be disabled by passing 0 for @slots. In this case @tx_mask,
-	 * @rx_mask and @slot_width will be ignored.
-	 * ...
-	 */
-	int snd_soc_dai_set_tdm_slot(...)
-	{
-		...
-		if (...)
-(A1)			ret = dai->driver->ops->xlate_tdm_slot_mask(...);
-		else
-(A2)			ret = snd_soc_xlate_tdm_slot_mask(...);
-		if (ret)
-			goto err;
-		...
-	}
+Spurious interrupts are interrupts that are rised for nothing, there is
+no work to do. This appends because the function that handles the
+interrupts ("xennet_tx_buf_gc") is also called at the end of the request
+path to garbage collect the responses received during the transmission
+load.
 
-snd_soc_xlate_tdm_slot_mask() (A2) will return -EINVAL if slots was 0 (X),
-but snd_soc_dai_set_tdm_slot() allow to use it (Y).
+The request path is doing the work that the interrupt handler should
+have done otherwise. This is particurary true when there is more than
+one vcpu and get worse linearly with the number of vcpu/queue.
 
-(A)	static int snd_soc_xlate_tdm_slot_mask(...)
-	{
-		...
-		if (!slots)
-(X)			return -EINVAL;
-		...
-	}
+Moreover, this problem is amplifyed by the penalty imposed by a spurious
+interrupt. When an interrupt is found spurious the interrupt chip will
+delay the EOI to slowdown the backend. This delay will allow more
+responses to be handled by the request path and then there will be more
+chance the next interrupt will not find any work to do, creating a new
+spurious interrupt.
 
-Call xlate_tdm_slot_mask() only if slots was non zero.
+This causes performance issue. The solution here is to remove the calls
+from the request path and let the interrupt handler do the processing of
+the responses. This approch removes most of the spurious interrupts
+(<0.05%) and also has the benefit of freeing up cycles in the request
+path, allowing it to process more work, which improves performance
+compared to masking the spurious interrupt one way or another.
 
-Reported-by: Giedrius Trainavičius <giedrius@blokas.io>
-Closes: https://lore.kernel.org/r/CAMONXLtSL7iKyvH6w=CzPTxQdBECf++hn8RKL6Y4=M_ou2YHow@mail.gmail.com
-Fixes: 7f1186a8d738661 ("ASoC: soc-dai: check return value at snd_soc_dai_set_tdm_slot()")
-Signed-off-by: Kuninori Morimoto <kuninori.morimoto.gx@renesas.com>
-Link: https://patch.msgid.link/8734cdfx59.wl-kuninori.morimoto.gx@renesas.com
-Signed-off-by: Mark Brown <broonie@kernel.org>
+This optimization changes a part of the code that is present since the
+net frontend driver was upstreamed. There is no similar pattern in the
+other xen PV drivers. Since the first commit of xen-netfront is a blob
+that doesn't explain all the design choices I can only guess why this
+specific mecanism was here. This could have been introduce to compensate
+a slow backend at the time (maybe the backend was fixed or optimize
+later) or a small queue. In 18 years, both frontend and backend gain lot
+of features and optimizations that could have obsolete the feature of
+reaping completions from the TX path.
+
+Some vif throughput performance figures from a 8 vCPUs, 4GB of RAM HVM
+guest(s):
+
+Without this patch on the :
+vm -> dom0: 4.5Gb/s
+vm -> vm:   7.0Gb/s
+
+Without XSA-391 patch (revert of b27d47950e48):
+vm -> dom0: 8.3Gb/s
+vm -> vm:   8.7Gb/s
+
+With XSA-391 and this patch:
+vm -> dom0: 11.5Gb/s
+vm -> vm:   12.6Gb/s
+
+v2:
+- add revewed and tested by tags
+- resend with the maintainers in the recipients list
+
+v3:
+- remove Fixes tag but keep the commit ref in the explanation
+- add a paragraph on why this code was here
+
+Signed-off-by: Anthoine Bourgeois <anthoine.bourgeois@vates.tech>
+Reviewed-by: Juergen Gross <jgross@suse.com>
+Tested-by: Elliott Mitchell <ehem+xen@m5p.com>
+Signed-off-by: Juergen Gross <jgross@suse.com>
+Message-ID: <20250721093316.23560-1-anthoine.bourgeois@vates.tech>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- sound/soc/soc-dai.c | 16 +++++++++-------
- 1 file changed, 9 insertions(+), 7 deletions(-)
+ drivers/net/xen-netfront.c | 5 -----
+ 1 file changed, 5 deletions(-)
 
-diff --git a/sound/soc/soc-dai.c b/sound/soc/soc-dai.c
-index f9aba413e495..e2db2ad219b8 100644
---- a/sound/soc/soc-dai.c
-+++ b/sound/soc/soc-dai.c
-@@ -206,13 +206,15 @@ int snd_soc_dai_set_tdm_slot(struct snd_soc_dai *dai,
- {
- 	int ret = -ENOTSUPP;
+diff --git a/drivers/net/xen-netfront.c b/drivers/net/xen-netfront.c
+index 0115f8f5b724..5b59c0ee6c66 100644
+--- a/drivers/net/xen-netfront.c
++++ b/drivers/net/xen-netfront.c
+@@ -637,8 +637,6 @@ static int xennet_xdp_xmit_one(struct net_device *dev,
+ 	tx_stats->packets++;
+ 	u64_stats_update_end(&tx_stats->syncp);
  
--	if (dai->driver->ops &&
--	    dai->driver->ops->xlate_tdm_slot_mask)
--		ret = dai->driver->ops->xlate_tdm_slot_mask(slots, &tx_mask, &rx_mask);
--	else
--		ret = snd_soc_xlate_tdm_slot_mask(slots, &tx_mask, &rx_mask);
--	if (ret)
--		goto err;
-+	if (slots) {
-+		if (dai->driver->ops &&
-+		    dai->driver->ops->xlate_tdm_slot_mask)
-+			ret = dai->driver->ops->xlate_tdm_slot_mask(slots, &tx_mask, &rx_mask);
-+		else
-+			ret = snd_soc_xlate_tdm_slot_mask(slots, &tx_mask, &rx_mask);
-+		if (ret)
-+			goto err;
-+	}
+-	xennet_tx_buf_gc(queue);
+-
+ 	return 0;
+ }
  
- 	dai->tx_mask = tx_mask;
- 	dai->rx_mask = rx_mask;
+@@ -848,9 +846,6 @@ static netdev_tx_t xennet_start_xmit(struct sk_buff *skb, struct net_device *dev
+ 	tx_stats->packets++;
+ 	u64_stats_update_end(&tx_stats->syncp);
+ 
+-	/* Note: It is not safe to access skb after xennet_tx_buf_gc()! */
+-	xennet_tx_buf_gc(queue);
+-
+ 	if (!netfront_tx_slot_available(queue))
+ 		netif_tx_stop_queue(netdev_get_tx_queue(dev, queue->id));
+ 
 -- 
 2.39.5
 
