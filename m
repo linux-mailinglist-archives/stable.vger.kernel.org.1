@@ -1,59 +1,57 @@
-Return-Path: <stable+bounces-174792-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-176371-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id C21E2B364E1
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 15:42:36 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id CDDFDB36CF0
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 17:03:41 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 149651C20B54
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 13:36:16 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 994FE582DC0
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 14:47:46 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1CD642F6564;
-	Tue, 26 Aug 2025 13:35:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2CB3C35AAC0;
+	Tue, 26 Aug 2025 14:44:45 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="kwQLeXOo"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ToBKzqFO"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CFCD52BDC2F;
-	Tue, 26 Aug 2025 13:35:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DE8F53568FD;
+	Tue, 26 Aug 2025 14:44:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756215330; cv=none; b=QeFDwnp0NcDzLwlF/u58mf6thybCffzDoXzQItIOxTLoDANsFCz5JZPgMI4G9mIWheBu/Laru5rOrZz6pgHmXh48/QQYOxpZTVGVeUgn0JiUVVfByoJf7aV7QCortIAhaNxxluANMUAgG1+w2MnUPtrfgDhrTSTbvcgX6q8eiqE=
+	t=1756219485; cv=none; b=UlRcOw+RWnFkSLoh8AAiok4INGn48vaurv0YLbQhu8DzrG6suIsJNY0Wc8j3hS/aLqbey+ua/rLNkVj4dKOpYBJ3/EHAf0roswTGwcN0sfAeP7DfEJSsgQghszr8aLwIXLjXlP7kjfdblHRC46zUP+p7yspmUy1Rq/35mOOfvis=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756215330; c=relaxed/simple;
-	bh=e31W+A+JwoQtcyji3IDBCUohHZMjV3G3VY/7vHgR1pY=;
+	s=arc-20240116; t=1756219485; c=relaxed/simple;
+	bh=vFxu520HrLt9jvCCp9T9tRmAOCxLiKOFD1Vfk89weVY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=uLv9qgCXm2tHXq0bwTHizZcjg9k/reTJ6VQjOxCz6i4SQHmbTu2kS7DePU+dPKPW79ZC0veEd45kgHO8XckuAF5avwFJIPctWwNk7E5wVo3bKk3vIHIOwR1tEuS6I9vwtswTnnl97HiZUMFvOyZCbSlk80v2BnC5m591YiutUtQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=kwQLeXOo; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 08D0AC4CEF1;
-	Tue, 26 Aug 2025 13:35:29 +0000 (UTC)
+	 MIME-Version; b=UEmMjqek93UIsqnKV/9ElKTZ/sZn6vgabrBDFWP9m1Oko2sUheTDQlKCzo2DHg+7Xlt6y2OTDP3UQ3dfLcQJ4a1YM/zJrOekp0mY1+s1ajF1lqEkwPccYX8+kaLLOOm3w9xuAqPlG/9hnZKWEauzit94Eklr2XlrLAfL/DjrI2E=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ToBKzqFO; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1CB93C113CF;
+	Tue, 26 Aug 2025 14:44:43 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1756215330;
-	bh=e31W+A+JwoQtcyji3IDBCUohHZMjV3G3VY/7vHgR1pY=;
+	s=korg; t=1756219484;
+	bh=vFxu520HrLt9jvCCp9T9tRmAOCxLiKOFD1Vfk89weVY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=kwQLeXOo6Fkj6cXXyN2t7Eoh+dp9hm2QzRtgnfR38lZTz+tDXudIa+7iGw9MkbogW
-	 cDhWWCZVxcKiyOgXoGjEM+p3wJPiKKu2ktE67mkR0EqcdqRMIv8eacli552Bdk0pyC
-	 nCk6RcUl+PHBqeDFLK7dhk3Ji1NxvhRQ38zDdndw=
+	b=ToBKzqFOVd7Cig1t8hZ+I9dAnPcbhnpHN3l/0To1U6ZKUrSkvgZ18AVuZjomxcRem
+	 gLsaAEuM2qPbtOK0v4RN8rpHpuvAJ5lrrj8lCbWuCjsY1P5h22/6HPuhLWKS6Wg+bo
+	 INpQYWE3AUMh6vco/DP0Q7NuxVZEppw/1HouIDFg=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	ValdikSS <iam@valdikss.org.ru>,
-	Vitaly Lifshits <vitaly.lifshits@intel.com>,
-	Paul Menzel <pmenzel@molgen.mpg.de>,
-	Tony Nguyen <anthony.l.nguyen@intel.com>,
+	William Liu <will@willsroot.io>,
+	Savino Dicanosa <savy@syst3mfailure.io>,
 	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 473/482] igc: fix disabling L1.2 PCI-E link substate on I226 on init
+Subject: [PATCH 5.4 400/403] net/sched: Remove unnecessary WARNING condition for empty child qdisc in htb_activate
 Date: Tue, 26 Aug 2025 13:12:06 +0200
-Message-ID: <20250826110942.504953122@linuxfoundation.org>
+Message-ID: <20250826110918.083755783@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250826110930.769259449@linuxfoundation.org>
-References: <20250826110930.769259449@linuxfoundation.org>
+In-Reply-To: <20250826110905.607690791@linuxfoundation.org>
+References: <20250826110905.607690791@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -65,81 +63,40 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+5.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: ValdikSS <iam@valdikss.org.ru>
+From: William Liu <will@willsroot.io>
 
-[ Upstream commit 1468c1f97cf32418e34dbb40b784ed9333b9e123 ]
+[ Upstream commit 2c2192e5f9c7c2892fe2363244d1387f62710d83 ]
 
-Device ID comparison in igc_is_device_id_i226 is performed before
-the ID is set, resulting in always failing check on init.
+The WARN_ON trigger based on !cl->leaf.q->q.qlen is unnecessary in
+htb_activate. htb_dequeue_tree already accounts for that scenario.
 
-Before the patch:
-* L1.2 is not disabled on init
-* L1.2 is properly disabled after suspend-resume cycle
-
-With the patch:
-* L1.2 is properly disabled both on init and after suspend-resume
-
-How to test:
-Connect to the 1G link with 300+ mbit/s Internet speed, and run
-the download speed test, such as:
-
-    curl -o /dev/null http://speedtest.selectel.ru/1GB
-
-Without L1.2 disabled, the speed would be no more than ~200 mbit/s.
-With L1.2 disabled, the speed would reach 1 gbit/s.
-Note: it's required that the latency between your host and the remote
-be around 3-5 ms, the test inside LAN (<1 ms latency) won't trigger the
-issue.
-
-Link: https://lore.kernel.org/intel-wired-lan/15248b4f-3271-42dd-8e35-02bfc92b25e1@intel.com
-Fixes: 0325143b59c6 ("igc: disable L1.2 PCI-E link substate to avoid performance issue")
-Signed-off-by: ValdikSS <iam@valdikss.org.ru>
-Reviewed-by: Vitaly Lifshits <vitaly.lifshits@intel.com>
-Reviewed-by: Paul Menzel <pmenzel@molgen.mpg.de>
-Signed-off-by: Tony Nguyen <anthony.l.nguyen@intel.com>
-Link: https://patch.msgid.link/20250819222000.3504873-6-anthony.l.nguyen@intel.com
+Fixes: 1da177e4c3f4 ("Linux-2.6.12-rc2")
+Signed-off-by: William Liu <will@willsroot.io>
+Reviewed-by: Savino Dicanosa <savy@syst3mfailure.io>
+Link: https://patch.msgid.link/20250819033632.579854-1-will@willsroot.io
 Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/ethernet/intel/igc/igc_main.c | 14 +++++++-------
- 1 file changed, 7 insertions(+), 7 deletions(-)
+ net/sched/sch_htb.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/net/ethernet/intel/igc/igc_main.c b/drivers/net/ethernet/intel/igc/igc_main.c
-index ca3fd0270810..5bcdb1b7da29 100644
---- a/drivers/net/ethernet/intel/igc/igc_main.c
-+++ b/drivers/net/ethernet/intel/igc/igc_main.c
-@@ -6553,6 +6553,13 @@ static int igc_probe(struct pci_dev *pdev,
- 	adapter->port_num = hw->bus.func;
- 	adapter->msg_enable = netif_msg_init(debug, DEFAULT_MSG_ENABLE);
+diff --git a/net/sched/sch_htb.c b/net/sched/sch_htb.c
+index 2562219ccca4..dd5088f7bffb 100644
+--- a/net/sched/sch_htb.c
++++ b/net/sched/sch_htb.c
+@@ -558,7 +558,7 @@ htb_change_class_mode(struct htb_sched *q, struct htb_class *cl, s64 *diff)
+  */
+ static inline void htb_activate(struct htb_sched *q, struct htb_class *cl)
+ {
+-	WARN_ON(cl->level || !cl->leaf.q || !cl->leaf.q->q.qlen);
++	WARN_ON(cl->level || !cl->leaf.q);
  
-+	/* PCI config space info */
-+	hw->vendor_id = pdev->vendor;
-+	hw->device_id = pdev->device;
-+	hw->revision_id = pdev->revision;
-+	hw->subsystem_vendor_id = pdev->subsystem_vendor;
-+	hw->subsystem_device_id = pdev->subsystem_device;
-+
- 	/* Disable ASPM L1.2 on I226 devices to avoid packet loss */
- 	if (igc_is_device_id_i226(hw))
- 		pci_disable_link_state(pdev, PCIE_LINK_STATE_L1_2);
-@@ -6577,13 +6584,6 @@ static int igc_probe(struct pci_dev *pdev,
- 	netdev->mem_start = pci_resource_start(pdev, 0);
- 	netdev->mem_end = pci_resource_end(pdev, 0);
- 
--	/* PCI config space info */
--	hw->vendor_id = pdev->vendor;
--	hw->device_id = pdev->device;
--	hw->revision_id = pdev->revision;
--	hw->subsystem_vendor_id = pdev->subsystem_vendor;
--	hw->subsystem_device_id = pdev->subsystem_device;
--
- 	/* Copy the default MAC and PHY function pointers */
- 	memcpy(&hw->mac.ops, ei->mac_ops, sizeof(hw->mac.ops));
- 	memcpy(&hw->phy.ops, ei->phy_ops, sizeof(hw->phy.ops));
+ 	if (!cl->prio_activity) {
+ 		cl->prio_activity = 1 << cl->prio;
 -- 
 2.50.1
 
