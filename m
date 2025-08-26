@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-173480-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-175730-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1199AB35CF8
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 13:40:23 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 42D59B369EE
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 16:32:43 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 8A02C3A6BA2
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 11:39:59 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id E4C0A563B93
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 14:19:07 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B313531CA74;
-	Tue, 26 Aug 2025 11:39:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 35BA334F496;
+	Tue, 26 Aug 2025 14:16:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="OVfUyDE5"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="FRNev73f"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 707262BE62B;
-	Tue, 26 Aug 2025 11:39:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DECA02BE058;
+	Tue, 26 Aug 2025 14:16:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756208358; cv=none; b=IqS83IdMvERr563fPOA4M1CxsfRlyJwjcCBEtX8gYgSLnYCapQboXGqohy3uoew4w5QIn9VQbLLQtmkouB4QTD1TP3HSer6SVOox9h7YpIeCVld8c7DIRLyfFrRq4nPd3WalmYIMTPmtUbd3MKR6HqD1EFXn0foEljhO7jsShvo=
+	t=1756217819; cv=none; b=eu+1gdeiQnTjzGe68yH+SVFKgPVy43J5avFmPlPwTI95PEvpoXzmRFrgmrj6gFBMYEG2MoQ1IIZLlmXn3cU1/qapWwJcn2hhA6XOXa6gWohQ6tvor7wht98z/iqnvZk2d3yTPNCp64wxa17TTqFCIKbzcS4VyWRHxJJpbEGnxnw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756208358; c=relaxed/simple;
-	bh=pEF6bqp1bTF3HTYrZ2IHhx+OD1v5OLnzhKc/UGkcNdw=;
+	s=arc-20240116; t=1756217819; c=relaxed/simple;
+	bh=iAOUhJv6k2j6lyt0ETT6FMkIXTZCY9XgKLwWOuONuTo=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=ADfz4dSm1whZ/NcRa2tYl1mjJXHlYXSBAhx9rF/80XttoVVGQiAbESgavFFvYatR+40Ph8JxyBvEKfCq5f5aM9mCUO83d19kbAposB+Q/2mrijtf/N3/li8ICAiAem1+LSCzBDYScAljvamaPXa+OeMaZ7QIhESMlKj4nj8Isc8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=OVfUyDE5; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 009F7C4CEF1;
-	Tue, 26 Aug 2025 11:39:17 +0000 (UTC)
+	 MIME-Version; b=Z3mICY234Mg9IVT34GvxdKKgdht7ZeBchnxs6oEXZefduDX34OILIEbOHekYMESyPhuVXslHTb33vbkfP5EVTKNyacpMYb0H5wRIcUYVHlA/Hf1SY6J+hLaZtb1hN5j6r/foGFbtqyYDpgoSdVlXE5tE79yOJmPdXiUAoYzHAIE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=FRNev73f; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6F64FC113CF;
+	Tue, 26 Aug 2025 14:16:58 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1756208358;
-	bh=pEF6bqp1bTF3HTYrZ2IHhx+OD1v5OLnzhKc/UGkcNdw=;
+	s=korg; t=1756217818;
+	bh=iAOUhJv6k2j6lyt0ETT6FMkIXTZCY9XgKLwWOuONuTo=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=OVfUyDE5A4utjxr+Qe/byKoD/lM9ZfPsmLlk5WvUunTtL1LHZKO66dULG0i+HHbQ6
-	 L7M8lzZdRoQpHLhmJ0+ki65AJHz3BEMTiMvwyNsTooCU5TlA4Ll+j+vTpkO0KfcUaG
-	 RSCb9h40NbI+XcGwZmkPIVMSpFzsLiHQsJHue/TA=
+	b=FRNev73fqPHjfZYgCPKj39eKdQfdL44cFb+iv3RNDhmlhSsoXZ6eudy4i7+wa9TjR
+	 YK62veVUqLicifeIqYVxRgDBq2fr7mjOACjYinJHV2DCcKEmKceezoGDJ1Zf8iO0ZB
+	 gE7yTFV+F/+j+S7y36KYmXRSDzj7CQfrrMfhbNeE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Stefano Garzarella <sgarzare@redhat.com>,
-	Will Deacon <will@kernel.org>,
-	"Michael S. Tsirkin" <mst@redhat.com>
-Subject: [PATCH 6.12 081/322] vhost/vsock: Avoid allocating arbitrarily-sized SKBs
+	Hari Kalavakunta <kalavakunta.hari.prasad@gmail.com>,
+	Paul Fertser <fercerpav@gmail.com>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.10 286/523] net: ncsi: Fix buffer overflow in fetching version id
 Date: Tue, 26 Aug 2025 13:08:16 +0200
-Message-ID: <20250826110917.621499902@linuxfoundation.org>
+Message-ID: <20250826110931.496474230@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250826110915.169062587@linuxfoundation.org>
-References: <20250826110915.169062587@linuxfoundation.org>
+In-Reply-To: <20250826110924.562212281@linuxfoundation.org>
+References: <20250826110924.562212281@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,58 +63,57 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Will Deacon <will@kernel.org>
+From: Hari Kalavakunta <kalavakunta.hari.prasad@gmail.com>
 
-commit 10a886aaed293c4db3417951f396827216299e3d upstream.
+[ Upstream commit 8e16170ae972c7fed132bc928914a2ffb94690fc ]
 
-vhost_vsock_alloc_skb() returns NULL for packets advertising a length
-larger than VIRTIO_VSOCK_MAX_PKT_BUF_SIZE in the packet header. However,
-this is only checked once the SKB has been allocated and, if the length
-in the packet header is zero, the SKB may not be freed immediately.
+In NC-SI spec v1.2 section 8.4.44.2, the firmware name doesn't
+need to be null terminated while its size occupies the full size
+of the field. Fix the buffer overflow issue by adding one
+additional byte for null terminator.
 
-Hoist the size check before the SKB allocation so that an iovec larger
-than VIRTIO_VSOCK_MAX_PKT_BUF_SIZE + the header size is rejected
-outright. The subsequent check on the length field in the header can
-then simply check that the allocated SKB is indeed large enough to hold
-the packet.
-
-Cc: <stable@vger.kernel.org>
-Fixes: 71dc9ec9ac7d ("virtio/vsock: replace virtio_vsock_pkt with sk_buff")
-Reviewed-by: Stefano Garzarella <sgarzare@redhat.com>
-Signed-off-by: Will Deacon <will@kernel.org>
-Message-Id: <20250717090116.11987-2-will@kernel.org>
-Signed-off-by: Michael S. Tsirkin <mst@redhat.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Signed-off-by: Hari Kalavakunta <kalavakunta.hari.prasad@gmail.com>
+Reviewed-by: Paul Fertser <fercerpav@gmail.com>
+Link: https://patch.msgid.link/20250610193338.1368-1-kalavakunta.hari.prasad@gmail.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/vhost/vsock.c |    6 ++++--
- 1 file changed, 4 insertions(+), 2 deletions(-)
+ net/ncsi/internal.h | 2 +-
+ net/ncsi/ncsi-rsp.c | 1 +
+ 2 files changed, 2 insertions(+), 1 deletion(-)
 
---- a/drivers/vhost/vsock.c
-+++ b/drivers/vhost/vsock.c
-@@ -344,6 +344,9 @@ vhost_vsock_alloc_skb(struct vhost_virtq
- 
- 	len = iov_length(vq->iov, out);
- 
-+	if (len > VIRTIO_VSOCK_MAX_PKT_BUF_SIZE + VIRTIO_VSOCK_SKB_HEADROOM)
-+		return NULL;
-+
- 	/* len contains both payload and hdr */
- 	skb = virtio_vsock_alloc_skb(len, GFP_KERNEL);
- 	if (!skb)
-@@ -367,8 +370,7 @@ vhost_vsock_alloc_skb(struct vhost_virtq
- 		return skb;
- 
- 	/* The pkt is too big or the length in the header is invalid */
--	if (payload_len > VIRTIO_VSOCK_MAX_PKT_BUF_SIZE ||
--	    payload_len + sizeof(*hdr) > len) {
-+	if (payload_len + sizeof(*hdr) > len) {
- 		kfree_skb(skb);
- 		return NULL;
- 	}
+diff --git a/net/ncsi/internal.h b/net/ncsi/internal.h
+index c61d2e2e93ad..6ebf9e55c046 100644
+--- a/net/ncsi/internal.h
++++ b/net/ncsi/internal.h
+@@ -107,7 +107,7 @@ struct ncsi_channel_version {
+ 	u8   update;		/* NCSI version update */
+ 	char alpha1;		/* NCSI version alpha1 */
+ 	char alpha2;		/* NCSI version alpha2 */
+-	u8  fw_name[12];	/* Firmware name string                */
++	u8  fw_name[12 + 1];	/* Firmware name string                */
+ 	u32 fw_version;		/* Firmware version                   */
+ 	u16 pci_ids[4];		/* PCI identification                 */
+ 	u32 mf_id;		/* Manufacture ID                     */
+diff --git a/net/ncsi/ncsi-rsp.c b/net/ncsi/ncsi-rsp.c
+index 88fb86cf7b20..c1d42bbfdc7e 100644
+--- a/net/ncsi/ncsi-rsp.c
++++ b/net/ncsi/ncsi-rsp.c
+@@ -782,6 +782,7 @@ static int ncsi_rsp_handler_gvi(struct ncsi_request *nr)
+ 	ncv->alpha1 = rsp->alpha1;
+ 	ncv->alpha2 = rsp->alpha2;
+ 	memcpy(ncv->fw_name, rsp->fw_name, 12);
++	ncv->fw_name[12] = '\0';
+ 	ncv->fw_version = ntohl(rsp->fw_version);
+ 	for (i = 0; i < ARRAY_SIZE(ncv->pci_ids); i++)
+ 		ncv->pci_ids[i] = ntohs(rsp->pci_ids[i]);
+-- 
+2.39.5
+
 
 
 
