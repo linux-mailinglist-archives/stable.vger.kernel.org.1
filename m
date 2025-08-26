@@ -1,56 +1,58 @@
-Return-Path: <stable+bounces-174256-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-176321-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id B600DB36257
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 15:18:19 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id C7543B36B8A
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 16:47:12 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 97716463DC5
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 13:12:26 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 1581E7BC70B
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 14:44:31 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id EB5E618F2FC;
-	Tue, 26 Aug 2025 13:11:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B4451352FD3;
+	Tue, 26 Aug 2025 14:42:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="rev2Ehk6"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="SeYhyZQH"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A659D22AE5D;
-	Tue, 26 Aug 2025 13:11:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6FCF3350843;
+	Tue, 26 Aug 2025 14:42:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756213906; cv=none; b=qy3G1j1aY1zF+vUxAO5LWwtOuf17vmp8kYYXYEvG8aHXgvlEji5Sroq8TIf7ZgPkFdsUkzob5S9SApngRt4AypAk3SNwIiJwJNdVptQNVKz+om2tdFprtVUJ371hNtnO+7rrHvYHmMexi+U1dhQRPYiYjJiIM6QnNLaAjfC5zrg=
+	t=1756219354; cv=none; b=WMEHRHEB3Lo1V0rXC1uDMFtf6ajUH3P1MI64VWa4wYVY78baFuT/K5knA6FLt9B3HUfj2yVYbvcdnHxnO1wayndVQKy/J39BfG+Vvt3S4Y/2tkusTvbHW0sSiMWFq0DQ4oJrUpbCJDz0z/XsPzhgW5E6ePDix+gxVn/3zCgKSew=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756213906; c=relaxed/simple;
-	bh=8+oqSpJcLVvtoc4pKraivdneiPCCHxU4aZOiEZ1s0kY=;
+	s=arc-20240116; t=1756219354; c=relaxed/simple;
+	bh=TeZ9N8J9PP/jK4Ps9NCPMXrPdNzXJJmRc9mQkxGIDXM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=NDzxHxKjU8CL43FCUj5aaaQqLDX53xWeX1Fvlv/Wr7WkgnfmNEgUEl7VDRRAUPskDQpmAAmpg0cD6cJaeYFukFQODulrbF31rzEPLbih9q6hS1kEBHXB55iBHF1Cj6jtLaFd+GnydB15ClvHX3fgV0y56FFQLliO6fT7kwZA4xI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=rev2Ehk6; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3AFDFC4CEF1;
-	Tue, 26 Aug 2025 13:11:46 +0000 (UTC)
+	 MIME-Version; b=poLhj7l5CnvKJ508MKOmWOfnZ6UFFBVhCabKmEm31S55Tij9JYrAgOo9spoKCugstmUIye65zlgRe/qas7rDFdNX6DhKEPnrSg5+r39MF/CXwMxvbYC/8wADBqNP+fkamn+V64BjAoImZaoDpqeCBdScnd2FG9v1MLd4liny768=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=SeYhyZQH; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0190EC4CEF1;
+	Tue, 26 Aug 2025 14:42:33 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1756213906;
-	bh=8+oqSpJcLVvtoc4pKraivdneiPCCHxU4aZOiEZ1s0kY=;
+	s=korg; t=1756219354;
+	bh=TeZ9N8J9PP/jK4Ps9NCPMXrPdNzXJJmRc9mQkxGIDXM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=rev2Ehk6YGon3FDuJtRMhKolNwKl7Xoz2qo3OprWo16c2xEnyxgyRCgPxVfzEsYgL
-	 7ZV3NNam2cLoYkJgU7F0tR2zX/IxcOxaIJWMgNiGur9avBqAmv4YJoLlIXDml2F2YN
-	 AZlmvPeKnUlwv06AnAM3eA6YbYUyJs6Fim+MmkvU=
+	b=SeYhyZQHjfs8wQd40+boclPfNrPWbKvQC68xok/XvjFIyYOrzofV66ehhCFaweAD4
+	 fnKprOWSYaGGzdt8EH2TYEwF9FLvxsrIbR4h7cg8pAP+Uru/8EYEf209WVtiZZY2QV
+	 UwOY8CA8iE0XVzYNAOXo46FGlJMuAa5fN/3+A18I=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Mael GUERIN <mael.guerin@murena.io>,
-	stable <stable@kernel.org>,
-	Alan Stern <stern@rowland.harvard.edu>
-Subject: [PATCH 6.6 525/587] USB: storage: Add unusual-devs entry for Novatek NTK96550-based camera
+	Dave Hansen <dave.hansen@linux.intel.com>,
+	Chao Gao <chao.gao@intel.com>,
+	Alison Schofield <alison.schofield@intel.com>,
+	"Peter Zijlstra (Intel)" <peterz@infradead.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.4 348/403] x86/fpu: Delay instruction pointer fixup until after warning
 Date: Tue, 26 Aug 2025 13:11:14 +0200
-Message-ID: <20250826111006.355755626@linuxfoundation.org>
+Message-ID: <20250826110916.486731950@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250826110952.942403671@linuxfoundation.org>
-References: <20250826110952.942403671@linuxfoundation.org>
+In-Reply-To: <20250826110905.607690791@linuxfoundation.org>
+References: <20250826110905.607690791@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,62 +62,66 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+5.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Mael GUERIN <mael.guerin@murena.io>
+From: Dave Hansen <dave.hansen@linux.intel.com>
 
-commit 6ca8af3c8fb584f3424a827f554ff74f898c27cd upstream.
+[ Upstream commit 1cec9ac2d071cfd2da562241aab0ef701355762a ]
 
-Add the US_FL_BULK_IGNORE_TAG quirk for Novatek NTK96550-based camera
-to fix USB resets after sending SCSI vendor commands due to CBW and
-CSW tags difference, leading to undesired slowness while communicating
-with the device.
+Right now, if XRSTOR fails a console message like this is be printed:
 
-Please find below the copy of /sys/kernel/debug/usb/devices with my
-device plugged in (listed as TechSys USB mass storage here, the
-underlying chipset being the Novatek NTK96550-based camera):
+	Bad FPU state detected at restore_fpregs_from_fpstate+0x9a/0x170, reinitializing FPU registers.
 
-T:  Bus=03 Lev=01 Prnt=01 Port=00 Cnt=01 Dev#=  3 Spd=480  MxCh= 0
-D:  Ver= 2.00 Cls=00(>ifc ) Sub=00 Prot=00 MxPS=64 #Cfgs=  1
-P:  Vendor=0603 ProdID=8611 Rev= 0.01
-S:  Manufacturer=TechSys
-S:  Product=USB Mass Storage
-S:  SerialNumber=966110000000100
-C:* #Ifs= 1 Cfg#= 1 Atr=c0 MxPwr=100mA
-I:* If#= 0 Alt= 0 #EPs= 2 Cls=08(stor.) Sub=06 Prot=50 Driver=usb-storage
-E:  Ad=81(I) Atr=02(Bulk) MxPS= 512 Ivl=0ms
-E:  Ad=02(O) Atr=02(Bulk) MxPS= 512 Ivl=0ms
+However, the text location (...+0x9a in this case) is the instruction
+*AFTER* the XRSTOR. The highlighted instruction in the "Code:" dump
+also points one instruction late.
 
-Signed-off-by: Mael GUERIN <mael.guerin@murena.io>
-Cc: stable <stable@kernel.org>
-Acked-by: Alan Stern <stern@rowland.harvard.edu>
-Link: https://lore.kernel.org/r/20250806164406.43450-1-mael.guerin@murena.io
+The reason is that the "fixup" moves RIP up to pass the bad XRSTOR and
+keep on running after returning from the #GP handler. But it does this
+fixup before warning.
+
+The resulting warning output is nonsensical because it looks like the
+non-FPU-related instruction is #GP'ing.
+
+Do not fix up RIP until after printing the warning. Do this by using
+the more generic and standard ex_handler_default().
+
+Fixes: d5c8028b4788 ("x86/fpu: Reinitialize FPU registers if restoring FPU state fails")
+Signed-off-by: Dave Hansen <dave.hansen@linux.intel.com>
+Reviewed-by: Chao Gao <chao.gao@intel.com>
+Acked-by: Alison Schofield <alison.schofield@intel.com>
+Acked-by: Peter Zijlstra (Intel) <peterz@infradead.org>
+Cc:stable@vger.kernel.org
+Link: https://lore.kernel.org/all/20250624210148.97126F9E%40davehans-spike.ostc.intel.com
+[ adapted ex_handler_default() call ]
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/usb/storage/unusual_devs.h |    7 +++++++
- 1 file changed, 7 insertions(+)
+ arch/x86/mm/extable.c |    5 ++---
+ 1 file changed, 2 insertions(+), 3 deletions(-)
 
---- a/drivers/usb/storage/unusual_devs.h
-+++ b/drivers/usb/storage/unusual_devs.h
-@@ -934,6 +934,13 @@ UNUSUAL_DEV(  0x05e3, 0x0723, 0x9451, 0x
- 		USB_SC_DEVICE, USB_PR_DEVICE, NULL,
- 		US_FL_SANE_SENSE ),
+--- a/arch/x86/mm/extable.c
++++ b/arch/x86/mm/extable.c
+@@ -59,13 +59,12 @@ __visible bool ex_handler_fprestore(cons
+ 				    unsigned long error_code,
+ 				    unsigned long fault_addr)
+ {
+-	regs->ip = ex_fixup_addr(fixup);
+-
+ 	WARN_ONCE(1, "Bad FPU state detected at %pB, reinitializing FPU registers.",
+ 		  (void *)instruction_pointer(regs));
  
-+/* Added by Maël GUERIN <mael.guerin@murena.io> */
-+UNUSUAL_DEV(  0x0603, 0x8611, 0x0000, 0xffff,
-+		"Novatek",
-+		"NTK96550-based camera",
-+		USB_SC_SCSI, USB_PR_BULK, NULL,
-+		US_FL_BULK_IGNORE_TAG ),
+ 	__copy_kernel_to_fpregs(&init_fpstate, -1);
+-	return true;
 +
- /*
-  * Reported by Hanno Boeck <hanno@gmx.de>
-  * Taken from the Lycoris Kernel
++	return ex_handler_default(fixup, regs, trapnr, error_code, fault_addr);
+ }
+ EXPORT_SYMBOL_GPL(ex_handler_fprestore);
+ 
 
 
 
