@@ -1,57 +1,59 @@
-Return-Path: <stable+bounces-175910-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-173307-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3AFC2B36A2E
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 16:35:09 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 23151B35D25
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 13:41:36 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 54C8C1C465AC
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 14:27:38 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 13A8B460C2E
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 11:34:03 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 72DF434F49D;
-	Tue, 26 Aug 2025 14:24:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8D13434A30C;
+	Tue, 26 Aug 2025 11:31:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="WST0BP6U"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="c8Y9+16U"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2EFA734AB0D;
-	Tue, 26 Aug 2025 14:24:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4B19D2BE653;
+	Tue, 26 Aug 2025 11:31:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756218289; cv=none; b=a6psMarZ3NHGHPdcRqlsBdqZTGN2oBgZOXibvEXO2WphBJV8kLBi18C9G78Nt+pGXBWB2iSlbwC4Je73BMyrOf31qmjito5AiIrCVhHvKMig4OQhFAt7562ovrmPDZtfA82OJr308wrei73eE05KEpZ+1IQ3wWLVLx3TuEq7RFI=
+	t=1756207908; cv=none; b=IKW3H0U9yGGNtez6Nfi9db84hO6I69xH3T9ttWyH6UiWMU1Yzd7z6iwDydkAwHuoNzFsc2CJdCb/Nk+mp6cCmYP/JLVNQhsE9fFjLOqdDSvXWDIN0eAys4Mq9lzfk9PEUQ1G6YUkUYUxEk5XrmU7JbeB21j0Gi0oRkEtzZh0eRg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756218289; c=relaxed/simple;
-	bh=kPkV3vh8azYB0z3FLRFYfYfg22RhmsUPCS8izjyrnW0=;
+	s=arc-20240116; t=1756207908; c=relaxed/simple;
+	bh=qhLlmRlpUoLijS70Gpf0fLyHP5ksweq4vOgqo9O9FHo=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=V2tacqQ+AQ0jJWAwKrBHd+C4JN4c3/asg+n5TiiyhjI0HfXPzslzqDtUdtL10AS0gwJoOC1QQNGeFhbmUustq84YblXjPaV/+c+hEUswTEpLwUhuxRD1XEO2axF+WFIj+hJE6mvhMk6PtpipNcwCi8fFxPZ3v/45dypGgI7znMU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=WST0BP6U; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B836AC4CEF1;
-	Tue, 26 Aug 2025 14:24:48 +0000 (UTC)
+	 MIME-Version; b=KeUwD07b+bzbMfcW6iSGY/SZcbWqf3NMC/ScFvFaZBgqab4clqFQqCpXXbey9s2jCMbeAhcWM6efkguBVdttyCl8S8EGPiKU8kxAib6N97/FRh1ckp7gTmJe70Nplee3vbs1TNRogUtSaKVYg076Cmrusx/J9IYrHMVhvDa8/Sc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=c8Y9+16U; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 85D92C4CEF1;
+	Tue, 26 Aug 2025 11:31:47 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1756218289;
-	bh=kPkV3vh8azYB0z3FLRFYfYfg22RhmsUPCS8izjyrnW0=;
+	s=korg; t=1756207907;
+	bh=qhLlmRlpUoLijS70Gpf0fLyHP5ksweq4vOgqo9O9FHo=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=WST0BP6U9//KklPa0p1BMwe6HY3U10mJNRsyN31CssCfjsXPhxSUbnnttlcqEMCTl
-	 3eom0xSKYG5hrZxVXDhNIysC2+X5URilYev8Jy6HtCZURGcg2YCB8lpmWB73WiCDjX
-	 XopJbq9RTcyURtzBJ1BbUhnwqPKQyisRSjSIm5QU=
+	b=c8Y9+16UPDv+trMD1Fc27ldGl07Tv6vTVRUR9p1dQaedZN7i+84ZOjzOUfpcIjXEf
+	 +moClOB2bNeBb1VkgJ0SuwEE1uQSVNoGxjqTdfCLdS0uaUq73SmMvogo/AT3VFGuLQ
+	 WgfW7aC4VcpsQTCJWIyz/zWUN9N0GhOpz2JDlmXw=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Hulk Robot <hulkci@huawei.com>,
-	Yang Yingliang <yangyingliang@huawei.com>,
-	"David S. Miller" <davem@davemloft.net>,
-	Shivani Agarwal <shivani.agarwal@broadcom.com>
-Subject: [PATCH 5.10 438/523] ptp: Fix possible memory leak in ptp_clock_register()
+	Anantha Prabhu <anantha.prabhu@broadcom.com>,
+	Saravanan Vajravel <saravanan.vajravel@broadcom.com>,
+	Selvin Xavier <selvin.xavier@broadcom.com>,
+	Kalesh AP <kalesh-anakkur.purayil@broadcom.com>,
+	Leon Romanovsky <leon@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.16 364/457] RDMA/bnxt_re: Fix to initialize the PBL array
 Date: Tue, 26 Aug 2025 13:10:48 +0200
-Message-ID: <20250826110935.258689354@linuxfoundation.org>
+Message-ID: <20250826110946.304386758@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250826110924.562212281@linuxfoundation.org>
-References: <20250826110924.562212281@linuxfoundation.org>
+In-Reply-To: <20250826110937.289866482@linuxfoundation.org>
+References: <20250826110937.289866482@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,73 +65,52 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+6.16-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Yang Yingliang <yangyingliang@huawei.com>
+From: Anantha Prabhu <anantha.prabhu@broadcom.com>
 
-commit 4225fea1cb28370086e17e82c0f69bec2779dca0 upstream.
+[ Upstream commit 806b9f494f62791ee6d68f515a8056c615a0e7b2 ]
 
-I got memory leak as follows when doing fault injection test:
+memset the PBL page pointer and page map arrays before
+populating the SGL addresses of the HWQ.
 
-unreferenced object 0xffff88800906c618 (size 8):
-  comm "i2c-idt82p33931", pid 4421, jiffies 4294948083 (age 13.188s)
-  hex dump (first 8 bytes):
-    70 74 70 30 00 00 00 00                          ptp0....
-  backtrace:
-    [<00000000312ed458>] __kmalloc_track_caller+0x19f/0x3a0
-    [<0000000079f6e2ff>] kvasprintf+0xb5/0x150
-    [<0000000026aae54f>] kvasprintf_const+0x60/0x190
-    [<00000000f323a5f7>] kobject_set_name_vargs+0x56/0x150
-    [<000000004e35abdd>] dev_set_name+0xc0/0x100
-    [<00000000f20cfe25>] ptp_clock_register+0x9f4/0xd30 [ptp]
-    [<000000008bb9f0de>] idt82p33_probe.cold+0x8b6/0x1561 [ptp_idt82p33]
-
-When posix_clock_register() returns an error, the name allocated
-in dev_set_name() will be leaked, the put_device() should be used
-to give up the device reference, then the name will be freed in
-kobject_cleanup() and other memory will be freed in ptp_clock_release().
-
-Reported-by: Hulk Robot <hulkci@huawei.com>
-Fixes: a33121e5487b ("ptp: fix the race between the release of ptp_clock and cdev")
-Signed-off-by: Yang Yingliang <yangyingliang@huawei.com>
-Signed-off-by: David S. Miller <davem@davemloft.net>
-[ Shivani: Modified to apply on 5.10.y, Removed kfree(ptp->vclock_index) in
-  the ptach, since vclock_index is introduced in later versions ]
-Signed-off-by: Shivani Agarwal <shivani.agarwal@broadcom.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: 0c4dcd602817 ("RDMA/bnxt_re: Refactor hardware queue memory allocation")
+Signed-off-by: Anantha Prabhu <anantha.prabhu@broadcom.com>
+Reviewed-by: Saravanan Vajravel <saravanan.vajravel@broadcom.com>
+Reviewed-by: Selvin Xavier <selvin.xavier@broadcom.com>
+Signed-off-by: Kalesh AP <kalesh-anakkur.purayil@broadcom.com>
+Link: https://patch.msgid.link/20250805101000.233310-5-kalesh-anakkur.purayil@broadcom.com
+Signed-off-by: Leon Romanovsky <leon@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/ptp/ptp_clock.c |   13 +++++++++----
- 1 file changed, 9 insertions(+), 4 deletions(-)
+ drivers/infiniband/hw/bnxt_re/qplib_res.c | 2 ++
+ 1 file changed, 2 insertions(+)
 
---- a/drivers/ptp/ptp_clock.c
-+++ b/drivers/ptp/ptp_clock.c
-@@ -283,15 +283,20 @@ struct ptp_clock *ptp_clock_register(str
- 	/* Create a posix clock and link it to the device. */
- 	err = posix_clock_register(&ptp->clock, &ptp->dev);
- 	if (err) {
-+		if (ptp->pps_source)
-+			pps_unregister_source(ptp->pps_source);
-+
-+		if (ptp->kworker)
-+			kthread_destroy_worker(ptp->kworker);
-+
-+		put_device(&ptp->dev);
-+
- 		pr_err("failed to create posix clock\n");
--		goto no_clock;
-+		return ERR_PTR(err);
+diff --git a/drivers/infiniband/hw/bnxt_re/qplib_res.c b/drivers/infiniband/hw/bnxt_re/qplib_res.c
+index 6cd05207ffed..cc5c82d96839 100644
+--- a/drivers/infiniband/hw/bnxt_re/qplib_res.c
++++ b/drivers/infiniband/hw/bnxt_re/qplib_res.c
+@@ -121,6 +121,7 @@ static int __alloc_pbl(struct bnxt_qplib_res *res,
+ 	pbl->pg_arr = vmalloc_array(pages, sizeof(void *));
+ 	if (!pbl->pg_arr)
+ 		return -ENOMEM;
++	memset(pbl->pg_arr, 0, pages * sizeof(void *));
+ 
+ 	pbl->pg_map_arr = vmalloc_array(pages, sizeof(dma_addr_t));
+ 	if (!pbl->pg_map_arr) {
+@@ -128,6 +129,7 @@ static int __alloc_pbl(struct bnxt_qplib_res *res,
+ 		pbl->pg_arr = NULL;
+ 		return -ENOMEM;
  	}
++	memset(pbl->pg_map_arr, 0, pages * sizeof(dma_addr_t));
+ 	pbl->pg_count = 0;
+ 	pbl->pg_size = sginfo->pgsize;
  
- 	return ptp;
- 
--no_clock:
--	if (ptp->pps_source)
--		pps_unregister_source(ptp->pps_source);
- no_pps:
- 	ptp_cleanup_pin_groups(ptp);
- no_pin_groups:
+-- 
+2.50.1
+
 
 
 
