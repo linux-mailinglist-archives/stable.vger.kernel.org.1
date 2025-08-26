@@ -1,57 +1,55 @@
-Return-Path: <stable+bounces-174207-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-175334-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 76E17B3621B
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 15:16:04 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1AE73B36845
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 16:14:48 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id E54AF36627D
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 13:10:41 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 876C59805CE
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 14:01:19 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0A76B32144B;
-	Tue, 26 Aug 2025 13:09:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D869F299A94;
+	Tue, 26 Aug 2025 13:59:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="0VE+Gr29"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="dyy85reW"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B9811321433;
-	Tue, 26 Aug 2025 13:09:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 85DFB350D40;
+	Tue, 26 Aug 2025 13:59:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756213779; cv=none; b=ZWGFdrs+EGscqT9Lq8vzcwSSl/ndGGNdXzl9HlL0u/rLzoxeLUB65jFO2ZbxE/EGYphDPsP8AuQwUrftbF8Wt6evrXYoKztAtSfaKbLXngTtARBPGSiQ4EmQ2H502p18faTW17wLvRdbMBZhxVq/6KYIo5wJ06Kb6Yl0oUulsLE=
+	t=1756216760; cv=none; b=Lc6wbHipDu6RBFBK6SwhNatZh1wxycYYTlqNaYqlt+uROnmmJkFnbw0EEh4nGcvaZswoCKdXN+7n263XqqgkvzGeo55vafa8kWmgQtw+gr4HydNf/bYwLbfyzXQPxCSwfP95vx58a10St6odKNmcI6T7OaXDv87LgRp2h7QKWCw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756213779; c=relaxed/simple;
-	bh=TbDluUIJhr3aKwhr9YZX8GB9i2IDDHt/Fl7JL1aem5w=;
+	s=arc-20240116; t=1756216760; c=relaxed/simple;
+	bh=lQFahW76rZ2vEPZildkvEVqkEEYNV1A5jBFpnwtj9JA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=ISpAN/+Rx32fMJuAPifqbJoPxRI44OmeOm6fczt4jm4ODh10ApCnSxgY2c9OhLdstSb9yiIt0r4Mq2w7NyT6gHWjX3E9Z8YxSlgdWGTD0gbiR+OWmXDKBVAQ7NGhAW0fJZ1hwIGgrheWkpIkmtzmIApkxl3MVO/qUQIfpXC9O2Q=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=0VE+Gr29; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8C21DC4CEF1;
-	Tue, 26 Aug 2025 13:09:37 +0000 (UTC)
+	 MIME-Version:Content-Type; b=J0oGYvvzwPwIrtUUwa9AXVaazNE6j3ByeDU3lFgtb42U+8ajKufElR9VNiUp8XpaFJIaceg5AAraRK5yvzaK4Rf89vVxFKVQ9b1SR8KBIyvALIz4hw2jLt05bj4Q1aimnSSg5nFCFC4rQmI3M3wmD5MPXP6AZhU/Zf+GsYcHWXI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=dyy85reW; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1B960C113CF;
+	Tue, 26 Aug 2025 13:59:19 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1756213777;
-	bh=TbDluUIJhr3aKwhr9YZX8GB9i2IDDHt/Fl7JL1aem5w=;
+	s=korg; t=1756216760;
+	bh=lQFahW76rZ2vEPZildkvEVqkEEYNV1A5jBFpnwtj9JA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=0VE+Gr29piyoO6DMFiBE1x8d/aR/adTjuu4nbkkh7czD8Pe+4al4WQToyqF9zfmCp
-	 yhxF/Qz3U4sfGo6SVM2V5UQlqnhKB5+0+69giBGSipb3fQ9SWSCzR6kFgF/MAzXugQ
-	 2sCSH/7z9SDBy9EzLJR1QbdR0zpAVmoM+MqCCgbI=
+	b=dyy85reW4I//lqAvTyLGKp+CqkWan6cGQDiYwspLHrUmfkTmgXws87jS3YCnFMMZR
+	 k/VluK+uyE0GThAytU/YtizDNfPkRfS/UoG0TW1Kr9hQEOf/Snm67cP2b7jZN+kgdP
+	 QJlO7FG84fe8WE6wEEGs8S3jvogfVLYyLy82XfkI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Vincent Guittot <vincent.guittot@linaro.org>,
-	Ingo Molnar <mingo@kernel.org>,
-	Lukasz Luba <lukasz.luba@arm.com>,
-	Wentao Guan <guanwentao@uniontech.com>
-Subject: [PATCH 6.6 474/587] energy_model: Use a fixed reference frequency
+	=?UTF-8?q?Uwe=20Kleine-K=C3=B6nig?= <u.kleine-koenig@pengutronix.de>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.15 532/644] usb: musb: omap2430: Convert to platform remove callback returning void
 Date: Tue, 26 Aug 2025 13:10:23 +0200
-Message-ID: <20250826111005.027259296@linuxfoundation.org>
+Message-ID: <20250826110959.696386040@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250826110952.942403671@linuxfoundation.org>
-References: <20250826110952.942403671@linuxfoundation.org>
+In-Reply-To: <20250826110946.507083938@linuxfoundation.org>
+References: <20250826110946.507083938@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,66 +59,65 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Vincent Guittot <vincent.guittot@linaro.org>
+From: Uwe Kleine-König <u.kleine-koenig@pengutronix.de>
 
-commit 15cbbd1d317e07b4e5c6aca5d4c5579539a82784 upstream.
+[ Upstream commit cb020bf52253327fe382e10bcae02a4f1da33c04 ]
 
-The last item of a performance domain is not always the performance point
-that has been used to compute CPU's capacity. This can lead to different
-target frequency compared with other part of the system like schedutil and
-would result in wrong energy estimation.
+The .remove() callback for a platform driver returns an int which makes
+many driver authors wrongly assume it's possible to do error handling by
+returning an error code. However the value returned is (mostly) ignored
+and this typically results in resource leaks. To improve here there is a
+quest to make the remove callback return void. In the first step of this
+quest all drivers are converted to .remove_new() which already returns
+void.
 
-A new arch_scale_freq_ref() is available to return a fixed and coherent
-frequency reference that can be used when computing the CPU's frequency
-for an level of utilization. Use this function to get this reference
-frequency.
+Trivially convert this driver from always returning zero in the remove
+callback to the void returning variant.
 
-Energy model is never used without defining arch_scale_freq_ref() but
-can be compiled. Define a default arch_scale_freq_ref() returning 0
-in such case.
-
-Signed-off-by: Vincent Guittot <vincent.guittot@linaro.org>
-Signed-off-by: Ingo Molnar <mingo@kernel.org>
-Tested-by: Lukasz Luba <lukasz.luba@arm.com>
-Reviewed-by: Lukasz Luba <lukasz.luba@arm.com>
-Link: https://lore.kernel.org/r/20231211104855.558096-5-vincent.guittot@linaro.org
-Stable-dep-of: e37617c8e53a ("sched/fair: Fix frequency selection for non-invariant case")
-Signed-off-by: Wentao Guan <guanwentao@uniontech.com>
+Signed-off-by: Uwe Kleine-König <u.kleine-koenig@pengutronix.de>
+Link: https://lore.kernel.org/r/20230405141009.3400693-8-u.kleine-koenig@pengutronix.de
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Stable-dep-of: 1473e9e7679b ("usb: musb: omap2430: fix device leak at unbind")
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- include/linux/energy_model.h |    6 +++---
- 1 file changed, 3 insertions(+), 3 deletions(-)
+ drivers/usb/musb/omap2430.c |    6 ++----
+ 1 file changed, 2 insertions(+), 4 deletions(-)
 
---- a/include/linux/energy_model.h
-+++ b/include/linux/energy_model.h
-@@ -224,7 +224,7 @@ static inline unsigned long em_cpu_energ
- 				unsigned long max_util, unsigned long sum_util,
- 				unsigned long allowed_cpu_cap)
+--- a/drivers/usb/musb/omap2430.c
++++ b/drivers/usb/musb/omap2430.c
+@@ -435,14 +435,12 @@ err0:
+ 	return ret;
+ }
+ 
+-static int omap2430_remove(struct platform_device *pdev)
++static void omap2430_remove(struct platform_device *pdev)
  {
--	unsigned long freq, scale_cpu;
-+	unsigned long freq, ref_freq, scale_cpu;
- 	struct em_perf_state *ps;
- 	int cpu;
+ 	struct omap2430_glue *glue = platform_get_drvdata(pdev);
  
-@@ -241,10 +241,10 @@ static inline unsigned long em_cpu_energ
- 	 */
- 	cpu = cpumask_first(to_cpumask(pd->cpus));
- 	scale_cpu = arch_scale_cpu_capacity(cpu);
--	ps = &pd->table[pd->nr_perf_states - 1];
-+	ref_freq = arch_scale_freq_ref(cpu);
+ 	platform_device_unregister(glue->musb);
+ 	pm_runtime_disable(glue->dev);
+-
+-	return 0;
+ }
  
- 	max_util = min(max_util, allowed_cpu_cap);
--	freq = map_util_freq(max_util, ps->frequency, scale_cpu);
-+	freq = map_util_freq(max_util, ref_freq, scale_cpu);
+ #ifdef CONFIG_PM
+@@ -574,7 +572,7 @@ MODULE_DEVICE_TABLE(of, omap2430_id_tabl
  
- 	/*
- 	 * Find the lowest performance state of the Energy Model above the
+ static struct platform_driver omap2430_driver = {
+ 	.probe		= omap2430_probe,
+-	.remove		= omap2430_remove,
++	.remove_new	= omap2430_remove,
+ 	.driver		= {
+ 		.name	= "musb-omap2430",
+ 		.pm	= DEV_PM_OPS,
 
 
 
