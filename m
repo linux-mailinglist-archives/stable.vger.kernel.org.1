@@ -1,55 +1,57 @@
-Return-Path: <stable+bounces-173072-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-175123-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7A9CAB35BDB
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 13:28:45 +0200 (CEST)
+Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [142.0.200.124])
+	by mail.lfdr.de (Postfix) with ESMTPS id 13EA0B365E0
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 15:51:28 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id BCD5A2A4808
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 11:22:40 +0000 (UTC)
+	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 072EC4E44C3
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 13:51:27 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E716632143D;
-	Tue, 26 Aug 2025 11:21:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0E313350D63;
+	Tue, 26 Aug 2025 13:50:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="L3MZsCSl"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="YMPBt0Fx"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A5B51296BDF;
-	Tue, 26 Aug 2025 11:21:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BF7B0350D46;
+	Tue, 26 Aug 2025 13:50:00 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756207300; cv=none; b=N8KMNqDeILri+73GeD5a9cuI2UKCA46FD0Zf7CZRiTb/LDnWvFcsIX4/Uwva5RaJQ6ZfuTabp7lgLQoUnWLJq4UTyT4S3VK/6+ZD9fx5IirUYiCs4/gIbu/wSsz9NAswR4Lq7p5aDd3LVt/uvFqUflu/C1zE7HOKG3VWGdLD0nc=
+	t=1756216200; cv=none; b=ZPnE2ArTIRcley2rB/V2rIK4TO3BsUqiDED0feHq9KWlgZ/zyheQutiik8K3zAQfxth3vRl3VXQzlYnZh1aAVDVxOFHQy4RwWia5Gbqs1yFZpY0FK1GIbyUhW6WwKpcrHBFcplT57xl+fIGv5Ld4JKYZZfaaCAEVsN+Z8ZRuJFk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756207300; c=relaxed/simple;
-	bh=wodCGhcAHWiO+ezrSGy79wl79g3qj37bdlmrn6quA+g=;
+	s=arc-20240116; t=1756216200; c=relaxed/simple;
+	bh=Gl//hmvBv5AwloJVO5vRWcYMl4IV+gAdJq0dZpWQaDg=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=T/r0208vlpYfVMqHvHp8rJBAJ66d7hqHjw/UZxqfJksRZ3jUKLrKL+4T7YCiwRSTUsD2QPZGc+6DAKPVcYA2nceHs9nIECMoVGj76+UVGAeCvlZjV10fOPTrK2XL7fAZJQYJfZeNw94XtPM3DEmIzDQwd96hEw6QyxAKQ53hun0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=L3MZsCSl; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2F736C4CEF1;
-	Tue, 26 Aug 2025 11:21:40 +0000 (UTC)
+	 MIME-Version; b=dS17lbMUBM+lIClt1Ik3HDTUdpUrDd9UUdotfFAapD4du/htMEf/1JyyV49FMD7/ACqJsbkHlqCuGtT1R6ZxkudeTz3IkC0BxheI+nRpmkikz22RwyCejqGHIhTjjZXzcwineNXfqxXPQq8KHAKO7x04ZS+O+6UhcAaPJv7ACrs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=YMPBt0Fx; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 29439C4CEF1;
+	Tue, 26 Aug 2025 13:50:00 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1756207300;
-	bh=wodCGhcAHWiO+ezrSGy79wl79g3qj37bdlmrn6quA+g=;
+	s=korg; t=1756216200;
+	bh=Gl//hmvBv5AwloJVO5vRWcYMl4IV+gAdJq0dZpWQaDg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=L3MZsCSl1buEzDaXBo8pDBPJ+R6jpBWOiZ//qj+rRMaVSCMVdYRpVOdoo43gLN959
-	 4OKtm0Pwn4FmLpIo5b3pZGOzxpo16TNpDB7S+Kc7S/aed56Er9Q2Ri9rXlgMzEIH6c
-	 vAi79z77RMSMeqRRJU/JoGQd3FuBpEkWa+5UmIlM=
+	b=YMPBt0Fxjz+jWBx6QgGdcTUpI0pfxmmPoAkPS96a5mv1UKlJ5zXxQQdKJ6vC5Ocme
+	 tV0+vi5j7F4ghMNeKB/YLBulyYtOP4Cccl0axBYxRSN9jyw5E02MCEaRGLT3+SPYZX
+	 o9FwsTe1c/kVEwgM5TsyK/lRiAm8//E7/kXyLY2w=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	John David Anglin <dave.anglin@bell.net>,
-	Helge Deller <deller@gmx.de>
-Subject: [PATCH 6.16 129/457] parisc: Update comments in make_insert_tlb
+	Avri Altman <avri.altman@sandisk.com>,
+	Ulf Hansson <ulf.hansson@linaro.org>,
+	Ricky Wu <ricky_wu@realtek.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.15 322/644] mmc: rtsx_usb_sdmmc: Fix error-path in sd_set_power_mode()
 Date: Tue, 26 Aug 2025 13:06:53 +0200
-Message-ID: <20250826110940.561515533@linuxfoundation.org>
+Message-ID: <20250826110954.363793885@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250826110937.289866482@linuxfoundation.org>
-References: <20250826110937.289866482@linuxfoundation.org>
+In-Reply-To: <20250826110946.507083938@linuxfoundation.org>
+References: <20250826110946.507083938@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,103 +63,45 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.16-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: John David Anglin <dave.anglin@bell.net>
+From: Ulf Hansson <ulf.hansson@linaro.org>
 
-commit cb22f247f371bd206a88cf0e0c05d80b8b62fb26 upstream.
+[ Upstream commit 47a255f7d2eabee06cfbf5b1c2379749442fd01d ]
 
-The following testcase exposed a problem with our read access checks
-in get_user() and raw_copy_from_user():
+In the error path of sd_set_power_mode() we don't update host->power_mode,
+which could lead to an imbalance of the runtime PM usage count. Fix this by
+always updating host->power_mode.
 
-#include <stdint.h>
-#include <stddef.h>
-#include <stdio.h>
-#include <stdlib.h>
-#include <string.h>
-#include <unistd.h>
-#include <errno.h>
-#include <sys/mman.h>
-#include <sys/types.h>
-
-int main(int argc, char **argv)
-{
-  unsigned long page_size = sysconf(_SC_PAGESIZE);
-  char *p = malloc(3 * page_size);
-  char *p_aligned;
-
-  /* initialize memory region. If not initialized, write syscall below will correctly return EFAULT. */
-  if (1)
-	memset(p, 'X', 3 * page_size);
-
-  p_aligned = (char *) ((((uintptr_t) p) + (2*page_size - 1)) & ~(page_size - 1));
-  /* Drop PROT_READ protection. Kernel and userspace should fault when accessing that memory region */
-  mprotect(p_aligned, page_size, PROT_NONE);
-
-  /* the following write() should return EFAULT, since PROT_READ was dropped by previous mprotect() */
-  int ret = write(2, p_aligned, 1);
-  if (!ret || errno != EFAULT)
-	printf("\n FAILURE: write() did not returned expected EFAULT value\n");
-
-  return 0;
-}
-
-Because of the way _PAGE_READ is handled, kernel code never generates
-a read access fault when it access a page as the kernel privilege level
-is always less than PL1 in the PTE.
-
-This patch reworks the comments in the make_insert_tlb macro to try
-to make this clearer.
-
-Signed-off-by: John David Anglin <dave.anglin@bell.net>
-Signed-off-by: Helge Deller <deller@gmx.de>
-Cc: stable@vger.kernel.org # v5.12+
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Reviewed-by: Avri Altman <avri.altman@sandisk.com>
+Signed-off-by: Ulf Hansson <ulf.hansson@linaro.org>
+Acked-by: Ricky Wu <ricky_wu@realtek.com>
+Link: https://lore.kernel.org/r/20250610111633.504366-2-ulf.hansson@linaro.org
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/parisc/kernel/entry.S |   17 ++++++++++++-----
- 1 file changed, 12 insertions(+), 5 deletions(-)
+ drivers/mmc/host/rtsx_usb_sdmmc.c | 4 +---
+ 1 file changed, 1 insertion(+), 3 deletions(-)
 
---- a/arch/parisc/kernel/entry.S
-+++ b/arch/parisc/kernel/entry.S
-@@ -499,6 +499,12 @@
- 	 * this happens is quite subtle, read below */
- 	.macro		make_insert_tlb	spc,pte,prot,tmp
- 	space_to_prot   \spc \prot        /* create prot id from space */
-+
-+#if _PAGE_SPECIAL_BIT == _PAGE_DMB_BIT
-+	/* need to drop DMB bit, as it's used as SPECIAL flag */
-+	depi		0,_PAGE_SPECIAL_BIT,1,\pte
-+#endif
-+
- 	/* The following is the real subtlety.  This is depositing
- 	 * T <-> _PAGE_REFTRAP
- 	 * D <-> _PAGE_DIRTY
-@@ -511,17 +517,18 @@
- 	 * Finally, _PAGE_READ goes in the top bit of PL1 (so we
- 	 * trigger an access rights trap in user space if the user
- 	 * tries to read an unreadable page */
--#if _PAGE_SPECIAL_BIT == _PAGE_DMB_BIT
--	/* need to drop DMB bit, as it's used as SPECIAL flag */
--	depi		0,_PAGE_SPECIAL_BIT,1,\pte
--#endif
- 	depd            \pte,8,7,\prot
+diff --git a/drivers/mmc/host/rtsx_usb_sdmmc.c b/drivers/mmc/host/rtsx_usb_sdmmc.c
+index 1be3a355f10d..ab7023d956eb 100644
+--- a/drivers/mmc/host/rtsx_usb_sdmmc.c
++++ b/drivers/mmc/host/rtsx_usb_sdmmc.c
+@@ -1032,9 +1032,7 @@ static int sd_set_power_mode(struct rtsx_usb_sdmmc *host,
+ 		err = sd_power_on(host);
+ 	}
  
- 	/* PAGE_USER indicates the page can be read with user privileges,
- 	 * so deposit X1|11 to PL1|PL2 (remember the upper bit of PL1
--	 * contains _PAGE_READ) */
-+	 * contains _PAGE_READ). While the kernel can't directly write
-+	 * user pages which have _PAGE_WRITE zero, it can read pages
-+	 * which have _PAGE_READ zero (PL <= PL1). Thus, the kernel
-+	 * exception fault handler doesn't trigger when reading pages
-+	 * that aren't user read accessible */
- 	extrd,u,*=      \pte,_PAGE_USER_BIT+32,1,%r0
- 	depdi		7,11,3,\prot
-+
- 	/* If we're a gateway page, drop PL2 back to zero for promotion
- 	 * to kernel privilege (so we can execute the page as kernel).
- 	 * Any privilege promotion page always denys read and write */
+-	if (!err)
+-		host->power_mode = power_mode;
+-
++	host->power_mode = power_mode;
+ 	return err;
+ }
+ 
+-- 
+2.39.5
+
 
 
 
