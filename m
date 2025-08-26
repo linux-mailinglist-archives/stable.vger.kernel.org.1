@@ -1,55 +1,59 @@
-Return-Path: <stable+bounces-173123-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-174045-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 746ABB35B77
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 13:24:48 +0200 (CEST)
+Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [IPv6:2605:f480:58:1:0:1994:3:14])
+	by mail.lfdr.de (Postfix) with ESMTPS id 733B2B360A0
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 15:02:28 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 8683B7C40B6
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 11:24:11 +0000 (UTC)
+	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 5A75A4E434F
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 13:02:27 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 43A5F29BD87;
-	Tue, 26 Aug 2025 11:23:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A6F9F1B85F8;
+	Tue, 26 Aug 2025 13:02:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="OGq8Admk"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="e2klocsD"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EFD602BEFF0;
-	Tue, 26 Aug 2025 11:23:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 634051ADFFE;
+	Tue, 26 Aug 2025 13:02:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756207433; cv=none; b=ZA/K43ltid5ZgwL8L+Z5XDluihCHGaWFofBWKXWUh7Yr4cQ9uuWonDJ5RC0t0iZLosSwsPz4Qojclg5nbMpaPl6abwzTooaVv9oiGkK2PCfQ8cuI7LfT5aXHAJF383gQe3gCOeih7WCEAjglw/oJHdP1mBD3R8ub/B3BDkoxFYs=
+	t=1756213346; cv=none; b=Tg5yneo3e4HN28VBeH1SCICxHhCJD1p+AIDlLYkDUxHB4AYoBQsj35RgNLwt0fKUMt6x0x4JDaIByU5eJSg5k+3FRPNfaGYtXs1BITELz0YuGhgnO1KSBfgZJNbgDsImV+eivVUKRuUyhQhTrYDtxJeySGuGDh6EGWQh+gk4NVI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756207433; c=relaxed/simple;
-	bh=GysSvYB/ElYF40AIJvyp3ID1xNkbuO2n/K/U4MHFUss=;
+	s=arc-20240116; t=1756213346; c=relaxed/simple;
+	bh=Co7V6F7xtBLJBDsUwiuG/OIZ36+139ViNFbtxqvDKI0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=EX7z2LvyOWh4CzFN+WXu0Zek4nCfZhJsff7vfDjbKeEcbDIjPxrvRpE9HKD/CIiLXfso9Q4AYRDpfBbi2a9iiCNMW85l+RehShEM8OHIAyX/OM/6Te3fhK+r7GrmbACixtWAXVfybIefNah+Y6ZXdgDTXy06VaSLKZdaXdCftOg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=OGq8Admk; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 83B93C4CEF4;
-	Tue, 26 Aug 2025 11:23:52 +0000 (UTC)
+	 MIME-Version; b=u/RVRSWDCilFz/1vaZ8GJIVbSOyyBPRa5Ujsh9Lmh+cJGMS97Hdgvj6MS+mf1AQjrMjS3TNtt2NjuFddJpWGXZqYQzUiX80ESud7kiTHkcGEfDH8vD1a5cSud5PqlHM+/x5SQdy+zhmAi+ouy6h8mjGI6w3nplgteJajPP/2VgU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=e2klocsD; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id EB0D1C4CEF1;
+	Tue, 26 Aug 2025 13:02:25 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1756207432;
-	bh=GysSvYB/ElYF40AIJvyp3ID1xNkbuO2n/K/U4MHFUss=;
+	s=korg; t=1756213346;
+	bh=Co7V6F7xtBLJBDsUwiuG/OIZ36+139ViNFbtxqvDKI0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=OGq8AdmkiJX2Uqd8dIrSLUVnC/TAb6WFPhO+QJZMgG8/mFsCuZLIlLKNo2Dz7Sq0L
-	 sOfEtVbR7wn5kJnNHwwFHyslFcYiR13Y87m10mVlAVIyVs9rTbPIvnwn/scfVXAvkv
-	 jlLHZgizWUNog8IAEyZMSUjvS8YIqcD8uu7IsWM4=
+	b=e2klocsDlfjjZuzCriP9xmJvs6vuSqA9TrBdCjlhnGM/c+Jx1lPg7sm7H3V/0LAZj
+	 JEs14hh+3qOc15o957VbDK5ycrR3//tEKp/n+RtJysAz3woSMFun5MwhFNn+WHWMHH
+	 aISKaWsisFKJUGlEFAPexofeBGzHisfXRiZeocjA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	YuanShang <YuanShang.Mao@amd.com>,
-	Alex Deucher <alexander.deucher@amd.com>
-Subject: [PATCH 6.16 178/457] drm/amdgpu: Retain job->vm in amdgpu_job_prepare_job
+	Peter Jung <ptr1337@cachyos.org>,
+	burneddi <burneddi@protonmail.com>,
+	Russell Haley <yumpusamongus@gmail.com>,
+	Boris Burkov <boris@bur.io>,
+	Filipe Manana <fdmanana@suse.com>,
+	David Sterba <dsterba@suse.com>
+Subject: [PATCH 6.6 313/587] btrfs: fix log tree replay failure due to file with 0 links and extents
 Date: Tue, 26 Aug 2025 13:07:42 +0200
-Message-ID: <20250826110941.775796519@linuxfoundation.org>
+Message-ID: <20250826111000.880509135@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250826110937.289866482@linuxfoundation.org>
-References: <20250826110937.289866482@linuxfoundation.org>
+In-Reply-To: <20250826110952.942403671@linuxfoundation.org>
+References: <20250826110952.942403671@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,48 +65,152 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.16-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: YuanShang <YuanShang.Mao@amd.com>
+From: Filipe Manana <fdmanana@suse.com>
 
-commit c00d8b79fd2167c6ac65e096619535acdf8678d5 upstream.
+commit 0a32e4f0025a74c70dcab4478e9b29c22f5ecf2f upstream.
 
-The field job->vm is used in function amdgpu_job_run to get the page
-table re-generation counter and decide whether the job should be skipped.
+If we log a new inode (not persisted in a past transaction) that has 0
+links and extents, then log another inode with an higher inode number, we
+end up with failing to replay the log tree with -EINVAL. The steps for
+this are:
 
-Specifically, function amdgpu_vm_generation checks if the VM is valid for this job to use.
-For instance, if a gfx job depends on a cancelled sdma job from entity vm->delayed,
-then the gfx job should be skipped.
+1) create new file A
+2) write some data to file A
+3) open an fd on file A
+4) unlink file A
+5) fsync file A using the previously open fd
+6) create file B (has higher inode number than file A)
+7) fsync file B
+8) power fail before current transaction commits
 
-Fixes: 26c95e838e63 ("drm/amdgpu: set the VM pointer to NULL in amdgpu_job_prepare")
-Signed-off-by: YuanShang <YuanShang.Mao@amd.com>
-Reviewed-by: Alex Deucher <alexander.deucher@amd.com>
-Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
-(cherry picked from commit ed76936c6b10b547c6df4ca75412331e9ef6d339)
-Cc: stable@vger.kernel.org
+Now when attempting to mount the fs, the log replay will fail with
+-ENOENT at replay_one_extent() when attempting to replay the first
+extent of file A. The failure comes when trying to open the inode for
+file A in the subvolume tree, since it doesn't exist.
+
+Before commit 5f61b961599a ("btrfs: fix inode lookup error handling
+during log replay"), the returned error was -EIO instead of -ENOENT,
+since we converted any errors when attempting to read an inode during
+log replay to -EIO.
+
+The reason for this is that the log replay procedure fails to ignore
+the current inode when we are at the stage LOG_WALK_REPLAY_ALL, our
+current inode has 0 links and last inode we processed in the previous
+stage has a non 0 link count. In other words, the issue is that at
+replay_one_extent() we only update wc->ignore_cur_inode if the current
+replay stage is LOG_WALK_REPLAY_INODES.
+
+Fix this by updating wc->ignore_cur_inode whenever we find an inode item
+regardless of the current replay stage. This is a simple solution and easy
+to backport, but later we can do other alternatives like avoid logging
+extents or inode items other than the inode item for inodes with a link
+count of 0.
+
+The problem with the wc->ignore_cur_inode logic has been around since
+commit f2d72f42d5fa ("Btrfs: fix warning when replaying log after fsync
+of a tmpfile") but it only became frequent to hit since the more recent
+commit 5e85262e542d ("btrfs: fix fsync of files with no hard links not
+persisting deletion"), because we stopped skipping inodes with a link
+count of 0 when logging, while before the problem would only be triggered
+if trying to replay a log tree created with an older kernel which has a
+logged inode with 0 links.
+
+A test case for fstests will be submitted soon.
+
+Reported-by: Peter Jung <ptr1337@cachyos.org>
+Link: https://lore.kernel.org/linux-btrfs/fce139db-4458-4788-bb97-c29acf6cb1df@cachyos.org/
+Reported-by: burneddi <burneddi@protonmail.com>
+Link: https://lore.kernel.org/linux-btrfs/lh4W-Lwc0Mbk-QvBhhQyZxf6VbM3E8VtIvU3fPIQgweP_Q1n7wtlUZQc33sYlCKYd-o6rryJQfhHaNAOWWRKxpAXhM8NZPojzsJPyHMf2qY=@protonmail.com/#t
+Reported-by: Russell Haley <yumpusamongus@gmail.com>
+Link: https://lore.kernel.org/linux-btrfs/598ecc75-eb80-41b3-83c2-f2317fbb9864@gmail.com/
+Fixes: f2d72f42d5fa ("Btrfs: fix warning when replaying log after fsync of a tmpfile")
+CC: stable@vger.kernel.org # 5.4+
+Reviewed-by: Boris Burkov <boris@bur.io>
+Signed-off-by: Filipe Manana <fdmanana@suse.com>
+Signed-off-by: David Sterba <dsterba@suse.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/gpu/drm/amd/amdgpu/amdgpu_job.c |    7 -------
- 1 file changed, 7 deletions(-)
+ fs/btrfs/tree-log.c |   48 ++++++++++++++++++++++++++++++------------------
+ 1 file changed, 30 insertions(+), 18 deletions(-)
 
---- a/drivers/gpu/drm/amd/amdgpu/amdgpu_job.c
-+++ b/drivers/gpu/drm/amd/amdgpu/amdgpu_job.c
-@@ -387,13 +387,6 @@ amdgpu_job_prepare_job(struct drm_sched_
- 			dev_err(ring->adev->dev, "Error getting VM ID (%d)\n", r);
- 			goto error;
- 		}
--		/*
--		 * The VM structure might be released after the VMID is
--		 * assigned, we had multiple problems with people trying to use
--		 * the VM pointer so better set it to NULL.
--		 */
--		if (!fence)
--			job->vm = NULL;
- 		return fence;
- 	}
+--- a/fs/btrfs/tree-log.c
++++ b/fs/btrfs/tree-log.c
+@@ -326,8 +326,7 @@ struct walk_control {
  
+ 	/*
+ 	 * Ignore any items from the inode currently being processed. Needs
+-	 * to be set every time we find a BTRFS_INODE_ITEM_KEY and we are in
+-	 * the LOG_WALK_REPLAY_INODES stage.
++	 * to be set every time we find a BTRFS_INODE_ITEM_KEY.
+ 	 */
+ 	bool ignore_cur_inode;
+ 
+@@ -2498,23 +2497,30 @@ static int replay_one_buffer(struct btrf
+ 
+ 	nritems = btrfs_header_nritems(eb);
+ 	for (i = 0; i < nritems; i++) {
+-		btrfs_item_key_to_cpu(eb, &key, i);
++		struct btrfs_inode_item *inode_item;
+ 
+-		/* inode keys are done during the first stage */
+-		if (key.type == BTRFS_INODE_ITEM_KEY &&
+-		    wc->stage == LOG_WALK_REPLAY_INODES) {
+-			struct btrfs_inode_item *inode_item;
+-			u32 mode;
++		btrfs_item_key_to_cpu(eb, &key, i);
+ 
+-			inode_item = btrfs_item_ptr(eb, i,
+-					    struct btrfs_inode_item);
++		if (key.type == BTRFS_INODE_ITEM_KEY) {
++			inode_item = btrfs_item_ptr(eb, i, struct btrfs_inode_item);
+ 			/*
+-			 * If we have a tmpfile (O_TMPFILE) that got fsync'ed
+-			 * and never got linked before the fsync, skip it, as
+-			 * replaying it is pointless since it would be deleted
+-			 * later. We skip logging tmpfiles, but it's always
+-			 * possible we are replaying a log created with a kernel
+-			 * that used to log tmpfiles.
++			 * An inode with no links is either:
++			 *
++			 * 1) A tmpfile (O_TMPFILE) that got fsync'ed and never
++			 *    got linked before the fsync, skip it, as replaying
++			 *    it is pointless since it would be deleted later.
++			 *    We skip logging tmpfiles, but it's always possible
++			 *    we are replaying a log created with a kernel that
++			 *    used to log tmpfiles;
++			 *
++			 * 2) A non-tmpfile which got its last link deleted
++			 *    while holding an open fd on it and later got
++			 *    fsynced through that fd. We always log the
++			 *    parent inodes when inode->last_unlink_trans is
++			 *    set to the current transaction, so ignore all the
++			 *    inode items for this inode. We will delete the
++			 *    inode when processing the parent directory with
++			 *    replay_dir_deletes().
+ 			 */
+ 			if (btrfs_inode_nlink(eb, inode_item) == 0) {
+ 				wc->ignore_cur_inode = true;
+@@ -2522,8 +2528,14 @@ static int replay_one_buffer(struct btrf
+ 			} else {
+ 				wc->ignore_cur_inode = false;
+ 			}
+-			ret = replay_xattr_deletes(wc->trans, root, log,
+-						   path, key.objectid);
++		}
++
++		/* Inode keys are done during the first stage. */
++		if (key.type == BTRFS_INODE_ITEM_KEY &&
++		    wc->stage == LOG_WALK_REPLAY_INODES) {
++			u32 mode;
++
++			ret = replay_xattr_deletes(wc->trans, root, log, path, key.objectid);
+ 			if (ret)
+ 				break;
+ 			mode = btrfs_inode_mode(eb, inode_item);
 
 
 
