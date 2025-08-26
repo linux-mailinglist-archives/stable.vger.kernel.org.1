@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-174186-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-173588-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8309AB361F0
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 15:14:14 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 4EF1FB35D6C
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 13:44:46 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 07E523BD717
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 13:09:25 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 648027C6067
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 11:44:44 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C48DE2D320B;
-	Tue, 26 Aug 2025 13:08:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id F29792F9C23;
+	Tue, 26 Aug 2025 11:43:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="SBs6dYPK"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="xP5A1o5I"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7E67427EFE7;
-	Tue, 26 Aug 2025 13:08:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AD83629D26A;
+	Tue, 26 Aug 2025 11:43:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756213722; cv=none; b=mixv7gZf5yatm0LJwcr1GALql18jYoLfFZgGZSi27fepniVcL4UHdSUu/qAlMEEs8S7DfgxpTHug9RtZxHjC1RmEgX0It1u6YLTkwXmuxIceai6nWZcvfsev8sClDO+HodL05UlzmbEunHO5kL6MRN9YIxyVB8bJm8ci33wnTxE=
+	t=1756208638; cv=none; b=frSk+LqSzoAWoyuY/r/zyAtUz9hgzxXOlCqqtxT1/6vzZMwwcFFCkLIaOTzl1F4ST2fQfOrnQa4TV3mkMgcM5HhKMlj2IDdZKWAe4AckFdIcIgjjPeirs3p2c+iPSDTTiLcx09bcaklbvAQouZe33IeyTXPCCMe0EdN7IHU8zX0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756213722; c=relaxed/simple;
-	bh=foVhemS0ESquAHrYGZEhRhHcX2CGc86G99anwlNPyAY=;
+	s=arc-20240116; t=1756208638; c=relaxed/simple;
+	bh=DavwPM8GgYuB7zbEftNdc0rYs+VZ6PWv5/ZAwSGyIsc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=UjuO+VkWsEkb8DHtH1hv5M+Q3SiWLYldVEIL3x8Sqsb+LPSofDECoFWXO8KTTUCNb0XPd2zT1iluYAlyicte96HtT3e2sryJAt8hIt9aGJ/I0sEsm0fK4qXBi+F/sgFtsYV+JgOqxSMQTk7DyKFE77nN9v4gg/wXj7DmLW4+Tik=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=SBs6dYPK; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A7E9AC4CEF1;
-	Tue, 26 Aug 2025 13:08:40 +0000 (UTC)
+	 MIME-Version; b=PcqAbaRTJZ/qA0GPf/dedUtRjUnekPGcGjYut4DjSyatMPv5BynORQRsCxHSnu10drfJF2fVpwQGi5GOOGNtXTanztpw7mMm90lSW16EuQMf7fi+IVFUXKCgP2dVhPwqYLNlkUTvmRtzHPuTif7ccVWgCBMgTmHo7TSOiPfw/cg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=xP5A1o5I; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 38B85C116B1;
+	Tue, 26 Aug 2025 11:43:58 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1756213721;
-	bh=foVhemS0ESquAHrYGZEhRhHcX2CGc86G99anwlNPyAY=;
+	s=korg; t=1756208638;
+	bh=DavwPM8GgYuB7zbEftNdc0rYs+VZ6PWv5/ZAwSGyIsc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=SBs6dYPKSN2ABFo0q3jI1Nh6x0J3ZoqEhMyIIdJwm0zhE19gYmMzb8kRST85sTDs6
-	 /NLHnsMnG6MvOffiIuLnI0UJIcUsL9HPkHfKY8BObGsLhJPQ/tsOk13OgKPfqOxqez
-	 9ouuKbmKlmOMD6SxmOnweJmWB9gUV641nrDLMdSs=
+	b=xP5A1o5IQG1mRIno0ANS5KjkXzPPIT0AVI+UCSWWa6mNgm8P2IGFhwmwl2Q2gFogD
+	 1G5d4ca4xivpEY7Gd9GArBqmqq0Nicwci3wBxL05isW6zCXkCNaGlK+kdeyzW2043H
+	 bmcn1rw/AOeuNACLEIGS/FN88/gBCOFd7EWONWME=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Filipe Manana <fdmanana@suse.com>,
-	David Sterba <dsterba@suse.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 455/587] btrfs: send: only use boolean variables at process_recorded_refs()
+	Dan Carpenter <dan.carpenter@linaro.org>,
+	Konrad Dybcio <konrad.dybcio@oss.qualcomm.com>,
+	Bjorn Andersson <andersson@kernel.org>
+Subject: [PATCH 6.12 189/322] soc: qcom: mdt_loader: Fix error return values in mdt_header_valid()
 Date: Tue, 26 Aug 2025 13:10:04 +0200
-Message-ID: <20250826111004.538391338@linuxfoundation.org>
+Message-ID: <20250826110920.532708978@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250826110952.942403671@linuxfoundation.org>
-References: <20250826110952.942403671@linuxfoundation.org>
+In-Reply-To: <20250826110915.169062587@linuxfoundation.org>
+References: <20250826110915.169062587@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,78 +62,47 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Filipe Manana <fdmanana@suse.com>
+From: Dan Carpenter <dan.carpenter@linaro.org>
 
-[ Upstream commit 9453fe329789073d9a971de01da5902c32c1a01a ]
+commit 9f35ab0e53ccbea57bb9cbad8065e0406d516195 upstream.
 
-We have several local variables at process_recorded_refs() that are used
-as booleans, with some of them having a 'bool' type while two of them
-having an 'int' type. Change this to make them all use the 'bool' type
-which is more clear and to make everything more consistent.
+This function is supposed to return true for valid headers and false for
+invalid.  In a couple places it returns -EINVAL instead which means the
+invalid headers are counted as true.  Change it to return false.
 
-Signed-off-by: Filipe Manana <fdmanana@suse.com>
-Reviewed-by: David Sterba <dsterba@suse.com>
-Signed-off-by: David Sterba <dsterba@suse.com>
-Stable-dep-of: 005b0a0c24e1 ("btrfs: send: use fallocate for hole punching with send stream v2")
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Fixes: 9f9967fed9d0 ("soc: qcom: mdt_loader: Ensure we don't read past the ELF header")
+Signed-off-by: Dan Carpenter <dan.carpenter@linaro.org>
+Reviewed-by: Konrad Dybcio <konrad.dybcio@oss.qualcomm.com>
+Link: https://lore.kernel.org/r/db57c01c-bdcc-4a0f-95db-b0f2784ea91f@sabinyo.mountain
+Signed-off-by: Bjorn Andersson <andersson@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- fs/btrfs/send.c |   12 ++++++------
- 1 file changed, 6 insertions(+), 6 deletions(-)
+ drivers/soc/qcom/mdt_loader.c |    4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
---- a/fs/btrfs/send.c
-+++ b/fs/btrfs/send.c
-@@ -4180,9 +4180,9 @@ static int process_recorded_refs(struct
- 	u64 ow_inode = 0;
- 	u64 ow_gen;
- 	u64 ow_mode;
--	int did_overwrite = 0;
--	int is_orphan = 0;
- 	u64 last_dir_ino_rm = 0;
-+	bool did_overwrite = false;
-+	bool is_orphan = false;
- 	bool can_rename = true;
- 	bool orphanized_dir = false;
- 	bool orphanized_ancestor = false;
-@@ -4224,14 +4224,14 @@ static int process_recorded_refs(struct
- 		if (ret < 0)
- 			goto out;
- 		if (ret)
--			did_overwrite = 1;
-+			did_overwrite = true;
- 	}
- 	if (sctx->cur_inode_new || did_overwrite) {
- 		ret = gen_unique_name(sctx, sctx->cur_ino,
- 				sctx->cur_inode_gen, valid_path);
- 		if (ret < 0)
- 			goto out;
--		is_orphan = 1;
-+		is_orphan = true;
- 	} else {
- 		ret = get_cur_path(sctx, sctx->cur_ino, sctx->cur_inode_gen,
- 				valid_path);
-@@ -4454,7 +4454,7 @@ static int process_recorded_refs(struct
- 			ret = send_rename(sctx, valid_path, cur->full_path);
- 			if (ret < 0)
- 				goto out;
--			is_orphan = 0;
-+			is_orphan = false;
- 			ret = fs_path_copy(valid_path, cur->full_path);
- 			if (ret < 0)
- 				goto out;
-@@ -4515,7 +4515,7 @@ static int process_recorded_refs(struct
- 					sctx->cur_inode_gen, valid_path);
- 			if (ret < 0)
- 				goto out;
--			is_orphan = 1;
-+			is_orphan = true;
- 		}
+--- a/drivers/soc/qcom/mdt_loader.c
++++ b/drivers/soc/qcom/mdt_loader.c
+@@ -33,14 +33,14 @@ static bool mdt_header_valid(const struc
+ 		return false;
  
- 		list_for_each_entry(cur, &sctx->deleted_refs, list) {
+ 	if (ehdr->e_phentsize != sizeof(struct elf32_phdr))
+-		return -EINVAL;
++		return false;
+ 
+ 	phend = size_add(size_mul(sizeof(struct elf32_phdr), ehdr->e_phnum), ehdr->e_phoff);
+ 	if (phend > fw->size)
+ 		return false;
+ 
+ 	if (ehdr->e_shentsize != sizeof(struct elf32_shdr))
+-		return -EINVAL;
++		return false;
+ 
+ 	shend = size_add(size_mul(sizeof(struct elf32_shdr), ehdr->e_shnum), ehdr->e_shoff);
+ 	if (shend > fw->size)
 
 
 
