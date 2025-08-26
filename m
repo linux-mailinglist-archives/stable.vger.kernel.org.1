@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-175801-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-174634-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 750DAB36A16
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 16:34:03 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 204CDB36367
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 15:29:28 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id CE7D6189BD54
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 14:21:58 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id E41317BD4B7
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 13:27:51 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3D13B35334B;
-	Tue, 26 Aug 2025 14:20:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6745D265CCD;
+	Tue, 26 Aug 2025 13:28:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="dLeSss5h"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="YDt9k/ld"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EDB2528314A;
-	Tue, 26 Aug 2025 14:20:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 22045196C7C;
+	Tue, 26 Aug 2025 13:28:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756218005; cv=none; b=tyFTZyzc+aG3PGe7K+xVes8ETwW6c0yaB4rIi1aR14yBdA34J+pJ8+oNkbIHEViwbh6G+uep+Jhut3zvWu6gp7VWqmcYU1k20bptq9+ceC4QnTIhuZ3P+PETGHbhPhXDeJmXl0tLExoJBVYIzDE8kiT85RHNzb0olKHVHS6mfaY=
+	t=1756214909; cv=none; b=n5wgfF6J4cujDWt8HXZGvewuueCR7q7ZLv+ZWtFVsCUNyHVSqlFh4bkMJ2+kytkU4TwLJ8ii7Xpw7Ag9y4wBOxJzK0PTHRogAMTy2kBuiG+4hZgJc97Y3Nm3NWbyuRlZpdzuS05L4hvqcPWClXKb/QyDgMuU8oVPyelk3S+olCA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756218005; c=relaxed/simple;
-	bh=SSNdB0hJlgHoucLN2/EGWH5nW8rG3fVmMN7+QYOYi04=;
+	s=arc-20240116; t=1756214909; c=relaxed/simple;
+	bh=NJcANyMcr7nj4qtqahjWMFURurftgHdlcxPZSeOIKPA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Rocr8SJjmQn6SYV96AHS2oC1x/y8YWZXwLgqP116ebo4ARMywzgKGPfCD5nUJi/9PKdemKvKCr7tKOCTelCyuLZosZrA637uQ7BlXNTldN1hJHqihO8SO/MetNvVbKIXBeFCvYZsH2fHtr+KGXqCy1eyJyzKdDsscOmOiykV3DU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=dLeSss5h; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 84152C4CEF1;
-	Tue, 26 Aug 2025 14:20:04 +0000 (UTC)
+	 MIME-Version; b=LW+PR9i6YueqOW8uymEDvkJSBnZik1yeH7ScKi8CKLU9xU4p86/1BYP87G5sD1upw7nzQE0OICwjdkwrt/f1ig2hz9/rAZCT6ihc9HlMTYM54o+kI2FXCvuPM7yT57E8cmlPFQFBuYVY6rsdNh7wtonSIaDf523qgZ9KncNVvnY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=YDt9k/ld; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5E4A8C4CEF1;
+	Tue, 26 Aug 2025 13:28:28 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1756218004;
-	bh=SSNdB0hJlgHoucLN2/EGWH5nW8rG3fVmMN7+QYOYi04=;
+	s=korg; t=1756214908;
+	bh=NJcANyMcr7nj4qtqahjWMFURurftgHdlcxPZSeOIKPA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=dLeSss5hymwKXH73zfe+a7FunS7zGB1B7/8Ac71TK7Zvro/a/5GiG6lyVJW6Q2LTj
-	 dos47ifSFNzMbJFSNQ4daJ9gZ8sLMphoKKC0Erwb1vn1qj8U/69Qg2ZdRBmMLlMIMu
-	 p7jtKGWJzy1/lwMTFI4/9DKPGxEWraXZx7vD/cho=
+	b=YDt9k/ldfhOzCX1XZhM8KMMc8s7NJlOQfWG3A+6Kao6BNtV+mu8aqCflbzx6nzACd
+	 FTHphXSecUycTvd61ao74PA8Llq+m8lBCRJucf2HVapRtoJxPrF42n2vmj5Gvq5epz
+	 ZgKBwufOkD6o5Dkmq5rBhSl+bJb7GJq0SqO4HsYw=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Neil Armstrong <neil.armstrong@linaro.org>,
-	Johan Hovold <johan@kernel.org>,
-	Martin Blumenstingl <martin.blumenstingl@googlemail.com>
-Subject: [PATCH 5.10 357/523] usb: dwc3: meson-g12a: fix device leaks at unbind
+	Randy Dunlap <rdunlap@infradead.org>,
+	"James E.J. Bottomley" <James.Bottomley@HansenPartnership.com>,
+	Helge Deller <deller@gmx.de>,
+	linux-parisc@vger.kernel.org
+Subject: [PATCH 6.1 314/482] parisc: Makefile: explain that 64BIT requires both 32-bit and 64-bit compilers
 Date: Tue, 26 Aug 2025 13:09:27 +0200
-Message-ID: <20250826110933.273791762@linuxfoundation.org>
+Message-ID: <20250826110938.561541011@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250826110924.562212281@linuxfoundation.org>
-References: <20250826110924.562212281@linuxfoundation.org>
+In-Reply-To: <20250826110930.769259449@linuxfoundation.org>
+References: <20250826110930.769259449@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,40 +63,42 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Johan Hovold <johan@kernel.org>
+From: Randy Dunlap <rdunlap@infradead.org>
 
-commit 93b400f4951404d040197943a25d6fef9f8ccabb upstream.
+commit 305ab0a748c52eeaeb01d8cff6408842d19e5cb5 upstream.
 
-Make sure to drop the references taken to the child devices by
-of_find_device_by_node() during probe on driver unbind.
+For building a 64-bit kernel, both 32-bit and 64-bit VDSO binaries
+are built, so both 32-bit and 64-bit compilers (and tools) should be
+in the PATH environment variable.
 
-Fixes: c99993376f72 ("usb: dwc3: Add Amlogic G12A DWC3 glue")
-Cc: stable@vger.kernel.org	# 5.2
-Cc: Neil Armstrong <neil.armstrong@linaro.org>
-Signed-off-by: Johan Hovold <johan@kernel.org>
-Reviewed-by: Martin Blumenstingl <martin.blumenstingl@googlemail.com>
-Link: https://lore.kernel.org/r/20250724091910.21092-3-johan@kernel.org
+Signed-off-by: Randy Dunlap <rdunlap@infradead.org>
+Cc: "James E.J. Bottomley" <James.Bottomley@HansenPartnership.com>
+Cc: Helge Deller <deller@gmx.de>
+Cc: linux-parisc@vger.kernel.org
+Signed-off-by: Helge Deller <deller@gmx.de>
+Cc: stable@vger.kernel.org # v5.3+
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/usb/dwc3/dwc3-meson-g12a.c |    3 +++
- 1 file changed, 3 insertions(+)
+ arch/parisc/Makefile |    4 +++-
+ 1 file changed, 3 insertions(+), 1 deletion(-)
 
---- a/drivers/usb/dwc3/dwc3-meson-g12a.c
-+++ b/drivers/usb/dwc3/dwc3-meson-g12a.c
-@@ -844,6 +844,9 @@ static int dwc3_meson_g12a_remove(struct
- 	if (priv->drvdata->otg_switch_supported)
- 		usb_role_switch_unregister(priv->role_switch);
+--- a/arch/parisc/Makefile
++++ b/arch/parisc/Makefile
+@@ -39,7 +39,9 @@ endif
  
-+	put_device(priv->switch_desc.udc);
-+	put_device(priv->switch_desc.usb2_port);
-+
- 	of_platform_depopulate(dev);
+ export LD_BFD
  
- 	for (i = 0 ; i < PHY_COUNT ; ++i) {
+-# Set default 32 bits cross compilers for vdso
++# Set default 32 bits cross compilers for vdso.
++# This means that for 64BIT, both the 64-bit tools and the 32-bit tools
++# need to be in the path.
+ CC_ARCHES_32 = hppa hppa2.0 hppa1.1
+ CC_SUFFIXES  = linux linux-gnu unknown-linux-gnu suse-linux
+ CROSS32_COMPILE := $(call cc-cross-prefix, \
 
 
 
