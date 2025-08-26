@@ -1,147 +1,88 @@
-Return-Path: <stable+bounces-172913-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-172914-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0FB90B352DD
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 06:49:59 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id BE9E0B352EA
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 06:57:17 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 142551A83B45
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 04:50:19 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 7D66D5E8115
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 04:57:16 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3909B2E091E;
-	Tue, 26 Aug 2025 04:49:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 723362E2DCF;
+	Tue, 26 Aug 2025 04:57:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="AGOU2HDD"
+	dkim=pass (1024-bit key) header.d=linux.microsoft.com header.i=@linux.microsoft.com header.b="R5PlInEp"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E60F12D23B6;
-	Tue, 26 Aug 2025 04:49:53 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+Received: from linux.microsoft.com (linux.microsoft.com [13.77.154.182])
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id DC6D72DECB2;
+	Tue, 26 Aug 2025 04:57:09 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=13.77.154.182
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756183794; cv=none; b=igaSJPwC4b8EMJZh+xzVQigtMBYrnGODS3xj8usMeMKLn/APloLfBF0ubEL/XKOwcM9ZHuwgAJpV6biZXLthvLqtrBZM1RjjAgt73ItMwE5kvybS1Cc3iqPbkqXmmTxtIFHGTriAh0Py6Km0jGeQHJ35iH3PWkmogT1c5UYar8Y=
+	t=1756184231; cv=none; b=trRSqdWZwgqIL51zZ+ZIS25eB1OtEeBXHN4qFm4NCpodgGEN8aJjdygCcZ8KdCG3rt+Dy5WPecAY3ndKdp9xJznEo/kMNH4NUYNs/emnsWSowFTZ0D2V4RFaNqSmS7FAe9okcFZvBEAYJiuCBhlYdFRNBiebYGcB8OLY7OG+kpw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756183794; c=relaxed/simple;
-	bh=mrTYfgAhz8yJIWYyD+ab7SDQCpNIYQe9Kn5DqAcQJpU=;
-	h=Date:From:To:Cc:Subject:Message-Id:In-Reply-To:References:
-	 Mime-Version:Content-Type; b=nj+fFi6FFCBkLCFfesav5dc/THiAkAhwqpbT+Rgq8lzNnqOoMqiimz1U9Bi6ILo5IQL435YN3lNnfPC+5QvN25Shf7NpxFUsPZDuQp5rzJDFuJdv81Vygc+ST9pLRgXQWC0VlqnPNAdRefbFbttGcMOX2yoRdL7wVO28Wmi4cEE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=AGOU2HDD; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 60EB9C4CEF1;
-	Tue, 26 Aug 2025 04:49:50 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1756183793;
-	bh=mrTYfgAhz8yJIWYyD+ab7SDQCpNIYQe9Kn5DqAcQJpU=;
-	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-	b=AGOU2HDDCy6d14h/txWFuiD0IdaXRysDk6Dbpw4n4li24LSI+9kVsYYI1nxI4n4m6
-	 SbuIYsohrM1cYPTeY/HyYGVBpxZuBnMPh/BUsP56TuQTZgo7W9pHSOGaeiPOcj3os6
-	 O3BhEqhgjZmfLYkLGPpLZnzdWyMmWNEj1Q98oDoLOki0iyRwGWUiR9+3dIULnXei5X
-	 v6UNkUvGrXvCuJj2pNMX2kUI45+OTM6H6K25uUOj1YET7MGRoLDs5v5qE3GrsNkc2N
-	 m6qaVKhaVtOdx8/lMiVSQDQrzqsrxCC2pssxUTaNj7NnU4sakQD8nLdNDr/0HHhjAc
-	 Lr/FVDTwVp1zA==
-Date: Tue, 26 Aug 2025 13:49:48 +0900
-From: Masami Hiramatsu (Google) <mhiramat@kernel.org>
-To: Lance Yang <lance.yang@linux.dev>
-Cc: akpm@linux-foundation.org, fthain@linux-m68k.org, geert@linux-m68k.org,
- senozhatsky@chromium.org, amaindex@outlook.com, anna.schumaker@oracle.com,
- boqun.feng@gmail.com, ioworker0@gmail.com, joel.granados@kernel.org,
- jstultz@google.com, kent.overstreet@linux.dev, leonylgao@tencent.com,
- linux-kernel@vger.kernel.org, linux-m68k@lists.linux-m68k.org,
- longman@redhat.com, mingo@redhat.com, mingzhe.yang@ly.com,
- oak@helsinkinet.fi, peterz@infradead.org, rostedt@goodmis.org,
- tfiga@chromium.org, will@kernel.org, stable@vger.kernel.org
-Subject: Re: [PATCH 1/1] hung_task: fix warnings caused by unaligned lock
- pointers
-Message-Id: <20250826134948.4f5f5aa74849e7f56f106c83@kernel.org>
-In-Reply-To: <20250823050036.7748-1-lance.yang@linux.dev>
-References: <f79735e1-1625-4746-98ce-a3c40123c5af@linux.dev>
-	<20250823050036.7748-1-lance.yang@linux.dev>
-X-Mailer: Sylpheed 3.8.0beta1 (GTK+ 2.24.33; x86_64-pc-linux-gnu)
+	s=arc-20240116; t=1756184231; c=relaxed/simple;
+	bh=xwMIaGQKz8p0Si+xGqmhBmPMRxKtcpPXxfbp1aDgx/U=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=UIXdpeTjDgBipRuu1OIe1HducQQ7Ok0yaQcP/qjhX7h6LyShhDSt6f9CIsQfF6T/GjMTx/gtcJw+hSbXAG3pO+oFVbxtlflxVPa2D1whcI5jsaaoa8Ue4If7FUA2qKwwaBDt4jqIigyDTzFfZ/AOzqkO4btKl0tY8ox5NDxbD3U=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.microsoft.com; spf=pass smtp.mailfrom=linux.microsoft.com; dkim=pass (1024-bit key) header.d=linux.microsoft.com header.i=@linux.microsoft.com header.b=R5PlInEp; arc=none smtp.client-ip=13.77.154.182
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.microsoft.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.microsoft.com
+Received: by linux.microsoft.com (Postfix, from userid 1127)
+	id 5ACCC211829D; Mon, 25 Aug 2025 21:57:09 -0700 (PDT)
+DKIM-Filter: OpenDKIM Filter v2.11.0 linux.microsoft.com 5ACCC211829D
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.microsoft.com;
+	s=default; t=1756184229;
+	bh=1SFbtV4WkD6PXoKrfW4+V58ZRmMRw6Cp+HTFsBe/b9U=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=R5PlInEp8xIb3pHwGaQkKup92Sl6gUT5NR5COZvZXaLTfEnfE76mfeaHpy14ch4la
+	 nRCWzZDBENIerpuXmpjyriFlrvVGfGSIkxJjKL+iguGAFph78S5tQkQ7eRvYzkB+ea
+	 RH0Ogy98u8JsYR/tjb/+GEePlov1eMyfw6ZSSGGs=
+Date: Mon, 25 Aug 2025 21:57:09 -0700
+From: Saurabh Singh Sengar <ssengar@linux.microsoft.com>
+To: Jakub Kicinski <kuba@kernel.org>
+Cc: kys@microsoft.com, haiyangz@microsoft.com, wei.liu@kernel.org,
+	decui@microsoft.com, andrew+netdev@lunn.ch, davem@davemloft.net,
+	edumazet@google.com, pabeni@redhat.com,
+	shradhagupta@linux.microsoft.com, ernis@linux.microsoft.com,
+	dipayanroy@linux.microsoft.com, shirazsaleem@microsoft.com,
+	linux-hyperv@vger.kernel.org, netdev@vger.kernel.org,
+	linux-kernel@vger.kernel.org, ssengar@microsoft.com,
+	stable@vger.kernel.org
+Subject: Re: [PATCH net] net: mana: Remove redundant
+ netdev_lock_ops_to_full() calls
+Message-ID: <20250826045709.GA2238@linuxonhyperv3.guj3yctzbm1etfxqx2vob5hsef.xx.internal.cloudapp.net>
+References: <1756119794-20110-1-git-send-email-ssengar@linux.microsoft.com>
+ <20250825174133.30e58c60@kernel.org>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20250825174133.30e58c60@kernel.org>
+User-Agent: Mutt/1.5.21 (2010-09-15)
 
-On Sat, 23 Aug 2025 13:00:36 +0800
-Lance Yang <lance.yang@linux.dev> wrote:
-
-> From: Lance Yang <lance.yang@linux.dev>
+On Mon, Aug 25, 2025 at 05:41:33PM -0700, Jakub Kicinski wrote:
+> On Mon, 25 Aug 2025 04:03:14 -0700 Saurabh Sengar wrote:
+> > NET_SHAPER is always selected for MANA driver. When NET_SHAPER is enabled,
+> > netdev_lock_ops_to_full() reduces effectively to only an assert for lock,
+> > which is always held in the path when NET_SHAPER is enabled.
+> > 
+> > Remove the redundant netdev_lock_ops_to_full() call.
+> > 
+> > Fixes: d5c8f0e4e0cb ("net: mana: Fix potential deadlocks in mana napi ops")
+> > Cc: stable@vger.kernel.org
 > 
-> The blocker tracking mechanism assumes that lock pointers are at least
-> 4-byte aligned to use their lower bits for type encoding.
-> 
-> However, as reported by Geert Uytterhoeven, some architectures like m68k
-> only guarantee 2-byte alignment of 32-bit values. This breaks the
-> assumption and causes two related WARN_ON_ONCE checks to trigger.
-> 
-> To fix this, the runtime checks are adjusted. The first WARN_ON_ONCE in
-> hung_task_set_blocker() is changed to a simple 'if' that returns silently
-> for unaligned pointers. The second, now-invalid WARN_ON_ONCE in
-> hung_task_clear_blocker() is then removed.
-> 
-> Thanks to Geert for bisecting!
-> 
-> Reported-by: Geert Uytterhoeven <geert@linux-m68k.org>
-> Closes: https://lore.kernel.org/lkml/CAMuHMdW7Ab13DdGs2acMQcix5ObJK0O2dG_Fxzr8_g58Rc1_0g@mail.gmail.com
-> Fixes: e711faaafbe5 ("hung_task: replace blocker_mutex with encoded blocker")
-> Cc: <stable@vger.kernel.org>
-> Signed-off-by: Lance Yang <lance.yang@linux.dev>
+> If the call is a nop why is this a stable-worthy fix?
 
-Looks good to me. I think we can just ignore it for
-this debugging option.
-
-Reviewed-by: Masami Hiramatsu (Google) <mhiramat@kernel.org>
-
-Thank you,
-
-> ---
->  include/linux/hung_task.h | 8 +++++---
->  1 file changed, 5 insertions(+), 3 deletions(-)
-> 
-> diff --git a/include/linux/hung_task.h b/include/linux/hung_task.h
-> index 34e615c76ca5..69640f266a69 100644
-> --- a/include/linux/hung_task.h
-> +++ b/include/linux/hung_task.h
-> @@ -20,6 +20,10 @@
->   * always zero. So we can use these bits to encode the specific blocking
->   * type.
->   *
-> + * Note that on architectures like m68k with only 2-byte alignment, the
-> + * blocker tracking mechanism gracefully does nothing for any lock that is
-> + * not 4-byte aligned.
-> + *
->   * Type encoding:
->   * 00 - Blocked on mutex			(BLOCKER_TYPE_MUTEX)
->   * 01 - Blocked on semaphore			(BLOCKER_TYPE_SEM)
-> @@ -45,7 +49,7 @@ static inline void hung_task_set_blocker(void *lock, unsigned long type)
->  	 * If the lock pointer matches the BLOCKER_TYPE_MASK, return
->  	 * without writing anything.
->  	 */
-> -	if (WARN_ON_ONCE(lock_ptr & BLOCKER_TYPE_MASK))
-> +	if (lock_ptr & BLOCKER_TYPE_MASK)
->  		return;
->  
->  	WRITE_ONCE(current->blocker, lock_ptr | type);
-> @@ -53,8 +57,6 @@ static inline void hung_task_set_blocker(void *lock, unsigned long type)
->  
->  static inline void hung_task_clear_blocker(void)
->  {
-> -	WARN_ON_ONCE(!READ_ONCE(current->blocker));
-> -
->  	WRITE_ONCE(current->blocker, 0UL);
->  }
->  
-> -- 
-> 2.49.0
-> 
+I am fine removing CC and fixes tag.
+I can send a V2 for it.
 
 
--- 
-Masami Hiramatsu (Google) <mhiramat@kernel.org>
+- Saurabh
+
 
