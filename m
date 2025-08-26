@@ -1,58 +1,57 @@
-Return-Path: <stable+bounces-173500-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-176131-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id CB590B35E00
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 13:50:40 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 8D478B36C24
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 16:53:14 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 07EAB4607A2
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 11:40:41 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 7A3255676D3
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 14:37:31 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9953729D280;
-	Tue, 26 Aug 2025 11:40:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7FA0F35CEC4;
+	Tue, 26 Aug 2025 14:34:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Gbui+Nk3"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="h7ZNs/HO"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 562F717332C;
-	Tue, 26 Aug 2025 11:40:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3B0E41CD1F;
+	Tue, 26 Aug 2025 14:34:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756208410; cv=none; b=pp5AWHbo3aNU9fZ9OP0axcXNdQAKJntxQvIE713sFjl+66e67XgV3M28b+cwewnw8BIRyBgzFoAlnt4LFHbKicbG4w1tOTmwMXuq+7DQxil9bzMjhWOpDP3pbbUip/78pmcMpf3bmr/CSFszUDx8TqVvxHxQ4MqmYAdluQBMyBE=
+	t=1756218861; cv=none; b=LXQRuu4U1vQ9fqZkTnxKWlgLUY6nIz45qdXQwj9RVRunx87I/MsYv6r9OGoSOgZ2sNSjSeNDLKxxJL4kSS8bQsghQrJyU2inOUSVsORI5ZKO8i59clqXJX4gnIyt/eaV46Juo3QOi1aUBZxZwumcpGwBIUQ7sQJ7QfyPb7Gtges=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756208410; c=relaxed/simple;
-	bh=kyd5+5dGTlHqEBbKoqPlwNzwWXUixynv9NKozWGq9Ik=;
+	s=arc-20240116; t=1756218861; c=relaxed/simple;
+	bh=C1oxVsv/N84F24UFHO7k78oAKWdDov5erW0HcD/XUKs=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=aSrSglocUTPeOkAhmg31+bu/L/jqH+KnUgYryxgBhCZXjiVfnaQB9l+GNeifgWDkgSlJ+jfQT4S7f+ougGL/ZoQPzh7N142JFp2mZCX2TJg+BRbLnKM5K6lLF5H+noLCQ2V+DYT4iDVYRP/4xDY6q3kHOtPs0dFjptbZwwRs/IQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Gbui+Nk3; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D9368C4CEF1;
-	Tue, 26 Aug 2025 11:40:09 +0000 (UTC)
+	 MIME-Version; b=XgOWiuYgOkUg1IoM/JuxjmQkhqe3anVaSMPdEwI6Zd5yXkiVz+HFxvONopcdNjSplDa2pfvdaFdUT1Sbpyk3GCK80PaE9kkOvBm7eivogxDmkJfVlJbqRx4tssYF2NXX0XdvRl1nbfwFOt9WCL99QJ4FFkCSdQFE+JbvyX+yMLw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=h7ZNs/HO; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C5395C113CF;
+	Tue, 26 Aug 2025 14:34:20 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1756208410;
-	bh=kyd5+5dGTlHqEBbKoqPlwNzwWXUixynv9NKozWGq9Ik=;
+	s=korg; t=1756218861;
+	bh=C1oxVsv/N84F24UFHO7k78oAKWdDov5erW0HcD/XUKs=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Gbui+Nk3xCr3tl+9VUO1D+CFskavgQzrXpEGonbbVzwGYPgoNRCxvDg/Y7W479cOc
-	 F+JY7VT3gj7p383GNN7vAU0408LEiLwXCXAqM3ToG3RdMBbPw51X118Qxrz2b15/m3
-	 6zty2X6DV8ven7Rc+R76jNXm9E5VG5RY5TQjVUB0=
+	b=h7ZNs/HOh8/y5ec7YBAg7GGCkwZ99cUzguq8/cmXxVrdgOAACL/Zv40MdDxe9lPYh
+	 xdB3DGu4s11JGiZAlnIWgsCvSOVARJzTPjSNsFZME0OGkJqvyMeawOrTgEPsazIb/9
+	 LDdmVxARl0/IOlVvX0C3xDtMXA1/KzVDf8Yhhocc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Chi Zhiling <chizhiling@kylinos.cn>,
-	Jan Kara <jack@suse.cz>,
-	Josef Bacik <josef@toxicpanda.com>,
-	"Matthew Wilcox (Oracle)" <willy@infradead.org>,
-	Andrew Morton <akpm@linux-foundation.org>
-Subject: [PATCH 6.12 073/322] readahead: fix return value of page_cache_next_miss() when no hole is found
+	Petro Pavlov <petro.pavlov@vastdata.com>,
+	Dai Ngo <dai.ngo@oracle.com>,
+	Jeff Layton <jlayton@kernel.org>,
+	Chuck Lever <chuck.lever@oracle.com>
+Subject: [PATCH 5.4 162/403] NFSD: detect mismatch of file handle and delegation stateid in OPEN op
 Date: Tue, 26 Aug 2025 13:08:08 +0200
-Message-ID: <20250826110917.390261525@linuxfoundation.org>
+Message-ID: <20250826110911.366258520@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250826110915.169062587@linuxfoundation.org>
-References: <20250826110915.169062587@linuxfoundation.org>
+In-Reply-To: <20250826110905.607690791@linuxfoundation.org>
+References: <20250826110905.607690791@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,49 +63,59 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+5.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Chi Zhiling <chizhiling@kylinos.cn>
+From: Dai Ngo <dai.ngo@oracle.com>
 
-commit bbcaee20e03ecaeeecba32a703816a0d4502b6c4 upstream.
+commit 9c65001c57164033ad08b654c8b5ae35512ddf4a upstream.
 
-max_scan in page_cache_next_miss always decreases to zero when no hole is
-found, causing the return value to be index + 0.
+When the client sends an OPEN with claim type CLAIM_DELEG_CUR_FH or
+CLAIM_DELEGATION_CUR, the delegation stateid and the file handle
+must belong to the same file, otherwise return NFS4ERR_INVAL.
 
-Fix this by preserving the max_scan value throughout the loop.
+Note that RFC8881, section 8.2.4, mandates the server to return
+NFS4ERR_BAD_STATEID if the selected table entry does not match the
+current filehandle. However returning NFS4ERR_BAD_STATEID in the
+OPEN causes the client to retry the operation and therefor get the
+client into a loop. To avoid this situation we return NFS4ERR_INVAL
+instead.
 
-Jan said "From what I know and have seen in the past, wrong responses
-from page_cache_next_miss() can lead to readahead window reduction and
-thus reduced read speeds."
-
-Link: https://lkml.kernel.org/r/20250605054935.2323451-1-chizhiling@163.com
-Fixes: 901a269ff3d5 ("filemap: fix page_cache_next_miss() when no hole found")
-Signed-off-by: Chi Zhiling <chizhiling@kylinos.cn>
-Reviewed-by: Jan Kara <jack@suse.cz>
-Cc: Josef Bacik <josef@toxicpanda.com>
-Cc: Matthew Wilcox (Oracle) <willy@infradead.org>
-Cc: <stable@vger.kernel.org>
-Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
+Reported-by: Petro Pavlov <petro.pavlov@vastdata.com>
+Fixes: c44c5eeb2c02 ("[PATCH] nfsd4: add open state code for CLAIM_DELEGATE_CUR")
+Cc: stable@vger.kernel.org
+Signed-off-by: Dai Ngo <dai.ngo@oracle.com>
+Reviewed-by: Jeff Layton <jlayton@kernel.org>
+Signed-off-by: Chuck Lever <chuck.lever@oracle.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- mm/filemap.c |    3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+ fs/nfsd/nfs4state.c |   14 ++++++++++++++
+ 1 file changed, 14 insertions(+)
 
---- a/mm/filemap.c
-+++ b/mm/filemap.c
-@@ -1750,8 +1750,9 @@ pgoff_t page_cache_next_miss(struct addr
- 			     pgoff_t index, unsigned long max_scan)
- {
- 	XA_STATE(xas, &mapping->i_pages, index);
-+	unsigned long nr = max_scan;
- 
--	while (max_scan--) {
-+	while (nr--) {
- 		void *entry = xas_next(&xas);
- 		if (!entry || xa_is_value(entry))
- 			return xas.xa_index;
+--- a/fs/nfsd/nfs4state.c
++++ b/fs/nfsd/nfs4state.c
+@@ -5081,6 +5081,20 @@ nfsd4_process_open2(struct svc_rqst *rqs
+ 		status = nfs4_check_deleg(cl, open, &dp);
+ 		if (status)
+ 			goto out;
++		if (dp && nfsd4_is_deleg_cur(open) &&
++				(dp->dl_stid.sc_file != fp)) {
++			/*
++			 * RFC8881 section 8.2.4 mandates the server to return
++			 * NFS4ERR_BAD_STATEID if the selected table entry does
++			 * not match the current filehandle. However returning
++			 * NFS4ERR_BAD_STATEID in the OPEN can cause the client
++			 * to repeatedly retry the operation with the same
++			 * stateid, since the stateid itself is valid. To avoid
++			 * this situation NFSD returns NFS4ERR_INVAL instead.
++			 */
++			status = nfserr_inval;
++			goto out;
++		}
+ 		stp = nfsd4_find_and_lock_existing_open(fp, open);
+ 	} else {
+ 		open->op_file = NULL;
 
 
 
