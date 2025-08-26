@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-174051-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-173159-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id DAD85B3610F
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 15:06:08 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id C3398B35BFA
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 13:30:01 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 3100F2A2BDD
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 13:02:48 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 9F49A1885106
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 11:25:50 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E981C18F2FC;
-	Tue, 26 Aug 2025 13:02:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id BD1682BEFF0;
+	Tue, 26 Aug 2025 11:25:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="LFicMUXu"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="QTWQOx67"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A653418DB2A;
-	Tue, 26 Aug 2025 13:02:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 78B1D239573;
+	Tue, 26 Aug 2025 11:25:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756213363; cv=none; b=hL5sYYjnb28Mktc/cA5Y2c17SnH8hy4X6UKRu8lcFhVTi+AmnK5UNVTVE5e0zj+OUzn3e4j75CI+inCJzIIgPYC5oACcr8ky0rz7xJjX/41rVQAj3wTB/O4CDjcsS57X6VInufmIVHVAY1K0H29IviGNc+PCPHpaCYZHwsX3oSQ=
+	t=1756207525; cv=none; b=WYlzsnjfSN4lx3OS2T3e0N5abZrDuYOFNwzcwO4HBuefqXyTgnm/eiFmB9LTWn/jekgzJ462WleAewUQ7SxZXtTQEXYuTkTO7U6IcCa4XAnDDpAPeI03nAkvtl1/Htc2tCR3DA/N7/szwmewMbDF8w52ra1vfH2+HcbXUSTwUD4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756213363; c=relaxed/simple;
-	bh=BLNZt56qHCDqpg8NNap5b25UOwXFnPOU8LTZnA1wlJY=;
+	s=arc-20240116; t=1756207525; c=relaxed/simple;
+	bh=lzMXDcnzhnvnFcAfm2Fv2h+pKdXWAYvJyf4wOpi7//Q=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=IW0fnIAzwbgGX0ImaLouy0YYzRpFq3P38jziXfCL2Hphe/j5t//MhaKAzkH/BlnPJxCEaMR11bPB3X2KTiSsL+8J6V65QKmLxsA/QNNokIIQyukkrYv34HcYPkNRjM4QC9blvZExU2FkEBCYC8nGOltRxec/QxBt/TIbKfneX5U=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=LFicMUXu; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D5C56C4CEF1;
-	Tue, 26 Aug 2025 13:02:41 +0000 (UTC)
+	 MIME-Version; b=gPrOLeH/7pswyzDnnzUVNrq58QLk65CReSrfbc6bVhiiiWPP4Cae2w8Osc/Xvtj8X3ZfShaPMxHhY5vwgMOMwpO95v2sLqO3L2YXyeQqkPgRZJ8LE4awqJRJXbVCrkiLKYLhs9h/WDOo58rdJmLg58wXodvo2NfZCN7EMF1E2s0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=QTWQOx67; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0CBB2C4CEF1;
+	Tue, 26 Aug 2025 11:25:24 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1756213362;
-	bh=BLNZt56qHCDqpg8NNap5b25UOwXFnPOU8LTZnA1wlJY=;
+	s=korg; t=1756207525;
+	bh=lzMXDcnzhnvnFcAfm2Fv2h+pKdXWAYvJyf4wOpi7//Q=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=LFicMUXuQP1mBqiWjQ4danyr9hNclyuMrEaMX7IPWw1x4CLEYn8n7hZskVxPLJMXx
-	 9FP+/6LhV1abd9U/E8CPJsZ2JW7g32+ruGtNVwKra/nGANMh9p26O4ZPEs+iUHM6WQ
-	 /np4Xo5dDhayN9l1DtL/Pn5QCvR+YIdU/Z0wVK3E=
+	b=QTWQOx67c83f1Te2cGCBKDOMSUXIfu9AwxR8Nj9w8GWLWXUdmS82i/oSfdrv0hOR7
+	 YAUZZbw1PP8O2ikZytM0GzF9f/vP3bSfSOs0M4RvNP+lQbA6QylpFlnpaqKp69aOwC
+	 fii/v831mNtoVWIeAeBeF+7FF837IPlVLGkDnsgc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Waiman Long <longman@redhat.com>,
-	Catalin Marinas <catalin.marinas@arm.com>,
-	Andrew Morton <akpm@linux-foundation.org>
-Subject: [PATCH 6.6 319/587] mm/kmemleak: avoid soft lockup in __kmemleak_do_cleanup()
+	Lijo Lazar <lijo.lazar@amd.com>,
+	Mangesh Gadre <Mangesh.Gadre@amd.com>,
+	Asad Kamal <asad.kamal@amd.com>,
+	Alex Deucher <alexander.deucher@amd.com>
+Subject: [PATCH 6.16 184/457] drm/amdgpu: Update supported modes for GC v9.5.0
 Date: Tue, 26 Aug 2025 13:07:48 +0200
-Message-ID: <20250826111001.031185623@linuxfoundation.org>
+Message-ID: <20250826110941.919860841@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250826110952.942403671@linuxfoundation.org>
-References: <20250826110952.942403671@linuxfoundation.org>
+In-Reply-To: <20250826110937.289866482@linuxfoundation.org>
+References: <20250826110937.289866482@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,71 +63,54 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.16-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Waiman Long <longman@redhat.com>
+From: Lijo Lazar <lijo.lazar@amd.com>
 
-commit d1534ae23c2b6be350c8ab060803fbf6e9682adc upstream.
+commit 389d79a195a9f71a103b39097ee8341a7ca60927 upstream.
 
-A soft lockup warning was observed on a relative small system x86-64
-system with 16 GB of memory when running a debug kernel with kmemleak
-enabled.
+For GC v9.5.0 SOCs, both CPX and QPX compute modes are also supported in
+NPS2 mode.
 
-  watchdog: BUG: soft lockup - CPU#8 stuck for 33s! [kworker/8:1:134]
-
-The test system was running a workload with hot unplug happening in
-parallel.  Then kemleak decided to disable itself due to its inability to
-allocate more kmemleak objects.  The debug kernel has its
-CONFIG_DEBUG_KMEMLEAK_MEM_POOL_SIZE set to 40,000.
-
-The soft lockup happened in kmemleak_do_cleanup() when the existing
-kmemleak objects were being removed and deleted one-by-one in a loop via a
-workqueue.  In this particular case, there are at least 40,000 objects
-that need to be processed and given the slowness of a debug kernel and the
-fact that a raw_spinlock has to be acquired and released in
-__delete_object(), it could take a while to properly handle all these
-objects.
-
-As kmemleak has been disabled in this case, the object removal and
-deletion process can be further optimized as locking isn't really needed.
-However, it is probably not worth the effort to optimize for such an edge
-case that should rarely happen.  So the simple solution is to call
-cond_resched() at periodic interval in the iteration loop to avoid soft
-lockup.
-
-Link: https://lkml.kernel.org/r/20250728190248.605750-1-longman@redhat.com
-Signed-off-by: Waiman Long <longman@redhat.com>
-Acked-by: Catalin Marinas <catalin.marinas@arm.com>
-Cc: <stable@vger.kernel.org>
-Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
+Signed-off-by: Lijo Lazar <lijo.lazar@amd.com>
+Acked-by: Mangesh Gadre <Mangesh.Gadre@amd.com>
+Reviewed-by: Asad Kamal <asad.kamal@amd.com>
+Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
+(cherry picked from commit 9d1ac25c7f830e0132aa816393b1e9f140e71148)
+Cc: stable@vger.kernel.org
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- mm/kmemleak.c |    5 +++++
- 1 file changed, 5 insertions(+)
+ drivers/gpu/drm/amd/amdgpu/aqua_vanjaram.c |    5 ++++-
+ 1 file changed, 4 insertions(+), 1 deletion(-)
 
---- a/mm/kmemleak.c
-+++ b/mm/kmemleak.c
-@@ -2006,6 +2006,7 @@ static const struct file_operations kmem
- static void __kmemleak_do_cleanup(void)
+--- a/drivers/gpu/drm/amd/amdgpu/aqua_vanjaram.c
++++ b/drivers/gpu/drm/amd/amdgpu/aqua_vanjaram.c
+@@ -453,6 +453,7 @@ static int __aqua_vanjaram_get_px_mode_i
+ 					    uint16_t *nps_modes)
  {
- 	struct kmemleak_object *object, *tmp;
-+	unsigned int cnt = 0;
+ 	struct amdgpu_device *adev = xcp_mgr->adev;
++	uint32_t gc_ver = amdgpu_ip_version(adev, GC_HWIP, 0);
  
- 	/*
- 	 * Kmemleak has already been disabled, no need for RCU list traversal
-@@ -2014,6 +2015,10 @@ static void __kmemleak_do_cleanup(void)
- 	list_for_each_entry_safe(object, tmp, &object_list, object_list) {
- 		__remove_object(object);
- 		__delete_object(object);
-+
-+		/* Call cond_resched() once per 64 iterations to avoid soft lockup */
-+		if (!(++cnt & 0x3f))
-+			cond_resched();
- 	}
- }
- 
+ 	if (!num_xcp || !nps_modes || !(xcp_mgr->supp_xcp_modes & BIT(px_mode)))
+ 		return -EINVAL;
+@@ -476,12 +477,14 @@ static int __aqua_vanjaram_get_px_mode_i
+ 		*num_xcp = 4;
+ 		*nps_modes = BIT(AMDGPU_NPS1_PARTITION_MODE) |
+ 			     BIT(AMDGPU_NPS4_PARTITION_MODE);
++		if (gc_ver == IP_VERSION(9, 5, 0))
++			*nps_modes |= BIT(AMDGPU_NPS2_PARTITION_MODE);
+ 		break;
+ 	case AMDGPU_CPX_PARTITION_MODE:
+ 		*num_xcp = NUM_XCC(adev->gfx.xcc_mask);
+ 		*nps_modes = BIT(AMDGPU_NPS1_PARTITION_MODE) |
+ 			     BIT(AMDGPU_NPS4_PARTITION_MODE);
+-		if (amdgpu_sriov_vf(adev))
++		if (gc_ver == IP_VERSION(9, 5, 0))
+ 			*nps_modes |= BIT(AMDGPU_NPS2_PARTITION_MODE);
+ 		break;
+ 	default:
 
 
 
