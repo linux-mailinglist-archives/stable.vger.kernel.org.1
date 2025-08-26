@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-174881-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-173759-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4D006B36536
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 15:45:48 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 52CC9B35F87
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 14:50:23 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 4C1FD8A58D1
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 13:39:22 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id EDA621BA47CD
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 12:50:25 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0184B393DF2;
-	Tue, 26 Aug 2025 13:39:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id BB2081C6BE;
+	Tue, 26 Aug 2025 12:49:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="gm0fs3TI"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="cKNs8pmO"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A46702139C9;
-	Tue, 26 Aug 2025 13:39:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 77947FC1D;
+	Tue, 26 Aug 2025 12:49:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756215561; cv=none; b=jWp0dte2hlVr+7NcbFp07DEr0ti8vU21SFcv6MYif7S8x6GMQ4cPC/Cv//xRPbGlqMbN6GB8chLyauls+RYlLhLSPFks2KFTUqYLule0iU2H2nIbbfCpRNce1TBAibK+ppSjopGRzDz3wZ/NiSrvO2eu6IxwCtItHz/lueWk2gg=
+	t=1756212596; cv=none; b=RUnAqdb5PjS15FVU/ZY8YLfUxUJGsMJ08nzZARwn/rCzcyIqf5tw0M3Yy23pU4vdRYczWtht9MOTAcwfkxP0jXgauZTVJSGCxMztOpwEno5Ir5MTsSlDeB5dE9KfaHZTiTrOVdwItczYjYVb6IEl7Mt/IkjgtzCbvZutNfSJAFs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756215561; c=relaxed/simple;
-	bh=MqJrrWzPvSPNq3fIoCYWKeXs2xTQfMuNOP0Ucsukddg=;
+	s=arc-20240116; t=1756212596; c=relaxed/simple;
+	bh=xO6KEbxNGHdGl9ZyKU2mBZpZWbLxCoHdA+NJRKl/2ds=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=bY6xtopfEtngBw365H0YP1laFaba4mZJ4vTM5C3KbGYJ3q6Sgr1ChMv4Ms0xDPQVWAo3jSIFYpwHjf1119k7TUyI+wS2/HdCran6emnmwijMZCTy5qJqd8UZUDSulNP3XuD+k/r5/kXFsCMqbzU4rZmdNtCRvry9ZB91bQs4pQs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=gm0fs3TI; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 36087C4CEF1;
-	Tue, 26 Aug 2025 13:39:21 +0000 (UTC)
+	 MIME-Version; b=hgdOQRK6pQW7N69/BylwTmG9f5t+PphxVY5us85POD3/bszZmiciwXIGLGjw0tOrpM/USEjnTH9LzBGHW5AFlLmkCSDu43QAj6almqfozJPBja3s8P25DxvNStmEWdcsNWLq4KNXRhBR/OtPju24brLnX1dTxEfv7AmVRNnZJW0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=cKNs8pmO; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0CD51C4CEF1;
+	Tue, 26 Aug 2025 12:49:55 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1756215561;
-	bh=MqJrrWzPvSPNq3fIoCYWKeXs2xTQfMuNOP0Ucsukddg=;
+	s=korg; t=1756212596;
+	bh=xO6KEbxNGHdGl9ZyKU2mBZpZWbLxCoHdA+NJRKl/2ds=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=gm0fs3TI6Rur20/jJCrgChYFC/cXreQTku+VhedRvERe8wai7Sj1TnKA1Y9nVxYph
-	 Tfo8PLOZad1A1GUkKEBR535PXVWUnCcVfC5LzZ4PO8Kp/FstN/vjSaqKle8onPaESi
-	 yA2rJJilfzcCln9RxR+k1gGOET0Vu5eMja3YlnXc=
+	b=cKNs8pmOkMrRphYmeO08LO57PmKeek+kj4c+Hq/3e/r58IXwGz1d+PtAmprZcbvEh
+	 832W7z6Im2lFgQAyZXnMO+IRbWvHCDqB6Cj33Rbf0OFJnHmt1zDcSrqSJvHk0k4Ljo
+	 6BCR78MzW0Dnqbmrgm4IICTmeX6cgMoIiHoqXUnw=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Abdun Nihaal <abdun.nihaal@gmail.com>,
-	Mark Brown <broonie@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 080/644] regmap: fix potential memory leak of regmap_bus
+	lei lu <llfamsec@gmail.com>,
+	Jeff Layton <jlayton@kernel.org>,
+	Chuck Lever <chuck.lever@oracle.com>
+Subject: [PATCH 6.6 022/587] nfsd: handle get_client_locked() failure in nfsd4_setclientid_confirm()
 Date: Tue, 26 Aug 2025 13:02:51 +0200
-Message-ID: <20250826110948.480096770@linuxfoundation.org>
+Message-ID: <20250826110953.519814490@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250826110946.507083938@linuxfoundation.org>
-References: <20250826110946.507083938@linuxfoundation.org>
+In-Reply-To: <20250826110952.942403671@linuxfoundation.org>
+References: <20250826110952.942403671@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,49 +62,76 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Abdun Nihaal <abdun.nihaal@gmail.com>
+From: Jeff Layton <jlayton@kernel.org>
 
-[ Upstream commit c871c199accb39d0f4cb941ad0dccabfc21e9214 ]
+commit 908e4ead7f757504d8b345452730636e298cbf68 upstream.
 
-When __regmap_init() is called from __regmap_init_i2c() and
-__regmap_init_spi() (and their devm versions), the bus argument
-obtained from regmap_get_i2c_bus() and regmap_get_spi_bus(), may be
-allocated using kmemdup() to support quirks. In those cases, the
-bus->free_on_exit field is set to true.
+Lei Lu recently reported that nfsd4_setclientid_confirm() did not check
+the return value from get_client_locked(). a SETCLIENTID_CONFIRM could
+race with a confirmed client expiring and fail to get a reference. That
+could later lead to a UAF.
 
-However, inside __regmap_init(), buf is not freed on any error path.
-This could lead to a memory leak of regmap_bus when __regmap_init()
-fails. Fix that by freeing bus on error path when free_on_exit is set.
+Fix this by getting a reference early in the case where there is an
+extant confirmed client. If that fails then treat it as if there were no
+confirmed client found at all.
 
-Fixes: ea030ca68819 ("regmap-i2c: Set regmap max raw r/w from quirks")
-Signed-off-by: Abdun Nihaal <abdun.nihaal@gmail.com>
-Link: https://patch.msgid.link/20250626172823.18725-1-abdun.nihaal@gmail.com
-Signed-off-by: Mark Brown <broonie@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+In the case where the unconfirmed client is expiring, just fail and
+return the result from get_client_locked().
+
+Reported-by: lei lu <llfamsec@gmail.com>
+Closes: https://lore.kernel.org/linux-nfs/CAEBF3_b=UvqzNKdnfD_52L05Mqrqui9vZ2eFamgAbV0WG+FNWQ@mail.gmail.com/
+Fixes: d20c11d86d8f ("nfsd: Protect session creation and client confirm using client_lock")
+Cc: stable@vger.kernel.org
+Signed-off-by: Jeff Layton <jlayton@kernel.org>
+Signed-off-by: Chuck Lever <chuck.lever@oracle.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/base/regmap/regmap.c | 2 ++
- 1 file changed, 2 insertions(+)
+ fs/nfsd/nfs4state.c |   20 +++++++++++++++-----
+ 1 file changed, 15 insertions(+), 5 deletions(-)
 
-diff --git a/drivers/base/regmap/regmap.c b/drivers/base/regmap/regmap.c
-index 6d94ad8bf1eb7..ebddc69bc969c 100644
---- a/drivers/base/regmap/regmap.c
-+++ b/drivers/base/regmap/regmap.c
-@@ -1264,6 +1264,8 @@ struct regmap *__regmap_init(struct device *dev,
- err_map:
- 	kfree(map);
- err:
-+	if (bus && bus->free_on_exit)
-+		kfree(bus);
- 	return ERR_PTR(ret);
- }
- EXPORT_SYMBOL_GPL(__regmap_init);
--- 
-2.39.5
-
+--- a/fs/nfsd/nfs4state.c
++++ b/fs/nfsd/nfs4state.c
+@@ -4282,10 +4282,16 @@ nfsd4_setclientid_confirm(struct svc_rqs
+ 	}
+ 	status = nfs_ok;
+ 	if (conf) {
+-		old = unconf;
+-		unhash_client_locked(old);
+-		nfsd4_change_callback(conf, &unconf->cl_cb_conn);
+-	} else {
++		if (get_client_locked(conf) == nfs_ok) {
++			old = unconf;
++			unhash_client_locked(old);
++			nfsd4_change_callback(conf, &unconf->cl_cb_conn);
++		} else {
++			conf = NULL;
++		}
++	}
++
++	if (!conf) {
+ 		old = find_confirmed_client_by_name(&unconf->cl_name, nn);
+ 		if (old) {
+ 			status = nfserr_clid_inuse;
+@@ -4302,10 +4308,14 @@ nfsd4_setclientid_confirm(struct svc_rqs
+ 			}
+ 			trace_nfsd_clid_replaced(&old->cl_clientid);
+ 		}
++		status = get_client_locked(unconf);
++		if (status != nfs_ok) {
++			old = NULL;
++			goto out;
++		}
+ 		move_to_confirmed(unconf);
+ 		conf = unconf;
+ 	}
+-	get_client_locked(conf);
+ 	spin_unlock(&nn->client_lock);
+ 	if (conf == unconf)
+ 		fsnotify_dentry(conf->cl_nfsd_info_dentry, FS_MODIFY);
 
 
 
