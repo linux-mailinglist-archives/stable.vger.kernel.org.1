@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-173686-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-175441-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9DE38B35E6A
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 13:57:18 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 91129B36835
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 16:13:59 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id EA96E1BA6617
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 11:48:35 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 6AE6517372D
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 14:06:16 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 15AE626C3A4;
-	Tue, 26 Aug 2025 11:48:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 691D7356903;
+	Tue, 26 Aug 2025 14:04:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="mq1sdYtc"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="MIIoBAub"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C8BB120330;
-	Tue, 26 Aug 2025 11:48:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 27873302CA6;
+	Tue, 26 Aug 2025 14:04:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756208892; cv=none; b=TUTcwj7T89ahJWplv3Y9buxfH+hXZ0zPpQm44D0C6Fg/eTTccXzcyrxh+iRyC5CEezdLF5xnPnxsddWBTwEX7HjxQG098y7NA+CkQfLXEId59j3p7NPX7JQDMDgtpd0wsN5KwPPpUCUcD0ALhM+XNAjzg/1Zx5ZT1yafwh2wQuo=
+	t=1756217052; cv=none; b=tlAMmAF96vFsYK2RitnkLoOlVFLYve5OFQanMpNvwtc+/MJYG27dSBM1TYqLxsV972wfNZplJ+p6dupHYHw3fUCEsa6esefrwhnTXLhSDB8Wnf37YvjORMf8jgYRdLj6YKU0lBLJGhjEpBnokWxPnMnPTjG27sMwjn9g48mlTXw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756208892; c=relaxed/simple;
-	bh=Qh/nra2OsacmAPogS8JnlTcet/7GRpDVsSWI5mIpt18=;
+	s=arc-20240116; t=1756217052; c=relaxed/simple;
+	bh=ZyNPjbjuv6fL8DtcrQkfDqS+gIqDONI0pR1IhAJXdnk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=NZkY/vfKfvorV84gVcOuil5P4jFhHowCUd/7hnP1lNLHGrpTyrIXNOVDKc5DRdXM83lS8S/PmYhQ5kvyXqytqufNh4D+QRlK7ZlfYe5NQYBZIE4kP4M3PzV3D38lRZ/klLvQDnK68D/g1FCL2iMFz7cjWsLK2iuu/15PbBdumJM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=mq1sdYtc; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 58822C4CEF1;
-	Tue, 26 Aug 2025 11:48:12 +0000 (UTC)
+	 MIME-Version:Content-Type; b=dI7RXE6vB22R57+m7kwnXr1BLj3SVN/7NolZk4tYd/1XvvloWxUK3Uh5Mbyz1rIl/XV8/U40Ay98JdTukGp35PzmL1L4qcPVnklaPtXu9ksLK1QIcaz8AzqJjwwbsPoM0UUw9McUV+6oAn8WViUTdNQoXEAdE2CMdNzbcMfpHwU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=MIIoBAub; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id AFA20C4CEF1;
+	Tue, 26 Aug 2025 14:04:11 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1756208892;
-	bh=Qh/nra2OsacmAPogS8JnlTcet/7GRpDVsSWI5mIpt18=;
+	s=korg; t=1756217052;
+	bh=ZyNPjbjuv6fL8DtcrQkfDqS+gIqDONI0pR1IhAJXdnk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=mq1sdYtcK0l9I7E7orkt1Kga7jU1j73TfyT1zT5keEpMUZYSJWfYettkbOenV2GvA
-	 9oCZhIadrwn0iRArKBWvqbmvewU911yT1C7cttbbN8ecRaXfjUHqUuufAkC3JCu2CC
-	 flYCQHw8EFMYI+KUsfqgB2xUCh3xHN2ALJdBCFb4=
+	b=MIIoBAub4yRBajwYNq5aBFcWQt4fiFxOLBlDZddDbXwC7z5vGiLlN8dvEX6WqSIaG
+	 32ctMTsNlD+FynqN7jy7rT5Vi1hbA9N3t6eXxL8SP8MmQdovOJfuQXJCnjNQPeKu2d
+	 PTwQOzhYZUKRQsDd+mq1+caOUxXqkMCJxpNjdiZ0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Baihan Li <libaihan@huawei.com>,
-	Yongbang Shi <shiyongbang@huawei.com>,
-	Dmitry Baryshkov <dmitry.baryshkov@oss.qualcomm.com>,
+	=?UTF-8?q?Uwe=20Kleine-K=C3=B6nig?= <u.kleine-koenig@baylibre.com>,
+	AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>,
+	=?UTF-8?q?Uwe=20Kleine-K=C3=B6nig?= <ukleinek@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 286/322] drm/hisilicon/hibmc: fix the hibmc loaded failed bug
+Subject: [PATCH 5.15 610/644] pwm: mediatek: Fix duty and period setting
 Date: Tue, 26 Aug 2025 13:11:41 +0200
-Message-ID: <20250826110922.975760272@linuxfoundation.org>
+Message-ID: <20250826111001.668691828@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250826110915.169062587@linuxfoundation.org>
-References: <20250826110915.169062587@linuxfoundation.org>
+In-Reply-To: <20250826110946.507083938@linuxfoundation.org>
+References: <20250826110946.507083938@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,55 +61,87 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Baihan Li <libaihan@huawei.com>
+From: Uwe Kleine-König <u.kleine-koenig@baylibre.com>
 
-[ Upstream commit 93a08f856fcc5aaeeecad01f71bef3088588216a ]
+[ Upstream commit f21d136caf8171f94159d975ea4620c164431bd9 ]
 
-When hibmc loaded failed, the driver use hibmc_unload to free the
-resource, but the mutexes in mode.config are not init, which will
-access an NULL pointer. Just change goto statement to return, because
-hibnc_hw_init() doesn't need to free anything.
+The period generated by the hardware is
 
-Fixes: b3df5e65cc03 ("drm/hibmc: Drop drm_vblank_cleanup")
-Signed-off-by: Baihan Li <libaihan@huawei.com>
-Signed-off-by: Yongbang Shi <shiyongbang@huawei.com>
-Reviewed-by: Dmitry Baryshkov <dmitry.baryshkov@oss.qualcomm.com>
-Link: https://lore.kernel.org/r/20250813094238.3722345-5-shiyongbang@huawei.com
-Signed-off-by: Dmitry Baryshkov <dmitry.baryshkov@oss.qualcomm.com>
+	(PWMDWIDTH + 1) << CLKDIV) / freq
+
+according to my tests with a signal analyser and also the documentation.
+
+The current algorithm doesn't consider the `+ 1` part and so configures
+slightly too high periods. The same issue exists for the duty cycle
+setting. So subtract 1 from both the register values for period and
+duty cycle. If period is 0, bail out, if duty_cycle is 0, just disable
+the PWM which results in a constant low output.
+
+Fixes: caf065f8fd58 ("pwm: Add MediaTek PWM support")
+Signed-off-by: Uwe Kleine-König <u.kleine-koenig@baylibre.com>
+Reviewed-by: AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>
+Link: https://lore.kernel.org/r/6d1fa87a76f8020bfe3171529b8e19baffceab10.1753717973.git.u.kleine-koenig@baylibre.com
+Cc: stable@vger.kernel.org
+Signed-off-by: Uwe Kleine-König <ukleinek@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/gpu/drm/hisilicon/hibmc/hibmc_drm_drv.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ drivers/pwm/pwm-mediatek.c |   21 ++++++++++++++-------
+ 1 file changed, 14 insertions(+), 7 deletions(-)
 
-diff --git a/drivers/gpu/drm/hisilicon/hibmc/hibmc_drm_drv.c b/drivers/gpu/drm/hisilicon/hibmc/hibmc_drm_drv.c
-index 9f9b19ea0587..1640609cdbc0 100644
---- a/drivers/gpu/drm/hisilicon/hibmc/hibmc_drm_drv.c
-+++ b/drivers/gpu/drm/hisilicon/hibmc/hibmc_drm_drv.c
-@@ -258,13 +258,13 @@ static int hibmc_load(struct drm_device *dev)
+--- a/drivers/pwm/pwm-mediatek.c
++++ b/drivers/pwm/pwm-mediatek.c
+@@ -163,7 +163,10 @@ static int pwm_mediatek_config(struct pw
+ 	do_div(resolution, clk_rate);
  
- 	ret = hibmc_hw_init(priv);
- 	if (ret)
--		goto err;
-+		return ret;
- 
- 	ret = drmm_vram_helper_init(dev, pci_resource_start(pdev, 0),
- 				    pci_resource_len(pdev, 0));
- 	if (ret) {
- 		drm_err(dev, "Error initializing VRAM MM; %d\n", ret);
--		goto err;
-+		return ret;
+ 	cnt_period = DIV_ROUND_CLOSEST_ULL((u64)period_ns * 1000, resolution);
+-	while (cnt_period > 8191) {
++	if (!cnt_period)
++		return -EINVAL;
++
++	while (cnt_period > 8192) {
+ 		resolution *= 2;
+ 		clkdiv++;
+ 		cnt_period = DIV_ROUND_CLOSEST_ULL((u64)period_ns * 1000,
+@@ -186,9 +189,16 @@ static int pwm_mediatek_config(struct pw
  	}
  
- 	ret = hibmc_kms_init(priv);
--- 
-2.50.1
-
+ 	cnt_duty = DIV_ROUND_CLOSEST_ULL((u64)duty_ns * 1000, resolution);
++
+ 	pwm_mediatek_writel(pc, pwm->hwpwm, PWMCON, BIT(15) | clkdiv);
+-	pwm_mediatek_writel(pc, pwm->hwpwm, reg_width, cnt_period);
+-	pwm_mediatek_writel(pc, pwm->hwpwm, reg_thres, cnt_duty);
++	pwm_mediatek_writel(pc, pwm->hwpwm, reg_width, cnt_period - 1);
++
++	if (cnt_duty) {
++		pwm_mediatek_writel(pc, pwm->hwpwm, reg_thres, cnt_duty - 1);
++		pwm_mediatek_enable(chip, pwm);
++	} else {
++		pwm_mediatek_disable(chip, pwm);
++	}
+ 
+ out:
+ 	pwm_mediatek_clk_disable(chip, pwm);
+@@ -217,11 +227,8 @@ static int pwm_mediatek_apply(struct pwm
+ 	if (err)
+ 		return err;
+ 
+-	if (!pwm->state.enabled) {
++	if (!pwm->state.enabled)
+ 		err = pwm_mediatek_clk_enable(chip, pwm);
+-		if (!err)
+-			pwm_mediatek_enable(chip, pwm);
+-	}
+ 
+ 	return err;
+ }
 
 
 
