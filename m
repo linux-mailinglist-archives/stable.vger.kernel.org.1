@@ -1,57 +1,55 @@
-Return-Path: <stable+bounces-176152-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-174090-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9BCBFB36BC8
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 16:48:57 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 81D5EB3614B
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 15:08:23 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 02A052A6413
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 14:38:13 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 5FBA31BA6575
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 13:05:40 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B87E935690D;
-	Tue, 26 Aug 2025 14:35:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3AD43266B64;
+	Tue, 26 Aug 2025 13:04:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="VFLRLR7h"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ffEM5Cu6"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 776CC352FC1;
-	Tue, 26 Aug 2025 14:35:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DD103230BF8;
+	Tue, 26 Aug 2025 13:04:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756218915; cv=none; b=DfXZP7mwQkrBjUsQXw6tr+SD1u/UKv5P7Mq2VA0Q+yq3ir/PI/OqJrhUipmBCcfSTW+s4U6Q97WoPnK3MXKco1wwCl2UcS3yTpCsPwcBhZ4ElkWC6z6xXe3LQPHr3+pSlyDUxHKypxlSy/IqXTZvf8jMfjbFN6EmNTz9B/cp3Zo=
+	t=1756213467; cv=none; b=iN6x6jHMNQTRf5ll41DdjmPZl+YdPKyg2cyPLtb0IaNV1DKnJCbUFiOUV+nGliSB96TiUKIhFRJnFkWCa3Uvm6+ZYJ9eV6d+P0iYQbby8DDkz8YYo+zrhkI5qQCv0fHscSQ0YtGbx5WRSBnobqhUBN3eWH9GYvLhCkhW2WIflE0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756218915; c=relaxed/simple;
-	bh=ovANF/QBNICfu8bxXWYQmUF1zs4yyda4lwAHyzHx7KQ=;
+	s=arc-20240116; t=1756213467; c=relaxed/simple;
+	bh=nd2aElGv7ByQ/6aQ1EbYJKJa1dKMpVsIpA0tYEiAZsA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Se/w6dySVbxzFZZMfwJvZjmIORUNnNM3Ux1J5CsN8x1BXe45VBFhC5YVHQUTB+MBOwVYo0HwGMVDfAt9TQXL+SHDL7ZsGZLgddLy11iuBpTd++ofXB188OCVM4mKNSlQOpm6H5nFUvgZ3LmhA+11LL6RbzuYeCXTC2z1lfJGSNI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=VFLRLR7h; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0D153C4CEF1;
-	Tue, 26 Aug 2025 14:35:14 +0000 (UTC)
+	 MIME-Version; b=qMtNUlll3O6KRGg/kXFjiTGHBqUjukj55HBkt1lVQjXwTejBASxtkjruNYDrnnmQuguA2hbSVIJa6DXQmogvwutmxWOSg/aMkViJMyc2uemAx6HGFeUUW8ezilFsJ8t8YKD4cUV/asUDC0oY7AtYkR2tkPvehTkj/1pb72PmhKM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ffEM5Cu6; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6BAA6C4CEF1;
+	Tue, 26 Aug 2025 13:04:26 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1756218915;
-	bh=ovANF/QBNICfu8bxXWYQmUF1zs4yyda4lwAHyzHx7KQ=;
+	s=korg; t=1756213466;
+	bh=nd2aElGv7ByQ/6aQ1EbYJKJa1dKMpVsIpA0tYEiAZsA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=VFLRLR7hfT4SZIEjm6i9F83FmNGLhoEpaqjquAi6EkeDab4V2SjE3NuT0iHV1D4d3
-	 snegz6qrAF27kjRc/yl0Do0SclK04qAZ78s8RTESbvMgnFT+wPpkSlzYfetPy6EqJy
-	 ER/7Iv18iYd5u5YASLzkji8h9KEETgg9PFT0PX+Y=
+	b=ffEM5Cu6R42eyS9AGb6XYXK1tHpmNx8cqlDWqYbPY+mHq0oJUfUsL3aaVad0gDzMk
+	 P1FMAzbGFn1/j8qLg6DSUbJfk1EHpFhhceJgQv6kLtnOJw25/kh6jtuRcgXG1MSUd1
+	 eu6qjm+8nDWHuKnHRZQliXyitaXJWd7/uX51Kvyo=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	"Rafael J. Wysocki" <rafael.j.wysocki@intel.com>,
-	Prashant Malani <pmalani@google.com>,
-	Viresh Kumar <viresh.kumar@linaro.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.4 181/403] cpufreq: CPPC: Mark driver with NEED_UPDATE_LIMITS flag
+	Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>,
+	"Rob Herring (Arm)" <robh@kernel.org>
+Subject: [PATCH 6.6 358/587] dt-bindings: display: sprd,sharkl3-dpu: Fix missing clocks constraints
 Date: Tue, 26 Aug 2025 13:08:27 +0200
-Message-ID: <20250826110911.883053063@linuxfoundation.org>
+Message-ID: <20250826111002.019569285@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250826110905.607690791@linuxfoundation.org>
-References: <20250826110905.607690791@linuxfoundation.org>
+In-Reply-To: <20250826110952.942403671@linuxfoundation.org>
+References: <20250826110952.942403671@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,56 +61,39 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.4-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Prashant Malani <pmalani@google.com>
+From: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
 
-[ Upstream commit 0a1416a49e63c320f6e6c1c8d07e1b58c0d4a3f3 ]
+commit 934da599e694d476f493d3927a30414e98a81561 upstream.
 
-AMU counters on certain CPPC-based platforms tend to yield inaccurate
-delivered performance measurements on systems that are idle/mostly idle.
-This results in an inaccurate frequency being stored by cpufreq in its
-policy structure when the CPU is brought online. [1]
+'minItems' alone does not impose upper bound, unlike 'maxItems' which
+implies lower bound.  Add missing clock constraint so the list will have
+exact number of items (clocks).
 
-Consequently, if the userspace governor tries to set the frequency to a
-new value, there is a possibility that it would be the erroneous value
-stored earlier. In such a scenario, cpufreq would assume that the
-requested frequency has already been set and return early, resulting in
-the correct/new frequency request never making it to the hardware.
-
-Since the operating frequency is liable to this sort of inconsistency,
-mark the CPPC driver with CPUFREQ_NEED_UPDATE_LIMITS so that it is always
-invoked when a target frequency update is requested.
-
-Link: https://lore.kernel.org/linux-pm/20250619000925.415528-3-pmalani@google.com/ [1]
-Suggested-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
-Signed-off-by: Prashant Malani <pmalani@google.com>
-Acked-by: Viresh Kumar <viresh.kumar@linaro.org>
-Link: https://patch.msgid.link/20250722055611.130574-2-pmalani@google.com
-Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Fixes: 8cae15c60cf0 ("dt-bindings: display: add Unisoc's dpu bindings")
+Cc: stable@vger.kernel.org
+Signed-off-by: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
+Link: https://lore.kernel.org/r/20250720123003.37662-3-krzysztof.kozlowski@linaro.org
+Signed-off-by: Rob Herring (Arm) <robh@kernel.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/cpufreq/cppc_cpufreq.c | 2 +-
+ Documentation/devicetree/bindings/display/sprd/sprd,sharkl3-dpu.yaml |    2 +-
  1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/cpufreq/cppc_cpufreq.c b/drivers/cpufreq/cppc_cpufreq.c
-index 8910fd1ae3c6..c85b01aa801d 100644
---- a/drivers/cpufreq/cppc_cpufreq.c
-+++ b/drivers/cpufreq/cppc_cpufreq.c
-@@ -407,7 +407,7 @@ static unsigned int cppc_cpufreq_get_rate(unsigned int cpunum)
- }
+--- a/Documentation/devicetree/bindings/display/sprd/sprd,sharkl3-dpu.yaml
++++ b/Documentation/devicetree/bindings/display/sprd/sprd,sharkl3-dpu.yaml
+@@ -25,7 +25,7 @@ properties:
+     maxItems: 1
  
- static struct cpufreq_driver cppc_cpufreq_driver = {
--	.flags = CPUFREQ_CONST_LOOPS,
-+	.flags = CPUFREQ_CONST_LOOPS | CPUFREQ_NEED_UPDATE_LIMITS,
- 	.verify = cppc_verify_policy,
- 	.target = cppc_cpufreq_set_target,
- 	.get = cppc_cpufreq_get_rate,
--- 
-2.39.5
-
+   clocks:
+-    minItems: 2
++    maxItems: 2
+ 
+   clock-names:
+     items:
 
 
 
