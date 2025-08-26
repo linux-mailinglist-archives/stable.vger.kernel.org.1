@@ -1,56 +1,55 @@
-Return-Path: <stable+bounces-173451-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-174573-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 627ADB35D88
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 13:45:55 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1F39AB363BB
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 15:32:49 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 9319F1BA7FA5
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 11:39:40 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id C047A188A48F
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 13:27:14 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 77A4F319858;
-	Tue, 26 Aug 2025 11:38:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8733F24467E;
+	Tue, 26 Aug 2025 13:25:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="fdKbWX+G"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="lzDbjsXA"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 341661F560B;
-	Tue, 26 Aug 2025 11:38:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4368539FD9;
+	Tue, 26 Aug 2025 13:25:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756208282; cv=none; b=JTput+LB577DksC22lphEkFWvpEt10M5VlONm3UO8v4lIwZyVzy/NapmQq9Km1vgKs/rXjP7SGqd4rJHJqFWlX2bXC2CrdcPnSD0+2uwBYluY5WEJSsCXyJjs0Wv94cKgQz0KdFQ3pJlOArOSxUZh/EpgKDUrkBKihz2b6VuvC0=
+	t=1756214751; cv=none; b=UnwoVuGIOV/fDtHcAPkFu0AS0W2OwlV6A4MtuxuWwwq2iItfDNLUfRT7H759bRSMlVBqnXECRXwsS98+Iu5GewEM8jjx7rqsBCxC0ZK4S5OR+hytBggKCdqcaSA8vl5sL2QbrmX/+YzHueg4mHKJYH/SW6b2e7GZmVxCUGZlVks=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756208282; c=relaxed/simple;
-	bh=4oHaJp5+hzRQFMECK3TYCfFfp5vC7w/3t4EFOpiahHI=;
+	s=arc-20240116; t=1756214751; c=relaxed/simple;
+	bh=VicwuS78Fs9GoFtNvjLLyqGJa9VFwJreE3F1HK7XQYM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=RfT6sHMxVwoVc3ZLam9isPpAOxATpw2BmpOzVx0IWiNevnSkcO/WiDVgSRBaCTnR64ZHinI4Ho0/YjJmAz8gnoNXfe/wAL2MZvE8VdVGnOLOpYLuvbq5axorrnEeKcOV5adqEOXuHL5X1AHeHPIyesVx3tzsaYGzRjGzt/Dr9iY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=fdKbWX+G; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B7C47C4CEF1;
-	Tue, 26 Aug 2025 11:38:01 +0000 (UTC)
+	 MIME-Version; b=qEt3XCUiLWrKxyVJcCEeq8IOby8/uKfgv6haYEDY3fRPHluTtY91+5d9iHJsW5dHoaQ3KBevvq56t6NYnCeV46UYXJy2ZXYuS+O6moVhPKuqQsXIdj2GU1exjqQsoELWkY6MeumF2WyYtvxOif/Wyvdf5O3Vnu/5lJCQUk92a+k=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=lzDbjsXA; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id CC38AC113CF;
+	Tue, 26 Aug 2025 13:25:50 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1756208282;
-	bh=4oHaJp5+hzRQFMECK3TYCfFfp5vC7w/3t4EFOpiahHI=;
+	s=korg; t=1756214751;
+	bh=VicwuS78Fs9GoFtNvjLLyqGJa9VFwJreE3F1HK7XQYM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=fdKbWX+GpNrwAHf/FaXpM4l0ERu8eCyep5T6SdwIMcQj2xBGJwo0a1T+xeiAzaoRW
-	 08Sev//CSouvdFSlcBTVcd2xUb/HYVJnualR8NICQJX+5uvFMeKVJRwJRN54LbE1a9
-	 VmnCch4yF/6+id4m97MHX3cGa8JM8T2R+GSN9tvI=
+	b=lzDbjsXAUW7VVhxUc3gAOBeaCVN3czaCuuPNR6/SkN5PL8rxWHg5H5SmgzqTz6m9j
+	 eZMQiq2na7eao5z4DMNwEIq/m9EO4QDKomuJNBgM2uthvmNuSb+VVuHAvRea31FTNM
+	 NwKwe8e8MSM8uFy8wJPJ74kfWcxWG6GViHH12XG8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Adrian Hunter <adrian.hunter@intel.com>,
-	Bart Van Assche <bvanassche@acm.org>,
-	"Martin K. Petersen" <martin.petersen@oracle.com>
-Subject: [PATCH 6.12 052/322] scsi: ufs: ufs-pci: Fix default runtime and system PM levels
+	Mikulas Patocka <mpatocka@redhat.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.1 214/482] dm-mpath: dont print the "loaded" message if registering fails
 Date: Tue, 26 Aug 2025 13:07:47 +0200
-Message-ID: <20250826110916.686136579@linuxfoundation.org>
+Message-ID: <20250826110936.063340810@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250826110915.169062587@linuxfoundation.org>
-References: <20250826110915.169062587@linuxfoundation.org>
+In-Reply-To: <20250826110930.769259449@linuxfoundation.org>
+References: <20250826110930.769259449@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,67 +61,92 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Adrian Hunter <adrian.hunter@intel.com>
+From: Mikulas Patocka <mpatocka@redhat.com>
 
-commit 6de7435e6b81fe52c0ab4c7e181f6b5decd18eb1 upstream.
+[ Upstream commit 6e11952a6abc4641dc8ae63f01b318b31b44e8db ]
 
-Intel MTL-like host controllers support auto-hibernate.  Using
-auto-hibernate with manual (driver initiated) hibernate produces more
-complex operation.  For example, the host controller will have to exit
-auto-hibernate simply to allow the driver to enter hibernate state
-manually.  That is not recommended.
+If dm_register_path_selector, don't print the "version X loaded" message.
 
-The default rpm_lvl and spm_lvl is 3, which includes manual hibernate.
-
-Change the default values to 2, which does not.
-
-Note, to be simpler to backport to stable kernels, utilize the UFS PCI
-driver's ->late_init() call back.  Recent commits have made it possible
-to set up a controller-specific default in the regular ->init() call
-back, but not all stable kernels have those changes.
-
-Fixes: 4049f7acef3e ("scsi: ufs: ufs-pci: Add support for Intel MTL")
-Cc: stable@vger.kernel.org
-Signed-off-by: Adrian Hunter <adrian.hunter@intel.com>
-Link: https://lore.kernel.org/r/20250723165856.145750-3-adrian.hunter@intel.com
-Reviewed-by: Bart Van Assche <bvanassche@acm.org>
-Signed-off-by: Martin K. Petersen <martin.petersen@oracle.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Signed-off-by: Mikulas Patocka <mpatocka@redhat.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/ufs/host/ufshcd-pci.c |   15 ++++++++++++++-
- 1 file changed, 14 insertions(+), 1 deletion(-)
+ drivers/md/dm-ps-historical-service-time.c | 4 +++-
+ drivers/md/dm-ps-queue-length.c            | 4 +++-
+ drivers/md/dm-ps-round-robin.c             | 4 +++-
+ drivers/md/dm-ps-service-time.c            | 4 +++-
+ 4 files changed, 12 insertions(+), 4 deletions(-)
 
---- a/drivers/ufs/host/ufshcd-pci.c
-+++ b/drivers/ufs/host/ufshcd-pci.c
-@@ -468,10 +468,23 @@ static int ufs_intel_adl_init(struct ufs
- 	return ufs_intel_common_init(hba);
- }
- 
-+static void ufs_intel_mtl_late_init(struct ufs_hba *hba)
-+{
-+	hba->rpm_lvl = UFS_PM_LVL_2;
-+	hba->spm_lvl = UFS_PM_LVL_2;
-+}
-+
- static int ufs_intel_mtl_init(struct ufs_hba *hba)
+diff --git a/drivers/md/dm-ps-historical-service-time.c b/drivers/md/dm-ps-historical-service-time.c
+index 1d82c95d323d..d0d1f97d21b6 100644
+--- a/drivers/md/dm-ps-historical-service-time.c
++++ b/drivers/md/dm-ps-historical-service-time.c
+@@ -541,8 +541,10 @@ static int __init dm_hst_init(void)
  {
-+	struct ufs_host *ufs_host;
-+	int err;
-+
- 	hba->caps |= UFSHCD_CAP_CRYPTO | UFSHCD_CAP_WB_EN;
--	return ufs_intel_common_init(hba);
-+	err = ufs_intel_common_init(hba);
-+	/* Get variant after it is set in ufs_intel_common_init() */
-+	ufs_host = ufshcd_get_variant(hba);
-+	ufs_host->late_init = ufs_intel_mtl_late_init;
-+	return err;
- }
+ 	int r = dm_register_path_selector(&hst_ps);
  
- static int ufs_qemu_get_hba_mac(struct ufs_hba *hba)
+-	if (r < 0)
++	if (r < 0) {
+ 		DMERR("register failed %d", r);
++		return r;
++	}
+ 
+ 	DMINFO("version " HST_VERSION " loaded");
+ 
+diff --git a/drivers/md/dm-ps-queue-length.c b/drivers/md/dm-ps-queue-length.c
+index 6fbec9fc242d..8e298570c8d2 100644
+--- a/drivers/md/dm-ps-queue-length.c
++++ b/drivers/md/dm-ps-queue-length.c
+@@ -259,8 +259,10 @@ static int __init dm_ql_init(void)
+ {
+ 	int r = dm_register_path_selector(&ql_ps);
+ 
+-	if (r < 0)
++	if (r < 0) {
+ 		DMERR("register failed %d", r);
++		return r;
++	}
+ 
+ 	DMINFO("version " QL_VERSION " loaded");
+ 
+diff --git a/drivers/md/dm-ps-round-robin.c b/drivers/md/dm-ps-round-robin.c
+index 1d07392b5ed4..22c68ca81a24 100644
+--- a/drivers/md/dm-ps-round-robin.c
++++ b/drivers/md/dm-ps-round-robin.c
+@@ -216,8 +216,10 @@ static int __init dm_rr_init(void)
+ {
+ 	int r = dm_register_path_selector(&rr_ps);
+ 
+-	if (r < 0)
++	if (r < 0) {
+ 		DMERR("register failed %d", r);
++		return r;
++	}
+ 
+ 	DMINFO("version " RR_VERSION " loaded");
+ 
+diff --git a/drivers/md/dm-ps-service-time.c b/drivers/md/dm-ps-service-time.c
+index eba2293be686..d1e77eefaf2b 100644
+--- a/drivers/md/dm-ps-service-time.c
++++ b/drivers/md/dm-ps-service-time.c
+@@ -340,8 +340,10 @@ static int __init dm_st_init(void)
+ {
+ 	int r = dm_register_path_selector(&st_ps);
+ 
+-	if (r < 0)
++	if (r < 0) {
+ 		DMERR("register failed %d", r);
++		return r;
++	}
+ 
+ 	DMINFO("version " ST_VERSION " loaded");
+ 
+-- 
+2.39.5
+
 
 
 
