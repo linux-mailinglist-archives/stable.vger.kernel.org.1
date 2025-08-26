@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-175724-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-174556-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 612B3B36A06
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 16:33:29 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 63322B363AC
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 15:32:14 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id B3C987C1858
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 14:18:58 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id C3AE51BC6FBD
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 13:26:37 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C794B2E88B7;
-	Tue, 26 Aug 2025 14:16:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id BAFCF228C9D;
+	Tue, 26 Aug 2025 13:25:06 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="qS016TDD"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="OGAPQmze"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 84C22352FDF;
-	Tue, 26 Aug 2025 14:16:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 791341DB127;
+	Tue, 26 Aug 2025 13:25:06 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756217803; cv=none; b=iwGlt5Ovnh213BaTMgdWuMVe7xqYfOQIUwlpIGCkDY/lFmP9XsSkigFy8yv5fp6nVR4XsiSLSACGqfenNsW11JVetg6sJ7VtThSBgZrSsW6/WQyIMdndO7xmx6AcoHowrtPJv2f4Nc1yyAXlHo8YaW57yzkGm64G0qWGTu8ghMU=
+	t=1756214706; cv=none; b=taCVwSuy/jAt/IzV3TzyOzIMt3axCIwffss7UQLQ71Ub7gX6vIxHuaM1gUZxmsvp6rXNLeVAS0cR7+lsIfonW/COaeSU30R+rFZ10YALKihOOZ3Tdm3+aEYq/08jnRnTCvHnBOn9kewqWIg24xGIRYE9QaEvz7iiPTWmaB0fUoU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756217803; c=relaxed/simple;
-	bh=aKXPoLXFkmCVvOKdW0rUmlrFnQ0F3QEQWD/Jdtk0oa0=;
+	s=arc-20240116; t=1756214706; c=relaxed/simple;
+	bh=8b/d9nWM8i+B1ad1cGAIMbOme6l8B1NiStR47dAQdc8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=SUKSGIX800TiUFJtX76rlXeuXFeqeD3gXP/pTdJy3RL3O89QZvIgGrvv0uqvZKThuGxkm5ubtGW2PvttK+1j4yoY3jH1rjq3Y8gk5e4t8GxJAVhDZc6JRxPh0rfup6qrDUF1SDSwIQct0U1tWYE2A+MBSCdtBnVB1fIBnzolRfk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=qS016TDD; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1AE15C4CEF1;
-	Tue, 26 Aug 2025 14:16:42 +0000 (UTC)
+	 MIME-Version; b=ZllL6ioGBEN4JcTjkw6NQvM3ptZJ4TosumSPzrdzAAsR0gJyX6PmZvvuLEJHx2+AWR4mS+rfDiJQaCar8vMEgI9DlZDwx4UV6TYWAThZp04+x7siyZMmfBQ3IobnYhirCCxUj3B+fpcNQ2hJxVjmVW284HxKUVR84OP20EX4Ro0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=OGAPQmze; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 09F3FC4CEF1;
+	Tue, 26 Aug 2025 13:25:05 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1756217803;
-	bh=aKXPoLXFkmCVvOKdW0rUmlrFnQ0F3QEQWD/Jdtk0oa0=;
+	s=korg; t=1756214706;
+	bh=8b/d9nWM8i+B1ad1cGAIMbOme6l8B1NiStR47dAQdc8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=qS016TDDsuTFCLGWPuNlNRrVg0bkZ8/1q7YhBSGbBsShvTfnjgyVDRVLlQiq1QyUJ
-	 Iq+JwkO+cVYf5z4LhT0AA7uZzERK5fN6avV9tbhGUSbUOxaFpb0yg51HjDuuYGfzec
-	 aboiz1syX7W6fHRVOfh+a4+Hb/QasA/aO054XXzE=
+	b=OGAPQmzetK7oBjd58ADsNWQ4wtuk0dp0Lcg3sF0YYO/LbV3FihdTGiR1zIObM+X5t
+	 hPDpVbMH1h+3uwrJWXNrnCKUxKd4qQUtRZQ5ruXky5mt8jU38no2wBeLr0InGo91K8
+	 KoK2ZnekWM9aj9SNid4j1UN/52hbh0ufWKPKQG5E=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Alok Tiwari <alok.a.tiwari@oracle.com>,
-	Jakub Kicinski <kuba@kernel.org>,
+	Jiasheng Jiang <jiashengjiangcool@gmail.com>,
+	Justin Tee <justin.tee@broadcom.com>,
+	"Martin K. Petersen" <martin.petersen@oracle.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 281/523] gve: Return error for unknown admin queue command
+Subject: [PATCH 6.1 238/482] scsi: lpfc: Remove redundant assignment to avoid memory leak
 Date: Tue, 26 Aug 2025 13:08:11 +0200
-Message-ID: <20250826110931.368269989@linuxfoundation.org>
+Message-ID: <20250826110936.652324833@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250826110924.562212281@linuxfoundation.org>
-References: <20250826110924.562212281@linuxfoundation.org>
+In-Reply-To: <20250826110930.769259449@linuxfoundation.org>
+References: <20250826110930.769259449@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,45 +63,41 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Alok Tiwari <alok.a.tiwari@oracle.com>
+From: Jiasheng Jiang <jiashengjiangcool@gmail.com>
 
-[ Upstream commit b11344f63fdd9e8c5121148a6965b41079071dd2 ]
+[ Upstream commit eea6cafb5890db488fce1c69d05464214616d800 ]
 
-In gve_adminq_issue_cmd(), return -EINVAL instead of 0 when an unknown
-admin queue command opcode is encountered.
+Remove the redundant assignment if kzalloc() succeeds to avoid memory
+leak.
 
-This prevents the function from silently succeeding on invalid input
-and prevents undefined behavior by ensuring the function fails gracefully
-when an unrecognized opcode is provided.
-
-These changes improve error handling.
-
-Signed-off-by: Alok Tiwari <alok.a.tiwari@oracle.com>
-Link: https://patch.msgid.link/20250616054504.1644770-2-alok.a.tiwari@oracle.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Fixes: bd2cdd5e400f ("scsi: lpfc: NVME Initiator: Add debugfs support")
+Signed-off-by: Jiasheng Jiang <jiashengjiangcool@gmail.com>
+Link: https://lore.kernel.org/r/20250801185202.42631-1-jiashengjiangcool@gmail.com
+Reviewed-by: Justin Tee <justin.tee@broadcom.com>
+Signed-off-by: Martin K. Petersen <martin.petersen@oracle.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/ethernet/google/gve/gve_adminq.c | 1 +
- 1 file changed, 1 insertion(+)
+ drivers/scsi/lpfc/lpfc_debugfs.c | 1 -
+ 1 file changed, 1 deletion(-)
 
-diff --git a/drivers/net/ethernet/google/gve/gve_adminq.c b/drivers/net/ethernet/google/gve/gve_adminq.c
-index 67f2b9a61463..f02b3f01a557 100644
---- a/drivers/net/ethernet/google/gve/gve_adminq.c
-+++ b/drivers/net/ethernet/google/gve/gve_adminq.c
-@@ -246,6 +246,7 @@ static int gve_adminq_issue_cmd(struct gve_priv *priv,
- 		break;
- 	default:
- 		dev_err(&priv->pdev->dev, "unknown AQ command opcode %d\n", opcode);
-+		return -EINVAL;
- 	}
- 
- 	return 0;
+diff --git a/drivers/scsi/lpfc/lpfc_debugfs.c b/drivers/scsi/lpfc/lpfc_debugfs.c
+index 250d423710ca..f149753e62ec 100644
+--- a/drivers/scsi/lpfc/lpfc_debugfs.c
++++ b/drivers/scsi/lpfc/lpfc_debugfs.c
+@@ -6287,7 +6287,6 @@ lpfc_debugfs_initialize(struct lpfc_vport *vport)
+ 			}
+ 			phba->nvmeio_trc_on = 1;
+ 			phba->nvmeio_trc_output_idx = 0;
+-			phba->nvmeio_trc = NULL;
+ 		} else {
+ nvmeio_off:
+ 			phba->nvmeio_trc_size = 0;
 -- 
-2.39.5
+2.50.1
 
 
 
