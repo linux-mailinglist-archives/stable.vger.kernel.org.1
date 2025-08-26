@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-175032-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-175525-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id A4592B366BD
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 15:59:55 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 944D4B36895
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 16:17:36 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 98B50565C2B
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 13:46:22 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 19462581B8E
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 14:09:21 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C033D3451CD;
-	Tue, 26 Aug 2025 13:46:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6692D35207C;
+	Tue, 26 Aug 2025 14:07:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="MBfR4sNP"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="fjxwW6f/"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7873E2BEC45;
-	Tue, 26 Aug 2025 13:46:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 21A09306D3F;
+	Tue, 26 Aug 2025 14:07:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756215961; cv=none; b=kOE5U1kwKACc+qOxmfamvxexe/eErKE4/Y8dG3vLFZIE60Gplbq3FS4/XwolECAGLV4lTj9caRxXU3tp305G4EIDXuJCZ70n5Nbd/o114zbLRpdey9aMxsdohv54emqcE/HqDLunsrIsils4CxsFu+D0bp2nNvPSEOeUVE3jJJU=
+	t=1756217274; cv=none; b=AoRVTsWlw45n+emv0tkwc9PiQIyeizdy8JhVt8bNCAHq5iPPmhkELHXxSHm+KlRnwWIQ8YeQg+hWJFk0Tvi7JmDBmCF4/frz3wl2iBBuwuq9FvvOEAJYRJCABqPUCatI6olhL7cFZviNHrDSztyXlxTkYrFjBey4YnaDMvYCW1c=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756215961; c=relaxed/simple;
-	bh=wta2yrMAt+L0+OoNtNno8Bz3q2wDbwbg8piUkN9ssB4=;
+	s=arc-20240116; t=1756217274; c=relaxed/simple;
+	bh=AoRDQm+hgcmu7KpEstdm+wIDk8/+8RJ4J3QF2YT5Iug=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=ov8RsWAG8Y6o2GXbxBI636pKB3+pn2/FmrJVDu/Gv/8vxFZxbpkfDTXUk7550F0uhg4ufMPdJeOfS22y0vOHtsjV1dl/C2fp3A1VnRETDC7zkf1hMwOhnRaGnOBL3T9g2okt5VLgOZo5qQRGTV+WFxpop/ospJ4OUGn+HUR34rk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=MBfR4sNP; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 012FDC4CEF1;
-	Tue, 26 Aug 2025 13:46:00 +0000 (UTC)
+	 MIME-Version; b=VxC8512IPK+voGgdDK8ZaCSn16YoQ9QxG+O8WfiahTqFRSi5pTVCWhU6Se7xiWwH0GCH+cKp01gv+np5oBulP0Pmojpb383oMnHC1xH2kyhejEQcjghUD1Ya8MOwj9anFGuIGRgO7+NUctgf2qNm4BL+VPqKJEtI+jAzc1OzLsw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=fjxwW6f/; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A6DE5C4CEF1;
+	Tue, 26 Aug 2025 14:07:53 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1756215961;
-	bh=wta2yrMAt+L0+OoNtNno8Bz3q2wDbwbg8piUkN9ssB4=;
+	s=korg; t=1756217274;
+	bh=AoRDQm+hgcmu7KpEstdm+wIDk8/+8RJ4J3QF2YT5Iug=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=MBfR4sNPPnFYB9Tth7kKSFOzkD05RisK5Ve/yYiwyaOwiyycLaFpBR5UQn9sRRu5c
-	 hMvmefJ8xWDaFD7vnZgj2jKMw4Hy3PD3vk1hB3z0bd231m/qxsMlAO4c8C3+7JtEm3
-	 jDfPjKkJyzox87E8AMizhXlQdATLQlxfPENQ8Fxw=
+	b=fjxwW6f/D2Ta/tK9Vh7r/3AB1iif95onSpgqCE7gnWH8/ACB1/eOUplckTxrzaRjY
+	 9BR+tFfPf5IXiG7admcQNm7eY5+p6Gnfrcc0sxg3IigefvlPVkDBcj4xpxzI2Sf8MJ
+	 uMDATFxOnW67pVICWunF1K7DM3Tv9rjgCZKklZDY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Thomas Fourier <fourier.thomas@gmail.com>,
-	Miquel Raynal <miquel.raynal@bootlin.com>,
+	Abdun Nihaal <abdun.nihaal@gmail.com>,
+	Dan Carpenter <dan.carpenter@linaro.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 200/644] mtd: rawnand: rockchip: Add missing check after DMA map
-Date: Tue, 26 Aug 2025 13:04:51 +0200
-Message-ID: <20250826110951.397470482@linuxfoundation.org>
+Subject: [PATCH 5.10 082/523] staging: fbtft: fix potential memory leak in fbtft_framebuffer_alloc()
+Date: Tue, 26 Aug 2025 13:04:52 +0200
+Message-ID: <20250826110926.585361864@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250826110946.507083938@linuxfoundation.org>
-References: <20250826110946.507083938@linuxfoundation.org>
+In-Reply-To: <20250826110924.562212281@linuxfoundation.org>
+References: <20250826110924.562212281@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,63 +62,40 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Thomas Fourier <fourier.thomas@gmail.com>
+From: Abdun Nihaal <abdun.nihaal@gmail.com>
 
-[ Upstream commit 3b36f86dc47261828f96f826077131a35dd825fd ]
+[ Upstream commit eb2cb7dab60f9be0b435ac4a674255429a36d72c ]
 
-The DMA map functions can fail and should be tested for errors.
+In the error paths after fb_info structure is successfully allocated,
+the memory allocated in fb_deferred_io_init() for info->pagerefs is not
+freed. Fix that by adding the cleanup function on the error path.
 
-Fixes: 058e0e847d54 ("mtd: rawnand: rockchip: NFC driver for RK3308, RK2928 and others")
-Signed-off-by: Thomas Fourier <fourier.thomas@gmail.com>
-Signed-off-by: Miquel Raynal <miquel.raynal@bootlin.com>
+Fixes: c296d5f9957c ("staging: fbtft: core support")
+Signed-off-by: Abdun Nihaal <abdun.nihaal@gmail.com>
+Reviewed-by: Dan Carpenter <dan.carpenter@linaro.org>
+Link: https://lore.kernel.org/r/20250626172412.18355-1-abdun.nihaal@gmail.com
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/mtd/nand/raw/rockchip-nand-controller.c | 15 +++++++++++++++
- 1 file changed, 15 insertions(+)
+ drivers/staging/fbtft/fbtft-core.c | 1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/drivers/mtd/nand/raw/rockchip-nand-controller.c b/drivers/mtd/nand/raw/rockchip-nand-controller.c
-index f45c85a1a5a3..76721a3b3e33 100644
---- a/drivers/mtd/nand/raw/rockchip-nand-controller.c
-+++ b/drivers/mtd/nand/raw/rockchip-nand-controller.c
-@@ -657,9 +657,16 @@ static int rk_nfc_write_page_hwecc(struct nand_chip *chip, const u8 *buf,
+diff --git a/drivers/staging/fbtft/fbtft-core.c b/drivers/staging/fbtft/fbtft-core.c
+index d0c8d85f3db0..2c04fcff0e1c 100644
+--- a/drivers/staging/fbtft/fbtft-core.c
++++ b/drivers/staging/fbtft/fbtft-core.c
+@@ -745,6 +745,7 @@ struct fb_info *fbtft_framebuffer_alloc(struct fbtft_display *display,
+ 	return info;
  
- 	dma_data = dma_map_single(nfc->dev, (void *)nfc->page_buf,
- 				  mtd->writesize, DMA_TO_DEVICE);
-+	if (dma_mapping_error(nfc->dev, dma_data))
-+		return -ENOMEM;
-+
- 	dma_oob = dma_map_single(nfc->dev, nfc->oob_buf,
- 				 ecc->steps * oob_step,
- 				 DMA_TO_DEVICE);
-+	if (dma_mapping_error(nfc->dev, dma_oob)) {
-+		dma_unmap_single(nfc->dev, dma_data, mtd->writesize, DMA_TO_DEVICE);
-+		return -ENOMEM;
-+	}
+ release_framebuf:
++	fb_deferred_io_cleanup(info);
+ 	framebuffer_release(info);
  
- 	reinit_completion(&nfc->done);
- 	writel(INT_DMA, nfc->regs + nfc->cfg->int_en_off);
-@@ -773,9 +780,17 @@ static int rk_nfc_read_page_hwecc(struct nand_chip *chip, u8 *buf, int oob_on,
- 	dma_data = dma_map_single(nfc->dev, nfc->page_buf,
- 				  mtd->writesize,
- 				  DMA_FROM_DEVICE);
-+	if (dma_mapping_error(nfc->dev, dma_data))
-+		return -ENOMEM;
-+
- 	dma_oob = dma_map_single(nfc->dev, nfc->oob_buf,
- 				 ecc->steps * oob_step,
- 				 DMA_FROM_DEVICE);
-+	if (dma_mapping_error(nfc->dev, dma_oob)) {
-+		dma_unmap_single(nfc->dev, dma_data, mtd->writesize,
-+				 DMA_FROM_DEVICE);
-+		return -ENOMEM;
-+	}
- 
- 	/*
- 	 * The first blocks (4, 8 or 16 depending on the device)
+ alloc_fail:
 -- 
 2.39.5
 
