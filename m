@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-176272-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-175364-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id D318DB36D19
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 17:07:22 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 4FD55B36803
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 16:12:07 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id CD781983D93
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 14:43:12 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 88DBC980F30
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 14:02:22 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2689F3570B5;
-	Tue, 26 Aug 2025 14:40:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E358135209F;
+	Tue, 26 Aug 2025 14:00:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="xk7SdV7d"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="meLMyd9S"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C6C5D352093;
-	Tue, 26 Aug 2025 14:40:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9F460352096;
+	Tue, 26 Aug 2025 14:00:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756219224; cv=none; b=eDWs69Zv8GIfl8ktFmv2Zcds08/7snTkA1GLXn0U80pBgy8G7zjkPg9Ykk/INOtuhgdg3X4Vb3oyFhvVmD2sQ3wnS6yJMWljseYRU4AX/MSsxzXVCBkpHIZ1XS1NrH7nIKBoBrsHMKmaylP7dbM+xLv/+br//6bWYZ9NYePF5e4=
+	t=1756216842; cv=none; b=ifZUVAxnJ32/0DKhckD/cIsgez9EtFmoYtrhEpc/BYzU8Aik1tcA4OfSuLgA909Bl5RbLny4wlnHxVfU6CHAJhSwP0dHUrYrw87V41biNp+DOJ5OZ2STn1pwXf7R6Tvsdf78ZrNL8pvq8lqY5G8+oXIsi+QlSHD2fXUl9BL4YSg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756219224; c=relaxed/simple;
-	bh=Ph961NgjofRDxLZ9cyjKX1wehhL6VDPBeibGlPNlFtE=;
+	s=arc-20240116; t=1756216842; c=relaxed/simple;
+	bh=SHFGwEaY2gdCOsq3D0O3M5LxsO0sdcjlNBU9lxmD4ao=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=SDvDarW7vkYJ/6ls2GABk3mDcuT6WwgbvTkoe4Ej2PHqEz9EsXFVqdsrK0WHXSnAvRbycadNlI9/2QESP+6wkOQsFyuiAsMvOUxgGwI6aO2pQsM02Ehy3AuILPwpmnttMnERiEfzW6lrvLG1JWHDsmOyRkMlX5+Ru/Pm3faOZN8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=xk7SdV7d; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5D90EC113CF;
-	Tue, 26 Aug 2025 14:40:24 +0000 (UTC)
+	 MIME-Version; b=Ya+oFzQoTihjo/ML6OOONogfvd1Kp0OA/ghWvFBllhseQAFUSq9wazPFEbzF0CUPnQNJaFnhGHFoVg364dtwQ7GoC/LwBmFtrdVvHtrHSZvN7Ofp2a/dhZ1tu0qT6aozM4dvQMx0Y0AD1EhZAAIkR4QvruZX0cT0Vb9N+hLMQFI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=meLMyd9S; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 256C7C4CEF1;
+	Tue, 26 Aug 2025 14:00:41 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1756219224;
-	bh=Ph961NgjofRDxLZ9cyjKX1wehhL6VDPBeibGlPNlFtE=;
+	s=korg; t=1756216842;
+	bh=SHFGwEaY2gdCOsq3D0O3M5LxsO0sdcjlNBU9lxmD4ao=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=xk7SdV7ddsdXj3qnvb5LO2HWGscHgSClYnhhSTDNXjvfKcpHmUFbbbnYiP8L5bXjf
-	 Frh4prt2D4wQPo0hnDWPkxXmetaqbJNG1N7IHTf8OT2a5bSqXgpbkrAEuNpB4Rvx55
-	 /Y5afqF+X3TeJ2XEkkiB6ukgD4u+IsuA8khBfFmw=
+	b=meLMyd9StUYHMaj7OyDu/9MsqxyV3hnGhG7qLL5DppcEs6EuEUhxgt55P/D8sOTP7
+	 6G0WC/PZxQilDRSCDvm3aokQRn5eQG6TMVfQWvTBiSc8txbxV79fu/2aowUGQAEWsS
+	 g3wUqwPwLheh8cc/TUxKy8O8RAz/d5erNAIBJBpw=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	stable@kernel.org,
-	Baokun Li <libaokun1@huawei.com>,
-	Theodore Tso <tytso@mit.edu>
-Subject: [PATCH 5.4 301/403] jbd2: prevent softlockup in jbd2_log_do_checkpoint()
+	Li Jun <jun.li@nxp.com>,
+	Johan Hovold <johan@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.15 536/644] usb: dwc3: imx8mp: fix device leak at unbind
 Date: Tue, 26 Aug 2025 13:10:27 +0200
-Message-ID: <20250826110915.129411634@linuxfoundation.org>
+Message-ID: <20250826110959.797233447@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250826110905.607690791@linuxfoundation.org>
-References: <20250826110905.607690791@linuxfoundation.org>
+In-Reply-To: <20250826110946.507083938@linuxfoundation.org>
+References: <20250826110946.507083938@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,78 +62,58 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.4-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Baokun Li <libaokun1@huawei.com>
+From: Johan Hovold <johan@kernel.org>
 
-commit 9d98cf4632258720f18265a058e62fde120c0151 upstream.
+[ Upstream commit 086a0e516f7b3844e6328a5c69e2708b66b0ce18 ]
 
-Both jbd2_log_do_checkpoint() and jbd2_journal_shrink_checkpoint_list()
-periodically release j_list_lock after processing a batch of buffers to
-avoid long hold times on the j_list_lock. However, since both functions
-contend for j_list_lock, the combined time spent waiting and processing
-can be significant.
+Make sure to drop the reference to the dwc3 device taken by
+of_find_device_by_node() on probe errors and on driver unbind.
 
-jbd2_journal_shrink_checkpoint_list() explicitly calls cond_resched() when
-need_resched() is true to avoid softlockups during prolonged operations.
-But jbd2_log_do_checkpoint() only exits its loop when need_resched() is
-true, relying on potentially sleeping functions like __flush_batch() or
-wait_on_buffer() to trigger rescheduling. If those functions do not sleep,
-the kernel may hit a softlockup.
-
-watchdog: BUG: soft lockup - CPU#3 stuck for 156s! [kworker/u129:2:373]
-CPU: 3 PID: 373 Comm: kworker/u129:2 Kdump: loaded Not tainted 6.6.0+ #10
-Hardware name: Huawei TaiShan 2280 /BC11SPCD, BIOS 1.27 06/13/2017
-Workqueue: writeback wb_workfn (flush-7:2)
-pstate: 20000005 (nzCv daif -PAN -UAO -TCO -DIT -SSBS BTYPE=--)
-pc : native_queued_spin_lock_slowpath+0x358/0x418
-lr : jbd2_log_do_checkpoint+0x31c/0x438 [jbd2]
-Call trace:
- native_queued_spin_lock_slowpath+0x358/0x418
- jbd2_log_do_checkpoint+0x31c/0x438 [jbd2]
- __jbd2_log_wait_for_space+0xfc/0x2f8 [jbd2]
- add_transaction_credits+0x3bc/0x418 [jbd2]
- start_this_handle+0xf8/0x560 [jbd2]
- jbd2__journal_start+0x118/0x228 [jbd2]
- __ext4_journal_start_sb+0x110/0x188 [ext4]
- ext4_do_writepages+0x3dc/0x740 [ext4]
- ext4_writepages+0xa4/0x190 [ext4]
- do_writepages+0x94/0x228
- __writeback_single_inode+0x48/0x318
- writeback_sb_inodes+0x204/0x590
- __writeback_inodes_wb+0x54/0xf8
- wb_writeback+0x2cc/0x3d8
- wb_do_writeback+0x2e0/0x2f8
- wb_workfn+0x80/0x2a8
- process_one_work+0x178/0x3e8
- worker_thread+0x234/0x3b8
- kthread+0xf0/0x108
- ret_from_fork+0x10/0x20
-
-So explicitly call cond_resched() in jbd2_log_do_checkpoint() to avoid
-softlockup.
-
-Cc: stable@kernel.org
-Signed-off-by: Baokun Li <libaokun1@huawei.com>
-Link: https://patch.msgid.link/20250812063752.912130-1-libaokun@huaweicloud.com
-Signed-off-by: Theodore Ts'o <tytso@mit.edu>
+Fixes: 6dd2565989b4 ("usb: dwc3: add imx8mp dwc3 glue layer driver")
+Cc: stable@vger.kernel.org	# 5.12
+Cc: Li Jun <jun.li@nxp.com>
+Signed-off-by: Johan Hovold <johan@kernel.org>
+Link: https://lore.kernel.org/r/20250724091910.21092-2-johan@kernel.org
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- fs/jbd2/checkpoint.c |    1 +
- 1 file changed, 1 insertion(+)
+ drivers/usb/dwc3/dwc3-imx8mp.c |    6 +++++-
+ 1 file changed, 5 insertions(+), 1 deletion(-)
 
---- a/fs/jbd2/checkpoint.c
-+++ b/fs/jbd2/checkpoint.c
-@@ -321,6 +321,7 @@ restart:
- 		retry:
- 			if (batch_count)
- 				__flush_batch(journal, &batch_count);
-+			cond_resched();
- 			spin_lock(&journal->j_list_lock);
- 			goto restart;
+--- a/drivers/usb/dwc3/dwc3-imx8mp.c
++++ b/drivers/usb/dwc3/dwc3-imx8mp.c
+@@ -183,7 +183,7 @@ static int dwc3_imx8mp_probe(struct plat
+ 					IRQF_ONESHOT, dev_name(dev), dwc3_imx);
+ 	if (err) {
+ 		dev_err(dev, "failed to request IRQ #%d --> %d\n", irq, err);
+-		goto depopulate;
++		goto put_dwc3;
  	}
+ 
+ 	device_set_wakeup_capable(dev, true);
+@@ -191,6 +191,8 @@ static int dwc3_imx8mp_probe(struct plat
+ 
+ 	return 0;
+ 
++put_dwc3:
++	put_device(&dwc3_imx->dwc3->dev);
+ depopulate:
+ 	of_platform_depopulate(dev);
+ err_node_put:
+@@ -211,6 +213,8 @@ static int dwc3_imx8mp_remove(struct pla
+ 	struct dwc3_imx8mp *dwc3_imx = platform_get_drvdata(pdev);
+ 	struct device *dev = &pdev->dev;
+ 
++	put_device(&dwc3_imx->dwc3->dev);
++
+ 	pm_runtime_get_sync(dev);
+ 	of_platform_depopulate(dev);
+ 
 
 
 
