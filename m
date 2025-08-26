@@ -1,57 +1,58 @@
-Return-Path: <stable+bounces-173169-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-175752-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 14CC0B35C1D
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 13:31:36 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9321BB36A49
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 16:36:17 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 7282D365250
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 11:25:52 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 22F461C42C0D
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 14:20:20 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3A4B02BF3E2;
-	Tue, 26 Aug 2025 11:25:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 998263570A6;
+	Tue, 26 Aug 2025 14:17:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="mlNhkSzV"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="wW4WRU3x"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E6A3529D26A;
-	Tue, 26 Aug 2025 11:25:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 53AA1356919;
+	Tue, 26 Aug 2025 14:17:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756207551; cv=none; b=BHbOySemCCwP7V8hjTxYO3gfy1qEtjSSO6CI5BVjYiLIBbOiXf5n7lIoNx/atv6Iss/li5dpIneWJ+ci66ovxg1BfxdlDl+nMawabYWGNJL1YsAODqt9rM2Zu3TVP2c4JCC+lXyOtPf4fj8uBf1xOKGtzm9QJBGkiVoNIjonv0g=
+	t=1756217876; cv=none; b=sRDWfgEJrWeAcs6okn7xwFsebwT7El2i/9eDUqaxZ8la8FE8JHTZtA3dikg1g4+XTynjzRAJqsjCgZnES1cpTyLDUu6zc6sgLRe0iTXDRZ3HDKdJIvPW2LDKu1Y/FaoLGKXfzm8/bVaX7d+vPl7nqrqJN2nRu3mAjfwmMBI9anw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756207551; c=relaxed/simple;
-	bh=aumXUG9buTLTmTHZXXsDMeubGWn77lJiN6Nds7lTb8g=;
+	s=arc-20240116; t=1756217876; c=relaxed/simple;
+	bh=28idnEN8yCmMmBR1abhWNw2SAJshtJaPWvdjI5Miax8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=T/VLE6TzQCRlF08gbfS0s8WXQ7fkGJ7fIlBmANuoWRFO1SoRncfUUcPoWSVIRpjz8BKrQpqWb7/AQsM+GU35K5kaUo7vbltQzT1EjDGpLnGQxzSf50e/iy+5aPw2mtd+4ve52CQyFLFeUwJ5V460hgeytMLYbqVokaQPDckP7SE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=mlNhkSzV; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6A78CC4CEF1;
-	Tue, 26 Aug 2025 11:25:50 +0000 (UTC)
+	 MIME-Version:Content-Type; b=ZlJQks58yAIBnkbtywXc6OzzaKDNFzqQHVefBPOtxcl+2ku0cTRhUL0TRJmwPguYFY8S2uWACV1xAjWDXb790vUwPoEjyDNWFbXqolYKIlUW9ynH9MSR3G1/25uSVDhEdpr51jZC7vnuwhZKa0MiBrlvkanGE/kXC+tFfbwtyWY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=wW4WRU3x; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id DA150C4CEF1;
+	Tue, 26 Aug 2025 14:17:55 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1756207550;
-	bh=aumXUG9buTLTmTHZXXsDMeubGWn77lJiN6Nds7lTb8g=;
+	s=korg; t=1756217876;
+	bh=28idnEN8yCmMmBR1abhWNw2SAJshtJaPWvdjI5Miax8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=mlNhkSzVbFo+orylDPk5JCNGrPVFPDET6426nIdJqT5zlq+AbQekecv53lOAsinCp
-	 7BsRBTi5DGIfMHuegZJ3FZKwVHsFeNm7YM5MT6ZgPvjik6tSsVvYMZzOXxSkllGOsr
-	 qul6ezxNH3Hv/YUBXCsklFL1lYdcUxXXZJoBHMHo=
+	b=wW4WRU3xeSh0mUz7qwq0WPwaAFGJWLqcUuYbp5S0gv9hyC4Oplq//Pkq6P6nyA/bm
+	 SPWpj8Nb8LIhWtV5fEBN6dprFEHCvLnIH8LrUuWNEQBYL+er52OseiefxB6LkHao5c
+	 IKt69wHm++UMbDhzzDaIT9+HIJOSEk9gpBDz4mpc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Alan Huang <mmpgouride@gmail.com>,
-	Christoph Hellwig <hch@lst.de>,
-	Carlos Maiolino <cem@kernel.org>,
+	=?UTF-8?q?Thomas=20Wei=C3=9Fschuh?= <thomas.weissschuh@linutronix.de>,
+	David Gow <davidgow@google.com>,
+	Huacai Chen <chenhuacai@loongson.cn>,
+	Thomas Bogendoerfer <tsbogend@alpha.franken.de>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.16 226/457] xfs: Remove unused label in xfs_dax_notify_dev_failure
-Date: Tue, 26 Aug 2025 13:08:30 +0200
-Message-ID: <20250826110942.955211569@linuxfoundation.org>
+Subject: [PATCH 5.10 301/523] MIPS: Dont crash in stack_top() for tasks without ABI or vDSO
+Date: Tue, 26 Aug 2025 13:08:31 +0200
+Message-ID: <20250826110931.877314323@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250826110937.289866482@linuxfoundation.org>
-References: <20250826110937.289866482@linuxfoundation.org>
+In-Reply-To: <20250826110924.562212281@linuxfoundation.org>
+References: <20250826110924.562212281@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,36 +62,84 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.16-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Alan Huang <mmpgouride@gmail.com>
+From: Thomas Weißschuh <thomas.weissschuh@linutronix.de>
 
-[ Upstream commit 8c10b04f9fc1760cb79068073686d8866e59d40f ]
+[ Upstream commit e9f4a6b3421e936c3ee9d74710243897d74dbaa2 ]
 
-Fixes: e967dc40d501 ("xfs: return the allocated transaction from xfs_trans_alloc_empty")
-Signed-off-by: Alan Huang <mmpgouride@gmail.com>
-Reviewed-by: Christoph Hellwig <hch@lst.de>
-Signed-off-by: Carlos Maiolino <cem@kernel.org>
+Not all tasks have an ABI associated or vDSO mapped,
+for example kthreads never do.
+If such a task ever ends up calling stack_top(), it will derefence the
+NULL ABI pointer and crash.
+
+This can for example happen when using kunit:
+
+    mips_stack_top+0x28/0xc0
+    arch_pick_mmap_layout+0x190/0x220
+    kunit_vm_mmap_init+0xf8/0x138
+    __kunit_add_resource+0x40/0xa8
+    kunit_vm_mmap+0x88/0xd8
+    usercopy_test_init+0xb8/0x240
+    kunit_try_run_case+0x5c/0x1a8
+    kunit_generic_run_threadfn_adapter+0x28/0x50
+    kthread+0x118/0x240
+    ret_from_kernel_thread+0x14/0x1c
+
+Only dereference the ABI point if it is set.
+
+The GIC page is also included as it is specific to the vDSO.
+Also move the randomization adjustment into the same conditional.
+
+Signed-off-by: Thomas Weißschuh <thomas.weissschuh@linutronix.de>
+Reviewed-by: David Gow <davidgow@google.com>
+Reviewed-by: Huacai Chen <chenhuacai@loongson.cn>
+Signed-off-by: Thomas Bogendoerfer <tsbogend@alpha.franken.de>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- fs/xfs/xfs_notify_failure.c |    1 -
- 1 file changed, 1 deletion(-)
+ arch/mips/kernel/process.c | 16 +++++++++-------
+ 1 file changed, 9 insertions(+), 7 deletions(-)
 
---- a/fs/xfs/xfs_notify_failure.c
-+++ b/fs/xfs/xfs_notify_failure.c
-@@ -350,7 +350,6 @@ xfs_dax_notify_dev_failure(
- 			error = -EFSCORRUPTED;
+diff --git a/arch/mips/kernel/process.c b/arch/mips/kernel/process.c
+index 98ecaf6f3edb..0a5710a4d696 100644
+--- a/arch/mips/kernel/process.c
++++ b/arch/mips/kernel/process.c
+@@ -675,18 +675,20 @@ unsigned long mips_stack_top(void)
  	}
  
--out:
- 	/* Thaw the fs if it has been frozen before. */
- 	if (mf_flags & MF_MEM_PRE_REMOVE)
- 		xfs_dax_notify_failure_thaw(mp, kernel_frozen);
+ 	/* Space for the VDSO, data page & GIC user page */
+-	top -= PAGE_ALIGN(current->thread.abi->vdso->size);
+-	top -= PAGE_SIZE;
+-	top -= mips_gic_present() ? PAGE_SIZE : 0;
++	if (current->thread.abi) {
++		top -= PAGE_ALIGN(current->thread.abi->vdso->size);
++		top -= PAGE_SIZE;
++		top -= mips_gic_present() ? PAGE_SIZE : 0;
++
++		/* Space to randomize the VDSO base */
++		if (current->flags & PF_RANDOMIZE)
++			top -= VDSO_RANDOMIZE_SIZE;
++	}
+ 
+ 	/* Space for cache colour alignment */
+ 	if (cpu_has_dc_aliases)
+ 		top -= shm_align_mask + 1;
+ 
+-	/* Space to randomize the VDSO base */
+-	if (current->flags & PF_RANDOMIZE)
+-		top -= VDSO_RANDOMIZE_SIZE;
+-
+ 	return top;
+ }
+ 
+-- 
+2.39.5
+
 
 
 
