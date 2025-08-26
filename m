@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-174955-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-173859-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3361BB365BD
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 15:50:21 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 86AE2B3601F
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 14:57:22 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id AFD238A7B23
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 13:42:41 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 428B64642C4
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 12:55:11 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5EF0F1E480;
-	Tue, 26 Aug 2025 13:42:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 27CAE23A9AE;
+	Tue, 26 Aug 2025 12:54:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="LOU+p4W+"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="X94h5Swp"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1CED01ACEDA;
-	Tue, 26 Aug 2025 13:42:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D5794225762;
+	Tue, 26 Aug 2025 12:54:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756215758; cv=none; b=PX2wEf3uhw9hMnBRNcpXBx2f7WcBeHDeVO94rXnwxsgKpOBDvJkHW/4dGDxE+0RqvyRFekpnfwfnBawEHVNCOs+GIi8gS3B4Zi0a0y2YM4QLQnox+yTzSNJgovmCBqmxZuipmNEJeDZxQ5CA7g3Jepl3wWRcQrh14dME4fGtbTE=
+	t=1756212854; cv=none; b=VusOdWsiICk3KiL3Cr9RoQ/JgCQ8mzcL6k1lBrvHa9TRISvw9BnOLjDsY6MNDyXVnmxuQu6maN729YLAOA3GcBTeh1J2n/ACYJ4hPZIt8B3JGA5dlgi+6kjBS+nVChFEAbtGCrBY58cBmdjaA0nPR/Pc+o09qe6H5BrUM1pVGSM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756215758; c=relaxed/simple;
-	bh=3NBnvZDHlHweKo8jzAHLQjwoNpU9+WanMHKtobWP0ts=;
+	s=arc-20240116; t=1756212854; c=relaxed/simple;
+	bh=8HKPIErnSByPB3ICdIUu1wR5N+DZ/6pmM7lKMkxBFe0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=XN+Z/YyX6gZZ0cqvhYDsW0K7tV4k0eQkqIF3PcGLiEV0/PLNy9ZSQXHpqV1n5jkzSDgGaVCYNMuS9+jh8xLbxoBz8SmnyIsCKYAhmB6nxcMhw3RMfpX8Q5ioCOPIsErPcPLUr8DWMi59/axb/Gb2jLkZv8gYFwDt7mz9Azd1FHU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=LOU+p4W+; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4711EC4CEF1;
-	Tue, 26 Aug 2025 13:42:37 +0000 (UTC)
+	 MIME-Version; b=Czy0Om6xL6uVUaN4vKYHyFkjXsWyvGP2xqZYae6khcX3RUhWoICy5zacKmJrpnUsUzSzfLxLFfi1xK0PyNY7syaj684CGPepRcpJVBuqn0vP9mtuQSkZjjIZw8BiA/CCFn796KgqH8BtQrUFa/2AjefVH41nA+umwCgatElw8xE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=X94h5Swp; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 65879C4CEF1;
+	Tue, 26 Aug 2025 12:54:14 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1756215757;
-	bh=3NBnvZDHlHweKo8jzAHLQjwoNpU9+WanMHKtobWP0ts=;
+	s=korg; t=1756212854;
+	bh=8HKPIErnSByPB3ICdIUu1wR5N+DZ/6pmM7lKMkxBFe0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=LOU+p4W+lbDyd7m2jALlddRc8s/c421rukCrT6OodzZveucXghV9iot/SMHRMVMHq
-	 JtzOc9gQYKWt/DK2N3u4PATPNhCi4S+8DeqMLJEmVJg01Ee88S7y9QSJFUSKRk94qv
-	 j85CRhFW47vKmATrlrfmy6YMy9HYiATqvFhJhT1I=
+	b=X94h5SwpFOTB6qeeMOvaWQ7S6SuAKrh4iBoh0IiEuwThgo1DYW2MOiCc+Ow5Adomq
+	 RzEgMbBYEFlv9w0NuFtZ32sDrfQ+AScw0DQAzkQSAPx9ULYMQ5VW00aIWlWoKzNmD/
+	 /ULxyrXNhCBGloQxFraWm2jL+p4BR8tfVvZbFqh8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Martin Kaistra <martin.kaistra@linutronix.de>,
-	Ping-Ke Shih <pkshih@realtek.com>,
+	Alexander Kochetkov <al.kochet@gmail.com>,
+	Heiko Stuebner <heiko@sntech.de>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 154/644] wifi: rtl8xxxu: Fix RX skb size for aggregation disabled
+Subject: [PATCH 6.6 096/587] ARM: rockchip: fix kernel hang during smp initialization
 Date: Tue, 26 Aug 2025 13:04:05 +0200
-Message-ID: <20250826110950.299001999@linuxfoundation.org>
+Message-ID: <20250826110955.384608006@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250826110946.507083938@linuxfoundation.org>
-References: <20250826110946.507083938@linuxfoundation.org>
+In-Reply-To: <20250826110952.942403671@linuxfoundation.org>
+References: <20250826110952.942403671@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,47 +62,72 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Martin Kaistra <martin.kaistra@linutronix.de>
+From: Alexander Kochetkov <al.kochet@gmail.com>
 
-[ Upstream commit d76a1abcf57734d2bcd4a7ec051617edd4513d7f ]
+[ Upstream commit 7cdb433bb44cdc87dc5260cdf15bf03cc1cd1814 ]
 
-Commit 1e5b3b3fe9e0 ("rtl8xxxu: Adjust RX skb size to include space for
-phystats") increased the skb size when aggregation is enabled but decreased
-it for the aggregation disabled case.
+In order to bring up secondary CPUs main CPU write trampoline
+code to SRAM. The trampoline code is written while secondary
+CPUs are powered on (at least that true for RK3188 CPU).
+Sometimes that leads to kernel hang. Probably because secondary
+CPU execute trampoline code while kernel doesn't expect.
 
-As a result, if a frame near the maximum size is received,
-rtl8xxxu_rx_complete() is called with status -EOVERFLOW and then the
-driver starts to malfunction and no further communication is possible.
+The patch moves SRAM initialization step to the point where all
+secondary CPUs are powered down.
 
-Restore the skb size in the aggregation disabled case.
+That fixes rarely hangs on RK3188:
+[    0.091568] CPU0: thread -1, cpu 0, socket 0, mpidr 80000000
+[    0.091996] rockchip_smp_prepare_cpus: ncores 4
 
-Fixes: 1e5b3b3fe9e0 ("rtl8xxxu: Adjust RX skb size to include space for phystats")
-Signed-off-by: Martin Kaistra <martin.kaistra@linutronix.de>
-Reviewed-by: Ping-Ke Shih <pkshih@realtek.com>
-Signed-off-by: Ping-Ke Shih <pkshih@realtek.com>
-Link: https://patch.msgid.link/20250709121522.1992366-1-martin.kaistra@linutronix.de
+Signed-off-by: Alexander Kochetkov <al.kochet@gmail.com>
+Link: https://lore.kernel.org/r/20250703140453.1273027-1-al.kochet@gmail.com
+Signed-off-by: Heiko Stuebner <heiko@sntech.de>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/wireless/realtek/rtl8xxxu/rtl8xxxu_core.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ arch/arm/mach-rockchip/platsmp.c | 15 +++++++++------
+ 1 file changed, 9 insertions(+), 6 deletions(-)
 
-diff --git a/drivers/net/wireless/realtek/rtl8xxxu/rtl8xxxu_core.c b/drivers/net/wireless/realtek/rtl8xxxu/rtl8xxxu_core.c
-index b042dff4ac93..9bcc137da20f 100644
---- a/drivers/net/wireless/realtek/rtl8xxxu/rtl8xxxu_core.c
-+++ b/drivers/net/wireless/realtek/rtl8xxxu/rtl8xxxu_core.c
-@@ -5795,7 +5795,7 @@ static int rtl8xxxu_submit_rx_urb(struct rtl8xxxu_priv *priv,
- 		skb_size = fops->rx_agg_buf_size;
- 		skb_size += (rx_desc_sz + sizeof(struct rtl8723au_phy_stats));
- 	} else {
--		skb_size = IEEE80211_MAX_FRAME_LEN;
-+		skb_size = IEEE80211_MAX_FRAME_LEN + rx_desc_sz;
+diff --git a/arch/arm/mach-rockchip/platsmp.c b/arch/arm/mach-rockchip/platsmp.c
+index 36915a073c23..f432d22bfed8 100644
+--- a/arch/arm/mach-rockchip/platsmp.c
++++ b/arch/arm/mach-rockchip/platsmp.c
+@@ -279,11 +279,6 @@ static void __init rockchip_smp_prepare_cpus(unsigned int max_cpus)
  	}
  
- 	skb = __netdev_alloc_skb(NULL, skb_size, GFP_KERNEL);
+ 	if (read_cpuid_part() == ARM_CPU_PART_CORTEX_A9) {
+-		if (rockchip_smp_prepare_sram(node)) {
+-			of_node_put(node);
+-			return;
+-		}
+-
+ 		/* enable the SCU power domain */
+ 		pmu_set_power_domain(PMU_PWRDN_SCU, true);
+ 
+@@ -316,11 +311,19 @@ static void __init rockchip_smp_prepare_cpus(unsigned int max_cpus)
+ 		asm ("mrc p15, 1, %0, c9, c0, 2\n" : "=r" (l2ctlr));
+ 		ncores = ((l2ctlr >> 24) & 0x3) + 1;
+ 	}
+-	of_node_put(node);
+ 
+ 	/* Make sure that all cores except the first are really off */
+ 	for (i = 1; i < ncores; i++)
+ 		pmu_set_power_domain(0 + i, false);
++
++	if (read_cpuid_part() == ARM_CPU_PART_CORTEX_A9) {
++		if (rockchip_smp_prepare_sram(node)) {
++			of_node_put(node);
++			return;
++		}
++	}
++
++	of_node_put(node);
+ }
+ 
+ static void __init rk3036_smp_prepare_cpus(unsigned int max_cpus)
 -- 
 2.39.5
 
