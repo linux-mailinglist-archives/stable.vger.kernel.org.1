@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-175205-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-174560-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id E0820B36727
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 16:04:10 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 28F49B363FD
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 15:35:02 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id E786A8A6177
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 13:55:34 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 2D76E8A1BC1
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 13:26:22 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4C5F2350D61;
-	Tue, 26 Aug 2025 13:53:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 819C0246790;
+	Tue, 26 Aug 2025 13:25:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="fZ2ik6AX"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="gYGqKWH5"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 09AB2260586;
-	Tue, 26 Aug 2025 13:53:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3FC70139579;
+	Tue, 26 Aug 2025 13:25:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756216420; cv=none; b=OsL3jzg8AUKOmviIEKWJhiCsHyYyXuPaGBYGFiCdy+wRPypQNUQG/A/ojqjy371T+PN9W/GMRBI50M0Bop1deAFfFPeJsIcQdDCuTB3fwma3eB0Ic2a4neAlmyqO/b/srOn++3WGrkAwFxL8FnBTpg8Ny1O7YGmV6q6RXpFv7bc=
+	t=1756214717; cv=none; b=sbN7PAx/Ps1AlJzZmZvUDFFJ15LuKeP+4XqzUSlnV3222TFeA8dWiJOcRbp7uJgLiXlIfzidx/f0l07FnDTn/E3Nbj+TWe89kUcksPTcOQD3509PRS17+HuXFSpuJTJwuNAEb/79Ohb10cGHlUxP3f9otY9tyQmpvt9uRHWrHTY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756216420; c=relaxed/simple;
-	bh=TjlFEHn+F1EZbqlZ7xb5VmHTdx+8eQYMwAXjAl3oFWI=;
+	s=arc-20240116; t=1756214717; c=relaxed/simple;
+	bh=JJCKzPF7cAs7jjfuq49Aupt8iNChrsuSPP5BQk22SXg=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=gnChrsdZSLrhMhhi5HENmcdOtLaPlKnPk523kPr8unBpiDMcb4yKM+k+JWTeJqwf469srFovp4PoCWXhYDb53eCCyXYdUackSbTakyNscebmE1xa2Z+VniqfhmmmkfVjiivdQESrwp4vn1ad8VG3m2bt/E4z0E0rG0JGHmQSL0M=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=fZ2ik6AX; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 24AD9C4CEF1;
-	Tue, 26 Aug 2025 13:53:34 +0000 (UTC)
+	 MIME-Version; b=ZcJbchQJ5TTLBhbfPocAMQNELkgrfahhZaP9wsL8GokjDah9bOzY/fglV7KLQQczMLQKO7D3uOk3osdJmyKWc5egcqw4jHP84/1ZNnXrBGtpGfpgzDEk3abpuT5f/IjuWsfiTuYEN1xLkDFjhJPgPEo7ORA025H22VsHcc2Ci5Q=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=gYGqKWH5; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id BEB92C4CEF1;
+	Tue, 26 Aug 2025 13:25:16 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1756216415;
-	bh=TjlFEHn+F1EZbqlZ7xb5VmHTdx+8eQYMwAXjAl3oFWI=;
+	s=korg; t=1756214717;
+	bh=JJCKzPF7cAs7jjfuq49Aupt8iNChrsuSPP5BQk22SXg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=fZ2ik6AXQhPe++3Ucby+BzYSyywUtdQcMy5Y3Ym3Ani4lJIwHZDS5wUNoXnWnWYpD
-	 0RDZCC4BAAAVKLVIGNJ9mvRXc11Am+nxN5upE62Op4HTQ0670GICVlhZO5AJ//IOpL
-	 hhNiJrwKeUtoU5+OYiL549OvjRVkIoKs8M2cPryY=
+	b=gYGqKWH5guGUCdvFpMOKELaYPETxDSHj21qMifKWGQVj8Cx0d3lhNhSXFjZhsKFk1
+	 3Im/ocGzy3LjGb6rZ5+P+/48cdezEB9Gjgu+sGCqgWAMQZbEXPZ+T3T8pSXNMlN1Io
+	 krF1Eqf3shXvoMTebn1nQE8sjY9ZDcwZEtaIVRtc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Dave Stevenson <dave.stevenson@raspberrypi.com>,
-	Hans Verkuil <hverkuil@xs4all.nl>,
+	Shengjiu Wang <shengjiu.wang@nxp.com>,
+	Mark Brown <broonie@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 404/644] media: tc358743: Check I2C succeeded during probe
+Subject: [PATCH 6.1 242/482] ASoC: fsl_sai: replace regmap_write with regmap_update_bits
 Date: Tue, 26 Aug 2025 13:08:15 +0200
-Message-ID: <20250826110956.463035035@linuxfoundation.org>
+Message-ID: <20250826110936.749383663@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250826110946.507083938@linuxfoundation.org>
-References: <20250826110946.507083938@linuxfoundation.org>
+In-Reply-To: <20250826110930.769259449@linuxfoundation.org>
+References: <20250826110930.769259449@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,113 +62,79 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Dave Stevenson <dave.stevenson@raspberrypi.com>
+From: Shengjiu Wang <shengjiu.wang@nxp.com>
 
-[ Upstream commit 303d81635e1d9c949b370215cc94526ed81f2e3d ]
+[ Upstream commit 0e270f32975fd21874185ba53653630dd40bf560 ]
 
-The probe for the TC358743 reads the CHIPID register from
-the device and compares it to the expected value of 0.
-If the I2C request fails then that also returns 0, so
-the driver loads thinking that the device is there.
+Use the regmap_write() for software reset in fsl_sai_config_disable would
+cause the FSL_SAI_CSR_BCE bit to be cleared. Refer to
+commit 197c53c8ecb34 ("ASoC: fsl_sai: Don't disable bitclock for i.MX8MP")
+FSL_SAI_CSR_BCE should not be cleared. So need to use regmap_update_bits()
+instead of regmap_write() for these bit operations.
 
-Generally I2C communications are reliable so there is
-limited need to check the return value on every transfer,
-therefore only amend the one read during probe to check
-for I2C errors.
-
-Signed-off-by: Dave Stevenson <dave.stevenson@raspberrypi.com>
-Signed-off-by: Hans Verkuil <hverkuil@xs4all.nl>
+Fixes: dc78f7e59169d ("ASoC: fsl_sai: Force a software reset when starting in consumer mode")
+Signed-off-by: Shengjiu Wang <shengjiu.wang@nxp.com>
+Link: https://patch.msgid.link/20250807020318.2143219-1-shengjiu.wang@nxp.com
+Signed-off-by: Mark Brown <broonie@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/media/i2c/tc358743.c | 27 +++++++++++++++++++++++----
- 1 file changed, 23 insertions(+), 4 deletions(-)
+ sound/soc/fsl/fsl_sai.c | 20 ++++++++++----------
+ 1 file changed, 10 insertions(+), 10 deletions(-)
 
-diff --git a/drivers/media/i2c/tc358743.c b/drivers/media/i2c/tc358743.c
-index 87feada1f602..fe53823ba6f7 100644
---- a/drivers/media/i2c/tc358743.c
-+++ b/drivers/media/i2c/tc358743.c
-@@ -110,7 +110,7 @@ static inline struct tc358743_state *to_state(struct v4l2_subdev *sd)
- 
- /* --------------- I2C --------------- */
- 
--static void i2c_rd(struct v4l2_subdev *sd, u16 reg, u8 *values, u32 n)
-+static int i2c_rd(struct v4l2_subdev *sd, u16 reg, u8 *values, u32 n)
- {
- 	struct tc358743_state *state = to_state(sd);
- 	struct i2c_client *client = state->i2c_client;
-@@ -136,6 +136,7 @@ static void i2c_rd(struct v4l2_subdev *sd, u16 reg, u8 *values, u32 n)
- 		v4l2_err(sd, "%s: reading register 0x%x from 0x%x failed\n",
- 				__func__, reg, client->addr);
- 	}
-+	return err != ARRAY_SIZE(msgs);
+diff --git a/sound/soc/fsl/fsl_sai.c b/sound/soc/fsl/fsl_sai.c
+index 33d01a5e9b31..e622c8375a46 100644
+--- a/sound/soc/fsl/fsl_sai.c
++++ b/sound/soc/fsl/fsl_sai.c
+@@ -768,9 +768,9 @@ static void fsl_sai_config_disable(struct fsl_sai *sai, int dir)
+ 	 * are running concurrently.
+ 	 */
+ 	/* Software Reset */
+-	regmap_write(sai->regmap, FSL_SAI_xCSR(tx, ofs), FSL_SAI_CSR_SR);
++	regmap_update_bits(sai->regmap, FSL_SAI_xCSR(tx, ofs), FSL_SAI_CSR_SR, FSL_SAI_CSR_SR);
+ 	/* Clear SR bit to finish the reset */
+-	regmap_write(sai->regmap, FSL_SAI_xCSR(tx, ofs), 0);
++	regmap_update_bits(sai->regmap, FSL_SAI_xCSR(tx, ofs), FSL_SAI_CSR_SR, 0);
  }
  
- static void i2c_wr(struct v4l2_subdev *sd, u16 reg, u8 *values, u32 n)
-@@ -192,15 +193,24 @@ static void i2c_wr(struct v4l2_subdev *sd, u16 reg, u8 *values, u32 n)
- 	}
- }
+ static int fsl_sai_trigger(struct snd_pcm_substream *substream, int cmd,
+@@ -889,11 +889,11 @@ static int fsl_sai_dai_probe(struct snd_soc_dai *cpu_dai)
+ 	unsigned int ofs = sai->soc_data->reg_offset;
  
--static noinline u32 i2c_rdreg(struct v4l2_subdev *sd, u16 reg, u32 n)
-+static noinline u32 i2c_rdreg_err(struct v4l2_subdev *sd, u16 reg, u32 n,
-+				  int *err)
- {
-+	int error;
- 	__le32 val = 0;
+ 	/* Software Reset for both Tx and Rx */
+-	regmap_write(sai->regmap, FSL_SAI_TCSR(ofs), FSL_SAI_CSR_SR);
+-	regmap_write(sai->regmap, FSL_SAI_RCSR(ofs), FSL_SAI_CSR_SR);
++	regmap_update_bits(sai->regmap, FSL_SAI_TCSR(ofs), FSL_SAI_CSR_SR, FSL_SAI_CSR_SR);
++	regmap_update_bits(sai->regmap, FSL_SAI_RCSR(ofs), FSL_SAI_CSR_SR, FSL_SAI_CSR_SR);
+ 	/* Clear SR bit to finish the reset */
+-	regmap_write(sai->regmap, FSL_SAI_TCSR(ofs), 0);
+-	regmap_write(sai->regmap, FSL_SAI_RCSR(ofs), 0);
++	regmap_update_bits(sai->regmap, FSL_SAI_TCSR(ofs), FSL_SAI_CSR_SR, 0);
++	regmap_update_bits(sai->regmap, FSL_SAI_RCSR(ofs), FSL_SAI_CSR_SR, 0);
  
--	i2c_rd(sd, reg, (u8 __force *)&val, n);
-+	error = i2c_rd(sd, reg, (u8 __force *)&val, n);
-+	if (err)
-+		*err = error;
+ 	regmap_update_bits(sai->regmap, FSL_SAI_TCR1(ofs),
+ 			   FSL_SAI_CR1_RFW_MASK(sai->soc_data->fifo_depth),
+@@ -1694,11 +1694,11 @@ static int fsl_sai_runtime_resume(struct device *dev)
  
- 	return le32_to_cpu(val);
- }
+ 	regcache_cache_only(sai->regmap, false);
+ 	regcache_mark_dirty(sai->regmap);
+-	regmap_write(sai->regmap, FSL_SAI_TCSR(ofs), FSL_SAI_CSR_SR);
+-	regmap_write(sai->regmap, FSL_SAI_RCSR(ofs), FSL_SAI_CSR_SR);
++	regmap_update_bits(sai->regmap, FSL_SAI_TCSR(ofs), FSL_SAI_CSR_SR, FSL_SAI_CSR_SR);
++	regmap_update_bits(sai->regmap, FSL_SAI_RCSR(ofs), FSL_SAI_CSR_SR, FSL_SAI_CSR_SR);
+ 	usleep_range(1000, 2000);
+-	regmap_write(sai->regmap, FSL_SAI_TCSR(ofs), 0);
+-	regmap_write(sai->regmap, FSL_SAI_RCSR(ofs), 0);
++	regmap_update_bits(sai->regmap, FSL_SAI_TCSR(ofs), FSL_SAI_CSR_SR, 0);
++	regmap_update_bits(sai->regmap, FSL_SAI_RCSR(ofs), FSL_SAI_CSR_SR, 0);
  
-+static inline u32 i2c_rdreg(struct v4l2_subdev *sd, u16 reg, u32 n)
-+{
-+	return i2c_rdreg_err(sd, reg, n, NULL);
-+}
-+
- static noinline void i2c_wrreg(struct v4l2_subdev *sd, u16 reg, u32 val, u32 n)
- {
- 	__le32 raw = cpu_to_le32(val);
-@@ -229,6 +239,13 @@ static u16 i2c_rd16(struct v4l2_subdev *sd, u16 reg)
- 	return i2c_rdreg(sd, reg, 2);
- }
- 
-+static int i2c_rd16_err(struct v4l2_subdev *sd, u16 reg, u16 *value)
-+{
-+	int err;
-+	*value = i2c_rdreg_err(sd, reg, 2, &err);
-+	return err;
-+}
-+
- static void i2c_wr16(struct v4l2_subdev *sd, u16 reg, u16 val)
- {
- 	i2c_wrreg(sd, reg, val, 2);
-@@ -2042,6 +2059,7 @@ static int tc358743_probe(struct i2c_client *client)
- 	struct tc358743_platform_data *pdata = client->dev.platform_data;
- 	struct v4l2_subdev *sd;
- 	u16 irq_mask = MASK_HDMI_MSK | MASK_CSI_MSK;
-+	u16 chipid;
- 	int err;
- 
- 	if (!i2c_check_functionality(client->adapter, I2C_FUNC_SMBUS_BYTE_DATA))
-@@ -2073,7 +2091,8 @@ static int tc358743_probe(struct i2c_client *client)
- 	sd->flags |= V4L2_SUBDEV_FL_HAS_DEVNODE | V4L2_SUBDEV_FL_HAS_EVENTS;
- 
- 	/* i2c access */
--	if ((i2c_rd16(sd, CHIPID) & MASK_CHIPID) != 0) {
-+	if (i2c_rd16_err(sd, CHIPID, &chipid) ||
-+	    (chipid & MASK_CHIPID) != 0) {
- 		v4l2_info(sd, "not a TC358743 on address 0x%x\n",
- 			  client->addr << 1);
- 		return -ENODEV;
+ 	ret = regcache_sync(sai->regmap);
+ 	if (ret)
 -- 
-2.39.5
+2.50.1
 
 
 
