@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-175029-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-175521-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 52FF2B36618
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 15:53:16 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id BAC66B368E7
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 16:20:32 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id A62A0467729
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 13:46:18 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 5A00F9815EF
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 14:09:14 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 06F6228314A;
-	Tue, 26 Aug 2025 13:45:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E79EC35209A;
+	Tue, 26 Aug 2025 14:07:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="GmJ8dsPj"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="S7cYmAXy"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AEEFE3451CD;
-	Tue, 26 Aug 2025 13:45:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 946351DE8BE;
+	Tue, 26 Aug 2025 14:07:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756215953; cv=none; b=S6af2ephyAV/bCUvQ2wBiJPyleH32Nlhw2gtZ4AS93U0IW9Obn1JWWH3AhHKVPqiwCg/0oVn78DxLfAbd98ngRbzgKACPhKvTiFa8fZoUMHufoAFkBcXlDiBd0OLAxMUf1IDI97pKkwD3ZbdHbRLCeXL/UdvZ2jVWGU9sbLrEi0=
+	t=1756217263; cv=none; b=YEsEPh0dpfXi2yxyFqXqb80PEB71gWCeu70/u6tkURRdg/OH3ePqysgbV3BG7EfqaRoDbJj7uyoDyullgMbykzMslYMiV8dM2TspW336it4xVOrhJ8wpRH2kN1assi8eqPKd4km7IaHLsEIlC5qtS76Q7D4x6P48mxsvb1XrWGY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756215953; c=relaxed/simple;
-	bh=56dLoeES3j5ZXUFAV9oUEVWuAFmEOwmokC0KL4r/c1M=;
+	s=arc-20240116; t=1756217263; c=relaxed/simple;
+	bh=sUSbm7EiiEPhqp5NxMXnUXhZOI69IEGzEwhoT9vnLH4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=cVmoHqIEayyaQLI65YJZopGvjZnASVowvcmVWKh1HWCOIogZ3r3IzkvpU90c4zKU19H8TsOAuyN/C4hO/jYsetv36mOduRpaEnQbD38KlnfEE7I4ulIYPgSvrl6eObmQCS6HU4HyU9Oqr/2ha02/ZPxO4KUy2vJsUg06THqG1Dk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=GmJ8dsPj; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 240A7C4CEF1;
-	Tue, 26 Aug 2025 13:45:52 +0000 (UTC)
+	 MIME-Version; b=otVuHR+O5jNzXLeMS/JJCNWA6JDup8uVOv4U2zb1J/If5Pkef/3da1lXaobKEZ2q31HP9pouph9F3SI3XtpA082D7/OfYfo3QH7YqZkydqB3ZpcV8cU4ISnG4P5mms0tDmVNvJfrgtvGtHRbrWsNrER8FIRO3sCZuJsM9LJDTUs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=S7cYmAXy; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 242E8C4CEF1;
+	Tue, 26 Aug 2025 14:07:42 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1756215953;
-	bh=56dLoeES3j5ZXUFAV9oUEVWuAFmEOwmokC0KL4r/c1M=;
+	s=korg; t=1756217263;
+	bh=sUSbm7EiiEPhqp5NxMXnUXhZOI69IEGzEwhoT9vnLH4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=GmJ8dsPjwJcKRYZEB/m6VUhOCl2dVd9AraCdDyHWG3cQL0XzyrqW3WddhBDzi94Xo
-	 C86iPTeKMSKMy76o/XIGuZtho/kFSOy1cQsV6V/B8FI1T4xf3EBB1CjvxYFJkGAEx1
-	 PXHktNCVzc1llkt+HIiTllgQpOpfbY3ZQqaYuTvk=
+	b=S7cYmAXycekDkETMhB1Qz1KMYsEKW8Jr/SZSGGZLUnsBLOiY7xgPLF1mjJLEQDsor
+	 BZqQD8zs56l1aEQ1g63y8gC3duzBDWvT9gMO6fuRMB9BTjQiHJJjcLDWSCpHLd/Lc8
+	 CsYYS9Opjd0ORdY38sJ5AexR1gLN6EW3PhHlrzLo=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Chenyuan Yang <chenyuan0y@gmail.com>,
-	Helge Deller <deller@gmx.de>,
+	syzbot+8c0bc9f818702ff75b76@syzkaller.appspotmail.com,
+	Yangtao Li <frank.li@vivo.com>,
+	Viacheslav Dubeyko <slava@dubeyko.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 197/644] fbdev: imxfb: Check fb_add_videomode to prevent null-ptr-deref
+Subject: [PATCH 5.10 078/523] hfsplus: remove mutex_lock check in hfsplus_free_extents
 Date: Tue, 26 Aug 2025 13:04:48 +0200
-Message-ID: <20250826110951.329066050@linuxfoundation.org>
+Message-ID: <20250826110926.491082695@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250826110946.507083938@linuxfoundation.org>
-References: <20250826110946.507083938@linuxfoundation.org>
+In-Reply-To: <20250826110924.562212281@linuxfoundation.org>
+References: <20250826110924.562212281@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,48 +63,96 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Chenyuan Yang <chenyuan0y@gmail.com>
+From: Yangtao Li <frank.li@vivo.com>
 
-[ Upstream commit da11e6a30e0bb8e911288bdc443b3dc8f6a7cac7 ]
+[ Upstream commit fcb96956c921f1aae7e7b477f2435c56f77a31b4 ]
 
-fb_add_videomode() can fail with -ENOMEM when its internal kmalloc() cannot
-allocate a struct fb_modelist.  If that happens, the modelist stays empty but
-the driver continues to register.  Add a check for its return value to prevent
-poteintial null-ptr-deref, which is similar to the commit 17186f1f90d3 ("fbdev:
-Fix do_register_framebuffer to prevent null-ptr-deref in fb_videomode_to_var").
+Syzbot reported an issue in hfsplus filesystem:
 
-Fixes: 1b6c79361ba5 ("video: imxfb: Add DT support")
-Signed-off-by: Chenyuan Yang <chenyuan0y@gmail.com>
-Signed-off-by: Helge Deller <deller@gmx.de>
+------------[ cut here ]------------
+WARNING: CPU: 0 PID: 4400 at fs/hfsplus/extents.c:346
+	hfsplus_free_extents+0x700/0xad0
+Call Trace:
+<TASK>
+hfsplus_file_truncate+0x768/0xbb0 fs/hfsplus/extents.c:606
+hfsplus_write_begin+0xc2/0xd0 fs/hfsplus/inode.c:56
+cont_expand_zero fs/buffer.c:2383 [inline]
+cont_write_begin+0x2cf/0x860 fs/buffer.c:2446
+hfsplus_write_begin+0x86/0xd0 fs/hfsplus/inode.c:52
+generic_cont_expand_simple+0x151/0x250 fs/buffer.c:2347
+hfsplus_setattr+0x168/0x280 fs/hfsplus/inode.c:263
+notify_change+0xe38/0x10f0 fs/attr.c:420
+do_truncate+0x1fb/0x2e0 fs/open.c:65
+do_sys_ftruncate+0x2eb/0x380 fs/open.c:193
+do_syscall_x64 arch/x86/entry/common.c:50 [inline]
+do_syscall_64+0x3d/0xb0 arch/x86/entry/common.c:80
+entry_SYSCALL_64_after_hwframe+0x63/0xcd
+
+To avoid deadlock, Commit 31651c607151 ("hfsplus: avoid deadlock
+on file truncation") unlock extree before hfsplus_free_extents(),
+and add check wheather extree is locked in hfsplus_free_extents().
+
+However, when operations such as hfsplus_file_release,
+hfsplus_setattr, hfsplus_unlink, and hfsplus_get_block are executed
+concurrently in different files, it is very likely to trigger the
+WARN_ON, which will lead syzbot and xfstest to consider it as an
+abnormality.
+
+The comment above this warning also describes one of the easy
+triggering situations, which can easily trigger and cause
+xfstest&syzbot to report errors.
+
+[task A]			[task B]
+->hfsplus_file_release
+  ->hfsplus_file_truncate
+    ->hfs_find_init
+      ->mutex_lock
+    ->mutex_unlock
+				->hfsplus_write_begin
+				  ->hfsplus_get_block
+				    ->hfsplus_file_extend
+				      ->hfsplus_ext_read_extent
+				        ->hfs_find_init
+					  ->mutex_lock
+    ->hfsplus_free_extents
+      WARN_ON(mutex_is_locked) !!!
+
+Several threads could try to lock the shared extents tree.
+And warning can be triggered in one thread when another thread
+has locked the tree. This is the wrong behavior of the code and
+we need to remove the warning.
+
+Fixes: 31651c607151f ("hfsplus: avoid deadlock on file truncation")
+Reported-by: syzbot+8c0bc9f818702ff75b76@syzkaller.appspotmail.com
+Closes: https://lore.kernel.org/all/00000000000057fa4605ef101c4c@google.com/
+Signed-off-by: Yangtao Li <frank.li@vivo.com>
+Reviewed-by: Viacheslav Dubeyko <slava@dubeyko.com>
+Signed-off-by: Viacheslav Dubeyko <slava@dubeyko.com>
+Link: https://lore.kernel.org/r/20250529061807.2213498-1-frank.li@vivo.com
+Signed-off-by: Viacheslav Dubeyko <slava@dubeyko.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/video/fbdev/imxfb.c | 9 +++++++--
- 1 file changed, 7 insertions(+), 2 deletions(-)
+ fs/hfsplus/extents.c | 3 ---
+ 1 file changed, 3 deletions(-)
 
-diff --git a/drivers/video/fbdev/imxfb.c b/drivers/video/fbdev/imxfb.c
-index cd376a9bfe1b..f9af2b1a91ab 100644
---- a/drivers/video/fbdev/imxfb.c
-+++ b/drivers/video/fbdev/imxfb.c
-@@ -1007,8 +1007,13 @@ static int imxfb_probe(struct platform_device *pdev)
+diff --git a/fs/hfsplus/extents.c b/fs/hfsplus/extents.c
+index c95a2f0ed4a7..fad1c250f150 100644
+--- a/fs/hfsplus/extents.c
++++ b/fs/hfsplus/extents.c
+@@ -342,9 +342,6 @@ static int hfsplus_free_extents(struct super_block *sb,
+ 	int i;
+ 	int err = 0;
  
- 
- 	INIT_LIST_HEAD(&info->modelist);
--	for (i = 0; i < fbi->num_modes; i++)
--		fb_add_videomode(&fbi->mode[i].mode, &info->modelist);
-+	for (i = 0; i < fbi->num_modes; i++) {
-+		ret = fb_add_videomode(&fbi->mode[i].mode, &info->modelist);
-+		if (ret) {
-+			dev_err(&pdev->dev, "Failed to add videomode\n");
-+			goto failed_cmap;
-+		}
-+	}
- 
- 	/*
- 	 * This makes sure that our colour bitfield
+-	/* Mapping the allocation file may lock the extent tree */
+-	WARN_ON(mutex_is_locked(&HFSPLUS_SB(sb)->ext_tree->tree_lock));
+-
+ 	hfsplus_dump_extent(extent);
+ 	for (i = 0; i < 8; extent++, i++) {
+ 		count = be32_to_cpu(extent->block_count);
 -- 
 2.39.5
 
