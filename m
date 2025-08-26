@@ -1,56 +1,55 @@
-Return-Path: <stable+bounces-174518-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-174035-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 69124B363C6
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 15:33:09 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8C4BDB36095
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 15:02:05 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 35DFD2A14FD
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 13:25:06 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 49BBA7B6F51
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 13:00:29 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 67B412F7473;
-	Tue, 26 Aug 2025 13:23:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 66EA8FBF0;
+	Tue, 26 Aug 2025 13:02:00 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Py3QJy5R"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="pDQGVgI0"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 25A66246BC5;
-	Tue, 26 Aug 2025 13:23:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 25C691494D9;
+	Tue, 26 Aug 2025 13:02:00 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756214604; cv=none; b=nmyudzTWnnUJUH8smLawT1dWa3tTB0uhxKwHLVMlkLVkla7TBhX0cNeimXI66FZ1SVhnMb0PHPqZydj08kAfdZLXuPccYXmII7xgR9rrhAAZGFDXdIWclkKKykVVRBOgHhVm6JLCfLODObmujHewIgW3AnOqV+G+A/7xxcD0HEU=
+	t=1756213320; cv=none; b=tkShqQAoh3IfVPLc6w0QCQj0PISrzpel2TPzZV5OWrtsRRUwbxupmmdIet8d+g2GYvHiIr9ZoRYOYQPFG5qtLFoQTTj4Ju5yHJBGSfwpU4bgvZa3d2XPcVzB3tStHttDtDvhtQpi/NuBdT/H8pYlRYrjOkLS+iAv/c9JTlc4gsg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756214604; c=relaxed/simple;
-	bh=gou9JrbDjhz4muSdHeHoUzlzY1bSDbCugk8JEXlJPqM=;
+	s=arc-20240116; t=1756213320; c=relaxed/simple;
+	bh=26yOdiCt3DKlZpTTT3Sev5x0rEyeMFHSJp1DAIo0WDg=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=JtzdaiYa2Y17W75qVCCsFKPvhYKcxIXh8h4FURGSGwiuQMzZVoXye1/Lqa3hWXhXvFixIvf689M337kCQC/uaeZZC4NFscksQ1C60hQP5XG+Q+F8MCo66OLO4nY6D2s1rt60C8L81M1JnFFj/WLKp212+2F8WqubpBLDFkAc+Zs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Py3QJy5R; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id AFEBBC4CEF1;
-	Tue, 26 Aug 2025 13:23:23 +0000 (UTC)
+	 MIME-Version; b=Q95dLwE0r43uYyXx8uleciVjkGu1WvzS5J5z9VSWOuDa7b6KqfMc6RqXhqUoMD0onOqU6bKTWM6xKM+HJpTLfjA8OrgNuqR3IYlO05kXE45lzTF5EbtyE/vHBECFxgW1OM64e9UKtRPKcd/4+AXdFQUfTkIv05FUbTk6Iamk2QE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=pDQGVgI0; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A809CC4CEF4;
+	Tue, 26 Aug 2025 13:01:59 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1756214604;
-	bh=gou9JrbDjhz4muSdHeHoUzlzY1bSDbCugk8JEXlJPqM=;
+	s=korg; t=1756213320;
+	bh=26yOdiCt3DKlZpTTT3Sev5x0rEyeMFHSJp1DAIo0WDg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Py3QJy5R5fiZr9pGrTznSndLMMDnJI1b8Xi+fqCFq44HBvXoqBddOBCwpUhXg/Q0d
-	 6/eQ02vGxrNslRR/Ob04/Ml4HGzS8Hcdp8CyArARSDxOgPFXZVCZgPgrfZhRxnfQhK
-	 Zo05ZE/PjQb3CVvrUhCXlXVP50rikN/ddmxCo+DY=
+	b=pDQGVgI0gr8kAJbPfZqLIBP9b+YPDwEhUcVSjEHCM/AAEYKLdA0Eh3OKA5+WhGRLP
+	 B1PPJtOK/9iZIKQKgW0S6Civ/7nvti4J6ADRU8Mzx/GgNCnWd3Oqwy4ykv01tSVLJ1
+	 OmHewCRNon5N9f6Lhhn3OurLdqy5SpR4sV/sRYvI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Dave Stevenson <dave.stevenson@raspberrypi.com>,
-	Hans Verkuil <hverkuil@xs4all.nl>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 200/482] media: tc358743: Check I2C succeeded during probe
+	Ricky Wu <ricky_wu@realtek.com>,
+	Ulf Hansson <ulf.hansson@linaro.org>
+Subject: [PATCH 6.6 304/587] misc: rtsx: usb: Ensure mmc child device is active when card is present
 Date: Tue, 26 Aug 2025 13:07:33 +0200
-Message-ID: <20250826110935.732923931@linuxfoundation.org>
+Message-ID: <20250826111000.655504679@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250826110930.769259449@linuxfoundation.org>
-References: <20250826110930.769259449@linuxfoundation.org>
+In-Reply-To: <20250826110952.942403671@linuxfoundation.org>
+References: <20250826110952.942403671@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,114 +61,74 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Dave Stevenson <dave.stevenson@raspberrypi.com>
+From: Ricky Wu <ricky_wu@realtek.com>
 
-[ Upstream commit 303d81635e1d9c949b370215cc94526ed81f2e3d ]
+commit 966c5cd72be8989c8a559ddef8e8ff07a37c5eb0 upstream.
 
-The probe for the TC358743 reads the CHIPID register from
-the device and compares it to the expected value of 0.
-If the I2C request fails then that also returns 0, so
-the driver loads thinking that the device is there.
+When a card is present in the reader, the driver currently defers
+autosuspend by returning -EAGAIN during the suspend callback to
+trigger USB remote wakeup signaling. However, this does not guarantee
+that the mmc child device has been resumed, which may cause issues if
+it remains suspended while the card is accessible.
+This patch ensures that all child devices, including the mmc host
+controller, are explicitly resumed before returning -EAGAIN. This
+fixes a corner case introduced by earlier remote wakeup handling,
+improving reliability of runtime PM when a card is inserted.
 
-Generally I2C communications are reliable so there is
-limited need to check the return value on every transfer,
-therefore only amend the one read during probe to check
-for I2C errors.
-
-Signed-off-by: Dave Stevenson <dave.stevenson@raspberrypi.com>
-Signed-off-by: Hans Verkuil <hverkuil@xs4all.nl>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Fixes: 883a87ddf2f1 ("misc: rtsx_usb: Use USB remote wakeup signaling for card insertion detection")
+Cc: stable@vger.kernel.org
+Signed-off-by: Ricky Wu <ricky_wu@realtek.com>
+Reviewed-by: Ulf Hansson <ulf.hansson@linaro.org>
+Link: https://lore.kernel.org/r/20250711140143.2105224-1-ricky_wu@realtek.com
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/media/i2c/tc358743.c | 27 +++++++++++++++++++++++----
- 1 file changed, 23 insertions(+), 4 deletions(-)
+ drivers/misc/cardreader/rtsx_usb.c |   16 +++++++++-------
+ 1 file changed, 9 insertions(+), 7 deletions(-)
 
-diff --git a/drivers/media/i2c/tc358743.c b/drivers/media/i2c/tc358743.c
-index 2c8189e04a13..7251d25106d6 100644
---- a/drivers/media/i2c/tc358743.c
-+++ b/drivers/media/i2c/tc358743.c
-@@ -110,7 +110,7 @@ static inline struct tc358743_state *to_state(struct v4l2_subdev *sd)
- 
- /* --------------- I2C --------------- */
- 
--static void i2c_rd(struct v4l2_subdev *sd, u16 reg, u8 *values, u32 n)
-+static int i2c_rd(struct v4l2_subdev *sd, u16 reg, u8 *values, u32 n)
- {
- 	struct tc358743_state *state = to_state(sd);
- 	struct i2c_client *client = state->i2c_client;
-@@ -136,6 +136,7 @@ static void i2c_rd(struct v4l2_subdev *sd, u16 reg, u8 *values, u32 n)
- 		v4l2_err(sd, "%s: reading register 0x%x from 0x%x failed\n",
- 				__func__, reg, client->addr);
- 	}
-+	return err != ARRAY_SIZE(msgs);
+--- a/drivers/misc/cardreader/rtsx_usb.c
++++ b/drivers/misc/cardreader/rtsx_usb.c
+@@ -698,6 +698,12 @@ static void rtsx_usb_disconnect(struct u
  }
  
- static void i2c_wr(struct v4l2_subdev *sd, u16 reg, u8 *values, u32 n)
-@@ -192,15 +193,24 @@ static void i2c_wr(struct v4l2_subdev *sd, u16 reg, u8 *values, u32 n)
- 	}
- }
- 
--static noinline u32 i2c_rdreg(struct v4l2_subdev *sd, u16 reg, u32 n)
-+static noinline u32 i2c_rdreg_err(struct v4l2_subdev *sd, u16 reg, u32 n,
-+				  int *err)
- {
-+	int error;
- 	__le32 val = 0;
- 
--	i2c_rd(sd, reg, (u8 __force *)&val, n);
-+	error = i2c_rd(sd, reg, (u8 __force *)&val, n);
-+	if (err)
-+		*err = error;
- 
- 	return le32_to_cpu(val);
- }
- 
-+static inline u32 i2c_rdreg(struct v4l2_subdev *sd, u16 reg, u32 n)
+ #ifdef CONFIG_PM
++static int rtsx_usb_resume_child(struct device *dev, void *data)
 +{
-+	return i2c_rdreg_err(sd, reg, n, NULL);
++	pm_request_resume(dev);
++	return 0;
 +}
 +
- static noinline void i2c_wrreg(struct v4l2_subdev *sd, u16 reg, u32 val, u32 n)
+ static int rtsx_usb_suspend(struct usb_interface *intf, pm_message_t message)
  {
- 	__le32 raw = cpu_to_le32(val);
-@@ -229,6 +239,13 @@ static u16 i2c_rd16(struct v4l2_subdev *sd, u16 reg)
- 	return i2c_rdreg(sd, reg, 2);
+ 	struct rtsx_ucr *ucr =
+@@ -713,8 +719,10 @@ static int rtsx_usb_suspend(struct usb_i
+ 			mutex_unlock(&ucr->dev_mutex);
+ 
+ 			/* Defer the autosuspend if card exists */
+-			if (val & (SD_CD | MS_CD))
++			if (val & (SD_CD | MS_CD)) {
++				device_for_each_child(&intf->dev, NULL, rtsx_usb_resume_child);
+ 				return -EAGAIN;
++			}
+ 		} else {
+ 			/* There is an ongoing operation*/
+ 			return -EAGAIN;
+@@ -724,12 +732,6 @@ static int rtsx_usb_suspend(struct usb_i
+ 	return 0;
  }
  
-+static int i2c_rd16_err(struct v4l2_subdev *sd, u16 reg, u16 *value)
-+{
-+	int err;
-+	*value = i2c_rdreg_err(sd, reg, 2, &err);
-+	return err;
-+}
-+
- static void i2c_wr16(struct v4l2_subdev *sd, u16 reg, u16 val)
+-static int rtsx_usb_resume_child(struct device *dev, void *data)
+-{
+-	pm_request_resume(dev);
+-	return 0;
+-}
+-
+ static int rtsx_usb_resume(struct usb_interface *intf)
  {
- 	i2c_wrreg(sd, reg, val, 2);
-@@ -2021,6 +2038,7 @@ static int tc358743_probe(struct i2c_client *client)
- 	struct tc358743_platform_data *pdata = client->dev.platform_data;
- 	struct v4l2_subdev *sd;
- 	u16 irq_mask = MASK_HDMI_MSK | MASK_CSI_MSK;
-+	u16 chipid;
- 	int err;
- 
- 	if (!i2c_check_functionality(client->adapter, I2C_FUNC_SMBUS_BYTE_DATA))
-@@ -2052,7 +2070,8 @@ static int tc358743_probe(struct i2c_client *client)
- 	sd->flags |= V4L2_SUBDEV_FL_HAS_DEVNODE | V4L2_SUBDEV_FL_HAS_EVENTS;
- 
- 	/* i2c access */
--	if ((i2c_rd16(sd, CHIPID) & MASK_CHIPID) != 0) {
-+	if (i2c_rd16_err(sd, CHIPID, &chipid) ||
-+	    (chipid & MASK_CHIPID) != 0) {
- 		v4l2_info(sd, "not a TC358743 on address 0x%x\n",
- 			  client->addr << 1);
- 		return -ENODEV;
--- 
-2.39.5
-
+ 	device_for_each_child(&intf->dev, NULL, rtsx_usb_resume_child);
 
 
 
