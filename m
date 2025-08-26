@@ -1,58 +1,56 @@
-Return-Path: <stable+bounces-173730-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-174320-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 80779B35E10
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 13:51:37 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 02ACAB36280
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 15:19:42 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 884FE3ACE77
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 11:50:26 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 8DBCF18850D1
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 13:16:35 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2E33329D292;
-	Tue, 26 Aug 2025 11:50:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id DD1593376BD;
+	Tue, 26 Aug 2025 13:14:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="XLw2ApOX"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="SAqYh59v"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DF4FC8635C;
-	Tue, 26 Aug 2025 11:50:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 99F9B299A94;
+	Tue, 26 Aug 2025 13:14:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756209008; cv=none; b=EpXVEqckreVp4eTfjVy+bPJz78m+dKija1H75UEehH6fcwzEYLlub/1VkR1L+XiQvQgq43dBwmAiXR+GGPfd3tPbAsFdtd1rR87E0eiVWbQgfm5X/SWweRhQVQIygsavXI2LvEYzCbeIsI5hxOioW23VEWNPONOMuhwGNmkAV/E=
+	t=1756214078; cv=none; b=Yd2wRtffrDtYuK3esfb45J43juYl2Eoc2KUhde+IXC7XiGeDCWNwciaGRfLalE3vAEBobIjWnOPQT38NyOf0R0d72d0GrfRtr00Fe2AWY82ULdtsau/cWWgfJdJfTcg81zPP+47xeUcRjnP9tkXbrDMo854WZZcf3O229PBRluc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756209008; c=relaxed/simple;
-	bh=TU9OKUFSEgToJboc98V/0Q7VSvPGjY6HyV3SyNZbESU=;
+	s=arc-20240116; t=1756214078; c=relaxed/simple;
+	bh=srTHVzZWFWJAIe4kzY8mWrFcPopPcLgVFpB9h1rDyjI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=uNTWYFwO0wNwL5+OWrEh4eUJUtEXaDVlsKOyELqPdNvzlEwQ4y+SJrCNhTwE3X9BIt9nA2C+z3TjkMoWWwcKkOc4ho6F/BPQVUJJ34ltB/7M1pleSYemzPLn7zqfQgxmcdVljGmrO7r/1AL1+dLAC7BtcC39v6HwQwMPyVlgbqc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=XLw2ApOX; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 70ABEC4CEF1;
-	Tue, 26 Aug 2025 11:50:07 +0000 (UTC)
+	 MIME-Version; b=DAqfJAl88iWNsCX8IRL+ni5AK6c3sU9/n9RMymY62pS/cAvNto3aAms7HVX0EpXCqskC1nGD1zaukXxaD/L/jHqCr17lSm8fTYsLgHv0TbbCrjedsk5Gwyip7pbZbtiMwDy2Dwretztlh8NxQHQSCFJ9KCVxrFGuFVmu0cvcRn8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=SAqYh59v; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id F219BC4CEF1;
+	Tue, 26 Aug 2025 13:14:37 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1756209007;
-	bh=TU9OKUFSEgToJboc98V/0Q7VSvPGjY6HyV3SyNZbESU=;
+	s=korg; t=1756214078;
+	bh=srTHVzZWFWJAIe4kzY8mWrFcPopPcLgVFpB9h1rDyjI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=XLw2ApOXW5vkhvE4Gitr97hL42q8dknxWNbux8GpIfV0YUhCOcRs1ldZZs8Y/ZX+f
-	 xw6hpi3NmmwBmD4BkhLFmgMvDxDm7oxpERE3XmUVeuSHCXBN42vDfykO7fBvQ5sCLq
-	 qaUMygrYj7F3DHrZ/2xDKfaNSkdnv8jjQnwOXcyM=
+	b=SAqYh59vyXJCxlPTcUlP2hOEZ/9QBeLXNHiUpdzGjnlM4czWULAgdHYQOgEP4jxZu
+	 sAqxvG29AJ1aeByHAhmb2Pv6xnhUN0J6TPSblucnq/k4+p0O5gtfmgZIIObOUTQNtH
+	 vo4aPmzx5bCauAHMtc0zpZG+/KZrUqzcyewJ42Hg=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Oren Sidi <osidi@nvidia.com>,
-	Alex Lazar <alazar@nvidia.com>,
-	Tariq Toukan <tariqt@nvidia.com>,
-	Leon Romanovsky <leon@kernel.org>,
+	Hariprasad Kelam <hkelam@marvell.com>,
+	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 315/322] net/mlx5: Add IFC bits and enums for buf_ownership
+Subject: [PATCH 6.6 581/587] Octeontx2-af: Skip overlap check for SPI field
 Date: Tue, 26 Aug 2025 13:12:10 +0200
-Message-ID: <20250826110923.667704908@linuxfoundation.org>
+Message-ID: <20250826111007.817709707@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250826110915.169062587@linuxfoundation.org>
-References: <20250826110915.169062587@linuxfoundation.org>
+In-Reply-To: <20250826110952.942403671@linuxfoundation.org>
+References: <20250826110952.942403671@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,61 +62,70 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Oren Sidi <osidi@nvidia.com>
+From: Hariprasad Kelam <hkelam@marvell.com>
 
-[ Upstream commit 6f09ee0b583cad4f2b6a82842c26235bee3d5c2e ]
+[ Upstream commit 8c5d95988c34f0aeba1f34cd5e4ba69494c90c5f ]
 
-Extend structure layouts and defines buf_ownership.
-buf_ownership indicates whether the buffer is managed by SW or FW.
+Octeontx2/CN10K silicon supports generating a 256-bit key per packet.
+The specific fields to be extracted from a packet for key generation
+are configurable via a Key Extraction (MKEX) Profile.
 
-Signed-off-by: Oren Sidi <osidi@nvidia.com>
-Reviewed-by: Alex Lazar <alazar@nvidia.com>
-Signed-off-by: Tariq Toukan <tariqt@nvidia.com>
-Link: https://patch.msgid.link/1752734895-257735-3-git-send-email-tariqt@nvidia.com
-Signed-off-by: Leon Romanovsky <leon@kernel.org>
-Stable-dep-of: 451d2849ea66 ("net/mlx5e: Query FW for buffer ownership")
+The AF driver scans the configured extraction profile to ensure that
+fields from upper layers do not overwrite fields from lower layers in
+the key.
+
+Example Packet Field Layout:
+LA: DMAC + SMAC
+LB: VLAN
+LC: IPv4/IPv6
+LD: TCP/UDP
+
+Valid MKEX Profile Configuration:
+
+LA   -> DMAC   -> key_offset[0-5]
+LC   -> SIP    -> key_offset[20-23]
+LD   -> SPORT  -> key_offset[30-31]
+
+Invalid MKEX profile configuration:
+
+LA   -> DMAC   -> key_offset[0-5]
+LC   -> SIP    -> key_offset[20-23]
+LD   -> SPORT  -> key_offset[2-3]  // Overlaps with DMAC field
+
+In another scenario, if the MKEX profile is configured to extract
+the SPI field from both AH and ESP headers at the same key offset,
+the driver rejecting this configuration. In a regular traffic,
+ipsec packet will be having either AH(LD) or ESP (LE). This patch
+relaxes the check for the same.
+
+Fixes: 12aa0a3b93f3 ("octeontx2-af: Harden rule validation.")
+Signed-off-by: Hariprasad Kelam <hkelam@marvell.com>
+Link: https://patch.msgid.link/20250820063919.1463518-1-hkelam@marvell.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- include/linux/mlx5/mlx5_ifc.h | 14 ++++++++++++--
- 1 file changed, 12 insertions(+), 2 deletions(-)
+ drivers/net/ethernet/marvell/octeontx2/af/rvu_npc_fs.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/include/linux/mlx5/mlx5_ifc.h b/include/linux/mlx5/mlx5_ifc.h
-index 512e25c416ae..2b1a816e4d59 100644
---- a/include/linux/mlx5/mlx5_ifc.h
-+++ b/include/linux/mlx5/mlx5_ifc.h
-@@ -10358,8 +10358,16 @@ struct mlx5_ifc_pifr_reg_bits {
- 	u8         port_filter_update_en[8][0x20];
- };
+diff --git a/drivers/net/ethernet/marvell/octeontx2/af/rvu_npc_fs.c b/drivers/net/ethernet/marvell/octeontx2/af/rvu_npc_fs.c
+index 237f82082ebe..0f4e462d39c2 100644
+--- a/drivers/net/ethernet/marvell/octeontx2/af/rvu_npc_fs.c
++++ b/drivers/net/ethernet/marvell/octeontx2/af/rvu_npc_fs.c
+@@ -580,8 +580,8 @@ static void npc_set_features(struct rvu *rvu, int blkaddr, u8 intf)
+ 		if (!npc_check_field(rvu, blkaddr, NPC_LB, intf))
+ 			*features &= ~BIT_ULL(NPC_OUTER_VID);
  
-+enum {
-+	MLX5_BUF_OWNERSHIP_UNKNOWN	= 0x0,
-+	MLX5_BUF_OWNERSHIP_FW_OWNED	= 0x1,
-+	MLX5_BUF_OWNERSHIP_SW_OWNED	= 0x2,
-+};
-+
- struct mlx5_ifc_pfcc_reg_bits {
--	u8         reserved_at_0[0x8];
-+	u8         reserved_at_0[0x4];
-+	u8	   buf_ownership[0x2];
-+	u8	   reserved_at_6[0x2];
- 	u8         local_port[0x8];
- 	u8         reserved_at_10[0xb];
- 	u8         ppan_mask_n[0x1];
-@@ -10491,7 +10499,9 @@ struct mlx5_ifc_mtutc_reg_bits {
- struct mlx5_ifc_pcam_enhanced_features_bits {
- 	u8         reserved_at_0[0x48];
- 	u8         fec_100G_per_lane_in_pplm[0x1];
--	u8         reserved_at_49[0x1f];
-+	u8         reserved_at_49[0xa];
-+	u8	   buffer_ownership[0x1];
-+	u8	   resereved_at_54[0x14];
- 	u8         fec_50G_per_lane_in_pplm[0x1];
- 	u8         reserved_at_69[0x4];
- 	u8         rx_icrc_encapsulated_counter[0x1];
+-	/* Set SPI flag only if AH/ESP and IPSEC_SPI are in the key */
+-	if (npc_check_field(rvu, blkaddr, NPC_IPSEC_SPI, intf) &&
++	/* Allow extracting SPI field from AH and ESP headers at same offset */
++	if (npc_is_field_present(rvu, NPC_IPSEC_SPI, intf) &&
+ 	    (*features & (BIT_ULL(NPC_IPPROTO_ESP) | BIT_ULL(NPC_IPPROTO_AH))))
+ 		*features |= BIT_ULL(NPC_IPSEC_SPI);
+ 
 -- 
 2.50.1
 
