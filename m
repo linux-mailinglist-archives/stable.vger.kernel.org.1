@@ -1,57 +1,55 @@
-Return-Path: <stable+bounces-174477-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-173073-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6F351B363D2
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 15:33:29 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 27C13B35B94
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 13:26:08 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id C911A16C571
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 13:23:16 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id D6F3B1BA3408
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 11:23:02 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9E27C33A03C;
-	Tue, 26 Aug 2025 13:21:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8819A30AAC2;
+	Tue, 26 Aug 2025 11:21:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="xH5w1asZ"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Q6JMjNxF"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5A2152BE058;
-	Tue, 26 Aug 2025 13:21:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 447FA20B7EE;
+	Tue, 26 Aug 2025 11:21:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756214497; cv=none; b=UbvT0+qNXDt2jM6qFjq22cU/8gN3INWzcaWISwc4MnAvaW63pzFyUasSvFx3kKhszktVRJlQioCY6Br2p/dtnLAwQlGFTGQvmCUM2ZzU7D/grHkxafr3CIRNzhNuxotDm6ZAzXFS6V8+qeiHuKVDfzieFPOALdR4a/qisFMfhTM=
+	t=1756207303; cv=none; b=HDzUsnpO1EFPIuaHHsGkL0lfHKCa7PUdZtm0ZqzqvvOn4bQdmcjaBwLAEDios6FH/ebTXiaUg0A6buhdEedX56A0yakhbUAqLHjbyQBaMO5xCFiGsWULazlr4hUGfSRLKoLkvpzuEnjcKl031VYktdFkySWDNJPNwDPFuHgYtoA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756214497; c=relaxed/simple;
-	bh=SCSYI3jJrPO+pda3OVDzaOGbeHNJ1i4CjJCge4Kj/aA=;
+	s=arc-20240116; t=1756207303; c=relaxed/simple;
+	bh=OGQ1h5zDeY+65JIojxtawqm61efJfN/6Pmbkp7/Jj08=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=b2wHfU4tI5eyGW8grljmd9QKfdXw4x5z851ZpJuoyJecRFSWeId3vGsez49YIUAEVJawUYW8TkZNWJXynEgN2oxrguUC7AN/lC44YsE/87e/571uRgmp7gw/FJGC3XhgqPi4rSMYLyJBZrTxvmxGu0nVv0a2cNz8L1bCNmJXm3g=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=xH5w1asZ; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7C725C4CEF1;
-	Tue, 26 Aug 2025 13:21:35 +0000 (UTC)
+	 MIME-Version; b=DsdQVNPEvjBmJu6gOtrt3aHqUmkv//qmMXMAg9Sv3WGJeuOB8wrCp75kFVD85MTro3qEhXpZLwdwmNzB4TEjfAP8kPaNeqJCNVKKt0U9vcSI2Ns9yRNQNasq0Ri2c35dt/Ca6RSRk9Y5SJ3eSq+2ZJAIgbcsqQGfRfzElfzzNm8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Q6JMjNxF; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C965AC4CEF1;
+	Tue, 26 Aug 2025 11:21:42 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1756214495;
-	bh=SCSYI3jJrPO+pda3OVDzaOGbeHNJ1i4CjJCge4Kj/aA=;
+	s=korg; t=1756207303;
+	bh=OGQ1h5zDeY+65JIojxtawqm61efJfN/6Pmbkp7/Jj08=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=xH5w1asZO09+gY5km6cWdd0CmJ+bZCpV84pgaf2KTopDS9xZNWf1hKH5XQe4rMfhe
-	 9LEyl2NLjsuYRe5f/kOiX/+yMpxUrFnh2o2lzyjVK9OB8qLznalufO1BWg8sOWjpSN
-	 udzGQH+63YaZ8VQY6vyTpE2eFSZwRmpDMmuga1BA=
+	b=Q6JMjNxFAb81m95mGcNdFIP8eRcQZKbJ9FKGLY7g0abkmlkzNdK1/u89AilJqBTX0
+	 1SPpy4kg6GNszEaLbwFF8V/rQCZ9oVw/VGrri4VlUTq67ThwyOxRdDSmCk88FxQxM8
+	 5l3yXF7XO7iy5WFaOYDCQcC/jZxtOjm5ZDsLKcqA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Florian Fainelli <florian.fainelli@broadcom.com>,
-	=?UTF-8?q?=C3=81lvaro=20Fern=C3=A1ndez=20Rojas?= <noltari@gmail.com>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 160/482] net: dsa: b53: prevent DIS_LEARNING access on BCM5325
-Date: Tue, 26 Aug 2025 13:06:53 +0200
-Message-ID: <20250826110934.764798202@linuxfoundation.org>
+	Dan Carpenter <dan.carpenter@linaro.org>,
+	Hans Verkuil <hverkuil@xs4all.nl>
+Subject: [PATCH 6.16 130/457] media: gspca: Add bounds checking to firmware parser
+Date: Tue, 26 Aug 2025 13:06:54 +0200
+Message-ID: <20250826110940.586199293@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250826110930.769259449@linuxfoundation.org>
-References: <20250826110930.769259449@linuxfoundation.org>
+In-Reply-To: <20250826110937.289866482@linuxfoundation.org>
+References: <20250826110937.289866482@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,61 +59,63 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.16-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Álvaro Fernández Rojas <noltari@gmail.com>
+From: Dan Carpenter <dan.carpenter@linaro.org>
 
-[ Upstream commit 800728abd9f83bda4de62a30ce62a8b41c242020 ]
+commit aef89c0b2417da79cb2062a95476288f9f203ab0 upstream.
 
-BCM5325 doesn't implement DIS_LEARNING register so we should avoid reading
-or writing it.
+This sd_init() function reads the firmware.  The firmware data holds a
+series of records and the function reads each record and sends the data
+to the device.  The request_ihex_firmware() function
+calls ihex_validate_fw() which ensures that the total length of all the
+records won't read out of bounds of the fw->data[].
 
-Reviewed-by: Florian Fainelli <florian.fainelli@broadcom.com>
-Signed-off-by: Álvaro Fernández Rojas <noltari@gmail.com>
-Link: https://patch.msgid.link/20250614080000.1884236-10-noltari@gmail.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+However, a potential issue is if there is a single very large
+record (larger than PAGE_SIZE) and that would result in memory
+corruption.  Generally we trust the firmware, but it's always better to
+double check.
+
+Fixes: 49b61ec9b5af ("[media] gspca: Add new vicam subdriver")
+Cc: stable@vger.kernel.org
+Signed-off-by: Dan Carpenter <dan.carpenter@linaro.org>
+Signed-off-by: Hans Verkuil <hverkuil@xs4all.nl>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/net/dsa/b53/b53_common.c | 11 ++++++++++-
- 1 file changed, 10 insertions(+), 1 deletion(-)
+ drivers/media/usb/gspca/vicam.c |   10 ++++++++--
+ 1 file changed, 8 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/net/dsa/b53/b53_common.c b/drivers/net/dsa/b53/b53_common.c
-index 6bd7ed19ce28..5bf390707505 100644
---- a/drivers/net/dsa/b53/b53_common.c
-+++ b/drivers/net/dsa/b53/b53_common.c
-@@ -561,6 +561,9 @@ static void b53_port_set_learning(struct b53_device *dev, int port,
- {
- 	u16 reg;
+--- a/drivers/media/usb/gspca/vicam.c
++++ b/drivers/media/usb/gspca/vicam.c
+@@ -227,6 +227,7 @@ static int sd_init(struct gspca_dev *gsp
+ 	const struct ihex_binrec *rec;
+ 	const struct firmware *fw;
+ 	u8 *firmware_buf;
++	int len;
  
-+	if (is5325(dev))
-+		return;
-+
- 	b53_read16(dev, B53_CTRL_PAGE, B53_DIS_LEARNING, &reg);
- 	if (learning)
- 		reg &= ~BIT(port);
-@@ -2031,7 +2034,13 @@ int b53_br_flags_pre(struct dsa_switch *ds, int port,
- 		     struct switchdev_brport_flags flags,
- 		     struct netlink_ext_ack *extack)
- {
--	if (flags.mask & ~(BR_FLOOD | BR_MCAST_FLOOD | BR_LEARNING))
-+	struct b53_device *dev = ds->priv;
-+	unsigned long mask = (BR_FLOOD | BR_MCAST_FLOOD);
-+
-+	if (!is5325(dev))
-+		mask |= BR_LEARNING;
-+
-+	if (flags.mask & ~mask)
- 		return -EINVAL;
- 
- 	return 0;
--- 
-2.39.5
-
+ 	ret = request_ihex_firmware(&fw, VICAM_FIRMWARE,
+ 				    &gspca_dev->dev->dev);
+@@ -241,9 +242,14 @@ static int sd_init(struct gspca_dev *gsp
+ 		goto exit;
+ 	}
+ 	for (rec = (void *)fw->data; rec; rec = ihex_next_binrec(rec)) {
+-		memcpy(firmware_buf, rec->data, be16_to_cpu(rec->len));
++		len = be16_to_cpu(rec->len);
++		if (len > PAGE_SIZE) {
++			ret = -EINVAL;
++			break;
++		}
++		memcpy(firmware_buf, rec->data, len);
+ 		ret = vicam_control_msg(gspca_dev, 0xff, 0, 0, firmware_buf,
+-					be16_to_cpu(rec->len));
++					len);
+ 		if (ret < 0)
+ 			break;
+ 	}
 
 
 
