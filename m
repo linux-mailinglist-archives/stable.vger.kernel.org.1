@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-175095-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-173044-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 44A39B36665
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 15:56:44 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 852A0B35BB8
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 13:27:11 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 59891565E96
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 13:50:13 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id DC74C17D506
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 11:21:57 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2C708239E8B;
-	Tue, 26 Aug 2025 13:48:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7AC65341651;
+	Tue, 26 Aug 2025 11:20:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Na32kBnp"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="UIExuzxr"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D098134DCD2;
-	Tue, 26 Aug 2025 13:48:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 37BE22BE653;
+	Tue, 26 Aug 2025 11:20:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756216126; cv=none; b=GIaAnLkbL/l9d5dOlwLGW3lvPtEpk7t/sGQqD5MeRWz0SYEnOLd4yDxmCpZ9AFT5h5Jmiyn3QpMqvmKGEKM+vRgKcZTttb9WUr2osQaOHdWFCE9BYlYdvtHMXqZXplqqpNtB8l93gHs/45OyuI9XAXlcp7PMHdYyWEQnD4I+2xk=
+	t=1756207229; cv=none; b=Cvo41zPRTTcNsSeSPj5EXOQxII41RiU6xD33zsiuFt/D/07M+JiCPTk9UitQOogT5cwRhi3U11cgHijveftiqL9NOorzvvypYtUNMADvSpzFvRQjnLAURaa0rVPuBgi/nRB3wBjSUbWwWjd8cz3mURW+R9suA4c4iJ3GAeT8myA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756216126; c=relaxed/simple;
-	bh=thAw4G5zxeJWY6eIdnQyacWHS9CC6gSydX0i+eGzOus=;
+	s=arc-20240116; t=1756207229; c=relaxed/simple;
+	bh=i3Qs1dUAlYUbGZroFSSqX/Gcx47v8Awa6uJADGfi4yQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=I47kfhxESx12/L7iMSAVwPo3wEtHPm88655Hroh+6DQ7v1vtpj7Vnj9kaaNNA2uYPCU4LtoWhiOmGPzeuzHZESjlphB+65bQvNPaZuFHkUwdOPv3WE2zYkbdua3ipe6t2UW1F2UqkanCxt2SAdb9htjMuxnhwQ0ThR8qvTzLy0M=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Na32kBnp; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5FD2AC4CEF1;
-	Tue, 26 Aug 2025 13:48:46 +0000 (UTC)
+	 MIME-Version; b=tvXCi6JzCIzNBanp1Xebq517Y48B4Y2pMjY1W60w1rmRYZVaaSsE+ueUahD2fFRJAC+HIM8+DMVEzOAANuQdz0B9iMzdgiMQBaR2gOvDn3lcv3N6TzhIBOPxIWUFVaWwDEUuxGLwilIIDR0Nykzt0ki069HMiK9Lo5KohGTLiF8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=UIExuzxr; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id BBBA9C4CEF1;
+	Tue, 26 Aug 2025 11:20:28 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1756216126;
-	bh=thAw4G5zxeJWY6eIdnQyacWHS9CC6gSydX0i+eGzOus=;
+	s=korg; t=1756207229;
+	bh=i3Qs1dUAlYUbGZroFSSqX/Gcx47v8Awa6uJADGfi4yQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Na32kBnpf/nBLzERlutknO8anntk+QvNZFDyFv5P2ThlwWJYhiBZfvQH7MtTSWWAy
-	 UH3j1Odv83jCXnhIkw4SOQs2wXi9P6I80rlJ1ZnXqsTfDzVhYix5I4rPJiEW4WX5Cd
-	 JnRBNqW4061RfYOj62ZITgzHkWm9Co+ve/205pJg=
+	b=UIExuzxrGrZCfbaulwumarIxJl30JB7ofU3gHGBML3qIeqjVOqe+V3mQCvJI62z/J
+	 MROfDTdGOueB6DVcaW/uzw3hJoPota4XIWpA2t3D8l/UNDnw2U5ERzvEKnkMRaEXT1
+	 gFoF2/AxMa4HvLdjbyUTt8tORI04bCqo7+XoqeYk=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Wei Gao <wegao@suse.com>,
-	Jan Kara <jack@suse.cz>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 293/644] ext2: Handle fiemap on empty files to prevent EINVAL
+	Damien Le Moal <dlemoal@kernel.org>,
+	Manivannan Sadhasivam <mani@kernel.org>,
+	Niklas Cassel <cassel@kernel.org>
+Subject: [PATCH 6.16 100/457] PCI: endpoint: Fix configfs group removal on driver teardown
 Date: Tue, 26 Aug 2025 13:06:24 +0200
-Message-ID: <20250826110953.643499249@linuxfoundation.org>
+Message-ID: <20250826110939.847426291@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250826110946.507083938@linuxfoundation.org>
-References: <20250826110946.507083938@linuxfoundation.org>
+In-Reply-To: <20250826110937.289866482@linuxfoundation.org>
+References: <20250826110937.289866482@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,56 +62,58 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.16-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Wei Gao <wegao@suse.com>
+From: Damien Le Moal <dlemoal@kernel.org>
 
-[ Upstream commit a099b09a3342a0b28ea330e405501b5b4d0424b4 ]
+commit 910bdb8197f9322790c738bb32feaa11dba26909 upstream.
 
-Previously, ext2_fiemap would unconditionally apply "len = min_t(u64, len,
-i_size_read(inode));", When inode->i_size was 0 (for an empty file), this
-would reduce the requested len to 0. Passing len = 0 to iomap_fiemap could
-then result in an -EINVAL error, even for valid queries on empty files.
+An endpoint driver configfs attributes group is added to the
+epf_group list of struct pci_epf_driver by pci_epf_add_cfs() but an
+added group is not removed from this list when the attribute group is
+unregistered with pci_ep_cfs_remove_epf_group().
 
-Link: https://github.com/linux-test-project/ltp/issues/1246
-Signed-off-by: Wei Gao <wegao@suse.com>
-Signed-off-by: Jan Kara <jack@suse.cz>
-Link: https://patch.msgid.link/20250613152402.3432135-1-wegao@suse.com
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Add the missing list_del() call in pci_ep_cfs_remove_epf_group()
+to correctly remove the attribute group from the driver list.
+
+With this change, once the loop over all attribute groups in
+pci_epf_remove_cfs() completes, the driver epf_group list should be
+empty. Add a WARN_ON() to make sure of that.
+
+Fixes: ef1433f717a2 ("PCI: endpoint: Create configfs entry for each pci_epf_device_id table entry")
+Signed-off-by: Damien Le Moal <dlemoal@kernel.org>
+Signed-off-by: Manivannan Sadhasivam <mani@kernel.org>
+Reviewed-by: Niklas Cassel <cassel@kernel.org>
+Cc: stable@vger.kernel.org
+Link: https://patch.msgid.link/20250624114544.342159-3-dlemoal@kernel.org
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- fs/ext2/inode.c | 12 +++++++++++-
- 1 file changed, 11 insertions(+), 1 deletion(-)
+ drivers/pci/endpoint/pci-ep-cfs.c   |    1 +
+ drivers/pci/endpoint/pci-epf-core.c |    1 +
+ 2 files changed, 2 insertions(+)
 
-diff --git a/fs/ext2/inode.c b/fs/ext2/inode.c
-index 333fa62661d5..85b6a76378ee 100644
---- a/fs/ext2/inode.c
-+++ b/fs/ext2/inode.c
-@@ -856,9 +856,19 @@ int ext2_fiemap(struct inode *inode, struct fiemap_extent_info *fieinfo,
- 		u64 start, u64 len)
- {
- 	int ret;
-+	loff_t i_size;
+--- a/drivers/pci/endpoint/pci-ep-cfs.c
++++ b/drivers/pci/endpoint/pci-ep-cfs.c
+@@ -691,6 +691,7 @@ void pci_ep_cfs_remove_epf_group(struct
+ 	if (IS_ERR_OR_NULL(group))
+ 		return;
  
- 	inode_lock(inode);
--	len = min_t(u64, len, i_size_read(inode));
-+	i_size = i_size_read(inode);
-+	/*
-+	 * iomap_fiemap() returns EINVAL for 0 length. Make sure we don't trim
-+	 * length to 0 but still trim the range as much as possible since
-+	 * ext2_get_blocks() iterates unmapped space block by block which is
-+	 * slow.
-+	 */
-+	if (i_size == 0)
-+		i_size = 1;
-+	len = min_t(u64, len, i_size);
- 	ret = iomap_fiemap(inode, fieinfo, start, len, &ext2_iomap_ops);
- 	inode_unlock(inode);
++	list_del(&group->group_entry);
+ 	configfs_unregister_default_group(group);
+ }
+ EXPORT_SYMBOL(pci_ep_cfs_remove_epf_group);
+--- a/drivers/pci/endpoint/pci-epf-core.c
++++ b/drivers/pci/endpoint/pci-epf-core.c
+@@ -338,6 +338,7 @@ static void pci_epf_remove_cfs(struct pc
+ 	mutex_lock(&pci_epf_mutex);
+ 	list_for_each_entry_safe(group, tmp, &driver->epf_group, group_entry)
+ 		pci_ep_cfs_remove_epf_group(group);
++	WARN_ON(!list_empty(&driver->epf_group));
+ 	mutex_unlock(&pci_epf_mutex);
+ }
  
--- 
-2.39.5
-
 
 
 
