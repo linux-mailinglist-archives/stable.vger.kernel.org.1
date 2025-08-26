@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-173363-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-174254-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id E42CEB35D76
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 13:45:04 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 49B05B36264
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 15:18:30 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id CCB9F361319
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 11:36:07 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 158F92A355A
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 13:12:23 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D3BA73451A5;
-	Tue, 26 Aug 2025 11:34:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C9D621FBCB5;
+	Tue, 26 Aug 2025 13:11:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="wohhelbG"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="lTUt3QXg"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 914A2343D9B;
-	Tue, 26 Aug 2025 11:34:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 84C37243946;
+	Tue, 26 Aug 2025 13:11:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756208053; cv=none; b=Fi/7AB+APLSoa/r7AJUbt7bX828Xwa4MisGmVpYc5G3+6c0XVApXFlxJY5EdBw7wWFck82zmPOvKtE+6Rkag/vtyHj7hBDBnQCOpyb7CMXwb8BFdLCSm7dSmeztqSwQkuyd9QdIPzVkOt0AGPB/XGrBEghjh3UEPfO6JO15ISDA=
+	t=1756213901; cv=none; b=pP+DvxqlDDovsM/WqWFAULR5k7yh9INra3hIDzvCqAYD/TXLf6B9aN1fMXGWVOVN6Joa98Tj17cW2kdS77K/MKQl+HVXIFOxNSf7bd3r3Qh4RqFSLw5HalqfX25iqeEq6qfdnQIxwDRAif2I/9hxpKKBpVq0WVxlpwWMJCoarvs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756208053; c=relaxed/simple;
-	bh=cJnKDLWdOGveBF25Gd8B6YWQaTyGLf1KaxfoQ9Fz6o0=;
+	s=arc-20240116; t=1756213901; c=relaxed/simple;
+	bh=31UurUCLSogxpC613EwZhq6Bc4ZhAQcD9suMldM8cXw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=I/kmLlKhJ10RIJ4eNR6/neg3RhNRmMX+n8IC5NDFHbL6DGEd3E9xQ5fr+ss0tE7mYdM25Udg+6lARMbTzvtvzSczE02fNDp17fBVfR/LlLABskzhYjbrSjvP1YTuPhe+QnDa6ypTwQ6y79GkMePicmZ+KVDti0JsRT8MzB/2mJ8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=wohhelbG; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 20C08C4CEF1;
-	Tue, 26 Aug 2025 11:34:12 +0000 (UTC)
+	 MIME-Version; b=QyOlRQPoIsCHZvRHAfEkUu27NtrEH1h0HEvWJrYoaqAuytvyY3+l7NlOIVQGEbcL8+ak/xzXokXojHpqkgtQD8lnEP5r1grYfA4Ndma4SfaCt36CHcAOc0SZRsXNtHyk1PrQCr3c5xL7k5WBm03jXf0Lep0ao+IxLbvxbfgGdQo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=lTUt3QXg; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1A23EC4CEF1;
+	Tue, 26 Aug 2025 13:11:40 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1756208053;
-	bh=cJnKDLWdOGveBF25Gd8B6YWQaTyGLf1KaxfoQ9Fz6o0=;
+	s=korg; t=1756213901;
+	bh=31UurUCLSogxpC613EwZhq6Bc4ZhAQcD9suMldM8cXw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=wohhelbGq78kLX81gSxUBS9Shu8Tic8pKbgGF4A9gy4gQ07lC+bonPtcU5FmZHqmP
-	 ZjdZl1MRPw68w2w0dvxAO7wFN5wo48ehb4ulo9zqlI4c214tU06j2Q7+P4aMNZKLZ+
-	 X43uRhC6eWiZ5q8H2nYOlS+XxiABJjCtjZPfGk8A=
+	b=lTUt3QXgz8KGZ+1v4oTqojnEttpJxG33iQf5Oa7xWg/z59gzN8msVlNONLuS9qmuG
+	 wi7POEklc+qIWxKJ8zQCB6T0PJxc0FMJRMjEWRr5KxnNfbBnpWS0HO/wItQst7BTrz
+	 1ohOelIjZW9G3nXEhXei2WV5l/Kau2OvP7gYb+yI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Baihan Li <libaihan@huawei.com>,
-	Yongbang Shi <shiyongbang@huawei.com>,
-	Dmitry Baryshkov <dmitry.baryshkov@oss.qualcomm.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.16 388/457] drm/hisilicon/hibmc: fix the i2c device resource leak when vdac init failed
+	stable <stable@kernel.org>,
+	Jun Li <jun.li@nxp.com>,
+	Xu Yang <xu.yang_2@nxp.com>,
+	Alan Stern <stern@rowland.harvard.edu>
+Subject: [PATCH 6.6 523/587] usb: core: hcd: fix accessing unmapped memory in SINGLE_STEP_SET_FEATURE test
 Date: Tue, 26 Aug 2025 13:11:12 +0200
-Message-ID: <20250826110946.887626400@linuxfoundation.org>
+Message-ID: <20250826111006.302924723@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250826110937.289866482@linuxfoundation.org>
-References: <20250826110937.289866482@linuxfoundation.org>
+In-Reply-To: <20250826110952.942403671@linuxfoundation.org>
+References: <20250826110952.942403671@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,99 +63,63 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.16-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Baihan Li <libaihan@huawei.com>
+From: Xu Yang <xu.yang_2@nxp.com>
 
-[ Upstream commit e5f48bfa2ae0806d5f51fb8061afc619a73599a7 ]
+commit 8fe06185e11ae753414aa6117f0e798aa77567ff upstream.
 
-Currently the driver missed to clean the i2c adapter when vdac init failed.
-It may cause resource leak.
+The USB core will unmap urb->transfer_dma after SETUP stage completes.
+Then the USB controller will access unmapped memory when it received
+device descriptor. If iommu is equipped, the entire test can't be
+completed due to the memory accessing is blocked.
 
-Fixes: a0d078d06e516 ("drm/hisilicon: Features to support reading resolutions from EDID")
-Signed-off-by: Baihan Li <libaihan@huawei.com>
-Signed-off-by: Yongbang Shi <shiyongbang@huawei.com>
-Reviewed-by: Dmitry Baryshkov <dmitry.baryshkov@oss.qualcomm.com>
-Link: https://lore.kernel.org/r/20250813094238.3722345-2-shiyongbang@huawei.com
-Signed-off-by: Dmitry Baryshkov <dmitry.baryshkov@oss.qualcomm.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Fix it by calling map_urb_for_dma() again for IN stage. To reduce
+redundant map for urb->transfer_buffer, this will also set
+URB_NO_TRANSFER_DMA_MAP flag before first map_urb_for_dma() to skip
+dma map for urb->transfer_buffer and clear URB_NO_TRANSFER_DMA_MAP
+flag before second map_urb_for_dma().
+
+Fixes: 216e0e563d81 ("usb: core: hcd: use map_urb_for_dma for single step set feature urb")
+Cc: stable <stable@kernel.org>
+Reviewed-by: Jun Li <jun.li@nxp.com>
+Signed-off-by: Xu Yang <xu.yang_2@nxp.com>
+Acked-by: Alan Stern <stern@rowland.harvard.edu>
+Link: https://lore.kernel.org/r/20250806083955.3325299-1-xu.yang_2@nxp.com
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/gpu/drm/hisilicon/hibmc/hibmc_drm_drv.h  |  1 +
- drivers/gpu/drm/hisilicon/hibmc/hibmc_drm_i2c.c  |  5 +++++
- drivers/gpu/drm/hisilicon/hibmc/hibmc_drm_vdac.c | 11 ++++++++---
- 3 files changed, 14 insertions(+), 3 deletions(-)
+ drivers/usb/core/hcd.c |    8 +++++++-
+ 1 file changed, 7 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/gpu/drm/hisilicon/hibmc/hibmc_drm_drv.h b/drivers/gpu/drm/hisilicon/hibmc/hibmc_drm_drv.h
-index 274feabe7df0..ca8502e2760c 100644
---- a/drivers/gpu/drm/hisilicon/hibmc/hibmc_drm_drv.h
-+++ b/drivers/gpu/drm/hisilicon/hibmc/hibmc_drm_drv.h
-@@ -69,6 +69,7 @@ int hibmc_de_init(struct hibmc_drm_private *priv);
- int hibmc_vdac_init(struct hibmc_drm_private *priv);
+--- a/drivers/usb/core/hcd.c
++++ b/drivers/usb/core/hcd.c
+@@ -2152,7 +2152,7 @@ static struct urb *request_single_step_s
+ 	urb->complete = usb_ehset_completion;
+ 	urb->status = -EINPROGRESS;
+ 	urb->actual_length = 0;
+-	urb->transfer_flags = URB_DIR_IN;
++	urb->transfer_flags = URB_DIR_IN | URB_NO_TRANSFER_DMA_MAP;
+ 	usb_get_urb(urb);
+ 	atomic_inc(&urb->use_count);
+ 	atomic_inc(&urb->dev->urbnum);
+@@ -2216,9 +2216,15 @@ int ehset_single_step_set_feature(struct
  
- int hibmc_ddc_create(struct drm_device *drm_dev, struct hibmc_vdac *connector);
-+void hibmc_ddc_del(struct hibmc_vdac *vdac);
- 
- int hibmc_dp_init(struct hibmc_drm_private *priv);
- 
-diff --git a/drivers/gpu/drm/hisilicon/hibmc/hibmc_drm_i2c.c b/drivers/gpu/drm/hisilicon/hibmc/hibmc_drm_i2c.c
-index 99b3b77b5445..44860011855e 100644
---- a/drivers/gpu/drm/hisilicon/hibmc/hibmc_drm_i2c.c
-+++ b/drivers/gpu/drm/hisilicon/hibmc/hibmc_drm_i2c.c
-@@ -95,3 +95,8 @@ int hibmc_ddc_create(struct drm_device *drm_dev, struct hibmc_vdac *vdac)
- 
- 	return i2c_bit_add_bus(&vdac->adapter);
- }
+ 	/* Complete remaining DATA and STATUS stages using the same URB */
+ 	urb->status = -EINPROGRESS;
++	urb->transfer_flags &= ~URB_NO_TRANSFER_DMA_MAP;
+ 	usb_get_urb(urb);
+ 	atomic_inc(&urb->use_count);
+ 	atomic_inc(&urb->dev->urbnum);
++	if (map_urb_for_dma(hcd, urb, GFP_KERNEL)) {
++		usb_put_urb(urb);
++		goto out1;
++	}
 +
-+void hibmc_ddc_del(struct hibmc_vdac *vdac)
-+{
-+	i2c_del_adapter(&vdac->adapter);
-+}
-diff --git a/drivers/gpu/drm/hisilicon/hibmc/hibmc_drm_vdac.c b/drivers/gpu/drm/hisilicon/hibmc/hibmc_drm_vdac.c
-index e8a527ede854..841e81f47b68 100644
---- a/drivers/gpu/drm/hisilicon/hibmc/hibmc_drm_vdac.c
-+++ b/drivers/gpu/drm/hisilicon/hibmc/hibmc_drm_vdac.c
-@@ -53,7 +53,7 @@ static void hibmc_connector_destroy(struct drm_connector *connector)
- {
- 	struct hibmc_vdac *vdac = to_hibmc_vdac(connector);
- 
--	i2c_del_adapter(&vdac->adapter);
-+	hibmc_ddc_del(vdac);
- 	drm_connector_cleanup(connector);
- }
- 
-@@ -110,7 +110,7 @@ int hibmc_vdac_init(struct hibmc_drm_private *priv)
- 	ret = drmm_encoder_init(dev, encoder, NULL, DRM_MODE_ENCODER_DAC, NULL);
- 	if (ret) {
- 		drm_err(dev, "failed to init encoder: %d\n", ret);
--		return ret;
-+		goto err;
- 	}
- 
- 	drm_encoder_helper_add(encoder, &hibmc_encoder_helper_funcs);
-@@ -121,7 +121,7 @@ int hibmc_vdac_init(struct hibmc_drm_private *priv)
- 					  &vdac->adapter);
- 	if (ret) {
- 		drm_err(dev, "failed to init connector: %d\n", ret);
--		return ret;
-+		goto err;
- 	}
- 
- 	drm_connector_helper_add(connector, &hibmc_connector_helper_funcs);
-@@ -131,4 +131,9 @@ int hibmc_vdac_init(struct hibmc_drm_private *priv)
- 	connector->polled = DRM_CONNECTOR_POLL_CONNECT | DRM_CONNECTOR_POLL_DISCONNECT;
- 
- 	return 0;
-+
-+err:
-+	hibmc_ddc_del(vdac);
-+
-+	return ret;
- }
--- 
-2.50.1
-
+ 	retval = hcd->driver->submit_single_step_set_feature(hcd, urb, 0);
+ 	if (!retval && !wait_for_completion_timeout(&done,
+ 						msecs_to_jiffies(2000))) {
 
 
 
