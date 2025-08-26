@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-175863-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-174695-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id BEEDBB36BBD
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 16:48:28 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3B314B364CD
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 15:42:04 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id E199CA009A6
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 14:24:40 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id A32CE8A5649
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 13:32:31 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id DFE6E3451A0;
-	Tue, 26 Aug 2025 14:22:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E0653187554;
+	Tue, 26 Aug 2025 13:31:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="IaxZOR9w"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="tLF7g/Fu"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9D75828314A;
-	Tue, 26 Aug 2025 14:22:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9C6052E6106;
+	Tue, 26 Aug 2025 13:31:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756218167; cv=none; b=q5C/KkplFHtXXtZcD+xoK4itetqOFt0idP4zxLsmaNUM5goiqsdOEt7ErE7m5Wtq2ngSjfTltoO9f1pK7pmdvMpvPeNXI7hHFIha3qI0WV55xhyO50DyjJOnoVgjLZkhkHKyIeQ6PZYq8AN8SGTx4oGmVTW/e09S1EVdS4T3zkk=
+	t=1756215071; cv=none; b=MsK75dkhhRbEkWujphhPgE5Pv3HTmbedP04NOPVhIBYuXav3KMVJhTTvrUD87ESFrrc/G5suIt4TNMgJc45Y5ZNWKQo7NW6MFSHOAxPBk6o70SbpejPNWRLNz+pA2XY50SWnNmKm59Aa2kAfii6kNWFFrwRCs7A/Eua3Pznmyw4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756218167; c=relaxed/simple;
-	bh=MW1k2+FfMZaJUJq9CueKIuMd4Y1VBtCehCXntA4MS/U=;
+	s=arc-20240116; t=1756215071; c=relaxed/simple;
+	bh=M/Q3NLdRTUTvSl3J86WcLxZaxl7y1KBAoPyx7r1/q80=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=X+/j4Ju7wbneCFSzWUVoFEeaqGLV21cTGsERnr1FCoEcMQMuxSAH3FyCInm6yIYIPmLh2xE0nW4P3wUmsoq6Nstb6IYWlX2l2Di49CaeAlxtj9TUzqIUoCfq0JkfoNb3M4lfwD7DAn5LAAzBP/SMoMOBrnKF9AJJvCQeqUoZYMw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=IaxZOR9w; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C7BC0C4CEF1;
-	Tue, 26 Aug 2025 14:22:46 +0000 (UTC)
+	 MIME-Version; b=fTUF4FTZMZBVUrS4akp4IFJqFSdf2YdpRHFZEr/R6Ec/DMEo5KNrotwWE4y150cMk5A0025eB/uA9bDcSTbI/01jgDCMXRJlYDkArHZjA7OECS9r9fW8L026gshqw0BVh/+4P9f4eAB+g3D7Mpchm0UOL4JjC0UVV85nZ/kMqdc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=tLF7g/Fu; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2EE57C113CF;
+	Tue, 26 Aug 2025 13:31:11 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1756218167;
-	bh=MW1k2+FfMZaJUJq9CueKIuMd4Y1VBtCehCXntA4MS/U=;
+	s=korg; t=1756215071;
+	bh=M/Q3NLdRTUTvSl3J86WcLxZaxl7y1KBAoPyx7r1/q80=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=IaxZOR9wfgVMPT7vIUrBP+4u7EUnER4Z8cSn7KEZm5Na0Jb6KiHr5oaEuvTSCHXWK
-	 QzRGJ2S2DOZa3WUBq7i+oyynBUd5MgjG6AX880C6bxJ/MN1tKyJxdUu14CctRrHqcc
-	 epejWN40r1xcfgMdpz+JIK/GZwSC7meRwdG+ryIg=
+	b=tLF7g/FuT+7LrCN7eKwlRUfj0z2evsE29YH4TBookDw7RPYL0q/b3dTRN/VBFithF
+	 G4ZF8WCL9r/P318lyH3COBqdRWeVnfG/Res6IWmzGEdh64XsJLrX5fnY39IjMZkDcW
+	 b8E8vXiSToTeva3ymSbrdMZa0XclxYwMyWt4fefg=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Mark Pearson <markpearson@lenovo.com>,
-	Mathias Nyman <mathias.nyman@linux.intel.com>,
+	Filipe Manana <fdmanana@suse.com>,
+	Qu Wenruo <wqu@suse.com>,
+	David Sterba <dsterba@suse.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 419/523] usb: hub: avoid warm port reset during USB3 disconnect
+Subject: [PATCH 6.1 376/482] btrfs: populate otime when logging an inode item
 Date: Tue, 26 Aug 2025 13:10:29 +0200
-Message-ID: <20250826110934.792035044@linuxfoundation.org>
+Message-ID: <20250826110940.118855535@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250826110924.562212281@linuxfoundation.org>
-References: <20250826110924.562212281@linuxfoundation.org>
+In-Reply-To: <20250826110930.769259449@linuxfoundation.org>
+References: <20250826110930.769259449@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,104 +63,118 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Mathias Nyman <mathias.nyman@linux.intel.com>
+From: Qu Wenruo <wqu@suse.com>
 
-[ Upstream commit f59f93cd1d720809466c7fd5aa16a236156c672b ]
+[ Upstream commit 1ef94169db0958d6de39f9ea6e063ce887342e2d ]
 
-During disconnect USB-3 ports often go via SS.Inactive link error state
-before the missing terminations are noticed, and link finally goes to
-RxDetect state
+[TEST FAILURE WITH EXPERIMENTAL FEATURES]
+When running test case generic/508, the test case will fail with the new
+btrfs shutdown support:
 
-Avoid immediately warm-resetting ports in SS.Inactive state.
-Let ports settle for a while and re-read the link status a few times 20ms
-apart to see if the ports transitions out of SS.Inactive.
+generic/508       - output mismatch (see /home/adam/xfstests/results//generic/508.out.bad)
+#    --- tests/generic/508.out	2022-05-11 11:25:30.806666664 +0930
+#    +++ /home/adam/xfstests/results//generic/508.out.bad	2025-07-02 14:53:22.401824212 +0930
+#    @@ -1,2 +1,6 @@
+#     QA output created by 508
+#     Silence is golden
+#    +Before:
+#    +After : stat.btime = Thu Jan  1 09:30:00 1970
+#    +Before:
+#    +After : stat.btime = Wed Jul  2 14:53:22 2025
+#    ...
+#    (Run 'diff -u /home/adam/xfstests/tests/generic/508.out /home/adam/xfstests/results//generic/508.out.bad'  to see the entire diff)
+Ran: generic/508
+Failures: generic/508
+Failed 1 of 1 tests
 
-According to USB 3.x spec 7.5.2, a port in SS.Inactive should
-automatically check for missing far-end receiver termination every
-12 ms (SSInactiveQuietTimeout)
+Please note that the test case requires shutdown support, thus the test
+case will be skipped using the current upstream kernel, as it doesn't
+have shutdown ioctl support.
 
-The futile multiple warm reset retries of a disconnected device takes
-a lot of time, also the resetting of a removed devices has caused cases
-where the reset bit got stuck for a long time on xHCI roothub.
-This lead to issues in detecting new devices connected to the same port
-shortly after.
+[CAUSE]
+The direct cause the 0 time stamp in the log tree:
 
-Tested-by: Mark Pearson <markpearson@lenovo.com>
-Signed-off-by: Mathias Nyman <mathias.nyman@linux.intel.com>
-Link: https://lore.kernel.org/r/20211210111653.1378381-1-mathias.nyman@linux.intel.com
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Stable-dep-of: 2521106fc732 ("usb: hub: Don't try to recover devices lost during warm reset.")
+leaf 30507008 items 2 free space 16057 generation 9 owner TREE_LOG
+leaf 30507008 flags 0x1(WRITTEN) backref revision 1
+checksum stored e522548d
+checksum calced e522548d
+fs uuid 57d45451-481e-43e4-aa93-289ad707a3a0
+chunk uuid d52bd3fd-5163-4337-98a7-7986993ad398
+	item 0 key (257 INODE_ITEM 0) itemoff 16123 itemsize 160
+		generation 9 transid 9 size 0 nbytes 0
+		block group 0 mode 100644 links 1 uid 0 gid 0 rdev 0
+		sequence 1 flags 0x0(none)
+		atime 1751432947.492000000 (2025-07-02 14:39:07)
+		ctime 1751432947.492000000 (2025-07-02 14:39:07)
+		mtime 1751432947.492000000 (2025-07-02 14:39:07)
+		otime 0.0 (1970-01-01 09:30:00) <<<
+
+But the old fs tree has all the correct time stamp:
+
+btrfs-progs v6.12
+fs tree key (FS_TREE ROOT_ITEM 0)
+leaf 30425088 items 2 free space 16061 generation 5 owner FS_TREE
+leaf 30425088 flags 0x1(WRITTEN) backref revision 1
+checksum stored 48f6c57e
+checksum calced 48f6c57e
+fs uuid 57d45451-481e-43e4-aa93-289ad707a3a0
+chunk uuid d52bd3fd-5163-4337-98a7-7986993ad398
+	item 0 key (256 INODE_ITEM 0) itemoff 16123 itemsize 160
+		generation 3 transid 0 size 0 nbytes 16384
+		block group 0 mode 40755 links 1 uid 0 gid 0 rdev 0
+		sequence 0 flags 0x0(none)
+		atime 1751432947.0 (2025-07-02 14:39:07)
+		ctime 1751432947.0 (2025-07-02 14:39:07)
+		mtime 1751432947.0 (2025-07-02 14:39:07)
+		otime 1751432947.0 (2025-07-02 14:39:07) <<<
+
+The root cause is that fill_inode_item() in tree-log.c is only
+populating a/c/m time, not the otime (or btime in statx output).
+
+Part of the reason is that, the vfs inode only has a/c/m time, no native
+btime support yet.
+
+[FIX]
+Thankfully btrfs has its otime stored in btrfs_inode::i_otime_sec and
+btrfs_inode::i_otime_nsec.
+
+So what we really need is just fill the otime time stamp in
+fill_inode_item() of tree-log.c
+
+There is another fill_inode_item() in inode.c, which is doing the proper
+otime population.
+
+Fixes: 94edf4ae43a5 ("Btrfs: don't bother committing delayed inode updates when fsyncing")
+CC: stable@vger.kernel.org
+Reviewed-by: Filipe Manana <fdmanana@suse.com>
+Signed-off-by: Qu Wenruo <wqu@suse.com>
+Reviewed-by: David Sterba <dsterba@suse.com>
+Signed-off-by: David Sterba <dsterba@suse.com>
+[ timespec changes in older tree ]
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/usb/core/hub.c |   26 ++++++++++++++++++++------
- 1 file changed, 20 insertions(+), 6 deletions(-)
+ fs/btrfs/tree-log.c |    5 +++++
+ 1 file changed, 5 insertions(+)
 
---- a/drivers/usb/core/hub.c
-+++ b/drivers/usb/core/hub.c
-@@ -2884,6 +2884,8 @@ static unsigned hub_is_wusb(struct usb_h
- #define PORT_INIT_TRIES		4
- #endif	/* CONFIG_USB_FEW_INIT_RETRIES */
+--- a/fs/btrfs/tree-log.c
++++ b/fs/btrfs/tree-log.c
+@@ -4210,6 +4210,11 @@ static void fill_inode_item(struct btrfs
+ 	btrfs_set_token_timespec_nsec(&token, &item->ctime,
+ 				      inode->i_ctime.tv_nsec);
  
-+#define DETECT_DISCONNECT_TRIES 5
++	btrfs_set_token_timespec_sec(&token, &item->otime,
++				     BTRFS_I(inode)->i_otime.tv_sec);
++	btrfs_set_token_timespec_nsec(&token, &item->otime,
++				      BTRFS_I(inode)->i_otime.tv_nsec);
 +
- #define HUB_ROOT_RESET_TIME	60	/* times are in msec */
- #define HUB_SHORT_RESET_TIME	10
- #define HUB_BH_RESET_TIME	50
-@@ -5685,6 +5687,7 @@ static void port_event(struct usb_hub *h
- 	struct usb_device *udev = port_dev->child;
- 	struct usb_device *hdev = hub->hdev;
- 	u16 portstatus, portchange;
-+	int i = 0;
- 
- 	connect_change = test_bit(port1, hub->change_bits);
- 	clear_bit(port1, hub->event_bits);
-@@ -5761,17 +5764,27 @@ static void port_event(struct usb_hub *h
- 		connect_change = 1;
- 
  	/*
--	 * Warm reset a USB3 protocol port if it's in
--	 * SS.Inactive state.
--	 */
--	if (hub_port_warm_reset_required(hub, port1, portstatus)) {
--		dev_dbg(&port_dev->dev, "do warm reset\n");
--		if (!udev || !(portstatus & USB_PORT_STAT_CONNECTION)
-+	 * Avoid trying to recover a USB3 SS.Inactive port with a warm reset if
-+	 * the device was disconnected. A 12ms disconnect detect timer in
-+	 * SS.Inactive state transitions the port to RxDetect automatically.
-+	 * SS.Inactive link error state is common during device disconnect.
-+	 */
-+	while (hub_port_warm_reset_required(hub, port1, portstatus)) {
-+		if ((i++ < DETECT_DISCONNECT_TRIES) && udev) {
-+			u16 unused;
-+
-+			msleep(20);
-+			hub_port_status(hub, port1, &portstatus, &unused);
-+			dev_dbg(&port_dev->dev, "Wait for inactive link disconnect detect\n");
-+			continue;
-+		} else if (!udev || !(portstatus & USB_PORT_STAT_CONNECTION)
- 				|| udev->state == USB_STATE_NOTATTACHED) {
-+			dev_dbg(&port_dev->dev, "do warm reset, port only\n");
- 			if (hub_port_reset(hub, port1, NULL,
- 					HUB_BH_RESET_TIME, true) < 0)
- 				hub_port_disable(hub, port1, 1);
- 		} else {
-+			dev_dbg(&port_dev->dev, "do warm reset, full device\n");
- 			usb_unlock_port(port_dev);
- 			usb_lock_device(udev);
- 			usb_reset_device(udev);
-@@ -5779,6 +5792,7 @@ static void port_event(struct usb_hub *h
- 			usb_lock_port(port_dev);
- 			connect_change = 0;
- 		}
-+		break;
- 	}
- 
- 	if (connect_change)
+ 	 * We do not need to set the nbytes field, in fact during a fast fsync
+ 	 * its value may not even be correct, since a fast fsync does not wait
 
 
 
