@@ -1,57 +1,59 @@
-Return-Path: <stable+bounces-175705-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-173163-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id CDC2EB36A4C
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 16:36:23 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 10FEFB35C05
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 13:30:35 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 4EC919810F4
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 14:18:14 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 2F9C2364541
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 11:25:37 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8C3AA35208B;
-	Tue, 26 Aug 2025 14:15:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D74A12BE7B2;
+	Tue, 26 Aug 2025 11:25:35 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="RJJOgBa9"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="BL6YX9/t"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 47F7C352080;
-	Tue, 26 Aug 2025 14:15:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 93938239573;
+	Tue, 26 Aug 2025 11:25:35 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756217753; cv=none; b=IxROW6IUxlqDgTM+9YnzgE4Zc7Y+mUPlQ5Jn/TxWTOhVsBnwIE09ZmaFR9+NyzEC387PaACl0z+XhWgQ4eCRi65LpxtLrqjsprgEBw+IQvUt3vC0hL4TpBwyAgay5wrAWp/pO6aUQHUTabuyDWYTc2e5co3DmrOvTdKRUalIbmg=
+	t=1756207535; cv=none; b=C1MwgrBh+pJ9WlV5Y2tJxWgxcb4gt2VCPpT210sCLH8okFlZQr4uHirbGhvMaZ+9aVA4ISCZCX+YrOUXBzHdMQIhzVVVF+WXuUkUqEkLn4QCxuWKooaLnaVyp/jJ46979TZ/Vg+Gy9MLrNuZefIMTJ7uAj7CjLzo75PW53YarwA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756217753; c=relaxed/simple;
-	bh=nUYe9XoljcbfyH83UU6TkWVNNP6cWuDXK6IWfMU0EM8=;
+	s=arc-20240116; t=1756207535; c=relaxed/simple;
+	bh=Nte42+I1cZEhUSdrfaUzXTqegPyLyt6BIiAje8oIrbI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=kfXhrPnzLiuMA9gNPLeCO0JzqIxZibJktIlr88i7p934eOxRj2I8e6GbcBttd6JQGvmJR4v/QN0F3hwe7DRHWfKlN2CkEpYZqOO+IyEOVZLhwotKLs6E2r0PV8Qb7r9iR2FWAxq2Ouj3gu/vao5dpjoD7yjfrGhrLttHQrpg4CY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=RJJOgBa9; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C2265C4CEF1;
-	Tue, 26 Aug 2025 14:15:52 +0000 (UTC)
+	 MIME-Version; b=sTh3BVczhgxKsaDTjNqpqBUE0a7mA7xSL6Q80pbLhKG56hHelR80oujOp5d7LfB/9/VOiDvDGFFkk0r9KoStOyDc7YZCKTux0uNTZ0KEZGApP27QvXmgxv8KI5qd290ls8RTQn32H2MfQHbFF+y1A5fC01n0YOlE3MFKf2+WkC8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=BL6YX9/t; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2D081C4CEF1;
+	Tue, 26 Aug 2025 11:25:35 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1756217753;
-	bh=nUYe9XoljcbfyH83UU6TkWVNNP6cWuDXK6IWfMU0EM8=;
+	s=korg; t=1756207535;
+	bh=Nte42+I1cZEhUSdrfaUzXTqegPyLyt6BIiAje8oIrbI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=RJJOgBa9bDgWz+rG+u67vjzpF2DOlA5Ur2QQh2x+fhP6gW+orRpLqO2mJPhMgTNNf
-	 pzjzeckOKmZJtDH7kpVLTGU6HTnsin/SpoOdLdQukElmbO5eMSztzIH/cXStx7xEEJ
-	 Fhq5ZnHRxvti8CdZmL3Y5hi2KFCv0xpIqp6qRags=
+	b=BL6YX9/tKGyRgpUUt3XFevUtZMmtgp3eRztxNhkHBWruKgN3Z46aB+7n5FfJmkYPp
+	 9bSVxxjbFRiZeLvrFrQjvpUUbkcaWSyuD/n35zN7kQH4KoM8kxZcAsQ/Dc06hHQvTX
+	 RiozrNunxjSh9zsCHoxqIL+vC8j/HiY1GVpi4A6M=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Sven Schnelle <svens@linux.ibm.com>,
-	Heiko Carstens <hca@linux.ibm.com>,
-	Alexander Gordeev <agordeev@linux.ibm.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 261/523] s390/time: Use monotonic clock in get_cycles()
-Date: Tue, 26 Aug 2025 13:07:51 +0200
-Message-ID: <20250826110930.863753146@linuxfoundation.org>
+	Mario Limonciello <mario.limonciello@amd.com>,
+	Siyang Liu <Security@tencent.com>,
+	Roman Li <roman.li@amd.com>,
+	Alex Hung <alex.hung@amd.com>,
+	Daniel Wheeler <daniel.wheeler@amd.com>,
+	Alex Deucher <alexander.deucher@amd.com>
+Subject: [PATCH 6.16 188/457] drm/amd/display: fix a Null pointer dereference vulnerability
+Date: Tue, 26 Aug 2025 13:07:52 +0200
+Message-ID: <20250826110942.015562424@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250826110924.562212281@linuxfoundation.org>
-References: <20250826110924.562212281@linuxfoundation.org>
+In-Reply-To: <20250826110937.289866482@linuxfoundation.org>
+References: <20250826110937.289866482@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,59 +65,72 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+6.16-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Sven Schnelle <svens@linux.ibm.com>
+From: Siyang Liu <Security@tencent.com>
 
-[ Upstream commit 09e7e29d2b49ba84bcefb3dc1657726d2de5bb24 ]
+commit 1bcf63a44381691d6192872801f830ce3250e367 upstream.
 
-Otherwise the code might not work correctly when the clock
-is changed.
+[Why]
+A null pointer dereference vulnerability exists in the AMD display driver's
+(DC module) cleanup function dc_destruct().
+When display control context (dc->ctx) construction fails
+(due to memory allocation failure), this pointer remains NULL.
+During subsequent error handling when dc_destruct() is called,
+there's no NULL check before dereferencing the perf_trace member
+(dc->ctx->perf_trace), causing a kernel null pointer dereference crash.
 
-Signed-off-by: Sven Schnelle <svens@linux.ibm.com>
-Reviewed-by: Heiko Carstens <hca@linux.ibm.com>
-Signed-off-by: Alexander Gordeev <agordeev@linux.ibm.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+[How]
+Check if dc->ctx is non-NULL before dereferencing.
+
+Link: https://lore.kernel.org/r/tencent_54FF4252EDFB6533090A491A25EEF3EDBF06@qq.com
+Co-developed-by: Mario Limonciello <mario.limonciello@amd.com>
+Signed-off-by: Mario Limonciello <mario.limonciello@amd.com>
+(Updated commit text and removed unnecessary error message)
+Signed-off-by: Siyang Liu <Security@tencent.com>
+Signed-off-by: Roman Li <roman.li@amd.com>
+Reviewed-by: Alex Hung <alex.hung@amd.com>
+Tested-by: Daniel Wheeler <daniel.wheeler@amd.com>
+Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
+(cherry picked from commit 9dd8e2ba268c636c240a918e0a31e6feaee19404)
+Cc: stable@vger.kernel.org
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- arch/s390/include/asm/timex.h | 13 ++++++-------
- 1 file changed, 6 insertions(+), 7 deletions(-)
+ drivers/gpu/drm/amd/display/dc/core/dc.c |   19 ++++++++++---------
+ 1 file changed, 10 insertions(+), 9 deletions(-)
 
-diff --git a/arch/s390/include/asm/timex.h b/arch/s390/include/asm/timex.h
-index 588aa0f2c842..d0260a1ec298 100644
---- a/arch/s390/include/asm/timex.h
-+++ b/arch/s390/include/asm/timex.h
-@@ -167,13 +167,6 @@ static inline unsigned long long get_tod_clock_fast(void)
- 	return get_tod_clock();
- #endif
- }
--
--static inline cycles_t get_cycles(void)
--{
--	return (cycles_t) get_tod_clock() >> 2;
--}
--#define get_cycles get_cycles
--
- int get_phys_clock(unsigned long *clock);
- void init_cpu_timer(void);
+--- a/drivers/gpu/drm/amd/display/dc/core/dc.c
++++ b/drivers/gpu/drm/amd/display/dc/core/dc.c
+@@ -938,17 +938,18 @@ static void dc_destruct(struct dc *dc)
+ 	if (dc->link_srv)
+ 		link_destroy_link_service(&dc->link_srv);
  
-@@ -196,6 +189,12 @@ static inline unsigned long long get_tod_clock_monotonic(void)
- 	return tod;
- }
+-	if (dc->ctx->gpio_service)
+-		dal_gpio_service_destroy(&dc->ctx->gpio_service);
++	if (dc->ctx) {
++		if (dc->ctx->gpio_service)
++			dal_gpio_service_destroy(&dc->ctx->gpio_service);
  
-+static inline cycles_t get_cycles(void)
-+{
-+	return (cycles_t)get_tod_clock_monotonic() >> 2;
-+}
-+#define get_cycles get_cycles
-+
- /**
-  * tod_to_ns - convert a TOD format value to nanoseconds
-  * @todval: to be converted TOD format value
--- 
-2.39.5
-
+-	if (dc->ctx->created_bios)
+-		dal_bios_parser_destroy(&dc->ctx->dc_bios);
++		if (dc->ctx->created_bios)
++			dal_bios_parser_destroy(&dc->ctx->dc_bios);
++		kfree(dc->ctx->logger);
++		dc_perf_trace_destroy(&dc->ctx->perf_trace);
+ 
+-	kfree(dc->ctx->logger);
+-	dc_perf_trace_destroy(&dc->ctx->perf_trace);
+-
+-	kfree(dc->ctx);
+-	dc->ctx = NULL;
++		kfree(dc->ctx);
++		dc->ctx = NULL;
++	}
+ 
+ 	kfree(dc->bw_vbios);
+ 	dc->bw_vbios = NULL;
 
 
 
