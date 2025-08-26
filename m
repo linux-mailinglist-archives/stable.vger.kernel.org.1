@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-173244-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-174167-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id F2817B35C37
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 13:32:37 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id BECFAB361CE
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 15:12:43 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 6B0B07C1865
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 11:32:07 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 6A7BF2A3B32
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 13:07:55 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id AFAE032142D;
-	Tue, 26 Aug 2025 11:29:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id ADAF2241673;
+	Tue, 26 Aug 2025 13:07:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="LE3KLG0C"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="oiDdvPEN"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6D1992EE296;
-	Tue, 26 Aug 2025 11:29:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6B7F2227BA4;
+	Tue, 26 Aug 2025 13:07:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756207745; cv=none; b=vAtZO8YMHwsazoMRQb5AFpdNpcfbo6SiGZcwBmqLHd6dXZGbVhhpQmk49G9rXUZRO+nBkR8uDaCMn2spfDOhFcvtfKZq40P5UrnZyMR/mfb+FLHEhwm0aI4u3Ad+FBVvs7hNX5JAFvH5zi+btylAAarRKCCOo3W8b5FoVQOd278=
+	t=1756213671; cv=none; b=PvvTYea5gaS24S1U45PYCvyX7VYMCGiu1H2fgvVn+dp8LZy6nknhXbUBG6nsEMVqcrosW3bFAHiy+w/tVqy/AtAj+xoyBLztQM8/9FCJvpU2i/jJezQ9d4mRY69hmWfsk5g77qOrFE3cHrUxli3a5Gpq77M4sdndBumkbRr14Yk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756207745; c=relaxed/simple;
-	bh=QWdJxuZukKz1CgkdrMemI0MlkUbVsTOqa7r1KvxouL0=;
+	s=arc-20240116; t=1756213671; c=relaxed/simple;
+	bh=4HGq9lU3UQuXCbZn01coiEFT7hPO5Q/q6rHvGRXob9c=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=WO1it11PULPpI/I5u1UeXOzBzFYwWB4dmDqhUGEsiNo29PS8BTgdoxFOUDITvfK9vIVoEO3QMRFEoXZq54crCT8WgISAEKo/A7nJnM8G/VHeOQbZ9zTyl98zL937pEoQ7Tu5RkA3T24gwwHOt71IBrZ8RXU+KB15gqHTeGon7H4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=LE3KLG0C; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id F1086C4CEF1;
-	Tue, 26 Aug 2025 11:29:04 +0000 (UTC)
+	 MIME-Version; b=EIz6J5H67Givkru5RzE+f1KVzacKIMy6U1a8Hjn9CvR0OvoB6eZXMyXptRapc6u5BLmS/vbLWNfejRsApZhBY2Wn2Rm+1x0WqSPAwlYjiYoOKrTM0s2DV0G2MFfeMNnFVC0/TfCHZXOcIazYFvbQnZN24n7jbKwFWEfTxkvHSxg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=oiDdvPEN; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4965EC113CF;
+	Tue, 26 Aug 2025 13:07:50 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1756207745;
-	bh=QWdJxuZukKz1CgkdrMemI0MlkUbVsTOqa7r1KvxouL0=;
+	s=korg; t=1756213670;
+	bh=4HGq9lU3UQuXCbZn01coiEFT7hPO5Q/q6rHvGRXob9c=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=LE3KLG0CjLN7cFZxDdEMMEWo4bFBaWvbbVbKdtnr3rFuJBfsvwWZK06Zf6ySXbaIs
-	 7qJpyCYyywOCChuGGyR2saCFPr1KDSPcCvHmIjDgFeP9kOHVwrT+7UtCS4tRdV3mtU
-	 enr3SO07KRzNyEI0MPlu+4ph/3fn+Rl4ap3gBj3E=
+	b=oiDdvPENB5YUj3blOKpQWq+Yx15p1oCu5zy1xNti5pz2ut8sDHzNNzthd0wx8+5Zp
+	 sStCIEGJ+6r75mhkvUOWu6j3LnTWtj0w0WCgJg4MP7n0M20mZoaL8hUvdQ3k7Qp452
+	 xBMH670n3xyGn/3c04a7W3Xchjs4veFVc8gf3euU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Matti Vaittinen <mazziesaccount@gmail.com>,
-	Andy Shevchenko <andy@kernel.org>,
-	Stable@vger.kernel.org,
-	Jonathan Cameron <Jonathan.Cameron@huawei.com>
-Subject: [PATCH 6.16 300/457] iio: light: as73211: Ensure buffer holes are zeroed
+	Eric Dumazet <edumazet@google.com>,
+	Simon Horman <horms@kernel.org>,
+	"David S. Miller" <davem@davemloft.net>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.6 435/587] net_sched: sch_ets: implement lockless ets_dump()
 Date: Tue, 26 Aug 2025 13:09:44 +0200
-Message-ID: <20250826110944.788863313@linuxfoundation.org>
+Message-ID: <20250826111004.015649679@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250826110937.289866482@linuxfoundation.org>
-References: <20250826110937.289866482@linuxfoundation.org>
+In-Reply-To: <20250826110952.942403671@linuxfoundation.org>
+References: <20250826110952.942403671@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,39 +63,108 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.16-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jonathan Cameron <Jonathan.Cameron@huawei.com>
+From: Eric Dumazet <edumazet@google.com>
 
-commit 433b99e922943efdfd62b9a8e3ad1604838181f2 upstream.
+[ Upstream commit c5f1dde7f731e7bf2e7c169ca42cb4989fc2f8b9 ]
 
-Given that the buffer is copied to a kfifo that ultimately user space
-can read, ensure we zero it.
+Instead of relying on RTNL, ets_dump() can use READ_ONCE()
+annotations, paired with WRITE_ONCE() ones in ets_change().
 
-Fixes: 403e5586b52e ("iio: light: as73211: New driver")
-Reviewed-by: Matti Vaittinen <mazziesaccount@gmail.com>
-Reviewed-by: Andy Shevchenko <andy@kernel.org>
-Link: https://patch.msgid.link/20250802164436.515988-2-jic23@kernel.org
-Cc: <Stable@vger.kernel.org>
-Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
+Signed-off-by: Eric Dumazet <edumazet@google.com>
+Reviewed-by: Simon Horman <horms@kernel.org>
+Signed-off-by: David S. Miller <davem@davemloft.net>
+Stable-dep-of: 87c6efc5ce9c ("net/sched: ets: use old 'nbands' while purging unused classes")
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/iio/light/as73211.c |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ net/sched/sch_ets.c |   25 ++++++++++++++-----------
+ 1 file changed, 14 insertions(+), 11 deletions(-)
 
---- a/drivers/iio/light/as73211.c
-+++ b/drivers/iio/light/as73211.c
-@@ -639,7 +639,7 @@ static irqreturn_t as73211_trigger_handl
- 	struct {
- 		__le16 chan[4];
- 		aligned_s64 ts;
--	} scan;
-+	} scan = { };
- 	int data_result, ret;
+--- a/net/sched/sch_ets.c
++++ b/net/sched/sch_ets.c
+@@ -651,7 +651,7 @@ static int ets_qdisc_change(struct Qdisc
  
- 	mutex_lock(&data->mutex);
+ 	sch_tree_lock(sch);
+ 
+-	q->nbands = nbands;
++	WRITE_ONCE(q->nbands, nbands);
+ 	for (i = nstrict; i < q->nstrict; i++) {
+ 		if (q->classes[i].qdisc->q.qlen) {
+ 			list_add_tail(&q->classes[i].alist, &q->active);
+@@ -663,11 +663,11 @@ static int ets_qdisc_change(struct Qdisc
+ 			list_del_init(&q->classes[i].alist);
+ 		qdisc_purge_queue(q->classes[i].qdisc);
+ 	}
+-	q->nstrict = nstrict;
++	WRITE_ONCE(q->nstrict, nstrict);
+ 	memcpy(q->prio2band, priomap, sizeof(priomap));
+ 
+ 	for (i = 0; i < q->nbands; i++)
+-		q->classes[i].quantum = quanta[i];
++		WRITE_ONCE(q->classes[i].quantum, quanta[i]);
+ 
+ 	for (i = oldbands; i < q->nbands; i++) {
+ 		q->classes[i].qdisc = queues[i];
+@@ -681,7 +681,7 @@ static int ets_qdisc_change(struct Qdisc
+ 	for (i = q->nbands; i < oldbands; i++) {
+ 		qdisc_put(q->classes[i].qdisc);
+ 		q->classes[i].qdisc = NULL;
+-		q->classes[i].quantum = 0;
++		WRITE_ONCE(q->classes[i].quantum, 0);
+ 		q->classes[i].deficit = 0;
+ 		gnet_stats_basic_sync_init(&q->classes[i].bstats);
+ 		memset(&q->classes[i].qstats, 0, sizeof(q->classes[i].qstats));
+@@ -738,6 +738,7 @@ static int ets_qdisc_dump(struct Qdisc *
+ 	struct ets_sched *q = qdisc_priv(sch);
+ 	struct nlattr *opts;
+ 	struct nlattr *nest;
++	u8 nbands, nstrict;
+ 	int band;
+ 	int prio;
+ 	int err;
+@@ -750,21 +751,22 @@ static int ets_qdisc_dump(struct Qdisc *
+ 	if (!opts)
+ 		goto nla_err;
+ 
+-	if (nla_put_u8(skb, TCA_ETS_NBANDS, q->nbands))
++	nbands = READ_ONCE(q->nbands);
++	if (nla_put_u8(skb, TCA_ETS_NBANDS, nbands))
+ 		goto nla_err;
+ 
+-	if (q->nstrict &&
+-	    nla_put_u8(skb, TCA_ETS_NSTRICT, q->nstrict))
++	nstrict = READ_ONCE(q->nstrict);
++	if (nstrict && nla_put_u8(skb, TCA_ETS_NSTRICT, nstrict))
+ 		goto nla_err;
+ 
+-	if (q->nbands > q->nstrict) {
++	if (nbands > nstrict) {
+ 		nest = nla_nest_start(skb, TCA_ETS_QUANTA);
+ 		if (!nest)
+ 			goto nla_err;
+ 
+-		for (band = q->nstrict; band < q->nbands; band++) {
++		for (band = nstrict; band < nbands; band++) {
+ 			if (nla_put_u32(skb, TCA_ETS_QUANTA_BAND,
+-					q->classes[band].quantum))
++					READ_ONCE(q->classes[band].quantum)))
+ 				goto nla_err;
+ 		}
+ 
+@@ -776,7 +778,8 @@ static int ets_qdisc_dump(struct Qdisc *
+ 		goto nla_err;
+ 
+ 	for (prio = 0; prio <= TC_PRIO_MAX; prio++) {
+-		if (nla_put_u8(skb, TCA_ETS_PRIOMAP_BAND, q->prio2band[prio]))
++		if (nla_put_u8(skb, TCA_ETS_PRIOMAP_BAND,
++			       READ_ONCE(q->prio2band[prio])))
+ 			goto nla_err;
+ 	}
+ 
 
 
 
