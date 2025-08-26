@@ -1,58 +1,55 @@
-Return-Path: <stable+bounces-174600-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-173518-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2186DB36400
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 15:35:05 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 22E48B35DC1
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 13:47:45 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 561607C0B5F
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 13:27:47 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id A83881BC12F7
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 11:41:27 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id DB3C5252904;
-	Tue, 26 Aug 2025 13:27:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D056B199935;
+	Tue, 26 Aug 2025 11:40:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Sc/qblqZ"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="j8t2Kat6"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9879739FD9;
-	Tue, 26 Aug 2025 13:27:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8AF2017332C;
+	Tue, 26 Aug 2025 11:40:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756214822; cv=none; b=DXlP8nPdfgkMy1wt9ZApB31NlOjQnMwzlD2lByl9h45SjdfJjJV3DebegxPfXdCFIp1RjxgWzDJcyCG+FrCW8m2gzwYTyxVwLNIKRESwgUVSYdP8gtTrOXhcEowq+UXhiv8tA6KIU8Y4OR4EmyLkm0EznJKJ7Amemg7FuqQws0M=
+	t=1756208456; cv=none; b=YMaLOAFfi+DdPz83Ms17EAixfZnivYaQ98I4V0rpLZr5tmL+/861Qwp+F63v9o4PY636v++6OjPPpjBQW9ZB9iqO2d3xv8fAs9Pc6P070jGVz6197cJ70Uz6qX7zk9OldZpOpCEOn+riwRTvV2Lpgdfa0cK1VKvKdrGOFk5Z8hY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756214822; c=relaxed/simple;
-	bh=LjwRD8eKi1tQTIjn9AJVfhz1kv3JjkeaCM3XTR83nRI=;
+	s=arc-20240116; t=1756208456; c=relaxed/simple;
+	bh=aUWBy0JrP+a3KyInS2H7vLCc1ZsUdv3CVh5TN0gPVqs=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=gWM0yzLhU3HzlRq0PENPnDvEEomXCieAsSTpLcPeDSywU26a7ZPRENfbAM2pP8pd44RiM5ZXuQp7i209Q+YzeJFl929IJ5Rg0rjHaQ2TBn7wb1IrRWODPQREnqHqMuA+0Z75vie6amYB8uTcHLfzV2JQENI7B8KFIv9qmkWg5+w=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Sc/qblqZ; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id AAC54C4CEF1;
-	Tue, 26 Aug 2025 13:27:01 +0000 (UTC)
+	 MIME-Version; b=UacOGD/5nTkcAD82hTUc73jIbKEBKzE3eJQmj7jDt0CZGIuaKvOFB6WarMZ61dAAwblf4TNkHrdzoWQlBat0kch9npFeuzFMJ8AreT/aGpFRbpVcQQ6DlN9nX1+CzQFQIoEC2abn2x9NDLZXx65Gx5OnbblKXH2Gq5NzP0pL7Yo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=j8t2Kat6; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 11CDAC4CEF1;
+	Tue, 26 Aug 2025 11:40:55 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1756214822;
-	bh=LjwRD8eKi1tQTIjn9AJVfhz1kv3JjkeaCM3XTR83nRI=;
+	s=korg; t=1756208456;
+	bh=aUWBy0JrP+a3KyInS2H7vLCc1ZsUdv3CVh5TN0gPVqs=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Sc/qblqZp/LKcW5oiD68J7cdMjuHjezfsV0LbzxsIhS35AVV4nDXrhTi2K1QekfCt
-	 QA/NL8OpD9zdyMcRtS4jYC99804LKG7d7PB1IsyqYg6Sm7dJtkauaznLZKRr7TT4ar
-	 UrqQWQcnWaWDk3PvWwz3yDwXVYcWAmrGQP6JjUJ8=
+	b=j8t2Kat6UJiUsFxpADNc5CGNX/b0SpPyo5kkQCIrs8ANEkZHGyxw/7NTTn9TsKipr
+	 GD/Za75Og2E/wJRTmqDcfaKFsdRrQ/X6xeu7nWF5lQU0OHXGfmNtZNoleT64TDb2Ui
+	 AVS9XbISXZ5G7u0QvxzaDqmq0kXib5M8Fft3bho8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	stable@kernel.org,
-	Disha Goel <disgoel@linux.ibm.com>,
-	Ojaswin Mujoo <ojaswin@linux.ibm.com>,
-	"Darrick J. Wong" <djwong@kernel.org>,
-	Theodore Tso <tytso@mit.edu>
-Subject: [PATCH 6.1 281/482] ext4: fix fsmap end of range reporting with bigalloc
+	Alex Deucher <alexander.deucher@amd.com>,
+	Mario Limonciello <mario.limonciello@amd.com>
+Subject: [PATCH 6.12 119/322] drm/amd: Restore cached power limit during resume
 Date: Tue, 26 Aug 2025 13:08:54 +0200
-Message-ID: <20250826110937.724686401@linuxfoundation.org>
+Message-ID: <20250826110918.738505882@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250826110930.769259449@linuxfoundation.org>
-References: <20250826110930.769259449@linuxfoundation.org>
+In-Reply-To: <20250826110915.169062587@linuxfoundation.org>
+References: <20250826110915.169062587@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,125 +61,45 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Ojaswin Mujoo <ojaswin@linux.ibm.com>
+From: Mario Limonciello <mario.limonciello@amd.com>
 
-commit bae76c035bf0852844151e68098c9b7cd63ef238 upstream.
+commit ed4efe426a49729952b3dc05d20e33b94409bdd1 upstream.
 
-With bigalloc enabled, the logic to report last extent has a bug since
-we try to use cluster units instead of block units. This can cause an
-issue where extra incorrect entries might be returned back to the
-user. This was flagged by generic/365 with 64k bs and -O bigalloc.
+The power limit will be cached in smu->current_power_limit but
+if the ASIC goes into S3 this value won't be restored.
 
-** Details of issue **
+Restore the value during SMU resume.
 
-The issue was noticed on 5G 64k blocksize FS with -O bigalloc which has
-only 1 bg.
-
-$ xfs_io -c "fsmap -d" /mnt/scratch
-
-  0: 253:48 [0..127]: static fs metadata 128   /* sb */
-  1: 253:48 [128..255]: special 102:1 128   /* gdt */
-  3: 253:48 [256..383]: special 102:3 128   /* block bitmap */
-  4: 253:48 [384..2303]: unknown 1920       /* flex bg empty space */
-  5: 253:48 [2304..2431]: special 102:4 128   /* inode bitmap */
-  6: 253:48 [2432..4351]: unknown 1920      /* flex bg empty space */
-  7: 253:48 [4352..6911]: inodes 2560
-  8: 253:48 [6912..538623]: unknown 531712
-  9: 253:48 [538624..10485759]: free space 9947136
-
-The issue can be seen with:
-
-$ xfs_io -c "fsmap -d 0 3" /mnt/scratch
-
-  0: 253:48 [0..127]: static fs metadata 128
-  1: 253:48 [384..2047]: unknown 1664
-
-Only the first entry was expected to be returned but we get 2. This is
-because:
-
-ext4_getfsmap_datadev()
-  first_cluster, last_cluster = 0
-  ...
-  info->gfi_last = true;
-  ext4_getfsmap_datadev_helper(sb, end_ag, last_cluster + 1, 0, info);
-    fsb = C2B(1) = 16
-    fslen = 0
-    ...
-    /* Merge in any relevant extents from the meta_list */
-    list_for_each_entry_safe(p, tmp, &info->gfi_meta_list, fmr_list) {
-      ...
-      // since fsb = 16, considers all metadata which starts before 16 blockno
-      iter 1: error = ext4_getfsmap_helper(sb, info, p);  // p = sb (0,1), nop
-        info->gfi_next_fsblk = 1
-      iter 2: error = ext4_getfsmap_helper(sb, info, p);  // p = gdt (1,2), nop
-        info->gfi_next_fsblk = 2
-      iter 3: error = ext4_getfsmap_helper(sb, info, p);  // p = blk bitmap (2,3), nop
-        info->gfi_next_fsblk = 3
-      iter 4: error = ext4_getfsmap_helper(sb, info, p);  // p = ino bitmap (18,19)
-        if (rec_blk > info->gfi_next_fsblk) { // (18 > 3)
-          // emits an extra entry ** BUG **
-        }
-    }
-
-Fix this by directly calling ext4_getfsmap_datadev() with a dummy
-record that has fmr_physical set to (end_fsb + 1) instead of
-last_cluster + 1. By using the block instead of cluster we get the
-correct behavior.
-
-Replacing ext4_getfsmap_datadev_helper() with ext4_getfsmap_helper()
-is okay since the gfi_lastfree and metadata checks in
-ext4_getfsmap_datadev_helper() are anyways redundant when we only want
-to emit the last allocated block of the range, as we have already
-taken care of emitting metadata and any last free blocks.
-
-Cc: stable@kernel.org
-Reported-by: Disha Goel <disgoel@linux.ibm.com>
-Fixes: 4a622e4d477b ("ext4: fix FS_IOC_GETFSMAP handling")
-Signed-off-by: Ojaswin Mujoo <ojaswin@linux.ibm.com>
-Reviewed-by: Darrick J. Wong <djwong@kernel.org>
-Link: https://patch.msgid.link/e7472c8535c9c5ec10f425f495366864ea12c9da.1754377641.git.ojaswin@linux.ibm.com
-Signed-off-by: Theodore Ts'o <tytso@mit.edu>
+Acked-by: Alex Deucher <alexander.deucher@amd.com>
+Link: https://lore.kernel.org/r/20250725031222.3015095-2-superm1@kernel.org
+Signed-off-by: Mario Limonciello <mario.limonciello@amd.com>
+Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
+(cherry picked from commit 26a609e053a6fc494403e95403bc6a2470383bec)
+Cc: stable@vger.kernel.org
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- fs/ext4/fsmap.c |   15 ++++++++++++---
- 1 file changed, 12 insertions(+), 3 deletions(-)
+ drivers/gpu/drm/amd/pm/swsmu/amdgpu_smu.c |    6 ++++++
+ 1 file changed, 6 insertions(+)
 
---- a/fs/ext4/fsmap.c
-+++ b/fs/ext4/fsmap.c
-@@ -526,6 +526,7 @@ static int ext4_getfsmap_datadev(struct
- 	ext4_group_t end_ag;
- 	ext4_grpblk_t first_cluster;
- 	ext4_grpblk_t last_cluster;
-+	struct ext4_fsmap irec;
- 	int error = 0;
+--- a/drivers/gpu/drm/amd/pm/swsmu/amdgpu_smu.c
++++ b/drivers/gpu/drm/amd/pm/swsmu/amdgpu_smu.c
+@@ -2153,6 +2153,12 @@ static int smu_resume(void *handle)
  
- 	bofs = le32_to_cpu(sbi->s_es->s_first_data_block);
-@@ -609,10 +610,18 @@ static int ext4_getfsmap_datadev(struct
- 			goto err;
- 	}
+ 	adev->pm.dpm_enabled = true;
  
--	/* Report any gaps at the end of the bg */
-+	/*
-+	 * The dummy record below will cause ext4_getfsmap_helper() to report
-+	 * any allocated blocks at the end of the range.
-+	 */
-+	irec.fmr_device = 0;
-+	irec.fmr_physical = end_fsb + 1;
-+	irec.fmr_length = 0;
-+	irec.fmr_owner = EXT4_FMR_OWN_FREE;
-+	irec.fmr_flags = 0;
++	if (smu->current_power_limit) {
++		ret = smu_set_power_limit(smu, smu->current_power_limit);
++		if (ret && ret != -EOPNOTSUPP)
++			return ret;
++	}
 +
- 	info->gfi_last = true;
--	error = ext4_getfsmap_datadev_helper(sb, end_ag, last_cluster + 1,
--					     0, info);
-+	error = ext4_getfsmap_helper(sb, info, &irec);
- 	if (error)
- 		goto err;
+ 	dev_info(adev->dev, "SMU is resumed successfully!\n");
  
+ 	return 0;
 
 
 
