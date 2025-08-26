@@ -1,56 +1,55 @@
-Return-Path: <stable+bounces-176149-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-174087-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8CCADB36A85
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 16:38:11 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id BEF31B36167
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 15:09:15 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 780457A2DD3
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 14:36:35 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 53E2E2A1B7A
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 13:05:16 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8CFB5352FCC;
-	Tue, 26 Aug 2025 14:35:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3FA8221CC4D;
+	Tue, 26 Aug 2025 13:04:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="TGmgTsLc"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="D3yep2LH"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 49E5D340D95;
-	Tue, 26 Aug 2025 14:35:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EC284230BF8;
+	Tue, 26 Aug 2025 13:04:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756218908; cv=none; b=snTlnPGZ45Fo6iMjQkCtt2YmpZhQDnHoDI0DSRZkxeDa3dJhS4jXfI7xS4xBXEwZyVJdIUvz2G1tatIhVUjC5oPS7I5fxGy5x/Cr8Jxy9aqZi1egt9kQqkgOWab19mvBfOPFOip5ROf0uYGEbThvhYxMRW/0ssI3bFurrV1TyKs=
+	t=1756213459; cv=none; b=jTQ8FnfBLsE1MdZME1q7i+aPED5/yiWWJNu6dKbEBvbPfIv41EzquQOwKqr2QvLu8FmVSyU6zZ5v3CGN72cFZgXXceXGqdEXoMa/7XAgbahPzEvhmZEIBCwTXPIDEFhAF0yVTkxSiuQgrd1mCZ6aWgwrkYcjsjQJiuH9X39B9eI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756218908; c=relaxed/simple;
-	bh=7nrLO239b7yQggz7/BNaPJlu3RiVlQalD9cuNA9mYPg=;
+	s=arc-20240116; t=1756213459; c=relaxed/simple;
+	bh=PF+sJVv5DSo8klTV+5dFFxWm/aSsnAZMixcGRio5/k4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=vDkNCtL33dBG/dPGhUYIqotcQBjPN2q9WQgEmC0tVqbRoq6onYY0oCLCICEHg1XsSAnX4JyDOMiSe+8l8f3UhEeY85BHJQdqQwHw9LmyVePIXfVEGgzDTihj99xkPSB3vi6/mofTOo7FmCd+7AAaZgDzna5++EVGmhKeEyT8+us=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=TGmgTsLc; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6B738C4CEF1;
-	Tue, 26 Aug 2025 14:35:07 +0000 (UTC)
+	 MIME-Version; b=W4EwpNjMaD0a6FF1z6rbchiN8VBRqgINIY+nv8vmyPJLpE7gwFNQo/s7KNd7CUDOPtGH1RLe7ZD2qk8EMxyn3m0hqEwkhyEiRrU7mmoGfy/RLmscbEQxOOYXbfn6IJb6rXJ/gfGYzk3OFcXYYrgJH9ENXK0nW12FC4VoHyLqibo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=D3yep2LH; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7CC3BC4CEF1;
+	Tue, 26 Aug 2025 13:04:18 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1756218907;
-	bh=7nrLO239b7yQggz7/BNaPJlu3RiVlQalD9cuNA9mYPg=;
+	s=korg; t=1756213458;
+	bh=PF+sJVv5DSo8klTV+5dFFxWm/aSsnAZMixcGRio5/k4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=TGmgTsLcDorYBF85INVPLn58rj7KnNmJ56GLqm9TQOdi76Kt383nhDfx2POpeeMwy
-	 Y5DwpEz2wGKrYGLpqjejMJ8b/DcxEFUkkNVIMXGGBj1DIY1fXe8XWysFYgbLmlA28y
-	 oyPjy5Znp/Q73I420TClYq8QTiurrypGnRsVPmNc=
+	b=D3yep2LHIYCLbhg/gWCuOmPEAdFOkoMOdxH/RpJTVFaF4kWc1QWpj3EftE6MR4kRc
+	 mcNOnDVRkzTfRCi85p1h6iwuSFiCQe+hqVMe5hFQqjS8ZuWzwrzYf3lkBh2jhPTVW0
+	 vz3+92WHwMtLFabPiIwMdnpE+XQ0uAEbAqVBKBF4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Viacheslav Dubeyko <slava@dubeyko.com>,
-	Johannes Thumshirn <johannes.thumshirn@wdc.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.4 178/403] hfs: fix not erasing deleted b-tree node issue
+	Alexander Sverdlin <alexander.sverdlin@siemens.com>,
+	Vignesh Raghavendra <vigneshr@ti.com>
+Subject: [PATCH 6.6 355/587] arm64: dts: ti: k3-pinctrl: Enable Schmitt Trigger by default
 Date: Tue, 26 Aug 2025 13:08:24 +0200
-Message-ID: <20250826110911.801994347@linuxfoundation.org>
+Message-ID: <20250826111001.944247225@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250826110905.607690791@linuxfoundation.org>
-References: <20250826110905.607690791@linuxfoundation.org>
+In-Reply-To: <20250826110952.942403671@linuxfoundation.org>
+References: <20250826110952.942403671@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,110 +61,72 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.4-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Viacheslav Dubeyko <slava@dubeyko.com>
+From: Alexander Sverdlin <alexander.sverdlin@siemens.com>
 
-[ Upstream commit d3ed6d6981f4756f145766753c872482bc3b28d3 ]
+commit 5b272127884bded21576a6ddceca13725a351c63 upstream.
 
-The generic/001 test of xfstests suite fails and corrupts
-the HFS volume:
+Switch Schmitt Trigger functions for PIN_INPUT* macros by default. This is
+HW PoR configuration, the slew rate requirements without ST enabled are
+pretty tough for these devices. We've noticed spurious GPIO interrupts even
+with noise-free edges but not meeting slew rate requirements (3.3E+6 V/s
+for 3.3v LVCMOS).
 
-sudo ./check generic/001
-FSTYP         -- hfs
-PLATFORM      -- Linux/x86_64 hfsplus-testing-0001 6.15.0-rc2+ #3 SMP PREEMPT_DYNAMIC Fri Apr 25 17:13:00 PDT 2>
-MKFS_OPTIONS  -- /dev/loop51
-MOUNT_OPTIONS -- /dev/loop51 /mnt/scratch
+It's not obvious why one might want to disable the PoR-enabled ST on any
+pin. Just enable it by default. As it's not possible to provide OR-able
+macros to disable the ST, shall anyone require it, provide a set of
+new macros with _NOST suffix.
 
-generic/001 32s ... _check_generic_filesystem: filesystem on /dev/loop50 is inconsistent
-(see /home/slavad/XFSTESTS-2/xfstests-dev/results//generic/001.full for details)
-
-Ran: generic/001
-Failures: generic/001
-Failed 1 of 1 tests
-
-fsck.hfs -d -n ./test-image.bin
-** ./test-image.bin (NO WRITE)
-	Using cacheBlockSize=32K cacheTotalBlock=1024 cacheSize=32768K.
-   Executing fsck_hfs (version 540.1-Linux).
-** Checking HFS volume.
-   The volume name is untitled
-** Checking extents overflow file.
-** Checking catalog file.
-   Unused node is not erased (node = 2)
-   Unused node is not erased (node = 4)
-<skipped>
-   Unused node is not erased (node = 253)
-   Unused node is not erased (node = 254)
-   Unused node is not erased (node = 255)
-   Unused node is not erased (node = 256)
-** Checking catalog hierarchy.
-** Checking volume bitmap.
-** Checking volume information.
-   Verify Status: VIStat = 0x0000, ABTStat = 0x0000 EBTStat = 0x0000
-                  CBTStat = 0x0004 CatStat = 0x00000000
-** The volume untitled was found corrupt and needs to be repaired.
-	volume type is HFS
-	primary MDB is at block 2 0x02
-	alternate MDB is at block 20971518 0x13ffffe
-	primary VHB is at block 0 0x00
-	alternate VHB is at block 0 0x00
-	sector size = 512 0x200
-	VolumeObject flags = 0x19
-	total sectors for volume = 20971520 0x1400000
-	total sectors for embedded volume = 0 0x00
-
-This patch adds logic of clearing the deleted b-tree node.
-
-sudo ./check generic/001
-FSTYP         -- hfs
-PLATFORM      -- Linux/x86_64 hfsplus-testing-0001 6.15.0-rc2+ #3 SMP PREEMPT_DYNAMIC Fri Apr 25 17:13:00 PDT 2025
-MKFS_OPTIONS  -- /dev/loop51
-MOUNT_OPTIONS -- /dev/loop51 /mnt/scratch
-
-generic/001 9s ...  32s
-Ran: generic/001
-Passed all 1 tests
-
-fsck.hfs -d -n ./test-image.bin
-** ./test-image.bin (NO WRITE)
-	Using cacheBlockSize=32K cacheTotalBlock=1024 cacheSize=32768K.
-   Executing fsck_hfs (version 540.1-Linux).
-** Checking HFS volume.
-   The volume name is untitled
-** Checking extents overflow file.
-** Checking catalog file.
-** Checking catalog hierarchy.
-** Checking volume bitmap.
-** Checking volume information.
-** The volume untitled appears to be OK.
-
-Signed-off-by: Viacheslav Dubeyko <slava@dubeyko.com>
-Reviewed-by: Johannes Thumshirn <johannes.thumshirn@wdc.com>
-Link: https://lore.kernel.org/r/20250430001211.1912533-1-slava@dubeyko.com
-Signed-off-by: Viacheslav Dubeyko <slava@dubeyko.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Fixes: fe49f2d776f7 ("arm64: dts: ti: Use local header for pinctrl register values")
+Cc: stable@vger.kernel.org
+Signed-off-by: Alexander Sverdlin <alexander.sverdlin@siemens.com>
+Link: https://lore.kernel.org/r/20250701105437.3539924-1-alexander.sverdlin@siemens.com
+[vigneshr@ti.com: Add Fixes tag]
+Signed-off-by: Vignesh Raghavendra <vigneshr@ti.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- fs/hfs/bnode.c | 1 +
- 1 file changed, 1 insertion(+)
+ arch/arm64/boot/dts/ti/k3-pinctrl.h |   15 ++++++++++++---
+ 1 file changed, 12 insertions(+), 3 deletions(-)
 
-diff --git a/fs/hfs/bnode.c b/fs/hfs/bnode.c
-index 2039cb6d5f66..219e3b8fd6a8 100644
---- a/fs/hfs/bnode.c
-+++ b/fs/hfs/bnode.c
-@@ -586,6 +586,7 @@ void hfs_bnode_put(struct hfs_bnode *node)
- 		if (test_bit(HFS_BNODE_DELETED, &node->flags)) {
- 			hfs_bnode_unhash(node);
- 			spin_unlock(&tree->hash_lock);
-+			hfs_bnode_clear(node, 0, tree->node_size);
- 			hfs_bmap_free(node);
- 			hfs_bnode_free(node);
- 			return;
--- 
-2.39.5
-
+--- a/arch/arm64/boot/dts/ti/k3-pinctrl.h
++++ b/arch/arm64/boot/dts/ti/k3-pinctrl.h
+@@ -8,11 +8,16 @@
+ #ifndef DTS_ARM64_TI_K3_PINCTRL_H
+ #define DTS_ARM64_TI_K3_PINCTRL_H
+ 
++#define ST_EN_SHIFT		(14)
+ #define PULLUDEN_SHIFT		(16)
+ #define PULLTYPESEL_SHIFT	(17)
+ #define RXACTIVE_SHIFT		(18)
+ #define DEBOUNCE_SHIFT		(11)
+ 
++/* Schmitt trigger configuration */
++#define ST_DISABLE		(0 << ST_EN_SHIFT)
++#define ST_ENABLE		(1 << ST_EN_SHIFT)
++
+ #define PULL_DISABLE		(1 << PULLUDEN_SHIFT)
+ #define PULL_ENABLE		(0 << PULLUDEN_SHIFT)
+ 
+@@ -26,9 +31,13 @@
+ #define PIN_OUTPUT		(INPUT_DISABLE | PULL_DISABLE)
+ #define PIN_OUTPUT_PULLUP	(INPUT_DISABLE | PULL_UP)
+ #define PIN_OUTPUT_PULLDOWN	(INPUT_DISABLE | PULL_DOWN)
+-#define PIN_INPUT		(INPUT_EN | PULL_DISABLE)
+-#define PIN_INPUT_PULLUP	(INPUT_EN | PULL_UP)
+-#define PIN_INPUT_PULLDOWN	(INPUT_EN | PULL_DOWN)
++#define PIN_INPUT		(INPUT_EN | ST_ENABLE | PULL_DISABLE)
++#define PIN_INPUT_PULLUP	(INPUT_EN | ST_ENABLE | PULL_UP)
++#define PIN_INPUT_PULLDOWN	(INPUT_EN | ST_ENABLE | PULL_DOWN)
++/* Input configurations with Schmitt Trigger disabled */
++#define PIN_INPUT_NOST		(INPUT_EN | PULL_DISABLE)
++#define PIN_INPUT_PULLUP_NOST	(INPUT_EN | PULL_UP)
++#define PIN_INPUT_PULLDOWN_NOST	(INPUT_EN | PULL_DOWN)
+ 
+ #define PIN_DEBOUNCE_DISABLE	(0 << DEBOUNCE_SHIFT)
+ #define PIN_DEBOUNCE_CONF1	(1 << DEBOUNCE_SHIFT)
 
 
 
