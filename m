@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-173017-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-175100-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6929DB35B63
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 13:23:49 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id AA5F1B3667E
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 15:57:49 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 34314189C366
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 11:21:29 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id DE2D8468108
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 13:50:25 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9BA5C3376BD;
-	Tue, 26 Aug 2025 11:19:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 61AB43431FE;
+	Tue, 26 Aug 2025 13:49:00 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="B2yy9Wss"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="aAhSa8yA"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 59144319858;
-	Tue, 26 Aug 2025 11:19:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2025A3451DE;
+	Tue, 26 Aug 2025 13:48:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756207160; cv=none; b=rEiwLUDpT80+o4UuYjc1/N7KQO+a4wPPpUmUg3rQAT9RgYIPafWX3JBTQIBnSClB9NWA1In+R/NqZmft7QvLz0B/m7KYI7BbPJKZ1QcZJeoQkdOZi2ZSRc0WzQzz+24xK53gtJuZDyJ9vSds7lp/lGsgwlJOHYKOTfc4nPrpnU0=
+	t=1756216140; cv=none; b=Ei5eo2B16Uu1laCMnyO7IHkgQhT/9FnYybP31jIMeAKBWWXUo5GLHx4bprbF3gespTe7ItcsdgiioY+y/DKGAzbkQqFk9IyiyNk3pjL4djBjcT/lE6rhr22ni3Co0IV5fJbmtlElsQwso2cObU5K0SOmNaLgS0DFV7rmxv2nKJw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756207160; c=relaxed/simple;
-	bh=JdBPwEhmHzyRTkRpVZUa2mqp1Z6qBWLUUg774w3AoCw=;
+	s=arc-20240116; t=1756216140; c=relaxed/simple;
+	bh=0q1QjqNepTgWMJ++E8qFXMfwoxAZiKmaI+/dqEFjPDw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=h+UPIxSecXXvkHMFW4W4uewqd8cg4utR6n/m48X7PzTPH9nfJjHl7T2jilTJzgHtmVyilVOjmK77OWPHTN9kpD3m7/FH5gw3Wg24bIql13CTG6pWxZbU/usIqHfR1OqIMekZNIeu9DoX0zeQRZGaqPPZ9w9WYAn6yWi94oZFlCw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=B2yy9Wss; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9C803C4CEF4;
-	Tue, 26 Aug 2025 11:19:19 +0000 (UTC)
+	 MIME-Version; b=sAKuiFMlvdGc+wOf/noob67sXqEyjIrqIDVHOnjZxhoYean0nyLe0yYeq2Z8z7V4a0DfXQFi0t+SihVg8atkJV4IVpU/UeIitJOCUr68pYAOgD3Mo9aIVDg3N7QtVnWqJSWUfoQWNZTbAerS56U9o+jXNwtIgQcMHIMTa5pxFVQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=aAhSa8yA; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 59066C4CEF1;
+	Tue, 26 Aug 2025 13:48:59 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1756207159;
-	bh=JdBPwEhmHzyRTkRpVZUa2mqp1Z6qBWLUUg774w3AoCw=;
+	s=korg; t=1756216139;
+	bh=0q1QjqNepTgWMJ++E8qFXMfwoxAZiKmaI+/dqEFjPDw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=B2yy9WssXdaLGwsU6heV6LiQmCeaWOIAEe0Utq8UsMogBt65SyTpWOVCHb2SDNntX
-	 ANhqtLEexaYZxoaEgRaMyGbLJki2/1ccoREX7R34yAjtS/haKXSVcJYSHzkKlrJ5tf
-	 TUBpsHTTZ4ZyE45PEw4FuA/zseVq9jyflPscNGy0=
+	b=aAhSa8yAmDogXKBFmnIRC+EsHGJ0IuhDaEpilSTFRqrdLw+ckM0cqWMXD81WtSSTf
+	 UDt1pkysKHcCPtrJWBwM1DucN6SMlASeJmUTOrqIG/KSjsorDVWnI3fRHrDMCEtms9
+	 gN5QEEZeHG7UOcCv+AVhncr/e7wDK0xf39uZdwLs=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Doug Anderson <dianders@chromium.org>,
-	Bjorn Andersson <bjorn.andersson@oss.qualcomm.com>,
-	Dmitry Baryshkov <dmitry.baryshkov@oss.qualcomm.com>,
-	Bjorn Andersson <andersson@kernel.org>
-Subject: [PATCH 6.16 073/457] soc: qcom: mdt_loader: Ensure we dont read past the ELF header
-Date: Tue, 26 Aug 2025 13:05:57 +0200
-Message-ID: <20250826110939.176951489@linuxfoundation.org>
+	Petro Pavlov <petro.pavlov@vastdata.com>,
+	Dai Ngo <dai.ngo@oracle.com>,
+	Jeff Layton <jlayton@kernel.org>,
+	Chuck Lever <chuck.lever@oracle.com>
+Subject: [PATCH 5.15 267/644] NFSD: detect mismatch of file handle and delegation stateid in OPEN op
+Date: Tue, 26 Aug 2025 13:05:58 +0200
+Message-ID: <20250826110952.991228005@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250826110937.289866482@linuxfoundation.org>
-References: <20250826110937.289866482@linuxfoundation.org>
+In-Reply-To: <20250826110946.507083938@linuxfoundation.org>
+References: <20250826110946.507083938@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,114 +63,59 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.16-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Bjorn Andersson <bjorn.andersson@oss.qualcomm.com>
+From: Dai Ngo <dai.ngo@oracle.com>
 
-commit 9f9967fed9d066ed3dae9372b45ffa4f6fccfeef upstream.
+commit 9c65001c57164033ad08b654c8b5ae35512ddf4a upstream.
 
-When the MDT loader is used in remoteproc, the ELF header is sanitized
-beforehand, but that's not necessary the case for other clients.
+When the client sends an OPEN with claim type CLAIM_DELEG_CUR_FH or
+CLAIM_DELEGATION_CUR, the delegation stateid and the file handle
+must belong to the same file, otherwise return NFS4ERR_INVAL.
 
-Validate the size of the firmware buffer to ensure that we don't read
-past the end as we iterate over the header. e_phentsize and e_shentsize
-are validated as well, to ensure that the assumptions about step size in
-the traversal are valid.
+Note that RFC8881, section 8.2.4, mandates the server to return
+NFS4ERR_BAD_STATEID if the selected table entry does not match the
+current filehandle. However returning NFS4ERR_BAD_STATEID in the
+OPEN causes the client to retry the operation and therefor get the
+client into a loop. To avoid this situation we return NFS4ERR_INVAL
+instead.
 
-Fixes: 2aad40d911ee ("remoteproc: Move qcom_mdt_loader into drivers/soc/qcom")
+Reported-by: Petro Pavlov <petro.pavlov@vastdata.com>
+Fixes: c44c5eeb2c02 ("[PATCH] nfsd4: add open state code for CLAIM_DELEGATE_CUR")
 Cc: stable@vger.kernel.org
-Reported-by: Doug Anderson <dianders@chromium.org>
-Signed-off-by: Bjorn Andersson <bjorn.andersson@oss.qualcomm.com>
-Reviewed-by: Dmitry Baryshkov <dmitry.baryshkov@oss.qualcomm.com>
-Link: https://lore.kernel.org/r/20250610-mdt-loader-validation-and-fixes-v2-1-f7073e9ab899@oss.qualcomm.com
-Signed-off-by: Bjorn Andersson <andersson@kernel.org>
+Signed-off-by: Dai Ngo <dai.ngo@oracle.com>
+Reviewed-by: Jeff Layton <jlayton@kernel.org>
+Signed-off-by: Chuck Lever <chuck.lever@oracle.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/soc/qcom/mdt_loader.c |   43 ++++++++++++++++++++++++++++++++++++++++++
- 1 file changed, 43 insertions(+)
+ fs/nfsd/nfs4state.c |   14 ++++++++++++++
+ 1 file changed, 14 insertions(+)
 
---- a/drivers/soc/qcom/mdt_loader.c
-+++ b/drivers/soc/qcom/mdt_loader.c
-@@ -18,6 +18,37 @@
- #include <linux/slab.h>
- #include <linux/soc/qcom/mdt_loader.h>
- 
-+static bool mdt_header_valid(const struct firmware *fw)
-+{
-+	const struct elf32_hdr *ehdr;
-+	size_t phend;
-+	size_t shend;
-+
-+	if (fw->size < sizeof(*ehdr))
-+		return false;
-+
-+	ehdr = (struct elf32_hdr *)fw->data;
-+
-+	if (memcmp(ehdr->e_ident, ELFMAG, SELFMAG))
-+		return false;
-+
-+	if (ehdr->e_phentsize != sizeof(struct elf32_phdr))
-+		return -EINVAL;
-+
-+	phend = size_add(size_mul(sizeof(struct elf32_phdr), ehdr->e_phnum), ehdr->e_phoff);
-+	if (phend > fw->size)
-+		return false;
-+
-+	if (ehdr->e_shentsize != sizeof(struct elf32_shdr))
-+		return -EINVAL;
-+
-+	shend = size_add(size_mul(sizeof(struct elf32_shdr), ehdr->e_shnum), ehdr->e_shoff);
-+	if (shend > fw->size)
-+		return false;
-+
-+	return true;
-+}
-+
- static bool mdt_phdr_valid(const struct elf32_phdr *phdr)
- {
- 	if (phdr->p_type != PT_LOAD)
-@@ -82,6 +113,9 @@ ssize_t qcom_mdt_get_size(const struct f
- 	phys_addr_t max_addr = 0;
- 	int i;
- 
-+	if (!mdt_header_valid(fw))
-+		return -EINVAL;
-+
- 	ehdr = (struct elf32_hdr *)fw->data;
- 	phdrs = (struct elf32_phdr *)(fw->data + ehdr->e_phoff);
- 
-@@ -134,6 +168,9 @@ void *qcom_mdt_read_metadata(const struc
- 	ssize_t ret;
- 	void *data;
- 
-+	if (!mdt_header_valid(fw))
-+		return ERR_PTR(-EINVAL);
-+
- 	ehdr = (struct elf32_hdr *)fw->data;
- 	phdrs = (struct elf32_phdr *)(fw->data + ehdr->e_phoff);
- 
-@@ -214,6 +251,9 @@ int qcom_mdt_pas_init(struct device *dev
- 	int ret;
- 	int i;
- 
-+	if (!mdt_header_valid(fw))
-+		return -EINVAL;
-+
- 	ehdr = (struct elf32_hdr *)fw->data;
- 	phdrs = (struct elf32_phdr *)(fw->data + ehdr->e_phoff);
- 
-@@ -310,6 +350,9 @@ static int __qcom_mdt_load(struct device
- 	if (!fw || !mem_region || !mem_phys || !mem_size)
- 		return -EINVAL;
- 
-+	if (!mdt_header_valid(fw))
-+		return -EINVAL;
-+
- 	is_split = qcom_mdt_bins_are_split(fw, fw_name);
- 	ehdr = (struct elf32_hdr *)fw->data;
- 	phdrs = (struct elf32_phdr *)(fw->data + ehdr->e_phoff);
+--- a/fs/nfsd/nfs4state.c
++++ b/fs/nfsd/nfs4state.c
+@@ -5736,6 +5736,20 @@ nfsd4_process_open2(struct svc_rqst *rqs
+ 		status = nfs4_check_deleg(cl, open, &dp);
+ 		if (status)
+ 			goto out;
++		if (dp && nfsd4_is_deleg_cur(open) &&
++				(dp->dl_stid.sc_file != fp)) {
++			/*
++			 * RFC8881 section 8.2.4 mandates the server to return
++			 * NFS4ERR_BAD_STATEID if the selected table entry does
++			 * not match the current filehandle. However returning
++			 * NFS4ERR_BAD_STATEID in the OPEN can cause the client
++			 * to repeatedly retry the operation with the same
++			 * stateid, since the stateid itself is valid. To avoid
++			 * this situation NFSD returns NFS4ERR_INVAL instead.
++			 */
++			status = nfserr_inval;
++			goto out;
++		}
+ 		stp = nfsd4_find_and_lock_existing_open(fp, open);
+ 	} else {
+ 		open->op_file = NULL;
 
 
 
