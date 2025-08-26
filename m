@@ -1,58 +1,58 @@
-Return-Path: <stable+bounces-174773-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-175912-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 23D78B364E2
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 15:42:37 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6F8D7B36A23
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 16:34:40 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 4AC148A66F5
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 13:35:24 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id F22521C41352
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 14:27:40 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 268A924A066;
-	Tue, 26 Aug 2025 13:34:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8F8543451A0;
+	Tue, 26 Aug 2025 14:24:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="fgK0Gj5r"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="CSLY2ojz"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D247022AE5D;
-	Tue, 26 Aug 2025 13:34:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4D0E51DF75A;
+	Tue, 26 Aug 2025 14:24:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756215278; cv=none; b=OVn9Bzja+v9P4e7u5wq0PHEjBqtuchgQhIy1CDtMLDFPiXWN4JPHddLISMay+CyJ/DhFMLlam/1ryD845dROx8BJV8htDoe6DDq7kn++eimkuM29BPjJ9FWtA1KAaZGO0qmX37LJ7v8IqOb0IUksWEb5hDMo4NMJ5NsAJ9nm6/U=
+	t=1756218294; cv=none; b=KlNMgsbWoWV3xVI+0HvkFUYw5PLzxBlO5hRa265wa88c1FeicoKMLKCGsw//z/256gM6y4yb3JuJWkxX3xpW72F3E+tjA6BAvxplId+IVINDY6oQ9UGjpiusOEejFHJ0yoR8YlisINbRWROJ2r9sT3ELdC3Vf01wxi230wB6NcI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756215278; c=relaxed/simple;
-	bh=Yw40TNg4+C97D4dqLIY44lJyP3yEpQVM+U7eIlPNOCs=;
+	s=arc-20240116; t=1756218294; c=relaxed/simple;
+	bh=VX734G8Rdgstp4wit+6ZO5DnBZEcih2BmNpJ9yeJK60=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=jSOAGJ6lXwPJZoDOyScRqPUwXSX/wH2AXF5ZDA49/Ab01ch4qKltGR6rLG2pY226itEdEg8YfWCaQYYbje6GSioXlTrGi1OdapKfmJdTz4EAyRLRc/PGQI1X43Zb+8yvCjw0Yn/Ev7U29UPoKKKvEAoD9XWMIl2NlQGQLu7oU1o=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=fgK0Gj5r; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 648F2C4CEF1;
-	Tue, 26 Aug 2025 13:34:38 +0000 (UTC)
+	 MIME-Version; b=cmXEpTDj3KFu+zEPmGE1DLuSSiOJQq1wNCQEIzjkFkEsK0bNhl1SXuXFMJYJXu/S6zcEhpuiggX/rfMz+Sl1826mzM4DMR2UUN7qMb0icpQKggv1jRjPQ0p2Y0Z4Vn+Ien/WhHKcl+AIK0PXe3uvECor1xN0UPxqFc7Xf7nVmiw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=CSLY2ojz; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D417DC4CEF1;
+	Tue, 26 Aug 2025 14:24:53 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1756215278;
-	bh=Yw40TNg4+C97D4dqLIY44lJyP3yEpQVM+U7eIlPNOCs=;
+	s=korg; t=1756218294;
+	bh=VX734G8Rdgstp4wit+6ZO5DnBZEcih2BmNpJ9yeJK60=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=fgK0Gj5r6v8g9LS9sSMBvKjAeq9bEl0RZGqTkBhVCX0CjNc1u+glUVxv4C0SMKoXr
-	 QGEPTAD9tFVPBGURIw+CxJBZ4ojkQRASfkzY4pY/7tuCc8cwcPpa2a7g0lkfImTMPL
-	 AtgY7HYJfmimeBFz7iYBOLA+xnjN+rHIoUqhjJrw=
+	b=CSLY2ojzrMOyRgx+smgm45vebOsWylD5D5wdRYY1MWlc/Y1w4W5sCjV7kyLnytWiG
+	 US+GGZGKTYVxU7JN1p1XKPp5trAF6gO1lBsZ0gli7m20QkMmiWP5NWUyUdKUgcaMmo
+	 I8vCrTx5vpicMxNUm6O3ToEeRxMamnU6gGhyo6/Y=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	stable <stable@kernel.org>,
-	Akash M <akash.m5@samsung.com>,
-	Selvarasu Ganesan <selvarasu.g@samsung.com>,
-	Thinh Nguyen <Thinh.Nguyen@synopsys.com>,
-	Sebastian Andrzej Siewior <bigeasy@linutronix.de>
-Subject: [PATCH 6.1 423/482] usb: dwc3: Remove WARN_ON for device endpoint command timeouts
+	Doug Anderson <dianders@chromium.org>,
+	Bjorn Andersson <bjorn.andersson@oss.qualcomm.com>,
+	Dmitry Baryshkov <dmitry.baryshkov@oss.qualcomm.com>,
+	Bjorn Andersson <andersson@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.10 466/523] soc: qcom: mdt_loader: Ensure we dont read past the ELF header
 Date: Tue, 26 Aug 2025 13:11:16 +0200
-Message-ID: <20250826110941.278324490@linuxfoundation.org>
+Message-ID: <20250826110935.938626950@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250826110930.769259449@linuxfoundation.org>
-References: <20250826110930.769259449@linuxfoundation.org>
+In-Reply-To: <20250826110924.562212281@linuxfoundation.org>
+References: <20250826110924.562212281@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,137 +64,110 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Selvarasu Ganesan <selvarasu.g@samsung.com>
+From: Bjorn Andersson <bjorn.andersson@oss.qualcomm.com>
 
-commit 45eae113dccaf8e502090ecf5b3d9e9b805add6f upstream.
+[ Upstream commit 9f9967fed9d066ed3dae9372b45ffa4f6fccfeef ]
 
-This commit addresses a rarely observed endpoint command timeout
-which causes kernel panic due to warn when 'panic_on_warn' is enabled
-and unnecessary call trace prints when 'panic_on_warn' is disabled.
-It is seen during fast software-controlled connect/disconnect testcases.
-The following is one such endpoint command timeout that we observed:
+When the MDT loader is used in remoteproc, the ELF header is sanitized
+beforehand, but that's not necessary the case for other clients.
 
-1. Connect
-   =======
-->dwc3_thread_interrupt
- ->dwc3_ep0_interrupt
-  ->configfs_composite_setup
-   ->composite_setup
-    ->usb_ep_queue
-     ->dwc3_gadget_ep0_queue
-      ->__dwc3_gadget_ep0_queue
-       ->__dwc3_ep0_do_control_data
-        ->dwc3_send_gadget_ep_cmd
+Validate the size of the firmware buffer to ensure that we don't read
+past the end as we iterate over the header. e_phentsize and e_shentsize
+are validated as well, to ensure that the assumptions about step size in
+the traversal are valid.
 
-2. Disconnect
-   ==========
-->dwc3_thread_interrupt
- ->dwc3_gadget_disconnect_interrupt
-  ->dwc3_ep0_reset_state
-   ->dwc3_ep0_end_control_data
-    ->dwc3_send_gadget_ep_cmd
-
-In the issue scenario, in Exynos platforms, we observed that control
-transfers for the previous connect have not yet been completed and end
-transfer command sent as a part of the disconnect sequence and
-processing of USB_ENDPOINT_HALT feature request from the host timeout.
-This maybe an expected scenario since the controller is processing EP
-commands sent as a part of the previous connect. It maybe better to
-remove WARN_ON in all places where device endpoint commands are sent to
-avoid unnecessary kernel panic due to warn.
-
-Cc: stable <stable@kernel.org>
-Co-developed-by: Akash M <akash.m5@samsung.com>
-Signed-off-by: Akash M <akash.m5@samsung.com>
-Signed-off-by: Selvarasu Ganesan <selvarasu.g@samsung.com>
-Acked-by: Thinh Nguyen <Thinh.Nguyen@synopsys.com>
-Reviewed-by: Sebastian Andrzej Siewior <bigeasy@linutronix.de>
-Link: https://lore.kernel.org/r/20250808125315.1607-1-selvarasu.g@samsung.com
+Fixes: 2aad40d911ee ("remoteproc: Move qcom_mdt_loader into drivers/soc/qcom")
+Cc: stable@vger.kernel.org
+Reported-by: Doug Anderson <dianders@chromium.org>
+Signed-off-by: Bjorn Andersson <bjorn.andersson@oss.qualcomm.com>
+Reviewed-by: Dmitry Baryshkov <dmitry.baryshkov@oss.qualcomm.com>
+Link: https://lore.kernel.org/r/20250610-mdt-loader-validation-and-fixes-v2-1-f7073e9ab899@oss.qualcomm.com
+Signed-off-by: Bjorn Andersson <andersson@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/usb/dwc3/ep0.c    |   20 ++++++++++++++++----
- drivers/usb/dwc3/gadget.c |   10 ++++++++--
- 2 files changed, 24 insertions(+), 6 deletions(-)
+ drivers/soc/qcom/mdt_loader.c |   41 +++++++++++++++++++++++++++++++++++++++++
+ 1 file changed, 41 insertions(+)
 
---- a/drivers/usb/dwc3/ep0.c
-+++ b/drivers/usb/dwc3/ep0.c
-@@ -286,7 +286,9 @@ void dwc3_ep0_out_start(struct dwc3 *dwc
- 	dwc3_ep0_prepare_one_trb(dep, dwc->ep0_trb_addr, 8,
- 			DWC3_TRBCTL_CONTROL_SETUP, false);
- 	ret = dwc3_ep0_start_trans(dep);
--	WARN_ON(ret < 0);
-+	if (ret < 0)
-+		dev_err(dwc->dev, "ep0 out start transfer failed: %d\n", ret);
+--- a/drivers/soc/qcom/mdt_loader.c
++++ b/drivers/soc/qcom/mdt_loader.c
+@@ -12,11 +12,43 @@
+ #include <linux/firmware.h>
+ #include <linux/kernel.h>
+ #include <linux/module.h>
++#include <linux/overflow.h>
+ #include <linux/qcom_scm.h>
+ #include <linux/sizes.h>
+ #include <linux/slab.h>
+ #include <linux/soc/qcom/mdt_loader.h>
+ 
++static bool mdt_header_valid(const struct firmware *fw)
++{
++	const struct elf32_hdr *ehdr;
++	size_t phend;
++	size_t shend;
 +
- 	for (i = 2; i < DWC3_ENDPOINTS_NUM; i++) {
- 		struct dwc3_ep *dwc3_ep;
- 
-@@ -1058,7 +1060,9 @@ static void __dwc3_ep0_do_control_data(s
- 		ret = dwc3_ep0_start_trans(dep);
- 	}
- 
--	WARN_ON(ret < 0);
-+	if (ret < 0)
-+		dev_err(dwc->dev,
-+			"ep0 data phase start transfer failed: %d\n", ret);
- }
- 
- static int dwc3_ep0_start_control_status(struct dwc3_ep *dep)
-@@ -1075,7 +1079,12 @@ static int dwc3_ep0_start_control_status
- 
- static void __dwc3_ep0_do_control_status(struct dwc3 *dwc, struct dwc3_ep *dep)
++	if (fw->size < sizeof(*ehdr))
++		return false;
++
++	ehdr = (struct elf32_hdr *)fw->data;
++
++	if (memcmp(ehdr->e_ident, ELFMAG, SELFMAG))
++		return false;
++
++	if (ehdr->e_phentsize != sizeof(struct elf32_phdr))
++		return false;
++
++	phend = size_add(size_mul(sizeof(struct elf32_phdr), ehdr->e_phnum), ehdr->e_phoff);
++	if (phend > fw->size)
++		return false;
++
++	if (ehdr->e_shentsize != sizeof(struct elf32_shdr))
++		return false;
++
++	shend = size_add(size_mul(sizeof(struct elf32_shdr), ehdr->e_shnum), ehdr->e_shoff);
++	if (shend > fw->size)
++		return false;
++
++	return true;
++}
++
+ static bool mdt_phdr_valid(const struct elf32_phdr *phdr)
  {
--	WARN_ON(dwc3_ep0_start_control_status(dep));
-+	int	ret;
-+
-+	ret = dwc3_ep0_start_control_status(dep);
-+	if (ret)
-+		dev_err(dwc->dev,
-+			"ep0 status phase start transfer failed: %d\n", ret);
- }
+ 	if (phdr->p_type != PT_LOAD)
+@@ -46,6 +78,9 @@ ssize_t qcom_mdt_get_size(const struct f
+ 	phys_addr_t max_addr = 0;
+ 	int i;
  
- static void dwc3_ep0_do_control_status(struct dwc3 *dwc,
-@@ -1118,7 +1127,10 @@ void dwc3_ep0_end_control_data(struct dw
- 	cmd |= DWC3_DEPCMD_PARAM(dep->resource_index);
- 	memset(&params, 0, sizeof(params));
- 	ret = dwc3_send_gadget_ep_cmd(dep, cmd, &params);
--	WARN_ON_ONCE(ret);
-+	if (ret)
-+		dev_err_ratelimited(dwc->dev,
-+			"ep0 data phase end transfer failed: %d\n", ret);
++	if (!mdt_header_valid(fw))
++		return -EINVAL;
 +
- 	dep->resource_index = 0;
- }
+ 	ehdr = (struct elf32_hdr *)fw->data;
+ 	phdrs = (struct elf32_phdr *)(ehdr + 1);
  
---- a/drivers/usb/dwc3/gadget.c
-+++ b/drivers/usb/dwc3/gadget.c
-@@ -1724,7 +1724,11 @@ static int __dwc3_stop_active_transfer(s
- 		dep->flags |= DWC3_EP_DELAY_STOP;
- 		return 0;
- 	}
--	WARN_ON_ONCE(ret);
+@@ -92,6 +127,9 @@ void *qcom_mdt_read_metadata(const struc
+ 	size_t ehdr_size;
+ 	void *data;
+ 
++	if (!mdt_header_valid(fw))
++		return ERR_PTR(-EINVAL);
 +
-+	if (ret)
-+		dev_err_ratelimited(dep->dwc->dev,
-+				"end transfer failed: %d\n", ret);
+ 	ehdr = (struct elf32_hdr *)fw->data;
+ 	phdrs = (struct elf32_phdr *)(ehdr + 1);
+ 
+@@ -151,6 +189,9 @@ static int __qcom_mdt_load(struct device
+ 	if (!fw || !mem_region || !mem_phys || !mem_size)
+ 		return -EINVAL;
+ 
++	if (!mdt_header_valid(fw))
++		return -EINVAL;
 +
- 	dep->resource_index = 0;
- 
- 	if (!interrupt)
-@@ -3897,7 +3901,9 @@ static void dwc3_clear_stall_all_ep(stru
- 		dep->flags &= ~DWC3_EP_STALL;
- 
- 		ret = dwc3_send_clear_stall_ep_cmd(dep);
--		WARN_ON_ONCE(ret);
-+		if (ret)
-+			dev_err_ratelimited(dwc->dev,
-+				"failed to clear STALL on %s\n", dep->name);
- 	}
- }
+ 	ehdr = (struct elf32_hdr *)fw->data;
+ 	phdrs = (struct elf32_phdr *)(ehdr + 1);
  
 
 
