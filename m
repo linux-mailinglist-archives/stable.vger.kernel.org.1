@@ -1,55 +1,59 @@
-Return-Path: <stable+bounces-174140-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-175789-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0C2BBB3617B
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 15:09:59 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id B4A15B368F8
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 16:21:21 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 99593189706C
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 13:07:13 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 8468E7AC100
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 14:19:45 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8E70B23B616;
-	Tue, 26 Aug 2025 13:06:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 026EB223335;
+	Tue, 26 Aug 2025 14:19:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="pTjqf5Gr"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="bcK28ahM"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4B331238C0B;
-	Tue, 26 Aug 2025 13:06:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B48782192F2;
+	Tue, 26 Aug 2025 14:19:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756213599; cv=none; b=abV43O3cMk9ZCIFnguo7S27W7S+Pr3j42ETs0TkwIuekHogbgWUFFCrYGzY3imuP4V6B2EFNdUkH4iBpvOlNiUWG+YnlbXQBn506WL/JZUdxNq/Bq8Xp96S/n63xLkgAoJ+H/LMGOc6H+HwUCWgbd2hJ2GxuRBDBAlEWmsFEKJY=
+	t=1756217973; cv=none; b=ML4S3UF90G4ntHZLkVK7Z4Ixl4FI60L7gcajL4pqVVRZzkZb7NiHIHS7ert7ibhyFIvz6Pllr1kNpCAet57NcgVNiDgGocZiPjc2aOnGRwHNi1aHu18PvDwUaYB2Wnqhsl1XOxdOMuN44XpVCPOw00d1mTUk8vOP17Z27Plm68s=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756213599; c=relaxed/simple;
-	bh=G8vWxrj2OuBIopLpXu/zVSQ0quls3LaZtZgMszWf49U=;
+	s=arc-20240116; t=1756217973; c=relaxed/simple;
+	bh=ET8oPI2GmI08ytpQa5Y+NNdROVmPobpEPYe5bERt+W0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=VjUEBH37KptzVAmqOntR/AbJ2WszEObztRPelJlhxn24m3Mu1V8LHy8n8GNI0pWYb2gjXyxmfiUiUOipivLPyzqKPQ74zIlfdkKWlDHyrCHehgs9DDfsy6mPg6K/Jok+3j18r7IdP6z9J1F67U3VEoA8pU8Mb3tqWEXnCAcDZ14=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=pTjqf5Gr; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id CF45CC4CEF1;
-	Tue, 26 Aug 2025 13:06:38 +0000 (UTC)
+	 MIME-Version; b=NrQ/yxRsT4F2BoxIBVnQzaM1QzO85bgy3P7DSlQCCkvy0xRIDn8EpAE6Zhgw4FyMftG2DefRHqGfuctkBYNC/dycKEA7j3m421Ai2lHwF/qEEVuwzrjmxBfhh9zcK0aoiFbeB4oINUzPXbQCLLeyzngybOopAAotKSa1ZlLJt1w=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=bcK28ahM; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id F1687C113CF;
+	Tue, 26 Aug 2025 14:19:32 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1756213599;
-	bh=G8vWxrj2OuBIopLpXu/zVSQ0quls3LaZtZgMszWf49U=;
+	s=korg; t=1756217973;
+	bh=ET8oPI2GmI08ytpQa5Y+NNdROVmPobpEPYe5bERt+W0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=pTjqf5GrTSoki7y14d9etsIEUJreYHOvM7YrYScvoNHwZXx8MKFwlPuXpvc+AkAJm
-	 C6SfVSlpdQm7C0QaZngDmhPQyeZYCVBiGY3MKiGv5Vx/sMX1x2ehEVXalDaxzsjJ1x
-	 suHtxXNpwaUcJqvabCgNwpC2sAv9zApgCP1bGWx4=
+	b=bcK28ahMdLRPFccEPwZHe0FIFOQR0vhF7qEbta3kAjD8AQ4PWTadSsad3BvO0JUXy
+	 uKa6RATltSQOTIxs5IVFtHUR+7kIFjK1leTaEQL6063QSFrJ82qzfyFGYD2Cd3ZOcX
+	 yA56y3HW7meSm4ZNF1+a5F9Ojw8L/T/niLb6tfuM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Ludwig Disterhof <ludwig@disterhof.eu>,
-	Hans Verkuil <hverkuil@xs4all.nl>
-Subject: [PATCH 6.6 407/587] media: usbtv: Lock resolution while streaming
+	Peter Jung <ptr1337@cachyos.org>,
+	burneddi <burneddi@protonmail.com>,
+	Russell Haley <yumpusamongus@gmail.com>,
+	Boris Burkov <boris@bur.io>,
+	Filipe Manana <fdmanana@suse.com>,
+	David Sterba <dsterba@suse.com>
+Subject: [PATCH 5.10 346/523] btrfs: fix log tree replay failure due to file with 0 links and extents
 Date: Tue, 26 Aug 2025 13:09:16 +0200
-Message-ID: <20250826111003.282456430@linuxfoundation.org>
+Message-ID: <20250826110933.001537807@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250826110952.942403671@linuxfoundation.org>
-References: <20250826110952.942403671@linuxfoundation.org>
+In-Reply-To: <20250826110924.562212281@linuxfoundation.org>
+References: <20250826110924.562212281@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,44 +65,152 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Ludwig Disterhof <ludwig@disterhof.eu>
+From: Filipe Manana <fdmanana@suse.com>
 
-commit 7e40e0bb778907b2441bff68d73c3eb6b6cd319f upstream.
+commit 0a32e4f0025a74c70dcab4478e9b29c22f5ecf2f upstream.
 
-When an program is streaming (ffplay) and another program (qv4l2)
-changes the TV standard from NTSC to PAL, the kernel crashes due to trying
-to copy to unmapped memory.
+If we log a new inode (not persisted in a past transaction) that has 0
+links and extents, then log another inode with an higher inode number, we
+end up with failing to replay the log tree with -EINVAL. The steps for
+this are:
 
-Changing from NTSC to PAL increases the resolution in the usbtv struct,
-but the video plane buffer isn't adjusted, so it overflows.
+1) create new file A
+2) write some data to file A
+3) open an fd on file A
+4) unlink file A
+5) fsync file A using the previously open fd
+6) create file B (has higher inode number than file A)
+7) fsync file B
+8) power fail before current transaction commits
 
-Fixes: 0e0fe3958fdd13d ("[media] usbtv: Add support for PAL video source")
-Cc: stable@vger.kernel.org
-Signed-off-by: Ludwig Disterhof <ludwig@disterhof.eu>
-Signed-off-by: Hans Verkuil <hverkuil@xs4all.nl>
-[hverkuil: call vb2_is_busy instead of vb2_is_streaming]
+Now when attempting to mount the fs, the log replay will fail with
+-ENOENT at replay_one_extent() when attempting to replay the first
+extent of file A. The failure comes when trying to open the inode for
+file A in the subvolume tree, since it doesn't exist.
+
+Before commit 5f61b961599a ("btrfs: fix inode lookup error handling
+during log replay"), the returned error was -EIO instead of -ENOENT,
+since we converted any errors when attempting to read an inode during
+log replay to -EIO.
+
+The reason for this is that the log replay procedure fails to ignore
+the current inode when we are at the stage LOG_WALK_REPLAY_ALL, our
+current inode has 0 links and last inode we processed in the previous
+stage has a non 0 link count. In other words, the issue is that at
+replay_one_extent() we only update wc->ignore_cur_inode if the current
+replay stage is LOG_WALK_REPLAY_INODES.
+
+Fix this by updating wc->ignore_cur_inode whenever we find an inode item
+regardless of the current replay stage. This is a simple solution and easy
+to backport, but later we can do other alternatives like avoid logging
+extents or inode items other than the inode item for inodes with a link
+count of 0.
+
+The problem with the wc->ignore_cur_inode logic has been around since
+commit f2d72f42d5fa ("Btrfs: fix warning when replaying log after fsync
+of a tmpfile") but it only became frequent to hit since the more recent
+commit 5e85262e542d ("btrfs: fix fsync of files with no hard links not
+persisting deletion"), because we stopped skipping inodes with a link
+count of 0 when logging, while before the problem would only be triggered
+if trying to replay a log tree created with an older kernel which has a
+logged inode with 0 links.
+
+A test case for fstests will be submitted soon.
+
+Reported-by: Peter Jung <ptr1337@cachyos.org>
+Link: https://lore.kernel.org/linux-btrfs/fce139db-4458-4788-bb97-c29acf6cb1df@cachyos.org/
+Reported-by: burneddi <burneddi@protonmail.com>
+Link: https://lore.kernel.org/linux-btrfs/lh4W-Lwc0Mbk-QvBhhQyZxf6VbM3E8VtIvU3fPIQgweP_Q1n7wtlUZQc33sYlCKYd-o6rryJQfhHaNAOWWRKxpAXhM8NZPojzsJPyHMf2qY=@protonmail.com/#t
+Reported-by: Russell Haley <yumpusamongus@gmail.com>
+Link: https://lore.kernel.org/linux-btrfs/598ecc75-eb80-41b3-83c2-f2317fbb9864@gmail.com/
+Fixes: f2d72f42d5fa ("Btrfs: fix warning when replaying log after fsync of a tmpfile")
+CC: stable@vger.kernel.org # 5.4+
+Reviewed-by: Boris Burkov <boris@bur.io>
+Signed-off-by: Filipe Manana <fdmanana@suse.com>
+Signed-off-by: David Sterba <dsterba@suse.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/media/usb/usbtv/usbtv-video.c |    4 ++++
- 1 file changed, 4 insertions(+)
+ fs/btrfs/tree-log.c |   48 ++++++++++++++++++++++++++++++------------------
+ 1 file changed, 30 insertions(+), 18 deletions(-)
 
---- a/drivers/media/usb/usbtv/usbtv-video.c
-+++ b/drivers/media/usb/usbtv/usbtv-video.c
-@@ -73,6 +73,10 @@ static int usbtv_configure_for_norm(stru
- 	}
+--- a/fs/btrfs/tree-log.c
++++ b/fs/btrfs/tree-log.c
+@@ -272,8 +272,7 @@ struct walk_control {
  
- 	if (params) {
-+		if (vb2_is_busy(&usbtv->vb2q) &&
-+		    (usbtv->width != params->cap_width ||
-+		     usbtv->height != params->cap_height))
-+			return -EBUSY;
- 		usbtv->width = params->cap_width;
- 		usbtv->height = params->cap_height;
- 		usbtv->n_chunks = usbtv->width * usbtv->height
+ 	/*
+ 	 * Ignore any items from the inode currently being processed. Needs
+-	 * to be set every time we find a BTRFS_INODE_ITEM_KEY and we are in
+-	 * the LOG_WALK_REPLAY_INODES stage.
++	 * to be set every time we find a BTRFS_INODE_ITEM_KEY.
+ 	 */
+ 	bool ignore_cur_inode;
+ 
+@@ -2581,23 +2580,30 @@ static int replay_one_buffer(struct btrf
+ 
+ 	nritems = btrfs_header_nritems(eb);
+ 	for (i = 0; i < nritems; i++) {
+-		btrfs_item_key_to_cpu(eb, &key, i);
++		struct btrfs_inode_item *inode_item;
+ 
+-		/* inode keys are done during the first stage */
+-		if (key.type == BTRFS_INODE_ITEM_KEY &&
+-		    wc->stage == LOG_WALK_REPLAY_INODES) {
+-			struct btrfs_inode_item *inode_item;
+-			u32 mode;
++		btrfs_item_key_to_cpu(eb, &key, i);
+ 
+-			inode_item = btrfs_item_ptr(eb, i,
+-					    struct btrfs_inode_item);
++		if (key.type == BTRFS_INODE_ITEM_KEY) {
++			inode_item = btrfs_item_ptr(eb, i, struct btrfs_inode_item);
+ 			/*
+-			 * If we have a tmpfile (O_TMPFILE) that got fsync'ed
+-			 * and never got linked before the fsync, skip it, as
+-			 * replaying it is pointless since it would be deleted
+-			 * later. We skip logging tmpfiles, but it's always
+-			 * possible we are replaying a log created with a kernel
+-			 * that used to log tmpfiles.
++			 * An inode with no links is either:
++			 *
++			 * 1) A tmpfile (O_TMPFILE) that got fsync'ed and never
++			 *    got linked before the fsync, skip it, as replaying
++			 *    it is pointless since it would be deleted later.
++			 *    We skip logging tmpfiles, but it's always possible
++			 *    we are replaying a log created with a kernel that
++			 *    used to log tmpfiles;
++			 *
++			 * 2) A non-tmpfile which got its last link deleted
++			 *    while holding an open fd on it and later got
++			 *    fsynced through that fd. We always log the
++			 *    parent inodes when inode->last_unlink_trans is
++			 *    set to the current transaction, so ignore all the
++			 *    inode items for this inode. We will delete the
++			 *    inode when processing the parent directory with
++			 *    replay_dir_deletes().
+ 			 */
+ 			if (btrfs_inode_nlink(eb, inode_item) == 0) {
+ 				wc->ignore_cur_inode = true;
+@@ -2605,8 +2611,14 @@ static int replay_one_buffer(struct btrf
+ 			} else {
+ 				wc->ignore_cur_inode = false;
+ 			}
+-			ret = replay_xattr_deletes(wc->trans, root, log,
+-						   path, key.objectid);
++		}
++
++		/* Inode keys are done during the first stage. */
++		if (key.type == BTRFS_INODE_ITEM_KEY &&
++		    wc->stage == LOG_WALK_REPLAY_INODES) {
++			u32 mode;
++
++			ret = replay_xattr_deletes(wc->trans, root, log, path, key.objectid);
+ 			if (ret)
+ 				break;
+ 			mode = btrfs_inode_mode(eb, inode_item);
 
 
 
