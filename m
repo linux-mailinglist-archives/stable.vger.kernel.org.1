@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-173853-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-174366-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1CA09B3600A
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 14:56:27 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 664CCB362C2
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 15:21:45 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 345037C6F14
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 12:54:36 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 377101881E0C
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 13:18:40 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 708381C84BD;
-	Tue, 26 Aug 2025 12:53:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 91FB534165A;
+	Tue, 26 Aug 2025 13:16:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="uP7i3Gqw"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="xK6KUWp3"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2D60E8462;
-	Tue, 26 Aug 2025 12:53:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4EE2A33A015;
+	Tue, 26 Aug 2025 13:16:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756212839; cv=none; b=jyh+5ffiU8BnmOJ70bsD6xBEZWwmGjinxK1RIpBs54KKBR3NhTYBf8Cf2DADWcixC76UMh6E0GC1vNowFOrvM1DbHr/wg6D07hzPfO/fyxy/zHfzj/uUiqc9X3YdraBFY77FmbnyyZrc6W4fv81CEvYA2X39U58KYY3t8XIjQqo=
+	t=1756214200; cv=none; b=ZfnZnM84HHHnuHweN3tACcg+u4Ixzrnqa5Vsiq7FjNx73NlPFnfchn8JIf0OcOvuXnso5KDiHaNBXFlR3FlP/uUQUIhT0i/PN1GIGbveVEvInHeFva5PEKkXSmDxXWSIrbJ409VvLabEK3hSl3rGIDplXuPAzhCzNxWIAifQSYM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756212839; c=relaxed/simple;
-	bh=5/UbnmvEo8+EsKwY6YaSVMeAHehSBFU/3aTWySaz4ts=;
+	s=arc-20240116; t=1756214200; c=relaxed/simple;
+	bh=Ri7Yi+owbYkqp4Cq/NfRZuRWWj8kN2T18dVtye6UHb0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=J4n8GR4gGG8EsGYdhcFyrSTB87Q7jS+qtPQp56GdTyYKxW62nknI7winolZlYjVuMjUX4JfcFFzSXi0Li0dPRMDddHCq5I7e2t0X4Zq/HVxmjdEQ6GLbhgMBZazpJ7QSEC8PnTKk4N64xVnmfLMIe3hL7869u7EAfOqrVgFoKyE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=uP7i3Gqw; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2C308C4CEF1;
-	Tue, 26 Aug 2025 12:53:57 +0000 (UTC)
+	 MIME-Version; b=YLW2NQ89MPSF+KmCaIbROILMJWUR9EhJO2VbciXFxHCxQGThIZaGY2/Iu2pYR2o6IRLDOYcfkLil0km88Xyd6wxuAURBgYAd9LmsUa/JE1MNEc5Avzexym+TWg46QJADRuHaa2K/EDBgHbvhDI/gKnS8+0R0cKInhbbFKKFoFkc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=xK6KUWp3; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D61BCC4CEF1;
+	Tue, 26 Aug 2025 13:16:39 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1756212838;
-	bh=5/UbnmvEo8+EsKwY6YaSVMeAHehSBFU/3aTWySaz4ts=;
+	s=korg; t=1756214200;
+	bh=Ri7Yi+owbYkqp4Cq/NfRZuRWWj8kN2T18dVtye6UHb0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=uP7i3GqwR7//gdzPXOHfLM4ePE7vk+mE4B2IqTPMGeiGe4J0Ng/Hp4WiDKmQH0MDx
-	 2pyoPHGs77R0Asxl010PlCuIXOzcuvc7lotG3DgsHfGxDWfD5OCQ3PmjW9VfejEykJ
-	 Equ3PsAOb23s5x5okudVL/cvaRE/xlbpgVk8FV98=
+	b=xK6KUWp3S6T5Mz17sUDlC051s2tV2qhx03fTZxlOwP+MKJGCDioM1ycouxerCQrlm
+	 PYj4+rPdcqe2YTCcLMpHWeLJSdm5gYh2hDa49KSCebH0ZE6DMd45WL2PujHuBPTrsx
+	 yf3zmevOKe9MTDYtFYLbIbg2lQbBCS70Jxx3++ps=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Joakim Zhang <joakim.zhang@cixtech.com>,
-	Takashi Iwai <tiwai@suse.de>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 120/587] ALSA: hda: Handle the jack polling always via a work
+	lei lu <llfamsec@gmail.com>,
+	Jeff Layton <jlayton@kernel.org>,
+	Chuck Lever <chuck.lever@oracle.com>
+Subject: [PATCH 6.1 016/482] nfsd: handle get_client_locked() failure in nfsd4_setclientid_confirm()
 Date: Tue, 26 Aug 2025 13:04:29 +0200
-Message-ID: <20250826110956.015017752@linuxfoundation.org>
+Message-ID: <20250826110931.189000359@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250826110952.942403671@linuxfoundation.org>
-References: <20250826110952.942403671@linuxfoundation.org>
+In-Reply-To: <20250826110930.769259449@linuxfoundation.org>
+References: <20250826110930.769259449@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,134 +62,76 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Takashi Iwai <tiwai@suse.de>
+From: Jeff Layton <jlayton@kernel.org>
 
-[ Upstream commit 5f7e54b23e4d253eff3b10b12d6fa92d28d7dddc ]
+commit 908e4ead7f757504d8b345452730636e298cbf68 upstream.
 
-We used to call directly hda_jackpoll_work() from a couple of places
-for updating the jack and notify to user-space, but this makes rather
-the code flow fragile.  Namely, because of those direct calls,
-hda_jackpoll_work() uses snd_hda_power_up_pm() and *_down_pm() calls
-instead of the standard snd_hda_power_up() and *_down() calls.  The
-latter pair assures the runtime PM resume sync, so it can avoid the
-race against the PM callbacks gracefully, while the former pair may
-continue if called concurrently, hence it may race (by design).
+Lei Lu recently reported that nfsd4_setclientid_confirm() did not check
+the return value from get_client_locked(). a SETCLIENTID_CONFIRM could
+race with a confirmed client expiring and fail to get a reference. That
+could later lead to a UAF.
 
-In this patch, we change the call pattern of hda_jackpoll_work(); now
-all callers are replaced with the standard snd_hda_jack_report_sync()
-and the additional schedule_delayed_work().
+Fix this by getting a reference early in the case where there is an
+extant confirmed client. If that fails then treat it as if there were no
+confirmed client found at all.
 
-Since hda_jackpoll_work() is called only from the associated work,
-it's always outside the PM code path, and we can safely use
-snd_hda_power_up() and *_down() there instead.  This allows us to
-remove the racy check of power-state in hda_jackpoll_work(), as well
-as the tricky cancel_delayed_work() and rescheduling at
-hda_codec_runtime_suspend().
+In the case where the unconfirmed client is expiring, just fail and
+return the result from get_client_locked().
 
-Reported-by: Joakim Zhang <joakim.zhang@cixtech.com>
-Closes: https://lore.kernel.org/20250619020844.2974160-1-joakim.zhang@cixtech.com
-Tested-by: Joakim Zhang <joakim.zhang@cixtech.com>
-Signed-off-by: Takashi Iwai <tiwai@suse.de>
-Link: https://patch.msgid.link/20250623131437.10670-4-tiwai@suse.de
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Reported-by: lei lu <llfamsec@gmail.com>
+Closes: https://lore.kernel.org/linux-nfs/CAEBF3_b=UvqzNKdnfD_52L05Mqrqui9vZ2eFamgAbV0WG+FNWQ@mail.gmail.com/
+Fixes: d20c11d86d8f ("nfsd: Protect session creation and client confirm using client_lock")
+Cc: stable@vger.kernel.org
+Signed-off-by: Jeff Layton <jlayton@kernel.org>
+Signed-off-by: Chuck Lever <chuck.lever@oracle.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- sound/pci/hda/hda_codec.c | 41 +++++++++++++--------------------------
- 1 file changed, 14 insertions(+), 27 deletions(-)
+ fs/nfsd/nfs4state.c |   20 +++++++++++++++-----
+ 1 file changed, 15 insertions(+), 5 deletions(-)
 
-diff --git a/sound/pci/hda/hda_codec.c b/sound/pci/hda/hda_codec.c
-index aa6dc00985b5..2d4b7527b840 100644
---- a/sound/pci/hda/hda_codec.c
-+++ b/sound/pci/hda/hda_codec.c
-@@ -641,24 +641,16 @@ static void hda_jackpoll_work(struct work_struct *work)
- 	struct hda_codec *codec =
- 		container_of(work, struct hda_codec, jackpoll_work.work);
- 
--	/* for non-polling trigger: we need nothing if already powered on */
--	if (!codec->jackpoll_interval && snd_hdac_is_power_on(&codec->core))
-+	if (!codec->jackpoll_interval)
- 		return;
- 
- 	/* the power-up/down sequence triggers the runtime resume */
--	snd_hda_power_up_pm(codec);
-+	snd_hda_power_up(codec);
- 	/* update jacks manually if polling is required, too */
--	if (codec->jackpoll_interval) {
--		snd_hda_jack_set_dirty_all(codec);
--		snd_hda_jack_poll_all(codec);
--	}
--	snd_hda_power_down_pm(codec);
--
--	if (!codec->jackpoll_interval)
--		return;
--
--	schedule_delayed_work(&codec->jackpoll_work,
--			      codec->jackpoll_interval);
-+	snd_hda_jack_set_dirty_all(codec);
-+	snd_hda_jack_poll_all(codec);
-+	schedule_delayed_work(&codec->jackpoll_work, codec->jackpoll_interval);
-+	snd_hda_power_down(codec);
- }
- 
- /* release all pincfg lists */
-@@ -2920,12 +2912,12 @@ static void hda_call_codec_resume(struct hda_codec *codec)
- 		snd_hda_regmap_sync(codec);
+--- a/fs/nfsd/nfs4state.c
++++ b/fs/nfsd/nfs4state.c
+@@ -4285,10 +4285,16 @@ nfsd4_setclientid_confirm(struct svc_rqs
  	}
- 
--	if (codec->jackpoll_interval)
--		hda_jackpoll_work(&codec->jackpoll_work.work);
--	else
--		snd_hda_jack_report_sync(codec);
-+	snd_hda_jack_report_sync(codec);
- 	codec->core.dev.power.power_state = PMSG_ON;
- 	snd_hdac_leave_pm(&codec->core);
-+	if (codec->jackpoll_interval)
-+		schedule_delayed_work(&codec->jackpoll_work,
-+				      codec->jackpoll_interval);
- }
- 
- static int hda_codec_runtime_suspend(struct device *dev)
-@@ -2937,8 +2929,6 @@ static int hda_codec_runtime_suspend(struct device *dev)
- 	if (!codec->card)
- 		return 0;
- 
--	cancel_delayed_work_sync(&codec->jackpoll_work);
--
- 	state = hda_call_codec_suspend(codec);
- 	if (codec->link_down_at_suspend ||
- 	    (codec_has_clkstop(codec) && codec_has_epss(codec) &&
-@@ -2946,10 +2936,6 @@ static int hda_codec_runtime_suspend(struct device *dev)
- 		snd_hdac_codec_link_down(&codec->core);
- 	snd_hda_codec_display_power(codec, false);
- 
--	if (codec->bus->jackpoll_in_suspend &&
--		(dev->power.power_state.event != PM_EVENT_SUSPEND))
--		schedule_delayed_work(&codec->jackpoll_work,
--					codec->jackpoll_interval);
- 	return 0;
- }
- 
-@@ -3118,10 +3104,11 @@ int snd_hda_codec_build_controls(struct hda_codec *codec)
- 	if (err < 0)
- 		return err;
- 
-+	snd_hda_jack_report_sync(codec); /* call at the last init point */
- 	if (codec->jackpoll_interval)
--		hda_jackpoll_work(&codec->jackpoll_work.work);
--	else
--		snd_hda_jack_report_sync(codec); /* call at the last init point */
-+		schedule_delayed_work(&codec->jackpoll_work,
-+				      codec->jackpoll_interval);
+ 	status = nfs_ok;
+ 	if (conf) {
+-		old = unconf;
+-		unhash_client_locked(old);
+-		nfsd4_change_callback(conf, &unconf->cl_cb_conn);
+-	} else {
++		if (get_client_locked(conf) == nfs_ok) {
++			old = unconf;
++			unhash_client_locked(old);
++			nfsd4_change_callback(conf, &unconf->cl_cb_conn);
++		} else {
++			conf = NULL;
++		}
++	}
 +
- 	sync_power_up_states(codec);
- 	return 0;
- }
--- 
-2.39.5
-
++	if (!conf) {
+ 		old = find_confirmed_client_by_name(&unconf->cl_name, nn);
+ 		if (old) {
+ 			status = nfserr_clid_inuse;
+@@ -4305,10 +4311,14 @@ nfsd4_setclientid_confirm(struct svc_rqs
+ 			}
+ 			trace_nfsd_clid_replaced(&old->cl_clientid);
+ 		}
++		status = get_client_locked(unconf);
++		if (status != nfs_ok) {
++			old = NULL;
++			goto out;
++		}
+ 		move_to_confirmed(unconf);
+ 		conf = unconf;
+ 	}
+-	get_client_locked(conf);
+ 	spin_unlock(&nn->client_lock);
+ 	if (conf == unconf)
+ 		fsnotify_dentry(conf->cl_nfsd_info_dentry, FS_MODIFY);
 
 
 
