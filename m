@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-174097-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-174577-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 67419B36170
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 15:09:31 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 53925B36418
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 15:35:46 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id AC4F52A1819
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 13:05:27 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 618C9684D6D
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 13:26:59 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0B88223BD1A;
-	Tue, 26 Aug 2025 13:04:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D50E439FD9;
+	Tue, 26 Aug 2025 13:26:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Rfwvihgl"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="2m+2bhXs"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BD23B2343BE;
-	Tue, 26 Aug 2025 13:04:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9216672605;
+	Tue, 26 Aug 2025 13:26:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756213485; cv=none; b=M6byJiGVwcEftNylFdMljB3wXkAwuN2LvwFqMSPcjqPe0I7//Q3YtWF10SIrVpi6QjYlh+uy33PvERWoVUI9MO1W90hLpeStQVeekoYjf+vzLvW/JABOJOo2+fkNXtHkylcudZvACd+CupahyYBOLDAU985sqt11Pt2FJLR/0So=
+	t=1756214761; cv=none; b=KvgLewwFN6/jaut7+ZtDvK9gWHSiGr+I7g4FOPK+HXJ332B076uRCRfMSdKWyWlI9DYGdxJWN/Xkkf3XuGmbiSvPQhGL9akG/Yx5C1rdx8tIyFwZdcbo4+2G/Y4Dfo3BzvLocfzykQWZVAMI9GYoIbSfsg90VLq2FfKffOqZFlQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756213485; c=relaxed/simple;
-	bh=L5gauHmrwefeCo69UcslEVolFx64XcctR15PC0a54eE=;
+	s=arc-20240116; t=1756214761; c=relaxed/simple;
+	bh=Xjf/WAv0uCm+2UQ5g8a635bn0S49Rli9iAFuR5YcF2c=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=qYWDSCGj7sCyyOky0aoY0LhrlM/wNOTZRLfHTf/oX78TN7resv5lKSm9TH9cqrOpVE5XMj8U7DMdm1ZYn20VtgzKlB0XV1QJFozFe/BZ08VMBq5U8LsFF8TWypXiRU0M3yjAn4Vx3DbHqtrVxNRfiud0twqTfH7puj+4ean4WKo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Rfwvihgl; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id EA5F3C4CEF1;
-	Tue, 26 Aug 2025 13:04:44 +0000 (UTC)
+	 MIME-Version; b=Q5i66xtoSEFrXQ7yV4wgt9GnhsTpdLc9Z5jeHnct58gCLCsOngIJH1ok28L3MYcwT6QkV4Insspvxvxn/pJqqTiiq3zt07o1O/AJoSigSbugOOSz7Eq1h8A18jKFhEzPE529FE3Nol0vToF7guCC37K0LqBi3/hMg38PrhL7bKQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=2m+2bhXs; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 293C7C4CEF1;
+	Tue, 26 Aug 2025 13:26:01 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1756213485;
-	bh=L5gauHmrwefeCo69UcslEVolFx64XcctR15PC0a54eE=;
+	s=korg; t=1756214761;
+	bh=Xjf/WAv0uCm+2UQ5g8a635bn0S49Rli9iAFuR5YcF2c=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Rfwvihgl+Pj3MDCH/ki5VdKKTQup5BUcAD9BGo6kuN8yGsRixF3WmWDnJyMcYZtVK
-	 jdLA/78z4f2vU7QPeD+57ePVsKS3yKOXeEVAR6JmpgK6GfZeDqiXkPqyzZhSHbAhjS
-	 jthZPxruksVKOOxxDZa3hM/GD0jdqJwnJrFF2su4=
+	b=2m+2bhXs1+vroHCaRPiwjMpCTNnKnHxUadhbITrXlMWSwKviSyNUKe61CoeLdGee7
+	 9w1YI1ZeOxt4JqmKB5LM+rXlWvDgGVdRHxIbWMKYefCSCP9hoSi/UwZrX1asB4x+FN
+	 9Va0cwiAss7zC9Y/jL26BEtQ66QkYA2XpJsXnlv4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Igor Pylypiv <ipylypiv@google.com>,
-	Niklas Cassel <cassel@kernel.org>,
-	Damien Le Moal <dlemoal@kernel.org>
-Subject: [PATCH 6.6 364/587] ata: libata-scsi: Fix CDL control
+	Waiman Long <longman@redhat.com>,
+	Catalin Marinas <catalin.marinas@arm.com>,
+	Andrew Morton <akpm@linux-foundation.org>
+Subject: [PATCH 6.1 260/482] mm/kmemleak: avoid soft lockup in __kmemleak_do_cleanup()
 Date: Tue, 26 Aug 2025 13:08:33 +0200
-Message-ID: <20250826111002.168954265@linuxfoundation.org>
+Message-ID: <20250826110937.192169589@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250826110952.942403671@linuxfoundation.org>
-References: <20250826110952.942403671@linuxfoundation.org>
+In-Reply-To: <20250826110930.769259449@linuxfoundation.org>
+References: <20250826110930.769259449@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,67 +62,71 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Igor Pylypiv <ipylypiv@google.com>
+From: Waiman Long <longman@redhat.com>
 
-commit 58768b0563916ddcb73d8ed26ede664915f8df31 upstream.
+commit d1534ae23c2b6be350c8ab060803fbf6e9682adc upstream.
 
-Delete extra checks for the ATA_DFLAG_CDL_ENABLED flag that prevent
-SET FEATURES command from being issued to a drive when NCQ commands
-are active.
+A soft lockup warning was observed on a relative small system x86-64
+system with 16 GB of memory when running a debug kernel with kmemleak
+enabled.
 
-ata_mselect_control_ata_feature() sets / clears the ATA_DFLAG_CDL_ENABLED
-flag during the translation of MODE SELECT to SET FEATURES. If SET FEATURES
-gets deferred due to outstanding NCQ commands, the original MODE SELECT
-command will be re-queued. When the re-queued MODE SELECT goes through
-the ata_mselect_control_ata_feature() translation again, SET FEATURES
-will not be issued because ATA_DFLAG_CDL_ENABLED has been already set or
-cleared by the initial translation of MODE SELECT.
+  watchdog: BUG: soft lockup - CPU#8 stuck for 33s! [kworker/8:1:134]
 
-The ATA_DFLAG_CDL_ENABLED checks in ata_mselect_control_ata_feature()
-are safe to remove because scsi_cdl_enable() implements a similar logic
-that avoids enabling CDL if it has been enabled already.
+The test system was running a workload with hot unplug happening in
+parallel.  Then kemleak decided to disable itself due to its inability to
+allocate more kmemleak objects.  The debug kernel has its
+CONFIG_DEBUG_KMEMLEAK_MEM_POOL_SIZE set to 40,000.
 
-Fixes: 17e897a45675 ("ata: libata-scsi: Improve CDL control")
-Cc: stable@vger.kernel.org
-Signed-off-by: Igor Pylypiv <ipylypiv@google.com>
-Reviewed-by: Niklas Cassel <cassel@kernel.org>
-Signed-off-by: Damien Le Moal <dlemoal@kernel.org>
+The soft lockup happened in kmemleak_do_cleanup() when the existing
+kmemleak objects were being removed and deleted one-by-one in a loop via a
+workqueue.  In this particular case, there are at least 40,000 objects
+that need to be processed and given the slowness of a debug kernel and the
+fact that a raw_spinlock has to be acquired and released in
+__delete_object(), it could take a while to properly handle all these
+objects.
+
+As kmemleak has been disabled in this case, the object removal and
+deletion process can be further optimized as locking isn't really needed.
+However, it is probably not worth the effort to optimize for such an edge
+case that should rarely happen.  So the simple solution is to call
+cond_resched() at periodic interval in the iteration loop to avoid soft
+lockup.
+
+Link: https://lkml.kernel.org/r/20250728190248.605750-1-longman@redhat.com
+Signed-off-by: Waiman Long <longman@redhat.com>
+Acked-by: Catalin Marinas <catalin.marinas@arm.com>
+Cc: <stable@vger.kernel.org>
+Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/ata/libata-scsi.c |   11 +++--------
- 1 file changed, 3 insertions(+), 8 deletions(-)
+ mm/kmemleak.c |    5 +++++
+ 1 file changed, 5 insertions(+)
 
---- a/drivers/ata/libata-scsi.c
-+++ b/drivers/ata/libata-scsi.c
-@@ -3782,21 +3782,16 @@ static int ata_mselect_control_ata_featu
- 	/* Check cdl_ctrl */
- 	switch (buf[0] & 0x03) {
- 	case 0:
--		/* Disable CDL if it is enabled */
--		if (!(dev->flags & ATA_DFLAG_CDL_ENABLED))
--			return 0;
-+		/* Disable CDL */
- 		ata_dev_dbg(dev, "Disabling CDL\n");
- 		cdl_action = 0;
- 		dev->flags &= ~ATA_DFLAG_CDL_ENABLED;
- 		break;
- 	case 0x02:
- 		/*
--		 * Enable CDL if not already enabled. Since this is mutually
--		 * exclusive with NCQ priority, allow this only if NCQ priority
--		 * is disabled.
-+		 * Enable CDL. Since CDL is mutually exclusive with NCQ
-+		 * priority, allow this only if NCQ priority is disabled.
- 		 */
--		if (dev->flags & ATA_DFLAG_CDL_ENABLED)
--			return 0;
- 		if (dev->flags & ATA_DFLAG_NCQ_PRIO_ENABLED) {
- 			ata_dev_err(dev,
- 				"NCQ priority must be disabled to enable CDL\n");
+--- a/mm/kmemleak.c
++++ b/mm/kmemleak.c
+@@ -1992,6 +1992,7 @@ static const struct file_operations kmem
+ static void __kmemleak_do_cleanup(void)
+ {
+ 	struct kmemleak_object *object, *tmp;
++	unsigned int cnt = 0;
+ 
+ 	/*
+ 	 * Kmemleak has already been disabled, no need for RCU list traversal
+@@ -2000,6 +2001,10 @@ static void __kmemleak_do_cleanup(void)
+ 	list_for_each_entry_safe(object, tmp, &object_list, object_list) {
+ 		__remove_object(object);
+ 		__delete_object(object);
++
++		/* Call cond_resched() once per 64 iterations to avoid soft lockup */
++		if (!(++cnt & 0x3f))
++			cond_resched();
+ 	}
+ }
+ 
 
 
 
