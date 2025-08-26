@@ -1,56 +1,55 @@
-Return-Path: <stable+bounces-175693-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-173121-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5A008B369ED
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 16:32:41 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id E859BB35BFD
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 13:30:13 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id F398B985170
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 14:17:29 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id F1789362C5A
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 11:23:55 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3CD9734F49D;
-	Tue, 26 Aug 2025 14:15:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 188222F9992;
+	Tue, 26 Aug 2025 11:23:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Izk54Zev"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="x50gQEUs"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EF02B34DCF1;
-	Tue, 26 Aug 2025 14:15:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B5FD5267386;
+	Tue, 26 Aug 2025 11:23:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756217720; cv=none; b=joBGjySNlS4I43S2NvcEfXShPbs7FYjYr7/MTM7SPphtD3kHtSD06xs4ZHz6JMFp1iTsl2nylUApnhC/Qwd8CtLeNgZ/V/pnyZi/W1AcW6b3FQwB2Fw5z68zSaGMIR3hr4Nn9So9DwEYTdksDpoRd7y+27FYdc4+JlD5b1CdcTI=
+	t=1756207427; cv=none; b=U6FdKOQcoIWtmmqm88cdRVqp9wG+eIDX1PfFsbKEAREm9ZFYJOGPzk2G1ZeVDnthh0M5Woy7yt9qWFpIxp8bT+mSHpErzWg21fYYRpbwvG6MpZMkdW0aPufikNQCxGgQolBNqiFwZmtuyplkst9onCsWYZAzXVYYQ/QWrIb0G7s=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756217720; c=relaxed/simple;
-	bh=caPf9tyhN/9o/1chpMsT4kGzHlM8XiVBXGhKG3dWgC4=;
+	s=arc-20240116; t=1756207427; c=relaxed/simple;
+	bh=sbHX/Ciz356FO0hX6Q3zAFg4R0Z3lueIJM/o+sjL+d4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=kRPgTwG/miHOWUhXZYnwTpdQlS1jr/L/Of/PA1lj/qT+Zq97kvbYX2+Y0o8JMA0MzI+5MfS87AsuqR6/oDdgxVTrxs/50n7+WRxf0Wn58rStiuCkccv+eC8paHirKpze4CdqkE/5MemKstYERKgSWCSWz1eQDf/34H+YlBiv/pM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Izk54Zev; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7B3B4C4CEF1;
-	Tue, 26 Aug 2025 14:15:19 +0000 (UTC)
+	 MIME-Version; b=OISoDWg6MaUAy8ROwub1kd9uHVhaaoMAWmys1eMAVFVQi2iwKU+iY1njMDpdZa9zGGtYl4xrHRzXWdn+z0Km0yMS1c8RuYPXNfm2vLp9JJKeHKQ8x+NEte8neGU8AR6y4uu3B3Ae5+MAXYvtK0lmqQRbeBu+0JE8CdE/0wpxgY4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=x50gQEUs; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 46E83C4CEF4;
+	Tue, 26 Aug 2025 11:23:47 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1756217719;
-	bh=caPf9tyhN/9o/1chpMsT4kGzHlM8XiVBXGhKG3dWgC4=;
+	s=korg; t=1756207427;
+	bh=sbHX/Ciz356FO0hX6Q3zAFg4R0Z3lueIJM/o+sjL+d4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Izk54ZevcgreB0LmUOmsWdgGBTxElU6mCiLfazIm0Ius0zSN0BuhtvsXOR8iPtP9M
-	 TqCKM2fFTeaE171SKNvjLbo8GcVVTu/YrUHAnpMhqZgSH8iUl6LYttSaSLUh72zs0R
-	 omxF4mWgICoMESbB8dkA+8CqpgW/d3xjMycKjhVE=
+	b=x50gQEUs+rWrtGL7i8JlImn7F2XimVf2qdOs9eLH/GUHry+MUkPRlw5rXLd1DDGSI
+	 cxJ2HKW49XxmA2CTK9j4UvU8lJghmfmZA+xcklH/bV06oMIib09V6N7buTigpmLOWY
+	 lrKWWX09HyCR0gpVLBNWTJi6GfU39Z8AlLoTIUTU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	"Gautham R. Shenoy" <gautham.shenoy@amd.com>,
-	Shuah Khan <skhan@linuxfoundation.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 250/523] pm: cpupower: Fix the snapshot-order of tsc,mperf, clock in mperf_stop()
+	Peter Shkenev <mustela@erminea.space>,
+	Alex Deucher <alexander.deucher@amd.com>
+Subject: [PATCH 6.16 176/457] drm/amdgpu: check if hubbub is NULL in debugfs/amdgpu_dm_capabilities
 Date: Tue, 26 Aug 2025 13:07:40 +0200
-Message-ID: <20250826110930.599676168@linuxfoundation.org>
+Message-ID: <20250826110941.724502613@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250826110924.562212281@linuxfoundation.org>
-References: <20250826110924.562212281@linuxfoundation.org>
+In-Reply-To: <20250826110937.289866482@linuxfoundation.org>
+References: <20250826110937.289866482@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,50 +61,37 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+6.16-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Gautham R. Shenoy <gautham.shenoy@amd.com>
+From: Peter Shkenev <mustela@erminea.space>
 
-[ Upstream commit cda7ac8ce7de84cf32a3871ba5f318aa3b79381e ]
+commit b4a69f7f29c8a459ad6b4d8a8b72450f1d9fd288 upstream.
 
-In the function mperf_start(), mperf_monitor snapshots the time, tsc
-and finally the aperf,mperf MSRs. However, this order of snapshotting
-in is reversed in mperf_stop(). As a result, the C0 residency (which
-is computed as delta_mperf * 100 / delta_tsc) is under-reported on
-CPUs that is 100% busy.
+HUBBUB structure is not initialized on DCE hardware, so check if it is NULL
+to avoid null dereference while accessing amdgpu_dm_capabilities file in
+debugfs.
 
-Fix this by snapshotting time, tsc and then aperf,mperf in
-mperf_stop() in the same order as in mperf_start().
-
-Link: https://lore.kernel.org/r/20250612122355.19629-2-gautham.shenoy@amd.com
-Signed-off-by: Gautham R. Shenoy <gautham.shenoy@amd.com>
-Signed-off-by: Shuah Khan <skhan@linuxfoundation.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Signed-off-by: Peter Shkenev <mustela@erminea.space>
+Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
+Cc: stable@vger.kernel.org
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- tools/power/cpupower/utils/idle_monitor/mperf_monitor.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm_debugfs.c |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/tools/power/cpupower/utils/idle_monitor/mperf_monitor.c b/tools/power/cpupower/utils/idle_monitor/mperf_monitor.c
-index 08a399b0be28..6ab9139f16af 100644
---- a/tools/power/cpupower/utils/idle_monitor/mperf_monitor.c
-+++ b/tools/power/cpupower/utils/idle_monitor/mperf_monitor.c
-@@ -240,9 +240,9 @@ static int mperf_stop(void)
- 	int cpu;
+--- a/drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm_debugfs.c
++++ b/drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm_debugfs.c
+@@ -3988,7 +3988,7 @@ static int capabilities_show(struct seq_
  
- 	for (cpu = 0; cpu < cpu_count; cpu++) {
--		mperf_measure_stats(cpu);
--		mperf_get_tsc(&tsc_at_measure_end[cpu]);
- 		clock_gettime(CLOCK_REALTIME, &time_end[cpu]);
-+		mperf_get_tsc(&tsc_at_measure_end[cpu]);
-+		mperf_measure_stats(cpu);
- 	}
+ 	struct hubbub *hubbub = dc->res_pool->hubbub;
  
- 	return 0;
--- 
-2.39.5
-
+-	if (hubbub->funcs->get_mall_en)
++	if (hubbub && hubbub->funcs->get_mall_en)
+ 		hubbub->funcs->get_mall_en(hubbub, &mall_in_use);
+ 
+ 	if (dc->cap_funcs.get_subvp_en)
 
 
 
