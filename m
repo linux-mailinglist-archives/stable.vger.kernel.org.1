@@ -1,64 +1,58 @@
-Return-Path: <stable+bounces-176354-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-173397-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4CAC6B36C5E
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 16:55:38 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 00430B35CB0
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 13:37:18 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 4E5B4A03BD6
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 14:47:22 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id B62B17C5014
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 11:37:17 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C303235E4D1;
-	Tue, 26 Aug 2025 14:44:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6403B338F57;
+	Tue, 26 Aug 2025 11:35:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="b1vDIjul"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="f4nd+VRm"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7E57A3376BD;
-	Tue, 26 Aug 2025 14:44:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2194220330;
+	Tue, 26 Aug 2025 11:35:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756219440; cv=none; b=asi0UMmfvW2CpJzkerzG58bBOfmu+IlI0fHHscj9mvF6WNSeDU58d2JuZh5yin4+3yI4kt2p7roAgPQo5d5UEqLk3pNXtwqNxdygtN+Ba4UNiW1l+GAXCJLRktbr9Q4SU1iRBdA8e4JPda2bndi2Om5TBQdNcN2Xr1P1wA7fu8E=
+	t=1756208142; cv=none; b=ON3UdrRbpdFTFItFeb6k9JuiM4yg1WkkrDy+1dIYLmJXLVj0jv6tb9dBj94fB7ibrf9hVRhTxC6ayJi2s5Q4FfkjhYhNqSNwBmAdU8AHRk4OWKgZlwUk6x0Pwis9d+9039HS1mpJy+IG7guleLveZ80xpxodpFDrFFivFxxD4vQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756219440; c=relaxed/simple;
-	bh=u1y3eF1ajJBP0OvIEKI3PhK7i414ZWr5HV5m14aDp34=;
+	s=arc-20240116; t=1756208142; c=relaxed/simple;
+	bh=qPfJc0VW5pS6mS6mBiHlWCxqnRiBlF5lm0+BznhuHII=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=MMsThx1drlh5xX/n8bDOrmn5J9RiwFgOSQczyKPe9AIHKkQEIIqi9jC3fAoTixP7VRx+rXlhqeSnCCCHV9QSb8MO3h7U4g+YyIppeYEV2IXjx34SxSJGIAfKweScmoSLbXzUYjT0paDvvYYHOLjXd3Ce9LqdW1El27VdRGRDx+0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=b1vDIjul; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id DD30FC4CEF1;
-	Tue, 26 Aug 2025 14:43:59 +0000 (UTC)
+	 MIME-Version; b=UNk5eQ/4KVkMbb1Q8X/KhxTIFJmB+jFaVxuA9XBiLtdj0tUFLdFwYe2OEOhl6sJONH9K0OpibutEZ5/vPra8Ph7+IFvnbIWEKAnfA8hn4FP/0UcpNgwMIci7GJl66+mY7JDNcUB8zs9uMF1djOkj4et/kW7oF2lVK0YBQCn6blA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=f4nd+VRm; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A4591C4CEF1;
+	Tue, 26 Aug 2025 11:35:41 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1756219440;
-	bh=u1y3eF1ajJBP0OvIEKI3PhK7i414ZWr5HV5m14aDp34=;
+	s=korg; t=1756208142;
+	bh=qPfJc0VW5pS6mS6mBiHlWCxqnRiBlF5lm0+BznhuHII=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=b1vDIjuloLaY1C3y5ciaTg//vxQpAGcCzNfcn3qXyQyz1rpRIRwwXf3QEM3natWXO
-	 cyPXnELRJdwGAS28kITnuUamuH1eGfuAgdOIvIGZaxDfWwwIFPToUB+YiK5ThwwACu
-	 +DmMbxHCZtLWrPt0vT+m+89mkrNXV2ukmozAT/90=
+	b=f4nd+VRmlUQAi4VgKk3qXmZKveM1B/pUA3Z+ilRj/LNxgS/vN3qDtm+B8yaSw3Lxb
+	 bM/s7VNK40dIM0wodLJBUqXaQLwI7/ZbRHKGBbEeDn39I7qxXoiBmrN3XgyQOCEpzS
+	 nikP4ZVgFQ87wSxcDBK7iqszbCWyDRef4Zz7essM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Lorenzo Stoakes <lstoakes@gmail.com>,
-	Jan Kara <jack@suse.cz>,
-	Alexander Viro <viro@zeniv.linux.org.uk>,
-	Andy Lutomirski <luto@kernel.org>,
-	Christian Brauner <brauner@kernel.org>,
-	Hugh Dickins <hughd@google.com>,
-	"Matthew Wilcox (Oracle)" <willy@infradead.org>,
-	Mike Kravetz <mike.kravetz@oracle.com>,
-	Muchun Song <muchun.song@linux.dev>,
-	Andrew Morton <akpm@linux-foundation.org>,
-	"Isaac J. Manjarres" <isaacmanjarres@google.com>
-Subject: [PATCH 5.4 381/403] mm: perform the mapping_map_writable() check after call_mmap()
+	Nathan Chancellor <nathan@kernel.org>,
+	WANG Rui <wangrui@loongson.cn>,
+	Tiezhu Yang <yangtiezhu@loongson.cn>,
+	Huacai Chen <chenhuacai@loongson.cn>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.16 423/457] LoongArch: Pass annotate-tablejump option if LTO is enabled
 Date: Tue, 26 Aug 2025 13:11:47 +0200
-Message-ID: <20250826110917.544018390@linuxfoundation.org>
+Message-ID: <20250826110947.745812566@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250826110905.607690791@linuxfoundation.org>
-References: <20250826110905.607690791@linuxfoundation.org>
+In-Reply-To: <20250826110937.289866482@linuxfoundation.org>
+References: <20250826110937.289866482@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -70,121 +64,69 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.4-stable review patch.  If anyone has any objections, please let me know.
+6.16-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Lorenzo Stoakes <lstoakes@gmail.com>
+From: Tiezhu Yang <yangtiezhu@loongson.cn>
 
-[ Upstream commit 158978945f3173b8c1a88f8c5684a629736a57ac ]
+[ Upstream commit 5dfea6644d201bfeffaa7e0d79d62309856613b7 ]
 
-In order for a F_SEAL_WRITE sealed memfd mapping to have an opportunity to
-clear VM_MAYWRITE, we must be able to invoke the appropriate
-vm_ops->mmap() handler to do so.  We would otherwise fail the
-mapping_map_writable() check before we had the opportunity to avoid it.
+When compiling with LLVM and CONFIG_LTO_CLANG is set, there exist many
+objtool warnings "sibling call from callable instruction with modified
+stack frame".
 
-This patch moves this check after the call_mmap() invocation.  Only memfd
-actively denies write access causing a potential failure here (in
-memfd_add_seals()), so there should be no impact on non-memfd cases.
+For this special case, the related object file shows that there is no
+generated relocation section '.rela.discard.tablejump_annotate' for the
+table jump instruction jirl, thus objtool can not know that what is the
+actual destination address.
 
-This patch makes the userland-visible change that MAP_SHARED, PROT_READ
-mappings of an F_SEAL_WRITE sealed memfd mapping will now succeed.
+It needs to do something on the LLVM side to make sure that there is the
+relocation section '.rela.discard.tablejump_annotate' if LTO is enabled,
+but in order to maintain compatibility for the current LLVM compiler,
+this can be done in the kernel Makefile for now. Ensure it is aware of
+linker with LTO, '--loongarch-annotate-tablejump' needs to be passed via
+'-mllvm' to ld.lld.
 
-There is a delicate situation with cleanup paths assuming that a writable
-mapping must have occurred in circumstances where it may now not have.  In
-order to ensure we do not accidentally mark a writable file unwritable by
-mistake, we explicitly track whether we have a writable mapping and unmap
-only if we do.
+Note that it should also pass the compiler option -mannotate-tablejump
+rather than only pass '-mllvm --loongarch-annotate-tablejump' to ld.lld
+if LTO is enabled, otherwise there are no jump info for some table jump
+instructions.
 
-[lstoakes@gmail.com: do not set writable_file_mapping in inappropriate case]
-  Link: https://lkml.kernel.org/r/c9eb4cc6-7db4-4c2b-838d-43a0b319a4f0@lucifer.local
-Link: https://bugzilla.kernel.org/show_bug.cgi?id=217238
-Link: https://lkml.kernel.org/r/55e413d20678a1bb4c7cce889062bbb07b0df892.1697116581.git.lstoakes@gmail.com
-Signed-off-by: Lorenzo Stoakes <lstoakes@gmail.com>
-Reviewed-by: Jan Kara <jack@suse.cz>
-Cc: Alexander Viro <viro@zeniv.linux.org.uk>
-Cc: Andy Lutomirski <luto@kernel.org>
-Cc: Christian Brauner <brauner@kernel.org>
-Cc: Hugh Dickins <hughd@google.com>
-Cc: Matthew Wilcox (Oracle) <willy@infradead.org>
-Cc: Mike Kravetz <mike.kravetz@oracle.com>
-Cc: Muchun Song <muchun.song@linux.dev>
-Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
-Cc: stable@vger.kernel.org
-[isaacmanjarres: added error handling to cleanup the work done by the
-mmap() callback and removed unused label.]
-Signed-off-by: Isaac J. Manjarres <isaacmanjarres@google.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: e20ab7d454ee ("LoongArch: Enable jump table for objtool")
+Closes: https://lore.kernel.org/loongarch/20250731175655.GA1455142@ax162/
+Reported-by: Nathan Chancellor <nathan@kernel.org>
+Tested-by: Nathan Chancellor <nathan@kernel.org>
+Co-developed-by: WANG Rui <wangrui@loongson.cn>
+Signed-off-by: WANG Rui <wangrui@loongson.cn>
+Signed-off-by: Tiezhu Yang <yangtiezhu@loongson.cn>
+Signed-off-by: Huacai Chen <chenhuacai@loongson.cn>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- mm/mmap.c |   22 ++++++++++++++--------
- 1 file changed, 14 insertions(+), 8 deletions(-)
+ arch/loongarch/Makefile | 6 ++++++
+ 1 file changed, 6 insertions(+)
 
---- a/mm/mmap.c
-+++ b/mm/mmap.c
-@@ -1718,6 +1718,7 @@ unsigned long mmap_region(struct file *f
- {
- 	struct mm_struct *mm = current->mm;
- 	struct vm_area_struct *vma, *prev;
-+	bool writable_file_mapping = false;
- 	int error;
- 	struct rb_node **rb_link, *rb_parent;
- 	unsigned long charged = 0;
-@@ -1785,11 +1786,6 @@ unsigned long mmap_region(struct file *f
- 			if (error)
- 				goto free_vma;
- 		}
--		if (is_shared_maywrite(vm_flags)) {
--			error = mapping_map_writable(file->f_mapping);
--			if (error)
--				goto allow_write_and_free_vma;
--		}
+diff --git a/arch/loongarch/Makefile b/arch/loongarch/Makefile
+index b0703a4e02a2..a3a9759414f4 100644
+--- a/arch/loongarch/Makefile
++++ b/arch/loongarch/Makefile
+@@ -102,7 +102,13 @@ KBUILD_CFLAGS			+= $(call cc-option,-mthin-add-sub) $(call cc-option,-Wa$(comma)
  
- 		/* ->mmap() can change vma->vm_file, but must guarantee that
- 		 * vma_link() below can deny write-access if VM_DENYWRITE is set
-@@ -1801,6 +1797,14 @@ unsigned long mmap_region(struct file *f
- 		if (error)
- 			goto unmap_and_free_vma;
- 
-+		if (vma_is_shared_maywrite(vma)) {
-+			error = mapping_map_writable(file->f_mapping);
-+			if (error)
-+				goto close_and_free_vma;
-+
-+			writable_file_mapping = true;
-+		}
-+
- 		/* Can addr have changed??
- 		 *
- 		 * Answer: Yes, several device drivers can do it in their
-@@ -1823,7 +1827,7 @@ unsigned long mmap_region(struct file *f
- 	vma_link(mm, vma, prev, rb_link, rb_parent);
- 	/* Once vma denies write, undo our temporary denial count */
- 	if (file) {
--		if (is_shared_maywrite(vm_flags))
-+		if (writable_file_mapping)
- 			mapping_unmap_writable(file->f_mapping);
- 		if (vm_flags & VM_DENYWRITE)
- 			allow_write_access(file);
-@@ -1858,15 +1862,17 @@ out:
- 
- 	return addr;
- 
-+close_and_free_vma:
-+	if (vma->vm_ops && vma->vm_ops->close)
-+		vma->vm_ops->close(vma);
- unmap_and_free_vma:
- 	vma->vm_file = NULL;
- 	fput(file);
- 
- 	/* Undo any partial mapping done by a device driver. */
- 	unmap_region(mm, vma, prev, vma->vm_start, vma->vm_end);
--	if (is_shared_maywrite(vm_flags))
-+	if (writable_file_mapping)
- 		mapping_unmap_writable(file->f_mapping);
--allow_write_and_free_vma:
- 	if (vm_flags & VM_DENYWRITE)
- 		allow_write_access(file);
- free_vma:
+ ifdef CONFIG_OBJTOOL
+ ifdef CONFIG_CC_HAS_ANNOTATE_TABLEJUMP
++# The annotate-tablejump option can not be passed to LLVM backend when LTO is enabled.
++# Ensure it is aware of linker with LTO, '--loongarch-annotate-tablejump' also needs to
++# be passed via '-mllvm' to ld.lld.
+ KBUILD_CFLAGS			+= -mannotate-tablejump
++ifdef CONFIG_LTO_CLANG
++KBUILD_LDFLAGS			+= -mllvm --loongarch-annotate-tablejump
++endif
+ else
+ KBUILD_CFLAGS			+= -fno-jump-tables # keep compatibility with older compilers
+ endif
+-- 
+2.50.1
+
 
 
 
