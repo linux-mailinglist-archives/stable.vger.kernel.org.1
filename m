@@ -1,57 +1,58 @@
-Return-Path: <stable+bounces-173932-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-175991-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id C9C35B36085
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 15:01:39 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8C424B36AE7
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 16:41:48 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 4DA977C6CB5
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 12:57:47 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 3A39F1C42A47
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 14:31:01 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 345B51E5718;
-	Tue, 26 Aug 2025 12:57:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id BC2801494D9;
+	Tue, 26 Aug 2025 14:28:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="BnuOzQJ8"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="vW51mTtE"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E40AA1E51E1;
-	Tue, 26 Aug 2025 12:57:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 78F782F83BA;
+	Tue, 26 Aug 2025 14:28:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756213046; cv=none; b=o7fE3kXDB9gpFsvqmjpF/3mzwTOlBd0iZaFcp/WvGg14enywHWclUYw/SLA7nVQZ8fu6HbZPazHvdm2Jcxd+G7lCn5QPsZD4LYadxpNf9qgThGIU/OKdagicobX8X2ceqsnh5K+RG6w8dAD+BwjejWcfK2k73bx8cYnpy/+6n+U=
+	t=1756218499; cv=none; b=pzyTYmD3ZDjzBMXAfrPCQtcViY7LKbfaqtb5YDJ9kNXESfts2ROD5JpZBCwgb0SP5QG/ysjobrhhu41PzcY0XPD693uliqlvqrgU5vyanWzOjes+ps6tGMzZf8ihtiAltRKry4AsxQgxPOpQ87nEUSmaR1lCdqUb6IMCAb5oKZo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756213046; c=relaxed/simple;
-	bh=K54trnWXGHfjojaFppYY3lMIrKMccwxDkRMf5Y4ty+w=;
+	s=arc-20240116; t=1756218499; c=relaxed/simple;
+	bh=2e2V1r0DBhwkkAllKyZebN/mkjrwt1VhdG/qbpCor9Q=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=cYAbSgoSad9lRuPC+/81lfqEPX5GibWFV8o8QoJB5SF6KTLMoqjdxHHRPZ5houtGbBvSQDYEBvv5rcVR/KrYrz7OmVUWZVDyaeqUNxPhP5DXLMFf0RT3QU4xYVvHRYwRvXHbYxWJhkGdPySw5P3FXl5EQevG9b4Pxazs8EWUnUU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=BnuOzQJ8; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 74E77C4CEF1;
-	Tue, 26 Aug 2025 12:57:25 +0000 (UTC)
+	 MIME-Version:Content-Type; b=GgUWQWh9A7YFi161MsntLk3VgLIMDieZFHX+wdjmVWQv3XJ200JQo/Kpvu0EWa0MTUud+RCZc0zCc3rjZ1AQm+aousShDg7FIntjWcLHtbWM9/yDik0Y9ddm5wiNLbHDZpHuNStVaKIbGpvvwbPfGvn6BEIbwS08kFUEoAMK9E0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=vW51mTtE; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0A8EBC4CEF1;
+	Tue, 26 Aug 2025 14:28:18 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1756213045;
-	bh=K54trnWXGHfjojaFppYY3lMIrKMccwxDkRMf5Y4ty+w=;
+	s=korg; t=1756218499;
+	bh=2e2V1r0DBhwkkAllKyZebN/mkjrwt1VhdG/qbpCor9Q=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=BnuOzQJ8+WxG5fEoH6J8uTgC3Or2QABPBr5h4ZFIa7q36VNcMuXTrNz9oGX/abzfB
-	 ZvWyGqnMbF5eHKDSrJBhGCjBEo2uHPt44uTg11VnMYGZvVjQqkMKsZh7g5/iFD1nGO
-	 raXvZ8h70icRgZb/JKPXG8wfb0VxYj7Gnw8weGh0=
+	b=vW51mTtEfYsSE0cr9V9f+bjVm6C4aJMRVtV0eN2Ih3HF7e4lgfDG4+j8dXrqPvXdz
+	 R4uIeTmss3DW/g2I9RSJdctjHOdBNaD/1jNrkhLU23755WlCBfvIQTPqAdP9Sq24eQ
+	 +8rdLCCo3nLGwIR9ZxxXEHowEVM4kGL0L4b7g9+8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Quentin Monnet <qmo@kernel.org>,
-	Yuan Chen <chenyuan@kylinos.cn>,
-	Andrii Nakryiko <andrii@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 201/587] bpftool: Fix JSON writer resource leak in version command
+	Chen Ni <nichen@iscas.ac.cn>,
+	=?UTF-8?q?Nuno=20S=C3=A1?= <nuno.sa@analog.com>,
+	Fabrice Gasnier <fabrice.gasnier@foss.st.com>,
+	Stable@vger.kernel.org,
+	Jonathan Cameron <Jonathan.Cameron@huawei.com>
+Subject: [PATCH 5.4 024/403] iio: adc: stm32-adc: Fix race in installing chained IRQ handler
 Date: Tue, 26 Aug 2025 13:05:50 +0200
-Message-ID: <20250826110958.052999051@linuxfoundation.org>
+Message-ID: <20250826110906.440255272@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250826110952.942403671@linuxfoundation.org>
-References: <20250826110952.942403671@linuxfoundation.org>
+In-Reply-To: <20250826110905.607690791@linuxfoundation.org>
+References: <20250826110905.607690791@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,53 +62,50 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+5.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Yuan Chen <chenyuan@kylinos.cn>
+From: Chen Ni <nichen@iscas.ac.cn>
 
-[ Upstream commit 85cd83fed8267cde0dd1cea719808aad95ae4de7 ]
+commit e8ad595064f6ebd5d2d1a5d5d7ebe0efce623091 upstream.
 
-When using `bpftool --version -j/-p`, the JSON writer object
-created in do_version() was not properly destroyed after use.
-This caused a memory leak each time the version command was
-executed with JSON output.
+Fix a race where a pending interrupt could be received and the handler
+called before the handler's data has been setup, by converting to
+irq_set_chained_handler_and_data().
 
-Fix: 004b45c0e51a (tools: bpftool: provide JSON output for all possible commands)
-
-Suggested-by: Quentin Monnet <qmo@kernel.org>
-Signed-off-by: Yuan Chen <chenyuan@kylinos.cn>
-Signed-off-by: Andrii Nakryiko <andrii@kernel.org>
-Reviewed-by: Quentin Monnet <qmo@kernel.org>
-Link: https://lore.kernel.org/bpf/20250617132442.9998-1-chenyuan_fl@163.com
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Fixes: 1add69880240 ("iio: adc: Add support for STM32 ADC core")
+Signed-off-by: Chen Ni <nichen@iscas.ac.cn>
+Reviewed-by: Nuno Sá <nuno.sa@analog.com>
+Tested-by: Fabrice Gasnier <fabrice.gasnier@foss.st.com>
+Reviewed-by: Fabrice Gasnier <fabrice.gasnier@foss.st.com>
+Link: https://patch.msgid.link/20250515083101.3811350-1-nichen@iscas.ac.cn
+Cc: <Stable@vger.kernel.org>
+Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- tools/bpf/bpftool/main.c | 6 +++---
- 1 file changed, 3 insertions(+), 3 deletions(-)
+ drivers/iio/adc/stm32-adc-core.c |    7 +++----
+ 1 file changed, 3 insertions(+), 4 deletions(-)
 
-diff --git a/tools/bpf/bpftool/main.c b/tools/bpf/bpftool/main.c
-index 08d0ac543c67..a0536528dfde 100644
---- a/tools/bpf/bpftool/main.c
-+++ b/tools/bpf/bpftool/main.c
-@@ -534,9 +534,9 @@ int main(int argc, char **argv)
- 		usage();
+--- a/drivers/iio/adc/stm32-adc-core.c
++++ b/drivers/iio/adc/stm32-adc-core.c
+@@ -393,10 +393,9 @@ static int stm32_adc_irq_probe(struct pl
+ 		return -ENOMEM;
+ 	}
  
- 	if (version_requested)
--		return do_version(argc, argv);
--
--	ret = cmd_select(commands, argc, argv, do_help);
-+		ret = do_version(argc, argv);
-+	else
-+		ret = cmd_select(commands, argc, argv, do_help);
+-	for (i = 0; i < priv->cfg->num_irqs; i++) {
+-		irq_set_chained_handler(priv->irq[i], stm32_adc_irq_handler);
+-		irq_set_handler_data(priv->irq[i], priv);
+-	}
++	for (i = 0; i < priv->cfg->num_irqs; i++)
++		irq_set_chained_handler_and_data(priv->irq[i],
++						 stm32_adc_irq_handler, priv);
  
- 	if (json_output)
- 		jsonw_destroy(&json_wtr);
--- 
-2.39.5
-
+ 	return 0;
+ }
 
 
 
