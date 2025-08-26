@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-174606-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-176171-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7E3BBB36445
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 15:37:20 +0200 (CEST)
+Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [142.0.200.124])
+	by mail.lfdr.de (Postfix) with ESMTPS id A2140B36A9B
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 16:38:57 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id C763C8A2240
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 13:28:07 +0000 (UTC)
+	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 92FCA4E1084
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 14:38:56 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4ACA83090CE;
-	Tue, 26 Aug 2025 13:27:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D855935E4C7;
+	Tue, 26 Aug 2025 14:36:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="maAhAf/W"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="JE2BJ1Pb"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 08B8D1B87E8;
-	Tue, 26 Aug 2025 13:27:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 95C3735E4C8;
+	Tue, 26 Aug 2025 14:36:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756214838; cv=none; b=fJR5LpUOzY7oeRYllC85ksXZUgmZb9msSAfn1gKUOaJRg6ma4dhjR4CMBHu7MHBIuVJ9FIYuAxTuUUYMb0zP+7HCfpgvZuYIA9UWoF8c/M1jDAuKHqQWQC0nk6RhXdWDY669GjZHdd2QrwB3FSHfVcPXUY1VfnYOWAJIMHnmups=
+	t=1756218964; cv=none; b=WPlDwIni7+CtHt+NdrCScjCqMGJzkOqCJR2g+re0ddektIMeWknGWmCK+UAdsNq+5YeCzxhAy+GcsEP7VXUzuHInXrYLmBdNey4+YJIPYxPeHAkCENDsVP3tsvY16EMDDGOSZ6MgRPwhdTc2NCIoy90z5W/s20zCqk8AZUPezCg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756214838; c=relaxed/simple;
-	bh=SbmApaK1G/Fcm2QZJ0K6YJEstH2upefx+uJF1T8ro+0=;
+	s=arc-20240116; t=1756218964; c=relaxed/simple;
+	bh=r+kW4W0fkduqmeqMvyTVU5aGT9gVP7dnB3hC3/AKScI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=kyoIu06Fvzo/2xNK6JCMwN0dLkm6HjjzWAJstnlV6maJ3nA3mg8P6CehuVcCxGRmPFderEagFOV9vfvRjd1NkR+7D7WASlumGL+tSxXlL9aMR0PoBN7DfzlkIiTo5ZnTdChNe/c8dpaCB/Nki4sPIjhElxjp4xp18iJSUK//uUA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=maAhAf/W; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8ECD8C4CEF1;
-	Tue, 26 Aug 2025 13:27:17 +0000 (UTC)
+	 MIME-Version; b=gpRmgTGxs3aO3u3SBpi2/V+kxBfYX0iXB95OWja+0V/NEsLdQyVjxXsrmSrq8NqxbELjmOYRsKNQXm7nDq0N7p4o4f/w3CyD0yB5rFHZfC2o7eG2jkOfMLjoPzCNiZzEv9+bXscds4MVGK4BDZgPBDaDi2OCyAII2QYVhvwQp8I=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=JE2BJ1Pb; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2732AC4CEF1;
+	Tue, 26 Aug 2025 14:36:03 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1756214837;
-	bh=SbmApaK1G/Fcm2QZJ0K6YJEstH2upefx+uJF1T8ro+0=;
+	s=korg; t=1756218964;
+	bh=r+kW4W0fkduqmeqMvyTVU5aGT9gVP7dnB3hC3/AKScI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=maAhAf/WLUMmksXeDo+1SJPOEpkzK9r063b6c40VS51Tydp0XpN2Gb+0sXx9pIdXC
-	 n7HFZWRPr84cAvadI5jsJXz/HwIvdzXyLyDeaBp8FDsWNEwZxkOQRuzol7fi6u2aIP
-	 EJKxJJFa/aqzf3BKjTNZTJPoWPmGkf3ZksTH0wD8=
+	b=JE2BJ1Pbuh6Ro0Iy59vU7u4t2hd7IQ1T6ktGrxw4EoRLkbZOCf6DWn9VeUxvThvnh
+	 KElsNmoCjdQKZ8OYhqv93hmuYnCPDur5Lo+wnYHIuJgdSZcnUfwCdVY6lH3zI8UgFv
+	 eYR4gTprrH16y8ogSdZW5Q1ipJPE56hBM2ZNIGUw=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Sravan Kumar Gundu <sravankumarlpu@gmail.com>,
-	Helge Deller <deller@gmx.de>,
-	syzbot+c4b7aa0513823e2ea880@syzkaller.appspotmail.com
-Subject: [PATCH 6.1 257/482] fbdev: Fix vmalloc out-of-bounds write in fast_imageblit
+	Jay Chen <shawn2000100@gmail.com>,
+	Mathias Nyman <mathias.nyman@linux.intel.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.4 184/403] usb: xhci: Set avg_trb_len = 8 for EP0 during Address Device Command
 Date: Tue, 26 Aug 2025 13:08:30 +0200
-Message-ID: <20250826110937.118509308@linuxfoundation.org>
+Message-ID: <20250826110911.963577305@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250826110930.769259449@linuxfoundation.org>
-References: <20250826110930.769259449@linuxfoundation.org>
+In-Reply-To: <20250826110905.607690791@linuxfoundation.org>
+References: <20250826110905.607690791@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,74 +62,66 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+5.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Sravan Kumar Gundu <sravankumarlpu@gmail.com>
+From: Jay Chen <shawn2000100@gmail.com>
 
-commit af0db3c1f898144846d4c172531a199bb3ca375d upstream.
+[ Upstream commit f72b9aa821a2bfe4b6dfec4be19f264d0673b008 ]
 
-This issue triggers when a userspace program does an ioctl
-FBIOPUT_CON2FBMAP by passing console number and frame buffer number.
-Ideally this maps console to frame buffer and updates the screen if
-console is visible.
+There is a subtle contradiction between sections of the xHCI 1.2 spec
+regarding the initialization of Input Endpoint Context fields. Section
+4.8.2 ("Endpoint Context Initialization") states that all fields should
+be initialized to 0. However, Section 6.2.3 ("Endpoint Context", p.453)
+specifies that the Average TRB Length (avg_trb_len) field shall be
+greater than 0, and explicitly notes (p.454): "Software shall set
+Average TRB Length to '8' for control endpoints."
 
-As part of mapping it has to do resize of console according to frame
-buffer info. if this resize fails and returns from vc_do_resize() and
-continues further. At this point console and new frame buffer are mapped
-and sets display vars. Despite failure still it continue to proceed
-updating the screen at later stages where vc_data is related to previous
-frame buffer and frame buffer info and display vars are mapped to new
-frame buffer and eventully leading to out-of-bounds write in
-fast_imageblit(). This bheviour is excepted only when fg_console is
-equal to requested console which is a visible console and updates screen
-with invalid struct references in fbcon_putcs().
+Strictly setting all fields to 0 during initialization conflicts with
+the specific recommendation for control endpoints. In practice, setting
+avg_trb_len = 0 is not meaningful for the hardware/firmware, as the
+value is used for bandwidth calculation.
 
-Reported-and-tested-by: syzbot+c4b7aa0513823e2ea880@syzkaller.appspotmail.com
-Closes: https://syzkaller.appspot.com/bug?extid=c4b7aa0513823e2ea880
-Signed-off-by: Sravan Kumar Gundu <sravankumarlpu@gmail.com>
-Cc: stable@vger.kernel.org
-Signed-off-by: Helge Deller <deller@gmx.de>
+Motivation: Our company is developing a custom Virtual xHC hardware
+platform that strictly follows the xHCI spec and its recommendations.
+During validation, we observed that enumeration fails and a parameter
+error (TRB Completion Code = 5) is reported if avg_trb_len for EP0 is
+not set to 8 as recommended by Section 6.2.3. This demonstrates the
+importance of assigning a meaningful, non-zero value to avg_trb_len,
+even in virtualized or emulated environments.
+
+This patch explicitly sets avg_trb_len to 8 for EP0 in
+xhci_setup_addressable_virt_dev(), as recommended in Section 6.2.3, to
+prevent potential issues with xHCI host controllers that enforce the
+spec strictly.
+
+Link: https://bugzilla.kernel.org/show_bug.cgi?id=220033
+Signed-off-by: Jay Chen <shawn2000100@gmail.com>
+Signed-off-by: Mathias Nyman <mathias.nyman@linux.intel.com>
+Link: https://lore.kernel.org/r/20250717073107.488599-4-mathias.nyman@linux.intel.com
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/video/fbdev/core/fbcon.c |    9 +++++----
- 1 file changed, 5 insertions(+), 4 deletions(-)
+ drivers/usb/host/xhci-mem.c | 2 ++
+ 1 file changed, 2 insertions(+)
 
---- a/drivers/video/fbdev/core/fbcon.c
-+++ b/drivers/video/fbdev/core/fbcon.c
-@@ -808,7 +808,8 @@ static void con2fb_init_display(struct v
- 				   fg_vc->vc_rows);
- 	}
+diff --git a/drivers/usb/host/xhci-mem.c b/drivers/usb/host/xhci-mem.c
+index 610190bf62da..6dddd5414fe9 100644
+--- a/drivers/usb/host/xhci-mem.c
++++ b/drivers/usb/host/xhci-mem.c
+@@ -1214,6 +1214,8 @@ int xhci_setup_addressable_virt_dev(struct xhci_hcd *xhci, struct usb_device *ud
+ 	ep0_ctx->deq = cpu_to_le64(dev->eps[0].ring->first_seg->dma |
+ 				   dev->eps[0].ring->cycle_state);
  
--	update_screen(vc_cons[fg_console].d);
-+	if (fg_console != unit)
-+		update_screen(vc_cons[fg_console].d);
- }
++	ep0_ctx->tx_info = cpu_to_le32(EP_AVG_TRB_LENGTH(8));
++
+ 	trace_xhci_setup_addressable_virt_device(dev);
  
- /**
-@@ -1353,6 +1354,7 @@ static void fbcon_set_disp(struct fb_inf
- 	struct vc_data *svc;
- 	struct fbcon_ops *ops = info->fbcon_par;
- 	int rows, cols;
-+	unsigned long ret = 0;
- 
- 	p = &fb_display[unit];
- 
-@@ -1403,11 +1405,10 @@ static void fbcon_set_disp(struct fb_inf
- 	rows = FBCON_SWAP(ops->rotate, info->var.yres, info->var.xres);
- 	cols /= vc->vc_font.width;
- 	rows /= vc->vc_font.height;
--	vc_resize(vc, cols, rows);
-+	ret = vc_resize(vc, cols, rows);
- 
--	if (con_is_visible(vc)) {
-+	if (con_is_visible(vc) && !ret)
- 		update_screen(vc);
--	}
- }
- 
- static __inline__ void ywrap_up(struct vc_data *vc, int count)
+ 	/* Steps 7 and 8 were done in xhci_alloc_virt_device() */
+-- 
+2.39.5
+
 
 
 
