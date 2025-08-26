@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-175643-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-173067-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1599CB36A24
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 16:34:43 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id EFFB5B35BCD
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 13:28:10 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id EAA5F982281
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 14:15:35 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 14F772A414A
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 11:22:34 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7E9C5350840;
-	Tue, 26 Aug 2025 14:13:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0338D335BAA;
+	Tue, 26 Aug 2025 11:21:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="a2fz4L+a"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Giign18d"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3C5E028314A;
-	Tue, 26 Aug 2025 14:13:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B50EF267386;
+	Tue, 26 Aug 2025 11:21:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756217588; cv=none; b=S2Nw6nY2uyDuH9aABkEzm6AW47qvxyNnZIPRmVFEn5VeEROV4FMTOKKTUkYCwaALOVx9/xvGZFWsJwInLfuA8OmI2RZZWlJBpZRXuQfBLQc1n69I2+dnHbfNNfVTbsMbyT4RMjN1acoZQtAqEivKGOkNA5Qg19hx22dOKHDhL50=
+	t=1756207287; cv=none; b=sGdy5j8MX1ovVKQA7J5C9HT2ndnw61KRKj3IH/fxB1Y4Cn3YQXrujCh44ClmfJj4bUHZunzl6+3yYWq82Ra3heDW/t+G4Y/EuTZTXWCbjej04PMje0vDvBawmoD2TR7LHyPKugvdYBmTuqnF6sXZD2dcc1iCgUirxmzRaUABNB8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756217588; c=relaxed/simple;
-	bh=EkMIUuKtuhep+L6vYKB0bB6QxAqPr2fVYYH3u3t0G9o=;
+	s=arc-20240116; t=1756207287; c=relaxed/simple;
+	bh=D6CwOuQ3I7wBiMUzDGTq5uj4kIgIWAw4n/SDWLUv2UA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=J6zzrw2r4n67jSVRt1ZQxE8pCBNeqe+dlYyswqbLfj/kSGB3JKXCAj5N18eT388fO9pKUIw29yMbJkktkTrnLB5ft5P46hXVJxwoJI5DCdABR1SRM/DMJ5vMVyEPaV1EdRSaKwIe+yqxi6LzUnQQmrwIJ1ZVvUB0QeLgf+oRqY8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=a2fz4L+a; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id BA010C4CEF1;
-	Tue, 26 Aug 2025 14:13:07 +0000 (UTC)
+	 MIME-Version; b=DNH16grHnvmuaX4iHFGj9KVvve09PLVXG7SijTuqxQNct1JzYftzDu17TOQI0j7Gd6tlUO1D7Gg9Iq3FWEOIT5k3Bh9dnsxaFi3dPY3hcPICsYVu1ACE3mN3pCQId8ClVWAofXM348X/1iHFa03dvUdKOdDY6i4E2d6DCVjRhbA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Giign18d; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 47545C4CEF1;
+	Tue, 26 Aug 2025 11:21:27 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1756217588;
-	bh=EkMIUuKtuhep+L6vYKB0bB6QxAqPr2fVYYH3u3t0G9o=;
+	s=korg; t=1756207287;
+	bh=D6CwOuQ3I7wBiMUzDGTq5uj4kIgIWAw4n/SDWLUv2UA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=a2fz4L+aCuzFCt37QYuvNb6wEgLXPN3TEenUee2G+N4LHQbQmDL0a/1NRjJLy7Tgf
-	 MOWi9wLqgEeZAjfia9hT/BUYKjtviOhw6Wz4eehMN0gjNjN4FZlpm/P1nK4uOFmZ9z
-	 MdtgudlZ6lNAcFllJSLZc1fiFObMGcETDio4UTJQ=
+	b=Giign18dHf1C8oSiYawmWcxBMuUD+YMV69CkaJgS1nnJBVLovp37z6GT8PyfcLFmE
+	 tkllURMqi/Z2rAyJyH3pKl1rkNn0IGqh7953QLsRL7VK1OvHQ2TTzppt+7LcHJNOsM
+	 h0ty6ElIkF04wCcad49vy32QM8SyuBPV7jBqvg9w=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	lei lu <llfamsec@gmail.com>,
-	Jeff Layton <jlayton@kernel.org>,
-	Chuck Lever <chuck.lever@oracle.com>
-Subject: [PATCH 5.10 198/523] nfsd: handle get_client_locked() failure in nfsd4_setclientid_confirm()
+	Randy Dunlap <rdunlap@infradead.org>,
+	"James E.J. Bottomley" <James.Bottomley@HansenPartnership.com>,
+	Helge Deller <deller@gmx.de>,
+	linux-parisc@vger.kernel.org
+Subject: [PATCH 6.16 124/457] parisc: Makefile: explain that 64BIT requires both 32-bit and 64-bit compilers
 Date: Tue, 26 Aug 2025 13:06:48 +0200
-Message-ID: <20250826110929.330984927@linuxfoundation.org>
+Message-ID: <20250826110940.438194377@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250826110924.562212281@linuxfoundation.org>
-References: <20250826110924.562212281@linuxfoundation.org>
+In-Reply-To: <20250826110937.289866482@linuxfoundation.org>
+References: <20250826110937.289866482@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,76 +63,42 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+6.16-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jeff Layton <jlayton@kernel.org>
+From: Randy Dunlap <rdunlap@infradead.org>
 
-commit 908e4ead7f757504d8b345452730636e298cbf68 upstream.
+commit 305ab0a748c52eeaeb01d8cff6408842d19e5cb5 upstream.
 
-Lei Lu recently reported that nfsd4_setclientid_confirm() did not check
-the return value from get_client_locked(). a SETCLIENTID_CONFIRM could
-race with a confirmed client expiring and fail to get a reference. That
-could later lead to a UAF.
+For building a 64-bit kernel, both 32-bit and 64-bit VDSO binaries
+are built, so both 32-bit and 64-bit compilers (and tools) should be
+in the PATH environment variable.
 
-Fix this by getting a reference early in the case where there is an
-extant confirmed client. If that fails then treat it as if there were no
-confirmed client found at all.
-
-In the case where the unconfirmed client is expiring, just fail and
-return the result from get_client_locked().
-
-Reported-by: lei lu <llfamsec@gmail.com>
-Closes: https://lore.kernel.org/linux-nfs/CAEBF3_b=UvqzNKdnfD_52L05Mqrqui9vZ2eFamgAbV0WG+FNWQ@mail.gmail.com/
-Fixes: d20c11d86d8f ("nfsd: Protect session creation and client confirm using client_lock")
-Cc: stable@vger.kernel.org
-Signed-off-by: Jeff Layton <jlayton@kernel.org>
-Signed-off-by: Chuck Lever <chuck.lever@oracle.com>
+Signed-off-by: Randy Dunlap <rdunlap@infradead.org>
+Cc: "James E.J. Bottomley" <James.Bottomley@HansenPartnership.com>
+Cc: Helge Deller <deller@gmx.de>
+Cc: linux-parisc@vger.kernel.org
+Signed-off-by: Helge Deller <deller@gmx.de>
+Cc: stable@vger.kernel.org # v5.3+
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- fs/nfsd/nfs4state.c |   20 +++++++++++++++-----
- 1 file changed, 15 insertions(+), 5 deletions(-)
+ arch/parisc/Makefile |    4 +++-
+ 1 file changed, 3 insertions(+), 1 deletion(-)
 
---- a/fs/nfsd/nfs4state.c
-+++ b/fs/nfsd/nfs4state.c
-@@ -4284,10 +4284,16 @@ nfsd4_setclientid_confirm(struct svc_rqs
- 	}
- 	status = nfs_ok;
- 	if (conf) {
--		old = unconf;
--		unhash_client_locked(old);
--		nfsd4_change_callback(conf, &unconf->cl_cb_conn);
--	} else {
-+		if (get_client_locked(conf) == nfs_ok) {
-+			old = unconf;
-+			unhash_client_locked(old);
-+			nfsd4_change_callback(conf, &unconf->cl_cb_conn);
-+		} else {
-+			conf = NULL;
-+		}
-+	}
-+
-+	if (!conf) {
- 		old = find_confirmed_client_by_name(&unconf->cl_name, nn);
- 		if (old) {
- 			status = nfserr_clid_inuse;
-@@ -4304,10 +4310,14 @@ nfsd4_setclientid_confirm(struct svc_rqs
- 			}
- 			trace_nfsd_clid_replaced(&old->cl_clientid);
- 		}
-+		status = get_client_locked(unconf);
-+		if (status != nfs_ok) {
-+			old = NULL;
-+			goto out;
-+		}
- 		move_to_confirmed(unconf);
- 		conf = unconf;
- 	}
--	get_client_locked(conf);
- 	spin_unlock(&nn->client_lock);
- 	if (conf == unconf)
- 		fsnotify_dentry(conf->cl_nfsd_info_dentry, FS_MODIFY);
+--- a/arch/parisc/Makefile
++++ b/arch/parisc/Makefile
+@@ -39,7 +39,9 @@ endif
+ 
+ export LD_BFD
+ 
+-# Set default 32 bits cross compilers for vdso
++# Set default 32 bits cross compilers for vdso.
++# This means that for 64BIT, both the 64-bit tools and the 32-bit tools
++# need to be in the path.
+ CC_ARCHES_32 = hppa hppa2.0 hppa1.1
+ CC_SUFFIXES  = linux linux-gnu unknown-linux-gnu suse-linux
+ CROSS32_COMPILE := $(call cc-cross-prefix, \
 
 
 
