@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-173032-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-173983-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 17704B35B72
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 13:24:40 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8C7D1B360CE
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 15:04:07 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 5E2821BA2971
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 11:22:04 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 31BAE3A0FE5
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 12:59:53 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 12941340D9C;
-	Tue, 26 Aug 2025 11:19:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id AE553218858;
+	Tue, 26 Aug 2025 12:59:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="slmgMr9Q"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="qTLDxSzh"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C2E08749C;
-	Tue, 26 Aug 2025 11:19:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 64CA11A00F0;
+	Tue, 26 Aug 2025 12:59:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756207198; cv=none; b=s246UTA/DTpxv0YSpLTYgJOgbprGammcKh7yZn36ZkgsjP78ZKxlszk4evoBZPWCUIOnEC/JU13rQ5M0zZDJGY09Wwr/pnMPbgSQzI+LtLzYuvGR0J4y/FziaCKVsR+vYUFpTlz3LV/+u1mUT+z5id+upkMul14+nbn4QAx6exE=
+	t=1756213182; cv=none; b=RGxvIJeNqLjbjIkoS5cFuhjkXtS6uUCyQXmInGQZHVUHWrnhZf7FeqkmrLMWeKnQNl1ESETqtUswfc4VPrqQ9+zCIHhOSDe/L4hPhfK8kN3gmlcIKd9A0j6sckZgTCTVVWxFTLHHu1mC9Lb4csGLTIfvPIAbS2QXZfB2/L1eqrU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756207198; c=relaxed/simple;
-	bh=lj+P3waBvC6uXrC7AE/HDoScGsaLhKh1lAqAuQL274Y=;
+	s=arc-20240116; t=1756213182; c=relaxed/simple;
+	bh=Tax0sjRT5kSqItI1pkSl/nEHYXPt46kiDbyxmbWUAY8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=a/xf6iVjUZgzhb5dKKBPXdfKTlCPOheUcw/Tnyg4NZBggU36p9F/rCMU61adagxtv4sODGhzkGCUJOVg2ZKdumC+qOS30uQwyfk6aOjWM9ySPZOhWj+bkip32uelp1gKmiL1z5TK/P/nzSRuajizx431GKdRXUyoVxBfHCscLQI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=slmgMr9Q; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id EB9B0C19422;
-	Tue, 26 Aug 2025 11:19:57 +0000 (UTC)
+	 MIME-Version; b=q8JFDedOVpfpAXPrjF0hiczJlbBvt12e2GJt0DzRszA3c7A2sw0ftvHIA3NxRikg8k9GJaCkT3C8LmRIjELq28x+DkFIQyAIDPjcumDA4GPkC5pX/kXhfmz7iw5Jo/ZCdXnETBcc8UPAK7lgiUhaP7xkn6anqToERajSBpi2/ko=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=qTLDxSzh; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 91C4CC4CEF1;
+	Tue, 26 Aug 2025 12:59:41 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1756207198;
-	bh=lj+P3waBvC6uXrC7AE/HDoScGsaLhKh1lAqAuQL274Y=;
+	s=korg; t=1756213181;
+	bh=Tax0sjRT5kSqItI1pkSl/nEHYXPt46kiDbyxmbWUAY8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=slmgMr9QH4i5/X8xIQ7h2Ut8KjU3/yU24fc+8LJZWty48WQ/cHt7+o/SvCh2pHcM9
-	 mPbEPY7y3l1nQqeXuIbKod/r3FDy330HH6D3/zT6l6VSYnuj3zj+sM8igVEwQNSaM4
-	 LZ2RjM0wh6lWkWHq5PWDancvAgA/sKphEY9VmdHs=
+	b=qTLDxSzh++mwIolG9rxQTJvV9yEYD0gRWMG6zMOh50kCMobs4oHF38OsnmAgp7itH
+	 jCH2Yd3+T761cl+4K8lrKeO5DHA5gF/a+xOg+lUlRZi5CkiJQii3hWfnd5pY6FS3p2
+	 Vqwk+6jnS8Rwdq1Qut0upHHVkvhJRLc6rY1fzr74=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	=?UTF-8?q?Uwe=20Kleine-K=C3=B6nig?= <u.kleine-koenig@baylibre.com>,
-	AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>,
-	=?UTF-8?q?Uwe=20Kleine-K=C3=B6nig?= <ukleinek@kernel.org>
-Subject: [PATCH 6.16 089/457] pwm: mediatek: Fix duty and period setting
+	Pei Xiao <xiaopei01@kylinos.cn>,
+	Thierry Reding <treding@nvidia.com>,
+	Stephen Boyd <sboyd@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.6 224/587] clk: tegra: periph: Fix error handling and resolve unsigned compare warning
 Date: Tue, 26 Aug 2025 13:06:13 +0200
-Message-ID: <20250826110939.579183665@linuxfoundation.org>
+Message-ID: <20250826110958.635305167@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250826110937.289866482@linuxfoundation.org>
-References: <20250826110937.289866482@linuxfoundation.org>
+In-Reply-To: <20250826110952.942403671@linuxfoundation.org>
+References: <20250826110952.942403671@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,86 +61,59 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.16-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Uwe Kleine-König <u.kleine-koenig@baylibre.com>
+From: Pei Xiao <xiaopei01@kylinos.cn>
 
-commit f21d136caf8171f94159d975ea4620c164431bd9 upstream.
+[ Upstream commit 2dc2ca9000eea2eb749f658196204cb84d4306f7 ]
 
-The period generated by the hardware is
+./drivers/clk/tegra/clk-periph.c:59:5-9: WARNING:
+	Unsigned expression compared with zero: rate < 0
 
-	(PWMDWIDTH + 1) << CLKDIV) / freq
+The unsigned long 'rate' variable caused:
+- Incorrect handling of negative errors
+- Compile warning: "Unsigned expression compared with zero"
 
-according to my tests with a signal analyser and also the documentation.
+Fix by changing to long type and adding req->rate cast.
 
-The current algorithm doesn't consider the `+ 1` part and so configures
-slightly too high periods. The same issue exists for the duty cycle
-setting. So subtract 1 from both the register values for period and
-duty cycle. If period is 0, bail out, if duty_cycle is 0, just disable
-the PWM which results in a constant low output.
-
-Fixes: caf065f8fd58 ("pwm: Add MediaTek PWM support")
-Signed-off-by: Uwe Kleine-König <u.kleine-koenig@baylibre.com>
-Reviewed-by: AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>
-Link: https://lore.kernel.org/r/6d1fa87a76f8020bfe3171529b8e19baffceab10.1753717973.git.u.kleine-koenig@baylibre.com
-Cc: stable@vger.kernel.org
-Signed-off-by: Uwe Kleine-König <ukleinek@kernel.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Signed-off-by: Pei Xiao <xiaopei01@kylinos.cn>
+Link: https://lore.kernel.org/r/79c7f01e29876c612e90d6d0157fb1572ca8b3fb.1752046270.git.xiaopei01@kylinos.cn
+Acked-by: Thierry Reding <treding@nvidia.com>
+Signed-off-by: Stephen Boyd <sboyd@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/pwm/pwm-mediatek.c |   21 ++++++++++++++-------
- 1 file changed, 14 insertions(+), 7 deletions(-)
+ drivers/clk/tegra/clk-periph.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
---- a/drivers/pwm/pwm-mediatek.c
-+++ b/drivers/pwm/pwm-mediatek.c
-@@ -164,7 +164,10 @@ static int pwm_mediatek_config(struct pw
- 	do_div(resolution, clk_rate);
+diff --git a/drivers/clk/tegra/clk-periph.c b/drivers/clk/tegra/clk-periph.c
+index 0626650a7011..c9fc52a36fce 100644
+--- a/drivers/clk/tegra/clk-periph.c
++++ b/drivers/clk/tegra/clk-periph.c
+@@ -51,7 +51,7 @@ static int clk_periph_determine_rate(struct clk_hw *hw,
+ 	struct tegra_clk_periph *periph = to_clk_periph(hw);
+ 	const struct clk_ops *div_ops = periph->div_ops;
+ 	struct clk_hw *div_hw = &periph->divider.hw;
+-	unsigned long rate;
++	long rate;
  
- 	cnt_period = DIV_ROUND_CLOSEST_ULL((u64)period_ns * 1000, resolution);
--	while (cnt_period > 8191) {
-+	if (!cnt_period)
-+		return -EINVAL;
-+
-+	while (cnt_period > 8192) {
- 		resolution *= 2;
- 		clkdiv++;
- 		cnt_period = DIV_ROUND_CLOSEST_ULL((u64)period_ns * 1000,
-@@ -187,9 +190,16 @@ static int pwm_mediatek_config(struct pw
- 	}
+ 	__clk_hw_set_clk(div_hw, hw);
  
- 	cnt_duty = DIV_ROUND_CLOSEST_ULL((u64)duty_ns * 1000, resolution);
-+
- 	pwm_mediatek_writel(pc, pwm->hwpwm, PWMCON, BIT(15) | clkdiv);
--	pwm_mediatek_writel(pc, pwm->hwpwm, reg_width, cnt_period);
--	pwm_mediatek_writel(pc, pwm->hwpwm, reg_thres, cnt_duty);
-+	pwm_mediatek_writel(pc, pwm->hwpwm, reg_width, cnt_period - 1);
-+
-+	if (cnt_duty) {
-+		pwm_mediatek_writel(pc, pwm->hwpwm, reg_thres, cnt_duty - 1);
-+		pwm_mediatek_enable(chip, pwm);
-+	} else {
-+		pwm_mediatek_disable(chip, pwm);
-+	}
+@@ -59,7 +59,7 @@ static int clk_periph_determine_rate(struct clk_hw *hw,
+ 	if (rate < 0)
+ 		return rate;
  
- out:
- 	pwm_mediatek_clk_disable(chip, pwm);
-@@ -218,11 +228,8 @@ static int pwm_mediatek_apply(struct pwm
- 	if (err)
- 		return err;
- 
--	if (!pwm->state.enabled) {
-+	if (!pwm->state.enabled)
- 		err = pwm_mediatek_clk_enable(chip, pwm);
--		if (!err)
--			pwm_mediatek_enable(chip, pwm);
--	}
- 
- 	return err;
+-	req->rate = rate;
++	req->rate = (unsigned long)rate;
+ 	return 0;
  }
+ 
+-- 
+2.39.5
+
 
 
 
