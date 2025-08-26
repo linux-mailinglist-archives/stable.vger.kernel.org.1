@@ -1,59 +1,57 @@
-Return-Path: <stable+bounces-173574-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-175792-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 45824B35D5C
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 13:44:06 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id B40E6B36A22
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 16:34:30 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 0AFC47BAE11
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 11:42:30 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id AA5A08E6C67
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 14:21:24 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 825053314DC;
-	Tue, 26 Aug 2025 11:43:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C046634DCCE;
+	Tue, 26 Aug 2025 14:19:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="wJSBStR9"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="SUwyTMo2"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2E2543090E1;
-	Tue, 26 Aug 2025 11:43:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7DF02341650;
+	Tue, 26 Aug 2025 14:19:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756208603; cv=none; b=KIDkGrf1iElOHobZhyAJ+o/L8sDS9EACz6uxrgcXgzwPI+BTSDU1SKHuydLZCMqIXHh31We8wZU5EAJUaMcfZnPrvmovMXSwvFdEqLTRusShSB0dpZ/K9TKvDmPduCZSFVPcLhZTJ37hJZqXStnDabuxmr93UBdsi13QhnS+700=
+	t=1756217981; cv=none; b=ocA2YZYZsXfu4SFMYjnSl/vFBTSc2AJYTa5MmZgQ/BGqbb7aamhea86/D7HbojKFexnbX5r5mcxuvDNFc1lqkFCZ8hWui3trIJEhx8bpKOCrz0u2O909bo4AeGiHrEt2F/nNEqSbqflqYgM91QyvCxZNlaBAmQ9Ti9BjIB1V0Wg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756208603; c=relaxed/simple;
-	bh=RjNNY5HqB/H4kn6BweqCRQbTdLGwa72wmjsGOKaPkLE=;
+	s=arc-20240116; t=1756217981; c=relaxed/simple;
+	bh=1Vf9zAVJcOLZGh0/u4v+Tfe+BPmnh/AjU0W422XYezA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=LTmedPnxodgayezyGnukoyZCCyHGIjtFkt9j82+tE5ncsiJyZco9cLGgg/mQ05CKQVPGIsRhwXp/fanWG9sKSaHFh+DeZ73C6IjEqYhOlp8NMOTMfvpZGtX2nXxNHBZMek5spHOu9bT9aYwuX/kBcaimOuApNLG3p5/8cZfmDqU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=wJSBStR9; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4E06BC4CEF1;
-	Tue, 26 Aug 2025 11:43:22 +0000 (UTC)
+	 MIME-Version; b=Eh0IJaDDH7eMNm60XH8NvYXQiSs3AG0bXonnN4eR3xoHk+jdAsTmd9nU87qcEVKiyjCYi5E2bIkL7AC1Ga1J8Zr8INOd+4e0LGHnAQS5nSEONYVPxQxt9ENz3IYwGXEgfJog8WVQ0OruA9IT0SFs20C6Lkyhcy/gmjT0igfv91w=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=SUwyTMo2; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0DD66C4CEF1;
+	Tue, 26 Aug 2025 14:19:40 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1756208602;
-	bh=RjNNY5HqB/H4kn6BweqCRQbTdLGwa72wmjsGOKaPkLE=;
+	s=korg; t=1756217981;
+	bh=1Vf9zAVJcOLZGh0/u4v+Tfe+BPmnh/AjU0W422XYezA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=wJSBStR988pyNB6AiuOgSDggWaMDUb0j9z56uq9S8u9Xste3LhaduskVkOtCmwjlC
-	 D7lR8IgZjmRN7UN1+wEcusltJ8cauwDHXuK7hqd3vlGFmDVigpS0VD061Q1gKj9SAO
-	 2uB7P194SCzEgX+TFPK+6xD/h+aQWe6aXKyAKKK4=
+	b=SUwyTMo26eaMnb8t6hIOjO3BG/HqglgO36f8Co/czyVM18aA34n20nMtYyo/efdP8
+	 UXJZ495bB6tw3ofZcaiDnBrTOHYGiXHJXQAhMiy+cp3M/YcjMSl4qUhBPl9xnDwfFE
+	 N+RKKfgZ+jwcRWSPRAudjhkEXywXAszhvxPG88d0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	cen zhang <zzzccc427@gmail.com>,
-	Boris Burkov <boris@bur.io>,
-	Qu Wenruo <wqu@suse.com>,
-	Filipe Manana <fdmanana@suse.com>,
-	David Sterba <dsterba@suse.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 143/322] btrfs: qgroup: fix race between quota disable and quota rescan ioctl
-Date: Tue, 26 Aug 2025 13:09:18 +0200
-Message-ID: <20250826110919.336186919@linuxfoundation.org>
+	Breno Leitao <leitao@debian.org>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Catalin Marinas <catalin.marinas@arm.com>,
+	Andrew Morton <akpm@linux-foundation.org>
+Subject: [PATCH 5.10 349/523] mm/kmemleak: avoid deadlock by moving pr_warn() outside kmemleak_lock
+Date: Tue, 26 Aug 2025 13:09:19 +0200
+Message-ID: <20250826110933.075409993@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250826110915.169062587@linuxfoundation.org>
-References: <20250826110915.169062587@linuxfoundation.org>
+In-Reply-To: <20250826110924.562212281@linuxfoundation.org>
+References: <20250826110924.562212281@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -65,114 +63,69 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Filipe Manana <fdmanana@suse.com>
+From: Breno Leitao <leitao@debian.org>
 
-[ Upstream commit e1249667750399a48cafcf5945761d39fa584edf ]
+commit 47b0f6d8f0d2be4d311a49e13d2fd5f152f492b2 upstream.
 
-There's a race between a task disabling quotas and another running the
-rescan ioctl that can result in a use-after-free of qgroup records from
-the fs_info->qgroup_tree rbtree.
+When netpoll is enabled, calling pr_warn_once() while holding
+kmemleak_lock in mem_pool_alloc() can cause a deadlock due to lock
+inversion with the netconsole subsystem.  This occurs because
+pr_warn_once() may trigger netpoll, which eventually leads to
+__alloc_skb() and back into kmemleak code, attempting to reacquire
+kmemleak_lock.
 
-This happens as follows:
+This is the path for the deadlock.
 
-1) Task A enters btrfs_ioctl_quota_rescan() -> btrfs_qgroup_rescan();
+mem_pool_alloc()
+  -> raw_spin_lock_irqsave(&kmemleak_lock, flags);
+      -> pr_warn_once()
+          -> netconsole subsystem
+	     -> netpoll
+	         -> __alloc_skb
+		   -> __create_object
+		     -> raw_spin_lock_irqsave(&kmemleak_lock, flags);
 
-2) Task B enters btrfs_quota_disable() and calls
-   btrfs_qgroup_wait_for_completion(), which does nothing because at that
-   point fs_info->qgroup_rescan_running is false (it wasn't set yet by
-   task A);
+Fix this by setting a flag and issuing the pr_warn_once() after
+kmemleak_lock is released.
 
-3) Task B calls btrfs_free_qgroup_config() which starts freeing qgroups
-   from fs_info->qgroup_tree without taking the lock fs_info->qgroup_lock;
-
-4) Task A enters qgroup_rescan_zero_tracking() which starts iterating
-   the fs_info->qgroup_tree tree while holding fs_info->qgroup_lock,
-   but task B is freeing qgroup records from that tree without holding
-   the lock, resulting in a use-after-free.
-
-Fix this by taking fs_info->qgroup_lock at btrfs_free_qgroup_config().
-Also at btrfs_qgroup_rescan() don't start the rescan worker if quotas
-were already disabled.
-
-Reported-by: cen zhang <zzzccc427@gmail.com>
-Link: https://lore.kernel.org/linux-btrfs/CAFRLqsV+cMDETFuzqdKSHk_FDm6tneea45krsHqPD6B3FetLpQ@mail.gmail.com/
-CC: stable@vger.kernel.org # 6.1+
-Reviewed-by: Boris Burkov <boris@bur.io>
-Reviewed-by: Qu Wenruo <wqu@suse.com>
-Signed-off-by: Filipe Manana <fdmanana@suse.com>
-Signed-off-by: David Sterba <dsterba@suse.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Link: https://lkml.kernel.org/r/20250731-kmemleak_lock-v1-1-728fd470198f@debian.org
+Fixes: c5665868183f ("mm: kmemleak: use the memory pool for early allocations")
+Signed-off-by: Breno Leitao <leitao@debian.org>
+Reported-by: Jakub Kicinski <kuba@kernel.org>
+Acked-by: Catalin Marinas <catalin.marinas@arm.com>
+Cc: <stable@vger.kernel.org>
+Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- fs/btrfs/qgroup.c |   31 ++++++++++++++++++++++++-------
- 1 file changed, 24 insertions(+), 7 deletions(-)
+ mm/kmemleak.c |    5 ++++-
+ 1 file changed, 4 insertions(+), 1 deletion(-)
 
---- a/fs/btrfs/qgroup.c
-+++ b/fs/btrfs/qgroup.c
-@@ -630,22 +630,30 @@ bool btrfs_check_quota_leak(const struct
- 
- /*
-  * This is called from close_ctree() or open_ctree() or btrfs_quota_disable(),
-- * first two are in single-threaded paths.And for the third one, we have set
-- * quota_root to be null with qgroup_lock held before, so it is safe to clean
-- * up the in-memory structures without qgroup_lock held.
-+ * first two are in single-threaded paths.
-  */
- void btrfs_free_qgroup_config(struct btrfs_fs_info *fs_info)
+--- a/mm/kmemleak.c
++++ b/mm/kmemleak.c
+@@ -417,6 +417,7 @@ static struct kmemleak_object *mem_pool_
  {
- 	struct rb_node *n;
- 	struct btrfs_qgroup *qgroup;
+ 	unsigned long flags;
+ 	struct kmemleak_object *object;
++	bool warn = false;
  
-+	/*
-+	 * btrfs_quota_disable() can be called concurrently with
-+	 * btrfs_qgroup_rescan() -> qgroup_rescan_zero_tracking(), so take the
-+	 * lock.
-+	 */
-+	spin_lock(&fs_info->qgroup_lock);
- 	while ((n = rb_first(&fs_info->qgroup_tree))) {
- 		qgroup = rb_entry(n, struct btrfs_qgroup, node);
- 		rb_erase(n, &fs_info->qgroup_tree);
- 		__del_qgroup_rb(qgroup);
-+		spin_unlock(&fs_info->qgroup_lock);
- 		btrfs_sysfs_del_one_qgroup(fs_info, qgroup);
- 		kfree(qgroup);
-+		spin_lock(&fs_info->qgroup_lock);
- 	}
-+	spin_unlock(&fs_info->qgroup_lock);
-+
- 	/*
- 	 * We call btrfs_free_qgroup_config() when unmounting
- 	 * filesystem and disabling quota, so we set qgroup_ulist
-@@ -4056,12 +4064,21 @@ btrfs_qgroup_rescan(struct btrfs_fs_info
- 	qgroup_rescan_zero_tracking(fs_info);
+ 	/* try the slab allocator first */
+ 	if (object_cache) {
+@@ -434,8 +435,10 @@ static struct kmemleak_object *mem_pool_
+ 	else if (mem_pool_free_count)
+ 		object = &mem_pool[--mem_pool_free_count];
+ 	else
+-		pr_warn_once("Memory pool empty, consider increasing CONFIG_DEBUG_KMEMLEAK_MEM_POOL_SIZE\n");
++		warn = true;
+ 	raw_spin_unlock_irqrestore(&kmemleak_lock, flags);
++	if (warn)
++		pr_warn_once("Memory pool empty, consider increasing CONFIG_DEBUG_KMEMLEAK_MEM_POOL_SIZE\n");
  
- 	mutex_lock(&fs_info->qgroup_rescan_lock);
--	fs_info->qgroup_rescan_running = true;
--	btrfs_queue_work(fs_info->qgroup_rescan_workers,
--			 &fs_info->qgroup_rescan_work);
-+	/*
-+	 * The rescan worker is only for full accounting qgroups, check if it's
-+	 * enabled as it is pointless to queue it otherwise. A concurrent quota
-+	 * disable may also have just cleared BTRFS_FS_QUOTA_ENABLED.
-+	 */
-+	if (btrfs_qgroup_full_accounting(fs_info)) {
-+		fs_info->qgroup_rescan_running = true;
-+		btrfs_queue_work(fs_info->qgroup_rescan_workers,
-+				 &fs_info->qgroup_rescan_work);
-+	} else {
-+		ret = -ENOTCONN;
-+	}
- 	mutex_unlock(&fs_info->qgroup_rescan_lock);
- 
--	return 0;
-+	return ret;
+ 	return object;
  }
- 
- int btrfs_qgroup_wait_for_completion(struct btrfs_fs_info *fs_info,
 
 
 
