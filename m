@@ -1,55 +1,55 @@
-Return-Path: <stable+bounces-176003-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-175103-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3E5E8B36B01
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 16:42:25 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6E1B9B3666C
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 15:57:03 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id DEC301BC5AE8
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 14:31:42 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 040201C24DB4
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 13:50:51 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1107B35334D;
-	Tue, 26 Aug 2025 14:28:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 08A6134DCDF;
+	Tue, 26 Aug 2025 13:49:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="MMlLeVe7"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="T0YJRPUC"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C2312343D63;
-	Tue, 26 Aug 2025 14:28:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B190133A00A;
+	Tue, 26 Aug 2025 13:49:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756218530; cv=none; b=RaBVCbPFtuMmSg9/nTu0d/4qgrbz1Zagxb8qeWrYzAZFI0tkrSQ43f5ihK3+jeUj9LCfY7TPpjvt6fGMKka4o87d4yavt7egLNwrj1Vi2X7lv5/dhaTTBZ295qpM+I32mq0GdobKmOZUkA+Qyi+OX+L3IVbC93kDGgwtP01O+yQ=
+	t=1756216147; cv=none; b=nDeMIL4eU9TzYwaXzd6b2JDud2ff+7aMJnteR9sWT6rC+8JeE2FucsIMqrO2IGprStJqtLgEbkyYUOHOEl8iaVBySdVyX8iv20O25kAdOnaSXCx3wlIWOolzqBoWuEG9ACJDLboY83SOP6qBHSVhFPgLUl25l25RfRMiFE0UG/0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756218530; c=relaxed/simple;
-	bh=T2lMROflOuoj+i6/ohrq+vcDgrwzxIMvLkRxShkIsLU=;
+	s=arc-20240116; t=1756216147; c=relaxed/simple;
+	bh=H2N2O2UjUt4S70FcKKL7SdPbqVV+0Ifn3q/jG6y/R9E=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=DZ3SejdGu1mR/Pp49AZ5h4klIhIAn3esA+IXLHLwwP163JpslMn80A8iV9OIUfUI/zUyChDzjKyzrMp5PtLRhFILGtLq5F1BDC0kfddzmdSClD8lBAgmyizAo8UBx0Un3Mbb/tuNwMsLplfrIqjrNE7w7YtijAuW6NCAQAr7hX8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=MMlLeVe7; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 51AE6C4CEF1;
-	Tue, 26 Aug 2025 14:28:50 +0000 (UTC)
+	 MIME-Version; b=VzSGI/+JfJt3LajiZwnQ09QqaNMHjFkV7R7T+wj0sVeCPl83LG4pE6oW3t1QEBRErau9g2PpKlQVbqLE1mMr9IwKotolAwoeLI9+AcTizpTlAKPL4JVFykHanBAqktzqDfXbCtr3gmWDRnYF/1Oy5zRj/DSc+Azyhf2f3OQ2uKg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=T0YJRPUC; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 41678C4CEF1;
+	Tue, 26 Aug 2025 13:49:07 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1756218530;
-	bh=T2lMROflOuoj+i6/ohrq+vcDgrwzxIMvLkRxShkIsLU=;
+	s=korg; t=1756216147;
+	bh=H2N2O2UjUt4S70FcKKL7SdPbqVV+0Ifn3q/jG6y/R9E=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=MMlLeVe74mZ+DuJcC01rri26dJz0Hu/sqVEo9Y4vE2PjeufRaJwCe/JxwFn+eZaM3
-	 Ya9SvKG/kafyS/jG5IxAXcsNn4Iq5J+RmQ6Ze6nihYXjMI3ZzUCpq6gz5vC30+Khdo
-	 h8OLhD3A36vLl5ad1HSGXmIGWbuuzVidGJyA71tM=
+	b=T0YJRPUCNkGTmg4uRTT+Yn5TvyCedwVRprYpLO5QDhkXGovvsygBFl1vfcmAjfE8B
+	 CJXoX5hZCeoVf1KSpJ9gRf8RacMDG206LCx/lJyv2RGaPaXdLSzp4siYaw7CdG0QFp
+	 h7kMRtFronQSOtfNqIvESbyi6efqAOoeVI1InRV0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Luiz Augusto von Dentz <luiz.von.dentz@intel.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.4 035/403] Bluetooth: SMP: If an unallowed command is received consider it a failure
+	Jann Horn <jannh@google.com>,
+	Christian Brauner <brauner@kernel.org>
+Subject: [PATCH 5.15 270/644] eventpoll: Fix semi-unbounded recursion
 Date: Tue, 26 Aug 2025 13:06:01 +0200
-Message-ID: <20250826110906.785636410@linuxfoundation.org>
+Message-ID: <20250826110953.064341000@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250826110905.607690791@linuxfoundation.org>
-References: <20250826110905.607690791@linuxfoundation.org>
+In-Reply-To: <20250826110946.507083938@linuxfoundation.org>
+References: <20250826110946.507083938@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,134 +61,171 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.4-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Luiz Augusto von Dentz <luiz.von.dentz@intel.com>
+From: Jann Horn <jannh@google.com>
 
-[ Upstream commit fe4840df0bdf341f376885271b7680764fe6b34e ]
+commit f2e467a48287c868818085aa35389a224d226732 upstream.
 
-If a command is received while a bonding is ongoing consider it a
-pairing failure so the session is cleanup properly and the device is
-disconnected immediately instead of continuing with other commands that
-may result in the session to get stuck without ever completing such as
-the case bellow:
+Ensure that epoll instances can never form a graph deeper than
+EP_MAX_NESTS+1 links.
 
-> ACL Data RX: Handle 2048 flags 0x02 dlen 21
-      SMP: Identity Information (0x08) len 16
-        Identity resolving key[16]: d7e08edef97d3e62cd2331f82d8073b0
-> ACL Data RX: Handle 2048 flags 0x02 dlen 21
-      SMP: Signing Information (0x0a) len 16
-        Signature key[16]: 1716c536f94e843a9aea8b13ffde477d
-Bluetooth: hci0: unexpected SMP command 0x0a from XX:XX:XX:XX:XX:XX
-> ACL Data RX: Handle 2048 flags 0x02 dlen 12
-      SMP: Identity Address Information (0x09) len 7
-        Address: XX:XX:XX:XX:XX:XX (Intel Corporate)
+Currently, ep_loop_check_proc() ensures that the graph is loop-free and
+does some recursion depth checks, but those recursion depth checks don't
+limit the depth of the resulting tree for two reasons:
 
-While accourding to core spec 6.1 the expected order is always BD_ADDR
-first first then CSRK:
+ - They don't look upwards in the tree.
+ - If there are multiple downwards paths of different lengths, only one of
+   the paths is actually considered for the depth check since commit
+   28d82dc1c4ed ("epoll: limit paths").
 
-When using LE legacy pairing, the keys shall be distributed in the
-following order:
+Essentially, the current recursion depth check in ep_loop_check_proc() just
+serves to prevent it from recursing too deeply while checking for loops.
 
-    LTK by the Peripheral
+A more thorough check is done in reverse_path_check() after the new graph
+edge has already been created; this checks, among other things, that no
+paths going upwards from any non-epoll file with a length of more than 5
+edges exist. However, this check does not apply to non-epoll files.
 
-    EDIV and Rand by the Peripheral
+As a result, it is possible to recurse to a depth of at least roughly 500,
+tested on v6.15. (I am unsure if deeper recursion is possible; and this may
+have changed with commit 8c44dac8add7 ("eventpoll: Fix priority inversion
+problem").)
 
-    IRK by the Peripheral
+To fix it:
 
-    BD_ADDR by the Peripheral
+1. In ep_loop_check_proc(), note the subtree depth of each visited node,
+and use subtree depths for the total depth calculation even when a subtree
+has already been visited.
+2. Add ep_get_upwards_depth_proc() for similarly determining the maximum
+depth of an upwards walk.
+3. In ep_loop_check(), use these values to limit the total path length
+between epoll nodes to EP_MAX_NESTS edges.
 
-    CSRK by the Peripheral
-
-    LTK by the Central
-
-    EDIV and Rand by the Central
-
-    IRK by the Central
-
-    BD_ADDR by the Central
-
-    CSRK by the Central
-
-When using LE Secure Connections, the keys shall be distributed in the
-following order:
-
-    IRK by the Peripheral
-
-    BD_ADDR by the Peripheral
-
-    CSRK by the Peripheral
-
-    IRK by the Central
-
-    BD_ADDR by the Central
-
-    CSRK by the Central
-
-According to the Core 6.1 for commands used for key distribution "Key
-Rejected" can be used:
-
-  '3.6.1. Key distribution and generation
-
-  A device may reject a distributed key by sending the Pairing Failed command
-  with the reason set to "Key Rejected".
-
-Fixes: b28b4943660f ("Bluetooth: Add strict checks for allowed SMP PDUs")
-Signed-off-by: Luiz Augusto von Dentz <luiz.von.dentz@intel.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Fixes: 22bacca48a17 ("epoll: prevent creating circular epoll structures")
+Cc: stable@vger.kernel.org
+Signed-off-by: Jann Horn <jannh@google.com>
+Link: https://lore.kernel.org/20250711-epoll-recursion-fix-v1-1-fb2457c33292@google.com
+Signed-off-by: Christian Brauner <brauner@kernel.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- net/bluetooth/smp.c | 19 ++++++++++++++++++-
- net/bluetooth/smp.h |  1 +
- 2 files changed, 19 insertions(+), 1 deletion(-)
+ fs/eventpoll.c |   60 +++++++++++++++++++++++++++++++++++++++++++--------------
+ 1 file changed, 46 insertions(+), 14 deletions(-)
 
-diff --git a/net/bluetooth/smp.c b/net/bluetooth/smp.c
-index 4d5ba9778885d..3227956eb7417 100644
---- a/net/bluetooth/smp.c
-+++ b/net/bluetooth/smp.c
-@@ -2908,8 +2908,25 @@ static int smp_sig_channel(struct l2cap_chan *chan, struct sk_buff *skb)
- 	if (code > SMP_CMD_MAX)
- 		goto drop;
+--- a/fs/eventpoll.c
++++ b/fs/eventpoll.c
+@@ -216,6 +216,7 @@ struct eventpoll {
+ 	/* used to optimize loop detection check */
+ 	u64 gen;
+ 	struct hlist_head refs;
++	u8 loop_check_depth;
  
--	if (smp && !test_and_clear_bit(code, &smp->allow_cmd))
-+	if (smp && !test_and_clear_bit(code, &smp->allow_cmd)) {
-+		/* If there is a context and the command is not allowed consider
-+		 * it a failure so the session is cleanup properly.
-+		 */
-+		switch (code) {
-+		case SMP_CMD_IDENT_INFO:
-+		case SMP_CMD_IDENT_ADDR_INFO:
-+		case SMP_CMD_SIGN_INFO:
-+			/* 3.6.1. Key distribution and generation
-+			 *
-+			 * A device may reject a distributed key by sending the
-+			 * Pairing Failed command with the reason set to
-+			 * "Key Rejected".
-+			 */
-+			smp_failure(conn, SMP_KEY_REJECTED);
-+			break;
-+		}
- 		goto drop;
-+	}
+ #ifdef CONFIG_NET_RX_BUSY_POLL
+ 	/* used to track busy poll napi_id */
+@@ -1944,23 +1945,24 @@ static int ep_poll(struct eventpoll *ep,
+ }
  
- 	/* If we don't have a context the only allowed commands are
- 	 * pairing request and security request.
-diff --git a/net/bluetooth/smp.h b/net/bluetooth/smp.h
-index 121edadd5f8da..f17de3d9778d0 100644
---- a/net/bluetooth/smp.h
-+++ b/net/bluetooth/smp.h
-@@ -138,6 +138,7 @@ struct smp_cmd_keypress_notify {
- #define SMP_NUMERIC_COMP_FAILED		0x0c
- #define SMP_BREDR_PAIRING_IN_PROGRESS	0x0d
- #define SMP_CROSS_TRANSP_NOT_ALLOWED	0x0e
-+#define SMP_KEY_REJECTED		0x0f
+ /**
+- * ep_loop_check_proc - verify that adding an epoll file inside another
+- *                      epoll structure does not violate the constraints, in
+- *                      terms of closed loops, or too deep chains (which can
+- *                      result in excessive stack usage).
++ * ep_loop_check_proc - verify that adding an epoll file @ep inside another
++ *                      epoll file does not create closed loops, and
++ *                      determine the depth of the subtree starting at @ep
+  *
+  * @ep: the &struct eventpoll to be currently checked.
+  * @depth: Current depth of the path being checked.
+  *
+- * Return: %zero if adding the epoll @file inside current epoll
+- *          structure @ep does not violate the constraints, or %-1 otherwise.
++ * Return: depth of the subtree, or INT_MAX if we found a loop or went too deep.
+  */
+ static int ep_loop_check_proc(struct eventpoll *ep, int depth)
+ {
+-	int error = 0;
++	int result = 0;
+ 	struct rb_node *rbp;
+ 	struct epitem *epi;
  
- #define SMP_MIN_ENC_KEY_SIZE		7
- #define SMP_MAX_ENC_KEY_SIZE		16
--- 
-2.39.5
-
++	if (ep->gen == loop_check_gen)
++		return ep->loop_check_depth;
++
+ 	mutex_lock_nested(&ep->mtx, depth + 1);
+ 	ep->gen = loop_check_gen;
+ 	for (rbp = rb_first_cached(&ep->rbr); rbp; rbp = rb_next(rbp)) {
+@@ -1968,13 +1970,11 @@ static int ep_loop_check_proc(struct eve
+ 		if (unlikely(is_file_epoll(epi->ffd.file))) {
+ 			struct eventpoll *ep_tovisit;
+ 			ep_tovisit = epi->ffd.file->private_data;
+-			if (ep_tovisit->gen == loop_check_gen)
+-				continue;
+ 			if (ep_tovisit == inserting_into || depth > EP_MAX_NESTS)
+-				error = -1;
++				result = INT_MAX;
+ 			else
+-				error = ep_loop_check_proc(ep_tovisit, depth + 1);
+-			if (error != 0)
++				result = max(result, ep_loop_check_proc(ep_tovisit, depth + 1) + 1);
++			if (result > EP_MAX_NESTS)
+ 				break;
+ 		} else {
+ 			/*
+@@ -1988,9 +1988,27 @@ static int ep_loop_check_proc(struct eve
+ 			list_file(epi->ffd.file);
+ 		}
+ 	}
++	ep->loop_check_depth = result;
+ 	mutex_unlock(&ep->mtx);
+ 
+-	return error;
++	return result;
++}
++
++/**
++ * ep_get_upwards_depth_proc - determine depth of @ep when traversed upwards
++ */
++static int ep_get_upwards_depth_proc(struct eventpoll *ep, int depth)
++{
++	int result = 0;
++	struct epitem *epi;
++
++	if (ep->gen == loop_check_gen)
++		return ep->loop_check_depth;
++	hlist_for_each_entry_rcu(epi, &ep->refs, fllink)
++		result = max(result, ep_get_upwards_depth_proc(epi->ep, depth + 1) + 1);
++	ep->gen = loop_check_gen;
++	ep->loop_check_depth = result;
++	return result;
+ }
+ 
+ /**
+@@ -2006,8 +2024,22 @@ static int ep_loop_check_proc(struct eve
+  */
+ static int ep_loop_check(struct eventpoll *ep, struct eventpoll *to)
+ {
++	int depth, upwards_depth;
++
+ 	inserting_into = ep;
+-	return ep_loop_check_proc(to, 0);
++	/*
++	 * Check how deep down we can get from @to, and whether it is possible
++	 * to loop up to @ep.
++	 */
++	depth = ep_loop_check_proc(to, 0);
++	if (depth > EP_MAX_NESTS)
++		return -1;
++	/* Check how far up we can go from @ep. */
++	rcu_read_lock();
++	upwards_depth = ep_get_upwards_depth_proc(ep, 0);
++	rcu_read_unlock();
++
++	return (depth+1+upwards_depth > EP_MAX_NESTS) ? -1 : 0;
+ }
+ 
+ static void clear_tfile_check_list(void)
 
 
 
