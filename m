@@ -1,55 +1,56 @@
-Return-Path: <stable+bounces-173068-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-176079-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 173DAB35BC7
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 13:28:01 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id D9E5BB36C34
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 16:53:38 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 6515A2A4243
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 11:22:35 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id EEE6B1C4508C
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 14:35:24 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 94AB129B8CF;
-	Tue, 26 Aug 2025 11:21:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id CBF9635E4CB;
+	Tue, 26 Aug 2025 14:32:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="lUz0ukmZ"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="PC303Ybj"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 53242267386;
-	Tue, 26 Aug 2025 11:21:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 88C0C35A28A;
+	Tue, 26 Aug 2025 14:32:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756207290; cv=none; b=PYz1rrvXcoQpWUp15vf3kEfjKXmhXlGn08RWCM5ar/RWAxlqQJ7M8qGkFZtkwYqOHczpKYX1Ywpqh3I2iD2O+lFxSFBcKUkZTpsEjx5Saw2thdO1+Kwwct23jao1oROpXp+y3ox0AXqHuV3adJPttueGIS8QodmSJzamD6NvfS4=
+	t=1756218728; cv=none; b=fLHaNdbVtT2NG3S0shTVXu+bK/RITZ4Jci76hvRhc8BF+8hwuHcD96FYwdPHCePS4PmQFA+6y8c53bS2ITdPNCdFobjGYnqVxxVeI2KODmXg+LOIHFE4iRFbc0ix+sBWO6n21xwb6zU+AXzLuEiDci/6G7EsV59MsaoaqME6xqg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756207290; c=relaxed/simple;
-	bh=h0pRl72BqCl4CaRQnTAgzXlp/2GZoZxHXmLjiDdNd9M=;
+	s=arc-20240116; t=1756218728; c=relaxed/simple;
+	bh=R+y+uewviSNgkgIUDs24gt6Tk98aDQqLeAQEK+IsNKs=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=hGVdkP9H77WYG3KVneSLtIeqH1P5hrwPqq5pSic8xBiNqiENBY8ZSrjbSyGaH+Nmrc0Asq/LjSxjTOsAlD9/+9xJKLVHv8xYF+h2nJ2ouQEuH1HPKk+PdmxSoThVtiU1eZCJU/47OxERHoH1NtlHEu5K5VOz2Y4E3yESDa4yF9U=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=lUz0ukmZ; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D63E3C4CEF1;
-	Tue, 26 Aug 2025 11:21:29 +0000 (UTC)
+	 MIME-Version; b=UufXwBhLEVwqGrsUie4rdRDJ5oIFuu4wh7gP+rgo2RSaW34JRfI0WnF7Ww/kR6vtCnD5iM/PDQSQqJ+DsypT2tQsRpN6Dxoq6pz3eBagpQJBtIfOf4yHJ8JIdY2lExTl7bAcNChfsSidnSisE5rTY0bUeiYeArtBU++BGgNDcJw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=PC303Ybj; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 134F6C4CEF1;
+	Tue, 26 Aug 2025 14:32:07 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1756207290;
-	bh=h0pRl72BqCl4CaRQnTAgzXlp/2GZoZxHXmLjiDdNd9M=;
+	s=korg; t=1756218728;
+	bh=R+y+uewviSNgkgIUDs24gt6Tk98aDQqLeAQEK+IsNKs=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=lUz0ukmZC/1b90bPRVTET3Lb4z5PcUsrKlkCdjRAaCXx4ZGpxNWmcAnln5Bq4t71s
-	 Na6P2WFfkqr9DxG6cosC7Q8gW0tIpVir9b6ppnYuNDS64A8smJE7auSVoKSY11s7bt
-	 gOjSq1lNc1FL9f4EuugD8DhcNFfPa+HylHGnSqVQ=
+	b=PC303YbjIhhElNoYA8sZwYf9XoZ5Ubwx8hPkl/Q1wOOes8g+e3ri+KwlRb2fqlPej
+	 nsuTkxVO+HEMJ3Q4loaRNKEZspkL4tZ6fgGsykyfrVK8YvU4X1qo71mshwQbjUnWxW
+	 YUebOJ7uZ75yMFQyZC2EsrSWqnT6ofbOMVFZvDpk=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	John David Anglin <dave.anglin@bell.net>,
-	Helge Deller <deller@gmx.de>
-Subject: [PATCH 6.16 125/457] parisc: Rename pte_needs_flush() to pte_needs_cache_flush() in cache.c
+	Alok Tiwari <alok.a.tiwari@oracle.com>,
+	Dan Carpenter <dan.carpenter@linaro.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.4 083/403] staging: nvec: Fix incorrect null termination of battery manufacturer
 Date: Tue, 26 Aug 2025 13:06:49 +0200
-Message-ID: <20250826110940.463628079@linuxfoundation.org>
+Message-ID: <20250826110908.951298969@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250826110937.289866482@linuxfoundation.org>
-References: <20250826110937.289866482@linuxfoundation.org>
+In-Reply-To: <20250826110905.607690791@linuxfoundation.org>
+References: <20250826110905.607690791@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,45 +62,46 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.16-stable review patch.  If anyone has any objections, please let me know.
+5.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: John David Anglin <dave.anglin@bell.net>
+From: Alok Tiwari <alok.a.tiwari@oracle.com>
 
-commit 52ce9406a9625c4498c4eaa51e7a7ed9dcb9db16 upstream.
+[ Upstream commit a8934352ba01081c51d2df428e9d540aae0e88b5 ]
 
-The local name used in cache.c conflicts the declaration in
-include/asm-generic/tlb.h.
+The battery manufacturer string was incorrectly null terminated using
+bat_model instead of bat_manu. This could result in an unintended
+write to the wrong field and potentially incorrect behavior.
 
-Signed-off-by: John David Anglin <dave.anglin@bell.net>
-Signed-off-by: Helge Deller <deller@gmx.de>
-Cc: stable@vger.kernel.org # v5.12+
+fixe the issue by correctly null terminating the bat_manu string.
+
+Fixes: 32890b983086 ("Staging: initial version of the nvec driver")
+Signed-off-by: Alok Tiwari <alok.a.tiwari@oracle.com>
+Reviewed-by: Dan Carpenter <dan.carpenter@linaro.org>
+Link: https://lore.kernel.org/r/20250719080755.3954373-1-alok.a.tiwari@oracle.com
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/parisc/kernel/cache.c |    4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ drivers/staging/nvec/nvec_power.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/arch/parisc/kernel/cache.c
-+++ b/arch/parisc/kernel/cache.c
-@@ -429,7 +429,7 @@ static inline pte_t *get_ptep(struct mm_
- 	return ptep;
- }
- 
--static inline bool pte_needs_flush(pte_t pte)
-+static inline bool pte_needs_cache_flush(pte_t pte)
- {
- 	return (pte_val(pte) & (_PAGE_PRESENT | _PAGE_ACCESSED | _PAGE_NO_CACHE))
- 		== (_PAGE_PRESENT | _PAGE_ACCESSED);
-@@ -630,7 +630,7 @@ static void flush_cache_page_if_present(
- 	ptep = get_ptep(vma->vm_mm, vmaddr);
- 	if (ptep) {
- 		pte = ptep_get(ptep);
--		needs_flush = pte_needs_flush(pte);
-+		needs_flush = pte_needs_cache_flush(pte);
- 		pte_unmap(ptep);
- 	}
- 	if (needs_flush)
+diff --git a/drivers/staging/nvec/nvec_power.c b/drivers/staging/nvec/nvec_power.c
+index 0e861c4bfcbf..590b801c5992 100644
+--- a/drivers/staging/nvec/nvec_power.c
++++ b/drivers/staging/nvec/nvec_power.c
+@@ -194,7 +194,7 @@ static int nvec_power_bat_notifier(struct notifier_block *nb,
+ 		break;
+ 	case MANUFACTURER:
+ 		memcpy(power->bat_manu, &res->plc, res->length - 2);
+-		power->bat_model[res->length - 2] = '\0';
++		power->bat_manu[res->length - 2] = '\0';
+ 		break;
+ 	case MODEL:
+ 		memcpy(power->bat_model, &res->plc, res->length - 2);
+-- 
+2.39.5
+
 
 
 
