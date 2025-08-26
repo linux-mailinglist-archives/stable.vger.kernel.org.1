@@ -1,54 +1,58 @@
-Return-Path: <stable+bounces-175482-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-174952-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9D6C9B368CA
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 16:19:26 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9D559B36654
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 15:56:05 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 6F7478E2D16
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 14:07:38 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 9F654564332
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 13:42:31 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5939A345747;
-	Tue, 26 Aug 2025 14:06:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5552C28314A;
+	Tue, 26 Aug 2025 13:42:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="BJIARO+w"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="sQxMueTA"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0E444352FDA;
-	Tue, 26 Aug 2025 14:06:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 12844202C46;
+	Tue, 26 Aug 2025 13:42:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756217161; cv=none; b=VG2YjqIpEAZd49v2/qgrsxFHzm+1AnjWER4/KZundUGh2us/RLsohn00dsIvxknoFwp2NZZZfa/cYmqiXWLdHb6ffA7+2YnKib3ihPNm/WfnP+X/ZJrUL9AKe6+C5DXslYE5GXUa+Blfdvs1oMo8tj3BKXpT4BHkRyChImbbBW4=
+	t=1756215750; cv=none; b=rwvkhumy+t2uAnj4MaB3OaIT/0hasBWFnw/+bvEibduv2+SyG1DUpWFwGKImzkll2EUVG8iuWSt7OzJJo6CUJ6ggBWZD/udVXf95YW4qg7tofW7EiP19bHK9NO/0zkHK7mff36WW/ONN15pKYAi1anaKhPRFZVcjmRwICsgcW9Y=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756217161; c=relaxed/simple;
-	bh=F5fT6j/G4W7s/4ZYBxnnqhcREE8OyNY2+Vt7LqUkXo4=;
+	s=arc-20240116; t=1756215750; c=relaxed/simple;
+	bh=B3g8mkTq9FJb6BoAnjoAPtoPoVI/AxIhWrBdu0W16EE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=PVMek8eEHj/Mwy9d7rzAPzFPZTZNNgnkgCtikIr3dSnWM2sxMwzdhcFNkc6tIkNw6G2m1n1a5LFxqQ6b8SP/DTRYsftsxGjevj76FLn9olmpRwMb5AyG4LBBzoTACgxhRt3ydl4BNAcTh0BoIDqMob5mciJH5P676H+nUCmO/4w=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=BJIARO+w; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 997AEC4CEF1;
-	Tue, 26 Aug 2025 14:06:00 +0000 (UTC)
+	 MIME-Version; b=g3VEsrjAkUpvYeviWD81zy39IHGNFm+nRBS1stB5ECMQyMjNIiKLsM+krIGMyQBpYK8vFk80EF7azc/mvt2GAh9KfpXkbJ76QzMeBtMM0KwmDxzlQuJ6HThp2vCNH+0ql1mhsEY19siHXeJA6BrwDBsW7m3a58vQYPhcaZHOplw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=sQxMueTA; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 582D3C4CEF1;
+	Tue, 26 Aug 2025 13:42:29 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1756217160;
-	bh=F5fT6j/G4W7s/4ZYBxnnqhcREE8OyNY2+Vt7LqUkXo4=;
+	s=korg; t=1756215749;
+	bh=B3g8mkTq9FJb6BoAnjoAPtoPoVI/AxIhWrBdu0W16EE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=BJIARO+w1/manJpp7yuJd1uJI0ziNtijRIkTN1n52jb+BlKEcdykpgWHwWIDzHToX
-	 YEFX/UySFn++PqhV0dJZp8EBbChUJ5WLoOcFc46ZPmMkoMwjrXfcyM/ylIpx7IUJWz
-	 cev6E2fljEW/+KUzX9vkmvDcsphJf3hnyJr30kwU=
+	b=sQxMueTAtEx52xjHvU/WBFR2EpuLjqjQGlhpgeCDC5AiJVihzFmVEzk63iUDD+IyA
+	 XYXFMFcjW0f60rQNhPulhjW3SWIxkvgU78rD+AsmtKd/2kKpsb8a14KyAGsm3WBrEP
+	 rDdr8igmy59svc5H3E/6AtVznXrCnD86jaD051aw=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Ian Abbott <abbotti@mev.co.uk>
-Subject: [PATCH 5.10 031/523] comedi: Fix some signed shift left operations
-Date: Tue, 26 Aug 2025 13:04:01 +0200
-Message-ID: <20250826110925.367159507@linuxfoundation.org>
+	William Liu <will@willsroot.io>,
+	Savino Dicanosa <savy@syst3mfailure.io>,
+	Jamal Hadi Salim <jhs@mojatatu.com>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.15 151/644] net/sched: Restrict conditions for adding duplicating netems to qdisc tree
+Date: Tue, 26 Aug 2025 13:04:02 +0200
+Message-ID: <20250826110950.227392165@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250826110924.562212281@linuxfoundation.org>
-References: <20250826110924.562212281@linuxfoundation.org>
+In-Reply-To: <20250826110946.507083938@linuxfoundation.org>
+References: <20250826110946.507083938@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,77 +64,121 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Ian Abbott <abbotti@mev.co.uk>
+From: William Liu <will@willsroot.io>
 
-commit ab705c8c35e18652abc6239c07cf3441f03e2cda upstream.
+[ Upstream commit ec8e0e3d7adef940cdf9475e2352c0680189d14e ]
 
-Correct some left shifts of the signed integer constant 1 by some
-unsigned number less than 32.  Change the constant to 1U to avoid
-shifting a 1 into the sign bit.
+netem_enqueue's duplication prevention logic breaks when a netem
+resides in a qdisc tree with other netems - this can lead to a
+soft lockup and OOM loop in netem_dequeue, as seen in [1].
+Ensure that a duplicating netem cannot exist in a tree with other
+netems.
 
-The corrected functions are comedi_dio_insn_config(),
-comedi_dio_update_state(), and __comedi_device_postconfig().
+Previous approaches suggested in discussions in chronological order:
 
-Fixes: e523c6c86232 ("staging: comedi: drivers: introduce comedi_dio_insn_config()")
-Fixes: 05e60b13a36b ("staging: comedi: drivers: introduce comedi_dio_update_state()")
-Fixes: 09567cb4373e ("staging: comedi: initialize subdevice s->io_bits in postconfig")
-Cc: stable@vger.kernel.org # 5.13+
-Signed-off-by: Ian Abbott <abbotti@mev.co.uk>
-Link: https://lore.kernel.org/r/20250707121555.65424-1-abbotti@mev.co.uk
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+1) Track duplication status or ttl in the sk_buff struct. Considered
+too specific a use case to extend such a struct, though this would
+be a resilient fix and address other previous and potential future
+DOS bugs like the one described in loopy fun [2].
+
+2) Restrict netem_enqueue recursion depth like in act_mirred with a
+per cpu variable. However, netem_dequeue can call enqueue on its
+child, and the depth restriction could be bypassed if the child is a
+netem.
+
+3) Use the same approach as in 2, but add metadata in netem_skb_cb
+to handle the netem_dequeue case and track a packet's involvement
+in duplication. This is an overly complex approach, and Jamal
+notes that the skb cb can be overwritten to circumvent this
+safeguard.
+
+4) Prevent the addition of a netem to a qdisc tree if its ancestral
+path contains a netem. However, filters and actions can cause a
+packet to change paths when re-enqueued to the root from netem
+duplication, leading us to the current solution: prevent a
+duplicating netem from inhabiting the same tree as other netems.
+
+[1] https://lore.kernel.org/netdev/8DuRWwfqjoRDLDmBMlIfbrsZg9Gx50DHJc1ilxsEBNe2D6NMoigR_eIRIG0LOjMc3r10nUUZtArXx4oZBIdUfZQrwjcQhdinnMis_0G7VEk=@willsroot.io/
+[2] https://lwn.net/Articles/719297/
+
+Fixes: 0afb51e72855 ("[PKT_SCHED]: netem: reinsert for duplication")
+Reported-by: William Liu <will@willsroot.io>
+Reported-by: Savino Dicanosa <savy@syst3mfailure.io>
+Signed-off-by: William Liu <will@willsroot.io>
+Signed-off-by: Savino Dicanosa <savy@syst3mfailure.io>
+Acked-by: Jamal Hadi Salim <jhs@mojatatu.com>
+Link: https://patch.msgid.link/20250708164141.875402-1-will@willsroot.io
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/staging/comedi/drivers.c |   14 +++++++-------
- 1 file changed, 7 insertions(+), 7 deletions(-)
+ net/sched/sch_netem.c | 40 ++++++++++++++++++++++++++++++++++++++++
+ 1 file changed, 40 insertions(+)
 
---- a/drivers/staging/comedi/drivers.c
-+++ b/drivers/staging/comedi/drivers.c
-@@ -339,10 +339,10 @@ int comedi_dio_insn_config(struct comedi
- 			   unsigned int *data,
- 			   unsigned int mask)
- {
--	unsigned int chan_mask = 1 << CR_CHAN(insn->chanspec);
-+	unsigned int chan = CR_CHAN(insn->chanspec);
+diff --git a/net/sched/sch_netem.c b/net/sched/sch_netem.c
+index 22f5d9421f6a..951156d7e548 100644
+--- a/net/sched/sch_netem.c
++++ b/net/sched/sch_netem.c
+@@ -962,6 +962,41 @@ static int parse_attr(struct nlattr *tb[], int maxtype, struct nlattr *nla,
+ 	return 0;
+ }
  
--	if (!mask)
--		mask = chan_mask;
-+	if (!mask && chan < 32)
-+		mask = 1U << chan;
++static const struct Qdisc_class_ops netem_class_ops;
++
++static int check_netem_in_tree(struct Qdisc *sch, bool duplicates,
++			       struct netlink_ext_ack *extack)
++{
++	struct Qdisc *root, *q;
++	unsigned int i;
++
++	root = qdisc_root_sleeping(sch);
++
++	if (sch != root && root->ops->cl_ops == &netem_class_ops) {
++		if (duplicates ||
++		    ((struct netem_sched_data *)qdisc_priv(root))->duplicate)
++			goto err;
++	}
++
++	if (!qdisc_dev(root))
++		return 0;
++
++	hash_for_each(qdisc_dev(root)->qdisc_hash, i, q, hash) {
++		if (sch != q && q->ops->cl_ops == &netem_class_ops) {
++			if (duplicates ||
++			    ((struct netem_sched_data *)qdisc_priv(q))->duplicate)
++				goto err;
++		}
++	}
++
++	return 0;
++
++err:
++	NL_SET_ERR_MSG(extack,
++		       "netem: cannot mix duplicating netems with other netems in tree");
++	return -EINVAL;
++}
++
+ /* Parse netlink message to set options */
+ static int netem_change(struct Qdisc *sch, struct nlattr *opt,
+ 			struct netlink_ext_ack *extack)
+@@ -1023,6 +1058,11 @@ static int netem_change(struct Qdisc *sch, struct nlattr *opt,
+ 	q->gap = qopt->gap;
+ 	q->counter = 0;
+ 	q->loss = qopt->loss;
++
++	ret = check_netem_in_tree(sch, qopt->duplicate, extack);
++	if (ret)
++		goto unlock;
++
+ 	q->duplicate = qopt->duplicate;
  
- 	switch (data[0]) {
- 	case INSN_CONFIG_DIO_INPUT:
-@@ -382,7 +382,7 @@ EXPORT_SYMBOL_GPL(comedi_dio_insn_config
- unsigned int comedi_dio_update_state(struct comedi_subdevice *s,
- 				     unsigned int *data)
- {
--	unsigned int chanmask = (s->n_chan < 32) ? ((1 << s->n_chan) - 1)
-+	unsigned int chanmask = (s->n_chan < 32) ? ((1U << s->n_chan) - 1)
- 						 : 0xffffffff;
- 	unsigned int mask = data[0] & chanmask;
- 	unsigned int bits = data[1];
-@@ -625,8 +625,8 @@ static int insn_rw_emulate_bits(struct c
- 	if (insn->insn == INSN_WRITE) {
- 		if (!(s->subdev_flags & SDF_WRITABLE))
- 			return -EINVAL;
--		_data[0] = 1 << (chan - base_chan);		    /* mask */
--		_data[1] = data[0] ? (1 << (chan - base_chan)) : 0; /* bits */
-+		_data[0] = 1U << (chan - base_chan);		     /* mask */
-+		_data[1] = data[0] ? (1U << (chan - base_chan)) : 0; /* bits */
- 	}
- 
- 	ret = s->insn_bits(dev, s, &_insn, _data);
-@@ -709,7 +709,7 @@ static int __comedi_device_postconfig(st
- 
- 		if (s->type == COMEDI_SUBD_DO) {
- 			if (s->n_chan < 32)
--				s->io_bits = (1 << s->n_chan) - 1;
-+				s->io_bits = (1U << s->n_chan) - 1;
- 			else
- 				s->io_bits = 0xffffffff;
- 		}
+ 	/* for compatibility with earlier versions.
+-- 
+2.39.5
+
 
 
 
