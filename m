@@ -1,55 +1,55 @@
-Return-Path: <stable+bounces-174338-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-175549-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id B7890B36299
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 15:20:37 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id CB919B3688B
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 16:17:15 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id D56B31BA5BD6
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 13:17:39 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 31C5A5820DE
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 14:09:57 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6B17A34A30F;
-	Tue, 26 Aug 2025 13:15:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C93A734A32E;
+	Tue, 26 Aug 2025 14:08:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Xln4iV+W"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="jRWSTGsX"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 26FC9246790;
-	Tue, 26 Aug 2025 13:15:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 84DCF223335;
+	Tue, 26 Aug 2025 14:08:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756214126; cv=none; b=ZfLzD9w/Pl4VFJ8b7N6uKM8RFrYOlu9Hkn4qWhLe/hIFA4tOwswscq5luEu2JLdgXTDGeEtBLOYuQjCDGBidSNIqFMNBmAtHqoV6UQa3VMePjBHBwtmN9GtaNWQLh5X7lNHPbkVmZcOq+mD4iJEwXATqoVAvt/MviVzQhNnAdX0=
+	t=1756217337; cv=none; b=nM9tMOkEinvVaIqgokKSAP9JDFZ9kDavjLTXGAIv8zMPsltbM622+qKTquSqBj/4VvHuQRdW456UXgq1xBHVgo27cYxvlf+ZlXkz7qd11tiQ6y5yqoCHOtnPmm5uhWIvrmhjyqXw8UyKQNJ2q5qOAz3Yq18otmQ1ABGOA55VEcQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756214126; c=relaxed/simple;
-	bh=LQzHDC7RM9afT6NCjKW4akwK3EVY4lXk79GGMvATgEQ=;
+	s=arc-20240116; t=1756217337; c=relaxed/simple;
+	bh=kgrqdfcQZJ15uygipZhogQfcW0TZdtF7WbFl4EIiVyE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=clOlFq59FPz0k2Rti7jJRCW+IXSbnfS3QGJ6o2llmpTOFCrkrIKgcMrvKhREr+RCZqUbOg9K6akbWX2jeXyFuuwrtdT9498MqMvKVpshhL/k1w8x+zVHFedn0XC/ez3YEWGd6J3jFGTpieOuFYXat+LZTCYttIITnGKi+WCUsWI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Xln4iV+W; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id AE2CAC4CEF1;
-	Tue, 26 Aug 2025 13:15:25 +0000 (UTC)
+	 MIME-Version; b=QcAXEfO+sAFRrB7PFZ1/i/TFrP28zSwL4zP6JTeAWuRQUR8nM0214xfqxNmNQIQJrgVhq3UXKm+d8v3luCP1nYTGJrO7LABjMQUFNntjPd1fdS7MLW8jRhs6rHXD1S8Xmd7r/sakKPRv/HdMCrca2XE3V/sApR4lfCdOkh6Hi7s=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=jRWSTGsX; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 15DA8C4CEF1;
+	Tue, 26 Aug 2025 14:08:56 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1756214126;
-	bh=LQzHDC7RM9afT6NCjKW4akwK3EVY4lXk79GGMvATgEQ=;
+	s=korg; t=1756217337;
+	bh=kgrqdfcQZJ15uygipZhogQfcW0TZdtF7WbFl4EIiVyE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Xln4iV+W6QePsmfd/qpcIbD3xRBPffSTH3UeFE3rAEi5gL8XVO1U0F74tpeZbVM5K
-	 MgsONq4OkJyrlY3oXsD+1Ylm5Ie954MsoMaX0TxFCqlDFDmCgBYw7rVPfzl7NsAOTa
-	 1pAp/iJZ/Nmf1ZPYzI+cCgTvbJPyZDUvUC8Fqu8Y=
+	b=jRWSTGsXPvEfJr9RUezDau45KJbcf4hK9tEWw7jS6/xgYZXiyaQR41L33DSiX1W0k
+	 mnCcT8iS+k2jYx1Gh4/LiICqSl4taDqJ8aa194AbQtIclq6mSbtZ5/ZOiBOnmY5Opt
+	 wiFzfPPoe4C5bVrkeSUtA2Pib1PvanY6TsE1BoRw=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Ma Ke <make24@iscas.ac.cn>,
-	Jens Axboe <axboe@kernel.dk>
-Subject: [PATCH 6.1 021/482] sunvdc: Balance device refcount in vdc_port_mpgroup_check
+	Yang Xiwen <forbidden405@outlook.com>,
+	Andi Shyti <andi.shyti@kernel.org>
+Subject: [PATCH 5.10 064/523] i2c: qup: jump out of the loop in case of timeout
 Date: Tue, 26 Aug 2025 13:04:34 +0200
-Message-ID: <20250826110931.314085390@linuxfoundation.org>
+Message-ID: <20250826110926.159249308@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250826110930.769259449@linuxfoundation.org>
-References: <20250826110930.769259449@linuxfoundation.org>
+In-Reply-To: <20250826110924.562212281@linuxfoundation.org>
+References: <20250826110924.562212281@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -59,53 +59,49 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Ma Ke <make24@iscas.ac.cn>
+From: Yang Xiwen <forbidden405@outlook.com>
 
-commit 63ce53724637e2e7ba51fe3a4f78351715049905 upstream.
+commit a7982a14b3012527a9583d12525cd0dc9f8d8934 upstream.
 
-Using device_find_child() to locate a probed virtual-device-port node
-causes a device refcount imbalance, as device_find_child() internally
-calls get_device() to increment the device’s reference count before
-returning its pointer. vdc_port_mpgroup_check() directly returns true
-upon finding a matching device without releasing the reference via
-put_device(). We should call put_device() to decrement refcount.
+Original logic only sets the return value but doesn't jump out of the
+loop if the bus is kept active by a client. This is not expected. A
+malicious or buggy i2c client can hang the kernel in this case and
+should be avoided. This is observed during a long time test with a
+PCA953x GPIO extender.
 
-As comment of device_find_child() says, 'NOTE: you will need to drop
-the reference with put_device() after use'.
+Fix it by changing the logic to not only sets the return value, but also
+jumps out of the loop and return to the caller with -ETIMEDOUT.
 
-Found by code review.
-
-Cc: stable@vger.kernel.org
-Fixes: 3ee70591d6c4 ("sunvdc: prevent sunvdc panic when mpgroup disk added to guest domain")
-Signed-off-by: Ma Ke <make24@iscas.ac.cn>
-Link: https://lore.kernel.org/r/20250719075856.3447953-1-make24@iscas.ac.cn
-Signed-off-by: Jens Axboe <axboe@kernel.dk>
+Fixes: fbfab1ab0658 ("i2c: qup: reorganization of driver code to remove polling for qup v1")
+Signed-off-by: Yang Xiwen <forbidden405@outlook.com>
+Cc: <stable@vger.kernel.org> # v4.17+
+Signed-off-by: Andi Shyti <andi.shyti@kernel.org>
+Link: https://lore.kernel.org/r/20250616-qca-i2c-v1-1-2a8d37ee0a30@outlook.com
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/block/sunvdc.c |    4 +++-
+ drivers/i2c/busses/i2c-qup.c |    4 +++-
  1 file changed, 3 insertions(+), 1 deletion(-)
 
---- a/drivers/block/sunvdc.c
-+++ b/drivers/block/sunvdc.c
-@@ -956,8 +956,10 @@ static bool vdc_port_mpgroup_check(struc
- 	dev = device_find_child(vdev->dev.parent, &port_data,
- 				vdc_device_probed);
+--- a/drivers/i2c/busses/i2c-qup.c
++++ b/drivers/i2c/busses/i2c-qup.c
+@@ -452,8 +452,10 @@ static int qup_i2c_bus_active(struct qup
+ 		if (!(status & I2C_STATUS_BUS_ACTIVE))
+ 			break;
  
--	if (dev)
-+	if (dev) {
-+		put_device(dev);
- 		return true;
-+	}
+-		if (time_after(jiffies, timeout))
++		if (time_after(jiffies, timeout)) {
+ 			ret = -ETIMEDOUT;
++			break;
++		}
  
- 	return false;
- }
+ 		usleep_range(len, len * 2);
+ 	}
 
 
 
