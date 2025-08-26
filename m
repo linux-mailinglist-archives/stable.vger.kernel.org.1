@@ -1,56 +1,55 @@
-Return-Path: <stable+bounces-173193-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-173487-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id A521BB35BAE
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 13:26:56 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id B6154B35D03
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 13:40:32 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 8AC9F7B0DEC
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 11:25:20 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 561B13AD5EE
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 11:40:09 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 24BE92BE7B2;
-	Tue, 26 Aug 2025 11:26:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2E4D3283FDF;
+	Tue, 26 Aug 2025 11:39:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Jmxg5+Us"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="gG9q7qsv"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D4BA82BE03C;
-	Tue, 26 Aug 2025 11:26:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D728A393DD1;
+	Tue, 26 Aug 2025 11:39:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756207611; cv=none; b=c0BjBtU96dqMe/MZCUBGaEwgnaIMcsX5J8bC1KdtmHvoyaN1L/ZcNHsiEzzNqLp9DRWQkEuvuJvegvc02mHKn9BNNO97Gzed6woiqtzAUmtwClp889rxtkZKphtsmbTWPbsIjSNKIQgM9yh1ljisNofONCk3Dbzp9KfvsAu2IQg=
+	t=1756208376; cv=none; b=BtbJ8ivDcyj/5NoxUnmJ9Nuc1lDqePJ/DBAs3aEgLpuCgtl7vfkJ7EVxr52JZcvlDmFL+E4TK2vwNX2nXPGEwKx6zukvy9XAJMYKsLR9yMhNxlUb1mAFO9t72NFBqEajf+ocNfxZ4I2eF8PscTXNgb8r7RzkICu6WywKzLnH0i4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756207611; c=relaxed/simple;
-	bh=0EwureN04fJtLTN3RbThe8OgYgejt+D3IKlcdJTs1xY=;
+	s=arc-20240116; t=1756208376; c=relaxed/simple;
+	bh=Ya1SeCYQleYG5ew/puP/5ArUbR6eXqtHG4PmMAjY6ZM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=CJIMS38RSgNpiGM/7+iWOcDxrgXxXI4VJvL+3t054JQkdE0Uc4OjEYCx0ZZKVK+1QRed+CIjIraGn60b47thO8x9vvgIbHAXNTg2s4f6J1JDhZf9y6SMTlQKyfn/hN2OwIKNb8e6b0xvOLw+X5t2giutkxpY9g1MFyA9IZw2l7k=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Jmxg5+Us; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6F31EC4CEF1;
-	Tue, 26 Aug 2025 11:26:51 +0000 (UTC)
+	 MIME-Version; b=WXzIhiZWrdyZ+vQyQkUiu6lgeDaxehhy7JDs6tGJPmXNo3cccIYg/PR5JOIDJB/6QydoIXgyGV8SmGGjU8M+Areh2W/4RpssVerZzpdw9E7ii9/p3s6FvuFwyo3OHVVQ4dlEhzDCEZjkmu5QZq82BTs6fbSz5HgbjqvrvWd83Jw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=gG9q7qsv; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 66487C4CEF1;
+	Tue, 26 Aug 2025 11:39:36 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1756207611;
-	bh=0EwureN04fJtLTN3RbThe8OgYgejt+D3IKlcdJTs1xY=;
+	s=korg; t=1756208376;
+	bh=Ya1SeCYQleYG5ew/puP/5ArUbR6eXqtHG4PmMAjY6ZM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Jmxg5+UsTCjLkPJ7JnCc9+WlpEE3D/lXM/33emyeJMPywFxIzvwD/xNl1WdB7bWpb
-	 EKiEGCyIymj8wxOvSNK5uK77v2VRgtc1+Mdb2P02KsBsH7A68rdeKCl9V3VsjaUqkt
-	 g2ugV0DGULMOOcJYwQBBx49UrAeMZJFkTSiVyn0o=
+	b=gG9q7qsveoYNFTfKxO82CKrmoBL2+djv1ThK0f3Pp1HfigsSx81hLjN1pHZnjEro/
+	 1SzyDInOfM8LLA3VIjQ3KePA6x1GrsQAqV6TywUadumwThAODMz9yTsxaj4CV807Rq
+	 y4fXMGx5yu2XvUXG0zmv8OhALxDmTs12cbQNC5MI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Qu Wenruo <wqu@suse.com>,
-	David Sterba <dsterba@suse.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.16 219/457] btrfs: add comments on the extra btrfs specific subpage bitmaps
+	Jon Hunter <jonathanh@nvidia.com>,
+	Ulf Hansson <ulf.hansson@linaro.org>
+Subject: [PATCH 6.12 088/322] soc/tegra: pmc: Ensure power-domains are in a known state
 Date: Tue, 26 Aug 2025 13:08:23 +0200
-Message-ID: <20250826110942.775221169@linuxfoundation.org>
+Message-ID: <20250826110917.828536284@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250826110937.289866482@linuxfoundation.org>
-References: <20250826110937.289866482@linuxfoundation.org>
+In-Reply-To: <20250826110915.169062587@linuxfoundation.org>
+References: <20250826110915.169062587@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,80 +61,142 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.16-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Qu Wenruo <wqu@suse.com>
+From: Jon Hunter <jonathanh@nvidia.com>
 
-[ Upstream commit 1e17738d6b76cdc76d240d64de87fa66ba2365f7 ]
+commit b6bcbce3359619d05bf387d4f5cc3af63668dbaa upstream.
 
-Unlike the iomap_folio_state structure, the btrfs_subpage structure has a
-lot of extra sub-bitmaps, namely:
+After commit 13a4b7fb6260 ("pmdomain: core: Leave powered-on genpds on
+until late_initcall_sync") was applied, the Tegra210 Jetson TX1 board
+failed to boot. Looking into this issue, before this commit was applied,
+if any of the Tegra power-domains were in 'on' state when the kernel
+booted, they were being turned off by the genpd core before any driver
+had chance to request them. This was purely by luck and a consequence of
+the power-domains being turned off earlier during boot. After this
+commit was applied, any power-domains in the 'on' state are kept on for
+longer during boot and therefore, may never transitioned to the off
+state before they are requested/used. The hang on the Tegra210 Jetson
+TX1 is caused because devices in some power-domains are accessed without
+the power-domain being turned off and on, indicating that the
+power-domain is not in a completely on state.
 
-- writeback sub-bitmap
-- locked sub-bitmap
-  iomap_folio_state uses an atomic for writeback tracking, while it has
-  no per-block locked tracking.
+>From reviewing the Tegra PMC driver code, if a power-domain is in the
+'on' state there is no guarantee that all the necessary clocks
+associated with the power-domain are on and even if they are they would
+not have been requested via the clock framework and so could be turned
+off later. Some power-domains also have a 'clamping' register that needs
+to be configured as well. In short, if a power-domain is already 'on' it
+is difficult to know if it has been configured correctly. Given that the
+power-domains happened to be switched off during boot previously, to
+ensure that they are in a good known state on boot, fix this by
+switching off any power-domains that are on initially when registering
+the power-domains with the genpd framework.
 
-  This is because iomap always locks a single folio, and submits dirty
-  blocks with that folio locked.
+Note that commit 05cfb988a4d0 ("soc/tegra: pmc: Initialise resets
+associated with a power partition") updated the
+tegra_powergate_of_get_resets() function to pass the 'off' to ensure
+that the resets for the power-domain are in the correct state on boot.
+However, now that we may power off a domain on boot, if it is on, it is
+better to move this logic into the tegra_powergate_add() function so
+that there is a single place where we are handling the initial state of
+the power-domain.
 
-  But btrfs has async delalloc ranges (for compression), which are queued
-  with their range locked, until the compression is done, then marks the
-  involved range writeback and unlocked.
-
-  This means a range can be unlocked and marked writeback at seemingly
-  random timing, thus it needs the extra tracking.
-
-  This needs a huge rework on the lifespan of async delalloc range
-  before we can remove/simplify these two sub-bitmaps.
-
-- ordered sub-bitmap
-- checked sub-bitmap
-  These are for COW-fixup, but as I mentioned in the past, the COW-fixup
-  is not really needed anymore and these two flags are already marked
-  deprecated, and will be removed in the near future after comprehensive
-  tests.
-
-Add related comments to indicate we're actively trying to align the
-sub-bitmaps to the iomap ones.
-
-Signed-off-by: Qu Wenruo <wqu@suse.com>
-Reviewed-by: David Sterba <dsterba@suse.com>
-Signed-off-by: David Sterba <dsterba@suse.com>
-Stable-dep-of: b1511360c8ac ("btrfs: subpage: keep TOWRITE tag until folio is cleaned")
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Fixes: a38045121bf4 ("soc/tegra: pmc: Add generic PM domain support")
+Signed-off-by: Jon Hunter <jonathanh@nvidia.com>
+Cc: stable@vger.kernel.org
+Link: https://lore.kernel.org/r/20250731121832.213671-1-jonathanh@nvidia.com
+Signed-off-by: Ulf Hansson <ulf.hansson@linaro.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- fs/btrfs/subpage.h |   14 ++++++++++++++
- 1 file changed, 14 insertions(+)
+ drivers/soc/tegra/pmc.c |   51 +++++++++++++++++++++++++++---------------------
+ 1 file changed, 29 insertions(+), 22 deletions(-)
 
---- a/fs/btrfs/subpage.h
-+++ b/fs/btrfs/subpage.h
-@@ -33,8 +33,22 @@ enum {
- 	btrfs_bitmap_nr_uptodate = 0,
- 	btrfs_bitmap_nr_dirty,
- 	btrfs_bitmap_nr_writeback,
+--- a/drivers/soc/tegra/pmc.c
++++ b/drivers/soc/tegra/pmc.c
+@@ -1233,7 +1233,7 @@ err:
+ }
+ 
+ static int tegra_powergate_of_get_resets(struct tegra_powergate *pg,
+-					 struct device_node *np, bool off)
++					 struct device_node *np)
+ {
+ 	struct device *dev = pg->pmc->dev;
+ 	int err;
+@@ -1248,22 +1248,6 @@ static int tegra_powergate_of_get_resets
+ 	err = reset_control_acquire(pg->reset);
+ 	if (err < 0) {
+ 		pr_err("failed to acquire resets: %d\n", err);
+-		goto out;
+-	}
+-
+-	if (off) {
+-		err = reset_control_assert(pg->reset);
+-	} else {
+-		err = reset_control_deassert(pg->reset);
+-		if (err < 0)
+-			goto out;
+-
+-		reset_control_release(pg->reset);
+-	}
+-
+-out:
+-	if (err) {
+-		reset_control_release(pg->reset);
+ 		reset_control_put(pg->reset);
+ 	}
+ 
+@@ -1308,20 +1292,43 @@ static int tegra_powergate_add(struct te
+ 		goto set_available;
+ 	}
+ 
+-	err = tegra_powergate_of_get_resets(pg, np, off);
++	err = tegra_powergate_of_get_resets(pg, np);
+ 	if (err < 0) {
+ 		dev_err(dev, "failed to get resets for %pOFn: %d\n", np, err);
+ 		goto remove_clks;
+ 	}
+ 
+-	if (!IS_ENABLED(CONFIG_PM_GENERIC_DOMAINS)) {
+-		if (off)
+-			WARN_ON(tegra_powergate_power_up(pg, true));
 +	/*
-+	 * The ordered and checked flags are for COW fixup, already marked
-+	 * deprecated, and will be removed eventually.
++	 * If the power-domain is off, then ensure the resets are asserted.
++	 * If the power-domain is on, then power down to ensure that when is
++	 * it turned on the power-domain, clocks and resets are all in the
++	 * expected state.
 +	 */
- 	btrfs_bitmap_nr_ordered,
- 	btrfs_bitmap_nr_checked,
-+
++	if (off) {
++		err = reset_control_assert(pg->reset);
++		if (err) {
++			pr_err("failed to assert resets: %d\n", err);
++			goto remove_resets;
++		}
++	} else {
++		err = tegra_powergate_power_down(pg);
++		if (err) {
++			dev_err(dev, "failed to turn off PM domain %s: %d\n",
++				pg->genpd.name, err);
++			goto remove_resets;
++		}
++	}
+ 
 +	/*
-+	 * The locked bit is for async delalloc range (compression), currently
-+	 * async extent is queued with the range locked, until the compression
-+	 * is done.
-+	 * So an async extent can unlock the range at any random timing.
-+	 *
-+	 * This will need a rework on the async extent lifespan (mark writeback
-+	 * and do compression) before deprecating this flag.
++	 * If PM_GENERIC_DOMAINS is not enabled, power-on
++	 * the domain and skip the genpd registration.
 +	 */
- 	btrfs_bitmap_nr_locked,
- 	btrfs_bitmap_nr_max
- };
++	if (!IS_ENABLED(CONFIG_PM_GENERIC_DOMAINS)) {
++		WARN_ON(tegra_powergate_power_up(pg, true));
+ 		goto remove_resets;
+ 	}
+ 
+-	err = pm_genpd_init(&pg->genpd, NULL, off);
++	err = pm_genpd_init(&pg->genpd, NULL, true);
+ 	if (err < 0) {
+ 		dev_err(dev, "failed to initialise PM domain %pOFn: %d\n", np,
+ 		       err);
 
 
 
