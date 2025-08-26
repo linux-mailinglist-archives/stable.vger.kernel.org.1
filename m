@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-175861-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-174693-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0597FB36A1D
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 16:34:17 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id EFC8BB364B0
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 15:41:23 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id CBDF81C20C26
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 14:24:59 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id A3E5E685603
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 13:32:21 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5228A35082E;
-	Tue, 26 Aug 2025 14:22:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id BBA852D46A4;
+	Tue, 26 Aug 2025 13:31:06 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="EBSSPr3u"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="hE3XdErH"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0E13B2FF64C;
-	Tue, 26 Aug 2025 14:22:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6F97826FDBF;
+	Tue, 26 Aug 2025 13:31:06 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756218162; cv=none; b=Vt5Lop9k5WduTcOIOnJJr4tV+0zsE9ZZ2/orfnZarrVUA8Vlc96xuC2pl5rwyfnlg+CHiQkNredP0Z6ZO7g6R2Rh0qHclwWwOxaJpRXPVww7IMK2eKM/b3dmwCOxbZakOYJnEHHy92PysQhyz7lVPongWMQDorycIFugvG20OjY=
+	t=1756215066; cv=none; b=Ic0e7xKP9CjDDagknKhz0RU2/9Jgufc5dh7DgPPYD0+tpj/qxvTnH4wgZ9gJ8G/nzdnBIL59EXWWUPI4Kdf+ZrMPc4GbaOurbF4dI2qGT4DABxzpt6umsheLj2wsF/0OBIRKsh5rVsXi53btcgGaAmsFLqSP9UW84vXUeM3J4JM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756218162; c=relaxed/simple;
-	bh=3L5LtoWEwaBIombD1AASC/fPMobhtaNphtJuTghT5Dk=;
+	s=arc-20240116; t=1756215066; c=relaxed/simple;
+	bh=IApXsaxtkh7AmG8c/3UMAWRWHvnjwxin7JzBw8y1KUI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=O/DXvoe2+CtZdhNDCtyyzgNr6Ftnloh5ofL/iy0+mZ8vNfqBMXh/zp0j0B+HIeyuFkA7JY2660Y4ufvKTZikO8qKOOWuhsARyn1PqxUu6uoxG24jNNny5DNlewWUeDZDdx918EnFeB076Kd5bbtbsycdPfavxA7CsvY9HxJrLKk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=EBSSPr3u; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 93C5BC4CEF1;
-	Tue, 26 Aug 2025 14:22:41 +0000 (UTC)
+	 MIME-Version; b=YQ8djlSCKGn1bhC07ofOH+WZUEZPZK1b5nQrhrlKJ6MhGw6/T35+CSRPB3KLlyXd4TRLy/BN5TrC8S8QdurDOze4HlskX5q1wQlGvs9G4CcvEj1dI/iGoqlDqokr8FbUQYt+a8U3RhmGLERwRzHMHNzx5QId7pki+4Zp6F1NdYI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=hE3XdErH; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id EE12AC4CEF1;
+	Tue, 26 Aug 2025 13:31:05 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1756218161;
-	bh=3L5LtoWEwaBIombD1AASC/fPMobhtaNphtJuTghT5Dk=;
+	s=korg; t=1756215066;
+	bh=IApXsaxtkh7AmG8c/3UMAWRWHvnjwxin7JzBw8y1KUI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=EBSSPr3u+Tjqnr4AlLsdGstkL7mW2kYLBDNG1It6eDbj++4fE9wfw6tOlLobK9O0O
-	 Bv7YY7+7XEiwkXjYGOCKjT2xrPaT49OvrawrAm04Ict/DGC+KFKAN+1u1lyiE9yR09
-	 d4giJuIup+8cbZHkfeBUz/dLuuOr0PpILx7iImsI=
+	b=hE3XdErHWQHc4gvvkc+Ul5guy6eKXugcuPz/4VV5WYMvjiqnehrigTJ1fqEv4RfZ9
+	 m06x7AnJNo0BX9yw8vNm3PuAF7eLnxIDoscsjZXH+tRCChsstd59XsPoRGeYnj9XCh
+	 lRYO/yOcg+ZF0QXg9n6LTEweHuUXtkabcp5r7MoE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Zhang Lixu <lixu.zhang@intel.com>,
-	Srinivas Pandruvada <srinivas.pandruvada@linux.intel.com>,
-	Jonathan Cameron <Jonathan.Cameron@huawei.com>,
+	Li Jun <jun.li@nxp.com>,
+	Johan Hovold <johan@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 417/523] iio: hid-sensor-prox: Fix incorrect OFFSET calculation
+Subject: [PATCH 6.1 374/482] usb: dwc3: imx8mp: fix device leak at unbind
 Date: Tue, 26 Aug 2025 13:10:27 +0200
-Message-ID: <20250826110934.741272833@linuxfoundation.org>
+Message-ID: <20250826110940.071468743@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250826110924.562212281@linuxfoundation.org>
-References: <20250826110924.562212281@linuxfoundation.org>
+In-Reply-To: <20250826110930.769259449@linuxfoundation.org>
+References: <20250826110930.769259449@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,44 +62,58 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Zhang Lixu <lixu.zhang@intel.com>
+From: Johan Hovold <johan@kernel.org>
 
-[ Upstream commit 79dabbd505210e41c88060806c92c052496dd61c ]
+[ Upstream commit 086a0e516f7b3844e6328a5c69e2708b66b0ce18 ]
 
-The OFFSET calculation in the prox_read_raw() was incorrectly using the
-unit exponent, which is intended for SCALE calculations.
+Make sure to drop the reference to the dwc3 device taken by
+of_find_device_by_node() on probe errors and on driver unbind.
 
-Remove the incorrect OFFSET calculation and set it to a fixed value of 0.
-
-Cc: stable@vger.kernel.org
-Fixes: 39a3a0138f61 ("iio: hid-sensors: Added Proximity Sensor Driver")
-Signed-off-by: Zhang Lixu <lixu.zhang@intel.com>
-Acked-by: Srinivas Pandruvada <srinivas.pandruvada@linux.intel.com>
-Link: https://patch.msgid.link/20250331055022.1149736-4-lixu.zhang@intel.com
-Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
-[ adapted prox_attr array access to single structure member access ]
+Fixes: 6dd2565989b4 ("usb: dwc3: add imx8mp dwc3 glue layer driver")
+Cc: stable@vger.kernel.org	# 5.12
+Cc: Li Jun <jun.li@nxp.com>
+Signed-off-by: Johan Hovold <johan@kernel.org>
+Link: https://lore.kernel.org/r/20250724091910.21092-2-johan@kernel.org
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/iio/light/hid-sensor-prox.c |    3 +--
- 1 file changed, 1 insertion(+), 2 deletions(-)
+ drivers/usb/dwc3/dwc3-imx8mp.c |    6 +++++-
+ 1 file changed, 5 insertions(+), 1 deletion(-)
 
---- a/drivers/iio/light/hid-sensor-prox.c
-+++ b/drivers/iio/light/hid-sensor-prox.c
-@@ -101,8 +101,7 @@ static int prox_read_raw(struct iio_dev
- 		ret_type = prox_state->scale_precision;
- 		break;
- 	case IIO_CHAN_INFO_OFFSET:
--		*val = hid_sensor_convert_exponent(
--				prox_state->prox_attr.unit_expo);
-+		*val = 0;
- 		ret_type = IIO_VAL_INT;
- 		break;
- 	case IIO_CHAN_INFO_SAMP_FREQ:
+--- a/drivers/usb/dwc3/dwc3-imx8mp.c
++++ b/drivers/usb/dwc3/dwc3-imx8mp.c
+@@ -243,7 +243,7 @@ static int dwc3_imx8mp_probe(struct plat
+ 					IRQF_ONESHOT, dev_name(dev), dwc3_imx);
+ 	if (err) {
+ 		dev_err(dev, "failed to request IRQ #%d --> %d\n", irq, err);
+-		goto depopulate;
++		goto put_dwc3;
+ 	}
+ 
+ 	device_set_wakeup_capable(dev, true);
+@@ -251,6 +251,8 @@ static int dwc3_imx8mp_probe(struct plat
+ 
+ 	return 0;
+ 
++put_dwc3:
++	put_device(&dwc3_imx->dwc3->dev);
+ depopulate:
+ 	of_platform_depopulate(dev);
+ err_node_put:
+@@ -271,6 +273,8 @@ static int dwc3_imx8mp_remove(struct pla
+ 	struct dwc3_imx8mp *dwc3_imx = platform_get_drvdata(pdev);
+ 	struct device *dev = &pdev->dev;
+ 
++	put_device(&dwc3_imx->dwc3->dev);
++
+ 	pm_runtime_get_sync(dev);
+ 	of_platform_depopulate(dev);
+ 
 
 
 
