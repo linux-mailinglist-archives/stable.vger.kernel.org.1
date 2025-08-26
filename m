@@ -1,165 +1,167 @@
-Return-Path: <stable+bounces-176432-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-176433-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1551BB3734F
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 21:39:19 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 026BBB37354
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 21:42:51 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id C05FF7C872F
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 19:39:17 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id B1BAA5E868E
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 19:42:49 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8283A5661;
-	Tue, 26 Aug 2025 19:39:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 62BE830CD9E;
+	Tue, 26 Aug 2025 19:42:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=sipsolutions.net header.i=@sipsolutions.net header.b="nct6m36+"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="A08G9NbD"
 X-Original-To: stable@vger.kernel.org
-Received: from sipsolutions.net (s3.sipsolutions.net [168.119.38.16])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-wr1-f52.google.com (mail-wr1-f52.google.com [209.85.221.52])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A011530CD90;
-	Tue, 26 Aug 2025 19:39:09 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=168.119.38.16
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7896130CDA0
+	for <stable@vger.kernel.org>; Tue, 26 Aug 2025 19:42:44 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.52
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756237151; cv=none; b=U7+Aq1tZJOC8sgb0s/A1t9RQ8TzbyTTNRMW81iW4fMCFPQmwiq7OR4ersiqcgN7+HA+VRZGK0CCv8AsUV4yHKkasUu7kV51CmNAo9fXB+o9ZsGZYmaLWMqaFNERQTfV8OSC/BkQnlodJIKkDyfOJRbayn/KTdCsM2irxtBMezwg=
+	t=1756237366; cv=none; b=m4itDedl3tSkA+zq7xhGiB1ce9P6b5bAvj7jh4EIq3+oprzzLgQawNtCYr+RX6Zd2LJYNnXFvPSBxKPtI6G5NRAmbroOhEx1EVhtmjl2m4U1WAK53QXcHapnzhQtrkbaZmLHH0f3W/I1QfXwmShFni+rTVR9LMn2ddTgxo45gBc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756237151; c=relaxed/simple;
-	bh=kFlj5Qjut4Y944cYckca8aJj7ctEj3VynLZeHGxNbGg=;
-	h=Message-ID:Subject:From:To:Cc:Date:In-Reply-To:References:
-	 Content-Type:MIME-Version; b=WvTUBfcDM1at4ZPV43ilId1+HWdxvQwni40eValEM2aPvxCJ5WTamyJrhNGQ03QlBkBBxKRmzx2RK5tX/HswK20Yq1tvqlrJHiAXRImFYqxJQKi1yXCJCuLvb3A+ohPFn8zFPmwa/4DuP0Tu3pLXRQ/eMrB5LRITqIapqlQbES4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=sipsolutions.net; spf=pass smtp.mailfrom=sipsolutions.net; dkim=pass (2048-bit key) header.d=sipsolutions.net header.i=@sipsolutions.net header.b=nct6m36+; arc=none smtp.client-ip=168.119.38.16
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=sipsolutions.net
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=sipsolutions.net
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-	d=sipsolutions.net; s=mail; h=MIME-Version:Content-Transfer-Encoding:
-	Content-Type:References:In-Reply-To:Date:Cc:To:From:Subject:Message-ID:Sender
-	:Reply-To:Content-ID:Content-Description:Resent-Date:Resent-From:Resent-To:
-	Resent-Cc:Resent-Message-ID; bh=kFlj5Qjut4Y944cYckca8aJj7ctEj3VynLZeHGxNbGg=;
-	t=1756237149; x=1757446749; b=nct6m36++YcTPCCjXwi5GnS54vihWLFBOIaSIV3fpP5R7UN
-	jlQL7G5rIZamfGCNk0XB/o2shaiFt7yH7C2VArdF2XUwE62pZQRbkP245beFLS0squwBjMlFufEk7
-	Dfu59TnTfYu/IjgoZ2WTXh384Z6pEf+bhSfbpLgSwrLBVHmkzEB8bOCKUaKHcXO+9dMqtDC6M6qHs
-	JFa271MsNSvDwUGg4QM+6+8BBCmeAuRTyHVcd5EwJj3LO9+sLoJmZZ7wnzlQ4kpUwMx/fINTEnBs/
-	npF9qPOF7jIAuASsGYTDDDlQjrndMrGbjg5rKdq59tz67s3mQb8S39rDJCz+ZrMA==;
-Received: by sipsolutions.net with esmtpsa (TLS1.3:ECDHE_X25519__RSA_PSS_RSAE_SHA256__AES_256_GCM:256)
-	(Exim 4.98.2)
-	(envelope-from <johannes@sipsolutions.net>)
-	id 1uqzVa-000000047Kb-2vpB;
-	Tue, 26 Aug 2025 21:39:06 +0200
-Message-ID: <a17c63c51c621031e2bfac56e63d562895583c60.camel@sipsolutions.net>
-Subject: Re: [PATCH wireless] wifi: mac80211: do not permit 40 MHz EHT
- operation on 5/6 GHz
-From: Johannes Berg <johannes@sipsolutions.net>
-To: Pablo MARTIN-GOMEZ <pmartin-gomez@freebox.fr>, Miri Korenblit
-	 <miriam.rachel.korenblit@intel.com>, linux-wireless@vger.kernel.org
-Cc: Benjamin Berg <benjamin.berg@intel.com>, stable@vger.kernel.org
-Date: Tue, 26 Aug 2025 21:39:05 +0200
-In-Reply-To: <29b001dd-92b5-4afd-a871-f9fbe875e91c@freebox.fr>
-References: 
-	<20250826202553.a6582f3abf57.Ic670429dc7127f68c818b4290d950ebfb5a0b9e1@changeid>
-	 <29b001dd-92b5-4afd-a871-f9fbe875e91c@freebox.fr>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-User-Agent: Evolution 3.56.2 (3.56.2-1.fc42) 
+	s=arc-20240116; t=1756237366; c=relaxed/simple;
+	bh=DWC0xNhvo1wbHp0YAGGxmcP4jYljObEIj1RY/1idnDQ=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version:Content-Type; b=JWaqxSD8hbcTRMmYbK/koXD+2jEAikB1vz1iFHiXEUxdLSUUNUA2XXRocn/UwvR84F4pPhWrAcYN1xmD1tRm1rnJtrZsyEKKgDDjWMnGJbCR4/0Vub6aEHKdIgiyDAcXHI1A/ibyjFIwNRlZYI2aA/WJFJn1vyzyAwXrNfM+fv4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=A08G9NbD; arc=none smtp.client-ip=209.85.221.52
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-wr1-f52.google.com with SMTP id ffacd0b85a97d-3c68ac7e238so2089006f8f.1
+        for <stable@vger.kernel.org>; Tue, 26 Aug 2025 12:42:44 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1756237363; x=1756842163; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=UbXHRbunt4OpyGsOWv5/YhmtCrW9GXbryUFavJQhLJo=;
+        b=A08G9NbD6wJ5LfvPt+1UUw/M8z8TICOrPUL/9KqoDtEr1Ts1LKV1kZQAJ9ecFXQndP
+         EtBWrN/1PuZ/V7kBX7Uf1tvbiNVwLfdVV53hn3oWCeUPZatStoLMJiQ2A6r1zzqyuhFb
+         s7A9mwe6kHXb46lkdPE6mmZHA85PiCJewYLh8IWZ4wNTfHrWoYOW3fOBcaSLf9fZhxZN
+         i+ksk/bDp05ssWEpN3PtWWL6x+IbAPXvG9NBb0Fo8kBbkJ+CJyTZPNGgWzzLhg0w6HPq
+         GcFKCXDttaxgpWdMKhFIB57EQgCzfcOTPslfrBPs4YMZpHGnjtyKe8aCfOlBExaw/ZoQ
+         DTVg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1756237363; x=1756842163;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=UbXHRbunt4OpyGsOWv5/YhmtCrW9GXbryUFavJQhLJo=;
+        b=UgflD+8riT8LwqhhDPM0Oa8OwOn45H/m5mXwgm9+Z1KLCaSy3WoW3o8cxO3eUAnivv
+         5JJLL6H/x3B0m4TQ2MB+S0j8XyawQE00FX79xQ+T48we4EOfljVvCnOUuD4a10lo8rpF
+         lcXel8GYtGf4ESgFOOSPnj/BX3frsSwyxApmhUyXx2wCVy4bb6RdT4aQVvaGk9+blYBw
+         lPaHq5tAGx+fcwjcgP1Ly4gUZec5Wm2O7vaTcDs0Ls/PV4IxH+87iOxZaE+JccR9si9e
+         20ZJWWNOGBX3QhQRozW5PaxXeu/u84yNSJcyzbDhPi/CDd41LxAvWASlVhi6qGmLP8cp
+         ZPdg==
+X-Forwarded-Encrypted: i=1; AJvYcCXDip81FSNIQ+JB4ikmR4UoGB82zV0dMzvRC/cwqnxFwTdMq8erCCPqdUtUg52Z9YJDq3fC0r0=@vger.kernel.org
+X-Gm-Message-State: AOJu0YwaD86boazweSrUvhlmgmWE7Kx0AuHfHAFAyfVJ92wPaclNGuPF
+	xg59ZLme+/c0vKDxl7HNOUkn26wo+FOv6Xdii2MIF91V6ZGcu1rc6NDq
+X-Gm-Gg: ASbGnctq+tewJXLZFdErcf9i9WcjAWdXQ74VURjoFk3eRzMzy6jIx92C2U9fWtXzCz3
+	3JkfJgQEePuNXDhsACWZMFIZYEIauBuUrIUPWSBRsmH56O6KhnpfbTiGZaXgd3drZ5g8UGdeXPX
+	3n89hQ1zjaOolwxmKtE3pWNuitT0hcyOjImdljyp97YZQuIoajh6UCzP2QjribWfpbV2x9thb1h
+	yTsKQN9TL9TEmabrq5EMZh6PwbiJ5R7UwpyzIzkBVO4zlmgkcI67q3UWCjuFy5XBb5K7cRlwHOl
+	RmsHUfk8wsCgkVFVs65QHBTihd6bh5iJX/aq2D9TexwM0VpoiS/yMpT1ynW4xnJdpAri/AvuMP7
+	dwa1UZXY/xlOoBJ34/lcaSHRmApsb0WLDZjS3NUemaR4WuH/nNRW6Jr6f62ADVR6mOKZRQFjV82
+	o8gPdxcQMfoZlTlMENYkScbYoOt6ddgXXROFIWMagZ4EukWWUIzP6d0wOJkncbHGqqvevf+mU3a
+	t9/PR+IAu8=
+X-Google-Smtp-Source: AGHT+IFXxOulOgNi/+i4gHiTA+vPHCw+Ch6HVG4vl2YTMfA5uK6UFp4wPBoX2L/oU4DwTfMKtqhczA==
+X-Received: by 2002:a05:6000:400e:b0:3b7:9c79:32ac with SMTP id ffacd0b85a97d-3c5ddd7f89amr12538440f8f.52.1756237362416;
+        Tue, 26 Aug 2025 12:42:42 -0700 (PDT)
+Received: from particle-cbe1-0604 (2a02-1810-950a-eb00-f9cf-2393-cb7f-6fd9.ip6.access.telenet.be. [2a02:1810:950a:eb00:f9cf:2393:cb7f:6fd9])
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-45b6c4e8961sm5789865e9.7.2025.08.26.12.42.41
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Tue, 26 Aug 2025 12:42:41 -0700 (PDT)
+From: DaanDeMeyer <daan.j.demeyer@gmail.com>
+To: daan.j.demeyer@gmail.com
+Cc: Dimitri John Ledkov <dimitri.ledkov@canonical.com>,
+	stable@vger.kernel.org
+Subject: [PATCH v5] Bluetooth: btintel: Correctly declare all module firmware files
+Date: Tue, 26 Aug 2025 19:42:20 +0000
+Message-ID: <20221122140222.1541731-1-dimitri.ledkov@canonical.com>
+X-Mailer: git-send-email 2.51.0
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-malware-bazaar: not-scanned
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 8bit
 
-On Tue, 2025-08-26 at 21:02 +0200, Pablo MARTIN-GOMEZ wrote:
-> > The EHT PHY requirements state that 80 MHz must be supported on the 5
-> > and 6 GHz bands unless the STA is 20 MHz only. So if the channel width
-> > is limited to 40 MHz on a band other than 2.4 GHz, then disable EHT and
-> > downgrade to HE.
->=20
-> This is wrong one way or another.
->=20
-> If we follow the 802.11 standard strictly [I'm going to use annex B's=20
-> items so it is easier to follow], we are implementing EHTP3.3, so a non=
-=20
+From: Dimitri John Ledkov <dimitri.ledkov@canonical.com>
 
-I ... don't think that's a good (correct?) way to phrase it. "Implement
-EHTP3.3" means you have 80 MHz support, which is required unless it's 20
-MHz only STA. Here we're not really implementing 80 MHz support but
-saying that this is a requirement ...
+Strictly encode patterns of supported hw_variants of firmware files
+the kernel driver supports requesting. This now includes many missing
+and previously undeclared module firmware files for 0x07, 0x08,
+0x11-0x14, 0x17-0x1b hw_variants.
 
-> 20 MHz-Only STA has to support 80 MHz channel width, therefore a 40 MHz=
-=20
-> (max) STA would not be compliant and we have to downgrade it. The issue=
-=20
-> is that HEP3.3 also requires that a non 20 MHz-Only HE STA has to=20
-> support 80 MHz channel width, therefore downgrading to HE is not ok.
+This especially affects environments that only install firmware files
+declared and referenced by the kernel modules. In such environments,
+only the declared firmware files are copied resulting in most Intel
+Bluetooth devices not working. I.e. host-only dracut-install initrds,
+or Ubuntu Core kernel snaps.
 
-Again this is misleading, HEP3.3 states no such thing, it just asks if
-you have it. Clause 27 states though that 40 and 80 MHz bandwidths must
-be supported (except for 20 MHz-only non-AP HE STA), so yes, you're
-still right that our downgrade is wrong, but talking about conforma
-items is confusing at best?
+BugLink: https://bugs.launchpad.net/bugs/1970819
+Cc: stable@vger.kernel.org # 4.15+
+Signed-off-by: Dimitri John Ledkov <dimitri.ledkov@canonical.com>
+---
+Notes:
+    Changes since v4:
+    - Add missing "intel/" prefix for 0x17+ firmware
+    - Add Cc stable for v4.15+ kernels
+    
+    Changes since v3:
+    - Hopefully pacify trailing whitespace from GitLint in this optional
+      portion of the commit.
+    
+    Changes since v2:
+    - encode patterns for 0x17 0x18 0x19 0x1b hw_variants
+    - rebase on top of latest rc tag
+    
+    Changes since v1:
+    - encode strict patterns of supported firmware files for each of the
+      supported hw_variant generations.
 
-(FWIW, I've also never seen an actual statement from anyone, it really
-doesn't seem to be relevant in practice at all.)
+ drivers/bluetooth/btintel.c | 26 ++++++++++++++++++++++----
+ 1 file changed, 22 insertions(+), 4 deletions(-)
 
-> We=20
-> have the same issue with VHTP3.3 that requires a VHT STA to support 80=
-=20
-> MHz channel width, therefore downgrading to VHT is not okay either.
+diff --git a/drivers/bluetooth/btintel.c b/drivers/bluetooth/btintel.c
+index a657e9a3e96a..d0e22fe09567 100644
+--- a/drivers/bluetooth/btintel.c
++++ b/drivers/bluetooth/btintel.c
+@@ -2656,7 +2656,25 @@ MODULE_AUTHOR("Marcel Holtmann <marcel@holtmann.org>");
+ MODULE_DESCRIPTION("Bluetooth support for Intel devices ver " VERSION);
+ MODULE_VERSION(VERSION);
+ MODULE_LICENSE("GPL");
+-MODULE_FIRMWARE("intel/ibt-11-5.sfi");
+-MODULE_FIRMWARE("intel/ibt-11-5.ddc");
+-MODULE_FIRMWARE("intel/ibt-12-16.sfi");
+-MODULE_FIRMWARE("intel/ibt-12-16.ddc");
++/* hw_variant 0x07 0x08 */
++MODULE_FIRMWARE("intel/ibt-hw-37.7.*-fw-*.*.*.*.*.bseq");
++MODULE_FIRMWARE("intel/ibt-hw-37.7.bseq");
++MODULE_FIRMWARE("intel/ibt-hw-37.8.*-fw-*.*.*.*.*.bseq");
++MODULE_FIRMWARE("intel/ibt-hw-37.8.bseq");
++/* hw_variant 0x0b 0x0c */
++MODULE_FIRMWARE("intel/ibt-11-*.sfi");
++MODULE_FIRMWARE("intel/ibt-12-*.sfi");
++MODULE_FIRMWARE("intel/ibt-11-*.ddc");
++MODULE_FIRMWARE("intel/ibt-12-*.ddc");
++/* hw_variant 0x11 0x12 0x13 0x14 */
++MODULE_FIRMWARE("intel/ibt-17-*-*.sfi");
++MODULE_FIRMWARE("intel/ibt-18-*-*.sfi");
++MODULE_FIRMWARE("intel/ibt-19-*-*.sfi");
++MODULE_FIRMWARE("intel/ibt-20-*-*.sfi");
++MODULE_FIRMWARE("intel/ibt-17-*-*.ddc");
++MODULE_FIRMWARE("intel/ibt-18-*-*.ddc");
++MODULE_FIRMWARE("intel/ibt-19-*-*.ddc");
++MODULE_FIRMWARE("intel/ibt-20-*-*.ddc");
++/* hw_variant 0x17 0x18 0x19 0x1b, read and use cnvi/cnvr */
++MODULE_FIRMWARE("intel/ibt-[0-9][0-9][0-9][0-9]-[0-9][0-9][0-9][0-9].sfi");
++MODULE_FIRMWARE("intel/ibt-[0-9][0-9][0-9][0-9]-[0-9][0-9][0-9][0-9].ddc");
+-- 
+2.34.1
 
-Similarly, Clause 21, not VHTP3.3, and in this case there's not even an
-allowance for 20-MHz only STA. I guess VHTP3.3 is a mere formality then.
-
-Anyway I know you meant this only as something to talk about, but I
-still think it's confusing, you should state the normative text that
-actually requires something, not the (normative) text about what the
-manufacturer should state for a device that claims compatibility.
-
-
-> So=20
-> that means that the strictly compliant approach would be to disallow a=
-=20
-> 40 MHz STA in the 6 GHz band and downgrade a 40 MHz STA to HT in the=20
-> 5GHz band.
-
-Looks like, yes. We should probably do that. These are corner cases
-anyway though, I don't think I've ever actually seen it happen.
-
-> If we follow the 802.11 standard more liberally, we never enforced=20
-> VHTP3.3 nor HEP3.3, so why begin now with EHTP3.3?
-
-Nobody found bugs with the other ones? ;-)
-
-Here it comes down to this actually _happening_ due some devices not
-allowing puncturing, and then we can't connect in the right way.
-
-And this doesn't matter to HE, if we connect to an AP with puncturing in
-the 80 MHz as an 80 MHz HE station, then it _must_ have HE not punctured
-so only 40 MHz. Then if the HE actually moves to 80 MHz the puncturing
-in EHT must go away, and the HE is 80 MHz unpunctured which is fine for
-the HE STA, so there isn't even a bug.
-
-The only bug would be if the downgrade happens for reasons other than
-puncturing (e.g. regulatory bands) but this is very unlikely in the
-first place.
-
-So practically, the only issue we had with this is that for EHT and
-puncturing, and then the downgrade to HE basically fixes that issue and
-we can connect with HE even if we pretend we can do 80 MHz because as
-long as the puncturing is there, the AP has to use 20 or 40 MHz
-operation for HE (and lower of course.)
-
-
-I agree though that this isn't really completely correct for HE/VHT if
-the downgrade were to happen for other reasons.
-
-However, I also don't think this is an argument _against_ fixing this
-issue for EHT. Clearly, for EHT there's the additional practical
-puncturing issue that matters. Yes, the APs rate scaling might be able
-to cope with it eventually, but if we remain connected with EHT and
-pretend we're 80 MHz when we're not, then we could get RUs in the
-unavailable part etc. and I think rate scaling would probably not deal
-with that well. This is true for HE as well, of course, but see above?
-
-johannes
 
