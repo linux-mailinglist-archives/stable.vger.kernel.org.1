@@ -1,58 +1,56 @@
-Return-Path: <stable+bounces-175807-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-175283-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id D9433B36AAD
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 16:39:35 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7D246B367A3
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 16:08:50 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id DEADD9880D1
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 14:21:45 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 55CD61888C59
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 13:59:46 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4B327350843;
-	Tue, 26 Aug 2025 14:20:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C78F23568E4;
+	Tue, 26 Aug 2025 13:57:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="fNvKIjXE"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="lkAY2M3R"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 090F52FDC5C;
-	Tue, 26 Aug 2025 14:20:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 82F90350D4F;
+	Tue, 26 Aug 2025 13:57:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756218021; cv=none; b=l7Ixwea/IrjWrRsD/CZo2JqszFCA6xoNTYU4lSgxFIjwczwSPCaYdEFlvTBEmpiC8aAtw+UR4HPPSEVwnbBOmbmcgOVSL4UhQ8nOZCSXCJ+R+rEJXYgSL+1UhneQcWw5qIJ+sbTB8qMwV5LZNb/7S6n5FjMx3faQrqeu1yE47h8=
+	t=1756216627; cv=none; b=sGGbcxOKngwPdmO9I9560cimot3XJFX2iO78KCPaLOPKbdhBh+YJ1UTtwhISq+xc2Hb9sSjmgia+pHmXvsqf2vAHzV5i+fA0FNmoURFWVOXoj9Q59lGu+OsnbDclKjc9e4FRbHy3HOz+RS0XCFLDvKhatMX2FXYwYu0tP27PdDY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756218021; c=relaxed/simple;
-	bh=aRHoPkLuIux3zLwh04/17rxVWr3E/XOHuZ3242kXus8=;
+	s=arc-20240116; t=1756216627; c=relaxed/simple;
+	bh=vfauPPBk3wbvwfVs7n0sLkoNqXu+IpBf8oCkqoJnljI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=m97qh88llV3Vekdpqq9tC3bnLNuy/f18hVMJykbhukdYO8k9Hkxcufxz+a+xId1k0Lpj3k3Jb3hCB7YIZo4ebmOYJAsiFS3DTayohy9tBfgesXZBfm+N9KZ0PwOPYFkpxpBd8IJkhkWPrkNWhiQXHqkpn12WXSjaoKvFBXYtNTE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=fNvKIjXE; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 39774C4CEF1;
-	Tue, 26 Aug 2025 14:20:20 +0000 (UTC)
+	 MIME-Version; b=E43a69laGGzFGygrGc2rrUTrE7uV9XlhMXLIkM0XLGDQX7D+Ve+LfdO3XymYycW35XmcHg3NuFAyjAhBVdjLkLMfc95ut4H6XY5/IDR5Skcb5+1bb58PKbn1Bj+1zV3R/mXxvBfwEQzn4Sw+DLJD2bfB1Xj9yXZyzVtIG68fsKQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=lkAY2M3R; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 131CAC4CEF1;
+	Tue, 26 Aug 2025 13:57:06 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1756218020;
-	bh=aRHoPkLuIux3zLwh04/17rxVWr3E/XOHuZ3242kXus8=;
+	s=korg; t=1756216627;
+	bh=vfauPPBk3wbvwfVs7n0sLkoNqXu+IpBf8oCkqoJnljI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=fNvKIjXECr6/0e0v7+NiYHFpxHn+xniL/H8Wg1HKQNVfPbMInYnsgVOBDHzSUOIGt
-	 5v1PmGg1AZ9M5GRyv58VVIPoTkn1EfkFRtq+AQUHGDbZJzAyFeR3uPQCrmccBKqNHc
-	 AoNGc2mzAunFFbvmJONS4LmpK5xmJ91XhxFjDSEs=
+	b=lkAY2M3RpzqWve5rgaCljAb1ukMwJR3TFHQ1cmPXJQcoV+mv4XOT4D8ueAVlsHgsq
+	 gtRiZtV/4FVmMx6CN+tTQGCk/tCzOy4rb9kwu/wifl9jzN75/WM5s1N1a42sFvzgHO
+	 tap52TXYkhcnQ9wPSqR6qvZhYV8axdWGSEo7/9uk=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Andreas Dilger <adilger@whamcloud.com>,
-	Li Dongyang <dongyangli@ddn.com>,
-	Alex Zhuravlev <bzzz@whamcloud.com>,
-	Oleg Drokin <green@whamcloud.com>,
-	Theodore Tso <tytso@mit.edu>
-Subject: [PATCH 5.10 363/523] ext4: check fast symlink for ea_inode correctly
-Date: Tue, 26 Aug 2025 13:09:33 +0200
-Message-ID: <20250826110933.423733008@linuxfoundation.org>
+	Damien Le Moal <dlemoal@kernel.org>,
+	Manivannan Sadhasivam <mani@kernel.org>,
+	Niklas Cassel <cassel@kernel.org>
+Subject: [PATCH 5.15 483/644] PCI: endpoint: Fix configfs group removal on driver teardown
+Date: Tue, 26 Aug 2025 13:09:34 +0200
+Message-ID: <20250826110958.454926893@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250826110924.562212281@linuxfoundation.org>
-References: <20250826110924.562212281@linuxfoundation.org>
+In-Reply-To: <20250826110946.507083938@linuxfoundation.org>
+References: <20250826110946.507083938@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,67 +62,57 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Andreas Dilger <adilger@dilger.ca>
+From: Damien Le Moal <dlemoal@kernel.org>
 
-commit b4cc4a4077268522e3d0d34de4b2dc144e2330fa upstream.
+commit 910bdb8197f9322790c738bb32feaa11dba26909 upstream.
 
-The check for a fast symlink in the presence of only an
-external xattr inode is incorrect.  If a fast symlink does
-not have an xattr block (i_file_acl == 0), but does have
-an external xattr inode that increases inode i_blocks, then
-the check for a fast symlink will incorrectly fail and
-__ext4_iget()->ext4_ind_check_inode() will report the inode
-is corrupt when it "validates" i_data[] on the next read:
+An endpoint driver configfs attributes group is added to the
+epf_group list of struct pci_epf_driver by pci_epf_add_cfs() but an
+added group is not removed from this list when the attribute group is
+unregistered with pci_ep_cfs_remove_epf_group().
 
-    # ln -s foo /mnt/tmp/bar
-    # setfattr -h -n trusted.test \
-               -v "$(yes | head -n 4000)" /mnt/tmp/bar
-    # umount /mnt/tmp
-    # mount /mnt/tmp
-    # ls -l /mnt/tmp
-    ls: cannot access '/mnt/tmp/bar': Structure needs cleaning
-    total 4
-     ? l?????????? ? ?    ?        ?            ? bar
-    # dmesg | tail -1
-    EXT4-fs error (device dm-8): __ext4_iget:5098:
-        inode #24578: block 7303014: comm ls: invalid block
+Add the missing list_del() call in pci_ep_cfs_remove_epf_group()
+to correctly remove the attribute group from the driver list.
 
-(note that "block 7303014" = 0x6f6f66 = "foo" in LE order).
+With this change, once the loop over all attribute groups in
+pci_epf_remove_cfs() completes, the driver epf_group list should be
+empty. Add a WARN_ON() to make sure of that.
 
-ext4_inode_is_fast_symlink() should check the superblock
-EXT4_FEATURE_INCOMPAT_EA_INODE feature flag, not the inode
-EXT4_EA_INODE_FL, since the latter is only set on the xattr
-inode itself, and not on the inode that uses this xattr.
-
+Fixes: ef1433f717a2 ("PCI: endpoint: Create configfs entry for each pci_epf_device_id table entry")
+Signed-off-by: Damien Le Moal <dlemoal@kernel.org>
+Signed-off-by: Manivannan Sadhasivam <mani@kernel.org>
+Reviewed-by: Niklas Cassel <cassel@kernel.org>
 Cc: stable@vger.kernel.org
-Fixes: fc82228a5e38 ("ext4: support fast symlinks from ext3 file systems")
-Signed-off-by: Andreas Dilger <adilger@whamcloud.com>
-Reviewed-by: Li Dongyang <dongyangli@ddn.com>
-Reviewed-by: Alex Zhuravlev <bzzz@whamcloud.com>
-Reviewed-by: Oleg Drokin <green@whamcloud.com>
-Reviewed-on: https://review.whamcloud.com/59879
-Lustre-bug-id: https://jira.whamcloud.com/browse/LU-19121
-Link: https://patch.msgid.link/20250717063709.757077-1-adilger@dilger.ca
-Signed-off-by: Theodore Ts'o <tytso@mit.edu>
+Link: https://patch.msgid.link/20250624114544.342159-3-dlemoal@kernel.org
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- fs/ext4/inode.c |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/pci/endpoint/pci-ep-cfs.c   |    1 +
+ drivers/pci/endpoint/pci-epf-core.c |    1 +
+ 2 files changed, 2 insertions(+)
 
---- a/fs/ext4/inode.c
-+++ b/fs/ext4/inode.c
-@@ -148,7 +148,7 @@ static int ext4_meta_trans_blocks(struct
-  */
- int ext4_inode_is_fast_symlink(struct inode *inode)
- {
--	if (!(EXT4_I(inode)->i_flags & EXT4_EA_INODE_FL)) {
-+	if (!ext4_has_feature_ea_inode(inode->i_sb)) {
- 		int ea_blocks = EXT4_I(inode)->i_file_acl ?
- 				EXT4_CLUSTER_SIZE(inode->i_sb) >> 9 : 0;
+--- a/drivers/pci/endpoint/pci-ep-cfs.c
++++ b/drivers/pci/endpoint/pci-ep-cfs.c
+@@ -658,6 +658,7 @@ void pci_ep_cfs_remove_epf_group(struct
+ 	if (IS_ERR_OR_NULL(group))
+ 		return;
+ 
++	list_del(&group->group_entry);
+ 	configfs_unregister_default_group(group);
+ }
+ EXPORT_SYMBOL(pci_ep_cfs_remove_epf_group);
+--- a/drivers/pci/endpoint/pci-epf-core.c
++++ b/drivers/pci/endpoint/pci-epf-core.c
+@@ -343,6 +343,7 @@ static void pci_epf_remove_cfs(struct pc
+ 	mutex_lock(&pci_epf_mutex);
+ 	list_for_each_entry_safe(group, tmp, &driver->epf_group, group_entry)
+ 		pci_ep_cfs_remove_epf_group(group);
++	WARN_ON(!list_empty(&driver->epf_group));
+ 	mutex_unlock(&pci_epf_mutex);
+ }
  
 
 
