@@ -1,56 +1,55 @@
-Return-Path: <stable+bounces-174394-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-175987-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5B6B5B3631B
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 15:26:32 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 057DEB36B5E
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 16:45:22 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 94B708A1B63
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 13:20:09 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 05ACB981D46
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 14:30:21 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D39A4246333;
-	Tue, 26 Aug 2025 13:17:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4D18934F48B;
+	Tue, 26 Aug 2025 14:28:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="hKEWQz2J"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="g0CZukk2"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8B90B72605;
-	Tue, 26 Aug 2025 13:17:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 09F482AE68;
+	Tue, 26 Aug 2025 14:28:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756214273; cv=none; b=Q7ojXvw2abz5dMD+gC8PG9N8yxkg7ZhCAIovB98GdfDKJ6/I909ZUmTF+5ukfb772oATTXAosEMs0GCkp9d/qGepGml1scLsVt1YXyrWANvyN4IEaiOz21a4Koqea7V3XiS+uVgHuUbH6+Nx7iZzoIolgs0HmuxZ5OfGhPU8cC0=
+	t=1756218489; cv=none; b=pi9QASRYX9uUdWNB1gYJ77THnCVmjXTo9FMjZzz3yzGyoMlCY5I5gZTAHGsxdR2lygiTCl26k1R9xD2Fanbma0WF7zNMga5Ja+FIqwnBmLzZezWTVtDuw8PdtzTTIPXP0C89N1qGe7ybVDsEBSuWSKMF5xsBY9VqbjIwKpZU9qs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756214273; c=relaxed/simple;
-	bh=8ntA+wKebteYw2ywCoWc2asSrZtdwON85l1Hqmhwj9o=;
+	s=arc-20240116; t=1756218489; c=relaxed/simple;
+	bh=RCXLJj2RhnfhPhFzf9aLG4wgnfS1p4eh1dfYruLoXAE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=TvrDdbBcHQulIazkkudJ/A7iRIWFJ5ZP28hw+xnD4xyuoYjszGkuhtm83a26Q2WlP7BRsouijRNNCd4oQ4q1vu7vwYdRHCA1yU4VSDcZytao2FSJtCBiogVOr2qjb8TkS5xPmTBj2Dr0oTkxtm8uxOEiS4W8+tlKzdIsSU8BClw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=hKEWQz2J; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 226CAC113D0;
-	Tue, 26 Aug 2025 13:17:52 +0000 (UTC)
+	 MIME-Version; b=dzdKxHTdj7iWrlrN8CkrbzSAzamjceEnPNVpGYR8a11C30m0WBTmzRblpinliCn184caDFHkSSCGwfAcoy0bJ0VsMH207fbs+B52+oKKrOjoX5qjfgcpwNUTCP+EmjEbfU7A3zQYKtHoNvIJATvOlETIXpb7p3KZBvbHtn/GxT4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=g0CZukk2; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 90AAFC4CEF1;
+	Tue, 26 Aug 2025 14:28:08 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1756214273;
-	bh=8ntA+wKebteYw2ywCoWc2asSrZtdwON85l1Hqmhwj9o=;
+	s=korg; t=1756218488;
+	bh=RCXLJj2RhnfhPhFzf9aLG4wgnfS1p4eh1dfYruLoXAE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=hKEWQz2JLovRM4W2p3/0FlVaTiRF9u76RFDkJ0QCyiu0xP+LQOC2BB/xHzciGf1V9
-	 WSX7s96zYvWKTglqzJWHgvRVRGX7fA2C53aH0UkVuiWQ7HLhkwNQbUCwjDdUVz4Wk9
-	 96v3uGMXsnQ+MWkFKuwIqTk9xziej57EYPfvpy2w=
+	b=g0CZukk2gSOkQYUR62BpsKNlLtxKQEsC8mx9G689Bpyi7osipUPZnhCnSbjH846VI
+	 3+h5Tjl4xx9zlgppBmZkeZrdAav9Hu2x3PXauhpgRTUbyX4akGbCPVemXD4D1X+mzE
+	 w0zsIwL7Ls+MYo74lekdTWkQxSWMnqOPbuGbia4o=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Alexander Kochetkov <al.kochet@gmail.com>,
-	Heiko Stuebner <heiko@sntech.de>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 075/482] ARM: rockchip: fix kernel hang during smp initialization
+	Slark Xiao <slark_xiao@163.com>,
+	Johan Hovold <johan@kernel.org>
+Subject: [PATCH 5.4 002/403] USB: serial: option: add Foxconn T99W640
 Date: Tue, 26 Aug 2025 13:05:28 +0200
-Message-ID: <20250826110932.687610529@linuxfoundation.org>
+Message-ID: <20250826110905.684734517@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250826110930.769259449@linuxfoundation.org>
-References: <20250826110930.769259449@linuxfoundation.org>
+In-Reply-To: <20250826110905.607690791@linuxfoundation.org>
+References: <20250826110905.607690791@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,75 +61,65 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+5.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Alexander Kochetkov <al.kochet@gmail.com>
+From: Slark Xiao <slark_xiao@163.com>
 
-[ Upstream commit 7cdb433bb44cdc87dc5260cdf15bf03cc1cd1814 ]
+commit 08f49cdb71f3759368fded4dbc9dde35a404ec2b upstream.
 
-In order to bring up secondary CPUs main CPU write trampoline
-code to SRAM. The trampoline code is written while secondary
-CPUs are powered on (at least that true for RK3188 CPU).
-Sometimes that leads to kernel hang. Probably because secondary
-CPU execute trampoline code while kernel doesn't expect.
+T99W640 is designed based on Qualconn SDX72 chip. There are 3
+serial ports to be enumerated: Diag, NMEA and AT.
 
-The patch moves SRAM initialization step to the point where all
-secondary CPUs are powered down.
+Test evidence as below:
+T:  Bus=04 Lev=01 Prnt=01 Port=01 Cnt=01 Dev#=  2 Spd=5000 MxCh= 0
+D:  Ver= 3.20 Cls=ef(misc ) Sub=02 Prot=01 MxPS= 9 #Cfgs=  1
+P:  Vendor=0489 ProdID=e167 Rev=05.15
+S:  Manufacturer=QCOM
+S:  Product=SDXPINNL USB WWAN Adapter
+S:  SerialNumber=cc1f1d92
+C:  #Ifs= 6 Cfg#= 1 Atr=a0 MxPwr=896mA
+I:  If#= 0 Alt= 0 #EPs= 1 Cls=02(commc) Sub=0e Prot=00 Driver=cdc_mbim
+E:  Ad=82(I) Atr=03(Int.) MxPS=  64 Ivl=32ms
+I:  If#= 1 Alt= 1 #EPs= 2 Cls=0a(data ) Sub=00 Prot=02 Driver=cdc_mbim
+E:  Ad=01(O) Atr=02(Bulk) MxPS=1024 Ivl=0ms
+E:  Ad=81(I) Atr=02(Bulk) MxPS=1024 Ivl=0ms
+I:  If#= 2 Alt= 0 #EPs= 3 Cls=ff(vend.) Sub=ff Prot=40 Driver=option
+E:  Ad=02(O) Atr=02(Bulk) MxPS=1024 Ivl=0ms
+E:  Ad=83(I) Atr=02(Bulk) MxPS=1024 Ivl=0ms
+E:  Ad=84(I) Atr=03(Int.) MxPS=  10 Ivl=32ms
+I:  If#= 3 Alt= 0 #EPs= 1 Cls=ff(vend.) Sub=ff Prot=ff Driver=(none)
+E:  Ad=85(I) Atr=03(Int.) MxPS=  64 Ivl=32ms
+I:  If#= 4 Alt= 0 #EPs= 3 Cls=ff(vend.) Sub=ff Prot=40 Driver=option
+E:  Ad=03(O) Atr=02(Bulk) MxPS=1024 Ivl=0ms
+E:  Ad=86(I) Atr=02(Bulk) MxPS=1024 Ivl=0ms
+E:  Ad=87(I) Atr=03(Int.) MxPS=  10 Ivl=32ms
+I:  If#= 5 Alt= 0 #EPs= 2 Cls=ff(vend.) Sub=ff Prot=30 Driver=option
+E:  Ad=04(O) Atr=02(Bulk) MxPS=1024 Ivl=0ms
+E:  Ad=88(I) Atr=02(Bulk) MxPS=1024 Ivl=0ms
 
-That fixes rarely hangs on RK3188:
-[    0.091568] CPU0: thread -1, cpu 0, socket 0, mpidr 80000000
-[    0.091996] rockchip_smp_prepare_cpus: ncores 4
+0&1: MBIM, 2:Modem, 3:GNSS(non-serial port), 4: NMEA, 5:Diag
 
-Signed-off-by: Alexander Kochetkov <al.kochet@gmail.com>
-Link: https://lore.kernel.org/r/20250703140453.1273027-1-al.kochet@gmail.com
-Signed-off-by: Heiko Stuebner <heiko@sntech.de>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Signed-off-by: Slark Xiao <slark_xiao@163.com>
+Cc: stable@vger.kernel.org
+Signed-off-by: Johan Hovold <johan@kernel.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- arch/arm/mach-rockchip/platsmp.c | 15 +++++++++------
- 1 file changed, 9 insertions(+), 6 deletions(-)
+ drivers/usb/serial/option.c |    2 ++
+ 1 file changed, 2 insertions(+)
 
-diff --git a/arch/arm/mach-rockchip/platsmp.c b/arch/arm/mach-rockchip/platsmp.c
-index 36915a073c23..f432d22bfed8 100644
---- a/arch/arm/mach-rockchip/platsmp.c
-+++ b/arch/arm/mach-rockchip/platsmp.c
-@@ -279,11 +279,6 @@ static void __init rockchip_smp_prepare_cpus(unsigned int max_cpus)
- 	}
- 
- 	if (read_cpuid_part() == ARM_CPU_PART_CORTEX_A9) {
--		if (rockchip_smp_prepare_sram(node)) {
--			of_node_put(node);
--			return;
--		}
--
- 		/* enable the SCU power domain */
- 		pmu_set_power_domain(PMU_PWRDN_SCU, true);
- 
-@@ -316,11 +311,19 @@ static void __init rockchip_smp_prepare_cpus(unsigned int max_cpus)
- 		asm ("mrc p15, 1, %0, c9, c0, 2\n" : "=r" (l2ctlr));
- 		ncores = ((l2ctlr >> 24) & 0x3) + 1;
- 	}
--	of_node_put(node);
- 
- 	/* Make sure that all cores except the first are really off */
- 	for (i = 1; i < ncores; i++)
- 		pmu_set_power_domain(0 + i, false);
-+
-+	if (read_cpuid_part() == ARM_CPU_PART_CORTEX_A9) {
-+		if (rockchip_smp_prepare_sram(node)) {
-+			of_node_put(node);
-+			return;
-+		}
-+	}
-+
-+	of_node_put(node);
- }
- 
- static void __init rk3036_smp_prepare_cpus(unsigned int max_cpus)
--- 
-2.39.5
-
+--- a/drivers/usb/serial/option.c
++++ b/drivers/usb/serial/option.c
+@@ -2346,6 +2346,8 @@ static const struct usb_device_id option
+ 	  .driver_info = RSVD(3) },
+ 	{ USB_DEVICE_INTERFACE_CLASS(0x0489, 0xe145, 0xff),			/* Foxconn T99W651 RNDIS */
+ 	  .driver_info = RSVD(5) | RSVD(6) },
++	{ USB_DEVICE_INTERFACE_CLASS(0x0489, 0xe167, 0xff),                     /* Foxconn T99W640 MBIM */
++	  .driver_info = RSVD(3) },
+ 	{ USB_DEVICE(0x1508, 0x1001),						/* Fibocom NL668 (IOT version) */
+ 	  .driver_info = RSVD(4) | RSVD(5) | RSVD(6) },
+ 	{ USB_DEVICE(0x1782, 0x4d10) },						/* Fibocom L610 (AT mode) */
 
 
 
