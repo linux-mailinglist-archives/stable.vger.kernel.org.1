@@ -1,57 +1,59 @@
-Return-Path: <stable+bounces-174550-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-175719-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3D1B0B363EB
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 15:34:19 +0200 (CEST)
+Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [142.0.200.124])
+	by mail.lfdr.de (Postfix) with ESMTPS id 127BAB368B8
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 16:18:53 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id E13FC16C795
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 13:26:08 +0000 (UTC)
+	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id D77F44E02A5
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 14:18:51 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id AEF95252900;
-	Tue, 26 Aug 2025 13:24:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id CC6B0353346;
+	Tue, 26 Aug 2025 14:16:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="fMOQlZmT"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="WKf4jYrc"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6CD3F1917ED;
-	Tue, 26 Aug 2025 13:24:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8910C352FFD;
+	Tue, 26 Aug 2025 14:16:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756214690; cv=none; b=YgI9r7sv9fYwlCd1tgDwWa9i0TcMMcRZ5n3EIOfHKeO/QyfYRFVWfsmW4hZ2ze/g9Lho8wU7RpGjWCy9A2V8ItmXLebMr3Xs1v//zHNUpPhjd2Xbhq+mKH5ZoPXSodtL+DfevhpEkKQGiLXPdzjWOMebvu36wiGoXbgBy2dSfdI=
+	t=1756217790; cv=none; b=Hfc4LUXt0ossQc7k7uboU6lHX4WtuKM7e3aawHM/6weh+Zppr0a4g+kghKPRozShYw16QTn/1lDHsIsKiPrcECeVmIkPkXI/KbIYUfmXaU6pjsYx3Bpa3AyqkLTonsQAN4leh3l4U99ldjVi6qwpRdNXc8qgqjZwkZc7ymZxE2k=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756214690; c=relaxed/simple;
-	bh=Hx9VbZTPlUq6OoWEN1lWFhRM2B46JY2US+ZwjTx5waY=;
+	s=arc-20240116; t=1756217790; c=relaxed/simple;
+	bh=Z7V+I1lZHFSPPTB1nKm6+1FPqhObhMltdcAlFHXeFxc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=TOuNa7kZYmSEBQrq7j7vdewPRAQUEC+nypiq1BJsxP7mLkjSdRInMhRiVncjFqJsl6QEmOF2jGdC25UaTZEYKj9iWw3hCm1S0QaGvjb9/uVkDq3th997ca2C1FvWB3I4Yo5UBlf0VSe+pCYjP4DtpbwP0qPW1j/QzBhywROItGM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=fMOQlZmT; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id EC84BC4CEF1;
-	Tue, 26 Aug 2025 13:24:49 +0000 (UTC)
+	 MIME-Version:Content-Type; b=bAYuPAVii73hHAxubEeqaTRz2TVEZVpsPFJtl9WAfFHrZR4ICYvcpAYGicBnT/L/wu4IZfxiQoljM+mHpvv/kICLC5m411ltqUI95N/8AioMoiRQdulwBq/+sJTkpDD6qwyN0/b1gblfdD/7ZhZ2qoagEww9FK9yxaov+tmZ9k4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=WKf4jYrc; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0FEE6C4CEF1;
+	Tue, 26 Aug 2025 14:16:29 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1756214690;
-	bh=Hx9VbZTPlUq6OoWEN1lWFhRM2B46JY2US+ZwjTx5waY=;
+	s=korg; t=1756217790;
+	bh=Z7V+I1lZHFSPPTB1nKm6+1FPqhObhMltdcAlFHXeFxc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=fMOQlZmTPLAsawnzfI2YPDQYqTqY5tGjfR0FrgvTXvZpkFf3Yvtsh/wjaUxjbuk5e
-	 FDk7k/2XxAwjN1TFqnk0nUyGQpbVU1ZJPUodpiX0P/9Dqz2/wCUAbqX12dfmGBYVMZ
-	 R7hfKLqadf4P7Pft7LmQxEMwyfpCXKO8QgHKv3o0=
+	b=WKf4jYrcAqc6nTiEN0fMA8+2capOy5ZKUoxGVhA4TLZhlytlib0ZcLDwPgv1aTc8f
+	 Wbl6dxsLM16s0l7q2RqwTCJuYHC4uHv2q1JXrbos/LhPB9S1ZQzhysrvGamsahx0Kh
+	 TQeBvyHHgLDYiR3Y9luyDaPdc4t5Nu/6r/5393So=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Sergey Bashirov <sergeybashirov@gmail.com>,
-	Christoph Hellwig <hch@lst.de>,
-	Trond Myklebust <trond.myklebust@hammerspace.com>,
+	Nicholas Kazlauskas <nicholas.kazlauskas@amd.com>,
+	Wen Chen <Wen.Chen3@amd.com>,
+	Fangzhi Zuo <jerry.zuo@amd.com>,
+	Daniel Wheeler <daniel.wheeler@amd.com>,
+	Alex Deucher <alexander.deucher@amd.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 233/482] pNFS: Fix stripe mapping in block/scsi layout
+Subject: [PATCH 5.10 276/523] drm/amd/display: Fix failed to blank crtc!
 Date: Tue, 26 Aug 2025 13:08:06 +0200
-Message-ID: <20250826110936.528091416@linuxfoundation.org>
+Message-ID: <20250826110931.238946612@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250826110930.769259449@linuxfoundation.org>
-References: <20250826110930.769259449@linuxfoundation.org>
+In-Reply-To: <20250826110924.562212281@linuxfoundation.org>
+References: <20250826110924.562212281@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,61 +63,50 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Sergey Bashirov <sergeybashirov@gmail.com>
+From: Wen Chen <Wen.Chen3@amd.com>
 
-[ Upstream commit 81438498a285759f31e843ac4800f82a5ce6521f ]
+[ Upstream commit 01f60348d8fb6b3fbcdfc7bdde5d669f95b009a4 ]
 
-Because of integer division, we need to carefully calculate the
-disk offset. Consider the example below for a stripe of 6 volumes,
-a chunk size of 4096, and an offset of 70000.
+[why]
+DCN35 is having “DC: failed to blank crtc!” when running HPO
+test cases. It's caused by not having sufficient udelay time.
 
-chunk = div_u64(offset, dev->chunk_size) = 70000 / 4096 = 17
-offset = chunk * dev->chunk_size = 17 * 4096 = 69632
-disk_offset_wrong = div_u64(offset, dev->nr_children) = 69632 / 6 = 11605
-disk_chunk = div_u64(chunk, dev->nr_children) = 17 / 6 = 2
-disk_offset = disk_chunk * dev->chunk_size = 2 * 4096 = 8192
+[how]
+Replace the old wait_for_blank_complete function with fsleep function to
+sleep just until the next frame should come up. This way it doesn't poll
+in case the pixel clock or other clock was bugged or until vactive and
+the vblank are hit again.
 
-Signed-off-by: Sergey Bashirov <sergeybashirov@gmail.com>
-Reviewed-by: Christoph Hellwig <hch@lst.de>
-Link: https://lore.kernel.org/r/20250701122341.199112-1-sergeybashirov@gmail.com
-Signed-off-by: Trond Myklebust <trond.myklebust@hammerspace.com>
+Reviewed-by: Nicholas Kazlauskas <nicholas.kazlauskas@amd.com>
+Signed-off-by: Wen Chen <Wen.Chen3@amd.com>
+Signed-off-by: Fangzhi Zuo <jerry.zuo@amd.com>
+Tested-by: Daniel Wheeler <daniel.wheeler@amd.com>
+Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/nfs/blocklayout/dev.c | 5 +++--
- 1 file changed, 3 insertions(+), 2 deletions(-)
+ drivers/gpu/drm/amd/display/dc/dcn20/dcn20_hwseq.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/fs/nfs/blocklayout/dev.c b/fs/nfs/blocklayout/dev.c
-index ce2ea6239797..fc6413953600 100644
---- a/fs/nfs/blocklayout/dev.c
-+++ b/fs/nfs/blocklayout/dev.c
-@@ -199,10 +199,11 @@ static bool bl_map_stripe(struct pnfs_block_dev *dev, u64 offset,
- 	struct pnfs_block_dev *child;
- 	u64 chunk;
- 	u32 chunk_idx;
-+	u64 disk_chunk;
- 	u64 disk_offset;
+diff --git a/drivers/gpu/drm/amd/display/dc/dcn20/dcn20_hwseq.c b/drivers/gpu/drm/amd/display/dc/dcn20/dcn20_hwseq.c
+index b6dc99317d7f..402d65759e73 100644
+--- a/drivers/gpu/drm/amd/display/dc/dcn20/dcn20_hwseq.c
++++ b/drivers/gpu/drm/amd/display/dc/dcn20/dcn20_hwseq.c
+@@ -735,7 +735,7 @@ enum dc_status dcn20_enable_stream_timing(
+ 		return DC_ERROR_UNEXPECTED;
+ 	}
  
- 	chunk = div_u64(offset, dev->chunk_size);
--	div_u64_rem(chunk, dev->nr_children, &chunk_idx);
-+	disk_chunk = div_u64_rem(chunk, dev->nr_children, &chunk_idx);
+-	hws->funcs.wait_for_blank_complete(pipe_ctx->stream_res.opp);
++	fsleep(stream->timing.v_total * (stream->timing.h_total * 10000u / stream->timing.pix_clk_100hz));
  
- 	if (chunk_idx >= dev->nr_children) {
- 		dprintk("%s: invalid chunk idx %d (%lld/%lld)\n",
-@@ -215,7 +216,7 @@ static bool bl_map_stripe(struct pnfs_block_dev *dev, u64 offset,
- 	offset = chunk * dev->chunk_size;
- 
- 	/* disk offset of the stripe */
--	disk_offset = div_u64(offset, dev->nr_children);
-+	disk_offset = disk_chunk * dev->chunk_size;
- 
- 	child = &dev->children[chunk_idx];
- 	child->map(child, disk_offset, map);
+ 	params.vertical_total_min = stream->adjust.v_total_min;
+ 	params.vertical_total_max = stream->adjust.v_total_max;
 -- 
 2.39.5
 
