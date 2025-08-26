@@ -1,56 +1,60 @@
-Return-Path: <stable+bounces-175152-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-176038-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id AEA28B366B3
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 15:59:36 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id EA581B36BB6
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 16:48:12 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id F0E4F1C23AC7
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 13:53:19 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 6A399A03E7D
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 14:32:34 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 99EA1352089;
-	Tue, 26 Aug 2025 13:51:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7569B280CC9;
+	Tue, 26 Aug 2025 14:30:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="XZE+zJvl"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="DvLfnGbm"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 528E635207B;
-	Tue, 26 Aug 2025 13:51:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 31D312FDC44;
+	Tue, 26 Aug 2025 14:30:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756216279; cv=none; b=qy/w4cJLqSH/qlxgVTadCWy2ElzU9k2/4o5MfKs1q1pyTegty06TR39sl0onFsubUDOGT8yUwz4UwoGle8Q2KTM7ehm7zwYtVr+wnvF2Ku8GRG5rZHtfVT0mMdtFgwvwnxkV1+U0JwYJH/VG3FCd8C2em0a8GUdIjKIz4NOj/sU=
+	t=1756218623; cv=none; b=bmV/RnU0JJo81Y6hJ0BIsJ/1ctNwWzEOfo0X9f2f6MtaeenTrIXnmcu+B1tJMTVM6zKYmWtWS7s2YTzlUA6IaIm4bV1g8pMzKqLhVJw1NDhtidWqv5w/M1oh0xmJnVbZbtESbdTWMPTfrzt3+Gk2ihXa/PBrrWf03H6jt8yj3Ms=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756216279; c=relaxed/simple;
-	bh=8IaX/BrJdnBokqVvQrdYZIFFPNUWwFSpRmjvpgNrO7o=;
+	s=arc-20240116; t=1756218623; c=relaxed/simple;
+	bh=Xy1Ng+7XXFsZ/S88k9Fbfdf3P8idnYWltuLQHe45WZo=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=kOt9MN5LIorxaFJO8hX2blvjNHuhpBT129FrY8zkAMfoOwWhX+AYETsh8y6JBPjbJtsTAx3DAWDXoLC7AiRUoFDmhmQvHqyFO//kngdie8GLX+ovXhGn3nVuk1w3MJrdRlpBvlxm9GLWrgJ3ws1jeYsuHEyC69hMR7IVS0Ewys0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=XZE+zJvl; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D1407C113CF;
-	Tue, 26 Aug 2025 13:51:18 +0000 (UTC)
+	 MIME-Version:Content-Type; b=CXAboI1gloGXyoRrLTzbvJSSXpHLDwGB8UuSrQYWrerq70qgFZ1Km06MQ0RSSWjxh3g/gduj9GsCMy/hjDGuJrifF8bH7GCwBXsrTtzDi0OYqMPFrW3REQiq9QN36/+mS3XR+TV65OkcTpU2RrYWOvneceDmenw9DRwo6WgZAig=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=DvLfnGbm; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B3A9AC4CEF1;
+	Tue, 26 Aug 2025 14:30:22 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1756216279;
-	bh=8IaX/BrJdnBokqVvQrdYZIFFPNUWwFSpRmjvpgNrO7o=;
+	s=korg; t=1756218623;
+	bh=Xy1Ng+7XXFsZ/S88k9Fbfdf3P8idnYWltuLQHe45WZo=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=XZE+zJvlmST5vUIaWbA7uXUDYZeT2nySbodmEHOjf03E5z5I90wEcgk/IibTXV2d6
-	 fU6gr+sYisjEFVyj51THU3lqnDYZelJ1VRzVbbzBgq1fG+qrfmwCqDtdG0vOdguDNr
-	 Nk6z8lp0VHOaiKnbZlWQTJCH1zfnPq6274bZImrU=
+	b=DvLfnGbmLcmSPPj50w4to4YpnrBzzvYEeO/hONqVFaIyJh5wPfks3U8HAzCLQEbYT
+	 sao3avcCafj9cqmyw4ZYGbtbm+J8bUD508WJZ2cC5awsG/am0PpRqVkkKTefOIHz51
+	 sjT7oKx8EAiPUrkU0MJl0q5soN7b6Luc3suU7ofk=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Lifeng Zheng <zhenglifeng1@huawei.com>,
-	Chanwoo Choi <cw00.choi@samsung.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 305/644] PM / devfreq: governor: Replace sscanf() with kstrtoul() in set_freq_store()
+	Arnd Bergmann <arnd@arndb.de>,
+	"David S. Miller" <davem@davemloft.net>,
+	Aleksandr Loktionov <aleksandr.loktionov@intel.com>,
+	Alexander Lobakin <aleksander.lobakin@intel.com>,
+	Tony Nguyen <anthony.l.nguyen@intel.com>,
+	Sasha Levin <sashal@kernel.org>,
+	Sunitha Mekala <sunithax.d.mekala@intel.com>
+Subject: [PATCH 5.4 070/403] ethernet: intel: fix building with large NR_CPUS
 Date: Tue, 26 Aug 2025 13:06:36 +0200
-Message-ID: <20250826110953.942553536@linuxfoundation.org>
+Message-ID: <20250826110908.112928526@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250826110946.507083938@linuxfoundation.org>
-References: <20250826110946.507083938@linuxfoundation.org>
+In-Reply-To: <20250826110905.607690791@linuxfoundation.org>
+References: <20250826110905.607690791@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,54 +64,102 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+5.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Lifeng Zheng <zhenglifeng1@huawei.com>
+From: Arnd Bergmann <arnd@arndb.de>
 
-[ Upstream commit 914cc799b28f17d369d5b4db3b941957d18157e8 ]
+[ Upstream commit 24171a5a4a952c26568ff0d2a0bc8c4708a95e1d ]
 
-Replace sscanf() with kstrtoul() in set_freq_store() and check the result
-to avoid invalid input.
+With large values of CONFIG_NR_CPUS, three Intel ethernet drivers fail to
+compile like:
 
-Signed-off-by: Lifeng Zheng <zhenglifeng1@huawei.com>
-Link: https://lore.kernel.org/lkml/20250421030020.3108405-2-zhenglifeng1@huawei.com/
-Signed-off-by: Chanwoo Choi <cw00.choi@samsung.com>
+In function ‘i40e_free_q_vector’,
+    inlined from ‘i40e_vsi_alloc_q_vectors’ at drivers/net/ethernet/intel/i40e/i40e_main.c:12112:3:
+  571 |         _compiletime_assert(condition, msg, __compiletime_assert_, __COUNTER__)
+include/linux/rcupdate.h:1084:17: note: in expansion of macro ‘BUILD_BUG_ON’
+ 1084 |                 BUILD_BUG_ON(offsetof(typeof(*(ptr)), rhf) >= 4096);    \
+drivers/net/ethernet/intel/i40e/i40e_main.c:5113:9: note: in expansion of macro ‘kfree_rcu’
+ 5113 |         kfree_rcu(q_vector, rcu);
+      |         ^~~~~~~~~
+
+The problem is that the 'rcu' member in 'q_vector' is too far from the start
+of the structure. Move this member before the CPU mask instead, in all three
+drivers.
+
+Signed-off-by: Arnd Bergmann <arnd@arndb.de>
+Acked-by: David S. Miller <davem@davemloft.net>
+Reviewed-by: Aleksandr Loktionov <aleksandr.loktionov@intel.com>
+Reviewed-by: Alexander Lobakin <aleksander.lobakin@intel.com>
+Tested-by: Sunitha Mekala <sunithax.d.mekala@intel.com> (A Contingent worker at Intel)
+Signed-off-by: Tony Nguyen <anthony.l.nguyen@intel.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/devfreq/governor_userspace.c | 6 +++++-
- 1 file changed, 5 insertions(+), 1 deletion(-)
+ drivers/net/ethernet/intel/fm10k/fm10k.h | 3 ++-
+ drivers/net/ethernet/intel/i40e/i40e.h   | 2 +-
+ drivers/net/ethernet/intel/ixgbe/ixgbe.h | 3 ++-
+ 3 files changed, 5 insertions(+), 3 deletions(-)
 
-diff --git a/drivers/devfreq/governor_userspace.c b/drivers/devfreq/governor_userspace.c
-index d69672ccacc4..8d057cea09d5 100644
---- a/drivers/devfreq/governor_userspace.c
-+++ b/drivers/devfreq/governor_userspace.c
-@@ -9,6 +9,7 @@
- #include <linux/slab.h>
- #include <linux/device.h>
- #include <linux/devfreq.h>
-+#include <linux/kstrtox.h>
- #include <linux/pm.h>
- #include <linux/mutex.h>
- #include <linux/module.h>
-@@ -39,10 +40,13 @@ static ssize_t set_freq_store(struct device *dev, struct device_attribute *attr,
- 	unsigned long wanted;
- 	int err = 0;
+diff --git a/drivers/net/ethernet/intel/fm10k/fm10k.h b/drivers/net/ethernet/intel/fm10k/fm10k.h
+index b14441944b4b..db72e5e4acd3 100644
+--- a/drivers/net/ethernet/intel/fm10k/fm10k.h
++++ b/drivers/net/ethernet/intel/fm10k/fm10k.h
+@@ -189,13 +189,14 @@ struct fm10k_q_vector {
+ 	struct fm10k_ring_container rx, tx;
  
-+	err = kstrtoul(buf, 0, &wanted);
-+	if (err)
-+		return err;
+ 	struct napi_struct napi;
++	struct rcu_head rcu;	/* to avoid race with update stats on free */
 +
- 	mutex_lock(&devfreq->lock);
- 	data = devfreq->governor_data;
+ 	cpumask_t affinity_mask;
+ 	char name[IFNAMSIZ + 9];
  
--	sscanf(buf, "%lu", &wanted);
- 	data->user_frequency = wanted;
- 	data->valid = true;
- 	err = update_devfreq(devfreq);
+ #ifdef CONFIG_DEBUG_FS
+ 	struct dentry *dbg_q_vector;
+ #endif /* CONFIG_DEBUG_FS */
+-	struct rcu_head rcu;	/* to avoid race with update stats on free */
+ 
+ 	/* for dynamic allocation of rings associated with this q_vector */
+ 	struct fm10k_ring ring[0] ____cacheline_internodealigned_in_smp;
+diff --git a/drivers/net/ethernet/intel/i40e/i40e.h b/drivers/net/ethernet/intel/i40e/i40e.h
+index 4c8c31692e9e..edb5e408c980 100644
+--- a/drivers/net/ethernet/intel/i40e/i40e.h
++++ b/drivers/net/ethernet/intel/i40e/i40e.h
+@@ -864,6 +864,7 @@ struct i40e_q_vector {
+ 	u16 reg_idx;		/* register index of the interrupt */
+ 
+ 	struct napi_struct napi;
++	struct rcu_head rcu;	/* to avoid race with update stats on free */
+ 
+ 	struct i40e_ring_container rx;
+ 	struct i40e_ring_container tx;
+@@ -874,7 +875,6 @@ struct i40e_q_vector {
+ 	cpumask_t affinity_mask;
+ 	struct irq_affinity_notify affinity_notify;
+ 
+-	struct rcu_head rcu;	/* to avoid race with update stats on free */
+ 	char name[I40E_INT_NAME_STR_LEN];
+ 	bool arm_wb_state;
+ } ____cacheline_internodealigned_in_smp;
+diff --git a/drivers/net/ethernet/intel/ixgbe/ixgbe.h b/drivers/net/ethernet/intel/ixgbe/ixgbe.h
+index 0142ca226bf5..0f9a1fce0dee 100644
+--- a/drivers/net/ethernet/intel/ixgbe/ixgbe.h
++++ b/drivers/net/ethernet/intel/ixgbe/ixgbe.h
+@@ -458,9 +458,10 @@ struct ixgbe_q_vector {
+ 	struct ixgbe_ring_container rx, tx;
+ 
+ 	struct napi_struct napi;
++	struct rcu_head rcu;	/* to avoid race with update stats on free */
++
+ 	cpumask_t affinity_mask;
+ 	int numa_node;
+-	struct rcu_head rcu;	/* to avoid race with update stats on free */
+ 	char name[IFNAMSIZ + 9];
+ 
+ 	/* for dynamic allocation of rings associated with this q_vector */
 -- 
 2.39.5
 
