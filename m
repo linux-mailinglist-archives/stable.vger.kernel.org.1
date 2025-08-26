@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-174534-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-174022-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id A26FDB363F8
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 15:34:43 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 35F8FB360DE
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 15:04:47 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id E729F2A66EB
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 13:25:45 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id EDDED17E27C
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 13:01:33 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C8E663019A3;
-	Tue, 26 Aug 2025 13:24:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 81D941AB52D;
+	Tue, 26 Aug 2025 13:01:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="u7NnqhZL"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="gjZ1SYhi"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 86AE418A6C4;
-	Tue, 26 Aug 2025 13:24:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3C56B1917ED;
+	Tue, 26 Aug 2025 13:01:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756214646; cv=none; b=XLljIUmT+MK18iK9LGEUA05gish5ekuEDwGT1oTRcnDXKx5nsO/9hVn4aYDurTHYTiO++2U6kny6rhimSZE70tPxDiLf1m9mDaq1Q+ACZNWfZawiZWwpcSlI7LUEufduwWvwyTGW8Pd83d+nnYU05U08cJUK08TaWDnobdm8sFA=
+	t=1756213286; cv=none; b=CggckjN/503hDlUwq0Mno3n2bSMQMcwYLNM/gvx7PWavpzYdWgCuU14TSjOCdwso9MXAg6g9CGjo5gwjMhtIDvqfw+pf/VpwLYbFWBfyEPYHP8IHwxgpjVMZW8hMJSjGom/LUCsTp7GQBDnMeoXS1A4l5rgZeyajiGmiq3isdzU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756214646; c=relaxed/simple;
-	bh=KD2z3VgZBT6+wEPMcvL5yHEGq+UICdEeq7NVDsAG+GM=;
+	s=arc-20240116; t=1756213286; c=relaxed/simple;
+	bh=h7fBPiZ5NPMaKpRwh5ECF2rKV8TPOyBETHxbjR/8mFA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=loYeHZGsSg/4hueMjL2PPnbO973DPaBSWQlouAUENa/IJhqTiBtXW8E0mSsViFwWBK8oxiDDRyE2XVITX6UH35SZqNJ+yeL9wjGZcKW1MhpCV9lILMGppnRTLr1f6/xTUJYOnxvFXbr16VsQtF9WH2xu6UrBr7s/glWHVii/epg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=u7NnqhZL; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 171EFC4CEF1;
-	Tue, 26 Aug 2025 13:24:05 +0000 (UTC)
+	 MIME-Version; b=UdKU13O4CuYnevV5rYZm1BPkhIioenuXoQ/OTS2be1PzFmoJZbcpSivqiPy6LxABK0fmElvnZQYWvrfDa7Llu90ncX5LuZ24M8smxJFJafPAzXFwfO7f8agNY0vKFIh95k+X3exDC5GG7WL8YFaEY43ku5pWn7lgCCLxY5g4UxM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=gjZ1SYhi; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 65C89C4CEF4;
+	Tue, 26 Aug 2025 13:01:25 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1756214646;
-	bh=KD2z3VgZBT6+wEPMcvL5yHEGq+UICdEeq7NVDsAG+GM=;
+	s=korg; t=1756213285;
+	bh=h7fBPiZ5NPMaKpRwh5ECF2rKV8TPOyBETHxbjR/8mFA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=u7NnqhZL7XtHDSSvS+6pXoK75lTOGwcPoiXIj2evgzdR0Yo4OvHZ8mzziuwm8uVnj
-	 gG89E6T3fv1JJfFI0dFsGBSbR0K4Y1wwbngsgiPjVBdftzdqrsUqweY/rhYoVAljze
-	 B86itIL0N8TibLCyGttWS4GZKgCrgY2Mv8cMXnwA=
+	b=gjZ1SYhiJC1pyUlSPLySG+Rlf1XGSBB5piNqAKRh0BX8zLsAAxlskmHgZ3LdZEkJZ
+	 lICkPGHUPxHAMRlXcprDxKZHXM+ifMhrgafnNEkafD8fALf1wzXXTwt4UQIvt31cd2
+	 PMuGa6bYVCyPiU7OzP8yjlS5WU+bb/qLT3Jh379U=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	jackysliu <1972843537@qq.com>,
-	"Martin K. Petersen" <martin.petersen@oracle.com>,
+	Sergey Bashirov <sergeybashirov@gmail.com>,
+	Christoph Hellwig <hch@lst.de>,
+	Trond Myklebust <trond.myklebust@hammerspace.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 185/482] scsi: bfa: Double-free fix
+Subject: [PATCH 6.6 289/587] pNFS: Fix stripe mapping in block/scsi layout
 Date: Tue, 26 Aug 2025 13:07:18 +0200
-Message-ID: <20250826110935.377003290@linuxfoundation.org>
+Message-ID: <20250826111000.281802450@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250826110930.769259449@linuxfoundation.org>
-References: <20250826110930.769259449@linuxfoundation.org>
+In-Reply-To: <20250826110952.942403671@linuxfoundation.org>
+References: <20250826110952.942403671@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,44 +63,59 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: jackysliu <1972843537@qq.com>
+From: Sergey Bashirov <sergeybashirov@gmail.com>
 
-[ Upstream commit add4c4850363d7c1b72e8fce9ccb21fdd2cf5dc9 ]
+[ Upstream commit 81438498a285759f31e843ac4800f82a5ce6521f ]
 
-When the bfad_im_probe() function fails during initialization, the memory
-pointed to by bfad->im is freed without setting bfad->im to NULL.
+Because of integer division, we need to carefully calculate the
+disk offset. Consider the example below for a stripe of 6 volumes,
+a chunk size of 4096, and an offset of 70000.
 
-Subsequently, during driver uninstallation, when the state machine enters
-the bfad_sm_stopping state and calls the bfad_im_probe_undo() function,
-it attempts to free the memory pointed to by bfad->im again, thereby
-triggering a double-free vulnerability.
+chunk = div_u64(offset, dev->chunk_size) = 70000 / 4096 = 17
+offset = chunk * dev->chunk_size = 17 * 4096 = 69632
+disk_offset_wrong = div_u64(offset, dev->nr_children) = 69632 / 6 = 11605
+disk_chunk = div_u64(chunk, dev->nr_children) = 17 / 6 = 2
+disk_offset = disk_chunk * dev->chunk_size = 2 * 4096 = 8192
 
-Set bfad->im to NULL if probing fails.
-
-Signed-off-by: jackysliu <1972843537@qq.com>
-Link: https://lore.kernel.org/r/tencent_3BB950D6D2D470976F55FC879206DE0B9A09@qq.com
-Signed-off-by: Martin K. Petersen <martin.petersen@oracle.com>
+Signed-off-by: Sergey Bashirov <sergeybashirov@gmail.com>
+Reviewed-by: Christoph Hellwig <hch@lst.de>
+Link: https://lore.kernel.org/r/20250701122341.199112-1-sergeybashirov@gmail.com
+Signed-off-by: Trond Myklebust <trond.myklebust@hammerspace.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/scsi/bfa/bfad_im.c | 1 +
- 1 file changed, 1 insertion(+)
+ fs/nfs/blocklayout/dev.c | 5 +++--
+ 1 file changed, 3 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/scsi/bfa/bfad_im.c b/drivers/scsi/bfa/bfad_im.c
-index c335f7a188d2..8f2bd0a6a08c 100644
---- a/drivers/scsi/bfa/bfad_im.c
-+++ b/drivers/scsi/bfa/bfad_im.c
-@@ -706,6 +706,7 @@ bfad_im_probe(struct bfad_s *bfad)
+diff --git a/fs/nfs/blocklayout/dev.c b/fs/nfs/blocklayout/dev.c
+index 65cbb5607a5f..61ee0b6c0fba 100644
+--- a/fs/nfs/blocklayout/dev.c
++++ b/fs/nfs/blocklayout/dev.c
+@@ -199,10 +199,11 @@ static bool bl_map_stripe(struct pnfs_block_dev *dev, u64 offset,
+ 	struct pnfs_block_dev *child;
+ 	u64 chunk;
+ 	u32 chunk_idx;
++	u64 disk_chunk;
+ 	u64 disk_offset;
  
- 	if (bfad_thread_workq(bfad) != BFA_STATUS_OK) {
- 		kfree(im);
-+		bfad->im = NULL;
- 		return BFA_STATUS_FAILED;
- 	}
+ 	chunk = div_u64(offset, dev->chunk_size);
+-	div_u64_rem(chunk, dev->nr_children, &chunk_idx);
++	disk_chunk = div_u64_rem(chunk, dev->nr_children, &chunk_idx);
  
+ 	if (chunk_idx >= dev->nr_children) {
+ 		dprintk("%s: invalid chunk idx %d (%lld/%lld)\n",
+@@ -215,7 +216,7 @@ static bool bl_map_stripe(struct pnfs_block_dev *dev, u64 offset,
+ 	offset = chunk * dev->chunk_size;
+ 
+ 	/* disk offset of the stripe */
+-	disk_offset = div_u64(offset, dev->nr_children);
++	disk_offset = disk_chunk * dev->chunk_size;
+ 
+ 	child = &dev->children[chunk_idx];
+ 	child->map(child, disk_offset, map);
 -- 
 2.39.5
 
