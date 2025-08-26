@@ -1,56 +1,65 @@
-Return-Path: <stable+bounces-175754-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-173181-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 720EDB369E3
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 16:32:07 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 35705B35C31
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 13:32:24 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id B9F9056544B
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 14:20:07 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 9ACDC16CAFA
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 11:26:28 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id CFCE3350D51;
-	Tue, 26 Aug 2025 14:18:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2F45D2F9982;
+	Tue, 26 Aug 2025 11:26:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="pSM6S/m5"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="T6r0NbPi"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 89AD03570D3;
-	Tue, 26 Aug 2025 14:18:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DDD552BEC34;
+	Tue, 26 Aug 2025 11:26:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756217881; cv=none; b=QD9xDVMgKHSfsCNxGS5I31mXxxONBUHe9WyhsudFJ2YRlxnnuGIgrEmAWnv0cCPWcq0vsB8K7J1SHAOmhadID0LpBk5Tr0IX3kkizppqHpmU7rRAxQZoKmSR6aix8DgMBEcqR/hHCt8ozIbXeMtXS/NX0AmoT4zWhfyQmqx8//I=
+	t=1756207582; cv=none; b=gj3XN9S8uNQon2hsKaI6O4gaOaea4Ijc8oUealFoYh2gSmvLzok9Yk7BbTjjpzy2+5QvOtTsKTftrk0lFjU0hILOif/klSKKvTReoYjenhgz3I4AoTyv0f4Gm/fwMfJYTyBl3k7n/cBKN8lcUnZn/B35ON4Ftv7vaI+QKkcayJo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756217881; c=relaxed/simple;
-	bh=DjEHFVJuYus2T979+yfpG8xNcXfc4nOKPeJrepgUgQI=;
+	s=arc-20240116; t=1756207582; c=relaxed/simple;
+	bh=p6Vl2qw9JchiluDQWoO66G+jgQWucUJmEQHBVEv/2TQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=nfz4zXCceePtKlFIQESGAKzgeesUYRAMHpHoxK+uLmG5F9sNhIhqOs47QHYyQHl8XIwxkM+cgWVUOR//67P71J7AUIhwztrXFuW1JPnJEF6z/z4DmPD0BrbAEjVp7Z8flbV6PwtlW6GoWfe6wFSGrI6uvdpJNSbrN6pghETbgVU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=pSM6S/m5; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1E721C4CEF1;
-	Tue, 26 Aug 2025 14:18:00 +0000 (UTC)
+	 MIME-Version; b=aAofNhZkRCQaIf1NTwKOznmcBomKd4pvfU9rdKjVOE+A97/4fQEn5wngCPv7s1t+KopdsnKCSWBjbna1RYRmvVHlRk7r11MrdLUFa4xAUJSrk4U8f+c6PV+xVc2IlvxTC1ljn4Sra9qCqFnFWhzE4vemo2ybxWaidDZJTe/Tfew=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=T6r0NbPi; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4B8C7C4CEF1;
+	Tue, 26 Aug 2025 11:26:21 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1756217881;
-	bh=DjEHFVJuYus2T979+yfpG8xNcXfc4nOKPeJrepgUgQI=;
+	s=korg; t=1756207581;
+	bh=p6Vl2qw9JchiluDQWoO66G+jgQWucUJmEQHBVEv/2TQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=pSM6S/m5c/TGEb8IAwRLFbA4P5MG7kFNjS8h3mUzSMDPIadM0wVLQnHfwPGQ2hC/G
-	 /IPX06zEsCTJ1wpsROH8wD3MW0y7eP3yGY6Tf9+xyMfcR3sRaiGGqPoYl/+PQcDxMs
-	 a58tDgeBGSblVxRsqfzHJgEf73g05qbmjsy64vQc=
+	b=T6r0NbPiz/qVAsxlvRr0YT4rzxbSQDlvOyHa5Rgns+U3EtZf8jw7kkMT2YqjZA63t
+	 lUmg/CbKcFD+feavFlVlepFPG+b830Et78soxtFIxaJgfkuPQbDj6OO0WOodUGrNBg
+	 qoiIJZztuPsQ+u0OkZIxi920tpSbS9EubFDqfehc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Wolfram Sang <wsa+renesas@sang-engineering.com>,
-	Hans Verkuil <hverkuil@xs4all.nl>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 311/523] media: usb: hdpvr: disable zero-length read messages
+	Pasha Tatashin <pasha.tatashin@soleen.com>,
+	"Mike Rapoport (Microsoft)" <rppt@kernel.org>,
+	Alexander Graf <graf@amazon.com>,
+	Arnd Bergmann <arnd@arndb.de>,
+	Baoquan He <bhe@redhat.com>,
+	Changyuan Lyu <changyuanl@google.com>,
+	Coiby Xu <coxu@redhat.com>,
+	Dave Vasilevsky <dave@vasilevsky.ca>,
+	Eric Biggers <ebiggers@google.com>,
+	Kees Cook <kees@kernel.org>,
+	Pratyush Yadav <pratyush@kernel.org>,
+	Andrew Morton <akpm@linux-foundation.org>
+Subject: [PATCH 6.16 237/457] kho: init new_physxa->phys_bits to fix lockdep
 Date: Tue, 26 Aug 2025 13:08:41 +0200
-Message-ID: <20250826110932.133424866@linuxfoundation.org>
+Message-ID: <20250826110943.231792760@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250826110924.562212281@linuxfoundation.org>
-References: <20250826110924.562212281@linuxfoundation.org>
+In-Reply-To: <20250826110937.289866482@linuxfoundation.org>
+References: <20250826110937.289866482@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,50 +71,116 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+6.16-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Wolfram Sang <wsa+renesas@sang-engineering.com>
+From: Pasha Tatashin <pasha.tatashin@soleen.com>
 
-[ Upstream commit b5ae5a79825ba8037b0be3ef677a24de8c063abf ]
+commit 63b17b653df30e90f95338083cb44c35d64bcae4 upstream.
 
-This driver passes the length of an i2c_msg directly to
-usb_control_msg(). If the message is now a read and of length 0, it
-violates the USB protocol and a warning will be printed. Enable the
-I2C_AQ_NO_ZERO_LEN_READ quirk for this adapter thus forbidding 0-length
-read messages altogether.
+Patch series "Several KHO Hotfixes".
 
-Signed-off-by: Wolfram Sang <wsa+renesas@sang-engineering.com>
-Signed-off-by: Hans Verkuil <hverkuil@xs4all.nl>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Three unrelated fixes for Kexec Handover.
+
+
+This patch (of 3):
+
+Lockdep shows the following warning:
+
+INFO: trying to register non-static key.  The code is fine but needs
+lockdep annotation, or maybe you didn't initialize this object before use?
+turning off the locking correctness validator.
+
+[<ffffffff810133a6>] dump_stack_lvl+0x66/0xa0
+[<ffffffff8136012c>] assign_lock_key+0x10c/0x120
+[<ffffffff81358bb4>] register_lock_class+0xf4/0x2f0
+[<ffffffff813597ff>] __lock_acquire+0x7f/0x2c40
+[<ffffffff81360cb0>] ? __pfx_hlock_conflict+0x10/0x10
+[<ffffffff811707be>] ? native_flush_tlb_global+0x8e/0xa0
+[<ffffffff8117096e>] ? __flush_tlb_all+0x4e/0xa0
+[<ffffffff81172fc2>] ? __kernel_map_pages+0x112/0x140
+[<ffffffff813ec327>] ? xa_load_or_alloc+0x67/0xe0
+[<ffffffff81359556>] lock_acquire+0xe6/0x280
+[<ffffffff813ec327>] ? xa_load_or_alloc+0x67/0xe0
+[<ffffffff8100b9e0>] _raw_spin_lock+0x30/0x40
+[<ffffffff813ec327>] ? xa_load_or_alloc+0x67/0xe0
+[<ffffffff813ec327>] xa_load_or_alloc+0x67/0xe0
+[<ffffffff813eb4c0>] kho_preserve_folio+0x90/0x100
+[<ffffffff813ebb7f>] __kho_finalize+0xcf/0x400
+[<ffffffff813ebef4>] kho_finalize+0x34/0x70
+
+This is becase xa has its own lock, that is not initialized in
+xa_load_or_alloc.
+
+Modifiy __kho_preserve_order(), to properly call
+xa_init(&new_physxa->phys_bits);
+
+Link: https://lkml.kernel.org/r/20250808201804.772010-2-pasha.tatashin@soleen.com
+Fixes: fc33e4b44b27 ("kexec: enable KHO support for memory preservation")
+Signed-off-by: Pasha Tatashin <pasha.tatashin@soleen.com>
+Acked-by: Mike Rapoport (Microsoft) <rppt@kernel.org>
+Cc: Alexander Graf <graf@amazon.com>
+Cc: Arnd Bergmann <arnd@arndb.de>
+Cc: Baoquan He <bhe@redhat.com>
+Cc: Changyuan Lyu <changyuanl@google.com>
+Cc: Coiby Xu <coxu@redhat.com>
+Cc: Dave Vasilevsky <dave@vasilevsky.ca>
+Cc: Eric Biggers <ebiggers@google.com>
+Cc: Kees Cook <kees@kernel.org>
+Cc: Pratyush Yadav <pratyush@kernel.org>
+Cc: <stable@vger.kernel.org>
+Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/media/usb/hdpvr/hdpvr-i2c.c | 6 ++++++
- 1 file changed, 6 insertions(+)
+ kernel/kexec_handover.c | 28 ++++++++++++++++++++++++----
+ 1 file changed, 24 insertions(+), 4 deletions(-)
 
-diff --git a/drivers/media/usb/hdpvr/hdpvr-i2c.c b/drivers/media/usb/hdpvr/hdpvr-i2c.c
-index 070559b01b01..54956a8ff15e 100644
---- a/drivers/media/usb/hdpvr/hdpvr-i2c.c
-+++ b/drivers/media/usb/hdpvr/hdpvr-i2c.c
-@@ -165,10 +165,16 @@ static const struct i2c_algorithm hdpvr_algo = {
- 	.functionality = hdpvr_functionality,
- };
+diff --git a/kernel/kexec_handover.c b/kernel/kexec_handover.c
+index e49743ae52c5..65145972d6d6 100644
+--- a/kernel/kexec_handover.c
++++ b/kernel/kexec_handover.c
+@@ -144,14 +144,34 @@ static int __kho_preserve_order(struct kho_mem_track *track, unsigned long pfn,
+ 				unsigned int order)
+ {
+ 	struct kho_mem_phys_bits *bits;
+-	struct kho_mem_phys *physxa;
++	struct kho_mem_phys *physxa, *new_physxa;
+ 	const unsigned long pfn_high = pfn >> order;
  
-+/* prevent invalid 0-length usb_control_msg */
-+static const struct i2c_adapter_quirks hdpvr_quirks = {
-+	.flags = I2C_AQ_NO_ZERO_LEN_READ,
-+};
+ 	might_sleep();
+ 
+-	physxa = xa_load_or_alloc(&track->orders, order, sizeof(*physxa));
+-	if (IS_ERR(physxa))
+-		return PTR_ERR(physxa);
++	physxa = xa_load(&track->orders, order);
++	if (!physxa) {
++		int err;
 +
- static const struct i2c_adapter hdpvr_i2c_adapter_template = {
- 	.name   = "Hauppauge HD PVR I2C",
- 	.owner  = THIS_MODULE,
- 	.algo   = &hdpvr_algo,
-+	.quirks = &hdpvr_quirks,
- };
++		new_physxa = kzalloc(sizeof(*physxa), GFP_KERNEL);
++		if (!new_physxa)
++			return -ENOMEM;
++
++		xa_init(&new_physxa->phys_bits);
++		physxa = xa_cmpxchg(&track->orders, order, NULL, new_physxa,
++				    GFP_KERNEL);
++
++		err = xa_err(physxa);
++		if (err || physxa) {
++			xa_destroy(&new_physxa->phys_bits);
++			kfree(new_physxa);
++
++			if (err)
++				return err;
++		} else {
++			physxa = new_physxa;
++		}
++	}
  
- static int hdpvr_activate_ir(struct hdpvr_device *dev)
+ 	bits = xa_load_or_alloc(&physxa->phys_bits, pfn_high / PRESERVE_BITS,
+ 				sizeof(*bits));
 -- 
-2.39.5
+2.50.1
 
 
 
