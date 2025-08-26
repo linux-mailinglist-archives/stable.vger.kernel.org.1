@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-173084-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-176066-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 31810B35B5E
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 13:23:36 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 3F7A1B36CB0
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 16:59:26 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 2A87C7C347F
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 11:22:57 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id EBB74988058
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 14:34:19 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id DAEBD2BF3E2;
-	Tue, 26 Aug 2025 11:22:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id F02DB353360;
+	Tue, 26 Aug 2025 14:31:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="QzRcem81"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="yrhRwiIL"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 992B1239573;
-	Tue, 26 Aug 2025 11:22:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id ADF7C2135B8;
+	Tue, 26 Aug 2025 14:31:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756207331; cv=none; b=safc1tM0SM2P8eIpC97MNKzWAzWNUhgREHRremDS/jqVy+BpvdX2jSatUxyv7qk96cfhAXMGm7SR4siWddninSLaBlfofy5m/9dV5MJG4lJDsxf51NjMIJ4d8SMPdHVakZV63UuKJ2dsLZqAK+iBPt2R4lipo40R4UaSgyx/ZcI=
+	t=1756218694; cv=none; b=CMPjQS7Uusd94lDlnJeH8ATKJHzhTd9RfGdZKWtMa5TaRf/4FQjEtnAG5ZQBr9XZFxybFq2n+E7JJAV91ewzJfB6Co/FCjhC22WWYBUcNiKWh1FjfjekBTyuaTIz/FmsFtvbFUeHMsLMjNKvApqT/3nxIg3VUmMcoeDzurUzs94=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756207331; c=relaxed/simple;
-	bh=ciBxAtvZXoJKA8yC8EmXB6pb0Tay5Y3g22d18RDx/1s=;
+	s=arc-20240116; t=1756218694; c=relaxed/simple;
+	bh=pFGHkjGbVWF30TV3A8KNkXMisIM6Cy9wqO4vT+H0Mps=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=ctu3XK6/WjhUg1Z2Vn5ehCPHq7YAtc38w4pGBSEN9KDxi7cH0iGVEK8ZJyZP7371j+A1OsUBSIQeRkgec7sRwehYsu1uEl8P+1Ytf76UyNy7Y1P+vstLXwUaLa/GONZ+PxGknu2TBuvzFDWl8VzabS28ZeWlfSOeu1bkCOUfu6g=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=QzRcem81; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 349C4C4CEF1;
-	Tue, 26 Aug 2025 11:22:11 +0000 (UTC)
+	 MIME-Version; b=ROali9AVSzZEF6WH9bbrtEXF0ZVpi4ONKlfynAl0whdMi+02/E6PhiG06C9UcvtbwEGI2UiVnwZQbmr3HSe1fZOityd8AxcCJGeK1dI4pP3TKp2tf0ahA5OnHlVpDB6yfETWBiw2vQdPnYmpMoRHFSoYBzE1JA5L3KbkF4nDmzg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=yrhRwiIL; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 43B52C4CEF1;
+	Tue, 26 Aug 2025 14:31:34 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1756207331;
-	bh=ciBxAtvZXoJKA8yC8EmXB6pb0Tay5Y3g22d18RDx/1s=;
+	s=korg; t=1756218694;
+	bh=pFGHkjGbVWF30TV3A8KNkXMisIM6Cy9wqO4vT+H0Mps=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=QzRcem81gqyqpHSUUD1JlhgTdtt1DC3qbI6sGhv3mMn6YFiDHhYPav82Gd3W5VkYh
-	 j2oUw36tB4g/WgI1wdwn8BZIGBIMLS3okbIcA5A1HmtYhIpXEJnTwV2SSb6VMdzZ/f
-	 Ft50F36J/DWZEsRl9vFZMIofjAmwQv2+Ht6WbS4s=
+	b=yrhRwiILC3KgDcGvL8vuPBCW0WxNl8cqG3V+gTBD3NnUY7XLuGBKQKV7j2Hb/Ba+C
+	 TVSdfcVLfP0Kte5L/c7VRr5WXvSeXnPZXY2G8uh7vXijvK+3EejnHMIHSlgywBR6Zu
+	 nLoY2KPHgrbtc4st3IGCD3WkKzDd4tiX7yCq36xQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Zhang Shurong <zhang_shurong@foxmail.com>,
-	Sakari Ailus <sakari.ailus@linux.intel.com>,
-	Hans Verkuil <hverkuil@xs4all.nl>
-Subject: [PATCH 6.16 140/457] media: ov2659: Fix memory leaks in ov2659_probe()
+	Remi Pommarel <repk@triplefau.lt>,
+	Johannes Berg <johannes.berg@intel.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.4 098/403] Reapply "wifi: mac80211: Update skbs control block key in ieee80211_tx_dequeue()"
 Date: Tue, 26 Aug 2025 13:07:04 +0200
-Message-ID: <20250826110940.835746482@linuxfoundation.org>
+Message-ID: <20250826110909.381604948@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250826110937.289866482@linuxfoundation.org>
-References: <20250826110937.289866482@linuxfoundation.org>
+In-Reply-To: <20250826110905.607690791@linuxfoundation.org>
+References: <20250826110905.607690791@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,47 +62,44 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.16-stable review patch.  If anyone has any objections, please let me know.
+5.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Zhang Shurong <zhang_shurong@foxmail.com>
+From: Remi Pommarel <repk@triplefau.lt>
 
-commit 76142b137b968d47b35cdd8d1dc924677d319c8b upstream.
+[ Upstream commit 754fe848b3b297fc85ec24cd959bad22b6df8cb8 ]
 
-ov2659_probe() doesn't properly free control handler resources in failure
-paths, causing memory leaks. Add v4l2_ctrl_handler_free() to prevent these
-memory leaks and reorder the ctrl_handler assignment for better code flow.
+This reverts commit 0937cb5f345c ("Revert "wifi: mac80211: Update
+skb's control block key in ieee80211_tx_dequeue()"").
 
-Fixes: c4c0283ab3cd ("[media] media: i2c: add support for omnivision's ov2659 sensor")
-Cc: stable@vger.kernel.org
-Signed-off-by: Zhang Shurong <zhang_shurong@foxmail.com>
-Signed-off-by: Sakari Ailus <sakari.ailus@linux.intel.com>
-Signed-off-by: Hans Verkuil <hverkuil@xs4all.nl>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+This commit broke TX with 802.11 encapsulation HW offloading, now that
+this is fixed, reapply it.
+
+Fixes: bb42f2d13ffc ("mac80211: Move reorder-sensitive TX handlers to after TXQ dequeue")
+Signed-off-by: Remi Pommarel <repk@triplefau.lt>
+Link: https://patch.msgid.link/66b8fc39fb0194fa06c9ca7eeb6ffe0118dcb3ec.1752765971.git.repk@triplefau.lt
+Signed-off-by: Johannes Berg <johannes.berg@intel.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/media/i2c/ov2659.c |    3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+ net/mac80211/tx.c | 1 +
+ 1 file changed, 1 insertion(+)
 
---- a/drivers/media/i2c/ov2659.c
-+++ b/drivers/media/i2c/ov2659.c
-@@ -1469,14 +1469,15 @@ static int ov2659_probe(struct i2c_clien
- 				     V4L2_CID_TEST_PATTERN,
- 				     ARRAY_SIZE(ov2659_test_pattern_menu) - 1,
- 				     0, 0, ov2659_test_pattern_menu);
--	ov2659->sd.ctrl_handler = &ov2659->ctrls;
- 
- 	if (ov2659->ctrls.error) {
- 		dev_err(&client->dev, "%s: control initialization error %d\n",
- 			__func__, ov2659->ctrls.error);
-+		v4l2_ctrl_handler_free(&ov2659->ctrls);
- 		return  ov2659->ctrls.error;
- 	}
- 
-+	ov2659->sd.ctrl_handler = &ov2659->ctrls;
- 	sd = &ov2659->sd;
- 	client->flags |= I2C_CLIENT_SCCB;
- 
+diff --git a/net/mac80211/tx.c b/net/mac80211/tx.c
+index 461cff7b94ad..f8d72f3e4def 100644
+--- a/net/mac80211/tx.c
++++ b/net/mac80211/tx.c
+@@ -3661,6 +3661,7 @@ struct sk_buff *ieee80211_tx_dequeue(struct ieee80211_hw *hw,
+ 	 * The key can be removed while the packet was queued, so need to call
+ 	 * this here to get the current key.
+ 	 */
++	info->control.hw_key = NULL;
+ 	r = ieee80211_tx_h_select_key(&tx);
+ 	if (r != TX_CONTINUE) {
+ 		ieee80211_free_txskb(&local->hw, skb);
+-- 
+2.39.5
+
 
 
 
