@@ -1,55 +1,55 @@
-Return-Path: <stable+bounces-176048-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-173095-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id CA9A1B36B26
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 16:43:27 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id D7A52B35BA9
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 13:26:44 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 8952A587D5A
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 14:33:00 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id BBE10189768B
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 11:23:33 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B4BF4352FD3;
-	Tue, 26 Aug 2025 14:30:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7B25A319866;
+	Tue, 26 Aug 2025 11:22:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="BqvMRzjt"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="DiT1Gsvv"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 65C7E352084;
-	Tue, 26 Aug 2025 14:30:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C2DAD326D48;
+	Tue, 26 Aug 2025 11:22:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756218649; cv=none; b=sFTgY1mEUryyoUgbZG0rAkW212Qud6xPgL722W813UQx+a/4G8Xk2OHs6uqt23w9hlfrICOTDDHHE6h2h0wCa5YUHPy91OP+fNTISU7yGapX2RegP2FWPO2cfUtCdqqSfK87ypTG+pk36ZD1rZAIsuSCZSmNfSsRQxS/Yorh4t8=
+	t=1756207360; cv=none; b=I1sqQAlOOhomUjVX6o2fr31eJiyy2taM7BEhIzmLb7E3bRZGh37eiAQWIy7JGWzmxLevSlRvZYN1BXYHAVs+SZ11aRZzOJnY+Wf8re5r76+BpYAw6UFJMR6BM5ULAuBWEV4kGPMPLL6FobRgNSD/SvsUbgjLt4nxiYRgxml+jak=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756218649; c=relaxed/simple;
-	bh=seMxkweLD7HqC5V7kncGJXpxbIoJTve4ElWvcdV2BQg=;
+	s=arc-20240116; t=1756207360; c=relaxed/simple;
+	bh=FCkPZX70LUFB6kIT0J7AZ+m5nAf0xGH42LGtUDIkGc8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=ZBOMIbBBDmGVzRbGdYMRDeWugaCmQifgdNlNef/2DHXsN34Ka+GhRg+RaGYT/DHtkzQ+5+RZhRpsoVGxbxgtu0fATJ7mMOzxr+7APdc+ndfeJR1zUOTjgbCbqaJAFz6atrAQMN1UsziU2JeTvxY8cxXOVUghXyy8mWmNb0tdI54=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=BqvMRzjt; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8A39EC4CEF1;
-	Tue, 26 Aug 2025 14:30:48 +0000 (UTC)
+	 MIME-Version; b=bNb5O0O48NvraSPwHGxJgf55GlRdf09qKGKSCAsuzRG0IpuVZjB56lPzVPuhTqJOgTZd0Zh2C7cJMQwSK6QD0zYAHpfYK8lZGTzB2FJSi8mUr8lq/AEGjVlRV4x6xeST2pNu23783M/lePGWz3a8AJHpzVJawd0sTHsu/1Wp5s4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=DiT1Gsvv; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D2047C4CEF4;
+	Tue, 26 Aug 2025 11:22:38 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1756218649;
-	bh=seMxkweLD7HqC5V7kncGJXpxbIoJTve4ElWvcdV2BQg=;
+	s=korg; t=1756207359;
+	bh=FCkPZX70LUFB6kIT0J7AZ+m5nAf0xGH42LGtUDIkGc8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=BqvMRzjt13yx6x/6DawcStHoB3b7Ljzw/BkxWKztpuyoKnFsV+N66i7zTPI1HA+AV
-	 +RX85pbE8QSXBEEdFa2VVPFUKdT7IEDjvtD2e3eZ65VQQoCzXj8MF14y9PyVvEAICZ
-	 KO+Lh66vWXdQlIdcKvzJjRsjiA0IRUJYgaphhlFQ=
+	b=DiT1GsvvO50Julc/XfPKqjZkqV0Gxy3A6so/9L3WGJb6geUR41OJK1hAyp0IUNOMG
+	 r8xm7YcTMmMy35wktvNTxr6kQTC+7tUpEMlqR62UyZDd8cpGYsEvi4Ee3Yl4M+urLW
+	 DJ3w/xkW4r23uvVZCVA8nkjVClPgezYogvgHZHMs=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Lucas De Marchi <lucas.demarchi@intel.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.4 079/403] usb: early: xhci-dbc: Fix early_ioremap leak
+	John David Anglin <dave.anglin@bell.net>,
+	Helge Deller <deller@gmx.de>
+Subject: [PATCH 6.16 121/457] parisc: Check region is readable by user in raw_copy_from_user()
 Date: Tue, 26 Aug 2025 13:06:45 +0200
-Message-ID: <20250826110908.636068927@linuxfoundation.org>
+Message-ID: <20250826110940.363246701@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250826110905.607690791@linuxfoundation.org>
-References: <20250826110905.607690791@linuxfoundation.org>
+In-Reply-To: <20250826110937.289866482@linuxfoundation.org>
+References: <20250826110937.289866482@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,61 +61,108 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.4-stable review patch.  If anyone has any objections, please let me know.
+6.16-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Lucas De Marchi <lucas.demarchi@intel.com>
+From: John David Anglin <dave.anglin@bell.net>
 
-[ Upstream commit 2b7eec2ec3015f52fc74cf45d0408925e984ecd1 ]
+commit 91428ca9320edbab1211851d82429d33b9cd73ef upstream.
 
-Using the kernel param earlyprintk=xdbc,keep without proper hardware
-setup leads to this:
+Because of the way the _PAGE_READ is handled in the parisc PTE, an
+access interruption is not generated when the kernel reads from a
+region where the _PAGE_READ is zero. The current code was written
+assuming read access faults would also occur in the kernel.
 
-	[ ] xhci_dbc:early_xdbc_parse_parameter: dbgp_num: 0
-	...
-	[ ] xhci_dbc:early_xdbc_setup_hardware: failed to setup the connection to host
-	...
-	[ ] calling  kmemleak_late_init+0x0/0xa0 @ 1
-	[ ] kmemleak: Kernel memory leak detector initialized (mem pool available: 14919)
-	[ ] kmemleak: Automatic memory scanning thread started
-	[ ] initcall kmemleak_late_init+0x0/0xa0 returned 0 after 417 usecs
-	[ ] calling  check_early_ioremap_leak+0x0/0x70 @ 1
-	[ ] ------------[ cut here ]------------
-	[ ] Debug warning: early ioremap leak of 1 areas detected.
-	    please boot with early_ioremap_debug and report the dmesg.
-	[ ] WARNING: CPU: 11 PID: 1 at mm/early_ioremap.c:90 check_early_ioremap_leak+0x4e/0x70
+This change adds user access checks to raw_copy_from_user().  The
+prober_user() define checks whether user code has read access to
+a virtual address. Note that page faults are not handled in the
+exception support for the probe instruction. For this reason, we
+precede the probe by a ldb access check.
 
-When early_xdbc_setup_hardware() fails, make sure to call
-early_iounmap() since xdbc_init() won't handle it.
-
-Signed-off-by: Lucas De Marchi <lucas.demarchi@intel.com>
-Fixes: aeb9dd1de98c ("usb/early: Add driver for xhci debug capability")
-Link: https://lore.kernel.org/r/20250627-xdbc-v1-1-43cc8c317b1b@intel.com
+Signed-off-by: John David Anglin <dave.anglin@bell.net>
+Signed-off-by: Helge Deller <deller@gmx.de>
+Cc: stable@vger.kernel.org # v5.12+
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/usb/early/xhci-dbc.c | 4 ++++
- 1 file changed, 4 insertions(+)
+ arch/parisc/include/asm/special_insns.h |   28 ++++++++++++++++++++++++++++
+ arch/parisc/lib/memcpy.c                |   19 ++++++++++++++++++-
+ 2 files changed, 46 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/usb/early/xhci-dbc.c b/drivers/usb/early/xhci-dbc.c
-index 5a462a1d1896..7673ded077a4 100644
---- a/drivers/usb/early/xhci-dbc.c
-+++ b/drivers/usb/early/xhci-dbc.c
-@@ -678,6 +678,10 @@ int __init early_xdbc_setup_hardware(void)
+--- a/arch/parisc/include/asm/special_insns.h
++++ b/arch/parisc/include/asm/special_insns.h
+@@ -32,6 +32,34 @@
+ 	pa;						\
+ })
  
- 		xdbc.table_base = NULL;
- 		xdbc.out_buf = NULL;
++/**
++ * prober_user() - Probe user read access
++ * @sr:		Space regster.
++ * @va:		Virtual address.
++ *
++ * Return: Non-zero if address is accessible.
++ *
++ * Due to the way _PAGE_READ is handled in TLB entries, we need
++ * a special check to determine whether a user address is accessible.
++ * The ldb instruction does the initial access check. If it is
++ * successful, the probe instruction checks user access rights.
++ */
++#define prober_user(sr, va)	({			\
++	unsigned long read_allowed;			\
++	__asm__ __volatile__(				\
++		"copy %%r0,%0\n"			\
++		"8:\tldb 0(%%sr%1,%2),%%r0\n"		\
++		"\tproberi (%%sr%1,%2),%3,%0\n"		\
++		"9:\n"					\
++		ASM_EXCEPTIONTABLE_ENTRY(8b, 9b,	\
++				"or %%r0,%%r0,%%r0")	\
++		: "=&r" (read_allowed)			\
++		: "i" (sr), "r" (va), "i" (PRIV_USER)	\
++		: "memory"				\
++	);						\
++	read_allowed;					\
++})
 +
-+		early_iounmap(xdbc.xhci_base, xdbc.xhci_length);
-+		xdbc.xhci_base = NULL;
-+		xdbc.xhci_length = 0;
- 	}
+ #define CR_EIEM 15	/* External Interrupt Enable Mask */
+ #define CR_CR16 16	/* CR16 Interval Timer */
+ #define CR_EIRR 23	/* External Interrupt Request Register */
+--- a/arch/parisc/lib/memcpy.c
++++ b/arch/parisc/lib/memcpy.c
+@@ -12,6 +12,7 @@
+ #include <linux/module.h>
+ #include <linux/compiler.h>
+ #include <linux/uaccess.h>
++#include <linux/mm.h>
  
- 	return ret;
--- 
-2.39.5
-
+ #define get_user_space()	mfsp(SR_USER)
+ #define get_kernel_space()	SR_KERNEL
+@@ -32,9 +33,25 @@ EXPORT_SYMBOL(raw_copy_to_user);
+ unsigned long raw_copy_from_user(void *dst, const void __user *src,
+ 			       unsigned long len)
+ {
++	unsigned long start = (unsigned long) src;
++	unsigned long end = start + len;
++	unsigned long newlen = len;
++
+ 	mtsp(get_user_space(), SR_TEMP1);
+ 	mtsp(get_kernel_space(), SR_TEMP2);
+-	return pa_memcpy(dst, (void __force *)src, len);
++
++	/* Check region is user accessible */
++	if (start)
++	while (start < end) {
++		if (!prober_user(SR_TEMP1, start)) {
++			newlen = (start - (unsigned long) src);
++			break;
++		}
++		start += PAGE_SIZE;
++		/* align to page boundry which may have different permission */
++		start = PAGE_ALIGN_DOWN(start);
++	}
++	return len - newlen + pa_memcpy(dst, (void __force *)src, newlen);
+ }
+ EXPORT_SYMBOL(raw_copy_from_user);
+ 
 
 
 
