@@ -1,58 +1,57 @@
-Return-Path: <stable+bounces-174292-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-175419-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 13B9CB362D3
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 15:22:33 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 898FBB36806
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 16:12:11 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 984762A253C
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 13:15:18 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 8DDAF1C410C8
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 14:05:13 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2CAE531813A;
-	Tue, 26 Aug 2025 13:13:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 001AE350847;
+	Tue, 26 Aug 2025 14:03:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Jf8wzqo+"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="QAweuX2V"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DDF013090CD;
-	Tue, 26 Aug 2025 13:13:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B056434F49D;
+	Tue, 26 Aug 2025 14:03:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756214002; cv=none; b=qo23W65cWIr3SZzCeENtClY5v3UELE5S2nDGii3n0GNrX9aK3kMHrD0Kmt61TDZD7DQAmccvZ5mXYSf24QpfgopLct7JNP8ueDa/RQhWPNaVeY25soQEaqSi5zPDACHS+KsiDAYMN6jEyxWrievF8pLP0/DVAqWznGQOjhHwijE=
+	t=1756216992; cv=none; b=ebyZXdZDVgq1Pj2dw1I3a9YKS2q2sXZKdpun45IuuqFj+jsnELGxyFp14DWnxS40XxrgXZJ//UZBC1he7e/A6gX3VF3sZaW6QSDibHtcKGmrIDIerVID4B8QNQFLuHTpgL4CImDwNYmtPq1qjYB0aiElVZppn4Azk/VDcprhxhY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756214002; c=relaxed/simple;
-	bh=Rg8yv+1GbMGNf3M/siZ/3MgwdBkAYwGYjpTWGevUnLM=;
+	s=arc-20240116; t=1756216992; c=relaxed/simple;
+	bh=1NV3RSgeR7Kp9hoJNkyGXwpiajxI3hqjBRYZpxBlSlQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=SwL7ainoZhyoH0rujq6E83VqF3Ix6ASvZ/Rqmgg2gBtH61v6viqdEhBP2L3zrrwtd0EzStTC9y1pPXyJSniEciVnX/JYBWIQgGC4x8aIuCQ+diuGdBOC4IBtS4ZM8timdqjzO2Ue8eLc/FLOp7M7TK1zj/fcJfU5lThSEbocylg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Jf8wzqo+; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 71AC0C4CEF1;
-	Tue, 26 Aug 2025 13:13:21 +0000 (UTC)
+	 MIME-Version; b=U0easFNHN4npHLH6fjniUJpYAJk/TQf5ML7OLb8N4zxozbi09OpiJGRyIaknNQsmTDlJYtOoOOqRtbNDY6BWKKOUAE0FZlP2XMznEoajUvBCnfCaUpjn48dceHeBifRJrjwOJ+d7INd2Igw6zJMao3O98xoyA3f1ee5AEB3DhN8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=QAweuX2V; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 445ABC19422;
+	Tue, 26 Aug 2025 14:03:12 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1756214001;
-	bh=Rg8yv+1GbMGNf3M/siZ/3MgwdBkAYwGYjpTWGevUnLM=;
+	s=korg; t=1756216992;
+	bh=1NV3RSgeR7Kp9hoJNkyGXwpiajxI3hqjBRYZpxBlSlQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Jf8wzqo+qWNp3Hyec/hwuJpR6wAE46dAhJg9jYI9u2zXv1aCk63pgwoIfv7C46aLW
-	 Ot/kJcVUmhOhINuT1F0sow9NLW9WdLysWcR8uKMLfXvALLA8jgM7FsorXrBfpaECwB
-	 w7iloU0L1rCnC2d7AV47yekxNUAE1w8Ka4jS1Zz0=
+	b=QAweuX2V0jdK1G6wZWASJbIboPb8KHsZh1H4/hUzKte3ydirfzzgC/8Wmnm+D+BbJ
+	 tYghxFom3RwhdAR3+DQIM+juY6dLU+FGuhja9soLfvNp1yQYMiPOx7hdvQup/aSeJC
+	 mmEwRt+Y5zJtPX0tKAlTuoE67LxwugxccUR1MhfA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Zoey Mertes <zoey@cloudflare.com>,
-	Ido Schimmel <idosch@nvidia.com>,
-	Petr Machata <petrm@nvidia.com>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 561/587] mlxsw: spectrum: Forward packets with an IPv4 link-local source IP
+	Tianxiang Peng <txpeng@tencent.com>,
+	"Borislav Petkov (AMD)" <bp@alien8.de>,
+	Hui Li <caelli@tencent.com>,
+	stable@kernel.org
+Subject: [PATCH 5.15 619/644] x86/cpu/hygon: Add missing resctrl_cpu_detect() in bsp_init helper
 Date: Tue, 26 Aug 2025 13:11:50 +0200
-Message-ID: <20250826111007.296722672@linuxfoundation.org>
+Message-ID: <20250826111001.894416321@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250826110952.942403671@linuxfoundation.org>
-References: <20250826110952.942403671@linuxfoundation.org>
+In-Reply-To: <20250826110946.507083938@linuxfoundation.org>
+References: <20250826110946.507083938@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,62 +63,61 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Ido Schimmel <idosch@nvidia.com>
+From: Tianxiang Peng <txpeng@tencent.com>
 
-[ Upstream commit f604d3aaf64ff0d90cc875295474d3abf4155629 ]
+commit d8df126349dad855cdfedd6bbf315bad2e901c2f upstream.
 
-By default, the device does not forward IPv4 packets with a link-local
-source IP (i.e., 169.254.0.0/16). This behavior does not align with the
-kernel which does forward them.
+Since
 
-Fix by instructing the device to forward such packets instead of
-dropping them.
+  923f3a2b48bd ("x86/resctrl: Query LLC monitoring properties once during boot")
 
-Fixes: ca360db4b825 ("mlxsw: spectrum: Disable DIP_LINK_LOCAL check in hardware pipeline")
-Reported-by: Zoey Mertes <zoey@cloudflare.com>
-Signed-off-by: Ido Schimmel <idosch@nvidia.com>
-Reviewed-by: Petr Machata <petrm@nvidia.com>
-Signed-off-by: Petr Machata <petrm@nvidia.com>
-Link: https://patch.msgid.link/6721e6b2c96feb80269e72ce8d0b426e2f32d99c.1755174341.git.petrm@nvidia.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+resctrl_cpu_detect() has been moved from common CPU initialization code to
+the vendor-specific BSP init helper, while Hygon didn't put that call in their
+code.
+
+This triggers a division by zero fault during early booting stage on our
+machines with X86_FEATURE_CQM* supported, where get_rdt_mon_resources() tries
+to calculate mon_l3_config with uninitialized boot_cpu_data.x86_cache_occ_scale.
+
+Add the missing resctrl_cpu_detect() in the Hygon BSP init helper.
+
+  [ bp: Massage commit message. ]
+
+Fixes: 923f3a2b48bd ("x86/resctrl: Query LLC monitoring properties once during boot")
+Signed-off-by: Tianxiang Peng <txpeng@tencent.com>
+Signed-off-by: Borislav Petkov (AMD) <bp@alien8.de>
+Reviewed-by: Hui Li <caelli@tencent.com>
+Cc: <stable@kernel.org>
+Link: https://lore.kernel.org/20250623093153.3016937-1-txpeng@tencent.com
+Signed-off-by: Tianxiang Peng <txpeng@tencent.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/net/ethernet/mellanox/mlxsw/spectrum.c | 2 ++
- drivers/net/ethernet/mellanox/mlxsw/trap.h     | 1 +
- 2 files changed, 3 insertions(+)
+ arch/x86/kernel/cpu/hygon.c |    3 +++
+ 1 file changed, 3 insertions(+)
 
-diff --git a/drivers/net/ethernet/mellanox/mlxsw/spectrum.c b/drivers/net/ethernet/mellanox/mlxsw/spectrum.c
-index 9dbd5edff0b0..51f49510826a 100644
---- a/drivers/net/ethernet/mellanox/mlxsw/spectrum.c
-+++ b/drivers/net/ethernet/mellanox/mlxsw/spectrum.c
-@@ -2528,6 +2528,8 @@ static const struct mlxsw_listener mlxsw_sp_listener[] = {
- 			     ROUTER_EXP, false),
- 	MLXSW_SP_RXL_NO_MARK(DISCARD_ING_ROUTER_DIP_LINK_LOCAL, FORWARD,
- 			     ROUTER_EXP, false),
-+	MLXSW_SP_RXL_NO_MARK(DISCARD_ING_ROUTER_SIP_LINK_LOCAL, FORWARD,
-+			     ROUTER_EXP, false),
- 	/* Multicast Router Traps */
- 	MLXSW_SP_RXL_MARK(ACL1, TRAP_TO_CPU, MULTICAST, false),
- 	MLXSW_SP_RXL_L3_MARK(ACL2, TRAP_TO_CPU, MULTICAST, false),
-diff --git a/drivers/net/ethernet/mellanox/mlxsw/trap.h b/drivers/net/ethernet/mellanox/mlxsw/trap.h
-index 83477c8e6971..5bfc1499347a 100644
---- a/drivers/net/ethernet/mellanox/mlxsw/trap.h
-+++ b/drivers/net/ethernet/mellanox/mlxsw/trap.h
-@@ -95,6 +95,7 @@ enum {
- 	MLXSW_TRAP_ID_DISCARD_ING_ROUTER_IPV4_SIP_BC = 0x16A,
- 	MLXSW_TRAP_ID_DISCARD_ING_ROUTER_IPV4_DIP_LOCAL_NET = 0x16B,
- 	MLXSW_TRAP_ID_DISCARD_ING_ROUTER_DIP_LINK_LOCAL = 0x16C,
-+	MLXSW_TRAP_ID_DISCARD_ING_ROUTER_SIP_LINK_LOCAL = 0x16D,
- 	MLXSW_TRAP_ID_DISCARD_ROUTER_IRIF_EN = 0x178,
- 	MLXSW_TRAP_ID_DISCARD_ROUTER_ERIF_EN = 0x179,
- 	MLXSW_TRAP_ID_DISCARD_ROUTER_LPM4 = 0x17B,
--- 
-2.50.1
-
+--- a/arch/x86/kernel/cpu/hygon.c
++++ b/arch/x86/kernel/cpu/hygon.c
+@@ -14,6 +14,7 @@
+ #include <asm/cacheinfo.h>
+ #include <asm/spec-ctrl.h>
+ #include <asm/delay.h>
++#include <asm/resctrl.h>
+ 
+ #include "cpu.h"
+ 
+@@ -239,6 +240,8 @@ static void bsp_init_hygon(struct cpuinf
+ 			x86_amd_ls_cfg_ssbd_mask = 1ULL << 10;
+ 		}
+ 	}
++
++	resctrl_cpu_detect(c);
+ }
+ 
+ static void early_init_hygon(struct cpuinfo_x86 *c)
 
 
 
