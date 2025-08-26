@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-173557-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-175806-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id B6FD3B35D43
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 13:42:42 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 460DBB369D2
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 16:31:17 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 5CC3B3BBA00
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 11:42:41 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 0AF461C2557B
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 14:22:06 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9B4D829BDBA;
-	Tue, 26 Aug 2025 11:42:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 32F7435083D;
+	Tue, 26 Aug 2025 14:20:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="OQlsRjWt"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="oZg1NpFO"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 24C6E267386;
-	Tue, 26 Aug 2025 11:42:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E396110E0;
+	Tue, 26 Aug 2025 14:20:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756208559; cv=none; b=ZpQX5Gj/bI4T7bX/SO71BIkK7z5vYHk6apsz9XowD9+Lr12IuyH/u+UY9hMgBkU+SZ1JES3sLx2K+7LwdomIHFKFk1nHDrtop2wKgIpipEyj8Ygj/0FUxv1npBLmlhUDYkM8Wx5f+h51ebmkZsuXrYzp4xgF+xihw3GzaWDntQY=
+	t=1756218018; cv=none; b=SgNfnL0elGxK0AzQB9BVVVIKZPtxyQICuvesfruhsYZN9go87M0fmQhj3hgRsM4xHOmTdFZDQ4ppK5SOeFR144Q94aHL5YuZuyVradHxVxOJk+MhDN//yoIg1LZz73GxgH+QAszxJ8zbPAlerdOTtkHMQrjtKiLqif/3QObcDhs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756208559; c=relaxed/simple;
-	bh=/pfDHMMkQ7ZgB9IX8C1Q65r9VHR0qyCIN5UsWj9KdGY=;
+	s=arc-20240116; t=1756218018; c=relaxed/simple;
+	bh=BVRrxAUHbngCRWxtWlj2N7sBHF5XpTs8mOkw3X9VTZ4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=ksUu7Oz1IQnIzqJPm6B08kP6yfa3H0CYKy7D+T9I31SB2SkE69JmIDDdYRfAQ1dRY1GG/6hFMtYxHDZduvZ8WX7JrFFw30qX5nqINuEFkBsDdH1Obvk9qctx7aZ0m+dUQENyZ2359V6u8HsrJl8THGZYyBVNbsNM9J6ae1+tjXI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=OQlsRjWt; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 178D5C4CEF1;
-	Tue, 26 Aug 2025 11:42:37 +0000 (UTC)
+	 MIME-Version; b=fod/45WQPTzsDFMO3gzLzBPXSAgD+1QWTvXPpgfkNiUcFajhsVr/GZtcO8TmxCHq4zGfoqQueS5jjaZq9cJJ+3zRI1ioLYwWCxnl5L2VT6jTPXCPr8YK/2oTh5yuDb3sg6gmFvIscjsUudYnuc9V6QjBFDQZ77ua2bbKky1YlPI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=oZg1NpFO; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 769A2C4CEF1;
+	Tue, 26 Aug 2025 14:20:17 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1756208558;
-	bh=/pfDHMMkQ7ZgB9IX8C1Q65r9VHR0qyCIN5UsWj9KdGY=;
+	s=korg; t=1756218017;
+	bh=BVRrxAUHbngCRWxtWlj2N7sBHF5XpTs8mOkw3X9VTZ4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=OQlsRjWtM4Ktne4lyFvLzR9lmdjZXmLJBqZkjbJBTuim3W/aSwIJtUR9c+xIzd8ze
-	 rZau04mkMc+Wkmr45xk1y/fjNVe7O4UL89hqCBmDZMdBnOGQstuyP4U7s0YXwVCE+o
-	 HBIirIk5wyPGyGbcYYBhHtWjic51DVhcNVG0/FwY=
+	b=oZg1NpFO3qwX2OzrOkgVzECrIXfEG1OvH/pu4lZr/MQzbkeovD1EaOQUeAZLMv00l
+	 agsvTCwOjJgW0zs7gY55WPndoffZ91Dc42ceVFN9cJJEOprUi/XrxyQdNruLhWj+At
+	 m9sL6jFW8OnhXG1eAcCp9a/KkwRb3IFhBuGqT3dk=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Filipe Manana <fdmanana@suse.com>,
-	David Sterba <dsterba@suse.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 157/322] btrfs: send: make fs_path_len() inline and constify its argument
+	Jari Ruusu <jariruusu@protonmail.com>,
+	Yi Yang <yiyang13@huawei.com>,
+	GONG Ruiqi <gongruiqi1@huawei.com>,
+	Helge Deller <deller@gmx.de>
+Subject: [PATCH 5.10 362/523] Revert "vgacon: Add check for vc_origin address range in vgacon_scroll()"
 Date: Tue, 26 Aug 2025 13:09:32 +0200
-Message-ID: <20250826110919.696139764@linuxfoundation.org>
+Message-ID: <20250826110933.398316462@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250826110915.169062587@linuxfoundation.org>
-References: <20250826110915.169062587@linuxfoundation.org>
+In-Reply-To: <20250826110924.562212281@linuxfoundation.org>
+References: <20250826110924.562212281@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,37 +63,45 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Filipe Manana <fdmanana@suse.com>
+From: Helge Deller <deller@gmx.de>
 
-[ Upstream commit 920e8ee2bfcaf886fd8c0ad9df097a7dddfeb2d8 ]
+commit e4fc307d8e24f122402907ebf585248cad52841d upstream.
 
-The helper function fs_path_len() is trivial and doesn't need to change
-its path argument, so make it inline and constify the argument.
+This reverts commit 864f9963ec6b4b76d104d595ba28110b87158003.
 
-Signed-off-by: Filipe Manana <fdmanana@suse.com>
-Reviewed-by: David Sterba <dsterba@suse.com>
-Signed-off-by: David Sterba <dsterba@suse.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+The patch is wrong as it checks vc_origin against vc_screenbuf,
+while in text mode it should compare against vga_vram_base.
+
+As such it broke VGA text scrolling, which can be reproduced like this:
+(1) boot a kernel that is configured to use text mode VGA-console
+(2) type commands:  ls -l /usr/bin | less -S
+(3) scroll up/down with cursor-down/up keys
+
+Reported-by: Jari Ruusu <jariruusu@protonmail.com>
+Cc: stable@vger.kernel.org
+Cc: Yi Yang <yiyang13@huawei.com>
+Cc: GONG Ruiqi <gongruiqi1@huawei.com>
+Signed-off-by: Helge Deller <deller@gmx.de>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- fs/btrfs/send.c |    2 +-
+ drivers/video/console/vgacon.c |    2 +-
  1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/fs/btrfs/send.c
-+++ b/fs/btrfs/send.c
-@@ -478,7 +478,7 @@ static void fs_path_free(struct fs_path
- 	kfree(p);
- }
- 
--static int fs_path_len(struct fs_path *p)
-+static inline int fs_path_len(const struct fs_path *p)
- {
- 	return p->end - p->start;
- }
+--- a/drivers/video/console/vgacon.c
++++ b/drivers/video/console/vgacon.c
+@@ -1200,7 +1200,7 @@ static bool vgacon_scroll(struct vc_data
+ 				     c->vc_screenbuf_size - delta);
+ 			c->vc_origin = vga_vram_end - c->vc_screenbuf_size;
+ 			vga_rolled_over = 0;
+-		} else if (oldo - delta >= (unsigned long)c->vc_screenbuf)
++		} else
+ 			c->vc_origin -= delta;
+ 		c->vc_scr_end = c->vc_origin + c->vc_screenbuf_size;
+ 		scr_memsetw((u16 *) (c->vc_origin), c->vc_video_erase_char,
 
 
 
