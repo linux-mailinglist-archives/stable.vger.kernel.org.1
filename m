@@ -1,55 +1,57 @@
-Return-Path: <stable+bounces-173424-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-174073-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6826EB35DCB
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 13:48:03 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8BED2B36140
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 15:08:16 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 5419F3679EA
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 11:38:09 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 206815E117A
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 13:04:09 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A4C3C2FD7DE;
-	Tue, 26 Aug 2025 11:36:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 549921B85F8;
+	Tue, 26 Aug 2025 13:03:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="pxd/TIGV"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="uC8xIImc"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 61BF32BF3E2;
-	Tue, 26 Aug 2025 11:36:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 10A0D2253F3;
+	Tue, 26 Aug 2025 13:03:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756208213; cv=none; b=bkFZQIBgg/2Hq+adyKNeIJbRtrtrMubarrzKD6dWRpbtEo4ZnYqppin5NYVVcB4i2cWQcttANiun6P4zX5pH3BZ8fg1WOsEybpMQtndDC/LNM4dnKlc8HaGyIakGu5fMaHsqbghdEO4wXR+LyvWZeXLi3IISOdO8ES6g60ndh4Q=
+	t=1756213420; cv=none; b=CxZIUdZqo4+hH1CfYpZ/aFiKGPxAJluWFh4Hwr7/pd8O35OrVFJVfXnoiVigEflibJ0jO7L1a93xwnQxhWjI+aSqUrp8ZNiToVjb1sY87moq+Itx1RGE6w8eVOGPyCfE3Py82+fRFcrsqvoCkCwrajoAf6NfU6XGnCzVtXM/Xxo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756208213; c=relaxed/simple;
-	bh=2hxcptxdqQq9OUwvWZzv/bjzRPeFpNbVqH6sjWZ0qok=;
+	s=arc-20240116; t=1756213420; c=relaxed/simple;
+	bh=IecXPk6HNNS9LqQbaVyye8jyznXEJtrBFlagQsCA9d4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=MvJzJgdXFbpFQb8rV5viXb+zph3mJcdDGKjbp6v/97QnOQmYf5B4CQfQVkJrOe0Ndm+mVv7SzzMrvkPmGMMNIGppjyYvkDi19FTPfAHS22Q4ITKlEOeRnSOuyD/Vs8YUBAxr5ESg9kcwn991e1l+Iu4AudscXh5sFNtJYR90o7E=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=pxd/TIGV; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id EB8CCC4CEF1;
-	Tue, 26 Aug 2025 11:36:52 +0000 (UTC)
+	 MIME-Version; b=KkN1J5O5fXgqDrAojQlTBVwMKVJQjDgkaTz1kK/2ihqyLQv2D2rTOgW5hoRgGc7kuZvzDwUpfAP2nZCh8iL5yoGQ8bHwgBaCy55y0NuUuAxKNAxEuwMorGgtgmG4wsUsTUvrBJy55znJ5Si0n0G9HksK6wAcpN/8itgth8fREdc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=uC8xIImc; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 95FF4C4CEF1;
+	Tue, 26 Aug 2025 13:03:39 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1756208213;
-	bh=2hxcptxdqQq9OUwvWZzv/bjzRPeFpNbVqH6sjWZ0qok=;
+	s=korg; t=1756213419;
+	bh=IecXPk6HNNS9LqQbaVyye8jyznXEJtrBFlagQsCA9d4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=pxd/TIGVCx0SqmqeSzvYCJP2FoejmkQq1zrojY8snQwb4eDxy228VUCoay/BQsOqm
-	 +QcE0Xfz6cFc6/uQNiBmMKmG94EMThAOMleQuasDff+SOVT403aiGM4W+aFQ3Jdynf
-	 kQdWKrGi436g8rBPgLpmmlvGw6lKWbYmm9DQOi/U=
+	b=uC8xIImc6rspXTIJNUT82RtpIJS8CvMIJ+uvESR4cftGm6CI2f7QxTea2Zmkbb309
+	 n/6J6Bxq+XttLuME3D2bearOqEEyKxSut3PnkvAJUAk1dveQA51T9XWcCHq3gq0/wy
+	 r+GP4q0k982YZnLRNyxR3cyzZqeitkD5OBtWCUe0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Bharat Bhushan <bbhushan2@marvell.com>,
-	Herbert Xu <herbert@gondor.apana.org.au>
-Subject: [PATCH 6.12 024/322] crypto: octeontx2 - Fix address alignment on CN10KB and CN10KA-B0
+	Sergey Bashirov <sergeybashirov@gmail.com>,
+	Christoph Hellwig <hch@lst.de>,
+	Trond Myklebust <trond.myklebust@hammerspace.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.6 290/587] pNFS: Fix disk addr range check in block/scsi layout
 Date: Tue, 26 Aug 2025 13:07:19 +0200
-Message-ID: <20250826110915.889247465@linuxfoundation.org>
+Message-ID: <20250826111000.305517953@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250826110915.169062587@linuxfoundation.org>
-References: <20250826110915.169062587@linuxfoundation.org>
+In-Reply-To: <20250826110952.942403671@linuxfoundation.org>
+References: <20250826110952.942403671@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,131 +63,46 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Bharat Bhushan <bbhushan2@marvell.com>
+From: Sergey Bashirov <sergeybashirov@gmail.com>
 
-commit a091a58b8a1eba2f243b0c05bcc82bdc2a4a338d upstream.
+[ Upstream commit 7db6e66663681abda54f81d5916db3a3b8b1a13d ]
 
-octeontx2 crypto driver allocates memory using kmalloc/kzalloc,
-and uses this memory for dma (does dma_map_single()). It assumes
-that kmalloc/kzalloc will return 128-byte aligned address. But
-kmalloc/kzalloc returns 8-byte aligned address after below changes:
-  "9382bc44b5f5 arm64: allow kmalloc() caches aligned to the
-   smaller cache_line_size()
+At the end of the isect translation, disc_addr represents the physical
+disk offset. Thus, end calculated from disk_addr is also a physical disk
+offset. Therefore, range checking should be done using map->disk_offset,
+not map->start.
 
-Memory allocated are used for following purpose:
- - Input data or scatter list address - 8-Byte alignment
- - Output data or gather list address - 8-Byte alignment
- - Completion address - 32-Byte alignment.
-
-This patch ensures all addresses are aligned as mentioned above.
-
-Signed-off-by: Bharat Bhushan <bbhushan2@marvell.com>
-Cc: <stable@vger.kernel.org> # v6.8+
-Signed-off-by: Herbert Xu <herbert@gondor.apana.org.au>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Signed-off-by: Sergey Bashirov <sergeybashirov@gmail.com>
+Reviewed-by: Christoph Hellwig <hch@lst.de>
+Link: https://lore.kernel.org/r/20250702133226.212537-1-sergeybashirov@gmail.com
+Signed-off-by: Trond Myklebust <trond.myklebust@hammerspace.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/crypto/marvell/octeontx2/otx2_cpt_reqmgr.h |   61 +++++++++++++++------
- 1 file changed, 45 insertions(+), 16 deletions(-)
+ fs/nfs/blocklayout/blocklayout.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
---- a/drivers/crypto/marvell/octeontx2/otx2_cpt_reqmgr.h
-+++ b/drivers/crypto/marvell/octeontx2/otx2_cpt_reqmgr.h
-@@ -350,22 +350,48 @@ static inline struct otx2_cpt_inst_info
- cn10k_sgv2_info_create(struct pci_dev *pdev, struct otx2_cpt_req_info *req,
- 		       gfp_t gfp)
- {
--	u32 dlen = 0, g_len, sg_len, info_len;
--	int align = OTX2_CPT_DMA_MINALIGN;
-+	u32 dlen = 0, g_len, s_len, sg_len, info_len;
- 	struct otx2_cpt_inst_info *info;
--	u16 g_sz_bytes, s_sz_bytes;
- 	u32 total_mem_len;
- 	int i;
+diff --git a/fs/nfs/blocklayout/blocklayout.c b/fs/nfs/blocklayout/blocklayout.c
+index 6be13e0ec170..e498aade8c47 100644
+--- a/fs/nfs/blocklayout/blocklayout.c
++++ b/fs/nfs/blocklayout/blocklayout.c
+@@ -149,8 +149,8 @@ do_add_page_to_bio(struct bio *bio, int npg, enum req_op op, sector_t isect,
  
--	g_sz_bytes = ((req->in_cnt + 2) / 3) *
--		      sizeof(struct cn10kb_cpt_sglist_component);
--	s_sz_bytes = ((req->out_cnt + 2) / 3) *
--		      sizeof(struct cn10kb_cpt_sglist_component);
--
--	g_len = ALIGN(g_sz_bytes, align);
--	sg_len = ALIGN(g_len + s_sz_bytes, align);
--	info_len = ALIGN(sizeof(*info), align);
--	total_mem_len = sg_len + info_len + sizeof(union otx2_cpt_res_s);
-+	/* Allocate memory to meet below alignment requirement:
-+	 *  ------------------------------------
-+	 * |    struct otx2_cpt_inst_info       |
-+	 * |    (No alignment required)         |
-+	 * |    --------------------------------|
-+	 * |   | padding for ARCH_DMA_MINALIGN  |
-+	 * |   | alignment                      |
-+	 * |------------------------------------|
-+	 * |    SG List Gather/Input memory     |
-+	 * |    Length = multiple of 32Bytes    |
-+	 * |    Alignment = 8Byte               |
-+	 * |----------------------------------  |
-+	 * |    SG List Scatter/Output memory   |
-+	 * |    Length = multiple of 32Bytes    |
-+	 * |    Alignment = 8Byte               |
-+	 * |     -------------------------------|
-+	 * |    | padding for 32B alignment     |
-+	 * |------------------------------------|
-+	 * |    Result response memory          |
-+	 * |    Alignment = 32Byte              |
-+	 *  ------------------------------------
-+	 */
-+
-+	info_len = sizeof(*info);
-+
-+	g_len = ((req->in_cnt + 2) / 3) *
-+		 sizeof(struct cn10kb_cpt_sglist_component);
-+	s_len = ((req->out_cnt + 2) / 3) *
-+		 sizeof(struct cn10kb_cpt_sglist_component);
-+	sg_len = g_len + s_len;
-+
-+	/* Allocate extra memory for SG and response address alignment */
-+	total_mem_len = ALIGN(info_len, OTX2_CPT_DPTR_RPTR_ALIGN);
-+	total_mem_len += (ARCH_DMA_MINALIGN - 1) &
-+			  ~(OTX2_CPT_DPTR_RPTR_ALIGN - 1);
-+	total_mem_len += ALIGN(sg_len, OTX2_CPT_RES_ADDR_ALIGN);
-+	total_mem_len += sizeof(union otx2_cpt_res_s);
+ 	/* limit length to what the device mapping allows */
+ 	end = disk_addr + *len;
+-	if (end >= map->start + map->len)
+-		*len = map->start + map->len - disk_addr;
++	if (end >= map->disk_offset + map->len)
++		*len = map->disk_offset + map->len - disk_addr;
  
- 	info = kzalloc(total_mem_len, gfp);
- 	if (unlikely(!info))
-@@ -375,7 +401,8 @@ cn10k_sgv2_info_create(struct pci_dev *p
- 		dlen += req->in[i].size;
- 
- 	info->dlen = dlen;
--	info->in_buffer = (u8 *)info + info_len;
-+	info->in_buffer = PTR_ALIGN((u8 *)info + info_len, ARCH_DMA_MINALIGN);
-+	info->out_buffer = info->in_buffer + g_len;
- 	info->gthr_sz = req->in_cnt;
- 	info->sctr_sz = req->out_cnt;
- 
-@@ -387,7 +414,7 @@ cn10k_sgv2_info_create(struct pci_dev *p
- 	}
- 
- 	if (sgv2io_components_setup(pdev, req->out, req->out_cnt,
--				    &info->in_buffer[g_len])) {
-+				    info->out_buffer)) {
- 		dev_err(&pdev->dev, "Failed to setup scatter list\n");
- 		goto destroy_info;
- 	}
-@@ -404,8 +431,10 @@ cn10k_sgv2_info_create(struct pci_dev *p
- 	 * Get buffer for union otx2_cpt_res_s response
- 	 * structure and its physical address
- 	 */
--	info->completion_addr = info->in_buffer + sg_len;
--	info->comp_baddr = info->dptr_baddr + sg_len;
-+	info->completion_addr = PTR_ALIGN((info->in_buffer + sg_len),
-+					  OTX2_CPT_RES_ADDR_ALIGN);
-+	info->comp_baddr = ALIGN((info->dptr_baddr + sg_len),
-+				 OTX2_CPT_RES_ADDR_ALIGN);
- 
- 	return info;
- 
+ retry:
+ 	if (!bio) {
+-- 
+2.39.5
+
 
 
 
