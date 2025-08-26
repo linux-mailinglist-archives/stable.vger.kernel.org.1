@@ -1,58 +1,58 @@
-Return-Path: <stable+bounces-174373-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-172968-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 84A36B362CE
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 15:22:16 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 45B4FB35B1D
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 13:18:41 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 4022818951D3
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 13:19:03 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 3B77517188D
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 11:17:17 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 25272343202;
-	Tue, 26 Aug 2025 13:16:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C241327A917;
+	Tue, 26 Aug 2025 11:17:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="YjeP16p5"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="MulpDoGp"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D4E8D23F405;
-	Tue, 26 Aug 2025 13:16:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7FD7020B7EE;
+	Tue, 26 Aug 2025 11:17:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756214218; cv=none; b=YtOqLbDHxNEoA4iBbAXSYhQkrx/Xt/rou0bGx7Tm7Np4a9q1cVP93s7wffkij2kDejExzwDfeBSNcrZpTCI7Ryk26y09tnDj9SkBFhTKkwdyxdrPUC7sPiIIoZM7TEsWZ8mqbCzqo084TZl5M0g2FRp5zYl8mtECOBWVZp4wAd0=
+	t=1756207032; cv=none; b=Wpr9DHnIQ2Gwh9UqRNuGmU8YAv1Sf5Ir6Y4V3JR3T3vAsEPAJNjxs8VUbyGAr5/85obgPnYJInVPJej9igqYB3SXX0gpRIZHDRS9rdF3RY3CvhlNo21F55vvC8H/5bjh8I0g3UqSMlzltyuc/5MBWKp+2hBMdnoiijB9TxqIPek=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756214218; c=relaxed/simple;
-	bh=6IfMK1Em6ZHnEFjo2/Uf28x99VxgWxsh1wgcg14Hpew=;
+	s=arc-20240116; t=1756207032; c=relaxed/simple;
+	bh=0nJlYRwWWB6G+OakE5RUTbhUh3e4TOnC3coRX6sGhTs=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=h+n8SQd8sFBjdWuu9OToUcznf5XQenQ0B5VFYGgn+wqbGyXTcN0sjwRHAakkQwzeGtSTzsQKCUlh+LeVebYxFnsdFmEao686Vmvvs/gJHKFkhBbScTk6/n4TZNLmSvqdiQJvtVXz/ebpHDvT4UWtrHibtgU4h6oFUnNrsj/xVUo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=YjeP16p5; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 64D10C4CEF1;
-	Tue, 26 Aug 2025 13:16:58 +0000 (UTC)
+	 MIME-Version; b=iMI7WBIonsR+8NS+fJQpSWNa8rslvsZAaPHhaNmenr+AqNAMjIEUzxi41ixVO2PATHNwk136tRqVHm6lDChiTkKraFLiW4KlZj5Kru0875Ex9KudhcZU+Z049rbTq9y7tQWkCff7fGyDuij6MaGuYT1oBML1ScEGhzDQ3RI55IQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=MulpDoGp; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 18386C4CEF1;
+	Tue, 26 Aug 2025 11:17:11 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1756214218;
-	bh=6IfMK1Em6ZHnEFjo2/Uf28x99VxgWxsh1wgcg14Hpew=;
+	s=korg; t=1756207032;
+	bh=0nJlYRwWWB6G+OakE5RUTbhUh3e4TOnC3coRX6sGhTs=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=YjeP16p5JOHtXIRErs6fFx0NYX0QX79KMKfj7OtN1N+/Lmn4QqOE9LHwy2ZVxe4EV
-	 U3huZuh/OO6/AH9+tXY3RmiNzdKJuomK7annzrdk5B9eu05nEFEOXoglUaMSdyiWwb
-	 T7XLoSF8x5urCa4TyI7p5NJI71kh3MvTUa3nnyj8=
+	b=MulpDoGpFBwtCZdZmobf9/Qh9wMIDKbDaE9F3NwZf7n/PFL1TPnsrCxOj311GqJjo
+	 kafBylCeuRF/r2Dny9lk0Ud1mr9WH/CcLUof9iWrTrLDVdarXAxHRmg5xQcVF55/tH
+	 7xjrtiu88RZHPXkVlikYO6d5tx6zuirl+qZrkGIM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Sarah Newman <srn@prgmr.com>,
-	Lars Ellenberg <lars@linbit.com>,
-	=?UTF-8?q?Christoph=20B=C3=B6hmwalder?= <christoph.boehmwalder@linbit.com>,
-	Jens Axboe <axboe@kernel.dk>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 056/482] drbd: add missing kref_get in handle_write_conflicts
+	John Ernberg <john.ernberg@actia.se>,
+	Peng Fan <peng.fan@nxp.com>,
+	Frank Li <Frank.Li@nxp.com>,
+	Herbert Xu <herbert@gondor.apana.org.au>,
+	stable@kernel.org
+Subject: [PATCH 6.16 025/457] crypto: caam - Prevent crash on suspend with iMX8QM / iMX8ULP
 Date: Tue, 26 Aug 2025 13:05:09 +0200
-Message-ID: <20250826110932.207559195@linuxfoundation.org>
+Message-ID: <20250826110937.956335961@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250826110930.769259449@linuxfoundation.org>
-References: <20250826110930.769259449@linuxfoundation.org>
+In-Reply-To: <20250826110937.289866482@linuxfoundation.org>
+References: <20250826110937.289866482@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,70 +62,123 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.16-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Sarah Newman <srn@prgmr.com>
+From: John Ernberg <john.ernberg@actia.se>
 
-[ Upstream commit 00c9c9628b49e368d140cfa61d7df9b8922ec2a8 ]
+commit 5ffc47feddcf8eb4d8ac7b42111a02c8e8146512 upstream.
 
-With `two-primaries` enabled, DRBD tries to detect "concurrent" writes
-and handle write conflicts, so that even if you write to the same sector
-simultaneously on both nodes, they end up with the identical data once
-the writes are completed.
+Since the CAAM on these SoCs is managed by another ARM core, called the
+SECO (Security Controller) on iMX8QM and Secure Enclave on iMX8ULP, which
+also reserves access to register page 0 suspend operations cannot touch
+this page.
 
-In handling "superseeded" writes, we forgot a kref_get,
-resulting in a premature drbd_destroy_device and use after free,
-and further to kernel crashes with symptoms.
+This is similar to when running OPTEE, where OPTEE will reserve page 0.
 
-Relevance: No one should use DRBD as a random data generator, and apparently
-all users of "two-primaries" handle concurrent writes correctly on layer up.
-That is cluster file systems use some distributed lock manager,
-and live migration in virtualization environments stops writes on one node
-before starting writes on the other node.
+Track this situation using a new state variable no_page0, reflecting if
+page 0 is reserved elsewhere, either by other management cores in SoC or
+by OPTEE.
 
-Which means that other than for "test cases",
-this code path is never taken in real life.
+Replace the optee_en check in suspend/resume with the new check.
 
-FYI, in DRBD 9, things are handled differently nowadays.  We still detect
-"write conflicts", but no longer try to be smart about them.
-We decided to disconnect hard instead: upper layers must not submit concurrent
-writes. If they do, that's their fault.
+optee_en cannot go away as it's needed elsewhere to gate OPTEE specific
+situations.
 
-Signed-off-by: Sarah Newman <srn@prgmr.com>
-Signed-off-by: Lars Ellenberg <lars@linbit.com>
-Signed-off-by: Christoph Böhmwalder <christoph.boehmwalder@linbit.com>
-Link: https://lore.kernel.org/r/20250627095728.800688-1-christoph.boehmwalder@linbit.com
-Signed-off-by: Jens Axboe <axboe@kernel.dk>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Fixes the following splat at suspend:
+
+    Internal error: synchronous external abort: 0000000096000010 [#1] SMP
+    Hardware name: Freescale i.MX8QXP ACU6C (DT)
+    pstate: 60400005 (nZCv daif +PAN -UAO -TCO -DIT -SSBS BTYPE=--)
+    pc : readl+0x0/0x18
+    lr : rd_reg32+0x18/0x3c
+    sp : ffffffc08192ba20
+    x29: ffffffc08192ba20 x28: ffffff8025190000 x27: 0000000000000000
+    x26: ffffffc0808ae808 x25: ffffffc080922338 x24: ffffff8020e89090
+    x23: 0000000000000000 x22: ffffffc080922000 x21: ffffff8020e89010
+    x20: ffffffc080387ef8 x19: ffffff8020e89010 x18: 000000005d8000d5
+    x17: 0000000030f35963 x16: 000000008f785f3f x15: 000000003b8ef57c
+    x14: 00000000c418aef8 x13: 00000000f5fea526 x12: 0000000000000001
+    x11: 0000000000000002 x10: 0000000000000001 x9 : 0000000000000000
+    x8 : ffffff8025190870 x7 : ffffff8021726880 x6 : 0000000000000002
+    x5 : ffffff80217268f0 x4 : ffffff8021726880 x3 : ffffffc081200000
+    x2 : 0000000000000001 x1 : ffffff8020e89010 x0 : ffffffc081200004
+    Call trace:
+     readl+0x0/0x18
+     caam_ctrl_suspend+0x30/0xdc
+     dpm_run_callback.constprop.0+0x24/0x5c
+     device_suspend+0x170/0x2e8
+     dpm_suspend+0xa0/0x104
+     dpm_suspend_start+0x48/0x50
+     suspend_devices_and_enter+0x7c/0x45c
+     pm_suspend+0x148/0x160
+     state_store+0xb4/0xf8
+     kobj_attr_store+0x14/0x24
+     sysfs_kf_write+0x38/0x48
+     kernfs_fop_write_iter+0xb4/0x178
+     vfs_write+0x118/0x178
+     ksys_write+0x6c/0xd0
+     __arm64_sys_write+0x14/0x1c
+     invoke_syscall.constprop.0+0x64/0xb0
+     do_el0_svc+0x90/0xb0
+     el0_svc+0x18/0x44
+     el0t_64_sync_handler+0x88/0x124
+     el0t_64_sync+0x150/0x154
+    Code: 88dffc21 88dffc21 5ac00800 d65f03c0 (b9400000)
+
+Fixes: d2835701d93c ("crypto: caam - i.MX8ULP donot have CAAM page0 access")
+Cc: stable@kernel.org # v6.10+
+Signed-off-by: John Ernberg <john.ernberg@actia.se>
+Reviewed-by: Peng Fan <peng.fan@nxp.com>
+Reviewed-by: Frank Li <Frank.Li@nxp.com>
+Signed-off-by: Herbert Xu <herbert@gondor.apana.org.au>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/block/drbd/drbd_receiver.c | 6 +++++-
- 1 file changed, 5 insertions(+), 1 deletion(-)
+ drivers/crypto/caam/ctrl.c   |    5 +++--
+ drivers/crypto/caam/intern.h |    1 +
+ 2 files changed, 4 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/block/drbd/drbd_receiver.c b/drivers/block/drbd/drbd_receiver.c
-index 4ba09abbcaf6..acaa84fbe7f6 100644
---- a/drivers/block/drbd/drbd_receiver.c
-+++ b/drivers/block/drbd/drbd_receiver.c
-@@ -2478,7 +2478,11 @@ static int handle_write_conflicts(struct drbd_device *device,
- 			peer_req->w.cb = superseded ? e_send_superseded :
- 						   e_send_retry_write;
- 			list_add_tail(&peer_req->w.list, &device->done_ee);
--			queue_work(connection->ack_sender, &peer_req->peer_device->send_acks_work);
-+			/* put is in drbd_send_acks_wf() */
-+			kref_get(&device->kref);
-+			if (!queue_work(connection->ack_sender,
-+					&peer_req->peer_device->send_acks_work))
-+				kref_put(&device->kref, drbd_destroy_device);
+--- a/drivers/crypto/caam/ctrl.c
++++ b/drivers/crypto/caam/ctrl.c
+@@ -831,7 +831,7 @@ static int caam_ctrl_suspend(struct devi
+ {
+ 	const struct caam_drv_private *ctrlpriv = dev_get_drvdata(dev);
  
- 			err = -ENOENT;
- 			goto out;
--- 
-2.39.5
-
+-	if (ctrlpriv->caam_off_during_pm && !ctrlpriv->optee_en)
++	if (ctrlpriv->caam_off_during_pm && !ctrlpriv->no_page0)
+ 		caam_state_save(dev);
+ 
+ 	return 0;
+@@ -842,7 +842,7 @@ static int caam_ctrl_resume(struct devic
+ 	struct caam_drv_private *ctrlpriv = dev_get_drvdata(dev);
+ 	int ret = 0;
+ 
+-	if (ctrlpriv->caam_off_during_pm && !ctrlpriv->optee_en) {
++	if (ctrlpriv->caam_off_during_pm && !ctrlpriv->no_page0) {
+ 		caam_state_restore(dev);
+ 
+ 		/* HW and rng will be reset so deinstantiation can be removed */
+@@ -908,6 +908,7 @@ static int caam_probe(struct platform_de
+ 
+ 		imx_soc_data = imx_soc_match->data;
+ 		reg_access = reg_access && imx_soc_data->page0_access;
++		ctrlpriv->no_page0 = !reg_access;
+ 		/*
+ 		 * CAAM clocks cannot be controlled from kernel.
+ 		 */
+--- a/drivers/crypto/caam/intern.h
++++ b/drivers/crypto/caam/intern.h
+@@ -115,6 +115,7 @@ struct caam_drv_private {
+ 	u8 blob_present;	/* Nonzero if BLOB support present in device */
+ 	u8 mc_en;		/* Nonzero if MC f/w is active */
+ 	u8 optee_en;		/* Nonzero if OP-TEE f/w is active */
++	u8 no_page0;		/* Nonzero if register page 0 is not controlled by Linux */
+ 	bool pr_support;        /* RNG prediction resistance available */
+ 	int secvio_irq;		/* Security violation interrupt number */
+ 	int virt_en;		/* Virtualization enabled in CAAM */
 
 
 
