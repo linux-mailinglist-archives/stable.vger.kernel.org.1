@@ -1,55 +1,57 @@
-Return-Path: <stable+bounces-173228-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-174119-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 58CD5B35C8E
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 13:35:41 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id CBE52B3616B
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 15:09:22 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 6FB611888F19
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 11:30:57 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 169B41BA7F46
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 13:06:38 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id EC93C34A307;
-	Tue, 26 Aug 2025 11:28:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 62E68246BB2;
+	Tue, 26 Aug 2025 13:05:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="DstzZKXe"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="CijGA5/O"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AA1B5346A1D;
-	Tue, 26 Aug 2025 11:28:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 201E228000C;
+	Tue, 26 Aug 2025 13:05:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756207701; cv=none; b=SfmLfhC17Y9HF/qJJhWI5TZEbWnZGhyV2JdRpp07W142jd4XvZAqut1RG1Av8Iy2c7a1w/7mjCYMqUbZ8Mw1PN/Pld3UlN3VUlAsulwA94ghq26xdkzeGS7Wxg1wuZFxGDSTpLeU6aY+l/ATzxSQ77xSz/6MzsYr9JKSaYzwgrM=
+	t=1756213544; cv=none; b=TIhOUNSkGEeytwCpz/0VK4UlyrRZs/1yY4eaG3vfTjLl9SZ/gKcX1E3wvtckKPyTzhd2zd9J2pc/DU6uY7v9/9uHh/n93TUOmesTEgbu0YR8Mown9MMh+oEGOustxGVjAxSLK5cV3EFfbA9CvMWGVI7TG1vnQy72FS/Tqddlz7g=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756207701; c=relaxed/simple;
-	bh=ix7Y2EVT+FasLKTP+wz8VJh7yH2ee7+yBR64noQlLzM=;
+	s=arc-20240116; t=1756213544; c=relaxed/simple;
+	bh=ynzZZ1WveFX6Zdc9Pu3fkpgqS8OX/onsvj+UUny2NiA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=YSUiYdUX+En69ppvKWyyLX61lb1E+xywfaNVaS7i13iGgVZIX+TGb5fNaC9nkXhqCWi+k3zD5NlsUR/vFl2xFs4/BzU7gOSlGzrza1W2NAyhNGt0qYw57LaAsdAd1HEtI7aVauDPxte4nd2/kAdwK2ZWlVLqRlyPuDcWuJ2s6Ps=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=DstzZKXe; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id CEDE8C4CEF4;
-	Tue, 26 Aug 2025 11:28:20 +0000 (UTC)
+	 MIME-Version; b=JEtvGstM0tzXtQFyoR9RePYMCLV6Achp6EgeOwxW0CiYSyVNqIbD2xpsvWSoDJq0wBYKzxsS9U6IUbo2ZCLqr9Hk3AZGZv8Maa4ft6CVDB8WsdzVczbdXFHZjJj9sgxgm6eaYksqbAkgrHAbmwMsV1/ftvUIn13ONFT5Apju78Q=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=CijGA5/O; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9BB4CC4CEF4;
+	Tue, 26 Aug 2025 13:05:43 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1756207701;
-	bh=ix7Y2EVT+FasLKTP+wz8VJh7yH2ee7+yBR64noQlLzM=;
+	s=korg; t=1756213544;
+	bh=ynzZZ1WveFX6Zdc9Pu3fkpgqS8OX/onsvj+UUny2NiA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=DstzZKXeXxj4KDWGch8aHekOew9W+rNP+0DDVEozUkQVo1N+lzhxwnhVK5BYorOj0
-	 tEt9D+OMnAJ24ZcQqwj83iXjY5ClBCa+pTiaybIjN7FjI5l+IZFz+RQbDJ/wriGGBt
-	 W4AqnngYNN8nA/hRU1anDb10ezoTxOHcsFEjNcHQ=
+	b=CijGA5/OFgWPFmKVJFAep1p3qmYH+Ked6pgRFLq8uxAquqv8Md4U0qDpTcMFMnbMF
+	 RQCmT0y1v9mQg2O0ki9C+YJhh6LxXKYUg6WFPCQ03xXR5MPB8Be7iImqjgUUokKMp5
+	 a3Naju1nGKKKgLlTEmMehP0RklB14W83dlat12T0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Alexander Gordeev <agordeev@linux.ibm.com>,
-	Peter Oberparleiter <oberpar@linux.ibm.com>
-Subject: [PATCH 6.16 253/457] s390/sclp: Fix SCCB present check
+	stable@kernel.org,
+	Kathiravan Thirumoorthy <kathiravan.thirumoorthy@oss.qualcomm.com>,
+	Konrad Dybcio <konrad.dybcio@oss.qualcomm.com>,
+	Vinod Koul <vkoul@kernel.org>
+Subject: [PATCH 6.6 388/587] phy: qcom: phy-qcom-m31: Update IPQ5332 M31 USB phy initialization sequence
 Date: Tue, 26 Aug 2025 13:08:57 +0200
-Message-ID: <20250826110943.611599404@linuxfoundation.org>
+Message-ID: <20250826111002.785927543@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250826110937.289866482@linuxfoundation.org>
-References: <20250826110937.289866482@linuxfoundation.org>
+In-Reply-To: <20250826110952.942403671@linuxfoundation.org>
+References: <20250826110952.942403671@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,70 +63,76 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.16-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Peter Oberparleiter <oberpar@linux.ibm.com>
+From: Kathiravan Thirumoorthy <kathiravan.thirumoorthy@oss.qualcomm.com>
 
-commit 430fa71027b6ac9bb0ce5532b8d0676777d4219a upstream.
+commit 4a3556b81b99f0c8c0358f7cc6801a62b4538fe2 upstream.
 
-Tracing code called by the SCLP interrupt handler contains early exits
-if the SCCB address associated with an interrupt is NULL. This check is
-performed after physical to virtual address translation.
+The current configuration used for the IPQ5332 M31 USB PHY fails the
+Near End High Speed Signal Quality compliance test. To resolve this,
+update the initialization sequence as specified in the Hardware Design
+Document.
 
-If the kernel identity mapping does not start at address zero, the
-resulting virtual address is never zero, so that the NULL checks won't
-work. Subsequently this may result in incorrect accesses to the first
-page of the identity mapping.
-
-Fix this by introducing a function that handles the NULL case before
-address translation.
-
-Fixes: ada1da31ce34 ("s390/sclp: sort out physical vs virtual pointers usage")
-Cc: stable@vger.kernel.org
-Reviewed-by: Alexander Gordeev <agordeev@linux.ibm.com>
-Signed-off-by: Peter Oberparleiter <oberpar@linux.ibm.com>
-Signed-off-by: Alexander Gordeev <agordeev@linux.ibm.com>
+Fixes: 08e49af50701 ("phy: qcom: Introduce M31 USB PHY driver")
+Cc: stable@kernel.org
+Signed-off-by: Kathiravan Thirumoorthy <kathiravan.thirumoorthy@oss.qualcomm.com>
+Reviewed-by: Konrad Dybcio <konrad.dybcio@oss.qualcomm.com>
+Link: https://lore.kernel.org/r/20250630-ipq5332_hsphy_complaince-v2-1-63621439ebdb@oss.qualcomm.com
+Signed-off-by: Vinod Koul <vkoul@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/s390/char/sclp.c |   11 +++++++++--
- 1 file changed, 9 insertions(+), 2 deletions(-)
+ drivers/phy/qualcomm/phy-qcom-m31.c |   14 ++++++++++----
+ 1 file changed, 10 insertions(+), 4 deletions(-)
 
---- a/drivers/s390/char/sclp.c
-+++ b/drivers/s390/char/sclp.c
-@@ -76,6 +76,13 @@ unsigned long sclp_console_full;
- /* The currently active SCLP command word. */
- static sclp_cmdw_t active_cmd;
+--- a/drivers/phy/qualcomm/phy-qcom-m31.c
++++ b/drivers/phy/qualcomm/phy-qcom-m31.c
+@@ -58,14 +58,16 @@
+  #define USB2_0_TX_ENABLE		BIT(2)
  
-+static inline struct sccb_header *sclpint_to_sccb(u32 sccb_int)
-+{
-+	if (sccb_int)
-+		return __va(sccb_int);
-+	return NULL;
-+}
+ #define USB2PHY_USB_PHY_M31_XCFGI_4	0xc8
+- #define HSTX_SLEW_RATE_565PS		GENMASK(1, 0)
++ #define HSTX_SLEW_RATE_400PS		GENMASK(2, 0)
+  #define PLL_CHARGING_PUMP_CURRENT_35UA	GENMASK(4, 3)
+  #define ODT_VALUE_38_02_OHM		GENMASK(7, 6)
+ 
+ #define USB2PHY_USB_PHY_M31_XCFGI_5	0xcc
+- #define ODT_VALUE_45_02_OHM		BIT(2)
+  #define HSTX_PRE_EMPHASIS_LEVEL_0_55MA	BIT(0)
+ 
++#define USB2PHY_USB_PHY_M31_XCFGI_9	0xdc
++ #define HSTX_CURRENT_17_1MA_385MV	BIT(1)
 +
- static inline void sclp_trace(int prio, char *id, u32 a, u64 b, bool err)
- {
- 	struct sclp_trace_entry e;
-@@ -619,7 +626,7 @@ __sclp_find_req(u32 sccb)
- 
- static bool ok_response(u32 sccb_int, sclp_cmdw_t cmd)
- {
--	struct sccb_header *sccb = (struct sccb_header *)__va(sccb_int);
-+	struct sccb_header *sccb = sclpint_to_sccb(sccb_int);
- 	struct evbuf_header *evbuf;
- 	u16 response;
- 
-@@ -658,7 +665,7 @@ static void sclp_interrupt_handler(struc
- 
- 	/* INT: Interrupt received (a=intparm, b=cmd) */
- 	sclp_trace_sccb(0, "INT", param32, active_cmd, active_cmd,
--			(struct sccb_header *)__va(finished_sccb),
-+			sclpint_to_sccb(finished_sccb),
- 			!ok_response(finished_sccb, active_cmd));
- 
- 	if (finished_sccb) {
+ #define USB2PHY_USB_PHY_M31_XCFGI_11	0xe4
+  #define XCFG_COARSE_TUNE_NUM		BIT(1)
+  #define XCFG_FINE_TUNE_NUM		BIT(3)
+@@ -120,7 +122,7 @@ static struct m31_phy_regs m31_ipq5332_r
+ 	},
+ 	{
+ 		USB2PHY_USB_PHY_M31_XCFGI_4,
+-		HSTX_SLEW_RATE_565PS | PLL_CHARGING_PUMP_CURRENT_35UA | ODT_VALUE_38_02_OHM,
++		HSTX_SLEW_RATE_400PS | PLL_CHARGING_PUMP_CURRENT_35UA | ODT_VALUE_38_02_OHM,
+ 		0
+ 	},
+ 	{
+@@ -130,10 +132,14 @@ static struct m31_phy_regs m31_ipq5332_r
+ 	},
+ 	{
+ 		USB2PHY_USB_PHY_M31_XCFGI_5,
+-		ODT_VALUE_45_02_OHM | HSTX_PRE_EMPHASIS_LEVEL_0_55MA,
++		HSTX_PRE_EMPHASIS_LEVEL_0_55MA,
+ 		4
+ 	},
+ 	{
++		USB2PHY_USB_PHY_M31_XCFGI_9,
++		HSTX_CURRENT_17_1MA_385MV,
++	},
++	{
+ 		USB_PHY_UTMI_CTRL5,
+ 		0x0,
+ 		0
 
 
 
