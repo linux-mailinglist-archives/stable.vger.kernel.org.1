@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-174935-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-175460-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id A1C64B36569
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 15:47:54 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id EFB96B3682C
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 16:13:35 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 9E11C1BC8267
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 13:42:08 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 3B216567B5D
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 14:06:47 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6E3112512C8;
-	Tue, 26 Aug 2025 13:41:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4056E225390;
+	Tue, 26 Aug 2025 14:05:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="xqvfrEGS"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="KbySk2es"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 29D231946BC;
-	Tue, 26 Aug 2025 13:41:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F273F34AB0D;
+	Tue, 26 Aug 2025 14:05:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756215705; cv=none; b=pJS127Adp7k2RS46Jcc/TX9mL+mIX/P+bMasJ6FwoovwhBTiU7Rra0NOjFjdQf0bNjxtsra++67FWmE+rWPwSf4bVGEjkjuwbfrB5WdM0jNN2xgTvUOsUBnj2tzSuKwD5kf6s1cs8E/q507lKyoZezycfXKilG/lN22Cpgq+TOA=
+	t=1756217102; cv=none; b=CtGbJex8fvoxwM1dX15mGEVGQjV4OA3L1KqjUi0IjYFtVy/iAjmmDjYZGPrq1Com2lohCduoFf5V1QMR9/zfmkIcxfN70UO5ZPO6GQDA+LmSArogv5ByPFyYbzPxEjoSL8zGkPDGz8QRw5vfwNNWUBN1qn9QHxc+2SWUsbjgp3A=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756215705; c=relaxed/simple;
-	bh=zu1mTLOEA9tRj62l4g2/suy6OKH/JhK+um0IveYVFa0=;
+	s=arc-20240116; t=1756217102; c=relaxed/simple;
+	bh=Pnd2NPc2YXEV6vaCT2dUbOc/GDpM6ek8h+4Js4zo3u8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=oJT3aHYZ118AuATKylbFFSF/cHlEuGu6frtMBFmgA90HZgzUl5nAZM8dI9KxniUDaznwUoFQ/rwqBGdOk3SkDBIgM9GzZr0Nl9hwtcdQOuXMaflflrmP5Bs15xd+1y2f4WQ4jfwWI2Kz9sx7AngHPaf/ecY1lkNyhIYTdHOH86k=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=xqvfrEGS; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id ACEF2C113D0;
-	Tue, 26 Aug 2025 13:41:44 +0000 (UTC)
+	 MIME-Version; b=RFYxly8fRRbhSctKlwK33lSExyIur6+pb1HO60NrSQx7WJHgDFyEnDLj3zbo5yWvDGTh2oP2rCMkfuliTmQFKzCNiZ/cj+y2sKsYlJbLZ3/9NnYEY8N06ppYGsJYnOJ359Q5CNFzsim3jmW6ZwxmuNgrEecBvrexam22LQviSWI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=KbySk2es; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8543CC4CEF1;
+	Tue, 26 Aug 2025 14:05:01 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1756215705;
-	bh=zu1mTLOEA9tRj62l4g2/suy6OKH/JhK+um0IveYVFa0=;
+	s=korg; t=1756217101;
+	bh=Pnd2NPc2YXEV6vaCT2dUbOc/GDpM6ek8h+4Js4zo3u8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=xqvfrEGSS4BolQeIV1ffTPRyycHJB/gp0L+6fCWyByHMdt37SVdwIn2lEIpvSNJDa
-	 KgnTVhQl6u+6R5vS03rsjeZXNwzITUt7ep4DoSL6gxz3O2x+i8II4+6Ezc4UI+gqJX
-	 gUkXRXhqTzFjAZAXfBrkSpfxZvXjIThEgg4u+7JI=
+	b=KbySk2esXCgXhiQHsVdUoUCoRuvkqggKrzfU9Jo5NyQNpPdagV/M3I5fRg9NzJUyO
+	 m7YdMDz4iGSMGW0D7HDcf+27PHMiOgYfv8Yy/DImeIbT6CJJj/nsbXRSa5F5v00JpX
+	 XH4GyRhUUC6eeCuPpUlPy7X/0Qmouc4mV8B5XzqM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Andy Yan <andy.yan@rock-chips.com>,
-	Heiko Stuebner <heiko@sntech.de>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 135/644] drm/rockchip: cleanup fb when drm_gem_fb_afbc_init failed
-Date: Tue, 26 Aug 2025 13:03:46 +0200
-Message-ID: <20250826110949.850684303@linuxfoundation.org>
+	syzbot+895c23f6917da440ed0d@syzkaller.appspotmail.com,
+	Jan Kara <jack@suse.cz>,
+	Christian Brauner <brauner@kernel.org>
+Subject: [PATCH 5.10 017/523] isofs: Verify inode mode when loading from disk
+Date: Tue, 26 Aug 2025 13:03:47 +0200
+Message-ID: <20250826110925.011526202@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250826110946.507083938@linuxfoundation.org>
-References: <20250826110946.507083938@linuxfoundation.org>
+In-Reply-To: <20250826110924.562212281@linuxfoundation.org>
+References: <20250826110924.562212281@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,57 +62,48 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Andy Yan <andy.yan@rock-chips.com>
+From: Jan Kara <jack@suse.cz>
 
-[ Upstream commit 099593a28138b48feea5be8ce700e5bc4565e31d ]
+commit 0a9e7405131380b57e155f10242b2e25d2e51852 upstream.
 
-In the function drm_gem_fb_init_with_funcs, the framebuffer (fb)
-and its corresponding object ID have already been registered.
+Verify that the inode mode is sane when loading it from the disk to
+avoid complaints from VFS about setting up invalid inodes.
 
-So we need to cleanup the drm framebuffer if the subsequent
-execution of drm_gem_fb_afbc_init fails.
-
-Directly call drm_framebuffer_put to ensure that all fb related
-resources are cleanup.
-
-Fixes: 7707f7227f09 ("drm/rockchip: Add support for afbc")
-Signed-off-by: Andy Yan <andy.yan@rock-chips.com>
-Signed-off-by: Heiko Stuebner <heiko@sntech.de>
-Link: https://lore.kernel.org/r/20250509031607.2542187-1-andyshrk@163.com
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Reported-by: syzbot+895c23f6917da440ed0d@syzkaller.appspotmail.com
+CC: stable@vger.kernel.org
+Signed-off-by: Jan Kara <jack@suse.cz>
+Link: https://lore.kernel.org/20250709095545.31062-2-jack@suse.cz
+Acked-by: Christian Brauner <brauner@kernel.org>
+Signed-off-by: Christian Brauner <brauner@kernel.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/gpu/drm/rockchip/rockchip_drm_fb.c | 9 +--------
- 1 file changed, 1 insertion(+), 8 deletions(-)
+ fs/isofs/inode.c |    9 ++++++++-
+ 1 file changed, 8 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/gpu/drm/rockchip/rockchip_drm_fb.c b/drivers/gpu/drm/rockchip/rockchip_drm_fb.c
-index 3aa37e177667..b386c17e8668 100644
---- a/drivers/gpu/drm/rockchip/rockchip_drm_fb.c
-+++ b/drivers/gpu/drm/rockchip/rockchip_drm_fb.c
-@@ -81,16 +81,9 @@ rockchip_fb_create(struct drm_device *dev, struct drm_file *file,
- 	}
+--- a/fs/isofs/inode.c
++++ b/fs/isofs/inode.c
+@@ -1492,9 +1492,16 @@ static int isofs_read_inode(struct inode
+ 		inode->i_op = &page_symlink_inode_operations;
+ 		inode_nohighmem(inode);
+ 		inode->i_data.a_ops = &isofs_symlink_aops;
+-	} else
++	} else if (S_ISCHR(inode->i_mode) || S_ISBLK(inode->i_mode) ||
++		   S_ISFIFO(inode->i_mode) || S_ISSOCK(inode->i_mode)) {
+ 		/* XXX - parse_rock_ridge_inode() had already set i_rdev. */
+ 		init_special_inode(inode, inode->i_mode, inode->i_rdev);
++	} else {
++		printk(KERN_DEBUG "ISOFS: Invalid file type 0%04o for inode %lu.\n",
++			inode->i_mode, inode->i_ino);
++		ret = -EIO;
++		goto fail;
++	}
  
- 	if (drm_is_afbc(mode_cmd->modifier[0])) {
--		int ret, i;
--
- 		ret = drm_gem_fb_afbc_init(dev, mode_cmd, afbc_fb);
- 		if (ret) {
--			struct drm_gem_object **obj = afbc_fb->base.obj;
--
--			for (i = 0; i < info->num_planes; ++i)
--				drm_gem_object_put(obj[i]);
--
--			kfree(afbc_fb);
-+			drm_framebuffer_put(&afbc_fb->base);
- 			return ERR_PTR(ret);
- 		}
- 	}
--- 
-2.39.5
-
+ 	ret = 0;
+ out:
 
 
 
