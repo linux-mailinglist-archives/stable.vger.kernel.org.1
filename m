@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-174778-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-176376-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 53797B364ED
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 15:42:55 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 8C0C2B36CBA
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 17:00:06 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 0BC695659E8
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 13:35:32 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 559B05A2FF4
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 14:47:53 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B1AF422DFA7;
-	Tue, 26 Aug 2025 13:34:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B6F97341AA6;
+	Tue, 26 Aug 2025 14:44:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Gw5TFRDg"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="SLQx7RlT"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6EE58224B09;
-	Tue, 26 Aug 2025 13:34:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 74F93296BDF;
+	Tue, 26 Aug 2025 14:44:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756215293; cv=none; b=CMkx4FTgqEphBz3ng8OCRc6DCCjOL9q1UiuFsAdLOLv2jhUU+KBFga4m48J9r174AFgtJgxItJSnhmwduQIF9fr8UWKkS1EtRsR6oceYKZOQcEWjw/5qbEwiMQA1yLOMUhOBRHHuyiwD8o6qAomxCc7MAqBndqSOrYbj9fmET4s=
+	t=1756219497; cv=none; b=RcxlkqU0Bfe7KzX2NDGHs017FBy7ktXfT+4Pj5V5ENXw1yHqESZATX5sQmHVv4Xu2K3sdhmqoKbM12gxYqu3MsquukmZ7hfpVMQ6pL9c0yXq/OruoyYJayQekcv2zBlCdHcPZbTBobvuXDyubZXl3067+Cnhwz6yVnCMTXtGCrA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756215293; c=relaxed/simple;
-	bh=a7MWMzoaJCO3hEQoNSYB4hoWZYM8HGnlmWtxf5/uodw=;
+	s=arc-20240116; t=1756219497; c=relaxed/simple;
+	bh=YHiytu09ntTOIrYFSegI8pzis7I53/RKQ2ty3h4QnqM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Cj3+fWizCpnfIovw1lgcQdQ+17fF1DOdOyV791x3O4kyPLz2my6DevLzT8lZbJ4e7STA3nRibPtGayUymnz95sRES8ailASBUDTnh1Nu3fv8q4ob6OcaAcuSHVEPBFfbzkIAhLSXfwHeKHH/3iyGVmtomPaZPzYNe8uVR73gvoY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Gw5TFRDg; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D10E1C4CEF1;
-	Tue, 26 Aug 2025 13:34:52 +0000 (UTC)
+	 MIME-Version; b=mvOwMbRFsv91tqa+GqdCm/li4C0HXXnWeoC+Fve9g0ATj89IljqcNl5g2uavH9ZL8el2bV0EBy7EM7mXjTOKmfM8tnBU+NFYsiYDF3amYHBZGVYDRf9VFvx69C2X7clYEwpYYzSsAYFrVREn8NRN0OQ1uCqjpNFPMpulgUX4uKs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=SLQx7RlT; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 044E6C4CEF1;
+	Tue, 26 Aug 2025 14:44:56 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1756215293;
-	bh=a7MWMzoaJCO3hEQoNSYB4hoWZYM8HGnlmWtxf5/uodw=;
+	s=korg; t=1756219497;
+	bh=YHiytu09ntTOIrYFSegI8pzis7I53/RKQ2ty3h4QnqM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Gw5TFRDgOC1TucdnBtQLA6vkRwyPOXEFpkkrOw3zpS3a/4Lbxk02BRpuV+gB42Hct
-	 NPlMLp8+vb4kCEwnDrYkv+K/bWlSf6OcHGuphKRwdUnMMNoZRaIwubVL+BPwnxWCDc
-	 /mVfFzjOlesuG+zEcqechXiJZ4KWw/TolJh0LJRc=
+	b=SLQx7RlTGPcaOp/cmXKro5KRsKZj5XILcp6ZgUsGSRtEzXClISrMLQE/jgjaz/LEF
+	 OaQu6Wv48aIEpXJYrPN6Yao0dSRBwrcdmqU2clZ4A7+tBtmaIYNrGAXfLOTW9Sb78f
+	 wMV/pFxVpjmi92xiPvM7W5X0UNXAtO8Hqe1fjXCI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Sergey Shtylyov <s.shtylyov@omp.ru>,
-	Paul Menzel <pmenzel@molgen.mpg.de>,
-	Luiz Augusto von Dentz <luiz.von.dentz@intel.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 460/482] Bluetooth: hci_conn: do return error from hci_enhanced_setup_sync()
+	wenxu <wenxu@ucloud.cn>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Shubham Kulkarni <skulkarni@mvista.com>
+Subject: [PATCH 5.4 387/403] net/sched: act_mirred: refactor the handle of xmit
 Date: Tue, 26 Aug 2025 13:11:53 +0200
-Message-ID: <20250826110942.188640677@linuxfoundation.org>
+Message-ID: <20250826110917.710119672@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250826110930.769259449@linuxfoundation.org>
-References: <20250826110930.769259449@linuxfoundation.org>
+In-Reply-To: <20250826110905.607690791@linuxfoundation.org>
+References: <20250826110905.607690791@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,48 +62,84 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+5.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Sergey Shtylyov <s.shtylyov@omp.ru>
+From: wenxu <wenxu@ucloud.cn>
 
-[ Upstream commit 0eaf7c7e85da7495c0e03a99375707fc954f5e7b ]
+[ Upstream commit fa6d639930ee5cd3f932cc314f3407f07a06582d ]
 
-The commit e07a06b4eb41 ("Bluetooth: Convert SCO configure_datapath to
-hci_sync") missed to update the *return* statement under the *case* of
-BT_CODEC_TRANSPARENT in hci_enhanced_setup_sync(), which led to returning
-success (0) instead of the negative error code (-EINVAL).  However, the
-result of hci_enhanced_setup_sync() seems to be ignored anyway, since NULL
-gets passed to hci_cmd_sync_queue() as the last argument in that case and
-the only function interested in that result is specified by that argument.
+This one is prepare for the next patch.
 
-Fixes: e07a06b4eb41 ("Bluetooth: Convert SCO configure_datapath to hci_sync")
-Signed-off-by: Sergey Shtylyov <s.shtylyov@omp.ru>
-Reviewed-by: Paul Menzel <pmenzel@molgen.mpg.de>
-Signed-off-by: Luiz Augusto von Dentz <luiz.von.dentz@intel.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Signed-off-by: wenxu <wenxu@ucloud.cn>
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+[ skulkarni: Adjusted patch for file 'sch_generic.h' wrt the mainline commit ]
+Stable-dep-of: ca22da2fbd69 ("act_mirred: use the backlog for nested calls to mirred ingress")
+Signed-off-by: Shubham Kulkarni <skulkarni@mvista.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- net/bluetooth/hci_conn.c | 3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+ include/net/sch_generic.h |    5 -----
+ net/sched/act_mirred.c    |   21 +++++++++++++++------
+ 2 files changed, 15 insertions(+), 11 deletions(-)
 
-diff --git a/net/bluetooth/hci_conn.c b/net/bluetooth/hci_conn.c
-index 49b9dd21b73e..5f6785fd6af5 100644
---- a/net/bluetooth/hci_conn.c
-+++ b/net/bluetooth/hci_conn.c
-@@ -439,7 +439,8 @@ static int hci_enhanced_setup_sync(struct hci_dev *hdev, void *data)
- 	case BT_CODEC_TRANSPARENT:
- 		if (!find_next_esco_param(conn, esco_param_msbc,
- 					  ARRAY_SIZE(esco_param_msbc)))
--			return false;
-+			return -EINVAL;
+--- a/include/net/sch_generic.h
++++ b/include/net/sch_generic.h
+@@ -1320,11 +1320,6 @@ void mini_qdisc_pair_swap(struct mini_Qd
+ void mini_qdisc_pair_init(struct mini_Qdisc_pair *miniqp, struct Qdisc *qdisc,
+ 			  struct mini_Qdisc __rcu **p_miniq);
+ 
+-static inline int skb_tc_reinsert(struct sk_buff *skb, struct tcf_result *res)
+-{
+-	return res->ingress ? netif_receive_skb(skb) : dev_queue_xmit(skb);
+-}
+-
+ /* Make sure qdisc is no longer in SCHED state. */
+ static inline void qdisc_synchronize(const struct Qdisc *q)
+ {
+--- a/net/sched/act_mirred.c
++++ b/net/sched/act_mirred.c
+@@ -206,6 +206,18 @@ release_idr:
+ 	return err;
+ }
+ 
++static int tcf_mirred_forward(bool want_ingress, struct sk_buff *skb)
++{
++	int err;
 +
- 		param = &esco_param_msbc[conn->attempt - 1];
- 		cp.tx_coding_format.id = 0x03;
- 		cp.rx_coding_format.id = 0x03;
--- 
-2.50.1
-
++	if (!want_ingress)
++		err = dev_queue_xmit(skb);
++	else
++		err = netif_receive_skb(skb);
++
++	return err;
++}
++
+ static int tcf_mirred_act(struct sk_buff *skb, const struct tc_action *a,
+ 			  struct tcf_result *res)
+ {
+@@ -295,18 +307,15 @@ static int tcf_mirred_act(struct sk_buff
+ 		/* let's the caller reinsert the packet, if possible */
+ 		if (use_reinsert) {
+ 			res->ingress = want_ingress;
+-			if (skb_tc_reinsert(skb, res))
++			err = tcf_mirred_forward(res->ingress, skb);
++			if (err)
+ 				tcf_action_inc_overlimit_qstats(&m->common);
+ 			__this_cpu_dec(mirred_rec_level);
+ 			return TC_ACT_CONSUMED;
+ 		}
+ 	}
+ 
+-	if (!want_ingress)
+-		err = dev_queue_xmit(skb2);
+-	else
+-		err = netif_receive_skb(skb2);
+-
++	err = tcf_mirred_forward(want_ingress, skb2);
+ 	if (err) {
+ out:
+ 		tcf_action_inc_overlimit_qstats(&m->common);
 
 
 
