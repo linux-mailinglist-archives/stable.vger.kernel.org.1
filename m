@@ -1,59 +1,55 @@
-Return-Path: <stable+bounces-176349-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-175938-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id E334CB36CBF
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 17:00:26 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 61427B36AA2
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 16:39:10 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 4B4311C44A83
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 14:47:37 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 5A14D1C41A23
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 14:28:53 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 453E735E4D5;
-	Tue, 26 Aug 2025 14:43:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 57C70352FED;
+	Tue, 26 Aug 2025 14:26:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="YOgL7l30"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="zK9CdFeO"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DB248352FC2;
-	Tue, 26 Aug 2025 14:43:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 13D6135209D;
+	Tue, 26 Aug 2025 14:26:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756219427; cv=none; b=sBMXb87zfdvNwszbXfwSeOpRp6Wn4FNp7uKmbFNnGRzTKB2PA1zWx0Emk3Hp1K/HOcgyJYfOgpABk6TsINxIJrQ8dSgS/TV5jzErZrRCYhlrk52GpVApCMUJ9rRkBdJKc8oUp5PHqYH2IzmMm7c8Q0eX5rs4O+E4VLekICIIGfw=
+	t=1756218364; cv=none; b=ayTolsOok6vSckSLi6x3eUorXukD7asbriBtfHt7/swLxVmutk6TQJRtKa/4Qm+yeR3mBn/qAmDzfkihZ5mLUkheHlm/L9LT6+1GAImZaEoVJlOQ131FK1d1+4Zk+j2NTMoJsC7bi9RcEMkXOXabfGkdxdS+U39SJFkF73F+/nU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756219427; c=relaxed/simple;
-	bh=sTYwLo+jVaKAq3PJB5BO2CTBQ1fbQLu9Z+ejsWG2cbY=;
+	s=arc-20240116; t=1756218364; c=relaxed/simple;
+	bh=IqMzwS71x1NQRI+nGlbmmmN/jPmznvvD9sm/wpQ4j6w=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=pzbctJUfdkstj4DwuhptVKrDUJL5HIm2aGLI4u4pjoy+L86sewkOXUoI1Ow6L3MrILdiYmf7qo5/kt58V1DUEQFhX8gxvi+VfMH9HsXSKlUdlr3CcEwOKUJaSyVMW/LwfbdzSl6FehxRxKX/iA44zQe/LVUIKlzqXLS/NFfKPpQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=YOgL7l30; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0F7D1C4CEF1;
-	Tue, 26 Aug 2025 14:43:46 +0000 (UTC)
+	 MIME-Version; b=UFRhy/pTBj0w8eSL6WxI1mJGyTXd5jPau5v7KegrH6lEP/OfHuotq0g3qDOrr7R/6ZNhofXagYRJivbRQo3EGMHXZcQgt+6plkm0DPWd61rKBmJ/OiqNxOlyr28D14QhroNajVQiFSbTA++fcf4hTHff+vmoLMvZ5myBme8NX3Q=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=zK9CdFeO; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 59183C4CEF1;
+	Tue, 26 Aug 2025 14:26:03 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1756219427;
-	bh=sTYwLo+jVaKAq3PJB5BO2CTBQ1fbQLu9Z+ejsWG2cbY=;
+	s=korg; t=1756218363;
+	bh=IqMzwS71x1NQRI+nGlbmmmN/jPmznvvD9sm/wpQ4j6w=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=YOgL7l30vXyI2ceX7bcmGMkB7UEgJCRIOzxgExT03SKjv2FfEeURDJOD3UdubkRpH
-	 L9o6KSJ9RZ69TQbSiIJ4zw5QKdkeA1MgnN1f5NLNnuLuestNJSVTf8iJPkpdUojiRU
-	 5/47V+P2Ouyw2DwM2mB/PgPORq6Ly5Cjf62gnADM=
+	b=zK9CdFeO7pDsaX1vc2RQmhfNTRIzW0b6zXm754WL7JnfVRkLksL+QXfk2SnVS3gLh
+	 lZv0Gh6M/80wCDLUz/ZJHVJWK3xGc0dc8QL4JO4G4rullW9FQjG8DZNMAfTcuhnMkE
+	 chajPqN9I9TpI8bN6gf19Ixs5EmI7LI+H4GWlM5Q=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Gerrard Tai <gerrard.tai@starlabs.sg>,
-	Cong Wang <xiyou.wangcong@gmail.com>,
-	Simon Horman <horms@kernel.org>,
-	Jamal Hadi Salim <jhs@mojatatu.com>,
-	Paolo Abeni <pabeni@redhat.com>,
-	Siddh Raman Pant <siddh.raman.pant@oracle.com>
-Subject: [PATCH 5.4 377/403] sch_qfq: make qfq_qlen_notify() idempotent
+	Christophe JAILLET <christophe.jaillet@wanadoo.fr>,
+	Shivani Agarwal <shivani.agarwal@broadcom.com>
+Subject: [PATCH 5.10 493/523] uio_hv_generic: Fix another memory leak in error handling paths
 Date: Tue, 26 Aug 2025 13:11:43 +0200
-Message-ID: <20250826110917.435503588@linuxfoundation.org>
+Message-ID: <20250826110936.605246904@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250826110905.607690791@linuxfoundation.org>
-References: <20250826110905.607690791@linuxfoundation.org>
+In-Reply-To: <20250826110924.562212281@linuxfoundation.org>
+References: <20250826110924.562212281@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -65,72 +61,51 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.4-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Cong Wang <xiyou.wangcong@gmail.com>
+From: Christophe JAILLET <christophe.jaillet@wanadoo.fr>
 
-commit 55f9eca4bfe30a15d8656f915922e8c98b7f0728 upstream.
+commit 0b0226be3a52dadd965644bc52a807961c2c26df upstream.
 
-qfq_qlen_notify() always deletes its class from its active list
-with list_del_init() _and_ calls qfq_deactivate_agg() when the whole list
-becomes empty.
+Memory allocated by 'vmbus_alloc_ring()' at the beginning of the probe
+function is never freed in the error handling path.
 
-To make it idempotent, just skip everything when it is not in the active
-list.
+Add the missing 'vmbus_free_ring()' call.
 
-Also change other list_del()'s to list_del_init() just to be extra safe.
+Note that it is already freed in the .remove function.
 
-Reported-by: Gerrard Tai <gerrard.tai@starlabs.sg>
-Signed-off-by: Cong Wang <xiyou.wangcong@gmail.com>
-Reviewed-by: Simon Horman <horms@kernel.org>
-Link: https://patch.msgid.link/20250403211033.166059-5-xiyou.wangcong@gmail.com
-Acked-by: Jamal Hadi Salim <jhs@mojatatu.com>
-Signed-off-by: Paolo Abeni <pabeni@redhat.com>
-Signed-off-by: Siddh Raman Pant <siddh.raman.pant@oracle.com>
+Fixes: cdfa835c6e5e ("uio_hv_generic: defer opening vmbus until first use")
+Cc: stable <stable@vger.kernel.org>
+Signed-off-by: Christophe JAILLET <christophe.jaillet@wanadoo.fr>
+Link: https://lore.kernel.org/r/0d86027b8eeed8e6360bc3d52bcdb328ff9bdca1.1620544055.git.christophe.jaillet@wanadoo.fr
+[Shivani: Modified to apply on 5.10.y]
+Signed-off-by: Shivani Agarwal <shivani.agarwal@broadcom.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- net/sched/sch_qfq.c |    7 +++++--
- 1 file changed, 5 insertions(+), 2 deletions(-)
-
---- a/net/sched/sch_qfq.c
-+++ b/net/sched/sch_qfq.c
-@@ -348,7 +348,7 @@ static void qfq_deactivate_class(struct
- 	struct qfq_aggregate *agg = cl->agg;
+ drivers/uio/uio_hv_generic.c |    4 +++-
+ 1 file changed, 3 insertions(+), 1 deletion(-)
+--- a/drivers/uio/uio_hv_generic.c
++++ b/drivers/uio/uio_hv_generic.c
+@@ -306,7 +306,7 @@ hv_uio_probe(struct hv_device *dev,
+ 	pdata->recv_buf = vzalloc(RECV_BUFFER_SIZE);
+ 	if (pdata->recv_buf == NULL) {
+ 		ret = -ENOMEM;
+-		goto fail_close;
++		goto fail_free_ring;
+ 	}
  
+ 	ret = vmbus_establish_gpadl(channel, pdata->recv_buf,
+@@ -366,6 +366,8 @@ hv_uio_probe(struct hv_device *dev,
  
--	list_del(&cl->alist); /* remove from RR queue of the aggregate */
-+	list_del_init(&cl->alist); /* remove from RR queue of the aggregate */
- 	if (list_empty(&agg->active)) /* agg is now inactive */
- 		qfq_deactivate_agg(q, agg);
+ fail_close:
+ 	hv_uio_cleanup(dev, pdata);
++fail_free_ring:
++	vmbus_free_ring(dev->channel);
+ 
+ 	return ret;
  }
-@@ -482,6 +482,7 @@ static int qfq_change_class(struct Qdisc
- 
- 	cl->common.classid = classid;
- 	cl->deficit = lmax;
-+	INIT_LIST_HEAD(&cl->alist);
- 
- 	cl->qdisc = qdisc_create_dflt(sch->dev_queue, &pfifo_qdisc_ops,
- 				      classid, NULL);
-@@ -1001,7 +1002,7 @@ static struct sk_buff *agg_dequeue(struc
- 	cl->deficit -= (int) len;
- 
- 	if (cl->qdisc->q.qlen == 0) /* no more packets, remove from list */
--		list_del(&cl->alist);
-+		list_del_init(&cl->alist);
- 	else if (cl->deficit < qdisc_pkt_len(cl->qdisc->ops->peek(cl->qdisc))) {
- 		cl->deficit += agg->lmax;
- 		list_move_tail(&cl->alist, &agg->active);
-@@ -1433,6 +1434,8 @@ static void qfq_qlen_notify(struct Qdisc
- 	struct qfq_sched *q = qdisc_priv(sch);
- 	struct qfq_class *cl = (struct qfq_class *)arg;
- 
-+	if (list_empty(&cl->alist))
-+		return;
- 	qfq_deactivate_class(q, cl);
- }
- 
 
 
 
