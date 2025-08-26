@@ -1,57 +1,58 @@
-Return-Path: <stable+bounces-175782-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-175228-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 70335B36A00
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 16:33:10 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id C71D8B367B7
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 16:09:31 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 6AB9458301A
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 14:21:08 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 033558A4C01
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 13:56:10 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 66512341AA6;
-	Tue, 26 Aug 2025 14:19:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8139634F481;
+	Tue, 26 Aug 2025 13:54:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="qCRSJJgD"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="VuyyKdBi"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 242FA2AE68;
-	Tue, 26 Aug 2025 14:19:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3F95134DCFE;
+	Tue, 26 Aug 2025 13:54:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756217955; cv=none; b=eANTPpPel9NSPEZjIJBpHQsyZ9tJ1rI4qe6xFYutDK7fFhb0/NfcnNxIPrwfVzrZ1cwK1i2RIkQ/PTRWUV0wGy/2ejYd1Feis/zojxdYuDwAg+ZFSbTa+SuzSRBrByLoddg6FcG7GhrRfC2o+UZiocJSJqsJVhjVDMvzgcdAPKA=
+	t=1756216481; cv=none; b=gQGu1qfN3bsYUPFuK3toh2jqFtLlNAmA6RGULylBqKQypZpfVC0s3Wk/JksRfMi9dwX4CPJ1s6MdpOkTh6/kaDB0E9I/vdx1KH7ovU8XD7yZMS7z3++jmfxsKXs1o5O0jtwgH8BbVbn5zUMzH6k0WPk/ATz4sFNLs/PveE6XFd4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756217955; c=relaxed/simple;
-	bh=c4CnVwBlD/d+ErDm9rNdZERF4iqeYLN5+2hZMuhnsW0=;
+	s=arc-20240116; t=1756216481; c=relaxed/simple;
+	bh=b69E9ObIV+VDr14UfVfTKIMJRR8PeRWw9h8z/zv1/so=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=mRhHDTm0OdpPcsoNYxrTpfoBkRE08z0glLQa6vxxGgNQ+LBh+/GG1QMaHbrh9t2zUG6otK1lt6gakSLnFr5ZTEwUQaoebYyHEQPLUF53RKwEGiW38MfLEJ9BiXM0xjH2WMjVOEgarUbk2uhMol9a3xoQXCKeMX/sCtomKLaUH+I=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=qCRSJJgD; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A9700C4CEF1;
-	Tue, 26 Aug 2025 14:19:14 +0000 (UTC)
+	 MIME-Version; b=JfC9GfNAFy2Xw4LYxXLQ6abNXaj3aZytlLA+XXwAAzRHvdwbCm/NckUEODMLENQbeOqB8Zw4Rfm/jkM2Z3DyOeG3Gtfy9q7dpzEJEanISb+qAurD7zdZm5lXJltHHn3GpyC0WkiEzBd3cGg4Thl+g6uP/cVTjo5l5b/MToWeP0U=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=VuyyKdBi; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C38B8C4CEF1;
+	Tue, 26 Aug 2025 13:54:40 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1756217955;
-	bh=c4CnVwBlD/d+ErDm9rNdZERF4iqeYLN5+2hZMuhnsW0=;
+	s=korg; t=1756216481;
+	bh=b69E9ObIV+VDr14UfVfTKIMJRR8PeRWw9h8z/zv1/so=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=qCRSJJgDMseFkS4o7kOkfyaTrinMW7mI/s8JudOlmn0kFw1mSnwpoHRn+7956YBVq
-	 qRINVZjSg+UHWYUSADtoxFeh65bJ7M5Uysjq2Ih01TZNSa/Ooe6FBGgNFbsm2yqmx0
-	 HBbWeJar0URxkUAvzc9D81ks761+F5MidZO1m/zM=
+	b=VuyyKdBisXLommqnLvfpPxC39o4GhNGaL6mOhiMh79NW72QL3INUCSuuI5F45MqCy
+	 dRCo2IUrGQvQIFGe3p8tkUJSnw8TTecEI3SYD7SXOiNSkxUZC4DQYp7RYDaqYjcBMU
+	 j9kUQT0gcICdvIRMdnIcDxLo63XtExnHxQHMIMvk=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Cheick Traore <cheick.traore@foss.st.com>,
-	Antonio Borneo <antonio.borneo@foss.st.com>,
-	Linus Walleij <linus.walleij@linaro.org>,
+	"Yann E. MORIN" <yann.morin.1998@free.fr>,
+	Peter Korsgaard <peter@korsgaard.com>,
+	Cherniaev Andrei <dungeonlords789@naver.com>,
+	Masahiro Yamada <masahiroy@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 307/523] pinctrl: stm32: Manage irq affinity settings
+Subject: [PATCH 5.15 426/644] kconfig: lxdialog: fix space to (de)select options
 Date: Tue, 26 Aug 2025 13:08:37 +0200
-Message-ID: <20250826110932.030541049@linuxfoundation.org>
+Message-ID: <20250826110957.015476984@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250826110924.562212281@linuxfoundation.org>
-References: <20250826110924.562212281@linuxfoundation.org>
+In-Reply-To: <20250826110946.507083938@linuxfoundation.org>
+References: <20250826110946.507083938@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,41 +64,51 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Cheick Traore <cheick.traore@foss.st.com>
+From: Yann E. MORIN <yann.morin.1998@free.fr>
 
-[ Upstream commit 4c5cc2f65386e22166ce006efe515c667aa075e4 ]
+[ Upstream commit 694174f94ebeeb5ec5cc0e9de9b40c82057e1d95 ]
 
-Trying to set the affinity of the interrupts associated to stm32
-pinctrl results in a write error.
+In case a menu has comment without letters/numbers (eg. characters
+matching the regexp '^[^[:alpha:][:digit:]]+$', for example - or *),
+hitting space will cycle through those comments, rather than
+selecting/deselecting the currently-highlighted option.
 
-Fill struct irq_chip::irq_set_affinity to use the default helper
-function.
+This is the behaviour of hitting any letter/digit: jump to the next
+option which prompt starts with that letter. The only letters that
+do not behave as such are 'y' 'm' and 'n'. Prompts that start with
+one of those three letters are instead matched on the first letter
+that is not 'y', 'm' or 'n'.
 
-Signed-off-by: Cheick Traore <cheick.traore@foss.st.com>
-Signed-off-by: Antonio Borneo <antonio.borneo@foss.st.com>
-Link: https://lore.kernel.org/20250610143042.295376-3-antonio.borneo@foss.st.com
-Signed-off-by: Linus Walleij <linus.walleij@linaro.org>
+Fix that by treating 'space' as we treat y/m/n, ie. as an action key,
+not as shortcut to jump to  prompt.
+
+Signed-off-by: Yann E. MORIN <yann.morin.1998@free.fr>
+Signed-off-by: Peter Korsgaard <peter@korsgaard.com>
+Signed-off-by: Cherniaev Andrei <dungeonlords789@naver.com>
+[masahiro: took from Buildroot, adjusted the commit subject]
+Signed-off-by: Masahiro Yamada <masahiroy@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/pinctrl/stm32/pinctrl-stm32.c | 1 +
- 1 file changed, 1 insertion(+)
+ scripts/kconfig/lxdialog/menubox.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/pinctrl/stm32/pinctrl-stm32.c b/drivers/pinctrl/stm32/pinctrl-stm32.c
-index 2d852f15cc50..6b6fdb711659 100644
---- a/drivers/pinctrl/stm32/pinctrl-stm32.c
-+++ b/drivers/pinctrl/stm32/pinctrl-stm32.c
-@@ -412,6 +412,7 @@ static struct irq_chip stm32_gpio_irq_chip = {
- 	.irq_set_wake	= irq_chip_set_wake_parent,
- 	.irq_request_resources = stm32_gpio_irq_request_resources,
- 	.irq_release_resources = stm32_gpio_irq_release_resources,
-+	.irq_set_affinity = IS_ENABLED(CONFIG_SMP) ? irq_chip_set_affinity_parent : NULL,
- };
+diff --git a/scripts/kconfig/lxdialog/menubox.c b/scripts/kconfig/lxdialog/menubox.c
+index 58c2f8afe59b..7e10e919fbdc 100644
+--- a/scripts/kconfig/lxdialog/menubox.c
++++ b/scripts/kconfig/lxdialog/menubox.c
+@@ -272,7 +272,7 @@ int dialog_menu(const char *title, const char *prompt,
+ 		if (key < 256 && isalpha(key))
+ 			key = tolower(key);
  
- static int stm32_gpio_domain_translate(struct irq_domain *d,
+-		if (strchr("ynmh", key))
++		if (strchr("ynmh ", key))
+ 			i = max_choice;
+ 		else {
+ 			for (i = choice + 1; i < max_choice; i++) {
 -- 
 2.39.5
 
