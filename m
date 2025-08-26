@@ -1,57 +1,55 @@
-Return-Path: <stable+bounces-175490-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-173840-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7D1EDB3685E
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 16:15:49 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id BE1B3B36008
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 14:56:24 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id C01DC562EA3
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 14:08:07 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 107F0464957
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 12:54:22 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4EBFE3568E9;
-	Tue, 26 Aug 2025 14:06:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3E2BC189BB0;
+	Tue, 26 Aug 2025 12:53:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="DKrwBkZV"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="wcRyV0BN"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 08C7234DCF6;
-	Tue, 26 Aug 2025 14:06:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F011F1C6BE;
+	Tue, 26 Aug 2025 12:53:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756217182; cv=none; b=tmPQWHD3OQkwks124fijCvpw4OPBpNyJir6Y4ZR68pJ5iaQELjF8NmXpN2L+sq0UHBa/TA7Wld7d1XVih1ktnpSPpxDtn1H/kdSjCRqkECjU984nLarAkbpxCT/uV6mQ35mP86OLv/KBwZqG1Fzgd3NDXaMTp9A8uc2BpeQTt2A=
+	t=1756212804; cv=none; b=Up/YPR6Zx2s6076tsGgAmk+XXMYD0OVbvXBp4SqEwO0jxSqRxXiLh0Ot9+4rotBHAT5Llqq16qwODBSc4McUReFsQ6KXxsCz0hS9TBccuHyO+kBwTlTSpa9YuVhk7418ASXZIJZgS6juac18z8i102XA3OF6A7EH350v7VJZbAc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756217182; c=relaxed/simple;
-	bh=E7d4TYsJtjOVwWZ0fwraHbL1HQXnv01Aa7F0V1fauYc=;
+	s=arc-20240116; t=1756212804; c=relaxed/simple;
+	bh=UrgcIKlhZY5rWxbEp8hwmlAPbP2oUmCTFacnnhGNJyk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=ulnr3IxYmxDkXQJvyNCfgZhJ5fglKDdWkn4akBtGgPIgo3USP++wwFyi4e/i9A1gBHd0Oo0u+lobwqvUiVrMp35Ti7nV3CE+o/rngJ5WJY/JX5OYMIANowcEwWqdUHoVgExmgqYv+h+3OI2otQQKOr6/2thbyf84OErhV/jJkH8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=DKrwBkZV; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 94240C116B1;
-	Tue, 26 Aug 2025 14:06:21 +0000 (UTC)
+	 MIME-Version; b=GSPuGU05BX3gF6eAhx+TnGrI3jDJXIubF2JyrEF566dJ96Th0YYmXY6chUAI15i1Jfqs6nFExxArGMgBAzQWp7yA6XfSldyz4vIpjzqdtnfkC+0yjGyulcfp6vQYU6fqH6JXyggCajdsw5MsFAmpYrTicGJj8AEBzvR/82+bvZo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=wcRyV0BN; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 82E21C4CEF1;
+	Tue, 26 Aug 2025 12:53:23 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1756217181;
-	bh=E7d4TYsJtjOVwWZ0fwraHbL1HQXnv01Aa7F0V1fauYc=;
+	s=korg; t=1756212803;
+	bh=UrgcIKlhZY5rWxbEp8hwmlAPbP2oUmCTFacnnhGNJyk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=DKrwBkZVelksliCuxKWskuA6XggOG6xOTb1e1aRox4JquJYnS/fh+xPRID70Ek9T6
-	 tId+Lb6Lh4BpM/RuZHuwJGslDqCQgNB+cV1zxtJSg6FtY7Y1mJqSBDQt7JIlb/I74P
-	 YmPCoTmF8DapvdK1TOk0lS9l6JXX/fhH0wiXjRgA=
+	b=wcRyV0BNb4/tc/Njbhllk2eooGOf53JfDYtNlPxa/b/n7bW9WIQYIGp/lGSnfcGtQ
+	 x8oaGUwpO2lJChOemOnXcXu3jA7YVmZkYk9VH114tXWPg0XoreoqNAShp/nrO2AaNo
+	 grrV+a5LsJI8WrhXLrEqVBVbG93nvvoUbS4JF6JM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	stable <stable@kernel.org>,
-	Mark Brown <broonie@kernel.org>,
-	Mathias Nyman <mathias.nyman@linux.intel.com>,
-	Konrad Dybcio <konrad.dybcio@oss.qualcomm.com>
-Subject: [PATCH 5.10 047/523] usb: hub: Fix flushing of delayed work used for post resume purposes
+	Thierry Reding <treding@nvidia.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.6 108/587] firmware: tegra: Fix IVC dependency problems
 Date: Tue, 26 Aug 2025 13:04:17 +0200
-Message-ID: <20250826110925.762227784@linuxfoundation.org>
+Message-ID: <20250826110955.687450358@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250826110924.562212281@linuxfoundation.org>
-References: <20250826110924.562212281@linuxfoundation.org>
+In-Reply-To: <20250826110952.942403671@linuxfoundation.org>
+References: <20250826110952.942403671@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,122 +61,55 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Mathias Nyman <mathias.nyman@linux.intel.com>
+From: Thierry Reding <treding@nvidia.com>
 
-commit 9bd9c8026341f75f25c53104eb7e656e357ca1a2 upstream.
+[ Upstream commit 78eb18020a88a4eed15f5af7700ed570642ff8f1 ]
 
-Delayed work that prevents USB3 hubs from runtime-suspending too early
-needed to be flushed in hub_quiesce() to resolve issues detected on
-QC SC8280XP CRD board during suspend resume testing.
+The IVC code is library code that other drivers need to select if they
+need that library. However, if the symbol is user-selectable this can
+lead to conflicts.
 
-This flushing did however trigger new issues on Raspberry Pi 3B+, which
-doesn't have USB3 ports, and doesn't queue any post resume delayed work.
+Fix this by making the symbol only selectable for COMPILE_TEST and add
+a select TEGRA_IVC to TEGRA_BPMP, which is currently the only user.
 
-The flushed 'hub->init_work' item is used for several purposes, and
-is originally initialized with a 'NULL' work function. The work function
-is also changed on the fly, which may contribute to the issue.
-
-Solve this by creating a dedicated delayed work item for post resume work,
-and flush that delayed work in hub_quiesce()
-
-Cc: stable <stable@kernel.org>
-Fixes: a49e1e2e785f ("usb: hub: Fix flushing and scheduling of delayed work that tunes runtime pm")
-Reported-by: Mark Brown <broonie@kernel.org>
-Closes: https://lore.kernel.org/linux-usb/aF5rNp1l0LWITnEB@finisterre.sirena.org.uk
-Signed-off-by: Mathias Nyman <mathias.nyman@linux.intel.com>
-Tested-by: Konrad Dybcio <konrad.dybcio@oss.qualcomm.com> # SC8280XP CRD
-Tested-by: Mark Brown <broonie@kernel.org>
-Link: https://lore.kernel.org/r/20250627164348.3982628-2-mathias.nyman@linux.intel.com
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Link: https://lore.kernel.org/r/20250506133118.1011777-10-thierry.reding@gmail.com
+Signed-off-by: Thierry Reding <treding@nvidia.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/usb/core/hub.c |   21 ++++++++-------------
- drivers/usb/core/hub.h |    1 +
- 2 files changed, 9 insertions(+), 13 deletions(-)
+ drivers/firmware/tegra/Kconfig | 5 +++--
+ 1 file changed, 3 insertions(+), 2 deletions(-)
 
---- a/drivers/usb/core/hub.c
-+++ b/drivers/usb/core/hub.c
-@@ -1031,12 +1031,11 @@ int usb_remove_device(struct usb_device
+diff --git a/drivers/firmware/tegra/Kconfig b/drivers/firmware/tegra/Kconfig
+index cde1ab8bd9d1..91f2320c0d0f 100644
+--- a/drivers/firmware/tegra/Kconfig
++++ b/drivers/firmware/tegra/Kconfig
+@@ -2,7 +2,7 @@
+ menu "Tegra firmware driver"
  
- enum hub_activation_type {
- 	HUB_INIT, HUB_INIT2, HUB_INIT3,		/* INITs must come first */
--	HUB_POST_RESET, HUB_RESUME, HUB_RESET_RESUME, HUB_POST_RESUME,
-+	HUB_POST_RESET, HUB_RESUME, HUB_RESET_RESUME,
- };
+ config TEGRA_IVC
+-	bool "Tegra IVC protocol"
++	bool "Tegra IVC protocol" if COMPILE_TEST
+ 	depends on ARCH_TEGRA
+ 	help
+ 	  IVC (Inter-VM Communication) protocol is part of the IPC
+@@ -13,8 +13,9 @@ config TEGRA_IVC
  
- static void hub_init_func2(struct work_struct *ws);
- static void hub_init_func3(struct work_struct *ws);
--static void hub_post_resume(struct work_struct *ws);
- 
- static void hub_activate(struct usb_hub *hub, enum hub_activation_type type)
- {
-@@ -1060,12 +1059,6 @@ static void hub_activate(struct usb_hub
- 		goto init3;
- 	}
- 
--	if (type == HUB_POST_RESUME) {
--		usb_autopm_put_interface_async(to_usb_interface(hub->intfdev));
--		hub_put(hub);
--		return;
--	}
--
- 	hub_get(hub);
- 
- 	/* The superspeed hub except for root hub has to use Hub Depth
-@@ -1319,8 +1312,8 @@ static void hub_activate(struct usb_hub
- 		usb_autopm_get_interface_no_resume(
- 			to_usb_interface(hub->intfdev));
- 
--		INIT_DELAYED_WORK(&hub->init_work, hub_post_resume);
--		queue_delayed_work(system_power_efficient_wq, &hub->init_work,
-+		queue_delayed_work(system_power_efficient_wq,
-+				   &hub->post_resume_work,
- 				   msecs_to_jiffies(USB_SS_PORT_U0_WAKE_TIME));
- 		return;
- 	}
-@@ -1345,9 +1338,10 @@ static void hub_init_func3(struct work_s
- 
- static void hub_post_resume(struct work_struct *ws)
- {
--	struct usb_hub *hub = container_of(ws, struct usb_hub, init_work.work);
-+	struct usb_hub *hub = container_of(ws, struct usb_hub, post_resume_work.work);
- 
--	hub_activate(hub, HUB_POST_RESUME);
-+	usb_autopm_put_interface_async(to_usb_interface(hub->intfdev));
-+	hub_put(hub);
- }
- 
- enum hub_quiescing_type {
-@@ -1375,7 +1369,7 @@ static void hub_quiesce(struct usb_hub *
- 
- 	/* Stop hub_wq and related activity */
- 	del_timer_sync(&hub->irq_urb_retry);
--	flush_delayed_work(&hub->init_work);
-+	flush_delayed_work(&hub->post_resume_work);
- 	usb_kill_urb(hub->urb);
- 	if (hub->has_indicators)
- 		cancel_delayed_work_sync(&hub->leds);
-@@ -1932,6 +1926,7 @@ static int hub_probe(struct usb_interfac
- 	hub->hdev = hdev;
- 	INIT_DELAYED_WORK(&hub->leds, led_work);
- 	INIT_DELAYED_WORK(&hub->init_work, NULL);
-+	INIT_DELAYED_WORK(&hub->post_resume_work, hub_post_resume);
- 	INIT_WORK(&hub->events, hub_event);
- 	spin_lock_init(&hub->irq_urb_lock);
- 	timer_setup(&hub->irq_urb_retry, hub_retry_irq_urb, 0);
---- a/drivers/usb/core/hub.h
-+++ b/drivers/usb/core/hub.h
-@@ -69,6 +69,7 @@ struct usb_hub {
- 	u8			indicator[USB_MAXCHILDREN];
- 	struct delayed_work	leds;
- 	struct delayed_work	init_work;
-+	struct delayed_work	post_resume_work;
- 	struct work_struct      events;
- 	spinlock_t		irq_urb_lock;
- 	struct timer_list	irq_urb_retry;
+ config TEGRA_BPMP
+ 	bool "Tegra BPMP driver"
+-	depends on ARCH_TEGRA && TEGRA_HSP_MBOX && TEGRA_IVC
++	depends on ARCH_TEGRA && TEGRA_HSP_MBOX
+ 	depends on !CPU_BIG_ENDIAN
++	select TEGRA_IVC
+ 	help
+ 	  BPMP (Boot and Power Management Processor) is designed to off-loading
+ 	  the PM functions which include clock/DVFS/thermal/power from the CPU.
+-- 
+2.39.5
+
 
 
 
