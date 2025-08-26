@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-176065-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-174488-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2D877B36CC7
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 17:00:48 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2BEEDB362E6
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 15:23:46 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 8814A984CC2
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 14:34:18 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 0BCDD7BCD2C
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 13:22:11 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 51F5922DFA7;
-	Tue, 26 Aug 2025 14:31:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 88D8A322A1E;
+	Tue, 26 Aug 2025 13:22:05 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="s5S/+msQ"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="1pGP/Oca"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0C2782135B8;
-	Tue, 26 Aug 2025 14:31:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4535C2857D2;
+	Tue, 26 Aug 2025 13:22:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756218693; cv=none; b=Ol4mD+Lo1GGelnEpNa0Ax3uyLxxyoX+87et9sPihO4NWgMjDC8eAVKDlN2of/IoWxQBvCIWN6ktlBTtoxIq1Myd0fAgxjWl2Fu2DTHTVz2+otPy0waUebPnF4NzxLh4Pah13tFAZCXeRD+Iw9aKegSC4hCQ0AXlcIQR6fQghEoI=
+	t=1756214525; cv=none; b=f2CZ4MCLj0ReFauHqI2jzJWP1CfBMIrNH+/+yF7dMNMYVtP8pjAgGhzqjxSnbmk+BSBz7B7/zxO5MAiXcSCADc4+6JnHihLUy2nxIDqUiuxS4wrL7KQOK26F7iO0CfonRt5sdUOC61EyOYIK7j2SaWcVt16DOl8aMX9gyDM6yNw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756218693; c=relaxed/simple;
-	bh=slB1aR+Eu4KpfkD7jxIpAxKYivSSn4hnOecyYi+WY+8=;
+	s=arc-20240116; t=1756214525; c=relaxed/simple;
+	bh=4/chsS10Kmo9gNqGHOyZ4EWH2AdGedx1cZJMe0pq59E=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=T/7I8pVwOUvOvgW7hYOLSFGfTjdF6B9fxFPWxOSpKoLDr4+kIu93c++XxuANlOchEphQKRqnulcBkeZCDZo+c+mYuc12HIiKFr37pPBThvcTy7yZYUqsFj9gMLsvY4kXVI213k8JBu1Tf2rzu3U9+MzkxhmlbwihfWhScS7X2ko=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=s5S/+msQ; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B54B7C4CEF1;
-	Tue, 26 Aug 2025 14:31:31 +0000 (UTC)
+	 MIME-Version:Content-Type; b=OlilzPYNJxrvPFB5E6hYVOPkVeyITi+lLzT/89vVvESNyh2tiuqyXfNRUjr+Get/yUIrKVPmJWa/SZ4ViTCxCpheihu1xlOhha+VBXsHt5u12PDnO/qexOM8KGDyy2dCzxYz9y7/cEluxxLg97dF7h1mIfheiPuqFQbWb1ln1SA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=1pGP/Oca; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 877AAC113CF;
+	Tue, 26 Aug 2025 13:22:04 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1756218692;
-	bh=slB1aR+Eu4KpfkD7jxIpAxKYivSSn4hnOecyYi+WY+8=;
+	s=korg; t=1756214524;
+	bh=4/chsS10Kmo9gNqGHOyZ4EWH2AdGedx1cZJMe0pq59E=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=s5S/+msQ1BzG3r6U/m7nJaRsF0y6+GXXtqUaqGmvoXon/AstACo+0Do5pcNDZ3QsZ
-	 m3iP7+nF1kpEJb0i055Zn/W7tRNSLDan1EnPtoqd16SRro6poN01tcBhVFr0VoUToY
-	 pBh2H7cCxesuig5LsE863CPH5wotHF9tuDtgK/1s=
+	b=1pGP/OcaUgXSzOM2tvNrVab1PFNF8/uld4j57bAFUAurFV3CuaQuPTJWeMEWVPiiZ
+	 CaerZGrGE7G8lgvKqGFw1F61MH7rhmjuEQ5jBnMt3jzcTE2kvmtjc75s7gehdp3Vtf
+	 fpf/XoEIR+uJcWr89eD2u2NtzQnKvOVq8Wjcgdao=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Thomas Fourier <fourier.thomas@gmail.com>,
-	Johannes Berg <johannes.berg@intel.com>,
+	Florian Fainelli <florian.fainelli@broadcom.com>,
+	=?UTF-8?q?=C3=81lvaro=20Fern=C3=A1ndez=20Rojas?= <noltari@gmail.com>,
+	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.4 097/403] mwl8k: Add missing check after DMA map
+Subject: [PATCH 6.1 170/482] net: dsa: b53: fix IP_MULTICAST_CTRL on BCM5325
 Date: Tue, 26 Aug 2025 13:07:03 +0200
-Message-ID: <20250826110909.352058930@linuxfoundation.org>
+Message-ID: <20250826110935.010390290@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250826110905.607690791@linuxfoundation.org>
-References: <20250826110905.607690791@linuxfoundation.org>
+In-Reply-To: <20250826110930.769259449@linuxfoundation.org>
+References: <20250826110930.769259449@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,43 +61,71 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-5.4-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Thomas Fourier <fourier.thomas@gmail.com>
+From: Álvaro Fernández Rojas <noltari@gmail.com>
 
-[ Upstream commit 50459501b9a212dbe7a673727589ee105a8a9954 ]
+[ Upstream commit 044d5ce2788b165798bfd173548e61bf7b6baf4d ]
 
-The DMA map functions can fail and should be tested for errors.
-If the mapping fails, unmap and return an error.
+BCM5325 doesn't implement B53_UC_FWD_EN, B53_MC_FWD_EN or B53_IPMC_FWD_EN.
 
-Fixes: 788838ebe8a4 ("mwl8k: use pci_unmap_addr{,set}() to keep track of unmap addresses on rx")
-Signed-off-by: Thomas Fourier <fourier.thomas@gmail.com>
-Link: https://patch.msgid.link/20250709111339.25360-2-fourier.thomas@gmail.com
-Signed-off-by: Johannes Berg <johannes.berg@intel.com>
+Reviewed-by: Florian Fainelli <florian.fainelli@broadcom.com>
+Signed-off-by: Álvaro Fernández Rojas <noltari@gmail.com>
+Link: https://patch.msgid.link/20250614080000.1884236-9-noltari@gmail.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/wireless/marvell/mwl8k.c | 4 ++++
- 1 file changed, 4 insertions(+)
+ drivers/net/dsa/b53/b53_common.c | 18 +++++++++++-------
+ drivers/net/dsa/b53/b53_regs.h   |  1 +
+ 2 files changed, 12 insertions(+), 7 deletions(-)
 
-diff --git a/drivers/net/wireless/marvell/mwl8k.c b/drivers/net/wireless/marvell/mwl8k.c
-index abd5c8670bc4..a0c15af1b167 100644
---- a/drivers/net/wireless/marvell/mwl8k.c
-+++ b/drivers/net/wireless/marvell/mwl8k.c
-@@ -1220,6 +1220,10 @@ static int rxq_refill(struct ieee80211_hw *hw, int index, int limit)
+diff --git a/drivers/net/dsa/b53/b53_common.c b/drivers/net/dsa/b53/b53_common.c
+index 3a1266f535e2..b0e283bc3efb 100644
+--- a/drivers/net/dsa/b53/b53_common.c
++++ b/drivers/net/dsa/b53/b53_common.c
+@@ -344,14 +344,18 @@ static void b53_set_forwarding(struct b53_device *dev, int enable)
+ 		b53_read8(dev, B53_CTRL_PAGE, B53_SWITCH_CTRL, &mgmt);
+ 		mgmt |= B53_MII_DUMB_FWDG_EN;
+ 		b53_write8(dev, B53_CTRL_PAGE, B53_SWITCH_CTRL, mgmt);
+-	}
  
- 		addr = pci_map_single(priv->pdev, skb->data,
- 				      MWL8K_RX_MAXSZ, DMA_FROM_DEVICE);
-+		if (dma_mapping_error(&priv->pdev->dev, addr)) {
-+			kfree_skb(skb);
-+			break;
-+		}
+-	/* Look at B53_UC_FWD_EN and B53_MC_FWD_EN to decide whether
+-	 * frames should be flooded or not.
+-	 */
+-	b53_read8(dev, B53_CTRL_PAGE, B53_IP_MULTICAST_CTRL, &mgmt);
+-	mgmt |= B53_UC_FWD_EN | B53_MC_FWD_EN | B53_IPMC_FWD_EN;
+-	b53_write8(dev, B53_CTRL_PAGE, B53_IP_MULTICAST_CTRL, mgmt);
++		/* Look at B53_UC_FWD_EN and B53_MC_FWD_EN to decide whether
++		 * frames should be flooded or not.
++		 */
++		b53_read8(dev, B53_CTRL_PAGE, B53_IP_MULTICAST_CTRL, &mgmt);
++		mgmt |= B53_UC_FWD_EN | B53_MC_FWD_EN | B53_IPMC_FWD_EN;
++		b53_write8(dev, B53_CTRL_PAGE, B53_IP_MULTICAST_CTRL, mgmt);
++	} else {
++		b53_read8(dev, B53_CTRL_PAGE, B53_IP_MULTICAST_CTRL, &mgmt);
++		mgmt |= B53_IP_MCAST_25;
++		b53_write8(dev, B53_CTRL_PAGE, B53_IP_MULTICAST_CTRL, mgmt);
++	}
+ }
  
- 		rxq->rxd_count++;
- 		rx = rxq->tail++;
+ static void b53_enable_vlan(struct b53_device *dev, int port, bool enable,
+diff --git a/drivers/net/dsa/b53/b53_regs.h b/drivers/net/dsa/b53/b53_regs.h
+index e5776545a8a0..77fb7ae660b8 100644
+--- a/drivers/net/dsa/b53/b53_regs.h
++++ b/drivers/net/dsa/b53/b53_regs.h
+@@ -104,6 +104,7 @@
+ 
+ /* IP Multicast control (8 bit) */
+ #define B53_IP_MULTICAST_CTRL		0x21
++#define  B53_IP_MCAST_25		BIT(0)
+ #define  B53_IPMC_FWD_EN		BIT(1)
+ #define  B53_UC_FWD_EN			BIT(6)
+ #define  B53_MC_FWD_EN			BIT(7)
 -- 
 2.39.5
 
