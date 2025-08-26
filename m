@@ -1,53 +1,55 @@
-Return-Path: <stable+bounces-175492-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-175494-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4EEAEB368C4
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 16:19:20 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id CFCF1B36884
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 16:17:02 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id F07E41B67C5E
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 14:08:40 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id A65701C27DB3
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 14:08:43 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E1C67341650;
-	Tue, 26 Aug 2025 14:06:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C98B23451A0;
+	Tue, 26 Aug 2025 14:06:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="vlXv1Nca"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="jZQ1hiYw"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9EAC034F490;
-	Tue, 26 Aug 2025 14:06:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8808D22128B;
+	Tue, 26 Aug 2025 14:06:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756217187; cv=none; b=DirVfg+kk/2/zgJOYcSYDkmaYnl10brSUfVKsySUh9Z8rZit+U+UdG+ECWKya6gBUVEsO4E3QtYjcQMU/n2FD17DEXeeE5VRnxsMB5YGCu8vZozWMKyhG57ktHQAovpMfW26ccVXeaxIi8inC0cI1gf4oevHEfM8VSgVAe8oia0=
+	t=1756217192; cv=none; b=ORIlZwf1t1zUTd3yXGKbky4SWtwFgaXHUDXSRdIsoeDeAGgDPZcLLDYlG4kodEPfeuXr90jG9v6sWUSNrXMATBZodUj2V1aE7C0hhUt6xmwFOjT8hxuE2ZrRBNtdDgJmmroRPxk2ITufguAqMG+JD+VuvlbPWX3mBGG02ZlLXBs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756217187; c=relaxed/simple;
-	bh=rC8VEThPR/J6QZDGDfTZQiz4oQfMhKmis8TPuFkCNx8=;
+	s=arc-20240116; t=1756217192; c=relaxed/simple;
+	bh=ZaLREzbC7iZl2TMpIVVpVjkvoTG/RGvMQ1OF2ARt6a0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=G0AdSAjp9lPMopPH9vdQlWUtX1IQ77jxbwOBw7NVMDyd6CHk2wK/zauv91yuJyhR+ARp6o4MnoqhdwIbRBPJGUSbLO6lAWJKXq1AlWhXCy+h+Pv6HB7c5fjrdy+a1u1tv+1U1sLtndq1YdA4zSF1g/xbqZmGCTzMAQhT02Jr/Ws=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=vlXv1Nca; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id CE693C116B1;
-	Tue, 26 Aug 2025 14:06:26 +0000 (UTC)
+	 MIME-Version; b=Y0BTAj4crJyZ0KW/PMBLArqIHai1DJ/2YQDVLY5lh+YkERCGi3GMSAcUXEtZtq8u9P5uLeTCltKPrjj71z6KDPFL3DpSJowQ4S+Zl2Ss8qxkWpFGuarqGBtQb+b9N8Y94HtoZqmfhT60J0icW1x5pUgAH/OIdkNarg5xhK3TUaA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=jZQ1hiYw; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1B91DC4CEF1;
+	Tue, 26 Aug 2025 14:06:31 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1756217187;
-	bh=rC8VEThPR/J6QZDGDfTZQiz4oQfMhKmis8TPuFkCNx8=;
+	s=korg; t=1756217192;
+	bh=ZaLREzbC7iZl2TMpIVVpVjkvoTG/RGvMQ1OF2ARt6a0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=vlXv1NcaHfQ5IEYn4mngxxDKLA5QHQtEvwxSJ34ad4IPZaM/oFX94GLBmF2OgXlrS
-	 8yriMh1i/58GE4Tn6peZaxaanPXWMB62sbrjTwmWnUa4GrwTn/4AhWX+lEcb3r+g6f
-	 4Sa1BnPLY9ngC3mvl1cVzwWSUErVoLVtXc7J5l1c=
+	b=jZQ1hiYwU1VrxL8uWORklKqTVSLGCu6LZ2JDGPHI6rHMX3TGemwy+o3GRKkYSGUx7
+	 oP4NRVl/pGAn3pGxHdMfArRC81KD9eq3ifbopUJ5E+37FMO4V30NXEx/OcS3Ct4Oe7
+	 UN/wmp2mveXJ/EYSxCU+KVK8Y3mbTllErRGWLHGc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Yehowshua Immanuel <yehowshua.immanuel@twosixtech.com>,
-	Drew Hamilton <drew.hamilton@zetier.com>,
+	stable <stable@kernel.org>,
+	Thinh Nguyen <Thinh.Nguyen@synopsys.com>,
+	Konrad Dybcio <konrad.dybcio@oss.qualcomm.com>,
+	Krishna Kurapati <krishna.kurapati@oss.qualcomm.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 049/523] usb: musb: fix gadget state on disconnect
-Date: Tue, 26 Aug 2025 13:04:19 +0200
-Message-ID: <20250826110925.809061287@linuxfoundation.org>
+Subject: [PATCH 5.10 050/523] usb: dwc3: qcom: Dont leave BCR asserted
+Date: Tue, 26 Aug 2025 13:04:20 +0200
+Message-ID: <20250826110925.833286139@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
 In-Reply-To: <20250826110924.562212281@linuxfoundation.org>
 References: <20250826110924.562212281@linuxfoundation.org>
@@ -66,49 +68,66 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Drew Hamilton <drew.hamilton@zetier.com>
+From: Krishna Kurapati <krishna.kurapati@oss.qualcomm.com>
 
-commit 67a59f82196c8c4f50c83329f0577acfb1349b50 upstream.
+commit ef8abc0ba49ce717e6bc4124e88e59982671f3b5 upstream.
 
-When unplugging the USB cable or disconnecting a gadget in usb peripheral mode with
-echo "" > /sys/kernel/config/usb_gadget/<your_gadget>/UDC,
-/sys/class/udc/musb-hdrc.0/state does not change from USB_STATE_CONFIGURED.
+Leaving the USB BCR asserted prevents the associated GDSC to turn on. This
+blocks any subsequent attempts of probing the device, e.g. after a probe
+deferral, with the following showing in the log:
 
-Testing on dwc2/3 shows they both update the state to USB_STATE_NOTATTACHED.
+[    1.332226] usb30_prim_gdsc status stuck at 'off'
 
-Add calls to usb_gadget_set_state in musb_g_disconnect and musb_gadget_stop
-to fix both cases.
+Leave the BCR deasserted when exiting the driver to avoid this issue.
 
-Fixes: 49401f4169c0 ("usb: gadget: introduce gadget state tracking")
-Cc: stable@vger.kernel.org
-Co-authored-by: Yehowshua Immanuel <yehowshua.immanuel@twosixtech.com>
-Signed-off-by: Yehowshua Immanuel <yehowshua.immanuel@twosixtech.com>
-Signed-off-by: Drew Hamilton <drew.hamilton@zetier.com>
-Link: https://lore.kernel.org/r/20250701154126.8543-1-drew.hamilton@zetier.com
+Cc: stable <stable@kernel.org>
+Fixes: a4333c3a6ba9 ("usb: dwc3: Add Qualcomm DWC3 glue driver")
+Acked-by: Thinh Nguyen <Thinh.Nguyen@synopsys.com>
+Reviewed-by: Konrad Dybcio <konrad.dybcio@oss.qualcomm.com>
+Signed-off-by: Krishna Kurapati <krishna.kurapati@oss.qualcomm.com>
+Link: https://lore.kernel.org/r/20250709132900.3408752-1-krishna.kurapati@oss.qualcomm.com
+[ adapted to individual clock management API instead of bulk clock operations ]
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/usb/musb/musb_gadget.c |    2 ++
- 1 file changed, 2 insertions(+)
+ drivers/usb/dwc3/dwc3-qcom.c |    7 ++-----
+ 1 file changed, 2 insertions(+), 5 deletions(-)
 
---- a/drivers/usb/musb/musb_gadget.c
-+++ b/drivers/usb/musb/musb_gadget.c
-@@ -1909,6 +1909,7 @@ static int musb_gadget_stop(struct usb_g
- 	 * gadget driver here and have everything work;
- 	 * that currently misbehaves.
- 	 */
-+	usb_gadget_set_state(g, USB_STATE_NOTATTACHED);
+--- a/drivers/usb/dwc3/dwc3-qcom.c
++++ b/drivers/usb/dwc3/dwc3-qcom.c
+@@ -786,13 +786,13 @@ static int dwc3_qcom_probe(struct platfo
+ 	ret = reset_control_deassert(qcom->resets);
+ 	if (ret) {
+ 		dev_err(&pdev->dev, "failed to deassert resets, err=%d\n", ret);
+-		goto reset_assert;
++		return ret;
+ 	}
  
- 	/* Force check of devctl register for PM runtime */
- 	schedule_delayed_work(&musb->irq_work, 0);
-@@ -2017,6 +2018,7 @@ void musb_g_disconnect(struct musb *musb
- 	case OTG_STATE_B_PERIPHERAL:
- 	case OTG_STATE_B_IDLE:
- 		musb_set_state(musb, OTG_STATE_B_IDLE);
-+		usb_gadget_set_state(&musb->g, USB_STATE_NOTATTACHED);
- 		break;
- 	case OTG_STATE_B_SRP_INIT:
- 		break;
+ 	ret = dwc3_qcom_clk_init(qcom, of_clk_get_parent_count(np));
+ 	if (ret) {
+ 		dev_err(dev, "failed to get clocks\n");
+-		goto reset_assert;
++		return ret;
+ 	}
+ 
+ 	res = platform_get_resource(pdev, IORESOURCE_MEM, 0);
+@@ -892,8 +892,6 @@ clk_disable:
+ 		clk_disable_unprepare(qcom->clks[i]);
+ 		clk_put(qcom->clks[i]);
+ 	}
+-reset_assert:
+-	reset_control_assert(qcom->resets);
+ 
+ 	return ret;
+ }
+@@ -921,7 +919,6 @@ static int dwc3_qcom_remove(struct platf
+ 	qcom->num_clocks = 0;
+ 
+ 	dwc3_qcom_interconnect_exit(qcom);
+-	reset_control_assert(qcom->resets);
+ 
+ 	pm_runtime_allow(dev);
+ 	pm_runtime_disable(dev);
 
 
 
