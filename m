@@ -1,54 +1,56 @@
-Return-Path: <stable+bounces-174078-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-175206-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9A79AB36160
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 15:09:07 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 952E4B36713
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 16:03:34 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id F1F1A3B80AC
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 13:04:54 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 382DC1C26AB9
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 13:55:58 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 95C2D241673;
-	Tue, 26 Aug 2025 13:03:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C2C4A350D65;
+	Tue, 26 Aug 2025 13:53:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="o9Kd6Fe9"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ZzgR9NIV"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 52A6623F439;
-	Tue, 26 Aug 2025 13:03:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7EC2F34DCC9;
+	Tue, 26 Aug 2025 13:53:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756213434; cv=none; b=uSk7g1G3FBaeUWe3x7Y33osPi6zq6IIb+dkOSrvvyspORz8dCnVJcaOF6a5N8Bdm+6GCEkXx+TCufmGeurAWp55L5M+R9kunDJpXVK0NrTJ7E7bVLB5snYrGdVVO+MBZos9AvImURyTQdiWtALHcLRzctPaZsKvelkvJY+omxfU=
+	t=1756216421; cv=none; b=W4tpin/4ygnyDlPhmdOpzkKtA9bJw9IlzWWVKv8+3+Y9trqaJD2gqaLmlBOm0Ew3MdWHfCHGm6D+ozs+SxbdgxOV3PFf+NZRJoee0gCMu4l5cU9TTqqubb9Llu90AK7P3OE3DyBjZAfqz5PI2BYJo88eY+CmHrrHH5zlZ96zVU0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756213434; c=relaxed/simple;
-	bh=EhvqosMmgakwY4FV+PnL2Q1CdP87eHyxGrCKLQ/R7E0=;
+	s=arc-20240116; t=1756216421; c=relaxed/simple;
+	bh=+0GQ6Wlr5B/YF/5qtK/Hmh9bBX1WsXb2dbJ/8Spmqq4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=jH5Jv3mHteY4ltfqkxkQA5UKikT6q9K/0ruhxKfqEi2G4qi9ZRk65+9JHbRu/u5TyJZ4YBt8vIihRDAYnFLD3kvCmjVIohSprLHBuG2pjl7nLJrckiRueKvD5U606qQl9aHovLuRhC70+moRHpjFEO7Pv2q2LAu4VzSeLSFs0mI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=o9Kd6Fe9; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 91D9FC113CF;
-	Tue, 26 Aug 2025 13:03:52 +0000 (UTC)
+	 MIME-Version; b=B2lCbjvMsQdsNUR+rJ72NjW0QTU2KIie4AnXliWczKDjbK3Hz43IBky+7GeaOyZavgBG+uDpB+rsJx1mbZP8ZoLh2e2tTofE2Yz+4bUJGMJHiiVhbNXnLddsHBONEKc2zN70oL2ZyWsZ8LQ+kyykQH5yWXYWZtH7r9tYcRJsY/k=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ZzgR9NIV; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 10ACBC4CEF1;
+	Tue, 26 Aug 2025 13:53:40 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1756213432;
-	bh=EhvqosMmgakwY4FV+PnL2Q1CdP87eHyxGrCKLQ/R7E0=;
+	s=korg; t=1756216421;
+	bh=+0GQ6Wlr5B/YF/5qtK/Hmh9bBX1WsXb2dbJ/8Spmqq4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=o9Kd6Fe9+oFwqhZAZjRm7Xyjsxgc3Z5vYm4G69D+5DapuC9wcpRbkVNlTny3nxZ6Z
-	 RlR5AXlIzkJV1JFZGW3Qj+ISs9eGnqfWItPzqT8u3rnPY3tCrsQF8rlqzA6VByqqFZ
-	 kqA8mpEAA03tvtWPRmhI335zQ2q8rSEMMYXVwOyI=
+	b=ZzgR9NIV37f6viZ/ZfcNbGlBh/gQURZrNReOil+kP2r09YYfD+Nr0KivfkHZW9q0i
+	 lnrTrJz/KfX+kk9XNrXKDDDvueerfmsDAVvE/34E+yKMwxkx2v1rnciIX2ru8wOcv4
+	 DDDUE55Bs0s/ukvE+DdUqf64bibMaE80VDR9AaCc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	"Masami Hiramatsu (Google)" <mhiramat@kernel.org>
-Subject: [PATCH 6.6 347/587] tracing: fprobe-event: Sanitize wildcard for fprobe event name
-Date: Tue, 26 Aug 2025 13:08:16 +0200
-Message-ID: <20250826111001.742361497@linuxfoundation.org>
+	Dave Stevenson <dave.stevenson@raspberrypi.com>,
+	Hans Verkuil <hverkuil@xs4all.nl>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.15 406/644] media: tc358743: Increase FIFO trigger level to 374
+Date: Tue, 26 Aug 2025 13:08:17 +0200
+Message-ID: <20250826110956.513476836@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250826110952.942403671@linuxfoundation.org>
-References: <20250826110952.942403671@linuxfoundation.org>
+In-Reply-To: <20250826110946.507083938@linuxfoundation.org>
+References: <20250826110946.507083938@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,46 +62,63 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Masami Hiramatsu (Google) <mhiramat@kernel.org>
+From: Dave Stevenson <dave.stevenson@raspberrypi.com>
 
-commit ec879e1a0be8007aa232ffedcf6a6445dfc1a3d7 upstream.
+[ Upstream commit 86addd25314a1e77dbdcfddfeed0bab2f27da0e2 ]
 
-Fprobe event accepts wildcards for the target functions, but unless user
-specifies its event name, it makes an event with the wildcards.
+The existing fixed value of 16 worked for UYVY 720P60 over
+2 lanes at 594MHz, or UYVY 1080P60 over 4 lanes. (RGB888
+1080P60 needs 6 lanes at 594MHz).
+It doesn't allow for lower resolutions to work as the FIFO
+underflows.
 
-  /sys/kernel/tracing # echo 'f mutex*' >> dynamic_events
-  /sys/kernel/tracing # cat dynamic_events
-  f:fprobes/mutex*__entry mutex*
-  /sys/kernel/tracing # ls events/fprobes/
-  enable         filter         mutex*__entry
+374 is required for 1080P24 or 1080P30 UYVY over 2 lanes @
+972Mbit/s, but >374 means that the FIFO underflows on 1080P50
+UYVY over 2 lanes @ 972Mbit/s.
 
-To fix this, replace the wildcard ('*') with an underscore.
+Whilst it would be nice to compute it, the required information
+isn't published by Toshiba.
 
-Link: https://lore.kernel.org/all/175535345114.282990.12294108192847938710.stgit@devnote2/
-
-Fixes: 334e5519c375 ("tracing/probes: Add fprobe events for tracing function entry and exit.")
-Signed-off-by: Masami Hiramatsu (Google) <mhiramat@kernel.org>
-Cc: stable@vger.kernel.org
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Signed-off-by: Dave Stevenson <dave.stevenson@raspberrypi.com>
+Signed-off-by: Hans Verkuil <hverkuil@xs4all.nl>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- kernel/trace/trace.h |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/media/i2c/tc358743.c | 15 +++++++++++++--
+ 1 file changed, 13 insertions(+), 2 deletions(-)
 
---- a/kernel/trace/trace.h
-+++ b/kernel/trace/trace.h
-@@ -2053,7 +2053,7 @@ static inline bool is_good_system_name(c
- static inline void sanitize_event_name(char *name)
- {
- 	while (*name++ != '\0')
--		if (*name == ':' || *name == '.')
-+		if (*name == ':' || *name == '.' || *name == '*')
- 			*name = '_';
- }
- 
+diff --git a/drivers/media/i2c/tc358743.c b/drivers/media/i2c/tc358743.c
+index a389e2d58d3d..3167beca4056 100644
+--- a/drivers/media/i2c/tc358743.c
++++ b/drivers/media/i2c/tc358743.c
+@@ -1960,8 +1960,19 @@ static int tc358743_probe_of(struct tc358743_state *state)
+ 	state->pdata.refclk_hz = clk_get_rate(refclk);
+ 	state->pdata.ddc5v_delay = DDC5V_DELAY_100_MS;
+ 	state->pdata.enable_hdcp = false;
+-	/* A FIFO level of 16 should be enough for 2-lane 720p60 at 594 MHz. */
+-	state->pdata.fifo_level = 16;
++	/*
++	 * Ideally the FIFO trigger level should be set based on the input and
++	 * output data rates, but the calculations required are buried in
++	 * Toshiba's register settings spreadsheet.
++	 * A value of 16 works with a 594Mbps data rate for 720p60 (using 2
++	 * lanes) and 1080p60 (using 4 lanes), but fails when the data rate
++	 * is increased, or a lower pixel clock is used that result in CSI
++	 * reading out faster than the data is arriving.
++	 *
++	 * A value of 374 works with both those modes at 594Mbps, and with most
++	 * modes on 972Mbps.
++	 */
++	state->pdata.fifo_level = 374;
+ 	/*
+ 	 * The PLL input clock is obtained by dividing refclk by pll_prd.
+ 	 * It must be between 6 MHz and 40 MHz, lower frequency is better.
+-- 
+2.39.5
+
 
 
 
