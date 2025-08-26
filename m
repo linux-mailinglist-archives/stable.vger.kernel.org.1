@@ -1,57 +1,55 @@
-Return-Path: <stable+bounces-175747-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-173141-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7F3A3B36ACF
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 16:40:53 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 76170B35C09
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 13:30:50 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 0F778983CCE
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 14:19:45 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 16715363285
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 11:24:41 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9F73628314A;
-	Tue, 26 Aug 2025 14:17:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id CCF8D2BE03C;
+	Tue, 26 Aug 2025 11:24:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="fwA7Dm1I"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="uQU2kSsJ"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4F772350830;
-	Tue, 26 Aug 2025 14:17:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7A4CE17332C;
+	Tue, 26 Aug 2025 11:24:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756217863; cv=none; b=EhevSnb+YA9Ol1v7+qh1VnA2Lr3sVS5fgKdMa9IhWnPCTkQoErGaVnm7JT+v4q36VJZUGi/8q764XpccEjRYRNla4QDeY+q9mh9vvlUKjsEop7/4HHUVtMX8XSINXSXhJuTEE3N33nGT4E3RM16clO4YH9C9eoEZkAS/3R2p2rY=
+	t=1756207479; cv=none; b=iRCyAHj/uRsh8GV9RVQQJlPv8zpcXj7eDmPUf3d60oMK+SCjkuJomchSrEWA6wzU23P2PUy8iOZC9/Bcn0Qm56Rzwg8Fc6SwHelUoy0HBK/M28EMEttTmK+sygBqNNpuMcUgHYRlWcfbldlON0td860Gz9JoVPlzv0hsdgnnb88=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756217863; c=relaxed/simple;
-	bh=CHTxYXvaqO3Fn+0rbpt2cPNT6DRJqnhkOL27yYG6Ltk=;
+	s=arc-20240116; t=1756207479; c=relaxed/simple;
+	bh=miJtgJphrAv4Raw0EkNHF87mGQ7meAl2FUxBB4EsFVA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=TOqXrhtUPqvYAP6aocyrc/YoXGSW6dC11kTAxl+Yzk8N90bsGty4HKhO0J+vaCl9AsVnrhZ15NfNoNQ+ZEsZxIihCDdLHtNMremrJLhc8zLZ7NrFgA0Nv4UNnyvsYDMOVhMtXhVm0iOFaMur9kcBBr8/7xGvolHb6DLxVMM/3pg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=fwA7Dm1I; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D4E11C4CEF1;
-	Tue, 26 Aug 2025 14:17:42 +0000 (UTC)
+	 MIME-Version; b=Z6DUIKVjez4kqcuPseoB7NXHvc4x5GkimZenqE+zEFl55eOE1bdxQIq/JBKR5ij82n0rb1WApjUtfFeDb0ZEjhIktvv4iOBS0tsYzo39y3krOCZQitx5IeQWBhQWkzGBaV3/cT4XcmVRFFXi8SV8tNHuWJDB2yCDDY+P4r7UHm8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=uQU2kSsJ; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 96AABC4CEF4;
+	Tue, 26 Aug 2025 11:24:38 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1756217863;
-	bh=CHTxYXvaqO3Fn+0rbpt2cPNT6DRJqnhkOL27yYG6Ltk=;
+	s=korg; t=1756207478;
+	bh=miJtgJphrAv4Raw0EkNHF87mGQ7meAl2FUxBB4EsFVA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=fwA7Dm1IcnaErFpDwZxouIK4rU6HV3bzcflNB66bJKPSt3D0VtHh/iffHHYfDHwfN
-	 LEDyI8Urfde1LTdQvBJJnCuYyr5RKWQazB/2NMMc6472cHhil2aiqQ3DCpAsZoCqnl
-	 liAe1vUs05HRtp0bCa5DWJ1PJqP5pbszxAiYMrMo=
+	b=uQU2kSsJNUaMoYwNk6imBqxxWBTiswDET4wFmLY992G0kno2q+kCyXDsrhvHRks0l
+	 w0Y0vOj8haYbF/E4Diz0V65y4r1751BYc9noauYJtUkZ9yL3zPTXYZ9seWSFTUCNAF
+	 coS9sYapcj0NLej9LsWRYrhhCNg/WbjOcIFaYYv4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jonas Rebmann <jre@pengutronix.de>,
-	Wei Fang <wei.fang@nxp.com>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 272/523] net: fec: allow disable coalescing
+	Andrea Righi <arighi@nvidia.com>,
+	Tejun Heo <tj@kernel.org>
+Subject: [PATCH 6.16 198/457] sched/ext: Fix invalid task state transitions on class switch
 Date: Tue, 26 Aug 2025 13:08:02 +0200
-Message-ID: <20250826110931.139841006@linuxfoundation.org>
+Message-ID: <20250826110942.261044559@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250826110924.562212281@linuxfoundation.org>
-References: <20250826110924.562212281@linuxfoundation.org>
+In-Reply-To: <20250826110937.289866482@linuxfoundation.org>
+References: <20250826110937.289866482@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,85 +61,70 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+6.16-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jonas Rebmann <jre@pengutronix.de>
+From: Andrea Righi <arighi@nvidia.com>
 
-[ Upstream commit b7ad21258f9e9a7f58b19595d5ceed2cde3bed68 ]
+commit ddf7233fcab6c247379d0928d46cc316ee122229 upstream.
 
-In the current implementation, IP coalescing is always enabled and
-cannot be disabled.
+When enabling a sched_ext scheduler, we may trigger invalid task state
+transitions, resulting in warnings like the following (which can be
+easily reproduced by running the hotplug selftest in a loop):
 
-As setting maximum frames to 0 or 1, or setting delay to zero implies
-immediate delivery of single packets/IRQs, disable coalescing in
-hardware in these cases.
+ sched_ext: Invalid task state transition 0 -> 3 for fish[770]
+ WARNING: CPU: 18 PID: 787 at kernel/sched/ext.c:3862 scx_set_task_state+0x7c/0xc0
+ ...
+ RIP: 0010:scx_set_task_state+0x7c/0xc0
+ ...
+ Call Trace:
+  <TASK>
+  scx_enable_task+0x11f/0x2e0
+  switching_to_scx+0x24/0x110
+  scx_enable.isra.0+0xd14/0x13d0
+  bpf_struct_ops_link_create+0x136/0x1a0
+  __sys_bpf+0x1edd/0x2c30
+  __x64_sys_bpf+0x21/0x30
+  do_syscall_64+0xbb/0x370
+  entry_SYSCALL_64_after_hwframe+0x77/0x7f
 
-This also guarantees that coalescing is never enabled with ICFT or ICTT
-set to zero, a configuration that could lead to unpredictable behaviour
-according to i.MX8MP reference manual.
+This happens because we skip initialization for tasks that are already
+dead (with their usage counter set to zero), but we don't exclude them
+during the scheduling class transition phase.
 
-Signed-off-by: Jonas Rebmann <jre@pengutronix.de>
-Reviewed-by: Wei Fang <wei.fang@nxp.com>
-Link: https://patch.msgid.link/20250626-fec_deactivate_coalescing-v2-1-0b217f2e80da@pengutronix.de
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Fix this by also skipping dead tasks during class swiching, preventing
+invalid task state transitions.
+
+Fixes: a8532fac7b5d2 ("sched_ext: TASK_DEAD tasks must be switched into SCX on ops_enable")
+Cc: stable@vger.kernel.org # v6.12+
+Signed-off-by: Andrea Righi <arighi@nvidia.com>
+Signed-off-by: Tejun Heo <tj@kernel.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/net/ethernet/freescale/fec_main.c | 34 +++++++++++------------
- 1 file changed, 16 insertions(+), 18 deletions(-)
+ kernel/sched/ext.c |    4 ++++
+ 1 file changed, 4 insertions(+)
 
-diff --git a/drivers/net/ethernet/freescale/fec_main.c b/drivers/net/ethernet/freescale/fec_main.c
-index 805434ba3035..adf70a1650f4 100644
---- a/drivers/net/ethernet/freescale/fec_main.c
-+++ b/drivers/net/ethernet/freescale/fec_main.c
-@@ -2630,27 +2630,25 @@ static int fec_enet_us_to_itr_clock(struct net_device *ndev, int us)
- static void fec_enet_itr_coal_set(struct net_device *ndev)
- {
- 	struct fec_enet_private *fep = netdev_priv(ndev);
--	int rx_itr, tx_itr;
-+	u32 rx_itr = 0, tx_itr = 0;
-+	int rx_ictt, tx_ictt;
+--- a/kernel/sched/ext.c
++++ b/kernel/sched/ext.c
+@@ -5694,6 +5694,9 @@ static int scx_enable(struct sched_ext_o
+ 			__setscheduler_class(p->policy, p->prio);
+ 		struct sched_enq_and_set_ctx ctx;
  
--	/* Must be greater than zero to avoid unpredictable behavior */
--	if (!fep->rx_time_itr || !fep->rx_pkts_itr ||
--	    !fep->tx_time_itr || !fep->tx_pkts_itr)
--		return;
--
--	/* Select enet system clock as Interrupt Coalescing
--	 * timer Clock Source
--	 */
--	rx_itr = FEC_ITR_CLK_SEL;
--	tx_itr = FEC_ITR_CLK_SEL;
-+	rx_ictt = fec_enet_us_to_itr_clock(ndev, fep->rx_time_itr);
-+	tx_ictt = fec_enet_us_to_itr_clock(ndev, fep->tx_time_itr);
++		if (!tryget_task_struct(p))
++			continue;
++
+ 		if (old_class != new_class && p->se.sched_delayed)
+ 			dequeue_task(task_rq(p), p, DEQUEUE_SLEEP | DEQUEUE_DELAYED);
  
--	/* set ICFT and ICTT */
--	rx_itr |= FEC_ITR_ICFT(fep->rx_pkts_itr);
--	rx_itr |= FEC_ITR_ICTT(fec_enet_us_to_itr_clock(ndev, fep->rx_time_itr));
--	tx_itr |= FEC_ITR_ICFT(fep->tx_pkts_itr);
--	tx_itr |= FEC_ITR_ICTT(fec_enet_us_to_itr_clock(ndev, fep->tx_time_itr));
-+	if (rx_ictt > 0 && fep->rx_pkts_itr > 1) {
-+		/* Enable with enet system clock as Interrupt Coalescing timer Clock Source */
-+		rx_itr = FEC_ITR_EN | FEC_ITR_CLK_SEL;
-+		rx_itr |= FEC_ITR_ICFT(fep->rx_pkts_itr);
-+		rx_itr |= FEC_ITR_ICTT(rx_ictt);
-+	}
+@@ -5706,6 +5709,7 @@ static int scx_enable(struct sched_ext_o
+ 		sched_enq_and_set_task(&ctx);
  
--	rx_itr |= FEC_ITR_EN;
--	tx_itr |= FEC_ITR_EN;
-+	if (tx_ictt > 0 && fep->tx_pkts_itr > 1) {
-+		/* Enable with enet system clock as Interrupt Coalescing timer Clock Source */
-+		tx_itr = FEC_ITR_EN | FEC_ITR_CLK_SEL;
-+		tx_itr |= FEC_ITR_ICFT(fep->tx_pkts_itr);
-+		tx_itr |= FEC_ITR_ICTT(tx_ictt);
-+	}
- 
- 	writel(tx_itr, fep->hwp + FEC_TXIC0);
- 	writel(rx_itr, fep->hwp + FEC_RXIC0);
--- 
-2.39.5
-
+ 		check_class_changed(task_rq(p), p, old_class, p->prio);
++		put_task_struct(p);
+ 	}
+ 	scx_task_iter_stop(&sti);
+ 	percpu_up_write(&scx_fork_rwsem);
 
 
 
