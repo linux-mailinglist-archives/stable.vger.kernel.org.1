@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-173331-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-174696-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0DEE0B35C81
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 13:35:08 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id F1207B3647F
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 15:39:18 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 452263A985F
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 11:34:56 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 61E5A1BC430A
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 13:32:59 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 039EC338F41;
-	Tue, 26 Aug 2025 11:32:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D50253376A8;
+	Tue, 26 Aug 2025 13:31:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="BSbfCuXJ"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="D+LeCC+P"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B40DD322A03;
-	Tue, 26 Aug 2025 11:32:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 929922AD04;
+	Tue, 26 Aug 2025 13:31:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756207969; cv=none; b=b4cpRAwUsYLN4Z8oEsYyv2ghAR6Z1Mg+wbrkbOKikvuP9RDu8VIlZujvywXO9Optrhog4WVqOXMaeiFeXVReXB5fy/VQ249HY3G+ZyWsfjT35CApiaH7L/Y9adORJludg8nID+fJfu/xDtRIxuoekS37649sPbHNWGU6ZOc1UJ4=
+	t=1756215075; cv=none; b=b/H4pKHZ4U7QoHOiKGbXyM27tU+Amxb6k207I7NkusEOC3ag+dIt9vBmTngzn1JsNUWrN/yjzxTShvNFEFb7tDnKBoZx/1ElzXO5DLfFEYpnmkH5HmccTnnJVfSOQ6VswpGbKAPMd/eDJMmzHP37O3FY/XHj9/i0XZFcAdY8RnY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756207969; c=relaxed/simple;
-	bh=k7PaaNhdxJ7GgtYVjI08AXc3UY1cq+Pedh8vyCt68xk=;
+	s=arc-20240116; t=1756215075; c=relaxed/simple;
+	bh=JrC58ynnqjIrrpJ8oAjoRZEzWRv5/9kXerUcWlWNLyU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=EDGtKi/sIWmrZqyoGY2fOoek7CKdNu8ijZ+PWtrs9g04CRxiqYBFWm3yyLsZXGO9Qpg5/Vi2q4m5PBQKP3EFIE4tzaZHobAvLGjo24xBCR8Q38DlOxAcnaFcr91B6rNrLRcNWlLIuW9TWMi6a1ffOUxDESGALjIqSvGm8YP8dJo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=BSbfCuXJ; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 45532C4CEF1;
-	Tue, 26 Aug 2025 11:32:49 +0000 (UTC)
+	 MIME-Version; b=UVNySjhCvnwzyP0RQq94Bo1GGmBSahP7WZzeZ1Meqh6jZz/G+pLu5u423p1n83HiBDXR/Gp61S+zXzhNmgMsr2GGk6kUNs9dj0+u5d/SA1wSDc+bQ7LF8r1Tp+foGoUPKfWrNj9jhEPB17mdFJAWsyp+HBBbThXPIHgGF4g2t/M=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=D+LeCC+P; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id CC00AC116B1;
+	Tue, 26 Aug 2025 13:31:13 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1756207969;
-	bh=k7PaaNhdxJ7GgtYVjI08AXc3UY1cq+Pedh8vyCt68xk=;
+	s=korg; t=1756215074;
+	bh=JrC58ynnqjIrrpJ8oAjoRZEzWRv5/9kXerUcWlWNLyU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=BSbfCuXJXaMotlVxkPvAeRJVcB9RRmV1Zx4wB7R8fXeZ+07E0RqubZALM68Brqtmy
-	 0/pibc7aRnT2DUXliQV7loKUdIcMrKHP4SrL2QZ4DpnPbOI27dgGMnqj/oESxHebwm
-	 r1/X/ZJCQbu/icHD/HlTdLSXLb2yTB2aZteFWgWg=
+	b=D+LeCC+PEHEHF+V5jC2xcTirihnOhztz0hU4ZOOq4S+tNJxfRaIsIP1b1yUNBgSmo
+	 yh2EB/oaX53EdLW6AZXYBo1noXXR7PdoWLmklxpfz/JAgy2elqKiVM/gTcUTpwpG7V
+	 1u6bCZtVTCnt3jJ1wclMMdYXMwHpJu0J9o1YqUmE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Waiman Long <longman@redhat.com>,
-	Juri Lelli <juri.lelli@redhat.com>,
-	Tejun Heo <tj@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.16 346/457] cgroup/cpuset: Use static_branch_enable_cpuslocked() on cpusets_insane_config_key
+	Sabrina Dubroca <sd@queasysnail.net>,
+	Jakub Kicinski <kuba@kernel.org>,
+	William Liu <will@willsroot.io>
+Subject: [PATCH 6.1 377/482] tls: separate no-async decryption request handling from async
 Date: Tue, 26 Aug 2025 13:10:30 +0200
-Message-ID: <20250826110945.879753293@linuxfoundation.org>
+Message-ID: <20250826110940.144511996@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250826110937.289866482@linuxfoundation.org>
-References: <20250826110937.289866482@linuxfoundation.org>
+In-Reply-To: <20250826110930.769259449@linuxfoundation.org>
+References: <20250826110930.769259449@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,77 +62,66 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.16-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Waiman Long <longman@redhat.com>
+From: Sabrina Dubroca <sd@queasysnail.net>
 
-[ Upstream commit 65f97cc81b0adc5f49cf6cff5d874be0058e3f41 ]
+commit 41532b785e9d79636b3815a64ddf6a096647d011 upstream.
 
-The following lockdep splat was observed.
+If we're not doing async, the handling is much simpler. There's no
+reference counting, we just need to wait for the completion to wake us
+up and return its result.
 
-[  812.359086] ============================================
-[  812.359089] WARNING: possible recursive locking detected
-[  812.359097] --------------------------------------------
-[  812.359100] runtest.sh/30042 is trying to acquire lock:
-[  812.359105] ffffffffa7f27420 (cpu_hotplug_lock){++++}-{0:0}, at: static_key_enable+0xe/0x20
-[  812.359131]
-[  812.359131] but task is already holding lock:
-[  812.359134] ffffffffa7f27420 (cpu_hotplug_lock){++++}-{0:0}, at: cpuset_write_resmask+0x98/0xa70
-     :
-[  812.359267] Call Trace:
-[  812.359272]  <TASK>
-[  812.359367]  cpus_read_lock+0x3c/0xe0
-[  812.359382]  static_key_enable+0xe/0x20
-[  812.359389]  check_insane_mems_config.part.0+0x11/0x30
-[  812.359398]  cpuset_write_resmask+0x9f2/0xa70
-[  812.359411]  cgroup_file_write+0x1c7/0x660
-[  812.359467]  kernfs_fop_write_iter+0x358/0x530
-[  812.359479]  vfs_write+0xabe/0x1250
-[  812.359529]  ksys_write+0xf9/0x1d0
-[  812.359558]  do_syscall_64+0x5f/0xe0
+We should preferably also use a separate crypto_wait. I'm not seeing a
+UAF as I did in the past, I think aec7961916f3 ("tls: fix race between
+async notify and socket close") took care of it.
 
-Since commit d74b27d63a8b ("cgroup/cpuset: Change cpuset_rwsem
-and hotplug lock order"), the ordering of cpu hotplug lock
-and cpuset_mutex had been reversed. That patch correctly
-used the cpuslocked version of the static branch API to enable
-cpusets_pre_enable_key and cpusets_enabled_key, but it didn't do the
-same for cpusets_insane_config_key.
+This will make the next fix easier.
 
-The cpusets_insane_config_key can be enabled in the
-check_insane_mems_config() which is called from update_nodemask()
-or cpuset_hotplug_update_tasks() with both cpu hotplug lock and
-cpuset_mutex held. Deadlock can happen with a pending hotplug event that
-tries to acquire the cpu hotplug write lock which will block further
-cpus_read_lock() attempt from check_insane_mems_config(). Fix that by
-switching to use static_branch_enable_cpuslocked().
-
-Fixes: d74b27d63a8b ("cgroup/cpuset: Change cpuset_rwsem and hotplug lock order")
-Signed-off-by: Waiman Long <longman@redhat.com>
-Reviewed-by: Juri Lelli <juri.lelli@redhat.com>
-Signed-off-by: Tejun Heo <tj@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Signed-off-by: Sabrina Dubroca <sd@queasysnail.net>
+Link: https://lore.kernel.org/r/47bde5f649707610eaef9f0d679519966fc31061.1709132643.git.sd@queasysnail.net
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+[ William: The original patch did not apply cleanly due to deletions of
+  non-existent lines in 6.1.y. The UAF the author stopped seeing can still
+  be reproduced on systems without AVX in conjunction with cryptd.
+  Also removed an extraneous statement after a return statement that is
+  adjacent to diff. ]
+Link: https://lore.kernel.org/netdev/he2K1yz_u7bZ-CnYcTSQ4OxuLuHZXN6xZRgp6_ICSWnq8J5FpI_uD1i_1lTSf7WMrYb5ThiX1OR2GTOB2IltgT49Koy7Hhutr4du4KtLvyk=@willsroot.io/
+Signed-off-by: William Liu <will@willsroot.io>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- kernel/cgroup/cpuset.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ net/tls/tls_sw.c |    9 +++++++--
+ 1 file changed, 7 insertions(+), 2 deletions(-)
 
-diff --git a/kernel/cgroup/cpuset.c b/kernel/cgroup/cpuset.c
-index 3bc4301466f3..77396bab071a 100644
---- a/kernel/cgroup/cpuset.c
-+++ b/kernel/cgroup/cpuset.c
-@@ -280,7 +280,7 @@ static inline void check_insane_mems_config(nodemask_t *nodes)
- {
- 	if (!cpusets_insane_config() &&
- 		movable_only_nodes(nodes)) {
--		static_branch_enable(&cpusets_insane_config_key);
-+		static_branch_enable_cpuslocked(&cpusets_insane_config_key);
- 		pr_info("Unsupported (movable nodes only) cpuset configuration detected (nmask=%*pbl)!\n"
- 			"Cpuset allocations might fail even with a lot of memory available.\n",
- 			nodemask_pr_args(nodes));
--- 
-2.50.1
-
+--- a/net/tls/tls_sw.c
++++ b/net/tls/tls_sw.c
+@@ -274,9 +274,15 @@ static int tls_do_decryption(struct sock
+ 		DEBUG_NET_WARN_ON_ONCE(atomic_read(&ctx->decrypt_pending) < 1);
+ 		atomic_inc(&ctx->decrypt_pending);
+ 	} else {
++		DECLARE_CRYPTO_WAIT(wait);
++
+ 		aead_request_set_callback(aead_req,
+ 					  CRYPTO_TFM_REQ_MAY_BACKLOG,
+-					  crypto_req_done, &ctx->async_wait);
++					  crypto_req_done, &wait);
++		ret = crypto_aead_decrypt(aead_req);
++		if (ret == -EINPROGRESS || ret == -EBUSY)
++			ret = crypto_wait_req(ret, &wait);
++		return ret;
+ 	}
+ 
+ 	ret = crypto_aead_decrypt(aead_req);
+@@ -289,7 +295,6 @@ static int tls_do_decryption(struct sock
+ 		/* all completions have run, we're not doing async anymore */
+ 		darg->async = false;
+ 		return ret;
+-		ret = ret ?: -EINPROGRESS;
+ 	}
+ 
+ 	atomic_dec(&ctx->decrypt_pending);
 
 
 
