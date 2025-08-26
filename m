@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-174536-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-175675-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id B3C17B363F6
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 15:34:40 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id D6A44B369D1
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 16:31:16 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id C9AF35E46E8
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 13:25:47 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 81FA01C23170
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 14:17:11 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 19CF072605;
-	Tue, 26 Aug 2025 13:24:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 25F303568F4;
+	Tue, 26 Aug 2025 14:14:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="AV4gT56t"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="J7q4U9Br"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CCE2424A066;
-	Tue, 26 Aug 2025 13:24:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D95E02AE68;
+	Tue, 26 Aug 2025 14:14:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756214651; cv=none; b=u5U962L4ungTz3iu3qmmn5X07SgEmb6u/d/ULNla3opqNJ/uKTmi397VfAG7YJ84rJSFxYojr3ZH6VZ7PoOxdQiHT2IpgSTrmZKjUclxcSFgARtrn0fJRMzFjR7hI00wj6pyuIkRkKCT4iZnzbvKoH9lwinvgiaCguQkuLfEz6k=
+	t=1756217671; cv=none; b=KVzsK/+ZSTUCojf2FltqfyfVu8Hx4z2Dza3Wqp2K/Ft8IgN0as0u/kX5yRBXBvm9g1fluejNzOL+icoobJ7NG1ilCwIXquyQxaSguKJ9lMEfs/0NAhySRh5jFfHgfEGkbVtEzuBQrVGpjsUTDy46WAq2dkLOAT+iYRmxrnT+iBQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756214651; c=relaxed/simple;
-	bh=J9nzJCqI6+pPpZniKhjHUswECYoU9SDpNosCkAAfrto=;
+	s=arc-20240116; t=1756217671; c=relaxed/simple;
+	bh=1/pW0s9acS90zlLQGjZiqV2yPoQ0LTZTYbyXrkb7cNA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=CGE2t+bI7RaF7G4NvrHZFV1jKWq2bBHfmkeU1VDLmOp4FH+BHEpUqaV4yVkQfyw9otYF0mzCiznDbchw6zXIhDP/UWaGwNRjJte/9ta0amW1JlVzSvO9394knc5iZqm4pzjL8Nw9tApR7tt6NkR15sZKmKMG1kmJSdpn83OOTjg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=AV4gT56t; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5DFF3C4CEF1;
-	Tue, 26 Aug 2025 13:24:11 +0000 (UTC)
+	 MIME-Version; b=aauqlNWnja+mX4R4xHGejo4v/E+UJGOKJUJmnVAP04mGMk8YZ2mw203v/qHrpYGRg6dqylr18xZo8kcl9+UsTAcuypxl+YZFai2aV3v5IyfZmG91uGBcMGVCBG12KMwHkPA/2h/dbDONmIcvUyRZ0vbpcbDLayhK62Sbd0dd+0o=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=J7q4U9Br; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6AFDEC4CEF1;
+	Tue, 26 Aug 2025 14:14:31 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1756214651;
-	bh=J9nzJCqI6+pPpZniKhjHUswECYoU9SDpNosCkAAfrto=;
+	s=korg; t=1756217671;
+	bh=1/pW0s9acS90zlLQGjZiqV2yPoQ0LTZTYbyXrkb7cNA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=AV4gT56tA106oRPgi91/+u1FmqL2SW6fCIJ6iHTOueD43P6S2QYWi+C1rk/58kqA6
-	 zfoPZuwjQXHn/gKqKAGAr5vB5PKJpCx+07amTQ7dp9pZIBR77/C0HhuNtn7Q18VToi
-	 5lp/tI/765+rsL6BfATwEq4u9arW8iJkVuoDQDEA=
+	b=J7q4U9BrEA9NC/GjRmZX8L1Oh/v/XDEQAzyE+go1o8dCeeIsANDDlDMcvYKZ5Ba+p
+	 Y1aHHDPciW5uJT16iClf7/9vUObTjX/NugAnmeuGgFJwV6XFX+42XTFKI1V57I1IlW
+	 9Jkji2qZ75LlpzBQ2lgL1ua1aljG88CsNFJ5SBEc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	syzbot+630f6d40b3ccabc8e96e@syzkaller.appspotmail.com,
-	Edward Adam Davis <eadavis@qq.com>,
-	Dave Kleikamp <dave.kleikamp@oracle.com>,
+	Alexander Kochetkov <al.kochet@gmail.com>,
+	Heiko Stuebner <heiko@sntech.de>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 187/482] jfs: Regular file corruption check
+Subject: [PATCH 5.10 230/523] ARM: rockchip: fix kernel hang during smp initialization
 Date: Tue, 26 Aug 2025 13:07:20 +0200
-Message-ID: <20250826110935.424730020@linuxfoundation.org>
+Message-ID: <20250826110930.127367955@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250826110930.769259449@linuxfoundation.org>
-References: <20250826110930.769259449@linuxfoundation.org>
+In-Reply-To: <20250826110924.562212281@linuxfoundation.org>
+References: <20250826110924.562212281@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,41 +62,72 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Edward Adam Davis <eadavis@qq.com>
+From: Alexander Kochetkov <al.kochet@gmail.com>
 
-[ Upstream commit 2d04df8116426b6c7b9f8b9b371250f666a2a2fb ]
+[ Upstream commit 7cdb433bb44cdc87dc5260cdf15bf03cc1cd1814 ]
 
-The reproducer builds a corrupted file on disk with a negative i_size value.
-Add a check when opening this file to avoid subsequent operation failures.
+In order to bring up secondary CPUs main CPU write trampoline
+code to SRAM. The trampoline code is written while secondary
+CPUs are powered on (at least that true for RK3188 CPU).
+Sometimes that leads to kernel hang. Probably because secondary
+CPU execute trampoline code while kernel doesn't expect.
 
-Reported-by: syzbot+630f6d40b3ccabc8e96e@syzkaller.appspotmail.com
-Closes: https://syzkaller.appspot.com/bug?extid=630f6d40b3ccabc8e96e
-Tested-by: syzbot+630f6d40b3ccabc8e96e@syzkaller.appspotmail.com
-Signed-off-by: Edward Adam Davis <eadavis@qq.com>
-Signed-off-by: Dave Kleikamp <dave.kleikamp@oracle.com>
+The patch moves SRAM initialization step to the point where all
+secondary CPUs are powered down.
+
+That fixes rarely hangs on RK3188:
+[    0.091568] CPU0: thread -1, cpu 0, socket 0, mpidr 80000000
+[    0.091996] rockchip_smp_prepare_cpus: ncores 4
+
+Signed-off-by: Alexander Kochetkov <al.kochet@gmail.com>
+Link: https://lore.kernel.org/r/20250703140453.1273027-1-al.kochet@gmail.com
+Signed-off-by: Heiko Stuebner <heiko@sntech.de>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/jfs/file.c | 3 +++
- 1 file changed, 3 insertions(+)
+ arch/arm/mach-rockchip/platsmp.c | 15 +++++++++------
+ 1 file changed, 9 insertions(+), 6 deletions(-)
 
-diff --git a/fs/jfs/file.c b/fs/jfs/file.c
-index 332dc9ac47a9..ae8df3d11663 100644
---- a/fs/jfs/file.c
-+++ b/fs/jfs/file.c
-@@ -44,6 +44,9 @@ static int jfs_open(struct inode *inode, struct file *file)
- {
- 	int rc;
+diff --git a/arch/arm/mach-rockchip/platsmp.c b/arch/arm/mach-rockchip/platsmp.c
+index d60856898d97..17aee4701e81 100644
+--- a/arch/arm/mach-rockchip/platsmp.c
++++ b/arch/arm/mach-rockchip/platsmp.c
+@@ -279,11 +279,6 @@ static void __init rockchip_smp_prepare_cpus(unsigned int max_cpus)
+ 	}
  
-+	if (S_ISREG(inode->i_mode) && inode->i_size < 0)
-+		return -EIO;
+ 	if (read_cpuid_part() == ARM_CPU_PART_CORTEX_A9) {
+-		if (rockchip_smp_prepare_sram(node)) {
+-			of_node_put(node);
+-			return;
+-		}
+-
+ 		/* enable the SCU power domain */
+ 		pmu_set_power_domain(PMU_PWRDN_SCU, true);
+ 
+@@ -316,11 +311,19 @@ static void __init rockchip_smp_prepare_cpus(unsigned int max_cpus)
+ 		asm ("mrc p15, 1, %0, c9, c0, 2\n" : "=r" (l2ctlr));
+ 		ncores = ((l2ctlr >> 24) & 0x3) + 1;
+ 	}
+-	of_node_put(node);
+ 
+ 	/* Make sure that all cores except the first are really off */
+ 	for (i = 1; i < ncores; i++)
+ 		pmu_set_power_domain(0 + i, false);
 +
- 	if ((rc = dquot_file_open(inode, file)))
- 		return rc;
++	if (read_cpuid_part() == ARM_CPU_PART_CORTEX_A9) {
++		if (rockchip_smp_prepare_sram(node)) {
++			of_node_put(node);
++			return;
++		}
++	}
++
++	of_node_put(node);
+ }
  
+ static void __init rk3036_smp_prepare_cpus(unsigned int max_cpus)
 -- 
 2.39.5
 
