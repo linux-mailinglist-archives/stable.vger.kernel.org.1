@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-173744-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-174874-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1C96CB35F75
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 14:49:30 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5FFD9B365A1
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 15:49:33 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id E4C3D2064D8
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 12:49:29 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 604FA8E2E0A
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 13:39:04 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0319B54654;
-	Tue, 26 Aug 2025 12:49:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id BA00522AE5D;
+	Tue, 26 Aug 2025 13:39:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="E/AyryyM"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="olgBW5GJ"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B1610450FE;
-	Tue, 26 Aug 2025 12:49:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 780ED20CCCA;
+	Tue, 26 Aug 2025 13:39:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756212560; cv=none; b=SPDtPiaBUGjjhF8lQPvkf+MxyMP+2eOFk500dnCoco//Hm+ejyrC0O1ic66hbuOaJGPVLUF9fTgewLMEatCeYb6p5/bbcjoRoWs0SC5o7CQFHukDnQfFCI1Z2W5/iiGurX6Dvst5NsFtxL1gC3qQxtOGg/GGnlVPzDhrbNEh5Fc=
+	t=1756215543; cv=none; b=az5kTV+eV5xX5/wC2WW0eQEiRlIQLcBBNP4oUdXLlYDE7sE/MTKXu1OkLMasIENNpl/5JMwYHlyC8MMq62LYExKlK9Io+zGjkCafgvBk92r9vLT/JvfX+eJ13gRJ0ea73l98/rdp7SB397VeVH++MCrxWNvnFOEH34VGarloEWI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756212560; c=relaxed/simple;
-	bh=1rMxdiL5Y4Kj29LEpjKm7hAvll/rPXCLEwYU6W6dAsM=;
+	s=arc-20240116; t=1756215543; c=relaxed/simple;
+	bh=hytmB9jRu9ufhdUw3IZ8f1wkrg1cIO2/8gXiZN2a8J0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Bwhcv1aR5ul5oTUyVbrPXR/5saFv97pnx8cjzWX1lEs31sEYd8s48X5rGXDfWWyu67DIgwanZ9MiinAHAdh+dEMVBdL5mqAKhoHW6+tb7QAZzGkpRXjpUGe6yX0/Ex0JVevDxOLcZpjSrSzzorvug++cUpVoQbVYiT0akHlpR40=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=E/AyryyM; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A4806C4CEF1;
-	Tue, 26 Aug 2025 12:49:18 +0000 (UTC)
+	 MIME-Version; b=m6r9SRTCITvWnquhBRg23cITuCCHxHOzbXiWC76o5qPJu739Bf2Hh+gbrSBP5mD7PWSHWQZPjjcYrEsED0ZfzJ2uMKCDE1itenKWSME0XvBUBFqtm01d20K4L8EuN/t4Nuzp2NnFY4OtXsQx2jyyTyMWRnAzK518NC1Lux9oMgM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=olgBW5GJ; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0A4E3C4CEF1;
+	Tue, 26 Aug 2025 13:39:02 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1756212559;
-	bh=1rMxdiL5Y4Kj29LEpjKm7hAvll/rPXCLEwYU6W6dAsM=;
+	s=korg; t=1756215543;
+	bh=hytmB9jRu9ufhdUw3IZ8f1wkrg1cIO2/8gXiZN2a8J0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=E/AyryyMpVHMIV6NViMt6cCiq/SOiPSVBYfLQaiolZl1WDwZzpOFYU/7Y8MaTa+zs
-	 rgs0t81JwcN6d9McEKJq3LuiFGip2oSgT4hkoGwv0VWvwiIegOYa0fdr3OcJWrYCbR
-	 Mwrk8P3n+uOrPduA1laKUIjWLMhDJ12mwWcxuMCI=
+	b=olgBW5GJOnIkS4tlGtWqa0FS/KkWMmoM89miJiP0Dr7GleqH1WhdKLmj6e/rzVu0A
+	 tWFL7ggWPIRTyNjveMv8GeZbzNROjfhC4p6PIYK9HTsHyoavqIwRGo8edkcXXmG9pv
+	 809Wbn/K4LgMh6oyHGVWpZaSXCgXD7vZ4KKBWC5g=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Vladimir Oltean <vladimir.oltean@nxp.com>,
-	Johan Hovold <johan@kernel.org>,
-	Simon Horman <horms@kernel.org>,
-	Jakub Kicinski <kuba@kernel.org>
-Subject: [PATCH 6.6 016/587] net: enetc: fix device and OF node leak at probe
+	Stephen Rothwell <sfr@canb.auug.org.au>,
+	"Peter Zijlstra (Intel)" <peterz@infradead.org>,
+	Kees Cook <keescook@chromium.org>,
+	Siddhi Katage <siddhi.katage@oracle.com>
+Subject: [PATCH 5.15 074/644] x86: Fix __get_wchan() for !STACKTRACE
 Date: Tue, 26 Aug 2025 13:02:45 +0200
-Message-ID: <20250826110953.365271938@linuxfoundation.org>
+Message-ID: <20250826110948.333542770@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250826110952.942403671@linuxfoundation.org>
-References: <20250826110952.942403671@linuxfoundation.org>
+In-Reply-To: <20250826110946.507083938@linuxfoundation.org>
+References: <20250826110946.507083938@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,63 +63,62 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Johan Hovold <johan@kernel.org>
+From: Peter Zijlstra <peterz@infradead.org>
 
-commit 70458f8a6b44daf3ad39f0d9b6d1097c8a7780ed upstream.
+commit 5d1ceb3969b6b2e47e2df6d17790a7c5a20fcbb4 upstream.
 
-Make sure to drop the references to the IERB OF node and platform device
-taken by of_parse_phandle() and of_find_device_by_node() during probe.
+Use asm/unwind.h to implement wchan, since we cannot always rely on
+STACKTRACE=y.
 
-Fixes: e7d48e5fbf30 ("net: enetc: add a mini driver for the Integrated Endpoint Register Block")
-Cc: stable@vger.kernel.org	# 5.13
-Cc: Vladimir Oltean <vladimir.oltean@nxp.com>
-Signed-off-by: Johan Hovold <johan@kernel.org>
-Reviewed-by: Simon Horman <horms@kernel.org>
-Link: https://patch.msgid.link/20250725171213.880-3-johan@kernel.org
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Fixes: bc9bbb81730e ("x86: Fix get_wchan() to support the ORC unwinder")
+Reported-by: Stephen Rothwell <sfr@canb.auug.org.au>
+Signed-off-by: Peter Zijlstra (Intel) <peterz@infradead.org>
+Reviewed-by: Kees Cook <keescook@chromium.org>
+Link: https://lkml.kernel.org/r/20211022152104.137058575@infradead.org
+Signed-off-by: Siddhi Katage <siddhi.katage@oracle.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/net/ethernet/freescale/enetc/enetc_pf.c |   14 ++++++++++++--
- 1 file changed, 12 insertions(+), 2 deletions(-)
+ arch/x86/kernel/process.c |   17 ++++++++++++++---
+ 1 file changed, 14 insertions(+), 3 deletions(-)
 
---- a/drivers/net/ethernet/freescale/enetc/enetc_pf.c
-+++ b/drivers/net/ethernet/freescale/enetc/enetc_pf.c
-@@ -1179,19 +1179,29 @@ static int enetc_pf_register_with_ierb(s
+--- a/arch/x86/kernel/process.c
++++ b/arch/x86/kernel/process.c
+@@ -43,6 +43,7 @@
+ #include <asm/io_bitmap.h>
+ #include <asm/proto.h>
+ #include <asm/frame.h>
++#include <asm/unwind.h>
+ 
+ #include "process.h"
+ 
+@@ -971,10 +972,20 @@ unsigned long arch_randomize_brk(struct
+  */
+ unsigned long __get_wchan(struct task_struct *p)
  {
- 	struct platform_device *ierb_pdev;
- 	struct device_node *ierb_node;
-+	int ret;
+-	unsigned long entry = 0;
++	struct unwind_state state;
++	unsigned long addr = 0;
  
- 	ierb_node = of_find_compatible_node(NULL, NULL,
- 					    "fsl,ls1028a-enetc-ierb");
--	if (!ierb_node || !of_device_is_available(ierb_node))
-+	if (!ierb_node)
- 		return -ENODEV;
- 
-+	if (!of_device_is_available(ierb_node)) {
-+		of_node_put(ierb_node);
-+		return -ENODEV;
+-	stack_trace_save_tsk(p, &entry, 1, 0);
+-	return entry;
++	for (unwind_start(&state, p, NULL, NULL); !unwind_done(&state);
++	     unwind_next_frame(&state)) {
++		addr = unwind_get_return_address(&state);
++		if (!addr)
++			break;
++		if (in_sched_functions(addr))
++			continue;
++		break;
 +	}
 +
- 	ierb_pdev = of_find_device_by_node(ierb_node);
- 	of_node_put(ierb_node);
- 
- 	if (!ierb_pdev)
- 		return -EPROBE_DEFER;
- 
--	return enetc_ierb_register_pf(ierb_pdev, pdev);
-+	ret = enetc_ierb_register_pf(ierb_pdev, pdev);
-+
-+	put_device(&ierb_pdev->dev);
-+
-+	return ret;
++	return addr;
  }
  
- static struct enetc_si *enetc_psi_create(struct pci_dev *pdev)
+ long do_arch_prctl_common(struct task_struct *task, int option,
 
 
 
