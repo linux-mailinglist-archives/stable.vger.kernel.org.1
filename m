@@ -1,58 +1,56 @@
-Return-Path: <stable+bounces-175306-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-174178-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7D624B3678C
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 16:08:07 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 41307B361AE
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 15:11:45 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 9AF8C565033
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 14:00:07 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id E54A71BA6B34
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 13:09:12 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 01F98350D62;
-	Tue, 26 Aug 2025 13:58:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4271E2C08A8;
+	Tue, 26 Aug 2025 13:08:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="wPmdbHWj"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="dNQsddBD"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B1692343218;
-	Tue, 26 Aug 2025 13:58:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F1B142FDC38;
+	Tue, 26 Aug 2025 13:08:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756216687; cv=none; b=bXnxVlDDUTpIvnlP2J7B/j2IK5yTx1dcJEETLUgNCg8nFdTDq6DbFUtKLUYIkbssUPVG5c+VqM/XlmAF1tmsTm7voTqCkUWpUE9sast3xRk7H+DEFGvqHnhXE4RNtaDuUBn2YKpiCUW0sQQwJWierKSDxfU3dlYnQwKsZ6iJtrs=
+	t=1756213700; cv=none; b=J7t/xj4qatyJ1rZa6AWUgiAJ2WMTNKGzrq5k5ekloGVJUCxXSuOeohTdUpeSiTIXm09WxGP0vxwlyIgAxd9o6Y9sNnyugWDNzI5j9U/Z8V6WthEd8MBEuvGzg+JWKgEwSyoyqdYnQx+2DrmH6MdTCo8bjwUNFLRH56Q/FVXqPRk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756216687; c=relaxed/simple;
-	bh=2/l1tCSOLk87WZraJHNcC+bDDbKS6mtR9NQNDeqoTAU=;
+	s=arc-20240116; t=1756213700; c=relaxed/simple;
+	bh=bCtS59WwfMaH0v1zcOo2BAPM4yM27HiiaeF4IA9JytY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=IGcBGkVuYKIyL/LjcrHZfDjGElpx5+NGg7rc91jaYLOGYJqkCU8qbVsV5B/7ZVyZiL848CDAfhusoQ3rcA/FIvuliaw8Y9sJoe31Z4JfQAv0XsKY6WnYCu53IHrtJ2mlg/yXlDchA+nz9rz6PCvWHjvdaAYE43qp5V8RzsCty0E=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=wPmdbHWj; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 43F02C4CEF1;
-	Tue, 26 Aug 2025 13:58:07 +0000 (UTC)
+	 MIME-Version; b=Es5E8yAIsVi6iH4mgxT35lsnLXPjYc4x32aA67z5NWwgRy4WeVBG3m8UPMZQuhnRYWM7+oWdUrChxeXrjtl90Vj1ccAz3RQratAi3PP78v/kpsOw8XV7yksMvbZo+7z/xY6GdvnrTQdmGIx3N1y9O2KbR7kHI2oHQIbl4tlxOsw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=dNQsddBD; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 34A07C113CF;
+	Tue, 26 Aug 2025 13:08:19 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1756216687;
-	bh=2/l1tCSOLk87WZraJHNcC+bDDbKS6mtR9NQNDeqoTAU=;
+	s=korg; t=1756213699;
+	bh=bCtS59WwfMaH0v1zcOo2BAPM4yM27HiiaeF4IA9JytY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=wPmdbHWjsvlWjy2j6JH9K9ilgOmKvbdua2/WUtkggrAb8rN06NWlEEKva3Pr6wdmy
-	 jWLNFSTGrojxRWohV7LVxlvGJftbmY+vU2ggNIQ4BQpfe2R4S6PAiag5wP7/s416xX
-	 b1LGjsDXSHnEb+SJm+edn1gOjTuBJ6Hm5GdfUDKc=
+	b=dNQsddBD+DmJ/glAy7qMV2f5y1efLiSD1LmIwzePFamExbx+mG2RRZpKGwPxJ3FK9
+	 K2ltEuUeIAW7GE25YvOiaIaGM9FPFxK6hr4lOE/rIap9cAMYsYv4nIbeYUjk1bc9Yd
+	 b12frQrtaIoaHG10OBmIUAFLnVGGKg/D3F5Q50tI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Lorenz Brun <lorenz@brun.one>,
-	Brandon Schwartz <Brandon.Schwartz@wdc.com>,
-	Damien Le Moal <dlemoal@kernel.org>,
-	Hannes Reinecke <hare@suse.de>,
-	"Martin K. Petersen" <martin.petersen@oracle.com>
-Subject: [PATCH 5.15 474/644] ata: libata-scsi: Fix ata_to_sense_error() status handling
+	Hans Verkuil <hverkuil@xs4all.nl>,
+	Ricardo Ribalda <ribalda@chromium.org>,
+	Bryan ODonoghue <bod@kernel.org>
+Subject: [PATCH 6.6 416/587] media: venus: venc: Clamp param smaller than 1fps and bigger than 240
 Date: Tue, 26 Aug 2025 13:09:25 +0200
-Message-ID: <20250826110958.228011997@linuxfoundation.org>
+Message-ID: <20250826111003.521233244@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250826110946.507083938@linuxfoundation.org>
-References: <20250826110946.507083938@linuxfoundation.org>
+In-Reply-To: <20250826110952.942403671@linuxfoundation.org>
+References: <20250826110952.942403671@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,95 +62,50 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Damien Le Moal <dlemoal@kernel.org>
+From: Ricardo Ribalda <ribalda@chromium.org>
 
-commit cf3fc037623c54de48d2ec1a1ee686e2d1de2d45 upstream.
+commit 417c01b92ec278a1118a05c6ad8a796eaa0c9c52 upstream.
 
-Commit 8ae720449fca ("libata: whitespace fixes in ata_to_sense_error()")
-inadvertantly added the entry 0x40 (ATA_DRDY) to the stat_table array in
-the function ata_to_sense_error(). This entry ties a failed qc which has
-a status filed equal to ATA_DRDY to the sense key ILLEGAL REQUEST with
-the additional sense code UNALIGNED WRITE COMMAND. This entry will be
-used to generate a failed qc sense key and sense code when the qc is
-missing sense data and there is no match for the qc error field in the
-sense_table array of ata_to_sense_error().
+The driver uses "whole" fps in all its calculations (e.g. in
+load_per_instance()). Those calculation expect an fps bigger than 1, and
+not big enough to overflow.
 
-As a result, for a failed qc for which we failed to get sense data (e.g.
-read log 10h failed if qc is an NCQ command, or REQUEST SENSE EXT
-command failed for the non-ncq case, the user very often end up seeing
-the completely misleading "unaligned write command" error, even if qc
-was not a write command. E.g.:
+Clamp the param if the user provides a value that will result in an invalid
+fps.
 
-sd 0:0:0:0: [sda] tag#12 FAILED Result: hostbyte=DID_OK driverbyte=DRIVER_OK cmd_age=0s
-sd 0:0:0:0: [sda] tag#12 Sense Key : Illegal Request [current]
-sd 0:0:0:0: [sda] tag#12 Add. Sense: Unaligned write command
-sd 0:0:0:0: [sda] tag#12 CDB: Read(10) 28 00 00 00 10 00 00 00 08 00
-I/O error, dev sda, sector 4096 op 0x0:(READ) flags 0x80700 phys_seg 1 prio class 0
-
-Fix this by removing the ATA_DRDY entry from the stat_table array so
-that we default to always returning ABORTED COMMAND without any
-additional sense code, since we do not know any better. The entry 0x08
-(ATA_DRQ) is also removed since signaling ABORTED COMMAND with a parity
-error is also misleading (as a parity error would likely be signaled
-through a bus error). So for this case, also default to returning
-ABORTED COMMAND without any additional sense code. With this, the
-previous example error case becomes:
-
-sd 0:0:0:0: [sda] tag#17 FAILED Result: hostbyte=DID_OK driverbyte=DRIVER_OK cmd_age=0s
-sd 0:0:0:0: [sda] tag#17 Sense Key : Aborted Command [current]
-sd 0:0:0:0: [sda] tag#17 Add. Sense: No additional sense information
-sd 0:0:0:0: [sda] tag#17 CDB: Read(10) 28 00 00 00 10 00 00 00 08 00
-I/O error, dev sda, sector 4096 op 0x0:(READ) flags 0x80700 phys_seg 1 prio class 0
-
-Together with these fixes, refactor stat_table to make it more readable
-by putting the entries comments in front of the entries and using the
-defined status bits macros instead of hardcoded values.
-
-Reported-by: Lorenz Brun <lorenz@brun.one>
-Reported-by: Brandon Schwartz <Brandon.Schwartz@wdc.com>
-Fixes: 8ae720449fca ("libata: whitespace fixes in ata_to_sense_error()")
+Reported-by: Hans Verkuil <hverkuil@xs4all.nl>
+Closes: https://lore.kernel.org/linux-media/f11653a7-bc49-48cd-9cdb-1659147453e4@xs4all.nl/T/#m91cd962ac942834654f94c92206e2f85ff7d97f0
+Fixes: aaaa93eda64b ("[media] media: venus: venc: add video encoder files")
 Cc: stable@vger.kernel.org
-Signed-off-by: Damien Le Moal <dlemoal@kernel.org>
-Reviewed-by: Hannes Reinecke <hare@suse.de>
-Reviewed-by: Martin K. Petersen <martin.petersen@oracle.com>
+Signed-off-by: Ricardo Ribalda <ribalda@chromium.org>
+[bod: Change "parm" to "param"]
+Signed-off-by: Bryan O'Donoghue <bod@kernel.org>
+Signed-off-by: Hans Verkuil <hverkuil@xs4all.nl>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/ata/libata-scsi.c |   20 ++++++++------------
- 1 file changed, 8 insertions(+), 12 deletions(-)
+ drivers/media/platform/qcom/venus/venc.c |    5 ++---
+ 1 file changed, 2 insertions(+), 3 deletions(-)
 
---- a/drivers/ata/libata-scsi.c
-+++ b/drivers/ata/libata-scsi.c
-@@ -770,18 +770,14 @@ static void ata_to_sense_error(unsigned
- 		{0xFF, 0xFF, 0xFF, 0xFF}, // END mark
- 	};
- 	static const unsigned char stat_table[][4] = {
--		/* Must be first because BUSY means no other bits valid */
--		{0x80,		ABORTED_COMMAND, 0x47, 0x00},
--		// Busy, fake parity for now
--		{0x40,		ILLEGAL_REQUEST, 0x21, 0x04},
--		// Device ready, unaligned write command
--		{0x20,		HARDWARE_ERROR,  0x44, 0x00},
--		// Device fault, internal target failure
--		{0x08,		ABORTED_COMMAND, 0x47, 0x00},
--		// Timed out in xfer, fake parity for now
--		{0x04,		RECOVERED_ERROR, 0x11, 0x00},
--		// Recovered ECC error	  Medium error, recovered
--		{0xFF, 0xFF, 0xFF, 0xFF}, // END mark
-+		/* Busy: must be first because BUSY means no other bits valid */
-+		{ ATA_BUSY,	ABORTED_COMMAND, 0x00, 0x00 },
-+		/* Device fault: INTERNAL TARGET FAILURE */
-+		{ ATA_DF,	HARDWARE_ERROR,  0x44, 0x00 },
-+		/* Corrected data error */
-+		{ ATA_CORR,	RECOVERED_ERROR, 0x00, 0x00 },
-+
-+		{ 0xFF, 0xFF, 0xFF, 0xFF }, /* END mark */
- 	};
+--- a/drivers/media/platform/qcom/venus/venc.c
++++ b/drivers/media/platform/qcom/venus/venc.c
+@@ -411,11 +411,10 @@ static int venc_s_parm(struct file *file
+ 	us_per_frame = timeperframe->numerator * (u64)USEC_PER_SEC;
+ 	do_div(us_per_frame, timeperframe->denominator);
  
- 	/*
+-	if (!us_per_frame)
+-		return -EINVAL;
+-
++	us_per_frame = clamp(us_per_frame, 1, USEC_PER_SEC);
+ 	fps = (u64)USEC_PER_SEC;
+ 	do_div(fps, us_per_frame);
++	fps = min(VENUS_MAX_FPS, fps);
+ 
+ 	inst->timeperframe = *timeperframe;
+ 	inst->fps = fps;
 
 
 
