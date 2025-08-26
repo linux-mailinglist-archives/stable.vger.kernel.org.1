@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-174419-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-173936-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3B6DBB36339
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 15:28:00 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 94E0FB36088
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 15:01:46 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id DF7E88A806D
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 13:21:06 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 5F0F27C77C0
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 12:57:52 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0E58E343202;
-	Tue, 26 Aug 2025 13:19:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 040A41C860B;
+	Tue, 26 Aug 2025 12:57:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="yqzobsps"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="aWZEj41I"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C06EF3431E9;
-	Tue, 26 Aug 2025 13:18:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B58B31B0420;
+	Tue, 26 Aug 2025 12:57:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756214339; cv=none; b=mPMggCH9rJb7ZPs1H59LBuRbYn9SYahsGBL7DMI22Cb5ld9D1ykKDiRSqHAZJut30N5I5emzqvqRvp9dgYMkzBhsJUWccrC0y5WMqKHbFKEExvoDO0fGMUT6P3UlMK3Pclgjm7kdGZ4ogAvF4I8HrldM9nOEldoQDEcin1KL6fA=
+	t=1756213056; cv=none; b=lBA4NfM0SmdHSZf90hf31Gh4geS6opnTsJHv69jdSWTK7mSA4hXcF7+aklPD/z/6qBchEjA9HjjjLowsrS6RtmkXZjLrM+5/BYAf2QMZLBuRCCflliAYiPTN6WvMfI207noxihPLuIvBvfchUsJTSxlMODSyrkzsn+JYKEXyG1Y=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756214339; c=relaxed/simple;
-	bh=ocudBeZNDUtRNuyjRIbREox0eMoYJCdC1J/yrZQTH0w=;
+	s=arc-20240116; t=1756213056; c=relaxed/simple;
+	bh=FnZSB0UQBOiKsSP/4s8ZoV98mTaCOoWwFnxno+EfZK0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=WeYtTkHM4QII7wWj5RCQlkKyTXGT7mrj2dgJyYOuni/FXXs/6sBceaIJrQ616ZLkuv4yGBMb+BH1lsZoScEm+2FdC6bX+G8C6ZvrTcAB6TUMzaDEE5CiMxzLgdWTmP1MymUInjuBtdQwIJJuZdGKxuV9Ja6v4psm4s+Z6Su0G9o=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=yqzobsps; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 05FA7C4CEF1;
-	Tue, 26 Aug 2025 13:18:58 +0000 (UTC)
+	 MIME-Version; b=n/Ua+BfPUvJAMHZ17AcgeE7SSicM580JrbaZXMy/EPaemQaRuN1hdlxaiV46oByLXYypB58royPYfaAm3mNcY5pgQZ800vap1ViwOFQKbpyBjXeCN+icd6wy4phZSHSiarzgs17oWqqkNHD1AX/c5mQ0jJ15+vTZ6tH0Rnngc7s=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=aWZEj41I; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E2C40C4CEF1;
+	Tue, 26 Aug 2025 12:57:35 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1756214339;
-	bh=ocudBeZNDUtRNuyjRIbREox0eMoYJCdC1J/yrZQTH0w=;
+	s=korg; t=1756213056;
+	bh=FnZSB0UQBOiKsSP/4s8ZoV98mTaCOoWwFnxno+EfZK0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=yqzobspsAsvx6xHUsoW/LmdtUaFXMnu3PvFHKHch8Ut459U5k8/Dda5284vrdDLfX
-	 2iOoTF64BGOLD6cvfeR+zzWxVsI7TZADViKCjG8ntY8oAoz6MOpD0I6Mv9PMdAxPWf
-	 uXE0dU06fSxH09fESmCdjcuLL6wod0rntlvOxoxk=
+	b=aWZEj41IwLrWI0EVqqKpYUFUvM2hEUfZMYNsabsaOONYMqVQ5ueSTWYrysVHlWokT
+	 U/vW1Lkg/Cq/YCS2Qni5qEGRA2N+WgRde7qZqwy4tr83I1nCEGhID7BzQN+ArxqR1/
+	 u0VbAXdsLNiYi9YEK2ZIsdXaP9oNui534VKyWU7c=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Alok Tiwari <alok.a.tiwari@oracle.com>,
-	Takashi Iwai <tiwai@suse.de>,
+	Hari Kalavakunta <kalavakunta.hari.prasad@gmail.com>,
+	Paul Fertser <fercerpav@gmail.com>,
+	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 101/482] ALSA: intel8x0: Fix incorrect codec index usage in mixer for ICH4
+Subject: [PATCH 6.6 205/587] net: ncsi: Fix buffer overflow in fetching version id
 Date: Tue, 26 Aug 2025 13:05:54 +0200
-Message-ID: <20250826110933.323377227@linuxfoundation.org>
+Message-ID: <20250826110958.153118637@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250826110930.769259449@linuxfoundation.org>
-References: <20250826110930.769259449@linuxfoundation.org>
+In-Reply-To: <20250826110952.942403671@linuxfoundation.org>
+References: <20250826110952.942403671@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,39 +63,54 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Alok Tiwari <alok.a.tiwari@oracle.com>
+From: Hari Kalavakunta <kalavakunta.hari.prasad@gmail.com>
 
-[ Upstream commit 87aafc8580acf87fcaf1a7e30ed858d8c8d37d81 ]
+[ Upstream commit 8e16170ae972c7fed132bc928914a2ffb94690fc ]
 
-code mistakenly used a hardcoded index (codec[1]) instead of
-iterating, over the codec array using the loop variable i.
-Use codec[i] instead of codec[1] to match the loop iteration.
+In NC-SI spec v1.2 section 8.4.44.2, the firmware name doesn't
+need to be null terminated while its size occupies the full size
+of the field. Fix the buffer overflow issue by adding one
+additional byte for null terminator.
 
-Signed-off-by: Alok Tiwari <alok.a.tiwari@oracle.com>
-Link: https://patch.msgid.link/20250621185233.4081094-1-alok.a.tiwari@oracle.com
-Signed-off-by: Takashi Iwai <tiwai@suse.de>
+Signed-off-by: Hari Kalavakunta <kalavakunta.hari.prasad@gmail.com>
+Reviewed-by: Paul Fertser <fercerpav@gmail.com>
+Link: https://patch.msgid.link/20250610193338.1368-1-kalavakunta.hari.prasad@gmail.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- sound/pci/intel8x0.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ net/ncsi/internal.h | 2 +-
+ net/ncsi/ncsi-rsp.c | 1 +
+ 2 files changed, 2 insertions(+), 1 deletion(-)
 
-diff --git a/sound/pci/intel8x0.c b/sound/pci/intel8x0.c
-index ae285c0a629c..f3df6fe2b7f1 100644
---- a/sound/pci/intel8x0.c
-+++ b/sound/pci/intel8x0.c
-@@ -2252,7 +2252,7 @@ static int snd_intel8x0_mixer(struct intel8x0 *chip, int ac97_clock,
- 			tmp |= chip->ac97_sdin[0] << ICH_DI1L_SHIFT;
- 			for (i = 1; i < 4; i++) {
- 				if (pcm->r[0].codec[i]) {
--					tmp |= chip->ac97_sdin[pcm->r[0].codec[1]->num] << ICH_DI2L_SHIFT;
-+					tmp |= chip->ac97_sdin[pcm->r[0].codec[i]->num] << ICH_DI2L_SHIFT;
- 					break;
- 				}
- 			}
+diff --git a/net/ncsi/internal.h b/net/ncsi/internal.h
+index 2c260f33b55c..ad1f671ffc37 100644
+--- a/net/ncsi/internal.h
++++ b/net/ncsi/internal.h
+@@ -110,7 +110,7 @@ struct ncsi_channel_version {
+ 	u8   update;		/* NCSI version update */
+ 	char alpha1;		/* NCSI version alpha1 */
+ 	char alpha2;		/* NCSI version alpha2 */
+-	u8  fw_name[12];	/* Firmware name string                */
++	u8  fw_name[12 + 1];	/* Firmware name string                */
+ 	u32 fw_version;		/* Firmware version                   */
+ 	u16 pci_ids[4];		/* PCI identification                 */
+ 	u32 mf_id;		/* Manufacture ID                     */
+diff --git a/net/ncsi/ncsi-rsp.c b/net/ncsi/ncsi-rsp.c
+index 8668888c5a2f..d5ed80731e89 100644
+--- a/net/ncsi/ncsi-rsp.c
++++ b/net/ncsi/ncsi-rsp.c
+@@ -775,6 +775,7 @@ static int ncsi_rsp_handler_gvi(struct ncsi_request *nr)
+ 	ncv->alpha1 = rsp->alpha1;
+ 	ncv->alpha2 = rsp->alpha2;
+ 	memcpy(ncv->fw_name, rsp->fw_name, 12);
++	ncv->fw_name[12] = '\0';
+ 	ncv->fw_version = ntohl(rsp->fw_version);
+ 	for (i = 0; i < ARRAY_SIZE(ncv->pci_ids); i++)
+ 		ncv->pci_ids[i] = ntohs(rsp->pci_ids[i]);
 -- 
 2.39.5
 
