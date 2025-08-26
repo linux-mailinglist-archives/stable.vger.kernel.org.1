@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-175520-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-173869-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 747C1B36893
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 16:17:33 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id A0F6BB36030
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 14:58:07 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id DCF6D580340
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 14:09:13 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 2C2B81BA6AF6
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 12:55:55 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4316C350D44;
-	Tue, 26 Aug 2025 14:07:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 330311C84BD;
+	Tue, 26 Aug 2025 12:54:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="jZK/fLg5"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="CJbO/1xJ"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 010F41DE8BE;
-	Tue, 26 Aug 2025 14:07:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E260F7081F;
+	Tue, 26 Aug 2025 12:54:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756217261; cv=none; b=TA4URZJI8SoQhwm/LOE1Aq10xVulDm1YhswP1TkJySmP6zh3/0VBLm5NBBJ5WLbgwQuLnOV4JDhXhgtlJIKTDFmk0s9JXrtXt5W271Kr7wBrZxVKbXSdiuNUXGRpxBrI6ed0WfhKCWYBqPT2+sAFfvJnZkyGeeWDZryhJY7I8Eg=
+	t=1756212881; cv=none; b=XN2ZtM/IF8dDI+V9QIBt263iZ1+dq5ig+hc1o0JEm3o+Mwur0ljeZaQoYUmRD5MwTgH9YGEOYYJ+Adyjee5aMbgpyz0ZsVjYD5n9KrBnhYVSUwPvO7iUHknyTVet1m3U1JP5wZ5L6Uh/UgiKwEQQKc1BfJ3ICieHgnD8QvcbJhI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756217261; c=relaxed/simple;
-	bh=tWD61AE5KaPgIJ/8L7Wd38qX0eFRL583cUe4cggrP3Q=;
+	s=arc-20240116; t=1756212881; c=relaxed/simple;
+	bh=fPsUold0XErEmiNdH3Ruy1/oI188YK8EvL27SBAIhW4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=TCCkMY+tko7gtQYhOzqtEOB+cCHX9vdTGmscGnXaOPLRoXuvf/q3gBLvQzqVJByMQUTAkP9vPN1qbpQjS///7kDBKmqnN+TTPkyhWK54xD3wYbwjk1zCfXvIlBn41au2ep90hx4/71F9G3L7aJhwkvRKYZc/ErzoqGPaJKiaL6Q=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=jZK/fLg5; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 88709C4CEF1;
-	Tue, 26 Aug 2025 14:07:40 +0000 (UTC)
+	 MIME-Version; b=QEtyZ0OJjMH44SGwWReVnrdUAvIOpDiuNCeiIwH3vj9ZPwkai5a0vXbMBNzmBeAsJ6SrXyjQO+/+m4ffg+XdSF5aLH3jkIRXDoTJKQLPO2Af8xdQkOO2PtIGNBcYY+st04TXPV7BCOxlvjaz17j2E4T1NLDLoz72AuXeHQw9ar4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=CJbO/1xJ; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7627AC4CEF1;
+	Tue, 26 Aug 2025 12:54:40 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1756217260;
-	bh=tWD61AE5KaPgIJ/8L7Wd38qX0eFRL583cUe4cggrP3Q=;
+	s=korg; t=1756212880;
+	bh=fPsUold0XErEmiNdH3Ruy1/oI188YK8EvL27SBAIhW4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=jZK/fLg59N/SRu1rAJgcvFXWhkEHa/+dgnGAAMAKjpQGhLKWMcmVBRmwPthhIAYSS
-	 D+o1sbrwzO+CdHQ8kPXIVK/pEmLQzGWk4Jr4DI8hnyIlsXdTBTpqcY5IyEy2EwzpxL
-	 1xF3iSwI3AcKI8+hjzZEetCU5EZfL3qjFzhh4p+Y=
+	b=CJbO/1xJF05mnTxIfWrsH/G5tl3bkn7GElduecwhy9+jtZmTleBEbLJjf33WBqKgm
+	 KpQv0InLLXCLDr2D11pQKG83O7xycec0zugBpsfUkRaFoOtTfCXo3tt0AZ3PvxEEbh
+	 teyBGhqDA/MIY9YbOYgwGoaLUtMjrh3S/ysh1caI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	RubenKelevra <rubenkelevra@gmail.com>,
-	Christian Brauner <brauner@kernel.org>,
+	Srinivas Kandagatla <srini@kernel.org>,
+	Kuninori Morimoto <kuninori.morimoto.gx@renesas.com>,
+	Mark Brown <broonie@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 077/523] fs_context: fix parameter name in infofc() macro
+Subject: [PATCH 6.6 138/587] ASoC: qcom: use drvdata instead of component to keep id
 Date: Tue, 26 Aug 2025 13:04:47 +0200
-Message-ID: <20250826110926.466853665@linuxfoundation.org>
+Message-ID: <20250826110956.462163926@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250826110924.562212281@linuxfoundation.org>
-References: <20250826110924.562212281@linuxfoundation.org>
+In-Reply-To: <20250826110952.942403671@linuxfoundation.org>
+References: <20250826110952.942403671@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,44 +61,145 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: RubenKelevra <rubenkelevra@gmail.com>
+From: Srinivas Kandagatla <srini@kernel.org>
 
-[ Upstream commit ffaf1bf3737f706e4e9be876de4bc3c8fc578091 ]
+[ Upstream commit 8167f4f42572818fa8153be2b03e4c2120846603 ]
 
-The macro takes a parameter called "p" but references "fc" internally.
-This happens to compile as long as callers pass a variable named fc,
-but breaks otherwise. Rename the first parameter to “fc” to match the
-usage and to be consistent with warnfc() / errorfc().
+Qcom lpass is using component->id to keep DAI ID (A).
 
-Fixes: a3ff937b33d9 ("prefix-handling analogues of errorf() and friends")
-Signed-off-by: RubenKelevra <rubenkelevra@gmail.com>
-Link: https://lore.kernel.org/20250617230927.1790401-1-rubenkelevra@gmail.com
-Signed-off-by: Christian Brauner <brauner@kernel.org>
+(S)	static int lpass_platform_pcmops_open(
+				sruct snd_soc_component *component,
+				struct snd_pcm_substream *substream)
+	{			                          ^^^^^^^^^(B0)
+		...
+(B1)		struct snd_soc_pcm_runtime *soc_runtime = snd_soc_substream_to_rtd(substream);
+(B2)		struct snd_soc_dai *cpu_dai = snd_soc_rtd_to_cpu(soc_runtime, 0);
+		...
+(B3)		unsigned int dai_id = cpu_dai->driver->id;
+
+(A)		component->id = dai_id;
+		...
+	}
+
+This driver can get dai_id from substream (B0 - B3).
+In this driver, below functions get dai_id from component->id (A).
+
+(X)	lpass_platform_pcmops_suspend()
+(Y)	lpass_platform_pcmops_resume()
+(Z)	lpass_platform_copy()
+
+Here, (Z) can get it from substream (B0 - B3), don't need to use
+component->id (A). On suspend/resume (X)(Y), dai_id can only be obtained
+from component->id (A), because there is no substream (B0) in function
+parameter.
+
+But, component->id (A) itself should not be used for such purpose.
+It is intilialized at snd_soc_component_initialize(), and parsed its ID
+(= component->id) from device name (a).
+
+	int snd_soc_component_initialize(...)
+	{
+		...
+		if (!component->name) {
+(a)			component->name = fmt_single_name(dev, &component->id);
+			...                                     ^^^^^^^^^^^^^
+		}
+		...
+	}
+
+Unfortunately, current code is broken to start with.
+
+There are many regmaps that the driver cares about, however its only
+managing one (either dp or i2s) in component suspend/resume path.
+
+I2S regmap is mandatory however other regmaps are setup based on flags
+like "hdmi_port_enable" and "codec_dma_enable".
+
+Correct thing for suspend/resume path to handle is by checking these
+flags, instead of using component->id.
+
+Signed-off-by: Srinivas Kandagatla <srini@kernel.org>
+Suggested-by: Kuninori Morimoto <kuninori.morimoto.gx@renesas.com>
+Signed-off-by: Kuninori Morimoto <kuninori.morimoto.gx@renesas.com>
+Link: https://patch.msgid.link/87a56ouuob.wl-kuninori.morimoto.gx@renesas.com
+Signed-off-by: Mark Brown <broonie@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- include/linux/fs_context.h | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ sound/soc/qcom/lpass-platform.c | 27 +++++++++++++++++----------
+ 1 file changed, 17 insertions(+), 10 deletions(-)
 
-diff --git a/include/linux/fs_context.h b/include/linux/fs_context.h
-index e869ce3ae660..40dd74bdd9fb 100644
---- a/include/linux/fs_context.h
-+++ b/include/linux/fs_context.h
-@@ -207,7 +207,7 @@ void logfc(struct fc_log *log, const char *prefix, char level, const char *fmt,
-  */
- #define infof(fc, fmt, ...) __logfc(fc, 'i', fmt, ## __VA_ARGS__)
- #define info_plog(p, fmt, ...) __plog(p, 'i', fmt, ## __VA_ARGS__)
--#define infofc(p, fmt, ...) __plog((&(fc)->log), 'i', fmt, ## __VA_ARGS__)
-+#define infofc(fc, fmt, ...) __plog((&(fc)->log), 'i', fmt, ## __VA_ARGS__)
+diff --git a/sound/soc/qcom/lpass-platform.c b/sound/soc/qcom/lpass-platform.c
+index f918d9e16dc0..f342bc4b3a14 100644
+--- a/sound/soc/qcom/lpass-platform.c
++++ b/sound/soc/qcom/lpass-platform.c
+@@ -201,7 +201,6 @@ static int lpass_platform_pcmops_open(struct snd_soc_component *component,
+ 	struct regmap *map;
+ 	unsigned int dai_id = cpu_dai->driver->id;
  
- /**
-  * warnf - Store supplementary warning message
+-	component->id = dai_id;
+ 	data = kzalloc(sizeof(*data), GFP_KERNEL);
+ 	if (!data)
+ 		return -ENOMEM;
+@@ -1189,13 +1188,14 @@ static int lpass_platform_pcmops_suspend(struct snd_soc_component *component)
+ {
+ 	struct lpass_data *drvdata = snd_soc_component_get_drvdata(component);
+ 	struct regmap *map;
+-	unsigned int dai_id = component->id;
+ 
+-	if (dai_id == LPASS_DP_RX)
++	if (drvdata->hdmi_port_enable) {
+ 		map = drvdata->hdmiif_map;
+-	else
+-		map = drvdata->lpaif_map;
++		regcache_cache_only(map, true);
++		regcache_mark_dirty(map);
++	}
+ 
++	map = drvdata->lpaif_map;
+ 	regcache_cache_only(map, true);
+ 	regcache_mark_dirty(map);
+ 
+@@ -1206,14 +1206,19 @@ static int lpass_platform_pcmops_resume(struct snd_soc_component *component)
+ {
+ 	struct lpass_data *drvdata = snd_soc_component_get_drvdata(component);
+ 	struct regmap *map;
+-	unsigned int dai_id = component->id;
++	int ret;
+ 
+-	if (dai_id == LPASS_DP_RX)
++	if (drvdata->hdmi_port_enable) {
+ 		map = drvdata->hdmiif_map;
+-	else
+-		map = drvdata->lpaif_map;
++		regcache_cache_only(map, false);
++		ret = regcache_sync(map);
++		if (ret)
++			return ret;
++	}
+ 
++	map = drvdata->lpaif_map;
+ 	regcache_cache_only(map, false);
++
+ 	return regcache_sync(map);
+ }
+ 
+@@ -1223,7 +1228,9 @@ static int lpass_platform_copy(struct snd_soc_component *component,
+ 			       unsigned long bytes)
+ {
+ 	struct snd_pcm_runtime *rt = substream->runtime;
+-	unsigned int dai_id = component->id;
++	struct snd_soc_pcm_runtime *soc_runtime = snd_soc_substream_to_rtd(substream);
++	struct snd_soc_dai *cpu_dai = snd_soc_rtd_to_cpu(soc_runtime, 0);
++	unsigned int dai_id = cpu_dai->driver->id;
+ 	int ret = 0;
+ 
+ 	void __iomem *dma_buf = (void __iomem *) (rt->dma_area + pos +
 -- 
 2.39.5
 
