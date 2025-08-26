@@ -1,59 +1,55 @@
-Return-Path: <stable+bounces-175748-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-176158-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 34C64B3698E
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 16:28:16 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 809AAB36BA3
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 16:47:52 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 6670D564793
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 14:19:47 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 3CE26582D56
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 14:38:21 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7F55C350D54;
-	Tue, 26 Aug 2025 14:17:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 320443431FE;
+	Tue, 26 Aug 2025 14:35:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="kLbX8U1b"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="0Gcyu674"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3BE111D5CD4;
-	Tue, 26 Aug 2025 14:17:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E39D334DCC3;
+	Tue, 26 Aug 2025 14:35:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756217866; cv=none; b=e7mCcOgZ7JGQJOjcN1hbSt5EGms1e7xawKBHYg9U91Hp/8DdbBQpIfZjF0wuzEm4uZitc+RoJR5ZjE1TDiujMY26btxvng40pHMx6QNTPQhcVfd4E9x7zqvwHzVGWMLQVDrPwdRQDj/jUb8BWT50ZRZeSa9SExbe7gQN7SxUgqQ=
+	t=1756218931; cv=none; b=Y3Iv3pLUa5EQB51JA+hU8x8iYG7X15fwZwsQN10FS5wV9HPUInpultlEw9aZr24xFgzkUKXFdyUD1II9WcobJJEdayVIVT7uxQiqcJlLQnAJIknseB4dbuhQ65pjdMBY0duA3/x3yHd8bMDBsYzWOhb+I0xOCyX0CtaOBqLCZvA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756217866; c=relaxed/simple;
-	bh=ZKuuJiDvp6DNEDGXzYx/VJ35GTQc2b0VH0nwsaUDjpo=;
+	s=arc-20240116; t=1756218931; c=relaxed/simple;
+	bh=MKR2ae4VlA894Jp6CfeCLuEJHQvSieeHlix0PSSGiPI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=g0hMVsXWzuDKsMfzr6txgaOqfB6gGla47SCJOH6vQgJdnflbLxmzwNykO+llKMM9qUbrH3qrpiVDfmty3uBZkhgVaMGH+LeOulTehacIw1kQWJgR52kBfneh+jkMTOheVbUpQKTpQPNaEioC/j+ajKKBb4QKLdPvH6ZtzWGgOSc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=kLbX8U1b; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 620F2C4CEF1;
-	Tue, 26 Aug 2025 14:17:45 +0000 (UTC)
+	 MIME-Version; b=BSjnuBNLEh6CDZcoQc51qdrCd9vUTT6Qza8rufeCl3Q0SyTIt48G9RBbL0NBIy9hSAqMw+ZIT46AAyp9uNuheOwLSJkMX/B5PzXJTtY3YLTLF7KDRz6WBMQHl01hZCvgVxhlLeSFOgdAedFzv9TZ398rC41kNgnxX99O+32Qzo0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=0Gcyu674; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7723CC4CEF1;
+	Tue, 26 Aug 2025 14:35:30 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1756217865;
-	bh=ZKuuJiDvp6DNEDGXzYx/VJ35GTQc2b0VH0nwsaUDjpo=;
+	s=korg; t=1756218930;
+	bh=MKR2ae4VlA894Jp6CfeCLuEJHQvSieeHlix0PSSGiPI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=kLbX8U1bKSmKJ7UDu7vzlPcJ8rfGw+ywZiSn5UIlCZILdvPxrv8JDfrV/ezLNXawM
-	 GULj0NWYRl5/y1akc7On8cjEGHTTOiRVd1TVb9fbqpbSpZHHuSngOXhW4hqsSYtbo4
-	 IxQ59cX9z1Pvch9znEMLW07HnvEv8mTsVhwN+H1k=
+	b=0Gcyu674B0Fv87LT7jMDwj0KqzNXX8ZLLirQPMPlyZXgaVERDxJBnEFJdcD1SKeCV
+	 3MA1d3oWfMcpaqp9Ff7LXJhfebs+dYdOuCkabQVKjgQ7FIJuon1j7s0m4fA3l90yCx
+	 oEoU5CPbNDqhwTCvMtWC1acvVuN+f8FsgSesKF6c=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Nevenko Stupar <nevenko.stupar@amd.com>,
-	Ilya Bakoulin <Ilya.Bakoulin@amd.com>,
-	Ray Wu <ray.wu@amd.com>,
-	Daniel Wheeler <daniel.wheeler@amd.com>,
-	Alex Deucher <alexander.deucher@amd.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 273/523] drm/amd/display: Separate set_gsl from set_gsl_source_select
+	Takashi Iwai <tiwai@suse.de>,
+	Youngjun Lee <yjjuny.lee@samsung.com>
+Subject: [PATCH 5.4 157/403] ALSA: usb-audio: Validate UAC3 power domain descriptors, too
 Date: Tue, 26 Aug 2025 13:08:03 +0200
-Message-ID: <20250826110931.164151421@linuxfoundation.org>
+Message-ID: <20250826110911.218818802@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250826110924.562212281@linuxfoundation.org>
-References: <20250826110924.562212281@linuxfoundation.org>
+In-Reply-To: <20250826110905.607690791@linuxfoundation.org>
+References: <20250826110905.607690791@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -65,54 +61,56 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+5.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Ilya Bakoulin <Ilya.Bakoulin@amd.com>
+From: Takashi Iwai <tiwai@suse.de>
 
-[ Upstream commit 660a467a5e7366cd6642de61f1aaeaf0d253ee68 ]
+commit d832ccbc301fbd9e5a1d691bdcf461cdb514595f upstream.
 
-[Why/How]
-Separate the checks for set_gsl and set_gsl_source_select, since
-source_select may not be implemented/necessary.
+UAC3 power domain descriptors need to be verified with its variable
+bLength for avoiding the unexpected OOB accesses by malicious
+firmware, too.
 
-Reviewed-by: Nevenko Stupar <nevenko.stupar@amd.com>
-Signed-off-by: Ilya Bakoulin <Ilya.Bakoulin@amd.com>
-Signed-off-by: Ray Wu <ray.wu@amd.com>
-Tested-by: Daniel Wheeler <daniel.wheeler@amd.com>
-Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Fixes: 9a2fe9b801f5 ("ALSA: usb: initial USB Audio Device Class 3.0 support")
+Reported-and-tested-by: Youngjun Lee <yjjuny.lee@samsung.com>
+Cc: <stable@vger.kernel.org>
+Link: https://patch.msgid.link/20250814081245.8902-1-tiwai@suse.de
+Signed-off-by: Takashi Iwai <tiwai@suse.de>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/gpu/drm/amd/display/dc/dcn20/dcn20_hwseq.c | 9 ++++-----
- 1 file changed, 4 insertions(+), 5 deletions(-)
+ sound/usb/validate.c |   12 ++++++++++++
+ 1 file changed, 12 insertions(+)
 
-diff --git a/drivers/gpu/drm/amd/display/dc/dcn20/dcn20_hwseq.c b/drivers/gpu/drm/amd/display/dc/dcn20/dcn20_hwseq.c
-index c6c4888c6665..b6dc99317d7f 100644
---- a/drivers/gpu/drm/amd/display/dc/dcn20/dcn20_hwseq.c
-+++ b/drivers/gpu/drm/amd/display/dc/dcn20/dcn20_hwseq.c
-@@ -159,14 +159,13 @@ static void dcn20_setup_gsl_group_as_lock(
- 	}
- 
- 	/* at this point we want to program whether it's to enable or disable */
--	if (pipe_ctx->stream_res.tg->funcs->set_gsl != NULL &&
--		pipe_ctx->stream_res.tg->funcs->set_gsl_source_select != NULL) {
-+	if (pipe_ctx->stream_res.tg->funcs->set_gsl != NULL) {
- 		pipe_ctx->stream_res.tg->funcs->set_gsl(
- 			pipe_ctx->stream_res.tg,
- 			&gsl);
--
--		pipe_ctx->stream_res.tg->funcs->set_gsl_source_select(
--			pipe_ctx->stream_res.tg, group_idx,	enable ? 4 : 0);
-+		if (pipe_ctx->stream_res.tg->funcs->set_gsl_source_select != NULL)
-+			pipe_ctx->stream_res.tg->funcs->set_gsl_source_select(
-+				pipe_ctx->stream_res.tg, group_idx, enable ? 4 : 0);
- 	} else
- 		BREAK_TO_DEBUGGER();
+--- a/sound/usb/validate.c
++++ b/sound/usb/validate.c
+@@ -221,6 +221,17 @@ static bool validate_uac3_feature_unit(c
+ 	return d->bLength >= sizeof(*d) + 4 + 2;
  }
--- 
-2.39.5
-
+ 
++static bool validate_uac3_power_domain_unit(const void *p,
++					    const struct usb_desc_validator *v)
++{
++	const struct uac3_power_domain_descriptor *d = p;
++
++	if (d->bLength < sizeof(*d))
++		return false;
++	/* baEntities[] + wPDomainDescrStr */
++	return d->bLength >= sizeof(*d) + d->bNrEntities + 2;
++}
++
+ static bool validate_midi_out_jack(const void *p,
+ 				   const struct usb_desc_validator *v)
+ {
+@@ -285,6 +296,7 @@ static const struct usb_desc_validator a
+ 	      struct uac3_clock_multiplier_descriptor),
+ 	/* UAC_VERSION_3, UAC3_SAMPLE_RATE_CONVERTER: not implemented yet */
+ 	/* UAC_VERSION_3, UAC3_CONNECTORS: not implemented yet */
++	FUNC(UAC_VERSION_3, UAC3_POWER_DOMAIN, validate_uac3_power_domain_unit),
+ 	{ } /* terminator */
+ };
+ 
 
 
 
