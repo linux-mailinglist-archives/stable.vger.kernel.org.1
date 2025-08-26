@@ -1,56 +1,58 @@
-Return-Path: <stable+bounces-174626-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-176204-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 29C93B3641C
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 15:35:50 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id B5F93B36C2B
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 16:53:30 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 996BA1B6792C
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 13:29:33 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 3E52A584EDB
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 14:40:27 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9572B30AAD2;
-	Tue, 26 Aug 2025 13:28:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id DFDAF350D57;
+	Tue, 26 Aug 2025 14:37:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="iIbN5iTI"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="lEdsO7e2"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 514A627EFE7;
-	Tue, 26 Aug 2025 13:28:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9478835209D;
+	Tue, 26 Aug 2025 14:37:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756214888; cv=none; b=CVVX9dXB847t8Y+J4YpzTDO4gfEwmLD5b6ovaEef6eRdJyj1AfFprOisrRJ0oJoguQy9x4v1VfKv7aCL7WXiqLR0vvDXNQj36A4zsfj2zHuzR6/zzUgmf1bJAb1/tHJbinhjaMYSxzLKSV33TNN+QHaD1sTodV7F5YrXmUFIA7E=
+	t=1756219050; cv=none; b=bWF/BvN1ZVAoxmWmlIDQ7MvmoodZiKnUqZ4wESrWAp2yDG/pTDUg74ReCnQkSv04U0wwWiakpuC0oastrHX4nzQqRyyurL0oC8g2HSpBwe5IC4N5iS/kdKiZUTN2jSiWpARqAt/QV6YqMHo9QfdmtVp1yKXLSxwAqhSFxuBDv7c=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756214888; c=relaxed/simple;
-	bh=ovQA87G3Xf2DZWl5Bc4QNSyom5C/fbUDnr0a45TH0wI=;
+	s=arc-20240116; t=1756219050; c=relaxed/simple;
+	bh=UUH84azPrOBw8yMfH3P6owR9ZG4Bx/bsv/K5C58aPv8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=utUladFIEsjoCGuN5UeLcwgU5OzNIx6mICQuJjRQ1aga/JTFNB7ttCVKy6AEjG2f7FixtIwqn78U1YtcJVz54nyrABNy1Zyiz80B/OE3lmaVnEVdJlp6q4izUXc8e6lbpWSho7tnkhU/EDJ/ozfFic/550wuXGH3XOJrFJ/5H2E=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=iIbN5iTI; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D8AC9C4CEF1;
-	Tue, 26 Aug 2025 13:28:07 +0000 (UTC)
+	 MIME-Version; b=IL8VgN8hFSVgvrWaY3rkndx/OuiB/qOSIAiDqORLqVarEOMHzUcHOXLlSf1G7I8xb2Lr+iE/nL7XqU54Hsd8vuSlpgEF7ODTOKb2YIzPHznnX/AJB4UJnP8jXUgsUIaHC3qEI7bPAUgkHlxf/TDRpT/bBDOCivrtgsC6mUkULlE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=lEdsO7e2; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id CE9D2C4CEF1;
+	Tue, 26 Aug 2025 14:37:29 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1756214888;
-	bh=ovQA87G3Xf2DZWl5Bc4QNSyom5C/fbUDnr0a45TH0wI=;
+	s=korg; t=1756219050;
+	bh=UUH84azPrOBw8yMfH3P6owR9ZG4Bx/bsv/K5C58aPv8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=iIbN5iTInNrDAGsjyMW/ju4I40kWPBpEoywgOaRpUwT2OSXOKvzyFVvHx/YIa9xht
-	 f9RuU8pJqcZQ6GxVOV1YA4j7qGcDO2hFxhgdcan2ff1SCEvHGBxtNxHKRxC1mOq7qB
-	 GpSgoids0I6SnFOHjw7Wnrsukk9I380iREtgdwPY=
+	b=lEdsO7e2I2VSOMsxc9WkFphw5mBn4vvBuZSXRXqMRE/afrc61/MmxFPeddYLn2H6n
+	 VcA7FLsPTILSh4T4Yi2hqLy20sg7vPjDM/mRktQQ/c3zTDybsH9Vv3RkIk0+ZASZLm
+	 RI3GRw3k9iB+f2Kw8daynqiqbhPbWjACNgV7V7J0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Damien Le Moal <dlemoal@kernel.org>,
-	Manivannan Sadhasivam <mani@kernel.org>,
-	Niklas Cassel <cassel@kernel.org>
-Subject: [PATCH 6.1 307/482] PCI: endpoint: Fix configfs group list head handling
+	Showrya M N <showrya@chelsio.com>,
+	Potnuri Bharat Teja <bharat@chelsio.com>,
+	Chris Leech <cleech@redhat.com>,
+	"Martin K. Petersen" <martin.petersen@oracle.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.4 234/403] scsi: libiscsi: Initialize iscsi_conn->dd_data only if memory is allocated
 Date: Tue, 26 Aug 2025 13:09:20 +0200
-Message-ID: <20250826110938.384528353@linuxfoundation.org>
+Message-ID: <20250826110913.292404193@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250826110930.769259449@linuxfoundation.org>
-References: <20250826110930.769259449@linuxfoundation.org>
+In-Reply-To: <20250826110905.607690791@linuxfoundation.org>
+References: <20250826110905.607690791@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,67 +64,67 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+5.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Damien Le Moal <dlemoal@kernel.org>
+From: Showrya M N <showrya@chelsio.com>
 
-commit d79123d79a8154b4318529b7b2ff7e15806f480b upstream.
+[ Upstream commit 3ea3a256ed81f95ab0f3281a0e234b01a9cae605 ]
 
-Doing a list_del() on the epf_group field of struct pci_epf_driver in
-pci_epf_remove_cfs() is not correct as this field is a list head, not
-a list entry. This list_del() call triggers a KASAN warning when an
-endpoint function driver which has a configfs attribute group is torn
-down:
+In case of an ib_fast_reg_mr allocation failure during iSER setup, the
+machine hits a panic because iscsi_conn->dd_data is initialized
+unconditionally, even when no memory is allocated (dd_size == 0).  This
+leads invalid pointer dereference during connection teardown.
 
-==================================================================
-BUG: KASAN: slab-use-after-free in pci_epf_remove_cfs+0x17c/0x198
-Write of size 8 at addr ffff00010f4a0d80 by task rmmod/319
+Fix by setting iscsi_conn->dd_data only if memory is actually allocated.
 
-CPU: 3 UID: 0 PID: 319 Comm: rmmod Not tainted 6.16.0-rc2 #1 NONE
-Hardware name: Radxa ROCK 5B (DT)
-Call trace:
-show_stack+0x2c/0x84 (C)
-dump_stack_lvl+0x70/0x98
-print_report+0x17c/0x538
-kasan_report+0xb8/0x190
-__asan_report_store8_noabort+0x20/0x2c
-pci_epf_remove_cfs+0x17c/0x198
-pci_epf_unregister_driver+0x18/0x30
-nvmet_pci_epf_cleanup_module+0x24/0x30 [nvmet_pci_epf]
-__arm64_sys_delete_module+0x264/0x424
-invoke_syscall+0x70/0x260
-el0_svc_common.constprop.0+0xac/0x230
-do_el0_svc+0x40/0x58
-el0_svc+0x48/0xdc
-el0t_64_sync_handler+0x10c/0x138
-el0t_64_sync+0x198/0x19c
-...
+Panic trace:
+------------
+ iser: iser_create_fastreg_desc: Failed to allocate ib_fast_reg_mr err=-12
+ iser: iser_alloc_rx_descriptors: failed allocating rx descriptors / data buffers
+ BUG: unable to handle page fault for address: fffffffffffffff8
+ RIP: 0010:swake_up_locked.part.5+0xa/0x40
+ Call Trace:
+  complete+0x31/0x40
+  iscsi_iser_conn_stop+0x88/0xb0 [ib_iser]
+  iscsi_stop_conn+0x66/0xc0 [scsi_transport_iscsi]
+  iscsi_if_stop_conn+0x14a/0x150 [scsi_transport_iscsi]
+  iscsi_if_rx+0x1135/0x1834 [scsi_transport_iscsi]
+  ? netlink_lookup+0x12f/0x1b0
+  ? netlink_deliver_tap+0x2c/0x200
+  netlink_unicast+0x1ab/0x280
+  netlink_sendmsg+0x257/0x4f0
+  ? _copy_from_user+0x29/0x60
+  sock_sendmsg+0x5f/0x70
 
-Remove this incorrect list_del() call from pci_epf_remove_cfs().
-
-Fixes: ef1433f717a2 ("PCI: endpoint: Create configfs entry for each pci_epf_device_id table entry")
-Signed-off-by: Damien Le Moal <dlemoal@kernel.org>
-Signed-off-by: Manivannan Sadhasivam <mani@kernel.org>
-Reviewed-by: Niklas Cassel <cassel@kernel.org>
-Cc: stable@vger.kernel.org
-Link: https://patch.msgid.link/20250624114544.342159-2-dlemoal@kernel.org
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Signed-off-by: Showrya M N <showrya@chelsio.com>
+Signed-off-by: Potnuri Bharat Teja <bharat@chelsio.com>
+Link: https://lore.kernel.org/r/20250627112329.19763-1-showrya@chelsio.com
+Reviewed-by: Chris Leech <cleech@redhat.com>
+Signed-off-by: Martin K. Petersen <martin.petersen@oracle.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/pci/endpoint/pci-epf-core.c |    1 -
- 1 file changed, 1 deletion(-)
+ drivers/scsi/libiscsi.c | 3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
---- a/drivers/pci/endpoint/pci-epf-core.c
-+++ b/drivers/pci/endpoint/pci-epf-core.c
-@@ -343,7 +343,6 @@ static void pci_epf_remove_cfs(struct pc
- 	mutex_lock(&pci_epf_mutex);
- 	list_for_each_entry_safe(group, tmp, &driver->epf_group, group_entry)
- 		pci_ep_cfs_remove_epf_group(group);
--	list_del(&driver->epf_group);
- 	mutex_unlock(&pci_epf_mutex);
- }
+diff --git a/drivers/scsi/libiscsi.c b/drivers/scsi/libiscsi.c
+index f3cee64c6d12..9b94218ff04c 100644
+--- a/drivers/scsi/libiscsi.c
++++ b/drivers/scsi/libiscsi.c
+@@ -2893,7 +2893,8 @@ iscsi_conn_setup(struct iscsi_cls_session *cls_session, int dd_size,
+ 	conn = cls_conn->dd_data;
+ 	memset(conn, 0, sizeof(*conn) + dd_size);
  
+-	conn->dd_data = cls_conn->dd_data + sizeof(*conn);
++	if (dd_size)
++		conn->dd_data = cls_conn->dd_data + sizeof(*conn);
+ 	conn->session = session;
+ 	conn->cls_conn = cls_conn;
+ 	conn->c_stage = ISCSI_CONN_INITIAL_STAGE;
+-- 
+2.39.5
+
 
 
 
