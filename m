@@ -1,55 +1,56 @@
-Return-Path: <stable+bounces-175987-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-173029-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 057DEB36B5E
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 16:45:22 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0D5E3B35B6E
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 13:24:27 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 05ACB981D46
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 14:30:21 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 516081883839
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 11:21:55 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4D18934F48B;
-	Tue, 26 Aug 2025 14:28:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 85CD4321456;
+	Tue, 26 Aug 2025 11:19:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="g0CZukk2"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="OGUcXaxQ"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 09F482AE68;
-	Tue, 26 Aug 2025 14:28:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 433548635C;
+	Tue, 26 Aug 2025 11:19:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756218489; cv=none; b=pi9QASRYX9uUdWNB1gYJ77THnCVmjXTo9FMjZzz3yzGyoMlCY5I5gZTAHGsxdR2lygiTCl26k1R9xD2Fanbma0WF7zNMga5Ja+FIqwnBmLzZezWTVtDuw8PdtzTTIPXP0C89N1qGe7ybVDsEBSuWSKMF5xsBY9VqbjIwKpZU9qs=
+	t=1756207191; cv=none; b=CpUW8T8lNh3WR947DnQLE/Sm8CR6U/yEoILIgM1bVgzTDutjufyrkbP57vZYWghpskpWZmMb0SLg95R/T1loHLusHW8fbMTp7UJXmQw9x2dFVjo567hzB0JDxDd8J0em3UPSzJEPqH8EhN5lQ/K15C9CD+1Bfz0tv1ca2v/PYbs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756218489; c=relaxed/simple;
-	bh=RCXLJj2RhnfhPhFzf9aLG4wgnfS1p4eh1dfYruLoXAE=;
+	s=arc-20240116; t=1756207191; c=relaxed/simple;
+	bh=24R/xeVdUpy5WS5kWs0qk4QLaKnpId53y79CqM0Cb9k=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=dzdKxHTdj7iWrlrN8CkrbzSAzamjceEnPNVpGYR8a11C30m0WBTmzRblpinliCn184caDFHkSSCGwfAcoy0bJ0VsMH207fbs+B52+oKKrOjoX5qjfgcpwNUTCP+EmjEbfU7A3zQYKtHoNvIJATvOlETIXpb7p3KZBvbHtn/GxT4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=g0CZukk2; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 90AAFC4CEF1;
-	Tue, 26 Aug 2025 14:28:08 +0000 (UTC)
+	 MIME-Version; b=Pm94jlBzOAM3kAhpHGfYL1SIKZTN4IXNyDTxLElrCSf9WVPcoYh0dvbARKgTvsIzHg5oXgAUGa6LrtS4IhE63wZsiIgSZzt9hzTdVHu/s20i8Uqm2nYdHIuSywaPe0Hx8jkPi+tuN/xpqJqzlYm3gZYGSi3ERbCxVkuNiZqM0es=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=OGUcXaxQ; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 82BEBC4CEF1;
+	Tue, 26 Aug 2025 11:19:50 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1756218488;
-	bh=RCXLJj2RhnfhPhFzf9aLG4wgnfS1p4eh1dfYruLoXAE=;
+	s=korg; t=1756207190;
+	bh=24R/xeVdUpy5WS5kWs0qk4QLaKnpId53y79CqM0Cb9k=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=g0CZukk2gSOkQYUR62BpsKNlLtxKQEsC8mx9G689Bpyi7osipUPZnhCnSbjH846VI
-	 3+h5Tjl4xx9zlgppBmZkeZrdAav9Hu2x3PXauhpgRTUbyX4akGbCPVemXD4D1X+mzE
-	 w0zsIwL7Ls+MYo74lekdTWkQxSWMnqOPbuGbia4o=
+	b=OGUcXaxQy/eqV1vPet/RXEbQO+qFG7ysP58bvqkScuKMJ7Mt8fI1N+vM1sZich7Vq
+	 vDdfglgeLe5TjOSoCC5Xyn5qfaoW9oWX+IlcqQhHTzPL0NJ4WLJpDb+s9u8rX9vJap
+	 g2QGyLIEf5WssVEoCmoWZEb+6h/1jklqUzZieM5Q=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Slark Xiao <slark_xiao@163.com>,
-	Johan Hovold <johan@kernel.org>
-Subject: [PATCH 5.4 002/403] USB: serial: option: add Foxconn T99W640
+	Johannes Thumshirn <johannes.thumshirn@wdc.com>,
+	Naohiro Aota <naohiro.aota@wdc.com>,
+	David Sterba <dsterba@suse.com>
+Subject: [PATCH 6.16 044/457] btrfs: zoned: fix write time activation failure for metadata block group
 Date: Tue, 26 Aug 2025 13:05:28 +0200
-Message-ID: <20250826110905.684734517@linuxfoundation.org>
+Message-ID: <20250826110938.432862357@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250826110905.607690791@linuxfoundation.org>
-References: <20250826110905.607690791@linuxfoundation.org>
+In-Reply-To: <20250826110937.289866482@linuxfoundation.org>
+References: <20250826110937.289866482@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,65 +62,60 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.4-stable review patch.  If anyone has any objections, please let me know.
+6.16-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Slark Xiao <slark_xiao@163.com>
+From: Naohiro Aota <naohiro.aota@wdc.com>
 
-commit 08f49cdb71f3759368fded4dbc9dde35a404ec2b upstream.
+commit 5c4b93f4c8e5c53574c1a48d66a27a2c68b414af upstream.
 
-T99W640 is designed based on Qualconn SDX72 chip. There are 3
-serial ports to be enumerated: Diag, NMEA and AT.
+Since commit 13bb483d32ab ("btrfs: zoned: activate metadata block group on
+write time"), we activate a metadata block group at the write time. If the
+zone capacity is small enough, we can allocate the entire region before the
+first write. Then, we hit the btrfs_zoned_bg_is_full() in
+btrfs_zone_activate() and the activation fails.
 
-Test evidence as below:
-T:  Bus=04 Lev=01 Prnt=01 Port=01 Cnt=01 Dev#=  2 Spd=5000 MxCh= 0
-D:  Ver= 3.20 Cls=ef(misc ) Sub=02 Prot=01 MxPS= 9 #Cfgs=  1
-P:  Vendor=0489 ProdID=e167 Rev=05.15
-S:  Manufacturer=QCOM
-S:  Product=SDXPINNL USB WWAN Adapter
-S:  SerialNumber=cc1f1d92
-C:  #Ifs= 6 Cfg#= 1 Atr=a0 MxPwr=896mA
-I:  If#= 0 Alt= 0 #EPs= 1 Cls=02(commc) Sub=0e Prot=00 Driver=cdc_mbim
-E:  Ad=82(I) Atr=03(Int.) MxPS=  64 Ivl=32ms
-I:  If#= 1 Alt= 1 #EPs= 2 Cls=0a(data ) Sub=00 Prot=02 Driver=cdc_mbim
-E:  Ad=01(O) Atr=02(Bulk) MxPS=1024 Ivl=0ms
-E:  Ad=81(I) Atr=02(Bulk) MxPS=1024 Ivl=0ms
-I:  If#= 2 Alt= 0 #EPs= 3 Cls=ff(vend.) Sub=ff Prot=40 Driver=option
-E:  Ad=02(O) Atr=02(Bulk) MxPS=1024 Ivl=0ms
-E:  Ad=83(I) Atr=02(Bulk) MxPS=1024 Ivl=0ms
-E:  Ad=84(I) Atr=03(Int.) MxPS=  10 Ivl=32ms
-I:  If#= 3 Alt= 0 #EPs= 1 Cls=ff(vend.) Sub=ff Prot=ff Driver=(none)
-E:  Ad=85(I) Atr=03(Int.) MxPS=  64 Ivl=32ms
-I:  If#= 4 Alt= 0 #EPs= 3 Cls=ff(vend.) Sub=ff Prot=40 Driver=option
-E:  Ad=03(O) Atr=02(Bulk) MxPS=1024 Ivl=0ms
-E:  Ad=86(I) Atr=02(Bulk) MxPS=1024 Ivl=0ms
-E:  Ad=87(I) Atr=03(Int.) MxPS=  10 Ivl=32ms
-I:  If#= 5 Alt= 0 #EPs= 2 Cls=ff(vend.) Sub=ff Prot=30 Driver=option
-E:  Ad=04(O) Atr=02(Bulk) MxPS=1024 Ivl=0ms
-E:  Ad=88(I) Atr=02(Bulk) MxPS=1024 Ivl=0ms
+For a data block group, we activate it at the allocation time and we should
+check the fullness condition in the caller side. Add, a WARN to check the
+fullness condition.
 
-0&1: MBIM, 2:Modem, 3:GNSS(non-serial port), 4: NMEA, 5:Diag
+For a metadata block group, we don't need the fullness check because we
+activate it at the write time. Instead, activating it once it is written
+should be invalid. Catch that with a WARN too.
 
-Signed-off-by: Slark Xiao <slark_xiao@163.com>
-Cc: stable@vger.kernel.org
-Signed-off-by: Johan Hovold <johan@kernel.org>
+Fixes: 13bb483d32ab ("btrfs: zoned: activate metadata block group on write time")
+CC: stable@vger.kernel.org # 6.6+
+Reviewed-by: Johannes Thumshirn <johannes.thumshirn@wdc.com>
+Signed-off-by: Naohiro Aota <naohiro.aota@wdc.com>
+Signed-off-by: David Sterba <dsterba@suse.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/usb/serial/option.c |    2 ++
- 1 file changed, 2 insertions(+)
+ fs/btrfs/zoned.c |   13 +++++++++----
+ 1 file changed, 9 insertions(+), 4 deletions(-)
 
---- a/drivers/usb/serial/option.c
-+++ b/drivers/usb/serial/option.c
-@@ -2346,6 +2346,8 @@ static const struct usb_device_id option
- 	  .driver_info = RSVD(3) },
- 	{ USB_DEVICE_INTERFACE_CLASS(0x0489, 0xe145, 0xff),			/* Foxconn T99W651 RNDIS */
- 	  .driver_info = RSVD(5) | RSVD(6) },
-+	{ USB_DEVICE_INTERFACE_CLASS(0x0489, 0xe167, 0xff),                     /* Foxconn T99W640 MBIM */
-+	  .driver_info = RSVD(3) },
- 	{ USB_DEVICE(0x1508, 0x1001),						/* Fibocom NL668 (IOT version) */
- 	  .driver_info = RSVD(4) | RSVD(5) | RSVD(6) },
- 	{ USB_DEVICE(0x1782, 0x4d10) },						/* Fibocom L610 (AT mode) */
+--- a/fs/btrfs/zoned.c
++++ b/fs/btrfs/zoned.c
+@@ -2169,10 +2169,15 @@ bool btrfs_zone_activate(struct btrfs_bl
+ 		goto out_unlock;
+ 	}
+ 
+-	/* No space left */
+-	if (btrfs_zoned_bg_is_full(block_group)) {
+-		ret = false;
+-		goto out_unlock;
++	if (block_group->flags & BTRFS_BLOCK_GROUP_DATA) {
++		/* The caller should check if the block group is full. */
++		if (WARN_ON_ONCE(btrfs_zoned_bg_is_full(block_group))) {
++			ret = false;
++			goto out_unlock;
++		}
++	} else {
++		/* Since it is already written, it should have been active. */
++		WARN_ON_ONCE(block_group->meta_write_pointer != block_group->start);
+ 	}
+ 
+ 	for (i = 0; i < map->num_stripes; i++) {
 
 
 
