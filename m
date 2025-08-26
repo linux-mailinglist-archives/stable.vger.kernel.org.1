@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-173578-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-173212-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1F0B4B35E17
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 13:52:11 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 091D0B35C6D
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 13:34:09 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 731C31BC1ECF
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 11:44:52 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 886203668DC
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 11:28:24 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 19DC830BF55;
-	Tue, 26 Aug 2025 11:43:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 030AC33472E;
+	Tue, 26 Aug 2025 11:27:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ou/sqpQo"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="fO4C7+7B"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C40362FDC38;
-	Tue, 26 Aug 2025 11:43:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A6BA3334717;
+	Tue, 26 Aug 2025 11:27:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756208612; cv=none; b=udCoUAy+XzGtuFQQWYAdIOpojG3YMyl4IzhT0MxHjPzZWM1qKKFNpU8Vbyho1shsHrfO+HZQ11//EX0ZwglSqhEg+TEVCz17JhAzgi1Edtg6AfhbVnfIQurQtxgBuzc2h1GMCpD2XN6v1sPU9EerHkBCMarV0MutjKL2a3O2dp8=
+	t=1756207659; cv=none; b=pbqcCZAXLavSA6wfwh5N/QwOPE2KH5WcXk2wB89n1xma4K7IeTggVzx9gaj4dy5L/HSE1j8yVR9ZGBp61OtodPoK2K2TAXy21JSWodcoSN0Uejnkjd1SvaxZ63E8c02jkjx3dtN07W8PjxfLQndacr0VOgnSc0sCiXTLWtCITTs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756208612; c=relaxed/simple;
-	bh=ZEpLhtT7lnzyN9yufGnAlFtcO9ZjpZLBUTxDoLb737U=;
+	s=arc-20240116; t=1756207659; c=relaxed/simple;
+	bh=17HZ3z/Y1r/jCmXac86KGypQOaOX1Hn7Oar8ZnjCsDE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=eOhzZqgYT9GktMGsoyeLQnzdRXVJhXeoCAlnKAYdgOdExki6nnM1J3qfanprzyElDDlyI1R49ERu6rGvUQMYAcsqnJRPJq71PEhJHuDOC+v8X6MOT2cQkVZ8QKsDe1ss7T/wJUkt+btIn2kTke0NzXPhaeVvIMRjqSHu0yywJb8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ou/sqpQo; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 555F4C4CEF1;
-	Tue, 26 Aug 2025 11:43:32 +0000 (UTC)
+	 MIME-Version:Content-Type; b=SmSA6VE68+M7DmWxHYCfPVuTUyaRggFa/CMoD0BxHnkpJfz6gakeaDjJB5LXjMjF8v85SRbteXyMIo9cMhg36k2/HtuytwNr1H0jSCjPKRS3JnsXif250TQdlg5729jLoXinAejWvspuCgcLcZB94conBzhVW7G3BHAaFZvyOhk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=fO4C7+7B; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 41ADFC4CEF1;
+	Tue, 26 Aug 2025 11:27:39 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1756208612;
-	bh=ZEpLhtT7lnzyN9yufGnAlFtcO9ZjpZLBUTxDoLb737U=;
+	s=korg; t=1756207659;
+	bh=17HZ3z/Y1r/jCmXac86KGypQOaOX1Hn7Oar8ZnjCsDE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=ou/sqpQoYRpNUYjlgdmauz6nz7hVNmS2FGjFZ4oE/Rag78RPgl9KwnJUe0pfzyfDm
-	 ULseNZkY+nigZot3TZiXAuDGeEOKoHfJ1MBePqI4+0bz8KHqHV7L3hkNEmAWq38uuS
-	 EIPd3D9iUD1P42+KhI+XJ7g/786j1xUKN5Bwl7kI=
+	b=fO4C7+7BzsX57Xp4lkbFU3Af0PJMyiImqyAuLzM8VqEjRf9nwQIvZ/gaDaFeeePlc
+	 /+4puziSnd8keJfwZHuWvp4s6RDY2odVLUeIdOU60OPK1L9PhH2PMk8tq2u6Qn2Yb7
+	 s3bAha8DbU7wM9LSY4GIS7WfZoTET6uypoR6h11M=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Mat Martineau <martineau@kernel.org>,
-	"Matthieu Baerts (NGI0)" <matttbe@kernel.org>,
-	Jakub Kicinski <kuba@kernel.org>
-Subject: [PATCH 6.12 137/322] selftests: mptcp: pm: check flush doesnt reset limits
+	=?UTF-8?q?Timur=20Krist=C3=B3f?= <timur.kristof@gmail.com>,
+	Alex Deucher <alexander.deucher@amd.com>,
+	Rodrigo Siqueira <siqueira@igalia.com>,
+	Alex Hung <alex.hung@amd.com>
+Subject: [PATCH 6.16 268/457] drm/amd/display: Fix fractional fb divider in set_pixel_clock_v3
 Date: Tue, 26 Aug 2025 13:09:12 +0200
-Message-ID: <20250826110919.186622467@linuxfoundation.org>
+Message-ID: <20250826110944.000366701@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250826110915.169062587@linuxfoundation.org>
-References: <20250826110915.169062587@linuxfoundation.org>
+In-Reply-To: <20250826110937.289866482@linuxfoundation.org>
+References: <20250826110937.289866482@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,48 +61,58 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.16-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Matthieu Baerts (NGI0) <matttbe@kernel.org>
+From: Timur Kristóf <timur.kristof@gmail.com>
 
-commit 452690be7de2f91cc0de68cb9e95252875b33503 upstream.
+commit 10507478468f165ea681605d133991ed05cdff62 upstream.
 
-This modification is linked to the parent commit where the received
-ADD_ADDR limit was accidentally reset when the endpoints were flushed.
+For later VBIOS versions, the fractional feedback divider is
+calculated as the remainder of dividing the feedback divider by
+a factor, which is set to 1000000. For reference, see:
+- calculate_fb_and_fractional_fb_divider
+- calc_pll_max_vco_construct
 
-To validate that, the test is now flushing endpoints after having set
-new limits, and before checking them.
+However, in case of old VBIOS versions that have
+set_pixel_clock_v3, they only have 1 byte available for the
+fractional feedback divider, and it's expected to be set to the
+remainder from dividing the feedback divider by 10.
+For reference see the legacy display code:
+- amdgpu_pll_compute
+- amdgpu_atombios_crtc_program_pll
 
-The 'Fixes' tag here below is the same as the one from the previous
-commit: this patch here is not fixing anything wrong in the selftests,
-but it validates the previous fix for an issue introduced by this commit
-ID.
+This commit fixes set_pixel_clock_v3 by dividing the fractional
+feedback divider passed to the function by 100000.
 
-Fixes: 01cacb00b35c ("mptcp: add netlink-based PM")
+Fixes: 4562236b3bc0 ("drm/amd/dc: Add dc display driver (v2)")
+Signed-off-by: Timur Kristóf <timur.kristof@gmail.com>
+Acked-by: Alex Deucher <alexander.deucher@amd.com>
+Reviewed-by: Rodrigo Siqueira <siqueira@igalia.com>
+Reviewed-by: Alex Hung <alex.hung@amd.com>
+Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
+(cherry picked from commit 027e7acc7e17802ebf28e1edb88a404836ad50d6)
 Cc: stable@vger.kernel.org
-Reviewed-by: Mat Martineau <martineau@kernel.org>
-Signed-off-by: Matthieu Baerts (NGI0) <matttbe@kernel.org>
-Link: https://patch.msgid.link/20250815-net-mptcp-misc-fixes-6-17-rc2-v1-3-521fe9957892@kernel.org
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- tools/testing/selftests/net/mptcp/pm_netlink.sh |    1 +
- 1 file changed, 1 insertion(+)
+ drivers/gpu/drm/amd/display/dc/bios/command_table.c |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/tools/testing/selftests/net/mptcp/pm_netlink.sh
-+++ b/tools/testing/selftests/net/mptcp/pm_netlink.sh
-@@ -198,6 +198,7 @@ set_limits 1 9 2>/dev/null
- check "get_limits" "${default_limits}" "subflows above hard limit"
+--- a/drivers/gpu/drm/amd/display/dc/bios/command_table.c
++++ b/drivers/gpu/drm/amd/display/dc/bios/command_table.c
+@@ -993,7 +993,7 @@ static enum bp_result set_pixel_clock_v3
+ 	allocation.sPCLKInput.usFbDiv =
+ 			cpu_to_le16((uint16_t)bp_params->feedback_divider);
+ 	allocation.sPCLKInput.ucFracFbDiv =
+-			(uint8_t)bp_params->fractional_feedback_divider;
++			(uint8_t)(bp_params->fractional_feedback_divider / 100000);
+ 	allocation.sPCLKInput.ucPostDiv =
+ 			(uint8_t)bp_params->pixel_clock_post_divider;
  
- set_limits 8 8
-+flush_endpoint  ## to make sure it doesn't affect the limits
- check "get_limits" "$(format_limits 8 8)" "set limits"
- 
- flush_endpoint
 
 
 
