@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-175140-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-176071-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 59A5DB366B9
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 15:59:49 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8EB7CB36CE8
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 17:02:47 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id BEFE91C218C5
-	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 13:52:56 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 4BA4D5E1E41
+	for <lists+stable@lfdr.de>; Tue, 26 Aug 2025 14:34:39 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E3B0235082E;
-	Tue, 26 Aug 2025 13:50:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2462035CED7;
+	Tue, 26 Aug 2025 14:31:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="itSNYSAd"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="hYSTnQyd"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A1A31341650;
-	Tue, 26 Aug 2025 13:50:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D520835CECE;
+	Tue, 26 Aug 2025 14:31:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756216247; cv=none; b=Rb1LkOtijX9ALfLrm9tYhF5qrzpMax2DKsJxgCKcY+uHwvaNp4Wr3TyY+PsQAeURPqlmDT3FN1K7SD5ONJmPxfRazin9s16RZitC06kJdjLRvmgmyuGARn9p5Bch3k9ot+vXRG5V0tocSgBCT/L4KxxJWbdorJlGEU7X9jCmWeE=
+	t=1756218707; cv=none; b=LLvE09FqnsjY4KXOUBElEoEumZvnjxh9rTcjDb/XYR8V27kSR/bzBrHfvpcKXL/I4HWv+W34rEzfifZTwE4jo4QVussmFil2jiQ0ejg37D8YA6JiITsyPMO8sKmp3Hw4HdwHBEFCCV04FKsfYqnJkr8yJpKrOC0YgZq/w4Ku/c8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756216247; c=relaxed/simple;
-	bh=P5RtaV3qZtHAKztjenR7y1C0F0kETjlYTYssfWyjlgk=;
+	s=arc-20240116; t=1756218707; c=relaxed/simple;
+	bh=TmWcI8BBVkTQc/WFpKfDPMKHZld6s0AbjBbR0WQqZ4Y=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=suuwfdQSS4nlckbVlCnii/TfTdZaKgWU5S/Ge+z17flytHOdKX81/e9ThMUvuBSR6BrY7m66Mp3XEMoNWNvn2ibtGGID0nUtn12wsHoItn6qWFccfavsf3WDezDjPwrD5rJ8LYpLAkS1p62vJv3jHHd8XqAIM/saH4GL7+MT8a8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=itSNYSAd; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 358A6C4CEF1;
-	Tue, 26 Aug 2025 13:50:47 +0000 (UTC)
+	 MIME-Version; b=bBZKR+s/fyG2bPhjM+Vrsg6L0Cq/g1245U5DSfilvoqTv/jHn3VRIXlGMNV8Sa2EJCfJglpOXF5C9QroitdDsT09RFhunvxAXiUB4/Z3KWjwijril1+2x8bjTr0pOSTyNgDnnB5edFEvlIKhJAKiSrJZLD6oaa9zaY5MCboVldE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=hYSTnQyd; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 62107C113CF;
+	Tue, 26 Aug 2025 14:31:47 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1756216247;
-	bh=P5RtaV3qZtHAKztjenR7y1C0F0kETjlYTYssfWyjlgk=;
+	s=korg; t=1756218707;
+	bh=TmWcI8BBVkTQc/WFpKfDPMKHZld6s0AbjBbR0WQqZ4Y=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=itSNYSAdZK4/Y8m4uRa3v2joE8GRHI2AVpc0SoECHexcV6uzTEDZYLUYCz2iBPdkQ
-	 MGjDR2B61h5KRJR5usYdfkoO0AdP0Lv4kV1gXTPDjUkAgMNqlZt1Dx6iY/chtOE5xG
-	 gSSvF5HQyPO0cDBiX0ERqQHnVHYY9kHxa9E2at2A=
+	b=hYSTnQydof0lisbEM16t2UI3YoZbThCFwX/kxhEhmjWpXgniCS1UhScpRUxGdhmrj
+	 lRO8GYld6NAYkpaKsk3BbCJHLS2XW8x90brM1GAK2K8NliXMUm9yVWlMaUacxdOr++
+	 dX+wCk50DWXWtFmfmuKRxpgP3nwZJAWAgGe7/yKU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Anthoine Bourgeois <anthoine.bourgeois@vates.tech>,
-	Juergen Gross <jgross@suse.com>,
-	Elliott Mitchell <ehem+xen@m5p.com>,
+	syzbot+4ff165b9251e4d295690@syzkaller.appspotmail.com,
+	Florian Westphal <fw@strlen.de>,
+	Pablo Neira Ayuso <pablo@netfilter.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 337/644] xen/netfront: Fix TX response spurious interrupts
+Subject: [PATCH 5.4 102/403] netfilter: xt_nfacct: dont assume acct name is null-terminated
 Date: Tue, 26 Aug 2025 13:07:08 +0200
-Message-ID: <20250826110954.739255480@linuxfoundation.org>
+Message-ID: <20250826110909.495261572@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250826110946.507083938@linuxfoundation.org>
-References: <20250826110946.507083938@linuxfoundation.org>
+In-Reply-To: <20250826110905.607690791@linuxfoundation.org>
+References: <20250826110905.607690791@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,110 +63,52 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+5.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Anthoine Bourgeois <anthoine.bourgeois@vates.tech>
+From: Florian Westphal <fw@strlen.de>
 
-[ Upstream commit 114a2de6fa86d99ed9546cc9113a3cad58beef79 ]
+[ Upstream commit bf58e667af7d96c8eb9411f926a0a0955f41ce21 ]
 
-We found at Vates that there are lot of spurious interrupts when
-benchmarking the xen-net PV driver frontend. This issue appeared with a
-patch that addresses security issue XSA-391 (b27d47950e48 "xen/netfront:
-harden netfront against event channel storms"). On an iperf benchmark,
-spurious interrupts can represent up to 50% of the interrupts.
+BUG: KASAN: slab-out-of-bounds in .. lib/vsprintf.c:721
+Read of size 1 at addr ffff88801eac95c8 by task syz-executor183/5851
+[..]
+ string+0x231/0x2b0 lib/vsprintf.c:721
+ vsnprintf+0x739/0xf00 lib/vsprintf.c:2874
+ [..]
+ nfacct_mt_checkentry+0xd2/0xe0 net/netfilter/xt_nfacct.c:41
+ xt_check_match+0x3d1/0xab0 net/netfilter/x_tables.c:523
 
-Spurious interrupts are interrupts that are rised for nothing, there is
-no work to do. This appends because the function that handles the
-interrupts ("xennet_tx_buf_gc") is also called at the end of the request
-path to garbage collect the responses received during the transmission
-load.
+nfnl_acct_find_get() handles non-null input, but the error
+printk relied on its presence.
 
-The request path is doing the work that the interrupt handler should
-have done otherwise. This is particurary true when there is more than
-one vcpu and get worse linearly with the number of vcpu/queue.
-
-Moreover, this problem is amplifyed by the penalty imposed by a spurious
-interrupt. When an interrupt is found spurious the interrupt chip will
-delay the EOI to slowdown the backend. This delay will allow more
-responses to be handled by the request path and then there will be more
-chance the next interrupt will not find any work to do, creating a new
-spurious interrupt.
-
-This causes performance issue. The solution here is to remove the calls
-from the request path and let the interrupt handler do the processing of
-the responses. This approch removes most of the spurious interrupts
-(<0.05%) and also has the benefit of freeing up cycles in the request
-path, allowing it to process more work, which improves performance
-compared to masking the spurious interrupt one way or another.
-
-This optimization changes a part of the code that is present since the
-net frontend driver was upstreamed. There is no similar pattern in the
-other xen PV drivers. Since the first commit of xen-netfront is a blob
-that doesn't explain all the design choices I can only guess why this
-specific mecanism was here. This could have been introduce to compensate
-a slow backend at the time (maybe the backend was fixed or optimize
-later) or a small queue. In 18 years, both frontend and backend gain lot
-of features and optimizations that could have obsolete the feature of
-reaping completions from the TX path.
-
-Some vif throughput performance figures from a 8 vCPUs, 4GB of RAM HVM
-guest(s):
-
-Without this patch on the :
-vm -> dom0: 4.5Gb/s
-vm -> vm:   7.0Gb/s
-
-Without XSA-391 patch (revert of b27d47950e48):
-vm -> dom0: 8.3Gb/s
-vm -> vm:   8.7Gb/s
-
-With XSA-391 and this patch:
-vm -> dom0: 11.5Gb/s
-vm -> vm:   12.6Gb/s
-
-v2:
-- add revewed and tested by tags
-- resend with the maintainers in the recipients list
-
-v3:
-- remove Fixes tag but keep the commit ref in the explanation
-- add a paragraph on why this code was here
-
-Signed-off-by: Anthoine Bourgeois <anthoine.bourgeois@vates.tech>
-Reviewed-by: Juergen Gross <jgross@suse.com>
-Tested-by: Elliott Mitchell <ehem+xen@m5p.com>
-Signed-off-by: Juergen Gross <jgross@suse.com>
-Message-ID: <20250721093316.23560-1-anthoine.bourgeois@vates.tech>
+Reported-by: syzbot+4ff165b9251e4d295690@syzkaller.appspotmail.com
+Closes: https://syzkaller.appspot.com/bug?extid=4ff165b9251e4d295690
+Tested-by: syzbot+4ff165b9251e4d295690@syzkaller.appspotmail.com
+Fixes: ceb98d03eac5 ("netfilter: xtables: add nfacct match to support extended accounting")
+Signed-off-by: Florian Westphal <fw@strlen.de>
+Signed-off-by: Pablo Neira Ayuso <pablo@netfilter.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/xen-netfront.c | 5 -----
- 1 file changed, 5 deletions(-)
+ net/netfilter/xt_nfacct.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/net/xen-netfront.c b/drivers/net/xen-netfront.c
-index 0add51f1b7e4..4b19d54fa2e2 100644
---- a/drivers/net/xen-netfront.c
-+++ b/drivers/net/xen-netfront.c
-@@ -639,8 +639,6 @@ static int xennet_xdp_xmit_one(struct net_device *dev,
- 	tx_stats->packets++;
- 	u64_stats_update_end(&tx_stats->syncp);
+diff --git a/net/netfilter/xt_nfacct.c b/net/netfilter/xt_nfacct.c
+index 5aab6df74e0f..68b07476f754 100644
+--- a/net/netfilter/xt_nfacct.c
++++ b/net/netfilter/xt_nfacct.c
+@@ -38,8 +38,8 @@ nfacct_mt_checkentry(const struct xt_mtchk_param *par)
  
--	xennet_tx_buf_gc(queue);
--
- 	return 0;
- }
- 
-@@ -850,9 +848,6 @@ static netdev_tx_t xennet_start_xmit(struct sk_buff *skb, struct net_device *dev
- 	tx_stats->packets++;
- 	u64_stats_update_end(&tx_stats->syncp);
- 
--	/* Note: It is not safe to access skb after xennet_tx_buf_gc()! */
--	xennet_tx_buf_gc(queue);
--
- 	if (!netfront_tx_slot_available(queue))
- 		netif_tx_stop_queue(netdev_get_tx_queue(dev, queue->id));
- 
+ 	nfacct = nfnl_acct_find_get(par->net, info->name);
+ 	if (nfacct == NULL) {
+-		pr_info_ratelimited("accounting object `%s' does not exists\n",
+-				    info->name);
++		pr_info_ratelimited("accounting object `%.*s' does not exist\n",
++				    NFACCT_NAME_MAX, info->name);
+ 		return -ENOENT;
+ 	}
+ 	info->nfacct = nfacct;
 -- 
 2.39.5
 
